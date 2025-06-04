@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.0.2](https://github.com/RIVM-bioinformatics/gen-epix-ui/compare/v1.0.1...v1.0.2) (2025-06-04)
+
+
+### Miscellaneous Chores
+
+* release 1.0.2 ([895384c](https://github.com/RIVM-bioinformatics/gen-epix-ui/commit/895384c83329d98456e6828251d79d4845b50928))
+
 ## [1.0.1](https://github.com/RIVM-bioinformatics/gen-epix-ui/compare/v1.0.0...v1.0.1) (2025-06-04)
 
 
