@@ -1,14 +1,20 @@
-name: on-pull-request
+name: Static Analysis and testing
 
 on:
   pull_request:
-    types: [opened, reopened]
+    types: [opened, synchronize, reopened, edited]
     branches:
       - main
 
+concurrency:
+  group: ci-${{ github.head_ref || github.run_id }}
+  cancel-in-progress: true
+
 jobs:
   validate:
-    name: Validate code
+    permissions:
+      contents: read
+      pull-requests: write
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
