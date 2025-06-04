@@ -1,11 +1,7 @@
 name: ci
 
 on:
-  workflow_dispatch:
-  push:
-    paths:
-      - 'src/**'
-      - '.github/workflows/ci.yml'
+  pull_request:
 
 jobs:
   validate:
