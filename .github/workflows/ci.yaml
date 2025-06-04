@@ -5,7 +5,7 @@ on:
   push:
     paths:
       - 'src/**'
-      - '.github/workflows/gen-epix-ui-ci.yml'
+      - '.github/workflows/ci.yml'
 
 jobs:
   validate:
