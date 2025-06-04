@@ -9,7 +9,7 @@
   "main": "./src/index.ts",
   "scripts": {
     "build": "vite build",
-    "build-publish": "npm run build && reconfigure-package . pre && cat package.json && npm run publish --access=public && reconfigure-package . post",
+    "build-publish": "npm run build && reconfigure-package . pre && npm publish --access=public && reconfigure-package . post",
     "validate": "npm run lint && npm run check-types && npm run test-run",
     "test": "vitest",
     "test-run": "vitest run --passWithNoTests",
