@@ -1,7 +1,10 @@
-name: ci
+name: on-pull-request
 
 on:
   pull_request:
+    types: [opened, reopened]
+    branches:
+      - main
 
 jobs:
   validate:
