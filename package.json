@@ -2,6 +2,14 @@
   "name": "@gen-epix/ui",
   "version": "1.0.4",
   "license": "EUPL-1.2",
+  "publishConfig": {
+    "access": "public"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/RIVM-bioinformatics/gen-epix-ui"
+  },
+  "author": "RIVM-bioinformatics <ids-bioinformatics@rivm.nl>",
   "type": "module",
   "files": [
     "src"
