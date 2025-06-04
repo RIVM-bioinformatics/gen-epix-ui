@@ -1,0 +1,19 @@
+name: ci
+
+on:
+  workflow_dispatch:
+  push:
+    paths:
+      - 'src/**'
+      - '.github/workflows/gen-epix-ui-ci.yml'
+
+jobs:
+  test-build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: ./.github/actions/setup-node-env
+        with:
+          node-version: 22
+      - run: npm ci
+      - run: npm run validate
