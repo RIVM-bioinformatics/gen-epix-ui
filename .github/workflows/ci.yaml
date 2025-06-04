@@ -8,7 +8,8 @@ on:
       - '.github/workflows/gen-epix-ui-ci.yml'
 
 jobs:
-  test-build:
+  validate:
+    name: Validate code
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
