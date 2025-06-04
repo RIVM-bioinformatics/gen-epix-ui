@@ -1,14 +1,9 @@
-name: Static Analysis and testing
+name: Validate
 
 on:
   pull_request:
     types: [opened, synchronize, reopened, edited]
-    branches:
-      - main
-
-concurrency:
-  group: ci-${{ github.head_ref || github.run_id }}
-  cancel-in-progress: true
+    branches: [main]
 
 jobs:
   validate:
