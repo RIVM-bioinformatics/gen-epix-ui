@@ -133,7 +133,7 @@ export class EpiCurveUtil {
       case ColType.TIME_DAY:
         return format(value, 'yyyy-MM-dd');
       case ColType.TIME_WEEK:
-        return format(value, 'yyyy-\'W\'ww');
+        return format(value, 'YYYY-\'W\'ww', { useAdditionalWeekYearTokens: true });
       case ColType.TIME_MONTH:
         return format(value, 'yyyy-MM');
       case ColType.TIME_QUARTER:
