@@ -308,8 +308,9 @@ export const EpiCaseSetInfoDialog = withDialog<EpiCaseSetInfoDialogProps, EpiCas
       userDataCollectionOptions: dataCollectionOptionsQuery.options,
       itemDataCollectionLinks: [caseSetDataCollectionLinks],
       rights: caseSetRightsQuery.data,
+      createdInDataCollection: caseSet ? dataCollectionsMapQuery.map.get(caseSet?.created_in_data_collection_id) : undefined,
     };
-  }, [caseSetDataCollectionLinks, caseSetRightsQuery.data, dataCollectionOptionsQuery.options, dataCollectionsMapQuery.map, dataCollectionsQuery.data]);
+  }, [caseSet, caseSetDataCollectionLinks, caseSetRightsQuery.data, dataCollectionOptionsQuery.options, dataCollectionsMapQuery.map, dataCollectionsQuery.data]);
 
   if (isRefreshingData || isDeleteMutating) {
     return (

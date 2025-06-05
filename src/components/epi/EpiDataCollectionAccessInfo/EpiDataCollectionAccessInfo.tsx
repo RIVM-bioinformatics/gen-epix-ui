@@ -37,14 +37,33 @@ export const EpiDataCollectionAccessInfo = () => {
             {t`Data collection`}
           </TableCell>
           <TableCell sx={{
-            width: 'calc(100% * 2/3)',
+            width: 'calc(100% * 1/6)',
           }}
           >
             {t`Removable`}
           </TableCell>
+          <TableCell sx={{
+            width: 'calc(100% * 1/2)',
+          }}
+          >
+            {t`Is created in`}
+          </TableCell>
         </TableRow>
       </TableHead>
       <TableBody>
+        {caseAbacContext.createdInDataCollection && (
+          <TableRow>
+            <TableCell>
+              {caseAbacContext.createdInDataCollection.name}
+            </TableCell>
+            <TableCell>
+              {t`No`}
+            </TableCell>
+            <TableCell>
+              {t`Yes`}
+            </TableCell>
+          </TableRow>
+        )}
         {caseAbacContext.itemSharedInDataCollections[0].map((dataCollection) => (
           <TableRow key={dataCollection.id}>
             <TableCell>
@@ -52,6 +71,9 @@ export const EpiDataCollectionAccessInfo = () => {
             </TableCell>
             <TableCell>
               {canRemoveItemFromDataCollection(dataCollection.id) ? t`Yes` : t`No`}
+            </TableCell>
+            <TableCell>
+              {t`No`}
             </TableCell>
           </TableRow>
         ))}

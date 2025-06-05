@@ -77,14 +77,6 @@ export const EpiReadOnlyCaseContent = ({ epiCase, ...boxProps }: EpiReadOnlyCase
                   {format(epiCase.case_date, 'yyyy-MM-dd')}
                 </TableCell>
               </TableRow>
-              <TableRow>
-                <TableCell>
-                  {t`Created in`}
-                </TableCell>
-                <TableCell>
-                  {dataCollectionMap.map.get(epiCase.created_in_data_collection_id)?.name ?? t`Unknown`}
-                </TableCell>
-              </TableRow>
             </TableBody>
           </Table>
         )}

@@ -296,8 +296,9 @@ export const EpiCaseInfoDialog = withDialog<EpiCaseInfoDialogProps, EpiCaseInfoD
       userDataCollectionOptions: dataCollectionOptionsQuery.options,
       itemDataCollectionLinks: [caseDataCollectionLinks],
       rights: caseRightsQuery.data,
+      createdInDataCollection: epiCase ? dataCollectionsMapQuery.map.get(epiCase.created_in_data_collection_id) : undefined,
     };
-  }, [dataCollectionsQuery.data, dataCollectionsMapQuery.map, dataCollectionOptionsQuery.options, caseDataCollectionLinks, caseRightsQuery.data]);
+  }, [dataCollectionsQuery.data, dataCollectionsMapQuery.map, dataCollectionOptionsQuery.options, caseDataCollectionLinks, caseRightsQuery.data, epiCase]);
 
   if (isRefreshingData) {
     return (

@@ -12,7 +12,6 @@ import { useMemo } from 'react';
 import { useTranslation } from 'react-i18next';
 import { format } from 'date-fns';
 
-import { useEpiCaseAbacContext } from '../../../context/epiCaseAbac';
 import type { CaseSet } from '../../../api';
 import { useCaseSetCategoryMap } from '../../../dataHooks/useCaseSetCategories';
 import { useCaseSetStatusMap } from '../../../dataHooks/useCaseSetStatuses';
@@ -27,7 +26,6 @@ export const EpiCaseSetContent = ({ caseSet, ...boxProps }: EpiCaseSetContentPro
   const caseSetCategoryMap = useCaseSetCategoryMap();
   const caseSetStatusMap = useCaseSetStatusMap();
   const caseTypeMap = useCaseTypeMap();
-  const caseAbacContext = useEpiCaseAbacContext();
   const [t] = useTranslation();
 
   const loadables = useMemo(() => [caseSetCategoryMap, caseSetStatusMap, caseTypeMap], [caseSetCategoryMap, caseSetStatusMap, caseTypeMap]);
@@ -100,15 +98,6 @@ export const EpiCaseSetContent = ({ caseSet, ...boxProps }: EpiCaseSetContentPro
                 {format(caseSet.created_at, 'yyyy-MM-dd HH:mm:ss')}
               </TableCell>
             </TableRow>
-            <TableRow>
-              <TableCell>
-                {t`Created in data collection`}
-              </TableCell>
-              <TableCell>
-                {caseAbacContext.userDataCollectionsMap.get(caseSet.created_in_data_collection_id)?.name ?? t`Unknown`}
-              </TableCell>
-            </TableRow>
-
           </TableBody>
         </Table>
       </ResponseHandler>

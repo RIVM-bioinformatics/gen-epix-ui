@@ -17,6 +17,7 @@ export type EpiCaseAbacContextValue = {
   itemDataCollections?: Array<DataCollection[]>;
   itemSharedInDataCollections?: Array<DataCollection[]>;
   itemDataCollectionOptions?: Array<OptionBase<string>[]>;
+  createdInDataCollection?: DataCollection;
   rights: Array<CaseSetRights | CaseRights>;
 };
 
