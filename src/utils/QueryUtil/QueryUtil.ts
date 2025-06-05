@@ -214,7 +214,6 @@ export class QueryUtil {
   public static async invalidateQueryKeys(queryKeys: string[][]) {
     const queryClient = QueryClientManager.instance.queryClient;
     for (const queryKey of QueryUtil.getUniqueQueryKeys(queryKeys ?? [])) {
-      console.log('Invalidating query key:', queryKey);
       await queryClient.cancelQueries({ queryKey });
       await queryClient.invalidateQueries({ queryKey });
     }

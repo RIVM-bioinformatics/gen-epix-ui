@@ -197,7 +197,9 @@ export const EpiCaseSetInfoDialog = withDialog<EpiCaseSetInfoDialogProps, EpiCas
   }, [caseSet]);
 
   useEffect(() => {
-    onPermalinkChange(EpiCaseSetUtil.createCaseSetLink(caseSet, true));
+    if (caseSet) {
+      onPermalinkChange(EpiCaseSetUtil.createCaseSetLink(caseSet, true));
+    }
   }, [caseSet, onPermalinkChange]);
 
   useEffect(() => {
