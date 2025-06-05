@@ -17,7 +17,6 @@ import { QueryClientManager } from '../../../classes/managers/QueryClientManager
 import { RouterManager } from '../../../classes/managers/RouterManager';
 import { ErrorPage } from '../../../pages/ErrorPage';
 
-
 export const App = () => {
   const { config } = ConfigManager.instance;
   const touchIconUrl = config.getTouchIconUrl();

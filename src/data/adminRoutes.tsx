@@ -1,5 +1,4 @@
 /* eslint-disable @typescript-eslint/naming-convention */
-import { UsersAdminPage } from '../pages/UsersAdminPage';
 import {
   CommandName,
   PermissionType,
@@ -32,13 +31,14 @@ import { RouterErrorPage } from '../pages/RouterErrorPage';
 import { UserAccessCasePoliciesAdminPage } from '../pages/UserAccessCasePoliciesAdminPage';
 import { UserInvitationsAdminPage } from '../pages/UserInvitationsAdminPage';
 import { UserShareCasePoliciesAdminPage } from '../pages/UserShareCasePoliciesAdminPage';
+import { UsersAdminPage } from '../pages/UsersAdminPage';
 
 export const adminRoutes: MyNonIndexRouteObject[] = [
   // USERS_AND_ORGANIZATIONS
 
   {
     path: '/management/organizations',
-    Component: OrganizationsAdminPage,
+    Component: () => <OrganizationsAdminPage />,
     errorElement: <RouterErrorPage />,
     handle: {
       titleKey: 'Organizations',
@@ -52,7 +52,7 @@ export const adminRoutes: MyNonIndexRouteObject[] = [
   },
   {
     path: '/management/users',
-    Component: UsersAdminPage,
+    Component: () => <UsersAdminPage />,
     errorElement: <RouterErrorPage />,
     handle: {
       titleKey: 'Users',
@@ -67,7 +67,7 @@ export const adminRoutes: MyNonIndexRouteObject[] = [
   },
   {
     path: '/management/user-invitations',
-    Component: UserInvitationsAdminPage,
+    Component: () => <UserInvitationsAdminPage />,
     errorElement: <RouterErrorPage />,
     handle: {
       titleKey: 'User invitations',
@@ -82,7 +82,7 @@ export const adminRoutes: MyNonIndexRouteObject[] = [
   },
   {
     path: '/management/organization-admin-policies',
-    Component: OrganizationAdminPoliciesAdminPage,
+    Component: () => <OrganizationAdminPoliciesAdminPage />,
     errorElement: <RouterErrorPage />,
     handle: {
       titleKey: 'Organization admin policies',
@@ -101,7 +101,7 @@ export const adminRoutes: MyNonIndexRouteObject[] = [
 
   {
     path: '/management/data-collections',
-    Component: DataCollectionsAdminPage,
+    Component: () => <DataCollectionsAdminPage />,
     errorElement: <RouterErrorPage />,
     handle: {
       titleKey: 'Data collections',
@@ -115,7 +115,7 @@ export const adminRoutes: MyNonIndexRouteObject[] = [
   },
   {
     path: '/management/data-collection-sets',
-    Component: DataCollectionSetsAdminPage,
+    Component: () => <DataCollectionSetsAdminPage />,
     errorElement: <RouterErrorPage />,
     handle: {
       titleKey: 'Data collection sets',
@@ -131,7 +131,7 @@ export const adminRoutes: MyNonIndexRouteObject[] = [
   },
   {
     path: '/management/case-type-col-sets',
-    Component: CaseTypeColSetsAdminPage,
+    Component: () => <CaseTypeColSetsAdminPage />,
     errorElement: <RouterErrorPage />,
     handle: {
       titleKey: 'Case type column sets',
@@ -148,7 +148,7 @@ export const adminRoutes: MyNonIndexRouteObject[] = [
   },
   {
     path: '/management/organization-access-case-policies',
-    Component: OrganizationAccessCasePoliciesAdminPage,
+    Component: () => <OrganizationAccessCasePoliciesAdminPage />,
     errorElement: <RouterErrorPage />,
     handle: {
       titleKey: 'Organization access case policies',
@@ -166,7 +166,7 @@ export const adminRoutes: MyNonIndexRouteObject[] = [
   },
   {
     path: '/management/organization-share-case-policies',
-    Component: OrganizationShareCasePoliciesAdminPage,
+    Component: () => <OrganizationShareCasePoliciesAdminPage />,
     errorElement: <RouterErrorPage />,
     handle: {
       titleKey: 'Organization share case policies',
@@ -182,7 +182,7 @@ export const adminRoutes: MyNonIndexRouteObject[] = [
   },
   {
     path: '/management/user-access-case-policies',
-    Component: UserAccessCasePoliciesAdminPage,
+    Component: () => <UserAccessCasePoliciesAdminPage />,
     errorElement: <RouterErrorPage />,
     handle: {
       titleKey: 'User access case policies',
@@ -200,7 +200,7 @@ export const adminRoutes: MyNonIndexRouteObject[] = [
   },
   {
     path: '/management/user-share-case-policies',
-    Component: UserShareCasePoliciesAdminPage,
+    Component: () => <UserShareCasePoliciesAdminPage />,
     errorElement: <RouterErrorPage />,
     handle: {
       titleKey: 'User share case policies',
@@ -220,7 +220,7 @@ export const adminRoutes: MyNonIndexRouteObject[] = [
   // REFERENCE_DATA
   {
     path: '/management/dims',
-    Component: DimsAdminPage,
+    Component: () => <DimsAdminPage />,
     errorElement: <RouterErrorPage />,
     handle: {
       titleKey: 'Dimensions',
@@ -234,7 +234,7 @@ export const adminRoutes: MyNonIndexRouteObject[] = [
   },
   {
     path: '/management/cols',
-    Component: ColsAdminPage,
+    Component: () => <ColsAdminPage />,
     errorElement: <RouterErrorPage />,
     handle: {
       titleKey: 'Columns',
@@ -252,7 +252,7 @@ export const adminRoutes: MyNonIndexRouteObject[] = [
   },
   {
     path: '/management/diseases',
-    Component: DiseasesAdminPage,
+    Component: () => <DiseasesAdminPage />,
     errorElement: <RouterErrorPage />,
     handle: {
       titleKey: 'Diseases',
@@ -266,7 +266,7 @@ export const adminRoutes: MyNonIndexRouteObject[] = [
   },
   {
     path: '/management/etiological-agents',
-    Component: EtiologicalAgentsAdminPage,
+    Component: () => <EtiologicalAgentsAdminPage />,
     errorElement: <RouterErrorPage />,
     handle: {
       titleKey: 'Etiological agents',
@@ -280,7 +280,7 @@ export const adminRoutes: MyNonIndexRouteObject[] = [
   },
   {
     path: '/management/etiologies',
-    Component: EtiologiesAdminPage,
+    Component: () => <EtiologiesAdminPage />,
     errorElement: <RouterErrorPage />,
     handle: {
       titleKey: 'Etiologies',
@@ -296,7 +296,7 @@ export const adminRoutes: MyNonIndexRouteObject[] = [
   },
   {
     path: '/management/case-set-statuses',
-    Component: CaseSetStatusAdminPage,
+    Component: () => <CaseSetStatusAdminPage />,
     errorElement: <RouterErrorPage />,
     handle: {
       titleKey: 'Case set statuses',
@@ -310,7 +310,7 @@ export const adminRoutes: MyNonIndexRouteObject[] = [
   },
   {
     path: '/management/case-types',
-    Component: CaseTypesAdminPage,
+    Component: () => <CaseTypesAdminPage />,
     errorElement: <RouterErrorPage />,
     handle: {
       titleKey: 'Case types',
@@ -326,7 +326,7 @@ export const adminRoutes: MyNonIndexRouteObject[] = [
   },
   {
     path: '/management/case-type-cols',
-    Component: CaseTypeColsAdminPage,
+    Component: () => <CaseTypeColsAdminPage />,
     errorElement: <RouterErrorPage />,
     handle: {
       titleKey: 'Case type columns',
@@ -343,7 +343,7 @@ export const adminRoutes: MyNonIndexRouteObject[] = [
   },
   {
     path: '/management/case-type-sets',
-    Component: CaseTypeSetsAdminPage,
+    Component: () => <CaseTypeSetsAdminPage />,
     errorElement: <RouterErrorPage />,
     handle: {
       titleKey: 'Case types sets',
@@ -360,7 +360,7 @@ export const adminRoutes: MyNonIndexRouteObject[] = [
   },
   {
     path: '/management/case-type-set-categories',
-    Component: CaseTypeSetCategoriesAdminPage,
+    Component: () => <CaseTypeSetCategoriesAdminPage />,
     errorElement: <RouterErrorPage />,
     handle: {
       titleKey: 'Case types set categories',
@@ -374,7 +374,7 @@ export const adminRoutes: MyNonIndexRouteObject[] = [
   },
   {
     path: '/management/regions',
-    Component: RegionsAdminPage,
+    Component: () => <RegionsAdminPage />,
     errorElement: <RouterErrorPage />,
     handle: {
       titleKey: 'Regions',
@@ -389,7 +389,7 @@ export const adminRoutes: MyNonIndexRouteObject[] = [
   },
   {
     path: '/management/region-sets',
-    Component: RegionSetsAdminPage,
+    Component: () => <RegionSetsAdminPage />,
     errorElement: <RouterErrorPage />,
     handle: {
       titleKey: 'Region sets',
@@ -403,7 +403,7 @@ export const adminRoutes: MyNonIndexRouteObject[] = [
   },
   {
     path: '/management/region-set-shapes',
-    Component: RegionSetShapesAdminPage,
+    Component: () => <RegionSetShapesAdminPage />,
     errorElement: <RouterErrorPage />,
     handle: {
       titleKey: 'Region set shapes',
@@ -420,7 +420,7 @@ export const adminRoutes: MyNonIndexRouteObject[] = [
   {
     path: '/management/outages',
 
-    Component: OutagesAdminPage,
+    Component: () => <OutagesAdminPage />,
     errorElement: <RouterErrorPage />,
     handle: {
       titleKey: 'Outages',
@@ -435,7 +435,7 @@ export const adminRoutes: MyNonIndexRouteObject[] = [
 
   {
     path: '/management/data-collection-visualization-page',
-    Component: DataCollectionVisualizationPage,
+    Component: () => <DataCollectionVisualizationPage />,
     errorElement: <RouterErrorPage />,
     handle: {
       titleKey: 'Data collection visualization',

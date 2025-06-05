@@ -25,7 +25,7 @@ import { adminRoutes } from './adminRoutes';
 export const routes: MyNonIndexRouteObject[] = [
   {
     path: '/post-logout',
-    Component: PostLogoutPage,
+    Component: () => <PostLogoutPage />,
     errorElement: <RouterErrorPage />,
     handle: {
       titleKey: 'PostLogout',
@@ -36,7 +36,7 @@ export const routes: MyNonIndexRouteObject[] = [
   },
   {
     path: '/',
-    Component: RouterRoot,
+    Component: () => <RouterRoot />,
     errorElement: <RouterErrorPage />,
     handle: {
       root: true,
@@ -48,7 +48,7 @@ export const routes: MyNonIndexRouteObject[] = [
     children: [
       {
         path: '/accept-invitation/:token',
-        Component: AcceptInvitationPage,
+        Component: () => <AcceptInvitationPage />,
         errorElement: <RouterErrorPage />,
         handle: {
           titleKey: 'AcceptInvitation',
@@ -59,7 +59,7 @@ export const routes: MyNonIndexRouteObject[] = [
       },
       {
         path: '/post-login',
-        Component: PostLoginPage,
+        Component: () => <PostLoginPage />,
         errorElement: <RouterErrorPage />,
         handle: {
           titleKey: 'PostLogin',
@@ -80,7 +80,7 @@ export const routes: MyNonIndexRouteObject[] = [
         children: [
           {
             path: '/cases',
-            Component: CasesPage,
+            Component: () => <CasesPage />,
             errorElement: <RouterErrorPage />,
             handle: {
               titleKey: 'Cases',
@@ -95,7 +95,7 @@ export const routes: MyNonIndexRouteObject[] = [
           },
           {
             path: '/cases/:slug/:caseTypeId',
-            Component: CasesDetailPage,
+            Component: () => <CasesDetailPage />,
             errorElement: <RouterErrorPage />,
             handle: {
               titleKey: 'Case type',
@@ -126,7 +126,7 @@ export const routes: MyNonIndexRouteObject[] = [
         children: [
           {
             index: true,
-            Component: EventsPage,
+            Component: () => <EventsPage />,
             errorElement: <RouterErrorPage />,
             handle: {
               titleKey: 'Events',
@@ -145,7 +145,7 @@ export const routes: MyNonIndexRouteObject[] = [
           },
           {
             path: '/events/:slug/:caseSetId',
-            Component: EventsDetailPage,
+            Component: () => <EventsDetailPage />,
             errorElement: <RouterErrorPage />,
             handle: {
               titleKey: 'Event',
@@ -168,7 +168,7 @@ export const routes: MyNonIndexRouteObject[] = [
       },
       {
         path: '/trends',
-        Component: TrendsPage,
+        Component: () => <TrendsPage />,
         errorElement: <RouterErrorPage />,
         handle: {
           titleKey: 'Trends',
@@ -179,7 +179,7 @@ export const routes: MyNonIndexRouteObject[] = [
       },
       {
         path: '/upload',
-        Component: UploadPage,
+        Component: () => <UploadPage />,
         errorElement: <RouterErrorPage />,
         handle: {
           titleKey: 'Upload',
@@ -202,7 +202,7 @@ export const routes: MyNonIndexRouteObject[] = [
           {
             path: '/management',
             index: true,
-            Component: AdminPage,
+            Component: () => <AdminPage />,
             errorElement: <RouterErrorPage />,
             handle: {
               titleKey: 'Management',
