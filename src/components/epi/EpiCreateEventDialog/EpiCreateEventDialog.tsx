@@ -202,7 +202,7 @@ export const EpiCreateEventDialog = withDialog<EpiCreateEventDialogProps, EpiCre
       {
         definition: FORM_FIELD_DEFINITION_TYPE.AUTOCOMPLETE,
         name: 'share_in_data_collection_ids',
-        label: t`Shared in data collections`,
+        label: t`Share in data collections`,
         options: shareInDataCollectionOptions,
         loading: dataCollectionOptionsQuery.isLoading || isCompleteCaseTypeLoading,
         disabled: shareInDataCollectionOptions.length === 0,
