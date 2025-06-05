@@ -144,15 +144,15 @@ export const EpiCaseInfoDialog = withDialog<EpiCaseInfoDialogProps, EpiCaseInfoD
 
 
   const canEdit = useMemo(() => {
-    return !!caseRightsQuery.data && caseRightsQuery.data.some((right) => right.write_case_type_col_ids.length);
+    return !!caseRightsQuery.data && caseRightsQuery.data.some((right) => right.is_full_access || right.write_case_type_col_ids.length);
   }, [caseRightsQuery.data]);
 
   const canShare = useMemo(() => {
-    return !!caseRightsQuery.data && caseRightsQuery.data.some((right) => right.remove_data_collection_ids.length || right.add_data_collection_ids.length);
+    return !!caseRightsQuery.data && caseRightsQuery.data.some((right) => right.is_full_access || right.remove_data_collection_ids.length || right.add_data_collection_ids.length);
   }, [caseRightsQuery.data]);
 
   const canDelete = useCallback(() => {
-    return !!caseRightsQuery.data && caseRightsQuery.data.some((right) => right.can_delete);
+    return !!caseRightsQuery.data && caseRightsQuery.data.some((right) => right.is_full_access || right.can_delete);
   }, [caseRightsQuery]);
 
   const onEditButtonClick = useCallback(() => {
@@ -269,7 +269,7 @@ export const EpiCaseInfoDialog = withDialog<EpiCaseInfoDialogProps, EpiCaseInfoD
           color: 'primary',
           variant: 'outlined',
           onClick: onShareButtonClick,
-          label: t`Sharing`,
+          label: t`Share`,
           startIcon: <ShareIcon />,
           disabled: !canShare,
         },

@@ -140,15 +140,15 @@ export const EpiCaseSetInfoDialog = withDialog<EpiCaseSetInfoDialogProps, EpiCas
   });
 
   const canEdit = useMemo(() => {
-    return !!caseSetRightsQuery.data && caseSetRightsQuery.data.some((caseSetRight) => caseSetRight.write_case_set);
+    return !!caseSetRightsQuery.data && caseSetRightsQuery.data.some((right) => right.is_full_access || right.write_case_set);
   }, [caseSetRightsQuery.data]);
 
   const canShare = useMemo(() => {
-    return !!caseSetRightsQuery.data && caseSetRightsQuery.data.some((caseSetRight) => caseSetRight.remove_data_collection_ids.length || caseSetRight.add_data_collection_ids.length);
+    return !!caseSetRightsQuery.data && caseSetRightsQuery.data.some((right) => right.is_full_access || right.remove_data_collection_ids.length || right.add_data_collection_ids.length);
   }, [caseSetRightsQuery.data]);
 
   const canDelete = useCallback(() => {
-    return !!caseSetRightsQuery.data && caseSetRightsQuery.data.some((caseSetRight) => caseSetRight.can_delete);
+    return !!caseSetRightsQuery.data && caseSetRightsQuery.data.some((right) => right.is_full_access || right.can_delete);
   }, [caseSetRightsQuery]);
 
   const onEditCaseContentButtonClick = useCallback(() => {
