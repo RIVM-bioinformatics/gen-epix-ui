@@ -251,7 +251,7 @@ export const EpiAddCasesToEventDialog = withDialog<EpiAddCasesToEventDialogProps
             <Box marginY={1}>
               <Select
                 disabled={caseSetDataCollectionLinks?.length === 0}
-                label={t`Should the same sharing be applied to the selected cases in the selected event?`}
+                label={t`Should the selected cases be given the same access rights as the selected event?`}
                 loading={caseSetDataCollectionLinks?.length && isCaseSetDataCollectionLinksLoading}
                 name={'shouldApplySharingToCases'}
                 options={booleanOptions}
