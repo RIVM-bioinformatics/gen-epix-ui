@@ -1,5 +1,17 @@
 # Changelog
 
+## [1.1.0](https://github.com/RIVM-bioinformatics/gen-epix-ui/compare/v1.0.4...v1.1.0) (2025-06-05)
+
+
+### Features
+
+* update dependencies and add @emotion/* as peer dependency ([85610de](https://github.com/RIVM-bioinformatics/gen-epix-ui/commit/85610de45d33197acd3195e05740db2cd46f55df))
+
+
+### Bug Fixes
+
+* fix hosting problem in route components ([eb80ce0](https://github.com/RIVM-bioinformatics/gen-epix-ui/commit/eb80ce0322e34895b038133eaad067f6563cec03))
+
 ## [1.0.4](https://github.com/RIVM-bioinformatics/gen-epix-ui/compare/v1.0.3...v1.0.4) (2025-06-04)
 
 
