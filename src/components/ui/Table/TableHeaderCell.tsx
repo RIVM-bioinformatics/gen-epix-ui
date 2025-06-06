@@ -237,12 +237,10 @@ export const TableHeaderCell = <TRowData, >(props: TableHeaderCellProps<TRowData
             sx={{
               display: 'inline-flex',
               alignItems: 'center',
-              '.GENEPIX-TableHeaderCell-content': {
-                maxWidth: `calc(${width}px - ${sum([hasActiveSorting ? iconSpacing : 0, hasActiveFilter ? iconSpacing : 0, iconSpacing])}px)`,
-              },
               '&:hover .GENEPIX-TableHeaderCell-content': {
-                maxWidth: `calc(${width}px - ${sum([shouldShowFilterIcon ? iconSpacing : 0, shouldShowSortIcon ? iconSpacing : 0, iconSpacing])}px)`,
+                maxWidth: `calc(100% + 16px - ${sum([shouldShowFilterIcon ? iconSpacing : 0, shouldShowSortIcon ? iconSpacing : 0, iconSpacing])}px)`,
               },
+              width: '100%',
             }}
           >
             <Tooltip
@@ -260,6 +258,8 @@ export const TableHeaderCell = <TRowData, >(props: TableHeaderCellProps<TRowData
                   overflow: 'hidden',
                   textOverflow: 'ellipsis',
                   whiteSpace: 'nowrap',
+                  maxWidth: `calc(100% + 16px - ${sum([hasActiveSorting ? iconSpacing : 0, hasActiveFilter ? iconSpacing : 0, iconSpacing])}px)`,
+                  flexGrow: 1,
                 }}
               >
                 {column.renderHeader
