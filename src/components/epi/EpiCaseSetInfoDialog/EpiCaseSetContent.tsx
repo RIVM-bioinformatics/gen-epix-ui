@@ -29,7 +29,6 @@ export const EpiCaseSetContent = ({ caseSet, ...boxProps }: EpiCaseSetContentPro
   const [t] = useTranslation();
 
   const loadables = useMemo(() => [caseSetCategoryMap, caseSetStatusMap, caseTypeMap], [caseSetCategoryMap, caseSetStatusMap, caseTypeMap]);
-
   return (
     <Box {...boxProps}>
       <Typography variant={'h6'}>
@@ -95,7 +94,7 @@ export const EpiCaseSetContent = ({ caseSet, ...boxProps }: EpiCaseSetContentPro
                 {t`Created at`}
               </TableCell>
               <TableCell>
-                {format(caseSet.created_at, 'yyyy-MM-dd HH:mm:ss')}
+                {caseSet.created_at ? format(caseSet.created_at, 'yyyy-MM-dd HH:mm:ss') : t`Unknown`}
               </TableCell>
             </TableRow>
           </TableBody>

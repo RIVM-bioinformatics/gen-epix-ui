@@ -22,6 +22,11 @@ export type UseEditMutationProps<TData, TVariables = TData> = {
   readonly getSuccessNotificationMessage: (data: TData, context: MutationContextEdit<TData>) => string | ReactElement;
   readonly onSuccess?: (item: TData, variables: TVariables, context: MutationContextEdit<TData>) => Promise<void>;
   readonly onError?: (error: unknown, variables: TVariables, context: MutationContextEdit<TData>) => Promise<void>;
+  // Optional function to get an intermediate item to be set in the query cache before the mutation is completed.
+  // This is useful for optimistic updates where you want to show a temporary state before the mutation is confirmed.
+  // The function receives the variables and the previous item, and should return the intermediate item.
+  // Only needed if the variables are different from the previous item.
+  readonly getIntermediateItem?: (variables: TVariables, previousItem: TData) => TData;
 };
 
 export const useEditMutation = <TData extends GenericData | GenericData[], TVariables = TData>({
@@ -33,6 +38,7 @@ export const useEditMutation = <TData extends GenericData | GenericData[], TVari
   getProgressNotificationMessage,
   onSuccess,
   onError,
+  getIntermediateItem,
 }: UseEditMutationProps<TData, TVariables>) => {
   const queryClient = QueryClientManager.instance.queryClient;
 
@@ -57,14 +63,12 @@ export const useEditMutation = <TData extends GenericData | GenericData[], TVari
         await queryClient.cancelQueries({ queryKey: resourceQueryKey });
         const previousData = queryClient.getQueryData<TData[]>(resourceQueryKey);
         if (Array.isArray(previousData) && !Array.isArray(variables)) {
+          const intermediateItem = getIntermediateItem ? getIntermediateItem(variables, previousItem) : {
+            ...variables,
+            id: (previousItem as GenericData).id,
+          } as GenericData;
           queryClient.setQueryData<GenericData[]>(resourceQueryKey, (oldItems) => {
-            return [
-              ...oldItems.filter(x => x.id !== (previousItem as GenericData).id),
-              {
-                ...variables,
-                id: (previousItem as GenericData).id,
-              },
-            ];
+            return [...oldItems.filter(x => x.id !== (previousItem as GenericData).id), intermediateItem] as GenericData[];
           });
           return { previousData, notificationKey };
         }
