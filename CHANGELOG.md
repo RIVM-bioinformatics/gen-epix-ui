@@ -1,5 +1,21 @@
 # Changelog
 
+## [1.2.0](https://github.com/RIVM-bioinformatics/gen-epix-ui/compare/v1.1.0...v1.2.0) (2025-06-10)
+
+
+### Features
+
+* Make created in data collection more clear ([dc1ff4e](https://github.com/RIVM-bioinformatics/gen-epix-ui/commit/dc1ff4e1c0dc0555955165e1ae979689d45d724a))
+
+
+### Bug Fixes
+
+* Allow editMutation to receive an getIntermediateItem. This fixes "Editing event produces error" ([1846bfc](https://github.com/RIVM-bioinformatics/gen-epix-ui/commit/1846bfc4bbb610e2e68a244d35874d77da09651b))
+* deleting an event should not throw an error ([830b5b6](https://github.com/RIVM-bioinformatics/gen-epix-ui/commit/830b5b61bd839af6f8eafcfa12ef284716f778f9))
+* fix table header header overflow after resizing column ([d3420c7](https://github.com/RIVM-bioinformatics/gen-epix-ui/commit/d3420c7af4b471af5046259860e7e51fcc40eb6e))
+* make year numbering correct for week of year format ([e764784](https://github.com/RIVM-bioinformatics/gen-epix-ui/commit/e764784cea05600b7f2499fc31f22dfdde6d170f))
+* take is_full_access into account for deleting/sharing/editing case(sets) ([4266b97](https://github.com/RIVM-bioinformatics/gen-epix-ui/commit/4266b973b150dc715b69f5f8a350165d1af39b4e))
+
 ## [1.1.0](https://github.com/RIVM-bioinformatics/gen-epix-ui/compare/v1.0.4...v1.1.0) (2025-06-05)
 
 
