@@ -20,8 +20,8 @@ import {
   CommandName,
   PermissionType,
 } from '../../api';
-import { useCaseTypeColOptions } from '../../dataHooks/useCaseTypeCols';
-import { useCaseTypeColSetMembers } from '../../dataHooks/useCaseTypeColSetMembers';
+import { useCaseTypeColOptionsQuery } from '../../dataHooks/useCaseTypeColsQuery';
+import { useCaseTypeColSetMembersQuery } from '../../dataHooks/useCaseTypeColSetMembersQuery';
 import type { Loadable } from '../../models/dataHooks';
 import type { FormFieldDefinition } from '../../models/form';
 import { FORM_FIELD_DEFINITION_TYPE } from '../../models/form';
@@ -38,10 +38,10 @@ type FormFields = Pick<TableData, 'name' | 'description' | 'caseTypeColIds'>;
 export const CaseTypeColSetsAdminPage = () => {
   const [t] = useTranslation();
 
-  const caseTypeColOptions = useCaseTypeColOptions();
-  const caseTypeColSetMembers = useCaseTypeColSetMembers();
+  const caseTypeColOptionsQuery = useCaseTypeColOptionsQuery();
+  const caseTypeColSetMembersQuery = useCaseTypeColSetMembersQuery();
 
-  const loadables = useMemo<Loadable[]>(() => [caseTypeColOptions, caseTypeColSetMembers], [caseTypeColOptions, caseTypeColSetMembers]);
+  const loadables = useMemo<Loadable[]>(() => [caseTypeColOptionsQuery, caseTypeColSetMembersQuery], [caseTypeColOptionsQuery, caseTypeColSetMembersQuery]);
 
   const fetchAll = useCallback(async (signal: AbortSignal) => {
     return (await CaseApi.getInstance().caseTypeColSetsGetAll({ signal }))?.data;
@@ -105,12 +105,12 @@ export const CaseTypeColSetsAdminPage = () => {
         definition: FORM_FIELD_DEFINITION_TYPE.TRANSFER_LIST,
         name: 'caseTypeColIds',
         label: t`Case type columns`,
-        options: caseTypeColOptions.options,
+        options: caseTypeColOptionsQuery.options,
         multiple: true,
-        loading: caseTypeColOptions.isLoading,
+        loading: caseTypeColOptionsQuery.isLoading,
       },
     ];
-  }, [caseTypeColOptions.isLoading, caseTypeColOptions.options, t]);
+  }, [caseTypeColOptionsQuery.isLoading, caseTypeColOptionsQuery.options, t]);
 
   const tableColumns = useMemo((): TableColumn<TableData>[] => {
     return [
@@ -121,13 +121,13 @@ export const CaseTypeColSetsAdminPage = () => {
         id: 'numCaseTypeColumns',
         textAlign: 'right',
         valueGetter: (item) => item.row.caseTypeColIds.length,
-        displayValueGetter: (item) => `${item.row.caseTypeColIds.length} / ${caseTypeColOptions.options.length}`,
+        displayValueGetter: (item) => `${item.row.caseTypeColIds.length} / ${caseTypeColOptionsQuery.options.length}`,
         headerName: t`Case type column count`,
         widthFlex: 0.5,
         isInitiallyVisible: true,
       },
     ];
-  }, [caseTypeColOptions.options.length, t]);
+  }, [caseTypeColOptionsQuery.options.length, t]);
 
   const extraCreateOnePermissions = useMemo<Permission[]>(() => [
     { command_name: CommandName.CaseTypeColSetCaseTypeColUpdateAssociationCommand, permission_type: PermissionType.EXECUTE },
@@ -140,17 +140,17 @@ export const CaseTypeColSetsAdminPage = () => {
   ], []);
 
   const convertToTableData = useCallback((items: CaseTypeColSet[]) => {
-    if (!items || !caseTypeColSetMembers.data) {
+    if (!items || !caseTypeColSetMembersQuery.data) {
       return [];
     }
     return items.map<TableData>((item) => {
-      const caseTypeColIds = caseTypeColSetMembers.data.filter(member => member.case_type_col_set_id === item.id).map(member => member.case_type_col_id);
+      const caseTypeColIds = caseTypeColSetMembersQuery.data.filter(member => member.case_type_col_set_id === item.id).map(member => member.case_type_col_id);
       return {
         ...item,
         caseTypeColIds,
       } satisfies TableData;
     });
-  }, [caseTypeColSetMembers.data]);
+  }, [caseTypeColSetMembersQuery.data]);
 
   const associationQueryKeys = useMemo(() => [
     [QUERY_KEY.CASE_TYPE_COL_SET_MEMBERS],

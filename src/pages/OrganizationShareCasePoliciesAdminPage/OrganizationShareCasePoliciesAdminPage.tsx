@@ -14,10 +14,10 @@ import {
   AbacApi,
   CommandName,
 } from '../../api';
-import { useCaseTypeColSetOptions } from '../../dataHooks/useCaseTypeColSets';
-import { useCaseTypeSetOptions } from '../../dataHooks/useCaseTypeSets';
-import { useDataCollectionOptions } from '../../dataHooks/useDataCollections';
-import { useOrganizationOptions } from '../../dataHooks/useOrganizations';
+import { useCaseTypeColSetOptionsQuery } from '../../dataHooks/useCaseTypeColSetsQuery';
+import { useCaseTypeSetOptionsQuery } from '../../dataHooks/useCaseTypeSetsQuery';
+import { useDataCollectionOptionsQuery } from '../../dataHooks/useDataCollectionsQuery';
+import { useOrganizationOptionsQuery } from '../../dataHooks/useOrganizationsQuery';
 import { useOrganizationCasePolicyNameFactory } from '../../hooks/useOrganizationCasePolicyNameFactory';
 import type { Loadable } from '../../models/dataHooks';
 import type { FormFieldDefinition } from '../../models/form';
@@ -43,14 +43,14 @@ type FormFields = Pick<
 
 export const OrganizationShareCasePoliciesAdminPage = () => {
   const [t] = useTranslation();
-  const organizationOptions = useOrganizationOptions();
-  const dataCollectionOptions = useDataCollectionOptions();
-  const caseTypeColSetOptions = useCaseTypeColSetOptions();
-  const caseTypeSetOptions = useCaseTypeSetOptions();
+  const organizationOptionsQuery = useOrganizationOptionsQuery();
+  const dataCollectionOptionsQuery = useDataCollectionOptionsQuery();
+  const caseTypeColSetOptionsQuery = useCaseTypeColSetOptionsQuery();
+  const caseTypeSetOptions = useCaseTypeSetOptionsQuery();
 
   const nameFactory = useOrganizationCasePolicyNameFactory();
 
-  const loadables = useMemo<Loadable[]>(() => [nameFactory, organizationOptions, dataCollectionOptions, caseTypeColSetOptions, caseTypeSetOptions], [nameFactory, caseTypeSetOptions, caseTypeColSetOptions, dataCollectionOptions, organizationOptions]);
+  const loadables = useMemo<Loadable[]>(() => [nameFactory, organizationOptionsQuery, dataCollectionOptionsQuery, caseTypeColSetOptionsQuery, caseTypeSetOptions], [nameFactory, caseTypeSetOptions, caseTypeColSetOptionsQuery, dataCollectionOptionsQuery, organizationOptionsQuery]);
 
   const fetchAll = useCallback(async (signal: AbortSignal) => {
     return (await AbacApi.getInstance().organizationShareCasePoliciesGetAll({ signal }))?.data;
@@ -92,22 +92,22 @@ export const OrganizationShareCasePoliciesAdminPage = () => {
         definition: FORM_FIELD_DEFINITION_TYPE.AUTOCOMPLETE,
         name: 'organization_id',
         label: t`Organization`,
-        options: organizationOptions.options,
-        loading: organizationOptions.isLoading,
+        options: organizationOptionsQuery.options,
+        loading: organizationOptionsQuery.isLoading,
       },
       {
         definition: FORM_FIELD_DEFINITION_TYPE.AUTOCOMPLETE,
         name: 'data_collection_id',
         label: t`Data collection`,
-        options: dataCollectionOptions.options,
-        loading: dataCollectionOptions.isLoading,
+        options: dataCollectionOptionsQuery.options,
+        loading: dataCollectionOptionsQuery.isLoading,
       },
       {
         definition: FORM_FIELD_DEFINITION_TYPE.AUTOCOMPLETE,
         name: 'from_data_collection_id',
         label: t`From data collection`,
-        options: dataCollectionOptions.options,
-        loading: dataCollectionOptions.isLoading,
+        options: dataCollectionOptionsQuery.options,
+        loading: dataCollectionOptionsQuery.isLoading,
       },
       {
         definition: FORM_FIELD_DEFINITION_TYPE.AUTOCOMPLETE,
@@ -142,13 +142,13 @@ export const OrganizationShareCasePoliciesAdminPage = () => {
         label: t`Is active`,
       },
     ];
-  }, [caseTypeSetOptions.isLoading, caseTypeSetOptions.options, dataCollectionOptions.isLoading, dataCollectionOptions.options, organizationOptions.isLoading, organizationOptions.options, t]);
+  }, [caseTypeSetOptions.isLoading, caseTypeSetOptions.options, dataCollectionOptionsQuery.isLoading, dataCollectionOptionsQuery.options, organizationOptionsQuery.isLoading, organizationOptionsQuery.options, t]);
 
   const tableColumns = useMemo((): TableColumn<OrganizationShareCasePolicy>[] => {
     return [
-      TableUtil.createOptionsColumn<OrganizationShareCasePolicy>({ id: 'organization_id', name: t`Organization`, options: organizationOptions.options }),
-      TableUtil.createOptionsColumn<OrganizationShareCasePolicy>({ id: 'data_collection_id', name: t`Data collection`, options: dataCollectionOptions.options }),
-      TableUtil.createOptionsColumn<OrganizationShareCasePolicy>({ id: 'from_data_collection_id', name: t`From collection`, options: dataCollectionOptions.options }),
+      TableUtil.createOptionsColumn<OrganizationShareCasePolicy>({ id: 'organization_id', name: t`Organization`, options: organizationOptionsQuery.options }),
+      TableUtil.createOptionsColumn<OrganizationShareCasePolicy>({ id: 'data_collection_id', name: t`Data collection`, options: dataCollectionOptionsQuery.options }),
+      TableUtil.createOptionsColumn<OrganizationShareCasePolicy>({ id: 'from_data_collection_id', name: t`From collection`, options: dataCollectionOptionsQuery.options }),
       TableUtil.createOptionsColumn<OrganizationShareCasePolicy>({ id: 'case_type_set_id', name: t`Case type set`, options: caseTypeSetOptions.options }),
 
       TableUtil.createBooleanColumn<OrganizationShareCasePolicy>({ id: 'add_case', name: t`Add case` }),
@@ -158,7 +158,7 @@ export const OrganizationShareCasePoliciesAdminPage = () => {
 
       TableUtil.createBooleanColumn<OrganizationShareCasePolicy>({ id: 'is_active', name: t`Active` }),
     ];
-  }, [caseTypeSetOptions.options, dataCollectionOptions.options, organizationOptions.options, t]);
+  }, [caseTypeSetOptions.options, dataCollectionOptionsQuery.options, organizationOptionsQuery.options, t]);
 
   return (
     <CrudPage<FormFields, OrganizationShareCasePolicy>

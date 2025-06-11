@@ -35,7 +35,7 @@ import type {
   CaseSetMember,
 } from '../../../api';
 import { CaseApi } from '../../../api';
-import { useDataCollectionsMap } from '../../../dataHooks/useDataCollections';
+import { useDataCollectionsMapQuery } from '../../../dataHooks/useDataCollectionsQuery';
 import { useEditMutation } from '../../../hooks/useEditMutation';
 import { QUERY_KEY } from '../../../models/query';
 import { EpiStoreContext } from '../../../stores/epiStore';
@@ -45,9 +45,9 @@ import { QueryUtil } from '../../../utils/QueryUtil';
 import { TestIdUtil } from '../../../utils/TestIdUtil';
 import { ResponseHandler } from '../../ui/ResponseHandler';
 import {
-  useCaseSetOptions,
-  useCaseSetsMap,
-} from '../../../dataHooks/useCaseSets';
+  useCaseSetOptionsQuery,
+  useCaseSetsMapQuery,
+} from '../../../dataHooks/useCaseSetsQuery';
 import type { DialogAction } from '../../ui/Dialog';
 import { Autocomplete } from '../../form/fields/Autocomplete';
 import { Select } from '../../form/fields/Select';
@@ -80,9 +80,9 @@ export const EpiAddCasesToEventDialog = withDialog<EpiAddCasesToEventDialogProps
 ): ReactElement => {
   const [t] = useTranslation();
 
-  const dataCollectionsMapQuery = useDataCollectionsMap();
-  const caseSetOptionsQuery = useCaseSetOptions();
-  const caseSetsMapQuery = useCaseSetsMap();
+  const dataCollectionsMapQuery = useDataCollectionsMapQuery();
+  const caseSetOptionsQuery = useCaseSetOptionsQuery();
+  const caseSetsMapQuery = useCaseSetsMapQuery();
   const epiStore = useContext(EpiStoreContext);
   const fetchData = useStore(epiStore, useShallow((state) => state.fetchData));
   const completeCaseType = useStore(epiStore, useShallow((state) => state.completeCaseType));

@@ -35,10 +35,10 @@ import {
   TableSidebarMenu,
   Table,
 } from '../../components/ui/Table';
-import { useCaseSetCategoryOptions } from '../../dataHooks/useCaseSetCategories';
-import { useCaseSetStatsMap } from '../../dataHooks/useCaseSetStats';
-import { useCaseSetStatusOptions } from '../../dataHooks/useCaseSetStatuses';
-import { useCaseTypeOptions } from '../../dataHooks/useCaseTypes';
+import { useCaseSetCategoryOptionsQuery } from '../../dataHooks/useCaseSetCategoriesQuery';
+import { useCaseSetStatsMapQuery } from '../../dataHooks/useCaseSetStatsQuery';
+import { useCaseSetStatusOptionsQuery } from '../../dataHooks/useCaseSetStatusesQuery';
+import { useCaseTypeOptionsQuery } from '../../dataHooks/useCaseTypesQuery';
 import { useInitializeTableStore } from '../../hooks/useInitializeTableStore';
 import type { Loadable } from '../../models/dataHooks';
 import { QUERY_KEY } from '../../models/query';
@@ -60,14 +60,14 @@ type Row = CaseSet & CaseSetStat;
 export const EventsPage = () => {
   const [t] = useTranslation();
   const theme = useTheme();
-  const caseTypeOptions = useCaseTypeOptions();
-  const caseSetCategoryOptions = useCaseSetCategoryOptions();
-  const caseSetStatusOptions = useCaseSetStatusOptions();
-  const caseSetStatsMap = useCaseSetStatsMap();
+  const caseTypeOptionsQuery = useCaseTypeOptionsQuery();
+  const caseSetCategoryOptionsQuery = useCaseSetCategoryOptionsQuery();
+  const caseSetStatusOptionsQuery = useCaseSetStatusOptionsQuery();
+  const caseSetStatsMapQuery = useCaseSetStatsMapQuery();
   const epiCaseSetInfoDialogRef = useRef<EpiCaseSetInfoDialogRefMethods>(null);
   const epiCreateEventDialogRef = useRef<EpiCreateEventDialogRefMethods>(null);
 
-  const loadables = useMemo<Loadable[]>(() => [caseTypeOptions, caseSetCategoryOptions, caseSetStatusOptions, caseSetStatsMap], [caseSetCategoryOptions, caseSetStatusOptions, caseTypeOptions, caseSetStatsMap]);
+  const loadables = useMemo<Loadable[]>(() => [caseTypeOptionsQuery, caseSetCategoryOptionsQuery, caseSetStatusOptionsQuery, caseSetStatsMapQuery], [caseSetCategoryOptionsQuery, caseSetStatusOptionsQuery, caseTypeOptionsQuery, caseSetStatsMapQuery]);
 
   const { isLoading: isCaseSetsLoading, error: caseSetsError, data: caseSets } = useQuery({
     queryKey: QueryUtil.getGenericKey(QUERY_KEY.CASE_SETS),
@@ -100,24 +100,24 @@ export const EventsPage = () => {
   }, []);
 
   const data = useMemo<Row[]>(() => {
-    if (!caseSets || !caseSetStatsMap.map) {
+    if (!caseSets || !caseSetStatsMapQuery.map) {
       return [];
     }
     return caseSets.map(caseSet => {
       return {
         ...caseSet,
-        ...caseSetStatsMap.map?.get(caseSet.id),
+        ...caseSetStatsMapQuery.map?.get(caseSet.id),
       } satisfies Row;
     });
-  }, [caseSetStatsMap.map, caseSets]);
+  }, [caseSetStatsMapQuery.map, caseSets]);
 
   const columns = useMemo<TableColumn<Row>[]>(() => {
     return [
       TableUtil.createReadableIndexColumn(),
-      TableUtil.createOptionsColumn({ id: 'case_type_id', name: t`Case type`, options: caseTypeOptions.options, flex: 1.5, shouldFilterOptions: true }),
+      TableUtil.createOptionsColumn({ id: 'case_type_id', name: t`Case type`, options: caseTypeOptionsQuery.options, flex: 1.5, shouldFilterOptions: true }),
       TableUtil.createTextColumn({ id: 'name', name: t`Name`, flex: 1.5 }),
-      TableUtil.createOptionsColumn({ id: 'case_set_category_id', name: t`Category`, options: caseSetCategoryOptions.options, flex: 0.4 }),
-      TableUtil.createOptionsColumn({ id: 'case_set_status_id', name: t`Status`, options: caseSetStatusOptions.options, flex: 0.4 }),
+      TableUtil.createOptionsColumn({ id: 'case_set_category_id', name: t`Category`, options: caseSetCategoryOptionsQuery.options, flex: 0.4 }),
+      TableUtil.createOptionsColumn({ id: 'case_set_status_id', name: t`Status`, options: caseSetStatusOptionsQuery.options, flex: 0.4 }),
       TableUtil.createNumberColumn({ id: 'n_cases', name: t`Cases`, flex: 0.35 }),
       // TableUtil.createNumberColumn({ id: 'n_own_cases', name: t`Own cases`, flex: 0.35 }),
       TableUtil.createDateColumn({ id: 'first_case_month', name: t`First case date` }),
@@ -159,7 +159,7 @@ export const EventsPage = () => {
         },
       }),
     ];
-  }, [caseSetCategoryOptions.options, caseSetStatusOptions.options, caseTypeOptions.options, onRowClick, showEventInformation, t]);
+  }, [caseSetCategoryOptionsQuery.options, caseSetStatusOptionsQuery.options, caseTypeOptionsQuery.options, onRowClick, showEventInformation, t]);
 
   const tableStore = useMemo(() => createTableStore<Row>({
     navigatorFunction: RouterManager.instance.router.navigate,

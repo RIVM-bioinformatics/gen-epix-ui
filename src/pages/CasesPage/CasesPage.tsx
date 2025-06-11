@@ -36,8 +36,8 @@ import {
   TableSidebarMenu,
   Table,
 } from '../../components/ui/Table';
-import { useCaseTypeSetCategories } from '../../dataHooks/useCaseTypeSetCategory';
-import { useCaseTypeStats } from '../../dataHooks/useCaseTypeStats';
+import { useCaseTypeSetCategoriesQuery } from '../../dataHooks/useCaseTypeSetCategoriesQuery';
+import { useCaseTypeStatsQuery } from '../../dataHooks/useCaseTypeStatsQuery';
 import { useInitializeTableStore } from '../../hooks/useInitializeTableStore';
 import type { OptionBase } from '../../models/form';
 import { QUERY_KEY } from '../../models/query';
@@ -67,10 +67,8 @@ export const CasesPage = () => {
   const [t] = useTranslation();
   const theme = useTheme();
   const epiCaseTypeInfoDialogWithLoaderRef = useRef<EpiCaseTypeInfoDialogWithLoaderRefMethods>(null);
-  const caseTypeStats = useCaseTypeStats();
-
-
-  const { isLoading: isCaseTypeSetCategoriesLoading, error: caseTypeSetCategoriesError, data: caseTypeSetCategories } = useCaseTypeSetCategories();
+  const caseTypeStatsQuery = useCaseTypeStatsQuery();
+  const caseTypeSetCategoriesQuery = useCaseTypeSetCategoriesQuery();
 
   const { isLoading: isCaseTypesLoading, error: caseTypesError, data: caseTypes } = useQuery({
     queryKey: QueryUtil.getGenericKey(QUERY_KEY.CASE_TYPES),
@@ -81,8 +79,8 @@ export const CasesPage = () => {
   });
 
   const caseTypeStatsMap = useMemo(() => {
-    return new Map<string, CaseTypeStat>(caseTypeStats.data?.map(stat => [stat.case_type_id, stat]));
-  }, [caseTypeStats]);
+    return new Map<string, CaseTypeStat>(caseTypeStatsQuery.data?.map(stat => [stat.case_type_id, stat]));
+  }, [caseTypeStatsQuery]);
 
 
   const { isLoading: isCaseTypeSetsLoading, error: caseTypeSetsError, data: caseTypeSets } = useQuery({
@@ -101,8 +99,8 @@ export const CasesPage = () => {
     },
   });
 
-  const isLoading = isCaseTypesLoading || isCaseTypeSetsLoading || isCaseTypeSetMembersLoading || isCaseTypeSetCategoriesLoading || caseTypeStats.isLoading;
-  const error = caseTypesError || caseTypeSetsError || caseTypeSetMembersError || caseTypeSetCategoriesError || caseTypeStats.error;
+  const isLoading = isCaseTypesLoading || isCaseTypeSetsLoading || isCaseTypeSetMembersLoading || caseTypeSetCategoriesQuery.isLoading || caseTypeStatsQuery.isLoading;
+  const error = caseTypesError || caseTypeSetsError || caseTypeSetMembersError || caseTypeSetCategoriesQuery.error || caseTypeStatsQuery.error;
 
   const handleCellNavigation = useCallback(async (caseType: Row) => {
     await RouterManager.instance.router.navigate(`/cases/${StringUtil.createSlug(caseType.name)}/${caseType.id}`);
@@ -160,7 +158,7 @@ export const CasesPage = () => {
         first_case_month: caseTypeStatsMap.get(caseType.id)?.first_case_month,
         last_case_month: caseTypeStatsMap.get(caseType.id)?.last_case_month,
       };
-      caseTypeSetCategories.forEach((caseTypeSetCategorie) => {
+      caseTypeSetCategoriesQuery.data.forEach((caseTypeSetCategorie) => {
         row[getCaseTypeSetCategoryRowId(caseTypeSetCategorie.id)] = [];
       });
 
@@ -173,16 +171,16 @@ export const CasesPage = () => {
       return row;
     });
     return rows;
-  }, [caseTypeSetCategories, caseTypeSetMembers, caseTypeSets, caseTypeStatsMap, caseTypes, error, isLoading]);
+  }, [caseTypeSetCategoriesQuery, caseTypeSetMembers, caseTypeSets, caseTypeStatsMap, caseTypes, error, isLoading]);
 
   const caseTypeSetCategoryOptions = useMemo(() => {
     const options: { [key: string]: OptionBase<string>[] } = {};
 
-    caseTypeSetCategories?.forEach(category => {
+    caseTypeSetCategoriesQuery.data?.forEach(category => {
       options[category.id] = caseTypeSets?.filter(set => set.case_type_set_category_id === category.id).sort((a, b) => a.rank - b.rank).map<OptionBase<string>>(set => ({ value: set.id, label: set.name }));
     });
     return options;
-  }, [caseTypeSetCategories, caseTypeSets]);
+  }, [caseTypeSetCategoriesQuery, caseTypeSets]);
 
   const columns = useMemo<TableColumn<Row>[]>(() => {
     if (isLoading || error) {
@@ -196,7 +194,7 @@ export const CasesPage = () => {
         id: 'name',
         flex: 1.5,
       }),
-      ...caseTypeSetCategories.filter(c => c.purpose === CaseTypeSetCategoryPurpose.CONTENT).map<TableColumn<Row>>((caseTypeSetCategory: CaseTypeSetCategory) => {
+      ...caseTypeSetCategoriesQuery.data.filter(c => c.purpose === CaseTypeSetCategoryPurpose.CONTENT).map<TableColumn<Row>>((caseTypeSetCategory: CaseTypeSetCategory) => {
         return {
           id: getCaseTypeSetCategoryRowId(caseTypeSetCategory.id),
           type: 'options',
@@ -254,7 +252,7 @@ export const CasesPage = () => {
         },
       }),
     ] satisfies TableColumn<Row>[];
-  }, [caseTypeSetCategories, caseTypeSetCategoryOptions, error, isLoading, onShowCaseTypeInformationClick, onShowItemClick, t]);
+  }, [caseTypeSetCategoriesQuery, caseTypeSetCategoryOptions, error, isLoading, onShowCaseTypeInformationClick, onShowItemClick, t]);
 
   const tableStore = useMemo(() => createTableStore<Row>({
     navigatorFunction: RouterManager.instance.router.navigate,

@@ -8,8 +8,8 @@ import { t } from 'i18next';
 
 import type { CaseSet } from '../../../api';
 import { RouterManager } from '../../../classes/managers/RouterManager';
-import { useCaseSetCategoryMap } from '../../../dataHooks/useCaseSetCategories';
-import { useCaseSetStatusMap } from '../../../dataHooks/useCaseSetStatuses';
+import { useCaseSetCategoryMapQuery } from '../../../dataHooks/useCaseSetCategoriesQuery';
+import { useCaseSetStatusMapQuery } from '../../../dataHooks/useCaseSetStatusesQuery';
 import { EpiCaseSetUtil } from '../../../utils/EpiCaseSetUtil';
 import type { ConfirmationRefMethods } from '../../ui/Confirmation';
 import { Confirmation } from '../../ui/Confirmation';
@@ -20,9 +20,9 @@ export type EpiCasesAlreadyInCaseSetWarningCaseSetLinkProps = {
 };
 
 export const EpiCasesAlreadyInCaseSetWarningCaseSetLink = ({ caseSet }: EpiCasesAlreadyInCaseSetWarningCaseSetLinkProps) => {
-  const caseSetCategoryMap = useCaseSetCategoryMap();
-  const caseSetStatusMap = useCaseSetStatusMap();
-  const loadables = useMemo(() => [caseSetCategoryMap, caseSetStatusMap], [caseSetCategoryMap, caseSetStatusMap]);
+  const caseSetCategoryMapQuery = useCaseSetCategoryMapQuery();
+  const caseSetStatusMapQuery = useCaseSetStatusMapQuery();
+  const loadables = useMemo(() => [caseSetCategoryMapQuery, caseSetStatusMapQuery], [caseSetCategoryMapQuery, caseSetStatusMapQuery]);
   const confirmationRef = useRef<ConfirmationRefMethods>(null);
 
   const onLinkClick = useCallback(() => {
@@ -47,7 +47,7 @@ export const EpiCasesAlreadyInCaseSetWarningCaseSetLink = ({ caseSet }: EpiCases
           display: 'table',
         }}
       >
-        {`${caseSet.name} (${caseSetCategoryMap.map.get(caseSet.case_set_category_id)?.name}, ${caseSetStatusMap.map.get(caseSet.case_set_status_id)?.name})`}
+        {`${caseSet.name} (${caseSetCategoryMapQuery.map.get(caseSet.case_set_category_id)?.name}, ${caseSetStatusMapQuery.map.get(caseSet.case_set_status_id)?.name})`}
       </Link>
       <Confirmation
         body={t('This will navigate to the "{{caseSetName}}"-event. You will loose your current selection of cases and all applied filters. Do you want to continue?', { caseSetName: caseSet.name })}

@@ -13,8 +13,8 @@ import {
   OntologyApi,
   CommandName,
 } from '../../api';
-import { useDiseaseOptions } from '../../dataHooks/useDiseases';
-import { useEtiologicalAgentOptions } from '../../dataHooks/useEtiologicalAgents';
+import { useDiseaseOptionsQuery } from '../../dataHooks/useDiseasesQuery';
+import { useEtiologicalAgentOptionsQuery } from '../../dataHooks/useEtiologicalAgentsQuery';
 import type { Loadable } from '../../models/dataHooks';
 import type { FormFieldDefinition } from '../../models/form';
 import { FORM_FIELD_DEFINITION_TYPE } from '../../models/form';
@@ -28,10 +28,10 @@ type FormFields = Pick<Etiology, 'disease_id' | 'etiological_agent_id'>;
 
 export const EtiologiesAdminPage = () => {
   const [t] = useTranslation();
-  const diseaseOptions = useDiseaseOptions();
-  const etiologicalAgentOptions = useEtiologicalAgentOptions();
+  const diseaseOptionsQuery = useDiseaseOptionsQuery();
+  const etiologicalAgentOptionsQuery = useEtiologicalAgentOptionsQuery();
 
-  const loadables = useMemo<Loadable[]>(() => [diseaseOptions, etiologicalAgentOptions], [etiologicalAgentOptions, diseaseOptions]);
+  const loadables = useMemo<Loadable[]>(() => [diseaseOptionsQuery, etiologicalAgentOptionsQuery], [etiologicalAgentOptionsQuery, diseaseOptionsQuery]);
 
   const fetchAll = useCallback(async (signal: AbortSignal) => {
     return (await OntologyApi.getInstance().etiologiesGetAll({ signal }))?.data;
@@ -67,25 +67,25 @@ export const EtiologiesAdminPage = () => {
         definition: FORM_FIELD_DEFINITION_TYPE.AUTOCOMPLETE,
         name: 'disease_id',
         label: t`Disease`,
-        options: diseaseOptions.options,
-        loading: diseaseOptions.isLoading,
+        options: diseaseOptionsQuery.options,
+        loading: diseaseOptionsQuery.isLoading,
       },
       {
         definition: FORM_FIELD_DEFINITION_TYPE.AUTOCOMPLETE,
         name: 'etiological_agent_id',
         label: t`Etiological agent`,
-        options: etiologicalAgentOptions.options,
-        loading: etiologicalAgentOptions.isLoading,
+        options: etiologicalAgentOptionsQuery.options,
+        loading: etiologicalAgentOptionsQuery.isLoading,
       },
     ];
-  }, [etiologicalAgentOptions.isLoading, etiologicalAgentOptions.options, diseaseOptions.isLoading, diseaseOptions.options, t]);
+  }, [etiologicalAgentOptionsQuery.isLoading, etiologicalAgentOptionsQuery.options, diseaseOptionsQuery.isLoading, diseaseOptionsQuery.options, t]);
 
   const tableColumns = useMemo((): TableColumn<Etiology>[] => {
     return [
-      TableUtil.createOptionsColumn<Etiology>({ id: 'disease_id', name: t`Disease`, options: diseaseOptions.options }),
-      TableUtil.createOptionsColumn<Etiology>({ id: 'etiological_agent_id', name: t`Etiological agent`, options: etiologicalAgentOptions.options }),
+      TableUtil.createOptionsColumn<Etiology>({ id: 'disease_id', name: t`Disease`, options: diseaseOptionsQuery.options }),
+      TableUtil.createOptionsColumn<Etiology>({ id: 'etiological_agent_id', name: t`Etiological agent`, options: etiologicalAgentOptionsQuery.options }),
     ];
-  }, [etiologicalAgentOptions.options, diseaseOptions.options, t]);
+  }, [etiologicalAgentOptionsQuery.options, diseaseOptionsQuery.options, t]);
 
   return (
     <CrudPage<FormFields, Etiology>

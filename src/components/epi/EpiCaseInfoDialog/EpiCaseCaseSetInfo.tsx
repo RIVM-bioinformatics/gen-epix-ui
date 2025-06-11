@@ -17,8 +17,8 @@ import type {
   TypedUuidSetFilter,
 } from '../../../api';
 import { CaseApi } from '../../../api';
-import { useCaseSetCategoryMap } from '../../../dataHooks/useCaseSetCategories';
-import { useCaseSetStatusMap } from '../../../dataHooks/useCaseSetStatuses';
+import { useCaseSetCategoryMapQuery } from '../../../dataHooks/useCaseSetCategoriesQuery';
+import { useCaseSetStatusMapQuery } from '../../../dataHooks/useCaseSetStatusesQuery';
 import { QUERY_KEY } from '../../../models/query';
 import { EpiCaseSetUtil } from '../../../utils/EpiCaseSetUtil';
 import { QueryUtil } from '../../../utils/QueryUtil';
@@ -30,8 +30,8 @@ export type EpiCaseCaseSetInfoProps = {
 } & BoxProps;
 
 export const EpiCaseCaseSetInfo = ({ epiCase, ...boxProps }: EpiCaseCaseSetInfoProps) => {
-  const caseSetCategoryMapResponse = useCaseSetCategoryMap();
-  const caseSetStatusMapResponse = useCaseSetStatusMap();
+  const caseSetCategoryMapQuery = useCaseSetCategoryMapQuery();
+  const caseSetStatusMapQuery = useCaseSetStatusMapQuery();
 
   const [t] = useTranslation();
   const caseSetMembersFilter: TypedUuidSetFilter = {
@@ -63,7 +63,7 @@ export const EpiCaseCaseSetInfo = ({ epiCase, ...boxProps }: EpiCaseCaseSetInfoP
     enabled: caseSetsFilter.members.length > 0,
   });
 
-  const loadables = useMemo(() => [caseSetCategoryMapResponse, caseSetStatusMapResponse], [caseSetCategoryMapResponse, caseSetStatusMapResponse]);
+  const loadables = useMemo(() => [caseSetCategoryMapQuery, caseSetStatusMapQuery], [caseSetCategoryMapQuery, caseSetStatusMapQuery]);
 
   return (
     <Box {...boxProps}>
@@ -113,10 +113,10 @@ export const EpiCaseCaseSetInfo = ({ epiCase, ...boxProps }: EpiCaseCaseSetInfoP
                     </LspNavLink>
                   </TableCell>
                   <TableCell>
-                    {caseSetCategoryMapResponse.map.get(caseSet.case_set_category_id)?.name ?? t`Unknown`}
+                    {caseSetCategoryMapQuery.map.get(caseSet.case_set_category_id)?.name ?? t`Unknown`}
                   </TableCell>
                   <TableCell>
-                    {caseSetStatusMapResponse.map.get(caseSet.case_set_status_id)?.name ?? t`Unknown`}
+                    {caseSetStatusMapQuery.map.get(caseSet.case_set_status_id)?.name ?? t`Unknown`}
                   </TableCell>
                 </TableRow>
               ))}

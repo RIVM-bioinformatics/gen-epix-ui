@@ -14,10 +14,10 @@ import {
   AbacApi,
   CommandName,
 } from '../../api';
-import { useCaseTypeColSetOptions } from '../../dataHooks/useCaseTypeColSets';
-import { useCaseTypeSetOptions } from '../../dataHooks/useCaseTypeSets';
-import { useDataCollectionOptions } from '../../dataHooks/useDataCollections';
-import { useOrganizationOptions } from '../../dataHooks/useOrganizations';
+import { useCaseTypeColSetOptionsQuery } from '../../dataHooks/useCaseTypeColSetsQuery';
+import { useCaseTypeSetOptionsQuery } from '../../dataHooks/useCaseTypeSetsQuery';
+import { useDataCollectionOptionsQuery } from '../../dataHooks/useDataCollectionsQuery';
+import { useOrganizationOptionsQuery } from '../../dataHooks/useOrganizationsQuery';
 import { useOrganizationCasePolicyNameFactory } from '../../hooks/useOrganizationCasePolicyNameFactory';
 import type { Loadable } from '../../models/dataHooks';
 import type { FormFieldDefinition } from '../../models/form';
@@ -47,14 +47,14 @@ type FormFields = Pick<
 
 export const OrganizationAccessCasePoliciesAdminPage = () => {
   const [t] = useTranslation();
-  const organizationOptions = useOrganizationOptions();
-  const dataCollectionOptions = useDataCollectionOptions();
-  const caseTypeColSetOptions = useCaseTypeColSetOptions();
-  const caseTypeSetOptions = useCaseTypeSetOptions();
+  const organizationOptionsQuery = useOrganizationOptionsQuery();
+  const dataCollectionOptionsQuery = useDataCollectionOptionsQuery();
+  const caseTypeColSetOptionsQuery = useCaseTypeColSetOptionsQuery();
+  const caseTypeSetOptionsQuery = useCaseTypeSetOptionsQuery();
 
   const nameFactory = useOrganizationCasePolicyNameFactory();
 
-  const loadables = useMemo<Loadable[]>(() => [nameFactory, organizationOptions, dataCollectionOptions, caseTypeColSetOptions, caseTypeSetOptions], [nameFactory, caseTypeSetOptions, caseTypeColSetOptions, dataCollectionOptions, organizationOptions]);
+  const loadables = useMemo<Loadable[]>(() => [nameFactory, organizationOptionsQuery, dataCollectionOptionsQuery, caseTypeColSetOptionsQuery, caseTypeSetOptionsQuery], [nameFactory, caseTypeSetOptionsQuery, caseTypeColSetOptionsQuery, dataCollectionOptionsQuery, organizationOptionsQuery]);
 
   const fetchAll = useCallback(async (signal: AbortSignal) => {
     return (await AbacApi.getInstance().organizationAccessCasePoliciesGetAll({ signal }))?.data;
@@ -100,36 +100,36 @@ export const OrganizationAccessCasePoliciesAdminPage = () => {
         definition: FORM_FIELD_DEFINITION_TYPE.AUTOCOMPLETE,
         name: 'organization_id',
         label: t`Organization`,
-        options: organizationOptions.options,
-        loading: organizationOptions.isLoading,
+        options: organizationOptionsQuery.options,
+        loading: organizationOptionsQuery.isLoading,
       },
       {
         definition: FORM_FIELD_DEFINITION_TYPE.AUTOCOMPLETE,
         name: 'data_collection_id',
         label: t`Data collection`,
-        options: dataCollectionOptions.options,
-        loading: dataCollectionOptions.isLoading,
+        options: dataCollectionOptionsQuery.options,
+        loading: dataCollectionOptionsQuery.isLoading,
       },
       {
         definition: FORM_FIELD_DEFINITION_TYPE.AUTOCOMPLETE,
         name: 'case_type_set_id',
         label: t`Case type set`,
-        options: caseTypeSetOptions.options,
-        loading: caseTypeSetOptions.isLoading,
+        options: caseTypeSetOptionsQuery.options,
+        loading: caseTypeSetOptionsQuery.isLoading,
       },
       {
         definition: FORM_FIELD_DEFINITION_TYPE.AUTOCOMPLETE,
         name: 'read_case_type_col_set_id',
         label: t`Read column set`,
-        options: caseTypeColSetOptions.options,
-        loading: caseTypeColSetOptions.isLoading,
+        options: caseTypeColSetOptionsQuery.options,
+        loading: caseTypeColSetOptionsQuery.isLoading,
       },
       {
         definition: FORM_FIELD_DEFINITION_TYPE.AUTOCOMPLETE,
         name: 'write_case_type_col_set_id',
         label: t`Write column set`,
-        options: caseTypeColSetOptions.options,
-        loading: caseTypeColSetOptions.isLoading,
+        options: caseTypeColSetOptionsQuery.options,
+        loading: caseTypeColSetOptionsQuery.isLoading,
       },
       {
         definition: FORM_FIELD_DEFINITION_TYPE.BOOLEAN,
@@ -172,15 +172,15 @@ export const OrganizationAccessCasePoliciesAdminPage = () => {
         label: t`Is active`,
       },
     ];
-  }, [caseTypeColSetOptions.isLoading, caseTypeColSetOptions.options, caseTypeSetOptions.isLoading, caseTypeSetOptions.options, dataCollectionOptions.isLoading, dataCollectionOptions.options, organizationOptions.isLoading, organizationOptions.options, t]);
+  }, [caseTypeColSetOptionsQuery.isLoading, caseTypeColSetOptionsQuery.options, caseTypeSetOptionsQuery.isLoading, caseTypeSetOptionsQuery.options, dataCollectionOptionsQuery.isLoading, dataCollectionOptionsQuery.options, organizationOptionsQuery.isLoading, organizationOptionsQuery.options, t]);
 
   const tableColumns = useMemo((): TableColumn<OrganizationAccessCasePolicy>[] => {
     return [
-      TableUtil.createOptionsColumn<OrganizationAccessCasePolicy>({ id: 'organization_id', name: t`Organization`, options: organizationOptions.options }),
-      TableUtil.createOptionsColumn<OrganizationAccessCasePolicy>({ id: 'data_collection_id', name: t`Data collection`, options: dataCollectionOptions.options }),
-      TableUtil.createOptionsColumn<OrganizationAccessCasePolicy>({ id: 'case_type_set_id', name: t`Case type set`, options: caseTypeSetOptions.options }),
-      TableUtil.createOptionsColumn<OrganizationAccessCasePolicy>({ id: 'read_case_type_col_set_id', name: t`Read column set`, options: caseTypeColSetOptions.options }),
-      TableUtil.createOptionsColumn<OrganizationAccessCasePolicy>({ id: 'write_case_type_col_set_id', name: t`Write column set`, options: caseTypeColSetOptions.options }),
+      TableUtil.createOptionsColumn<OrganizationAccessCasePolicy>({ id: 'organization_id', name: t`Organization`, options: organizationOptionsQuery.options }),
+      TableUtil.createOptionsColumn<OrganizationAccessCasePolicy>({ id: 'data_collection_id', name: t`Data collection`, options: dataCollectionOptionsQuery.options }),
+      TableUtil.createOptionsColumn<OrganizationAccessCasePolicy>({ id: 'case_type_set_id', name: t`Case type set`, options: caseTypeSetOptionsQuery.options }),
+      TableUtil.createOptionsColumn<OrganizationAccessCasePolicy>({ id: 'read_case_type_col_set_id', name: t`Read column set`, options: caseTypeColSetOptionsQuery.options }),
+      TableUtil.createOptionsColumn<OrganizationAccessCasePolicy>({ id: 'write_case_type_col_set_id', name: t`Write column set`, options: caseTypeColSetOptionsQuery.options }),
 
       TableUtil.createBooleanColumn<OrganizationAccessCasePolicy>({ id: 'add_case', name: t`Add case` }),
       TableUtil.createBooleanColumn<OrganizationAccessCasePolicy>({ id: 'remove_case', name: t`Remove case` }),
@@ -192,7 +192,7 @@ export const OrganizationAccessCasePoliciesAdminPage = () => {
       TableUtil.createBooleanColumn<OrganizationAccessCasePolicy>({ id: 'is_private', name: t`Private` }),
       TableUtil.createBooleanColumn<OrganizationAccessCasePolicy>({ id: 'is_active', name: t`Active` }),
     ];
-  }, [caseTypeColSetOptions.options, caseTypeSetOptions.options, dataCollectionOptions.options, organizationOptions.options, t]);
+  }, [caseTypeColSetOptionsQuery.options, caseTypeSetOptionsQuery.options, dataCollectionOptionsQuery.options, organizationOptionsQuery.options, t]);
 
   return (
     <CrudPage<FormFields, OrganizationAccessCasePolicy>

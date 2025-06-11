@@ -16,11 +16,11 @@ import {
   ColType,
   CommandName,
 } from '../../api';
-import { useColTypeOptions } from '../../dataHooks/useColTypes';
-import { useConceptSetOptions } from '../../dataHooks/useConceptSets';
-import { useDimOptions } from '../../dataHooks/useDims';
-import { useGeneticDistanceProtocolOptions } from '../../dataHooks/useGeneticDistanceProtocols';
-import { useRegionSetOptions } from '../../dataHooks/useRegionSets';
+import { useColTypeOptionsQuery } from '../../dataHooks/useColTypesQuery';
+import { useConceptSetOptionsQuery } from '../../dataHooks/useConceptSetsQuery';
+import { useDimOptionsQuery } from '../../dataHooks/useDimsQuery';
+import { useGeneticDistanceProtocolOptionsQuery } from '../../dataHooks/useGeneticDistanceProtocolsQuery';
+import { useRegionSetOptionsQuery } from '../../dataHooks/useRegionSetsQuery';
 import type { Loadable } from '../../models/dataHooks';
 import type { FormFieldDefinition } from '../../models/form';
 import { FORM_FIELD_DEFINITION_TYPE } from '../../models/form';
@@ -34,13 +34,13 @@ type FormFields = Pick<Col, 'dim_id' | 'code_suffix' | 'code' | 'rank_in_dim' | 
 
 export const ColsAdminPage = () => {
   const [t] = useTranslation();
-  const dimOptions = useDimOptions();
-  const colTypeOptions = useColTypeOptions();
-  const conceptSetOptions = useConceptSetOptions();
-  const regionSetOptions = useRegionSetOptions();
-  const geneticDistanceProtocolOptions = useGeneticDistanceProtocolOptions();
+  const dimOptionsQuery = useDimOptionsQuery();
+  const colTypeOptionsQuery = useColTypeOptionsQuery();
+  const conceptSetOptionsQuery = useConceptSetOptionsQuery();
+  const regionSetOptionsQuery = useRegionSetOptionsQuery();
+  const geneticDistanceProtocolOptionsQuery = useGeneticDistanceProtocolOptionsQuery();
 
-  const loadables = useMemo<Loadable[]>(() => [dimOptions, colTypeOptions, conceptSetOptions, regionSetOptions, geneticDistanceProtocolOptions], [colTypeOptions, conceptSetOptions, dimOptions, geneticDistanceProtocolOptions, regionSetOptions]);
+  const loadables = useMemo<Loadable[]>(() => [dimOptionsQuery, colTypeOptionsQuery, conceptSetOptionsQuery, regionSetOptionsQuery, geneticDistanceProtocolOptionsQuery], [colTypeOptionsQuery, conceptSetOptionsQuery, dimOptionsQuery, geneticDistanceProtocolOptionsQuery, regionSetOptionsQuery]);
 
   const fetchAll = useCallback(async (signal: AbortSignal) => {
     return (await CaseApi.getInstance().colsGetAll({ signal }))?.data;
@@ -95,7 +95,7 @@ export const ColsAdminPage = () => {
         definition: FORM_FIELD_DEFINITION_TYPE.AUTOCOMPLETE,
         name: 'col_type',
         label: t`Column type`,
-        options: colTypeOptions.options,
+        options: colTypeOptionsQuery.options,
       },
       {
         definition: FORM_FIELD_DEFINITION_TYPE.TEXTFIELD,
@@ -123,25 +123,25 @@ export const ColsAdminPage = () => {
         definition: FORM_FIELD_DEFINITION_TYPE.AUTOCOMPLETE,
         name: 'dim_id',
         label: t`Dimension`,
-        options: dimOptions.options,
+        options: dimOptionsQuery.options,
       },
       {
         definition: FORM_FIELD_DEFINITION_TYPE.AUTOCOMPLETE,
         name: 'concept_set_id',
         label: t`Concept set`,
-        options: conceptSetOptions.options,
+        options: conceptSetOptionsQuery.options,
       },
       {
         definition: FORM_FIELD_DEFINITION_TYPE.AUTOCOMPLETE,
         name: 'region_set_id',
         label: t`Region set`,
-        options: regionSetOptions.options,
+        options: regionSetOptionsQuery.options,
       },
       {
         definition: FORM_FIELD_DEFINITION_TYPE.AUTOCOMPLETE,
         name: 'genetic_distance_protocol_id',
         label: t`Genetic distance protocol`,
-        options: geneticDistanceProtocolOptions.options,
+        options: geneticDistanceProtocolOptionsQuery.options,
       },
       {
         definition: FORM_FIELD_DEFINITION_TYPE.TEXTFIELD,
@@ -152,17 +152,17 @@ export const ColsAdminPage = () => {
 
 
     ];
-  }, [colTypeOptions.options, conceptSetOptions.options, dimOptions.options, geneticDistanceProtocolOptions.options, regionSetOptions.options, t]);
+  }, [colTypeOptionsQuery.options, conceptSetOptionsQuery.options, dimOptionsQuery.options, geneticDistanceProtocolOptionsQuery.options, regionSetOptionsQuery.options, t]);
 
   const tableColumns = useMemo((): TableColumn<Col>[] => {
     return [
       TableUtil.createTextColumn<Col>({ id: 'code', name: t`Code` }),
-      TableUtil.createOptionsColumn<Col>({ id: 'dim_id', name: t`Dimension`, options: dimOptions.options }),
-      TableUtil.createOptionsColumn<Col>({ id: 'col_type', name: t`Column type`, options: colTypeOptions.options }),
+      TableUtil.createOptionsColumn<Col>({ id: 'dim_id', name: t`Dimension`, options: dimOptionsQuery.options }),
+      TableUtil.createOptionsColumn<Col>({ id: 'col_type', name: t`Column type`, options: colTypeOptionsQuery.options }),
       TableUtil.createTextColumn<Col>({ id: 'rank_in_dim', name: t`Rank in dimension` }),
       TableUtil.createTextColumn<Col>({ id: 'label', name: t`Label` }),
     ];
-  }, [colTypeOptions.options, dimOptions.options, t]);
+  }, [colTypeOptionsQuery.options, dimOptionsQuery.options, t]);
 
   return (
     <CrudPage<FormFields, Col>

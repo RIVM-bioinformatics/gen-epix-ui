@@ -27,12 +27,12 @@ import { CaseApi } from '../../../api';
 import { RouterManager } from '../../../classes/managers/RouterManager';
 import type { EpiCaseAbacContextValue } from '../../../context/epiCaseAbac';
 import { EpiCaseAbacProvider } from '../../../context/epiCaseAbac';
-import { useCaseSetRights } from '../../../dataHooks/useCaseSetRights';
+import { useCaseSetRightsQuery } from '../../../dataHooks/useCaseSetRightsQuery';
 import {
-  useDataCollections,
-  useDataCollectionsMap,
-  useDataCollectionOptions,
-} from '../../../dataHooks/useDataCollections';
+  useDataCollectionsQuery,
+  useDataCollectionsMapQuery,
+  useDataCollectionOptionsQuery,
+} from '../../../dataHooks/useDataCollectionsQuery';
 import { useDeleteMutation } from '../../../hooks/useDeleteMutation';
 import { useItemQuery } from '../../../hooks/useItemQuery';
 import { QUERY_KEY } from '../../../models/query';
@@ -74,10 +74,10 @@ export const EpiCaseSetInfoDialog = withDialog<EpiCaseSetInfoDialogProps, EpiCas
 ): ReactElement => {
   const [t] = useTranslation();
   const caseSetIds = useMemo(() => [openProps.caseSetId], [openProps.caseSetId]);
-  const caseSetRightsQuery = useCaseSetRights(caseSetIds);
-  const dataCollectionsQuery = useDataCollections();
-  const dataCollectionsMapQuery = useDataCollectionsMap();
-  const dataCollectionOptionsQuery = useDataCollectionOptions();
+  const caseSetRightsQuery = useCaseSetRightsQuery(caseSetIds);
+  const dataCollectionsQuery = useDataCollectionsQuery();
+  const dataCollectionsMapQuery = useDataCollectionsMapQuery();
+  const dataCollectionOptionsQuery = useDataCollectionOptionsQuery();
   const [isEditingCaseSetContent, setIsEditingCaseSetContent] = useState(false);
   const [isEditingDataCollections, setIsEditingDataCollections] = useState(false);
   const [isEpiCaseSetFormSaving, setIsEpiCaseSetFormSaving] = useState(false);

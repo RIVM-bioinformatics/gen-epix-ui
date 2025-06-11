@@ -27,10 +27,10 @@ import type {
 } from '../../../api';
 import { CaseApi } from '../../../api';
 import { EpiEventBusManager } from '../../../classes/managers/EpiEventBusManager';
-import { useCaseSetCategoryOptions } from '../../../dataHooks/useCaseSetCategories';
-import { useCaseSetStatusOptions } from '../../../dataHooks/useCaseSetStatuses';
-import { useCaseTypeOptions } from '../../../dataHooks/useCaseTypes';
-import { useDataCollectionOptions } from '../../../dataHooks/useDataCollections';
+import { useCaseSetCategoryOptionsQuery } from '../../../dataHooks/useCaseSetCategoriesQuery';
+import { useCaseSetStatusOptionsQuery } from '../../../dataHooks/useCaseSetStatusesQuery';
+import { useCaseTypeOptionsQuery } from '../../../dataHooks/useCaseTypesQuery';
+import { useDataCollectionOptionsQuery } from '../../../dataHooks/useDataCollectionsQuery';
 import type {
   WithDialogRenderProps,
   WithDialogRefMethods,
@@ -83,10 +83,10 @@ export const EpiCreateEventDialog = withDialog<EpiCreateEventDialogProps, EpiCre
     openProps,
   }: EpiCreateEventDialogProps,
 ): ReactElement => {
-  const caseTypeOptionsQuery = useCaseTypeOptions();
-  const caseSetCategoryOptionsQuery = useCaseSetCategoryOptions();
-  const caseSetStatusOptionsQuery = useCaseSetStatusOptions();
-  const dataCollectionOptionsQuery = useDataCollectionOptions();
+  const caseTypeOptionsQuery = useCaseTypeOptionsQuery();
+  const caseSetCategoryOptionsQuery = useCaseSetCategoryOptionsQuery();
+  const caseSetStatusOptionsQuery = useCaseSetStatusOptionsQuery();
+  const dataCollectionOptionsQuery = useDataCollectionOptionsQuery();
   const [t] = useTranslation();
   const formId = useId();
 

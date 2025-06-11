@@ -15,9 +15,9 @@ import {
 import { EpiCreateEventDialogSuccessNotificationMessage } from '../EpiCreateEventDialog/EpiCreateEventDialogSuccessNotificationMessage';
 import type { CaseSet } from '../../../api';
 import { CaseApi } from '../../../api';
-import { useCaseSetCategoryOptions } from '../../../dataHooks/useCaseSetCategories';
-import { useCaseSetStatusOptions } from '../../../dataHooks/useCaseSetStatuses';
-import { useCaseTypeOptions } from '../../../dataHooks/useCaseTypes';
+import { useCaseSetCategoryOptionsQuery } from '../../../dataHooks/useCaseSetCategoriesQuery';
+import { useCaseSetStatusOptionsQuery } from '../../../dataHooks/useCaseSetStatusesQuery';
+import { useCaseTypeOptionsQuery } from '../../../dataHooks/useCaseTypesQuery';
 import { useEditMutation } from '../../../hooks/useEditMutation';
 import type { FormFieldDefinition } from '../../../models/form';
 import { FORM_FIELD_DEFINITION_TYPE } from '../../../models/form';
@@ -37,9 +37,9 @@ export type EpiCaseSetFormProps = {
 type FormFields = Pick<CaseSet, 'name' | 'description' | 'case_type_id' | 'case_set_category_id' | 'case_set_status_id'>;
 
 export const EpiCaseSetForm = ({ caseSet, formId, onFinish, onIsSavingChange }: EpiCaseSetFormProps) => {
-  const caseTypeOptions = useCaseTypeOptions();
-  const caseSetCategoryOptions = useCaseSetCategoryOptions();
-  const caseSetStatusOptions = useCaseSetStatusOptions();
+  const caseTypeOptionsQuery = useCaseTypeOptionsQuery();
+  const caseSetCategoryOptionsQuery = useCaseSetCategoryOptionsQuery();
+  const caseSetStatusOptionsQuery = useCaseSetStatusOptionsQuery();
 
   const schema = useMemo(() => object<FormFields>().shape({
     name: string().extendedAlphaNumeric().required().max(100),
@@ -65,8 +65,8 @@ export const EpiCaseSetForm = ({ caseSet, formId, onFinish, onIsSavingChange }: 
         definition: FORM_FIELD_DEFINITION_TYPE.AUTOCOMPLETE,
         name: 'case_type_id',
         label: t`Case type`,
-        options: caseTypeOptions.options,
-        loading: caseTypeOptions.isLoading,
+        options: caseTypeOptionsQuery.options,
+        loading: caseTypeOptionsQuery.isLoading,
         disabled: !!caseSet,
       },
       {
@@ -83,18 +83,18 @@ export const EpiCaseSetForm = ({ caseSet, formId, onFinish, onIsSavingChange }: 
         definition: FORM_FIELD_DEFINITION_TYPE.AUTOCOMPLETE,
         name: 'case_set_category_id',
         label: t`Category`,
-        options: caseSetCategoryOptions.options,
-        loading: caseSetCategoryOptions.isLoading,
+        options: caseSetCategoryOptionsQuery.options,
+        loading: caseSetCategoryOptionsQuery.isLoading,
       },
       {
         definition: FORM_FIELD_DEFINITION_TYPE.AUTOCOMPLETE,
         name: 'case_set_status_id',
         label: t`Status`,
-        options: caseSetStatusOptions.options,
-        loading: caseSetStatusOptions.isLoading,
+        options: caseSetStatusOptionsQuery.options,
+        loading: caseSetStatusOptionsQuery.isLoading,
       },
     ];
-  }, [caseSet, caseSetCategoryOptions.isLoading, caseSetCategoryOptions.options, caseSetStatusOptions.isLoading, caseSetStatusOptions.options, caseTypeOptions.isLoading, caseTypeOptions.options]);
+  }, [caseSet, caseSetCategoryOptionsQuery.isLoading, caseSetCategoryOptionsQuery.options, caseSetStatusOptionsQuery.isLoading, caseSetStatusOptionsQuery.options, caseTypeOptionsQuery.isLoading, caseTypeOptionsQuery.options]);
 
   const { mutate: mutateEdit, isMutating: isEditing, setPreviousItem } = useEditMutation<CaseSet, FormFields>({
     resourceQueryKey: QueryUtil.getGenericKey(QUERY_KEY.CASE_SETS),

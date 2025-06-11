@@ -14,7 +14,7 @@ import {
   GeoApi,
   CommandName,
 } from '../../api';
-import { useRegionSetOptions } from '../../dataHooks/useRegionSets';
+import { useRegionSetOptionsQuery } from '../../dataHooks/useRegionSetsQuery';
 import type { Loadable } from '../../models/dataHooks';
 import type { FormFieldDefinition } from '../../models/form';
 import { FORM_FIELD_DEFINITION_TYPE } from '../../models/form';
@@ -28,9 +28,9 @@ type FormFields = Pick<Region, 'name' | 'code' | 'region_set_id' | 'centroid_lat
 
 export const RegionsAdminPage = () => {
   const [t] = useTranslation();
-  const regionSetOptions = useRegionSetOptions();
+  const regionSetOptionsQuery = useRegionSetOptionsQuery();
 
-  const loadables = useMemo<Loadable[]>(() => [regionSetOptions], [regionSetOptions]);
+  const loadables = useMemo<Loadable[]>(() => [regionSetOptionsQuery], [regionSetOptionsQuery]);
 
   const fetchAll = useCallback(async (signal: AbortSignal) => {
     return (await GeoApi.getInstance().regionsGetAll({ signal }))?.data;
@@ -81,8 +81,8 @@ export const RegionsAdminPage = () => {
         definition: FORM_FIELD_DEFINITION_TYPE.AUTOCOMPLETE,
         name: 'region_set_id',
         label: t`Region set`,
-        options: regionSetOptions.options,
-        loading: regionSetOptions.isLoading,
+        options: regionSetOptionsQuery.options,
+        loading: regionSetOptionsQuery.isLoading,
       },
       {
         definition: FORM_FIELD_DEFINITION_TYPE.TEXTFIELD,
@@ -109,15 +109,15 @@ export const RegionsAdminPage = () => {
         type: 'number',
       },
     ];
-  }, [regionSetOptions.isLoading, regionSetOptions.options, t]);
+  }, [regionSetOptionsQuery.isLoading, regionSetOptionsQuery.options, t]);
 
   const tableColumns = useMemo((): TableColumn<Region>[] => {
     return [
       TableUtil.createTextColumn<Region>({ id: 'name', name: t`Name` }),
       TableUtil.createTextColumn<Region>({ id: 'code', name: t`Code` }),
-      TableUtil.createOptionsColumn<Region>({ id: 'region_set_id', name: t`Region set`, options: regionSetOptions.options }),
+      TableUtil.createOptionsColumn<Region>({ id: 'region_set_id', name: t`Region set`, options: regionSetOptionsQuery.options }),
     ];
-  }, [t, regionSetOptions.options]);
+  }, [t, regionSetOptionsQuery.options]);
 
   return (
     <CrudPage<FormFields, Region>

@@ -15,11 +15,11 @@ import { useStore } from 'zustand';
 import type { EpiCaseTypeAbacContextValue } from '../../../context/epiCaseTypeAbac';
 import { EpiCaseTypeAbacProvider } from '../../../context/epiCaseTypeAbac';
 import {
-  useDataCollectionsMap,
-  useDataCollections,
-} from '../../../dataHooks/useDataCollections';
-import { useDiseasesMap } from '../../../dataHooks/useDiseases';
-import { useEtiologicalAgentsMap } from '../../../dataHooks/useEtiologicalAgents';
+  useDataCollectionsMapQuery,
+  useDataCollectionsQuery,
+} from '../../../dataHooks/useDataCollectionsQuery';
+import { useDiseasesMapQuery } from '../../../dataHooks/useDiseasesQuery';
+import { useEtiologicalAgentsMapQuery } from '../../../dataHooks/useEtiologicalAgentsQuery';
 import { EpiStoreContext } from '../../../stores/epiStore';
 import { MarkdownContent } from '../../ui/MarkdownContent';
 import { ResponseHandler } from '../../ui/ResponseHandler';
@@ -37,33 +37,33 @@ export type EpiCaseTypeInfoDialogContentProps = {
 export const EpiCaseTypeInfoDialogContent = ({ onTitleChange }: EpiCaseTypeInfoDialogContentProps) => {
   const [t] = useTranslation();
   const theme = useTheme();
-  const diseasesMap = useDiseasesMap();
-  const etiologicalAgentsMap = useEtiologicalAgentsMap();
-  const dataCollectionsMapQuery = useDataCollectionsMap();
-  const dataCollectionsQuery = useDataCollections();
-  const loadables = useMemo(() => [dataCollectionsMapQuery, dataCollectionsQuery, diseasesMap, etiologicalAgentsMap], [dataCollectionsMapQuery, dataCollectionsQuery, diseasesMap, etiologicalAgentsMap]);
+  const diseasesMapQuery = useDiseasesMapQuery();
+  const etiologicalAgentsMapQuery = useEtiologicalAgentsMapQuery();
+  const dataCollectionsMapQuery = useDataCollectionsMapQuery();
+  const dataCollectionsQuery = useDataCollectionsQuery();
+  const loadables = useMemo(() => [dataCollectionsMapQuery, dataCollectionsQuery, diseasesMapQuery, etiologicalAgentsMapQuery], [dataCollectionsMapQuery, dataCollectionsQuery, diseasesMapQuery, etiologicalAgentsMapQuery]);
 
   const epiStore = useContext(EpiStoreContext);
   const completeCaseType = useStore(epiStore, (state) => state.completeCaseType);
 
   const getDiseaseName = useCallback((id: string) => {
-    if (!id || !diseasesMap.map.has(id)) {
+    if (!id || !diseasesMapQuery.map.has(id)) {
       return undefined;
     }
-    const disease = diseasesMap.map.get(id);
+    const disease = diseasesMapQuery.map.get(id);
     const code = disease.icd_code ? ` (ICD Code: ${disease.icd_code})` : '';
 
     return `${disease.name}${code}`;
-  }, [diseasesMap.map]);
+  }, [diseasesMapQuery.map]);
 
   const getEtiologicalAgentName = useCallback((id: string) => {
-    if (!id || !etiologicalAgentsMap.map.has(id)) {
+    if (!id || !etiologicalAgentsMapQuery.map.has(id)) {
       return undefined;
     }
-    const etiologicalAgent = etiologicalAgentsMap.map.get(id);
+    const etiologicalAgent = etiologicalAgentsMapQuery.map.get(id);
 
     return `${etiologicalAgent.name} (${etiologicalAgent.type})`;
-  }, [etiologicalAgentsMap.map]);
+  }, [etiologicalAgentsMapQuery.map]);
 
   useEffect(() => {
     onTitleChange(completeCaseType.name);

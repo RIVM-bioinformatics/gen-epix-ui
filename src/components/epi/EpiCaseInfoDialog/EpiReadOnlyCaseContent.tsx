@@ -13,7 +13,7 @@ import { format } from 'date-fns';
 import { useMemo } from 'react';
 
 import type { Case } from '../../../api';
-import { useDataCollectionsMap } from '../../../dataHooks/useDataCollections';
+import { useDataCollectionsMapQuery } from '../../../dataHooks/useDataCollectionsQuery';
 import { GenericErrorMessage } from '../../ui/GenericErrorMessage';
 import { ResponseHandler } from '../../ui/ResponseHandler';
 
@@ -23,9 +23,9 @@ export type EpiReadOnlyCaseContentProps = {
 
 export const EpiReadOnlyCaseContent = ({ epiCase, ...boxProps }: EpiReadOnlyCaseContentProps) => {
   const [t] = useTranslation();
-  const dataCollectionMap = useDataCollectionsMap();
+  const dataCollectionsMapQuery = useDataCollectionsMapQuery();
 
-  const loadables = useMemo(() => [dataCollectionMap], [dataCollectionMap]);
+  const loadables = useMemo(() => [dataCollectionsMapQuery], [dataCollectionsMapQuery]);
 
   return (
     <Box {...boxProps}>

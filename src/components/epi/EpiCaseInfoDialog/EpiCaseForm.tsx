@@ -19,7 +19,7 @@ import {
 import type { Case } from '../../../api';
 import { CaseApi } from '../../../api';
 import { NotificationManager } from '../../../classes/managers/NotificationManager';
-import { useOrganizations } from '../../../dataHooks/useOrganizations';
+import { useOrganizationsQuery } from '../../../dataHooks/useOrganizationsQuery';
 import { QUERY_KEY } from '../../../models/query';
 import { EpiStoreContext } from '../../../stores/epiStore';
 import { EpiCaseUtil } from '../../../utils/EpiCaseUtil';
@@ -37,11 +37,11 @@ export type EpiCaseFormProps = {
 } & BoxProps;
 
 export const EpiCaseForm = ({ epiCase, formId, onFinish, onIsSavingChange, ...boxProps }: EpiCaseFormProps) => {
-  const organizationsQueryResult = useOrganizations();
+  const organizationsQuery = useOrganizationsQuery();
   const epiStore = useContext(EpiStoreContext);
   const completeCaseType = useStore(epiStore, (state) => state.completeCaseType);
   const schema = useMemo(() => EpiCaseUtil.createYupSchema(completeCaseType), [completeCaseType]);
-  const formFieldDefinitions = useMemo(() => EpiCaseUtil.createFormFieldDefinitions(completeCaseType, organizationsQueryResult), [completeCaseType, organizationsQueryResult]);
+  const formFieldDefinitions = useMemo(() => EpiCaseUtil.createFormFieldDefinitions(completeCaseType, organizationsQuery), [completeCaseType, organizationsQuery]);
   const mutateCachedCase = useStore(epiStore, useShallow((state) => state.mutateCachedCase));
   const [isSaving, setIsSaving] = useState(false);
 

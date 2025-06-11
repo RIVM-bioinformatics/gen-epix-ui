@@ -20,9 +20,9 @@ import {
   CommandName,
   PermissionType,
 } from '../../api';
-import { useCaseTypeOptions } from '../../dataHooks/useCaseTypes';
-import { useCaseTypeSetCategoryOptions } from '../../dataHooks/useCaseTypeSetCategory';
-import { useCaseTypeSetMembers } from '../../dataHooks/useCaseTypeSetMembers';
+import { useCaseTypeOptionsQuery } from '../../dataHooks/useCaseTypesQuery';
+import { useCaseTypeSetCategoryOptionsQuery } from '../../dataHooks/useCaseTypeSetCategoriesQuery';
+import { useCaseTypeSetMembersQuery } from '../../dataHooks/useCaseTypeSetMembersQuery';
 import type { Loadable } from '../../models/dataHooks';
 import type { FormFieldDefinition } from '../../models/form';
 import { FORM_FIELD_DEFINITION_TYPE } from '../../models/form';
@@ -40,11 +40,11 @@ type FormFields = Pick<TableData, 'name' | 'case_type_set_category_id' | 'caseTy
 
 export const CaseTypeSetsAdminPage = () => {
   const [t] = useTranslation();
-  const caseTypeSetCategoryOptions = useCaseTypeSetCategoryOptions();
-  const caseTypeSetMembers = useCaseTypeSetMembers();
-  const caseTypeOptions = useCaseTypeOptions();
+  const caseTypeSetCategoryOptionsQuery = useCaseTypeSetCategoryOptionsQuery();
+  const caseTypeSetMembersQuery = useCaseTypeSetMembersQuery();
+  const caseTypeOptionsQuery = useCaseTypeOptionsQuery();
 
-  const loadables = useMemo<Loadable[]>(() => [caseTypeOptions, caseTypeSetCategoryOptions], [caseTypeOptions, caseTypeSetCategoryOptions]);
+  const loadables = useMemo<Loadable[]>(() => [caseTypeOptionsQuery, caseTypeSetCategoryOptionsQuery], [caseTypeOptionsQuery, caseTypeSetCategoryOptionsQuery]);
 
   const fetchAll = useCallback(async (signal: AbortSignal): Promise<CaseTypeSet[]> => {
     const caseTypesSets = (await CaseApi.getInstance().caseTypeSetsGetAll({ signal }))?.data;
@@ -96,8 +96,8 @@ export const CaseTypeSetsAdminPage = () => {
         definition: FORM_FIELD_DEFINITION_TYPE.AUTOCOMPLETE,
         name: 'case_type_set_category_id',
         label: t`Category`,
-        options: caseTypeSetCategoryOptions.options,
-        loading: caseTypeSetCategoryOptions.isLoading,
+        options: caseTypeSetCategoryOptionsQuery.options,
+        loading: caseTypeSetCategoryOptionsQuery.isLoading,
       },
       {
         definition: FORM_FIELD_DEFINITION_TYPE.TEXTFIELD,
@@ -120,15 +120,15 @@ export const CaseTypeSetsAdminPage = () => {
         definition: FORM_FIELD_DEFINITION_TYPE.TRANSFER_LIST,
         name: 'caseTypeIds',
         label: t`Case types`,
-        options: caseTypeOptions.options,
-        loading: caseTypeOptions.isLoading,
+        options: caseTypeOptionsQuery.options,
+        loading: caseTypeOptionsQuery.isLoading,
       },
     ];
-  }, [caseTypeOptions.isLoading, caseTypeOptions.options, caseTypeSetCategoryOptions.isLoading, caseTypeSetCategoryOptions.options, t]);
+  }, [caseTypeOptionsQuery.isLoading, caseTypeOptionsQuery.options, caseTypeSetCategoryOptionsQuery.isLoading, caseTypeSetCategoryOptionsQuery.options, t]);
 
   const tableColumns = useMemo((): TableColumn<TableData>[] => {
     return [
-      TableUtil.createOptionsColumn<TableData>({ id: 'case_type_set_category_id', name: t`Category`, options: caseTypeSetCategoryOptions.options }),
+      TableUtil.createOptionsColumn<TableData>({ id: 'case_type_set_category_id', name: t`Category`, options: caseTypeSetCategoryOptionsQuery.options }),
       TableUtil.createTextColumn<TableData>({ id: 'name', name: t`Name` }),
       TableUtil.createNumberColumn<TableData>({ id: 'rank', name: t`Rank` }),
       {
@@ -136,13 +136,13 @@ export const CaseTypeSetsAdminPage = () => {
         type: 'number',
         headerName: t`Case type count`,
         valueGetter: (item) => item.row.caseTypeIds.length,
-        displayValueGetter: (item) => `${item.row.caseTypeIds.length} / ${caseTypeOptions.options.length}`,
+        displayValueGetter: (item) => `${item.row.caseTypeIds.length} / ${caseTypeOptionsQuery.options.length}`,
         widthFlex: 0.5,
         textAlign: 'right',
         isInitiallyVisible: true,
       },
     ];
-  }, [caseTypeOptions.options.length, caseTypeSetCategoryOptions.options, t]);
+  }, [caseTypeOptionsQuery.options.length, caseTypeSetCategoryOptionsQuery.options, t]);
 
   const extraCreateOnePermissions = useMemo<Permission[]>(() => [
     { command_name: CommandName.CaseTypeSetCaseTypeUpdateAssociationCommand, permission_type: PermissionType.EXECUTE },
@@ -156,17 +156,17 @@ export const CaseTypeSetsAdminPage = () => {
 
 
   const convertToTableData = useCallback((items: CaseTypeSet[]) => {
-    if (!items || !caseTypeSetMembers.data) {
+    if (!items || !caseTypeSetMembersQuery.data) {
       return [];
     }
     return items.map<TableData>((item) => {
-      const caseTypeIds = caseTypeSetMembers.data.filter(member => member.case_type_set_id === item.id).map(member => member.case_type_id);
+      const caseTypeIds = caseTypeSetMembersQuery.data.filter(member => member.case_type_set_id === item.id).map(member => member.case_type_id);
       return {
         ...item,
         caseTypeIds,
       } satisfies TableData;
     });
-  }, [caseTypeSetMembers.data]);
+  }, [caseTypeSetMembersQuery.data]);
 
   const associationQueryKeys = useMemo(() => [
     [QUERY_KEY.CASE_TYPE_SET_MEMBERS],

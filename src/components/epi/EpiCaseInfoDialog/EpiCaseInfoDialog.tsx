@@ -29,12 +29,12 @@ import type {
   TypedUuidSetFilter,
 } from '../../../api';
 import { CaseApi } from '../../../api';
-import { useCaseRights } from '../../../dataHooks/useCaseRights';
+import { useCaseRightsQuery } from '../../../dataHooks/useCaseRightsQuery';
 import {
-  useDataCollections,
-  useDataCollectionsMap,
-  useDataCollectionOptions,
-} from '../../../dataHooks/useDataCollections';
+  useDataCollectionsQuery,
+  useDataCollectionsMapQuery,
+  useDataCollectionOptionsQuery,
+} from '../../../dataHooks/useDataCollectionsQuery';
 import { useDeleteMutation } from '../../../hooks/useDeleteMutation';
 import { useItemQuery } from '../../../hooks/useItemQuery';
 import { QUERY_KEY } from '../../../models/query';
@@ -75,10 +75,10 @@ export const EpiCaseInfoDialog = withDialog<EpiCaseInfoDialogProps, EpiCaseInfoD
 ): ReactElement => {
   const [t] = useTranslation();
   const caseIds = useMemo(() => [openProps.caseId], [openProps.caseId]);
-  const caseRightsQuery = useCaseRights(caseIds);
-  const dataCollectionsQuery = useDataCollections();
-  const dataCollectionsMapQuery = useDataCollectionsMap();
-  const dataCollectionOptionsQuery = useDataCollectionOptions();
+  const caseRightsQuery = useCaseRightsQuery(caseIds);
+  const dataCollectionsQuery = useDataCollectionsQuery();
+  const dataCollectionsMapQuery = useDataCollectionsMapQuery();
+  const dataCollectionOptionsQuery = useDataCollectionOptionsQuery();
 
   const epiStore = useContext(EpiStoreContext);
   const fetchData = useStore(epiStore, useShallow((state) => state.fetchData));

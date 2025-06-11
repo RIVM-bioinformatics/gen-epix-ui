@@ -16,10 +16,10 @@ import {
   CaseApi,
   CommandName,
 } from '../../api';
-import { useCaseTypeColOptions } from '../../dataHooks/useCaseTypeCols';
-import { useCaseTypeOptions } from '../../dataHooks/useCaseTypes';
-import { useColOptions } from '../../dataHooks/useCols';
-import { useTreeAlgorithmCodeOptions } from '../../dataHooks/useTreeAlgorithmCodes';
+import { useCaseTypeColOptionsQuery } from '../../dataHooks/useCaseTypeColsQuery';
+import { useCaseTypeOptionsQuery } from '../../dataHooks/useCaseTypesQuery';
+import { useColOptionsQuery } from '../../dataHooks/useColsQuery';
+import { useTreeAlgorithmCodeOptionsQuery } from '../../dataHooks/useTreeAlgorithmCodesQuery';
 import type { Loadable } from '../../models/dataHooks';
 import type { FormFieldDefinition } from '../../models/form';
 import { FORM_FIELD_DEFINITION_TYPE } from '../../models/form';
@@ -33,12 +33,12 @@ type FormFields = Pick<CaseTypeCol, 'case_type_id' | 'col_id' | 'occurrence' | '
 
 export const CaseTypeColsAdminPage = () => {
   const [t] = useTranslation();
-  const colOptions = useColOptions();
-  const treeAlgorithmCodesOptions = useTreeAlgorithmCodeOptions();
-  const caseTypeOptions = useCaseTypeOptions();
-  const caseTypeColOptions = useCaseTypeColOptions();
+  const colOptionsQuery = useColOptionsQuery();
+  const treeAlgorithmCodesOptionsQuery = useTreeAlgorithmCodeOptionsQuery();
+  const caseTypeOptionsQuery = useCaseTypeOptionsQuery();
+  const caseTypeColOptionsQuery = useCaseTypeColOptionsQuery();
 
-  const loadables = useMemo<Loadable[]>(() => [caseTypeOptions, colOptions, treeAlgorithmCodesOptions, caseTypeColOptions], [caseTypeColOptions, caseTypeOptions, colOptions, treeAlgorithmCodesOptions]);
+  const loadables = useMemo<Loadable[]>(() => [caseTypeOptionsQuery, colOptionsQuery, treeAlgorithmCodesOptionsQuery, caseTypeColOptionsQuery], [caseTypeColOptionsQuery, caseTypeOptionsQuery, colOptionsQuery, treeAlgorithmCodesOptionsQuery]);
 
   const fetchAll = useCallback(async (signal: AbortSignal) => {
     return (await CaseApi.getInstance().caseTypeColsGetAll({ signal }))?.data;
@@ -92,7 +92,7 @@ export const CaseTypeColsAdminPage = () => {
         definition: FORM_FIELD_DEFINITION_TYPE.AUTOCOMPLETE,
         name: 'case_type_id',
         label: t`Case type`,
-        options: caseTypeOptions.options,
+        options: caseTypeOptionsQuery.options,
       },
       {
         definition: FORM_FIELD_DEFINITION_TYPE.TEXTFIELD,
@@ -110,7 +110,7 @@ export const CaseTypeColsAdminPage = () => {
         definition: FORM_FIELD_DEFINITION_TYPE.AUTOCOMPLETE,
         name: 'col_id',
         label: t`Column`,
-        options: colOptions.options,
+        options: colOptionsQuery.options,
       },
       {
         definition: FORM_FIELD_DEFINITION_TYPE.TEXTFIELD,
@@ -146,13 +146,13 @@ export const CaseTypeColsAdminPage = () => {
         definition: FORM_FIELD_DEFINITION_TYPE.AUTOCOMPLETE,
         name: 'genetic_sequence_case_type_col_id',
         label: t`Genetic sequence case type column`,
-        options: caseTypeColOptions.options,
+        options: caseTypeColOptionsQuery.options,
       },
       {
         definition: FORM_FIELD_DEFINITION_TYPE.AUTOCOMPLETE,
         name: 'tree_algorithm_codes',
         label: t`Tree algorithm codes`,
-        options: treeAlgorithmCodesOptions.options,
+        options: treeAlgorithmCodesOptionsQuery.options,
         multiple: true,
       },
       {
@@ -162,16 +162,16 @@ export const CaseTypeColsAdminPage = () => {
         type: 'number',
       },
     ];
-  }, [caseTypeColOptions.options, caseTypeOptions.options, colOptions.options, t, treeAlgorithmCodesOptions.options]);
+  }, [caseTypeColOptionsQuery.options, caseTypeOptionsQuery.options, colOptionsQuery.options, t, treeAlgorithmCodesOptionsQuery.options]);
 
   const tableColumns = useMemo((): TableColumn<CaseTypeCol>[] => {
     return [
-      TableUtil.createOptionsColumn<CaseTypeCol>({ id: 'case_type_id', name: t`Case type`, options: caseTypeOptions.options }),
-      TableUtil.createOptionsColumn<CaseTypeCol>({ id: 'col_id', name: t`Column`, options: colOptions.options }),
+      TableUtil.createOptionsColumn<CaseTypeCol>({ id: 'case_type_id', name: t`Case type`, options: caseTypeOptionsQuery.options }),
+      TableUtil.createOptionsColumn<CaseTypeCol>({ id: 'col_id', name: t`Column`, options: colOptionsQuery.options }),
       TableUtil.createTextColumn<CaseTypeCol>({ id: 'code', name: t`Code` }),
       TableUtil.createTextColumn<CaseTypeCol>({ id: 'rank', name: t`Rank` }),
     ];
-  }, [caseTypeOptions.options, colOptions.options, t]);
+  }, [caseTypeOptionsQuery.options, colOptionsQuery.options, t]);
 
   return (
     <CrudPage<FormFields, CaseTypeCol>

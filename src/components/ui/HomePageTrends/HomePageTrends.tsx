@@ -23,9 +23,9 @@ import {
 } from '../../../api';
 import { ConfigManager } from '../../../classes/managers/ConfigManager';
 import { RouterManager } from '../../../classes/managers/RouterManager';
-import { useCaseSets } from '../../../dataHooks/useCaseSets';
-import { useCaseTypeMap } from '../../../dataHooks/useCaseTypes';
-import { useCaseTypeStats } from '../../../dataHooks/useCaseTypeStats';
+import { useCaseSetsQuery } from '../../../dataHooks/useCaseSetsQuery';
+import { useCaseTypeMapQuery } from '../../../dataHooks/useCaseTypesQuery';
+import { useCaseTypeStatsQuery } from '../../../dataHooks/useCaseTypeStatsQuery';
 import { QUERY_KEY } from '../../../models/query';
 import { EpiCaseTypeUtil } from '../../../utils/EpiCaseTypeUtil';
 import { QueryUtil } from '../../../utils/QueryUtil';
@@ -63,10 +63,10 @@ export const HomePageTrends = () => {
     datetime_range_filter: dateTimeRangeFilter,
   }), [dateTimeRangeFilter]);
 
-  const caseTypeStatsNow = useCaseTypeStats();
-  const caseTypeStatsThen = useCaseTypeStats(retrieveCaseTypeStatsCommand);
-  const caseSetStatsNow = useCaseSets();
-  const caseTypeMap = useCaseTypeMap();
+  const caseTypeStatsQueryNow = useCaseTypeStatsQuery();
+  const caseTypeStatsQueryPast = useCaseTypeStatsQuery(retrieveCaseTypeStatsCommand);
+  const caseSetsNowQuery = useCaseSetsQuery();
+  const caseTypeMapQuery = useCaseTypeMapQuery();
 
   const { data: caseSetsThenData, ...caseSetsThenQuery } = useQuery({
     queryKey: QueryUtil.getGenericKey(QUERY_KEY.CASE_SETS, caseSetQueryFilter),
@@ -77,12 +77,12 @@ export const HomePageTrends = () => {
   });
 
   const loadables = useMemo(() => [
-    caseTypeStatsNow,
-    caseTypeStatsThen,
-    caseTypeMap,
-    caseSetStatsNow,
+    caseTypeStatsQueryNow,
+    caseTypeStatsQueryPast,
+    caseTypeMapQuery,
+    caseSetsNowQuery,
     caseSetsThenQuery,
-  ], [caseTypeStatsNow, caseTypeStatsThen, caseTypeMap, caseSetStatsNow, caseSetsThenQuery]);
+  ], [caseTypeStatsQueryNow, caseTypeStatsQueryPast, caseTypeMapQuery, caseSetsNowQuery, caseSetsThenQuery]);
 
   const statistics = useMemo<Statistic[]>(() => {
     const s: Statistic[] = [];
@@ -91,8 +91,8 @@ export const HomePageTrends = () => {
       return s;
     }
 
-    const nowTotalCases = caseTypeStatsNow.data?.reduce((acc, stat) => acc + stat.n_cases, 0) ?? 0;
-    const thenTotalCases = caseTypeStatsThen.data?.reduce((acc, stat) => acc + stat.n_cases, 0) ?? 0;
+    const nowTotalCases = caseTypeStatsQueryNow.data?.reduce((acc, stat) => acc + stat.n_cases, 0) ?? 0;
+    const thenTotalCases = caseTypeStatsQueryPast.data?.reduce((acc, stat) => acc + stat.n_cases, 0) ?? 0;
 
     s.push(
       {
@@ -106,7 +106,7 @@ export const HomePageTrends = () => {
       },
     );
 
-    const numberOfCaseSetsNow = caseSetStatsNow.data.length;
+    const numberOfCaseSetsNow = caseSetsNowQuery.data.length;
     const numberOfCaseSetsThen = caseSetsThenData.length;
     s.push(
       {
@@ -120,8 +120,8 @@ export const HomePageTrends = () => {
       },
     );
 
-    const caseTypeStatsThenByCaseTypeId = new Map<string, CaseTypeStat>(caseTypeStatsThen.data?.map(stat => [stat.case_type_id, stat]));
-    const sortedStats = caseTypeStatsNow?.data?.map<CaseTypeStatWithDiff>(stat => {
+    const caseTypeStatsThenByCaseTypeId = new Map<string, CaseTypeStat>(caseTypeStatsQueryPast.data?.map(stat => [stat.case_type_id, stat]));
+    const sortedStats = caseTypeStatsQueryNow?.data?.map<CaseTypeStatWithDiff>(stat => {
       const thenStat = caseTypeStatsThenByCaseTypeId.get(stat.case_type_id);
       const diff = stat.n_cases - (thenStat?.n_cases ?? 0);
       const diffPercentage = round((diff / (thenStat?.n_cases ?? 1)) * 100, 2);
@@ -133,7 +133,7 @@ export const HomePageTrends = () => {
 
     for (let i = 0; i < 6; i += 1) {
       if (sortedStats?.[i]) {
-        const caseType = caseTypeMap.map?.get(sortedStats?.[i].case_type_id ?? '');
+        const caseType = caseTypeMapQuery.map?.get(sortedStats?.[i].case_type_id ?? '');
         const caseTypeName = caseType?.name;
         if (caseTypeName) {
           s.push(
@@ -152,7 +152,7 @@ export const HomePageTrends = () => {
     }
 
     return s;
-  }, [caseSetStatsNow.data?.length, caseSetsThenData?.length, caseTypeMap.map, caseTypeStatsNow.data, caseTypeStatsThen.data, loadables, t]);
+  }, [caseSetsNowQuery.data?.length, caseSetsThenData?.length, caseTypeMapQuery.map, caseTypeStatsQueryNow.data, caseTypeStatsQueryPast.data, loadables, t]);
 
   const onViewMoreTrendsButtonClick = useCallback(async () => {
     await RouterManager.instance.router.navigate('/trends');

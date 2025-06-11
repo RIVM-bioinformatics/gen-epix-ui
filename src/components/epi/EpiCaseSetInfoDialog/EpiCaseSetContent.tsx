@@ -13,9 +13,9 @@ import { useTranslation } from 'react-i18next';
 import { format } from 'date-fns';
 
 import type { CaseSet } from '../../../api';
-import { useCaseSetCategoryMap } from '../../../dataHooks/useCaseSetCategories';
-import { useCaseSetStatusMap } from '../../../dataHooks/useCaseSetStatuses';
-import { useCaseTypeMap } from '../../../dataHooks/useCaseTypes';
+import { useCaseSetCategoryMapQuery } from '../../../dataHooks/useCaseSetCategoriesQuery';
+import { useCaseSetStatusMapQuery } from '../../../dataHooks/useCaseSetStatusesQuery';
+import { useCaseTypeMapQuery } from '../../../dataHooks/useCaseTypesQuery';
 import { ResponseHandler } from '../../ui/ResponseHandler';
 
 export type EpiCaseSetContentProps = {
@@ -23,12 +23,12 @@ export type EpiCaseSetContentProps = {
 } & BoxProps;
 
 export const EpiCaseSetContent = ({ caseSet, ...boxProps }: EpiCaseSetContentProps) => {
-  const caseSetCategoryMap = useCaseSetCategoryMap();
-  const caseSetStatusMap = useCaseSetStatusMap();
-  const caseTypeMap = useCaseTypeMap();
+  const caseSetCategoryMapQuery = useCaseSetCategoryMapQuery();
+  const caseSetStatusMapQuery = useCaseSetStatusMapQuery();
+  const caseTypeMapQuery = useCaseTypeMapQuery();
   const [t] = useTranslation();
 
-  const loadables = useMemo(() => [caseSetCategoryMap, caseSetStatusMap, caseTypeMap], [caseSetCategoryMap, caseSetStatusMap, caseTypeMap]);
+  const loadables = useMemo(() => [caseSetCategoryMapQuery, caseSetStatusMapQuery, caseTypeMapQuery], [caseSetCategoryMapQuery, caseSetStatusMapQuery, caseTypeMapQuery]);
   return (
     <Box {...boxProps}>
       <Typography variant={'h6'}>
@@ -70,7 +70,7 @@ export const EpiCaseSetContent = ({ caseSet, ...boxProps }: EpiCaseSetContentPro
                 {t`Status`}
               </TableCell>
               <TableCell>
-                {caseSetStatusMap.map.get(caseSet.case_set_status_id)?.name}
+                {caseSetStatusMapQuery.map.get(caseSet.case_set_status_id)?.name}
               </TableCell>
             </TableRow>
             <TableRow>
@@ -78,7 +78,7 @@ export const EpiCaseSetContent = ({ caseSet, ...boxProps }: EpiCaseSetContentPro
                 {t`Category`}
               </TableCell>
               <TableCell>
-                {caseSetCategoryMap.map.get(caseSet.case_set_category_id)?.name}
+                {caseSetCategoryMapQuery.map.get(caseSet.case_set_category_id)?.name}
               </TableCell>
             </TableRow>
             <TableRow>
@@ -86,7 +86,7 @@ export const EpiCaseSetContent = ({ caseSet, ...boxProps }: EpiCaseSetContentPro
                 {t`Type`}
               </TableCell>
               <TableCell>
-                {caseTypeMap.map.get(caseSet.case_type_id)?.name}
+                {caseTypeMapQuery.map.get(caseSet.case_type_id)?.name}
               </TableCell>
             </TableRow>
             <TableRow>

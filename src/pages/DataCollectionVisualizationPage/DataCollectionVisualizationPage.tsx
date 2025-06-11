@@ -16,8 +16,8 @@ import {
 
 import { PageContainer } from '../../components/ui/PageContainer';
 import { ResponseHandler } from '../../components/ui/ResponseHandler';
-import { useDataCollections } from '../../dataHooks/useDataCollections';
-import { useOrganizationMap } from '../../dataHooks/useOrganizations';
+import { useDataCollectionsQuery } from '../../dataHooks/useDataCollectionsQuery';
+import { useOrganizationMapQuery } from '../../dataHooks/useOrganizationsQuery';
 import { TestIdUtil } from '../../utils/TestIdUtil';
 
 
@@ -49,13 +49,13 @@ type Graph = {
 };
 
 const DataCollectionVisualizationPageContent = () => {
-  const dataCollections = useDataCollections();
-  const organizationMap = useOrganizationMap();
+  const dataCollectionsQuery = useDataCollectionsQuery();
+  const organizationMapQuery = useOrganizationMapQuery();
 
   const loadables = useMemo(() => [
-    dataCollections,
-    organizationMap,
-  ], [dataCollections, organizationMap]);
+    dataCollectionsQuery,
+    organizationMapQuery,
+  ], [dataCollectionsQuery, organizationMapQuery]);
 
   const chartRef = useRef<EChartsReact>(null);
 
@@ -117,7 +117,7 @@ const DataCollectionVisualizationPageContent = () => {
     Object.entries(numOrganizationPolicies).forEach(([organizationId, numPolicies]) => {
       organizationNodes.push({
         id: organizationId,
-        name: organizationMap.map.get(organizationId)?.name || 'Unknown',
+        name: organizationMapQuery.map.get(organizationId)?.name || 'Unknown',
         symbolSize: 15 + (numPolicies * 0.5),
         x: Math.random() * 1000,
         y: Math.random() * 1000,
@@ -126,7 +126,7 @@ const DataCollectionVisualizationPageContent = () => {
       });
     });
 
-    dataCollections.data?.forEach((dataCollection) => {
+    dataCollectionsQuery.data?.forEach((dataCollection) => {
       dataCollectionNodes.push({
         id: dataCollection.id,
         name: dataCollection.name,
@@ -143,7 +143,7 @@ const DataCollectionVisualizationPageContent = () => {
       links: [...dataCollectionsLinks, ...organizationLinks],
       nodes: [...dataCollectionNodes, ...organizationNodes],
     } satisfies Graph;
-  }, [dataCollections.data, loadables, organizationMap.map]);
+  }, [dataCollectionsQuery.data, loadables, organizationMapQuery.map]);
 
   const getOptions = useCallback(() => {
     return {

@@ -18,8 +18,8 @@ import {
   OrganizationApi,
   CommandName,
 } from '../../api';
-import { useDataCollectionOptions } from '../../dataHooks/useDataCollections';
-import { useDataCollectionSetMembers } from '../../dataHooks/useDataCollectionSetMembers';
+import { useDataCollectionOptionsQuery } from '../../dataHooks/useDataCollectionsQuery';
+import { useDataCollectionSetMembersQuery } from '../../dataHooks/useDataCollectionSetMembersQuery';
 import type { Loadable } from '../../models/dataHooks';
 import type { FormFieldDefinition } from '../../models/form';
 import { FORM_FIELD_DEFINITION_TYPE } from '../../models/form';
@@ -35,10 +35,10 @@ type FormFields = Pick<TableData, 'name' | 'description' | 'dataCollectionIds'>;
 export const DataCollectionSetsAdminPage = () => {
   const [t] = useTranslation();
 
-  const dataCollectionSetMembers = useDataCollectionSetMembers();
-  const dataCollectionOptions = useDataCollectionOptions();
+  const dataCollectionSetMembersQuery = useDataCollectionSetMembersQuery();
+  const dataCollectionOptionsQuery = useDataCollectionOptionsQuery();
 
-  const loadables = useMemo<Loadable[]>(() => [dataCollectionSetMembers, dataCollectionOptions], [dataCollectionSetMembers, dataCollectionOptions]);
+  const loadables = useMemo<Loadable[]>(() => [dataCollectionSetMembersQuery, dataCollectionOptionsQuery], [dataCollectionSetMembersQuery, dataCollectionOptionsQuery]);
 
   const fetchAll = useCallback(async (signal: AbortSignal) => {
     return (await OrganizationApi.getInstance().dataCollectionSetsGetAll({ signal }))?.data;
@@ -99,12 +99,12 @@ export const DataCollectionSetsAdminPage = () => {
         definition: FORM_FIELD_DEFINITION_TYPE.TRANSFER_LIST,
         name: 'dataCollectionIds',
         label: t`Case type columns`,
-        options: dataCollectionOptions.options,
+        options: dataCollectionOptionsQuery.options,
         multiple: true,
-        loading: dataCollectionOptions.isLoading,
+        loading: dataCollectionOptionsQuery.isLoading,
       },
     ];
-  }, [dataCollectionOptions.isLoading, dataCollectionOptions.options, t]);
+  }, [dataCollectionOptionsQuery.isLoading, dataCollectionOptionsQuery.options, t]);
 
   const tableColumns = useMemo((): TableColumn<TableData>[] => {
     return [
@@ -115,26 +115,26 @@ export const DataCollectionSetsAdminPage = () => {
         id: 'numDataCollections',
         textAlign: 'right',
         valueGetter: (item) => item.row.dataCollectionIds.length,
-        displayValueGetter: (item) => `${item.row.dataCollectionIds.length} / ${dataCollectionOptions.options.length}`,
+        displayValueGetter: (item) => `${item.row.dataCollectionIds.length} / ${dataCollectionOptionsQuery.options.length}`,
         headerName: t`Data collections`,
         widthFlex: 0.5,
         isInitiallyVisible: true,
       },
     ];
-  }, [dataCollectionOptions.options.length, t]);
+  }, [dataCollectionOptionsQuery.options.length, t]);
 
   const convertToTableData = useCallback((items: DataCollectionSet[]) => {
-    if (!items || !dataCollectionSetMembers.data) {
+    if (!items || !dataCollectionSetMembersQuery.data) {
       return [];
     }
     return items.map<TableData>((item) => {
-      const dataCollectionIds = dataCollectionSetMembers.data.filter(member => member.data_collection_set_id === item.id).map(member => member.data_collection_id);
+      const dataCollectionIds = dataCollectionSetMembersQuery.data.filter(member => member.data_collection_set_id === item.id).map(member => member.data_collection_id);
       return {
         ...item,
         dataCollectionIds,
       } satisfies TableData;
     });
-  }, [dataCollectionSetMembers.data]);
+  }, [dataCollectionSetMembersQuery.data]);
 
   return (
     <CrudPage<FormFields, DataCollectionSet, TableData>

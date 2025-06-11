@@ -22,10 +22,10 @@ import {
   CommandName,
 } from '../../api';
 import { AuthorizationManager } from '../../classes/managers/AuthorizationManager';
-import { useOrganizationAdminPolicyMap } from '../../dataHooks/useOrganizationAdminPolicies';
-import { useOrganizationOptions } from '../../dataHooks/useOrganizations';
-import { useRoleOptions } from '../../dataHooks/useRoles';
-import { useUserOptions } from '../../dataHooks/useUsers';
+import { useOrganizationAdminPolicyMapQuery } from '../../dataHooks/useOrganizationAdminPoliciesQuery';
+import { useOrganizationOptionsQuery } from '../../dataHooks/useOrganizationsQuery';
+import { useRoleOptionsQuery } from '../../dataHooks/useRolesQuery';
+import { useUserOptionsQuery } from '../../dataHooks/useUsersQuery';
 import type { Loadable } from '../../models/dataHooks';
 import type {
   OptionBase,
@@ -50,20 +50,20 @@ type FormFields = Pick<UserInvitation, 'email' | 'organization_id' | 'roles'>;
 
 export const UserInvitationsAdminPage = () => {
   const [t] = useTranslation();
-  const baseOrganizationOptions = useOrganizationOptions();
-  const roleOptions = useRoleOptions();
-  const userOptions = useUserOptions();
-  const organizationAdminPolicyMap = useOrganizationAdminPolicyMap();
+  const organizationOptionsQuery = useOrganizationOptionsQuery();
+  const roleOptionsQuery = useRoleOptionsQuery();
+  const userOptionsQuery = useUserOptionsQuery();
+  const organizationAdminPolicyMapQuery = useOrganizationAdminPolicyMapQuery();
 
   const organizationOptions = useMemo<OptionBase<string>[]>(() => {
-    if (baseOrganizationOptions.isLoading || baseOrganizationOptions.error) {
+    if (organizationOptionsQuery.isLoading || organizationOptionsQuery.error) {
       return [];
     }
-    const allowedOrganizationIds = Array.from(organizationAdminPolicyMap.map.values()).filter((policy) => policy.is_active && policy.user_id === AuthorizationManager.instance.user.id).map((policy) => policy.organization_id);
-    return baseOrganizationOptions.options.filter((option) => allowedOrganizationIds.includes(option.value));
-  }, [baseOrganizationOptions.error, baseOrganizationOptions.isLoading, baseOrganizationOptions.options, organizationAdminPolicyMap.map]);
+    const allowedOrganizationIds = Array.from(organizationAdminPolicyMapQuery.map.values()).filter((policy) => policy.is_active && policy.user_id === AuthorizationManager.instance.user.id).map((policy) => policy.organization_id);
+    return organizationOptionsQuery.options.filter((option) => allowedOrganizationIds.includes(option.value));
+  }, [organizationOptionsQuery.error, organizationOptionsQuery.isLoading, organizationOptionsQuery.options, organizationAdminPolicyMapQuery.map]);
 
-  const loadables = useMemo<Loadable[]>(() => [baseOrganizationOptions, roleOptions, userOptions, organizationAdminPolicyMap], [organizationAdminPolicyMap, baseOrganizationOptions, roleOptions, userOptions]);
+  const loadables = useMemo<Loadable[]>(() => [organizationOptionsQuery, roleOptionsQuery, userOptionsQuery, organizationAdminPolicyMapQuery], [organizationAdminPolicyMapQuery, organizationOptionsQuery, roleOptionsQuery, userOptionsQuery]);
 
   const userInvitationsAdminDetailDialogRef = useRef<UserInvitationsAdminDetailDialogRefMethods>(null);
 
@@ -125,19 +125,19 @@ export const UserInvitationsAdminPage = () => {
         name: 'organization_id',
         label: t`Organization`,
         options: organizationOptions,
-        loading: baseOrganizationOptions.isLoading,
+        loading: organizationOptionsQuery.isLoading,
       },
       {
         definition: FORM_FIELD_DEFINITION_TYPE.AUTOCOMPLETE,
         multiple: true,
         name: 'roles',
         label: t`Roles`,
-        options: roleOptions.options,
-        loading: roleOptions.isLoading,
+        options: roleOptionsQuery.options,
+        loading: roleOptionsQuery.isLoading,
       },
     );
     return fields;
-  }, [t, organizationOptions, baseOrganizationOptions.isLoading, roleOptions.options, roleOptions.isLoading]);
+  }, [t, organizationOptions, organizationOptionsQuery.isLoading, roleOptionsQuery.options, roleOptionsQuery.isLoading]);
 
   const extraActionsFactory = useCallback((params: TableRowParams<UserInvitation>) => {
     return [(
@@ -157,11 +157,11 @@ export const UserInvitationsAdminPage = () => {
     return [
       TableUtil.createTextColumn<UserInvitation>({ id: 'email', name: t`Email` }),
       TableUtil.createOptionsColumn<UserInvitation>({ id: 'organization_id', name: t`Organization`, options: organizationOptions }),
-      TableUtil.createOptionsColumn<UserInvitation>({ id: 'invited_by_user_id', name: t`Invited by user`, options: userOptions.options }),
-      TableUtil.createOptionsColumn<UserInvitation>({ id: 'roles', name: t`Roles`, options: roleOptions.options }),
+      TableUtil.createOptionsColumn<UserInvitation>({ id: 'invited_by_user_id', name: t`Invited by user`, options: userOptionsQuery.options }),
+      TableUtil.createOptionsColumn<UserInvitation>({ id: 'roles', name: t`Roles`, options: roleOptionsQuery.options }),
       TableUtil.createDateColumn<UserInvitation>({ id: 'expires_at', name: t`Expires` }),
     ];
-  }, [t, organizationOptions, userOptions.options, roleOptions.options]);
+  }, [t, organizationOptions, userOptionsQuery.options, roleOptionsQuery.options]);
 
   return (
     <>

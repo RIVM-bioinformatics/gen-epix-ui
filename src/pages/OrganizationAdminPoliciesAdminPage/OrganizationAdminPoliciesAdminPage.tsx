@@ -14,9 +14,9 @@ import {
   AbacApi,
   CommandName,
 } from '../../api';
-import { useOrganizationAdminPolicyNameFactory } from '../../dataHooks/useOrganizationAdminPolicies';
-import { useOrganizationOptions } from '../../dataHooks/useOrganizations';
-import { useUserOptions } from '../../dataHooks/useUsers';
+import { useOrganizationAdminPolicyNameFactory } from '../../dataHooks/useOrganizationAdminPoliciesQuery';
+import { useOrganizationOptionsQuery } from '../../dataHooks/useOrganizationsQuery';
+import { useUserOptionsQuery } from '../../dataHooks/useUsersQuery';
 import type { Loadable } from '../../models/dataHooks';
 import type { FormFieldDefinition } from '../../models/form';
 import { FORM_FIELD_DEFINITION_TYPE } from '../../models/form';
@@ -30,11 +30,11 @@ type FormFields = Pick<OrganizationAdminPolicy, 'is_active' | 'organization_id' 
 
 export const OrganizationAdminPoliciesAdminPage = () => {
   const [t] = useTranslation();
-  const organizationOptions = useOrganizationOptions();
-  const userOptions = useUserOptions();
+  const organizationOptionsQuery = useOrganizationOptionsQuery();
+  const userOptionsQuery = useUserOptionsQuery();
   const organizationAdminPolicyNameFactory = useOrganizationAdminPolicyNameFactory();
 
-  const loadables = useMemo<Loadable[]>(() => [organizationOptions, userOptions, organizationAdminPolicyNameFactory], [organizationOptions, userOptions, organizationAdminPolicyNameFactory]);
+  const loadables = useMemo<Loadable[]>(() => [organizationOptionsQuery, userOptionsQuery, organizationAdminPolicyNameFactory], [organizationOptionsQuery, userOptionsQuery, organizationAdminPolicyNameFactory]);
 
   const fetchAll = useCallback(async (signal: AbortSignal) => {
     return (await AbacApi.getInstance().organizationAdminPoliciesGetAll({ signal }))?.data;
@@ -70,15 +70,15 @@ export const OrganizationAdminPoliciesAdminPage = () => {
         definition: FORM_FIELD_DEFINITION_TYPE.AUTOCOMPLETE,
         name: 'organization_id',
         label: t`Organization`,
-        options: organizationOptions.options,
-        loading: organizationOptions.isLoading,
+        options: organizationOptionsQuery.options,
+        loading: organizationOptionsQuery.isLoading,
       },
       {
         definition: FORM_FIELD_DEFINITION_TYPE.AUTOCOMPLETE,
         name: 'user_id',
         label: t`User`,
-        options: userOptions.options,
-        loading: userOptions.isLoading,
+        options: userOptionsQuery.options,
+        loading: userOptionsQuery.isLoading,
       },
       {
         definition: FORM_FIELD_DEFINITION_TYPE.BOOLEAN,
@@ -86,15 +86,15 @@ export const OrganizationAdminPoliciesAdminPage = () => {
         label: t`Active`,
       },
     ];
-  }, [organizationOptions.isLoading, organizationOptions.options, t, userOptions.isLoading, userOptions.options]);
+  }, [organizationOptionsQuery.isLoading, organizationOptionsQuery.options, t, userOptionsQuery.isLoading, userOptionsQuery.options]);
 
   const tableColumns = useMemo((): TableColumn<OrganizationAdminPolicy>[] => {
     return [
-      TableUtil.createOptionsColumn<OrganizationAdminPolicy>({ id: 'organization_id', name: t`Organization`, options: organizationOptions.options }),
-      TableUtil.createOptionsColumn<OrganizationAdminPolicy>({ id: 'user_id', name: t`User`, options: userOptions.options }),
+      TableUtil.createOptionsColumn<OrganizationAdminPolicy>({ id: 'organization_id', name: t`Organization`, options: organizationOptionsQuery.options }),
+      TableUtil.createOptionsColumn<OrganizationAdminPolicy>({ id: 'user_id', name: t`User`, options: userOptionsQuery.options }),
       TableUtil.createBooleanColumn<OrganizationAdminPolicy>({ id: 'is_active', name: t`Is active` }),
     ];
-  }, [organizationOptions.options, t, userOptions.options]);
+  }, [organizationOptionsQuery.options, t, userOptionsQuery.options]);
 
   return (
     <CrudPage<FormFields, OrganizationAdminPolicy>

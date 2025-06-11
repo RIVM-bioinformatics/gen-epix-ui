@@ -12,8 +12,8 @@ import {
 
 import type { User } from '../../api';
 import { OrganizationApi } from '../../api';
-import { useOrganizationOptions } from '../../dataHooks/useOrganizations';
-import { useRoleOptions } from '../../dataHooks/useRoles';
+import { useOrganizationOptionsQuery } from '../../dataHooks/useOrganizationsQuery';
+import { useRoleOptionsQuery } from '../../dataHooks/useRolesQuery';
 import type { Loadable } from '../../models/dataHooks';
 import type { FormFieldDefinition } from '../../models/form';
 import { FORM_FIELD_DEFINITION_TYPE } from '../../models/form';
@@ -27,10 +27,10 @@ type FormFields = Pick<User, 'email' | 'is_active' | 'roles'>;
 
 export const UsersAdminPage = () => {
   const [t] = useTranslation();
-  const roleOptions = useRoleOptions();
-  const organizationOptions = useOrganizationOptions();
+  const roleOptionsQuery = useRoleOptionsQuery();
+  const organizationOptionsQuery = useOrganizationOptionsQuery();
 
-  const loadables = useMemo<Loadable[]>(() => [roleOptions, organizationOptions], [roleOptions, organizationOptions]);
+  const loadables = useMemo<Loadable[]>(() => [roleOptionsQuery, organizationOptionsQuery], [roleOptionsQuery, organizationOptionsQuery]);
 
   const fetchAll = useCallback(async (signal: AbortSignal) => {
     const users = (await OrganizationApi.getInstance().usersGetAll({ signal }))?.data;
@@ -71,8 +71,8 @@ export const UsersAdminPage = () => {
         definition: FORM_FIELD_DEFINITION_TYPE.AUTOCOMPLETE,
         name: 'roles',
         label: t`Roles`,
-        options: roleOptions.options,
-        loading: roleOptions.isLoading,
+        options: roleOptionsQuery.options,
+        loading: roleOptionsQuery.isLoading,
         multiple: true,
       },
       {
@@ -81,17 +81,17 @@ export const UsersAdminPage = () => {
         label: t`Is active`,
       },
     ];
-  }, [roleOptions.isLoading, roleOptions.options, t]);
+  }, [roleOptionsQuery.isLoading, roleOptionsQuery.options, t]);
 
   const tableColumns = useMemo((): TableColumn<User>[] => {
     return [
       TableUtil.createTextColumn<User>({ id: 'name', name: t`Name` }),
-      TableUtil.createOptionsColumn<User>({ id: 'organization_id', name: t`Organization`, options: organizationOptions.options }),
+      TableUtil.createOptionsColumn<User>({ id: 'organization_id', name: t`Organization`, options: organizationOptionsQuery.options }),
       TableUtil.createTextColumn<User>({ id: 'email', name: t`E-Mail` }),
-      TableUtil.createOptionsColumn<User>({ id: 'roles', name: t`Roles`, options: roleOptions.options }),
+      TableUtil.createOptionsColumn<User>({ id: 'roles', name: t`Roles`, options: roleOptionsQuery.options }),
       TableUtil.createBooleanColumn<User>({ id: 'is_active', name: t`Is active` }),
     ];
-  }, [organizationOptions.options, roleOptions.options, t]);
+  }, [organizationOptionsQuery.options, roleOptionsQuery.options, t]);
 
   return (
     <CrudPage<FormFields, User>

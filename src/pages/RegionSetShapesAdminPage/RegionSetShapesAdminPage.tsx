@@ -15,9 +15,9 @@ import {
   CommandName,
 } from '../../api';
 import {
-  useRegionSetOptions,
-  useRegionSetsMap,
-} from '../../dataHooks/useRegionSets';
+  useRegionSetOptionsQuery,
+  useRegionSetsMapQuery,
+} from '../../dataHooks/useRegionSetsQuery';
 import type { Loadable } from '../../models/dataHooks';
 import type { FormFieldDefinition } from '../../models/form';
 import { FORM_FIELD_DEFINITION_TYPE } from '../../models/form';
@@ -31,10 +31,10 @@ type FormFields = Pick<RegionSetShape, 'region_set_id' | 'scale' | 'geo_json'>;
 
 export const RegionSetShapesAdminPage = () => {
   const [t] = useTranslation();
-  const regionSetOptions = useRegionSetOptions();
-  const regionSetsMap = useRegionSetsMap();
+  const regionSetOptionsQuery = useRegionSetOptionsQuery();
+  const regionSetsMapQuery = useRegionSetsMapQuery();
 
-  const loadables = useMemo<Loadable[]>(() => [regionSetOptions, regionSetsMap], [regionSetOptions, regionSetsMap]);
+  const loadables = useMemo<Loadable[]>(() => [regionSetOptionsQuery, regionSetsMapQuery], [regionSetOptionsQuery, regionSetsMapQuery]);
 
 
   const fetchAll = useCallback(async (signal: AbortSignal) => {
@@ -54,9 +54,9 @@ export const RegionSetShapesAdminPage = () => {
   }, []);
 
   const getName = useCallback((item: RegionSetShape) => {
-    const regionSet = regionSetsMap.map.get(item.region_set_id);
+    const regionSet = regionSetsMapQuery.map.get(item.region_set_id);
     return `${regionSet.name} - ${item.scale}`;
-  }, [regionSetsMap.map]);
+  }, [regionSetsMapQuery.map]);
 
   const schema = useMemo(() => {
     return object<FormFields>().shape({
@@ -72,8 +72,8 @@ export const RegionSetShapesAdminPage = () => {
         definition: FORM_FIELD_DEFINITION_TYPE.AUTOCOMPLETE,
         name: 'region_set_id',
         label: t`Region set`,
-        options: regionSetOptions.options,
-        loading: regionSetOptions.isLoading,
+        options: regionSetOptionsQuery.options,
+        loading: regionSetOptionsQuery.isLoading,
       },
       {
         definition: FORM_FIELD_DEFINITION_TYPE.TEXTFIELD,
@@ -89,15 +89,15 @@ export const RegionSetShapesAdminPage = () => {
         multiline: true,
       },
     ];
-  }, [regionSetOptions.isLoading, regionSetOptions.options, t]);
+  }, [regionSetOptionsQuery.isLoading, regionSetOptionsQuery.options, t]);
 
   const tableColumns = useMemo((): TableColumn<RegionSetShape>[] => {
     return [
-      TableUtil.createOptionsColumn<RegionSetShape>({ id: 'region_set_id', name: t`Region set`, options: regionSetOptions.options }),
+      TableUtil.createOptionsColumn<RegionSetShape>({ id: 'region_set_id', name: t`Region set`, options: regionSetOptionsQuery.options }),
       TableUtil.createNumberColumn<RegionSetShape>({ id: 'scale', name: t`Scale` }),
       TableUtil.createBooleanColumn<RegionSetShape>({ id: 'geo_json', name: t`GEO JSON` }),
     ];
-  }, [regionSetOptions.options, t]);
+  }, [regionSetOptionsQuery.options, t]);
 
   return (
     <CrudPage<FormFields, RegionSetShape>

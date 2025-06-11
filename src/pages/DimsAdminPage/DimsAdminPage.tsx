@@ -16,7 +16,7 @@ import {
   DimType,
   CommandName,
 } from '../../api';
-import { useDimTypeOptions } from '../../dataHooks/useDimTypes';
+import { useDimTypeOptionsQuery } from '../../dataHooks/useDimTypesQuery';
 import type { FormFieldDefinition } from '../../models/form';
 import { FORM_FIELD_DEFINITION_TYPE } from '../../models/form';
 import { QUERY_KEY } from '../../models/query';
@@ -29,7 +29,7 @@ type FormFields = Pick<Dim, 'dim_type' | 'code' | 'label' | 'description' | 'ran
 
 export const DimsAdminPage = () => {
   const [t] = useTranslation();
-  const dimTypeOptions = useDimTypeOptions();
+  const dimTypeOptionsQuery = useDimTypeOptionsQuery();
 
   const fetchAll = useCallback(async (signal: AbortSignal) => {
     return (await CaseApi.getInstance().dimsGetAll({ signal }))?.data;
@@ -68,7 +68,7 @@ export const DimsAdminPage = () => {
         definition: FORM_FIELD_DEFINITION_TYPE.AUTOCOMPLETE,
         name: 'dim_type',
         label: t`Dimension type`,
-        options: dimTypeOptions.options,
+        options: dimTypeOptionsQuery.options,
       },
       {
         definition: FORM_FIELD_DEFINITION_TYPE.TEXTFIELD,
@@ -99,17 +99,17 @@ export const DimsAdminPage = () => {
         type: 'number',
       },
     ];
-  }, [dimTypeOptions.options, t]);
+  }, [dimTypeOptionsQuery.options, t]);
 
   const tableColumns = useMemo((): TableColumn<Dim>[] => {
     return [
       TableUtil.createTextColumn<Dim>({ id: 'code', name: t`Code` }),
-      TableUtil.createOptionsColumn<Dim>({ id: 'dim_type', name: t`Dimension type`, options: dimTypeOptions.options }),
+      TableUtil.createOptionsColumn<Dim>({ id: 'dim_type', name: t`Dimension type`, options: dimTypeOptionsQuery.options }),
       TableUtil.createTextColumn<Dim>({ id: 'label', name: t`Label` }),
       TableUtil.createNumberColumn<Dim>({ id: 'rank', name: t`Rank` }),
       TableUtil.createTextColumn<Dim>({ id: 'description', name: t`Description` }),
     ];
-  }, [dimTypeOptions.options, t]);
+  }, [dimTypeOptionsQuery.options, t]);
 
   return (
     <CrudPage<FormFields, Dim>

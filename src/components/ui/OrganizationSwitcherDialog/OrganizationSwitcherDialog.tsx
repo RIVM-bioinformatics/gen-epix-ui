@@ -26,7 +26,7 @@ import { OrganizationApi } from '../../../api';
 import { AuthorizationManager } from '../../../classes/managers/AuthorizationManager';
 import { NotificationManager } from '../../../classes/managers/NotificationManager';
 import { WindowManager } from '../../../classes/managers/WindowManager';
-import { useOrganizationOptions } from '../../../dataHooks/useOrganizations';
+import { useOrganizationOptionsQuery } from '../../../dataHooks/useOrganizationsQuery';
 import type {
   WithDialogRenderProps,
   WithDialogRefMethods,
@@ -57,12 +57,12 @@ export const OrganizationSwitcherDialog = withDialog<OrganizationSwitcherDialogP
   }: OrganizationSwitcherDialogProps,
 ): ReactElement => {
   const [t] = useTranslation();
-  const organizationOptions = useOrganizationOptions();
+  const organizationOptionsQuery = useOrganizationOptionsQuery();
   const user = AuthorizationManager.instance.user;
   const [isChanging, setIsChanging] = useState(false);
   const [newOrganizationId, setNewOrganizationId] = useState<string>(null);
 
-  const loadables = useMemo(() => [organizationOptions], [organizationOptions]);
+  const loadables = useMemo(() => [organizationOptionsQuery], [organizationOptionsQuery]);
 
   const formMethods = useForm<FormValues>({
     resolver: yupResolver(object().shape({
@@ -161,7 +161,7 @@ export const OrganizationSwitcherDialog = withDialog<OrganizationSwitcherDialogP
       {newOrganizationId && (
         <Alert severity={'success'}>
           {t('Your organization has been changed. You are now a member of "{{organization}}". You will need to refresh the page for changes to take effect.', {
-            organization: organizationOptions.options.find((option) => option.value === newOrganizationId)?.label,
+            organization: organizationOptionsQuery.options.find((option) => option.value === newOrganizationId)?.label,
           })}
         </Alert>
       )}
@@ -180,7 +180,7 @@ export const OrganizationSwitcherDialog = withDialog<OrganizationSwitcherDialogP
               <Autocomplete
                 label={t`Organization`}
                 name={'organization_id'}
-                options={organizationOptions.options}
+                options={organizationOptionsQuery.options}
               />
             </Box>
           </form>

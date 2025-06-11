@@ -9,7 +9,7 @@ import { CaseApi } from '../../api';
 import { EpiDashboard } from '../../components/epi/EpiDashboard';
 import { PageContainer } from '../../components/ui/PageContainer';
 import { ResponseHandler } from '../../components/ui/ResponseHandler';
-import { useCaseTypeMap } from '../../dataHooks/useCaseTypes';
+import { useCaseTypeMapQuery } from '../../dataHooks/useCaseTypesQuery';
 import { useItemQuery } from '../../hooks/useItemQuery';
 import { useUpdateBreadcrumb } from '../../hooks/useUpdateBreadcrumb';
 import { QUERY_KEY } from '../../models/query';
@@ -19,7 +19,7 @@ export const EventsDetailPage = () => {
   const [t] = useTranslation();
   const { caseSetId, slug } = useParams();
 
-  const caseTypesMap = useCaseTypeMap();
+  const caseTypeMapQuery = useCaseTypeMapQuery();
   const updateBreadcrumb = useUpdateBreadcrumb('Event');
 
   const { isPending, error, data: caseSet } = useItemQuery({
@@ -34,16 +34,16 @@ export const EventsDetailPage = () => {
     if (!caseSet) {
       return t`Event`;
     }
-    const caseTypeName = caseTypesMap.isLoading || !caseTypesMap.map.has(caseSet.case_type_id) ? '⌛' : caseTypesMap.map.get(caseSet.case_type_id).name;
+    const caseTypeName = caseTypeMapQuery.isLoading || !caseTypeMapQuery.map.has(caseSet.case_type_id) ? '⌛' : caseTypeMapQuery.map.get(caseSet.case_type_id).name;
 
     return `${caseSet.name} (${caseTypeName})`;
-  }, [caseSet, caseTypesMap.isLoading, caseTypesMap.map, t]);
+  }, [caseSet, caseTypeMapQuery.isLoading, caseTypeMapQuery.map, t]);
 
   useEffect(() => {
     updateBreadcrumb(title);
   }, [title, updateBreadcrumb]);
 
-  const loadables = useMemo(() => [caseTypesMap], [caseTypesMap]);
+  const loadables = useMemo(() => [caseTypeMapQuery], [caseTypeMapQuery]);
 
   return (
     <PageContainer
