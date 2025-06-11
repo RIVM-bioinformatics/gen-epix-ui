@@ -258,12 +258,14 @@ export const Table = <TRowData, >({
     return (
       <Checkbox
         checked={selectedIds.includes(id)}
-        inputProps={{
-          'aria-label': t`Select row`,
-        }}
         key={id}
         name={idSelectorCallback(cell.row)}
         onChange={onRowCheckBoxChange}
+        slotProps={{
+          input: {
+            'aria-label': t`Select row`,
+          },
+        }}
         sx={{
           padding: 0,
           marginTop: '-2px',

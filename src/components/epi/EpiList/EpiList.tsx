@@ -75,10 +75,9 @@ export const EpiList = ({ linkedScrollSubject, onLink, caseSet }: EpiListProps) 
   const tableRef = useRef<TableRef>(null);
 
   const epiStore = useContext(EpiStoreContext);
-  const baseData = useStore(epiStore, useShallow((state) => state.baseData));
   const completeCaseType = useStore(epiStore, useShallow((state) => state.completeCaseType));
   const sortedData = useStore(epiStore, useShallow((state) => state.sortedData));
-  const setSorting = useStore(epiStore, (state) => state.setSorting);
+  const setSorting = useStore(epiStore, useShallow((state) => state.setSorting));
   const selectedRowCaseIds = useStore(epiStore, useShallow((state) => state.selectedIds));
   const selectRows = useStore(epiStore, useShallow((state) => state.setSelectedIds));
   const stratification = useStore(epiStore, useShallow((state) => state.stratification));
@@ -347,13 +346,17 @@ export const EpiList = ({ linkedScrollSubject, onLink, caseSet }: EpiListProps) 
   }, [highlightingManager, rowHighlightingSubject]);
 
   const getSelectedRows = useCallback(() => {
-    return baseData.filter(row => selectedRowCaseIds.includes(row.id));
-  }, [baseData, selectedRowCaseIds]);
+    return sortedData.filter(row => selectedRowCaseIds.includes(row.id));
+  }, [sortedData, selectedRowCaseIds]);
 
   const createFilterFromSelectedRowCaseIds = useCallback(async () => {
     await setFilterValue('selected', selectedRowCaseIds);
     selectRows([]);
   }, [selectRows, selectedRowCaseIds, setFilterValue]);
+
+  const getVisibleColumnIds = useCallback(() => {
+    return epiStore.getState().columnSettings.filter(x => x.isVisible).map(x => x.id);
+  }, [epiStore]);
 
   const columnsMenuItem = UseColumnsMenu({ hasCellData });
 
@@ -435,23 +438,23 @@ export const EpiList = ({ linkedScrollSubject, onLink, caseSet }: EpiListProps) 
         label: t`Download`,
         items: [
           {
-            label: t`All rows`,
-            disabled: !baseData?.length,
+            label: t`Rows`,
+            disabled: !sortedData?.length,
             items: [
               {
                 label: t`Download as Excel`,
                 leftIcon: <DownloadIcon />,
-                callback: () => EpiListUtil.downloadAsExcel(baseData, completeCaseType, t`Line list`),
+                callback: () => EpiListUtil.downloadAsExcel(sortedData, getVisibleColumnIds(), completeCaseType, t),
               },
               {
                 label: t`Download as CSV`,
                 leftIcon: <DownloadIcon />,
-                callback: () => EpiListUtil.downloadAsCsv(baseData, completeCaseType, t`Line list`),
+                callback: () => EpiListUtil.downloadAsCsv(sortedData, getVisibleColumnIds(), completeCaseType, t),
               },
               {
                 label: t`Download sequences`,
                 leftIcon: <DownloadIcon />,
-                callback: () => EpiEventBusManager.instance.emit('openSequenceDownloadDialog', { cases: baseData }),
+                callback: () => EpiEventBusManager.instance.emit('openSequenceDownloadDialog', { cases: sortedData }),
               },
               {
                 label: t`Download allele profiles`,
@@ -469,17 +472,17 @@ export const EpiList = ({ linkedScrollSubject, onLink, caseSet }: EpiListProps) 
               {
                 label: t`Download as Excel`,
                 leftIcon: <DownloadIcon />,
-                callback: () => EpiListUtil.downloadAsExcel(getSelectedRows(), completeCaseType, t`Line list`),
+                callback: () => EpiListUtil.downloadAsExcel(getSelectedRows(), getVisibleColumnIds(), completeCaseType, t),
               },
               {
                 label: t`Download as CSV`,
                 leftIcon: <DownloadIcon />,
-                callback: () => EpiListUtil.downloadAsCsv(getSelectedRows(), completeCaseType, t`Line list`),
+                callback: () => EpiListUtil.downloadAsCsv(getSelectedRows(), getVisibleColumnIds(), completeCaseType, t),
               },
               {
                 label: t`Download sequences`,
                 leftIcon: <DownloadIcon />,
-                callback: () => EpiEventBusManager.instance.emit('openSequenceDownloadDialog', { cases: baseData.filter(c => selectedRowCaseIds.includes(c.id)) }),
+                callback: () => EpiEventBusManager.instance.emit('openSequenceDownloadDialog', { cases: sortedData.filter(c => selectedRowCaseIds.includes(c.id)) }),
               },
               {
                 label: t`Download allele profiles`,
@@ -494,7 +497,7 @@ export const EpiList = ({ linkedScrollSubject, onLink, caseSet }: EpiListProps) 
     ];
 
     return menus;
-  }, [columnsMenuItem, t, selectedRowCaseIds, createFilterFromSelectedRowCaseIds, baseData, completeCaseType, getSelectedRows, caseSet]);
+  }, [caseSet, t, selectedRowCaseIds, createFilterFromSelectedRowCaseIds, columnsMenuItem, sortedData, getSelectedRows, completeCaseType, getVisibleColumnIds]);
 
   const onLinkButtonClick = useCallback(() => {
     const perform = async () => {
