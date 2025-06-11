@@ -10,3 +10,8 @@ export type TreeNode = {
   size?: number;
   address?: string;
 };
+
+export type TreePathProperties = {
+  subTreeLeaveNames: string[];
+  treeNode?: TreeNode;
+};

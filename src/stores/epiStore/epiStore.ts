@@ -540,8 +540,8 @@ export const createEpiStore = (kwArgs: CreateEpiStoreKwArgs) => {
               const { tree } = get();
               let filteredCases: Case[];
               if (!treeFilter.isInitialFilterValue()) {
-                const { subTreeNames } = tree;
-                filteredCases = data.filter(c => subTreeNames.includes(c.id));
+                const { subTreeLeaveNames } = tree;
+                filteredCases = data.filter(c => subTreeLeaveNames.includes(c.id));
               } else {
                 filteredCases = data;
               }

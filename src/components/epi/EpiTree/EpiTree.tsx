@@ -55,7 +55,7 @@ import type {
 } from '../../../models/epi';
 import { EPI_ZONE } from '../../../models/epi';
 import type { MenuItemData } from '../../../models/nestedMenu';
-import type { TreeNode } from '../../../models/tree';
+import type { TreePathProperties } from '../../../models/tree';
 import { EpiStoreContext } from '../../../stores/epiStore';
 import { userProfileStore } from '../../../stores/userProfileStore';
 import { SELECTION_FILTER_GROUP } from '../../../utils/EpiCaseTypeUtil';
@@ -358,21 +358,47 @@ export const EpiTree = ({ linkedScrollSubject, ref }: EpiTreeProps) => {
     await treeFilterStepOut();
   }, [treeFilterStepOut]);
 
-  const getTreeNodeFromCanvas = useCallback((canvas: HTMLCanvasElement, event: MouseEvent): TreeNode => {
-    if (!treeAssembly?.pathToTreeNodeMap?.size) {
-      return null;
-    }
+  const getPathPropertiesFromCanvas = useCallback((canvas: HTMLCanvasElement, event: MouseEvent): TreePathProperties => {
     const ctx = canvas.getContext('2d');
-
     const rect = (event.target as HTMLCanvasElement).getBoundingClientRect();
     const canvasX = (event.clientX - rect.left) * devicePixelRatio;
     const canvasY = (event.clientY - rect.top) * devicePixelRatio;
 
-    for (const path of treeAssembly.pathToTreeNodeMap.keys()) {
+    for (const path of treeAssembly?.nodePathPropertiesMap?.keys() ?? []) {
       if (ctx.isPointInPath(path, canvasX, canvasY)) {
-        return treeAssembly.pathToTreeNodeMap.get(path);
+        return treeAssembly.nodePathPropertiesMap.get(path);
       }
     }
+
+    // Allow for a 1px vertical margin around the mouse position to allow for easier clicking
+    const canvasYs = [
+      ((event.clientY - 1) - rect.top) * devicePixelRatio,
+      canvasY,
+      ((event.clientY + 1) - rect.top) * devicePixelRatio,
+    ];
+
+    for (const path of treeAssembly?.horizontalLinePathPropertiesMap?.keys() ?? []) {
+      for (const y of canvasYs) {
+        if (ctx.isPointInStroke(path, canvasX, y)) {
+          return treeAssembly.horizontalLinePathPropertiesMap.get(path);
+        }
+      }
+    }
+
+    // Allow for a 1px horizontal margin around the mouse position to allow for easier clicking
+    const canvasXs = [
+      ((event.clientX - 1) - rect.left) * devicePixelRatio,
+      canvasX,
+      ((event.clientX + 1) - rect.left) * devicePixelRatio,
+    ];
+    for (const path of treeAssembly?.verticalLinePathPropertiesMap?.keys() ?? []) {
+      for (const x of canvasXs) {
+        if (ctx.isPointInStroke(path, x, canvasY)) {
+          return treeAssembly.verticalLinePathPropertiesMap.get(path);
+        }
+      }
+    }
+
   }, [treeAssembly, devicePixelRatio]);
 
   useEffect(() => {
@@ -447,11 +473,11 @@ export const EpiTree = ({ linkedScrollSubject, ref }: EpiTreeProps) => {
         return;
       }
 
-      const treeNode = getTreeNodeFromCanvas(treeCanvas, event);
-      if (treeNode) {
+      const pathProperties = getPathPropertiesFromCanvas(treeCanvas, event);
+      if (pathProperties) {
         treeCanvas.style.cursor = 'pointer';
         internalHighlightingSubject.next({
-          caseIds: [...treeNode.subTreeNames, treeNode.name],
+          caseIds: pathProperties.subTreeLeaveNames,
           origin: EPI_ZONE.TREE,
         });
       } else {
@@ -471,8 +497,9 @@ export const EpiTree = ({ linkedScrollSubject, ref }: EpiTreeProps) => {
       followMouse = false;
 
       // Handle the click when the user clicked a path in the canvas
-      const treeNode = getTreeNodeFromCanvas(treeCanvas, event);
-      if (treeNode) {
+      const pathProperties = getPathPropertiesFromCanvas(treeCanvas, event);
+      if (pathProperties?.treeNode) {
+        const { treeNode } = pathProperties;
         setEpiContextMenuConfig({
           position: {
             left: event.clientX,
@@ -490,6 +517,15 @@ export const EpiTree = ({ linkedScrollSubject, ref }: EpiTreeProps) => {
         if (treeNode.name && !treeNode.subTreeNames.length) {
           setExtraLeafInfoId(treeNode.name);
         }
+      } else if (pathProperties?.subTreeLeaveNames?.length) {
+        setEpiContextMenuConfig({
+          position: {
+            left: event.clientX,
+            top: event.clientY,
+          },
+          caseIds: pathProperties.subTreeLeaveNames,
+          mouseEvent: event,
+        });
       }
     };
 
@@ -549,7 +585,7 @@ export const EpiTree = ({ linkedScrollSubject, ref }: EpiTreeProps) => {
     };
   // note: we don't want to re-run this effect when the treeSubject.data changes; it would disconnect the event handles and prevent the user from interacting with the tree
   // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [treeCanvasHeight, treeCanvas, getTreeNodeFromCanvas, internalHighlightingSubject, updateScrollPosition, scrollContainerRef, treeHeight, zoomLevel]);
+  }, [treeCanvasHeight, treeCanvas, getPathPropertiesFromCanvas, internalHighlightingSubject, updateScrollPosition, scrollContainerRef, treeHeight, zoomLevel]);
 
   // Setup header canvas
   useEffect(() => {

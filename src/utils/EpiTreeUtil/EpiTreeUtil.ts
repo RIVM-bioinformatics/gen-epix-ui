@@ -16,21 +16,26 @@ import type {
   Stratification,
   TreeConfiguration,
 } from '../../models/epi';
-import type { TreeNode } from '../../models/tree';
+import type {
+  TreeNode,
+  TreePathProperties,
+} from '../../models/tree';
 
 type SanitizeResult = { node: TreeNode; nodesToMove: TreeNode[] };
 
-type PathToTreeNodeMap = Map<Path2D, TreeNode>;
+type PathPropertiesMap = Map<Path2D, TreePathProperties>;
 
 export type TreeAssembly = {
-  ancestorTreeLines: Array<{ nodeNames: string[]; shape: Path2D }>;
+  verticalAncestorTreeLines: Array<{ nodeNames: string[]; shape: Path2D }>;
+  horizontalAncestorTreeLines: Array<{ nodeNames: string[]; shape: Path2D }>;
   ancestorNodes: Array<{ nodeNames: string[]; shape: Path2D }>;
-  ancestorClickAreaNodes: Array<{ nodeNames: string[]; shape: Path2D }>;
   leafNodes: Array<{ nodeName: string; shape: Path2D }>;
   leafTreeLines: Array<{ nodeName: string; shape: Path2D }>;
   supportLines: Array<{ nodeName: string; fromX: number; toX: number; y: number }>;
   distanceTexts: Array<{ nodeNames: string[]; x: number; y: number; text: string }>;
-  pathToTreeNodeMap: PathToTreeNodeMap;
+  nodePathPropertiesMap: PathPropertiesMap;
+  horizontalLinePathPropertiesMap: PathPropertiesMap;
+  verticalLinePathPropertiesMap: PathPropertiesMap;
 };
 
 type TreeAssemblyContext = {
@@ -232,14 +237,16 @@ export class EpiTreeUtil {
   public static assembleTree(rootNode: TreeNode, treeCanvasWidth: number, pixelToGeneticDistanceRatio: number): TreeAssembly {
     let leafIndex = 0;
     const treeAssembly: TreeAssembly = {
-      ancestorTreeLines: [],
+      verticalAncestorTreeLines: [],
+      horizontalAncestorTreeLines: [],
       ancestorNodes: [],
-      ancestorClickAreaNodes: [],
       leafNodes: [],
       leafTreeLines: [],
       supportLines: [],
       distanceTexts: [],
-      pathToTreeNodeMap: new Map(),
+      nodePathPropertiesMap: new Map(),
+      horizontalLinePathPropertiesMap: new Map(),
+      verticalLinePathPropertiesMap: new Map(),
     };
 
     const treeAssemblyContext: TreeAssemblyContext = {
@@ -286,6 +293,9 @@ export class EpiTreeUtil {
     horizontalLineAccordingToDistancePath.lineTo(leafXPxEnd, leafYPx);
     horizontalLineAccordingToDistancePath.closePath();
     treeAssemblyContext.treeAssembly.leafTreeLines.push({ nodeName: node.name, shape: horizontalLineAccordingToDistancePath });
+    treeAssemblyContext.treeAssembly.horizontalLinePathPropertiesMap.set(horizontalLineAccordingToDistancePath, {
+      subTreeLeaveNames: node.subTreeLeaveNames,
+    });
 
     // add distance text
     if (label) {
@@ -299,7 +309,10 @@ export class EpiTreeUtil {
     circlePath.arc(leafXPxEnd, leafYPx, ConfigManager.instance.config.epiTree.LEAF_DOT_RADIUS, 0, 2 * Math.PI, false);
     circlePath.closePath();
 
-    treeAssemblyContext.treeAssembly.pathToTreeNodeMap.set(circlePath, node);
+    treeAssemblyContext.treeAssembly.nodePathPropertiesMap.set(circlePath, {
+      subTreeLeaveNames: node.subTreeLeaveNames,
+      treeNode: node,
+    });
     treeAssemblyContext.treeAssembly.leafNodes.push({ nodeName: node.name, shape: circlePath });
 
     return {
@@ -334,7 +347,10 @@ export class EpiTreeUtil {
         chunkPath.moveTo(childRenderResult.x, childRenderResult.y);
         chunkPath.lineTo(childRenderResult.x, lineToYPx);
         chunkPath.closePath();
-        treeAssemblyContext.treeAssembly.ancestorTreeLines.push({ nodeNames: [...chunkCaseIds], shape: chunkPath });
+        treeAssemblyContext.treeAssembly.verticalAncestorTreeLines.push({ nodeNames: [...chunkCaseIds], shape: chunkPath });
+        treeAssemblyContext.treeAssembly.verticalLinePathPropertiesMap.set(chunkPath, {
+          subTreeLeaveNames: chunkCaseIds,
+        });
       });
     });
 
@@ -343,7 +359,10 @@ export class EpiTreeUtil {
     horizontalLineAccordingToDistancePath.moveTo(ancestorXPxStart, ancestorYPx);
     horizontalLineAccordingToDistancePath.lineTo(ancestorXPxEnd, ancestorYPx);
     horizontalLineAccordingToDistancePath.closePath();
-    treeAssemblyContext.treeAssembly.ancestorTreeLines.push({ nodeNames: [node.name, ...caseIds], shape: horizontalLineAccordingToDistancePath });
+    treeAssemblyContext.treeAssembly.horizontalAncestorTreeLines.push({ nodeNames: [node.name, ...caseIds], shape: horizontalLineAccordingToDistancePath });
+    treeAssemblyContext.treeAssembly.horizontalLinePathPropertiesMap.set(horizontalLineAccordingToDistancePath, {
+      subTreeLeaveNames: caseIds,
+    });
 
     // add distance text
     if (label) {
@@ -355,13 +374,10 @@ export class EpiTreeUtil {
       const circlePath = new Path2D();
       circlePath.arc(ancestorXPxEnd, ancestorYPx, ConfigManager.instance.config.epiTree.ANCESTOR_DOT_RADIUS, 0, 2 * Math.PI, false);
       treeAssemblyContext.treeAssembly.ancestorNodes.push({ nodeNames: [node.name, ...caseIds], shape: circlePath });
-
-      // add circle at beginning of the line representing the node itself (click area)
-      const circleClickPath = new Path2D();
-      circleClickPath.arc(ancestorXPxEnd, ancestorYPx, ConfigManager.instance.config.epiTree.ANCESTOR_DOT_RADIUS_HOVER_ZONE, 0, 2 * Math.PI, false);
-      circleClickPath.closePath();
-      treeAssemblyContext.treeAssembly.pathToTreeNodeMap.set(circleClickPath, node);
-      treeAssemblyContext.treeAssembly.ancestorClickAreaNodes.push({ nodeNames: [node.name, ...caseIds], shape: circleClickPath });
+      treeAssemblyContext.treeAssembly.nodePathPropertiesMap.set(circlePath, {
+        subTreeLeaveNames: node.subTreeLeaveNames,
+        treeNode: node,
+      });
     }
 
     return {
@@ -413,7 +429,13 @@ export class EpiTreeUtil {
     ctx.font = theme.epi.tree.font;
     ctx.lineWidth = 1;
 
-    treeAssembly.ancestorTreeLines.forEach(({ shape, nodeNames }) => {
+    treeAssembly.verticalAncestorTreeLines.forEach(({ shape, nodeNames }) => {
+      const isHighlighted = intersection(nodeNames, highlightedNodeNames).length > 0;
+      const opacity = !highlightedNodeNames.length || isHighlighted ? 1 : 0.2;
+      ctx.strokeStyle = ColorUtil.hexToRgba(REGULAR_FILL_COLOR, opacity);
+      ctx.stroke(shape);
+    });
+    treeAssembly.horizontalAncestorTreeLines.forEach(({ shape, nodeNames }) => {
       const isHighlighted = intersection(nodeNames, highlightedNodeNames).length > 0;
       const opacity = !highlightedNodeNames.length || isHighlighted ? 1 : 0.2;
       ctx.strokeStyle = ColorUtil.hexToRgba(REGULAR_FILL_COLOR, opacity);
@@ -450,11 +472,6 @@ export class EpiTreeUtil {
         }
       });
     }
-
-    treeAssembly.ancestorClickAreaNodes.forEach(({ shape }) => {
-      ctx.fillStyle = ColorUtil.hexToRgba('#fff', 0);
-      ctx.fill(shape);
-    });
 
     treeAssembly.ancestorNodes.forEach(({ shape, nodeNames }) => {
       const isHighlighted = intersection(nodeNames, highlightedNodeNames).length > 0;

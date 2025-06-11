@@ -71,7 +71,6 @@ export interface Config {
     SCALE_INCREMENTS: number[];
     LEAF_DOT_RADIUS: number;
     ANCESTOR_DOT_RADIUS: number;
-    ANCESTOR_DOT_RADIUS_HOVER_ZONE: number;
     MINIMUM_DISTANCE_PERCENTAGE_TO_SHOW_LABEL: number;
     REGULAR_FILL_COLOR_SUPPORT_LINE: string;
     HEADER_HEIGHT: number;
