@@ -197,7 +197,6 @@ export const EpiCreateEventDialog = withDialog<EpiCreateEventDialogProps, EpiCre
         label: t`Create in data collection`,
         options: createInDataCollectionOptions,
         loading: dataCollectionOptionsQuery.isLoading || isCompleteCaseTypeLoading,
-        disabled: createInDataCollectionOptions.length === 0,
       },
       {
         definition: FORM_FIELD_DEFINITION_TYPE.AUTOCOMPLETE,
@@ -205,7 +204,6 @@ export const EpiCreateEventDialog = withDialog<EpiCreateEventDialogProps, EpiCre
         label: t`Share in data collections`,
         options: shareInDataCollectionOptions,
         loading: dataCollectionOptionsQuery.isLoading || isCompleteCaseTypeLoading,
-        disabled: shareInDataCollectionOptions.length === 0,
         multiple: true,
       },
       {
