@@ -3,6 +3,7 @@ import {
   useQuery,
   type UseQueryResult,
 } from '@tanstack/react-query';
+import { format } from 'date-fns';
 
 import type { CaseSet } from '../../api';
 import { CaseApi } from '../../api';
@@ -37,7 +38,7 @@ export const useCaseSetOptionsQuery = (): UseOptions<string> => {
   const response = useCaseSetsQuery();
 
   return useMemo(() => {
-    return DataUtil.createUseOptionsDataHook<CaseSet>(response, item => item.id, (item: CaseSet) => item.name);
+    return DataUtil.createUseOptionsDataHook<CaseSet>(response, item => item.id, (item: CaseSet) => `${item.name} (${format(item.created_at, 'yyyy-MM-dd')})`);
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [DataUtil.createMemorizationDependency(response)]);
 };
