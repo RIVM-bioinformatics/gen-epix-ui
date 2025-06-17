@@ -1,40 +1,16 @@
 import { useTranslation } from 'react-i18next';
 import { Box } from '@mui/material';
-import {
-  subMonths,
-  type Locale,
-} from 'date-fns';
-import {
-  enUS,
-  sv,
-} from 'date-fns/locale';
-import { useMemo } from 'react';
-import {
-  DatePicker,
-  LocalizationProvider,
-} from '@mui/x-date-pickers';
-import { AdapterDateFns } from '@mui/x-date-pickers/AdapterDateFns';
 
+import { ConfigManager } from '../../classes/managers/ConfigManager';
 import { HomePageTrends } from '../../components/ui/HomePageTrends';
 import { PageContainer } from '../../components/ui/PageContainer';
 import { TestIdUtil } from '../../utils/TestIdUtil';
 
 
 const HomeContent = () => {
-  const [t] = useTranslation();
-  const customLocale = useMemo<Locale>(() => {
-    /**
-     * Use everything from enUS, but format dates the Swedish way (ISO 8601)
-     */
-    return {
-      ...enUS,
-      formatLong: sv.formatLong,
-    };
-  }, []);
 
-  const defaultValue = useMemo(() => {
-    return subMonths(new Date(), 3);
-  }, []);
+  const { HomePageIntroduction } = ConfigManager.instance.config;
+
 
   return (
     <Box
@@ -52,15 +28,7 @@ const HomeContent = () => {
           gridTemplateColumns: '1fr 1fr',
         }}
       >
-        <LocalizationProvider
-          adapterLocale={customLocale}
-          dateAdapter={AdapterDateFns}
-        >
-          <DatePicker
-            defaultValue={defaultValue}
-            label={t`From`}
-          />
-        </LocalizationProvider>
+        <HomePageIntroduction />
       </Box>
       <HomePageTrends />
     </Box>
