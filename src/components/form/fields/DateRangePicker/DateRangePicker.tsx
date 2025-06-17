@@ -36,6 +36,7 @@ import type { Locale } from 'date-fns';
 import {
   isValid,
   parseISO,
+  set,
   subMonths,
 } from 'date-fns';
 import {
@@ -78,10 +79,13 @@ export const DateRangePicker = <TFieldValues extends FieldValues, TName extends 
   const id = useId();
   const [t] = useTranslation();
 
-  const defaultFromDate = useMemo(() => {
-    const now = new Date();
-    return subMonths(now, 3);
+  const referenceDate = useMemo(() => {
+    return set(new Date(), { hours: 0, minutes: 0, seconds: 0, milliseconds: 0 });
   }, []);
+
+  const defaultFromDate = useMemo(() => {
+    return subMonths(referenceDate, 3);
+  }, [referenceDate]);
 
   const customLocale = useMemo<Locale>(() => {
     /**
@@ -94,14 +98,10 @@ export const DateRangePicker = <TFieldValues extends FieldValues, TName extends 
   }, []);
 
   const outerValue = useWatch({ control, name }) as [Date, Date];
-
-  console.log('DateRangePicker outerValue', outerValue);
-
   const handleChange = useCallback((onChange: (value: [Date, Date]) => void, value: [Date, Date]) => {
     if (isEqual(value, outerValue)) {
       return;
     }
-    console.log('DateRangePicker handleChange', value);
     onChange(value);
     if (onChangeProp) {
       onChangeProp(value);
@@ -119,12 +119,10 @@ export const DateRangePicker = <TFieldValues extends FieldValues, TName extends 
     const rightValue = (value as [Date, Date])[1];
 
     const onLeftValueChange = (newLeftValue: Date) => {
-      console.log('DateRangePicker onLeftValueChange', newLeftValue, rightValue);
       handleChange(onChange, [newLeftValue, rightValue]);
     };
 
     const onRightValueChange = (newRightValue: Date) => {
-      console.log('DateRangePicker onRightValueChange', leftValue, newRightValue);
       handleChange(onChange, [leftValue, newRightValue]);
     };
 
@@ -215,9 +213,10 @@ export const DateRangePicker = <TFieldValues extends FieldValues, TName extends 
           }}
           >
             <MuiDatePicker
+              defaultValue={defaultFromDate}
               disableFuture
               disabled={disabled || loading}
-              enableAccessibleFieldDOMStructure={false}
+              // enableAccessibleFieldDOMStructure={false}
               inputRef={leftInputRef}
               label={t`From`}
               loading={loading}
@@ -225,7 +224,7 @@ export const DateRangePicker = <TFieldValues extends FieldValues, TName extends 
               minDate={minDate}
               // eslint-disable-next-line react/jsx-no-bind
               onAccept={onLeftValueChange}
-              referenceDate={defaultFromDate}
+              referenceDate={referenceDate}
               slotProps={{
                 textField: {
                   className: classNames({ 'Mui-warning': hasWarning }),
@@ -241,6 +240,7 @@ export const DateRangePicker = <TFieldValues extends FieldValues, TName extends 
               value={leftValue ?? null}
             />
             <MuiDatePicker
+              defaultValue={maxDate}
               disableFuture
               disabled={disabled || loading}
               enableAccessibleFieldDOMStructure={false}
@@ -251,7 +251,7 @@ export const DateRangePicker = <TFieldValues extends FieldValues, TName extends 
               minDate={leftValue ? new Date(Math.max.apply(null, [minDate, leftValue] as unknown as number[])) : minDate}
               // eslint-disable-next-line react/jsx-no-bind
               onAccept={onRightValueChange}
-              referenceDate={maxDate}
+              referenceDate={referenceDate}
               slotProps={{
                 textField: {
                   className: classNames({ 'Mui-warning': hasWarning }),
@@ -278,7 +278,7 @@ export const DateRangePicker = <TFieldValues extends FieldValues, TName extends 
         </FormHelperText>
       </FormControl>
     );
-  }, [disabled, errorMessage, hasError, hasWarning, id, label, loading, maxDate, minDate, name, handleChange, required, t, theme, warningMessage, defaultFromDate, customLocale]);
+  }, [hasError, label, name, disabled, loading, id, required, customLocale, theme, defaultFromDate, t, maxDate, minDate, referenceDate, hasWarning, errorMessage, warningMessage, handleChange]);
 
   return (
     <Controller

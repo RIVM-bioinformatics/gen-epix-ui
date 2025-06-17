@@ -9,6 +9,7 @@ import type {
   CompleteCaseType,
   CaseTypeCol,
 } from '../api';
+import type { DATE_FORMAT } from '../data/date';
 
 import type { CaseTypeRowValue } from './epi';
 import type { OptionBase } from './form';
@@ -92,7 +93,7 @@ export interface TableColumnNumber<TRowData> extends TableColumnBase<TRowData, n
 
 export interface TableColumnDate<TRowData> extends TableColumnBase<TRowData, string> {
   type: 'date';
-  format: string;
+  format: typeof DATE_FORMAT[keyof typeof DATE_FORMAT];
   comparatorFactory?: (params: GetTableCellRowComparatorProps<TableColumnDate<TRowData>>) => (a: TRowData, b: TRowData) => number;
 }
 

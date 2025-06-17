@@ -43,6 +43,7 @@ import type {
   TableColumnDimension,
 } from '../../models/table';
 import { FIXED_COLUMN_ID } from '../../models/table';
+import { DATE_FORMAT } from '../../data/date';
 
 export class TableUtil {
   public static createFiltersFromColumns<TData>(columns: TableColumn<TData>[], baseRows: TData[]): Filters {
@@ -115,6 +116,7 @@ export class TableUtil {
           dateParser: parseISO,
           minDate,
           maxDate,
+          dateFormat: column.format ?? DATE_FORMAT.DATE,
         }));
       }
     });
@@ -366,13 +368,13 @@ export class TableUtil {
     };
   }
 
-  public static createDateColumn<TData>(kwArgs: { id?: keyof TData; name: string; filterLabel?: string; flex?: number; withTime?: boolean }): TableColumnDate<TData> {
+  public static createDateColumn<TData>(kwArgs: { id?: keyof TData; name: string; filterLabel?: string; flex?: number; dateFormat?: typeof DATE_FORMAT[keyof typeof DATE_FORMAT] }): TableColumnDate<TData> {
     return {
       id: kwArgs.id as string,
       headerName: kwArgs.name,
       type: 'date',
       widthFlex: kwArgs.flex ?? 0.5,
-      format: kwArgs.withTime ? 'yyyy-MM-dd HH:mm' : 'yyyy-MM-dd',
+      format: kwArgs.dateFormat ?? DATE_FORMAT.DATE,
       filterLabel: kwArgs.filterLabel,
       comparatorFactory: TableUtil.createDateCellRowComperator,
       isInitiallyVisible: true,

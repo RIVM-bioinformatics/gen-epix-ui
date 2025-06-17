@@ -21,6 +21,7 @@ import type {
   CaseTypeCol,
 } from '../../api';
 import { ColType } from '../../api';
+import { DATE_FORMAT } from '../../data/date';
 
 interface Item {
   date: Date;
@@ -131,15 +132,15 @@ export class EpiCurveUtil {
   public static getXAxisLabel(colType: ColType, value: Date): string {
     switch (colType) {
       case ColType.TIME_DAY:
-        return format(value, 'yyyy-MM-dd');
+        return format(value, DATE_FORMAT.DATE);
       case ColType.TIME_WEEK:
-        return format(value, 'YYYY-\'W\'ww', { useAdditionalWeekYearTokens: true });
+        return format(value, DATE_FORMAT.YEAR_WEEK, { useAdditionalWeekYearTokens: true });
       case ColType.TIME_MONTH:
-        return format(value, 'yyyy-MM');
+        return format(value, DATE_FORMAT.YEAR_MONTH);
       case ColType.TIME_QUARTER:
-        return format(value, 'yyyy-QQQ');
+        return format(value, DATE_FORMAT.YEAR_QUARTER);
       case ColType.TIME_YEAR:
-        return format(value, 'yyyy');
+        return format(value, DATE_FORMAT.YEAR);
       default:
         throw Error(`unknown col_type ${colType}`);
     }
