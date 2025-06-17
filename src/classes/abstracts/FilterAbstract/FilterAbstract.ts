@@ -38,4 +38,17 @@ export abstract class FilterAbstract<TFilterValue> {
     const usedValue = value !== undefined ? value : this.filterValue;
     return JSON.stringify(usedValue) === JSON.stringify(this.initialFilterValue);
   }
+
+  public fromURLSearchParameterValue(searchParameterValue: string): TFilterValue {
+    try {
+      return JSON.parse(searchParameterValue) as TFilterValue;
+    } catch (error) {
+      console.error('Error parsing search parameter value:', error);
+      return null;
+    }
+  }
+
+  public toURLSearchParameterValue(): string {
+    return JSON.stringify(this.filterValue);
+  }
 }

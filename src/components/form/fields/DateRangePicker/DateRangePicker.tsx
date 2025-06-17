@@ -95,10 +95,13 @@ export const DateRangePicker = <TFieldValues extends FieldValues, TName extends 
 
   const outerValue = useWatch({ control, name }) as [Date, Date];
 
+  console.log('DateRangePicker outerValue', outerValue);
+
   const handleChange = useCallback((onChange: (value: [Date, Date]) => void, value: [Date, Date]) => {
     if (isEqual(value, outerValue)) {
       return;
     }
+    console.log('DateRangePicker handleChange', value);
     onChange(value);
     if (onChangeProp) {
       onChangeProp(value);
@@ -116,10 +119,12 @@ export const DateRangePicker = <TFieldValues extends FieldValues, TName extends 
     const rightValue = (value as [Date, Date])[1];
 
     const onLeftValueChange = (newLeftValue: Date) => {
+      console.log('DateRangePicker onLeftValueChange', newLeftValue, rightValue);
       handleChange(onChange, [newLeftValue, rightValue]);
     };
 
     const onRightValueChange = (newRightValue: Date) => {
+      console.log('DateRangePicker onRightValueChange', leftValue, newRightValue);
       handleChange(onChange, [leftValue, newRightValue]);
     };
 
@@ -212,13 +217,14 @@ export const DateRangePicker = <TFieldValues extends FieldValues, TName extends 
             <MuiDatePicker
               disableFuture
               disabled={disabled || loading}
+              enableAccessibleFieldDOMStructure={false}
               inputRef={leftInputRef}
               label={t`From`}
               loading={loading}
               maxDate={rightValue ? new Date(Math.min.apply(null, [maxDate, rightValue] as unknown as number[])) : maxDate}
               minDate={minDate}
               // eslint-disable-next-line react/jsx-no-bind
-              onChange={onLeftValueChange}
+              onAccept={onLeftValueChange}
               referenceDate={defaultFromDate}
               slotProps={{
                 textField: {
@@ -237,6 +243,7 @@ export const DateRangePicker = <TFieldValues extends FieldValues, TName extends 
             <MuiDatePicker
               disableFuture
               disabled={disabled || loading}
+              enableAccessibleFieldDOMStructure={false}
               inputRef={rightInputRef}
               label={t`To`}
               loading={loading}

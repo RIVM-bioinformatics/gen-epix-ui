@@ -210,15 +210,7 @@ export const createTableStoreActions = <TData>(kwArgs: {
           if (!searchParamStringValue) {
             return;
           }
-          try {
-            if (Array.isArray(filter.initialFilterValue)) {
-              filter.setFilterValue(searchParamStringValue.split(',').map(x => JSON.parse(x) as string));
-            } else {
-              filter.setFilterValue(JSON.parse(searchParamStringValue));
-            }
-          } catch (_error: unknown) {
-            console.error(`Failed to set search param for filter '${filter.id}' with value '${searchParamStringValue}')`);
-          }
+          filter.setFilterValue(filter.fromURLSearchParameterValue(searchParamStringValue));
         });
       }
     },
@@ -435,23 +427,28 @@ export const createTableStoreActions = <TData>(kwArgs: {
         }
       });
 
-      let searchParams: URLSearchParams;
       const newFilters = produce(filters, (draft) => {
         draft.forEach(filter => {
           if (filterValues[filter.id] !== undefined) {
             filter.setFilterValue(filterValues[filter.id]);
-            if (navigateFunction) {
-              if (Array.isArray(filter.initialFilterValue)) {
-                searchParams = updateSearchParams(filter.id, (filterValues[filter.id] as string[]).map(x => JSON.stringify(x)).join(','), searchParams);
-              } else {
-                searchParams = updateSearchParams(filter.id, JSON.stringify(filterValues[filter.id]), searchParams);
-              }
-            }
           }
         });
         return draft;
       });
       set({ filters: newFilters });
+
+      if (navigateFunction) {
+        const url = new URL(document.location.href);
+        let searchParams = url.searchParams;
+        newFilters.forEach(filter => {
+          if (filter.isInitialFilterValue(filter.filterValue)) {
+            searchParams.delete(filter.id);
+            return;
+          }
+          searchParams = updateSearchParams(filter.id, filter.toURLSearchParameterValue());
+        });
+        await updateUrl(searchParams);
+      }
 
       newFilters.forEach(filter => {
         if (filter.filterMode === FILTER_MODE.BACKEND) {
@@ -476,8 +473,8 @@ export const createTableStoreActions = <TData>(kwArgs: {
         }
         return null;
       });
+
       reloadFilterData(fistFilterPriorityToFilterFrom);
-      await updateUrl(searchParams);
     },
     setNavigateFunction: (navigateFunction: NavigateFunction) => {
       set({ navigateFunction });

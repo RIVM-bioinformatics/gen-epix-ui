@@ -125,12 +125,7 @@ export class TableUtil {
       if (!value) {
         return;
       }
-      try {
-        value = Array.isArray(filter.initialFilterValue) ? (value as string).split(',').map(x => JSON.parse(x) as string) : JSON.parse(value as string) as unknown;
-        filter.setFilterValue(value);
-      } catch {
-        // ignore
-      }
+      filter.setFilterValue(filter.fromURLSearchParameterValue(value as string));
     });
 
     return filters;
