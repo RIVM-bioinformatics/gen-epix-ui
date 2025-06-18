@@ -43,6 +43,7 @@ import type { Locale } from 'date-fns';
 import {
   isValid,
   lastDayOfMonth,
+  parse,
   parseISO,
   set,
 } from 'date-fns';
@@ -135,8 +136,8 @@ export const DateRangePicker = <TFieldValues extends FieldValues, TName extends 
 
   const outerValue = useWatch({ control, name }) as [Date, Date];
 
-  const handleChange = useCallback((onChange: (value: [Date, Date]) => void, value: [Date, Date]) => {
-    const sanitizedValue = [value[0], value[1]];
+  const sanitizeValue = useCallback((value: [Date, Date]): [Date, Date] => {
+    const sanitizedValue: [Date, Date] = [value[0], value[1]];
     switch (dateFormat) {
       case DATE_FORMAT.DATE:
         sanitizedValue[0] = value[0] ? set(value[0], { hours: 0, minutes: 0, seconds: 0, milliseconds: 0 }) : null;
@@ -157,15 +158,38 @@ export const DateRangePicker = <TFieldValues extends FieldValues, TName extends 
       default:
         throw new Error(`Unsupported date format: ${dateFormat}`);
     }
+    return sanitizedValue;
+  }, [dateFormat]);
 
-    if (isEqual(value, outerValue)) {
+  const inputValueToDate = useCallback((inputValue: string): Date | null => {
+    if (!inputValue) {
+      return null;
+    }
+    return dateFormat === DATE_FORMAT.YEAR_MONTH
+      ? parse(inputValue, 'MMMM yyyy', new Date())
+      : parseISO(inputValue);
+  }, [dateFormat]);
+
+  const handleChange = useCallback((onChange: (value: [Date, Date]) => void, shouldReRender: boolean, focusTo: boolean, value: [Date, Date]) => {
+    const sanitizedValue = sanitizeValue(value);
+
+    if (isEqual(sanitizedValue, outerValue)) {
       return;
     }
-    onChange(value);
+    onChange(sanitizedValue);
     if (onChangeProp) {
-      onChangeProp(value);
+      onChangeProp(sanitizedValue);
     }
-  }, [dateFormat, onChangeProp, outerValue]);
+    if (shouldReRender) {
+      setKey(prevKey => prevKey + 1); // Force re-render
+    }
+    if (focusTo) {
+      // Focus the "to" input after the change. Must be done in a timeout to ensure the input is (re-)rendered before focusing.
+      setTimeout(() => {
+        toInputRef.current?.focus();
+      }, 0);
+    }
+  }, [onChangeProp, outerValue, sanitizeValue]);
 
   const renderController = useCallback(({ field: { onChange, onBlur, value, ref } }: UseControllerReturn<TFieldValues, TName>) => {
     ref({
@@ -178,44 +202,50 @@ export const DateRangePicker = <TFieldValues extends FieldValues, TName extends 
     const toValue = (value as [Date, Date])[1];
 
     const onFromValueAccept = (newFromValue: Date) => {
-      handleChange(onChange, [newFromValue, toValue]);
+      handleChange(onChange, false, false, [newFromValue, toValue]);
     };
 
     const onToValueAccept = (newToValue: Date) => {
-      handleChange(onChange, [fromValue, newToValue]);
+      handleChange(onChange, false, false, [fromValue, newToValue]);
     };
 
     const onFromBlur = () => {
-      const fromInputValue = parseISO(fromInputRef.current.value);
+      const fromInputValue = inputValueToDate(fromInputRef.current.value);
+      let newValue: [Date, Date] = [null, null];
 
       if (!isValid(fromInputValue)) {
-        handleChange(onChange, [null, toValue]);
+        newValue = [null, toValue];
       } else if (fromInputValue < minDate) {
-        handleChange(onChange, [minDate, toValue]);
+        newValue = [minDate, toValue];
       } else if (fromInputValue > maxDate) {
-        handleChange(onChange, [maxDate, maxDate]);
+        newValue = [maxDate, maxDate];
       } else if (toValue && fromInputValue > toValue) {
-        handleChange(onChange, [toValue, fromInputValue]);
+        newValue = [toValue, fromInputValue];
       } else {
-        handleChange(onChange, [fromInputValue, toValue]);
+        newValue = [fromInputValue, toValue];
       }
+
+      handleChange(onChange, fromInputValue !== newValue[0], fromInputValue !== newValue[0], newValue);
       onBlur();
     };
 
     const onToBlur = () => {
-      const toInputValue = parseISO(toInputRef.current.value);
+      const toInputValue = inputValueToDate(toInputRef.current.value);
+      let newValue: [Date, Date] = [null, null];
 
       if (!isValid(toInputValue)) {
-        handleChange(onChange, [fromValue, null]);
+        newValue = [fromValue, null];
       } else if (toInputValue > maxDate) {
-        handleChange(onChange, [fromValue, maxDate]);
+        newValue = [fromValue, maxDate];
       } else if (toInputValue < minDate) {
-        handleChange(onChange, [minDate, minDate]);
+        newValue = [minDate, minDate];
       } else if (fromValue && toInputValue < fromValue) {
-        handleChange(onChange, [toInputValue, fromValue]);
+        newValue = [toInputValue, fromValue];
       } else {
-        handleChange(onChange, [fromValue, toInputValue]);
+        newValue = [fromValue, toInputValue];
       }
+
+      handleChange(onChange, toInputValue !== newValue[1], false, newValue);
       onBlur();
     };
 
@@ -342,7 +372,7 @@ export const DateRangePicker = <TFieldValues extends FieldValues, TName extends 
         </FormHelperText>
       </FormControl>
     );
-  }, [hasError, label, name, disabled, loading, id, required, customLocale, theme, MuiComponent, t, maxDate, minDate, dateFormat, referenceDate, hasWarning, views, errorMessage, warningMessage, handleChange]);
+  }, [hasError, label, name, disabled, loading, id, required, customLocale, theme, MuiComponent, t, maxDate, minDate, dateFormat, referenceDate, hasWarning, views, errorMessage, warningMessage, handleChange, inputValueToDate]);
 
   return (
     <Controller
