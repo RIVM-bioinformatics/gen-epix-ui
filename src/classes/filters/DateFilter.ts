@@ -31,7 +31,7 @@ export class DateFilter extends FilterAbstract<[Date, Date]> implements Filter<[
   public filterValue: [Date, Date] = [null, null];
   public dateParser: (date: string) => Date;
   public backendFilterType: 'DATE_RANGE' | 'PARTIAL_DATE_RANGE';
-  public dateFormat: string;
+  public dateFormat: typeof DATE_FORMAT[keyof typeof DATE_FORMAT];
 
   public constructor(kwArgs: DateFilterKwArgs) {
     super({

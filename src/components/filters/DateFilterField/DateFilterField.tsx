@@ -12,6 +12,7 @@ export const DateFilterField = ({ filter }: DateFilterFieldProps) => {
   return (
     <Box>
       <DateRangePicker
+        dateFormat={filter.dateFormat}
         label={filter.label}
         maxDate={filter.maxDate}
         minDate={filter.minDate}

@@ -53,6 +53,7 @@ import { QueryUtil } from '../../utils/QueryUtil';
 import { StringUtil } from '../../utils/StringUtil';
 import { TableUtil } from '../../utils/TableUtil';
 import { TestIdUtil } from '../../utils/TestIdUtil';
+import { DATE_FORMAT } from '../../data/date';
 
 type Row = {
   id: string;
@@ -116,7 +117,7 @@ export const CasesPage = () => {
 
   const onShowCaseTypeInformationClick = useCallback((params: TableRowParams<Row>) => {
     epiCaseTypeInfoDialogWithLoaderRef.current.open({
-      caseTypeId: params.id,
+      caseTypeId: params.row.id,
     });
   }, []);
 
@@ -208,11 +209,11 @@ export const CasesPage = () => {
       }),
       TableUtil.createNumberColumn({ name: t('Number of cases'), id: 'n_cases', flex: 0.5 }),
       {
-        ...TableUtil.createDateColumn({ name: t('First case month'), id: 'first_case_month', flex: 0.5 }),
+        ...TableUtil.createDateColumn({ name: t('First case month'), id: 'first_case_month', flex: 0.5, dateFormat: DATE_FORMAT.DATE_TIME }),
         isInitiallyVisible: false,
       },
       {
-        ...TableUtil.createDateColumn({ name: t('Last case month'), id: 'last_case_month', flex: 0.5 }),
+        ...TableUtil.createDateColumn({ name: t('Last case month'), id: 'last_case_month', flex: 0.5, dateFormat: DATE_FORMAT.DATE_TIME }),
         isInitiallyVisible: false,
       },
       TableUtil.createActionsColumn({

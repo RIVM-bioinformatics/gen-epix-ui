@@ -93,7 +93,7 @@ export interface TableColumnNumber<TRowData> extends TableColumnBase<TRowData, n
 
 export interface TableColumnDate<TRowData> extends TableColumnBase<TRowData, string> {
   type: 'date';
-  format: typeof DATE_FORMAT[keyof typeof DATE_FORMAT];
+  dateFormat: typeof DATE_FORMAT[keyof typeof DATE_FORMAT];
   comparatorFactory?: (params: GetTableCellRowComparatorProps<TableColumnDate<TRowData>>) => (a: TRowData, b: TRowData) => number;
 }
 

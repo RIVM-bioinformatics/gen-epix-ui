@@ -116,7 +116,7 @@ export class TableUtil {
           dateParser: parseISO,
           minDate,
           maxDate,
-          dateFormat: column.format ?? DATE_FORMAT.DATE,
+          dateFormat: column.dateFormat ?? DATE_FORMAT.DATE,
         }));
       }
     });
@@ -182,7 +182,7 @@ export class TableUtil {
     if (!value) {
       return '';
     }
-    return dateFnsFormat(value, column.format);
+    return dateFnsFormat(value, column.dateFormat);
   }
 
   public static getTableBooleanCellDisplayValue<TRowData>({ row, column, rowIndex, t }: GetTableCellValueProps<TRowData, TableColumnBoolean<TRowData>>): string {
@@ -374,7 +374,7 @@ export class TableUtil {
       headerName: kwArgs.name,
       type: 'date',
       widthFlex: kwArgs.flex ?? 0.5,
-      format: kwArgs.dateFormat ?? DATE_FORMAT.DATE,
+      dateFormat: kwArgs.dateFormat ?? DATE_FORMAT.DATE,
       filterLabel: kwArgs.filterLabel,
       comparatorFactory: TableUtil.createDateCellRowComperator,
       isInitiallyVisible: true,
