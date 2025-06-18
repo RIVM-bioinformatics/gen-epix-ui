@@ -83,31 +83,6 @@ export const TextField = <TFieldValues extends FieldValues, TName extends Path<T
 
     return (
       <MuiTextField
-        FormHelperTextProps={{ className: classnames({ 'Mui-warning': hasWarning }) }}
-        InputLabelProps={{
-          required: required && !disabled,
-          className: classnames({ 'Mui-warning': hasWarning }),
-        }}
-        InputProps={{
-          className: classnames({ 'Mui-warning': hasWarning }),
-          endAdornment: (
-            <InputAdornment position={'end'}>
-              <IconButton
-                {...TestIdUtil.createAttributes('TextField-reset')}
-                // eslint-disable-next-line react/jsx-no-bind
-                onClick={onResetButtonClick}
-                sx={{
-                  '& svg': {
-                    fontSize: '16px',
-                  },
-                }}
-                tabIndex={-1}
-              >
-                <ClearIcon />
-              </IconButton>
-            </InputAdornment>
-          ),
-        }}
         disabled={disabled || loading}
         error={hasError}
         helperText={(
@@ -123,6 +98,35 @@ export const TextField = <TFieldValues extends FieldValues, TName extends Path<T
         onChange={onMuiTextFieldChange(onChange)}
         placeholder={placeholder}
         rows={rows}
+        slotProps={{
+          formHelperText: {
+            className: classnames({ 'Mui-warning': hasWarning }),
+          },
+          input: {
+            className: classnames({ 'Mui-warning': hasWarning }),
+            endAdornment: (
+              <InputAdornment position={'end'}>
+                <IconButton
+                  {...TestIdUtil.createAttributes('TextField-reset')}
+                  // eslint-disable-next-line react/jsx-no-bind
+                  onClick={onResetButtonClick}
+                  sx={{
+                    '& svg': {
+                      fontSize: '16px',
+                    },
+                  }}
+                  tabIndex={-1}
+                >
+                  <ClearIcon />
+                </IconButton>
+              </InputAdornment>
+            ),
+          },
+          inputLabel: {
+            required: required && !disabled,
+            className: classnames({ 'Mui-warning': hasWarning }),
+          },
+        }}
         type={type}
         value={value ?? '' as string}
       />

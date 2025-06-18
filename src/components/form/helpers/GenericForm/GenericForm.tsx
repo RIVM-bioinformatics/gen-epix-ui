@@ -9,7 +9,6 @@ import type {
   UseFormReturn,
 } from 'react-hook-form';
 import { FormProvider } from 'react-hook-form';
-import { DatePicker } from '@mui/x-date-pickers';
 import { Box } from '@mui/material';
 
 import type { FormFieldDefinition } from '../../../../models/form';
@@ -21,6 +20,7 @@ import type { AutocompleteProps } from '../../fields/Autocomplete';
 import { Autocomplete } from '../../fields/Autocomplete';
 import { Select } from '../../fields/Select';
 import { TextField } from '../../fields/TextField';
+import { DatePicker } from '../../fields/DatePicker';
 
 export type GenericFormProps<TFormFields> = {
   readonly formFieldDefinitions: FormFieldDefinition<TFormFields>[];

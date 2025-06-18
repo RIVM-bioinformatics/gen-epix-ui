@@ -21,6 +21,7 @@ import type {
 } from '../../hoc/withDialog';
 import { withDialog } from '../../hoc/withDialog';
 import { TestIdUtil } from '../../utils/TestIdUtil';
+import { DATE_FORMAT } from '../../data/date';
 
 export interface UserInvitationsAdminDetailDialogOpenProps {
   item: UserInvitation;
@@ -45,7 +46,7 @@ export const UserInvitationsAdminDetailDialog = withDialog<UserInvitationsAdminD
   }, [onTitleChange, openProps.item.email, t]);
 
   const expiryDate = useMemo(() => {
-    return format(openProps.item.expires_at, 'yyyy-MM-dd');
+    return format(openProps.item.expires_at, DATE_FORMAT.DATE);
   }, [openProps.item.expires_at]);
 
   const invitationLink = useMemo(() => {

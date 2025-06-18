@@ -28,6 +28,7 @@ import type { TableColumn } from '../../models/table';
 import { TableUtil } from '../../utils/TableUtil';
 import { TestIdUtil } from '../../utils/TestIdUtil';
 import { CrudPage } from '../CrudPage';
+import { DATE_FORMAT } from '../../data/date';
 
 type FormFields = Pick<CaseTypeCol, 'case_type_id' | 'col_id' | 'occurrence' | 'code' | 'rank' | 'label' | 'description' | 'min_value' | 'max_value' | 'min_datetime' | 'max_datetime' | 'min_length' | 'genetic_sequence_case_type_col_id' | 'tree_algorithm_codes' | 'pattern'>;
 
@@ -128,13 +129,13 @@ export const CaseTypeColsAdminPage = () => {
         definition: FORM_FIELD_DEFINITION_TYPE.DATE,
         name: 'min_datetime',
         label: t`Min datetime`,
-        withTime: true,
+        dateFormat: DATE_FORMAT.DATE_TIME,
       },
       {
         definition: FORM_FIELD_DEFINITION_TYPE.DATE,
         name: 'max_datetime',
         label: t`Max datetime`,
-        withTime: true,
+        dateFormat: DATE_FORMAT.DATE_TIME,
       },
       {
         definition: FORM_FIELD_DEFINITION_TYPE.TEXTFIELD,

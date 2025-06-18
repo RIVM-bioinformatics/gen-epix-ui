@@ -17,6 +17,7 @@ import type {
 } from '../../api';
 import { StringUtil } from '../StringUtil';
 import { ConfigManager } from '../../classes/managers/ConfigManager';
+import { DATE_FORMAT } from '../../data/date';
 
 export class EpiListUtil {
   public static getColumnHeadersForExport(caseTypeColumnIds: string[], completeCaseType: CompleteCaseType): string[] {
@@ -32,7 +33,7 @@ export class EpiListUtil {
     return cases.map(row => [
       row.id,
       completeCaseType.name,
-      row.case_date ? format(row.case_date, 'yyyy-MM-dd') : '',
+      row.case_date ? format(row.case_date, DATE_FORMAT.DATE) : '',
       ...EpiListUtil.getCaseTypeColumnsForExport(caseTypeColumnIds, completeCaseType).map(caseTypeColumn => EpiCaseUtil.getRowValue(row, caseTypeColumn, completeCaseType).short),
     ]);
   }
@@ -40,7 +41,7 @@ export class EpiListUtil {
   public static getExportFileName(completeCaseType: CompleteCaseType, t: TFunction<'translation', undefined>): string {
     return t('{{applicationName}}--line-list--{{date}}--{{caseTypeName}}', {
       applicationName: StringUtil.createSlug(ConfigManager.instance.config.applicationName),
-      date: format(new Date(), 'yyyy-MM-dd'),
+      date: format(new Date(), DATE_FORMAT.DATE),
       caseTypeName: StringUtil.createSlug(completeCaseType.name),
     });
   }

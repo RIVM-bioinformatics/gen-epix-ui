@@ -71,7 +71,7 @@ export const TableHeaderFilter = <TRowData, >({ filter, onFilterChange }: TableH
         id={'Filters'}
         onSubmit={handleSubmit(onFormSubmit)}
         sx={{
-          width: '400px',
+          minWidth: '400px',
         }}
       >
         <TableFilter filter={filter} />

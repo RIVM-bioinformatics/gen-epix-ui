@@ -37,6 +37,7 @@ import type {
   Filters,
 } from '../../models/filter';
 import type { AutoCompleteOption } from '../../models/form';
+import { DATE_FORMAT } from '../../data/date';
 
 export class EpiFilterUtil {
 
@@ -216,7 +217,7 @@ export class EpiFilterUtil {
 
   public static getDateParser(column: Col): (date: string) => Date {
     if (column.col_type === ColType.TIME_QUARTER) {
-      return (date: string) => parse(date, 'yyyy-QQQ', new Date());
+      return (date: string) => parse(date, DATE_FORMAT.YEAR_QUARTER, new Date());
     }
     return (date: string) => parseISO(date);
   }

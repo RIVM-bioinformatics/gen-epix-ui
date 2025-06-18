@@ -14,6 +14,7 @@ import type {
 import { QUERY_KEY } from '../../models/query';
 import { DataUtil } from '../../utils/DataUtil';
 import { QueryUtil } from '../../utils/QueryUtil';
+import { DATE_FORMAT } from '../../data/date';
 
 export const useCaseSetsQuery = (): UseQueryResult<CaseSet[]> => {
   return useQuery({
@@ -38,7 +39,7 @@ export const useCaseSetOptionsQuery = (): UseOptions<string> => {
   const response = useCaseSetsQuery();
 
   return useMemo(() => {
-    return DataUtil.createUseOptionsDataHook<CaseSet>(response, item => item.id, (item: CaseSet) => `${item.name} (${format(item.created_at, 'yyyy-MM-dd')})`);
+    return DataUtil.createUseOptionsDataHook<CaseSet>(response, item => item.id, (item: CaseSet) => `${item.name} (${format(item.created_at, DATE_FORMAT.DATE)})`);
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [DataUtil.createMemorizationDependency(response)]);
 };

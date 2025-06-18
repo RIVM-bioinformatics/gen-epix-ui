@@ -54,6 +54,7 @@ import { EpiCaseSetUtil } from '../../utils/EpiCaseSetUtil';
 import { QueryUtil } from '../../utils/QueryUtil';
 import { TableUtil } from '../../utils/TableUtil';
 import { TestIdUtil } from '../../utils/TestIdUtil';
+import { DATE_FORMAT } from '../../data/date';
 
 type Row = CaseSet & CaseSetStat;
 
@@ -120,8 +121,8 @@ export const EventsPage = () => {
       TableUtil.createOptionsColumn({ id: 'case_set_status_id', name: t`Status`, options: caseSetStatusOptionsQuery.options, flex: 0.4 }),
       TableUtil.createNumberColumn({ id: 'n_cases', name: t`Cases`, flex: 0.35 }),
       // TableUtil.createNumberColumn({ id: 'n_own_cases', name: t`Own cases`, flex: 0.35 }),
-      TableUtil.createDateColumn({ id: 'first_case_month', name: t`First case date` }),
-      TableUtil.createDateColumn({ id: 'last_case_month', name: t`Last case date` }),
+      TableUtil.createDateColumn({ id: 'first_case_month', name: t`First case month`, dateFormat: DATE_FORMAT.YEAR_MONTH }),
+      TableUtil.createDateColumn({ id: 'last_case_month', name: t`Last case month`, dateFormat: DATE_FORMAT.YEAR_MONTH }),
       TableUtil.createDateColumn({ id: 'created_at', name: t`Created on` }),
       TableUtil.createActionsColumn({
         t,
