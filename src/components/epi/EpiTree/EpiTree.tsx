@@ -158,14 +158,6 @@ export const EpiTree = ({ linkedScrollSubject, ref }: EpiTreeProps) => {
     }
   }, [isLinked, zoomLevel]);
 
-  const resetZoomLevel = useCallback(() => {
-    if (isLinked) {
-      setZoomLevel(ConfigManager.instance.config.epiTree.MIN_LINKED_ZOOM_LEVEL);
-    } else {
-      setZoomLevel(ConfigManager.instance.config.epiTree.MIN_UNLINKED_ZOOM_LEVEL);
-    }
-  }, [isLinked]);
-
   const caseIds = useMemo(() => filteredCases.map(c => c.id).sort(), [filteredCases]);
 
   useEffect(() => {
@@ -340,23 +332,27 @@ export const EpiTree = ({ linkedScrollSubject, ref }: EpiTreeProps) => {
 
   }, [linkLineListToTree]);
 
-  const onAddTreeFilterMenuItemClick = useCallback(async (onMenuClose: () => void) => {
-    resetZoomLevel();
+  const resetZoomLevelAndScrollPosition = useCallback(() => {
+    setZoomLevel(ConfigManager.instance.config.epiTree.MIN_LINKED_ZOOM_LEVEL);
+    setIsLinked(true);
     updateScrollPosition(0, 1);
+  }, [updateScrollPosition]);
 
+  const onAddTreeFilterMenuItemClick = useCallback(async (onMenuClose: () => void) => {
     await addTreeFilter(zoomInMenuItemConfig.rootId);
+    resetZoomLevelAndScrollPosition();
     onMenuClose();
-  }, [addTreeFilter, resetZoomLevel, updateScrollPosition, zoomInMenuItemConfig?.rootId]);
+  }, [addTreeFilter, zoomInMenuItemConfig?.rootId, resetZoomLevelAndScrollPosition]);
 
   const onRemoveTreeFilterButtonClick = useCallback(async () => {
-
     await removeTreeFilter();
-  }, [removeTreeFilter]);
+    resetZoomLevelAndScrollPosition();
+  }, [removeTreeFilter, resetZoomLevelAndScrollPosition]);
 
   const onTreeFilterStepOutButtonClick = useCallback(async () => {
-
     await treeFilterStepOut();
-  }, [treeFilterStepOut]);
+    resetZoomLevelAndScrollPosition();
+  }, [resetZoomLevelAndScrollPosition, treeFilterStepOut]);
 
   const getPathPropertiesFromCanvas = useCallback((canvas: HTMLCanvasElement, event: MouseEvent): TreePathProperties => {
     const ctx = canvas.getContext('2d');
