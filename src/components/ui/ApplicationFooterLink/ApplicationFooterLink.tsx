@@ -1,3 +1,4 @@
+import type { BoxProps } from '@mui/material';
 import {
   Box,
   Link,
@@ -8,14 +9,15 @@ import type { PropsWithChildren } from 'react';
 export type ApplicationFooterLinkProps = PropsWithChildren<{
   readonly href?: string;
   readonly onClick?: () => void;
-}>;
+}> & BoxProps<'li'>;
 
-export const ApplicationFooterLink = ({ href, onClick, children }: ApplicationFooterLinkProps) => {
+export const ApplicationFooterLink = ({ href, onClick, children, ...boxProps }: ApplicationFooterLinkProps) => {
   const theme = useTheme();
 
   return (
     <Box
       component={'li'}
+      {...boxProps}
     >
       {href && (
         <Link
