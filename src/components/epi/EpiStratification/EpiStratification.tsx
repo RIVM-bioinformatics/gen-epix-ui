@@ -196,7 +196,6 @@ export const EpiStratification = () => {
             variant: 'text',
             size: 'small',
             color: 'inherit',
-            disableRipple: true,
             sx: {
               margin: 0,
               padding: 0,
