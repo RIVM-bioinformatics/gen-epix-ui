@@ -197,8 +197,6 @@ export const EpiAddCasesToEventDialog = withDialog<EpiAddCasesToEventDialogProps
     onTitleChange(t('Add {{numCases}} selected case(s) to an existing event', { numCases: openProps.rows.length }));
   }, [completeCaseType.name, onTitleChange, openProps.rows.length, t]);
 
-  console.log(isCaseSetMembersLoading, isMutatingItems, isCaseSetDataCollectionLinksLoading);
-
   useEffect(() => {
     const actions: DialogAction[] = [];
     actions.push(
