@@ -20,7 +20,7 @@ export const CasesDetailPage = () => {
 
   const updateBreadcrumb = useUpdateBreadcrumb('Case type');
 
-  const { isPending, error, data: caseType } = useItemQuery({
+  const { isLoading, error, data: caseType } = useItemQuery({
     baseQueryKey: QUERY_KEY.CASE_TYPES,
     itemId: caseTypeId,
     useQueryOptions: {
@@ -46,7 +46,7 @@ export const CasesDetailPage = () => {
     >
       <ResponseHandler
         error={error}
-        isPending={isPending}
+        isLoading={isLoading}
       >
         <EpiDashboard
           caseTypeId={caseTypeId}

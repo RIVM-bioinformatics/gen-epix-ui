@@ -47,7 +47,7 @@ export const UserMenu = ({ anchorElement, onClose }: UserMenuProps): ReactElemen
   const isUserMenuOpen = !!anchorElement;
   const [t] = useTranslation();
 
-  const { isPending: isOrganizationAdminNameEmailsPending, error: organizationAdminNameEmailsError, data: organizationAdminNameEmails } = useQuery({
+  const { isLoading: isOrganizationAdminNameEmailsLoading, error: organizationAdminNameEmailsError, data: organizationAdminNameEmails } = useQuery({
     queryKey: QueryUtil.getGenericKey(QUERY_KEY.ORGANIZATION_ADMIN_NAME_EMAILS),
     queryFn: async ({ signal }) => (await OrganizationApi.getInstance().retrieveOrganizationAdminNameEmails({ signal })).data,
     gcTime: Infinity,
@@ -182,7 +182,7 @@ export const UserMenu = ({ anchorElement, onClose }: UserMenuProps): ReactElemen
             primary={t`Your organization admins`}
             secondary={(
               <>
-                {isOrganizationAdminNameEmailsPending && t`Loading...`}
+                {isOrganizationAdminNameEmailsLoading && t`Loading...`}
                 {organizationAdminNameEmailsError && t`Error`}
                 {organizationAdminNameEmails?.map(admin => (
                   <Link

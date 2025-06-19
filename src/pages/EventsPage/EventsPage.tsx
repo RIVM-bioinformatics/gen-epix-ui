@@ -224,7 +224,7 @@ export const EventsPage = () => {
         >
           <ResponseHandler
             error={caseSetsError}
-            isPending={isCaseSetsLoading}
+            isLoading={isCaseSetsLoading}
             loadables={loadables}
           >
 

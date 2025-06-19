@@ -66,7 +66,7 @@ export const EpiRemoveCasesFromEventDialog = withDialog<EpiRemoveCasesFromEventD
     members: openProps.rows.map(row => row.id),
   }), [openProps.rows]);
 
-  const { isPending: isCaseSetMembersPending, error: caseSetMembersError, data: caseSetMembers } = useQuery({
+  const { isLoading: isCaseSetMembersLoading, error: caseSetMembersError, data: caseSetMembers } = useQuery({
     queryKey: QueryUtil.getGenericKey(QUERY_KEY.CASE_SET_MEMBERS, caseSetMembersFilter),
     queryFn: async ({ signal }) => {
       const response = await CaseApi.getInstance().caseSetMembersPostQuery(caseSetMembersFilter, { signal });
@@ -142,7 +142,7 @@ export const EpiRemoveCasesFromEventDialog = withDialog<EpiRemoveCasesFromEventD
   return (
     <ResponseHandler
       error={caseSetMembersError}
-      isPending={isCaseSetMembersPending}
+      isLoading={isCaseSetMembersLoading}
       shouldHideActionButtons
     >
       <Box>

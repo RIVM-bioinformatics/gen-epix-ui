@@ -155,7 +155,7 @@ export const OrganizationSwitcherDialog = withDialog<OrganizationSwitcherDialogP
 
   return (
     <ResponseHandler
-      isPending={isChanging}
+      isLoading={isChanging}
       loadables={loadables}
     >
       {newOrganizationId && (

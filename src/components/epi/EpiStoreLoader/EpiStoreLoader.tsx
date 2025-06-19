@@ -26,7 +26,7 @@ export const EpiStoreLoader = ({ caseSet, caseTypeId, children }: EpiStoreLoader
   const [isSideEffectLoading, setIsSideEffectLoading] = useState(true);
   const [sideEffectError, setSideEffectError] = useState<Error>();
 
-  const { isPending: isCompleteCaseTypePending, error: completeCaseTypeError, data: completeCaseType } = useItemQuery({
+  const { isLoading: isCompleteCaseTypeLoading, error: completeCaseTypeError, data: completeCaseType } = useItemQuery({
     baseQueryKey: QUERY_KEY.COMPLETE_CASE_TYPES,
     itemId: caseTypeId,
     useQueryOptions: {
@@ -71,7 +71,7 @@ export const EpiStoreLoader = ({ caseSet, caseTypeId, children }: EpiStoreLoader
     >
       <ResponseHandler
         error={completeCaseTypeError || sideEffectError}
-        isPending={isCompleteCaseTypePending || isSideEffectLoading}
+        isLoading={isCompleteCaseTypeLoading || isSideEffectLoading}
         loadingMessage={t`Loading dashboard`}
       >
         <EpiStoreLoaderContent

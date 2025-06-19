@@ -180,7 +180,7 @@ export const EpiTree = ({ linkedScrollSubject, ref }: EpiTreeProps) => {
     tree_algorithm_code: treeConfiguration?.treeAlgorithm.code,
   }), [caseIds, treeConfiguration?.caseTypeCol.id, treeConfiguration?.treeAlgorithm.code]);
 
-  const { isPending: isTreePending, error: treeError, data: treeData } = useQuery({
+  const { isLoading: isTreeLoading, error: treeError, data: treeData } = useQuery({
     queryKey: QueryUtil.getRetrievePhylogeneticTreeKey(retrievePhylogeneticTreeRequestBody),
     queryFn: async ({ signal }) => {
       const response = await CaseApi.getInstance().retrievePhylogeneticTree(retrievePhylogeneticTreeRequestBody, { signal });
@@ -191,9 +191,9 @@ export const EpiTree = ({ linkedScrollSubject, ref }: EpiTreeProps) => {
     staleTime: Infinity,
   });
 
-  const isLoading = !!treeConfiguration && (isCaseDataLoading || (hasEnoughSequencesToShowTree && isTreePending));
+  const isLoading = !!treeConfiguration && (isCaseDataLoading || (hasEnoughSequencesToShowTree && isTreeLoading));
   const isTreeUnavailable = !isCaseDataLoading && ((!isLoading && !!treeError) || !hasEnoughSequencesToShowTree || tree?.maxBranchLength?.toNumber() === 0 || tree?.size === 0 || !treeConfiguration);
-  const shouldShowTree = !!treeConfiguration && !isCaseDataLoading && !treeError && !isTreePending && width > 0 && tree?.size > 0 && hasEnoughSequencesToShowTree;
+  const shouldShowTree = !!treeConfiguration && !isCaseDataLoading && !treeError && !isTreeLoading && width > 0 && tree?.size > 0 && hasEnoughSequencesToShowTree;
 
   const treeCanvasWidth = width;
   const treeCanvasHeight = height - ConfigManager.instance.config.epiTree.HEADER_HEIGHT;

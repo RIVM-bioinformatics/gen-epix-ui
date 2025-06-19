@@ -341,7 +341,7 @@ export const EpiCreateEventDialog = withDialog<EpiCreateEventDialogProps, EpiCre
     <ResponseHandler
       error={completeCaseTypeError}
       inlineSpinner
-      isPending={isCreating}
+      isLoading={isCreating}
       loadables={loadables}
     >
       <GenericForm<FormFields>

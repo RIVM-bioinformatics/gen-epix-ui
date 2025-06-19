@@ -23,7 +23,7 @@ export const AcceptInvitationPage = () => {
   const { token } = useParams();
   const [shouldRegister, setShouldRegister] = useState(false);
 
-  const { data, error, isPending } = useQuery({
+  const { data, error, isLoading } = useQuery({
     queryKey: QueryUtil.getUserRegistrationsKey(token),
     queryFn: async ({ signal }) => {
       const response = await AuthApi.getInstance().userRegistrationsPostOne(token, { signal });
@@ -53,7 +53,7 @@ export const AcceptInvitationPage = () => {
       <ResponseHandler
         enabled={shouldRegister}
         error={error}
-        isPending={isPending}
+        isLoading={isLoading}
       >
         {!data && (
           <>

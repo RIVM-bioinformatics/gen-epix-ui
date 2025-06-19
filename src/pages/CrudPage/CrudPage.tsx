@@ -169,18 +169,18 @@ export const CrudPage = <
     return false;
   }, [loadables]);
 
-  const { isPending: fetchAllPending, error: fetchAllError, data: rows } = useQuery({
+  const { isLoading: fetchAllLoading, error: fetchAllError, data: rows } = useQuery({
     queryKey: resourceQueryKey,
     queryFn: async ({ signal }) => fetchAll(signal),
     enabled: !isLoadablesLoading,
   });
 
   const isLoading = useMemo(() => {
-    if (fetchAllPending) {
+    if (fetchAllLoading) {
       return true;
     }
     return isLoadablesLoading;
-  }, [fetchAllPending, isLoadablesLoading]);
+  }, [fetchAllLoading, isLoadablesLoading]);
 
   const error = useMemo(() => {
     if (fetchAllError) {
@@ -507,7 +507,7 @@ export const CrudPage = <
         >
           <ResponseHandler
             error={error}
-            isPending={isLoading}
+            isLoading={isLoading}
           >
 
             <TableSidebarMenu />

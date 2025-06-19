@@ -9,7 +9,7 @@ import { GenericErrorMessage } from '../GenericErrorMessage';
 import type { Loadable } from '../../../models/dataHooks';
 
 export type ResponseHandlerProps = PropsWithChildren<{
-  readonly isPending?: boolean;
+  readonly isLoading?: boolean;
   readonly error?: unknown;
   readonly enabled?: boolean;
   readonly loadingMessage?: string;
@@ -22,7 +22,7 @@ export type ResponseHandlerProps = PropsWithChildren<{
 
 export const ResponseHandler = ({
   children,
-  isPending: userIsPending,
+  isLoading: userIsLoading,
   error: userError,
   enabled,
   loadingMessage,
@@ -37,7 +37,7 @@ export const ResponseHandler = ({
   }
 
   const error = userError || (loadables?.find((loadable) => loadable.error))?.error;
-  const isPending = userIsPending || (loadables?.some((loadable) => loadable.isLoading));
+  const isLoading = userIsLoading || (loadables?.some((loadable) => loadable.isLoading));
 
   return (
     <>
@@ -47,7 +47,7 @@ export const ResponseHandler = ({
           shouldHideActionButtons={shouldHideActionButtons}
         />
       )}
-      {isPending && !error && (
+      {isLoading && !error && (
         <>
           {!!loadingContent && loadingContent}
           {!loadingContent && (
@@ -60,7 +60,7 @@ export const ResponseHandler = ({
         </>
 
       )}
-      {!isPending && !error && children}
+      {!isLoading && !error && children}
     </>
   );
 };

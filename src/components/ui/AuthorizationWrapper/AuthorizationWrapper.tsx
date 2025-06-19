@@ -48,7 +48,7 @@ export const AuthorizationWrapper = ({ children }: PropsWithChildren): ReactNode
       >
         <ResponseHandler
           error={userError}
-          isPending
+          isLoading
           loadingMessage={t`Loading user data`}
         />
       </PageContainer>

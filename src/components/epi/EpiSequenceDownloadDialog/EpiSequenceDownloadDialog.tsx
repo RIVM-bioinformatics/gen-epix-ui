@@ -93,7 +93,7 @@ export const EpiSequenceDownloadDialog = withDialog<EpiSequenceDownloadDialogPro
     return ['retrieveGeneticSequence', geneticSequenceCaseTypeColId, openProps.cases.map(c => c.id)];
   }, [openProps.cases, geneticSequenceCaseTypeColId]);
 
-  const { isPending, error, data: sequenceResponses } = useQuery({
+  const { isLoading, error, data: sequenceResponses } = useQuery({
     queryKey,
     queryFn: async ({ signal }) => {
       const response = await CaseApi.getInstance().retrieveGeneticSequence({
@@ -133,7 +133,7 @@ export const EpiSequenceDownloadDialog = withDialog<EpiSequenceDownloadDialogPro
       {geneticSequenceCaseTypeColId && (
         <ResponseHandler
           error={error}
-          isPending={isPending}
+          isLoading={isLoading}
           shouldHideActionButtons
         >
           <Box

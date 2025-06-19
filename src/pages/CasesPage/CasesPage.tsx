@@ -294,7 +294,7 @@ export const CasesPage = () => {
         >
           <ResponseHandler
             error={error}
-            isPending={isLoading}
+            isLoading={isLoading}
           >
             <TableSidebarMenu />
             <Box sx={{

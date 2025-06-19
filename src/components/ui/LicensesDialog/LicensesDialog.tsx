@@ -55,7 +55,7 @@ export const LicensesDialog = withDialog<LicensesDialogProps, LicensesDialogOpen
 
   const { LicenseInformation } = ConfigManager.instance.config;
 
-  const { isPending: isManifestLoading, error: manifestError, data: manifest } = useQuery({
+  const { isLoading: isManifestLoading, error: manifestError, data: manifest } = useQuery({
     queryKey: ['LICENSES.JSON'],
     queryFn: async ({ signal }) => {
       return (await axios.get('/licenses.json', {
@@ -95,7 +95,7 @@ export const LicensesDialog = withDialog<LicensesDialogProps, LicensesDialogOpen
     <ResponseHandler
       error={manifestError}
       inlineSpinner
-      isPending={isManifestLoading}
+      isLoading={isManifestLoading}
     >
       <LicenseInformation />
       <Box marginY={2}>
