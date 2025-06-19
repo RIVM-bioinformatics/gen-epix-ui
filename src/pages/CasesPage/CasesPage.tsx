@@ -209,11 +209,11 @@ export const CasesPage = () => {
       }),
       TableUtil.createNumberColumn({ name: t('Number of cases'), id: 'n_cases', flex: 0.5 }),
       {
-        ...TableUtil.createDateColumn({ name: t('First case month'), id: 'first_case_month', flex: 0.5, dateFormat: DATE_FORMAT.DATE_TIME }),
+        ...TableUtil.createDateColumn({ name: t('First case month'), id: 'first_case_month', flex: 0.5, dateFormat: DATE_FORMAT.YEAR_MONTH }),
         isInitiallyVisible: false,
       },
       {
-        ...TableUtil.createDateColumn({ name: t('Last case month'), id: 'last_case_month', flex: 0.5, dateFormat: DATE_FORMAT.DATE_TIME }),
+        ...TableUtil.createDateColumn({ name: t('Last case month'), id: 'last_case_month', flex: 0.5, dateFormat: DATE_FORMAT.YEAR_MONTH }),
         isInitiallyVisible: false,
       },
       TableUtil.createActionsColumn({
