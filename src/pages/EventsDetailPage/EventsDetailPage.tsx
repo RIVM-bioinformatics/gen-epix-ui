@@ -55,7 +55,7 @@ export const EventsDetailPage = () => {
     >
       <ResponseHandler
         error={error}
-        isPending={isPending}
+        isLoading={isPending}
         loadables={loadables}
       >
         <EpiDashboard

@@ -44,7 +44,7 @@ export const EpiContactDetailsDialog = withDialog<EpiContactDetailsDialogProps, 
     return ['contacts', openProps.contactId];
   }, [openProps.contactId]);
 
-  const { isPending, error, data: contactInfos } = useQuery({
+  const { isLoading, error, data: contactInfos } = useQuery({
     queryKey,
     queryFn: async ({ signal }) => {
       const response = await CaseApi.getInstance().retrieveOrganizationContact({
@@ -64,24 +64,24 @@ export const EpiContactDetailsDialog = withDialog<EpiContactDetailsDialogProps, 
 
   return (
     <Box>
-      {isPending && !error && (
+      {isLoading && !error && (
         <Spinner
           inline
           label={t`Loading`}
         />
       )}
-      {!isPending && error && (
+      {!isLoading && error && (
         <GenericErrorMessage
           error={error}
           shouldHideActionButtons
         />
       )}
-      {!isPending && !contactInfos?.length && (
+      {!isLoading && !contactInfos?.length && (
         <Box>
           {t`No contact details found for this organization`}
         </Box>
       )}
-      {!isPending && contactInfos?.length && (
+      {!isLoading && contactInfos?.length && (
         <Box sx={{
           display: 'grid',
           gridTemplateColumns: '1fr 1fr',

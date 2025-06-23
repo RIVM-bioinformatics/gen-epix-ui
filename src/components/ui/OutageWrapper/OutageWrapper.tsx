@@ -32,7 +32,7 @@ export const OutageWrapper = ({ children }: PropsWithChildren): ReactNode => {
   const [shouldContinue, setShouldContinue] = useState(false);
   const [buttonsEnabled, setButtonsEnabled] = useState(false);
 
-  const { isPending: isOutagesPending, error: outagesError, data: outages } = useQuery({
+  const { isLoading: isOutagesPending, error: outagesError, data: outages } = useQuery({
     queryKey: QueryUtil.getGenericKey(QUERY_KEY.OUTAGES),
     queryFn: async ({ signal }) => (await SystemApi.getInstance().retrieveOutages({ signal })).data,
     gcTime: Infinity,
@@ -120,7 +120,7 @@ export const OutageWrapper = ({ children }: PropsWithChildren): ReactNode => {
     >
       <ResponseHandler
         error={outagesError}
-        isPending={isOutagesPending}
+        isLoading={isOutagesPending}
         loadingMessage={t`Loading`}
       >
         {children}

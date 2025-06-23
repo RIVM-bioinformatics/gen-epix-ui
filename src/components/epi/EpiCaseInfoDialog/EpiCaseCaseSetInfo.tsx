@@ -73,7 +73,7 @@ export const EpiCaseCaseSetInfo = ({ epiCase, ...boxProps }: EpiCaseCaseSetInfoP
       <ResponseHandler
         error={caseSetMembersError || caseSetsError}
         inlineSpinner
-        isPending={isCaseSetMembersLoading || isCaseSetsLoading}
+        isLoading={isCaseSetMembersLoading || isCaseSetsLoading}
         loadables={loadables}
         shouldHideActionButtons
       >

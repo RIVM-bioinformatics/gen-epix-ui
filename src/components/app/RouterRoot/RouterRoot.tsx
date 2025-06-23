@@ -37,7 +37,7 @@ import { UserInactivityConfirmation } from '../../ui/UserInactivityConfirmation'
 export const RouterRoot = () => {
   const location = useLocation();
 
-  const { isPending: isIdentityProvidersPending, error: identityProvidersError, data: identityProviders } = useQuery({
+  const { isLoading: isIdentityProvidersLoading, error: identityProvidersError, data: identityProviders } = useQuery({
     queryKey: QueryUtil.getGenericKey(QUERY_KEY.IDENTITY_PROVIDERS),
     queryFn: async ({ signal }) => (await AuthApi.getInstance().identityProvidersGetAll({ signal })).data,
     gcTime: Infinity,
@@ -79,7 +79,7 @@ export const RouterRoot = () => {
     return window.userManager;
   }, [identityProviders, oidcConfiguration]);
 
-  if (isIdentityProvidersPending) {
+  if (isIdentityProvidersLoading) {
     return <Spinner />;
   }
 

@@ -159,14 +159,6 @@ export const EpiTree = ({ linkedScrollSubject, ref }: EpiTreeProps) => {
     }
   }, [isLinked, zoomLevel]);
 
-  const resetZoomLevel = useCallback(() => {
-    if (isLinked) {
-      setZoomLevel(1);
-    } else {
-      setZoomLevel(ConfigManager.instance.config.epiTree.MIN_UNLINKED_ZOOM_LEVEL);
-    }
-  }, [isLinked]);
-
   const caseIds = useMemo(() => filteredCases.map(c => c.id).sort(), [filteredCases]);
 
   useEffect(() => {
@@ -181,7 +173,7 @@ export const EpiTree = ({ linkedScrollSubject, ref }: EpiTreeProps) => {
     tree_algorithm_code: treeConfiguration?.treeAlgorithm.code,
   }), [caseIds, treeConfiguration?.caseTypeCol.id, treeConfiguration?.treeAlgorithm.code]);
 
-  const { isPending: isTreePending, error: treeError, data: treeData } = useQuery({
+  const { isLoading: isTreeLoading, error: treeError, data: treeData } = useQuery({
     queryKey: QueryUtil.getRetrievePhylogeneticTreeKey(retrievePhylogeneticTreeRequestBody),
     queryFn: async ({ signal }) => {
       const response = await CaseApi.getInstance().retrievePhylogeneticTree(retrievePhylogeneticTreeRequestBody, { signal });
@@ -192,9 +184,9 @@ export const EpiTree = ({ linkedScrollSubject, ref }: EpiTreeProps) => {
     staleTime: Infinity,
   });
 
-  const isLoading = !!treeConfiguration && (isCaseDataLoading || (hasEnoughSequencesToShowTree && isTreePending));
+  const isLoading = !!treeConfiguration && (isCaseDataLoading || (hasEnoughSequencesToShowTree && isTreeLoading));
   const isTreeUnavailable = !isCaseDataLoading && ((!isLoading && !!treeError) || !hasEnoughSequencesToShowTree || tree?.maxBranchLength?.toNumber() === 0 || tree?.size === 0 || !treeConfiguration);
-  const shouldShowTree = !!treeConfiguration && !isCaseDataLoading && !treeError && !isTreePending && width > 0 && tree?.size > 0 && hasEnoughSequencesToShowTree;
+  const shouldShowTree = !!treeConfiguration && !isCaseDataLoading && !treeError && !isTreeLoading && width > 0 && tree?.size > 0 && hasEnoughSequencesToShowTree;
 
   const treeCanvasWidth = width;
   const treeCanvasHeight = height - ConfigManager.instance.config.epiTree.HEADER_HEIGHT;
@@ -348,22 +340,27 @@ export const EpiTree = ({ linkedScrollSubject, ref }: EpiTreeProps) => {
 
   }, [linkLineListToTree]);
 
-  const onAddTreeFilterMenuItemClick = useCallback(async (onMenuClose: () => void) => {
-    resetZoomLevel();
+  const resetZoomLevelAndScrollPosition = useCallback(() => {
+    setZoomLevel(ConfigManager.instance.config.epiTree.MIN_LINKED_ZOOM_LEVEL);
+    setIsLinked(true);
     updateScrollPosition(0, 0, 1);
+  }, [updateScrollPosition]);
 
+  const onAddTreeFilterMenuItemClick = useCallback(async (onMenuClose: () => void) => {
     await addTreeFilter(zoomInMenuItemConfig.rootId);
+    resetZoomLevelAndScrollPosition();
     onMenuClose();
-  }, [addTreeFilter, resetZoomLevel, updateScrollPosition, zoomInMenuItemConfig?.rootId]);
+  }, [addTreeFilter, zoomInMenuItemConfig?.rootId, resetZoomLevelAndScrollPosition]);
 
   const onRemoveTreeFilterButtonClick = useCallback(async () => {
-
     await removeTreeFilter();
-  }, [removeTreeFilter]);
+    resetZoomLevelAndScrollPosition();
+  }, [removeTreeFilter, resetZoomLevelAndScrollPosition]);
 
   const onTreeFilterStepOutButtonClick = useCallback(async () => {
     await treeFilterStepOut();
-  }, [treeFilterStepOut]);
+    resetZoomLevelAndScrollPosition();
+  }, [resetZoomLevelAndScrollPosition, treeFilterStepOut]);
 
   const getPathPropertiesFromCanvas = useCallback((canvas: HTMLCanvasElement, event: MouseEvent): TreePathProperties => {
     const ctx = canvas.getContext('2d');

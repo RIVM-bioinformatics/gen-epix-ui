@@ -103,7 +103,7 @@ export const EpiCasesAlreadyInCaseSetWarning = ({ cases }: EpiCasesAlreadyInCase
   return (
     <ResponseHandler
       error={caseSetMembersError || caseSetsError}
-      isPending={isCaseSetMembersLoading || isCaseSetsLoading}
+      isLoading={isCaseSetMembersLoading || isCaseSetsLoading}
       shouldHideActionButtons
     >
       {caseSetsByCase.size > 0 && (

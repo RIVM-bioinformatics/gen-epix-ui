@@ -183,7 +183,6 @@ export const TransferList = <TFieldValues extends FieldValues, TName extends Pat
                 >
                   <Checkbox
                     checked={checked.indexOf(item) !== -1}
-                    disableRipple
                     inputProps={{
                       'aria-labelledby': labelId,
                     }}

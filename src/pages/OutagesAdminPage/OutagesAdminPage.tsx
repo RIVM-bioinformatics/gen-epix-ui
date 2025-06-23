@@ -26,6 +26,7 @@ import type { TableColumn } from '../../models/table';
 import { TableUtil } from '../../utils/TableUtil';
 import { TestIdUtil } from '../../utils/TestIdUtil';
 import { CrudPage } from '../CrudPage';
+import { DATE_FORMAT } from '../../data/date';
 
 type FormFields = Pick<Outage, 'description' | 'active_from' | 'active_to' | 'visible_from' | 'visible_to' | 'is_active' | 'is_visible'>;
 
@@ -77,25 +78,25 @@ export const OutagesAdminPage = () => {
         definition: FORM_FIELD_DEFINITION_TYPE.DATE,
         name: 'active_from',
         label: t`Active from`,
-        withTime: true,
+        dateFormat: DATE_FORMAT.DATE_TIME,
       },
       {
         definition: FORM_FIELD_DEFINITION_TYPE.DATE,
         name: 'active_to',
         label: t`Active to`,
-        withTime: true,
+        dateFormat: DATE_FORMAT.DATE_TIME,
       },
       {
         definition: FORM_FIELD_DEFINITION_TYPE.DATE,
         name: 'visible_from',
         label: t`Visible from`,
-        withTime: true,
+        dateFormat: DATE_FORMAT.DATE_TIME,
       },
       {
         definition: FORM_FIELD_DEFINITION_TYPE.DATE,
         name: 'visible_to',
         label: t`Visible to`,
-        withTime: true,
+        dateFormat: DATE_FORMAT.DATE_TIME,
       },
       {
         definition: FORM_FIELD_DEFINITION_TYPE.BOOLEAN,
@@ -113,10 +114,10 @@ export const OutagesAdminPage = () => {
   const tableColumns = useMemo((): TableColumn<Outage>[] => {
     return [
       TableUtil.createTextColumn<Outage>({ id: 'description', name: t`Description` }),
-      TableUtil.createDateColumn<Outage>({ id: 'active_from', name: t`Active from`, withTime: true }),
-      TableUtil.createDateColumn<Outage>({ id: 'active_to', name: t`Active to`, withTime: true }),
-      TableUtil.createDateColumn<Outage>({ id: 'visible_from', name: t`Visible from`, withTime: true }),
-      TableUtil.createDateColumn<Outage>({ id: 'visible_to', name: t`Visible to`, withTime: true }),
+      TableUtil.createDateColumn<Outage>({ id: 'active_from', name: t`Active from`, dateFormat: DATE_FORMAT.DATE_TIME }),
+      TableUtil.createDateColumn<Outage>({ id: 'active_to', name: t`Active to`, dateFormat: DATE_FORMAT.DATE_TIME }),
+      TableUtil.createDateColumn<Outage>({ id: 'visible_from', name: t`Visible from`, dateFormat: DATE_FORMAT.DATE_TIME }),
+      TableUtil.createDateColumn<Outage>({ id: 'visible_to', name: t`Visible to`, dateFormat: DATE_FORMAT.DATE_TIME }),
       TableUtil.createBooleanColumn<Outage>({ id: 'is_active', name: t`Is active` }),
       TableUtil.createBooleanColumn<Outage>({ id: 'is_visible', name: t`Is visible` }),
     ];

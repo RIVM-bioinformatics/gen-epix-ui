@@ -177,7 +177,6 @@ export const Dialog = ({
                   <Button
                     key={action.label}
                     {...action}
-                    disableRipple
                   >
                     {action.label}
                   </Button>

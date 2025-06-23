@@ -103,11 +103,10 @@ export class DataUtil {
       };
     }
 
-    const isLoadings = [DataUtil.isResponse(response) ? response.isLoading || response.isPending : false];
-    if (loadables) {
-      isLoadings.push(...loadables.map(obj => obj.isLoading));
-    }
-    const isLoading = isLoadings.some(Boolean);
+    const isLoading = [
+      DataUtil.isResponse(response) ? (response.isLoading || response.isPending) : false,
+      ...loadables?.map(obj => obj.isLoading) ?? [],
+    ].some(Boolean);
     const sort = sortComperator ?? StringUtil.sortComperator;
 
     let options: {

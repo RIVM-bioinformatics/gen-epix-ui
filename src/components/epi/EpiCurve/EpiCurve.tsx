@@ -62,6 +62,7 @@ import type { EpiContextMenuConfigWithPosition } from '../EpiContextMenu';
 import { EpiContextMenu } from '../EpiContextMenu';
 import { EpiWidget } from '../EpiWidget';
 import { EpiWidgetUnavailable } from '../EpiWidgetUnavailable';
+import { DATE_FORMAT } from '../../../data/date';
 
 echarts.use([TooltipComponent, GridComponent, DataZoomComponent, BarChart, CanvasRenderer]);
 
@@ -407,30 +408,30 @@ export const EpiCurve = () => {
     let toDate: Date;
 
     if (focussedDate.match(/^\d{4}$/)) {
-      const date = parse(focussedDate, 'yyyy', new Date());
+      const date = parse(focussedDate, DATE_FORMAT.YEAR, new Date());
       fromDate = startOfYear(date);
       toDate = endOfYear(date);
       // year
     } else if (focussedDate.match(/^\d{4}-\d{2}$/)) {
       // month
-      const date = parse(focussedDate, 'yyyy-MM', new Date());
+      const date = parse(focussedDate, DATE_FORMAT.YEAR_MONTH, new Date());
       fromDate = startOfMonth(date);
       toDate = lastDayOfMonth(date);
     } else if (focussedDate.match(/^\d{4}-\d{2}-\d{2}$/)) {
       // full date
-      const date = parse(focussedDate, 'yyyy-MM-dd', new Date());
+      const date = parse(focussedDate, DATE_FORMAT.DATE, new Date());
       fromDate = date;
       toDate = date;
     } else if (focussedDate.match(/^\d{4}-W\d{2}$/)) {
       // week
-      const date = parse(focussedDate, 'YYYY-\'W\'ww', new Date(), {
+      const date = parse(focussedDate, DATE_FORMAT.YEAR_WEEK, new Date(), {
         useAdditionalWeekYearTokens: true,
       });
       fromDate = startOfISOWeek(date);
       toDate = endOfISOWeek(date);
     } else if (focussedDate.match(/^\d{4}-Q\d$/)) {
       // quarter
-      const date = parse(focussedDate, 'yyyy-QQQ', new Date());
+      const date = parse(focussedDate, DATE_FORMAT.YEAR_QUARTER, new Date());
       fromDate = startOfQuarter(date);
       toDate = endOfQuarter(date);
     }

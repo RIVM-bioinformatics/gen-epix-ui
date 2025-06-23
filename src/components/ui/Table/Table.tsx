@@ -145,6 +145,14 @@ export const Table = <TRowData, >({
   const tableRange = useRef<ListRange>(null);
   const [container, setContainer] = useState<HTMLDivElement>();
 
+  // If applying filters or sorting and the results in the table don't change, we need to re-render the table manually to reflect the changes in filters / sorting in the headers.
+
+  // re-render the table when the filters change
+  useStore(tableStore, (state) => JSON.stringify(state.filters.map(x => x.filterValue)));
+  // re-render the table when the sort by field or direction changes
+  useStore(tableStore, (state) => state.sortByField);
+  useStore(tableStore, (state) => state.sortDirection);
+
   const onTableRowClick = useCallback((row: TableRowParams<TRowData>, event: MouseEvent) => {
     if (onRowClick) {
       if (ConfigManager.instance.config.enablePageVents) {

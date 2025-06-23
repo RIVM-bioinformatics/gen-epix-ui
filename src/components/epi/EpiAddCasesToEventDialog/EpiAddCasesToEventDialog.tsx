@@ -115,7 +115,7 @@ export const EpiAddCasesToEventDialog = withDialog<EpiAddCasesToEventDialogProps
     type: 'UUID_SET',
     members: [caseSetId],
   }), [caseSetId]);
-  const { isPending: isCaseSetMembersPending, error: caseSetMembersError, data: caseSetMembers } = useQuery({
+  const { isLoading: isCaseSetMembersLoading, error: caseSetMembersError, data: caseSetMembers } = useQuery({
     queryKey: QueryUtil.getGenericKey(QUERY_KEY.CASE_SET_MEMBERS, caseSetMembersFilter),
     queryFn: async ({ signal }) => {
       const response = await CaseApi.getInstance().caseSetMembersPostQuery(caseSetMembersFilter, { signal });
@@ -130,7 +130,7 @@ export const EpiAddCasesToEventDialog = withDialog<EpiAddCasesToEventDialogProps
     type: 'UUID_SET',
     members: [caseSetId],
   }), [caseSetId]);
-  const { isPending: isCaseSetDataCollectionLinksLoading, error: caseSetDataCollectionLinksError, data: caseSetDataCollectionLinks } = useQuery({
+  const { isLoading: isCaseSetDataCollectionLinksLoading, error: caseSetDataCollectionLinksError, data: caseSetDataCollectionLinks } = useQuery({
     queryKey: QueryUtil.getGenericKey(QUERY_KEY.CASE_SET_DATA_COLLECTION_LINKS, caseSetDataCollectionLinksFilter),
     queryFn: async ({ signal }) => {
       const response = await CaseApi.getInstance().caseSetDataCollectionLinksPostQuery(caseSetDataCollectionLinksFilter, { signal });
@@ -197,7 +197,6 @@ export const EpiAddCasesToEventDialog = withDialog<EpiAddCasesToEventDialogProps
     onTitleChange(t('Add {{numCases}} selected case(s) to an existing event', { numCases: openProps.rows.length }));
   }, [completeCaseType.name, onTitleChange, openProps.rows.length, t]);
 
-
   useEffect(() => {
     const actions: DialogAction[] = [];
     actions.push(
@@ -215,15 +214,15 @@ export const EpiAddCasesToEventDialog = withDialog<EpiAddCasesToEventDialogProps
         autoFocus: true,
         variant: 'contained',
         onClick: onConfirmButtonClick,
-        disabled: (caseSetId && isCaseSetMembersPending) || !caseSetId || isMutatingItems || caseIdsToAdd.length < 1,
-        loading: (caseSetId && isCaseSetMembersPending) || isMutatingItems || isCaseSetDataCollectionLinksLoading,
+        disabled: (caseSetId && isCaseSetMembersLoading) || !caseSetId || isMutatingItems || caseIdsToAdd.length < 1,
+        loading: (caseSetId && isCaseSetMembersLoading) || isMutatingItems || isCaseSetDataCollectionLinksLoading,
         label: t`Confirm`,
         form: formId,
         type: 'submit',
       },
     );
     onActionsChange(actions);
-  }, [caseSetId, formId, isMutatingItems, isCaseSetMembersPending, onActionsChange, onCancelButtonClick, onConfirmButtonClick, t, caseIdsToAdd.length, isCaseSetDataCollectionLinksLoading]);
+  }, [caseSetId, formId, isMutatingItems, isCaseSetMembersLoading, onActionsChange, onCancelButtonClick, onConfirmButtonClick, t, caseIdsToAdd.length, isCaseSetDataCollectionLinksLoading]);
 
   const loadables = useMemo(() => [caseSetOptionsQuery, caseSetsMapQuery, dataCollectionsMapQuery], [caseSetOptionsQuery, caseSetsMapQuery, dataCollectionsMapQuery]);
 
@@ -231,7 +230,7 @@ export const EpiAddCasesToEventDialog = withDialog<EpiAddCasesToEventDialogProps
 
   return (
     <ResponseHandler
-      isPending={isMutatingItems}
+      isLoading={isMutatingItems}
       loadables={loadables}
     >
       <FormProvider {...formMethods}>
@@ -264,7 +263,7 @@ export const EpiAddCasesToEventDialog = withDialog<EpiAddCasesToEventDialogProps
               <ResponseHandler
                 error={caseSetMembersError || caseSetDataCollectionLinksError}
                 inlineSpinner
-                isPending={isCaseSetMembersPending}
+                isLoading={isCaseSetMembersLoading}
                 shouldHideActionButtons
               >
                 {caseSetDataCollections?.length > 0 && (

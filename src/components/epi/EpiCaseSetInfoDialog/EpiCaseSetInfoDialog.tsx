@@ -130,7 +130,7 @@ export const EpiCaseSetInfoDialog = withDialog<EpiCaseSetInfoDialogProps, EpiCas
     type: 'UUID_SET',
     members: [caseSet?.id],
   }), [caseSet?.id]);
-  const { isPending: isSetCaseDataCollectionLinksLoading, error: caseSetDataCollectionLinksError, data: caseSetDataCollectionLinks } = useQuery({
+  const { isLoading: isSetCaseDataCollectionLinksLoading, error: caseSetDataCollectionLinksError, data: caseSetDataCollectionLinks } = useQuery({
     queryKey: QueryUtil.getGenericKey(QUERY_KEY.CASE_SET_DATA_COLLECTION_LINKS, caseSetDataCollectionLinksFilter),
     queryFn: async ({ signal }) => {
       const response = await CaseApi.getInstance().caseSetDataCollectionLinksPostQuery(caseSetDataCollectionLinksFilter, { signal });
@@ -328,7 +328,7 @@ export const EpiCaseSetInfoDialog = withDialog<EpiCaseSetInfoDialogProps, EpiCas
       <ResponseHandler
         error={caseSetError || caseSetDataCollectionLinksError}
         inlineSpinner
-        isPending={isCaseSetLoading || isSetCaseDataCollectionLinksLoading}
+        isLoading={isCaseSetLoading || isSetCaseDataCollectionLinksLoading}
         loadables={loadables}
         shouldHideActionButtons
       >

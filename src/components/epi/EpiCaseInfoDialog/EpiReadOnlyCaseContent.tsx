@@ -16,6 +16,7 @@ import type { Case } from '../../../api';
 import { useDataCollectionsMapQuery } from '../../../dataHooks/useDataCollectionsQuery';
 import { GenericErrorMessage } from '../../ui/GenericErrorMessage';
 import { ResponseHandler } from '../../ui/ResponseHandler';
+import { DATE_FORMAT } from '../../../data/date';
 
 export type EpiReadOnlyCaseContentProps = {
   readonly epiCase: Case;
@@ -74,7 +75,7 @@ export const EpiReadOnlyCaseContent = ({ epiCase, ...boxProps }: EpiReadOnlyCase
                   {t`Case date`}
                 </TableCell>
                 <TableCell>
-                  {format(epiCase.case_date, 'yyyy-MM-dd')}
+                  {format(epiCase.case_date, DATE_FORMAT.DATE)}
                 </TableCell>
               </TableRow>
             </TableBody>

@@ -199,7 +199,7 @@ export const EpiDashboard = withEpiStore(({ caseSet }: EpiDashboardProps) => {
     >
       <ResponseHandler
         error={dataError}
-        isPending={false}
+        isLoading={false}
       >
 
         {/* Sidebar */}

@@ -17,6 +17,7 @@ import { useCaseSetCategoryMapQuery } from '../../../dataHooks/useCaseSetCategor
 import { useCaseSetStatusMapQuery } from '../../../dataHooks/useCaseSetStatusesQuery';
 import { useCaseTypeMapQuery } from '../../../dataHooks/useCaseTypesQuery';
 import { ResponseHandler } from '../../ui/ResponseHandler';
+import { DATE_FORMAT } from '../../../data/date';
 
 export type EpiCaseSetContentProps = {
   readonly caseSet: CaseSet;
@@ -94,7 +95,7 @@ export const EpiCaseSetContent = ({ caseSet, ...boxProps }: EpiCaseSetContentPro
                 {t`Created at`}
               </TableCell>
               <TableCell>
-                {caseSet.created_at ? format(caseSet.created_at, 'yyyy-MM-dd HH:mm:ss') : t`Unknown`}
+                {caseSet.created_at ? format(caseSet.created_at, DATE_FORMAT.DATE_TIME) : t`Unknown`}
               </TableCell>
             </TableRow>
           </TableBody>
