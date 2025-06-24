@@ -149,13 +149,16 @@ export const EpiTree = ({ linkedScrollSubject, ref }: EpiTreeProps) => {
   useEffect(() => {
     if (sortByField && isLinked) {
       setIsLinked(false);
-      setZoomLevel(ConfigManager.instance.config.epiTree.MIN_UNLINKED_ZOOM_LEVEL);
+      setZoomLevel(ConfigManager.instance.config.epiTree.INITIAL_UNLINKED_ZOOM_LEVEL);
     }
   }, [isLinked, sortByField]);
 
   useEffect(() => {
     if (isLinked && zoomLevel !== 1) {
       setIsLinked(false);
+    }
+    if (!isLinked && zoomLevel === 1) {
+      setIsLinked(true);
     }
   }, [isLinked, zoomLevel]);
 
@@ -268,6 +271,8 @@ export const EpiTree = ({ linkedScrollSubject, ref }: EpiTreeProps) => {
       x: Math.round(positionX * devicePixelRatio),
       y: newPositionY,
     });
+    // console.log({ positionX, positionY, x: Math.round(positionX * devicePixelRatio), y: newPositionY });
+
     if (internalZoomLevel === 1) {
       updateLinkedScrollSubjectDebounced(newPositionY);
     }
@@ -341,7 +346,7 @@ export const EpiTree = ({ linkedScrollSubject, ref }: EpiTreeProps) => {
   }, [linkLineListToTree]);
 
   const resetZoomLevelAndScrollPosition = useCallback(() => {
-    setZoomLevel(ConfigManager.instance.config.epiTree.MIN_LINKED_ZOOM_LEVEL);
+    setZoomLevel(1);
     setIsLinked(true);
     updateScrollPosition(0, 0, 1);
   }, [updateScrollPosition]);
@@ -433,19 +438,19 @@ export const EpiTree = ({ linkedScrollSubject, ref }: EpiTreeProps) => {
       return;
     }
 
-    EpiTreeUtil.drawTreeCanvas({ canvas: treeCanvas, theme, treeAssembly, stratification, width, zoomLevel, horizontalScrollPosition, verticalScrollPosition, treeCanvasWidth, treeWidthMinusPadding, treeCanvasHeight, pixelToGeneticDistanceRatio, tickerMarkScale, shouldShowDistances: isShowDistancesEnabled, devicePixelRatio });
+    EpiTreeUtil.drawTreeCanvas({ canvas: treeCanvas, theme, treeAssembly, stratification, zoomLevel, horizontalScrollPosition, verticalScrollPosition, treeCanvasWidth, treeCanvasHeight, pixelToGeneticDistanceRatio, tickerMarkScale, shouldShowDistances: isShowDistancesEnabled, devicePixelRatio });
     let animationFrameId: number;
     const unsubscribe = internalHighlightingSubject.subscribe((highlighting) => {
       cancelAnimationFrame(animationFrameId);
       animationFrameId = requestAnimationFrame(() => {
-        EpiTreeUtil.drawTreeCanvas({ canvas: treeCanvas, theme, treeAssembly, stratification, width, zoomLevel, horizontalScrollPosition, verticalScrollPosition, treeCanvasWidth, treeWidthMinusPadding, treeCanvasHeight, pixelToGeneticDistanceRatio, tickerMarkScale, highlightedNodeNames: highlighting.caseIds, shouldShowDistances: isShowDistancesEnabled, devicePixelRatio });
+        EpiTreeUtil.drawTreeCanvas({ canvas: treeCanvas, theme, treeAssembly, stratification, zoomLevel, horizontalScrollPosition, verticalScrollPosition, treeCanvasWidth, treeCanvasHeight, pixelToGeneticDistanceRatio, tickerMarkScale, highlightedNodeNames: highlighting.caseIds, shouldShowDistances: isShowDistancesEnabled, devicePixelRatio });
       });
     });
     return () => {
       unsubscribe();
       cancelAnimationFrame(animationFrameId);
     };
-  }, [treeCanvasHeight, treeCanvas, internalHighlightingSubject, treeWidthMinusPadding, pixelToGeneticDistanceRatio, stratification, theme, tickerMarkScale, treeAssembly, treeCanvasWidth, horizontalScrollPosition, verticalScrollPosition, width, zoomLevel, isShowDistancesEnabled, devicePixelRatio]);
+  }, [treeCanvasHeight, treeCanvas, internalHighlightingSubject, pixelToGeneticDistanceRatio, stratification, theme, tickerMarkScale, treeAssembly, treeCanvasWidth, horizontalScrollPosition, verticalScrollPosition, width, zoomLevel, isShowDistancesEnabled, devicePixelRatio]);
 
   // Setup canvas event listeners (note: must be in a separate useEffect to prevent render loop)
   useEffect(() => {
@@ -453,7 +458,12 @@ export const EpiTree = ({ linkedScrollSubject, ref }: EpiTreeProps) => {
       return;
     }
 
-    let pos = { x: 0, y: 0, currentX: 0, currentY: 0 };
+    let pos = {
+      x: 0,
+      y: 0,
+      currentX: 0,
+      currentY: 0,
+    };
     let followMouse = false;
 
     const onMouseDown = (event: MouseEvent) => {
@@ -461,7 +471,6 @@ export const EpiTree = ({ linkedScrollSubject, ref }: EpiTreeProps) => {
       pos = {
         x: event.clientX,
         y: event.clientY,
-        // FIXME
         currentX: canvasScrollSubject.data.x,
         currentY: canvasScrollSubject.data.y,
       };
@@ -477,11 +486,15 @@ export const EpiTree = ({ linkedScrollSubject, ref }: EpiTreeProps) => {
         const deltaX = event.clientX - pos.x;
         const deltaY = event.clientY - pos.y;
         // the new scroll position:
-        const scrolledX = pos.currentX - deltaX;
-        const scrolledY = pos.currentY - deltaY;
-        // the maximum scroll position:
+        const scrollPositionX = pos.currentX - deltaX;
+        const scrollPositionY = pos.currentY - deltaY;
 
-        updateScrollPosition(scrolledX, scrolledY, zoomLevel);
+        let sanitizedScrollPositionX = scrollPositionX;
+        if (zoomLevel === 1 && Math.abs(deltaX) < ConfigManager.instance.config.epiTree.PANNING_THRESHOLD && pos.currentX === 0) {
+          sanitizedScrollPositionX = 0;
+        }
+
+        updateScrollPosition(sanitizedScrollPositionX, scrollPositionY, zoomLevel);
         return;
       }
 
@@ -543,31 +556,34 @@ export const EpiTree = ({ linkedScrollSubject, ref }: EpiTreeProps) => {
 
     const onMouseWheel = (event: WheelEvent) => {
       event.preventDefault();
-      const currentScrollPosition = canvasScrollSubject.data;
       // if (event.shiftKey) {
       //   updateScrollPosition(currentScrollPosition + event.deltaX, zoomLevel);
       //   return;
       // }
 
-      const { MAX_ZOOM_SPEED, MIN_ZOOM_SPEED, MAX_ZOOM_LEVEL, MIN_UNLINKED_ZOOM_LEVEL } = ConfigManager.instance.config.epiTree;
+      const { MAX_ZOOM_SPEED, MIN_ZOOM_SPEED, MAX_ZOOM_LEVEL, MIN_ZOOM_LEVEL } = ConfigManager.instance.config.epiTree;
 
       const zoomSpeed = Math.min(MAX_ZOOM_SPEED, Math.max(MIN_ZOOM_SPEED, treeHeight / treeCanvasHeight * 0.1));
-      const newZoomLevel = Math.min(MAX_ZOOM_LEVEL, Math.max(isLinked ? 1 : MIN_UNLINKED_ZOOM_LEVEL, zoomLevel + (event.deltaY > 0 ? zoomSpeed : -zoomSpeed)));
-      const mouseOnFullSizeTreePosition = (event.offsetY + currentScrollPosition.y) * zoomLevel;
-      const mouseOnCurrentSizeTreePosition = mouseOnFullSizeTreePosition / (treeHeight / (treeHeight / zoomLevel));
-      const mouseOnNewSizeTreePosition = mouseOnFullSizeTreePosition / (treeHeight / (treeHeight / newZoomLevel));
-      const newScrollPosition = currentScrollPosition.y - (mouseOnCurrentSizeTreePosition - mouseOnNewSizeTreePosition);
+      const newZoomLevel = Math.min(MAX_ZOOM_LEVEL, Math.max(MIN_ZOOM_LEVEL, zoomLevel + (event.deltaY > 0 ? zoomSpeed : -zoomSpeed)));
+
+      const mouseYOnFullSizeTreePosition = (event.offsetY + canvasScrollSubject.data.y) * zoomLevel;
+      const mouseYOnCurrentSizeTreePosition = mouseYOnFullSizeTreePosition / (treeHeight / (treeHeight / zoomLevel));
+      const mouseYOnNewSizeTreePosition = mouseYOnFullSizeTreePosition / (treeHeight / (treeHeight / newZoomLevel));
+      const newScrollPositionY = canvasScrollSubject.data.y - (mouseYOnCurrentSizeTreePosition - mouseYOnNewSizeTreePosition);
+
+      const mouseXOnFullSizeTreePosition = (event.offsetX + canvasScrollSubject.data.x) * zoomLevel;
+      const mouseXOnCurrentSizeTreePosition = mouseXOnFullSizeTreePosition / (treeCanvasWidth / (treeCanvasWidth / zoomLevel));
+      const mouseXOnNewSizeTreePosition = mouseXOnFullSizeTreePosition / (treeCanvasWidth / (treeCanvasWidth / newZoomLevel));
+      const newScrollPositionX = canvasScrollSubject.data.x - (mouseXOnCurrentSizeTreePosition - mouseXOnNewSizeTreePosition);
 
       setZoomLevel(newZoomLevel);
       if (newZoomLevel !== 1) {
-        // FIXME
-        updateScrollPosition(0, newScrollPosition, newZoomLevel);
+        updateScrollPosition(newScrollPositionX, newScrollPositionY, newZoomLevel);
       } else {
-        // FIXME
-        updateScrollPosition(0, linkedScrollSubject.data?.position ?? 0, 1);
+        updateScrollPosition(newScrollPositionX, linkedScrollSubject.data?.position ?? 0, 1);
       }
 
-      if (newZoomLevel > (isLinked ? 1 : MIN_UNLINKED_ZOOM_LEVEL) && newZoomLevel < MAX_ZOOM_LEVEL) {
+      if (newZoomLevel > MIN_ZOOM_LEVEL && newZoomLevel < MAX_ZOOM_LEVEL) {
         // Disconnect the event listener and allow a render cycle to complete
         // But only when zoomLevel is not at it's boundaries, otherwise the event listener will not be reconnected
         treeCanvas.removeEventListener('wheel', onMouseWheel);
@@ -611,9 +627,9 @@ export const EpiTree = ({ linkedScrollSubject, ref }: EpiTreeProps) => {
     canvas.width = canvas.clientWidth * devicePixelRatio;
     canvas.height = canvas.clientHeight * devicePixelRatio;
 
-    EpiTreeUtil.drawGuides({ canvas, tickerMarkScale, treeWidthMinusPadding, pixelToGeneticDistanceRatio, horizontalScrollPosition, paddingTop: ConfigManager.instance.config.epiTree.HEADER_HEIGHT * 0.7, paddingBottom: 0, zoomLevel, devicePixelRatio });
-    EpiTreeUtil.drawGuides({ canvas, tickerMarkScale, treeWidthMinusPadding, pixelToGeneticDistanceRatio, horizontalScrollPosition, paddingTop: 0, paddingBottom: ConfigManager.instance.config.epiTree.HEADER_HEIGHT * 0.7, zoomLevel, devicePixelRatio });
-    EpiTreeUtil.drawScale({ canvas, theme, tickerMarkScale, pixelToGeneticDistanceRatio, treeWidthMinusPadding, zoomLevel, devicePixelRatio, horizontalScrollPosition });
+    EpiTreeUtil.drawGuides({ canvas, tickerMarkScale, pixelToGeneticDistanceRatio, horizontalScrollPosition, paddingTop: ConfigManager.instance.config.epiTree.HEADER_HEIGHT * 0.7, paddingBottom: 0, zoomLevel, devicePixelRatio });
+    EpiTreeUtil.drawGuides({ canvas, tickerMarkScale, pixelToGeneticDistanceRatio, horizontalScrollPosition, paddingTop: 0, paddingBottom: ConfigManager.instance.config.epiTree.HEADER_HEIGHT * 0.7, zoomLevel, devicePixelRatio });
+    EpiTreeUtil.drawScale({ canvas, theme, tickerMarkScale, pixelToGeneticDistanceRatio, zoomLevel, devicePixelRatio, horizontalScrollPosition });
 
     // Draw horizontal top divider
     EpiTreeUtil.drawDivider({ canvas, y: 0, devicePixelRatio });
@@ -621,7 +637,7 @@ export const EpiTree = ({ linkedScrollSubject, ref }: EpiTreeProps) => {
     EpiTreeUtil.drawDivider({ canvas, y: ConfigManager.instance.config.epiTree.HEADER_HEIGHT - 1, devicePixelRatio });
 
     ctx.translate(-0.5, -0.5);
-  }, [headerCanvas, treeWidthMinusPadding, pixelToGeneticDistanceRatio, theme, tickerMarkScale, zoomLevel, devicePixelRatio, horizontalScrollPosition]);
+  }, [headerCanvas, pixelToGeneticDistanceRatio, theme, tickerMarkScale, zoomLevel, devicePixelRatio, horizontalScrollPosition]);
 
   const onShowDetailsSelectionMenuItemClick = useCallback((onMenuClose: () => void) => {
     EpiEventBusManager.instance.emit('openCaseInfoDialog', {
