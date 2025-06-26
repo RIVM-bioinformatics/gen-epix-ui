@@ -3,12 +3,11 @@ import first from 'lodash/first';
 import intersection from 'lodash/intersection';
 import last from 'lodash/last';
 import round from 'lodash/round';
-import type { Theme } from '@mui/material';
+import { type Theme } from '@mui/material';
 
 import { DataUrlUtil } from '../DataUrlUtil';
 import { NumberUtil } from '../NumberUtil';
 import { EpiDataUtil } from '../EpiDataUtil';
-import { ColorUtil } from '../ColorUtil';
 import type { CompleteCaseType } from '../../api';
 import { ColType } from '../../api';
 import { ConfigManager } from '../../classes/managers/ConfigManager';
@@ -281,7 +280,7 @@ export class EpiTreeUtil {
 
   private static assembleLeafNode(treeAssemblyContext: TreeAssemblyContext, node: TreeNode, distance = 0, leafIndex = 0): NodeAssemblyResult {
     const leafX = (distance ?? 0) + (node.branchLength.toNumber() ?? 0);
-    const leafXPxEnd = Math.ceil(leafX * treeAssemblyContext.pixelToGeneticDistanceRatio) + ConfigManager.instance.config.epiTree.TREE_PADDING_LEFT;
+    const leafXPxEnd = leafX * treeAssemblyContext.pixelToGeneticDistanceRatio + ConfigManager.instance.config.epiTree.TREE_PADDING;
     const leafYPx = ((leafIndex) * ConfigManager.instance.config.epiList.TABLE_ROW_HEIGHT) + (ConfigManager.instance.config.epiList.TABLE_ROW_HEIGHT / 2);
     const leafXPxDistance = (node.branchLength.toNumber() ?? 0) * treeAssemblyContext.pixelToGeneticDistanceRatio;
     const leafXPxStart = leafXPxEnd - leafXPxDistance;
@@ -289,7 +288,7 @@ export class EpiTreeUtil {
 
     // add horizontal line according to distance
     const horizontalLineAccordingToDistancePath = new Path2D();
-    horizontalLineAccordingToDistancePath.moveTo(leafXPxStart, leafYPx);
+    horizontalLineAccordingToDistancePath.moveTo(leafXPxStart - 0.5, leafYPx);
     horizontalLineAccordingToDistancePath.lineTo(leafXPxEnd, leafYPx);
     horizontalLineAccordingToDistancePath.closePath();
     treeAssemblyContext.treeAssembly.leafTreeLines.push({ nodeName: node.name, shape: horizontalLineAccordingToDistancePath });
@@ -356,7 +355,7 @@ export class EpiTreeUtil {
 
     // add horizontal line according to distance
     const horizontalLineAccordingToDistancePath = new Path2D();
-    horizontalLineAccordingToDistancePath.moveTo(ancestorXPxStart, ancestorYPx);
+    horizontalLineAccordingToDistancePath.moveTo(ancestorXPxStart - 0.5, ancestorYPx);
     horizontalLineAccordingToDistancePath.lineTo(ancestorXPxEnd, ancestorYPx);
     horizontalLineAccordingToDistancePath.closePath();
     treeAssemblyContext.treeAssembly.horizontalAncestorTreeLines.push({ nodeNames: [node.name, ...caseIds], shape: horizontalLineAccordingToDistancePath });
@@ -411,8 +410,6 @@ export class EpiTreeUtil {
     devicePixelRatio: number;
   }): void {
     const { canvas, theme, treeAssembly, stratification, zoomLevel, verticalScrollPosition, horizontalScrollPosition, shouldShowDistances, devicePixelRatio, highlightedNodeNames = [] } = params;
-    const REGULAR_FILL_COLOR = theme.palette.grey[800];
-
     const ctx = canvas.getContext('2d');
     ctx.setTransform(
       (1 / zoomLevel) * devicePixelRatio, // The scale factor(X direction)
@@ -430,32 +427,24 @@ export class EpiTreeUtil {
     ctx.lineWidth = 1;
 
     treeAssembly.verticalAncestorTreeLines.forEach(({ shape, nodeNames }) => {
-      const isHighlighted = intersection(nodeNames, highlightedNodeNames).length > 0;
-      const opacity = !highlightedNodeNames.length || isHighlighted ? 1 : 0.2;
-      ctx.strokeStyle = ColorUtil.hexToRgba(REGULAR_FILL_COLOR, opacity);
+      ctx.strokeStyle = EpiTreeUtil.getFillStyle(theme.epi.tree.color, theme.epi.tree.dimFn, highlightedNodeNames, nodeNames);
       ctx.stroke(shape);
     });
     treeAssembly.horizontalAncestorTreeLines.forEach(({ shape, nodeNames }) => {
-      const isHighlighted = intersection(nodeNames, highlightedNodeNames).length > 0;
-      const opacity = !highlightedNodeNames.length || isHighlighted ? 1 : 0.2;
-      ctx.strokeStyle = ColorUtil.hexToRgba(REGULAR_FILL_COLOR, opacity);
+      ctx.strokeStyle = EpiTreeUtil.getFillStyle(theme.epi.tree.color, theme.epi.tree.dimFn, highlightedNodeNames, nodeNames);
       ctx.stroke(shape);
     });
 
     treeAssembly.leafTreeLines.forEach(({ shape, nodeName }) => {
-      const isHighlighted = highlightedNodeNames.includes(nodeName);
-      const opacity = !highlightedNodeNames.length || isHighlighted ? 1 : 0.2;
-      ctx.strokeStyle = ColorUtil.hexToRgba(REGULAR_FILL_COLOR, opacity);
+      ctx.strokeStyle = EpiTreeUtil.getFillStyle(theme.epi.tree.color, theme.epi.tree.dimFn, highlightedNodeNames, nodeName);
       ctx.stroke(shape);
     });
 
     if (zoomLevel === 1) {
       treeAssembly.supportLines.forEach(({ nodeName, fromX, toX, y }) => {
-        const isHighlighted = highlightedNodeNames.includes(nodeName);
-        const opacity = !highlightedNodeNames.length || isHighlighted ? 1 : 0.2;
         ctx.setLineDash([1, 4]);
         ctx.beginPath();
-        ctx.strokeStyle = ColorUtil.hexToRgba(REGULAR_FILL_COLOR, opacity);
+        ctx.strokeStyle = EpiTreeUtil.getFillStyle(theme.epi.tree.color, theme.epi.tree.dimFn, highlightedNodeNames, nodeName);
         ctx.moveTo(fromX, y);
         ctx.lineTo(toX + horizontalScrollPosition, y);
         ctx.stroke();
@@ -465,27 +454,39 @@ export class EpiTreeUtil {
 
     if (shouldShowDistances) {
       treeAssembly.distanceTexts.forEach(({ x, y, text, nodeNames }) => {
-        const isHighlighted = intersection(nodeNames, highlightedNodeNames).length > 0;
+        const isHighlighted = highlightedNodeNames.length && intersection(nodeNames, highlightedNodeNames).length > 0;
         if (isHighlighted) {
-          ctx.fillStyle = REGULAR_FILL_COLOR;
+          ctx.fillStyle = theme.epi.tree.color;
           ctx.fillText(text, x, y);
         }
       });
     }
 
     treeAssembly.ancestorNodes.forEach(({ shape, nodeNames }) => {
-      const isHighlighted = intersection(nodeNames, highlightedNodeNames).length > 0;
-      const opacity = !highlightedNodeNames.length || isHighlighted ? 1 : 0.2;
-      ctx.fillStyle = ColorUtil.hexToRgba(REGULAR_FILL_COLOR, opacity);
+      ctx.fillStyle = EpiTreeUtil.getFillStyle(theme.epi.tree.color, theme.epi.tree.dimFn, highlightedNodeNames, nodeNames);
       ctx.fill(shape);
     });
 
     treeAssembly.leafNodes.forEach(({ shape, nodeName }) => {
-      const isHighlighted = highlightedNodeNames.includes(nodeName);
-      const opacity = !highlightedNodeNames.length || isHighlighted ? 1 : 0.2;
-      ctx.fillStyle = ColorUtil.hexToRgba(stratification?.caseIdColors?.[nodeName] ?? REGULAR_FILL_COLOR, opacity);
+      ctx.fillStyle = EpiTreeUtil.getFillStyle(stratification?.caseIdColors?.[nodeName] ?? theme.epi.tree.color, theme.epi.tree.dimFn, highlightedNodeNames, nodeName);
       ctx.fill(shape);
     });
+  }
+
+  private static getFillStyle(color: string, dimFn: (color: string) => string, highlightedNodeNames: string[], nodeNames: string | string[]): string {
+    if (highlightedNodeNames.length) {
+      let isHighlighted = false;
+      if (Array.isArray(nodeNames)) {
+        isHighlighted = intersection(nodeNames, highlightedNodeNames).length > 0;
+      } else {
+        isHighlighted = highlightedNodeNames.includes(nodeNames);
+      }
+      if (isHighlighted) {
+        return color;
+      }
+      return dimFn(color);
+    }
+    return color;
   }
 
   public static drawTreeCanvas(params: {
@@ -534,7 +535,7 @@ export class EpiTreeUtil {
       const tickerWidth = (tickerMarkScale[1] * pixelToGeneticDistanceRatio) / zoomLevel;
       for (let i = 0; i <= tickerMarkScale[0]; i++) {
         ctx.beginPath();
-        const x = ((i * tickerWidth)) - horizontalScrollPosition + ConfigManager.instance.config.epiTree.TREE_PADDING_LEFT;
+        const x = ((i * tickerWidth)) + (ConfigManager.instance.config.epiTree.TREE_PADDING / zoomLevel) - horizontalScrollPosition;
         ctx.moveTo(x, paddingTop);
         ctx.lineTo(x, canvas.height - paddingBottom);
         ctx.stroke();
@@ -552,7 +553,7 @@ export class EpiTreeUtil {
       const tickerWidth = (tickerMarkScale[1] * pixelToGeneticDistanceRatio) / zoomLevel;
       for (let i = 0; i <= tickerMarkScale[0]; i++) {
         ctx.beginPath();
-        const x = ((i * tickerWidth)) - horizontalScrollPosition + ConfigManager.instance.config.epiTree.TREE_PADDING_LEFT;
+        const x = ((i * tickerWidth)) + (ConfigManager.instance.config.epiTree.TREE_PADDING / zoomLevel) - horizontalScrollPosition;
         if (x < 0) {
           continue;
         }
