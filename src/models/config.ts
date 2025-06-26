@@ -75,6 +75,7 @@ export interface Config {
     REGULAR_FILL_COLOR_SUPPORT_LINE: string;
     HEADER_HEIGHT: number;
     TREE_PADDING: number;
+    LINKED_SCROLL_DEBOUNCE_DELAY_MS: number;
     MAX_ZOOM_LEVEL: number;
     MIN_ZOOM_LEVEL: number;
     MIN_ZOOM_SPEED: number;

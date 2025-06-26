@@ -228,48 +228,19 @@ export const EpiTree = ({ linkedScrollSubject, ref }: EpiTreeProps) => {
       position: position / devicePixelRatio,
       origin: scrollContainerRef.current,
     });
-  }, 500);
+  }, ConfigManager.instance.config.epiTree.LINKED_SCROLL_DEBOUNCE_DELAY_MS);
 
   const updateScrollPosition = useCallback((positionX: number, positionY: number, internalZoomLevel: number) => {
-    let positionYMax: number;
-    let positionYMin: number;
-
-    const relativeTreePadding = ((ConfigManager.instance.config.epiTree.TREE_PADDING) * devicePixelRatio);
-
-    if (isLinked) {
-      if (treeHeight < treeCanvasHeight) {
-        positionYMin = 0;
-        positionYMax = 0;
-      } else {
-        // some magic needs to be done here to prevent the tree from scrolling too far. I can't detect the exact reason, but it seems to be related to the devicePixelRatio
-        // this only happens when you use the zoom functionality of the browser
-        const roundedDevicePixelRatio = Math.round(devicePixelRatio * 100) / 100;
-        const thresholds = [
-          [1, 0],
-          [1.1, 1],
-          [1.25, 4],
-          [1.5, 7],
-          [1.75, 11],
-          [2, 0],
-          [2.2, 4],
-          [2.5, 7],
-          [3, 15],
-        ];
-        let divePixelRatioOffset = thresholds.find(([threshold]) => roundedDevicePixelRatio <= threshold)?.[1] ?? 0;
-
-        positionYMin = relativeTreePadding;
-        positionYMax = (treeHeight * devicePixelRatio) - ((treeCanvasHeight) * devicePixelRatio) - divePixelRatioOffset;
-      }
-    } else {
-      positionYMin = (-treeCanvasHeight * devicePixelRatio) + relativeTreePadding + (ConfigManager.instance.config.epiTree.HEADER_HEIGHT * devicePixelRatio);
-      positionYMax = ((treeHeight / internalZoomLevel) * devicePixelRatio) - relativeTreePadding - (ConfigManager.instance.config.epiTree.HEADER_HEIGHT * devicePixelRatio);
-    }
-
-    const newPositionY = Math.max(Math.min(positionYMax, positionY), positionYMin);
-
-    const positionXMin = -treeCanvasWidth + (2 * relativeTreePadding);
-    const positionXMax = ((treeCanvasWidth / internalZoomLevel) * devicePixelRatio) - (2 * relativeTreePadding);
-    const newPositionX = Math.max(Math.min(positionXMax, positionX), positionXMin);
+    const { newPositionX, newPositionY } = EpiTreeUtil.getSanitizedScrollPosition({
+      devicePixelRatio,
+      internalZoomLevel,
+      isLinked,
+      positionX,
+      positionY,
+      treeCanvasHeight,
+      treeCanvasWidth,
+      treeHeight,
+    });
 
     canvasScrollSubject.next({
       x: newPositionX,
@@ -575,18 +546,22 @@ export const EpiTree = ({ linkedScrollSubject, ref }: EpiTreeProps) => {
       const zoomSpeed = Math.min(MAX_ZOOM_SPEED, Math.max(MIN_ZOOM_SPEED, treeHeight / treeCanvasHeight * 0.2));
       const newZoomLevel = Math.min(MAX_ZOOM_LEVEL, Math.max(MIN_ZOOM_LEVEL, zoomLevel + (event.deltaY > 0 ? zoomSpeed : -zoomSpeed)));
 
-      const mouseYOnFullSizeTreePosition = (event.offsetY + canvasScrollSubject.data.y) * zoomLevel;
-      const mouseYOnCurrentSizeTreePosition = mouseYOnFullSizeTreePosition / (treeHeight / (treeHeight / zoomLevel));
-      const mouseYOnNewSizeTreePosition = mouseYOnFullSizeTreePosition / (treeHeight / (treeHeight / newZoomLevel));
-      const newScrollPositionY = canvasScrollSubject.data.y - (mouseYOnCurrentSizeTreePosition - mouseYOnNewSizeTreePosition);
-
-      const mouseXOnFullSizeTreePosition = (event.offsetX + canvasScrollSubject.data.x) * zoomLevel;
-      const mouseXOnCurrentSizeTreePosition = mouseXOnFullSizeTreePosition / (treeCanvasWidth / (treeCanvasWidth / zoomLevel));
-      const mouseXOnNewSizeTreePosition = mouseXOnFullSizeTreePosition / (treeCanvasWidth / (treeCanvasWidth / newZoomLevel));
-      const newScrollPositionX = canvasScrollSubject.data.x - (mouseXOnCurrentSizeTreePosition - mouseXOnNewSizeTreePosition);
+      const newScrollPositionY = EpiTreeUtil.getNewScrollPositionForZoomLevel({
+        eventOffset: event.offsetY,
+        scrollPosition: canvasScrollSubject.data.y,
+        dimensionSize: treeHeight,
+        currentZoomLevel: zoomLevel,
+        newZoomLevel,
+      });
+      const newScrollPositionX = EpiTreeUtil.getNewScrollPositionForZoomLevel({
+        eventOffset: event.offsetX,
+        scrollPosition: canvasScrollSubject.data.x,
+        dimensionSize: treeCanvasWidth,
+        currentZoomLevel: zoomLevel,
+        newZoomLevel,
+      });
 
       setZoomLevel(newZoomLevel);
-
       if (newZoomLevel !== 1) {
         updateScrollPosition(newScrollPositionX, newScrollPositionY, newZoomLevel);
       } else {

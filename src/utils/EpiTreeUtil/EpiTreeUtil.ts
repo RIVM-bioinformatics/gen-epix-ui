@@ -183,9 +183,10 @@ export class EpiTreeUtil {
   /**
    * getTickMarkScale
    *
-   * @param canvasWidth width of the canvas in pixels
+   * @param treeWidthMinusPadding width of the canvas in pixels
    * @param geneticTreeWidth
    * @param minGeneticScaleUnit
+   * @param zoomLevel
    * @returns [number of lines to draw, genetic distance of single line, minGeneticScaleUnit]
    */
   public static getTickMarkScale(params: { treeWidthMinusPadding: number; geneticTreeWidth: number; minGeneticScaleUnit: number; zoomLevel: number }): TickerMarkScale {
@@ -225,7 +226,7 @@ export class EpiTreeUtil {
         const product = increment * numLines;
         const leftover = Math.abs(geneticTreeWidth - product);
         if (leftover < bestCombination[2]) {
-          bestCombination = [numLines, increment, leftover];
+          bestCombination = [Math.min(numLines, geneticTreeWidth / increment), increment, leftover];
         }
       }
     }
@@ -446,7 +447,7 @@ export class EpiTreeUtil {
         ctx.beginPath();
         ctx.strokeStyle = EpiTreeUtil.getFillStyle(theme.epi.tree.color, theme.epi.tree.dimFn, highlightedNodeNames, nodeName);
         ctx.moveTo(fromX, y);
-        ctx.lineTo(toX + horizontalScrollPosition, y);
+        ctx.lineTo(toX + (horizontalScrollPosition / devicePixelRatio), y);
         ctx.stroke();
         ctx.setLineDash([]);
       });
@@ -535,7 +536,7 @@ export class EpiTreeUtil {
       const tickerWidth = (tickerMarkScale[1] * pixelToGeneticDistanceRatio) / zoomLevel;
       for (let i = 0; i <= tickerMarkScale[0]; i++) {
         ctx.beginPath();
-        const x = ((i * tickerWidth)) + (ConfigManager.instance.config.epiTree.TREE_PADDING / zoomLevel) - horizontalScrollPosition;
+        const x = ((i * tickerWidth)) + (ConfigManager.instance.config.epiTree.TREE_PADDING / zoomLevel) - (horizontalScrollPosition / devicePixelRatio);
         ctx.moveTo(x, paddingTop);
         ctx.lineTo(x, canvas.height - paddingBottom);
         ctx.stroke();
@@ -548,16 +549,15 @@ export class EpiTreeUtil {
   public static drawScale(params: { canvas: HTMLCanvasElement; theme: Theme; tickerMarkScale: TickerMarkScale; pixelToGeneticDistanceRatio: number; zoomLevel: number; devicePixelRatio: number; horizontalScrollPosition: number }): void {
     const { canvas, theme, tickerMarkScale, pixelToGeneticDistanceRatio, devicePixelRatio, zoomLevel, horizontalScrollPosition = 0 } = params;
 
-
     EpiTreeUtil.draw(canvas, devicePixelRatio, (ctx) => {
       const tickerWidth = (tickerMarkScale[1] * pixelToGeneticDistanceRatio) / zoomLevel;
       for (let i = 0; i <= tickerMarkScale[0]; i++) {
         ctx.beginPath();
-        const x = ((i * tickerWidth)) + (ConfigManager.instance.config.epiTree.TREE_PADDING / zoomLevel) - horizontalScrollPosition;
+        const x = ((i * tickerWidth)) + (ConfigManager.instance.config.epiTree.TREE_PADDING / zoomLevel) - (horizontalScrollPosition / devicePixelRatio);
         if (x < 0) {
           continue;
         }
-        ctx.textAlign = x < 10 ? 'left' : 'center';
+        ctx.textAlign = 'center';
         ctx.font = `bold 11px ${theme.typography.fontFamily}`;
         const label = new Decimal(tickerMarkScale[1]);
         ctx.fillText(NumberUtil.toStringWithPrecision(label.times(i).toNumber(), tickerMarkScale[2]), x, ConfigManager.instance.config.epiTree.HEADER_HEIGHT * 0.61);
@@ -586,6 +586,66 @@ export class EpiTreeUtil {
     callback(ctx);
     ctx.translate(-0.5, -0.5);
     ctx.scale(1 / devicePixelRatio, 1 / devicePixelRatio);
+  }
+
+  public static getNewScrollPositionForZoomLevel(params: { eventOffset: number; scrollPosition: number; dimensionSize: number; currentZoomLevel: number; newZoomLevel: number }): number {
+    const { eventOffset, scrollPosition, dimensionSize, currentZoomLevel, newZoomLevel } = params;
+
+    const fullSizeTreePosition = ((eventOffset * devicePixelRatio) + scrollPosition) * currentZoomLevel;
+    const currentSizeTreePosition = fullSizeTreePosition / (dimensionSize / (dimensionSize / currentZoomLevel));
+    const newSizeTreePosition = fullSizeTreePosition / (dimensionSize / (dimensionSize / newZoomLevel));
+    return scrollPosition - (currentSizeTreePosition - newSizeTreePosition);
+  }
+
+  public static getSanitizedScrollPosition(params: { positionX: number; positionY: number; treeCanvasWidth: number; treeCanvasHeight: number; treeHeight: number; devicePixelRatio: number; internalZoomLevel: number; isLinked: boolean }): { newPositionX: number; newPositionY: number } {
+    const { positionX, positionY, treeCanvasWidth, treeCanvasHeight, treeHeight, devicePixelRatio, internalZoomLevel, isLinked } = params;
+    let positionYMax: number;
+    let positionYMin: number;
+
+    const relativeTreePadding = ((ConfigManager.instance.config.epiTree.TREE_PADDING) * devicePixelRatio);
+
+    if (isLinked && internalZoomLevel === 1) {
+      if (treeHeight < treeCanvasHeight) {
+        positionYMin = 0;
+        positionYMax = 0;
+      } else {
+        // some magic needs to be done here to prevent the tree from scrolling too far. I can't detect the exact reason, but it seems to be related to the devicePixelRatio
+        // this only happens when you use the zoom functionality of the browser
+        const roundedDevicePixelRatio = Math.round(devicePixelRatio * 100) / 100;
+        const thresholds = [
+          [1, 0],
+          [1.1, 1],
+          [1.25, 4],
+          [1.5, 7],
+          [1.75, 11],
+          [2, 0],
+          [2.2, 4],
+          [2.5, 7],
+          [3, 15],
+        ];
+        let divePixelRatioOffset = thresholds.find(([threshold]) => roundedDevicePixelRatio <= threshold)?.[1] ?? 0;
+
+        positionYMin = 0;
+        positionYMax = (treeHeight * devicePixelRatio) - ((treeCanvasHeight) * devicePixelRatio) - divePixelRatioOffset;
+      }
+    } else {
+      positionYMin = (-treeCanvasHeight * devicePixelRatio) + relativeTreePadding + (ConfigManager.instance.config.epiTree.HEADER_HEIGHT * devicePixelRatio);
+      positionYMax = ((treeHeight / internalZoomLevel) * devicePixelRatio) - relativeTreePadding - (ConfigManager.instance.config.epiTree.HEADER_HEIGHT * devicePixelRatio);
+    }
+    const newPositionY = Math.max(Math.min(positionYMax, positionY), positionYMin);
+
+    const positionXMin = -treeCanvasWidth + (2 * relativeTreePadding);
+    const positionXMax = ((treeCanvasWidth / internalZoomLevel) * devicePixelRatio) - (2 * relativeTreePadding);
+    const newPositionX = Math.max(Math.min(positionXMax, positionX), positionXMin);
+
+    if (positionY !== newPositionY || positionX !== newPositionX) {
+      console.log('getNextScrollPosition', { positionY, newPositionY, positionX, newPositionX });
+    }
+
+    return {
+      newPositionX,
+      newPositionY,
+    };
   }
 
   public static getTreeConfigurations(completeCaseType: CompleteCaseType): TreeConfiguration[] {

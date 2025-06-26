@@ -16,6 +16,7 @@ export class DevicePixelRatioManager extends SubscribableAbstract<number> {
       const window = WindowManager.instance.window;
       const media = window.matchMedia(`(resolution: ${window.devicePixelRatio}dppx)`);
       const onDevicePixelRatioChange = () => {
+        console.log('DevicePixelRatioManager: Device pixel ratio changed', window.devicePixelRatio);
         this.subject.next(window.devicePixelRatio);
         media.removeEventListener('change', onDevicePixelRatioChange);
         attachEventListener();
