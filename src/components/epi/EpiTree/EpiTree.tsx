@@ -147,13 +147,6 @@ export const EpiTree = ({ linkedScrollSubject, ref }: EpiTreeProps) => {
   }, [highlightingManager, internalHighlightingSubject]);
 
   useEffect(() => {
-    if (sortByField && isLinked) {
-      setIsLinked(false);
-      setZoomLevel(ConfigManager.instance.config.epiTree.INITIAL_UNLINKED_ZOOM_LEVEL);
-    }
-  }, [isLinked, sortByField]);
-
-  useEffect(() => {
     if (isLinked && zoomLevel !== 1) {
       setIsLinked(false);
     }
@@ -247,10 +240,18 @@ export const EpiTree = ({ linkedScrollSubject, ref }: EpiTreeProps) => {
       y: newPositionY,
     });
 
-    if (internalZoomLevel === 1) {
+    if (isLinked && internalZoomLevel === 1) {
       updateLinkedScrollSubjectDebounced(newPositionY);
     }
   }, [devicePixelRatio, isLinked, treeCanvasWidth, canvasScrollSubject, treeHeight, treeCanvasHeight, updateLinkedScrollSubjectDebounced]);
+
+  useEffect(() => {
+    if (sortByField && isLinked) {
+      setIsLinked(false);
+      setZoomLevel(ConfigManager.instance.config.epiTree.INITIAL_UNLINKED_ZOOM_LEVEL);
+      updateScrollPosition(0, 0, 0);
+    }
+  }, [isLinked, sortByField, updateScrollPosition]);
 
   const devicePixelRatioManagerCallback = useCallback((newDevicePixelRation: number, previousDevicePixelRatio: number) => {
     canvasScrollSubject.next({
@@ -343,46 +344,12 @@ export const EpiTree = ({ linkedScrollSubject, ref }: EpiTreeProps) => {
   }, [resetZoomLevelAndScrollPosition, treeFilterStepOut]);
 
   const getPathPropertiesFromCanvas = useCallback((canvas: HTMLCanvasElement, event: MouseEvent): TreePathProperties => {
-    const ctx = canvas.getContext('2d');
-    const rect = (event.target as HTMLCanvasElement).getBoundingClientRect();
-    const canvasX = (event.clientX - rect.left) * devicePixelRatio;
-    const canvasY = (event.clientY - rect.top) * devicePixelRatio;
-
-    for (const path of treeAssembly?.nodePathPropertiesMap?.keys() ?? []) {
-      if (ctx.isPointInPath(path, canvasX, canvasY)) {
-        return treeAssembly.nodePathPropertiesMap.get(path);
-      }
-    }
-
-    // Allow for a 1px vertical margin around the mouse position to allow for easier clicking
-    const canvasYs = [
-      ((event.clientY - 1) - rect.top) * devicePixelRatio,
-      canvasY,
-      ((event.clientY + 1) - rect.top) * devicePixelRatio,
-    ];
-
-    for (const path of treeAssembly?.horizontalLinePathPropertiesMap?.keys() ?? []) {
-      for (const y of canvasYs) {
-        if (ctx.isPointInStroke(path, canvasX, y)) {
-          return treeAssembly.horizontalLinePathPropertiesMap.get(path);
-        }
-      }
-    }
-
-    // Allow for a 1px horizontal margin around the mouse position to allow for easier clicking
-    const canvasXs = [
-      ((event.clientX - 1) - rect.left) * devicePixelRatio,
-      canvasX,
-      ((event.clientX + 1) - rect.left) * devicePixelRatio,
-    ];
-    for (const path of treeAssembly?.verticalLinePathPropertiesMap?.keys() ?? []) {
-      for (const x of canvasXs) {
-        if (ctx.isPointInStroke(path, x, canvasY)) {
-          return treeAssembly.verticalLinePathPropertiesMap.get(path);
-        }
-      }
-    }
-
+    return EpiTreeUtil.getPathPropertiesFromCanvas({
+      canvas,
+      event,
+      treeAssembly,
+      devicePixelRatio,
+    });
   }, [treeAssembly, devicePixelRatio]);
 
   useEffect(() => {
@@ -390,7 +357,7 @@ export const EpiTree = ({ linkedScrollSubject, ref }: EpiTreeProps) => {
       if (data.origin === scrollContainerRef.current) {
         return;
       }
-      if (zoomLevel === 1) {
+      if (isLinked && zoomLevel === 1) {
         canvasScrollSubject.next({
           x: canvasScrollSubject.data.x * devicePixelRatio,
           y: data.position * devicePixelRatio,
@@ -401,7 +368,7 @@ export const EpiTree = ({ linkedScrollSubject, ref }: EpiTreeProps) => {
     return () => {
       unsubscribe();
     };
-  }, [linkedScrollSubject, canvasScrollSubject, updateScrollPosition, zoomLevel, devicePixelRatio]);
+  }, [linkedScrollSubject, canvasScrollSubject, updateScrollPosition, devicePixelRatio, isLinked, zoomLevel]);
 
   // Setup canvas
   useEffect(() => {
@@ -413,19 +380,19 @@ export const EpiTree = ({ linkedScrollSubject, ref }: EpiTreeProps) => {
       return;
     }
 
-    EpiTreeUtil.drawTreeCanvas({ canvas: treeCanvas, theme, treeAssembly, stratification, zoomLevel, horizontalScrollPosition, verticalScrollPosition, treeCanvasWidth, treeCanvasHeight, pixelToGeneticDistanceRatio, tickerMarkScale, shouldShowDistances: isShowDistancesEnabled, devicePixelRatio });
+    EpiTreeUtil.drawTreeCanvas({ canvas: treeCanvas, theme, treeAssembly, stratification, zoomLevel, isLinked, horizontalScrollPosition, verticalScrollPosition, treeCanvasWidth, treeCanvasHeight, pixelToGeneticDistanceRatio, tickerMarkScale, shouldShowDistances: isShowDistancesEnabled, devicePixelRatio });
     let animationFrameId: number;
     const unsubscribe = internalHighlightingSubject.subscribe((highlighting) => {
       cancelAnimationFrame(animationFrameId);
       animationFrameId = requestAnimationFrame(() => {
-        EpiTreeUtil.drawTreeCanvas({ canvas: treeCanvas, theme, treeAssembly, stratification, zoomLevel, horizontalScrollPosition, verticalScrollPosition, treeCanvasWidth, treeCanvasHeight, pixelToGeneticDistanceRatio, tickerMarkScale, highlightedNodeNames: highlighting.caseIds, shouldShowDistances: isShowDistancesEnabled, devicePixelRatio });
+        EpiTreeUtil.drawTreeCanvas({ canvas: treeCanvas, theme, treeAssembly, stratification, zoomLevel, isLinked, horizontalScrollPosition, verticalScrollPosition, treeCanvasWidth, treeCanvasHeight, pixelToGeneticDistanceRatio, tickerMarkScale, highlightedNodeNames: highlighting.caseIds, shouldShowDistances: isShowDistancesEnabled, devicePixelRatio });
       });
     });
     return () => {
       unsubscribe();
       cancelAnimationFrame(animationFrameId);
     };
-  }, [treeCanvasHeight, treeCanvas, internalHighlightingSubject, pixelToGeneticDistanceRatio, stratification, theme, tickerMarkScale, treeAssembly, treeCanvasWidth, horizontalScrollPosition, verticalScrollPosition, width, zoomLevel, isShowDistancesEnabled, devicePixelRatio]);
+  }, [treeCanvasHeight, treeCanvas, internalHighlightingSubject, pixelToGeneticDistanceRatio, stratification, theme, tickerMarkScale, treeAssembly, treeCanvasWidth, horizontalScrollPosition, verticalScrollPosition, width, zoomLevel, isLinked, isShowDistancesEnabled, devicePixelRatio]);
 
   // Setup canvas event listeners (note: must be in a separate useEffect to prevent render loop)
   useEffect(() => {
