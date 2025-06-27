@@ -1,5 +1,30 @@
 # Changelog
 
+## [1.3.0](https://github.com/RIVM-bioinformatics/gen-epix-ui/compare/v1.2.0...v1.3.0) (2025-06-27)
+
+
+### Features
+
+* allow ApplicationFooterLink to receive box props ([90c0545](https://github.com/RIVM-bioinformatics/gen-epix-ui/commit/90c0545f5685d3fcc0923fb0de67927bb0e9a3bf))
+* allow clicking and hovering tree lines in the tree ([16a881d](https://github.com/RIVM-bioinformatics/gen-epix-ui/commit/16a881d03ec680dadd70dc6591ebfb34cb92bd11))
+* Download cases is in sort order of the screen ([1ff0cc8](https://github.com/RIVM-bioinformatics/gen-epix-ui/commit/1ff0cc82ece56ffa39405dc70e8315a736491560))
+* Download line list should include case.id, case.case_type and case.case_date ([1ff0cc8](https://github.com/RIVM-bioinformatics/gen-epix-ui/commit/1ff0cc82ece56ffa39405dc70e8315a736491560))
+* Download line list should only include visible rows ([1ff0cc8](https://github.com/RIVM-bioinformatics/gen-epix-ui/commit/1ff0cc82ece56ffa39405dc70e8315a736491560))
+* select event drop down shows created date ([473a5bb](https://github.com/RIVM-bioinformatics/gen-epix-ui/commit/473a5bb44f555ee4ba6c2ac847b5ae3609a31b8b))
+* tree panning and zooming in ([117feca](https://github.com/RIVM-bioinformatics/gen-epix-ui/commit/117feca7703beb4f61922d3623f4dd9d0eb053f8))
+* tree should snap to line list when subtree filter changes ([a47e582](https://github.com/RIVM-bioinformatics/gen-epix-ui/commit/a47e582c41346f5ca6469714119d0db40be6111e))
+
+
+### Bug Fixes
+
+* add more date picker fixes ([159b449](https://github.com/RIVM-bioinformatics/gen-epix-ui/commit/159b449c980786f5b60ab9afba84a53a3c6c7e0a))
+* Created in data collection drop down is greyed out when there is only 1 choice ([e0778c6](https://github.com/RIVM-bioinformatics/gen-epix-ui/commit/e0778c65ed9ef16d22d58351580d53efcf7b6792))
+* fix date format of last_case_month in cases page ([1767976](https://github.com/RIVM-bioinformatics/gen-epix-ui/commit/1767976c4afd114b40cff7de832fec3a8473e3d5))
+* fix date range picker ([ef530ad](https://github.com/RIVM-bioinformatics/gen-epix-ui/commit/ef530ad85657fc24537ea4dbddf68091ac66e771))
+* re-render table when filters / sorting does not change results ([3e14442](https://github.com/RIVM-bioinformatics/gen-epix-ui/commit/3e144427f30366b82f0f33761303803f216e2b46))
+* show ripple effect in dialog, transferlist  and netsted dropdown for stratification ([b7209d9](https://github.com/RIVM-bioinformatics/gen-epix-ui/commit/b7209d92cc528edc4c492a37e2e0ef34f1872743))
+* use isLoading instead of isPending ([4f0efd5](https://github.com/RIVM-bioinformatics/gen-epix-ui/commit/4f0efd50742342ed7492f7a48d3ef8f30a159aae))
+
 ## [1.2.0](https://github.com/RIVM-bioinformatics/gen-epix-ui/compare/v1.1.0...v1.2.0) (2025-06-10)
 
 
