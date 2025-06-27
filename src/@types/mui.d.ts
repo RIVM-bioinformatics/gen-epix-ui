@@ -6,6 +6,8 @@ declare module '@mui/material/styles' {
       tree: {
         font: string;
         fontVariationSettings?: string;
+        color: string;
+        dimFn: (color: string) => string;
       };
       lineList: {
         font: string;
@@ -19,6 +21,8 @@ declare module '@mui/material/styles' {
       tree: {
         font: string;
         fontVariationSettings?: string;
+        color: string;
+        dimFn: (color: string) => string;
       };
       lineList: {
         font: string;

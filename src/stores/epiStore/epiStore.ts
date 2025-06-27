@@ -77,6 +77,7 @@ interface StratifiableColumn {
 interface EpiTreeWidgetData extends WidgetData {
   treeConfiguration: TreeConfiguration;
   verticalScrollPosition: number;
+  horizontalScrollPosition: number;
   zoomLevel: number;
 }
 interface EpiListWidgetData extends WidgetData {
@@ -168,6 +169,7 @@ const createEpiTreeWidgetDataInitialState = (): EpiTreeWidgetData => ({
   ...createWidgetDataInitialState(),
   treeConfiguration: null,
   verticalScrollPosition: 0,
+  horizontalScrollPosition: 0,
   zoomLevel: 1,
 });
 

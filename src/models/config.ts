@@ -74,12 +74,13 @@ export interface Config {
     MINIMUM_DISTANCE_PERCENTAGE_TO_SHOW_LABEL: number;
     REGULAR_FILL_COLOR_SUPPORT_LINE: string;
     HEADER_HEIGHT: number;
-    TREE_PADDING_LEFT: number;
-    TREE_PADDING_RIGHT: number;
+    TREE_PADDING: number;
+    LINKED_SCROLL_DEBOUNCE_DELAY_MS: number;
     MAX_ZOOM_LEVEL: number;
-    MIN_LINKED_ZOOM_LEVEL: number;
-    MIN_UNLINKED_ZOOM_LEVEL: number;
+    MIN_ZOOM_LEVEL: number;
     MIN_ZOOM_SPEED: number;
+    PANNING_THRESHOLD: number;
+    INITIAL_UNLINKED_ZOOM_LEVEL: number;
     MAX_ZOOM_SPEED: number;
     TAKING_LONGER_TIMEOUT_MS: number;
   };
