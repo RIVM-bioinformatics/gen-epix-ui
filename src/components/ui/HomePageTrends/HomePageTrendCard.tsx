@@ -11,6 +11,8 @@ import {
 import { t } from 'i18next';
 import { useCallback } from 'react';
 
+import { TestIdUtil } from '../../../utils/TestIdUtil';
+
 export type HomagePageTrendCardProps = {
   readonly header: string;
   readonly value: number;
@@ -20,7 +22,7 @@ export type HomagePageTrendCardProps = {
   readonly callbackLabel?: string;
 };
 
-export const HomagePageTrendCard = ({ header, value, diffPercentage, sinceLabel, callback, callbackLabel }: HomagePageTrendCardProps) => {
+export const HomePageTrendCard = ({ header, value, diffPercentage, sinceLabel, callback, callbackLabel }: HomagePageTrendCardProps) => {
   const theme = useTheme();
 
   const onCallbackButtonClick = useCallback(() => {
@@ -29,6 +31,7 @@ export const HomagePageTrendCard = ({ header, value, diffPercentage, sinceLabel,
 
   return (
     <Card
+      {...TestIdUtil.createAttributes('HomePageTrendCard', { header })}
       elevation={1}
       sx={{
         display: 'flex',
@@ -53,6 +56,7 @@ export const HomagePageTrendCard = ({ header, value, diffPercentage, sinceLabel,
           {t(header)}
         </Typography>
         <Typography
+          {...TestIdUtil.createAttributes('HomePageTrendCard-value')}
           sx={{ fontSize: '1.8rem' }}
         >
           {value.toLocaleString()}
@@ -65,6 +69,7 @@ export const HomagePageTrendCard = ({ header, value, diffPercentage, sinceLabel,
           }}
         >
           <Button
+            {...TestIdUtil.createAttributes('HomePageTrendCard-button')}
             onClick={onCallbackButtonClick}
             size="small"
             variant="outlined"
@@ -83,6 +88,7 @@ export const HomagePageTrendCard = ({ header, value, diffPercentage, sinceLabel,
           {diffPercentage === 0 && (
             <Typography>
               <Box
+                {...TestIdUtil.createAttributes('HomePageTrendCard-diffPercentage-label')}
                 component={'span'}
                 sx={{
                   color: theme.palette.text.secondary,
@@ -96,6 +102,7 @@ export const HomagePageTrendCard = ({ header, value, diffPercentage, sinceLabel,
           {diffPercentage !== 0 && (
             <Typography>
               <Box
+                {...TestIdUtil.createAttributes('HomePageTrendCard-diffPercentage')}
                 component={'span'}
                 sx={{
                   color: diffPercentage > 0 ? darken(theme.palette.success.main, 0.4) : theme.palette.error.main,
@@ -107,7 +114,10 @@ export const HomagePageTrendCard = ({ header, value, diffPercentage, sinceLabel,
                 {'%'}
 
               </Box>
-              <Box component={'span'}>
+              <Box
+                {...TestIdUtil.createAttributes('HomePageTrendCard-diffPercentage-label')}
+                component={'span'}
+              >
                 {' '}
                 {sinceLabel}
               </Box>
