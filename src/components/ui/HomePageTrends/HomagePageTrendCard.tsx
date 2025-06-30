@@ -31,7 +31,7 @@ export const HomagePageTrendCard = ({ header, value, diffPercentage, sinceLabel,
 
   return (
     <Card
-      {...TestIdUtil.createAttributes('HomagePageTrendCard', { header, value })}
+      {...TestIdUtil.createAttributes('HomagePageTrendCard', { header })}
       elevation={1}
       sx={{
         display: 'flex',
@@ -56,6 +56,7 @@ export const HomagePageTrendCard = ({ header, value, diffPercentage, sinceLabel,
           {t(header)}
         </Typography>
         <Typography
+          {...TestIdUtil.createAttributes('HomagePageTrendCard-value')}
           sx={{ fontSize: '1.8rem' }}
         >
           {value.toLocaleString()}
@@ -68,6 +69,7 @@ export const HomagePageTrendCard = ({ header, value, diffPercentage, sinceLabel,
           }}
         >
           <Button
+            {...TestIdUtil.createAttributes('HomagePageTrendCard-button')}
             onClick={onCallbackButtonClick}
             size="small"
             variant="outlined"
@@ -86,6 +88,7 @@ export const HomagePageTrendCard = ({ header, value, diffPercentage, sinceLabel,
           {diffPercentage === 0 && (
             <Typography>
               <Box
+                {...TestIdUtil.createAttributes('HomagePageTrendCard-diffPercentage-label')}
                 component={'span'}
                 sx={{
                   color: theme.palette.text.secondary,
@@ -99,6 +102,7 @@ export const HomagePageTrendCard = ({ header, value, diffPercentage, sinceLabel,
           {diffPercentage !== 0 && (
             <Typography>
               <Box
+                {...TestIdUtil.createAttributes('HomagePageTrendCard-diffPercentage')}
                 component={'span'}
                 sx={{
                   color: diffPercentage > 0 ? darken(theme.palette.success.main, 0.4) : theme.palette.error.main,
@@ -110,7 +114,10 @@ export const HomagePageTrendCard = ({ header, value, diffPercentage, sinceLabel,
                 {'%'}
 
               </Box>
-              <Box component={'span'}>
+              <Box
+                {...TestIdUtil.createAttributes('HomagePageTrendCard-diffPercentage-label')}
+                component={'span'}
+              >
                 {' '}
                 {sinceLabel}
               </Box>
