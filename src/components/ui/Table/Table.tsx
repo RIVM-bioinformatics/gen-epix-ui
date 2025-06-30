@@ -68,6 +68,10 @@ import {
   TableCell,
   type TableCellProps,
 } from './TableCell';
+import {
+  TableColumnOrderDialog,
+  type TableColumnOrderDialogRefMethods,
+} from './TableColumnOrderDialog';
 
 
 export type TableProps<TRowData> = {
@@ -144,6 +148,7 @@ export const Table = <TRowData, >({
   const tableWidthRef = useRef<number>(0);
   const tableRange = useRef<ListRange>(null);
   const [container, setContainer] = useState<HTMLDivElement>();
+  const tableColumnOrderDialogRef = useRef<TableColumnOrderDialogRefMethods>(null);
 
   // If applying filters or sorting and the results in the table don't change, we need to re-render the table manually to reflect the changes in filters / sorting in the headers.
 
@@ -698,6 +703,9 @@ export const Table = <TRowData, >({
         });
         updateTable();
       }),
+      addTableEventListener('openColumnOrderDialog', () => {
+        tableColumnOrderDialogRef.current.open();
+      }),
     ];
 
     return () => {
@@ -855,7 +863,9 @@ export const Table = <TRowData, >({
           totalCount={sortedData.length}
         />
       )}
-
+      <TableColumnOrderDialog
+        ref={tableColumnOrderDialogRef}
+      />
     </Box>
   );
 };

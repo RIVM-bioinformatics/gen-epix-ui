@@ -28,6 +28,10 @@ export const UseColumnsMenu = <TRowData,>({ hasCellData }: UseColumnsMenuProps<T
   const sortedData = useStore(tableStore, useShallow((state) => state.sortedData));
   const [t] = useTranslation();
 
+  const onChangeOrderMenuItemClick = useCallback(() => {
+    emitTableEvent('openColumnOrderDialog');
+  }, [emitTableEvent]);
+
   const toggleItem = useCallback((columnId: string): void => {
     const newVisibleColumnIds = produce(visibleColumnIds, (draft) => {
       if (draft.includes(columnId)) {
@@ -79,6 +83,11 @@ export const UseColumnsMenu = <TRowData,>({ hasCellData }: UseColumnsMenuProps<T
         divider: true,
       },
       {
+        label: t`Change order`,
+        callback: () => onChangeOrderMenuItemClick(),
+        divider: true,
+      },
+      {
         label: t`Show all`,
         callback: () => {
           emitTableEvent('columnVisibilityChange', [...tableColumns.map(c => c.id)]);
@@ -127,7 +136,7 @@ export const UseColumnsMenu = <TRowData,>({ hasCellData }: UseColumnsMenuProps<T
       label: t`Columns`,
       items,
     };
-  }, [t, columnDimensions, emitTableEvent, tableColumns, onHideColumnsWithoutDataClick, visibleColumnIds, toggleItem]);
+  }, [t, columnDimensions, emitTableEvent, onChangeOrderMenuItemClick, tableColumns, onHideColumnsWithoutDataClick, visibleColumnIds, toggleItem]);
 
   return menuItemData;
 };
