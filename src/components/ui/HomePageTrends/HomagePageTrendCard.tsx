@@ -11,6 +11,8 @@ import {
 import { t } from 'i18next';
 import { useCallback } from 'react';
 
+import { TestIdUtil } from '../../../utils/TestIdUtil';
+
 export type HomagePageTrendCardProps = {
   readonly header: string;
   readonly value: number;
@@ -29,6 +31,7 @@ export const HomagePageTrendCard = ({ header, value, diffPercentage, sinceLabel,
 
   return (
     <Card
+      {...TestIdUtil.createAttributes('HomagePageTrendCard', { header, value })}
       elevation={1}
       sx={{
         display: 'flex',
