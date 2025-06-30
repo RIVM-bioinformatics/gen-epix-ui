@@ -31,7 +31,7 @@ import { EpiCaseTypeUtil } from '../../../utils/EpiCaseTypeUtil';
 import { QueryUtil } from '../../../utils/QueryUtil';
 import { ResponseHandler } from '../ResponseHandler';
 
-import { HomagePageTrendCard } from './HomagePageTrendCard';
+import { HomePageTrendCard } from './HomePageTrendCard';
 
 type Statistic = {
   header: string;
@@ -229,7 +229,7 @@ export const HomePageTrends = () => {
         }}
         >
           {statistics.map(statistic => (
-            <HomagePageTrendCard
+            <HomePageTrendCard
               callback={statistic.callback}
               callbackLabel={statistic.callbackLabel}
               diffPercentage={statistic.diffPercentage}
