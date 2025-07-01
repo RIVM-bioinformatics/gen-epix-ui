@@ -703,6 +703,14 @@ export const Table = <TRowData, >({
         });
         updateTable();
       }),
+      addTableEventListener('columnOrderChange', (columnIds: string[]) => {
+        tableColumnSettings.current.sort((a, b) => {
+          const aIndex = columnIds.indexOf(a.id) ?? tableColumnSettings.current.findIndex(x => x.id === a.id);
+          const bIndex = columnIds.indexOf(b.id) ?? tableColumnSettings.current.findIndex(x => x.id === b.id);
+          return aIndex - bIndex;
+        });
+        updateTable();
+      }),
       addTableEventListener('openColumnOrderDialog', () => {
         tableColumnOrderDialogRef.current.open();
       }),

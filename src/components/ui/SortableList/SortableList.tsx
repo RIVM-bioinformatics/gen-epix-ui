@@ -1,10 +1,10 @@
 import {
-  Fragment,
+  type ReactNode,
   useCallback,
   useMemo,
   useState,
+  type ChangeEvent as ReactChangeEvent,
 } from 'react';
-import type { ReactNode } from 'react';
 import {
   DndContext,
   KeyboardSensor,
@@ -25,14 +25,19 @@ import {
 } from '@dnd-kit/sortable';
 import {
   Box,
+  Checkbox,
   useTheme,
 } from '@mui/material';
 
 import { SortableOverlay } from './SortableOverlay';
+import { SortableListItem } from './SortableListItem';
+import { SortableListItemDragHandle } from './SortableListItemDragHandle';
 
 
 interface BaseItem {
   id: UniqueIdentifier;
+  label: string;
+  isSelected: boolean;
 }
 
 interface Props<T extends BaseItem> {
@@ -77,6 +82,21 @@ export const SortableList = <T extends BaseItem>({
     setActive(item);
   }, []);
 
+  const onCheckBoxChange = useCallback((event: ReactChangeEvent<HTMLInputElement>) => {
+    const itemId = event.target.getAttribute('data-id') as UniqueIdentifier;
+    if (!itemId) {
+      return;
+    }
+    const isSelected = event.target.checked;
+    onChange(items.map((item) => {
+      if (item.id === itemId) {
+        return { ...item, isSelected };
+      }
+      return item;
+    }));
+  }, [onChange, items]);
+
+
   return (
     <DndContext
       onDragCancel={onDragCancel}
@@ -97,7 +117,34 @@ export const SortableList = <T extends BaseItem>({
           }}
         >
           {items.map((item) => (
-            <Fragment key={item.id}>{renderItem(item)}</Fragment>
+            <SortableListItem
+              id={item.id}
+              key={item.id}
+              sx={{
+                backgroundColor: theme.palette.background.paper,
+                '&:hover': {
+                  backgroundColor: theme.palette.action.hover,
+                },
+              }}
+            >
+              <Checkbox
+                checked={item.isSelected}
+                onChange={onCheckBoxChange}
+                size={'small'}
+                slotProps={{
+                  input: {
+                    ...{ 'data-id': (item.id as string) },
+                  },
+                }}
+                sx={{
+                  padding: `0 ${theme.spacing(0.5)}`,
+                }}
+              />
+              <Box flexGrow={1}>
+                {renderItem(item)}
+              </Box>
+              <SortableListItemDragHandle />
+            </SortableListItem>
           ))}
         </Box>
       </SortableContext>
