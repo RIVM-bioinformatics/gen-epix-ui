@@ -43,13 +43,13 @@ interface BaseItem {
 interface Props<T extends BaseItem> {
   readonly items: T[];
   onChange(items: T[]): void;
-  renderItem(item: T): ReactNode;
+  renderItemContent(item: T): ReactNode;
 }
 
 export const SortableList = <T extends BaseItem>({
   items,
   onChange,
-  renderItem,
+  renderItemContent,
 }: Props<T>) => {
   const theme = useTheme();
   const [active, setActive] = useState<Active | null>(null);
@@ -96,6 +96,38 @@ export const SortableList = <T extends BaseItem>({
     }));
   }, [onChange, items]);
 
+  const renderItem = useCallback((item: T) => {
+    return (
+      <SortableListItem
+        id={item.id}
+        key={item.id}
+        sx={{
+          backgroundColor: theme.palette.background.paper,
+          '&:hover': {
+            backgroundColor: theme.palette.action.hover,
+          },
+        }}
+      >
+        <Checkbox
+          checked={item.isSelected}
+          onChange={onCheckBoxChange}
+          size={'small'}
+          slotProps={{
+            input: {
+              ...{ 'data-id': (item.id as string) },
+            },
+          }}
+          sx={{
+            padding: `0 ${theme.spacing(0.5)}`,
+          }}
+        />
+        <Box flexGrow={1}>
+          {renderItemContent(item)}
+        </Box>
+        <SortableListItemDragHandle />
+      </SortableListItem>
+    );
+  }, [onCheckBoxChange, renderItemContent, theme]);
 
   return (
     <DndContext
@@ -116,36 +148,7 @@ export const SortableList = <T extends BaseItem>({
             listStyle: 'none',
           }}
         >
-          {items.map((item) => (
-            <SortableListItem
-              id={item.id}
-              key={item.id}
-              sx={{
-                backgroundColor: theme.palette.background.paper,
-                '&:hover': {
-                  backgroundColor: theme.palette.action.hover,
-                },
-              }}
-            >
-              <Checkbox
-                checked={item.isSelected}
-                onChange={onCheckBoxChange}
-                size={'small'}
-                slotProps={{
-                  input: {
-                    ...{ 'data-id': (item.id as string) },
-                  },
-                }}
-                sx={{
-                  padding: `0 ${theme.spacing(0.5)}`,
-                }}
-              />
-              <Box flexGrow={1}>
-                {renderItem(item)}
-              </Box>
-              <SortableListItemDragHandle />
-            </SortableListItem>
-          ))}
+          {items.map((item) => renderItem(item))}
         </Box>
       </SortableContext>
       <SortableOverlay>

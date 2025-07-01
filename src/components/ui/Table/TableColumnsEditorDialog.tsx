@@ -94,7 +94,7 @@ export const TableColumnsEditorDialog = withDialog<TableColumnsEditorDialogProps
 
 
   useEffect(() => {
-    onTitleChange(t`Change column order`);
+    onTitleChange(t`Change column order and visibility`);
   }, [onTitleChange, t]);
 
   const onSaveButtonClick = useCallback(() => {
@@ -103,9 +103,9 @@ export const TableColumnsEditorDialog = withDialog<TableColumnsEditorDialogProps
     onClose();
   }, [tableColumns, emitTableEvent, items, onClose]);
 
-  const onHideColumnsWithoutDataClick = useCallback(() => {
+  const filterColumnsWithPredicate = useCallback((predicate: (item: Item) => boolean) => {
     const newVisibleColumnIds = TableUtil.getColumnIdsWithData({
-      visibleColumnIds: tableColumnSettings.filter(c => c.isVisible).map(c => c.id),
+      visibleColumnIds: items.filter(predicate).map(c => c.id.toString()),
       tableColumns,
       sortedData,
       hasCellData,
@@ -116,7 +116,34 @@ export const TableColumnsEditorDialog = withDialog<TableColumnsEditorDialogProps
         isSelected: newVisibleColumnIds.includes(item.id.toString()),
       }));
     });
-  }, [hasCellData, sortedData, tableColumnSettings, tableColumns]);
+  }, [hasCellData, items, sortedData, tableColumns]);
+
+
+  const onEnableOnlyColumnsWithDataClick = useCallback(() => {
+    filterColumnsWithPredicate(() => true);
+  }, [filterColumnsWithPredicate]);
+
+  const onDisableColumnsWithoutDataClick = useCallback(() => {
+    filterColumnsWithPredicate((item) => item.isSelected);
+  }, [filterColumnsWithPredicate]);
+
+  const onEnableAllButtonClick = useCallback(() => {
+    setItems((prevItems) => {
+      return prevItems.map((item) => ({
+        ...item,
+        isSelected: true,
+      }));
+    });
+  }, []);
+
+  const onDisableAllButtonClick = useCallback(() => {
+    setItems((prevItems) => {
+      return prevItems.map((item) => ({
+        ...item,
+        isSelected: false,
+      }));
+    });
+  }, []);
 
   useEffect(() => {
     onActionsChange(
@@ -130,16 +157,40 @@ export const TableColumnsEditorDialog = withDialog<TableColumnsEditorDialogProps
           label: t`Close`,
         },
         {
-          ...TestIdUtil.createAttributes('TableColumnOrderDialog-hide-columns-without-data'),
-          color: 'primary',
+          ...TestIdUtil.createAttributes('TableColumnOrderDialog-show-all'),
+          color: 'secondary',
           autoFocus: true,
-          onClick: onHideColumnsWithoutDataClick,
+          onClick: onEnableAllButtonClick,
           variant: 'outlined',
-          label: t`Hide columns without data`,
+          label: t`Enable all`,
+        },
+        {
+          ...TestIdUtil.createAttributes('TableColumnOrderDialog-hide-columns-without-data'),
+          color: 'secondary',
+          autoFocus: true,
+          onClick: onEnableOnlyColumnsWithDataClick,
+          variant: 'outlined',
+          label: t`Enable all with data`,
+        },
+        {
+          ...TestIdUtil.createAttributes('TableColumnOrderDialog-hide-all'),
+          color: 'secondary',
+          autoFocus: true,
+          onClick: onDisableAllButtonClick,
+          variant: 'outlined',
+          label: t`Disable all`,
+        },
+        {
+          ...TestIdUtil.createAttributes('TableColumnOrderDialog-hide-all'),
+          color: 'secondary',
+          autoFocus: true,
+          onClick: onDisableColumnsWithoutDataClick,
+          variant: 'outlined',
+          label: t`Disable all without data`,
         },
         {
           ...TestIdUtil.createAttributes('TableColumnOrderDialog-reset'),
-          color: 'primary',
+          color: 'secondary',
           autoFocus: true,
           onClick: onResetButtonClick,
           variant: 'outlined',
@@ -155,13 +206,13 @@ export const TableColumnsEditorDialog = withDialog<TableColumnsEditorDialogProps
         },
       ],
     );
-  }, [onActionsChange, onClose, onHideColumnsWithoutDataClick, onResetButtonClick, onSaveButtonClick, t]);
+  }, [onActionsChange, onClose, onDisableAllButtonClick, onEnableOnlyColumnsWithDataClick, onResetButtonClick, onSaveButtonClick, onEnableAllButtonClick, t, onDisableColumnsWithoutDataClick]);
 
   const onSortableListChange = useCallback((newItems: Item[]) => {
     setItems(newItems);
   }, []);
 
-  const renderItem = useCallback((item: Item) => item.label, []);
+  const renderItemContent = useCallback((item: Item) => item.label, []);
 
   return (
     <Box sx={{
@@ -170,7 +221,7 @@ export const TableColumnsEditorDialog = withDialog<TableColumnsEditorDialogProps
       <SortableList<Item>
         items={items}
         onChange={onSortableListChange}
-        renderItem={renderItem}
+        renderItemContent={renderItemContent}
       />
     </Box>
   );

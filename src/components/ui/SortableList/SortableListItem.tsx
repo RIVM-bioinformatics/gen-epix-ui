@@ -39,7 +39,7 @@ export const SortableListItem = ({ children, id, sx }: SortableListItemProps) =>
     [attributes, listeners, setActivatorNodeRef],
   );
   const style: CSSProperties = {
-    opacity: isDragging ? 0.4 : undefined,
+    backgroundColor: isDragging ? theme.palette.secondary.main : theme.palette.background.paper,
     transform: CSS.Translate.toString(transform),
     transition,
   };
@@ -54,9 +54,9 @@ export const SortableListItem = ({ children, id, sx }: SortableListItemProps) =>
           ...(sx ?? {}),
           display: 'flex',
           justifyContent: 'space-between',
+          backgroundColor: theme.palette.background.paper,
           flexGrow: 1,
           alignItems: 'center',
-          backgroundColor: '#fff',
           boxShadow: 1,
           borderRadius: `${theme.shape.borderRadius}px`,
           boxSizing: 'border-box',

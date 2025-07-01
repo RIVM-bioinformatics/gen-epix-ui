@@ -14,7 +14,7 @@ export const SortableOverlay = ({ children }: PropsWithChildren<unknown>) => {
     sideEffects: defaultDropAnimationSideEffects({
       styles: {
         active: {
-          opacity: '0.4',
+          opacity: '0.6',
         },
       },
     }),
@@ -22,6 +22,11 @@ export const SortableOverlay = ({ children }: PropsWithChildren<unknown>) => {
 
 
   return (
-    <DragOverlay dropAnimation={dropAnimationConfig}>{children}</DragOverlay>
+    <DragOverlay
+      dropAnimation={dropAnimationConfig}
+      zIndex={1000}
+    >
+      {children}
+    </DragOverlay>
   );
 };
