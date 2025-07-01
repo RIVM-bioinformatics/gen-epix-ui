@@ -173,3 +173,5 @@ export type TableColumnDimension = {
   label: string;
   columnIds: string[];
 };
+
+export type HasCellDataFn<TRowData> = (row: TRowData, column: TableColumn<TRowData>, rowIndex: number) => boolean;

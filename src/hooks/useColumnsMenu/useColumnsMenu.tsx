@@ -10,12 +10,13 @@ import {
 import { useTranslation } from 'react-i18next';
 
 import type { MenuItemData } from '../../models/nestedMenu';
-import type { TableColumn } from '../../models/table';
+import type { HasCellDataFn } from '../../models/table';
 import { useTableStoreContext } from '../../stores/tableStore';
+import { TableUtil } from '../../utils/TableUtil';
 
 
 export type UseColumnsMenuProps<TRowData> = {
-  readonly hasCellData?: (row: TRowData, column: TableColumn<TRowData>, rowIndex: number) => boolean;
+  readonly hasCellData?: HasCellDataFn<TRowData>;
 };
 
 //Note: must be CamelCase because of HMR
@@ -27,6 +28,10 @@ export const UseColumnsMenu = <TRowData,>({ hasCellData }: UseColumnsMenuProps<T
   const columnDimensions = useStore(tableStore, useShallow((state) => state.columnDimensions));
   const sortedData = useStore(tableStore, useShallow((state) => state.sortedData));
   const [t] = useTranslation();
+
+  const onColumnsEditorMenuItemClick = useCallback(() => {
+    emitTableEvent('openColumnsEditorDialog', hasCellData as HasCellDataFn<unknown>);
+  }, [emitTableEvent, hasCellData]);
 
   const toggleItem = useCallback((columnId: string): void => {
     const newVisibleColumnIds = produce(visibleColumnIds, (draft) => {
@@ -40,43 +45,26 @@ export const UseColumnsMenu = <TRowData,>({ hasCellData }: UseColumnsMenuProps<T
   }, [emitTableEvent, visibleColumnIds]);
 
   const onHideColumnsWithoutDataClick = useCallback(() => {
-    const columns = visibleColumnIds.map(id => tableColumns.find(c => c.id === id));
-    let newVisibleColumnIds: string[];
-    if (hasCellData) {
-      newVisibleColumnIds = columns.filter(column => {
-        if (column.isStatic) {
-          return true;
-        }
-        return sortedData.every((row, rowIndex) => hasCellData(row, column, rowIndex));
-      }).map(c => c.id);
-    } else {
-      newVisibleColumnIds = columns.filter(column => {
-        if (column.isStatic) {
-          return true;
-        }
-        return sortedData.some((row, rowIndex) => {
-          if (column.valueGetter) {
-            return column.valueGetter({
-              id: column.id,
-              row,
-              rowIndex,
-            });
-          }
-          return row[column.id as keyof TRowData] !== undefined;
-        });
-      }).map(c => c.id);
-    }
-    emitTableEvent('columnVisibilityChange', newVisibleColumnIds);
+    emitTableEvent('columnVisibilityChange', TableUtil.getColumnIdsWithData({
+      visibleColumnIds,
+      tableColumns,
+      sortedData,
+      hasCellData,
+    }));
 
   }, [emitTableEvent, hasCellData, sortedData, tableColumns, visibleColumnIds]);
 
   const menuItemData: MenuItemData = useMemo(() => {
     const items: MenuItemData[] = [
       {
+        label: t`Change order / visibility`,
+        callback: () => onColumnsEditorMenuItemClick(),
+        divider: true,
+      },
+      {
         label: t`Reset`,
         callback: () => emitTableEvent('reset'),
         autoCloseDisabled: true,
-        divider: true,
       },
       {
         label: t`Show all`,
@@ -127,7 +115,7 @@ export const UseColumnsMenu = <TRowData,>({ hasCellData }: UseColumnsMenuProps<T
       label: t`Columns`,
       items,
     };
-  }, [t, columnDimensions, emitTableEvent, tableColumns, onHideColumnsWithoutDataClick, visibleColumnIds, toggleItem]);
+  }, [t, columnDimensions, emitTableEvent, onColumnsEditorMenuItemClick, tableColumns, onHideColumnsWithoutDataClick, visibleColumnIds, toggleItem]);
 
   return menuItemData;
 };

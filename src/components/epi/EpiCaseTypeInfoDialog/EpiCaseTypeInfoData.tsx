@@ -1,5 +1,7 @@
-import { Typography } from '@mui/material';
-import { Box } from '@mui/system';
+import {
+  Typography,
+  Box,
+} from '@mui/material';
 import { t } from 'i18next';
 
 export type EpiCaseTypeInfoDataProps = {

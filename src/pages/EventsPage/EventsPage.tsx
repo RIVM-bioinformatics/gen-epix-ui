@@ -48,7 +48,7 @@ import type {
 } from '../../models/table';
 import {
   createTableStore,
-  TableStoreProvider,
+  TableStoreContextProvider,
 } from '../../stores/tableStore';
 import { EpiCaseSetUtil } from '../../utils/EpiCaseSetUtil';
 import { QueryUtil } from '../../utils/QueryUtil';
@@ -202,7 +202,7 @@ export const EventsPage = () => {
   }, []);
 
   return (
-    <TableStoreProvider store={tableStore}>
+    <TableStoreContextProvider store={tableStore}>
       <PageContainer
         contentActions={contentActions}
         contentHeader={(
@@ -252,6 +252,6 @@ export const EventsPage = () => {
           />
         </Box>
       </PageContainer>
-    </TableStoreProvider>
+    </TableStoreContextProvider>
   );
 };

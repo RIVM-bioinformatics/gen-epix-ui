@@ -26,7 +26,7 @@ import type {
 import { CaseApi } from '../../../api';
 import { RouterManager } from '../../../classes/managers/RouterManager';
 import type { EpiCaseAbacContextValue } from '../../../context/epiCaseAbac';
-import { EpiCaseAbacProvider } from '../../../context/epiCaseAbac';
+import { EpiCaseAbacContextProvider } from '../../../context/epiCaseAbac';
 import { useCaseSetRightsQuery } from '../../../dataHooks/useCaseSetRightsQuery';
 import {
   useDataCollectionsQuery,
@@ -332,7 +332,7 @@ export const EpiCaseSetInfoDialog = withDialog<EpiCaseSetInfoDialogProps, EpiCas
         loadables={loadables}
         shouldHideActionButtons
       >
-        <EpiCaseAbacProvider caseAbac={caseAbacContextValue}>
+        <EpiCaseAbacContextProvider caseAbac={caseAbacContextValue}>
           {!isEditingCaseSetContent && !isEditingDataCollections && (
             <>
               <EpiCaseSetContent
@@ -366,7 +366,7 @@ export const EpiCaseSetInfoDialog = withDialog<EpiCaseSetInfoDialogProps, EpiCas
               onIsSavingChange={onEpiCaseSetDataCollectionFormIsSavingChange}
             />
           )}
-        </EpiCaseAbacProvider>
+        </EpiCaseAbacContextProvider>
       </ResponseHandler>
       <Confirmation
         body={t`Are you sure you want to delete the event?`}

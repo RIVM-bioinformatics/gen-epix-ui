@@ -6,12 +6,12 @@ import {
 import type { EpiCaseAbacContextValue } from './EpiCaseAbacContext';
 import { EpiCaseAbacContext } from './EpiCaseAbacContext';
 
-export type EpiCaseAbacProviderProps = PropsWithChildren<{
+export type EpiCaseAbacContextProviderProps = PropsWithChildren<{
   readonly caseAbac: EpiCaseAbacContextValue;
 }>;
 
-export const EpiCaseAbacProvider = (
-  props: EpiCaseAbacProviderProps,
+export const EpiCaseAbacContextProvider = (
+  props: EpiCaseAbacContextProviderProps,
 ) => {
   const { children, caseAbac } = props;
 

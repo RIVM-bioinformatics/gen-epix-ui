@@ -6,8 +6,8 @@ import {
 } from 'react';
 import { useStore } from 'zustand';
 import { useShallow } from 'zustand/shallow';
-import { Box } from '@mui/system';
 import {
+  Box,
   IconButton,
   Tooltip,
 } from '@mui/material';
