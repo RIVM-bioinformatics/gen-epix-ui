@@ -28,7 +28,6 @@ export * from './utils/EpiAbacUtil';
 export * from './utils/EChartsUtil';
 export * from './utils/DataUtil';
 export * from './utils/DataUrlUtil';
-export * from './utils/ColorUtil';
 export * from './utils/AxiosUtil';
 export * from './stores/userProfileStore';
 export * from './stores/tableStore';

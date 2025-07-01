@@ -1,5 +1,7 @@
-import { useTheme } from '@mui/material';
-import { Box } from '@mui/system';
+import {
+  useTheme,
+  Box,
+} from '@mui/material';
 import MDEditor from '@uiw/react-md-editor';
 import { useMemo } from 'react';
 import rehypeSanitize from 'rehype-sanitize';

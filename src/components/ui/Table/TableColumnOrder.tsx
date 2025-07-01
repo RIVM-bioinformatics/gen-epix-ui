@@ -1,186 +1,119 @@
-import { useTranslation } from 'react-i18next';
+import type { ChangeEvent as ReactChangeEvent } from 'react';
 import { useStore } from 'zustand';
 import { useShallow } from 'zustand/shallow';
-import type {
-  PropsWithChildren,
-  Ref,
-} from 'react';
 import {
   useCallback,
-  useMemo,
+  useEffect,
   useState,
 } from 'react';
 import {
-  useSortable,
-  arrayMove,
-  SortableContext,
-  sortableKeyboardCoordinates,
-  verticalListSortingStrategy,
-} from '@dnd-kit/sortable';
-import { CSS } from '@dnd-kit/utilities';
-import type {
-  DragEndEvent,
-  DraggableAttributes,
-  DragStartEvent,
-  UniqueIdentifier,
-} from '@dnd-kit/core';
-import {
-  DndContext,
-  closestCenter,
-  KeyboardSensor,
-  PointerSensor,
-  useSensor,
-  useSensors,
-  DragOverlay,
-} from '@dnd-kit/core';
-import { Box } from '@mui/system';
-import type { SyntheticListenerMap } from '@dnd-kit/core/dist/hooks/utilities';
-import { Card } from '@mui/material';
+  Box,
+  Checkbox,
+  useTheme,
+} from '@mui/material';
+import type { UniqueIdentifier } from '@dnd-kit/core';
 
 import { useTableStoreContext } from '../../../stores/tableStore';
-import type { TableColumnDimension } from '../../../models/table';
+import { SortableList } from '../SortableList/SortableList';
+import { SortableListItem } from '../SortableList/SortableListItem';
+import { SortableListItemDragHandle } from '../SortableList/SortableListItemDragHandle';
+import type { TableColumn } from '../../../models/table';
 
-
-const PLACEHOLDER_COLUMN_ID = 'PLACEHOLDER';
-
-type ItemProps = PropsWithChildren<{
-  readonly ref?: Ref<HTMLDivElement>;
-  readonly attributes?: DraggableAttributes;
-  readonly listeners?: SyntheticListenerMap;
-  readonly style?: { transform: string; transition: string };
-}>;
-
-const Item = ({ attributes, listeners, children, style, ref }: ItemProps) => {
-  console.log(style);
-  return (
-    <Card
-      {...attributes}
-      {...listeners}
-      component={'div'}
-      ref={ref}
-      style={style}
-      sx={{
-        padding: '8px',
-        marginBottom: '4px',
-      }}
-    >
-      {children}
-    </Card>
-  );
-};
-
-type SortableItemProps = {
-  readonly id: UniqueIdentifier;
-};
-
-const SortableItem = ({ id }: SortableItemProps) => {
-  const {
-    attributes,
-    listeners,
-    setNodeRef,
-    transform,
-    transition,
-  } = useSortable({ id });
-
-  const style = {
-    transform: CSS.Transform.toString(transform),
-    transition,
-  };
-
-  return (
-    <Item
-      attributes={attributes}
-      listeners={listeners}
-      ref={setNodeRef}
-      style={style}
-    >
-      {id}
-    </Item>
-  );
+type Item = {
+  id: UniqueIdentifier;
+  label: string;
+  isChecked: boolean;
 };
 
 
 export const TableColumnOrder = () => {
-  const [t] = useTranslation();
+  const theme = useTheme();
+  const [items, setItems] = useState<Item[]>([]);
 
   const tableStore = useTableStoreContext<unknown>();
-  const columnDimensionsFromStore = useStore(tableStore, useShallow((state) => state.columnDimensions));
   const columnSettings = useStore(tableStore, useShallow((state) => state.columnSettings));
   const columns = useStore(tableStore, useShallow((state) => state.columns));
-  const [activeId, setActiveId] = useState<UniqueIdentifier>(null);
-  const [items, setItems] = useState<string[]>(['1', '2', '3']);
 
-  const sensors = useSensors(
-    useSensor(PointerSensor),
-    useSensor(KeyboardSensor, {
-      coordinateGetter: sortableKeyboardCoordinates,
-    }),
-  );
+  const onCheckedChange = useCallback((event: ReactChangeEvent<HTMLInputElement>) => {
 
-  const handleDragStart = useCallback((event: DragStartEvent) => {
-    const { active } = event;
-
-    setActiveId(active.id);
-  }, [setActiveId]);
-
-  const handleDragEnd = useCallback((event: DragEndEvent) => {
-    const { active, over } = event;
-
-    if (active.id !== over.id) {
-      setItems((x) => {
-        const oldIndex = x.indexOf(active.id as string);
-        const newIndex = x.indexOf(over.id as string);
-
-        return arrayMove(x, oldIndex, newIndex);
-      });
+    const itemId = event.target.getAttribute('data-id') as UniqueIdentifier;
+    if (!itemId) {
+      return;
     }
-
-    setActiveId(null);
+    const isChecked = event.target.checked;
+    setItems((prevItems) => {
+      return prevItems.map((item) => {
+        if (item.id === itemId) {
+          return { ...item, isChecked };
+        }
+        return item;
+      });
+    });
   }, []);
 
-  const columnDimensions = useMemo<TableColumnDimension[]>(() => {
-    if (columnDimensionsFromStore.length) {
-      return columnDimensionsFromStore;
-    }
-    return [{
-      columnIds: columns.map((column) => column.id),
-      id: PLACEHOLDER_COLUMN_ID,
-      label: t`Columns`,
-    }];
-  }, [columnDimensionsFromStore, columns, t]);
+  useEffect(() => {
+    const checkedItems: Item[] = [];
+    const unCheckedItems: Item[] = [];
+    const columnsMap = new Map<string, TableColumn<unknown>>();
+    columns.forEach((column) => {
+      columnsMap.set(column.id, column);
+    });
 
-  console.log({ columnDimensions, columns, columnSettings });
+    columnSettings.forEach(columnSetting => {
+      const column = columnsMap.get(columnSetting.id);
+      if (column && !column.isStatic && !column.frozen) {
+        (columnSetting.isVisible ? checkedItems : unCheckedItems).push({
+          id: column.id,
+          label: column.headerName,
+          isChecked: columnSetting.isVisible,
+        });
+      }
+    });
+    setItems([checkedItems, ...unCheckedItems].flat());
+
+  }, [columnSettings, columns]);
+
+  const renderItem = useCallback((item: Item) => {
+    return (
+      <SortableListItem
+        id={item.id}
+        sx={{
+          backgroundColor: theme.palette.background.paper,
+          '&:hover': {
+            backgroundColor: theme.palette.action.hover,
+          },
+        }}
+      >
+        <Checkbox
+          checked={item.isChecked}
+          onChange={onCheckedChange}
+          size={'small'}
+          slotProps={{
+            input: {
+              ...{ 'data-id': (item.id as string) },
+            },
+          }}
+          sx={{
+            padding: `0 ${theme.spacing(0.5)}`,
+          }}
+        />
+        <Box flexGrow={1}>
+          {item.label}
+        </Box>
+        <SortableListItemDragHandle />
+      </SortableListItem>
+    );
+  }, [onCheckedChange, theme]);
 
   return (
     <Box sx={{
-      height: '500px',
     }}
     >
-      <DndContext
-        collisionDetection={closestCenter}
-        onDragEnd={handleDragEnd}
-        onDragStart={handleDragStart}
-        sensors={sensors}
-      >
-        <SortableContext
-          items={items}
-          strategy={verticalListSortingStrategy}
-        >
-          {items.map(id => (
-            <SortableItem
-              id={id}
-              key={id}
-            />
-          ))}
-        </SortableContext>
-        <DragOverlay>
-          {activeId ? (
-            <Item>
-              {activeId}
-            </Item>
-          ) : null}
-        </DragOverlay>
-      </DndContext>
+      <SortableList<Item>
+        items={items}
+        onChange={setItems}
+        renderItem={renderItem}
+      />
     </Box>
   );
 };
