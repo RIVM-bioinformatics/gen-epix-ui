@@ -705,9 +705,7 @@ export const Table = <TRowData, >({
       }),
       addTableEventListener('columnOrderChange', (columnIds: string[]) => {
         tableColumnSettings.current.sort((a, b) => {
-          const aIndex = columnIds.includes(a.id) ? columnIds.indexOf(a.id) : tableColumnSettings.current.findIndex(x => x.id === a.id);
-          const bIndex = columnIds.includes(b.id) ? columnIds.indexOf(b.id) : tableColumnSettings.current.findIndex(x => x.id === b.id);
-          return aIndex - bIndex;
+          return columnIds.indexOf(a.id) - columnIds.indexOf(b.id);
         });
         updateTable();
       }),

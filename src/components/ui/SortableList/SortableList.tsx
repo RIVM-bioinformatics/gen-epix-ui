@@ -29,6 +29,8 @@ import {
   useTheme,
 } from '@mui/material';
 
+import { TestIdUtil } from '../../../utils/TestIdUtil';
+
 import { SortableOverlay } from './SortableOverlay';
 import { SortableListItem } from './SortableListItem';
 import { SortableListItemDragHandle } from './SortableListItemDragHandle';
@@ -138,6 +140,7 @@ export const SortableList = <T extends BaseItem>({
     >
       <SortableContext items={items}>
         <Box
+          {...TestIdUtil.createAttributes('SortableList')}
           component={'ul'}
           role="application"
           sx={{

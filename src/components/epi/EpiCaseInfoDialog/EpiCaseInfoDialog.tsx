@@ -23,7 +23,7 @@ import {
   type WithDialogRenderProps,
 } from '../../../hoc/withDialog';
 import type { EpiCaseAbacContextValue } from '../../../context/epiCaseAbac/EpiCaseAbacContext';
-import { EpiCaseAbacProvider } from '../../../context/epiCaseAbac';
+import { EpiCaseAbacContextProvider } from '../../../context/epiCaseAbac';
 import type {
   Case,
   TypedUuidSetFilter,
@@ -318,7 +318,7 @@ export const EpiCaseInfoDialog = withDialog<EpiCaseInfoDialogProps, EpiCaseInfoD
         loadables={loadables}
         shouldHideActionButtons
       >
-        <EpiCaseAbacProvider caseAbac={caseAbacContextValue}>
+        <EpiCaseAbacContextProvider caseAbac={caseAbacContextValue}>
           <EpiReadOnlyCaseContent
             epiCase={epiCase}
             marginBottom={2}
@@ -354,7 +354,7 @@ export const EpiCaseInfoDialog = withDialog<EpiCaseInfoDialogProps, EpiCaseInfoD
               onIsSavingChange={onEpiCaseDataCollectionFormIsSavingChange}
             />
           )}
-        </EpiCaseAbacProvider>
+        </EpiCaseAbacContextProvider>
       </ResponseHandler>
       <Confirmation
         body={t`Are you sure you want to delete the case?`}

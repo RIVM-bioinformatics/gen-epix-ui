@@ -47,7 +47,7 @@ import type {
 } from '../../models/table';
 import {
   createTableStore,
-  TableStoreProvider,
+  TableStoreContextProvider,
 } from '../../stores/tableStore';
 import { QueryUtil } from '../../utils/QueryUtil';
 import { StringUtil } from '../../utils/StringUtil';
@@ -272,7 +272,7 @@ export const CasesPage = () => {
   }, []);
 
   return (
-    <TableStoreProvider store={tableStore}>
+    <TableStoreContextProvider store={tableStore}>
       <PageContainer
         contentActions={(<TableMenu />)}
         contentHeader={(
@@ -313,6 +313,6 @@ export const CasesPage = () => {
         </Box>
         <EpiCaseTypeInfoDialogWithLoader ref={epiCaseTypeInfoDialogWithLoaderRef} />
       </PageContainer>
-    </TableStoreProvider>
+    </TableStoreContextProvider>
   );
 };

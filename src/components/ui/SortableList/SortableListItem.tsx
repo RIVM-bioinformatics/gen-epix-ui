@@ -12,6 +12,8 @@ import {
   useTheme,
 } from '@mui/material';
 
+import { TestIdUtil } from '../../../utils/TestIdUtil';
+
 import { SortableListItemContextProvider } from './context/SortableListItemContextProvider';
 
 export type SortableListItemProps = PropsWithChildren<{
@@ -47,6 +49,7 @@ export const SortableListItem = ({ children, id, sx }: SortableListItemProps) =>
   return (
     <SortableListItemContextProvider value={context}>
       <Box
+        {...TestIdUtil.createAttributes('SortableListItem', { id })}
         component="li"
         ref={setNodeRef}
         style={style}

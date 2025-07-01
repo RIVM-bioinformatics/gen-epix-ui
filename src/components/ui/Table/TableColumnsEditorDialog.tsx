@@ -98,8 +98,13 @@ export const TableColumnsEditorDialog = withDialog<TableColumnsEditorDialogProps
   }, [onTitleChange, t]);
 
   const onSaveButtonClick = useCallback(() => {
-    emitTableEvent('columnVisibilityChange', [...tableColumns.filter(c => c.isStatic).map(c => c.id), ...items.filter((item) => item.isSelected).map((item) => item.id.toString())]);
-    emitTableEvent('columnOrderChange', items.map((item) => item.id.toString()));
+    emitTableEvent('columnVisibilityChange', [...tableColumns.filter(c => c.isStatic || c.frozen).map(c => c.id), ...items.filter((item) => item.isSelected).map((item) => item.id.toString())]);
+
+    const firstMovableColumnIndex = tableColumns.findIndex(c => !c.isStatic && !c.frozen);
+    const leadingStaticColumns = tableColumns.slice(0, firstMovableColumnIndex);
+    const trailingStaticColumns = tableColumns.slice(firstMovableColumnIndex + items.length);
+
+    emitTableEvent('columnOrderChange', [...leadingStaticColumns.map(c => c.id), ...items.map((item) => item.id.toString()), ...trailingStaticColumns.map(c => c.id)]);
     onClose();
   }, [tableColumns, emitTableEvent, items, onClose]);
 
@@ -149,15 +154,7 @@ export const TableColumnsEditorDialog = withDialog<TableColumnsEditorDialogProps
     onActionsChange(
       [
         {
-          ...TestIdUtil.createAttributes('TableColumnOrderDialog-close'),
-          color: 'primary',
-          autoFocus: true,
-          onClick: onClose,
-          variant: 'outlined',
-          label: t`Close`,
-        },
-        {
-          ...TestIdUtil.createAttributes('TableColumnOrderDialog-show-all'),
+          ...TestIdUtil.createAttributes('TableColumnOrderDialog-enable-all'),
           color: 'secondary',
           autoFocus: true,
           onClick: onEnableAllButtonClick,
@@ -165,7 +162,7 @@ export const TableColumnsEditorDialog = withDialog<TableColumnsEditorDialogProps
           label: t`Enable all`,
         },
         {
-          ...TestIdUtil.createAttributes('TableColumnOrderDialog-hide-columns-without-data'),
+          ...TestIdUtil.createAttributes('TableColumnOrderDialog-enable-all-with-data'),
           color: 'secondary',
           autoFocus: true,
           onClick: onEnableOnlyColumnsWithDataClick,
@@ -173,7 +170,7 @@ export const TableColumnsEditorDialog = withDialog<TableColumnsEditorDialogProps
           label: t`Enable all with data`,
         },
         {
-          ...TestIdUtil.createAttributes('TableColumnOrderDialog-hide-all'),
+          ...TestIdUtil.createAttributes('TableColumnOrderDialog-disable-all'),
           color: 'secondary',
           autoFocus: true,
           onClick: onDisableAllButtonClick,
@@ -181,7 +178,7 @@ export const TableColumnsEditorDialog = withDialog<TableColumnsEditorDialogProps
           label: t`Disable all`,
         },
         {
-          ...TestIdUtil.createAttributes('TableColumnOrderDialog-hide-all'),
+          ...TestIdUtil.createAttributes('TableColumnOrderDialog-disable-all-without-data'),
           color: 'secondary',
           autoFocus: true,
           onClick: onDisableColumnsWithoutDataClick,
@@ -194,7 +191,15 @@ export const TableColumnsEditorDialog = withDialog<TableColumnsEditorDialogProps
           autoFocus: true,
           onClick: onResetButtonClick,
           variant: 'outlined',
-          label: t`Reset`,
+          label: t`Reset to default`,
+        },
+        {
+          ...TestIdUtil.createAttributes('TableColumnOrderDialog-close'),
+          color: 'primary',
+          autoFocus: true,
+          onClick: onClose,
+          variant: 'outlined',
+          label: t`Close`,
         },
         {
           ...TestIdUtil.createAttributes('TableColumnOrderDialog-save'),
@@ -202,7 +207,7 @@ export const TableColumnsEditorDialog = withDialog<TableColumnsEditorDialogProps
           autoFocus: true,
           onClick: onSaveButtonClick,
           variant: 'contained',
-          label: t`Save`,
+          label: t`Apply`,
         },
       ],
     );

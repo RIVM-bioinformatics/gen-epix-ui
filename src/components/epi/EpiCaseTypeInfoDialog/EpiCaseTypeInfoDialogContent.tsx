@@ -13,7 +13,7 @@ import { useTranslation } from 'react-i18next';
 import { useStore } from 'zustand';
 
 import type { EpiCaseTypeAbacContextValue } from '../../../context/epiCaseTypeAbac';
-import { EpiCaseTypeAbacProvider } from '../../../context/epiCaseTypeAbac';
+import { EpiCaseTypeAbacContextProvider } from '../../../context/epiCaseTypeAbac';
 import {
   useDataCollectionsMapQuery,
   useDataCollectionsQuery,
@@ -82,7 +82,7 @@ export const EpiCaseTypeInfoDialogContent = ({ onTitleChange }: EpiCaseTypeInfoD
       loadables={loadables}
       shouldHideActionButtons
     >
-      <EpiCaseTypeAbacProvider caseTypeAbac={caseTypeAbacContextValue}>
+      <EpiCaseTypeAbacContextProvider caseTypeAbac={caseTypeAbacContextValue}>
         <Box
           sx={{
             '& dl': {
@@ -162,7 +162,7 @@ export const EpiCaseTypeInfoDialogContent = ({ onTitleChange }: EpiCaseTypeInfoD
             />
           </Box>
         </Box>
-      </EpiCaseTypeAbacProvider>
+      </EpiCaseTypeAbacContextProvider>
     </ResponseHandler>
   );
 };

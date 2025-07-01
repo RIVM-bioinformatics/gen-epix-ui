@@ -57,7 +57,7 @@ import type {
 import type { PropsWithTestIdAttributes } from '../../models/testId';
 import {
   createTableStore,
-  TableStoreProvider,
+  TableStoreContextProvider,
 } from '../../stores/tableStore';
 import { QueryUtil } from '../../utils/QueryUtil';
 import { TableUtil } from '../../utils/TableUtil';
@@ -485,7 +485,7 @@ export const CrudPage = <
   }, [contentActions, userCanCreate, isLoading, isCreating, onCreateItemButtonClick, createItemButtonText, t, theme]);
 
   return (
-    <TableStoreProvider store={tableStore}>
+    <TableStoreContextProvider store={tableStore}>
       <PageContainer
         contentActions={customContentActions}
         contentHeader={(
@@ -540,6 +540,6 @@ export const CrudPage = <
           title={t`Are you sure?`}
         />
       </PageContainer>
-    </TableStoreProvider>
+    </TableStoreContextProvider>
   );
 };

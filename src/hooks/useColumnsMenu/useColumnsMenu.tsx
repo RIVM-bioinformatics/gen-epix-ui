@@ -57,15 +57,14 @@ export const UseColumnsMenu = <TRowData,>({ hasCellData }: UseColumnsMenuProps<T
   const menuItemData: MenuItemData = useMemo(() => {
     const items: MenuItemData[] = [
       {
-        label: t`Reset`,
-        callback: () => emitTableEvent('reset'),
-        autoCloseDisabled: true,
-        divider: true,
-      },
-      {
         label: t`Change order / visibility`,
         callback: () => onColumnsEditorMenuItemClick(),
         divider: true,
+      },
+      {
+        label: t`Reset`,
+        callback: () => emitTableEvent('reset'),
+        autoCloseDisabled: true,
       },
       {
         label: t`Show all`,

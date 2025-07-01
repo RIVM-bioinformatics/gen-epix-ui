@@ -8,6 +8,8 @@ import {
 } from '@dnd-kit/core';
 import type { DropAnimation } from '@dnd-kit/core';
 
+import { TestIdUtil } from '../../../utils/TestIdUtil';
+
 
 export const SortableOverlay = ({ children }: PropsWithChildren<unknown>) => {
   const dropAnimationConfig = useMemo<DropAnimation>(() => ({
@@ -23,6 +25,7 @@ export const SortableOverlay = ({ children }: PropsWithChildren<unknown>) => {
 
   return (
     <DragOverlay
+      {...TestIdUtil.createAttributes('SortableOverlay')}
       dropAnimation={dropAnimationConfig}
       zIndex={1000}
     >

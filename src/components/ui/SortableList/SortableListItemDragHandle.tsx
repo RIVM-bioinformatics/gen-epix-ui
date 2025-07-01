@@ -5,6 +5,8 @@ import {
 import { useContext } from 'react';
 import DragIndicatorIcon from '@mui/icons-material/DragIndicator';
 
+import { TestIdUtil } from '../../../utils/TestIdUtil';
+
 import { SortableListItemContext } from './context/SortableListItemContext';
 
 export const SortableListItemDragHandle = () =>{
@@ -13,6 +15,7 @@ export const SortableListItemDragHandle = () =>{
 
   return (
     <Box
+      {...TestIdUtil.createAttributes('SortableListItemDragHandle')}
       component="button"
       {...attributes}
       {...listeners}

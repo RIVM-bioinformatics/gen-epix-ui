@@ -15,7 +15,7 @@ import {
   createEpiStore,
   EpiStoreContext,
 } from '../../../stores/epiStore';
-import { TableStoreProvider } from '../../../stores/tableStore';
+import { TableStoreContextProvider } from '../../../stores/tableStore';
 import { EpiCaseTypeUtil } from '../../../utils/EpiCaseTypeUtil';
 import { StringUtil } from '../../../utils/StringUtil';
 
@@ -62,10 +62,10 @@ export const EpiStoreLoaderContent = ({ completeCaseType, caseSet, children }: E
   }, [initialize, setColumnDimensions, tableColumnDimensions]);
 
   return (
-    <TableStoreProvider store={epiStore}>
+    <TableStoreContextProvider store={epiStore}>
       <EpiStoreContext.Provider value={epiStore}>
         {children}
       </EpiStoreContext.Provider>
-    </TableStoreProvider>
+    </TableStoreContextProvider>
   );
 };

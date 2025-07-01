@@ -12,7 +12,7 @@ import { useInitializeTableStore } from '../../../hooks/useInitializeTableStore'
 import type { TableColumn } from '../../../models/table';
 import {
   createTableStore,
-  TableStoreProvider,
+  TableStoreContextProvider,
 } from '../../../stores/tableStore';
 import { StringUtil } from '../../../utils/StringUtil';
 import { TableUtil } from '../../../utils/TableUtil';
@@ -64,7 +64,7 @@ export const SearchHistoryTable = () => {
   useInitializeTableStore(tableStore, searchHistoryColumns, searchHistoryEntries);
 
   return (
-    <TableStoreProvider store={tableStore}>
+    <TableStoreContextProvider store={tableStore}>
       <TableHeader
         header={t`Search history (demo data)`}
         headerComponent={'h6'}
@@ -73,6 +73,6 @@ export const SearchHistoryTable = () => {
       <Table
         getRowName={getRowName}
       />
-    </TableStoreProvider>
+    </TableStoreContextProvider>
   );
 };
