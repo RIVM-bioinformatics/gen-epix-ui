@@ -18,6 +18,7 @@ import type {
   WithDialogRefMethods,
 } from '../../../hoc/withDialog';
 import type {
+  HasCellDataFn,
   TableColumn,
   TableColumnSettings,
 } from '../../../models/table';
@@ -26,15 +27,15 @@ import { useTableStoreContext } from '../../../stores/tableStore';
 import { TableUtil } from '../../../utils/TableUtil';
 
 
-export interface TableColumnOrderDialogOpenProps {
+export interface TableColumnsEditorDialogOpenProps {
+  readonly hasCellData: HasCellDataFn<unknown>;
+}
+
+export interface TableColumnsEditorDialogProps extends WithDialogRenderProps<TableColumnsEditorDialogOpenProps> {
   //
 }
 
-export interface TableColumnOrderDialogProps extends WithDialogRenderProps<TableColumnOrderDialogOpenProps> {
-  //
-}
-
-export type TableColumnOrderDialogRefMethods = WithDialogRefMethods<TableColumnOrderDialogProps, TableColumnOrderDialogOpenProps>;
+export type TableColumnsEditorDialogRefMethods = WithDialogRefMethods<TableColumnsEditorDialogProps, TableColumnsEditorDialogOpenProps>;
 
 
 type Item = {
@@ -43,12 +44,13 @@ type Item = {
   isSelected: boolean;
 };
 
-export const TableColumnOrderDialog = withDialog<TableColumnOrderDialogProps, TableColumnOrderDialogOpenProps>((
+export const TableColumnsEditorDialog = withDialog<TableColumnsEditorDialogProps, TableColumnsEditorDialogOpenProps>((
   {
     onTitleChange,
     onActionsChange,
     onClose,
-  }: TableColumnOrderDialogProps,
+    openProps: { hasCellData },
+  }: TableColumnsEditorDialogProps,
 ): ReactElement => {
   const [t] = useTranslation();
   const [items, setItems] = useState<Item[]>([]);
@@ -57,6 +59,7 @@ export const TableColumnOrderDialog = withDialog<TableColumnOrderDialogProps, Ta
   const emitTableEvent = useStore(tableStore, useShallow((state) => state.emitEvent));
   const tableColumnSettings = useStore(tableStore, useShallow((state) => state.columnSettings));
   const tableColumns = useStore(tableStore, useShallow((state) => state.columns));
+  const sortedData = useStore(tableStore, useShallow((state) => state.sortedData));
 
   const columnsMap = useMemo(() => {
     const map = new Map<string, TableColumn<unknown>>();
@@ -85,7 +88,7 @@ export const TableColumnOrderDialog = withDialog<TableColumnOrderDialogProps, Ta
     updateItems(tableColumnSettings);
   }, [tableColumnSettings, updateItems]);
 
-  const onReset = useCallback(() => {
+  const onResetButtonClick = useCallback(() => {
     updateItems(TableUtil.createInitialColumnSettings(tableColumns));
   }, [tableColumns, updateItems]);
 
@@ -94,11 +97,26 @@ export const TableColumnOrderDialog = withDialog<TableColumnOrderDialogProps, Ta
     onTitleChange(t`Change column order`);
   }, [onTitleChange, t]);
 
-  const onSave = useCallback(() => {
+  const onSaveButtonClick = useCallback(() => {
     emitTableEvent('columnVisibilityChange', [...tableColumns.filter(c => c.isStatic).map(c => c.id), ...items.filter((item) => item.isSelected).map((item) => item.id.toString())]);
     emitTableEvent('columnOrderChange', items.map((item) => item.id.toString()));
     onClose();
   }, [tableColumns, emitTableEvent, items, onClose]);
+
+  const onHideColumnsWithoutDataClick = useCallback(() => {
+    const newVisibleColumnIds = TableUtil.getColumnIdsWithData({
+      visibleColumnIds: tableColumnSettings.filter(c => c.isVisible).map(c => c.id),
+      tableColumns,
+      sortedData,
+      hasCellData,
+    });
+    setItems((prevItems) => {
+      return prevItems.map((item) => ({
+        ...item,
+        isSelected: newVisibleColumnIds.includes(item.id.toString()),
+      }));
+    });
+  }, [hasCellData, sortedData, tableColumnSettings, tableColumns]);
 
   useEffect(() => {
     onActionsChange(
@@ -112,10 +130,18 @@ export const TableColumnOrderDialog = withDialog<TableColumnOrderDialogProps, Ta
           label: t`Close`,
         },
         {
+          ...TestIdUtil.createAttributes('TableColumnOrderDialog-hide-columns-without-data'),
+          color: 'primary',
+          autoFocus: true,
+          onClick: onHideColumnsWithoutDataClick,
+          variant: 'outlined',
+          label: t`Hide columns without data`,
+        },
+        {
           ...TestIdUtil.createAttributes('TableColumnOrderDialog-reset'),
           color: 'primary',
           autoFocus: true,
-          onClick: onReset,
+          onClick: onResetButtonClick,
           variant: 'outlined',
           label: t`Reset`,
         },
@@ -123,13 +149,13 @@ export const TableColumnOrderDialog = withDialog<TableColumnOrderDialogProps, Ta
           ...TestIdUtil.createAttributes('TableColumnOrderDialog-save'),
           color: 'secondary',
           autoFocus: true,
-          onClick: onSave,
+          onClick: onSaveButtonClick,
           variant: 'contained',
           label: t`Save`,
         },
       ],
     );
-  }, [onActionsChange, onClose, onReset, onSave, t]);
+  }, [onActionsChange, onClose, onHideColumnsWithoutDataClick, onResetButtonClick, onSaveButtonClick, t]);
 
   const onSortableListChange = useCallback((newItems: Item[]) => {
     setItems(newItems);

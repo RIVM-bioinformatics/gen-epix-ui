@@ -41,6 +41,7 @@ import type {
   TableRowParams,
   TableColumnActions,
   TableColumnDimension,
+  HasCellDataFn,
 } from '../../models/table';
 import { FIXED_COLUMN_ID } from '../../models/table';
 import { DATE_FORMAT } from '../../data/date';
@@ -468,6 +469,37 @@ export class TableUtil {
     });
 
     return new Map(tableColumnSettings.map(c => [c.id, c]));
+  }
+
+  public static getColumnIdsWithData<TRowData>(params: { visibleColumnIds: string[]; tableColumns: TableColumn<TRowData>[]; sortedData: TRowData[]; hasCellData: HasCellDataFn<TRowData> }): string[] {
+    const { visibleColumnIds, tableColumns, sortedData, hasCellData } = params;
+    const columns = visibleColumnIds.map(id => tableColumns.find(c => c.id === id));
+    let newVisibleColumnIds: string[];
+    if (hasCellData) {
+      newVisibleColumnIds = columns.filter(column => {
+        if (column.isStatic) {
+          return true;
+        }
+        return sortedData.every((row, rowIndex) => hasCellData(row, column, rowIndex));
+      }).map(c => c.id);
+    } else {
+      newVisibleColumnIds = columns.filter(column => {
+        if (column.isStatic) {
+          return true;
+        }
+        return sortedData.some((row, rowIndex) => {
+          if (column.valueGetter) {
+            return column.valueGetter({
+              id: column.id,
+              row,
+              rowIndex,
+            });
+          }
+          return row[column.id as keyof TRowData] !== undefined;
+        });
+      }).map(c => c.id);
+    }
+    return newVisibleColumnIds;
   }
 
   public static handleMoveColumn<TRowData>(
