@@ -87,7 +87,7 @@ export const HomePageTrends = () => {
   const statistics = useMemo<Statistic[]>(() => {
     const s: Statistic[] = [];
 
-    if (loadables.some(loadable => loadable.isLoading)) {
+    if (loadables.some(loadable => loadable.isLoading) || !caseTypeStatsQueryNow.data?.length || !caseTypeStatsQueryPast.data?.length) {
       return s;
     }
 
