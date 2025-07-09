@@ -8,9 +8,7 @@ import { TestIdUtil } from '../../utils/TestIdUtil';
 
 
 const HomeContent = () => {
-
   const { HomePageIntroduction } = ConfigManager.instance.config;
-
 
   return (
     <Box

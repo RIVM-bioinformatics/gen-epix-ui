@@ -40,10 +40,12 @@ export const AdminContent = () => {
   const authorizationManager = useMemo(() => AuthorizationManager.instance, []);
 
   const menuItems = useMemo(() => {
-    const items = adminRoutes.filter(r => {
-      const hasPermission = authorizationManager.doesUserHavePermission(r.handle.requiredPermissions);
-      return !r.handle?.hidden && !r.index && hasPermission;
-    });
+    const items = adminRoutes
+      .map(r => r.children?.length ? r.children.find(child => child.index) as MyNonIndexRouteObject : r)
+      .filter(r => {
+        const hasPermission = authorizationManager.doesUserHavePermission(r.handle.requiredPermissions);
+        return !r.handle?.hidden && hasPermission;
+      });
     return items;
   }, [authorizationManager]);
 

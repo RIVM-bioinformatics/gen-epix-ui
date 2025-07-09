@@ -1,5 +1,4 @@
 import type { UseQueryResult } from '@tanstack/react-query';
-import { useQuery } from '@tanstack/react-query';
 import { useMemo } from 'react';
 
 import type { CaseType } from '../../api';
@@ -11,9 +10,10 @@ import type {
 import { QUERY_KEY } from '../../models/query';
 import { DataUtil } from '../../utils/DataUtil';
 import { QueryUtil } from '../../utils/QueryUtil';
+import { useQueryMemo } from '../../hooks/useQueryMemo';
 
 export const useCaseTypesQuery = (): UseQueryResult<CaseType[]> => {
-  return useQuery({
+  return useQueryMemo({
     queryKey: QueryUtil.getGenericKey(QUERY_KEY.CASE_TYPES),
     queryFn: async ({ signal }) => {
       const response = await CaseApi.getInstance().caseTypesGetAll({ signal });
@@ -29,8 +29,7 @@ export const useCaseTypeMapQuery = (): UseMap<CaseType> => {
 
   return useMemo(() => {
     return DataUtil.createUseMapDataHook<CaseType>(response, item => item.id);
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [DataUtil.createMemorizationDependency(response)]);
+  }, [response]);
 };
 
 export const useCaseTypeOptionsQuery = (): UseOptions<string> => {
@@ -38,6 +37,5 @@ export const useCaseTypeOptionsQuery = (): UseOptions<string> => {
 
   return useMemo(() => {
     return DataUtil.createUseOptionsDataHook<CaseType>(response, item => item.id, item => item.name);
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [DataUtil.createMemorizationDependency(response)]);
+  }, [response]);
 };

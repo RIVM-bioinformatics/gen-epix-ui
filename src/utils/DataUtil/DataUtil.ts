@@ -34,15 +34,6 @@ export class DataUtil {
     return true;
   }
 
-  public static createMemorizationDependency<T>(response: UseQueryResult<T>): unknown {
-    return JSON.stringify({
-      data: response.data,
-      error: response.error,
-      isLoading: response.isLoading,
-      isPending: response.isPending,
-    });
-  }
-
   public static createUseMapDataHook<TValue>(
     response: UseQueryResult<TValue[]> | TValue[],
     getId: (item: TValue) => string,

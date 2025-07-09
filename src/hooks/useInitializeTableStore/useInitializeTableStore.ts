@@ -16,7 +16,7 @@ export const useInitializeTableStore = <TData,>(store: StoreApi<TableStore<TData
   const initialize = useStore(store, (state) => state.initialize);
 
   useEffect(() => {
-    if (!columns || !baseData) {
+    if (!columns || !baseData?.length) {
       return;
     }
     const abortController = new AbortController();

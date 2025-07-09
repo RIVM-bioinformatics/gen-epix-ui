@@ -32,6 +32,7 @@ import { UserAccessCasePoliciesAdminPage } from '../pages/UserAccessCasePolicies
 import { UserInvitationsAdminPage } from '../pages/UserInvitationsAdminPage';
 import { UserShareCasePoliciesAdminPage } from '../pages/UserShareCasePoliciesAdminPage';
 import { UsersAdminPage } from '../pages/UsersAdminPage';
+import { UsersEffectiveRightsAdminPage } from '../pages/UsersEffectiveRightsAdminPage';
 
 export const adminRoutes: MyNonIndexRouteObject[] = [
   // USERS_AND_ORGANIZATIONS
@@ -52,18 +53,44 @@ export const adminRoutes: MyNonIndexRouteObject[] = [
   },
   {
     path: '/management/users',
-    Component: () => <UsersAdminPage />,
     errorElement: <RouterErrorPage />,
     handle: {
       titleKey: 'Users',
-      subTitleKey: 'Manage users',
-      requiredPermissions: [
-        { command_name: CommandName.UserCrudCommand, permission_type: PermissionType.READ },
-        { command_name: CommandName.OrganizationCrudCommand, permission_type: PermissionType.READ },
-      ],
+      requiredPermissions: [],
       requiresUserProfile: true,
-      category: ADMIN_PAGE_CATEGORY.USERS_AND_ORGANIZATIONS,
+      requirePermissionForChildRoute: true,
     },
+    children: [
+      {
+        index: true,
+        path: '/management/users',
+        Component: () => <UsersAdminPage />,
+        errorElement: <RouterErrorPage />,
+        handle: {
+          titleKey: 'Users',
+          subTitleKey: 'Manage users',
+          requiredPermissions: [
+            { command_name: CommandName.UserCrudCommand, permission_type: PermissionType.READ },
+            { command_name: CommandName.OrganizationCrudCommand, permission_type: PermissionType.READ },
+          ],
+          requiresUserProfile: true,
+          category: ADMIN_PAGE_CATEGORY.USERS_AND_ORGANIZATIONS,
+        },
+      },
+      {
+        path: '/management/users/:userId/effective-rights',
+        Component: () => <UsersEffectiveRightsAdminPage />,
+        errorElement: <RouterErrorPage />,
+        handle: {
+          titleKey: 'Effective rights',
+          requiredPermissions: [
+            { command_name: CommandName.UserCrudCommand, permission_type: PermissionType.READ },
+            { command_name: CommandName.OrganizationCrudCommand, permission_type: PermissionType.READ },
+          ],
+          requiresUserProfile: true,
+        },
+      },
+    ],
   },
   {
     path: '/management/user-invitations',
