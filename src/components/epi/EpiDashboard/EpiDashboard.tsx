@@ -76,8 +76,8 @@ import { EpiStratification } from '../EpiStratification';
 import type { EpiTreeRef } from '../EpiTree';
 import { EpiTree } from '../EpiTree';
 import { EpiWidgetUnavailable } from '../EpiWidgetUnavailable';
-
 import { TestIdUtil } from '../../../utils/TestIdUtil';
+
 import {
   EpiDashboardSettingsSidebarItemIcon,
   EpiDashboardSettingsSidebarItem,
