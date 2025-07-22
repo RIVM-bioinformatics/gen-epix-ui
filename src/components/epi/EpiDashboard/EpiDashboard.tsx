@@ -83,6 +83,7 @@ import {
 } from './EpiDashboardSettingsSidebarItem';
 import { EpiDashboardLayoutRenderer } from './EpiDashboardLayoutRenderer';
 import type { ForwardRefEpiDashboardLayoutRendererRefMethods } from './EpiDashboardLayoutRenderer';
+import { TestIdUtil } from '../../../utils/TestIdUtil';
 
 type EpiDashboardProps = {
   readonly caseSet?: CaseSet;
