@@ -77,13 +77,13 @@ import type { EpiTreeRef } from '../EpiTree';
 import { EpiTree } from '../EpiTree';
 import { EpiWidgetUnavailable } from '../EpiWidgetUnavailable';
 
+import { TestIdUtil } from '../../../utils/TestIdUtil';
 import {
   EpiDashboardSettingsSidebarItemIcon,
   EpiDashboardSettingsSidebarItem,
 } from './EpiDashboardSettingsSidebarItem';
 import { EpiDashboardLayoutRenderer } from './EpiDashboardLayoutRenderer';
 import type { ForwardRefEpiDashboardLayoutRendererRefMethods } from './EpiDashboardLayoutRenderer';
-import { TestIdUtil } from '../../../utils/TestIdUtil';
 
 type EpiDashboardProps = {
   readonly caseSet?: CaseSet;
