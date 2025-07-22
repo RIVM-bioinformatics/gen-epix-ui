@@ -76,7 +76,6 @@ import { EpiStratification } from '../EpiStratification';
 import type { EpiTreeRef } from '../EpiTree';
 import { EpiTree } from '../EpiTree';
 import { EpiWidgetUnavailable } from '../EpiWidgetUnavailable';
-import { TestIdUtil } from '../../../utils/TestIdUtil';
 
 import {
   EpiDashboardSettingsSidebarItemIcon,
@@ -211,7 +210,7 @@ export const EpiDashboard = withEpiStore(({ caseSet }: EpiDashboardProps) => {
             first
             icon={<TableFiltersSidebarItemIcon />}
             onClick={onEpiDashboardOpenFilterSidebarButtonClick}
-            testIdAttributes={TestIdUtil.createAttributes({ name: 'filters' })}
+            testIdAttributes={{ name: 'filters' }}
             title={t`Open filters`}
           />
           <SidebarMenuItem
@@ -219,20 +218,20 @@ export const EpiDashboard = withEpiStore(({ caseSet }: EpiDashboardProps) => {
             badgeContent={numHiddenLayoutZones === numLayoutZones ? '!' : numHiddenLayoutZones}
             icon={<EpiDashboardSettingsSidebarItemIcon />}
             onClick={onEpiDashboardLayoutSelectorSidebarButtonClick}
-            testIdAttributes={TestIdUtil.createAttributes({ name: 'dashboard layout' })}
+            testIdAttributes={{ name: 'dashboard layout' }}
             title={t('Change dashboard layout (hidden zones: {{numHiddenLayoutZones}})', { numHiddenLayoutZones })}
           />
           <SidebarMenuItem
             icon={<InfoIcon />}
             onClick={onEpiDashboardOpenInfoSidebarButtonClick}
-            testIdAttributes={TestIdUtil.createAttributes({ name: 'show case type information' })}
+            testIdAttributes={{ name: 'show case type information' }}
             title={t`Show case type information`}
           />
           {caseSet && (
             <SidebarMenuItem
               icon={<CollectionIcon />}
               onClick={onEpiDashboardOpenCaseSetDescriptionButtonClick}
-              testIdAttributes={TestIdUtil.createAttributes({ name: 'show event information' })}
+              testIdAttributes={{ name: 'show event information' }}
               title={t`Show event information`}
             />
           )}
