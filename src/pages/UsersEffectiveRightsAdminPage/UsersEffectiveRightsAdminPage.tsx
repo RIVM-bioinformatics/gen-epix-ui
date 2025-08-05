@@ -151,7 +151,6 @@ export const UsersEffectiveRightsAdminPage = () => {
       const userSharePolicy = userShareCasePolicies.filter(p => p.data_collection_id === organizationPolicy.data_collection_id);
 
       const effectiveShareCaseRights: UserEffectiveRight['effective_share_case_rights'] = [];
-
       organizationSharePolicy.forEach(organizationShareCasePolicy => {
         const userShareCasePolicy = userSharePolicy.find(p => p.from_data_collection_id === organizationShareCasePolicy.from_data_collection_id);
         const organizationShareCaseTypeIds = caseTypeSetMembers.filter(member => member.case_type_set_id === organizationShareCasePolicy.case_type_set_id).map(member => member.case_type_id);
@@ -163,17 +162,25 @@ export const UsersEffectiveRightsAdminPage = () => {
           childMemberIds: userShareCaseTypeIds,
         });
 
-        effectiveShareCaseRights.push({
-          add_case: organizationShareCasePolicy.add_case && userShareCasePolicy?.add_case,
-          remove_case: organizationShareCasePolicy.remove_case && userShareCasePolicy?.remove_case,
-          add_case_set: organizationShareCasePolicy.add_case_set && userShareCasePolicy?.add_case_set,
-          remove_case_set: organizationShareCasePolicy.remove_case_set && userShareCasePolicy?.remove_case_set,
-          from_data_collection_id: organizationShareCasePolicy.from_data_collection_id,
-          case_type_set_ids,
-          categorized_case_type_ids,
-          uncategorized_case_type_ids,
-        } satisfies UserEffectiveRight['effective_share_case_rights'][number]);
+        const add_case = organizationShareCasePolicy.add_case && userShareCasePolicy?.add_case;
+        const remove_case = organizationShareCasePolicy.remove_case && userShareCasePolicy?.remove_case;
+        const add_case_set = organizationShareCasePolicy.add_case_set && userShareCasePolicy?.add_case_set;
+        const remove_case_set = organizationShareCasePolicy.remove_case_set && userShareCasePolicy?.remove_case_set;
+
+        if ([ add_case, remove_case, add_case_set, remove_case_set ].some(x => x)) {
+          effectiveShareCaseRights.push({
+            add_case,
+            remove_case,
+            add_case_set,
+            remove_case_set,
+            from_data_collection_id: organizationShareCasePolicy.from_data_collection_id,
+            case_type_set_ids,
+            categorized_case_type_ids,
+            uncategorized_case_type_ids,
+          } satisfies UserEffectiveRight['effective_share_case_rights'][number]);
+        }
       });
+
 
       const organizationCaseTypeIds = caseTypeSetMembers.filter(member => member.case_type_set_id === organizationPolicy.case_type_set_id).map(member => member.case_type_id);
       const userCaseTypeIds = caseTypeSetMembers.filter(member => member.case_type_set_id === userPolicy?.case_type_set_id).map(member => member.case_type_id);
