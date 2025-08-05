@@ -23,6 +23,7 @@ import { useEtiologicalAgentsMapQuery } from '../../../dataHooks/useEtiologicalA
 import { EpiStoreContext } from '../../../stores/epiStore';
 import { MarkdownContent } from '../../ui/MarkdownContent';
 import { ResponseHandler } from '../../ui/ResponseHandler';
+import { useArray } from '../../../hooks/useArray';
 
 import { EpiCaseTypeInfoValues } from './EpiCaseTypeInfoValues';
 import { EpiCaseTypeInfoTrees } from './EpiCaseTypeInfoTrees';
@@ -41,7 +42,7 @@ export const EpiCaseTypeInfoDialogContent = ({ onTitleChange }: EpiCaseTypeInfoD
   const etiologicalAgentsMapQuery = useEtiologicalAgentsMapQuery();
   const dataCollectionsMapQuery = useDataCollectionsMapQuery();
   const dataCollectionsQuery = useDataCollectionsQuery();
-  const loadables = useMemo(() => [dataCollectionsMapQuery, dataCollectionsQuery, diseasesMapQuery, etiologicalAgentsMapQuery], [dataCollectionsMapQuery, dataCollectionsQuery, diseasesMapQuery, etiologicalAgentsMapQuery]);
+  const loadables = useArray([dataCollectionsMapQuery, dataCollectionsQuery, diseasesMapQuery, etiologicalAgentsMapQuery]);
 
   const epiStore = useContext(EpiStoreContext);
   const completeCaseType = useStore(epiStore, (state) => state.completeCaseType);

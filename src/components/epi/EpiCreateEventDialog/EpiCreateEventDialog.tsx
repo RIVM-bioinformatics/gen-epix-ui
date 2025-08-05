@@ -51,6 +51,7 @@ import { GenericForm } from '../../form/helpers/GenericForm';
 import type { DialogAction } from '../../ui/Dialog';
 import { ResponseHandler } from '../../ui/ResponseHandler';
 import { EpiCasesAlreadyInCaseSetWarning } from '../EpiCasesAlreadyInCaseSetWarning';
+import { useArray } from '../../../hooks/useArray';
 
 import { EpiCreateEventDialogSuccessNotificationMessage } from './EpiCreateEventDialogSuccessNotificationMessage';
 
@@ -240,12 +241,12 @@ export const EpiCreateEventDialog = withDialog<EpiCreateEventDialogProps, EpiCre
     ];
   }, [caseSetCategoryOptionsQuery.isLoading, caseSetCategoryOptionsQuery.options, caseSetStatusOptionsQuery.isLoading, caseSetStatusOptionsQuery.options, caseTypeOptionsQuery.isLoading, caseTypeOptionsQuery.options, createInDataCollectionOptions, dataCollectionOptionsQuery.isLoading, isCompleteCaseTypeLoading, openProps.completeCaseType, openProps.rows?.length, shareInDataCollectionOptions, sharedInDataCollectionIds.length, t]);
 
-  const loadables = useMemo(() => [
+  const loadables = useArray([
     caseTypeOptionsQuery,
     caseSetCategoryOptionsQuery,
     caseSetStatusOptionsQuery,
     dataCollectionOptionsQuery,
-  ], [dataCollectionOptionsQuery, caseSetCategoryOptionsQuery, caseSetStatusOptionsQuery, caseTypeOptionsQuery]);
+  ]);
 
 
   const isLoading = loadables.some(x => x.isLoading);

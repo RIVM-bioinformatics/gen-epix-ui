@@ -10,13 +10,13 @@ import {
 } from '@mui/material';
 import { useTranslation } from 'react-i18next';
 import { format } from 'date-fns';
-import { useMemo } from 'react';
 
 import type { Case } from '../../../api';
 import { useDataCollectionsMapQuery } from '../../../dataHooks/useDataCollectionsQuery';
 import { GenericErrorMessage } from '../../ui/GenericErrorMessage';
 import { ResponseHandler } from '../../ui/ResponseHandler';
 import { DATE_FORMAT } from '../../../data/date';
+import { useArray } from '../../../hooks/useArray';
 
 export type EpiReadOnlyCaseContentProps = {
   readonly epiCase: Case;
@@ -26,7 +26,7 @@ export const EpiReadOnlyCaseContent = ({ epiCase, ...boxProps }: EpiReadOnlyCase
   const [t] = useTranslation();
   const dataCollectionsMapQuery = useDataCollectionsMapQuery();
 
-  const loadables = useMemo(() => [dataCollectionsMapQuery], [dataCollectionsMapQuery]);
+  const loadables = useArray([dataCollectionsMapQuery]);
 
   return (
     <Box {...boxProps}>

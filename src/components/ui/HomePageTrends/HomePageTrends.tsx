@@ -30,6 +30,7 @@ import { QUERY_KEY } from '../../../models/query';
 import { EpiCaseTypeUtil } from '../../../utils/EpiCaseTypeUtil';
 import { QueryUtil } from '../../../utils/QueryUtil';
 import { ResponseHandler } from '../ResponseHandler';
+import { useArray } from '../../../hooks/useArray';
 
 import { HomePageTrendCard } from './HomePageTrendCard';
 
@@ -76,13 +77,13 @@ export const HomePageTrends = () => {
     },
   });
 
-  const loadables = useMemo(() => [
+  const loadables = useArray([
     caseTypeStatsQueryNow,
     caseTypeStatsQueryPast,
     caseTypeMapQuery,
     caseSetsNowQuery,
     caseSetsThenQuery,
-  ], [caseTypeStatsQueryNow, caseTypeStatsQueryPast, caseTypeMapQuery, caseSetsNowQuery, caseSetsThenQuery]);
+  ]);
 
   const statistics = useMemo<Statistic[]>(() => {
     const s: Statistic[] = [];

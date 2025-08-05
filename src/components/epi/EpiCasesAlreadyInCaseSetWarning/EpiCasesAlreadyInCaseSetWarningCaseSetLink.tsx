@@ -1,7 +1,6 @@
 import { Link } from '@mui/material';
 import {
   useCallback,
-  useMemo,
   useRef,
 } from 'react';
 import { t } from 'i18next';
@@ -14,6 +13,7 @@ import { EpiCaseSetUtil } from '../../../utils/EpiCaseSetUtil';
 import type { ConfirmationRefMethods } from '../../ui/Confirmation';
 import { Confirmation } from '../../ui/Confirmation';
 import { ResponseHandler } from '../../ui/ResponseHandler';
+import { useArray } from '../../../hooks/useArray';
 
 export type EpiCasesAlreadyInCaseSetWarningCaseSetLinkProps = {
   readonly caseSet: CaseSet;
@@ -22,7 +22,7 @@ export type EpiCasesAlreadyInCaseSetWarningCaseSetLinkProps = {
 export const EpiCasesAlreadyInCaseSetWarningCaseSetLink = ({ caseSet }: EpiCasesAlreadyInCaseSetWarningCaseSetLinkProps) => {
   const caseSetCategoryMapQuery = useCaseSetCategoryMapQuery();
   const caseSetStatusMapQuery = useCaseSetStatusMapQuery();
-  const loadables = useMemo(() => [caseSetCategoryMapQuery, caseSetStatusMapQuery], [caseSetCategoryMapQuery, caseSetStatusMapQuery]);
+  const loadables = useArray([caseSetCategoryMapQuery, caseSetStatusMapQuery]);
   const confirmationRef = useRef<ConfirmationRefMethods>(null);
 
   const onLinkClick = useCallback(() => {

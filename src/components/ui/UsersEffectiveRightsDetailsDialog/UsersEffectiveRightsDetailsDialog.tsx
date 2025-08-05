@@ -377,7 +377,6 @@ export const UsersEffectiveRightsDetailsDialog = withDialog<UsersEffectiveRights
             )}
           </CustomTabPanel>
 
-
           <CustomTabPanel
             index={3}
             value={activeTab}

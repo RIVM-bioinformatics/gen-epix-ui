@@ -51,6 +51,7 @@ import {
 import type { DialogAction } from '../../ui/Dialog';
 import { Autocomplete } from '../../form/fields/Autocomplete';
 import { Select } from '../../form/fields/Select';
+import { useArray } from '../../../hooks/useArray';
 
 import { EpiAddCasesToEventDialogSuccessNotificationMessage } from './EpiAddCasesToEventDialogSuccessNotificationMessage';
 
@@ -224,7 +225,7 @@ export const EpiAddCasesToEventDialog = withDialog<EpiAddCasesToEventDialogProps
     onActionsChange(actions);
   }, [caseSetId, formId, isMutatingItems, isCaseSetMembersLoading, onActionsChange, onCancelButtonClick, onConfirmButtonClick, t, caseIdsToAdd.length, isCaseSetDataCollectionLinksLoading]);
 
-  const loadables = useMemo(() => [caseSetOptionsQuery, caseSetsMapQuery, dataCollectionsMapQuery], [caseSetOptionsQuery, caseSetsMapQuery, dataCollectionsMapQuery]);
+  const loadables = useArray([caseSetOptionsQuery, caseSetsMapQuery, dataCollectionsMapQuery]);
 
   const booleanOptions = useMemo(() => FormUtil.createBooleanOptions(t), [t]);
 
