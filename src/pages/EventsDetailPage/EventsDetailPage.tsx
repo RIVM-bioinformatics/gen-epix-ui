@@ -10,6 +10,7 @@ import { EpiDashboard } from '../../components/epi/EpiDashboard';
 import { PageContainer } from '../../components/ui/PageContainer';
 import { ResponseHandler } from '../../components/ui/ResponseHandler';
 import { useCaseTypeMapQuery } from '../../dataHooks/useCaseTypesQuery';
+import { useArray } from '../../hooks/useArray';
 import { useItemQuery } from '../../hooks/useItemQuery';
 import { useUpdateBreadcrumb } from '../../hooks/useUpdateBreadcrumb';
 import { QUERY_KEY } from '../../models/query';
@@ -43,7 +44,7 @@ export const EventsDetailPage = () => {
     updateBreadcrumb(title);
   }, [title, updateBreadcrumb]);
 
-  const loadables = useMemo(() => [caseTypeMapQuery], [caseTypeMapQuery]);
+  const loadables = useArray([caseTypeMapQuery]);
 
   return (
     <PageContainer

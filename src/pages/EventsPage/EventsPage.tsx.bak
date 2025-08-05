@@ -40,7 +40,7 @@ import { useCaseSetStatsMapQuery } from '../../dataHooks/useCaseSetStatsQuery';
 import { useCaseSetStatusOptionsQuery } from '../../dataHooks/useCaseSetStatusesQuery';
 import { useCaseTypeOptionsQuery } from '../../dataHooks/useCaseTypesQuery';
 import { useInitializeTableStore } from '../../hooks/useInitializeTableStore';
-import { useArray } from '../../hooks/useArray';
+import { useArray } from '../../hooks/useArray';import type { Loadable } from '../../models/dataHooks';
 import { QUERY_KEY } from '../../models/query';
 import type {
   TableRowParams,

@@ -22,7 +22,7 @@ import {
 } from '../../api';
 import { useCaseTypeColOptionsQuery } from '../../dataHooks/useCaseTypeColsQuery';
 import { useCaseTypeColSetMembersQuery } from '../../dataHooks/useCaseTypeColSetMembersQuery';
-import { useArray } from '../../hooks/useArray';
+import { useArray } from '../../hooks/useArray';import type { Loadable } from '../../models/dataHooks';
 import type { FormFieldDefinition } from '../../models/form';
 import { FORM_FIELD_DEFINITION_TYPE } from '../../models/form';
 import { QUERY_KEY } from '../../models/query';

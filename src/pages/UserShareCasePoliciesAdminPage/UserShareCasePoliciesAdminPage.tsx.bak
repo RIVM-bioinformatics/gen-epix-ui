@@ -9,7 +9,7 @@ import {
   string,
 } from 'yup';
 
-import type { OrganizationShareCasePolicy } from '../../api';
+import type { UserShareCasePolicy } from '../../api';
 import {
   AbacApi,
   CommandName,
@@ -17,9 +17,9 @@ import {
 import { useCaseTypeColSetOptionsQuery } from '../../dataHooks/useCaseTypeColSetsQuery';
 import { useCaseTypeSetOptionsQuery } from '../../dataHooks/useCaseTypeSetsQuery';
 import { useDataCollectionOptionsQuery } from '../../dataHooks/useDataCollectionsQuery';
-import { useOrganizationOptionsQuery } from '../../dataHooks/useOrganizationsQuery';
-import { useOrganizationCasePolicyNameFactory } from '../../hooks/useOrganizationCasePolicyNameFactory';
-import { useArray } from '../../hooks/useArray';
+import { useUserOptionsQuery } from '../../dataHooks/useUsersQuery';
+import { useUserCasePolicyNameFactory } from '../../hooks/useUserCasePolicyNameFactory';
+import { useArray } from '../../hooks/useArray';import type { Loadable } from '../../models/dataHooks';
 import type { FormFieldDefinition } from '../../models/form';
 import { FORM_FIELD_DEFINITION_TYPE } from '../../models/form';
 import { QUERY_KEY } from '../../models/query';
@@ -29,8 +29,8 @@ import { TestIdUtil } from '../../utils/TestIdUtil';
 import { CrudPage } from '../CrudPage';
 
 type FormFields = Pick<
-  OrganizationShareCasePolicy,
-  'organization_id' |
+  UserShareCasePolicy,
+  'user_id' |
   'data_collection_id' |
   'case_type_set_id' |
   'from_data_collection_id' |
@@ -41,40 +41,40 @@ type FormFields = Pick<
   'is_active'
 >;
 
-export const OrganizationShareCasePoliciesAdminPage = () => {
+export const UserShareCasePoliciesAdminPage = () => {
   const [t] = useTranslation();
-  const organizationOptionsQuery = useOrganizationOptionsQuery();
+  const userOptionsQuery = useUserOptionsQuery();
   const dataCollectionOptionsQuery = useDataCollectionOptionsQuery();
   const caseTypeColSetOptionsQuery = useCaseTypeColSetOptionsQuery();
-  const caseTypeSetOptions = useCaseTypeSetOptionsQuery();
+  const caseTypeSetOptionsQuery = useCaseTypeSetOptionsQuery();
 
-  const nameFactory = useOrganizationCasePolicyNameFactory();
+  const nameFactory = useUserCasePolicyNameFactory();
 
-  const loadables = useArray([nameFactory, organizationOptionsQuery, dataCollectionOptionsQuery, caseTypeColSetOptionsQuery, caseTypeSetOptions]);
+  const loadables = useArray([userOptionsQuery, dataCollectionOptionsQuery, caseTypeColSetOptionsQuery, caseTypeSetOptionsQuery]);
 
   const fetchAll = useCallback(async (signal: AbortSignal) => {
-    return (await AbacApi.getInstance().organizationShareCasePoliciesGetAll({ signal }))?.data;
+    return (await AbacApi.getInstance().userShareCasePoliciesGetAll({ signal }))?.data;
   }, []);
 
-  const deleteOne = useCallback(async (item: OrganizationShareCasePolicy) => {
-    return await AbacApi.getInstance().organizationShareCasePoliciesDeleteOne(item.id);
+  const deleteOne = useCallback(async (item: UserShareCasePolicy) => {
+    return await AbacApi.getInstance().userShareCasePoliciesDeleteOne(item.id);
   }, []);
 
-  const updateOne = useCallback(async (variables: FormFields, item: OrganizationShareCasePolicy) => {
-    return (await AbacApi.getInstance().organizationShareCasePoliciesPutOne(item.id, { id: item.id, ...variables })).data;
+  const updateOne = useCallback(async (variables: FormFields, item: UserShareCasePolicy) => {
+    return (await AbacApi.getInstance().userShareCasePoliciesPutOne(item.id, { id: item.id, ...variables })).data;
   }, []);
 
   const createOne = useCallback(async (variables: FormFields) => {
-    return (await AbacApi.getInstance().organizationShareCasePoliciesPostOne(variables)).data;
+    return (await AbacApi.getInstance().userShareCasePoliciesPostOne(variables)).data;
   }, []);
 
-  const getName = useCallback((item: OrganizationShareCasePolicy) => {
+  const getName = useCallback((item: UserShareCasePolicy) => {
     return nameFactory.getName(item);
   }, [nameFactory]);
 
   const schema = useMemo(() => {
     return object<FormFields>().shape({
-      organization_id: string().uuid4().required().max(100),
+      user_id: string().uuid4().required().max(100),
       data_collection_id: string().uuid4().required().max(100),
       from_data_collection_id: string().uuid4().required().max(100),
       case_type_set_id: string().uuid4().required().max(100),
@@ -90,10 +90,10 @@ export const OrganizationShareCasePoliciesAdminPage = () => {
     return [
       {
         definition: FORM_FIELD_DEFINITION_TYPE.AUTOCOMPLETE,
-        name: 'organization_id',
-        label: t`Organization`,
-        options: organizationOptionsQuery.options,
-        loading: organizationOptionsQuery.isLoading,
+        name: 'user_id',
+        label: t`User`,
+        options: userOptionsQuery.options,
+        loading: userOptionsQuery.isLoading,
       },
       {
         definition: FORM_FIELD_DEFINITION_TYPE.AUTOCOMPLETE,
@@ -113,8 +113,8 @@ export const OrganizationShareCasePoliciesAdminPage = () => {
         definition: FORM_FIELD_DEFINITION_TYPE.AUTOCOMPLETE,
         name: 'case_type_set_id',
         label: t`Case type set`,
-        options: caseTypeSetOptions.options,
-        loading: caseTypeSetOptions.isLoading,
+        options: caseTypeSetOptionsQuery.options,
+        loading: caseTypeSetOptionsQuery.isLoading,
       },
       {
         definition: FORM_FIELD_DEFINITION_TYPE.BOOLEAN,
@@ -142,40 +142,40 @@ export const OrganizationShareCasePoliciesAdminPage = () => {
         label: t`Is active`,
       },
     ];
-  }, [caseTypeSetOptions.isLoading, caseTypeSetOptions.options, dataCollectionOptionsQuery.isLoading, dataCollectionOptionsQuery.options, organizationOptionsQuery.isLoading, organizationOptionsQuery.options, t]);
+  }, [caseTypeSetOptionsQuery.isLoading, caseTypeSetOptionsQuery.options, dataCollectionOptionsQuery.isLoading, dataCollectionOptionsQuery.options, userOptionsQuery.isLoading, userOptionsQuery.options, t]);
 
-  const tableColumns = useMemo((): TableColumn<OrganizationShareCasePolicy>[] => {
+  const tableColumns = useMemo((): TableColumn<UserShareCasePolicy>[] => {
     return [
-      TableUtil.createOptionsColumn<OrganizationShareCasePolicy>({ id: 'organization_id', name: t`Organization`, options: organizationOptionsQuery.options }),
-      TableUtil.createOptionsColumn<OrganizationShareCasePolicy>({ id: 'data_collection_id', name: t`Data collection`, options: dataCollectionOptionsQuery.options }),
-      TableUtil.createOptionsColumn<OrganizationShareCasePolicy>({ id: 'from_data_collection_id', name: t`From collection`, options: dataCollectionOptionsQuery.options }),
-      TableUtil.createOptionsColumn<OrganizationShareCasePolicy>({ id: 'case_type_set_id', name: t`Case type set`, options: caseTypeSetOptions.options }),
+      TableUtil.createOptionsColumn<UserShareCasePolicy>({ id: 'user_id', name: t`User`, options: userOptionsQuery.options }),
+      TableUtil.createOptionsColumn<UserShareCasePolicy>({ id: 'data_collection_id', name: t`Data collection`, options: dataCollectionOptionsQuery.options }),
+      TableUtil.createOptionsColumn<UserShareCasePolicy>({ id: 'from_data_collection_id', name: t`From collection`, options: dataCollectionOptionsQuery.options }),
+      TableUtil.createOptionsColumn<UserShareCasePolicy>({ id: 'case_type_set_id', name: t`Case type set`, options: caseTypeSetOptionsQuery.options }),
 
-      TableUtil.createBooleanColumn<OrganizationShareCasePolicy>({ id: 'add_case', name: t`Add case` }),
-      TableUtil.createBooleanColumn<OrganizationShareCasePolicy>({ id: 'remove_case', name: t`Remove case` }),
-      TableUtil.createBooleanColumn<OrganizationShareCasePolicy>({ id: 'add_case_set', name: t`Add case set` }),
-      TableUtil.createBooleanColumn<OrganizationShareCasePolicy>({ id: 'remove_case_set', name: t`Remove case set` }),
+      TableUtil.createBooleanColumn<UserShareCasePolicy>({ id: 'add_case', name: t`Add case` }),
+      TableUtil.createBooleanColumn<UserShareCasePolicy>({ id: 'remove_case', name: t`Remove case` }),
+      TableUtil.createBooleanColumn<UserShareCasePolicy>({ id: 'add_case_set', name: t`Add case set` }),
+      TableUtil.createBooleanColumn<UserShareCasePolicy>({ id: 'remove_case_set', name: t`Remove case set` }),
 
-      TableUtil.createBooleanColumn<OrganizationShareCasePolicy>({ id: 'is_active', name: t`Active` }),
+      TableUtil.createBooleanColumn<UserShareCasePolicy>({ id: 'is_active', name: t`Active` }),
     ];
-  }, [caseTypeSetOptions.options, dataCollectionOptionsQuery.options, organizationOptionsQuery.options, t]);
+  }, [caseTypeSetOptionsQuery.options, dataCollectionOptionsQuery.options, userOptionsQuery.options, t]);
 
   return (
-    <CrudPage<FormFields, OrganizationShareCasePolicy>
+    <CrudPage<FormFields, UserShareCasePolicy>
       createOne={createOne}
-      crudCommandType={CommandName.OrganizationShareCasePolicyCrudCommand}
-      defaultSortByField={'organization_id'}
+      crudCommandType={CommandName.UserShareCasePolicyCrudCommand}
+      defaultSortByField={'user_id'}
       defaultSortDirection={'asc'}
       deleteOne={deleteOne}
       fetchAll={fetchAll}
       formFieldDefinitions={formFieldDefinitions}
       getName={getName}
       loadables={loadables}
-      resourceQueryKeyBase={QUERY_KEY.ORGANIZATION_SHARE_CASE_POLICIES}
+      resourceQueryKeyBase={QUERY_KEY.USER_SHARE_CASE_POLICIES}
       schema={schema}
       tableColumns={tableColumns}
-      testIdAttributes={TestIdUtil.createAttributes('OrganizationShareCasePoliciesAdminPage')}
-      title={t`Organization share case policies`}
+      testIdAttributes={TestIdUtil.createAttributes('UserShareCasePoliciesAdminPage')}
+      title={t`User share case policies`}
       updateOne={updateOne}
     />
   );

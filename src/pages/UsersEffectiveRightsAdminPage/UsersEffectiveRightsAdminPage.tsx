@@ -28,7 +28,9 @@ import {
   useDataCollectionOptionsQuery,
 } from '../../dataHooks/useDataCollectionsQuery';
 import { useOrganizationAccessCasePoliciesQuery } from '../../dataHooks/useOrganizationAccessCasePoliciesQuery';
+import { useOrganizationShareCasePoliciesQuery } from '../../dataHooks/useOrganizationShareCasePoliciesQuery';
 import { useUserAccessCasePoliciesQuery } from '../../dataHooks/useUserAccessCasePoliciesQuery';
+import { useUserShareCasePoliciesQuery } from '../../dataHooks/useUserShareCasePoliciesQuery';
 import { useArray } from '../../hooks/useArray';
 import { useInitializeTableStore } from '../../hooks/useInitializeTableStore';
 import type {
@@ -88,11 +90,15 @@ export const UsersEffectiveRightsAdminPage = () => {
   const dataCollectionMapQuery = useDataCollectionsMapQuery();
   const dataCollectionOptionsQuery = useDataCollectionOptionsQuery();
   const organizationAccessCasePoliciesQuery = useOrganizationAccessCasePoliciesQuery(policies => policies.filter(policy => policy.is_active && policy.organization_id === user.organization_id));
+  const organizationShareCasePoliciesQuery = useOrganizationShareCasePoliciesQuery(policies => policies.filter(policy => policy.is_active && policy.organization_id === user.organization_id));
   const userAccessCasePoliciesQuery = useUserAccessCasePoliciesQuery(policies => policies.filter(policy => policy.is_active && policy.user_id === user.id));
+  const userShareCasePoliciesQuery = useUserShareCasePoliciesQuery(policies => policies.filter(policy => policy.is_active && policy.user_id === user.id));
 
   const loadables = useArray([
     organizationAccessCasePoliciesQuery,
+    organizationShareCasePoliciesQuery,
     userAccessCasePoliciesQuery,
+    userShareCasePoliciesQuery,
     caseTypeSetMembersQuery,
     caseTypeColSetMembersQuery,
     dataCollectionMapQuery,
@@ -117,11 +123,13 @@ export const UsersEffectiveRightsAdminPage = () => {
     }
 
     const { data: organizationAccessCasePolicies } = organizationAccessCasePoliciesQuery;
+    const { data: organizationShareCasePolicies } = organizationShareCasePoliciesQuery;
     const { data: userAccessCasePolicies } = userAccessCasePoliciesQuery;
+    const { data: userShareCasePolicies } = userShareCasePoliciesQuery;
     const { data: caseTypeSetMembers } = caseTypeSetMembersQuery;
     const { data: caseTypeColSetMembers } = caseTypeColSetMembersQuery;
 
-    if (!organizationAccessCasePolicies || !userAccessCasePolicies || !caseTypeSetMembers || !caseTypeColSetMembers) {
+    if (!organizationAccessCasePolicies || !organizationShareCasePolicies || !userAccessCasePolicies || !userShareCasePolicies || !caseTypeSetMembers || !caseTypeColSetMembers) {
       return [];
     }
 
@@ -139,6 +147,33 @@ export const UsersEffectiveRightsAdminPage = () => {
 
     return organizationAccessCasePolicies.map(organizationPolicy => {
       const userPolicy = userAccessCasePolicies.find(p => p.data_collection_id === organizationPolicy.data_collection_id);
+      const organizationSharePolicy = organizationShareCasePolicies.filter(p => p.data_collection_id === organizationPolicy.data_collection_id);
+      const userSharePolicy = userShareCasePolicies.filter(p => p.data_collection_id === organizationPolicy.data_collection_id);
+
+      const effectiveShareCaseRights: UserEffectiveRight['effective_share_case_rights'] = [];
+
+      organizationSharePolicy.forEach(organizationShareCasePolicy => {
+        const userShareCasePolicy = userSharePolicy.find(p => p.from_data_collection_id === organizationShareCasePolicy.from_data_collection_id);
+        const organizationShareCaseTypeIds = caseTypeSetMembers.filter(member => member.case_type_set_id === organizationShareCasePolicy.case_type_set_id).map(member => member.case_type_id);
+        const userShareCaseTypeIds = caseTypeSetMembers.filter(member => member.case_type_set_id === userShareCasePolicy?.case_type_set_id).map(member => member.case_type_id);
+        const { setIds: case_type_set_ids, categorizedMemberIds: categorized_case_type_ids, uncategorizedMemberIds: uncategorized_case_type_ids } = DataSetUtil.getCategorizedSetMembers({
+          mappedSetMembers: mappedCaseTypeSetMembers,
+          parentSetId: organizationShareCasePolicy.case_type_set_id,
+          parentMemberIds: organizationShareCaseTypeIds,
+          childMemberIds: userShareCaseTypeIds,
+        });
+
+        effectiveShareCaseRights.push({
+          add_case: organizationShareCasePolicy.add_case && userShareCasePolicy?.add_case,
+          remove_case: organizationShareCasePolicy.remove_case && userShareCasePolicy?.remove_case,
+          add_case_set: organizationShareCasePolicy.add_case_set && userShareCasePolicy?.add_case_set,
+          remove_case_set: organizationShareCasePolicy.remove_case_set && userShareCasePolicy?.remove_case_set,
+          from_data_collection_id: organizationShareCasePolicy.from_data_collection_id,
+          case_type_set_ids,
+          categorized_case_type_ids,
+          uncategorized_case_type_ids,
+        } satisfies UserEffectiveRight['effective_share_case_rights'][number]);
+      });
 
       const organizationCaseTypeIds = caseTypeSetMembers.filter(member => member.case_type_set_id === organizationPolicy.case_type_set_id).map(member => member.case_type_id);
       const userCaseTypeIds = caseTypeSetMembers.filter(member => member.case_type_set_id === userPolicy?.case_type_set_id).map(member => member.case_type_id);
@@ -167,7 +202,6 @@ export const UsersEffectiveRightsAdminPage = () => {
         childMemberIds: userWriteCaseTypeColIds,
       });
 
-
       return {
         add_case: organizationPolicy.add_case && userPolicy?.add_case,
         add_case_set: organizationPolicy.add_case_set && userPolicy?.add_case_set,
@@ -189,10 +223,11 @@ export const UsersEffectiveRightsAdminPage = () => {
         write_case_type_col_set_ids,
         categorized_write_case_type_col_ids,
         uncategorized_write_case_type_col_ids,
+        effective_share_case_rights: effectiveShareCaseRights,
       } satisfies UserEffectiveRight;
     }).filter((policy => !!policy));
 
-  }, [caseTypeColSetMembersQuery, caseTypeSetMembersQuery, organizationAccessCasePoliciesQuery, user, userAccessCasePoliciesQuery]);
+  }, [caseTypeColSetMembersQuery, caseTypeSetMembersQuery, organizationAccessCasePoliciesQuery, organizationShareCasePoliciesQuery, user, userAccessCasePoliciesQuery, userShareCasePoliciesQuery]);
 
   const renderSetCell = useCallback((params: { userEffectiveRight: UserEffectiveRight; setIds: string[]; uncategorizedMemberIds: string[]; getName: (memberId: string) => string; type: UsersEffectiveRightsDetailsDialogOpenProps['type'] }) => {
     const { userEffectiveRight, setIds, uncategorizedMemberIds, getName, type } = params;
@@ -231,18 +266,16 @@ export const UsersEffectiveRightsAdminPage = () => {
 
     return (
       <>
-        {setIds.map(memberId => {
-          return (
-            <Link
-              href={'#'}
-              key={memberId}
-              // eslint-disable-next-line react/jsx-no-bind
-              onClick={onLinkClick}
-            >
-              {getName(memberId) ?? memberId}
-            </Link>
-          );
-        })}
+        {setIds.map(setId => (
+          <Link
+            href={'#'}
+            key={setId}
+            // eslint-disable-next-line react/jsx-no-bind
+            onClick={onLinkClick}
+          >
+            {getName(setId) ?? setId}
+          </Link>
+        ))}
       </>
     );
   }, [t, user]);
@@ -315,13 +348,28 @@ export const UsersEffectiveRightsAdminPage = () => {
       TableUtil.createBooleanColumn<UserEffectiveRight>({ id: 'remove_case_set', name: t`Remove case set` }),
       TableUtil.createBooleanColumn<UserEffectiveRight>({ id: 'read_case_set', name: t`Read case set` }),
       TableUtil.createBooleanColumn<UserEffectiveRight>({ id: 'write_case_set', name: t`Write case set` }),
-      TableUtil.createBooleanColumn<UserEffectiveRight>({ id: 'is_private', name: t`Private` }),
+      {
+        type: 'boolean',
+        id: 'has_additional_rights',
+        headerName: t`Addition al rights`,
+        widthFlex: 0.25,
+        isInitiallyVisible: true,
+        valueGetter: (params) => params.row.effective_share_case_rights.length > 0,
+      },
     ];
   }, [dataCollectionOptionsQuery.options, renderCaseTypeSetsCell, renderReadCaseSetsCell, renderWriteCaseSetsCell, t]);
 
   const getRowName = useCallback((row: UserEffectiveRight) => {
     return dataCollectionMapQuery.map.get(row.data_collection_id)?.name ?? row.data_collection_id;
   }, [dataCollectionMapQuery.map]);
+
+  const onRowClick = useCallback((params: TableRowParams<UserEffectiveRight>) => {
+    usersEffectiveRightsDetailsDialogRef.current.open({
+      userEffectiveRight: params.row,
+      type: 'caseTypeSets',
+      user,
+    });
+  }, [user]);
 
   useInitializeTableStore(tableStore, tableColumns, effectiveAccessCasePolicies, true);
 
@@ -361,6 +409,7 @@ export const UsersEffectiveRightsAdminPage = () => {
             >
               <Table
                 getRowName={getRowName}
+                onRowClick={onRowClick}
               />
             </Box>
           </ResponseHandler>

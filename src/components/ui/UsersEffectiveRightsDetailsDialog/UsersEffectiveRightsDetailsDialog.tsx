@@ -1,6 +1,7 @@
 import { useTranslation } from 'react-i18next';
 import {
   Box,
+  Link,
   Tab,
   Tabs,
   Typography,
@@ -75,7 +76,7 @@ const CustomTabPanel = (props: CustomTabPanelProps) => {
       role="tabpanel"
       {...other}
     >
-      {value === index && <Box sx={{ p: 3 }}>{children}</Box>}
+      {value === index && children}
     </div>
   );
 };
@@ -95,8 +96,10 @@ export const UsersEffectiveRightsDetailsDialog = withDialog<UsersEffectiveRights
     openProps: { userEffectiveRight, type, user },
   }: UsersEffectiveRightsDetailsDialogProps,
 ): ReactElement => {
+
   const [t] = useTranslation();
   const [activeTab, setActiveTab] = useState(usersEffectiveRightsDetailsTypeOrder.indexOf(type));
+  const [visibleItems, setVisibleItems] = useState<string[]>([]);
 
   const caseTypeMapQuery = useCaseTypeMapQuery();
   const caseTypeSetMapQuery = useCaseTypeSetsMapQuery();
@@ -122,6 +125,15 @@ export const UsersEffectiveRightsDetailsDialog = withDialog<UsersEffectiveRights
 
   const handleTabChange = useCallback((_event: SyntheticEvent, newValue: number) => {
     setActiveTab(newValue);
+  }, []);
+
+  const onToggleSectionLinkClick = useCallback((key: string) => {
+    setVisibleItems((prev) => {
+      if (prev.includes(key)) {
+        return prev.filter(item => item !== key);
+      }
+      return [...prev, key];
+    });
   }, []);
 
   useEffect(() => {
@@ -169,6 +181,10 @@ export const UsersEffectiveRightsDetailsDialog = withDialog<UsersEffectiveRights
                 label="Rights"
                 {...a11yProps(3)}
               />
+              <Tab
+                label="Additional rights"
+                {...a11yProps(4)}
+              />
             </Tabs>
           </Box>
           <CustomTabPanel
@@ -177,17 +193,12 @@ export const UsersEffectiveRightsDetailsDialog = withDialog<UsersEffectiveRights
           >
             { !userEffectiveRight.categorized_case_type_ids.length && !userEffectiveRight.uncategorized_case_type_ids.length && (
               <Box marginY={2}>
-                <Typography variant="h5">
-                  {t`No case types assigned`}
-                </Typography>
+                {t`No case types assigned`}
               </Box>
             )}
 
             { userEffectiveRight.case_type_set_ids.length > 0 && (
-              <Box marginY={2}>
-                <Typography variant="h5">
-                  {t`Case type sets`}
-                </Typography>
+              <Box>
                 {userEffectiveRight.case_type_set_ids.map((caseTypeSetId) => {
                   const caseTypeSet = caseTypeSetMapQuery.map.get(caseTypeSetId);
                   const caseTypeSetMembers = caseTypeSetMembersQuery.data.filter(x => x.case_type_set_id === caseTypeSetId);
@@ -199,17 +210,24 @@ export const UsersEffectiveRightsDetailsDialog = withDialog<UsersEffectiveRights
                   return (
                     <Box key={caseTypeSetId}>
                       <Box marginY={1}>
-                        <Typography variant="h6">
+                        <Link
+                          href={'#'}
+                          // eslint-disable-next-line react/jsx-no-bind
+                          onClick={() => onToggleSectionLinkClick(`case-type-sets-${caseTypeSetId}`)}
+                          tabIndex={0}
+                        >
                           {caseTypeSetNameFactory.getName(caseTypeSet) ?? caseTypeSetId}
-                        </Typography>
-                        {sortedCaseTypeSetMembers.map((caseTypeSetMember) => {
-                          const caseType = caseTypeMapQuery.map.get(caseTypeSetMember.case_type_id);
-                          return (
-                            <Box key={caseTypeSetMember.case_type_id}>
-                              {caseType?.name ?? caseTypeSetMember.case_type_id}
-                            </Box>
-                          );
-                        })}
+                        </Link>
+                        <Box sx={{ display: visibleItems.includes(`case-type-sets-${caseTypeSetId}`) ? 'block' : 'none' }}>
+                          {sortedCaseTypeSetMembers.map((caseTypeSetMember) => {
+                            const caseType = caseTypeMapQuery.map.get(caseTypeSetMember.case_type_id);
+                            return (
+                              <Box key={caseTypeSetMember.case_type_id}>
+                                {caseType?.name ?? caseTypeSetMember.case_type_id}
+                              </Box>
+                            );
+                          })}
+                        </Box>
                       </Box>
                     </Box>
                   );
@@ -217,22 +235,29 @@ export const UsersEffectiveRightsDetailsDialog = withDialog<UsersEffectiveRights
               </Box>
             )}
             { userEffectiveRight.uncategorized_case_type_ids.length > 0 && (
-              <Box marginY={2}>
-                <Typography variant="h5">
+              <Box marginY={1}>
+                <Link
+                  href={'#'}
+                  // eslint-disable-next-line react/jsx-no-bind
+                  onClick={() => onToggleSectionLinkClick(`uncategorized-case-type-sets`)}
+                  tabIndex={0}
+                >
                   {t`Uncategorized case types`}
-                </Typography>
-                {userEffectiveRight.uncategorized_case_type_ids.sort((a, b) => {
-                  const caseTypeA = caseTypeMapQuery.map.get(a);
-                  const caseTypeB = caseTypeMapQuery.map.get(b);
-                  return (caseTypeA?.name ?? '').localeCompare(caseTypeB?.name ?? '');
-                }).map((caseTypeId) => {
-                  const caseType = caseTypeMapQuery.map.get(caseTypeId);
-                  return (
-                    <Box key={caseTypeId}>
-                      {caseType?.name ?? caseTypeId}
-                    </Box>
-                  );
-                })}
+                </Link>
+                <Box sx={{ display: visibleItems.includes(`uncategorized-case-type-sets`) ? 'block' : 'none' }}>
+                  {userEffectiveRight.uncategorized_case_type_ids.sort((a, b) => {
+                    const caseTypeA = caseTypeMapQuery.map.get(a);
+                    const caseTypeB = caseTypeMapQuery.map.get(b);
+                    return (caseTypeA?.name ?? '').localeCompare(caseTypeB?.name ?? '');
+                  }).map((caseTypeId) => {
+                    const caseType = caseTypeMapQuery.map.get(caseTypeId);
+                    return (
+                      <Box key={caseTypeId}>
+                        {caseType?.name ?? caseTypeId}
+                      </Box>
+                    );
+                  })}
+                </Box>
               </Box>
             )}
           </CustomTabPanel>
@@ -243,17 +268,12 @@ export const UsersEffectiveRightsDetailsDialog = withDialog<UsersEffectiveRights
           >
             { !userEffectiveRight.categorized_read_case_type_col_ids.length && !userEffectiveRight.uncategorized_read_case_type_col_ids.length && (
               <Box marginY={2}>
-                <Typography variant="h5">
-                  {t`No read columns assigned`}
-                </Typography>
+                {t`No read columns assigned`}
               </Box>
             )}
 
             { userEffectiveRight.read_case_type_col_set_ids.length > 0 && (
-              <Box marginY={2}>
-                <Typography variant="h5">
-                  {t`Read columns sets`}
-                </Typography>
+              <Box>
                 {userEffectiveRight.read_case_type_col_set_ids.map((colSetId) => {
                   const colSet = caseTypeColSetsMapQuery.map.get(colSetId);
                   const colSetMembers = caseTypeColSetMembersQuery.data.filter(x => x.case_type_col_set_id === colSetId);
@@ -267,17 +287,24 @@ export const UsersEffectiveRightsDetailsDialog = withDialog<UsersEffectiveRights
                   return (
                     <Box key={colSetId}>
                       <Box marginY={1}>
-                        <Typography variant="h6">
+                        <Link
+                          href={'#'}
+                          // eslint-disable-next-line react/jsx-no-bind
+                          onClick={() => onToggleSectionLinkClick(`read-col-sets-${colSetId}`)}
+                          tabIndex={0}
+                        >
                           {colSet?.name ?? colSetId}
-                        </Typography>
-                        {sortedColSetMembers.map((colSetMember) => {
-                          const col = caseTypeColMapQuery.map.get(colSetMember.case_type_col_id);
-                          return (
-                            <Box key={col.id}>
-                              {(col && caseTypeColNameFactory.getName(col)) ?? colSetMember.case_type_col_id}
-                            </Box>
-                          );
-                        })}
+                        </Link>
+                        <Box sx={{ display: visibleItems.includes(`read-col-sets-${colSetId}`) ? 'block' : 'none' }}>
+                          {sortedColSetMembers.map((colSetMember) => {
+                            const col = caseTypeColMapQuery.map.get(colSetMember.case_type_col_id);
+                            return (
+                              <Box key={col.id}>
+                                {(col && caseTypeColNameFactory.getName(col)) ?? colSetMember.case_type_col_id}
+                              </Box>
+                            );
+                          })}
+                        </Box>
                       </Box>
                     </Box>
                   );
@@ -285,24 +312,34 @@ export const UsersEffectiveRightsDetailsDialog = withDialog<UsersEffectiveRights
               </Box>
             )}
             { userEffectiveRight.uncategorized_read_case_type_col_ids.length > 0 && (
-              <Box marginY={2}>
+              <Box marginY={1}>
                 <Typography variant="h5">
                   {t`Uncategorized read columns sets`}
                 </Typography>
-                {userEffectiveRight.uncategorized_read_case_type_col_ids.sort((a, b) => {
-                  const colA = caseTypeColMapQuery.map.get(a);
-                  const colB = caseTypeColMapQuery.map.get(b);
-                  const colAName = caseTypeColNameFactory.getName(colA) ?? a;
-                  const colBName = caseTypeColNameFactory.getName(colB) ?? b;
-                  return colAName.localeCompare(colBName);
-                }).map((colId) => {
-                  const col = caseTypeColMapQuery.map.get(colId);
-                  return (
-                    <Box key={colId}>
-                      {caseTypeColNameFactory.getName(col) ?? colId}
-                    </Box>
-                  );
-                })}
+                <Link
+                  href={'#'}
+                  // eslint-disable-next-line react/jsx-no-bind
+                  onClick={() => onToggleSectionLinkClick(`uncategorized-read-col-sets`)}
+                  tabIndex={0}
+                >
+                  {t`Uncategorized read columns sets`}
+                </Link>
+                <Box sx={{ display: visibleItems.includes(`uncategorized-read-col-sets`) ? 'block' : 'none' }}>
+                  {userEffectiveRight.uncategorized_read_case_type_col_ids.sort((a, b) => {
+                    const colA = caseTypeColMapQuery.map.get(a);
+                    const colB = caseTypeColMapQuery.map.get(b);
+                    const colAName = caseTypeColNameFactory.getName(colA) ?? a;
+                    const colBName = caseTypeColNameFactory.getName(colB) ?? b;
+                    return colAName.localeCompare(colBName);
+                  }).map((colId) => {
+                    const col = caseTypeColMapQuery.map.get(colId);
+                    return (
+                      <Box key={colId}>
+                        {caseTypeColNameFactory.getName(col) ?? colId}
+                      </Box>
+                    );
+                  })}
+                </Box>
               </Box>
             )}
           </CustomTabPanel>
@@ -313,17 +350,12 @@ export const UsersEffectiveRightsDetailsDialog = withDialog<UsersEffectiveRights
           >
             { !userEffectiveRight.categorized_write_case_type_col_ids.length && !userEffectiveRight.uncategorized_write_case_type_col_ids.length && (
               <Box marginY={2}>
-                <Typography variant="h5">
-                  {t`No write columns assigned`}
-                </Typography>
+                {t`No write columns assigned`}
               </Box>
             )}
 
             { userEffectiveRight.write_case_type_col_set_ids.length > 0 && (
-              <Box marginY={2}>
-                <Typography variant="h5">
-                  {t`Write columns sets`}
-                </Typography>
+              <Box>
                 {userEffectiveRight.write_case_type_col_set_ids.map((colSetId) => {
                   const colSet = caseTypeColSetsMapQuery.map.get(colSetId);
                   const colSetMembers = caseTypeColSetMembersQuery.data.filter(x => x.case_type_col_set_id === colSetId);
@@ -337,17 +369,24 @@ export const UsersEffectiveRightsDetailsDialog = withDialog<UsersEffectiveRights
                   return (
                     <Box key={colSetId}>
                       <Box marginY={1}>
-                        <Typography variant="h6">
+                        <Link
+                          href={'#'}
+                          // eslint-disable-next-line react/jsx-no-bind
+                          onClick={() => onToggleSectionLinkClick(`write-col-sets-${colSetId}`)}
+                          tabIndex={0}
+                        >
                           {colSet?.name ?? colSetId}
-                        </Typography>
-                        {sortedColSetMembers.map((colSetMember) => {
-                          const col = caseTypeColMapQuery.map.get(colSetMember.case_type_col_id);
-                          return (
-                            <Box key={col.id}>
-                              {caseTypeColNameFactory.getName(col) ?? colSetMember.case_type_col_id}
-                            </Box>
-                          );
-                        })}
+                        </Link>
+                        <Box sx={{ display: visibleItems.includes(`write-col-sets-${colSetId}`) ? 'block' : 'none' }}>
+                          {sortedColSetMembers.map((colSetMember) => {
+                            const col = caseTypeColMapQuery.map.get(colSetMember.case_type_col_id);
+                            return (
+                              <Box key={col.id}>
+                                {caseTypeColNameFactory.getName(col) ?? colSetMember.case_type_col_id}
+                              </Box>
+                            );
+                          })}
+                        </Box>
                       </Box>
                     </Box>
                   );
@@ -355,24 +394,31 @@ export const UsersEffectiveRightsDetailsDialog = withDialog<UsersEffectiveRights
               </Box>
             )}
             { userEffectiveRight.uncategorized_write_case_type_col_ids.length > 0 && (
-              <Box marginY={2}>
-                <Typography variant="h5">
+              <Box marginY={1}>
+                <Link
+                  href={'#'}
+                  // eslint-disable-next-line react/jsx-no-bind
+                  onClick={() => onToggleSectionLinkClick(`uncategorized-write-col-sets`)}
+                  tabIndex={0}
+                >
                   {t`Uncategorized write columns sets`}
-                </Typography>
-                {userEffectiveRight.uncategorized_write_case_type_col_ids.sort((a, b) => {
-                  const colA = caseTypeColMapQuery.map.get(a);
-                  const colB = caseTypeColMapQuery.map.get(b);
-                  const colAName = caseTypeColNameFactory.getName(colA) ?? a;
-                  const colBName = caseTypeColNameFactory.getName(colB) ?? b;
-                  return colAName.localeCompare(colBName);
-                }).map((colId) => {
-                  const col = caseTypeColMapQuery.map.get(colId);
-                  return (
-                    <Box key={colId}>
-                      {caseTypeColNameFactory.getName(col) ?? colId}
-                    </Box>
-                  );
-                })}
+                </Link>
+                <Box sx={{ display: visibleItems.includes(`uncategorized-write-col-sets`) ? 'block' : 'none' }}>
+                  {userEffectiveRight.uncategorized_write_case_type_col_ids.sort((a, b) => {
+                    const colA = caseTypeColMapQuery.map.get(a);
+                    const colB = caseTypeColMapQuery.map.get(b);
+                    const colAName = caseTypeColNameFactory.getName(colA) ?? a;
+                    const colBName = caseTypeColNameFactory.getName(colB) ?? b;
+                    return colAName.localeCompare(colBName);
+                  }).map((colId) => {
+                    const col = caseTypeColMapQuery.map.get(colId);
+                    return (
+                      <Box key={colId}>
+                        {caseTypeColNameFactory.getName(col) ?? colId}
+                      </Box>
+                    );
+                  })}
+                </Box>
               </Box>
             )}
           </CustomTabPanel>
@@ -401,13 +447,121 @@ export const UsersEffectiveRightsDetailsDialog = withDialog<UsersEffectiveRights
               <dd>{userEffectiveRight.is_private ? t`Yes` : t`No`}</dd>
             </Box>
           </CustomTabPanel>
+
+          <CustomTabPanel
+            index={4}
+            value={activeTab}
+          >
+            <Box marginY={2}>
+              { !userEffectiveRight.effective_share_case_rights.length && (
+                <Box marginY={2}>
+                  {t`No additional rights assigned`}
+                </Box>
+              )}
+
+              {userEffectiveRight.effective_share_case_rights.map((right) => (
+                <Box
+                  key={right.from_data_collection_id}
+                  marginY={2}
+                >
+                  <Box>
+                    <Typography variant="h5">
+                      {t('From: {{dataCollectionName}}', {
+                        dataCollectionName: dataCollectionsMapQuery.map.get(right.from_data_collection_id)?.name ?? right.from_data_collection_id,
+                      })}
+                    </Typography>
+                  </Box>
+                  <Box>
+                    {right.categorized_case_type_ids.length === 0 && right.uncategorized_case_type_ids.length === 0 && (
+                      <Box marginY={2}>
+                        {t`No case types assigned`}
+                      </Box>
+                    )}
+                    {right.case_type_set_ids.map((caseTypeSetId) => {
+                      const caseTypeSet = caseTypeSetMapQuery.map.get(caseTypeSetId);
+                      const caseTypeSetMembers = caseTypeSetMembersQuery.data.filter(x => x.case_type_set_id === caseTypeSetId);
+                      const sortedCaseTypeSetMembers = caseTypeSetMembers.sort((a, b) => {
+                        const caseTypeA = caseTypeMapQuery.map.get(a.case_type_id);
+                        const caseTypeB = caseTypeMapQuery.map.get(b.case_type_id);
+                        return (caseTypeA?.name ?? '').localeCompare(caseTypeB?.name ?? '');
+                      });
+                      return (
+                        <Box key={caseTypeSetId}>
+                          <Box marginY={1}>
+                            <Link
+                              href={'#'}
+                              // eslint-disable-next-line react/jsx-no-bind
+                              onClick={() => onToggleSectionLinkClick(`${right.from_data_collection_id}-${caseTypeSetId}`)}
+                              tabIndex={0}
+                            >
+                              {caseTypeSetNameFactory.getName(caseTypeSet) ?? caseTypeSetId}
+                            </Link>
+                            <Box sx={{ display: visibleItems.includes(`${right.from_data_collection_id}-${caseTypeSetId}`) ? 'block' : 'none' }}>
+                              {sortedCaseTypeSetMembers.map((caseTypeSetMember) => {
+                                const caseType = caseTypeMapQuery.map.get(caseTypeSetMember.case_type_id);
+                                return (
+                                  <Box key={caseTypeSetMember.case_type_id}>
+                                    {caseType?.name ?? caseTypeSetMember.case_type_id}
+                                  </Box>
+                                );
+                              })}
+                            </Box>
+                          </Box>
+                        </Box>
+                      );
+                    })}
+                    {right.uncategorized_case_type_ids.length > 0 && (
+                      <Box marginY={2}>
+                        <Link
+                          href={'#'}
+                          // eslint-disable-next-line react/jsx-no-bind
+                          onClick={() => onToggleSectionLinkClick(`${right.from_data_collection_id}-uncategorized`)}
+                          tabIndex={0}
+                        >
+                          {t`Uncategorized case types`}
+                        </Link>
+                        <Box sx={{ display: visibleItems.includes(`${right.from_data_collection_id}-uncategorized`) ? 'block' : 'none' }}>
+                          {right.uncategorized_case_type_ids.sort((a, b) => {
+                            const caseTypeA = caseTypeMapQuery.map.get(a);
+                            const caseTypeB = caseTypeMapQuery.map.get(b);
+                            return (caseTypeA?.name ?? '').localeCompare(caseTypeB?.name ?? '');
+                          }).map((caseTypeId) => {
+                            const caseType = caseTypeMapQuery.map.get(caseTypeId);
+                            return (
+                              <Box key={caseTypeId}>
+                                {caseType?.name ?? caseTypeId}
+                              </Box>
+                            );
+                          })}
+                        </Box>
+                      </Box>
+                    )}
+                  </Box>
+                  <Box
+                    component={'dl'}
+                    sx={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 0 }}
+                  >
+                    <dt>{t`Add case`}</dt>
+                    <dd>{right.add_case ? t`Yes` : t`No`}</dd>
+                    <dt>{t`Remove case`}</dt>
+                    <dd>{right.remove_case ? t`Yes` : t`No`}</dd>
+                    <dt>{t`Add case set`}</dt>
+                    <dd>{right.add_case_set ? t`Yes` : t`No`}</dd>
+                    <dt>{t`Remove case set`}</dt>
+                    <dd>{right.remove_case_set ? t`Yes` : t`No`}</dd>
+                  </Box>
+                </Box>
+              ))}
+
+            </Box>
+          </CustomTabPanel>
         </Box>
       )}
     </ResponseHandler>
   );
 }, {
   testId: 'UsersEffectiveRightsDetailsDialog',
-  maxWidth: 'md',
+  maxWidth: 'lg',
   fullWidth: true,
   defaultTitle: '',
   noCloseButton: false,

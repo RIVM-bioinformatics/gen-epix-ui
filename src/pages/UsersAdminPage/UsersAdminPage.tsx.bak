@@ -21,7 +21,7 @@ import type { User } from '../../api';
 import { OrganizationApi } from '../../api';
 import { useOrganizationOptionsQuery } from '../../dataHooks/useOrganizationsQuery';
 import { useRoleOptionsQuery } from '../../dataHooks/useRolesQuery';
-import { useArray } from '../../hooks/useArray';
+import { useArray } from '../../hooks/useArray';import type { Loadable } from '../../models/dataHooks';
 import type { FormFieldDefinition } from '../../models/form';
 import { FORM_FIELD_DEFINITION_TYPE } from '../../models/form';
 import { QUERY_KEY } from '../../models/query';
@@ -35,7 +35,6 @@ import { CrudPage } from '../CrudPage';
 import type { EpiUserRightsDialogRefMethods } from '../../components/epi/EpiUserRightsDialog';
 import { EpiUserRightsDialog } from '../../components/epi/EpiUserRightsDialog';
 import { RouterManager } from '../../classes/managers/RouterManager';
-import type { DialogAction } from '../../components/ui/Dialog';
 
 
 type FormFields = Pick<User, 'email' | 'is_active' | 'roles'>;
@@ -128,26 +127,11 @@ export const UsersAdminPage = () => {
     )];
   }, [t]);
 
-  const editDialogExtraActionsFactory = useCallback((item: User): DialogAction[] =>{
-    return [
-      {
-        ...TestIdUtil.createAttributes('UsersAdminPage-epiUserRightsButton'),
-        label: t`View effective rights`,
-        color: 'primary',
-        variant: 'outlined',
-        onClick: async () => await RouterManager.instance.router.navigate({
-          pathname: `/management/users/${item.id}/effective-rights`,
-        }),
-      },
-    ];
-  }, [t]);
-
   return (
     <>
       <CrudPage<FormFields, User>
         defaultSortByField={'name'}
         defaultSortDirection={'asc'}
-        editDialogExtraActionsFactory={editDialogExtraActionsFactory}
         extraActionsFactory={extraActionsFactory}
         fetchAll={fetchAll}
         formFieldDefinitions={formFieldDefinitions}

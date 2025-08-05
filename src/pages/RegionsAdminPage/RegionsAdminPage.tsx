@@ -15,7 +15,7 @@ import {
   CommandName,
 } from '../../api';
 import { useRegionSetOptionsQuery } from '../../dataHooks/useRegionSetsQuery';
-import type { Loadable } from '../../models/dataHooks';
+import { useArray } from '../../hooks/useArray';
 import type { FormFieldDefinition } from '../../models/form';
 import { FORM_FIELD_DEFINITION_TYPE } from '../../models/form';
 import { QUERY_KEY } from '../../models/query';
@@ -30,7 +30,7 @@ export const RegionsAdminPage = () => {
   const [t] = useTranslation();
   const regionSetOptionsQuery = useRegionSetOptionsQuery();
 
-  const loadables = useMemo<Loadable[]>(() => [regionSetOptionsQuery], [regionSetOptionsQuery]);
+  const loadables = useArray([regionSetOptionsQuery]);
 
   const fetchAll = useCallback(async (signal: AbortSignal) => {
     return (await GeoApi.getInstance().regionsGetAll({ signal }))?.data;

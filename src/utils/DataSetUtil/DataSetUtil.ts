@@ -15,7 +15,6 @@ export class DataSetUtil {
 
   public static getCategorizedSetMembers(kwArgs: { mappedSetMembers: Map<string, string[]>; parentSetId: string; parentMemberIds: string[]; childMemberIds: string[] }): { setIds: string[]; categorizedMemberIds: string[]; uncategorizedMemberIds: string[] } {
     const { mappedSetMembers, parentSetId, parentMemberIds, childMemberIds } = kwArgs;
-    const sortedSetsIdsBySize = Array.from(mappedSetMembers.entries()).sort((a, b) => b[1].length - a[1].length).map(x => x[0]);
     const intersectedMemberIds = intersection(parentMemberIds, childMemberIds);
     let uncategorizedMemberIds: string[] = [];
     let categorizedMemberIds: string[] = [];
@@ -43,6 +42,7 @@ export class DataSetUtil {
     if (setIds.length <= 1) {
       sanitizedSetIds.push(...setIds);
     } else {
+      const sortedSetsIdsBySize = Array.from(mappedSetMembers.entries()).filter(([setId]) => setIds.includes(setId)).sort((a, b) => b[1].length - a[1].length).map(x => x[0]);
       setIds.forEach(setId => {
         const setIdIndex = sortedSetsIdsBySize.indexOf(setId);
         for (let i = 0; i < setIdIndex; i++) {

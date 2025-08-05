@@ -15,7 +15,7 @@ import {
 } from '../../api';
 import { useDiseaseOptionsQuery } from '../../dataHooks/useDiseasesQuery';
 import { useEtiologicalAgentOptionsQuery } from '../../dataHooks/useEtiologicalAgentsQuery';
-import type { Loadable } from '../../models/dataHooks';
+import { useArray } from '../../hooks/useArray';
 import type { FormFieldDefinition } from '../../models/form';
 import { FORM_FIELD_DEFINITION_TYPE } from '../../models/form';
 import { QUERY_KEY } from '../../models/query';
@@ -31,7 +31,7 @@ export const CaseTypesAdminPage = () => {
   const diseaseOptionsQuery = useDiseaseOptionsQuery();
   const etiologicalAgentOptionsQuery = useEtiologicalAgentOptionsQuery();
 
-  const loadables = useMemo<Loadable[]>(() => [diseaseOptionsQuery, etiologicalAgentOptionsQuery], [etiologicalAgentOptionsQuery, diseaseOptionsQuery]);
+  const loadables = useArray([diseaseOptionsQuery, etiologicalAgentOptionsQuery]);
 
   const fetchAll = useCallback(async (signal: AbortSignal) => {
     return (await CaseApi.getInstance().caseTypesGetAll({ signal }))?.data;
