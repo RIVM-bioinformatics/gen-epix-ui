@@ -1,5 +1,4 @@
 import type { UseQueryResult } from '@tanstack/react-query';
-import { useQuery } from '@tanstack/react-query';
 import { useMemo } from 'react';
 
 import type { DataCollection } from '../../api';
@@ -11,9 +10,10 @@ import type {
 import { QUERY_KEY } from '../../models/query';
 import { DataUtil } from '../../utils/DataUtil';
 import { QueryUtil } from '../../utils/QueryUtil';
+import { useQueryMemo } from '../../hooks/useQueryMemo';
 
 export const useDataCollectionsQuery = (dataCollectionIds?: string[]): UseQueryResult<DataCollection[]> => {
-  return useQuery({
+  return useQueryMemo({
     queryKey: QueryUtil.getGenericKey(QUERY_KEY.DATA_COLLECTIONS),
     queryFn: async ({ signal }) => {
       const response = await OrganizationApi.getInstance().dataCollectionsGetAll({ signal });
@@ -33,8 +33,7 @@ export const useDataCollectionsMapQuery = (dataCollectionIds?: string[]): UseMap
 
   return useMemo(() => {
     return DataUtil.createUseMapDataHook<DataCollection>(dataCollectionsQuery, item => item.id);
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [DataUtil.createMemorizationDependency(dataCollectionsQuery)]);
+  }, [dataCollectionsQuery]);
 };
 
 export const useDataCollectionOptionsQuery = (dataCollectionIds?: string[]): UseOptions<string> => {
@@ -42,6 +41,5 @@ export const useDataCollectionOptionsQuery = (dataCollectionIds?: string[]): Use
 
   return useMemo(() => {
     return DataUtil.createUseOptionsDataHook<DataCollection>(dataCollectionsQuery, item => item.id, item => item.name);
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [DataUtil.createMemorizationDependency(dataCollectionsQuery)]);
+  }, [dataCollectionsQuery]);
 };

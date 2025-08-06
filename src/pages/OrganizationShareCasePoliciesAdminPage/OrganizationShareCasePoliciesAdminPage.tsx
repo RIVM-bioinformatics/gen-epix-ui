@@ -19,7 +19,7 @@ import { useCaseTypeSetOptionsQuery } from '../../dataHooks/useCaseTypeSetsQuery
 import { useDataCollectionOptionsQuery } from '../../dataHooks/useDataCollectionsQuery';
 import { useOrganizationOptionsQuery } from '../../dataHooks/useOrganizationsQuery';
 import { useOrganizationCasePolicyNameFactory } from '../../hooks/useOrganizationCasePolicyNameFactory';
-import type { Loadable } from '../../models/dataHooks';
+import { useArray } from '../../hooks/useArray';
 import type { FormFieldDefinition } from '../../models/form';
 import { FORM_FIELD_DEFINITION_TYPE } from '../../models/form';
 import { QUERY_KEY } from '../../models/query';
@@ -50,7 +50,7 @@ export const OrganizationShareCasePoliciesAdminPage = () => {
 
   const nameFactory = useOrganizationCasePolicyNameFactory();
 
-  const loadables = useMemo<Loadable[]>(() => [nameFactory, organizationOptionsQuery, dataCollectionOptionsQuery, caseTypeColSetOptionsQuery, caseTypeSetOptions], [nameFactory, caseTypeSetOptions, caseTypeColSetOptionsQuery, dataCollectionOptionsQuery, organizationOptionsQuery]);
+  const loadables = useArray([nameFactory, organizationOptionsQuery, dataCollectionOptionsQuery, caseTypeColSetOptionsQuery, caseTypeSetOptions]);
 
   const fetchAll = useCallback(async (signal: AbortSignal) => {
     return (await AbacApi.getInstance().organizationShareCasePoliciesGetAll({ signal }))?.data;

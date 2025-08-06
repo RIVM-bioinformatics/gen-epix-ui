@@ -1,7 +1,4 @@
-import {
-  useQuery,
-  type UseQueryResult,
-} from '@tanstack/react-query';
+import { type UseQueryResult } from '@tanstack/react-query';
 import { useMemo } from 'react';
 
 import type { EtiologicalAgent } from '../../api';
@@ -13,9 +10,10 @@ import type {
 import { QUERY_KEY } from '../../models/query';
 import { DataUtil } from '../../utils/DataUtil';
 import { QueryUtil } from '../../utils/QueryUtil';
+import { useQueryMemo } from '../../hooks/useQueryMemo';
 
 export const useEtiologicalAgentsQuery = (): UseQueryResult<EtiologicalAgent[]> => {
-  return useQuery({
+  return useQueryMemo({
     queryKey: QueryUtil.getGenericKey(QUERY_KEY.ETIOLOGICAL_AGENTS),
     queryFn: async ({ signal }) => {
       const response = await OntologyApi.getInstance().etiologicalAgentsGetAll({ signal });
@@ -29,8 +27,7 @@ export const useEtiologicalAgentsMapQuery = (): UseMap<EtiologicalAgent> => {
 
   return useMemo(() => {
     return DataUtil.createUseMapDataHook<EtiologicalAgent>(etiologicalAgentsQuery, item => item.id);
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [DataUtil.createMemorizationDependency(etiologicalAgentsQuery)]);
+  }, [etiologicalAgentsQuery]);
 };
 
 export const useEtiologicalAgentOptionsQuery = (): UseOptions<string> => {
@@ -38,6 +35,5 @@ export const useEtiologicalAgentOptionsQuery = (): UseOptions<string> => {
 
   return useMemo(() => {
     return DataUtil.createUseOptionsDataHook<EtiologicalAgent>(etiologicalAgentsQuery, item => item.id, item => item.name);
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [DataUtil.createMemorizationDependency(etiologicalAgentsQuery)]);
+  }, [etiologicalAgentsQuery]);
 };

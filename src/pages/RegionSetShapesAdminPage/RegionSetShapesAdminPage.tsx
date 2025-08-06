@@ -18,7 +18,7 @@ import {
   useRegionSetOptionsQuery,
   useRegionSetsMapQuery,
 } from '../../dataHooks/useRegionSetsQuery';
-import type { Loadable } from '../../models/dataHooks';
+import { useArray } from '../../hooks/useArray';
 import type { FormFieldDefinition } from '../../models/form';
 import { FORM_FIELD_DEFINITION_TYPE } from '../../models/form';
 import { QUERY_KEY } from '../../models/query';
@@ -34,7 +34,7 @@ export const RegionSetShapesAdminPage = () => {
   const regionSetOptionsQuery = useRegionSetOptionsQuery();
   const regionSetsMapQuery = useRegionSetsMapQuery();
 
-  const loadables = useMemo<Loadable[]>(() => [regionSetOptionsQuery, regionSetsMapQuery], [regionSetOptionsQuery, regionSetsMapQuery]);
+  const loadables = useArray([regionSetOptionsQuery, regionSetsMapQuery]);
 
 
   const fetchAll = useCallback(async (signal: AbortSignal) => {

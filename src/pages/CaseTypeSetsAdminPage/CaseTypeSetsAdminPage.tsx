@@ -23,7 +23,7 @@ import {
 import { useCaseTypeOptionsQuery } from '../../dataHooks/useCaseTypesQuery';
 import { useCaseTypeSetCategoryOptionsQuery } from '../../dataHooks/useCaseTypeSetCategoriesQuery';
 import { useCaseTypeSetMembersQuery } from '../../dataHooks/useCaseTypeSetMembersQuery';
-import type { Loadable } from '../../models/dataHooks';
+import { useArray } from '../../hooks/useArray';
 import type { FormFieldDefinition } from '../../models/form';
 import { FORM_FIELD_DEFINITION_TYPE } from '../../models/form';
 import { QUERY_KEY } from '../../models/query';
@@ -44,7 +44,7 @@ export const CaseTypeSetsAdminPage = () => {
   const caseTypeSetMembersQuery = useCaseTypeSetMembersQuery();
   const caseTypeOptionsQuery = useCaseTypeOptionsQuery();
 
-  const loadables = useMemo<Loadable[]>(() => [caseTypeOptionsQuery, caseTypeSetCategoryOptionsQuery], [caseTypeOptionsQuery, caseTypeSetCategoryOptionsQuery]);
+  const loadables = useArray([caseTypeOptionsQuery, caseTypeSetCategoryOptionsQuery]);
 
   const fetchAll = useCallback(async (signal: AbortSignal): Promise<CaseTypeSet[]> => {
     const caseTypesSets = (await CaseApi.getInstance().caseTypeSetsGetAll({ signal }))?.data;

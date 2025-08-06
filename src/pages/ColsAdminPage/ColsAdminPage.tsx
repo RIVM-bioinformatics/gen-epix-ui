@@ -21,7 +21,7 @@ import { useConceptSetOptionsQuery } from '../../dataHooks/useConceptSetsQuery';
 import { useDimOptionsQuery } from '../../dataHooks/useDimsQuery';
 import { useGeneticDistanceProtocolOptionsQuery } from '../../dataHooks/useGeneticDistanceProtocolsQuery';
 import { useRegionSetOptionsQuery } from '../../dataHooks/useRegionSetsQuery';
-import type { Loadable } from '../../models/dataHooks';
+import { useArray } from '../../hooks/useArray';
 import type { FormFieldDefinition } from '../../models/form';
 import { FORM_FIELD_DEFINITION_TYPE } from '../../models/form';
 import { QUERY_KEY } from '../../models/query';
@@ -40,7 +40,7 @@ export const ColsAdminPage = () => {
   const regionSetOptionsQuery = useRegionSetOptionsQuery();
   const geneticDistanceProtocolOptionsQuery = useGeneticDistanceProtocolOptionsQuery();
 
-  const loadables = useMemo<Loadable[]>(() => [dimOptionsQuery, colTypeOptionsQuery, conceptSetOptionsQuery, regionSetOptionsQuery, geneticDistanceProtocolOptionsQuery], [colTypeOptionsQuery, conceptSetOptionsQuery, dimOptionsQuery, geneticDistanceProtocolOptionsQuery, regionSetOptionsQuery]);
+  const loadables = useArray([dimOptionsQuery, colTypeOptionsQuery, conceptSetOptionsQuery, regionSetOptionsQuery, geneticDistanceProtocolOptionsQuery]);
 
   const fetchAll = useCallback(async (signal: AbortSignal) => {
     return (await CaseApi.getInstance().colsGetAll({ signal }))?.data;

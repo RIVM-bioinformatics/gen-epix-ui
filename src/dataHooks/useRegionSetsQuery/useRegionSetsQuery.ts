@@ -1,5 +1,4 @@
 import type { UseQueryResult } from '@tanstack/react-query';
-import { useQuery } from '@tanstack/react-query';
 import { useMemo } from 'react';
 
 import type { RegionSet } from '../../api';
@@ -11,9 +10,10 @@ import type {
 import { QUERY_KEY } from '../../models/query';
 import { DataUtil } from '../../utils/DataUtil';
 import { QueryUtil } from '../../utils/QueryUtil';
+import { useQueryMemo } from '../../hooks/useQueryMemo';
 
 export const useRegionSetsQuery = (): UseQueryResult<RegionSet[]> => {
-  return useQuery({
+  return useQueryMemo({
     queryKey: QueryUtil.getGenericKey(QUERY_KEY.REGION_SETS),
     queryFn: async ({ signal }) => {
       const response = await GeoApi.getInstance().regionSetsGetAll({ signal });
@@ -27,8 +27,7 @@ export const useRegionSetOptionsQuery = (): UseOptions<string> => {
 
   return useMemo(() => {
     return DataUtil.createUseOptionsDataHook<RegionSet>(regionSetsQuery, item => item.id, item => item.name);
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [DataUtil.createMemorizationDependency(regionSetsQuery)]);
+  }, [regionSetsQuery]);
 };
 
 export const useRegionSetsMapQuery = (): UseMap<RegionSet> => {
@@ -36,6 +35,5 @@ export const useRegionSetsMapQuery = (): UseMap<RegionSet> => {
 
   return useMemo(() => {
     return DataUtil.createUseMapDataHook<RegionSet>(regionSetsQuery, item => item.id);
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [DataUtil.createMemorizationDependency(regionSetsQuery)]);
+  }, [regionSetsQuery]);
 };

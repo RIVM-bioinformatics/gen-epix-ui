@@ -19,7 +19,7 @@ import { useCaseTypeSetOptionsQuery } from '../../dataHooks/useCaseTypeSetsQuery
 import { useDataCollectionOptionsQuery } from '../../dataHooks/useDataCollectionsQuery';
 import { useUserOptionsQuery } from '../../dataHooks/useUsersQuery';
 import { useUserCasePolicyNameFactory } from '../../hooks/useUserCasePolicyNameFactory';
-import type { Loadable } from '../../models/dataHooks';
+import { useArray } from '../../hooks/useArray';
 import type { FormFieldDefinition } from '../../models/form';
 import { FORM_FIELD_DEFINITION_TYPE } from '../../models/form';
 import { QUERY_KEY } from '../../models/query';
@@ -53,7 +53,7 @@ export const UserAccessCasePoliciesAdminPage = () => {
 
   const nameFactory = useUserCasePolicyNameFactory();
 
-  const loadables = useMemo<Loadable[]>(() => [nameFactory, userOptionsQuery, dataCollectionOptionsQuery, caseTypeColSetOptionsQuery, caseTypeSetOptions], [nameFactory, caseTypeSetOptions, caseTypeColSetOptionsQuery, dataCollectionOptionsQuery, userOptionsQuery]);
+  const loadables = useArray([nameFactory, userOptionsQuery, dataCollectionOptionsQuery, caseTypeColSetOptionsQuery, caseTypeSetOptions]);
 
   const fetchAll = useCallback(async (signal: AbortSignal) => {
     return (await AbacApi.getInstance().userAccessCasePoliciesGetAll({ signal }))?.data;

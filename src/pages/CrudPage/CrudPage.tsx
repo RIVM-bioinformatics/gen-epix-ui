@@ -61,6 +61,7 @@ import {
 } from '../../stores/tableStore';
 import { QueryUtil } from '../../utils/QueryUtil';
 import { TableUtil } from '../../utils/TableUtil';
+import type { DialogAction } from '../../components/ui/Dialog';
 
 import type { CrudPageEditDialogRefMethods } from './CrudPageEditDialog';
 import { CrudPageEditDialog } from './CrudPageEditDialog';
@@ -105,6 +106,7 @@ export type CrudPageProps<
   readonly onCreateError?: (error: unknown, variables: TFormFields, context: MutationContextCreate<TData>) => Promise<void>;
   readonly onDeleteSuccess?: (item: TData, context: MutationContextDelete<TData>) => Promise<void>;
   readonly onDeleteError?: (error: unknown, item: TData, context: MutationContextDelete<TData>) => Promise<void>;
+  readonly editDialogExtraActionsFactory?: (item: TData) => DialogAction[];
 }>;
 
 export const CrudPage = <
@@ -146,6 +148,7 @@ export const CrudPage = <
   onCreateError,
   onDeleteSuccess,
   onDeleteError,
+  editDialogExtraActionsFactory,
 }: CrudPageProps<TFormFields, TData, TTableData>) => {
   const [t] = useTranslation();
   const theme = useTheme();
@@ -230,10 +233,11 @@ export const CrudPage = <
 
   const editItem = useCallback((item: TTableData) => {
     editDialogRef.current.open({
+      extraActionsFactory: editDialogExtraActionsFactory,
       hiddenFormFieldValues,
       item,
     });
-  }, [hiddenFormFieldValues]);
+  }, [editDialogExtraActionsFactory, hiddenFormFieldValues]);
 
   const tryToGetName = useCallback((item: TData | TFormFields) => {
     let name: string;

@@ -20,7 +20,7 @@ import { useCaseTypeColOptionsQuery } from '../../dataHooks/useCaseTypeColsQuery
 import { useCaseTypeOptionsQuery } from '../../dataHooks/useCaseTypesQuery';
 import { useColOptionsQuery } from '../../dataHooks/useColsQuery';
 import { useTreeAlgorithmCodeOptionsQuery } from '../../dataHooks/useTreeAlgorithmCodesQuery';
-import type { Loadable } from '../../models/dataHooks';
+import { useArray } from '../../hooks/useArray';
 import type { FormFieldDefinition } from '../../models/form';
 import { FORM_FIELD_DEFINITION_TYPE } from '../../models/form';
 import { QUERY_KEY } from '../../models/query';
@@ -39,7 +39,7 @@ export const CaseTypeColsAdminPage = () => {
   const caseTypeOptionsQuery = useCaseTypeOptionsQuery();
   const caseTypeColOptionsQuery = useCaseTypeColOptionsQuery();
 
-  const loadables = useMemo<Loadable[]>(() => [caseTypeOptionsQuery, colOptionsQuery, treeAlgorithmCodesOptionsQuery, caseTypeColOptionsQuery], [caseTypeColOptionsQuery, caseTypeOptionsQuery, colOptionsQuery, treeAlgorithmCodesOptionsQuery]);
+  const loadables = useArray([caseTypeOptionsQuery, colOptionsQuery, treeAlgorithmCodesOptionsQuery, caseTypeColOptionsQuery]);
 
   const fetchAll = useCallback(async (signal: AbortSignal) => {
     return (await CaseApi.getInstance().caseTypeColsGetAll({ signal }))?.data;

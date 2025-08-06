@@ -31,6 +31,7 @@ import { TestIdUtil } from '../../utils/TestIdUtil';
 export interface CrudPageEditDialogOpenProps<TData extends GenericData> {
   readonly item?: TData;
   readonly hiddenFormFieldValues?: Partial<Record<keyof TData, unknown>>;
+  readonly extraActionsFactory?: (item: TData) => DialogAction[];
 }
 export interface CrudPageEditDialogProps<TData extends GenericData, TFormFields extends AnyObject> extends WithDialogRenderProps<CrudPageEditDialogOpenProps<TData>> {
   readonly onSave: (formValues: TFormFields, item: TData) => void;
@@ -58,6 +59,9 @@ export const CrudPageEditDialog = withDialog<CrudPageEditDialogProps<any, any>, 
 
   useEffect(() => {
     const actions: DialogAction[] = [];
+    if (openProps.extraActionsFactory) {
+      actions.push(...openProps.extraActionsFactory(openProps.item));
+    }
     actions.push({
       ...TestIdUtil.createAttributes('CrudPageEditDialog-saveButton'),
       color: 'secondary',
@@ -70,7 +74,7 @@ export const CrudPageEditDialog = withDialog<CrudPageEditDialogProps<any, any>, 
       disabled: formFieldDefinitions.some(def => def.loading),
     });
     onActionsChange(actions);
-  }, [onActionsChange, formId, t, formFieldDefinitions]);
+  }, [onActionsChange, formId, t, formFieldDefinitions, openProps]);
 
   useEffect(() => {
     if (openProps.item) {

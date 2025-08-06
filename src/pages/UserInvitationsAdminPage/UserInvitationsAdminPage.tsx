@@ -26,7 +26,7 @@ import { useOrganizationAdminPolicyMapQuery } from '../../dataHooks/useOrganizat
 import { useOrganizationOptionsQuery } from '../../dataHooks/useOrganizationsQuery';
 import { useRoleOptionsQuery } from '../../dataHooks/useRolesQuery';
 import { useUserOptionsQuery } from '../../dataHooks/useUsersQuery';
-import type { Loadable } from '../../models/dataHooks';
+import { useArray } from '../../hooks/useArray';
 import type {
   OptionBase,
   FormFieldDefinition,
@@ -63,7 +63,7 @@ export const UserInvitationsAdminPage = () => {
     return organizationOptionsQuery.options.filter((option) => allowedOrganizationIds.includes(option.value));
   }, [organizationOptionsQuery.error, organizationOptionsQuery.isLoading, organizationOptionsQuery.options, organizationAdminPolicyMapQuery.map]);
 
-  const loadables = useMemo<Loadable[]>(() => [organizationOptionsQuery, roleOptionsQuery, userOptionsQuery, organizationAdminPolicyMapQuery], [organizationAdminPolicyMapQuery, organizationOptionsQuery, roleOptionsQuery, userOptionsQuery]);
+  const loadables = useArray([organizationOptionsQuery, roleOptionsQuery, userOptionsQuery, organizationAdminPolicyMapQuery]);
 
   const userInvitationsAdminDetailDialogRef = useRef<UserInvitationsAdminDetailDialogRefMethods>(null);
 

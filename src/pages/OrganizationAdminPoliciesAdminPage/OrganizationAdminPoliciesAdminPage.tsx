@@ -17,7 +17,7 @@ import {
 import { useOrganizationAdminPolicyNameFactory } from '../../dataHooks/useOrganizationAdminPoliciesQuery';
 import { useOrganizationOptionsQuery } from '../../dataHooks/useOrganizationsQuery';
 import { useUserOptionsQuery } from '../../dataHooks/useUsersQuery';
-import type { Loadable } from '../../models/dataHooks';
+import { useArray } from '../../hooks/useArray';
 import type { FormFieldDefinition } from '../../models/form';
 import { FORM_FIELD_DEFINITION_TYPE } from '../../models/form';
 import { QUERY_KEY } from '../../models/query';
@@ -34,7 +34,7 @@ export const OrganizationAdminPoliciesAdminPage = () => {
   const userOptionsQuery = useUserOptionsQuery();
   const organizationAdminPolicyNameFactory = useOrganizationAdminPolicyNameFactory();
 
-  const loadables = useMemo<Loadable[]>(() => [organizationOptionsQuery, userOptionsQuery, organizationAdminPolicyNameFactory], [organizationOptionsQuery, userOptionsQuery, organizationAdminPolicyNameFactory]);
+  const loadables = useArray([organizationOptionsQuery, userOptionsQuery, organizationAdminPolicyNameFactory]);
 
   const fetchAll = useCallback(async (signal: AbortSignal) => {
     return (await AbacApi.getInstance().organizationAdminPoliciesGetAll({ signal }))?.data;

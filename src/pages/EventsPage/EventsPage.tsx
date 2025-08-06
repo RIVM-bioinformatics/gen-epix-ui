@@ -40,7 +40,7 @@ import { useCaseSetStatsMapQuery } from '../../dataHooks/useCaseSetStatsQuery';
 import { useCaseSetStatusOptionsQuery } from '../../dataHooks/useCaseSetStatusesQuery';
 import { useCaseTypeOptionsQuery } from '../../dataHooks/useCaseTypesQuery';
 import { useInitializeTableStore } from '../../hooks/useInitializeTableStore';
-import type { Loadable } from '../../models/dataHooks';
+import { useArray } from '../../hooks/useArray';
 import { QUERY_KEY } from '../../models/query';
 import type {
   TableRowParams,
@@ -68,7 +68,7 @@ export const EventsPage = () => {
   const epiCaseSetInfoDialogRef = useRef<EpiCaseSetInfoDialogRefMethods>(null);
   const epiCreateEventDialogRef = useRef<EpiCreateEventDialogRefMethods>(null);
 
-  const loadables = useMemo<Loadable[]>(() => [caseTypeOptionsQuery, caseSetCategoryOptionsQuery, caseSetStatusOptionsQuery, caseSetStatsMapQuery], [caseSetCategoryOptionsQuery, caseSetStatusOptionsQuery, caseTypeOptionsQuery, caseSetStatsMapQuery]);
+  const loadables = useArray([caseTypeOptionsQuery, caseSetCategoryOptionsQuery, caseSetStatusOptionsQuery, caseSetStatsMapQuery]);
 
   const { isLoading: isCaseSetsLoading, error: caseSetsError, data: caseSets } = useQuery({
     queryKey: QueryUtil.getGenericKey(QUERY_KEY.CASE_SETS),

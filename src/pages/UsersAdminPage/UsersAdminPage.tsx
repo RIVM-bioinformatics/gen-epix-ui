@@ -1,6 +1,7 @@
 import {
   useCallback,
   useMemo,
+  useRef,
 } from 'react';
 import { useTranslation } from 'react-i18next';
 import {
@@ -9,19 +10,33 @@ import {
   object,
   string,
 } from 'yup';
+import {
+  MenuItem,
+  ListItemText,
+  ListItemIcon,
+} from '@mui/material';
+import PermIdentityIcon from '@mui/icons-material/PermIdentity';
 
 import type { User } from '../../api';
 import { OrganizationApi } from '../../api';
 import { useOrganizationOptionsQuery } from '../../dataHooks/useOrganizationsQuery';
 import { useRoleOptionsQuery } from '../../dataHooks/useRolesQuery';
-import type { Loadable } from '../../models/dataHooks';
+import { useArray } from '../../hooks/useArray';
 import type { FormFieldDefinition } from '../../models/form';
 import { FORM_FIELD_DEFINITION_TYPE } from '../../models/form';
 import { QUERY_KEY } from '../../models/query';
-import type { TableColumn } from '../../models/table';
+import type {
+  TableColumn,
+  TableRowParams,
+} from '../../models/table';
 import { TableUtil } from '../../utils/TableUtil';
 import { TestIdUtil } from '../../utils/TestIdUtil';
 import { CrudPage } from '../CrudPage';
+import type { EpiUserRightsDialogRefMethods } from '../../components/epi/EpiUserRightsDialog';
+import { EpiUserRightsDialog } from '../../components/epi/EpiUserRightsDialog';
+import { RouterManager } from '../../classes/managers/RouterManager';
+import type { DialogAction } from '../../components/ui/Dialog';
+
 
 type FormFields = Pick<User, 'email' | 'is_active' | 'roles'>;
 
@@ -29,8 +44,9 @@ export const UsersAdminPage = () => {
   const [t] = useTranslation();
   const roleOptionsQuery = useRoleOptionsQuery();
   const organizationOptionsQuery = useOrganizationOptionsQuery();
+  const epiUserRightsDialogRef = useRef<EpiUserRightsDialogRefMethods>(null);
 
-  const loadables = useMemo<Loadable[]>(() => [roleOptionsQuery, organizationOptionsQuery], [roleOptionsQuery, organizationOptionsQuery]);
+  const loadables = useArray([roleOptionsQuery, organizationOptionsQuery]);
 
   const fetchAll = useCallback(async (signal: AbortSignal) => {
     const users = (await OrganizationApi.getInstance().usersGetAll({ signal }))?.data;
@@ -93,20 +109,58 @@ export const UsersAdminPage = () => {
     ];
   }, [organizationOptionsQuery.options, roleOptionsQuery.options, t]);
 
+  const extraActionsFactory = useCallback((params: TableRowParams<User>) => {
+    return [(
+      <MenuItem
+        key={'custom-action-1'}
+        // eslint-disable-next-line react/jsx-no-bind
+        onClick={async () => await RouterManager.instance.router.navigate({
+          pathname: `/management/users/${params.row.id}/effective-rights`,
+        })}
+      >
+        <ListItemIcon>
+          <PermIdentityIcon fontSize={'small'} />
+        </ListItemIcon>
+        <ListItemText>
+          {t`View effective rights`}
+        </ListItemText>
+      </MenuItem>
+    )];
+  }, [t]);
+
+  const editDialogExtraActionsFactory = useCallback((item: User): DialogAction[] =>{
+    return [
+      {
+        ...TestIdUtil.createAttributes('UsersAdminPage-epiUserRightsButton'),
+        label: t`View effective rights`,
+        color: 'primary',
+        variant: 'outlined',
+        onClick: async () => await RouterManager.instance.router.navigate({
+          pathname: `/management/users/${item.id}/effective-rights`,
+        }),
+      },
+    ];
+  }, [t]);
+
   return (
-    <CrudPage<FormFields, User>
-      defaultSortByField={'name'}
-      defaultSortDirection={'asc'}
-      fetchAll={fetchAll}
-      formFieldDefinitions={formFieldDefinitions}
-      getName={getName}
-      loadables={loadables}
-      resourceQueryKeyBase={QUERY_KEY.USERS}
-      schema={schema}
-      tableColumns={tableColumns}
-      testIdAttributes={TestIdUtil.createAttributes('UsersAdminPage')}
-      title={t`Users`}
-      updateOne={updateOne}
-    />
+    <>
+      <CrudPage<FormFields, User>
+        defaultSortByField={'name'}
+        defaultSortDirection={'asc'}
+        editDialogExtraActionsFactory={editDialogExtraActionsFactory}
+        extraActionsFactory={extraActionsFactory}
+        fetchAll={fetchAll}
+        formFieldDefinitions={formFieldDefinitions}
+        getName={getName}
+        loadables={loadables}
+        resourceQueryKeyBase={QUERY_KEY.USERS}
+        schema={schema}
+        tableColumns={tableColumns}
+        testIdAttributes={TestIdUtil.createAttributes('UsersAdminPage')}
+        title={t`Users`}
+        updateOne={updateOne}
+      />
+      <EpiUserRightsDialog ref={epiUserRightsDialogRef} />
+    </>
   );
 };

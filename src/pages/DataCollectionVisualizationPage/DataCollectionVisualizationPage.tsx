@@ -18,6 +18,7 @@ import { PageContainer } from '../../components/ui/PageContainer';
 import { ResponseHandler } from '../../components/ui/ResponseHandler';
 import { useDataCollectionsQuery } from '../../dataHooks/useDataCollectionsQuery';
 import { useOrganizationMapQuery } from '../../dataHooks/useOrganizationsQuery';
+import { useArray } from '../../hooks/useArray';
 import { TestIdUtil } from '../../utils/TestIdUtil';
 
 
@@ -52,10 +53,10 @@ const DataCollectionVisualizationPageContent = () => {
   const dataCollectionsQuery = useDataCollectionsQuery();
   const organizationMapQuery = useOrganizationMapQuery();
 
-  const loadables = useMemo(() => [
+  const loadables = useArray([
     dataCollectionsQuery,
     organizationMapQuery,
-  ], [dataCollectionsQuery, organizationMapQuery]);
+  ]);
 
   const chartRef = useRef<EChartsReact>(null);
 

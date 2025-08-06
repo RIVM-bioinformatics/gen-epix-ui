@@ -1,5 +1,4 @@
 import type { UseQueryResult } from '@tanstack/react-query';
-import { useQuery } from '@tanstack/react-query';
 import { useMemo } from 'react';
 import { useTranslation } from 'react-i18next';
 
@@ -15,9 +14,10 @@ import { DataUtil } from '../../utils/DataUtil';
 import { QueryUtil } from '../../utils/QueryUtil';
 import { useOrganizationMapQuery } from '../useOrganizationsQuery';
 import { useUsersMapQuery } from '../useUsersQuery';
+import { useQueryMemo } from '../../hooks/useQueryMemo';
 
 export const useOrganizationAdminPoliciesQuery = (): UseQueryResult<OrganizationAdminPolicy[]> => {
-  return useQuery({
+  return useQueryMemo({
     queryKey: QueryUtil.getGenericKey(QUERY_KEY.ORGANIZATION_ADMIN_POLICIES),
     queryFn: async ({ signal }) => {
       const response = await AbacApi.getInstance().organizationAdminPoliciesGetAll({ signal });
@@ -31,8 +31,8 @@ export const useOrganizationAdminPolicyMapQuery = (): UseMap<OrganizationAdminPo
 
   return useMemo(() => {
     return DataUtil.createUseMapDataHook<OrganizationAdminPolicy>(organizationAdminPoliciesQuery, item => item.id);
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [DataUtil.createMemorizationDependency(organizationAdminPoliciesQuery)]);
+
+  }, [organizationAdminPoliciesQuery]);
 };
 
 export const useOrganizationAdminPolicyNameFactory = (): UseNameFactory<OrganizationAdminPolicy> => {
@@ -51,11 +51,9 @@ export const useOrganizationAdminPolicyNameFactory = (): UseNameFactory<Organiza
 
 export const useOrganizationAdminPolicyOptionsQuery = (): UseOptions<string> => {
   const organizationAdminPoliciesQuery = useOrganizationAdminPoliciesQuery();
-
   const organizationAdminPolicyNameFactory = useOrganizationAdminPolicyNameFactory();
 
   return useMemo(() => {
     return DataUtil.createUseOptionsDataHook<OrganizationAdminPolicy>(organizationAdminPoliciesQuery, item => item.id, organizationAdminPolicyNameFactory.getName, [organizationAdminPolicyNameFactory]);
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [organizationAdminPolicyNameFactory, DataUtil.createMemorizationDependency(organizationAdminPoliciesQuery)]);
+  }, [organizationAdminPolicyNameFactory, organizationAdminPoliciesQuery]);
 };

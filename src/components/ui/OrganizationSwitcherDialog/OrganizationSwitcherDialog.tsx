@@ -8,7 +8,6 @@ import type { ReactElement } from 'react';
 import {
   useCallback,
   useEffect,
-  useMemo,
   useState,
 } from 'react';
 import { yupResolver } from '@hookform/resolvers/yup';
@@ -27,6 +26,7 @@ import { AuthorizationManager } from '../../../classes/managers/AuthorizationMan
 import { NotificationManager } from '../../../classes/managers/NotificationManager';
 import { WindowManager } from '../../../classes/managers/WindowManager';
 import { useOrganizationOptionsQuery } from '../../../dataHooks/useOrganizationsQuery';
+import { useArray } from '../../../hooks/useArray';
 import type {
   WithDialogRenderProps,
   WithDialogRefMethods,
@@ -62,7 +62,7 @@ export const OrganizationSwitcherDialog = withDialog<OrganizationSwitcherDialogP
   const [isChanging, setIsChanging] = useState(false);
   const [newOrganizationId, setNewOrganizationId] = useState<string>(null);
 
-  const loadables = useMemo(() => [organizationOptionsQuery], [organizationOptionsQuery]);
+  const loadables = useArray([organizationOptionsQuery]);
 
   const formMethods = useForm<FormValues>({
     resolver: yupResolver(object().shape({

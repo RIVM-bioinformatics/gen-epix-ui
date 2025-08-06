@@ -18,8 +18,8 @@ import { useCaseTypeColSetOptionsQuery } from '../../dataHooks/useCaseTypeColSet
 import { useCaseTypeSetOptionsQuery } from '../../dataHooks/useCaseTypeSetsQuery';
 import { useDataCollectionOptionsQuery } from '../../dataHooks/useDataCollectionsQuery';
 import { useOrganizationOptionsQuery } from '../../dataHooks/useOrganizationsQuery';
+import { useArray } from '../../hooks/useArray';
 import { useOrganizationCasePolicyNameFactory } from '../../hooks/useOrganizationCasePolicyNameFactory';
-import type { Loadable } from '../../models/dataHooks';
 import type { FormFieldDefinition } from '../../models/form';
 import { FORM_FIELD_DEFINITION_TYPE } from '../../models/form';
 import { QUERY_KEY } from '../../models/query';
@@ -54,7 +54,7 @@ export const OrganizationAccessCasePoliciesAdminPage = () => {
 
   const nameFactory = useOrganizationCasePolicyNameFactory();
 
-  const loadables = useMemo<Loadable[]>(() => [nameFactory, organizationOptionsQuery, dataCollectionOptionsQuery, caseTypeColSetOptionsQuery, caseTypeSetOptionsQuery], [nameFactory, caseTypeSetOptionsQuery, caseTypeColSetOptionsQuery, dataCollectionOptionsQuery, organizationOptionsQuery]);
+  const loadables = useArray([nameFactory, organizationOptionsQuery, dataCollectionOptionsQuery, caseTypeColSetOptionsQuery, caseTypeSetOptionsQuery]);
 
   const fetchAll = useCallback(async (signal: AbortSignal) => {
     return (await AbacApi.getInstance().organizationAccessCasePoliciesGetAll({ signal }))?.data;

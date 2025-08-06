@@ -44,6 +44,7 @@ import { Confirmation } from '../../ui/Confirmation';
 import type { DialogAction } from '../../ui/Dialog';
 import { ResponseHandler } from '../../ui/ResponseHandler';
 import { Spinner } from '../../ui/Spinner';
+import { useArray } from '../../../hooks/useArray';
 
 import { EpiCaseSetDescription } from './EpiCaseSetDescription';
 import { EpiCaseSetSharingForm } from './EpiCaseSetSharingForm';
@@ -86,7 +87,7 @@ export const EpiCaseSetInfoDialog = withDialog<EpiCaseSetInfoDialogProps, EpiCas
   const deleteConfirmation = useRef<ConfirmationRefMethods>(null);
   const valuesFormId = useId();
   const dataCollectionsFormId = useId();
-  const loadables = useMemo(() => [caseSetRightsQuery, dataCollectionsQuery, dataCollectionsMapQuery, dataCollectionOptionsQuery], [caseSetRightsQuery, dataCollectionsQuery, dataCollectionsMapQuery, dataCollectionOptionsQuery]);
+  const loadables = useArray([caseSetRightsQuery, dataCollectionsQuery, dataCollectionsMapQuery, dataCollectionOptionsQuery]);
 
 
   // eslint-disable-next-line @typescript-eslint/require-await

@@ -1,5 +1,4 @@
 import type { UseQueryResult } from '@tanstack/react-query';
-import { useQuery } from '@tanstack/react-query';
 import { useMemo } from 'react';
 
 import type { CaseTypeCol } from '../../api';
@@ -13,9 +12,10 @@ import { QUERY_KEY } from '../../models/query';
 import { DataUtil } from '../../utils/DataUtil';
 import { QueryUtil } from '../../utils/QueryUtil';
 import { useCaseTypeMapQuery } from '../useCaseTypesQuery';
+import { useQueryMemo } from '../../hooks/useQueryMemo';
 
 export const useCaseTypeColsQuery = (): UseQueryResult<CaseTypeCol[]> => {
-  return useQuery({
+  return useQueryMemo({
     queryKey: QueryUtil.getGenericKey(QUERY_KEY.CASE_TYPE_COLS),
     queryFn: async ({ signal }) => {
       const response = await CaseApi.getInstance().caseTypeColsGetAll({ signal });
@@ -29,8 +29,7 @@ export const useCaseTypeColMapQuery = (): UseMap<CaseTypeCol> => {
 
   return useMemo(() => {
     return DataUtil.createUseMapDataHook<CaseTypeCol>(response, item => item.id);
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [DataUtil.createMemorizationDependency(response)]);
+  }, [response]);
 };
 
 export const useCaseTypeColNameFactory = (): UseNameFactory<CaseTypeCol> => {
@@ -43,7 +42,6 @@ export const useCaseTypeColNameFactory = (): UseNameFactory<CaseTypeCol> => {
     };
     return DataUtil.createUseNameFactoryHook(getName, [caseTypeMapQuery]);
   }, [caseTypeMapQuery]);
-
 };
 
 export const useCaseTypeColOptionsQuery = (): UseOptions<string> => {
@@ -53,6 +51,5 @@ export const useCaseTypeColOptionsQuery = (): UseOptions<string> => {
 
   return useMemo(() => {
     return DataUtil.createUseOptionsDataHook<CaseTypeCol>(response, item => item.id, caseTypeColNameFactory.getName, [caseTypeColNameFactory]);
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [caseTypeColNameFactory, DataUtil.createMemorizationDependency(response)]);
+  }, [caseTypeColNameFactory, response]);
 };

@@ -20,7 +20,7 @@ import {
 } from '../../api';
 import { useDataCollectionOptionsQuery } from '../../dataHooks/useDataCollectionsQuery';
 import { useDataCollectionSetMembersQuery } from '../../dataHooks/useDataCollectionSetMembersQuery';
-import type { Loadable } from '../../models/dataHooks';
+import { useArray } from '../../hooks/useArray';
 import type { FormFieldDefinition } from '../../models/form';
 import { FORM_FIELD_DEFINITION_TYPE } from '../../models/form';
 import { QUERY_KEY } from '../../models/query';
@@ -38,7 +38,7 @@ export const DataCollectionSetsAdminPage = () => {
   const dataCollectionSetMembersQuery = useDataCollectionSetMembersQuery();
   const dataCollectionOptionsQuery = useDataCollectionOptionsQuery();
 
-  const loadables = useMemo<Loadable[]>(() => [dataCollectionSetMembersQuery, dataCollectionOptionsQuery], [dataCollectionSetMembersQuery, dataCollectionOptionsQuery]);
+  const loadables = useArray([dataCollectionSetMembersQuery, dataCollectionOptionsQuery]);
 
   const fetchAll = useCallback(async (signal: AbortSignal) => {
     return (await OrganizationApi.getInstance().dataCollectionSetsGetAll({ signal }))?.data;

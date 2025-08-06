@@ -8,7 +8,6 @@ import {
   TableRow,
   Typography,
 } from '@mui/material';
-import { useMemo } from 'react';
 import { useTranslation } from 'react-i18next';
 import { format } from 'date-fns';
 
@@ -18,6 +17,7 @@ import { useCaseSetStatusMapQuery } from '../../../dataHooks/useCaseSetStatusesQ
 import { useCaseTypeMapQuery } from '../../../dataHooks/useCaseTypesQuery';
 import { ResponseHandler } from '../../ui/ResponseHandler';
 import { DATE_FORMAT } from '../../../data/date';
+import { useArray } from '../../../hooks/useArray';
 
 export type EpiCaseSetContentProps = {
   readonly caseSet: CaseSet;
@@ -29,7 +29,7 @@ export const EpiCaseSetContent = ({ caseSet, ...boxProps }: EpiCaseSetContentPro
   const caseTypeMapQuery = useCaseTypeMapQuery();
   const [t] = useTranslation();
 
-  const loadables = useMemo(() => [caseSetCategoryMapQuery, caseSetStatusMapQuery, caseTypeMapQuery], [caseSetCategoryMapQuery, caseSetStatusMapQuery, caseTypeMapQuery]);
+  const loadables = useArray([caseSetCategoryMapQuery, caseSetStatusMapQuery, caseTypeMapQuery]);
   return (
     <Box {...boxProps}>
       <Typography variant={'h6'}>

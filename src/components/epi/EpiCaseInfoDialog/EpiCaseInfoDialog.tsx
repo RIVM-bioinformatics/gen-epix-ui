@@ -46,6 +46,7 @@ import { Confirmation } from '../../ui/Confirmation';
 import type { DialogAction } from '../../ui/Dialog';
 import { ResponseHandler } from '../../ui/ResponseHandler';
 import { Spinner } from '../../ui/Spinner';
+import { useArray } from '../../../hooks/useArray';
 
 import { EpiCaseCaseSetInfo } from './EpiCaseCaseSetInfo';
 import { EpiCaseForm } from './EpiCaseForm';
@@ -90,7 +91,7 @@ export const EpiCaseInfoDialog = withDialog<EpiCaseInfoDialogProps, EpiCaseInfoD
   const deleteConfirmation = useRef<ConfirmationRefMethods>(null);
   const valuesFormId = useId();
   const dataCollectionsFormId = useId();
-  const loadables = useMemo(() => [caseRightsQuery, dataCollectionsQuery, dataCollectionsMapQuery, dataCollectionOptionsQuery], [caseRightsQuery, dataCollectionsQuery, dataCollectionsMapQuery, dataCollectionOptionsQuery]);
+  const loadables = useArray([caseRightsQuery, dataCollectionsQuery, dataCollectionsMapQuery, dataCollectionOptionsQuery]);
 
   // eslint-disable-next-line @typescript-eslint/require-await
   const onDeleteSuccess = useCallback(async () => {

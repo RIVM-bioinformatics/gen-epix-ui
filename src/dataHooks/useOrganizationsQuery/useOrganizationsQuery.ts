@@ -1,5 +1,4 @@
 import type { UseQueryResult } from '@tanstack/react-query';
-import { useQuery } from '@tanstack/react-query';
 import { useMemo } from 'react';
 
 import type { Organization } from '../../api';
@@ -12,9 +11,10 @@ import { QUERY_KEY } from '../../models/query';
 import { DataUtil } from '../../utils/DataUtil';
 import { QueryUtil } from '../../utils/QueryUtil';
 import { StringUtil } from '../../utils/StringUtil';
+import { useQueryMemo } from '../../hooks/useQueryMemo';
 
 export const useOrganizationsQuery = (): UseQueryResult<Organization[]> => {
-  return useQuery({
+  return useQueryMemo({
     queryKey: QueryUtil.getGenericKey(QUERY_KEY.ORGANIZATIONS),
     queryFn: async ({ signal }) => {
       const response = await OrganizationApi.getInstance().organizationsGetAll({ signal });
@@ -28,8 +28,7 @@ export const useOrganizationMapQuery = (): UseMap<Organization> => {
 
   return useMemo(() => {
     return DataUtil.createUseMapDataHook<Organization>(organizationsQuery, item => item.id);
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [DataUtil.createMemorizationDependency(organizationsQuery)]);
+  }, [organizationsQuery]);
 };
 
 export const useOrganizationOptionsQuery = (): UseOptions<string> => {
@@ -37,6 +36,5 @@ export const useOrganizationOptionsQuery = (): UseOptions<string> => {
 
   return useMemo(() => {
     return DataUtil.createUseOptionsDataHook<Organization>(organizationsQuery, item => item.id, item => item.name, [], StringUtil.advancedSortComperator);
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [DataUtil.createMemorizationDependency(organizationsQuery)]);
+  }, [organizationsQuery]);
 };

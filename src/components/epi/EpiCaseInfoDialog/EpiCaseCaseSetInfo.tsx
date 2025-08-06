@@ -10,7 +10,6 @@ import {
   Typography,
 } from '@mui/material';
 import { useTranslation } from 'react-i18next';
-import { useMemo } from 'react';
 
 import type {
   Case,
@@ -24,6 +23,7 @@ import { EpiCaseSetUtil } from '../../../utils/EpiCaseSetUtil';
 import { QueryUtil } from '../../../utils/QueryUtil';
 import { LspNavLink } from '../../ui/LspNavLink';
 import { ResponseHandler } from '../../ui/ResponseHandler';
+import { useArray } from '../../../hooks/useArray';
 
 export type EpiCaseCaseSetInfoProps = {
   readonly epiCase: Case;
@@ -63,7 +63,7 @@ export const EpiCaseCaseSetInfo = ({ epiCase, ...boxProps }: EpiCaseCaseSetInfoP
     enabled: caseSetsFilter.members.length > 0,
   });
 
-  const loadables = useMemo(() => [caseSetCategoryMapQuery, caseSetStatusMapQuery], [caseSetCategoryMapQuery, caseSetStatusMapQuery]);
+  const loadables = useArray([caseSetCategoryMapQuery, caseSetStatusMapQuery]);
 
   return (
     <Box {...boxProps}>

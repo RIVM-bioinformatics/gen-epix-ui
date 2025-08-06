@@ -23,7 +23,7 @@ type SearchHistoryEntry = {
   description: string;
 };
 
-const searchHistoryEntries: SearchHistoryEntry[] = [
+const tableData: SearchHistoryEntry[] = [
   {
     id: StringUtil.createUuid(),
     timestamp: '30-10-2023 11:25 AM',
@@ -52,7 +52,7 @@ export const SearchHistoryTable = () => {
     storageVersion: 1,
   }), []);
 
-  const searchHistoryColumns = useMemo<TableColumn<SearchHistoryEntry>[]>(() => [
+  const tableColumns = useMemo<TableColumn<SearchHistoryEntry>[]>(() => [
     TableUtil.createTextColumn({ id: 'timestamp', name: t`Time` }),
     TableUtil.createTextColumn({ id: 'description', name: t`Description` }),
   ], [t]);
@@ -61,7 +61,7 @@ export const SearchHistoryTable = () => {
     return row.id;
   }, []);
 
-  useInitializeTableStore(tableStore, searchHistoryColumns, searchHistoryEntries);
+  useInitializeTableStore(tableStore, tableColumns, tableData);
 
   return (
     <TableStoreContextProvider store={tableStore}>
