@@ -210,6 +210,7 @@ export const EpiDashboard = withEpiStore(({ caseSet }: EpiDashboardProps) => {
             first
             icon={<TableFiltersSidebarItemIcon />}
             onClick={onEpiDashboardOpenFilterSidebarButtonClick}
+            testIdAttributes={{ name: 'filters' }}
             title={t`Open filters`}
           />
           <SidebarMenuItem
@@ -217,17 +218,20 @@ export const EpiDashboard = withEpiStore(({ caseSet }: EpiDashboardProps) => {
             badgeContent={numHiddenLayoutZones === numLayoutZones ? '!' : numHiddenLayoutZones}
             icon={<EpiDashboardSettingsSidebarItemIcon />}
             onClick={onEpiDashboardLayoutSelectorSidebarButtonClick}
+            testIdAttributes={{ name: 'dashboard' }}
             title={t('Change dashboard layout (hidden zones: {{numHiddenLayoutZones}})', { numHiddenLayoutZones })}
           />
           <SidebarMenuItem
             icon={<InfoIcon />}
             onClick={onEpiDashboardOpenInfoSidebarButtonClick}
+            testIdAttributes={{ name: 'case' }}
             title={t`Show case type information`}
           />
           {caseSet && (
             <SidebarMenuItem
               icon={<CollectionIcon />}
               onClick={onEpiDashboardOpenCaseSetDescriptionButtonClick}
+              testIdAttributes={{ name: 'event' }}
               title={t`Show event information`}
             />
           )}
