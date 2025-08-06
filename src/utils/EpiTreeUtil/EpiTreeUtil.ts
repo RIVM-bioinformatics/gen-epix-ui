@@ -189,7 +189,7 @@ export class EpiTreeUtil {
    * @param zoomLevel
    * @returns [number of lines to draw, genetic distance of single line, minGeneticScaleUnit]
    */
-  public static getTickMarkScale(params: { treeWidthMinusPadding: number; geneticTreeWidth: number; minGeneticScaleUnit: number; zoomLevel: number }): TickerMarkScale {
+  public static getTickMarkScale(params: { treeWidthMinusPadding: number; geneticTreeWidth: Decimal; minGeneticScaleUnit: number; zoomLevel: number }): TickerMarkScale {
     const { treeWidthMinusPadding, geneticTreeWidth, minGeneticScaleUnit, zoomLevel } = params;
     if (!treeWidthMinusPadding || !geneticTreeWidth || !minGeneticScaleUnit) {
       return [0, 0, 0];
@@ -199,8 +199,8 @@ export class EpiTreeUtil {
     let minNumLines = Math.floor(width / ConfigManager.instance.config.epiTree.MAX_SCALE_WIDTH_PX) + 1;
     let maxNumLines = Math.ceil(width / ConfigManager.instance.config.epiTree.MIN_SCALE_WIDTH_PX) + 1;
 
-    if (geneticTreeWidth / minGeneticScaleUnit < maxNumLines) {
-      maxNumLines = Math.max(Math.ceil(geneticTreeWidth / minGeneticScaleUnit), 2);
+    if (geneticTreeWidth.div(minGeneticScaleUnit).add(1).lessThan(maxNumLines)) {
+      maxNumLines = Math.max(geneticTreeWidth.div(minGeneticScaleUnit).ceil().toNumber(), 2);
     }
     if (minNumLines > maxNumLines) {
       minNumLines = maxNumLines;
@@ -209,29 +209,26 @@ export class EpiTreeUtil {
       return [2, minGeneticScaleUnit, minGeneticScaleUnit];
     }
 
-    if (maxNumLines === 2) {
-      return [0, geneticTreeWidth, minGeneticScaleUnit];
-    }
+    const geneticTreeWidthDecimal = new Decimal(geneticTreeWidth);
+    const multiplier = new Decimal(10).pow(geneticTreeWidthDecimal.log(10).floor().minus(1));
+    const multipliedIncrements = ConfigManager.instance.config.epiTree.SCALE_INCREMENTS.map(i => new Decimal(i).times(multiplier));
 
-    const multiplier = 10 ** (Math.floor(Math.log10(geneticTreeWidth)) - 1);
-    const multipliedIncrements = ConfigManager.instance.config.epiTree.SCALE_INCREMENTS.map(i => i * multiplier);
-
-    let bestCombination: [number, number, number] = [0, 0, Infinity];
+    let bestCombination: [Decimal, Decimal, Decimal] = [new Decimal(0), new Decimal(0), new Decimal(Infinity)];
 
     for (let numLines = minNumLines; numLines <= maxNumLines; numLines++) {
       for (const increment of multipliedIncrements) {
-        if (increment < minGeneticScaleUnit) {
+        if (increment.lt(minGeneticScaleUnit)) {
           continue;
         }
-        const product = increment * numLines;
-        const leftover = Math.abs(geneticTreeWidth - product);
-        if (leftover < bestCombination[2]) {
-          bestCombination = [Math.min(numLines, geneticTreeWidth / increment), increment, leftover];
+        const product = increment.times(numLines);
+        const leftover = product.minus(geneticTreeWidthDecimal).abs();
+        if (leftover.lt(bestCombination[2])) {
+          bestCombination = [Decimal(numLines), increment, leftover];
         }
       }
     }
 
-    return [...bestCombination.slice(0, 2) as [number, number], minGeneticScaleUnit];
+    return [bestCombination[0].add(1).toNumber(), bestCombination[1].toNumber(), minGeneticScaleUnit];
   }
 
   public static assembleTree(rootNode: TreeNode, treeCanvasWidth: number, pixelToGeneticDistanceRatio: number): TreeAssembly {
@@ -507,8 +504,9 @@ export class EpiTreeUtil {
     tickerMarkScale: TickerMarkScale;
     shouldShowDistances: boolean;
     devicePixelRatio: number;
+    geneticTreeWidth: Decimal;
   }): void {
-    const { devicePixelRatio, canvas, theme, treeAssembly, stratification, zoomLevel, isLinked, highlightedNodeNames, horizontalScrollPosition, verticalScrollPosition, treeCanvasWidth, treeCanvasHeight, tickerMarkScale, pixelToGeneticDistanceRatio, shouldShowDistances } = params;
+    const { devicePixelRatio, geneticTreeWidth, canvas, theme, treeAssembly, stratification, zoomLevel, isLinked, highlightedNodeNames, horizontalScrollPosition, verticalScrollPosition, treeCanvasWidth, treeCanvasHeight, tickerMarkScale, pixelToGeneticDistanceRatio, shouldShowDistances } = params;
     const ctx = canvas.getContext('2d');
     ctx.reset();
     canvas.width = canvas.clientWidth * devicePixelRatio;
@@ -517,7 +515,7 @@ export class EpiTreeUtil {
     ctx.imageSmoothingQuality = 'high';
 
     EpiTreeUtil.drawBackground({ canvas, theme, treeCanvasWidth, treeCanvasHeight, devicePixelRatio });
-    EpiTreeUtil.drawGuides({ canvas, tickerMarkScale, pixelToGeneticDistanceRatio, devicePixelRatio, horizontalScrollPosition, zoomLevel });
+    EpiTreeUtil.drawGuides({ canvas, geneticTreeWidth, tickerMarkScale, pixelToGeneticDistanceRatio, devicePixelRatio, horizontalScrollPosition, zoomLevel });
     EpiTreeUtil.drawTree({ canvas, theme, treeAssembly, stratification, highlightedNodeNames, zoomLevel, isLinked, horizontalScrollPosition, verticalScrollPosition, shouldShowDistances, devicePixelRatio });
   }
 
@@ -529,42 +527,67 @@ export class EpiTreeUtil {
     });
   }
 
-  public static drawGuides(params: { canvas: HTMLCanvasElement; tickerMarkScale: TickerMarkScale; pixelToGeneticDistanceRatio: number; devicePixelRatio: number; paddingTop?: number; paddingBottom?: number; zoomLevel: number; horizontalScrollPosition: number }): void {
-    const { canvas, tickerMarkScale, pixelToGeneticDistanceRatio, zoomLevel, devicePixelRatio, paddingTop = 0, paddingBottom = 0, horizontalScrollPosition = 0 } = params;
+  public static forEachScaleLine(params: { tickerMarkScale: TickerMarkScale; geneticTreeWidth: Decimal; pixelToGeneticDistanceRatio: number; zoomLevel: number; devicePixelRatio: number; horizontalScrollPosition?: number; callback: (x: number, i: number, numberOfLines: number) => void }): void {
+    const { tickerMarkScale, geneticTreeWidth, pixelToGeneticDistanceRatio, zoomLevel, devicePixelRatio, horizontalScrollPosition = 0, callback } = params;
+
+    const numberOfLines = tickerMarkScale[0];
+    const tickerGeneticWidth = tickerMarkScale[1];
+    const tickerWidth = new Decimal(tickerGeneticWidth).times(pixelToGeneticDistanceRatio).div(zoomLevel);
+    const totalTickerWidth = tickerWidth.times(numberOfLines - 1);
+    const geneticTreeWidthPx = geneticTreeWidth.times(pixelToGeneticDistanceRatio).div(zoomLevel);
+    const offset = totalTickerWidth.minus(geneticTreeWidthPx);
+
+    for (let i = 0; i < numberOfLines; i++) {
+      const x = new Decimal(i).times(tickerWidth).plus(new Decimal(ConfigManager.instance.config.epiTree.TREE_PADDING).div(zoomLevel)).minus(offset).minus(new Decimal(horizontalScrollPosition).div(devicePixelRatio)).toNumber();
+      callback(x, i, numberOfLines);
+    }
+  }
+
+  public static drawGuides(params: { canvas: HTMLCanvasElement; tickerMarkScale: TickerMarkScale; geneticTreeWidth: Decimal; pixelToGeneticDistanceRatio: number; devicePixelRatio: number; paddingTop?: number; paddingBottom?: number; zoomLevel: number; horizontalScrollPosition: number }): void {
+    const { canvas, geneticTreeWidth, tickerMarkScale, pixelToGeneticDistanceRatio, zoomLevel, devicePixelRatio, paddingTop = 0, paddingBottom = 0, horizontalScrollPosition = 0 } = params;
 
     EpiTreeUtil.draw(canvas, devicePixelRatio, (ctx) => {
       ctx.strokeStyle = ConfigManager.instance.config.epiTree.REGULAR_FILL_COLOR_SUPPORT_LINE;
       ctx.setLineDash([3, 1]);
-      const tickerWidth = (tickerMarkScale[1] * pixelToGeneticDistanceRatio) / zoomLevel;
-      for (let i = 0; i <= tickerMarkScale[0]; i++) {
-        ctx.beginPath();
-        const x = ((i * tickerWidth)) + (ConfigManager.instance.config.epiTree.TREE_PADDING / zoomLevel) - (horizontalScrollPosition / devicePixelRatio);
-        ctx.moveTo(x, paddingTop);
-        ctx.lineTo(x, canvas.height - paddingBottom);
-        ctx.stroke();
-        ctx.closePath();
-      }
+      EpiTreeUtil.forEachScaleLine({
+        tickerMarkScale,
+        geneticTreeWidth,
+        pixelToGeneticDistanceRatio,
+        zoomLevel,
+        devicePixelRatio,
+        horizontalScrollPosition,
+        callback: (x) => {
+          // Draw the guide lines
+          ctx.beginPath();
+          ctx.moveTo(x, paddingTop);
+          ctx.lineTo(x, canvas.height - paddingBottom);
+          ctx.stroke();
+          ctx.closePath();
+        },
+      });
       ctx.setLineDash([0, 0]);
     });
   }
 
-  public static drawScale(params: { canvas: HTMLCanvasElement; theme: Theme; tickerMarkScale: TickerMarkScale; pixelToGeneticDistanceRatio: number; zoomLevel: number; devicePixelRatio: number; horizontalScrollPosition: number }): void {
-    const { canvas, theme, tickerMarkScale, pixelToGeneticDistanceRatio, devicePixelRatio, zoomLevel, horizontalScrollPosition = 0 } = params;
-
+  public static drawScale(params: { canvas: HTMLCanvasElement; theme: Theme; tickerMarkScale: TickerMarkScale; geneticTreeWidth: Decimal; pixelToGeneticDistanceRatio: number; zoomLevel: number; devicePixelRatio: number; horizontalScrollPosition: number }): void {
+    const { canvas, theme, tickerMarkScale, geneticTreeWidth, pixelToGeneticDistanceRatio, devicePixelRatio, zoomLevel, horizontalScrollPosition = 0 } = params;
     EpiTreeUtil.draw(canvas, devicePixelRatio, (ctx) => {
-      const tickerWidth = (tickerMarkScale[1] * pixelToGeneticDistanceRatio) / zoomLevel;
-      for (let i = 0; i <= tickerMarkScale[0]; i++) {
-        ctx.beginPath();
-        const x = ((i * tickerWidth)) + (ConfigManager.instance.config.epiTree.TREE_PADDING / zoomLevel) - (horizontalScrollPosition / devicePixelRatio);
-        if (x < 0) {
-          continue;
-        }
-        ctx.textAlign = 'center';
-        ctx.font = `bold 11px ${theme.typography.fontFamily}`;
-        const label = new Decimal(tickerMarkScale[1]);
-        ctx.fillText(NumberUtil.toStringWithPrecision(label.times(i).toNumber(), tickerMarkScale[2]), x, ConfigManager.instance.config.epiTree.HEADER_HEIGHT * 0.61);
-        ctx.closePath();
-      }
+      EpiTreeUtil.forEachScaleLine({
+        tickerMarkScale,
+        geneticTreeWidth,
+        pixelToGeneticDistanceRatio,
+        zoomLevel,
+        devicePixelRatio,
+        horizontalScrollPosition,
+        callback: (x, i, numberOfLines) => {
+          ctx.beginPath();
+          ctx.textAlign = 'center';
+          ctx.font = `bold 11px ${theme.typography.fontFamily}`;
+          const label = new Decimal(tickerMarkScale[1]).times((numberOfLines - 1) - i).toNumber();
+          ctx.fillText(NumberUtil.toStringWithPrecision(label, tickerMarkScale[2]), x, ConfigManager.instance.config.epiTree.HEADER_HEIGHT * 0.61);
+          ctx.closePath();
+        },
+      });
     });
   }
 

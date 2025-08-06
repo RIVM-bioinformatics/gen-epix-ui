@@ -1,3 +1,5 @@
+import Decimal from 'decimal.js';
+
 import type { ArgumentTypes } from '../../models/generic';
 
 import { EpiTreeUtil } from './EpiTreeUtil';
@@ -7,25 +9,25 @@ describe('EpiTreeUtil', () => {
     it('determines the tick mark scale', () => {
       const cases: Array<[ArgumentTypes<typeof EpiTreeUtil.getTickMarkScale>[0], [number, number, number]]> = [
         [{
-          geneticTreeWidth: 16,
+          geneticTreeWidth: new Decimal(16),
           minGeneticScaleUnit: 1,
           treeWidthMinusPadding: 1200,
           zoomLevel: 1,
-        }, [16, 1, 1]],
+        }, [17, 1, 1]],
         [{
-          geneticTreeWidth: 80,
+          geneticTreeWidth: new Decimal(80),
           minGeneticScaleUnit: 1,
           treeWidthMinusPadding: 1200,
           zoomLevel: 1,
-        }, [16, 5, 1]],
+        }, [17, 5, 1]],
         [{
-          geneticTreeWidth: 150,
+          geneticTreeWidth: new Decimal(150),
           minGeneticScaleUnit: 1,
           treeWidthMinusPadding: 1200,
           zoomLevel: 1,
-        }, [15, 10, 1]],
+        }, [16, 10, 1]],
         [{
-          geneticTreeWidth: 0.8,
+          geneticTreeWidth: new Decimal(0.8),
           minGeneticScaleUnit: 1,
           treeWidthMinusPadding: 1200,
           zoomLevel: 1,

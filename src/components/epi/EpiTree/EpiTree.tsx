@@ -59,8 +59,10 @@ import type { TreePathProperties } from '../../../models/tree';
 import { EpiStoreContext } from '../../../stores/epiStore';
 import { userProfileStore } from '../../../stores/userProfileStore';
 import { SELECTION_FILTER_GROUP } from '../../../utils/EpiCaseTypeUtil';
-import type { TreeAssembly } from '../../../utils/EpiTreeUtil';
-import { EpiTreeUtil } from '../../../utils/EpiTreeUtil';
+import {
+  EpiTreeUtil,
+  type TreeAssembly,
+} from '../../../utils/EpiTreeUtil';
 import { QueryUtil } from '../../../utils/QueryUtil';
 import { Spinner } from '../../ui/Spinner';
 import { EpiWidget } from '../EpiWidget';
@@ -280,8 +282,9 @@ export const EpiTree = ({ linkedScrollSubject, ref }: EpiTreeProps) => {
   const tickerMarkScale = useMemo(() => {
     return EpiTreeUtil.getTickMarkScale({
       treeWidthMinusPadding,
-      geneticTreeWidth: tree?.maxBranchLength?.toNumber(),
+      geneticTreeWidth: tree?.maxBranchLength,
       minGeneticScaleUnit: Math.min(EpiTreeUtil.getMinGeneticScaleUnit(tree), treeConfiguration?.geneticDistanceProtocol?.min_scale_unit ?? Infinity),
+      // minGeneticScaleUnit: treeConfiguration?.geneticDistanceProtocol?.min_scale_unit,
       zoomLevel,
     });
   }, [treeWidthMinusPadding, tree, treeConfiguration?.geneticDistanceProtocol?.min_scale_unit, zoomLevel]);
@@ -380,19 +383,19 @@ export const EpiTree = ({ linkedScrollSubject, ref }: EpiTreeProps) => {
       return;
     }
 
-    EpiTreeUtil.drawTreeCanvas({ canvas: treeCanvas, theme, treeAssembly, stratification, zoomLevel, isLinked, horizontalScrollPosition, verticalScrollPosition, treeCanvasWidth, treeCanvasHeight, pixelToGeneticDistanceRatio, tickerMarkScale, shouldShowDistances: isShowDistancesEnabled, devicePixelRatio });
+    EpiTreeUtil.drawTreeCanvas({ canvas: treeCanvas, theme, geneticTreeWidth: tree?.maxBranchLength, treeAssembly, stratification, zoomLevel, isLinked, horizontalScrollPosition, verticalScrollPosition, treeCanvasWidth, treeCanvasHeight, pixelToGeneticDistanceRatio, tickerMarkScale, shouldShowDistances: isShowDistancesEnabled, devicePixelRatio });
     let animationFrameId: number;
     const unsubscribe = internalHighlightingSubject.subscribe((highlighting) => {
       cancelAnimationFrame(animationFrameId);
       animationFrameId = requestAnimationFrame(() => {
-        EpiTreeUtil.drawTreeCanvas({ canvas: treeCanvas, theme, treeAssembly, stratification, zoomLevel, isLinked, horizontalScrollPosition, verticalScrollPosition, treeCanvasWidth, treeCanvasHeight, pixelToGeneticDistanceRatio, tickerMarkScale, highlightedNodeNames: highlighting.caseIds, shouldShowDistances: isShowDistancesEnabled, devicePixelRatio });
+        EpiTreeUtil.drawTreeCanvas({ canvas: treeCanvas, theme, geneticTreeWidth: tree?.maxBranchLength, treeAssembly, stratification, zoomLevel, isLinked, horizontalScrollPosition, verticalScrollPosition, treeCanvasWidth, treeCanvasHeight, pixelToGeneticDistanceRatio, tickerMarkScale, highlightedNodeNames: highlighting.caseIds, shouldShowDistances: isShowDistancesEnabled, devicePixelRatio });
       });
     });
     return () => {
       unsubscribe();
       cancelAnimationFrame(animationFrameId);
     };
-  }, [treeCanvasHeight, treeCanvas, internalHighlightingSubject, pixelToGeneticDistanceRatio, stratification, theme, tickerMarkScale, treeAssembly, treeCanvasWidth, horizontalScrollPosition, verticalScrollPosition, width, zoomLevel, isLinked, isShowDistancesEnabled, devicePixelRatio]);
+  }, [treeCanvasHeight, treeCanvas, internalHighlightingSubject, pixelToGeneticDistanceRatio, stratification, theme, tickerMarkScale, treeAssembly, treeCanvasWidth, horizontalScrollPosition, verticalScrollPosition, width, zoomLevel, isLinked, isShowDistancesEnabled, devicePixelRatio, tree?.maxBranchLength]);
 
   // Setup canvas event listeners (note: must be in a separate useEffect to prevent render loop)
   useEffect(() => {
@@ -579,9 +582,9 @@ export const EpiTree = ({ linkedScrollSubject, ref }: EpiTreeProps) => {
     canvas.width = canvas.clientWidth * devicePixelRatio;
     canvas.height = canvas.clientHeight * devicePixelRatio;
 
-    EpiTreeUtil.drawGuides({ canvas, tickerMarkScale, pixelToGeneticDistanceRatio, horizontalScrollPosition, paddingTop: ConfigManager.instance.config.epiTree.HEADER_HEIGHT * 0.7, paddingBottom: 0, zoomLevel, devicePixelRatio });
-    EpiTreeUtil.drawGuides({ canvas, tickerMarkScale, pixelToGeneticDistanceRatio, horizontalScrollPosition, paddingTop: 0, paddingBottom: ConfigManager.instance.config.epiTree.HEADER_HEIGHT * 0.7, zoomLevel, devicePixelRatio });
-    EpiTreeUtil.drawScale({ canvas, theme, tickerMarkScale, pixelToGeneticDistanceRatio, zoomLevel, devicePixelRatio, horizontalScrollPosition });
+    EpiTreeUtil.drawGuides({ canvas, geneticTreeWidth: tree?.maxBranchLength, tickerMarkScale, pixelToGeneticDistanceRatio, horizontalScrollPosition, paddingTop: ConfigManager.instance.config.epiTree.HEADER_HEIGHT * 0.7, paddingBottom: 0, zoomLevel, devicePixelRatio });
+    EpiTreeUtil.drawGuides({ canvas, geneticTreeWidth: tree?.maxBranchLength, tickerMarkScale, pixelToGeneticDistanceRatio, horizontalScrollPosition, paddingTop: 0, paddingBottom: ConfigManager.instance.config.epiTree.HEADER_HEIGHT * 0.7, zoomLevel, devicePixelRatio });
+    EpiTreeUtil.drawScale({ canvas, theme, tickerMarkScale, geneticTreeWidth: tree?.maxBranchLength, pixelToGeneticDistanceRatio, zoomLevel, devicePixelRatio, horizontalScrollPosition });
 
     // Draw horizontal top divider
     EpiTreeUtil.drawDivider({ canvas, y: 0, devicePixelRatio });
@@ -589,7 +592,7 @@ export const EpiTree = ({ linkedScrollSubject, ref }: EpiTreeProps) => {
     EpiTreeUtil.drawDivider({ canvas, y: ConfigManager.instance.config.epiTree.HEADER_HEIGHT - 1, devicePixelRatio });
 
     ctx.translate(-0.5, -0.5);
-  }, [headerCanvas, pixelToGeneticDistanceRatio, theme, tickerMarkScale, zoomLevel, devicePixelRatio, horizontalScrollPosition]);
+  }, [headerCanvas, pixelToGeneticDistanceRatio, theme, tickerMarkScale, zoomLevel, devicePixelRatio, horizontalScrollPosition, tree?.maxBranchLength]);
 
   const onShowDetailsSelectionMenuItemClick = useCallback((onMenuClose: () => void) => {
     EpiEventBusManager.instance.emit('openCaseInfoDialog', {
