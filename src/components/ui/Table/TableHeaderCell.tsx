@@ -283,6 +283,9 @@ export const TableHeaderCell = <TRowData, >(props: TableHeaderCellProps<TRowData
                   id={popperId}
                   open={!!filterAnchorElement}
                   placement={'bottom-start'}
+                  sx={{
+                    zIndex: 1,
+                  }}
                 >
                   <Paper
                     elevation={4}
