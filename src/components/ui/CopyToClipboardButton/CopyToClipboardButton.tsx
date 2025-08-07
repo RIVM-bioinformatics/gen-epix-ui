@@ -20,12 +20,13 @@ export type CopyToClipboardButtonProps = {
   readonly iconOnly?: boolean;
   readonly buttonProps?: ButtonOwnProps;
   readonly tooltipSuccessText?: string;
+  readonly baseIcon?: ReactElement;
 };
 
-export const CopyToClipboardButton = ({ clipboardValue, onGetClipboardValue, buttonText, buttonVariant, iconOnly, buttonProps, tooltipSuccessText }: CopyToClipboardButtonProps) => {
+export const CopyToClipboardButton = ({ clipboardValue, onGetClipboardValue, buttonText, buttonVariant, iconOnly, buttonProps, tooltipSuccessText, baseIcon }: CopyToClipboardButtonProps) => {
   const [t] = useTranslation();
   const [copyToClipBoardButtonColor, setCopyToClipBoardButtonColor] = useState<ButtonOwnProps['color']>('primary');
-  const [copyToClipBoardIcon, setCopyToClipBoardIcon] = useState<ReactElement>(<ContentCopyIcon />);
+  const [copyToClipBoardIcon, setCopyToClipBoardIcon] = useState<ReactElement>(baseIcon ?? <ContentCopyIcon />);
   const [tooltipText, setTooltipText] = useState<string>(buttonText ?? t`Copy to clipboard`);
 
 
@@ -44,7 +45,7 @@ export const CopyToClipboardButton = ({ clipboardValue, onGetClipboardValue, but
       } finally {
         timeoutId = window.setTimeout(() => {
           setCopyToClipBoardButtonColor('primary');
-          setCopyToClipBoardIcon(<ContentCopyIcon />);
+          setCopyToClipBoardIcon(baseIcon ?? <ContentCopyIcon />);
           setTooltipText(buttonText ?? t`Copy to clipboard`);
         }, 2000);
       }
@@ -54,7 +55,7 @@ export const CopyToClipboardButton = ({ clipboardValue, onGetClipboardValue, but
     return () => {
       clearTimeout(timeoutId);
     };
-  }, [buttonText, clipboardValue, onGetClipboardValue, t, tooltipSuccessText]);
+  }, [baseIcon, buttonText, clipboardValue, onGetClipboardValue, t, tooltipSuccessText]);
 
   if (iconOnly) {
     return (

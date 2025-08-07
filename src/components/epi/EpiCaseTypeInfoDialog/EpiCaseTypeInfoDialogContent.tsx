@@ -24,6 +24,8 @@ import { EpiStoreContext } from '../../../stores/epiStore';
 import { MarkdownContent } from '../../ui/MarkdownContent';
 import { ResponseHandler } from '../../ui/ResponseHandler';
 import { useArray } from '../../../hooks/useArray';
+import type { WithDialogRenderProps } from '../../../hoc/withDialog';
+import { EpiCaseTypeUtil } from '../../../utils/EpiCaseTypeUtil';
 
 import { EpiCaseTypeInfoValues } from './EpiCaseTypeInfoValues';
 import { EpiCaseTypeInfoTrees } from './EpiCaseTypeInfoTrees';
@@ -31,11 +33,9 @@ import { EpiCaseTypeInfoRegions } from './EpiCaseTypeInfoRegions';
 import { EpiCaseTypeInfoData } from './EpiCaseTypeInfoData';
 import { EpiCaseTypeInfoAccessRights } from './EpiCaseTypeInfoAccessRights';
 
-export type EpiCaseTypeInfoDialogContentProps = {
-  readonly onTitleChange: (title: string) => void;
-};
+export type EpiCaseTypeInfoDialogContentProps = Pick<WithDialogRenderProps, 'onTitleChange' | 'onPermalinkChange'>;
 
-export const EpiCaseTypeInfoDialogContent = ({ onTitleChange }: EpiCaseTypeInfoDialogContentProps) => {
+export const EpiCaseTypeInfoDialogContent = ({ onTitleChange, onPermalinkChange }: EpiCaseTypeInfoDialogContentProps) => {
   const [t] = useTranslation();
   const theme = useTheme();
   const diseasesMapQuery = useDiseasesMapQuery();
@@ -69,6 +69,12 @@ export const EpiCaseTypeInfoDialogContent = ({ onTitleChange }: EpiCaseTypeInfoD
   useEffect(() => {
     onTitleChange(completeCaseType.name);
   }, [completeCaseType.name, onTitleChange]);
+
+  useEffect(() => {
+    if (completeCaseType) {
+      onPermalinkChange(EpiCaseTypeUtil.createCaseTypeLink(completeCaseType, true));
+    }
+  }, [completeCaseType.name, completeCaseType.id, onPermalinkChange, completeCaseType]);
 
   const caseTypeAbacContextValue = useMemo<EpiCaseTypeAbacContextValue>(() => {
     return {

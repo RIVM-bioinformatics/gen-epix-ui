@@ -12,6 +12,7 @@ import {
   Button,
 } from '@mui/material';
 import CloseIcon from '@mui/icons-material/Close';
+import LinkIcon from '@mui/icons-material/Link';
 import {
   type ReactElement,
   type PropsWithChildren,
@@ -123,6 +124,7 @@ export const Dialog = ({
                 }}
               >
                 <CopyToClipboardButton
+                  baseIcon={<LinkIcon />}
                   buttonProps={{
                     sx: {
                       width: 16,

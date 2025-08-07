@@ -22,12 +22,16 @@ export type EpiCaseTypeInfoDialogWithLoaderRefMethods = WithDialogRefMethods<Epi
 export const EpiCaseTypeInfoDialogWithLoader = withDialog<EpiCaseTypeInfoDialogWithLoaderProps, EpiCaseTypeInfoDialogWithLoaderOpenProps>((
   {
     onTitleChange,
+    onPermalinkChange,
     openProps,
   }: EpiCaseTypeInfoDialogWithLoaderProps,
 ): ReactElement => {
   return (
     <EpiStoreLoader caseTypeId={openProps.caseTypeId}>
-      <EpiCaseTypeInfoDialogContent onTitleChange={onTitleChange} />
+      <EpiCaseTypeInfoDialogContent
+        onPermalinkChange={onPermalinkChange}
+        onTitleChange={onTitleChange}
+      />
     </EpiStoreLoader>
   );
 }, {

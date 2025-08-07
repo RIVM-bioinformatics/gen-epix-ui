@@ -22,9 +22,15 @@ export type EpiCaseTypeInfoDialogRefMethods = WithDialogRefMethods<EpiCaseTypeIn
 export const EpiCaseTypeInfoDialog = withDialog<EpiCaseTypeInfoDialogProps, EpiCaseTypeInfoDialogOpenProps>((
   {
     onTitleChange,
+    onPermalinkChange,
   }: EpiCaseTypeInfoDialogProps,
 ): ReactElement => {
-  return (<EpiCaseTypeInfoDialogContent onTitleChange={onTitleChange} />);
+  return (
+    <EpiCaseTypeInfoDialogContent
+      onPermalinkChange={onPermalinkChange}
+      onTitleChange={onTitleChange}
+    />
+  );
 }, {
   testId: 'EpiCaseTypeInfoDialog',
   titleVariant: 'h2',

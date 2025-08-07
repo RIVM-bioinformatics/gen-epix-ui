@@ -13,14 +13,20 @@ import {
   DimType,
   ColType,
 } from '../../api';
+import { WindowManager } from '../../classes/managers/WindowManager';
 
 export const SELECTION_FILTER_GROUP = 'selection';
 export const TREE_FILTER_GROUP = 'tree';
 
 export class EpiCaseTypeUtil {
-  public static createCaseTypeLink(caseType: CaseType | CompleteCaseType): string {
-    return `/cases/${StringUtil.createSlug(caseType.name)}/${caseType.id}`;
+  public static createCaseTypeLink(caseType: CaseType | CompleteCaseType, full?: boolean): string {
+    const path = `/cases/${StringUtil.createSlug(caseType.name)}/${caseType.id}`;
+    if (full) {
+      return `${WindowManager.instance.window.location.origin}${path}`;
+    }
+    return path;
   }
+
 
   public static getInitialVisibleColumnIds(completeCaseType: CompleteCaseType): string[] {
     const visibleColumnIds: string[] = [];

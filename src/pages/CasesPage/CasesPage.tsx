@@ -50,10 +50,10 @@ import {
   TableStoreContextProvider,
 } from '../../stores/tableStore';
 import { QueryUtil } from '../../utils/QueryUtil';
-import { StringUtil } from '../../utils/StringUtil';
 import { TableUtil } from '../../utils/TableUtil';
 import { TestIdUtil } from '../../utils/TestIdUtil';
 import { DATE_FORMAT } from '../../data/date';
+import { EpiCaseTypeUtil } from '../../utils/EpiCaseTypeUtil';
 
 type Row = {
   id: string;
@@ -104,7 +104,7 @@ export const CasesPage = () => {
   const error = caseTypesError || caseTypeSetsError || caseTypeSetMembersError || caseTypeSetCategoriesQuery.error || caseTypeStatsQuery.error;
 
   const handleCellNavigation = useCallback(async (caseType: Row) => {
-    await RouterManager.instance.router.navigate(`/cases/${StringUtil.createSlug(caseType.name)}/${caseType.id}`);
+    await RouterManager.instance.router.navigate(EpiCaseTypeUtil.createCaseTypeLink(caseType));
   }, []);
 
   const onRowClick = useCallback(async (params: TableRowParams<Row>) => {
