@@ -70,7 +70,7 @@ export class NumberRangeFilter extends FilterAbstract<[number, number]> implemen
       lower_bound: this.filterValue[0] ?? undefined,
       upper_bound: this.filterValue[1] ?? undefined,
       lower_bound_censor: ComparisonOperator.Greater_Than_Or_Equal_To,
-      upper_bound_censor: ComparisonOperator.Less_Than,
+      upper_bound_censor: this.filterValue[0] === this.filterValue[1] ? ComparisonOperator.Less_Than_Or_Equal_To : ComparisonOperator.Less_Than,
     };
   }
 }
