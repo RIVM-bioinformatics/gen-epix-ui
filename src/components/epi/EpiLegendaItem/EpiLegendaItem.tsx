@@ -4,7 +4,10 @@ import {
   Tooltip,
   useTheme,
 } from '@mui/material';
-import type { MouseEvent } from 'react';
+import type {
+  MouseEvent,
+  ReactNode,
+} from 'react';
 import {
   useCallback,
   useMemo,
@@ -21,9 +24,10 @@ export type EpiLegendaItemProps = {
   readonly tooltip?: boolean;
   readonly tooltipProps?: Partial<TooltipProps>;
   readonly disabled?: boolean;
+  readonly children?: ReactNode;
 };
 
-export const EpiLegendaItem = ({ rowValue, color, onItemClick, tooltip, tooltipProps, onMouseOver: onMouseOverCallback, onMouseLeave: onMouseLeaveCallback, disabled }: EpiLegendaItemProps) => {
+export const EpiLegendaItem = ({ rowValue, color, onItemClick, tooltip, tooltipProps, onMouseOver: onMouseOverCallback, onMouseLeave: onMouseLeaveCallback, disabled, children }: EpiLegendaItemProps) => {
   const theme = useTheme();
   const onClick = useCallback((event: MouseEvent<HTMLDivElement>) => {
     if (onItemClick) {
@@ -70,11 +74,11 @@ export const EpiLegendaItem = ({ rowValue, color, onItemClick, tooltip, tooltipP
           whiteSpace: 'nowrap',
         }}
         >
-          {rowValue.short}
+          {children || rowValue.short}
         </Box>
       </Box>
     );
-  }, [canClick, color, disabled, rowValue.short, theme]);
+  }, [canClick, children, color, disabled, rowValue.short, theme]);
 
   return (
     <Box

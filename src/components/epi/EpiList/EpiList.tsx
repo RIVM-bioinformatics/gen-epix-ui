@@ -135,7 +135,7 @@ export const EpiList = ({ linkedScrollSubject, onLink, caseSet }: EpiListProps) 
     if (rowValue.isMissing) {
       return rowValue.short;
     }
-    return (
+    const link = (
       <Link
         color={'primary'}
         // eslint-disable-next-line react/jsx-no-bind
@@ -149,7 +149,18 @@ export const EpiList = ({ linkedScrollSubject, onLink, caseSet }: EpiListProps) 
         {rowValue.short}
       </Link>
     );
-  }, [completeCaseType, onOrganizationCellClick]);
+    if (id === stratification?.caseTypeColumn?.id) {
+      return (
+        <EpiLegendaItem
+          color={stratification?.caseIdColors[row.id]}
+          rowValue={rowValue}
+        >
+          {link}
+        </EpiLegendaItem>
+      );
+    }
+    return link;
+  }, [completeCaseType, onOrganizationCellClick, stratification?.caseIdColors, stratification?.caseTypeColumn?.id]);
 
   const onGeneticSequenceCellClick = useCallback((id: string, row: Case) => {
     EpiEventBusManager.instance.emit('openSequenceDownloadDialog', {
