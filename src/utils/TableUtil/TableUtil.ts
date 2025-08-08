@@ -315,14 +315,14 @@ export class TableUtil {
   }
 
   // Column creation helpers
-  public static createTextColumn<TData>(kwArgs: { id?: keyof TData; name: string; filterLabel?: string; flex?: number }): TableColumnText<TData> {
+  public static createTextColumn<TData>(kwArgs: { id?: keyof TData; name: string; filterLabel?: string; flex?: number; advancedSort?: boolean }): TableColumnText<TData> {
     return {
       id: kwArgs.id as string,
       headerName: kwArgs.name,
       type: 'text',
       widthFlex: kwArgs.flex ?? 1,
       filterLabel: kwArgs.filterLabel,
-      comparatorFactory: TableUtil.createTextCellRowComperator,
+      comparatorFactory: kwArgs.advancedSort ? TableUtil.createTextCellRowAdvancedComperator : TableUtil.createTextCellRowComperator,
       isInitiallyVisible: true,
     };
   }

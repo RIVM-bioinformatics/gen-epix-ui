@@ -108,7 +108,7 @@ export const DataCollectionSetsAdminPage = () => {
 
   const tableColumns = useMemo((): TableColumn<TableData>[] => {
     return [
-      TableUtil.createTextColumn<TableData>({ id: 'name', name: t`Name` }),
+      TableUtil.createTextColumn<TableData>({ id: 'name', name: t`Name`, advancedSort: true }),
       TableUtil.createTextColumn<TableData>({ id: 'description', name: t`Description` }),
       {
         type: 'number',
