@@ -10,6 +10,7 @@ import { NotificationManager } from '../../classes/managers/NotificationManager'
 import { QueryClientManager } from '../../classes/managers/QueryClientManager';
 import type { GenericData } from '../../models/data';
 import { QueryUtil } from '../../utils/QueryUtil';
+import { NotificationUtil } from '../../utils/NotificationUtil';
 
 export type MutationContextEdit<TData> = { previousData?: TData[]; notificationKey?: string };
 
@@ -83,7 +84,7 @@ export const useEditMutation = <TData extends GenericData | GenericData[], TVari
       if (onError) {
         await onError(error, variables, context);
       }
-      NotificationManager.instance.fulfillNotification(context.notificationKey, getErrorNotificationMessage(variables, error), 'error');
+      NotificationManager.instance.fulfillNotification(context.notificationKey, NotificationUtil.wrapErrorNotificationMessage(getErrorNotificationMessage(variables, error), error), 'error');
     },
     onSuccess: async (item, variables, context) => {
       await QueryUtil.invalidateQueryKeys(associationQueryKeys);

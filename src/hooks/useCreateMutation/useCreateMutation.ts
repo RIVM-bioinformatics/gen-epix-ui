@@ -7,6 +7,7 @@ import { QueryClientManager } from '../../classes/managers/QueryClientManager';
 import type { GenericData } from '../../models/data';
 import { QueryUtil } from '../../utils/QueryUtil';
 import { StringUtil } from '../../utils/StringUtil';
+import { NotificationUtil } from '../../utils/NotificationUtil';
 
 
 export type MutationContextCreate<TData> = { previousData?: TData[]; temporaryId?: string; notificationKey?: string };
@@ -71,7 +72,7 @@ export const useCreateMutation = <TData extends GenericData | GenericData[], TVa
       if (onError) {
         await onError(error, variables, context);
       }
-      NotificationManager.instance.fulfillNotification(context.notificationKey, getErrorNotificationMessage(variables, error), 'error');
+      NotificationManager.instance.fulfillNotification(context.notificationKey, NotificationUtil.wrapErrorNotificationMessage(getErrorNotificationMessage(variables, error), error), 'error');
     },
     onSuccess: async (item, variables, context) => {
       if (resourceQueryKey && Array.isArray(context?.previousData) && !Array.isArray(item)) {
