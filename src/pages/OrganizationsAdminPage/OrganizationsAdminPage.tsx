@@ -66,7 +66,10 @@ export const OrganizationsAdminPage = () => {
 
   const tableColumns = useMemo((): TableColumn<Organization>[] => {
     return [
-      TableUtil.createTextColumn<Organization>({ id: 'name', name: t`Name` }),
+      {
+        ...TableUtil.createTextColumn<Organization>({ id: 'name', name: t`Name` }),
+        comparatorFactory: TableUtil.createTextCellRowAdvancedComperator,
+      },
       TableUtil.createTextColumn<Organization>({ id: 'legal_entity_code', name: t`Legal entity code` }),
     ];
   }, [t]);

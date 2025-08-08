@@ -105,7 +105,10 @@ export const UsersAdminPage = () => {
 
   const tableColumns = useMemo((): TableColumn<User>[] => {
     return [
-      TableUtil.createTextColumn<User>({ id: 'name', name: t`Name` }),
+      {
+        ...TableUtil.createTextColumn<User>({ id: 'name', name: t`Name` }),
+        comparatorFactory: TableUtil.createTextCellRowAdvancedComperator,
+      },
       TableUtil.createOptionsColumn<User>({ id: 'organization_id', name: t`Organization`, options: organizationOptionsQuery.options }),
       TableUtil.createTextColumn<User>({ id: 'email', name: t`E-Mail` }),
       TableUtil.createOptionsColumn<User>({ id: 'roles', name: t`Roles`, options: roleOptionsQuery.options }),

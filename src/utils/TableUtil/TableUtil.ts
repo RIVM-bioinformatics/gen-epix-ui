@@ -45,6 +45,7 @@ import type {
 } from '../../models/table';
 import { FIXED_COLUMN_ID } from '../../models/table';
 import { DATE_FORMAT } from '../../data/date';
+import { StringUtil } from '../StringUtil';
 
 export class TableUtil {
   public static createFiltersFromColumns<TData>(columns: TableColumn<TData>[], baseRows: TData[]): Filters {
@@ -206,7 +207,17 @@ export class TableUtil {
     return (a: TRowData, b: TRowData) => {
       const aValue = TableUtil.getTableTextCellValue({ column, row: a, rowIndex: 0 });
       const bValue = TableUtil.getTableTextCellValue({ column, row: b, rowIndex: 0 });
-      return direction === 'asc' ? (aValue ?? '').localeCompare(bValue ?? '') : (bValue ?? '').localeCompare(aValue ?? '');
+      const result = (aValue ?? '').localeCompare(bValue ?? '');
+      return direction === 'asc' ? result : -result;
+    };
+  }
+
+  public static createTextCellRowAdvancedComperator<TRowData>({ column, direction }: GetTableCellRowComparatorProps<TableColumnText<TRowData>>): (a: TRowData, b: TRowData) => number {
+    return (a: TRowData, b: TRowData) => {
+      const aValue = TableUtil.getTableTextCellValue({ column, row: a, rowIndex: 0 });
+      const bValue = TableUtil.getTableTextCellValue({ column, row: b, rowIndex: 0 });
+      const result = StringUtil.advancedSortComperator(aValue ?? '', bValue ?? '');
+      return direction === 'asc' ? result : -result;
     };
   }
 
