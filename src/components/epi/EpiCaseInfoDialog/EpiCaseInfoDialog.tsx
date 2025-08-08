@@ -2,6 +2,7 @@ import SaveIcon from '@mui/icons-material/Save';
 import EditIcon from '@mui/icons-material/Edit';
 import ShareIcon from '@mui/icons-material/Share';
 import DeleteIcon from '@mui/icons-material/Delete';
+import ArrowLeftIcon from '@mui/icons-material/ArrowLeft';
 import {
   useCallback,
   useContext,
@@ -164,7 +165,7 @@ export const EpiCaseInfoDialog = withDialog<EpiCaseInfoDialogProps, EpiCaseInfoD
     setIsEditingDataCollections(true);
   }, []);
 
-  const onCancelButtonClick = useCallback(() => {
+  const onGoBackButtonClick = useCallback(() => {
     setIsEditingCaseContent(false);
     setIsEditingDataCollections(false);
   }, []);
@@ -217,11 +218,12 @@ export const EpiCaseInfoDialog = withDialog<EpiCaseInfoDialogProps, EpiCaseInfoD
 
     if (isEditingCaseContent || isEditingDataCollections) {
       actions.push({
-        ...TestIdUtil.createAttributes('EpiCaseInfoDialog-cancelButton'),
+        ...TestIdUtil.createAttributes('EpiCaseInfoDialog-goBackButton'),
         color: 'primary',
         variant: 'outlined',
-        label: t`Cancel`,
-        onClick: onCancelButtonClick,
+        label: t`Go back`,
+        onClick: onGoBackButtonClick,
+        startIcon: <ArrowLeftIcon />,
         disabled: isSaving,
       });
     }
@@ -288,7 +290,7 @@ export const EpiCaseInfoDialog = withDialog<EpiCaseInfoDialogProps, EpiCaseInfoD
       );
     }
     onActionsChange(actions);
-  }, [onActionsChange, onEditButtonClick, t, isEditingCaseContent, onCancelButtonClick, onShareButtonClick, isEditingDataCollections, valuesFormId, dataCollectionsFormId, onClose, isSaving, canShare, onDeleteEventButtonClick, canDelete, canEdit]);
+  }, [onActionsChange, onEditButtonClick, t, isEditingCaseContent, onGoBackButtonClick, onShareButtonClick, isEditingDataCollections, valuesFormId, dataCollectionsFormId, onClose, isSaving, canShare, onDeleteEventButtonClick, canDelete, canEdit]);
 
   const caseAbacContextValue = useMemo<EpiCaseAbacContextValue>(() => {
     return {

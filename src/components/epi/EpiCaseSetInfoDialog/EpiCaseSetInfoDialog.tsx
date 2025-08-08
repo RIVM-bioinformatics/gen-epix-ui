@@ -3,6 +3,7 @@ import SaveIcon from '@mui/icons-material/Save';
 import EditIcon from '@mui/icons-material/Edit';
 import ShareIcon from '@mui/icons-material/Share';
 import DeleteIcon from '@mui/icons-material/Delete';
+import ArrowLeftIcon from '@mui/icons-material/ArrowLeft';
 import {
   useCallback,
   useEffect,
@@ -160,7 +161,7 @@ export const EpiCaseSetInfoDialog = withDialog<EpiCaseSetInfoDialogProps, EpiCas
     setIsEditingDataCollections(true);
   }, []);
 
-  const onCancelButtonClick = useCallback(() => {
+  const onGoBackButtonClick = useCallback(() => {
     setIsEditingCaseSetContent(false);
     setIsEditingDataCollections(false);
   }, []);
@@ -220,11 +221,12 @@ export const EpiCaseSetInfoDialog = withDialog<EpiCaseSetInfoDialogProps, EpiCas
 
     if (isEditingCaseSetContent || isEditingDataCollections) {
       actions.push({
-        ...TestIdUtil.createAttributes('EpiCaseSetInfoDialog-cancelButton'),
+        ...TestIdUtil.createAttributes('EpiCaseSetInfoDialog-goBackButton'),
         color: 'primary',
         variant: 'outlined',
-        label: t`Cancel`,
-        onClick: onCancelButtonClick,
+        label: t`Go back`,
+        onClick: onGoBackButtonClick,
+        startIcon: <ArrowLeftIcon />,
         disabled: isSaving,
       });
     }
@@ -302,7 +304,7 @@ export const EpiCaseSetInfoDialog = withDialog<EpiCaseSetInfoDialogProps, EpiCas
 
 
     onActionsChange(actions);
-  }, [onActionsChange, showNavigationButton, onClose, onGotoEventButtonClick, t, caseSet, isEditingCaseSetContent, isEditingDataCollections, onCancelButtonClick, isSaving, valuesFormId, dataCollectionsFormId, onEditDataCollectionsButtonClick, onEditCaseContentButtonClick, onDeleteEventButtonClick, canEdit, canShare, canDelete]);
+  }, [onActionsChange, showNavigationButton, onClose, onGotoEventButtonClick, t, caseSet, isEditingCaseSetContent, isEditingDataCollections, onGoBackButtonClick, isSaving, valuesFormId, dataCollectionsFormId, onEditDataCollectionsButtonClick, onEditCaseContentButtonClick, onDeleteEventButtonClick, canEdit, canShare, canDelete]);
 
   const caseAbacContextValue = useMemo<EpiCaseAbacContextValue>(() => {
     return {

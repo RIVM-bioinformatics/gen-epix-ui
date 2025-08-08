@@ -202,14 +202,6 @@ export const EpiAddCasesToEventDialog = withDialog<EpiAddCasesToEventDialogProps
     const actions: DialogAction[] = [];
     actions.push(
       {
-        ...TestIdUtil.createAttributes('EpiAddCasesToEventDialog-cancelButton'),
-        color: 'primary',
-        variant: 'outlined',
-        onClick: onCancelButtonClick,
-        disabled: isMutatingItems,
-        label: t`Cancel`,
-      },
-      {
         ...TestIdUtil.createAttributes('EpiAddCasesToEventDialog-confirmButton'),
         color: 'secondary',
         autoFocus: true,
