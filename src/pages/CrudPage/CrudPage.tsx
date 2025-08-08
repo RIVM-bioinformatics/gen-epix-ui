@@ -108,6 +108,7 @@ export type CrudPageProps<
   readonly onDeleteSuccess?: (item: TData, context: MutationContextDelete<TData>) => Promise<void>;
   readonly onDeleteError?: (error: unknown, item: TData, context: MutationContextDelete<TData>) => Promise<void>;
   readonly editDialogExtraActionsFactory?: (item: TData) => DialogAction[];
+  readonly getEditIntermediateItem?: (variables: TFormFields, previousItem: TData) => TData;
 }>;
 
 export const CrudPage = <
@@ -151,6 +152,7 @@ export const CrudPage = <
   onDeleteSuccess,
   onDeleteError,
   editDialogExtraActionsFactory,
+  getEditIntermediateItem,
 }: CrudPageProps<TFormFields, TData, TTableData>) => {
   const [t] = useTranslation();
   const theme = useTheme();
@@ -315,6 +317,7 @@ export const CrudPage = <
     getProgressNotificationMessage: getEditProgressNotificationMessage,
     onSuccess: onEditSuccess,
     onError: onEditError,
+    getIntermediateItem: getEditIntermediateItem,
   });
 
   const { mutate: mutateCreate, isMutating: isCreating } = useCreateMutation<TData, TFormFields>({

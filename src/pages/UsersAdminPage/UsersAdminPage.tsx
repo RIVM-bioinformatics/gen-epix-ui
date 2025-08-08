@@ -132,6 +132,17 @@ export const UsersAdminPage = () => {
     )];
   }, [t]);
 
+  const getEditIntermediateItem = useCallback((variables: FormFields, previousItem: User): User => {
+    return {
+      ...variables,
+      id: previousItem.id,
+      is_active: previousItem.is_active,
+      organization_id: previousItem.organization_id,
+      name: previousItem.name,
+    };
+  }, []);
+
+
   const editDialogExtraActionsFactory = useCallback((item: User): DialogAction[] =>{
     return [
       {
@@ -156,6 +167,7 @@ export const UsersAdminPage = () => {
         extraActionsFactory={extraActionsFactory}
         fetchAll={fetchAll}
         formFieldDefinitions={formFieldDefinitions}
+        getEditIntermediateItem={getEditIntermediateItem}
         getName={getName}
         loadables={loadables}
         resourceQueryKeyBase={QUERY_KEY.USERS}
