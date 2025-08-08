@@ -36,7 +36,7 @@ import type { EpiUserRightsDialogRefMethods } from '../../components/epi/EpiUser
 import { EpiUserRightsDialog } from '../../components/epi/EpiUserRightsDialog';
 import { RouterManager } from '../../classes/managers/RouterManager';
 import type { DialogAction } from '../../components/ui/Dialog';
-
+import { AuthorizationManager } from '../../classes/managers/AuthorizationManager';
 
 type FormFields = Pick<User, 'email' | 'is_active' | 'roles'>;
 
@@ -65,6 +65,10 @@ export const UsersAdminPage = () => {
 
   const getName = useCallback((item: FormFields) => {
     return item.email;
+  }, []);
+
+  const canEditItem = useCallback((item: User) => {
+    return AuthorizationManager.instance.user.email !== item.email;
   }, []);
 
   const schema = useMemo(() => {
@@ -145,6 +149,7 @@ export const UsersAdminPage = () => {
   return (
     <>
       <CrudPage<FormFields, User>
+        canEditItem={canEditItem}
         defaultSortByField={'name'}
         defaultSortDirection={'asc'}
         editDialogExtraActionsFactory={editDialogExtraActionsFactory}
