@@ -12,7 +12,7 @@ const VALIDATION_PATTERN = {
   ALPHA: /^[A-Za-z ŠŒŽšœžŸÀ-ÖØ-öø-ÿ]*$/,
   ALPHA_NUMERIC: /^[\dA-Za-z ŠŒŽšœžŸÀ-ÖØ-öø-ÿ]*$/,
   EXTENDED_ALPHA: /^[A-Za-z ŠŒŽšœžŸÀ-ÖØ-öø-ÿ&-),-/:-;]*$/,
-  EXTENDED_ALPHA_NUMERIC: /^[\dA-Za-z ŠŒŽšœžŸÀ-ÖØ-öø-ÿ&-),-/:-;]*$/,
+  EXTENDED_ALPHA_NUMERIC: /^[\dA-Za-z ŠŒŽšœžŸÀ-ÖØ-öø-ÿ&-),-/:-;/&]*$/,
   FREE_FORM_TEXT: /^[\s\c\u0020-\u00FF]*$/,
   EMAIL: /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/,
   UUID4: /^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/i,

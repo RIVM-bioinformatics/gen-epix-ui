@@ -45,7 +45,7 @@ export const OrganizationsAdminPage = () => {
   const schema = useMemo(() => {
     return object<FormFields>().shape({
       name: string().extendedAlphaNumeric().required().max(100),
-      legal_entity_code: string().alphaNumeric().required().max(100),
+      legal_entity_code: string().extendedAlphaNumeric().required().max(100),
     });
   }, []);
 
