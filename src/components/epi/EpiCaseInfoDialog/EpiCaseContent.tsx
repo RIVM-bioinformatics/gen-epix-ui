@@ -77,7 +77,7 @@ export const EpiCaseContent = ({ epiCase, ...boxProps }: EpiCaseContentProps) =>
           <TableBody>
             {caseTypeColumns.map(caseTypeColumn => {
               const column = completeCaseType.cols[caseTypeColumn.col_id];
-              const columnValue = EpiCaseUtil.getRowValue(epiCase, caseTypeColumn, completeCaseType).long;
+              const columnValue = EpiCaseUtil.getRowValue(epiCase, caseTypeColumn, completeCaseType);
               return (
                 <TableRow key={caseTypeColumn.id}>
                   <TableCell sx={{
@@ -90,7 +90,7 @@ export const EpiCaseContent = ({ epiCase, ...boxProps }: EpiCaseContentProps) =>
                     width: 'calc(100% / 3 * 2)',
                   }}
                   >
-                    {column.col_type === ColType.ORGANIZATION && (
+                    {column.col_type === ColType.ORGANIZATION && !columnValue.isMissing && (
                       <Link
                         color={'primary'}
                         // eslint-disable-next-line react/jsx-no-bind
@@ -101,12 +101,12 @@ export const EpiCaseContent = ({ epiCase, ...boxProps }: EpiCaseContentProps) =>
                           cursor: 'pointer',
                         }}
                       >
-                        {columnValue}
+                        {columnValue.long}
                       </Link>
                     )}
                     {column.col_type !== ColType.ORGANIZATION && (
                       <>
-                        {columnValue}
+                        {columnValue.long}
                       </>
                     )}
                   </TableCell>
