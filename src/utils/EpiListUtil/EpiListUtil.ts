@@ -1,8 +1,5 @@
 import { createArrayCsvStringifier } from 'csv-writer';
-import {
-  utils,
-  write,
-} from 'xlsx';
+import { Workbook } from 'exceljs';
 import sumBy from 'lodash/sumBy';
 import { format } from 'date-fns';
 import type { TFunction } from 'i18next';
@@ -54,20 +51,25 @@ export class EpiListUtil {
     DataUrlUtil.downloadUrl(`data:text/csv;base64,${btoa(csv)}`, EpiListUtil.getExportFileName(completeCaseType, t));
   }
 
-  public static downloadAsExcel(cases: Case[], caseTypeColumnIds: string[], completeCaseType: CompleteCaseType, t: TFunction<'translation', undefined>): void {
-    const workBook = utils.book_new();
+  public static async downloadAsExcel(cases: Case[], caseTypeColumnIds: string[], completeCaseType: CompleteCaseType, t: TFunction<'translation', undefined>): Promise<void> {
+    const workbook = new Workbook();
+    const worksheet = workbook.addWorksheet('Data');
 
-    const workSheet = utils.aoa_to_sheet([
-      EpiListUtil.getColumnHeadersForExport(caseTypeColumnIds, completeCaseType),
-      ...EpiListUtil.getRowsForExport(cases, caseTypeColumnIds, completeCaseType),
-    ]);
-    utils.book_append_sheet(workBook, workSheet);
+    // Add headers
+    const headers = EpiListUtil.getColumnHeadersForExport(caseTypeColumnIds, completeCaseType);
+    worksheet.addRow(headers);
 
-    const result = write(workBook, {
-      type: 'base64',
-      bookType: 'xls',
-    }) as string;
-    DataUrlUtil.downloadUrl(`data:application/vnd.ms-excel;base64,${result}`, EpiListUtil.getExportFileName(completeCaseType, t));
+    // Add data rows
+    const rows = EpiListUtil.getRowsForExport(cases, caseTypeColumnIds, completeCaseType);
+    rows.forEach(row => {
+      worksheet.addRow(row);
+    });
+
+    // Generate buffer and download
+    const buffer = await workbook.xlsx.writeBuffer();
+    const base64 = btoa(String.fromCharCode(...new Uint8Array(buffer)));
+    const fileName = `${EpiListUtil.getExportFileName(completeCaseType, t)}.xlsx`;
+    DataUrlUtil.downloadUrl(`data:application/vnd.openxmlformats-officedocument.spreadsheetml.sheet;base64,${base64}`, fileName);
   }
 
   public static getCaseCount(cases: Case[]): number {

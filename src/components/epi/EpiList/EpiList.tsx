@@ -455,7 +455,7 @@ export const EpiList = ({ linkedScrollSubject, onLink, caseSet }: EpiListProps) 
               {
                 label: t`Download as Excel`,
                 leftIcon: <DownloadIcon />,
-                callback: () => EpiListUtil.downloadAsExcel(sortedData, getVisibleColumnIds(), completeCaseType, t),
+                callback: async () => EpiListUtil.downloadAsExcel(sortedData, getVisibleColumnIds(), completeCaseType, t),
               },
               {
                 label: t`Download as CSV`,
@@ -483,7 +483,7 @@ export const EpiList = ({ linkedScrollSubject, onLink, caseSet }: EpiListProps) 
               {
                 label: t`Download as Excel`,
                 leftIcon: <DownloadIcon />,
-                callback: () => EpiListUtil.downloadAsExcel(getSelectedRows(), getVisibleColumnIds(), completeCaseType, t),
+                callback: async () => EpiListUtil.downloadAsExcel(getSelectedRows(), getVisibleColumnIds(), completeCaseType, t),
               },
               {
                 label: t`Download as CSV`,
