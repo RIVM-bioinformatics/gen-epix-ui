@@ -32,6 +32,7 @@ export interface CrudPageEditDialogOpenProps<TData extends GenericData> {
   readonly item?: TData;
   readonly hiddenFormFieldValues?: Partial<Record<keyof TData, unknown>>;
   readonly extraActionsFactory?: (item: TData) => DialogAction[];
+  readonly canSave: boolean;
 }
 export interface CrudPageEditDialogProps<TData extends GenericData, TFormFields extends AnyObject> extends WithDialogRenderProps<CrudPageEditDialogOpenProps<TData>> {
   readonly onSave: (formValues: TFormFields, item: TData) => void;
@@ -71,7 +72,7 @@ export const CrudPageEditDialog = withDialog<CrudPageEditDialogProps<any, any>, 
       type: 'submit',
       label: t`Save`,
       startIcon: <SaveIcon />,
-      disabled: formFieldDefinitions.some(def => def.loading),
+      disabled: !openProps.canSave || formFieldDefinitions.some(def => def.loading),
     });
     onActionsChange(actions);
   }, [onActionsChange, formId, t, formFieldDefinitions, openProps]);
@@ -110,7 +111,7 @@ export const CrudPageEditDialog = withDialog<CrudPageEditDialogProps<any, any>, 
       formFieldDefinitions={formFieldDefinitions}
       formId={formId}
       formMethods={formMethods}
-      onSubmit={handleSubmit(onFormSubmit)}
+      onSubmit={openProps.canSave ? handleSubmit(onFormSubmit) : undefined}
     />
   );
 }, {

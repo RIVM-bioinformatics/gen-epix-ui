@@ -74,6 +74,7 @@ export type CrudPageProps<
   readonly contentHeader?: string;
   readonly createItemButtonText?: string;
   readonly createOne?: (item: TFormFields) => Promise<TData>;
+  readonly canEditItem?: (item: TData) => boolean;
   readonly crudCommandType?: CommandName;
   readonly customOnRowClick?: (params: TableRowParams<TData>) => void;
   readonly defaultSortByField: keyof TTableData;
@@ -115,6 +116,7 @@ export const CrudPage = <
   TTableData extends TData = TData
 >({
   contentHeader,
+  canEditItem,
   contentActions,
   convertToTableData,
   createItemButtonText,
@@ -236,8 +238,9 @@ export const CrudPage = <
       extraActionsFactory: editDialogExtraActionsFactory,
       hiddenFormFieldValues,
       item,
+      canSave: userCanEdit && (!item || canEditItem ? canEditItem(item) : true),
     });
-  }, [editDialogExtraActionsFactory, hiddenFormFieldValues]);
+  }, [canEditItem, editDialogExtraActionsFactory, hiddenFormFieldValues, userCanEdit]);
 
   const tryToGetName = useCallback((item: TData | TFormFields) => {
     let name: string;
@@ -354,10 +357,10 @@ export const CrudPage = <
       customOnRowClick(params);
     } else if (onShowItem) {
       onShowItem(params);
-    } else if (userCanEdit) {
+    } else {
       editItem(params.row);
     }
-  }, [customOnRowClick, onShowItem, userCanEdit, editItem]);
+  }, [customOnRowClick, onShowItem, editItem]);
 
   const onDeleteConfirmationConfirm = useCallback((params: TableRowParams<TData>) => {
     mutateDelete(params.row);
@@ -454,6 +457,7 @@ export const CrudPage = <
   const onCreateItemButtonClick = useCallback(() => {
     editDialogRef.current.open({
       hiddenFormFieldValues,
+      canSave: true,
     });
   }, [hiddenFormFieldValues]);
 
@@ -523,7 +527,7 @@ export const CrudPage = <
             >
               <Table
                 getRowName={getName}
-                onRowClick={(userCanEdit || customOnRowClick || onShowItem) ? onRowClick : undefined}
+                onRowClick={onRowClick}
               />
             </Box>
           </ResponseHandler>
