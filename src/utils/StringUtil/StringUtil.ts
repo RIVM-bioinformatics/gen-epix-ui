@@ -39,9 +39,19 @@ export class StringUtil {
   }
 
   public static advancedSortComperator(a: string, b: string): number {
+    if (a === b) {
+      return 0;
+    }
+    if (!a) {
+      return 1;
+    }
+    if (!b) {
+      return -1;
+    }
+
     const regex = /\d+|\D+/g;
-    const aParts = a.match(regex);
-    const bParts = b.match(regex);
+    const aParts = (a || '').match(regex);
+    const bParts = (b || '').match(regex);
 
     for (let i = 0; i < Math.min(aParts.length, bParts.length); i++) {
       const aValue = aParts[i];

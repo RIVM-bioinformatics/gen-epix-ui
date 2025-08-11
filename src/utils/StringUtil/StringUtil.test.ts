@@ -54,6 +54,8 @@ describe('StringUtil', () => {
     it('sorts correctly', () => {
       expect(['Lab2', 'Lab11', 'Lab1'].sort(StringUtil.advancedSortComperator)).toEqual(['Lab1', 'Lab2', 'Lab11']);
       expect(['A1', 'Lab11', 'Lab1'].sort(StringUtil.advancedSortComperator)).toEqual(['A1', 'Lab1', 'Lab11']);
+      expect(() => [null, undefined, 'Lab11', 'Lab1'].sort(StringUtil.advancedSortComperator)).not.toThrow();
+      expect([null, undefined, 'Lab11', 'Lab1'].sort(StringUtil.advancedSortComperator)).toEqual(['Lab1', 'Lab11', null, undefined]);
     });
   });
 });

@@ -11,6 +11,7 @@ export * from './utils/QueryUtil';
 export * from './utils/OutageUtil';
 export * from './utils/ObjectUtil';
 export * from './utils/NumberUtil';
+export * from './utils/NotificationUtil';
 export * from './utils/FormUtil';
 export * from './utils/EpiTreeUtil';
 export * from './utils/EpiNewickUtil';
