@@ -3,7 +3,7 @@ import type {
   Path,
 } from 'react-hook-form';
 
-import type { MarkdownEditorProps } from '../components/form/fields/MarkdownEditor';
+import type { RichTextEditorProps } from '../components/form/fields/RichTextEditor';
 import type { TransferListProps } from '../components/form/fields/TransferList';
 import type { AutocompleteProps } from '../components/form/fields/Autocomplete';
 import type { TextFieldProps } from '../components/form/fields/TextField';
@@ -41,7 +41,7 @@ export enum FORM_FIELD_DEFINITION_TYPE {
   TRANSFER_LIST = 'TRANSFER_LIST',
   AUTOCOMPLETE = 'AUTOCOMPLETE',
   TEXTFIELD = 'TEXTFIELD',
-  MARKDOWN = 'MARKDOWN',
+  RICH_TEXT = 'RICH_TEXT',
   BOOLEAN = 'BOOLEAN',
   HIDDEN = 'HIDDEN',
   DATE = 'DATE',
@@ -54,5 +54,5 @@ export type FormFieldDefinition<TFormFields> =
   ({ definition: FORM_FIELD_DEFINITION_TYPE.BOOLEAN } & Omit<SelectProps<TFormFields, Path<TFormFields>, false>, 'options'>) |
   ({ definition: FORM_FIELD_DEFINITION_TYPE.TRANSFER_LIST } & TransferListProps<TFormFields, Path<TFormFields>>) |
   ({ definition: FORM_FIELD_DEFINITION_TYPE.HIDDEN } & TextFieldProps<TFormFields, Path<TFormFields>>) |
-  ({ definition: FORM_FIELD_DEFINITION_TYPE.MARKDOWN } & MarkdownEditorProps<TFormFields, Path<TFormFields>>) |
+  ({ definition: FORM_FIELD_DEFINITION_TYPE.RICH_TEXT } & RichTextEditorProps<TFormFields, Path<TFormFields>>) |
   ({ definition: FORM_FIELD_DEFINITION_TYPE.DATE } & DatePickerProps<TFormFields, Path<TFormFields>>);

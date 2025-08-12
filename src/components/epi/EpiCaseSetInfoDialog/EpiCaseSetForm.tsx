@@ -75,7 +75,7 @@ export const EpiCaseSetForm = ({ caseSet, formId, onFinish, onIsSavingChange }: 
         label: t`Event name`,
       },
       {
-        definition: FORM_FIELD_DEFINITION_TYPE.MARKDOWN,
+        definition: FORM_FIELD_DEFINITION_TYPE.RICH_TEXT,
         name: 'description',
         label: t`Description`,
       },

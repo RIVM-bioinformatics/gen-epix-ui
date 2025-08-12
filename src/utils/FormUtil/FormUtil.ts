@@ -30,7 +30,7 @@ export class FormUtil {
     formFieldDefinitions.forEach(formFieldDefinition => {
       switch (formFieldDefinition.definition) {
         case FORM_FIELD_DEFINITION_TYPE.TEXTFIELD:
-        case FORM_FIELD_DEFINITION_TYPE.MARKDOWN:
+        case FORM_FIELD_DEFINITION_TYPE.RICH_TEXT:
         case FORM_FIELD_DEFINITION_TYPE.BOOLEAN:
           itemValues[formFieldDefinition.name] = item?.[formFieldDefinition.name as unknown as keyof typeof item] ?? '';
           break;

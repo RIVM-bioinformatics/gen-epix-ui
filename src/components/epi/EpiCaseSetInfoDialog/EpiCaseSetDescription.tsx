@@ -6,7 +6,7 @@ import {
 import { useTranslation } from 'react-i18next';
 
 import type { CaseSet } from '../../../api';
-import { MarkdownContent } from '../../ui/MarkdownContent';
+import { RichTextEditorContent } from '../../form/fields/RichTextEditor';
 
 export type EpiCaseSetDescriptionProps = {
   readonly caseSet: CaseSet;
@@ -20,7 +20,7 @@ export const EpiCaseSetDescription = ({ caseSet, ...boxProps }: EpiCaseSetDescri
       </Typography>
       <Box>
         {caseSet?.description && (
-          <MarkdownContent source={caseSet?.description || ''} />
+          <RichTextEditorContent source={caseSet?.description || ''} />
         )}
         {!caseSet?.description && (
           <Box sx={{ fontStyle: 'italic' }}>{t`None`}</Box>

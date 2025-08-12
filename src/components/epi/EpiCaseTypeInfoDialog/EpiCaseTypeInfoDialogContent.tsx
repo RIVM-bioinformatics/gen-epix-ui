@@ -21,11 +21,11 @@ import {
 import { useDiseasesMapQuery } from '../../../dataHooks/useDiseasesQuery';
 import { useEtiologicalAgentsMapQuery } from '../../../dataHooks/useEtiologicalAgentsQuery';
 import { EpiStoreContext } from '../../../stores/epiStore';
-import { MarkdownContent } from '../../ui/MarkdownContent';
 import { ResponseHandler } from '../../ui/ResponseHandler';
 import { useArray } from '../../../hooks/useArray';
 import type { WithDialogRenderProps } from '../../../hoc/withDialog';
 import { EpiCaseTypeUtil } from '../../../utils/EpiCaseTypeUtil';
+import { RichTextEditorContent } from '../../form/fields/RichTextEditor';
 
 import { EpiCaseTypeInfoValues } from './EpiCaseTypeInfoValues';
 import { EpiCaseTypeInfoTrees } from './EpiCaseTypeInfoTrees';
@@ -104,7 +104,7 @@ export const EpiCaseTypeInfoDialogContent = ({ onTitleChange, onPermalinkChange 
           }}
         >
           <Box marginBottom={1}>
-            <MarkdownContent source={completeCaseType?.description || t`No description available`} />
+            <RichTextEditorContent source={completeCaseType?.description || t`No description available`} />
           </Box>
 
           <EpiCaseTypeInfoData

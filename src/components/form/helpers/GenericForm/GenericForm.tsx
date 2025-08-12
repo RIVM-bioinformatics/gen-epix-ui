@@ -14,7 +14,7 @@ import { Box } from '@mui/material';
 import type { FormFieldDefinition } from '../../../../models/form';
 import { FORM_FIELD_DEFINITION_TYPE } from '../../../../models/form';
 import { FormUtil } from '../../../../utils/FormUtil';
-import { MarkdownEditor } from '../../fields/MarkdownEditor';
+import { RichTextEditor } from '../../fields/RichTextEditor';
 import { TransferList } from '../../fields/TransferList';
 import type { AutocompleteProps } from '../../fields/Autocomplete';
 import { Autocomplete } from '../../fields/Autocomplete';
@@ -66,9 +66,9 @@ export const GenericForm = <TFormFields, >({
             {...formFieldDefinition}
           />
         );
-      case FORM_FIELD_DEFINITION_TYPE.MARKDOWN:
+      case FORM_FIELD_DEFINITION_TYPE.RICH_TEXT:
         return (
-          <MarkdownEditor
+          <RichTextEditor
             {...formFieldDefinition}
           />
         );

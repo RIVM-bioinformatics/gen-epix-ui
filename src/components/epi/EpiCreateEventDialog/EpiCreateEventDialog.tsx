@@ -220,7 +220,7 @@ export const EpiCreateEventDialog = withDialog<EpiCreateEventDialogProps, EpiCre
         label: t`Event name`,
       },
       {
-        definition: FORM_FIELD_DEFINITION_TYPE.MARKDOWN,
+        definition: FORM_FIELD_DEFINITION_TYPE.RICH_TEXT,
         name: 'description',
         label: t`Description`,
       },
