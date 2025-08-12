@@ -1,5 +1,13 @@
 # Changelog
 
+## [1.3.1](https://github.com/RIVM-bioinformatics/gen-epix-ui/compare/v1.3.0...v1.3.1) (2025-08-12)
+
+
+### Bug Fixes
+
+* add baseBranches for renovate ([2cfbf8e](https://github.com/RIVM-bioinformatics/gen-epix-ui/commit/2cfbf8eb331a3aa9e1b72398110ce5a81833d681))
+* add correct config renovate ([2091a94](https://github.com/RIVM-bioinformatics/gen-epix-ui/commit/2091a94b4b4c83b20ad11cf631a5c087d22a59ac))
+
 ## [1.3.0](https://github.com/RIVM-bioinformatics/gen-epix-ui/compare/v1.2.0...v1.3.0) (2025-06-27)
 
 
