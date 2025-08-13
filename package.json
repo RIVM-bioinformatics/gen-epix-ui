@@ -34,7 +34,7 @@
     "react": "19.1.0",
     "react-dom": "19.1.0",
     "react-i18next": "15.5.2",
-    "vite": "6.3.5"
+    "vite": "7.1.2"
   },
   "dependencies": {
     "@date-io/date-fns": "3.2.1",
