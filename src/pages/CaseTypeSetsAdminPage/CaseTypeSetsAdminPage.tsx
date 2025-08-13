@@ -13,7 +13,7 @@ import omit from 'lodash/omit';
 
 import type {
   CaseTypeSet,
-  Permission,
+  ApiPermission,
 } from '../../api';
 import {
   CaseApi,
@@ -144,14 +144,14 @@ export const CaseTypeSetsAdminPage = () => {
     ];
   }, [caseTypeOptionsQuery.options.length, caseTypeSetCategoryOptionsQuery.options, t]);
 
-  const extraCreateOnePermissions = useMemo<Permission[]>(() => [
-    { command_name: CommandName.CaseTypeSetCaseTypeUpdateAssociationCommand, permission_type: PermissionType.E },
+  const extraCreateOnePermissions = useMemo<ApiPermission[]>(() => [
+    { command_name: CommandName.CaseTypeSetCaseTypeUpdateAssociationCommand, permission_type: PermissionType.EXECUTE },
   ], []);
-  const extraDeleteOnePermissions = useMemo<Permission[]>(() => [
-    { command_name: CommandName.CaseTypeSetCaseTypeUpdateAssociationCommand, permission_type: PermissionType.E },
+  const extraDeleteOnePermissions = useMemo<ApiPermission[]>(() => [
+    { command_name: CommandName.CaseTypeSetCaseTypeUpdateAssociationCommand, permission_type: PermissionType.EXECUTE },
   ], []);
-  const extraUpdateOnePermissions = useMemo<Permission[]>(() => [
-    { command_name: CommandName.CaseTypeSetCaseTypeUpdateAssociationCommand, permission_type: PermissionType.E },
+  const extraUpdateOnePermissions = useMemo<ApiPermission[]>(() => [
+    { command_name: CommandName.CaseTypeSetCaseTypeUpdateAssociationCommand, permission_type: PermissionType.EXECUTE },
   ], []);
 
 

@@ -15,7 +15,7 @@ import { useQuery } from '@tanstack/react-query';
 import type {
   CaseTypeStat,
   TypedDatetimeRangeFilter,
-  RetrieveCaseTypeStatsCommand,
+  RetrieveCaseTypeStatsRequestBody,
 } from '../../../api';
 import {
   TypedDatetimeRangeFilterType,
@@ -61,7 +61,7 @@ export const HomePageTrendsContent = () => {
     key: 'created_at',
   }), [dateTimeRangeFilter]);
 
-  const retrieveCaseTypeStatsCommand = useMemo<RetrieveCaseTypeStatsCommand>(() => ({
+  const retrieveCaseTypeStatsCommand = useMemo<RetrieveCaseTypeStatsRequestBody>(() => ({
     datetime_range_filter: dateTimeRangeFilter,
   }), [dateTimeRangeFilter]);
 

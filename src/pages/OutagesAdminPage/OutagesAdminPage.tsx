@@ -12,7 +12,7 @@ import { isValid } from 'date-fns';
 
 import type {
   Outage,
-  Permission,
+  ApiPermission,
 } from '../../api';
 import {
   SystemApi,
@@ -124,14 +124,14 @@ export const OutagesAdminPage = () => {
   }, [t]);
 
 
-  const extraCreateOnePermissions = useMemo<Permission[]>(() => [
-    { command_name: CommandName.OutageCrudCommand, permission_type: PermissionType.C },
+  const extraCreateOnePermissions = useMemo<ApiPermission[]>(() => [
+    { command_name: CommandName.OutageCrudCommand, permission_type: PermissionType.CREATE },
   ], []);
-  const extraDeleteOnePermissions = useMemo<Permission[]>(() => [
-    { command_name: CommandName.OutageCrudCommand, permission_type: PermissionType.D },
+  const extraDeleteOnePermissions = useMemo<ApiPermission[]>(() => [
+    { command_name: CommandName.OutageCrudCommand, permission_type: PermissionType.DELETE },
   ], []);
-  const extraUpdateOnePermissions = useMemo<Permission[]>(() => [
-    { command_name: CommandName.OutageCrudCommand, permission_type: PermissionType.U },
+  const extraUpdateOnePermissions = useMemo<ApiPermission[]>(() => [
+    { command_name: CommandName.OutageCrudCommand, permission_type: PermissionType.UPDATE },
   ], []);
 
   return (

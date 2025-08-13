@@ -13,7 +13,7 @@ import omit from 'lodash/omit';
 import type {
   CaseTypeColSet,
   CaseTypeColSetMember,
-  Permission,
+  ApiPermission,
 } from '../../api';
 import {
   CaseApi,
@@ -128,14 +128,14 @@ export const CaseTypeColSetsAdminPage = () => {
     ];
   }, [caseTypeColOptionsQuery.options.length, t]);
 
-  const extraCreateOnePermissions = useMemo<Permission[]>(() => [
-    { command_name: CommandName.CaseTypeColSetCaseTypeColUpdateAssociationCommand, permission_type: PermissionType.E },
+  const extraCreateOnePermissions = useMemo<ApiPermission[]>(() => [
+    { command_name: CommandName.CaseTypeColSetCaseTypeColUpdateAssociationCommand, permission_type: PermissionType.EXECUTE },
   ], []);
-  const extraDeleteOnePermissions = useMemo<Permission[]>(() => [
-    { command_name: CommandName.CaseTypeColSetCaseTypeColUpdateAssociationCommand, permission_type: PermissionType.E },
+  const extraDeleteOnePermissions = useMemo<ApiPermission[]>(() => [
+    { command_name: CommandName.CaseTypeColSetCaseTypeColUpdateAssociationCommand, permission_type: PermissionType.EXECUTE },
   ], []);
-  const extraUpdateOnePermissions = useMemo<Permission[]>(() => [
-    { command_name: CommandName.CaseTypeColSetCaseTypeColUpdateAssociationCommand, permission_type: PermissionType.E },
+  const extraUpdateOnePermissions = useMemo<ApiPermission[]>(() => [
+    { command_name: CommandName.CaseTypeColSetCaseTypeColUpdateAssociationCommand, permission_type: PermissionType.EXECUTE },
   ], []);
 
   const convertToTableData = useCallback((items: CaseTypeColSet[]) => {

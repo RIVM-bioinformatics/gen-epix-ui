@@ -1,27 +1,35 @@
 import type {
-  CompleteUser,
-  Permission,
+  User,
+  ApiPermission,
 } from '../../../api';
 import type { MyNonIndexRouteObject } from '../../../models/reactRouter';
 import { PageEventBusManager } from '../PageEventBusManager';
 
 export class AuthorizationManager {
-  private __user: CompleteUser;
+  private __user: User;
+  private __apiPermissions: ApiPermission[] = [];
   private static __instance: AuthorizationManager;
 
   private constructor() {
     //
   }
 
-  public set user(user: CompleteUser) {
+  public set user(user: User) {
     PageEventBusManager.instance.emit('changeUser', user);
     this.__user = user;
   }
 
-  public get user(): CompleteUser {
+  public get user(): User {
     return this.__user;
   }
 
+  public set apiPermissions(permissions: ApiPermission[]) {
+    this.__apiPermissions = permissions;
+  }
+
+  public get apiPermissions(): ApiPermission[] {
+    return this.__apiPermissions;
+  }
 
   public static get instance(): AuthorizationManager {
     AuthorizationManager.__instance = AuthorizationManager.__instance || new AuthorizationManager();
@@ -46,15 +54,15 @@ export class AuthorizationManager {
     return route.children?.some((childRoute) => this.doesUserHavePermissionForRoute(childRoute as MyNonIndexRouteObject, orAnyOfItsSubRoutes));
   }
 
-  public doesUserHavePermission(permissions: Permission[]): boolean {
+  public doesUserHavePermission(permissions: ApiPermission[]): boolean {
     if (!permissions?.length) {
       return true;
     }
-    if (!this.user?.permissions?.length) {
+    if (!this.apiPermissions?.length) {
       return false;
     }
     return permissions.every(permission => {
-      return !!(this.user.permissions).find(({ command_name, permission_type }) => {
+      return !!(this.apiPermissions).find(({ command_name, permission_type }) => {
         return command_name === permission.command_name && permission_type === permission.permission_type;
       });
     });

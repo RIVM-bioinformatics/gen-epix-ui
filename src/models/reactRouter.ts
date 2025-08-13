@@ -4,7 +4,7 @@ import type {
   NonIndexRouteObject,
 } from 'react-router';
 
-import type { Permission } from '../api';
+import type { ApiPermission } from '../api';
 
 export type UseLoaderData<T> = {
   data: T;
@@ -17,7 +17,7 @@ export type MyHandle = {
   icon?: ReactElement;
   hidden?: boolean;
   disabled?: boolean;
-  requiredPermissions: Permission[];
+  requiredPermissions: ApiPermission[];
   requiresUserProfile: boolean;
   requirePermissionForChildRoute?: boolean;
   category?: string;
