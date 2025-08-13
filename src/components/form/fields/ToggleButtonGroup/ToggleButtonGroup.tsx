@@ -23,18 +23,20 @@ import type {
   ControllerRenderProps,
 } from 'react-hook-form';
 
-import type {
-  FormFieldBaseProps,
-  ToggleButtonOption,
-} from '../../../../models/form';
+import type { ToggleButtonOption } from '../../../../models/form';
 import { FormUtil } from '../../../../utils/FormUtil';
 import { TestIdUtil } from '../../../../utils/TestIdUtil';
 import { FormFieldHelperText } from '../../helpers/FormFieldHelperText';
 
-export interface ToggleButtonProps<TFieldValues extends FieldValues, TName extends Path<TFieldValues> = Path<TFieldValues>> extends Omit<FormFieldBaseProps<TFieldValues, TName>, 'label'> {
+export type ToggleButtonProps<TFieldValues extends FieldValues, TName extends Path<TFieldValues> = Path<TFieldValues>> = {
+  readonly disabled?: boolean;
+  readonly name: TName;
+  readonly onChange?: (value: string) => void;
+  readonly required?: boolean;
+  readonly warningMessage?: string | boolean;
   readonly row?: boolean;
   readonly options: ToggleButtonOption[];
-}
+};
 
 export const ToggleButtonGroup = <TFieldValues extends FieldValues, TName extends Path<TFieldValues> = Path<TFieldValues>>({
   disabled,

@@ -73,42 +73,42 @@ export const OutagesAdminPage = () => {
         label: t`Description`,
         multiline: true,
         rows: 5,
-      },
+      } as const satisfies FormFieldDefinition<FormFields>,
       {
         definition: FORM_FIELD_DEFINITION_TYPE.DATE,
         name: 'active_from',
         label: t`Active from`,
         dateFormat: DATE_FORMAT.DATE_TIME,
-      },
+      } as const satisfies FormFieldDefinition<FormFields>,
       {
         definition: FORM_FIELD_DEFINITION_TYPE.DATE,
         name: 'active_to',
         label: t`Active to`,
         dateFormat: DATE_FORMAT.DATE_TIME,
-      },
+      } as const satisfies FormFieldDefinition<FormFields>,
       {
         definition: FORM_FIELD_DEFINITION_TYPE.DATE,
         name: 'visible_from',
         label: t`Visible from`,
         dateFormat: DATE_FORMAT.DATE_TIME,
-      },
+      } as const satisfies FormFieldDefinition<FormFields>,
       {
         definition: FORM_FIELD_DEFINITION_TYPE.DATE,
         name: 'visible_to',
         label: t`Visible to`,
         dateFormat: DATE_FORMAT.DATE_TIME,
-      },
+      } as const satisfies FormFieldDefinition<FormFields>,
       {
         definition: FORM_FIELD_DEFINITION_TYPE.BOOLEAN,
         name: 'is_active',
         label: t`Is active`,
-      },
+      } as const satisfies FormFieldDefinition<FormFields>,
       {
         definition: FORM_FIELD_DEFINITION_TYPE.BOOLEAN,
         name: 'is_visible',
         label: t`Is visible`,
-      },
-    ];
+      } as const satisfies FormFieldDefinition<FormFields>,
+    ] as const;
   }, [t]);
 
   const tableColumns = useMemo((): TableColumn<Outage>[] => {
@@ -125,13 +125,13 @@ export const OutagesAdminPage = () => {
 
 
   const extraCreateOnePermissions = useMemo<Permission[]>(() => [
-    { command_name: CommandName.OutageCrudCommand, permission_type: PermissionType.CREATE },
+    { command_name: CommandName.OutageCrudCommand, permission_type: PermissionType.C },
   ], []);
   const extraDeleteOnePermissions = useMemo<Permission[]>(() => [
-    { command_name: CommandName.OutageCrudCommand, permission_type: PermissionType.DELETE },
+    { command_name: CommandName.OutageCrudCommand, permission_type: PermissionType.D },
   ], []);
   const extraUpdateOnePermissions = useMemo<Permission[]>(() => [
-    { command_name: CommandName.OutageCrudCommand, permission_type: PermissionType.UPDATE },
+    { command_name: CommandName.OutageCrudCommand, permission_type: PermissionType.U },
   ], []);
 
   return (

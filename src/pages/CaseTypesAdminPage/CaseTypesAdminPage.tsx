@@ -89,22 +89,22 @@ export const CaseTypesAdminPage = () => {
         definition: FORM_FIELD_DEFINITION_TYPE.TEXTFIELD,
         name: 'name',
         label: t`Name`,
-      },
+      } as const satisfies FormFieldDefinition<FormFields>,
       {
         definition: FORM_FIELD_DEFINITION_TYPE.AUTOCOMPLETE,
         name: 'disease_id',
         label: t`Disease`,
         options: diseaseOptionsQuery.options,
         loading: diseaseOptionsQuery.isLoading,
-      },
+      } as const satisfies FormFieldDefinition<FormFields>,
       {
         definition: FORM_FIELD_DEFINITION_TYPE.AUTOCOMPLETE,
         name: 'etiological_agent_id',
         label: t`Etiological agent`,
         options: etiologicalAgentOptionsQuery.options,
         loading: etiologicalAgentOptionsQuery.isLoading,
-      },
-    ];
+      } as const satisfies FormFieldDefinition<FormFields>,
+    ] as const;
   }, [etiologicalAgentOptionsQuery.isLoading, etiologicalAgentOptionsQuery.options, diseaseOptionsQuery, t]);
 
   const tableColumns = useMemo((): TableColumn<CaseType>[] => {

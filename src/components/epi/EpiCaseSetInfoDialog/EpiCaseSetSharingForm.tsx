@@ -105,13 +105,13 @@ export const EpiCaseSetSharingForm = ({ formId, caseSet, onFinish, onIsSavingCha
       label: t`Data collections`,
       options: caseAbacContext?.itemDataCollectionOptions?.[0] ?? [],
       multiple: true,
-    },
+    } as const satisfies FormFieldDefinition<FormFields>,
     {
       definition: FORM_FIELD_DEFINITION_TYPE.BOOLEAN,
       name: 'shouldApplySharingToCases',
       label: t`Should the same sharing be applied to the cases in the event?`,
-    },
-  ], [caseAbacContext?.itemDataCollectionOptions, t]);
+    } as const satisfies FormFieldDefinition<FormFields>,
+  ] as const, [caseAbacContext?.itemDataCollectionOptions, t]);
 
   const item = useMemo<FormFields>(() => {
     return {

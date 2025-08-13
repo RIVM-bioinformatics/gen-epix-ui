@@ -12,9 +12,9 @@ export const HomePageTrends = () => {
   const authorizationManager = useMemo(() => AuthorizationManager.instance, []);
 
   if (!authorizationManager.doesUserHavePermission([
-    { command_name: CommandName.RetrieveCaseTypeStatsCommand, permission_type: PermissionType.EXECUTE },
-    { command_name: CommandName.CaseSetCrudCommand, permission_type: PermissionType.READ },
-    { command_name: CommandName.CaseTypeCrudCommand, permission_type: PermissionType.READ },
+    { command_name: CommandName.RetrieveCaseTypeStatsCommand, permission_type: PermissionType.E },
+    { command_name: CommandName.CaseSetCrudCommand, permission_type: PermissionType.R },
+    { command_name: CommandName.CaseTypeCrudCommand, permission_type: PermissionType.R },
   ])) {
     return null;
   }

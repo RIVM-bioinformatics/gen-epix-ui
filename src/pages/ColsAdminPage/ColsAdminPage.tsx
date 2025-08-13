@@ -96,62 +96,60 @@ export const ColsAdminPage = () => {
         name: 'col_type',
         label: t`Column type`,
         options: colTypeOptionsQuery.options,
-      },
+      } as const satisfies FormFieldDefinition<FormFields>,
       {
         definition: FORM_FIELD_DEFINITION_TYPE.TEXTFIELD,
         name: 'label',
         label: t`Label`,
-      },
+      } as const satisfies FormFieldDefinition<FormFields>,
       {
         definition: FORM_FIELD_DEFINITION_TYPE.TEXTFIELD,
         name: 'description',
         label: t`Description`,
         multiline: true,
         rows: 5,
-      },
+      } as const satisfies FormFieldDefinition<FormFields>,
       {
         definition: FORM_FIELD_DEFINITION_TYPE.TEXTFIELD,
         name: 'code',
         label: t`Code`,
-      },
+      } as const satisfies FormFieldDefinition<FormFields>,
       {
         definition: FORM_FIELD_DEFINITION_TYPE.TEXTFIELD,
         name: 'code_suffix',
         label: t`Column code prefix`,
-      },
+      } as const satisfies FormFieldDefinition<FormFields>,
       {
         definition: FORM_FIELD_DEFINITION_TYPE.AUTOCOMPLETE,
         name: 'dim_id',
         label: t`Dimension`,
         options: dimOptionsQuery.options,
-      },
+      } as const satisfies FormFieldDefinition<FormFields>,
       {
         definition: FORM_FIELD_DEFINITION_TYPE.AUTOCOMPLETE,
         name: 'concept_set_id',
         label: t`Concept set`,
         options: conceptSetOptionsQuery.options,
-      },
+      } as const satisfies FormFieldDefinition<FormFields>,
       {
         definition: FORM_FIELD_DEFINITION_TYPE.AUTOCOMPLETE,
         name: 'region_set_id',
         label: t`Region set`,
         options: regionSetOptionsQuery.options,
-      },
+      } as const satisfies FormFieldDefinition<FormFields>,
       {
         definition: FORM_FIELD_DEFINITION_TYPE.AUTOCOMPLETE,
         name: 'genetic_distance_protocol_id',
         label: t`Genetic distance protocol`,
         options: geneticDistanceProtocolOptionsQuery.options,
-      },
+      } as const satisfies FormFieldDefinition<FormFields>,
       {
         definition: FORM_FIELD_DEFINITION_TYPE.TEXTFIELD,
         name: 'rank_in_dim',
         label: t`Rank in dimension`,
         type: 'number',
-      },
-
-
-    ];
+      } as const satisfies FormFieldDefinition<FormFields>,
+    ] as const;
   }, [colTypeOptionsQuery.options, conceptSetOptionsQuery.options, dimOptionsQuery.options, geneticDistanceProtocolOptionsQuery.options, regionSetOptionsQuery.options, t]);
 
   const tableColumns = useMemo((): TableColumn<Col>[] => {

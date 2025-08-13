@@ -68,32 +68,32 @@ export const EpiCaseSetForm = ({ caseSet, formId, onFinish, onIsSavingChange }: 
         options: caseTypeOptionsQuery.options,
         loading: caseTypeOptionsQuery.isLoading,
         disabled: !!caseSet,
-      },
+      } as const satisfies FormFieldDefinition<FormFields>,
       {
         definition: FORM_FIELD_DEFINITION_TYPE.TEXTFIELD,
         name: 'name',
         label: t`Event name`,
-      },
+      } as const satisfies FormFieldDefinition<FormFields>,
       {
         definition: FORM_FIELD_DEFINITION_TYPE.RICH_TEXT,
         name: 'description',
         label: t`Description`,
-      },
+      } as const satisfies FormFieldDefinition<FormFields>,
       {
         definition: FORM_FIELD_DEFINITION_TYPE.AUTOCOMPLETE,
         name: 'case_set_category_id',
         label: t`Category`,
         options: caseSetCategoryOptionsQuery.options,
         loading: caseSetCategoryOptionsQuery.isLoading,
-      },
+      } as const satisfies FormFieldDefinition<FormFields>,
       {
         definition: FORM_FIELD_DEFINITION_TYPE.AUTOCOMPLETE,
         name: 'case_set_status_id',
         label: t`Status`,
         options: caseSetStatusOptionsQuery.options,
         loading: caseSetStatusOptionsQuery.isLoading,
-      },
-    ];
+      } as const satisfies FormFieldDefinition<FormFields>,
+    ] as const;
   }, [caseSet, caseSetCategoryOptionsQuery.isLoading, caseSetCategoryOptionsQuery.options, caseSetStatusOptionsQuery.isLoading, caseSetStatusOptionsQuery.options, caseTypeOptionsQuery.isLoading, caseTypeOptionsQuery.options]);
 
   const { mutate: mutateEdit, isMutating: isEditing, setPreviousItem } = useEditMutation<CaseSet, FormFields>({

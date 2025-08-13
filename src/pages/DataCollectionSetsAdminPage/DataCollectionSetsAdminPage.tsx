@@ -87,23 +87,20 @@ export const DataCollectionSetsAdminPage = () => {
         definition: FORM_FIELD_DEFINITION_TYPE.TEXTFIELD,
         name: 'name',
         label: t`Name`,
-      },
+      } as const satisfies FormFieldDefinition<FormFields>,
       {
-        definition: FORM_FIELD_DEFINITION_TYPE.TEXTFIELD,
+        definition: FORM_FIELD_DEFINITION_TYPE.RICH_TEXT,
         name: 'description',
         label: t`Description`,
-        multiline: true,
-        rows: 5,
-      },
+      } as const satisfies FormFieldDefinition<FormFields>,
       {
         definition: FORM_FIELD_DEFINITION_TYPE.TRANSFER_LIST,
         name: 'dataCollectionIds',
         label: t`Case type columns`,
         options: dataCollectionOptionsQuery.options,
-        multiple: true,
         loading: dataCollectionOptionsQuery.isLoading,
-      },
-    ];
+      } as const satisfies FormFieldDefinition<FormFields>,
+    ] as const;
   }, [dataCollectionOptionsQuery.isLoading, dataCollectionOptionsQuery.options, t]);
 
   const tableColumns = useMemo((): TableColumn<TableData>[] => {

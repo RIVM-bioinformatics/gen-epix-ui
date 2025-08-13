@@ -18,7 +18,6 @@ import {
 import type { UserInvitation } from '../../api';
 import {
   OrganizationApi,
-  AuthApi,
   CommandName,
 } from '../../api';
 import { AuthorizationManager } from '../../classes/managers/AuthorizationManager';
@@ -67,6 +66,17 @@ export const UserInvitationsAdminPage = () => {
 
   const userInvitationsAdminDetailDialogRef = useRef<UserInvitationsAdminDetailDialogRefMethods>(null);
 
+  /**
+   * Hidden form field values that are not visible to the user. These are set by the backend. It's a shortcoming of the openapi generator that it doesn't support mandatory read-only fields.
+   */
+  const hiddenFormFieldValues = useMemo<CrudPageProps<FormFields, UserInvitation>['hiddenFormFieldValues']>(() => {
+    return {
+      token: StringUtil.createUuid(),
+      invited_by_user_id: StringUtil.createUuid(),
+      expires_at: addMonths(new Date(), 2).toISOString(),
+    };
+  }, []);
+
   const fetchAll = useCallback(async (signal: AbortSignal) => {
     return (await OrganizationApi.getInstance().userInvitationsGetAll({ signal }))?.data;
   }, []);
@@ -76,8 +86,13 @@ export const UserInvitationsAdminPage = () => {
   }, []);
 
   const createOne = useCallback(async (variables: FormFields) => {
-    return (await AuthApi.getInstance().userInvitationsPostOne(variables)).data;
-  }, []);
+    return (await OrganizationApi.getInstance().userInvitationsPostOne({
+      ...variables,
+      token: hiddenFormFieldValues.token as string,
+      invited_by_user_id: hiddenFormFieldValues.invited_by_user_id as string,
+      expires_at: hiddenFormFieldValues.expires_at as string,
+    })).data;
+  }, [hiddenFormFieldValues.expires_at, hiddenFormFieldValues.invited_by_user_id, hiddenFormFieldValues.token]);
 
   const getName = useCallback((item: FormFields) => {
     return item.email;
@@ -100,16 +115,6 @@ export const UserInvitationsAdminPage = () => {
     userInvitationsAdminDetailDialogRef.current.open({ item: params.row });
   }, []);
 
-  /**
-   * Hidden form field values that are not visible to the user. These are set by the backend. It's a shortcoming of the openapi generator that it doesn't support mandatory read-only fields.
-   */
-  const hiddenFormFieldValues = useMemo<CrudPageProps<FormFields, UserInvitation>['hiddenFormFieldValues']>(() => {
-    return {
-      token: StringUtil.createUuid(),
-      invited_by_user_id: StringUtil.createUuid(),
-      expires_at: addMonths(new Date(), 2).toISOString(),
-    };
-  }, []);
 
   const formFieldDefinitions = useMemo<FormFieldDefinition<FormFields>[]>(() => {
     const fields: FormFieldDefinition<FormFields>[] = [];
@@ -119,14 +124,14 @@ export const UserInvitationsAdminPage = () => {
         definition: FORM_FIELD_DEFINITION_TYPE.TEXTFIELD,
         name: 'email',
         label: t`Email`,
-      },
+      } as const satisfies FormFieldDefinition<FormFields>,
       {
         definition: FORM_FIELD_DEFINITION_TYPE.AUTOCOMPLETE,
         name: 'organization_id',
         label: t`Organization`,
         options: organizationOptions,
         loading: organizationOptionsQuery.isLoading,
-      },
+      } as const satisfies FormFieldDefinition<FormFields>,
       {
         definition: FORM_FIELD_DEFINITION_TYPE.AUTOCOMPLETE,
         multiple: true,
@@ -134,7 +139,7 @@ export const UserInvitationsAdminPage = () => {
         label: t`Roles`,
         options: roleOptionsQuery.options,
         loading: roleOptionsQuery.isLoading,
-      },
+      } as const satisfies FormFieldDefinition<FormFields>,
     );
     return fields;
   }, [t, organizationOptions, organizationOptionsQuery.isLoading, roleOptionsQuery.options, roleOptionsQuery.isLoading]);

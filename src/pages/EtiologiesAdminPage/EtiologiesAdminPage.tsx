@@ -69,15 +69,15 @@ export const EtiologiesAdminPage = () => {
         label: t`Disease`,
         options: diseaseOptionsQuery.options,
         loading: diseaseOptionsQuery.isLoading,
-      },
+      } as const satisfies FormFieldDefinition<FormFields>,
       {
         definition: FORM_FIELD_DEFINITION_TYPE.AUTOCOMPLETE,
         name: 'etiological_agent_id',
         label: t`Etiological agent`,
         options: etiologicalAgentOptionsQuery.options,
         loading: etiologicalAgentOptionsQuery.isLoading,
-      },
-    ];
+      } as const satisfies FormFieldDefinition<FormFields>,
+    ] as const;
   }, [etiologicalAgentOptionsQuery.isLoading, etiologicalAgentOptionsQuery.options, diseaseOptionsQuery.isLoading, diseaseOptionsQuery.options, t]);
 
   const tableColumns = useMemo((): TableColumn<Etiology>[] => {

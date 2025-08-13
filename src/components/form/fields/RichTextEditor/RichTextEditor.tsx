@@ -57,7 +57,6 @@ import {
 } from 'react-hook-form';
 import { useTranslation } from 'react-i18next';
 
-import type { FormFieldBaseProps } from '../../../../models/form';
 import { FormUtil } from '../../../../utils/FormUtil';
 import { TestIdUtil } from '../../../../utils/TestIdUtil';
 import { FormFieldHelperText } from '../../helpers/FormFieldHelperText';
@@ -65,9 +64,15 @@ import { FormFieldLoadingIndicator } from '../../helpers/FormFieldLoadingIndicat
 
 import { useRichTextEditorExtensions } from './useRichTextEditorExtensions';
 
-export interface RichTextEditorProps<TFieldValues extends FieldValues, TName extends Path<TFieldValues> = Path<TFieldValues>> extends FormFieldBaseProps<TFieldValues, TName> {
+export type RichTextEditorProps<TFieldValues extends FieldValues, TName extends Path<TFieldValues> = Path<TFieldValues>> = {
+  readonly disabled?: boolean;
+  readonly label: string;
+  readonly name: TName;
+  readonly onChange?: (value: string) => void;
+  readonly required?: boolean;
+  readonly warningMessage?: string | boolean;
   readonly loading?: boolean;
-}
+};
 
 export const RichTextEditor = <TFieldValues extends FieldValues, TName extends Path<TFieldValues> = Path<TFieldValues>>({
   label,

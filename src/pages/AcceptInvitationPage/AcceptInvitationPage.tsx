@@ -11,7 +11,7 @@ import {
   useState,
 } from 'react';
 
-import { AuthApi } from '../../api';
+import { OrganizationApi } from '../../api';
 import { ConfigManager } from '../../classes/managers/ConfigManager';
 import { WindowManager } from '../../classes/managers/WindowManager';
 import { PageContainer } from '../../components/ui/PageContainer';
@@ -26,7 +26,7 @@ export const AcceptInvitationPage = () => {
   const { data, error, isLoading } = useQuery({
     queryKey: QueryUtil.getUserRegistrationsKey(token),
     queryFn: async ({ signal }) => {
-      const response = await AuthApi.getInstance().userRegistrationsPostOne(token, { signal });
+      const response = await OrganizationApi.getInstance().userRegistrationsPostOne(token, { signal });
       return response.data;
     },
     enabled: shouldRegister,

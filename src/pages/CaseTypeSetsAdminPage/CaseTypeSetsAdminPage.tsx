@@ -98,32 +98,32 @@ export const CaseTypeSetsAdminPage = () => {
         label: t`Category`,
         options: caseTypeSetCategoryOptionsQuery.options,
         loading: caseTypeSetCategoryOptionsQuery.isLoading,
-      },
+      } as const satisfies FormFieldDefinition<FormFields>,
       {
         definition: FORM_FIELD_DEFINITION_TYPE.TEXTFIELD,
         name: 'name',
         label: t`Name`,
-      },
+      } as const satisfies FormFieldDefinition<FormFields>,
       {
         definition: FORM_FIELD_DEFINITION_TYPE.TEXTFIELD,
         name: 'rank',
         label: t`Rank`,
-      },
+      } as const satisfies FormFieldDefinition<FormFields>,
       {
         definition: FORM_FIELD_DEFINITION_TYPE.TEXTFIELD,
         name: 'description',
         label: t`Description`,
         multiline: true,
         rows: 5,
-      },
+      } as const satisfies FormFieldDefinition<FormFields>,
       {
         definition: FORM_FIELD_DEFINITION_TYPE.TRANSFER_LIST,
         name: 'caseTypeIds',
         label: t`Case types`,
         options: caseTypeOptionsQuery.options,
         loading: caseTypeOptionsQuery.isLoading,
-      },
-    ];
+      } as const satisfies FormFieldDefinition<FormFields>,
+    ] as const;
   }, [caseTypeOptionsQuery.isLoading, caseTypeOptionsQuery.options, caseTypeSetCategoryOptionsQuery.isLoading, caseTypeSetCategoryOptionsQuery.options, t]);
 
   const tableColumns = useMemo((): TableColumn<TableData>[] => {
@@ -145,13 +145,13 @@ export const CaseTypeSetsAdminPage = () => {
   }, [caseTypeOptionsQuery.options.length, caseTypeSetCategoryOptionsQuery.options, t]);
 
   const extraCreateOnePermissions = useMemo<Permission[]>(() => [
-    { command_name: CommandName.CaseTypeSetCaseTypeUpdateAssociationCommand, permission_type: PermissionType.EXECUTE },
+    { command_name: CommandName.CaseTypeSetCaseTypeUpdateAssociationCommand, permission_type: PermissionType.E },
   ], []);
   const extraDeleteOnePermissions = useMemo<Permission[]>(() => [
-    { command_name: CommandName.CaseTypeSetCaseTypeUpdateAssociationCommand, permission_type: PermissionType.EXECUTE },
+    { command_name: CommandName.CaseTypeSetCaseTypeUpdateAssociationCommand, permission_type: PermissionType.E },
   ], []);
   const extraUpdateOnePermissions = useMemo<Permission[]>(() => [
-    { command_name: CommandName.CaseTypeSetCaseTypeUpdateAssociationCommand, permission_type: PermissionType.EXECUTE },
+    { command_name: CommandName.CaseTypeSetCaseTypeUpdateAssociationCommand, permission_type: PermissionType.E },
   ], []);
 
 

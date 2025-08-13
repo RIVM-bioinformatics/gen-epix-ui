@@ -131,7 +131,7 @@ export class EpiCaseUtil {
             definition: FORM_FIELD_DEFINITION_TYPE.TEXTFIELD,
             name: caseTypeColumn.id,
             label: caseTypeColumn.label,
-          });
+          } as const satisfies FormFieldDefinition<Case['content']>);
           break;
         case ColType.REGEX:
           try {
@@ -140,14 +140,14 @@ export class EpiCaseUtil {
               definition: FORM_FIELD_DEFINITION_TYPE.TEXTFIELD,
               name: caseTypeColumn.id,
               label: caseTypeColumn.label,
-            });
+            } as const satisfies FormFieldDefinition<Case['content']>);
           } catch (_error) {
             acc.push({
               definition: FORM_FIELD_DEFINITION_TYPE.TEXTFIELD,
               name: caseTypeColumn.id,
               label: caseTypeColumn.label,
               warningMessage: t`Unable to parse regular expression. You may enter text, but it's not guaranteed to be valid.`,
-            });
+            } as const satisfies FormFieldDefinition<Case['content']>);
           }
           break;
         case ColType.NOMINAL:
@@ -162,7 +162,7 @@ export class EpiCaseUtil {
                 value: concept.id,
                 label: concept.name,
               })),
-            });
+            } as const satisfies FormFieldDefinition<Case['content']>);
           }
           break;
         case ColType.GEO_REGION:
@@ -175,7 +175,7 @@ export class EpiCaseUtil {
                 value: region.id,
                 label: EpiDataUtil.data.regionSets[column.region_set_id].region_code_as_label ? region.code : region.name,
               })),
-            });
+            } as const satisfies FormFieldDefinition<Case['content']>);
           }
           break;
         case ColType.ORGANIZATION:
@@ -188,7 +188,7 @@ export class EpiCaseUtil {
               value: organization.id,
               label: organization.name,
             })),
-          });
+          } as const satisfies FormFieldDefinition<Case['content']>);
           break;
         default:
           break;

@@ -191,14 +191,14 @@ export const EpiCreateEventDialog = withDialog<EpiCreateEventDialogProps, EpiCre
         options: caseTypeOptionsQuery.options,
         loading: caseTypeOptionsQuery.isLoading,
         disabled: !!openProps.completeCaseType,
-      },
+      } as const satisfies FormFieldDefinition<FormFields>,
       {
         definition: FORM_FIELD_DEFINITION_TYPE.AUTOCOMPLETE,
         name: 'create_in_data_collection_id',
         label: t`Create in data collection`,
         options: createInDataCollectionOptions,
         loading: dataCollectionOptionsQuery.isLoading || isCompleteCaseTypeLoading,
-      },
+      } as const satisfies FormFieldDefinition<FormFields>,
       {
         definition: FORM_FIELD_DEFINITION_TYPE.AUTOCOMPLETE,
         name: 'share_in_data_collection_ids',
@@ -206,39 +206,39 @@ export const EpiCreateEventDialog = withDialog<EpiCreateEventDialogProps, EpiCre
         options: shareInDataCollectionOptions,
         loading: dataCollectionOptionsQuery.isLoading || isCompleteCaseTypeLoading,
         multiple: true,
-      },
+      } as const satisfies FormFieldDefinition<FormFields>,
       {
         definition: FORM_FIELD_DEFINITION_TYPE.BOOLEAN,
         name: 'shouldApplySharingToCases',
         label: t`Should the same sharing be applied to the cases in the event?`,
         loading: dataCollectionOptionsQuery.isLoading || isCompleteCaseTypeLoading,
         disabled: sharedInDataCollectionIds.length === 0 || !openProps.rows?.length,
-      },
+      } as const satisfies FormFieldDefinition<FormFields>,
       {
         definition: FORM_FIELD_DEFINITION_TYPE.TEXTFIELD,
         name: 'name',
         label: t`Event name`,
-      },
+      } as const satisfies FormFieldDefinition<FormFields>,
       {
         definition: FORM_FIELD_DEFINITION_TYPE.RICH_TEXT,
         name: 'description',
         label: t`Description`,
-      },
+      } as const satisfies FormFieldDefinition<FormFields>,
       {
         definition: FORM_FIELD_DEFINITION_TYPE.AUTOCOMPLETE,
         name: 'case_set_category_id',
         label: t`Category`,
         options: caseSetCategoryOptionsQuery.options,
         loading: caseSetCategoryOptionsQuery.isLoading,
-      },
+      } as const satisfies FormFieldDefinition<FormFields>,
       {
         definition: FORM_FIELD_DEFINITION_TYPE.AUTOCOMPLETE,
         name: 'case_set_status_id',
         label: t`Status`,
         options: caseSetStatusOptionsQuery.options,
         loading: caseSetStatusOptionsQuery.isLoading,
-      },
-    ];
+      } as const satisfies FormFieldDefinition<FormFields>,
+    ] as const;
   }, [caseSetCategoryOptionsQuery.isLoading, caseSetCategoryOptionsQuery.options, caseSetStatusOptionsQuery.isLoading, caseSetStatusOptionsQuery.options, caseTypeOptionsQuery.isLoading, caseTypeOptionsQuery.options, createInDataCollectionOptions, dataCollectionOptionsQuery.isLoading, isCompleteCaseTypeLoading, openProps.completeCaseType, openProps.rows?.length, shareInDataCollectionOptions, sharedInDataCollectionIds.length, t]);
 
   const loadables = useArray([

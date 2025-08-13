@@ -25,7 +25,6 @@ import { withDialog } from '../../../hoc/withDialog';
 import { TestIdUtil } from '../../../utils/TestIdUtil';
 import type { DialogAction } from '../Dialog';
 import type { UserEffectiveRight } from '../../../models/caseAccess';
-import type { User } from '../../../api';
 import { useCaseTypeMapQuery } from '../../../dataHooks/useCaseTypesQuery';
 import { useArray } from '../../../hooks/useArray';
 import { ResponseHandler } from '../ResponseHandler';
@@ -42,6 +41,7 @@ import {
 } from '../../../dataHooks/useCaseTypeColsQuery';
 import { useCaseTypeColSetMembersQuery } from '../../../dataHooks/useCaseTypeColSetMembersQuery';
 import { useCaseTypeSetMembersQuery } from '../../../dataHooks/useCaseTypeSetMembersQuery';
+import type { User } from '../../../api';
 
 
 export type UsersEffectiveRightsDetailsType = 'caseTypeSets' | 'readColSets' | 'writeColSets';

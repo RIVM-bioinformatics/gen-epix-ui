@@ -36,7 +36,6 @@ import {
 } from 'date-fns/locale';
 import { AdapterDateFns } from '@mui/x-date-pickers/AdapterDateFns';
 
-import type { FormFieldBaseProps } from '../../../../models/form';
 import { FormUtil } from '../../../../utils/FormUtil';
 import { TestIdUtil } from '../../../../utils/TestIdUtil';
 import { FormFieldHelperText } from '../../helpers/FormFieldHelperText';
@@ -44,10 +43,16 @@ import { FormFieldLoadingIndicator } from '../../helpers/FormFieldLoadingIndicat
 import { DATE_FORMAT } from '../../../../data/date';
 
 
-export interface DatePickerProps<TFieldValues extends FieldValues, TName extends Path<TFieldValues> = Path<TFieldValues>> extends FormFieldBaseProps<TFieldValues, TName, Date> {
+export type DatePickerProps<TFieldValues extends FieldValues, TName extends Path<TFieldValues> = Path<TFieldValues>> = {
+  readonly disabled?: boolean;
+  readonly label: string;
+  readonly name: TName;
+  readonly onChange?: (value: Date) => void;
+  readonly required?: boolean;
+  readonly warningMessage?: string | boolean;
   readonly loading?: boolean;
   readonly dateFormat?: typeof DATE_FORMAT[keyof typeof DATE_FORMAT];
-}
+};
 
 export const DatePicker = <TFieldValues extends FieldValues, TName extends Path<TFieldValues> = Path<TFieldValues>>({
   disabled = false,

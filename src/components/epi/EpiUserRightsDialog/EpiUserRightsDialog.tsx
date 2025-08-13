@@ -20,7 +20,7 @@ import type {
   WithDialogRefMethods,
 } from '../../../hoc/withDialog';
 import { withDialog } from '../../../hoc/withDialog';
-import { type User } from '../../../api';
+import type { User } from '../../../api';
 
 import { EpiUserRightsDialogCaseAccessPolicy } from './EpiUserRightsDialogCaseAccessPolicy';
 

@@ -34,17 +34,22 @@ import isEqual from 'lodash/isEqual';
 import isNumber from 'lodash/isNumber';
 import isFinite from 'lodash/isFinite';
 
-import type { FormFieldBaseProps } from '../../../../models/form';
 import { FormUtil } from '../../../../utils/FormUtil';
 import { TestIdUtil } from '../../../../utils/TestIdUtil';
 import { FormFieldHelperText } from '../../helpers/FormFieldHelperText';
 import { FormFieldLoadingIndicator } from '../../helpers/FormFieldLoadingIndicator';
 
-export interface NumberRangeInputProps<TFieldValues extends FieldValues, TName extends Path<TFieldValues> = Path<TFieldValues>> extends FormFieldBaseProps<TFieldValues, TName, number | number[]> {
+export type NumberRangeInputProps<TFieldValues extends FieldValues, TName extends Path<TFieldValues> = Path<TFieldValues>> = {
+  readonly disabled?: boolean;
+  readonly label: string;
+  readonly name: TName;
+  readonly onChange?: (value: number | number[]) => void;
+  readonly required?: boolean;
+  readonly warningMessage?: string | boolean;
   readonly loading?: boolean;
   readonly min: number;
   readonly max: number;
-}
+};
 
 export const NumberRangeInput = <TFieldValues extends FieldValues, TName extends Path<TFieldValues> = Path<TFieldValues>>({
   disabled = false,

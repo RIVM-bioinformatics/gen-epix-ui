@@ -205,7 +205,7 @@ export const CrudPage = <
     }
     return authorizationManager.doesUserHavePermission(
       [
-        ...(crudCommandType ? [{ command_name: crudCommandType, permission_type: PermissionType.UPDATE }] : []),
+        ...(crudCommandType ? [{ command_name: crudCommandType, permission_type: PermissionType.U }] : []),
         ...(extraUpdateOnePermissions ?? []),
       ],
     );
@@ -217,7 +217,7 @@ export const CrudPage = <
     }
     return authorizationManager.doesUserHavePermission(
       [
-        ...(crudCommandType ? [{ command_name: crudCommandType, permission_type: PermissionType.DELETE }] : []),
+        ...(crudCommandType ? [{ command_name: crudCommandType, permission_type: PermissionType.D }] : []),
         ...(extraDeleteOnePermissions ?? []),
       ],
     );
@@ -229,7 +229,7 @@ export const CrudPage = <
     }
     return authorizationManager.doesUserHavePermission(
       [
-        ...(crudCommandType ? [{ command_name: crudCommandType, permission_type: PermissionType.CREATE }] : []),
+        ...(crudCommandType ? [{ command_name: crudCommandType, permission_type: PermissionType.C }] : []),
         ...(extraCreateOnePermissions ?? []),
       ],
     );
