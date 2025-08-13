@@ -1,6 +1,6 @@
 import { WindowManager } from '../WindowManager';
 import { ConfigManager } from '../ConfigManager';
-import type { CompleteUser } from '../../../api';
+import type { User } from '../../../api';
 import { EventBusAbstract } from '../../abstracts/EventBusAbstract';
 
 type Page = {
@@ -10,7 +10,7 @@ type Page = {
 
 type EpiEvent = {
   error: Error;
-  changeUser: CompleteUser;
+  changeUser: User;
   changePage: Page;
   click: {
     label: string;

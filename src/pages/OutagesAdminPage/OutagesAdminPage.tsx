@@ -12,7 +12,7 @@ import { isValid } from 'date-fns';
 
 import type {
   Outage,
-  Permission,
+  ApiPermission,
 } from '../../api';
 import {
   SystemApi,
@@ -73,42 +73,42 @@ export const OutagesAdminPage = () => {
         label: t`Description`,
         multiline: true,
         rows: 5,
-      },
+      } as const satisfies FormFieldDefinition<FormFields>,
       {
         definition: FORM_FIELD_DEFINITION_TYPE.DATE,
         name: 'active_from',
         label: t`Active from`,
         dateFormat: DATE_FORMAT.DATE_TIME,
-      },
+      } as const satisfies FormFieldDefinition<FormFields>,
       {
         definition: FORM_FIELD_DEFINITION_TYPE.DATE,
         name: 'active_to',
         label: t`Active to`,
         dateFormat: DATE_FORMAT.DATE_TIME,
-      },
+      } as const satisfies FormFieldDefinition<FormFields>,
       {
         definition: FORM_FIELD_DEFINITION_TYPE.DATE,
         name: 'visible_from',
         label: t`Visible from`,
         dateFormat: DATE_FORMAT.DATE_TIME,
-      },
+      } as const satisfies FormFieldDefinition<FormFields>,
       {
         definition: FORM_FIELD_DEFINITION_TYPE.DATE,
         name: 'visible_to',
         label: t`Visible to`,
         dateFormat: DATE_FORMAT.DATE_TIME,
-      },
+      } as const satisfies FormFieldDefinition<FormFields>,
       {
         definition: FORM_FIELD_DEFINITION_TYPE.BOOLEAN,
         name: 'is_active',
         label: t`Is active`,
-      },
+      } as const satisfies FormFieldDefinition<FormFields>,
       {
         definition: FORM_FIELD_DEFINITION_TYPE.BOOLEAN,
         name: 'is_visible',
         label: t`Is visible`,
-      },
-    ];
+      } as const satisfies FormFieldDefinition<FormFields>,
+    ] as const;
   }, [t]);
 
   const tableColumns = useMemo((): TableColumn<Outage>[] => {
@@ -124,13 +124,13 @@ export const OutagesAdminPage = () => {
   }, [t]);
 
 
-  const extraCreateOnePermissions = useMemo<Permission[]>(() => [
+  const extraCreateOnePermissions = useMemo<ApiPermission[]>(() => [
     { command_name: CommandName.OutageCrudCommand, permission_type: PermissionType.CREATE },
   ], []);
-  const extraDeleteOnePermissions = useMemo<Permission[]>(() => [
+  const extraDeleteOnePermissions = useMemo<ApiPermission[]>(() => [
     { command_name: CommandName.OutageCrudCommand, permission_type: PermissionType.DELETE },
   ], []);
-  const extraUpdateOnePermissions = useMemo<Permission[]>(() => [
+  const extraUpdateOnePermissions = useMemo<ApiPermission[]>(() => [
     { command_name: CommandName.OutageCrudCommand, permission_type: PermissionType.UPDATE },
   ], []);
 

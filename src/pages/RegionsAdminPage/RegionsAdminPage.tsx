@@ -71,44 +71,44 @@ export const RegionsAdminPage = () => {
         definition: FORM_FIELD_DEFINITION_TYPE.TEXTFIELD,
         name: 'name',
         label: t`name`,
-      },
+      } as const satisfies FormFieldDefinition<FormFields>,
       {
         definition: FORM_FIELD_DEFINITION_TYPE.TEXTFIELD,
         name: 'code',
         label: t`Code`,
-      },
+      } as const satisfies FormFieldDefinition<FormFields>,
       {
         definition: FORM_FIELD_DEFINITION_TYPE.AUTOCOMPLETE,
         name: 'region_set_id',
         label: t`Region set`,
         options: regionSetOptionsQuery.options,
         loading: regionSetOptionsQuery.isLoading,
-      },
+      } as const satisfies FormFieldDefinition<FormFields>,
       {
         definition: FORM_FIELD_DEFINITION_TYPE.TEXTFIELD,
         name: 'centroid_lat',
         label: t`Centroid latitude`,
         type: 'number',
-      },
+      } as const satisfies FormFieldDefinition<FormFields>,
       {
         definition: FORM_FIELD_DEFINITION_TYPE.TEXTFIELD,
         name: 'centroid_lon',
         label: t`Centroid longitude`,
         type: 'number',
-      },
+      } as const satisfies FormFieldDefinition<FormFields>,
       {
         definition: FORM_FIELD_DEFINITION_TYPE.TEXTFIELD,
         name: 'center_lat',
         label: t`Center latitude`,
         type: 'number',
-      },
+      } as const satisfies FormFieldDefinition<FormFields>,
       {
         definition: FORM_FIELD_DEFINITION_TYPE.TEXTFIELD,
         name: 'center_lon',
         label: t`Center longitude`,
         type: 'number',
-      },
-    ];
+      } as const satisfies FormFieldDefinition<FormFields>,
+    ] as const;
   }, [regionSetOptionsQuery.isLoading, regionSetOptionsQuery.options, t]);
 
   const tableColumns = useMemo((): TableColumn<Region>[] => {

@@ -7,8 +7,8 @@ import { useTranslation } from 'react-i18next';
 import { Box } from '@mui/system';
 
 import type {
-  OrganizationAccessCasePolicy,
   User,
+  OrganizationAccessCasePolicy,
   UserAccessCasePolicy,
 } from '../../../api';
 import { ResponseHandler } from '../../ui/ResponseHandler';

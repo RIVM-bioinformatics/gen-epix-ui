@@ -40,10 +40,7 @@ import {
 import classnames from 'classnames';
 import { useTranslation } from 'react-i18next';
 
-import type {
-  FormFieldBaseProps,
-  AutoCompleteOption,
-} from '../../../../models/form';
+import type { AutoCompleteOption } from '../../../../models/form';
 import { FormUtil } from '../../../../utils/FormUtil';
 import { TestIdUtil } from '../../../../utils/TestIdUtil';
 import { FormFieldHelperText } from '../../helpers/FormFieldHelperText';
@@ -52,13 +49,19 @@ import { FormFieldLoadingIndicator } from '../../helpers/FormFieldLoadingIndicat
 
 type Value = string | number;
 
-export interface AutocompleteProps<TFieldValues extends FieldValues, TName extends Path<TFieldValues>, TMultiple extends boolean | undefined> extends FormFieldBaseProps<TFieldValues, TName, AutocompleteValue<TFieldValues[TName], TMultiple, false, false>> {
+export type AutocompleteProps<TFieldValues extends FieldValues, TName extends Path<TFieldValues>, TMultiple extends boolean | undefined> = {
+  readonly disabled?: boolean;
+  readonly label: string;
+  readonly name: TName;
+  readonly onChange?: (value: AutocompleteValue<TFieldValues[TName], TMultiple, false, false>) => void;
+  readonly required?: boolean;
+  readonly warningMessage?: string | boolean;
   readonly groupValues?: boolean;
   readonly options: AutoCompleteOption[];
   readonly multiple?: TMultiple;
   readonly shouldSortOptions?: boolean;
   readonly loading?: boolean;
-}
+};
 
 export const Autocomplete = <TFieldValues extends FieldValues, TName extends Path<TFieldValues> = Path<TFieldValues>, TMultiple extends boolean | undefined = false>({
   disabled = false,

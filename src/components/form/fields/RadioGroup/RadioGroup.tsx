@@ -26,18 +26,21 @@ import type {
   ControllerRenderProps,
 } from 'react-hook-form';
 
-import type {
-  FormFieldBaseProps,
-  RadioButtonOption,
-} from '../../../../models/form';
+import type { RadioButtonOption } from '../../../../models/form';
 import { FormUtil } from '../../../../utils/FormUtil';
 import { TestIdUtil } from '../../../../utils/TestIdUtil';
 import { FormFieldHelperText } from '../../helpers/FormFieldHelperText';
 
-export interface RadioGroupProps<TFieldValues extends FieldValues, TName extends Path<TFieldValues> = Path<TFieldValues>> extends FormFieldBaseProps<TFieldValues, TName> {
+export type RadioGroupProps<TFieldValues extends FieldValues, TName extends Path<TFieldValues> = Path<TFieldValues>> = {
+  readonly disabled?: boolean;
+  readonly label: string;
+  readonly name: TName;
+  readonly onChange?: (value: string) => void;
+  readonly required?: boolean;
+  readonly warningMessage?: string | boolean;
   readonly row?: boolean;
   readonly options: RadioButtonOption[];
-}
+};
 
 export const RadioGroup = <TFieldValues extends FieldValues, TName extends Path<TFieldValues> = Path<TFieldValues>>({
   disabled,

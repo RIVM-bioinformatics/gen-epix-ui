@@ -25,10 +25,7 @@ import {
 } from 'react-hook-form';
 import classnames from 'classnames';
 
-import type {
-  FormFieldBaseProps,
-  SelectOption,
-} from '../../../../models/form';
+import type { SelectOption } from '../../../../models/form';
 import { FormUtil } from '../../../../utils/FormUtil';
 import { TestIdUtil } from '../../../../utils/TestIdUtil';
 import { FormFieldHelperText } from '../../helpers/FormFieldHelperText';
@@ -37,12 +34,18 @@ import { FormFieldLoadingIndicator } from '../../helpers/FormFieldLoadingIndicat
 
 type Value = string | number | boolean;
 
-export interface SelectProps<TFieldValues extends FieldValues, TName extends Path<TFieldValues>, TMultiple extends boolean | undefined> extends FormFieldBaseProps<TFieldValues, TName, string> {
+export type SelectProps<TFieldValues extends FieldValues, TName extends Path<TFieldValues>, TMultiple extends boolean | undefined> = {
+  readonly disabled?: boolean;
+  readonly label: string;
+  readonly name: TName;
+  readonly onChange?: (value: string) => void;
+  readonly required?: boolean;
+  readonly warningMessage?: string | boolean;
   readonly groupValues?: boolean;
   readonly options: SelectOption[];
   readonly multiple?: TMultiple;
   readonly loading?: boolean;
-}
+};
 
 export const Select = <TFieldValues extends FieldValues, TName extends Path<TFieldValues> = Path<TFieldValues>, TMultiple extends boolean | undefined = false>({
   disabled = false,

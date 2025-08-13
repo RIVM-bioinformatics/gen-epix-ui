@@ -106,8 +106,8 @@ export const EventsPage = () => {
     }
     return caseSets.map(caseSet => {
       return {
-        ...caseSet,
         ...caseSetStatsMapQuery.map?.get(caseSet.id),
+        ...caseSet,
       } satisfies Row;
     });
   }, [caseSetStatsMapQuery.map, caseSets]);

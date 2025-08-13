@@ -59,15 +59,15 @@ export const DataCollectionsAdminPage = () => {
         definition: FORM_FIELD_DEFINITION_TYPE.TEXTFIELD,
         name: 'name',
         label: t`Name`,
-      },
+      } as const satisfies FormFieldDefinition<FormFields>,
       {
         definition: FORM_FIELD_DEFINITION_TYPE.TEXTFIELD,
         name: 'description',
         label: t`Description`,
         multiline: true,
         rows: 5,
-      },
-    ];
+      } as const satisfies FormFieldDefinition<FormFields>,
+    ] as const;
   }, [t]);
 
   const tableColumns = useMemo((): TableColumn<DataCollection>[] => {

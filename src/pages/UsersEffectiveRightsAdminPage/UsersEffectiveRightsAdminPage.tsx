@@ -42,10 +42,8 @@ import {
   TableStoreContextProvider,
 } from '../../stores/tableStore';
 import { TableUtil } from '../../utils/TableUtil';
-import {
-  OrganizationApi,
-  type User,
-} from '../../api';
+import type { User } from '../../api';
+import { OrganizationApi } from '../../api';
 import { useItemQuery } from '../../hooks/useItemQuery';
 import { QUERY_KEY } from '../../models/query';
 import {

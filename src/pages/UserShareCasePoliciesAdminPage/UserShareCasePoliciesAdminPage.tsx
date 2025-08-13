@@ -94,54 +94,54 @@ export const UserShareCasePoliciesAdminPage = () => {
         label: t`User`,
         options: userOptionsQuery.options,
         loading: userOptionsQuery.isLoading,
-      },
+      } as const satisfies FormFieldDefinition<FormFields>,
       {
         definition: FORM_FIELD_DEFINITION_TYPE.AUTOCOMPLETE,
         name: 'data_collection_id',
         label: t`Data collection`,
         options: dataCollectionOptionsQuery.options,
         loading: dataCollectionOptionsQuery.isLoading,
-      },
+      } as const satisfies FormFieldDefinition<FormFields>,
       {
         definition: FORM_FIELD_DEFINITION_TYPE.AUTOCOMPLETE,
         name: 'from_data_collection_id',
         label: t`From data collection`,
         options: dataCollectionOptionsQuery.options,
         loading: dataCollectionOptionsQuery.isLoading,
-      },
+      } as const satisfies FormFieldDefinition<FormFields>,
       {
         definition: FORM_FIELD_DEFINITION_TYPE.AUTOCOMPLETE,
         name: 'case_type_set_id',
         label: t`Case type set`,
         options: caseTypeSetOptionsQuery.options,
         loading: caseTypeSetOptionsQuery.isLoading,
-      },
+      } as const satisfies FormFieldDefinition<FormFields>,
       {
         definition: FORM_FIELD_DEFINITION_TYPE.BOOLEAN,
         name: 'add_case',
         label: t`Add case`,
-      },
+      } as const satisfies FormFieldDefinition<FormFields>,
       {
         definition: FORM_FIELD_DEFINITION_TYPE.BOOLEAN,
         name: 'remove_case',
         label: t`Remove case`,
-      },
+      } as const satisfies FormFieldDefinition<FormFields>,
       {
         definition: FORM_FIELD_DEFINITION_TYPE.BOOLEAN,
         name: 'add_case_set',
         label: t`Add case set`,
-      },
+      } as const satisfies FormFieldDefinition<FormFields>,
       {
         definition: FORM_FIELD_DEFINITION_TYPE.BOOLEAN,
         name: 'remove_case_set',
         label: t`Remove case set`,
-      },
+      } as const satisfies FormFieldDefinition<FormFields>,
       {
         definition: FORM_FIELD_DEFINITION_TYPE.BOOLEAN,
         name: 'is_active',
         label: t`Is active`,
-      },
-    ];
+      } as const satisfies FormFieldDefinition<FormFields>,
+    ] as const;
   }, [caseTypeSetOptionsQuery.isLoading, caseTypeSetOptionsQuery.options, dataCollectionOptionsQuery.isLoading, dataCollectionOptionsQuery.options, userOptionsQuery.isLoading, userOptionsQuery.options, t]);
 
   const tableColumns = useMemo((): TableColumn<UserShareCasePolicy>[] => {

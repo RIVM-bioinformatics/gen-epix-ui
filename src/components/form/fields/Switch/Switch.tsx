@@ -24,15 +24,20 @@ import {
 } from 'react-hook-form';
 import classnames from 'classnames';
 
-import type { FormFieldBaseProps } from '../../../../models/form';
 import { FormUtil } from '../../../../utils/FormUtil';
 import { TestIdUtil } from '../../../../utils/TestIdUtil';
 import { FormFieldHelperText } from '../../helpers/FormFieldHelperText';
 import { FormFieldLoadingIndicator } from '../../helpers/FormFieldLoadingIndicator';
 
-export interface SwitchPropsProps<TFieldValues extends FieldValues, TName extends Path<TFieldValues>> extends FormFieldBaseProps<TFieldValues, TName, boolean> {
+export type SwitchPropsProps<TFieldValues extends FieldValues, TName extends Path<TFieldValues>> = {
+  readonly disabled?: boolean;
+  readonly label: string;
+  readonly name: TName;
+  readonly onChange?: (value: boolean) => void;
+  readonly required?: boolean;
+  readonly warningMessage?: string | boolean;
   readonly loading?: boolean;
-}
+};
 
 export const Switch = <TFieldValues extends FieldValues, TName extends Path<TFieldValues> = Path<TFieldValues>>({
   disabled = false,

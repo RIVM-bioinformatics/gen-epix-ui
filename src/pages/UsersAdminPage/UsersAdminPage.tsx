@@ -55,11 +55,11 @@ export const UsersAdminPage = () => {
   }, []);
 
   const updateOne = useCallback(async (variables: FormFields, item: User) => {
-
     return (await OrganizationApi.getInstance().usersPutOne(item.id, {
       is_active: variables.is_active,
       organization_id: item.organization_id,
       roles: variables.roles,
+      email: item.email,
     })).data;
   }, []);
 
@@ -86,7 +86,7 @@ export const UsersAdminPage = () => {
         name: 'email',
         label: t`Email`,
         disabled: true,
-      },
+      } as const satisfies FormFieldDefinition<FormFields>,
       {
         definition: FORM_FIELD_DEFINITION_TYPE.AUTOCOMPLETE,
         name: 'roles',
@@ -94,13 +94,13 @@ export const UsersAdminPage = () => {
         options: roleOptionsQuery.options,
         loading: roleOptionsQuery.isLoading,
         multiple: true,
-      },
+      } as const satisfies FormFieldDefinition<FormFields>,
       {
         definition: FORM_FIELD_DEFINITION_TYPE.BOOLEAN,
         name: 'is_active',
         label: t`Is active`,
-      },
-    ];
+      } as const satisfies FormFieldDefinition<FormFields>,
+    ] as const;
   }, [roleOptionsQuery.isLoading, roleOptionsQuery.options, t]);
 
   const tableColumns = useMemo((): TableColumn<User>[] => {

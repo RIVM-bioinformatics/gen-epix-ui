@@ -19,6 +19,7 @@ import { QUERY_KEY } from '../../../models/query';
 import type { MyNonIndexRouteObject } from '../../../models/reactRouter';
 import { QueryUtil } from '../../../utils/QueryUtil';
 import { TestIdUtil } from '../../../utils/TestIdUtil';
+import { useArray } from '../../../hooks/useArray';
 
 export const AuthorizationWrapper = ({ children }: PropsWithChildren): ReactNode => {
   const [t] = useTranslation();
@@ -26,19 +27,35 @@ export const AuthorizationWrapper = ({ children }: PropsWithChildren): ReactNode
 
   const requiresUserProfile = useMemo(() => last(matches).handle.requiresUserProfile, [matches]);
 
-  const { isLoading: isUserLoading, error: userError, data: user } = useQuery({
+  const userQuery = useQuery({
     queryKey: QueryUtil.getGenericKey(QUERY_KEY.USER_ME),
     queryFn: async ({ signal }) => (await OrganizationApi.getInstance().userMeGetOne({ signal })).data,
     gcTime: Infinity,
     staleTime: Infinity,
     enabled: requiresUserProfile,
   });
+  const userPermissionsQuery = useQuery({
+    queryKey: QueryUtil.getGenericKey(QUERY_KEY.USER_PERMISSIONS),
+    queryFn: async ({ signal }) => (await OrganizationApi.getInstance().userMeRetrievePermissions({ signal })).data,
+    gcTime: Infinity,
+    staleTime: Infinity,
+    enabled: requiresUserProfile,
+  });
 
-  if (user) {
-    AuthorizationManager.instance.user = user;
+  const loadables = useArray([
+    userQuery,
+    userPermissionsQuery,
+  ]);
+
+
+  if (userQuery.data) {
+    AuthorizationManager.instance.user = userQuery.data;
+  }
+  if (userPermissionsQuery.data) {
+    AuthorizationManager.instance.apiPermissions = userPermissionsQuery.data;
   }
 
-  if (requiresUserProfile && (isUserLoading || userError)) {
+  if (requiresUserProfile && (loadables.some((l) => l.isLoading) || loadables.some((l) => l.isError))) {
     return (
       <PageContainer
         ignorePageEvent
@@ -47,8 +64,7 @@ export const AuthorizationWrapper = ({ children }: PropsWithChildren): ReactNode
         title={t`Loading user data`}
       >
         <ResponseHandler
-          error={userError}
-          isLoading
+          loadables={loadables}
           loadingMessage={t`Loading user data`}
         />
       </PageContainer>

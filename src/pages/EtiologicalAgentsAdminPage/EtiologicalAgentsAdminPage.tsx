@@ -59,13 +59,13 @@ export const EtiologicalAgentsAdminPage = () => {
         definition: FORM_FIELD_DEFINITION_TYPE.TEXTFIELD,
         name: 'name',
         label: t`Name`,
-      },
+      } as const satisfies FormFieldDefinition<FormFields>,
       {
         definition: FORM_FIELD_DEFINITION_TYPE.TEXTFIELD,
         name: 'type',
         label: t`Type`,
-      },
-    ];
+      } as const satisfies FormFieldDefinition<FormFields>,
+    ] as const;
   }, [t]);
 
   const tableColumns = useMemo((): TableColumn<EtiologicalAgent>[] => {

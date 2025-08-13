@@ -61,18 +61,18 @@ export const RegionSetsAdminPage = () => {
         definition: FORM_FIELD_DEFINITION_TYPE.TEXTFIELD,
         name: 'name',
         label: t`Name`,
-      },
+      } as const satisfies FormFieldDefinition<FormFields>,
       {
         definition: FORM_FIELD_DEFINITION_TYPE.TEXTFIELD,
         name: 'code',
         label: t`Code`,
-      },
+      } as const satisfies FormFieldDefinition<FormFields>,
       {
         definition: FORM_FIELD_DEFINITION_TYPE.BOOLEAN,
         name: 'region_code_as_label',
         label: t`Region code as label`,
-      },
-    ];
+      } as const satisfies FormFieldDefinition<FormFields>,
+    ] as const;
   }, [t]);
 
   const tableColumns = useMemo((): TableColumn<RegionSet>[] => {

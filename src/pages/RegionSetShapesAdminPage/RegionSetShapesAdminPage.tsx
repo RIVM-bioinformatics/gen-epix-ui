@@ -74,21 +74,21 @@ export const RegionSetShapesAdminPage = () => {
         label: t`Region set`,
         options: regionSetOptionsQuery.options,
         loading: regionSetOptionsQuery.isLoading,
-      },
+      } as const satisfies FormFieldDefinition<FormFields>,
       {
         definition: FORM_FIELD_DEFINITION_TYPE.TEXTFIELD,
         name: 'scale',
         label: t`Scale`,
         type: 'number',
-      },
+      } as const satisfies FormFieldDefinition<FormFields>,
       {
         definition: FORM_FIELD_DEFINITION_TYPE.TEXTFIELD,
         name: 'geo_json',
         label: t`Scale`,
         rows: 20,
         multiline: true,
-      },
-    ];
+      } as const satisfies FormFieldDefinition<FormFields>,
+    ] as const;
   }, [regionSetOptionsQuery.isLoading, regionSetOptionsQuery.options, t]);
 
   const tableColumns = useMemo((): TableColumn<RegionSetShape>[] => {

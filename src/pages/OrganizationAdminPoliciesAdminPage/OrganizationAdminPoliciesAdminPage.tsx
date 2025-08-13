@@ -72,20 +72,20 @@ export const OrganizationAdminPoliciesAdminPage = () => {
         label: t`Organization`,
         options: organizationOptionsQuery.options,
         loading: organizationOptionsQuery.isLoading,
-      },
+      } as const satisfies FormFieldDefinition<FormFields>,
       {
         definition: FORM_FIELD_DEFINITION_TYPE.AUTOCOMPLETE,
         name: 'user_id',
         label: t`User`,
         options: userOptionsQuery.options,
         loading: userOptionsQuery.isLoading,
-      },
+      } as const satisfies FormFieldDefinition<FormFields>,
       {
         definition: FORM_FIELD_DEFINITION_TYPE.BOOLEAN,
         name: 'is_active',
         label: t`Active`,
-      },
-    ];
+      } as const satisfies FormFieldDefinition<FormFields>,
+    ] as const;
   }, [organizationOptionsQuery.isLoading, organizationOptionsQuery.options, t, userOptionsQuery.isLoading, userOptionsQuery.options]);
 
   const tableColumns = useMemo((): TableColumn<OrganizationAdminPolicy>[] => {

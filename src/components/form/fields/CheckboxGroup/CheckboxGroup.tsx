@@ -28,10 +28,7 @@ import type {
   ControllerRenderProps,
 } from 'react-hook-form';
 
-import type {
-  FormFieldBaseProps,
-  CheckboxOption,
-} from '../../../../models/form';
+import type { CheckboxOption } from '../../../../models/form';
 import { FormUtil } from '../../../../utils/FormUtil';
 import { TestIdUtil } from '../../../../utils/TestIdUtil';
 import { FormFieldHelperText } from '../../helpers/FormFieldHelperText';
@@ -40,11 +37,17 @@ import { FormFieldLoadingIndicator } from '../../helpers/FormFieldLoadingIndicat
 
 type CheckBoxGroupValue = Array<string | number>;
 
-export interface CheckboxGroupProps<TFieldValues extends FieldValues, TName extends Path<TFieldValues> = Path<TFieldValues>> extends FormFieldBaseProps<TFieldValues, TName, CheckBoxGroupValue> {
+export type CheckboxGroupProps<TFieldValues extends FieldValues, TName extends Path<TFieldValues> = Path<TFieldValues>> = {
+  readonly disabled?: boolean;
+  readonly label: string;
+  readonly name: TName;
+  readonly onChange?: (value: CheckBoxGroupValue) => void;
+  readonly required?: boolean;
+  readonly warningMessage?: string | boolean;
   readonly row?: boolean;
   readonly options: CheckboxOption[];
   readonly loading?: boolean;
-}
+};
 
 export const CheckboxGroup = <TFieldValues extends FieldValues, TName extends Path<TFieldValues> = Path<TFieldValues>>({
   disabled,

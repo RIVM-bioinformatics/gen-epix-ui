@@ -24,8 +24,8 @@ import {
   type ConfirmationRefMethods,
 } from '../Confirmation';
 import {
+  AbacApi,
   LogLevel,
-  OrganizationApi,
 } from '../../../api';
 import { AuthorizationManager } from '../../../classes/managers/AuthorizationManager';
 import { LogManager } from '../../../classes/managers/LogManager';
@@ -49,7 +49,7 @@ export const UserMenu = ({ anchorElement, onClose }: UserMenuProps): ReactElemen
 
   const { isLoading: isOrganizationAdminNameEmailsLoading, error: organizationAdminNameEmailsError, data: organizationAdminNameEmails } = useQuery({
     queryKey: QueryUtil.getGenericKey(QUERY_KEY.ORGANIZATION_ADMIN_NAME_EMAILS),
-    queryFn: async ({ signal }) => (await OrganizationApi.getInstance().retrieveOrganizationAdminNameEmails({ signal })).data,
+    queryFn: async ({ signal }) => (await AbacApi.getInstance().retrieveOrganizationAdminNameEmails({ signal })).data,
     gcTime: Infinity,
     staleTime: Infinity,
   });

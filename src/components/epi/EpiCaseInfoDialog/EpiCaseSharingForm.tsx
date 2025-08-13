@@ -57,8 +57,8 @@ export const EpiCaseSharingForm = ({ formId, epiCase, onFinish, onIsSavingChange
       label: t`Data collections`,
       options: caseAbacContext?.itemDataCollectionOptions?.[0] ?? [],
       multiple: true,
-    },
-  ], [t, caseAbacContext?.itemDataCollectionOptions]);
+    } as const satisfies FormFieldDefinition<FormFields>,
+  ] as const, [t, caseAbacContext?.itemDataCollectionOptions]);
 
   const item = useMemo<FormFields>(() => {
     return {

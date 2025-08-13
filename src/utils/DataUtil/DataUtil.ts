@@ -2,10 +2,7 @@ import type { TFunction } from 'i18next';
 import type { UseQueryResult } from '@tanstack/react-query';
 
 import { StringUtil } from '../StringUtil';
-import type {
-  CompleteUser,
-  User,
-} from '../../api';
+import type { User } from '../../api';
 import type {
   Loadable,
   UseMap,
@@ -14,7 +11,7 @@ import type {
 } from '../../models/dataHooks';
 
 export class DataUtil {
-  public static getUserDisplayValue(user: User | CompleteUser, t: TFunction<'translation', undefined>): string {
+  public static getUserDisplayValue(user: User, t: TFunction<'translation', undefined>): string {
     if (!user) {
       return t`Unknown user`;
     }

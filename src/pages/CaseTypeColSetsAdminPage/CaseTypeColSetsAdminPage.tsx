@@ -13,7 +13,7 @@ import omit from 'lodash/omit';
 import type {
   CaseTypeColSet,
   CaseTypeColSetMember,
-  Permission,
+  ApiPermission,
 } from '../../api';
 import {
   CaseApi,
@@ -93,23 +93,22 @@ export const CaseTypeColSetsAdminPage = () => {
         definition: FORM_FIELD_DEFINITION_TYPE.TEXTFIELD,
         name: 'name',
         label: t`Name`,
-      },
+      } as const satisfies FormFieldDefinition<FormFields>,
       {
         definition: FORM_FIELD_DEFINITION_TYPE.TEXTFIELD,
         name: 'description',
         label: t`Description`,
         multiline: true,
         rows: 5,
-      },
+      } as const satisfies FormFieldDefinition<FormFields>,
       {
         definition: FORM_FIELD_DEFINITION_TYPE.TRANSFER_LIST,
         name: 'caseTypeColIds',
         label: t`Case type columns`,
         options: caseTypeColOptionsQuery.options,
-        multiple: true,
         loading: caseTypeColOptionsQuery.isLoading,
-      },
-    ];
+      } as const satisfies FormFieldDefinition<FormFields>,
+    ] as const;
   }, [caseTypeColOptionsQuery.isLoading, caseTypeColOptionsQuery.options, t]);
 
   const tableColumns = useMemo((): TableColumn<TableData>[] => {
@@ -129,13 +128,13 @@ export const CaseTypeColSetsAdminPage = () => {
     ];
   }, [caseTypeColOptionsQuery.options.length, t]);
 
-  const extraCreateOnePermissions = useMemo<Permission[]>(() => [
+  const extraCreateOnePermissions = useMemo<ApiPermission[]>(() => [
     { command_name: CommandName.CaseTypeColSetCaseTypeColUpdateAssociationCommand, permission_type: PermissionType.EXECUTE },
   ], []);
-  const extraDeleteOnePermissions = useMemo<Permission[]>(() => [
+  const extraDeleteOnePermissions = useMemo<ApiPermission[]>(() => [
     { command_name: CommandName.CaseTypeColSetCaseTypeColUpdateAssociationCommand, permission_type: PermissionType.EXECUTE },
   ], []);
-  const extraUpdateOnePermissions = useMemo<Permission[]>(() => [
+  const extraUpdateOnePermissions = useMemo<ApiPermission[]>(() => [
     { command_name: CommandName.CaseTypeColSetCaseTypeColUpdateAssociationCommand, permission_type: PermissionType.EXECUTE },
   ], []);
 

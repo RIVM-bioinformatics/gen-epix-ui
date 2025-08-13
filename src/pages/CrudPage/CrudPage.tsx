@@ -22,7 +22,7 @@ import isArray from 'lodash/isArray';
 
 import type {
   CommandName,
-  Permission,
+  ApiPermission,
 } from '../../api';
 import { PermissionType } from '../../api';
 import { AuthorizationManager } from '../../classes/managers/AuthorizationManager';
@@ -81,9 +81,9 @@ export type CrudPageProps<
   readonly defaultSortDirection: TableSortDirection;
   readonly deleteOne?: (item: TData) => Promise<unknown>;
   readonly extraActionsFactory?: (params: TableRowParams<TData>) => ReactElement[];
-  readonly extraCreateOnePermissions?: Permission[];
-  readonly extraDeleteOnePermissions?: Permission[];
-  readonly extraUpdateOnePermissions?: Permission[];
+  readonly extraCreateOnePermissions?: ApiPermission[];
+  readonly extraDeleteOnePermissions?: ApiPermission[];
+  readonly extraUpdateOnePermissions?: ApiPermission[];
   readonly fetchAll: (signal: AbortSignal) => Promise<TData[]>;
   readonly formFieldDefinitions?: FormFieldDefinition<TFormFields>[];
   readonly getName: (item: TData | TFormFields) => string;

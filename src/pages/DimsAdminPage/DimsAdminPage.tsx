@@ -69,36 +69,36 @@ export const DimsAdminPage = () => {
         name: 'dim_type',
         label: t`Dimension type`,
         options: dimTypeOptionsQuery.options,
-      },
+      } as const satisfies FormFieldDefinition<FormFields>,
       {
         definition: FORM_FIELD_DEFINITION_TYPE.TEXTFIELD,
         name: 'label',
         label: t`Label`,
-      },
+      } as const satisfies FormFieldDefinition<FormFields>,
       {
         definition: FORM_FIELD_DEFINITION_TYPE.TEXTFIELD,
         name: 'description',
         label: t`Description`,
         multiline: true,
         rows: 5,
-      },
+      } as const satisfies FormFieldDefinition<FormFields>,
       {
         definition: FORM_FIELD_DEFINITION_TYPE.TEXTFIELD,
         name: 'code',
         label: t`Code`,
-      },
+      } as const satisfies FormFieldDefinition<FormFields>,
       {
         definition: FORM_FIELD_DEFINITION_TYPE.TEXTFIELD,
         name: 'col_code_prefix',
         label: t`Column code prefix`,
-      },
+      } as const satisfies FormFieldDefinition<FormFields>,
       {
         definition: FORM_FIELD_DEFINITION_TYPE.TEXTFIELD,
         name: 'rank',
         label: t`Rank`,
         type: 'number',
-      },
-    ];
+      } as const satisfies FormFieldDefinition<FormFields>,
+    ] as const;
   }, [dimTypeOptionsQuery.options, t]);
 
   const tableColumns = useMemo((): TableColumn<Dim>[] => {

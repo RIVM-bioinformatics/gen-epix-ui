@@ -13,7 +13,8 @@ export const useCaseSetStatsQuery = (): UseQueryResult<CaseSetStat[]> => {
   return useQueryMemo({
     queryKey: QueryUtil.getGenericKey(QUERY_KEY.CASE_SET_STATS),
     queryFn: async ({ signal }) => {
-      const response = await CaseApi.getInstance().retrieveCaseSetStats({ signal });
+      // FIXME
+      const response = await CaseApi.getInstance().retrieveCaseSetStats({}, { signal });
       return response.data;
     },
   });

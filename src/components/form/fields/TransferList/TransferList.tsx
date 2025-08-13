@@ -38,19 +38,22 @@ import intersection from 'lodash/intersection';
 import { useTranslation } from 'react-i18next';
 import { useDebouncedCallback } from 'use-debounce';
 
-import type {
-  FormFieldBaseProps,
-  TransferListOption,
-} from '../../../../models/form';
+import type { TransferListOption } from '../../../../models/form';
 import { FormUtil } from '../../../../utils/FormUtil';
 import { TestIdUtil } from '../../../../utils/TestIdUtil';
 import { FormFieldHelperText } from '../../helpers/FormFieldHelperText';
 
-export interface TransferListProps<TFieldValues extends FieldValues, TName extends Path<TFieldValues> = Path<TFieldValues>> extends FormFieldBaseProps<TFieldValues, TName> {
+export type TransferListProps<TFieldValues extends FieldValues, TName extends Path<TFieldValues> = Path<TFieldValues>> = {
+  readonly disabled?: boolean;
+  readonly label: string;
+  readonly name: TName;
+  readonly onChange?: (value: string) => void;
+  readonly required?: boolean;
+  readonly warningMessage?: string | boolean;
   readonly options: TransferListOption[];
   readonly loading?: boolean;
   readonly height?: number;
-}
+};
 
 export const TransferList = <TFieldValues extends FieldValues, TName extends Path<TFieldValues> = Path<TFieldValues>>({
   disabled,

@@ -53,7 +53,6 @@ import {
 } from 'date-fns/locale';
 import isEqual from 'lodash/isEqual';
 
-import type { FormFieldBaseProps } from '../../../../models/form';
 import { FormUtil } from '../../../../utils/FormUtil';
 import { TestIdUtil } from '../../../../utils/TestIdUtil';
 import { FormFieldHelperText } from '../../helpers/FormFieldHelperText';
@@ -62,12 +61,18 @@ import { DATE_FORMAT } from '../../../../data/date';
 import { WindowManager } from '../../../../classes/managers/WindowManager';
 
 
-export interface DateRangePickerProps<TFieldValues extends FieldValues, TName extends Path<TFieldValues> = Path<TFieldValues>> extends FormFieldBaseProps<TFieldValues, TName, [Date, Date]> {
+export type DateRangePickerProps<TFieldValues extends FieldValues, TName extends Path<TFieldValues> = Path<TFieldValues>> = {
+  readonly disabled?: boolean;
+  readonly label: string;
+  readonly name: TName;
+  readonly onChange?: (value: [Date, Date]) => void;
+  readonly required?: boolean;
+  readonly warningMessage?: string | boolean;
   readonly loading?: boolean;
   readonly minDate?: Date;
   readonly maxDate?: Date;
   readonly dateFormat: typeof DATE_FORMAT[keyof typeof DATE_FORMAT];
-}
+};
 
 export const DateRangePicker = <TFieldValues extends FieldValues, TName extends Path<TFieldValues> = Path<TFieldValues>>({
   disabled = false,

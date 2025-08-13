@@ -27,16 +27,6 @@ export type ToggleButtonOption<TValue = void> = OptionBase<TValue extends void ?
 export type CheckboxOption = OptionBase<string | number>;
 export type TransferListOption = OptionBase<string>;
 
-export interface FormFieldBaseProps<TFieldValues extends FieldValues, TName extends Path<TFieldValues>, TValue = string> {
-  disabled?: boolean;
-  label: string;
-  name: TName;
-  onChange?: (value: TValue) => void;
-  required?: boolean;
-  warningMessage?: string | boolean;
-}
-
-
 export enum FORM_FIELD_DEFINITION_TYPE {
   TRANSFER_LIST = 'TRANSFER_LIST',
   AUTOCOMPLETE = 'AUTOCOMPLETE',
@@ -47,12 +37,21 @@ export enum FORM_FIELD_DEFINITION_TYPE {
   DATE = 'DATE',
 }
 
+export type FormFieldDefinitionAutocomplete<TFormFields extends FieldValues> = { definition: FORM_FIELD_DEFINITION_TYPE.AUTOCOMPLETE; multiple?: false } & AutocompleteProps<TFormFields, Path<TFormFields>, false>;
+export type FormFieldDefinitionAutocompleteMultiple<TFormFields extends FieldValues> = { definition: FORM_FIELD_DEFINITION_TYPE.AUTOCOMPLETE; multiple?: true } & AutocompleteProps<TFormFields, Path<TFormFields>, true>;
+export type FormFieldDefinitionTextField<TFormFields extends FieldValues> = { definition: FORM_FIELD_DEFINITION_TYPE.TEXTFIELD } & TextFieldProps<TFormFields, Path<TFormFields>>;
+export type FormFieldDefinitionBoolean<TFormFields extends FieldValues> = { definition: FORM_FIELD_DEFINITION_TYPE.BOOLEAN } & Omit<SelectProps<TFormFields, Path<TFormFields>, false>, 'options'>;
+export type FormFieldDefinitionTransferList<TFormFields extends FieldValues> = { definition: FORM_FIELD_DEFINITION_TYPE.TRANSFER_LIST } & TransferListProps<TFormFields, Path<TFormFields>>;
+export type FormFieldDefinitionHidden<TFormFields extends FieldValues> = { definition: FORM_FIELD_DEFINITION_TYPE.HIDDEN } & TextFieldProps<TFormFields, Path<TFormFields>>;
+export type FormFieldDefinitionRichText<TFormFields extends FieldValues> = { definition: FORM_FIELD_DEFINITION_TYPE.RICH_TEXT } & RichTextEditorProps<TFormFields, Path<TFormFields>>;
+export type FormFieldDefinitionDate<TFormFields extends FieldValues> = { definition: FORM_FIELD_DEFINITION_TYPE.DATE } & DatePickerProps<TFormFields, Path<TFormFields>>;
+
 export type FormFieldDefinition<TFormFields> =
-  ({ definition: FORM_FIELD_DEFINITION_TYPE.AUTOCOMPLETE; multiple?: false } & AutocompleteProps<TFormFields, Path<TFormFields>, false>) |
-  ({ definition: FORM_FIELD_DEFINITION_TYPE.AUTOCOMPLETE; multiple?: true } & AutocompleteProps<TFormFields, Path<TFormFields>, true>) |
-  ({ definition: FORM_FIELD_DEFINITION_TYPE.TEXTFIELD } & TextFieldProps<TFormFields, Path<TFormFields>>) |
-  ({ definition: FORM_FIELD_DEFINITION_TYPE.BOOLEAN } & Omit<SelectProps<TFormFields, Path<TFormFields>, false>, 'options'>) |
-  ({ definition: FORM_FIELD_DEFINITION_TYPE.TRANSFER_LIST } & TransferListProps<TFormFields, Path<TFormFields>>) |
-  ({ definition: FORM_FIELD_DEFINITION_TYPE.HIDDEN } & TextFieldProps<TFormFields, Path<TFormFields>>) |
-  ({ definition: FORM_FIELD_DEFINITION_TYPE.RICH_TEXT } & RichTextEditorProps<TFormFields, Path<TFormFields>>) |
-  ({ definition: FORM_FIELD_DEFINITION_TYPE.DATE } & DatePickerProps<TFormFields, Path<TFormFields>>);
+  FormFieldDefinitionAutocomplete<TFormFields> |
+  FormFieldDefinitionAutocompleteMultiple<TFormFields> |
+  FormFieldDefinitionTextField<TFormFields> |
+  FormFieldDefinitionBoolean<TFormFields> |
+  FormFieldDefinitionTransferList<TFormFields> |
+  FormFieldDefinitionHidden<TFormFields> |
+  FormFieldDefinitionRichText<TFormFields> |
+  FormFieldDefinitionDate<TFormFields>;
