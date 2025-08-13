@@ -121,7 +121,7 @@
     "zustand": "5.0.7"
   },
   "devDependencies": {
-    "@gen-epix/eslint-config": "0.0.10",
+    "@gen-epix/eslint-config": "0.0.11",
     "@gen-epix/generate-api": "0.0.11",
     "@gen-epix/reconfigure-package": "0.0.3",
     "@gen-epix/typescript-config": "0.0.4",
