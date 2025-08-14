@@ -1,5 +1,43 @@
 # Changelog
 
+## [1.4.0](https://github.com/RIVM-bioinformatics/gen-epix-ui/compare/v1.3.0...v1.4.0) (2025-08-14)
+
+
+### Features
+
+* add advances sorting algorithm to user:name and organization:name ([1beeb00](https://github.com/RIVM-bioinformatics/gen-epix-ui/commit/1beeb00a8d3dd3efa8c61e473719d4196242563c))
+* change copy permalink to clipboard icon, add permalink to case type dialog ([3a41a6b](https://github.com/RIVM-bioinformatics/gen-epix-ui/commit/3a41a6b54cd1eca91dae726d2d66de715bec97aa))
+* column order menu ([f10c8dd](https://github.com/RIVM-bioinformatics/gen-epix-ui/commit/f10c8dd19f207fc88d4e8de7ceb655a02faadb38))
+* effective user rights ([d53bb4c](https://github.com/RIVM-bioinformatics/gen-epix-ui/commit/d53bb4ca1cd1d12789e4c0c128f707d4611d2e77))
+* make advanced sorting part of TableUtil ([4a86897](https://github.com/RIVM-bioinformatics/gen-epix-ui/commit/4a86897be0d73a397b83dbcd57709182850f426a))
+* make edit- and create notification messages more descriptive bases on https status code ([9583ab7](https://github.com/RIVM-bioinformatics/gen-epix-ui/commit/9583ab7bc2aa4d89e98d333166225c72267c58da))
+* on CrudPages you should always be able to open an item. ([b637e96](https://github.com/RIVM-bioinformatics/gen-epix-ui/commit/b637e96eef31fe85d3ab8b2597ead63a9e6146c9))
+* remove sheejs dependency in favour of exceljs ([bae188d](https://github.com/RIVM-bioinformatics/gen-epix-ui/commit/bae188d8bbbb5471e710493d743cbd237183c9f7))
+* rename context providers ([f10c8dd](https://github.com/RIVM-bioinformatics/gen-epix-ui/commit/f10c8dd19f207fc88d4e8de7ceb655a02faadb38))
+* replace markdown editor with html editor ([c281ea7](https://github.com/RIVM-bioinformatics/gen-epix-ui/commit/c281ea7ce301d54f3c4d95e81af07fa36fe1c0fe))
+* update api ([d84d3f9](https://github.com/RIVM-bioinformatics/gen-epix-ui/commit/d84d3f9db94430d4d049ec3de1c69caeaa2f2c57))
+
+
+### Bug Fixes
+
+* add baseBranches for renovate ([2cfbf8e](https://github.com/RIVM-bioinformatics/gen-epix-ui/commit/2cfbf8eb331a3aa9e1b72398110ce5a81833d681))
+* add correct config renovate ([2091a94](https://github.com/RIVM-bioinformatics/gen-epix-ui/commit/2091a94b4b4c83b20ad11cf631a5c087d22a59ac))
+* allow organization name and organization legal entity code to contain an extended character set ([d144b8e](https://github.com/RIVM-bioinformatics/gen-epix-ui/commit/d144b8e667c7c737edd6e82861d0888fd9e496c6))
+* disable organization link if organization data is missing ([02df1ab](https://github.com/RIVM-bioinformatics/gen-epix-ui/commit/02df1ab98054b4ff8459734bbdf81a30db72abe7))
+* downgrade typescript to 5.8.3 because 5.9.x does not work with eslint parser ([bae188d](https://github.com/RIVM-bioinformatics/gen-epix-ui/commit/bae188d8bbbb5471e710493d743cbd237183c9f7))
+* epi list should show stratifying when stratifying on organization ([c28d5b6](https://github.com/RIVM-bioinformatics/gen-epix-ui/commit/c28d5b62de96412205220b6b72a98dd2840ed02c))
+* fix data collection sets admin page should call the correct endpoint ([67ac9bb](https://github.com/RIVM-bioinformatics/gen-epix-ui/commit/67ac9bb5822fea1deffb889b6f6cdfb4ddcad126))
+* fix StringUtil:advancedSortComperator so it doesn't fail on null and undefined values ([86d1422](https://github.com/RIVM-bioinformatics/gen-epix-ui/commit/86d142226270c99427dd146cc4e4bd2a78877650))
+* fix table filter z-index so it appears on top of static table columns ([12405cd](https://github.com/RIVM-bioinformatics/gen-epix-ui/commit/12405cd0079d15f7fea6af1213665fe13c3eb9c5))
+* fix tree rendering issues, show genetic distance from right to left (right being 0 distance) ([d97db0b](https://github.com/RIVM-bioinformatics/gen-epix-ui/commit/d97db0b5316dc7f205cb91908e28d47de8eb31c3))
+* fix user's name and organization not set after editing ([197a388](https://github.com/RIVM-bioinformatics/gen-epix-ui/commit/197a3888b1b28e7ba604cbcbbb4a193f8f83d948))
+* frontend should not fail when backend returns a 500 error for case type stats ([aff5a0e](https://github.com/RIVM-bioinformatics/gen-epix-ui/commit/aff5a0e42d7bc1029ef34530ec43fb505ec81d90))
+* hide home page trends if user does not have permission to see them ([cbe8544](https://github.com/RIVM-bioinformatics/gen-epix-ui/commit/cbe85441c8b20419e231b98aadd6f7b97a3a3e7c))
+* make cancel buttons more consistent by removing them. in case- and caseset dialog changed to 'go back' button ([b593783](https://github.com/RIVM-bioinformatics/gen-epix-ui/commit/b5937833a9258ead05daf8d50b12fa90b9d8d317))
+* number range filter upper_bound_censor when lower value and upper value are equal ([9ff8de5](https://github.com/RIVM-bioinformatics/gen-epix-ui/commit/9ff8de5fdc78ea039279d1ab1e45c5fbe9c9b7ca))
+* populate organization field in UserInvitationsAdminPage for root and app_admin (temporary solution) ([2fa5d67](https://github.com/RIVM-bioinformatics/gen-epix-ui/commit/2fa5d67801ef4cb01d488be610a25eedaeeed877))
+* users should not be able to edit themselves ([4cf35d8](https://github.com/RIVM-bioinformatics/gen-epix-ui/commit/4cf35d8e5dd226e620d4fab40e5ed687104063cf))
+
 ## [1.3.0](https://github.com/RIVM-bioinformatics/gen-epix-ui/compare/v1.2.0...v1.3.0) (2025-06-27)
 
 
