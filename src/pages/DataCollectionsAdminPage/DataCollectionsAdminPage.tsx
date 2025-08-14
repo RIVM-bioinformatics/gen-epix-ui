@@ -61,11 +61,9 @@ export const DataCollectionsAdminPage = () => {
         label: t`Name`,
       } as const satisfies FormFieldDefinition<FormFields>,
       {
-        definition: FORM_FIELD_DEFINITION_TYPE.TEXTFIELD,
+        definition: FORM_FIELD_DEFINITION_TYPE.RICH_TEXT,
         name: 'description',
         label: t`Description`,
-        multiline: true,
-        rows: 5,
       } as const satisfies FormFieldDefinition<FormFields>,
     ] as const;
   }, [t]);
@@ -73,7 +71,6 @@ export const DataCollectionsAdminPage = () => {
   const tableColumns = useMemo((): TableColumn<DataCollection>[] => {
     return [
       TableUtil.createTextColumn<DataCollection>({ id: 'name', name: t`Name` }),
-      TableUtil.createTextColumn<DataCollection>({ id: 'description', name: t`Description` }),
     ];
   }, [t]);
 

@@ -55,11 +55,11 @@ export const DataCollectionSetsAdminPage = () => {
         data_collection_set_id: item.id,
       })),
     });
-    return (await OrganizationApi.getInstance().dataCollectionsPutOne(item.id, { id: item.id, ...variables })).data;
+    return (await OrganizationApi.getInstance().dataCollectionSetsPutOne(item.id, { id: item.id, ...variables })).data;
   }, []);
 
   const createOne = useCallback(async (variables: FormFields) => {
-    const resultItem = (await OrganizationApi.getInstance().dataCollectionsPostOne(variables)).data;
+    const resultItem = (await OrganizationApi.getInstance().dataCollectionSetsPostOne(variables)).data;
     await OrganizationApi.getInstance().dataCollectionSetsPutDataCollections(resultItem.id, {
       data_collection_set_members: variables.dataCollectionIds.map<DataCollectionSetMember>(data_collection_id => ({
         data_collection_id,
@@ -106,7 +106,6 @@ export const DataCollectionSetsAdminPage = () => {
   const tableColumns = useMemo((): TableColumn<TableData>[] => {
     return [
       TableUtil.createTextColumn<TableData>({ id: 'name', name: t`Name`, advancedSort: true }),
-      TableUtil.createTextColumn<TableData>({ id: 'description', name: t`Description` }),
       {
         type: 'number',
         id: 'numDataCollections',
