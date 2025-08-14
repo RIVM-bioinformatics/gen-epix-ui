@@ -19,6 +19,7 @@ import type { UserInvitation } from '../../api';
 import {
   OrganizationApi,
   CommandName,
+  Role,
 } from '../../api';
 import { AuthorizationManager } from '../../classes/managers/AuthorizationManager';
 import { useOrganizationAdminPolicyMapQuery } from '../../dataHooks/useOrganizationAdminPoliciesQuery';
@@ -57,6 +58,9 @@ export const UserInvitationsAdminPage = () => {
   const organizationOptions = useMemo<OptionBase<string>[]>(() => {
     if (organizationOptionsQuery.isLoading || organizationOptionsQuery.error) {
       return [];
+    }
+    if (AuthorizationManager.instance.isRoot() || AuthorizationManager.instance.hasRole(Role.APP_ADMIN)) {
+      return organizationOptionsQuery.options;
     }
     const allowedOrganizationIds = Array.from(organizationAdminPolicyMapQuery.map.values()).filter((policy) => policy.is_active && policy.user_id === AuthorizationManager.instance.user.id).map((policy) => policy.organization_id);
     return organizationOptionsQuery.options.filter((option) => allowedOrganizationIds.includes(option.value));

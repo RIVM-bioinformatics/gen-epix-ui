@@ -1,6 +1,7 @@
-import type {
-  User,
-  ApiPermission,
+import {
+  type User,
+  type ApiPermission,
+  Role,
 } from '../../../api';
 import type { MyNonIndexRouteObject } from '../../../models/reactRouter';
 import { PageEventBusManager } from '../PageEventBusManager';
@@ -52,6 +53,14 @@ export class AuthorizationManager {
       return false;
     }
     return route.children?.some((childRoute) => this.doesUserHavePermissionForRoute(childRoute as MyNonIndexRouteObject, orAnyOfItsSubRoutes));
+  }
+
+  public hasRole(role: Role): boolean {
+    return this.user.roles.includes(role);
+  }
+
+  public isRoot(): boolean {
+    return this.user.roles.includes(Role.ROOT);
   }
 
   public doesUserHavePermission(permissions: ApiPermission[]): boolean {
