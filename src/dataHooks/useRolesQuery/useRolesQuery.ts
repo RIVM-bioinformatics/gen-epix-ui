@@ -11,7 +11,7 @@ export const rolePresentationValues: Record<Role, string> = {
   [Role.ROOT]: 'ROOT',
   [Role.APP_ADMIN]: 'APP_ADMIN',
   [Role.ORG_ADMIN]: 'ORG_ADMIN',
-  [Role.METADATA_ADMIN]: 'METADATA_ADMIN',
+  [Role.REFDATA_ADMIN]: 'REFDATA_ADMIN',
   [Role.ORG_USER]: 'ORG_USER',
   [Role.GUEST]: 'GUEST',
   [Role.ROLE1]: 'ROLE1',
