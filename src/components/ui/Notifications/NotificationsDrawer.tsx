@@ -98,7 +98,7 @@ export const NotificationsDrawer = ({ onDrawerClose, open }: NotificationsDrawer
             }}
             >
               <Typography>
-                {t`No new notifications from this session`}
+                {t`No new notifications in this session`}
               </Typography>
             </Box>
           </Box>

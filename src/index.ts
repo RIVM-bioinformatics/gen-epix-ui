@@ -114,6 +114,7 @@ export * from './hooks/useDeleteMutation';
 export * from './hooks/useCreateMutation';
 export * from './hooks/useColumnsMenu';
 export * from './hooks/useArray';
+export * from './hoc/withPermissions';
 export * from './hoc/withDialog';
 export * from './dataHooks/useUsersQuery';
 export * from './dataHooks/useUserShareCasePoliciesQuery';

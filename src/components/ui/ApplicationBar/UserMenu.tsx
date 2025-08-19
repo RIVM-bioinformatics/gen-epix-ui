@@ -10,30 +10,25 @@ import {
   ListItem,
   Box,
   ListItemText,
-  Link,
   ListItemButton,
   ListItemIcon,
 } from '@mui/material';
 import LogoutIcon from '@mui/icons-material/Logout';
 import { useTranslation } from 'react-i18next';
-import { useQuery } from '@tanstack/react-query';
 import { useAuth } from 'react-oidc-context';
 
 import {
   Confirmation,
   type ConfirmationRefMethods,
 } from '../Confirmation';
-import {
-  AbacApi,
-  LogLevel,
-} from '../../../api';
+import { LogLevel } from '../../../api';
 import { AuthorizationManager } from '../../../classes/managers/AuthorizationManager';
 import { LogManager } from '../../../classes/managers/LogManager';
-import { QUERY_KEY } from '../../../models/query';
 import { DataUtil } from '../../../utils/DataUtil';
-import { QueryUtil } from '../../../utils/QueryUtil';
 import { StringUtil } from '../../../utils/StringUtil';
 import { TestIdUtil } from '../../../utils/TestIdUtil';
+
+import { UserOrganizationAdminMenuItem } from './UserOrganizationAdminMenuItem';
 
 type UserMenuProps = {
   readonly onClose: () => void;
@@ -46,13 +41,6 @@ export const UserMenu = ({ anchorElement, onClose }: UserMenuProps): ReactElemen
   const popoverId = useMemo(() => StringUtil.createUuid(), []);
   const isUserMenuOpen = !!anchorElement;
   const [t] = useTranslation();
-
-  const { isLoading: isOrganizationAdminNameEmailsLoading, error: organizationAdminNameEmailsError, data: organizationAdminNameEmails } = useQuery({
-    queryKey: QueryUtil.getGenericKey(QUERY_KEY.ORGANIZATION_ADMIN_NAME_EMAILS),
-    queryFn: async ({ signal }) => (await AbacApi.getInstance().retrieveOrganizationAdminNameEmails({ signal })).data,
-    gcTime: Infinity,
-    staleTime: Infinity,
-  });
 
   const onLogoutButtonClick = useCallback(() => {
     logoutConfirmation.current.open();
@@ -170,43 +158,7 @@ export const UserMenu = ({ anchorElement, onClose }: UserMenuProps): ReactElemen
           />
         </ListItem>
 
-        <ListItem
-          alignItems={'center'}
-          divider
-          sx={{
-            justifyContent: 'center',
-            paddingTop: 0,
-          }}
-        >
-          <ListItemText
-            primary={t`Your organization admins`}
-            secondary={(
-              <>
-                {isOrganizationAdminNameEmailsLoading && t`Loading...`}
-                {organizationAdminNameEmailsError && t`Error`}
-                {organizationAdminNameEmails?.map(admin => (
-                  <Link
-                    href={`mailto:${admin.email}`}
-                    key={admin.id}
-                    sx={{
-                      display: 'table',
-                    }}
-                  >
-                    {admin.name ?? admin.email}
-                  </Link>
-                ))}
-              </>
-            )}
-            slotProps={{
-              primary: {
-                sx: {
-                  fontWeight: 'bold',
-                },
-              },
-            }}
-          />
-
-        </ListItem>
+        <UserOrganizationAdminMenuItem />
 
         <ListItem
           alignItems={'center'}
