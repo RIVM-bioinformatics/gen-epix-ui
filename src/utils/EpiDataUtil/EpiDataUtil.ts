@@ -192,13 +192,14 @@ export class EpiDataUtil {
     }
 
     const currentOrganizations = QueryUtil.getValidQueryData<Organization[]>(QueryUtil.getGenericKey(QUERY_KEY.ORGANIZATIONS_LAZY)) ?? [];
-    const organizations = (await OrganizationApi.getInstance().organizationsPostQuery({
+    const loadedOrganizations = (await OrganizationApi.getInstance().organizationsPostQuery({
       invert: false,
       key: 'id',
       type: 'UUID_SET',
       members: missingOrganizationIds,
     }, { signal })).data;
-    queryClient.setQueryData(QueryUtil.getGenericKey(QUERY_KEY.ORGANIZATIONS_LAZY), [...organizations, ...currentOrganizations].sort((a, b) => a.name.localeCompare(b.name)));
+    const organizations = [...loadedOrganizations, ...currentOrganizations];
+    queryClient.setQueryData(QueryUtil.getGenericKey(QUERY_KEY.ORGANIZATIONS_LAZY), organizations);
     // Rebuild the cache
     EpiDataUtil.data.organizationsById = {};
     EpiDataUtil.data.organizations = organizations;
