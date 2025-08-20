@@ -10,6 +10,7 @@
     "url": "https://github.com/RIVM-bioinformatics/gen-epix-ui.git"
   },
   "author": "RIVM-bioinformatics <ids-bioinformatics@rivm.nl>",
+  "homepage": "https://github.com/RIVM-bioinformatics/gen-epix",
   "type": "module",
   "files": [
     "src"
