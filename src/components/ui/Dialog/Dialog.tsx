@@ -13,12 +13,13 @@ import {
 } from '@mui/material';
 import CloseIcon from '@mui/icons-material/Close';
 import LinkIcon from '@mui/icons-material/Link';
-import {
-  type ReactElement,
-  type PropsWithChildren,
-  useCallback,
-} from 'react';
 import isObject from 'lodash/isObject';
+import type {
+  ReactElement,
+  RefObject,
+  PropsWithChildren,
+} from 'react';
+import { useCallback } from 'react';
 
 import { CopyToClipboardButton } from '../CopyToClipboardButton';
 import { TestIdUtil } from '../../../utils/TestIdUtil';
@@ -45,6 +46,7 @@ export type DialogProps = {
   readonly disableBackdropClick?: boolean;
   readonly noTitle?: boolean;
   readonly noPadding?: boolean;
+  readonly dialogContentRef?: RefObject<HTMLDivElement>;
 };
 
 const isDialogActionButton = (action: DialogAction): action is DialogActionButton => {
@@ -67,6 +69,7 @@ export const Dialog = ({
   fullScreen = false,
   noTitle = false,
   noPadding = false,
+  dialogContentRef,
 }: PropsWithChildren<DialogProps>): ReactElement => {
   const onMuiDialogClose = useCallback((_event: unknown, reason: 'backdropClick' | 'escapeKeyDown') => {
     if (reason === 'backdropClick' && disableBackdropClick) {
@@ -157,6 +160,7 @@ export const Dialog = ({
         <DialogContent
           {...TestIdUtil.createAttributes(`${testId}-content`)}
           dividers={!!ActionButtons}
+          ref={dialogContentRef}
           sx={{
             paddingTop: fullScreen ? 0 : undefined,
           }}
