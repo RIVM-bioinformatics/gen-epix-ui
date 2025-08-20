@@ -1,5 +1,14 @@
 # Changelog
 
+## [1.5.1](https://github.com/RIVM-bioinformatics/gen-epix-ui/compare/v1.5.0...v1.5.1) (2025-08-20)
+
+
+### Bug Fixes
+
+* update dependencies ([7e33811](https://github.com/RIVM-bioinformatics/gen-epix-ui/commit/7e33811a1c09874269443a4e67336dca80735e90))
+* update dependencies ([689c571](https://github.com/RIVM-bioinformatics/gen-epix-ui/commit/689c571f1986bc905bcc4915d1cce378cf143a9c))
+* update peer dependencies ([8f0d1f0](https://github.com/RIVM-bioinformatics/gen-epix-ui/commit/8f0d1f0d10f6b91aba102c5f5c19aa818d88e942))
+
 ## [1.5.0](https://github.com/RIVM-bioinformatics/gen-epix-ui/compare/v1.4.0...v1.5.0) (2025-08-20)
 
 
