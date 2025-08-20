@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.5.2](https://github.com/RIVM-bioinformatics/gen-epix-ui/compare/v1.5.1...v1.5.2) (2025-08-20)
+
+
+### Bug Fixes
+
+* downgrade @tanstack/react-query to 5.85.0 due to a known bug ([7433fe2](https://github.com/RIVM-bioinformatics/gen-epix-ui/commit/7433fe2c4b18ae140ac8136aeb0a8cac357f20b7))
+
 ## [1.5.1](https://github.com/RIVM-bioinformatics/gen-epix-ui/compare/v1.5.0...v1.5.1) (2025-08-20)
 
 
