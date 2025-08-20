@@ -1,5 +1,18 @@
 # Changelog
 
+## [1.5.0](https://github.com/RIVM-bioinformatics/gen-epix-ui/compare/v1.4.0...v1.5.0) (2025-08-20)
+
+
+### Features
+
+* update to latest API ([a0467d8](https://github.com/RIVM-bioinformatics/gen-epix-ui/commit/a0467d82fd8ad5c4c026f7937f973ee2fbd6aa84))
+
+
+### Bug Fixes
+
+* fix route permission for cases ([f0fc5d8](https://github.com/RIVM-bioinformatics/gen-epix-ui/commit/f0fc5d8e01f49823e2a4fbee0752e7504b768ed9))
+* wrap retrieveOrganizationAdminNameEmails in an RBAC wrapper ([c675218](https://github.com/RIVM-bioinformatics/gen-epix-ui/commit/c6752182ed79d5887ea517e9fbf8e67ef62036ec))
+
 ## [1.4.0](https://github.com/RIVM-bioinformatics/gen-epix-ui/compare/v1.3.0...v1.4.0) (2025-08-14)
 
 
