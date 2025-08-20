@@ -36,3 +36,11 @@ ConfigManager.instance.config = {
 }
 createRoot(document.getElementById('root')).render(<App />);
 ```
+
+## Funding
+
+This work was funded by the European Union under the EU4Health Programme (EU4H), project ID 101113520 (NLWGSHERA2)
+
+<img src="./docs/assets/cofunded_EU_logo.png" alt="cofunded-EU-logo" width = 400>
+
+*Disclaimer: Funded by the European Union. Views and opinions expressed are however those of the author(s) only and do not necessarily reflect those of the European Union or Health and Digital Executive Agency. Neither the European Union nor the granting authority can be held responsible for them.*
