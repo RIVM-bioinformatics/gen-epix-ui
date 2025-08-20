@@ -122,10 +122,10 @@
     "zustand": "5.0.8"
   },
   "devDependencies": {
-    "@gen-epix/eslint-config": "0.0.12",
-    "@gen-epix/generate-api": "0.0.13",
-    "@gen-epix/reconfigure-package": "0.0.4",
-    "@gen-epix/typescript-config": "0.0.5",
+    "@gen-epix/eslint-config": "0.0.13",
+    "@gen-epix/generate-api": "0.0.14",
+    "@gen-epix/reconfigure-package": "0.0.5",
+    "@gen-epix/typescript-config": "0.0.6",
     "@types/lodash": "4.17.20",
     "@types/node": "24.3.0",
     "@types/react": "19.1.10",
