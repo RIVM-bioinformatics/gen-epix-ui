@@ -56,7 +56,7 @@ export const ApplicationBarNavigationMenu = ({ fullWidth }: ApplicationBarNaviga
         }}
       >
         {menuItems.map(menuItem => {
-          const disabled = menuItem.handle.disabled || !authorizationManager.doesUserHavePermissionForRoute(menuItem, true);
+          const disabled = menuItem.handle.disabled || !authorizationManager.doesUserHavePermissionForRoute(menuItem);
           return (
             <Box
               component={'li'}

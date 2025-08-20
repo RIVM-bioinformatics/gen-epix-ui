@@ -79,6 +79,7 @@ export const routes: MyNonIndexRouteObject[] = [
         },
         children: [
           {
+            index: true,
             path: '/cases',
             Component: () => <CasesPage />,
             errorElement: <RouterErrorPage />,
@@ -89,6 +90,7 @@ export const routes: MyNonIndexRouteObject[] = [
                 { command_name: CommandName.CaseTypeSetCategoryCrudCommand, permission_type: PermissionType.READ },
                 { command_name: CommandName.CaseTypeSetCrudCommand, permission_type: PermissionType.READ },
                 { command_name: CommandName.CaseTypeSetMemberCrudCommand, permission_type: PermissionType.READ },
+                { command_name: CommandName.RetrieveCaseTypeStatsCommand, permission_type: PermissionType.EXECUTE },
               ],
               requiresUserProfile: true,
             },
@@ -139,6 +141,7 @@ export const routes: MyNonIndexRouteObject[] = [
                 { command_name: CommandName.CaseTypeCrudCommand, permission_type: PermissionType.READ },
                 { command_name: CommandName.CaseTypeSetCrudCommand, permission_type: PermissionType.READ },
                 { command_name: CommandName.CaseTypeSetMemberCrudCommand, permission_type: PermissionType.READ },
+                { command_name: CommandName.RetrieveCaseSetStatsCommand, permission_type: PermissionType.EXECUTE },
               ],
               requiresUserProfile: true,
             },

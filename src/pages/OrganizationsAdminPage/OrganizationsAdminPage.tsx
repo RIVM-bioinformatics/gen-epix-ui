@@ -38,6 +38,10 @@ export const OrganizationsAdminPage = () => {
     return (await OrganizationApi.getInstance().organizationsPostOne(variables)).data;
   }, []);
 
+  const deleteOne = useCallback(async (item: Organization) => {
+    return await OrganizationApi.getInstance().organizationsDeleteOne(item.id);
+  }, []);
+
   const getName = useCallback((item: Organization) => {
     return item.name;
   }, []);
@@ -77,6 +81,7 @@ export const OrganizationsAdminPage = () => {
       crudCommandType={CommandName.OrganizationCrudCommand}
       defaultSortByField={'name'}
       defaultSortDirection={'asc'}
+      deleteOne={deleteOne}
       fetchAll={fetchAll}
       formFieldDefinitions={formFieldDefinitions}
       getName={getName}

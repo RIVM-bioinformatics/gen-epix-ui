@@ -77,10 +77,10 @@ export const GenericErrorMessage = ({ error, shouldHideActionButtons }: GenericE
       return t`The item you requested can not be found. It may have been moved or deleted.`;
     }
     if (AxiosUtil.isAxiosForbiddenError(error)) {
-      return t`You don't have access to this item.`;
+      return t`You don't have access to this page or item.`;
     }
     if (AxiosUtil.isAxiosUnprocessableEntityError(error)) {
-      return t`We were unable to process this item. It's most likely you don't have access to this item.`;
+      return t`We were unable to process this page or item.`;
     }
     return t('We have encountered a problem. The error has been automatically logged. One of our staff will look into it shortly. Error message: {{message}}', { message: (error as Error)?.message ?? t`Unknown` });
   }, [error, t]);

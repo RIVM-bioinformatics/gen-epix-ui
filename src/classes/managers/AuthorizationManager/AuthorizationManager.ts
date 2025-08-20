@@ -37,9 +37,9 @@ export class AuthorizationManager {
     return AuthorizationManager.__instance;
   }
 
-  public doesUserHavePermissionForRoute(route: MyNonIndexRouteObject, orAnyOfItsSubRoutes?: boolean): boolean {
+  public doesUserHavePermissionForRoute(route: MyNonIndexRouteObject): boolean {
     if (route.handle.requirePermissionForChildRoute) {
-      return route.children?.filter(r => !r.index)?.some((childRoute) => this.doesUserHavePermissionForRoute(childRoute as MyNonIndexRouteObject, orAnyOfItsSubRoutes));
+      return route.children?.filter(r => !r.index)?.some((childRoute) => this.doesUserHavePermissionForRoute(childRoute as MyNonIndexRouteObject));
     }
     const indexRoute = route.children?.find((childRoute) => childRoute.index);
     if (!route.handle.requiredPermissions?.length && !indexRoute) {
@@ -49,10 +49,7 @@ export class AuthorizationManager {
     if (hasPermissionForRoute) {
       return true;
     }
-    if (!hasPermissionForRoute && (!orAnyOfItsSubRoutes || !route.children?.length)) {
-      return false;
-    }
-    return route.children?.some((childRoute) => this.doesUserHavePermissionForRoute(childRoute as MyNonIndexRouteObject, orAnyOfItsSubRoutes));
+    return false;
   }
 
   public hasRole(role: Role): boolean {

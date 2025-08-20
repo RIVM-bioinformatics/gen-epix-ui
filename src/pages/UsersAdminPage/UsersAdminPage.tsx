@@ -18,7 +18,10 @@ import {
 import PermIdentityIcon from '@mui/icons-material/PermIdentity';
 
 import type { User } from '../../api';
-import { OrganizationApi } from '../../api';
+import {
+  CommandName,
+  OrganizationApi,
+} from '../../api';
 import { useOrganizationOptionsQuery } from '../../dataHooks/useOrganizationsQuery';
 import { useRoleOptionsQuery } from '../../dataHooks/useRolesQuery';
 import { useArray } from '../../hooks/useArray';
@@ -61,6 +64,10 @@ export const UsersAdminPage = () => {
       roles: variables.roles,
       email: item.email,
     })).data;
+  }, []);
+
+  const deleteOne = useCallback(async (item: User) => {
+    return await OrganizationApi.getInstance().usersDeleteOne(item.id);
   }, []);
 
   const getName = useCallback((item: FormFields) => {
@@ -161,8 +168,10 @@ export const UsersAdminPage = () => {
     <>
       <CrudPage<FormFields, User>
         canEditItem={canEditItem}
+        crudCommandType={CommandName.UserCrudCommand}
         defaultSortByField={'name'}
         defaultSortDirection={'asc'}
+        deleteOne={deleteOne}
         editDialogExtraActionsFactory={editDialogExtraActionsFactory}
         extraActionsFactory={extraActionsFactory}
         fetchAll={fetchAll}
