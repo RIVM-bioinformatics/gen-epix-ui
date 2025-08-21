@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.6.0](https://github.com/RIVM-bioinformatics/gen-epix-ui/compare/v1.5.2...v1.6.0) (2025-08-21)
+
+
+### Features
+
+* use backend licence endpoint ([bf96b33](https://github.com/RIVM-bioinformatics/gen-epix-ui/commit/bf96b33f79ef40a8cb8d9a6077143bb4a7e22a35))
+
 ## [1.5.2](https://github.com/RIVM-bioinformatics/gen-epix-ui/compare/v1.5.1...v1.5.2) (2025-08-20)
 
 
