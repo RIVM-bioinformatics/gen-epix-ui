@@ -2,8 +2,12 @@ import type { DialogProps as MuiDialogProps } from '@mui/material';
 import type {
   ComponentClass,
   ComponentType,
+  RefObject,
 } from 'react';
-import { Component } from 'react';
+import {
+  Component,
+  createRef,
+} from 'react';
 
 import {
   Dialog,
@@ -33,6 +37,7 @@ export type WithDialogRenderProps<TOpenProps = never> = {
   permalink?: string;
   onPermalinkChange?: (permalink: string) => void;
   openProps?: TOpenProps;
+  dialogContentRef?: RefObject<HTMLDivElement>;
 };
 
 export type WithDialogOptions = {
@@ -45,6 +50,8 @@ export type WithDialogOptions = {
 
 export const withDialog = <TProps extends WithDialogRenderProps<TOpenProps>, TOpenProps = never>(Content: ComponentType<TProps>, withDialogOptions: WithDialogOptions = {}): ComponentClass<TProps, WithDialogState<TOpenProps>> => {
   return class WithDialog extends Component<TProps, WithDialogState<TOpenProps>> implements WithDialogRefMethods<TProps, TOpenProps> {
+    private readonly dialogContentRef: RefObject<HTMLDivElement>;
+
     public constructor(props: TProps) {
       super(props);
       this.state = {
@@ -58,6 +65,7 @@ export const withDialog = <TProps extends WithDialogRenderProps<TOpenProps>, TOp
       this.onPermalinkChange = this.onPermalinkChange.bind(this);
       this.onTitleChange = this.onTitleChange.bind(this);
       this.onActionsChange = this.onActionsChange.bind(this);
+      this.dialogContentRef = createRef<HTMLDivElement>();
     }
 
     private onPermalinkChange(permalink: string): void {
@@ -74,7 +82,6 @@ export const withDialog = <TProps extends WithDialogRenderProps<TOpenProps>, TOp
 
     private onClose(): void {
       this.close();
-
       this.props.onClose?.();
     }
 
@@ -87,6 +94,7 @@ export const withDialog = <TProps extends WithDialogRenderProps<TOpenProps>, TOp
       return (
         <Dialog
           actions={this.state.actions}
+          dialogContentRef={this.dialogContentRef}
           disableBackdropClick={withDialogOptions?.disableBackdropClick}
           fullScreen={withDialogOptions.fullScreen}
           fullWidth={withDialogOptions.fullWidth}
@@ -102,6 +110,7 @@ export const withDialog = <TProps extends WithDialogRenderProps<TOpenProps>, TOp
         >
           <Content
             {...this.props as TProps}
+            dialogContentRef={this.dialogContentRef}
             onActionsChange={this.onActionsChange}
             onClose={this.onClose}
             onPermalinkChange={this.onPermalinkChange}
