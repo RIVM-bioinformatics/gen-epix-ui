@@ -89,7 +89,6 @@ export * from './models/epi.ts';
 export * from './models/filter.ts';
 export * from './models/form.ts';
 export * from './models/generic.ts';
-export * from './models/manifest.ts';
 export * from './models/nestedMenu.ts';
 export * from './models/notification.ts';
 export * from './models/outage.ts';

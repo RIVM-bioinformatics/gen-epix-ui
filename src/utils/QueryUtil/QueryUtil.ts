@@ -156,6 +156,7 @@ export const queryKeyDependencies: Record<QUERY_KEY, QUERY_KEY[]> = {
   [QUERY_KEY.SITES]: [
     QUERY_KEY.CONTACTS,
   ],
+  [QUERY_KEY.LICENSES]: [],
 };
 
 export class QueryUtil {
