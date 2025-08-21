@@ -80,8 +80,8 @@ export const LicensesDialog = withDialog<LicensesDialogProps, LicensesDialogOpen
   const { isLoading: isBackendLicensesLoading, error: backendLicensesError, data: backendLicenses } = useQuery({
     queryKey: QueryUtil.getGenericKey(QUERY_KEY.LICENSES),
     queryFn: async ({ signal }) => {
-      const response = await SystemApi.instance.licenses({ signal });
-      return response.data.packages;
+      const response = await SystemApi.instance.retrieveLicenses({ signal });
+      return response.data;
     },
   });
 

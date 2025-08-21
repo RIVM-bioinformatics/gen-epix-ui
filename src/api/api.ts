@@ -1360,84 +1360,85 @@ export type ColType = typeof ColType[keyof typeof ColType];
  */
 
 export const CommandName = {
+    RetrieveCaseSetRightsCommand: 'RetrieveCaseSetRightsCommand',
+    RetrieveCompleteCaseTypeCommand: 'RetrieveCompleteCaseTypeCommand',
+    CaseSetDataCollectionLinkCrudCommand: 'CaseSetDataCollectionLinkCrudCommand',
+    UserShareCasePolicyCrudCommand: 'UserShareCasePolicyCrudCommand',
+    RetrieveContainingRegionCommand: 'RetrieveContainingRegionCommand',
+    OutageCrudCommand: 'OutageCrudCommand',
+    CaseTypeSetMemberCrudCommand: 'CaseTypeSetMemberCrudCommand',
+    RetrieveOrganizationContactCommand: 'RetrieveOrganizationContactCommand',
+    OrganizationSetMemberCrudCommand: 'OrganizationSetMemberCrudCommand',
+    UserCrudCommand: 'UserCrudCommand',
+    CaseSetCreateCommand: 'CaseSetCreateCommand',
+    RetrieveGeneticSequenceByCaseCommand: 'RetrieveGeneticSequenceByCaseCommand',
+    TreeAlgorithmClassCrudCommand: 'TreeAlgorithmClassCrudCommand',
+    CaseTypeSetCaseTypeUpdateAssociationCommand: 'CaseTypeSetCaseTypeUpdateAssociationCommand',
     ConceptSetConceptUpdateAssociationCommand: 'ConceptSetConceptUpdateAssociationCommand',
-    DataCollectionSetCrudCommand: 'DataCollectionSetCrudCommand',
-    SubjectIdentifierCrudCommand: 'SubjectIdentifierCrudCommand',
+    RetrieveCaseRightsCommand: 'RetrieveCaseRightsCommand',
+    RetrieveCaseTypeStatsCommand: 'RetrieveCaseTypeStatsCommand',
+    CasesCreateCommand: 'CasesCreateCommand',
+    RegionRelationCrudCommand: 'RegionRelationCrudCommand',
+    DataCollectionCrudCommand: 'DataCollectionCrudCommand',
+    GetIdentityProvidersCommand: 'GetIdentityProvidersCommand',
+    RetrieveAlleleProfileCommand: 'RetrieveAlleleProfileCommand',
+    UserInvitationCrudCommand: 'UserInvitationCrudCommand',
+    RetrieveCaseSetStatsCommand: 'RetrieveCaseSetStatsCommand',
+    IdentifierIssuerCrudCommand: 'IdentifierIssuerCrudCommand',
+    DataCollectionSetMemberCrudCommand: 'DataCollectionSetMemberCrudCommand',
+    InviteUserCommand: 'InviteUserCommand',
+    EtiologyCrudCommand: 'EtiologyCrudCommand',
+    ContactCrudCommand: 'ContactCrudCommand',
+    RegisterInvitedUserCommand: 'RegisterInvitedUserCommand',
+    OrganizationAccessCasePolicyCrudCommand: 'OrganizationAccessCasePolicyCrudCommand',
     CaseSetMemberCrudCommand: 'CaseSetMemberCrudCommand',
+    DiseaseCrudCommand: 'DiseaseCrudCommand',
+    TreeAlgorithmCrudCommand: 'TreeAlgorithmCrudCommand',
+    CaseTypeColSetMemberCrudCommand: 'CaseTypeColSetMemberCrudCommand',
+    DataCollectionSetCrudCommand: 'DataCollectionSetCrudCommand',
+    CaseTypeColSetCaseTypeColUpdateAssociationCommand: 'CaseTypeColSetCaseTypeColUpdateAssociationCommand',
     RegionSetCrudCommand: 'RegionSetCrudCommand',
     RetrieveOwnPermissionsCommand: 'RetrieveOwnPermissionsCommand',
-    RetrieveCasesByQueryCommand: 'RetrieveCasesByQueryCommand',
-    ColCrudCommand: 'ColCrudCommand',
-    RetrieveCaseSetStatsCommand: 'RetrieveCaseSetStatsCommand',
-    CaseTypeCrudCommand: 'CaseTypeCrudCommand',
-    RetrieveContainingRegionCommand: 'RetrieveContainingRegionCommand',
-    CaseTypeSetCrudCommand: 'CaseTypeSetCrudCommand',
-    CaseTypeSetMemberCrudCommand: 'CaseTypeSetMemberCrudCommand',
-    EtiologicalAgentCrudCommand: 'EtiologicalAgentCrudCommand',
-    RetrievePhylogeneticTreeBySequencesCommand: 'RetrievePhylogeneticTreeBySequencesCommand',
-    RetrieveAlleleProfileCommand: 'RetrieveAlleleProfileCommand',
-    OrganizationShareCasePolicyCrudCommand: 'OrganizationShareCasePolicyCrudCommand',
-    RegisterInvitedUserCommand: 'RegisterInvitedUserCommand',
-    OrganizationSetOrganizationUpdateAssociationCommand: 'OrganizationSetOrganizationUpdateAssociationCommand',
-    ConceptSetMemberCrudCommand: 'ConceptSetMemberCrudCommand',
-    RetrieveOrganizationContactCommand: 'RetrieveOrganizationContactCommand',
-    TreeAlgorithmCrudCommand: 'TreeAlgorithmCrudCommand',
-    UserCrudCommand: 'UserCrudCommand',
-    CaseTypeSetCategoryCrudCommand: 'CaseTypeSetCategoryCrudCommand',
-    RetrieveGeneticSequenceByCaseCommand: 'RetrieveGeneticSequenceByCaseCommand',
-    UserShareCasePolicyCrudCommand: 'UserShareCasePolicyCrudCommand',
-    DataCollectionSetDataCollectionUpdateAssociationCommand: 'DataCollectionSetDataCollectionUpdateAssociationCommand',
     CaseSetCrudCommand: 'CaseSetCrudCommand',
-    RetrieveCaseTypeStatsCommand: 'RetrieveCaseTypeStatsCommand',
-    CaseSetDataCollectionLinkCrudCommand: 'CaseSetDataCollectionLinkCrudCommand',
-    GetIdentityProvidersCommand: 'GetIdentityProvidersCommand',
-    RetrieveGeneticSequenceByIdCommand: 'RetrieveGeneticSequenceByIdCommand',
-    RetrieveCompleteCaseTypeCommand: 'RetrieveCompleteCaseTypeCommand',
-    CaseTypeColSetMemberCrudCommand: 'CaseTypeColSetMemberCrudCommand',
-    OrganizationAccessCasePolicyCrudCommand: 'OrganizationAccessCasePolicyCrudCommand',
-    DataCollectionCrudCommand: 'DataCollectionCrudCommand',
-    OrganizationSetCrudCommand: 'OrganizationSetCrudCommand',
-    DiseaseCrudCommand: 'DiseaseCrudCommand',
-    CaseTypeColCrudCommand: 'CaseTypeColCrudCommand',
-    ConceptSetCrudCommand: 'ConceptSetCrudCommand',
-    RetrieveOrganizationAdminNameEmailsCommand: 'RetrieveOrganizationAdminNameEmailsCommand',
-    OrganizationCrudCommand: 'OrganizationCrudCommand',
-    OrganizationSetMemberCrudCommand: 'OrganizationSetMemberCrudCommand',
-    ContactCrudCommand: 'ContactCrudCommand',
-    CaseSetCategoryCrudCommand: 'CaseSetCategoryCrudCommand',
-    CaseSetStatusCrudCommand: 'CaseSetStatusCrudCommand',
-    CaseDataCollectionLinkCrudCommand: 'CaseDataCollectionLinkCrudCommand',
-    RegionRelationCrudCommand: 'RegionRelationCrudCommand',
-    CaseTypeSetCaseTypeUpdateAssociationCommand: 'CaseTypeSetCaseTypeUpdateAssociationCommand',
-    SiteCrudCommand: 'SiteCrudCommand',
-    RetrieveCaseSetRightsCommand: 'RetrieveCaseSetRightsCommand',
-    UserAccessCasePolicyCrudCommand: 'UserAccessCasePolicyCrudCommand',
-    RetrieveOutagesCommand: 'RetrieveOutagesCommand',
-    RegionCrudCommand: 'RegionCrudCommand',
-    OrganizationAdminPolicyCrudCommand: 'OrganizationAdminPolicyCrudCommand',
-    TreeAlgorithmClassCrudCommand: 'TreeAlgorithmClassCrudCommand',
-    CaseTypeColSetCaseTypeColUpdateAssociationCommand: 'CaseTypeColSetCaseTypeColUpdateAssociationCommand',
-    EtiologyCrudCommand: 'EtiologyCrudCommand',
+    RetrieveCasesByQueryCommand: 'RetrieveCasesByQueryCommand',
     DiseaseEtiologicalAgentUpdateAssociationCommand: 'DiseaseEtiologicalAgentUpdateAssociationCommand',
-    CaseCrudCommand: 'CaseCrudCommand',
-    UserInvitationCrudCommand: 'UserInvitationCrudCommand',
-    CasesCreateCommand: 'CasesCreateCommand',
-    DimCrudCommand: 'DimCrudCommand',
-    RetrievePhylogeneticTreeByCasesCommand: 'RetrievePhylogeneticTreeByCasesCommand',
-    OutageCrudCommand: 'OutageCrudCommand',
-    InviteUserCommand: 'InviteUserCommand',
-    IdentifierIssuerCrudCommand: 'IdentifierIssuerCrudCommand',
-    RetrieveCaseRightsCommand: 'RetrieveCaseRightsCommand',
-    CaseTypeColSetCrudCommand: 'CaseTypeColSetCrudCommand',
-    DataCollectionSetMemberCrudCommand: 'DataCollectionSetMemberCrudCommand',
-    UpdateUserOwnOrganizationCommand: 'UpdateUserOwnOrganizationCommand',
-    ConceptCrudCommand: 'ConceptCrudCommand',
-    SubjectCrudCommand: 'SubjectCrudCommand',
-    CaseSetCreateCommand: 'CaseSetCreateCommand',
-    UpdateUserCommand: 'UpdateUserCommand',
+    SubjectIdentifierCrudCommand: 'SubjectIdentifierCrudCommand',
+    CaseDataCollectionLinkCrudCommand: 'CaseDataCollectionLinkCrudCommand',
+    RegionSetShapeCrudCommand: 'RegionSetShapeCrudCommand',
     GeneticDistanceProtocolCrudCommand: 'GeneticDistanceProtocolCrudCommand',
+    UpdateUserOwnOrganizationCommand: 'UpdateUserOwnOrganizationCommand',
+    ConceptSetCrudCommand: 'ConceptSetCrudCommand',
+    RetrieveGeneticSequenceByIdCommand: 'RetrieveGeneticSequenceByIdCommand',
+    CaseTypeColSetCrudCommand: 'CaseTypeColSetCrudCommand',
+    CaseCrudCommand: 'CaseCrudCommand',
+    RetrieveLicensesCommand: 'RetrieveLicensesCommand',
+    RegionCrudCommand: 'RegionCrudCommand',
+    CaseSetStatusCrudCommand: 'CaseSetStatusCrudCommand',
+    OrganizationShareCasePolicyCrudCommand: 'OrganizationShareCasePolicyCrudCommand',
+    DataCollectionSetDataCollectionUpdateAssociationCommand: 'DataCollectionSetDataCollectionUpdateAssociationCommand',
+    SubjectCrudCommand: 'SubjectCrudCommand',
+    RetrievePhylogeneticTreeBySequencesCommand: 'RetrievePhylogeneticTreeBySequencesCommand',
+    OrganizationCrudCommand: 'OrganizationCrudCommand',
+    CaseSetCategoryCrudCommand: 'CaseSetCategoryCrudCommand',
+    CaseTypeColCrudCommand: 'CaseTypeColCrudCommand',
+    EtiologicalAgentCrudCommand: 'EtiologicalAgentCrudCommand',
     RetrieveCasesByIdCommand: 'RetrieveCasesByIdCommand',
-    RegionSetShapeCrudCommand: 'RegionSetShapeCrudCommand'
+    RetrieveOutagesCommand: 'RetrieveOutagesCommand',
+    SiteCrudCommand: 'SiteCrudCommand',
+    OrganizationSetOrganizationUpdateAssociationCommand: 'OrganizationSetOrganizationUpdateAssociationCommand',
+    DimCrudCommand: 'DimCrudCommand',
+    CaseTypeCrudCommand: 'CaseTypeCrudCommand',
+    CaseTypeSetCategoryCrudCommand: 'CaseTypeSetCategoryCrudCommand',
+    UpdateUserCommand: 'UpdateUserCommand',
+    RetrieveOrganizationAdminNameEmailsCommand: 'RetrieveOrganizationAdminNameEmailsCommand',
+    RetrievePhylogeneticTreeByCasesCommand: 'RetrievePhylogeneticTreeByCasesCommand',
+    ConceptSetMemberCrudCommand: 'ConceptSetMemberCrudCommand',
+    CaseTypeSetCrudCommand: 'CaseTypeSetCrudCommand',
+    OrganizationSetCrudCommand: 'OrganizationSetCrudCommand',
+    ConceptCrudCommand: 'ConceptCrudCommand',
+    ColCrudCommand: 'ColCrudCommand',
+    OrganizationAdminPolicyCrudCommand: 'OrganizationAdminPolicyCrudCommand',
+    UserAccessCasePolicyCrudCommand: 'UserAccessCasePolicyCrudCommand'
 } as const;
 
 export type CommandName = typeof CommandName[keyof typeof CommandName];
@@ -2279,19 +2280,6 @@ export interface IdentityProvider {
 
 
 /**
- * 
- * @export
- * @interface LicensesResponseBody
- */
-export interface LicensesResponseBody {
-    /**
-     * 
-     * @type {Array<PackageMetadata>}
-     * @memberof LicensesResponseBody
-     */
-    'packages': Array<PackageMetadata>;
-}
-/**
  * @type LocationInner
  * @export
  */
@@ -2807,25 +2795,31 @@ export interface Outage {
  */
 export interface PackageMetadata {
     /**
-     * 
+     * The unique identifier for the obj.
+     * @type {string}
+     * @memberof PackageMetadata
+     */
+    'id'?: string | null;
+    /**
+     * Name of the package.
      * @type {string}
      * @memberof PackageMetadata
      */
     'name': string;
     /**
-     * 
+     * Version of the package.
      * @type {string}
      * @memberof PackageMetadata
      */
     'version': string;
     /**
-     * 
+     * License information for the package.
      * @type {string}
      * @memberof PackageMetadata
      */
     'license'?: string | null;
     /**
-     * 
+     * Homepage URL of the package.
      * @type {string}
      * @memberof PackageMetadata
      */
@@ -40365,36 +40359,6 @@ const SystemApiAxiosParamCreator = function (configuration?: Configuration) {
         },
         /**
          * 
-         * @summary Licenses
-         * @param {*} [options] Override http request option.
-         * @throws {RequiredError}
-         */
-        licenses: async (options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
-            const localVarPath = `/v1/licenses`;
-            // use dummy base URL string because the URL constructor only accepts absolute URLs.
-            const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
-            let baseOptions;
-            if (configuration) {
-                baseOptions = configuration.baseOptions;
-            }
-
-            const localVarRequestOptions = { method: 'GET', ...baseOptions, ...options};
-            const localVarHeaderParameter = {} as any;
-            const localVarQueryParameter = {} as any;
-
-
-    
-            setSearchParams(localVarUrlObj, localVarQueryParameter);
-            let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
-            localVarRequestOptions.headers = {...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers};
-
-            return {
-                url: toPathString(localVarUrlObj),
-                options: localVarRequestOptions,
-            };
-        },
-        /**
-         * 
          * @summary Log
          * @param {LogRequestBody} logRequestBody 
          * @param {*} [options] Override http request option.
@@ -40853,6 +40817,36 @@ const SystemApiAxiosParamCreator = function (configuration?: Configuration) {
         },
         /**
          * 
+         * @summary Licenses
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        retrieveLicenses: async (options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
+            const localVarPath = `/v1/retrieve/licenses`;
+            // use dummy base URL string because the URL constructor only accepts absolute URLs.
+            const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
+            let baseOptions;
+            if (configuration) {
+                baseOptions = configuration.baseOptions;
+            }
+
+            const localVarRequestOptions = { method: 'POST', ...baseOptions, ...options};
+            const localVarHeaderParameter = {} as any;
+            const localVarQueryParameter = {} as any;
+
+
+    
+            setSearchParams(localVarUrlObj, localVarQueryParameter);
+            let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
+            localVarRequestOptions.headers = {...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers};
+
+            return {
+                url: toPathString(localVarUrlObj),
+                options: localVarRequestOptions,
+            };
+        },
+        /**
+         * 
          * @summary Outages
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
@@ -40901,18 +40895,6 @@ const SystemApiFp = function(configuration?: Configuration) {
             const localVarAxiosArgs = await localVarAxiosParamCreator.health(options);
             const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
             const localVarOperationServerBasePath = operationServerMap['SystemApi.health']?.[localVarOperationServerIndex]?.url;
-            return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
-        },
-        /**
-         * 
-         * @summary Licenses
-         * @param {*} [options] Override http request option.
-         * @throws {RequiredError}
-         */
-        async licenses(options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<LicensesResponseBody>> {
-            const localVarAxiosArgs = await localVarAxiosParamCreator.licenses(options);
-            const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
-            const localVarOperationServerBasePath = operationServerMap['SystemApi.licenses']?.[localVarOperationServerIndex]?.url;
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
         /**
@@ -41085,6 +41067,18 @@ const SystemApiFp = function(configuration?: Configuration) {
         },
         /**
          * 
+         * @summary Licenses
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        async retrieveLicenses(options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<Array<PackageMetadata>>> {
+            const localVarAxiosArgs = await localVarAxiosParamCreator.retrieveLicenses(options);
+            const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
+            const localVarOperationServerBasePath = operationServerMap['SystemApi.retrieveLicenses']?.[localVarOperationServerIndex]?.url;
+            return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
+        },
+        /**
+         * 
          * @summary Outages
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
@@ -41126,17 +41120,6 @@ export class SystemApi extends BaseAPI {
      */
     public health(options?: RawAxiosRequestConfig) {
         return SystemApiFp(this.configuration).health(options).then((request) => request(this.axios, this.configuration.baseUrl));
-    }
-
-    /**
-     * 
-     * @summary Licenses
-     * @param {*} [options] Override http request option.
-     * @throws {RequiredError}
-     * @memberof SystemApi
-     */
-    public licenses(options?: RawAxiosRequestConfig) {
-        return SystemApiFp(this.configuration).licenses(options).then((request) => request(this.axios, this.configuration.baseUrl));
     }
 
     /**
@@ -41292,6 +41275,17 @@ export class SystemApi extends BaseAPI {
      */
     public outagesPutSome(outage: Array<Outage>, options?: RawAxiosRequestConfig) {
         return SystemApiFp(this.configuration).outagesPutSome(outage, options).then((request) => request(this.axios, this.configuration.baseUrl));
+    }
+
+    /**
+     * 
+     * @summary Licenses
+     * @param {*} [options] Override http request option.
+     * @throws {RequiredError}
+     * @memberof SystemApi
+     */
+    public retrieveLicenses(options?: RawAxiosRequestConfig) {
+        return SystemApiFp(this.configuration).retrieveLicenses(options).then((request) => request(this.axios, this.configuration.baseUrl));
     }
 
     /**
