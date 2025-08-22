@@ -83,6 +83,10 @@ import {
 } from './EpiDashboardSettingsSidebarItem';
 import { EpiDashboardLayoutRenderer } from './EpiDashboardLayoutRenderer';
 import type { ForwardRefEpiDashboardLayoutRendererRefMethods } from './EpiDashboardLayoutRenderer';
+import {
+  EpiDashboardDownloadSidebarItem,
+  EpiDashboardDownloadSidebarItemIcon,
+} from './EpiDashboardDownloadSidebarItem';
 
 type EpiDashboardProps = {
   readonly caseSet?: CaseSet;
@@ -105,6 +109,7 @@ export const EpiDashboard = withEpiStore(({ caseSet }: EpiDashboardProps) => {
   const epiBulkEditCaseDialogRef = useRef<EpiBulkEditCaseDialogRefMethods>(null);
   const [isFilterSidebarOpen, setIsFilterSidebarOpen] = useState(false);
   const [isSettingsSidebarOpen, setIsSettingsSidebarOpen] = useState(false);
+  const [isDownloadSidebarOpen, setIsDownloadSidebarOpen] = useState(false);
   const epiTreeRef = useRef<EpiTreeRef>(null);
   const linkedScrollSubject = useMemo(() => {
     return new Subject<EpiLinkedScrollSubjectValue>();
@@ -166,8 +171,16 @@ export const EpiDashboard = withEpiStore(({ caseSet }: EpiDashboardProps) => {
     setIsSettingsSidebarOpen(false);
   }, []);
 
+  const onEpiDashboardDownloadSidebarClose = useCallback(() => {
+    setIsDownloadSidebarOpen(false);
+  }, []);
+
   const onEpiDashboardLayoutSelectorSidebarButtonClick = useCallback(() => {
     setIsSettingsSidebarOpen(true);
+  }, []);
+
+  const onEpiDashboardOpenDownloadButtonClick = useCallback(() => {
+    setIsDownloadSidebarOpen(true);
   }, []);
 
   const onEpiDashboardOpenInfoSidebarButtonClick = useCallback(() => {
@@ -235,6 +248,13 @@ export const EpiDashboard = withEpiStore(({ caseSet }: EpiDashboardProps) => {
               title={t`Show event information`}
             />
           )}
+          <SidebarMenuItem
+            icon={<EpiDashboardDownloadSidebarItemIcon />}
+            onClick={onEpiDashboardOpenDownloadButtonClick}
+            testIdAttributes={{ name: 'download' }}
+            title={t`Download`}
+          />
+
           <TableFiltersSidebarItem
             onClose={onEpiDashboardFilterSidebarClose}
             open={isFilterSidebarOpen}
@@ -250,6 +270,10 @@ export const EpiDashboard = withEpiStore(({ caseSet }: EpiDashboardProps) => {
           {caseSet && (
             <EpiCaseSetInfoDialog ref={epiCaseSetInfoDialogRef} />
           )}
+          <EpiDashboardDownloadSidebarItem
+            onClose={onEpiDashboardDownloadSidebarClose}
+            open={isDownloadSidebarOpen}
+          />
         </SidebarMenu>
 
         {/* Content */}

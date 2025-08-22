@@ -9,7 +9,6 @@ import ClearIcon from '@mui/icons-material/Clear';
 import ArrowUpwardIcon from '@mui/icons-material/ArrowUpward';
 import FilterAltIcon from '@mui/icons-material/FilterAlt';
 import InfoOutlinedIcon from '@mui/icons-material/InfoOutlined';
-import DownloadIcon from '@mui/icons-material/Download';
 import LinkIcon from '@mui/icons-material/Link';
 import type {
   ReactElement,
@@ -66,6 +65,7 @@ import {
 import { QueryUtil } from '../../../utils/QueryUtil';
 import { Spinner } from '../../ui/Spinner';
 import { EpiWidget } from '../EpiWidget';
+import { EpiDownloadUtil } from '../../../utils/EpiDownloadUtil';
 
 type ZoomInMenuItemConfig = {
   caseIds?: string[];
@@ -683,34 +683,6 @@ export const EpiTree = ({ linkedScrollSubject, ref }: EpiTreeProps) => {
   const primaryMenu = useMemo<MenuItemData[]>(() => {
     return [
       {
-        label: t`Download`,
-        disabled: isTreeUnavailable,
-        items: [
-          {
-            label: t`Save as Newick`,
-            callback: () => EpiTreeUtil.downloadNewick(newick, t`Tree`),
-            leftIcon: <DownloadIcon />,
-          },
-          {
-            label: t`Save as JPEG`,
-            callback: () => EpiTreeUtil.downloadImage(treeCanvas, t`Tree`, 'JPEG'),
-            leftIcon: <DownloadIcon />,
-            disabled: !isLinked,
-          },
-          {
-            label: t`Save as PNG`,
-            callback: () => EpiTreeUtil.downloadImage(treeCanvas, t`Tree`, 'PNG'),
-            leftIcon: <DownloadIcon />,
-            disabled: !isLinked,
-          },
-        ],
-      },
-    ];
-  }, [t, isTreeUnavailable, isLinked, newick, treeCanvas]);
-
-  const secondaryMenu = useMemo<MenuItemData[]>(() => {
-    return [
-      {
         disabled: !hasActiveTreeFilter,
         label: t`Change tree filter to nearest ancestor`,
         leftIcon: <ArrowUpwardIcon />,
@@ -735,6 +707,52 @@ export const EpiTree = ({ linkedScrollSubject, ref }: EpiTreeProps) => {
     ];
   }, [hasActiveTreeFilter, t, onTreeFilterStepOutButtonClick, onRemoveTreeFilterButtonClick, isLinked, theme.palette.error.main, onLinkButtonClick]);
 
+  useEffect(() => {
+    const emitDownloadOptions = () => {
+      const baseName = t('Phylogenetic Tree - {{geneticDistanceProtocol}} - {{treeAlgorithm}}',
+        {
+          treeAlgorithm: treeConfiguration?.treeAlgorithm.name ?? '',
+          geneticDistanceProtocol: treeConfiguration?.geneticDistanceProtocol.name ?? '',
+        });
+
+      EpiEventBusManager.instance.emit('onDownloadOptionsChanged', {
+        zone: EPI_ZONE.TREE,
+        disabled: isTreeUnavailable,
+        zoneLabel: t`Phylogenetic Tree`,
+        items: [
+          {
+            label: t`Save as Newick`,
+            callback: () => EpiDownloadUtil.downloadNewick(baseName, newick, completeCaseType, t),
+          },
+          {
+            label: t`Save as JPEG`,
+            callback: () => EpiDownloadUtil.downloadCanvasImage(baseName, treeCanvas, 'jpeg', completeCaseType, t),
+            disabled: !isLinked,
+          },
+          {
+            label: t`Save as PNG`,
+            callback: () => EpiDownloadUtil.downloadCanvasImage(baseName, treeCanvas, 'png', completeCaseType, t),
+            disabled: !isLinked,
+          },
+        ],
+      });
+    };
+
+
+    emitDownloadOptions();
+    const remove = EpiEventBusManager.instance.addEventListener('onDownloadOptionsRequested', emitDownloadOptions);
+
+    return () => {
+      EpiEventBusManager.instance.emit('onDownloadOptionsChanged', {
+        zone: EPI_ZONE.TREE,
+        items: null,
+        zoneLabel: t`Tree`,
+      });
+      remove();
+    };
+  }, [completeCaseType, isLinked, isTreeUnavailable, newick, t, treeCanvas, treeConfiguration?.geneticDistanceProtocol.name, treeConfiguration?.treeAlgorithm.name]);
+
+
   const link = useCallback(() => {
     // Link the tree to the current scroll position of the Line List
     setIsLinked(true);
@@ -750,7 +768,6 @@ export const EpiTree = ({ linkedScrollSubject, ref }: EpiTreeProps) => {
     <EpiWidget
       expandDisabled={isTreeUnavailable}
       primaryMenu={primaryMenu}
-      secondaryMenu={secondaryMenu}
       title={titleMenu}
       zone={EPI_ZONE.TREE}
     >

@@ -5,7 +5,6 @@ import last from 'lodash/last';
 import round from 'lodash/round';
 import { type Theme } from '@mui/material';
 
-import { DataUrlUtil } from '../DataUrlUtil';
 import { NumberUtil } from '../NumberUtil';
 import { EpiDataUtil } from '../EpiDataUtil';
 import type { CompleteCaseType } from '../../api';
@@ -75,15 +74,6 @@ export class EpiTreeUtil {
     return newScrollPosition;
   }
 
-
-  public static downloadImage(canvas: HTMLCanvasElement, name: string, type: 'PNG' | 'JPEG'): void {
-    const dataUrl = canvas.toDataURL(type === 'JPEG' ? 'image/jpeg' : 'image/png');
-    DataUrlUtil.downloadUrl(dataUrl, name);
-  }
-
-  public static downloadNewick(newick: string, name: string): void {
-    DataUrlUtil.downloadUrl(`data:text/x-nh;base64,${btoa(newick)}`, `${name}.txt`);
-  }
 
   public static sanitizeTree(rootNode: TreeNode): TreeNode {
     const sanitize = (node: TreeNode): SanitizeResult => {

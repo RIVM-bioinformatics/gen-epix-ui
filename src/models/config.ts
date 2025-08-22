@@ -7,7 +7,10 @@ import type { TFunction } from 'i18next';
 
 import type { ColType } from '../api';
 
-import type { EpiDashboardLayoutConfig } from './epi';
+import type {
+  EPI_ZONE,
+  EpiDashboardLayoutConfig,
+} from './epi';
 
 export type ApplicationHeaderProps = {
   readonly fullWidth?: boolean;
@@ -61,6 +64,7 @@ export interface Config {
     DATA_MISSING_CHARACTER: string;
     STRATIFICATION_COLORS: string[];
     INITIAL_NUM_VISIBLE_ATTRIBUTES_IN_CASE_SUMMARY: number;
+    DOWNLOAD_SECTION_ORDER: EPI_ZONE[];
   };
   epiMap: {
     MIN_PIE_CHART_RADIUS: number;

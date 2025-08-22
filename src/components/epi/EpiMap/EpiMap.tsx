@@ -5,7 +5,6 @@ import {
   MenuItem,
 } from '@mui/material';
 import FilterAltIcon from '@mui/icons-material/FilterAlt';
-import DownloadIcon from '@mui/icons-material/Download';
 import type { EChartsReactProps } from 'echarts-for-react';
 import EChartsReact from 'echarts-for-react';
 import {
@@ -57,12 +56,13 @@ import type { UnwrapArray } from '../../../models/generic';
 import type { MenuItemData } from '../../../models/nestedMenu';
 import { QUERY_KEY } from '../../../models/query';
 import { EpiStoreContext } from '../../../stores/epiStore';
-import { EChartsUtil } from '../../../utils/EChartsUtil';
 import { EpiCaseTypeUtil } from '../../../utils/EpiCaseTypeUtil';
 import { EpiDataUtil } from '../../../utils/EpiDataUtil';
 import { EpiListUtil } from '../../../utils/EpiListUtil';
 import { EpiMapUtil } from '../../../utils/EpiMapUtil';
 import { QueryUtil } from '../../../utils/QueryUtil';
+import { EpiEventBusManager } from '../../../classes/managers/EpiEventBusManager';
+import { EpiDownloadUtil } from '../../../utils/EpiDownloadUtil';
 
 echarts.use([GeoComponent, TooltipComponent, LegendComponent, CanvasRenderer, PieChart]);
 
@@ -436,29 +436,6 @@ export const EpiMap = () => {
   const shouldShowLoading = isLoading && !error;
   const shouldShowMap = !!column && (regionSetShape?.geo_json && regionSetShape?.geo_json !== 'null') && series.length > 0;
 
-  const primaryMenu = useMemo<MenuItemData[]>(() => {
-    const menus: MenuItemData[] = [];
-    menus.push(
-      {
-        label: t`Download`,
-        disabled: !shouldShowMap,
-        items: [
-          {
-            label: t`Save as PNG`,
-            leftIcon: <DownloadIcon />,
-            callback: () => EChartsUtil.downloadImage(chartRef.current.getEchartsInstance(), 'png', t`Map`),
-          },
-          {
-            label: t`Save as JPEG`,
-            leftIcon: <DownloadIcon />,
-            callback: () => EChartsUtil.downloadImage(chartRef.current.getEchartsInstance(), 'jpeg', t`Map`),
-          },
-        ],
-      },
-    );
-    return menus;
-  }, [chartRef, shouldShowMap, t]);
-
   const onShowOnlySelectedRegionMenuItemClick = useCallback(async (onMenuClose: () => void) => {
     await setFilterValue(column.id, [focussedRegion.id]);
     onMenuClose();
@@ -484,11 +461,43 @@ export const EpiMap = () => {
     );
   }, [column, focussedRegion, onShowOnlySelectedRegionMenuItemClick, t]);
 
+  useEffect(() => {
+    const emitDownloadOptions = () => {
+      EpiEventBusManager.instance.emit('onDownloadOptionsChanged', {
+        zone: EPI_ZONE.MAP,
+        disabled: !shouldShowMap,
+        zoneLabel: t`Map`,
+        items: [
+          {
+            label: t`Save as PNG`,
+            callback: () => EpiDownloadUtil.downloadEchartsImage(t`Epi curve`, chartRef.current.getEchartsInstance(), 'png', completeCaseType, t),
+          },
+          {
+            label: t`Save as JPEG`,
+            callback: () => EpiDownloadUtil.downloadEchartsImage(t`Epi curve`, chartRef.current.getEchartsInstance(), 'jpeg', completeCaseType, t),
+          },
+        ],
+      });
+    };
+
+
+    emitDownloadOptions();
+    const remove = EpiEventBusManager.instance.addEventListener('onDownloadOptionsRequested', emitDownloadOptions);
+
+    return () => {
+      EpiEventBusManager.instance.emit('onDownloadOptionsChanged', {
+        zone: EPI_ZONE.MAP,
+        items: null,
+        zoneLabel: t`Map`,
+      });
+      remove();
+    };
+  }, [completeCaseType, shouldShowMap, t]);
+
   return (
     <EpiWidget
       expandDisabled={!shouldShowMap}
       isLoading={shouldShowLoading}
-      primaryMenu={primaryMenu}
       title={titleMenu}
       warningMessage={shouldShowMap && epiMapCaseCount > 0 && missingCasesCount > 0 ? t('Missing cases: {{missingCasesCount}} ({{missingCasesPercentage}}%)', { missingCasesCount, missingCasesPercentage }) : undefined}
       zone={EPI_ZONE.MAP}

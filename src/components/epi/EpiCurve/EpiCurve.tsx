@@ -4,7 +4,6 @@ import {
   ListItemText,
   MenuItem,
 } from '@mui/material';
-import DownloadIcon from '@mui/icons-material/Download';
 import * as echarts from 'echarts/core';
 import {
   DataZoomComponent,
@@ -54,15 +53,16 @@ import { HighlightingManager } from '../../../classes/managers/HighlightingManag
 import { EPI_ZONE } from '../../../models/epi';
 import type { MenuItemData } from '../../../models/nestedMenu';
 import { EpiStoreContext } from '../../../stores/epiStore';
-import { EChartsUtil } from '../../../utils/EChartsUtil';
 import { EpiCaseTypeUtil } from '../../../utils/EpiCaseTypeUtil';
 import { EpiCurveUtil } from '../../../utils/EpiCurveUtil';
-import { EpiListUtil } from '../../../utils/EpiListUtil';
 import type { EpiContextMenuConfigWithPosition } from '../EpiContextMenu';
 import { EpiContextMenu } from '../EpiContextMenu';
 import { EpiWidget } from '../EpiWidget';
 import { EpiWidgetUnavailable } from '../EpiWidgetUnavailable';
 import { DATE_FORMAT } from '../../../data/date';
+import { EpiEventBusManager } from '../../../classes/managers/EpiEventBusManager';
+import { EpiDownloadUtil } from '../../../utils/EpiDownloadUtil';
+import { EpiListUtil } from '../../../utils/EpiListUtil';
 
 echarts.use([TooltipComponent, GridComponent, DataZoomComponent, BarChart, CanvasRenderer]);
 
@@ -372,30 +372,6 @@ export const EpiCurve = () => {
     } satisfies EChartsOption;
   }, [serieData, xAxisIntervals, getXAxisLabel, stratification]);
 
-  const primaryMenu = useMemo<MenuItemData[]>(() => {
-    const menus: MenuItemData[] = [];
-    menus.push(
-      {
-        label: t`Download`,
-        disabled: !column,
-        items: [
-          {
-            label: t`Save as PNG`,
-            leftIcon: <DownloadIcon />,
-            callback: () => EChartsUtil.downloadImage(chartRef.current.getEchartsInstance(), 'png', t`Epi curve`),
-          },
-          {
-            label: t`Save as JPEG`,
-            leftIcon: <DownloadIcon />,
-            callback: () => EChartsUtil.downloadImage(chartRef.current.getEchartsInstance(), 'jpeg', t`Epi curve`),
-          },
-        ],
-      },
-    );
-
-    return menus;
-  }, [chartRef, column, t]);
-
   const onShowOnlySelectedDateMenuItemClick = useCallback(async (onMenuClose: () => void) => {
     if (!isString(focussedDate) || !column?.id) {
       onMenuClose();
@@ -467,11 +443,42 @@ export const EpiCurve = () => {
   const missingCasesPercentage = missingCasesCount > 0 ? round(missingCasesCount / lineListCaseCount * 100, 1) : 0;
   const shouldShowEpiCurve = epiCurveCaseCount > 0 && timeDimensions.length > 0;
 
+
+  useEffect(() => {
+    const emitDownloadOptions = () => {
+      EpiEventBusManager.instance.emit('onDownloadOptionsChanged', {
+        zone: EPI_ZONE.EPI_CURVE,
+        disabled: !shouldShowEpiCurve,
+        zoneLabel: t`Epi curve`,
+        items: [
+          {
+            label: t`Save as PNG`,
+            callback: () => EpiDownloadUtil.downloadEchartsImage(t`Epi curve`, chartRef.current.getEchartsInstance(), 'png', completeCaseType, t),
+          },
+          {
+            label: t`Save as JPEG`,
+            callback: () => EpiDownloadUtil.downloadEchartsImage(t`Epi curve`, chartRef.current.getEchartsInstance(), 'jpeg', completeCaseType, t),
+          },
+        ],
+      });
+    };
+    emitDownloadOptions();
+    const remove = EpiEventBusManager.instance.addEventListener('onDownloadOptionsRequested', emitDownloadOptions);
+
+    return () => {
+      EpiEventBusManager.instance.emit('onDownloadOptionsChanged', {
+        zone: EPI_ZONE.EPI_CURVE,
+        zoneLabel: t`Epi curve`,
+        items: null,
+      });
+      remove();
+    };
+  }, [completeCaseType, shouldShowEpiCurve, t]);
+
   return (
     <EpiWidget
       expandDisabled={!shouldShowEpiCurve}
       isLoading={isDataLoading}
-      primaryMenu={primaryMenu}
       title={titleMenu}
       warningMessage={shouldShowEpiCurve && epiCurveCaseCount > 0 && missingCasesCount > 0 ? t('Missing cases: {{missingCasesCount}} ({{missingCasesPercentage}}%)', { missingCasesCount, missingCasesPercentage }) : undefined}
       zone={EPI_ZONE.EPI_CURVE}

@@ -32,7 +32,7 @@ import type {
 import { withDialog } from '../../../hoc/withDialog';
 import type { AutoCompleteOption } from '../../../models/form';
 import { EpiStoreContext } from '../../../stores/epiStore';
-import { DataUrlUtil } from '../../../utils/DataUrlUtil';
+import { EpiDownloadUtil } from '../../../utils/EpiDownloadUtil';
 import { EpiCaseTypeUtil } from '../../../utils/EpiCaseTypeUtil';
 import { SequenceUtil } from '../../../utils/SequenceUtil';
 import { CopyToClipboardButton } from '../../ui/CopyToClipboardButton';
@@ -166,7 +166,7 @@ export const EpiSequenceDownloadDialog = withDialog<EpiSequenceDownloadDialogPro
                 // eslint-disable-next-line react/jsx-no-bind
                 onClick={() => {
                   const fasta = SequenceUtil.createFastaContent(sequenceResponses, openProps.cases);
-                  DataUrlUtil.downloadUrl(`data:text/plain;base64,${btoa(fasta)}`, 'sequences.fasta');
+                  EpiDownloadUtil.createDownloadUrl(`data:text/plain;base64,${btoa(fasta)}`, 'sequences.fasta');
                   onClose();
                 }}
                 startIcon={<DownloadIcon />}
