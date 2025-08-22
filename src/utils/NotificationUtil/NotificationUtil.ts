@@ -15,7 +15,13 @@ export class NotificationUtil {
       message = t('{{message}} - The item you are trying to edit does not exist.', { message });
     }
     if (AxiosUtil.isAxiosBadRequestError(error)) {
-      message = t('{{message}} - Bad request.', { message });
+      message = t('{{message}} - Bad request. The input data was not correct.', { message });
+    }
+    if (AxiosUtil.isAxiosConflictError(error)) {
+      message = t('{{message}} - Conflict. The request could not be completed due to a conflict with the current state of the resource.', { message });
+    }
+    if (AxiosUtil.isAxiosInternalServerError(error)) {
+      message = t('{{message}} - Internal Server Error. Please try again later.', { message });
     }
     return message;
   }

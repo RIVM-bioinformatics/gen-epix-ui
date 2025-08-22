@@ -37,6 +37,10 @@ export class AxiosUtil {
     return AxiosUtil.isAxiosRequestErrorWithCode(error, 500);
   }
 
+  public static isAxiosConflictError(error: unknown): error is AxiosError<unknown> {
+    return AxiosUtil.isAxiosRequestErrorWithCode(error, 409);
+  }
+
   public static isAxiosRequestErrorWithCode(error: unknown, status: number): error is AxiosError<unknown> {
     return isAxiosError(error) && error.response?.status === status;
   }
