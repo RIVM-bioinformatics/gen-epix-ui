@@ -1,11 +1,9 @@
 import type { ReactElement } from 'react';
 import {
   useCallback,
-  useEffect,
   useId,
   useMemo,
   useRef,
-  useState,
 } from 'react';
 import {
   Box,
@@ -27,14 +25,13 @@ import {
   useFormContext,
   useWatch,
 } from 'react-hook-form';
-import type {
-  DateTimePickerProps as MuiDateTimePickerProps,
-  DatePickerProps as MuiDatePickerProps,
-} from '@mui/x-date-pickers';
 import {
   LocalizationProvider,
   DatePicker as MuiDatePicker,
-  DateTimePicker as MuiDateTimePicker,
+} from '@mui/x-date-pickers';
+import type {
+  DateTimePickerProps as MuiDateTimePickerProps,
+  DatePickerProps as MuiDatePickerProps,
 } from '@mui/x-date-pickers';
 import { AdapterDateFns } from '@mui/x-date-pickers/AdapterDateFns';
 import classNames from 'classnames';
@@ -46,6 +43,7 @@ import {
   parse,
   parseISO,
   set,
+  subMonths,
 } from 'date-fns';
 import {
   enUS,
@@ -58,7 +56,6 @@ import { TestIdUtil } from '../../../../utils/TestIdUtil';
 import { FormFieldHelperText } from '../../helpers/FormFieldHelperText';
 import { FormFieldLoadingIndicator } from '../../helpers/FormFieldLoadingIndicator';
 import { DATE_FORMAT } from '../../../../data/date';
-import { WindowManager } from '../../../../classes/managers/WindowManager';
 
 
 export type DateRangePickerProps<TFieldValues extends FieldValues, TName extends Path<TFieldValues> = Path<TFieldValues>> = {
@@ -95,18 +92,10 @@ export const DateRangePicker = <TFieldValues extends FieldValues, TName extends 
   const theme = useTheme();
   const id = useId();
   const [t] = useTranslation();
-  const [key, setKey] = useState(0);
 
-  useEffect(() => {
-    // There is a bug in MuiDatePicker and MuiDateTimePicker where the pickers don't work correctly in a controlled state (having a value prop).
-    // The workaround is to use the pickers in an uncontrolled state. But then the problem is that the defaultValue is not set correctly on the first render.
-    // The default value is always [null, null] on first render. Updating the key prop of the Controller will force a re-render and set the default value correctly.
-    const setKeyTimeout = WindowManager.instance.window.setTimeout(() => {
-      setKey(1);
-    }, 0);
-    return () => {
-      WindowManager.instance.window.clearTimeout(setKeyTimeout);
-    };
+  const defaultFromDate = useMemo(() => {
+    const now = new Date();
+    return subMonths(now, 3);
   }, []);
 
   const views = useMemo<MuiDateTimePickerProps['views']>(() => {
@@ -123,26 +112,8 @@ export const DateRangePicker = <TFieldValues extends FieldValues, TName extends 
     }
   }, [dateFormat]);
 
-  const MuiComponent = useMemo(() => dateFormat === DATE_FORMAT.DATE_TIME ? MuiDateTimePicker : MuiDatePicker, [dateFormat]);
-
-  const referenceDate = useMemo(() => {
-    return new Date();
-  }, []);
-
-  const customLocale = useMemo<Locale>(() => {
-    /**
-     * Use everything from enUS, but format dates the Swedish way (ISO 8601)
-     */
-    return {
-      ...enUS,
-      formatLong: sv.formatLong,
-    };
-  }, []);
-
-  const outerValue = useWatch({ control, name }) as [Date, Date];
-
   const sanitizeValue = useCallback((value: [Date, Date]): [Date, Date] => {
-    const sanitizedValue: [Date, Date] = [value[0], value[1]];
+    const sanitizedValue: [Date, Date] = [null, null];
     switch (dateFormat) {
       case DATE_FORMAT.DATE:
         sanitizedValue[0] = value[0] ? set(value[0], { hours: 0, minutes: 0, seconds: 0, milliseconds: 0 }) : null;
@@ -154,7 +125,7 @@ export const DateRangePicker = <TFieldValues extends FieldValues, TName extends 
         break;
       case DATE_FORMAT.YEAR_MONTH:
         sanitizedValue[0] = value[0] ? set(value[0], { date: 1, hours: 0, minutes: 0, seconds: 0, milliseconds: 0 }) : null;
-        sanitizedValue[1] = value[1] ? lastDayOfMonth(set(value[1], { date: 1, hours: 23, minutes: 59, seconds: 59, milliseconds: 999 })) : null;
+        sanitizedValue[1] = value[1] ? set(lastDayOfMonth(value[1]), { hours: 23, minutes: 59, seconds: 59, milliseconds: 999 }) : null;
         break;
       case DATE_FORMAT.YEAR:
         sanitizedValue[0] = value[0] ? set(value[0], { month: 0, date: 1, hours: 0, minutes: 0, seconds: 0, milliseconds: 0 }) : null;
@@ -175,24 +146,26 @@ export const DateRangePicker = <TFieldValues extends FieldValues, TName extends 
       : parseISO(inputValue);
   }, [dateFormat]);
 
-  const handleChange = useCallback((onChange: (value: [Date, Date]) => void, shouldReRender: boolean, focusTo: boolean, value: [Date, Date]) => {
-    const sanitizedValue = sanitizeValue(value);
+  const customLocale = useMemo<Locale>(() => {
+    /**
+     * Use everything from enUS, but format dates the Swedish way (ISO 8601)
+     */
+    return {
+      ...enUS,
+      formatLong: sv.formatLong,
+    };
+  }, []);
 
+  const outerValue = useWatch({ control, name }) as [Date, Date];
+
+  const handleChange = useCallback((onChange: (value: [Date, Date]) => void, value: [Date, Date]) => {
+    const sanitizedValue = sanitizeValue(value);
     if (isEqual(sanitizedValue, outerValue)) {
       return;
     }
     onChange(sanitizedValue);
     if (onChangeProp) {
       onChangeProp(sanitizedValue);
-    }
-    if (shouldReRender) {
-      setKey(prevKey => prevKey + 1); // Force re-render
-    }
-    if (focusTo) {
-      // Focus the "to" input after the change. Must be done in a timeout to ensure the input is (re-)rendered before focusing.
-      setTimeout(() => {
-        toInputRef.current?.focus();
-      }, 0);
     }
   }, [onChangeProp, outerValue, sanitizeValue]);
 
@@ -206,57 +179,50 @@ export const DateRangePicker = <TFieldValues extends FieldValues, TName extends 
     const fromValue = (value as [Date, Date])[0];
     const toValue = (value as [Date, Date])[1];
 
-    const onFromValueAccept = (newFromValue: Date) => {
-      handleChange(onChange, false, false, [newFromValue, toValue]);
+    const onFromValueChange = (newFromValue: Date) => {
+      handleChange(onChange, [newFromValue, toValue]);
     };
 
-    const onToValueAccept = (newToValue: Date) => {
-      handleChange(onChange, false, false, [fromValue, newToValue]);
+    const onToValueChange = (newToValue: Date) => {
+      handleChange(onChange, [fromValue, newToValue]);
     };
 
     const onFromBlur = () => {
       const fromInputValue = inputValueToDate(fromInputRef.current.value);
-      let newValue: [Date, Date] = [null, null];
 
       if (!isValid(fromInputValue)) {
-        newValue = [null, toValue];
+        handleChange(onChange, [null, toValue]);
       } else if (fromInputValue < minDate) {
-        newValue = [minDate, toValue];
+        handleChange(onChange, [minDate, toValue]);
       } else if (fromInputValue > maxDate) {
-        newValue = [maxDate, maxDate];
+        handleChange(onChange, [maxDate, maxDate]);
       } else if (toValue && fromInputValue > toValue) {
-        newValue = [toValue, fromInputValue];
+        handleChange(onChange, [toValue, fromInputValue]);
       } else {
-        newValue = [fromInputValue, toValue];
+        handleChange(onChange, [fromInputValue, toValue]);
       }
-
-      handleChange(onChange, fromInputValue !== newValue[0], fromInputValue !== newValue[0], newValue);
       onBlur();
     };
 
     const onToBlur = () => {
       const toInputValue = inputValueToDate(toInputRef.current.value);
-      let newValue: [Date, Date] = [null, null];
 
       if (!isValid(toInputValue)) {
-        newValue = [fromValue, null];
+        handleChange(onChange, [fromValue, null]);
       } else if (toInputValue > maxDate) {
-        newValue = [fromValue, maxDate];
+        handleChange(onChange, [fromValue, maxDate]);
       } else if (toInputValue < minDate) {
-        newValue = [minDate, minDate];
+        handleChange(onChange, [minDate, minDate]);
       } else if (fromValue && toInputValue < fromValue) {
-        newValue = [toInputValue, fromValue];
+        handleChange(onChange, [toInputValue, fromValue]);
       } else {
-        newValue = [fromValue, toInputValue];
+        handleChange(onChange, [fromValue, toInputValue]);
       }
-
-      handleChange(onChange, toInputValue !== newValue[1], false, newValue);
       onBlur();
     };
 
     const onResetButtonClick = () => {
       onChange([null, null]);
-      setKey(prevKey => prevKey + 1); // Force re-render
     };
 
     return (
@@ -307,22 +273,19 @@ export const DateRangePicker = <TFieldValues extends FieldValues, TName extends 
             gap: theme.spacing(1),
           }}
           >
-            <MuiComponent
-              defaultValue={fromValue}
+            <MuiDatePicker
               disableFuture
               disabled={disabled || loading}
               enableAccessibleFieldDOMStructure={false}
               inputRef={fromInputRef}
               label={t`From`}
               loading={loading}
-              maxDate={maxDate}
+              maxDate={toValue ? new Date(Math.min.apply(null, [maxDate, toValue] as unknown as number[])) : maxDate}
               minDate={minDate}
               // eslint-disable-next-line react/jsx-no-bind
-              onAccept={onFromValueAccept}
-              openTo={dateFormat === DATE_FORMAT.DATE_TIME ? undefined : 'year'}
-              referenceDate={referenceDate}
+              onChange={onFromValueChange}
+              referenceDate={defaultFromDate}
               slotProps={{
-                field: { clearable: true },
                 textField: {
                   className: classNames({ 'Mui-warning': hasWarning }),
                   onBlur: onFromBlur,
@@ -334,10 +297,10 @@ export const DateRangePicker = <TFieldValues extends FieldValues, TName extends 
                   },
                 },
               }}
+              value={fromValue ?? null}
               views={views as MuiDateTimePickerProps['views'] & MuiDatePickerProps['views']}
             />
-            <MuiComponent
-              defaultValue={toValue}
+            <MuiDatePicker
               disableFuture
               disabled={disabled || loading}
               enableAccessibleFieldDOMStructure={false}
@@ -345,13 +308,11 @@ export const DateRangePicker = <TFieldValues extends FieldValues, TName extends 
               label={t`To`}
               loading={loading}
               maxDate={maxDate}
-              minDate={minDate}
+              minDate={fromValue ? new Date(Math.max.apply(null, [minDate, fromValue] as unknown as number[])) : minDate}
               // eslint-disable-next-line react/jsx-no-bind
-              onAccept={onToValueAccept}
-              openTo={dateFormat === DATE_FORMAT.DATE_TIME ? undefined : 'year'}
-              referenceDate={referenceDate}
+              onChange={onToValueChange}
+              referenceDate={maxDate}
               slotProps={{
-                field: { clearable: true },
                 textField: {
                   className: classNames({ 'Mui-warning': hasWarning }),
                   onBlur: onToBlur,
@@ -363,6 +324,7 @@ export const DateRangePicker = <TFieldValues extends FieldValues, TName extends 
                   },
                 },
               }}
+              value={toValue ?? null}
               views={views as MuiDateTimePickerProps['views'] & MuiDatePickerProps['views']}
             />
           </Box>
@@ -377,13 +339,12 @@ export const DateRangePicker = <TFieldValues extends FieldValues, TName extends 
         </FormHelperText>
       </FormControl>
     );
-  }, [hasError, label, name, disabled, loading, id, required, customLocale, theme, MuiComponent, t, maxDate, minDate, dateFormat, referenceDate, hasWarning, views, errorMessage, warningMessage, handleChange, inputValueToDate]);
+  }, [hasError, label, name, disabled, loading, id, required, customLocale, theme, t, maxDate, minDate, defaultFromDate, hasWarning, views, errorMessage, warningMessage, handleChange, inputValueToDate]);
 
   return (
     <Controller
       control={control}
       defaultValue={'' as PathValue<TFieldValues, TName>}
-      key={key} // Force re-render on mount
       name={name}
       render={renderController}
     />
