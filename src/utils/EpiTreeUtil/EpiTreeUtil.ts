@@ -451,14 +451,14 @@ export class EpiTreeUtil {
       ctx.fill(shape);
     });
 
-    treeAssembly.leafNodes.forEach(({ shape, nodeName }) => {
-      ctx.fillStyle = EpiTreeUtil.getFillStyle(stratification?.caseIdColors?.[nodeName] ?? theme.epi.tree.color, theme.epi.tree.dimFn, highlightedNodeNames, nodeName);
-      ctx.fill(shape);
-    });
-
     treeAssembly.leafTreeLines.forEach(({ shape, nodeName }) => {
       ctx.strokeStyle = EpiTreeUtil.getFillStyle(theme.epi.tree.color, theme.epi.tree.dimFn, highlightedNodeNames, nodeName);
       ctx.stroke(shape);
+    });
+
+    treeAssembly.leafNodes.forEach(({ shape, nodeName }) => {
+      ctx.fillStyle = EpiTreeUtil.getFillStyle(stratification?.caseIdColors?.[nodeName] ?? theme.epi.tree.color, theme.epi.tree.dimFn, highlightedNodeNames, nodeName);
+      ctx.fill(shape);
     });
   }
 
