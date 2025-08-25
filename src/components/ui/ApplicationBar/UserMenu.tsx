@@ -27,6 +27,7 @@ import { LogManager } from '../../../classes/managers/LogManager';
 import { DataUtil } from '../../../utils/DataUtil';
 import { StringUtil } from '../../../utils/StringUtil';
 import { TestIdUtil } from '../../../utils/TestIdUtil';
+import { useOrganizationMapQuery } from '../../../dataHooks/useOrganizationsQuery';
 
 import { UserOrganizationAdminMenuItem } from './UserOrganizationAdminMenuItem';
 
@@ -40,6 +41,7 @@ export const UserMenu = ({ anchorElement, onClose }: UserMenuProps): ReactElemen
   const logoutConfirmation = useRef<ConfirmationRefMethods>(null);
   const popoverId = useMemo(() => StringUtil.createUuid(), []);
   const isUserMenuOpen = !!anchorElement;
+  const organizationMapQuery = useOrganizationMapQuery();
   const [t] = useTranslation();
 
   const onLogoutButtonClick = useCallback(() => {
@@ -66,8 +68,14 @@ export const UserMenu = ({ anchorElement, onClose }: UserMenuProps): ReactElemen
   }, []);
 
   const userOrganization = useMemo(() => {
-    return AuthorizationManager.instance.user?.organization?.name;
-  }, []);
+    if (organizationMapQuery.isLoading) {
+      return t`Loading...`;
+    }
+    if (organizationMapQuery.error) {
+      return t`Unknown`;
+    }
+    return organizationMapQuery.map.get(AuthorizationManager.instance.user?.organization_id ?? '')?.name ?? t`Unknown`;
+  }, [organizationMapQuery, t]);
 
   return (
     <Popover
