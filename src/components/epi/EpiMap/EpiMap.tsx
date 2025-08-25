@@ -470,11 +470,11 @@ export const EpiMap = () => {
         items: [
           {
             label: t`Save as PNG`,
-            callback: () => EpiDownloadUtil.downloadEchartsImage(t`Epi curve`, chartRef.current.getEchartsInstance(), 'png', completeCaseType, t),
+            callback: () => EpiDownloadUtil.downloadEchartsImage(t`Incidence map`, chartRef.current.getEchartsInstance(), 'png', completeCaseType, t),
           },
           {
             label: t`Save as JPEG`,
-            callback: () => EpiDownloadUtil.downloadEchartsImage(t`Epi curve`, chartRef.current.getEchartsInstance(), 'jpeg', completeCaseType, t),
+            callback: () => EpiDownloadUtil.downloadEchartsImage(t`Incidence map`, chartRef.current.getEchartsInstance(), 'jpeg', completeCaseType, t),
           },
         ],
       });
