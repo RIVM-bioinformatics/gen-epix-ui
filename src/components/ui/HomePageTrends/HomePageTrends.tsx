@@ -81,6 +81,8 @@ export const HomePageTrends = withPermissions(() => {
     },
   });
 
+  console.log({ caseSetsThenQuery });
+
   const loadables = useArray([
     caseTypeStatsQueryNow,
     caseTypeStatsQueryPast,
@@ -92,7 +94,7 @@ export const HomePageTrends = withPermissions(() => {
   const statistics = useMemo<Statistic[]>(() => {
     const s: Statistic[] = [];
 
-    if (loadables.some(loadable => loadable.isLoading) || !caseTypeStatsQueryNow.data?.length || !caseTypeStatsQueryPast.data?.length) {
+    if (loadables.some(loadable => loadable.isLoading) || loadables.some(loadable => loadable.error) || !caseTypeStatsQueryNow.data?.length || !caseTypeStatsQueryPast.data?.length) {
       return s;
     }
 
