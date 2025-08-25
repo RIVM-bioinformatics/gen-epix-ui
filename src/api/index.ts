@@ -1,8 +1,8 @@
 /* tslint:disable */
 /* eslint-disable */
 /**
- * Gen-EpiX
- * Gen-EpiX is platform for visualizing and analyzing genomic epidemiology data. It has fine-grained access controls for collaboration between multiple organizations.
+ * Gen-EpiX casedb
+ * The casedb app manages data of cases of a disease.
  *
  * The version of the OpenAPI document: 5.0.0
  * Contact: ids-bioinformatics@rivm.nl

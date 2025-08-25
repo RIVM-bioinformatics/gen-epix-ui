@@ -1,8 +1,8 @@
 /* eslint-disable */
 // @ts-nocheck
 /**
- * Gen-EpiX
- * Gen-EpiX is platform for visualizing and analyzing genomic epidemiology data. It has fine-grained access controls for collaboration between multiple organizations.
+ * Gen-EpiX casedb
+ * The casedb app manages data of cases of a disease.
  *
  * The version of the OpenAPI document: 5.0.0
  * Contact: ids-bioinformatics@rivm.nl
@@ -23,6 +23,25 @@ import type { RequestArgs } from './base';
 // @ts-ignore
 import { BASE_PATH, COLLECTION_FORMATS, BaseAPI, RequiredError, operationServerMap } from './base';
 
+/**
+ * An allele profile. Temporary implementation.
+ * @export
+ * @interface AlleleProfile
+ */
+export interface AlleleProfile {
+    /**
+     * The unique identifier for the obj.
+     * @type {string}
+     * @memberof AlleleProfile
+     */
+    'id'?: string | null;
+    /**
+     * The allele profile
+     * @type {string}
+     * @memberof AlleleProfile
+     */
+    'allele_profile'?: string | null;
+}
 /**
  * 
  * @export
@@ -1360,85 +1379,85 @@ export type ColType = typeof ColType[keyof typeof ColType];
  */
 
 export const CommandName = {
-    RetrieveCaseSetRightsCommand: 'RetrieveCaseSetRightsCommand',
-    RetrieveCompleteCaseTypeCommand: 'RetrieveCompleteCaseTypeCommand',
-    CaseSetDataCollectionLinkCrudCommand: 'CaseSetDataCollectionLinkCrudCommand',
-    UserShareCasePolicyCrudCommand: 'UserShareCasePolicyCrudCommand',
-    RetrieveContainingRegionCommand: 'RetrieveContainingRegionCommand',
-    OutageCrudCommand: 'OutageCrudCommand',
-    CaseTypeSetMemberCrudCommand: 'CaseTypeSetMemberCrudCommand',
-    RetrieveOrganizationContactCommand: 'RetrieveOrganizationContactCommand',
-    OrganizationSetMemberCrudCommand: 'OrganizationSetMemberCrudCommand',
-    UserCrudCommand: 'UserCrudCommand',
-    CaseSetCreateCommand: 'CaseSetCreateCommand',
-    RetrieveGeneticSequenceByCaseCommand: 'RetrieveGeneticSequenceByCaseCommand',
-    TreeAlgorithmClassCrudCommand: 'TreeAlgorithmClassCrudCommand',
-    CaseTypeSetCaseTypeUpdateAssociationCommand: 'CaseTypeSetCaseTypeUpdateAssociationCommand',
-    ConceptSetConceptUpdateAssociationCommand: 'ConceptSetConceptUpdateAssociationCommand',
-    RetrieveCaseRightsCommand: 'RetrieveCaseRightsCommand',
-    RetrieveCaseTypeStatsCommand: 'RetrieveCaseTypeStatsCommand',
-    CasesCreateCommand: 'CasesCreateCommand',
-    RegionRelationCrudCommand: 'RegionRelationCrudCommand',
-    DataCollectionCrudCommand: 'DataCollectionCrudCommand',
-    GetIdentityProvidersCommand: 'GetIdentityProvidersCommand',
-    RetrieveAlleleProfileCommand: 'RetrieveAlleleProfileCommand',
-    UserInvitationCrudCommand: 'UserInvitationCrudCommand',
-    RetrieveCaseSetStatsCommand: 'RetrieveCaseSetStatsCommand',
-    IdentifierIssuerCrudCommand: 'IdentifierIssuerCrudCommand',
-    DataCollectionSetMemberCrudCommand: 'DataCollectionSetMemberCrudCommand',
-    InviteUserCommand: 'InviteUserCommand',
-    EtiologyCrudCommand: 'EtiologyCrudCommand',
-    ContactCrudCommand: 'ContactCrudCommand',
-    RegisterInvitedUserCommand: 'RegisterInvitedUserCommand',
-    OrganizationAccessCasePolicyCrudCommand: 'OrganizationAccessCasePolicyCrudCommand',
-    CaseSetMemberCrudCommand: 'CaseSetMemberCrudCommand',
-    DiseaseCrudCommand: 'DiseaseCrudCommand',
-    TreeAlgorithmCrudCommand: 'TreeAlgorithmCrudCommand',
-    CaseTypeColSetMemberCrudCommand: 'CaseTypeColSetMemberCrudCommand',
-    DataCollectionSetCrudCommand: 'DataCollectionSetCrudCommand',
-    CaseTypeColSetCaseTypeColUpdateAssociationCommand: 'CaseTypeColSetCaseTypeColUpdateAssociationCommand',
-    RegionSetCrudCommand: 'RegionSetCrudCommand',
-    RetrieveOwnPermissionsCommand: 'RetrieveOwnPermissionsCommand',
-    CaseSetCrudCommand: 'CaseSetCrudCommand',
-    RetrieveCasesByQueryCommand: 'RetrieveCasesByQueryCommand',
-    DiseaseEtiologicalAgentUpdateAssociationCommand: 'DiseaseEtiologicalAgentUpdateAssociationCommand',
-    SubjectIdentifierCrudCommand: 'SubjectIdentifierCrudCommand',
-    CaseDataCollectionLinkCrudCommand: 'CaseDataCollectionLinkCrudCommand',
-    RegionSetShapeCrudCommand: 'RegionSetShapeCrudCommand',
-    GeneticDistanceProtocolCrudCommand: 'GeneticDistanceProtocolCrudCommand',
-    UpdateUserOwnOrganizationCommand: 'UpdateUserOwnOrganizationCommand',
-    ConceptSetCrudCommand: 'ConceptSetCrudCommand',
-    RetrieveGeneticSequenceByIdCommand: 'RetrieveGeneticSequenceByIdCommand',
-    CaseTypeColSetCrudCommand: 'CaseTypeColSetCrudCommand',
-    CaseCrudCommand: 'CaseCrudCommand',
-    RetrieveLicensesCommand: 'RetrieveLicensesCommand',
-    RegionCrudCommand: 'RegionCrudCommand',
-    CaseSetStatusCrudCommand: 'CaseSetStatusCrudCommand',
-    OrganizationShareCasePolicyCrudCommand: 'OrganizationShareCasePolicyCrudCommand',
-    DataCollectionSetDataCollectionUpdateAssociationCommand: 'DataCollectionSetDataCollectionUpdateAssociationCommand',
-    SubjectCrudCommand: 'SubjectCrudCommand',
-    RetrievePhylogeneticTreeBySequencesCommand: 'RetrievePhylogeneticTreeBySequencesCommand',
-    OrganizationCrudCommand: 'OrganizationCrudCommand',
-    CaseSetCategoryCrudCommand: 'CaseSetCategoryCrudCommand',
-    CaseTypeColCrudCommand: 'CaseTypeColCrudCommand',
-    EtiologicalAgentCrudCommand: 'EtiologicalAgentCrudCommand',
-    RetrieveCasesByIdCommand: 'RetrieveCasesByIdCommand',
-    RetrieveOutagesCommand: 'RetrieveOutagesCommand',
-    SiteCrudCommand: 'SiteCrudCommand',
-    OrganizationSetOrganizationUpdateAssociationCommand: 'OrganizationSetOrganizationUpdateAssociationCommand',
-    DimCrudCommand: 'DimCrudCommand',
-    CaseTypeCrudCommand: 'CaseTypeCrudCommand',
-    CaseTypeSetCategoryCrudCommand: 'CaseTypeSetCategoryCrudCommand',
-    UpdateUserCommand: 'UpdateUserCommand',
-    RetrieveOrganizationAdminNameEmailsCommand: 'RetrieveOrganizationAdminNameEmailsCommand',
     RetrievePhylogeneticTreeByCasesCommand: 'RetrievePhylogeneticTreeByCasesCommand',
+    CaseCrudCommand: 'CaseCrudCommand',
+    ConceptSetConceptUpdateAssociationCommand: 'ConceptSetConceptUpdateAssociationCommand',
+    SubjectIdentifierCrudCommand: 'SubjectIdentifierCrudCommand',
+    UpdateUserOwnOrganizationCommand: 'UpdateUserOwnOrganizationCommand',
+    SiteCrudCommand: 'SiteCrudCommand',
+    RetrieveOwnPermissionsCommand: 'RetrieveOwnPermissionsCommand',
+    RetrievePhylogeneticTreeBySequencesCommand: 'RetrievePhylogeneticTreeBySequencesCommand',
+    CaseSetCategoryCrudCommand: 'CaseSetCategoryCrudCommand',
     ConceptSetMemberCrudCommand: 'ConceptSetMemberCrudCommand',
-    CaseTypeSetCrudCommand: 'CaseTypeSetCrudCommand',
-    OrganizationSetCrudCommand: 'OrganizationSetCrudCommand',
+    RegionCrudCommand: 'RegionCrudCommand',
+    CaseSetCrudCommand: 'CaseSetCrudCommand',
+    DataCollectionCrudCommand: 'DataCollectionCrudCommand',
+    OrganizationShareCasePolicyCrudCommand: 'OrganizationShareCasePolicyCrudCommand',
+    CaseTypeSetMemberCrudCommand: 'CaseTypeSetMemberCrudCommand',
+    OrganizationSetMemberCrudCommand: 'OrganizationSetMemberCrudCommand',
     ConceptCrudCommand: 'ConceptCrudCommand',
+    CaseSetStatusCrudCommand: 'CaseSetStatusCrudCommand',
+    RegionRelationCrudCommand: 'RegionRelationCrudCommand',
+    ContactCrudCommand: 'ContactCrudCommand',
+    OutageCrudCommand: 'OutageCrudCommand',
+    CaseTypeSetCrudCommand: 'CaseTypeSetCrudCommand',
+    UserInvitationCrudCommand: 'UserInvitationCrudCommand',
+    EtiologyCrudCommand: 'EtiologyCrudCommand',
+    RetrieveOrganizationAdminNameEmailsCommand: 'RetrieveOrganizationAdminNameEmailsCommand',
+    RetrieveCompleteCaseTypeCommand: 'RetrieveCompleteCaseTypeCommand',
+    RegionSetShapeCrudCommand: 'RegionSetShapeCrudCommand',
+    RetrieveCaseSetRightsCommand: 'RetrieveCaseSetRightsCommand',
+    CaseDataCollectionLinkCrudCommand: 'CaseDataCollectionLinkCrudCommand',
+    OrganizationSetCrudCommand: 'OrganizationSetCrudCommand',
+    TreeAlgorithmClassCrudCommand: 'TreeAlgorithmClassCrudCommand',
+    TreeAlgorithmCrudCommand: 'TreeAlgorithmCrudCommand',
+    IdentifierIssuerCrudCommand: 'IdentifierIssuerCrudCommand',
+    RetrieveCasesByIdCommand: 'RetrieveCasesByIdCommand',
+    DimCrudCommand: 'DimCrudCommand',
+    GeneticDistanceProtocolCrudCommand: 'GeneticDistanceProtocolCrudCommand',
+    EtiologicalAgentCrudCommand: 'EtiologicalAgentCrudCommand',
+    CaseTypeSetCaseTypeUpdateAssociationCommand: 'CaseTypeSetCaseTypeUpdateAssociationCommand',
+    CaseTypeCrudCommand: 'CaseTypeCrudCommand',
+    RetrieveCaseRightsCommand: 'RetrieveCaseRightsCommand',
+    RetrieveContainingRegionCommand: 'RetrieveContainingRegionCommand',
+    OrganizationCrudCommand: 'OrganizationCrudCommand',
+    DataCollectionSetCrudCommand: 'DataCollectionSetCrudCommand',
+    CaseTypeColSetCrudCommand: 'CaseTypeColSetCrudCommand',
+    RetrieveOrganizationContactCommand: 'RetrieveOrganizationContactCommand',
+    SubjectCrudCommand: 'SubjectCrudCommand',
+    UpdateUserCommand: 'UpdateUserCommand',
+    RetrieveCasesByQueryCommand: 'RetrieveCasesByQueryCommand',
+    RetrieveLicensesCommand: 'RetrieveLicensesCommand',
+    RetrieveGeneticSequenceByCaseCommand: 'RetrieveGeneticSequenceByCaseCommand',
     ColCrudCommand: 'ColCrudCommand',
+    DataCollectionSetMemberCrudCommand: 'DataCollectionSetMemberCrudCommand',
+    OrganizationSetOrganizationUpdateAssociationCommand: 'OrganizationSetOrganizationUpdateAssociationCommand',
+    CaseTypeColSetCaseTypeColUpdateAssociationCommand: 'CaseTypeColSetCaseTypeColUpdateAssociationCommand',
+    CaseSetMemberCrudCommand: 'CaseSetMemberCrudCommand',
+    RegionSetCrudCommand: 'RegionSetCrudCommand',
+    CasesCreateCommand: 'CasesCreateCommand',
+    CaseTypeSetCategoryCrudCommand: 'CaseTypeSetCategoryCrudCommand',
+    UserAccessCasePolicyCrudCommand: 'UserAccessCasePolicyCrudCommand',
+    RetrieveGeneticSequenceByIdCommand: 'RetrieveGeneticSequenceByIdCommand',
+    UserCrudCommand: 'UserCrudCommand',
+    CaseTypeColSetMemberCrudCommand: 'CaseTypeColSetMemberCrudCommand',
+    DataCollectionSetDataCollectionUpdateAssociationCommand: 'DataCollectionSetDataCollectionUpdateAssociationCommand',
+    ConceptSetCrudCommand: 'ConceptSetCrudCommand',
+    GetIdentityProvidersCommand: 'GetIdentityProvidersCommand',
+    RetrieveCaseTypeStatsCommand: 'RetrieveCaseTypeStatsCommand',
+    UserShareCasePolicyCrudCommand: 'UserShareCasePolicyCrudCommand',
+    CaseTypeColCrudCommand: 'CaseTypeColCrudCommand',
+    DiseaseCrudCommand: 'DiseaseCrudCommand',
+    RetrieveAlleleProfileCommand: 'RetrieveAlleleProfileCommand',
+    InviteUserCommand: 'InviteUserCommand',
+    RetrieveCaseSetStatsCommand: 'RetrieveCaseSetStatsCommand',
     OrganizationAdminPolicyCrudCommand: 'OrganizationAdminPolicyCrudCommand',
-    UserAccessCasePolicyCrudCommand: 'UserAccessCasePolicyCrudCommand'
+    OrganizationAccessCasePolicyCrudCommand: 'OrganizationAccessCasePolicyCrudCommand',
+    RegisterInvitedUserCommand: 'RegisterInvitedUserCommand',
+    DiseaseEtiologicalAgentUpdateAssociationCommand: 'DiseaseEtiologicalAgentUpdateAssociationCommand',
+    RetrieveOutagesCommand: 'RetrieveOutagesCommand',
+    CaseSetDataCollectionLinkCrudCommand: 'CaseSetDataCollectionLinkCrudCommand',
+    CaseSetCreateCommand: 'CaseSetCreateCommand'
 } as const;
 
 export type CommandName = typeof CommandName[keyof typeof CommandName];
@@ -1578,7 +1597,7 @@ export interface CompleteCaseType {
     'case_type_share_abacs': { [key: string]: CaseTypeShareAbac; };
 }
 /**
- * 
+ * A concept in the ontology.
  * @export
  * @interface Concept
  */
@@ -1615,7 +1634,7 @@ export interface Concept {
     'props'?: object;
 }
 /**
- * 
+ * A set of concepts in the ontology.
  * @export
  * @interface ConceptSet
  */
@@ -1672,7 +1691,7 @@ export interface ConceptSet {
 
 
 /**
- * 
+ * The membership of a concept in a concept set.
  * @export
  * @interface ConceptSetMember
  */
@@ -1989,7 +2008,7 @@ export type DimType = typeof DimType[keyof typeof DimType];
 
 
 /**
- * 
+ * A disease.
  * @export
  * @interface Disease
  */
@@ -2014,7 +2033,7 @@ export interface Disease {
     'icd_code'?: string | null;
 }
 /**
- * 
+ * An etiological agent.
  * @export
  * @interface EtiologicalAgent
  */
@@ -2039,7 +2058,7 @@ export interface EtiologicalAgent {
     'type': string;
 }
 /**
- * 
+ * The etiology of a disease based on an etiological agent.
  * @export
  * @interface Etiology
  */
@@ -2131,7 +2150,7 @@ export interface GeneticDistanceProtocol {
     'min_scale_unit': number;
 }
 /**
- * A class representing a genetic sequence. Temporary implementation.
+ * A genetic sequence. Temporary implementation.
  * @export
  * @interface GeneticSequence
  */
@@ -2538,7 +2557,7 @@ export interface OrganizationAccessCasePolicy {
     'write_case_set': boolean;
 }
 /**
- * 
+ * Defines whether a user is an admin for an organization. If so, and if the user has the role ORG_ADMIN, they will be able to: 1) Invite new users of this organization. 2) Manage the case and case set access and share rights of these users.  The user will not be able to: 1) Perform the operations above for any other organization for which there    is no corresponding admin policy. 2) Set the case and case set access and share case rights for the    organization itself. This has to be done by a user with role APP_ADMIN.  Users with role APP_ADMIN or above do not require an admin policy to perform these actions. They are de facto organization admin for all organizations.
  * @export
  * @interface OrganizationAdminPolicy
  */
@@ -2843,7 +2862,7 @@ export type PermissionType = typeof PermissionType[keyof typeof PermissionType];
 
 
 /**
- * 
+ * A phylogenetic tree, including a description of the leaves and how it was generated.
  * @export
  * @interface PhylogeneticTree
  */
@@ -2906,7 +2925,7 @@ export interface PhylogeneticTree {
 
 
 /**
- * 
+ * Geographical representation of a region.
  * @export
  * @interface Region
  */
@@ -2942,32 +2961,32 @@ export interface Region {
      */
     'name': string;
     /**
-     * 
+     * The latitude of the region\'s centroid.
      * @type {number}
      * @memberof Region
      */
     'centroid_lat': number;
     /**
-     * 
+     * The longitude of the region\'s centroid.
      * @type {number}
      * @memberof Region
      */
     'centroid_lon': number;
     /**
-     * 
+     * The latitude of the region\'s center.
      * @type {number}
      * @memberof Region
      */
     'center_lat': number;
     /**
-     * 
+     * The longitude of the region\'s center.
      * @type {number}
      * @memberof Region
      */
     'center_lon': number;
 }
 /**
- * 
+ * Geographical relation between two regions.
  * @export
  * @interface RegionRelation
  */
@@ -2979,7 +2998,7 @@ export interface RegionRelation {
      */
     'id'?: string | null;
     /**
-     * 
+     * The ID of the source region. FOREIGN KEY
      * @type {string}
      * @memberof RegionRelation
      */
@@ -2991,7 +3010,7 @@ export interface RegionRelation {
      */
     'from_region'?: Region;
     /**
-     * 
+     * The ID of the target region. FOREIGN KEY
      * @type {string}
      * @memberof RegionRelation
      */
@@ -3060,7 +3079,7 @@ export interface RegionSet {
     'region_code_as_label': boolean;
 }
 /**
- * 
+ * Geographical shape representation for a region set.
  * @export
  * @interface RegionSetShape
  */
@@ -3095,6 +3114,25 @@ export interface RegionSetShape {
      * @memberof RegionSetShape
      */
     'geo_json': string;
+}
+/**
+ * 
+ * @export
+ * @interface RetrieveAlleleProfileRequestBody
+ */
+export interface RetrieveAlleleProfileRequestBody {
+    /**
+     * 
+     * @type {Array<string>}
+     * @memberof RetrieveAlleleProfileRequestBody
+     */
+    'sequence_ids': Array<string>;
+    /**
+     * 
+     * @type {object}
+     * @memberof RetrieveAlleleProfileRequestBody
+     */
+    'props'?: object;
 }
 /**
  * 
@@ -3256,7 +3294,7 @@ export interface Site {
     'name': string;
 }
 /**
- * Represents a person context bound to a particular data collection.
+ * A person context bound to a particular data collection.
  * @export
  * @interface EpiSubject
  */
@@ -3293,7 +3331,7 @@ export interface EpiSubject {
     'content': object;
 }
 /**
- * 
+ * A unique identifier for a subject, generated by a particular identifier issuer.
  * @export
  * @interface SubjectIdentifier
  */
@@ -4399,7 +4437,7 @@ export interface UserAccessCasePolicy {
     'write_case_set': boolean;
 }
 /**
- * 
+ * Represents an invitation for a new user of a particular organization and with particular starting properties.
  * @export
  * @interface UserInvitation
  */
@@ -4429,13 +4467,13 @@ export interface UserInvitation {
      */
     'expires_at': string;
     /**
-     * The initial roles of the user
+     * The initial roles that the new user will have
      * @type {Array<Role>}
      * @memberof UserInvitation
      */
     'roles': Array<Role>;
     /**
-     * The ID of the user who invited the user. FOREIGN KEY
+     * The ID of the user who invited the new user. FOREIGN KEY
      * @type {string}
      * @memberof UserInvitation
      */
@@ -4447,7 +4485,7 @@ export interface UserInvitation {
      */
     'invited_by_user'?: User;
     /**
-     * The ID of the organization of the user. FOREIGN KEY
+     * The ID of the organization that the new user will belong to. FOREIGN KEY
      * @type {string}
      * @memberof UserInvitation
      */
@@ -4466,19 +4504,19 @@ export interface UserInvitation {
  */
 export interface UserInvitationRequestBody {
     /**
-     * 
+     * The email of the user, UNIQUE
      * @type {string}
      * @memberof UserInvitationRequestBody
      */
     'email': string;
     /**
-     * The roles of the user
+     * The initial roles that the new user will have
      * @type {Array<Role>}
      * @memberof UserInvitationRequestBody
      */
     'roles': Array<Role>;
     /**
-     * The ID of the organization that the invited will belong to
+     * The ID of the organization that the new user will belong to. FOREIGN KEY
      * @type {string}
      * @memberof UserInvitationRequestBody
      */
@@ -4640,8 +4678,8 @@ export type Value = number | string;
 const AbacApiAxiosParamCreator = function (configuration?: Configuration) {
     return {
         /**
-         * Stores the access rights of an organization to a particular data collection.     If an organization does not have a policy to a data collection, it has no access     rights to that data collection.      The access rights are limited to the case types in the case type set. If a case type     is not in the case type set, the organization has no access rights to that data     collection for that case type.
-         * @summary Organization Access Case Policies
+         * 
+         * @summary Organization Access Case Policies  Delete All
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
@@ -4670,8 +4708,8 @@ const AbacApiAxiosParamCreator = function (configuration?: Configuration) {
             };
         },
         /**
-         * Stores the access rights of an organization to a particular data collection.     If an organization does not have a policy to a data collection, it has no access     rights to that data collection.      The access rights are limited to the case types in the case type set. If a case type     is not in the case type set, the organization has no access rights to that data     collection for that case type.
-         * @summary Organization Access Case Policies
+         * 
+         * @summary Organization Access Case Policies  Delete One
          * @param {any} objectId 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
@@ -4704,8 +4742,8 @@ const AbacApiAxiosParamCreator = function (configuration?: Configuration) {
             };
         },
         /**
-         * Stores the access rights of an organization to a particular data collection.     If an organization does not have a policy to a data collection, it has no access     rights to that data collection.      The access rights are limited to the case types in the case type set. If a case type     is not in the case type set, the organization has no access rights to that data     collection for that case type.
-         * @summary Organization Access Case Policies
+         * 
+         * @summary Organization Access Case Policies  Delete Some
          * @param {string} ids 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
@@ -4741,8 +4779,8 @@ const AbacApiAxiosParamCreator = function (configuration?: Configuration) {
             };
         },
         /**
-         * Stores the access rights of an organization to a particular data collection.     If an organization does not have a policy to a data collection, it has no access     rights to that data collection.      The access rights are limited to the case types in the case type set. If a case type     is not in the case type set, the organization has no access rights to that data     collection for that case type.
-         * @summary Organization Access Case Policies
+         * 
+         * @summary Organization Access Case Policies  Get All
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
@@ -4771,8 +4809,8 @@ const AbacApiAxiosParamCreator = function (configuration?: Configuration) {
             };
         },
         /**
-         * Stores the access rights of an organization to a particular data collection.     If an organization does not have a policy to a data collection, it has no access     rights to that data collection.      The access rights are limited to the case types in the case type set. If a case type     is not in the case type set, the organization has no access rights to that data     collection for that case type.
-         * @summary Organization Access Case Policies
+         * 
+         * @summary Organization Access Case Policies  Get One
          * @param {string} objectId 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
@@ -4805,8 +4843,8 @@ const AbacApiAxiosParamCreator = function (configuration?: Configuration) {
             };
         },
         /**
-         * Stores the access rights of an organization to a particular data collection.     If an organization does not have a policy to a data collection, it has no access     rights to that data collection.      The access rights are limited to the case types in the case type set. If a case type     is not in the case type set, the organization has no access rights to that data     collection for that case type.
-         * @summary Organization Access Case Policies
+         * 
+         * @summary Organization Access Case Policies  Get Some
          * @param {string} ids 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
@@ -4842,8 +4880,8 @@ const AbacApiAxiosParamCreator = function (configuration?: Configuration) {
             };
         },
         /**
-         * Stores the access rights of an organization to a particular data collection.     If an organization does not have a policy to a data collection, it has no access     rights to that data collection.      The access rights are limited to the case types in the case type set. If a case type     is not in the case type set, the organization has no access rights to that data     collection for that case type.
-         * @summary Organization Access Case Policies
+         * 
+         * @summary Organization Access Case Policies  Post One
          * @param {OrganizationAccessCasePolicy} organizationAccessCasePolicy 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
@@ -4878,8 +4916,8 @@ const AbacApiAxiosParamCreator = function (configuration?: Configuration) {
             };
         },
         /**
-         * Stores the access rights of an organization to a particular data collection.     If an organization does not have a policy to a data collection, it has no access     rights to that data collection.      The access rights are limited to the case types in the case type set. If a case type     is not in the case type set, the organization has no access rights to that data     collection for that case type.
-         * @summary Organization Access Case Policies
+         * 
+         * @summary Organization Access Case Policies  Post Query
          * @param {EpiFilter} filter 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
@@ -4914,8 +4952,8 @@ const AbacApiAxiosParamCreator = function (configuration?: Configuration) {
             };
         },
         /**
-         * Stores the access rights of an organization to a particular data collection.     If an organization does not have a policy to a data collection, it has no access     rights to that data collection.      The access rights are limited to the case types in the case type set. If a case type     is not in the case type set, the organization has no access rights to that data     collection for that case type.
-         * @summary Organization Access Case Policies
+         * 
+         * @summary Organization Access Case Policies  Post Query  Ids
          * @param {EpiFilter} filter 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
@@ -4950,8 +4988,8 @@ const AbacApiAxiosParamCreator = function (configuration?: Configuration) {
             };
         },
         /**
-         * Stores the access rights of an organization to a particular data collection.     If an organization does not have a policy to a data collection, it has no access     rights to that data collection.      The access rights are limited to the case types in the case type set. If a case type     is not in the case type set, the organization has no access rights to that data     collection for that case type.
-         * @summary Organization Access Case Policies
+         * 
+         * @summary Organization Access Case Policies  Post Some
          * @param {Array<OrganizationAccessCasePolicy>} organizationAccessCasePolicy 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
@@ -4986,8 +5024,8 @@ const AbacApiAxiosParamCreator = function (configuration?: Configuration) {
             };
         },
         /**
-         * Stores the access rights of an organization to a particular data collection.     If an organization does not have a policy to a data collection, it has no access     rights to that data collection.      The access rights are limited to the case types in the case type set. If a case type     is not in the case type set, the organization has no access rights to that data     collection for that case type.
-         * @summary Organization Access Case Policies
+         * 
+         * @summary Organization Access Case Policies  Put One
          * @param {string} objectId 
          * @param {OrganizationAccessCasePolicy} organizationAccessCasePolicy 
          * @param {*} [options] Override http request option.
@@ -5026,8 +5064,8 @@ const AbacApiAxiosParamCreator = function (configuration?: Configuration) {
             };
         },
         /**
-         * Stores the access rights of an organization to a particular data collection.     If an organization does not have a policy to a data collection, it has no access     rights to that data collection.      The access rights are limited to the case types in the case type set. If a case type     is not in the case type set, the organization has no access rights to that data     collection for that case type.
-         * @summary Organization Access Case Policies
+         * 
+         * @summary Organization Access Case Policies  Put Some
          * @param {Array<OrganizationAccessCasePolicy>} organizationAccessCasePolicy 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
@@ -5063,7 +5101,7 @@ const AbacApiAxiosParamCreator = function (configuration?: Configuration) {
         },
         /**
          * 
-         * @summary Organization Admin Policies
+         * @summary Organization Admin Policies  Delete All
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
@@ -5093,7 +5131,7 @@ const AbacApiAxiosParamCreator = function (configuration?: Configuration) {
         },
         /**
          * 
-         * @summary Organization Admin Policies
+         * @summary Organization Admin Policies  Delete One
          * @param {any} objectId 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
@@ -5127,7 +5165,7 @@ const AbacApiAxiosParamCreator = function (configuration?: Configuration) {
         },
         /**
          * 
-         * @summary Organization Admin Policies
+         * @summary Organization Admin Policies  Delete Some
          * @param {string} ids 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
@@ -5164,7 +5202,7 @@ const AbacApiAxiosParamCreator = function (configuration?: Configuration) {
         },
         /**
          * 
-         * @summary Organization Admin Policies
+         * @summary Organization Admin Policies  Get All
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
@@ -5194,7 +5232,7 @@ const AbacApiAxiosParamCreator = function (configuration?: Configuration) {
         },
         /**
          * 
-         * @summary Organization Admin Policies
+         * @summary Organization Admin Policies  Get One
          * @param {string} objectId 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
@@ -5228,7 +5266,7 @@ const AbacApiAxiosParamCreator = function (configuration?: Configuration) {
         },
         /**
          * 
-         * @summary Organization Admin Policies
+         * @summary Organization Admin Policies  Get Some
          * @param {string} ids 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
@@ -5265,7 +5303,7 @@ const AbacApiAxiosParamCreator = function (configuration?: Configuration) {
         },
         /**
          * 
-         * @summary Organization Admin Policies
+         * @summary Organization Admin Policies  Post One
          * @param {OrganizationAdminPolicy} organizationAdminPolicy 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
@@ -5301,7 +5339,7 @@ const AbacApiAxiosParamCreator = function (configuration?: Configuration) {
         },
         /**
          * 
-         * @summary Organization Admin Policies
+         * @summary Organization Admin Policies  Post Query
          * @param {EpiFilter} filter 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
@@ -5337,7 +5375,7 @@ const AbacApiAxiosParamCreator = function (configuration?: Configuration) {
         },
         /**
          * 
-         * @summary Organization Admin Policies
+         * @summary Organization Admin Policies  Post Query  Ids
          * @param {EpiFilter} filter 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
@@ -5373,7 +5411,7 @@ const AbacApiAxiosParamCreator = function (configuration?: Configuration) {
         },
         /**
          * 
-         * @summary Organization Admin Policies
+         * @summary Organization Admin Policies  Post Some
          * @param {Array<OrganizationAdminPolicy>} organizationAdminPolicy 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
@@ -5409,7 +5447,7 @@ const AbacApiAxiosParamCreator = function (configuration?: Configuration) {
         },
         /**
          * 
-         * @summary Organization Admin Policies
+         * @summary Organization Admin Policies  Put One
          * @param {string} objectId 
          * @param {OrganizationAdminPolicy} organizationAdminPolicy 
          * @param {*} [options] Override http request option.
@@ -5449,7 +5487,7 @@ const AbacApiAxiosParamCreator = function (configuration?: Configuration) {
         },
         /**
          * 
-         * @summary Organization Admin Policies
+         * @summary Organization Admin Policies  Put Some
          * @param {Array<OrganizationAdminPolicy>} organizationAdminPolicy 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
@@ -5484,8 +5522,8 @@ const AbacApiAxiosParamCreator = function (configuration?: Configuration) {
             };
         },
         /**
-         * Stores any additional case or case set share rights of an organization to a     particular data collection, if the case or case set is already in a particular     other data collection.      The share rights are limited to the case types in the case type set. If a case type     is not in the case type set, the organization has no share rights to that data     collection for that case type.
-         * @summary Organization Share Case Policies
+         * 
+         * @summary Organization Share Case Policies  Delete All
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
@@ -5514,8 +5552,8 @@ const AbacApiAxiosParamCreator = function (configuration?: Configuration) {
             };
         },
         /**
-         * Stores any additional case or case set share rights of an organization to a     particular data collection, if the case or case set is already in a particular     other data collection.      The share rights are limited to the case types in the case type set. If a case type     is not in the case type set, the organization has no share rights to that data     collection for that case type.
-         * @summary Organization Share Case Policies
+         * 
+         * @summary Organization Share Case Policies  Delete One
          * @param {any} objectId 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
@@ -5548,8 +5586,8 @@ const AbacApiAxiosParamCreator = function (configuration?: Configuration) {
             };
         },
         /**
-         * Stores any additional case or case set share rights of an organization to a     particular data collection, if the case or case set is already in a particular     other data collection.      The share rights are limited to the case types in the case type set. If a case type     is not in the case type set, the organization has no share rights to that data     collection for that case type.
-         * @summary Organization Share Case Policies
+         * 
+         * @summary Organization Share Case Policies  Delete Some
          * @param {string} ids 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
@@ -5585,8 +5623,8 @@ const AbacApiAxiosParamCreator = function (configuration?: Configuration) {
             };
         },
         /**
-         * Stores any additional case or case set share rights of an organization to a     particular data collection, if the case or case set is already in a particular     other data collection.      The share rights are limited to the case types in the case type set. If a case type     is not in the case type set, the organization has no share rights to that data     collection for that case type.
-         * @summary Organization Share Case Policies
+         * 
+         * @summary Organization Share Case Policies  Get All
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
@@ -5615,8 +5653,8 @@ const AbacApiAxiosParamCreator = function (configuration?: Configuration) {
             };
         },
         /**
-         * Stores any additional case or case set share rights of an organization to a     particular data collection, if the case or case set is already in a particular     other data collection.      The share rights are limited to the case types in the case type set. If a case type     is not in the case type set, the organization has no share rights to that data     collection for that case type.
-         * @summary Organization Share Case Policies
+         * 
+         * @summary Organization Share Case Policies  Get One
          * @param {string} objectId 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
@@ -5649,8 +5687,8 @@ const AbacApiAxiosParamCreator = function (configuration?: Configuration) {
             };
         },
         /**
-         * Stores any additional case or case set share rights of an organization to a     particular data collection, if the case or case set is already in a particular     other data collection.      The share rights are limited to the case types in the case type set. If a case type     is not in the case type set, the organization has no share rights to that data     collection for that case type.
-         * @summary Organization Share Case Policies
+         * 
+         * @summary Organization Share Case Policies  Get Some
          * @param {string} ids 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
@@ -5686,8 +5724,8 @@ const AbacApiAxiosParamCreator = function (configuration?: Configuration) {
             };
         },
         /**
-         * Stores any additional case or case set share rights of an organization to a     particular data collection, if the case or case set is already in a particular     other data collection.      The share rights are limited to the case types in the case type set. If a case type     is not in the case type set, the organization has no share rights to that data     collection for that case type.
-         * @summary Organization Share Case Policies
+         * 
+         * @summary Organization Share Case Policies  Post One
          * @param {OrganizationShareCasePolicy} organizationShareCasePolicy 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
@@ -5722,8 +5760,8 @@ const AbacApiAxiosParamCreator = function (configuration?: Configuration) {
             };
         },
         /**
-         * Stores any additional case or case set share rights of an organization to a     particular data collection, if the case or case set is already in a particular     other data collection.      The share rights are limited to the case types in the case type set. If a case type     is not in the case type set, the organization has no share rights to that data     collection for that case type.
-         * @summary Organization Share Case Policies
+         * 
+         * @summary Organization Share Case Policies  Post Query
          * @param {EpiFilter} filter 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
@@ -5758,8 +5796,8 @@ const AbacApiAxiosParamCreator = function (configuration?: Configuration) {
             };
         },
         /**
-         * Stores any additional case or case set share rights of an organization to a     particular data collection, if the case or case set is already in a particular     other data collection.      The share rights are limited to the case types in the case type set. If a case type     is not in the case type set, the organization has no share rights to that data     collection for that case type.
-         * @summary Organization Share Case Policies
+         * 
+         * @summary Organization Share Case Policies  Post Query  Ids
          * @param {EpiFilter} filter 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
@@ -5794,8 +5832,8 @@ const AbacApiAxiosParamCreator = function (configuration?: Configuration) {
             };
         },
         /**
-         * Stores any additional case or case set share rights of an organization to a     particular data collection, if the case or case set is already in a particular     other data collection.      The share rights are limited to the case types in the case type set. If a case type     is not in the case type set, the organization has no share rights to that data     collection for that case type.
-         * @summary Organization Share Case Policies
+         * 
+         * @summary Organization Share Case Policies  Post Some
          * @param {Array<OrganizationShareCasePolicy>} organizationShareCasePolicy 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
@@ -5830,8 +5868,8 @@ const AbacApiAxiosParamCreator = function (configuration?: Configuration) {
             };
         },
         /**
-         * Stores any additional case or case set share rights of an organization to a     particular data collection, if the case or case set is already in a particular     other data collection.      The share rights are limited to the case types in the case type set. If a case type     is not in the case type set, the organization has no share rights to that data     collection for that case type.
-         * @summary Organization Share Case Policies
+         * 
+         * @summary Organization Share Case Policies  Put One
          * @param {string} objectId 
          * @param {OrganizationShareCasePolicy} organizationShareCasePolicy 
          * @param {*} [options] Override http request option.
@@ -5870,8 +5908,8 @@ const AbacApiAxiosParamCreator = function (configuration?: Configuration) {
             };
         },
         /**
-         * Stores any additional case or case set share rights of an organization to a     particular data collection, if the case or case set is already in a particular     other data collection.      The share rights are limited to the case types in the case type set. If a case type     is not in the case type set, the organization has no share rights to that data     collection for that case type.
-         * @summary Organization Share Case Policies
+         * 
+         * @summary Organization Share Case Policies  Put Some
          * @param {Array<OrganizationShareCasePolicy>} organizationShareCasePolicy 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
@@ -5906,7 +5944,7 @@ const AbacApiAxiosParamCreator = function (configuration?: Configuration) {
             };
         },
         /**
-         * 
+         * Retrieve the names and email addresses of all organization admins for the user\'s     organization.
          * @summary Retrieveorganizationadminnameemailscommand
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
@@ -5936,8 +5974,8 @@ const AbacApiAxiosParamCreator = function (configuration?: Configuration) {
             };
         },
         /**
-         * Stores the maximum access rights of a user to a particular data collection,     analogous to the organization access case policy.      The actual access rights of a user are derived as the intersection of their maximum     access rights stored here, and the access rights of the organization to which they     belong.
-         * @summary User Access Case Policies
+         * 
+         * @summary User Access Case Policies  Delete All
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
@@ -5966,8 +6004,8 @@ const AbacApiAxiosParamCreator = function (configuration?: Configuration) {
             };
         },
         /**
-         * Stores the maximum access rights of a user to a particular data collection,     analogous to the organization access case policy.      The actual access rights of a user are derived as the intersection of their maximum     access rights stored here, and the access rights of the organization to which they     belong.
-         * @summary User Access Case Policies
+         * 
+         * @summary User Access Case Policies  Delete One
          * @param {any} objectId 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
@@ -6000,8 +6038,8 @@ const AbacApiAxiosParamCreator = function (configuration?: Configuration) {
             };
         },
         /**
-         * Stores the maximum access rights of a user to a particular data collection,     analogous to the organization access case policy.      The actual access rights of a user are derived as the intersection of their maximum     access rights stored here, and the access rights of the organization to which they     belong.
-         * @summary User Access Case Policies
+         * 
+         * @summary User Access Case Policies  Delete Some
          * @param {string} ids 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
@@ -6037,8 +6075,8 @@ const AbacApiAxiosParamCreator = function (configuration?: Configuration) {
             };
         },
         /**
-         * Stores the maximum access rights of a user to a particular data collection,     analogous to the organization access case policy.      The actual access rights of a user are derived as the intersection of their maximum     access rights stored here, and the access rights of the organization to which they     belong.
-         * @summary User Access Case Policies
+         * 
+         * @summary User Access Case Policies  Get All
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
@@ -6067,8 +6105,8 @@ const AbacApiAxiosParamCreator = function (configuration?: Configuration) {
             };
         },
         /**
-         * Stores the maximum access rights of a user to a particular data collection,     analogous to the organization access case policy.      The actual access rights of a user are derived as the intersection of their maximum     access rights stored here, and the access rights of the organization to which they     belong.
-         * @summary User Access Case Policies
+         * 
+         * @summary User Access Case Policies  Get One
          * @param {string} objectId 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
@@ -6101,8 +6139,8 @@ const AbacApiAxiosParamCreator = function (configuration?: Configuration) {
             };
         },
         /**
-         * Stores the maximum access rights of a user to a particular data collection,     analogous to the organization access case policy.      The actual access rights of a user are derived as the intersection of their maximum     access rights stored here, and the access rights of the organization to which they     belong.
-         * @summary User Access Case Policies
+         * 
+         * @summary User Access Case Policies  Get Some
          * @param {string} ids 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
@@ -6138,8 +6176,8 @@ const AbacApiAxiosParamCreator = function (configuration?: Configuration) {
             };
         },
         /**
-         * Stores the maximum access rights of a user to a particular data collection,     analogous to the organization access case policy.      The actual access rights of a user are derived as the intersection of their maximum     access rights stored here, and the access rights of the organization to which they     belong.
-         * @summary User Access Case Policies
+         * 
+         * @summary User Access Case Policies  Post One
          * @param {UserAccessCasePolicy} userAccessCasePolicy 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
@@ -6174,8 +6212,8 @@ const AbacApiAxiosParamCreator = function (configuration?: Configuration) {
             };
         },
         /**
-         * Stores the maximum access rights of a user to a particular data collection,     analogous to the organization access case policy.      The actual access rights of a user are derived as the intersection of their maximum     access rights stored here, and the access rights of the organization to which they     belong.
-         * @summary User Access Case Policies
+         * 
+         * @summary User Access Case Policies  Post Query
          * @param {EpiFilter} filter 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
@@ -6210,8 +6248,8 @@ const AbacApiAxiosParamCreator = function (configuration?: Configuration) {
             };
         },
         /**
-         * Stores the maximum access rights of a user to a particular data collection,     analogous to the organization access case policy.      The actual access rights of a user are derived as the intersection of their maximum     access rights stored here, and the access rights of the organization to which they     belong.
-         * @summary User Access Case Policies
+         * 
+         * @summary User Access Case Policies  Post Query  Ids
          * @param {EpiFilter} filter 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
@@ -6246,8 +6284,8 @@ const AbacApiAxiosParamCreator = function (configuration?: Configuration) {
             };
         },
         /**
-         * Stores the maximum access rights of a user to a particular data collection,     analogous to the organization access case policy.      The actual access rights of a user are derived as the intersection of their maximum     access rights stored here, and the access rights of the organization to which they     belong.
-         * @summary User Access Case Policies
+         * 
+         * @summary User Access Case Policies  Post Some
          * @param {Array<UserAccessCasePolicy>} userAccessCasePolicy 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
@@ -6282,8 +6320,8 @@ const AbacApiAxiosParamCreator = function (configuration?: Configuration) {
             };
         },
         /**
-         * Stores the maximum access rights of a user to a particular data collection,     analogous to the organization access case policy.      The actual access rights of a user are derived as the intersection of their maximum     access rights stored here, and the access rights of the organization to which they     belong.
-         * @summary User Access Case Policies
+         * 
+         * @summary User Access Case Policies  Put One
          * @param {string} objectId 
          * @param {UserAccessCasePolicy} userAccessCasePolicy 
          * @param {*} [options] Override http request option.
@@ -6322,8 +6360,8 @@ const AbacApiAxiosParamCreator = function (configuration?: Configuration) {
             };
         },
         /**
-         * Stores the maximum access rights of a user to a particular data collection,     analogous to the organization access case policy.      The actual access rights of a user are derived as the intersection of their maximum     access rights stored here, and the access rights of the organization to which they     belong.
-         * @summary User Access Case Policies
+         * 
+         * @summary User Access Case Policies  Put Some
          * @param {Array<UserAccessCasePolicy>} userAccessCasePolicy 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
@@ -6358,8 +6396,8 @@ const AbacApiAxiosParamCreator = function (configuration?: Configuration) {
             };
         },
         /**
-         * Stores the maximum share rights of a user to a particular data collection,     analogous to the organization share case policy.      The actual share rights of a user are derived as the intersection of their maximum     share rights stored here, and the share rights of the organization to which they     belong.
-         * @summary User Share Case Policies
+         * 
+         * @summary User Share Case Policies  Delete All
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
@@ -6388,8 +6426,8 @@ const AbacApiAxiosParamCreator = function (configuration?: Configuration) {
             };
         },
         /**
-         * Stores the maximum share rights of a user to a particular data collection,     analogous to the organization share case policy.      The actual share rights of a user are derived as the intersection of their maximum     share rights stored here, and the share rights of the organization to which they     belong.
-         * @summary User Share Case Policies
+         * 
+         * @summary User Share Case Policies  Delete One
          * @param {any} objectId 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
@@ -6422,8 +6460,8 @@ const AbacApiAxiosParamCreator = function (configuration?: Configuration) {
             };
         },
         /**
-         * Stores the maximum share rights of a user to a particular data collection,     analogous to the organization share case policy.      The actual share rights of a user are derived as the intersection of their maximum     share rights stored here, and the share rights of the organization to which they     belong.
-         * @summary User Share Case Policies
+         * 
+         * @summary User Share Case Policies  Delete Some
          * @param {string} ids 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
@@ -6459,8 +6497,8 @@ const AbacApiAxiosParamCreator = function (configuration?: Configuration) {
             };
         },
         /**
-         * Stores the maximum share rights of a user to a particular data collection,     analogous to the organization share case policy.      The actual share rights of a user are derived as the intersection of their maximum     share rights stored here, and the share rights of the organization to which they     belong.
-         * @summary User Share Case Policies
+         * 
+         * @summary User Share Case Policies  Get All
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
@@ -6489,8 +6527,8 @@ const AbacApiAxiosParamCreator = function (configuration?: Configuration) {
             };
         },
         /**
-         * Stores the maximum share rights of a user to a particular data collection,     analogous to the organization share case policy.      The actual share rights of a user are derived as the intersection of their maximum     share rights stored here, and the share rights of the organization to which they     belong.
-         * @summary User Share Case Policies
+         * 
+         * @summary User Share Case Policies  Get One
          * @param {string} objectId 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
@@ -6523,8 +6561,8 @@ const AbacApiAxiosParamCreator = function (configuration?: Configuration) {
             };
         },
         /**
-         * Stores the maximum share rights of a user to a particular data collection,     analogous to the organization share case policy.      The actual share rights of a user are derived as the intersection of their maximum     share rights stored here, and the share rights of the organization to which they     belong.
-         * @summary User Share Case Policies
+         * 
+         * @summary User Share Case Policies  Get Some
          * @param {string} ids 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
@@ -6560,8 +6598,8 @@ const AbacApiAxiosParamCreator = function (configuration?: Configuration) {
             };
         },
         /**
-         * Stores the maximum share rights of a user to a particular data collection,     analogous to the organization share case policy.      The actual share rights of a user are derived as the intersection of their maximum     share rights stored here, and the share rights of the organization to which they     belong.
-         * @summary User Share Case Policies
+         * 
+         * @summary User Share Case Policies  Post One
          * @param {UserShareCasePolicy} userShareCasePolicy 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
@@ -6596,8 +6634,8 @@ const AbacApiAxiosParamCreator = function (configuration?: Configuration) {
             };
         },
         /**
-         * Stores the maximum share rights of a user to a particular data collection,     analogous to the organization share case policy.      The actual share rights of a user are derived as the intersection of their maximum     share rights stored here, and the share rights of the organization to which they     belong.
-         * @summary User Share Case Policies
+         * 
+         * @summary User Share Case Policies  Post Query
          * @param {EpiFilter} filter 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
@@ -6632,8 +6670,8 @@ const AbacApiAxiosParamCreator = function (configuration?: Configuration) {
             };
         },
         /**
-         * Stores the maximum share rights of a user to a particular data collection,     analogous to the organization share case policy.      The actual share rights of a user are derived as the intersection of their maximum     share rights stored here, and the share rights of the organization to which they     belong.
-         * @summary User Share Case Policies
+         * 
+         * @summary User Share Case Policies  Post Query  Ids
          * @param {EpiFilter} filter 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
@@ -6668,8 +6706,8 @@ const AbacApiAxiosParamCreator = function (configuration?: Configuration) {
             };
         },
         /**
-         * Stores the maximum share rights of a user to a particular data collection,     analogous to the organization share case policy.      The actual share rights of a user are derived as the intersection of their maximum     share rights stored here, and the share rights of the organization to which they     belong.
-         * @summary User Share Case Policies
+         * 
+         * @summary User Share Case Policies  Post Some
          * @param {Array<UserShareCasePolicy>} userShareCasePolicy 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
@@ -6704,8 +6742,8 @@ const AbacApiAxiosParamCreator = function (configuration?: Configuration) {
             };
         },
         /**
-         * Stores the maximum share rights of a user to a particular data collection,     analogous to the organization share case policy.      The actual share rights of a user are derived as the intersection of their maximum     share rights stored here, and the share rights of the organization to which they     belong.
-         * @summary User Share Case Policies
+         * 
+         * @summary User Share Case Policies  Put One
          * @param {string} objectId 
          * @param {UserShareCasePolicy} userShareCasePolicy 
          * @param {*} [options] Override http request option.
@@ -6744,8 +6782,8 @@ const AbacApiAxiosParamCreator = function (configuration?: Configuration) {
             };
         },
         /**
-         * Stores the maximum share rights of a user to a particular data collection,     analogous to the organization share case policy.      The actual share rights of a user are derived as the intersection of their maximum     share rights stored here, and the share rights of the organization to which they     belong.
-         * @summary User Share Case Policies
+         * 
+         * @summary User Share Case Policies  Put Some
          * @param {Array<UserShareCasePolicy>} userShareCasePolicy 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
@@ -6790,8 +6828,8 @@ const AbacApiFp = function(configuration?: Configuration) {
     const localVarAxiosParamCreator = AbacApiAxiosParamCreator(configuration)
     return {
         /**
-         * Stores the access rights of an organization to a particular data collection.     If an organization does not have a policy to a data collection, it has no access     rights to that data collection.      The access rights are limited to the case types in the case type set. If a case type     is not in the case type set, the organization has no access rights to that data     collection for that case type.
-         * @summary Organization Access Case Policies
+         * 
+         * @summary Organization Access Case Policies  Delete All
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
@@ -6802,8 +6840,8 @@ const AbacApiFp = function(configuration?: Configuration) {
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
         /**
-         * Stores the access rights of an organization to a particular data collection.     If an organization does not have a policy to a data collection, it has no access     rights to that data collection.      The access rights are limited to the case types in the case type set. If a case type     is not in the case type set, the organization has no access rights to that data     collection for that case type.
-         * @summary Organization Access Case Policies
+         * 
+         * @summary Organization Access Case Policies  Delete One
          * @param {any} objectId 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
@@ -6815,8 +6853,8 @@ const AbacApiFp = function(configuration?: Configuration) {
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
         /**
-         * Stores the access rights of an organization to a particular data collection.     If an organization does not have a policy to a data collection, it has no access     rights to that data collection.      The access rights are limited to the case types in the case type set. If a case type     is not in the case type set, the organization has no access rights to that data     collection for that case type.
-         * @summary Organization Access Case Policies
+         * 
+         * @summary Organization Access Case Policies  Delete Some
          * @param {string} ids 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
@@ -6828,8 +6866,8 @@ const AbacApiFp = function(configuration?: Configuration) {
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
         /**
-         * Stores the access rights of an organization to a particular data collection.     If an organization does not have a policy to a data collection, it has no access     rights to that data collection.      The access rights are limited to the case types in the case type set. If a case type     is not in the case type set, the organization has no access rights to that data     collection for that case type.
-         * @summary Organization Access Case Policies
+         * 
+         * @summary Organization Access Case Policies  Get All
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
@@ -6840,8 +6878,8 @@ const AbacApiFp = function(configuration?: Configuration) {
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
         /**
-         * Stores the access rights of an organization to a particular data collection.     If an organization does not have a policy to a data collection, it has no access     rights to that data collection.      The access rights are limited to the case types in the case type set. If a case type     is not in the case type set, the organization has no access rights to that data     collection for that case type.
-         * @summary Organization Access Case Policies
+         * 
+         * @summary Organization Access Case Policies  Get One
          * @param {string} objectId 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
@@ -6853,8 +6891,8 @@ const AbacApiFp = function(configuration?: Configuration) {
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
         /**
-         * Stores the access rights of an organization to a particular data collection.     If an organization does not have a policy to a data collection, it has no access     rights to that data collection.      The access rights are limited to the case types in the case type set. If a case type     is not in the case type set, the organization has no access rights to that data     collection for that case type.
-         * @summary Organization Access Case Policies
+         * 
+         * @summary Organization Access Case Policies  Get Some
          * @param {string} ids 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
@@ -6866,8 +6904,8 @@ const AbacApiFp = function(configuration?: Configuration) {
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
         /**
-         * Stores the access rights of an organization to a particular data collection.     If an organization does not have a policy to a data collection, it has no access     rights to that data collection.      The access rights are limited to the case types in the case type set. If a case type     is not in the case type set, the organization has no access rights to that data     collection for that case type.
-         * @summary Organization Access Case Policies
+         * 
+         * @summary Organization Access Case Policies  Post One
          * @param {OrganizationAccessCasePolicy} organizationAccessCasePolicy 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
@@ -6879,8 +6917,8 @@ const AbacApiFp = function(configuration?: Configuration) {
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
         /**
-         * Stores the access rights of an organization to a particular data collection.     If an organization does not have a policy to a data collection, it has no access     rights to that data collection.      The access rights are limited to the case types in the case type set. If a case type     is not in the case type set, the organization has no access rights to that data     collection for that case type.
-         * @summary Organization Access Case Policies
+         * 
+         * @summary Organization Access Case Policies  Post Query
          * @param {EpiFilter} filter 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
@@ -6892,8 +6930,8 @@ const AbacApiFp = function(configuration?: Configuration) {
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
         /**
-         * Stores the access rights of an organization to a particular data collection.     If an organization does not have a policy to a data collection, it has no access     rights to that data collection.      The access rights are limited to the case types in the case type set. If a case type     is not in the case type set, the organization has no access rights to that data     collection for that case type.
-         * @summary Organization Access Case Policies
+         * 
+         * @summary Organization Access Case Policies  Post Query  Ids
          * @param {EpiFilter} filter 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
@@ -6905,8 +6943,8 @@ const AbacApiFp = function(configuration?: Configuration) {
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
         /**
-         * Stores the access rights of an organization to a particular data collection.     If an organization does not have a policy to a data collection, it has no access     rights to that data collection.      The access rights are limited to the case types in the case type set. If a case type     is not in the case type set, the organization has no access rights to that data     collection for that case type.
-         * @summary Organization Access Case Policies
+         * 
+         * @summary Organization Access Case Policies  Post Some
          * @param {Array<OrganizationAccessCasePolicy>} organizationAccessCasePolicy 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
@@ -6918,8 +6956,8 @@ const AbacApiFp = function(configuration?: Configuration) {
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
         /**
-         * Stores the access rights of an organization to a particular data collection.     If an organization does not have a policy to a data collection, it has no access     rights to that data collection.      The access rights are limited to the case types in the case type set. If a case type     is not in the case type set, the organization has no access rights to that data     collection for that case type.
-         * @summary Organization Access Case Policies
+         * 
+         * @summary Organization Access Case Policies  Put One
          * @param {string} objectId 
          * @param {OrganizationAccessCasePolicy} organizationAccessCasePolicy 
          * @param {*} [options] Override http request option.
@@ -6932,8 +6970,8 @@ const AbacApiFp = function(configuration?: Configuration) {
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
         /**
-         * Stores the access rights of an organization to a particular data collection.     If an organization does not have a policy to a data collection, it has no access     rights to that data collection.      The access rights are limited to the case types in the case type set. If a case type     is not in the case type set, the organization has no access rights to that data     collection for that case type.
-         * @summary Organization Access Case Policies
+         * 
+         * @summary Organization Access Case Policies  Put Some
          * @param {Array<OrganizationAccessCasePolicy>} organizationAccessCasePolicy 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
@@ -6946,7 +6984,7 @@ const AbacApiFp = function(configuration?: Configuration) {
         },
         /**
          * 
-         * @summary Organization Admin Policies
+         * @summary Organization Admin Policies  Delete All
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
@@ -6958,7 +6996,7 @@ const AbacApiFp = function(configuration?: Configuration) {
         },
         /**
          * 
-         * @summary Organization Admin Policies
+         * @summary Organization Admin Policies  Delete One
          * @param {any} objectId 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
@@ -6971,7 +7009,7 @@ const AbacApiFp = function(configuration?: Configuration) {
         },
         /**
          * 
-         * @summary Organization Admin Policies
+         * @summary Organization Admin Policies  Delete Some
          * @param {string} ids 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
@@ -6984,7 +7022,7 @@ const AbacApiFp = function(configuration?: Configuration) {
         },
         /**
          * 
-         * @summary Organization Admin Policies
+         * @summary Organization Admin Policies  Get All
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
@@ -6996,7 +7034,7 @@ const AbacApiFp = function(configuration?: Configuration) {
         },
         /**
          * 
-         * @summary Organization Admin Policies
+         * @summary Organization Admin Policies  Get One
          * @param {string} objectId 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
@@ -7009,7 +7047,7 @@ const AbacApiFp = function(configuration?: Configuration) {
         },
         /**
          * 
-         * @summary Organization Admin Policies
+         * @summary Organization Admin Policies  Get Some
          * @param {string} ids 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
@@ -7022,7 +7060,7 @@ const AbacApiFp = function(configuration?: Configuration) {
         },
         /**
          * 
-         * @summary Organization Admin Policies
+         * @summary Organization Admin Policies  Post One
          * @param {OrganizationAdminPolicy} organizationAdminPolicy 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
@@ -7035,7 +7073,7 @@ const AbacApiFp = function(configuration?: Configuration) {
         },
         /**
          * 
-         * @summary Organization Admin Policies
+         * @summary Organization Admin Policies  Post Query
          * @param {EpiFilter} filter 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
@@ -7048,7 +7086,7 @@ const AbacApiFp = function(configuration?: Configuration) {
         },
         /**
          * 
-         * @summary Organization Admin Policies
+         * @summary Organization Admin Policies  Post Query  Ids
          * @param {EpiFilter} filter 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
@@ -7061,7 +7099,7 @@ const AbacApiFp = function(configuration?: Configuration) {
         },
         /**
          * 
-         * @summary Organization Admin Policies
+         * @summary Organization Admin Policies  Post Some
          * @param {Array<OrganizationAdminPolicy>} organizationAdminPolicy 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
@@ -7074,7 +7112,7 @@ const AbacApiFp = function(configuration?: Configuration) {
         },
         /**
          * 
-         * @summary Organization Admin Policies
+         * @summary Organization Admin Policies  Put One
          * @param {string} objectId 
          * @param {OrganizationAdminPolicy} organizationAdminPolicy 
          * @param {*} [options] Override http request option.
@@ -7088,7 +7126,7 @@ const AbacApiFp = function(configuration?: Configuration) {
         },
         /**
          * 
-         * @summary Organization Admin Policies
+         * @summary Organization Admin Policies  Put Some
          * @param {Array<OrganizationAdminPolicy>} organizationAdminPolicy 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
@@ -7100,8 +7138,8 @@ const AbacApiFp = function(configuration?: Configuration) {
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
         /**
-         * Stores any additional case or case set share rights of an organization to a     particular data collection, if the case or case set is already in a particular     other data collection.      The share rights are limited to the case types in the case type set. If a case type     is not in the case type set, the organization has no share rights to that data     collection for that case type.
-         * @summary Organization Share Case Policies
+         * 
+         * @summary Organization Share Case Policies  Delete All
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
@@ -7112,8 +7150,8 @@ const AbacApiFp = function(configuration?: Configuration) {
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
         /**
-         * Stores any additional case or case set share rights of an organization to a     particular data collection, if the case or case set is already in a particular     other data collection.      The share rights are limited to the case types in the case type set. If a case type     is not in the case type set, the organization has no share rights to that data     collection for that case type.
-         * @summary Organization Share Case Policies
+         * 
+         * @summary Organization Share Case Policies  Delete One
          * @param {any} objectId 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
@@ -7125,8 +7163,8 @@ const AbacApiFp = function(configuration?: Configuration) {
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
         /**
-         * Stores any additional case or case set share rights of an organization to a     particular data collection, if the case or case set is already in a particular     other data collection.      The share rights are limited to the case types in the case type set. If a case type     is not in the case type set, the organization has no share rights to that data     collection for that case type.
-         * @summary Organization Share Case Policies
+         * 
+         * @summary Organization Share Case Policies  Delete Some
          * @param {string} ids 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
@@ -7138,8 +7176,8 @@ const AbacApiFp = function(configuration?: Configuration) {
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
         /**
-         * Stores any additional case or case set share rights of an organization to a     particular data collection, if the case or case set is already in a particular     other data collection.      The share rights are limited to the case types in the case type set. If a case type     is not in the case type set, the organization has no share rights to that data     collection for that case type.
-         * @summary Organization Share Case Policies
+         * 
+         * @summary Organization Share Case Policies  Get All
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
@@ -7150,8 +7188,8 @@ const AbacApiFp = function(configuration?: Configuration) {
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
         /**
-         * Stores any additional case or case set share rights of an organization to a     particular data collection, if the case or case set is already in a particular     other data collection.      The share rights are limited to the case types in the case type set. If a case type     is not in the case type set, the organization has no share rights to that data     collection for that case type.
-         * @summary Organization Share Case Policies
+         * 
+         * @summary Organization Share Case Policies  Get One
          * @param {string} objectId 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
@@ -7163,8 +7201,8 @@ const AbacApiFp = function(configuration?: Configuration) {
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
         /**
-         * Stores any additional case or case set share rights of an organization to a     particular data collection, if the case or case set is already in a particular     other data collection.      The share rights are limited to the case types in the case type set. If a case type     is not in the case type set, the organization has no share rights to that data     collection for that case type.
-         * @summary Organization Share Case Policies
+         * 
+         * @summary Organization Share Case Policies  Get Some
          * @param {string} ids 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
@@ -7176,8 +7214,8 @@ const AbacApiFp = function(configuration?: Configuration) {
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
         /**
-         * Stores any additional case or case set share rights of an organization to a     particular data collection, if the case or case set is already in a particular     other data collection.      The share rights are limited to the case types in the case type set. If a case type     is not in the case type set, the organization has no share rights to that data     collection for that case type.
-         * @summary Organization Share Case Policies
+         * 
+         * @summary Organization Share Case Policies  Post One
          * @param {OrganizationShareCasePolicy} organizationShareCasePolicy 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
@@ -7189,8 +7227,8 @@ const AbacApiFp = function(configuration?: Configuration) {
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
         /**
-         * Stores any additional case or case set share rights of an organization to a     particular data collection, if the case or case set is already in a particular     other data collection.      The share rights are limited to the case types in the case type set. If a case type     is not in the case type set, the organization has no share rights to that data     collection for that case type.
-         * @summary Organization Share Case Policies
+         * 
+         * @summary Organization Share Case Policies  Post Query
          * @param {EpiFilter} filter 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
@@ -7202,8 +7240,8 @@ const AbacApiFp = function(configuration?: Configuration) {
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
         /**
-         * Stores any additional case or case set share rights of an organization to a     particular data collection, if the case or case set is already in a particular     other data collection.      The share rights are limited to the case types in the case type set. If a case type     is not in the case type set, the organization has no share rights to that data     collection for that case type.
-         * @summary Organization Share Case Policies
+         * 
+         * @summary Organization Share Case Policies  Post Query  Ids
          * @param {EpiFilter} filter 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
@@ -7215,8 +7253,8 @@ const AbacApiFp = function(configuration?: Configuration) {
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
         /**
-         * Stores any additional case or case set share rights of an organization to a     particular data collection, if the case or case set is already in a particular     other data collection.      The share rights are limited to the case types in the case type set. If a case type     is not in the case type set, the organization has no share rights to that data     collection for that case type.
-         * @summary Organization Share Case Policies
+         * 
+         * @summary Organization Share Case Policies  Post Some
          * @param {Array<OrganizationShareCasePolicy>} organizationShareCasePolicy 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
@@ -7228,8 +7266,8 @@ const AbacApiFp = function(configuration?: Configuration) {
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
         /**
-         * Stores any additional case or case set share rights of an organization to a     particular data collection, if the case or case set is already in a particular     other data collection.      The share rights are limited to the case types in the case type set. If a case type     is not in the case type set, the organization has no share rights to that data     collection for that case type.
-         * @summary Organization Share Case Policies
+         * 
+         * @summary Organization Share Case Policies  Put One
          * @param {string} objectId 
          * @param {OrganizationShareCasePolicy} organizationShareCasePolicy 
          * @param {*} [options] Override http request option.
@@ -7242,8 +7280,8 @@ const AbacApiFp = function(configuration?: Configuration) {
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
         /**
-         * Stores any additional case or case set share rights of an organization to a     particular data collection, if the case or case set is already in a particular     other data collection.      The share rights are limited to the case types in the case type set. If a case type     is not in the case type set, the organization has no share rights to that data     collection for that case type.
-         * @summary Organization Share Case Policies
+         * 
+         * @summary Organization Share Case Policies  Put Some
          * @param {Array<OrganizationShareCasePolicy>} organizationShareCasePolicy 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
@@ -7255,7 +7293,7 @@ const AbacApiFp = function(configuration?: Configuration) {
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
         /**
-         * 
+         * Retrieve the names and email addresses of all organization admins for the user\'s     organization.
          * @summary Retrieveorganizationadminnameemailscommand
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
@@ -7267,8 +7305,8 @@ const AbacApiFp = function(configuration?: Configuration) {
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
         /**
-         * Stores the maximum access rights of a user to a particular data collection,     analogous to the organization access case policy.      The actual access rights of a user are derived as the intersection of their maximum     access rights stored here, and the access rights of the organization to which they     belong.
-         * @summary User Access Case Policies
+         * 
+         * @summary User Access Case Policies  Delete All
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
@@ -7279,8 +7317,8 @@ const AbacApiFp = function(configuration?: Configuration) {
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
         /**
-         * Stores the maximum access rights of a user to a particular data collection,     analogous to the organization access case policy.      The actual access rights of a user are derived as the intersection of their maximum     access rights stored here, and the access rights of the organization to which they     belong.
-         * @summary User Access Case Policies
+         * 
+         * @summary User Access Case Policies  Delete One
          * @param {any} objectId 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
@@ -7292,8 +7330,8 @@ const AbacApiFp = function(configuration?: Configuration) {
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
         /**
-         * Stores the maximum access rights of a user to a particular data collection,     analogous to the organization access case policy.      The actual access rights of a user are derived as the intersection of their maximum     access rights stored here, and the access rights of the organization to which they     belong.
-         * @summary User Access Case Policies
+         * 
+         * @summary User Access Case Policies  Delete Some
          * @param {string} ids 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
@@ -7305,8 +7343,8 @@ const AbacApiFp = function(configuration?: Configuration) {
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
         /**
-         * Stores the maximum access rights of a user to a particular data collection,     analogous to the organization access case policy.      The actual access rights of a user are derived as the intersection of their maximum     access rights stored here, and the access rights of the organization to which they     belong.
-         * @summary User Access Case Policies
+         * 
+         * @summary User Access Case Policies  Get All
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
@@ -7317,8 +7355,8 @@ const AbacApiFp = function(configuration?: Configuration) {
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
         /**
-         * Stores the maximum access rights of a user to a particular data collection,     analogous to the organization access case policy.      The actual access rights of a user are derived as the intersection of their maximum     access rights stored here, and the access rights of the organization to which they     belong.
-         * @summary User Access Case Policies
+         * 
+         * @summary User Access Case Policies  Get One
          * @param {string} objectId 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
@@ -7330,8 +7368,8 @@ const AbacApiFp = function(configuration?: Configuration) {
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
         /**
-         * Stores the maximum access rights of a user to a particular data collection,     analogous to the organization access case policy.      The actual access rights of a user are derived as the intersection of their maximum     access rights stored here, and the access rights of the organization to which they     belong.
-         * @summary User Access Case Policies
+         * 
+         * @summary User Access Case Policies  Get Some
          * @param {string} ids 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
@@ -7343,8 +7381,8 @@ const AbacApiFp = function(configuration?: Configuration) {
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
         /**
-         * Stores the maximum access rights of a user to a particular data collection,     analogous to the organization access case policy.      The actual access rights of a user are derived as the intersection of their maximum     access rights stored here, and the access rights of the organization to which they     belong.
-         * @summary User Access Case Policies
+         * 
+         * @summary User Access Case Policies  Post One
          * @param {UserAccessCasePolicy} userAccessCasePolicy 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
@@ -7356,8 +7394,8 @@ const AbacApiFp = function(configuration?: Configuration) {
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
         /**
-         * Stores the maximum access rights of a user to a particular data collection,     analogous to the organization access case policy.      The actual access rights of a user are derived as the intersection of their maximum     access rights stored here, and the access rights of the organization to which they     belong.
-         * @summary User Access Case Policies
+         * 
+         * @summary User Access Case Policies  Post Query
          * @param {EpiFilter} filter 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
@@ -7369,8 +7407,8 @@ const AbacApiFp = function(configuration?: Configuration) {
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
         /**
-         * Stores the maximum access rights of a user to a particular data collection,     analogous to the organization access case policy.      The actual access rights of a user are derived as the intersection of their maximum     access rights stored here, and the access rights of the organization to which they     belong.
-         * @summary User Access Case Policies
+         * 
+         * @summary User Access Case Policies  Post Query  Ids
          * @param {EpiFilter} filter 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
@@ -7382,8 +7420,8 @@ const AbacApiFp = function(configuration?: Configuration) {
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
         /**
-         * Stores the maximum access rights of a user to a particular data collection,     analogous to the organization access case policy.      The actual access rights of a user are derived as the intersection of their maximum     access rights stored here, and the access rights of the organization to which they     belong.
-         * @summary User Access Case Policies
+         * 
+         * @summary User Access Case Policies  Post Some
          * @param {Array<UserAccessCasePolicy>} userAccessCasePolicy 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
@@ -7395,8 +7433,8 @@ const AbacApiFp = function(configuration?: Configuration) {
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
         /**
-         * Stores the maximum access rights of a user to a particular data collection,     analogous to the organization access case policy.      The actual access rights of a user are derived as the intersection of their maximum     access rights stored here, and the access rights of the organization to which they     belong.
-         * @summary User Access Case Policies
+         * 
+         * @summary User Access Case Policies  Put One
          * @param {string} objectId 
          * @param {UserAccessCasePolicy} userAccessCasePolicy 
          * @param {*} [options] Override http request option.
@@ -7409,8 +7447,8 @@ const AbacApiFp = function(configuration?: Configuration) {
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
         /**
-         * Stores the maximum access rights of a user to a particular data collection,     analogous to the organization access case policy.      The actual access rights of a user are derived as the intersection of their maximum     access rights stored here, and the access rights of the organization to which they     belong.
-         * @summary User Access Case Policies
+         * 
+         * @summary User Access Case Policies  Put Some
          * @param {Array<UserAccessCasePolicy>} userAccessCasePolicy 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
@@ -7422,8 +7460,8 @@ const AbacApiFp = function(configuration?: Configuration) {
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
         /**
-         * Stores the maximum share rights of a user to a particular data collection,     analogous to the organization share case policy.      The actual share rights of a user are derived as the intersection of their maximum     share rights stored here, and the share rights of the organization to which they     belong.
-         * @summary User Share Case Policies
+         * 
+         * @summary User Share Case Policies  Delete All
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
@@ -7434,8 +7472,8 @@ const AbacApiFp = function(configuration?: Configuration) {
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
         /**
-         * Stores the maximum share rights of a user to a particular data collection,     analogous to the organization share case policy.      The actual share rights of a user are derived as the intersection of their maximum     share rights stored here, and the share rights of the organization to which they     belong.
-         * @summary User Share Case Policies
+         * 
+         * @summary User Share Case Policies  Delete One
          * @param {any} objectId 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
@@ -7447,8 +7485,8 @@ const AbacApiFp = function(configuration?: Configuration) {
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
         /**
-         * Stores the maximum share rights of a user to a particular data collection,     analogous to the organization share case policy.      The actual share rights of a user are derived as the intersection of their maximum     share rights stored here, and the share rights of the organization to which they     belong.
-         * @summary User Share Case Policies
+         * 
+         * @summary User Share Case Policies  Delete Some
          * @param {string} ids 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
@@ -7460,8 +7498,8 @@ const AbacApiFp = function(configuration?: Configuration) {
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
         /**
-         * Stores the maximum share rights of a user to a particular data collection,     analogous to the organization share case policy.      The actual share rights of a user are derived as the intersection of their maximum     share rights stored here, and the share rights of the organization to which they     belong.
-         * @summary User Share Case Policies
+         * 
+         * @summary User Share Case Policies  Get All
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
@@ -7472,8 +7510,8 @@ const AbacApiFp = function(configuration?: Configuration) {
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
         /**
-         * Stores the maximum share rights of a user to a particular data collection,     analogous to the organization share case policy.      The actual share rights of a user are derived as the intersection of their maximum     share rights stored here, and the share rights of the organization to which they     belong.
-         * @summary User Share Case Policies
+         * 
+         * @summary User Share Case Policies  Get One
          * @param {string} objectId 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
@@ -7485,8 +7523,8 @@ const AbacApiFp = function(configuration?: Configuration) {
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
         /**
-         * Stores the maximum share rights of a user to a particular data collection,     analogous to the organization share case policy.      The actual share rights of a user are derived as the intersection of their maximum     share rights stored here, and the share rights of the organization to which they     belong.
-         * @summary User Share Case Policies
+         * 
+         * @summary User Share Case Policies  Get Some
          * @param {string} ids 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
@@ -7498,8 +7536,8 @@ const AbacApiFp = function(configuration?: Configuration) {
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
         /**
-         * Stores the maximum share rights of a user to a particular data collection,     analogous to the organization share case policy.      The actual share rights of a user are derived as the intersection of their maximum     share rights stored here, and the share rights of the organization to which they     belong.
-         * @summary User Share Case Policies
+         * 
+         * @summary User Share Case Policies  Post One
          * @param {UserShareCasePolicy} userShareCasePolicy 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
@@ -7511,8 +7549,8 @@ const AbacApiFp = function(configuration?: Configuration) {
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
         /**
-         * Stores the maximum share rights of a user to a particular data collection,     analogous to the organization share case policy.      The actual share rights of a user are derived as the intersection of their maximum     share rights stored here, and the share rights of the organization to which they     belong.
-         * @summary User Share Case Policies
+         * 
+         * @summary User Share Case Policies  Post Query
          * @param {EpiFilter} filter 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
@@ -7524,8 +7562,8 @@ const AbacApiFp = function(configuration?: Configuration) {
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
         /**
-         * Stores the maximum share rights of a user to a particular data collection,     analogous to the organization share case policy.      The actual share rights of a user are derived as the intersection of their maximum     share rights stored here, and the share rights of the organization to which they     belong.
-         * @summary User Share Case Policies
+         * 
+         * @summary User Share Case Policies  Post Query  Ids
          * @param {EpiFilter} filter 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
@@ -7537,8 +7575,8 @@ const AbacApiFp = function(configuration?: Configuration) {
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
         /**
-         * Stores the maximum share rights of a user to a particular data collection,     analogous to the organization share case policy.      The actual share rights of a user are derived as the intersection of their maximum     share rights stored here, and the share rights of the organization to which they     belong.
-         * @summary User Share Case Policies
+         * 
+         * @summary User Share Case Policies  Post Some
          * @param {Array<UserShareCasePolicy>} userShareCasePolicy 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
@@ -7550,8 +7588,8 @@ const AbacApiFp = function(configuration?: Configuration) {
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
         /**
-         * Stores the maximum share rights of a user to a particular data collection,     analogous to the organization share case policy.      The actual share rights of a user are derived as the intersection of their maximum     share rights stored here, and the share rights of the organization to which they     belong.
-         * @summary User Share Case Policies
+         * 
+         * @summary User Share Case Policies  Put One
          * @param {string} objectId 
          * @param {UserShareCasePolicy} userShareCasePolicy 
          * @param {*} [options] Override http request option.
@@ -7564,8 +7602,8 @@ const AbacApiFp = function(configuration?: Configuration) {
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
         /**
-         * Stores the maximum share rights of a user to a particular data collection,     analogous to the organization share case policy.      The actual share rights of a user are derived as the intersection of their maximum     share rights stored here, and the share rights of the organization to which they     belong.
-         * @summary User Share Case Policies
+         * 
+         * @summary User Share Case Policies  Put Some
          * @param {Array<UserShareCasePolicy>} userShareCasePolicy 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
@@ -7599,8 +7637,8 @@ export class AbacApi extends BaseAPI {
   }
 
     /**
-     * Stores the access rights of an organization to a particular data collection.     If an organization does not have a policy to a data collection, it has no access     rights to that data collection.      The access rights are limited to the case types in the case type set. If a case type     is not in the case type set, the organization has no access rights to that data     collection for that case type.
-     * @summary Organization Access Case Policies
+     * 
+     * @summary Organization Access Case Policies  Delete All
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
      * @memberof AbacApi
@@ -7610,8 +7648,8 @@ export class AbacApi extends BaseAPI {
     }
 
     /**
-     * Stores the access rights of an organization to a particular data collection.     If an organization does not have a policy to a data collection, it has no access     rights to that data collection.      The access rights are limited to the case types in the case type set. If a case type     is not in the case type set, the organization has no access rights to that data     collection for that case type.
-     * @summary Organization Access Case Policies
+     * 
+     * @summary Organization Access Case Policies  Delete One
      * @param {any} objectId 
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
@@ -7622,8 +7660,8 @@ export class AbacApi extends BaseAPI {
     }
 
     /**
-     * Stores the access rights of an organization to a particular data collection.     If an organization does not have a policy to a data collection, it has no access     rights to that data collection.      The access rights are limited to the case types in the case type set. If a case type     is not in the case type set, the organization has no access rights to that data     collection for that case type.
-     * @summary Organization Access Case Policies
+     * 
+     * @summary Organization Access Case Policies  Delete Some
      * @param {string} ids 
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
@@ -7634,8 +7672,8 @@ export class AbacApi extends BaseAPI {
     }
 
     /**
-     * Stores the access rights of an organization to a particular data collection.     If an organization does not have a policy to a data collection, it has no access     rights to that data collection.      The access rights are limited to the case types in the case type set. If a case type     is not in the case type set, the organization has no access rights to that data     collection for that case type.
-     * @summary Organization Access Case Policies
+     * 
+     * @summary Organization Access Case Policies  Get All
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
      * @memberof AbacApi
@@ -7645,8 +7683,8 @@ export class AbacApi extends BaseAPI {
     }
 
     /**
-     * Stores the access rights of an organization to a particular data collection.     If an organization does not have a policy to a data collection, it has no access     rights to that data collection.      The access rights are limited to the case types in the case type set. If a case type     is not in the case type set, the organization has no access rights to that data     collection for that case type.
-     * @summary Organization Access Case Policies
+     * 
+     * @summary Organization Access Case Policies  Get One
      * @param {string} objectId 
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
@@ -7657,8 +7695,8 @@ export class AbacApi extends BaseAPI {
     }
 
     /**
-     * Stores the access rights of an organization to a particular data collection.     If an organization does not have a policy to a data collection, it has no access     rights to that data collection.      The access rights are limited to the case types in the case type set. If a case type     is not in the case type set, the organization has no access rights to that data     collection for that case type.
-     * @summary Organization Access Case Policies
+     * 
+     * @summary Organization Access Case Policies  Get Some
      * @param {string} ids 
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
@@ -7669,8 +7707,8 @@ export class AbacApi extends BaseAPI {
     }
 
     /**
-     * Stores the access rights of an organization to a particular data collection.     If an organization does not have a policy to a data collection, it has no access     rights to that data collection.      The access rights are limited to the case types in the case type set. If a case type     is not in the case type set, the organization has no access rights to that data     collection for that case type.
-     * @summary Organization Access Case Policies
+     * 
+     * @summary Organization Access Case Policies  Post One
      * @param {OrganizationAccessCasePolicy} organizationAccessCasePolicy 
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
@@ -7681,8 +7719,8 @@ export class AbacApi extends BaseAPI {
     }
 
     /**
-     * Stores the access rights of an organization to a particular data collection.     If an organization does not have a policy to a data collection, it has no access     rights to that data collection.      The access rights are limited to the case types in the case type set. If a case type     is not in the case type set, the organization has no access rights to that data     collection for that case type.
-     * @summary Organization Access Case Policies
+     * 
+     * @summary Organization Access Case Policies  Post Query
      * @param {EpiFilter} filter 
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
@@ -7693,8 +7731,8 @@ export class AbacApi extends BaseAPI {
     }
 
     /**
-     * Stores the access rights of an organization to a particular data collection.     If an organization does not have a policy to a data collection, it has no access     rights to that data collection.      The access rights are limited to the case types in the case type set. If a case type     is not in the case type set, the organization has no access rights to that data     collection for that case type.
-     * @summary Organization Access Case Policies
+     * 
+     * @summary Organization Access Case Policies  Post Query  Ids
      * @param {EpiFilter} filter 
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
@@ -7705,8 +7743,8 @@ export class AbacApi extends BaseAPI {
     }
 
     /**
-     * Stores the access rights of an organization to a particular data collection.     If an organization does not have a policy to a data collection, it has no access     rights to that data collection.      The access rights are limited to the case types in the case type set. If a case type     is not in the case type set, the organization has no access rights to that data     collection for that case type.
-     * @summary Organization Access Case Policies
+     * 
+     * @summary Organization Access Case Policies  Post Some
      * @param {Array<OrganizationAccessCasePolicy>} organizationAccessCasePolicy 
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
@@ -7717,8 +7755,8 @@ export class AbacApi extends BaseAPI {
     }
 
     /**
-     * Stores the access rights of an organization to a particular data collection.     If an organization does not have a policy to a data collection, it has no access     rights to that data collection.      The access rights are limited to the case types in the case type set. If a case type     is not in the case type set, the organization has no access rights to that data     collection for that case type.
-     * @summary Organization Access Case Policies
+     * 
+     * @summary Organization Access Case Policies  Put One
      * @param {string} objectId 
      * @param {OrganizationAccessCasePolicy} organizationAccessCasePolicy 
      * @param {*} [options] Override http request option.
@@ -7730,8 +7768,8 @@ export class AbacApi extends BaseAPI {
     }
 
     /**
-     * Stores the access rights of an organization to a particular data collection.     If an organization does not have a policy to a data collection, it has no access     rights to that data collection.      The access rights are limited to the case types in the case type set. If a case type     is not in the case type set, the organization has no access rights to that data     collection for that case type.
-     * @summary Organization Access Case Policies
+     * 
+     * @summary Organization Access Case Policies  Put Some
      * @param {Array<OrganizationAccessCasePolicy>} organizationAccessCasePolicy 
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
@@ -7743,7 +7781,7 @@ export class AbacApi extends BaseAPI {
 
     /**
      * 
-     * @summary Organization Admin Policies
+     * @summary Organization Admin Policies  Delete All
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
      * @memberof AbacApi
@@ -7754,7 +7792,7 @@ export class AbacApi extends BaseAPI {
 
     /**
      * 
-     * @summary Organization Admin Policies
+     * @summary Organization Admin Policies  Delete One
      * @param {any} objectId 
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
@@ -7766,7 +7804,7 @@ export class AbacApi extends BaseAPI {
 
     /**
      * 
-     * @summary Organization Admin Policies
+     * @summary Organization Admin Policies  Delete Some
      * @param {string} ids 
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
@@ -7778,7 +7816,7 @@ export class AbacApi extends BaseAPI {
 
     /**
      * 
-     * @summary Organization Admin Policies
+     * @summary Organization Admin Policies  Get All
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
      * @memberof AbacApi
@@ -7789,7 +7827,7 @@ export class AbacApi extends BaseAPI {
 
     /**
      * 
-     * @summary Organization Admin Policies
+     * @summary Organization Admin Policies  Get One
      * @param {string} objectId 
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
@@ -7801,7 +7839,7 @@ export class AbacApi extends BaseAPI {
 
     /**
      * 
-     * @summary Organization Admin Policies
+     * @summary Organization Admin Policies  Get Some
      * @param {string} ids 
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
@@ -7813,7 +7851,7 @@ export class AbacApi extends BaseAPI {
 
     /**
      * 
-     * @summary Organization Admin Policies
+     * @summary Organization Admin Policies  Post One
      * @param {OrganizationAdminPolicy} organizationAdminPolicy 
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
@@ -7825,7 +7863,7 @@ export class AbacApi extends BaseAPI {
 
     /**
      * 
-     * @summary Organization Admin Policies
+     * @summary Organization Admin Policies  Post Query
      * @param {EpiFilter} filter 
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
@@ -7837,7 +7875,7 @@ export class AbacApi extends BaseAPI {
 
     /**
      * 
-     * @summary Organization Admin Policies
+     * @summary Organization Admin Policies  Post Query  Ids
      * @param {EpiFilter} filter 
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
@@ -7849,7 +7887,7 @@ export class AbacApi extends BaseAPI {
 
     /**
      * 
-     * @summary Organization Admin Policies
+     * @summary Organization Admin Policies  Post Some
      * @param {Array<OrganizationAdminPolicy>} organizationAdminPolicy 
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
@@ -7861,7 +7899,7 @@ export class AbacApi extends BaseAPI {
 
     /**
      * 
-     * @summary Organization Admin Policies
+     * @summary Organization Admin Policies  Put One
      * @param {string} objectId 
      * @param {OrganizationAdminPolicy} organizationAdminPolicy 
      * @param {*} [options] Override http request option.
@@ -7874,7 +7912,7 @@ export class AbacApi extends BaseAPI {
 
     /**
      * 
-     * @summary Organization Admin Policies
+     * @summary Organization Admin Policies  Put Some
      * @param {Array<OrganizationAdminPolicy>} organizationAdminPolicy 
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
@@ -7885,8 +7923,8 @@ export class AbacApi extends BaseAPI {
     }
 
     /**
-     * Stores any additional case or case set share rights of an organization to a     particular data collection, if the case or case set is already in a particular     other data collection.      The share rights are limited to the case types in the case type set. If a case type     is not in the case type set, the organization has no share rights to that data     collection for that case type.
-     * @summary Organization Share Case Policies
+     * 
+     * @summary Organization Share Case Policies  Delete All
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
      * @memberof AbacApi
@@ -7896,8 +7934,8 @@ export class AbacApi extends BaseAPI {
     }
 
     /**
-     * Stores any additional case or case set share rights of an organization to a     particular data collection, if the case or case set is already in a particular     other data collection.      The share rights are limited to the case types in the case type set. If a case type     is not in the case type set, the organization has no share rights to that data     collection for that case type.
-     * @summary Organization Share Case Policies
+     * 
+     * @summary Organization Share Case Policies  Delete One
      * @param {any} objectId 
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
@@ -7908,8 +7946,8 @@ export class AbacApi extends BaseAPI {
     }
 
     /**
-     * Stores any additional case or case set share rights of an organization to a     particular data collection, if the case or case set is already in a particular     other data collection.      The share rights are limited to the case types in the case type set. If a case type     is not in the case type set, the organization has no share rights to that data     collection for that case type.
-     * @summary Organization Share Case Policies
+     * 
+     * @summary Organization Share Case Policies  Delete Some
      * @param {string} ids 
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
@@ -7920,8 +7958,8 @@ export class AbacApi extends BaseAPI {
     }
 
     /**
-     * Stores any additional case or case set share rights of an organization to a     particular data collection, if the case or case set is already in a particular     other data collection.      The share rights are limited to the case types in the case type set. If a case type     is not in the case type set, the organization has no share rights to that data     collection for that case type.
-     * @summary Organization Share Case Policies
+     * 
+     * @summary Organization Share Case Policies  Get All
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
      * @memberof AbacApi
@@ -7931,8 +7969,8 @@ export class AbacApi extends BaseAPI {
     }
 
     /**
-     * Stores any additional case or case set share rights of an organization to a     particular data collection, if the case or case set is already in a particular     other data collection.      The share rights are limited to the case types in the case type set. If a case type     is not in the case type set, the organization has no share rights to that data     collection for that case type.
-     * @summary Organization Share Case Policies
+     * 
+     * @summary Organization Share Case Policies  Get One
      * @param {string} objectId 
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
@@ -7943,8 +7981,8 @@ export class AbacApi extends BaseAPI {
     }
 
     /**
-     * Stores any additional case or case set share rights of an organization to a     particular data collection, if the case or case set is already in a particular     other data collection.      The share rights are limited to the case types in the case type set. If a case type     is not in the case type set, the organization has no share rights to that data     collection for that case type.
-     * @summary Organization Share Case Policies
+     * 
+     * @summary Organization Share Case Policies  Get Some
      * @param {string} ids 
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
@@ -7955,8 +7993,8 @@ export class AbacApi extends BaseAPI {
     }
 
     /**
-     * Stores any additional case or case set share rights of an organization to a     particular data collection, if the case or case set is already in a particular     other data collection.      The share rights are limited to the case types in the case type set. If a case type     is not in the case type set, the organization has no share rights to that data     collection for that case type.
-     * @summary Organization Share Case Policies
+     * 
+     * @summary Organization Share Case Policies  Post One
      * @param {OrganizationShareCasePolicy} organizationShareCasePolicy 
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
@@ -7967,8 +8005,8 @@ export class AbacApi extends BaseAPI {
     }
 
     /**
-     * Stores any additional case or case set share rights of an organization to a     particular data collection, if the case or case set is already in a particular     other data collection.      The share rights are limited to the case types in the case type set. If a case type     is not in the case type set, the organization has no share rights to that data     collection for that case type.
-     * @summary Organization Share Case Policies
+     * 
+     * @summary Organization Share Case Policies  Post Query
      * @param {EpiFilter} filter 
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
@@ -7979,8 +8017,8 @@ export class AbacApi extends BaseAPI {
     }
 
     /**
-     * Stores any additional case or case set share rights of an organization to a     particular data collection, if the case or case set is already in a particular     other data collection.      The share rights are limited to the case types in the case type set. If a case type     is not in the case type set, the organization has no share rights to that data     collection for that case type.
-     * @summary Organization Share Case Policies
+     * 
+     * @summary Organization Share Case Policies  Post Query  Ids
      * @param {EpiFilter} filter 
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
@@ -7991,8 +8029,8 @@ export class AbacApi extends BaseAPI {
     }
 
     /**
-     * Stores any additional case or case set share rights of an organization to a     particular data collection, if the case or case set is already in a particular     other data collection.      The share rights are limited to the case types in the case type set. If a case type     is not in the case type set, the organization has no share rights to that data     collection for that case type.
-     * @summary Organization Share Case Policies
+     * 
+     * @summary Organization Share Case Policies  Post Some
      * @param {Array<OrganizationShareCasePolicy>} organizationShareCasePolicy 
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
@@ -8003,8 +8041,8 @@ export class AbacApi extends BaseAPI {
     }
 
     /**
-     * Stores any additional case or case set share rights of an organization to a     particular data collection, if the case or case set is already in a particular     other data collection.      The share rights are limited to the case types in the case type set. If a case type     is not in the case type set, the organization has no share rights to that data     collection for that case type.
-     * @summary Organization Share Case Policies
+     * 
+     * @summary Organization Share Case Policies  Put One
      * @param {string} objectId 
      * @param {OrganizationShareCasePolicy} organizationShareCasePolicy 
      * @param {*} [options] Override http request option.
@@ -8016,8 +8054,8 @@ export class AbacApi extends BaseAPI {
     }
 
     /**
-     * Stores any additional case or case set share rights of an organization to a     particular data collection, if the case or case set is already in a particular     other data collection.      The share rights are limited to the case types in the case type set. If a case type     is not in the case type set, the organization has no share rights to that data     collection for that case type.
-     * @summary Organization Share Case Policies
+     * 
+     * @summary Organization Share Case Policies  Put Some
      * @param {Array<OrganizationShareCasePolicy>} organizationShareCasePolicy 
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
@@ -8028,7 +8066,7 @@ export class AbacApi extends BaseAPI {
     }
 
     /**
-     * 
+     * Retrieve the names and email addresses of all organization admins for the user\'s     organization.
      * @summary Retrieveorganizationadminnameemailscommand
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
@@ -8039,8 +8077,8 @@ export class AbacApi extends BaseAPI {
     }
 
     /**
-     * Stores the maximum access rights of a user to a particular data collection,     analogous to the organization access case policy.      The actual access rights of a user are derived as the intersection of their maximum     access rights stored here, and the access rights of the organization to which they     belong.
-     * @summary User Access Case Policies
+     * 
+     * @summary User Access Case Policies  Delete All
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
      * @memberof AbacApi
@@ -8050,8 +8088,8 @@ export class AbacApi extends BaseAPI {
     }
 
     /**
-     * Stores the maximum access rights of a user to a particular data collection,     analogous to the organization access case policy.      The actual access rights of a user are derived as the intersection of their maximum     access rights stored here, and the access rights of the organization to which they     belong.
-     * @summary User Access Case Policies
+     * 
+     * @summary User Access Case Policies  Delete One
      * @param {any} objectId 
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
@@ -8062,8 +8100,8 @@ export class AbacApi extends BaseAPI {
     }
 
     /**
-     * Stores the maximum access rights of a user to a particular data collection,     analogous to the organization access case policy.      The actual access rights of a user are derived as the intersection of their maximum     access rights stored here, and the access rights of the organization to which they     belong.
-     * @summary User Access Case Policies
+     * 
+     * @summary User Access Case Policies  Delete Some
      * @param {string} ids 
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
@@ -8074,8 +8112,8 @@ export class AbacApi extends BaseAPI {
     }
 
     /**
-     * Stores the maximum access rights of a user to a particular data collection,     analogous to the organization access case policy.      The actual access rights of a user are derived as the intersection of their maximum     access rights stored here, and the access rights of the organization to which they     belong.
-     * @summary User Access Case Policies
+     * 
+     * @summary User Access Case Policies  Get All
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
      * @memberof AbacApi
@@ -8085,8 +8123,8 @@ export class AbacApi extends BaseAPI {
     }
 
     /**
-     * Stores the maximum access rights of a user to a particular data collection,     analogous to the organization access case policy.      The actual access rights of a user are derived as the intersection of their maximum     access rights stored here, and the access rights of the organization to which they     belong.
-     * @summary User Access Case Policies
+     * 
+     * @summary User Access Case Policies  Get One
      * @param {string} objectId 
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
@@ -8097,8 +8135,8 @@ export class AbacApi extends BaseAPI {
     }
 
     /**
-     * Stores the maximum access rights of a user to a particular data collection,     analogous to the organization access case policy.      The actual access rights of a user are derived as the intersection of their maximum     access rights stored here, and the access rights of the organization to which they     belong.
-     * @summary User Access Case Policies
+     * 
+     * @summary User Access Case Policies  Get Some
      * @param {string} ids 
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
@@ -8109,8 +8147,8 @@ export class AbacApi extends BaseAPI {
     }
 
     /**
-     * Stores the maximum access rights of a user to a particular data collection,     analogous to the organization access case policy.      The actual access rights of a user are derived as the intersection of their maximum     access rights stored here, and the access rights of the organization to which they     belong.
-     * @summary User Access Case Policies
+     * 
+     * @summary User Access Case Policies  Post One
      * @param {UserAccessCasePolicy} userAccessCasePolicy 
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
@@ -8121,8 +8159,8 @@ export class AbacApi extends BaseAPI {
     }
 
     /**
-     * Stores the maximum access rights of a user to a particular data collection,     analogous to the organization access case policy.      The actual access rights of a user are derived as the intersection of their maximum     access rights stored here, and the access rights of the organization to which they     belong.
-     * @summary User Access Case Policies
+     * 
+     * @summary User Access Case Policies  Post Query
      * @param {EpiFilter} filter 
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
@@ -8133,8 +8171,8 @@ export class AbacApi extends BaseAPI {
     }
 
     /**
-     * Stores the maximum access rights of a user to a particular data collection,     analogous to the organization access case policy.      The actual access rights of a user are derived as the intersection of their maximum     access rights stored here, and the access rights of the organization to which they     belong.
-     * @summary User Access Case Policies
+     * 
+     * @summary User Access Case Policies  Post Query  Ids
      * @param {EpiFilter} filter 
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
@@ -8145,8 +8183,8 @@ export class AbacApi extends BaseAPI {
     }
 
     /**
-     * Stores the maximum access rights of a user to a particular data collection,     analogous to the organization access case policy.      The actual access rights of a user are derived as the intersection of their maximum     access rights stored here, and the access rights of the organization to which they     belong.
-     * @summary User Access Case Policies
+     * 
+     * @summary User Access Case Policies  Post Some
      * @param {Array<UserAccessCasePolicy>} userAccessCasePolicy 
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
@@ -8157,8 +8195,8 @@ export class AbacApi extends BaseAPI {
     }
 
     /**
-     * Stores the maximum access rights of a user to a particular data collection,     analogous to the organization access case policy.      The actual access rights of a user are derived as the intersection of their maximum     access rights stored here, and the access rights of the organization to which they     belong.
-     * @summary User Access Case Policies
+     * 
+     * @summary User Access Case Policies  Put One
      * @param {string} objectId 
      * @param {UserAccessCasePolicy} userAccessCasePolicy 
      * @param {*} [options] Override http request option.
@@ -8170,8 +8208,8 @@ export class AbacApi extends BaseAPI {
     }
 
     /**
-     * Stores the maximum access rights of a user to a particular data collection,     analogous to the organization access case policy.      The actual access rights of a user are derived as the intersection of their maximum     access rights stored here, and the access rights of the organization to which they     belong.
-     * @summary User Access Case Policies
+     * 
+     * @summary User Access Case Policies  Put Some
      * @param {Array<UserAccessCasePolicy>} userAccessCasePolicy 
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
@@ -8182,8 +8220,8 @@ export class AbacApi extends BaseAPI {
     }
 
     /**
-     * Stores the maximum share rights of a user to a particular data collection,     analogous to the organization share case policy.      The actual share rights of a user are derived as the intersection of their maximum     share rights stored here, and the share rights of the organization to which they     belong.
-     * @summary User Share Case Policies
+     * 
+     * @summary User Share Case Policies  Delete All
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
      * @memberof AbacApi
@@ -8193,8 +8231,8 @@ export class AbacApi extends BaseAPI {
     }
 
     /**
-     * Stores the maximum share rights of a user to a particular data collection,     analogous to the organization share case policy.      The actual share rights of a user are derived as the intersection of their maximum     share rights stored here, and the share rights of the organization to which they     belong.
-     * @summary User Share Case Policies
+     * 
+     * @summary User Share Case Policies  Delete One
      * @param {any} objectId 
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
@@ -8205,8 +8243,8 @@ export class AbacApi extends BaseAPI {
     }
 
     /**
-     * Stores the maximum share rights of a user to a particular data collection,     analogous to the organization share case policy.      The actual share rights of a user are derived as the intersection of their maximum     share rights stored here, and the share rights of the organization to which they     belong.
-     * @summary User Share Case Policies
+     * 
+     * @summary User Share Case Policies  Delete Some
      * @param {string} ids 
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
@@ -8217,8 +8255,8 @@ export class AbacApi extends BaseAPI {
     }
 
     /**
-     * Stores the maximum share rights of a user to a particular data collection,     analogous to the organization share case policy.      The actual share rights of a user are derived as the intersection of their maximum     share rights stored here, and the share rights of the organization to which they     belong.
-     * @summary User Share Case Policies
+     * 
+     * @summary User Share Case Policies  Get All
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
      * @memberof AbacApi
@@ -8228,8 +8266,8 @@ export class AbacApi extends BaseAPI {
     }
 
     /**
-     * Stores the maximum share rights of a user to a particular data collection,     analogous to the organization share case policy.      The actual share rights of a user are derived as the intersection of their maximum     share rights stored here, and the share rights of the organization to which they     belong.
-     * @summary User Share Case Policies
+     * 
+     * @summary User Share Case Policies  Get One
      * @param {string} objectId 
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
@@ -8240,8 +8278,8 @@ export class AbacApi extends BaseAPI {
     }
 
     /**
-     * Stores the maximum share rights of a user to a particular data collection,     analogous to the organization share case policy.      The actual share rights of a user are derived as the intersection of their maximum     share rights stored here, and the share rights of the organization to which they     belong.
-     * @summary User Share Case Policies
+     * 
+     * @summary User Share Case Policies  Get Some
      * @param {string} ids 
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
@@ -8252,8 +8290,8 @@ export class AbacApi extends BaseAPI {
     }
 
     /**
-     * Stores the maximum share rights of a user to a particular data collection,     analogous to the organization share case policy.      The actual share rights of a user are derived as the intersection of their maximum     share rights stored here, and the share rights of the organization to which they     belong.
-     * @summary User Share Case Policies
+     * 
+     * @summary User Share Case Policies  Post One
      * @param {UserShareCasePolicy} userShareCasePolicy 
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
@@ -8264,8 +8302,8 @@ export class AbacApi extends BaseAPI {
     }
 
     /**
-     * Stores the maximum share rights of a user to a particular data collection,     analogous to the organization share case policy.      The actual share rights of a user are derived as the intersection of their maximum     share rights stored here, and the share rights of the organization to which they     belong.
-     * @summary User Share Case Policies
+     * 
+     * @summary User Share Case Policies  Post Query
      * @param {EpiFilter} filter 
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
@@ -8276,8 +8314,8 @@ export class AbacApi extends BaseAPI {
     }
 
     /**
-     * Stores the maximum share rights of a user to a particular data collection,     analogous to the organization share case policy.      The actual share rights of a user are derived as the intersection of their maximum     share rights stored here, and the share rights of the organization to which they     belong.
-     * @summary User Share Case Policies
+     * 
+     * @summary User Share Case Policies  Post Query  Ids
      * @param {EpiFilter} filter 
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
@@ -8288,8 +8326,8 @@ export class AbacApi extends BaseAPI {
     }
 
     /**
-     * Stores the maximum share rights of a user to a particular data collection,     analogous to the organization share case policy.      The actual share rights of a user are derived as the intersection of their maximum     share rights stored here, and the share rights of the organization to which they     belong.
-     * @summary User Share Case Policies
+     * 
+     * @summary User Share Case Policies  Post Some
      * @param {Array<UserShareCasePolicy>} userShareCasePolicy 
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
@@ -8300,8 +8338,8 @@ export class AbacApi extends BaseAPI {
     }
 
     /**
-     * Stores the maximum share rights of a user to a particular data collection,     analogous to the organization share case policy.      The actual share rights of a user are derived as the intersection of their maximum     share rights stored here, and the share rights of the organization to which they     belong.
-     * @summary User Share Case Policies
+     * 
+     * @summary User Share Case Policies  Put One
      * @param {string} objectId 
      * @param {UserShareCasePolicy} userShareCasePolicy 
      * @param {*} [options] Override http request option.
@@ -8313,8 +8351,8 @@ export class AbacApi extends BaseAPI {
     }
 
     /**
-     * Stores the maximum share rights of a user to a particular data collection,     analogous to the organization share case policy.      The actual share rights of a user are derived as the intersection of their maximum     share rights stored here, and the share rights of the organization to which they     belong.
-     * @summary User Share Case Policies
+     * 
+     * @summary User Share Case Policies  Put Some
      * @param {Array<UserShareCasePolicy>} userShareCasePolicy 
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
@@ -8429,7 +8467,7 @@ const CaseApiAxiosParamCreator = function (configuration?: Configuration) {
     return {
         /**
          * 
-         * @summary Case Data Collection Links
+         * @summary Case Data Collection Links  Delete All
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
@@ -8459,7 +8497,7 @@ const CaseApiAxiosParamCreator = function (configuration?: Configuration) {
         },
         /**
          * 
-         * @summary Case Data Collection Links
+         * @summary Case Data Collection Links  Delete One
          * @param {any} objectId 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
@@ -8493,7 +8531,7 @@ const CaseApiAxiosParamCreator = function (configuration?: Configuration) {
         },
         /**
          * 
-         * @summary Case Data Collection Links
+         * @summary Case Data Collection Links  Delete Some
          * @param {string} ids 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
@@ -8530,7 +8568,7 @@ const CaseApiAxiosParamCreator = function (configuration?: Configuration) {
         },
         /**
          * 
-         * @summary Case Data Collection Links
+         * @summary Case Data Collection Links  Get All
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
@@ -8560,7 +8598,7 @@ const CaseApiAxiosParamCreator = function (configuration?: Configuration) {
         },
         /**
          * 
-         * @summary Case Data Collection Links
+         * @summary Case Data Collection Links  Get One
          * @param {string} objectId 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
@@ -8594,7 +8632,7 @@ const CaseApiAxiosParamCreator = function (configuration?: Configuration) {
         },
         /**
          * 
-         * @summary Case Data Collection Links
+         * @summary Case Data Collection Links  Get Some
          * @param {string} ids 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
@@ -8631,7 +8669,7 @@ const CaseApiAxiosParamCreator = function (configuration?: Configuration) {
         },
         /**
          * 
-         * @summary Case Data Collection Links
+         * @summary Case Data Collection Links  Post One
          * @param {CaseDataCollectionLink} caseDataCollectionLink 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
@@ -8667,7 +8705,7 @@ const CaseApiAxiosParamCreator = function (configuration?: Configuration) {
         },
         /**
          * 
-         * @summary Case Data Collection Links
+         * @summary Case Data Collection Links  Post Query
          * @param {EpiFilter} filter 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
@@ -8703,7 +8741,7 @@ const CaseApiAxiosParamCreator = function (configuration?: Configuration) {
         },
         /**
          * 
-         * @summary Case Data Collection Links
+         * @summary Case Data Collection Links  Post Query  Ids
          * @param {EpiFilter} filter 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
@@ -8739,7 +8777,7 @@ const CaseApiAxiosParamCreator = function (configuration?: Configuration) {
         },
         /**
          * 
-         * @summary Case Data Collection Links
+         * @summary Case Data Collection Links  Post Some
          * @param {Array<CaseDataCollectionLink>} caseDataCollectionLink 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
@@ -8775,7 +8813,7 @@ const CaseApiAxiosParamCreator = function (configuration?: Configuration) {
         },
         /**
          * 
-         * @summary Case Data Collection Links
+         * @summary Case Data Collection Links  Put One
          * @param {string} objectId 
          * @param {CaseDataCollectionLink} caseDataCollectionLink 
          * @param {*} [options] Override http request option.
@@ -8815,7 +8853,7 @@ const CaseApiAxiosParamCreator = function (configuration?: Configuration) {
         },
         /**
          * 
-         * @summary Case Data Collection Links
+         * @summary Case Data Collection Links  Put Some
          * @param {Array<CaseDataCollectionLink>} caseDataCollectionLink 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
@@ -8851,7 +8889,7 @@ const CaseApiAxiosParamCreator = function (configuration?: Configuration) {
         },
         /**
          * 
-         * @summary Case Set Categories
+         * @summary Case Set Categories  Delete All
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
@@ -8881,7 +8919,7 @@ const CaseApiAxiosParamCreator = function (configuration?: Configuration) {
         },
         /**
          * 
-         * @summary Case Set Categories
+         * @summary Case Set Categories  Delete One
          * @param {any} objectId 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
@@ -8915,7 +8953,7 @@ const CaseApiAxiosParamCreator = function (configuration?: Configuration) {
         },
         /**
          * 
-         * @summary Case Set Categories
+         * @summary Case Set Categories  Delete Some
          * @param {string} ids 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
@@ -8952,7 +8990,7 @@ const CaseApiAxiosParamCreator = function (configuration?: Configuration) {
         },
         /**
          * 
-         * @summary Case Set Categories
+         * @summary Case Set Categories  Get All
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
@@ -8982,7 +9020,7 @@ const CaseApiAxiosParamCreator = function (configuration?: Configuration) {
         },
         /**
          * 
-         * @summary Case Set Categories
+         * @summary Case Set Categories  Get One
          * @param {string} objectId 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
@@ -9016,7 +9054,7 @@ const CaseApiAxiosParamCreator = function (configuration?: Configuration) {
         },
         /**
          * 
-         * @summary Case Set Categories
+         * @summary Case Set Categories  Get Some
          * @param {string} ids 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
@@ -9053,7 +9091,7 @@ const CaseApiAxiosParamCreator = function (configuration?: Configuration) {
         },
         /**
          * 
-         * @summary Case Set Categories
+         * @summary Case Set Categories  Post One
          * @param {CaseSetCategory} caseSetCategory 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
@@ -9089,7 +9127,7 @@ const CaseApiAxiosParamCreator = function (configuration?: Configuration) {
         },
         /**
          * 
-         * @summary Case Set Categories
+         * @summary Case Set Categories  Post Query
          * @param {EpiFilter} filter 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
@@ -9125,7 +9163,7 @@ const CaseApiAxiosParamCreator = function (configuration?: Configuration) {
         },
         /**
          * 
-         * @summary Case Set Categories
+         * @summary Case Set Categories  Post Query  Ids
          * @param {EpiFilter} filter 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
@@ -9161,7 +9199,7 @@ const CaseApiAxiosParamCreator = function (configuration?: Configuration) {
         },
         /**
          * 
-         * @summary Case Set Categories
+         * @summary Case Set Categories  Post Some
          * @param {Array<CaseSetCategory>} caseSetCategory 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
@@ -9197,7 +9235,7 @@ const CaseApiAxiosParamCreator = function (configuration?: Configuration) {
         },
         /**
          * 
-         * @summary Case Set Categories
+         * @summary Case Set Categories  Put One
          * @param {string} objectId 
          * @param {CaseSetCategory} caseSetCategory 
          * @param {*} [options] Override http request option.
@@ -9237,7 +9275,7 @@ const CaseApiAxiosParamCreator = function (configuration?: Configuration) {
         },
         /**
          * 
-         * @summary Case Set Categories
+         * @summary Case Set Categories  Put Some
          * @param {Array<CaseSetCategory>} caseSetCategory 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
@@ -9273,7 +9311,7 @@ const CaseApiAxiosParamCreator = function (configuration?: Configuration) {
         },
         /**
          * 
-         * @summary Case Set Data Collection Links
+         * @summary Case Set Data Collection Links  Delete All
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
@@ -9303,7 +9341,7 @@ const CaseApiAxiosParamCreator = function (configuration?: Configuration) {
         },
         /**
          * 
-         * @summary Case Set Data Collection Links
+         * @summary Case Set Data Collection Links  Delete One
          * @param {any} objectId 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
@@ -9337,7 +9375,7 @@ const CaseApiAxiosParamCreator = function (configuration?: Configuration) {
         },
         /**
          * 
-         * @summary Case Set Data Collection Links
+         * @summary Case Set Data Collection Links  Delete Some
          * @param {string} ids 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
@@ -9374,7 +9412,7 @@ const CaseApiAxiosParamCreator = function (configuration?: Configuration) {
         },
         /**
          * 
-         * @summary Case Set Data Collection Links
+         * @summary Case Set Data Collection Links  Get All
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
@@ -9404,7 +9442,7 @@ const CaseApiAxiosParamCreator = function (configuration?: Configuration) {
         },
         /**
          * 
-         * @summary Case Set Data Collection Links
+         * @summary Case Set Data Collection Links  Get One
          * @param {string} objectId 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
@@ -9438,7 +9476,7 @@ const CaseApiAxiosParamCreator = function (configuration?: Configuration) {
         },
         /**
          * 
-         * @summary Case Set Data Collection Links
+         * @summary Case Set Data Collection Links  Get Some
          * @param {string} ids 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
@@ -9475,7 +9513,7 @@ const CaseApiAxiosParamCreator = function (configuration?: Configuration) {
         },
         /**
          * 
-         * @summary Case Set Data Collection Links
+         * @summary Case Set Data Collection Links  Post One
          * @param {CaseSetDataCollectionLink} caseSetDataCollectionLink 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
@@ -9511,7 +9549,7 @@ const CaseApiAxiosParamCreator = function (configuration?: Configuration) {
         },
         /**
          * 
-         * @summary Case Set Data Collection Links
+         * @summary Case Set Data Collection Links  Post Query
          * @param {EpiFilter} filter 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
@@ -9547,7 +9585,7 @@ const CaseApiAxiosParamCreator = function (configuration?: Configuration) {
         },
         /**
          * 
-         * @summary Case Set Data Collection Links
+         * @summary Case Set Data Collection Links  Post Query  Ids
          * @param {EpiFilter} filter 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
@@ -9583,7 +9621,7 @@ const CaseApiAxiosParamCreator = function (configuration?: Configuration) {
         },
         /**
          * 
-         * @summary Case Set Data Collection Links
+         * @summary Case Set Data Collection Links  Post Some
          * @param {Array<CaseSetDataCollectionLink>} caseSetDataCollectionLink 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
@@ -9619,7 +9657,7 @@ const CaseApiAxiosParamCreator = function (configuration?: Configuration) {
         },
         /**
          * 
-         * @summary Case Set Data Collection Links
+         * @summary Case Set Data Collection Links  Put One
          * @param {string} objectId 
          * @param {CaseSetDataCollectionLink} caseSetDataCollectionLink 
          * @param {*} [options] Override http request option.
@@ -9659,7 +9697,7 @@ const CaseApiAxiosParamCreator = function (configuration?: Configuration) {
         },
         /**
          * 
-         * @summary Case Set Data Collection Links
+         * @summary Case Set Data Collection Links  Put Some
          * @param {Array<CaseSetDataCollectionLink>} caseSetDataCollectionLink 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
@@ -9695,7 +9733,7 @@ const CaseApiAxiosParamCreator = function (configuration?: Configuration) {
         },
         /**
          * 
-         * @summary Case Set Members
+         * @summary Case Set Members  Delete All
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
@@ -9725,7 +9763,7 @@ const CaseApiAxiosParamCreator = function (configuration?: Configuration) {
         },
         /**
          * 
-         * @summary Case Set Members
+         * @summary Case Set Members  Delete One
          * @param {any} objectId 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
@@ -9759,7 +9797,7 @@ const CaseApiAxiosParamCreator = function (configuration?: Configuration) {
         },
         /**
          * 
-         * @summary Case Set Members
+         * @summary Case Set Members  Delete Some
          * @param {string} ids 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
@@ -9796,7 +9834,7 @@ const CaseApiAxiosParamCreator = function (configuration?: Configuration) {
         },
         /**
          * 
-         * @summary Case Set Members
+         * @summary Case Set Members  Get All
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
@@ -9826,7 +9864,7 @@ const CaseApiAxiosParamCreator = function (configuration?: Configuration) {
         },
         /**
          * 
-         * @summary Case Set Members
+         * @summary Case Set Members  Get One
          * @param {string} objectId 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
@@ -9860,7 +9898,7 @@ const CaseApiAxiosParamCreator = function (configuration?: Configuration) {
         },
         /**
          * 
-         * @summary Case Set Members
+         * @summary Case Set Members  Get Some
          * @param {string} ids 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
@@ -9897,7 +9935,7 @@ const CaseApiAxiosParamCreator = function (configuration?: Configuration) {
         },
         /**
          * 
-         * @summary Case Set Members
+         * @summary Case Set Members  Post One
          * @param {CaseSetMember} caseSetMember 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
@@ -9933,7 +9971,7 @@ const CaseApiAxiosParamCreator = function (configuration?: Configuration) {
         },
         /**
          * 
-         * @summary Case Set Members
+         * @summary Case Set Members  Post Query
          * @param {EpiFilter} filter 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
@@ -9969,7 +10007,7 @@ const CaseApiAxiosParamCreator = function (configuration?: Configuration) {
         },
         /**
          * 
-         * @summary Case Set Members
+         * @summary Case Set Members  Post Query  Ids
          * @param {EpiFilter} filter 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
@@ -10005,7 +10043,7 @@ const CaseApiAxiosParamCreator = function (configuration?: Configuration) {
         },
         /**
          * 
-         * @summary Case Set Members
+         * @summary Case Set Members  Post Some
          * @param {Array<CaseSetMember>} caseSetMember 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
@@ -10041,7 +10079,7 @@ const CaseApiAxiosParamCreator = function (configuration?: Configuration) {
         },
         /**
          * 
-         * @summary Case Set Members
+         * @summary Case Set Members  Put One
          * @param {string} objectId 
          * @param {CaseSetMember} caseSetMember 
          * @param {*} [options] Override http request option.
@@ -10081,7 +10119,7 @@ const CaseApiAxiosParamCreator = function (configuration?: Configuration) {
         },
         /**
          * 
-         * @summary Case Set Members
+         * @summary Case Set Members  Put Some
          * @param {Array<CaseSetMember>} caseSetMember 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
@@ -10117,7 +10155,7 @@ const CaseApiAxiosParamCreator = function (configuration?: Configuration) {
         },
         /**
          * 
-         * @summary Case Set Statuses
+         * @summary Case Set Statuses  Delete All
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
@@ -10147,7 +10185,7 @@ const CaseApiAxiosParamCreator = function (configuration?: Configuration) {
         },
         /**
          * 
-         * @summary Case Set Statuses
+         * @summary Case Set Statuses  Delete One
          * @param {any} objectId 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
@@ -10181,7 +10219,7 @@ const CaseApiAxiosParamCreator = function (configuration?: Configuration) {
         },
         /**
          * 
-         * @summary Case Set Statuses
+         * @summary Case Set Statuses  Delete Some
          * @param {string} ids 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
@@ -10218,7 +10256,7 @@ const CaseApiAxiosParamCreator = function (configuration?: Configuration) {
         },
         /**
          * 
-         * @summary Case Set Statuses
+         * @summary Case Set Statuses  Get All
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
@@ -10248,7 +10286,7 @@ const CaseApiAxiosParamCreator = function (configuration?: Configuration) {
         },
         /**
          * 
-         * @summary Case Set Statuses
+         * @summary Case Set Statuses  Get One
          * @param {string} objectId 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
@@ -10282,7 +10320,7 @@ const CaseApiAxiosParamCreator = function (configuration?: Configuration) {
         },
         /**
          * 
-         * @summary Case Set Statuses
+         * @summary Case Set Statuses  Get Some
          * @param {string} ids 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
@@ -10319,7 +10357,7 @@ const CaseApiAxiosParamCreator = function (configuration?: Configuration) {
         },
         /**
          * 
-         * @summary Case Set Statuses
+         * @summary Case Set Statuses  Post One
          * @param {CaseSetStatus} caseSetStatus 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
@@ -10355,7 +10393,7 @@ const CaseApiAxiosParamCreator = function (configuration?: Configuration) {
         },
         /**
          * 
-         * @summary Case Set Statuses
+         * @summary Case Set Statuses  Post Query
          * @param {EpiFilter} filter 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
@@ -10391,7 +10429,7 @@ const CaseApiAxiosParamCreator = function (configuration?: Configuration) {
         },
         /**
          * 
-         * @summary Case Set Statuses
+         * @summary Case Set Statuses  Post Query  Ids
          * @param {EpiFilter} filter 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
@@ -10427,7 +10465,7 @@ const CaseApiAxiosParamCreator = function (configuration?: Configuration) {
         },
         /**
          * 
-         * @summary Case Set Statuses
+         * @summary Case Set Statuses  Post Some
          * @param {Array<CaseSetStatus>} caseSetStatus 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
@@ -10463,7 +10501,7 @@ const CaseApiAxiosParamCreator = function (configuration?: Configuration) {
         },
         /**
          * 
-         * @summary Case Set Statuses
+         * @summary Case Set Statuses  Put One
          * @param {string} objectId 
          * @param {CaseSetStatus} caseSetStatus 
          * @param {*} [options] Override http request option.
@@ -10503,7 +10541,7 @@ const CaseApiAxiosParamCreator = function (configuration?: Configuration) {
         },
         /**
          * 
-         * @summary Case Set Statuses
+         * @summary Case Set Statuses  Put Some
          * @param {Array<CaseSetStatus>} caseSetStatus 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
@@ -10539,7 +10577,7 @@ const CaseApiAxiosParamCreator = function (configuration?: Configuration) {
         },
         /**
          * 
-         * @summary Case Sets
+         * @summary Case Sets  Delete All
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
@@ -10569,7 +10607,7 @@ const CaseApiAxiosParamCreator = function (configuration?: Configuration) {
         },
         /**
          * 
-         * @summary Case Sets
+         * @summary Case Sets  Delete One
          * @param {any} objectId 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
@@ -10603,7 +10641,7 @@ const CaseApiAxiosParamCreator = function (configuration?: Configuration) {
         },
         /**
          * 
-         * @summary Case Sets
+         * @summary Case Sets  Delete Some
          * @param {string} ids 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
@@ -10640,7 +10678,7 @@ const CaseApiAxiosParamCreator = function (configuration?: Configuration) {
         },
         /**
          * 
-         * @summary Case Sets
+         * @summary Case Sets  Get All
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
@@ -10670,7 +10708,7 @@ const CaseApiAxiosParamCreator = function (configuration?: Configuration) {
         },
         /**
          * 
-         * @summary Case Sets
+         * @summary Case Sets  Get One
          * @param {string} objectId 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
@@ -10704,7 +10742,7 @@ const CaseApiAxiosParamCreator = function (configuration?: Configuration) {
         },
         /**
          * 
-         * @summary Case Sets
+         * @summary Case Sets  Get Some
          * @param {string} ids 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
@@ -10741,7 +10779,7 @@ const CaseApiAxiosParamCreator = function (configuration?: Configuration) {
         },
         /**
          * 
-         * @summary Case Sets
+         * @summary Case Sets  Post One
          * @param {CaseSet} caseSet 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
@@ -10777,7 +10815,7 @@ const CaseApiAxiosParamCreator = function (configuration?: Configuration) {
         },
         /**
          * 
-         * @summary Case Sets
+         * @summary Case Sets  Post Query
          * @param {EpiFilter} filter 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
@@ -10813,7 +10851,7 @@ const CaseApiAxiosParamCreator = function (configuration?: Configuration) {
         },
         /**
          * 
-         * @summary Case Sets
+         * @summary Case Sets  Post Query  Ids
          * @param {EpiFilter} filter 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
@@ -10849,7 +10887,7 @@ const CaseApiAxiosParamCreator = function (configuration?: Configuration) {
         },
         /**
          * 
-         * @summary Case Sets
+         * @summary Case Sets  Post Some
          * @param {Array<CaseSet>} caseSet 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
@@ -10885,7 +10923,7 @@ const CaseApiAxiosParamCreator = function (configuration?: Configuration) {
         },
         /**
          * 
-         * @summary Case Sets
+         * @summary Case Sets  Put One
          * @param {string} objectId 
          * @param {CaseSet} caseSet 
          * @param {*} [options] Override http request option.
@@ -10925,7 +10963,7 @@ const CaseApiAxiosParamCreator = function (configuration?: Configuration) {
         },
         /**
          * 
-         * @summary Case Sets
+         * @summary Case Sets  Put Some
          * @param {Array<CaseSet>} caseSet 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
@@ -10961,7 +10999,7 @@ const CaseApiAxiosParamCreator = function (configuration?: Configuration) {
         },
         /**
          * 
-         * @summary Case Type Col Set Members
+         * @summary Case Type Col Set Members  Delete All
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
@@ -10991,7 +11029,7 @@ const CaseApiAxiosParamCreator = function (configuration?: Configuration) {
         },
         /**
          * 
-         * @summary Case Type Col Set Members
+         * @summary Case Type Col Set Members  Delete One
          * @param {any} objectId 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
@@ -11025,7 +11063,7 @@ const CaseApiAxiosParamCreator = function (configuration?: Configuration) {
         },
         /**
          * 
-         * @summary Case Type Col Set Members
+         * @summary Case Type Col Set Members  Delete Some
          * @param {string} ids 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
@@ -11062,7 +11100,7 @@ const CaseApiAxiosParamCreator = function (configuration?: Configuration) {
         },
         /**
          * 
-         * @summary Case Type Col Set Members
+         * @summary Case Type Col Set Members  Get All
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
@@ -11092,7 +11130,7 @@ const CaseApiAxiosParamCreator = function (configuration?: Configuration) {
         },
         /**
          * 
-         * @summary Case Type Col Set Members
+         * @summary Case Type Col Set Members  Get One
          * @param {string} objectId 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
@@ -11126,7 +11164,7 @@ const CaseApiAxiosParamCreator = function (configuration?: Configuration) {
         },
         /**
          * 
-         * @summary Case Type Col Set Members
+         * @summary Case Type Col Set Members  Get Some
          * @param {string} ids 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
@@ -11163,7 +11201,7 @@ const CaseApiAxiosParamCreator = function (configuration?: Configuration) {
         },
         /**
          * 
-         * @summary Case Type Col Set Members
+         * @summary Case Type Col Set Members  Post One
          * @param {CaseTypeColSetMember} caseTypeColSetMember 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
@@ -11199,7 +11237,7 @@ const CaseApiAxiosParamCreator = function (configuration?: Configuration) {
         },
         /**
          * 
-         * @summary Case Type Col Set Members
+         * @summary Case Type Col Set Members  Post Query
          * @param {EpiFilter} filter 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
@@ -11235,7 +11273,7 @@ const CaseApiAxiosParamCreator = function (configuration?: Configuration) {
         },
         /**
          * 
-         * @summary Case Type Col Set Members
+         * @summary Case Type Col Set Members  Post Query  Ids
          * @param {EpiFilter} filter 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
@@ -11271,7 +11309,7 @@ const CaseApiAxiosParamCreator = function (configuration?: Configuration) {
         },
         /**
          * 
-         * @summary Case Type Col Set Members
+         * @summary Case Type Col Set Members  Post Some
          * @param {Array<CaseTypeColSetMember>} caseTypeColSetMember 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
@@ -11307,7 +11345,7 @@ const CaseApiAxiosParamCreator = function (configuration?: Configuration) {
         },
         /**
          * 
-         * @summary Case Type Col Set Members
+         * @summary Case Type Col Set Members  Put One
          * @param {string} objectId 
          * @param {CaseTypeColSetMember} caseTypeColSetMember 
          * @param {*} [options] Override http request option.
@@ -11347,7 +11385,7 @@ const CaseApiAxiosParamCreator = function (configuration?: Configuration) {
         },
         /**
          * 
-         * @summary Case Type Col Set Members
+         * @summary Case Type Col Set Members  Put Some
          * @param {Array<CaseTypeColSetMember>} caseTypeColSetMember 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
@@ -11383,7 +11421,7 @@ const CaseApiAxiosParamCreator = function (configuration?: Configuration) {
         },
         /**
          * 
-         * @summary Case Type Col Sets
+         * @summary Case Type Col Sets  Delete All
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
@@ -11413,7 +11451,7 @@ const CaseApiAxiosParamCreator = function (configuration?: Configuration) {
         },
         /**
          * 
-         * @summary Case Type Col Sets
+         * @summary Case Type Col Sets  Delete One
          * @param {any} objectId 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
@@ -11447,7 +11485,7 @@ const CaseApiAxiosParamCreator = function (configuration?: Configuration) {
         },
         /**
          * 
-         * @summary Case Type Col Sets
+         * @summary Case Type Col Sets  Delete Some
          * @param {string} ids 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
@@ -11484,7 +11522,7 @@ const CaseApiAxiosParamCreator = function (configuration?: Configuration) {
         },
         /**
          * 
-         * @summary Case Type Col Sets
+         * @summary Case Type Col Sets  Get All
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
@@ -11514,7 +11552,7 @@ const CaseApiAxiosParamCreator = function (configuration?: Configuration) {
         },
         /**
          * 
-         * @summary Case Type Col Sets
+         * @summary Case Type Col Sets  Get One
          * @param {string} objectId 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
@@ -11548,7 +11586,7 @@ const CaseApiAxiosParamCreator = function (configuration?: Configuration) {
         },
         /**
          * 
-         * @summary Case Type Col Sets
+         * @summary Case Type Col Sets  Get Some
          * @param {string} ids 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
@@ -11585,7 +11623,7 @@ const CaseApiAxiosParamCreator = function (configuration?: Configuration) {
         },
         /**
          * 
-         * @summary Case Type Col Sets
+         * @summary Case Type Col Sets  Post One
          * @param {CaseTypeColSet} caseTypeColSet 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
@@ -11621,7 +11659,7 @@ const CaseApiAxiosParamCreator = function (configuration?: Configuration) {
         },
         /**
          * 
-         * @summary Case Type Col Sets
+         * @summary Case Type Col Sets  Post Query
          * @param {EpiFilter} filter 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
@@ -11657,7 +11695,7 @@ const CaseApiAxiosParamCreator = function (configuration?: Configuration) {
         },
         /**
          * 
-         * @summary Case Type Col Sets
+         * @summary Case Type Col Sets  Post Query  Ids
          * @param {EpiFilter} filter 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
@@ -11693,7 +11731,7 @@ const CaseApiAxiosParamCreator = function (configuration?: Configuration) {
         },
         /**
          * 
-         * @summary Case Type Col Sets
+         * @summary Case Type Col Sets  Post Some
          * @param {Array<CaseTypeColSet>} caseTypeColSet 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
@@ -11729,7 +11767,7 @@ const CaseApiAxiosParamCreator = function (configuration?: Configuration) {
         },
         /**
          * 
-         * @summary Casetypecolset Casetypecol
+         * @summary Update Association Between Casetypecolset And Casetypecol
          * @param {string} caseTypeColSetId 
          * @param {UpdateCaseTypeColSetCaseTypeColsRequestBody} updateCaseTypeColSetCaseTypeColsRequestBody 
          * @param {*} [options] Override http request option.
@@ -11769,7 +11807,7 @@ const CaseApiAxiosParamCreator = function (configuration?: Configuration) {
         },
         /**
          * 
-         * @summary Case Type Col Sets
+         * @summary Case Type Col Sets  Put One
          * @param {string} objectId 
          * @param {CaseTypeColSet} caseTypeColSet 
          * @param {*} [options] Override http request option.
@@ -11809,7 +11847,7 @@ const CaseApiAxiosParamCreator = function (configuration?: Configuration) {
         },
         /**
          * 
-         * @summary Case Type Col Sets
+         * @summary Case Type Col Sets  Put Some
          * @param {Array<CaseTypeColSet>} caseTypeColSet 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
@@ -11845,7 +11883,7 @@ const CaseApiAxiosParamCreator = function (configuration?: Configuration) {
         },
         /**
          * 
-         * @summary Case Type Cols
+         * @summary Case Type Cols  Delete All
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
@@ -11875,7 +11913,7 @@ const CaseApiAxiosParamCreator = function (configuration?: Configuration) {
         },
         /**
          * 
-         * @summary Case Type Cols
+         * @summary Case Type Cols  Delete One
          * @param {any} objectId 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
@@ -11909,7 +11947,7 @@ const CaseApiAxiosParamCreator = function (configuration?: Configuration) {
         },
         /**
          * 
-         * @summary Case Type Cols
+         * @summary Case Type Cols  Delete Some
          * @param {string} ids 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
@@ -11946,7 +11984,7 @@ const CaseApiAxiosParamCreator = function (configuration?: Configuration) {
         },
         /**
          * 
-         * @summary Case Type Cols
+         * @summary Case Type Cols  Get All
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
@@ -11976,7 +12014,7 @@ const CaseApiAxiosParamCreator = function (configuration?: Configuration) {
         },
         /**
          * 
-         * @summary Case Type Cols
+         * @summary Case Type Cols  Get One
          * @param {string} objectId 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
@@ -12010,7 +12048,7 @@ const CaseApiAxiosParamCreator = function (configuration?: Configuration) {
         },
         /**
          * 
-         * @summary Case Type Cols
+         * @summary Case Type Cols  Get Some
          * @param {string} ids 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
@@ -12047,7 +12085,7 @@ const CaseApiAxiosParamCreator = function (configuration?: Configuration) {
         },
         /**
          * 
-         * @summary Case Type Cols
+         * @summary Case Type Cols  Post One
          * @param {CaseTypeCol} caseTypeCol 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
@@ -12083,7 +12121,7 @@ const CaseApiAxiosParamCreator = function (configuration?: Configuration) {
         },
         /**
          * 
-         * @summary Case Type Cols
+         * @summary Case Type Cols  Post Query
          * @param {EpiFilter} filter 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
@@ -12119,7 +12157,7 @@ const CaseApiAxiosParamCreator = function (configuration?: Configuration) {
         },
         /**
          * 
-         * @summary Case Type Cols
+         * @summary Case Type Cols  Post Query  Ids
          * @param {EpiFilter} filter 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
@@ -12155,7 +12193,7 @@ const CaseApiAxiosParamCreator = function (configuration?: Configuration) {
         },
         /**
          * 
-         * @summary Case Type Cols
+         * @summary Case Type Cols  Post Some
          * @param {Array<CaseTypeCol>} caseTypeCol 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
@@ -12191,7 +12229,7 @@ const CaseApiAxiosParamCreator = function (configuration?: Configuration) {
         },
         /**
          * 
-         * @summary Case Type Cols
+         * @summary Case Type Cols  Put One
          * @param {string} objectId 
          * @param {CaseTypeCol} caseTypeCol 
          * @param {*} [options] Override http request option.
@@ -12231,7 +12269,7 @@ const CaseApiAxiosParamCreator = function (configuration?: Configuration) {
         },
         /**
          * 
-         * @summary Case Type Cols
+         * @summary Case Type Cols  Put Some
          * @param {Array<CaseTypeCol>} caseTypeCol 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
@@ -12267,7 +12305,7 @@ const CaseApiAxiosParamCreator = function (configuration?: Configuration) {
         },
         /**
          * 
-         * @summary Case Type Set Categories
+         * @summary Case Type Set Categories  Delete All
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
@@ -12297,7 +12335,7 @@ const CaseApiAxiosParamCreator = function (configuration?: Configuration) {
         },
         /**
          * 
-         * @summary Case Type Set Categories
+         * @summary Case Type Set Categories  Delete One
          * @param {any} objectId 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
@@ -12331,7 +12369,7 @@ const CaseApiAxiosParamCreator = function (configuration?: Configuration) {
         },
         /**
          * 
-         * @summary Case Type Set Categories
+         * @summary Case Type Set Categories  Delete Some
          * @param {string} ids 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
@@ -12368,7 +12406,7 @@ const CaseApiAxiosParamCreator = function (configuration?: Configuration) {
         },
         /**
          * 
-         * @summary Case Type Set Categories
+         * @summary Case Type Set Categories  Get All
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
@@ -12398,7 +12436,7 @@ const CaseApiAxiosParamCreator = function (configuration?: Configuration) {
         },
         /**
          * 
-         * @summary Case Type Set Categories
+         * @summary Case Type Set Categories  Get One
          * @param {string} objectId 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
@@ -12432,7 +12470,7 @@ const CaseApiAxiosParamCreator = function (configuration?: Configuration) {
         },
         /**
          * 
-         * @summary Case Type Set Categories
+         * @summary Case Type Set Categories  Get Some
          * @param {string} ids 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
@@ -12469,7 +12507,7 @@ const CaseApiAxiosParamCreator = function (configuration?: Configuration) {
         },
         /**
          * 
-         * @summary Case Type Set Categories
+         * @summary Case Type Set Categories  Post One
          * @param {CaseTypeSetCategory} caseTypeSetCategory 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
@@ -12505,7 +12543,7 @@ const CaseApiAxiosParamCreator = function (configuration?: Configuration) {
         },
         /**
          * 
-         * @summary Case Type Set Categories
+         * @summary Case Type Set Categories  Post Query
          * @param {EpiFilter} filter 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
@@ -12541,7 +12579,7 @@ const CaseApiAxiosParamCreator = function (configuration?: Configuration) {
         },
         /**
          * 
-         * @summary Case Type Set Categories
+         * @summary Case Type Set Categories  Post Query  Ids
          * @param {EpiFilter} filter 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
@@ -12577,7 +12615,7 @@ const CaseApiAxiosParamCreator = function (configuration?: Configuration) {
         },
         /**
          * 
-         * @summary Case Type Set Categories
+         * @summary Case Type Set Categories  Post Some
          * @param {Array<CaseTypeSetCategory>} caseTypeSetCategory 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
@@ -12613,7 +12651,7 @@ const CaseApiAxiosParamCreator = function (configuration?: Configuration) {
         },
         /**
          * 
-         * @summary Case Type Set Categories
+         * @summary Case Type Set Categories  Put One
          * @param {string} objectId 
          * @param {CaseTypeSetCategory} caseTypeSetCategory 
          * @param {*} [options] Override http request option.
@@ -12653,7 +12691,7 @@ const CaseApiAxiosParamCreator = function (configuration?: Configuration) {
         },
         /**
          * 
-         * @summary Case Type Set Categories
+         * @summary Case Type Set Categories  Put Some
          * @param {Array<CaseTypeSetCategory>} caseTypeSetCategory 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
@@ -12689,7 +12727,7 @@ const CaseApiAxiosParamCreator = function (configuration?: Configuration) {
         },
         /**
          * 
-         * @summary Case Type Set Members
+         * @summary Case Type Set Members  Delete All
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
@@ -12719,7 +12757,7 @@ const CaseApiAxiosParamCreator = function (configuration?: Configuration) {
         },
         /**
          * 
-         * @summary Case Type Set Members
+         * @summary Case Type Set Members  Delete One
          * @param {any} objectId 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
@@ -12753,7 +12791,7 @@ const CaseApiAxiosParamCreator = function (configuration?: Configuration) {
         },
         /**
          * 
-         * @summary Case Type Set Members
+         * @summary Case Type Set Members  Delete Some
          * @param {string} ids 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
@@ -12790,7 +12828,7 @@ const CaseApiAxiosParamCreator = function (configuration?: Configuration) {
         },
         /**
          * 
-         * @summary Case Type Set Members
+         * @summary Case Type Set Members  Get All
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
@@ -12820,7 +12858,7 @@ const CaseApiAxiosParamCreator = function (configuration?: Configuration) {
         },
         /**
          * 
-         * @summary Case Type Set Members
+         * @summary Case Type Set Members  Get One
          * @param {string} objectId 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
@@ -12854,7 +12892,7 @@ const CaseApiAxiosParamCreator = function (configuration?: Configuration) {
         },
         /**
          * 
-         * @summary Case Type Set Members
+         * @summary Case Type Set Members  Get Some
          * @param {string} ids 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
@@ -12891,7 +12929,7 @@ const CaseApiAxiosParamCreator = function (configuration?: Configuration) {
         },
         /**
          * 
-         * @summary Case Type Set Members
+         * @summary Case Type Set Members  Post One
          * @param {CaseTypeSetMember} caseTypeSetMember 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
@@ -12927,7 +12965,7 @@ const CaseApiAxiosParamCreator = function (configuration?: Configuration) {
         },
         /**
          * 
-         * @summary Case Type Set Members
+         * @summary Case Type Set Members  Post Query
          * @param {EpiFilter} filter 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
@@ -12963,7 +13001,7 @@ const CaseApiAxiosParamCreator = function (configuration?: Configuration) {
         },
         /**
          * 
-         * @summary Case Type Set Members
+         * @summary Case Type Set Members  Post Query  Ids
          * @param {EpiFilter} filter 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
@@ -12999,7 +13037,7 @@ const CaseApiAxiosParamCreator = function (configuration?: Configuration) {
         },
         /**
          * 
-         * @summary Case Type Set Members
+         * @summary Case Type Set Members  Post Some
          * @param {Array<CaseTypeSetMember>} caseTypeSetMember 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
@@ -13035,7 +13073,7 @@ const CaseApiAxiosParamCreator = function (configuration?: Configuration) {
         },
         /**
          * 
-         * @summary Case Type Set Members
+         * @summary Case Type Set Members  Put One
          * @param {string} objectId 
          * @param {CaseTypeSetMember} caseTypeSetMember 
          * @param {*} [options] Override http request option.
@@ -13075,7 +13113,7 @@ const CaseApiAxiosParamCreator = function (configuration?: Configuration) {
         },
         /**
          * 
-         * @summary Case Type Set Members
+         * @summary Case Type Set Members  Put Some
          * @param {Array<CaseTypeSetMember>} caseTypeSetMember 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
@@ -13111,7 +13149,7 @@ const CaseApiAxiosParamCreator = function (configuration?: Configuration) {
         },
         /**
          * 
-         * @summary Case Type Sets
+         * @summary Case Type Sets  Delete All
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
@@ -13141,7 +13179,7 @@ const CaseApiAxiosParamCreator = function (configuration?: Configuration) {
         },
         /**
          * 
-         * @summary Case Type Sets
+         * @summary Case Type Sets  Delete One
          * @param {any} objectId 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
@@ -13175,7 +13213,7 @@ const CaseApiAxiosParamCreator = function (configuration?: Configuration) {
         },
         /**
          * 
-         * @summary Case Type Sets
+         * @summary Case Type Sets  Delete Some
          * @param {string} ids 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
@@ -13212,7 +13250,7 @@ const CaseApiAxiosParamCreator = function (configuration?: Configuration) {
         },
         /**
          * 
-         * @summary Case Type Sets
+         * @summary Case Type Sets  Get All
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
@@ -13242,7 +13280,7 @@ const CaseApiAxiosParamCreator = function (configuration?: Configuration) {
         },
         /**
          * 
-         * @summary Case Type Sets
+         * @summary Case Type Sets  Get One
          * @param {string} objectId 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
@@ -13276,7 +13314,7 @@ const CaseApiAxiosParamCreator = function (configuration?: Configuration) {
         },
         /**
          * 
-         * @summary Case Type Sets
+         * @summary Case Type Sets  Get Some
          * @param {string} ids 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
@@ -13313,7 +13351,7 @@ const CaseApiAxiosParamCreator = function (configuration?: Configuration) {
         },
         /**
          * 
-         * @summary Case Type Sets
+         * @summary Case Type Sets  Post One
          * @param {CaseTypeSet} caseTypeSet 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
@@ -13349,7 +13387,7 @@ const CaseApiAxiosParamCreator = function (configuration?: Configuration) {
         },
         /**
          * 
-         * @summary Case Type Sets
+         * @summary Case Type Sets  Post Query
          * @param {EpiFilter} filter 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
@@ -13385,7 +13423,7 @@ const CaseApiAxiosParamCreator = function (configuration?: Configuration) {
         },
         /**
          * 
-         * @summary Case Type Sets
+         * @summary Case Type Sets  Post Query  Ids
          * @param {EpiFilter} filter 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
@@ -13421,7 +13459,7 @@ const CaseApiAxiosParamCreator = function (configuration?: Configuration) {
         },
         /**
          * 
-         * @summary Case Type Sets
+         * @summary Case Type Sets  Post Some
          * @param {Array<CaseTypeSet>} caseTypeSet 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
@@ -13457,7 +13495,7 @@ const CaseApiAxiosParamCreator = function (configuration?: Configuration) {
         },
         /**
          * 
-         * @summary Casetypeset Casetype
+         * @summary Update Association Between Casetypeset And Casetype
          * @param {string} caseTypeSetId 
          * @param {UpdateCaseTypeSetCaseTypesRequestBody} updateCaseTypeSetCaseTypesRequestBody 
          * @param {*} [options] Override http request option.
@@ -13497,7 +13535,7 @@ const CaseApiAxiosParamCreator = function (configuration?: Configuration) {
         },
         /**
          * 
-         * @summary Case Type Sets
+         * @summary Case Type Sets  Put One
          * @param {string} objectId 
          * @param {CaseTypeSet} caseTypeSet 
          * @param {*} [options] Override http request option.
@@ -13537,7 +13575,7 @@ const CaseApiAxiosParamCreator = function (configuration?: Configuration) {
         },
         /**
          * 
-         * @summary Case Type Sets
+         * @summary Case Type Sets  Put Some
          * @param {Array<CaseTypeSet>} caseTypeSet 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
@@ -13573,7 +13611,7 @@ const CaseApiAxiosParamCreator = function (configuration?: Configuration) {
         },
         /**
          * 
-         * @summary Case Types
+         * @summary Case Types  Delete All
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
@@ -13603,7 +13641,7 @@ const CaseApiAxiosParamCreator = function (configuration?: Configuration) {
         },
         /**
          * 
-         * @summary Case Types
+         * @summary Case Types  Delete One
          * @param {any} objectId 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
@@ -13637,7 +13675,7 @@ const CaseApiAxiosParamCreator = function (configuration?: Configuration) {
         },
         /**
          * 
-         * @summary Case Types
+         * @summary Case Types  Delete Some
          * @param {string} ids 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
@@ -13674,7 +13712,7 @@ const CaseApiAxiosParamCreator = function (configuration?: Configuration) {
         },
         /**
          * 
-         * @summary Case Types
+         * @summary Case Types  Get All
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
@@ -13704,7 +13742,7 @@ const CaseApiAxiosParamCreator = function (configuration?: Configuration) {
         },
         /**
          * 
-         * @summary Case Types
+         * @summary Case Types  Get One
          * @param {string} objectId 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
@@ -13738,7 +13776,7 @@ const CaseApiAxiosParamCreator = function (configuration?: Configuration) {
         },
         /**
          * 
-         * @summary Case Types
+         * @summary Case Types  Get Some
          * @param {string} ids 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
@@ -13775,7 +13813,7 @@ const CaseApiAxiosParamCreator = function (configuration?: Configuration) {
         },
         /**
          * 
-         * @summary Case Types
+         * @summary Case Types  Post One
          * @param {CaseType} caseType 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
@@ -13811,7 +13849,7 @@ const CaseApiAxiosParamCreator = function (configuration?: Configuration) {
         },
         /**
          * 
-         * @summary Case Types
+         * @summary Case Types  Post Query
          * @param {EpiFilter} filter 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
@@ -13847,7 +13885,7 @@ const CaseApiAxiosParamCreator = function (configuration?: Configuration) {
         },
         /**
          * 
-         * @summary Case Types
+         * @summary Case Types  Post Query  Ids
          * @param {EpiFilter} filter 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
@@ -13883,7 +13921,7 @@ const CaseApiAxiosParamCreator = function (configuration?: Configuration) {
         },
         /**
          * 
-         * @summary Case Types
+         * @summary Case Types  Post Some
          * @param {Array<CaseType>} caseType 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
@@ -13919,7 +13957,7 @@ const CaseApiAxiosParamCreator = function (configuration?: Configuration) {
         },
         /**
          * 
-         * @summary Case Types
+         * @summary Case Types  Put One
          * @param {string} objectId 
          * @param {CaseType} caseType 
          * @param {*} [options] Override http request option.
@@ -13959,7 +13997,7 @@ const CaseApiAxiosParamCreator = function (configuration?: Configuration) {
         },
         /**
          * 
-         * @summary Case Types
+         * @summary Case Types  Put Some
          * @param {Array<CaseType>} caseType 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
@@ -13994,8 +14032,8 @@ const CaseApiAxiosParamCreator = function (configuration?: Configuration) {
             };
         },
         /**
-         * A class representing a case.
-         * @summary Cases
+         * 
+         * @summary Cases  Delete All
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
@@ -14024,8 +14062,8 @@ const CaseApiAxiosParamCreator = function (configuration?: Configuration) {
             };
         },
         /**
-         * A class representing a case.
-         * @summary Cases
+         * 
+         * @summary Cases  Delete One
          * @param {any} objectId 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
@@ -14058,8 +14096,8 @@ const CaseApiAxiosParamCreator = function (configuration?: Configuration) {
             };
         },
         /**
-         * A class representing a case.
-         * @summary Cases
+         * 
+         * @summary Cases  Delete Some
          * @param {string} ids 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
@@ -14095,8 +14133,8 @@ const CaseApiAxiosParamCreator = function (configuration?: Configuration) {
             };
         },
         /**
-         * A class representing a case.
-         * @summary Cases
+         * 
+         * @summary Cases  Get All
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
@@ -14125,8 +14163,8 @@ const CaseApiAxiosParamCreator = function (configuration?: Configuration) {
             };
         },
         /**
-         * A class representing a case.
-         * @summary Cases
+         * 
+         * @summary Cases  Get One
          * @param {string} objectId 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
@@ -14159,8 +14197,8 @@ const CaseApiAxiosParamCreator = function (configuration?: Configuration) {
             };
         },
         /**
-         * A class representing a case.
-         * @summary Cases
+         * 
+         * @summary Cases  Get Some
          * @param {string} ids 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
@@ -14196,8 +14234,8 @@ const CaseApiAxiosParamCreator = function (configuration?: Configuration) {
             };
         },
         /**
-         * A class representing a case.
-         * @summary Cases
+         * 
+         * @summary Cases  Post One
          * @param {Case} _case 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
@@ -14232,8 +14270,8 @@ const CaseApiAxiosParamCreator = function (configuration?: Configuration) {
             };
         },
         /**
-         * A class representing a case.
-         * @summary Cases
+         * 
+         * @summary Cases  Post Query
          * @param {EpiFilter} filter 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
@@ -14268,8 +14306,8 @@ const CaseApiAxiosParamCreator = function (configuration?: Configuration) {
             };
         },
         /**
-         * A class representing a case.
-         * @summary Cases
+         * 
+         * @summary Cases  Post Query  Ids
          * @param {EpiFilter} filter 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
@@ -14304,8 +14342,8 @@ const CaseApiAxiosParamCreator = function (configuration?: Configuration) {
             };
         },
         /**
-         * A class representing a case.
-         * @summary Cases
+         * 
+         * @summary Cases  Post Some
          * @param {Array<Case>} _case 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
@@ -14340,8 +14378,8 @@ const CaseApiAxiosParamCreator = function (configuration?: Configuration) {
             };
         },
         /**
-         * A class representing a case.
-         * @summary Cases
+         * 
+         * @summary Cases  Put One
          * @param {string} objectId 
          * @param {Case} _case 
          * @param {*} [options] Override http request option.
@@ -14380,8 +14418,8 @@ const CaseApiAxiosParamCreator = function (configuration?: Configuration) {
             };
         },
         /**
-         * A class representing a case.
-         * @summary Cases
+         * 
+         * @summary Cases  Put Some
          * @param {Array<Case>} _case 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
@@ -14417,7 +14455,7 @@ const CaseApiAxiosParamCreator = function (configuration?: Configuration) {
         },
         /**
          * 
-         * @summary Cols
+         * @summary Cols  Delete All
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
@@ -14447,7 +14485,7 @@ const CaseApiAxiosParamCreator = function (configuration?: Configuration) {
         },
         /**
          * 
-         * @summary Cols
+         * @summary Cols  Delete One
          * @param {any} objectId 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
@@ -14481,7 +14519,7 @@ const CaseApiAxiosParamCreator = function (configuration?: Configuration) {
         },
         /**
          * 
-         * @summary Cols
+         * @summary Cols  Delete Some
          * @param {string} ids 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
@@ -14518,7 +14556,7 @@ const CaseApiAxiosParamCreator = function (configuration?: Configuration) {
         },
         /**
          * 
-         * @summary Cols
+         * @summary Cols  Get All
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
@@ -14548,7 +14586,7 @@ const CaseApiAxiosParamCreator = function (configuration?: Configuration) {
         },
         /**
          * 
-         * @summary Cols
+         * @summary Cols  Get One
          * @param {string} objectId 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
@@ -14582,7 +14620,7 @@ const CaseApiAxiosParamCreator = function (configuration?: Configuration) {
         },
         /**
          * 
-         * @summary Cols
+         * @summary Cols  Get Some
          * @param {string} ids 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
@@ -14619,7 +14657,7 @@ const CaseApiAxiosParamCreator = function (configuration?: Configuration) {
         },
         /**
          * 
-         * @summary Cols
+         * @summary Cols  Post One
          * @param {Col} col 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
@@ -14655,7 +14693,7 @@ const CaseApiAxiosParamCreator = function (configuration?: Configuration) {
         },
         /**
          * 
-         * @summary Cols
+         * @summary Cols  Post Query
          * @param {EpiFilter} filter 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
@@ -14691,7 +14729,7 @@ const CaseApiAxiosParamCreator = function (configuration?: Configuration) {
         },
         /**
          * 
-         * @summary Cols
+         * @summary Cols  Post Query  Ids
          * @param {EpiFilter} filter 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
@@ -14727,7 +14765,7 @@ const CaseApiAxiosParamCreator = function (configuration?: Configuration) {
         },
         /**
          * 
-         * @summary Cols
+         * @summary Cols  Post Some
          * @param {Array<Col>} col 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
@@ -14763,7 +14801,7 @@ const CaseApiAxiosParamCreator = function (configuration?: Configuration) {
         },
         /**
          * 
-         * @summary Cols
+         * @summary Cols  Put One
          * @param {string} objectId 
          * @param {Col} col 
          * @param {*} [options] Override http request option.
@@ -14803,7 +14841,7 @@ const CaseApiAxiosParamCreator = function (configuration?: Configuration) {
         },
         /**
          * 
-         * @summary Cols
+         * @summary Cols  Put Some
          * @param {Array<Col>} col 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
@@ -14838,8 +14876,8 @@ const CaseApiAxiosParamCreator = function (configuration?: Configuration) {
             };
         },
         /**
-         * 
-         * @summary Completecasetype
+         * Retrieve a complete case type.
+         * @summary Retrieve Complete Case Type
          * @param {string} caseTypeId 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
@@ -14875,8 +14913,8 @@ const CaseApiAxiosParamCreator = function (configuration?: Configuration) {
             };
         },
         /**
-         * 
-         * @summary Caseset
+         * Create a new case set and associate it with the specified data collections and     cases.
+         * @summary Create Case Set
          * @param {CreateCaseSetRequestBody} createCaseSetRequestBody 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
@@ -14911,8 +14949,8 @@ const CaseApiAxiosParamCreator = function (configuration?: Configuration) {
             };
         },
         /**
-         * 
-         * @summary Cases
+         * Create a list of cases and associate them with the specified data collections.
+         * @summary Create Cases
          * @param {CreateCasesRequestBody} createCasesRequestBody 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
@@ -14948,7 +14986,7 @@ const CaseApiAxiosParamCreator = function (configuration?: Configuration) {
         },
         /**
          * 
-         * @summary Dims
+         * @summary Dims  Delete All
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
@@ -14978,7 +15016,7 @@ const CaseApiAxiosParamCreator = function (configuration?: Configuration) {
         },
         /**
          * 
-         * @summary Dims
+         * @summary Dims  Delete One
          * @param {any} objectId 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
@@ -15012,7 +15050,7 @@ const CaseApiAxiosParamCreator = function (configuration?: Configuration) {
         },
         /**
          * 
-         * @summary Dims
+         * @summary Dims  Delete Some
          * @param {string} ids 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
@@ -15049,7 +15087,7 @@ const CaseApiAxiosParamCreator = function (configuration?: Configuration) {
         },
         /**
          * 
-         * @summary Dims
+         * @summary Dims  Get All
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
@@ -15079,7 +15117,7 @@ const CaseApiAxiosParamCreator = function (configuration?: Configuration) {
         },
         /**
          * 
-         * @summary Dims
+         * @summary Dims  Get One
          * @param {string} objectId 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
@@ -15113,7 +15151,7 @@ const CaseApiAxiosParamCreator = function (configuration?: Configuration) {
         },
         /**
          * 
-         * @summary Dims
+         * @summary Dims  Get Some
          * @param {string} ids 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
@@ -15150,7 +15188,7 @@ const CaseApiAxiosParamCreator = function (configuration?: Configuration) {
         },
         /**
          * 
-         * @summary Dims
+         * @summary Dims  Post One
          * @param {Dim} dim 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
@@ -15186,7 +15224,7 @@ const CaseApiAxiosParamCreator = function (configuration?: Configuration) {
         },
         /**
          * 
-         * @summary Dims
+         * @summary Dims  Post Query
          * @param {EpiFilter} filter 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
@@ -15222,7 +15260,7 @@ const CaseApiAxiosParamCreator = function (configuration?: Configuration) {
         },
         /**
          * 
-         * @summary Dims
+         * @summary Dims  Post Query  Ids
          * @param {EpiFilter} filter 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
@@ -15258,7 +15296,7 @@ const CaseApiAxiosParamCreator = function (configuration?: Configuration) {
         },
         /**
          * 
-         * @summary Dims
+         * @summary Dims  Post Some
          * @param {Array<Dim>} dim 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
@@ -15294,7 +15332,7 @@ const CaseApiAxiosParamCreator = function (configuration?: Configuration) {
         },
         /**
          * 
-         * @summary Dims
+         * @summary Dims  Put One
          * @param {string} objectId 
          * @param {Dim} dim 
          * @param {*} [options] Override http request option.
@@ -15334,7 +15372,7 @@ const CaseApiAxiosParamCreator = function (configuration?: Configuration) {
         },
         /**
          * 
-         * @summary Dims
+         * @summary Dims  Put Some
          * @param {Array<Dim>} dim 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
@@ -15370,7 +15408,7 @@ const CaseApiAxiosParamCreator = function (configuration?: Configuration) {
         },
         /**
          * 
-         * @summary Genetic Distance Protocols
+         * @summary Genetic Distance Protocols  Delete All
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
@@ -15400,7 +15438,7 @@ const CaseApiAxiosParamCreator = function (configuration?: Configuration) {
         },
         /**
          * 
-         * @summary Genetic Distance Protocols
+         * @summary Genetic Distance Protocols  Delete One
          * @param {any} objectId 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
@@ -15434,7 +15472,7 @@ const CaseApiAxiosParamCreator = function (configuration?: Configuration) {
         },
         /**
          * 
-         * @summary Genetic Distance Protocols
+         * @summary Genetic Distance Protocols  Delete Some
          * @param {string} ids 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
@@ -15471,7 +15509,7 @@ const CaseApiAxiosParamCreator = function (configuration?: Configuration) {
         },
         /**
          * 
-         * @summary Genetic Distance Protocols
+         * @summary Genetic Distance Protocols  Get All
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
@@ -15501,7 +15539,7 @@ const CaseApiAxiosParamCreator = function (configuration?: Configuration) {
         },
         /**
          * 
-         * @summary Genetic Distance Protocols
+         * @summary Genetic Distance Protocols  Get One
          * @param {string} objectId 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
@@ -15535,7 +15573,7 @@ const CaseApiAxiosParamCreator = function (configuration?: Configuration) {
         },
         /**
          * 
-         * @summary Genetic Distance Protocols
+         * @summary Genetic Distance Protocols  Get Some
          * @param {string} ids 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
@@ -15572,7 +15610,7 @@ const CaseApiAxiosParamCreator = function (configuration?: Configuration) {
         },
         /**
          * 
-         * @summary Genetic Distance Protocols
+         * @summary Genetic Distance Protocols  Post One
          * @param {GeneticDistanceProtocol} geneticDistanceProtocol 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
@@ -15608,7 +15646,7 @@ const CaseApiAxiosParamCreator = function (configuration?: Configuration) {
         },
         /**
          * 
-         * @summary Genetic Distance Protocols
+         * @summary Genetic Distance Protocols  Post Query
          * @param {EpiFilter} filter 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
@@ -15644,7 +15682,7 @@ const CaseApiAxiosParamCreator = function (configuration?: Configuration) {
         },
         /**
          * 
-         * @summary Genetic Distance Protocols
+         * @summary Genetic Distance Protocols  Post Query  Ids
          * @param {EpiFilter} filter 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
@@ -15680,7 +15718,7 @@ const CaseApiAxiosParamCreator = function (configuration?: Configuration) {
         },
         /**
          * 
-         * @summary Genetic Distance Protocols
+         * @summary Genetic Distance Protocols  Post Some
          * @param {Array<GeneticDistanceProtocol>} geneticDistanceProtocol 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
@@ -15716,7 +15754,7 @@ const CaseApiAxiosParamCreator = function (configuration?: Configuration) {
         },
         /**
          * 
-         * @summary Genetic Distance Protocols
+         * @summary Genetic Distance Protocols  Put One
          * @param {string} objectId 
          * @param {GeneticDistanceProtocol} geneticDistanceProtocol 
          * @param {*} [options] Override http request option.
@@ -15756,7 +15794,7 @@ const CaseApiAxiosParamCreator = function (configuration?: Configuration) {
         },
         /**
          * 
-         * @summary Genetic Distance Protocols
+         * @summary Genetic Distance Protocols  Put Some
          * @param {Array<GeneticDistanceProtocol>} geneticDistanceProtocol 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
@@ -15791,8 +15829,44 @@ const CaseApiAxiosParamCreator = function (configuration?: Configuration) {
             };
         },
         /**
-         * 
-         * @summary Retrieve  Case Ids By Query
+         * Retrieve a set of allele profiles based on a set of case IDs and a genetic distance     case type column.
+         * @summary Retrieve Allele Profile
+         * @param {RetrieveAlleleProfileRequestBody} retrieveAlleleProfileRequestBody 
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        retrieveAlleleProfile: async (retrieveAlleleProfileRequestBody: RetrieveAlleleProfileRequestBody, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
+            // verify required parameter 'retrieveAlleleProfileRequestBody' is not null or undefined
+            assertParamExists('retrieveAlleleProfile', 'retrieveAlleleProfileRequestBody', retrieveAlleleProfileRequestBody)
+            const localVarPath = `/v1/retrieve/allele_profile`;
+            // use dummy base URL string because the URL constructor only accepts absolute URLs.
+            const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
+            let baseOptions;
+            if (configuration) {
+                baseOptions = configuration.baseOptions;
+            }
+
+            const localVarRequestOptions = { method: 'POST', ...baseOptions, ...options};
+            const localVarHeaderParameter = {} as any;
+            const localVarQueryParameter = {} as any;
+
+
+    
+            localVarHeaderParameter['Content-Type'] = 'application/json';
+
+            setSearchParams(localVarUrlObj, localVarQueryParameter);
+            let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
+            localVarRequestOptions.headers = {...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers};
+            localVarRequestOptions.data = serializeDataIfNeeded(retrieveAlleleProfileRequestBody, localVarRequestOptions, configuration)
+
+            return {
+                url: toPathString(localVarUrlObj),
+                options: localVarRequestOptions,
+            };
+        },
+        /**
+         * Retrieve cases based on a query.
+         * @summary Retrieve Case Ids By Query
          * @param {CaseQuery} caseQuery 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
@@ -15827,8 +15901,8 @@ const CaseApiAxiosParamCreator = function (configuration?: Configuration) {
             };
         },
         /**
-         * 
-         * @summary Retrieve  Case Rights
+         * Retrieve access rights for a set of cases.
+         * @summary Retrieve Case Rights
          * @param {Array<string>} requestBody 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
@@ -15863,8 +15937,8 @@ const CaseApiAxiosParamCreator = function (configuration?: Configuration) {
             };
         },
         /**
-         * 
-         * @summary Retrieve  Case Set Rights
+         * Retrieve access rights for a set of case sets.
+         * @summary Retrieve Case Set Rights
          * @param {Array<string>} requestBody 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
@@ -15899,8 +15973,8 @@ const CaseApiAxiosParamCreator = function (configuration?: Configuration) {
             };
         },
         /**
-         * 
-         * @summary Casesetstats
+         * Retrieve statistics for a set of case sets.
+         * @summary Retrieve Case Set Statistics
          * @param {RetrieveCaseSetStatsRequestBody} retrieveCaseSetStatsRequestBody 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
@@ -15935,8 +16009,8 @@ const CaseApiAxiosParamCreator = function (configuration?: Configuration) {
             };
         },
         /**
-         * 
-         * @summary Casetypestats
+         * Retrieve statistics for a set of case types.
+         * @summary Retrieve Case Type Statistics
          * @param {RetrieveCaseTypeStatsRequestBody} retrieveCaseTypeStatsRequestBody 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
@@ -15971,8 +16045,8 @@ const CaseApiAxiosParamCreator = function (configuration?: Configuration) {
             };
         },
         /**
-         * 
-         * @summary Retrieve  Cases By Ids
+         * Retrieve cases by their IDs.
+         * @summary Retrieve Cases By Ids
          * @param {Array<string>} requestBody 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
@@ -16007,8 +16081,8 @@ const CaseApiAxiosParamCreator = function (configuration?: Configuration) {
             };
         },
         /**
-         * 
-         * @summary Retrieve  Genetic Sequence
+         * Retrieve a set of genetic sequences based on a set of case IDs and a genetic     sequence case type column.
+         * @summary Retrieve Genetic Sequence By Case
          * @param {RetrieveGeneticSequenceRequestBody} retrieveGeneticSequenceRequestBody 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
@@ -16043,8 +16117,8 @@ const CaseApiAxiosParamCreator = function (configuration?: Configuration) {
             };
         },
         /**
-         * 
-         * @summary Retrieve  Organization Contact
+         * Retrieves Contacts associated with organizations, sites, or specific contacts.      Exactly one of organization_ids, site_ids, or contact_ids must be provided.     Returns a list of contacts with their associated site and organization data     cascaded.
+         * @summary Retrieve Organization Contact
          * @param {RetrieveOrganizationContactRequestBody} retrieveOrganizationContactRequestBody 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
@@ -16079,8 +16153,8 @@ const CaseApiAxiosParamCreator = function (configuration?: Configuration) {
             };
         },
         /**
-         * 
-         * @summary Retrieve  Phylogenetic Tree
+         * Retrieve a phylogenetic tree based on a set of case IDs, a tree algorithm, and     a genetic distance case type column.
+         * @summary Retrieve Phylogenetic Tree
          * @param {RetrievePhylogeneticTreeRequestBody} retrievePhylogeneticTreeRequestBody 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
@@ -16116,7 +16190,7 @@ const CaseApiAxiosParamCreator = function (configuration?: Configuration) {
         },
         /**
          * 
-         * @summary Tree Algorithm Classes
+         * @summary Tree Algorithm Classes  Delete All
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
@@ -16146,7 +16220,7 @@ const CaseApiAxiosParamCreator = function (configuration?: Configuration) {
         },
         /**
          * 
-         * @summary Tree Algorithm Classes
+         * @summary Tree Algorithm Classes  Delete One
          * @param {any} objectId 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
@@ -16180,7 +16254,7 @@ const CaseApiAxiosParamCreator = function (configuration?: Configuration) {
         },
         /**
          * 
-         * @summary Tree Algorithm Classes
+         * @summary Tree Algorithm Classes  Delete Some
          * @param {string} ids 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
@@ -16217,7 +16291,7 @@ const CaseApiAxiosParamCreator = function (configuration?: Configuration) {
         },
         /**
          * 
-         * @summary Tree Algorithm Classes
+         * @summary Tree Algorithm Classes  Get All
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
@@ -16247,7 +16321,7 @@ const CaseApiAxiosParamCreator = function (configuration?: Configuration) {
         },
         /**
          * 
-         * @summary Tree Algorithm Classes
+         * @summary Tree Algorithm Classes  Get One
          * @param {string} objectId 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
@@ -16281,7 +16355,7 @@ const CaseApiAxiosParamCreator = function (configuration?: Configuration) {
         },
         /**
          * 
-         * @summary Tree Algorithm Classes
+         * @summary Tree Algorithm Classes  Get Some
          * @param {string} ids 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
@@ -16318,7 +16392,7 @@ const CaseApiAxiosParamCreator = function (configuration?: Configuration) {
         },
         /**
          * 
-         * @summary Tree Algorithm Classes
+         * @summary Tree Algorithm Classes  Post One
          * @param {TreeAlgorithmClass} treeAlgorithmClass 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
@@ -16354,7 +16428,7 @@ const CaseApiAxiosParamCreator = function (configuration?: Configuration) {
         },
         /**
          * 
-         * @summary Tree Algorithm Classes
+         * @summary Tree Algorithm Classes  Post Query
          * @param {EpiFilter} filter 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
@@ -16390,7 +16464,7 @@ const CaseApiAxiosParamCreator = function (configuration?: Configuration) {
         },
         /**
          * 
-         * @summary Tree Algorithm Classes
+         * @summary Tree Algorithm Classes  Post Query  Ids
          * @param {EpiFilter} filter 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
@@ -16426,7 +16500,7 @@ const CaseApiAxiosParamCreator = function (configuration?: Configuration) {
         },
         /**
          * 
-         * @summary Tree Algorithm Classes
+         * @summary Tree Algorithm Classes  Post Some
          * @param {Array<TreeAlgorithmClass>} treeAlgorithmClass 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
@@ -16462,7 +16536,7 @@ const CaseApiAxiosParamCreator = function (configuration?: Configuration) {
         },
         /**
          * 
-         * @summary Tree Algorithm Classes
+         * @summary Tree Algorithm Classes  Put One
          * @param {string} objectId 
          * @param {TreeAlgorithmClass} treeAlgorithmClass 
          * @param {*} [options] Override http request option.
@@ -16502,7 +16576,7 @@ const CaseApiAxiosParamCreator = function (configuration?: Configuration) {
         },
         /**
          * 
-         * @summary Tree Algorithm Classes
+         * @summary Tree Algorithm Classes  Put Some
          * @param {Array<TreeAlgorithmClass>} treeAlgorithmClass 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
@@ -16537,8 +16611,8 @@ const CaseApiAxiosParamCreator = function (configuration?: Configuration) {
             };
         },
         /**
-         * See https://en.wikipedia.org/wiki/Hierarchical_clustering,     https://en.wikipedia.org/wiki/Neighbor_joining,      https://en.wikipedia.org/wiki/Computational_phylogenetics,      https://en.wikipedia.org/wiki/Spanning_tree
-         * @summary Tree Algorithms
+         * 
+         * @summary Tree Algorithms  Delete All
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
@@ -16567,8 +16641,8 @@ const CaseApiAxiosParamCreator = function (configuration?: Configuration) {
             };
         },
         /**
-         * See https://en.wikipedia.org/wiki/Hierarchical_clustering,     https://en.wikipedia.org/wiki/Neighbor_joining,      https://en.wikipedia.org/wiki/Computational_phylogenetics,      https://en.wikipedia.org/wiki/Spanning_tree
-         * @summary Tree Algorithms
+         * 
+         * @summary Tree Algorithms  Delete One
          * @param {any} objectId 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
@@ -16601,8 +16675,8 @@ const CaseApiAxiosParamCreator = function (configuration?: Configuration) {
             };
         },
         /**
-         * See https://en.wikipedia.org/wiki/Hierarchical_clustering,     https://en.wikipedia.org/wiki/Neighbor_joining,      https://en.wikipedia.org/wiki/Computational_phylogenetics,      https://en.wikipedia.org/wiki/Spanning_tree
-         * @summary Tree Algorithms
+         * 
+         * @summary Tree Algorithms  Delete Some
          * @param {string} ids 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
@@ -16638,8 +16712,8 @@ const CaseApiAxiosParamCreator = function (configuration?: Configuration) {
             };
         },
         /**
-         * See https://en.wikipedia.org/wiki/Hierarchical_clustering,     https://en.wikipedia.org/wiki/Neighbor_joining,      https://en.wikipedia.org/wiki/Computational_phylogenetics,      https://en.wikipedia.org/wiki/Spanning_tree
-         * @summary Tree Algorithms
+         * 
+         * @summary Tree Algorithms  Get All
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
@@ -16668,8 +16742,8 @@ const CaseApiAxiosParamCreator = function (configuration?: Configuration) {
             };
         },
         /**
-         * See https://en.wikipedia.org/wiki/Hierarchical_clustering,     https://en.wikipedia.org/wiki/Neighbor_joining,      https://en.wikipedia.org/wiki/Computational_phylogenetics,      https://en.wikipedia.org/wiki/Spanning_tree
-         * @summary Tree Algorithms
+         * 
+         * @summary Tree Algorithms  Get One
          * @param {string} objectId 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
@@ -16702,8 +16776,8 @@ const CaseApiAxiosParamCreator = function (configuration?: Configuration) {
             };
         },
         /**
-         * See https://en.wikipedia.org/wiki/Hierarchical_clustering,     https://en.wikipedia.org/wiki/Neighbor_joining,      https://en.wikipedia.org/wiki/Computational_phylogenetics,      https://en.wikipedia.org/wiki/Spanning_tree
-         * @summary Tree Algorithms
+         * 
+         * @summary Tree Algorithms  Get Some
          * @param {string} ids 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
@@ -16739,8 +16813,8 @@ const CaseApiAxiosParamCreator = function (configuration?: Configuration) {
             };
         },
         /**
-         * See https://en.wikipedia.org/wiki/Hierarchical_clustering,     https://en.wikipedia.org/wiki/Neighbor_joining,      https://en.wikipedia.org/wiki/Computational_phylogenetics,      https://en.wikipedia.org/wiki/Spanning_tree
-         * @summary Tree Algorithms
+         * 
+         * @summary Tree Algorithms  Post One
          * @param {TreeAlgorithm} treeAlgorithm 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
@@ -16775,8 +16849,8 @@ const CaseApiAxiosParamCreator = function (configuration?: Configuration) {
             };
         },
         /**
-         * See https://en.wikipedia.org/wiki/Hierarchical_clustering,     https://en.wikipedia.org/wiki/Neighbor_joining,      https://en.wikipedia.org/wiki/Computational_phylogenetics,      https://en.wikipedia.org/wiki/Spanning_tree
-         * @summary Tree Algorithms
+         * 
+         * @summary Tree Algorithms  Post Query
          * @param {EpiFilter} filter 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
@@ -16811,8 +16885,8 @@ const CaseApiAxiosParamCreator = function (configuration?: Configuration) {
             };
         },
         /**
-         * See https://en.wikipedia.org/wiki/Hierarchical_clustering,     https://en.wikipedia.org/wiki/Neighbor_joining,      https://en.wikipedia.org/wiki/Computational_phylogenetics,      https://en.wikipedia.org/wiki/Spanning_tree
-         * @summary Tree Algorithms
+         * 
+         * @summary Tree Algorithms  Post Query  Ids
          * @param {EpiFilter} filter 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
@@ -16847,8 +16921,8 @@ const CaseApiAxiosParamCreator = function (configuration?: Configuration) {
             };
         },
         /**
-         * See https://en.wikipedia.org/wiki/Hierarchical_clustering,     https://en.wikipedia.org/wiki/Neighbor_joining,      https://en.wikipedia.org/wiki/Computational_phylogenetics,      https://en.wikipedia.org/wiki/Spanning_tree
-         * @summary Tree Algorithms
+         * 
+         * @summary Tree Algorithms  Post Some
          * @param {Array<TreeAlgorithm>} treeAlgorithm 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
@@ -16883,8 +16957,8 @@ const CaseApiAxiosParamCreator = function (configuration?: Configuration) {
             };
         },
         /**
-         * See https://en.wikipedia.org/wiki/Hierarchical_clustering,     https://en.wikipedia.org/wiki/Neighbor_joining,      https://en.wikipedia.org/wiki/Computational_phylogenetics,      https://en.wikipedia.org/wiki/Spanning_tree
-         * @summary Tree Algorithms
+         * 
+         * @summary Tree Algorithms  Put One
          * @param {string} objectId 
          * @param {TreeAlgorithm} treeAlgorithm 
          * @param {*} [options] Override http request option.
@@ -16923,8 +16997,8 @@ const CaseApiAxiosParamCreator = function (configuration?: Configuration) {
             };
         },
         /**
-         * See https://en.wikipedia.org/wiki/Hierarchical_clustering,     https://en.wikipedia.org/wiki/Neighbor_joining,      https://en.wikipedia.org/wiki/Computational_phylogenetics,      https://en.wikipedia.org/wiki/Spanning_tree
-         * @summary Tree Algorithms
+         * 
+         * @summary Tree Algorithms  Put Some
          * @param {Array<TreeAlgorithm>} treeAlgorithm 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
@@ -16970,7 +17044,7 @@ const CaseApiFp = function(configuration?: Configuration) {
     return {
         /**
          * 
-         * @summary Case Data Collection Links
+         * @summary Case Data Collection Links  Delete All
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
@@ -16982,7 +17056,7 @@ const CaseApiFp = function(configuration?: Configuration) {
         },
         /**
          * 
-         * @summary Case Data Collection Links
+         * @summary Case Data Collection Links  Delete One
          * @param {any} objectId 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
@@ -16995,7 +17069,7 @@ const CaseApiFp = function(configuration?: Configuration) {
         },
         /**
          * 
-         * @summary Case Data Collection Links
+         * @summary Case Data Collection Links  Delete Some
          * @param {string} ids 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
@@ -17008,7 +17082,7 @@ const CaseApiFp = function(configuration?: Configuration) {
         },
         /**
          * 
-         * @summary Case Data Collection Links
+         * @summary Case Data Collection Links  Get All
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
@@ -17020,7 +17094,7 @@ const CaseApiFp = function(configuration?: Configuration) {
         },
         /**
          * 
-         * @summary Case Data Collection Links
+         * @summary Case Data Collection Links  Get One
          * @param {string} objectId 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
@@ -17033,7 +17107,7 @@ const CaseApiFp = function(configuration?: Configuration) {
         },
         /**
          * 
-         * @summary Case Data Collection Links
+         * @summary Case Data Collection Links  Get Some
          * @param {string} ids 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
@@ -17046,7 +17120,7 @@ const CaseApiFp = function(configuration?: Configuration) {
         },
         /**
          * 
-         * @summary Case Data Collection Links
+         * @summary Case Data Collection Links  Post One
          * @param {CaseDataCollectionLink} caseDataCollectionLink 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
@@ -17059,7 +17133,7 @@ const CaseApiFp = function(configuration?: Configuration) {
         },
         /**
          * 
-         * @summary Case Data Collection Links
+         * @summary Case Data Collection Links  Post Query
          * @param {EpiFilter} filter 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
@@ -17072,7 +17146,7 @@ const CaseApiFp = function(configuration?: Configuration) {
         },
         /**
          * 
-         * @summary Case Data Collection Links
+         * @summary Case Data Collection Links  Post Query  Ids
          * @param {EpiFilter} filter 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
@@ -17085,7 +17159,7 @@ const CaseApiFp = function(configuration?: Configuration) {
         },
         /**
          * 
-         * @summary Case Data Collection Links
+         * @summary Case Data Collection Links  Post Some
          * @param {Array<CaseDataCollectionLink>} caseDataCollectionLink 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
@@ -17098,7 +17172,7 @@ const CaseApiFp = function(configuration?: Configuration) {
         },
         /**
          * 
-         * @summary Case Data Collection Links
+         * @summary Case Data Collection Links  Put One
          * @param {string} objectId 
          * @param {CaseDataCollectionLink} caseDataCollectionLink 
          * @param {*} [options] Override http request option.
@@ -17112,7 +17186,7 @@ const CaseApiFp = function(configuration?: Configuration) {
         },
         /**
          * 
-         * @summary Case Data Collection Links
+         * @summary Case Data Collection Links  Put Some
          * @param {Array<CaseDataCollectionLink>} caseDataCollectionLink 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
@@ -17125,7 +17199,7 @@ const CaseApiFp = function(configuration?: Configuration) {
         },
         /**
          * 
-         * @summary Case Set Categories
+         * @summary Case Set Categories  Delete All
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
@@ -17137,7 +17211,7 @@ const CaseApiFp = function(configuration?: Configuration) {
         },
         /**
          * 
-         * @summary Case Set Categories
+         * @summary Case Set Categories  Delete One
          * @param {any} objectId 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
@@ -17150,7 +17224,7 @@ const CaseApiFp = function(configuration?: Configuration) {
         },
         /**
          * 
-         * @summary Case Set Categories
+         * @summary Case Set Categories  Delete Some
          * @param {string} ids 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
@@ -17163,7 +17237,7 @@ const CaseApiFp = function(configuration?: Configuration) {
         },
         /**
          * 
-         * @summary Case Set Categories
+         * @summary Case Set Categories  Get All
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
@@ -17175,7 +17249,7 @@ const CaseApiFp = function(configuration?: Configuration) {
         },
         /**
          * 
-         * @summary Case Set Categories
+         * @summary Case Set Categories  Get One
          * @param {string} objectId 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
@@ -17188,7 +17262,7 @@ const CaseApiFp = function(configuration?: Configuration) {
         },
         /**
          * 
-         * @summary Case Set Categories
+         * @summary Case Set Categories  Get Some
          * @param {string} ids 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
@@ -17201,7 +17275,7 @@ const CaseApiFp = function(configuration?: Configuration) {
         },
         /**
          * 
-         * @summary Case Set Categories
+         * @summary Case Set Categories  Post One
          * @param {CaseSetCategory} caseSetCategory 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
@@ -17214,7 +17288,7 @@ const CaseApiFp = function(configuration?: Configuration) {
         },
         /**
          * 
-         * @summary Case Set Categories
+         * @summary Case Set Categories  Post Query
          * @param {EpiFilter} filter 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
@@ -17227,7 +17301,7 @@ const CaseApiFp = function(configuration?: Configuration) {
         },
         /**
          * 
-         * @summary Case Set Categories
+         * @summary Case Set Categories  Post Query  Ids
          * @param {EpiFilter} filter 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
@@ -17240,7 +17314,7 @@ const CaseApiFp = function(configuration?: Configuration) {
         },
         /**
          * 
-         * @summary Case Set Categories
+         * @summary Case Set Categories  Post Some
          * @param {Array<CaseSetCategory>} caseSetCategory 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
@@ -17253,7 +17327,7 @@ const CaseApiFp = function(configuration?: Configuration) {
         },
         /**
          * 
-         * @summary Case Set Categories
+         * @summary Case Set Categories  Put One
          * @param {string} objectId 
          * @param {CaseSetCategory} caseSetCategory 
          * @param {*} [options] Override http request option.
@@ -17267,7 +17341,7 @@ const CaseApiFp = function(configuration?: Configuration) {
         },
         /**
          * 
-         * @summary Case Set Categories
+         * @summary Case Set Categories  Put Some
          * @param {Array<CaseSetCategory>} caseSetCategory 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
@@ -17280,7 +17354,7 @@ const CaseApiFp = function(configuration?: Configuration) {
         },
         /**
          * 
-         * @summary Case Set Data Collection Links
+         * @summary Case Set Data Collection Links  Delete All
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
@@ -17292,7 +17366,7 @@ const CaseApiFp = function(configuration?: Configuration) {
         },
         /**
          * 
-         * @summary Case Set Data Collection Links
+         * @summary Case Set Data Collection Links  Delete One
          * @param {any} objectId 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
@@ -17305,7 +17379,7 @@ const CaseApiFp = function(configuration?: Configuration) {
         },
         /**
          * 
-         * @summary Case Set Data Collection Links
+         * @summary Case Set Data Collection Links  Delete Some
          * @param {string} ids 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
@@ -17318,7 +17392,7 @@ const CaseApiFp = function(configuration?: Configuration) {
         },
         /**
          * 
-         * @summary Case Set Data Collection Links
+         * @summary Case Set Data Collection Links  Get All
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
@@ -17330,7 +17404,7 @@ const CaseApiFp = function(configuration?: Configuration) {
         },
         /**
          * 
-         * @summary Case Set Data Collection Links
+         * @summary Case Set Data Collection Links  Get One
          * @param {string} objectId 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
@@ -17343,7 +17417,7 @@ const CaseApiFp = function(configuration?: Configuration) {
         },
         /**
          * 
-         * @summary Case Set Data Collection Links
+         * @summary Case Set Data Collection Links  Get Some
          * @param {string} ids 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
@@ -17356,7 +17430,7 @@ const CaseApiFp = function(configuration?: Configuration) {
         },
         /**
          * 
-         * @summary Case Set Data Collection Links
+         * @summary Case Set Data Collection Links  Post One
          * @param {CaseSetDataCollectionLink} caseSetDataCollectionLink 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
@@ -17369,7 +17443,7 @@ const CaseApiFp = function(configuration?: Configuration) {
         },
         /**
          * 
-         * @summary Case Set Data Collection Links
+         * @summary Case Set Data Collection Links  Post Query
          * @param {EpiFilter} filter 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
@@ -17382,7 +17456,7 @@ const CaseApiFp = function(configuration?: Configuration) {
         },
         /**
          * 
-         * @summary Case Set Data Collection Links
+         * @summary Case Set Data Collection Links  Post Query  Ids
          * @param {EpiFilter} filter 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
@@ -17395,7 +17469,7 @@ const CaseApiFp = function(configuration?: Configuration) {
         },
         /**
          * 
-         * @summary Case Set Data Collection Links
+         * @summary Case Set Data Collection Links  Post Some
          * @param {Array<CaseSetDataCollectionLink>} caseSetDataCollectionLink 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
@@ -17408,7 +17482,7 @@ const CaseApiFp = function(configuration?: Configuration) {
         },
         /**
          * 
-         * @summary Case Set Data Collection Links
+         * @summary Case Set Data Collection Links  Put One
          * @param {string} objectId 
          * @param {CaseSetDataCollectionLink} caseSetDataCollectionLink 
          * @param {*} [options] Override http request option.
@@ -17422,7 +17496,7 @@ const CaseApiFp = function(configuration?: Configuration) {
         },
         /**
          * 
-         * @summary Case Set Data Collection Links
+         * @summary Case Set Data Collection Links  Put Some
          * @param {Array<CaseSetDataCollectionLink>} caseSetDataCollectionLink 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
@@ -17435,7 +17509,7 @@ const CaseApiFp = function(configuration?: Configuration) {
         },
         /**
          * 
-         * @summary Case Set Members
+         * @summary Case Set Members  Delete All
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
@@ -17447,7 +17521,7 @@ const CaseApiFp = function(configuration?: Configuration) {
         },
         /**
          * 
-         * @summary Case Set Members
+         * @summary Case Set Members  Delete One
          * @param {any} objectId 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
@@ -17460,7 +17534,7 @@ const CaseApiFp = function(configuration?: Configuration) {
         },
         /**
          * 
-         * @summary Case Set Members
+         * @summary Case Set Members  Delete Some
          * @param {string} ids 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
@@ -17473,7 +17547,7 @@ const CaseApiFp = function(configuration?: Configuration) {
         },
         /**
          * 
-         * @summary Case Set Members
+         * @summary Case Set Members  Get All
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
@@ -17485,7 +17559,7 @@ const CaseApiFp = function(configuration?: Configuration) {
         },
         /**
          * 
-         * @summary Case Set Members
+         * @summary Case Set Members  Get One
          * @param {string} objectId 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
@@ -17498,7 +17572,7 @@ const CaseApiFp = function(configuration?: Configuration) {
         },
         /**
          * 
-         * @summary Case Set Members
+         * @summary Case Set Members  Get Some
          * @param {string} ids 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
@@ -17511,7 +17585,7 @@ const CaseApiFp = function(configuration?: Configuration) {
         },
         /**
          * 
-         * @summary Case Set Members
+         * @summary Case Set Members  Post One
          * @param {CaseSetMember} caseSetMember 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
@@ -17524,7 +17598,7 @@ const CaseApiFp = function(configuration?: Configuration) {
         },
         /**
          * 
-         * @summary Case Set Members
+         * @summary Case Set Members  Post Query
          * @param {EpiFilter} filter 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
@@ -17537,7 +17611,7 @@ const CaseApiFp = function(configuration?: Configuration) {
         },
         /**
          * 
-         * @summary Case Set Members
+         * @summary Case Set Members  Post Query  Ids
          * @param {EpiFilter} filter 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
@@ -17550,7 +17624,7 @@ const CaseApiFp = function(configuration?: Configuration) {
         },
         /**
          * 
-         * @summary Case Set Members
+         * @summary Case Set Members  Post Some
          * @param {Array<CaseSetMember>} caseSetMember 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
@@ -17563,7 +17637,7 @@ const CaseApiFp = function(configuration?: Configuration) {
         },
         /**
          * 
-         * @summary Case Set Members
+         * @summary Case Set Members  Put One
          * @param {string} objectId 
          * @param {CaseSetMember} caseSetMember 
          * @param {*} [options] Override http request option.
@@ -17577,7 +17651,7 @@ const CaseApiFp = function(configuration?: Configuration) {
         },
         /**
          * 
-         * @summary Case Set Members
+         * @summary Case Set Members  Put Some
          * @param {Array<CaseSetMember>} caseSetMember 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
@@ -17590,7 +17664,7 @@ const CaseApiFp = function(configuration?: Configuration) {
         },
         /**
          * 
-         * @summary Case Set Statuses
+         * @summary Case Set Statuses  Delete All
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
@@ -17602,7 +17676,7 @@ const CaseApiFp = function(configuration?: Configuration) {
         },
         /**
          * 
-         * @summary Case Set Statuses
+         * @summary Case Set Statuses  Delete One
          * @param {any} objectId 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
@@ -17615,7 +17689,7 @@ const CaseApiFp = function(configuration?: Configuration) {
         },
         /**
          * 
-         * @summary Case Set Statuses
+         * @summary Case Set Statuses  Delete Some
          * @param {string} ids 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
@@ -17628,7 +17702,7 @@ const CaseApiFp = function(configuration?: Configuration) {
         },
         /**
          * 
-         * @summary Case Set Statuses
+         * @summary Case Set Statuses  Get All
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
@@ -17640,7 +17714,7 @@ const CaseApiFp = function(configuration?: Configuration) {
         },
         /**
          * 
-         * @summary Case Set Statuses
+         * @summary Case Set Statuses  Get One
          * @param {string} objectId 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
@@ -17653,7 +17727,7 @@ const CaseApiFp = function(configuration?: Configuration) {
         },
         /**
          * 
-         * @summary Case Set Statuses
+         * @summary Case Set Statuses  Get Some
          * @param {string} ids 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
@@ -17666,7 +17740,7 @@ const CaseApiFp = function(configuration?: Configuration) {
         },
         /**
          * 
-         * @summary Case Set Statuses
+         * @summary Case Set Statuses  Post One
          * @param {CaseSetStatus} caseSetStatus 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
@@ -17679,7 +17753,7 @@ const CaseApiFp = function(configuration?: Configuration) {
         },
         /**
          * 
-         * @summary Case Set Statuses
+         * @summary Case Set Statuses  Post Query
          * @param {EpiFilter} filter 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
@@ -17692,7 +17766,7 @@ const CaseApiFp = function(configuration?: Configuration) {
         },
         /**
          * 
-         * @summary Case Set Statuses
+         * @summary Case Set Statuses  Post Query  Ids
          * @param {EpiFilter} filter 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
@@ -17705,7 +17779,7 @@ const CaseApiFp = function(configuration?: Configuration) {
         },
         /**
          * 
-         * @summary Case Set Statuses
+         * @summary Case Set Statuses  Post Some
          * @param {Array<CaseSetStatus>} caseSetStatus 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
@@ -17718,7 +17792,7 @@ const CaseApiFp = function(configuration?: Configuration) {
         },
         /**
          * 
-         * @summary Case Set Statuses
+         * @summary Case Set Statuses  Put One
          * @param {string} objectId 
          * @param {CaseSetStatus} caseSetStatus 
          * @param {*} [options] Override http request option.
@@ -17732,7 +17806,7 @@ const CaseApiFp = function(configuration?: Configuration) {
         },
         /**
          * 
-         * @summary Case Set Statuses
+         * @summary Case Set Statuses  Put Some
          * @param {Array<CaseSetStatus>} caseSetStatus 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
@@ -17745,7 +17819,7 @@ const CaseApiFp = function(configuration?: Configuration) {
         },
         /**
          * 
-         * @summary Case Sets
+         * @summary Case Sets  Delete All
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
@@ -17757,7 +17831,7 @@ const CaseApiFp = function(configuration?: Configuration) {
         },
         /**
          * 
-         * @summary Case Sets
+         * @summary Case Sets  Delete One
          * @param {any} objectId 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
@@ -17770,7 +17844,7 @@ const CaseApiFp = function(configuration?: Configuration) {
         },
         /**
          * 
-         * @summary Case Sets
+         * @summary Case Sets  Delete Some
          * @param {string} ids 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
@@ -17783,7 +17857,7 @@ const CaseApiFp = function(configuration?: Configuration) {
         },
         /**
          * 
-         * @summary Case Sets
+         * @summary Case Sets  Get All
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
@@ -17795,7 +17869,7 @@ const CaseApiFp = function(configuration?: Configuration) {
         },
         /**
          * 
-         * @summary Case Sets
+         * @summary Case Sets  Get One
          * @param {string} objectId 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
@@ -17808,7 +17882,7 @@ const CaseApiFp = function(configuration?: Configuration) {
         },
         /**
          * 
-         * @summary Case Sets
+         * @summary Case Sets  Get Some
          * @param {string} ids 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
@@ -17821,7 +17895,7 @@ const CaseApiFp = function(configuration?: Configuration) {
         },
         /**
          * 
-         * @summary Case Sets
+         * @summary Case Sets  Post One
          * @param {CaseSet} caseSet 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
@@ -17834,7 +17908,7 @@ const CaseApiFp = function(configuration?: Configuration) {
         },
         /**
          * 
-         * @summary Case Sets
+         * @summary Case Sets  Post Query
          * @param {EpiFilter} filter 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
@@ -17847,7 +17921,7 @@ const CaseApiFp = function(configuration?: Configuration) {
         },
         /**
          * 
-         * @summary Case Sets
+         * @summary Case Sets  Post Query  Ids
          * @param {EpiFilter} filter 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
@@ -17860,7 +17934,7 @@ const CaseApiFp = function(configuration?: Configuration) {
         },
         /**
          * 
-         * @summary Case Sets
+         * @summary Case Sets  Post Some
          * @param {Array<CaseSet>} caseSet 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
@@ -17873,7 +17947,7 @@ const CaseApiFp = function(configuration?: Configuration) {
         },
         /**
          * 
-         * @summary Case Sets
+         * @summary Case Sets  Put One
          * @param {string} objectId 
          * @param {CaseSet} caseSet 
          * @param {*} [options] Override http request option.
@@ -17887,7 +17961,7 @@ const CaseApiFp = function(configuration?: Configuration) {
         },
         /**
          * 
-         * @summary Case Sets
+         * @summary Case Sets  Put Some
          * @param {Array<CaseSet>} caseSet 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
@@ -17900,7 +17974,7 @@ const CaseApiFp = function(configuration?: Configuration) {
         },
         /**
          * 
-         * @summary Case Type Col Set Members
+         * @summary Case Type Col Set Members  Delete All
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
@@ -17912,7 +17986,7 @@ const CaseApiFp = function(configuration?: Configuration) {
         },
         /**
          * 
-         * @summary Case Type Col Set Members
+         * @summary Case Type Col Set Members  Delete One
          * @param {any} objectId 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
@@ -17925,7 +17999,7 @@ const CaseApiFp = function(configuration?: Configuration) {
         },
         /**
          * 
-         * @summary Case Type Col Set Members
+         * @summary Case Type Col Set Members  Delete Some
          * @param {string} ids 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
@@ -17938,7 +18012,7 @@ const CaseApiFp = function(configuration?: Configuration) {
         },
         /**
          * 
-         * @summary Case Type Col Set Members
+         * @summary Case Type Col Set Members  Get All
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
@@ -17950,7 +18024,7 @@ const CaseApiFp = function(configuration?: Configuration) {
         },
         /**
          * 
-         * @summary Case Type Col Set Members
+         * @summary Case Type Col Set Members  Get One
          * @param {string} objectId 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
@@ -17963,7 +18037,7 @@ const CaseApiFp = function(configuration?: Configuration) {
         },
         /**
          * 
-         * @summary Case Type Col Set Members
+         * @summary Case Type Col Set Members  Get Some
          * @param {string} ids 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
@@ -17976,7 +18050,7 @@ const CaseApiFp = function(configuration?: Configuration) {
         },
         /**
          * 
-         * @summary Case Type Col Set Members
+         * @summary Case Type Col Set Members  Post One
          * @param {CaseTypeColSetMember} caseTypeColSetMember 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
@@ -17989,7 +18063,7 @@ const CaseApiFp = function(configuration?: Configuration) {
         },
         /**
          * 
-         * @summary Case Type Col Set Members
+         * @summary Case Type Col Set Members  Post Query
          * @param {EpiFilter} filter 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
@@ -18002,7 +18076,7 @@ const CaseApiFp = function(configuration?: Configuration) {
         },
         /**
          * 
-         * @summary Case Type Col Set Members
+         * @summary Case Type Col Set Members  Post Query  Ids
          * @param {EpiFilter} filter 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
@@ -18015,7 +18089,7 @@ const CaseApiFp = function(configuration?: Configuration) {
         },
         /**
          * 
-         * @summary Case Type Col Set Members
+         * @summary Case Type Col Set Members  Post Some
          * @param {Array<CaseTypeColSetMember>} caseTypeColSetMember 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
@@ -18028,7 +18102,7 @@ const CaseApiFp = function(configuration?: Configuration) {
         },
         /**
          * 
-         * @summary Case Type Col Set Members
+         * @summary Case Type Col Set Members  Put One
          * @param {string} objectId 
          * @param {CaseTypeColSetMember} caseTypeColSetMember 
          * @param {*} [options] Override http request option.
@@ -18042,7 +18116,7 @@ const CaseApiFp = function(configuration?: Configuration) {
         },
         /**
          * 
-         * @summary Case Type Col Set Members
+         * @summary Case Type Col Set Members  Put Some
          * @param {Array<CaseTypeColSetMember>} caseTypeColSetMember 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
@@ -18055,7 +18129,7 @@ const CaseApiFp = function(configuration?: Configuration) {
         },
         /**
          * 
-         * @summary Case Type Col Sets
+         * @summary Case Type Col Sets  Delete All
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
@@ -18067,7 +18141,7 @@ const CaseApiFp = function(configuration?: Configuration) {
         },
         /**
          * 
-         * @summary Case Type Col Sets
+         * @summary Case Type Col Sets  Delete One
          * @param {any} objectId 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
@@ -18080,7 +18154,7 @@ const CaseApiFp = function(configuration?: Configuration) {
         },
         /**
          * 
-         * @summary Case Type Col Sets
+         * @summary Case Type Col Sets  Delete Some
          * @param {string} ids 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
@@ -18093,7 +18167,7 @@ const CaseApiFp = function(configuration?: Configuration) {
         },
         /**
          * 
-         * @summary Case Type Col Sets
+         * @summary Case Type Col Sets  Get All
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
@@ -18105,7 +18179,7 @@ const CaseApiFp = function(configuration?: Configuration) {
         },
         /**
          * 
-         * @summary Case Type Col Sets
+         * @summary Case Type Col Sets  Get One
          * @param {string} objectId 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
@@ -18118,7 +18192,7 @@ const CaseApiFp = function(configuration?: Configuration) {
         },
         /**
          * 
-         * @summary Case Type Col Sets
+         * @summary Case Type Col Sets  Get Some
          * @param {string} ids 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
@@ -18131,7 +18205,7 @@ const CaseApiFp = function(configuration?: Configuration) {
         },
         /**
          * 
-         * @summary Case Type Col Sets
+         * @summary Case Type Col Sets  Post One
          * @param {CaseTypeColSet} caseTypeColSet 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
@@ -18144,7 +18218,7 @@ const CaseApiFp = function(configuration?: Configuration) {
         },
         /**
          * 
-         * @summary Case Type Col Sets
+         * @summary Case Type Col Sets  Post Query
          * @param {EpiFilter} filter 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
@@ -18157,7 +18231,7 @@ const CaseApiFp = function(configuration?: Configuration) {
         },
         /**
          * 
-         * @summary Case Type Col Sets
+         * @summary Case Type Col Sets  Post Query  Ids
          * @param {EpiFilter} filter 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
@@ -18170,7 +18244,7 @@ const CaseApiFp = function(configuration?: Configuration) {
         },
         /**
          * 
-         * @summary Case Type Col Sets
+         * @summary Case Type Col Sets  Post Some
          * @param {Array<CaseTypeColSet>} caseTypeColSet 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
@@ -18183,7 +18257,7 @@ const CaseApiFp = function(configuration?: Configuration) {
         },
         /**
          * 
-         * @summary Casetypecolset Casetypecol
+         * @summary Update Association Between Casetypecolset And Casetypecol
          * @param {string} caseTypeColSetId 
          * @param {UpdateCaseTypeColSetCaseTypeColsRequestBody} updateCaseTypeColSetCaseTypeColsRequestBody 
          * @param {*} [options] Override http request option.
@@ -18197,7 +18271,7 @@ const CaseApiFp = function(configuration?: Configuration) {
         },
         /**
          * 
-         * @summary Case Type Col Sets
+         * @summary Case Type Col Sets  Put One
          * @param {string} objectId 
          * @param {CaseTypeColSet} caseTypeColSet 
          * @param {*} [options] Override http request option.
@@ -18211,7 +18285,7 @@ const CaseApiFp = function(configuration?: Configuration) {
         },
         /**
          * 
-         * @summary Case Type Col Sets
+         * @summary Case Type Col Sets  Put Some
          * @param {Array<CaseTypeColSet>} caseTypeColSet 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
@@ -18224,7 +18298,7 @@ const CaseApiFp = function(configuration?: Configuration) {
         },
         /**
          * 
-         * @summary Case Type Cols
+         * @summary Case Type Cols  Delete All
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
@@ -18236,7 +18310,7 @@ const CaseApiFp = function(configuration?: Configuration) {
         },
         /**
          * 
-         * @summary Case Type Cols
+         * @summary Case Type Cols  Delete One
          * @param {any} objectId 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
@@ -18249,7 +18323,7 @@ const CaseApiFp = function(configuration?: Configuration) {
         },
         /**
          * 
-         * @summary Case Type Cols
+         * @summary Case Type Cols  Delete Some
          * @param {string} ids 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
@@ -18262,7 +18336,7 @@ const CaseApiFp = function(configuration?: Configuration) {
         },
         /**
          * 
-         * @summary Case Type Cols
+         * @summary Case Type Cols  Get All
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
@@ -18274,7 +18348,7 @@ const CaseApiFp = function(configuration?: Configuration) {
         },
         /**
          * 
-         * @summary Case Type Cols
+         * @summary Case Type Cols  Get One
          * @param {string} objectId 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
@@ -18287,7 +18361,7 @@ const CaseApiFp = function(configuration?: Configuration) {
         },
         /**
          * 
-         * @summary Case Type Cols
+         * @summary Case Type Cols  Get Some
          * @param {string} ids 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
@@ -18300,7 +18374,7 @@ const CaseApiFp = function(configuration?: Configuration) {
         },
         /**
          * 
-         * @summary Case Type Cols
+         * @summary Case Type Cols  Post One
          * @param {CaseTypeCol} caseTypeCol 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
@@ -18313,7 +18387,7 @@ const CaseApiFp = function(configuration?: Configuration) {
         },
         /**
          * 
-         * @summary Case Type Cols
+         * @summary Case Type Cols  Post Query
          * @param {EpiFilter} filter 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
@@ -18326,7 +18400,7 @@ const CaseApiFp = function(configuration?: Configuration) {
         },
         /**
          * 
-         * @summary Case Type Cols
+         * @summary Case Type Cols  Post Query  Ids
          * @param {EpiFilter} filter 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
@@ -18339,7 +18413,7 @@ const CaseApiFp = function(configuration?: Configuration) {
         },
         /**
          * 
-         * @summary Case Type Cols
+         * @summary Case Type Cols  Post Some
          * @param {Array<CaseTypeCol>} caseTypeCol 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
@@ -18352,7 +18426,7 @@ const CaseApiFp = function(configuration?: Configuration) {
         },
         /**
          * 
-         * @summary Case Type Cols
+         * @summary Case Type Cols  Put One
          * @param {string} objectId 
          * @param {CaseTypeCol} caseTypeCol 
          * @param {*} [options] Override http request option.
@@ -18366,7 +18440,7 @@ const CaseApiFp = function(configuration?: Configuration) {
         },
         /**
          * 
-         * @summary Case Type Cols
+         * @summary Case Type Cols  Put Some
          * @param {Array<CaseTypeCol>} caseTypeCol 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
@@ -18379,7 +18453,7 @@ const CaseApiFp = function(configuration?: Configuration) {
         },
         /**
          * 
-         * @summary Case Type Set Categories
+         * @summary Case Type Set Categories  Delete All
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
@@ -18391,7 +18465,7 @@ const CaseApiFp = function(configuration?: Configuration) {
         },
         /**
          * 
-         * @summary Case Type Set Categories
+         * @summary Case Type Set Categories  Delete One
          * @param {any} objectId 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
@@ -18404,7 +18478,7 @@ const CaseApiFp = function(configuration?: Configuration) {
         },
         /**
          * 
-         * @summary Case Type Set Categories
+         * @summary Case Type Set Categories  Delete Some
          * @param {string} ids 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
@@ -18417,7 +18491,7 @@ const CaseApiFp = function(configuration?: Configuration) {
         },
         /**
          * 
-         * @summary Case Type Set Categories
+         * @summary Case Type Set Categories  Get All
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
@@ -18429,7 +18503,7 @@ const CaseApiFp = function(configuration?: Configuration) {
         },
         /**
          * 
-         * @summary Case Type Set Categories
+         * @summary Case Type Set Categories  Get One
          * @param {string} objectId 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
@@ -18442,7 +18516,7 @@ const CaseApiFp = function(configuration?: Configuration) {
         },
         /**
          * 
-         * @summary Case Type Set Categories
+         * @summary Case Type Set Categories  Get Some
          * @param {string} ids 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
@@ -18455,7 +18529,7 @@ const CaseApiFp = function(configuration?: Configuration) {
         },
         /**
          * 
-         * @summary Case Type Set Categories
+         * @summary Case Type Set Categories  Post One
          * @param {CaseTypeSetCategory} caseTypeSetCategory 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
@@ -18468,7 +18542,7 @@ const CaseApiFp = function(configuration?: Configuration) {
         },
         /**
          * 
-         * @summary Case Type Set Categories
+         * @summary Case Type Set Categories  Post Query
          * @param {EpiFilter} filter 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
@@ -18481,7 +18555,7 @@ const CaseApiFp = function(configuration?: Configuration) {
         },
         /**
          * 
-         * @summary Case Type Set Categories
+         * @summary Case Type Set Categories  Post Query  Ids
          * @param {EpiFilter} filter 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
@@ -18494,7 +18568,7 @@ const CaseApiFp = function(configuration?: Configuration) {
         },
         /**
          * 
-         * @summary Case Type Set Categories
+         * @summary Case Type Set Categories  Post Some
          * @param {Array<CaseTypeSetCategory>} caseTypeSetCategory 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
@@ -18507,7 +18581,7 @@ const CaseApiFp = function(configuration?: Configuration) {
         },
         /**
          * 
-         * @summary Case Type Set Categories
+         * @summary Case Type Set Categories  Put One
          * @param {string} objectId 
          * @param {CaseTypeSetCategory} caseTypeSetCategory 
          * @param {*} [options] Override http request option.
@@ -18521,7 +18595,7 @@ const CaseApiFp = function(configuration?: Configuration) {
         },
         /**
          * 
-         * @summary Case Type Set Categories
+         * @summary Case Type Set Categories  Put Some
          * @param {Array<CaseTypeSetCategory>} caseTypeSetCategory 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
@@ -18534,7 +18608,7 @@ const CaseApiFp = function(configuration?: Configuration) {
         },
         /**
          * 
-         * @summary Case Type Set Members
+         * @summary Case Type Set Members  Delete All
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
@@ -18546,7 +18620,7 @@ const CaseApiFp = function(configuration?: Configuration) {
         },
         /**
          * 
-         * @summary Case Type Set Members
+         * @summary Case Type Set Members  Delete One
          * @param {any} objectId 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
@@ -18559,7 +18633,7 @@ const CaseApiFp = function(configuration?: Configuration) {
         },
         /**
          * 
-         * @summary Case Type Set Members
+         * @summary Case Type Set Members  Delete Some
          * @param {string} ids 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
@@ -18572,7 +18646,7 @@ const CaseApiFp = function(configuration?: Configuration) {
         },
         /**
          * 
-         * @summary Case Type Set Members
+         * @summary Case Type Set Members  Get All
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
@@ -18584,7 +18658,7 @@ const CaseApiFp = function(configuration?: Configuration) {
         },
         /**
          * 
-         * @summary Case Type Set Members
+         * @summary Case Type Set Members  Get One
          * @param {string} objectId 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
@@ -18597,7 +18671,7 @@ const CaseApiFp = function(configuration?: Configuration) {
         },
         /**
          * 
-         * @summary Case Type Set Members
+         * @summary Case Type Set Members  Get Some
          * @param {string} ids 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
@@ -18610,7 +18684,7 @@ const CaseApiFp = function(configuration?: Configuration) {
         },
         /**
          * 
-         * @summary Case Type Set Members
+         * @summary Case Type Set Members  Post One
          * @param {CaseTypeSetMember} caseTypeSetMember 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
@@ -18623,7 +18697,7 @@ const CaseApiFp = function(configuration?: Configuration) {
         },
         /**
          * 
-         * @summary Case Type Set Members
+         * @summary Case Type Set Members  Post Query
          * @param {EpiFilter} filter 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
@@ -18636,7 +18710,7 @@ const CaseApiFp = function(configuration?: Configuration) {
         },
         /**
          * 
-         * @summary Case Type Set Members
+         * @summary Case Type Set Members  Post Query  Ids
          * @param {EpiFilter} filter 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
@@ -18649,7 +18723,7 @@ const CaseApiFp = function(configuration?: Configuration) {
         },
         /**
          * 
-         * @summary Case Type Set Members
+         * @summary Case Type Set Members  Post Some
          * @param {Array<CaseTypeSetMember>} caseTypeSetMember 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
@@ -18662,7 +18736,7 @@ const CaseApiFp = function(configuration?: Configuration) {
         },
         /**
          * 
-         * @summary Case Type Set Members
+         * @summary Case Type Set Members  Put One
          * @param {string} objectId 
          * @param {CaseTypeSetMember} caseTypeSetMember 
          * @param {*} [options] Override http request option.
@@ -18676,7 +18750,7 @@ const CaseApiFp = function(configuration?: Configuration) {
         },
         /**
          * 
-         * @summary Case Type Set Members
+         * @summary Case Type Set Members  Put Some
          * @param {Array<CaseTypeSetMember>} caseTypeSetMember 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
@@ -18689,7 +18763,7 @@ const CaseApiFp = function(configuration?: Configuration) {
         },
         /**
          * 
-         * @summary Case Type Sets
+         * @summary Case Type Sets  Delete All
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
@@ -18701,7 +18775,7 @@ const CaseApiFp = function(configuration?: Configuration) {
         },
         /**
          * 
-         * @summary Case Type Sets
+         * @summary Case Type Sets  Delete One
          * @param {any} objectId 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
@@ -18714,7 +18788,7 @@ const CaseApiFp = function(configuration?: Configuration) {
         },
         /**
          * 
-         * @summary Case Type Sets
+         * @summary Case Type Sets  Delete Some
          * @param {string} ids 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
@@ -18727,7 +18801,7 @@ const CaseApiFp = function(configuration?: Configuration) {
         },
         /**
          * 
-         * @summary Case Type Sets
+         * @summary Case Type Sets  Get All
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
@@ -18739,7 +18813,7 @@ const CaseApiFp = function(configuration?: Configuration) {
         },
         /**
          * 
-         * @summary Case Type Sets
+         * @summary Case Type Sets  Get One
          * @param {string} objectId 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
@@ -18752,7 +18826,7 @@ const CaseApiFp = function(configuration?: Configuration) {
         },
         /**
          * 
-         * @summary Case Type Sets
+         * @summary Case Type Sets  Get Some
          * @param {string} ids 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
@@ -18765,7 +18839,7 @@ const CaseApiFp = function(configuration?: Configuration) {
         },
         /**
          * 
-         * @summary Case Type Sets
+         * @summary Case Type Sets  Post One
          * @param {CaseTypeSet} caseTypeSet 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
@@ -18778,7 +18852,7 @@ const CaseApiFp = function(configuration?: Configuration) {
         },
         /**
          * 
-         * @summary Case Type Sets
+         * @summary Case Type Sets  Post Query
          * @param {EpiFilter} filter 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
@@ -18791,7 +18865,7 @@ const CaseApiFp = function(configuration?: Configuration) {
         },
         /**
          * 
-         * @summary Case Type Sets
+         * @summary Case Type Sets  Post Query  Ids
          * @param {EpiFilter} filter 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
@@ -18804,7 +18878,7 @@ const CaseApiFp = function(configuration?: Configuration) {
         },
         /**
          * 
-         * @summary Case Type Sets
+         * @summary Case Type Sets  Post Some
          * @param {Array<CaseTypeSet>} caseTypeSet 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
@@ -18817,7 +18891,7 @@ const CaseApiFp = function(configuration?: Configuration) {
         },
         /**
          * 
-         * @summary Casetypeset Casetype
+         * @summary Update Association Between Casetypeset And Casetype
          * @param {string} caseTypeSetId 
          * @param {UpdateCaseTypeSetCaseTypesRequestBody} updateCaseTypeSetCaseTypesRequestBody 
          * @param {*} [options] Override http request option.
@@ -18831,7 +18905,7 @@ const CaseApiFp = function(configuration?: Configuration) {
         },
         /**
          * 
-         * @summary Case Type Sets
+         * @summary Case Type Sets  Put One
          * @param {string} objectId 
          * @param {CaseTypeSet} caseTypeSet 
          * @param {*} [options] Override http request option.
@@ -18845,7 +18919,7 @@ const CaseApiFp = function(configuration?: Configuration) {
         },
         /**
          * 
-         * @summary Case Type Sets
+         * @summary Case Type Sets  Put Some
          * @param {Array<CaseTypeSet>} caseTypeSet 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
@@ -18858,7 +18932,7 @@ const CaseApiFp = function(configuration?: Configuration) {
         },
         /**
          * 
-         * @summary Case Types
+         * @summary Case Types  Delete All
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
@@ -18870,7 +18944,7 @@ const CaseApiFp = function(configuration?: Configuration) {
         },
         /**
          * 
-         * @summary Case Types
+         * @summary Case Types  Delete One
          * @param {any} objectId 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
@@ -18883,7 +18957,7 @@ const CaseApiFp = function(configuration?: Configuration) {
         },
         /**
          * 
-         * @summary Case Types
+         * @summary Case Types  Delete Some
          * @param {string} ids 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
@@ -18896,7 +18970,7 @@ const CaseApiFp = function(configuration?: Configuration) {
         },
         /**
          * 
-         * @summary Case Types
+         * @summary Case Types  Get All
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
@@ -18908,7 +18982,7 @@ const CaseApiFp = function(configuration?: Configuration) {
         },
         /**
          * 
-         * @summary Case Types
+         * @summary Case Types  Get One
          * @param {string} objectId 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
@@ -18921,7 +18995,7 @@ const CaseApiFp = function(configuration?: Configuration) {
         },
         /**
          * 
-         * @summary Case Types
+         * @summary Case Types  Get Some
          * @param {string} ids 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
@@ -18934,7 +19008,7 @@ const CaseApiFp = function(configuration?: Configuration) {
         },
         /**
          * 
-         * @summary Case Types
+         * @summary Case Types  Post One
          * @param {CaseType} caseType 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
@@ -18947,7 +19021,7 @@ const CaseApiFp = function(configuration?: Configuration) {
         },
         /**
          * 
-         * @summary Case Types
+         * @summary Case Types  Post Query
          * @param {EpiFilter} filter 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
@@ -18960,7 +19034,7 @@ const CaseApiFp = function(configuration?: Configuration) {
         },
         /**
          * 
-         * @summary Case Types
+         * @summary Case Types  Post Query  Ids
          * @param {EpiFilter} filter 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
@@ -18973,7 +19047,7 @@ const CaseApiFp = function(configuration?: Configuration) {
         },
         /**
          * 
-         * @summary Case Types
+         * @summary Case Types  Post Some
          * @param {Array<CaseType>} caseType 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
@@ -18986,7 +19060,7 @@ const CaseApiFp = function(configuration?: Configuration) {
         },
         /**
          * 
-         * @summary Case Types
+         * @summary Case Types  Put One
          * @param {string} objectId 
          * @param {CaseType} caseType 
          * @param {*} [options] Override http request option.
@@ -19000,7 +19074,7 @@ const CaseApiFp = function(configuration?: Configuration) {
         },
         /**
          * 
-         * @summary Case Types
+         * @summary Case Types  Put Some
          * @param {Array<CaseType>} caseType 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
@@ -19012,8 +19086,8 @@ const CaseApiFp = function(configuration?: Configuration) {
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
         /**
-         * A class representing a case.
-         * @summary Cases
+         * 
+         * @summary Cases  Delete All
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
@@ -19024,8 +19098,8 @@ const CaseApiFp = function(configuration?: Configuration) {
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
         /**
-         * A class representing a case.
-         * @summary Cases
+         * 
+         * @summary Cases  Delete One
          * @param {any} objectId 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
@@ -19037,8 +19111,8 @@ const CaseApiFp = function(configuration?: Configuration) {
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
         /**
-         * A class representing a case.
-         * @summary Cases
+         * 
+         * @summary Cases  Delete Some
          * @param {string} ids 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
@@ -19050,8 +19124,8 @@ const CaseApiFp = function(configuration?: Configuration) {
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
         /**
-         * A class representing a case.
-         * @summary Cases
+         * 
+         * @summary Cases  Get All
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
@@ -19062,8 +19136,8 @@ const CaseApiFp = function(configuration?: Configuration) {
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
         /**
-         * A class representing a case.
-         * @summary Cases
+         * 
+         * @summary Cases  Get One
          * @param {string} objectId 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
@@ -19075,8 +19149,8 @@ const CaseApiFp = function(configuration?: Configuration) {
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
         /**
-         * A class representing a case.
-         * @summary Cases
+         * 
+         * @summary Cases  Get Some
          * @param {string} ids 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
@@ -19088,8 +19162,8 @@ const CaseApiFp = function(configuration?: Configuration) {
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
         /**
-         * A class representing a case.
-         * @summary Cases
+         * 
+         * @summary Cases  Post One
          * @param {Case} _case 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
@@ -19101,8 +19175,8 @@ const CaseApiFp = function(configuration?: Configuration) {
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
         /**
-         * A class representing a case.
-         * @summary Cases
+         * 
+         * @summary Cases  Post Query
          * @param {EpiFilter} filter 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
@@ -19114,8 +19188,8 @@ const CaseApiFp = function(configuration?: Configuration) {
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
         /**
-         * A class representing a case.
-         * @summary Cases
+         * 
+         * @summary Cases  Post Query  Ids
          * @param {EpiFilter} filter 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
@@ -19127,8 +19201,8 @@ const CaseApiFp = function(configuration?: Configuration) {
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
         /**
-         * A class representing a case.
-         * @summary Cases
+         * 
+         * @summary Cases  Post Some
          * @param {Array<Case>} _case 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
@@ -19140,8 +19214,8 @@ const CaseApiFp = function(configuration?: Configuration) {
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
         /**
-         * A class representing a case.
-         * @summary Cases
+         * 
+         * @summary Cases  Put One
          * @param {string} objectId 
          * @param {Case} _case 
          * @param {*} [options] Override http request option.
@@ -19154,8 +19228,8 @@ const CaseApiFp = function(configuration?: Configuration) {
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
         /**
-         * A class representing a case.
-         * @summary Cases
+         * 
+         * @summary Cases  Put Some
          * @param {Array<Case>} _case 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
@@ -19168,7 +19242,7 @@ const CaseApiFp = function(configuration?: Configuration) {
         },
         /**
          * 
-         * @summary Cols
+         * @summary Cols  Delete All
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
@@ -19180,7 +19254,7 @@ const CaseApiFp = function(configuration?: Configuration) {
         },
         /**
          * 
-         * @summary Cols
+         * @summary Cols  Delete One
          * @param {any} objectId 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
@@ -19193,7 +19267,7 @@ const CaseApiFp = function(configuration?: Configuration) {
         },
         /**
          * 
-         * @summary Cols
+         * @summary Cols  Delete Some
          * @param {string} ids 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
@@ -19206,7 +19280,7 @@ const CaseApiFp = function(configuration?: Configuration) {
         },
         /**
          * 
-         * @summary Cols
+         * @summary Cols  Get All
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
@@ -19218,7 +19292,7 @@ const CaseApiFp = function(configuration?: Configuration) {
         },
         /**
          * 
-         * @summary Cols
+         * @summary Cols  Get One
          * @param {string} objectId 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
@@ -19231,7 +19305,7 @@ const CaseApiFp = function(configuration?: Configuration) {
         },
         /**
          * 
-         * @summary Cols
+         * @summary Cols  Get Some
          * @param {string} ids 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
@@ -19244,7 +19318,7 @@ const CaseApiFp = function(configuration?: Configuration) {
         },
         /**
          * 
-         * @summary Cols
+         * @summary Cols  Post One
          * @param {Col} col 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
@@ -19257,7 +19331,7 @@ const CaseApiFp = function(configuration?: Configuration) {
         },
         /**
          * 
-         * @summary Cols
+         * @summary Cols  Post Query
          * @param {EpiFilter} filter 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
@@ -19270,7 +19344,7 @@ const CaseApiFp = function(configuration?: Configuration) {
         },
         /**
          * 
-         * @summary Cols
+         * @summary Cols  Post Query  Ids
          * @param {EpiFilter} filter 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
@@ -19283,7 +19357,7 @@ const CaseApiFp = function(configuration?: Configuration) {
         },
         /**
          * 
-         * @summary Cols
+         * @summary Cols  Post Some
          * @param {Array<Col>} col 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
@@ -19296,7 +19370,7 @@ const CaseApiFp = function(configuration?: Configuration) {
         },
         /**
          * 
-         * @summary Cols
+         * @summary Cols  Put One
          * @param {string} objectId 
          * @param {Col} col 
          * @param {*} [options] Override http request option.
@@ -19310,7 +19384,7 @@ const CaseApiFp = function(configuration?: Configuration) {
         },
         /**
          * 
-         * @summary Cols
+         * @summary Cols  Put Some
          * @param {Array<Col>} col 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
@@ -19322,8 +19396,8 @@ const CaseApiFp = function(configuration?: Configuration) {
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
         /**
-         * 
-         * @summary Completecasetype
+         * Retrieve a complete case type.
+         * @summary Retrieve Complete Case Type
          * @param {string} caseTypeId 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
@@ -19335,8 +19409,8 @@ const CaseApiFp = function(configuration?: Configuration) {
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
         /**
-         * 
-         * @summary Caseset
+         * Create a new case set and associate it with the specified data collections and     cases.
+         * @summary Create Case Set
          * @param {CreateCaseSetRequestBody} createCaseSetRequestBody 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
@@ -19348,8 +19422,8 @@ const CaseApiFp = function(configuration?: Configuration) {
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
         /**
-         * 
-         * @summary Cases
+         * Create a list of cases and associate them with the specified data collections.
+         * @summary Create Cases
          * @param {CreateCasesRequestBody} createCasesRequestBody 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
@@ -19362,7 +19436,7 @@ const CaseApiFp = function(configuration?: Configuration) {
         },
         /**
          * 
-         * @summary Dims
+         * @summary Dims  Delete All
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
@@ -19374,7 +19448,7 @@ const CaseApiFp = function(configuration?: Configuration) {
         },
         /**
          * 
-         * @summary Dims
+         * @summary Dims  Delete One
          * @param {any} objectId 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
@@ -19387,7 +19461,7 @@ const CaseApiFp = function(configuration?: Configuration) {
         },
         /**
          * 
-         * @summary Dims
+         * @summary Dims  Delete Some
          * @param {string} ids 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
@@ -19400,7 +19474,7 @@ const CaseApiFp = function(configuration?: Configuration) {
         },
         /**
          * 
-         * @summary Dims
+         * @summary Dims  Get All
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
@@ -19412,7 +19486,7 @@ const CaseApiFp = function(configuration?: Configuration) {
         },
         /**
          * 
-         * @summary Dims
+         * @summary Dims  Get One
          * @param {string} objectId 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
@@ -19425,7 +19499,7 @@ const CaseApiFp = function(configuration?: Configuration) {
         },
         /**
          * 
-         * @summary Dims
+         * @summary Dims  Get Some
          * @param {string} ids 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
@@ -19438,7 +19512,7 @@ const CaseApiFp = function(configuration?: Configuration) {
         },
         /**
          * 
-         * @summary Dims
+         * @summary Dims  Post One
          * @param {Dim} dim 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
@@ -19451,7 +19525,7 @@ const CaseApiFp = function(configuration?: Configuration) {
         },
         /**
          * 
-         * @summary Dims
+         * @summary Dims  Post Query
          * @param {EpiFilter} filter 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
@@ -19464,7 +19538,7 @@ const CaseApiFp = function(configuration?: Configuration) {
         },
         /**
          * 
-         * @summary Dims
+         * @summary Dims  Post Query  Ids
          * @param {EpiFilter} filter 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
@@ -19477,7 +19551,7 @@ const CaseApiFp = function(configuration?: Configuration) {
         },
         /**
          * 
-         * @summary Dims
+         * @summary Dims  Post Some
          * @param {Array<Dim>} dim 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
@@ -19490,7 +19564,7 @@ const CaseApiFp = function(configuration?: Configuration) {
         },
         /**
          * 
-         * @summary Dims
+         * @summary Dims  Put One
          * @param {string} objectId 
          * @param {Dim} dim 
          * @param {*} [options] Override http request option.
@@ -19504,7 +19578,7 @@ const CaseApiFp = function(configuration?: Configuration) {
         },
         /**
          * 
-         * @summary Dims
+         * @summary Dims  Put Some
          * @param {Array<Dim>} dim 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
@@ -19517,7 +19591,7 @@ const CaseApiFp = function(configuration?: Configuration) {
         },
         /**
          * 
-         * @summary Genetic Distance Protocols
+         * @summary Genetic Distance Protocols  Delete All
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
@@ -19529,7 +19603,7 @@ const CaseApiFp = function(configuration?: Configuration) {
         },
         /**
          * 
-         * @summary Genetic Distance Protocols
+         * @summary Genetic Distance Protocols  Delete One
          * @param {any} objectId 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
@@ -19542,7 +19616,7 @@ const CaseApiFp = function(configuration?: Configuration) {
         },
         /**
          * 
-         * @summary Genetic Distance Protocols
+         * @summary Genetic Distance Protocols  Delete Some
          * @param {string} ids 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
@@ -19555,7 +19629,7 @@ const CaseApiFp = function(configuration?: Configuration) {
         },
         /**
          * 
-         * @summary Genetic Distance Protocols
+         * @summary Genetic Distance Protocols  Get All
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
@@ -19567,7 +19641,7 @@ const CaseApiFp = function(configuration?: Configuration) {
         },
         /**
          * 
-         * @summary Genetic Distance Protocols
+         * @summary Genetic Distance Protocols  Get One
          * @param {string} objectId 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
@@ -19580,7 +19654,7 @@ const CaseApiFp = function(configuration?: Configuration) {
         },
         /**
          * 
-         * @summary Genetic Distance Protocols
+         * @summary Genetic Distance Protocols  Get Some
          * @param {string} ids 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
@@ -19593,7 +19667,7 @@ const CaseApiFp = function(configuration?: Configuration) {
         },
         /**
          * 
-         * @summary Genetic Distance Protocols
+         * @summary Genetic Distance Protocols  Post One
          * @param {GeneticDistanceProtocol} geneticDistanceProtocol 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
@@ -19606,7 +19680,7 @@ const CaseApiFp = function(configuration?: Configuration) {
         },
         /**
          * 
-         * @summary Genetic Distance Protocols
+         * @summary Genetic Distance Protocols  Post Query
          * @param {EpiFilter} filter 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
@@ -19619,7 +19693,7 @@ const CaseApiFp = function(configuration?: Configuration) {
         },
         /**
          * 
-         * @summary Genetic Distance Protocols
+         * @summary Genetic Distance Protocols  Post Query  Ids
          * @param {EpiFilter} filter 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
@@ -19632,7 +19706,7 @@ const CaseApiFp = function(configuration?: Configuration) {
         },
         /**
          * 
-         * @summary Genetic Distance Protocols
+         * @summary Genetic Distance Protocols  Post Some
          * @param {Array<GeneticDistanceProtocol>} geneticDistanceProtocol 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
@@ -19645,7 +19719,7 @@ const CaseApiFp = function(configuration?: Configuration) {
         },
         /**
          * 
-         * @summary Genetic Distance Protocols
+         * @summary Genetic Distance Protocols  Put One
          * @param {string} objectId 
          * @param {GeneticDistanceProtocol} geneticDistanceProtocol 
          * @param {*} [options] Override http request option.
@@ -19659,7 +19733,7 @@ const CaseApiFp = function(configuration?: Configuration) {
         },
         /**
          * 
-         * @summary Genetic Distance Protocols
+         * @summary Genetic Distance Protocols  Put Some
          * @param {Array<GeneticDistanceProtocol>} geneticDistanceProtocol 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
@@ -19671,8 +19745,21 @@ const CaseApiFp = function(configuration?: Configuration) {
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
         /**
-         * 
-         * @summary Retrieve  Case Ids By Query
+         * Retrieve a set of allele profiles based on a set of case IDs and a genetic distance     case type column.
+         * @summary Retrieve Allele Profile
+         * @param {RetrieveAlleleProfileRequestBody} retrieveAlleleProfileRequestBody 
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        async retrieveAlleleProfile(retrieveAlleleProfileRequestBody: RetrieveAlleleProfileRequestBody, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<Array<AlleleProfile>>> {
+            const localVarAxiosArgs = await localVarAxiosParamCreator.retrieveAlleleProfile(retrieveAlleleProfileRequestBody, options);
+            const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
+            const localVarOperationServerBasePath = operationServerMap['CaseApi.retrieveAlleleProfile']?.[localVarOperationServerIndex]?.url;
+            return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
+        },
+        /**
+         * Retrieve cases based on a query.
+         * @summary Retrieve Case Ids By Query
          * @param {CaseQuery} caseQuery 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
@@ -19684,8 +19771,8 @@ const CaseApiFp = function(configuration?: Configuration) {
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
         /**
-         * 
-         * @summary Retrieve  Case Rights
+         * Retrieve access rights for a set of cases.
+         * @summary Retrieve Case Rights
          * @param {Array<string>} requestBody 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
@@ -19697,8 +19784,8 @@ const CaseApiFp = function(configuration?: Configuration) {
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
         /**
-         * 
-         * @summary Retrieve  Case Set Rights
+         * Retrieve access rights for a set of case sets.
+         * @summary Retrieve Case Set Rights
          * @param {Array<string>} requestBody 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
@@ -19710,8 +19797,8 @@ const CaseApiFp = function(configuration?: Configuration) {
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
         /**
-         * 
-         * @summary Casesetstats
+         * Retrieve statistics for a set of case sets.
+         * @summary Retrieve Case Set Statistics
          * @param {RetrieveCaseSetStatsRequestBody} retrieveCaseSetStatsRequestBody 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
@@ -19723,8 +19810,8 @@ const CaseApiFp = function(configuration?: Configuration) {
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
         /**
-         * 
-         * @summary Casetypestats
+         * Retrieve statistics for a set of case types.
+         * @summary Retrieve Case Type Statistics
          * @param {RetrieveCaseTypeStatsRequestBody} retrieveCaseTypeStatsRequestBody 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
@@ -19736,8 +19823,8 @@ const CaseApiFp = function(configuration?: Configuration) {
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
         /**
-         * 
-         * @summary Retrieve  Cases By Ids
+         * Retrieve cases by their IDs.
+         * @summary Retrieve Cases By Ids
          * @param {Array<string>} requestBody 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
@@ -19749,8 +19836,8 @@ const CaseApiFp = function(configuration?: Configuration) {
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
         /**
-         * 
-         * @summary Retrieve  Genetic Sequence
+         * Retrieve a set of genetic sequences based on a set of case IDs and a genetic     sequence case type column.
+         * @summary Retrieve Genetic Sequence By Case
          * @param {RetrieveGeneticSequenceRequestBody} retrieveGeneticSequenceRequestBody 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
@@ -19762,8 +19849,8 @@ const CaseApiFp = function(configuration?: Configuration) {
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
         /**
-         * 
-         * @summary Retrieve  Organization Contact
+         * Retrieves Contacts associated with organizations, sites, or specific contacts.      Exactly one of organization_ids, site_ids, or contact_ids must be provided.     Returns a list of contacts with their associated site and organization data     cascaded.
+         * @summary Retrieve Organization Contact
          * @param {RetrieveOrganizationContactRequestBody} retrieveOrganizationContactRequestBody 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
@@ -19775,8 +19862,8 @@ const CaseApiFp = function(configuration?: Configuration) {
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
         /**
-         * 
-         * @summary Retrieve  Phylogenetic Tree
+         * Retrieve a phylogenetic tree based on a set of case IDs, a tree algorithm, and     a genetic distance case type column.
+         * @summary Retrieve Phylogenetic Tree
          * @param {RetrievePhylogeneticTreeRequestBody} retrievePhylogeneticTreeRequestBody 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
@@ -19789,7 +19876,7 @@ const CaseApiFp = function(configuration?: Configuration) {
         },
         /**
          * 
-         * @summary Tree Algorithm Classes
+         * @summary Tree Algorithm Classes  Delete All
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
@@ -19801,7 +19888,7 @@ const CaseApiFp = function(configuration?: Configuration) {
         },
         /**
          * 
-         * @summary Tree Algorithm Classes
+         * @summary Tree Algorithm Classes  Delete One
          * @param {any} objectId 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
@@ -19814,7 +19901,7 @@ const CaseApiFp = function(configuration?: Configuration) {
         },
         /**
          * 
-         * @summary Tree Algorithm Classes
+         * @summary Tree Algorithm Classes  Delete Some
          * @param {string} ids 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
@@ -19827,7 +19914,7 @@ const CaseApiFp = function(configuration?: Configuration) {
         },
         /**
          * 
-         * @summary Tree Algorithm Classes
+         * @summary Tree Algorithm Classes  Get All
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
@@ -19839,7 +19926,7 @@ const CaseApiFp = function(configuration?: Configuration) {
         },
         /**
          * 
-         * @summary Tree Algorithm Classes
+         * @summary Tree Algorithm Classes  Get One
          * @param {string} objectId 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
@@ -19852,7 +19939,7 @@ const CaseApiFp = function(configuration?: Configuration) {
         },
         /**
          * 
-         * @summary Tree Algorithm Classes
+         * @summary Tree Algorithm Classes  Get Some
          * @param {string} ids 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
@@ -19865,7 +19952,7 @@ const CaseApiFp = function(configuration?: Configuration) {
         },
         /**
          * 
-         * @summary Tree Algorithm Classes
+         * @summary Tree Algorithm Classes  Post One
          * @param {TreeAlgorithmClass} treeAlgorithmClass 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
@@ -19878,7 +19965,7 @@ const CaseApiFp = function(configuration?: Configuration) {
         },
         /**
          * 
-         * @summary Tree Algorithm Classes
+         * @summary Tree Algorithm Classes  Post Query
          * @param {EpiFilter} filter 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
@@ -19891,7 +19978,7 @@ const CaseApiFp = function(configuration?: Configuration) {
         },
         /**
          * 
-         * @summary Tree Algorithm Classes
+         * @summary Tree Algorithm Classes  Post Query  Ids
          * @param {EpiFilter} filter 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
@@ -19904,7 +19991,7 @@ const CaseApiFp = function(configuration?: Configuration) {
         },
         /**
          * 
-         * @summary Tree Algorithm Classes
+         * @summary Tree Algorithm Classes  Post Some
          * @param {Array<TreeAlgorithmClass>} treeAlgorithmClass 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
@@ -19917,7 +20004,7 @@ const CaseApiFp = function(configuration?: Configuration) {
         },
         /**
          * 
-         * @summary Tree Algorithm Classes
+         * @summary Tree Algorithm Classes  Put One
          * @param {string} objectId 
          * @param {TreeAlgorithmClass} treeAlgorithmClass 
          * @param {*} [options] Override http request option.
@@ -19931,7 +20018,7 @@ const CaseApiFp = function(configuration?: Configuration) {
         },
         /**
          * 
-         * @summary Tree Algorithm Classes
+         * @summary Tree Algorithm Classes  Put Some
          * @param {Array<TreeAlgorithmClass>} treeAlgorithmClass 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
@@ -19943,8 +20030,8 @@ const CaseApiFp = function(configuration?: Configuration) {
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
         /**
-         * See https://en.wikipedia.org/wiki/Hierarchical_clustering,     https://en.wikipedia.org/wiki/Neighbor_joining,      https://en.wikipedia.org/wiki/Computational_phylogenetics,      https://en.wikipedia.org/wiki/Spanning_tree
-         * @summary Tree Algorithms
+         * 
+         * @summary Tree Algorithms  Delete All
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
@@ -19955,8 +20042,8 @@ const CaseApiFp = function(configuration?: Configuration) {
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
         /**
-         * See https://en.wikipedia.org/wiki/Hierarchical_clustering,     https://en.wikipedia.org/wiki/Neighbor_joining,      https://en.wikipedia.org/wiki/Computational_phylogenetics,      https://en.wikipedia.org/wiki/Spanning_tree
-         * @summary Tree Algorithms
+         * 
+         * @summary Tree Algorithms  Delete One
          * @param {any} objectId 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
@@ -19968,8 +20055,8 @@ const CaseApiFp = function(configuration?: Configuration) {
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
         /**
-         * See https://en.wikipedia.org/wiki/Hierarchical_clustering,     https://en.wikipedia.org/wiki/Neighbor_joining,      https://en.wikipedia.org/wiki/Computational_phylogenetics,      https://en.wikipedia.org/wiki/Spanning_tree
-         * @summary Tree Algorithms
+         * 
+         * @summary Tree Algorithms  Delete Some
          * @param {string} ids 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
@@ -19981,8 +20068,8 @@ const CaseApiFp = function(configuration?: Configuration) {
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
         /**
-         * See https://en.wikipedia.org/wiki/Hierarchical_clustering,     https://en.wikipedia.org/wiki/Neighbor_joining,      https://en.wikipedia.org/wiki/Computational_phylogenetics,      https://en.wikipedia.org/wiki/Spanning_tree
-         * @summary Tree Algorithms
+         * 
+         * @summary Tree Algorithms  Get All
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
@@ -19993,8 +20080,8 @@ const CaseApiFp = function(configuration?: Configuration) {
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
         /**
-         * See https://en.wikipedia.org/wiki/Hierarchical_clustering,     https://en.wikipedia.org/wiki/Neighbor_joining,      https://en.wikipedia.org/wiki/Computational_phylogenetics,      https://en.wikipedia.org/wiki/Spanning_tree
-         * @summary Tree Algorithms
+         * 
+         * @summary Tree Algorithms  Get One
          * @param {string} objectId 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
@@ -20006,8 +20093,8 @@ const CaseApiFp = function(configuration?: Configuration) {
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
         /**
-         * See https://en.wikipedia.org/wiki/Hierarchical_clustering,     https://en.wikipedia.org/wiki/Neighbor_joining,      https://en.wikipedia.org/wiki/Computational_phylogenetics,      https://en.wikipedia.org/wiki/Spanning_tree
-         * @summary Tree Algorithms
+         * 
+         * @summary Tree Algorithms  Get Some
          * @param {string} ids 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
@@ -20019,8 +20106,8 @@ const CaseApiFp = function(configuration?: Configuration) {
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
         /**
-         * See https://en.wikipedia.org/wiki/Hierarchical_clustering,     https://en.wikipedia.org/wiki/Neighbor_joining,      https://en.wikipedia.org/wiki/Computational_phylogenetics,      https://en.wikipedia.org/wiki/Spanning_tree
-         * @summary Tree Algorithms
+         * 
+         * @summary Tree Algorithms  Post One
          * @param {TreeAlgorithm} treeAlgorithm 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
@@ -20032,8 +20119,8 @@ const CaseApiFp = function(configuration?: Configuration) {
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
         /**
-         * See https://en.wikipedia.org/wiki/Hierarchical_clustering,     https://en.wikipedia.org/wiki/Neighbor_joining,      https://en.wikipedia.org/wiki/Computational_phylogenetics,      https://en.wikipedia.org/wiki/Spanning_tree
-         * @summary Tree Algorithms
+         * 
+         * @summary Tree Algorithms  Post Query
          * @param {EpiFilter} filter 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
@@ -20045,8 +20132,8 @@ const CaseApiFp = function(configuration?: Configuration) {
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
         /**
-         * See https://en.wikipedia.org/wiki/Hierarchical_clustering,     https://en.wikipedia.org/wiki/Neighbor_joining,      https://en.wikipedia.org/wiki/Computational_phylogenetics,      https://en.wikipedia.org/wiki/Spanning_tree
-         * @summary Tree Algorithms
+         * 
+         * @summary Tree Algorithms  Post Query  Ids
          * @param {EpiFilter} filter 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
@@ -20058,8 +20145,8 @@ const CaseApiFp = function(configuration?: Configuration) {
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
         /**
-         * See https://en.wikipedia.org/wiki/Hierarchical_clustering,     https://en.wikipedia.org/wiki/Neighbor_joining,      https://en.wikipedia.org/wiki/Computational_phylogenetics,      https://en.wikipedia.org/wiki/Spanning_tree
-         * @summary Tree Algorithms
+         * 
+         * @summary Tree Algorithms  Post Some
          * @param {Array<TreeAlgorithm>} treeAlgorithm 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
@@ -20071,8 +20158,8 @@ const CaseApiFp = function(configuration?: Configuration) {
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
         /**
-         * See https://en.wikipedia.org/wiki/Hierarchical_clustering,     https://en.wikipedia.org/wiki/Neighbor_joining,      https://en.wikipedia.org/wiki/Computational_phylogenetics,      https://en.wikipedia.org/wiki/Spanning_tree
-         * @summary Tree Algorithms
+         * 
+         * @summary Tree Algorithms  Put One
          * @param {string} objectId 
          * @param {TreeAlgorithm} treeAlgorithm 
          * @param {*} [options] Override http request option.
@@ -20085,8 +20172,8 @@ const CaseApiFp = function(configuration?: Configuration) {
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
         /**
-         * See https://en.wikipedia.org/wiki/Hierarchical_clustering,     https://en.wikipedia.org/wiki/Neighbor_joining,      https://en.wikipedia.org/wiki/Computational_phylogenetics,      https://en.wikipedia.org/wiki/Spanning_tree
-         * @summary Tree Algorithms
+         * 
+         * @summary Tree Algorithms  Put Some
          * @param {Array<TreeAlgorithm>} treeAlgorithm 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
@@ -20121,7 +20208,7 @@ export class CaseApi extends BaseAPI {
 
     /**
      * 
-     * @summary Case Data Collection Links
+     * @summary Case Data Collection Links  Delete All
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
      * @memberof CaseApi
@@ -20132,7 +20219,7 @@ export class CaseApi extends BaseAPI {
 
     /**
      * 
-     * @summary Case Data Collection Links
+     * @summary Case Data Collection Links  Delete One
      * @param {any} objectId 
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
@@ -20144,7 +20231,7 @@ export class CaseApi extends BaseAPI {
 
     /**
      * 
-     * @summary Case Data Collection Links
+     * @summary Case Data Collection Links  Delete Some
      * @param {string} ids 
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
@@ -20156,7 +20243,7 @@ export class CaseApi extends BaseAPI {
 
     /**
      * 
-     * @summary Case Data Collection Links
+     * @summary Case Data Collection Links  Get All
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
      * @memberof CaseApi
@@ -20167,7 +20254,7 @@ export class CaseApi extends BaseAPI {
 
     /**
      * 
-     * @summary Case Data Collection Links
+     * @summary Case Data Collection Links  Get One
      * @param {string} objectId 
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
@@ -20179,7 +20266,7 @@ export class CaseApi extends BaseAPI {
 
     /**
      * 
-     * @summary Case Data Collection Links
+     * @summary Case Data Collection Links  Get Some
      * @param {string} ids 
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
@@ -20191,7 +20278,7 @@ export class CaseApi extends BaseAPI {
 
     /**
      * 
-     * @summary Case Data Collection Links
+     * @summary Case Data Collection Links  Post One
      * @param {CaseDataCollectionLink} caseDataCollectionLink 
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
@@ -20203,7 +20290,7 @@ export class CaseApi extends BaseAPI {
 
     /**
      * 
-     * @summary Case Data Collection Links
+     * @summary Case Data Collection Links  Post Query
      * @param {EpiFilter} filter 
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
@@ -20215,7 +20302,7 @@ export class CaseApi extends BaseAPI {
 
     /**
      * 
-     * @summary Case Data Collection Links
+     * @summary Case Data Collection Links  Post Query  Ids
      * @param {EpiFilter} filter 
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
@@ -20227,7 +20314,7 @@ export class CaseApi extends BaseAPI {
 
     /**
      * 
-     * @summary Case Data Collection Links
+     * @summary Case Data Collection Links  Post Some
      * @param {Array<CaseDataCollectionLink>} caseDataCollectionLink 
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
@@ -20239,7 +20326,7 @@ export class CaseApi extends BaseAPI {
 
     /**
      * 
-     * @summary Case Data Collection Links
+     * @summary Case Data Collection Links  Put One
      * @param {string} objectId 
      * @param {CaseDataCollectionLink} caseDataCollectionLink 
      * @param {*} [options] Override http request option.
@@ -20252,7 +20339,7 @@ export class CaseApi extends BaseAPI {
 
     /**
      * 
-     * @summary Case Data Collection Links
+     * @summary Case Data Collection Links  Put Some
      * @param {Array<CaseDataCollectionLink>} caseDataCollectionLink 
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
@@ -20264,7 +20351,7 @@ export class CaseApi extends BaseAPI {
 
     /**
      * 
-     * @summary Case Set Categories
+     * @summary Case Set Categories  Delete All
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
      * @memberof CaseApi
@@ -20275,7 +20362,7 @@ export class CaseApi extends BaseAPI {
 
     /**
      * 
-     * @summary Case Set Categories
+     * @summary Case Set Categories  Delete One
      * @param {any} objectId 
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
@@ -20287,7 +20374,7 @@ export class CaseApi extends BaseAPI {
 
     /**
      * 
-     * @summary Case Set Categories
+     * @summary Case Set Categories  Delete Some
      * @param {string} ids 
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
@@ -20299,7 +20386,7 @@ export class CaseApi extends BaseAPI {
 
     /**
      * 
-     * @summary Case Set Categories
+     * @summary Case Set Categories  Get All
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
      * @memberof CaseApi
@@ -20310,7 +20397,7 @@ export class CaseApi extends BaseAPI {
 
     /**
      * 
-     * @summary Case Set Categories
+     * @summary Case Set Categories  Get One
      * @param {string} objectId 
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
@@ -20322,7 +20409,7 @@ export class CaseApi extends BaseAPI {
 
     /**
      * 
-     * @summary Case Set Categories
+     * @summary Case Set Categories  Get Some
      * @param {string} ids 
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
@@ -20334,7 +20421,7 @@ export class CaseApi extends BaseAPI {
 
     /**
      * 
-     * @summary Case Set Categories
+     * @summary Case Set Categories  Post One
      * @param {CaseSetCategory} caseSetCategory 
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
@@ -20346,7 +20433,7 @@ export class CaseApi extends BaseAPI {
 
     /**
      * 
-     * @summary Case Set Categories
+     * @summary Case Set Categories  Post Query
      * @param {EpiFilter} filter 
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
@@ -20358,7 +20445,7 @@ export class CaseApi extends BaseAPI {
 
     /**
      * 
-     * @summary Case Set Categories
+     * @summary Case Set Categories  Post Query  Ids
      * @param {EpiFilter} filter 
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
@@ -20370,7 +20457,7 @@ export class CaseApi extends BaseAPI {
 
     /**
      * 
-     * @summary Case Set Categories
+     * @summary Case Set Categories  Post Some
      * @param {Array<CaseSetCategory>} caseSetCategory 
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
@@ -20382,7 +20469,7 @@ export class CaseApi extends BaseAPI {
 
     /**
      * 
-     * @summary Case Set Categories
+     * @summary Case Set Categories  Put One
      * @param {string} objectId 
      * @param {CaseSetCategory} caseSetCategory 
      * @param {*} [options] Override http request option.
@@ -20395,7 +20482,7 @@ export class CaseApi extends BaseAPI {
 
     /**
      * 
-     * @summary Case Set Categories
+     * @summary Case Set Categories  Put Some
      * @param {Array<CaseSetCategory>} caseSetCategory 
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
@@ -20407,7 +20494,7 @@ export class CaseApi extends BaseAPI {
 
     /**
      * 
-     * @summary Case Set Data Collection Links
+     * @summary Case Set Data Collection Links  Delete All
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
      * @memberof CaseApi
@@ -20418,7 +20505,7 @@ export class CaseApi extends BaseAPI {
 
     /**
      * 
-     * @summary Case Set Data Collection Links
+     * @summary Case Set Data Collection Links  Delete One
      * @param {any} objectId 
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
@@ -20430,7 +20517,7 @@ export class CaseApi extends BaseAPI {
 
     /**
      * 
-     * @summary Case Set Data Collection Links
+     * @summary Case Set Data Collection Links  Delete Some
      * @param {string} ids 
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
@@ -20442,7 +20529,7 @@ export class CaseApi extends BaseAPI {
 
     /**
      * 
-     * @summary Case Set Data Collection Links
+     * @summary Case Set Data Collection Links  Get All
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
      * @memberof CaseApi
@@ -20453,7 +20540,7 @@ export class CaseApi extends BaseAPI {
 
     /**
      * 
-     * @summary Case Set Data Collection Links
+     * @summary Case Set Data Collection Links  Get One
      * @param {string} objectId 
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
@@ -20465,7 +20552,7 @@ export class CaseApi extends BaseAPI {
 
     /**
      * 
-     * @summary Case Set Data Collection Links
+     * @summary Case Set Data Collection Links  Get Some
      * @param {string} ids 
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
@@ -20477,7 +20564,7 @@ export class CaseApi extends BaseAPI {
 
     /**
      * 
-     * @summary Case Set Data Collection Links
+     * @summary Case Set Data Collection Links  Post One
      * @param {CaseSetDataCollectionLink} caseSetDataCollectionLink 
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
@@ -20489,7 +20576,7 @@ export class CaseApi extends BaseAPI {
 
     /**
      * 
-     * @summary Case Set Data Collection Links
+     * @summary Case Set Data Collection Links  Post Query
      * @param {EpiFilter} filter 
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
@@ -20501,7 +20588,7 @@ export class CaseApi extends BaseAPI {
 
     /**
      * 
-     * @summary Case Set Data Collection Links
+     * @summary Case Set Data Collection Links  Post Query  Ids
      * @param {EpiFilter} filter 
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
@@ -20513,7 +20600,7 @@ export class CaseApi extends BaseAPI {
 
     /**
      * 
-     * @summary Case Set Data Collection Links
+     * @summary Case Set Data Collection Links  Post Some
      * @param {Array<CaseSetDataCollectionLink>} caseSetDataCollectionLink 
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
@@ -20525,7 +20612,7 @@ export class CaseApi extends BaseAPI {
 
     /**
      * 
-     * @summary Case Set Data Collection Links
+     * @summary Case Set Data Collection Links  Put One
      * @param {string} objectId 
      * @param {CaseSetDataCollectionLink} caseSetDataCollectionLink 
      * @param {*} [options] Override http request option.
@@ -20538,7 +20625,7 @@ export class CaseApi extends BaseAPI {
 
     /**
      * 
-     * @summary Case Set Data Collection Links
+     * @summary Case Set Data Collection Links  Put Some
      * @param {Array<CaseSetDataCollectionLink>} caseSetDataCollectionLink 
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
@@ -20550,7 +20637,7 @@ export class CaseApi extends BaseAPI {
 
     /**
      * 
-     * @summary Case Set Members
+     * @summary Case Set Members  Delete All
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
      * @memberof CaseApi
@@ -20561,7 +20648,7 @@ export class CaseApi extends BaseAPI {
 
     /**
      * 
-     * @summary Case Set Members
+     * @summary Case Set Members  Delete One
      * @param {any} objectId 
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
@@ -20573,7 +20660,7 @@ export class CaseApi extends BaseAPI {
 
     /**
      * 
-     * @summary Case Set Members
+     * @summary Case Set Members  Delete Some
      * @param {string} ids 
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
@@ -20585,7 +20672,7 @@ export class CaseApi extends BaseAPI {
 
     /**
      * 
-     * @summary Case Set Members
+     * @summary Case Set Members  Get All
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
      * @memberof CaseApi
@@ -20596,7 +20683,7 @@ export class CaseApi extends BaseAPI {
 
     /**
      * 
-     * @summary Case Set Members
+     * @summary Case Set Members  Get One
      * @param {string} objectId 
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
@@ -20608,7 +20695,7 @@ export class CaseApi extends BaseAPI {
 
     /**
      * 
-     * @summary Case Set Members
+     * @summary Case Set Members  Get Some
      * @param {string} ids 
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
@@ -20620,7 +20707,7 @@ export class CaseApi extends BaseAPI {
 
     /**
      * 
-     * @summary Case Set Members
+     * @summary Case Set Members  Post One
      * @param {CaseSetMember} caseSetMember 
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
@@ -20632,7 +20719,7 @@ export class CaseApi extends BaseAPI {
 
     /**
      * 
-     * @summary Case Set Members
+     * @summary Case Set Members  Post Query
      * @param {EpiFilter} filter 
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
@@ -20644,7 +20731,7 @@ export class CaseApi extends BaseAPI {
 
     /**
      * 
-     * @summary Case Set Members
+     * @summary Case Set Members  Post Query  Ids
      * @param {EpiFilter} filter 
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
@@ -20656,7 +20743,7 @@ export class CaseApi extends BaseAPI {
 
     /**
      * 
-     * @summary Case Set Members
+     * @summary Case Set Members  Post Some
      * @param {Array<CaseSetMember>} caseSetMember 
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
@@ -20668,7 +20755,7 @@ export class CaseApi extends BaseAPI {
 
     /**
      * 
-     * @summary Case Set Members
+     * @summary Case Set Members  Put One
      * @param {string} objectId 
      * @param {CaseSetMember} caseSetMember 
      * @param {*} [options] Override http request option.
@@ -20681,7 +20768,7 @@ export class CaseApi extends BaseAPI {
 
     /**
      * 
-     * @summary Case Set Members
+     * @summary Case Set Members  Put Some
      * @param {Array<CaseSetMember>} caseSetMember 
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
@@ -20693,7 +20780,7 @@ export class CaseApi extends BaseAPI {
 
     /**
      * 
-     * @summary Case Set Statuses
+     * @summary Case Set Statuses  Delete All
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
      * @memberof CaseApi
@@ -20704,7 +20791,7 @@ export class CaseApi extends BaseAPI {
 
     /**
      * 
-     * @summary Case Set Statuses
+     * @summary Case Set Statuses  Delete One
      * @param {any} objectId 
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
@@ -20716,7 +20803,7 @@ export class CaseApi extends BaseAPI {
 
     /**
      * 
-     * @summary Case Set Statuses
+     * @summary Case Set Statuses  Delete Some
      * @param {string} ids 
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
@@ -20728,7 +20815,7 @@ export class CaseApi extends BaseAPI {
 
     /**
      * 
-     * @summary Case Set Statuses
+     * @summary Case Set Statuses  Get All
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
      * @memberof CaseApi
@@ -20739,7 +20826,7 @@ export class CaseApi extends BaseAPI {
 
     /**
      * 
-     * @summary Case Set Statuses
+     * @summary Case Set Statuses  Get One
      * @param {string} objectId 
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
@@ -20751,7 +20838,7 @@ export class CaseApi extends BaseAPI {
 
     /**
      * 
-     * @summary Case Set Statuses
+     * @summary Case Set Statuses  Get Some
      * @param {string} ids 
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
@@ -20763,7 +20850,7 @@ export class CaseApi extends BaseAPI {
 
     /**
      * 
-     * @summary Case Set Statuses
+     * @summary Case Set Statuses  Post One
      * @param {CaseSetStatus} caseSetStatus 
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
@@ -20775,7 +20862,7 @@ export class CaseApi extends BaseAPI {
 
     /**
      * 
-     * @summary Case Set Statuses
+     * @summary Case Set Statuses  Post Query
      * @param {EpiFilter} filter 
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
@@ -20787,7 +20874,7 @@ export class CaseApi extends BaseAPI {
 
     /**
      * 
-     * @summary Case Set Statuses
+     * @summary Case Set Statuses  Post Query  Ids
      * @param {EpiFilter} filter 
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
@@ -20799,7 +20886,7 @@ export class CaseApi extends BaseAPI {
 
     /**
      * 
-     * @summary Case Set Statuses
+     * @summary Case Set Statuses  Post Some
      * @param {Array<CaseSetStatus>} caseSetStatus 
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
@@ -20811,7 +20898,7 @@ export class CaseApi extends BaseAPI {
 
     /**
      * 
-     * @summary Case Set Statuses
+     * @summary Case Set Statuses  Put One
      * @param {string} objectId 
      * @param {CaseSetStatus} caseSetStatus 
      * @param {*} [options] Override http request option.
@@ -20824,7 +20911,7 @@ export class CaseApi extends BaseAPI {
 
     /**
      * 
-     * @summary Case Set Statuses
+     * @summary Case Set Statuses  Put Some
      * @param {Array<CaseSetStatus>} caseSetStatus 
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
@@ -20836,7 +20923,7 @@ export class CaseApi extends BaseAPI {
 
     /**
      * 
-     * @summary Case Sets
+     * @summary Case Sets  Delete All
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
      * @memberof CaseApi
@@ -20847,7 +20934,7 @@ export class CaseApi extends BaseAPI {
 
     /**
      * 
-     * @summary Case Sets
+     * @summary Case Sets  Delete One
      * @param {any} objectId 
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
@@ -20859,7 +20946,7 @@ export class CaseApi extends BaseAPI {
 
     /**
      * 
-     * @summary Case Sets
+     * @summary Case Sets  Delete Some
      * @param {string} ids 
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
@@ -20871,7 +20958,7 @@ export class CaseApi extends BaseAPI {
 
     /**
      * 
-     * @summary Case Sets
+     * @summary Case Sets  Get All
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
      * @memberof CaseApi
@@ -20882,7 +20969,7 @@ export class CaseApi extends BaseAPI {
 
     /**
      * 
-     * @summary Case Sets
+     * @summary Case Sets  Get One
      * @param {string} objectId 
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
@@ -20894,7 +20981,7 @@ export class CaseApi extends BaseAPI {
 
     /**
      * 
-     * @summary Case Sets
+     * @summary Case Sets  Get Some
      * @param {string} ids 
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
@@ -20906,7 +20993,7 @@ export class CaseApi extends BaseAPI {
 
     /**
      * 
-     * @summary Case Sets
+     * @summary Case Sets  Post One
      * @param {CaseSet} caseSet 
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
@@ -20918,7 +21005,7 @@ export class CaseApi extends BaseAPI {
 
     /**
      * 
-     * @summary Case Sets
+     * @summary Case Sets  Post Query
      * @param {EpiFilter} filter 
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
@@ -20930,7 +21017,7 @@ export class CaseApi extends BaseAPI {
 
     /**
      * 
-     * @summary Case Sets
+     * @summary Case Sets  Post Query  Ids
      * @param {EpiFilter} filter 
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
@@ -20942,7 +21029,7 @@ export class CaseApi extends BaseAPI {
 
     /**
      * 
-     * @summary Case Sets
+     * @summary Case Sets  Post Some
      * @param {Array<CaseSet>} caseSet 
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
@@ -20954,7 +21041,7 @@ export class CaseApi extends BaseAPI {
 
     /**
      * 
-     * @summary Case Sets
+     * @summary Case Sets  Put One
      * @param {string} objectId 
      * @param {CaseSet} caseSet 
      * @param {*} [options] Override http request option.
@@ -20967,7 +21054,7 @@ export class CaseApi extends BaseAPI {
 
     /**
      * 
-     * @summary Case Sets
+     * @summary Case Sets  Put Some
      * @param {Array<CaseSet>} caseSet 
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
@@ -20979,7 +21066,7 @@ export class CaseApi extends BaseAPI {
 
     /**
      * 
-     * @summary Case Type Col Set Members
+     * @summary Case Type Col Set Members  Delete All
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
      * @memberof CaseApi
@@ -20990,7 +21077,7 @@ export class CaseApi extends BaseAPI {
 
     /**
      * 
-     * @summary Case Type Col Set Members
+     * @summary Case Type Col Set Members  Delete One
      * @param {any} objectId 
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
@@ -21002,7 +21089,7 @@ export class CaseApi extends BaseAPI {
 
     /**
      * 
-     * @summary Case Type Col Set Members
+     * @summary Case Type Col Set Members  Delete Some
      * @param {string} ids 
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
@@ -21014,7 +21101,7 @@ export class CaseApi extends BaseAPI {
 
     /**
      * 
-     * @summary Case Type Col Set Members
+     * @summary Case Type Col Set Members  Get All
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
      * @memberof CaseApi
@@ -21025,7 +21112,7 @@ export class CaseApi extends BaseAPI {
 
     /**
      * 
-     * @summary Case Type Col Set Members
+     * @summary Case Type Col Set Members  Get One
      * @param {string} objectId 
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
@@ -21037,7 +21124,7 @@ export class CaseApi extends BaseAPI {
 
     /**
      * 
-     * @summary Case Type Col Set Members
+     * @summary Case Type Col Set Members  Get Some
      * @param {string} ids 
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
@@ -21049,7 +21136,7 @@ export class CaseApi extends BaseAPI {
 
     /**
      * 
-     * @summary Case Type Col Set Members
+     * @summary Case Type Col Set Members  Post One
      * @param {CaseTypeColSetMember} caseTypeColSetMember 
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
@@ -21061,7 +21148,7 @@ export class CaseApi extends BaseAPI {
 
     /**
      * 
-     * @summary Case Type Col Set Members
+     * @summary Case Type Col Set Members  Post Query
      * @param {EpiFilter} filter 
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
@@ -21073,7 +21160,7 @@ export class CaseApi extends BaseAPI {
 
     /**
      * 
-     * @summary Case Type Col Set Members
+     * @summary Case Type Col Set Members  Post Query  Ids
      * @param {EpiFilter} filter 
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
@@ -21085,7 +21172,7 @@ export class CaseApi extends BaseAPI {
 
     /**
      * 
-     * @summary Case Type Col Set Members
+     * @summary Case Type Col Set Members  Post Some
      * @param {Array<CaseTypeColSetMember>} caseTypeColSetMember 
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
@@ -21097,7 +21184,7 @@ export class CaseApi extends BaseAPI {
 
     /**
      * 
-     * @summary Case Type Col Set Members
+     * @summary Case Type Col Set Members  Put One
      * @param {string} objectId 
      * @param {CaseTypeColSetMember} caseTypeColSetMember 
      * @param {*} [options] Override http request option.
@@ -21110,7 +21197,7 @@ export class CaseApi extends BaseAPI {
 
     /**
      * 
-     * @summary Case Type Col Set Members
+     * @summary Case Type Col Set Members  Put Some
      * @param {Array<CaseTypeColSetMember>} caseTypeColSetMember 
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
@@ -21122,7 +21209,7 @@ export class CaseApi extends BaseAPI {
 
     /**
      * 
-     * @summary Case Type Col Sets
+     * @summary Case Type Col Sets  Delete All
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
      * @memberof CaseApi
@@ -21133,7 +21220,7 @@ export class CaseApi extends BaseAPI {
 
     /**
      * 
-     * @summary Case Type Col Sets
+     * @summary Case Type Col Sets  Delete One
      * @param {any} objectId 
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
@@ -21145,7 +21232,7 @@ export class CaseApi extends BaseAPI {
 
     /**
      * 
-     * @summary Case Type Col Sets
+     * @summary Case Type Col Sets  Delete Some
      * @param {string} ids 
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
@@ -21157,7 +21244,7 @@ export class CaseApi extends BaseAPI {
 
     /**
      * 
-     * @summary Case Type Col Sets
+     * @summary Case Type Col Sets  Get All
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
      * @memberof CaseApi
@@ -21168,7 +21255,7 @@ export class CaseApi extends BaseAPI {
 
     /**
      * 
-     * @summary Case Type Col Sets
+     * @summary Case Type Col Sets  Get One
      * @param {string} objectId 
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
@@ -21180,7 +21267,7 @@ export class CaseApi extends BaseAPI {
 
     /**
      * 
-     * @summary Case Type Col Sets
+     * @summary Case Type Col Sets  Get Some
      * @param {string} ids 
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
@@ -21192,7 +21279,7 @@ export class CaseApi extends BaseAPI {
 
     /**
      * 
-     * @summary Case Type Col Sets
+     * @summary Case Type Col Sets  Post One
      * @param {CaseTypeColSet} caseTypeColSet 
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
@@ -21204,7 +21291,7 @@ export class CaseApi extends BaseAPI {
 
     /**
      * 
-     * @summary Case Type Col Sets
+     * @summary Case Type Col Sets  Post Query
      * @param {EpiFilter} filter 
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
@@ -21216,7 +21303,7 @@ export class CaseApi extends BaseAPI {
 
     /**
      * 
-     * @summary Case Type Col Sets
+     * @summary Case Type Col Sets  Post Query  Ids
      * @param {EpiFilter} filter 
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
@@ -21228,7 +21315,7 @@ export class CaseApi extends BaseAPI {
 
     /**
      * 
-     * @summary Case Type Col Sets
+     * @summary Case Type Col Sets  Post Some
      * @param {Array<CaseTypeColSet>} caseTypeColSet 
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
@@ -21240,7 +21327,7 @@ export class CaseApi extends BaseAPI {
 
     /**
      * 
-     * @summary Casetypecolset Casetypecol
+     * @summary Update Association Between Casetypecolset And Casetypecol
      * @param {string} caseTypeColSetId 
      * @param {UpdateCaseTypeColSetCaseTypeColsRequestBody} updateCaseTypeColSetCaseTypeColsRequestBody 
      * @param {*} [options] Override http request option.
@@ -21253,7 +21340,7 @@ export class CaseApi extends BaseAPI {
 
     /**
      * 
-     * @summary Case Type Col Sets
+     * @summary Case Type Col Sets  Put One
      * @param {string} objectId 
      * @param {CaseTypeColSet} caseTypeColSet 
      * @param {*} [options] Override http request option.
@@ -21266,7 +21353,7 @@ export class CaseApi extends BaseAPI {
 
     /**
      * 
-     * @summary Case Type Col Sets
+     * @summary Case Type Col Sets  Put Some
      * @param {Array<CaseTypeColSet>} caseTypeColSet 
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
@@ -21278,7 +21365,7 @@ export class CaseApi extends BaseAPI {
 
     /**
      * 
-     * @summary Case Type Cols
+     * @summary Case Type Cols  Delete All
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
      * @memberof CaseApi
@@ -21289,7 +21376,7 @@ export class CaseApi extends BaseAPI {
 
     /**
      * 
-     * @summary Case Type Cols
+     * @summary Case Type Cols  Delete One
      * @param {any} objectId 
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
@@ -21301,7 +21388,7 @@ export class CaseApi extends BaseAPI {
 
     /**
      * 
-     * @summary Case Type Cols
+     * @summary Case Type Cols  Delete Some
      * @param {string} ids 
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
@@ -21313,7 +21400,7 @@ export class CaseApi extends BaseAPI {
 
     /**
      * 
-     * @summary Case Type Cols
+     * @summary Case Type Cols  Get All
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
      * @memberof CaseApi
@@ -21324,7 +21411,7 @@ export class CaseApi extends BaseAPI {
 
     /**
      * 
-     * @summary Case Type Cols
+     * @summary Case Type Cols  Get One
      * @param {string} objectId 
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
@@ -21336,7 +21423,7 @@ export class CaseApi extends BaseAPI {
 
     /**
      * 
-     * @summary Case Type Cols
+     * @summary Case Type Cols  Get Some
      * @param {string} ids 
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
@@ -21348,7 +21435,7 @@ export class CaseApi extends BaseAPI {
 
     /**
      * 
-     * @summary Case Type Cols
+     * @summary Case Type Cols  Post One
      * @param {CaseTypeCol} caseTypeCol 
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
@@ -21360,7 +21447,7 @@ export class CaseApi extends BaseAPI {
 
     /**
      * 
-     * @summary Case Type Cols
+     * @summary Case Type Cols  Post Query
      * @param {EpiFilter} filter 
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
@@ -21372,7 +21459,7 @@ export class CaseApi extends BaseAPI {
 
     /**
      * 
-     * @summary Case Type Cols
+     * @summary Case Type Cols  Post Query  Ids
      * @param {EpiFilter} filter 
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
@@ -21384,7 +21471,7 @@ export class CaseApi extends BaseAPI {
 
     /**
      * 
-     * @summary Case Type Cols
+     * @summary Case Type Cols  Post Some
      * @param {Array<CaseTypeCol>} caseTypeCol 
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
@@ -21396,7 +21483,7 @@ export class CaseApi extends BaseAPI {
 
     /**
      * 
-     * @summary Case Type Cols
+     * @summary Case Type Cols  Put One
      * @param {string} objectId 
      * @param {CaseTypeCol} caseTypeCol 
      * @param {*} [options] Override http request option.
@@ -21409,7 +21496,7 @@ export class CaseApi extends BaseAPI {
 
     /**
      * 
-     * @summary Case Type Cols
+     * @summary Case Type Cols  Put Some
      * @param {Array<CaseTypeCol>} caseTypeCol 
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
@@ -21421,7 +21508,7 @@ export class CaseApi extends BaseAPI {
 
     /**
      * 
-     * @summary Case Type Set Categories
+     * @summary Case Type Set Categories  Delete All
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
      * @memberof CaseApi
@@ -21432,7 +21519,7 @@ export class CaseApi extends BaseAPI {
 
     /**
      * 
-     * @summary Case Type Set Categories
+     * @summary Case Type Set Categories  Delete One
      * @param {any} objectId 
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
@@ -21444,7 +21531,7 @@ export class CaseApi extends BaseAPI {
 
     /**
      * 
-     * @summary Case Type Set Categories
+     * @summary Case Type Set Categories  Delete Some
      * @param {string} ids 
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
@@ -21456,7 +21543,7 @@ export class CaseApi extends BaseAPI {
 
     /**
      * 
-     * @summary Case Type Set Categories
+     * @summary Case Type Set Categories  Get All
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
      * @memberof CaseApi
@@ -21467,7 +21554,7 @@ export class CaseApi extends BaseAPI {
 
     /**
      * 
-     * @summary Case Type Set Categories
+     * @summary Case Type Set Categories  Get One
      * @param {string} objectId 
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
@@ -21479,7 +21566,7 @@ export class CaseApi extends BaseAPI {
 
     /**
      * 
-     * @summary Case Type Set Categories
+     * @summary Case Type Set Categories  Get Some
      * @param {string} ids 
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
@@ -21491,7 +21578,7 @@ export class CaseApi extends BaseAPI {
 
     /**
      * 
-     * @summary Case Type Set Categories
+     * @summary Case Type Set Categories  Post One
      * @param {CaseTypeSetCategory} caseTypeSetCategory 
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
@@ -21503,7 +21590,7 @@ export class CaseApi extends BaseAPI {
 
     /**
      * 
-     * @summary Case Type Set Categories
+     * @summary Case Type Set Categories  Post Query
      * @param {EpiFilter} filter 
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
@@ -21515,7 +21602,7 @@ export class CaseApi extends BaseAPI {
 
     /**
      * 
-     * @summary Case Type Set Categories
+     * @summary Case Type Set Categories  Post Query  Ids
      * @param {EpiFilter} filter 
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
@@ -21527,7 +21614,7 @@ export class CaseApi extends BaseAPI {
 
     /**
      * 
-     * @summary Case Type Set Categories
+     * @summary Case Type Set Categories  Post Some
      * @param {Array<CaseTypeSetCategory>} caseTypeSetCategory 
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
@@ -21539,7 +21626,7 @@ export class CaseApi extends BaseAPI {
 
     /**
      * 
-     * @summary Case Type Set Categories
+     * @summary Case Type Set Categories  Put One
      * @param {string} objectId 
      * @param {CaseTypeSetCategory} caseTypeSetCategory 
      * @param {*} [options] Override http request option.
@@ -21552,7 +21639,7 @@ export class CaseApi extends BaseAPI {
 
     /**
      * 
-     * @summary Case Type Set Categories
+     * @summary Case Type Set Categories  Put Some
      * @param {Array<CaseTypeSetCategory>} caseTypeSetCategory 
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
@@ -21564,7 +21651,7 @@ export class CaseApi extends BaseAPI {
 
     /**
      * 
-     * @summary Case Type Set Members
+     * @summary Case Type Set Members  Delete All
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
      * @memberof CaseApi
@@ -21575,7 +21662,7 @@ export class CaseApi extends BaseAPI {
 
     /**
      * 
-     * @summary Case Type Set Members
+     * @summary Case Type Set Members  Delete One
      * @param {any} objectId 
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
@@ -21587,7 +21674,7 @@ export class CaseApi extends BaseAPI {
 
     /**
      * 
-     * @summary Case Type Set Members
+     * @summary Case Type Set Members  Delete Some
      * @param {string} ids 
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
@@ -21599,7 +21686,7 @@ export class CaseApi extends BaseAPI {
 
     /**
      * 
-     * @summary Case Type Set Members
+     * @summary Case Type Set Members  Get All
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
      * @memberof CaseApi
@@ -21610,7 +21697,7 @@ export class CaseApi extends BaseAPI {
 
     /**
      * 
-     * @summary Case Type Set Members
+     * @summary Case Type Set Members  Get One
      * @param {string} objectId 
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
@@ -21622,7 +21709,7 @@ export class CaseApi extends BaseAPI {
 
     /**
      * 
-     * @summary Case Type Set Members
+     * @summary Case Type Set Members  Get Some
      * @param {string} ids 
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
@@ -21634,7 +21721,7 @@ export class CaseApi extends BaseAPI {
 
     /**
      * 
-     * @summary Case Type Set Members
+     * @summary Case Type Set Members  Post One
      * @param {CaseTypeSetMember} caseTypeSetMember 
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
@@ -21646,7 +21733,7 @@ export class CaseApi extends BaseAPI {
 
     /**
      * 
-     * @summary Case Type Set Members
+     * @summary Case Type Set Members  Post Query
      * @param {EpiFilter} filter 
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
@@ -21658,7 +21745,7 @@ export class CaseApi extends BaseAPI {
 
     /**
      * 
-     * @summary Case Type Set Members
+     * @summary Case Type Set Members  Post Query  Ids
      * @param {EpiFilter} filter 
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
@@ -21670,7 +21757,7 @@ export class CaseApi extends BaseAPI {
 
     /**
      * 
-     * @summary Case Type Set Members
+     * @summary Case Type Set Members  Post Some
      * @param {Array<CaseTypeSetMember>} caseTypeSetMember 
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
@@ -21682,7 +21769,7 @@ export class CaseApi extends BaseAPI {
 
     /**
      * 
-     * @summary Case Type Set Members
+     * @summary Case Type Set Members  Put One
      * @param {string} objectId 
      * @param {CaseTypeSetMember} caseTypeSetMember 
      * @param {*} [options] Override http request option.
@@ -21695,7 +21782,7 @@ export class CaseApi extends BaseAPI {
 
     /**
      * 
-     * @summary Case Type Set Members
+     * @summary Case Type Set Members  Put Some
      * @param {Array<CaseTypeSetMember>} caseTypeSetMember 
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
@@ -21707,7 +21794,7 @@ export class CaseApi extends BaseAPI {
 
     /**
      * 
-     * @summary Case Type Sets
+     * @summary Case Type Sets  Delete All
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
      * @memberof CaseApi
@@ -21718,7 +21805,7 @@ export class CaseApi extends BaseAPI {
 
     /**
      * 
-     * @summary Case Type Sets
+     * @summary Case Type Sets  Delete One
      * @param {any} objectId 
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
@@ -21730,7 +21817,7 @@ export class CaseApi extends BaseAPI {
 
     /**
      * 
-     * @summary Case Type Sets
+     * @summary Case Type Sets  Delete Some
      * @param {string} ids 
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
@@ -21742,7 +21829,7 @@ export class CaseApi extends BaseAPI {
 
     /**
      * 
-     * @summary Case Type Sets
+     * @summary Case Type Sets  Get All
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
      * @memberof CaseApi
@@ -21753,7 +21840,7 @@ export class CaseApi extends BaseAPI {
 
     /**
      * 
-     * @summary Case Type Sets
+     * @summary Case Type Sets  Get One
      * @param {string} objectId 
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
@@ -21765,7 +21852,7 @@ export class CaseApi extends BaseAPI {
 
     /**
      * 
-     * @summary Case Type Sets
+     * @summary Case Type Sets  Get Some
      * @param {string} ids 
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
@@ -21777,7 +21864,7 @@ export class CaseApi extends BaseAPI {
 
     /**
      * 
-     * @summary Case Type Sets
+     * @summary Case Type Sets  Post One
      * @param {CaseTypeSet} caseTypeSet 
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
@@ -21789,7 +21876,7 @@ export class CaseApi extends BaseAPI {
 
     /**
      * 
-     * @summary Case Type Sets
+     * @summary Case Type Sets  Post Query
      * @param {EpiFilter} filter 
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
@@ -21801,7 +21888,7 @@ export class CaseApi extends BaseAPI {
 
     /**
      * 
-     * @summary Case Type Sets
+     * @summary Case Type Sets  Post Query  Ids
      * @param {EpiFilter} filter 
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
@@ -21813,7 +21900,7 @@ export class CaseApi extends BaseAPI {
 
     /**
      * 
-     * @summary Case Type Sets
+     * @summary Case Type Sets  Post Some
      * @param {Array<CaseTypeSet>} caseTypeSet 
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
@@ -21825,7 +21912,7 @@ export class CaseApi extends BaseAPI {
 
     /**
      * 
-     * @summary Casetypeset Casetype
+     * @summary Update Association Between Casetypeset And Casetype
      * @param {string} caseTypeSetId 
      * @param {UpdateCaseTypeSetCaseTypesRequestBody} updateCaseTypeSetCaseTypesRequestBody 
      * @param {*} [options] Override http request option.
@@ -21838,7 +21925,7 @@ export class CaseApi extends BaseAPI {
 
     /**
      * 
-     * @summary Case Type Sets
+     * @summary Case Type Sets  Put One
      * @param {string} objectId 
      * @param {CaseTypeSet} caseTypeSet 
      * @param {*} [options] Override http request option.
@@ -21851,7 +21938,7 @@ export class CaseApi extends BaseAPI {
 
     /**
      * 
-     * @summary Case Type Sets
+     * @summary Case Type Sets  Put Some
      * @param {Array<CaseTypeSet>} caseTypeSet 
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
@@ -21863,7 +21950,7 @@ export class CaseApi extends BaseAPI {
 
     /**
      * 
-     * @summary Case Types
+     * @summary Case Types  Delete All
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
      * @memberof CaseApi
@@ -21874,7 +21961,7 @@ export class CaseApi extends BaseAPI {
 
     /**
      * 
-     * @summary Case Types
+     * @summary Case Types  Delete One
      * @param {any} objectId 
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
@@ -21886,7 +21973,7 @@ export class CaseApi extends BaseAPI {
 
     /**
      * 
-     * @summary Case Types
+     * @summary Case Types  Delete Some
      * @param {string} ids 
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
@@ -21898,7 +21985,7 @@ export class CaseApi extends BaseAPI {
 
     /**
      * 
-     * @summary Case Types
+     * @summary Case Types  Get All
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
      * @memberof CaseApi
@@ -21909,7 +21996,7 @@ export class CaseApi extends BaseAPI {
 
     /**
      * 
-     * @summary Case Types
+     * @summary Case Types  Get One
      * @param {string} objectId 
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
@@ -21921,7 +22008,7 @@ export class CaseApi extends BaseAPI {
 
     /**
      * 
-     * @summary Case Types
+     * @summary Case Types  Get Some
      * @param {string} ids 
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
@@ -21933,7 +22020,7 @@ export class CaseApi extends BaseAPI {
 
     /**
      * 
-     * @summary Case Types
+     * @summary Case Types  Post One
      * @param {CaseType} caseType 
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
@@ -21945,7 +22032,7 @@ export class CaseApi extends BaseAPI {
 
     /**
      * 
-     * @summary Case Types
+     * @summary Case Types  Post Query
      * @param {EpiFilter} filter 
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
@@ -21957,7 +22044,7 @@ export class CaseApi extends BaseAPI {
 
     /**
      * 
-     * @summary Case Types
+     * @summary Case Types  Post Query  Ids
      * @param {EpiFilter} filter 
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
@@ -21969,7 +22056,7 @@ export class CaseApi extends BaseAPI {
 
     /**
      * 
-     * @summary Case Types
+     * @summary Case Types  Post Some
      * @param {Array<CaseType>} caseType 
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
@@ -21981,7 +22068,7 @@ export class CaseApi extends BaseAPI {
 
     /**
      * 
-     * @summary Case Types
+     * @summary Case Types  Put One
      * @param {string} objectId 
      * @param {CaseType} caseType 
      * @param {*} [options] Override http request option.
@@ -21994,7 +22081,7 @@ export class CaseApi extends BaseAPI {
 
     /**
      * 
-     * @summary Case Types
+     * @summary Case Types  Put Some
      * @param {Array<CaseType>} caseType 
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
@@ -22005,8 +22092,8 @@ export class CaseApi extends BaseAPI {
     }
 
     /**
-     * A class representing a case.
-     * @summary Cases
+     * 
+     * @summary Cases  Delete All
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
      * @memberof CaseApi
@@ -22016,8 +22103,8 @@ export class CaseApi extends BaseAPI {
     }
 
     /**
-     * A class representing a case.
-     * @summary Cases
+     * 
+     * @summary Cases  Delete One
      * @param {any} objectId 
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
@@ -22028,8 +22115,8 @@ export class CaseApi extends BaseAPI {
     }
 
     /**
-     * A class representing a case.
-     * @summary Cases
+     * 
+     * @summary Cases  Delete Some
      * @param {string} ids 
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
@@ -22040,8 +22127,8 @@ export class CaseApi extends BaseAPI {
     }
 
     /**
-     * A class representing a case.
-     * @summary Cases
+     * 
+     * @summary Cases  Get All
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
      * @memberof CaseApi
@@ -22051,8 +22138,8 @@ export class CaseApi extends BaseAPI {
     }
 
     /**
-     * A class representing a case.
-     * @summary Cases
+     * 
+     * @summary Cases  Get One
      * @param {string} objectId 
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
@@ -22063,8 +22150,8 @@ export class CaseApi extends BaseAPI {
     }
 
     /**
-     * A class representing a case.
-     * @summary Cases
+     * 
+     * @summary Cases  Get Some
      * @param {string} ids 
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
@@ -22075,8 +22162,8 @@ export class CaseApi extends BaseAPI {
     }
 
     /**
-     * A class representing a case.
-     * @summary Cases
+     * 
+     * @summary Cases  Post One
      * @param {Case} _case 
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
@@ -22087,8 +22174,8 @@ export class CaseApi extends BaseAPI {
     }
 
     /**
-     * A class representing a case.
-     * @summary Cases
+     * 
+     * @summary Cases  Post Query
      * @param {EpiFilter} filter 
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
@@ -22099,8 +22186,8 @@ export class CaseApi extends BaseAPI {
     }
 
     /**
-     * A class representing a case.
-     * @summary Cases
+     * 
+     * @summary Cases  Post Query  Ids
      * @param {EpiFilter} filter 
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
@@ -22111,8 +22198,8 @@ export class CaseApi extends BaseAPI {
     }
 
     /**
-     * A class representing a case.
-     * @summary Cases
+     * 
+     * @summary Cases  Post Some
      * @param {Array<Case>} _case 
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
@@ -22123,8 +22210,8 @@ export class CaseApi extends BaseAPI {
     }
 
     /**
-     * A class representing a case.
-     * @summary Cases
+     * 
+     * @summary Cases  Put One
      * @param {string} objectId 
      * @param {Case} _case 
      * @param {*} [options] Override http request option.
@@ -22136,8 +22223,8 @@ export class CaseApi extends BaseAPI {
     }
 
     /**
-     * A class representing a case.
-     * @summary Cases
+     * 
+     * @summary Cases  Put Some
      * @param {Array<Case>} _case 
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
@@ -22149,7 +22236,7 @@ export class CaseApi extends BaseAPI {
 
     /**
      * 
-     * @summary Cols
+     * @summary Cols  Delete All
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
      * @memberof CaseApi
@@ -22160,7 +22247,7 @@ export class CaseApi extends BaseAPI {
 
     /**
      * 
-     * @summary Cols
+     * @summary Cols  Delete One
      * @param {any} objectId 
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
@@ -22172,7 +22259,7 @@ export class CaseApi extends BaseAPI {
 
     /**
      * 
-     * @summary Cols
+     * @summary Cols  Delete Some
      * @param {string} ids 
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
@@ -22184,7 +22271,7 @@ export class CaseApi extends BaseAPI {
 
     /**
      * 
-     * @summary Cols
+     * @summary Cols  Get All
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
      * @memberof CaseApi
@@ -22195,7 +22282,7 @@ export class CaseApi extends BaseAPI {
 
     /**
      * 
-     * @summary Cols
+     * @summary Cols  Get One
      * @param {string} objectId 
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
@@ -22207,7 +22294,7 @@ export class CaseApi extends BaseAPI {
 
     /**
      * 
-     * @summary Cols
+     * @summary Cols  Get Some
      * @param {string} ids 
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
@@ -22219,7 +22306,7 @@ export class CaseApi extends BaseAPI {
 
     /**
      * 
-     * @summary Cols
+     * @summary Cols  Post One
      * @param {Col} col 
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
@@ -22231,7 +22318,7 @@ export class CaseApi extends BaseAPI {
 
     /**
      * 
-     * @summary Cols
+     * @summary Cols  Post Query
      * @param {EpiFilter} filter 
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
@@ -22243,7 +22330,7 @@ export class CaseApi extends BaseAPI {
 
     /**
      * 
-     * @summary Cols
+     * @summary Cols  Post Query  Ids
      * @param {EpiFilter} filter 
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
@@ -22255,7 +22342,7 @@ export class CaseApi extends BaseAPI {
 
     /**
      * 
-     * @summary Cols
+     * @summary Cols  Post Some
      * @param {Array<Col>} col 
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
@@ -22267,7 +22354,7 @@ export class CaseApi extends BaseAPI {
 
     /**
      * 
-     * @summary Cols
+     * @summary Cols  Put One
      * @param {string} objectId 
      * @param {Col} col 
      * @param {*} [options] Override http request option.
@@ -22280,7 +22367,7 @@ export class CaseApi extends BaseAPI {
 
     /**
      * 
-     * @summary Cols
+     * @summary Cols  Put Some
      * @param {Array<Col>} col 
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
@@ -22291,8 +22378,8 @@ export class CaseApi extends BaseAPI {
     }
 
     /**
-     * 
-     * @summary Completecasetype
+     * Retrieve a complete case type.
+     * @summary Retrieve Complete Case Type
      * @param {string} caseTypeId 
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
@@ -22303,8 +22390,8 @@ export class CaseApi extends BaseAPI {
     }
 
     /**
-     * 
-     * @summary Caseset
+     * Create a new case set and associate it with the specified data collections and     cases.
+     * @summary Create Case Set
      * @param {CreateCaseSetRequestBody} createCaseSetRequestBody 
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
@@ -22315,8 +22402,8 @@ export class CaseApi extends BaseAPI {
     }
 
     /**
-     * 
-     * @summary Cases
+     * Create a list of cases and associate them with the specified data collections.
+     * @summary Create Cases
      * @param {CreateCasesRequestBody} createCasesRequestBody 
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
@@ -22328,7 +22415,7 @@ export class CaseApi extends BaseAPI {
 
     /**
      * 
-     * @summary Dims
+     * @summary Dims  Delete All
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
      * @memberof CaseApi
@@ -22339,7 +22426,7 @@ export class CaseApi extends BaseAPI {
 
     /**
      * 
-     * @summary Dims
+     * @summary Dims  Delete One
      * @param {any} objectId 
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
@@ -22351,7 +22438,7 @@ export class CaseApi extends BaseAPI {
 
     /**
      * 
-     * @summary Dims
+     * @summary Dims  Delete Some
      * @param {string} ids 
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
@@ -22363,7 +22450,7 @@ export class CaseApi extends BaseAPI {
 
     /**
      * 
-     * @summary Dims
+     * @summary Dims  Get All
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
      * @memberof CaseApi
@@ -22374,7 +22461,7 @@ export class CaseApi extends BaseAPI {
 
     /**
      * 
-     * @summary Dims
+     * @summary Dims  Get One
      * @param {string} objectId 
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
@@ -22386,7 +22473,7 @@ export class CaseApi extends BaseAPI {
 
     /**
      * 
-     * @summary Dims
+     * @summary Dims  Get Some
      * @param {string} ids 
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
@@ -22398,7 +22485,7 @@ export class CaseApi extends BaseAPI {
 
     /**
      * 
-     * @summary Dims
+     * @summary Dims  Post One
      * @param {Dim} dim 
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
@@ -22410,7 +22497,7 @@ export class CaseApi extends BaseAPI {
 
     /**
      * 
-     * @summary Dims
+     * @summary Dims  Post Query
      * @param {EpiFilter} filter 
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
@@ -22422,7 +22509,7 @@ export class CaseApi extends BaseAPI {
 
     /**
      * 
-     * @summary Dims
+     * @summary Dims  Post Query  Ids
      * @param {EpiFilter} filter 
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
@@ -22434,7 +22521,7 @@ export class CaseApi extends BaseAPI {
 
     /**
      * 
-     * @summary Dims
+     * @summary Dims  Post Some
      * @param {Array<Dim>} dim 
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
@@ -22446,7 +22533,7 @@ export class CaseApi extends BaseAPI {
 
     /**
      * 
-     * @summary Dims
+     * @summary Dims  Put One
      * @param {string} objectId 
      * @param {Dim} dim 
      * @param {*} [options] Override http request option.
@@ -22459,7 +22546,7 @@ export class CaseApi extends BaseAPI {
 
     /**
      * 
-     * @summary Dims
+     * @summary Dims  Put Some
      * @param {Array<Dim>} dim 
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
@@ -22471,7 +22558,7 @@ export class CaseApi extends BaseAPI {
 
     /**
      * 
-     * @summary Genetic Distance Protocols
+     * @summary Genetic Distance Protocols  Delete All
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
      * @memberof CaseApi
@@ -22482,7 +22569,7 @@ export class CaseApi extends BaseAPI {
 
     /**
      * 
-     * @summary Genetic Distance Protocols
+     * @summary Genetic Distance Protocols  Delete One
      * @param {any} objectId 
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
@@ -22494,7 +22581,7 @@ export class CaseApi extends BaseAPI {
 
     /**
      * 
-     * @summary Genetic Distance Protocols
+     * @summary Genetic Distance Protocols  Delete Some
      * @param {string} ids 
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
@@ -22506,7 +22593,7 @@ export class CaseApi extends BaseAPI {
 
     /**
      * 
-     * @summary Genetic Distance Protocols
+     * @summary Genetic Distance Protocols  Get All
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
      * @memberof CaseApi
@@ -22517,7 +22604,7 @@ export class CaseApi extends BaseAPI {
 
     /**
      * 
-     * @summary Genetic Distance Protocols
+     * @summary Genetic Distance Protocols  Get One
      * @param {string} objectId 
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
@@ -22529,7 +22616,7 @@ export class CaseApi extends BaseAPI {
 
     /**
      * 
-     * @summary Genetic Distance Protocols
+     * @summary Genetic Distance Protocols  Get Some
      * @param {string} ids 
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
@@ -22541,7 +22628,7 @@ export class CaseApi extends BaseAPI {
 
     /**
      * 
-     * @summary Genetic Distance Protocols
+     * @summary Genetic Distance Protocols  Post One
      * @param {GeneticDistanceProtocol} geneticDistanceProtocol 
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
@@ -22553,7 +22640,7 @@ export class CaseApi extends BaseAPI {
 
     /**
      * 
-     * @summary Genetic Distance Protocols
+     * @summary Genetic Distance Protocols  Post Query
      * @param {EpiFilter} filter 
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
@@ -22565,7 +22652,7 @@ export class CaseApi extends BaseAPI {
 
     /**
      * 
-     * @summary Genetic Distance Protocols
+     * @summary Genetic Distance Protocols  Post Query  Ids
      * @param {EpiFilter} filter 
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
@@ -22577,7 +22664,7 @@ export class CaseApi extends BaseAPI {
 
     /**
      * 
-     * @summary Genetic Distance Protocols
+     * @summary Genetic Distance Protocols  Post Some
      * @param {Array<GeneticDistanceProtocol>} geneticDistanceProtocol 
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
@@ -22589,7 +22676,7 @@ export class CaseApi extends BaseAPI {
 
     /**
      * 
-     * @summary Genetic Distance Protocols
+     * @summary Genetic Distance Protocols  Put One
      * @param {string} objectId 
      * @param {GeneticDistanceProtocol} geneticDistanceProtocol 
      * @param {*} [options] Override http request option.
@@ -22602,7 +22689,7 @@ export class CaseApi extends BaseAPI {
 
     /**
      * 
-     * @summary Genetic Distance Protocols
+     * @summary Genetic Distance Protocols  Put Some
      * @param {Array<GeneticDistanceProtocol>} geneticDistanceProtocol 
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
@@ -22613,8 +22700,20 @@ export class CaseApi extends BaseAPI {
     }
 
     /**
-     * 
-     * @summary Retrieve  Case Ids By Query
+     * Retrieve a set of allele profiles based on a set of case IDs and a genetic distance     case type column.
+     * @summary Retrieve Allele Profile
+     * @param {RetrieveAlleleProfileRequestBody} retrieveAlleleProfileRequestBody 
+     * @param {*} [options] Override http request option.
+     * @throws {RequiredError}
+     * @memberof CaseApi
+     */
+    public retrieveAlleleProfile(retrieveAlleleProfileRequestBody: RetrieveAlleleProfileRequestBody, options?: RawAxiosRequestConfig) {
+        return CaseApiFp(this.configuration).retrieveAlleleProfile(retrieveAlleleProfileRequestBody, options).then((request) => request(this.axios, this.configuration.baseUrl));
+    }
+
+    /**
+     * Retrieve cases based on a query.
+     * @summary Retrieve Case Ids By Query
      * @param {CaseQuery} caseQuery 
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
@@ -22625,8 +22724,8 @@ export class CaseApi extends BaseAPI {
     }
 
     /**
-     * 
-     * @summary Retrieve  Case Rights
+     * Retrieve access rights for a set of cases.
+     * @summary Retrieve Case Rights
      * @param {Array<string>} requestBody 
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
@@ -22637,8 +22736,8 @@ export class CaseApi extends BaseAPI {
     }
 
     /**
-     * 
-     * @summary Retrieve  Case Set Rights
+     * Retrieve access rights for a set of case sets.
+     * @summary Retrieve Case Set Rights
      * @param {Array<string>} requestBody 
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
@@ -22649,8 +22748,8 @@ export class CaseApi extends BaseAPI {
     }
 
     /**
-     * 
-     * @summary Casesetstats
+     * Retrieve statistics for a set of case sets.
+     * @summary Retrieve Case Set Statistics
      * @param {RetrieveCaseSetStatsRequestBody} retrieveCaseSetStatsRequestBody 
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
@@ -22661,8 +22760,8 @@ export class CaseApi extends BaseAPI {
     }
 
     /**
-     * 
-     * @summary Casetypestats
+     * Retrieve statistics for a set of case types.
+     * @summary Retrieve Case Type Statistics
      * @param {RetrieveCaseTypeStatsRequestBody} retrieveCaseTypeStatsRequestBody 
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
@@ -22673,8 +22772,8 @@ export class CaseApi extends BaseAPI {
     }
 
     /**
-     * 
-     * @summary Retrieve  Cases By Ids
+     * Retrieve cases by their IDs.
+     * @summary Retrieve Cases By Ids
      * @param {Array<string>} requestBody 
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
@@ -22685,8 +22784,8 @@ export class CaseApi extends BaseAPI {
     }
 
     /**
-     * 
-     * @summary Retrieve  Genetic Sequence
+     * Retrieve a set of genetic sequences based on a set of case IDs and a genetic     sequence case type column.
+     * @summary Retrieve Genetic Sequence By Case
      * @param {RetrieveGeneticSequenceRequestBody} retrieveGeneticSequenceRequestBody 
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
@@ -22697,8 +22796,8 @@ export class CaseApi extends BaseAPI {
     }
 
     /**
-     * 
-     * @summary Retrieve  Organization Contact
+     * Retrieves Contacts associated with organizations, sites, or specific contacts.      Exactly one of organization_ids, site_ids, or contact_ids must be provided.     Returns a list of contacts with their associated site and organization data     cascaded.
+     * @summary Retrieve Organization Contact
      * @param {RetrieveOrganizationContactRequestBody} retrieveOrganizationContactRequestBody 
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
@@ -22709,8 +22808,8 @@ export class CaseApi extends BaseAPI {
     }
 
     /**
-     * 
-     * @summary Retrieve  Phylogenetic Tree
+     * Retrieve a phylogenetic tree based on a set of case IDs, a tree algorithm, and     a genetic distance case type column.
+     * @summary Retrieve Phylogenetic Tree
      * @param {RetrievePhylogeneticTreeRequestBody} retrievePhylogeneticTreeRequestBody 
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
@@ -22722,7 +22821,7 @@ export class CaseApi extends BaseAPI {
 
     /**
      * 
-     * @summary Tree Algorithm Classes
+     * @summary Tree Algorithm Classes  Delete All
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
      * @memberof CaseApi
@@ -22733,7 +22832,7 @@ export class CaseApi extends BaseAPI {
 
     /**
      * 
-     * @summary Tree Algorithm Classes
+     * @summary Tree Algorithm Classes  Delete One
      * @param {any} objectId 
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
@@ -22745,7 +22844,7 @@ export class CaseApi extends BaseAPI {
 
     /**
      * 
-     * @summary Tree Algorithm Classes
+     * @summary Tree Algorithm Classes  Delete Some
      * @param {string} ids 
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
@@ -22757,7 +22856,7 @@ export class CaseApi extends BaseAPI {
 
     /**
      * 
-     * @summary Tree Algorithm Classes
+     * @summary Tree Algorithm Classes  Get All
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
      * @memberof CaseApi
@@ -22768,7 +22867,7 @@ export class CaseApi extends BaseAPI {
 
     /**
      * 
-     * @summary Tree Algorithm Classes
+     * @summary Tree Algorithm Classes  Get One
      * @param {string} objectId 
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
@@ -22780,7 +22879,7 @@ export class CaseApi extends BaseAPI {
 
     /**
      * 
-     * @summary Tree Algorithm Classes
+     * @summary Tree Algorithm Classes  Get Some
      * @param {string} ids 
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
@@ -22792,7 +22891,7 @@ export class CaseApi extends BaseAPI {
 
     /**
      * 
-     * @summary Tree Algorithm Classes
+     * @summary Tree Algorithm Classes  Post One
      * @param {TreeAlgorithmClass} treeAlgorithmClass 
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
@@ -22804,7 +22903,7 @@ export class CaseApi extends BaseAPI {
 
     /**
      * 
-     * @summary Tree Algorithm Classes
+     * @summary Tree Algorithm Classes  Post Query
      * @param {EpiFilter} filter 
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
@@ -22816,7 +22915,7 @@ export class CaseApi extends BaseAPI {
 
     /**
      * 
-     * @summary Tree Algorithm Classes
+     * @summary Tree Algorithm Classes  Post Query  Ids
      * @param {EpiFilter} filter 
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
@@ -22828,7 +22927,7 @@ export class CaseApi extends BaseAPI {
 
     /**
      * 
-     * @summary Tree Algorithm Classes
+     * @summary Tree Algorithm Classes  Post Some
      * @param {Array<TreeAlgorithmClass>} treeAlgorithmClass 
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
@@ -22840,7 +22939,7 @@ export class CaseApi extends BaseAPI {
 
     /**
      * 
-     * @summary Tree Algorithm Classes
+     * @summary Tree Algorithm Classes  Put One
      * @param {string} objectId 
      * @param {TreeAlgorithmClass} treeAlgorithmClass 
      * @param {*} [options] Override http request option.
@@ -22853,7 +22952,7 @@ export class CaseApi extends BaseAPI {
 
     /**
      * 
-     * @summary Tree Algorithm Classes
+     * @summary Tree Algorithm Classes  Put Some
      * @param {Array<TreeAlgorithmClass>} treeAlgorithmClass 
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
@@ -22864,8 +22963,8 @@ export class CaseApi extends BaseAPI {
     }
 
     /**
-     * See https://en.wikipedia.org/wiki/Hierarchical_clustering,     https://en.wikipedia.org/wiki/Neighbor_joining,      https://en.wikipedia.org/wiki/Computational_phylogenetics,      https://en.wikipedia.org/wiki/Spanning_tree
-     * @summary Tree Algorithms
+     * 
+     * @summary Tree Algorithms  Delete All
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
      * @memberof CaseApi
@@ -22875,8 +22974,8 @@ export class CaseApi extends BaseAPI {
     }
 
     /**
-     * See https://en.wikipedia.org/wiki/Hierarchical_clustering,     https://en.wikipedia.org/wiki/Neighbor_joining,      https://en.wikipedia.org/wiki/Computational_phylogenetics,      https://en.wikipedia.org/wiki/Spanning_tree
-     * @summary Tree Algorithms
+     * 
+     * @summary Tree Algorithms  Delete One
      * @param {any} objectId 
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
@@ -22887,8 +22986,8 @@ export class CaseApi extends BaseAPI {
     }
 
     /**
-     * See https://en.wikipedia.org/wiki/Hierarchical_clustering,     https://en.wikipedia.org/wiki/Neighbor_joining,      https://en.wikipedia.org/wiki/Computational_phylogenetics,      https://en.wikipedia.org/wiki/Spanning_tree
-     * @summary Tree Algorithms
+     * 
+     * @summary Tree Algorithms  Delete Some
      * @param {string} ids 
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
@@ -22899,8 +22998,8 @@ export class CaseApi extends BaseAPI {
     }
 
     /**
-     * See https://en.wikipedia.org/wiki/Hierarchical_clustering,     https://en.wikipedia.org/wiki/Neighbor_joining,      https://en.wikipedia.org/wiki/Computational_phylogenetics,      https://en.wikipedia.org/wiki/Spanning_tree
-     * @summary Tree Algorithms
+     * 
+     * @summary Tree Algorithms  Get All
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
      * @memberof CaseApi
@@ -22910,8 +23009,8 @@ export class CaseApi extends BaseAPI {
     }
 
     /**
-     * See https://en.wikipedia.org/wiki/Hierarchical_clustering,     https://en.wikipedia.org/wiki/Neighbor_joining,      https://en.wikipedia.org/wiki/Computational_phylogenetics,      https://en.wikipedia.org/wiki/Spanning_tree
-     * @summary Tree Algorithms
+     * 
+     * @summary Tree Algorithms  Get One
      * @param {string} objectId 
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
@@ -22922,8 +23021,8 @@ export class CaseApi extends BaseAPI {
     }
 
     /**
-     * See https://en.wikipedia.org/wiki/Hierarchical_clustering,     https://en.wikipedia.org/wiki/Neighbor_joining,      https://en.wikipedia.org/wiki/Computational_phylogenetics,      https://en.wikipedia.org/wiki/Spanning_tree
-     * @summary Tree Algorithms
+     * 
+     * @summary Tree Algorithms  Get Some
      * @param {string} ids 
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
@@ -22934,8 +23033,8 @@ export class CaseApi extends BaseAPI {
     }
 
     /**
-     * See https://en.wikipedia.org/wiki/Hierarchical_clustering,     https://en.wikipedia.org/wiki/Neighbor_joining,      https://en.wikipedia.org/wiki/Computational_phylogenetics,      https://en.wikipedia.org/wiki/Spanning_tree
-     * @summary Tree Algorithms
+     * 
+     * @summary Tree Algorithms  Post One
      * @param {TreeAlgorithm} treeAlgorithm 
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
@@ -22946,8 +23045,8 @@ export class CaseApi extends BaseAPI {
     }
 
     /**
-     * See https://en.wikipedia.org/wiki/Hierarchical_clustering,     https://en.wikipedia.org/wiki/Neighbor_joining,      https://en.wikipedia.org/wiki/Computational_phylogenetics,      https://en.wikipedia.org/wiki/Spanning_tree
-     * @summary Tree Algorithms
+     * 
+     * @summary Tree Algorithms  Post Query
      * @param {EpiFilter} filter 
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
@@ -22958,8 +23057,8 @@ export class CaseApi extends BaseAPI {
     }
 
     /**
-     * See https://en.wikipedia.org/wiki/Hierarchical_clustering,     https://en.wikipedia.org/wiki/Neighbor_joining,      https://en.wikipedia.org/wiki/Computational_phylogenetics,      https://en.wikipedia.org/wiki/Spanning_tree
-     * @summary Tree Algorithms
+     * 
+     * @summary Tree Algorithms  Post Query  Ids
      * @param {EpiFilter} filter 
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
@@ -22970,8 +23069,8 @@ export class CaseApi extends BaseAPI {
     }
 
     /**
-     * See https://en.wikipedia.org/wiki/Hierarchical_clustering,     https://en.wikipedia.org/wiki/Neighbor_joining,      https://en.wikipedia.org/wiki/Computational_phylogenetics,      https://en.wikipedia.org/wiki/Spanning_tree
-     * @summary Tree Algorithms
+     * 
+     * @summary Tree Algorithms  Post Some
      * @param {Array<TreeAlgorithm>} treeAlgorithm 
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
@@ -22982,8 +23081,8 @@ export class CaseApi extends BaseAPI {
     }
 
     /**
-     * See https://en.wikipedia.org/wiki/Hierarchical_clustering,     https://en.wikipedia.org/wiki/Neighbor_joining,      https://en.wikipedia.org/wiki/Computational_phylogenetics,      https://en.wikipedia.org/wiki/Spanning_tree
-     * @summary Tree Algorithms
+     * 
+     * @summary Tree Algorithms  Put One
      * @param {string} objectId 
      * @param {TreeAlgorithm} treeAlgorithm 
      * @param {*} [options] Override http request option.
@@ -22995,8 +23094,8 @@ export class CaseApi extends BaseAPI {
     }
 
     /**
-     * See https://en.wikipedia.org/wiki/Hierarchical_clustering,     https://en.wikipedia.org/wiki/Neighbor_joining,      https://en.wikipedia.org/wiki/Computational_phylogenetics,      https://en.wikipedia.org/wiki/Spanning_tree
-     * @summary Tree Algorithms
+     * 
+     * @summary Tree Algorithms  Put Some
      * @param {Array<TreeAlgorithm>} treeAlgorithm 
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
@@ -23111,7 +23210,7 @@ const GeoApiAxiosParamCreator = function (configuration?: Configuration) {
     return {
         /**
          * 
-         * @summary Region Relations
+         * @summary Region Relations  Delete All
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
@@ -23141,7 +23240,7 @@ const GeoApiAxiosParamCreator = function (configuration?: Configuration) {
         },
         /**
          * 
-         * @summary Region Relations
+         * @summary Region Relations  Delete One
          * @param {any} objectId 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
@@ -23175,7 +23274,7 @@ const GeoApiAxiosParamCreator = function (configuration?: Configuration) {
         },
         /**
          * 
-         * @summary Region Relations
+         * @summary Region Relations  Delete Some
          * @param {string} ids 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
@@ -23212,7 +23311,7 @@ const GeoApiAxiosParamCreator = function (configuration?: Configuration) {
         },
         /**
          * 
-         * @summary Region Relations
+         * @summary Region Relations  Get All
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
@@ -23242,7 +23341,7 @@ const GeoApiAxiosParamCreator = function (configuration?: Configuration) {
         },
         /**
          * 
-         * @summary Region Relations
+         * @summary Region Relations  Get One
          * @param {string} objectId 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
@@ -23276,7 +23375,7 @@ const GeoApiAxiosParamCreator = function (configuration?: Configuration) {
         },
         /**
          * 
-         * @summary Region Relations
+         * @summary Region Relations  Get Some
          * @param {string} ids 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
@@ -23313,7 +23412,7 @@ const GeoApiAxiosParamCreator = function (configuration?: Configuration) {
         },
         /**
          * 
-         * @summary Region Relations
+         * @summary Region Relations  Post One
          * @param {RegionRelation} regionRelation 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
@@ -23349,7 +23448,7 @@ const GeoApiAxiosParamCreator = function (configuration?: Configuration) {
         },
         /**
          * 
-         * @summary Region Relations
+         * @summary Region Relations  Post Query
          * @param {EpiFilter} filter 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
@@ -23385,7 +23484,7 @@ const GeoApiAxiosParamCreator = function (configuration?: Configuration) {
         },
         /**
          * 
-         * @summary Region Relations
+         * @summary Region Relations  Post Query  Ids
          * @param {EpiFilter} filter 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
@@ -23421,7 +23520,7 @@ const GeoApiAxiosParamCreator = function (configuration?: Configuration) {
         },
         /**
          * 
-         * @summary Region Relations
+         * @summary Region Relations  Post Some
          * @param {Array<RegionRelation>} regionRelation 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
@@ -23457,7 +23556,7 @@ const GeoApiAxiosParamCreator = function (configuration?: Configuration) {
         },
         /**
          * 
-         * @summary Region Relations
+         * @summary Region Relations  Put One
          * @param {string} objectId 
          * @param {RegionRelation} regionRelation 
          * @param {*} [options] Override http request option.
@@ -23497,7 +23596,7 @@ const GeoApiAxiosParamCreator = function (configuration?: Configuration) {
         },
         /**
          * 
-         * @summary Region Relations
+         * @summary Region Relations  Put Some
          * @param {Array<RegionRelation>} regionRelation 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
@@ -23533,7 +23632,7 @@ const GeoApiAxiosParamCreator = function (configuration?: Configuration) {
         },
         /**
          * 
-         * @summary Region Set Shapes
+         * @summary Region Set Shapes  Delete All
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
@@ -23563,7 +23662,7 @@ const GeoApiAxiosParamCreator = function (configuration?: Configuration) {
         },
         /**
          * 
-         * @summary Region Set Shapes
+         * @summary Region Set Shapes  Delete One
          * @param {any} objectId 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
@@ -23597,7 +23696,7 @@ const GeoApiAxiosParamCreator = function (configuration?: Configuration) {
         },
         /**
          * 
-         * @summary Region Set Shapes
+         * @summary Region Set Shapes  Delete Some
          * @param {string} ids 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
@@ -23634,7 +23733,7 @@ const GeoApiAxiosParamCreator = function (configuration?: Configuration) {
         },
         /**
          * 
-         * @summary Region Set Shapes
+         * @summary Region Set Shapes  Get All
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
@@ -23664,7 +23763,7 @@ const GeoApiAxiosParamCreator = function (configuration?: Configuration) {
         },
         /**
          * 
-         * @summary Region Set Shapes
+         * @summary Region Set Shapes  Get One
          * @param {string} objectId 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
@@ -23698,7 +23797,7 @@ const GeoApiAxiosParamCreator = function (configuration?: Configuration) {
         },
         /**
          * 
-         * @summary Region Set Shapes
+         * @summary Region Set Shapes  Get Some
          * @param {string} ids 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
@@ -23735,7 +23834,7 @@ const GeoApiAxiosParamCreator = function (configuration?: Configuration) {
         },
         /**
          * 
-         * @summary Region Set Shapes
+         * @summary Region Set Shapes  Post One
          * @param {RegionSetShape} regionSetShape 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
@@ -23771,7 +23870,7 @@ const GeoApiAxiosParamCreator = function (configuration?: Configuration) {
         },
         /**
          * 
-         * @summary Region Set Shapes
+         * @summary Region Set Shapes  Post Query
          * @param {EpiFilter} filter 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
@@ -23807,7 +23906,7 @@ const GeoApiAxiosParamCreator = function (configuration?: Configuration) {
         },
         /**
          * 
-         * @summary Region Set Shapes
+         * @summary Region Set Shapes  Post Query  Ids
          * @param {EpiFilter} filter 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
@@ -23843,7 +23942,7 @@ const GeoApiAxiosParamCreator = function (configuration?: Configuration) {
         },
         /**
          * 
-         * @summary Region Set Shapes
+         * @summary Region Set Shapes  Post Some
          * @param {Array<RegionSetShape>} regionSetShape 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
@@ -23879,7 +23978,7 @@ const GeoApiAxiosParamCreator = function (configuration?: Configuration) {
         },
         /**
          * 
-         * @summary Region Set Shapes
+         * @summary Region Set Shapes  Put One
          * @param {string} objectId 
          * @param {RegionSetShape} regionSetShape 
          * @param {*} [options] Override http request option.
@@ -23919,7 +24018,7 @@ const GeoApiAxiosParamCreator = function (configuration?: Configuration) {
         },
         /**
          * 
-         * @summary Region Set Shapes
+         * @summary Region Set Shapes  Put Some
          * @param {Array<RegionSetShape>} regionSetShape 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
@@ -23954,8 +24053,8 @@ const GeoApiAxiosParamCreator = function (configuration?: Configuration) {
             };
         },
         /**
-         * Set of regions that do not overlap geographically     or otherwise did not exist at the same moment in time.
-         * @summary Region Sets
+         * 
+         * @summary Region Sets  Delete All
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
@@ -23984,8 +24083,8 @@ const GeoApiAxiosParamCreator = function (configuration?: Configuration) {
             };
         },
         /**
-         * Set of regions that do not overlap geographically     or otherwise did not exist at the same moment in time.
-         * @summary Region Sets
+         * 
+         * @summary Region Sets  Delete One
          * @param {any} objectId 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
@@ -24018,8 +24117,8 @@ const GeoApiAxiosParamCreator = function (configuration?: Configuration) {
             };
         },
         /**
-         * Set of regions that do not overlap geographically     or otherwise did not exist at the same moment in time.
-         * @summary Region Sets
+         * 
+         * @summary Region Sets  Delete Some
          * @param {string} ids 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
@@ -24055,8 +24154,8 @@ const GeoApiAxiosParamCreator = function (configuration?: Configuration) {
             };
         },
         /**
-         * Set of regions that do not overlap geographically     or otherwise did not exist at the same moment in time.
-         * @summary Region Sets
+         * 
+         * @summary Region Sets  Get All
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
@@ -24085,8 +24184,8 @@ const GeoApiAxiosParamCreator = function (configuration?: Configuration) {
             };
         },
         /**
-         * Set of regions that do not overlap geographically     or otherwise did not exist at the same moment in time.
-         * @summary Region Sets
+         * 
+         * @summary Region Sets  Get One
          * @param {string} objectId 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
@@ -24119,8 +24218,8 @@ const GeoApiAxiosParamCreator = function (configuration?: Configuration) {
             };
         },
         /**
-         * Set of regions that do not overlap geographically     or otherwise did not exist at the same moment in time.
-         * @summary Region Sets
+         * 
+         * @summary Region Sets  Get Some
          * @param {string} ids 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
@@ -24156,8 +24255,8 @@ const GeoApiAxiosParamCreator = function (configuration?: Configuration) {
             };
         },
         /**
-         * Set of regions that do not overlap geographically     or otherwise did not exist at the same moment in time.
-         * @summary Region Sets
+         * 
+         * @summary Region Sets  Post One
          * @param {RegionSet} regionSet 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
@@ -24192,8 +24291,8 @@ const GeoApiAxiosParamCreator = function (configuration?: Configuration) {
             };
         },
         /**
-         * Set of regions that do not overlap geographically     or otherwise did not exist at the same moment in time.
-         * @summary Region Sets
+         * 
+         * @summary Region Sets  Post Query
          * @param {EpiFilter} filter 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
@@ -24228,8 +24327,8 @@ const GeoApiAxiosParamCreator = function (configuration?: Configuration) {
             };
         },
         /**
-         * Set of regions that do not overlap geographically     or otherwise did not exist at the same moment in time.
-         * @summary Region Sets
+         * 
+         * @summary Region Sets  Post Query  Ids
          * @param {EpiFilter} filter 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
@@ -24264,8 +24363,8 @@ const GeoApiAxiosParamCreator = function (configuration?: Configuration) {
             };
         },
         /**
-         * Set of regions that do not overlap geographically     or otherwise did not exist at the same moment in time.
-         * @summary Region Sets
+         * 
+         * @summary Region Sets  Post Some
          * @param {Array<RegionSet>} regionSet 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
@@ -24300,8 +24399,8 @@ const GeoApiAxiosParamCreator = function (configuration?: Configuration) {
             };
         },
         /**
-         * Set of regions that do not overlap geographically     or otherwise did not exist at the same moment in time.
-         * @summary Region Sets
+         * 
+         * @summary Region Sets  Put One
          * @param {string} objectId 
          * @param {RegionSet} regionSet 
          * @param {*} [options] Override http request option.
@@ -24340,8 +24439,8 @@ const GeoApiAxiosParamCreator = function (configuration?: Configuration) {
             };
         },
         /**
-         * Set of regions that do not overlap geographically     or otherwise did not exist at the same moment in time.
-         * @summary Region Sets
+         * 
+         * @summary Region Sets  Put Some
          * @param {Array<RegionSet>} regionSet 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
@@ -24377,7 +24476,7 @@ const GeoApiAxiosParamCreator = function (configuration?: Configuration) {
         },
         /**
          * 
-         * @summary Regions
+         * @summary Regions  Delete All
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
@@ -24407,7 +24506,7 @@ const GeoApiAxiosParamCreator = function (configuration?: Configuration) {
         },
         /**
          * 
-         * @summary Regions
+         * @summary Regions  Delete One
          * @param {any} objectId 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
@@ -24441,7 +24540,7 @@ const GeoApiAxiosParamCreator = function (configuration?: Configuration) {
         },
         /**
          * 
-         * @summary Regions
+         * @summary Regions  Delete Some
          * @param {string} ids 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
@@ -24478,7 +24577,7 @@ const GeoApiAxiosParamCreator = function (configuration?: Configuration) {
         },
         /**
          * 
-         * @summary Regions
+         * @summary Regions  Get All
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
@@ -24508,7 +24607,7 @@ const GeoApiAxiosParamCreator = function (configuration?: Configuration) {
         },
         /**
          * 
-         * @summary Regions
+         * @summary Regions  Get One
          * @param {string} objectId 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
@@ -24542,7 +24641,7 @@ const GeoApiAxiosParamCreator = function (configuration?: Configuration) {
         },
         /**
          * 
-         * @summary Regions
+         * @summary Regions  Get Some
          * @param {string} ids 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
@@ -24579,7 +24678,7 @@ const GeoApiAxiosParamCreator = function (configuration?: Configuration) {
         },
         /**
          * 
-         * @summary Regions
+         * @summary Regions  Post One
          * @param {Region} region 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
@@ -24615,7 +24714,7 @@ const GeoApiAxiosParamCreator = function (configuration?: Configuration) {
         },
         /**
          * 
-         * @summary Regions
+         * @summary Regions  Post Query
          * @param {EpiFilter} filter 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
@@ -24651,7 +24750,7 @@ const GeoApiAxiosParamCreator = function (configuration?: Configuration) {
         },
         /**
          * 
-         * @summary Regions
+         * @summary Regions  Post Query  Ids
          * @param {EpiFilter} filter 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
@@ -24687,7 +24786,7 @@ const GeoApiAxiosParamCreator = function (configuration?: Configuration) {
         },
         /**
          * 
-         * @summary Regions
+         * @summary Regions  Post Some
          * @param {Array<Region>} region 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
@@ -24723,7 +24822,7 @@ const GeoApiAxiosParamCreator = function (configuration?: Configuration) {
         },
         /**
          * 
-         * @summary Regions
+         * @summary Regions  Put One
          * @param {string} objectId 
          * @param {Region} region 
          * @param {*} [options] Override http request option.
@@ -24763,7 +24862,7 @@ const GeoApiAxiosParamCreator = function (configuration?: Configuration) {
         },
         /**
          * 
-         * @summary Regions
+         * @summary Regions  Put Some
          * @param {Array<Region>} region 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
@@ -24809,7 +24908,7 @@ const GeoApiFp = function(configuration?: Configuration) {
     return {
         /**
          * 
-         * @summary Region Relations
+         * @summary Region Relations  Delete All
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
@@ -24821,7 +24920,7 @@ const GeoApiFp = function(configuration?: Configuration) {
         },
         /**
          * 
-         * @summary Region Relations
+         * @summary Region Relations  Delete One
          * @param {any} objectId 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
@@ -24834,7 +24933,7 @@ const GeoApiFp = function(configuration?: Configuration) {
         },
         /**
          * 
-         * @summary Region Relations
+         * @summary Region Relations  Delete Some
          * @param {string} ids 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
@@ -24847,7 +24946,7 @@ const GeoApiFp = function(configuration?: Configuration) {
         },
         /**
          * 
-         * @summary Region Relations
+         * @summary Region Relations  Get All
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
@@ -24859,7 +24958,7 @@ const GeoApiFp = function(configuration?: Configuration) {
         },
         /**
          * 
-         * @summary Region Relations
+         * @summary Region Relations  Get One
          * @param {string} objectId 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
@@ -24872,7 +24971,7 @@ const GeoApiFp = function(configuration?: Configuration) {
         },
         /**
          * 
-         * @summary Region Relations
+         * @summary Region Relations  Get Some
          * @param {string} ids 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
@@ -24885,7 +24984,7 @@ const GeoApiFp = function(configuration?: Configuration) {
         },
         /**
          * 
-         * @summary Region Relations
+         * @summary Region Relations  Post One
          * @param {RegionRelation} regionRelation 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
@@ -24898,7 +24997,7 @@ const GeoApiFp = function(configuration?: Configuration) {
         },
         /**
          * 
-         * @summary Region Relations
+         * @summary Region Relations  Post Query
          * @param {EpiFilter} filter 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
@@ -24911,7 +25010,7 @@ const GeoApiFp = function(configuration?: Configuration) {
         },
         /**
          * 
-         * @summary Region Relations
+         * @summary Region Relations  Post Query  Ids
          * @param {EpiFilter} filter 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
@@ -24924,7 +25023,7 @@ const GeoApiFp = function(configuration?: Configuration) {
         },
         /**
          * 
-         * @summary Region Relations
+         * @summary Region Relations  Post Some
          * @param {Array<RegionRelation>} regionRelation 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
@@ -24937,7 +25036,7 @@ const GeoApiFp = function(configuration?: Configuration) {
         },
         /**
          * 
-         * @summary Region Relations
+         * @summary Region Relations  Put One
          * @param {string} objectId 
          * @param {RegionRelation} regionRelation 
          * @param {*} [options] Override http request option.
@@ -24951,7 +25050,7 @@ const GeoApiFp = function(configuration?: Configuration) {
         },
         /**
          * 
-         * @summary Region Relations
+         * @summary Region Relations  Put Some
          * @param {Array<RegionRelation>} regionRelation 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
@@ -24964,7 +25063,7 @@ const GeoApiFp = function(configuration?: Configuration) {
         },
         /**
          * 
-         * @summary Region Set Shapes
+         * @summary Region Set Shapes  Delete All
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
@@ -24976,7 +25075,7 @@ const GeoApiFp = function(configuration?: Configuration) {
         },
         /**
          * 
-         * @summary Region Set Shapes
+         * @summary Region Set Shapes  Delete One
          * @param {any} objectId 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
@@ -24989,7 +25088,7 @@ const GeoApiFp = function(configuration?: Configuration) {
         },
         /**
          * 
-         * @summary Region Set Shapes
+         * @summary Region Set Shapes  Delete Some
          * @param {string} ids 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
@@ -25002,7 +25101,7 @@ const GeoApiFp = function(configuration?: Configuration) {
         },
         /**
          * 
-         * @summary Region Set Shapes
+         * @summary Region Set Shapes  Get All
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
@@ -25014,7 +25113,7 @@ const GeoApiFp = function(configuration?: Configuration) {
         },
         /**
          * 
-         * @summary Region Set Shapes
+         * @summary Region Set Shapes  Get One
          * @param {string} objectId 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
@@ -25027,7 +25126,7 @@ const GeoApiFp = function(configuration?: Configuration) {
         },
         /**
          * 
-         * @summary Region Set Shapes
+         * @summary Region Set Shapes  Get Some
          * @param {string} ids 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
@@ -25040,7 +25139,7 @@ const GeoApiFp = function(configuration?: Configuration) {
         },
         /**
          * 
-         * @summary Region Set Shapes
+         * @summary Region Set Shapes  Post One
          * @param {RegionSetShape} regionSetShape 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
@@ -25053,7 +25152,7 @@ const GeoApiFp = function(configuration?: Configuration) {
         },
         /**
          * 
-         * @summary Region Set Shapes
+         * @summary Region Set Shapes  Post Query
          * @param {EpiFilter} filter 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
@@ -25066,7 +25165,7 @@ const GeoApiFp = function(configuration?: Configuration) {
         },
         /**
          * 
-         * @summary Region Set Shapes
+         * @summary Region Set Shapes  Post Query  Ids
          * @param {EpiFilter} filter 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
@@ -25079,7 +25178,7 @@ const GeoApiFp = function(configuration?: Configuration) {
         },
         /**
          * 
-         * @summary Region Set Shapes
+         * @summary Region Set Shapes  Post Some
          * @param {Array<RegionSetShape>} regionSetShape 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
@@ -25092,7 +25191,7 @@ const GeoApiFp = function(configuration?: Configuration) {
         },
         /**
          * 
-         * @summary Region Set Shapes
+         * @summary Region Set Shapes  Put One
          * @param {string} objectId 
          * @param {RegionSetShape} regionSetShape 
          * @param {*} [options] Override http request option.
@@ -25106,7 +25205,7 @@ const GeoApiFp = function(configuration?: Configuration) {
         },
         /**
          * 
-         * @summary Region Set Shapes
+         * @summary Region Set Shapes  Put Some
          * @param {Array<RegionSetShape>} regionSetShape 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
@@ -25118,8 +25217,8 @@ const GeoApiFp = function(configuration?: Configuration) {
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
         /**
-         * Set of regions that do not overlap geographically     or otherwise did not exist at the same moment in time.
-         * @summary Region Sets
+         * 
+         * @summary Region Sets  Delete All
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
@@ -25130,8 +25229,8 @@ const GeoApiFp = function(configuration?: Configuration) {
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
         /**
-         * Set of regions that do not overlap geographically     or otherwise did not exist at the same moment in time.
-         * @summary Region Sets
+         * 
+         * @summary Region Sets  Delete One
          * @param {any} objectId 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
@@ -25143,8 +25242,8 @@ const GeoApiFp = function(configuration?: Configuration) {
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
         /**
-         * Set of regions that do not overlap geographically     or otherwise did not exist at the same moment in time.
-         * @summary Region Sets
+         * 
+         * @summary Region Sets  Delete Some
          * @param {string} ids 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
@@ -25156,8 +25255,8 @@ const GeoApiFp = function(configuration?: Configuration) {
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
         /**
-         * Set of regions that do not overlap geographically     or otherwise did not exist at the same moment in time.
-         * @summary Region Sets
+         * 
+         * @summary Region Sets  Get All
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
@@ -25168,8 +25267,8 @@ const GeoApiFp = function(configuration?: Configuration) {
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
         /**
-         * Set of regions that do not overlap geographically     or otherwise did not exist at the same moment in time.
-         * @summary Region Sets
+         * 
+         * @summary Region Sets  Get One
          * @param {string} objectId 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
@@ -25181,8 +25280,8 @@ const GeoApiFp = function(configuration?: Configuration) {
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
         /**
-         * Set of regions that do not overlap geographically     or otherwise did not exist at the same moment in time.
-         * @summary Region Sets
+         * 
+         * @summary Region Sets  Get Some
          * @param {string} ids 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
@@ -25194,8 +25293,8 @@ const GeoApiFp = function(configuration?: Configuration) {
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
         /**
-         * Set of regions that do not overlap geographically     or otherwise did not exist at the same moment in time.
-         * @summary Region Sets
+         * 
+         * @summary Region Sets  Post One
          * @param {RegionSet} regionSet 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
@@ -25207,8 +25306,8 @@ const GeoApiFp = function(configuration?: Configuration) {
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
         /**
-         * Set of regions that do not overlap geographically     or otherwise did not exist at the same moment in time.
-         * @summary Region Sets
+         * 
+         * @summary Region Sets  Post Query
          * @param {EpiFilter} filter 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
@@ -25220,8 +25319,8 @@ const GeoApiFp = function(configuration?: Configuration) {
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
         /**
-         * Set of regions that do not overlap geographically     or otherwise did not exist at the same moment in time.
-         * @summary Region Sets
+         * 
+         * @summary Region Sets  Post Query  Ids
          * @param {EpiFilter} filter 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
@@ -25233,8 +25332,8 @@ const GeoApiFp = function(configuration?: Configuration) {
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
         /**
-         * Set of regions that do not overlap geographically     or otherwise did not exist at the same moment in time.
-         * @summary Region Sets
+         * 
+         * @summary Region Sets  Post Some
          * @param {Array<RegionSet>} regionSet 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
@@ -25246,8 +25345,8 @@ const GeoApiFp = function(configuration?: Configuration) {
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
         /**
-         * Set of regions that do not overlap geographically     or otherwise did not exist at the same moment in time.
-         * @summary Region Sets
+         * 
+         * @summary Region Sets  Put One
          * @param {string} objectId 
          * @param {RegionSet} regionSet 
          * @param {*} [options] Override http request option.
@@ -25260,8 +25359,8 @@ const GeoApiFp = function(configuration?: Configuration) {
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
         /**
-         * Set of regions that do not overlap geographically     or otherwise did not exist at the same moment in time.
-         * @summary Region Sets
+         * 
+         * @summary Region Sets  Put Some
          * @param {Array<RegionSet>} regionSet 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
@@ -25274,7 +25373,7 @@ const GeoApiFp = function(configuration?: Configuration) {
         },
         /**
          * 
-         * @summary Regions
+         * @summary Regions  Delete All
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
@@ -25286,7 +25385,7 @@ const GeoApiFp = function(configuration?: Configuration) {
         },
         /**
          * 
-         * @summary Regions
+         * @summary Regions  Delete One
          * @param {any} objectId 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
@@ -25299,7 +25398,7 @@ const GeoApiFp = function(configuration?: Configuration) {
         },
         /**
          * 
-         * @summary Regions
+         * @summary Regions  Delete Some
          * @param {string} ids 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
@@ -25312,7 +25411,7 @@ const GeoApiFp = function(configuration?: Configuration) {
         },
         /**
          * 
-         * @summary Regions
+         * @summary Regions  Get All
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
@@ -25324,7 +25423,7 @@ const GeoApiFp = function(configuration?: Configuration) {
         },
         /**
          * 
-         * @summary Regions
+         * @summary Regions  Get One
          * @param {string} objectId 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
@@ -25337,7 +25436,7 @@ const GeoApiFp = function(configuration?: Configuration) {
         },
         /**
          * 
-         * @summary Regions
+         * @summary Regions  Get Some
          * @param {string} ids 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
@@ -25350,7 +25449,7 @@ const GeoApiFp = function(configuration?: Configuration) {
         },
         /**
          * 
-         * @summary Regions
+         * @summary Regions  Post One
          * @param {Region} region 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
@@ -25363,7 +25462,7 @@ const GeoApiFp = function(configuration?: Configuration) {
         },
         /**
          * 
-         * @summary Regions
+         * @summary Regions  Post Query
          * @param {EpiFilter} filter 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
@@ -25376,7 +25475,7 @@ const GeoApiFp = function(configuration?: Configuration) {
         },
         /**
          * 
-         * @summary Regions
+         * @summary Regions  Post Query  Ids
          * @param {EpiFilter} filter 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
@@ -25389,7 +25488,7 @@ const GeoApiFp = function(configuration?: Configuration) {
         },
         /**
          * 
-         * @summary Regions
+         * @summary Regions  Post Some
          * @param {Array<Region>} region 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
@@ -25402,7 +25501,7 @@ const GeoApiFp = function(configuration?: Configuration) {
         },
         /**
          * 
-         * @summary Regions
+         * @summary Regions  Put One
          * @param {string} objectId 
          * @param {Region} region 
          * @param {*} [options] Override http request option.
@@ -25416,7 +25515,7 @@ const GeoApiFp = function(configuration?: Configuration) {
         },
         /**
          * 
-         * @summary Regions
+         * @summary Regions  Put Some
          * @param {Array<Region>} region 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
@@ -25451,7 +25550,7 @@ export class GeoApi extends BaseAPI {
 
     /**
      * 
-     * @summary Region Relations
+     * @summary Region Relations  Delete All
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
      * @memberof GeoApi
@@ -25462,7 +25561,7 @@ export class GeoApi extends BaseAPI {
 
     /**
      * 
-     * @summary Region Relations
+     * @summary Region Relations  Delete One
      * @param {any} objectId 
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
@@ -25474,7 +25573,7 @@ export class GeoApi extends BaseAPI {
 
     /**
      * 
-     * @summary Region Relations
+     * @summary Region Relations  Delete Some
      * @param {string} ids 
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
@@ -25486,7 +25585,7 @@ export class GeoApi extends BaseAPI {
 
     /**
      * 
-     * @summary Region Relations
+     * @summary Region Relations  Get All
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
      * @memberof GeoApi
@@ -25497,7 +25596,7 @@ export class GeoApi extends BaseAPI {
 
     /**
      * 
-     * @summary Region Relations
+     * @summary Region Relations  Get One
      * @param {string} objectId 
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
@@ -25509,7 +25608,7 @@ export class GeoApi extends BaseAPI {
 
     /**
      * 
-     * @summary Region Relations
+     * @summary Region Relations  Get Some
      * @param {string} ids 
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
@@ -25521,7 +25620,7 @@ export class GeoApi extends BaseAPI {
 
     /**
      * 
-     * @summary Region Relations
+     * @summary Region Relations  Post One
      * @param {RegionRelation} regionRelation 
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
@@ -25533,7 +25632,7 @@ export class GeoApi extends BaseAPI {
 
     /**
      * 
-     * @summary Region Relations
+     * @summary Region Relations  Post Query
      * @param {EpiFilter} filter 
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
@@ -25545,7 +25644,7 @@ export class GeoApi extends BaseAPI {
 
     /**
      * 
-     * @summary Region Relations
+     * @summary Region Relations  Post Query  Ids
      * @param {EpiFilter} filter 
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
@@ -25557,7 +25656,7 @@ export class GeoApi extends BaseAPI {
 
     /**
      * 
-     * @summary Region Relations
+     * @summary Region Relations  Post Some
      * @param {Array<RegionRelation>} regionRelation 
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
@@ -25569,7 +25668,7 @@ export class GeoApi extends BaseAPI {
 
     /**
      * 
-     * @summary Region Relations
+     * @summary Region Relations  Put One
      * @param {string} objectId 
      * @param {RegionRelation} regionRelation 
      * @param {*} [options] Override http request option.
@@ -25582,7 +25681,7 @@ export class GeoApi extends BaseAPI {
 
     /**
      * 
-     * @summary Region Relations
+     * @summary Region Relations  Put Some
      * @param {Array<RegionRelation>} regionRelation 
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
@@ -25594,7 +25693,7 @@ export class GeoApi extends BaseAPI {
 
     /**
      * 
-     * @summary Region Set Shapes
+     * @summary Region Set Shapes  Delete All
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
      * @memberof GeoApi
@@ -25605,7 +25704,7 @@ export class GeoApi extends BaseAPI {
 
     /**
      * 
-     * @summary Region Set Shapes
+     * @summary Region Set Shapes  Delete One
      * @param {any} objectId 
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
@@ -25617,7 +25716,7 @@ export class GeoApi extends BaseAPI {
 
     /**
      * 
-     * @summary Region Set Shapes
+     * @summary Region Set Shapes  Delete Some
      * @param {string} ids 
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
@@ -25629,7 +25728,7 @@ export class GeoApi extends BaseAPI {
 
     /**
      * 
-     * @summary Region Set Shapes
+     * @summary Region Set Shapes  Get All
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
      * @memberof GeoApi
@@ -25640,7 +25739,7 @@ export class GeoApi extends BaseAPI {
 
     /**
      * 
-     * @summary Region Set Shapes
+     * @summary Region Set Shapes  Get One
      * @param {string} objectId 
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
@@ -25652,7 +25751,7 @@ export class GeoApi extends BaseAPI {
 
     /**
      * 
-     * @summary Region Set Shapes
+     * @summary Region Set Shapes  Get Some
      * @param {string} ids 
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
@@ -25664,7 +25763,7 @@ export class GeoApi extends BaseAPI {
 
     /**
      * 
-     * @summary Region Set Shapes
+     * @summary Region Set Shapes  Post One
      * @param {RegionSetShape} regionSetShape 
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
@@ -25676,7 +25775,7 @@ export class GeoApi extends BaseAPI {
 
     /**
      * 
-     * @summary Region Set Shapes
+     * @summary Region Set Shapes  Post Query
      * @param {EpiFilter} filter 
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
@@ -25688,7 +25787,7 @@ export class GeoApi extends BaseAPI {
 
     /**
      * 
-     * @summary Region Set Shapes
+     * @summary Region Set Shapes  Post Query  Ids
      * @param {EpiFilter} filter 
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
@@ -25700,7 +25799,7 @@ export class GeoApi extends BaseAPI {
 
     /**
      * 
-     * @summary Region Set Shapes
+     * @summary Region Set Shapes  Post Some
      * @param {Array<RegionSetShape>} regionSetShape 
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
@@ -25712,7 +25811,7 @@ export class GeoApi extends BaseAPI {
 
     /**
      * 
-     * @summary Region Set Shapes
+     * @summary Region Set Shapes  Put One
      * @param {string} objectId 
      * @param {RegionSetShape} regionSetShape 
      * @param {*} [options] Override http request option.
@@ -25725,7 +25824,7 @@ export class GeoApi extends BaseAPI {
 
     /**
      * 
-     * @summary Region Set Shapes
+     * @summary Region Set Shapes  Put Some
      * @param {Array<RegionSetShape>} regionSetShape 
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
@@ -25736,8 +25835,8 @@ export class GeoApi extends BaseAPI {
     }
 
     /**
-     * Set of regions that do not overlap geographically     or otherwise did not exist at the same moment in time.
-     * @summary Region Sets
+     * 
+     * @summary Region Sets  Delete All
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
      * @memberof GeoApi
@@ -25747,8 +25846,8 @@ export class GeoApi extends BaseAPI {
     }
 
     /**
-     * Set of regions that do not overlap geographically     or otherwise did not exist at the same moment in time.
-     * @summary Region Sets
+     * 
+     * @summary Region Sets  Delete One
      * @param {any} objectId 
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
@@ -25759,8 +25858,8 @@ export class GeoApi extends BaseAPI {
     }
 
     /**
-     * Set of regions that do not overlap geographically     or otherwise did not exist at the same moment in time.
-     * @summary Region Sets
+     * 
+     * @summary Region Sets  Delete Some
      * @param {string} ids 
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
@@ -25771,8 +25870,8 @@ export class GeoApi extends BaseAPI {
     }
 
     /**
-     * Set of regions that do not overlap geographically     or otherwise did not exist at the same moment in time.
-     * @summary Region Sets
+     * 
+     * @summary Region Sets  Get All
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
      * @memberof GeoApi
@@ -25782,8 +25881,8 @@ export class GeoApi extends BaseAPI {
     }
 
     /**
-     * Set of regions that do not overlap geographically     or otherwise did not exist at the same moment in time.
-     * @summary Region Sets
+     * 
+     * @summary Region Sets  Get One
      * @param {string} objectId 
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
@@ -25794,8 +25893,8 @@ export class GeoApi extends BaseAPI {
     }
 
     /**
-     * Set of regions that do not overlap geographically     or otherwise did not exist at the same moment in time.
-     * @summary Region Sets
+     * 
+     * @summary Region Sets  Get Some
      * @param {string} ids 
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
@@ -25806,8 +25905,8 @@ export class GeoApi extends BaseAPI {
     }
 
     /**
-     * Set of regions that do not overlap geographically     or otherwise did not exist at the same moment in time.
-     * @summary Region Sets
+     * 
+     * @summary Region Sets  Post One
      * @param {RegionSet} regionSet 
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
@@ -25818,8 +25917,8 @@ export class GeoApi extends BaseAPI {
     }
 
     /**
-     * Set of regions that do not overlap geographically     or otherwise did not exist at the same moment in time.
-     * @summary Region Sets
+     * 
+     * @summary Region Sets  Post Query
      * @param {EpiFilter} filter 
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
@@ -25830,8 +25929,8 @@ export class GeoApi extends BaseAPI {
     }
 
     /**
-     * Set of regions that do not overlap geographically     or otherwise did not exist at the same moment in time.
-     * @summary Region Sets
+     * 
+     * @summary Region Sets  Post Query  Ids
      * @param {EpiFilter} filter 
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
@@ -25842,8 +25941,8 @@ export class GeoApi extends BaseAPI {
     }
 
     /**
-     * Set of regions that do not overlap geographically     or otherwise did not exist at the same moment in time.
-     * @summary Region Sets
+     * 
+     * @summary Region Sets  Post Some
      * @param {Array<RegionSet>} regionSet 
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
@@ -25854,8 +25953,8 @@ export class GeoApi extends BaseAPI {
     }
 
     /**
-     * Set of regions that do not overlap geographically     or otherwise did not exist at the same moment in time.
-     * @summary Region Sets
+     * 
+     * @summary Region Sets  Put One
      * @param {string} objectId 
      * @param {RegionSet} regionSet 
      * @param {*} [options] Override http request option.
@@ -25867,8 +25966,8 @@ export class GeoApi extends BaseAPI {
     }
 
     /**
-     * Set of regions that do not overlap geographically     or otherwise did not exist at the same moment in time.
-     * @summary Region Sets
+     * 
+     * @summary Region Sets  Put Some
      * @param {Array<RegionSet>} regionSet 
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
@@ -25880,7 +25979,7 @@ export class GeoApi extends BaseAPI {
 
     /**
      * 
-     * @summary Regions
+     * @summary Regions  Delete All
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
      * @memberof GeoApi
@@ -25891,7 +25990,7 @@ export class GeoApi extends BaseAPI {
 
     /**
      * 
-     * @summary Regions
+     * @summary Regions  Delete One
      * @param {any} objectId 
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
@@ -25903,7 +26002,7 @@ export class GeoApi extends BaseAPI {
 
     /**
      * 
-     * @summary Regions
+     * @summary Regions  Delete Some
      * @param {string} ids 
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
@@ -25915,7 +26014,7 @@ export class GeoApi extends BaseAPI {
 
     /**
      * 
-     * @summary Regions
+     * @summary Regions  Get All
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
      * @memberof GeoApi
@@ -25926,7 +26025,7 @@ export class GeoApi extends BaseAPI {
 
     /**
      * 
-     * @summary Regions
+     * @summary Regions  Get One
      * @param {string} objectId 
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
@@ -25938,7 +26037,7 @@ export class GeoApi extends BaseAPI {
 
     /**
      * 
-     * @summary Regions
+     * @summary Regions  Get Some
      * @param {string} ids 
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
@@ -25950,7 +26049,7 @@ export class GeoApi extends BaseAPI {
 
     /**
      * 
-     * @summary Regions
+     * @summary Regions  Post One
      * @param {Region} region 
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
@@ -25962,7 +26061,7 @@ export class GeoApi extends BaseAPI {
 
     /**
      * 
-     * @summary Regions
+     * @summary Regions  Post Query
      * @param {EpiFilter} filter 
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
@@ -25974,7 +26073,7 @@ export class GeoApi extends BaseAPI {
 
     /**
      * 
-     * @summary Regions
+     * @summary Regions  Post Query  Ids
      * @param {EpiFilter} filter 
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
@@ -25986,7 +26085,7 @@ export class GeoApi extends BaseAPI {
 
     /**
      * 
-     * @summary Regions
+     * @summary Regions  Post Some
      * @param {Array<Region>} region 
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
@@ -25998,7 +26097,7 @@ export class GeoApi extends BaseAPI {
 
     /**
      * 
-     * @summary Regions
+     * @summary Regions  Put One
      * @param {string} objectId 
      * @param {Region} region 
      * @param {*} [options] Override http request option.
@@ -26011,7 +26110,7 @@ export class GeoApi extends BaseAPI {
 
     /**
      * 
-     * @summary Regions
+     * @summary Regions  Put Some
      * @param {Array<Region>} region 
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
@@ -26032,7 +26131,7 @@ const OntologyApiAxiosParamCreator = function (configuration?: Configuration) {
     return {
         /**
          * 
-         * @summary Concept Set Members
+         * @summary Concept Set Members  Delete All
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
@@ -26062,7 +26161,7 @@ const OntologyApiAxiosParamCreator = function (configuration?: Configuration) {
         },
         /**
          * 
-         * @summary Concept Set Members
+         * @summary Concept Set Members  Delete One
          * @param {any} objectId 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
@@ -26096,7 +26195,7 @@ const OntologyApiAxiosParamCreator = function (configuration?: Configuration) {
         },
         /**
          * 
-         * @summary Concept Set Members
+         * @summary Concept Set Members  Delete Some
          * @param {string} ids 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
@@ -26133,7 +26232,7 @@ const OntologyApiAxiosParamCreator = function (configuration?: Configuration) {
         },
         /**
          * 
-         * @summary Concept Set Members
+         * @summary Concept Set Members  Get All
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
@@ -26163,7 +26262,7 @@ const OntologyApiAxiosParamCreator = function (configuration?: Configuration) {
         },
         /**
          * 
-         * @summary Concept Set Members
+         * @summary Concept Set Members  Get One
          * @param {string} objectId 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
@@ -26197,7 +26296,7 @@ const OntologyApiAxiosParamCreator = function (configuration?: Configuration) {
         },
         /**
          * 
-         * @summary Concept Set Members
+         * @summary Concept Set Members  Get Some
          * @param {string} ids 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
@@ -26234,7 +26333,7 @@ const OntologyApiAxiosParamCreator = function (configuration?: Configuration) {
         },
         /**
          * 
-         * @summary Concept Set Members
+         * @summary Concept Set Members  Post One
          * @param {ConceptSetMember} conceptSetMember 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
@@ -26270,7 +26369,7 @@ const OntologyApiAxiosParamCreator = function (configuration?: Configuration) {
         },
         /**
          * 
-         * @summary Concept Set Members
+         * @summary Concept Set Members  Post Query
          * @param {EpiFilter} filter 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
@@ -26306,7 +26405,7 @@ const OntologyApiAxiosParamCreator = function (configuration?: Configuration) {
         },
         /**
          * 
-         * @summary Concept Set Members
+         * @summary Concept Set Members  Post Query  Ids
          * @param {EpiFilter} filter 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
@@ -26342,7 +26441,7 @@ const OntologyApiAxiosParamCreator = function (configuration?: Configuration) {
         },
         /**
          * 
-         * @summary Concept Set Members
+         * @summary Concept Set Members  Post Some
          * @param {Array<ConceptSetMember>} conceptSetMember 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
@@ -26378,7 +26477,7 @@ const OntologyApiAxiosParamCreator = function (configuration?: Configuration) {
         },
         /**
          * 
-         * @summary Concept Set Members
+         * @summary Concept Set Members  Put One
          * @param {string} objectId 
          * @param {ConceptSetMember} conceptSetMember 
          * @param {*} [options] Override http request option.
@@ -26418,7 +26517,7 @@ const OntologyApiAxiosParamCreator = function (configuration?: Configuration) {
         },
         /**
          * 
-         * @summary Concept Set Members
+         * @summary Concept Set Members  Put Some
          * @param {Array<ConceptSetMember>} conceptSetMember 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
@@ -26454,7 +26553,7 @@ const OntologyApiAxiosParamCreator = function (configuration?: Configuration) {
         },
         /**
          * 
-         * @summary Concept Sets
+         * @summary Concept Sets  Delete All
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
@@ -26484,7 +26583,7 @@ const OntologyApiAxiosParamCreator = function (configuration?: Configuration) {
         },
         /**
          * 
-         * @summary Concept Sets
+         * @summary Concept Sets  Delete One
          * @param {any} objectId 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
@@ -26518,7 +26617,7 @@ const OntologyApiAxiosParamCreator = function (configuration?: Configuration) {
         },
         /**
          * 
-         * @summary Concept Sets
+         * @summary Concept Sets  Delete Some
          * @param {string} ids 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
@@ -26555,7 +26654,7 @@ const OntologyApiAxiosParamCreator = function (configuration?: Configuration) {
         },
         /**
          * 
-         * @summary Concept Sets
+         * @summary Concept Sets  Get All
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
@@ -26585,7 +26684,7 @@ const OntologyApiAxiosParamCreator = function (configuration?: Configuration) {
         },
         /**
          * 
-         * @summary Concept Sets
+         * @summary Concept Sets  Get One
          * @param {string} objectId 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
@@ -26619,7 +26718,7 @@ const OntologyApiAxiosParamCreator = function (configuration?: Configuration) {
         },
         /**
          * 
-         * @summary Concept Sets
+         * @summary Concept Sets  Get Some
          * @param {string} ids 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
@@ -26656,7 +26755,7 @@ const OntologyApiAxiosParamCreator = function (configuration?: Configuration) {
         },
         /**
          * 
-         * @summary Concept Sets
+         * @summary Concept Sets  Post One
          * @param {ConceptSet} conceptSet 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
@@ -26692,7 +26791,7 @@ const OntologyApiAxiosParamCreator = function (configuration?: Configuration) {
         },
         /**
          * 
-         * @summary Concept Sets
+         * @summary Concept Sets  Post Query
          * @param {EpiFilter} filter 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
@@ -26728,7 +26827,7 @@ const OntologyApiAxiosParamCreator = function (configuration?: Configuration) {
         },
         /**
          * 
-         * @summary Concept Sets
+         * @summary Concept Sets  Post Query  Ids
          * @param {EpiFilter} filter 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
@@ -26764,7 +26863,7 @@ const OntologyApiAxiosParamCreator = function (configuration?: Configuration) {
         },
         /**
          * 
-         * @summary Concept Sets
+         * @summary Concept Sets  Post Some
          * @param {Array<ConceptSet>} conceptSet 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
@@ -26840,7 +26939,7 @@ const OntologyApiAxiosParamCreator = function (configuration?: Configuration) {
         },
         /**
          * 
-         * @summary Concept Sets
+         * @summary Concept Sets  Put One
          * @param {string} objectId 
          * @param {ConceptSet} conceptSet 
          * @param {*} [options] Override http request option.
@@ -26880,7 +26979,7 @@ const OntologyApiAxiosParamCreator = function (configuration?: Configuration) {
         },
         /**
          * 
-         * @summary Concept Sets
+         * @summary Concept Sets  Put Some
          * @param {Array<ConceptSet>} conceptSet 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
@@ -26916,7 +27015,7 @@ const OntologyApiAxiosParamCreator = function (configuration?: Configuration) {
         },
         /**
          * 
-         * @summary Concepts
+         * @summary Concepts  Delete All
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
@@ -26946,7 +27045,7 @@ const OntologyApiAxiosParamCreator = function (configuration?: Configuration) {
         },
         /**
          * 
-         * @summary Concepts
+         * @summary Concepts  Delete One
          * @param {any} objectId 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
@@ -26980,7 +27079,7 @@ const OntologyApiAxiosParamCreator = function (configuration?: Configuration) {
         },
         /**
          * 
-         * @summary Concepts
+         * @summary Concepts  Delete Some
          * @param {string} ids 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
@@ -27017,7 +27116,7 @@ const OntologyApiAxiosParamCreator = function (configuration?: Configuration) {
         },
         /**
          * 
-         * @summary Concepts
+         * @summary Concepts  Get All
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
@@ -27047,7 +27146,7 @@ const OntologyApiAxiosParamCreator = function (configuration?: Configuration) {
         },
         /**
          * 
-         * @summary Concepts
+         * @summary Concepts  Get One
          * @param {string} objectId 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
@@ -27081,7 +27180,7 @@ const OntologyApiAxiosParamCreator = function (configuration?: Configuration) {
         },
         /**
          * 
-         * @summary Concepts
+         * @summary Concepts  Get Some
          * @param {string} ids 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
@@ -27118,7 +27217,7 @@ const OntologyApiAxiosParamCreator = function (configuration?: Configuration) {
         },
         /**
          * 
-         * @summary Concepts
+         * @summary Concepts  Post One
          * @param {Concept} concept 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
@@ -27154,7 +27253,7 @@ const OntologyApiAxiosParamCreator = function (configuration?: Configuration) {
         },
         /**
          * 
-         * @summary Concepts
+         * @summary Concepts  Post Query
          * @param {EpiFilter} filter 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
@@ -27190,7 +27289,7 @@ const OntologyApiAxiosParamCreator = function (configuration?: Configuration) {
         },
         /**
          * 
-         * @summary Concepts
+         * @summary Concepts  Post Query  Ids
          * @param {EpiFilter} filter 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
@@ -27226,7 +27325,7 @@ const OntologyApiAxiosParamCreator = function (configuration?: Configuration) {
         },
         /**
          * 
-         * @summary Concepts
+         * @summary Concepts  Post Some
          * @param {Array<Concept>} concept 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
@@ -27262,7 +27361,7 @@ const OntologyApiAxiosParamCreator = function (configuration?: Configuration) {
         },
         /**
          * 
-         * @summary Concepts
+         * @summary Concepts  Put One
          * @param {string} objectId 
          * @param {Concept} concept 
          * @param {*} [options] Override http request option.
@@ -27302,7 +27401,7 @@ const OntologyApiAxiosParamCreator = function (configuration?: Configuration) {
         },
         /**
          * 
-         * @summary Concepts
+         * @summary Concepts  Put Some
          * @param {Array<Concept>} concept 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
@@ -27338,7 +27437,7 @@ const OntologyApiAxiosParamCreator = function (configuration?: Configuration) {
         },
         /**
          * 
-         * @summary Diseases
+         * @summary Diseases  Delete All
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
@@ -27368,7 +27467,7 @@ const OntologyApiAxiosParamCreator = function (configuration?: Configuration) {
         },
         /**
          * 
-         * @summary Diseases
+         * @summary Diseases  Delete One
          * @param {any} objectId 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
@@ -27402,7 +27501,7 @@ const OntologyApiAxiosParamCreator = function (configuration?: Configuration) {
         },
         /**
          * 
-         * @summary Diseases
+         * @summary Diseases  Delete Some
          * @param {string} ids 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
@@ -27439,7 +27538,7 @@ const OntologyApiAxiosParamCreator = function (configuration?: Configuration) {
         },
         /**
          * 
-         * @summary Diseases
+         * @summary Diseases  Get All
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
@@ -27469,7 +27568,7 @@ const OntologyApiAxiosParamCreator = function (configuration?: Configuration) {
         },
         /**
          * 
-         * @summary Diseases
+         * @summary Diseases  Get One
          * @param {string} objectId 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
@@ -27503,7 +27602,7 @@ const OntologyApiAxiosParamCreator = function (configuration?: Configuration) {
         },
         /**
          * 
-         * @summary Diseases
+         * @summary Diseases  Get Some
          * @param {string} ids 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
@@ -27540,7 +27639,7 @@ const OntologyApiAxiosParamCreator = function (configuration?: Configuration) {
         },
         /**
          * 
-         * @summary Diseases
+         * @summary Diseases  Post One
          * @param {Disease} disease 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
@@ -27576,7 +27675,7 @@ const OntologyApiAxiosParamCreator = function (configuration?: Configuration) {
         },
         /**
          * 
-         * @summary Diseases
+         * @summary Diseases  Post Query
          * @param {EpiFilter} filter 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
@@ -27612,7 +27711,7 @@ const OntologyApiAxiosParamCreator = function (configuration?: Configuration) {
         },
         /**
          * 
-         * @summary Diseases
+         * @summary Diseases  Post Query  Ids
          * @param {EpiFilter} filter 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
@@ -27648,7 +27747,7 @@ const OntologyApiAxiosParamCreator = function (configuration?: Configuration) {
         },
         /**
          * 
-         * @summary Diseases
+         * @summary Diseases  Post Some
          * @param {Array<Disease>} disease 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
@@ -27724,7 +27823,7 @@ const OntologyApiAxiosParamCreator = function (configuration?: Configuration) {
         },
         /**
          * 
-         * @summary Diseases
+         * @summary Diseases  Put One
          * @param {string} objectId 
          * @param {Disease} disease 
          * @param {*} [options] Override http request option.
@@ -27764,7 +27863,7 @@ const OntologyApiAxiosParamCreator = function (configuration?: Configuration) {
         },
         /**
          * 
-         * @summary Diseases
+         * @summary Diseases  Put Some
          * @param {Array<Disease>} disease 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
@@ -27800,7 +27899,7 @@ const OntologyApiAxiosParamCreator = function (configuration?: Configuration) {
         },
         /**
          * 
-         * @summary Etiological Agents
+         * @summary Etiological Agents  Delete All
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
@@ -27830,7 +27929,7 @@ const OntologyApiAxiosParamCreator = function (configuration?: Configuration) {
         },
         /**
          * 
-         * @summary Etiological Agents
+         * @summary Etiological Agents  Delete One
          * @param {any} objectId 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
@@ -27864,7 +27963,7 @@ const OntologyApiAxiosParamCreator = function (configuration?: Configuration) {
         },
         /**
          * 
-         * @summary Etiological Agents
+         * @summary Etiological Agents  Delete Some
          * @param {string} ids 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
@@ -27901,7 +28000,7 @@ const OntologyApiAxiosParamCreator = function (configuration?: Configuration) {
         },
         /**
          * 
-         * @summary Etiological Agents
+         * @summary Etiological Agents  Get All
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
@@ -27931,7 +28030,7 @@ const OntologyApiAxiosParamCreator = function (configuration?: Configuration) {
         },
         /**
          * 
-         * @summary Etiological Agents
+         * @summary Etiological Agents  Get One
          * @param {string} objectId 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
@@ -27965,7 +28064,7 @@ const OntologyApiAxiosParamCreator = function (configuration?: Configuration) {
         },
         /**
          * 
-         * @summary Etiological Agents
+         * @summary Etiological Agents  Get Some
          * @param {string} ids 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
@@ -28002,7 +28101,7 @@ const OntologyApiAxiosParamCreator = function (configuration?: Configuration) {
         },
         /**
          * 
-         * @summary Etiological Agents
+         * @summary Etiological Agents  Post One
          * @param {EtiologicalAgent} etiologicalAgent 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
@@ -28038,7 +28137,7 @@ const OntologyApiAxiosParamCreator = function (configuration?: Configuration) {
         },
         /**
          * 
-         * @summary Etiological Agents
+         * @summary Etiological Agents  Post Query
          * @param {EpiFilter} filter 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
@@ -28074,7 +28173,7 @@ const OntologyApiAxiosParamCreator = function (configuration?: Configuration) {
         },
         /**
          * 
-         * @summary Etiological Agents
+         * @summary Etiological Agents  Post Query  Ids
          * @param {EpiFilter} filter 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
@@ -28110,7 +28209,7 @@ const OntologyApiAxiosParamCreator = function (configuration?: Configuration) {
         },
         /**
          * 
-         * @summary Etiological Agents
+         * @summary Etiological Agents  Post Some
          * @param {Array<EtiologicalAgent>} etiologicalAgent 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
@@ -28146,7 +28245,7 @@ const OntologyApiAxiosParamCreator = function (configuration?: Configuration) {
         },
         /**
          * 
-         * @summary Etiological Agents
+         * @summary Etiological Agents  Put One
          * @param {string} objectId 
          * @param {EtiologicalAgent} etiologicalAgent 
          * @param {*} [options] Override http request option.
@@ -28186,7 +28285,7 @@ const OntologyApiAxiosParamCreator = function (configuration?: Configuration) {
         },
         /**
          * 
-         * @summary Etiological Agents
+         * @summary Etiological Agents  Put Some
          * @param {Array<EtiologicalAgent>} etiologicalAgent 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
@@ -28222,7 +28321,7 @@ const OntologyApiAxiosParamCreator = function (configuration?: Configuration) {
         },
         /**
          * 
-         * @summary Etiologies
+         * @summary Etiologies  Delete All
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
@@ -28252,7 +28351,7 @@ const OntologyApiAxiosParamCreator = function (configuration?: Configuration) {
         },
         /**
          * 
-         * @summary Etiologies
+         * @summary Etiologies  Delete One
          * @param {any} objectId 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
@@ -28286,7 +28385,7 @@ const OntologyApiAxiosParamCreator = function (configuration?: Configuration) {
         },
         /**
          * 
-         * @summary Etiologies
+         * @summary Etiologies  Delete Some
          * @param {string} ids 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
@@ -28323,7 +28422,7 @@ const OntologyApiAxiosParamCreator = function (configuration?: Configuration) {
         },
         /**
          * 
-         * @summary Etiologies
+         * @summary Etiologies  Get All
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
@@ -28353,7 +28452,7 @@ const OntologyApiAxiosParamCreator = function (configuration?: Configuration) {
         },
         /**
          * 
-         * @summary Etiologies
+         * @summary Etiologies  Get One
          * @param {string} objectId 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
@@ -28387,7 +28486,7 @@ const OntologyApiAxiosParamCreator = function (configuration?: Configuration) {
         },
         /**
          * 
-         * @summary Etiologies
+         * @summary Etiologies  Get Some
          * @param {string} ids 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
@@ -28424,7 +28523,7 @@ const OntologyApiAxiosParamCreator = function (configuration?: Configuration) {
         },
         /**
          * 
-         * @summary Etiologies
+         * @summary Etiologies  Post One
          * @param {Etiology} etiology 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
@@ -28460,7 +28559,7 @@ const OntologyApiAxiosParamCreator = function (configuration?: Configuration) {
         },
         /**
          * 
-         * @summary Etiologies
+         * @summary Etiologies  Post Query
          * @param {EpiFilter} filter 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
@@ -28496,7 +28595,7 @@ const OntologyApiAxiosParamCreator = function (configuration?: Configuration) {
         },
         /**
          * 
-         * @summary Etiologies
+         * @summary Etiologies  Post Query  Ids
          * @param {EpiFilter} filter 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
@@ -28532,7 +28631,7 @@ const OntologyApiAxiosParamCreator = function (configuration?: Configuration) {
         },
         /**
          * 
-         * @summary Etiologies
+         * @summary Etiologies  Post Some
          * @param {Array<Etiology>} etiology 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
@@ -28568,7 +28667,7 @@ const OntologyApiAxiosParamCreator = function (configuration?: Configuration) {
         },
         /**
          * 
-         * @summary Etiologies
+         * @summary Etiologies  Put One
          * @param {string} objectId 
          * @param {Etiology} etiology 
          * @param {*} [options] Override http request option.
@@ -28608,7 +28707,7 @@ const OntologyApiAxiosParamCreator = function (configuration?: Configuration) {
         },
         /**
          * 
-         * @summary Etiologies
+         * @summary Etiologies  Put Some
          * @param {Array<Etiology>} etiology 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
@@ -28654,7 +28753,7 @@ const OntologyApiFp = function(configuration?: Configuration) {
     return {
         /**
          * 
-         * @summary Concept Set Members
+         * @summary Concept Set Members  Delete All
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
@@ -28666,7 +28765,7 @@ const OntologyApiFp = function(configuration?: Configuration) {
         },
         /**
          * 
-         * @summary Concept Set Members
+         * @summary Concept Set Members  Delete One
          * @param {any} objectId 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
@@ -28679,7 +28778,7 @@ const OntologyApiFp = function(configuration?: Configuration) {
         },
         /**
          * 
-         * @summary Concept Set Members
+         * @summary Concept Set Members  Delete Some
          * @param {string} ids 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
@@ -28692,7 +28791,7 @@ const OntologyApiFp = function(configuration?: Configuration) {
         },
         /**
          * 
-         * @summary Concept Set Members
+         * @summary Concept Set Members  Get All
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
@@ -28704,7 +28803,7 @@ const OntologyApiFp = function(configuration?: Configuration) {
         },
         /**
          * 
-         * @summary Concept Set Members
+         * @summary Concept Set Members  Get One
          * @param {string} objectId 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
@@ -28717,7 +28816,7 @@ const OntologyApiFp = function(configuration?: Configuration) {
         },
         /**
          * 
-         * @summary Concept Set Members
+         * @summary Concept Set Members  Get Some
          * @param {string} ids 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
@@ -28730,7 +28829,7 @@ const OntologyApiFp = function(configuration?: Configuration) {
         },
         /**
          * 
-         * @summary Concept Set Members
+         * @summary Concept Set Members  Post One
          * @param {ConceptSetMember} conceptSetMember 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
@@ -28743,7 +28842,7 @@ const OntologyApiFp = function(configuration?: Configuration) {
         },
         /**
          * 
-         * @summary Concept Set Members
+         * @summary Concept Set Members  Post Query
          * @param {EpiFilter} filter 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
@@ -28756,7 +28855,7 @@ const OntologyApiFp = function(configuration?: Configuration) {
         },
         /**
          * 
-         * @summary Concept Set Members
+         * @summary Concept Set Members  Post Query  Ids
          * @param {EpiFilter} filter 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
@@ -28769,7 +28868,7 @@ const OntologyApiFp = function(configuration?: Configuration) {
         },
         /**
          * 
-         * @summary Concept Set Members
+         * @summary Concept Set Members  Post Some
          * @param {Array<ConceptSetMember>} conceptSetMember 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
@@ -28782,7 +28881,7 @@ const OntologyApiFp = function(configuration?: Configuration) {
         },
         /**
          * 
-         * @summary Concept Set Members
+         * @summary Concept Set Members  Put One
          * @param {string} objectId 
          * @param {ConceptSetMember} conceptSetMember 
          * @param {*} [options] Override http request option.
@@ -28796,7 +28895,7 @@ const OntologyApiFp = function(configuration?: Configuration) {
         },
         /**
          * 
-         * @summary Concept Set Members
+         * @summary Concept Set Members  Put Some
          * @param {Array<ConceptSetMember>} conceptSetMember 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
@@ -28809,7 +28908,7 @@ const OntologyApiFp = function(configuration?: Configuration) {
         },
         /**
          * 
-         * @summary Concept Sets
+         * @summary Concept Sets  Delete All
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
@@ -28821,7 +28920,7 @@ const OntologyApiFp = function(configuration?: Configuration) {
         },
         /**
          * 
-         * @summary Concept Sets
+         * @summary Concept Sets  Delete One
          * @param {any} objectId 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
@@ -28834,7 +28933,7 @@ const OntologyApiFp = function(configuration?: Configuration) {
         },
         /**
          * 
-         * @summary Concept Sets
+         * @summary Concept Sets  Delete Some
          * @param {string} ids 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
@@ -28847,7 +28946,7 @@ const OntologyApiFp = function(configuration?: Configuration) {
         },
         /**
          * 
-         * @summary Concept Sets
+         * @summary Concept Sets  Get All
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
@@ -28859,7 +28958,7 @@ const OntologyApiFp = function(configuration?: Configuration) {
         },
         /**
          * 
-         * @summary Concept Sets
+         * @summary Concept Sets  Get One
          * @param {string} objectId 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
@@ -28872,7 +28971,7 @@ const OntologyApiFp = function(configuration?: Configuration) {
         },
         /**
          * 
-         * @summary Concept Sets
+         * @summary Concept Sets  Get Some
          * @param {string} ids 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
@@ -28885,7 +28984,7 @@ const OntologyApiFp = function(configuration?: Configuration) {
         },
         /**
          * 
-         * @summary Concept Sets
+         * @summary Concept Sets  Post One
          * @param {ConceptSet} conceptSet 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
@@ -28898,7 +28997,7 @@ const OntologyApiFp = function(configuration?: Configuration) {
         },
         /**
          * 
-         * @summary Concept Sets
+         * @summary Concept Sets  Post Query
          * @param {EpiFilter} filter 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
@@ -28911,7 +29010,7 @@ const OntologyApiFp = function(configuration?: Configuration) {
         },
         /**
          * 
-         * @summary Concept Sets
+         * @summary Concept Sets  Post Query  Ids
          * @param {EpiFilter} filter 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
@@ -28924,7 +29023,7 @@ const OntologyApiFp = function(configuration?: Configuration) {
         },
         /**
          * 
-         * @summary Concept Sets
+         * @summary Concept Sets  Post Some
          * @param {Array<ConceptSet>} conceptSet 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
@@ -28951,7 +29050,7 @@ const OntologyApiFp = function(configuration?: Configuration) {
         },
         /**
          * 
-         * @summary Concept Sets
+         * @summary Concept Sets  Put One
          * @param {string} objectId 
          * @param {ConceptSet} conceptSet 
          * @param {*} [options] Override http request option.
@@ -28965,7 +29064,7 @@ const OntologyApiFp = function(configuration?: Configuration) {
         },
         /**
          * 
-         * @summary Concept Sets
+         * @summary Concept Sets  Put Some
          * @param {Array<ConceptSet>} conceptSet 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
@@ -28978,7 +29077,7 @@ const OntologyApiFp = function(configuration?: Configuration) {
         },
         /**
          * 
-         * @summary Concepts
+         * @summary Concepts  Delete All
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
@@ -28990,7 +29089,7 @@ const OntologyApiFp = function(configuration?: Configuration) {
         },
         /**
          * 
-         * @summary Concepts
+         * @summary Concepts  Delete One
          * @param {any} objectId 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
@@ -29003,7 +29102,7 @@ const OntologyApiFp = function(configuration?: Configuration) {
         },
         /**
          * 
-         * @summary Concepts
+         * @summary Concepts  Delete Some
          * @param {string} ids 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
@@ -29016,7 +29115,7 @@ const OntologyApiFp = function(configuration?: Configuration) {
         },
         /**
          * 
-         * @summary Concepts
+         * @summary Concepts  Get All
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
@@ -29028,7 +29127,7 @@ const OntologyApiFp = function(configuration?: Configuration) {
         },
         /**
          * 
-         * @summary Concepts
+         * @summary Concepts  Get One
          * @param {string} objectId 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
@@ -29041,7 +29140,7 @@ const OntologyApiFp = function(configuration?: Configuration) {
         },
         /**
          * 
-         * @summary Concepts
+         * @summary Concepts  Get Some
          * @param {string} ids 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
@@ -29054,7 +29153,7 @@ const OntologyApiFp = function(configuration?: Configuration) {
         },
         /**
          * 
-         * @summary Concepts
+         * @summary Concepts  Post One
          * @param {Concept} concept 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
@@ -29067,7 +29166,7 @@ const OntologyApiFp = function(configuration?: Configuration) {
         },
         /**
          * 
-         * @summary Concepts
+         * @summary Concepts  Post Query
          * @param {EpiFilter} filter 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
@@ -29080,7 +29179,7 @@ const OntologyApiFp = function(configuration?: Configuration) {
         },
         /**
          * 
-         * @summary Concepts
+         * @summary Concepts  Post Query  Ids
          * @param {EpiFilter} filter 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
@@ -29093,7 +29192,7 @@ const OntologyApiFp = function(configuration?: Configuration) {
         },
         /**
          * 
-         * @summary Concepts
+         * @summary Concepts  Post Some
          * @param {Array<Concept>} concept 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
@@ -29106,7 +29205,7 @@ const OntologyApiFp = function(configuration?: Configuration) {
         },
         /**
          * 
-         * @summary Concepts
+         * @summary Concepts  Put One
          * @param {string} objectId 
          * @param {Concept} concept 
          * @param {*} [options] Override http request option.
@@ -29120,7 +29219,7 @@ const OntologyApiFp = function(configuration?: Configuration) {
         },
         /**
          * 
-         * @summary Concepts
+         * @summary Concepts  Put Some
          * @param {Array<Concept>} concept 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
@@ -29133,7 +29232,7 @@ const OntologyApiFp = function(configuration?: Configuration) {
         },
         /**
          * 
-         * @summary Diseases
+         * @summary Diseases  Delete All
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
@@ -29145,7 +29244,7 @@ const OntologyApiFp = function(configuration?: Configuration) {
         },
         /**
          * 
-         * @summary Diseases
+         * @summary Diseases  Delete One
          * @param {any} objectId 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
@@ -29158,7 +29257,7 @@ const OntologyApiFp = function(configuration?: Configuration) {
         },
         /**
          * 
-         * @summary Diseases
+         * @summary Diseases  Delete Some
          * @param {string} ids 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
@@ -29171,7 +29270,7 @@ const OntologyApiFp = function(configuration?: Configuration) {
         },
         /**
          * 
-         * @summary Diseases
+         * @summary Diseases  Get All
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
@@ -29183,7 +29282,7 @@ const OntologyApiFp = function(configuration?: Configuration) {
         },
         /**
          * 
-         * @summary Diseases
+         * @summary Diseases  Get One
          * @param {string} objectId 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
@@ -29196,7 +29295,7 @@ const OntologyApiFp = function(configuration?: Configuration) {
         },
         /**
          * 
-         * @summary Diseases
+         * @summary Diseases  Get Some
          * @param {string} ids 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
@@ -29209,7 +29308,7 @@ const OntologyApiFp = function(configuration?: Configuration) {
         },
         /**
          * 
-         * @summary Diseases
+         * @summary Diseases  Post One
          * @param {Disease} disease 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
@@ -29222,7 +29321,7 @@ const OntologyApiFp = function(configuration?: Configuration) {
         },
         /**
          * 
-         * @summary Diseases
+         * @summary Diseases  Post Query
          * @param {EpiFilter} filter 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
@@ -29235,7 +29334,7 @@ const OntologyApiFp = function(configuration?: Configuration) {
         },
         /**
          * 
-         * @summary Diseases
+         * @summary Diseases  Post Query  Ids
          * @param {EpiFilter} filter 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
@@ -29248,7 +29347,7 @@ const OntologyApiFp = function(configuration?: Configuration) {
         },
         /**
          * 
-         * @summary Diseases
+         * @summary Diseases  Post Some
          * @param {Array<Disease>} disease 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
@@ -29275,7 +29374,7 @@ const OntologyApiFp = function(configuration?: Configuration) {
         },
         /**
          * 
-         * @summary Diseases
+         * @summary Diseases  Put One
          * @param {string} objectId 
          * @param {Disease} disease 
          * @param {*} [options] Override http request option.
@@ -29289,7 +29388,7 @@ const OntologyApiFp = function(configuration?: Configuration) {
         },
         /**
          * 
-         * @summary Diseases
+         * @summary Diseases  Put Some
          * @param {Array<Disease>} disease 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
@@ -29302,7 +29401,7 @@ const OntologyApiFp = function(configuration?: Configuration) {
         },
         /**
          * 
-         * @summary Etiological Agents
+         * @summary Etiological Agents  Delete All
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
@@ -29314,7 +29413,7 @@ const OntologyApiFp = function(configuration?: Configuration) {
         },
         /**
          * 
-         * @summary Etiological Agents
+         * @summary Etiological Agents  Delete One
          * @param {any} objectId 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
@@ -29327,7 +29426,7 @@ const OntologyApiFp = function(configuration?: Configuration) {
         },
         /**
          * 
-         * @summary Etiological Agents
+         * @summary Etiological Agents  Delete Some
          * @param {string} ids 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
@@ -29340,7 +29439,7 @@ const OntologyApiFp = function(configuration?: Configuration) {
         },
         /**
          * 
-         * @summary Etiological Agents
+         * @summary Etiological Agents  Get All
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
@@ -29352,7 +29451,7 @@ const OntologyApiFp = function(configuration?: Configuration) {
         },
         /**
          * 
-         * @summary Etiological Agents
+         * @summary Etiological Agents  Get One
          * @param {string} objectId 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
@@ -29365,7 +29464,7 @@ const OntologyApiFp = function(configuration?: Configuration) {
         },
         /**
          * 
-         * @summary Etiological Agents
+         * @summary Etiological Agents  Get Some
          * @param {string} ids 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
@@ -29378,7 +29477,7 @@ const OntologyApiFp = function(configuration?: Configuration) {
         },
         /**
          * 
-         * @summary Etiological Agents
+         * @summary Etiological Agents  Post One
          * @param {EtiologicalAgent} etiologicalAgent 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
@@ -29391,7 +29490,7 @@ const OntologyApiFp = function(configuration?: Configuration) {
         },
         /**
          * 
-         * @summary Etiological Agents
+         * @summary Etiological Agents  Post Query
          * @param {EpiFilter} filter 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
@@ -29404,7 +29503,7 @@ const OntologyApiFp = function(configuration?: Configuration) {
         },
         /**
          * 
-         * @summary Etiological Agents
+         * @summary Etiological Agents  Post Query  Ids
          * @param {EpiFilter} filter 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
@@ -29417,7 +29516,7 @@ const OntologyApiFp = function(configuration?: Configuration) {
         },
         /**
          * 
-         * @summary Etiological Agents
+         * @summary Etiological Agents  Post Some
          * @param {Array<EtiologicalAgent>} etiologicalAgent 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
@@ -29430,7 +29529,7 @@ const OntologyApiFp = function(configuration?: Configuration) {
         },
         /**
          * 
-         * @summary Etiological Agents
+         * @summary Etiological Agents  Put One
          * @param {string} objectId 
          * @param {EtiologicalAgent} etiologicalAgent 
          * @param {*} [options] Override http request option.
@@ -29444,7 +29543,7 @@ const OntologyApiFp = function(configuration?: Configuration) {
         },
         /**
          * 
-         * @summary Etiological Agents
+         * @summary Etiological Agents  Put Some
          * @param {Array<EtiologicalAgent>} etiologicalAgent 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
@@ -29457,7 +29556,7 @@ const OntologyApiFp = function(configuration?: Configuration) {
         },
         /**
          * 
-         * @summary Etiologies
+         * @summary Etiologies  Delete All
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
@@ -29469,7 +29568,7 @@ const OntologyApiFp = function(configuration?: Configuration) {
         },
         /**
          * 
-         * @summary Etiologies
+         * @summary Etiologies  Delete One
          * @param {any} objectId 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
@@ -29482,7 +29581,7 @@ const OntologyApiFp = function(configuration?: Configuration) {
         },
         /**
          * 
-         * @summary Etiologies
+         * @summary Etiologies  Delete Some
          * @param {string} ids 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
@@ -29495,7 +29594,7 @@ const OntologyApiFp = function(configuration?: Configuration) {
         },
         /**
          * 
-         * @summary Etiologies
+         * @summary Etiologies  Get All
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
@@ -29507,7 +29606,7 @@ const OntologyApiFp = function(configuration?: Configuration) {
         },
         /**
          * 
-         * @summary Etiologies
+         * @summary Etiologies  Get One
          * @param {string} objectId 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
@@ -29520,7 +29619,7 @@ const OntologyApiFp = function(configuration?: Configuration) {
         },
         /**
          * 
-         * @summary Etiologies
+         * @summary Etiologies  Get Some
          * @param {string} ids 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
@@ -29533,7 +29632,7 @@ const OntologyApiFp = function(configuration?: Configuration) {
         },
         /**
          * 
-         * @summary Etiologies
+         * @summary Etiologies  Post One
          * @param {Etiology} etiology 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
@@ -29546,7 +29645,7 @@ const OntologyApiFp = function(configuration?: Configuration) {
         },
         /**
          * 
-         * @summary Etiologies
+         * @summary Etiologies  Post Query
          * @param {EpiFilter} filter 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
@@ -29559,7 +29658,7 @@ const OntologyApiFp = function(configuration?: Configuration) {
         },
         /**
          * 
-         * @summary Etiologies
+         * @summary Etiologies  Post Query  Ids
          * @param {EpiFilter} filter 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
@@ -29572,7 +29671,7 @@ const OntologyApiFp = function(configuration?: Configuration) {
         },
         /**
          * 
-         * @summary Etiologies
+         * @summary Etiologies  Post Some
          * @param {Array<Etiology>} etiology 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
@@ -29585,7 +29684,7 @@ const OntologyApiFp = function(configuration?: Configuration) {
         },
         /**
          * 
-         * @summary Etiologies
+         * @summary Etiologies  Put One
          * @param {string} objectId 
          * @param {Etiology} etiology 
          * @param {*} [options] Override http request option.
@@ -29599,7 +29698,7 @@ const OntologyApiFp = function(configuration?: Configuration) {
         },
         /**
          * 
-         * @summary Etiologies
+         * @summary Etiologies  Put Some
          * @param {Array<Etiology>} etiology 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
@@ -29634,7 +29733,7 @@ export class OntologyApi extends BaseAPI {
 
     /**
      * 
-     * @summary Concept Set Members
+     * @summary Concept Set Members  Delete All
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
      * @memberof OntologyApi
@@ -29645,7 +29744,7 @@ export class OntologyApi extends BaseAPI {
 
     /**
      * 
-     * @summary Concept Set Members
+     * @summary Concept Set Members  Delete One
      * @param {any} objectId 
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
@@ -29657,7 +29756,7 @@ export class OntologyApi extends BaseAPI {
 
     /**
      * 
-     * @summary Concept Set Members
+     * @summary Concept Set Members  Delete Some
      * @param {string} ids 
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
@@ -29669,7 +29768,7 @@ export class OntologyApi extends BaseAPI {
 
     /**
      * 
-     * @summary Concept Set Members
+     * @summary Concept Set Members  Get All
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
      * @memberof OntologyApi
@@ -29680,7 +29779,7 @@ export class OntologyApi extends BaseAPI {
 
     /**
      * 
-     * @summary Concept Set Members
+     * @summary Concept Set Members  Get One
      * @param {string} objectId 
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
@@ -29692,7 +29791,7 @@ export class OntologyApi extends BaseAPI {
 
     /**
      * 
-     * @summary Concept Set Members
+     * @summary Concept Set Members  Get Some
      * @param {string} ids 
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
@@ -29704,7 +29803,7 @@ export class OntologyApi extends BaseAPI {
 
     /**
      * 
-     * @summary Concept Set Members
+     * @summary Concept Set Members  Post One
      * @param {ConceptSetMember} conceptSetMember 
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
@@ -29716,7 +29815,7 @@ export class OntologyApi extends BaseAPI {
 
     /**
      * 
-     * @summary Concept Set Members
+     * @summary Concept Set Members  Post Query
      * @param {EpiFilter} filter 
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
@@ -29728,7 +29827,7 @@ export class OntologyApi extends BaseAPI {
 
     /**
      * 
-     * @summary Concept Set Members
+     * @summary Concept Set Members  Post Query  Ids
      * @param {EpiFilter} filter 
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
@@ -29740,7 +29839,7 @@ export class OntologyApi extends BaseAPI {
 
     /**
      * 
-     * @summary Concept Set Members
+     * @summary Concept Set Members  Post Some
      * @param {Array<ConceptSetMember>} conceptSetMember 
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
@@ -29752,7 +29851,7 @@ export class OntologyApi extends BaseAPI {
 
     /**
      * 
-     * @summary Concept Set Members
+     * @summary Concept Set Members  Put One
      * @param {string} objectId 
      * @param {ConceptSetMember} conceptSetMember 
      * @param {*} [options] Override http request option.
@@ -29765,7 +29864,7 @@ export class OntologyApi extends BaseAPI {
 
     /**
      * 
-     * @summary Concept Set Members
+     * @summary Concept Set Members  Put Some
      * @param {Array<ConceptSetMember>} conceptSetMember 
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
@@ -29777,7 +29876,7 @@ export class OntologyApi extends BaseAPI {
 
     /**
      * 
-     * @summary Concept Sets
+     * @summary Concept Sets  Delete All
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
      * @memberof OntologyApi
@@ -29788,7 +29887,7 @@ export class OntologyApi extends BaseAPI {
 
     /**
      * 
-     * @summary Concept Sets
+     * @summary Concept Sets  Delete One
      * @param {any} objectId 
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
@@ -29800,7 +29899,7 @@ export class OntologyApi extends BaseAPI {
 
     /**
      * 
-     * @summary Concept Sets
+     * @summary Concept Sets  Delete Some
      * @param {string} ids 
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
@@ -29812,7 +29911,7 @@ export class OntologyApi extends BaseAPI {
 
     /**
      * 
-     * @summary Concept Sets
+     * @summary Concept Sets  Get All
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
      * @memberof OntologyApi
@@ -29823,7 +29922,7 @@ export class OntologyApi extends BaseAPI {
 
     /**
      * 
-     * @summary Concept Sets
+     * @summary Concept Sets  Get One
      * @param {string} objectId 
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
@@ -29835,7 +29934,7 @@ export class OntologyApi extends BaseAPI {
 
     /**
      * 
-     * @summary Concept Sets
+     * @summary Concept Sets  Get Some
      * @param {string} ids 
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
@@ -29847,7 +29946,7 @@ export class OntologyApi extends BaseAPI {
 
     /**
      * 
-     * @summary Concept Sets
+     * @summary Concept Sets  Post One
      * @param {ConceptSet} conceptSet 
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
@@ -29859,7 +29958,7 @@ export class OntologyApi extends BaseAPI {
 
     /**
      * 
-     * @summary Concept Sets
+     * @summary Concept Sets  Post Query
      * @param {EpiFilter} filter 
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
@@ -29871,7 +29970,7 @@ export class OntologyApi extends BaseAPI {
 
     /**
      * 
-     * @summary Concept Sets
+     * @summary Concept Sets  Post Query  Ids
      * @param {EpiFilter} filter 
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
@@ -29883,7 +29982,7 @@ export class OntologyApi extends BaseAPI {
 
     /**
      * 
-     * @summary Concept Sets
+     * @summary Concept Sets  Post Some
      * @param {Array<ConceptSet>} conceptSet 
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
@@ -29908,7 +30007,7 @@ export class OntologyApi extends BaseAPI {
 
     /**
      * 
-     * @summary Concept Sets
+     * @summary Concept Sets  Put One
      * @param {string} objectId 
      * @param {ConceptSet} conceptSet 
      * @param {*} [options] Override http request option.
@@ -29921,7 +30020,7 @@ export class OntologyApi extends BaseAPI {
 
     /**
      * 
-     * @summary Concept Sets
+     * @summary Concept Sets  Put Some
      * @param {Array<ConceptSet>} conceptSet 
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
@@ -29933,7 +30032,7 @@ export class OntologyApi extends BaseAPI {
 
     /**
      * 
-     * @summary Concepts
+     * @summary Concepts  Delete All
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
      * @memberof OntologyApi
@@ -29944,7 +30043,7 @@ export class OntologyApi extends BaseAPI {
 
     /**
      * 
-     * @summary Concepts
+     * @summary Concepts  Delete One
      * @param {any} objectId 
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
@@ -29956,7 +30055,7 @@ export class OntologyApi extends BaseAPI {
 
     /**
      * 
-     * @summary Concepts
+     * @summary Concepts  Delete Some
      * @param {string} ids 
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
@@ -29968,7 +30067,7 @@ export class OntologyApi extends BaseAPI {
 
     /**
      * 
-     * @summary Concepts
+     * @summary Concepts  Get All
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
      * @memberof OntologyApi
@@ -29979,7 +30078,7 @@ export class OntologyApi extends BaseAPI {
 
     /**
      * 
-     * @summary Concepts
+     * @summary Concepts  Get One
      * @param {string} objectId 
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
@@ -29991,7 +30090,7 @@ export class OntologyApi extends BaseAPI {
 
     /**
      * 
-     * @summary Concepts
+     * @summary Concepts  Get Some
      * @param {string} ids 
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
@@ -30003,7 +30102,7 @@ export class OntologyApi extends BaseAPI {
 
     /**
      * 
-     * @summary Concepts
+     * @summary Concepts  Post One
      * @param {Concept} concept 
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
@@ -30015,7 +30114,7 @@ export class OntologyApi extends BaseAPI {
 
     /**
      * 
-     * @summary Concepts
+     * @summary Concepts  Post Query
      * @param {EpiFilter} filter 
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
@@ -30027,7 +30126,7 @@ export class OntologyApi extends BaseAPI {
 
     /**
      * 
-     * @summary Concepts
+     * @summary Concepts  Post Query  Ids
      * @param {EpiFilter} filter 
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
@@ -30039,7 +30138,7 @@ export class OntologyApi extends BaseAPI {
 
     /**
      * 
-     * @summary Concepts
+     * @summary Concepts  Post Some
      * @param {Array<Concept>} concept 
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
@@ -30051,7 +30150,7 @@ export class OntologyApi extends BaseAPI {
 
     /**
      * 
-     * @summary Concepts
+     * @summary Concepts  Put One
      * @param {string} objectId 
      * @param {Concept} concept 
      * @param {*} [options] Override http request option.
@@ -30064,7 +30163,7 @@ export class OntologyApi extends BaseAPI {
 
     /**
      * 
-     * @summary Concepts
+     * @summary Concepts  Put Some
      * @param {Array<Concept>} concept 
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
@@ -30076,7 +30175,7 @@ export class OntologyApi extends BaseAPI {
 
     /**
      * 
-     * @summary Diseases
+     * @summary Diseases  Delete All
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
      * @memberof OntologyApi
@@ -30087,7 +30186,7 @@ export class OntologyApi extends BaseAPI {
 
     /**
      * 
-     * @summary Diseases
+     * @summary Diseases  Delete One
      * @param {any} objectId 
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
@@ -30099,7 +30198,7 @@ export class OntologyApi extends BaseAPI {
 
     /**
      * 
-     * @summary Diseases
+     * @summary Diseases  Delete Some
      * @param {string} ids 
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
@@ -30111,7 +30210,7 @@ export class OntologyApi extends BaseAPI {
 
     /**
      * 
-     * @summary Diseases
+     * @summary Diseases  Get All
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
      * @memberof OntologyApi
@@ -30122,7 +30221,7 @@ export class OntologyApi extends BaseAPI {
 
     /**
      * 
-     * @summary Diseases
+     * @summary Diseases  Get One
      * @param {string} objectId 
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
@@ -30134,7 +30233,7 @@ export class OntologyApi extends BaseAPI {
 
     /**
      * 
-     * @summary Diseases
+     * @summary Diseases  Get Some
      * @param {string} ids 
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
@@ -30146,7 +30245,7 @@ export class OntologyApi extends BaseAPI {
 
     /**
      * 
-     * @summary Diseases
+     * @summary Diseases  Post One
      * @param {Disease} disease 
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
@@ -30158,7 +30257,7 @@ export class OntologyApi extends BaseAPI {
 
     /**
      * 
-     * @summary Diseases
+     * @summary Diseases  Post Query
      * @param {EpiFilter} filter 
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
@@ -30170,7 +30269,7 @@ export class OntologyApi extends BaseAPI {
 
     /**
      * 
-     * @summary Diseases
+     * @summary Diseases  Post Query  Ids
      * @param {EpiFilter} filter 
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
@@ -30182,7 +30281,7 @@ export class OntologyApi extends BaseAPI {
 
     /**
      * 
-     * @summary Diseases
+     * @summary Diseases  Post Some
      * @param {Array<Disease>} disease 
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
@@ -30207,7 +30306,7 @@ export class OntologyApi extends BaseAPI {
 
     /**
      * 
-     * @summary Diseases
+     * @summary Diseases  Put One
      * @param {string} objectId 
      * @param {Disease} disease 
      * @param {*} [options] Override http request option.
@@ -30220,7 +30319,7 @@ export class OntologyApi extends BaseAPI {
 
     /**
      * 
-     * @summary Diseases
+     * @summary Diseases  Put Some
      * @param {Array<Disease>} disease 
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
@@ -30232,7 +30331,7 @@ export class OntologyApi extends BaseAPI {
 
     /**
      * 
-     * @summary Etiological Agents
+     * @summary Etiological Agents  Delete All
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
      * @memberof OntologyApi
@@ -30243,7 +30342,7 @@ export class OntologyApi extends BaseAPI {
 
     /**
      * 
-     * @summary Etiological Agents
+     * @summary Etiological Agents  Delete One
      * @param {any} objectId 
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
@@ -30255,7 +30354,7 @@ export class OntologyApi extends BaseAPI {
 
     /**
      * 
-     * @summary Etiological Agents
+     * @summary Etiological Agents  Delete Some
      * @param {string} ids 
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
@@ -30267,7 +30366,7 @@ export class OntologyApi extends BaseAPI {
 
     /**
      * 
-     * @summary Etiological Agents
+     * @summary Etiological Agents  Get All
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
      * @memberof OntologyApi
@@ -30278,7 +30377,7 @@ export class OntologyApi extends BaseAPI {
 
     /**
      * 
-     * @summary Etiological Agents
+     * @summary Etiological Agents  Get One
      * @param {string} objectId 
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
@@ -30290,7 +30389,7 @@ export class OntologyApi extends BaseAPI {
 
     /**
      * 
-     * @summary Etiological Agents
+     * @summary Etiological Agents  Get Some
      * @param {string} ids 
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
@@ -30302,7 +30401,7 @@ export class OntologyApi extends BaseAPI {
 
     /**
      * 
-     * @summary Etiological Agents
+     * @summary Etiological Agents  Post One
      * @param {EtiologicalAgent} etiologicalAgent 
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
@@ -30314,7 +30413,7 @@ export class OntologyApi extends BaseAPI {
 
     /**
      * 
-     * @summary Etiological Agents
+     * @summary Etiological Agents  Post Query
      * @param {EpiFilter} filter 
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
@@ -30326,7 +30425,7 @@ export class OntologyApi extends BaseAPI {
 
     /**
      * 
-     * @summary Etiological Agents
+     * @summary Etiological Agents  Post Query  Ids
      * @param {EpiFilter} filter 
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
@@ -30338,7 +30437,7 @@ export class OntologyApi extends BaseAPI {
 
     /**
      * 
-     * @summary Etiological Agents
+     * @summary Etiological Agents  Post Some
      * @param {Array<EtiologicalAgent>} etiologicalAgent 
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
@@ -30350,7 +30449,7 @@ export class OntologyApi extends BaseAPI {
 
     /**
      * 
-     * @summary Etiological Agents
+     * @summary Etiological Agents  Put One
      * @param {string} objectId 
      * @param {EtiologicalAgent} etiologicalAgent 
      * @param {*} [options] Override http request option.
@@ -30363,7 +30462,7 @@ export class OntologyApi extends BaseAPI {
 
     /**
      * 
-     * @summary Etiological Agents
+     * @summary Etiological Agents  Put Some
      * @param {Array<EtiologicalAgent>} etiologicalAgent 
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
@@ -30375,7 +30474,7 @@ export class OntologyApi extends BaseAPI {
 
     /**
      * 
-     * @summary Etiologies
+     * @summary Etiologies  Delete All
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
      * @memberof OntologyApi
@@ -30386,7 +30485,7 @@ export class OntologyApi extends BaseAPI {
 
     /**
      * 
-     * @summary Etiologies
+     * @summary Etiologies  Delete One
      * @param {any} objectId 
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
@@ -30398,7 +30497,7 @@ export class OntologyApi extends BaseAPI {
 
     /**
      * 
-     * @summary Etiologies
+     * @summary Etiologies  Delete Some
      * @param {string} ids 
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
@@ -30410,7 +30509,7 @@ export class OntologyApi extends BaseAPI {
 
     /**
      * 
-     * @summary Etiologies
+     * @summary Etiologies  Get All
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
      * @memberof OntologyApi
@@ -30421,7 +30520,7 @@ export class OntologyApi extends BaseAPI {
 
     /**
      * 
-     * @summary Etiologies
+     * @summary Etiologies  Get One
      * @param {string} objectId 
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
@@ -30433,7 +30532,7 @@ export class OntologyApi extends BaseAPI {
 
     /**
      * 
-     * @summary Etiologies
+     * @summary Etiologies  Get Some
      * @param {string} ids 
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
@@ -30445,7 +30544,7 @@ export class OntologyApi extends BaseAPI {
 
     /**
      * 
-     * @summary Etiologies
+     * @summary Etiologies  Post One
      * @param {Etiology} etiology 
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
@@ -30457,7 +30556,7 @@ export class OntologyApi extends BaseAPI {
 
     /**
      * 
-     * @summary Etiologies
+     * @summary Etiologies  Post Query
      * @param {EpiFilter} filter 
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
@@ -30469,7 +30568,7 @@ export class OntologyApi extends BaseAPI {
 
     /**
      * 
-     * @summary Etiologies
+     * @summary Etiologies  Post Query  Ids
      * @param {EpiFilter} filter 
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
@@ -30481,7 +30580,7 @@ export class OntologyApi extends BaseAPI {
 
     /**
      * 
-     * @summary Etiologies
+     * @summary Etiologies  Post Some
      * @param {Array<Etiology>} etiology 
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
@@ -30493,7 +30592,7 @@ export class OntologyApi extends BaseAPI {
 
     /**
      * 
-     * @summary Etiologies
+     * @summary Etiologies  Put One
      * @param {string} objectId 
      * @param {Etiology} etiology 
      * @param {*} [options] Override http request option.
@@ -30506,7 +30605,7 @@ export class OntologyApi extends BaseAPI {
 
     /**
      * 
-     * @summary Etiologies
+     * @summary Etiologies  Put Some
      * @param {Array<Etiology>} etiology 
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
@@ -30526,8 +30625,8 @@ export class OntologyApi extends BaseAPI {
 const OrganizationApiAxiosParamCreator = function (configuration?: Configuration) {
     return {
         /**
-         * A class representing contact information for an organization.
-         * @summary Contacts
+         * 
+         * @summary Contacts  Delete All
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
@@ -30556,8 +30655,8 @@ const OrganizationApiAxiosParamCreator = function (configuration?: Configuration
             };
         },
         /**
-         * A class representing contact information for an organization.
-         * @summary Contacts
+         * 
+         * @summary Contacts  Delete One
          * @param {any} objectId 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
@@ -30590,8 +30689,8 @@ const OrganizationApiAxiosParamCreator = function (configuration?: Configuration
             };
         },
         /**
-         * A class representing contact information for an organization.
-         * @summary Contacts
+         * 
+         * @summary Contacts  Delete Some
          * @param {string} ids 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
@@ -30627,8 +30726,8 @@ const OrganizationApiAxiosParamCreator = function (configuration?: Configuration
             };
         },
         /**
-         * A class representing contact information for an organization.
-         * @summary Contacts
+         * 
+         * @summary Contacts  Get All
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
@@ -30657,8 +30756,8 @@ const OrganizationApiAxiosParamCreator = function (configuration?: Configuration
             };
         },
         /**
-         * A class representing contact information for an organization.
-         * @summary Contacts
+         * 
+         * @summary Contacts  Get One
          * @param {string} objectId 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
@@ -30691,8 +30790,8 @@ const OrganizationApiAxiosParamCreator = function (configuration?: Configuration
             };
         },
         /**
-         * A class representing contact information for an organization.
-         * @summary Contacts
+         * 
+         * @summary Contacts  Get Some
          * @param {string} ids 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
@@ -30728,8 +30827,8 @@ const OrganizationApiAxiosParamCreator = function (configuration?: Configuration
             };
         },
         /**
-         * A class representing contact information for an organization.
-         * @summary Contacts
+         * 
+         * @summary Contacts  Post One
          * @param {Contact} contact 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
@@ -30764,8 +30863,8 @@ const OrganizationApiAxiosParamCreator = function (configuration?: Configuration
             };
         },
         /**
-         * A class representing contact information for an organization.
-         * @summary Contacts
+         * 
+         * @summary Contacts  Post Query
          * @param {EpiFilter} filter 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
@@ -30800,8 +30899,8 @@ const OrganizationApiAxiosParamCreator = function (configuration?: Configuration
             };
         },
         /**
-         * A class representing contact information for an organization.
-         * @summary Contacts
+         * 
+         * @summary Contacts  Post Query  Ids
          * @param {EpiFilter} filter 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
@@ -30836,8 +30935,8 @@ const OrganizationApiAxiosParamCreator = function (configuration?: Configuration
             };
         },
         /**
-         * A class representing contact information for an organization.
-         * @summary Contacts
+         * 
+         * @summary Contacts  Post Some
          * @param {Array<Contact>} contact 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
@@ -30872,8 +30971,8 @@ const OrganizationApiAxiosParamCreator = function (configuration?: Configuration
             };
         },
         /**
-         * A class representing contact information for an organization.
-         * @summary Contacts
+         * 
+         * @summary Contacts  Put One
          * @param {string} objectId 
          * @param {Contact} contact 
          * @param {*} [options] Override http request option.
@@ -30912,8 +31011,8 @@ const OrganizationApiAxiosParamCreator = function (configuration?: Configuration
             };
         },
         /**
-         * A class representing contact information for an organization.
-         * @summary Contacts
+         * 
+         * @summary Contacts  Put Some
          * @param {Array<Contact>} contact 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
@@ -30949,7 +31048,7 @@ const OrganizationApiAxiosParamCreator = function (configuration?: Configuration
         },
         /**
          * 
-         * @summary Data Collection Set Members
+         * @summary Data Collection Set Members  Delete All
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
@@ -30979,7 +31078,7 @@ const OrganizationApiAxiosParamCreator = function (configuration?: Configuration
         },
         /**
          * 
-         * @summary Data Collection Set Members
+         * @summary Data Collection Set Members  Delete One
          * @param {any} objectId 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
@@ -31013,7 +31112,7 @@ const OrganizationApiAxiosParamCreator = function (configuration?: Configuration
         },
         /**
          * 
-         * @summary Data Collection Set Members
+         * @summary Data Collection Set Members  Delete Some
          * @param {string} ids 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
@@ -31050,7 +31149,7 @@ const OrganizationApiAxiosParamCreator = function (configuration?: Configuration
         },
         /**
          * 
-         * @summary Data Collection Set Members
+         * @summary Data Collection Set Members  Get All
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
@@ -31080,7 +31179,7 @@ const OrganizationApiAxiosParamCreator = function (configuration?: Configuration
         },
         /**
          * 
-         * @summary Data Collection Set Members
+         * @summary Data Collection Set Members  Get One
          * @param {string} objectId 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
@@ -31114,7 +31213,7 @@ const OrganizationApiAxiosParamCreator = function (configuration?: Configuration
         },
         /**
          * 
-         * @summary Data Collection Set Members
+         * @summary Data Collection Set Members  Get Some
          * @param {string} ids 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
@@ -31151,7 +31250,7 @@ const OrganizationApiAxiosParamCreator = function (configuration?: Configuration
         },
         /**
          * 
-         * @summary Data Collection Set Members
+         * @summary Data Collection Set Members  Post One
          * @param {DataCollectionSetMember} dataCollectionSetMember 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
@@ -31187,7 +31286,7 @@ const OrganizationApiAxiosParamCreator = function (configuration?: Configuration
         },
         /**
          * 
-         * @summary Data Collection Set Members
+         * @summary Data Collection Set Members  Post Query
          * @param {EpiFilter} filter 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
@@ -31223,7 +31322,7 @@ const OrganizationApiAxiosParamCreator = function (configuration?: Configuration
         },
         /**
          * 
-         * @summary Data Collection Set Members
+         * @summary Data Collection Set Members  Post Query  Ids
          * @param {EpiFilter} filter 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
@@ -31259,7 +31358,7 @@ const OrganizationApiAxiosParamCreator = function (configuration?: Configuration
         },
         /**
          * 
-         * @summary Data Collection Set Members
+         * @summary Data Collection Set Members  Post Some
          * @param {Array<DataCollectionSetMember>} dataCollectionSetMember 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
@@ -31295,7 +31394,7 @@ const OrganizationApiAxiosParamCreator = function (configuration?: Configuration
         },
         /**
          * 
-         * @summary Data Collection Set Members
+         * @summary Data Collection Set Members  Put One
          * @param {string} objectId 
          * @param {DataCollectionSetMember} dataCollectionSetMember 
          * @param {*} [options] Override http request option.
@@ -31335,7 +31434,7 @@ const OrganizationApiAxiosParamCreator = function (configuration?: Configuration
         },
         /**
          * 
-         * @summary Data Collection Set Members
+         * @summary Data Collection Set Members  Put Some
          * @param {Array<DataCollectionSetMember>} dataCollectionSetMember 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
@@ -31371,7 +31470,7 @@ const OrganizationApiAxiosParamCreator = function (configuration?: Configuration
         },
         /**
          * 
-         * @summary Data Collection Sets
+         * @summary Data Collection Sets  Delete All
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
@@ -31401,7 +31500,7 @@ const OrganizationApiAxiosParamCreator = function (configuration?: Configuration
         },
         /**
          * 
-         * @summary Data Collection Sets
+         * @summary Data Collection Sets  Delete One
          * @param {any} objectId 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
@@ -31435,7 +31534,7 @@ const OrganizationApiAxiosParamCreator = function (configuration?: Configuration
         },
         /**
          * 
-         * @summary Data Collection Sets
+         * @summary Data Collection Sets  Delete Some
          * @param {string} ids 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
@@ -31472,7 +31571,7 @@ const OrganizationApiAxiosParamCreator = function (configuration?: Configuration
         },
         /**
          * 
-         * @summary Data Collection Sets
+         * @summary Data Collection Sets  Get All
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
@@ -31502,7 +31601,7 @@ const OrganizationApiAxiosParamCreator = function (configuration?: Configuration
         },
         /**
          * 
-         * @summary Data Collection Sets
+         * @summary Data Collection Sets  Get One
          * @param {string} objectId 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
@@ -31536,7 +31635,7 @@ const OrganizationApiAxiosParamCreator = function (configuration?: Configuration
         },
         /**
          * 
-         * @summary Data Collection Sets
+         * @summary Data Collection Sets  Get Some
          * @param {string} ids 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
@@ -31573,7 +31672,7 @@ const OrganizationApiAxiosParamCreator = function (configuration?: Configuration
         },
         /**
          * 
-         * @summary Data Collection Sets
+         * @summary Data Collection Sets  Post One
          * @param {DataCollectionSet} dataCollectionSet 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
@@ -31609,7 +31708,7 @@ const OrganizationApiAxiosParamCreator = function (configuration?: Configuration
         },
         /**
          * 
-         * @summary Data Collection Sets
+         * @summary Data Collection Sets  Post Query
          * @param {EpiFilter} filter 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
@@ -31645,7 +31744,7 @@ const OrganizationApiAxiosParamCreator = function (configuration?: Configuration
         },
         /**
          * 
-         * @summary Data Collection Sets
+         * @summary Data Collection Sets  Post Query  Ids
          * @param {EpiFilter} filter 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
@@ -31681,7 +31780,7 @@ const OrganizationApiAxiosParamCreator = function (configuration?: Configuration
         },
         /**
          * 
-         * @summary Data Collection Sets
+         * @summary Data Collection Sets  Post Some
          * @param {Array<DataCollectionSet>} dataCollectionSet 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
@@ -31716,7 +31815,7 @@ const OrganizationApiAxiosParamCreator = function (configuration?: Configuration
             };
         },
         /**
-         * 
+         * Updates the association between DataCollectionSets and DataCollections.      This command manages the many-to-many relationship by creating or updating     DataCollectionSetMember associations between data collection sets and     individual data collections.
          * @summary Datacollectionset Datacollection
          * @param {string} dataCollectionSetId 
          * @param {UpdateDataCollectionSetDataCollectionRequestBody} updateDataCollectionSetDataCollectionRequestBody 
@@ -31757,7 +31856,7 @@ const OrganizationApiAxiosParamCreator = function (configuration?: Configuration
         },
         /**
          * 
-         * @summary Data Collection Sets
+         * @summary Data Collection Sets  Put One
          * @param {string} objectId 
          * @param {DataCollectionSet} dataCollectionSet 
          * @param {*} [options] Override http request option.
@@ -31797,7 +31896,7 @@ const OrganizationApiAxiosParamCreator = function (configuration?: Configuration
         },
         /**
          * 
-         * @summary Data Collection Sets
+         * @summary Data Collection Sets  Put Some
          * @param {Array<DataCollectionSet>} dataCollectionSet 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
@@ -31832,8 +31931,8 @@ const OrganizationApiAxiosParamCreator = function (configuration?: Configuration
             };
         },
         /**
-         * Represents a collection of data.
-         * @summary Data Collections
+         * 
+         * @summary Data Collections  Delete All
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
@@ -31862,8 +31961,8 @@ const OrganizationApiAxiosParamCreator = function (configuration?: Configuration
             };
         },
         /**
-         * Represents a collection of data.
-         * @summary Data Collections
+         * 
+         * @summary Data Collections  Delete One
          * @param {any} objectId 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
@@ -31896,8 +31995,8 @@ const OrganizationApiAxiosParamCreator = function (configuration?: Configuration
             };
         },
         /**
-         * Represents a collection of data.
-         * @summary Data Collections
+         * 
+         * @summary Data Collections  Delete Some
          * @param {string} ids 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
@@ -31933,8 +32032,8 @@ const OrganizationApiAxiosParamCreator = function (configuration?: Configuration
             };
         },
         /**
-         * Represents a collection of data.
-         * @summary Data Collections
+         * 
+         * @summary Data Collections  Get All
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
@@ -31963,8 +32062,8 @@ const OrganizationApiAxiosParamCreator = function (configuration?: Configuration
             };
         },
         /**
-         * Represents a collection of data.
-         * @summary Data Collections
+         * 
+         * @summary Data Collections  Get One
          * @param {string} objectId 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
@@ -31997,8 +32096,8 @@ const OrganizationApiAxiosParamCreator = function (configuration?: Configuration
             };
         },
         /**
-         * Represents a collection of data.
-         * @summary Data Collections
+         * 
+         * @summary Data Collections  Get Some
          * @param {string} ids 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
@@ -32034,8 +32133,8 @@ const OrganizationApiAxiosParamCreator = function (configuration?: Configuration
             };
         },
         /**
-         * Represents a collection of data.
-         * @summary Data Collections
+         * 
+         * @summary Data Collections  Post One
          * @param {DataCollection} dataCollection 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
@@ -32070,8 +32169,8 @@ const OrganizationApiAxiosParamCreator = function (configuration?: Configuration
             };
         },
         /**
-         * Represents a collection of data.
-         * @summary Data Collections
+         * 
+         * @summary Data Collections  Post Query
          * @param {EpiFilter} filter 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
@@ -32106,8 +32205,8 @@ const OrganizationApiAxiosParamCreator = function (configuration?: Configuration
             };
         },
         /**
-         * Represents a collection of data.
-         * @summary Data Collections
+         * 
+         * @summary Data Collections  Post Query  Ids
          * @param {EpiFilter} filter 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
@@ -32142,8 +32241,8 @@ const OrganizationApiAxiosParamCreator = function (configuration?: Configuration
             };
         },
         /**
-         * Represents a collection of data.
-         * @summary Data Collections
+         * 
+         * @summary Data Collections  Post Some
          * @param {Array<DataCollection>} dataCollection 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
@@ -32178,8 +32277,8 @@ const OrganizationApiAxiosParamCreator = function (configuration?: Configuration
             };
         },
         /**
-         * Represents a collection of data.
-         * @summary Data Collections
+         * 
+         * @summary Data Collections  Put One
          * @param {string} objectId 
          * @param {DataCollection} dataCollection 
          * @param {*} [options] Override http request option.
@@ -32218,8 +32317,8 @@ const OrganizationApiAxiosParamCreator = function (configuration?: Configuration
             };
         },
         /**
-         * Represents a collection of data.
-         * @summary Data Collections
+         * 
+         * @summary Data Collections  Put Some
          * @param {Array<DataCollection>} dataCollection 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
@@ -32254,8 +32353,8 @@ const OrganizationApiAxiosParamCreator = function (configuration?: Configuration
             };
         },
         /**
-         * A system or process that issues identifiers.     The combination (identifier_issuer, issued_identifier) is universally unique.
-         * @summary Identifier Issuers
+         * 
+         * @summary Identifier Issuers  Delete All
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
@@ -32284,8 +32383,8 @@ const OrganizationApiAxiosParamCreator = function (configuration?: Configuration
             };
         },
         /**
-         * A system or process that issues identifiers.     The combination (identifier_issuer, issued_identifier) is universally unique.
-         * @summary Identifier Issuers
+         * 
+         * @summary Identifier Issuers  Delete One
          * @param {any} objectId 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
@@ -32318,8 +32417,8 @@ const OrganizationApiAxiosParamCreator = function (configuration?: Configuration
             };
         },
         /**
-         * A system or process that issues identifiers.     The combination (identifier_issuer, issued_identifier) is universally unique.
-         * @summary Identifier Issuers
+         * 
+         * @summary Identifier Issuers  Delete Some
          * @param {string} ids 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
@@ -32355,8 +32454,8 @@ const OrganizationApiAxiosParamCreator = function (configuration?: Configuration
             };
         },
         /**
-         * A system or process that issues identifiers.     The combination (identifier_issuer, issued_identifier) is universally unique.
-         * @summary Identifier Issuers
+         * 
+         * @summary Identifier Issuers  Get All
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
@@ -32385,8 +32484,8 @@ const OrganizationApiAxiosParamCreator = function (configuration?: Configuration
             };
         },
         /**
-         * A system or process that issues identifiers.     The combination (identifier_issuer, issued_identifier) is universally unique.
-         * @summary Identifier Issuers
+         * 
+         * @summary Identifier Issuers  Get One
          * @param {string} objectId 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
@@ -32419,8 +32518,8 @@ const OrganizationApiAxiosParamCreator = function (configuration?: Configuration
             };
         },
         /**
-         * A system or process that issues identifiers.     The combination (identifier_issuer, issued_identifier) is universally unique.
-         * @summary Identifier Issuers
+         * 
+         * @summary Identifier Issuers  Get Some
          * @param {string} ids 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
@@ -32456,8 +32555,8 @@ const OrganizationApiAxiosParamCreator = function (configuration?: Configuration
             };
         },
         /**
-         * A system or process that issues identifiers.     The combination (identifier_issuer, issued_identifier) is universally unique.
-         * @summary Identifier Issuers
+         * 
+         * @summary Identifier Issuers  Post One
          * @param {IdentifierIssuer} identifierIssuer 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
@@ -32492,8 +32591,8 @@ const OrganizationApiAxiosParamCreator = function (configuration?: Configuration
             };
         },
         /**
-         * A system or process that issues identifiers.     The combination (identifier_issuer, issued_identifier) is universally unique.
-         * @summary Identifier Issuers
+         * 
+         * @summary Identifier Issuers  Post Query
          * @param {EpiFilter} filter 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
@@ -32528,8 +32627,8 @@ const OrganizationApiAxiosParamCreator = function (configuration?: Configuration
             };
         },
         /**
-         * A system or process that issues identifiers.     The combination (identifier_issuer, issued_identifier) is universally unique.
-         * @summary Identifier Issuers
+         * 
+         * @summary Identifier Issuers  Post Query  Ids
          * @param {EpiFilter} filter 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
@@ -32564,8 +32663,8 @@ const OrganizationApiAxiosParamCreator = function (configuration?: Configuration
             };
         },
         /**
-         * A system or process that issues identifiers.     The combination (identifier_issuer, issued_identifier) is universally unique.
-         * @summary Identifier Issuers
+         * 
+         * @summary Identifier Issuers  Post Some
          * @param {Array<IdentifierIssuer>} identifierIssuer 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
@@ -32600,8 +32699,8 @@ const OrganizationApiAxiosParamCreator = function (configuration?: Configuration
             };
         },
         /**
-         * A system or process that issues identifiers.     The combination (identifier_issuer, issued_identifier) is universally unique.
-         * @summary Identifier Issuers
+         * 
+         * @summary Identifier Issuers  Put One
          * @param {string} objectId 
          * @param {IdentifierIssuer} identifierIssuer 
          * @param {*} [options] Override http request option.
@@ -32640,8 +32739,8 @@ const OrganizationApiAxiosParamCreator = function (configuration?: Configuration
             };
         },
         /**
-         * A system or process that issues identifiers.     The combination (identifier_issuer, issued_identifier) is universally unique.
-         * @summary Identifier Issuers
+         * 
+         * @summary Identifier Issuers  Put Some
          * @param {Array<IdentifierIssuer>} identifierIssuer 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
@@ -32676,8 +32775,44 @@ const OrganizationApiAxiosParamCreator = function (configuration?: Configuration
             };
         },
         /**
+         * Creates and returns a UserInvitation for a new user with a particular     email address, organization and initial role(s).      A random unique token is added to the invitation, and to be provided to the     new user for consuming the invitation.
+         * @summary Invite A User
+         * @param {UserInvitationRequestBody} userInvitationRequestBody 
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        inviteUser: async (userInvitationRequestBody: UserInvitationRequestBody, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
+            // verify required parameter 'userInvitationRequestBody' is not null or undefined
+            assertParamExists('inviteUser', 'userInvitationRequestBody', userInvitationRequestBody)
+            const localVarPath = `/v1/invite_user`;
+            // use dummy base URL string because the URL constructor only accepts absolute URLs.
+            const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
+            let baseOptions;
+            if (configuration) {
+                baseOptions = configuration.baseOptions;
+            }
+
+            const localVarRequestOptions = { method: 'POST', ...baseOptions, ...options};
+            const localVarHeaderParameter = {} as any;
+            const localVarQueryParameter = {} as any;
+
+
+    
+            localVarHeaderParameter['Content-Type'] = 'application/json';
+
+            setSearchParams(localVarUrlObj, localVarQueryParameter);
+            let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
+            localVarRequestOptions.headers = {...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers};
+            localVarRequestOptions.data = serializeDataIfNeeded(userInvitationRequestBody, localVarRequestOptions, configuration)
+
+            return {
+                url: toPathString(localVarUrlObj),
+                options: localVarRequestOptions,
+            };
+        },
+        /**
          * 
-         * @summary Organization Set Members
+         * @summary Organization Set Members  Delete All
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
@@ -32707,7 +32842,7 @@ const OrganizationApiAxiosParamCreator = function (configuration?: Configuration
         },
         /**
          * 
-         * @summary Organization Set Members
+         * @summary Organization Set Members  Delete One
          * @param {any} objectId 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
@@ -32741,7 +32876,7 @@ const OrganizationApiAxiosParamCreator = function (configuration?: Configuration
         },
         /**
          * 
-         * @summary Organization Set Members
+         * @summary Organization Set Members  Delete Some
          * @param {string} ids 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
@@ -32778,7 +32913,7 @@ const OrganizationApiAxiosParamCreator = function (configuration?: Configuration
         },
         /**
          * 
-         * @summary Organization Set Members
+         * @summary Organization Set Members  Get All
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
@@ -32808,7 +32943,7 @@ const OrganizationApiAxiosParamCreator = function (configuration?: Configuration
         },
         /**
          * 
-         * @summary Organization Set Members
+         * @summary Organization Set Members  Get One
          * @param {string} objectId 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
@@ -32842,7 +32977,7 @@ const OrganizationApiAxiosParamCreator = function (configuration?: Configuration
         },
         /**
          * 
-         * @summary Organization Set Members
+         * @summary Organization Set Members  Get Some
          * @param {string} ids 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
@@ -32879,7 +33014,7 @@ const OrganizationApiAxiosParamCreator = function (configuration?: Configuration
         },
         /**
          * 
-         * @summary Organization Set Members
+         * @summary Organization Set Members  Post One
          * @param {OrganizationSetMember} organizationSetMember 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
@@ -32915,7 +33050,7 @@ const OrganizationApiAxiosParamCreator = function (configuration?: Configuration
         },
         /**
          * 
-         * @summary Organization Set Members
+         * @summary Organization Set Members  Post Query
          * @param {EpiFilter} filter 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
@@ -32951,7 +33086,7 @@ const OrganizationApiAxiosParamCreator = function (configuration?: Configuration
         },
         /**
          * 
-         * @summary Organization Set Members
+         * @summary Organization Set Members  Post Query  Ids
          * @param {EpiFilter} filter 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
@@ -32987,7 +33122,7 @@ const OrganizationApiAxiosParamCreator = function (configuration?: Configuration
         },
         /**
          * 
-         * @summary Organization Set Members
+         * @summary Organization Set Members  Post Some
          * @param {Array<OrganizationSetMember>} organizationSetMember 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
@@ -33023,7 +33158,7 @@ const OrganizationApiAxiosParamCreator = function (configuration?: Configuration
         },
         /**
          * 
-         * @summary Organization Set Members
+         * @summary Organization Set Members  Put One
          * @param {string} objectId 
          * @param {OrganizationSetMember} organizationSetMember 
          * @param {*} [options] Override http request option.
@@ -33063,7 +33198,7 @@ const OrganizationApiAxiosParamCreator = function (configuration?: Configuration
         },
         /**
          * 
-         * @summary Organization Set Members
+         * @summary Organization Set Members  Put Some
          * @param {Array<OrganizationSetMember>} organizationSetMember 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
@@ -33099,7 +33234,7 @@ const OrganizationApiAxiosParamCreator = function (configuration?: Configuration
         },
         /**
          * 
-         * @summary Organization Sets
+         * @summary Organization Sets  Delete All
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
@@ -33129,7 +33264,7 @@ const OrganizationApiAxiosParamCreator = function (configuration?: Configuration
         },
         /**
          * 
-         * @summary Organization Sets
+         * @summary Organization Sets  Delete One
          * @param {any} objectId 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
@@ -33163,7 +33298,7 @@ const OrganizationApiAxiosParamCreator = function (configuration?: Configuration
         },
         /**
          * 
-         * @summary Organization Sets
+         * @summary Organization Sets  Delete Some
          * @param {string} ids 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
@@ -33200,7 +33335,7 @@ const OrganizationApiAxiosParamCreator = function (configuration?: Configuration
         },
         /**
          * 
-         * @summary Organization Sets
+         * @summary Organization Sets  Get All
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
@@ -33230,7 +33365,7 @@ const OrganizationApiAxiosParamCreator = function (configuration?: Configuration
         },
         /**
          * 
-         * @summary Organization Sets
+         * @summary Organization Sets  Get One
          * @param {string} objectId 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
@@ -33264,7 +33399,7 @@ const OrganizationApiAxiosParamCreator = function (configuration?: Configuration
         },
         /**
          * 
-         * @summary Organization Sets
+         * @summary Organization Sets  Get Some
          * @param {string} ids 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
@@ -33301,7 +33436,7 @@ const OrganizationApiAxiosParamCreator = function (configuration?: Configuration
         },
         /**
          * 
-         * @summary Organization Sets
+         * @summary Organization Sets  Post One
          * @param {OrganizationSet} organizationSet 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
@@ -33337,7 +33472,7 @@ const OrganizationApiAxiosParamCreator = function (configuration?: Configuration
         },
         /**
          * 
-         * @summary Organization Sets
+         * @summary Organization Sets  Post Query
          * @param {EpiFilter} filter 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
@@ -33373,7 +33508,7 @@ const OrganizationApiAxiosParamCreator = function (configuration?: Configuration
         },
         /**
          * 
-         * @summary Organization Sets
+         * @summary Organization Sets  Post Query  Ids
          * @param {EpiFilter} filter 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
@@ -33409,7 +33544,7 @@ const OrganizationApiAxiosParamCreator = function (configuration?: Configuration
         },
         /**
          * 
-         * @summary Organization Sets
+         * @summary Organization Sets  Post Some
          * @param {Array<OrganizationSet>} organizationSet 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
@@ -33445,7 +33580,7 @@ const OrganizationApiAxiosParamCreator = function (configuration?: Configuration
         },
         /**
          * 
-         * @summary Organization Sets
+         * @summary Organization Sets  Put One
          * @param {string} objectId 
          * @param {OrganizationSet} organizationSet 
          * @param {*} [options] Override http request option.
@@ -33484,7 +33619,7 @@ const OrganizationApiAxiosParamCreator = function (configuration?: Configuration
             };
         },
         /**
-         * 
+         * Updates the association between an OrganizationSets and Organizations.      This command manages the many-to-many relationship by creating or updating     OrganizationSetMember associations between organization sets and     individual organizations.
          * @summary Organizationset Organization
          * @param {string} organizationSetId 
          * @param {UpdateOrganizationSetOrganizationRequestBody} updateOrganizationSetOrganizationRequestBody 
@@ -33525,7 +33660,7 @@ const OrganizationApiAxiosParamCreator = function (configuration?: Configuration
         },
         /**
          * 
-         * @summary Organization Sets
+         * @summary Organization Sets  Put Some
          * @param {Array<OrganizationSet>} organizationSet 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
@@ -33560,8 +33695,8 @@ const OrganizationApiAxiosParamCreator = function (configuration?: Configuration
             };
         },
         /**
-         * Represents an organization.
-         * @summary Organizations
+         * 
+         * @summary Organizations  Delete All
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
@@ -33590,8 +33725,8 @@ const OrganizationApiAxiosParamCreator = function (configuration?: Configuration
             };
         },
         /**
-         * Represents an organization.
-         * @summary Organizations
+         * 
+         * @summary Organizations  Delete One
          * @param {any} objectId 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
@@ -33624,8 +33759,8 @@ const OrganizationApiAxiosParamCreator = function (configuration?: Configuration
             };
         },
         /**
-         * Represents an organization.
-         * @summary Organizations
+         * 
+         * @summary Organizations  Delete Some
          * @param {string} ids 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
@@ -33661,8 +33796,8 @@ const OrganizationApiAxiosParamCreator = function (configuration?: Configuration
             };
         },
         /**
-         * Represents an organization.
-         * @summary Organizations
+         * 
+         * @summary Organizations  Get All
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
@@ -33691,8 +33826,8 @@ const OrganizationApiAxiosParamCreator = function (configuration?: Configuration
             };
         },
         /**
-         * Represents an organization.
-         * @summary Organizations
+         * 
+         * @summary Organizations  Get One
          * @param {string} objectId 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
@@ -33725,8 +33860,8 @@ const OrganizationApiAxiosParamCreator = function (configuration?: Configuration
             };
         },
         /**
-         * Represents an organization.
-         * @summary Organizations
+         * 
+         * @summary Organizations  Get Some
          * @param {string} ids 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
@@ -33762,8 +33897,8 @@ const OrganizationApiAxiosParamCreator = function (configuration?: Configuration
             };
         },
         /**
-         * Represents an organization.
-         * @summary Organizations
+         * 
+         * @summary Organizations  Post One
          * @param {Organization} organization 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
@@ -33798,8 +33933,8 @@ const OrganizationApiAxiosParamCreator = function (configuration?: Configuration
             };
         },
         /**
-         * Represents an organization.
-         * @summary Organizations
+         * 
+         * @summary Organizations  Post Query
          * @param {EpiFilter} filter 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
@@ -33834,8 +33969,8 @@ const OrganizationApiAxiosParamCreator = function (configuration?: Configuration
             };
         },
         /**
-         * Represents an organization.
-         * @summary Organizations
+         * 
+         * @summary Organizations  Post Query  Ids
          * @param {EpiFilter} filter 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
@@ -33870,8 +34005,8 @@ const OrganizationApiAxiosParamCreator = function (configuration?: Configuration
             };
         },
         /**
-         * Represents an organization.
-         * @summary Organizations
+         * 
+         * @summary Organizations  Post Some
          * @param {Array<Organization>} organization 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
@@ -33906,8 +34041,8 @@ const OrganizationApiAxiosParamCreator = function (configuration?: Configuration
             };
         },
         /**
-         * Represents an organization.
-         * @summary Organizations
+         * 
+         * @summary Organizations  Put One
          * @param {string} objectId 
          * @param {Organization} organization 
          * @param {*} [options] Override http request option.
@@ -33946,8 +34081,8 @@ const OrganizationApiAxiosParamCreator = function (configuration?: Configuration
             };
         },
         /**
-         * Represents an organization.
-         * @summary Organizations
+         * 
+         * @summary Organizations  Put Some
          * @param {Array<Organization>} organization 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
@@ -33982,8 +34117,8 @@ const OrganizationApiAxiosParamCreator = function (configuration?: Configuration
             };
         },
         /**
-         * Represents a physical site of an organization.
-         * @summary Sites
+         * 
+         * @summary Sites  Delete All
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
@@ -34012,8 +34147,8 @@ const OrganizationApiAxiosParamCreator = function (configuration?: Configuration
             };
         },
         /**
-         * Represents a physical site of an organization.
-         * @summary Sites
+         * 
+         * @summary Sites  Delete One
          * @param {any} objectId 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
@@ -34046,8 +34181,8 @@ const OrganizationApiAxiosParamCreator = function (configuration?: Configuration
             };
         },
         /**
-         * Represents a physical site of an organization.
-         * @summary Sites
+         * 
+         * @summary Sites  Delete Some
          * @param {string} ids 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
@@ -34083,8 +34218,8 @@ const OrganizationApiAxiosParamCreator = function (configuration?: Configuration
             };
         },
         /**
-         * Represents a physical site of an organization.
-         * @summary Sites
+         * 
+         * @summary Sites  Get All
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
@@ -34113,8 +34248,8 @@ const OrganizationApiAxiosParamCreator = function (configuration?: Configuration
             };
         },
         /**
-         * Represents a physical site of an organization.
-         * @summary Sites
+         * 
+         * @summary Sites  Get One
          * @param {string} objectId 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
@@ -34147,8 +34282,8 @@ const OrganizationApiAxiosParamCreator = function (configuration?: Configuration
             };
         },
         /**
-         * Represents a physical site of an organization.
-         * @summary Sites
+         * 
+         * @summary Sites  Get Some
          * @param {string} ids 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
@@ -34184,8 +34319,8 @@ const OrganizationApiAxiosParamCreator = function (configuration?: Configuration
             };
         },
         /**
-         * Represents a physical site of an organization.
-         * @summary Sites
+         * 
+         * @summary Sites  Post One
          * @param {Site} site 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
@@ -34220,8 +34355,8 @@ const OrganizationApiAxiosParamCreator = function (configuration?: Configuration
             };
         },
         /**
-         * Represents a physical site of an organization.
-         * @summary Sites
+         * 
+         * @summary Sites  Post Query
          * @param {EpiFilter} filter 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
@@ -34256,8 +34391,8 @@ const OrganizationApiAxiosParamCreator = function (configuration?: Configuration
             };
         },
         /**
-         * Represents a physical site of an organization.
-         * @summary Sites
+         * 
+         * @summary Sites  Post Query  Ids
          * @param {EpiFilter} filter 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
@@ -34292,8 +34427,8 @@ const OrganizationApiAxiosParamCreator = function (configuration?: Configuration
             };
         },
         /**
-         * Represents a physical site of an organization.
-         * @summary Sites
+         * 
+         * @summary Sites  Post Some
          * @param {Array<Site>} site 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
@@ -34328,8 +34463,8 @@ const OrganizationApiAxiosParamCreator = function (configuration?: Configuration
             };
         },
         /**
-         * Represents a physical site of an organization.
-         * @summary Sites
+         * 
+         * @summary Sites  Put One
          * @param {string} objectId 
          * @param {Site} site 
          * @param {*} [options] Override http request option.
@@ -34368,8 +34503,8 @@ const OrganizationApiAxiosParamCreator = function (configuration?: Configuration
             };
         },
         /**
-         * Represents a physical site of an organization.
-         * @summary Sites
+         * 
+         * @summary Sites  Put Some
          * @param {Array<Site>} site 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
@@ -34404,8 +34539,8 @@ const OrganizationApiAxiosParamCreator = function (configuration?: Configuration
             };
         },
         /**
-         * 
-         * @summary Updateuserownorganization
+         * Updates an existing User with new properties such as active status,     roles, and organization membership.      The target user is identified by tgt_user_id. Any field set to None will     leave that property unchanged. Roles cannot be set to an empty set.     Cache is invalidated after successful update.
+         * @summary Updateuserownorganizationcommand
          * @param {UpdateUserOwnOrganizationRequestBody} updateUserOwnOrganizationRequestBody 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
@@ -34441,7 +34576,7 @@ const OrganizationApiAxiosParamCreator = function (configuration?: Configuration
         },
         /**
          * 
-         * @summary User Invitations
+         * @summary User Invitations  Delete All
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
@@ -34471,7 +34606,7 @@ const OrganizationApiAxiosParamCreator = function (configuration?: Configuration
         },
         /**
          * 
-         * @summary User Invitations
+         * @summary User Invitations  Delete One
          * @param {any} objectId 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
@@ -34505,7 +34640,7 @@ const OrganizationApiAxiosParamCreator = function (configuration?: Configuration
         },
         /**
          * 
-         * @summary User Invitations
+         * @summary User Invitations  Delete Some
          * @param {string} ids 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
@@ -34542,7 +34677,7 @@ const OrganizationApiAxiosParamCreator = function (configuration?: Configuration
         },
         /**
          * 
-         * @summary User Invitations
+         * @summary User Invitations  Get All
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
@@ -34572,7 +34707,7 @@ const OrganizationApiAxiosParamCreator = function (configuration?: Configuration
         },
         /**
          * 
-         * @summary User Invitations
+         * @summary User Invitations  Get One
          * @param {string} objectId 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
@@ -34606,7 +34741,7 @@ const OrganizationApiAxiosParamCreator = function (configuration?: Configuration
         },
         /**
          * 
-         * @summary User Invitations
+         * @summary User Invitations  Get Some
          * @param {string} ids 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
@@ -34643,7 +34778,7 @@ const OrganizationApiAxiosParamCreator = function (configuration?: Configuration
         },
         /**
          * 
-         * @summary User Invitations
+         * @summary User Invitations  Post One
          * @param {UserInvitation} userInvitation 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
@@ -34679,7 +34814,7 @@ const OrganizationApiAxiosParamCreator = function (configuration?: Configuration
         },
         /**
          * 
-         * @summary User Invitations
+         * @summary User Invitations  Post Query
          * @param {EpiFilter} filter 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
@@ -34715,7 +34850,7 @@ const OrganizationApiAxiosParamCreator = function (configuration?: Configuration
         },
         /**
          * 
-         * @summary User Invitations
+         * @summary User Invitations  Post Query  Ids
          * @param {EpiFilter} filter 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
@@ -34751,7 +34886,7 @@ const OrganizationApiAxiosParamCreator = function (configuration?: Configuration
         },
         /**
          * 
-         * @summary User Invitations
+         * @summary User Invitations  Post Some
          * @param {Array<UserInvitation>} userInvitation 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
@@ -34787,7 +34922,7 @@ const OrganizationApiAxiosParamCreator = function (configuration?: Configuration
         },
         /**
          * 
-         * @summary User Invitations
+         * @summary User Invitations  Put One
          * @param {string} objectId 
          * @param {UserInvitation} userInvitation 
          * @param {*} [options] Override http request option.
@@ -34827,7 +34962,7 @@ const OrganizationApiAxiosParamCreator = function (configuration?: Configuration
         },
         /**
          * 
-         * @summary User Invitations
+         * @summary User Invitations  Put Some
          * @param {Array<UserInvitation>} userInvitation 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
@@ -34893,7 +35028,7 @@ const OrganizationApiAxiosParamCreator = function (configuration?: Configuration
         },
         /**
          * 
-         * @summary Userme
+         * @summary Userme Permissions
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
@@ -34922,7 +35057,7 @@ const OrganizationApiAxiosParamCreator = function (configuration?: Configuration
             };
         },
         /**
-         * 
+         * Registers (creates) the user of the command. The email and token must match     that of an existing UserInvitation. The newly registered user is assigned     the organization and roles from the invitation. The invitation is deleted.
          * @summary Registerinviteduser
          * @param {string} token 
          * @param {*} [options] Override http request option.
@@ -34957,7 +35092,7 @@ const OrganizationApiAxiosParamCreator = function (configuration?: Configuration
         },
         /**
          * 
-         * @summary Users
+         * @summary Users  Delete All
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
@@ -34987,7 +35122,7 @@ const OrganizationApiAxiosParamCreator = function (configuration?: Configuration
         },
         /**
          * 
-         * @summary Users
+         * @summary Users  Delete One
          * @param {any} objectId 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
@@ -35021,7 +35156,7 @@ const OrganizationApiAxiosParamCreator = function (configuration?: Configuration
         },
         /**
          * 
-         * @summary Users
+         * @summary Users  Delete Some
          * @param {string} ids 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
@@ -35058,7 +35193,7 @@ const OrganizationApiAxiosParamCreator = function (configuration?: Configuration
         },
         /**
          * 
-         * @summary Users
+         * @summary Users  Get All
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
@@ -35088,7 +35223,7 @@ const OrganizationApiAxiosParamCreator = function (configuration?: Configuration
         },
         /**
          * 
-         * @summary Users
+         * @summary Users  Get One
          * @param {string} objectId 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
@@ -35122,7 +35257,7 @@ const OrganizationApiAxiosParamCreator = function (configuration?: Configuration
         },
         /**
          * 
-         * @summary Users
+         * @summary Users  Get Some
          * @param {string} ids 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
@@ -35159,7 +35294,7 @@ const OrganizationApiAxiosParamCreator = function (configuration?: Configuration
         },
         /**
          * 
-         * @summary Users
+         * @summary Users  Post One
          * @param {User} user 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
@@ -35195,7 +35330,7 @@ const OrganizationApiAxiosParamCreator = function (configuration?: Configuration
         },
         /**
          * 
-         * @summary Users
+         * @summary Users  Post Query
          * @param {EpiFilter} filter 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
@@ -35231,7 +35366,7 @@ const OrganizationApiAxiosParamCreator = function (configuration?: Configuration
         },
         /**
          * 
-         * @summary Users
+         * @summary Users  Post Query  Ids
          * @param {EpiFilter} filter 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
@@ -35267,7 +35402,7 @@ const OrganizationApiAxiosParamCreator = function (configuration?: Configuration
         },
         /**
          * 
-         * @summary Users
+         * @summary Users  Post Some
          * @param {Array<User>} user 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
@@ -35303,7 +35438,7 @@ const OrganizationApiAxiosParamCreator = function (configuration?: Configuration
         },
         /**
          * 
-         * @summary Users
+         * @summary Users  Put One
          * @param {string} objectId 
          * @param {User} user 
          * @param {*} [options] Override http request option.
@@ -35343,7 +35478,7 @@ const OrganizationApiAxiosParamCreator = function (configuration?: Configuration
         },
         /**
          * 
-         * @summary Users
+         * @summary Users  Put Some
          * @param {Array<User>} user 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
@@ -35388,8 +35523,8 @@ const OrganizationApiFp = function(configuration?: Configuration) {
     const localVarAxiosParamCreator = OrganizationApiAxiosParamCreator(configuration)
     return {
         /**
-         * A class representing contact information for an organization.
-         * @summary Contacts
+         * 
+         * @summary Contacts  Delete All
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
@@ -35400,8 +35535,8 @@ const OrganizationApiFp = function(configuration?: Configuration) {
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
         /**
-         * A class representing contact information for an organization.
-         * @summary Contacts
+         * 
+         * @summary Contacts  Delete One
          * @param {any} objectId 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
@@ -35413,8 +35548,8 @@ const OrganizationApiFp = function(configuration?: Configuration) {
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
         /**
-         * A class representing contact information for an organization.
-         * @summary Contacts
+         * 
+         * @summary Contacts  Delete Some
          * @param {string} ids 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
@@ -35426,8 +35561,8 @@ const OrganizationApiFp = function(configuration?: Configuration) {
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
         /**
-         * A class representing contact information for an organization.
-         * @summary Contacts
+         * 
+         * @summary Contacts  Get All
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
@@ -35438,8 +35573,8 @@ const OrganizationApiFp = function(configuration?: Configuration) {
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
         /**
-         * A class representing contact information for an organization.
-         * @summary Contacts
+         * 
+         * @summary Contacts  Get One
          * @param {string} objectId 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
@@ -35451,8 +35586,8 @@ const OrganizationApiFp = function(configuration?: Configuration) {
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
         /**
-         * A class representing contact information for an organization.
-         * @summary Contacts
+         * 
+         * @summary Contacts  Get Some
          * @param {string} ids 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
@@ -35464,8 +35599,8 @@ const OrganizationApiFp = function(configuration?: Configuration) {
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
         /**
-         * A class representing contact information for an organization.
-         * @summary Contacts
+         * 
+         * @summary Contacts  Post One
          * @param {Contact} contact 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
@@ -35477,8 +35612,8 @@ const OrganizationApiFp = function(configuration?: Configuration) {
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
         /**
-         * A class representing contact information for an organization.
-         * @summary Contacts
+         * 
+         * @summary Contacts  Post Query
          * @param {EpiFilter} filter 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
@@ -35490,8 +35625,8 @@ const OrganizationApiFp = function(configuration?: Configuration) {
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
         /**
-         * A class representing contact information for an organization.
-         * @summary Contacts
+         * 
+         * @summary Contacts  Post Query  Ids
          * @param {EpiFilter} filter 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
@@ -35503,8 +35638,8 @@ const OrganizationApiFp = function(configuration?: Configuration) {
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
         /**
-         * A class representing contact information for an organization.
-         * @summary Contacts
+         * 
+         * @summary Contacts  Post Some
          * @param {Array<Contact>} contact 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
@@ -35516,8 +35651,8 @@ const OrganizationApiFp = function(configuration?: Configuration) {
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
         /**
-         * A class representing contact information for an organization.
-         * @summary Contacts
+         * 
+         * @summary Contacts  Put One
          * @param {string} objectId 
          * @param {Contact} contact 
          * @param {*} [options] Override http request option.
@@ -35530,8 +35665,8 @@ const OrganizationApiFp = function(configuration?: Configuration) {
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
         /**
-         * A class representing contact information for an organization.
-         * @summary Contacts
+         * 
+         * @summary Contacts  Put Some
          * @param {Array<Contact>} contact 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
@@ -35544,7 +35679,7 @@ const OrganizationApiFp = function(configuration?: Configuration) {
         },
         /**
          * 
-         * @summary Data Collection Set Members
+         * @summary Data Collection Set Members  Delete All
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
@@ -35556,7 +35691,7 @@ const OrganizationApiFp = function(configuration?: Configuration) {
         },
         /**
          * 
-         * @summary Data Collection Set Members
+         * @summary Data Collection Set Members  Delete One
          * @param {any} objectId 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
@@ -35569,7 +35704,7 @@ const OrganizationApiFp = function(configuration?: Configuration) {
         },
         /**
          * 
-         * @summary Data Collection Set Members
+         * @summary Data Collection Set Members  Delete Some
          * @param {string} ids 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
@@ -35582,7 +35717,7 @@ const OrganizationApiFp = function(configuration?: Configuration) {
         },
         /**
          * 
-         * @summary Data Collection Set Members
+         * @summary Data Collection Set Members  Get All
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
@@ -35594,7 +35729,7 @@ const OrganizationApiFp = function(configuration?: Configuration) {
         },
         /**
          * 
-         * @summary Data Collection Set Members
+         * @summary Data Collection Set Members  Get One
          * @param {string} objectId 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
@@ -35607,7 +35742,7 @@ const OrganizationApiFp = function(configuration?: Configuration) {
         },
         /**
          * 
-         * @summary Data Collection Set Members
+         * @summary Data Collection Set Members  Get Some
          * @param {string} ids 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
@@ -35620,7 +35755,7 @@ const OrganizationApiFp = function(configuration?: Configuration) {
         },
         /**
          * 
-         * @summary Data Collection Set Members
+         * @summary Data Collection Set Members  Post One
          * @param {DataCollectionSetMember} dataCollectionSetMember 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
@@ -35633,7 +35768,7 @@ const OrganizationApiFp = function(configuration?: Configuration) {
         },
         /**
          * 
-         * @summary Data Collection Set Members
+         * @summary Data Collection Set Members  Post Query
          * @param {EpiFilter} filter 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
@@ -35646,7 +35781,7 @@ const OrganizationApiFp = function(configuration?: Configuration) {
         },
         /**
          * 
-         * @summary Data Collection Set Members
+         * @summary Data Collection Set Members  Post Query  Ids
          * @param {EpiFilter} filter 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
@@ -35659,7 +35794,7 @@ const OrganizationApiFp = function(configuration?: Configuration) {
         },
         /**
          * 
-         * @summary Data Collection Set Members
+         * @summary Data Collection Set Members  Post Some
          * @param {Array<DataCollectionSetMember>} dataCollectionSetMember 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
@@ -35672,7 +35807,7 @@ const OrganizationApiFp = function(configuration?: Configuration) {
         },
         /**
          * 
-         * @summary Data Collection Set Members
+         * @summary Data Collection Set Members  Put One
          * @param {string} objectId 
          * @param {DataCollectionSetMember} dataCollectionSetMember 
          * @param {*} [options] Override http request option.
@@ -35686,7 +35821,7 @@ const OrganizationApiFp = function(configuration?: Configuration) {
         },
         /**
          * 
-         * @summary Data Collection Set Members
+         * @summary Data Collection Set Members  Put Some
          * @param {Array<DataCollectionSetMember>} dataCollectionSetMember 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
@@ -35699,7 +35834,7 @@ const OrganizationApiFp = function(configuration?: Configuration) {
         },
         /**
          * 
-         * @summary Data Collection Sets
+         * @summary Data Collection Sets  Delete All
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
@@ -35711,7 +35846,7 @@ const OrganizationApiFp = function(configuration?: Configuration) {
         },
         /**
          * 
-         * @summary Data Collection Sets
+         * @summary Data Collection Sets  Delete One
          * @param {any} objectId 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
@@ -35724,7 +35859,7 @@ const OrganizationApiFp = function(configuration?: Configuration) {
         },
         /**
          * 
-         * @summary Data Collection Sets
+         * @summary Data Collection Sets  Delete Some
          * @param {string} ids 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
@@ -35737,7 +35872,7 @@ const OrganizationApiFp = function(configuration?: Configuration) {
         },
         /**
          * 
-         * @summary Data Collection Sets
+         * @summary Data Collection Sets  Get All
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
@@ -35749,7 +35884,7 @@ const OrganizationApiFp = function(configuration?: Configuration) {
         },
         /**
          * 
-         * @summary Data Collection Sets
+         * @summary Data Collection Sets  Get One
          * @param {string} objectId 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
@@ -35762,7 +35897,7 @@ const OrganizationApiFp = function(configuration?: Configuration) {
         },
         /**
          * 
-         * @summary Data Collection Sets
+         * @summary Data Collection Sets  Get Some
          * @param {string} ids 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
@@ -35775,7 +35910,7 @@ const OrganizationApiFp = function(configuration?: Configuration) {
         },
         /**
          * 
-         * @summary Data Collection Sets
+         * @summary Data Collection Sets  Post One
          * @param {DataCollectionSet} dataCollectionSet 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
@@ -35788,7 +35923,7 @@ const OrganizationApiFp = function(configuration?: Configuration) {
         },
         /**
          * 
-         * @summary Data Collection Sets
+         * @summary Data Collection Sets  Post Query
          * @param {EpiFilter} filter 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
@@ -35801,7 +35936,7 @@ const OrganizationApiFp = function(configuration?: Configuration) {
         },
         /**
          * 
-         * @summary Data Collection Sets
+         * @summary Data Collection Sets  Post Query  Ids
          * @param {EpiFilter} filter 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
@@ -35814,7 +35949,7 @@ const OrganizationApiFp = function(configuration?: Configuration) {
         },
         /**
          * 
-         * @summary Data Collection Sets
+         * @summary Data Collection Sets  Post Some
          * @param {Array<DataCollectionSet>} dataCollectionSet 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
@@ -35826,7 +35961,7 @@ const OrganizationApiFp = function(configuration?: Configuration) {
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
         /**
-         * 
+         * Updates the association between DataCollectionSets and DataCollections.      This command manages the many-to-many relationship by creating or updating     DataCollectionSetMember associations between data collection sets and     individual data collections.
          * @summary Datacollectionset Datacollection
          * @param {string} dataCollectionSetId 
          * @param {UpdateDataCollectionSetDataCollectionRequestBody} updateDataCollectionSetDataCollectionRequestBody 
@@ -35841,7 +35976,7 @@ const OrganizationApiFp = function(configuration?: Configuration) {
         },
         /**
          * 
-         * @summary Data Collection Sets
+         * @summary Data Collection Sets  Put One
          * @param {string} objectId 
          * @param {DataCollectionSet} dataCollectionSet 
          * @param {*} [options] Override http request option.
@@ -35855,7 +35990,7 @@ const OrganizationApiFp = function(configuration?: Configuration) {
         },
         /**
          * 
-         * @summary Data Collection Sets
+         * @summary Data Collection Sets  Put Some
          * @param {Array<DataCollectionSet>} dataCollectionSet 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
@@ -35867,8 +36002,8 @@ const OrganizationApiFp = function(configuration?: Configuration) {
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
         /**
-         * Represents a collection of data.
-         * @summary Data Collections
+         * 
+         * @summary Data Collections  Delete All
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
@@ -35879,8 +36014,8 @@ const OrganizationApiFp = function(configuration?: Configuration) {
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
         /**
-         * Represents a collection of data.
-         * @summary Data Collections
+         * 
+         * @summary Data Collections  Delete One
          * @param {any} objectId 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
@@ -35892,8 +36027,8 @@ const OrganizationApiFp = function(configuration?: Configuration) {
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
         /**
-         * Represents a collection of data.
-         * @summary Data Collections
+         * 
+         * @summary Data Collections  Delete Some
          * @param {string} ids 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
@@ -35905,8 +36040,8 @@ const OrganizationApiFp = function(configuration?: Configuration) {
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
         /**
-         * Represents a collection of data.
-         * @summary Data Collections
+         * 
+         * @summary Data Collections  Get All
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
@@ -35917,8 +36052,8 @@ const OrganizationApiFp = function(configuration?: Configuration) {
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
         /**
-         * Represents a collection of data.
-         * @summary Data Collections
+         * 
+         * @summary Data Collections  Get One
          * @param {string} objectId 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
@@ -35930,8 +36065,8 @@ const OrganizationApiFp = function(configuration?: Configuration) {
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
         /**
-         * Represents a collection of data.
-         * @summary Data Collections
+         * 
+         * @summary Data Collections  Get Some
          * @param {string} ids 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
@@ -35943,8 +36078,8 @@ const OrganizationApiFp = function(configuration?: Configuration) {
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
         /**
-         * Represents a collection of data.
-         * @summary Data Collections
+         * 
+         * @summary Data Collections  Post One
          * @param {DataCollection} dataCollection 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
@@ -35956,8 +36091,8 @@ const OrganizationApiFp = function(configuration?: Configuration) {
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
         /**
-         * Represents a collection of data.
-         * @summary Data Collections
+         * 
+         * @summary Data Collections  Post Query
          * @param {EpiFilter} filter 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
@@ -35969,8 +36104,8 @@ const OrganizationApiFp = function(configuration?: Configuration) {
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
         /**
-         * Represents a collection of data.
-         * @summary Data Collections
+         * 
+         * @summary Data Collections  Post Query  Ids
          * @param {EpiFilter} filter 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
@@ -35982,8 +36117,8 @@ const OrganizationApiFp = function(configuration?: Configuration) {
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
         /**
-         * Represents a collection of data.
-         * @summary Data Collections
+         * 
+         * @summary Data Collections  Post Some
          * @param {Array<DataCollection>} dataCollection 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
@@ -35995,8 +36130,8 @@ const OrganizationApiFp = function(configuration?: Configuration) {
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
         /**
-         * Represents a collection of data.
-         * @summary Data Collections
+         * 
+         * @summary Data Collections  Put One
          * @param {string} objectId 
          * @param {DataCollection} dataCollection 
          * @param {*} [options] Override http request option.
@@ -36009,8 +36144,8 @@ const OrganizationApiFp = function(configuration?: Configuration) {
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
         /**
-         * Represents a collection of data.
-         * @summary Data Collections
+         * 
+         * @summary Data Collections  Put Some
          * @param {Array<DataCollection>} dataCollection 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
@@ -36022,8 +36157,8 @@ const OrganizationApiFp = function(configuration?: Configuration) {
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
         /**
-         * A system or process that issues identifiers.     The combination (identifier_issuer, issued_identifier) is universally unique.
-         * @summary Identifier Issuers
+         * 
+         * @summary Identifier Issuers  Delete All
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
@@ -36034,8 +36169,8 @@ const OrganizationApiFp = function(configuration?: Configuration) {
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
         /**
-         * A system or process that issues identifiers.     The combination (identifier_issuer, issued_identifier) is universally unique.
-         * @summary Identifier Issuers
+         * 
+         * @summary Identifier Issuers  Delete One
          * @param {any} objectId 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
@@ -36047,8 +36182,8 @@ const OrganizationApiFp = function(configuration?: Configuration) {
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
         /**
-         * A system or process that issues identifiers.     The combination (identifier_issuer, issued_identifier) is universally unique.
-         * @summary Identifier Issuers
+         * 
+         * @summary Identifier Issuers  Delete Some
          * @param {string} ids 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
@@ -36060,8 +36195,8 @@ const OrganizationApiFp = function(configuration?: Configuration) {
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
         /**
-         * A system or process that issues identifiers.     The combination (identifier_issuer, issued_identifier) is universally unique.
-         * @summary Identifier Issuers
+         * 
+         * @summary Identifier Issuers  Get All
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
@@ -36072,8 +36207,8 @@ const OrganizationApiFp = function(configuration?: Configuration) {
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
         /**
-         * A system or process that issues identifiers.     The combination (identifier_issuer, issued_identifier) is universally unique.
-         * @summary Identifier Issuers
+         * 
+         * @summary Identifier Issuers  Get One
          * @param {string} objectId 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
@@ -36085,8 +36220,8 @@ const OrganizationApiFp = function(configuration?: Configuration) {
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
         /**
-         * A system or process that issues identifiers.     The combination (identifier_issuer, issued_identifier) is universally unique.
-         * @summary Identifier Issuers
+         * 
+         * @summary Identifier Issuers  Get Some
          * @param {string} ids 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
@@ -36098,8 +36233,8 @@ const OrganizationApiFp = function(configuration?: Configuration) {
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
         /**
-         * A system or process that issues identifiers.     The combination (identifier_issuer, issued_identifier) is universally unique.
-         * @summary Identifier Issuers
+         * 
+         * @summary Identifier Issuers  Post One
          * @param {IdentifierIssuer} identifierIssuer 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
@@ -36111,8 +36246,8 @@ const OrganizationApiFp = function(configuration?: Configuration) {
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
         /**
-         * A system or process that issues identifiers.     The combination (identifier_issuer, issued_identifier) is universally unique.
-         * @summary Identifier Issuers
+         * 
+         * @summary Identifier Issuers  Post Query
          * @param {EpiFilter} filter 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
@@ -36124,8 +36259,8 @@ const OrganizationApiFp = function(configuration?: Configuration) {
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
         /**
-         * A system or process that issues identifiers.     The combination (identifier_issuer, issued_identifier) is universally unique.
-         * @summary Identifier Issuers
+         * 
+         * @summary Identifier Issuers  Post Query  Ids
          * @param {EpiFilter} filter 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
@@ -36137,8 +36272,8 @@ const OrganizationApiFp = function(configuration?: Configuration) {
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
         /**
-         * A system or process that issues identifiers.     The combination (identifier_issuer, issued_identifier) is universally unique.
-         * @summary Identifier Issuers
+         * 
+         * @summary Identifier Issuers  Post Some
          * @param {Array<IdentifierIssuer>} identifierIssuer 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
@@ -36150,8 +36285,8 @@ const OrganizationApiFp = function(configuration?: Configuration) {
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
         /**
-         * A system or process that issues identifiers.     The combination (identifier_issuer, issued_identifier) is universally unique.
-         * @summary Identifier Issuers
+         * 
+         * @summary Identifier Issuers  Put One
          * @param {string} objectId 
          * @param {IdentifierIssuer} identifierIssuer 
          * @param {*} [options] Override http request option.
@@ -36164,8 +36299,8 @@ const OrganizationApiFp = function(configuration?: Configuration) {
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
         /**
-         * A system or process that issues identifiers.     The combination (identifier_issuer, issued_identifier) is universally unique.
-         * @summary Identifier Issuers
+         * 
+         * @summary Identifier Issuers  Put Some
          * @param {Array<IdentifierIssuer>} identifierIssuer 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
@@ -36177,8 +36312,21 @@ const OrganizationApiFp = function(configuration?: Configuration) {
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
         /**
+         * Creates and returns a UserInvitation for a new user with a particular     email address, organization and initial role(s).      A random unique token is added to the invitation, and to be provided to the     new user for consuming the invitation.
+         * @summary Invite A User
+         * @param {UserInvitationRequestBody} userInvitationRequestBody 
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        async inviteUser(userInvitationRequestBody: UserInvitationRequestBody, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<UserInvitation>> {
+            const localVarAxiosArgs = await localVarAxiosParamCreator.inviteUser(userInvitationRequestBody, options);
+            const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
+            const localVarOperationServerBasePath = operationServerMap['OrganizationApi.inviteUser']?.[localVarOperationServerIndex]?.url;
+            return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
+        },
+        /**
          * 
-         * @summary Organization Set Members
+         * @summary Organization Set Members  Delete All
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
@@ -36190,7 +36338,7 @@ const OrganizationApiFp = function(configuration?: Configuration) {
         },
         /**
          * 
-         * @summary Organization Set Members
+         * @summary Organization Set Members  Delete One
          * @param {any} objectId 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
@@ -36203,7 +36351,7 @@ const OrganizationApiFp = function(configuration?: Configuration) {
         },
         /**
          * 
-         * @summary Organization Set Members
+         * @summary Organization Set Members  Delete Some
          * @param {string} ids 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
@@ -36216,7 +36364,7 @@ const OrganizationApiFp = function(configuration?: Configuration) {
         },
         /**
          * 
-         * @summary Organization Set Members
+         * @summary Organization Set Members  Get All
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
@@ -36228,7 +36376,7 @@ const OrganizationApiFp = function(configuration?: Configuration) {
         },
         /**
          * 
-         * @summary Organization Set Members
+         * @summary Organization Set Members  Get One
          * @param {string} objectId 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
@@ -36241,7 +36389,7 @@ const OrganizationApiFp = function(configuration?: Configuration) {
         },
         /**
          * 
-         * @summary Organization Set Members
+         * @summary Organization Set Members  Get Some
          * @param {string} ids 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
@@ -36254,7 +36402,7 @@ const OrganizationApiFp = function(configuration?: Configuration) {
         },
         /**
          * 
-         * @summary Organization Set Members
+         * @summary Organization Set Members  Post One
          * @param {OrganizationSetMember} organizationSetMember 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
@@ -36267,7 +36415,7 @@ const OrganizationApiFp = function(configuration?: Configuration) {
         },
         /**
          * 
-         * @summary Organization Set Members
+         * @summary Organization Set Members  Post Query
          * @param {EpiFilter} filter 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
@@ -36280,7 +36428,7 @@ const OrganizationApiFp = function(configuration?: Configuration) {
         },
         /**
          * 
-         * @summary Organization Set Members
+         * @summary Organization Set Members  Post Query  Ids
          * @param {EpiFilter} filter 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
@@ -36293,7 +36441,7 @@ const OrganizationApiFp = function(configuration?: Configuration) {
         },
         /**
          * 
-         * @summary Organization Set Members
+         * @summary Organization Set Members  Post Some
          * @param {Array<OrganizationSetMember>} organizationSetMember 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
@@ -36306,7 +36454,7 @@ const OrganizationApiFp = function(configuration?: Configuration) {
         },
         /**
          * 
-         * @summary Organization Set Members
+         * @summary Organization Set Members  Put One
          * @param {string} objectId 
          * @param {OrganizationSetMember} organizationSetMember 
          * @param {*} [options] Override http request option.
@@ -36320,7 +36468,7 @@ const OrganizationApiFp = function(configuration?: Configuration) {
         },
         /**
          * 
-         * @summary Organization Set Members
+         * @summary Organization Set Members  Put Some
          * @param {Array<OrganizationSetMember>} organizationSetMember 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
@@ -36333,7 +36481,7 @@ const OrganizationApiFp = function(configuration?: Configuration) {
         },
         /**
          * 
-         * @summary Organization Sets
+         * @summary Organization Sets  Delete All
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
@@ -36345,7 +36493,7 @@ const OrganizationApiFp = function(configuration?: Configuration) {
         },
         /**
          * 
-         * @summary Organization Sets
+         * @summary Organization Sets  Delete One
          * @param {any} objectId 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
@@ -36358,7 +36506,7 @@ const OrganizationApiFp = function(configuration?: Configuration) {
         },
         /**
          * 
-         * @summary Organization Sets
+         * @summary Organization Sets  Delete Some
          * @param {string} ids 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
@@ -36371,7 +36519,7 @@ const OrganizationApiFp = function(configuration?: Configuration) {
         },
         /**
          * 
-         * @summary Organization Sets
+         * @summary Organization Sets  Get All
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
@@ -36383,7 +36531,7 @@ const OrganizationApiFp = function(configuration?: Configuration) {
         },
         /**
          * 
-         * @summary Organization Sets
+         * @summary Organization Sets  Get One
          * @param {string} objectId 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
@@ -36396,7 +36544,7 @@ const OrganizationApiFp = function(configuration?: Configuration) {
         },
         /**
          * 
-         * @summary Organization Sets
+         * @summary Organization Sets  Get Some
          * @param {string} ids 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
@@ -36409,7 +36557,7 @@ const OrganizationApiFp = function(configuration?: Configuration) {
         },
         /**
          * 
-         * @summary Organization Sets
+         * @summary Organization Sets  Post One
          * @param {OrganizationSet} organizationSet 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
@@ -36422,7 +36570,7 @@ const OrganizationApiFp = function(configuration?: Configuration) {
         },
         /**
          * 
-         * @summary Organization Sets
+         * @summary Organization Sets  Post Query
          * @param {EpiFilter} filter 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
@@ -36435,7 +36583,7 @@ const OrganizationApiFp = function(configuration?: Configuration) {
         },
         /**
          * 
-         * @summary Organization Sets
+         * @summary Organization Sets  Post Query  Ids
          * @param {EpiFilter} filter 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
@@ -36448,7 +36596,7 @@ const OrganizationApiFp = function(configuration?: Configuration) {
         },
         /**
          * 
-         * @summary Organization Sets
+         * @summary Organization Sets  Post Some
          * @param {Array<OrganizationSet>} organizationSet 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
@@ -36461,7 +36609,7 @@ const OrganizationApiFp = function(configuration?: Configuration) {
         },
         /**
          * 
-         * @summary Organization Sets
+         * @summary Organization Sets  Put One
          * @param {string} objectId 
          * @param {OrganizationSet} organizationSet 
          * @param {*} [options] Override http request option.
@@ -36474,7 +36622,7 @@ const OrganizationApiFp = function(configuration?: Configuration) {
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
         /**
-         * 
+         * Updates the association between an OrganizationSets and Organizations.      This command manages the many-to-many relationship by creating or updating     OrganizationSetMember associations between organization sets and     individual organizations.
          * @summary Organizationset Organization
          * @param {string} organizationSetId 
          * @param {UpdateOrganizationSetOrganizationRequestBody} updateOrganizationSetOrganizationRequestBody 
@@ -36489,7 +36637,7 @@ const OrganizationApiFp = function(configuration?: Configuration) {
         },
         /**
          * 
-         * @summary Organization Sets
+         * @summary Organization Sets  Put Some
          * @param {Array<OrganizationSet>} organizationSet 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
@@ -36501,8 +36649,8 @@ const OrganizationApiFp = function(configuration?: Configuration) {
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
         /**
-         * Represents an organization.
-         * @summary Organizations
+         * 
+         * @summary Organizations  Delete All
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
@@ -36513,8 +36661,8 @@ const OrganizationApiFp = function(configuration?: Configuration) {
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
         /**
-         * Represents an organization.
-         * @summary Organizations
+         * 
+         * @summary Organizations  Delete One
          * @param {any} objectId 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
@@ -36526,8 +36674,8 @@ const OrganizationApiFp = function(configuration?: Configuration) {
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
         /**
-         * Represents an organization.
-         * @summary Organizations
+         * 
+         * @summary Organizations  Delete Some
          * @param {string} ids 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
@@ -36539,8 +36687,8 @@ const OrganizationApiFp = function(configuration?: Configuration) {
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
         /**
-         * Represents an organization.
-         * @summary Organizations
+         * 
+         * @summary Organizations  Get All
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
@@ -36551,8 +36699,8 @@ const OrganizationApiFp = function(configuration?: Configuration) {
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
         /**
-         * Represents an organization.
-         * @summary Organizations
+         * 
+         * @summary Organizations  Get One
          * @param {string} objectId 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
@@ -36564,8 +36712,8 @@ const OrganizationApiFp = function(configuration?: Configuration) {
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
         /**
-         * Represents an organization.
-         * @summary Organizations
+         * 
+         * @summary Organizations  Get Some
          * @param {string} ids 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
@@ -36577,8 +36725,8 @@ const OrganizationApiFp = function(configuration?: Configuration) {
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
         /**
-         * Represents an organization.
-         * @summary Organizations
+         * 
+         * @summary Organizations  Post One
          * @param {Organization} organization 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
@@ -36590,8 +36738,8 @@ const OrganizationApiFp = function(configuration?: Configuration) {
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
         /**
-         * Represents an organization.
-         * @summary Organizations
+         * 
+         * @summary Organizations  Post Query
          * @param {EpiFilter} filter 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
@@ -36603,8 +36751,8 @@ const OrganizationApiFp = function(configuration?: Configuration) {
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
         /**
-         * Represents an organization.
-         * @summary Organizations
+         * 
+         * @summary Organizations  Post Query  Ids
          * @param {EpiFilter} filter 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
@@ -36616,8 +36764,8 @@ const OrganizationApiFp = function(configuration?: Configuration) {
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
         /**
-         * Represents an organization.
-         * @summary Organizations
+         * 
+         * @summary Organizations  Post Some
          * @param {Array<Organization>} organization 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
@@ -36629,8 +36777,8 @@ const OrganizationApiFp = function(configuration?: Configuration) {
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
         /**
-         * Represents an organization.
-         * @summary Organizations
+         * 
+         * @summary Organizations  Put One
          * @param {string} objectId 
          * @param {Organization} organization 
          * @param {*} [options] Override http request option.
@@ -36643,8 +36791,8 @@ const OrganizationApiFp = function(configuration?: Configuration) {
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
         /**
-         * Represents an organization.
-         * @summary Organizations
+         * 
+         * @summary Organizations  Put Some
          * @param {Array<Organization>} organization 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
@@ -36656,8 +36804,8 @@ const OrganizationApiFp = function(configuration?: Configuration) {
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
         /**
-         * Represents a physical site of an organization.
-         * @summary Sites
+         * 
+         * @summary Sites  Delete All
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
@@ -36668,8 +36816,8 @@ const OrganizationApiFp = function(configuration?: Configuration) {
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
         /**
-         * Represents a physical site of an organization.
-         * @summary Sites
+         * 
+         * @summary Sites  Delete One
          * @param {any} objectId 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
@@ -36681,8 +36829,8 @@ const OrganizationApiFp = function(configuration?: Configuration) {
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
         /**
-         * Represents a physical site of an organization.
-         * @summary Sites
+         * 
+         * @summary Sites  Delete Some
          * @param {string} ids 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
@@ -36694,8 +36842,8 @@ const OrganizationApiFp = function(configuration?: Configuration) {
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
         /**
-         * Represents a physical site of an organization.
-         * @summary Sites
+         * 
+         * @summary Sites  Get All
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
@@ -36706,8 +36854,8 @@ const OrganizationApiFp = function(configuration?: Configuration) {
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
         /**
-         * Represents a physical site of an organization.
-         * @summary Sites
+         * 
+         * @summary Sites  Get One
          * @param {string} objectId 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
@@ -36719,8 +36867,8 @@ const OrganizationApiFp = function(configuration?: Configuration) {
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
         /**
-         * Represents a physical site of an organization.
-         * @summary Sites
+         * 
+         * @summary Sites  Get Some
          * @param {string} ids 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
@@ -36732,8 +36880,8 @@ const OrganizationApiFp = function(configuration?: Configuration) {
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
         /**
-         * Represents a physical site of an organization.
-         * @summary Sites
+         * 
+         * @summary Sites  Post One
          * @param {Site} site 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
@@ -36745,8 +36893,8 @@ const OrganizationApiFp = function(configuration?: Configuration) {
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
         /**
-         * Represents a physical site of an organization.
-         * @summary Sites
+         * 
+         * @summary Sites  Post Query
          * @param {EpiFilter} filter 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
@@ -36758,8 +36906,8 @@ const OrganizationApiFp = function(configuration?: Configuration) {
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
         /**
-         * Represents a physical site of an organization.
-         * @summary Sites
+         * 
+         * @summary Sites  Post Query  Ids
          * @param {EpiFilter} filter 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
@@ -36771,8 +36919,8 @@ const OrganizationApiFp = function(configuration?: Configuration) {
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
         /**
-         * Represents a physical site of an organization.
-         * @summary Sites
+         * 
+         * @summary Sites  Post Some
          * @param {Array<Site>} site 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
@@ -36784,8 +36932,8 @@ const OrganizationApiFp = function(configuration?: Configuration) {
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
         /**
-         * Represents a physical site of an organization.
-         * @summary Sites
+         * 
+         * @summary Sites  Put One
          * @param {string} objectId 
          * @param {Site} site 
          * @param {*} [options] Override http request option.
@@ -36798,8 +36946,8 @@ const OrganizationApiFp = function(configuration?: Configuration) {
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
         /**
-         * Represents a physical site of an organization.
-         * @summary Sites
+         * 
+         * @summary Sites  Put Some
          * @param {Array<Site>} site 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
@@ -36811,8 +36959,8 @@ const OrganizationApiFp = function(configuration?: Configuration) {
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
         /**
-         * 
-         * @summary Updateuserownorganization
+         * Updates an existing User with new properties such as active status,     roles, and organization membership.      The target user is identified by tgt_user_id. Any field set to None will     leave that property unchanged. Roles cannot be set to an empty set.     Cache is invalidated after successful update.
+         * @summary Updateuserownorganizationcommand
          * @param {UpdateUserOwnOrganizationRequestBody} updateUserOwnOrganizationRequestBody 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
@@ -36825,7 +36973,7 @@ const OrganizationApiFp = function(configuration?: Configuration) {
         },
         /**
          * 
-         * @summary User Invitations
+         * @summary User Invitations  Delete All
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
@@ -36837,7 +36985,7 @@ const OrganizationApiFp = function(configuration?: Configuration) {
         },
         /**
          * 
-         * @summary User Invitations
+         * @summary User Invitations  Delete One
          * @param {any} objectId 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
@@ -36850,7 +36998,7 @@ const OrganizationApiFp = function(configuration?: Configuration) {
         },
         /**
          * 
-         * @summary User Invitations
+         * @summary User Invitations  Delete Some
          * @param {string} ids 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
@@ -36863,7 +37011,7 @@ const OrganizationApiFp = function(configuration?: Configuration) {
         },
         /**
          * 
-         * @summary User Invitations
+         * @summary User Invitations  Get All
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
@@ -36875,7 +37023,7 @@ const OrganizationApiFp = function(configuration?: Configuration) {
         },
         /**
          * 
-         * @summary User Invitations
+         * @summary User Invitations  Get One
          * @param {string} objectId 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
@@ -36888,7 +37036,7 @@ const OrganizationApiFp = function(configuration?: Configuration) {
         },
         /**
          * 
-         * @summary User Invitations
+         * @summary User Invitations  Get Some
          * @param {string} ids 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
@@ -36901,7 +37049,7 @@ const OrganizationApiFp = function(configuration?: Configuration) {
         },
         /**
          * 
-         * @summary User Invitations
+         * @summary User Invitations  Post One
          * @param {UserInvitation} userInvitation 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
@@ -36914,7 +37062,7 @@ const OrganizationApiFp = function(configuration?: Configuration) {
         },
         /**
          * 
-         * @summary User Invitations
+         * @summary User Invitations  Post Query
          * @param {EpiFilter} filter 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
@@ -36927,7 +37075,7 @@ const OrganizationApiFp = function(configuration?: Configuration) {
         },
         /**
          * 
-         * @summary User Invitations
+         * @summary User Invitations  Post Query  Ids
          * @param {EpiFilter} filter 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
@@ -36940,7 +37088,7 @@ const OrganizationApiFp = function(configuration?: Configuration) {
         },
         /**
          * 
-         * @summary User Invitations
+         * @summary User Invitations  Post Some
          * @param {Array<UserInvitation>} userInvitation 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
@@ -36953,7 +37101,7 @@ const OrganizationApiFp = function(configuration?: Configuration) {
         },
         /**
          * 
-         * @summary User Invitations
+         * @summary User Invitations  Put One
          * @param {string} objectId 
          * @param {UserInvitation} userInvitation 
          * @param {*} [options] Override http request option.
@@ -36967,7 +37115,7 @@ const OrganizationApiFp = function(configuration?: Configuration) {
         },
         /**
          * 
-         * @summary User Invitations
+         * @summary User Invitations  Put Some
          * @param {Array<UserInvitation>} userInvitation 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
@@ -36992,7 +37140,7 @@ const OrganizationApiFp = function(configuration?: Configuration) {
         },
         /**
          * 
-         * @summary Userme
+         * @summary Userme Permissions
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
@@ -37003,7 +37151,7 @@ const OrganizationApiFp = function(configuration?: Configuration) {
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
         /**
-         * 
+         * Registers (creates) the user of the command. The email and token must match     that of an existing UserInvitation. The newly registered user is assigned     the organization and roles from the invitation. The invitation is deleted.
          * @summary Registerinviteduser
          * @param {string} token 
          * @param {*} [options] Override http request option.
@@ -37017,7 +37165,7 @@ const OrganizationApiFp = function(configuration?: Configuration) {
         },
         /**
          * 
-         * @summary Users
+         * @summary Users  Delete All
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
@@ -37029,7 +37177,7 @@ const OrganizationApiFp = function(configuration?: Configuration) {
         },
         /**
          * 
-         * @summary Users
+         * @summary Users  Delete One
          * @param {any} objectId 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
@@ -37042,7 +37190,7 @@ const OrganizationApiFp = function(configuration?: Configuration) {
         },
         /**
          * 
-         * @summary Users
+         * @summary Users  Delete Some
          * @param {string} ids 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
@@ -37055,7 +37203,7 @@ const OrganizationApiFp = function(configuration?: Configuration) {
         },
         /**
          * 
-         * @summary Users
+         * @summary Users  Get All
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
@@ -37067,7 +37215,7 @@ const OrganizationApiFp = function(configuration?: Configuration) {
         },
         /**
          * 
-         * @summary Users
+         * @summary Users  Get One
          * @param {string} objectId 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
@@ -37080,7 +37228,7 @@ const OrganizationApiFp = function(configuration?: Configuration) {
         },
         /**
          * 
-         * @summary Users
+         * @summary Users  Get Some
          * @param {string} ids 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
@@ -37093,7 +37241,7 @@ const OrganizationApiFp = function(configuration?: Configuration) {
         },
         /**
          * 
-         * @summary Users
+         * @summary Users  Post One
          * @param {User} user 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
@@ -37106,7 +37254,7 @@ const OrganizationApiFp = function(configuration?: Configuration) {
         },
         /**
          * 
-         * @summary Users
+         * @summary Users  Post Query
          * @param {EpiFilter} filter 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
@@ -37119,7 +37267,7 @@ const OrganizationApiFp = function(configuration?: Configuration) {
         },
         /**
          * 
-         * @summary Users
+         * @summary Users  Post Query  Ids
          * @param {EpiFilter} filter 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
@@ -37132,7 +37280,7 @@ const OrganizationApiFp = function(configuration?: Configuration) {
         },
         /**
          * 
-         * @summary Users
+         * @summary Users  Post Some
          * @param {Array<User>} user 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
@@ -37145,7 +37293,7 @@ const OrganizationApiFp = function(configuration?: Configuration) {
         },
         /**
          * 
-         * @summary Users
+         * @summary Users  Put One
          * @param {string} objectId 
          * @param {User} user 
          * @param {*} [options] Override http request option.
@@ -37159,7 +37307,7 @@ const OrganizationApiFp = function(configuration?: Configuration) {
         },
         /**
          * 
-         * @summary Users
+         * @summary Users  Put Some
          * @param {Array<User>} user 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
@@ -37193,8 +37341,8 @@ export class OrganizationApi extends BaseAPI {
   }
 
     /**
-     * A class representing contact information for an organization.
-     * @summary Contacts
+     * 
+     * @summary Contacts  Delete All
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
      * @memberof OrganizationApi
@@ -37204,8 +37352,8 @@ export class OrganizationApi extends BaseAPI {
     }
 
     /**
-     * A class representing contact information for an organization.
-     * @summary Contacts
+     * 
+     * @summary Contacts  Delete One
      * @param {any} objectId 
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
@@ -37216,8 +37364,8 @@ export class OrganizationApi extends BaseAPI {
     }
 
     /**
-     * A class representing contact information for an organization.
-     * @summary Contacts
+     * 
+     * @summary Contacts  Delete Some
      * @param {string} ids 
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
@@ -37228,8 +37376,8 @@ export class OrganizationApi extends BaseAPI {
     }
 
     /**
-     * A class representing contact information for an organization.
-     * @summary Contacts
+     * 
+     * @summary Contacts  Get All
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
      * @memberof OrganizationApi
@@ -37239,8 +37387,8 @@ export class OrganizationApi extends BaseAPI {
     }
 
     /**
-     * A class representing contact information for an organization.
-     * @summary Contacts
+     * 
+     * @summary Contacts  Get One
      * @param {string} objectId 
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
@@ -37251,8 +37399,8 @@ export class OrganizationApi extends BaseAPI {
     }
 
     /**
-     * A class representing contact information for an organization.
-     * @summary Contacts
+     * 
+     * @summary Contacts  Get Some
      * @param {string} ids 
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
@@ -37263,8 +37411,8 @@ export class OrganizationApi extends BaseAPI {
     }
 
     /**
-     * A class representing contact information for an organization.
-     * @summary Contacts
+     * 
+     * @summary Contacts  Post One
      * @param {Contact} contact 
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
@@ -37275,8 +37423,8 @@ export class OrganizationApi extends BaseAPI {
     }
 
     /**
-     * A class representing contact information for an organization.
-     * @summary Contacts
+     * 
+     * @summary Contacts  Post Query
      * @param {EpiFilter} filter 
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
@@ -37287,8 +37435,8 @@ export class OrganizationApi extends BaseAPI {
     }
 
     /**
-     * A class representing contact information for an organization.
-     * @summary Contacts
+     * 
+     * @summary Contacts  Post Query  Ids
      * @param {EpiFilter} filter 
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
@@ -37299,8 +37447,8 @@ export class OrganizationApi extends BaseAPI {
     }
 
     /**
-     * A class representing contact information for an organization.
-     * @summary Contacts
+     * 
+     * @summary Contacts  Post Some
      * @param {Array<Contact>} contact 
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
@@ -37311,8 +37459,8 @@ export class OrganizationApi extends BaseAPI {
     }
 
     /**
-     * A class representing contact information for an organization.
-     * @summary Contacts
+     * 
+     * @summary Contacts  Put One
      * @param {string} objectId 
      * @param {Contact} contact 
      * @param {*} [options] Override http request option.
@@ -37324,8 +37472,8 @@ export class OrganizationApi extends BaseAPI {
     }
 
     /**
-     * A class representing contact information for an organization.
-     * @summary Contacts
+     * 
+     * @summary Contacts  Put Some
      * @param {Array<Contact>} contact 
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
@@ -37337,7 +37485,7 @@ export class OrganizationApi extends BaseAPI {
 
     /**
      * 
-     * @summary Data Collection Set Members
+     * @summary Data Collection Set Members  Delete All
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
      * @memberof OrganizationApi
@@ -37348,7 +37496,7 @@ export class OrganizationApi extends BaseAPI {
 
     /**
      * 
-     * @summary Data Collection Set Members
+     * @summary Data Collection Set Members  Delete One
      * @param {any} objectId 
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
@@ -37360,7 +37508,7 @@ export class OrganizationApi extends BaseAPI {
 
     /**
      * 
-     * @summary Data Collection Set Members
+     * @summary Data Collection Set Members  Delete Some
      * @param {string} ids 
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
@@ -37372,7 +37520,7 @@ export class OrganizationApi extends BaseAPI {
 
     /**
      * 
-     * @summary Data Collection Set Members
+     * @summary Data Collection Set Members  Get All
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
      * @memberof OrganizationApi
@@ -37383,7 +37531,7 @@ export class OrganizationApi extends BaseAPI {
 
     /**
      * 
-     * @summary Data Collection Set Members
+     * @summary Data Collection Set Members  Get One
      * @param {string} objectId 
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
@@ -37395,7 +37543,7 @@ export class OrganizationApi extends BaseAPI {
 
     /**
      * 
-     * @summary Data Collection Set Members
+     * @summary Data Collection Set Members  Get Some
      * @param {string} ids 
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
@@ -37407,7 +37555,7 @@ export class OrganizationApi extends BaseAPI {
 
     /**
      * 
-     * @summary Data Collection Set Members
+     * @summary Data Collection Set Members  Post One
      * @param {DataCollectionSetMember} dataCollectionSetMember 
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
@@ -37419,7 +37567,7 @@ export class OrganizationApi extends BaseAPI {
 
     /**
      * 
-     * @summary Data Collection Set Members
+     * @summary Data Collection Set Members  Post Query
      * @param {EpiFilter} filter 
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
@@ -37431,7 +37579,7 @@ export class OrganizationApi extends BaseAPI {
 
     /**
      * 
-     * @summary Data Collection Set Members
+     * @summary Data Collection Set Members  Post Query  Ids
      * @param {EpiFilter} filter 
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
@@ -37443,7 +37591,7 @@ export class OrganizationApi extends BaseAPI {
 
     /**
      * 
-     * @summary Data Collection Set Members
+     * @summary Data Collection Set Members  Post Some
      * @param {Array<DataCollectionSetMember>} dataCollectionSetMember 
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
@@ -37455,7 +37603,7 @@ export class OrganizationApi extends BaseAPI {
 
     /**
      * 
-     * @summary Data Collection Set Members
+     * @summary Data Collection Set Members  Put One
      * @param {string} objectId 
      * @param {DataCollectionSetMember} dataCollectionSetMember 
      * @param {*} [options] Override http request option.
@@ -37468,7 +37616,7 @@ export class OrganizationApi extends BaseAPI {
 
     /**
      * 
-     * @summary Data Collection Set Members
+     * @summary Data Collection Set Members  Put Some
      * @param {Array<DataCollectionSetMember>} dataCollectionSetMember 
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
@@ -37480,7 +37628,7 @@ export class OrganizationApi extends BaseAPI {
 
     /**
      * 
-     * @summary Data Collection Sets
+     * @summary Data Collection Sets  Delete All
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
      * @memberof OrganizationApi
@@ -37491,7 +37639,7 @@ export class OrganizationApi extends BaseAPI {
 
     /**
      * 
-     * @summary Data Collection Sets
+     * @summary Data Collection Sets  Delete One
      * @param {any} objectId 
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
@@ -37503,7 +37651,7 @@ export class OrganizationApi extends BaseAPI {
 
     /**
      * 
-     * @summary Data Collection Sets
+     * @summary Data Collection Sets  Delete Some
      * @param {string} ids 
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
@@ -37515,7 +37663,7 @@ export class OrganizationApi extends BaseAPI {
 
     /**
      * 
-     * @summary Data Collection Sets
+     * @summary Data Collection Sets  Get All
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
      * @memberof OrganizationApi
@@ -37526,7 +37674,7 @@ export class OrganizationApi extends BaseAPI {
 
     /**
      * 
-     * @summary Data Collection Sets
+     * @summary Data Collection Sets  Get One
      * @param {string} objectId 
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
@@ -37538,7 +37686,7 @@ export class OrganizationApi extends BaseAPI {
 
     /**
      * 
-     * @summary Data Collection Sets
+     * @summary Data Collection Sets  Get Some
      * @param {string} ids 
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
@@ -37550,7 +37698,7 @@ export class OrganizationApi extends BaseAPI {
 
     /**
      * 
-     * @summary Data Collection Sets
+     * @summary Data Collection Sets  Post One
      * @param {DataCollectionSet} dataCollectionSet 
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
@@ -37562,7 +37710,7 @@ export class OrganizationApi extends BaseAPI {
 
     /**
      * 
-     * @summary Data Collection Sets
+     * @summary Data Collection Sets  Post Query
      * @param {EpiFilter} filter 
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
@@ -37574,7 +37722,7 @@ export class OrganizationApi extends BaseAPI {
 
     /**
      * 
-     * @summary Data Collection Sets
+     * @summary Data Collection Sets  Post Query  Ids
      * @param {EpiFilter} filter 
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
@@ -37586,7 +37734,7 @@ export class OrganizationApi extends BaseAPI {
 
     /**
      * 
-     * @summary Data Collection Sets
+     * @summary Data Collection Sets  Post Some
      * @param {Array<DataCollectionSet>} dataCollectionSet 
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
@@ -37597,7 +37745,7 @@ export class OrganizationApi extends BaseAPI {
     }
 
     /**
-     * 
+     * Updates the association between DataCollectionSets and DataCollections.      This command manages the many-to-many relationship by creating or updating     DataCollectionSetMember associations between data collection sets and     individual data collections.
      * @summary Datacollectionset Datacollection
      * @param {string} dataCollectionSetId 
      * @param {UpdateDataCollectionSetDataCollectionRequestBody} updateDataCollectionSetDataCollectionRequestBody 
@@ -37611,7 +37759,7 @@ export class OrganizationApi extends BaseAPI {
 
     /**
      * 
-     * @summary Data Collection Sets
+     * @summary Data Collection Sets  Put One
      * @param {string} objectId 
      * @param {DataCollectionSet} dataCollectionSet 
      * @param {*} [options] Override http request option.
@@ -37624,7 +37772,7 @@ export class OrganizationApi extends BaseAPI {
 
     /**
      * 
-     * @summary Data Collection Sets
+     * @summary Data Collection Sets  Put Some
      * @param {Array<DataCollectionSet>} dataCollectionSet 
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
@@ -37635,8 +37783,8 @@ export class OrganizationApi extends BaseAPI {
     }
 
     /**
-     * Represents a collection of data.
-     * @summary Data Collections
+     * 
+     * @summary Data Collections  Delete All
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
      * @memberof OrganizationApi
@@ -37646,8 +37794,8 @@ export class OrganizationApi extends BaseAPI {
     }
 
     /**
-     * Represents a collection of data.
-     * @summary Data Collections
+     * 
+     * @summary Data Collections  Delete One
      * @param {any} objectId 
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
@@ -37658,8 +37806,8 @@ export class OrganizationApi extends BaseAPI {
     }
 
     /**
-     * Represents a collection of data.
-     * @summary Data Collections
+     * 
+     * @summary Data Collections  Delete Some
      * @param {string} ids 
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
@@ -37670,8 +37818,8 @@ export class OrganizationApi extends BaseAPI {
     }
 
     /**
-     * Represents a collection of data.
-     * @summary Data Collections
+     * 
+     * @summary Data Collections  Get All
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
      * @memberof OrganizationApi
@@ -37681,8 +37829,8 @@ export class OrganizationApi extends BaseAPI {
     }
 
     /**
-     * Represents a collection of data.
-     * @summary Data Collections
+     * 
+     * @summary Data Collections  Get One
      * @param {string} objectId 
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
@@ -37693,8 +37841,8 @@ export class OrganizationApi extends BaseAPI {
     }
 
     /**
-     * Represents a collection of data.
-     * @summary Data Collections
+     * 
+     * @summary Data Collections  Get Some
      * @param {string} ids 
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
@@ -37705,8 +37853,8 @@ export class OrganizationApi extends BaseAPI {
     }
 
     /**
-     * Represents a collection of data.
-     * @summary Data Collections
+     * 
+     * @summary Data Collections  Post One
      * @param {DataCollection} dataCollection 
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
@@ -37717,8 +37865,8 @@ export class OrganizationApi extends BaseAPI {
     }
 
     /**
-     * Represents a collection of data.
-     * @summary Data Collections
+     * 
+     * @summary Data Collections  Post Query
      * @param {EpiFilter} filter 
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
@@ -37729,8 +37877,8 @@ export class OrganizationApi extends BaseAPI {
     }
 
     /**
-     * Represents a collection of data.
-     * @summary Data Collections
+     * 
+     * @summary Data Collections  Post Query  Ids
      * @param {EpiFilter} filter 
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
@@ -37741,8 +37889,8 @@ export class OrganizationApi extends BaseAPI {
     }
 
     /**
-     * Represents a collection of data.
-     * @summary Data Collections
+     * 
+     * @summary Data Collections  Post Some
      * @param {Array<DataCollection>} dataCollection 
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
@@ -37753,8 +37901,8 @@ export class OrganizationApi extends BaseAPI {
     }
 
     /**
-     * Represents a collection of data.
-     * @summary Data Collections
+     * 
+     * @summary Data Collections  Put One
      * @param {string} objectId 
      * @param {DataCollection} dataCollection 
      * @param {*} [options] Override http request option.
@@ -37766,8 +37914,8 @@ export class OrganizationApi extends BaseAPI {
     }
 
     /**
-     * Represents a collection of data.
-     * @summary Data Collections
+     * 
+     * @summary Data Collections  Put Some
      * @param {Array<DataCollection>} dataCollection 
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
@@ -37778,8 +37926,8 @@ export class OrganizationApi extends BaseAPI {
     }
 
     /**
-     * A system or process that issues identifiers.     The combination (identifier_issuer, issued_identifier) is universally unique.
-     * @summary Identifier Issuers
+     * 
+     * @summary Identifier Issuers  Delete All
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
      * @memberof OrganizationApi
@@ -37789,8 +37937,8 @@ export class OrganizationApi extends BaseAPI {
     }
 
     /**
-     * A system or process that issues identifiers.     The combination (identifier_issuer, issued_identifier) is universally unique.
-     * @summary Identifier Issuers
+     * 
+     * @summary Identifier Issuers  Delete One
      * @param {any} objectId 
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
@@ -37801,8 +37949,8 @@ export class OrganizationApi extends BaseAPI {
     }
 
     /**
-     * A system or process that issues identifiers.     The combination (identifier_issuer, issued_identifier) is universally unique.
-     * @summary Identifier Issuers
+     * 
+     * @summary Identifier Issuers  Delete Some
      * @param {string} ids 
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
@@ -37813,8 +37961,8 @@ export class OrganizationApi extends BaseAPI {
     }
 
     /**
-     * A system or process that issues identifiers.     The combination (identifier_issuer, issued_identifier) is universally unique.
-     * @summary Identifier Issuers
+     * 
+     * @summary Identifier Issuers  Get All
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
      * @memberof OrganizationApi
@@ -37824,8 +37972,8 @@ export class OrganizationApi extends BaseAPI {
     }
 
     /**
-     * A system or process that issues identifiers.     The combination (identifier_issuer, issued_identifier) is universally unique.
-     * @summary Identifier Issuers
+     * 
+     * @summary Identifier Issuers  Get One
      * @param {string} objectId 
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
@@ -37836,8 +37984,8 @@ export class OrganizationApi extends BaseAPI {
     }
 
     /**
-     * A system or process that issues identifiers.     The combination (identifier_issuer, issued_identifier) is universally unique.
-     * @summary Identifier Issuers
+     * 
+     * @summary Identifier Issuers  Get Some
      * @param {string} ids 
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
@@ -37848,8 +37996,8 @@ export class OrganizationApi extends BaseAPI {
     }
 
     /**
-     * A system or process that issues identifiers.     The combination (identifier_issuer, issued_identifier) is universally unique.
-     * @summary Identifier Issuers
+     * 
+     * @summary Identifier Issuers  Post One
      * @param {IdentifierIssuer} identifierIssuer 
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
@@ -37860,8 +38008,8 @@ export class OrganizationApi extends BaseAPI {
     }
 
     /**
-     * A system or process that issues identifiers.     The combination (identifier_issuer, issued_identifier) is universally unique.
-     * @summary Identifier Issuers
+     * 
+     * @summary Identifier Issuers  Post Query
      * @param {EpiFilter} filter 
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
@@ -37872,8 +38020,8 @@ export class OrganizationApi extends BaseAPI {
     }
 
     /**
-     * A system or process that issues identifiers.     The combination (identifier_issuer, issued_identifier) is universally unique.
-     * @summary Identifier Issuers
+     * 
+     * @summary Identifier Issuers  Post Query  Ids
      * @param {EpiFilter} filter 
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
@@ -37884,8 +38032,8 @@ export class OrganizationApi extends BaseAPI {
     }
 
     /**
-     * A system or process that issues identifiers.     The combination (identifier_issuer, issued_identifier) is universally unique.
-     * @summary Identifier Issuers
+     * 
+     * @summary Identifier Issuers  Post Some
      * @param {Array<IdentifierIssuer>} identifierIssuer 
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
@@ -37896,8 +38044,8 @@ export class OrganizationApi extends BaseAPI {
     }
 
     /**
-     * A system or process that issues identifiers.     The combination (identifier_issuer, issued_identifier) is universally unique.
-     * @summary Identifier Issuers
+     * 
+     * @summary Identifier Issuers  Put One
      * @param {string} objectId 
      * @param {IdentifierIssuer} identifierIssuer 
      * @param {*} [options] Override http request option.
@@ -37909,8 +38057,8 @@ export class OrganizationApi extends BaseAPI {
     }
 
     /**
-     * A system or process that issues identifiers.     The combination (identifier_issuer, issued_identifier) is universally unique.
-     * @summary Identifier Issuers
+     * 
+     * @summary Identifier Issuers  Put Some
      * @param {Array<IdentifierIssuer>} identifierIssuer 
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
@@ -37921,8 +38069,20 @@ export class OrganizationApi extends BaseAPI {
     }
 
     /**
+     * Creates and returns a UserInvitation for a new user with a particular     email address, organization and initial role(s).      A random unique token is added to the invitation, and to be provided to the     new user for consuming the invitation.
+     * @summary Invite A User
+     * @param {UserInvitationRequestBody} userInvitationRequestBody 
+     * @param {*} [options] Override http request option.
+     * @throws {RequiredError}
+     * @memberof OrganizationApi
+     */
+    public inviteUser(userInvitationRequestBody: UserInvitationRequestBody, options?: RawAxiosRequestConfig) {
+        return OrganizationApiFp(this.configuration).inviteUser(userInvitationRequestBody, options).then((request) => request(this.axios, this.configuration.baseUrl));
+    }
+
+    /**
      * 
-     * @summary Organization Set Members
+     * @summary Organization Set Members  Delete All
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
      * @memberof OrganizationApi
@@ -37933,7 +38093,7 @@ export class OrganizationApi extends BaseAPI {
 
     /**
      * 
-     * @summary Organization Set Members
+     * @summary Organization Set Members  Delete One
      * @param {any} objectId 
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
@@ -37945,7 +38105,7 @@ export class OrganizationApi extends BaseAPI {
 
     /**
      * 
-     * @summary Organization Set Members
+     * @summary Organization Set Members  Delete Some
      * @param {string} ids 
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
@@ -37957,7 +38117,7 @@ export class OrganizationApi extends BaseAPI {
 
     /**
      * 
-     * @summary Organization Set Members
+     * @summary Organization Set Members  Get All
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
      * @memberof OrganizationApi
@@ -37968,7 +38128,7 @@ export class OrganizationApi extends BaseAPI {
 
     /**
      * 
-     * @summary Organization Set Members
+     * @summary Organization Set Members  Get One
      * @param {string} objectId 
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
@@ -37980,7 +38140,7 @@ export class OrganizationApi extends BaseAPI {
 
     /**
      * 
-     * @summary Organization Set Members
+     * @summary Organization Set Members  Get Some
      * @param {string} ids 
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
@@ -37992,7 +38152,7 @@ export class OrganizationApi extends BaseAPI {
 
     /**
      * 
-     * @summary Organization Set Members
+     * @summary Organization Set Members  Post One
      * @param {OrganizationSetMember} organizationSetMember 
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
@@ -38004,7 +38164,7 @@ export class OrganizationApi extends BaseAPI {
 
     /**
      * 
-     * @summary Organization Set Members
+     * @summary Organization Set Members  Post Query
      * @param {EpiFilter} filter 
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
@@ -38016,7 +38176,7 @@ export class OrganizationApi extends BaseAPI {
 
     /**
      * 
-     * @summary Organization Set Members
+     * @summary Organization Set Members  Post Query  Ids
      * @param {EpiFilter} filter 
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
@@ -38028,7 +38188,7 @@ export class OrganizationApi extends BaseAPI {
 
     /**
      * 
-     * @summary Organization Set Members
+     * @summary Organization Set Members  Post Some
      * @param {Array<OrganizationSetMember>} organizationSetMember 
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
@@ -38040,7 +38200,7 @@ export class OrganizationApi extends BaseAPI {
 
     /**
      * 
-     * @summary Organization Set Members
+     * @summary Organization Set Members  Put One
      * @param {string} objectId 
      * @param {OrganizationSetMember} organizationSetMember 
      * @param {*} [options] Override http request option.
@@ -38053,7 +38213,7 @@ export class OrganizationApi extends BaseAPI {
 
     /**
      * 
-     * @summary Organization Set Members
+     * @summary Organization Set Members  Put Some
      * @param {Array<OrganizationSetMember>} organizationSetMember 
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
@@ -38065,7 +38225,7 @@ export class OrganizationApi extends BaseAPI {
 
     /**
      * 
-     * @summary Organization Sets
+     * @summary Organization Sets  Delete All
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
      * @memberof OrganizationApi
@@ -38076,7 +38236,7 @@ export class OrganizationApi extends BaseAPI {
 
     /**
      * 
-     * @summary Organization Sets
+     * @summary Organization Sets  Delete One
      * @param {any} objectId 
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
@@ -38088,7 +38248,7 @@ export class OrganizationApi extends BaseAPI {
 
     /**
      * 
-     * @summary Organization Sets
+     * @summary Organization Sets  Delete Some
      * @param {string} ids 
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
@@ -38100,7 +38260,7 @@ export class OrganizationApi extends BaseAPI {
 
     /**
      * 
-     * @summary Organization Sets
+     * @summary Organization Sets  Get All
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
      * @memberof OrganizationApi
@@ -38111,7 +38271,7 @@ export class OrganizationApi extends BaseAPI {
 
     /**
      * 
-     * @summary Organization Sets
+     * @summary Organization Sets  Get One
      * @param {string} objectId 
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
@@ -38123,7 +38283,7 @@ export class OrganizationApi extends BaseAPI {
 
     /**
      * 
-     * @summary Organization Sets
+     * @summary Organization Sets  Get Some
      * @param {string} ids 
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
@@ -38135,7 +38295,7 @@ export class OrganizationApi extends BaseAPI {
 
     /**
      * 
-     * @summary Organization Sets
+     * @summary Organization Sets  Post One
      * @param {OrganizationSet} organizationSet 
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
@@ -38147,7 +38307,7 @@ export class OrganizationApi extends BaseAPI {
 
     /**
      * 
-     * @summary Organization Sets
+     * @summary Organization Sets  Post Query
      * @param {EpiFilter} filter 
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
@@ -38159,7 +38319,7 @@ export class OrganizationApi extends BaseAPI {
 
     /**
      * 
-     * @summary Organization Sets
+     * @summary Organization Sets  Post Query  Ids
      * @param {EpiFilter} filter 
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
@@ -38171,7 +38331,7 @@ export class OrganizationApi extends BaseAPI {
 
     /**
      * 
-     * @summary Organization Sets
+     * @summary Organization Sets  Post Some
      * @param {Array<OrganizationSet>} organizationSet 
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
@@ -38183,7 +38343,7 @@ export class OrganizationApi extends BaseAPI {
 
     /**
      * 
-     * @summary Organization Sets
+     * @summary Organization Sets  Put One
      * @param {string} objectId 
      * @param {OrganizationSet} organizationSet 
      * @param {*} [options] Override http request option.
@@ -38195,7 +38355,7 @@ export class OrganizationApi extends BaseAPI {
     }
 
     /**
-     * 
+     * Updates the association between an OrganizationSets and Organizations.      This command manages the many-to-many relationship by creating or updating     OrganizationSetMember associations between organization sets and     individual organizations.
      * @summary Organizationset Organization
      * @param {string} organizationSetId 
      * @param {UpdateOrganizationSetOrganizationRequestBody} updateOrganizationSetOrganizationRequestBody 
@@ -38209,7 +38369,7 @@ export class OrganizationApi extends BaseAPI {
 
     /**
      * 
-     * @summary Organization Sets
+     * @summary Organization Sets  Put Some
      * @param {Array<OrganizationSet>} organizationSet 
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
@@ -38220,8 +38380,8 @@ export class OrganizationApi extends BaseAPI {
     }
 
     /**
-     * Represents an organization.
-     * @summary Organizations
+     * 
+     * @summary Organizations  Delete All
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
      * @memberof OrganizationApi
@@ -38231,8 +38391,8 @@ export class OrganizationApi extends BaseAPI {
     }
 
     /**
-     * Represents an organization.
-     * @summary Organizations
+     * 
+     * @summary Organizations  Delete One
      * @param {any} objectId 
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
@@ -38243,8 +38403,8 @@ export class OrganizationApi extends BaseAPI {
     }
 
     /**
-     * Represents an organization.
-     * @summary Organizations
+     * 
+     * @summary Organizations  Delete Some
      * @param {string} ids 
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
@@ -38255,8 +38415,8 @@ export class OrganizationApi extends BaseAPI {
     }
 
     /**
-     * Represents an organization.
-     * @summary Organizations
+     * 
+     * @summary Organizations  Get All
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
      * @memberof OrganizationApi
@@ -38266,8 +38426,8 @@ export class OrganizationApi extends BaseAPI {
     }
 
     /**
-     * Represents an organization.
-     * @summary Organizations
+     * 
+     * @summary Organizations  Get One
      * @param {string} objectId 
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
@@ -38278,8 +38438,8 @@ export class OrganizationApi extends BaseAPI {
     }
 
     /**
-     * Represents an organization.
-     * @summary Organizations
+     * 
+     * @summary Organizations  Get Some
      * @param {string} ids 
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
@@ -38290,8 +38450,8 @@ export class OrganizationApi extends BaseAPI {
     }
 
     /**
-     * Represents an organization.
-     * @summary Organizations
+     * 
+     * @summary Organizations  Post One
      * @param {Organization} organization 
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
@@ -38302,8 +38462,8 @@ export class OrganizationApi extends BaseAPI {
     }
 
     /**
-     * Represents an organization.
-     * @summary Organizations
+     * 
+     * @summary Organizations  Post Query
      * @param {EpiFilter} filter 
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
@@ -38314,8 +38474,8 @@ export class OrganizationApi extends BaseAPI {
     }
 
     /**
-     * Represents an organization.
-     * @summary Organizations
+     * 
+     * @summary Organizations  Post Query  Ids
      * @param {EpiFilter} filter 
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
@@ -38326,8 +38486,8 @@ export class OrganizationApi extends BaseAPI {
     }
 
     /**
-     * Represents an organization.
-     * @summary Organizations
+     * 
+     * @summary Organizations  Post Some
      * @param {Array<Organization>} organization 
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
@@ -38338,8 +38498,8 @@ export class OrganizationApi extends BaseAPI {
     }
 
     /**
-     * Represents an organization.
-     * @summary Organizations
+     * 
+     * @summary Organizations  Put One
      * @param {string} objectId 
      * @param {Organization} organization 
      * @param {*} [options] Override http request option.
@@ -38351,8 +38511,8 @@ export class OrganizationApi extends BaseAPI {
     }
 
     /**
-     * Represents an organization.
-     * @summary Organizations
+     * 
+     * @summary Organizations  Put Some
      * @param {Array<Organization>} organization 
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
@@ -38363,8 +38523,8 @@ export class OrganizationApi extends BaseAPI {
     }
 
     /**
-     * Represents a physical site of an organization.
-     * @summary Sites
+     * 
+     * @summary Sites  Delete All
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
      * @memberof OrganizationApi
@@ -38374,8 +38534,8 @@ export class OrganizationApi extends BaseAPI {
     }
 
     /**
-     * Represents a physical site of an organization.
-     * @summary Sites
+     * 
+     * @summary Sites  Delete One
      * @param {any} objectId 
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
@@ -38386,8 +38546,8 @@ export class OrganizationApi extends BaseAPI {
     }
 
     /**
-     * Represents a physical site of an organization.
-     * @summary Sites
+     * 
+     * @summary Sites  Delete Some
      * @param {string} ids 
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
@@ -38398,8 +38558,8 @@ export class OrganizationApi extends BaseAPI {
     }
 
     /**
-     * Represents a physical site of an organization.
-     * @summary Sites
+     * 
+     * @summary Sites  Get All
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
      * @memberof OrganizationApi
@@ -38409,8 +38569,8 @@ export class OrganizationApi extends BaseAPI {
     }
 
     /**
-     * Represents a physical site of an organization.
-     * @summary Sites
+     * 
+     * @summary Sites  Get One
      * @param {string} objectId 
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
@@ -38421,8 +38581,8 @@ export class OrganizationApi extends BaseAPI {
     }
 
     /**
-     * Represents a physical site of an organization.
-     * @summary Sites
+     * 
+     * @summary Sites  Get Some
      * @param {string} ids 
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
@@ -38433,8 +38593,8 @@ export class OrganizationApi extends BaseAPI {
     }
 
     /**
-     * Represents a physical site of an organization.
-     * @summary Sites
+     * 
+     * @summary Sites  Post One
      * @param {Site} site 
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
@@ -38445,8 +38605,8 @@ export class OrganizationApi extends BaseAPI {
     }
 
     /**
-     * Represents a physical site of an organization.
-     * @summary Sites
+     * 
+     * @summary Sites  Post Query
      * @param {EpiFilter} filter 
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
@@ -38457,8 +38617,8 @@ export class OrganizationApi extends BaseAPI {
     }
 
     /**
-     * Represents a physical site of an organization.
-     * @summary Sites
+     * 
+     * @summary Sites  Post Query  Ids
      * @param {EpiFilter} filter 
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
@@ -38469,8 +38629,8 @@ export class OrganizationApi extends BaseAPI {
     }
 
     /**
-     * Represents a physical site of an organization.
-     * @summary Sites
+     * 
+     * @summary Sites  Post Some
      * @param {Array<Site>} site 
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
@@ -38481,8 +38641,8 @@ export class OrganizationApi extends BaseAPI {
     }
 
     /**
-     * Represents a physical site of an organization.
-     * @summary Sites
+     * 
+     * @summary Sites  Put One
      * @param {string} objectId 
      * @param {Site} site 
      * @param {*} [options] Override http request option.
@@ -38494,8 +38654,8 @@ export class OrganizationApi extends BaseAPI {
     }
 
     /**
-     * Represents a physical site of an organization.
-     * @summary Sites
+     * 
+     * @summary Sites  Put Some
      * @param {Array<Site>} site 
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
@@ -38506,8 +38666,8 @@ export class OrganizationApi extends BaseAPI {
     }
 
     /**
-     * 
-     * @summary Updateuserownorganization
+     * Updates an existing User with new properties such as active status,     roles, and organization membership.      The target user is identified by tgt_user_id. Any field set to None will     leave that property unchanged. Roles cannot be set to an empty set.     Cache is invalidated after successful update.
+     * @summary Updateuserownorganizationcommand
      * @param {UpdateUserOwnOrganizationRequestBody} updateUserOwnOrganizationRequestBody 
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
@@ -38519,7 +38679,7 @@ export class OrganizationApi extends BaseAPI {
 
     /**
      * 
-     * @summary User Invitations
+     * @summary User Invitations  Delete All
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
      * @memberof OrganizationApi
@@ -38530,7 +38690,7 @@ export class OrganizationApi extends BaseAPI {
 
     /**
      * 
-     * @summary User Invitations
+     * @summary User Invitations  Delete One
      * @param {any} objectId 
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
@@ -38542,7 +38702,7 @@ export class OrganizationApi extends BaseAPI {
 
     /**
      * 
-     * @summary User Invitations
+     * @summary User Invitations  Delete Some
      * @param {string} ids 
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
@@ -38554,7 +38714,7 @@ export class OrganizationApi extends BaseAPI {
 
     /**
      * 
-     * @summary User Invitations
+     * @summary User Invitations  Get All
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
      * @memberof OrganizationApi
@@ -38565,7 +38725,7 @@ export class OrganizationApi extends BaseAPI {
 
     /**
      * 
-     * @summary User Invitations
+     * @summary User Invitations  Get One
      * @param {string} objectId 
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
@@ -38577,7 +38737,7 @@ export class OrganizationApi extends BaseAPI {
 
     /**
      * 
-     * @summary User Invitations
+     * @summary User Invitations  Get Some
      * @param {string} ids 
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
@@ -38589,7 +38749,7 @@ export class OrganizationApi extends BaseAPI {
 
     /**
      * 
-     * @summary User Invitations
+     * @summary User Invitations  Post One
      * @param {UserInvitation} userInvitation 
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
@@ -38601,7 +38761,7 @@ export class OrganizationApi extends BaseAPI {
 
     /**
      * 
-     * @summary User Invitations
+     * @summary User Invitations  Post Query
      * @param {EpiFilter} filter 
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
@@ -38613,7 +38773,7 @@ export class OrganizationApi extends BaseAPI {
 
     /**
      * 
-     * @summary User Invitations
+     * @summary User Invitations  Post Query  Ids
      * @param {EpiFilter} filter 
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
@@ -38625,7 +38785,7 @@ export class OrganizationApi extends BaseAPI {
 
     /**
      * 
-     * @summary User Invitations
+     * @summary User Invitations  Post Some
      * @param {Array<UserInvitation>} userInvitation 
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
@@ -38637,7 +38797,7 @@ export class OrganizationApi extends BaseAPI {
 
     /**
      * 
-     * @summary User Invitations
+     * @summary User Invitations  Put One
      * @param {string} objectId 
      * @param {UserInvitation} userInvitation 
      * @param {*} [options] Override http request option.
@@ -38650,7 +38810,7 @@ export class OrganizationApi extends BaseAPI {
 
     /**
      * 
-     * @summary User Invitations
+     * @summary User Invitations  Put Some
      * @param {Array<UserInvitation>} userInvitation 
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
@@ -38673,7 +38833,7 @@ export class OrganizationApi extends BaseAPI {
 
     /**
      * 
-     * @summary Userme
+     * @summary Userme Permissions
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
      * @memberof OrganizationApi
@@ -38683,7 +38843,7 @@ export class OrganizationApi extends BaseAPI {
     }
 
     /**
-     * 
+     * Registers (creates) the user of the command. The email and token must match     that of an existing UserInvitation. The newly registered user is assigned     the organization and roles from the invitation. The invitation is deleted.
      * @summary Registerinviteduser
      * @param {string} token 
      * @param {*} [options] Override http request option.
@@ -38696,7 +38856,7 @@ export class OrganizationApi extends BaseAPI {
 
     /**
      * 
-     * @summary Users
+     * @summary Users  Delete All
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
      * @memberof OrganizationApi
@@ -38707,7 +38867,7 @@ export class OrganizationApi extends BaseAPI {
 
     /**
      * 
-     * @summary Users
+     * @summary Users  Delete One
      * @param {any} objectId 
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
@@ -38719,7 +38879,7 @@ export class OrganizationApi extends BaseAPI {
 
     /**
      * 
-     * @summary Users
+     * @summary Users  Delete Some
      * @param {string} ids 
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
@@ -38731,7 +38891,7 @@ export class OrganizationApi extends BaseAPI {
 
     /**
      * 
-     * @summary Users
+     * @summary Users  Get All
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
      * @memberof OrganizationApi
@@ -38742,7 +38902,7 @@ export class OrganizationApi extends BaseAPI {
 
     /**
      * 
-     * @summary Users
+     * @summary Users  Get One
      * @param {string} objectId 
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
@@ -38754,7 +38914,7 @@ export class OrganizationApi extends BaseAPI {
 
     /**
      * 
-     * @summary Users
+     * @summary Users  Get Some
      * @param {string} ids 
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
@@ -38766,7 +38926,7 @@ export class OrganizationApi extends BaseAPI {
 
     /**
      * 
-     * @summary Users
+     * @summary Users  Post One
      * @param {User} user 
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
@@ -38778,7 +38938,7 @@ export class OrganizationApi extends BaseAPI {
 
     /**
      * 
-     * @summary Users
+     * @summary Users  Post Query
      * @param {EpiFilter} filter 
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
@@ -38790,7 +38950,7 @@ export class OrganizationApi extends BaseAPI {
 
     /**
      * 
-     * @summary Users
+     * @summary Users  Post Query  Ids
      * @param {EpiFilter} filter 
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
@@ -38802,7 +38962,7 @@ export class OrganizationApi extends BaseAPI {
 
     /**
      * 
-     * @summary Users
+     * @summary Users  Post Some
      * @param {Array<User>} user 
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
@@ -38814,7 +38974,7 @@ export class OrganizationApi extends BaseAPI {
 
     /**
      * 
-     * @summary Users
+     * @summary Users  Put One
      * @param {string} objectId 
      * @param {User} user 
      * @param {*} [options] Override http request option.
@@ -38827,7 +38987,7 @@ export class OrganizationApi extends BaseAPI {
 
     /**
      * 
-     * @summary Users
+     * @summary Users  Put Some
      * @param {Array<User>} user 
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
@@ -38848,7 +39008,7 @@ const SubjectApiAxiosParamCreator = function (configuration?: Configuration) {
     return {
         /**
          * 
-         * @summary EpiSubject Identifiers
+         * @summary EpiSubject Identifiers  Delete All
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
@@ -38878,7 +39038,7 @@ const SubjectApiAxiosParamCreator = function (configuration?: Configuration) {
         },
         /**
          * 
-         * @summary EpiSubject Identifiers
+         * @summary EpiSubject Identifiers  Delete One
          * @param {any} objectId 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
@@ -38912,7 +39072,7 @@ const SubjectApiAxiosParamCreator = function (configuration?: Configuration) {
         },
         /**
          * 
-         * @summary EpiSubject Identifiers
+         * @summary EpiSubject Identifiers  Delete Some
          * @param {string} ids 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
@@ -38949,7 +39109,7 @@ const SubjectApiAxiosParamCreator = function (configuration?: Configuration) {
         },
         /**
          * 
-         * @summary EpiSubject Identifiers
+         * @summary EpiSubject Identifiers  Get All
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
@@ -38979,7 +39139,7 @@ const SubjectApiAxiosParamCreator = function (configuration?: Configuration) {
         },
         /**
          * 
-         * @summary EpiSubject Identifiers
+         * @summary EpiSubject Identifiers  Get One
          * @param {string} objectId 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
@@ -39013,7 +39173,7 @@ const SubjectApiAxiosParamCreator = function (configuration?: Configuration) {
         },
         /**
          * 
-         * @summary EpiSubject Identifiers
+         * @summary EpiSubject Identifiers  Get Some
          * @param {string} ids 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
@@ -39050,7 +39210,7 @@ const SubjectApiAxiosParamCreator = function (configuration?: Configuration) {
         },
         /**
          * 
-         * @summary EpiSubject Identifiers
+         * @summary EpiSubject Identifiers  Post One
          * @param {SubjectIdentifier} subjectIdentifier 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
@@ -39086,7 +39246,7 @@ const SubjectApiAxiosParamCreator = function (configuration?: Configuration) {
         },
         /**
          * 
-         * @summary EpiSubject Identifiers
+         * @summary EpiSubject Identifiers  Post Query
          * @param {EpiFilter} filter 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
@@ -39122,7 +39282,7 @@ const SubjectApiAxiosParamCreator = function (configuration?: Configuration) {
         },
         /**
          * 
-         * @summary EpiSubject Identifiers
+         * @summary EpiSubject Identifiers  Post Query  Ids
          * @param {EpiFilter} filter 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
@@ -39158,7 +39318,7 @@ const SubjectApiAxiosParamCreator = function (configuration?: Configuration) {
         },
         /**
          * 
-         * @summary EpiSubject Identifiers
+         * @summary EpiSubject Identifiers  Post Some
          * @param {Array<SubjectIdentifier>} subjectIdentifier 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
@@ -39194,7 +39354,7 @@ const SubjectApiAxiosParamCreator = function (configuration?: Configuration) {
         },
         /**
          * 
-         * @summary EpiSubject Identifiers
+         * @summary EpiSubject Identifiers  Put One
          * @param {string} objectId 
          * @param {SubjectIdentifier} subjectIdentifier 
          * @param {*} [options] Override http request option.
@@ -39234,7 +39394,7 @@ const SubjectApiAxiosParamCreator = function (configuration?: Configuration) {
         },
         /**
          * 
-         * @summary EpiSubject Identifiers
+         * @summary EpiSubject Identifiers  Put Some
          * @param {Array<SubjectIdentifier>} subjectIdentifier 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
@@ -39269,8 +39429,8 @@ const SubjectApiAxiosParamCreator = function (configuration?: Configuration) {
             };
         },
         /**
-         * Represents a person context bound to a particular data collection.
-         * @summary Subjects
+         * 
+         * @summary Subjects  Delete All
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
@@ -39299,8 +39459,8 @@ const SubjectApiAxiosParamCreator = function (configuration?: Configuration) {
             };
         },
         /**
-         * Represents a person context bound to a particular data collection.
-         * @summary Subjects
+         * 
+         * @summary Subjects  Delete One
          * @param {any} objectId 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
@@ -39333,8 +39493,8 @@ const SubjectApiAxiosParamCreator = function (configuration?: Configuration) {
             };
         },
         /**
-         * Represents a person context bound to a particular data collection.
-         * @summary Subjects
+         * 
+         * @summary Subjects  Delete Some
          * @param {string} ids 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
@@ -39370,8 +39530,8 @@ const SubjectApiAxiosParamCreator = function (configuration?: Configuration) {
             };
         },
         /**
-         * Represents a person context bound to a particular data collection.
-         * @summary Subjects
+         * 
+         * @summary Subjects  Get All
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
@@ -39400,8 +39560,8 @@ const SubjectApiAxiosParamCreator = function (configuration?: Configuration) {
             };
         },
         /**
-         * Represents a person context bound to a particular data collection.
-         * @summary Subjects
+         * 
+         * @summary Subjects  Get One
          * @param {string} objectId 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
@@ -39434,8 +39594,8 @@ const SubjectApiAxiosParamCreator = function (configuration?: Configuration) {
             };
         },
         /**
-         * Represents a person context bound to a particular data collection.
-         * @summary Subjects
+         * 
+         * @summary Subjects  Get Some
          * @param {string} ids 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
@@ -39471,8 +39631,8 @@ const SubjectApiAxiosParamCreator = function (configuration?: Configuration) {
             };
         },
         /**
-         * Represents a person context bound to a particular data collection.
-         * @summary Subjects
+         * 
+         * @summary Subjects  Post One
          * @param {EpiSubject} subject 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
@@ -39507,8 +39667,8 @@ const SubjectApiAxiosParamCreator = function (configuration?: Configuration) {
             };
         },
         /**
-         * Represents a person context bound to a particular data collection.
-         * @summary Subjects
+         * 
+         * @summary Subjects  Post Query
          * @param {EpiFilter} filter 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
@@ -39543,8 +39703,8 @@ const SubjectApiAxiosParamCreator = function (configuration?: Configuration) {
             };
         },
         /**
-         * Represents a person context bound to a particular data collection.
-         * @summary Subjects
+         * 
+         * @summary Subjects  Post Query  Ids
          * @param {EpiFilter} filter 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
@@ -39579,8 +39739,8 @@ const SubjectApiAxiosParamCreator = function (configuration?: Configuration) {
             };
         },
         /**
-         * Represents a person context bound to a particular data collection.
-         * @summary Subjects
+         * 
+         * @summary Subjects  Post Some
          * @param {Array<EpiSubject>} subject 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
@@ -39615,8 +39775,8 @@ const SubjectApiAxiosParamCreator = function (configuration?: Configuration) {
             };
         },
         /**
-         * Represents a person context bound to a particular data collection.
-         * @summary Subjects
+         * 
+         * @summary Subjects  Put One
          * @param {string} objectId 
          * @param {EpiSubject} subject 
          * @param {*} [options] Override http request option.
@@ -39655,8 +39815,8 @@ const SubjectApiAxiosParamCreator = function (configuration?: Configuration) {
             };
         },
         /**
-         * Represents a person context bound to a particular data collection.
-         * @summary Subjects
+         * 
+         * @summary Subjects  Put Some
          * @param {Array<EpiSubject>} subject 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
@@ -39702,7 +39862,7 @@ const SubjectApiFp = function(configuration?: Configuration) {
     return {
         /**
          * 
-         * @summary EpiSubject Identifiers
+         * @summary EpiSubject Identifiers  Delete All
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
@@ -39714,7 +39874,7 @@ const SubjectApiFp = function(configuration?: Configuration) {
         },
         /**
          * 
-         * @summary EpiSubject Identifiers
+         * @summary EpiSubject Identifiers  Delete One
          * @param {any} objectId 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
@@ -39727,7 +39887,7 @@ const SubjectApiFp = function(configuration?: Configuration) {
         },
         /**
          * 
-         * @summary EpiSubject Identifiers
+         * @summary EpiSubject Identifiers  Delete Some
          * @param {string} ids 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
@@ -39740,7 +39900,7 @@ const SubjectApiFp = function(configuration?: Configuration) {
         },
         /**
          * 
-         * @summary EpiSubject Identifiers
+         * @summary EpiSubject Identifiers  Get All
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
@@ -39752,7 +39912,7 @@ const SubjectApiFp = function(configuration?: Configuration) {
         },
         /**
          * 
-         * @summary EpiSubject Identifiers
+         * @summary EpiSubject Identifiers  Get One
          * @param {string} objectId 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
@@ -39765,7 +39925,7 @@ const SubjectApiFp = function(configuration?: Configuration) {
         },
         /**
          * 
-         * @summary EpiSubject Identifiers
+         * @summary EpiSubject Identifiers  Get Some
          * @param {string} ids 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
@@ -39778,7 +39938,7 @@ const SubjectApiFp = function(configuration?: Configuration) {
         },
         /**
          * 
-         * @summary EpiSubject Identifiers
+         * @summary EpiSubject Identifiers  Post One
          * @param {SubjectIdentifier} subjectIdentifier 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
@@ -39791,7 +39951,7 @@ const SubjectApiFp = function(configuration?: Configuration) {
         },
         /**
          * 
-         * @summary EpiSubject Identifiers
+         * @summary EpiSubject Identifiers  Post Query
          * @param {EpiFilter} filter 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
@@ -39804,7 +39964,7 @@ const SubjectApiFp = function(configuration?: Configuration) {
         },
         /**
          * 
-         * @summary EpiSubject Identifiers
+         * @summary EpiSubject Identifiers  Post Query  Ids
          * @param {EpiFilter} filter 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
@@ -39817,7 +39977,7 @@ const SubjectApiFp = function(configuration?: Configuration) {
         },
         /**
          * 
-         * @summary EpiSubject Identifiers
+         * @summary EpiSubject Identifiers  Post Some
          * @param {Array<SubjectIdentifier>} subjectIdentifier 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
@@ -39830,7 +39990,7 @@ const SubjectApiFp = function(configuration?: Configuration) {
         },
         /**
          * 
-         * @summary EpiSubject Identifiers
+         * @summary EpiSubject Identifiers  Put One
          * @param {string} objectId 
          * @param {SubjectIdentifier} subjectIdentifier 
          * @param {*} [options] Override http request option.
@@ -39844,7 +40004,7 @@ const SubjectApiFp = function(configuration?: Configuration) {
         },
         /**
          * 
-         * @summary EpiSubject Identifiers
+         * @summary EpiSubject Identifiers  Put Some
          * @param {Array<SubjectIdentifier>} subjectIdentifier 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
@@ -39856,8 +40016,8 @@ const SubjectApiFp = function(configuration?: Configuration) {
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
         /**
-         * Represents a person context bound to a particular data collection.
-         * @summary Subjects
+         * 
+         * @summary Subjects  Delete All
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
@@ -39868,8 +40028,8 @@ const SubjectApiFp = function(configuration?: Configuration) {
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
         /**
-         * Represents a person context bound to a particular data collection.
-         * @summary Subjects
+         * 
+         * @summary Subjects  Delete One
          * @param {any} objectId 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
@@ -39881,8 +40041,8 @@ const SubjectApiFp = function(configuration?: Configuration) {
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
         /**
-         * Represents a person context bound to a particular data collection.
-         * @summary Subjects
+         * 
+         * @summary Subjects  Delete Some
          * @param {string} ids 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
@@ -39894,8 +40054,8 @@ const SubjectApiFp = function(configuration?: Configuration) {
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
         /**
-         * Represents a person context bound to a particular data collection.
-         * @summary Subjects
+         * 
+         * @summary Subjects  Get All
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
@@ -39906,8 +40066,8 @@ const SubjectApiFp = function(configuration?: Configuration) {
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
         /**
-         * Represents a person context bound to a particular data collection.
-         * @summary Subjects
+         * 
+         * @summary Subjects  Get One
          * @param {string} objectId 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
@@ -39919,8 +40079,8 @@ const SubjectApiFp = function(configuration?: Configuration) {
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
         /**
-         * Represents a person context bound to a particular data collection.
-         * @summary Subjects
+         * 
+         * @summary Subjects  Get Some
          * @param {string} ids 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
@@ -39932,8 +40092,8 @@ const SubjectApiFp = function(configuration?: Configuration) {
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
         /**
-         * Represents a person context bound to a particular data collection.
-         * @summary Subjects
+         * 
+         * @summary Subjects  Post One
          * @param {EpiSubject} subject 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
@@ -39945,8 +40105,8 @@ const SubjectApiFp = function(configuration?: Configuration) {
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
         /**
-         * Represents a person context bound to a particular data collection.
-         * @summary Subjects
+         * 
+         * @summary Subjects  Post Query
          * @param {EpiFilter} filter 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
@@ -39958,8 +40118,8 @@ const SubjectApiFp = function(configuration?: Configuration) {
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
         /**
-         * Represents a person context bound to a particular data collection.
-         * @summary Subjects
+         * 
+         * @summary Subjects  Post Query  Ids
          * @param {EpiFilter} filter 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
@@ -39971,8 +40131,8 @@ const SubjectApiFp = function(configuration?: Configuration) {
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
         /**
-         * Represents a person context bound to a particular data collection.
-         * @summary Subjects
+         * 
+         * @summary Subjects  Post Some
          * @param {Array<EpiSubject>} subject 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
@@ -39984,8 +40144,8 @@ const SubjectApiFp = function(configuration?: Configuration) {
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
         /**
-         * Represents a person context bound to a particular data collection.
-         * @summary Subjects
+         * 
+         * @summary Subjects  Put One
          * @param {string} objectId 
          * @param {EpiSubject} subject 
          * @param {*} [options] Override http request option.
@@ -39998,8 +40158,8 @@ const SubjectApiFp = function(configuration?: Configuration) {
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
         /**
-         * Represents a person context bound to a particular data collection.
-         * @summary Subjects
+         * 
+         * @summary Subjects  Put Some
          * @param {Array<EpiSubject>} subject 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
@@ -40034,7 +40194,7 @@ export class SubjectApi extends BaseAPI {
 
     /**
      * 
-     * @summary EpiSubject Identifiers
+     * @summary EpiSubject Identifiers  Delete All
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
      * @memberof SubjectApi
@@ -40045,7 +40205,7 @@ export class SubjectApi extends BaseAPI {
 
     /**
      * 
-     * @summary EpiSubject Identifiers
+     * @summary EpiSubject Identifiers  Delete One
      * @param {any} objectId 
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
@@ -40057,7 +40217,7 @@ export class SubjectApi extends BaseAPI {
 
     /**
      * 
-     * @summary EpiSubject Identifiers
+     * @summary EpiSubject Identifiers  Delete Some
      * @param {string} ids 
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
@@ -40069,7 +40229,7 @@ export class SubjectApi extends BaseAPI {
 
     /**
      * 
-     * @summary EpiSubject Identifiers
+     * @summary EpiSubject Identifiers  Get All
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
      * @memberof SubjectApi
@@ -40080,7 +40240,7 @@ export class SubjectApi extends BaseAPI {
 
     /**
      * 
-     * @summary EpiSubject Identifiers
+     * @summary EpiSubject Identifiers  Get One
      * @param {string} objectId 
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
@@ -40092,7 +40252,7 @@ export class SubjectApi extends BaseAPI {
 
     /**
      * 
-     * @summary EpiSubject Identifiers
+     * @summary EpiSubject Identifiers  Get Some
      * @param {string} ids 
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
@@ -40104,7 +40264,7 @@ export class SubjectApi extends BaseAPI {
 
     /**
      * 
-     * @summary EpiSubject Identifiers
+     * @summary EpiSubject Identifiers  Post One
      * @param {SubjectIdentifier} subjectIdentifier 
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
@@ -40116,7 +40276,7 @@ export class SubjectApi extends BaseAPI {
 
     /**
      * 
-     * @summary EpiSubject Identifiers
+     * @summary EpiSubject Identifiers  Post Query
      * @param {EpiFilter} filter 
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
@@ -40128,7 +40288,7 @@ export class SubjectApi extends BaseAPI {
 
     /**
      * 
-     * @summary EpiSubject Identifiers
+     * @summary EpiSubject Identifiers  Post Query  Ids
      * @param {EpiFilter} filter 
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
@@ -40140,7 +40300,7 @@ export class SubjectApi extends BaseAPI {
 
     /**
      * 
-     * @summary EpiSubject Identifiers
+     * @summary EpiSubject Identifiers  Post Some
      * @param {Array<SubjectIdentifier>} subjectIdentifier 
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
@@ -40152,7 +40312,7 @@ export class SubjectApi extends BaseAPI {
 
     /**
      * 
-     * @summary EpiSubject Identifiers
+     * @summary EpiSubject Identifiers  Put One
      * @param {string} objectId 
      * @param {SubjectIdentifier} subjectIdentifier 
      * @param {*} [options] Override http request option.
@@ -40165,7 +40325,7 @@ export class SubjectApi extends BaseAPI {
 
     /**
      * 
-     * @summary EpiSubject Identifiers
+     * @summary EpiSubject Identifiers  Put Some
      * @param {Array<SubjectIdentifier>} subjectIdentifier 
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
@@ -40176,8 +40336,8 @@ export class SubjectApi extends BaseAPI {
     }
 
     /**
-     * Represents a person context bound to a particular data collection.
-     * @summary Subjects
+     * 
+     * @summary Subjects  Delete All
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
      * @memberof SubjectApi
@@ -40187,8 +40347,8 @@ export class SubjectApi extends BaseAPI {
     }
 
     /**
-     * Represents a person context bound to a particular data collection.
-     * @summary Subjects
+     * 
+     * @summary Subjects  Delete One
      * @param {any} objectId 
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
@@ -40199,8 +40359,8 @@ export class SubjectApi extends BaseAPI {
     }
 
     /**
-     * Represents a person context bound to a particular data collection.
-     * @summary Subjects
+     * 
+     * @summary Subjects  Delete Some
      * @param {string} ids 
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
@@ -40211,8 +40371,8 @@ export class SubjectApi extends BaseAPI {
     }
 
     /**
-     * Represents a person context bound to a particular data collection.
-     * @summary Subjects
+     * 
+     * @summary Subjects  Get All
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
      * @memberof SubjectApi
@@ -40222,8 +40382,8 @@ export class SubjectApi extends BaseAPI {
     }
 
     /**
-     * Represents a person context bound to a particular data collection.
-     * @summary Subjects
+     * 
+     * @summary Subjects  Get One
      * @param {string} objectId 
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
@@ -40234,8 +40394,8 @@ export class SubjectApi extends BaseAPI {
     }
 
     /**
-     * Represents a person context bound to a particular data collection.
-     * @summary Subjects
+     * 
+     * @summary Subjects  Get Some
      * @param {string} ids 
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
@@ -40246,8 +40406,8 @@ export class SubjectApi extends BaseAPI {
     }
 
     /**
-     * Represents a person context bound to a particular data collection.
-     * @summary Subjects
+     * 
+     * @summary Subjects  Post One
      * @param {EpiSubject} subject 
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
@@ -40258,8 +40418,8 @@ export class SubjectApi extends BaseAPI {
     }
 
     /**
-     * Represents a person context bound to a particular data collection.
-     * @summary Subjects
+     * 
+     * @summary Subjects  Post Query
      * @param {EpiFilter} filter 
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
@@ -40270,8 +40430,8 @@ export class SubjectApi extends BaseAPI {
     }
 
     /**
-     * Represents a person context bound to a particular data collection.
-     * @summary Subjects
+     * 
+     * @summary Subjects  Post Query  Ids
      * @param {EpiFilter} filter 
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
@@ -40282,8 +40442,8 @@ export class SubjectApi extends BaseAPI {
     }
 
     /**
-     * Represents a person context bound to a particular data collection.
-     * @summary Subjects
+     * 
+     * @summary Subjects  Post Some
      * @param {Array<EpiSubject>} subject 
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
@@ -40294,8 +40454,8 @@ export class SubjectApi extends BaseAPI {
     }
 
     /**
-     * Represents a person context bound to a particular data collection.
-     * @summary Subjects
+     * 
+     * @summary Subjects  Put One
      * @param {string} objectId 
      * @param {EpiSubject} subject 
      * @param {*} [options] Override http request option.
@@ -40307,8 +40467,8 @@ export class SubjectApi extends BaseAPI {
     }
 
     /**
-     * Represents a person context bound to a particular data collection.
-     * @summary Subjects
+     * 
+     * @summary Subjects  Put Some
      * @param {Array<EpiSubject>} subject 
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
@@ -40328,7 +40488,7 @@ export class SubjectApi extends BaseAPI {
 const SystemApiAxiosParamCreator = function (configuration?: Configuration) {
     return {
         /**
-         * 
+         * Returns the health status of the service. If no response is received within the timeout period, the service is considered unhealthy.
          * @summary Health
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
@@ -40358,7 +40518,7 @@ const SystemApiAxiosParamCreator = function (configuration?: Configuration) {
             };
         },
         /**
-         * 
+         * Logs the provided log items.
          * @summary Log
          * @param {LogRequestBody} logRequestBody 
          * @param {*} [options] Override http request option.
@@ -40394,8 +40554,8 @@ const SystemApiAxiosParamCreator = function (configuration?: Configuration) {
             };
         },
         /**
-         * Represents a system outage.
-         * @summary Outages
+         * 
+         * @summary Outages  Delete All
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
@@ -40424,8 +40584,8 @@ const SystemApiAxiosParamCreator = function (configuration?: Configuration) {
             };
         },
         /**
-         * Represents a system outage.
-         * @summary Outages
+         * 
+         * @summary Outages  Delete One
          * @param {any} objectId 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
@@ -40458,8 +40618,8 @@ const SystemApiAxiosParamCreator = function (configuration?: Configuration) {
             };
         },
         /**
-         * Represents a system outage.
-         * @summary Outages
+         * 
+         * @summary Outages  Delete Some
          * @param {string} ids 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
@@ -40495,8 +40655,8 @@ const SystemApiAxiosParamCreator = function (configuration?: Configuration) {
             };
         },
         /**
-         * Represents a system outage.
-         * @summary Outages
+         * 
+         * @summary Outages  Get All
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
@@ -40525,8 +40685,8 @@ const SystemApiAxiosParamCreator = function (configuration?: Configuration) {
             };
         },
         /**
-         * Represents a system outage.
-         * @summary Outages
+         * 
+         * @summary Outages  Get One
          * @param {string} objectId 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
@@ -40559,8 +40719,8 @@ const SystemApiAxiosParamCreator = function (configuration?: Configuration) {
             };
         },
         /**
-         * Represents a system outage.
-         * @summary Outages
+         * 
+         * @summary Outages  Get Some
          * @param {string} ids 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
@@ -40596,8 +40756,8 @@ const SystemApiAxiosParamCreator = function (configuration?: Configuration) {
             };
         },
         /**
-         * Represents a system outage.
-         * @summary Outages
+         * 
+         * @summary Outages  Post One
          * @param {Outage} outage 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
@@ -40632,8 +40792,8 @@ const SystemApiAxiosParamCreator = function (configuration?: Configuration) {
             };
         },
         /**
-         * Represents a system outage.
-         * @summary Outages
+         * 
+         * @summary Outages  Post Query
          * @param {EpiFilter} filter 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
@@ -40668,8 +40828,8 @@ const SystemApiAxiosParamCreator = function (configuration?: Configuration) {
             };
         },
         /**
-         * Represents a system outage.
-         * @summary Outages
+         * 
+         * @summary Outages  Post Query  Ids
          * @param {EpiFilter} filter 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
@@ -40704,8 +40864,8 @@ const SystemApiAxiosParamCreator = function (configuration?: Configuration) {
             };
         },
         /**
-         * Represents a system outage.
-         * @summary Outages
+         * 
+         * @summary Outages  Post Some
          * @param {Array<Outage>} outage 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
@@ -40740,8 +40900,8 @@ const SystemApiAxiosParamCreator = function (configuration?: Configuration) {
             };
         },
         /**
-         * Represents a system outage.
-         * @summary Outages
+         * 
+         * @summary Outages  Put One
          * @param {string} objectId 
          * @param {Outage} outage 
          * @param {*} [options] Override http request option.
@@ -40780,8 +40940,8 @@ const SystemApiAxiosParamCreator = function (configuration?: Configuration) {
             };
         },
         /**
-         * Represents a system outage.
-         * @summary Outages
+         * 
+         * @summary Outages  Put Some
          * @param {Array<Outage>} outage 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
@@ -40886,7 +41046,7 @@ const SystemApiFp = function(configuration?: Configuration) {
     const localVarAxiosParamCreator = SystemApiAxiosParamCreator(configuration)
     return {
         /**
-         * 
+         * Returns the health status of the service. If no response is received within the timeout period, the service is considered unhealthy.
          * @summary Health
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
@@ -40898,7 +41058,7 @@ const SystemApiFp = function(configuration?: Configuration) {
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
         /**
-         * 
+         * Logs the provided log items.
          * @summary Log
          * @param {LogRequestBody} logRequestBody 
          * @param {*} [options] Override http request option.
@@ -40911,8 +41071,8 @@ const SystemApiFp = function(configuration?: Configuration) {
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
         /**
-         * Represents a system outage.
-         * @summary Outages
+         * 
+         * @summary Outages  Delete All
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
@@ -40923,8 +41083,8 @@ const SystemApiFp = function(configuration?: Configuration) {
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
         /**
-         * Represents a system outage.
-         * @summary Outages
+         * 
+         * @summary Outages  Delete One
          * @param {any} objectId 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
@@ -40936,8 +41096,8 @@ const SystemApiFp = function(configuration?: Configuration) {
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
         /**
-         * Represents a system outage.
-         * @summary Outages
+         * 
+         * @summary Outages  Delete Some
          * @param {string} ids 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
@@ -40949,8 +41109,8 @@ const SystemApiFp = function(configuration?: Configuration) {
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
         /**
-         * Represents a system outage.
-         * @summary Outages
+         * 
+         * @summary Outages  Get All
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
@@ -40961,8 +41121,8 @@ const SystemApiFp = function(configuration?: Configuration) {
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
         /**
-         * Represents a system outage.
-         * @summary Outages
+         * 
+         * @summary Outages  Get One
          * @param {string} objectId 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
@@ -40974,8 +41134,8 @@ const SystemApiFp = function(configuration?: Configuration) {
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
         /**
-         * Represents a system outage.
-         * @summary Outages
+         * 
+         * @summary Outages  Get Some
          * @param {string} ids 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
@@ -40987,8 +41147,8 @@ const SystemApiFp = function(configuration?: Configuration) {
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
         /**
-         * Represents a system outage.
-         * @summary Outages
+         * 
+         * @summary Outages  Post One
          * @param {Outage} outage 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
@@ -41000,8 +41160,8 @@ const SystemApiFp = function(configuration?: Configuration) {
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
         /**
-         * Represents a system outage.
-         * @summary Outages
+         * 
+         * @summary Outages  Post Query
          * @param {EpiFilter} filter 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
@@ -41013,8 +41173,8 @@ const SystemApiFp = function(configuration?: Configuration) {
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
         /**
-         * Represents a system outage.
-         * @summary Outages
+         * 
+         * @summary Outages  Post Query  Ids
          * @param {EpiFilter} filter 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
@@ -41026,8 +41186,8 @@ const SystemApiFp = function(configuration?: Configuration) {
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
         /**
-         * Represents a system outage.
-         * @summary Outages
+         * 
+         * @summary Outages  Post Some
          * @param {Array<Outage>} outage 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
@@ -41039,8 +41199,8 @@ const SystemApiFp = function(configuration?: Configuration) {
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
         /**
-         * Represents a system outage.
-         * @summary Outages
+         * 
+         * @summary Outages  Put One
          * @param {string} objectId 
          * @param {Outage} outage 
          * @param {*} [options] Override http request option.
@@ -41053,8 +41213,8 @@ const SystemApiFp = function(configuration?: Configuration) {
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
         /**
-         * Represents a system outage.
-         * @summary Outages
+         * 
+         * @summary Outages  Put Some
          * @param {Array<Outage>} outage 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
@@ -41112,7 +41272,7 @@ export class SystemApi extends BaseAPI {
   }
 
     /**
-     * 
+     * Returns the health status of the service. If no response is received within the timeout period, the service is considered unhealthy.
      * @summary Health
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
@@ -41123,7 +41283,7 @@ export class SystemApi extends BaseAPI {
     }
 
     /**
-     * 
+     * Logs the provided log items.
      * @summary Log
      * @param {LogRequestBody} logRequestBody 
      * @param {*} [options] Override http request option.
@@ -41135,8 +41295,8 @@ export class SystemApi extends BaseAPI {
     }
 
     /**
-     * Represents a system outage.
-     * @summary Outages
+     * 
+     * @summary Outages  Delete All
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
      * @memberof SystemApi
@@ -41146,8 +41306,8 @@ export class SystemApi extends BaseAPI {
     }
 
     /**
-     * Represents a system outage.
-     * @summary Outages
+     * 
+     * @summary Outages  Delete One
      * @param {any} objectId 
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
@@ -41158,8 +41318,8 @@ export class SystemApi extends BaseAPI {
     }
 
     /**
-     * Represents a system outage.
-     * @summary Outages
+     * 
+     * @summary Outages  Delete Some
      * @param {string} ids 
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
@@ -41170,8 +41330,8 @@ export class SystemApi extends BaseAPI {
     }
 
     /**
-     * Represents a system outage.
-     * @summary Outages
+     * 
+     * @summary Outages  Get All
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
      * @memberof SystemApi
@@ -41181,8 +41341,8 @@ export class SystemApi extends BaseAPI {
     }
 
     /**
-     * Represents a system outage.
-     * @summary Outages
+     * 
+     * @summary Outages  Get One
      * @param {string} objectId 
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
@@ -41193,8 +41353,8 @@ export class SystemApi extends BaseAPI {
     }
 
     /**
-     * Represents a system outage.
-     * @summary Outages
+     * 
+     * @summary Outages  Get Some
      * @param {string} ids 
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
@@ -41205,8 +41365,8 @@ export class SystemApi extends BaseAPI {
     }
 
     /**
-     * Represents a system outage.
-     * @summary Outages
+     * 
+     * @summary Outages  Post One
      * @param {Outage} outage 
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
@@ -41217,8 +41377,8 @@ export class SystemApi extends BaseAPI {
     }
 
     /**
-     * Represents a system outage.
-     * @summary Outages
+     * 
+     * @summary Outages  Post Query
      * @param {EpiFilter} filter 
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
@@ -41229,8 +41389,8 @@ export class SystemApi extends BaseAPI {
     }
 
     /**
-     * Represents a system outage.
-     * @summary Outages
+     * 
+     * @summary Outages  Post Query  Ids
      * @param {EpiFilter} filter 
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
@@ -41241,8 +41401,8 @@ export class SystemApi extends BaseAPI {
     }
 
     /**
-     * Represents a system outage.
-     * @summary Outages
+     * 
+     * @summary Outages  Post Some
      * @param {Array<Outage>} outage 
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
@@ -41253,8 +41413,8 @@ export class SystemApi extends BaseAPI {
     }
 
     /**
-     * Represents a system outage.
-     * @summary Outages
+     * 
+     * @summary Outages  Put One
      * @param {string} objectId 
      * @param {Outage} outage 
      * @param {*} [options] Override http request option.
@@ -41266,8 +41426,8 @@ export class SystemApi extends BaseAPI {
     }
 
     /**
-     * Represents a system outage.
-     * @summary Outages
+     * 
+     * @summary Outages  Put Some
      * @param {Array<Outage>} outage 
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
