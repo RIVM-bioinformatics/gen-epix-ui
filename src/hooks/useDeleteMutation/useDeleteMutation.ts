@@ -58,7 +58,12 @@ export const useDeleteMutation = <TData extends GenericData | GenericData[]>({
     },
     onError: async (error, item, context) => {
       if (resourceQueryKey) {
-        queryClient.setQueryData(resourceQueryKey, context.previousData);
+        queryClient.setQueryData(resourceQueryKey, (oldItems: TData[]) => {
+          if (!Array.isArray(oldItems)) {
+            return oldItems;
+          }
+          return [...oldItems, item];
+        });
       }
       if (associationQueryKeys) {
         await QueryUtil.invalidateQueryKeys(associationQueryKeys);

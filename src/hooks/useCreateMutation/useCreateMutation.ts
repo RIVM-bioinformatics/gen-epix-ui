@@ -65,8 +65,13 @@ export const useCreateMutation = <TData extends GenericData | GenericData[], TVa
       return { notificationKey };
     },
     onError: async (error, variables, context) => {
-      if (resourceQueryKey && Array.isArray(context.previousData)) {
-        queryClient.setQueryData(resourceQueryKey, context.previousData);
+      if (resourceQueryKey) {
+        queryClient.setQueryData<TData[]>(resourceQueryKey, (oldItems: TData[]) => {
+          if (!Array.isArray(oldItems)) {
+            return oldItems;
+          }
+          return [...oldItems.filter(item => (item as GenericData)?.id !== context.temporaryId)];
+        });
       }
       await QueryUtil.invalidateQueryKeys(associationQueryKeys);
       if (onError) {

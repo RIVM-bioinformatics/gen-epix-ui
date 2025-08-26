@@ -12,7 +12,7 @@ import type { GenericData } from '../../models/data';
 import { QueryUtil } from '../../utils/QueryUtil';
 import { NotificationUtil } from '../../utils/NotificationUtil';
 
-export type MutationContextEdit<TData> = { previousData?: TData[]; notificationKey?: string };
+export type MutationContextEdit<TData> = { previousData?: TData[]; notificationKey?: string; item?: TData };
 
 export type UseEditMutationProps<TData, TVariables = TData> = {
   readonly queryFn?: (variables: TVariables, previousData: TData) => Promise<TData>;
@@ -71,14 +71,19 @@ export const useEditMutation = <TData extends GenericData | GenericData[], TVari
           queryClient.setQueryData<GenericData[]>(resourceQueryKey, (oldItems) => {
             return [...oldItems.filter(x => x.id !== (previousItem as GenericData).id), intermediateItem] as GenericData[];
           });
-          return { previousData, notificationKey };
+          return { previousData, notificationKey, item: previousItem };
         }
       }
       return { notificationKey };
     },
     onError: async (error, variables, context) => {
       if (resourceQueryKey && Array.isArray(context.previousData)) {
-        queryClient.setQueryData(resourceQueryKey, context.previousData);
+        queryClient.setQueryData(resourceQueryKey, (oldItems: TData[]) => {
+          if (!Array.isArray(oldItems)) {
+            return oldItems;
+          }
+          return [...oldItems, context.item];
+        });
       }
       await QueryUtil.invalidateQueryKeys(associationQueryKeys);
       if (onError) {
