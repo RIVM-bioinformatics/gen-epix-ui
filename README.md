@@ -39,7 +39,7 @@ createRoot(document.getElementById('root')).render(<App />);
 
 ## Funding
 
-This work was funded by the European Union under the EU4Health Programme (EU4H), project ID 101113520 (NLWGSHERA2)
+This work was funded by the European Union under the EU4Health Programme (EU4H), project ID 101113520 (NLWGSHERA2).
 
 <img src="./docs/assets/cofunded_EU_logo.png" alt="cofunded-EU-logo" width = 400>
 
