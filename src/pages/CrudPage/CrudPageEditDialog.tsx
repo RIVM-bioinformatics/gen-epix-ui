@@ -30,7 +30,6 @@ import { TestIdUtil } from '../../utils/TestIdUtil';
 
 export interface CrudPageEditDialogOpenProps<TData extends GenericData> {
   readonly item?: TData;
-  readonly hiddenFormFieldValues?: Partial<Record<keyof TData, unknown>>;
   readonly extraActionsFactory?: (item: TData) => DialogAction[];
   readonly canSave: boolean;
 }
@@ -98,13 +97,9 @@ export const CrudPageEditDialog = withDialog<CrudPageEditDialogProps<any, any>, 
   }
 
   const onFormSubmit = useCallback((formFields: TFormFields): void => {
-    const data = {
-      ...formFields,
-      ...(openProps.hiddenFormFieldValues ?? {}),
-    } as unknown as TFormFields;
-    onSave(data, openProps.item);
+    onSave(formFields, openProps.item);
     onClose();
-  }, [onClose, onSave, openProps.hiddenFormFieldValues, openProps.item]);
+  }, [onClose, onSave, openProps.item]);
 
   return (
     <GenericForm<TFormFields>

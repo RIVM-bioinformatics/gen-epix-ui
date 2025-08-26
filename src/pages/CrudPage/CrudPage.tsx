@@ -87,7 +87,6 @@ export type CrudPageProps<
   readonly fetchAll: (signal: AbortSignal) => Promise<TData[]>;
   readonly formFieldDefinitions?: FormFieldDefinition<TFormFields>[];
   readonly getName: (item: TData | TFormFields) => string;
-  readonly hiddenFormFieldValues?: Partial<Record<keyof TData, unknown>>;
   readonly loadables?: Loadable[];
   readonly onShowItem?: (params: TableRowParams<TTableData>) => void;
   readonly resourceQueryKeyBase: QUERY_KEY;
@@ -134,7 +133,6 @@ export const CrudPage = <
   fetchAll,
   formFieldDefinitions,
   getName,
-  hiddenFormFieldValues,
   associationQueryKeys,
   resourceQueryKeyBase,
   loadables,
@@ -238,11 +236,10 @@ export const CrudPage = <
   const editItem = useCallback((item: TTableData) => {
     editDialogRef.current.open({
       extraActionsFactory: editDialogExtraActionsFactory,
-      hiddenFormFieldValues,
       item,
       canSave: userCanEdit && (!item || canEditItem ? canEditItem(item) : true),
     });
-  }, [canEditItem, editDialogExtraActionsFactory, hiddenFormFieldValues, userCanEdit]);
+  }, [canEditItem, editDialogExtraActionsFactory, userCanEdit]);
 
   const tryToGetName = useCallback((item: TData | TFormFields) => {
     let name: string;
@@ -459,10 +456,9 @@ export const CrudPage = <
 
   const onCreateItemButtonClick = useCallback(() => {
     editDialogRef.current.open({
-      hiddenFormFieldValues,
       canSave: true,
     });
-  }, [hiddenFormFieldValues]);
+  }, []);
 
   const customContentActions = useMemo(() => {
     if (!contentActions && !userCanCreate) {

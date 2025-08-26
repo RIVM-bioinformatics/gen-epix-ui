@@ -7,14 +7,13 @@ import type { UseOptions } from '../../models/dataHooks';
 import type { OptionBase } from '../../models/form';
 
 
-export const rolePresentationValues: Record<Role, string> = {
+export const rolePresentationValues: Partial<Record<Role, string>> = {
   [Role.ROOT]: 'ROOT',
+  [Role.REFDATA_ADMIN]: 'REFDATA_ADMIN',
   [Role.APP_ADMIN]: 'APP_ADMIN',
   [Role.ORG_ADMIN]: 'ORG_ADMIN',
-  [Role.REFDATA_ADMIN]: 'REFDATA_ADMIN',
   [Role.ORG_USER]: 'ORG_USER',
   [Role.GUEST]: 'GUEST',
-  [Role.ROLE1]: 'ROLE1',
 };
 
 export const useRoleOptionsQuery = (): UseOptions<string> => {

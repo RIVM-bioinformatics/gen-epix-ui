@@ -9,11 +9,11 @@ import {
   object,
   string,
 } from 'yup';
-import { addMonths } from 'date-fns';
 import {
   MenuItem,
   ListItemText,
 } from '@mui/material';
+import uniqBy from 'lodash/uniqBy';
 
 import type { UserInvitation } from '../../api';
 import {
@@ -37,10 +37,8 @@ import type {
   TableRowParams,
   TableColumn,
 } from '../../models/table';
-import { StringUtil } from '../../utils/StringUtil';
 import { TableUtil } from '../../utils/TableUtil';
 import { TestIdUtil } from '../../utils/TestIdUtil';
-import type { CrudPageProps } from '../CrudPage';
 import { CrudPage } from '../CrudPage';
 
 import { UserInvitationsAdminDetailDialog } from './UserInvitationsAdminDetailDialog';
@@ -70,16 +68,25 @@ export const UserInvitationsAdminPage = () => {
 
   const userInvitationsAdminDetailDialogRef = useRef<UserInvitationsAdminDetailDialogRefMethods>(null);
 
-  /**
-   * Hidden form field values that are not visible to the user. These are set by the backend. It's a shortcoming of the openapi generator that it doesn't support mandatory read-only fields.
-   */
-  const hiddenFormFieldValues = useMemo<CrudPageProps<FormFields, UserInvitation>['hiddenFormFieldValues']>(() => {
-    return {
-      token: StringUtil.createUuid(),
-      invited_by_user_id: AuthorizationManager.instance.user.id,
-      expires_at: addMonths(new Date(), 2).toISOString(),
-    };
-  }, []);
+  const allowedRoleOptions = useMemo(() => {
+    /**
+     * @FIXME
+     * This is a temporary implementation that assumes that roles are ordered by level in the Role enum.
+     * The backend will supply this information in the future, and we can then remove this logic.
+     */
+    const options = roleOptionsQuery.options;
+    if (!options) {
+      return [];
+    }
+    const allowedOptions: OptionBase<string>[] = [];
+    AuthorizationManager.instance.user.roles.forEach(userRole => {
+      const indexOf = options.findIndex(option => option.value === userRole);
+      if (indexOf !== -1) {
+        allowedOptions.push(...options.slice(indexOf + 1)); // roles are ordered by level, so we can just take all roles above the user's highest role
+      }
+    });
+    return uniqBy(allowedOptions, option => option.value);
+  }, [roleOptionsQuery.options]);
 
   const fetchAll = useCallback(async (signal: AbortSignal) => {
     return (await OrganizationApi.getInstance().userInvitationsGetAll({ signal }))?.data;
@@ -90,7 +97,7 @@ export const UserInvitationsAdminPage = () => {
   }, []);
 
   const createOne = useCallback(async (variables: FormFields) => {
-    return (await OrganizationApi.getInstance().userInvitationsPostOne(variables as UserInvitation)).data;
+    return (await OrganizationApi.getInstance().inviteUser(variables)).data;
   }, []);
 
   const getName = useCallback((item: FormFields) => {
@@ -136,12 +143,12 @@ export const UserInvitationsAdminPage = () => {
         multiple: true,
         name: 'roles',
         label: t`Roles`,
-        options: roleOptionsQuery.options,
+        options: allowedRoleOptions,
         loading: roleOptionsQuery.isLoading,
       } as const satisfies FormFieldDefinition<FormFields>,
     );
     return fields;
-  }, [t, organizationOptions, organizationOptionsQuery.isLoading, roleOptionsQuery.options, roleOptionsQuery.isLoading]);
+  }, [t, organizationOptions, organizationOptionsQuery.isLoading, allowedRoleOptions, roleOptionsQuery.isLoading]);
 
   const extraActionsFactory = useCallback((params: TableRowParams<UserInvitation>) => {
     return [(
@@ -181,7 +188,6 @@ export const UserInvitationsAdminPage = () => {
         fetchAll={fetchAll}
         formFieldDefinitions={formFieldDefinitions}
         getName={getName}
-        hiddenFormFieldValues={hiddenFormFieldValues}
         loadables={loadables}
         onCreateSuccess={onCreateSuccess}
         resourceQueryKeyBase={QUERY_KEY.USER_REGISTRATIONS}
