@@ -265,7 +265,7 @@ export const CasesPage = () => {
     storageVersion: 1,
   }), []);
 
-  useInitializeTableStore(tableStore, columns, data, true);
+  useInitializeTableStore({ store: tableStore, columns, rows: data, createFiltersFromColumns: true });
 
   const getRowName = useCallback((row: Row) => {
     return row.name;

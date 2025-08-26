@@ -61,7 +61,7 @@ export const SearchHistoryTable = () => {
     return row.id;
   }, []);
 
-  useInitializeTableStore(tableStore, tableColumns, tableData);
+  useInitializeTableStore({ store: tableStore, columns: tableColumns, rows: tableData });
 
   return (
     <TableStoreContextProvider store={tableStore}>

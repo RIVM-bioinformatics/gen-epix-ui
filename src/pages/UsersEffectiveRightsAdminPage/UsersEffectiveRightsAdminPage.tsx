@@ -376,7 +376,7 @@ export const UsersEffectiveRightsAdminPage = () => {
     });
   }, [user]);
 
-  useInitializeTableStore(tableStore, tableColumns, effectiveAccessCasePolicies, true);
+  useInitializeTableStore({ store: tableStore, columns: tableColumns, rows: effectiveAccessCasePolicies, createFiltersFromColumns: true });
 
   return (
     <TableStoreContextProvider store={tableStore}>

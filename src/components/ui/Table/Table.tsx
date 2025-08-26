@@ -99,7 +99,7 @@ export interface TableRef {
   setVerticalScrollPosition: (position: number) => void;
 }
 
-export const Table = <TRowData, >({
+export const Table = <TRowData,>({
   onRowClick,
   sx,
   rowHeight = 4,

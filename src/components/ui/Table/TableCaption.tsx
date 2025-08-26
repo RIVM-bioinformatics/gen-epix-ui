@@ -12,7 +12,7 @@ export type TableCaptionProps = {
   readonly component?: TypographyProps['component'];
 };
 
-export const TableCaption = <TRowData, >({ caption, variant = 'h2', component = 'h2' }: TableCaptionProps) => {
+export const TableCaption = <TRowData,>({ caption, variant = 'h2', component = 'h2' }: TableCaptionProps) => {
   const [t] = useTranslation();
   const tableStore = useTableStoreContext<TRowData>();
   const baseDataLength = useStore(tableStore, (state) => state.baseData.length);

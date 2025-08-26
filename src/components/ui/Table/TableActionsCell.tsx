@@ -22,7 +22,7 @@ export interface TableActionsCellProps<TRowData> extends TableCellProps<TRowData
   readonly column: TableColumnActions<TRowData>;
 }
 
-export const TableActionsCell = <TRowData, >(props: TableActionsCellProps<TRowData>) => {
+export const TableActionsCell = <TRowData,>(props: TableActionsCellProps<TRowData>) => {
   const [anchorElement, setAnchorElement] = useState<HTMLButtonElement>(null);
   const [t] = useTranslation();
   const open = !!anchorElement;

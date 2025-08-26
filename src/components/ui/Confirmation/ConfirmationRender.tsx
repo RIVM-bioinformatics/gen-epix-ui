@@ -23,7 +23,7 @@ export interface ConfirmationProps<TOpenProps = never> extends WithDialogRenderP
 
 export type ConfirmationRefMethods<TOpenProps = never> = WithDialogRefMethods<ConfirmationProps, TOpenProps>;
 
-export const ConfirmationRender = <TOpenProps, >(
+export const ConfirmationRender = <TOpenProps,>(
   {
     confirmLabel,
     cancelLabel,

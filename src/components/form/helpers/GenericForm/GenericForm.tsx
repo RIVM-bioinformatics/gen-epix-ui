@@ -29,7 +29,7 @@ export type GenericFormProps<TFormFields> = {
   readonly formMethods: UseFormReturn<TFormFields>;
 };
 
-export const GenericForm = <TFormFields, >({
+export const GenericForm = <TFormFields,>({
   formFieldDefinitions,
   formId,
   onSubmit,

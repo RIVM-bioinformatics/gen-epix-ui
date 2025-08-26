@@ -171,7 +171,7 @@ export const EventsPage = () => {
     storageVersion: 3,
   }), []);
 
-  useInitializeTableStore(tableStore, columns, data, true);
+  useInitializeTableStore({ store: tableStore, columns, rows: data, createFiltersFromColumns: true });
 
   const contentActions = useMemo(() => {
     const isLoading = loadables.some(loadable => loadable.isLoading);

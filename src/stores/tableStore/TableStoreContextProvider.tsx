@@ -8,7 +8,7 @@ export type TableStoreContextProviderProps<TData> = PropsWithChildren<{
   readonly store: StoreApi<TableStore<TData>>;
 }>;
 
-export const TableStoreContextProvider = <TData, >(
+export const TableStoreContextProvider = <TData,>(
   props: TableStoreContextProviderProps<TData>,
 ) => {
   const { children, store } = props;

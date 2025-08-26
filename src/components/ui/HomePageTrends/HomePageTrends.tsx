@@ -81,8 +81,6 @@ export const HomePageTrends = withPermissions(() => {
     },
   });
 
-  console.log({ caseSetsThenQuery });
-
   const loadables = useArray([
     caseTypeStatsQueryNow,
     caseTypeStatsQueryPast,

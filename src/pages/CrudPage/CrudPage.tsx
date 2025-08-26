@@ -176,28 +176,28 @@ export const CrudPage = <
     return false;
   }, [loadables]);
 
-  const { isLoading: fetchAllLoading, error: fetchAllError, data: rows } = useQuery({
+  const { isLoading: isRowsLoading, error: rowsError, data: rows } = useQuery({
     queryKey: resourceQueryKey,
     queryFn: async ({ signal }) => fetchAll(signal),
     enabled: !isLoadablesLoading,
   });
 
   const isLoading = useMemo(() => {
-    if (fetchAllLoading) {
+    if (isRowsLoading) {
       return true;
     }
     return isLoadablesLoading;
-  }, [fetchAllLoading, isLoadablesLoading]);
+  }, [isRowsLoading, isLoadablesLoading]);
 
   const error = useMemo(() => {
-    if (fetchAllError) {
-      return fetchAllError;
+    if (rowsError) {
+      return rowsError;
     }
     if (isArray(loadables)) {
       return loadables.find((loadable) => loadable.error)?.error as Error;
     }
     return null;
-  }, [fetchAllError, loadables]);
+  }, [rowsError, loadables]);
 
   const userCanEdit = useMemo(() => {
     if (!updateOne) {
@@ -455,7 +455,7 @@ export const CrudPage = <
     return convertToTableData(rows);
   }, [convertToTableData, rows]);
 
-  useInitializeTableStore<TTableData>(tableStore, columns, tableRows, true);
+  useInitializeTableStore<TTableData>({ store: tableStore, columns, rows: tableRows, createFiltersFromColumns: true });
 
   const onCreateItemButtonClick = useCallback(() => {
     editDialogRef.current.open({

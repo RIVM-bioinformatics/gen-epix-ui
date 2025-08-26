@@ -76,7 +76,7 @@ export const UserInvitationsAdminPage = () => {
   const hiddenFormFieldValues = useMemo<CrudPageProps<FormFields, UserInvitation>['hiddenFormFieldValues']>(() => {
     return {
       token: StringUtil.createUuid(),
-      invited_by_user_id: StringUtil.createUuid(),
+      invited_by_user_id: AuthorizationManager.instance.user.id,
       expires_at: addMonths(new Date(), 2).toISOString(),
     };
   }, []);
@@ -90,13 +90,8 @@ export const UserInvitationsAdminPage = () => {
   }, []);
 
   const createOne = useCallback(async (variables: FormFields) => {
-    return (await OrganizationApi.getInstance().userInvitationsPostOne({
-      ...variables,
-      token: hiddenFormFieldValues.token as string,
-      invited_by_user_id: hiddenFormFieldValues.invited_by_user_id as string,
-      expires_at: hiddenFormFieldValues.expires_at as string,
-    })).data;
-  }, [hiddenFormFieldValues.expires_at, hiddenFormFieldValues.invited_by_user_id, hiddenFormFieldValues.token]);
+    return (await OrganizationApi.getInstance().userInvitationsPostOne(variables as UserInvitation)).data;
+  }, []);
 
   const getName = useCallback((item: FormFields) => {
     return item.email;

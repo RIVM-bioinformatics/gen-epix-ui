@@ -27,7 +27,7 @@ export type TableHeaderFilterProps = {
   readonly onFilterChange: () => void;
 };
 
-export const TableHeaderFilter = <TRowData, >({ filter, onFilterChange }: TableHeaderFilterProps) => {
+export const TableHeaderFilter = <TRowData,>({ filter, onFilterChange }: TableHeaderFilterProps) => {
   const tableStore = useTableStoreContext<TRowData>();
   const [t] = useTranslation();
   const setFilterValue = useStore(tableStore, (state) => state.setFilterValue);

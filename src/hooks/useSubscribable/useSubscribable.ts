@@ -10,7 +10,7 @@ type UseSubscribableKwArgs<TSubjectData> = {
   readonly callback?: (data: TSubjectData, prevData: TSubjectData) => void;
 };
 
-export const useSubscribable = <TSubjectData,>(subscribable: SubscribableAbstract<TSubjectData>, kwArgs: UseSubscribableKwArgs<TSubjectData> = {}) => {
+export const useSubscribable = <TSubjectData>(subscribable: SubscribableAbstract<TSubjectData>, kwArgs: UseSubscribableKwArgs<TSubjectData> = {}) => {
   const { select, callback } = kwArgs;
 
   const [data, setData] = useState<TSubjectData | undefined>(subscribable.data);
