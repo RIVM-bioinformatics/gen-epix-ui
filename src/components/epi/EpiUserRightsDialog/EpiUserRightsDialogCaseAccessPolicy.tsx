@@ -127,10 +127,6 @@ export const EpiUserRightsDialogCaseAccessPolicy = ({ user }: EpiUserRightsDialo
 
   }, [caseTypeColMapQuery, caseTypeColSetMembersQuery, caseTypeMapQuery, caseTypeSetMembersQuery, organizationAccessCasePoliciesQuery, userAccessCasePoliciesQuery]);
 
-  const privateDataCollectionIds = useMemo(() => {
-    return effectiveAccessCasePolicies.filter(policy => policy.is_private).map(policy => policy.data_collection_id);
-  }, [effectiveAccessCasePolicies]);
-
   const tableColumns = useMemo<TableColumn<AccessCasePolity>[]>(() => [
     TableUtil.createReadableIndexColumn(),
     TableUtil.createOptionsColumn({ id: 'data_collection_id', name: t`Data collection`, options: dataCollectionOptionsQuery.options }),
@@ -140,9 +136,7 @@ export const EpiUserRightsDialogCaseAccessPolicy = ({ user }: EpiUserRightsDialo
     return dataCollectionMapQuery.map.get(row.data_collection_id)?.name ?? row.data_collection_id;
   }, [dataCollectionMapQuery.map]);
 
-  useInitializeTableStore(tableStore, tableColumns, effectiveAccessCasePolicies);
-
-  console.log({ effectiveAccessCasePolicies, privateDataCollectionIds });
+  useInitializeTableStore({ store: tableStore, columns: tableColumns, rows: effectiveAccessCasePolicies });
 
   return (
     <ResponseHandler
