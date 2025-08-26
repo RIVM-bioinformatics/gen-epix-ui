@@ -23,7 +23,7 @@ export const useInitializeTableStore = <TData>({ store, columns, rows, createFil
   const initialize = useStore(store, (state) => state.initialize);
 
   useEffect(() => {
-    if (!columns?.length) {
+    if (!columns || !rows) {
       return;
     }
     const abortController = new AbortController();
