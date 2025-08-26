@@ -27,9 +27,9 @@ import { LogManager } from '../../../classes/managers/LogManager';
 import { DataUtil } from '../../../utils/DataUtil';
 import { StringUtil } from '../../../utils/StringUtil';
 import { TestIdUtil } from '../../../utils/TestIdUtil';
-import { useOrganizationMapQuery } from '../../../dataHooks/useOrganizationsQuery';
 
 import { UserOrganizationAdminMenuItem } from './UserOrganizationAdminMenuItem';
+import { UserOwnOrganizationMenuItem } from './UserOwnOrganizationMenuItem';
 
 type UserMenuProps = {
   readonly onClose: () => void;
@@ -41,7 +41,6 @@ export const UserMenu = ({ anchorElement, onClose }: UserMenuProps): ReactElemen
   const logoutConfirmation = useRef<ConfirmationRefMethods>(null);
   const popoverId = useMemo(() => StringUtil.createUuid(), []);
   const isUserMenuOpen = !!anchorElement;
-  const organizationMapQuery = useOrganizationMapQuery();
   const [t] = useTranslation();
 
   const onLogoutButtonClick = useCallback(() => {
@@ -66,16 +65,6 @@ export const UserMenu = ({ anchorElement, onClose }: UserMenuProps): ReactElemen
   const userRoles = useMemo(() => {
     return AuthorizationManager.instance.user?.roles;
   }, []);
-
-  const userOrganization = useMemo(() => {
-    if (organizationMapQuery.isLoading) {
-      return t`Loading...`;
-    }
-    if (organizationMapQuery.error) {
-      return t`Unknown`;
-    }
-    return organizationMapQuery.map.get(AuthorizationManager.instance.user?.organization_id ?? '')?.name ?? t`Unknown`;
-  }, [organizationMapQuery, t]);
 
   return (
     <Popover
@@ -148,24 +137,7 @@ export const UserMenu = ({ anchorElement, onClose }: UserMenuProps): ReactElemen
             }}
           />
         </ListItem>
-        <ListItem
-          sx={{
-            paddingBottom: 0,
-          }}
-        >
-          <ListItemText
-            primary={t`Your organization`}
-            secondary={userOrganization ?? t`Unknown`}
-            slotProps={{
-              primary: {
-                sx: {
-                  fontWeight: 'bold',
-                },
-              },
-            }}
-          />
-        </ListItem>
-
+        <UserOwnOrganizationMenuItem />
         <UserOrganizationAdminMenuItem />
 
         <ListItem
