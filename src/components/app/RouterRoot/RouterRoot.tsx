@@ -104,8 +104,7 @@ export const RouterRoot = () => {
             <UserInactivityConfirmation />
             <NotificationsStack />
             <StrictMode>
-              {/* use key={location.pathname} to force a rerender when the pathname changes */}
-              {location?.pathname === '/' ? <HomePage /> : <Outlet key={location.pathname} /> }
+              {location?.pathname === '/' ? <HomePage /> : <Outlet /> }
             </StrictMode>
           </AuthorizationWrapper>
         </OutageWrapper>
