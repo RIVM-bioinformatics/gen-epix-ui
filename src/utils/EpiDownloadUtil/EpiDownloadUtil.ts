@@ -2,7 +2,7 @@ import type { TFunction } from 'i18next';
 import { format } from 'date-fns';
 import type { ECharts } from 'echarts';
 import { createArrayCsvStringifier } from 'csv-writer';
-import { Workbook } from 'exceljs';
+import writeXlsxFile from 'write-excel-file';
 
 import type {
   Case,
@@ -65,23 +65,31 @@ export class EpiDownloadUtil {
   }
 
   public static async downloadAsExcel(cases: Case[], caseTypeColumnIds: string[], completeCaseType: CompleteCaseType, t: TFunction<'translation', undefined>): Promise<void> {
-    const workbook = new Workbook();
-    const worksheet = workbook.addWorksheet('Data');
-
-    // Add headers
+    // Prepare headers
     const headers = EpiDownloadUtil.getColumnHeadersForExport(caseTypeColumnIds, completeCaseType);
-    worksheet.addRow(headers);
 
-    // Add data rows
+    // Prepare data rows
     const rows = EpiDownloadUtil.getRowsForExport(cases, caseTypeColumnIds, completeCaseType);
-    rows.forEach(row => {
-      worksheet.addRow(row);
+
+    // Convert data to the format expected by write-excel-file (SheetData)
+    // Each row is an array of Cell objects
+    const data = [
+      // Header row
+      headers.map(header => ({ type: String, value: header })),
+      // Data rows
+      ...rows.map(row => row.map(cell => ({ type: String, value: cell }))),
+    ];
+
+    const fileName = `${EpiDownloadUtil.getExportFileName(t`Line list`, completeCaseType, t)}.xlsx`;
+
+    // Generate Excel file as a Blob and download it
+    const blob = await writeXlsxFile(data, {
+      columns: headers.map(() => ({ width: 20 })),
     });
 
-    // Generate buffer and download
-    const buffer = await workbook.xlsx.writeBuffer();
-    const base64 = btoa(String.fromCharCode(...new Uint8Array(buffer)));
-    const fileName = `${EpiDownloadUtil.getExportFileName(t`Line list`, completeCaseType, t)}.xlsx`;
+    // Convert blob to base64 and download
+    const arrayBuffer = await blob.arrayBuffer();
+    const base64 = btoa(String.fromCharCode(...new Uint8Array(arrayBuffer)));
     EpiDownloadUtil.createDownloadUrl(`data:application/vnd.openxmlformats-officedocument.spreadsheetml.sheet;base64,${base64}`, fileName);
   }
 
