@@ -19,8 +19,8 @@ import uniq from 'lodash/uniq';
 import type {
   ChangeEvent,
   MouseEvent as ReactMouseEvent,
-  DragEvent as ReactDragEvent,
   Ref,
+  CSSProperties,
 } from 'react';
 import {
   Fragment,
@@ -55,6 +55,7 @@ import type {
   TableRowParams,
   TableColumnSettings,
   TableColumn,
+  TableDragEvent,
 } from '../../../models/table';
 import { useTableStoreContext } from '../../../stores/tableStore';
 import { TableUtil } from '../../../utils/TableUtil';
@@ -149,6 +150,8 @@ export const Table = <TRowData,>({
   const tableRange = useRef<ListRange>(null);
   const [container, setContainer] = useState<HTMLDivElement>();
   const tableColumnsEditorDialogRef = useRef<TableColumnsEditorDialogRefMethods>(null);
+
+  const dragConfig = useRef<{ clonedElement: HTMLDivElement; scrollPosition: number; elementOffsetX: number }>(null);
 
   // If applying filters or sorting and the results in the table don't change, we need to re-render the table manually to reflect the changes in filters / sorting in the headers.
 
@@ -375,13 +378,11 @@ export const Table = <TRowData,>({
     };
   }, [updateColumnSizes, saveColumnSettingsToStoreDebounced]);
 
-  const lowerBoundColumnDropElement = useRef<HTMLDivElement>(null);
-  const upperBoundColumnDropElement = useRef<HTMLDivElement>(null);
-  const cleanupColumnDropZones = useRef<() => void>(noop);
-
-  const getTableElement = useCallback((): HTMLDivElement => {
-    return container.querySelector('[role=table]');
-  }, [container]);
+  useEffect(() => {
+    return () => {
+      eventListenersCleaner.current();
+    };
+  }, []);
 
   const moveColumn = useCallback((elementTableColumn: TableColumn<TRowData>, direction: 1 | -1): boolean => {
     return TableUtil.handleMoveColumn(
@@ -400,104 +401,6 @@ export const Table = <TRowData,>({
     });
   }, [container]);
 
-  const setupColumnDragAndDrop = useCallback((tableColumn: TableColumn<TRowData>, maxLowerBoundWidth = Infinity) => {
-    lowerBoundColumnDropElement.current = document.createElement('div');
-    upperBoundColumnDropElement.current = document.createElement('div');
-
-    const visibleTableSettingsColumns = getVisibleTableSettingsColumns();
-
-    const widths = visibleTableSettingsColumns.map(c => c.calculatedWidth);
-    const elementIndex = visibleTableSettingsColumns.findIndex(c => c.id === tableColumn.id);
-    const lowerBoundWidth = Math.min(
-      maxLowerBoundWidth,
-      widths.slice(0, elementIndex).reduce((acc, width) => acc + width, 0),
-    ) - 15;
-    const upperBoundStart = widths.slice(0, elementIndex + 1).reduce((acc, width) => acc + width, 0) + 15;
-    const totalWidth = widths.reduce((acc, width) => acc + width, 0);
-    const upperBoundWidth = totalWidth - upperBoundStart;
-
-    Object.assign(lowerBoundColumnDropElement.current.style, {
-      zIndex: 10,
-      position: 'absolute',
-      left: 0,
-      width: `${lowerBoundWidth}px`,
-      top: 0,
-      bottom: 0,
-      // background: 'red',
-    });
-    Object.assign(upperBoundColumnDropElement.current.style, {
-      zIndex: 11,
-      position: 'absolute',
-      left: `${upperBoundStart}px`,
-      width: `${upperBoundWidth}px`,
-      top: 0,
-      bottom: 0,
-      // background: 'green',
-    });
-    getTableElement().appendChild(lowerBoundColumnDropElement.current);
-    getTableElement().appendChild(upperBoundColumnDropElement.current);
-
-    const onLowerBoundElementDragEnter = (event: DragEvent) => {
-      event.preventDefault();
-      cleanupColumnDropZones.current();
-      event.dataTransfer.dropEffect = 'move';
-      if (moveColumn(tableColumn, -1)) {
-        updateColumnOrderInDOM();
-      }
-      setupColumnDragAndDrop(tableColumn);
-    };
-    const onUpperBoundElementDragEnter = (event: DragEvent) => {
-      event.preventDefault();
-      cleanupColumnDropZones.current();
-      event.dataTransfer.dropEffect = 'move';
-      if (moveColumn(tableColumn, 1)) {
-        updateColumnOrderInDOM();
-      }
-      setupColumnDragAndDrop(tableColumn, upperBoundStart);
-    };
-    const onTableElementDragEnter = (event: DragEvent) => {
-      event.preventDefault();
-      event.dataTransfer.dropEffect = 'move';
-    };
-    const onTableElementDragOver = (event: DragEvent) => {
-      event.preventDefault();
-      event.dataTransfer.dropEffect = 'move';
-    };
-
-    const onContainerMouseMove = (event: MouseEvent) => {
-      // Fix for Firefox: Firefox fires a mousemove event just before the dragenter event
-      if((event.target as HTMLElement).classList.contains('GENEPIX-TableHeaderCell-content')) {
-        return;
-      }
-      // Note: when you start dragging, then use the mouse wheel to scroll, then drop outside the table. The drag end is never fired.
-      // To fix this we listen to the mouse move on the table. Which is disabled during drag and enabled when the drag ends.
-      cleanupColumnDropZones.current();
-    };
-
-    lowerBoundColumnDropElement.current.addEventListener('dragenter', onLowerBoundElementDragEnter);
-    upperBoundColumnDropElement.current.addEventListener('dragenter', onUpperBoundElementDragEnter);
-    getTableElement().addEventListener('dragenter', onTableElementDragEnter);
-    getTableElement().addEventListener('dragover', onTableElementDragOver);
-    container.addEventListener('mousemove', onContainerMouseMove);
-
-    cleanupColumnDropZones.current = () => {
-      lowerBoundColumnDropElement.current.remove();
-      upperBoundColumnDropElement.current.remove();
-      container.removeEventListener('mousemove', onContainerMouseMove);
-      lowerBoundColumnDropElement.current.removeEventListener('dragenter', onLowerBoundElementDragEnter);
-      upperBoundColumnDropElement.current.removeEventListener('dragenter', onUpperBoundElementDragEnter);
-      getTableElement().removeEventListener('dragenter', onTableElementDragEnter);
-      getTableElement().removeEventListener('dragover', onTableElementDragOver);
-    };
-  }, [getTableElement, container, moveColumn, updateColumnOrderInDOM, getVisibleTableSettingsColumns]);
-
-  useEffect(() => {
-    return () => {
-      eventListenersCleaner.current();
-      cleanupColumnDropZones.current();
-    };
-  }, []);
-
   useEffect(() => {
     const onWindowResize = () => {
       updateColumnSizes();
@@ -509,18 +412,90 @@ export const Table = <TRowData,>({
     };
   }, [updateColumnOrderInDOM, updateColumnSizes]);
 
-  const onTableHeaderCellDragStart = useCallback((event: ReactDragEvent<HTMLDivElement>, column: TableColumn<TRowData>) => {
-    const targetElement = event.target as HTMLDivElement;
-    targetElement.style.opacity = '0.1';
-    event.dataTransfer.effectAllowed = 'move';
-    setupColumnDragAndDrop(column);
-  }, [setupColumnDragAndDrop]);
+  const calculateColumnBoundaries = useCallback((tableColumn: TableColumn<TRowData>) => {
+    const visibleTableSettingsColumns = getVisibleTableSettingsColumns();
 
-  const onTableHeaderCellDragEnd = useCallback((event: ReactDragEvent<HTMLDivElement>) => {
-    (event.target as HTMLDivElement).style.opacity = '1';
-    cleanupColumnDropZones.current();
-    saveColumnSettingsToStore();
-  }, [saveColumnSettingsToStore]);
+    // Find the index of the column being dragged
+    const elementIndex = visibleTableSettingsColumns.findIndex(c => c.id === tableColumn.id);
+
+    // Create an array of the widths of all visible columns
+    const widths = visibleTableSettingsColumns.map(c => c.calculatedWidth);
+
+    return {
+      visibleTableSettingsColumns,
+      elementIndex,
+      widths,
+    };
+  }, [getVisibleTableSettingsColumns]);
+
+  /**
+   * Handles the drag event for a table header cell to enable column reordering.
+   *
+   * The way this works is:
+   * - On 'start': It creates a clone of the header cell being dragged, styles it for visibility, and appends it to the body. It also prevents page scrolling and text selection.
+   * - On 'move': It updates the position of the cloned element to follow the mouse cursor. It checks if the cursor has crossed the boundary of adjacent columns and swaps them in the DOM if necessary.
+   * - On 'end': It removes the cloned element and restores original styles and behaviors.
+   *
+   * If the table has a scrollbar, it takes that into account when calculating positions. The way the columns are swapped is by changing their 'order' CSS property, which is efficient and avoids re-rendering the entire table.
+   * Dragging the column beyond the current scroll position works because of selecting text (default browser behavior), but text selection is disabled during the drag.
+   *
+   * @param event - The drag event containing details about the drag action.
+   * @param tableColumn - The column being dragged.
+   */
+  const onTableHeaderCellDrag = useCallback((event: TableDragEvent, tableColumn: TableColumn<TRowData>) => {
+    let columnBoundaries = calculateColumnBoundaries(tableColumn);
+
+    if (event.type === 'start') {
+      // Prevent a horizontal scroll on the entire page when dragging the column
+      WindowManager.instance.body.style.setProperty('overflow', 'hidden');
+
+      // Prevent text selection while dragging
+      container?.style.setProperty('--selection-background', 'none');
+
+      // Set the opacity of the original element to 0.3 to indicate it's being dragged
+      event.target.style.setProperty('opacity', '0.3');
+
+      // Create a clone of the original element to drag around and store the properties
+      dragConfig.current = {
+        clonedElement: (event.target).cloneNode(true) as HTMLDivElement,
+        scrollPosition: getScrollerElement().scrollLeft,
+        elementOffsetX: columnBoundaries.widths.slice(0, columnBoundaries.elementIndex).reduce((acc, width) => acc + width, 0) - 15,
+      };
+      dragConfig.current.clonedElement.style.cssText = `
+        font-weight: bold;
+        position: absolute;
+        top: ${event.target.getBoundingClientRect().top}px;
+        left: ${event.clientX - event.elementOffsetX}px;
+        z-index: ${theme.zIndex.modal.toString()};
+        pointer-events: none;
+        filter: blur(0.5px);
+        box-shadow: 1px 2px 3px 0px rgba(0,0,0,0.5);
+      `;
+      WindowManager.instance.body.appendChild(dragConfig.current.clonedElement);
+    }
+    if (event.type === 'end') {
+      // Restore the original behaviors and styles
+      WindowManager.instance.body.style.removeProperty('overflow');
+      container?.style.setProperty('--selection-background', 'highlight');
+      WindowManager.instance.document.getSelection().empty();
+      dragConfig.current.clonedElement.remove();
+      event.target.style.setProperty('opacity', '1');
+    }
+    if (event.type === 'move') {
+      // Move the cloned element to follow the mouse cursor
+      dragConfig.current.clonedElement.style.setProperty('left', `${event.clientX - event.elementOffsetX}px`);
+      dragConfig.current.clonedElement.style.setProperty('top', `${event.clientY}px`);
+
+      // Check if we need to swap the column with the left or right column
+      const relativeMousePosition = dragConfig.current.elementOffsetX + event.deltaX + event.elementOffsetX + (getScrollerElement().scrollLeft - dragConfig.current.scrollPosition);
+      const leftBoundary = columnBoundaries.widths.slice(0, columnBoundaries.elementIndex - 1).reduce((acc, width) => acc + width, 0) + Math.min(16, columnBoundaries.widths?.[columnBoundaries.elementIndex - 1] ?? Infinity);
+      const rightBoundary = columnBoundaries.widths.slice(0, columnBoundaries.elementIndex + 1).reduce((acc, width) => acc + width, 0) + Math.min(16, columnBoundaries.widths?.[columnBoundaries.elementIndex + 1] ?? Infinity);
+      if ((relativeMousePosition < leftBoundary && moveColumn(tableColumn, -1)) || (relativeMousePosition > rightBoundary && moveColumn(tableColumn, 1))) {
+        updateColumnOrderInDOM();
+        columnBoundaries = calculateColumnBoundaries(tableColumn);
+      }
+    }
+  }, [calculateColumnBoundaries, container?.style, getScrollerElement, moveColumn, theme.zIndex.modal, updateColumnOrderInDOM]);
 
   const renderFixedHeaderContent = useCallback(() => {
     return (
@@ -552,8 +527,9 @@ export const Table = <TRowData,>({
               height={theme.spacing(headerHeight)}
               key={column.id}
               onColumnDividerMouseDown={onColumnDividerMouseDown}
-              onDragEnd={onTableHeaderCellDragEnd}
-              onDragStart={onTableHeaderCellDragStart}
+              // onDragEnd={onTableHeaderCellDragEnd}
+              // onDragStart={onTableHeaderCellDragStart}
+              onCustomDrag={onTableHeaderCellDrag}
               order={tableColumnSettings.current.findIndex(c => c.id === column.id)}
               role={'columnheader'}
               width={column.calculatedWidth}
@@ -563,7 +539,7 @@ export const Table = <TRowData,>({
         })}
       </Box>
     );
-  }, [theme, headerHeight, headerBorderColor, getVisibleTableSettingsColumns, tableColumns, renderCheckboxHeader, onColumnDividerMouseDown, onTableHeaderCellDragEnd, onTableHeaderCellDragStart]);
+  }, [theme, headerHeight, headerBorderColor, getVisibleTableSettingsColumns, tableColumns, renderCheckboxHeader, onColumnDividerMouseDown, onTableHeaderCellDrag]);
 
   const renderItemContent = useCallback((index: number, row: TRowData) => {
     return (
@@ -765,10 +741,14 @@ export const Table = <TRowData,>({
   return (
     <Box
       ref={setContainer}
+      style={{ '--selection-background': 'highlight' } as CSSProperties}
       sx={{
         height: '100%',
         width: '100%',
         position: 'relative',
+        '*::selection': {
+          backgroundColor: 'var(--selection-background) !important',
+        },
         ...sx,
       }}
     >
