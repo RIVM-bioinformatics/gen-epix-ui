@@ -24,7 +24,10 @@ import FilterAltIcon from '@mui/icons-material/FilterAlt';
 import sum from 'lodash/sum';
 
 import { tableHeaderCellClassNames } from '../../../data/table';
-import type { TableColumn } from '../../../models/table';
+import type {
+  TableColumn,
+  TableDragEvent,
+} from '../../../models/table';
 import { useTableStoreContext } from '../../../stores/tableStore';
 
 import { TableHeaderFilter } from './TableHeaderFilter';
@@ -102,17 +105,26 @@ export const TableHeaderCell = <TRowData,>(props: TableHeaderCellProps<TRowData>
 
   const {
     column,
+    columnIndex,
+    dividerColor,
     height,
+    onColumnDividerMouseDown: onColumnDividerMouseDownProp,
+    onCustomDrag,
+    order,
     width,
     xOffset,
-    columnIndex,
-    onColumnDividerMouseDown: onColumnDividerMouseDownProp,
-    dividerColor,
-    onDragCapture,
-    onDragEnd,
-    onDragStart,
-    order,
   } = props;
+
+  const ignoreNextClick = useRef(false);
+
+  const onCustomDragTableHeaderCell = useCallback((event: TableDragEvent, col: TableColumn<TRowData>) => {
+    if (onCustomDrag) {
+      if (event.type === 'start') {
+        ignoreNextClick.current = true;
+      }
+      onCustomDrag(event, col);
+    }
+  }, [onCustomDrag]);
 
   const updateSorting = useCallback(async () => {
     if (sortByField === column.id) {
@@ -124,13 +136,21 @@ export const TableHeaderCell = <TRowData,>(props: TableHeaderCellProps<TRowData>
     await setSorting(column.id, 'asc');
   }, [column.id, setSorting, sortByField, sortDirection]);
 
-  const onContentClick = useCallback(async () => {
+  const onContentClick = useCallback(async (event: ReactMouseEvent<HTMLDivElement>) => {
+    if (ignoreNextClick.current) {
+      event.preventDefault();
+      event.stopPropagation();
+      ignoreNextClick.current = false;
+      return;
+    }
+
     if (column.comparatorFactory) {
       await updateSorting();
     }
   }, [column.comparatorFactory, updateSorting]);
 
-  const onTableSortClick = useCallback(async () => {
+  const onTableSortClick = useCallback(async (event: ReactMouseEvent<SVGSVGElement>) => {
+    console.log('onTableSortClick', event);
     await updateSorting();
   }, [updateSorting]);
 
@@ -150,6 +170,8 @@ export const TableHeaderCell = <TRowData,>(props: TableHeaderCellProps<TRowData>
     if (event.button !== 0) {
       return;
     }
+    event.preventDefault();
+    event.stopPropagation();
     onColumnDividerMouseDownProp(event, column);
   }, [column, onColumnDividerMouseDownProp]);
 
@@ -188,9 +210,7 @@ export const TableHeaderCell = <TRowData,>(props: TableHeaderCellProps<TRowData>
       draggable={!column.frozen && !column.isStatic}
       height={height}
       key={column.id}
-      onDragCapture={onDragCapture}
-      onDragEnd={onDragEnd}
-      onDragStart={onDragStart}
+      onCustomDrag={onCustomDragTableHeaderCell}
       order={order}
       ref={tableCellRef}
       role={'columnheader'}

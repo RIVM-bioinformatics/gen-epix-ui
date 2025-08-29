@@ -175,3 +175,14 @@ export type TableColumnDimension = {
 };
 
 export type HasCellDataFn<TRowData> = (row: TRowData, column: TableColumn<TRowData>, rowIndex: number) => boolean;
+
+export type TableDragEvent = {
+  deltaX: number;
+  deltaY: number;
+  clientX: number;
+  clientY: number;
+  elementOffsetX: number;
+  elementWidth: number;
+  type: 'start' | 'move' | 'end';
+  target: HTMLDivElement;
+};
