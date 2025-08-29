@@ -1,5 +1,5 @@
 <p align="center">
-    <img src="https://raw.githubusercontent.com/RIVM-bioinformatics/gen-epix-ui-demo-client/refs/heads/main/src/assets/logo/gen-epix-logo-large.svg" alt="gen-epix-api-logo">
+    <img src="./docs/assets/gen-epix_logo_full.svg" alt="gen-epix-logo" width=600>
 </p>
 <p align="center">
     <em>Genomic Epidemiology platform for disease X</em>
@@ -36,3 +36,11 @@ ConfigManager.instance.config = {
 }
 createRoot(document.getElementById('root')).render(<App />);
 ```
+
+## Funding
+
+This work was funded by the European Union under the EU4Health Programme (EU4H), project ID 101113520 (NLWGSHERA2).
+
+<img src="./docs/assets/cofunded_EU_logo.png" alt="cofunded-EU-logo" width = 400>
+
+*Disclaimer: Funded by the European Union. Views and opinions expressed are however those of the author(s) only and do not necessarily reflect those of the European Union or Health and Digital Executive Agency. Neither the European Union nor the granting authority can be held responsible for them.*
