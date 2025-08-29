@@ -63,14 +63,20 @@ export class NumberRangeFilter extends FilterAbstract<[number, number]> implemen
     if (this.isInitialFilterValue()) {
       return;
     }
+    let upper_bound_censor: ComparisonOperator;
+    if (this.filterValue[0] === this.filterValue[1]) {
+      upper_bound_censor = ComparisonOperator.Less_Than_Or_Equal_To;
+    } else if (isFinite(this.filterValue[1])) {
+      upper_bound_censor = ComparisonOperator.Less_Than;
+    }
 
     return {
       type: 'NUMBER_RANGE',
       key: this.id,
       lower_bound: this.filterValue[0] ?? undefined,
       upper_bound: this.filterValue[1] ?? undefined,
-      lower_bound_censor: ComparisonOperator.Greater_Than_Or_Equal_To,
-      upper_bound_censor: this.filterValue[0] === this.filterValue[1] ? ComparisonOperator.Less_Than_Or_Equal_To : ComparisonOperator.Less_Than,
+      lower_bound_censor: isFinite(this.filterValue[0]) ? ComparisonOperator.Greater_Than_Or_Equal_To : undefined,
+      upper_bound_censor,
     };
   }
 }

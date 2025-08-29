@@ -103,8 +103,8 @@ export class DateFilter extends FilterAbstract<[Date, Date]> implements Filter<[
       type: this.backendFilterType,
       lower_bound: this.filterValue[0] && isDate(this.filterValue[0]) ? format(this.filterValue[0], DATE_FORMAT.DATE) : undefined,
       upper_bound: this.filterValue[1] && isDate(this.filterValue[1]) ? format(this.filterValue[1], DATE_FORMAT.DATE) : undefined,
-      lower_bound_censor: '>=',
-      upper_bound_censor: '<=',
+      lower_bound_censor: this.filterValue[0] ? '>=' : undefined,
+      upper_bound_censor: this.filterValue[1] ? '<=' : undefined,
     };
   }
 

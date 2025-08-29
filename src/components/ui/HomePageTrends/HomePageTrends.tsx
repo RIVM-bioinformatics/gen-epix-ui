@@ -56,7 +56,6 @@ export const HomePageTrends = withPermissions(() => {
   const dateTimeRangeFilter = useMemo<TypedDatetimeRangeFilter>(() => ({
     type: TypedDatetimeRangeFilterType.DATETIME_RANGE,
     upper_bound: ConfigManager.instance.config.trends.homePage.getSinceDate(),
-    lower_bound_censor: '>=',
     upper_bound_censor: '<=',
   }), []);
   const caseSetQueryFilter = useMemo<TypedDatetimeRangeFilter>(() => ({
