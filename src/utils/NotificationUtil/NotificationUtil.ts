@@ -12,7 +12,7 @@ export class NotificationUtil {
       message = t('{{message}} - You are not logged in.', { message });
     }
     if (AxiosUtil.isAxiosNotFoundError(error)) {
-      message = t('{{message}} - The item you are trying to edit does not exist.', { message });
+      message = t('{{message}} - The item does not exist.', { message });
     }
     if (AxiosUtil.isAxiosBadRequestError(error)) {
       message = t('{{message}} - Bad request. The input data was not correct.', { message });
