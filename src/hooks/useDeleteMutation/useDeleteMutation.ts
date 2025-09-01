@@ -6,6 +6,7 @@ import { NotificationManager } from '../../classes/managers/NotificationManager'
 import { QueryClientManager } from '../../classes/managers/QueryClientManager';
 import type { GenericData } from '../../models/data';
 import { QueryUtil } from '../../utils/QueryUtil';
+import { NotificationUtil } from '../../utils/NotificationUtil';
 
 
 export type MutationContextDelete<TData> = { previousData?: TData[]; notificationKey?: string };
@@ -71,7 +72,7 @@ export const useDeleteMutation = <TData extends GenericData | GenericData[]>({
       if (onError) {
         await onError(error, item, context);
       }
-      NotificationManager.instance.fulfillNotification(context.notificationKey, getErrorNotificationMessage(item, error), 'error');
+      NotificationManager.instance.fulfillNotification(context.notificationKey, NotificationUtil.wrapErrorNotificationMessage(getErrorNotificationMessage(item, error), error), 'error');
     },
     onSuccess: async (_data, item, context) => {
       if (associationQueryKeys) {
