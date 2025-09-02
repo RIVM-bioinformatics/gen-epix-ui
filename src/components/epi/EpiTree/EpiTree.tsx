@@ -210,7 +210,7 @@ export const EpiTree = ({ linkedScrollSubject, ref }: EpiTreeProps) => {
 
   useEffect(() => {
     if (!treeConfigurations?.length || !!epiTreeWidgetData.treeConfiguration) {
-      return;
+      setTreeConfiguration(null);
     }
     setTreeConfiguration(treeConfigurations[0]);
     updateEpiTreeWidgetData({
@@ -379,7 +379,7 @@ export const EpiTree = ({ linkedScrollSubject, ref }: EpiTreeProps) => {
   }, [pixelToGeneticDistanceRatio, tree, treeCanvasWidth]);
 
   useEffect(() => {
-    if (!treeCanvas || !treeAssembly) {
+    if (!treeCanvas || !treeAssembly || !tree) {
       return;
     }
 
@@ -395,7 +395,7 @@ export const EpiTree = ({ linkedScrollSubject, ref }: EpiTreeProps) => {
       unsubscribe();
       cancelAnimationFrame(animationFrameId);
     };
-  }, [treeCanvasHeight, treeCanvas, internalHighlightingSubject, pixelToGeneticDistanceRatio, stratification, theme, tickerMarkScale, treeAssembly, treeCanvasWidth, horizontalScrollPosition, verticalScrollPosition, width, zoomLevel, isLinked, isShowDistancesEnabled, devicePixelRatio, tree?.maxBranchLength]);
+  }, [treeCanvasHeight, treeCanvas, internalHighlightingSubject, pixelToGeneticDistanceRatio, stratification, theme, tickerMarkScale, treeAssembly, treeCanvasWidth, horizontalScrollPosition, verticalScrollPosition, width, zoomLevel, isLinked, isShowDistancesEnabled, devicePixelRatio, tree?.maxBranchLength, tree]);
 
   // Setup canvas event listeners (note: must be in a separate useEffect to prevent render loop)
   useEffect(() => {
@@ -574,7 +574,7 @@ export const EpiTree = ({ linkedScrollSubject, ref }: EpiTreeProps) => {
 
   // Setup header canvas
   useEffect(() => {
-    if (!headerCanvas) {
+    if (!headerCanvas || !tree) {
       return;
     }
     const canvas = headerCanvas;
@@ -592,7 +592,7 @@ export const EpiTree = ({ linkedScrollSubject, ref }: EpiTreeProps) => {
     EpiTreeUtil.drawDivider({ canvas, y: ConfigManager.instance.config.epiTree.HEADER_HEIGHT - 1, devicePixelRatio });
 
     ctx.translate(-0.5, -0.5);
-  }, [headerCanvas, pixelToGeneticDistanceRatio, theme, tickerMarkScale, zoomLevel, devicePixelRatio, horizontalScrollPosition, tree?.maxBranchLength]);
+  }, [headerCanvas, pixelToGeneticDistanceRatio, theme, tickerMarkScale, zoomLevel, devicePixelRatio, horizontalScrollPosition, tree?.maxBranchLength, tree]);
 
   const onShowDetailsSelectionMenuItemClick = useCallback((onMenuClose: () => void) => {
     EpiEventBusManager.instance.emit('openCaseInfoDialog', {
