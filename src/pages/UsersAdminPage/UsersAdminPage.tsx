@@ -21,6 +21,7 @@ import type { User } from '../../api';
 import {
   CommandName,
   OrganizationApi,
+  PermissionType,
 } from '../../api';
 import { useOrganizationOptionsQuery } from '../../dataHooks/useOrganizationsQuery';
 import { useRoleOptionsQuery } from '../../dataHooks/useRolesQuery';
@@ -121,6 +122,22 @@ export const UsersAdminPage = () => {
   }, [organizationOptionsQuery.options, roleOptionsQuery.options, t]);
 
   const extraActionsFactory = useCallback((params: TableRowParams<User>) => {
+    if (!AuthorizationManager.instance.doesUserHavePermission([
+      { command_name: CommandName.CaseTypeColSetMemberCrudCommand, permission_type: PermissionType.READ },
+      { command_name: CommandName.CaseTypeSetCrudCommand, permission_type: PermissionType.READ },
+      { command_name: CommandName.CaseTypeColSetCrudCommand, permission_type: PermissionType.READ },
+      { command_name: CommandName.CaseTypeSetMemberCrudCommand, permission_type: PermissionType.READ },
+      { command_name: CommandName.CaseTypeSetCategoryCrudCommand, permission_type: PermissionType.READ },
+      { command_name: CommandName.DataCollectionCrudCommand, permission_type: PermissionType.READ },
+      { command_name: CommandName.OrganizationAccessCasePolicyCrudCommand, permission_type: PermissionType.READ },
+      { command_name: CommandName.OrganizationShareCasePolicyCrudCommand, permission_type: PermissionType.READ },
+      { command_name: CommandName.UserAccessCasePolicyCrudCommand, permission_type: PermissionType.READ },
+      { command_name: CommandName.UserShareCasePolicyCrudCommand, permission_type: PermissionType.READ },
+      { command_name: CommandName.CaseTypeColCrudCommand, permission_type: PermissionType.READ },
+    ])) {
+      return [];
+    }
+
     return [(
       <MenuItem
         key={'custom-action-1'}

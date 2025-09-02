@@ -436,7 +436,10 @@ export const CrudPage = <
                 </MenuItem>,
               );
             }
-            actions.push(...(extraActionsFactory ? extraActionsFactory(params) : []));
+            const extraActions = extraActionsFactory ? extraActionsFactory(params) : [];
+            if (extraActions?.length > 0 && actions.length > 0) {
+              actions.push(...extraActions);
+            }
             return actions;
           },
         }),

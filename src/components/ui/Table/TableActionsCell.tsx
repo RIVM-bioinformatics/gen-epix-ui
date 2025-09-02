@@ -6,6 +6,7 @@ import MoreVertIcon from '@mui/icons-material/MoreVert';
 import type { MouseEvent } from 'react';
 import {
   useCallback,
+  useMemo,
   useState,
 } from 'react';
 import { useTranslation } from 'react-i18next';
@@ -35,36 +36,46 @@ export const TableActionsCell = <TRowData,>(props: TableActionsCellProps<TRowDat
     setAnchorElement(null);
   }, []);
 
+  const actions = useMemo(() => {
+    return props.column.getActions({ row: props.row, id: props.column.id, rowIndex: props.rowIndex });
+  }, [props.column, props.row, props.rowIndex]);
+
   return (
     <TableCell
       key={props.column.id}
       {...props}
       onClick={noop}
     >
-      <IconButton
-        aria-label={t`Row actions`}
-        onClick={onIconButtonClick}
-        sx={{
-          position: 'absolute',
-          marginTop: '-2px',
-          '& svg': {
-            fontSize: 18,
-          },
-        }}
-      >
-        <MoreVertIcon />
-      </IconButton>
-      <Menu
-        MenuListProps={{
-          'aria-labelledby': 'basic-button',
-        }}
-        anchorEl={anchorElement}
-        id={'basic-menu'}
-        onClose={onMenuClose}
-        open={open}
-      >
-        {props.column.getActions({ row: props.row, id: props.column.id, rowIndex: props.rowIndex })}
-      </Menu>
+      {actions.length > 0 && (
+        <>
+          <IconButton
+            aria-label={t`Row actions`}
+            onClick={onIconButtonClick}
+            sx={{
+              position: 'absolute',
+              marginTop: '-2px',
+              '& svg': {
+                fontSize: 18,
+              },
+            }}
+          >
+            <MoreVertIcon />
+          </IconButton>
+          <Menu
+            anchorEl={anchorElement}
+            id={'basic-menu'}
+            onClose={onMenuClose}
+            open={open}
+            slotProps={{
+              list: {
+                'aria-labelledby': 'basic-button',
+              },
+            }}
+          >
+            {actions}
+          </Menu>
+        </>
+      )}
     </TableCell>
   );
 };
