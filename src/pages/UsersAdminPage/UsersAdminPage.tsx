@@ -121,8 +121,8 @@ export const UsersAdminPage = () => {
     ];
   }, [organizationOptionsQuery.options, roleOptionsQuery.options, t]);
 
-  const extraActionsFactory = useCallback((params: TableRowParams<User>) => {
-    if (!AuthorizationManager.instance.doesUserHavePermission([
+  const doesUserHavePermissionToViewEffectiveRights = useMemo(() => {
+    return AuthorizationManager.instance.doesUserHavePermission([
       { command_name: CommandName.CaseTypeColSetMemberCrudCommand, permission_type: PermissionType.READ },
       { command_name: CommandName.CaseTypeSetCrudCommand, permission_type: PermissionType.READ },
       { command_name: CommandName.CaseTypeColSetCrudCommand, permission_type: PermissionType.READ },
@@ -134,7 +134,11 @@ export const UsersAdminPage = () => {
       { command_name: CommandName.UserAccessCasePolicyCrudCommand, permission_type: PermissionType.READ },
       { command_name: CommandName.UserShareCasePolicyCrudCommand, permission_type: PermissionType.READ },
       { command_name: CommandName.CaseTypeColCrudCommand, permission_type: PermissionType.READ },
-    ])) {
+    ]);
+  }, []);
+
+  const extraActionsFactory = useCallback((params: TableRowParams<User>) => {
+    if (!doesUserHavePermissionToViewEffectiveRights) {
       return [];
     }
 
@@ -154,9 +158,9 @@ export const UsersAdminPage = () => {
         </ListItemText>
       </MenuItem>
     )];
-  }, [t]);
+  }, [doesUserHavePermissionToViewEffectiveRights, t]);
 
-  const getEditIntermediateItem = useCallback((variables: FormFields, previousItem: User): User => {
+  const getOptimisticUpdateIntermediateItem = useCallback((variables: FormFields, previousItem: User): User => {
     return {
       ...variables,
       id: previousItem.id,
@@ -168,9 +172,12 @@ export const UsersAdminPage = () => {
 
 
   const editDialogExtraActionsFactory = useCallback((item: User): DialogAction[] =>{
+    if (!doesUserHavePermissionToViewEffectiveRights) {
+      return [];
+    }
     return [
       {
-        ...TestIdUtil.createAttributes('UsersAdminPage-epiUserRightsButton'),
+        ...TestIdUtil.createAttributes('UsersAdminPage-ViewUserRightsButton'),
         label: t`View effective rights`,
         color: 'primary',
         variant: 'outlined',
@@ -179,7 +186,7 @@ export const UsersAdminPage = () => {
         }),
       },
     ];
-  }, [t]);
+  }, [doesUserHavePermissionToViewEffectiveRights, t]);
 
   return (
     <>
@@ -193,8 +200,8 @@ export const UsersAdminPage = () => {
         extraActionsFactory={extraActionsFactory}
         fetchAll={fetchAll}
         formFieldDefinitions={formFieldDefinitions}
-        getEditIntermediateItem={getEditIntermediateItem}
         getName={getName}
+        getOptimisticUpdateIntermediateItem={getOptimisticUpdateIntermediateItem}
         loadables={loadables}
         resourceQueryKeyBase={QUERY_KEY.USERS}
         schema={schema}

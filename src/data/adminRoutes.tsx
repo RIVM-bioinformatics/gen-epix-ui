@@ -21,8 +21,10 @@ import { EtiologicalAgentsAdminPage } from '../pages/EtiologicalAgentsAdminPage'
 import { EtiologiesAdminPage } from '../pages/EtiologiesAdminPage';
 import { OrganizationAccessCasePoliciesAdminPage } from '../pages/OrganizationAccessCasePoliciesAdminPage';
 import { OrganizationAdminPoliciesAdminPage } from '../pages/OrganizationAdminPoliciesAdminPage';
+import { OrganizationContactsAdminPage } from '../pages/OrganizationContactsAdminPage';
 import { OrganizationsAdminPage } from '../pages/OrganizationsAdminPage';
 import { OrganizationShareCasePoliciesAdminPage } from '../pages/OrganizationShareCasePoliciesAdminPage';
+import { OrganizationSitesAdminPage } from '../pages/OrganizationSitesAdminPage';
 import { OutagesAdminPage } from '../pages/OutagesAdminPage';
 import { RegionsAdminPage } from '../pages/RegionsAdminPage';
 import { RegionSetsAdminPage } from '../pages/RegionSetsAdminPage';
@@ -30,26 +32,77 @@ import { RegionSetShapesAdminPage } from '../pages/RegionSetShapesAdminPage';
 import { RouterErrorPage } from '../pages/RouterErrorPage';
 import { UserAccessCasePoliciesAdminPage } from '../pages/UserAccessCasePoliciesAdminPage';
 import { UserInvitationsAdminPage } from '../pages/UserInvitationsAdminPage';
-import { UserShareCasePoliciesAdminPage } from '../pages/UserShareCasePoliciesAdminPage';
 import { UsersAdminPage } from '../pages/UsersAdminPage';
 import { UsersEffectiveRightsAdminPage } from '../pages/UsersEffectiveRightsAdminPage';
+import { UserShareCasePoliciesAdminPage } from '../pages/UserShareCasePoliciesAdminPage';
 
 export const adminRoutes: MyNonIndexRouteObject[] = [
   // USERS_AND_ORGANIZATIONS
 
   {
     path: '/management/organizations',
-    Component: () => <OrganizationsAdminPage />,
     errorElement: <RouterErrorPage />,
     handle: {
       titleKey: 'Organizations',
-      subTitleKey: 'Manage your organizations',
-      requiredPermissions: [
-        { command_name: CommandName.OrganizationCrudCommand, permission_type: PermissionType.READ },
-      ],
+      requiredPermissions: [],
       requiresUserProfile: true,
-      category: ADMIN_PAGE_CATEGORY.USERS_AND_ORGANIZATIONS,
+      requirePermissionForChildRoute: true,
     },
+    children: [
+      {
+        index: true,
+        path: '/management/organizations',
+        Component: () => <OrganizationsAdminPage />,
+        errorElement: <RouterErrorPage />,
+        handle: {
+          titleKey: 'Organizations',
+          subTitleKey: 'Manage your organizations',
+          requiredPermissions: [
+            { command_name: CommandName.OrganizationCrudCommand, permission_type: PermissionType.READ },
+          ],
+          requiresUserProfile: true,
+          category: ADMIN_PAGE_CATEGORY.USERS_AND_ORGANIZATIONS,
+        },
+      },
+      {
+        path: '/management/organizations/:organizationId/sites',
+        errorElement: <RouterErrorPage />,
+        handle: {
+          titleKey: 'Organization sites',
+          requiredPermissions: [],
+          requiresUserProfile: true,
+          requirePermissionForChildRoute: true,
+        },
+        children: [
+          {
+            index: true,
+            path: '/management/organizations/:organizationId/sites',
+            Component: () => <OrganizationSitesAdminPage />,
+            errorElement: <RouterErrorPage />,
+            handle: {
+              titleKey: 'Organization sites',
+              requiredPermissions: [
+                { command_name: CommandName.SiteCrudCommand, permission_type: PermissionType.READ },
+              ],
+              requiresUserProfile: true,
+            },
+          },
+          {
+            path: '/management/organizations/:organizationId/sites/:siteId/contacts',
+            Component: () => <OrganizationContactsAdminPage />,
+            errorElement: <RouterErrorPage />,
+            handle: {
+              titleKey: 'Site contacts',
+              requiredPermissions: [
+                { command_name: CommandName.SiteCrudCommand, permission_type: PermissionType.READ },
+              ],
+              requiresUserProfile: true,
+            },
+          },
+        ],
+      },
+
+    ],
   },
   {
     path: '/management/users',
@@ -84,8 +137,17 @@ export const adminRoutes: MyNonIndexRouteObject[] = [
         handle: {
           titleKey: 'Effective rights',
           requiredPermissions: [
-            { command_name: CommandName.UserCrudCommand, permission_type: PermissionType.READ },
-            { command_name: CommandName.OrganizationCrudCommand, permission_type: PermissionType.READ },
+            { command_name: CommandName.CaseTypeColSetMemberCrudCommand, permission_type: PermissionType.READ },
+            { command_name: CommandName.CaseTypeSetCrudCommand, permission_type: PermissionType.READ },
+            { command_name: CommandName.CaseTypeColSetCrudCommand, permission_type: PermissionType.READ },
+            { command_name: CommandName.CaseTypeSetMemberCrudCommand, permission_type: PermissionType.READ },
+            { command_name: CommandName.CaseTypeSetCategoryCrudCommand, permission_type: PermissionType.READ },
+            { command_name: CommandName.DataCollectionCrudCommand, permission_type: PermissionType.READ },
+            { command_name: CommandName.OrganizationAccessCasePolicyCrudCommand, permission_type: PermissionType.READ },
+            { command_name: CommandName.OrganizationShareCasePolicyCrudCommand, permission_type: PermissionType.READ },
+            { command_name: CommandName.UserAccessCasePolicyCrudCommand, permission_type: PermissionType.READ },
+            { command_name: CommandName.UserShareCasePolicyCrudCommand, permission_type: PermissionType.READ },
+            { command_name: CommandName.CaseTypeColCrudCommand, permission_type: PermissionType.READ },
           ],
           requiresUserProfile: true,
         },

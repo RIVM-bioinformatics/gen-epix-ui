@@ -85,6 +85,7 @@ export type CrudPageProps<
   readonly extraDeleteOnePermissions?: ApiPermission[];
   readonly extraUpdateOnePermissions?: ApiPermission[];
   readonly fetchAll: (signal: AbortSignal) => Promise<TData[]>;
+  readonly fetchAllSelect?: (data: TData[]) => TData[];
   readonly formFieldDefinitions?: FormFieldDefinition<TFormFields>[];
   readonly getName: (item: TData | TFormFields) => string;
   readonly loadables?: Loadable[];
@@ -107,7 +108,7 @@ export type CrudPageProps<
   readonly onDeleteSuccess?: (item: TData, context: MutationContextDelete<TData>) => Promise<void>;
   readonly onDeleteError?: (error: unknown, item: TData, context: MutationContextDelete<TData>) => Promise<void>;
   readonly editDialogExtraActionsFactory?: (item: TData) => DialogAction[];
-  readonly getEditIntermediateItem?: (variables: TFormFields, previousItem: TData) => TData;
+  readonly getOptimisticUpdateIntermediateItem?: (variables: TFormFields, previousItem: TData) => TData;
 }>;
 
 export const CrudPage = <
@@ -131,6 +132,7 @@ export const CrudPage = <
   extraDeleteOnePermissions,
   extraUpdateOnePermissions,
   fetchAll,
+  fetchAllSelect,
   formFieldDefinitions,
   getName,
   associationQueryKeys,
@@ -150,7 +152,7 @@ export const CrudPage = <
   onDeleteSuccess,
   onDeleteError,
   editDialogExtraActionsFactory,
-  getEditIntermediateItem,
+  getOptimisticUpdateIntermediateItem,
 }: CrudPageProps<TFormFields, TData, TTableData>) => {
   const [t] = useTranslation();
   const theme = useTheme();
@@ -177,6 +179,7 @@ export const CrudPage = <
   const { isLoading: isRowsLoading, error: rowsError, data: rows } = useQuery({
     queryKey: resourceQueryKey,
     queryFn: async ({ signal }) => fetchAll(signal),
+    select: fetchAllSelect,
     enabled: !isLoadablesLoading,
   });
 
@@ -314,7 +317,7 @@ export const CrudPage = <
     getProgressNotificationMessage: getEditProgressNotificationMessage,
     onSuccess: onEditSuccess,
     onError: onEditError,
-    getIntermediateItem: getEditIntermediateItem,
+    getIntermediateItem: getOptimisticUpdateIntermediateItem,
   });
 
   const { mutate: mutateCreate, isMutating: isCreating } = useCreateMutation<TData, TFormFields>({

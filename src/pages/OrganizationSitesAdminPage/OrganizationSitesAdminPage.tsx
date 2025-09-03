@@ -7,14 +7,15 @@ import {
   object,
   string,
 } from 'yup';
+import { useParams } from 'react-router-dom';
 import {
   MenuItem,
   ListItemIcon,
   ListItemText,
 } from '@mui/material';
-import BusinessIcon from '@mui/icons-material/Business';
+import PermContactCalendarIcon from '@mui/icons-material/PermContactCalendar';
 
-import type { Organization } from '../../api';
+import type { Site } from '../../api';
 import {
   OrganizationApi,
   CommandName,
@@ -34,35 +35,46 @@ import { AuthorizationManager } from '../../classes/managers/AuthorizationManage
 import { RouterManager } from '../../classes/managers/RouterManager';
 import type { DialogAction } from '../../components/ui/Dialog';
 
-type FormFields = Pick<Organization, 'name' | 'legal_entity_code'>;
+type FormFields = Omit<Site, 'id' | 'organization_id' | 'organization'>;
 
-export const OrganizationsAdminPage = () => {
+export const OrganizationSitesAdminPage = () => {
+  const { organizationId } = useParams();
   const [t] = useTranslation();
 
   const fetchAll = useCallback(async (signal: AbortSignal) => {
-    return (await OrganizationApi.getInstance().organizationsGetAll({ signal }))?.data;
+    return (await OrganizationApi.getInstance().sitesGetAll({ signal })).data;
   }, []);
 
-  const updateOne = useCallback(async (variables: FormFields, item: Organization) => {
-    return (await OrganizationApi.getInstance().organizationsPutOne(item.id, { id: item.id, ...variables })).data;
-  }, []);
+  const fetchAllSelect = useCallback((sites: Site[]) => {
+    return sites.filter((site) => site.organization_id === organizationId);
+  }, [organizationId]);
+
+  const updateOne = useCallback(async (variables: FormFields, item: Site) => {
+    return (await OrganizationApi.getInstance().sitesPutOne(item.id, {
+      id: item.id,
+      name: variables.name,
+      organization_id: organizationId,
+    })).data;
+  }, [organizationId]);
 
   const createOne = useCallback(async (variables: FormFields) => {
-    return (await OrganizationApi.getInstance().organizationsPostOne(variables)).data;
+    return (await OrganizationApi.getInstance().sitesPostOne({
+      name: variables.name,
+      organization_id: organizationId,
+    })).data;
+  }, [organizationId]);
+
+  const deleteOne = useCallback(async (item: Site) => {
+    return await OrganizationApi.getInstance().sitesDeleteOne(item.id);
   }, []);
 
-  const deleteOne = useCallback(async (item: Organization) => {
-    return await OrganizationApi.getInstance().organizationsDeleteOne(item.id);
-  }, []);
-
-  const getName = useCallback((item: Organization) => {
+  const getName = useCallback((item: FormFields) => {
     return item.name;
   }, []);
 
   const schema = useMemo(() => {
     return object<FormFields>().shape({
       name: string().extendedAlphaNumeric().required().max(100),
-      legal_entity_code: string().extendedAlphaNumeric().required().max(100),
     });
   }, []);
 
@@ -73,29 +85,31 @@ export const OrganizationsAdminPage = () => {
         name: 'name',
         label: t`Name`,
       } as const satisfies FormFieldDefinition<FormFields>,
-      {
-        definition: FORM_FIELD_DEFINITION_TYPE.TEXTFIELD,
-        name: 'legal_entity_code',
-        label: t`Legal entity code`,
-      } as const satisfies FormFieldDefinition<FormFields>,
     ] as const;
   }, [t]);
 
-  const tableColumns = useMemo((): TableColumn<Organization>[] => {
+  const tableColumns = useMemo((): TableColumn<Site>[] => {
     return [
-      TableUtil.createTextColumn<Organization>({ id: 'name', name: t`Name`, advancedSort: true }),
-      TableUtil.createTextColumn<Organization>({ id: 'legal_entity_code', name: t`Legal entity code` }),
+      TableUtil.createTextColumn<Site>({ id: 'name', name: t`Name`, advancedSort: true }),
     ];
   }, [t]);
 
-  const doesUserHavePermissionToViewSites = useMemo(() => {
+  const getOptimisticUpdateIntermediateItem = useCallback((variables: FormFields, previousItem: Site): Site => {
+    return {
+      ...variables,
+      id: previousItem.id,
+      organization_id: previousItem.organization_id,
+    };
+  }, []);
+
+  const doesUserHavePermissionToViewContacts = useMemo(() => {
     return AuthorizationManager.instance.doesUserHavePermission([
       { command_name: CommandName.ContactCrudCommand, permission_type: PermissionType.READ },
     ]);
   }, []);
 
-  const extraActionsFactory = useCallback((params: TableRowParams<Organization>) => {
-    if (!doesUserHavePermissionToViewSites) {
+  const extraActionsFactory = useCallback((params: TableRowParams<Site>) => {
+    if (!doesUserHavePermissionToViewContacts) {
       return [];
     }
 
@@ -104,53 +118,55 @@ export const OrganizationsAdminPage = () => {
         key={'custom-action-1'}
         // eslint-disable-next-line react/jsx-no-bind
         onClick={async () => await RouterManager.instance.router.navigate({
-          pathname: `/management/organizations/${params.row.id}/sites`,
+          pathname: `/management/organizations/${params.row.organization_id}/sites/${params.row.id}/contacts`,
         })}
       >
         <ListItemIcon>
-          <BusinessIcon fontSize={'small'} />
+          <PermContactCalendarIcon fontSize={'small'} />
         </ListItemIcon>
         <ListItemText>
-          {t`Manage sites`}
+          {t`Manage contacts`}
         </ListItemText>
       </MenuItem>
     )];
-  }, [doesUserHavePermissionToViewSites, t]);
+  }, [doesUserHavePermissionToViewContacts, t]);
 
-  const editDialogExtraActionsFactory = useCallback((item: Organization): DialogAction[] =>{
-    if (!doesUserHavePermissionToViewSites) {
+  const editDialogExtraActionsFactory = useCallback((item: Site): DialogAction[] =>{
+    if (!doesUserHavePermissionToViewContacts) {
       return [];
     }
     return [
       {
-        ...TestIdUtil.createAttributes('OrganizationsAdminPage-ManageSitesButton'),
-        label: t`Manage sites`,
+        ...TestIdUtil.createAttributes('OrganizationSitesAdminPage-ManageContactsButton'),
+        label: t`Manage contacts`,
         color: 'primary',
         variant: 'outlined',
         onClick: async () => await RouterManager.instance.router.navigate({
-          pathname: `/management/organizations/${item.id}/sites`,
+          pathname: `/management/organizations/${item.organization_id}/sites/${item.id}/contacts`,
         }),
       },
     ];
-  }, [doesUserHavePermissionToViewSites, t]);
+  }, [doesUserHavePermissionToViewContacts, t]);
 
   return (
-    <CrudPage<FormFields, Organization>
+    <CrudPage<FormFields, Site>
       createOne={createOne}
-      crudCommandType={CommandName.OrganizationCrudCommand}
+      crudCommandType={CommandName.SiteCrudCommand}
       defaultSortByField={'name'}
       defaultSortDirection={'asc'}
       deleteOne={deleteOne}
       editDialogExtraActionsFactory={editDialogExtraActionsFactory}
       extraActionsFactory={extraActionsFactory}
       fetchAll={fetchAll}
+      fetchAllSelect={fetchAllSelect}
       formFieldDefinitions={formFieldDefinitions}
       getName={getName}
-      resourceQueryKeyBase={QUERY_KEY.ORGANIZATIONS}
+      getOptimisticUpdateIntermediateItem={getOptimisticUpdateIntermediateItem}
+      resourceQueryKeyBase={QUERY_KEY.SITES}
       schema={schema}
       tableColumns={tableColumns}
-      testIdAttributes={TestIdUtil.createAttributes('OrganizationsAdminPage')}
-      title={t`Organizations`}
+      testIdAttributes={TestIdUtil.createAttributes('OrganizationSitesAdminPage')}
+      title={t`Organization Sites`}
       updateOne={updateOne}
     />
   );
