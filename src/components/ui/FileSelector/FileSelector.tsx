@@ -15,9 +15,10 @@ import CloudUploadIcon from '@mui/icons-material/CloudUpload';
 import CloudDoneIcon from '@mui/icons-material/CloudDone';
 import { useTranslation } from 'react-i18next';
 
+
 export type FileSelectorProps = {
   readonly accept: string;
-  readonly onFileListChange: (files: FileList | null) => void;
+  readonly onFileListChange: (fileList: FileList) => void;
   readonly numFilesAllowed?: number;
 };
 
@@ -40,6 +41,7 @@ export const FileSelector = ({
   const [labelText, setLabelText] = useState<string>(hoverLabel);
   const [errorText, setErrorText] = useState<string>(null);
   const [isDragOver, setIsDragOver] = useState<boolean>(false);
+
   const stopDefaults = useCallback((e: DragEvent) => {
     e.stopPropagation();
     e.preventDefault();
