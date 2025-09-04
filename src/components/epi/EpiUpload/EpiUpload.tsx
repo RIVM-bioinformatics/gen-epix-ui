@@ -11,6 +11,8 @@ import {
 } from 'react';
 
 import { EpiUploadSelectFile } from './EpiUploadSelectFile';
+import type { EpiUploadSettingsFormFields } from './EpiUploadSettings';
+import EpiUploadSettings from './EpiUploadSettings';
 
 
 export const EpiUpload = () => {
@@ -18,16 +20,28 @@ export const EpiUpload = () => {
   const [activeStep, setActiveStep] = useState(0);
   const steps = [t`Select file`, t`Define settings`, t`Map data`, t`Upload`];
   const [rawData, setRawData] = useState<string[][] | null>(null);
+  const [formData, setFormData] = useState<EpiUploadSettingsFormFields | null>(null);
 
   const onFileChange = useCallback((data: string[][]) => {
     setRawData(data);
+  }, []);
+
+  const onEpiUploadSettingsBack = useCallback(() => {
+    setActiveStep(0);
+  }, []);
+
+  const onEpiUploadSettingsProceed = useCallback((data: EpiUploadSettingsFormFields) => {
+    setFormData(data);
   }, []);
 
   useEffect(() => {
     if (rawData) {
       setActiveStep(1);
     }
-  }, [rawData]);
+    if (formData) {
+      setActiveStep(2);
+    }
+  }, [formData, rawData]);
 
   return (
     <Box
@@ -59,6 +73,14 @@ export const EpiUpload = () => {
       <Box>
         {activeStep === 0 && (
           <EpiUploadSelectFile onFileChange={onFileChange} />
+        )}
+        {activeStep === 1 && (
+          <Box marginY={2}>
+            <EpiUploadSettings
+              onBack={onEpiUploadSettingsBack}
+              onProceed={onEpiUploadSettingsProceed}
+            />
+          </Box>
         )}
       </Box>
     </Box>
