@@ -92,7 +92,7 @@ export class EpiDownloadUtil {
 
     // Convert blob to base64 and download
     const arrayBuffer = await blob.arrayBuffer();
-    const base64 = btoa(String.fromCharCode(...new Uint8Array(arrayBuffer)));
+    const base64 = EpiDownloadUtil.arrayBufferToBase64(arrayBuffer);
     EpiDownloadUtil.createDownloadUrl(`data:application/vnd.openxmlformats-officedocument.spreadsheetml.sheet;base64,${base64}`, fileName);
   }
 
@@ -123,5 +123,13 @@ export class EpiDownloadUtil {
       });
   }
 
-
+  private static arrayBufferToBase64(buffer: ArrayBuffer) {
+    var binary = '';
+    var bytes = new Uint8Array(buffer);
+    var len = bytes.byteLength;
+    for (var i = 0; i < len; i++) {
+      binary += String.fromCharCode(bytes[i]);
+    }
+    return window.btoa(binary);
+  }
 }
