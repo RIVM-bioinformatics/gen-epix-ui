@@ -15,9 +15,15 @@ import {
   object,
   string,
 } from 'yup';
-import { Box } from '@mui/system';
-import { Button } from '@mui/material';
+import {
+  Box,
+  Button,
+} from '@mui/material';
 
+import type {
+  CompleteCaseType,
+  DataCollection,
+} from '../../../api';
 import { CaseApi } from '../../../api';
 import { useCaseTypeOptionsQuery } from '../../../dataHooks/useCaseTypesQuery';
 import { useItemQuery } from '../../../hooks/useItemQuery';
@@ -30,22 +36,31 @@ import { QUERY_KEY } from '../../../models/query';
 import { useArray } from '../../../hooks/useArray';
 import { GenericForm } from '../../form/helpers/GenericForm';
 import { ResponseHandler } from '../../ui/ResponseHandler';
-import { useDataCollectionOptionsQuery } from '../../../dataHooks/useDataCollectionsQuery';
+import {
+  useDataCollectionOptionsQuery,
+  useDataCollectionsMapQuery,
+} from '../../../dataHooks/useDataCollectionsQuery';
 
-export type EpiUploadSettingsFormFields = {
+type EpiUploadSettingsFormFields = {
   case_type_id: string;
   create_in_data_collection_id: string;
 };
 
+export type EpiUploadSettingsResult = {
+  completeCaseType: CompleteCaseType;
+  createInDataCollection: DataCollection;
+};
+
 export type EpiUploadSettingsProps = {
   readonly onBack: () => void;
-  readonly onProceed: (data: EpiUploadSettingsFormFields) => void;
+  readonly onProceed: (data: EpiUploadSettingsResult) => void;
 };
 
 const EpiUploadSettings = ({ onBack, onProceed }: EpiUploadSettingsProps) => {
   const [t] = useTranslation();
   const caseTypeOptionsQuery = useCaseTypeOptionsQuery();
   const dataCollectionOptionsQuery = useDataCollectionOptionsQuery();
+  const dataCollectionsMapQuery = useDataCollectionsMapQuery();
   const formId = useId();
 
   const schema = useMemo(() => object<EpiUploadSettingsFormFields>().shape({
@@ -116,12 +131,16 @@ const EpiUploadSettings = ({ onBack, onProceed }: EpiUploadSettingsProps) => {
   }, [createInDataCollectionOptions, dataCollectionOptionsQuery.isLoading, setValue]);
 
   const onFormSubmit = useCallback((formData: EpiUploadSettingsFormFields) => {
-    console.log(formData);
-    onProceed(formData);
-  }, [onProceed]);
+    onProceed({
+      completeCaseType,
+      createInDataCollection: dataCollectionsMapQuery.map.get(formData.create_in_data_collection_id),
+    });
+  }, [completeCaseType, dataCollectionsMapQuery.map, onProceed]);
 
   const loadables = useArray([
     caseTypeOptionsQuery,
+    dataCollectionOptionsQuery,
+    dataCollectionsMapQuery,
   ]);
 
   const onBackButtonClick = useCallback(() => {

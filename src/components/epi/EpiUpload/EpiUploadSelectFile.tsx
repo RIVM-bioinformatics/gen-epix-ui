@@ -2,10 +2,10 @@ import {
   useCallback,
   useState,
 } from 'react';
-import { Box } from '@mui/system';
 import { parse } from 'csv/browser/esm/sync';
 import readXlsxFile from 'read-excel-file';
 import {
+  Box,
   Button,
   Typography,
 } from '@mui/material';
@@ -42,7 +42,9 @@ export const EpiUploadSelectFile = ({ onFileChange }: EpiUploadSelectFileProps) 
         });
       } else if (fileName.endsWith('.xlsx')) {
         // Parse Excel file
-        const excelData = await readXlsxFile(file);
+        const excelData = await readXlsxFile(file, {
+
+        });
         // Convert CellValue[][] to string[][]
         parsedData = excelData.map(row => row.map(cell => cell?.toString() || ''));
       } else {

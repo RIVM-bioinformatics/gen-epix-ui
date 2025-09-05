@@ -11,8 +11,9 @@ import {
 } from 'react';
 
 import { EpiUploadSelectFile } from './EpiUploadSelectFile';
-import type { EpiUploadSettingsFormFields } from './EpiUploadSettings';
+import type { EpiUploadSettingsResult } from './EpiUploadSettings';
 import EpiUploadSettings from './EpiUploadSettings';
+import { EpiUploadMapData } from './EpiUploadMapData';
 
 
 export const EpiUpload = () => {
@@ -20,7 +21,7 @@ export const EpiUpload = () => {
   const [activeStep, setActiveStep] = useState(0);
   const steps = [t`Select file`, t`Define settings`, t`Map data`, t`Upload`];
   const [rawData, setRawData] = useState<string[][] | null>(null);
-  const [formData, setFormData] = useState<EpiUploadSettingsFormFields | null>(null);
+  const [settings, setSettings] = useState<EpiUploadSettingsResult | null>(null);
 
   const onFileChange = useCallback((data: string[][]) => {
     setRawData(data);
@@ -30,18 +31,26 @@ export const EpiUpload = () => {
     setActiveStep(0);
   }, []);
 
-  const onEpiUploadSettingsProceed = useCallback((data: EpiUploadSettingsFormFields) => {
-    setFormData(data);
+  const onEpiUploadMapDataBack = useCallback(() => {
+    setActiveStep(1);
+  }, []);
+
+  const onEpiUploadSettingsProceed = useCallback((data: EpiUploadSettingsResult) => {
+    setSettings(data);
+  }, []);
+
+  const onEpiUploadMapDataProceed = useCallback(() => {
+    //
   }, []);
 
   useEffect(() => {
     if (rawData) {
       setActiveStep(1);
     }
-    if (formData) {
+    if (settings) {
       setActiveStep(2);
     }
-  }, [formData, rawData]);
+  }, [settings, rawData]);
 
   return (
     <Box
@@ -80,6 +89,22 @@ export const EpiUpload = () => {
             <EpiUploadSettings
               onBack={onEpiUploadSettingsBack}
               onProceed={onEpiUploadSettingsProceed}
+            />
+          </Box>
+        )}
+        {activeStep === 2 && (
+          <Box
+            sx={{
+              height: '100%',
+              position: 'relative',
+            }}
+          >
+            <EpiUploadMapData
+              completeCaseType={settings.completeCaseType}
+              createdInDataCollectionId={settings.createInDataCollection}
+              rawData={rawData}
+              onBack={onEpiUploadMapDataBack}
+              onProceed={onEpiUploadMapDataProceed}
             />
           </Box>
         )}

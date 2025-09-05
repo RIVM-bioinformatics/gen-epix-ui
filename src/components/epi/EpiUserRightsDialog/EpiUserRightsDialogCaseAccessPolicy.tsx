@@ -4,7 +4,7 @@ import {
 } from 'react';
 import intersection from 'lodash/intersection';
 import { useTranslation } from 'react-i18next';
-import { Box } from '@mui/system';
+import { Box } from '@mui/material';
 
 import type {
   User,
