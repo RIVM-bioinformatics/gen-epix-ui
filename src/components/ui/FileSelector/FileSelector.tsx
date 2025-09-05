@@ -131,25 +131,28 @@ export const FileSelector = ({
 
   if (uploadComplete) {
     return (
-      <Box sx={{
-        width: '100%',
-        height: '100%',
-        position: 'relative',
-        display: 'flex',
-        justifyContent: 'center',
-        flexDirection: 'column',
-        alignItems: 'center',
-      }}
+      <Box
+        sx={{
+          width: '100%',
+          height: '100%',
+          position: 'relative',
+          display: 'flex',
+          justifyContent: 'center',
+          flexDirection: 'column',
+          alignItems: 'center',
+        }}
       >
         <CloudDoneIcon
           color={'primary'}
-          fontSize="large"
-          onClick={onUploadCompleteButtonClick}
+          fontSize={'large'}
           sx={{
             cursor: 'pointer',
           }}
+          onClick={onUploadCompleteButtonClick}
         />
-        <Typography>{t`Complete`}</Typography>
+        <Typography>
+          {t`Complete`}
+        </Typography>
       </Box>
     );
   }
@@ -161,20 +164,15 @@ export const FileSelector = ({
         component={'input'}
         id={inputId}
         multiple={numFilesAllowed > 1}
-        onChange={onFileInputChange}
         sx={{
           display: 'none',
         }}
-        type="file"
+        type={'file'}
+        onChange={onFileInputChange}
       />
-
       <Box
         component={'label'}
         htmlFor={inputId}
-        onDragEnter={onDragEnter}
-        onDragLeave={onDragLeave}
-        onDragOver={onDragOver}
-        onDrop={onDrop}
         sx={{
           width: '100%',
           height: '100%',
@@ -189,6 +187,10 @@ export const FileSelector = ({
             opacity: 1,
           },
         }}
+        onDragEnter={onDragEnter}
+        onDragLeave={onDragLeave}
+        onDragOver={onDragOver}
+        onDrop={onDrop}
       >
         <Box
           sx={{
@@ -211,17 +213,21 @@ export const FileSelector = ({
           >
             <CloudUploadIcon
               color={'primary'}
-              fontSize="large"
+              fontSize={'large'}
             />
             {errorText && (
-              <Typography sx={{
-                color: 'error.main',
-                fontWeight: 'bold',
-              }}
-              >{errorText}
+              <Typography
+                sx={{
+                  color: 'error.main',
+                  fontWeight: 'bold',
+                }}
+              >
+                {errorText}
               </Typography>
             )}
-            <Typography>{labelText}</Typography>
+            <Typography>
+              {labelText}
+            </Typography>
 
           </Box>
         </Box>

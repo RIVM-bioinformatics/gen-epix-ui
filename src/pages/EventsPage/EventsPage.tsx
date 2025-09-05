@@ -176,20 +176,21 @@ export const EventsPage = () => {
   const contentActions = useMemo(() => {
     const isLoading = loadables.some(loadable => loadable.isLoading);
     return (
-      <Box sx={{
-        display: 'flex',
-        alignItems: 'center',
-        gap: theme.spacing(1),
-      }}
+      <Box
+        sx={{
+          display: 'flex',
+          alignItems: 'center',
+          gap: theme.spacing(1),
+        }}
       >
         <TableMenu />
         <Button
           color={'primary'}
           disabled={isLoading}
           loading={isLoading}
-          onClick={onCreateItemButtonClick}
           size={'small'}
           variant={'contained'}
+          onClick={onCreateItemButtonClick}
         >
           {t`Create event`}
         </Button>
@@ -204,6 +205,8 @@ export const EventsPage = () => {
   return (
     <TableStoreContextProvider store={tableStore}>
       <PageContainer
+        fullWidth
+        showBreadcrumbs
         contentActions={contentActions}
         contentHeader={(
           <TableCaption
@@ -212,15 +215,14 @@ export const EventsPage = () => {
             variant={'h2'}
           />
         )}
-        fullWidth
-        showBreadcrumbs
         testIdAttributes={TestIdUtil.createAttributes('EventsPage')}
         title={t`Events`}
       >
-        <Box sx={{
-          position: 'relative',
-          height: '100%',
-        }}
+        <Box
+          sx={{
+            position: 'relative',
+            height: '100%',
+          }}
         >
           <ResponseHandler
             error={caseSetsError}
@@ -229,11 +231,12 @@ export const EventsPage = () => {
           >
 
             <TableSidebarMenu />
-            <Box sx={{
-              width: '100%',
-              height: '100%',
-              paddingLeft: theme.spacing(ConfigManager.instance.config.layout.SIDEBAR_MENU_WIDTH + 1),
-            }}
+            <Box
+              sx={{
+                width: '100%',
+                height: '100%',
+                paddingLeft: theme.spacing(ConfigManager.instance.config.layout.SIDEBAR_MENU_WIDTH + 1),
+              }}
             >
               <Table
                 getRowName={getRowName}

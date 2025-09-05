@@ -138,17 +138,17 @@ export const TableCell = <TRowData, >({
 
   return (
     <Box
+      ref={ref}
       className={className}
       data-column-index={columnIndex}
       data-frozen={column.frozen ? 1 : 0}
       data-id={column.id}
       data-row-index={rowIndex ?? ''}
-      onClick={onClick && enabled ? onTableCellClick : undefined}
-      onMouseDown={isMovable && onCustomDrag ? onMouseDown : undefined}
-      ref={ref}
       role={role ?? 'cell'}
       sx={getCellStyles()}
       title={title}
+      onClick={onClick && enabled ? onTableCellClick : undefined}
+      onMouseDown={isMovable && onCustomDrag ? onMouseDown : undefined}
     >
       {children}
     </Box>

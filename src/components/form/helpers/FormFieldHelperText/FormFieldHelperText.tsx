@@ -35,8 +35,8 @@ export const FormFieldHelperText = ({ errorMessage, warningMessage, noIndent }: 
     return (
       <FormHelperText
         {...testIdAttributes}
-        component={'span'}
         error
+        component={'span'}
         sx={{
           marginLeft: noIndent ? 0 : theme.spacing(-2),
           position: 'relative',

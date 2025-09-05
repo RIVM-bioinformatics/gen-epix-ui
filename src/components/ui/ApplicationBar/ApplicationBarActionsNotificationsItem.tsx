@@ -40,8 +40,8 @@ export const ApplicationBarActionsNotificationsItem = () => {
       <IconButton
         aria-label={t`Notifications`}
         color={'inherit'}
-        onClick={onMenuIconClick}
         title={t`Notifications`}
+        onClick={onMenuIconClick}
       >
         <Badge
           badgeContent={notifications.length}
@@ -61,8 +61,8 @@ export const ApplicationBarActionsNotificationsItem = () => {
         )}
       </IconButton>
       <NotificationsDrawer
-        onDrawerClose={onDrawerClose}
         open={open}
+        onDrawerClose={onDrawerClose}
       />
     </Fragment>
   );

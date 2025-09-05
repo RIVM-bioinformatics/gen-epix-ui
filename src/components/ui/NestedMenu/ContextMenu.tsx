@@ -98,18 +98,18 @@ export const ContextMenu = ({ children, menuItems, menuItemsData, ref }: Context
 
   return (
     <Box
+      ref={wrapperRef}
       onContextMenu={onContextMenu}
       onMouseDown={onMouseDown}
       onMouseUp={onMouseUp}
-      ref={wrapperRef}
     >
       {menuPosition && (
         <Menu
           anchorPosition={menuPosition}
           anchorReference={'anchorPosition'}
+          open={!!menuPosition}
           onClose={onMenuClose}
           onContextMenu={onContextMenu}
-          open={!!menuPosition}
         >
           {menuContents}
         </Menu>

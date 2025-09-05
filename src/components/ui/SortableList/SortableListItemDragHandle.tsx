@@ -16,7 +16,7 @@ export const SortableListItemDragHandle = () =>{
   return (
     <Box
       {...TestIdUtil.createAttributes('SortableListItemDragHandle')}
-      component="button"
+      component={'button'}
       {...attributes}
       {...listeners}
       ref={ref}

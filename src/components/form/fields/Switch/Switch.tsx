@@ -92,8 +92,8 @@ export const Switch = <TFieldValues extends FieldValues, TName extends Path<TFie
           sx={{ ml: 0 }}
         >
           <FormFieldHelperText
-            errorMessage={errorMessage}
             noIndent
+            errorMessage={errorMessage}
             warningMessage={warningMessage}
           />
         </FormHelperText>

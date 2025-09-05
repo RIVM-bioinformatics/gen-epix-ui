@@ -146,8 +146,8 @@ export const UserFeedbackDialog = withDialog<UserFeedbackDialogProps, UserFeedba
         </Box>
         <Box>
           <TextField
-            label={t`Your message`}
             multiline
+            label={t`Your message`}
             name={'message'}
             rows={15}
           />

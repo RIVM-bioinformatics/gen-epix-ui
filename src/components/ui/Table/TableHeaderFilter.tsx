@@ -69,26 +69,26 @@ export const TableHeaderFilter = <TRowData,>({ filter, onFilterChange }: TableHe
         autoComplete={'off'}
         component={'form'}
         id={'Filters'}
-        onSubmit={handleSubmit(onFormSubmit)}
         sx={{
           minWidth: '400px',
         }}
+        onSubmit={handleSubmit(onFormSubmit)}
       >
         <TableFilter filter={filter} />
-        <Box sx={{
-          display: 'flex',
-          gap: 1,
-          justifyContent: 'flex-end',
-        }}
+        <Box
+          sx={{
+            display: 'flex',
+            gap: 1,
+            justifyContent: 'flex-end',
+          }}
         >
           <Button
             disabled={filter.isInitialFilterValue()}
-            onClick={onResetButtonClick}
             variant={'outlined'}
+            onClick={onResetButtonClick}
           >
             {t`Remove filter`}
           </Button>
-
           <Button
             disabled={!isDirty}
             type={'submit'}

@@ -192,6 +192,7 @@ export const EpiStratification = () => {
     >
       <Box>
         <NestedDropdown
+          showTopLevelTooltip
           ButtonProps={{
             variant: 'text',
             size: 'small',
@@ -207,7 +208,6 @@ export const EpiStratification = () => {
             },
           }}
           menuItemsData={stratificationMenu}
-          showTopLevelTooltip
         />
       </Box>
       {stratification?.legendaItems.map(legendaItem => (
@@ -216,18 +216,18 @@ export const EpiStratification = () => {
           marginX={1}
         >
           <EpiLegendaItem
+            tooltip
             color={legendaItem.color}
+            rowValue={legendaItem.rowValue}
+            tooltipProps={{
+              placement: 'top',
+              arrow: true,
+            }}
             disabled={legendaItem.caseIds.length === 0}
             // eslint-disable-next-line react/jsx-no-bind
             onItemClick={stratification.mode === STRATIFICATION_MODE.FIELD ? (event) => onLegendaItemClick(event, legendaItem) : undefined}
             onMouseLeave={onLegendaItemMouseLeave}
             onMouseOver={onLegendaItemMouseOver}
-            rowValue={legendaItem.rowValue}
-            tooltip
-            tooltipProps={{
-              placement: 'top',
-              arrow: true,
-            }}
           />
         </Box>
       ))}

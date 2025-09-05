@@ -70,10 +70,10 @@ export const ApplicationBarActionsFeedbackItem = () => {
             disablePortal: true,
           },
         }}
-        onMouseEnter={onTooltipMouseEnter}
         open={isFeedbackTooltipOpen}
         placement={'left'}
         title={t`Would you like to share your feedback?`}
+        onMouseEnter={onTooltipMouseEnter}
       >
         <IconButton
           aria-label={t`Feedback`}

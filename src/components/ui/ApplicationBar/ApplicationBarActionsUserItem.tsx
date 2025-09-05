@@ -24,8 +24,8 @@ export const ApplicationBarActionsUserItem = () => {
     <Fragment>
       <IconButton
         color={'inherit'}
-        onClick={onAccountMenuIconClick}
         title={'Account'}
+        onClick={onAccountMenuIconClick}
       >
         <AccountCircleIcon color={'inherit'} />
       </IconButton>

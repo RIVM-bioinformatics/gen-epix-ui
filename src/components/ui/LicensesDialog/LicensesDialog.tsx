@@ -134,8 +134,8 @@ export const LicensesDialog = withDialog<LicensesDialogProps, LicensesDialogOpen
 
   return (
     <ResponseHandler
-      error={frontendLicensesError || backendLicensesError}
       inlineSpinner
+      error={frontendLicensesError || backendLicensesError}
       isLoading={isLoading}
     >
       {item && (
@@ -163,11 +163,11 @@ export const LicensesDialog = withDialog<LicensesDialogProps, LicensesDialogOpen
                 } else if (entry.license.length > 100) {
                   license = (
                     <Button
-                      color="secondary"
+                      size={'small'}
+                      variant={'text'}
+                      color={'secondary'}
                       // eslint-disable-next-line react/jsx-no-bind
                       onClick={() => onItemLicenseClick(entry)}
-                      size="small"
-                      variant="text"
                     >
                       {t('Show license')}
                     </Button>
@@ -178,16 +178,17 @@ export const LicensesDialog = withDialog<LicensesDialogProps, LicensesDialogOpen
 
                 return (
                   <Fragment key={entry.name}>
-                    <ListItem secondaryAction={entry.homepage && (
-                      <IconButton
-                        aria-label="delete"
-                        edge="end"
-                        // eslint-disable-next-line react/jsx-no-bind
-                        onClick={() => onItemURLClick(entry.homepage)}
-                      >
-                        <OpenInNewIcon />
-                      </IconButton>
-                    )}
+                    <ListItem
+                      secondaryAction={entry.homepage && (
+                        <IconButton
+                          aria-label={'delete'}
+                          edge={'end'}
+                          // eslint-disable-next-line react/jsx-no-bind
+                          onClick={() => onItemURLClick(entry.homepage)}
+                        >
+                          <OpenInNewIcon />
+                        </IconButton>
+                      )}
                     >
                       <ListItemAvatar>
                         <Avatar>
@@ -208,8 +209,8 @@ export const LicensesDialog = withDialog<LicensesDialogProps, LicensesDialogOpen
                       />
                     </ListItem>
                     <Divider
-                      component="li"
-                      variant="inset"
+                      component={'li'}
+                      variant={'inset'}
                     />
                   </Fragment>
                 );

@@ -50,7 +50,6 @@ export const TableActionsCell = <TRowData,>(props: TableActionsCellProps<TRowDat
         <>
           <IconButton
             aria-label={t`Row actions`}
-            onClick={onIconButtonClick}
             sx={{
               position: 'absolute',
               marginTop: '-2px',
@@ -58,19 +57,20 @@ export const TableActionsCell = <TRowData,>(props: TableActionsCellProps<TRowDat
                 fontSize: 18,
               },
             }}
+            onClick={onIconButtonClick}
           >
             <MoreVertIcon />
           </IconButton>
           <Menu
             anchorEl={anchorElement}
             id={'basic-menu'}
-            onClose={onMenuClose}
             open={open}
             slotProps={{
               list: {
                 'aria-labelledby': 'basic-button',
               },
             }}
+            onClose={onMenuClose}
           >
             {actions}
           </Menu>

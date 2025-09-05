@@ -22,12 +22,12 @@ export const ApplicationFooterLink = ({ href, onClick, children, ...boxProps }: 
       {href && (
         <Link
           href={href}
-          onClick={onClick}
           rel={'noreferrer'}
           sx={{
             color: theme.palette.primary.contrastText,
           }}
           target={'_blank'}
+          onClick={onClick}
         >
           {children}
         </Link>
@@ -35,10 +35,10 @@ export const ApplicationFooterLink = ({ href, onClick, children, ...boxProps }: 
       {!href && (
         <Link
           component={'button'}
-          onClick={onClick}
           sx={{
             color: theme.palette.primary.contrastText,
           }}
+          onClick={onClick}
         >
           {children}
         </Link>

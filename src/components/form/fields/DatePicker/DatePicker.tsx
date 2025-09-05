@@ -126,7 +126,6 @@ export const DatePicker = <TFieldValues extends FieldValues, TName extends Path<
             inputRef={inputRef}
             label={label}
             loading={loading}
-            onChange={onMuiDatePickerChange(onChange)}
             openTo={dateFormat === DATE_FORMAT.DATE_TIME ? undefined : 'year'}
             slotProps={{
               textField: {
@@ -141,13 +140,14 @@ export const DatePicker = <TFieldValues extends FieldValues, TName extends Path<
             }}
             value={value}
             views={views as MuiDateTimePickerProps['views'] & MuiDatePickerProps['views']}
+            onChange={onMuiDatePickerChange(onChange)}
           />
         </LocalizationProvider>
         { loading && <FormFieldLoadingIndicator />}
         <FormHelperText sx={{ ml: 0 }}>
           <FormFieldHelperText
-            errorMessage={errorMessage}
             noIndent
+            errorMessage={errorMessage}
             warningMessage={warningMessage}
           />
         </FormHelperText>

@@ -67,18 +67,18 @@ export const EpiDashboardGeneralSettingsForm = ({ onReset }: EpiDashboardGeneral
           </FormGroup>
         </Box>
       </form>
-
-      <Box sx={{
-        display: 'flex',
-        justifyContent: 'flex-end',
-      }}
+      <Box
+        sx={{
+          display: 'flex',
+          justifyContent: 'flex-end',
+        }}
       >
         <Box marginX={1}>
           <Button
             color={'primary'}
-            onClick={onResetButtonClick}
             startIcon={<RestartAltIcon />}
             variant={'outlined'}
+            onClick={onResetButtonClick}
           >
             {t`Reset general settings`}
           </Button>

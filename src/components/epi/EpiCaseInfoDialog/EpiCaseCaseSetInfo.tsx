@@ -71,31 +71,34 @@ export const EpiCaseCaseSetInfo = ({ epiCase, ...boxProps }: EpiCaseCaseSetInfoP
         {t`Events`}
       </Typography>
       <ResponseHandler
-        error={caseSetMembersError || caseSetsError}
         inlineSpinner
+        shouldHideActionButtons
+        error={caseSetMembersError || caseSetsError}
         isLoading={isCaseSetMembersLoading || isCaseSetsLoading}
         loadables={loadables}
-        shouldHideActionButtons
       >
         {caseSets?.length > 0 && (
           <Table size={'small'}>
             <TableHead>
               <TableRow>
-                <TableCell sx={{
-                  width: 'calc(100% * 1/3)',
-                }}
+                <TableCell
+                  sx={{
+                    width: 'calc(100% * 1/3)',
+                  }}
                 >
                   {t`Name`}
                 </TableCell>
-                <TableCell sx={{
-                  width: 'calc(100% * 1/3)',
-                }}
+                <TableCell
+                  sx={{
+                    width: 'calc(100% * 1/3)',
+                  }}
                 >
                   {t`Category`}
                 </TableCell>
-                <TableCell sx={{
-                  width: 'calc(100% * 1/3)',
-                }}
+                <TableCell
+                  sx={{
+                    width: 'calc(100% * 1/3)',
+                  }}
                 >
                   {t`Status`}
                 </TableCell>
@@ -123,7 +126,11 @@ export const EpiCaseCaseSetInfo = ({ epiCase, ...boxProps }: EpiCaseCaseSetInfoP
             </TableBody>
           </Table>
         )}
-        {(!caseSets || caseSets?.length === 0) && <Box sx={{ fontStyle: 'italic' }}>{t`None`}</Box>}
+        {(!caseSets || caseSets?.length === 0) && (
+          <Box sx={{ fontStyle: 'italic' }}>
+            {t`None`}
+          </Box>
+        )}
       </ResponseHandler>
     </Box>
   );

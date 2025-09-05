@@ -64,12 +64,13 @@ export const EpiUpload = () => {
               key={label}
               {...stepProps}
             >
-              <StepLabel {...labelProps}>{label}</StepLabel>
+              <StepLabel {...labelProps}>
+                {label}
+              </StepLabel>
             </Step>
           );
         })}
       </Stepper>
-
       <Box>
         {activeStep === 0 && (
           <EpiUploadSelectFile onFileChange={onFileChange} />

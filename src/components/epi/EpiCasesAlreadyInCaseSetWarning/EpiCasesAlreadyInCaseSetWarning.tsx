@@ -102,13 +102,13 @@ export const EpiCasesAlreadyInCaseSetWarning = ({ cases }: EpiCasesAlreadyInCase
 
   return (
     <ResponseHandler
+      shouldHideActionButtons
       error={caseSetMembersError || caseSetsError}
       isLoading={isCaseSetMembersLoading || isCaseSetsLoading}
-      shouldHideActionButtons
     >
       {caseSetsByCase.size > 0 && (
         <Alert
-          severity="warning"
+          severity={'warning'}
           slotProps={{
             message: {
               sx: {
@@ -117,29 +117,32 @@ export const EpiCasesAlreadyInCaseSetWarning = ({ cases }: EpiCasesAlreadyInCase
             },
           }}
         >
-          <AlertTitle sx={{
-            width: '100%',
-          }}
+          <AlertTitle
+            sx={{
+              width: '100%',
+            }}
           >
             {t('{{numCases}} selected case(s) are already part of other event(s):', { numCases: caseSetsByCase.size })}
           </AlertTitle>
           <Table
-            size="small"
+            size={'small'}
             sx={{
               width: '100%',
             }}
           >
             <TableHead>
               <TableRow>
-                <TableCell sx={{
-                  width: '50%',
-                }}
+                <TableCell
+                  sx={{
+                    width: '50%',
+                  }}
                 >
                   {t`Case`}
                 </TableCell>
-                <TableCell sx={{
-                  width: '50%',
-                }}
+                <TableCell
+                  sx={{
+                    width: '50%',
+                  }}
                 >
                   {t`Events`}
                 </TableCell>
@@ -149,28 +152,29 @@ export const EpiCasesAlreadyInCaseSetWarning = ({ cases }: EpiCasesAlreadyInCase
               {(Array.from(caseSetsByCase) ?? []).map(([caseItem, caseItemCaseSets]) => {
                 return (
                   <TableRow key={caseItem.id}>
-                    <TableCell sx={{
-                      width: '50%',
-                      verticalAlign: 'top',
-                    }}
+                    <TableCell
+                      sx={{
+                        width: '50%',
+                        verticalAlign: 'top',
+                      }}
                     >
                       <EpiCaseSummary
                         epiCase={caseItem}
                       />
                     </TableCell>
-
-                    <TableCell sx={{
-                      width: '50%',
-                      verticalAlign: 'top',
-                      '& :nth-of-type(2)': {
-                        marginTop: theme.spacing(1),
-                      },
-                    }}
+                    <TableCell
+                      sx={{
+                        width: '50%',
+                        verticalAlign: 'top',
+                        '& :nth-of-type(2)': {
+                          marginTop: theme.spacing(1),
+                        },
+                      }}
                     >
                       {caseItemCaseSets.sort((a, b) => a.name.localeCompare(b.name)).map(caseItemCaseSet => (
                         <EpiCasesAlreadyInCaseSetWarningCaseSetLink
-                          caseSet={caseItemCaseSet}
                           key={caseItemCaseSet.id}
+                          caseSet={caseItemCaseSet}
                         />
                       ))}
                     </TableCell>

@@ -25,20 +25,21 @@ export const NotificationsStack = (): ReactElement => {
       {visibleNotifications.length > 0 && (
         <Snackbar
           {...TestIdUtil.createAttributes('NotificationsStack')}
-          anchorOrigin={{ horizontal: 'right', vertical: 'top' }}
           open
+          anchorOrigin={{ horizontal: 'right', vertical: 'top' }}
         >
           <Box>
             {visibleNotifications.map(notification => (
               <NotificationItem
-                allowClose
                 key={notification.key}
+                allowClose
                 notification={notification}
                 onClose={onNotificationItemClose}
               />
             ))}
           </Box>
-        </Snackbar>)}
+        </Snackbar>
+      )}
     </>
   );
 };

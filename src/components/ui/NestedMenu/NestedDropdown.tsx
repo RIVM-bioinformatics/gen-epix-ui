@@ -117,8 +117,8 @@ export const NestedDropdown = ({ ref, ...props }: NestedDropdownProps) => {
       )}
       <Menu
         anchorEl={anchorEl}
-        onClose={onMenuClose}
         open={open}
+        onClose={onMenuClose}
         {...MenuProps}
       >
         {menuItems}

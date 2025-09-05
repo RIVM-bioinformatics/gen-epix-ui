@@ -189,12 +189,12 @@ export const UserInvitationsAdminPage = () => {
         formFieldDefinitions={formFieldDefinitions}
         getName={getName}
         loadables={loadables}
-        onCreateSuccess={onCreateSuccess}
         resourceQueryKeyBase={QUERY_KEY.USER_REGISTRATIONS}
         schema={schema}
         tableColumns={tableColumns}
         testIdAttributes={TestIdUtil.createAttributes('UserInvitationsAdminPage')}
         title={t`User invitations`}
+        onCreateSuccess={onCreateSuccess}
       />
       <UserInvitationsAdminDetailDialog ref={userInvitationsAdminDetailDialogRef} />
     </>

@@ -51,12 +51,13 @@ export const EpiLegendaItem = ({ rowValue, color, onItemClick, tooltip, tooltipP
 
   const innerContent = useMemo(() => {
     return (
-      <Box sx={{
-        display: 'flex',
-        alignItems: 'center',
-        cursor: canClick ? 'pointer' : 'initial',
-        opacity: disabled ? 0.3 : 1,
-      }}
+      <Box
+        sx={{
+          display: 'flex',
+          alignItems: 'center',
+          cursor: canClick ? 'pointer' : 'initial',
+          opacity: disabled ? 0.3 : 1,
+        }}
       >
         <Box
           sx={{
@@ -68,11 +69,12 @@ export const EpiLegendaItem = ({ rowValue, color, onItemClick, tooltip, tooltipP
             marginRight: theme.spacing(1),
           }}
         />
-        <Box sx={{
-          overflow: 'hidden',
-          textOverflow: 'ellipsis',
-          whiteSpace: 'nowrap',
-        }}
+        <Box
+          sx={{
+            overflow: 'hidden',
+            textOverflow: 'ellipsis',
+            whiteSpace: 'nowrap',
+          }}
         >
           {children || rowValue.short}
         </Box>

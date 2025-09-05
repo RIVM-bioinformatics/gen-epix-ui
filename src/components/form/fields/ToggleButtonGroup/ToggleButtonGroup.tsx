@@ -72,18 +72,18 @@ export const ToggleButtonGroup = <TFieldValues extends FieldValues, TName extend
     });
     return (
       <MuiToggleButtonGroup
-        color={'primary'}
         exclusive
+        color={'primary'}
+        value={value as string}
         onBlur={onBlur}
         onChange={onMuiToggleButtonChange(onChange)}
-        value={value as string}
       >
         { options.map((option) => {
           return (
             <ToggleButton
               {...TestIdUtil.createAttributes('ToggleButton-option', { code: option.value.toString(), description: option.label })}
-              disabled={disabled}
               key={option.value.toString()}
+              disabled={disabled}
               value={option.value}
             >
               {option.label}
@@ -108,8 +108,8 @@ export const ToggleButtonGroup = <TFieldValues extends FieldValues, TName extend
       />
       <FormHelperText sx={{ ml: 0 }}>
         <FormFieldHelperText
-          errorMessage={errorMessage}
           noIndent
+          errorMessage={errorMessage}
           warningMessage={warningMessage}
         />
       </FormHelperText>

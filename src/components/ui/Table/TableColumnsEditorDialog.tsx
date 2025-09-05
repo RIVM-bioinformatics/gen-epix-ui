@@ -220,13 +220,14 @@ export const TableColumnsEditorDialog = withDialog<TableColumnsEditorDialogProps
   const renderItemContent = useCallback((item: Item) => item.label, []);
 
   return (
-    <Box sx={{
-    }}
+    <Box
+      sx={{
+      }}
     >
       <SortableList<Item>
         items={items}
-        onChange={onSortableListChange}
         renderItemContent={renderItemContent}
+        onChange={onSortableListChange}
       />
     </Box>
   );

@@ -315,11 +315,11 @@ export const EpiCaseInfoDialog = withDialog<EpiCaseInfoDialogProps, EpiCaseInfoD
   return (
     <>
       <ResponseHandler
-        error={epiCaseError || caseDataCollectionLinksError}
         inlineSpinner
+        shouldHideActionButtons
+        error={epiCaseError || caseDataCollectionLinksError}
         isLoading={epiCaseIsLoading || isCaseDataCollectionLinksLoading}
         loadables={loadables}
-        shouldHideActionButtons
       >
         <EpiCaseAbacContextProvider caseAbac={caseAbacContextValue}>
           <EpiReadOnlyCaseContent
@@ -360,12 +360,12 @@ export const EpiCaseInfoDialog = withDialog<EpiCaseInfoDialogProps, EpiCaseInfoD
         </EpiCaseAbacContextProvider>
       </ResponseHandler>
       <Confirmation
+        ref={deleteConfirmation}
         body={t`Are you sure you want to delete the case?`}
         cancelLabel={t`Cancel`}
         confirmLabel={t`Delete`}
-        onConfirm={onDeleteConfirmationConfirm}
-        ref={deleteConfirmation}
         title={t`Delete case?`}
+        onConfirm={onDeleteConfirmationConfirm}
       />
     </>
   );

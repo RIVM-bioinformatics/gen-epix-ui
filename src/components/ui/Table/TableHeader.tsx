@@ -14,11 +14,12 @@ export type TableHeaderProps = {
 
 export const TableHeader = ({ header, headerComponent = 'h3', headerVariant = 'h5', showTableMenu = true }: TableHeaderProps) => {
   return (
-    <Box sx={{
-      display: 'flex',
-      justifyContent: header ? 'space-between' : 'flex-end',
-      alignItems: 'center',
-    }}
+    <Box
+      sx={{
+        display: 'flex',
+        justifyContent: header ? 'space-between' : 'flex-end',
+        alignItems: 'center',
+      }}
     >
       {header && (
         <Box>

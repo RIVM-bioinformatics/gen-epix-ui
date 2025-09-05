@@ -59,8 +59,8 @@ export const ApplicationBarNavigationMenu = ({ fullWidth }: ApplicationBarNaviga
           const disabled = menuItem.handle.disabled || !authorizationManager.doesUserHavePermissionForRoute(menuItem);
           return (
             <Box
-              component={'li'}
               key={menuItem.path}
+              component={'li'}
               sx={{
                 display: 'flex',
                 alignItems: 'center',

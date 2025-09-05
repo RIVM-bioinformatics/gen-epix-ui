@@ -22,7 +22,9 @@ export const EpiDataCollectionAccessInfo = () => {
 
   if (!caseAbacContext.itemDataCollections || caseAbacContext.itemDataCollections?.length === 0) {
     return (
-      <Box sx={{ fontStyle: 'italic' }}>{t`None`}</Box>
+      <Box sx={{ fontStyle: 'italic' }}>
+        {t`None`}
+      </Box>
     );
   }
 
@@ -30,21 +32,24 @@ export const EpiDataCollectionAccessInfo = () => {
     <Table size={'small'}>
       <TableHead>
         <TableRow>
-          <TableCell sx={{
-            width: 'calc(100% * 1/3)',
-          }}
+          <TableCell
+            sx={{
+              width: 'calc(100% * 1/3)',
+            }}
           >
             {t`Data collection`}
           </TableCell>
-          <TableCell sx={{
-            width: 'calc(100% * 1/6)',
-          }}
+          <TableCell
+            sx={{
+              width: 'calc(100% * 1/6)',
+            }}
           >
             {t`Removable`}
           </TableCell>
-          <TableCell sx={{
-            width: 'calc(100% * 1/2)',
-          }}
+          <TableCell
+            sx={{
+              width: 'calc(100% * 1/2)',
+            }}
           >
             {t`Is created in`}
           </TableCell>

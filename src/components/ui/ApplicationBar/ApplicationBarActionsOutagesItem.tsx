@@ -57,8 +57,8 @@ export const ApplicationBarActionsOutagesItem = () => {
       <IconButton
         aria-label={t`Outages`}
         color={'inherit'}
-        onClick={onMenuIconClick}
         title={t`Outages`}
+        onClick={onMenuIconClick}
       >
         <Badge
           badgeContent={badgeContent}

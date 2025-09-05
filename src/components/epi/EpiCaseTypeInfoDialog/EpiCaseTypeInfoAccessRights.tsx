@@ -44,7 +44,7 @@ export const EpiCaseTypeInfoAccessRights = ({ completeCaseType }: EpiCaseTypeInf
               {dataCollection.name}
             </AccordionSummary>
             <AccordionDetails>
-              <Table size="small">
+              <Table size={'small'}>
                 <TableHead>
                   <TableRow>
                     <TableCell sx={{ width: '20%', verticalAlign: 'top' }}>

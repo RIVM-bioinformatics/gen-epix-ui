@@ -36,11 +36,15 @@ export const CopyToClipboardButton = ({ clipboardValue, onGetClipboardValue, but
       try {
         await navigator.clipboard.writeText(clipboardValue ?? onGetClipboardValue());
         setCopyToClipBoardButtonColor('success');
-        setCopyToClipBoardIcon(<DoneIcon />);
+        setCopyToClipBoardIcon(
+          <DoneIcon />,
+        );
         setTooltipText(tooltipSuccessText ?? t`Copied to clipboard`);
       } catch (_error: unknown) {
         setCopyToClipBoardButtonColor('error');
-        setCopyToClipBoardIcon(<ErrorIcon />);
+        setCopyToClipBoardIcon(
+          <ErrorIcon />,
+        );
         setTooltipText(t`Error`);
       } finally {
         timeoutId = window.setTimeout(() => {
@@ -61,14 +65,14 @@ export const CopyToClipboardButton = ({ clipboardValue, onGetClipboardValue, but
     return (
       <Tooltip
         arrow
-        placement="top"
+        placement={'top'}
         title={tooltipText}
       >
         <IconButton
           {...buttonProps}
           color={copyToClipBoardButtonColor}
+          size={'small'}
           onClick={onCopyToClipboardButtonClick}
-          size="small"
         >
           {copyToClipBoardIcon}
         </IconButton>
@@ -80,9 +84,9 @@ export const CopyToClipboardButton = ({ clipboardValue, onGetClipboardValue, but
     <Button
       {...buttonProps}
       color={copyToClipBoardButtonColor}
-      onClick={onCopyToClipboardButtonClick}
       startIcon={copyToClipBoardIcon}
       variant={buttonVariant ?? 'contained'}
+      onClick={onCopyToClipboardButtonClick}
     >
       {buttonText ?? t`Copy to clipboard`}
     </Button>

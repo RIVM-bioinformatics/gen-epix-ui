@@ -105,9 +105,9 @@ export const EpiCaseTypeInfoCaseTypeColumnAccessRights = ({ caseTypeColumnId }: 
         })}
         {dataCollectionAccesses.length > MAX_ITEMS && !shouldShowMore && (
           <Button
+            size={'small'}
+            variant={'text'}
             onClick={onShowMoreButtonClick}
-            size="small"
-            variant="text"
           >
             {t('Show more')}
           </Button>

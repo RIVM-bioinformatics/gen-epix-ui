@@ -697,9 +697,10 @@ export const EpiTree = ({ linkedScrollSubject, ref }: EpiTreeProps) => {
       {
         label: t`Link and snap the Line List to the Tree (resets tree zoom level and Line List sorting)`,
         leftIcon: (
-          <LinkIcon sx={{
-            color: isLinked ? undefined : theme.palette.error.main,
-          }}
+          <LinkIcon
+            sx={{
+              color: isLinked ? undefined : theme.palette.error.main,
+            }}
           />
         ),
         callback: onLinkButtonClick,
@@ -781,10 +782,11 @@ export const EpiTree = ({ linkedScrollSubject, ref }: EpiTreeProps) => {
         }}
       >
         {isTreeUnavailable && (
-          <Box sx={{
-            position: 'absolute',
-            zIndex: 1,
-          }}
+          <Box
+            sx={{
+              position: 'absolute',
+              zIndex: 1,
+            }}
           >
             <EpiWidgetUnavailable
               epiZone={EPI_ZONE.TREE}
@@ -799,19 +801,20 @@ export const EpiTree = ({ linkedScrollSubject, ref }: EpiTreeProps) => {
           />
         )}
         {!isTreeUnavailable && shouldShowTree && (
-          <Box sx={{
-            height: ConfigManager.instance.config.epiTree.HEADER_HEIGHT,
-            position: 'absolute',
-            background: theme.palette.background.paper,
-            width: treeCanvasWidth,
-            top: 0,
-            zIndex: 1,
-          }}
+          <Box
+            sx={{
+              height: ConfigManager.instance.config.epiTree.HEADER_HEIGHT,
+              position: 'absolute',
+              background: theme.palette.background.paper,
+              width: treeCanvasWidth,
+              top: 0,
+              zIndex: 1,
+            }}
           >
             <Box
+              ref={setHeaderCanvas}
               aria-label={t`Figure of a phylogenetic tree scale`.toString()}
               component={'canvas'}
-              ref={setHeaderCanvas}
               role={'figure'}
               sx={{
                 width: treeCanvasWidth,
@@ -832,9 +835,9 @@ export const EpiTree = ({ linkedScrollSubject, ref }: EpiTreeProps) => {
         >
           {!isTreeUnavailable && shouldShowTree && (
             <Box
+              ref={setTreeCanvas}
               aria-label={t`Figure of a phylogenetic tree`.toString()}
               component={'canvas'}
-              ref={setTreeCanvas}
               role={'figure'}
               sx={{
                 width: treeCanvasWidth,
@@ -844,7 +847,6 @@ export const EpiTree = ({ linkedScrollSubject, ref }: EpiTreeProps) => {
           )}
         </Box>
       </Box>
-
       <EpiContextMenu
         config={epiContextMenuConfig}
         getExtraItems={getEpiContextMenuExtraItems}

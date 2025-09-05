@@ -24,8 +24,8 @@ export const ApplicationBarActionsInfoItem = () => {
     <Fragment>
       <IconButton
         color={'inherit'}
-        onClick={onInfoMenuIconClick}
         title={'Code information'}
+        onClick={onInfoMenuIconClick}
       >
         <CodeIcon color={'inherit'} />
       </IconButton>

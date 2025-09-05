@@ -39,9 +39,9 @@ export const EpiWidgetUnavailable = ({ widgetName, epiZone }: EpiWidgetUnavailab
       <Box marginY={1}>
         <Button
           color={'primary'}
-          onClick={onDisableButtonClick}
           size={'small'}
           variant={'outlined'}
+          onClick={onDisableButtonClick}
         >
           {t('Hide {{widgetName}}', { widgetName })}
         </Button>

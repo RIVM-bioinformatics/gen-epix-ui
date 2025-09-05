@@ -116,8 +116,6 @@ export const CheckboxGroup = <TFieldValues extends FieldValues, TName extends Pa
           {label}
           <IconButton
             {...TestIdUtil.createAttributes('DateRangePicker-reset')}
-            // eslint-disable-next-line react/jsx-no-bind
-            onClick={onResetButtonClick}
             sx={{
               position: 'absolute',
               top: '-10px',
@@ -126,6 +124,8 @@ export const CheckboxGroup = <TFieldValues extends FieldValues, TName extends Pa
               },
             }}
             tabIndex={-1}
+            // eslint-disable-next-line react/jsx-no-bind
+            onClick={onResetButtonClick}
           >
             <ClearIcon />
           </IconButton>
@@ -133,13 +133,14 @@ export const CheckboxGroup = <TFieldValues extends FieldValues, TName extends Pa
         { !loading && (
           <FormGroup
             aria-labelledby={id}
-            onBlur={onBlur}
             row={row}
+            onBlur={onBlur}
           >
             { options.map((option, index) => {
               return (
                 <FormControlLabel
                   {...TestIdUtil.createAttributes('CheckboxGroup-option', { value: option.value.toString(), label: option.label })}
+                  key={option.value.toString()}
                   checked={(value as CheckBoxGroupValue)?.includes(option.value)}
                   control={(
                     <MuiCheckbox
@@ -150,7 +151,6 @@ export const CheckboxGroup = <TFieldValues extends FieldValues, TName extends Pa
                     />
                   )}
                   disabled={loading || disabled}
-                  key={option.value.toString()}
                   label={option.label}
                   onChange={onMuiCheckboxChange(onChange, option.value, value)}
                 />
@@ -161,8 +161,8 @@ export const CheckboxGroup = <TFieldValues extends FieldValues, TName extends Pa
         { loading && <FormFieldLoadingIndicator inline />}
         <FormHelperText sx={{ ml: 0 }}>
           <FormFieldHelperText
-            errorMessage={errorMessage}
             noIndent
+            errorMessage={errorMessage}
             warningMessage={warningMessage}
           />
         </FormHelperText>

@@ -136,13 +136,13 @@ export const EpiList = ({ linkedScrollSubject, onLink, caseSet }: EpiListProps) 
     }
     const link = (
       <Link
+        sx={{
+          cursor: 'pointer',
+        }}
         color={'primary'}
         // eslint-disable-next-line react/jsx-no-bind
         onClick={() => {
           onOrganizationCellClick(row.content[id]);
-        }}
-        sx={{
-          cursor: 'pointer',
         }}
       >
         {rowValue.short}
@@ -171,13 +171,13 @@ export const EpiList = ({ linkedScrollSubject, onLink, caseSet }: EpiListProps) 
   const renderGeneticSequenceCell = useCallback(({ id, row }: TableRowParams<Case>) => {
     return (
       <Link
+        sx={{
+          cursor: 'pointer',
+        }}
         color={'primary'}
         // eslint-disable-next-line react/jsx-no-bind
         onClick={() => {
           onGeneticSequenceCellClick(id, row);
-        }}
-        sx={{
-          cursor: 'pointer',
         }}
       >
         {row.content[id]}
@@ -556,9 +556,10 @@ export const EpiList = ({ linkedScrollSubject, onLink, caseSet }: EpiListProps) 
         disabled: isTreeLinked,
         label: t`Link and snap the Tree to the Line list (resets tree zoom level and Line List sorting)`,
         leftIcon: (
-          <LinkIcon sx={{
-            color: isTreeLinked ? undefined : theme.palette.error.main,
-          }}
+          <LinkIcon
+            sx={{
+              color: isTreeLinked ? undefined : theme.palette.error.main,
+            }}
           />
         ),
         callback: onLinkButtonClick,
@@ -607,19 +608,19 @@ export const EpiList = ({ linkedScrollSubject, onLink, caseSet }: EpiListProps) 
         }}
       >
         <Table
-          font={theme.epi.lineList.font}
+          ref={tableRef}
           forceHorizontalOverflow
+          font={theme.epi.lineList.font}
           getRowName={getRowName}
           initialVisibleItemIndex={epiListWidgetData.visibleItemItemIndex}
+          rowHeight={3}
+          rowHighlightingSubject={rowHighlightingSubject}
           onRangeChanged={onRangeChangedDebounced}
           onReadableIndexClick={onIndexCellClick}
           onRowMouseEnter={onRowMouseEnter}
           onRowMouseLeave={onRowMouseLeave}
           onVerticalScrollPositionChange={onVerticalScrollPositionChange}
           onVisibleItemIndexChange={onTableVisibleItemIndexChange}
-          ref={tableRef}
-          rowHeight={3}
-          rowHighlightingSubject={rowHighlightingSubject}
         />
       </Box>
     </EpiWidget>

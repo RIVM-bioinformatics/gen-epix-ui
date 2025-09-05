@@ -42,9 +42,10 @@ const EpiDashboardSettingsSidebarItemContent = ({ onReset }: EpiDashboardSetting
   ], [onReset, t]);
 
   return (
-    <Box sx={{
-      width: theme.spacing(59),
-    }}
+    <Box
+      sx={{
+        width: theme.spacing(59),
+      }}
     >
       {items.map(({ label, component }, index) => (
         <Box
@@ -80,10 +81,10 @@ export const EpiDashboardSettingsSidebarItem = ({ open, onClose, onReset }: EpiD
     <SidebarItem
       closeIcon={<EpiDashboardSettingsSidebarItemIcon />}
       closeIconTooltipText={t`Close settings`}
-      onClose={onClose}
       open={open}
       title={t`Settings`}
       width={60}
+      onClose={onClose}
     >
       {open && <EpiDashboardSettingsSidebarItemContent onReset={onReset} />}
     </SidebarItem>

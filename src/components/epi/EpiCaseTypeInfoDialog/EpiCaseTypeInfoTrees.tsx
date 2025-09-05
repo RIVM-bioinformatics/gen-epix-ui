@@ -42,19 +42,19 @@ export const EpiCaseTypeInfoTrees = ({ completeCaseType }: EpiCaseTypeInfoTreesP
             {`${treeConfiguration.geneticDistanceProtocol.name} - ${treeConfiguration.treeAlgorithm.name}`}
           </AccordionSummary>
           <AccordionDetails>
-            <Box sx={{
-              '& dl': {
-                margin: 0,
-              },
-              '& dd': {
-                marginLeft: theme.spacing(2),
-              },
-            }}
+            <Box
+              sx={{
+                '& dl': {
+                  margin: 0,
+                },
+                '& dd': {
+                  marginLeft: theme.spacing(2),
+                },
+              }}
             >
               <EpiTreeDescription
                 treeConfiguration={treeConfiguration}
               />
-
               <Box marginY={1}>
                 <strong style={{ fontSize: '1rem' }}>
                   {t`Access rights`}

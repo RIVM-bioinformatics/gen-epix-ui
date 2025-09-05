@@ -65,11 +65,12 @@ const EpiDashboardDownloadSidebarItemContent = () => {
           </Typography>
         ) : (
           <Link
+            tabIndex={0}
             component={'button'}
             // eslint-disable-next-line react/jsx-no-bind
             onClick={() => item.callback()}
-            tabIndex={0}
-          >{item.label}
+          >
+            {item.label}
           </Link>
         )}
       </Box>
@@ -88,9 +89,10 @@ const EpiDashboardDownloadSidebarItemContent = () => {
   }, [renderDownloadItem]);
 
   return (
-    <Box sx={{
-      width: theme.spacing(59),
-    }}
+    <Box
+      sx={{
+        width: theme.spacing(59),
+      }}
     >
       {downloadConfigs.map((config) => (
         <Box
@@ -103,7 +105,7 @@ const EpiDashboardDownloadSidebarItemContent = () => {
           <Box>
             <Typography
               color={config.disabled ? theme.palette.text.disabled : undefined}
-              variant="h5"
+              variant={'h5'}
             >
               {config.zoneLabel}
             </Typography>
@@ -140,10 +142,10 @@ export const EpiDashboardDownloadSidebarItem = ({ open, onClose }: EpiDashboardD
     <SidebarItem
       closeIcon={<EpiDashboardDownloadSidebarItemIcon />}
       closeIconTooltipText={t`Close download`}
-      onClose={onClose}
       open={open}
       title={t`Download`}
       width={60}
+      onClose={onClose}
     >
       {open && <EpiDashboardDownloadSidebarItemContent />}
     </SidebarItem>

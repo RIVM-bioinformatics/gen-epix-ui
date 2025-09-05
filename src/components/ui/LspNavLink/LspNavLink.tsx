@@ -38,7 +38,9 @@ export const LspNavLink = ({ children, activeAsText, ...props }: LspNavLinkProps
   return (
     <StyledNavLink {...props}>
       {({ isActive }) => (
-        <span className={isActive ? 'active' : ''}>{children}</span>
+        <span className={isActive ? 'active' : ''}>
+          {children}
+        </span>
       )}
     </StyledNavLink>
   );

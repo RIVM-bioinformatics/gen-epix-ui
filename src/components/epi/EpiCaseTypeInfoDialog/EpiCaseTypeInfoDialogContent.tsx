@@ -86,8 +86,8 @@ export const EpiCaseTypeInfoDialogContent = ({ onTitleChange, onPermalinkChange 
 
   return (
     <ResponseHandler
-      loadables={loadables}
       shouldHideActionButtons
+      loadables={loadables}
     >
       <EpiCaseTypeAbacContextProvider caseTypeAbac={caseTypeAbacContextValue}>
         <Box
@@ -106,17 +106,14 @@ export const EpiCaseTypeInfoDialogContent = ({ onTitleChange, onPermalinkChange 
           <Box marginBottom={1}>
             <RichTextEditorContent source={completeCaseType?.description || t`No description available`} />
           </Box>
-
           <EpiCaseTypeInfoData
             name={getDiseaseName(completeCaseType.disease_id)}
             title={t`Disease`}
           />
-
           <EpiCaseTypeInfoData
             name={getEtiologicalAgentName(completeCaseType.etiological_agent_id)}
             title={t`Etiological agent`}
           />
-
           <Box marginY={3}>
             <Typography
               component={'h4'}
@@ -129,7 +126,6 @@ export const EpiCaseTypeInfoDialogContent = ({ onTitleChange, onPermalinkChange 
               completeCaseType={completeCaseType}
             />
           </Box>
-
           <Box marginY={3}>
             <Typography
               component={'h4'}
@@ -142,7 +138,6 @@ export const EpiCaseTypeInfoDialogContent = ({ onTitleChange, onPermalinkChange 
               completeCaseType={completeCaseType}
             />
           </Box>
-
           <Box marginY={3}>
             <Typography
               component={'h4'}
@@ -155,7 +150,6 @@ export const EpiCaseTypeInfoDialogContent = ({ onTitleChange, onPermalinkChange 
               completeCaseType={completeCaseType}
             />
           </Box>
-
           <Box marginY={3}>
             <Typography
               component={'h4'}

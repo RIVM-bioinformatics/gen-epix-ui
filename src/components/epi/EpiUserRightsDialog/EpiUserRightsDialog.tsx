@@ -48,10 +48,14 @@ const CustomTabPanel = (props: CustomTabPanelProps) => {
       aria-labelledby={`simple-tab-${index}`}
       hidden={value !== index}
       id={`simple-tabpanel-${index}`}
-      role="tabpanel"
+      role={'tabpanel'}
       {...other}
     >
-      {value === index && <Box sx={{ p: 3 }}>{children}</Box>}
+      {value === index && (
+        <Box sx={{ p: 3 }}>
+          {children}
+        </Box>
+      )}
     </div>
   );
 };
@@ -86,9 +90,9 @@ export const EpiUserRightsDialog = withDialog<EpiUserRightsDialogProps, EpiUserR
     <Box sx={{ width: '100%' }}>
       <Box sx={{ borderBottom: 1, borderColor: 'divider' }}>
         <Tabs
-          aria-label="basic tabs example"
-          onChange={onTabsChange}
+          aria-label={'basic tabs example'}
           value={activeTab}
+          onChange={onTabsChange}
         >
           <Tab
             label={t`Case access`}

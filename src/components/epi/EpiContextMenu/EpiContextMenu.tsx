@@ -103,11 +103,10 @@ export const EpiContextMenu = ({ config, onMenuClose, getExtraItems }: EpiContex
       anchorEl={config?.anchorElement}
       anchorPosition={config?.position}
       anchorReference={config?.anchorElement ? 'anchorEl' : 'anchorPosition'}
-      onClose={onMenuClose}
       open={!!config}
+      onClose={onMenuClose}
     >
       {extraItems}
-
       <MenuItem
         onClick={onMenuSelectClick}
       >
@@ -118,7 +117,6 @@ export const EpiContextMenu = ({ config, onMenuClose, getExtraItems }: EpiContex
           {t`Select rows`}
         </ListItemText>
       </MenuItem>
-
       <MenuItem
         disabled={!EpiCaseSelectionUtil.canAddToSelection(componentCaseIds, selectedIds)}
         onClick={onAddToSelectionMenuItemClick}
@@ -130,7 +128,6 @@ export const EpiContextMenu = ({ config, onMenuClose, getExtraItems }: EpiContex
           {t`Add to selected rows`}
         </ListItemText>
       </MenuItem>
-
       <MenuItem
         disabled={!EpiCaseSelectionUtil.canRemoveFromSelection(componentCaseIds, selectedIds)}
         onClick={onRemoveFromSelectionMenuItemClick}
@@ -142,7 +139,6 @@ export const EpiContextMenu = ({ config, onMenuClose, getExtraItems }: EpiContex
           {t`Remove from selected rows`}
         </ListItemText>
       </MenuItem>
-
       <MenuItem
         disabled={!EpiCaseSelectionUtil.canRefineSelection(componentCaseIds, selectedIds)}
         onClick={onRefineSelectionMenuItemClick}

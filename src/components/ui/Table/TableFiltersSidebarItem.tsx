@@ -116,11 +116,12 @@ const TableFiltersSidebarItemContentFilterDimension = <TRowData,>({ filterDimens
       marginBottom={2}
     >
       {shouldShowDimensionTitle && (
-        <Box sx={{
-          display: 'flex',
-          justifyContent: 'space-between',
-          alignItems: 'center',
-        }}
+        <Box
+          sx={{
+            display: 'flex',
+            justifyContent: 'space-between',
+            alignItems: 'center',
+          }}
         >
           <Box>
             <Typography
@@ -156,7 +157,6 @@ const TableFiltersSidebarItemContentFilterDimension = <TRowData,>({ filterDimens
           )}
         </Box>
       )}
-
       {filteredDimensionFilters.map((filter) => (
         <Box
           key={filter.id}
@@ -165,7 +165,6 @@ const TableFiltersSidebarItemContentFilterDimension = <TRowData,>({ filterDimens
           <TableFilter filter={filter} />
         </Box>
       ))}
-
       <Divider />
     </Box>
   );
@@ -245,16 +244,16 @@ export const TableFiltersSidebarItemContent = <TRowData,>({ onClose }: TableFilt
             autoComplete={'off'}
             component={'form'}
             id={'Filters'}
-            onSubmit={handleSubmit(onFormSubmit)}
             sx={{
               height: '100%',
               display: 'grid',
               gridTemplateRows: 'max-content auto',
             }}
+            onSubmit={handleSubmit(onFormSubmit)}
           >
 
             {/* Active filters */}
-            <Box >
+            <Box>
               {isDirty && hasActiveFilter && !hasActiveFormFilters && (
                 <Box marginY={1}>
                   {t`All filters have been removed, but have not yet been applied.`}
@@ -290,9 +289,9 @@ export const TableFiltersSidebarItemContent = <TRowData,>({ onClose }: TableFilt
                           </Box>
                         </Box>
                         <IconButton
+                          size={'small'}
                           // eslint-disable-next-line react/jsx-no-bind
                           onClick={() => removeFilter(id)}
-                          size={'small'}
                         >
                           <CloseIcon />
                         </IconButton>
@@ -315,9 +314,9 @@ export const TableFiltersSidebarItemContent = <TRowData,>({ onClose }: TableFilt
                   <Button
                     {...TestIdUtil.createAttributes('TableFiltersSidebarItem-reset')}
                     color={'primary'}
-                    onClick={onResetButtonClick}
                     startIcon={<RestartAltIcon />}
                     variant={'outlined'}
+                    onClick={onResetButtonClick}
                   >
                     {t`Reset`}
                   </Button>
@@ -331,22 +330,22 @@ export const TableFiltersSidebarItemContent = <TRowData,>({ onClose }: TableFilt
                 </Box>
               )}
             </Box>
-
             {/* Render filters */}
-            <Box sx={{
-              overflowY: 'auto',
-              paddingRight: 1,
-            }}
+            <Box
+              sx={{
+                overflowY: 'auto',
+                paddingRight: 1,
+              }}
             >
               {filterDimensions.length > 0 && (
                 <>
                   {filterDimensions.filter(x => x.filterIds.length).map((filterDimension) => {
                     return (
                       <TableFiltersSidebarItemContentFilterDimension
-                        filterDimension={filterDimension}
                         key={filterDimension.id}
-                        onFilterVisibilityChange={onFilterVisibilityChange}
+                        filterDimension={filterDimension}
                         visibleFilterWithinDimension={internalVisibleFilterWithinDimensions[filterDimension.id]}
+                        onFilterVisibilityChange={onFilterVisibilityChange}
                       />
                     );
                   })}
@@ -385,11 +384,11 @@ export const TableFiltersSidebarItem = ({ open, onClose }: TableFiltersSidebarIt
     <SidebarItem
       closeIcon={<TableFiltersSidebarItemIcon />}
       closeIconTooltipText={t`Close filters`}
-      onClose={onClose}
       open={open}
       testIdAttributes={{ name: 'tableFiltersSidebarItem' }}
       title={t`Filters`}
       width={60}
+      onClose={onClose}
     >
       {open && <TableFiltersSidebarItemContent onClose={onClose} />}
     </SidebarItem>

@@ -68,18 +68,18 @@ export const EpiDashboardTreeSettingsForm = ({ onReset }: EpiDashboardTreeSettin
           </FormGroup>
         </Box>
       </form>
-
-      <Box sx={{
-        display: 'flex',
-        justifyContent: 'flex-end',
-      }}
+      <Box
+        sx={{
+          display: 'flex',
+          justifyContent: 'flex-end',
+        }}
       >
         <Box marginX={1}>
           <Button
             color={'primary'}
-            onClick={onResetButtonClick}
             startIcon={<RestartAltIcon />}
             variant={'outlined'}
+            onClick={onResetButtonClick}
           >
             {t`Reset tree settings`}
           </Button>

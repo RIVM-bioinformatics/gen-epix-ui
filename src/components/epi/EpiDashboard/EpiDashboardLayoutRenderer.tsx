@@ -127,11 +127,12 @@ export const ForwardRefEpiDashboardLayoutRenderer: ForwardRefRenderFunction<Forw
 
   if (enabledLayoutZones.length === 0) {
     return (
-      <Box sx={{
-        display: 'flex',
-        justifyContent: 'center',
-        alignContent: 'center',
-      }}
+      <Box
+        sx={{
+          display: 'flex',
+          justifyContent: 'center',
+          alignContent: 'center',
+        }}
       >
         <Alert severity={'info'}>
           <AlertTitle>
@@ -148,10 +149,10 @@ export const ForwardRefEpiDashboardLayoutRenderer: ForwardRefRenderFunction<Forw
 
   return (
     <PanelGroup
+      ref={registerPanel}
       autoSaveId={createOuterPanelId(outerDirection)}
       direction={outerDirection}
       id={createOuterPanelId(outerDirection)}
-      ref={registerPanel}
       storage={panelStorageFactory(`${panelNamePrefix}-outer`)}
       style={{
         width: '100%',
@@ -170,10 +171,10 @@ export const ForwardRefEpiDashboardLayoutRenderer: ForwardRefRenderFunction<Forw
               {widgetPanels.length === 1 && panelMap[widgetPanels[0][1] as keyof typeof panelMap]}
               {widgetPanels.length > 1 && (
                 <PanelGroup
+                  ref={registerPanel}
                   autoSaveId={createInnerPanelId(innerDirection, index)}
                   direction={innerDirection}
                   id={createInnerPanelId(innerDirection, index)}
-                  ref={registerPanel}
                   storage={panelStorageFactory(`${panelNamePrefix}-inner-${index}-${innerDirection}`)}
                 >
                   {widgetPanels.map(([widgetPanelSize, zone], innerIndex) => {

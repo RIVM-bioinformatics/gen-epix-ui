@@ -45,12 +45,12 @@ export const InfoMenu = ({ anchorElement, onClose }: InfoMenuProps): ReactElemen
         horizontal: 'right',
       }}
       id={isInfoMenuOpen ? popoverId : undefined}
-      onClose={onClose}
       open={isInfoMenuOpen}
       transformOrigin={{
         vertical: 'top',
         horizontal: 'right',
       }}
+      onClose={onClose}
     >
       <List
         sx={{

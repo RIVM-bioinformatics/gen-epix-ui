@@ -27,8 +27,8 @@ export const UserOrganizationAdminMenuItem = withPermissions(() => {
 
   return (
     <ListItem
-      alignItems={'center'}
       divider
+      alignItems={'center'}
       sx={{
         justifyContent: 'center',
         paddingTop: 0,
@@ -42,8 +42,8 @@ export const UserOrganizationAdminMenuItem = withPermissions(() => {
             {organizationAdminNameEmailsError && t`Error`}
             {organizationAdminNameEmails?.map(admin => (
               <Link
-                href={`mailto:${admin.email}`}
                 key={admin.id}
+                href={`mailto:${admin.email}`}
                 sx={{
                   display: 'table',
                 }}

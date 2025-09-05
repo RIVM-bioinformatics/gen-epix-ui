@@ -123,7 +123,7 @@
     "zustand": "5.0.8"
   },
   "devDependencies": {
-    "@gen-epix/eslint-config": "0.0.13",
+    "@gen-epix/eslint-config": "0.0.19",
     "@gen-epix/generate-api": "0.0.14",
     "@gen-epix/reconfigure-package": "0.0.5",
     "@gen-epix/typescript-config": "0.0.6",
@@ -133,7 +133,7 @@
     "@types/react-dom": "19.1.7",
     "@types/uuid": "10.0.0",
     "@vitejs/plugin-react-swc": "4.0.1",
-    "eslint": "9.33.0",
+    "eslint": "9.34.0",
     "glob": "11.0.3",
     "jsdom": "26.1.0",
     "typescript": "5.9.2",

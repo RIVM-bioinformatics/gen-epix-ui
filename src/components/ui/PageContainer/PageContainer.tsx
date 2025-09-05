@@ -77,7 +77,6 @@ export const PageContainer = ({
         fullWidth={fullWidth}
         singleAction={singleAction}
       />
-
       <Box
         id={ConfigManager.instance.config.layout.MAIN_CONTENT_ID}
         sx={{
@@ -97,7 +96,6 @@ export const PageContainer = ({
             <Breadcrumbs />
           </Container>
         )}
-
         <Container
           component={'article'}
           maxWidth={fullWidth ? false : 'xl'}
@@ -143,7 +141,6 @@ export const PageContainer = ({
           {!singleAction && children}
         </Container>
       </Box>
-
       {hasFooterArea && (
         <Box
           component={'footer'}

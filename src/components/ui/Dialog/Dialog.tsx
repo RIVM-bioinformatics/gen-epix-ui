@@ -85,23 +85,24 @@ export const Dialog = ({
   return (
     <MuiDialog
       {...TestIdUtil.createAttributes(testId, { title })}
+      open
       disableEscapeKeyDown={disableBackdropClick}
       fullScreen={fullScreen}
       fullWidth={fullWidth}
       maxWidth={maxWidth}
-      onClose={onMuiDialogClose}
-      open
       sx={{
         '& .MuiDialogContent-root, & .MuiCardContent-root:last-child': {
           padding: noPadding ? '0' : undefined,
         },
       }}
+      onClose={onMuiDialogClose}
     >
       {!noTitle && (
-        <Box sx={{
-          display: 'flex',
-          justifyContent: 'space-between',
-        }}
+        <Box
+          sx={{
+            display: 'flex',
+            justifyContent: 'space-between',
+          }}
         >
           <DialogTitle
             {...TestIdUtil.createAttributes(`${testId}-title`)}
@@ -120,13 +121,14 @@ export const Dialog = ({
             {title}
             {permalink && (
               <Box
-                className="genepix-permalink"
+                className={'genepix-permalink'}
                 sx={{
                   display: 'inline-block',
                   marginLeft: 1,
                 }}
               >
                 <CopyToClipboardButton
+                  iconOnly
                   baseIcon={<LinkIcon />}
                   buttonProps={{
                     sx: {
@@ -137,7 +139,6 @@ export const Dialog = ({
                       },
                     },
                   }}
-                  iconOnly
                   onGetClipboardValue={onGetClipboardValue}
                 />
               </Box>
@@ -146,10 +147,10 @@ export const Dialog = ({
           {!noCloseButton && (
             <IconButton
               {...TestIdUtil.createAttributes(`${testId}-closeButton`)}
-              onClick={onClose}
               sx={{
                 color: 'grey.500',
               }}
+              onClick={onClose}
             >
               <CloseIcon />
             </IconButton>
@@ -159,8 +160,8 @@ export const Dialog = ({
       {!!children && (
         <DialogContent
           {...TestIdUtil.createAttributes(`${testId}-content`)}
-          dividers={!!ActionButtons}
           ref={dialogContentRef}
+          dividers={!!ActionButtons}
           sx={{
             paddingTop: fullScreen ? 0 : undefined,
           }}

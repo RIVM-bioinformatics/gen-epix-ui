@@ -134,8 +134,8 @@ const EpiUploadSettings = ({ onBack, onProceed }: EpiUploadSettingsProps) => {
 
   return (
     <ResponseHandler
-      error={completeCaseTypeError}
       inlineSpinner
+      error={completeCaseTypeError}
       loadables={loadables}
     >
       <GenericForm<EpiUploadSettingsFormFields>
@@ -144,21 +144,22 @@ const EpiUploadSettings = ({ onBack, onProceed }: EpiUploadSettingsProps) => {
         formMethods={formMethods}
         onSubmit={handleSubmit(onFormSubmit)}
       />
-      <Box sx={{
-        display: 'flex',
-        gap: 2,
-        justifyContent: 'flex-end',
-      }}
+      <Box
+        sx={{
+          display: 'flex',
+          gap: 2,
+          justifyContent: 'flex-end',
+        }}
       >
         <Button
-          onClick={onBackButtonClick}
           variant={'outlined'}
+          onClick={onBackButtonClick}
         >
           {t('Back')}
         </Button>
         <Button
-          onClick={onProceedButtonClick}
           variant={'contained'}
+          onClick={onProceedButtonClick}
         >
           {t('Proceed')}
         </Button>

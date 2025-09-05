@@ -9,8 +9,8 @@ export const UploadPage = () => {
 
   return (
     <PageContainer
-      contentHeader={t`Upload`}
       showBreadcrumbs
+      contentHeader={t`Upload`}
       testIdAttributes={TestIdUtil.createAttributes('UploadPage')}
       title={t`Upload`}
     >

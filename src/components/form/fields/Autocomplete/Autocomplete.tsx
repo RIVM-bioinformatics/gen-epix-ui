@@ -114,21 +114,21 @@ export const Autocomplete = <TFieldValues extends FieldValues, TName extends Pat
     return (
       // eslint-disable-next-line jsx-a11y/click-events-have-key-events, jsx-a11y/no-noninteractive-element-interactions
       <li
+        key={option}
         aria-disabled={props['aria-disabled']}
         aria-selected={props['aria-selected']}
         className={props.className}
         data-option-index={(props as { 'data-option-index': string })['data-option-index']}
         id={props.id}
-        key={option}
-        onClick={props.onClick}
-        onMouseMove={props.onMouseMove}
-        onTouchStart={props.onTouchStart}
         role={props.role}
         style={{
           padding: 0,
           margin: 0,
         }}
         tabIndex={props.tabIndex}
+        onClick={props.onClick}
+        onMouseMove={props.onMouseMove}
+        onTouchStart={props.onTouchStart}
       >
         <Checkbox
           checked={state.selected}
@@ -160,7 +160,6 @@ export const Autocomplete = <TFieldValues extends FieldValues, TName extends Pat
         helperText={helperText}
         inputRef={inputRef}
         label={label}
-        onChange={multiple ? onInputValueChange : undefined}
         slotProps={{
           formHelperText: { className: classnames({ 'Mui-warning': hasWarning }) },
           inputLabel: {
@@ -174,6 +173,7 @@ export const Autocomplete = <TFieldValues extends FieldValues, TName extends Pat
             }),
           },
         }}
+        onChange={multiple ? onInputValueChange : undefined}
       />
     );
   }, [disabled, errorMessage, hasError, hasWarning, label, multiple, onInputValueChange, required, warningMessage]);
@@ -181,7 +181,7 @@ export const Autocomplete = <TFieldValues extends FieldValues, TName extends Pat
   const renderTags = useCallback((values: TFieldValues[TName][], getTagProps: AutocompleteRenderGetTagProps) => {
     return (
       <Stack
-        direction="row"
+        direction={'row'}
         flexWrap={'wrap'}
         spacing={1}
       >
@@ -196,7 +196,7 @@ export const Autocomplete = <TFieldValues extends FieldValues, TName extends Pat
               {...props}
               key={value}
               label={getOptionLabel(value)}
-              size="small"
+              size={'small'}
             />
           );
         })}
@@ -241,13 +241,13 @@ export const Autocomplete = <TFieldValues extends FieldValues, TName extends Pat
         isOptionEqualToValue={getIsOptionEqualToValue}
         multiple={multiple}
         noOptionsText={t`No results`}
-        onBlur={onBlur}
-        onChange={onMuiAutocompleteChange(onChange)}
         options={optionValues as TFieldValues[TName]}
         renderInput={renderInput}
         renderOption={multiple ? renderOption : undefined}
         renderTags={multiple ? renderTags : undefined}
         value={value}
+        onBlur={onBlur}
+        onChange={onMuiAutocompleteChange(onChange)}
       />
     );
   }, [required, multiple, disabled, loading, filterOptions, getIsOptionDisabled, getOptionLabel, groupValues, groupBy, inputValue, getIsOptionEqualToValue, t, onMuiAutocompleteChange, optionValues, renderInput, renderOption, renderTags]);

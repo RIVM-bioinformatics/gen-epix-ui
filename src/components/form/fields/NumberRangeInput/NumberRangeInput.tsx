@@ -160,16 +160,18 @@ export const NumberRangeInput = <TFieldValues extends FieldValues, TName extends
         }}
       >
         { !loading && (
-          <Box sx={{
-            display: 'grid',
-            gridTemplateColumns: 'max-content auto max-content',
-            position: 'relative',
-          }}
-          >
-            <Box sx={{
-              width: theme.spacing(shouldShowSlider ? 6 : 16),
-              marginTop: 4,
+          <Box
+            sx={{
+              display: 'grid',
+              gridTemplateColumns: 'max-content auto max-content',
+              position: 'relative',
             }}
+          >
+            <Box
+              sx={{
+                width: theme.spacing(shouldShowSlider ? 6 : 16),
+                marginTop: 4,
+              }}
             >
               <Input
                 fullWidth
@@ -177,19 +179,18 @@ export const NumberRangeInput = <TFieldValues extends FieldValues, TName extends
                   ...TestIdUtil.createAttributes('RangeSlider-from-input'),
                   'aria-labelledby': id,
                 }}
+                placeholder={t`From`}
+                size={'small'}
+                value={leftValue ?? ''}
                 // eslint-disable-next-line react/jsx-no-bind
                 onBlur={onLeftValueBlur}
                 // eslint-disable-next-line react/jsx-no-bind
                 onChange={onLeftValueChange}
-                placeholder={t`From`}
-                size={'small'}
-                value={leftValue ?? ''}
               />
             </Box>
-
             <FormControl
-              error={hasError}
               fullWidth
+              error={hasError}
               sx={{
                 position: 'initial',
               }}
@@ -207,9 +208,6 @@ export const NumberRangeInput = <TFieldValues extends FieldValues, TName extends
                 {label}
                 <IconButton
                   {...TestIdUtil.createAttributes('RangeSlider-reset')}
-                  aria-label={t`Clear`}
-                  // eslint-disable-next-line react/jsx-no-bind
-                  onClick={onResetButtonClick}
                   sx={{
                     position: 'absolute',
                     top: '-10px',
@@ -218,6 +216,9 @@ export const NumberRangeInput = <TFieldValues extends FieldValues, TName extends
                     },
                   }}
                   tabIndex={-1}
+                  aria-label={t`Clear`}
+                  // eslint-disable-next-line react/jsx-no-bind
+                  onClick={onResetButtonClick}
                 >
                   <ClearIcon />
                 </IconButton>
@@ -231,8 +232,6 @@ export const NumberRangeInput = <TFieldValues extends FieldValues, TName extends
                     color={'primary'}
                     max={max}
                     min={min}
-                    onBlur={onBlur}
-                    onChange={onMuiRangeSliderChange(onChange)}
                     slotProps={{
                       input: {
                         'aria-label': t`Value`,
@@ -240,14 +239,17 @@ export const NumberRangeInput = <TFieldValues extends FieldValues, TName extends
                     }}
                     value={value as [number, number]}
                     valueLabelDisplay={'off'}
+                    onBlur={onBlur}
+                    onChange={onMuiRangeSliderChange(onChange)}
                   />
                 )}
               </Box>
             </FormControl>
-            <Box sx={{
-              width: theme.spacing(shouldShowSlider ? 6 : 16),
-              marginTop: 4,
-            }}
+            <Box
+              sx={{
+                width: theme.spacing(shouldShowSlider ? 6 : 16),
+                marginTop: 4,
+              }}
             >
               <Input
                 fullWidth
@@ -255,13 +257,13 @@ export const NumberRangeInput = <TFieldValues extends FieldValues, TName extends
                   ...TestIdUtil.createAttributes('RangeSlider-to-input'),
                   'aria-labelledby': id,
                 }}
+                placeholder={t`To`}
+                size={'small'}
+                value={rightValue ?? ''}
                 // eslint-disable-next-line react/jsx-no-bind
                 onBlur={onRightValueBlur}
                 // eslint-disable-next-line react/jsx-no-bind
                 onChange={onRightValueChange}
-                placeholder={t`To`}
-                size={'small'}
-                value={rightValue ?? ''}
               />
             </Box>
           </Box>
@@ -269,8 +271,8 @@ export const NumberRangeInput = <TFieldValues extends FieldValues, TName extends
         { loading && <FormFieldLoadingIndicator inline />}
         <FormHelperText sx={{ ml: 0 }}>
           <FormFieldHelperText
-            errorMessage={errorMessage}
             noIndent
+            errorMessage={errorMessage}
             warningMessage={warningMessage}
           />
         </FormHelperText>

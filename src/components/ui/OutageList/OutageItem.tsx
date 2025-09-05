@@ -29,12 +29,16 @@ export const OutageItem = ({ outage, severity, title }: OutageItemProps) => {
       </Box>
       <Box>
         <Typography component={'p'}>
-          {t`Expected start: `} {outage.active_from ? new Date(outage.active_from).toLocaleString() : t`Unknown`}
+          {t`Expected start: `}
+          {' '}
+          {outage.active_from ? new Date(outage.active_from).toLocaleString() : t`Unknown`}
         </Typography>
       </Box>
       <Box>
         <Typography component={'p'}>
-          {t`Expected end: `} {outage.active_to ? new Date(outage.active_from).toLocaleString() : t`Unknown`}
+          {t`Expected end: `}
+          {' '}
+          {outage.active_to ? new Date(outage.active_from).toLocaleString() : t`Unknown`}
         </Typography>
       </Box>
     </Alert>

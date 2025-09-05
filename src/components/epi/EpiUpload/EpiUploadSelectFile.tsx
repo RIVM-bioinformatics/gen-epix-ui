@@ -67,19 +67,19 @@ export const EpiUploadSelectFile = ({ onFileChange }: EpiUploadSelectFileProps) 
   }, [rawData, onFileChange]);
 
   return (
-    <Box sx={{
-      width: '100%',
-      height: '100%',
-      position: 'relative',
-    }}
+    <Box
+      sx={{
+        width: '100%',
+        height: '100%',
+        position: 'relative',
+      }}
     >
       {!rawData && (
         <FileSelector
-          accept=".csv,.xlsx"
+          accept={'.csv,.xlsx'}
           onFileListChange={onFileSelectorFileListChange}
         />
       )}
-
       {rawData && (
         <Box marginY={2}>
           <Typography
@@ -91,21 +91,22 @@ export const EpiUploadSelectFile = ({ onFileChange }: EpiUploadSelectFileProps) 
           >
             {t('File loaded with {{rowCount}} rows and {{colCount}} columns.', { rowCount: rawData.length - 1, colCount: rawData[0]?.length || 0 })}
           </Typography>
-          <Box sx={{
-            display: 'flex',
-            gap: 2,
-            justifyContent: 'flex-end',
-          }}
+          <Box
+            sx={{
+              display: 'flex',
+              gap: 2,
+              justifyContent: 'flex-end',
+            }}
           >
             <Button
-              onClick={onResetButtonClick}
               variant={'outlined'}
+              onClick={onResetButtonClick}
             >
               {t('Start over')}
             </Button>
             <Button
-              onClick={onProceedButtonClick}
               variant={'contained'}
+              onClick={onProceedButtonClick}
             >
               {t('Proceed')}
             </Button>

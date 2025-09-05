@@ -48,8 +48,8 @@ const Breadcrumb = ({ item, isLast }: BreadcrumbProps): ReactElement => {
       <Link
         color={'inherit'}
         href={item.pathname}
-        onClick={onLinkClick}
         underline={'hover'}
+        onClick={onLinkClick}
       >
         {title}
       </Link>
@@ -84,9 +84,9 @@ export const Breadcrumbs = () => {
     >
       {matches.map((match, index) => (
         <Breadcrumb
+          key={match.id}
           isLast={index === matches.length - 1}
           item={match}
-          key={match.id}
         />
       ))}
     </MuiBreadcrumbs>

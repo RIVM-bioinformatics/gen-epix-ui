@@ -26,15 +26,15 @@ export const nestedMenuItemsFromObject = ({
     if (!disabled && menuItemsData && menuItemsData.length > 0) {
       return (
         <Tooltip
-          arrow
           key={label}
+          arrow
           placement={'right'}
           title={undefined}
         >
           <NestedMenuItem
+            key={label}
             active={active}
             disabled={disabled}
-            key={label}
             label={label}
             leftIcon={leftIcon}
             parentMenuOpen={isOpen}
@@ -54,10 +54,17 @@ export const nestedMenuItemsFromObject = ({
 
     const iconMenuItem = (
       <IconMenuItem
+        key={label}
         disabled={disabled}
         divider={divider}
-        key={label}
         label={label}
+        rightIcon={rightIcon}
+        sx={{
+          ...(sx || {}),
+          '& p': {
+            fontWeight: active ? 700 : undefined,
+          },
+        }}
         leftIcon={leftIcon}
         // eslint-disable-next-line react/jsx-no-bind
         onClick={(event: MouseEvent<HTMLElement>) => {
@@ -68,13 +75,6 @@ export const nestedMenuItemsFromObject = ({
             callback(event, item);
           }
         }}
-        rightIcon={rightIcon}
-        sx={{
-          ...(sx || {}),
-          '& p': {
-            fontWeight: active ? 700 : undefined,
-          },
-        }}
       />
     );
     if (disabled) {
@@ -84,8 +84,8 @@ export const nestedMenuItemsFromObject = ({
     // No children elements, return MenuItem
     return (
       <Tooltip
-        arrow
         key={label}
+        arrow
         placement={'right'}
         title={tooltip ?? label}
       >

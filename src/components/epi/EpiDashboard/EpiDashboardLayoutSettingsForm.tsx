@@ -129,27 +129,27 @@ export const EpiDashboardLayoutSettingsForm = ({ onReset }: EpiDashboardLayoutSe
           <Box marginY={1}>
             <FormGroup>
               <ToggleButtonGroup
+                required
                 disabled={layoutConfig.layouts.length < 1}
                 name={'arrangement'}
                 options={arrangementOptions}
-                required
               />
             </FormGroup>
           </Box>
         )}
       </form>
-
-      <Box sx={{
-        display: 'flex',
-        justifyContent: 'flex-end',
-      }}
+      <Box
+        sx={{
+          display: 'flex',
+          justifyContent: 'flex-end',
+        }}
       >
         <Box marginX={1}>
           <Button
             color={'primary'}
-            onClick={onResetButtonClick}
             startIcon={<RestartAltIcon />}
             variant={'outlined'}
+            onClick={onResetButtonClick}
           >
             {t`Reset dashboard layout`}
           </Button>

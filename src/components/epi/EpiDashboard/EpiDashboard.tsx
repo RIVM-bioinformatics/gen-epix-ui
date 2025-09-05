@@ -218,51 +218,50 @@ export const EpiDashboard = withEpiStore(({ caseSet }: EpiDashboardProps) => {
         {/* Sidebar */}
         <SidebarMenu>
           <SidebarMenuItem
+            first
             badgeColor={'secondary'}
             badgeContent={activeFiltersCount}
-            first
             icon={<TableFiltersSidebarItemIcon />}
-            onClick={onEpiDashboardOpenFilterSidebarButtonClick}
             testIdAttributes={{ name: 'filters' }}
             title={t`Open filters`}
+            onClick={onEpiDashboardOpenFilterSidebarButtonClick}
           />
           <SidebarMenuItem
             badgeColor={numHiddenLayoutZones === numLayoutZones ? 'error' : 'secondary'}
             badgeContent={numHiddenLayoutZones === numLayoutZones ? '!' : numHiddenLayoutZones}
             icon={<EpiDashboardSettingsSidebarItemIcon />}
-            onClick={onEpiDashboardLayoutSelectorSidebarButtonClick}
             testIdAttributes={{ name: 'dashboard' }}
             title={t('Change dashboard layout (hidden zones: {{numHiddenLayoutZones}})', { numHiddenLayoutZones })}
+            onClick={onEpiDashboardLayoutSelectorSidebarButtonClick}
           />
           <SidebarMenuItem
             icon={<InfoIcon />}
-            onClick={onEpiDashboardOpenInfoSidebarButtonClick}
             testIdAttributes={{ name: 'case' }}
             title={t`Show case type information`}
+            onClick={onEpiDashboardOpenInfoSidebarButtonClick}
           />
           {caseSet && (
             <SidebarMenuItem
               icon={<CollectionIcon />}
-              onClick={onEpiDashboardOpenCaseSetDescriptionButtonClick}
               testIdAttributes={{ name: 'event' }}
               title={t`Show event information`}
+              onClick={onEpiDashboardOpenCaseSetDescriptionButtonClick}
             />
           )}
           <SidebarMenuItem
             icon={<EpiDashboardDownloadSidebarItemIcon />}
-            onClick={onEpiDashboardOpenDownloadButtonClick}
             testIdAttributes={{ name: 'download' }}
             title={t`Download`}
+            onClick={onEpiDashboardOpenDownloadButtonClick}
           />
-
           <TableFiltersSidebarItem
-            onClose={onEpiDashboardFilterSidebarClose}
             open={isFilterSidebarOpen}
+            onClose={onEpiDashboardFilterSidebarClose}
           />
           <EpiDashboardSettingsSidebarItem
+            open={isSettingsSidebarOpen}
             onClose={onEpiDashboardSettingsSidebarClose}
             onReset={onEpiDashboardLayoutSelectorSidebarReset}
-            open={isSettingsSidebarOpen}
           />
           <EpiCaseTypeInfoDialog
             ref={epiCaseTypeInfoDialogRef}
@@ -271,34 +270,35 @@ export const EpiDashboard = withEpiStore(({ caseSet }: EpiDashboardProps) => {
             <EpiCaseSetInfoDialog ref={epiCaseSetInfoDialogRef} />
           )}
           <EpiDashboardDownloadSidebarItem
-            onClose={onEpiDashboardDownloadSidebarClose}
             open={isDownloadSidebarOpen}
+            onClose={onEpiDashboardDownloadSidebarClose}
           />
         </SidebarMenu>
-
         {/* Content */}
-        <Box sx={{
-          width: '100%',
-          height: '100%',
-          display: 'grid',
-          gridTemplateRows: 'max-content auto',
-          paddingLeft: theme.spacing(ConfigManager.instance.config.layout.SIDEBAR_MENU_WIDTH + 1),
-        }}
+        <Box
+          sx={{
+            width: '100%',
+            height: '100%',
+            display: 'grid',
+            gridTemplateRows: 'max-content auto',
+            paddingLeft: theme.spacing(ConfigManager.instance.config.layout.SIDEBAR_MENU_WIDTH + 1),
+          }}
         >
           <Box>
             <EpiStratification />
           </Box>
-
           <Box>
             <EpiDashboardLayoutRenderer
+              ref={epiDashboardLayoutRendererRef}
               disabled={isFilterSidebarOpen || isSettingsSidebarOpen}
               epiCurveWidget={(
-                <ErrorBoundary fallback={(
-                  <EpiWidgetUnavailable
-                    epiZone={EPI_ZONE.EPI_CURVE}
-                    widgetName={t`epi curve`}
-                  />
-                )}
+                <ErrorBoundary
+                  fallback={(
+                    <EpiWidgetUnavailable
+                      epiZone={EPI_ZONE.EPI_CURVE}
+                      widgetName={t`epi curve`}
+                    />
+                  )}
                 >
                   <EpiCurve />
                 </ErrorBoundary>
@@ -311,23 +311,23 @@ export const EpiDashboard = withEpiStore(({ caseSet }: EpiDashboardProps) => {
                 />
               )}
               mapWidget={(
-                <ErrorBoundary fallback={(
-                  <EpiWidgetUnavailable
-                    epiZone={EPI_ZONE.MAP}
-                    widgetName={t`map`}
-                  />
-                )}
+                <ErrorBoundary
+                  fallback={(
+                    <EpiWidgetUnavailable
+                      epiZone={EPI_ZONE.MAP}
+                      widgetName={t`map`}
+                    />
+                  )}
                 >
                   <EpiMap />
                 </ErrorBoundary>
               )}
               phylogeneticTreeWidget={(
                 <EpiTree
-                  linkedScrollSubject={linkedScrollSubject}
                   ref={epiTreeRef}
+                  linkedScrollSubject={linkedScrollSubject}
                 />
               )}
-              ref={epiDashboardLayoutRendererRef}
             />
           </Box>
         </Box>

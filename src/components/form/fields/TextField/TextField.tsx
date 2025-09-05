@@ -99,8 +99,6 @@ export const TextField = <TFieldValues extends FieldValues, TName extends Path<T
         inputRef={inputRef}
         label={label}
         multiline={multiline}
-        onBlur={onBlur}
-        onChange={onMuiTextFieldChange(onChange)}
         placeholder={placeholder}
         rows={rows}
         slotProps={{
@@ -113,14 +111,14 @@ export const TextField = <TFieldValues extends FieldValues, TName extends Path<T
               <InputAdornment position={'end'}>
                 <IconButton
                   {...TestIdUtil.createAttributes('TextField-reset')}
-                  // eslint-disable-next-line react/jsx-no-bind
-                  onClick={onResetButtonClick}
                   sx={{
                     '& svg': {
                       fontSize: '16px',
                     },
                   }}
                   tabIndex={-1}
+                  // eslint-disable-next-line react/jsx-no-bind
+                  onClick={onResetButtonClick}
                 >
                   <ClearIcon />
                 </IconButton>
@@ -134,6 +132,8 @@ export const TextField = <TFieldValues extends FieldValues, TName extends Path<T
         }}
         type={type}
         value={value ?? '' as string}
+        onBlur={onBlur}
+        onChange={onMuiTextFieldChange(onChange)}
       />
     );
   }, [hasWarning, required, disabled, loading, hasError, errorMessage, warningMessage, label, multiline, onMuiTextFieldChange, placeholder, rows, type]);

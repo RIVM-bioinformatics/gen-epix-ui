@@ -519,16 +519,16 @@ export const EpiMap = () => {
         )}
         {shouldShowMap && (
           <EChartsReact
-            echarts={echarts}
-            notMerge
-            onEvents={events}
-            option={getOptions()}
             ref={chartRef}
+            notMerge
+            echarts={echarts}
+            option={getOptions()}
             style={{
               width: '100%',
               height: '100%',
               position: 'absolute',
             }}
+            onEvents={events}
           />
         )}
         <EpiContextMenu

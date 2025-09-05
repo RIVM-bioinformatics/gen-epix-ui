@@ -22,12 +22,13 @@ export const PanelResizeHandleHorizontal = (props: PanelResizeHandleProps) => {
         },
       }}
     >
-      <Box sx={{
-        background: theme.palette.divider,
-        width: '100%',
-        margin: '5px 0',
-        height: '1px',
-      }}
+      <Box
+        sx={{
+          background: theme.palette.divider,
+          width: '100%',
+          margin: '5px 0',
+          height: '1px',
+        }}
       />
     </StyledPanelResizeHandle>
   );
@@ -47,12 +48,13 @@ export const PanelResizeHandleVertical = (props: PanelResizeHandleProps) => {
         },
       }}
     >
-      <Box sx={{
-        background: theme.palette.divider,
-        height: '100%',
-        margin: '0 5px',
-        width: '1px',
-      }}
+      <Box
+        sx={{
+          background: theme.palette.divider,
+          height: '100%',
+          margin: '0 5px',
+          width: '1px',
+        }}
       />
     </StyledPanelResizeHandle>
   );

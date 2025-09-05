@@ -125,7 +125,7 @@ export class TableUtil {
 
     const searchParams = new URL(document.location.href).searchParams;
     filters.forEach((filter) => {
-      let value = searchParams.get(filter.id) as unknown;
+      const value = searchParams.get(filter.id) as unknown;
       if (!value) {
         return;
       }

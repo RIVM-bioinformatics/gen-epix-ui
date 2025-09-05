@@ -133,9 +133,9 @@ export const EpiRemoveCasesFromEventDialog = withDialog<EpiRemoveCasesFromEventD
 
   return (
     <ResponseHandler
+      shouldHideActionButtons
       error={caseSetMembersError}
       isLoading={isCaseSetMembersLoading}
-      shouldHideActionButtons
     >
       <Box>
         {t('Are you sure you want to remove {{numCases}} selected cases from {{caseTypeName}}?', { numCases: openProps.rows.length, caseTypeName: completeCaseType.name })}

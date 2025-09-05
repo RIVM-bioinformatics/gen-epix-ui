@@ -17,14 +17,15 @@ export const EpiTreeDescription = ({
   const [t] = useTranslation();
 
   return (
-    <Box sx={{
-      '& dl': {
-        margin: 0,
-      },
-      '& dd': {
-        marginLeft: theme.spacing(2),
-      },
-    }}
+    <Box
+      sx={{
+        '& dl': {
+          margin: 0,
+        },
+        '& dd': {
+          marginLeft: theme.spacing(2),
+        },
+      }}
     >
       <Box marginY={1}>
         <strong style={{ fontSize: '1rem' }}>
@@ -45,7 +46,6 @@ export const EpiTreeDescription = ({
           </dd>
         </dl>
       </Box>
-
       <Box marginY={1}>
         <strong style={{ fontSize: '1rem' }}>
           {t`Tree algorithm`}

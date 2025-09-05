@@ -41,12 +41,12 @@ export const SidebarMenuItem = ({
         {...TestIdUtil.createAttributes('SidebarMenuItem', testIdAttributes)}
         aria-label={title}
         color={'primary'}
-        onClick={onClick}
         sx={{
           padding: 0,
           marginTop: theme.spacing(first ? 0 : 2),
           marginLeft: theme.spacing(-1),
         }}
+        onClick={onClick}
       >
         <Badge
           badgeContent={badgeContent ?? 0}
