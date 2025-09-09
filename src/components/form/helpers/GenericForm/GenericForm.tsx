@@ -22,6 +22,7 @@ import { Select } from '../../fields/Select';
 import { TextField } from '../../fields/TextField';
 import { DatePicker } from '../../fields/DatePicker';
 import { UploadButton } from '../../fields/UploadButton/UploadButton';
+import { RadioGroup } from '../../fields/RadioGroup';
 
 export type GenericFormProps<TFormFields> = {
   readonly formFieldDefinitions: FormFieldDefinition<TFormFields>[];
@@ -76,6 +77,12 @@ export const GenericForm = <TFormFields,>({
       case FORM_FIELD_DEFINITION_TYPE.FILE:
         return (
           <UploadButton
+            {...formFieldDefinition}
+          />
+        );
+      case FORM_FIELD_DEFINITION_TYPE.RADIO_GROUP:
+        return (
+          <RadioGroup
             {...formFieldDefinition}
           />
         );

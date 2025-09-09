@@ -12,10 +12,22 @@ export type EpiUploadSelectFileResult = {
   create_in_data_collection_id: string;
   file_list: FileList;
   sheet: string;
+  import_action: EPI_UPLOAD_ACTION;
 };
 
 export type EpiUploadMappedColumn = {
   originalIndex: number;
   originalLabel: string;
   caseTypeCol: CaseTypeCol;
+  isCaseIdColumn?: boolean;
+  isCaseDateColumn?: boolean;
+};
+
+export enum EPI_UPLOAD_ACTION {
+  CREATE = 'CREATE',
+  UPDATE = 'UPDATE',
+}
+
+export type EpiUploadMappedColumnsFormFields = {
+  [key: string]: string | null;
 };

@@ -49,13 +49,21 @@ export const EpiUploadDataPreview = ({
   }), []);
 
   const tableColumns = useMemo<TableColumn<TableRow>[]>(() => {
-    return mappedColumns.filter(mappedColumn => mappedColumn.caseTypeCol).map((mappedColumn) => {
+    return mappedColumns.filter(mappedColumn => mappedColumn.caseTypeCol || mappedColumn.isCaseDateColumn || mappedColumn.isCaseIdColumn).map((mappedColumn) => {
+      let headerName = t('Column {{number}}', { number: mappedColumn.originalIndex + 1 });
+      if (mappedColumn.caseTypeCol) {
+        headerName = mappedColumn.caseTypeCol.code;
+      } else if (mappedColumn.isCaseIdColumn) {
+        headerName = t('case_id');
+      } else if (mappedColumn.isCaseDateColumn) {
+        headerName = t('case_date');
+      }
       return {
         type: 'text',
         isInitiallyVisible: true,
         hideInFilter: true,
         id: `col-${mappedColumn.originalIndex}`,
-        headerName: (mappedColumn.caseTypeCol ? mappedColumn.caseTypeCol.code : mappedColumn.originalLabel) || `Column ${mappedColumn.originalIndex + 1}`,
+        headerName,
         valueGetter: (params) => params.row[mappedColumn.originalIndex],
         widthPx: 250,
       } satisfies TableColumn<TableRow>;

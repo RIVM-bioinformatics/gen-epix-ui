@@ -8,7 +8,6 @@ import {
 import { useTranslation } from 'react-i18next';
 import { yupResolver } from '@hookform/resolvers/yup';
 import type { Resolver } from 'react-hook-form';
-import { parse } from 'csv/browser/esm/sync';
 import {
   useForm,
   useWatch,
@@ -19,10 +18,12 @@ import {
   string,
 } from 'yup';
 import {
+  Alert,
+  AlertTitle,
   Box,
   Button,
+  Typography,
 } from '@mui/material';
-import readXlsxFile, { readSheetNames } from 'read-excel-file';
 
 import { CaseApi } from '../../../api';
 import {
@@ -44,10 +45,14 @@ import {
   useDataCollectionsMapQuery,
 } from '../../../dataHooks/useDataCollectionsQuery';
 import { useCaseTypeColsQuery } from '../../../dataHooks/useCaseTypeColsQuery';
-import { EpiCaseTypeUtil } from '../../../utils/EpiCaseTypeUtil';
-import type { EpiUploadSelectFileResult } from '../../../models/epiUpload';
+import {
+  EPI_UPLOAD_ACTION,
+  type EpiUploadSelectFileResult,
+} from '../../../models/epiUpload';
+import { EpiUploadUtil } from '../../../utils/EpiUploadUtil';
 
 type FormFields = {
+  import_action: EPI_UPLOAD_ACTION;
   case_type_id: string;
   create_in_data_collection_id: string;
   file_list: FileList;
@@ -69,12 +74,14 @@ const EpiUploadSelectFile = ({ onProceed, defaultValues }: EpiUploadSelectFilePr
   const [fileParsingError, setFileParsingError] = useState<string | null>(null);
   const formId = useId();
   const sheetId = useId();
+  const [rawData, setRawData] = useState<string[][] | null>(null);
 
   const schema = useMemo(() => object<FormFields>().shape({
     case_type_id: string().uuid4().required(),
     file_list: mixed().required(t`File is required`),
     create_in_data_collection_id: string().uuid4().required(),
     sheet: string().required(t`Sheet is required`),
+    import_action: mixed<EPI_UPLOAD_ACTION>().oneOf(Object.values(EPI_UPLOAD_ACTION)).required(),
   }), [t]);
 
   const formMethods = useForm<FormFields>({
@@ -84,6 +91,7 @@ const EpiUploadSelectFile = ({ onProceed, defaultValues }: EpiUploadSelectFilePr
       create_in_data_collection_id: null,
       file_list: null,
       sheet: null,
+      import_action: EPI_UPLOAD_ACTION.UPDATE,
     },
     values: {
       ...defaultValues,
@@ -93,8 +101,6 @@ const EpiUploadSelectFile = ({ onProceed, defaultValues }: EpiUploadSelectFilePr
   const { control } = formMethods;
   const { case_type_id: userSelectedCaseTypeId, file_list: userSelectedFile, sheet: userSelectedSheet } = useWatch({ control });
   const [ sheetOptions, setSheetOptions] = useState<AutoCompleteOption[]>([]);
-  const [rawData, setRawData] = useState<string[][] | null>(null);
-
 
   const { isLoading: isCompleteCaseTypeLoading, error: completeCaseTypeError, data: completeCaseType } = useItemQuery({
     baseQueryKey: QUERY_KEY.COMPLETE_CASE_TYPES,
@@ -117,21 +123,39 @@ const EpiUploadSelectFile = ({ onProceed, defaultValues }: EpiUploadSelectFilePr
     });
   }, [completeCaseType, dataCollectionOptionsQuery.options]);
 
+  const createOrUpdateOptions = useMemo<AutoCompleteOption[]>(() => ([
+    { label: t('Create new cases'), value: EPI_UPLOAD_ACTION.CREATE },
+    { label: t('Update existing cases'), value: EPI_UPLOAD_ACTION.UPDATE },
+  ]), [t]);
+
   const formFieldDefinitions = useMemo<FormFieldDefinition<FormFields>[]>(() => {
-    return [
+    const fields: FormFieldDefinition<FormFields>[] = [
+        {
+          definition: FORM_FIELD_DEFINITION_TYPE.RADIO_GROUP,
+          name: 'import_action',
+          label: t`Import action`,
+          options: createOrUpdateOptions,
+          row: true,
+        } as const satisfies FormFieldDefinition<FormFields>,
         {
           definition: FORM_FIELD_DEFINITION_TYPE.FILE,
           name: 'file_list',
           label: t`File`,
-          accept: '.csv,.xlsx',
+          accept: '.csv,.tsv,.txt,.xlsx',
         } as const satisfies FormFieldDefinition<FormFields>,
-        {
-          definition: FORM_FIELD_DEFINITION_TYPE.AUTOCOMPLETE,
-          name: 'sheet',
-          label: t`Sheet`,
-          options: sheetOptions,
-          disabled: !userSelectedFile || !sheetOptions.length || !userSelectedFile?.[0]?.name.toLowerCase().endsWith('.xlsx'),
-        } as const satisfies FormFieldDefinition<FormFields>,
+    ];
+
+    if (userSelectedFile?.[0]?.name.toLowerCase().endsWith('.xlsx')) {
+      fields.push({
+        definition: FORM_FIELD_DEFINITION_TYPE.AUTOCOMPLETE,
+        name: 'sheet',
+        label: t`Sheet`,
+        options: sheetOptions,
+        disabled: !userSelectedFile || !sheetOptions.length || !userSelectedFile?.[0]?.name.toLowerCase().endsWith('.xlsx'),
+      } as const satisfies FormFieldDefinition<FormFields>);
+    }
+
+    fields.push(...[
         {
           definition: FORM_FIELD_DEFINITION_TYPE.AUTOCOMPLETE,
           name: 'case_type_id',
@@ -148,8 +172,10 @@ const EpiUploadSelectFile = ({ onProceed, defaultValues }: EpiUploadSelectFilePr
           loading: dataCollectionOptionsQuery.isLoading || isCompleteCaseTypeLoading,
           disabled: !userSelectedFile || !userSelectedCaseTypeId,
         } as const satisfies FormFieldDefinition<FormFields>,
-    ] as const;
-  }, [t, sheetOptions, userSelectedFile, caseTypeOptionsQuery.options, caseTypeOptionsQuery.isLoading, createInDataCollectionOptions, dataCollectionOptionsQuery.isLoading, isCompleteCaseTypeLoading, userSelectedCaseTypeId]);
+    ] as const);
+
+    return fields;
+  }, [t, createOrUpdateOptions, sheetOptions, userSelectedFile, caseTypeOptionsQuery.options, caseTypeOptionsQuery.isLoading, createInDataCollectionOptions, dataCollectionOptionsQuery.isLoading, isCompleteCaseTypeLoading, userSelectedCaseTypeId]);
 
   useEffect(() => {
     if (fileParsingError) {
@@ -173,19 +199,17 @@ const EpiUploadSelectFile = ({ onProceed, defaultValues }: EpiUploadSelectFilePr
       setFileParsingError(null);
 
       try {
-        const file = userSelectedFile[0];
-        const fileName = file.name.toLowerCase();
-
-        if (fileName.toLowerCase().endsWith('.xlsx')) {
-          const sheetNames = await readSheetNames(file);
-          setSheetOptions(() => sheetNames.map(name => ({ label: name, value: name })));
-          if (sheetNames.length === 1) {
-            setValue('sheet', sheetNames[0]);
-          }
-          return;
+        const options = await EpiUploadUtil.getSheetNameOptions(userSelectedFile);
+        setSheetOptions(options);
+        if (options.length === 1) {
+          setValue('sheet', options[0].value, {
+            shouldTouch: true,
+            shouldDirty: true,
+            shouldValidate: true,
+          });
+        } else {
+          setValue('sheet', null);
         }
-        setSheetOptions([{ label: 'CSV', value: sheetId }]);
-        setValue('sheet', sheetId);
       } catch (_error) {
         setValue('sheet', null);
         setValue('file_list', null);
@@ -193,7 +217,7 @@ const EpiUploadSelectFile = ({ onProceed, defaultValues }: EpiUploadSelectFilePr
       }
     };
     void perform();
-  }, [setValue, sheetId, t, userSelectedFile]);
+  }, [setValue, t, userSelectedFile]);
 
   useEffect(() => {
     const perform = async (): Promise<void> => {
@@ -201,35 +225,9 @@ const EpiUploadSelectFile = ({ onProceed, defaultValues }: EpiUploadSelectFilePr
         return;
       }
       setFileParsingError(null);
-      const file = userSelectedFile[0];
-      const fileName = file.name.toLowerCase();
-
       try {
-        let parsedData: string[][];
-
-        if (fileName.endsWith('.csv')) {
-        // Parse CSV file
-          const text = await file.text();
-          parsedData = parse(text, {
-            columns: false, // Keep as array of arrays
-            skip_empty_lines: true,
-            trim: true,
-          });
-        } else if (fileName.endsWith('.xlsx')) {
-          if (userSelectedSheet === sheetId) {
-            // allow a render cycle to complete
-            return;
-          }
-          // Parse Excel file
-          const excelData = await readXlsxFile(file, {
-            sheet: userSelectedSheet || undefined,
-          });
-          // Convert CellValue[][] to string[][]
-          parsedData = excelData.map(row => row.map(cell => cell?.toString() || ''));
-        } else {
-          throw new Error('Unsupported file format. Please select a CSV or Excel file.');
-        }
-
+        const parsedData = await EpiUploadUtil.readRawData(userSelectedFile, userSelectedSheet);
+        console.log({ parsedData });
         // Call the callback with parsed data
         setRawData(parsedData);
       } catch (_error) {
@@ -245,7 +243,7 @@ const EpiUploadSelectFile = ({ onProceed, defaultValues }: EpiUploadSelectFilePr
     if (!rawData || caseTypeColsQuery.isLoading || !caseTypeColsQuery.data?.length) {
       return;
     }
-    const bestMatchingCaseType = EpiCaseTypeUtil.getCaseTypeFromColumnLabels(caseTypeColsQuery.data, rawData[0]);
+    const bestMatchingCaseType = EpiUploadUtil.getCaseTypeFromColumnLabels(caseTypeColsQuery.data, rawData[0]);
     if (bestMatchingCaseType) {
       setValue('case_type_id', bestMatchingCaseType.id, {
         shouldTouch: true,
@@ -271,7 +269,6 @@ const EpiUploadSelectFile = ({ onProceed, defaultValues }: EpiUploadSelectFilePr
   }, [createInDataCollectionOptions, dataCollectionOptionsQuery.isLoading, setValue]);
 
   const onFormSubmit = useCallback((formData: FormFields) => {
-    console.log(formData.file_list[0]);
     onProceed({
       completeCaseType,
       createInDataCollection: dataCollectionsMapQuery.map.get(formData.create_in_data_collection_id),
@@ -280,6 +277,7 @@ const EpiUploadSelectFile = ({ onProceed, defaultValues }: EpiUploadSelectFilePr
       create_in_data_collection_id: formData.create_in_data_collection_id,
       file_list: formData.file_list,
       sheet: formData.sheet,
+      import_action: formData.import_action,
     });
   }, [completeCaseType, dataCollectionsMapQuery.map, onProceed, rawData]);
 
@@ -307,6 +305,27 @@ const EpiUploadSelectFile = ({ onProceed, defaultValues }: EpiUploadSelectFilePr
         formMethods={formMethods}
         onSubmit={handleSubmit(onFormSubmit)}
       />
+      {rawData && rawData.length > 0 && (
+        <Alert
+          severity={'info'}
+          sx={{ mb: 2 }}
+        >
+          <AlertTitle>
+            {t('{{fileName}} loaded successfully', { fileName: userSelectedFile?.[0]?.name || '' })}
+          </AlertTitle>
+          {userSelectedSheet !== EpiUploadUtil.csvSheetId && (
+            <Typography>
+              {t('Sheet name: {{sheetName}}', { sheetName: userSelectedSheet || '' })}
+            </Typography>
+          )}
+          <Typography>
+            {t('Number of columns: {{columnCount}}', { columnCount: rawData[0].length })}
+          </Typography>
+          <Typography>
+            {t('Number of data rows: {{rowCount}}', { rowCount: rawData.length - 1 })}
+          </Typography>
+        </Alert>
+      )}
       <Box
         sx={{
           display: 'flex',

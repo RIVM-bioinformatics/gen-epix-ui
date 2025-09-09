@@ -23,11 +23,12 @@ import { EpiUploadMapColumns } from './EpiUploadMapColumns';
 export const EpiUpload = () => {
   const [t] = useTranslation();
   const [activeStep, setActiveStep] = useState(0);
-  const steps = [t`Select file`, t`Map columns`, t`Preview`, t`Upload`, t`Validate`];
+  const steps = [t`Select file`, t`Map columns`, t`Preview`, t`Validate`, t`Upload`];
   const [selectFileResult, setSelectFileResult] = useState<EpiUploadSelectFileResult | null>(null);
   const [mappedColumns, setMappedColumns] = useState<EpiUploadMappedColumn[] | null>(null);
 
   const onEpiUploadSelectFileProceed = useCallback((data: EpiUploadSelectFileResult) => {
+    // FIXME
     if (mappedColumns) {
       NotificationManager.instance.showNotification({
         message: t`Column mappings have been reset.`,
@@ -99,6 +100,7 @@ export const EpiUpload = () => {
                 create_in_data_collection_id: selectFileResult.create_in_data_collection_id,
                 file_list: selectFileResult.file_list,
                 sheet: selectFileResult.sheet,
+                import_action: selectFileResult.import_action,
               } : undefined}
               onProceed={onEpiUploadSelectFileProceed}
             />
@@ -110,6 +112,7 @@ export const EpiUpload = () => {
               mappedColumns={mappedColumns || undefined}
               completeCaseType={selectFileResult.completeCaseType}
               rawData={selectFileResult.rawData}
+              importAction={selectFileResult.import_action}
               onProceed={onEpiUploadMapColumnsProceed}
               onGoBack={onEpiUploadMapColumnsGoBack}
             />

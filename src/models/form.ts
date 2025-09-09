@@ -10,6 +10,7 @@ import type { TextFieldProps } from '../components/form/fields/TextField';
 import type { SelectProps } from '../components/form/fields/Select';
 import type { DatePickerProps } from '../components/form/fields/DatePicker';
 import type { UploadButtonProps } from '../components/form/fields/UploadButton/UploadButton';
+import type { RadioGroupProps } from '../components/form/fields/RadioGroup';
 
 
 export interface OptionBase<TValue> {
@@ -37,6 +38,7 @@ export enum FORM_FIELD_DEFINITION_TYPE {
   BOOLEAN = 'BOOLEAN',
   HIDDEN = 'HIDDEN',
   DATE = 'DATE',
+  RADIO_GROUP = 'RADIO_GROUP',
 }
 
 export type FormFieldDefinitionAutocomplete<TFormFields extends FieldValues> = { definition: FORM_FIELD_DEFINITION_TYPE.AUTOCOMPLETE; multiple?: false } & AutocompleteProps<TFormFields, Path<TFormFields>, false>;
@@ -48,6 +50,7 @@ export type FormFieldDefinitionHidden<TFormFields extends FieldValues> = { defin
 export type FormFieldDefinitionRichText<TFormFields extends FieldValues> = { definition: FORM_FIELD_DEFINITION_TYPE.RICH_TEXT } & RichTextEditorProps<TFormFields, Path<TFormFields>>;
 export type FormFieldDefinitionDate<TFormFields extends FieldValues> = { definition: FORM_FIELD_DEFINITION_TYPE.DATE } & DatePickerProps<TFormFields, Path<TFormFields>>;
 export type FormFieldDefinitionFile<TFormFields extends FieldValues> = { definition: FORM_FIELD_DEFINITION_TYPE.FILE } & UploadButtonProps<TFormFields, Path<TFormFields>>;
+export type FormFieldDefinitionRadioGroup<TFormFields extends FieldValues> = { definition: FORM_FIELD_DEFINITION_TYPE.RADIO_GROUP } & RadioGroupProps<TFormFields, Path<TFormFields>>;
 
 export type FormFieldDefinition<TFormFields> =
   FormFieldDefinitionAutocomplete<TFormFields> |
@@ -58,4 +61,5 @@ export type FormFieldDefinition<TFormFields> =
   FormFieldDefinitionHidden<TFormFields> |
   FormFieldDefinitionRichText<TFormFields> |
   FormFieldDefinitionDate<TFormFields> |
-  FormFieldDefinitionFile<TFormFields>;
+  FormFieldDefinitionFile<TFormFields> |
+  FormFieldDefinitionRadioGroup<TFormFields>;
