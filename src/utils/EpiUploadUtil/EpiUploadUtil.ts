@@ -216,8 +216,6 @@ export class EpiUploadUtil {
         name: 'case_id',
         label: 'Case ID',
         options,
-        multiple: false,
-        disabled: false,
       });
     }
     if (importAction === EPI_UPLOAD_ACTION.CREATE) {
@@ -226,8 +224,6 @@ export class EpiUploadUtil {
         name: 'case_date',
         label: 'Case Date',
         options,
-        multiple: false,
-        disabled: false,
       });
     }
 
@@ -238,8 +234,6 @@ export class EpiUploadUtil {
         name: caseTypeCol.id,
         label: caseTypeCol.label,
         options,
-        multiple: false,
-        disabled: false,
       });
     });
 

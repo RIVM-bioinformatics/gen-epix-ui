@@ -1,3 +1,4 @@
+import type { ReactElement } from 'react';
 import {
   useCallback,
   useId,
@@ -9,6 +10,11 @@ import { useForm } from 'react-hook-form';
 import {
   Box,
   Button,
+  Table,
+  TableBody,
+  TableCell,
+  TableHead,
+  TableRow,
 } from '@mui/material';
 import { useTranslation } from 'react-i18next';
 import invert from 'lodash/invert';
@@ -36,9 +42,10 @@ export type EpiUploadMapColumnsProps = {
   readonly onProceed: (mappedColumns: EpiUploadMappedColumn[]) => void;
   readonly onGoBack?: () => void;
   readonly mappedColumns?: EpiUploadMappedColumn[];
+  readonly fileName: string;
 };
 
-export const EpiUploadMapColumns = ({ completeCaseType, rawData, onProceed, onGoBack, mappedColumns: mappedColumnsFromProps, importAction }: EpiUploadMapColumnsProps) => {
+export const EpiUploadMapColumns = ({ completeCaseType, rawData, onProceed, onGoBack, mappedColumns: mappedColumnsFromProps, importAction, fileName }: EpiUploadMapColumnsProps) => {
   const [t] = useTranslation();
   const caseTypeColMap = useCaseTypeColMapQuery();
 
@@ -100,16 +107,54 @@ export const EpiUploadMapColumns = ({ completeCaseType, rawData, onProceed, onGo
     await handleSubmit(onFormSubmit)();
   }, [handleSubmit, onFormSubmit]);
 
+  const renderField = useCallback((definition: FormFieldDefinition<EpiUploadMappedColumnsFormFields>, element: ReactElement) => {
+    return (
+      <TableRow key={definition.name}>
+        <TableCell>
+          {definition.label}
+        </TableCell>
+        <TableCell>
+          {element}
+        </TableCell>
+      </TableRow>
+    );
+  }, []);
+
+  const wrapForm = useCallback((children: ReactElement) => {
+    return (
+      <Table
+        size={'small'}
+      >
+        <TableHead>
+          <TableRow>
+            <TableCell sx={{ width: '34%' }}>
+              {t('Case type column')}
+            </TableCell>
+            <TableCell sx={{ width: '66%' }}>
+              {fileName}
+            </TableCell>
+          </TableRow>
+        </TableHead>
+        <TableBody>
+          {children}
+        </TableBody>
+      </Table>
+    );
+  }, [fileName, t]);
+
   return (
     <ResponseHandler loadables={loadables}>
       <GenericForm<EpiUploadMappedColumnsFormFields>
         formFieldDefinitions={formFieldDefinitions}
         formId={formId}
         formMethods={formMethods}
+        renderField={renderField}
+        wrapForm={wrapForm}
         onSubmit={handleSubmit(onFormSubmit)}
       />
       <Box
         sx={{
+          marginTop: 2,
           display: 'flex',
           gap: 2,
           justifyContent: 'flex-end',

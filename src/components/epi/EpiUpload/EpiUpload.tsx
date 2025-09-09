@@ -113,6 +113,7 @@ export const EpiUpload = () => {
               completeCaseType={selectFileResult.completeCaseType}
               rawData={selectFileResult.rawData}
               importAction={selectFileResult.import_action}
+              fileName={selectFileResult.file_list[0]?.name ?? 'unknown file'}
               onProceed={onEpiUploadMapColumnsProceed}
               onGoBack={onEpiUploadMapColumnsGoBack}
             />

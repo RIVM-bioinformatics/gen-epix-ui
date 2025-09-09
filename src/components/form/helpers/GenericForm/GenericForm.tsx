@@ -1,7 +1,11 @@
-import type { FormEventHandler } from 'react';
+import type {
+  FormEventHandler,
+  ReactElement,
+} from 'react';
 import {
   useMemo,
   useCallback,
+  Fragment,
 } from 'react';
 import { useTranslation } from 'react-i18next';
 import type {
@@ -29,6 +33,8 @@ export type GenericFormProps<TFormFields> = {
   readonly formId?: string;
   readonly onSubmit: FormEventHandler<HTMLFormElement>;
   readonly formMethods: UseFormReturn<TFormFields>;
+  readonly renderField?: (definition: FormFieldDefinition<TFormFields>, element: ReactElement) => ReactElement;
+  readonly wrapForm?: (children: ReactElement) => ReactElement;
 };
 
 export const GenericForm = <TFormFields,>({
@@ -36,6 +42,8 @@ export const GenericForm = <TFormFields,>({
   formId,
   onSubmit,
   formMethods,
+  renderField,
+  wrapForm,
 }: GenericFormProps<TFormFields>) => {
   const [t] = useTranslation();
 
@@ -96,6 +104,29 @@ export const GenericForm = <TFormFields,>({
     }
   }, [booleanOptions]);
 
+
+  const formContent = (
+    <>
+      {formFieldDefinitions.map(formFieldDefinition => {
+        if (renderField) {
+          return (
+            <Fragment key={formFieldDefinition.name}>
+              {renderField(formFieldDefinition, renderFormFieldDefinition(formFieldDefinition))}
+            </Fragment>
+          );
+        }
+        return (
+          <Box
+            key={formFieldDefinition.name}
+            marginY={1}
+          >
+            {renderFormFieldDefinition(formFieldDefinition)}
+          </Box>
+        );
+      })}
+    </>
+  );
+
   return (
     <FormProvider {...formMethods}>
       <form
@@ -103,14 +134,7 @@ export const GenericForm = <TFormFields,>({
         id={formId}
         onSubmit={onSubmit}
       >
-        {formFieldDefinitions.map(formFieldDefinition => (
-          <Box
-            key={formFieldDefinition.name}
-            marginY={1}
-          >
-            {renderFormFieldDefinition(formFieldDefinition)}
-          </Box>
-        ))}
+        {wrapForm ? wrapForm(formContent) : formContent}
       </form>
     </FormProvider>
   );
