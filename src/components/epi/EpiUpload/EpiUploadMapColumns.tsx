@@ -2,19 +2,16 @@ import {
   useCallback,
   useId,
   useMemo,
-  useState,
 } from 'react';
 import { yupResolver } from '@hookform/resolvers/yup';
 import type { Resolver } from 'react-hook-form';
 import { useForm } from 'react-hook-form';
 import {
-  Alert,
-  AlertTitle,
   Box,
   Button,
-  Typography,
 } from '@mui/material';
 import { useTranslation } from 'react-i18next';
+import invert from 'lodash/invert';
 
 import type {
   CaseTypeCol,
@@ -29,8 +26,8 @@ import { EpiUploadUtil } from '../../../utils/EpiUploadUtil';
 import type {
   EpiUploadMappedColumn,
   EpiUploadMappedColumnsFormFields,
+  EPI_UPLOAD_ACTION,
 } from '../../../models/epiUpload';
-import { EPI_UPLOAD_ACTION } from '../../../models/epiUpload';
 
 export type EpiUploadMapColumnsProps = {
   readonly completeCaseType: CompleteCaseType;
@@ -44,7 +41,6 @@ export type EpiUploadMapColumnsProps = {
 export const EpiUploadMapColumns = ({ completeCaseType, rawData, onProceed, onGoBack, mappedColumns: mappedColumnsFromProps, importAction }: EpiUploadMapColumnsProps) => {
   const [t] = useTranslation();
   const caseTypeColMap = useCaseTypeColMapQuery();
-  const [hasError, setHasError] = useState(false);
 
   const loadables = useArray([
     caseTypeColMap,
@@ -59,20 +55,16 @@ export const EpiUploadMapColumns = ({ completeCaseType, rawData, onProceed, onGo
   }, [completeCaseType, mappedColumnsFromProps, rawData]);
 
   const schema = useMemo(() => {
-    return EpiUploadUtil.getSchemaFromMappedColumns(mappedColumns, t);
-  }, [mappedColumns, t]);
+    return EpiUploadUtil.getSchema(completeCaseType, t, importAction);
+  }, [completeCaseType, importAction, t]);
 
   const defaultValues: EpiUploadMappedColumnsFormFields = useMemo(() => {
-    return EpiUploadUtil.getDefaultColumMappingFormValues(mappedColumns);
-  }, [mappedColumns]);
-
-  const caseTypeColOptions = useMemo(() => {
-    return EpiUploadUtil.getCaseTypeColOptions(completeCaseType);
-  }, [completeCaseType]);
+    return EpiUploadUtil.getDefaultFormValues(completeCaseType, mappedColumns, importAction);
+  }, [completeCaseType, mappedColumns, importAction]);
 
   const formFieldDefinitions = useMemo<FormFieldDefinition<EpiUploadMappedColumnsFormFields>[]>(() => {
-    return EpiUploadUtil.getFormFieldDefinitionsFromMappedColumns(mappedColumns, caseTypeColOptions);
-  }, [caseTypeColOptions, mappedColumns]);
+    return EpiUploadUtil.getFormFieldDefinitions(completeCaseType, rawData[0], importAction);
+  }, [completeCaseType, rawData, importAction]);
 
   const formMethods = useForm<EpiUploadMappedColumnsFormFields>({
     resolver: yupResolver(schema) as unknown as Resolver<EpiUploadMappedColumnsFormFields>,
@@ -83,8 +75,10 @@ export const EpiUploadMapColumns = ({ completeCaseType, rawData, onProceed, onGo
   const { handleSubmit } = formMethods;
 
   const onFormSubmit = useCallback((data: EpiUploadMappedColumnsFormFields) => {
+    const sheetValues = invert(data);
+
     const mergedMappedColumns = mappedColumns.map((mappedColumn) => {
-      const formValue = data[mappedColumn.originalIndex.toString()];
+      const formValue = sheetValues[mappedColumn.originalIndex.toString()];
       const isCaseIdColumn = formValue === 'case_id';
       const isCaseDateColumn = formValue === 'case_date';
       let caseTypeCol: CaseTypeCol | null = null;
@@ -99,19 +93,8 @@ export const EpiUploadMapColumns = ({ completeCaseType, rawData, onProceed, onGo
       };
     });
 
-    const hasCaseIdColumnMapped = mergedMappedColumns.some(c => c.isCaseIdColumn);
-    const hasCaseDateColumnMapped = mergedMappedColumns.some(c => c.isCaseDateColumn);
-
-    if (importAction === EPI_UPLOAD_ACTION.UPDATE && !hasCaseIdColumnMapped) {
-      setHasError(true);
-      return;
-    }
-    if (importAction === EPI_UPLOAD_ACTION.CREATE && !hasCaseDateColumnMapped) {
-      setHasError(true);
-      return;
-    }
     onProceed(mergedMappedColumns);
-  }, [caseTypeColMap.map, importAction, mappedColumns, onProceed]);
+  }, [caseTypeColMap.map, mappedColumns, onProceed]);
 
   const onProceedButtonClick = useCallback(async () => {
     await handleSubmit(onFormSubmit)();
@@ -125,38 +108,6 @@ export const EpiUploadMapColumns = ({ completeCaseType, rawData, onProceed, onGo
         formMethods={formMethods}
         onSubmit={handleSubmit(onFormSubmit)}
       />
-      {importAction === EPI_UPLOAD_ACTION.UPDATE && (
-        <Alert
-          severity={hasError ? 'error' : 'warning'}
-          sx={{ mt: 2, mb: 2 }}
-        >
-          <AlertTitle>
-            {t`You're about to update existing cases`}
-          </AlertTitle>
-          <Typography>
-            {t`At least one of the columns should be mapped to the "case_id" column.`}
-          </Typography>
-          <Typography>
-            {t`Any mapping to the "case_date" column will be ignored during the import.`}
-          </Typography>
-        </Alert>
-      )}
-      {importAction === EPI_UPLOAD_ACTION.CREATE && (
-        <Alert
-          severity={hasError ? 'error' : 'warning'}
-          sx={{ mt: 2, mb: 2 }}
-        >
-          <AlertTitle>
-            {t`You're about to create new cases`}
-          </AlertTitle>
-          <Typography>
-            {t`At least one of the columns should be mapped to the "case_date" column.`}
-          </Typography>
-          <Typography>
-            {t`Any mapping to the "case_id" column will be ignored during the import.`}
-          </Typography>
-        </Alert>
-      )}
       <Box
         sx={{
           display: 'flex',

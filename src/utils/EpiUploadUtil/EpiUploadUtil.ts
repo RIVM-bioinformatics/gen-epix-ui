@@ -10,12 +10,12 @@ import {
   string,
 } from 'yup';
 import type { TFunction } from 'i18next';
+import difference from 'lodash/difference';
 
 import type {
   CaseTypeCol,
   CaseType,
   CompleteCaseType,
-  Dim,
 } from '../../api';
 import {
   FORM_FIELD_DEFINITION_TYPE,
@@ -23,10 +23,10 @@ import {
   type FormFieldDefinition,
 } from '../../models/form';
 import { StringUtil } from '../StringUtil';
-import { EpiCaseTypeUtil } from '../EpiCaseTypeUtil';
-import type {
-  EpiUploadMappedColumn,
-  EpiUploadMappedColumnsFormFields,
+import {
+  EPI_UPLOAD_ACTION,
+  type EpiUploadMappedColumn,
+  type EpiUploadMappedColumnsFormFields,
 } from '../../models/epiUpload';
 
 export class EpiUploadUtil {
@@ -157,74 +157,123 @@ export class EpiUploadUtil {
   }
 
   // eslint-disable-next-line @typescript-eslint/no-empty-object-type
-  public static getSchemaFromMappedColumns(mappedColumns: EpiUploadMappedColumn[], t: TFunction<'translation', undefined>): ObjectSchema<{}, AnyObject, {}, ''> {
+  public static getSchema(completeCaseType: CompleteCaseType, t: TFunction<'translation', undefined>, importAction: EPI_UPLOAD_ACTION): ObjectSchema<{}, AnyObject, {}, ''> {
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
     const fields: { [key: string]: any } = {};
 
-    if (!mappedColumns.length) {
-      return object().shape(fields);
-    }
-    const fieldNames = mappedColumns.map(mappedColumn => mappedColumn.originalIndex.toString());
-    mappedColumns.forEach((mappedColumn) => {
-      const otherFieldNames = fieldNames.filter(name => name !== mappedColumn.originalIndex.toString());
-      fields[mappedColumn.originalIndex.toString()] = lazy(() => string().nullable().when(otherFieldNames, (otherFieldValues, schema) => {
+    const fieldNames: string[] = ['case_id', 'case_date', ...completeCaseType.case_type_col_order];
+
+    completeCaseType.case_type_col_order.forEach((colId) => {
+      const caseTypeCol = completeCaseType.case_type_cols[colId];
+      const otherFieldNames = fieldNames.filter(name => name !== caseTypeCol.id);
+      fields[caseTypeCol.id] = lazy(() => string().nullable().when(otherFieldNames, (otherFieldValues, schema) => {
         return schema
           .test('unique', t('Each column must be mapped to a unique case type field.'), (fieldValue) => {
             return !fieldValue || !otherFieldValues.includes(fieldValue);
           });
       }));
     });
+
+    if (importAction === EPI_UPLOAD_ACTION.UPDATE) {
+      fields['case_id'] = lazy(() => string().nullable().when(fieldNames.filter(name => name !== 'case_id'), (otherFieldValues, schema) => {
+        return schema
+          .test('unique', t('Each column must be mapped to a unique case type field.'), (fieldValue) => {
+            return !fieldValue || !otherFieldValues.includes(fieldValue);
+          })
+          .test('required', t('A column must be mapped to the case ID field.'), (fieldValue) => {
+            return !!fieldValue;
+          });
+      }));
+    }
+    if (importAction === EPI_UPLOAD_ACTION.CREATE) {
+      fields['case_date'] = lazy(() => string().nullable().when(fieldNames.filter(name => name !== 'case_date'), (otherFieldValues, schema) => {
+        return schema
+          .test('unique', t('Each column must be mapped to a unique case type field.'), (fieldValue) => {
+            return !fieldValue || !otherFieldValues.includes(fieldValue);
+          })
+          .test('required', t('A column must be mapped to the case date field.'), (fieldValue) => {
+            return !!fieldValue;
+          });
+      }));
+    }
+
     return object().shape(fields);
   }
 
-  public static getFormFieldDefinitionsFromMappedColumns(mappedColumns: EpiUploadMappedColumn[], caseTypeColOptions: AutoCompleteOption<string>[]): FormFieldDefinition<EpiUploadMappedColumnsFormFields>[] {
-    return mappedColumns.map((header) => ({
-      definition: FORM_FIELD_DEFINITION_TYPE.AUTOCOMPLETE,
-      name: header.originalIndex.toString(),
-      label: header.originalLabel || `Column ${header.originalIndex + 1}`,
-      options: caseTypeColOptions,
-      multiple: false,
-      clearOnBlur: true,
-      disabled: false,
-      fullWidth: true,
-    }));
-  }
 
-  public static getCaseTypeColOptions(completeCaseType: CompleteCaseType): AutoCompleteOption<string>[] {
+  public static getFormFieldDefinitions(completeCaseType: CompleteCaseType, headers: string[], importAction: EPI_UPLOAD_ACTION): FormFieldDefinition<EpiUploadMappedColumnsFormFields>[] {
     const options: AutoCompleteOption<string>[] = [
-      {
-        value: 'case_id',
-        label: 'case_id',
-      },
-      {
-        value: 'case_date',
-        label: 'case_date',
-      },
+      ...headers.map((header, index) => ({
+        label: header,
+        value: index.toString(),
+      })),
     ];
-    EpiCaseTypeUtil.iterateOrderedDimensions(completeCaseType, (_dim: Dim, caseTypeColumns: CaseTypeCol[]) => {
-      EpiCaseTypeUtil.iterateCaseTypeColumns(completeCaseType, caseTypeColumns, (caseTypeCol) => {
-        options.push({
-          value: caseTypeCol.id,
-          label: `${caseTypeCol.label} (${caseTypeCol.code})`,
-        });
+
+    const fields: FormFieldDefinition<EpiUploadMappedColumnsFormFields>[] = [];
+    if (importAction === EPI_UPLOAD_ACTION.UPDATE) {
+      fields.push({
+        definition: FORM_FIELD_DEFINITION_TYPE.AUTOCOMPLETE,
+        name: 'case_id',
+        label: 'Case ID',
+        options,
+        multiple: false,
+        disabled: false,
+      });
+    }
+    if (importAction === EPI_UPLOAD_ACTION.CREATE) {
+      fields.push({
+        definition: FORM_FIELD_DEFINITION_TYPE.AUTOCOMPLETE,
+        name: 'case_date',
+        label: 'Case Date',
+        options,
+        multiple: false,
+        disabled: false,
+      });
+    }
+
+    completeCaseType.case_type_col_order.forEach((colId) => {
+      const caseTypeCol = completeCaseType.case_type_cols[colId];
+      fields.push({
+        definition: FORM_FIELD_DEFINITION_TYPE.AUTOCOMPLETE,
+        name: caseTypeCol.id,
+        label: caseTypeCol.label,
+        options,
+        multiple: false,
+        disabled: false,
       });
     });
-    return options;
+
+    return fields;
   }
 
-  public static getDefaultColumMappingFormValues(mappedColumns: EpiUploadMappedColumn[]): EpiUploadMappedColumnsFormFields {
-    const values: EpiUploadMappedColumnsFormFields = {};
+  public static getDefaultFormValues(completeCaseType: CompleteCaseType, mappedColumns: EpiUploadMappedColumn[], importAction: EPI_UPLOAD_ACTION): EpiUploadMappedColumnsFormFields {
+    const defaultFormValues: EpiUploadMappedColumnsFormFields = {};
+    const caseIdColumn = mappedColumns.find(col => col.isCaseIdColumn);
+    const caseDateColumn = mappedColumns.find(col => col.isCaseDateColumn);
+
+    if (importAction === EPI_UPLOAD_ACTION.UPDATE && caseIdColumn) {
+      defaultFormValues['case_id'] = caseIdColumn.originalIndex.toString();
+    }
+    if (importAction === EPI_UPLOAD_ACTION.CREATE && caseDateColumn) {
+      defaultFormValues['case_date'] = caseDateColumn.originalIndex.toString();
+    }
+
     mappedColumns.forEach((header) => {
-      let value: string = null;
-      if (header.isCaseIdColumn) {
-        value = 'case_id';
-      } else if (header.isCaseDateColumn) {
-        value = 'case_date';
-      } else if (header.caseTypeCol) {
-        value = header.caseTypeCol?.id;
+      if (header.caseTypeCol) {
+        defaultFormValues[header.caseTypeCol.id] = header.originalIndex.toString();
       }
-      values[header.originalIndex.toString()] = value ?? null;
     });
-    return values;
+    difference(completeCaseType.case_type_col_order, Object.keys(defaultFormValues)).forEach((colId) => {
+      defaultFormValues[colId] = null;
+    });
+    return defaultFormValues;
+  }
+
+  public static getWritableCaseTypeColIds(completeCaseType: CompleteCaseType): string[] {
+    const writableColIds: string[] = [];
+    Object.values(completeCaseType.case_type_access_abacs).forEach((abac) => {
+      writableColIds.push(...abac.write_case_type_col_ids);
+    });
+    return writableColIds;
   }
 }
