@@ -1,15 +1,13 @@
 import {
   useCallback,
   useMemo,
-  useState,
 } from 'react';
-import { Box } from '@mui/material';
+import {
+  Box,
+  Button,
+} from '@mui/material';
+import { t } from 'i18next';
 
-import type {
-  CaseTypeCol,
-  CompleteCaseType,
-  DataCollection,
-} from '../../../api';
 import {
   createTableStore,
   TableStoreContextProvider,
@@ -17,51 +15,25 @@ import {
 import type { TableColumn } from '../../../models/table';
 import { useInitializeTableStore } from '../../../hooks/useInitializeTableStore';
 import { Table } from '../../ui/Table';
+import type { EpiUploadMappedColumn } from '../../../models/epiUpload';
 
-export type EpiUploadMapDataProps = {
-  readonly completeCaseType: CompleteCaseType;
-  readonly createdInDataCollectionId: DataCollection;
+export type EpiUploadDataPreviewProps = {
+  readonly mappedColumns?: EpiUploadMappedColumn[];
   readonly rawData: string[][];
-  readonly onBack: () => void;
+  readonly onGoBack: () => void;
   readonly onProceed: () => void;
-};
-
-type RawDataHeader = {
-  originalIndex: number;
-  originalLabel: string;
-  caseTypeCol: CaseTypeCol;
 };
 
 type TableRow = {
   [key: string]: string;
 };
 
-export const EpiUploadMapData = ({
-  completeCaseType,
-  createdInDataCollectionId,
+export const EpiUploadDataPreview = ({
+  mappedColumns,
   rawData,
-  onBack,
+  onGoBack,
   onProceed,
-}: EpiUploadMapDataProps) => {
-  const [headers, setHeaders] = useState<RawDataHeader[]>(() => {
-    if (rawData.length === 0) {
-      return [];
-    }
-    return rawData[0].map((label, index) => {
-      return {
-        originalIndex: index,
-        originalLabel: label,
-        caseTypeCol: Object.values(completeCaseType.case_type_cols).find(caseTypeCol => {
-          if (!label || typeof label !== 'string') {
-            return false;
-          }
-          const labelLowerCase = label.toLocaleLowerCase();
-          return labelLowerCase === caseTypeCol.label.toLocaleLowerCase() || labelLowerCase === caseTypeCol.code.toLowerCase() || labelLowerCase === caseTypeCol.id.toLocaleLowerCase();
-        }) || null,
-      };
-    });
-  });
-
+}: EpiUploadDataPreviewProps) => {
   const tableRows = useMemo<TableRow[]>(() => {
     return rawData.slice(1).map((row) => {
       const tableRow: TableRow = {};
@@ -77,24 +49,28 @@ export const EpiUploadMapData = ({
   }), []);
 
   const tableColumns = useMemo<TableColumn<TableRow>[]>(() => {
-    return headers.map((header) => {
+    return mappedColumns.filter(mappedColumn => mappedColumn.caseTypeCol).map((mappedColumn) => {
       return {
         type: 'text',
         isInitiallyVisible: true,
         hideInFilter: true,
-        id: `col-${header.originalIndex}`,
-        headerName: (header.caseTypeCol ? header.caseTypeCol.code : header.originalLabel) || `Column ${header.originalIndex + 1}`,
-        valueGetter: (params) => params.row[header.originalIndex],
+        id: `col-${mappedColumn.originalIndex}`,
+        headerName: (mappedColumn.caseTypeCol ? mappedColumn.caseTypeCol.code : mappedColumn.originalLabel) || `Column ${mappedColumn.originalIndex + 1}`,
+        valueGetter: (params) => params.row[mappedColumn.originalIndex],
         widthPx: 250,
       } satisfies TableColumn<TableRow>;
     });
-  }, [headers]);
+  }, [mappedColumns]);
 
   const getRowName = useCallback((row: TableRow) => {
     return row[0] || 'Row';
   }, []);
 
   useInitializeTableStore({ store: tableStore, columns: tableColumns, rows: tableRows, createFiltersFromColumns: true });
+
+  const onProceedButtonClick = useCallback(() => {
+    onProceed();
+  }, [onProceed]);
 
   return (
     <TableStoreContextProvider store={tableStore}>
@@ -103,11 +79,34 @@ export const EpiUploadMapData = ({
           width: '100%',
           height: '100%',
           position: 'relative',
+          display: 'grid',
+          gridTemplateRows: 'auto max-content',
         }}
       >
         <Table
           getRowName={getRowName}
         />
+        <Box
+          paddingY={1}
+          sx={{
+            display: 'flex',
+            gap: 2,
+            justifyContent: 'flex-end',
+          }}
+        >
+          <Button
+            variant={'outlined'}
+            onClick={onGoBack}
+          >
+            {t('Go back')}
+          </Button>
+          <Button
+            variant={'contained'}
+            onClick={onProceedButtonClick}
+          >
+            {t('Proceed')}
+          </Button>
+        </Box>
       </Box>
     </TableStoreContextProvider>
   );

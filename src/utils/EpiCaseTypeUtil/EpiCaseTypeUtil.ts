@@ -27,7 +27,6 @@ export class EpiCaseTypeUtil {
     return path;
   }
 
-
   public static getInitialVisibleColumnIds(completeCaseType: CompleteCaseType): string[] {
     const visibleColumnIds: string[] = [];
 
@@ -60,7 +59,7 @@ export class EpiCaseTypeUtil {
     return caseTypeColumns.find(c => completeCaseType.cols[c.col_id].rank_in_dim === 1) ?? caseTypeColumns?.[0];
   }
 
-  public static iterateOrderedDimensions(completeCaseType: CompleteCaseType, cb: (dimension: Dim, dimensionCaseTypeColumns: CaseTypeCol[], dimIndex: number) => void, dimType?: DimType): void {
+  public static iterateOrderedDimensions(completeCaseType: CompleteCaseType, cb: (dimension: Dim, dimensionCaseTypeColumns?: CaseTypeCol[], dimIndex?: number) => void, dimType?: DimType): void {
     let index = 0;
     completeCaseType.case_type_dims.forEach((caseTypeDim) => {
       const dimension = completeCaseType.dims[caseTypeDim.dim_id];
@@ -103,5 +102,55 @@ export class EpiCaseTypeUtil {
   public static getDimensionLabel(dimension: Dim, occurrence?: number): string {
     const occurrenceLabel = isNumber(occurrence) ? `.x${occurrence}` : '';
     return `${dimension.code}${occurrenceLabel}`;
+  }
+
+  public static matchColumnLabel(columnLabel: string, caseTypeCol: CaseTypeCol): boolean {
+    if (!columnLabel || typeof columnLabel !== 'string') {
+      return false;
+    }
+    const labelLowerCase = columnLabel.toLocaleLowerCase();
+    return labelLowerCase === caseTypeCol.label.toLocaleLowerCase() || labelLowerCase === caseTypeCol.code.toLowerCase() || labelLowerCase === caseTypeCol.id.toLocaleLowerCase();
+  }
+
+  public static getCaseTypeFromColumnLabels(caseTypeCols: CaseTypeCol[], columnLabels: string[]): CaseType | null {
+    const bestMatch = {
+      caseType: null as CaseType | null,
+      matchCount: 0,
+    };
+
+    // Group case type columns by case type ID to count matches per case type
+    const caseTypeMatches = new Map<string, { caseType: CaseType; matchCount: number }>();
+
+    caseTypeCols.forEach(caseTypeCol => {
+      const matchCount = columnLabels.filter(label =>
+        this.matchColumnLabel(label, caseTypeCol)).length;
+
+      if (matchCount > 0) {
+        const caseTypeId = caseTypeCol.case_type_id;
+        const existing = caseTypeMatches.get(caseTypeId);
+
+        if (existing) {
+          existing.matchCount += matchCount;
+        } else {
+          // Note: We don't have access to the full CaseType object here,
+          // so we create a minimal one with the ID. In a real implementation,
+          // you might need to pass the complete case type data or modify the method signature.
+          caseTypeMatches.set(caseTypeId, {
+            caseType: { id: caseTypeId } as CaseType,
+            matchCount,
+          });
+        }
+      }
+    });
+
+    // Find the case type with the highest match count
+    caseTypeMatches.forEach(match => {
+      if (match.matchCount > bestMatch.matchCount) {
+        bestMatch.caseType = match.caseType;
+        bestMatch.matchCount = match.matchCount;
+      }
+    });
+
+    return bestMatch.caseType;
   }
 }

@@ -3,54 +3,67 @@ import Stepper from '@mui/material/Stepper';
 import Step from '@mui/material/Step';
 import StepLabel from '@mui/material/StepLabel';
 import { useTranslation } from 'react-i18next';
-import type { ReactNode } from 'react';
 import {
   useCallback,
   useEffect,
   useState,
 } from 'react';
 
-import { EpiUploadSelectFile } from './EpiUploadSelectFile';
-import type { EpiUploadSettingsResult } from './EpiUploadSettings';
-import EpiUploadSettings from './EpiUploadSettings';
-import { EpiUploadMapData } from './EpiUploadMapData';
+import type {
+  EpiUploadMappedColumn,
+  EpiUploadSelectFileResult,
+} from '../../../models/epiUpload';
+import { NotificationManager } from '../../../classes/managers/NotificationManager';
+
+import EpiUploadSelectFile from './EpiUploadSelectFile';
+import { EpiUploadDataPreview } from './EpiUploadDataPreview';
+import { EpiUploadMapColumns } from './EpiUploadMapColumns';
 
 
 export const EpiUpload = () => {
   const [t] = useTranslation();
   const [activeStep, setActiveStep] = useState(0);
-  const steps = [t`Select file`, t`Define settings`, t`Map data`, t`Upload`];
-  const [rawData, setRawData] = useState<string[][] | null>(null);
-  const [settings, setSettings] = useState<EpiUploadSettingsResult | null>(null);
+  const steps = [t`Select file`, t`Map columns`, t`Preview`, t`Upload`, t`Validate`];
+  const [selectFileResult, setSelectFileResult] = useState<EpiUploadSelectFileResult | null>(null);
+  const [mappedColumns, setMappedColumns] = useState<EpiUploadMappedColumn[] | null>(null);
 
-  const onFileChange = useCallback((data: string[][]) => {
-    setRawData(data);
+  const onEpiUploadSelectFileProceed = useCallback((data: EpiUploadSelectFileResult) => {
+    if (mappedColumns) {
+      NotificationManager.instance.showNotification({
+        message: t`Column mappings have been reset.`,
+        severity: 'info',
+        isLoading: false,
+      });
+    }
+    setMappedColumns(null);
+    setSelectFileResult(data);
+  }, [mappedColumns, t]);
+
+  const onEpiUploadMapColumnsProceed = useCallback((data: EpiUploadMappedColumn[]) => {
+    setMappedColumns(data);
   }, []);
 
-  const onEpiUploadSettingsBack = useCallback(() => {
+  const onEpiUploadMapColumnsGoBack = useCallback(() => {
     setActiveStep(0);
   }, []);
 
-  const onEpiUploadMapDataBack = useCallback(() => {
+  const onEpiUploadDataPreviewGoBack = useCallback(() => {
     setActiveStep(1);
   }, []);
 
-  const onEpiUploadSettingsProceed = useCallback((data: EpiUploadSettingsResult) => {
-    setSettings(data);
+  const onEpiUploadDataPreviewProceed = useCallback(() => {
+    setActiveStep(3);
   }, []);
 
-  const onEpiUploadMapDataProceed = useCallback(() => {
-    //
-  }, []);
 
   useEffect(() => {
-    if (rawData) {
+    if (selectFileResult) {
       setActiveStep(1);
     }
-    if (settings) {
+    if (mappedColumns) {
       setActiveStep(2);
     }
-  }, [settings, rawData]);
+  }, [selectFileResult, mappedColumns]);
 
   return (
     <Box
@@ -65,15 +78,12 @@ export const EpiUpload = () => {
       <Stepper activeStep={activeStep}>
         {steps.map((label) => {
           const stepProps: { completed?: boolean } = {};
-          const labelProps: {
-            optional?: ReactNode;
-          } = {};
           return (
             <Step
               key={label}
               {...stepProps}
             >
-              <StepLabel {...labelProps}>
+              <StepLabel>
                 {label}
               </StepLabel>
             </Step>
@@ -82,13 +92,26 @@ export const EpiUpload = () => {
       </Stepper>
       <Box>
         {activeStep === 0 && (
-          <EpiUploadSelectFile onFileChange={onFileChange} />
+          <Box marginY={2}>
+            <EpiUploadSelectFile
+              defaultValues={selectFileResult ? {
+                case_type_id: selectFileResult.case_type_id,
+                create_in_data_collection_id: selectFileResult.create_in_data_collection_id,
+                file_list: selectFileResult.file_list,
+                sheet: selectFileResult.sheet,
+              } : undefined}
+              onProceed={onEpiUploadSelectFileProceed}
+            />
+          </Box>
         )}
         {activeStep === 1 && (
           <Box marginY={2}>
-            <EpiUploadSettings
-              onBack={onEpiUploadSettingsBack}
-              onProceed={onEpiUploadSettingsProceed}
+            <EpiUploadMapColumns
+              mappedColumns={mappedColumns || undefined}
+              completeCaseType={selectFileResult.completeCaseType}
+              rawData={selectFileResult.rawData}
+              onProceed={onEpiUploadMapColumnsProceed}
+              onGoBack={onEpiUploadMapColumnsGoBack}
             />
           </Box>
         )}
@@ -99,13 +122,22 @@ export const EpiUpload = () => {
               position: 'relative',
             }}
           >
-            <EpiUploadMapData
-              completeCaseType={settings.completeCaseType}
-              createdInDataCollectionId={settings.createInDataCollection}
-              rawData={rawData}
-              onBack={onEpiUploadMapDataBack}
-              onProceed={onEpiUploadMapDataProceed}
+            <EpiUploadDataPreview
+              mappedColumns={mappedColumns}
+              rawData={selectFileResult.rawData}
+              onGoBack={onEpiUploadDataPreviewGoBack}
+              onProceed={onEpiUploadDataPreviewProceed}
             />
+          </Box>
+        )}
+        {activeStep === 3 && (
+          <Box
+            sx={{
+              height: '100%',
+              position: 'relative',
+            }}
+          >
+            {'Upload step (not implemented)'}
           </Box>
         )}
       </Box>

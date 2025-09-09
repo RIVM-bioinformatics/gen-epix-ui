@@ -21,6 +21,7 @@ import { Autocomplete } from '../../fields/Autocomplete';
 import { Select } from '../../fields/Select';
 import { TextField } from '../../fields/TextField';
 import { DatePicker } from '../../fields/DatePicker';
+import { UploadButton } from '../../fields/UploadButton/UploadButton';
 
 export type GenericFormProps<TFormFields> = {
   readonly formFieldDefinitions: FormFieldDefinition<TFormFields>[];
@@ -69,6 +70,12 @@ export const GenericForm = <TFormFields,>({
       case FORM_FIELD_DEFINITION_TYPE.RICH_TEXT:
         return (
           <RichTextEditor
+            {...formFieldDefinition}
+          />
+        );
+      case FORM_FIELD_DEFINITION_TYPE.FILE:
+        return (
+          <UploadButton
             {...formFieldDefinition}
           />
         );
