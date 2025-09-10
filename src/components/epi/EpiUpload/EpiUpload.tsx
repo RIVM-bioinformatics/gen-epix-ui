@@ -14,6 +14,7 @@ import type {
   EpiUploadSelectFileResult,
 } from '../../../models/epiUpload';
 import { NotificationManager } from '../../../classes/managers/NotificationManager';
+import { EpiUploadUtil } from '../../../utils/EpiUploadUtil';
 
 import EpiUploadSelectFile from './EpiUploadSelectFile';
 import { EpiUploadDataPreview } from './EpiUploadDataPreview';
@@ -28,16 +29,17 @@ export const EpiUpload = () => {
   const [mappedColumns, setMappedColumns] = useState<EpiUploadMappedColumn[] | null>(null);
 
   const onEpiUploadSelectFileProceed = useCallback((data: EpiUploadSelectFileResult) => {
-    // FIXME
-    if (mappedColumns) {
-      NotificationManager.instance.showNotification({
-        message: t`Column mappings have been reset.`,
-        severity: 'info',
-        isLoading: false,
-      });
-    }
-    setMappedColumns(null);
     setSelectFileResult(data);
+    if (mappedColumns) {
+      if (!EpiUploadUtil.areMappedColumnsEqual(mappedColumns, EpiUploadUtil.getInitialMappedColumns(data.completeCaseType, data.rawData, data.import_action))) {
+        NotificationManager.instance.showNotification({
+          message: t`Column mappings have been reset due to changes in the selected case type or file.`,
+          severity: 'info',
+          isLoading: false,
+        });
+        setMappedColumns(null);
+      }
+    }
   }, [mappedColumns, t]);
 
   const onEpiUploadMapColumnsProceed = useCallback((data: EpiUploadMappedColumn[]) => {
@@ -98,6 +100,7 @@ export const EpiUpload = () => {
               defaultValues={selectFileResult ? {
                 case_type_id: selectFileResult.case_type_id,
                 create_in_data_collection_id: selectFileResult.create_in_data_collection_id,
+                share_in_data_collection_ids: selectFileResult.share_in_data_collection_ids,
                 file_list: selectFileResult.file_list,
                 sheet: selectFileResult.sheet,
                 import_action: selectFileResult.import_action,

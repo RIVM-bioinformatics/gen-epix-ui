@@ -55,6 +55,7 @@ type FormFields = {
   import_action: EPI_UPLOAD_ACTION;
   case_type_id: string;
   create_in_data_collection_id: string;
+  share_in_data_collection_ids: string[];
   file_list: FileList;
   sheet: string;
 };
@@ -91,7 +92,8 @@ const EpiUploadSelectFile = ({ onProceed, defaultValues }: EpiUploadSelectFilePr
       create_in_data_collection_id: null,
       file_list: null,
       sheet: null,
-      import_action: EPI_UPLOAD_ACTION.UPDATE,
+      import_action: EPI_UPLOAD_ACTION.CREATE,
+      share_in_data_collection_ids: [],
     },
     values: {
       ...defaultValues,
@@ -99,7 +101,7 @@ const EpiUploadSelectFile = ({ onProceed, defaultValues }: EpiUploadSelectFilePr
   });
   const { handleSubmit, setValue, setError } = formMethods;
   const { control } = formMethods;
-  const { case_type_id: userSelectedCaseTypeId, file_list: userSelectedFile, sheet: userSelectedSheet } = useWatch({ control });
+  const { case_type_id: userSelectedCaseTypeId, file_list: userSelectedFile, sheet: userSelectedSheet, create_in_data_collection_id: userSelectedCreateInDataCollectionId, import_action: userSelectedImportAction } = useWatch({ control });
   const [ sheetOptions, setSheetOptions] = useState<AutoCompleteOption[]>([]);
 
   const { isLoading: isCompleteCaseTypeLoading, error: completeCaseTypeError, data: completeCaseType } = useItemQuery({
@@ -123,11 +125,20 @@ const EpiUploadSelectFile = ({ onProceed, defaultValues }: EpiUploadSelectFilePr
     });
   }, [completeCaseType, dataCollectionOptionsQuery.options]);
 
+  const shareInDataCollectionOptions = useMemo<AutoCompleteOption[]>(() => {
+    if (!completeCaseType) {
+      return [];
+    }
+    return dataCollectionOptionsQuery.options.filter(option => {
+      const dataCollectionId = option.value;
+      return userSelectedCreateInDataCollectionId !== dataCollectionId && completeCaseType.case_type_access_abacs[dataCollectionId]?.add_case_set;
+    });
+  }, [completeCaseType, userSelectedCreateInDataCollectionId, dataCollectionOptionsQuery.options]);
+
   const createOrUpdateOptions = useMemo<AutoCompleteOption[]>(() => ([
     { label: t('Create new cases'), value: EPI_UPLOAD_ACTION.CREATE },
     { label: t('Update existing cases'), value: EPI_UPLOAD_ACTION.UPDATE },
   ]), [t]);
-
   const formFieldDefinitions = useMemo<FormFieldDefinition<FormFields>[]>(() => {
     const fields: FormFieldDefinition<FormFields>[] = [
         {
@@ -174,8 +185,19 @@ const EpiUploadSelectFile = ({ onProceed, defaultValues }: EpiUploadSelectFilePr
         } as const satisfies FormFieldDefinition<FormFields>,
     ] as const);
 
+    if (userSelectedImportAction === EPI_UPLOAD_ACTION.CREATE) {
+      fields.push({
+        definition: FORM_FIELD_DEFINITION_TYPE.AUTOCOMPLETE,
+        name: 'share_in_data_collection_ids',
+        label: t`Share in data collections`,
+        options: shareInDataCollectionOptions,
+        loading: dataCollectionOptionsQuery.isLoading || isCompleteCaseTypeLoading,
+        disabled: !userSelectedCreateInDataCollectionId,
+        multiple: true,
+      } as const satisfies FormFieldDefinition<FormFields>);
+    }
     return fields;
-  }, [t, createOrUpdateOptions, sheetOptions, userSelectedFile, caseTypeOptionsQuery.options, caseTypeOptionsQuery.isLoading, createInDataCollectionOptions, dataCollectionOptionsQuery.isLoading, isCompleteCaseTypeLoading, userSelectedCaseTypeId]);
+  }, [t, createOrUpdateOptions, userSelectedFile, caseTypeOptionsQuery.options, caseTypeOptionsQuery.isLoading, createInDataCollectionOptions, dataCollectionOptionsQuery.isLoading, isCompleteCaseTypeLoading, userSelectedCaseTypeId, userSelectedImportAction, sheetOptions, shareInDataCollectionOptions, userSelectedCreateInDataCollectionId]);
 
   useEffect(() => {
     if (fileParsingError) {
@@ -275,6 +297,7 @@ const EpiUploadSelectFile = ({ onProceed, defaultValues }: EpiUploadSelectFilePr
       rawData,
       case_type_id: formData.case_type_id,
       create_in_data_collection_id: formData.create_in_data_collection_id,
+      share_in_data_collection_ids: formData.share_in_data_collection_ids,
       file_list: formData.file_list,
       sheet: formData.sheet,
       import_action: formData.import_action,

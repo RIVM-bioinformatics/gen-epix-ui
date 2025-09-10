@@ -10,6 +10,7 @@ export type EpiUploadSelectFileResult = {
   rawData: string[][];
   case_type_id: string;
   create_in_data_collection_id: string;
+  share_in_data_collection_ids: string[];
   file_list: FileList;
   sheet: string;
   import_action: EPI_UPLOAD_ACTION;

@@ -11,6 +11,7 @@ import {
 } from 'yup';
 import type { TFunction } from 'i18next';
 import difference from 'lodash/difference';
+import uniq from 'lodash/uniq';
 
 import type {
   CaseTypeCol,
@@ -132,10 +133,12 @@ export class EpiUploadUtil {
     return bestMatch.caseType;
   }
 
-  public static getInitialMappedColumns(completeCaseType: CompleteCaseType, rawData: string[][]): EpiUploadMappedColumn[] {
+  public static getInitialMappedColumns(completeCaseType: CompleteCaseType, rawData: string[][], importAction: EPI_UPLOAD_ACTION): EpiUploadMappedColumn[] {
     if (rawData.length === 0) {
       return [];
     }
+    const writableColIds = EpiUploadUtil.getWritableCaseTypeColIds(completeCaseType);
+
     return rawData[0].map((label, index) => {
       const isCaseIdColumn = EpiUploadUtil.caseIdColumnAliases.includes(label.toLocaleLowerCase());
       const isCaseDateColumn = EpiUploadUtil.caseDateColumnAliases.includes(label.toLocaleLowerCase());
@@ -144,6 +147,9 @@ export class EpiUploadUtil {
 
       if (!isCaseIdColumn && !isCaseDateColumn) {
         caseTypeCol = Object.values(completeCaseType.case_type_cols).find(c => EpiUploadUtil.matchColumnLabel(label, c)) || null;
+        if (caseTypeCol && importAction === EPI_UPLOAD_ACTION.UPDATE && !writableColIds.includes(caseTypeCol.id)) {
+          caseTypeCol = null;
+        }
       }
 
       return {
@@ -153,6 +159,19 @@ export class EpiUploadUtil {
         isCaseDateColumn,
         isCaseIdColumn,
       };
+    });
+  }
+
+  public static areMappedColumnsEqual(a: EpiUploadMappedColumn[], b: EpiUploadMappedColumn[]): boolean {
+    if (a.length !== b.length) {
+      return false;
+    }
+
+    return a.every((itemA, index) => {
+      const itemB = b[index];
+      const stringifiedA = `${itemA.originalIndex}-${itemA.originalLabel}`;
+      const stringifiedB = `${itemB.originalIndex}-${itemB.originalLabel}`;
+      return stringifiedA === stringifiedB;
     });
   }
 
@@ -208,6 +227,7 @@ export class EpiUploadUtil {
         value: index.toString(),
       })),
     ];
+    const writableColIds = EpiUploadUtil.getWritableCaseTypeColIds(completeCaseType);
 
     const fields: FormFieldDefinition<EpiUploadMappedColumnsFormFields>[] = [];
     if (importAction === EPI_UPLOAD_ACTION.UPDATE) {
@@ -229,6 +249,9 @@ export class EpiUploadUtil {
 
     completeCaseType.case_type_col_order.forEach((colId) => {
       const caseTypeCol = completeCaseType.case_type_cols[colId];
+      if (importAction === EPI_UPLOAD_ACTION.UPDATE && !writableColIds.includes(caseTypeCol.id)) {
+        return;
+      }
       fields.push({
         definition: FORM_FIELD_DEFINITION_TYPE.AUTOCOMPLETE,
         name: caseTypeCol.id,
@@ -268,6 +291,6 @@ export class EpiUploadUtil {
     Object.values(completeCaseType.case_type_access_abacs).forEach((abac) => {
       writableColIds.push(...abac.write_case_type_col_ids);
     });
-    return writableColIds;
+    return uniq(writableColIds);
   }
 }

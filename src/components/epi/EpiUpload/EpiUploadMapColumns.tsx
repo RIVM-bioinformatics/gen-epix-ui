@@ -34,6 +34,7 @@ import type {
   EpiUploadMappedColumnsFormFields,
   EPI_UPLOAD_ACTION,
 } from '../../../models/epiUpload';
+import { ConfigManager } from '../../../classes/managers/ConfigManager';
 
 export type EpiUploadMapColumnsProps = {
   readonly completeCaseType: CompleteCaseType;
@@ -58,8 +59,8 @@ export const EpiUploadMapColumns = ({ completeCaseType, rawData, onProceed, onGo
     if (mappedColumnsFromProps) {
       return mappedColumnsFromProps;
     }
-    return EpiUploadUtil.getInitialMappedColumns(completeCaseType, rawData);
-  }, [completeCaseType, mappedColumnsFromProps, rawData]);
+    return EpiUploadUtil.getInitialMappedColumns(completeCaseType, rawData, importAction);
+  }, [completeCaseType, importAction, mappedColumnsFromProps, rawData]);
 
   const schema = useMemo(() => {
     return EpiUploadUtil.getSchema(completeCaseType, t, importAction);
@@ -128,7 +129,7 @@ export const EpiUploadMapColumns = ({ completeCaseType, rawData, onProceed, onGo
         <TableHead>
           <TableRow>
             <TableCell sx={{ width: '34%' }}>
-              {t('Case type column')}
+              {`${ConfigManager.instance.config.applicationName} - ${completeCaseType.name}`}
             </TableCell>
             <TableCell sx={{ width: '66%' }}>
               {fileName}
@@ -140,7 +141,7 @@ export const EpiUploadMapColumns = ({ completeCaseType, rawData, onProceed, onGo
         </TableBody>
       </Table>
     );
-  }, [fileName, t]);
+  }, [completeCaseType.name, fileName]);
 
   return (
     <ResponseHandler loadables={loadables}>
