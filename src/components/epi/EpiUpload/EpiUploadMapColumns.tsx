@@ -171,7 +171,7 @@ export const EpiUploadMapColumns = ({ completeCaseType, rawData, onProceed, onGo
           variant={'contained'}
           onClick={onProceedButtonClick}
         >
-          {t('Save & proceed')}
+          {t('Next')}
         </Button>
       </Box>
     </ResponseHandler>

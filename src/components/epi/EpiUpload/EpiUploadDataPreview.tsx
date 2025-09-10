@@ -95,7 +95,8 @@ export const EpiUploadDataPreview = ({
           getRowName={getRowName}
         />
         <Box
-          paddingY={1}
+          marginTop={2}
+          marginBottom={1}
           sx={{
             display: 'flex',
             gap: 2,
@@ -112,7 +113,7 @@ export const EpiUploadDataPreview = ({
             variant={'contained'}
             onClick={onProceedButtonClick}
           >
-            {t('Proceed')}
+            {t('Validate')}
           </Button>
         </Box>
       </Box>

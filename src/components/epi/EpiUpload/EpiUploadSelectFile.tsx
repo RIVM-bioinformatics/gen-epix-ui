@@ -360,7 +360,7 @@ const EpiUploadSelectFile = ({ onProceed, defaultValues }: EpiUploadSelectFilePr
           variant={'contained'}
           onClick={onProceedButtonClick}
         >
-          {t('Save & proceed')}
+          {t('Next')}
         </Button>
       </Box>
     </ResponseHandler>
