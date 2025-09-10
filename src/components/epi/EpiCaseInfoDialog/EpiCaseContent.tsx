@@ -50,7 +50,6 @@ export const EpiCaseContent = ({ epiCase, ...boxProps }: EpiCaseContentProps) =>
       <Typography variant={'h6'}>
         {t`Content`}
       </Typography>
-
       {!epiCase && (
         <GenericErrorMessage
           error={new Error('Case could not be found')}
@@ -60,15 +59,17 @@ export const EpiCaseContent = ({ epiCase, ...boxProps }: EpiCaseContentProps) =>
         <Table size={'small'}>
           <TableHead>
             <TableRow>
-              <TableCell sx={{
-                width: 'calc(100% / 3)',
-              }}
+              <TableCell
+                sx={{
+                  width: 'calc(100% / 3)',
+                }}
               >
                 {t`Column`}
               </TableCell>
-              <TableCell sx={{
-                width: 'calc(100% / 3 * 2)',
-              }}
+              <TableCell
+                sx={{
+                  width: 'calc(100% / 3 * 2)',
+                }}
               >
                 {t`Value`}
               </TableCell>
@@ -80,25 +81,27 @@ export const EpiCaseContent = ({ epiCase, ...boxProps }: EpiCaseContentProps) =>
               const columnValue = EpiCaseUtil.getRowValue(epiCase, caseTypeColumn, completeCaseType);
               return (
                 <TableRow key={caseTypeColumn.id}>
-                  <TableCell sx={{
-                    width: 'calc(100% / 3)',
-                  }}
+                  <TableCell
+                    sx={{
+                      width: 'calc(100% / 3)',
+                    }}
                   >
                     {caseTypeColumn.label}
                   </TableCell>
-                  <TableCell sx={{
-                    width: 'calc(100% / 3 * 2)',
-                  }}
+                  <TableCell
+                    sx={{
+                      width: 'calc(100% / 3 * 2)',
+                    }}
                   >
                     {column.col_type === ColType.ORGANIZATION && !columnValue.isMissing && (
                       <Link
+                        sx={{
+                          cursor: 'pointer',
+                        }}
                         color={'primary'}
                         // eslint-disable-next-line react/jsx-no-bind
                         onClick={() => {
                           onOrganizationLinkClick(epiCase.content[caseTypeColumn.id]);
-                        }}
-                        sx={{
-                          cursor: 'pointer',
                         }}
                       >
                         {columnValue.long}

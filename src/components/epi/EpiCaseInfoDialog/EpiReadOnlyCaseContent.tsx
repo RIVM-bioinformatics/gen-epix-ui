@@ -40,22 +40,24 @@ export const EpiReadOnlyCaseContent = ({ epiCase, ...boxProps }: EpiReadOnlyCase
       )}
       <ResponseHandler
         inlineSpinner
-        loadables={loadables}
         shouldHideActionButtons
+        loadables={loadables}
       >
         {epiCase && (
           <Table size={'small'}>
             <TableHead>
               <TableRow>
-                <TableCell sx={{
-                  width: 'calc(100% * 1/3)',
-                }}
+                <TableCell
+                  sx={{
+                    width: 'calc(100% * 1/3)',
+                  }}
                 >
                   {t`Column`}
                 </TableCell>
-                <TableCell sx={{
-                  width: 'calc(100% * 2/3)',
-                }}
+                <TableCell
+                  sx={{
+                    width: 'calc(100% * 2/3)',
+                  }}
                 >
                   {t`Value`}
                 </TableCell>

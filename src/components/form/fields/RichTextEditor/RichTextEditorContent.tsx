@@ -17,12 +17,13 @@ export const RichTextEditorContent = ({ source }: RichTextEditorContentProps) =>
   const theme = useTheme();
 
   return (
-    <Box sx={{
-      '& *': {
-        fontSize: '1rem',
-        fontFamily: theme.typography.fontFamily,
-      },
-    }}
+    <Box
+      sx={{
+        '& *': {
+          fontSize: '1rem',
+          fontFamily: theme.typography.fontFamily,
+        },
+      }}
     >
       <RichTextReadOnly
         content={source}

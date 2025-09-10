@@ -1,8 +1,8 @@
 import type { TFunction } from 'i18next';
 import { format } from 'date-fns';
 import type { ECharts } from 'echarts';
-import { createArrayCsvStringifier } from 'csv-writer';
 import writeXlsxFile from 'write-excel-file';
+import { stringify } from 'csv-stringify/browser/esm/sync';
 
 import type {
   Case,
@@ -56,10 +56,13 @@ export class EpiDownloadUtil {
   }
 
   public static downloadAsCsv(cases: Case[], caseTypeColumnIds: string[], completeCaseType: CompleteCaseType, t: TFunction<'translation', undefined>): void {
-    const csvStringifier = createArrayCsvStringifier({
-      header: EpiDownloadUtil.getColumnHeadersForExport(caseTypeColumnIds, completeCaseType),
+    const data = [
+      EpiDownloadUtil.getColumnHeadersForExport(caseTypeColumnIds, completeCaseType),
+      ...EpiDownloadUtil.getRowsForExport(cases, caseTypeColumnIds, completeCaseType),
+    ];
+    const csv = stringify(data, {
+      defaultEncoding: 'utf-8',
     });
-    const csv = `${csvStringifier.getHeaderString()}${csvStringifier.stringifyRecords(EpiDownloadUtil.getRowsForExport(cases, caseTypeColumnIds, completeCaseType))}`;
     const fileName = `${EpiDownloadUtil.getExportFileName(t`Line list`, completeCaseType, t)}.csv`;
     EpiDownloadUtil.createDownloadUrl(`data:text/csv;base64,${btoa(csv)}`, fileName);
   }
@@ -89,7 +92,7 @@ export class EpiDownloadUtil {
 
     // Convert blob to base64 and download
     const arrayBuffer = await blob.arrayBuffer();
-    const base64 = btoa(String.fromCharCode(...new Uint8Array(arrayBuffer)));
+    const base64 = EpiDownloadUtil.arrayBufferToBase64(arrayBuffer);
     EpiDownloadUtil.createDownloadUrl(`data:application/vnd.openxmlformats-officedocument.spreadsheetml.sheet;base64,${base64}`, fileName);
   }
 
@@ -103,11 +106,12 @@ export class EpiDownloadUtil {
   }
 
   private static getRowsForExport(cases: Case[], caseTypeColumnIds: string[], completeCaseType: CompleteCaseType): string[][] {
+    const caseTypeColumns = EpiDownloadUtil.getCaseTypeColumnsForExport(caseTypeColumnIds, completeCaseType);
     return cases.map(row => [
       row.id,
       completeCaseType.name,
       row.case_date ? format(row.case_date, DATE_FORMAT.DATE) : '',
-      ...EpiDownloadUtil.getCaseTypeColumnsForExport(caseTypeColumnIds, completeCaseType).map(caseTypeColumn => EpiCaseUtil.getRowValue(row, caseTypeColumn, completeCaseType).short),
+      ...caseTypeColumns.map(caseTypeColumn => EpiCaseUtil.getRowValue(row, caseTypeColumn, completeCaseType, true).long),
     ]);
   }
 
@@ -119,5 +123,13 @@ export class EpiDownloadUtil {
       });
   }
 
-
+  private static arrayBufferToBase64(buffer: ArrayBuffer) {
+    let binary = '';
+    const bytes = new Uint8Array(buffer);
+    const len = bytes.byteLength;
+    for (let i = 0; i < len; i++) {
+      binary += String.fromCharCode(bytes[i]);
+    }
+    return window.btoa(binary);
+  }
 }

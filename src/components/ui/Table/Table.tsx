@@ -213,18 +213,18 @@ export const Table = <TRowData,>({
     }
     return (
       <Link
-        color={'primary'}
         key={cell.id}
-        // eslint-disable-next-line react/jsx-no-bind
-        onClick={(event) => {
-          onTableReadableIndexClick(cell.row, event);
-        }}
+        color={'primary'}
         sx={{
           cursor: 'pointer',
           width: '100%',
           display: 'block',
           textAlign: 'right',
           height: '100%',
+        }}
+        // eslint-disable-next-line react/jsx-no-bind
+        onClick={(event) => {
+          onTableReadableIndexClick(cell.row, event);
         }}
       >
         {cell.rowIndex + 1}
@@ -251,11 +251,11 @@ export const Table = <TRowData,>({
           'aria-label': t`Select all`,
         }}
         name={'select-all'}
-        onChange={onSelectAllCheckBoxChange}
         sx={{
           padding: 0,
           marginTop: '-2px',
         }}
+        onChange={onSelectAllCheckBoxChange}
       />
     );
   }, [idSelectorCallback, onSelectAllCheckBoxChange, selectedIds, sortedData, t]);
@@ -273,10 +273,9 @@ export const Table = <TRowData,>({
     const id = idSelectorCallback(cell.row);
     return (
       <Checkbox
-        checked={selectedIds.includes(id)}
         key={id}
+        checked={selectedIds.includes(id)}
         name={idSelectorCallback(cell.row)}
-        onChange={onRowCheckBoxChange}
         slotProps={{
           input: {
             'aria-label': t`Select row`,
@@ -286,6 +285,7 @@ export const Table = <TRowData,>({
           padding: 0,
           marginTop: '-2px',
         }}
+        onChange={onRowCheckBoxChange}
       />
     );
   }, [idSelectorCallback, onRowCheckBoxChange, selectedIds, t]);
@@ -521,19 +521,19 @@ export const Table = <TRowData,>({
           }
           return (
             <TableHeaderCell<TRowData>
+              key={column.id}
               column={tableColumn.type === 'selectable' ? { ...tableColumn, renderHeader: renderCheckboxHeader } : tableColumn}
               columnIndex={columnIndex}
               dividerColor={headerBorderColor}
               height={theme.spacing(headerHeight)}
-              key={column.id}
-              onColumnDividerMouseDown={onColumnDividerMouseDown}
               // onDragEnd={onTableHeaderCellDragEnd}
               // onDragStart={onTableHeaderCellDragStart}
-              onCustomDrag={onTableHeaderCellDrag}
               order={tableColumnSettings.current.findIndex(c => c.id === column.id)}
               role={'columnheader'}
               width={column.calculatedWidth}
               xOffset={column.offsetX}
+              onColumnDividerMouseDown={onColumnDividerMouseDown}
+              onCustomDrag={onTableHeaderCellDrag}
             />
           );
         })}
@@ -595,8 +595,8 @@ export const Table = <TRowData,>({
           return (
             <TableCell
               {...baseProps as TableCellProps<TRowData>}
-              column={tableColumn}
               key={column.id}
+              column={tableColumn}
             >
               {!!tableColumn.renderCell && (
                 // React is losing it's mind here, so we need to wrap the renderCell in a Fragment to prevent complaints about keys
@@ -610,7 +610,6 @@ export const Table = <TRowData,>({
                   <TableCellAsyncContent content={tableColumn.displayValueGetter({ id: column.id, row, rowIndex: index })} />
                 </Fragment>
               )}
-
               {!tableColumn.displayValueGetter && !tableColumn.renderCell && tableColumn.type === 'text' && TableUtil.getTableTextCellValue({ column: tableColumn, row, rowIndex: index })}
               {!tableColumn.displayValueGetter && !tableColumn.renderCell && tableColumn.type === 'boolean' && TableUtil.getTableBooleanCellDisplayValue({ column: tableColumn, row, rowIndex: index, t })}
               {!tableColumn.displayValueGetter && !tableColumn.renderCell && tableColumn.type === 'number' && TableUtil.getTableNumberCellValue({ column: tableColumn, row, rowIndex: index })}
@@ -755,17 +754,14 @@ export const Table = <TRowData,>({
       {isInitialized && (
         <TableVirtuoso
           {...TestIdUtil.createAttributes('Table')}
+          ref={tableRef}
           components={{
           // eslint-disable-next-line @typescript-eslint/naming-convention, react/no-unstable-nested-components
             TableRow: forwardRef((props: ItemProps<TRowData>, tableRowRef) => {
               const isRowEnabled = isRowEnabledCallback ? isRowEnabledCallback(props.item) : true;
               return (
                 <Box
-                  data-id={idSelectorCallback(props.item)}
-                  // eslint-disable-next-line react/jsx-no-bind
-                  onMouseEnter={() => onRowMouseEnterCallback(props.item)}
-                  // eslint-disable-next-line react/jsx-no-bind
-                  onMouseLeave={() => onRowMouseLeaveCallback(props.item)}
+                  ref={tableRowRef}
                   role={'row'}
                   sx={{
                     height: theme.spacing(rowHeight),
@@ -780,8 +776,12 @@ export const Table = <TRowData,>({
                       },
                     },
                   }}
+                  data-id={idSelectorCallback(props.item)}
+                  // eslint-disable-next-line react/jsx-no-bind
+                  onMouseEnter={() => onRowMouseEnterCallback(props.item)}
+                  // eslint-disable-next-line react/jsx-no-bind
+                  onMouseLeave={() => onRowMouseLeaveCallback(props.item)}
                   {...omit(props, 'item')}
-                  ref={tableRowRef}
                 />
               );
             }),
@@ -789,8 +789,8 @@ export const Table = <TRowData,>({
             Table: forwardRef((props: VirtuosoTableProps, tableElementRef) => (
               <Box
                 {...props}
-                data-row-count={sortedData.length}
                 ref={tableElementRef}
+                data-row-count={sortedData.length}
                 role={'table'}
                 sx={{
                   width: tableWidthRef.current,
@@ -837,18 +837,17 @@ export const Table = <TRowData,>({
           initialTopMostItemIndex={initialVisibleItemIndex}
           itemContent={renderItemContent}
           itemSize={handleItemSize}
-          onScroll={onTableScroll}
           overscan={{
             main: overscanMain ?? DEFAULT_OVERSCAN_MAIN,
             reverse: overscanReverse ?? DEFAULT_OVERSCAN_REVERSE,
           }}
           rangeChanged={onVirtuosoRangeChanged}
-          ref={tableRef}
           style={{
             height: '100%',
             overflowX: forceHorizontalOverflow ? 'scroll' : 'auto',
           }}
           totalCount={sortedData.length}
+          onScroll={onTableScroll}
         />
       )}
       <TableColumnsEditorDialog

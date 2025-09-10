@@ -329,11 +329,11 @@ export const EpiCaseSetInfoDialog = withDialog<EpiCaseSetInfoDialogProps, EpiCas
   return (
     <>
       <ResponseHandler
-        error={caseSetError || caseSetDataCollectionLinksError}
         inlineSpinner
+        shouldHideActionButtons
+        error={caseSetError || caseSetDataCollectionLinksError}
         isLoading={isCaseSetLoading || isSetCaseDataCollectionLinksLoading}
         loadables={loadables}
-        shouldHideActionButtons
       >
         <EpiCaseAbacContextProvider caseAbac={caseAbacContextValue}>
           {!isEditingCaseSetContent && !isEditingDataCollections && (
@@ -351,7 +351,6 @@ export const EpiCaseSetInfoDialog = withDialog<EpiCaseSetInfoDialogProps, EpiCas
               />
             </>
           )}
-
           {isEditingCaseSetContent && (
             <EpiCaseSetForm
               caseSet={caseSet}
@@ -360,7 +359,6 @@ export const EpiCaseSetInfoDialog = withDialog<EpiCaseSetInfoDialogProps, EpiCas
               onIsSavingChange={onEpiCaseSetFormIsSavingChange}
             />
           )}
-
           {isEditingDataCollections && (
             <EpiCaseSetSharingForm
               caseSet={caseSet}
@@ -372,12 +370,12 @@ export const EpiCaseSetInfoDialog = withDialog<EpiCaseSetInfoDialogProps, EpiCas
         </EpiCaseAbacContextProvider>
       </ResponseHandler>
       <Confirmation
+        ref={deleteConfirmation}
         body={t`Are you sure you want to delete the event?`}
         cancelLabel={t`Cancel`}
         confirmLabel={t`Delete`}
-        onConfirm={onDeleteConfirmationConfirm}
-        ref={deleteConfirmation}
         title={t`Delete event?`}
+        onConfirm={onDeleteConfirmationConfirm}
       />
 
     </>

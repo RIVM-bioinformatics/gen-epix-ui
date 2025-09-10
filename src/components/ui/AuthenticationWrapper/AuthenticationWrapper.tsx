@@ -94,8 +94,8 @@ export const AuthenticationWrapper = ({ children }: PropsWithChildren) => {
       <Box marginY={2}>
         <Button
           color={'primary'}
-          onClick={onChangeLoginProviderButtonClick}
           variant={'outlined'}
+          onClick={onChangeLoginProviderButtonClick}
         >
           {t`Choose a different identity provider`}
         </Button>
@@ -166,8 +166,8 @@ export const AuthenticationWrapper = ({ children }: PropsWithChildren) => {
       {children}
       {ConfigManager.instance.config.consentDialog.getShouldShow() && (
         <ConsentDialog
-          onConsent={onConsentDialogConsent}
           ref={consentDialogRef}
+          onConsent={onConsentDialogConsent}
         />
       )}
     </>

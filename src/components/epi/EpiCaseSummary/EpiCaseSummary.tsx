@@ -88,8 +88,12 @@ export const EpiCaseSummary = ({ epiCase }: EpiCaseSummaryProps) => {
             const value = EpiCaseUtil.getRowValue(epiCase, tableColumn.caseTypeColumn, completeCaseType);
             return (
               <Fragment key={tableColumn.id}>
-                <dt>{tableColumn.headerName}</dt>
-                <dd>{value.short}</dd>
+                <dt>
+                  {tableColumn.headerName}
+                </dt>
+                <dd>
+                  {value.short}
+                </dd>
               </Fragment>
             );
           } catch {
@@ -97,10 +101,11 @@ export const EpiCaseSummary = ({ epiCase }: EpiCaseSummaryProps) => {
           }
         })}
       </Box>
-      <Box sx={{
-        clear: 'both',
-        float: 'right',
-      }}
+      <Box
+        sx={{
+          clear: 'both',
+          float: 'right',
+        }}
       >
         <Tooltip
           arrow
@@ -110,10 +115,10 @@ export const EpiCaseSummary = ({ epiCase }: EpiCaseSummaryProps) => {
             aria-label={t`Show one less attribute`}
             color={'primary'}
             disabled={numVisibleAttributesInSummary <= 1}
+            size={'small'}
             onClick={onRemoveAttributeClick}
-            size="small"
           >
-            <RemoveIcon fontSize="inherit" />
+            <RemoveIcon fontSize={'inherit'} />
           </IconButton>
         </Tooltip>
         <Tooltip
@@ -124,10 +129,10 @@ export const EpiCaseSummary = ({ epiCase }: EpiCaseSummaryProps) => {
             aria-label={t`Show one more attribute`}
             color={'primary'}
             disabled={numVisibleAttributesInSummary >= visibleCaseTypeTableColumns.length - 1}
+            size={'small'}
             onClick={onAddAttributeClick}
-            size="small"
           >
-            <AddIcon fontSize="inherit" />
+            <AddIcon fontSize={'inherit'} />
           </IconButton>
         </Tooltip>
       </Box>

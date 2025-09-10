@@ -177,38 +177,38 @@ export const NestedMenuItem = ({ ref, ...props }: NestedMenuItemProps) => {
   return (
     <Box
       {...ContainerProps}
+      ref={containerRef}
+      tabIndex={tabIndex}
       onFocus={onFocus}
       onKeyDown={onKeyDown}
       onMouseEnter={onMouseEnter}
       onMouseLeave={onMouseLeave}
-      ref={containerRef}
-      tabIndex={tabIndex}
     >
 
       <IconMenuItem
+        ref={menuItemRef}
         MenuItemProps={MenuItemProps}
         className={className}
         label={label}
         leftIcon={leftIcon}
-        ref={menuItemRef}
         rightIcon={rightIcon}
       />
       <Menu
+        ref={menuRef}
+        disableAutoFocus
+        disableEnforceFocus
         // from capturing events for clicks and hovers
         anchorEl={menuItemRef.current}
         anchorOrigin={origins.anchor}
         // eslint-disable-next-line jsx-a11y/no-autofocus
         autoFocus={false}
-        disableAutoFocus
-        disableEnforceFocus
-        onClose={onMenuClose}
         open={open}
-        ref={menuRef}
         // Set pointer events to 'none' to prevent the invisible Popover div
         sx={{
           pointerEvents: 'none',
         }}
         transformOrigin={origins.transform}
+        onClose={onMenuClose}
         {...MenuProps}
       >
         <Box

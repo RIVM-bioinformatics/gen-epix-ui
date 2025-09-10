@@ -9,6 +9,8 @@ import type { AutocompleteProps } from '../components/form/fields/Autocomplete';
 import type { TextFieldProps } from '../components/form/fields/TextField';
 import type { SelectProps } from '../components/form/fields/Select';
 import type { DatePickerProps } from '../components/form/fields/DatePicker';
+import type { UploadButtonProps } from '../components/form/fields/UploadButton/UploadButton';
+import type { RadioGroupProps } from '../components/form/fields/RadioGroup';
 
 
 export interface OptionBase<TValue> {
@@ -30,11 +32,13 @@ export type TransferListOption = OptionBase<string>;
 export enum FORM_FIELD_DEFINITION_TYPE {
   TRANSFER_LIST = 'TRANSFER_LIST',
   AUTOCOMPLETE = 'AUTOCOMPLETE',
+  FILE = 'FILE',
   TEXTFIELD = 'TEXTFIELD',
   RICH_TEXT = 'RICH_TEXT',
   BOOLEAN = 'BOOLEAN',
   HIDDEN = 'HIDDEN',
   DATE = 'DATE',
+  RADIO_GROUP = 'RADIO_GROUP',
 }
 
 export type FormFieldDefinitionAutocomplete<TFormFields extends FieldValues> = { definition: FORM_FIELD_DEFINITION_TYPE.AUTOCOMPLETE; multiple?: false } & AutocompleteProps<TFormFields, Path<TFormFields>, false>;
@@ -45,6 +49,8 @@ export type FormFieldDefinitionTransferList<TFormFields extends FieldValues> = {
 export type FormFieldDefinitionHidden<TFormFields extends FieldValues> = { definition: FORM_FIELD_DEFINITION_TYPE.HIDDEN } & TextFieldProps<TFormFields, Path<TFormFields>>;
 export type FormFieldDefinitionRichText<TFormFields extends FieldValues> = { definition: FORM_FIELD_DEFINITION_TYPE.RICH_TEXT } & RichTextEditorProps<TFormFields, Path<TFormFields>>;
 export type FormFieldDefinitionDate<TFormFields extends FieldValues> = { definition: FORM_FIELD_DEFINITION_TYPE.DATE } & DatePickerProps<TFormFields, Path<TFormFields>>;
+export type FormFieldDefinitionFile<TFormFields extends FieldValues> = { definition: FORM_FIELD_DEFINITION_TYPE.FILE } & UploadButtonProps<TFormFields, Path<TFormFields>>;
+export type FormFieldDefinitionRadioGroup<TFormFields extends FieldValues> = { definition: FORM_FIELD_DEFINITION_TYPE.RADIO_GROUP } & RadioGroupProps<TFormFields, Path<TFormFields>>;
 
 export type FormFieldDefinition<TFormFields> =
   FormFieldDefinitionAutocomplete<TFormFields> |
@@ -54,4 +60,6 @@ export type FormFieldDefinition<TFormFields> =
   FormFieldDefinitionTransferList<TFormFields> |
   FormFieldDefinitionHidden<TFormFields> |
   FormFieldDefinitionRichText<TFormFields> |
-  FormFieldDefinitionDate<TFormFields>;
+  FormFieldDefinitionDate<TFormFields> |
+  FormFieldDefinitionFile<TFormFields> |
+  FormFieldDefinitionRadioGroup<TFormFields>;

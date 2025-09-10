@@ -75,25 +75,27 @@ export const SidebarItem = ({ open, onClose, children, width, title, closeIconTo
         },
       }}
       anchor={'left'}
-      onClose={onClose}
       open={open}
+      onClose={onClose}
     >
       {!open && (
-        <Box sx={{
-          width: theme.spacing(width),
-        }}
+        <Box
+          sx={{
+            width: theme.spacing(width),
+          }}
         />
       )}
       {open && (
         <>
-          <Box sx={{
-            display: 'flex',
-            justifyContent: 'space-between',
-            alignItems: 'center',
-            height: theme.spacing(6),
-            width: theme.spacing(width),
-            background: theme.palette.grey[100],
-          }}
+          <Box
+            sx={{
+              display: 'flex',
+              justifyContent: 'space-between',
+              alignItems: 'center',
+              height: theme.spacing(6),
+              width: theme.spacing(width),
+              background: theme.palette.grey[100],
+            }}
           >
             <Typography
               component={'h3'}
@@ -115,14 +117,14 @@ export const SidebarItem = ({ open, onClose, children, width, title, closeIconTo
               </IconButton>
             </Tooltip>
           </Box>
-
           <Box paddingX={1}>
-            <Box sx={{
-              position: 'absolute',
-              top: theme.spacing(6),
-              height: `calc(100% - ${theme.spacing(6)})`,
-              width: theme.spacing(width - 1),
-            }}
+            <Box
+              sx={{
+                position: 'absolute',
+                top: theme.spacing(6),
+                height: `calc(100% - ${theme.spacing(6)})`,
+                width: theme.spacing(width - 1),
+              }}
             >
               {children}
             </Box>

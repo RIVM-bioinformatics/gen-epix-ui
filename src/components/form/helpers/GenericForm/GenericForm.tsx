@@ -1,7 +1,11 @@
-import type { FormEventHandler } from 'react';
+import type {
+  FormEventHandler,
+  ReactElement,
+} from 'react';
 import {
   useMemo,
   useCallback,
+  Fragment,
 } from 'react';
 import { useTranslation } from 'react-i18next';
 import type {
@@ -21,12 +25,16 @@ import { Autocomplete } from '../../fields/Autocomplete';
 import { Select } from '../../fields/Select';
 import { TextField } from '../../fields/TextField';
 import { DatePicker } from '../../fields/DatePicker';
+import { UploadButton } from '../../fields/UploadButton/UploadButton';
+import { RadioGroup } from '../../fields/RadioGroup';
 
 export type GenericFormProps<TFormFields> = {
   readonly formFieldDefinitions: FormFieldDefinition<TFormFields>[];
   readonly formId?: string;
   readonly onSubmit: FormEventHandler<HTMLFormElement>;
   readonly formMethods: UseFormReturn<TFormFields>;
+  readonly renderField?: (definition: FormFieldDefinition<TFormFields>, element: ReactElement) => ReactElement;
+  readonly wrapForm?: (children: ReactElement) => ReactElement;
 };
 
 export const GenericForm = <TFormFields,>({
@@ -34,6 +42,8 @@ export const GenericForm = <TFormFields,>({
   formId,
   onSubmit,
   formMethods,
+  renderField,
+  wrapForm,
 }: GenericFormProps<TFormFields>) => {
   const [t] = useTranslation();
 
@@ -72,6 +82,18 @@ export const GenericForm = <TFormFields,>({
             {...formFieldDefinition}
           />
         );
+      case FORM_FIELD_DEFINITION_TYPE.FILE:
+        return (
+          <UploadButton
+            {...formFieldDefinition}
+          />
+        );
+      case FORM_FIELD_DEFINITION_TYPE.RADIO_GROUP:
+        return (
+          <RadioGroup
+            {...formFieldDefinition}
+          />
+        );
       case FORM_FIELD_DEFINITION_TYPE.TEXTFIELD:
       default:
         return (
@@ -82,6 +104,29 @@ export const GenericForm = <TFormFields,>({
     }
   }, [booleanOptions]);
 
+
+  const formContent = (
+    <>
+      {formFieldDefinitions.map(formFieldDefinition => {
+        if (renderField) {
+          return (
+            <Fragment key={formFieldDefinition.name}>
+              {renderField(formFieldDefinition, renderFormFieldDefinition(formFieldDefinition))}
+            </Fragment>
+          );
+        }
+        return (
+          <Box
+            key={formFieldDefinition.name}
+            marginY={1}
+          >
+            {renderFormFieldDefinition(formFieldDefinition)}
+          </Box>
+        );
+      })}
+    </>
+  );
+
   return (
     <FormProvider {...formMethods}>
       <form
@@ -89,14 +134,7 @@ export const GenericForm = <TFormFields,>({
         id={formId}
         onSubmit={onSubmit}
       >
-        {formFieldDefinitions.map(formFieldDefinition => (
-          <Box
-            key={formFieldDefinition.name}
-            marginY={1}
-          >
-            {renderFormFieldDefinition(formFieldDefinition)}
-          </Box>
-        ))}
+        {wrapForm ? wrapForm(formContent) : formContent}
       </form>
     </FormProvider>
   );

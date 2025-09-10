@@ -130,15 +130,15 @@ export const GenericErrorMessage = ({ error, shouldHideActionButtons }: GenericE
         >
           <Button
             color={'primary'}
-            onClick={onLogoutButtonClick}
             variant={'outlined'}
+            onClick={onLogoutButtonClick}
           >
             {t`Logout`}
           </Button>
           <Button
             color={'primary'}
-            onClick={onBackToHomePageButtonClick}
             variant={'outlined'}
+            onClick={onBackToHomePageButtonClick}
           >
             {t`Go back to homepage`}
           </Button>

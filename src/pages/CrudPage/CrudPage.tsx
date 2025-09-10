@@ -473,11 +473,12 @@ export const CrudPage = <
       );
     }
     return (
-      <Box sx={{
-        display: 'flex',
-        alignItems: 'center',
-        gap: theme.spacing(1),
-      }}
+      <Box
+        sx={{
+          display: 'flex',
+          alignItems: 'center',
+          gap: theme.spacing(1),
+        }}
       >
         <TableHeader />
         {userCanCreate && (
@@ -485,9 +486,9 @@ export const CrudPage = <
             color={'primary'}
             disabled={isLoading || isCreating}
             loading={isLoading || isCreating}
-            onClick={onCreateItemButtonClick}
             size={'small'}
             variant={'contained'}
+            onClick={onCreateItemButtonClick}
           >
             {createItemButtonText ?? t`Create item`}
           </Button>
@@ -500,6 +501,8 @@ export const CrudPage = <
   return (
     <TableStoreContextProvider store={tableStore}>
       <PageContainer
+        fullWidth
+        showBreadcrumbs
         contentActions={customContentActions}
         contentHeader={(
           <TableCaption
@@ -508,15 +511,14 @@ export const CrudPage = <
             variant={'h2'}
           />
         )}
-        fullWidth
-        showBreadcrumbs
         testIdAttributes={testIdAttributes}
         title={title}
       >
-        <Box sx={{
-          position: 'relative',
-          height: '100%',
-        }}
+        <Box
+          sx={{
+            position: 'relative',
+            height: '100%',
+          }}
         >
           <ResponseHandler
             error={error}
@@ -524,11 +526,12 @@ export const CrudPage = <
           >
 
             <TableSidebarMenu />
-            <Box sx={{
-              width: '100%',
-              height: '100%',
-              paddingLeft: theme.spacing(ConfigManager.instance.config.layout.SIDEBAR_MENU_WIDTH + 1),
-            }}
+            <Box
+              sx={{
+                width: '100%',
+                height: '100%',
+                paddingLeft: theme.spacing(ConfigManager.instance.config.layout.SIDEBAR_MENU_WIDTH + 1),
+              }}
             >
               <Table
                 getRowName={getName}
@@ -538,19 +541,19 @@ export const CrudPage = <
           </ResponseHandler>
         </Box>
         <CrudPageEditDialog
+          ref={editDialogRef}
           formFieldDefinitions={formFieldDefinitions}
           getName={getName}
-          onSave={onEditDialogSave}
-          ref={editDialogRef}
           schema={schema}
+          onSave={onEditDialogSave}
         />
         <Confirmation
+          ref={deleteConfirmationRef}
           body={t`This will delete the item.`}
           cancelLabel={t`Cancel`}
           confirmLabel={t`Delete`}
-          onConfirm={onDeleteConfirmationConfirm}
-          ref={deleteConfirmationRef}
           title={t`Are you sure?`}
+          onConfirm={onDeleteConfirmationConfirm}
         />
       </PageContainer>
     </TableStoreContextProvider>

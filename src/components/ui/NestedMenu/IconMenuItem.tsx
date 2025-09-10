@@ -45,8 +45,8 @@ export const IconMenuItem = ({ MenuItemProps, className, label, leftIcon, rightI
   return (
     <StyledMenuItem
       {...MenuItemProps}
-      className={className}
       ref={ref}
+      className={className}
       {...props}
     >
       <FlexBox>

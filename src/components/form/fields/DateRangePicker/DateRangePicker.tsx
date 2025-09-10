@@ -249,8 +249,6 @@ export const DateRangePicker = <TFieldValues extends FieldValues, TName extends 
           {label}
           <IconButton
             {...TestIdUtil.createAttributes('DateRangePicker-reset')}
-            // eslint-disable-next-line react/jsx-no-bind
-            onClick={onResetButtonClick}
             sx={{
               position: 'absolute',
               top: '-10px',
@@ -259,6 +257,8 @@ export const DateRangePicker = <TFieldValues extends FieldValues, TName extends 
               },
             }}
             tabIndex={-1}
+            // eslint-disable-next-line react/jsx-no-bind
+            onClick={onResetButtonClick}
           >
             <ClearIcon />
           </IconButton>
@@ -267,11 +267,12 @@ export const DateRangePicker = <TFieldValues extends FieldValues, TName extends 
           adapterLocale={customLocale}
           dateAdapter={AdapterDateFns}
         >
-          <Box sx={{
-            display: 'grid',
-            gridTemplateColumns: '1fr 1fr',
-            gap: theme.spacing(1),
-          }}
+          <Box
+            sx={{
+              display: 'grid',
+              gridTemplateColumns: '1fr 1fr',
+              gap: theme.spacing(1),
+            }}
           >
             <MuiDatePicker
               disableFuture
@@ -281,9 +282,6 @@ export const DateRangePicker = <TFieldValues extends FieldValues, TName extends 
               label={t`From`}
               loading={loading}
               maxDate={toValue ? new Date(Math.min.apply(null, [maxDate, toValue] as unknown as number[])) : maxDate}
-              minDate={minDate}
-              // eslint-disable-next-line react/jsx-no-bind
-              onChange={onFromValueChange}
               referenceDate={defaultFromDate}
               slotProps={{
                 textField: {
@@ -299,6 +297,9 @@ export const DateRangePicker = <TFieldValues extends FieldValues, TName extends 
               }}
               value={fromValue ?? null}
               views={views as MuiDateTimePickerProps['views'] & MuiDatePickerProps['views']}
+              minDate={minDate}
+              // eslint-disable-next-line react/jsx-no-bind
+              onChange={onFromValueChange}
             />
             <MuiDatePicker
               disableFuture
@@ -308,9 +309,6 @@ export const DateRangePicker = <TFieldValues extends FieldValues, TName extends 
               label={t`To`}
               loading={loading}
               maxDate={maxDate}
-              minDate={fromValue ? new Date(Math.max.apply(null, [minDate, fromValue] as unknown as number[])) : minDate}
-              // eslint-disable-next-line react/jsx-no-bind
-              onChange={onToValueChange}
               referenceDate={maxDate}
               slotProps={{
                 textField: {
@@ -326,14 +324,17 @@ export const DateRangePicker = <TFieldValues extends FieldValues, TName extends 
               }}
               value={toValue ?? null}
               views={views as MuiDateTimePickerProps['views'] & MuiDatePickerProps['views']}
+              minDate={fromValue ? new Date(Math.max.apply(null, [minDate, fromValue] as unknown as number[])) : minDate}
+              // eslint-disable-next-line react/jsx-no-bind
+              onChange={onToValueChange}
             />
           </Box>
         </LocalizationProvider>
         { loading && <FormFieldLoadingIndicator />}
         <FormHelperText sx={{ ml: 0 }}>
           <FormFieldHelperText
-            errorMessage={errorMessage}
             noIndent
+            errorMessage={errorMessage}
             warningMessage={warningMessage}
           />
         </FormHelperText>

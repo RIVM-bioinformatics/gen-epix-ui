@@ -40,23 +40,25 @@ export const NotificationsDrawer = ({ onDrawerClose, open }: NotificationsDrawer
   return (
     <Drawer
       anchor={'right'}
-      onClose={onDrawerClose}
       open={open}
+      onClose={onDrawerClose}
     >
-      <Box sx={{
-        padding: theme.spacing(2),
-        width: '520px',
-        [theme.breakpoints.up('xl')]: {
-          width: '620px',
-        },
-      }}
-      >
-        <Box sx={{
-          display: 'flex',
-          justifyContent: 'space-between',
-          alignItems: 'center',
-          marginBottom: 2,
+      <Box
+        sx={{
+          padding: theme.spacing(2),
+          width: '520px',
+          [theme.breakpoints.up('xl')]: {
+            width: '620px',
+          },
         }}
+      >
+        <Box
+          sx={{
+            display: 'flex',
+            justifyContent: 'space-between',
+            alignItems: 'center',
+            marginBottom: 2,
+          }}
         >
           <Typography
             component={'h6'}
@@ -66,17 +68,16 @@ export const NotificationsDrawer = ({ onDrawerClose, open }: NotificationsDrawer
           </Typography>
           <IconButton>
             <CloseIcon
-              onClick={onDrawerClose}
               sx={{
                 color: theme.palette.text.secondary,
                 '&:hover': {
                   color: theme.palette.text.primary,
                 },
               }}
+              onClick={onDrawerClose}
             />
           </IconButton>
         </Box>
-
         {notifications.length === 0 && (
           <Box>
             <Box
@@ -86,16 +87,18 @@ export const NotificationsDrawer = ({ onDrawerClose, open }: NotificationsDrawer
                 justifyContent: 'center',
               }}
             >
-              <NotificationsIcon sx={{
-                fontSize: 100,
-                color: theme.palette.text.disabled,
-              }}
+              <NotificationsIcon
+                sx={{
+                  fontSize: 100,
+                  color: theme.palette.text.disabled,
+                }}
               />
             </Box>
-            <Box sx={{
-              display: 'flex',
-              justifyContent: 'center',
-            }}
+            <Box
+              sx={{
+                display: 'flex',
+                justifyContent: 'center',
+              }}
             >
               <Typography>
                 {t`No new notifications in this session`}
@@ -113,8 +116,8 @@ export const NotificationsDrawer = ({ onDrawerClose, open }: NotificationsDrawer
             >
               <Button
                 color={'primary'}
-                onClick={onClearAllButtonClick}
                 variant={'outlined'}
+                onClick={onClearAllButtonClick}
               >
                 {t`Clear all notifications`}
               </Button>
@@ -125,10 +128,10 @@ export const NotificationsDrawer = ({ onDrawerClose, open }: NotificationsDrawer
             >
               <Divider />
             </Box>
-
-            <Box sx={{
-              overflowY: 'hidden',
-            }}
+            <Box
+              sx={{
+                overflowY: 'hidden',
+              }}
             >
               <Box
                 sx={{
@@ -138,11 +141,11 @@ export const NotificationsDrawer = ({ onDrawerClose, open }: NotificationsDrawer
               >
                 {notifications.map(notification => (
                   <NotificationItem
-                    allowClose={!notification.isLoading}
                     key={notification.key}
+                    showTimestamp
+                    allowClose={!notification.isLoading}
                     notification={notification}
                     onClose={onNotificationItemClose}
-                    showTimestamp
                   />
                 ))}
               </Box>

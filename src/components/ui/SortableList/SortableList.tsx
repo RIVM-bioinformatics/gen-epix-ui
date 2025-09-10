@@ -101,8 +101,8 @@ export const SortableList = <T extends BaseItem>({
   const renderItem = useCallback((item: T) => {
     return (
       <SortableListItem
-        id={item.id}
         key={item.id}
+        id={item.id}
         sx={{
           backgroundColor: theme.palette.background.paper,
           '&:hover': {
@@ -112,7 +112,6 @@ export const SortableList = <T extends BaseItem>({
       >
         <Checkbox
           checked={item.isSelected}
-          onChange={onCheckBoxChange}
           size={'small'}
           slotProps={{
             input: {
@@ -122,6 +121,7 @@ export const SortableList = <T extends BaseItem>({
           sx={{
             padding: `0 ${theme.spacing(0.5)}`,
           }}
+          onChange={onCheckBoxChange}
         />
         <Box flexGrow={1}>
           {renderItemContent(item)}
@@ -133,16 +133,16 @@ export const SortableList = <T extends BaseItem>({
 
   return (
     <DndContext
+      sensors={sensors}
       onDragCancel={onDragCancel}
       onDragEnd={onDragEnd}
       onDragStart={onDragStart}
-      sensors={sensors}
     >
       <SortableContext items={items}>
         <Box
           {...TestIdUtil.createAttributes('SortableList')}
           component={'ul'}
-          role="application"
+          role={'application'}
           sx={{
             display: 'flex',
             flexDirection: 'column',

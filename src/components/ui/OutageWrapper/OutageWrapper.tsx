@@ -82,23 +82,24 @@ export const OutageWrapper = ({ children }: PropsWithChildren): ReactNode => {
           soonActiveOutages={categorizedOutages.soonActiveOutages}
           visibleOutages={categorizedOutages.visibleOutages}
         />
-        <Box sx={{
-          display: 'flex',
-          justifyContent: 'flex-end',
-          gap: 1,
-        }}
+        <Box
+          sx={{
+            display: 'flex',
+            justifyContent: 'flex-end',
+            gap: 1,
+          }}
         >
           <Button
             disabled={!buttonsEnabled}
-            onClick={onContinuButtonClick}
             variant={'outlined'}
+            onClick={onContinuButtonClick}
           >
             {t`Continue anyway`}
           </Button>
           <Button
             disabled={!buttonsEnabled}
-            onClick={onRetryButtonClick}
             variant={'contained'}
+            onClick={onRetryButtonClick}
           >
             {t`Retry`}
           </Button>

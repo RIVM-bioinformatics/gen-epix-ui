@@ -147,8 +147,8 @@ export const TransferList = <TFieldValues extends FieldValues, TName extends Pat
 
     const customList = (items: readonly string[]) => (
       <Paper
-        elevation={1}
         square
+        elevation={1}
         sx={{
           width: '100%',
           height,
@@ -156,8 +156,8 @@ export const TransferList = <TFieldValues extends FieldValues, TName extends Pat
         }}
       >
         <List
-          component={'div'}
           dense
+          component={'div'}
           role={'list'}
         >
           {items.filter(item => {
@@ -171,18 +171,19 @@ export const TransferList = <TFieldValues extends FieldValues, TName extends Pat
             return (
               <ListItemButton
                 key={option.value}
-                onClick={handleToggle(option.value)}
                 role={'listitem'}
                 sx={{
                   padding: `0 0 0 ${theme.spacing(1)}`,
                   margin: 0,
                 }}
+                onClick={handleToggle(option.value)}
               >
-                <ListItemIcon sx={{
-                  margin: 0,
-                  padding: 0,
-                  minWidth: theme.spacing(4),
-                }}
+                <ListItemIcon
+                  sx={{
+                    margin: 0,
+                    padding: 0,
+                    minWidth: theme.spacing(4),
+                  }}
                 >
                   <Checkbox
                     checked={checked.indexOf(item) !== -1}
@@ -209,20 +210,20 @@ export const TransferList = <TFieldValues extends FieldValues, TName extends Pat
 
     return (
       <Box
-        onBlur={onBlur}
         sx={{
           width: '100%',
           display: 'grid',
           gridTemplateRows: 'auto max-content',
           marginTop: theme.spacing(0.5),
         }}
+        onBlur={onBlur}
       >
         <Box>
           <TextField
             label={t`Filter`}
-            onChange={onFilterValueChangeDebounced}
             size={'small'}
-            variant="outlined"
+            variant={'outlined'}
+            onChange={onFilterValueChangeDebounced}
           />
         </Box>
         <Box
@@ -237,75 +238,74 @@ export const TransferList = <TFieldValues extends FieldValues, TName extends Pat
           </Box>
           <Box sx={{ height }}>
             <Grid
-              alignItems={'center'}
               container
+              alignItems={'center'}
               direction={'column'}
               sx={{ height }}
             >
 
               <Button
                 aria-label={t`move selected right`}
-                disabled={leftChecked.length === 0}
-                // eslint-disable-next-line react/jsx-no-bind
-                onClick={onMoveRightButtonClick}
                 size={'small'}
                 sx={{ my: 0.5 }}
                 variant={'outlined'}
+                disabled={leftChecked.length === 0}
+                // eslint-disable-next-line react/jsx-no-bind
+                onClick={onMoveRightButtonClick}
               >
                 {'>'}
               </Button>
               <Button
                 aria-label={t`move selected left`}
-                disabled={rightChecked.length === 0}
-                // eslint-disable-next-line react/jsx-no-bind
-                onClick={onMoveLeftButtonClick}
                 size={'small'}
                 sx={{ my: 0.5 }}
                 variant={'outlined'}
+                disabled={rightChecked.length === 0}
+                // eslint-disable-next-line react/jsx-no-bind
+                onClick={onMoveLeftButtonClick}
               >
                 {'<'}
               </Button>
               <Button
                 aria-label={t`move all right`}
-                disabled={left.length === 0}
-                // eslint-disable-next-line react/jsx-no-bind
-                onClick={onMoveAllRightButtonClick}
                 size={'small'}
                 sx={{ my: 0.5, mt: 2 }}
                 variant={'outlined'}
+                disabled={left.length === 0}
+                // eslint-disable-next-line react/jsx-no-bind
+                onClick={onMoveAllRightButtonClick}
               >
                 {'≫'}
               </Button>
               <Button
                 aria-label={t`move all left`}
-                disabled={right.length === 0}
-                // eslint-disable-next-line react/jsx-no-bind
-                onClick={onMoveAllLeftButtonClick}
                 size={'small'}
                 sx={{ my: 0.5 }}
                 variant={'outlined'}
+                disabled={right.length === 0}
+                // eslint-disable-next-line react/jsx-no-bind
+                onClick={onMoveAllLeftButtonClick}
               >
                 {'≪'}
               </Button>
-
               <Button
                 aria-label={t`reset`}
-                disabled={options.length === 0}
-                // eslint-disable-next-line react/jsx-no-bind
-                onClick={onResetButtonClick}
                 size={'small'}
                 sx={{ mt: 4 }}
                 variant={'outlined'}
+                disabled={options.length === 0}
+                // eslint-disable-next-line react/jsx-no-bind
+                onClick={onResetButtonClick}
               >
                 {t`Reset`}
               </Button>
               <Button
-                aria-label={t`clear`}
-                // eslint-disable-next-line react/jsx-no-bind
-                onClick={onMoveAllLeftButtonClick}
                 size={'small'}
                 sx={{ mt: 0.5 }}
                 variant={'outlined'}
+                aria-label={t`clear`}
+                // eslint-disable-next-line react/jsx-no-bind
+                onClick={onMoveAllLeftButtonClick}
               >
                 {t`Clear`}
               </Button>
@@ -344,8 +344,8 @@ export const TransferList = <TFieldValues extends FieldValues, TName extends Pat
       />
       <FormHelperText sx={{ ml: 0 }}>
         <FormFieldHelperText
-          errorMessage={errorMessage}
           noIndent
+          errorMessage={errorMessage}
           warningMessage={warningMessage}
         />
       </FormHelperText>

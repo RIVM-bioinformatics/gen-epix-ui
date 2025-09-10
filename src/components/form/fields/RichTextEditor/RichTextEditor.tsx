@@ -141,8 +141,6 @@ export const RichTextEditor = <TFieldValues extends FieldValues, TName extends P
           {label}
           <IconButton
             {...TestIdUtil.createAttributes('DateRangePicker-reset')}
-            // eslint-disable-next-line react/jsx-no-bind
-            onClick={onResetButtonClick}
             sx={{
               position: 'absolute',
               top: '-10px',
@@ -151,6 +149,8 @@ export const RichTextEditor = <TFieldValues extends FieldValues, TName extends P
               },
             }}
             tabIndex={-1}
+            // eslint-disable-next-line react/jsx-no-bind
+            onClick={onResetButtonClick}
           >
             <ClearIcon />
           </IconButton>
@@ -161,6 +161,7 @@ export const RichTextEditor = <TFieldValues extends FieldValues, TName extends P
             onBlur={onBlur}
           >
             <RichTextEditorComponent
+              ref={rteRef}
               RichTextFieldProps={{
                 // The "outlined" variant is the default (shown here only as
                 // example), but can be changed to "standard" to remove the outlined
@@ -169,7 +170,11 @@ export const RichTextEditor = <TFieldValues extends FieldValues, TName extends P
               }}
               content={value}
               extensions={extensions}
-              ref={rteRef}
+              sx={{
+                '& .ProseMirror': {
+                  whiteSpace: 'pre-wrap',
+                },
+              }}
               // eslint-disable-next-line react/jsx-no-bind
               renderControls={() => (
                 <MenuControlsContainer>
@@ -237,11 +242,6 @@ export const RichTextEditor = <TFieldValues extends FieldValues, TName extends P
                   <MenuButtonRedo />
                 </MenuControlsContainer>
               )}
-              sx={{
-                '& .ProseMirror': {
-                  whiteSpace: 'pre-wrap',
-                },
-              }}
             >
               {() => (
                 <>
@@ -282,8 +282,8 @@ export const RichTextEditor = <TFieldValues extends FieldValues, TName extends P
         { loading && <FormFieldLoadingIndicator inline />}
         <FormHelperText sx={{ ml: 0 }}>
           <FormFieldHelperText
-            errorMessage={errorMessage}
             noIndent
+            errorMessage={errorMessage}
             warningMessage={warningMessage}
           />
         </FormHelperText>

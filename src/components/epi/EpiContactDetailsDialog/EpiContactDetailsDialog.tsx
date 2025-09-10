@@ -72,8 +72,8 @@ export const EpiContactDetailsDialog = withDialog<EpiContactDetailsDialogProps, 
       )}
       {!isLoading && error && (
         <GenericErrorMessage
-          error={error}
           shouldHideActionButtons
+          error={error}
         />
       )}
       {!isLoading && !contactInfos?.length && (
@@ -82,17 +82,18 @@ export const EpiContactDetailsDialog = withDialog<EpiContactDetailsDialogProps, 
         </Box>
       )}
       {!isLoading && contactInfos?.length && (
-        <Box sx={{
-          display: 'grid',
-          gridTemplateColumns: '1fr 1fr',
-          gap: 2,
-        }}
+        <Box
+          sx={{
+            display: 'grid',
+            gridTemplateColumns: '1fr 1fr',
+            gap: 2,
+          }}
         >
           {contactInfos.map(contactInfo => (
             <Card
-              elevation={2}
               key={contactInfo.id}
               square
+              elevation={2}
             >
               <CardContent>
                 <Typography

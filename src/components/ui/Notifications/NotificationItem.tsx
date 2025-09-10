@@ -32,7 +32,6 @@ export const NotificationItem = ({ notification, showTimestamp, onClose, allowCl
       {...TestIdUtil.createAttributes('NotificationItem', { key: notification.key })}
       closeText={t`Close`}
       icon={notification.isLoading ? <CircularProgress size={16} /> : undefined}
-      onClose={allowClose ? onCloseButtonClick : undefined}
       severity={notification.isLoading ? 'info' : notification.severity}
       slotProps={{
         message: {
@@ -46,17 +45,20 @@ export const NotificationItem = ({ notification, showTimestamp, onClose, allowCl
         marginBottom: 1,
         backgroundColor: 'background.paper',
       }}
+      onClose={allowClose ? onCloseButtonClick : undefined}
     >
-      <AlertTitle sx={{
-        width: '100%',
-      }}
+      <AlertTitle
+        sx={{
+          width: '100%',
+        }}
       >
         {notification.message}
       </AlertTitle>
       {showTimestamp && (
-        <Box sx={{
-          textAlign: 'right',
-        }}
+        <Box
+          sx={{
+            textAlign: 'right',
+          }}
         >
           {TimeUtil.getReadableTimeRemaining(now - notification.timestamp, t, { postFix: ' ago', round: true })}
         </Box>

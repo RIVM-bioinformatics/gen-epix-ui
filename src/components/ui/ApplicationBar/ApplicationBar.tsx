@@ -32,8 +32,8 @@ export const ApplicationBar = ({
   return (
     <AppBar
       {...TestIdUtil.createAttributes('ApplicationBar')}
-      position={'static'}
       square
+      position={'static'}
       sx={{
         boxShadow: 'none',
         background: theme.palette.secondary.main,

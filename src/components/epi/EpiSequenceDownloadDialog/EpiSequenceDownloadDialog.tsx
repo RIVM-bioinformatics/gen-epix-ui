@@ -120,21 +120,19 @@ export const EpiSequenceDownloadDialog = withDialog<EpiSequenceDownloadDialogPro
             <Autocomplete
               disabled={geneticSequenceCaseTypeColOptions.length < 2}
               label={t`Genetic sequence column`}
+              options={geneticSequenceCaseTypeColOptions}
               name={'geneticSequenceCaseTypeColId'}
               // eslint-disable-next-line react/jsx-no-bind
               onChange={(value: string) => setGeneticSequenceCaseTypeColId(value)}
-              options={geneticSequenceCaseTypeColOptions}
             />
           </form>
         </FormProvider>
       </Box>
-
-
       {geneticSequenceCaseTypeColId && (
         <ResponseHandler
+          shouldHideActionButtons
           error={error}
           isLoading={isLoading}
-          shouldHideActionButtons
         >
           <Box
             marginBottom={1}
@@ -162,6 +160,7 @@ export const EpiSequenceDownloadDialog = withDialog<EpiSequenceDownloadDialogPro
             </Box>
             <Box>
               <Button
+                startIcon={<DownloadIcon />}
                 color={'primary'}
                 // eslint-disable-next-line react/jsx-no-bind
                 onClick={() => {
@@ -169,7 +168,6 @@ export const EpiSequenceDownloadDialog = withDialog<EpiSequenceDownloadDialogPro
                   EpiDownloadUtil.createDownloadUrl(`data:text/plain;base64,${btoa(fasta)}`, 'sequences.fasta');
                   onClose();
                 }}
-                startIcon={<DownloadIcon />}
               >
                 {t`Download FASTA`}
               </Button>

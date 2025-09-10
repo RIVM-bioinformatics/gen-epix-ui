@@ -15,7 +15,7 @@ export const EpiCaseSetDescription = ({ caseSet, ...boxProps }: EpiCaseSetDescri
   const [t] = useTranslation();
   return (
     <Box {...boxProps}>
-      <Typography variant="h6">
+      <Typography variant={'h6'}>
         {t`Description`}
       </Typography>
       <Box>
@@ -23,7 +23,9 @@ export const EpiCaseSetDescription = ({ caseSet, ...boxProps }: EpiCaseSetDescri
           <RichTextEditorContent source={caseSet?.description || ''} />
         )}
         {!caseSet?.description && (
-          <Box sx={{ fontStyle: 'italic' }}>{t`None`}</Box>
+          <Box sx={{ fontStyle: 'italic' }}>
+            {t`None`}
+          </Box>
         )}
       </Box>
     </Box>

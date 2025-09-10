@@ -39,9 +39,10 @@ export const HomePageTrendCard = ({ header, value, diffPercentage, sinceLabel, c
         justifyContent: 'space-between',
       }}
     >
-      <CardContent sx={{
-        paddingBottom: 0,
-      }}
+      <CardContent
+        sx={{
+          paddingBottom: 0,
+        }}
       >
         <Typography
           component={'p'}
@@ -70,10 +71,11 @@ export const HomePageTrendCard = ({ header, value, diffPercentage, sinceLabel, c
         >
           <Button
             {...TestIdUtil.createAttributes('HomePageTrendCard-button')}
+            size={'small'}
+            variant={'outlined'}
             onClick={onCallbackButtonClick}
-            size="small"
-            variant="outlined"
-          >{callbackLabel}
+          >
+            {callbackLabel}
           </Button>
         </CardActions>
       )}

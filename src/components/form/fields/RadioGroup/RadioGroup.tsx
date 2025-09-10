@@ -77,18 +77,18 @@ export const RadioGroup = <TFieldValues extends FieldValues, TName extends Path<
     return (
       <MuiRadioGroup
         aria-labelledby={id}
-        onBlur={onBlur}
-        onChange={onMuiRadioGroupChange(onChange)}
         row={row}
         value={value as string}
+        onBlur={onBlur}
+        onChange={onMuiRadioGroupChange(onChange)}
       >
         { options.map((option, index) => {
           return (
             <FormControlLabel
               {...TestIdUtil.createAttributes('RadioGroup-option', { code: option.value.toString(), description: option.label })}
+              key={option.value.toString()}
               control={<Radio inputRef={index === 0 ? inputRef : undefined} />}
               disabled={disabled}
-              key={option.value.toString()}
               label={option.label}
               value={option.value}
             />
@@ -119,8 +119,8 @@ export const RadioGroup = <TFieldValues extends FieldValues, TName extends Path<
       />
       <FormHelperText sx={{ ml: 0 }}>
         <FormFieldHelperText
-          errorMessage={errorMessage}
           noIndent
+          errorMessage={errorMessage}
           warningMessage={warningMessage}
         />
       </FormHelperText>

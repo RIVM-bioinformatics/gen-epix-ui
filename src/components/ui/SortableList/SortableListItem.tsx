@@ -50,8 +50,8 @@ export const SortableListItem = ({ children, id, sx }: SortableListItemProps) =>
     <SortableListItemContextProvider value={context}>
       <Box
         {...TestIdUtil.createAttributes('SortableListItem', { id })}
-        component="li"
         ref={setNodeRef}
+        component={'li'}
         style={style}
         sx={{
           ...(sx ?? {}),

@@ -101,6 +101,7 @@ export const EpiWidget = ({ title, children, primaryMenu, secondaryMenu, warning
           if (menuItemsData.items) {
             return (
               <NestedDropdown
+                key={menuItemsData.label}
                 ButtonProps={{
                   variant: 'text',
                   size: 'small',
@@ -108,19 +109,18 @@ export const EpiWidget = ({ title, children, primaryMenu, secondaryMenu, warning
                   disabled: menuItemsData.disabled,
                 }}
                 MenuProps={{ elevation: 3 }}
-                key={menuItemsData.label}
                 menuItemsData={menuItemsData}
               />
             );
           }
           return (
             <WidgetHeaderIconButton
-              disabled={menuItemsData.disabled}
               key={menuItemsData.label}
+              disabled={menuItemsData.disabled}
+              size={'small'}
               label={menuItemsData.label}
               // eslint-disable-next-line react/jsx-no-bind
               onClick={() => menuItemsData.callback(null, null)}
-              size={'small'}
             >
               {menuItemsData.leftIcon || menuItemsData.rightIcon}
             </WidgetHeaderIconButton>
@@ -171,6 +171,7 @@ export const EpiWidget = ({ title, children, primaryMenu, secondaryMenu, warning
         )}
         {typeof title !== 'string' && (
           <NestedDropdown
+            showTopLevelTooltip
             ButtonProps={{
               variant: 'text',
               size: 'small',
@@ -186,7 +187,6 @@ export const EpiWidget = ({ title, children, primaryMenu, secondaryMenu, warning
               },
             }}
             menuItemsData={title}
-            showTopLevelTooltip
           />
         )}
       </Box>
@@ -202,18 +202,19 @@ export const EpiWidget = ({ title, children, primaryMenu, secondaryMenu, warning
     >
 
       {/* Widget header bar */}
-      <Box sx={{
-        height: theme.spacing(3),
-        display: 'flex',
-        justifyContent: 'space-between',
-      }}
+      <Box
+        sx={{
+          height: theme.spacing(3),
+          display: 'flex',
+          justifyContent: 'space-between',
+        }}
       >
         {/* Title */}
         {titleElement}
-
-        <Box sx={{
-          display: 'flex',
-        }}
+        <Box
+          sx={{
+            display: 'flex',
+          }}
         >
           {/* secondary menu */}
           <Box
@@ -233,7 +234,6 @@ export const EpiWidget = ({ title, children, primaryMenu, secondaryMenu, warning
               />
             )}
           </Box>
-
           {/* primary menu */}
           <Box
             sx={{
@@ -255,10 +255,10 @@ export const EpiWidget = ({ title, children, primaryMenu, secondaryMenu, warning
               <WidgetHeaderIconButton
                 disabled={expandDisabled}
                 label={isExpanded ? t`Collapse` : t`Expand`}
-                onClick={onExpandButtonClick}
                 sx={{
                   marginRight: theme.spacing(-1),
                 }}
+                onClick={onExpandButtonClick}
               >
                 {isExpanded && (
                   <ZoomInMapIcon />
@@ -272,24 +272,26 @@ export const EpiWidget = ({ title, children, primaryMenu, secondaryMenu, warning
         </Box>
 
       </Box>
-
       {/* Widget content */}
-      <Box sx={{
-        height: `calc(100% - ${theme.spacing(3)})`,
-        position: 'relative',
-      }}
+      <Box
+        sx={{
+          height: `calc(100% - ${theme.spacing(3)})`,
+          position: 'relative',
+        }}
       >
         {warningMessage && (
-          <Box sx={{
-            height: theme.spacing(3),
-          }}
+          <Box
+            sx={{
+              height: theme.spacing(3),
+            }}
           >
             <EpiWarning warningMessage={warningMessage} />
           </Box>
         )}
-        <Box sx={{
-          height: warningMessage ? `calc(100% - ${theme.spacing(3)})` : '100%',
-        }}
+        <Box
+          sx={{
+            height: warningMessage ? `calc(100% - ${theme.spacing(3)})` : '100%',
+          }}
         >
           {isLoading && (
             <Spinner

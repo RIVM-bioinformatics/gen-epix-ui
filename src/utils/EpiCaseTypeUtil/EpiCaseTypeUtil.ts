@@ -27,7 +27,6 @@ export class EpiCaseTypeUtil {
     return path;
   }
 
-
   public static getInitialVisibleColumnIds(completeCaseType: CompleteCaseType): string[] {
     const visibleColumnIds: string[] = [];
 
@@ -60,7 +59,7 @@ export class EpiCaseTypeUtil {
     return caseTypeColumns.find(c => completeCaseType.cols[c.col_id].rank_in_dim === 1) ?? caseTypeColumns?.[0];
   }
 
-  public static iterateOrderedDimensions(completeCaseType: CompleteCaseType, cb: (dimension: Dim, dimensionCaseTypeColumns: CaseTypeCol[], dimIndex: number) => void, dimType?: DimType): void {
+  public static iterateOrderedDimensions(completeCaseType: CompleteCaseType, cb: (dimension: Dim, dimensionCaseTypeColumns?: CaseTypeCol[], dimIndex?: number) => void, dimType?: DimType): void {
     let index = 0;
     completeCaseType.case_type_dims.forEach((caseTypeDim) => {
       const dimension = completeCaseType.dims[caseTypeDim.dim_id];
@@ -104,4 +103,5 @@ export class EpiCaseTypeUtil {
     const occurrenceLabel = isNumber(occurrence) ? `.x${occurrence}` : '';
     return `${dimension.code}${occurrenceLabel}`;
   }
+
 }

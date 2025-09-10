@@ -113,8 +113,8 @@ export interface CreateTableStoreInitialStateKwArgs<TData> {
 }
 
 export type CreateTableStoreKwArgs<TData> = CreateTableStoreInitialStateKwArgs<TData> & {
-  storageNamePostFix: string;
-  storageVersion: number;
+  storageNamePostFix?: string;
+  storageVersion?: number;
 };
 
 export const createTableStoreInitialState = <TData>(kwArgs: CreateTableStoreInitialStateKwArgs<TData>): TableStoreState<TData> => {
@@ -508,6 +508,17 @@ export const createTableStoreActions = <TData>(kwArgs: {
 export const createTableStore = <TData>(kwArgs: CreateTableStoreKwArgs<TData>) => {
   const { storageNamePostFix, storageVersion, ...initialStateParams } = kwArgs;
   const initialState = createTableStoreInitialState<TData>(initialStateParams);
+
+  if (!storageNamePostFix) {
+    return createStore<TableStore<TData>>()(
+      (set, get) => {
+        return {
+          ...initialState,
+          ...createTableStoreActions<TData>({ set, get }),
+        };
+      },
+    );
+  }
 
   return createStore<TableStore<TData>>()(
     persist(

@@ -186,7 +186,6 @@ export const routes: MyNonIndexRouteObject[] = [
         errorElement: <RouterErrorPage />,
         handle: {
           titleKey: 'Upload',
-          disabled: true,
           requiredPermissions: [],
           requiresUserProfile: true,
         },

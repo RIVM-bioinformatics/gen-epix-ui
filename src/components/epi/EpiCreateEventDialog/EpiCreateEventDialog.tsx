@@ -298,8 +298,8 @@ export const EpiCreateEventDialog = withDialog<EpiCreateEventDialogProps, EpiCre
     getErrorNotificationMessage: (item, _error) => t('Failed to create event: {{name}}', { name: item.name }),
     getSuccessNotificationMessage: (item) => (
       <EpiCreateEventDialogSuccessNotificationMessage
-        caseSet={item}
         isCreating
+        caseSet={item}
       />
     ),
   });
@@ -340,8 +340,8 @@ export const EpiCreateEventDialog = withDialog<EpiCreateEventDialogProps, EpiCre
 
   return (
     <ResponseHandler
-      error={completeCaseTypeError}
       inlineSpinner
+      error={completeCaseTypeError}
       isLoading={isCreating}
       loadables={loadables}
     >

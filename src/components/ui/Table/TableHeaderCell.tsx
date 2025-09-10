@@ -204,15 +204,14 @@ export const TableHeaderCell = <TRowData,>(props: TableHeaderCellProps<TRowData>
 
   return (
     <TableCell
+      key={column.id}
+      ref={tableCellRef}
       className={tableHeaderCellClassNames.root}
       column={column}
       columnIndex={columnIndex}
       draggable={!column.frozen && !column.isStatic}
       height={height}
-      key={column.id}
-      onCustomDrag={onCustomDragTableHeaderCell}
       order={order}
-      ref={tableCellRef}
       role={'columnheader'}
       sx={{
         textAlign: 'left',
@@ -239,6 +238,7 @@ export const TableHeaderCell = <TRowData,>(props: TableHeaderCellProps<TRowData>
       }}
       width={width}
       xOffset={xOffset}
+      onCustomDrag={onCustomDragTableHeaderCell}
     >
       {column.type === 'actions' && (
         <Box
@@ -270,9 +270,8 @@ export const TableHeaderCell = <TRowData,>(props: TableHeaderCellProps<TRowData>
             >
 
               <Box
-                className={'GENEPIX-TableHeaderCell-content'}
-                onClick={onContentClick}
                 ref={contentRef}
+                className={'GENEPIX-TableHeaderCell-content'}
                 sx={{
                   cursor: 'pointer',
                   overflow: 'hidden',
@@ -281,6 +280,7 @@ export const TableHeaderCell = <TRowData,>(props: TableHeaderCellProps<TRowData>
                   maxWidth: `calc(100% + 16px - ${sum([hasActiveSorting ? iconSpacing : 0, hasActiveFilter ? iconSpacing : 0, iconSpacing])}px)`,
                   flexGrow: 1,
                 }}
+                onClick={onContentClick}
               >
                 {column.renderHeader
                   ? column.renderHeader({
@@ -297,7 +297,6 @@ export const TableHeaderCell = <TRowData,>(props: TableHeaderCellProps<TRowData>
                   className={tableFilterLabelClassNames}
                   onClick={onFilterIconClick}
                 />
-
                 <Popper
                   anchorEl={filterAnchorElement}
                   id={popperId}
@@ -308,8 +307,8 @@ export const TableHeaderCell = <TRowData,>(props: TableHeaderCellProps<TRowData>
                   }}
                 >
                   <Paper
-                    elevation={4}
                     square
+                    elevation={4}
                     sx={{
                       padding: theme.spacing(3),
                     }}
@@ -326,8 +325,8 @@ export const TableHeaderCell = <TRowData,>(props: TableHeaderCellProps<TRowData>
               <>
                 <TableSortLabelIcon
                   className={tableSortLabelClassNames}
-                  onClick={onTableSortClick}
                   ownerState={tableSortLabelIconProps}
+                  onClick={onTableSortClick}
                 />
                 {sortByField === column.id && (
                   <Box
@@ -342,7 +341,6 @@ export const TableHeaderCell = <TRowData,>(props: TableHeaderCellProps<TRowData>
             {column.resizable !== false && (
               <Box
                 className={tableHeaderCellClassNames.columnDivider}
-                onMouseDown={onColumnDividerMouseDown}
                 sx={{
                   width: '7px',
                   height: '18px',
@@ -353,6 +351,7 @@ export const TableHeaderCell = <TRowData,>(props: TableHeaderCellProps<TRowData>
                   boxSizing: 'border-box',
                   opacity: 0,
                 }}
+                onMouseDown={onColumnDividerMouseDown}
               />
             )}
           </Box>

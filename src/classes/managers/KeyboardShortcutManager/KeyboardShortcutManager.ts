@@ -33,7 +33,7 @@ export class KeyboardShortcutManager {
   }
 
   private handleKeyDown(event: KeyboardEvent): void {
-    for (let config of this.configs) {
+    for (const config of this.configs) {
       const { key, modifier, callback } = config;
       if (event.key !== key) {
         continue;

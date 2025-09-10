@@ -26,8 +26,8 @@ export const ApplicationBarActionsOrganizationSwitcherItem = () => {
       <IconButton
         aria-label={t`Change organization`}
         color={'inherit'}
-        onClick={onMenuIconClick}
         title={t`Change organization`}
+        onClick={onMenuIconClick}
       >
         <ChangeCircleIcon color={'inherit'} />
 

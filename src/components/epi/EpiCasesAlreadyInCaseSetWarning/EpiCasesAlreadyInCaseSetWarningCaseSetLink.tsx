@@ -36,26 +36,26 @@ export const EpiCasesAlreadyInCaseSetWarningCaseSetLink = ({ caseSet }: EpiCases
 
   return (
     <ResponseHandler
-      loadables={loadables}
       shouldHideActionButtons
+      loadables={loadables}
     >
       <Link
         color={'primary'}
-        href="#"
-        onClick={onLinkClick}
+        href={'#'}
         sx={{
           display: 'table',
         }}
+        onClick={onLinkClick}
       >
         {`${caseSet.name} (${caseSetCategoryMapQuery.map.get(caseSet.case_set_category_id)?.name}, ${caseSetStatusMapQuery.map.get(caseSet.case_set_status_id)?.name})`}
       </Link>
       <Confirmation
+        ref={confirmationRef}
         body={t('This will navigate to the "{{caseSetName}}"-event. You will loose your current selection of cases and all applied filters. Do you want to continue?', { caseSetName: caseSet.name })}
         cancelLabel={t`Cancel`}
         confirmLabel={t`Continue`}
-        onConfirm={onConfirm}
-        ref={confirmationRef}
         title={t('Do you want to navigate to the "{{caseSetName}}"-event?', { caseSetName: caseSet.name })}
+        onConfirm={onConfirm}
       />
     </ResponseHandler>
   );

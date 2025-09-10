@@ -65,8 +65,8 @@ export const AcceptInvitationPage = () => {
             <Box marginY={2}>
               <Button
                 color={'primary'}
-                onClick={onCompleteRegistrationButtonClick}
                 type={'submit'}
+                onClick={onCompleteRegistrationButtonClick}
               >
                 {t`Complete registration`}
               </Button>

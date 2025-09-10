@@ -75,12 +75,12 @@ export const UserMenu = ({ anchorElement, onClose }: UserMenuProps): ReactElemen
         horizontal: 'right',
       }}
       id={isUserMenuOpen ? popoverId : undefined}
-      onClose={onClose}
       open={isUserMenuOpen}
       transformOrigin={{
         vertical: 'top',
         horizontal: 'right',
       }}
+      onClose={onClose}
     >
       <List
         sx={{
@@ -118,8 +118,8 @@ export const UserMenu = ({ anchorElement, onClose }: UserMenuProps): ReactElemen
               <>
                 {userRoles?.map((role) => (
                   <Box
-                    component={'span'}
                     key={role}
+                    component={'span'}
                     mr={1}
                     sx={{ display: 'inline-block' }}
                   >
@@ -139,7 +139,6 @@ export const UserMenu = ({ anchorElement, onClose }: UserMenuProps): ReactElemen
         </ListItem>
         <UserOwnOrganizationMenuItem />
         <UserOrganizationAdminMenuItem />
-
         <ListItem
           alignItems={'center'}
           sx={{ justifyContent: 'center' }}
@@ -163,12 +162,12 @@ export const UserMenu = ({ anchorElement, onClose }: UserMenuProps): ReactElemen
             />
           </ListItemButton>
           <Confirmation
+            ref={logoutConfirmation}
             body={t`Click the logout button to logout`}
             cancelLabel={t`Cancel`}
             confirmLabel={t`Logout`}
-            onConfirm={onLogoutConfirmationConfirm}
-            ref={logoutConfirmation}
             title={t`Are you sure you want to logout?`}
+            onConfirm={onLogoutConfirmationConfirm}
           />
         </ListItem>
       </List>

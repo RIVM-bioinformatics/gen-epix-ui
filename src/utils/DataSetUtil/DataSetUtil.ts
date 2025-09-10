@@ -17,7 +17,7 @@ export class DataSetUtil {
     const { mappedSetMembers, parentSetId, parentMemberIds, childMemberIds } = kwArgs;
     const intersectedMemberIds = intersection(parentMemberIds, childMemberIds);
     let uncategorizedMemberIds: string[] = [];
-    let categorizedMemberIds: string[] = [];
+    const categorizedMemberIds: string[] = [];
 
     const setIds: string[] = [];
     if (intersectedMemberIds.length) {

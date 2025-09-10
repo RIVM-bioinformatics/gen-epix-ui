@@ -105,19 +105,16 @@ export const EpiCaseTypeInfoVariableDetails = ({ dimension, caseTypeDim, complet
                       {t('from: {{from}}; to: {{to}}', { from: dimensionCaseTypeColumn.min_datetime ?? '-', to: dimensionCaseTypeColumn.max_datetime ?? '-' })}
                     </>
                   )}
-
                   {column.col_type === ColType.TEXT && dimensionCaseTypeColumn.max_length && (
                     <>
                       {t('Max length: {{maxLength}}', { maxLength: dimensionCaseTypeColumn.max_length })}
                     </>
                   )}
-
                   {column.col_type === ColType.GEO_REGION && column.region_set_id && (
                     <>
                       {EpiDataUtil.data.regionSets[column.region_set_id].name}
                     </>
                   )}
-
                   {([ColType.NOMINAL, ColType.ORDINAL] as ColType[]).includes(column.col_type) && column.concept_set_id && EpiDataUtil.data.conceptsBySetId[column.concept_set_id] && (
                     <Box
                       sx={{

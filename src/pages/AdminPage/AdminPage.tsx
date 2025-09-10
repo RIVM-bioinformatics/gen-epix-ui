@@ -104,20 +104,21 @@ export const AdminContent = () => {
           >
             {category.label}
           </Typography>
-          <Box sx={{
-            display: 'grid',
-            gridTemplateColumns: 'repeat(1, 1fr)',
-            gap: theme.spacing(1),
-            [theme.breakpoints.up('md')]: {
-              gridTemplateColumns: 'repeat(2, 1fr)',
-            },
-            [theme.breakpoints.up('lg')]: {
-              gridTemplateColumns: 'repeat(3, 1fr)',
-            },
-            [theme.breakpoints.up('xl')]: {
-              gridTemplateColumns: 'repeat(4, 1fr)',
-            },
-          }}
+          <Box
+            sx={{
+              display: 'grid',
+              gridTemplateColumns: 'repeat(1, 1fr)',
+              gap: theme.spacing(1),
+              [theme.breakpoints.up('md')]: {
+                gridTemplateColumns: 'repeat(2, 1fr)',
+              },
+              [theme.breakpoints.up('lg')]: {
+                gridTemplateColumns: 'repeat(3, 1fr)',
+              },
+              [theme.breakpoints.up('xl')]: {
+                gridTemplateColumns: 'repeat(4, 1fr)',
+              },
+            }}
           >
             {category.items.map(item => (
               <Card

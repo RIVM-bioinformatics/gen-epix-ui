@@ -222,8 +222,8 @@ export const CasesPage = () => {
           return [
             (
               <MenuItem
-                disabled={!params.row.hasCases}
                 key={'actions1'}
+                disabled={!params.row.hasCases}
                 // eslint-disable-next-line react/jsx-no-bind
                 onClick={async () => onShowItemClick(params)}
               >
@@ -274,6 +274,8 @@ export const CasesPage = () => {
   return (
     <TableStoreContextProvider store={tableStore}>
       <PageContainer
+        fullWidth
+        showBreadcrumbs
         contentActions={(<TableMenu />)}
         contentHeader={(
           <TableCaption
@@ -282,26 +284,26 @@ export const CasesPage = () => {
             variant={'h2'}
           />
         )}
-        fullWidth
-        showBreadcrumbs
         testIdAttributes={TestIdUtil.createAttributes('CasesPage')}
         title={t`Cases`}
       >
-        <Box sx={{
-          position: 'relative',
-          height: '100%',
-        }}
+        <Box
+          sx={{
+            position: 'relative',
+            height: '100%',
+          }}
         >
           <ResponseHandler
             error={error}
             isLoading={isLoading}
           >
             <TableSidebarMenu />
-            <Box sx={{
-              width: '100%',
-              height: '100%',
-              paddingLeft: theme.spacing(ConfigManager.instance.config.layout.SIDEBAR_MENU_WIDTH + 1),
-            }}
+            <Box
+              sx={{
+                width: '100%',
+                height: '100%',
+                paddingLeft: theme.spacing(ConfigManager.instance.config.layout.SIDEBAR_MENU_WIDTH + 1),
+              }}
             >
               <Table
                 getRowName={getRowName}

@@ -101,6 +101,7 @@ export const UserInactivityConfirmation = () => {
 
   return (
     <Confirmation
+      ref={confirmation}
       body={t('Because you were inactive for the last {{formattedTimeInactive}}, you will be automatically logged out in {{formattedTimeUntilLogout}}.', {
         formattedTimeInactive: getReadableTimeRemaining(idleDiff),
         formattedTimeUntilLogout: getReadableTimeRemaining(notificationDiff),
@@ -108,11 +109,10 @@ export const UserInactivityConfirmation = () => {
       cancelLabel={'Logout'}
       confirmLabel={t`Stay logged in`}
       maxWidth={'xs'}
+      title={t`Your session is about to expire`}
       onCancel={onCancel}
       onClose={onClose}
       onConfirm={onClose}
-      ref={confirmation}
-      title={t`Your session is about to expire`}
     />
   );
 };

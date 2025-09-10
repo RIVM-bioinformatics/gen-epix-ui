@@ -249,22 +249,24 @@ export const UsersEffectiveRightsAdminPage = () => {
     if (uncategorizedMemberIds.length > 0) {
       return (
         <Link
+          tabIndex={0}
           href={'#'}
           // eslint-disable-next-line react/jsx-no-bind
           onClick={onLinkClick}
-          tabIndex={0}
-        >{t`View all`}
+        >
+          {t`View all`}
         </Link>
       );
     }
     if (setIds.length > 2) {
       return (
         <Link
+          tabIndex={0}
           href={'#'}
           // eslint-disable-next-line react/jsx-no-bind
           onClick={onLinkClick}
-          tabIndex={0}
-        >{t('View {{numSets}} sets', { numSets: setIds.length })}
+        >
+          {t('View {{numSets}} sets', { numSets: setIds.length })}
         </Link>
       );
     }
@@ -273,8 +275,8 @@ export const UsersEffectiveRightsAdminPage = () => {
       <>
         {setIds.map(setId => (
           <Link
-            href={'#'}
             key={setId}
+            href={'#'}
             // eslint-disable-next-line react/jsx-no-bind
             onClick={onLinkClick}
           >
@@ -381,6 +383,8 @@ export const UsersEffectiveRightsAdminPage = () => {
   return (
     <TableStoreContextProvider store={tableStore}>
       <PageContainer
+        fullWidth
+        showBreadcrumbs
         contentActions={(<TableMenu />)}
         contentHeader={(
           <TableCaption
@@ -389,28 +393,28 @@ export const UsersEffectiveRightsAdminPage = () => {
             variant={'h2'}
           />
         )}
-        fullWidth
-        showBreadcrumbs
         testIdAttributes={TestIdUtil.createAttributes('UsersEffectiveRightsAdminPage')}
         title={t`Users effective rights`}
       >
-        <Box sx={{
-          position: 'relative',
-          height: '100%',
-        }}
+        <Box
+          sx={{
+            position: 'relative',
+            height: '100%',
+          }}
         >
           <ResponseHandler
-            error={userError}
             inlineSpinner
+            error={userError}
             isLoading={isUserLoading}
             loadables={loadables}
           >
             <TableSidebarMenu />
-            <Box sx={{
-              width: '100%',
-              height: '100%',
-              paddingLeft: theme.spacing(ConfigManager.instance.config.layout.SIDEBAR_MENU_WIDTH + 1),
-            }}
+            <Box
+              sx={{
+                width: '100%',
+                height: '100%',
+                paddingLeft: theme.spacing(ConfigManager.instance.config.layout.SIDEBAR_MENU_WIDTH + 1),
+              }}
             >
               <Table
                 getRowName={getRowName}

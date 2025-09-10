@@ -254,10 +254,10 @@ export const EpiAddCasesToEventDialog = withDialog<EpiAddCasesToEventDialogProps
           {caseSetId && (
             <Box marginY={2}>
               <ResponseHandler
-                error={caseSetMembersError || caseSetDataCollectionLinksError}
                 inlineSpinner
-                isLoading={isCaseSetMembersLoading}
                 shouldHideActionButtons
+                error={caseSetMembersError || caseSetDataCollectionLinksError}
+                isLoading={isCaseSetMembersLoading}
               >
                 {caseSetDataCollections?.length > 0 && (
                   <Box marginY={2}>
@@ -273,7 +273,6 @@ export const EpiAddCasesToEventDialog = withDialog<EpiAddCasesToEventDialogProps
                     </Alert>
                   </Box>
                 )}
-
                 {caseIdsToAdd.length > 0 && (
                   <Box marginY={2}>
                     <Alert severity={'info'}>

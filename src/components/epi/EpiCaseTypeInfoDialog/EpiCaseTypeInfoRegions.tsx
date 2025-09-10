@@ -53,7 +53,7 @@ export const EpiCaseTypeInfoRegions = ({ completeCaseType }: EpiCaseTypeInfoRegi
                 flexWrap={'wrap'}
                 rowGap={1}
               >
-                <Table size="small">
+                <Table size={'small'}>
                   <TableHead>
                     <TableRow>
                       <TableCell sx={{ width: '20%', verticalAlign: 'top' }}>

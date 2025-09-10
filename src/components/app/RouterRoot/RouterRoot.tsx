@@ -95,8 +95,8 @@ export const RouterRoot = () => {
 
   return (
     <AuthProvider
-      onSigninCallback={onSignin}
       userManager={userManager}
+      onSigninCallback={onSignin}
     >
       <AuthenticationWrapper>
         <OutageWrapper>

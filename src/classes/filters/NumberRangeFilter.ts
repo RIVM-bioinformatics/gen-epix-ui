@@ -47,8 +47,8 @@ export class NumberRangeFilter extends FilterAbstract<[number, number]> implemen
       return false;
     }
 
-    let left = this.filterValue[0];
-    let right = this.filterValue[1];
+    const left = this.filterValue[0];
+    const right = this.filterValue[1];
 
     if (isFinite(left) && +rowValue < this.filterValue[0]) {
       return false;

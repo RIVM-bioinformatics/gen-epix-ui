@@ -102,20 +102,20 @@ export const withDialog = <TProps extends WithDialogRenderProps<TOpenProps>, TOp
           noCloseButton={withDialogOptions?.noCloseButton}
           noPadding={withDialogOptions.noPadding}
           noTitle={withDialogOptions?.noTitle}
-          onClose={this.onClose}
           permalink={this.state.permalink}
           testId={withDialogOptions?.testId}
           title={this.state.title}
           titleVariant={withDialogOptions?.titleVariant}
+          onClose={this.onClose}
         >
           <Content
             {...this.props as TProps}
             dialogContentRef={this.dialogContentRef}
+            openProps={this.state.openProps}
             onActionsChange={this.onActionsChange}
             onClose={this.onClose}
             onPermalinkChange={this.onPermalinkChange}
             onTitleChange={this.onTitleChange}
-            openProps={this.state.openProps}
           />
         </Dialog>
       );

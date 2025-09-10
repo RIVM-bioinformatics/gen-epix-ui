@@ -73,9 +73,9 @@ export const UserInvitationsAdminDetailDialog = withDialog<UserInvitationsAdminD
         label: t('Email invitation link'),
       },
       <CopyToClipboardButton
+        key={'copyToClipboard'}
         buttonText={t('Copy invitation link to clipboard')}
         clipboardValue={invitationLink}
-        key={'copyToClipboard'}
       />,
     ]);
   }, [onActionsChange, shareInvitationHref, t, invitationLink]);

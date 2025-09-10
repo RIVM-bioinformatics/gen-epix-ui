@@ -299,40 +299,42 @@ export class EpiCaseUtil {
     }, object({}));
   }
 
-  public static getRowValue(row: Case, caseTypeColumn: CaseTypeCol, completeCaseType: CompleteCaseType): CaseTypeRowValue {
+  public static getRowValue(row: Case, caseTypeColumn: CaseTypeCol, completeCaseType: CompleteCaseType, machineReadable = false): CaseTypeRowValue {
     const column = completeCaseType.cols[caseTypeColumn.col_id];
     const hasMappedValue = column.col_type === ColType.ORGANIZATION || column.region_set_id || column.concept_set_id;
     if (hasMappedValue) {
-      return EpiCaseUtil.getMappedValue(row.content[caseTypeColumn.id], caseTypeColumn, completeCaseType);
+      return EpiCaseUtil.getMappedValue(row.content[caseTypeColumn.id], caseTypeColumn, completeCaseType, machineReadable);
     }
 
     const { DATA_MISSING_CHARACTER } = ConfigManager.instance.config.epi;
+    const dataMissingCharacter = machineReadable ? '' : DATA_MISSING_CHARACTER;
 
     const rowValue: CaseTypeRowValue = {
       raw: row.content?.[caseTypeColumn.id],
       isMissing: !row.content[caseTypeColumn.id],
-      short: row.content[caseTypeColumn.id] ?? DATA_MISSING_CHARACTER,
-      long: row.content[caseTypeColumn.id] ?? DATA_MISSING_CHARACTER,
-      full: row.content[caseTypeColumn.id] ?? t(`${DATA_MISSING_CHARACTER} (missing)`),
+      short: row.content[caseTypeColumn.id] ?? dataMissingCharacter,
+      long: row.content[caseTypeColumn.id] ?? dataMissingCharacter,
+      full: row.content[caseTypeColumn.id] ?? t(`${dataMissingCharacter} (missing)`),
     };
     return rowValue;
   }
 
-  public static getMissingRowValue(raw: string): CaseTypeRowValue {
+  public static getMissingRowValue(raw: string, machineReadable = true): CaseTypeRowValue {
     const { DATA_MISSING_CHARACTER } = ConfigManager.instance.config.epi;
+    const dataMissingCharacter = machineReadable ? '' : DATA_MISSING_CHARACTER;
 
     return {
       raw,
       isMissing: true,
-      full: t(`${DATA_MISSING_CHARACTER} (missing)`),
-      long: DATA_MISSING_CHARACTER,
-      short: DATA_MISSING_CHARACTER,
+      full: t(`${dataMissingCharacter} (missing)`),
+      long: dataMissingCharacter,
+      short: dataMissingCharacter,
     };
   }
 
-  public static getMappedValue(raw: string, caseTypeColumn: CaseTypeCol, completeCaseType: CompleteCaseType): CaseTypeRowValue {
+  public static getMappedValue(raw: string, caseTypeColumn: CaseTypeCol, completeCaseType: CompleteCaseType, machineReadable = false): CaseTypeRowValue {
     if (!raw) {
-      return EpiCaseUtil.getMissingRowValue(raw);
+      return EpiCaseUtil.getMissingRowValue(raw, machineReadable);
     }
 
     const column = completeCaseType.cols[caseTypeColumn.col_id];
@@ -344,7 +346,7 @@ export class EpiCaseUtil {
     } else if (column.concept_set_id) {
       return EpiCaseUtil.getConceptMappedValue(raw);
     }
-    return EpiCaseUtil.getMissingRowValue(raw);
+    return EpiCaseUtil.getMissingRowValue(raw, machineReadable);
   }
 
   private static getOrganizationMappedValue(raw: string): CaseTypeRowValue {

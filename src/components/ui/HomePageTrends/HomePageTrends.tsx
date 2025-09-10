@@ -169,11 +169,12 @@ export const HomePageTrends = withPermissions(() => {
   return (
     <Box>
       <Box marginBottom={1}>
-        <Box sx={{
-          display: 'flex',
-          alignItems: 'center',
-          justifyContent: 'space-between',
-        }}
+        <Box
+          sx={{
+            display: 'flex',
+            alignItems: 'center',
+            justifyContent: 'space-between',
+          }}
         >
           <Box>
             <Typography
@@ -184,10 +185,10 @@ export const HomePageTrends = withPermissions(() => {
           </Box>
           <Box>
             <Button
-              color={'primary'}
               disabled
-              onClick={onViewMoreTrendsButtonClick}
+              color={'primary'}
               variant={'outlined'}
+              onClick={onViewMoreTrendsButtonClick}
             >
               {t`View more trends`}
             </Button>
@@ -196,14 +197,16 @@ export const HomePageTrends = withPermissions(() => {
       </Box>
       <ResponseHandler
         inlineSpinner
+        shouldHideActionButtons
         loadables={loadables}
         loadingContent={(
-          <Box sx={{
-            display: 'grid',
-            gridTemplateColumns: 'repeat(4, 1fr)',
-            gap: 2,
-            marginBottom: 2,
-          }}
+          <Box
+            sx={{
+              display: 'grid',
+              gridTemplateColumns: 'repeat(4, 1fr)',
+              gap: 2,
+              marginBottom: 2,
+            }}
           >
             {[...Array<string>(8)].map((_, index) => (
               <Box
@@ -217,16 +220,15 @@ export const HomePageTrends = withPermissions(() => {
                 }}
               >
                 <Skeleton
-                  animation="pulse"
+                  animation={'pulse'}
                   height={'100%'}
-                  variant="rounded"
+                  variant={'rounded'}
                   width={'100%'}
                 />
               </Box>
             ))}
           </Box>
         )}
-        shouldHideActionButtons
       >
         {statistics.length === 0 && (
           <Box marginY={2}>
@@ -236,20 +238,21 @@ export const HomePageTrends = withPermissions(() => {
           </Box>
         )}
         {statistics.length > 0 && (
-          <Box sx={{
-            display: 'grid',
-            gridTemplateColumns: 'repeat(4, 1fr)',
-            gap: 2,
-            marginBottom: 2,
-          }}
+          <Box
+            sx={{
+              display: 'grid',
+              gridTemplateColumns: 'repeat(4, 1fr)',
+              gap: 2,
+              marginBottom: 2,
+            }}
           >
             {statistics.map(statistic => (
               <HomePageTrendCard
+                key={statistic.header}
                 callback={statistic.callback}
                 callbackLabel={statistic.callbackLabel}
                 diffPercentage={statistic.diffPercentage}
                 header={statistic.header}
-                key={statistic.header}
                 sinceLabel={ConfigManager.instance.config.trends.homePage.getSinceLabel(t)}
                 value={statistic.value}
               />

@@ -123,17 +123,17 @@ export const Select = <TFieldValues extends FieldValues, TName extends Path<TFie
           }}
           label={label}
           multiple={multiple}
-          onBlur={onBlur}
-          onChange={onMuiSelectChange(onChange)}
           renderValue={getOptionLabel}
           required={required}
           value={value ?? ''}
+          onBlur={onBlur}
+          onChange={onMuiSelectChange(onChange)}
         >
           { options.map((option) => {
             return (
               <MenuItem
-                disabled={getIsOptionDisabled(option.value)}
                 key={option.value.toString()}
+                disabled={getIsOptionDisabled(option.value)}
                 value={option.value as string}
               >
                 {option.label}
@@ -146,8 +146,8 @@ export const Select = <TFieldValues extends FieldValues, TName extends Path<TFie
           sx={{ ml: 0 }}
         >
           <FormFieldHelperText
-            errorMessage={errorMessage}
             noIndent
+            errorMessage={errorMessage}
             warningMessage={warningMessage}
           />
         </FormHelperText>

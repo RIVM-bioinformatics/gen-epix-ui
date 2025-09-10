@@ -62,8 +62,8 @@ export const OrganizationContactsAdminPage = () => {
   const schema = useMemo(() => {
     return object<FormFields>().shape({
       name: string().extendedAlphaNumeric().required().max(100),
-      email: string().email().required().max(100),
-      phone: string().extendedAlphaNumeric().required().max(100),
+      email: string().email().max(256),
+      phone: string().extendedAlphaNumeric().max(100),
     });
   }, []);
 
