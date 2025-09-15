@@ -41,6 +41,7 @@ export type UploadButtonProps<TFieldValues extends FieldValues, TName extends Pa
   readonly warningMessage?: string | boolean;
   readonly multiple?: boolean;
   readonly accept: string;
+  readonly loading?: boolean; // NOT implemented
 };
 
 const VisuallyHiddenInput = styled('input')({

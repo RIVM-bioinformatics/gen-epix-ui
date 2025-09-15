@@ -8,7 +8,10 @@ import {
   useEffect,
   useState,
 } from 'react';
-import { useTheme } from '@mui/material';
+import {
+  Container,
+  useTheme,
+} from '@mui/material';
 
 import type {
   EpiUploadMappedColumn,
@@ -61,6 +64,14 @@ export const EpiUpload = () => {
     setActiveStep(3);
   }, []);
 
+  const onEpiUploadValidateGoBack = useCallback(() => {
+    setActiveStep(2);
+  }, []);
+
+  const onEpiUploadValidateProceed = useCallback(() => {
+    setActiveStep(4);
+  }, []);
+
 
   useEffect(() => {
     if (selectFileResult) {
@@ -81,21 +92,23 @@ export const EpiUpload = () => {
         gridTemplateRows: 'max-content auto',
       }}
     >
-      <Stepper activeStep={activeStep}>
-        {steps.map((label) => {
-          const stepProps: { completed?: boolean } = {};
-          return (
-            <Step
-              key={label}
-              {...stepProps}
-            >
-              <StepLabel>
-                {label}
-              </StepLabel>
-            </Step>
-          );
-        })}
-      </Stepper>
+      <Container maxWidth={'xl'}>
+        <Stepper activeStep={activeStep}>
+          {steps.map((label) => {
+            const stepProps: { completed?: boolean } = {};
+            return (
+              <Step
+                key={label}
+                {...stepProps}
+              >
+                <StepLabel>
+                  {label}
+                </StepLabel>
+              </Step>
+            );
+          })}
+        </Stepper>
+      </Container>
       <Box
         sx={{
           marginTop: 2,
@@ -105,28 +118,32 @@ export const EpiUpload = () => {
         }}
       >
         {activeStep === 0 && (
-          <EpiUploadSelectFile
-            defaultValues={selectFileResult ? {
-              case_type_id: selectFileResult.case_type_id,
-              create_in_data_collection_id: selectFileResult.create_in_data_collection_id,
-              share_in_data_collection_ids: selectFileResult.share_in_data_collection_ids,
-              file_list: selectFileResult.file_list,
-              sheet: selectFileResult.sheet,
-              import_action: selectFileResult.import_action,
-            } : undefined}
-            onProceed={onEpiUploadSelectFileProceed}
-          />
+          <Container maxWidth={'xl'}>
+            <EpiUploadSelectFile
+              defaultValues={selectFileResult ? {
+                case_type_id: selectFileResult.case_type_id,
+                create_in_data_collection_id: selectFileResult.create_in_data_collection_id,
+                share_in_data_collection_ids: selectFileResult.share_in_data_collection_ids,
+                file_list: selectFileResult.file_list,
+                sheet: selectFileResult.sheet,
+                import_action: selectFileResult.import_action,
+              } : undefined}
+              onProceed={onEpiUploadSelectFileProceed}
+            />
+          </Container>
         )}
         {activeStep === 1 && (
-          <EpiUploadMapColumns
-            mappedColumns={mappedColumns || undefined}
-            completeCaseType={selectFileResult.completeCaseType}
-            rawData={selectFileResult.rawData}
-            importAction={selectFileResult.import_action}
-            fileName={selectFileResult.file_list[0]?.name ?? 'unknown file'}
-            onProceed={onEpiUploadMapColumnsProceed}
-            onGoBack={onEpiUploadMapColumnsGoBack}
-          />
+          <Container maxWidth={'xl'}>
+            <EpiUploadMapColumns
+              mappedColumns={mappedColumns || undefined}
+              completeCaseType={selectFileResult.completeCaseType}
+              rawData={selectFileResult.rawData}
+              importAction={selectFileResult.import_action}
+              fileName={selectFileResult.file_list[0]?.name ?? 'unknown file'}
+              onProceed={onEpiUploadMapColumnsProceed}
+              onGoBack={onEpiUploadMapColumnsGoBack}
+            />
+          </Container>
         )}
         {activeStep === 2 && (
           <EpiUploadDataPreview
@@ -137,7 +154,14 @@ export const EpiUpload = () => {
           />
         )}
         {activeStep === 3 && (
-          <EpiUploadValidate />
+          <EpiUploadValidate
+            caseTypeId={selectFileResult.case_type_id}
+            completeCaseType={selectFileResult.completeCaseType}
+            selectFileResult={selectFileResult}
+            mappedColumns={mappedColumns}
+            onGoBack={onEpiUploadValidateGoBack}
+            onProceed={onEpiUploadValidateProceed}
+          />
         )}
       </Box>
     </Box>

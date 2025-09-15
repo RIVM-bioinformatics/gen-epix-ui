@@ -40,6 +40,7 @@ export type RadioGroupProps<TFieldValues extends FieldValues, TName extends Path
   readonly warningMessage?: string | boolean;
   readonly row?: boolean;
   readonly options: RadioButtonOption[];
+  readonly loading?: boolean; // NOT USED YET
 };
 
 export const RadioGroup = <TFieldValues extends FieldValues, TName extends Path<TFieldValues> = Path<TFieldValues>>({

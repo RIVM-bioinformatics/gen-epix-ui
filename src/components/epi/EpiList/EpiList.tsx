@@ -371,7 +371,7 @@ export const EpiList = ({ linkedScrollSubject, onLink, caseSet }: EpiListProps) 
   const columnsMenuItem = UseColumnsMenu({ hasCellData });
 
   const primaryMenu = useMemo<MenuItemData[]>(() => {
-    const shouldShowCreateEventMenuItem = AuthorizationManager.instance.doesUserHavePermission([{ command_name: CommandName.CaseSetCreateCommand, permission_type: PermissionType.EXECUTE }]);
+    const shouldShowCreateEventMenuItem = AuthorizationManager.instance.doesUserHavePermission([{ command_name: CommandName.CreateCaseSetCommand, permission_type: PermissionType.EXECUTE }]);
     const shouldShowAddToEventMenuItem = AuthorizationManager.instance.doesUserHavePermission([{ command_name: CommandName.CaseSetMemberCrudCommand, permission_type: PermissionType.CREATE }]);
     const shouldShowRemoveFromEventMenuItem = !!caseSet && AuthorizationManager.instance.doesUserHavePermission([{ command_name: CommandName.CaseSetMemberCrudCommand, permission_type: PermissionType.DELETE }]);
     // FIXME

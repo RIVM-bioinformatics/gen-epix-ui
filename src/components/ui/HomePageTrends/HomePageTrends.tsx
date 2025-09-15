@@ -14,11 +14,11 @@ import { useQuery } from '@tanstack/react-query';
 
 import type {
   CaseTypeStat,
-  TypedDatetimeRangeFilter,
+  EpiFilter,
   RetrieveCaseTypeStatsRequestBody,
+  TypedDatetimeRangeFilter,
 } from '../../../api';
 import {
-  TypedDatetimeRangeFilterType,
   CaseApi,
   CommandName,
   PermissionType,
@@ -54,14 +54,16 @@ export const HomePageTrends = withPermissions(() => {
   const [t] = useTranslation();
 
   const dateTimeRangeFilter = useMemo<TypedDatetimeRangeFilter>(() => ({
-    type: TypedDatetimeRangeFilterType.DATETIME_RANGE,
+    type: 'DATETIME_RANGE',
     upper_bound: ConfigManager.instance.config.trends.homePage.getSinceDate(),
     upper_bound_censor: '<=',
-  }), []);
-  const caseSetQueryFilter = useMemo<TypedDatetimeRangeFilter>(() => ({
-    ...dateTimeRangeFilter,
+  } satisfies TypedDatetimeRangeFilter), []);
+  const caseSetQueryFilter = useMemo<EpiFilter>(() => ({
+    type: 'DATETIME_RANGE',
+    upper_bound: ConfigManager.instance.config.trends.homePage.getSinceDate(),
+    upper_bound_censor: '<=',
     key: 'created_at',
-  }), [dateTimeRangeFilter]);
+  } satisfies EpiFilter), []);
 
   const retrieveCaseTypeStatsCommand = useMemo<RetrieveCaseTypeStatsRequestBody>(() => ({
     datetime_range_filter: dateTimeRangeFilter,

@@ -1,6 +1,6 @@
 import type { TFunction } from 'i18next';
 
-import type { TypedExistsFilter } from '../../api';
+import type { FiltersInner } from '../../api';
 import { FilterAbstract } from '../abstracts/FilterAbstract';
 import type { Filter } from '../../models/filter';
 
@@ -25,7 +25,7 @@ export class BooleanFilter extends FilterAbstract<boolean> implements Filter<boo
     return usedValue ? t('Yes') : t('No');
   }
 
-  public toBackendFilter(): TypedExistsFilter {
+  public toBackendFilter(): FiltersInner {
     throw new Error('Not implemented');
   }
 }

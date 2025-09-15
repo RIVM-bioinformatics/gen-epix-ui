@@ -249,7 +249,6 @@ const EpiUploadSelectFile = ({ onProceed, defaultValues }: EpiUploadSelectFilePr
       setFileParsingError(null);
       try {
         const parsedData = await EpiUploadUtil.readRawData(userSelectedFile, userSelectedSheet);
-        console.log({ parsedData });
         // Call the callback with parsed data
         setRawData(parsedData);
       } catch (_error) {

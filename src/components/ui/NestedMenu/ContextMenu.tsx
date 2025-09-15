@@ -88,7 +88,7 @@ export const ContextMenu = ({ children, menuItems, menuItemsData, ref }: Context
   }, []);
 
   const menuContents =
-        menuItems ??
+    menuItems ??
         (menuItemsData &&
             nestedMenuItemsFromObject({
               handleClose: onItemClick,

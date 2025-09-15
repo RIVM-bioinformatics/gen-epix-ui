@@ -78,27 +78,6 @@ export type AuthProtocol = typeof AuthProtocol[keyof typeof AuthProtocol];
 
 
 /**
- * 
- * @export
- * @ {string}
- */
-
-export const BooleanOperator = {
-    AND: 'AND',
-    OR: 'OR',
-    NOT: 'NOT',
-    XOR: 'XOR',
-    NAND: 'NAND',
-    NOR: 'NOR',
-    XNOR: 'XNOR',
-    IMPLIES: 'IMPLIES',
-    NIMPLIES: 'NIMPLIES'
-} as const;
-
-export type BooleanOperator = typeof BooleanOperator[keyof typeof BooleanOperator];
-
-
-/**
  * A class representing a case.
  * @export
  * @interface Case
@@ -183,6 +162,23 @@ export type CaseClassification = typeof CaseClassification[keyof typeof CaseClas
 /**
  * 
  * @export
+ * @ {string}
+ */
+
+export const CaseColDataRule = {
+    MISSING: 'MISSING',
+    INVALID: 'INVALID',
+    UNAUTHORIZED: 'UNAUTHORIZED',
+    CONFLICT: 'CONFLICT',
+    DERIVED: 'DERIVED'
+} as const;
+
+export type CaseColDataRule = typeof CaseColDataRule[keyof typeof CaseColDataRule];
+
+
+/**
+ * 
+ * @export
  * @interface CaseDataCollectionLink
  */
 export interface CaseDataCollectionLink {
@@ -216,6 +212,82 @@ export interface CaseDataCollectionLink {
      * @memberof CaseDataCollectionLink
      */
     'data_collection'?: DataCollection;
+}
+/**
+ * 
+ * @export
+ * @interface CaseDataIssue
+ */
+export interface CaseDataIssue {
+    /**
+     * The ID of the case type column
+     * @type {string}
+     * @memberof CaseDataIssue
+     */
+    'case_type_col_id': string;
+    /**
+     * The value of the case type column
+     * @type {string}
+     * @memberof CaseDataIssue
+     */
+    'original_value': string | null;
+    /**
+     * The new value of the case type column after potential resolution. If not resolved, this will be None.
+     * @type {string}
+     * @memberof CaseDataIssue
+     */
+    'updated_value': string | null;
+    /**
+     * 
+     * @type {CaseColDataRule}
+     * @memberof CaseDataIssue
+     */
+    'data_rule': CaseColDataRule;
+    /**
+     * The details of the data issue
+     * @type {string}
+     * @memberof CaseDataIssue
+     */
+    'details': string | null;
+}
+
+
+/**
+ * A class representing a case to be created or updated.
+ * @export
+ * @interface CaseForCreateUpdate
+ */
+export interface CaseForCreateUpdate {
+    /**
+     * The unique identifier for the obj.
+     * @type {string}
+     * @memberof CaseForCreateUpdate
+     */
+    'id'?: string | null;
+    /**
+     * The ID of the subject. FOREIGN KEY
+     * @type {string}
+     * @memberof CaseForCreateUpdate
+     */
+    'subject_id'?: string | null;
+    /**
+     * The number of cases, if applicable
+     * @type {number}
+     * @memberof CaseForCreateUpdate
+     */
+    'count'?: number | null;
+    /**
+     * The date of the case
+     * @type {string}
+     * @memberof CaseForCreateUpdate
+     */
+    'case_date': string;
+    /**
+     * The column data of the case as {col_id: str_value}. If None and the model is used for update, then any existing value will be deleted.
+     * @type {{ [key: string]: string | null; }}
+     * @memberof CaseForCreateUpdate
+     */
+    'content': { [key: string]: string | null; };
 }
 /**
  * 
@@ -916,10 +988,10 @@ export interface CaseTypeCol {
     'tree_algorithm_codes'?: Array<TreeAlgorithmType> | null;
     /**
      * Additional properties of the case type column.
-     * @type {object}
+     * @type {{ [key: string]: any; }}
      * @memberof CaseTypeCol
      */
-    'props'?: object;
+    'props'?: { [key: string]: any; };
 }
 /**
  * 
@@ -1230,6 +1302,49 @@ export interface CaseTypeStat {
 /**
  * 
  * @export
+ * @interface CaseValidationReport
+ */
+export interface CaseValidationReport {
+    /**
+     * The unique identifier for the obj.
+     * @type {string}
+     * @memberof CaseValidationReport
+     */
+    'id'?: string | null;
+    /**
+     * The case type ID that the cases belong to.
+     * @type {string}
+     * @memberof CaseValidationReport
+     */
+    'case_type_id': string;
+    /**
+     * The data collection ID in which the cases would be created.
+     * @type {string}
+     * @memberof CaseValidationReport
+     */
+    'created_in_data_collection_id': string;
+    /**
+     * Whether the cases are intended to be updated or newly created.
+     * @type {boolean}
+     * @memberof CaseValidationReport
+     */
+    'is_update': boolean;
+    /**
+     * The additional data collections that the cases would be put in, other than the created_in_data_collection.
+     * @type {Array<string>}
+     * @memberof CaseValidationReport
+     */
+    'data_collection_ids': Array<string>;
+    /**
+     * The cases containing validated content and any data issues found during validation.
+     * @type {Array<ValidatedCase>}
+     * @memberof CaseValidationReport
+     */
+    'validated_cases': Array<ValidatedCase>;
+}
+/**
+ * 
+ * @export
  * @interface Col
  */
 export interface Col {
@@ -1325,10 +1440,10 @@ export interface Col {
     'description'?: string | null;
     /**
      * Additional properties of the column.
-     * @type {object}
+     * @type {{ [key: string]: any; }}
      * @memberof Col
      */
-    'props'?: object;
+    'props'?: { [key: string]: any; };
 }
 
 
@@ -1342,7 +1457,7 @@ export const ColType = {
     TEXT: 'TEXT',
     CONTEXT_FREE_GRAMMAR_JSON: 'CONTEXT_FREE_GRAMMAR_JSON',
     CONTEXT_FREE_GRAMMAR_XML: 'CONTEXT_FREE_GRAMMAR_XML',
-    REGEX: 'REGEX',
+    REGULAR_LANGUAGE: 'REGULAR_LANGUAGE',
     NOMINAL: 'NOMINAL',
     ORDINAL: 'ORDINAL',
     INTERVAL: 'INTERVAL',
@@ -1363,7 +1478,9 @@ export const ColType = {
     DECIMAL_4: 'DECIMAL_4',
     DECIMAL_5: 'DECIMAL_5',
     DECIMAL_6: 'DECIMAL_6',
+    GENETIC_READS: 'GENETIC_READS',
     GENETIC_SEQUENCE: 'GENETIC_SEQUENCE',
+    GENETIC_PROFILE: 'GENETIC_PROFILE',
     GENETIC_DISTANCE: 'GENETIC_DISTANCE',
     ORGANIZATION: 'ORGANIZATION',
     OTHER: 'OTHER'
@@ -1379,85 +1496,90 @@ export type ColType = typeof ColType[keyof typeof ColType];
  */
 
 export const CommandName = {
+    DiseaseEtiologicalAgentUpdateAssociationCommand: 'DiseaseEtiologicalAgentUpdateAssociationCommand',
+    CaseSetDataCollectionLinkCrudCommand: 'CaseSetDataCollectionLinkCrudCommand',
+    RetrieveGeneticSequenceByIdCommand: 'RetrieveGeneticSequenceByIdCommand',
     RetrievePhylogeneticTreeByCasesCommand: 'RetrievePhylogeneticTreeByCasesCommand',
-    CaseCrudCommand: 'CaseCrudCommand',
-    ConceptSetConceptUpdateAssociationCommand: 'ConceptSetConceptUpdateAssociationCommand',
-    SubjectIdentifierCrudCommand: 'SubjectIdentifierCrudCommand',
-    UpdateUserOwnOrganizationCommand: 'UpdateUserOwnOrganizationCommand',
-    SiteCrudCommand: 'SiteCrudCommand',
-    RetrieveOwnPermissionsCommand: 'RetrieveOwnPermissionsCommand',
+    RetrieveContainingRegionCommand: 'RetrieveContainingRegionCommand',
+    RetrieveCaseRightsCommand: 'RetrieveCaseRightsCommand',
+    RetrieveOutagesCommand: 'RetrieveOutagesCommand',
     RetrievePhylogeneticTreeBySequencesCommand: 'RetrievePhylogeneticTreeBySequencesCommand',
-    CaseSetCategoryCrudCommand: 'CaseSetCategoryCrudCommand',
-    ConceptSetMemberCrudCommand: 'ConceptSetMemberCrudCommand',
-    RegionCrudCommand: 'RegionCrudCommand',
-    CaseSetCrudCommand: 'CaseSetCrudCommand',
-    DataCollectionCrudCommand: 'DataCollectionCrudCommand',
-    OrganizationShareCasePolicyCrudCommand: 'OrganizationShareCasePolicyCrudCommand',
-    CaseTypeSetMemberCrudCommand: 'CaseTypeSetMemberCrudCommand',
-    OrganizationSetMemberCrudCommand: 'OrganizationSetMemberCrudCommand',
-    ConceptCrudCommand: 'ConceptCrudCommand',
-    CaseSetStatusCrudCommand: 'CaseSetStatusCrudCommand',
-    RegionRelationCrudCommand: 'RegionRelationCrudCommand',
-    ContactCrudCommand: 'ContactCrudCommand',
-    OutageCrudCommand: 'OutageCrudCommand',
+    UpdateUserCommand: 'UpdateUserCommand',
+    ValidateCasesCommand: 'ValidateCasesCommand',
     CaseTypeSetCrudCommand: 'CaseTypeSetCrudCommand',
-    UserInvitationCrudCommand: 'UserInvitationCrudCommand',
-    EtiologyCrudCommand: 'EtiologyCrudCommand',
-    RetrieveOrganizationAdminNameEmailsCommand: 'RetrieveOrganizationAdminNameEmailsCommand',
-    RetrieveCompleteCaseTypeCommand: 'RetrieveCompleteCaseTypeCommand',
-    RegionSetShapeCrudCommand: 'RegionSetShapeCrudCommand',
-    RetrieveCaseSetRightsCommand: 'RetrieveCaseSetRightsCommand',
-    CaseDataCollectionLinkCrudCommand: 'CaseDataCollectionLinkCrudCommand',
-    OrganizationSetCrudCommand: 'OrganizationSetCrudCommand',
-    TreeAlgorithmClassCrudCommand: 'TreeAlgorithmClassCrudCommand',
-    TreeAlgorithmCrudCommand: 'TreeAlgorithmCrudCommand',
-    IdentifierIssuerCrudCommand: 'IdentifierIssuerCrudCommand',
+    RegionSetCrudCommand: 'RegionSetCrudCommand',
+    RetrieveInviteUserConstraintsCommand: 'RetrieveInviteUserConstraintsCommand',
+    UserShareCasePolicyCrudCommand: 'UserShareCasePolicyCrudCommand',
+    InviteUserCommand: 'InviteUserCommand',
+    UpdateUserOwnOrganizationCommand: 'UpdateUserOwnOrganizationCommand',
+    DiseaseCrudCommand: 'DiseaseCrudCommand',
+    DataCollectionSetCrudCommand: 'DataCollectionSetCrudCommand',
+    CaseTypeSetCategoryCrudCommand: 'CaseTypeSetCategoryCrudCommand',
     RetrieveCasesByIdCommand: 'RetrieveCasesByIdCommand',
-    DimCrudCommand: 'DimCrudCommand',
-    GeneticDistanceProtocolCrudCommand: 'GeneticDistanceProtocolCrudCommand',
+    ConceptSetConceptUpdateAssociationCommand: 'ConceptSetConceptUpdateAssociationCommand',
     EtiologicalAgentCrudCommand: 'EtiologicalAgentCrudCommand',
     CaseTypeSetCaseTypeUpdateAssociationCommand: 'CaseTypeSetCaseTypeUpdateAssociationCommand',
-    CaseTypeCrudCommand: 'CaseTypeCrudCommand',
-    RetrieveCaseRightsCommand: 'RetrieveCaseRightsCommand',
-    RetrieveContainingRegionCommand: 'RetrieveContainingRegionCommand',
+    SubjectIdentifierCrudCommand: 'SubjectIdentifierCrudCommand',
     OrganizationCrudCommand: 'OrganizationCrudCommand',
-    DataCollectionSetCrudCommand: 'DataCollectionSetCrudCommand',
-    CaseTypeColSetCrudCommand: 'CaseTypeColSetCrudCommand',
-    RetrieveOrganizationContactCommand: 'RetrieveOrganizationContactCommand',
-    SubjectCrudCommand: 'SubjectCrudCommand',
-    UpdateUserCommand: 'UpdateUserCommand',
-    RetrieveCasesByQueryCommand: 'RetrieveCasesByQueryCommand',
-    RetrieveLicensesCommand: 'RetrieveLicensesCommand',
+    CaseCrudCommand: 'CaseCrudCommand',
     RetrieveGeneticSequenceByCaseCommand: 'RetrieveGeneticSequenceByCaseCommand',
-    ColCrudCommand: 'ColCrudCommand',
-    DataCollectionSetMemberCrudCommand: 'DataCollectionSetMemberCrudCommand',
-    OrganizationSetOrganizationUpdateAssociationCommand: 'OrganizationSetOrganizationUpdateAssociationCommand',
-    CaseTypeColSetCaseTypeColUpdateAssociationCommand: 'CaseTypeColSetCaseTypeColUpdateAssociationCommand',
-    CaseSetMemberCrudCommand: 'CaseSetMemberCrudCommand',
-    RegionSetCrudCommand: 'RegionSetCrudCommand',
-    CasesCreateCommand: 'CasesCreateCommand',
-    CaseTypeSetCategoryCrudCommand: 'CaseTypeSetCategoryCrudCommand',
-    UserAccessCasePolicyCrudCommand: 'UserAccessCasePolicyCrudCommand',
-    RetrieveGeneticSequenceByIdCommand: 'RetrieveGeneticSequenceByIdCommand',
-    UserCrudCommand: 'UserCrudCommand',
-    CaseTypeColSetMemberCrudCommand: 'CaseTypeColSetMemberCrudCommand',
-    DataCollectionSetDataCollectionUpdateAssociationCommand: 'DataCollectionSetDataCollectionUpdateAssociationCommand',
-    ConceptSetCrudCommand: 'ConceptSetCrudCommand',
-    GetIdentityProvidersCommand: 'GetIdentityProvidersCommand',
-    RetrieveCaseTypeStatsCommand: 'RetrieveCaseTypeStatsCommand',
-    UserShareCasePolicyCrudCommand: 'UserShareCasePolicyCrudCommand',
-    CaseTypeColCrudCommand: 'CaseTypeColCrudCommand',
-    DiseaseCrudCommand: 'DiseaseCrudCommand',
-    RetrieveAlleleProfileCommand: 'RetrieveAlleleProfileCommand',
-    InviteUserCommand: 'InviteUserCommand',
-    RetrieveCaseSetStatsCommand: 'RetrieveCaseSetStatsCommand',
-    OrganizationAdminPolicyCrudCommand: 'OrganizationAdminPolicyCrudCommand',
+    DataCollectionCrudCommand: 'DataCollectionCrudCommand',
+    CaseSetCategoryCrudCommand: 'CaseSetCategoryCrudCommand',
+    CaseDataCollectionLinkCrudCommand: 'CaseDataCollectionLinkCrudCommand',
     OrganizationAccessCasePolicyCrudCommand: 'OrganizationAccessCasePolicyCrudCommand',
+    RegionCrudCommand: 'RegionCrudCommand',
+    CreateCasesCommand: 'CreateCasesCommand',
+    RetrieveOrganizationContactCommand: 'RetrieveOrganizationContactCommand',
+    OrganizationSetCrudCommand: 'OrganizationSetCrudCommand',
+    DataCollectionSetMemberCrudCommand: 'DataCollectionSetMemberCrudCommand',
+    RetrieveOwnPermissionsCommand: 'RetrieveOwnPermissionsCommand',
+    IdentifierIssuerCrudCommand: 'IdentifierIssuerCrudCommand',
+    DimCrudCommand: 'DimCrudCommand',
+    UserAccessCasePolicyCrudCommand: 'UserAccessCasePolicyCrudCommand',
+    RetrieveCaseSetRightsCommand: 'RetrieveCaseSetRightsCommand',
+    TreeAlgorithmCrudCommand: 'TreeAlgorithmCrudCommand',
+    CaseSetMemberCrudCommand: 'CaseSetMemberCrudCommand',
+    OrganizationAdminPolicyCrudCommand: 'OrganizationAdminPolicyCrudCommand',
+    GeneticDistanceProtocolCrudCommand: 'GeneticDistanceProtocolCrudCommand',
+    CaseTypeCrudCommand: 'CaseTypeCrudCommand',
+    UserInvitationCrudCommand: 'UserInvitationCrudCommand',
+    ConceptCrudCommand: 'ConceptCrudCommand',
+    RetrieveLicensesCommand: 'RetrieveLicensesCommand',
+    DataCollectionSetDataCollectionUpdateAssociationCommand: 'DataCollectionSetDataCollectionUpdateAssociationCommand',
     RegisterInvitedUserCommand: 'RegisterInvitedUserCommand',
-    DiseaseEtiologicalAgentUpdateAssociationCommand: 'DiseaseEtiologicalAgentUpdateAssociationCommand',
-    RetrieveOutagesCommand: 'RetrieveOutagesCommand',
-    CaseSetDataCollectionLinkCrudCommand: 'CaseSetDataCollectionLinkCrudCommand',
-    CaseSetCreateCommand: 'CaseSetCreateCommand'
+    CaseSetStatusCrudCommand: 'CaseSetStatusCrudCommand',
+    RetrieveCaseTypeStatsCommand: 'RetrieveCaseTypeStatsCommand',
+    CaseTypeColSetCaseTypeColUpdateAssociationCommand: 'CaseTypeColSetCaseTypeColUpdateAssociationCommand',
+    CaseTypeColSetMemberCrudCommand: 'CaseTypeColSetMemberCrudCommand',
+    SubjectCrudCommand: 'SubjectCrudCommand',
+    ConceptSetCrudCommand: 'ConceptSetCrudCommand',
+    RetrieveCompleteCaseTypeCommand: 'RetrieveCompleteCaseTypeCommand',
+    RetrieveOrganizationAdminNameEmailsCommand: 'RetrieveOrganizationAdminNameEmailsCommand',
+    RetrieveSubRolesCommand: 'RetrieveSubRolesCommand',
+    OrganizationSetMemberCrudCommand: 'OrganizationSetMemberCrudCommand',
+    UserCrudCommand: 'UserCrudCommand',
+    RegionSetShapeCrudCommand: 'RegionSetShapeCrudCommand',
+    CaseTypeSetMemberCrudCommand: 'CaseTypeSetMemberCrudCommand',
+    ContactCrudCommand: 'ContactCrudCommand',
+    SiteCrudCommand: 'SiteCrudCommand',
+    EtiologyCrudCommand: 'EtiologyCrudCommand',
+    RegionRelationCrudCommand: 'RegionRelationCrudCommand',
+    CaseTypeColSetCrudCommand: 'CaseTypeColSetCrudCommand',
+    CaseTypeColCrudCommand: 'CaseTypeColCrudCommand',
+    RetrieveCasesByQueryCommand: 'RetrieveCasesByQueryCommand',
+    ColCrudCommand: 'ColCrudCommand',
+    CaseSetCrudCommand: 'CaseSetCrudCommand',
+    ConceptSetMemberCrudCommand: 'ConceptSetMemberCrudCommand',
+    RetrieveOrganizationsUnderAdminCommand: 'RetrieveOrganizationsUnderAdminCommand',
+    OutageCrudCommand: 'OutageCrudCommand',
+    OrganizationShareCasePolicyCrudCommand: 'OrganizationShareCasePolicyCrudCommand',
+    CreateCaseSetCommand: 'CreateCaseSetCommand',
+    OrganizationSetOrganizationUpdateAssociationCommand: 'OrganizationSetOrganizationUpdateAssociationCommand',
+    GetIdentityProvidersCommand: 'GetIdentityProvidersCommand',
+    RetrieveCaseSetStatsCommand: 'RetrieveCaseSetStatsCommand',
+    TreeAlgorithmClassCrudCommand: 'TreeAlgorithmClassCrudCommand',
+    RetrieveGeneticSequenceFastaByCaseCommand: 'RetrieveGeneticSequenceFastaByCaseCommand',
+    RetrieveAlleleProfileCommand: 'RetrieveAlleleProfileCommand'
 } as const;
 
 export type CommandName = typeof CommandName[keyof typeof CommandName];
@@ -1628,10 +1750,10 @@ export interface Concept {
     'description'?: string | null;
     /**
      * Additional properties of the concept.
-     * @type {object}
+     * @type {{ [key: string]: any; }}
      * @memberof Concept
      */
-    'props'?: object;
+    'props'?: { [key: string]: any; };
 }
 /**
  * A set of concepts in the ontology.
@@ -1826,17 +1948,35 @@ export interface CreateCaseSetRequestBody {
  */
 export interface CreateCasesRequestBody {
     /**
-     * 
-     * @type {Array<Case>}
+     * The case type ID that the cases belong to.
+     * @type {string}
      * @memberof CreateCasesRequestBody
      */
-    'cases': Array<Case>;
+    'case_type_id': string;
     /**
-     * The data collections in which the cases will be put initially
+     * The data collection ID in which the cases would be created.
+     * @type {string}
+     * @memberof CreateCasesRequestBody
+     */
+    'created_in_data_collection_id': string;
+    /**
+     * The additional data collections that the cases would be put in, other than the created_in_data_collection.
      * @type {Array<string>}
      * @memberof CreateCasesRequestBody
      */
-    'data_collection_ids'?: Array<string>;
+    'data_collection_ids': Array<string>;
+    /**
+     * Whether this is an update operation.
+     * @type {boolean}
+     * @memberof CreateCasesRequestBody
+     */
+    'is_update': boolean;
+    /**
+     * The cases to validate.
+     * @type {Array<CaseForCreateUpdate>}
+     * @memberof CreateCasesRequestBody
+     */
+    'cases': Array<CaseForCreateUpdate>;
 }
 /**
  * Represents a collection of data.
@@ -1929,7 +2069,7 @@ export interface DataCollectionSetMember {
  * @type Detail
  * @export
  */
-export type Detail = object | string;
+export type Detail = string | { [key: string]: any; };
 
 /**
  * 
@@ -1981,10 +2121,10 @@ export interface Dim {
     'description'?: string | null;
     /**
      * Additional properties of the dimension.
-     * @type {object}
+     * @type {{ [key: string]: any; }}
      * @memberof Dim
      */
-    'props'?: object;
+    'props'?: { [key: string]: any; };
 }
 
 
@@ -2098,13 +2238,13 @@ export interface Etiology {
  * @type EpiFilter
  * @export
  */
-export type EpiFilter = { type: 'COMPOSITE' } & TypedCompositeFilter | { type: 'DATETIME_RANGE' } & TypedDatetimeRangeFilter | { type: 'DATE_RANGE' } & TypedDateRangeFilter | { type: 'EQUALS_BOOLEAN' } & TypedEqualsBooleanFilter | { type: 'EQUALS_NUMBER' } & TypedEqualsNumberFilter | { type: 'EQUALS_STRING' } & TypedEqualsStringFilter | { type: 'EQUALS_UUID' } & TypedEqualsUuidFilter | { type: 'EXISTS' } & TypedExistsFilter | { type: 'NO_FILTER' } & TypedNoFilter | { type: 'NUMBER_RANGE' } & TypedNumberRangeFilter | { type: 'NUMBER_SET' } & TypedNumberSetFilter | { type: 'PARTIAL_DATE_RANGE' } & TypedPartialDateRangeFilter | { type: 'REGEX' } & TypedRegexFilter | { type: 'STRING_SET' } & TypedStringSetFilter | { type: 'UUID_SET' } & TypedUuidSetFilter;
+export type EpiFilter = TypedCompositeFilter | TypedDateRangeFilter | TypedDatetimeRangeFilter | TypedEqualsBooleanFilter | TypedEqualsNumberFilter | TypedEqualsStringFilter | TypedEqualsUuidFilter | TypedExistsFilter | TypedNoFilter | TypedNumberRangeFilter | TypedNumberSetFilter | TypedPartialDateRangeFilter | TypedRegexFilter | TypedStringSetFilter | TypedUuidSetFilter;
 
 /**
  * @type FiltersInner
  * @export
  */
-export type FiltersInner = { type: 'COMPOSITE' } & TypedCompositeFilter | { type: 'DATETIME_RANGE' } & TypedDatetimeRangeFilter | { type: 'DATE_RANGE' } & TypedDateRangeFilter | { type: 'EQUALS_BOOLEAN' } & TypedEqualsBooleanFilter | { type: 'EQUALS_NUMBER' } & TypedEqualsNumberFilter | { type: 'EQUALS_STRING' } & TypedEqualsStringFilter | { type: 'EQUALS_UUID' } & TypedEqualsUuidFilter | { type: 'EXISTS' } & TypedExistsFilter | { type: 'NO_FILTER' } & TypedNoFilter | { type: 'NUMBER_RANGE' } & TypedNumberRangeFilter | { type: 'NUMBER_SET' } & TypedNumberSetFilter | { type: 'PARTIAL_DATE_RANGE' } & TypedPartialDateRangeFilter | { type: 'REGEX' } & TypedRegexFilter | { type: 'STRING_SET' } & TypedStringSetFilter | { type: 'UUID_SET' } & TypedUuidSetFilter;
+export type FiltersInner = TypedCompositeFilter | TypedDateRangeFilter | TypedDatetimeRangeFilter | TypedEqualsBooleanFilter | TypedEqualsNumberFilter | TypedEqualsStringFilter | TypedEqualsUuidFilter | TypedExistsFilter | TypedNoFilter | TypedNumberRangeFilter | TypedNumberSetFilter | TypedPartialDateRangeFilter | TypedRegexFilter | TypedStringSetFilter | TypedUuidSetFilter;
 
 /**
  * 
@@ -2386,6 +2526,27 @@ export interface LogRequestBody {
      */
     'log_items': Array<LogItem>;
 }
+/**
+ * 
+ * @export
+ * @ {string}
+ */
+
+export const LogicalOperator = {
+    AND: 'AND',
+    OR: 'OR',
+    NOT: 'NOT',
+    XOR: 'XOR',
+    NAND: 'NAND',
+    NOR: 'NOR',
+    XNOR: 'XNOR',
+    IMPLIES: 'IMPLIES',
+    NIMPLIES: 'NIMPLIES'
+} as const;
+
+export type LogicalOperator = typeof LogicalOperator[keyof typeof LogicalOperator];
+
+
 /**
  * @type MembersInner
  * @export
@@ -3129,10 +3290,10 @@ export interface RetrieveAlleleProfileRequestBody {
     'sequence_ids': Array<string>;
     /**
      * 
-     * @type {object}
+     * @type {{ [key: string]: any; }}
      * @memberof RetrieveAlleleProfileRequestBody
      */
-    'props'?: object;
+    'props'?: { [key: string]: any; };
 }
 /**
  * 
@@ -3169,17 +3330,42 @@ export interface RetrieveCaseTypeStatsRequestBody {
 /**
  * 
  * @export
+ * @interface RetrieveGeneticSequenceFastaRequestBody
+ */
+export interface RetrieveGeneticSequenceFastaRequestBody {
+    /**
+     * The case type column that contains the genetic sequences to retrieve.
+     * @type {string}
+     * @memberof RetrieveGeneticSequenceFastaRequestBody
+     */
+    'genetic_sequence_case_type_col_id': string;
+    /**
+     * The case ids to retrieve genetic sequences for.
+     * @type {Array<string>}
+     * @memberof RetrieveGeneticSequenceFastaRequestBody
+     */
+    'case_ids': Array<string>;
+    /**
+     * The desired filename for the FASTA download.
+     * @type {string}
+     * @memberof RetrieveGeneticSequenceFastaRequestBody
+     */
+    'file_name': string;
+}
+/**
+ * 
+ * @export
  * @interface RetrieveGeneticSequenceRequestBody
  */
 export interface RetrieveGeneticSequenceRequestBody {
     /**
-     * 
+     * The case type column that contains the genetic sequences to retrieve.
      * @type {string}
      * @memberof RetrieveGeneticSequenceRequestBody
      */
     'genetic_sequence_case_type_col_id': string;
     /**
-     * 
+     * The case ids to retrieve genetic sequences for.
      * @type {Array<string>}
      * @memberof RetrieveGeneticSequenceRequestBody
      */
@@ -3211,10 +3397,10 @@ export interface RetrieveOrganizationContactRequestBody {
     'contact_ids'?: Array<string> | null;
     /**
      * 
-     * @type {object}
+     * @type {{ [key: string]: any; }}
      * @memberof RetrieveOrganizationContactRequestBody
      */
-    'props'?: object;
+    'props'?: { [key: string]: any; };
 }
 /**
  * 
@@ -3325,10 +3511,10 @@ export interface EpiSubject {
     'external_ids'?: { [key: string]: string; } | null;
     /**
      * A dictionary containing the content of the subject
-     * @type {object}
+     * @type {{ [key: string]: any; }}
      * @memberof EpiSubject
      */
-    'content': object;
+    'content': { [key: string]: any; };
 }
 /**
  * A unique identifier for a subject, generated by a particular identifier issuer.
@@ -3540,23 +3726,18 @@ export interface TypedCompositeFilter {
     'filters': Array<FiltersInner>;
     /**
      * 
-     * @type {BooleanOperator}
+     * @type {LogicalOperator}
      * @memberof TypedCompositeFilter
      */
-    'operator'?: BooleanOperator;
+    'operator'?: LogicalOperator;
     /**
      * 
      * @type {string}
      * @memberof TypedCompositeFilter
      */
-    'type': TypedCompositeFilterType;
+    'type': string;
 }
 
-export const TypedCompositeFilterType = {
-    COMPOSITE: 'COMPOSITE'
-} as const;
-
-export type TypedCompositeFilterType = typeof TypedCompositeFilterType[keyof typeof TypedCompositeFilterType];
 
 /**
  * 
@@ -3581,7 +3762,7 @@ export interface TypedDateRangeFilter {
      * @type {string}
      * @memberof TypedDateRangeFilter
      */
-    'lower_bound'?: string;
+    'lower_bound'?: string | null;
     /**
      * 
      * @type {ComparisonOperator}
@@ -3593,7 +3774,7 @@ export interface TypedDateRangeFilter {
      * @type {string}
      * @memberof TypedDateRangeFilter
      */
-    'upper_bound'?: string;
+    'upper_bound'?: string | null;
     /**
      * 
      * @type {ComparisonOperator}
@@ -3605,14 +3786,9 @@ export interface TypedDateRangeFilter {
      * @type {string}
      * @memberof TypedDateRangeFilter
      */
-    'type': TypedDateRangeFilterType;
+    'type': string;
 }
 
-export const TypedDateRangeFilterType = {
-    DATE_RANGE: 'DATE_RANGE'
-} as const;
-
-export type TypedDateRangeFilterType = typeof TypedDateRangeFilterType[keyof typeof TypedDateRangeFilterType];
 
 /**
  * 
@@ -3637,7 +3813,7 @@ export interface TypedDatetimeRangeFilter {
      * @type {string}
      * @memberof TypedDatetimeRangeFilter
      */
-    'lower_bound'?: string;
+    'lower_bound'?: string | null;
     /**
      * 
      * @type {ComparisonOperator}
@@ -3649,7 +3825,7 @@ export interface TypedDatetimeRangeFilter {
      * @type {string}
      * @memberof TypedDatetimeRangeFilter
      */
-    'upper_bound'?: string;
+    'upper_bound'?: string | null;
     /**
      * 
      * @type {ComparisonOperator}
@@ -3661,14 +3837,9 @@ export interface TypedDatetimeRangeFilter {
      * @type {string}
      * @memberof TypedDatetimeRangeFilter
      */
-    'type': TypedDatetimeRangeFilterType;
+    'type': string;
 }
 
-export const TypedDatetimeRangeFilterType = {
-    DATETIME_RANGE: 'DATETIME_RANGE'
-} as const;
-
-export type TypedDatetimeRangeFilterType = typeof TypedDatetimeRangeFilterType[keyof typeof TypedDatetimeRangeFilterType];
 
 /**
  * 
@@ -3699,15 +3870,8 @@ export interface TypedEqualsBooleanFilter {
      * @type {string}
      * @memberof TypedEqualsBooleanFilter
      */
-    'type': TypedEqualsBooleanFilterType;
+    'type': string;
 }
-
-export const TypedEqualsBooleanFilterType = {
-    EQUALS_BOOLEAN: 'EQUALS_BOOLEAN'
-} as const;
-
-export type TypedEqualsBooleanFilterType = typeof TypedEqualsBooleanFilterType[keyof typeof TypedEqualsBooleanFilterType];
-
 /**
  * 
  * @export
@@ -3737,15 +3901,8 @@ export interface TypedEqualsNumberFilter {
      * @type {string}
      * @memberof TypedEqualsNumberFilter
      */
-    'type': TypedEqualsNumberFilterType;
+    'type': string;
 }
-
-export const TypedEqualsNumberFilterType = {
-    EQUALS_NUMBER: 'EQUALS_NUMBER'
-} as const;
-
-export type TypedEqualsNumberFilterType = typeof TypedEqualsNumberFilterType[keyof typeof TypedEqualsNumberFilterType];
-
 /**
  * 
  * @export
@@ -3775,15 +3932,8 @@ export interface TypedEqualsStringFilter {
      * @type {string}
      * @memberof TypedEqualsStringFilter
      */
-    'type': TypedEqualsStringFilterType;
+    'type': string;
 }
-
-export const TypedEqualsStringFilterType = {
-    EQUALS_STRING: 'EQUALS_STRING'
-} as const;
-
-export type TypedEqualsStringFilterType = typeof TypedEqualsStringFilterType[keyof typeof TypedEqualsStringFilterType];
-
 /**
  * 
  * @export
@@ -3813,15 +3963,8 @@ export interface TypedEqualsUuidFilter {
      * @type {string}
      * @memberof TypedEqualsUuidFilter
      */
-    'type': TypedEqualsUuidFilterType;
+    'type': string;
 }
-
-export const TypedEqualsUuidFilterType = {
-    EQUALS_UUID: 'EQUALS_UUID'
-} as const;
-
-export type TypedEqualsUuidFilterType = typeof TypedEqualsUuidFilterType[keyof typeof TypedEqualsUuidFilterType];
-
 /**
  * 
  * @export
@@ -3845,15 +3988,8 @@ export interface TypedExistsFilter {
      * @type {string}
      * @memberof TypedExistsFilter
      */
-    'type': TypedExistsFilterType;
+    'type': string;
 }
-
-export const TypedExistsFilterType = {
-    EXISTS: 'EXISTS'
-} as const;
-
-export type TypedExistsFilterType = typeof TypedExistsFilterType[keyof typeof TypedExistsFilterType];
-
 /**
  * 
  * @export
@@ -3877,15 +4013,8 @@ export interface TypedNoFilter {
      * @type {string}
      * @memberof TypedNoFilter
      */
-    'type': TypedNoFilterType;
+    'type': string;
 }
-
-export const TypedNoFilterType = {
-    NO_FILTER: 'NO_FILTER'
-} as const;
-
-export type TypedNoFilterType = typeof TypedNoFilterType[keyof typeof TypedNoFilterType];
-
 /**
  * 
  * @export
@@ -3909,7 +4038,7 @@ export interface TypedNumberRangeFilter {
      * @type {number}
      * @memberof TypedNumberRangeFilter
      */
-    'lower_bound'?: number;
+    'lower_bound'?: number | null;
     /**
      * 
      * @type {ComparisonOperator}
@@ -3921,7 +4050,7 @@ export interface TypedNumberRangeFilter {
      * @type {number}
      * @memberof TypedNumberRangeFilter
      */
-    'upper_bound'?: number;
+    'upper_bound'?: number | null;
     /**
      * 
      * @type {ComparisonOperator}
@@ -3933,14 +4062,9 @@ export interface TypedNumberRangeFilter {
      * @type {string}
      * @memberof TypedNumberRangeFilter
      */
-    'type': TypedNumberRangeFilterType;
+    'type': string;
 }
 
-export const TypedNumberRangeFilterType = {
-    NUMBER_RANGE: 'NUMBER_RANGE'
-} as const;
-
-export type TypedNumberRangeFilterType = typeof TypedNumberRangeFilterType[keyof typeof TypedNumberRangeFilterType];
 
 /**
  * 
@@ -3971,15 +4095,8 @@ export interface TypedNumberSetFilter {
      * @type {string}
      * @memberof TypedNumberSetFilter
      */
-    'type': TypedNumberSetFilterType;
+    'type': string;
 }
-
-export const TypedNumberSetFilterType = {
-    NUMBER_SET: 'NUMBER_SET'
-} as const;
-
-export type TypedNumberSetFilterType = typeof TypedNumberSetFilterType[keyof typeof TypedNumberSetFilterType];
-
 /**
  * 
  * @export
@@ -4027,14 +4144,9 @@ export interface TypedPartialDateRangeFilter {
      * @type {string}
      * @memberof TypedPartialDateRangeFilter
      */
-    'type': TypedPartialDateRangeFilterType;
+    'type': string;
 }
 
-export const TypedPartialDateRangeFilterType = {
-    PARTIAL_DATE_RANGE: 'PARTIAL_DATE_RANGE'
-} as const;
-
-export type TypedPartialDateRangeFilterType = typeof TypedPartialDateRangeFilterType[keyof typeof TypedPartialDateRangeFilterType];
 
 /**
  * 
@@ -4065,15 +4177,8 @@ export interface TypedRegexFilter {
      * @type {string}
      * @memberof TypedRegexFilter
      */
-    'type': TypedRegexFilterType;
+    'type': string;
 }
-
-export const TypedRegexFilterType = {
-    REGEX: 'REGEX'
-} as const;
-
-export type TypedRegexFilterType = typeof TypedRegexFilterType[keyof typeof TypedRegexFilterType];
-
 /**
  * 
  * @export
@@ -4109,15 +4214,8 @@ export interface TypedStringSetFilter {
      * @type {string}
      * @memberof TypedStringSetFilter
      */
-    'type': TypedStringSetFilterType;
+    'type': string;
 }
-
-export const TypedStringSetFilterType = {
-    STRING_SET: 'STRING_SET'
-} as const;
-
-export type TypedStringSetFilterType = typeof TypedStringSetFilterType[keyof typeof TypedStringSetFilterType];
-
 /**
  * 
  * @export
@@ -4147,15 +4245,8 @@ export interface TypedUuidSetFilter {
      * @type {string}
      * @memberof TypedUuidSetFilter
      */
-    'type': TypedUuidSetFilterType;
+    'type': string;
 }
-
-export const TypedUuidSetFilterType = {
-    UUID_SET: 'UUID_SET'
-} as const;
-
-export type TypedUuidSetFilterType = typeof TypedUuidSetFilterType[keyof typeof TypedUuidSetFilterType];
-
 /**
  * 
  * @export
@@ -4467,7 +4558,7 @@ export interface UserInvitation {
      */
     'expires_at': string;
     /**
-     * The initial roles that the new user will have
+     * The roles of the user
      * @type {Array<Role>}
      * @memberof UserInvitation
      */
@@ -4496,6 +4587,31 @@ export interface UserInvitation {
      * @memberof UserInvitation
      */
     'organization'?: Organization;
+}
+/**
+ * Represents the constraints for a user invitation.
+ * @export
+ * @interface UserInvitationConstraints
+ */
+export interface UserInvitationConstraints {
+    /**
+     * The unique identifier for the obj.
+     * @type {string}
+     * @memberof UserInvitationConstraints
+     */
+    'id'?: string | null;
+    /**
+     * The roles that the user may be assigned by the inviting user.
+     * @type {Array<string>}
+     * @memberof UserInvitationConstraints
+     */
+    'roles': Array<string>;
+    /**
+     * The organizations that the user may be assigned by the inviting user.
+     * @type {Array<string>}
+     * @memberof UserInvitationConstraints
+     */
+    'organization_ids': Array<string>;
 }
 /**
  * 
@@ -4637,6 +4753,62 @@ export interface UserShareCasePolicy {
      * @memberof UserShareCasePolicy
      */
     'from_data_collection'?: DataCollection;
+}
+/**
+ * 
+ * @export
+ * @interface ValidateCasesRequestBody
+ */
+export interface ValidateCasesRequestBody {
+    /**
+     * The case type ID that the cases belong to.
+     * @type {string}
+     * @memberof ValidateCasesRequestBody
+     */
+    'case_type_id': string;
+    /**
+     * The data collection ID in which the cases would be created.
+     * @type {string}
+     * @memberof ValidateCasesRequestBody
+     */
+    'created_in_data_collection_id': string;
+    /**
+     * The additional data collections that the cases would be put in, other than the created_in_data_collection.
+     * @type {Array<string>}
+     * @memberof ValidateCasesRequestBody
+     */
+    'data_collection_ids': Array<string>;
+    /**
+     * Whether this is an update operation.
+     * @type {boolean}
+     * @memberof ValidateCasesRequestBody
+     */
+    'is_update': boolean;
+    /**
+     * The cases to validate.
+     * @type {Array<CaseForCreateUpdate>}
+     * @memberof ValidateCasesRequestBody
+     */
+    'cases': Array<CaseForCreateUpdate>;
+}
+/**
+ * 
+ * @export
+ * @interface ValidatedCase
+ */
+export interface ValidatedCase {
+    /**
+     * 
+     * @type {CaseForCreateUpdate}
+     * @memberof ValidatedCase
+     */
+    'case': CaseForCreateUpdate;
+    /**
+     * The data issues found for the case.
+     * @type {Array<CaseDataIssue>}
+     * @memberof ValidatedCase
+     */
+    'data_issues': Array<CaseDataIssue>;
 }
 /**
  * 
@@ -5944,7 +6116,7 @@ const AbacApiAxiosParamCreator = function (configuration?: Configuration) {
             };
         },
         /**
-         * Retrieve the names and email addresses of all organization admins for the user\'s     organization.
+         * Retrieve the names and email addresses of all organization admins for the user\'s organization.
          * @summary Retrieveorganizationadminnameemailscommand
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
@@ -7293,7 +7465,7 @@ const AbacApiFp = function(configuration?: Configuration) {
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
         /**
-         * Retrieve the names and email addresses of all organization admins for the user\'s     organization.
+         * Retrieve the names and email addresses of all organization admins for the user\'s organization.
          * @summary Retrieveorganizationadminnameemailscommand
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
@@ -8066,7 +8238,7 @@ export class AbacApi extends BaseAPI {
     }
 
     /**
-     * Retrieve the names and email addresses of all organization admins for the user\'s     organization.
+     * Retrieve the names and email addresses of all organization admins for the user\'s organization.
      * @summary Retrieveorganizationadminnameemailscommand
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
@@ -14913,7 +15085,7 @@ const CaseApiAxiosParamCreator = function (configuration?: Configuration) {
             };
         },
         /**
-         * Create a new case set and associate it with the specified data collections and     cases.
+         * Create a new case set and associate it with the specified data collections and cases.
          * @summary Create Case Set
          * @param {CreateCaseSetRequestBody} createCaseSetRequestBody 
          * @param {*} [options] Override http request option.
@@ -14949,7 +15121,7 @@ const CaseApiAxiosParamCreator = function (configuration?: Configuration) {
             };
         },
         /**
-         * Create a list of cases and associate them with the specified data collections.
+         * Create the corresponding cases and return them.
          * @summary Create Cases
          * @param {CreateCasesRequestBody} createCasesRequestBody 
          * @param {*} [options] Override http request option.
@@ -15829,7 +16001,7 @@ const CaseApiAxiosParamCreator = function (configuration?: Configuration) {
             };
         },
         /**
-         * Retrieve a set of allele profiles based on a set of case IDs and a genetic distance     case type column.
+         * Retrieve a set of allele profiles based on a set of case IDs and a genetic distance case type column.
          * @summary Retrieve Allele Profile
          * @param {RetrieveAlleleProfileRequestBody} retrieveAlleleProfileRequestBody 
          * @param {*} [options] Override http request option.
@@ -16081,7 +16253,7 @@ const CaseApiAxiosParamCreator = function (configuration?: Configuration) {
             };
         },
         /**
-         * Retrieve a set of genetic sequences based on a set of case IDs and a genetic     sequence case type column.
+         * Retrieve a set of genetic sequences based on a set of case IDs and a genetic sequence case type column.
          * @summary Retrieve Genetic Sequence By Case
          * @param {RetrieveGeneticSequenceRequestBody} retrieveGeneticSequenceRequestBody 
          * @param {*} [options] Override http request option.
@@ -16117,7 +16289,43 @@ const CaseApiAxiosParamCreator = function (configuration?: Configuration) {
             };
         },
         /**
-         * Retrieves Contacts associated with organizations, sites, or specific contacts.      Exactly one of organization_ids, site_ids, or contact_ids must be provided.     Returns a list of contacts with their associated site and organization data     cascaded.
+         * Retrieve a set of genetic sequences in FASTA format based on a set of case IDs and a genetic sequence case type column. An iterator is returned that yields the FASTA lines.
+         * @summary Retrieve Genetic Sequence By Case, In Fasta Format And Streamed
+         * @param {RetrieveGeneticSequenceFastaRequestBody} retrieveGeneticSequenceFastaRequestBody 
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        retrieveGeneticSequenceFasta: async (retrieveGeneticSequenceFastaRequestBody: RetrieveGeneticSequenceFastaRequestBody, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
+            // verify required parameter 'retrieveGeneticSequenceFastaRequestBody' is not null or undefined
+            assertParamExists('retrieveGeneticSequenceFasta', 'retrieveGeneticSequenceFastaRequestBody', retrieveGeneticSequenceFastaRequestBody)
+            const localVarPath = `/v1/retrieve/genetic_sequence/fasta`;
+            // use dummy base URL string because the URL constructor only accepts absolute URLs.
+            const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
+            let baseOptions;
+            if (configuration) {
+                baseOptions = configuration.baseOptions;
+            }
+
+            const localVarRequestOptions = { method: 'POST', ...baseOptions, ...options};
+            const localVarHeaderParameter = {} as any;
+            const localVarQueryParameter = {} as any;
+
+
+    
+            localVarHeaderParameter['Content-Type'] = 'application/json';
+
+            setSearchParams(localVarUrlObj, localVarQueryParameter);
+            let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
+            localVarRequestOptions.headers = {...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers};
+            localVarRequestOptions.data = serializeDataIfNeeded(retrieveGeneticSequenceFastaRequestBody, localVarRequestOptions, configuration)
+
+            return {
+                url: toPathString(localVarUrlObj),
+                options: localVarRequestOptions,
+            };
+        },
+        /**
+         * Retrieves Contacts associated with organizations, sites, or specific contacts.  Exactly one of organization_ids, site_ids, or contact_ids must be provided. Returns a list of contacts with their associated site and organization data cascaded.
          * @summary Retrieve Organization Contact
          * @param {RetrieveOrganizationContactRequestBody} retrieveOrganizationContactRequestBody 
          * @param {*} [options] Override http request option.
@@ -16153,7 +16361,7 @@ const CaseApiAxiosParamCreator = function (configuration?: Configuration) {
             };
         },
         /**
-         * Retrieve a phylogenetic tree based on a set of case IDs, a tree algorithm, and     a genetic distance case type column.
+         * Retrieve a phylogenetic tree based on a set of case IDs, a tree algorithm, and a genetic distance case type column.
          * @summary Retrieve Phylogenetic Tree
          * @param {RetrievePhylogeneticTreeRequestBody} retrievePhylogeneticTreeRequestBody 
          * @param {*} [options] Override http request option.
@@ -17026,6 +17234,42 @@ const CaseApiAxiosParamCreator = function (configuration?: Configuration) {
             let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
             localVarRequestOptions.headers = {...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers};
             localVarRequestOptions.data = serializeDataIfNeeded(treeAlgorithm, localVarRequestOptions, configuration)
+
+            return {
+                url: toPathString(localVarUrlObj),
+                options: localVarRequestOptions,
+            };
+        },
+        /**
+         * Validate case data and return a validation report.
+         * @summary Validate Cases
+         * @param {ValidateCasesRequestBody} validateCasesRequestBody 
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        validateCases: async (validateCasesRequestBody: ValidateCasesRequestBody, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
+            // verify required parameter 'validateCasesRequestBody' is not null or undefined
+            assertParamExists('validateCases', 'validateCasesRequestBody', validateCasesRequestBody)
+            const localVarPath = `/v1/validate/cases`;
+            // use dummy base URL string because the URL constructor only accepts absolute URLs.
+            const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
+            let baseOptions;
+            if (configuration) {
+                baseOptions = configuration.baseOptions;
+            }
+
+            const localVarRequestOptions = { method: 'POST', ...baseOptions, ...options};
+            const localVarHeaderParameter = {} as any;
+            const localVarQueryParameter = {} as any;
+
+
+    
+            localVarHeaderParameter['Content-Type'] = 'application/json';
+
+            setSearchParams(localVarUrlObj, localVarQueryParameter);
+            let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
+            localVarRequestOptions.headers = {...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers};
+            localVarRequestOptions.data = serializeDataIfNeeded(validateCasesRequestBody, localVarRequestOptions, configuration)
 
             return {
                 url: toPathString(localVarUrlObj),
@@ -19409,7 +19653,7 @@ const CaseApiFp = function(configuration?: Configuration) {
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
         /**
-         * Create a new case set and associate it with the specified data collections and     cases.
+         * Create a new case set and associate it with the specified data collections and cases.
          * @summary Create Case Set
          * @param {CreateCaseSetRequestBody} createCaseSetRequestBody 
          * @param {*} [options] Override http request option.
@@ -19422,7 +19666,7 @@ const CaseApiFp = function(configuration?: Configuration) {
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
         /**
-         * Create a list of cases and associate them with the specified data collections.
+         * Create the corresponding cases and return them.
          * @summary Create Cases
          * @param {CreateCasesRequestBody} createCasesRequestBody 
          * @param {*} [options] Override http request option.
@@ -19745,7 +19989,7 @@ const CaseApiFp = function(configuration?: Configuration) {
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
         /**
-         * Retrieve a set of allele profiles based on a set of case IDs and a genetic distance     case type column.
+         * Retrieve a set of allele profiles based on a set of case IDs and a genetic distance case type column.
          * @summary Retrieve Allele Profile
          * @param {RetrieveAlleleProfileRequestBody} retrieveAlleleProfileRequestBody 
          * @param {*} [options] Override http request option.
@@ -19836,7 +20080,7 @@ const CaseApiFp = function(configuration?: Configuration) {
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
         /**
-         * Retrieve a set of genetic sequences based on a set of case IDs and a genetic     sequence case type column.
+         * Retrieve a set of genetic sequences based on a set of case IDs and a genetic sequence case type column.
          * @summary Retrieve Genetic Sequence By Case
          * @param {RetrieveGeneticSequenceRequestBody} retrieveGeneticSequenceRequestBody 
          * @param {*} [options] Override http request option.
@@ -19849,7 +20093,20 @@ const CaseApiFp = function(configuration?: Configuration) {
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
         /**
-         * Retrieves Contacts associated with organizations, sites, or specific contacts.      Exactly one of organization_ids, site_ids, or contact_ids must be provided.     Returns a list of contacts with their associated site and organization data     cascaded.
+         * Retrieve a set of genetic sequences in FASTA format based on a set of case IDs and a genetic sequence case type column. An iterator is returned that yields the FASTA lines.
+         * @summary Retrieve Genetic Sequence By Case, In Fasta Format And Streamed
+         * @param {RetrieveGeneticSequenceFastaRequestBody} retrieveGeneticSequenceFastaRequestBody 
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        async retrieveGeneticSequenceFasta(retrieveGeneticSequenceFastaRequestBody: RetrieveGeneticSequenceFastaRequestBody, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<any>> {
+            const localVarAxiosArgs = await localVarAxiosParamCreator.retrieveGeneticSequenceFasta(retrieveGeneticSequenceFastaRequestBody, options);
+            const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
+            const localVarOperationServerBasePath = operationServerMap['CaseApi.retrieveGeneticSequenceFasta']?.[localVarOperationServerIndex]?.url;
+            return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
+        },
+        /**
+         * Retrieves Contacts associated with organizations, sites, or specific contacts.  Exactly one of organization_ids, site_ids, or contact_ids must be provided. Returns a list of contacts with their associated site and organization data cascaded.
          * @summary Retrieve Organization Contact
          * @param {RetrieveOrganizationContactRequestBody} retrieveOrganizationContactRequestBody 
          * @param {*} [options] Override http request option.
@@ -19862,7 +20119,7 @@ const CaseApiFp = function(configuration?: Configuration) {
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
         /**
-         * Retrieve a phylogenetic tree based on a set of case IDs, a tree algorithm, and     a genetic distance case type column.
+         * Retrieve a phylogenetic tree based on a set of case IDs, a tree algorithm, and a genetic distance case type column.
          * @summary Retrieve Phylogenetic Tree
          * @param {RetrievePhylogeneticTreeRequestBody} retrievePhylogeneticTreeRequestBody 
          * @param {*} [options] Override http request option.
@@ -20182,6 +20439,19 @@ const CaseApiFp = function(configuration?: Configuration) {
             const localVarAxiosArgs = await localVarAxiosParamCreator.treeAlgorithmsPutSome(treeAlgorithm, options);
             const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
             const localVarOperationServerBasePath = operationServerMap['CaseApi.treeAlgorithmsPutSome']?.[localVarOperationServerIndex]?.url;
+            return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
+        },
+        /**
+         * Validate case data and return a validation report.
+         * @summary Validate Cases
+         * @param {ValidateCasesRequestBody} validateCasesRequestBody 
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        async validateCases(validateCasesRequestBody: ValidateCasesRequestBody, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<CaseValidationReport>> {
+            const localVarAxiosArgs = await localVarAxiosParamCreator.validateCases(validateCasesRequestBody, options);
+            const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
+            const localVarOperationServerBasePath = operationServerMap['CaseApi.validateCases']?.[localVarOperationServerIndex]?.url;
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
     }
@@ -22390,7 +22660,7 @@ export class CaseApi extends BaseAPI {
     }
 
     /**
-     * Create a new case set and associate it with the specified data collections and     cases.
+     * Create a new case set and associate it with the specified data collections and cases.
      * @summary Create Case Set
      * @param {CreateCaseSetRequestBody} createCaseSetRequestBody 
      * @param {*} [options] Override http request option.
@@ -22402,7 +22672,7 @@ export class CaseApi extends BaseAPI {
     }
 
     /**
-     * Create a list of cases and associate them with the specified data collections.
+     * Create the corresponding cases and return them.
      * @summary Create Cases
      * @param {CreateCasesRequestBody} createCasesRequestBody 
      * @param {*} [options] Override http request option.
@@ -22700,7 +22970,7 @@ export class CaseApi extends BaseAPI {
     }
 
     /**
-     * Retrieve a set of allele profiles based on a set of case IDs and a genetic distance     case type column.
+     * Retrieve a set of allele profiles based on a set of case IDs and a genetic distance case type column.
      * @summary Retrieve Allele Profile
      * @param {RetrieveAlleleProfileRequestBody} retrieveAlleleProfileRequestBody 
      * @param {*} [options] Override http request option.
@@ -22784,7 +23054,7 @@ export class CaseApi extends BaseAPI {
     }
 
     /**
-     * Retrieve a set of genetic sequences based on a set of case IDs and a genetic     sequence case type column.
+     * Retrieve a set of genetic sequences based on a set of case IDs and a genetic sequence case type column.
      * @summary Retrieve Genetic Sequence By Case
      * @param {RetrieveGeneticSequenceRequestBody} retrieveGeneticSequenceRequestBody 
      * @param {*} [options] Override http request option.
@@ -22796,7 +23066,19 @@ export class CaseApi extends BaseAPI {
     }
 
     /**
-     * Retrieves Contacts associated with organizations, sites, or specific contacts.      Exactly one of organization_ids, site_ids, or contact_ids must be provided.     Returns a list of contacts with their associated site and organization data     cascaded.
+     * Retrieve a set of genetic sequences in FASTA format based on a set of case IDs and a genetic sequence case type column. An iterator is returned that yields the FASTA lines.
+     * @summary Retrieve Genetic Sequence By Case, In Fasta Format And Streamed
+     * @param {RetrieveGeneticSequenceFastaRequestBody} retrieveGeneticSequenceFastaRequestBody 
+     * @param {*} [options] Override http request option.
+     * @throws {RequiredError}
+     * @memberof CaseApi
+     */
+    public retrieveGeneticSequenceFasta(retrieveGeneticSequenceFastaRequestBody: RetrieveGeneticSequenceFastaRequestBody, options?: RawAxiosRequestConfig) {
+        return CaseApiFp(this.configuration).retrieveGeneticSequenceFasta(retrieveGeneticSequenceFastaRequestBody, options).then((request) => request(this.axios, this.configuration.baseUrl));
+    }
+
+    /**
+     * Retrieves Contacts associated with organizations, sites, or specific contacts.  Exactly one of organization_ids, site_ids, or contact_ids must be provided. Returns a list of contacts with their associated site and organization data cascaded.
      * @summary Retrieve Organization Contact
      * @param {RetrieveOrganizationContactRequestBody} retrieveOrganizationContactRequestBody 
      * @param {*} [options] Override http request option.
@@ -22808,7 +23090,7 @@ export class CaseApi extends BaseAPI {
     }
 
     /**
-     * Retrieve a phylogenetic tree based on a set of case IDs, a tree algorithm, and     a genetic distance case type column.
+     * Retrieve a phylogenetic tree based on a set of case IDs, a tree algorithm, and a genetic distance case type column.
      * @summary Retrieve Phylogenetic Tree
      * @param {RetrievePhylogeneticTreeRequestBody} retrievePhylogeneticTreeRequestBody 
      * @param {*} [options] Override http request option.
@@ -23103,6 +23385,18 @@ export class CaseApi extends BaseAPI {
      */
     public treeAlgorithmsPutSome(treeAlgorithm: Array<TreeAlgorithm>, options?: RawAxiosRequestConfig) {
         return CaseApiFp(this.configuration).treeAlgorithmsPutSome(treeAlgorithm, options).then((request) => request(this.axios, this.configuration.baseUrl));
+    }
+
+    /**
+     * Validate case data and return a validation report.
+     * @summary Validate Cases
+     * @param {ValidateCasesRequestBody} validateCasesRequestBody 
+     * @param {*} [options] Override http request option.
+     * @throws {RequiredError}
+     * @memberof CaseApi
+     */
+    public validateCases(validateCasesRequestBody: ValidateCasesRequestBody, options?: RawAxiosRequestConfig) {
+        return CaseApiFp(this.configuration).validateCases(validateCasesRequestBody, options).then((request) => request(this.axios, this.configuration.baseUrl));
     }
 }
 
@@ -31815,7 +32109,7 @@ const OrganizationApiAxiosParamCreator = function (configuration?: Configuration
             };
         },
         /**
-         * Updates the association between DataCollectionSets and DataCollections.      This command manages the many-to-many relationship by creating or updating     DataCollectionSetMember associations between data collection sets and     individual data collections.
+         * Updates the association between DataCollectionSets and DataCollections.  This command manages the many-to-many relationship by creating or updating DataCollectionSetMember associations between data collection sets and individual data collections.
          * @summary Datacollectionset Datacollection
          * @param {string} dataCollectionSetId 
          * @param {UpdateDataCollectionSetDataCollectionRequestBody} updateDataCollectionSetDataCollectionRequestBody 
@@ -32775,7 +33069,7 @@ const OrganizationApiAxiosParamCreator = function (configuration?: Configuration
             };
         },
         /**
-         * Creates and returns a UserInvitation for a new user with a particular     email address, organization and initial role(s).      A random unique token is added to the invitation, and to be provided to the     new user for consuming the invitation.
+         * Creates and returns a UserInvitation for a new user with a particular email address, organization and initial role(s).  A random unique token is added to the invitation, and to be provided to the new user for consuming the invitation.
          * @summary Invite A User
          * @param {UserInvitationRequestBody} userInvitationRequestBody 
          * @param {*} [options] Override http request option.
@@ -32804,6 +33098,36 @@ const OrganizationApiAxiosParamCreator = function (configuration?: Configuration
             let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
             localVarRequestOptions.headers = {...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers};
             localVarRequestOptions.data = serializeDataIfNeeded(userInvitationRequestBody, localVarRequestOptions, configuration)
+
+            return {
+                url: toPathString(localVarUrlObj),
+                options: localVarRequestOptions,
+            };
+        },
+        /**
+         * Retrieves the constraints for inviting a user, such as valid roles and organizations.  This command is used to gather the necessary information for the user invitation process.
+         * @summary The Constraints For Inviting A User
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        inviteUserConstraints: async (options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
+            const localVarPath = `/v1/invite_user/constraints`;
+            // use dummy base URL string because the URL constructor only accepts absolute URLs.
+            const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
+            let baseOptions;
+            if (configuration) {
+                baseOptions = configuration.baseOptions;
+            }
+
+            const localVarRequestOptions = { method: 'GET', ...baseOptions, ...options};
+            const localVarHeaderParameter = {} as any;
+            const localVarQueryParameter = {} as any;
+
+
+    
+            setSearchParams(localVarUrlObj, localVarQueryParameter);
+            let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
+            localVarRequestOptions.headers = {...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers};
 
             return {
                 url: toPathString(localVarUrlObj),
@@ -33619,7 +33943,7 @@ const OrganizationApiAxiosParamCreator = function (configuration?: Configuration
             };
         },
         /**
-         * Updates the association between an OrganizationSets and Organizations.      This command manages the many-to-many relationship by creating or updating     OrganizationSetMember associations between organization sets and     individual organizations.
+         * Updates the association between an OrganizationSets and Organizations.  This command manages the many-to-many relationship by creating or updating OrganizationSetMember associations between organization sets and individual organizations.
          * @summary Organizationset Organization
          * @param {string} organizationSetId 
          * @param {UpdateOrganizationSetOrganizationRequestBody} updateOrganizationSetOrganizationRequestBody 
@@ -34539,7 +34863,7 @@ const OrganizationApiAxiosParamCreator = function (configuration?: Configuration
             };
         },
         /**
-         * Updates an existing User with new properties such as active status,     roles, and organization membership.      The target user is identified by tgt_user_id. Any field set to None will     leave that property unchanged. Roles cannot be set to an empty set.     Cache is invalidated after successful update.
+         * Updates an existing User with new properties such as active status, roles, and organization membership.  The target user is identified by tgt_user_id. Any field set to None will leave that property unchanged. Roles cannot be set to an empty set. Cache is invalidated after successful update.
          * @summary Updateuserownorganizationcommand
          * @param {UpdateUserOwnOrganizationRequestBody} updateUserOwnOrganizationRequestBody 
          * @param {*} [options] Override http request option.
@@ -35057,7 +35381,7 @@ const OrganizationApiAxiosParamCreator = function (configuration?: Configuration
             };
         },
         /**
-         * Registers (creates) the user of the command. The email and token must match     that of an existing UserInvitation. The newly registered user is assigned     the organization and roles from the invitation. The invitation is deleted.
+         * Registers (creates) the user of the command. The email and token must match that of an existing UserInvitation. The newly registered user is assigned the organization and roles from the invitation. The invitation is deleted.
          * @summary Registerinviteduser
          * @param {string} token 
          * @param {*} [options] Override http request option.
@@ -35961,7 +36285,7 @@ const OrganizationApiFp = function(configuration?: Configuration) {
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
         /**
-         * Updates the association between DataCollectionSets and DataCollections.      This command manages the many-to-many relationship by creating or updating     DataCollectionSetMember associations between data collection sets and     individual data collections.
+         * Updates the association between DataCollectionSets and DataCollections.  This command manages the many-to-many relationship by creating or updating DataCollectionSetMember associations between data collection sets and individual data collections.
          * @summary Datacollectionset Datacollection
          * @param {string} dataCollectionSetId 
          * @param {UpdateDataCollectionSetDataCollectionRequestBody} updateDataCollectionSetDataCollectionRequestBody 
@@ -36312,7 +36636,7 @@ const OrganizationApiFp = function(configuration?: Configuration) {
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
         /**
-         * Creates and returns a UserInvitation for a new user with a particular     email address, organization and initial role(s).      A random unique token is added to the invitation, and to be provided to the     new user for consuming the invitation.
+         * Creates and returns a UserInvitation for a new user with a particular email address, organization and initial role(s).  A random unique token is added to the invitation, and to be provided to the new user for consuming the invitation.
          * @summary Invite A User
          * @param {UserInvitationRequestBody} userInvitationRequestBody 
          * @param {*} [options] Override http request option.
@@ -36322,6 +36646,18 @@ const OrganizationApiFp = function(configuration?: Configuration) {
             const localVarAxiosArgs = await localVarAxiosParamCreator.inviteUser(userInvitationRequestBody, options);
             const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
             const localVarOperationServerBasePath = operationServerMap['OrganizationApi.inviteUser']?.[localVarOperationServerIndex]?.url;
+            return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
+        },
+        /**
+         * Retrieves the constraints for inviting a user, such as valid roles and organizations.  This command is used to gather the necessary information for the user invitation process.
+         * @summary The Constraints For Inviting A User
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        async inviteUserConstraints(options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<UserInvitationConstraints>> {
+            const localVarAxiosArgs = await localVarAxiosParamCreator.inviteUserConstraints(options);
+            const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
+            const localVarOperationServerBasePath = operationServerMap['OrganizationApi.inviteUserConstraints']?.[localVarOperationServerIndex]?.url;
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
         /**
@@ -36622,7 +36958,7 @@ const OrganizationApiFp = function(configuration?: Configuration) {
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
         /**
-         * Updates the association between an OrganizationSets and Organizations.      This command manages the many-to-many relationship by creating or updating     OrganizationSetMember associations between organization sets and     individual organizations.
+         * Updates the association between an OrganizationSets and Organizations.  This command manages the many-to-many relationship by creating or updating OrganizationSetMember associations between organization sets and individual organizations.
          * @summary Organizationset Organization
          * @param {string} organizationSetId 
          * @param {UpdateOrganizationSetOrganizationRequestBody} updateOrganizationSetOrganizationRequestBody 
@@ -36959,7 +37295,7 @@ const OrganizationApiFp = function(configuration?: Configuration) {
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
         /**
-         * Updates an existing User with new properties such as active status,     roles, and organization membership.      The target user is identified by tgt_user_id. Any field set to None will     leave that property unchanged. Roles cannot be set to an empty set.     Cache is invalidated after successful update.
+         * Updates an existing User with new properties such as active status, roles, and organization membership.  The target user is identified by tgt_user_id. Any field set to None will leave that property unchanged. Roles cannot be set to an empty set. Cache is invalidated after successful update.
          * @summary Updateuserownorganizationcommand
          * @param {UpdateUserOwnOrganizationRequestBody} updateUserOwnOrganizationRequestBody 
          * @param {*} [options] Override http request option.
@@ -37151,7 +37487,7 @@ const OrganizationApiFp = function(configuration?: Configuration) {
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
         /**
-         * Registers (creates) the user of the command. The email and token must match     that of an existing UserInvitation. The newly registered user is assigned     the organization and roles from the invitation. The invitation is deleted.
+         * Registers (creates) the user of the command. The email and token must match that of an existing UserInvitation. The newly registered user is assigned the organization and roles from the invitation. The invitation is deleted.
          * @summary Registerinviteduser
          * @param {string} token 
          * @param {*} [options] Override http request option.
@@ -37745,7 +38081,7 @@ export class OrganizationApi extends BaseAPI {
     }
 
     /**
-     * Updates the association between DataCollectionSets and DataCollections.      This command manages the many-to-many relationship by creating or updating     DataCollectionSetMember associations between data collection sets and     individual data collections.
+     * Updates the association between DataCollectionSets and DataCollections.  This command manages the many-to-many relationship by creating or updating DataCollectionSetMember associations between data collection sets and individual data collections.
      * @summary Datacollectionset Datacollection
      * @param {string} dataCollectionSetId 
      * @param {UpdateDataCollectionSetDataCollectionRequestBody} updateDataCollectionSetDataCollectionRequestBody 
@@ -38069,7 +38405,7 @@ export class OrganizationApi extends BaseAPI {
     }
 
     /**
-     * Creates and returns a UserInvitation for a new user with a particular     email address, organization and initial role(s).      A random unique token is added to the invitation, and to be provided to the     new user for consuming the invitation.
+     * Creates and returns a UserInvitation for a new user with a particular email address, organization and initial role(s).  A random unique token is added to the invitation, and to be provided to the new user for consuming the invitation.
      * @summary Invite A User
      * @param {UserInvitationRequestBody} userInvitationRequestBody 
      * @param {*} [options] Override http request option.
@@ -38078,6 +38414,17 @@ export class OrganizationApi extends BaseAPI {
      */
     public inviteUser(userInvitationRequestBody: UserInvitationRequestBody, options?: RawAxiosRequestConfig) {
         return OrganizationApiFp(this.configuration).inviteUser(userInvitationRequestBody, options).then((request) => request(this.axios, this.configuration.baseUrl));
+    }
+
+    /**
+     * Retrieves the constraints for inviting a user, such as valid roles and organizations.  This command is used to gather the necessary information for the user invitation process.
+     * @summary The Constraints For Inviting A User
+     * @param {*} [options] Override http request option.
+     * @throws {RequiredError}
+     * @memberof OrganizationApi
+     */
+    public inviteUserConstraints(options?: RawAxiosRequestConfig) {
+        return OrganizationApiFp(this.configuration).inviteUserConstraints(options).then((request) => request(this.axios, this.configuration.baseUrl));
     }
 
     /**
@@ -38355,7 +38702,7 @@ export class OrganizationApi extends BaseAPI {
     }
 
     /**
-     * Updates the association between an OrganizationSets and Organizations.      This command manages the many-to-many relationship by creating or updating     OrganizationSetMember associations between organization sets and     individual organizations.
+     * Updates the association between an OrganizationSets and Organizations.  This command manages the many-to-many relationship by creating or updating OrganizationSetMember associations between organization sets and individual organizations.
      * @summary Organizationset Organization
      * @param {string} organizationSetId 
      * @param {UpdateOrganizationSetOrganizationRequestBody} updateOrganizationSetOrganizationRequestBody 
@@ -38666,7 +39013,7 @@ export class OrganizationApi extends BaseAPI {
     }
 
     /**
-     * Updates an existing User with new properties such as active status,     roles, and organization membership.      The target user is identified by tgt_user_id. Any field set to None will     leave that property unchanged. Roles cannot be set to an empty set.     Cache is invalidated after successful update.
+     * Updates an existing User with new properties such as active status, roles, and organization membership.  The target user is identified by tgt_user_id. Any field set to None will leave that property unchanged. Roles cannot be set to an empty set. Cache is invalidated after successful update.
      * @summary Updateuserownorganizationcommand
      * @param {UpdateUserOwnOrganizationRequestBody} updateUserOwnOrganizationRequestBody 
      * @param {*} [options] Override http request option.
@@ -38843,7 +39190,7 @@ export class OrganizationApi extends BaseAPI {
     }
 
     /**
-     * Registers (creates) the user of the command. The email and token must match     that of an existing UserInvitation. The newly registered user is assigned     the organization and roles from the invitation. The invitation is deleted.
+     * Registers (creates) the user of the command. The email and token must match that of an existing UserInvitation. The newly registered user is assigned the organization and roles from the invitation. The invitation is deleted.
      * @summary Registerinviteduser
      * @param {string} token 
      * @param {*} [options] Override http request option.

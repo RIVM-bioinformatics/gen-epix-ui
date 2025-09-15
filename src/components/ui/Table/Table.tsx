@@ -93,7 +93,7 @@ export type TableProps<TRowData> = {
   readonly overscanMain?: number;
   readonly overscanReverse?: number;
   readonly onRangeChanged?: (range: ListRange) => void;
-  readonly getRowName: (row: TRowData) => string;
+  readonly getRowName?: (row: TRowData) => string;
 };
 
 export interface TableRef {
@@ -163,6 +163,9 @@ export const Table = <TRowData,>({
 
   const onTableRowClick = useCallback((row: TableRowParams<TRowData>, event: MouseEvent) => {
     if (onRowClick) {
+      if (!getRowName) {
+        throw new Error('getRowName is required when onRowClick is provided');
+      }
       if (ConfigManager.instance.config.enablePageVents) {
         PageEventBusManager.instance.emit('click', {
           label: getRowName(row.row),
@@ -195,6 +198,9 @@ export const Table = <TRowData,>({
 
   const onTableReadableIndexClick = useCallback((row: TRowData, event: ReactMouseEvent) => {
     if (onReadableIndexClick) {
+      if (!getRowName) {
+        throw new Error('getRowName is required when onReadableIndexClick is provided');
+      }
       if (ConfigManager.instance.config.enablePageVents) {
         PageEventBusManager.instance.emit('click', {
           label: getRowName(row),
@@ -566,6 +572,8 @@ export const Table = <TRowData,>({
             title = TableUtil.getTableOptionsCellDisplayValue({ column: tableColumn, row, rowIndex: index });
           } else if (tableColumn.type === 'caseType') {
             title = TableUtil.getTableCaseTypeCellValue({ column: tableColumn, row, rowIndex: index }).long;
+          } else if (tableColumn.type === 'validatedCase') {
+            title = TableUtil.getTableValidatedCaseCellValue({ column: tableColumn, row, rowIndex: index }).long;
           }
 
           const baseProps: Partial<TableCellProps<TRowData>> = {
@@ -616,6 +624,7 @@ export const Table = <TRowData,>({
               {!tableColumn.displayValueGetter && !tableColumn.renderCell && tableColumn.type === 'date' && TableUtil.getTableDateCellValue({ column: tableColumn, row, rowIndex: index })}
               {!tableColumn.displayValueGetter && !tableColumn.renderCell && tableColumn.type === 'options' && TableUtil.getTableOptionsCellDisplayValue({ column: tableColumn, row, rowIndex: index })}
               {!tableColumn.displayValueGetter && !tableColumn.renderCell && tableColumn.type === 'caseType' && TableUtil.getTableCaseTypeCellDisplayValue({ column: tableColumn, row, rowIndex: index })}
+              {!tableColumn.displayValueGetter && !tableColumn.renderCell && tableColumn.type === 'validatedCase' && TableUtil.getTableValidatedCaseCellDisplayValue({ column: tableColumn, row, rowIndex: index })}
               {!tableColumn.displayValueGetter && !tableColumn.renderCell && tableColumn.type === 'readableIndex' && renderReadableIndexCell({ id: column.id, row, rowIndex: index })}
               {!tableColumn.displayValueGetter && !tableColumn.renderCell && tableColumn.type === 'selectable' && renderCheckboxCell({ id: column.id, row, rowIndex: index })}
             </TableCell>

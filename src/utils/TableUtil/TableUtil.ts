@@ -11,7 +11,10 @@ import sumBy from 'lodash/sumBy';
 
 import { EpiDataUtil } from '../EpiDataUtil';
 import { EpiCaseUtil } from '../EpiCaseUtil';
-import type { Case } from '../../api';
+import type {
+  Case,
+  ValidatedCase,
+} from '../../api';
 import { ColType } from '../../api';
 import {
   FILTER_MODE,
@@ -42,6 +45,7 @@ import type {
   TableColumnActions,
   TableColumnDimension,
   HasCellDataFn,
+  TableColumnValidatedCase,
 } from '../../models/table';
 import { FIXED_COLUMN_ID } from '../../models/table';
 import { DATE_FORMAT } from '../../data/date';
@@ -158,6 +162,13 @@ export class TableUtil {
     return EpiCaseUtil.getRowValue(row as Case, column.caseTypeColumn, column.completeCaseType);
   }
 
+  public static getTableValidatedCaseCellValue<TRowData>({ row, column, rowIndex }: GetTableCellValueProps<TRowData, TableColumnValidatedCase<TRowData>>): CaseTypeRowValue {
+    if (column.valueGetter) {
+      return column.valueGetter({ row, id: column.id, rowIndex });
+    }
+    return EpiCaseUtil.getRowValue((row as ValidatedCase).case as Case, column.caseTypeColumn, column.completeCaseType);
+  }
+
   public static getTableNumberCellValue<TRowData>({ row, column, rowIndex }: GetTableCellValueProps<TRowData, TableColumnNumber<TRowData>>): number {
     if (column.valueGetter) {
       return column.valueGetter({ row, id: column.id, rowIndex });
@@ -199,6 +210,11 @@ export class TableUtil {
 
   public static getTableCaseTypeCellDisplayValue<TRowData>({ row, column, rowIndex }: GetTableCellValueProps<TRowData, TableColumnCaseType<TRowData>>): string {
     const value = TableUtil.getTableCaseTypeCellValue({ row, column, rowIndex });
+    return value.short;
+  }
+
+  public static getTableValidatedCaseCellDisplayValue<TRowData>({ row, column, rowIndex }: GetTableCellValueProps<TRowData, TableColumnValidatedCase<TRowData>>): string {
+    const value = TableUtil.getTableValidatedCaseCellValue({ row, column, rowIndex });
     return value.short;
   }
 

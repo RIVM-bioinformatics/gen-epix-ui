@@ -10,7 +10,7 @@ export const colTypePresentationValues: Record<ColType, string> = {
   [ColType.TEXT]: 'TEXT',
   [ColType.CONTEXT_FREE_GRAMMAR_JSON]: 'CONTEXT_FREE_GRAMMAR_JSON',
   [ColType.CONTEXT_FREE_GRAMMAR_XML]: 'CONTEXT_FREE_GRAMMAR_XML',
-  [ColType.REGEX]: 'REGEX',
+  [ColType.REGULAR_LANGUAGE]: 'REGULAR_LANGUAGE',
   [ColType.NOMINAL]: 'NOMINAL',
   [ColType.ORDINAL]: 'ORDINAL',
   [ColType.INTERVAL]: 'INTERVAL',
@@ -34,6 +34,8 @@ export const colTypePresentationValues: Record<ColType, string> = {
   [ColType.GENETIC_SEQUENCE]: 'GENETIC_SEQUENCE',
   [ColType.GENETIC_DISTANCE]: 'GENETIC_DISTANCE',
   [ColType.ORGANIZATION]: 'ORGANIZATION',
+  [ColType.GENETIC_READS]: 'GENETIC_READS',
+  [ColType.GENETIC_PROFILE]: 'GENETIC_PROFILE',
   [ColType.OTHER]: 'OTHER',
 };
 

@@ -149,8 +149,7 @@ export const TableHeaderCell = <TRowData,>(props: TableHeaderCellProps<TRowData>
     }
   }, [column.comparatorFactory, updateSorting]);
 
-  const onTableSortClick = useCallback(async (event: ReactMouseEvent<SVGSVGElement>) => {
-    console.log('onTableSortClick', event);
+  const onTableSortClick = useCallback(async (_event: ReactMouseEvent<SVGSVGElement>) => {
     await updateSorting();
   }, [updateSorting]);
 

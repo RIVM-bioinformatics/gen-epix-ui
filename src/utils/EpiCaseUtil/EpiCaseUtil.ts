@@ -133,7 +133,7 @@ export class EpiCaseUtil {
             label: caseTypeColumn.label,
           } as const satisfies FormFieldDefinition<Case['content']>);
           break;
-        case ColType.REGEX:
+        case ColType.REGULAR_LANGUAGE:
           try {
             new RegExp(caseTypeColumn.pattern);
             acc.push({
@@ -279,7 +279,7 @@ export class EpiCaseUtil {
           return s.concat(object().shape({
             [caseTypeColumn.id]: string().nullable().timeYear().transform((_val: unknown, orig: string) => orig || null),
           }));
-        case ColType.REGEX:
+        case ColType.REGULAR_LANGUAGE:
           try {
             return s.concat(object().shape({
               [caseTypeColumn.id]: string().nullable().matches(new RegExp(caseTypeColumn.pattern), t('Invalid value for pattern "{{pattern}}"', { pattern: caseTypeColumn.pattern })),

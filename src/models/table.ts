@@ -122,6 +122,13 @@ export interface TableColumnCaseType<TRowData> extends TableColumnBase<TRowData,
   comparatorFactory?: (params: GetTableCellRowComparatorProps<TableColumnCaseType<TRowData>>) => (a: TRowData, b: TRowData) => number;
 }
 
+export interface TableColumnValidatedCase<TRowData> extends TableColumnBase<TRowData, CaseTypeRowValue> {
+  type: 'validatedCase';
+  completeCaseType: CompleteCaseType;
+  caseTypeColumn: CaseTypeCol;
+  comparatorFactory?: (params: GetTableCellRowComparatorProps<TableColumnValidatedCase<TRowData>>) => (a: TRowData, b: TRowData) => number;
+}
+
 export interface GetTableCellValueProps<TRowData, TColumn> {
   readonly row: TRowData;
   readonly column: TColumn;
@@ -148,7 +155,8 @@ export type TableColumn<TRowData> =
   TableColumnActions<TRowData> |
   TableColumnReadableIndex<TRowData> |
   TableColumnSelectable<TRowData> |
-  TableColumnCaseType<TRowData>;
+  TableColumnCaseType<TRowData> |
+  TableColumnValidatedCase<TRowData>;
 
 export type TableSortDirection = 'asc' | 'desc';
 
