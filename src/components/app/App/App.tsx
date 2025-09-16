@@ -42,8 +42,8 @@ export const App = () => {
   const emotionCache = createCache({
     key: 'genepix',
     stylisPlugins: [],
-    nonce: 'genepix',
-    prepend: true,
+    nonce: config.nonce,
+    prepend: !!config.nonce,
   });
 
   const queryQueryManager = QueryClientManager.instance;

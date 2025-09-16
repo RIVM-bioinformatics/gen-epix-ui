@@ -27,6 +27,7 @@ export type ApplicationFooterProps = {
 export interface Config {
   enablePageVents: boolean;
   applicationName: string;
+  nonce?: string;
   theme: Theme;
   // eslint-disable-next-line @typescript-eslint/naming-convention
   ApplicationHeader: (props: ApplicationHeaderProps) => ReactElement;
