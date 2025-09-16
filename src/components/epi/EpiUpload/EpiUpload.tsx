@@ -5,7 +5,6 @@ import StepLabel from '@mui/material/StepLabel';
 import { useTranslation } from 'react-i18next';
 import {
   useCallback,
-  useEffect,
   useState,
 } from 'react';
 import {
@@ -19,11 +18,13 @@ import type {
 } from '../../../models/epiUpload';
 import { NotificationManager } from '../../../classes/managers/NotificationManager';
 import { EpiUploadUtil } from '../../../utils/EpiUploadUtil';
+import type { ValidatedCase } from '../../../api';
 
 import EpiUploadSelectFile from './EpiUploadSelectFile';
 import { EpiUploadDataPreview } from './EpiUploadDataPreview';
 import { EpiUploadMapColumns } from './EpiUploadMapColumns';
 import { EpiUploadValidate } from './EpiUploadValidate';
+import { EpiUploadCreateCases } from './EpiUploadCreateCases';
 
 
 export const EpiUpload = () => {
@@ -33,6 +34,7 @@ export const EpiUpload = () => {
   const steps = [t`Select file`, t`Map columns`, t`Preview`, t`Validate`, t`Upload`];
   const [selectFileResult, setSelectFileResult] = useState<EpiUploadSelectFileResult | null>(null);
   const [mappedColumns, setMappedColumns] = useState<EpiUploadMappedColumn[] | null>(null);
+  const [validatedCases, setValidatedCases] = useState<ValidatedCase[] | null>(null);
 
   const onEpiUploadSelectFileProceed = useCallback((data: EpiUploadSelectFileResult) => {
     setSelectFileResult(data);
@@ -46,10 +48,12 @@ export const EpiUpload = () => {
         setMappedColumns(null);
       }
     }
+    setActiveStep(1);
   }, [mappedColumns, t]);
 
   const onEpiUploadMapColumnsProceed = useCallback((data: EpiUploadMappedColumn[]) => {
     setMappedColumns(data);
+    setActiveStep(3);
   }, []);
 
   const onEpiUploadMapColumnsGoBack = useCallback(() => {
@@ -68,19 +72,11 @@ export const EpiUpload = () => {
     setActiveStep(2);
   }, []);
 
-  const onEpiUploadValidateProceed = useCallback(() => {
+  const onEpiUploadValidateProceed = useCallback((data: ValidatedCase[]) => {
+    setValidatedCases(data);
     setActiveStep(4);
   }, []);
 
-
-  useEffect(() => {
-    if (selectFileResult) {
-      setActiveStep(1);
-    }
-    if (mappedColumns) {
-      setActiveStep(2);
-    }
-  }, [selectFileResult, mappedColumns]);
 
   return (
     <Box
@@ -161,6 +157,12 @@ export const EpiUpload = () => {
             mappedColumns={mappedColumns}
             onGoBack={onEpiUploadValidateGoBack}
             onProceed={onEpiUploadValidateProceed}
+          />
+        )}
+        {activeStep === 4 && (
+          <EpiUploadCreateCases
+            selectFileResult={selectFileResult}
+            validatedCases={validatedCases}
           />
         )}
       </Box>

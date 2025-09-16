@@ -229,6 +229,7 @@ export * from './components/epi/EpiCurve';
 export * from './components/epi/EpiCreateEventDialog';
 export * from './components/epi/EpiContextMenu';
 export * from './components/epi/EpiContactDetailsDialog';
+export * from './components/epi/EpiCompletCaseTypeLoader';
 export * from './components/epi/EpiCasesAlreadyInCaseSetWarning';
 export * from './components/epi/EpiCaseTypeInfoDialog';
 export * from './components/epi/EpiCaseSummary';
