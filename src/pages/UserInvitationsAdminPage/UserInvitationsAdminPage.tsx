@@ -13,15 +13,15 @@ import {
   MenuItem,
   ListItemText,
 } from '@mui/material';
-import uniqBy from 'lodash/uniqBy';
 
-import type { UserInvitation } from '../../api';
+import type {
+  UserInvitation,
+  Role,
+} from '../../api';
 import {
   OrganizationApi,
   CommandName,
-  Role,
 } from '../../api';
-import { AuthorizationManager } from '../../classes/managers/AuthorizationManager';
 import { useOrganizationAdminPolicyMapQuery } from '../../dataHooks/useOrganizationAdminPoliciesQuery';
 import { useOrganizationOptionsQuery } from '../../dataHooks/useOrganizationsQuery';
 import { useRoleOptionsQuery } from '../../dataHooks/useRolesQuery';
@@ -40,6 +40,7 @@ import type {
 import { TableUtil } from '../../utils/TableUtil';
 import { TestIdUtil } from '../../utils/TestIdUtil';
 import { CrudPage } from '../CrudPage';
+import { useInviteUserConstraintsQuery } from '../../dataHooks/useInviteUserConstraintsQuery';
 
 import { UserInvitationsAdminDetailDialog } from './UserInvitationsAdminDetailDialog';
 import type { UserInvitationsAdminDetailDialogRefMethods } from './UserInvitationsAdminDetailDialog';
@@ -49,44 +50,30 @@ type FormFields = Pick<UserInvitation, 'email' | 'organization_id' | 'roles'>;
 export const UserInvitationsAdminPage = () => {
   const [t] = useTranslation();
   const organizationOptionsQuery = useOrganizationOptionsQuery();
+  const inviteUserConstraintsQuery = useInviteUserConstraintsQuery();
   const roleOptionsQuery = useRoleOptionsQuery();
   const userOptionsQuery = useUserOptionsQuery();
   const organizationAdminPolicyMapQuery = useOrganizationAdminPolicyMapQuery();
 
   const organizationOptions = useMemo<OptionBase<string>[]>(() => {
-    if (organizationOptionsQuery.isLoading || organizationOptionsQuery.error) {
+    if (!organizationOptionsQuery?.options?.length || !inviteUserConstraintsQuery?.data) {
       return [];
     }
-    if (AuthorizationManager.instance.isRoot() || AuthorizationManager.instance.hasRole(Role.APP_ADMIN)) {
-      return organizationOptionsQuery.options;
-    }
-    const allowedOrganizationIds = Array.from(organizationAdminPolicyMapQuery.map.values()).filter((policy) => policy.is_active && policy.user_id === AuthorizationManager.instance.user.id).map((policy) => policy.organization_id);
-    return organizationOptionsQuery.options.filter((option) => allowedOrganizationIds.includes(option.value));
-  }, [organizationOptionsQuery.error, organizationOptionsQuery.isLoading, organizationOptionsQuery.options, organizationAdminPolicyMapQuery.map]);
+    return organizationOptionsQuery.options.filter(option => inviteUserConstraintsQuery.data.organization_ids.includes(option.value));
 
-  const loadables = useArray([organizationOptionsQuery, roleOptionsQuery, userOptionsQuery, organizationAdminPolicyMapQuery]);
+  }, [organizationOptionsQuery.options, inviteUserConstraintsQuery.data]);
+
+  const loadables = useArray([inviteUserConstraintsQuery, organizationOptionsQuery, roleOptionsQuery, userOptionsQuery, organizationAdminPolicyMapQuery]);
 
   const userInvitationsAdminDetailDialogRef = useRef<UserInvitationsAdminDetailDialogRefMethods>(null);
 
   const allowedRoleOptions = useMemo(() => {
-    /**
-     * @FIXME
-     * This is a temporary implementation that assumes that roles are ordered by level in the Role enum.
-     * The backend will supply this information in the future, and we can then remove this logic.
-     */
-    const options = roleOptionsQuery.options;
-    if (!options) {
+    if (!inviteUserConstraintsQuery?.data || !roleOptionsQuery.options?.length) {
       return [];
     }
-    const allowedOptions: OptionBase<string>[] = [];
-    AuthorizationManager.instance.user.roles.forEach(userRole => {
-      const indexOf = options.findIndex(option => option.value === userRole);
-      if (indexOf !== -1) {
-        allowedOptions.push(...options.slice(indexOf + 1)); // roles are ordered by level, so we can just take all roles above the user's highest role
-      }
-    });
-    return uniqBy(allowedOptions, option => option.value);
-  }, [roleOptionsQuery.options]);
+    return roleOptionsQuery.options.filter(option => inviteUserConstraintsQuery.data?.roles.includes(option.value as Role));
+
+  }, [inviteUserConstraintsQuery.data, roleOptionsQuery.options]);
 
   const fetchAll = useCallback(async (signal: AbortSignal) => {
     return (await OrganizationApi.getInstance().userInvitationsGetAll({ signal }))?.data;

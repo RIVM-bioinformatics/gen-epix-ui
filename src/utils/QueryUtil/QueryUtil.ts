@@ -112,6 +112,7 @@ export const queryKeyDependencies: Record<QUERY_KEY, QUERY_KEY[]> = {
   [QUERY_KEY.ORGANIZATIONS]: [
     QUERY_KEY.ORGANIZATIONS_LAZY,
     QUERY_KEY.ORGANIZATION_ADMIN_NAME_EMAILS,
+    QUERY_KEY.INVITE_USER_CONSTRAINTS,
   ],
   [QUERY_KEY.ORGANIZATIONS_LAZY]: [],
   [QUERY_KEY.OUTAGES]: [],
@@ -162,6 +163,7 @@ export const queryKeyDependencies: Record<QUERY_KEY, QUERY_KEY[]> = {
     QUERY_KEY.CONTACTS,
   ],
   [QUERY_KEY.LICENSES]: [],
+  [QUERY_KEY.INVITE_USER_CONSTRAINTS]: [],
 };
 
 export class QueryUtil {
