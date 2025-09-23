@@ -77,5 +77,22 @@ export default {
     environment: 'jsdom',
     setupFiles: ['./src/test/setup.ts'],
     testTimeout: 5000,
+    coverage: {
+      provider: 'v8',
+      reporter: ['text', 'json', 'html'],
+      reportsDirectory: './coverage',
+      exclude: [
+        'node_modules/',
+        'dist/',
+        '.next/',
+        'build/',
+        'src/api/**/*',
+        '**/*.config.{js,ts}',
+        '**/*.test.{js,ts,jsx,tsx}',
+        '**/*.spec.{js,ts,jsx,tsx}',
+        '**/test/**',
+        '**/tests/**',
+      ],
+    },
   },
 } satisfies UserConfig;

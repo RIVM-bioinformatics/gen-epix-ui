@@ -130,7 +130,7 @@ export const EpiCaseTypeInfoVariableDetails = ({ dimension, caseTypeDim, complet
                         {EpiDataUtil.data.conceptsBySetId[column.concept_set_id].map(concept => (
                           <Chip
                             key={concept.id}
-                            label={`${concept.name} (${concept.abbreviation})`}
+                            label={`${concept.name} (${concept.code})`}
                           />
                         ))}
                       </Stack>

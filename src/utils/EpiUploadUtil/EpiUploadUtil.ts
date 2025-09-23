@@ -24,11 +24,14 @@ import {
   type FormFieldDefinition,
 } from '../../models/form';
 import { StringUtil } from '../StringUtil';
-import {
-  EPI_UPLOAD_ACTION,
-  type EpiUploadMappedColumn,
-  type EpiUploadMappedColumnsFormFields,
+import { ColType } from '../../api';
+import type {
+  EpiUploadMappedColumn,
+  EpiUploadMappedColumnsFormFields,
+  EpiUploadFileColumnAssignment,
 } from '../../models/epiUpload';
+import { EPI_UPLOAD_ACTION } from '../../models/epiUpload';
+import { EpiCaseTypeUtil } from '../EpiCaseTypeUtil';
 
 export class EpiUploadUtil {
   public static __csvSheetId: string;
@@ -286,11 +289,210 @@ export class EpiUploadUtil {
     return defaultFormValues;
   }
 
+  public static isGenomeFile(fileName: string): boolean {
+    const lowerName = fileName.toLowerCase();
+    return lowerName.endsWith('.fa') ||
+      lowerName.endsWith('.fasta') ||
+      lowerName.endsWith('.fa.gz') ||
+      lowerName.endsWith('.fasta.gz');
+  }
+
+  public static isReadsFile(fileName: string): boolean {
+    const lowerName = fileName.toLowerCase();
+    return lowerName.endsWith('.fq') ||
+      lowerName.endsWith('.fastq') ||
+      lowerName.endsWith('.fq.gz') ||
+      lowerName.endsWith('.fastq.gz');
+  }
+
+  public static isSupportedGeneticFile(fileName: string): boolean {
+    return EpiUploadUtil.isGenomeFile(fileName) || EpiUploadUtil.isReadsFile(fileName);
+  }
+
   public static getWritableCaseTypeColIds(completeCaseType: CompleteCaseType): string[] {
     const writableColIds: string[] = [];
     Object.values(completeCaseType.case_type_access_abacs).forEach((abac) => {
       writableColIds.push(...abac.write_case_type_col_ids);
     });
     return uniq(writableColIds);
+  }
+
+  /**
+   * Assigns genetic files (FASTA/FASTQ) to corresponding case type columns
+   * @param completeCaseType The complete case type structure
+   * @param fileList The list of files to assign
+   * @returns Array of file-to-column assignments
+   */
+  public static assignFilesToColumns(
+    completeCaseType: CompleteCaseType,
+    fileList: FileList,
+  ): EpiUploadFileColumnAssignment[] {
+    const files = Array.from(fileList);
+    const assignments: EpiUploadFileColumnAssignment[] = [];
+
+    // Validate input
+    if (!files.length) {
+      return assignments;
+    }
+
+    // Separate supported and unsupported files
+    const supportedFiles = files.filter(file => EpiUploadUtil.isSupportedGeneticFile(file.name));
+    const unsupportedFiles = files.filter(file => !EpiUploadUtil.isSupportedGeneticFile(file.name));
+
+    // Add assignments for unsupported files
+    unsupportedFiles.forEach(file => {
+      assignments.push({
+        file,
+        caseTypeCol: null,
+      });
+    });
+
+    // Process supported files
+    const genomeFiles = supportedFiles.filter(file => EpiUploadUtil.isGenomeFile(file.name));
+    const readsFiles = supportedFiles.filter(file => EpiUploadUtil.isReadsFile(file.name));
+
+    // Handle genome files (.fa, .fasta)
+    genomeFiles.forEach(file => {
+      const caseTypeColId = EpiUploadUtil.findUniqueCaseTypeColumnByFilename(completeCaseType, file.name, [ColType.GENETIC_SEQUENCE]);
+      if (caseTypeColId) {
+        assignments.push({
+          file,
+          caseTypeCol: caseTypeColId,
+        });
+        return;
+      }
+      const geneticSequenceCols = EpiCaseTypeUtil.getCaseTypeColumnsByType(completeCaseType, ColType.GENETIC_SEQUENCE);
+      assignments.push({
+        file,
+        caseTypeCol: geneticSequenceCols.length === 1 ? geneticSequenceCols[0] : null,
+      });
+    });
+
+    // Handle reads files (.fq, .fastq)
+    if (readsFiles.length === 1) {
+      // Single file - assign to GENETIC_READS
+      const caseTypeColId = EpiUploadUtil.findUniqueCaseTypeColumnByFilename(completeCaseType, readsFiles[0].name, [ColType.GENETIC_READS]);
+      if (caseTypeColId) {
+        assignments.push({
+          file: readsFiles[0],
+          caseTypeCol: caseTypeColId,
+        });
+        return;
+      }
+      const geneticReadsCols = EpiCaseTypeUtil.getCaseTypeColumnsByType(completeCaseType, ColType.GENETIC_READS);
+      assignments.push({
+        file: readsFiles[0],
+        caseTypeCol: geneticReadsCols.length === 1 ? geneticReadsCols[0] : null,
+      });
+    } else if (readsFiles.length === 2) {
+      // Try to assign based on filenames first
+      const caseTypeColA = EpiUploadUtil.findUniqueCaseTypeColumnByFilename(completeCaseType, readsFiles[0].name, [ColType.GENETIC_READS_FWD, ColType.GENETIC_READS_REV]);
+      const caseTypeColB = EpiUploadUtil.findUniqueCaseTypeColumnByFilename(completeCaseType, readsFiles[1].name, [ColType.GENETIC_READS_FWD, ColType.GENETIC_READS_REV]);
+      if (caseTypeColA && caseTypeColB) {
+        const colTypeA = completeCaseType.cols[caseTypeColA.col_id].col_type;
+        const colTypeB = completeCaseType.cols[caseTypeColB.col_id].col_type;
+        if ((colTypeA === ColType.GENETIC_READS_FWD && colTypeB === ColType.GENETIC_READS_REV) ||
+          (colTypeA === ColType.GENETIC_READS_REV && colTypeB === ColType.GENETIC_READS_FWD)) {
+          assignments.push({
+            file: readsFiles[0],
+            caseTypeCol: caseTypeColA,
+          });
+          assignments.push({
+            file: readsFiles[1],
+            caseTypeCol: caseTypeColB,
+          });
+          return;
+        }
+      }
+
+      // Try by pairing GENETIC_READS_FWD/REV in the same dimension
+      const pairedReadsCols = EpiCaseTypeUtil.findPairedReadsCaseTypeColumns(completeCaseType);
+      if (pairedReadsCols.length === 1) {
+        const sortedFiles = [...readsFiles].sort((a, b) => a.name.localeCompare(b.name));
+
+        assignments.push({
+          file: sortedFiles[0],
+          caseTypeCol: pairedReadsCols[0].fwd,
+        });
+        assignments.push({
+          file: sortedFiles[1],
+          caseTypeCol: pairedReadsCols[0].rev,
+        });
+      } else {
+        // No suitable paired columns found - assign null to both files
+        readsFiles.forEach(file => {
+          assignments.push({
+            file,
+            caseTypeCol: null,
+          });
+        });
+      }
+    } else {
+      // More than 2 reads files - not supported
+      readsFiles.forEach(file => {
+        assignments.push({
+          file,
+          caseTypeCol: null,
+        });
+      });
+    }
+
+    return assignments;
+  }
+
+  /**
+   * Find a unique case type column by file name.
+   * @param completeCaseType The complete case type object.
+   * @param fileName The name of the file.
+   * @returns The unique case type column or null if not found.
+   */
+  public static findUniqueCaseTypeColumnByFilename(completeCaseType: CompleteCaseType, fileName: string, colTypes: ColType[]): CaseTypeCol {
+    const ids: string[] = [];
+
+    const nameWithoutExtension = fileName.replace(/\.(gz|gzip)$/i, '').replace(/\.(fa|fasta|fq|fastq)$/i, '').toLowerCase();
+    ids.push(nameWithoutExtension);
+    ids.push(nameWithoutExtension.replace(/[_\-.]/g, ' '));
+
+    // Find UUIDs in the filename (pattern: 8-4-4-4-12 hex characters)
+    const uuidRegex = /[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}/gi;
+    const uuidMatches = nameWithoutExtension.match(uuidRegex);
+    if (uuidMatches) {
+      uuidMatches.forEach(uuid => {
+        ids.push(uuid.toLowerCase());
+      });
+    }
+
+    // Find UUIDs without hyphens (32 consecutive hex characters)
+    const uuidNoHyphenRegex = /[0-9a-f]{32}/gi;
+    const uuidNoHyphenMatches = nameWithoutExtension.match(uuidNoHyphenRegex);
+    if (uuidNoHyphenMatches) {
+      uuidNoHyphenMatches.forEach(uuid => {
+        // Add both the original format and the hyphenated version
+        ids.push(uuid.toLowerCase());
+        // Convert to standard UUID format: 8-4-4-4-12
+        const hyphenated = `${uuid.slice(0, 8)}-${uuid.slice(8, 12)}-${uuid.slice(12, 16)}-${uuid.slice(16, 20)}-${uuid.slice(20, 32)}`.toLowerCase();
+        ids.push(hyphenated);
+      });
+    }
+
+    // Find ULIDs in the filename (pattern: 26 characters using Crockford's Base32)
+    const ulidRegex = /[0123456789ABCDEFGHJKMNPQRSTVWXYZ]{26}/gi;
+    const ulidMatches = nameWithoutExtension.match(ulidRegex);
+    if (ulidMatches) {
+      ulidMatches.forEach(ulid => {
+        ids.push(ulid.toLowerCase());
+      });
+    }
+
+    for (const id of ids) {
+      const caseTypeCol = EpiCaseTypeUtil.findUniqueCaseTypeColumnByCaseTypeColIdOrColId(completeCaseType, id);
+      if (caseTypeCol) {
+        const col = completeCaseType.cols[caseTypeCol.col_id];
+        if (colTypes.includes(col.col_type)) {
+          return caseTypeCol;
+        }
+      }
+    }
+    return null;
   }
 }

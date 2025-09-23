@@ -99,9 +99,88 @@ export class EpiCaseTypeUtil {
     return caseTypeDimensions.map(caseTypeDimension => caseTypeDimension.case_type_col_order.map(caseTypeId => completeCaseType.case_type_cols[caseTypeId])).flat();
   }
 
+  /**
+   * Get a label for the dimension, including its occurrence if specified.
+   * @param dimension The dimension object.
+   * @param occurrence The occurrence number (optional).
+   * @returns The formatted dimension label.
+   */
   public static getDimensionLabel(dimension: Dim, occurrence?: number): string {
     const occurrenceLabel = isNumber(occurrence) ? `.x${occurrence}` : '';
     return `${dimension.code}${occurrenceLabel}`;
+  }
+
+  /**
+   * Get case type columns by their column type.
+   * @param completeCaseType The complete case type object.
+   * @param colType The column type to filter by.
+   * @returns An array of case type columns matching the specified column type.
+   */
+  public static getCaseTypeColumnsByType(completeCaseType: CompleteCaseType, colType: ColType): CaseTypeCol[] {
+    return Object.values(completeCaseType.case_type_cols).filter(caseTypeCol => {
+      const col = completeCaseType.cols[caseTypeCol.col_id];
+      return col?.col_type === colType;
+    });
+  }
+
+
+  /**
+   * Find a unique case type column by its case type column ID or column ID.
+   * @param completeCaseType The complete case type object.
+   * @param id The ID of the case type column or column.
+   * @returns The unique case type column if found, otherwise null.
+   */
+  public static findUniqueCaseTypeColumnByCaseTypeColIdOrColId(completeCaseType: CompleteCaseType, id: string): CaseTypeCol {
+    const caseTypeColId = Object.values(completeCaseType.case_type_cols).find(caseTypeCol => caseTypeCol.col_id === id);
+    if (caseTypeColId) {
+      return caseTypeColId;
+    }
+    const colIds = Object.values(completeCaseType.cols).filter(col => col.id === id);
+    if (colIds.length !== 1) {
+      return null;
+    }
+    const caseTypeCols = Object.values(completeCaseType.case_type_cols).filter(caseTypeCol => caseTypeCol.col_id === colIds[0].id);
+    if (caseTypeCols.length !== 1) {
+      return null;
+    }
+    return caseTypeCols[0];
+  }
+
+
+  /**
+   * Find paired GENETIC_READS_FWD/REV columns in the same dimension.
+   * @param completeCaseType The complete case type object.
+   * @returns An array of paired GENETIC_READS_FWD/REV columns.
+   */
+  public static findPairedReadsCaseTypeColumns(completeCaseType: CompleteCaseType): { fwd: CaseTypeCol; rev: CaseTypeCol }[] {
+    const pairs: { fwd: CaseTypeCol; rev: CaseTypeCol }[] = [];
+
+    EpiCaseTypeUtil.iterateOrderedDimensions(completeCaseType, (_dimension, caseTypeColumns) => {
+      if (!caseTypeColumns) {
+        return;
+      }
+      const caseTypeColsInDimension = caseTypeColumns.filter(ctc => {
+        const col = completeCaseType.cols[ctc.col_id];
+        return col?.col_type === ColType.GENETIC_READS_FWD || col?.col_type === ColType.GENETIC_READS_REV;
+      });
+      if (caseTypeColsInDimension.length !== 2) {
+        return;
+      }
+      const geneticReadsFwdCaseTypeCol = caseTypeColsInDimension.find(ctc => {
+        const col = completeCaseType.cols[ctc.col_id];
+        return col?.col_type === ColType.GENETIC_READS_FWD;
+      });
+      const geneticReadsRevCaseTypeCol = caseTypeColsInDimension.find(ctc => {
+        const col = completeCaseType.cols[ctc.col_id];
+        return col?.col_type === ColType.GENETIC_READS_REV;
+      });
+
+      if (geneticReadsFwdCaseTypeCol && geneticReadsRevCaseTypeCol) {
+        pairs.push({ fwd: geneticReadsFwdCaseTypeCol, rev: geneticReadsRevCaseTypeCol });
+      }
+    });
+
+    return pairs;
   }
 
 }

@@ -36,3 +36,11 @@ export type EpiUploadMappedColumnsFormFields = {
 export type EpiUploadTableRow = {
   [key: string]: string;
 };
+
+/**
+ * File assignment result for genetic file uploads
+ */
+export interface EpiUploadFileColumnAssignment {
+  file: File;
+  caseTypeCol: CaseTypeCol; // null if no suitable column found
+}

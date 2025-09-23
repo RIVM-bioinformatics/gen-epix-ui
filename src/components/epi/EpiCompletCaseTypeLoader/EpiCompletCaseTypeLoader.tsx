@@ -47,9 +47,10 @@ export const EpiCompletCaseTypeLoader = ({ caseTypeId, onCompleteCaseTypeLoaded,
       const perform = async () => {
         try {
           await Promise.all([
-            EpiDataUtil.loadMissingConceptSets(completeCaseType, abortController.signal),
-            EpiDataUtil.loadMissingRegionSets(completeCaseType, abortController.signal),
+            EpiDataUtil.loadConcepts(abortController.signal),
+            EpiDataUtil.loadMissingRegions(completeCaseType, abortController.signal),
             EpiDataUtil.loadTreeAlgorithms(completeCaseType, abortController.signal),
+            EpiDataUtil.loadOrganizations(abortController.signal),
           ]);
           setIsSideEffectLoading(false);
         } catch (error) {
