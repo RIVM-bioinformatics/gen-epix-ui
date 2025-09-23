@@ -118,7 +118,7 @@
     "mui-tiptap": "1.26.0",
     "oidc-client-ts": "3.3.0",
     "react-error-boundary": "6.0.0",
-    "react-hook-form": "7.63.0",
+    "react-hook-form": "7.61.0",
     "react-oidc-context": "3.3.0",
     "react-resizable-panels": "3.0.6",
     "react-router-dom": "7.9.1",
@@ -131,11 +131,11 @@
     "use-sync-external-store": "1.5.0",
     "uuid": "13.0.0",
     "write-excel-file": "2.3.10",
-    "yup": "1.7.1",
+    "yup": "1.7.0",
     "zustand": "5.0.8"
   },
   "devDependencies": {
-    "@gen-epix/eslint-config": "0.0.20",
+    "@gen-epix/eslint-config": "0.0.21",
     "@gen-epix/generate-api": "0.0.15",
     "@gen-epix/reconfigure-package": "0.0.5",
     "@gen-epix/typescript-config": "0.0.6",

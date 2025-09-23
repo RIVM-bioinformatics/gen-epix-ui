@@ -37,6 +37,8 @@ export const colTypePresentationValues: Record<ColType, string> = {
   [ColType.GENETIC_READS]: 'GENETIC_READS',
   [ColType.GENETIC_PROFILE]: 'GENETIC_PROFILE',
   [ColType.OTHER]: 'OTHER',
+  [ColType.GENETIC_READS_FWD]: 'GENETIC_READS_FWD',
+  [ColType.GENETIC_READS_REV]: 'GENETIC_READS_REV',
 };
 
 export const useColTypeOptionsQuery = (): UseOptions<string> => {

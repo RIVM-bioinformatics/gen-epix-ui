@@ -281,8 +281,8 @@ export const createEpiStore = (kwArgs: CreateEpiStoreKwArgs) => {
                       rowValue: {
                         isMissing: false,
                         raw: conceptId,
-                        full: `${concept.abbreviation} (${concept.name})`,
-                        short: concept.abbreviation,
+                        full: `${concept.code} (${concept.name})`,
+                        short: concept.code,
                         long: concept.name,
                       },
                       columnType: column.col_type,
@@ -675,7 +675,6 @@ export const createEpiStore = (kwArgs: CreateEpiStoreKwArgs) => {
               });
               const cases = currentCaseIdsByQuery.map(id => casesMap.get(id));
 
-              await EpiDataUtil.loadMissingOrganizations(completeCaseType, cases, fetchAbortController.signal);
               setBaseData(cases);
               set({ isDataLoading: false });
             } catch (error: unknown) {

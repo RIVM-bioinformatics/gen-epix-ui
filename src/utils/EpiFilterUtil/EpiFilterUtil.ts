@@ -195,7 +195,7 @@ export class EpiFilterUtil {
     if ((column.col_type === ColType.NOMINAL || column.col_type === ColType.ORDINAL || column.col_type === ColType.INTERVAL) && EpiDataUtil.data.conceptsBySetId[column.concept_set_id]) {
       const options = EpiDataUtil.data.conceptsBySetId[column.concept_set_id].map<AutoCompleteOption>(concept => ({
         value: concept.id,
-        label: `${concept.abbreviation} (${concept.name})`,
+        label: `${concept.code} (${concept.name})`,
       }));
       return new MultiSelectFilter({
         id: caseTypeColumn.id,

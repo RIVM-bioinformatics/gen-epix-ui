@@ -1,15 +1,10 @@
-import difference from 'lodash/difference';
-import uniq from 'lodash/uniq';
-
 import type {
   CompleteCaseType,
   TreeAlgorithm,
   RegionSet,
   Region,
   ConceptSet,
-  ConceptSetMember,
   Concept,
-  Case,
   Organization,
 } from '../../api';
 import {
@@ -17,7 +12,6 @@ import {
   GeoApi,
   OntologyApi,
   OrganizationApi,
-  DimType,
 } from '../../api';
 import { QueryClientManager } from '../../classes/managers/QueryClientManager';
 import { QUERY_KEY } from '../../models/query';
@@ -62,7 +56,7 @@ export class EpiDataUtil {
     EpiDataUtil.data.treeAlgorithms = treeAlgorithms;
   }
 
-  public static async loadMissingRegionSets(completeCaseType: CompleteCaseType, signal: AbortSignal): Promise<void> {
+  public static async loadMissingRegions(completeCaseType: CompleteCaseType, signal: AbortSignal): Promise<void> {
     const queryClient = QueryClientManager.instance.queryClient;
 
     const regionSetIds = EpiDataUtil.getMissingRegionSetIds(completeCaseType);
@@ -109,46 +103,25 @@ export class EpiDataUtil {
     });
   }
 
-  public static async loadMissingConceptSets(completeCaseType: CompleteCaseType, signal: AbortSignal): Promise<void> {
+  public static async loadConcepts(signal: AbortSignal): Promise<void> {
     const queryClient = QueryClientManager.instance.queryClient;
 
-    const missingConceptSetIds = EpiDataUtil.getMissingConceptSetIds(completeCaseType);
-    if (!missingConceptSetIds.length) {
+    let conceptSets = QueryUtil.getValidQueryData<ConceptSet[]>(QueryUtil.getGenericKey(QUERY_KEY.CONCEPT_SETS)) ?? null;
+    let concepts = QueryUtil.getValidQueryData<Concept[]>(QueryUtil.getGenericKey(QUERY_KEY.CONCEPTS)) ?? null;
+
+    if (conceptSets !== null && concepts !== null) {
       return;
     }
 
-    const currentConceptSets = QueryUtil.getValidQueryData<ConceptSet[]>(QueryUtil.getGenericKey(QUERY_KEY.CONCEPT_SETS_LAZY)) ?? [];
-    const currentConceptSetMembers = QueryUtil.getValidQueryData<ConceptSetMember[]>(QueryUtil.getGenericKey(QUERY_KEY.CONCEPT_SET_MEMBERS_LAZY)) ?? [];
-    const currentConcepts = QueryUtil.getValidQueryData<Concept[]>(QueryUtil.getGenericKey(QUERY_KEY.CONCEPTS_LAZY)) ?? [];
+    if (conceptSets === null) {
+      conceptSets = (await OntologyApi.getInstance().conceptSetsGetAll({ signal })).data;
+      queryClient.setQueryData(QueryUtil.getGenericKey(QUERY_KEY.CONCEPT_SETS), conceptSets);
+    }
 
-    const conceptSetsResult = (await OntologyApi.getInstance().conceptSetsPostQuery({
-      invert: false,
-      key: 'id',
-      type: 'UUID_SET',
-      members: missingConceptSetIds,
-    }, { signal })).data;
-    const conceptSets = [...conceptSetsResult, ...currentConceptSets];
-    queryClient.setQueryData(QueryUtil.getGenericKey(QUERY_KEY.CONCEPT_SETS_LAZY), conceptSets);
-
-    const conceptSetMembersResult = (await OntologyApi.getInstance().conceptSetMembersPostQuery({
-      invert: false,
-      key: 'concept_set_id',
-      type: 'UUID_SET',
-      members: missingConceptSetIds,
-    }, { signal })).data;
-    const conceptSetMembers = [...conceptSetMembersResult, ...currentConceptSetMembers];
-    queryClient.setQueryData(QueryUtil.getGenericKey(QUERY_KEY.CONCEPT_SET_MEMBERS_LAZY), conceptSetMembers);
-
-    const missingConceptIds = difference(uniq(conceptSetMembers.map(x => x.concept_id)), currentConcepts.map(x => x.id));
-
-    const conceptsResult = (await OntologyApi.getInstance().conceptsPostQuery({
-      invert: false,
-      key: 'id',
-      type: 'UUID_SET',
-      members: missingConceptIds,
-    }, { signal })).data;
-    const concepts = [...conceptsResult, ...currentConcepts];
-    queryClient.setQueryData(QueryUtil.getGenericKey(QUERY_KEY.CONCEPTS_LAZY), concepts);
+    if (concepts === null) {
+      concepts = (await OntologyApi.getInstance().conceptsGetAll({ signal })).data;
+      queryClient.setQueryData(QueryUtil.getGenericKey(QUERY_KEY.CONCEPTS), concepts);
+    }
 
     // Rebuild the cache
     EpiDataUtil.data.conceptSets = {};
@@ -157,49 +130,31 @@ export class EpiDataUtil {
     EpiDataUtil.data.conceptsById = {};
 
     conceptSets.forEach(conceptSet => {
-      if (conceptSet) {
-        EpiDataUtil.data.conceptSets[conceptSet.id] = conceptSet;
+      EpiDataUtil.data.conceptSets[conceptSet.id] = conceptSet;
+      if (!EpiDataUtil.data.conceptsBySetId[conceptSet.id]) {
+        EpiDataUtil.data.conceptsBySetId[conceptSet.id] = [];
+        EpiDataUtil.data.conceptsIdsBySetId[conceptSet.id] = [];
       }
     });
 
     concepts.forEach(concept => {
       EpiDataUtil.data.conceptsById[concept.id] = concept;
-    });
-
-    conceptSetMembers.forEach(conceptSetMember => {
-      const concept = EpiDataUtil.data.conceptsById[conceptSetMember.concept_id];
-      if (!concept) {
-        throw Error('Concept not found');
-      }
-      if (!EpiDataUtil.data.conceptsBySetId[conceptSetMember.concept_set_id]) {
-        EpiDataUtil.data.conceptsBySetId[conceptSetMember.concept_set_id] = [];
-      }
-      if (!EpiDataUtil.data.conceptsIdsBySetId[conceptSetMember.concept_set_id]) {
-        EpiDataUtil.data.conceptsIdsBySetId[conceptSetMember.concept_set_id] = [];
-      }
-      EpiDataUtil.data.conceptsBySetId[conceptSetMember.concept_set_id].push(concept);
-      EpiDataUtil.data.conceptsIdsBySetId[conceptSetMember.concept_set_id].push(concept.id);
-      EpiDataUtil.data.conceptsById[concept.id] = concept;
+      EpiDataUtil.data.conceptsBySetId[concept.concept_set_id].push(concept);
+      EpiDataUtil.data.conceptsIdsBySetId[concept.concept_set_id].push(concept.id);
     });
   }
 
-  public static async loadMissingOrganizations(completeCaseType: CompleteCaseType, cases: Case[], signal: AbortSignal): Promise<void> {
+  public static async loadOrganizations(signal: AbortSignal): Promise<void> {
     const queryClient = QueryClientManager.instance.queryClient;
 
-    const missingOrganizationIds = EpiDataUtil.getMissingOrganizationIds(completeCaseType, cases);
-    if (!missingOrganizationIds.length) {
+    let organizations = QueryUtil.getValidQueryData<Organization[]>(QueryUtil.getGenericKey(QUERY_KEY.ORGANIZATIONS)) ?? null;
+
+    if (organizations !== null) {
       return;
     }
+    organizations = (await OrganizationApi.getInstance().organizationsGetAll({ signal })).data;
+    queryClient.setQueryData(QueryUtil.getGenericKey(QUERY_KEY.ORGANIZATIONS), organizations);
 
-    const currentOrganizations = QueryUtil.getValidQueryData<Organization[]>(QueryUtil.getGenericKey(QUERY_KEY.ORGANIZATIONS_LAZY)) ?? [];
-    const loadedOrganizations = (await OrganizationApi.getInstance().organizationsPostQuery({
-      invert: false,
-      key: 'id',
-      type: 'UUID_SET',
-      members: missingOrganizationIds,
-    }, { signal })).data;
-    const organizations = [...loadedOrganizations, ...currentOrganizations];
-    queryClient.setQueryData(QueryUtil.getGenericKey(QUERY_KEY.ORGANIZATIONS_LAZY), organizations);
     // Rebuild the cache
     EpiDataUtil.data.organizationsById = {};
     EpiDataUtil.data.organizations = organizations;
@@ -220,44 +175,9 @@ export class EpiDataUtil {
     return regionSetIds;
   }
 
-  private static getMissingOrganizationIds(completeCaseType: CompleteCaseType, cases: Case[]): string[] {
-    const organizationColumnIds: string[] = [];
-    completeCaseType.case_type_dims.forEach(caseTypeDimension => {
-      const dimension = completeCaseType.dims[caseTypeDimension.dim_id];
-      if (dimension.dim_type === DimType.ORGANIZATION) {
-        organizationColumnIds.push(...caseTypeDimension.case_type_col_order);
-      }
-    });
-    const organizationIds: string[] = [];
-    cases.forEach(c => {
-      organizationColumnIds.forEach(organizationColumnId => {
-        const organizationId = c.content[organizationColumnId];
-        if (organizationId && !organizationIds.includes(organizationId)) {
-          organizationIds.push(organizationId);
-        }
-      });
-    });
-
-    const currentOrganizationIds = (QueryUtil.getValidQueryData<Organization[]>(QueryUtil.getGenericKey(QUERY_KEY.ORGANIZATIONS_LAZY)) ?? []).map(x => x.id);
-    return organizationIds.filter(organizationId => !currentOrganizationIds.includes(organizationId));
-  }
-
   private static getMissingRegionSetIds(completeCaseType: CompleteCaseType): string[] {
     const regionSetIds = EpiDataUtil.getRegionSetIds(completeCaseType);
     const currentRegionSetsIds = (QueryUtil.getValidQueryData<RegionSet[]>(QueryUtil.getGenericKey(QUERY_KEY.REGION_SETS_LAZY)) ?? []).map(x => x.id);
     return regionSetIds.filter(regionSetId => !currentRegionSetsIds.includes(regionSetId));
-  }
-
-  private static getMissingConceptSetIds(completeCaseType: CompleteCaseType): string[] {
-    const conceptSetIds: string[] = [];
-    EpiCaseTypeUtil.getCaseTypeColumns(completeCaseType).forEach(caseTypeColumn => {
-      const column = completeCaseType.cols[caseTypeColumn.col_id];
-      if (column.concept_set_id && !conceptSetIds.includes(column.concept_set_id)) {
-        conceptSetIds.push(column.concept_set_id);
-      }
-    });
-
-    const currentConceptSetIds = (QueryUtil.getValidQueryData<ConceptSet[]>(QueryUtil.getGenericKey(QUERY_KEY.CONCEPT_SETS_LAZY)) ?? []).map(x => x.id);
-    return conceptSetIds.filter(conceptId => !currentConceptSetIds.includes(conceptId));
   }
 }

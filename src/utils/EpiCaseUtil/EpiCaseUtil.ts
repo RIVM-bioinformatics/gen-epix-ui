@@ -386,8 +386,8 @@ export class EpiCaseUtil {
     return {
       raw,
       isMissing: false,
-      full: `${concept.abbreviation} (${concept.name})`,
-      short: concept.abbreviation,
+      full: `${concept.code} (${concept.name})`,
+      short: concept.code,
       long: concept.name,
     };
   }
