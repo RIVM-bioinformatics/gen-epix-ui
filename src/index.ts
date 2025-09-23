@@ -128,6 +128,7 @@ export * from './dataHooks/useOrganizationsQuery';
 export * from './dataHooks/useOrganizationShareCasePoliciesQuery';
 export * from './dataHooks/useOrganizationAdminPoliciesQuery';
 export * from './dataHooks/useOrganizationAccessCasePoliciesQuery';
+export * from './dataHooks/useInviteUserConstraintsQuery';
 export * from './dataHooks/useGeneticDistanceProtocolsQuery';
 export * from './dataHooks/useEtiologicalAgentsQuery';
 export * from './dataHooks/useDiseasesQuery';
