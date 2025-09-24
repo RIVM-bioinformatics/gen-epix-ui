@@ -1,5 +1,6 @@
 import {
   Button,
+  Tooltip,
   useTheme,
 } from '@mui/material';
 import ErrorOutlineIcon from '@mui/icons-material/ErrorOutline';
@@ -26,6 +27,7 @@ import {
 } from '../../../models/epiUpload';
 import type {
   Case,
+  CaseDataIssue,
   CaseForCreateUpdate,
   CompleteCaseType,
   ValidatedCase,
@@ -136,6 +138,48 @@ export const EpiUploadValidateContent = ({
     setSelectedIds(newSelectedIds);
   }, [rowsWithGeneratedId, setSelectedIds]);
 
+  const getIssueTooltipContent = useCallback((issues: CaseDataIssue[]) => {
+    const messages: { message: string; key: string }[] = [];
+    issues.forEach((issue) => {
+      const issueMessage = issue.details.replace(issue.original_value, '"{{originalValue}}"');
+      const translatedMessage = t(issueMessage, { originalValue: issue.original_value });
+      messages.push({ message: translatedMessage, key: issue.case_type_col_id });
+    });
+    return (
+      <>
+        {messages.map(({ message, key }, index) => (
+          <Box
+            key={key}
+            sx={{ marginTop: index > 0 ? 1 : 0 }}
+          >
+            {message}
+          </Box>
+        ))}
+      </>
+    );
+  }, []);
+
+  const renderHasIssueCell = useCallback(({ row }: TableRowParams<ValidatedCaseWithGeneratedId>) => {
+    const errorIssues = row.data_issues.filter(i => i.data_rule === CaseColDataRule.INVALID || i.data_rule === CaseColDataRule.UNAUTHORIZED || i.data_rule === CaseColDataRule.CONFLICT);
+    if (errorIssues.length > 0) {
+      return (
+        <Tooltip
+          arrow
+          title={getIssueTooltipContent(errorIssues)}
+        >
+          <ErrorOutlineIcon
+            fontSize={'small'}
+            sx={{
+              color: theme.palette.error.main,
+              position: 'absolute',
+              marginTop: '5px',
+            }}
+          />
+        </Tooltip>
+      );
+    }
+  }, [getIssueTooltipContent, theme.palette.error.main]);
+
   const renderCell = useCallback(({ id, row }: TableRowParams<ValidatedCaseWithGeneratedId>) => {
     const rowValue = EpiCaseUtil.getRowValue(row.case as Case, completeCaseType.case_type_cols[id], completeCaseType);
     const issue = row.data_issues.find((i) => i.case_type_col_id === id);
@@ -143,13 +187,13 @@ export const EpiUploadValidateContent = ({
     if (issue) {
       let color: string;
       switch (issue.data_rule) {
-        case CaseColDataRule.CONFLICT:
         case CaseColDataRule.MISSING:
           color = theme.palette.warning.main;
           break;
         case CaseColDataRule.DERIVED:
           color = theme.palette.info.main;
           break;
+        case CaseColDataRule.CONFLICT:
         case CaseColDataRule.UNAUTHORIZED:
         case CaseColDataRule.INVALID:
         default:
@@ -173,15 +217,19 @@ export const EpiUploadValidateContent = ({
               position: 'relative',
             }}
           >
-            <ErrorOutlineIcon
-              fontSize={'small'}
-              sx={{
-                color,
-                position: 'absolute',
-                marginTop: '-2px',
-                cursor: 'pointer',
-              }}
-            />
+            <Tooltip
+              arrow
+              title={getIssueTooltipContent([issue])}
+            >
+              <ErrorOutlineIcon
+                fontSize={'small'}
+                sx={{
+                  color,
+                  position: 'absolute',
+                  marginTop: '-2px',
+                }}
+              />
+            </Tooltip>
           </Box>
           <Box
             sx={{
@@ -200,7 +248,7 @@ export const EpiUploadValidateContent = ({
         {rowValue.short}
       </>
     );
-  }, [completeCaseType, theme]);
+  }, [completeCaseType, getIssueTooltipContent, theme]);
 
   const tableColumns = useMemo<TableColumn<ValidatedCaseWithGeneratedId>[]>(() => {
     const validatedCases = validationQuery?.data?.validated_cases;
@@ -210,6 +258,20 @@ export const EpiUploadValidateContent = ({
     }
     tableCols.push(TableUtil.createReadableIndexColumn());
     tableCols.push(TableUtil.createSelectableColumn());
+    tableCols.push({
+      id: 'gen-epix-ui-issue',
+      type: 'text',
+      isInitiallyVisible: true,
+      isStatic: true,
+      frozen: true,
+      resizable: false,
+      disableEllipsis: true,
+      widthPx: 38,
+      valueGetter: () => '',
+      renderCell: renderHasIssueCell,
+      hideInFilter: true,
+      headerName: '',
+    });
 
     const hasIdColumn = validatedCases.some(vc => !!vc.case.id);
     const hasDateColumn = validatedCases.some(vc => !!vc.case.case_date);
@@ -265,7 +327,11 @@ export const EpiUploadValidateContent = ({
           cellTitleGetter: (params) => {
             const issue = params.row.data_issues.find((i) => i.case_type_col_id === caseTypeColumn.id);
             if (!issue) {
-              return EpiCaseUtil.getRowValue(params.row.case as Case, caseTypeColumn, completeCaseType).full;
+              const originalValue = selectFileResult.rawData.slice(1)[params.rowIndex][mappedColumns.find(mc => mc.caseTypeCol?.id === caseTypeColumn.id)?.originalIndex || -1];
+              return t('{{value}} (original value: "{{originalValue}}")', {
+                value: EpiCaseUtil.getRowValue(params.row.case as Case, caseTypeColumn, completeCaseType).short,
+                originalValue,
+              });
             }
             return '';
           },
@@ -275,7 +341,7 @@ export const EpiUploadValidateContent = ({
     });
 
     return tableCols;
-  }, [completeCaseType, renderCell, validationQuery?.data?.validated_cases]);
+  }, [completeCaseType, mappedColumns, renderCell, renderHasIssueCell, selectFileResult.rawData, validationQuery?.data?.validated_cases]);
 
   useInitializeTableStore<ValidatedCaseWithGeneratedId>({ store: tableStore, columns: tableColumns, rows: rowsWithGeneratedId, createFiltersFromColumns: true });
 
