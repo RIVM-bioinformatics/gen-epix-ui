@@ -6,10 +6,14 @@ import {
 } from 'react';
 import { yupResolver } from '@hookform/resolvers/yup';
 import type { Resolver } from 'react-hook-form';
-import { useForm } from 'react-hook-form';
+import {
+  useForm,
+  useWatch,
+} from 'react-hook-form';
 import {
   Box,
   Button,
+  Container,
   Table,
   TableBody,
   TableCell,
@@ -18,6 +22,7 @@ import {
 } from '@mui/material';
 import { useTranslation } from 'react-i18next';
 import invert from 'lodash/invert';
+import uniq from 'lodash/uniq';
 
 import type {
   CaseTypeCol,
@@ -55,6 +60,7 @@ export const EpiUploadMapColumns = ({ completeCaseType, rawData, onProceed, onGo
   ]);
 
   const formId = useId();
+
   const mappedColumns = useMemo<EpiUploadMappedColumn[]>(() => {
     if (mappedColumnsFromProps) {
       return mappedColumnsFromProps;
@@ -80,7 +86,8 @@ export const EpiUploadMapColumns = ({ completeCaseType, rawData, onProceed, onGo
     defaultValues: { ...defaultValues },
   });
 
-  const { handleSubmit } = formMethods;
+  const { handleSubmit, control } = formMethods;
+  const values = useWatch({ control });
 
   const onFormSubmit = useCallback((data: EpiUploadMappedColumnsFormFields) => {
     const sheetValues = invert(data);
@@ -109,6 +116,14 @@ export const EpiUploadMapColumns = ({ completeCaseType, rawData, onProceed, onGo
   }, [handleSubmit, onFormSubmit]);
 
   const renderField = useCallback((definition: FormFieldDefinition<EpiUploadMappedColumnsFormFields>, element: ReactElement) => {
+    const columnIndexInRawData = values[definition.name]; // Note, this is a string, so '0', '1', '2', etc.
+
+    let firstFiveValuesString = '';
+    if (columnIndexInRawData) {
+      const columnValues = uniq(rawData.slice(1).map((row) => row[parseInt(columnIndexInRawData, 10)] ?? '')).filter(x => !!x);
+      firstFiveValuesString = columnValues.slice(0, 5).join(', ').trim() || t('<no data>');
+    }
+
     return (
       <TableRow key={definition.name}>
         <TableCell>
@@ -117,9 +132,12 @@ export const EpiUploadMapColumns = ({ completeCaseType, rawData, onProceed, onGo
         <TableCell>
           {element}
         </TableCell>
+        <TableCell>
+          {firstFiveValuesString}
+        </TableCell>
       </TableRow>
     );
-  }, []);
+  }, [values, rawData, t]);
 
   const wrapForm = useCallback((children: ReactElement) => {
     return (
@@ -129,10 +147,13 @@ export const EpiUploadMapColumns = ({ completeCaseType, rawData, onProceed, onGo
         <TableHead>
           <TableRow>
             <TableCell sx={{ width: '34%' }}>
-              {`${ConfigManager.instance.config.applicationName} - ${completeCaseType.name}`}
+              {t('{{applicationName}} - {{caseTypeName}}', { applicationName: ConfigManager.instance.config.applicationName, caseTypeName: completeCaseType.name })}
             </TableCell>
-            <TableCell sx={{ width: '66%' }}>
+            <TableCell sx={{ width: '33%' }}>
               {fileName}
+            </TableCell>
+            <TableCell sx={{ width: '33%' }}>
+              {t`Data preview (first 5 unique values)`}
             </TableCell>
           </TableRow>
         </TableHead>
@@ -141,38 +162,74 @@ export const EpiUploadMapColumns = ({ completeCaseType, rawData, onProceed, onGo
         </TableBody>
       </Table>
     );
-  }, [completeCaseType.name, fileName]);
+  }, [completeCaseType.name, fileName, t]);
 
   return (
     <ResponseHandler loadables={loadables}>
-      <GenericForm<EpiUploadMappedColumnsFormFields>
-        formFieldDefinitions={formFieldDefinitions}
-        formId={formId}
-        formMethods={formMethods}
-        renderField={renderField}
-        wrapForm={wrapForm}
-        onSubmit={handleSubmit(onFormSubmit)}
-      />
       <Box
         sx={{
-          marginTop: 2,
-          display: 'flex',
-          gap: 2,
-          justifyContent: 'flex-end',
+          display: 'grid',
+          gridTemplateRows: 'auto max-content',
+          height: '100%',
         }}
       >
-        <Button
-          variant={'outlined'}
-          onClick={onGoBack}
+        <Box
+          sx={{
+            overflowY: 'auto',
+            position: 'relative',
+          }}
         >
-          {t('Go back')}
-        </Button>
-        <Button
-          variant={'contained'}
-          onClick={onProceedButtonClick}
-        >
-          {t('Next')}
-        </Button>
+          <Container
+            maxWidth={'xl'}
+            sx={{
+              position: 'relative',
+            }}
+          >
+            <Box
+              sx={{
+                position: 'absolute',
+                top: 0,
+                left: 0,
+                right: 0,
+                bottom: 0,
+              }}
+            >
+              <GenericForm<EpiUploadMappedColumnsFormFields>
+                formFieldDefinitions={formFieldDefinitions}
+                formId={formId}
+                formMethods={formMethods}
+                renderField={renderField}
+                wrapForm={wrapForm}
+                onSubmit={handleSubmit(onFormSubmit)}
+              />
+            </Box>
+          </Container>
+        </Box>
+        <Box>
+          <Container maxWidth={'xl'}>
+            <Box
+              sx={{
+                marginTop: 2,
+                display: 'flex',
+                gap: 2,
+                justifyContent: 'flex-end',
+              }}
+            >
+              <Button
+                variant={'outlined'}
+                onClick={onGoBack}
+              >
+                {t('Go back')}
+              </Button>
+              <Button
+                variant={'contained'}
+                onClick={onProceedButtonClick}
+              >
+                {t('Next')}
+              </Button>
+            </Box>
+          </Container>
+        </Box>
       </Box>
     </ResponseHandler>
   );

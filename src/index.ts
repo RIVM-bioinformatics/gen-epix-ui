@@ -173,7 +173,7 @@ export * from './components/ui/OutageList';
 export * from './components/ui/OrganizationSwitcherDialog';
 export * from './components/ui/Notifications';
 export * from './components/ui/NestedMenu';
-export * from './components/ui/NavLink/index.ts';
+export * from './components/ui/NavLink';
 export * from './components/ui/LoadingIndicator';
 export * from './components/ui/LicensesDialog';
 export * from './components/ui/HomePageTrends';

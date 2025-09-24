@@ -22,6 +22,7 @@ import {
   AlertTitle,
   Box,
   Button,
+  Container,
   Typography,
 } from '@mui/material';
 
@@ -316,53 +317,55 @@ const EpiUploadSelectFile = ({ onProceed, defaultValues }: EpiUploadSelectFilePr
   }, [handleSubmit, onFormSubmit]);
 
   return (
-    <ResponseHandler
-      inlineSpinner
-      error={completeCaseTypeError}
-      loadables={loadables}
-    >
-      <GenericForm<FormFields>
-        formFieldDefinitions={formFieldDefinitions}
-        formId={formId}
-        formMethods={formMethods}
-        onSubmit={handleSubmit(onFormSubmit)}
-      />
-      {rawData && rawData.length > 0 && (
-        <Alert
-          severity={'info'}
-          sx={{ mb: 2 }}
-        >
-          <AlertTitle>
-            {t('{{fileName}} loaded successfully', { fileName: userSelectedFile?.[0]?.name || '' })}
-          </AlertTitle>
-          {userSelectedSheet !== EpiUploadUtil.csvSheetId && (
-            <Typography>
-              {t('Sheet name: {{sheetName}}', { sheetName: userSelectedSheet || '' })}
-            </Typography>
-          )}
-          <Typography>
-            {t('Number of columns: {{columnCount}}', { columnCount: rawData[0].length })}
-          </Typography>
-          <Typography>
-            {t('Number of data rows: {{rowCount}}', { rowCount: rawData.length - 1 })}
-          </Typography>
-        </Alert>
-      )}
-      <Box
-        sx={{
-          display: 'flex',
-          gap: 2,
-          justifyContent: 'flex-end',
-        }}
+    <Container maxWidth={'xl'}>
+      <ResponseHandler
+        inlineSpinner
+        error={completeCaseTypeError}
+        loadables={loadables}
       >
-        <Button
-          variant={'contained'}
-          onClick={onProceedButtonClick}
+        <GenericForm<FormFields>
+          formFieldDefinitions={formFieldDefinitions}
+          formId={formId}
+          formMethods={formMethods}
+          onSubmit={handleSubmit(onFormSubmit)}
+        />
+        {rawData && rawData.length > 0 && (
+          <Alert
+            severity={'info'}
+            sx={{ mb: 2 }}
+          >
+            <AlertTitle>
+              {t('{{fileName}} loaded successfully', { fileName: userSelectedFile?.[0]?.name || '' })}
+            </AlertTitle>
+            {userSelectedSheet !== EpiUploadUtil.csvSheetId && (
+              <Typography>
+                {t('Sheet name: {{sheetName}}', { sheetName: userSelectedSheet || '' })}
+              </Typography>
+            )}
+            <Typography>
+              {t('Number of columns: {{columnCount}}', { columnCount: rawData[0].length })}
+            </Typography>
+            <Typography>
+              {t('Number of data rows: {{rowCount}}', { rowCount: rawData.length - 1 })}
+            </Typography>
+          </Alert>
+        )}
+        <Box
+          sx={{
+            display: 'flex',
+            gap: 2,
+            justifyContent: 'flex-end',
+          }}
         >
-          {t('Next')}
-        </Button>
-      </Box>
-    </ResponseHandler>
+          <Button
+            variant={'contained'}
+            onClick={onProceedButtonClick}
+          >
+            {t('Next')}
+          </Button>
+        </Box>
+      </ResponseHandler>
+    </Container>
   );
 };
 

@@ -115,9 +115,8 @@ export const EpiCreateEventDialog = withDialog<EpiCreateEventDialogProps, EpiCre
       shouldApplySharingToCases: true,
     },
   });
-  const { handleSubmit, setValue } = formMethods;
+  const { handleSubmit, setValue, control } = formMethods;
 
-  const { control } = formMethods;
   const { case_type_id: userSelectedCaseTypeId, create_in_data_collection_id: createdInDataCollectionId, share_in_data_collection_ids: sharedInDataCollectionIds } = useWatch({ control });
 
   const sanitizedCompleteCaseTypeId = openProps.completeCaseType?.id ?? userSelectedCaseTypeId;

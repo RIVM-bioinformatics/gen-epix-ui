@@ -5,6 +5,7 @@ import StepLabel from '@mui/material/StepLabel';
 import { useTranslation } from 'react-i18next';
 import {
   useCallback,
+  useMemo,
   useState,
 } from 'react';
 import {
@@ -21,17 +22,44 @@ import { EpiUploadUtil } from '../../../utils/EpiUploadUtil';
 import type { ValidatedCase } from '../../../api';
 
 import EpiUploadSelectFile from './EpiUploadSelectFile';
-import { EpiUploadDataPreview } from './EpiUploadDataPreview';
 import { EpiUploadMapColumns } from './EpiUploadMapColumns';
 import { EpiUploadValidate } from './EpiUploadValidate';
 import { EpiUploadCreateCases } from './EpiUploadCreateCases';
 
 
+enum EPI_UPLOAD_STEP {
+  SELECT_FILE = 0,
+  MAP_COLUMNS = 1,
+  VALIDATE = 2,
+  SELECT_SEQUENCE_FILES = 3,
+  MAP_SEQUENCES = 4,
+  UPLOAD = 5,
+}
+
 export const EpiUpload = () => {
   const [t] = useTranslation();
   const theme = useTheme();
-  const [activeStep, setActiveStep] = useState(0);
-  const steps = [t`Select file`, t`Map columns`, t`Preview`, t`Validate`, t`Upload`];
+  const [activeStep, setActiveStep] = useState(EPI_UPLOAD_STEP.SELECT_FILE);
+
+  const stepOrder = useMemo(() => [
+    EPI_UPLOAD_STEP.SELECT_FILE,
+    EPI_UPLOAD_STEP.MAP_COLUMNS,
+    EPI_UPLOAD_STEP.VALIDATE,
+    // EPI_UPLOAD_STEP.SELECT_SEQUENCE_FILES,
+    // EPI_UPLOAD_STEP.MAP_SEQUENCES,
+    EPI_UPLOAD_STEP.UPLOAD,
+  ], []);
+  const steps = useMemo(() => {
+    return {
+      [EPI_UPLOAD_STEP.SELECT_FILE]: t`Select file`,
+      [EPI_UPLOAD_STEP.MAP_COLUMNS]: t`Map columns`,
+      [EPI_UPLOAD_STEP.VALIDATE]: t`Validate`,
+      [EPI_UPLOAD_STEP.SELECT_SEQUENCE_FILES]: t`Select sequence files`,
+      [EPI_UPLOAD_STEP.MAP_SEQUENCES]: t`Map sequences`,
+      [EPI_UPLOAD_STEP.UPLOAD]: t`Upload`,
+    } satisfies Record<EPI_UPLOAD_STEP, string>;
+  }, [t]);
+
   const [selectFileResult, setSelectFileResult] = useState<EpiUploadSelectFileResult | null>(null);
   const [mappedColumns, setMappedColumns] = useState<EpiUploadMappedColumn[] | null>(null);
   const [validatedCases, setValidatedCases] = useState<ValidatedCase[] | null>(null);
@@ -48,40 +76,42 @@ export const EpiUpload = () => {
         setMappedColumns(null);
       }
     }
-    setActiveStep(1);
+    setActiveStep(EPI_UPLOAD_STEP.MAP_COLUMNS);
   }, [mappedColumns, t]);
+
+  const findNext = useCallback((fromStep: EPI_UPLOAD_STEP) => {
+    const currentIndex = stepOrder.indexOf(fromStep);
+    return currentIndex >= 0 && currentIndex < stepOrder.length - 1 ? stepOrder[currentIndex + 1] : null;
+  }, [stepOrder]);
+
+  const findPrevious = useCallback((fromStep: EPI_UPLOAD_STEP) => {
+    const currentIndex = stepOrder.indexOf(fromStep);
+    return currentIndex > 0 ? stepOrder[currentIndex - 1] : null;
+  }, [stepOrder]);
 
   const onEpiUploadMapColumnsProceed = useCallback((data: EpiUploadMappedColumn[]) => {
     setMappedColumns(data);
-    setActiveStep(2);
-  }, []);
+    setActiveStep(findNext(EPI_UPLOAD_STEP.MAP_COLUMNS));
+  }, [findNext]);
 
   const onEpiUploadMapColumnsGoBack = useCallback(() => {
-    setActiveStep(0);
-  }, []);
-
-  const onEpiUploadDataPreviewGoBack = useCallback(() => {
-    setActiveStep(1);
-  }, []);
-
-  const onEpiUploadDataPreviewProceed = useCallback(() => {
-    setActiveStep(3);
-  }, []);
+    setActiveStep(findPrevious(EPI_UPLOAD_STEP.MAP_COLUMNS));
+  }, [findPrevious]);
 
   const onEpiUploadValidateGoBack = useCallback(() => {
-    setActiveStep(2);
-  }, []);
+    setActiveStep(findPrevious(EPI_UPLOAD_STEP.VALIDATE));
+  }, [findPrevious]);
 
   const onEpiUploadValidateProceed = useCallback((data: ValidatedCase[]) => {
     setValidatedCases(data);
-    setActiveStep(4);
-  }, []);
+    setActiveStep(findNext(EPI_UPLOAD_STEP.VALIDATE));
+  }, [findNext]);
 
   const onUploadCasesStartOver = useCallback(() => {
     setSelectFileResult(null);
     setMappedColumns(null);
     setValidatedCases(null);
-    setActiveStep(0);
+    setActiveStep(EPI_UPLOAD_STEP.SELECT_FILE);
   }, []);
 
   return (
@@ -94,17 +124,19 @@ export const EpiUpload = () => {
         gridTemplateRows: 'max-content auto',
       }}
     >
-      <Container maxWidth={'xl'}>
+      <Container
+        maxWidth={'xl'}
+      >
         <Stepper activeStep={activeStep}>
-          {steps.map((label) => {
+          {stepOrder.map((step) => {
             const stepProps: { completed?: boolean } = {};
             return (
               <Step
-                key={label}
+                key={step}
                 {...stepProps}
               >
                 <StepLabel>
-                  {label}
+                  {steps[step]}
                 </StepLabel>
               </Step>
             );
@@ -119,43 +151,31 @@ export const EpiUpload = () => {
           position: 'relative',
         }}
       >
-        {activeStep === 0 && (
-          <Container maxWidth={'xl'}>
-            <EpiUploadSelectFile
-              defaultValues={selectFileResult ? {
-                case_type_id: selectFileResult.case_type_id,
-                create_in_data_collection_id: selectFileResult.create_in_data_collection_id,
-                share_in_data_collection_ids: selectFileResult.share_in_data_collection_ids,
-                file_list: selectFileResult.file_list,
-                sheet: selectFileResult.sheet,
-                import_action: selectFileResult.import_action,
-              } : undefined}
-              onProceed={onEpiUploadSelectFileProceed}
-            />
-          </Container>
-        )}
-        {activeStep === 1 && (
-          <Container maxWidth={'xl'}>
-            <EpiUploadMapColumns
-              mappedColumns={mappedColumns || undefined}
-              completeCaseType={selectFileResult.completeCaseType}
-              rawData={selectFileResult.rawData}
-              importAction={selectFileResult.import_action}
-              fileName={selectFileResult.file_list[0]?.name ?? 'unknown file'}
-              onProceed={onEpiUploadMapColumnsProceed}
-              onGoBack={onEpiUploadMapColumnsGoBack}
-            />
-          </Container>
-        )}
-        {activeStep === 2 && (
-          <EpiUploadDataPreview
-            mappedColumns={mappedColumns}
-            rawData={selectFileResult.rawData}
-            onGoBack={onEpiUploadDataPreviewGoBack}
-            onProceed={onEpiUploadDataPreviewProceed}
+        {activeStep === EPI_UPLOAD_STEP.SELECT_FILE && (
+          <EpiUploadSelectFile
+            defaultValues={selectFileResult ? {
+              case_type_id: selectFileResult.case_type_id,
+              create_in_data_collection_id: selectFileResult.create_in_data_collection_id,
+              share_in_data_collection_ids: selectFileResult.share_in_data_collection_ids,
+              file_list: selectFileResult.file_list,
+              sheet: selectFileResult.sheet,
+              import_action: selectFileResult.import_action,
+            } : undefined}
+            onProceed={onEpiUploadSelectFileProceed}
           />
         )}
-        {activeStep === 3 && (
+        {activeStep === EPI_UPLOAD_STEP.MAP_COLUMNS && (
+          <EpiUploadMapColumns
+            mappedColumns={mappedColumns || undefined}
+            completeCaseType={selectFileResult.completeCaseType}
+            rawData={selectFileResult.rawData}
+            importAction={selectFileResult.import_action}
+            fileName={selectFileResult.file_list[0]?.name ?? 'unknown file'}
+            onProceed={onEpiUploadMapColumnsProceed}
+            onGoBack={onEpiUploadMapColumnsGoBack}
+          />
+        )}
+        {activeStep === EPI_UPLOAD_STEP.VALIDATE && (
           <EpiUploadValidate
             caseTypeId={selectFileResult.case_type_id}
             completeCaseType={selectFileResult.completeCaseType}
@@ -165,7 +185,7 @@ export const EpiUpload = () => {
             onProceed={onEpiUploadValidateProceed}
           />
         )}
-        {activeStep === 4 && (
+        {activeStep === EPI_UPLOAD_STEP.UPLOAD && (
           <EpiUploadCreateCases
             selectFileResult={selectFileResult}
             validatedCases={validatedCases}

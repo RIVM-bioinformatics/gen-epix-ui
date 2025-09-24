@@ -7,6 +7,7 @@ import {
   Alert,
   Box,
   Button,
+  Container,
 } from '@mui/material';
 
 import {
@@ -74,7 +75,7 @@ export const EpiUploadCreateCases = ({ selectFileResult, validatedCases, onStart
     );
   }
   return (
-    <Box>
+    <Container maxWidth={'xl'}>
       <Alert severity={'success'}>
         {t('Successfully uploaded {{numCases}} cases.', { numCases: createCasesQuery.data?.length ?? 0 })}
       </Alert>
@@ -100,6 +101,6 @@ export const EpiUploadCreateCases = ({ selectFileResult, validatedCases, onStart
           {t('View uploaded cases')}
         </Button>
       </Box>
-    </Box>
+    </Container>
   );
 };

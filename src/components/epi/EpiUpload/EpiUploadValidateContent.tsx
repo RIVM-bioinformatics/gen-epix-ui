@@ -3,7 +3,10 @@ import {
   useTheme,
 } from '@mui/material';
 import ErrorOutlineIcon from '@mui/icons-material/ErrorOutline';
-import { Box } from '@mui/system';
+import {
+  Box,
+  Container,
+} from '@mui/system';
 import { t } from 'i18next';
 import {
   useCallback,
@@ -298,28 +301,30 @@ export const EpiUploadValidateContent = ({
           }}
         >
           <Table />
-          <Box
-            marginTop={2}
-            marginBottom={1}
-            sx={{
-              display: 'flex',
-              gap: 2,
-              justifyContent: 'flex-end',
-            }}
-          >
-            <Button
-              variant={'outlined'}
-              onClick={onGoBack}
+          <Container maxWidth={'xl'}>
+            <Box
+              marginTop={2}
+              marginBottom={1}
+              sx={{
+                display: 'flex',
+                gap: 2,
+                justifyContent: 'flex-end',
+              }}
             >
-              {t('Go back')}
-            </Button>
-            <Button
-              variant={'contained'}
-              onClick={onProceedButtonClick}
-            >
-              {t('Next')}
-            </Button>
-          </Box>
+              <Button
+                variant={'outlined'}
+                onClick={onGoBack}
+              >
+                {t('Go back')}
+              </Button>
+              <Button
+                variant={'contained'}
+                onClick={onProceedButtonClick}
+              >
+                {t('Next')}
+              </Button>
+            </Box>
+          </Container>
         </Box>
       </TableStoreContextProvider>
     </ResponseHandler>
