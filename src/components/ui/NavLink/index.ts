@@ -1,1 +1,1 @@
-export * from './LspNavLink';
+export * from './NavLink';
