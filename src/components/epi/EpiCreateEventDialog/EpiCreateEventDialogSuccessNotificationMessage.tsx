@@ -3,7 +3,7 @@ import { Box } from '@mui/material';
 
 import type { CaseSet } from '../../../api';
 import { EpiCaseSetUtil } from '../../../utils/EpiCaseSetUtil';
-import { LspNavLink } from '../../ui/LspNavLink';
+import { NavLink } from '../../ui/NavLink';
 
 export type EpiCreateEventDialogSuccessNotificationMessageProps = {
   readonly caseSet: CaseSet;
@@ -18,12 +18,12 @@ export const EpiCreateEventDialogSuccessNotificationMessage = ({ caseSet, isCrea
         {!isCreating && t('Successfully edited event: {{name}}', { name: caseSet.name })}
       </Box>
       <Box marginY={2}>
-        <LspNavLink
+        <NavLink
           activeAsText
           to={EpiCaseSetUtil.createCaseSetLink(caseSet)}
         >
           {t('View event: {{name}}', { name: caseSet.name })}
-        </LspNavLink>
+        </NavLink>
       </Box>
     </Box>
   );

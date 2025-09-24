@@ -21,7 +21,7 @@ import { useCaseSetStatusMapQuery } from '../../../dataHooks/useCaseSetStatusesQ
 import { QUERY_KEY } from '../../../models/query';
 import { EpiCaseSetUtil } from '../../../utils/EpiCaseSetUtil';
 import { QueryUtil } from '../../../utils/QueryUtil';
-import { LspNavLink } from '../../ui/LspNavLink';
+import { NavLink } from '../../ui/NavLink';
 import { ResponseHandler } from '../../ui/ResponseHandler';
 import { useArray } from '../../../hooks/useArray';
 
@@ -108,12 +108,12 @@ export const EpiCaseCaseSetInfo = ({ epiCase, ...boxProps }: EpiCaseCaseSetInfoP
               {caseSets?.map((caseSet) => (
                 <TableRow key={caseSet.id}>
                   <TableCell>
-                    <LspNavLink
+                    <NavLink
                       activeAsText
                       to={EpiCaseSetUtil.createCaseSetLink(caseSet)}
                     >
                       {caseSet.name}
-                    </LspNavLink>
+                    </NavLink>
                   </TableCell>
                   <TableCell>
                     {caseSetCategoryMapQuery.map.get(caseSet.case_set_category_id)?.name ?? t`Unknown`}

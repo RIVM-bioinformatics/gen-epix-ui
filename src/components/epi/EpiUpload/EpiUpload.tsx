@@ -53,7 +53,7 @@ export const EpiUpload = () => {
 
   const onEpiUploadMapColumnsProceed = useCallback((data: EpiUploadMappedColumn[]) => {
     setMappedColumns(data);
-    setActiveStep(3);
+    setActiveStep(2);
   }, []);
 
   const onEpiUploadMapColumnsGoBack = useCallback(() => {
@@ -77,6 +77,12 @@ export const EpiUpload = () => {
     setActiveStep(4);
   }, []);
 
+  const onUploadCasesStartOver = useCallback(() => {
+    setSelectFileResult(null);
+    setMappedColumns(null);
+    setValidatedCases(null);
+    setActiveStep(0);
+  }, []);
 
   return (
     <Box
@@ -163,6 +169,7 @@ export const EpiUpload = () => {
           <EpiUploadCreateCases
             selectFileResult={selectFileResult}
             validatedCases={validatedCases}
+            onStartOver={onUploadCasesStartOver}
           />
         )}
       </Box>

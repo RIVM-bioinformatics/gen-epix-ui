@@ -238,6 +238,7 @@ export const EpiUploadValidateContent = ({
       } satisfies TableColumn<ValidatedCaseWithGeneratedId>);
     }
 
+
     // get union of caseTypeColIds from validationQuery.data.validated_cases
     const uniqueCaseTypeColIds: Set<string> = new Set();
     validatedCases.forEach((vc) => {
