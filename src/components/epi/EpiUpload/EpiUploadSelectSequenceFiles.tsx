@@ -16,7 +16,6 @@ export const EpiUploadSelectSequenceFiles = ({ onProceed, onGoBack }: EpiUploadS
   return (
     <Box>
       <EpiUploadNavigation
-        container
         onGoBackButtonClick={onGoBack}
         onProceedButtonClick={onProceedButtonClick}
       />

@@ -8,10 +8,7 @@ import {
   useMemo,
   useState,
 } from 'react';
-import {
-  Container,
-  useTheme,
-} from '@mui/material';
+import { useTheme } from '@mui/material';
 
 import type {
   EpiUploadMappedColumn,
@@ -134,25 +131,21 @@ export const EpiUpload = () => {
         gridTemplateRows: 'max-content auto',
       }}
     >
-      <Container
-        maxWidth={'xl'}
-      >
-        <Stepper activeStep={activeStep}>
-          {stepOrder.map((step) => {
-            const stepProps: { completed?: boolean } = {};
-            return (
-              <Step
-                key={step}
-                {...stepProps}
-              >
-                <StepLabel>
-                  {steps[step]}
-                </StepLabel>
-              </Step>
-            );
-          })}
-        </Stepper>
-      </Container>
+      <Stepper activeStep={activeStep}>
+        {stepOrder.map((step) => {
+          const stepProps: { completed?: boolean } = {};
+          return (
+            <Step
+              key={step}
+              {...stepProps}
+            >
+              <StepLabel>
+                {steps[step]}
+              </StepLabel>
+            </Step>
+          );
+        })}
+      </Stepper>
       <Box
         sx={{
           marginTop: 2,

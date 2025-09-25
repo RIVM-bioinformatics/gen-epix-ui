@@ -317,12 +317,13 @@ const EpiUploadSelectFile = ({ onProceed, defaultValues }: EpiUploadSelectFilePr
   }, [handleSubmit, onFormSubmit]);
 
   return (
-    <Container maxWidth={'xl'}>
-      <ResponseHandler
-        inlineSpinner
-        error={completeCaseTypeError}
-        loadables={loadables}
-      >
+
+    <ResponseHandler
+      inlineSpinner
+      error={completeCaseTypeError}
+      loadables={loadables}
+    >
+      <Container maxWidth={'lg'}>
         <GenericForm<FormFields>
           formFieldDefinitions={formFieldDefinitions}
           formId={formId}
@@ -350,11 +351,11 @@ const EpiUploadSelectFile = ({ onProceed, defaultValues }: EpiUploadSelectFilePr
             </Typography>
           </Alert>
         )}
-        <EpiUploadNavigation
-          onProceedButtonClick={onProceedButtonClick}
-        />
-      </ResponseHandler>
-    </Container>
+      </Container>
+      <EpiUploadNavigation
+        onProceedButtonClick={onProceedButtonClick}
+      />
+    </ResponseHandler>
   );
 };
 

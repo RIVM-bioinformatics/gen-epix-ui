@@ -2,9 +2,7 @@ import type { ContainerOwnProps } from '@mui/material';
 import {
   Box,
   Button,
-  Container,
 } from '@mui/material';
-import { useMemo } from 'react';
 import { useTranslation } from 'react-i18next';
 
 export type EpiUploadNavigationProps = {
@@ -13,19 +11,20 @@ export type EpiUploadNavigationProps = {
   readonly containerProps?: ContainerOwnProps;
   readonly proceedLabel?: string;
   readonly backLabel?: string;
-  readonly container?: boolean;
 };
 
-export const EpiUploadNavigation = ({ onProceedButtonClick: onProceedButtonClick, onGoBackButtonClick: onGoBack, containerProps, proceedLabel, backLabel, container }: EpiUploadNavigationProps) => {
+export const EpiUploadNavigation = ({ onProceedButtonClick: onProceedButtonClick, onGoBackButtonClick: onGoBack, proceedLabel, backLabel }: EpiUploadNavigationProps) => {
   const [t] = useTranslation();
 
-  const content = useMemo(() => (
+  return (
     <Box
       sx={{
-        marginTop: 2,
+        marginTop: 1,
+        paddingTop: 1,
         display: 'flex',
         gap: 2,
         justifyContent: 'flex-end',
+        borderTop: (theme) => `1px solid ${theme.palette.divider}`,
       }}
     >
       {onGoBack && (
@@ -45,18 +44,6 @@ export const EpiUploadNavigation = ({ onProceedButtonClick: onProceedButtonClick
         </Button>
       )}
     </Box>
-  ), [backLabel, onGoBack, onProceedButtonClick, proceedLabel, t]);
-
-  if (!container) {
-    return content;
-  }
-
-  return (
-    <Container
-      {...containerProps}
-      maxWidth={containerProps?.maxWidth ?? 'xl'}
-    >
-      {content}
-    </Container>
   );
+
 };

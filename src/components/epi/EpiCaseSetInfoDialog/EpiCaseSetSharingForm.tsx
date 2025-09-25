@@ -58,7 +58,7 @@ export const EpiCaseSetSharingForm = ({ formId, caseSet, onFinish, onIsSavingCha
       onIsSavingChange(true);
       const queryKeys = QueryUtil.getQueryKeyDependencies([QUERY_KEY.CASE_SET_DATA_COLLECTION_LINKS], true);
       const notificationKey = NotificationManager.instance.showNotification({
-        message: t('Saving case set data collections...'),
+        message: t('Saving case set data collections'),
         severity: 'info',
         isLoading: true,
       });

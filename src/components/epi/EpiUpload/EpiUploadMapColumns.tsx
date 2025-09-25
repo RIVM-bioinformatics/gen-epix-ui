@@ -38,7 +38,6 @@ import type {
   EpiUploadMappedColumnsFormFields,
   EPI_UPLOAD_ACTION,
 } from '../../../models/epiUpload';
-import { ConfigManager } from '../../../classes/managers/ConfigManager';
 
 import { EpiUploadNavigation } from './EpiUploadNavigation';
 
@@ -128,9 +127,6 @@ export const EpiUploadMapColumns = ({ completeCaseType, rawData, onProceed, onGo
     return (
       <TableRow key={definition.name}>
         <TableCell>
-          {definition.label}
-        </TableCell>
-        <TableCell>
           {element}
         </TableCell>
         <TableCell>
@@ -147,13 +143,10 @@ export const EpiUploadMapColumns = ({ completeCaseType, rawData, onProceed, onGo
       >
         <TableHead>
           <TableRow>
-            <TableCell sx={{ width: '34%' }}>
-              {t('{{applicationName}} - {{caseTypeName}}', { applicationName: ConfigManager.instance.config.applicationName, caseTypeName: completeCaseType.name })}
+            <TableCell sx={{ width: '50%' }}>
+              {t`Mapping`}
             </TableCell>
-            <TableCell sx={{ width: '33%' }}>
-              {fileName}
-            </TableCell>
-            <TableCell sx={{ width: '33%' }}>
+            <TableCell sx={{ width: '50%' }}>
               {t`Data preview (first 5 unique values)`}
             </TableCell>
           </TableRow>
@@ -163,7 +156,7 @@ export const EpiUploadMapColumns = ({ completeCaseType, rawData, onProceed, onGo
         </TableBody>
       </Table>
     );
-  }, [completeCaseType.name, fileName, t]);
+  }, [t]);
 
   return (
     <ResponseHandler loadables={loadables}>
@@ -180,21 +173,16 @@ export const EpiUploadMapColumns = ({ completeCaseType, rawData, onProceed, onGo
             position: 'relative',
           }}
         >
-          <Container
-            maxWidth={'xl'}
+          <Box
             sx={{
-              position: 'relative',
+              position: 'absolute',
+              top: 0,
+              left: 0,
+              right: 0,
+              bottom: 0,
             }}
           >
-            <Box
-              sx={{
-                position: 'absolute',
-                top: 0,
-                left: 0,
-                right: 0,
-                bottom: 0,
-              }}
-            >
+            <Container>
               <GenericForm<EpiUploadMappedColumnsFormFields>
                 formFieldDefinitions={formFieldDefinitions}
                 formId={formId}
@@ -203,12 +191,11 @@ export const EpiUploadMapColumns = ({ completeCaseType, rawData, onProceed, onGo
                 wrapForm={wrapForm}
                 onSubmit={handleSubmit(onFormSubmit)}
               />
-            </Box>
-          </Container>
+            </Container>
+          </Box>
         </Box>
         <Box>
           <EpiUploadNavigation
-            container
             onGoBackButtonClick={onGoBack}
             onProceedButtonClick={onProceedButtonClick}
           />

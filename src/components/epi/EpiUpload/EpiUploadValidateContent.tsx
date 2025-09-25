@@ -350,28 +350,28 @@ export const EpiUploadValidateContent = ({
   }, [onProceed, rowsWithGeneratedId, tableStore]);
 
   return (
-    <ResponseHandler
-      inlineSpinner
-      loadables={loadables}
+    <Box
+      sx={{
+        width: '100%',
+        height: '100%',
+        position: 'relative',
+        display: 'grid',
+        gridTemplateRows: 'auto max-content',
+      }}
     >
-      <TableStoreContextProvider store={tableStore}>
-        <Box
-          sx={{
-            width: '100%',
-            height: '100%',
-            position: 'relative',
-            display: 'grid',
-            gridTemplateRows: 'auto max-content',
-          }}
-        >
+      <ResponseHandler
+        inlineSpinner
+        loadables={loadables}
+        loadingMessage={t('Validating cases')}
+      >
+        <TableStoreContextProvider store={tableStore}>
           <Table />
           <EpiUploadNavigation
-            container
             onGoBackButtonClick={onGoBack}
             onProceedButtonClick={onProceedButtonClick}
           />
-        </Box>
-      </TableStoreContextProvider>
-    </ResponseHandler>
+        </TableStoreContextProvider>
+      </ResponseHandler>
+    </Box>
   );
 };
