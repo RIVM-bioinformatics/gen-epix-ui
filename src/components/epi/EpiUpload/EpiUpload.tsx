@@ -25,6 +25,7 @@ import EpiUploadSelectFile from './EpiUploadSelectFile';
 import { EpiUploadMapColumns } from './EpiUploadMapColumns';
 import { EpiUploadValidate } from './EpiUploadValidate';
 import { EpiUploadCreateCases } from './EpiUploadCreateCases';
+import { EpiUploadSelectSequenceFiles } from './EpiUploadSelectSequenceFiles';
 
 
 enum EPI_UPLOAD_STEP {
@@ -45,8 +46,8 @@ export const EpiUpload = () => {
     EPI_UPLOAD_STEP.SELECT_FILE,
     EPI_UPLOAD_STEP.MAP_COLUMNS,
     EPI_UPLOAD_STEP.VALIDATE,
-    // EPI_UPLOAD_STEP.SELECT_SEQUENCE_FILES,
-    // EPI_UPLOAD_STEP.MAP_SEQUENCES,
+    EPI_UPLOAD_STEP.SELECT_SEQUENCE_FILES,
+    EPI_UPLOAD_STEP.MAP_SEQUENCES,
     EPI_UPLOAD_STEP.UPLOAD,
   ], []);
   const steps = useMemo(() => {
@@ -105,6 +106,15 @@ export const EpiUpload = () => {
   const onEpiUploadValidateProceed = useCallback((data: ValidatedCase[]) => {
     setValidatedCases(data);
     setActiveStep(findNext(EPI_UPLOAD_STEP.VALIDATE));
+  }, [findNext]);
+
+  const onEpiUploadSelectSequenceFilesGoBack = useCallback(() => {
+    setActiveStep(findPrevious(EPI_UPLOAD_STEP.SELECT_SEQUENCE_FILES));
+  }, [findPrevious]);
+
+  const onEpiUploadSelectSequenceFilesProceed = useCallback((_fileList: FileList) => {
+    // Handle the file list selection
+    setActiveStep(findNext(EPI_UPLOAD_STEP.SELECT_SEQUENCE_FILES));
   }, [findNext]);
 
   const onUploadCasesStartOver = useCallback(() => {
@@ -190,6 +200,12 @@ export const EpiUpload = () => {
             selectFileResult={selectFileResult}
             validatedCases={validatedCases}
             onStartOver={onUploadCasesStartOver}
+          />
+        )}
+        {activeStep === EPI_UPLOAD_STEP.SELECT_SEQUENCE_FILES && (
+          <EpiUploadSelectSequenceFiles
+            onGoBack={onEpiUploadSelectSequenceFilesGoBack}
+            onProceed={onEpiUploadSelectSequenceFilesProceed}
           />
         )}
       </Box>

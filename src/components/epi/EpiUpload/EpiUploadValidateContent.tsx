@@ -1,13 +1,9 @@
 import {
-  Button,
   Tooltip,
   useTheme,
 } from '@mui/material';
 import ErrorOutlineIcon from '@mui/icons-material/ErrorOutline';
-import {
-  Box,
-  Container,
-} from '@mui/system';
+import { Box } from '@mui/system';
 import { t } from 'i18next';
 import {
   useCallback,
@@ -55,6 +51,8 @@ import { EpiCaseUtil } from '../../../utils/EpiCaseUtil';
 import { StringUtil } from '../../../utils/StringUtil';
 import { QueryUtil } from '../../../utils/QueryUtil';
 import { QUERY_KEY } from '../../../models/query';
+
+import { EpiUploadNavigation } from './EpiUploadNavigation';
 
 export type EpiUploadValidateProps = {
   readonly selectFileResult: EpiUploadSelectFileResult;
@@ -367,30 +365,11 @@ export const EpiUploadValidateContent = ({
           }}
         >
           <Table />
-          <Container maxWidth={'xl'}>
-            <Box
-              marginTop={2}
-              marginBottom={1}
-              sx={{
-                display: 'flex',
-                gap: 2,
-                justifyContent: 'flex-end',
-              }}
-            >
-              <Button
-                variant={'outlined'}
-                onClick={onGoBack}
-              >
-                {t('Go back')}
-              </Button>
-              <Button
-                variant={'contained'}
-                onClick={onProceedButtonClick}
-              >
-                {t('Next')}
-              </Button>
-            </Box>
-          </Container>
+          <EpiUploadNavigation
+            container
+            onGoBackButtonClick={onGoBack}
+            onProceedButtonClick={onProceedButtonClick}
+          />
         </Box>
       </TableStoreContextProvider>
     </ResponseHandler>

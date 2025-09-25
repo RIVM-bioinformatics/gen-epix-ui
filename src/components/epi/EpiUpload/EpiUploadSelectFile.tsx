@@ -20,8 +20,6 @@ import {
 import {
   Alert,
   AlertTitle,
-  Box,
-  Button,
   Container,
   Typography,
 } from '@mui/material';
@@ -51,6 +49,8 @@ import {
   type EpiUploadSelectFileResult,
 } from '../../../models/epiUpload';
 import { EpiUploadUtil } from '../../../utils/EpiUploadUtil';
+
+import { EpiUploadNavigation } from './EpiUploadNavigation';
 
 type FormFields = {
   import_action: EPI_UPLOAD_ACTION;
@@ -350,20 +350,9 @@ const EpiUploadSelectFile = ({ onProceed, defaultValues }: EpiUploadSelectFilePr
             </Typography>
           </Alert>
         )}
-        <Box
-          sx={{
-            display: 'flex',
-            gap: 2,
-            justifyContent: 'flex-end',
-          }}
-        >
-          <Button
-            variant={'contained'}
-            onClick={onProceedButtonClick}
-          >
-            {t('Next')}
-          </Button>
-        </Box>
+        <EpiUploadNavigation
+          onProceedButtonClick={onProceedButtonClick}
+        />
       </ResponseHandler>
     </Container>
   );

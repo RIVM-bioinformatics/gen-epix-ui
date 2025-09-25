@@ -12,7 +12,6 @@ import {
 } from 'react-hook-form';
 import {
   Box,
-  Button,
   Container,
   Table,
   TableBody,
@@ -40,6 +39,8 @@ import type {
   EPI_UPLOAD_ACTION,
 } from '../../../models/epiUpload';
 import { ConfigManager } from '../../../classes/managers/ConfigManager';
+
+import { EpiUploadNavigation } from './EpiUploadNavigation';
 
 export type EpiUploadMapColumnsProps = {
   readonly completeCaseType: CompleteCaseType;
@@ -206,29 +207,11 @@ export const EpiUploadMapColumns = ({ completeCaseType, rawData, onProceed, onGo
           </Container>
         </Box>
         <Box>
-          <Container maxWidth={'xl'}>
-            <Box
-              sx={{
-                marginTop: 2,
-                display: 'flex',
-                gap: 2,
-                justifyContent: 'flex-end',
-              }}
-            >
-              <Button
-                variant={'outlined'}
-                onClick={onGoBack}
-              >
-                {t('Go back')}
-              </Button>
-              <Button
-                variant={'contained'}
-                onClick={onProceedButtonClick}
-              >
-                {t('Next')}
-              </Button>
-            </Box>
-          </Container>
+          <EpiUploadNavigation
+            container
+            onGoBackButtonClick={onGoBack}
+            onProceedButtonClick={onProceedButtonClick}
+          />
         </Box>
       </Box>
     </ResponseHandler>
