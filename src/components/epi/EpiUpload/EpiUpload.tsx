@@ -23,6 +23,7 @@ import { EpiUploadMapColumns } from './EpiUploadMapColumns';
 import { EpiUploadValidate } from './EpiUploadValidate';
 import { EpiUploadCreateCases } from './EpiUploadCreateCases';
 import { EpiUploadSelectSequenceFiles } from './EpiUploadSelectSequenceFiles';
+import { EpiUploadMapSequences } from './EpiUploadMapSequences';
 
 
 enum EPI_UPLOAD_STEP {
@@ -59,6 +60,7 @@ export const EpiUpload = () => {
   }, [t]);
 
   const [selectFileResult, setSelectFileResult] = useState<EpiUploadSelectFileResult | null>(null);
+  const [selectSequencesResult, setSelectSequencesResult] = useState<DataTransfer | null>(null);
   const [mappedColumns, setMappedColumns] = useState<EpiUploadMappedColumn[] | null>(null);
   const [validatedCases, setValidatedCases] = useState<ValidatedCase[] | null>(null);
 
@@ -109,9 +111,17 @@ export const EpiUpload = () => {
     setActiveStep(findPrevious(EPI_UPLOAD_STEP.SELECT_SEQUENCE_FILES));
   }, [findPrevious]);
 
-  const onEpiUploadSelectSequenceFilesProceed = useCallback((_fileList: FileList) => {
-    // Handle the file list selection
+  const onEpiUploadSelectSequenceFilesProceed = useCallback((dataTransfer: DataTransfer) => {
+    setSelectSequencesResult(dataTransfer);
     setActiveStep(findNext(EPI_UPLOAD_STEP.SELECT_SEQUENCE_FILES));
+  }, [findNext]);
+
+  const onEpiUploadMapSequencesGoBack = useCallback(() => {
+    setActiveStep(findPrevious(EPI_UPLOAD_STEP.MAP_SEQUENCES));
+  }, [findPrevious]);
+
+  const onEpiUploadMapSequencesProceed = useCallback(() => {
+    setActiveStep(findNext(EPI_UPLOAD_STEP.MAP_SEQUENCES));
   }, [findNext]);
 
   const onUploadCasesStartOver = useCallback(() => {
@@ -173,7 +183,6 @@ export const EpiUpload = () => {
             completeCaseType={selectFileResult.completeCaseType}
             rawData={selectFileResult.rawData}
             importAction={selectFileResult.import_action}
-            fileName={selectFileResult.file_list[0]?.name ?? 'unknown file'}
             onProceed={onEpiUploadMapColumnsProceed}
             onGoBack={onEpiUploadMapColumnsGoBack}
           />
@@ -197,8 +206,15 @@ export const EpiUpload = () => {
         )}
         {activeStep === EPI_UPLOAD_STEP.SELECT_SEQUENCE_FILES && (
           <EpiUploadSelectSequenceFiles
+            initialDataTransfer={selectSequencesResult || undefined}
             onGoBack={onEpiUploadSelectSequenceFilesGoBack}
             onProceed={onEpiUploadSelectSequenceFilesProceed}
+          />
+        )}
+        {activeStep === EPI_UPLOAD_STEP.MAP_SEQUENCES && (
+          <EpiUploadMapSequences
+            onGoBack={onEpiUploadMapSequencesGoBack}
+            onProceed={onEpiUploadMapSequencesProceed}
           />
         )}
       </Box>

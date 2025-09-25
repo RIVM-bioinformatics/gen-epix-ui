@@ -48,10 +48,9 @@ export type EpiUploadMapColumnsProps = {
   readonly onProceed: (mappedColumns: EpiUploadMappedColumn[]) => void;
   readonly onGoBack?: () => void;
   readonly mappedColumns?: EpiUploadMappedColumn[];
-  readonly fileName: string;
 };
 
-export const EpiUploadMapColumns = ({ completeCaseType, rawData, onProceed, onGoBack, mappedColumns: mappedColumnsFromProps, importAction, fileName }: EpiUploadMapColumnsProps) => {
+export const EpiUploadMapColumns = ({ completeCaseType, rawData, onProceed, onGoBack, mappedColumns: mappedColumnsFromProps, importAction }: EpiUploadMapColumnsProps) => {
   const [t] = useTranslation();
   const caseTypeColMap = useCaseTypeColMapQuery();
 
