@@ -22,6 +22,7 @@ export type EpiUploadValidateProps = {
   readonly onGoBack: () => void;
   readonly completeCaseType: CompleteCaseType;
   readonly caseTypeId: string;
+  readonly queryKey: string[];
 };
 
 export const EpiUploadValidate = ({
@@ -30,6 +31,7 @@ export const EpiUploadValidate = ({
   onProceed,
   onGoBack,
   completeCaseType,
+  queryKey,
 }: EpiUploadValidateProps) => {
   const [isCompleteCaseTypeLoaded, setIsCompleteCaseTypeLoaded] = useState<boolean>(false);
 
@@ -48,6 +50,7 @@ export const EpiUploadValidate = ({
           mappedColumns={mappedColumns}
           completeCaseType={completeCaseType}
           caseTypeId={selectFileResult.completeCaseType.id}
+          queryKey={queryKey}
           onProceed={onProceed}
           onGoBack={onGoBack}
         />

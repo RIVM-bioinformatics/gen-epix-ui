@@ -116,10 +116,10 @@ export class EpiCaseTypeUtil {
    * @param colType The column type to filter by.
    * @returns An array of case type columns matching the specified column type.
    */
-  public static getCaseTypeColumnsByType(completeCaseType: CompleteCaseType, colType: ColType): CaseTypeCol[] {
+  public static getCaseTypeColumnsByType(completeCaseType: CompleteCaseType, colType: ColType[]): CaseTypeCol[] {
     return Object.values(completeCaseType.case_type_cols).filter(caseTypeCol => {
       const col = completeCaseType.cols[caseTypeCol.col_id];
-      return col?.col_type === colType;
+      return colType.includes(col?.col_type);
     });
   }
 

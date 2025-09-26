@@ -2,9 +2,11 @@ import { useTranslation } from 'react-i18next';
 import {
   useCallback,
   useId,
+  useState,
 } from 'react';
 import {
   Alert,
+  AlertTitle,
   Box,
   Button,
   Container,
@@ -25,16 +27,20 @@ import { Spinner } from '../../ui/Spinner';
 import { EpiCaseTypeUtil } from '../../../utils/EpiCaseTypeUtil';
 import { RouterManager } from '../../../classes/managers/RouterManager';
 
+import { EpiUploadNavigation } from './EpiUploadNavigation';
+
 
 export type EpiUploadCreateCasesProps = {
   readonly selectFileResult: EpiUploadSelectFileResult;
   readonly validatedCases: ValidatedCase[];
   readonly onStartOver: () => void;
+  readonly onGoBack: () => void;
 };
 
-export const EpiUploadCreateCases = ({ selectFileResult, validatedCases, onStartOver }: EpiUploadCreateCasesProps) => {
+export const EpiUploadCreateCases = ({ selectFileResult, validatedCases, onStartOver, onGoBack }: EpiUploadCreateCasesProps) => {
   const [t] = useTranslation();
   const queryId = useId();
+  const [isUploadEnabled, setIsUploadEnabled] = useState(false);
 
   const createCasesQuery = useQueryMemo({
     queryKey: QueryUtil.getGenericKey(QUERY_KEY.CREATE_CASES, queryId),
@@ -51,11 +57,16 @@ export const EpiUploadCreateCases = ({ selectFileResult, validatedCases, onStart
     },
     gcTime: 0,
     staleTime: 0,
+    enabled: isUploadEnabled,
   });
 
   const onStartOverButtonClick = useCallback(() => {
     onStartOver();
   }, [onStartOver]);
+
+  const onStartUploadButtonClick = useCallback(() => {
+    setIsUploadEnabled(true);
+  }, []);
 
   const onGotoCasesButtonClick = useCallback(async () => {
     const link = EpiCaseTypeUtil.createCaseTypeLink(selectFileResult.completeCaseType);
@@ -75,32 +86,57 @@ export const EpiUploadCreateCases = ({ selectFileResult, validatedCases, onStart
     );
   }
   return (
-    <Container maxWidth={'xl'}>
-      <Alert severity={'success'}>
-        {t('Successfully uploaded {{numCases}} cases.', { numCases: createCasesQuery.data?.length ?? 0 })}
-      </Alert>
-      <Box
-        marginTop={2}
-        marginBottom={1}
-        sx={{
-          display: 'flex',
-          gap: 2,
-          justifyContent: 'flex-end',
-        }}
-      >
-        <Button
-          variant={'outlined'}
-          onClick={onStartOverButtonClick}
+    <Container
+      maxWidth={'xl'}
+      sx={{
+        height: '100%',
+      }}
+    >
+      {!isUploadEnabled && (
+        <Alert severity={'info'}>
+          <AlertTitle>
+            {t('{{numCases}} cases are ready to be uploaded.', { numCases: validatedCases.length })}
+          </AlertTitle>
+        </Alert>
+      )}
+      {isUploadEnabled && (
+        <Alert severity={'success'}>
+          <AlertTitle>
+            {t('Successfully uploaded {{numCases}} cases.', { numCases: createCasesQuery.data?.length ?? 0 })}
+          </AlertTitle>
+        </Alert>
+      )}
+      {!isUploadEnabled && (
+        <EpiUploadNavigation
+          proceedLabel={'Start upload'}
+          onGoBackButtonClick={onGoBack}
+          onProceedButtonClick={onStartUploadButtonClick}
+        />
+      )}
+      {isUploadEnabled && (
+        <Box
+          marginTop={2}
+          marginBottom={1}
+          sx={{
+            display: 'flex',
+            gap: 2,
+            justifyContent: 'flex-end',
+          }}
         >
-          {t('Upload more cases')}
-        </Button>
-        <Button
-          variant={'contained'}
-          onClick={onGotoCasesButtonClick}
-        >
-          {t('View uploaded cases')}
-        </Button>
-      </Box>
+          <Button
+            variant={'outlined'}
+            onClick={onStartOverButtonClick}
+          >
+            {t('Upload more cases')}
+          </Button>
+          <Button
+            variant={'contained'}
+            onClick={onGotoCasesButtonClick}
+          >
+            {t('View uploaded cases')}
+          </Button>
+        </Box>
+      )}
     </Container>
   );
 };

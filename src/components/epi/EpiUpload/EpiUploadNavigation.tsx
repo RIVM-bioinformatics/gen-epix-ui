@@ -11,9 +11,10 @@ export type EpiUploadNavigationProps = {
   readonly containerProps?: ContainerOwnProps;
   readonly proceedLabel?: string;
   readonly backLabel?: string;
+  readonly proceedDisabled?: boolean;
 };
 
-export const EpiUploadNavigation = ({ onProceedButtonClick: onProceedButtonClick, onGoBackButtonClick: onGoBack, proceedLabel, backLabel }: EpiUploadNavigationProps) => {
+export const EpiUploadNavigation = ({ onProceedButtonClick: onProceedButtonClick, onGoBackButtonClick: onGoBack, proceedLabel, backLabel, proceedDisabled }: EpiUploadNavigationProps) => {
   const [t] = useTranslation();
 
   return (
@@ -38,9 +39,10 @@ export const EpiUploadNavigation = ({ onProceedButtonClick: onProceedButtonClick
       {onProceedButtonClick && (
         <Button
           variant={'contained'}
+          disabled={proceedDisabled}
           onClick={onProceedButtonClick}
         >
-          {t(proceedLabel ?? 'Next')}
+          {t(proceedLabel ?? 'Save & Continue')}
         </Button>
       )}
     </Box>

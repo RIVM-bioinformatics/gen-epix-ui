@@ -218,6 +218,13 @@ export class QueryUtil {
     }
   }
 
+  public static removeQueries(queryKeys: string[][]) {
+    const queryClient = QueryClientManager.instance.queryClient;
+    for (const queryKey of QueryUtil.getUniqueQueryKeys(queryKeys ?? [])) {
+      queryClient.removeQueries({ queryKey });
+    }
+  }
+
   public static getUniqueQueryKeys<T>(queryKeys: T[][]): T[][] {
     return uniqBy(queryKeys, x => x.join('-'));
   }

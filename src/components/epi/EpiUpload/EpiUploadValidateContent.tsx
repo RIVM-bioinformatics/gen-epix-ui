@@ -8,7 +8,6 @@ import { t } from 'i18next';
 import {
   useCallback,
   useEffect,
-  useId,
   useMemo,
 } from 'react';
 import { format } from 'date-fns';
@@ -49,8 +48,6 @@ import { DATE_FORMAT } from '../../../data/date';
 import { TableUtil } from '../../../utils/TableUtil';
 import { EpiCaseUtil } from '../../../utils/EpiCaseUtil';
 import { StringUtil } from '../../../utils/StringUtil';
-import { QueryUtil } from '../../../utils/QueryUtil';
-import { QUERY_KEY } from '../../../models/query';
 
 import { EpiUploadNavigation } from './EpiUploadNavigation';
 
@@ -61,6 +58,7 @@ export type EpiUploadValidateProps = {
   readonly onGoBack: () => void;
   readonly completeCaseType: CompleteCaseType;
   readonly caseTypeId: string;
+  readonly queryKey: string[];
 };
 
 type ValidatedCaseWithGeneratedId = ValidatedCase & { generated_id: string };
@@ -71,9 +69,9 @@ export const EpiUploadValidateContent = ({
   onProceed,
   onGoBack,
   completeCaseType,
+  queryKey,
 }: EpiUploadValidateProps) => {
   const theme = useTheme();
-  const queryId = useId();
 
   const inputCases = useMemo<CaseForCreateUpdate[]>(() => {
     return selectFileResult.rawData.slice(1).map((row) => {
@@ -96,7 +94,7 @@ export const EpiUploadValidateContent = ({
   }, [mappedColumns, selectFileResult.rawData]);
 
   const validationQuery = useQueryMemo({
-    queryKey: QueryUtil.getGenericKey(QUERY_KEY.VALIDATE_CASES, queryId),
+    queryKey,
     queryFn: async ({ signal }) => {
       const response = await CaseApi.instance.validateCases({
         case_type_id: selectFileResult.case_type_id,
@@ -108,8 +106,8 @@ export const EpiUploadValidateContent = ({
       return response.data;
     },
     enabled: mappedColumns.length > 0 && inputCases.length > 0,
-    gcTime: 0,
-    staleTime: 0,
+    gcTime: Infinity,
+    staleTime: Infinity,
   });
 
   const rowsWithGeneratedId = useMemo<ValidatedCaseWithGeneratedId[]>(() => {
@@ -128,6 +126,7 @@ export const EpiUploadValidateContent = ({
   }), []);
 
   const setSelectedIds = useStore(tableStore, useShallow((state) => state.setSelectedIds));
+  const selectedIds = useStore(tableStore, (state) => state.selectedIds);
 
   useEffect(() => {
     const newSelectedIds = rowsWithGeneratedId.filter(validatedCase => {
@@ -344,10 +343,9 @@ export const EpiUploadValidateContent = ({
   useInitializeTableStore<ValidatedCaseWithGeneratedId>({ store: tableStore, columns: tableColumns, rows: rowsWithGeneratedId, createFiltersFromColumns: true });
 
   const onProceedButtonClick = useCallback(() => {
-    const selectedIds = tableStore.getState().selectedIds;
     const validatedCases = rowsWithGeneratedId.filter(r => selectedIds.includes(r.generated_id)).map(r => omit(r, 'generated_id'));
     onProceed(validatedCases);
-  }, [onProceed, rowsWithGeneratedId, tableStore]);
+  }, [onProceed, rowsWithGeneratedId, selectedIds]);
 
   return (
     <Box
@@ -367,6 +365,8 @@ export const EpiUploadValidateContent = ({
         <TableStoreContextProvider store={tableStore}>
           <Table />
           <EpiUploadNavigation
+            proceedLabel={t('Continue')}
+            proceedDisabled={selectedIds.length === 0}
             onGoBackButtonClick={onGoBack}
             onProceedButtonClick={onProceedButtonClick}
           />

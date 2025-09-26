@@ -5,6 +5,7 @@ import {
   Stack,
 } from '@mui/material';
 import DeleteIcon from '@mui/icons-material/Delete';
+import InsertDriveFileIcon from '@mui/icons-material/InsertDriveFile';
 import type {
   ChangeEvent,
   DragEvent,
@@ -263,6 +264,7 @@ export const FileSelector = ({
                   {Array.from(dataTransfer.files).map(file => (
                     <Chip
                       key={`${file.name}-${file.size}-${file.lastModified}`}
+                      icon={<InsertDriveFileIcon />}
                       sx={{
                         margin: 0.25,
                       }}

@@ -17,6 +17,7 @@ import type {
   CaseTypeCol,
   CaseType,
   CompleteCaseType,
+  ValidatedCase,
 } from '../../api';
 import {
   FORM_FIELD_DEFINITION_TYPE,
@@ -32,6 +33,7 @@ import type {
 } from '../../models/epiUpload';
 import { EPI_UPLOAD_ACTION } from '../../models/epiUpload';
 import { EpiCaseTypeUtil } from '../EpiCaseTypeUtil';
+import { ConfigManager } from '../../classes/managers/ConfigManager';
 
 export class EpiUploadUtil {
   public static __csvSheetId: string;
@@ -223,21 +225,25 @@ export class EpiUploadUtil {
   }
 
 
-  public static getFormFieldDefinitions(completeCaseType: CompleteCaseType, headers: string[], importAction: EPI_UPLOAD_ACTION): FormFieldDefinition<EpiUploadMappedColumnsFormFields>[] {
+  public static getFormFieldDefinitions(completeCaseType: CompleteCaseType, headers: string[], fileName: string, importAction: EPI_UPLOAD_ACTION): FormFieldDefinition<EpiUploadMappedColumnsFormFields>[] {
     const options: AutoCompleteOption<string>[] = [
       ...headers.map((header, index) => ({
-        label: header,
+        label: `${header} (.${fileName.split('.').pop()})`,
         value: index.toString(),
       })),
     ];
     const writableColIds = EpiUploadUtil.getWritableCaseTypeColIds(completeCaseType);
+
+    const getLabel = (label: string) => {
+      return `${label} (${ConfigManager.instance.config.applicationName})`;
+    };
 
     const fields: FormFieldDefinition<EpiUploadMappedColumnsFormFields>[] = [];
     if (importAction === EPI_UPLOAD_ACTION.UPDATE) {
       fields.push({
         definition: FORM_FIELD_DEFINITION_TYPE.AUTOCOMPLETE,
         name: 'case_id',
-        label: 'Case ID',
+        label: getLabel('Case ID'),
         options,
       });
     }
@@ -245,7 +251,7 @@ export class EpiUploadUtil {
       fields.push({
         definition: FORM_FIELD_DEFINITION_TYPE.AUTOCOMPLETE,
         name: 'case_date',
-        label: 'Case Date',
+        label: getLabel('Case Date'),
         options,
       });
     }
@@ -258,7 +264,7 @@ export class EpiUploadUtil {
       fields.push({
         definition: FORM_FIELD_DEFINITION_TYPE.AUTOCOMPLETE,
         name: caseTypeCol.id,
-        label: caseTypeCol.label,
+        label: getLabel(caseTypeCol.label),
         options,
       });
     });
@@ -309,7 +315,7 @@ export class EpiUploadUtil {
     return EpiUploadUtil.isGenomeFile(fileName) || EpiUploadUtil.isReadsFile(fileName);
   }
 
-  public static getWritableCaseTypeColIds(completeCaseType: CompleteCaseType): string[] {
+  private static getWritableCaseTypeColIds(completeCaseType: CompleteCaseType): string[] {
     const writableColIds: string[] = [];
     Object.values(completeCaseType.case_type_access_abacs).forEach((abac) => {
       writableColIds.push(...abac.write_case_type_col_ids);
@@ -317,17 +323,27 @@ export class EpiUploadUtil {
     return uniq(writableColIds);
   }
 
+  public static getCompleteCaseTypeColumnStats(completeCaseType: CompleteCaseType): { idColumns: CaseTypeCol[]; sequenceColumns: CaseTypeCol[]; readsColumns: CaseTypeCol[]; writableColumns: CaseTypeCol[] } {
+    const idColumns = EpiCaseTypeUtil.getCaseTypeColumnsByType(completeCaseType, [ColType.ID_ANONYMISED, ColType.ID_PSEUDONYMISED, ColType.ID_DIRECT]);
+    const sequenceColumns = EpiCaseTypeUtil.getCaseTypeColumnsByType(completeCaseType, [ColType.GENETIC_SEQUENCE]);
+    const readsColumns = EpiCaseTypeUtil.getCaseTypeColumnsByType(completeCaseType, [ColType.GENETIC_READS]);
+    const writableColumns = Object.values(completeCaseType.case_type_cols).filter(col => EpiUploadUtil.getWritableCaseTypeColIds(completeCaseType).includes(col.id));
+
+    return { idColumns, sequenceColumns, readsColumns, writableColumns };
+  }
+
   /**
    * Assigns genetic files (FASTA/FASTQ) to corresponding case type columns
    * @param completeCaseType The complete case type structure
-   * @param fileList The list of files to assign
+   * @param dataTransfer The list of files to assign
    * @returns Array of file-to-column assignments
    */
   public static assignFilesToColumns(
     completeCaseType: CompleteCaseType,
-    fileList: FileList,
+    dataTransfer: DataTransfer,
+    _validatedCases: ValidatedCase[],
   ): EpiUploadFileColumnAssignment[] {
-    const files = Array.from(fileList);
+    const files = Array.from(dataTransfer.files);
     const assignments: EpiUploadFileColumnAssignment[] = [];
 
     // Validate input
@@ -361,7 +377,7 @@ export class EpiUploadUtil {
         });
         return;
       }
-      const geneticSequenceCols = EpiCaseTypeUtil.getCaseTypeColumnsByType(completeCaseType, ColType.GENETIC_SEQUENCE);
+      const geneticSequenceCols = EpiCaseTypeUtil.getCaseTypeColumnsByType(completeCaseType, [ColType.GENETIC_SEQUENCE]);
       assignments.push({
         file,
         caseTypeCol: geneticSequenceCols.length === 1 ? geneticSequenceCols[0] : null,
@@ -379,7 +395,7 @@ export class EpiUploadUtil {
         });
         return;
       }
-      const geneticReadsCols = EpiCaseTypeUtil.getCaseTypeColumnsByType(completeCaseType, ColType.GENETIC_READS);
+      const geneticReadsCols = EpiCaseTypeUtil.getCaseTypeColumnsByType(completeCaseType, [ColType.GENETIC_READS]);
       assignments.push({
         file: readsFiles[0],
         caseTypeCol: geneticReadsCols.length === 1 ? geneticReadsCols[0] : null,

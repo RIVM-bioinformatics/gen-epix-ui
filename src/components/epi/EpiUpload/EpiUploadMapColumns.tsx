@@ -48,9 +48,10 @@ export type EpiUploadMapColumnsProps = {
   readonly onProceed: (mappedColumns: EpiUploadMappedColumn[]) => void;
   readonly onGoBack?: () => void;
   readonly mappedColumns?: EpiUploadMappedColumn[];
+  readonly fileName: string;
 };
 
-export const EpiUploadMapColumns = ({ completeCaseType, rawData, onProceed, onGoBack, mappedColumns: mappedColumnsFromProps, importAction }: EpiUploadMapColumnsProps) => {
+export const EpiUploadMapColumns = ({ completeCaseType, rawData, onProceed, onGoBack, mappedColumns: mappedColumnsFromProps, importAction, fileName }: EpiUploadMapColumnsProps) => {
   const [t] = useTranslation();
   const caseTypeColMap = useCaseTypeColMapQuery();
 
@@ -76,8 +77,8 @@ export const EpiUploadMapColumns = ({ completeCaseType, rawData, onProceed, onGo
   }, [completeCaseType, mappedColumns, importAction]);
 
   const formFieldDefinitions = useMemo<FormFieldDefinition<EpiUploadMappedColumnsFormFields>[]>(() => {
-    return EpiUploadUtil.getFormFieldDefinitions(completeCaseType, rawData[0], importAction);
-  }, [completeCaseType, rawData, importAction]);
+    return EpiUploadUtil.getFormFieldDefinitions(completeCaseType, rawData[0], fileName, importAction);
+  }, [completeCaseType, rawData, fileName, importAction]);
 
   const formMethods = useForm<EpiUploadMappedColumnsFormFields>({
     resolver: yupResolver(schema) as unknown as Resolver<EpiUploadMappedColumnsFormFields>,
