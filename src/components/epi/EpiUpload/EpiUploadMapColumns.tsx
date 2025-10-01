@@ -11,6 +11,8 @@ import {
   useWatch,
 } from 'react-hook-form';
 import {
+  Alert,
+  AlertTitle,
   Box,
   Container,
   Table,
@@ -33,10 +35,10 @@ import { useCaseTypeColMapQuery } from '../../../dataHooks/useCaseTypeColsQuery'
 import { useArray } from '../../../hooks/useArray';
 import { ResponseHandler } from '../../ui/ResponseHandler';
 import { EpiUploadUtil } from '../../../utils/EpiUploadUtil';
-import type {
-  EpiUploadMappedColumn,
-  EpiUploadMappedColumnsFormFields,
+import {
   EPI_UPLOAD_ACTION,
+  type EpiUploadMappedColumn,
+  type EpiUploadMappedColumnsFormFields,
 } from '../../../models/epiUpload';
 
 import { EpiUploadNavigation } from './EpiUploadNavigation';
@@ -45,9 +47,9 @@ export type EpiUploadMapColumnsProps = {
   readonly completeCaseType: CompleteCaseType;
   readonly rawData: string[][];
   readonly importAction: EPI_UPLOAD_ACTION;
+  readonly mappedColumns?: EpiUploadMappedColumn[];
   readonly onProceed: (mappedColumns: EpiUploadMappedColumn[]) => void;
   readonly onGoBack?: () => void;
-  readonly mappedColumns?: EpiUploadMappedColumn[];
   readonly fileName: string;
 };
 
@@ -89,7 +91,7 @@ export const EpiUploadMapColumns = ({ completeCaseType, rawData, onProceed, onGo
   const { handleSubmit, control } = formMethods;
   const values = useWatch({ control });
 
-  const onFormSubmit = useCallback((data: EpiUploadMappedColumnsFormFields) => {
+  const getMergedMappedColumns = useCallback((data: EpiUploadMappedColumnsFormFields) => {
     const sheetValues = invert(data);
 
     const mergedMappedColumns = mappedColumns.map((mappedColumn) => {
@@ -107,9 +109,26 @@ export const EpiUploadMapColumns = ({ completeCaseType, rawData, onProceed, onGo
         caseTypeCol,
       };
     });
+    return mergedMappedColumns;
+  }, [caseTypeColMap.map, mappedColumns]);
 
-    onProceed(mergedMappedColumns);
-  }, [caseTypeColMap.map, mappedColumns, onProceed]);
+  const unMappedColumns = useMemo(() => {
+    return getMergedMappedColumns(values).filter(mappedColumn => {
+      // ignore case type columns
+      if (mappedColumn.isCaseTypeColumn) {
+        return false;
+      }
+      // ignore case id column when creating cases
+      if (importAction === EPI_UPLOAD_ACTION.CREATE && mappedColumn.isCaseIdColumn) {
+        return false;
+      }
+      return !mappedColumn.isCaseIdColumn && !mappedColumn.isCaseDateColumn && !mappedColumn.caseTypeCol;
+    });
+  }, [getMergedMappedColumns, importAction, values]);
+
+  const onFormSubmit = useCallback((data: EpiUploadMappedColumnsFormFields) => {
+    onProceed(getMergedMappedColumns(data));
+  }, [getMergedMappedColumns, onProceed]);
 
   const onProceedButtonClick = useCallback(async () => {
     await handleSubmit(onFormSubmit)();
@@ -118,7 +137,7 @@ export const EpiUploadMapColumns = ({ completeCaseType, rawData, onProceed, onGo
   const renderField = useCallback((definition: FormFieldDefinition<EpiUploadMappedColumnsFormFields>, element: ReactElement) => {
     const columnIndexInRawData = values[definition.name]; // Note, this is a string, so '0', '1', '2', etc.
 
-    let firstFiveValuesString = '';
+    let firstFiveValuesString = t('<not mapped>');
     if (columnIndexInRawData) {
       const columnValues = uniq(rawData.slice(1).map((row) => row[parseInt(columnIndexInRawData, 10)] ?? '')).filter(x => !!x);
       firstFiveValuesString = columnValues.slice(0, 5).join(', ').trim() || t('<no data>');
@@ -163,10 +182,23 @@ export const EpiUploadMapColumns = ({ completeCaseType, rawData, onProceed, onGo
       <Box
         sx={{
           display: 'grid',
-          gridTemplateRows: 'auto max-content',
+          gridTemplateRows: 'max-content auto max-content',
           height: '100%',
         }}
       >
+        <Container maxWidth={'lg'}>
+          <Alert severity={'info'}>
+            <AlertTitle>
+              {unMappedColumns.length === 0 ? t('All columns in {{fileName}} have been mapped', { fileName }) : t('{{numUnmappedColumns}} columns in {{fileName}} are not mapped', { numUnmappedColumns: unMappedColumns.length, fileName })}
+            </AlertTitle>
+            {unMappedColumns.map((col) => (
+              <Box key={col.originalIndex}>
+                {t('The column "{{columnName}}" (column {{columnIndex}}) has not been mapped.', { columnName: col.originalLabel, columnIndex: col.originalIndex + 1 })}
+              </Box>
+            ))}
+            {unMappedColumns.length === 0 && t('You can proceed to the next step.')}
+          </Alert>
+        </Container>
         <Box
           sx={{
             overflowY: 'auto',

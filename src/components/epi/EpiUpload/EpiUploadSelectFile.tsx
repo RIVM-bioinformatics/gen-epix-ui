@@ -140,6 +140,7 @@ const EpiUploadSelectFile = ({ onProceed, defaultValues }: EpiUploadSelectFilePr
     { label: t('Create new cases'), value: EPI_UPLOAD_ACTION.CREATE },
     { label: t('Update existing cases'), value: EPI_UPLOAD_ACTION.UPDATE },
   ]), [t]);
+
   const formFieldDefinitions = useMemo<FormFieldDefinition<FormFields>[]>(() => {
     const fields: FormFieldDefinition<FormFields>[] = [
         {
@@ -206,7 +207,7 @@ const EpiUploadSelectFile = ({ onProceed, defaultValues }: EpiUploadSelectFilePr
     } else {
       setError('file_list', undefined);
     }
-  }, [fileParsingError, setError]);
+  }, [fileParsingError, setError, setValue]);
 
   useEffect(() => {
     // READ THE SHEET OPTIONS WHEN FILE CHANGES
@@ -351,10 +352,10 @@ const EpiUploadSelectFile = ({ onProceed, defaultValues }: EpiUploadSelectFilePr
             </Typography>
           </Alert>
         )}
+        <EpiUploadNavigation
+          onProceedButtonClick={onProceedButtonClick}
+        />
       </Container>
-      <EpiUploadNavigation
-        onProceedButtonClick={onProceedButtonClick}
-      />
     </ResponseHandler>
   );
 };

@@ -3,36 +3,15 @@ import {
   useState,
 } from 'react';
 
-import {
-  type EpiUploadSelectFileResult,
-  type EpiUploadMappedColumn,
-} from '../../../models/epiUpload';
-import type {
-  CompleteCaseType,
-  ValidatedCase,
-} from '../../../api';
 import { EpiCompletCaseTypeLoader } from '../EpiCompletCaseTypeLoader';
 
+import type { EpiUploadValidateContentProps } from './EpiUploadValidateContent';
 import { EpiUploadValidateContent } from './EpiUploadValidateContent';
 
-export type EpiUploadValidateProps = {
-  readonly selectFileResult: EpiUploadSelectFileResult;
-  readonly mappedColumns: EpiUploadMappedColumn[];
-  readonly onProceed: (validatedCases: ValidatedCase[]) => void;
-  readonly onGoBack: () => void;
-  readonly completeCaseType: CompleteCaseType;
-  readonly caseTypeId: string;
-  readonly queryKey: string[];
-};
+export type EpiUploadValidateProps = EpiUploadValidateContentProps;
 
-export const EpiUploadValidate = ({
-  selectFileResult,
-  mappedColumns,
-  onProceed,
-  onGoBack,
-  completeCaseType,
-  queryKey,
-}: EpiUploadValidateProps) => {
+
+export const EpiUploadValidate = (props: EpiUploadValidateProps) => {
   const [isCompleteCaseTypeLoaded, setIsCompleteCaseTypeLoaded] = useState<boolean>(false);
 
   const onCompleteCaseTypeLoaded = useCallback(() => {
@@ -41,18 +20,12 @@ export const EpiUploadValidate = ({
 
   return (
     <EpiCompletCaseTypeLoader
-      caseTypeId={completeCaseType.id}
+      caseTypeId={props.completeCaseType.id}
       onCompleteCaseTypeLoaded={onCompleteCaseTypeLoaded}
     >
       {isCompleteCaseTypeLoaded && (
         <EpiUploadValidateContent
-          selectFileResult={selectFileResult}
-          mappedColumns={mappedColumns}
-          completeCaseType={completeCaseType}
-          caseTypeId={selectFileResult.completeCaseType.id}
-          queryKey={queryKey}
-          onProceed={onProceed}
-          onGoBack={onGoBack}
+          {...props}
         />
       )}
     </EpiCompletCaseTypeLoader>

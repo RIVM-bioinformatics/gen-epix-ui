@@ -76,61 +76,21 @@ export const EpiUpload = () => {
       [EPI_UPLOAD_STEP.CREATE_CASES]: t`Upload`,
     } satisfies Record<EPI_UPLOAD_STEP, string>;
   }, [t]);
-  const [disabledSteps, setDisabledSteps] = useState<EPI_UPLOAD_STEP[]>([]);
-
 
   const [selectFileResult, setSelectFileResult] = useState<EpiUploadSelectFileResult | null>(null);
   const [sequenceFilesDataTransfer, setSequenceFilesDataTransfer] = useState<DataTransfer | null>(null);
   const [mappedColumns, setMappedColumns] = useState<EpiUploadMappedColumn[] | null>(null);
   const [validatedCases, setValidatedCases] = useState<ValidatedCase[] | null>(null);
 
-
-  useEffect(() => {
-    if (selectFileResult?.completeCaseType) {
-      const { sequenceColumns, readsColumns } = EpiUploadUtil.getCompleteCaseTypeColumnStats(selectFileResult.completeCaseType);
-      const newDisabledSteps: EPI_UPLOAD_STEP[] = [];
-      if (sequenceColumns.length === 0 || readsColumns.length === 0) {
-        newDisabledSteps.push(EPI_UPLOAD_STEP.SELECT_SEQUENCE_FILES, EPI_UPLOAD_STEP.MAP_SEQUENCES);
-      }
-      setDisabledSteps(newDisabledSteps);
-    } else {
-      setDisabledSteps([]);
-    }
-  }, [selectFileResult]);
-
-  const findNext = useCallback((fromStep: EPI_UPLOAD_STEP): EPI_UPLOAD_STEP | null => {
+  const findNext = useCallback((fromStep: EPI_UPLOAD_STEP) => {
     const currentIndex = stepOrder.indexOf(fromStep);
-    if (currentIndex < 0 || currentIndex >= stepOrder.length - 1) {
-      return null;
-    }
+    return currentIndex >= 0 && currentIndex < stepOrder.length - 1 ? stepOrder[currentIndex + 1] : null;
+  }, [stepOrder]);
 
-    // Find next non-disabled step
-    for (let i = currentIndex + 1; i < stepOrder.length; i++) {
-      const nextStep = stepOrder[i];
-      if (!disabledSteps.includes(nextStep)) {
-        return nextStep;
-      }
-    }
-
-    return null;
-  }, [stepOrder, disabledSteps]);
-
-  const findPrevious = useCallback((fromStep: EPI_UPLOAD_STEP): EPI_UPLOAD_STEP | null => {
+  const findPrevious = useCallback((fromStep: EPI_UPLOAD_STEP) => {
     const currentIndex = stepOrder.indexOf(fromStep);
-    if (currentIndex <= 0) {
-      return null;
-    }
-
-    // Find previous non-disabled step
-    for (let i = currentIndex - 1; i >= 0; i--) {
-      const prevStep = stepOrder[i];
-      if (!disabledSteps.includes(prevStep)) {
-        return prevStep;
-      }
-    }
-
-    return null;
-  }, [stepOrder, disabledSteps]);
+    return currentIndex > 0 ? stepOrder[currentIndex - 1] : null;
+  }, [stepOrder]);
 
   const onEpiUploadSelectFileProceed = useCallback(async (data: EpiUploadSelectFileResult) => {
     if (JSON.stringify(selectFileResult) !== JSON.stringify(data)) {
@@ -213,12 +173,10 @@ export const EpiUpload = () => {
       <Stepper activeStep={activeStep}>
         {stepOrder.map((step) => {
           const stepProps: { completed?: boolean } = {};
-          const isDisabled = disabledSteps.includes(step);
           return (
             <Step
               key={step}
               {...stepProps}
-              disabled={isDisabled}
             >
               <StepLabel>
                 {steps[step]}
@@ -272,7 +230,11 @@ export const EpiUpload = () => {
         )}
         {activeStep === EPI_UPLOAD_STEP.SELECT_SEQUENCE_FILES && (
           <EpiUploadSelectSequenceFiles
-            initialDataTransfer={sequenceFilesDataTransfer || undefined}
+            initialDataTransfer={sequenceFilesDataTransfer}
+            completeCaseType={selectFileResult.completeCaseType}
+            rawData={selectFileResult.rawData}
+            importAction={selectFileResult.import_action}
+            mappedColumns={mappedColumns}
             onGoBack={onEpiUploadSelectSequenceFilesGoBack}
             onProceed={onEpiUploadSelectSequenceFilesProceed}
           />

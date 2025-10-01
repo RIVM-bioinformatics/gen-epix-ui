@@ -3,6 +3,7 @@ import {
   useCallback,
   useMemo,
 } from 'react';
+import { useTranslation } from 'react-i18next';
 
 import {
   ColType,
@@ -22,6 +23,7 @@ export type EpiUploadMapSequencesProps = {
 };
 
 export const EpiUploadMapSequences = ({ onProceed, onGoBack, validatedCases, sequenceFilesDataTransfer, completeCaseType }: EpiUploadMapSequencesProps) => {
+  const [t] = useTranslation();
   const onProceedButtonClick = useCallback(() => {
     onProceed();
   }, [onProceed]);
@@ -37,8 +39,13 @@ export const EpiUploadMapSequences = ({ onProceed, onGoBack, validatedCases, seq
     <Box
       sx={{
         height: '100%',
+        display: 'grid',
+        gridTemplateRows: 'auto max-content',
       }}
     >
+      <Box>
+        {t`Work in progress...`}
+      </Box>
       <EpiUploadNavigation
         onGoBackButtonClick={onGoBack}
         onProceedButtonClick={onProceedButtonClick}

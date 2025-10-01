@@ -22,6 +22,7 @@ export type EpiUploadMappedColumn = {
   caseTypeCol: CaseTypeCol;
   isCaseIdColumn?: boolean;
   isCaseDateColumn?: boolean;
+  isCaseTypeColumn?: boolean;
 };
 
 export enum EPI_UPLOAD_ACTION {

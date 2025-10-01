@@ -51,7 +51,7 @@ import { StringUtil } from '../../../utils/StringUtil';
 
 import { EpiUploadNavigation } from './EpiUploadNavigation';
 
-export type EpiUploadValidateProps = {
+export type EpiUploadValidateContentProps = {
   readonly selectFileResult: EpiUploadSelectFileResult;
   readonly mappedColumns: EpiUploadMappedColumn[];
   readonly onProceed: (validatedCases: ValidatedCase[]) => void;
@@ -70,7 +70,7 @@ export const EpiUploadValidateContent = ({
   onGoBack,
   completeCaseType,
   queryKey,
-}: EpiUploadValidateProps) => {
+}: EpiUploadValidateContentProps) => {
   const theme = useTheme();
 
   const inputCases = useMemo<CaseForCreateUpdate[]>(() => {
@@ -79,7 +79,7 @@ export const EpiUploadValidateContent = ({
       const caseDateColumn = mappedColumns.find((mappedColumn) => mappedColumn.isCaseDateColumn)?.originalIndex;
 
       const caseForCreateUpdate: CaseForCreateUpdate = {
-        id: caseIdColumn !== undefined ? row[caseIdColumn] : undefined,
+        id: selectFileResult.import_action === EPI_UPLOAD_ACTION.UPDATE && caseIdColumn !== undefined ? row[caseIdColumn] : undefined,
         case_date: caseDateColumn !== undefined ? row[caseDateColumn] : undefined,
         content: undefined,
       };
@@ -91,7 +91,7 @@ export const EpiUploadValidateContent = ({
       });
       return { ...caseForCreateUpdate, content };
     });
-  }, [mappedColumns, selectFileResult.rawData]);
+  }, [mappedColumns, selectFileResult.import_action, selectFileResult.rawData]);
 
   const validationQuery = useQueryMemo({
     queryKey,
@@ -130,7 +130,7 @@ export const EpiUploadValidateContent = ({
 
   useEffect(() => {
     const newSelectedIds = rowsWithGeneratedId.filter(validatedCase => {
-      return !validatedCase.data_issues.some(issue => issue.data_rule === CaseColDataRule.INVALID || issue.data_rule === CaseColDataRule.UNAUTHORIZED || issue.data_rule === CaseColDataRule.CONFLICT);
+      return !validatedCase.data_issues.some(issue => issue.data_rule === CaseColDataRule.INVALID || issue.data_rule === CaseColDataRule.UNAUTHORIZED);
     }).map(vc => vc.generated_id);
     setSelectedIds(newSelectedIds);
   }, [rowsWithGeneratedId, setSelectedIds]);
@@ -157,7 +157,7 @@ export const EpiUploadValidateContent = ({
   }, []);
 
   const renderHasIssueCell = useCallback(({ row }: TableRowParams<ValidatedCaseWithGeneratedId>) => {
-    const errorIssues = row.data_issues.filter(i => i.data_rule === CaseColDataRule.INVALID || i.data_rule === CaseColDataRule.UNAUTHORIZED || i.data_rule === CaseColDataRule.CONFLICT);
+    const errorIssues = row.data_issues.filter(i => i.data_rule === CaseColDataRule.INVALID || i.data_rule === CaseColDataRule.UNAUTHORIZED);
     if (errorIssues.length > 0) {
       return (
         <Tooltip
@@ -185,12 +185,12 @@ export const EpiUploadValidateContent = ({
       let color: string;
       switch (issue.data_rule) {
         case CaseColDataRule.MISSING:
+        case CaseColDataRule.CONFLICT:
           color = theme.palette.warning.main;
           break;
         case CaseColDataRule.DERIVED:
           color = theme.palette.info.main;
           break;
-        case CaseColDataRule.CONFLICT:
         case CaseColDataRule.UNAUTHORIZED:
         case CaseColDataRule.INVALID:
         default:
@@ -235,7 +235,7 @@ export const EpiUploadValidateContent = ({
               whiteSpace: 'nowrap',
             }}
           >
-            {issue.original_value}
+            {rowValue?.isMissing ? issue.original_value : rowValue?.short}
           </Box>
         </Box>
       );
@@ -270,9 +270,7 @@ export const EpiUploadValidateContent = ({
       headerName: '',
     });
 
-    const hasIdColumn = validatedCases.some(vc => !!vc.case.id);
-    const hasDateColumn = validatedCases.some(vc => !!vc.case.case_date);
-    if (hasIdColumn) {
+    if (selectFileResult.import_action === EPI_UPLOAD_ACTION.UPDATE && validatedCases.some(vc => !!vc.case.id)) {
       tableCols.push({
         type: 'text',
         isInitiallyVisible: true,
@@ -283,7 +281,7 @@ export const EpiUploadValidateContent = ({
         widthPx: 250,
       } satisfies TableColumn<ValidatedCaseWithGeneratedId>);
     }
-    if (hasDateColumn) {
+    if (validatedCases.some(vc => !!vc.case.case_date)) {
       tableCols.push({
         type: 'text',
         isInitiallyVisible: true,
@@ -338,7 +336,7 @@ export const EpiUploadValidateContent = ({
     });
 
     return tableCols;
-  }, [completeCaseType, mappedColumns, renderCell, renderHasIssueCell, selectFileResult.rawData, validationQuery?.data?.validated_cases]);
+  }, [completeCaseType, mappedColumns, renderCell, renderHasIssueCell, selectFileResult.import_action, selectFileResult.rawData, validationQuery?.data?.validated_cases]);
 
   useInitializeTableStore<ValidatedCaseWithGeneratedId>({ store: tableStore, columns: tableColumns, rows: rowsWithGeneratedId, createFiltersFromColumns: true });
 

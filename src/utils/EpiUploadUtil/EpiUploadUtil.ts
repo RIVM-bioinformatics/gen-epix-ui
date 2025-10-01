@@ -38,8 +38,9 @@ import { ConfigManager } from '../../classes/managers/ConfigManager';
 export class EpiUploadUtil {
   public static __csvSheetId: string;
 
-  public static readonly caseIdColumnAliases = ['case id', 'case_id', 'caseid', '_case_id', 'case.id'];
-  public static readonly caseDateColumnAliases = ['case date', 'case_date', 'casedate', '_case_date', 'case.date'];
+  public static readonly caseIdColumnAliases = ['_case_id', 'case id', 'case_id', 'caseid', 'case.id'];
+  public static readonly caseDateColumnAliases = ['_case_date', 'case date', 'case_date', 'casedate', 'case.date'];
+  public static readonly caseTypeColumnAliases = ['_case_type', 'case type', 'case_type', 'casetype', 'case.type'];
 
   public static get csvSheetId(): string {
     if (!this.__csvSheetId) {
@@ -63,10 +64,36 @@ export class EpiUploadUtil {
   public static async readRawData(fileList: FileList, sheet?: string): Promise<string[][]> {
     const file = fileList[0];
     const fileName = file.name.toLowerCase();
-    if (fileName.endsWith('.csv')) {
+    let result: string[][] = [];
+
+    if (fileName.endsWith('.csv') || fileName.endsWith('.tsv') || fileName.endsWith('.txt')) {
       // Parse CSV file
-      const text = await file.text();
-      return parse(text, {
+      let text = await file.text();
+      if (fileName.endsWith('.tsv')) {
+        // Convert TSV to CSV by replacing tabs with commas
+        text = text.replace(/\t/g, ',');
+      }
+      if (fileName.endsWith('.txt')) {
+        // Attempt to auto-detect delimiter (comma, tab, semicolon)
+        const lines = text.split(/\r?\n/).filter(line => line.trim() !== '');
+        if (lines.length > 0) {
+          const delimiters = [',', '\t', ';'];
+          let bestDelimiter = ',';
+          let maxFields = 0;
+          delimiters.forEach(delimiter => {
+            const fieldsCount = lines[0].split(delimiter).length;
+            if (fieldsCount > maxFields) {
+              maxFields = fieldsCount;
+              bestDelimiter = delimiter;
+            }
+          });
+          if (bestDelimiter !== ',') {
+            const regex = new RegExp(bestDelimiter.replace(/[-/\\^$*+?.()|[\]{}]/g, '\\$&'), 'g');
+            text = text.replace(regex, ',');
+          }
+        }
+      }
+      result = parse(text, {
         columns: false, // Keep as array of arrays
         skip_empty_lines: true,
         trim: true,
@@ -82,9 +109,14 @@ export class EpiUploadUtil {
         trim: true,
       });
       // Convert CellValue[][] to string[][]
-      return excelData.map(row => row.map(cell => cell?.toString() ?? undefined));
+      result = excelData.map(row => row.map(cell => cell?.toString() ?? undefined));
+    } else {
+      throw new Error('Unsupported file format. Please select a CSV or Excel file.');
     }
-    throw new Error('Unsupported file format. Please select a CSV or Excel file.');
+    if (result.length < 2 || result[0].length < 2) {
+      throw new Error('The selected file does not contain enough data. Please ensure it has at least a header row and one data row.');
+    }
+    return result;
   }
 
 
@@ -138,19 +170,32 @@ export class EpiUploadUtil {
     return bestMatch.caseType;
   }
 
+  public static isCaseIdColumn(label: string): boolean {
+    return this.caseIdColumnAliases.includes(label.toLocaleLowerCase());
+  }
+
+  public static isCaseDateColumn(label: string): boolean {
+    return this.caseDateColumnAliases.includes(label.toLocaleLowerCase());
+  }
+
+  public static isCaseTypeColumn(label: string): boolean {
+    return this.caseTypeColumnAliases.includes(label.toLocaleLowerCase());
+  }
+
   public static getInitialMappedColumns(completeCaseType: CompleteCaseType, rawData: string[][], importAction: EPI_UPLOAD_ACTION): EpiUploadMappedColumn[] {
     if (rawData.length === 0) {
       return [];
     }
     const writableColIds = EpiUploadUtil.getWritableCaseTypeColIds(completeCaseType);
 
-    return rawData[0].map((label, index) => {
-      const isCaseIdColumn = EpiUploadUtil.caseIdColumnAliases.includes(label.toLocaleLowerCase());
-      const isCaseDateColumn = EpiUploadUtil.caseDateColumnAliases.includes(label.toLocaleLowerCase());
+    const mappedColumns = rawData[0].map((label, index) => {
+      const isCaseIdColumn = EpiUploadUtil.isCaseIdColumn(label);
+      const isCaseDateColumn = EpiUploadUtil.isCaseDateColumn(label);
+      const isCaseTypeColumn = EpiUploadUtil.isCaseTypeColumn(label);
 
       let caseTypeCol: CaseTypeCol | null = null;
 
-      if (!isCaseIdColumn && !isCaseDateColumn) {
+      if (!isCaseIdColumn && !isCaseDateColumn && !isCaseTypeColumn) {
         caseTypeCol = Object.values(completeCaseType.case_type_cols).find(c => EpiUploadUtil.matchColumnLabel(label, c)) || null;
         if (caseTypeCol && importAction === EPI_UPLOAD_ACTION.UPDATE && !writableColIds.includes(caseTypeCol.id)) {
           caseTypeCol = null;
@@ -163,8 +208,11 @@ export class EpiUploadUtil {
         caseTypeCol,
         isCaseDateColumn,
         isCaseIdColumn,
-      };
+        isCaseTypeColumn,
+      } satisfies EpiUploadMappedColumn;
     });
+
+    return mappedColumns;
   }
 
   public static areMappedColumnsEqual(a: EpiUploadMappedColumn[], b: EpiUploadMappedColumn[]): boolean {
@@ -209,17 +257,18 @@ export class EpiUploadUtil {
           });
       }));
     }
-    if (importAction === EPI_UPLOAD_ACTION.CREATE) {
-      fields['case_date'] = lazy(() => string().nullable().when(fieldNames.filter(name => name !== 'case_date'), (otherFieldValues, schema) => {
-        return schema
-          .test('unique', t('Each column must be mapped to a unique case type field.'), (fieldValue) => {
-            return !fieldValue || !otherFieldValues.includes(fieldValue);
-          })
-          .test('required', t('A column must be mapped to the case date field.'), (fieldValue) => {
-            return !!fieldValue;
-          });
-      }));
-    }
+    fields['case_date'] = lazy(() => string().nullable().when(fieldNames.filter(name => name !== 'case_date'), (otherFieldValues, schema) => {
+      return schema
+        .test('unique', t('Each column must be mapped to a unique case type field.'), (fieldValue) => {
+          return !fieldValue || !otherFieldValues.includes(fieldValue);
+        })
+        .test('required', t('A column must be mapped to the case date field.'), (fieldValue) => {
+          if (importAction === EPI_UPLOAD_ACTION.UPDATE) {
+            return true;
+          }
+          return !!fieldValue;
+        });
+    }));
 
     return object().shape(fields);
   }
@@ -247,14 +296,12 @@ export class EpiUploadUtil {
         options,
       });
     }
-    if (importAction === EPI_UPLOAD_ACTION.CREATE) {
-      fields.push({
-        definition: FORM_FIELD_DEFINITION_TYPE.AUTOCOMPLETE,
-        name: 'case_date',
-        label: getLabel('Case Date'),
-        options,
-      });
-    }
+    fields.push({
+      definition: FORM_FIELD_DEFINITION_TYPE.AUTOCOMPLETE,
+      name: 'case_date',
+      label: getLabel('Case Date'),
+      options,
+    });
 
     completeCaseType.case_type_col_order.forEach((colId) => {
       const caseTypeCol = completeCaseType.case_type_cols[colId];
@@ -272,23 +319,24 @@ export class EpiUploadUtil {
     return fields;
   }
 
-  public static getDefaultFormValues(completeCaseType: CompleteCaseType, mappedColumns: EpiUploadMappedColumn[], importAction: EPI_UPLOAD_ACTION): EpiUploadMappedColumnsFormFields {
+  public static getDefaultFormValues(completeCaseType: CompleteCaseType, mappedColumns: EpiUploadMappedColumn[], _importAction: EPI_UPLOAD_ACTION): EpiUploadMappedColumnsFormFields {
     const defaultFormValues: EpiUploadMappedColumnsFormFields = {};
     const caseIdColumn = mappedColumns.find(col => col.isCaseIdColumn);
     const caseDateColumn = mappedColumns.find(col => col.isCaseDateColumn);
 
-    if (importAction === EPI_UPLOAD_ACTION.UPDATE && caseIdColumn) {
-      defaultFormValues['case_id'] = caseIdColumn.originalIndex.toString();
-    }
-    if (importAction === EPI_UPLOAD_ACTION.CREATE && caseDateColumn) {
+    if (caseDateColumn) {
       defaultFormValues['case_date'] = caseDateColumn.originalIndex.toString();
     }
+    if (caseIdColumn) {
+      defaultFormValues['case_id'] = caseIdColumn.originalIndex.toString();
+    }
 
-    mappedColumns.forEach((header) => {
-      if (header.caseTypeCol) {
-        defaultFormValues[header.caseTypeCol.id] = header.originalIndex.toString();
+    mappedColumns.forEach((mappedColumn) => {
+      if (mappedColumn.caseTypeCol) {
+        defaultFormValues[mappedColumn.caseTypeCol.id] = mappedColumn.originalIndex.toString();
       }
     });
+
     difference(completeCaseType.case_type_col_order, Object.keys(defaultFormValues)).forEach((colId) => {
       defaultFormValues[colId] = null;
     });
@@ -323,13 +371,14 @@ export class EpiUploadUtil {
     return uniq(writableColIds);
   }
 
-  public static getCompleteCaseTypeColumnStats(completeCaseType: CompleteCaseType): { idColumns: CaseTypeCol[]; sequenceColumns: CaseTypeCol[]; readsColumns: CaseTypeCol[]; writableColumns: CaseTypeCol[] } {
+  public static getCompleteCaseTypeColumnStats(completeCaseType: CompleteCaseType): { idColumns: CaseTypeCol[]; sequenceColumns: CaseTypeCol[]; readsColumns: CaseTypeCol[]; writableColumns: CaseTypeCol[]; readsFwdRevColumnPairs: { fwd: CaseTypeCol; rev: CaseTypeCol }[] } {
     const idColumns = EpiCaseTypeUtil.getCaseTypeColumnsByType(completeCaseType, [ColType.ID_ANONYMISED, ColType.ID_PSEUDONYMISED, ColType.ID_DIRECT]);
     const sequenceColumns = EpiCaseTypeUtil.getCaseTypeColumnsByType(completeCaseType, [ColType.GENETIC_SEQUENCE]);
     const readsColumns = EpiCaseTypeUtil.getCaseTypeColumnsByType(completeCaseType, [ColType.GENETIC_READS]);
+    const readsFwdRevColumnPairs = EpiCaseTypeUtil.findPairedReadsCaseTypeColumns(completeCaseType);
     const writableColumns = Object.values(completeCaseType.case_type_cols).filter(col => EpiUploadUtil.getWritableCaseTypeColIds(completeCaseType).includes(col.id));
 
-    return { idColumns, sequenceColumns, readsColumns, writableColumns };
+    return { idColumns, sequenceColumns, readsColumns, writableColumns, readsFwdRevColumnPairs };
   }
 
   /**
