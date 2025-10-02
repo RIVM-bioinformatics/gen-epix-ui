@@ -15,11 +15,6 @@ import { useStore } from 'zustand';
 import { useShallow } from 'zustand/shallow';
 import omit from 'lodash/omit';
 
-import {
-  type EpiUploadSelectFileResult,
-  type EpiUploadMappedColumn,
-  EPI_UPLOAD_ACTION,
-} from '../../../models/epiUpload';
 import type {
   Case,
   CaseDataIssue,
@@ -48,6 +43,12 @@ import { DATE_FORMAT } from '../../../data/date';
 import { TableUtil } from '../../../utils/TableUtil';
 import { EpiCaseUtil } from '../../../utils/EpiCaseUtil';
 import { StringUtil } from '../../../utils/StringUtil';
+import type {
+  EpiUploadSelectFileResult,
+  EpiUploadMappedColumn,
+  EpiValidatedCaseWithGeneratedId,
+} from '../../../models/epiUpload';
+import { EPI_UPLOAD_ACTION } from '../../../models/epiUpload';
 
 import { EpiUploadNavigation } from './EpiUploadNavigation';
 
@@ -60,8 +61,6 @@ export type EpiUploadValidateContentProps = {
   readonly caseTypeId: string;
   readonly queryKey: string[];
 };
-
-type ValidatedCaseWithGeneratedId = ValidatedCase & { generated_id: string };
 
 export const EpiUploadValidateContent = ({
   selectFileResult,
@@ -110,7 +109,7 @@ export const EpiUploadValidateContent = ({
     staleTime: Infinity,
   });
 
-  const rowsWithGeneratedId = useMemo<ValidatedCaseWithGeneratedId[]>(() => {
+  const rowsWithGeneratedId = useMemo<EpiValidatedCaseWithGeneratedId[]>(() => {
     return (validationQuery?.data?.validated_cases || []).map((vc) => ({
       ...vc,
       generated_id: vc.case.id || StringUtil.createUuid(),
@@ -121,7 +120,7 @@ export const EpiUploadValidateContent = ({
     validationQuery,
   ]);
 
-  const tableStore = useMemo(() => createTableStore<ValidatedCaseWithGeneratedId>({
+  const tableStore = useMemo(() => createTableStore<EpiValidatedCaseWithGeneratedId>({
     idSelectorCallback: (row) => row.generated_id,
   }), []);
 
@@ -156,7 +155,7 @@ export const EpiUploadValidateContent = ({
     );
   }, []);
 
-  const renderHasIssueCell = useCallback(({ row }: TableRowParams<ValidatedCaseWithGeneratedId>) => {
+  const renderHasIssueCell = useCallback(({ row }: TableRowParams<EpiValidatedCaseWithGeneratedId>) => {
     const errorIssues = row.data_issues.filter(i => i.data_rule === CaseColDataRule.INVALID || i.data_rule === CaseColDataRule.UNAUTHORIZED);
     if (errorIssues.length > 0) {
       return (
@@ -177,7 +176,7 @@ export const EpiUploadValidateContent = ({
     }
   }, [getIssueTooltipContent, theme.palette.error.main]);
 
-  const renderCell = useCallback(({ id, row }: TableRowParams<ValidatedCaseWithGeneratedId>) => {
+  const renderCell = useCallback(({ id, row }: TableRowParams<EpiValidatedCaseWithGeneratedId>) => {
     const rowValue = EpiCaseUtil.getRowValue(row.case as Case, completeCaseType.case_type_cols[id], completeCaseType);
     const issue = row.data_issues.find((i) => i.case_type_col_id === id);
 
@@ -247,9 +246,9 @@ export const EpiUploadValidateContent = ({
     );
   }, [completeCaseType, getIssueTooltipContent, theme]);
 
-  const tableColumns = useMemo<TableColumn<ValidatedCaseWithGeneratedId>[]>(() => {
+  const tableColumns = useMemo<TableColumn<EpiValidatedCaseWithGeneratedId>[]>(() => {
     const validatedCases = validationQuery?.data?.validated_cases;
-    const tableCols: TableColumn<ValidatedCaseWithGeneratedId>[] = [];
+    const tableCols: TableColumn<EpiValidatedCaseWithGeneratedId>[] = [];
     if (!validatedCases?.length) {
       return tableCols;
     }
@@ -279,7 +278,7 @@ export const EpiUploadValidateContent = ({
         headerName: t('case_id'),
         valueGetter: (params) => params.row.case.id || '',
         widthPx: 250,
-      } satisfies TableColumn<ValidatedCaseWithGeneratedId>);
+      } satisfies TableColumn<EpiValidatedCaseWithGeneratedId>);
     }
     if (validatedCases.some(vc => !!vc.case.case_date)) {
       tableCols.push({
@@ -295,7 +294,7 @@ export const EpiUploadValidateContent = ({
           return '';
         },
         widthPx: 250,
-      } satisfies TableColumn<ValidatedCaseWithGeneratedId>);
+      } satisfies TableColumn<EpiValidatedCaseWithGeneratedId>);
     }
 
 
@@ -331,14 +330,14 @@ export const EpiUploadValidateContent = ({
             return '';
           },
           valueGetter: (params) => EpiCaseUtil.getRowValue(params.row.case as Case, caseTypeColumn, completeCaseType).short,
-        } satisfies TableColumn<ValidatedCaseWithGeneratedId>);
+        } satisfies TableColumn<EpiValidatedCaseWithGeneratedId>);
       }
     });
 
     return tableCols;
   }, [completeCaseType, mappedColumns, renderCell, renderHasIssueCell, selectFileResult.import_action, selectFileResult.rawData, validationQuery?.data?.validated_cases]);
 
-  useInitializeTableStore<ValidatedCaseWithGeneratedId>({ store: tableStore, columns: tableColumns, rows: rowsWithGeneratedId, createFiltersFromColumns: true });
+  useInitializeTableStore<EpiValidatedCaseWithGeneratedId>({ store: tableStore, columns: tableColumns, rows: rowsWithGeneratedId, createFiltersFromColumns: true });
 
   const onProceedButtonClick = useCallback(() => {
     const validatedCases = rowsWithGeneratedId.filter(r => selectedIds.includes(r.generated_id)).map(r => omit(r, 'generated_id'));
@@ -361,7 +360,9 @@ export const EpiUploadValidateContent = ({
         loadingMessage={t('Validating cases')}
       >
         <TableStoreContextProvider store={tableStore}>
-          <Table />
+          <Table
+            font={theme.epi.lineList.font}
+          />
           <EpiUploadNavigation
             proceedLabel={t('Continue')}
             proceedDisabled={selectedIds.length === 0}

@@ -2,6 +2,7 @@ import type {
   CaseTypeCol,
   CompleteCaseType,
   DataCollection,
+  ValidatedCase,
 } from '../api';
 
 export type EpiUploadSelectFileResult = {
@@ -45,3 +46,5 @@ export interface EpiUploadFileColumnAssignment {
   file: File;
   caseTypeCol: CaseTypeCol; // null if no suitable column found
 }
+
+export type EpiValidatedCaseWithGeneratedId = ValidatedCase & { generated_id: string };

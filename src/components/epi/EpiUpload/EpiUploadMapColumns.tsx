@@ -40,6 +40,7 @@ import {
   type EpiUploadMappedColumn,
   type EpiUploadMappedColumnsFormFields,
 } from '../../../models/epiUpload';
+import { ConfigManager } from '../../../classes/managers/ConfigManager';
 
 import { EpiUploadNavigation } from './EpiUploadNavigation';
 
@@ -160,7 +161,14 @@ export const EpiUploadMapColumns = ({ completeCaseType, rawData, onProceed, onGo
       <Table
         size={'small'}
       >
-        <TableHead>
+        <TableHead
+          sx={{
+            position: 'sticky',
+            top: 0,
+            backgroundColor: (theme) => theme.palette.background.paper,
+            zIndex: (theme) => theme.zIndex.tooltip - 1,
+          }}
+        >
           <TableRow>
             <TableCell sx={{ width: '50%' }}>
               {t`Mapping`}
@@ -186,10 +194,15 @@ export const EpiUploadMapColumns = ({ completeCaseType, rawData, onProceed, onGo
           height: '100%',
         }}
       >
-        <Container maxWidth={'lg'}>
+        <Container
+          maxWidth={'lg'}
+          sx={{
+            marginBottom: 2,
+          }}
+        >
           <Alert severity={'info'}>
             <AlertTitle>
-              {unMappedColumns.length === 0 ? t('All columns in {{fileName}} have been mapped', { fileName }) : t('{{numUnmappedColumns}} columns in {{fileName}} are not mapped', { numUnmappedColumns: unMappedColumns.length, fileName })}
+              {unMappedColumns.length === 0 ? t('All columns in {{fileName}} have been mapped to known columns in {{applicationName}}', { fileName, applicationName: ConfigManager.instance.config.applicationName }) : t('{{numUnmappedColumns}} columns in {{fileName}} are not mapped', { numUnmappedColumns: unMappedColumns.length, fileName })}
             </AlertTitle>
             {unMappedColumns.map((col) => (
               <Box key={col.originalIndex}>

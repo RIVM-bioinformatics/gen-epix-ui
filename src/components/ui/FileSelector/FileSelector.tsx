@@ -242,19 +242,27 @@ export const FileSelector = ({
         <Box
           sx={{
             overflow: 'auto',
+            position: 'relative',
           }}
         >
           <Box>
             {dataTransfer.files.length > 0 && (
               <>
-                <Typography
+                <Box
                   sx={{
-                    marginY: 1,
+                    position: 'sticky',
+                    top: 0,
+                    paddingY: 1,
+                    backgroundColor: (theme) => theme.palette.background.paper,
+                    zIndex: (theme) => theme.zIndex.tooltip - 1,
                   }}
-                  variant={'h5'}
                 >
-                  {t('Selected files: {{numFiles}}', { numFiles: dataTransfer.files.length })}
-                </Typography>
+                  <Typography
+                    variant={'h5'}
+                  >
+                    {t('Selected files: {{numFiles}}', { numFiles: dataTransfer.files.length })}
+                  </Typography>
+                </Box>
                 <Stack
                   direction={'row'}
                   sx={{

@@ -64,17 +64,6 @@ export const EpiUploadSelectSequenceFiles = ({
   const canUploadSequences = caseTypeSupportsUploadingSequences && importDataSupportsUploadingSequences;
   const canUploadReads = caseTypeSupportsUploadingReads && importDataSupportsUploadingReads;
 
-  console.log({ completeCaseTypeColumnStats });
-
-  console.table({
-    caseTypeSupportsUploadingSequences,
-    caseTypeSupportsUploadingReads,
-    importDataSupportsUploadingSequences,
-    importDataSupportsUploadingReads,
-    canUploadSequences,
-    canUploadReads,
-  });
-
   const accept = useMemo(() => {
     let acc = '';
     if (canUploadSequences) {
@@ -104,15 +93,16 @@ export const EpiUploadSelectSequenceFiles = ({
         height: '100%',
         display: 'grid',
         gridTemplateRows: 'max-content auto max-content',
+        position: 'relative',
       }}
     >
       {!canUpload && (
         <>
           <Alert severity={'info'}>
             <AlertTitle>
-              {t('Nothing to upload')}
+              {t('Uploading of sequences or read files is not supported.')}
             </AlertTitle>
-            {t`The selected case type does not support uploading of sequences or read files, or the imported data does not contain any mapped columns that support uploading of sequences or read files.`}
+            {t`The selected case type does not support uploading sequences or read files, or the imported data does not contain any mapped columns that support uploading of sequences or read files.`}
           </Alert>
           <Box />
         </>
@@ -120,27 +110,68 @@ export const EpiUploadSelectSequenceFiles = ({
       {canUpload && (
         <>
           <Box>
-            <Box marginY={2}>
-              <Alert severity={'info'}>
-                <AlertTitle>
-                  {canUploadSequences ? t('Uploading of sequences is available') : t('Uploading of sequences has been disabled (not enough data).')}
-                </AlertTitle>
-              </Alert>
-            </Box>
-            <Box marginY={2}>
-              <Alert severity={'info'}>
-                <AlertTitle>
-                  {canUploadReads ? t('Uploading of read files is available') : t('Uploading of read files has been disabled (not enough data).')}
-                </AlertTitle>
-              </Alert>
+            {!canUploadSequences && (
+              <Box marginY={2}>
+                <Alert severity={'info'}>
+                  <AlertTitle>
+                    {t('Uploading of sequences has been disabled.')}
+                  </AlertTitle>
+                  {!caseTypeSupportsUploadingSequences && (
+                    <Box>
+                      {t('Uploading of sequences is not supported for the selected case type.')}
+                    </Box>
+                  )}
+                  {!importDataSupportsUploadingSequences && (
+                    <Box>
+                      {t('Uploading of sequences is not supported for the imported data.')}
+                    </Box>
+                  )}
+                </Alert>
+              </Box>
+            )}
+            {!canUploadReads && (
+              <Box marginY={2}>
+                <Alert severity={'info'}>
+                  <AlertTitle>
+                    {t('Uploading of read files has been disabled.')}
+                  </AlertTitle>
+                  {!caseTypeSupportsUploadingReads && (
+                    <Box>
+                      {t('Uploading of read files is not supported for the selected case type.')}
+                    </Box>
+                  )}
+                  {!importDataSupportsUploadingReads && (
+                    <Box>
+                      {t('Uploading of read files is not supported for the imported data.')}
+                    </Box>
+                  )}
+                </Alert>
+              </Box>
+            )}
+          </Box>
+          <Box
+            sx={{
+              position: 'relative',
+            }}
+          >
+            <Box
+              sx={{
+                position: 'absolute',
+                top: 0,
+                left: 0,
+                right: 0,
+                bottom: 0,
+                height: '100%',
+              }}
+            >
+              <FileSelector
+                initialDataTransfer={initialDataTransfer}
+                accept={accept}
+                numFilesAllowed={Infinity}
+                onDataTransferChange={onDataTransferChange}
+              />
             </Box>
           </Box>
-          <FileSelector
-            initialDataTransfer={initialDataTransfer}
-            accept={accept}
-            numFilesAllowed={Infinity}
-            onDataTransferChange={onDataTransferChange}
-          />
         </>
       )}
       <EpiUploadNavigation
