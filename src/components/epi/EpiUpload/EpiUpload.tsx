@@ -256,6 +256,8 @@ export const EpiUpload = () => {
           <EpiUploadCreateCases
             selectFileResult={selectFileResult}
             validatedCases={validatedCases}
+            sequenceMapping={sequenceMapping}
+            sequenceFilesDataTransfer={sequenceFilesDataTransfer}
             onGoBack={onEpiUploadCreateCasesGoBack}
             onStartOver={onEpiUploadCreateCasesStartOver}
           />
