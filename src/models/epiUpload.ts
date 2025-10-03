@@ -48,3 +48,17 @@ export interface EpiUploadFileColumnAssignment {
 }
 
 export type EpiValidatedCaseWithGeneratedId = ValidatedCase & { generated_id: string };
+
+export type EpiUploadSequenceMapping = {
+  [caseId: string]: {
+    [seqOrReadColumnId: string]: string;
+  };
+};
+
+export type EpiUploadCompleteCaseTypeColumnStats = {
+  idColumns: CaseTypeCol[];
+  sequenceColumns: CaseTypeCol[];
+  readsColumns: CaseTypeCol[];
+  writableColumns: CaseTypeCol[];
+  readsFwdRevColumnPairs: { fwd: CaseTypeCol; rev: CaseTypeCol }[];
+};

@@ -42,7 +42,6 @@ import { Table } from '../../ui/Table';
 import { DATE_FORMAT } from '../../../data/date';
 import { TableUtil } from '../../../utils/TableUtil';
 import { EpiCaseUtil } from '../../../utils/EpiCaseUtil';
-import { StringUtil } from '../../../utils/StringUtil';
 import type {
   EpiUploadSelectFileResult,
   EpiUploadMappedColumn,
@@ -110,9 +109,9 @@ export const EpiUploadValidateContent = ({
   });
 
   const rowsWithGeneratedId = useMemo<EpiValidatedCaseWithGeneratedId[]>(() => {
-    return (validationQuery?.data?.validated_cases || []).map((vc) => ({
+    return (validationQuery?.data?.validated_cases || []).map((vc, index) => ({
       ...vc,
-      generated_id: vc.case.id || StringUtil.createUuid(),
+      generated_id: vc.case.id || index.toString(),
     }));
   }, [validationQuery?.data?.validated_cases]);
 

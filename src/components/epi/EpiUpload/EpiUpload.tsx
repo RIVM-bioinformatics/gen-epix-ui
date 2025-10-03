@@ -16,6 +16,7 @@ import noop from 'lodash/noop';
 import type {
   EpiUploadMappedColumn,
   EpiUploadSelectFileResult,
+  EpiUploadSequenceMapping,
 } from '../../../models/epiUpload';
 import { NotificationManager } from '../../../classes/managers/NotificationManager';
 import { EpiUploadUtil } from '../../../utils/EpiUploadUtil';
@@ -81,6 +82,7 @@ export const EpiUpload = () => {
   const [sequenceFilesDataTransfer, setSequenceFilesDataTransfer] = useState<DataTransfer | null>(null);
   const [mappedColumns, setMappedColumns] = useState<EpiUploadMappedColumn[] | null>(null);
   const [validatedCases, setValidatedCases] = useState<ValidatedCase[] | null>(null);
+  const [sequenceMapping, setSequenceMapping] = useState<EpiUploadSequenceMapping | null>(null);
 
   const findNext = useCallback((fromStep: EPI_UPLOAD_STEP) => {
     const currentIndex = stepOrder.indexOf(fromStep);
@@ -144,7 +146,8 @@ export const EpiUpload = () => {
     setActiveStep(findPrevious(EPI_UPLOAD_STEP.MAP_SEQUENCES));
   }, [findPrevious]);
 
-  const onEpiUploadMapSequencesProceed = useCallback(() => {
+  const onEpiUploadMapSequencesProceed = useCallback((data: EpiUploadSequenceMapping) => {
+    setSequenceMapping(data);
     setActiveStep(findNext(EPI_UPLOAD_STEP.MAP_SEQUENCES));
   }, [findNext]);
 
@@ -244,6 +247,7 @@ export const EpiUpload = () => {
             completeCaseType={selectFileResult.completeCaseType}
             validatedCases={validatedCases || []}
             sequenceFilesDataTransfer={sequenceFilesDataTransfer}
+            initialSequenceMapping={sequenceMapping}
             onGoBack={onEpiUploadMapSequencesGoBack}
             onProceed={onEpiUploadMapSequencesProceed}
           />

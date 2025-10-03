@@ -1,4 +1,6 @@
 import {
+  Alert,
+  AlertTitle,
   Autocomplete,
   Box,
   TextField,
@@ -6,11 +8,18 @@ import {
 } from '@mui/material';
 import {
   useCallback,
+  useEffect,
+  useId,
   useMemo,
+  useRef,
 } from 'react';
+import { useTranslation } from 'react-i18next';
+import uniq from 'lodash/uniq';
 
-import type { EpiValidatedCaseWithGeneratedId } from '../../../models/epiUpload';
-import { StringUtil } from '../../../utils/StringUtil';
+import type {
+  EpiUploadSequenceMapping,
+  EpiValidatedCaseWithGeneratedId,
+} from '../../../models/epiUpload';
 import {
   createTableStore,
   TableStoreContextProvider,
@@ -34,29 +43,57 @@ import {
 import { EpiUploadNavigation } from './EpiUploadNavigation';
 
 export type EpiUploadMapSequencesProps = {
-  readonly onProceed: () => void;
+  readonly onProceed: (sequenceMapping: EpiUploadSequenceMapping) => void;
+  readonly initialSequenceMapping?: EpiUploadSequenceMapping;
   readonly onGoBack: () => void;
   readonly completeCaseType: CompleteCaseType;
   readonly validatedCases: ValidatedCase[];
   readonly sequenceFilesDataTransfer: DataTransfer;
 };
 
-export const EpiUploadMapSequences = ({ onProceed, onGoBack, validatedCases, sequenceFilesDataTransfer, completeCaseType }: EpiUploadMapSequencesProps) => {
+export const EpiUploadMapSequences = ({ onProceed, onGoBack, validatedCases, sequenceFilesDataTransfer, completeCaseType, initialSequenceMapping }: EpiUploadMapSequencesProps) => {
+  const [t] = useTranslation();
   const theme = useTheme();
-  const onProceedButtonClick = useCallback(() => {
-    onProceed();
-  }, [onProceed]);
 
   const rowsWithGeneratedId = useMemo<EpiValidatedCaseWithGeneratedId[]>(() => {
-    return (validatedCases || []).map((vc) => ({
+    return (validatedCases || []).map((vc, index) => ({
       ...vc,
-      generated_id: vc.case.id || StringUtil.createUuid(),
+      generated_id: index.toString(),
     }));
   }, [validatedCases]);
 
   const completeCaseTypeColumnStats = useMemo(() => {
     return EpiUploadUtil.getCompleteCaseTypeColumnStats(completeCaseType);
   }, [completeCaseType]);
+
+  const alertTitleId = useId();
+  const alertContentId = useId();
+
+  const epiUploadSequenceMapping = useRef(initialSequenceMapping ?? EpiUploadUtil.getEpiUploadSequenceMapping(completeCaseType, rowsWithGeneratedId, sequenceFilesDataTransfer));
+
+  const onProceedButtonClick = useCallback(() => {
+    console.log({ epiUploadSequenceMapping: epiUploadSequenceMapping.current });
+    onProceed(epiUploadSequenceMapping.current);
+  }, [onProceed]);
+
+  const updateAlert = useCallback(() => {
+    // Note: This is done via DOM manipulation to prevent excessive re-renders of the entire table
+
+    const alertTitleElement = document.getElementById(alertTitleId);
+    const alertContentElement = document.getElementById(alertContentId);
+    if (!alertTitleElement || !alertContentElement) {
+      return;
+    }
+    const numberOfFilesToMap = Array.from(sequenceFilesDataTransfer.files).length;
+    const mappedFiles = uniq(Object.values(epiUploadSequenceMapping.current).flatMap(Object.values)).filter(v => v);
+    const unmappedFileNames = Array.from(sequenceFilesDataTransfer.files).map(file => file.name).filter(fileName => !mappedFiles.includes(fileName));
+    alertTitleElement.innerHTML = numberOfFilesToMap === mappedFiles.length ? t('All {{numberOfFilesToMap}} files are mapped', { numberOfFilesToMap }) : t('{{mappedFilesLength}} of {{numberOfFilesToMap}} files mapped', { mappedFilesLength: mappedFiles.length, numberOfFilesToMap });
+    alertContentElement.innerHTML = numberOfFilesToMap === mappedFiles.length ? '' : t('Unmapped files: {{unmappedFileNames}}', { unmappedFileNames: unmappedFileNames.join(', ') });
+  }, [alertContentId, alertTitleId, sequenceFilesDataTransfer.files, t]);
+
+  useEffect(() => {
+    updateAlert();
+  }, [updateAlert]);
 
   const tableStore = useMemo(() => createTableStore<EpiValidatedCaseWithGeneratedId>({
     idSelectorCallback: (row) => row.generated_id,
@@ -69,15 +106,25 @@ export const EpiUploadMapSequences = ({ onProceed, onGoBack, validatedCases, seq
     });
   }, [completeCaseType]);
 
+  const sequenceDropDownOptions = useMemo(() => {
+    return Array.from(sequenceFilesDataTransfer.files).map((file) => file.name).filter(name => name.endsWith('.fasta') || name.endsWith('.fa') || name.endsWith('.fa.gz') || name.endsWith('.fasta.gz'));
+  }, [sequenceFilesDataTransfer.files]);
+
+  const readsDropDownOptions = useMemo(() => {
+    return Array.from(sequenceFilesDataTransfer.files).map((file) => file.name).filter(name => name.endsWith('.fastq') || name.endsWith('.fq') || name.endsWith('.fq.gz') || name.endsWith('.fastaq.gz'));
+  }, [sequenceFilesDataTransfer.files]);
+
   const renderDropDownCell = useCallback((tableRowParams: TableRowParams<EpiValidatedCaseWithGeneratedId>) => {
     const caseTypeColumn = completeCaseType.case_type_cols[tableRowParams.id];
     const rowValue = EpiCaseUtil.getRowValue(tableRowParams.row.case as Case, caseTypeColumn, completeCaseType);
+    const isSequenceColumn = completeCaseTypeColumnStats.sequenceColumns.includes(caseTypeColumn);
 
     if (rowValue.isMissing) {
       return null;
     }
 
-    const options = ['1', '2', '3'];
+    const dropDownValue = epiUploadSequenceMapping.current?.[tableRowParams.row.generated_id]?.[caseTypeColumn.id] || '';
+
     return (
       <Box
         sx={{
@@ -89,10 +136,13 @@ export const EpiUploadMapSequences = ({ onProceed, onGoBack, validatedCases, seq
         height={'100%'}
       >
         <Autocomplete
+          freeSolo
           size={'small'}
           sx={{
             lineHeight: 'initial',
           }}
+          value={dropDownValue}
+          options={isSequenceColumn ? sequenceDropDownOptions : readsDropDownOptions}
           // eslint-disable-next-line react/jsx-no-bind
           renderInput={(params) => (
             <TextField
@@ -101,11 +151,19 @@ export const EpiUploadMapSequences = ({ onProceed, onGoBack, validatedCases, seq
               label={rowValue.short}
             />
           )}
-          options={options}
+          // eslint-disable-next-line react/jsx-no-bind
+          onChange={(_, newValue) => {
+            if (!newValue) {
+              delete epiUploadSequenceMapping.current?.[tableRowParams.row.generated_id]?.[caseTypeColumn.id];
+            } else {
+              epiUploadSequenceMapping.current[tableRowParams.row.generated_id][caseTypeColumn.id] = newValue;
+            }
+            updateAlert();
+          }}
         />
       </Box>
     );
-  }, [completeCaseType]);
+  }, [completeCaseType, completeCaseTypeColumnStats.sequenceColumns, sequenceDropDownOptions, readsDropDownOptions, updateAlert]);
 
   const tableColumns = useMemo<TableColumn<EpiValidatedCaseWithGeneratedId>[]>(() => {
     const tableCols: TableColumn<EpiValidatedCaseWithGeneratedId>[] = [];
@@ -147,9 +205,15 @@ export const EpiUploadMapSequences = ({ onProceed, onGoBack, validatedCases, seq
       sx={{
         height: '100%',
         display: 'grid',
-        gridTemplateRows: 'auto max-content',
+        gridTemplateRows: 'max-content auto max-content',
       }}
     >
+      <Box paddingBottom={1}>
+        <Alert severity={'info'}>
+          <AlertTitle id={alertTitleId} />
+          <Box id={alertContentId} />
+        </Alert>
+      </Box>
       <TableStoreContextProvider store={tableStore}>
         <Table
           font={theme.epi.lineList.font}
