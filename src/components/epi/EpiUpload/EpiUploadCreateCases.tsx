@@ -12,7 +12,7 @@ import {
   Button,
   Container,
 } from '@mui/material';
-import { difference } from 'lodash';
+import difference from 'lodash/difference';
 
 import {
   CaseApi,
@@ -118,7 +118,7 @@ export const EpiUploadCreateCases = ({ selectFileResult, validatedCases, onStart
     >
       {!isUploadStarted && (
         <Box>
-          <Box>
+          <Box marginY={2}>
             <Alert severity={'info'}>
               <AlertTitle>
                 {t('{{numCases}} cases are ready to be uploaded.', { numCases: validatedCases.length })}
@@ -143,11 +143,20 @@ export const EpiUploadCreateCases = ({ selectFileResult, validatedCases, onStart
               </Alert>
             </Box>
           )}
+          {(selectFileResult.rawData.length - 1) - validatedCases.length > 0 && (
+            <Box marginY={2}>
+              <Alert severity={'warning'}>
+                <AlertTitle>
+                  {t('{{numCases}} cases were not selected and will not be uploaded.', { numCases: (selectFileResult.rawData.length - 1) - validatedCases.length })}
+                </AlertTitle>
+              </Alert>
+            </Box>
+          )}
           {sequenceFileStats.unmappedSequenceFiles.length > 0 && (
             <Box marginY={2}>
               <Alert severity={'warning'}>
                 <AlertTitle>
-                  {t('{{unmappedSequenceFiles}} unmapped sequence files will not be uploaded', { unmappedSequenceFiles: sequenceFileStats.unmappedSequenceFiles.length })}
+                  {t('{{unmappedSequenceFiles}} unmapped sequence files will not be uploaded.', { unmappedSequenceFiles: sequenceFileStats.unmappedSequenceFiles.length })}
                 </AlertTitle>
               </Alert>
             </Box>
@@ -156,7 +165,7 @@ export const EpiUploadCreateCases = ({ selectFileResult, validatedCases, onStart
             <Box marginY={2}>
               <Alert severity={'warning'}>
                 <AlertTitle>
-                  {t('{{unmappedReadsFiles}} unmapped reads files will not be uploaded', { unmappedReadsFiles: sequenceFileStats.unmappedReadsFiles.length })}
+                  {t('{{unmappedReadsFiles}} unmapped reads files will not be uploaded.', { unmappedReadsFiles: sequenceFileStats.unmappedReadsFiles.length })}
                 </AlertTitle>
               </Alert>
             </Box>
