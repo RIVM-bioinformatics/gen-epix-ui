@@ -23,6 +23,16 @@ describe('ValidationUtil', () => {
       expect(ValidationUtil.validate('EXTENDED_ALPHA', '!@#$%^ \n\t')).toBe(false);
       expect(ValidationUtil.validate('EXTENDED_ALPHA_NUMERIC', '!@#$%^ 123 \n\t')).toBe(false);
     });
+    it('should return false on empty strings', () => {
+      expect(ValidationUtil.validate('STRICT_ALPHA', '  ')).toBe(false);
+      expect(ValidationUtil.validate('STRICT_ALPHA', '  ')).toBe(false);
+      expect(ValidationUtil.validate('STRICT_ALPHA_NUMERIC', '  ')).toBe(false);
+      expect(ValidationUtil.validate('ALPHA', '  ')).toBe(false);
+      expect(ValidationUtil.validate('ALPHA', '  \n\t')).toBe(false);
+      expect(ValidationUtil.validate('ALPHA_NUMERIC', '  \n\t')).toBe(false);
+      expect(ValidationUtil.validate('EXTENDED_ALPHA', '  \n\t')).toBe(false);
+      expect(ValidationUtil.validate('EXTENDED_ALPHA_NUMERIC', '  \n\t')).toBe(false);
+    });
   });
 
   describe('validate ALPHA', () => {

@@ -21,6 +21,7 @@ const VALIDATION_PATTERN = {
   TIME_MONTH: /^\d{4}-(1[0-2]|0[1-9])$/,
   TIME_QUARTER: /^\d{4}-[qQ][1-4]$/,
   TIME_YEAR: /^\d{4}$/,
+  EMPTY_STRING: /^\s+$/,
 };
 
 export class ValidationUtil {
@@ -30,6 +31,10 @@ export class ValidationUtil {
     }
     if (typeof value === 'number') {
       value = value.toString();
+    }
+    if (VALIDATION_PATTERN.EMPTY_STRING.test(value)) {
+      // value is only whitespace
+      return false;
     }
     return VALIDATION_PATTERN[patternKey].test(value);
   }
