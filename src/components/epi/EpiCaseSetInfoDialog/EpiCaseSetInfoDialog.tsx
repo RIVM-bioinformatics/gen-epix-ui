@@ -167,7 +167,6 @@ export const EpiCaseSetInfoDialog = withDialog<EpiCaseSetInfoDialogProps, EpiCas
   }, []);
 
   const onFinish = useCallback(() => {
-    // FIXME refresh epi store data
     setIsEpiCaseSetFormSaving(false);
     setIsEpiCaseSetDataCollectionFormSaving(false);
     setIsRefreshingData(true);

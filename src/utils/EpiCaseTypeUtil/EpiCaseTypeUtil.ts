@@ -42,8 +42,7 @@ export class EpiCaseTypeUtil {
       } else {
         visibleColumnIds.push(...caseTypeColumns.filter(cc => {
           const col = completeCaseType.cols[cc.col_id];
-          const hiddenColTypes: ColType[] = [ColType.ID_ANONYMISED, ColType.ID_PSEUDONYMISED, ColType.ID_DIRECT, ColType.GENETIC_READS_FWD, ColType.GENETIC_READS_REV, ColType.GENETIC_READS, ColType.GENETIC_SEQUENCE];
-          // FIXME: Move to config
+          const hiddenColTypes: ColType[] = [ColType.GENETIC_READS_FWD, ColType.GENETIC_READS_REV, ColType.GENETIC_READS, ColType.GENETIC_SEQUENCE];
           return !hiddenColTypes.includes(col.col_type);
         }).map(c => c.id));
       }
