@@ -11,8 +11,9 @@ import {
   useWatch,
 } from 'react-hook-form';
 import {
+  Alert,
+  AlertTitle,
   Box,
-  Button,
   Container,
   Table,
   TableBody,
@@ -34,20 +35,22 @@ import { useCaseTypeColMapQuery } from '../../../dataHooks/useCaseTypeColsQuery'
 import { useArray } from '../../../hooks/useArray';
 import { ResponseHandler } from '../../ui/ResponseHandler';
 import { EpiUploadUtil } from '../../../utils/EpiUploadUtil';
-import type {
-  EpiUploadMappedColumn,
-  EpiUploadMappedColumnsFormFields,
+import {
   EPI_UPLOAD_ACTION,
+  type EpiUploadMappedColumn,
+  type EpiUploadMappedColumnsFormFields,
 } from '../../../models/epiUpload';
 import { ConfigManager } from '../../../classes/managers/ConfigManager';
+
+import { EpiUploadNavigation } from './EpiUploadNavigation';
 
 export type EpiUploadMapColumnsProps = {
   readonly completeCaseType: CompleteCaseType;
   readonly rawData: string[][];
   readonly importAction: EPI_UPLOAD_ACTION;
+  readonly mappedColumns?: EpiUploadMappedColumn[];
   readonly onProceed: (mappedColumns: EpiUploadMappedColumn[]) => void;
   readonly onGoBack?: () => void;
-  readonly mappedColumns?: EpiUploadMappedColumn[];
   readonly fileName: string;
 };
 
@@ -77,8 +80,8 @@ export const EpiUploadMapColumns = ({ completeCaseType, rawData, onProceed, onGo
   }, [completeCaseType, mappedColumns, importAction]);
 
   const formFieldDefinitions = useMemo<FormFieldDefinition<EpiUploadMappedColumnsFormFields>[]>(() => {
-    return EpiUploadUtil.getFormFieldDefinitions(completeCaseType, rawData[0], importAction);
-  }, [completeCaseType, rawData, importAction]);
+    return EpiUploadUtil.getFormFieldDefinitions(completeCaseType, rawData[0], fileName, importAction);
+  }, [completeCaseType, rawData, fileName, importAction]);
 
   const formMethods = useForm<EpiUploadMappedColumnsFormFields>({
     resolver: yupResolver(schema) as unknown as Resolver<EpiUploadMappedColumnsFormFields>,
@@ -89,7 +92,7 @@ export const EpiUploadMapColumns = ({ completeCaseType, rawData, onProceed, onGo
   const { handleSubmit, control } = formMethods;
   const values = useWatch({ control });
 
-  const onFormSubmit = useCallback((data: EpiUploadMappedColumnsFormFields) => {
+  const getMergedMappedColumns = useCallback((data: EpiUploadMappedColumnsFormFields) => {
     const sheetValues = invert(data);
 
     const mergedMappedColumns = mappedColumns.map((mappedColumn) => {
@@ -107,9 +110,26 @@ export const EpiUploadMapColumns = ({ completeCaseType, rawData, onProceed, onGo
         caseTypeCol,
       };
     });
+    return mergedMappedColumns;
+  }, [caseTypeColMap.map, mappedColumns]);
 
-    onProceed(mergedMappedColumns);
-  }, [caseTypeColMap.map, mappedColumns, onProceed]);
+  const unMappedColumns = useMemo(() => {
+    return getMergedMappedColumns(values).filter(mappedColumn => {
+      // ignore case type columns
+      if (mappedColumn.isCaseTypeColumn) {
+        return false;
+      }
+      // ignore case id column when creating cases
+      if (importAction === EPI_UPLOAD_ACTION.CREATE && mappedColumn.isCaseIdColumn) {
+        return false;
+      }
+      return !mappedColumn.isCaseIdColumn && !mappedColumn.isCaseDateColumn && !mappedColumn.caseTypeCol;
+    });
+  }, [getMergedMappedColumns, importAction, values]);
+
+  const onFormSubmit = useCallback((data: EpiUploadMappedColumnsFormFields) => {
+    onProceed(getMergedMappedColumns(data));
+  }, [getMergedMappedColumns, onProceed]);
 
   const onProceedButtonClick = useCallback(async () => {
     await handleSubmit(onFormSubmit)();
@@ -118,7 +138,7 @@ export const EpiUploadMapColumns = ({ completeCaseType, rawData, onProceed, onGo
   const renderField = useCallback((definition: FormFieldDefinition<EpiUploadMappedColumnsFormFields>, element: ReactElement) => {
     const columnIndexInRawData = values[definition.name]; // Note, this is a string, so '0', '1', '2', etc.
 
-    let firstFiveValuesString = '';
+    let firstFiveValuesString = t('<not mapped>');
     if (columnIndexInRawData) {
       const columnValues = uniq(rawData.slice(1).map((row) => row[parseInt(columnIndexInRawData, 10)] ?? '')).filter(x => !!x);
       firstFiveValuesString = columnValues.slice(0, 5).join(', ').trim() || t('<no data>');
@@ -126,9 +146,6 @@ export const EpiUploadMapColumns = ({ completeCaseType, rawData, onProceed, onGo
 
     return (
       <TableRow key={definition.name}>
-        <TableCell>
-          {definition.label}
-        </TableCell>
         <TableCell>
           {element}
         </TableCell>
@@ -144,15 +161,19 @@ export const EpiUploadMapColumns = ({ completeCaseType, rawData, onProceed, onGo
       <Table
         size={'small'}
       >
-        <TableHead>
+        <TableHead
+          sx={{
+            position: 'sticky',
+            top: 0,
+            backgroundColor: (theme) => theme.palette.background.paper,
+            zIndex: (theme) => theme.zIndex.tooltip - 1,
+          }}
+        >
           <TableRow>
-            <TableCell sx={{ width: '34%' }}>
-              {t('{{applicationName}} - {{caseTypeName}}', { applicationName: ConfigManager.instance.config.applicationName, caseTypeName: completeCaseType.name })}
+            <TableCell sx={{ width: '50%' }}>
+              {t`Mapping`}
             </TableCell>
-            <TableCell sx={{ width: '33%' }}>
-              {fileName}
-            </TableCell>
-            <TableCell sx={{ width: '33%' }}>
+            <TableCell sx={{ width: '50%' }}>
               {t`Data preview (first 5 unique values)`}
             </TableCell>
           </TableRow>
@@ -162,38 +183,51 @@ export const EpiUploadMapColumns = ({ completeCaseType, rawData, onProceed, onGo
         </TableBody>
       </Table>
     );
-  }, [completeCaseType.name, fileName, t]);
+  }, [t]);
 
   return (
     <ResponseHandler loadables={loadables}>
       <Box
         sx={{
           display: 'grid',
-          gridTemplateRows: 'auto max-content',
+          gridTemplateRows: 'max-content auto max-content',
           height: '100%',
         }}
       >
+        <Container
+          maxWidth={'lg'}
+          sx={{
+            marginBottom: 2,
+          }}
+        >
+          <Alert severity={'info'}>
+            <AlertTitle>
+              {unMappedColumns.length === 0 ? t('All columns in {{fileName}} have been mapped to known columns in {{applicationName}}', { fileName, applicationName: ConfigManager.instance.config.applicationName }) : t('{{numUnmappedColumns}} columns in {{fileName}} are not mapped', { numUnmappedColumns: unMappedColumns.length, fileName })}
+            </AlertTitle>
+            {unMappedColumns.map((col) => (
+              <Box key={col.originalIndex}>
+                {t('The column "{{columnName}}" (column {{columnIndex}}) has not been mapped.', { columnName: col.originalLabel, columnIndex: col.originalIndex + 1 })}
+              </Box>
+            ))}
+            {unMappedColumns.length === 0 && t('You can proceed to the next step.')}
+          </Alert>
+        </Container>
         <Box
           sx={{
             overflowY: 'auto',
             position: 'relative',
           }}
         >
-          <Container
-            maxWidth={'xl'}
+          <Box
             sx={{
-              position: 'relative',
+              position: 'absolute',
+              top: 0,
+              left: 0,
+              right: 0,
+              bottom: 0,
             }}
           >
-            <Box
-              sx={{
-                position: 'absolute',
-                top: 0,
-                left: 0,
-                right: 0,
-                bottom: 0,
-              }}
-            >
+            <Container>
               <GenericForm<EpiUploadMappedColumnsFormFields>
                 formFieldDefinitions={formFieldDefinitions}
                 formId={formId}
@@ -202,33 +236,14 @@ export const EpiUploadMapColumns = ({ completeCaseType, rawData, onProceed, onGo
                 wrapForm={wrapForm}
                 onSubmit={handleSubmit(onFormSubmit)}
               />
-            </Box>
-          </Container>
+            </Container>
+          </Box>
         </Box>
         <Box>
-          <Container maxWidth={'xl'}>
-            <Box
-              sx={{
-                marginTop: 2,
-                display: 'flex',
-                gap: 2,
-                justifyContent: 'flex-end',
-              }}
-            >
-              <Button
-                variant={'outlined'}
-                onClick={onGoBack}
-              >
-                {t('Go back')}
-              </Button>
-              <Button
-                variant={'contained'}
-                onClick={onProceedButtonClick}
-              >
-                {t('Next')}
-              </Button>
-            </Box>
-          </Container>
+          <EpiUploadNavigation
+            onGoBackButtonClick={onGoBack}
+            onProceedButtonClick={onProceedButtonClick}
+          />
         </Box>
       </Box>
     </ResponseHandler>

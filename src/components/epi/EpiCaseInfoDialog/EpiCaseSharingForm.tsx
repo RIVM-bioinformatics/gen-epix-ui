@@ -80,7 +80,7 @@ export const EpiCaseSharingForm = ({ formId, epiCase, onFinish, onIsSavingChange
       onIsSavingChange(true);
       const queryKeys = QueryUtil.getQueryKeyDependencies([QUERY_KEY.CASE_DATA_COLLECTION_LINKS], true);
       const notificationKey = NotificationManager.instance.showNotification({
-        message: t('Saving case data collections...'),
+        message: t('Saving case data collections'),
         isLoading: true,
         severity: 'info',
       });

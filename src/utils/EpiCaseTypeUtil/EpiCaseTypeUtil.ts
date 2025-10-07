@@ -40,7 +40,12 @@ export class EpiCaseTypeUtil {
       } else if (dimension.dim_type === DimType.TIME || dimension.dim_type === DimType.NUMBER || EpiCaseTypeUtil.isGeneticDistanceDimension(dimension, cols)) {
         visibleColumnIds.push(EpiCaseTypeUtil.getPreferredColumnInDimensionHavingHighestRank(caseTypeColumns, completeCaseType).id);
       } else {
-        visibleColumnIds.push(...caseTypeColumns.map(c => c.id));
+        visibleColumnIds.push(...caseTypeColumns.filter(cc => {
+          const col = completeCaseType.cols[cc.col_id];
+          const hiddenColTypes: ColType[] = [ColType.ID_ANONYMISED, ColType.ID_PSEUDONYMISED, ColType.ID_DIRECT, ColType.GENETIC_READS_FWD, ColType.GENETIC_READS_REV, ColType.GENETIC_READS, ColType.GENETIC_SEQUENCE];
+          // FIXME: Move to config
+          return !hiddenColTypes.includes(col.col_type);
+        }).map(c => c.id));
       }
     });
 
@@ -116,10 +121,10 @@ export class EpiCaseTypeUtil {
    * @param colType The column type to filter by.
    * @returns An array of case type columns matching the specified column type.
    */
-  public static getCaseTypeColumnsByType(completeCaseType: CompleteCaseType, colType: ColType): CaseTypeCol[] {
+  public static getCaseTypeColumnsByType(completeCaseType: CompleteCaseType, colType: ColType[]): CaseTypeCol[] {
     return Object.values(completeCaseType.case_type_cols).filter(caseTypeCol => {
       const col = completeCaseType.cols[caseTypeCol.col_id];
-      return col?.col_type === colType;
+      return colType.includes(col?.col_type);
     });
   }
 

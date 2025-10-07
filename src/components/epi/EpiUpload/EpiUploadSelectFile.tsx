@@ -20,8 +20,6 @@ import {
 import {
   Alert,
   AlertTitle,
-  Box,
-  Button,
   Container,
   Typography,
 } from '@mui/material';
@@ -51,6 +49,8 @@ import {
   type EpiUploadSelectFileResult,
 } from '../../../models/epiUpload';
 import { EpiUploadUtil } from '../../../utils/EpiUploadUtil';
+
+import { EpiUploadNavigation } from './EpiUploadNavigation';
 
 type FormFields = {
   import_action: EPI_UPLOAD_ACTION;
@@ -140,6 +140,7 @@ const EpiUploadSelectFile = ({ onProceed, defaultValues }: EpiUploadSelectFilePr
     { label: t('Create new cases'), value: EPI_UPLOAD_ACTION.CREATE },
     { label: t('Update existing cases'), value: EPI_UPLOAD_ACTION.UPDATE },
   ]), [t]);
+
   const formFieldDefinitions = useMemo<FormFieldDefinition<FormFields>[]>(() => {
     const fields: FormFieldDefinition<FormFields>[] = [
         {
@@ -206,7 +207,7 @@ const EpiUploadSelectFile = ({ onProceed, defaultValues }: EpiUploadSelectFilePr
     } else {
       setError('file_list', undefined);
     }
-  }, [fileParsingError, setError]);
+  }, [fileParsingError, setError, setValue]);
 
   useEffect(() => {
     // READ THE SHEET OPTIONS WHEN FILE CHANGES
@@ -317,12 +318,13 @@ const EpiUploadSelectFile = ({ onProceed, defaultValues }: EpiUploadSelectFilePr
   }, [handleSubmit, onFormSubmit]);
 
   return (
-    <Container maxWidth={'xl'}>
-      <ResponseHandler
-        inlineSpinner
-        error={completeCaseTypeError}
-        loadables={loadables}
-      >
+
+    <ResponseHandler
+      inlineSpinner
+      error={completeCaseTypeError}
+      loadables={loadables}
+    >
+      <Container maxWidth={'lg'}>
         <GenericForm<FormFields>
           formFieldDefinitions={formFieldDefinitions}
           formId={formId}
@@ -350,22 +352,11 @@ const EpiUploadSelectFile = ({ onProceed, defaultValues }: EpiUploadSelectFilePr
             </Typography>
           </Alert>
         )}
-        <Box
-          sx={{
-            display: 'flex',
-            gap: 2,
-            justifyContent: 'flex-end',
-          }}
-        >
-          <Button
-            variant={'contained'}
-            onClick={onProceedButtonClick}
-          >
-            {t('Next')}
-          </Button>
-        </Box>
-      </ResponseHandler>
-    </Container>
+        <EpiUploadNavigation
+          onProceedButtonClick={onProceedButtonClick}
+        />
+      </Container>
+    </ResponseHandler>
   );
 };
 

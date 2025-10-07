@@ -41,7 +41,7 @@ export class EpiCaseUtil {
     }
 
     const notificationKey = NotificationManager.instance.showNotification({
-      message: t('Applying sharing to the cases...'),
+      message: t('Applying sharing to the cases'),
       isLoading: true,
       severity: 'info',
     });

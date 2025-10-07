@@ -31,6 +31,7 @@ import { useTranslation } from 'react-i18next';
 import { FormUtil } from '../../../../utils/FormUtil';
 import { TestIdUtil } from '../../../../utils/TestIdUtil';
 import { FormFieldHelperText } from '../../helpers/FormFieldHelperText';
+import { WindowManager } from '../../../../classes/managers/WindowManager';
 
 export type UploadButtonProps<TFieldValues extends FieldValues, TName extends Path<TFieldValues> = Path<TFieldValues>> = {
   readonly disabled?: boolean;
@@ -68,6 +69,7 @@ export const UploadButton = <TFieldValues extends FieldValues, TName extends Pat
 }: UploadButtonProps<TFieldValues, TName>): ReactElement => {
   const [t] = useTranslation();
   const id = useId();
+  const inputId = useId();
   const { control, formState: { errors } } = useFormContext<TFieldValues>();
   const errorMessage = FormUtil.getFieldErrorMessage(errors, name);
 
@@ -89,6 +91,10 @@ export const UploadButton = <TFieldValues extends FieldValues, TName extends Pat
         buttonRef?.current?.focus();
       },
     });
+    const inputElement = WindowManager.instance.document.getElementById(inputId) as HTMLInputElement | null;
+    if (!value && inputElement) {
+      inputElement.value = '';
+    }
     return (
       <>
         <Button
@@ -103,6 +109,7 @@ export const UploadButton = <TFieldValues extends FieldValues, TName extends Pat
         >
           {multiple ? t('Upload files ({{accept}})', { accept: accept.split(',').join(', ') }) : t('Upload file ({{accept}})', { accept: accept.split(',').join(', ') })}
           <VisuallyHiddenInput
+            id={inputId}
             accept={accept}
             multiple={multiple}
             type={'file'}
@@ -116,7 +123,7 @@ export const UploadButton = <TFieldValues extends FieldValues, TName extends Pat
         )}
       </>
     );
-  }, [accept, disabled, multiple, onInputChange, t]);
+  }, [accept, disabled, inputId, multiple, onInputChange, t]);
 
   return (
     <FormControl

@@ -1,18 +1,13 @@
 import {
-  Button,
   Tooltip,
   useTheme,
 } from '@mui/material';
 import ErrorOutlineIcon from '@mui/icons-material/ErrorOutline';
-import {
-  Box,
-  Container,
-} from '@mui/system';
+import { Box } from '@mui/system';
 import { t } from 'i18next';
 import {
   useCallback,
   useEffect,
-  useId,
   useMemo,
 } from 'react';
 import { format } from 'date-fns';
@@ -20,11 +15,6 @@ import { useStore } from 'zustand';
 import { useShallow } from 'zustand/shallow';
 import omit from 'lodash/omit';
 
-import {
-  type EpiUploadSelectFileResult,
-  type EpiUploadMappedColumn,
-  EPI_UPLOAD_ACTION,
-} from '../../../models/epiUpload';
 import type {
   Case,
   CaseDataIssue,
@@ -52,20 +42,24 @@ import { Table } from '../../ui/Table';
 import { DATE_FORMAT } from '../../../data/date';
 import { TableUtil } from '../../../utils/TableUtil';
 import { EpiCaseUtil } from '../../../utils/EpiCaseUtil';
-import { StringUtil } from '../../../utils/StringUtil';
-import { QueryUtil } from '../../../utils/QueryUtil';
-import { QUERY_KEY } from '../../../models/query';
+import type {
+  EpiUploadSelectFileResult,
+  EpiUploadMappedColumn,
+  EpiValidatedCaseWithGeneratedId,
+} from '../../../models/epiUpload';
+import { EPI_UPLOAD_ACTION } from '../../../models/epiUpload';
 
-export type EpiUploadValidateProps = {
+import { EpiUploadNavigation } from './EpiUploadNavigation';
+
+export type EpiUploadValidateContentProps = {
   readonly selectFileResult: EpiUploadSelectFileResult;
   readonly mappedColumns: EpiUploadMappedColumn[];
   readonly onProceed: (validatedCases: ValidatedCase[]) => void;
   readonly onGoBack: () => void;
   readonly completeCaseType: CompleteCaseType;
   readonly caseTypeId: string;
+  readonly queryKey: string[];
 };
-
-type ValidatedCaseWithGeneratedId = ValidatedCase & { generated_id: string };
 
 export const EpiUploadValidateContent = ({
   selectFileResult,
@@ -73,9 +67,9 @@ export const EpiUploadValidateContent = ({
   onProceed,
   onGoBack,
   completeCaseType,
-}: EpiUploadValidateProps) => {
+  queryKey,
+}: EpiUploadValidateContentProps) => {
   const theme = useTheme();
-  const queryId = useId();
 
   const inputCases = useMemo<CaseForCreateUpdate[]>(() => {
     return selectFileResult.rawData.slice(1).map((row) => {
@@ -83,7 +77,7 @@ export const EpiUploadValidateContent = ({
       const caseDateColumn = mappedColumns.find((mappedColumn) => mappedColumn.isCaseDateColumn)?.originalIndex;
 
       const caseForCreateUpdate: CaseForCreateUpdate = {
-        id: caseIdColumn !== undefined ? row[caseIdColumn] : undefined,
+        id: selectFileResult.import_action === EPI_UPLOAD_ACTION.UPDATE && caseIdColumn !== undefined ? row[caseIdColumn] : undefined,
         case_date: caseDateColumn !== undefined ? row[caseDateColumn] : undefined,
         content: undefined,
       };
@@ -95,10 +89,10 @@ export const EpiUploadValidateContent = ({
       });
       return { ...caseForCreateUpdate, content };
     });
-  }, [mappedColumns, selectFileResult.rawData]);
+  }, [mappedColumns, selectFileResult.import_action, selectFileResult.rawData]);
 
   const validationQuery = useQueryMemo({
-    queryKey: QueryUtil.getGenericKey(QUERY_KEY.VALIDATE_CASES, queryId),
+    queryKey,
     queryFn: async ({ signal }) => {
       const response = await CaseApi.instance.validateCases({
         case_type_id: selectFileResult.case_type_id,
@@ -110,14 +104,14 @@ export const EpiUploadValidateContent = ({
       return response.data;
     },
     enabled: mappedColumns.length > 0 && inputCases.length > 0,
-    gcTime: 0,
-    staleTime: 0,
+    gcTime: Infinity,
+    staleTime: Infinity,
   });
 
-  const rowsWithGeneratedId = useMemo<ValidatedCaseWithGeneratedId[]>(() => {
-    return (validationQuery?.data?.validated_cases || []).map((vc) => ({
+  const rowsWithGeneratedId = useMemo<EpiValidatedCaseWithGeneratedId[]>(() => {
+    return (validationQuery?.data?.validated_cases || []).map((vc, index) => ({
       ...vc,
-      generated_id: vc.case.id || StringUtil.createUuid(),
+      generated_id: vc.case.id || index.toString(),
     }));
   }, [validationQuery?.data?.validated_cases]);
 
@@ -125,15 +119,16 @@ export const EpiUploadValidateContent = ({
     validationQuery,
   ]);
 
-  const tableStore = useMemo(() => createTableStore<ValidatedCaseWithGeneratedId>({
+  const tableStore = useMemo(() => createTableStore<EpiValidatedCaseWithGeneratedId>({
     idSelectorCallback: (row) => row.generated_id,
   }), []);
 
   const setSelectedIds = useStore(tableStore, useShallow((state) => state.setSelectedIds));
+  const selectedIds = useStore(tableStore, (state) => state.selectedIds);
 
   useEffect(() => {
     const newSelectedIds = rowsWithGeneratedId.filter(validatedCase => {
-      return !validatedCase.data_issues.some(issue => issue.data_rule === CaseColDataRule.INVALID || issue.data_rule === CaseColDataRule.UNAUTHORIZED || issue.data_rule === CaseColDataRule.CONFLICT);
+      return !validatedCase.data_issues.some(issue => issue.data_rule === CaseColDataRule.INVALID || issue.data_rule === CaseColDataRule.UNAUTHORIZED);
     }).map(vc => vc.generated_id);
     setSelectedIds(newSelectedIds);
   }, [rowsWithGeneratedId, setSelectedIds]);
@@ -159,8 +154,8 @@ export const EpiUploadValidateContent = ({
     );
   }, []);
 
-  const renderHasIssueCell = useCallback(({ row }: TableRowParams<ValidatedCaseWithGeneratedId>) => {
-    const errorIssues = row.data_issues.filter(i => i.data_rule === CaseColDataRule.INVALID || i.data_rule === CaseColDataRule.UNAUTHORIZED || i.data_rule === CaseColDataRule.CONFLICT);
+  const renderHasIssueCell = useCallback(({ row }: TableRowParams<EpiValidatedCaseWithGeneratedId>) => {
+    const errorIssues = row.data_issues.filter(i => i.data_rule === CaseColDataRule.INVALID || i.data_rule === CaseColDataRule.UNAUTHORIZED);
     if (errorIssues.length > 0) {
       return (
         <Tooltip
@@ -180,7 +175,7 @@ export const EpiUploadValidateContent = ({
     }
   }, [getIssueTooltipContent, theme.palette.error.main]);
 
-  const renderCell = useCallback(({ id, row }: TableRowParams<ValidatedCaseWithGeneratedId>) => {
+  const renderCell = useCallback(({ id, row }: TableRowParams<EpiValidatedCaseWithGeneratedId>) => {
     const rowValue = EpiCaseUtil.getRowValue(row.case as Case, completeCaseType.case_type_cols[id], completeCaseType);
     const issue = row.data_issues.find((i) => i.case_type_col_id === id);
 
@@ -188,12 +183,12 @@ export const EpiUploadValidateContent = ({
       let color: string;
       switch (issue.data_rule) {
         case CaseColDataRule.MISSING:
+        case CaseColDataRule.CONFLICT:
           color = theme.palette.warning.main;
           break;
         case CaseColDataRule.DERIVED:
           color = theme.palette.info.main;
           break;
-        case CaseColDataRule.CONFLICT:
         case CaseColDataRule.UNAUTHORIZED:
         case CaseColDataRule.INVALID:
         default:
@@ -238,7 +233,7 @@ export const EpiUploadValidateContent = ({
               whiteSpace: 'nowrap',
             }}
           >
-            {issue.original_value}
+            {rowValue?.isMissing ? issue.original_value : rowValue?.short}
           </Box>
         </Box>
       );
@@ -250,9 +245,9 @@ export const EpiUploadValidateContent = ({
     );
   }, [completeCaseType, getIssueTooltipContent, theme]);
 
-  const tableColumns = useMemo<TableColumn<ValidatedCaseWithGeneratedId>[]>(() => {
+  const tableColumns = useMemo<TableColumn<EpiValidatedCaseWithGeneratedId>[]>(() => {
     const validatedCases = validationQuery?.data?.validated_cases;
-    const tableCols: TableColumn<ValidatedCaseWithGeneratedId>[] = [];
+    const tableCols: TableColumn<EpiValidatedCaseWithGeneratedId>[] = [];
     if (!validatedCases?.length) {
       return tableCols;
     }
@@ -273,9 +268,7 @@ export const EpiUploadValidateContent = ({
       headerName: '',
     });
 
-    const hasIdColumn = validatedCases.some(vc => !!vc.case.id);
-    const hasDateColumn = validatedCases.some(vc => !!vc.case.case_date);
-    if (hasIdColumn) {
+    if (selectFileResult.import_action === EPI_UPLOAD_ACTION.UPDATE && validatedCases.some(vc => !!vc.case.id)) {
       tableCols.push({
         type: 'text',
         isInitiallyVisible: true,
@@ -284,9 +277,9 @@ export const EpiUploadValidateContent = ({
         headerName: t('case_id'),
         valueGetter: (params) => params.row.case.id || '',
         widthPx: 250,
-      } satisfies TableColumn<ValidatedCaseWithGeneratedId>);
+      } satisfies TableColumn<EpiValidatedCaseWithGeneratedId>);
     }
-    if (hasDateColumn) {
+    if (validatedCases.some(vc => !!vc.case.case_date)) {
       tableCols.push({
         type: 'text',
         isInitiallyVisible: true,
@@ -300,7 +293,7 @@ export const EpiUploadValidateContent = ({
           return '';
         },
         widthPx: 250,
-      } satisfies TableColumn<ValidatedCaseWithGeneratedId>);
+      } satisfies TableColumn<EpiValidatedCaseWithGeneratedId>);
     }
 
 
@@ -336,63 +329,47 @@ export const EpiUploadValidateContent = ({
             return '';
           },
           valueGetter: (params) => EpiCaseUtil.getRowValue(params.row.case as Case, caseTypeColumn, completeCaseType).short,
-        } satisfies TableColumn<ValidatedCaseWithGeneratedId>);
+        } satisfies TableColumn<EpiValidatedCaseWithGeneratedId>);
       }
     });
 
     return tableCols;
-  }, [completeCaseType, mappedColumns, renderCell, renderHasIssueCell, selectFileResult.rawData, validationQuery?.data?.validated_cases]);
+  }, [completeCaseType, mappedColumns, renderCell, renderHasIssueCell, selectFileResult.import_action, selectFileResult.rawData, validationQuery?.data?.validated_cases]);
 
-  useInitializeTableStore<ValidatedCaseWithGeneratedId>({ store: tableStore, columns: tableColumns, rows: rowsWithGeneratedId, createFiltersFromColumns: true });
+  useInitializeTableStore<EpiValidatedCaseWithGeneratedId>({ store: tableStore, columns: tableColumns, rows: rowsWithGeneratedId, createFiltersFromColumns: true });
 
   const onProceedButtonClick = useCallback(() => {
-    const selectedIds = tableStore.getState().selectedIds;
     const validatedCases = rowsWithGeneratedId.filter(r => selectedIds.includes(r.generated_id)).map(r => omit(r, 'generated_id'));
     onProceed(validatedCases);
-  }, [onProceed, rowsWithGeneratedId, tableStore]);
+  }, [onProceed, rowsWithGeneratedId, selectedIds]);
 
   return (
-    <ResponseHandler
-      inlineSpinner
-      loadables={loadables}
+    <Box
+      sx={{
+        width: '100%',
+        height: '100%',
+        position: 'relative',
+        display: 'grid',
+        gridTemplateRows: 'auto max-content',
+      }}
     >
-      <TableStoreContextProvider store={tableStore}>
-        <Box
-          sx={{
-            width: '100%',
-            height: '100%',
-            position: 'relative',
-            display: 'grid',
-            gridTemplateRows: 'auto max-content',
-          }}
-        >
-          <Table />
-          <Container maxWidth={'xl'}>
-            <Box
-              marginTop={2}
-              marginBottom={1}
-              sx={{
-                display: 'flex',
-                gap: 2,
-                justifyContent: 'flex-end',
-              }}
-            >
-              <Button
-                variant={'outlined'}
-                onClick={onGoBack}
-              >
-                {t('Go back')}
-              </Button>
-              <Button
-                variant={'contained'}
-                onClick={onProceedButtonClick}
-              >
-                {t('Next')}
-              </Button>
-            </Box>
-          </Container>
-        </Box>
-      </TableStoreContextProvider>
-    </ResponseHandler>
+      <ResponseHandler
+        inlineSpinner
+        loadables={loadables}
+        loadingMessage={t('Validating cases')}
+      >
+        <TableStoreContextProvider store={tableStore}>
+          <Table
+            font={theme.epi.lineList.font}
+          />
+          <EpiUploadNavigation
+            proceedLabel={t('Continue')}
+            proceedDisabled={selectedIds.length === 0}
+            onGoBackButtonClick={onGoBack}
+            onProceedButtonClick={onProceedButtonClick}
+          />
+        </TableStoreContextProvider>
+      </ResponseHandler>
+    </Box>
   );
 };

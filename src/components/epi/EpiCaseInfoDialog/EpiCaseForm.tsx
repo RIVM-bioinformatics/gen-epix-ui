@@ -51,7 +51,7 @@ export const EpiCaseForm = ({ epiCase, formId, onFinish, onIsSavingChange, ...bo
     const perform = async () => {
       const queryKeys = QueryUtil.getQueryKeyDependencies([QUERY_KEY.CASES], true);
       const notificationKey = NotificationManager.instance.showNotification({
-        message: t('Saving case data...'),
+        message: t('Saving case data'),
         severity: 'info',
         isLoading: true,
       });

@@ -2,6 +2,7 @@ import type {
   CaseTypeCol,
   CompleteCaseType,
   DataCollection,
+  ValidatedCase,
 } from '../api';
 
 export type EpiUploadSelectFileResult = {
@@ -22,6 +23,7 @@ export type EpiUploadMappedColumn = {
   caseTypeCol: CaseTypeCol;
   isCaseIdColumn?: boolean;
   isCaseDateColumn?: boolean;
+  isCaseTypeColumn?: boolean;
 };
 
 export enum EPI_UPLOAD_ACTION {
@@ -44,3 +46,19 @@ export interface EpiUploadFileColumnAssignment {
   file: File;
   caseTypeCol: CaseTypeCol; // null if no suitable column found
 }
+
+export type EpiValidatedCaseWithGeneratedId = ValidatedCase & { generated_id: string };
+
+export type EpiUploadSequenceMapping = {
+  [caseId: string]: {
+    [seqOrReadColumnId: string]: string;
+  };
+};
+
+export type EpiUploadCompleteCaseTypeColumnStats = {
+  idColumns: CaseTypeCol[];
+  sequenceColumns: CaseTypeCol[];
+  readsColumns: CaseTypeCol[];
+  writableColumns: CaseTypeCol[];
+  readsFwdRevColumnPairs: { fwd: CaseTypeCol; rev: CaseTypeCol }[];
+};

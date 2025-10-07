@@ -13,6 +13,7 @@ export * from './utils/ObjectUtil';
 export * from './utils/NumberUtil';
 export * from './utils/NotificationUtil';
 export * from './utils/FormUtil';
+export * from './utils/FileUtil';
 export * from './utils/EpiUploadUtil';
 export * from './utils/EpiTreeUtil';
 export * from './utils/EpiNewickUtil';
