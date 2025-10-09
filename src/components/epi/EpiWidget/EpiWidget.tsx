@@ -120,7 +120,7 @@ export const EpiWidget = ({ title, children, primaryMenu, secondaryMenu, warning
               size={'small'}
               label={menuItemsData.label}
               // eslint-disable-next-line react/jsx-no-bind
-              onClick={() => menuItemsData.callback(null, null)}
+              onClick={() => menuItemsData.callback()}
             >
               {menuItemsData.leftIcon || menuItemsData.rightIcon}
             </WidgetHeaderIconButton>

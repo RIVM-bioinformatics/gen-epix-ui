@@ -1,4 +1,3 @@
-import type { MouseEvent } from 'react';
 import { Tooltip } from '@mui/material';
 
 import type { MenuItemData } from '../../../models/nestedMenu';
@@ -34,6 +33,7 @@ export const nestedMenuItemsFromObject = ({
           <NestedMenuItem
             key={label}
             active={active}
+            callback={callback}
             disabled={disabled}
             label={label}
             leftIcon={leftIcon}
@@ -67,12 +67,12 @@ export const nestedMenuItemsFromObject = ({
         }}
         leftIcon={leftIcon}
         // eslint-disable-next-line react/jsx-no-bind
-        onClick={(event: MouseEvent<HTMLElement>) => {
+        onClick={() => {
           if (!autoCloseDisabled) {
             handleClose();
           }
           if (callback) {
-            callback(event, item);
+            callback();
           }
         }}
       />

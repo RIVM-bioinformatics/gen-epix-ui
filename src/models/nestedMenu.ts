@@ -1,6 +1,5 @@
 import type { SxProps } from '@mui/material';
 import type {
-  MouseEvent,
   ReactElement,
   ReactNode,
 } from 'react';
@@ -11,7 +10,7 @@ export interface MenuItemData {
   tooltip?: string | ReactElement;
   leftIcon?: ReactNode;
   rightIcon?: ReactNode;
-  callback?: (event: MouseEvent<HTMLElement>, item: MenuItemData) => void;
+  callback?: () => void;
   items?: MenuItemData[];
   disabled?: boolean;
   divider?: boolean;

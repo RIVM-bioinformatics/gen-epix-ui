@@ -3,6 +3,7 @@ import { useStore } from 'zustand';
 import { useShallow } from 'zustand/shallow';
 import CheckBoxOutlinedIcon from '@mui/icons-material/CheckBoxOutlined';
 import CheckBoxOutlineBlankOutlinedIcon from '@mui/icons-material/CheckBoxOutlineBlankOutlined';
+import IndeterminateCheckBoxIcon from '@mui/icons-material/IndeterminateCheckBox';
 import {
   useCallback,
   useMemo,
@@ -39,6 +40,22 @@ export const UseColumnsMenu = <TRowData,>({ hasCellData }: UseColumnsMenuProps<T
         return draft.filter(c => c !== columnId);
       }
       draft.push(columnId);
+      return draft;
+    });
+    emitTableEvent('columnVisibilityChange', newVisibleColumnIds);
+  }, [emitTableEvent, visibleColumnIds]);
+
+  const toggleDimension = useCallback((dimensionColumnIds: string[]): void => {
+    const areAllVisible = dimensionColumnIds.every(columnId => visibleColumnIds.includes(columnId));
+    const newVisibleColumnIds = produce(visibleColumnIds, (draft) => {
+      if (areAllVisible) {
+        return draft.filter(c => !dimensionColumnIds.includes(c));
+      }
+      dimensionColumnIds.forEach((columnId) => {
+        if (!draft.includes(columnId)) {
+          draft.push(columnId);
+        }
+      });
       return draft;
     });
     emitTableEvent('columnVisibilityChange', newVisibleColumnIds);
@@ -90,8 +107,14 @@ export const UseColumnsMenu = <TRowData,>({ hasCellData }: UseColumnsMenuProps<T
 
     if (columnDimensions) {
       columnDimensions.forEach((dimension) => {
+        const areAllVisible = dimension.columnIds.every(columnId => visibleColumnIds.includes(columnId));
+        const areSomeVisible = dimension.columnIds.some(columnId => visibleColumnIds.includes(columnId));
         items.push({
+          autoCloseDisabled: true,
           label: dimension.label,
+          callback: () => toggleDimension(dimension.columnIds),
+          // eslint-disable-next-line no-nested-ternary
+          rightIcon: areAllVisible ? <CheckBoxOutlinedIcon /> : areSomeVisible ? <IndeterminateCheckBoxIcon /> : <CheckBoxOutlineBlankOutlinedIcon />,
           items: dimension.columnIds.map((columnId) => ({
             autoCloseDisabled: true,
             label: tableColumns.find(c => c.id === columnId)?.headerName ?? '',
@@ -115,7 +138,7 @@ export const UseColumnsMenu = <TRowData,>({ hasCellData }: UseColumnsMenuProps<T
       label: t`Columns`,
       items,
     };
-  }, [t, columnDimensions, emitTableEvent, onColumnsEditorMenuItemClick, tableColumns, onHideColumnsWithoutDataClick, visibleColumnIds, toggleItem]);
+  }, [t, columnDimensions, onColumnsEditorMenuItemClick, emitTableEvent, tableColumns, onHideColumnsWithoutDataClick, visibleColumnIds, toggleDimension, toggleItem]);
 
   return menuItemData;
 };

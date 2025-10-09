@@ -2,6 +2,7 @@ import {
   type SxProps,
   type Theme,
 } from '@mui/material';
+import IndeterminateCheckBoxIcon from '@mui/icons-material/IndeterminateCheckBox';
 import {
   Box,
   Checkbox,
@@ -250,12 +251,17 @@ export const Table = <TRowData,>({
   }, [sortedData, setSelectedIds, selectedIds, idSelectorCallback]);
 
   const renderCheckboxHeader = useCallback(() => {
+    const isAllChecked = sortedData.every(row => selectedIds.includes(idSelectorCallback(row)));
+    const isSomeChecked = sortedData.some(row => selectedIds.includes(idSelectorCallback(row)));
     return (
       <Checkbox
-        checked={sortedData.every(row => selectedIds.includes(idSelectorCallback(row)))}
-        inputProps={{
-          'aria-label': t`Select all`,
+        checked={isSomeChecked}
+        slotProps={{
+          input: {
+            'aria-label': t`Select all`,
+          },
         }}
+        checkedIcon={isAllChecked ? undefined : <IndeterminateCheckBoxIcon />}
         name={'select-all'}
         sx={{
           padding: 0,

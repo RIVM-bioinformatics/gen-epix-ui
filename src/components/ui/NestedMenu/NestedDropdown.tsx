@@ -102,7 +102,7 @@ export const NestedDropdown = ({ ref, ...props }: NestedDropdownProps) => {
       {(!ButtonProps.disabled && showTopLevelTooltip) && (
         <Tooltip
           arrow
-          componentsProps={{
+          slotProps={{
             tooltip: {
               sx: {
                 marginLeft: `${theme.spacing(0)} !important`,

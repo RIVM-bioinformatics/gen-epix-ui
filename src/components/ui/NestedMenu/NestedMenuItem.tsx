@@ -59,6 +59,7 @@ export type NestedMenuItemProps = Omit<MenuItemProps, 'button'> & {
   readonly className?: string;
   readonly tabIndex?: number;
   readonly disabled?: boolean;
+  readonly callback?: () => void;
   // eslint-disable-next-line @typescript-eslint/naming-convention
   readonly ContainerProps?: HTMLAttributes<HTMLElement>;
   // eslint-disable-next-line @typescript-eslint/naming-convention
@@ -76,6 +77,7 @@ export const NestedMenuItem = ({ ref, ...props }: NestedMenuItemProps) => {
   const [origins, setOrigins] = useState<Origins>(rightOrigins);
 
   const {
+    callback,
     parentMenuOpen,
     label,
     rightIcon = <ChevronRightIcon />,
@@ -89,6 +91,12 @@ export const NestedMenuItem = ({ ref, ...props }: NestedMenuItemProps) => {
   } = props;
 
   useImperativeHandle(ref, () => menuItemRef.current);
+
+  const onIconMenuItemClick = useCallback((): void => {
+    if (callback) {
+      callback();
+    }
+  }, [callback]);
 
   const onMouseEnter = useCallback((e: MouseEvent<HTMLElement>): void => {
     setIsSubMenuOpen(true);
@@ -135,6 +143,14 @@ export const NestedMenuItem = ({ ref, ...props }: NestedMenuItemProps) => {
     }
   }, [ContainerProps]);
 
+  const onBlur = useCallback(() => {
+    setTimeout(() => {
+      if (!isSubmenuFocused()) {
+        setIsSubMenuOpen(false);
+      }
+    });
+  }, [isSubmenuFocused]);
+
   const onKeyDown = useCallback((e: KeyboardEvent) => {
     if (e.key === 'Escape') {
       return;
@@ -146,6 +162,11 @@ export const NestedMenuItem = ({ ref, ...props }: NestedMenuItemProps) => {
 
     const isActive = containerRef.current?.ownerDocument.activeElement;
 
+    // if pressing enter key, run callback
+    if (e.key === 'Enter' && e.target === containerRef.current && callback) {
+      callback();
+    }
+
     if (e.key === 'ArrowLeft' && isSubmenuFocused()) {
       containerRef.current?.focus();
     }
@@ -154,7 +175,7 @@ export const NestedMenuItem = ({ ref, ...props }: NestedMenuItemProps) => {
       const firstChild = menuContainerRef.current?.children[0] as HTMLDivElement;
       firstChild?.focus();
     }
-  }, [isSubmenuFocused]);
+  }, [callback, isSubmenuFocused]);
 
   const open = isSubMenuOpen && parentMenuOpen;
 
@@ -179,6 +200,7 @@ export const NestedMenuItem = ({ ref, ...props }: NestedMenuItemProps) => {
       {...ContainerProps}
       ref={containerRef}
       tabIndex={tabIndex}
+      onBlur={onBlur}
       onFocus={onFocus}
       onKeyDown={onKeyDown}
       onMouseEnter={onMouseEnter}
@@ -192,6 +214,7 @@ export const NestedMenuItem = ({ ref, ...props }: NestedMenuItemProps) => {
         label={label}
         leftIcon={leftIcon}
         rightIcon={rightIcon}
+        onClick={onIconMenuItemClick}
       />
       <Menu
         ref={menuRef}
