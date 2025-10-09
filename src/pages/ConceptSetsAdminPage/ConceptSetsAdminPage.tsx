@@ -171,7 +171,7 @@ export const ConceptSetsAdminPage = () => {
     }
     return [
       {
-        ...TestIdUtil.createAttributes('OrganizationSitesAdminPage-ManageContactsButton'),
+        ...TestIdUtil.createAttributes('ConceptSetsAdminPage-ManageConceptsButton'),
         label: t`Manage concepts`,
         color: 'primary',
         variant: 'outlined',

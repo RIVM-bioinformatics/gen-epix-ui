@@ -8,16 +8,14 @@ import {
   object,
   string,
 } from 'yup';
+import { useParams } from 'react-router-dom';
 
 import type { RegionSetShape } from '../../api';
 import {
   GeoApi,
   CommandName,
 } from '../../api';
-import {
-  useRegionSetOptionsQuery,
-  useRegionSetsMapQuery,
-} from '../../dataHooks/useRegionSetsQuery';
+import { useRegionSetsMapQuery } from '../../dataHooks/useRegionSetsQuery';
 import { useArray } from '../../hooks/useArray';
 import type { FormFieldDefinition } from '../../models/form';
 import { FORM_FIELD_DEFINITION_TYPE } from '../../models/form';
@@ -27,36 +25,46 @@ import { TableUtil } from '../../utils/TableUtil';
 import { TestIdUtil } from '../../utils/TestIdUtil';
 import { CrudPage } from '../CrudPage';
 
-type FormFields = Pick<RegionSetShape, 'region_set_id' | 'scale' | 'geo_json'>;
+type FormFields = Omit<RegionSetShape, 'id' | 'region_set_id' | 'region_set'>;
 
 export const RegionSetShapesAdminPage = () => {
+  const { regionSetId } = useParams();
   const [t] = useTranslation();
-  const regionSetOptionsQuery = useRegionSetOptionsQuery();
   const regionSetsMapQuery = useRegionSetsMapQuery();
 
-  const loadables = useArray([regionSetOptionsQuery, regionSetsMapQuery]);
-
+  const loadables = useArray([regionSetsMapQuery]);
 
   const fetchAll = useCallback(async (signal: AbortSignal) => {
     return (await GeoApi.getInstance().regionSetShapesGetAll({ signal }))?.data;
   }, []);
+
+  const fetchAllSelect = useCallback((regionSetShapes: RegionSetShape[]) => {
+    return regionSetShapes.filter((regionSetShape) => regionSetShape.region_set_id === regionSetId);
+  }, [regionSetId]);
 
   const deleteOne = useCallback(async (item: RegionSetShape) => {
     return await GeoApi.getInstance().regionSetShapesDeleteOne(item.id);
   }, []);
 
   const updateOne = useCallback(async (variables: FormFields, item: RegionSetShape) => {
-    return (await GeoApi.getInstance().regionSetShapesPutOne(item.id, { id: item.id, ...variables })).data;
-  }, []);
+    return (await GeoApi.getInstance().regionSetShapesPutOne(item.id, {
+      ...variables,
+      id: item.id,
+      region_set_id: regionSetId,
+    })).data;
+  }, [regionSetId]);
 
   const createOne = useCallback(async (variables: FormFields) => {
-    return (await GeoApi.getInstance().regionSetShapesPostOne(variables)).data;
-  }, []);
+    return (await GeoApi.getInstance().regionSetShapesPostOne({
+      ...variables,
+      region_set_id: regionSetId,
+    })).data;
+  }, [regionSetId]);
 
-  const getName = useCallback((item: RegionSetShape) => {
-    const regionSet = regionSetsMapQuery.map.get(item.region_set_id);
+  const getName = useCallback((item: FormFields) => {
+    const regionSet = regionSetsMapQuery.map.get(regionSetId);
     return `${regionSet.name} - ${item.scale}`;
-  }, [regionSetsMapQuery.map]);
+  }, [regionSetId, regionSetsMapQuery.map]);
 
   const schema = useMemo(() => {
     return object<FormFields>().shape({
@@ -68,13 +76,6 @@ export const RegionSetShapesAdminPage = () => {
 
   const formFieldDefinitions = useMemo<FormFieldDefinition<FormFields>[]>(() => {
     return [
-      {
-        definition: FORM_FIELD_DEFINITION_TYPE.AUTOCOMPLETE,
-        name: 'region_set_id',
-        label: t`Region set`,
-        options: regionSetOptionsQuery.options,
-        loading: regionSetOptionsQuery.isLoading,
-      } as const satisfies FormFieldDefinition<FormFields>,
       {
         definition: FORM_FIELD_DEFINITION_TYPE.TEXTFIELD,
         name: 'scale',
@@ -89,24 +90,33 @@ export const RegionSetShapesAdminPage = () => {
         multiline: true,
       } as const satisfies FormFieldDefinition<FormFields>,
     ] as const;
-  }, [regionSetOptionsQuery.isLoading, regionSetOptionsQuery.options, t]);
+  }, [t]);
 
   const tableColumns = useMemo((): TableColumn<RegionSetShape>[] => {
     return [
-      TableUtil.createOptionsColumn<RegionSetShape>({ id: 'region_set_id', name: t`Region set`, options: regionSetOptionsQuery.options }),
       TableUtil.createNumberColumn<RegionSetShape>({ id: 'scale', name: t`Scale` }),
       TableUtil.createBooleanColumn<RegionSetShape>({ id: 'geo_json', name: t`GEO JSON` }),
     ];
-  }, [regionSetOptionsQuery.options, t]);
+  }, [t]);
+
+  const getOptimisticUpdateIntermediateItem = useCallback((variables: FormFields, previousItem: RegionSetShape): RegionSetShape => {
+    return {
+      ...variables,
+      id: previousItem.id,
+      region_set_id: previousItem.region_set_id,
+    };
+  }, []);
 
   return (
     <CrudPage<FormFields, RegionSetShape>
       createOne={createOne}
       crudCommandType={CommandName.RegionSetShapeCrudCommand}
-      defaultSortByField={'region_set_id'}
+      defaultSortByField={'scale'}
       defaultSortDirection={'asc'}
       deleteOne={deleteOne}
+      getOptimisticUpdateIntermediateItem={getOptimisticUpdateIntermediateItem}
       fetchAll={fetchAll}
+      fetchAllSelect={fetchAllSelect}
       formFieldDefinitions={formFieldDefinitions}
       getName={getName}
       loadables={loadables}

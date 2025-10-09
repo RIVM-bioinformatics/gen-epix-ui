@@ -504,48 +504,62 @@ export const adminRoutes: MyNonIndexRouteObject[] = [
       category: ADMIN_PAGE_CATEGORY.REFERENCE_DATA,
     },
   },
-  {
-    path: '/management/regions',
-    Component: () => <RegionsAdminPage />,
-    errorElement: <RouterErrorPage />,
-    handle: {
-      titleKey: 'Regions',
-      subTitleKey: 'Manage regions',
-      requiredPermissions: [
-        { command_name: CommandName.RegionCrudCommand, permission_type: PermissionType.READ },
-        { command_name: CommandName.RegionSetCrudCommand, permission_type: PermissionType.READ },
-      ],
-      requiresUserProfile: true,
-      category: ADMIN_PAGE_CATEGORY.REFERENCE_DATA,
-    },
-  },
+
   {
     path: '/management/region-sets',
-    Component: () => <RegionSetsAdminPage />,
     errorElement: <RouterErrorPage />,
     handle: {
       titleKey: 'Region sets',
-      subTitleKey: 'Manage region sets',
-      requiredPermissions: [
-        { command_name: CommandName.RegionSetCrudCommand, permission_type: PermissionType.READ },
-      ],
+      requiredPermissions: [],
       requiresUserProfile: true,
-      category: ADMIN_PAGE_CATEGORY.REFERENCE_DATA,
+      requirePermissionForChildRoute: true,
     },
-  },
-  {
-    path: '/management/region-set-shapes',
-    Component: () => <RegionSetShapesAdminPage />,
-    errorElement: <RouterErrorPage />,
-    handle: {
-      titleKey: 'Region set shapes',
-      subTitleKey: 'Manage region set shapes',
-      requiredPermissions: [
-        { command_name: CommandName.RegionSetShapeCrudCommand, permission_type: PermissionType.READ },
-      ],
-      requiresUserProfile: true,
-      category: ADMIN_PAGE_CATEGORY.REFERENCE_DATA,
-    },
+    children: [
+      {
+        index: true,
+        path: '/management/region-sets',
+        Component: () => <RegionSetsAdminPage />,
+        errorElement: <RouterErrorPage />,
+        handle: {
+          titleKey: 'Region sets',
+          subTitleKey: 'Manage region sets',
+          requiredPermissions: [
+            { command_name: CommandName.RegionSetCrudCommand, permission_type: PermissionType.READ },
+          ],
+          requiresUserProfile: true,
+          category: ADMIN_PAGE_CATEGORY.REFERENCE_DATA,
+        },
+      },
+      {
+        path: '/management/region-sets/:regionSetId/regions',
+        Component: () => <RegionsAdminPage />,
+        errorElement: <RouterErrorPage />,
+        handle: {
+          titleKey: 'Regions',
+          subTitleKey: 'Manage regions',
+          requiredPermissions: [
+            { command_name: CommandName.RegionCrudCommand, permission_type: PermissionType.READ },
+            { command_name: CommandName.RegionSetCrudCommand, permission_type: PermissionType.READ },
+          ],
+          requiresUserProfile: true,
+          category: ADMIN_PAGE_CATEGORY.REFERENCE_DATA,
+        },
+      },
+      {
+        path: '/management/region-sets/:regionSetId/shapes',
+        Component: () => <RegionSetShapesAdminPage />,
+        errorElement: <RouterErrorPage />,
+        handle: {
+          titleKey: 'Region set shapes',
+          subTitleKey: 'Manage region set shapes',
+          requiredPermissions: [
+            { command_name: CommandName.RegionSetShapeCrudCommand, permission_type: PermissionType.READ },
+          ],
+          requiresUserProfile: true,
+          category: ADMIN_PAGE_CATEGORY.REFERENCE_DATA,
+        },
+      },
+    ],
   },
 
   // SYSTEM

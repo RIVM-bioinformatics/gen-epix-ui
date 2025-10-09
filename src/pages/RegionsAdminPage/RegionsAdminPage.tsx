@@ -8,14 +8,13 @@ import {
   object,
   string,
 } from 'yup';
+import { useParams } from 'react-router-dom';
 
 import type { Region } from '../../api';
 import {
   GeoApi,
   CommandName,
 } from '../../api';
-import { useRegionSetOptionsQuery } from '../../dataHooks/useRegionSetsQuery';
-import { useArray } from '../../hooks/useArray';
 import type { FormFieldDefinition } from '../../models/form';
 import { FORM_FIELD_DEFINITION_TYPE } from '../../models/form';
 import { QUERY_KEY } from '../../models/query';
@@ -24,31 +23,40 @@ import { TableUtil } from '../../utils/TableUtil';
 import { TestIdUtil } from '../../utils/TestIdUtil';
 import { CrudPage } from '../CrudPage';
 
-type FormFields = Pick<Region, 'name' | 'code' | 'region_set_id' | 'centroid_lat' | 'centroid_lon' | 'center_lat' | 'center_lon'>;
+type FormFields = Omit<Region, 'id' | 'region_set_id' | 'region_set'>;
 
 export const RegionsAdminPage = () => {
+  const { regionSetId } = useParams();
   const [t] = useTranslation();
-  const regionSetOptionsQuery = useRegionSetOptionsQuery();
-
-  const loadables = useArray([regionSetOptionsQuery]);
 
   const fetchAll = useCallback(async (signal: AbortSignal) => {
     return (await GeoApi.getInstance().regionsGetAll({ signal }))?.data;
   }, []);
+
+  const fetchAllSelect = useCallback((regions: Region[]) => {
+    return regions.filter((region) => region.region_set_id === regionSetId);
+  }, [regionSetId]);
 
   const deleteOne = useCallback(async (item: Region) => {
     return await GeoApi.getInstance().regionsDeleteOne(item.id);
   }, []);
 
   const updateOne = useCallback(async (variables: FormFields, item: Region) => {
-    return (await GeoApi.getInstance().regionsPutOne(item.id, { id: item.id, ...variables })).data;
-  }, []);
+    return (await GeoApi.getInstance().regionsPutOne(item.id, {
+      ...variables,
+      id: item.id,
+      region_set_id: regionSetId,
+    })).data;
+  }, [regionSetId]);
 
   const createOne = useCallback(async (variables: FormFields) => {
-    return (await GeoApi.getInstance().regionsPostOne(variables)).data;
-  }, []);
+    return (await GeoApi.getInstance().regionsPostOne({
+      ...variables,
+      region_set_id: regionSetId,
+    })).data;
+  }, [regionSetId]);
 
-  const getName = useCallback((item: Region) => {
+  const getName = useCallback((item: FormFields) => {
     return item.name;
   }, []);
 
@@ -56,7 +64,6 @@ export const RegionsAdminPage = () => {
     return object<FormFields>().shape({
       name: string().extendedAlphaNumeric().required().max(100),
       code: string().code().required().max(100),
-      region_set_id: string().uuid4().required(),
       centroid_lat: number().required().transform((_val: unknown, orig: string | number) => orig === '' ? undefined : orig),
       centroid_lon: number().required().transform((_val: unknown, orig: string | number) => orig === '' ? undefined : orig),
       center_lat: number().required().transform((_val: unknown, orig: string | number) => orig === '' ? undefined : orig),
@@ -70,19 +77,12 @@ export const RegionsAdminPage = () => {
       {
         definition: FORM_FIELD_DEFINITION_TYPE.TEXTFIELD,
         name: 'name',
-        label: t`name`,
+        label: t`Name`,
       } as const satisfies FormFieldDefinition<FormFields>,
       {
         definition: FORM_FIELD_DEFINITION_TYPE.TEXTFIELD,
         name: 'code',
         label: t`Code`,
-      } as const satisfies FormFieldDefinition<FormFields>,
-      {
-        definition: FORM_FIELD_DEFINITION_TYPE.AUTOCOMPLETE,
-        name: 'region_set_id',
-        label: t`Region set`,
-        options: regionSetOptionsQuery.options,
-        loading: regionSetOptionsQuery.isLoading,
       } as const satisfies FormFieldDefinition<FormFields>,
       {
         definition: FORM_FIELD_DEFINITION_TYPE.TEXTFIELD,
@@ -109,27 +109,35 @@ export const RegionsAdminPage = () => {
         type: 'number',
       } as const satisfies FormFieldDefinition<FormFields>,
     ] as const;
-  }, [regionSetOptionsQuery.isLoading, regionSetOptionsQuery.options, t]);
+  }, [t]);
 
   const tableColumns = useMemo((): TableColumn<Region>[] => {
     return [
       TableUtil.createTextColumn<Region>({ id: 'name', name: t`Name` }),
       TableUtil.createTextColumn<Region>({ id: 'code', name: t`Code` }),
-      TableUtil.createOptionsColumn<Region>({ id: 'region_set_id', name: t`Region set`, options: regionSetOptionsQuery.options }),
     ];
-  }, [t, regionSetOptionsQuery.options]);
+  }, [t]);
+
+  const getOptimisticUpdateIntermediateItem = useCallback((variables: FormFields, previousItem: Region): Region => {
+    return {
+      ...variables,
+      id: previousItem.id,
+      region_set_id: previousItem.region_set_id,
+    };
+  }, []);
 
   return (
     <CrudPage<FormFields, Region>
       createOne={createOne}
       crudCommandType={CommandName.RegionCrudCommand}
       defaultSortByField={'name'}
+      fetchAllSelect={fetchAllSelect}
       defaultSortDirection={'asc'}
       deleteOne={deleteOne}
       fetchAll={fetchAll}
       formFieldDefinitions={formFieldDefinitions}
+      getOptimisticUpdateIntermediateItem={getOptimisticUpdateIntermediateItem}
       getName={getName}
-      loadables={loadables}
       resourceQueryKeyBase={QUERY_KEY.REGIONS}
       schema={schema}
       tableColumns={tableColumns}
