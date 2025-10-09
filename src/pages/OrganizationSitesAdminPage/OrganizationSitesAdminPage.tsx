@@ -13,7 +13,6 @@ import {
   ListItemIcon,
   ListItemText,
 } from '@mui/material';
-import PermContactCalendarIcon from '@mui/icons-material/PermContactCalendar';
 
 import type { Site } from '../../api';
 import {
@@ -121,9 +120,7 @@ export const OrganizationSitesAdminPage = () => {
           pathname: `/management/organizations/${params.row.organization_id}/sites/${params.row.id}/contacts`,
         })}
       >
-        <ListItemIcon>
-          <PermContactCalendarIcon fontSize={'small'} />
-        </ListItemIcon>
+        <ListItemIcon />
         <ListItemText>
           {t`Manage contacts`}
         </ListItemText>

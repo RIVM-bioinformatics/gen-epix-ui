@@ -1,4 +1,4 @@
-const VALIDATION_PATTERN = {
+const VALIDATOR = {
   DECIMAL_0: /^[-+]?\d*$/,
   DECIMAL_1: /^[-+]?\d*(\.\d)$/,
   DECIMAL_2: /^[-+]?\d*(\.\d){0,2}$/,
@@ -21,21 +21,36 @@ const VALIDATION_PATTERN = {
   TIME_MONTH: /^\d{4}-(1[0-2]|0[1-9])$/,
   TIME_QUARTER: /^\d{4}-[qQ][1-4]$/,
   TIME_YEAR: /^\d{4}$/,
-  EMPTY_STRING: /^\s+$/,
+  URL: /^(https?:\/\/)?([\w-]+(\.[\w-]+)+)([\w.,@?^=%&:/~+#-]*[\w@?^=%&/~+#-])?$/,
+  // eslint-disable-next-line @typescript-eslint/naming-convention
+  REGEX: (value: string) => {
+    try {
+      // Try to create a new RegExp object with the provided value
+      new RegExp(value);
+      return true; // If successful, the regex is valid
+    } catch (_e) {
+      return false; // If an error is thrown, the regex is invalid
+    }
+  },
 };
 
+const EMPTY_STRING = /^\s+$/;
+
 export class ValidationUtil {
-  public static validate(patternKey: keyof typeof VALIDATION_PATTERN, value: string | number, isRequired = false): boolean {
+  public static validate(patternKey: keyof typeof VALIDATOR, value: string | number, isRequired = false): boolean {
     if (value === undefined || value === null || value === '') {
       return !isRequired;
     }
     if (typeof value === 'number') {
       value = value.toString();
     }
-    if (VALIDATION_PATTERN.EMPTY_STRING.test(value)) {
-      // value is only whitespace
+    // Check for empty string (only spaces, tabs, new lines)
+    if (EMPTY_STRING.test(value)) {
       return false;
     }
-    return VALIDATION_PATTERN[patternKey].test(value);
+    if (typeof VALIDATOR[patternKey] === 'function') {
+      return VALIDATOR[patternKey](value);
+    }
+    return VALIDATOR[patternKey].test(value);
   }
 }

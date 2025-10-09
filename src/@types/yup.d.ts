@@ -25,5 +25,7 @@ declare module 'yup' {
     decimal4(): StringSchema;
     decimal5(): StringSchema;
     decimal6(): StringSchema;
+    url(): StringSchema;
+    regex(): StringSchema;
   }
 }

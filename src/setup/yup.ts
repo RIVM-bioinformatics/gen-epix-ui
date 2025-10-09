@@ -108,6 +108,16 @@ export const setupYup = () => {
       message: () => t`Only a valid email address is allowed.`,
     },
     {
+      name: 'url',
+      assertCallback: (value: string) => ValidationUtil.validate('URL', value),
+      message: () => t`Only a valid url is allowed.`,
+    },
+    {
+      name: 'regex',
+      assertCallback: (value: string) => ValidationUtil.validate('REGEX', value),
+      message: () => t`Only a valid regex is allowed.`,
+    },
+    {
       name: 'uuid4',
       assertCallback: (value: string) => ValidationUtil.validate('UUID4', value),
       message: () => t`Only a valid UUID is allowed.`,

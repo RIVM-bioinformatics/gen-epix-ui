@@ -12,6 +12,8 @@ import { CaseTypesAdminPage } from '../pages/CaseTypesAdminPage';
 import { CaseTypeSetCategoriesAdminPage } from '../pages/CaseTypeSetCategoriesAdminPage';
 import { CaseTypeSetsAdminPage } from '../pages/CaseTypeSetsAdminPage';
 import { ColsAdminPage } from '../pages/ColsAdminPage';
+import { ConceptsAdminPage } from '../pages/ConceptsAdminPage';
+import { ConceptSetsAdminPage } from '../pages/ConceptSetsAdminPage';
 import { DataCollectionsAdminPage } from '../pages/DataCollectionsAdminPage';
 import { DataCollectionSetsAdminPage } from '../pages/DataCollectionSetsAdminPage';
 import { DataCollectionVisualizationPage } from '../pages/DataCollectionVisualizationPage';
@@ -340,6 +342,47 @@ export const adminRoutes: MyNonIndexRouteObject[] = [
     },
   },
   {
+    path: '/management/concept-sets',
+    errorElement: <RouterErrorPage />,
+    handle: {
+      titleKey: 'Concept Sets',
+      requiredPermissions: [],
+      requiresUserProfile: true,
+      requirePermissionForChildRoute: true,
+    },
+    children: [
+      {
+        index: true,
+        path: '/management/concept-sets',
+        Component: () => <ConceptSetsAdminPage />,
+        errorElement: <RouterErrorPage />,
+        handle: {
+          titleKey: 'Concept Sets',
+          subTitleKey: 'Manage concept sets',
+          requiredPermissions: [
+            { command_name: CommandName.ConceptSetCrudCommand, permission_type: PermissionType.READ },
+          ],
+          requiresUserProfile: true,
+          category: ADMIN_PAGE_CATEGORY.REFERENCE_DATA,
+        },
+      },
+      {
+        path: '/management/concept-sets/:conceptSetId/concepts',
+        Component: () => <ConceptsAdminPage />,
+        errorElement: <RouterErrorPage />,
+        handle: {
+          titleKey: 'Concepts',
+          subTitleKey: 'Manage concepts',
+          requiredPermissions: [
+            { command_name: CommandName.ConceptCrudCommand, permission_type: PermissionType.READ },
+          ],
+          requiresUserProfile: true,
+          category: ADMIN_PAGE_CATEGORY.REFERENCE_DATA,
+        },
+      },
+    ],
+  },
+  {
     path: '/management/diseases',
     Component: () => <DiseasesAdminPage />,
     errorElement: <RouterErrorPage />,
@@ -504,11 +547,10 @@ export const adminRoutes: MyNonIndexRouteObject[] = [
       category: ADMIN_PAGE_CATEGORY.REFERENCE_DATA,
     },
   },
-  // SYSTEM
 
+  // SYSTEM
   {
     path: '/management/outages',
-
     Component: () => <OutagesAdminPage />,
     errorElement: <RouterErrorPage />,
     handle: {

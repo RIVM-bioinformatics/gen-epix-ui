@@ -12,6 +12,8 @@ describe('ValidationUtil', () => {
       expect(ValidationUtil.validate('EXTENDED_ALPHA', 'abc-xyz, ábç-xÿz.;:')).toBe(true);
       expect(ValidationUtil.validate('EXTENDED_ALPHA_NUMERIC', 'abc-xyz, ábç-xÿz.;:123')).toBe(true);
       expect(ValidationUtil.validate('FREE_FORM_TEXT', 'ábçxÿz890!@#$%^  \n \t')).toBe(true);
+      expect(ValidationUtil.validate('URL', 'http://example.com')).toBe(true);
+      expect(ValidationUtil.validate('REGEX', 'H\\d+')).toBe(true);
     });
     it('should return false on incorrect input', () => {
       expect(ValidationUtil.validate('STRICT_ALPHA', 'ábçxÿz')).toBe(false);
@@ -22,6 +24,8 @@ describe('ValidationUtil', () => {
       expect(ValidationUtil.validate('ALPHA_NUMERIC', '!@#$%^ \n\t')).toBe(false);
       expect(ValidationUtil.validate('EXTENDED_ALPHA', '!@#$%^ \n\t')).toBe(false);
       expect(ValidationUtil.validate('EXTENDED_ALPHA_NUMERIC', '!@#$%^ 123 \n\t')).toBe(false);
+      expect(ValidationUtil.validate('URL', 'xxxx')).toBe(false);
+      expect(ValidationUtil.validate('REGEX', '[')).toBe(false);
     });
     it('should return false on empty strings', () => {
       expect(ValidationUtil.validate('STRICT_ALPHA', '  ')).toBe(false);
@@ -32,6 +36,8 @@ describe('ValidationUtil', () => {
       expect(ValidationUtil.validate('ALPHA_NUMERIC', '  \n\t')).toBe(false);
       expect(ValidationUtil.validate('EXTENDED_ALPHA', '  \n\t')).toBe(false);
       expect(ValidationUtil.validate('EXTENDED_ALPHA_NUMERIC', '  \n\t')).toBe(false);
+      expect(ValidationUtil.validate('URL', '  \n\t')).toBe(false);
+      expect(ValidationUtil.validate('REGEX', '  \n\t')).toBe(false);
     });
   });
 

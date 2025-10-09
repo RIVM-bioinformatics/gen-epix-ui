@@ -12,7 +12,6 @@ import {
   ListItemIcon,
   ListItemText,
 } from '@mui/material';
-import BusinessIcon from '@mui/icons-material/Business';
 
 import type { Organization } from '../../api';
 import {
@@ -107,9 +106,7 @@ export const OrganizationsAdminPage = () => {
           pathname: `/management/organizations/${params.row.id}/sites`,
         })}
       >
-        <ListItemIcon>
-          <BusinessIcon fontSize={'small'} />
-        </ListItemIcon>
+        <ListItemIcon />
         <ListItemText>
           {t`Manage sites`}
         </ListItemText>
