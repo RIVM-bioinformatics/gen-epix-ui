@@ -64,6 +64,12 @@ export const RouterRoot = () => {
     }]);
   }, [location.pathname]);
 
+  useEffect(() => {
+    if (identityProviders?.length === 1) {
+      AuthenticationManager.instance.next(identityProviders[0]);
+    }
+  }, [identityProviders]);
+
   const userManager = useMemo<UserManager>(() => {
     if (!oidcConfiguration || !identityProviders?.length) {
       return null;
