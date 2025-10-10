@@ -100,7 +100,7 @@ export const ConceptsAdminPage = () => {
 
   const tableColumns = useMemo((): TableColumn<Concept>[] => {
     return [
-      TableUtil.createTextColumn<Concept>({ id: 'rank', name: t`Rank`, flex: 0.25 }),
+      TableUtil.createNumberColumn<Concept>({ id: 'rank', name: t`Rank`, flex: 0.25 }),
       TableUtil.createTextColumn<Concept>({ id: 'name', name: t`Name` }),
       TableUtil.createTextColumn<Concept>({ id: 'code', name: t`Code` }),
     ];

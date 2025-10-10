@@ -170,7 +170,7 @@ export const CaseTypeColsAdminPage = () => {
       TableUtil.createOptionsColumn<CaseTypeCol>({ id: 'case_type_id', name: t`Case type`, options: caseTypeOptionsQuery.options }),
       TableUtil.createOptionsColumn<CaseTypeCol>({ id: 'col_id', name: t`Column`, options: colOptionsQuery.options }),
       TableUtil.createTextColumn<CaseTypeCol>({ id: 'code', name: t`Code` }),
-      TableUtil.createTextColumn<CaseTypeCol>({ id: 'rank', name: t`Rank` }),
+      TableUtil.createNumberColumn<CaseTypeCol>({ id: 'rank', name: t`Rank` }),
     ];
   }, [caseTypeOptionsQuery.options, colOptionsQuery.options, t]);
 
