@@ -11,6 +11,7 @@ import {
 } from 'react';
 import { isRouteErrorResponse } from 'react-router-dom';
 import { isAxiosError } from 'axios';
+import { useAuth } from 'react-oidc-context';
 
 import { LogLevel } from '../../../api';
 import { AxiosUtil } from '../../../utils/AxiosUtil';
@@ -19,7 +20,6 @@ import { ConfigManager } from '../../../classes/managers/ConfigManager';
 import { LogManager } from '../../../classes/managers/LogManager';
 import { PageEventBusManager } from '../../../classes/managers/PageEventBusManager';
 import { RouterManager } from '../../../classes/managers/RouterManager';
-import { WindowManager } from '../../../classes/managers/WindowManager';
 
 export type GenericErrorMessageProps = {
   readonly error?: unknown;
@@ -28,6 +28,7 @@ export type GenericErrorMessageProps = {
 
 export const GenericErrorMessage = ({ error, shouldHideActionButtons }: GenericErrorMessageProps) => {
   const [t] = useTranslation();
+  const auth = useAuth();
 
   useEffect(() => {
     LogManager.instance.log([{
@@ -54,10 +55,17 @@ export const GenericErrorMessage = ({ error, shouldHideActionButtons }: GenericE
     await RouterManager.instance.router.navigate(-1);
   }, []);
 
-  const onLogoutButtonClick = useCallback(() => {
+  const onLogoutButtonClick = useCallback(async () => {
     AuthenticationManager.clearStaleState();
-    WindowManager.instance.window.location.reload();
-  }, []);
+    if (auth) {
+      // eslint-disable-next-line @typescript-eslint/no-floating-promises
+      auth.signoutRedirect();
+    } else {
+      await RouterManager.instance.router.navigate({
+        pathname: '/',
+      });
+    }
+  }, [auth]);
 
   const title = useMemo(() => {
     if (isRouteErrorResponse(error) || AxiosUtil.isAxiosNotFoundError(error)) {
