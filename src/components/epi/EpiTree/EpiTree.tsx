@@ -105,7 +105,6 @@ export const EpiTree = ({ linkedScrollSubject, ref }: EpiTreeProps) => {
   const addTreeFilter = useStore(epiStore, (state) => state.addTreeFilter);
   const treeFilterStepOut = useStore(epiStore, (state) => state.treeFilterStepOut);
   const updateEpiTreeWidgetData = useStore(epiStore, (state) => state.updateEpiTreeWidgetData);
-  const epiTreeWidgetData = useStore(epiStore, (state) => state.epiTreeWidgetData);
   const removeTreeFilter = useStore(epiStore, (state) => state.removeTreeFilter);
   const isCaseDataLoading = useStore(epiStore, (state) => state.isDataLoading);
   const newick = useStore(epiStore, (state) => state.newick);
@@ -114,11 +113,11 @@ export const EpiTree = ({ linkedScrollSubject, ref }: EpiTreeProps) => {
   const [epiContextMenuConfig, setEpiContextMenuConfig] = useState<EpiContextMenuConfigWithPosition | null>(null);
   const [zoomInMenuItemConfig, setZoomInMenuItemConfig] = useState<ZoomInMenuItemConfig>(null);
   const [extraLeafInfoId, setExtraLeafInfoId] = useState<string>(null);
-  const [treeConfiguration, setTreeConfiguration] = useState<TreeConfiguration>(epiTreeWidgetData.treeConfiguration);
+  const [treeConfiguration, setTreeConfiguration] = useState<TreeConfiguration>(epiStore.getState().epiTreeWidgetData.treeConfiguration);
   const [treeAssembly, setTreeAssembly] = useState<TreeAssembly>(null);
-  const [verticalScrollPosition, setVerticalScrollPosition] = useState<number>(epiTreeWidgetData.verticalScrollPosition);
-  const [horizontalScrollPosition, setHorizontalScrollPosition] = useState<number>(epiTreeWidgetData.horizontalScrollPosition);
-  const [zoomLevel, setZoomLevel] = useState<number>(epiTreeWidgetData.zoomLevel);
+  const [verticalScrollPosition, setVerticalScrollPosition] = useState<number>(epiStore.getState().epiTreeWidgetData.verticalScrollPosition);
+  const [horizontalScrollPosition, setHorizontalScrollPosition] = useState<number>(epiStore.getState().epiTreeWidgetData.horizontalScrollPosition);
+  const [zoomLevel, setZoomLevel] = useState<number>(epiStore.getState().epiTreeWidgetData.zoomLevel);
   const [devicePixelRatio, setDevicePixelRatio] = useState<number>(DevicePixelRatioManager.instance.data);
   const [isLinked, setIsLinked] = useState(true);
   const internalHighlightingSubject = useMemo(() => new Subject<Highlighting>({
@@ -209,14 +208,16 @@ export const EpiTree = ({ linkedScrollSubject, ref }: EpiTreeProps) => {
   }, [canvasScrollSubject]);
 
   useEffect(() => {
-    if (!treeConfigurations?.length || !!epiTreeWidgetData.treeConfiguration) {
+    if (!treeConfigurations?.length) {
       setTreeConfiguration(null);
     }
-    setTreeConfiguration(treeConfigurations[0]);
+    const newConfig = epiStore.getState().epiTreeWidgetData.treeConfiguration || treeConfigurations[0];
+
+    setTreeConfiguration(newConfig);
     updateEpiTreeWidgetData({
-      treeConfiguration: treeConfigurations[0],
+      treeConfiguration: newConfig,
     });
-  }, [epiTreeWidgetData.treeConfiguration, treeConfigurations, updateEpiTreeWidgetData]);
+  }, [epiStore, treeConfigurations, updateEpiTreeWidgetData]);
 
   const updateLinkedScrollSubjectDebounced = useDebouncedCallback((position: number) => {
     linkedScrollSubject.next({
@@ -658,6 +659,7 @@ export const EpiTree = ({ linkedScrollSubject, ref }: EpiTreeProps) => {
       items: treeConfigurations?.map<MenuItemData>(config => ({
         label: getTitleMenuLabel(config.geneticDistanceProtocol, config.treeAlgorithm),
         callback: () => {
+          console.log('Switching tree configuration to', config);
           const perform = async () => {
             await removeTreeFilter();
             updateEpiTreeWidgetData({
