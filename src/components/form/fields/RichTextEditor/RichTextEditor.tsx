@@ -11,6 +11,8 @@ import {
   FormHelperText,
   FormLabel,
   useTheme,
+  Alert,
+  AlertTitle,
 } from '@mui/material';
 import ClearIcon from '@mui/icons-material/Clear';
 import type { RichTextEditorRef } from 'mui-tiptap';
@@ -131,6 +133,15 @@ export const RichTextEditor = <TFieldValues extends FieldValues, TName extends P
           },
         }}
       >
+        <Alert
+          severity={'info'}
+          sx={{ mt: 0.5 }}
+        >
+          <AlertTitle>
+            {t`Privacy notice`}
+          </AlertTitle>
+          {t`Do not enter any personal information here (such as name, address, telephone number or government-issued personal identifier).`}
+        </Alert>
         <FormLabel
           component={'legend'}
           disabled={disabled || loading}
