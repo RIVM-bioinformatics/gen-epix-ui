@@ -1,17 +1,21 @@
 import {
   useCallback,
+  useContext,
   useState,
 } from 'react';
+import { useStore } from 'zustand';
 
 import { EpiCompletCaseTypeLoader } from '../EpiCompletCaseTypeLoader';
+import { EpiUploadStoreContext } from '../../../stores/epiUploadStore';
 
-import type { EpiUploadValidateContentProps } from './EpiUploadValidateContent';
 import { EpiUploadValidateContent } from './EpiUploadValidateContent';
 
-export type EpiUploadValidateProps = EpiUploadValidateContentProps;
+
+export const EpiUploadValidate = () => {
+  const store = useContext(EpiUploadStoreContext);
+  const completeCaseType = useStore(store, (state) => state.completeCaseType);
 
 
-export const EpiUploadValidate = (props: EpiUploadValidateProps) => {
   const [isCompleteCaseTypeLoaded, setIsCompleteCaseTypeLoaded] = useState<boolean>(false);
 
   const onCompleteCaseTypeLoaded = useCallback(() => {
@@ -20,13 +24,11 @@ export const EpiUploadValidate = (props: EpiUploadValidateProps) => {
 
   return (
     <EpiCompletCaseTypeLoader
-      caseTypeId={props.completeCaseType.id}
+      caseTypeId={completeCaseType.id}
       onCompleteCaseTypeLoaded={onCompleteCaseTypeLoaded}
     >
       {isCompleteCaseTypeLoaded && (
-        <EpiUploadValidateContent
-          {...props}
-        />
+        <EpiUploadValidateContent />
       )}
     </EpiCompletCaseTypeLoader>
   );

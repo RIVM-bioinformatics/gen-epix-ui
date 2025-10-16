@@ -1,6 +1,7 @@
 import { useTranslation } from 'react-i18next';
 import {
   useCallback,
+  useContext,
   useId,
   useMemo,
   useState,
@@ -13,49 +14,50 @@ import {
   Container,
 } from '@mui/material';
 import difference from 'lodash/difference';
+import { useStore } from 'zustand';
 
-import {
-  CaseApi,
-  type ValidatedCase,
-} from '../../../api';
+import { CaseApi } from '../../../api';
 import { useQueryMemo } from '../../../hooks/useQueryMemo';
 import { QueryUtil } from '../../../utils/QueryUtil';
 import { QUERY_KEY } from '../../../models/query';
 import { Spinner } from '../../ui/Spinner';
 import { EpiCaseTypeUtil } from '../../../utils/EpiCaseTypeUtil';
 import { RouterManager } from '../../../classes/managers/RouterManager';
-import type {
-  EpiUploadSelectFileResult,
-  EpiUploadSequenceMapping,
-} from '../../../models/epiUpload';
 import { EPI_UPLOAD_ACTION } from '../../../models/epiUpload';
 import { EpiUploadUtil } from '../../../utils/EpiUploadUtil';
+import { EpiUploadStoreContext } from '../../../stores/epiUploadStore';
 
 import { EpiUploadNavigation } from './EpiUploadNavigation';
 
 
-export type EpiUploadCreateCasesProps = {
-  readonly selectFileResult: EpiUploadSelectFileResult;
-  readonly sequenceMapping: EpiUploadSequenceMapping;
-  readonly sequenceFilesDataTransfer: DataTransfer;
-  readonly validatedCases: ValidatedCase[];
-  readonly onStartOver: () => void;
-  readonly onGoBack: () => void;
-};
-
-export const EpiUploadCreateCases = ({ selectFileResult, validatedCases, onStartOver, onGoBack, sequenceMapping, sequenceFilesDataTransfer }: EpiUploadCreateCasesProps) => {
+export const EpiUploadCreateCases = () => {
   const [t] = useTranslation();
   const queryId = useId();
+
+  const store = useContext(EpiUploadStoreContext);
+  const reset = useStore(store, (state) => state.reset);
+  const goToPreviousStep = useStore(store, (state) => state.goToPreviousStep);
+  const sequenceMapping = useStore(store, (state) => state.sequenceMapping);
+  const sequenceFilesDataTransfer = useStore(store, (state) => state.sequenceFilesDataTransfer);
+  const validatedCases = useStore(store, (state) => state.validatedCases);
+  const case_type_id = useStore(store, (state) => state.case_type_id);
+  const import_action = useStore(store, (state) => state.import_action);
+  const created_in_data_collection_id = useStore(store, (state) => state.created_in_data_collection_id);
+  const completeCaseType = useStore(store, (state) => state.completeCaseType);
+  const rawData = useStore(store, (state) => state.rawData);
+  const share_in_data_collection_ids = useStore(store, (state) => state.share_in_data_collection_ids);
+
+
   const [isUploadStarted, setIsUploadStarted] = useState(false);
 
   const createCasesQuery = useQueryMemo({
     queryKey: QueryUtil.getGenericKey(QUERY_KEY.CREATE_CASES, queryId),
     queryFn: async ({ signal }) => {
       const response = await CaseApi.instance.createCases({
-        case_type_id: selectFileResult.case_type_id,
-        created_in_data_collection_id: selectFileResult.create_in_data_collection_id,
-        data_collection_ids: selectFileResult.share_in_data_collection_ids,
-        is_update: selectFileResult.import_action === EPI_UPLOAD_ACTION.UPDATE,
+        case_type_id,
+        created_in_data_collection_id,
+        data_collection_ids: share_in_data_collection_ids,
+        is_update: import_action === EPI_UPLOAD_ACTION.UPDATE,
         cases: validatedCases.map(c => c.case),
       }, { signal });
       await QueryUtil.invalidateQueryKeys(QueryUtil.getQueryKeyDependencies([QUERY_KEY.CREATE_CASES], false));
@@ -85,17 +87,17 @@ export const EpiUploadCreateCases = ({ selectFileResult, validatedCases, onStart
   }, [sequenceFilesDataTransfer.files, sequenceMapping]);
 
   const onStartOverButtonClick = useCallback(() => {
-    onStartOver();
-  }, [onStartOver]);
+    reset();
+  }, [reset]);
 
   const onStartUploadButtonClick = useCallback(() => {
     setIsUploadStarted(true);
   }, []);
 
   const onGotoCasesButtonClick = useCallback(async () => {
-    const link = EpiCaseTypeUtil.createCaseTypeLink(selectFileResult.completeCaseType);
+    const link = EpiCaseTypeUtil.createCaseTypeLink(completeCaseType);
     await RouterManager.instance.router.navigate(link);
-  }, [selectFileResult.completeCaseType]);
+  }, [completeCaseType]);
 
   if (createCasesQuery.isLoading) {
     return <Spinner label={t`Uploading cases...`} />;
@@ -143,11 +145,11 @@ export const EpiUploadCreateCases = ({ selectFileResult, validatedCases, onStart
               </Alert>
             </Box>
           )}
-          {(selectFileResult.rawData.length - 1) - validatedCases.length > 0 && (
+          {(rawData.length - 1) - validatedCases.length > 0 && (
             <Box marginY={2}>
               <Alert severity={'warning'}>
                 <AlertTitle>
-                  {t('{{numCases}} cases were not selected and will not be uploaded.', { numCases: (selectFileResult.rawData.length - 1) - validatedCases.length })}
+                  {t('{{numCases}} cases were not selected and will not be uploaded.', { numCases: (rawData.length - 1) - validatedCases.length })}
                 </AlertTitle>
               </Alert>
             </Box>
@@ -182,7 +184,7 @@ export const EpiUploadCreateCases = ({ selectFileResult, validatedCases, onStart
       {!isUploadStarted && (
         <EpiUploadNavigation
           proceedLabel={'Start upload'}
-          onGoBackButtonClick={onGoBack}
+          onGoBackButtonClick={goToPreviousStep}
           onProceedButtonClick={onStartUploadButtonClick}
         />
       )}

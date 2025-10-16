@@ -8,6 +8,7 @@ import {
 } from '@mui/material';
 import {
   useCallback,
+  useContext,
   useEffect,
   useId,
   useMemo,
@@ -15,11 +16,9 @@ import {
 } from 'react';
 import { useTranslation } from 'react-i18next';
 import uniq from 'lodash/uniq';
+import { useStore } from 'zustand';
 
-import type {
-  EpiUploadSequenceMapping,
-  EpiValidatedCaseWithGeneratedId,
-} from '../../../models/epiUpload';
+import type { EpiValidatedCaseWithGeneratedId } from '../../../models/epiUpload';
 import {
   createTableStore,
   TableStoreContextProvider,
@@ -34,26 +33,24 @@ import { EpiUploadUtil } from '../../../utils/EpiUploadUtil';
 import { Table } from '../../ui/Table';
 import { EpiCaseUtil } from '../../../utils/EpiCaseUtil';
 import {
-  type CompleteCaseType,
-  type ValidatedCase,
   type Case,
   type CaseTypeCol,
 } from '../../../api';
+import { EpiUploadStoreContext } from '../../../stores/epiUploadStore';
 
 import { EpiUploadNavigation } from './EpiUploadNavigation';
 
-export type EpiUploadMapSequencesProps = {
-  readonly onProceed: (sequenceMapping: EpiUploadSequenceMapping) => void;
-  readonly initialSequenceMapping?: EpiUploadSequenceMapping;
-  readonly onGoBack: () => void;
-  readonly completeCaseType: CompleteCaseType;
-  readonly validatedCases: ValidatedCase[];
-  readonly sequenceFilesDataTransfer: DataTransfer;
-};
-
-export const EpiUploadMapSequences = ({ onProceed, onGoBack, validatedCases, sequenceFilesDataTransfer, completeCaseType, initialSequenceMapping }: EpiUploadMapSequencesProps) => {
+export const EpiUploadMapSequences = () => {
   const [t] = useTranslation();
   const theme = useTheme();
+
+  const store = useContext(EpiUploadStoreContext);
+  const goToNextStep = useStore(store, (state) => state.goToNextStep);
+  const goToPreviousStep = useStore(store, (state) => state.goToPreviousStep);
+  const completeCaseType = useStore(store, (state) => state.completeCaseType);
+  const sequenceFilesDataTransfer = useStore(store, (state) => state.sequenceFilesDataTransfer);
+  const validatedCases = useStore(store, (state) => state.validatedCases);
+  const setSequenceMapping = useStore(store, (state) => state.setSequenceMapping);
 
   const rowsWithGeneratedId = useMemo<EpiValidatedCaseWithGeneratedId[]>(() => {
     return (validatedCases || []).map((vc, index) => ({
@@ -69,11 +66,12 @@ export const EpiUploadMapSequences = ({ onProceed, onGoBack, validatedCases, seq
   const alertTitleId = useId();
   const alertContentId = useId();
 
-  const epiUploadSequenceMapping = useRef(initialSequenceMapping ?? EpiUploadUtil.getEpiUploadSequenceMapping(completeCaseType, rowsWithGeneratedId, sequenceFilesDataTransfer));
+  const epiUploadSequenceMapping = useRef(store.getState().sequenceMapping ?? EpiUploadUtil.getEpiUploadSequenceMapping(completeCaseType, rowsWithGeneratedId, sequenceFilesDataTransfer));
 
   const onProceedButtonClick = useCallback(() => {
-    onProceed(epiUploadSequenceMapping.current);
-  }, [onProceed]);
+    setSequenceMapping(epiUploadSequenceMapping.current);
+    goToNextStep();
+  }, [setSequenceMapping, goToNextStep]);
 
   const updateAlert = useCallback(() => {
     // Note: This is done via DOM manipulation to prevent excessive re-renders of the entire table
@@ -240,7 +238,7 @@ export const EpiUploadMapSequences = ({ onProceed, onGoBack, validatedCases, seq
           rowHeight={7}
         />
         <EpiUploadNavigation
-          onGoBackButtonClick={onGoBack}
+          onGoBackButtonClick={goToPreviousStep}
           onProceedButtonClick={onProceedButtonClick}
         />
       </TableStoreContextProvider>
