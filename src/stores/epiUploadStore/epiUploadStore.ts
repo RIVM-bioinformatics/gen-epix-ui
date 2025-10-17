@@ -15,13 +15,12 @@ import {
 import { QueryUtil } from '../../utils/QueryUtil';
 import { StringUtil } from '../../utils/StringUtil';
 import { EpiUploadUtil } from '../../utils/EpiUploadUtil';
-import { QueryClientManager } from '../../classes/managers/QueryClientManager';
-import { caseTypesQueryFn } from '../../dataHooks/useCaseTypesQuery';
 import { QUERY_KEY } from '../../models/query';
 import type {
   AutoCompleteOption,
   OptionBase,
 } from '../../models/form';
+import { NotificationManager } from '../../classes/managers/NotificationManager';
 
 export const STEP_ORDER = [
   EPI_UPLOAD_STEP.SELECT_FILE,
@@ -52,7 +51,12 @@ export interface EpiUploadStoreState {
   fileParsingError: string;
   sheetOptions: AutoCompleteOption<string>[];
   dataCollectionOptions: OptionBase<string>[];
+  createdInDataCollectionOptions: AutoCompleteOption<string>[];
+  shareInDataCollectionOptions: AutoCompleteOption<string>[];
   caseTypeCols: CaseTypeCol[];
+  isInitLoading: boolean;
+  initError: unknown;
+  shouldResetColumnMapping: boolean;
 }
 
 export interface EpiUploadStoreActions {
@@ -65,13 +69,14 @@ export interface EpiUploadStoreActions {
   setCompleteCaseType: (completeCaseType: CompleteCaseType) => void;
   setCreatedInDataCollectionId: (createdInDataCollectionId: string) => void;
   setShareInDataCollectionIds: (shareInDataCollectionIds: string[]) => void;
-  setImportAction: (importAction: EPI_UPLOAD_ACTION) => void;
-  setRawData: (rawData: string[][]) => void;
+  setImportAction: (importAction: EPI_UPLOAD_ACTION) => Promise<void>;
+  setRawData: (rawData: string[][]) => Promise<void>;
   setSheetOptions: (sheetOptions: AutoCompleteOption<string>[]) => Promise<void>;
   setCaseTypeCols: (caseTypeCols: CaseTypeCol[]) => void;
   setDataCollectionOptions: (options: OptionBase<string>[]) => void;
+  setValidatedCases: (validatedCases: ValidatedCase[]) => void;
 
-  goToNextStep: () => void;
+  goToNextStep: () => Promise<void>;
   goToPreviousStep: () => void;
   reset: () => Promise<void>;
   destroy: () => Promise<void>;
@@ -92,7 +97,7 @@ const createEpiUploadStoreDefaultState: () => EpiUploadStoreState = () => ({
   fileName: null,
   fileParsingError: null,
   importAction: EPI_UPLOAD_ACTION.CREATE,
-  mappedColumns: [],
+  mappedColumns: null,
   rawData: null,
   sequenceFilesDataTransfer: new DataTransfer(),
   sequenceMapping: {},
@@ -103,21 +108,35 @@ const createEpiUploadStoreDefaultState: () => EpiUploadStoreState = () => ({
   sheetOptions: [],
   caseTypeCols: null,
   dataCollectionOptions: [],
+  isInitLoading: true,
+  initError: null,
+  createdInDataCollectionOptions: [],
+  shareInDataCollectionOptions: [],
+  shouldResetColumnMapping: false,
 });
 
 export const createEpiUploadStore = () => {
   return createStore<EpiUploadStore>()((set, get) => {
     return {
       ...createEpiUploadStoreDefaultState(),
+      setValidatedCases: (validatedCases: ValidatedCase[]) => {
+        set({ validatedCases });
+      },
+
       setCaseTypeCols: (caseTypeCols: CaseTypeCol[]) => {
         set({ caseTypeCols });
       },
+
       setDataCollectionOptions: (options: OptionBase<string>[]) => {
         set({ dataCollectionOptions: options });
       },
 
-      setRawData: (rawData: string[][]) => {
-        const { caseTypeCols, setCaseTypeId } = get();
+      setRawData: async (rawData: string[][]) => {
+        const { caseTypeCols, setCaseTypeId, rawData: oldRawData, invalidateCaseValidationQuery } = get();
+        if (JSON.stringify(oldRawData) !== JSON.stringify(rawData)) {
+          set({ shouldResetColumnMapping: true });
+          await invalidateCaseValidationQuery();
+        }
         set({ rawData });
         if (!rawData || rawData.length === 0) {
           return;
@@ -137,7 +156,7 @@ export const createEpiUploadStore = () => {
         set({ fileName: file ? file.name : null });
         if (!file) {
           await setSheet(null);
-          setRawData(null);
+          await setRawData(null);
           set({ fileList: null });
           return;
         }
@@ -146,7 +165,7 @@ export const createEpiUploadStore = () => {
         try {
           if (!EpiUploadUtil.isXlsxFile(file.name)) {
             const data = await EpiUploadUtil.readRawData(fileList);
-            setRawData(data);
+            await setRawData(data);
           }
           const sheetOptions = await EpiUploadUtil.getSheetNameOptions(fileList);
           await setSheetOptions(sheetOptions);
@@ -174,11 +193,11 @@ export const createEpiUploadStore = () => {
         }
         try {
           // Call the callback with parsed data
-          setRawData(await EpiUploadUtil.readRawData(fileList, sheet));
+          await setRawData(await EpiUploadUtil.readRawData(fileList, sheet));
         } catch (_error) {
           set({ sheet: null });
           set({ fileParsingError: t('Error reading sheet') });
-          setRawData(null);
+          await setRawData(null);
           return;
         }
       },
@@ -195,11 +214,50 @@ export const createEpiUploadStore = () => {
         set({ shareInDataCollectionIds });
       },
 
-      setCompleteCaseType: (completeCaseType: CompleteCaseType) => {
+      setCompleteCaseType: async (completeCaseType: CompleteCaseType) => {
+        const { completeCaseType: oldCompleteCaseType, dataCollectionOptions, createdInDataCollectionId, shareInDataCollectionIds, invalidateCaseValidationQuery } = get();
         set({ completeCaseType });
+        if (completeCaseType && completeCaseType.id !== oldCompleteCaseType?.id) {
+          await invalidateCaseValidationQuery();
+          set({ shouldResetColumnMapping: true });
+          const createdInDataCollectionOptions = dataCollectionOptions.filter(option => {
+            const dataCollectionId = option.value;
+            return completeCaseType.case_type_access_abacs[dataCollectionId]?.is_private && completeCaseType.case_type_access_abacs[dataCollectionId]?.add_case_set;
+          });
+          set({ createdInDataCollectionOptions });
+          if (createdInDataCollectionOptions.length === 1) {
+            set({ createdInDataCollectionId: createdInDataCollectionOptions[0].value });
+          }
+
+          const shareInDataCollectionOptions = dataCollectionOptions.filter(option => {
+            const dataCollectionId = option.value;
+            return completeCaseType.case_type_access_abacs[dataCollectionId]?.is_private && !completeCaseType.case_type_access_abacs[dataCollectionId]?.add_case_set;
+          });
+          set({ shareInDataCollectionOptions });
+
+          // If the current createdInDataCollectionId is not valid for the new completeCaseType, reset it
+          if (createdInDataCollectionId) {
+            const isValid = createdInDataCollectionOptions.some(option => option.value === createdInDataCollectionId);
+            if (!isValid) {
+              set({ createdInDataCollectionId: null });
+            }
+          }
+
+          // Filter shareInDataCollectionIds to only valid options
+          const validShareInIds = shareInDataCollectionIds.filter(id => shareInDataCollectionOptions.some(option => option.value === id));
+          set({ shareInDataCollectionIds: validShareInIds });
+        }
       },
 
-      setImportAction: (importAction: EPI_UPLOAD_ACTION) => {
+      setImportAction: async (importAction: EPI_UPLOAD_ACTION) => {
+        const { importAction: oldImportAction, invalidateCaseValidationQuery } = get();
+        if (importAction !== oldImportAction) {
+          set({ shouldResetColumnMapping: true });
+          await invalidateCaseValidationQuery();
+        }
+        if (importAction === EPI_UPLOAD_ACTION.UPDATE) {
+          set({ shareInDataCollectionIds: [] });
+        }
         set({ importAction });
       },
 
@@ -217,11 +275,26 @@ export const createEpiUploadStore = () => {
         set({ sequenceMapping });
       },
 
-      goToNextStep: () => {
-        const { activeStep } = get();
+      goToNextStep: async () => {
+        const { activeStep, shouldResetColumnMapping, mappedColumns, setMappedColumns, completeCaseType, rawData, importAction } = get();
+
         const nextStep = get().findNextStep(activeStep);
+
+        if (nextStep === EPI_UPLOAD_STEP.MAP_COLUMNS) {
+          if (shouldResetColumnMapping && mappedColumns) {
+            NotificationManager.instance.showNotification({
+              message: t`Column mappings have been reset due to changes in the selected case type or file.`,
+              severity: 'info',
+              isLoading: false,
+            });
+          }
+          if ((shouldResetColumnMapping && mappedColumns) || !mappedColumns) {
+            await setMappedColumns(EpiUploadUtil.getInitialMappedColumns(completeCaseType, rawData, importAction));
+          }
+        }
+
         if (nextStep !== null) {
-          set({ activeStep: nextStep });
+          set({ activeStep: nextStep, shouldResetColumnMapping: false });
         }
       },
 
@@ -265,19 +338,6 @@ export const createEpiUploadStore = () => {
       destroy: async () => {
         const { invalidateCaseValidationQuery } = get();
         await invalidateCaseValidationQuery();
-      },
-
-      init: async () => {
-        // FIXME: refactor
-        const queryClient = QueryClientManager.instance.queryClient;
-        try {
-          const data = await queryClient.fetchQuery({
-            queryKey: QueryUtil.getGenericKey(QUERY_KEY.CASE_TYPES),
-            queryFn: caseTypesQueryFn,
-          });
-        } catch (error) {
-          console.log(error);
-        }
       },
     };
   });

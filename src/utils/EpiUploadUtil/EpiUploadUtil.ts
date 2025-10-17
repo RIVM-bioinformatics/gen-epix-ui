@@ -270,7 +270,7 @@ export class EpiUploadUtil {
   }
 
 
-  public static getFormFieldDefinitions(completeCaseType: CompleteCaseType, headers: string[], fileName: string, importAction: EPI_UPLOAD_ACTION): FormFieldDefinition<EpiUploadMappedColumnsFormFields>[] {
+  public static getColumnMappingFormFieldDefinitions(completeCaseType: CompleteCaseType, headers: string[], fileName: string, importAction: EPI_UPLOAD_ACTION): FormFieldDefinition<EpiUploadMappedColumnsFormFields>[] {
     const options: AutoCompleteOption<string>[] = [
       ...headers.map((header, index) => ({
         label: `${header} (.${fileName.split('.').pop()})`,

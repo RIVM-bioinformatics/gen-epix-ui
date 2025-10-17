@@ -43,7 +43,6 @@ import { useCaseTypeColsQuery } from '../../../dataHooks/useCaseTypeColsQuery';
 import { EPI_UPLOAD_ACTION } from '../../../models/epiUpload';
 import { EpiUploadUtil } from '../../../utils/EpiUploadUtil';
 import { EpiUploadStoreContext } from '../../../stores/epiUploadStore';
-import { NotificationManager } from '../../../classes/managers/NotificationManager';
 
 import { EpiUploadNavigation } from './EpiUploadNavigation';
 
@@ -73,34 +72,20 @@ const EpiUploadSelectFile = () => {
   const fileParsingError = useStore(store, (state) => state.fileParsingError);
   const goToNextStep = useStore(store, (state) => state.goToNextStep);
   const importAction = useStore(store, (state) => state.importAction);
-  const invalidateCaseValidationQuery = useStore(store, (state) => state.invalidateCaseValidationQuery);
-  const mappedColumns = useStore(store, (state) => state.mappedColumns);
+  const createdInDataCollectionOptions = useStore(store, (state) => state.createdInDataCollectionOptions);
+  const shareInDataCollectionOptions = useStore(store, (state) => state.shareInDataCollectionOptions);
   const rawData = useStore(store, (state) => state.rawData);
   const setCaseTypeCols = useStore(store, (state) => state.setCaseTypeCols);
   const setCaseTypeId = useStore(store, (state) => state.setCaseTypeId);
   const setCompleteCaseType = useStore(store, (state) => state.setCompleteCaseType);
   const setCreatedInDataCollectionId = useStore(store, (state) => state.setCreatedInDataCollectionId);
   const setFileList = useStore(store, (state) => state.setFileList);
-  const setMappedColumns = useStore(store, (state) => state.setMappedColumns);
   const setShareInDataCollectionIds = useStore(store, (state) => state.setShareInDataCollectionIds);
   const setSheet = useStore(store, (state) => state.setSheet);
   const setImportAction = useStore(store, (state) => state.setImportAction);
   const setDataCollectionOptions = useStore(store, (state) => state.setDataCollectionOptions);
   const sheet = useStore(store, (state) => state.sheet);
   const sheetOptions = useStore(store, (state) => state.sheetOptions);
-
-  const oldValues = useMemo(() => {
-    const state = store.getState();
-    return {
-      caseTypeId: state.caseTypeId,
-      completeCaseType: state.completeCaseType,
-      createdInDataCollectionId: state.createdInDataCollectionId,
-      fileList: state.fileList,
-      importAction: state.importAction,
-      shareInDataCollectionIds: state.shareInDataCollectionIds,
-      sheet: state.sheet,
-    };
-  }, [store]);
 
   const schema = useMemo(() => object<FormFields>().shape({
     caseTypeId: string().uuid4().required(),
@@ -155,33 +140,19 @@ const EpiUploadSelectFile = () => {
     },
   });
 
-  const createdInDataCollectionOptions = useMemo<AutoCompleteOption[]>(() => {
-    if (!completeCaseType || !dataCollectionOptionsQuery.options?.length) {
-      return [];
+  useEffect(() => {
+    if (completeCaseType) {
+      setCompleteCaseType(completeCaseType);
     }
-    return dataCollectionOptionsQuery.options.filter(option => {
-      const dataCollectionId = option.value;
-      return completeCaseType.case_type_access_abacs[dataCollectionId]?.is_private && completeCaseType.case_type_access_abacs[dataCollectionId]?.add_case_set;
-    });
-  }, [completeCaseType, dataCollectionOptionsQuery.options]);
-
-  const shareInDataCollectionOptions = useMemo<AutoCompleteOption[]>(() => {
-    if (!completeCaseType) {
-      return [];
-    }
-    return dataCollectionOptionsQuery.options.filter(option => {
-      const dataCollectionId = option.value;
-      return createdInDataCollectionId !== dataCollectionId && completeCaseType.case_type_access_abacs[dataCollectionId]?.add_case_set;
-    });
-  }, [completeCaseType, createdInDataCollectionId, dataCollectionOptionsQuery.options]);
+  }, [completeCaseType, setCompleteCaseType]);
 
   const createOrUpdateOptions = useMemo<AutoCompleteOption[]>(() => ([
     { label: t('Create new cases'), value: EPI_UPLOAD_ACTION.CREATE },
     { label: t('Update existing cases'), value: EPI_UPLOAD_ACTION.UPDATE },
   ]), [t]);
 
-  const onImportActionsChange = useCallback((value: unknown) => {
-    setImportAction(value as EPI_UPLOAD_ACTION);
+  const onImportActionsChange = useCallback(async (value: unknown) => {
+    await setImportAction(value as EPI_UPLOAD_ACTION);
   }, [setImportAction]);
 
   const onFileListChange = useCallback(async (value: FileList) => {
@@ -191,6 +162,18 @@ const EpiUploadSelectFile = () => {
   const onSheetChange = useCallback(async (value: unknown) => {
     await setSheet(value as string);
   }, [setSheet]);
+
+  const onCaseTypeIdChange = useCallback((value: unknown) => {
+    setCaseTypeId(value as string);
+  }, [setCaseTypeId]);
+
+  const onCreatedInDataCollectionIdChange = useCallback((value: unknown) => {
+    setCreatedInDataCollectionId(value as string);
+  }, [setCreatedInDataCollectionId]);
+
+  const onShareInDataCollectionIdsChange = useCallback((value: unknown) => {
+    setShareInDataCollectionIds(value as string[]);
+  }, [setShareInDataCollectionIds]);
 
   const formFieldDefinitions = useMemo<FormFieldDefinition<FormFields>[]>(() => {
     const fields: FormFieldDefinition<FormFields>[] = [
@@ -229,6 +212,7 @@ const EpiUploadSelectFile = () => {
           options: caseTypeOptionsQuery.options,
           loading: caseTypeOptionsQuery.isLoading,
           disabled: !fileList,
+          onChange: onCaseTypeIdChange,
         } as const satisfies FormFieldDefinition<FormFields>,
         {
           definition: FORM_FIELD_DEFINITION_TYPE.AUTOCOMPLETE,
@@ -237,6 +221,7 @@ const EpiUploadSelectFile = () => {
           options: createdInDataCollectionOptions,
           loading: dataCollectionOptionsQuery.isLoading || isCompleteCaseTypeLoading,
           disabled: !fileList || !caseTypeId,
+          onChange: onCreatedInDataCollectionIdChange,
         } as const satisfies FormFieldDefinition<FormFields>,
     ] as const);
 
@@ -249,10 +234,11 @@ const EpiUploadSelectFile = () => {
         loading: dataCollectionOptionsQuery.isLoading || isCompleteCaseTypeLoading,
         disabled: !createdInDataCollectionId,
         multiple: true,
+        onChange: onShareInDataCollectionIdsChange,
       } as const satisfies FormFieldDefinition<FormFields>);
     }
     return fields;
-  }, [t, createOrUpdateOptions, onImportActionsChange, onFileListChange, fileName, caseTypeOptionsQuery.options, caseTypeOptionsQuery.isLoading, fileList, createdInDataCollectionOptions, dataCollectionOptionsQuery.isLoading, isCompleteCaseTypeLoading, caseTypeId, importAction, sheetOptions, onSheetChange, shareInDataCollectionOptions, createdInDataCollectionId]);
+  }, [t, createOrUpdateOptions, onImportActionsChange, onFileListChange, fileName, caseTypeOptionsQuery.options, caseTypeOptionsQuery.isLoading, fileList, onCaseTypeIdChange, createdInDataCollectionOptions, dataCollectionOptionsQuery.isLoading, isCompleteCaseTypeLoading, caseTypeId, onCreatedInDataCollectionIdChange, importAction, sheetOptions, onSheetChange, shareInDataCollectionOptions, createdInDataCollectionId, onShareInDataCollectionIdsChange]);
 
   useEffect(() => {
     if (fileParsingError) {
@@ -262,66 +248,9 @@ const EpiUploadSelectFile = () => {
     }
   }, [fileParsingError, setError, setValue]);
 
-  useEffect(() => {
-    if (!rawData || caseTypeColsQuery.isLoading || !caseTypeColsQuery.data?.length) {
-      return;
-    }
-    const bestMatchingCaseType = EpiUploadUtil.getCaseTypeFromColumnLabels(caseTypeColsQuery.data, rawData[0]);
-    if (bestMatchingCaseType) {
-      setValue('caseTypeId', bestMatchingCaseType.id, {
-        shouldTouch: true,
-        shouldDirty: true,
-        shouldValidate: true,
-      });
-    }
-  }, [caseTypeColsQuery.data, caseTypeColsQuery.isLoading, rawData, setValue]);
-
-
-  useEffect(() => {
-    if (dataCollectionOptionsQuery.isLoading || !createdInDataCollectionOptions?.length) {
-      return;
-    }
-
-    if (createdInDataCollectionOptions?.length === 1) {
-      setValue('createdInDataCollectionId', createdInDataCollectionOptions[0].value as string, {
-        shouldTouch: true,
-        shouldDirty: true,
-        shouldValidate: true,
-      });
-    }
-  }, [createdInDataCollectionOptions, dataCollectionOptionsQuery.isLoading, setValue]);
-
-  const onFormSubmit = useCallback(async (formData: FormFields) => {
-    const newValues = {
-      caseTypeId: formData.caseTypeId,
-      completeCaseType,
-      createdInDataCollectionId: formData.createdInDataCollectionId,
-      fileList: formData.fileList,
-      importAction: formData.importAction,
-      shareInDataCollectionIds: formData.shareInDataCollectionIds,
-      sheet: formData.sheet,
-    };
-    if (JSON.stringify(oldValues) !== JSON.stringify(newValues)) {
-      await invalidateCaseValidationQuery();
-    }
-    if (mappedColumns) {
-      if (!EpiUploadUtil.areMappedColumnsEqual(mappedColumns, EpiUploadUtil.getInitialMappedColumns(completeCaseType, rawData, formData.importAction))) {
-        NotificationManager.instance.showNotification({
-          message: t`Column mappings have been reset due to changes in the selected case type or file.`,
-          severity: 'info',
-          isLoading: false,
-        });
-        await setMappedColumns([]);
-      }
-    }
-    setCaseTypeId(formData.caseTypeId);
-    setCompleteCaseType(completeCaseType);
-    setCreatedInDataCollectionId(formData.createdInDataCollectionId);
-    await setFileList(formData.fileList);
-    setShareInDataCollectionIds(formData.shareInDataCollectionIds);
-    await setSheet(formData.sheet);
-    goToNextStep();
-  }, [completeCaseType, goToNextStep, invalidateCaseValidationQuery, mappedColumns, oldValues, rawData, setCaseTypeId, setCompleteCaseType, setCreatedInDataCollectionId, setFileList, setMappedColumns, setShareInDataCollectionIds, setSheet, t]);
+  const onFormSubmit = useCallback(async () => {
+    await goToNextStep();
+  }, [goToNextStep]);
 
   const loadables = useArray([
     caseTypesQuery,

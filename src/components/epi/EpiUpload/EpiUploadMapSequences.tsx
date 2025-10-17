@@ -68,9 +68,9 @@ export const EpiUploadMapSequences = () => {
 
   const epiUploadSequenceMapping = useRef(store.getState().sequenceMapping ?? EpiUploadUtil.getEpiUploadSequenceMapping(completeCaseType, rowsWithGeneratedId, sequenceFilesDataTransfer));
 
-  const onProceedButtonClick = useCallback(() => {
+  const onProceedButtonClick = useCallback(async () => {
     setSequenceMapping(epiUploadSequenceMapping.current);
-    goToNextStep();
+    await goToNextStep();
   }, [setSequenceMapping, goToNextStep]);
 
   const updateAlert = useCallback(() => {

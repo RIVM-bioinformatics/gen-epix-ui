@@ -40,13 +40,8 @@ export const EpiUploadCreateCases = () => {
   const sequenceMapping = useStore(store, (state) => state.sequenceMapping);
   const sequenceFilesDataTransfer = useStore(store, (state) => state.sequenceFilesDataTransfer);
   const validatedCases = useStore(store, (state) => state.validatedCases);
-  const case_type_id = useStore(store, (state) => state.case_type_id);
-  const import_action = useStore(store, (state) => state.import_action);
-  const created_in_data_collection_id = useStore(store, (state) => state.created_in_data_collection_id);
   const completeCaseType = useStore(store, (state) => state.completeCaseType);
   const rawData = useStore(store, (state) => state.rawData);
-  const share_in_data_collection_ids = useStore(store, (state) => state.share_in_data_collection_ids);
-
 
   const [isUploadStarted, setIsUploadStarted] = useState(false);
 
@@ -54,10 +49,10 @@ export const EpiUploadCreateCases = () => {
     queryKey: QueryUtil.getGenericKey(QUERY_KEY.CREATE_CASES, queryId),
     queryFn: async ({ signal }) => {
       const response = await CaseApi.instance.createCases({
-        case_type_id,
-        created_in_data_collection_id,
-        data_collection_ids: share_in_data_collection_ids,
-        is_update: import_action === EPI_UPLOAD_ACTION.UPDATE,
+        case_type_id: store.getState().caseTypeId,
+        created_in_data_collection_id: store.getState().createdInDataCollectionId,
+        data_collection_ids: store.getState().shareInDataCollectionIds,
+        is_update: store.getState().importAction === EPI_UPLOAD_ACTION.UPDATE,
         cases: validatedCases.map(c => c.case),
       }, { signal });
       await QueryUtil.invalidateQueryKeys(QueryUtil.getQueryKeyDependencies([QUERY_KEY.CREATE_CASES], false));

@@ -56,11 +56,11 @@ export const EpiUploadValidateContent = () => {
   const mappedColumns = useStore(store, (state) => state.mappedColumns);
   const completeCaseType = useStore(store, (state) => state.completeCaseType);
   const importAction = useStore(store, (state) => state.importAction);
+  const setValidatedCases = useStore(store, (state) => state.setValidatedCases);
   const caseTypeId = useStore(store, (state) => state.caseTypeId);
   const createdInDataCollectionId = useStore(store, (state) => state.createdInDataCollectionId);
   const shareInDataCollectionIds = useStore(store, (state) => state.shareInDataCollectionIds);
   const rawData = useStore(store, (state) => state.rawData);
-  const setValue = useStore(store, (state) => state.setValue);
   const validateCasesQueryKey = useStore(store, (state) => state.validateCasesQueryKey);
 
   const inputCases = useMemo<CaseForCreateUpdate[]>(() => {
@@ -330,11 +330,11 @@ export const EpiUploadValidateContent = () => {
 
   useInitializeTableStore<EpiValidatedCaseWithGeneratedId>({ store: tableStore, columns: tableColumns, rows: rowsWithGeneratedId, createFiltersFromColumns: true });
 
-  const onProceedButtonClick = useCallback(() => {
+  const onProceedButtonClick = useCallback(async () => {
     const validatedCases = rowsWithGeneratedId.filter(r => selectedIds.includes(r.generated_id)).map(r => omit(r, 'generated_id'));
-    setValue('validatedCases', validatedCases);
-    goToNextStep();
-  }, [goToNextStep, rowsWithGeneratedId, selectedIds, setValue]);
+    setValidatedCases(validatedCases);
+    await goToNextStep();
+  }, [goToNextStep, rowsWithGeneratedId, selectedIds, setValidatedCases]);
 
   return (
     <Box
