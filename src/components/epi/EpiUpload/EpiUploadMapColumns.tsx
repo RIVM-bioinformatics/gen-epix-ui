@@ -53,10 +53,10 @@ export const EpiUploadMapColumns = () => {
   const completeCaseType = useStore(store, (state) => state.completeCaseType);
   const rawData = useStore(store, (state) => state.rawData);
   const fileName = useStore(store, (state) => state.fileName);
-  const importAction = useStore(store, (state) => state.import_action);
+  const importAction = useStore(store, (state) => state.importAction);
   const goToNextStep = useStore(store, (state) => state.goToNextStep);
   const goToPreviousStep = useStore(store, (state) => state.goToPreviousStep);
-  const setValue = useStore(store, (state) => state.setValue);
+  const setMappedColumns = useStore(store, (state) => state.setMappedColumns);
 
   const loadables = useArray([
     caseTypeColMap,
@@ -127,10 +127,10 @@ export const EpiUploadMapColumns = () => {
     });
   }, [getMergedMappedColumns, importAction, values]);
 
-  const onFormSubmit = useCallback((data: EpiUploadMappedColumnsFormFields) => {
-    setValue('mappedColumns', getMergedMappedColumns(data));
+  const onFormSubmit = useCallback(async (data: EpiUploadMappedColumnsFormFields) => {
+    await setMappedColumns(getMergedMappedColumns(data));
     goToNextStep();
-  }, [getMergedMappedColumns, goToNextStep, setValue]);
+  }, [getMergedMappedColumns, goToNextStep, setMappedColumns]);
 
   const onProceedButtonClick = useCallback(async () => {
     await handleSubmit(onFormSubmit)();

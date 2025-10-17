@@ -24,7 +24,6 @@ import {
   type AutoCompleteOption,
   type FormFieldDefinition,
 } from '../../models/form';
-import { StringUtil } from '../StringUtil';
 import { ColType } from '../../api';
 import type {
   EpiUploadMappedColumn,
@@ -39,27 +38,25 @@ import { ConfigManager } from '../../classes/managers/ConfigManager';
 import { EpiCaseUtil } from '../EpiCaseUtil';
 
 export class EpiUploadUtil {
-  public static __csvSheetId: string;
-
   public static readonly caseIdColumnAliases = ['_case_id', 'case id', 'case_id', 'caseid', 'case.id'];
   public static readonly caseDateColumnAliases = ['_case_date', 'case date', 'case_date', 'casedate', 'case.date'];
   public static readonly caseTypeColumnAliases = ['_case_type', 'case type', 'case_type', 'casetype', 'case.type'];
 
-  public static get csvSheetId(): string {
-    if (!this.__csvSheetId) {
-      this.__csvSheetId = `csv-${StringUtil.createUuid()}`;
-    }
-    return this.__csvSheetId;
+  public static isXlsxFile(fileName: string): boolean {
+    return fileName?.toLowerCase()?.endsWith('.xlsx');
+  }
+
+  public static isTextFile(fileName: string): boolean {
+    const lowerName = fileName?.toLowerCase();
+    return lowerName?.endsWith('.csv') || lowerName?.endsWith('.tsv') || lowerName?.endsWith('.txt');
   }
 
   public static async getSheetNameOptions(fileList: FileList): Promise<AutoCompleteOption<string>[]> {
     const file = fileList[0];
     const fileName = file.name.toLowerCase();
 
-    if (fileName.toLowerCase().endsWith('.xlsx')) {
+    if (EpiUploadUtil.isXlsxFile(fileName)) {
       return (await readSheetNames(file)).map(name => ({ label: name, value: name }));
-    } else if (fileName.toLowerCase().endsWith('.csv') || fileName.toLowerCase().endsWith('.tsv') || fileName.toLowerCase().endsWith('.txt')) {
-      return [{ label: 'CSV', value: EpiUploadUtil.csvSheetId }];
     }
     return [];
   }
@@ -69,7 +66,7 @@ export class EpiUploadUtil {
     const fileName = file.name.toLowerCase();
     let result: string[][] = [];
 
-    if (fileName.endsWith('.csv') || fileName.endsWith('.tsv') || fileName.endsWith('.txt')) {
+    if (EpiUploadUtil.isTextFile(fileName)) {
       // Parse CSV file
       let text = await file.text();
       if (fileName.endsWith('.tsv')) {
@@ -101,11 +98,7 @@ export class EpiUploadUtil {
         skip_empty_lines: true,
         trim: true,
       });
-    } else if (fileName.endsWith('.xlsx')) {
-      if (sheet === EpiUploadUtil.csvSheetId) {
-        // allow a render cycle to complete
-        return null;
-      }
+    } else if (EpiUploadUtil.isXlsxFile(fileName)) {
       // Parse Excel file
       const excelData = await readXlsxFile(file, {
         sheet,

@@ -41,44 +41,6 @@ export const EpiUpload = () => {
     } satisfies Record<EPI_UPLOAD_STEP, string>;
   }, [t]);
 
-  // const onEpiUploadSelectFileProceed = useCallback(async (data: EpiUploadSelectFileResult) => {
-  //   if (JSON.stringify(selectFileResult) !== JSON.stringify(data)) {
-  //     await invalidateCaseValidationQuery();
-  //   }
-  //   setSelectFileResult(data);
-  //   if (mappedColumns) {
-  //     if (!EpiUploadUtil.areMappedColumnsEqual(mappedColumns, EpiUploadUtil.getInitialMappedColumns(data.completeCaseType, data.rawData, data.import_action))) {
-  //       NotificationManager.instance.showNotification({
-  //         message: t`Column mappings have been reset due to changes in the selected case type or file.`,
-  //         severity: 'info',
-  //         isLoading: false,
-  //       });
-  //       setMappedColumns(null);
-  //     }
-  //   }
-  //   setActiveStep(EPI_UPLOAD_STEP.MAP_COLUMNS);
-  // }, [invalidateCaseValidationQuery, mappedColumns, selectFileResult, t]);
-
-  // const onEpiUploadMapColumnsProceed = useCallback(async (data: EpiUploadMappedColumn[]) => {
-  //   if (JSON.stringify(mappedColumns) !== JSON.stringify(data)) {
-  //     await invalidateCaseValidationQuery();
-  //   }
-  //   setMappedColumns(data);
-  //   setActiveStep(findNext(EPI_UPLOAD_STEP.MAP_COLUMNS));
-  // }, [findNext, invalidateCaseValidationQuery, mappedColumns]);
-
-  // const onEpiUploadCreateCasesStartOver = useCallback(async () => {
-  //   await QueryUtil.invalidateQueryKeys([validateQueryKey]);
-  //   setSelectFileResult(null);
-  //   setMappedColumns(null);
-  //   setValidatedCases(null);
-  //   setActiveStep(EPI_UPLOAD_STEP.SELECT_FILE);
-  // }, [validateQueryKey]);
-
-  // const onEpiUploadCreateCasesGoBack = useCallback(() => {
-  //   setActiveStep(findPrevious(EPI_UPLOAD_STEP.CREATE_CASES));
-  // }, [findPrevious]);
-
   return (
     <Box
       sx={{

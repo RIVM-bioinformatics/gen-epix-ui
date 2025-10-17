@@ -55,10 +55,10 @@ export const EpiUploadValidateContent = () => {
   const goToPreviousStep = useStore(store, (state) => state.goToPreviousStep);
   const mappedColumns = useStore(store, (state) => state.mappedColumns);
   const completeCaseType = useStore(store, (state) => state.completeCaseType);
-  const import_action = useStore(store, (state) => state.import_action);
-  const case_type_id = useStore(store, (state) => state.case_type_id);
-  const created_in_data_collection_id = useStore(store, (state) => state.created_in_data_collection_id);
-  const share_in_data_collection_ids = useStore(store, (state) => state.share_in_data_collection_ids);
+  const importAction = useStore(store, (state) => state.importAction);
+  const caseTypeId = useStore(store, (state) => state.caseTypeId);
+  const createdInDataCollectionId = useStore(store, (state) => state.createdInDataCollectionId);
+  const shareInDataCollectionIds = useStore(store, (state) => state.shareInDataCollectionIds);
   const rawData = useStore(store, (state) => state.rawData);
   const setValue = useStore(store, (state) => state.setValue);
   const validateCasesQueryKey = useStore(store, (state) => state.validateCasesQueryKey);
@@ -69,7 +69,7 @@ export const EpiUploadValidateContent = () => {
       const caseDateColumn = mappedColumns.find((mappedColumn) => mappedColumn.isCaseDateColumn)?.originalIndex;
 
       const caseForCreateUpdate: CaseForCreateUpdate = {
-        id: import_action === EPI_UPLOAD_ACTION.UPDATE && caseIdColumn !== undefined ? row[caseIdColumn] : undefined,
+        id: importAction === EPI_UPLOAD_ACTION.UPDATE && caseIdColumn !== undefined ? row[caseIdColumn] : undefined,
         case_date: caseDateColumn !== undefined ? row[caseDateColumn] : undefined,
         content: undefined,
       };
@@ -81,16 +81,16 @@ export const EpiUploadValidateContent = () => {
       });
       return { ...caseForCreateUpdate, content };
     });
-  }, [import_action, mappedColumns, rawData]);
+  }, [importAction, mappedColumns, rawData]);
 
   const validationQuery = useQueryMemo({
     queryKey: validateCasesQueryKey,
     queryFn: async ({ signal }) => {
       const response = await CaseApi.instance.validateCases({
-        case_type_id,
-        created_in_data_collection_id,
-        data_collection_ids: share_in_data_collection_ids,
-        is_update: import_action === EPI_UPLOAD_ACTION.UPDATE,
+        case_type_id: caseTypeId,
+        created_in_data_collection_id: createdInDataCollectionId,
+        data_collection_ids: shareInDataCollectionIds,
+        is_update: importAction === EPI_UPLOAD_ACTION.UPDATE,
         cases: inputCases,
       }, { signal });
       return response.data;
@@ -260,7 +260,7 @@ export const EpiUploadValidateContent = () => {
       headerName: '',
     });
 
-    if (import_action === EPI_UPLOAD_ACTION.UPDATE && validatedCases.some(vc => !!vc.case.id)) {
+    if (importAction === EPI_UPLOAD_ACTION.UPDATE && validatedCases.some(vc => !!vc.case.id)) {
       tableCols.push({
         type: 'text',
         isInitiallyVisible: true,
@@ -326,7 +326,7 @@ export const EpiUploadValidateContent = () => {
     });
 
     return tableCols;
-  }, [completeCaseType, import_action, mappedColumns, rawData, renderCell, renderHasIssueCell, validationQuery?.data?.validated_cases]);
+  }, [completeCaseType, importAction, mappedColumns, rawData, renderCell, renderHasIssueCell, validationQuery?.data?.validated_cases]);
 
   useInitializeTableStore<EpiValidatedCaseWithGeneratedId>({ store: tableStore, columns: tableColumns, rows: rowsWithGeneratedId, createFiltersFromColumns: true });
 

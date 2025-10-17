@@ -86,8 +86,8 @@ export const EpiUploadCreateCases = () => {
     };
   }, [sequenceFilesDataTransfer.files, sequenceMapping]);
 
-  const onStartOverButtonClick = useCallback(() => {
-    reset();
+  const onStartOverButtonClick = useCallback(async () => {
+    await reset();
   }, [reset]);
 
   const onStartUploadButtonClick = useCallback(() => {
