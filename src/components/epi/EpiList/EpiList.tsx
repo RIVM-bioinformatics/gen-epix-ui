@@ -280,7 +280,6 @@ export const EpiList = ({ linkedScrollSubject, onLink, caseSet }: EpiListProps) 
             type: 'caseType',
             widthPx: 200,
             valueGetter: (params) => {
-
               const value = treeAddresses[caseTypeColumn.id]?.addresses[params.row.id] ? `${treeAddresses[caseTypeColumn.id].algorithmCode} ${treeAddresses[caseTypeColumn.id].addresses[params.row.id]}` : undefined;
               return {
                 raw: value,
