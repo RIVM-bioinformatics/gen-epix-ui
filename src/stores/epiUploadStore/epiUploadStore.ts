@@ -150,10 +150,9 @@ export const createEpiUploadStore = () => {
       setFileList: async (fileList: FileList) => {
         const { setSheetOptions, setSheet, setRawData } = get();
 
-        set({ fileParsingError: null });
-
         const file = fileList?.length > 0 ? fileList[0] : null;
-        set({ fileName: file ? file.name : null });
+        set({ fileParsingError: null, rawData: null, fileName: file?.name ?? null, sheet: null });
+
         if (!file) {
           await setSheet(null);
           await setRawData(null);
@@ -186,8 +185,8 @@ export const createEpiUploadStore = () => {
 
       setSheet: async (sheet: string) => {
         const { fileList, setRawData } = get();
-        set({ sheet });
-        set({ fileParsingError: null });
+        set({ sheet, fileParsingError: null, rawData: null });
+
         if (!sheet) {
           return;
         }
