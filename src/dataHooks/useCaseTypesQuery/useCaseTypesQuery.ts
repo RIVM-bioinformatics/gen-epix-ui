@@ -12,15 +12,17 @@ import { DataUtil } from '../../utils/DataUtil';
 import { QueryUtil } from '../../utils/QueryUtil';
 import { useQueryMemo } from '../../hooks/useQueryMemo';
 
+export const caseTypesQueryFn = async ({ signal }: { signal: AbortSignal }): Promise<CaseType[]> => {
+  const response = await CaseApi.getInstance().caseTypesGetAll({ signal });
+  const items = response.data;
+  items.sort((a, b) => a.name.localeCompare(b.name));
+  return items;
+};
+
 export const useCaseTypesQuery = (): UseQueryResult<CaseType[]> => {
   return useQueryMemo({
     queryKey: QueryUtil.getGenericKey(QUERY_KEY.CASE_TYPES),
-    queryFn: async ({ signal }) => {
-      const response = await CaseApi.getInstance().caseTypesGetAll({ signal });
-      const items = response.data;
-      items.sort((a, b) => a.name.localeCompare(b.name));
-      return items;
-    },
+    queryFn: caseTypesQueryFn,
   });
 };
 

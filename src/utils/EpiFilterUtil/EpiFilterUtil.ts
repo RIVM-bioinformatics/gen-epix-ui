@@ -90,6 +90,9 @@ export class EpiFilterUtil {
   }
 
   public static createFilters(completeCaseType: CompleteCaseType): Filters {
+    // !FIXME: move to config
+    const filterBlacklist = new Set<ColType>([ColType.GENETIC_DISTANCE, ColType.GENETIC_SEQUENCE, ColType.GENETIC_READS, ColType.GENETIC_READS_FWD, ColType.GENETIC_READS_REV]);
+
     const filters: Filters = [];
     filters.push(new SelectionFilter({
       id: 'selected',
@@ -109,6 +112,9 @@ export class EpiFilterUtil {
       const caseTypeColumns = caseTypeDimension.case_type_col_order.map(id => completeCaseType.case_type_cols[id]);
       caseTypeColumns.forEach(caseTypeColumn => {
         const column = completeCaseType.cols[caseTypeColumn.col_id];
+        if (filterBlacklist.has(column.col_type)) {
+          return;
+        }
 
         if (dimension.dim_type === DimType.TIME) {
           const today = new Date();
@@ -174,8 +180,6 @@ export class EpiFilterUtil {
             filterDimensionId: caseTypeDimension.id,
             options,
           }));
-        } else if (column.col_type === ColType.GENETIC_DISTANCE) {
-          return;
         } else {
           filters.push(new TextFilter({
             id: caseTypeColumn.id,

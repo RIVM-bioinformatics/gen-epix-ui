@@ -5,39 +5,30 @@ import {
 } from '@mui/material';
 import {
   useCallback,
+  useContext,
   useMemo,
   useRef,
 } from 'react';
 import { useTranslation } from 'react-i18next';
+import { useStore } from 'zustand';
 
 import { FileSelector } from '../../ui/FileSelector';
-import type { CompleteCaseType } from '../../../api';
-import type {
-  EPI_UPLOAD_ACTION,
-  EpiUploadMappedColumn,
-} from '../../../models/epiUpload';
 import { EpiUploadUtil } from '../../../utils/EpiUploadUtil';
+import { EpiUploadStoreContext } from '../../../stores/epiUploadStore';
 
 import { EpiUploadNavigation } from './EpiUploadNavigation';
 
-export type EpiUploadSelectSequenceFilesProps = {
-  readonly initialDataTransfer?: DataTransfer;
-  readonly completeCaseType: CompleteCaseType;
-  readonly rawData: string[][];
-  readonly importAction: EPI_UPLOAD_ACTION;
-  readonly mappedColumns?: EpiUploadMappedColumn[];
-  readonly onProceed: (dataTransfer: DataTransfer) => void;
-  readonly onGoBack: () => void;
-};
 
-export const EpiUploadSelectSequenceFiles = ({
-  onProceed,
-  onGoBack,
-  initialDataTransfer,
-  completeCaseType,
-  mappedColumns,
-}: EpiUploadSelectSequenceFilesProps) => {
+export const EpiUploadSelectSequenceFiles = () => {
   const [t] = useTranslation();
+
+  const store = useContext(EpiUploadStoreContext);
+  const mappedColumns = useStore(store, (state) => state.mappedColumns);
+  const completeCaseType = useStore(store, (state) => state.completeCaseType);
+  const goToNextStep = useStore(store, (state) => state.goToNextStep);
+  const goToPreviousStep = useStore(store, (state) => state.goToPreviousStep);
+  const setSequenceFilesDataTransfer = useStore(store, (state) => state.setSequenceFilesDataTransfer);
+  const initialDataTransfer = useStore(store, (state) => state.sequenceFilesDataTransfer);
   const dataTransfer = useRef(initialDataTransfer);
 
   const completeCaseTypeColumnStats = useMemo(() => {
@@ -79,13 +70,19 @@ export const EpiUploadSelectSequenceFiles = ({
     return (canUploadSequences) || (canUploadReads);
   }, [canUploadSequences, canUploadReads]);
 
-  const onProceedButtonClick = useCallback(() => {
-    onProceed(dataTransfer.current);
-  }, [onProceed, dataTransfer]);
+  const onProceedButtonClick = useCallback(async () => {
+    setSequenceFilesDataTransfer(dataTransfer.current);
+    await goToNextStep();
+  }, [goToNextStep, setSequenceFilesDataTransfer]);
 
   const onDataTransferChange = useCallback((dt: DataTransfer) => {
     dataTransfer.current = dt;
-  }, []);
+
+    // Note: setState in a timeout to avoid React state update during rendering warning
+    setTimeout(() => {
+      setSequenceFilesDataTransfer(dataTransfer.current);
+    });
+  }, [setSequenceFilesDataTransfer]);
 
   return (
     <Box
@@ -176,7 +173,7 @@ export const EpiUploadSelectSequenceFiles = ({
       )}
       <EpiUploadNavigation
         proceedLabel={!canUpload ? t`Proceed` : undefined}
-        onGoBackButtonClick={onGoBack}
+        onGoBackButtonClick={goToPreviousStep}
         onProceedButtonClick={onProceedButtonClick}
       />
     </Box>

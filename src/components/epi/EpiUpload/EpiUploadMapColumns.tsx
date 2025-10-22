@@ -1,6 +1,8 @@
 import type { ReactElement } from 'react';
 import {
   useCallback,
+  useContext,
+  useEffect,
   useId,
   useMemo,
 } from 'react';
@@ -24,11 +26,9 @@ import {
 import { useTranslation } from 'react-i18next';
 import invert from 'lodash/invert';
 import uniq from 'lodash/uniq';
+import { useStore } from 'zustand';
 
-import type {
-  CaseTypeCol,
-  CompleteCaseType,
-} from '../../../api';
+import type { CaseTypeCol } from '../../../api';
 import type { FormFieldDefinition } from '../../../models/form';
 import { GenericForm } from '../../form/helpers/GenericForm';
 import { useCaseTypeColMapQuery } from '../../../dataHooks/useCaseTypeColsQuery';
@@ -37,26 +37,26 @@ import { ResponseHandler } from '../../ui/ResponseHandler';
 import { EpiUploadUtil } from '../../../utils/EpiUploadUtil';
 import {
   EPI_UPLOAD_ACTION,
-  type EpiUploadMappedColumn,
   type EpiUploadMappedColumnsFormFields,
 } from '../../../models/epiUpload';
 import { ConfigManager } from '../../../classes/managers/ConfigManager';
+import { EpiUploadStoreContext } from '../../../stores/epiUploadStore';
 
 import { EpiUploadNavigation } from './EpiUploadNavigation';
 
-export type EpiUploadMapColumnsProps = {
-  readonly completeCaseType: CompleteCaseType;
-  readonly rawData: string[][];
-  readonly importAction: EPI_UPLOAD_ACTION;
-  readonly mappedColumns?: EpiUploadMappedColumn[];
-  readonly onProceed: (mappedColumns: EpiUploadMappedColumn[]) => void;
-  readonly onGoBack?: () => void;
-  readonly fileName: string;
-};
 
-export const EpiUploadMapColumns = ({ completeCaseType, rawData, onProceed, onGoBack, mappedColumns: mappedColumnsFromProps, importAction, fileName }: EpiUploadMapColumnsProps) => {
+export const EpiUploadMapColumns = () => {
   const [t] = useTranslation();
   const caseTypeColMap = useCaseTypeColMapQuery();
+
+  const store = useContext(EpiUploadStoreContext);
+  const completeCaseType = useStore(store, (state) => state.completeCaseType);
+  const rawData = useStore(store, (state) => state.rawData);
+  const fileName = useStore(store, (state) => state.fileName);
+  const importAction = useStore(store, (state) => state.importAction);
+  const goToNextStep = useStore(store, (state) => state.goToNextStep);
+  const goToPreviousStep = useStore(store, (state) => state.goToPreviousStep);
+  const setMappedColumns = useStore(store, (state) => state.setMappedColumns);
 
   const loadables = useArray([
     caseTypeColMap,
@@ -64,25 +64,13 @@ export const EpiUploadMapColumns = ({ completeCaseType, rawData, onProceed, onGo
 
   const formId = useId();
 
-  const mappedColumns = useMemo<EpiUploadMappedColumn[]>(() => {
-    if (mappedColumnsFromProps) {
-      return mappedColumnsFromProps;
-    }
-    return EpiUploadUtil.getInitialMappedColumns(completeCaseType, rawData, importAction);
-  }, [completeCaseType, importAction, mappedColumnsFromProps, rawData]);
-
   const schema = useMemo(() => {
-    return EpiUploadUtil.getSchema(completeCaseType, t, importAction);
-  }, [completeCaseType, importAction, t]);
+    return EpiUploadUtil.getSchema(rawData, completeCaseType, t, importAction);
+  }, [completeCaseType, importAction, rawData, t]);
 
   const defaultValues: EpiUploadMappedColumnsFormFields = useMemo(() => {
-    return EpiUploadUtil.getDefaultFormValues(completeCaseType, mappedColumns, importAction);
-  }, [completeCaseType, mappedColumns, importAction]);
-
-  const formFieldDefinitions = useMemo<FormFieldDefinition<EpiUploadMappedColumnsFormFields>[]>(() => {
-    return EpiUploadUtil.getFormFieldDefinitions(completeCaseType, rawData[0], fileName, importAction);
-  }, [completeCaseType, rawData, fileName, importAction]);
-
+    return EpiUploadUtil.getDefaultFormValues(completeCaseType, store.getState().mappedColumns, importAction);
+  }, [completeCaseType, store, importAction]);
   const formMethods = useForm<EpiUploadMappedColumnsFormFields>({
     resolver: yupResolver(schema) as unknown as Resolver<EpiUploadMappedColumnsFormFields>,
     values: { ...defaultValues },
@@ -92,10 +80,14 @@ export const EpiUploadMapColumns = ({ completeCaseType, rawData, onProceed, onGo
   const { handleSubmit, control } = formMethods;
   const values = useWatch({ control });
 
+  const formFieldDefinitions = useMemo<FormFieldDefinition<EpiUploadMappedColumnsFormFields>[]>(() => {
+    return EpiUploadUtil.getColumnMappingFormFieldDefinitions(completeCaseType, rawData[0], fileName, importAction);
+  }, [completeCaseType, rawData, fileName, importAction]);
+
   const getMergedMappedColumns = useCallback((data: EpiUploadMappedColumnsFormFields) => {
     const sheetValues = invert(data);
 
-    const mergedMappedColumns = mappedColumns.map((mappedColumn) => {
+    const mergedMappedColumns = store.getState().mappedColumns.map((mappedColumn) => {
       const formValue = sheetValues[mappedColumn.originalIndex.toString()];
       const isCaseIdColumn = formValue === 'case_id';
       const isCaseDateColumn = formValue === 'case_date';
@@ -111,7 +103,15 @@ export const EpiUploadMapColumns = ({ completeCaseType, rawData, onProceed, onGo
       };
     });
     return mergedMappedColumns;
-  }, [caseTypeColMap.map, mappedColumns]);
+  }, [caseTypeColMap.map, store]);
+
+  useEffect(() => {
+    const perform = async () => {
+      await setMappedColumns(getMergedMappedColumns(values));
+    };
+    // eslint-disable-next-line @typescript-eslint/no-floating-promises
+    perform();
+  }, [getMergedMappedColumns, setMappedColumns, values]);
 
   const unMappedColumns = useMemo(() => {
     return getMergedMappedColumns(values).filter(mappedColumn => {
@@ -127,9 +127,10 @@ export const EpiUploadMapColumns = ({ completeCaseType, rawData, onProceed, onGo
     });
   }, [getMergedMappedColumns, importAction, values]);
 
-  const onFormSubmit = useCallback((data: EpiUploadMappedColumnsFormFields) => {
-    onProceed(getMergedMappedColumns(data));
-  }, [getMergedMappedColumns, onProceed]);
+  const onFormSubmit = useCallback(async (data: EpiUploadMappedColumnsFormFields) => {
+    await setMappedColumns(getMergedMappedColumns(data));
+    await goToNextStep();
+  }, [getMergedMappedColumns, goToNextStep, setMappedColumns]);
 
   const onProceedButtonClick = useCallback(async () => {
     await handleSubmit(onFormSubmit)();
@@ -241,7 +242,7 @@ export const EpiUploadMapColumns = ({ completeCaseType, rawData, onProceed, onGo
         </Box>
         <Box>
           <EpiUploadNavigation
-            onGoBackButtonClick={onGoBack}
+            onGoBackButtonClick={goToPreviousStep}
             onProceedButtonClick={onProceedButtonClick}
           />
         </Box>

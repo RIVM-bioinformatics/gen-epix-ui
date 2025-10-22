@@ -37,7 +37,7 @@ export type UploadButtonProps<TFieldValues extends FieldValues, TName extends Pa
   readonly disabled?: boolean;
   readonly label: string;
   readonly name: TName;
-  readonly onChange?: (value: string) => void;
+  readonly onChange?: (value: FileList) => void;
   readonly required?: boolean;
   readonly warningMessage?: string | boolean;
   readonly multiple?: boolean;
