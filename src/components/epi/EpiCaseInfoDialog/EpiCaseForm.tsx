@@ -73,7 +73,7 @@ export const EpiCaseForm = ({ epiCase, formId, onFinish, onIsSavingChange, ...bo
         onFinish();
       }
     };
-      // eslint-disable-next-line @typescript-eslint/no-floating-promises
+    // eslint-disable-next-line @typescript-eslint/no-floating-promises
     perform();
   }, [epiCase, mutateCachedCase, onFinish, onIsSavingChange]);
 

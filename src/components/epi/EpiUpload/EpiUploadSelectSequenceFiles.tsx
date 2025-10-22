@@ -29,7 +29,6 @@ export const EpiUploadSelectSequenceFiles = () => {
   const goToPreviousStep = useStore(store, (state) => state.goToPreviousStep);
   const setSequenceFilesDataTransfer = useStore(store, (state) => state.setSequenceFilesDataTransfer);
   const initialDataTransfer = useStore(store, (state) => state.sequenceFilesDataTransfer);
-
   const dataTransfer = useRef(initialDataTransfer);
 
   const completeCaseTypeColumnStats = useMemo(() => {
@@ -74,11 +73,16 @@ export const EpiUploadSelectSequenceFiles = () => {
   const onProceedButtonClick = useCallback(async () => {
     setSequenceFilesDataTransfer(dataTransfer.current);
     await goToNextStep();
-  }, [setSequenceFilesDataTransfer, goToNextStep]);
+  }, [goToNextStep, setSequenceFilesDataTransfer]);
 
   const onDataTransferChange = useCallback((dt: DataTransfer) => {
     dataTransfer.current = dt;
-  }, []);
+
+    // Note: setState in a timeout to avoid React state update during rendering warning
+    setTimeout(() => {
+      setSequenceFilesDataTransfer(dataTransfer.current);
+    });
+  }, [setSequenceFilesDataTransfer]);
 
   return (
     <Box

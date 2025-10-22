@@ -49,15 +49,9 @@ export const EpiUploadMapSequences = () => {
   const goToPreviousStep = useStore(store, (state) => state.goToPreviousStep);
   const completeCaseType = useStore(store, (state) => state.completeCaseType);
   const sequenceFilesDataTransfer = useStore(store, (state) => state.sequenceFilesDataTransfer);
+  const validatedCasesWithGeneratedId = useStore(store, (state) => state.validatedCasesWithGeneratedId);
   const validatedCases = useStore(store, (state) => state.validatedCases);
   const setSequenceMapping = useStore(store, (state) => state.setSequenceMapping);
-
-  const rowsWithGeneratedId = useMemo<EpiValidatedCaseWithGeneratedId[]>(() => {
-    return (validatedCases || []).map((vc, index) => ({
-      ...vc,
-      generated_id: index.toString(),
-    }));
-  }, [validatedCases]);
 
   const completeCaseTypeColumnStats = useMemo(() => {
     return EpiUploadUtil.getCompleteCaseTypeColumnStats(completeCaseType);
@@ -66,7 +60,7 @@ export const EpiUploadMapSequences = () => {
   const alertTitleId = useId();
   const alertContentId = useId();
 
-  const epiUploadSequenceMapping = useRef(store.getState().sequenceMapping ?? EpiUploadUtil.getEpiUploadSequenceMapping(completeCaseType, rowsWithGeneratedId, sequenceFilesDataTransfer));
+  const epiUploadSequenceMapping = useRef(store.getState().sequenceMapping);
 
   const onProceedButtonClick = useCallback(async () => {
     setSequenceMapping(epiUploadSequenceMapping.current);
@@ -155,12 +149,13 @@ export const EpiUploadMapSequences = () => {
             } else {
               epiUploadSequenceMapping.current[tableRowParams.row.generated_id][caseTypeColumn.id] = newValue;
             }
+            setSequenceMapping(epiUploadSequenceMapping.current);
             updateAlert();
           }}
         />
       </Box>
     );
-  }, [completeCaseType, completeCaseTypeColumnStats.sequenceColumns, sequenceDropDownOptions, readsDropDownOptions, updateAlert]);
+  }, [completeCaseType, completeCaseTypeColumnStats.sequenceColumns, sequenceDropDownOptions, readsDropDownOptions, setSequenceMapping, updateAlert]);
 
   const tableColumns = useMemo<TableColumn<EpiValidatedCaseWithGeneratedId>[]>(() => {
     const tableCols: TableColumn<EpiValidatedCaseWithGeneratedId>[] = [];
@@ -174,7 +169,7 @@ export const EpiUploadMapSequences = () => {
     ];
 
     columnsUsedForMapping.forEach((caseTypeColumn) => {
-      if (!caseHasColumnContent(rowsWithGeneratedId, caseTypeColumn)) {
+      if (!caseHasColumnContent(validatedCasesWithGeneratedId, caseTypeColumn)) {
         return;
       }
       const isIdColumn = completeCaseTypeColumnStats.idColumns.includes(caseTypeColumn);
@@ -214,9 +209,9 @@ export const EpiUploadMapSequences = () => {
     });
 
     return tableCols;
-  }, [caseHasColumnContent, completeCaseType, completeCaseTypeColumnStats.idColumns, completeCaseTypeColumnStats.readsColumns, completeCaseTypeColumnStats.readsFwdRevColumnPairs, completeCaseTypeColumnStats.sequenceColumns, renderDropDownCell, rowsWithGeneratedId, validatedCases]);
+  }, [caseHasColumnContent, completeCaseType, completeCaseTypeColumnStats.idColumns, completeCaseTypeColumnStats.readsColumns, completeCaseTypeColumnStats.readsFwdRevColumnPairs, completeCaseTypeColumnStats.sequenceColumns, renderDropDownCell, validatedCases, validatedCasesWithGeneratedId]);
 
-  useInitializeTableStore<EpiValidatedCaseWithGeneratedId>({ store: tableStore, columns: tableColumns, rows: rowsWithGeneratedId, createFiltersFromColumns: true });
+  useInitializeTableStore<EpiValidatedCaseWithGeneratedId>({ store: tableStore, columns: tableColumns, rows: validatedCasesWithGeneratedId, createFiltersFromColumns: true });
 
   return (
     <Box

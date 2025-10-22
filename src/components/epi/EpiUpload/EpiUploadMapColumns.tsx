@@ -2,6 +2,7 @@ import type { ReactElement } from 'react';
 import {
   useCallback,
   useContext,
+  useEffect,
   useId,
   useMemo,
 } from 'react';
@@ -70,11 +71,6 @@ export const EpiUploadMapColumns = () => {
   const defaultValues: EpiUploadMappedColumnsFormFields = useMemo(() => {
     return EpiUploadUtil.getDefaultFormValues(completeCaseType, store.getState().mappedColumns, importAction);
   }, [completeCaseType, store, importAction]);
-
-  const formFieldDefinitions = useMemo<FormFieldDefinition<EpiUploadMappedColumnsFormFields>[]>(() => {
-    return EpiUploadUtil.getColumnMappingFormFieldDefinitions(completeCaseType, rawData[0], fileName, importAction);
-  }, [completeCaseType, rawData, fileName, importAction]);
-
   const formMethods = useForm<EpiUploadMappedColumnsFormFields>({
     resolver: yupResolver(schema) as unknown as Resolver<EpiUploadMappedColumnsFormFields>,
     values: { ...defaultValues },
@@ -83,6 +79,10 @@ export const EpiUploadMapColumns = () => {
 
   const { handleSubmit, control } = formMethods;
   const values = useWatch({ control });
+
+  const formFieldDefinitions = useMemo<FormFieldDefinition<EpiUploadMappedColumnsFormFields>[]>(() => {
+    return EpiUploadUtil.getColumnMappingFormFieldDefinitions(completeCaseType, rawData[0], fileName, importAction);
+  }, [completeCaseType, rawData, fileName, importAction]);
 
   const getMergedMappedColumns = useCallback((data: EpiUploadMappedColumnsFormFields) => {
     const sheetValues = invert(data);
@@ -104,6 +104,14 @@ export const EpiUploadMapColumns = () => {
     });
     return mergedMappedColumns;
   }, [caseTypeColMap.map, store]);
+
+  useEffect(() => {
+    const perform = async () => {
+      await setMappedColumns(getMergedMappedColumns(values));
+    };
+    // eslint-disable-next-line @typescript-eslint/no-floating-promises
+    perform();
+  }, [getMergedMappedColumns, setMappedColumns, values]);
 
   const unMappedColumns = useMemo(() => {
     return getMergedMappedColumns(values).filter(mappedColumn => {
