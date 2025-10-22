@@ -12,6 +12,11 @@ import {
 import type { TFunction } from 'i18next';
 import difference from 'lodash/difference';
 import uniq from 'lodash/uniq';
+import {
+  isValid,
+  parse as parseDate,
+  parseISO,
+} from 'date-fns';
 
 import type {
   CaseTypeCol,
@@ -36,6 +41,7 @@ import { EPI_UPLOAD_ACTION } from '../../models/epiUpload';
 import { EpiCaseTypeUtil } from '../EpiCaseTypeUtil';
 import { ConfigManager } from '../../classes/managers/ConfigManager';
 import { EpiCaseUtil } from '../EpiCaseUtil';
+import { DATE_FORMAT } from '../../data/date';
 
 export class EpiUploadUtil {
   public static readonly caseIdColumnAliases = ['_case_id', 'case id', 'case_id', 'caseid', 'case.id'];
@@ -225,7 +231,7 @@ export class EpiUploadUtil {
   }
 
   // eslint-disable-next-line @typescript-eslint/no-empty-object-type
-  public static getSchema(completeCaseType: CompleteCaseType, t: TFunction<'translation', undefined>, importAction: EPI_UPLOAD_ACTION): ObjectSchema<{}, AnyObject, {}, ''> {
+  public static getSchema(rawData: string[][], completeCaseType: CompleteCaseType, t: TFunction<'translation', undefined>, importAction: EPI_UPLOAD_ACTION): ObjectSchema<{}, AnyObject, {}, ''> {
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
     const fields: { [key: string]: any } = {};
 
@@ -236,7 +242,7 @@ export class EpiUploadUtil {
       const otherFieldNames = fieldNames.filter(name => name !== caseTypeCol.id);
       fields[caseTypeCol.id] = lazy(() => string().nullable().when(otherFieldNames, (otherFieldValues, schema) => {
         return schema
-          .test('unique', t('Each column must be mapped to a unique case type field.'), (fieldValue) => {
+          .test('unique', t('This column has already been mapped to another field.'), (fieldValue) => {
             return !fieldValue || !otherFieldValues.includes(fieldValue);
           });
       }));
@@ -245,17 +251,24 @@ export class EpiUploadUtil {
     if (importAction === EPI_UPLOAD_ACTION.UPDATE) {
       fields['case_id'] = lazy(() => string().nullable().when(fieldNames.filter(name => name !== 'case_id'), (otherFieldValues, schema) => {
         return schema
-          .test('unique', t('Each column must be mapped to a unique case type field.'), (fieldValue) => {
+          .test('unique', t('This column has already been mapped to another field.'), (fieldValue) => {
             return !fieldValue || !otherFieldValues.includes(fieldValue);
           })
           .test('required', t('A column must be mapped to the case ID field.'), (fieldValue) => {
             return !!fieldValue;
+          })
+          .test('all-column-values-valid', t('The column mapped to the case ID field must contain an id for each row.'), (fieldValue) => {
+            if (!fieldValue) {
+              return true; // caught by another validation
+            }
+            const columnIndex = parseInt(fieldValue, 10);
+            return rawData.slice(1).map(row => row[columnIndex]).every(value => !!value);
           });
       }));
     }
     fields['case_date'] = lazy(() => string().nullable().when(fieldNames.filter(name => name !== 'case_date'), (otherFieldValues, schema) => {
       return schema
-        .test('unique', t('Each column must be mapped to a unique case type field.'), (fieldValue) => {
+        .test('unique', t('This column has already been mapped to another field.'), (fieldValue) => {
           return !fieldValue || !otherFieldValues.includes(fieldValue);
         })
         .test('required', t('A column must be mapped to the case date field.'), (fieldValue) => {
@@ -263,6 +276,26 @@ export class EpiUploadUtil {
             return true;
           }
           return !!fieldValue;
+        })
+        .test('all-column-values-valid', t('The column mapped to the case date field must contain valid date values for each row.'), (fieldValue) => {
+          if (!fieldValue) {
+            return true; // caught by another validation
+          }
+          const columnIndex = parseInt(fieldValue, 10);
+          const values = rawData.slice(1).map(row => row[columnIndex]);
+          const refDate = new Date();
+          return values.every(value => {
+            try {
+              if (isValid(parseISO(value))) {
+                return true;
+              }
+              return Object.values(DATE_FORMAT).some(format => {
+                return isValid(parseDate(value, format, refDate, { useAdditionalWeekYearTokens: true }));
+              });
+            } catch (_e) {
+              return false;
+            }
+          });
         });
     }));
 
