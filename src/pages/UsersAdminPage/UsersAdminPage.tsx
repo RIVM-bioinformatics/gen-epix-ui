@@ -64,6 +64,7 @@ export const UsersAdminPage = () => {
       organization_id: item.organization_id,
       roles: variables.roles,
       email: item.email,
+      key: item.email,
     })).data;
   }, []);
 
@@ -162,11 +163,13 @@ export const UsersAdminPage = () => {
 
   const getOptimisticUpdateIntermediateItem = useCallback((variables: FormFields, previousItem: User): User => {
     return {
-      ...variables,
       id: previousItem.id,
       is_active: previousItem.is_active,
       organization_id: previousItem.organization_id,
       name: previousItem.name,
+      key: previousItem.email,
+      email: previousItem.email,
+      ...variables,
     };
   }, []);
 

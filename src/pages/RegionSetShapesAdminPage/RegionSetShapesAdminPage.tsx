@@ -101,9 +101,9 @@ export const RegionSetShapesAdminPage = () => {
 
   const getOptimisticUpdateIntermediateItem = useCallback((variables: FormFields, previousItem: RegionSetShape): RegionSetShape => {
     return {
-      ...variables,
       id: previousItem.id,
       region_set_id: previousItem.region_set_id,
+      ...variables,
     };
   }, []);
 

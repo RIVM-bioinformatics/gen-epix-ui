@@ -108,9 +108,9 @@ export const ConceptsAdminPage = () => {
 
   const getOptimisticUpdateIntermediateItem = useCallback((variables: FormFields, previousItem: Concept): Concept => {
     return {
-      ...variables,
       id: previousItem.id,
       concept_set_id: previousItem.concept_set_id,
+      ...variables,
     };
   }, []);
 

@@ -69,9 +69,9 @@ export const OrganizationContactsAdminPage = () => {
 
   const getOptimisticUpdateIntermediateItem = useCallback((variables: FormFields, previousItem: Contact): Contact => {
     return {
-      ...variables,
       id: previousItem.id,
       site_id: previousItem.site_id,
+      ...variables,
     };
   }, []);
 

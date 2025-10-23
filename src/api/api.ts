@@ -70,6 +70,7 @@ export interface ApiPermission {
  */
 
 export const AuthProtocol = {
+    NONE: 'NONE',
     OAUTH2: 'OAUTH2',
     OIDC: 'OIDC'
 } as const;
@@ -277,11 +278,11 @@ export interface CaseForCreateUpdate {
      */
     'count'?: number | null;
     /**
-     * The date of the case
+     * The date of the case. Required when creating a case, ignored when updating.
      * @type {string}
      * @memberof CaseForCreateUpdate
      */
-    'case_date': string;
+    'case_date'?: string | null;
     /**
      * The column data of the case as {col_id: str_value}. If None and the model is used for update, then any existing value will be deleted.
      * @type {{ [key: string]: string | null; }}
@@ -1498,90 +1499,90 @@ export type ColType = typeof ColType[keyof typeof ColType];
  */
 
 export const CommandName = {
-    RetrieveOrganizationAdminNameEmailsCommand: 'RetrieveOrganizationAdminNameEmailsCommand',
-    CaseTypeColSetMemberCrudCommand: 'CaseTypeColSetMemberCrudCommand',
-    DataCollectionSetDataCollectionUpdateAssociationCommand: 'DataCollectionSetDataCollectionUpdateAssociationCommand',
-    CaseCrudCommand: 'CaseCrudCommand',
     ConceptSetCrudCommand: 'ConceptSetCrudCommand',
-    IdentifierIssuerCrudCommand: 'IdentifierIssuerCrudCommand',
-    OrganizationAdminPolicyCrudCommand: 'OrganizationAdminPolicyCrudCommand',
-    CaseTypeColSetCrudCommand: 'CaseTypeColSetCrudCommand',
-    RetrieveGeneticSequenceFastaByCaseCommand: 'RetrieveGeneticSequenceFastaByCaseCommand',
-    OrganizationSetMemberCrudCommand: 'OrganizationSetMemberCrudCommand',
-    RetrievePhylogeneticTreeByCasesCommand: 'RetrievePhylogeneticTreeByCasesCommand',
-    CaseTypeSetCrudCommand: 'CaseTypeSetCrudCommand',
-    CaseDataCollectionLinkCrudCommand: 'CaseDataCollectionLinkCrudCommand',
-    ValidateCasesCommand: 'ValidateCasesCommand',
-    OrganizationShareCasePolicyCrudCommand: 'OrganizationShareCasePolicyCrudCommand',
-    GeneticDistanceProtocolCrudCommand: 'GeneticDistanceProtocolCrudCommand',
-    CaseSetStatusCrudCommand: 'CaseSetStatusCrudCommand',
-    UserAccessCasePolicyCrudCommand: 'UserAccessCasePolicyCrudCommand',
-    ConceptRelationCrudCommand: 'ConceptRelationCrudCommand',
-    DataCollectionCrudCommand: 'DataCollectionCrudCommand',
+    DimCrudCommand: 'DimCrudCommand',
+    UserCrudCommand: 'UserCrudCommand',
+    ConceptCrudCommand: 'ConceptCrudCommand',
+    RetrieveOrganizationContactCommand: 'RetrieveOrganizationContactCommand',
+    CaseSetMemberCrudCommand: 'CaseSetMemberCrudCommand',
+    DiseaseCrudCommand: 'DiseaseCrudCommand',
+    RegionCrudCommand: 'RegionCrudCommand',
     CaseTypeCrudCommand: 'CaseTypeCrudCommand',
     DataCollectionSetCrudCommand: 'DataCollectionSetCrudCommand',
-    CaseSetCategoryCrudCommand: 'CaseSetCategoryCrudCommand',
-    RetrievePhylogeneticTreeBySequencesCommand: 'RetrievePhylogeneticTreeBySequencesCommand',
-    CaseSetCrudCommand: 'CaseSetCrudCommand',
-    TreeAlgorithmCrudCommand: 'TreeAlgorithmCrudCommand',
-    RetrieveCompleteCaseTypeCommand: 'RetrieveCompleteCaseTypeCommand',
-    CaseSetMemberCrudCommand: 'CaseSetMemberCrudCommand',
-    RetrieveAlleleProfileCommand: 'RetrieveAlleleProfileCommand',
-    UpdateUserCommand: 'UpdateUserCommand',
-    OrganizationCrudCommand: 'OrganizationCrudCommand',
-    SiteCrudCommand: 'SiteCrudCommand',
-    UserInvitationCrudCommand: 'UserInvitationCrudCommand',
-    UserCrudCommand: 'UserCrudCommand',
-    OrganizationSetCrudCommand: 'OrganizationSetCrudCommand',
-    OrganizationAccessCasePolicyCrudCommand: 'OrganizationAccessCasePolicyCrudCommand',
-    EtiologicalAgentCrudCommand: 'EtiologicalAgentCrudCommand',
-    SubjectIdentifierCrudCommand: 'SubjectIdentifierCrudCommand',
-    CaseTypeSetCaseTypeUpdateAssociationCommand: 'CaseTypeSetCaseTypeUpdateAssociationCommand',
-    RegionSetCrudCommand: 'RegionSetCrudCommand',
-    RegionCrudCommand: 'RegionCrudCommand',
-    RetrieveOrganizationContactCommand: 'RetrieveOrganizationContactCommand',
-    ColCrudCommand: 'ColCrudCommand',
-    CreateCasesCommand: 'CreateCasesCommand',
-    CaseTypeSetMemberCrudCommand: 'CaseTypeSetMemberCrudCommand',
-    RetrieveSubRolesCommand: 'RetrieveSubRolesCommand',
-    RetrieveOwnPermissionsCommand: 'RetrieveOwnPermissionsCommand',
-    TreeAlgorithmClassCrudCommand: 'TreeAlgorithmClassCrudCommand',
-    RegionRelationCrudCommand: 'RegionRelationCrudCommand',
-    CaseSetDataCollectionLinkCrudCommand: 'CaseSetDataCollectionLinkCrudCommand',
-    RegionSetShapeCrudCommand: 'RegionSetShapeCrudCommand',
-    CaseTypeColCrudCommand: 'CaseTypeColCrudCommand',
-    RetrieveInviteUserConstraintsCommand: 'RetrieveInviteUserConstraintsCommand',
-    RetrieveCaseTypeStatsCommand: 'RetrieveCaseTypeStatsCommand',
-    DataCollectionSetMemberCrudCommand: 'DataCollectionSetMemberCrudCommand',
-    OrganizationSetOrganizationUpdateAssociationCommand: 'OrganizationSetOrganizationUpdateAssociationCommand',
-    CreateCaseSetCommand: 'CreateCaseSetCommand',
-    UpdateUserOwnOrganizationCommand: 'UpdateUserOwnOrganizationCommand',
-    SubjectCrudCommand: 'SubjectCrudCommand',
-    RetrieveCaseSetRightsCommand: 'RetrieveCaseSetRightsCommand',
-    InviteUserCommand: 'InviteUserCommand',
-    DimCrudCommand: 'DimCrudCommand',
-    RetrieveGeneticSequenceByIdCommand: 'RetrieveGeneticSequenceByIdCommand',
-    CaseTypeSetCategoryCrudCommand: 'CaseTypeSetCategoryCrudCommand',
-    RetrieveGeneticSequenceFastaByIdCommand: 'RetrieveGeneticSequenceFastaByIdCommand',
-    ContactCrudCommand: 'ContactCrudCommand',
-    RetrieveOrganizationsUnderAdminCommand: 'RetrieveOrganizationsUnderAdminCommand',
-    RetrieveGeneticSequenceByCaseCommand: 'RetrieveGeneticSequenceByCaseCommand',
-    RetrieveCaseRightsCommand: 'RetrieveCaseRightsCommand',
-    DiseaseEtiologicalAgentUpdateAssociationCommand: 'DiseaseEtiologicalAgentUpdateAssociationCommand',
-    ConceptCrudCommand: 'ConceptCrudCommand',
-    RetrieveLicensesCommand: 'RetrieveLicensesCommand',
-    RetrieveContainingRegionCommand: 'RetrieveContainingRegionCommand',
-    RegisterInvitedUserCommand: 'RegisterInvitedUserCommand',
-    RetrieveCaseSetStatsCommand: 'RetrieveCaseSetStatsCommand',
-    RetrieveCasesByIdCommand: 'RetrieveCasesByIdCommand',
-    UserShareCasePolicyCrudCommand: 'UserShareCasePolicyCrudCommand',
-    OutageCrudCommand: 'OutageCrudCommand',
-    EtiologyCrudCommand: 'EtiologyCrudCommand',
     RetrieveCasesByQueryCommand: 'RetrieveCasesByQueryCommand',
+    RetrieveLicensesCommand: 'RetrieveLicensesCommand',
+    RetrievePhylogeneticTreeBySequencesCommand: 'RetrievePhylogeneticTreeBySequencesCommand',
+    TreeAlgorithmClassCrudCommand: 'TreeAlgorithmClassCrudCommand',
+    DiseaseEtiologicalAgentUpdateAssociationCommand: 'DiseaseEtiologicalAgentUpdateAssociationCommand',
+    RetrieveSubRolesCommand: 'RetrieveSubRolesCommand',
+    OrganizationSetCrudCommand: 'OrganizationSetCrudCommand',
+    RegionRelationCrudCommand: 'RegionRelationCrudCommand',
+    RetrieveGeneticSequenceByCaseCommand: 'RetrieveGeneticSequenceByCaseCommand',
+    RetrieveCaseTypeStatsCommand: 'RetrieveCaseTypeStatsCommand',
+    CaseTypeSetCrudCommand: 'CaseTypeSetCrudCommand',
+    SiteCrudCommand: 'SiteCrudCommand',
+    RetrieveInviteUserConstraintsCommand: 'RetrieveInviteUserConstraintsCommand',
+    CaseSetCrudCommand: 'CaseSetCrudCommand',
+    DataCollectionSetDataCollectionUpdateAssociationCommand: 'DataCollectionSetDataCollectionUpdateAssociationCommand',
+    CaseTypeColSetMemberCrudCommand: 'CaseTypeColSetMemberCrudCommand',
+    CreateCaseSetCommand: 'CreateCaseSetCommand',
+    ValidateCasesCommand: 'ValidateCasesCommand',
+    UserAccessCasePolicyCrudCommand: 'UserAccessCasePolicyCrudCommand',
+    ColCrudCommand: 'ColCrudCommand',
+    ContactCrudCommand: 'ContactCrudCommand',
+    RegisterInvitedUserCommand: 'RegisterInvitedUserCommand',
+    RetrieveGeneticSequenceByIdCommand: 'RetrieveGeneticSequenceByIdCommand',
+    RetrieveOwnPermissionsCommand: 'RetrieveOwnPermissionsCommand',
+    RetrieveCasesByIdCommand: 'RetrieveCasesByIdCommand',
+    RetrieveGeneticSequenceFastaByIdCommand: 'RetrieveGeneticSequenceFastaByIdCommand',
+    RetrieveOrganizationsUnderAdminCommand: 'RetrieveOrganizationsUnderAdminCommand',
+    RegionSetCrudCommand: 'RegionSetCrudCommand',
+    CaseDataCollectionLinkCrudCommand: 'CaseDataCollectionLinkCrudCommand',
+    UpdateUserCommand: 'UpdateUserCommand',
+    RetrieveCaseRightsCommand: 'RetrieveCaseRightsCommand',
+    TreeAlgorithmCrudCommand: 'TreeAlgorithmCrudCommand',
+    CaseSetStatusCrudCommand: 'CaseSetStatusCrudCommand',
+    DataCollectionSetMemberCrudCommand: 'DataCollectionSetMemberCrudCommand',
+    RetrievePhylogeneticTreeByCasesCommand: 'RetrievePhylogeneticTreeByCasesCommand',
+    CaseTypeSetCategoryCrudCommand: 'CaseTypeSetCategoryCrudCommand',
+    RetrieveContainingRegionCommand: 'RetrieveContainingRegionCommand',
+    OrganizationAccessCasePolicyCrudCommand: 'OrganizationAccessCasePolicyCrudCommand',
+    CaseTypeColCrudCommand: 'CaseTypeColCrudCommand',
+    ConceptRelationCrudCommand: 'ConceptRelationCrudCommand',
+    OrganizationAdminPolicyCrudCommand: 'OrganizationAdminPolicyCrudCommand',
+    RegionSetShapeCrudCommand: 'RegionSetShapeCrudCommand',
+    IdentifierIssuerCrudCommand: 'IdentifierIssuerCrudCommand',
+    OrganizationShareCasePolicyCrudCommand: 'OrganizationShareCasePolicyCrudCommand',
+    OrganizationCrudCommand: 'OrganizationCrudCommand',
+    RetrieveOrganizationAdminNameEmailsCommand: 'RetrieveOrganizationAdminNameEmailsCommand',
+    CaseTypeColSetCrudCommand: 'CaseTypeColSetCrudCommand',
+    OutageCrudCommand: 'OutageCrudCommand',
     GetIdentityProvidersCommand: 'GetIdentityProvidersCommand',
+    CaseSetDataCollectionLinkCrudCommand: 'CaseSetDataCollectionLinkCrudCommand',
+    OrganizationSetOrganizationUpdateAssociationCommand: 'OrganizationSetOrganizationUpdateAssociationCommand',
     CaseTypeColSetCaseTypeColUpdateAssociationCommand: 'CaseTypeColSetCaseTypeColUpdateAssociationCommand',
+    CaseTypeSetMemberCrudCommand: 'CaseTypeSetMemberCrudCommand',
+    UpdateUserOwnOrganizationCommand: 'UpdateUserOwnOrganizationCommand',
+    EtiologyCrudCommand: 'EtiologyCrudCommand',
+    OrganizationSetMemberCrudCommand: 'OrganizationSetMemberCrudCommand',
+    EtiologicalAgentCrudCommand: 'EtiologicalAgentCrudCommand',
+    CaseTypeSetCaseTypeUpdateAssociationCommand: 'CaseTypeSetCaseTypeUpdateAssociationCommand',
+    RetrieveCaseSetStatsCommand: 'RetrieveCaseSetStatsCommand',
+    RetrieveCompleteCaseTypeCommand: 'RetrieveCompleteCaseTypeCommand',
+    GeneticDistanceProtocolCrudCommand: 'GeneticDistanceProtocolCrudCommand',
     RetrieveOutagesCommand: 'RetrieveOutagesCommand',
-    DiseaseCrudCommand: 'DiseaseCrudCommand'
+    RetrieveCaseSetRightsCommand: 'RetrieveCaseSetRightsCommand',
+    SubjectCrudCommand: 'SubjectCrudCommand',
+    SubjectIdentifierCrudCommand: 'SubjectIdentifierCrudCommand',
+    CaseCrudCommand: 'CaseCrudCommand',
+    InviteUserCommand: 'InviteUserCommand',
+    CaseSetCategoryCrudCommand: 'CaseSetCategoryCrudCommand',
+    DataCollectionCrudCommand: 'DataCollectionCrudCommand',
+    UserInvitationCrudCommand: 'UserInvitationCrudCommand',
+    CreateCasesCommand: 'CreateCasesCommand',
+    RetrieveGeneticSequenceFastaByCaseCommand: 'RetrieveGeneticSequenceFastaByCaseCommand',
+    RetrieveAlleleProfileCommand: 'RetrieveAlleleProfileCommand',
+    UserShareCasePolicyCrudCommand: 'UserShareCasePolicyCrudCommand'
 } as const;
 
 export type CommandName = typeof CommandName[keyof typeof CommandName];
@@ -2443,10 +2444,10 @@ export interface IdentityProvider {
     'auth_protocol': AuthProtocol;
     /**
      * 
-     * @type {OauthFlowType}
+     * @type {OAuthFlow}
      * @memberof IdentityProvider
      */
-    'oauth_flow'?: OauthFlowType;
+    'oauth_flow'?: OAuthFlow;
     /**
      * The discovery URL of the identity provider
      * @type {string}
@@ -2454,23 +2455,29 @@ export interface IdentityProvider {
      */
     'discovery_url'?: string | null;
     /**
-     * The client ID of the identity provider
+     * The client ID that tokens should be requested for
      * @type {string}
      * @memberof IdentityProvider
      */
     'client_id'?: string | null;
     /**
-     * The client secret of the identity provider
+     * The client secret
      * @type {string}
      * @memberof IdentityProvider
      */
     'client_secret'?: string | null;
     /**
-     * The scope of the identity provider
+     * The OIDC scopes, space separated
      * @type {string}
      * @memberof IdentityProvider
      */
     'scope'?: string | null;
+    /**
+     * Whether the identity provider is public
+     * @type {boolean}
+     * @memberof IdentityProvider
+     */
+    'public'?: boolean;
 }
 
 
@@ -2595,7 +2602,7 @@ export type MembersInner = number | string;
  * @ {string}
  */
 
-export const OauthFlowType = {
+export const OAuthFlow = {
     AUTHORIZATION_CODE: 'AUTHORIZATION_CODE',
     CLIENT_CREDENTIALS: 'CLIENT_CREDENTIALS',
     RESOURCE_OWNER: 'RESOURCE_OWNER',
@@ -2604,7 +2611,7 @@ export const OauthFlowType = {
     PKCE: 'PKCE'
 } as const;
 
-export type OauthFlowType = typeof OauthFlowType[keyof typeof OauthFlowType];
+export type OAuthFlow = typeof OAuthFlow[keyof typeof OAuthFlow];
 
 
 /**
@@ -4399,11 +4406,17 @@ export interface User {
      */
     'id'?: string | null;
     /**
-     * The email of the user, UNIQUE
+     * The key of the user, UNIQUE
      * @type {string}
      * @memberof User
      */
-    'email': string;
+    'key': string;
+    /**
+     * The email of the user
+     * @type {string}
+     * @memberof User
+     */
+    'email'?: string | null;
     /**
      * The full name of the user
      * @type {string}
@@ -4563,11 +4576,23 @@ export interface UserInvitation {
      */
     'id'?: string | null;
     /**
-     * The email of the user, UNIQUE
+     * The key of the user, UNIQUE
      * @type {string}
      * @memberof UserInvitation
      */
-    'email': string;
+    'key': string;
+    /**
+     * The email of the user
+     * @type {string}
+     * @memberof UserInvitation
+     */
+    'email'?: string | null;
+    /**
+     * The full name of the user
+     * @type {string}
+     * @memberof UserInvitation
+     */
+    'name'?: string | null;
     /**
      * The token of the invitation
      * @type {string}
@@ -4643,11 +4668,11 @@ export interface UserInvitationConstraints {
  */
 export interface UserInvitationRequestBody {
     /**
-     * The email of the user, UNIQUE
+     * The key of the user, UNIQUE
      * @type {string}
      * @memberof UserInvitationRequestBody
      */
-    'email': string;
+    'key': string;
     /**
      * The initial roles that the new user will have
      * @type {Array<Role>}
@@ -4684,7 +4709,7 @@ export interface UserNameEmail {
      * @type {string}
      * @memberof UserNameEmail
      */
-    'email': string;
+    'email': string | null;
 }
 /**
  * Stores the maximum share rights of a user to a particular data collection, analogous to the organization share case policy.  The actual share rights of a user are derived as the intersection of their maximum share rights stored here, and the share rights of the organization to which they belong.
@@ -8567,7 +8592,7 @@ export class AbacApi extends BaseAPI {
 const AuthApiAxiosParamCreator = function (configuration?: Configuration) {
     return {
         /**
-         * 
+         * Get all public identity providers
          * @summary Identityprovider
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
@@ -8607,7 +8632,7 @@ const AuthApiFp = function(configuration?: Configuration) {
     const localVarAxiosParamCreator = AuthApiAxiosParamCreator(configuration)
     return {
         /**
-         * 
+         * Get all public identity providers
          * @summary Identityprovider
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
@@ -8641,7 +8666,7 @@ export class AuthApi extends BaseAPI {
   }
 
     /**
-     * 
+     * Get all public identity providers
      * @summary Identityprovider
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
@@ -33025,7 +33050,7 @@ const OrganizationApiAxiosParamCreator = function (configuration?: Configuration
             };
         },
         /**
-         * Creates and returns a UserInvitation for a new user with a particular email address, organization and initial role(s).  A random unique token is added to the invitation, and to be provided to the new user for consuming the invitation.
+         * Creates and returns a UserInvitation for a new user with a particular user key claim (e.g. email address), organization and initial role(s).  A random unique token is added to the invitation, and to be provided to the new user for consuming the invitation.
          * @summary Invite A User
          * @param {UserInvitationRequestBody} userInvitationRequestBody 
          * @param {*} [options] Override http request option.
@@ -35337,7 +35362,7 @@ const OrganizationApiAxiosParamCreator = function (configuration?: Configuration
             };
         },
         /**
-         * Registers (creates) the user of the command. The email and token must match that of an existing UserInvitation. The newly registered user is assigned the organization and roles from the invitation. The invitation is deleted.
+         * Registers (creates) the user of the command. The key and token must match that of an existing UserInvitation. The newly registered user is assigned the organization and roles from the invitation. The invitation is deleted.
          * @summary Registerinviteduser
          * @param {string} token 
          * @param {*} [options] Override http request option.
@@ -36592,7 +36617,7 @@ const OrganizationApiFp = function(configuration?: Configuration) {
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
         /**
-         * Creates and returns a UserInvitation for a new user with a particular email address, organization and initial role(s).  A random unique token is added to the invitation, and to be provided to the new user for consuming the invitation.
+         * Creates and returns a UserInvitation for a new user with a particular user key claim (e.g. email address), organization and initial role(s).  A random unique token is added to the invitation, and to be provided to the new user for consuming the invitation.
          * @summary Invite A User
          * @param {UserInvitationRequestBody} userInvitationRequestBody 
          * @param {*} [options] Override http request option.
@@ -37443,7 +37468,7 @@ const OrganizationApiFp = function(configuration?: Configuration) {
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
         /**
-         * Registers (creates) the user of the command. The email and token must match that of an existing UserInvitation. The newly registered user is assigned the organization and roles from the invitation. The invitation is deleted.
+         * Registers (creates) the user of the command. The key and token must match that of an existing UserInvitation. The newly registered user is assigned the organization and roles from the invitation. The invitation is deleted.
          * @summary Registerinviteduser
          * @param {string} token 
          * @param {*} [options] Override http request option.
@@ -38361,7 +38386,7 @@ export class OrganizationApi extends BaseAPI {
     }
 
     /**
-     * Creates and returns a UserInvitation for a new user with a particular email address, organization and initial role(s).  A random unique token is added to the invitation, and to be provided to the new user for consuming the invitation.
+     * Creates and returns a UserInvitation for a new user with a particular user key claim (e.g. email address), organization and initial role(s).  A random unique token is added to the invitation, and to be provided to the new user for consuming the invitation.
      * @summary Invite A User
      * @param {UserInvitationRequestBody} userInvitationRequestBody 
      * @param {*} [options] Override http request option.
@@ -39146,7 +39171,7 @@ export class OrganizationApi extends BaseAPI {
     }
 
     /**
-     * Registers (creates) the user of the command. The email and token must match that of an existing UserInvitation. The newly registered user is assigned the organization and roles from the invitation. The invitation is deleted.
+     * Registers (creates) the user of the command. The key and token must match that of an existing UserInvitation. The newly registered user is assigned the organization and roles from the invitation. The invitation is deleted.
      * @summary Registerinviteduser
      * @param {string} token 
      * @param {*} [options] Override http request option.

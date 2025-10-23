@@ -120,9 +120,9 @@ export const RegionsAdminPage = () => {
 
   const getOptimisticUpdateIntermediateItem = useCallback((variables: FormFields, previousItem: Region): Region => {
     return {
-      ...variables,
       id: previousItem.id,
       region_set_id: previousItem.region_set_id,
+      ...variables,
     };
   }, []);
 

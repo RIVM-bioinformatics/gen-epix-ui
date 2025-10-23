@@ -95,9 +95,9 @@ export const OrganizationSitesAdminPage = () => {
 
   const getOptimisticUpdateIntermediateItem = useCallback((variables: FormFields, previousItem: Site): Site => {
     return {
-      ...variables,
       id: previousItem.id,
       organization_id: previousItem.organization_id,
+      ...variables,
     };
   }, []);
 
