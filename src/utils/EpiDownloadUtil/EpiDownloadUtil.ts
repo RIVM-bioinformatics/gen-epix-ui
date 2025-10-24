@@ -14,6 +14,7 @@ import { DATE_FORMAT } from '../../data/date';
 import { StringUtil } from '../StringUtil';
 import { EpiCaseTypeUtil } from '../EpiCaseTypeUtil';
 import { EpiCaseUtil } from '../EpiCaseUtil';
+import { AuthenticationManager } from '../../classes/managers/AuthenticationManager';
 
 export class EpiDownloadUtil {
   public static createDownloadUrl(url: string, name: string): void {
@@ -23,6 +24,39 @@ export class EpiDownloadUtil {
     document.body.appendChild(link);
     link.click();
     document.body.removeChild(link);
+  }
+
+  public static downloadAsMultiPartForm(kwArgs: { action: string; data: Record<string, string | string[]> }): void {
+    const formElement = document.createElement('form');
+    formElement.method = 'POST';
+    formElement.action = kwArgs.action;
+    formElement.style.display = 'none';
+    formElement.target = '_blank';
+
+    Object.entries(kwArgs.data).forEach(([key, value]) => {
+      if (Array.isArray(value)) {
+        value.forEach((v) => {
+          const input = document.createElement('input');
+          input.name = key;
+          input.value = v;
+          formElement.appendChild(input);
+        });
+        return;
+      }
+
+      const input = document.createElement('input');
+      input.name = key;
+      input.value = value;
+      formElement.appendChild(input);
+    });
+    const input = document.createElement('input');
+    input.name = 'token';
+    input.value = AuthenticationManager.instance.authContextProps?.user?.access_token ?? '';
+    formElement.appendChild(input);
+
+    document.body.appendChild(formElement);
+    formElement.submit();
+    document.body.removeChild(formElement);
   }
 
   public static getExportFileName(baseName: string, completeCaseType: CompleteCaseType, t: TFunction<'translation', undefined>): string {

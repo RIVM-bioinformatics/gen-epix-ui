@@ -84,7 +84,10 @@ export const UserInvitationsAdminPage = () => {
   }, []);
 
   const createOne = useCallback(async (variables: FormFields) => {
-    return (await OrganizationApi.getInstance().inviteUser(variables)).data;
+    return (await OrganizationApi.getInstance().inviteUser({
+      ...variables,
+      key: variables.email,
+    })).data;
   }, []);
 
   const getName = useCallback((item: FormFields) => {

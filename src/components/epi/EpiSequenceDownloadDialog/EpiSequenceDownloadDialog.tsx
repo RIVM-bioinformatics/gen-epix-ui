@@ -6,12 +6,12 @@ import {
 import DownloadIcon from '@mui/icons-material/Download';
 import type { ReactElement } from 'react';
 import {
+  useCallback,
   useContext,
   useEffect,
   useMemo,
   useState,
 } from 'react';
-import { useQuery } from '@tanstack/react-query';
 import { useStore } from 'zustand';
 import { useShallow } from 'zustand/shallow';
 import {
@@ -21,10 +21,7 @@ import {
 import noop from 'lodash/noop';
 
 import type { Case } from '../../../api';
-import {
-  ColType,
-  CaseApi,
-} from '../../../api';
+import { ColType } from '../../../api';
 import type {
   WithDialogRenderProps,
   WithDialogRefMethods,
@@ -34,10 +31,8 @@ import type { AutoCompleteOption } from '../../../models/form';
 import { EpiStoreContext } from '../../../stores/epiStore';
 import { EpiDownloadUtil } from '../../../utils/EpiDownloadUtil';
 import { EpiCaseTypeUtil } from '../../../utils/EpiCaseTypeUtil';
-import { SequenceUtil } from '../../../utils/SequenceUtil';
-import { CopyToClipboardButton } from '../../ui/CopyToClipboardButton';
-import { ResponseHandler } from '../../ui/ResponseHandler';
 import { Autocomplete } from '../../form/fields/Autocomplete';
+import { StringUtil } from '../../../utils/StringUtil';
 
 export interface EpiSequenceDownloadDialogOpenProps {
   cases: Case[];
@@ -89,21 +84,17 @@ export const EpiSequenceDownloadDialog = withDialog<EpiSequenceDownloadDialogPro
     },
   });
 
-  const queryKey = useMemo(() => {
-    return ['retrieveGeneticSequence', geneticSequenceCaseTypeColId, openProps.cases.map(c => c.id)];
-  }, [openProps.cases, geneticSequenceCaseTypeColId]);
-
-  const { isLoading, error, data: sequenceResponses } = useQuery({
-    queryKey,
-    queryFn: async ({ signal }) => {
-      const response = await CaseApi.getInstance().retrieveGeneticSequence({
+  const onDownloadFastaButtonClick = useCallback(() => {
+    EpiDownloadUtil.downloadAsMultiPartForm({
+      action: '/v1/retrieve/genetic_sequence/fasta',
+      data: {
         case_ids: openProps.cases.map(c => c.id),
         genetic_sequence_case_type_col_id: geneticSequenceCaseTypeColId,
-      }, { signal });
-      return response.data;
-    },
-    enabled: openProps.cases.length > 0 && !!geneticSequenceCaseTypeColId,
-  });
+        file_name: `${StringUtil.createSlug(completeCaseType.name)}-${StringUtil.createSlug(geneticSequenceCaseTypeColOptions.find(x => x.value === geneticSequenceCaseTypeColId)?.label)}-sequences.fasta`,
+      },
+    });
+    onClose();
+  }, [completeCaseType.name, geneticSequenceCaseTypeColId, geneticSequenceCaseTypeColOptions, onClose, openProps.cases]);
 
   useEffect(() => {
     onTitleChange(t`Download sequences`);
@@ -129,51 +120,24 @@ export const EpiSequenceDownloadDialog = withDialog<EpiSequenceDownloadDialogPro
         </FormProvider>
       </Box>
       {geneticSequenceCaseTypeColId && (
-        <ResponseHandler
-          shouldHideActionButtons
-          error={error}
-          isLoading={isLoading}
+        <Box
+          marginBottom={1}
+          sx={{
+            display: 'flex',
+            justifyContent: 'flex-end',
+            gap: 1,
+          }}
         >
-          <Box
-            marginBottom={1}
-            sx={{
-              display: 'flex',
-              justifyContent: 'flex-end',
-              gap: 1,
-            }}
-          >
-            {sequenceResponses?.length === 1 && (
-              <Box>
-                <CopyToClipboardButton
-                  buttonText={t`Copy sequence to clipboard`}
-                  // eslint-disable-next-line react/jsx-no-bind
-                  onGetClipboardValue={() => sequenceResponses[0].nucleotide_sequence}
-                />
-              </Box>
-            )}
-            <Box>
-              <CopyToClipboardButton
-                buttonText={t`Copy Fasta to clipboard`}
-                // eslint-disable-next-line react/jsx-no-bind
-                onGetClipboardValue={() => SequenceUtil.createFastaContent(sequenceResponses, openProps.cases)}
-              />
-            </Box>
-            <Box>
-              <Button
-                startIcon={<DownloadIcon />}
-                color={'primary'}
-                // eslint-disable-next-line react/jsx-no-bind
-                onClick={() => {
-                  const fasta = SequenceUtil.createFastaContent(sequenceResponses, openProps.cases);
-                  EpiDownloadUtil.createDownloadUrl(`data:text/plain;base64,${btoa(fasta)}`, 'sequences.fasta');
-                  onClose();
-                }}
-              >
-                {t`Download FASTA`}
-              </Button>
-            </Box>
+          <Box>
+            <Button
+              startIcon={<DownloadIcon />}
+              color={'primary'}
+              onClick={onDownloadFastaButtonClick}
+            >
+              {t`Download FASTA`}
+            </Button>
           </Box>
-        </ResponseHandler>
+        </Box>
       )}
     </Box>
   );

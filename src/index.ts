@@ -6,7 +6,6 @@ export * from './utils/TimeUtil';
 export * from './utils/TestIdUtil';
 export * from './utils/TableUtil';
 export * from './utils/StringUtil';
-export * from './utils/SequenceUtil';
 export * from './utils/QueryUtil';
 export * from './utils/OutageUtil';
 export * from './utils/ObjectUtil';
