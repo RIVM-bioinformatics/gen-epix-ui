@@ -89,7 +89,7 @@ export class EpiTreeUtil {
       if (node.children?.length) {
         const nodesToMove: TreeNode[] = [];
         node.children.forEach(child => {
-          if (node.branchLength.toNumber() === 0 && (node.children?.length || child.branchLength.toNumber() === 0)) {
+          if ((node.branchLength?.toNumber() ?? 0) === 0 && (node.children?.length || (child.branchLength?.toNumber() ?? 0) === 0)) {
             nodesToMove.push(child);
           }
         });
@@ -109,11 +109,11 @@ export class EpiTreeUtil {
     const traverse = (node: TreeNode, address: number[] = []): TreeNode => {
       treeAddresses[node.name] = address.join('.');
       if (node.children?.length) {
-        const hasZeroBranchLength = node.children.some(child => child.branchLength.toNumber() === 0);
+        const hasZeroBranchLength = node.children.some(child => (child.branchLength?.toNumber() ?? 0) === 0);
 
         let index = hasZeroBranchLength ? 2 : 1;
         node.children.forEach((child) => {
-          if (child.branchLength.toNumber() === 0) {
+          if ((child.branchLength?.toNumber() ?? 0) === 0) {
             traverse(child, [...address, 1]);
           } else {
             traverse(child, [...address, index]);
@@ -160,9 +160,9 @@ export class EpiTreeUtil {
     }
     let min: number = Infinity;
     const traverse = (node: TreeNode) => {
-      const branchLength = node.branchLength.toNumber();
+      const branchLength = node.branchLength?.toNumber() ?? 0;
       if (!node.children?.length && branchLength && branchLength < min) {
-        min = node.branchLength.toNumber();
+        min = node.branchLength?.toNumber() ?? 0;
       }
       node?.children?.forEach(child => traverse(child));
     };
@@ -249,7 +249,7 @@ export class EpiTreeUtil {
       }
       const nodeRenderResults: NodeAssemblyResult[] = [];
       node.children?.forEach(child => {
-        nodeRenderResults.push(traverseTree(child, distance + (node.branchLength.toNumber() ?? 0)));
+        nodeRenderResults.push(traverseTree(child, distance + (node.branchLength?.toNumber() ?? 0)));
       });
 
       if (!node.children?.length) {
@@ -267,10 +267,10 @@ export class EpiTreeUtil {
   }
 
   private static assembleLeafNode(treeAssemblyContext: TreeAssemblyContext, node: TreeNode, distance = 0, leafIndex = 0): NodeAssemblyResult {
-    const leafX = (distance ?? 0) + (node.branchLength.toNumber() ?? 0);
+    const leafX = (distance ?? 0) + (node.branchLength?.toNumber() ?? 0);
     const leafXPxEnd = leafX * treeAssemblyContext.pixelToGeneticDistanceRatio + ConfigManager.instance.config.epiTree.TREE_PADDING;
     const leafYPx = ((leafIndex) * ConfigManager.instance.config.epiList.TABLE_ROW_HEIGHT) + (ConfigManager.instance.config.epiList.TABLE_ROW_HEIGHT / 2);
-    const leafXPxDistance = (node.branchLength.toNumber() ?? 0) * treeAssemblyContext.pixelToGeneticDistanceRatio;
+    const leafXPxDistance = (node.branchLength?.toNumber() ?? 0) * treeAssemblyContext.pixelToGeneticDistanceRatio;
     const leafXPxStart = leafXPxEnd - leafXPxDistance;
     const label = EpiTreeUtil.getDistanceLabel(treeAssemblyContext, node.branchLength);
 
@@ -314,7 +314,7 @@ export class EpiTreeUtil {
     const lastChild = last(childRenderResults);
 
     const ancestorXPxEnd = firstChild.x;
-    const ancestorXPxDistance = (node.branchLength.toNumber() ?? 0) * treeAssemblyContext.pixelToGeneticDistanceRatio;
+    const ancestorXPxDistance = (node.branchLength?.toNumber() ?? 0) * treeAssemblyContext.pixelToGeneticDistanceRatio;
     const ancestorXPxStart = ancestorXPxEnd - ancestorXPxDistance;
     const ancestorYPx = (firstChild.y + lastChild.y) / 2;
     const caseIds = childRenderResults.map(r => r.caseIds).flat();
@@ -356,7 +356,7 @@ export class EpiTreeUtil {
       treeAssemblyContext.treeAssembly.distanceTexts.push({ nodeNames: [node.name, ...caseIds], x: (ancestorXPxStart + ancestorXPxEnd) / 2, y: ancestorYPx + 12, text: label });
     }
 
-    if (node.children.every(child => child.branchLength.toNumber() > 0)) {
+    if (node.children.every(child => (child.branchLength?.toNumber() ?? 0) > 0)) {
       // add circle at beginning of the line representing the node itself
       const circlePath = new Path2D();
       circlePath.arc(ancestorXPxEnd, ancestorYPx, ConfigManager.instance.config.epiTree.ANCESTOR_DOT_RADIUS, 0, 2 * Math.PI, false);
@@ -376,13 +376,13 @@ export class EpiTreeUtil {
 
   private static getDistanceLabel(treeAssemblyContext: TreeAssemblyContext, branchLength: Decimal): string {
     const labelPrecision = treeAssemblyContext.rootNode?.maxBranchLength ? Math.max(1, 4 - String(Math.round(treeAssemblyContext.rootNode.maxBranchLength.toNumber())).length) : null;
-    if (!treeAssemblyContext.rootNode.maxBranchLength || treeAssemblyContext.rootNode.maxBranchLength.toNumber() === 0 || !branchLength || branchLength.toNumber() === 0) {
+    if (!treeAssemblyContext.rootNode.maxBranchLength || treeAssemblyContext.rootNode.maxBranchLength.toNumber() === 0 || !branchLength || (branchLength?.toNumber() ?? 0) === 0) {
       return null;
     }
     if (branchLength.div(treeAssemblyContext.rootNode.maxBranchLength).mul(100).lessThan(ConfigManager.instance.config.epiTree.MINIMUM_DISTANCE_PERCENTAGE_TO_SHOW_LABEL)) {
       return null;
     }
-    return String(round(branchLength.toNumber(), labelPrecision));
+    return String(round(branchLength?.toNumber() ?? 0, labelPrecision));
   }
 
   public static drawTree(params: {
