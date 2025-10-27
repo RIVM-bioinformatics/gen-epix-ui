@@ -464,7 +464,7 @@ export const createEpiStore = (kwArgs: CreateEpiStoreKwArgs) => {
           setPhylogeneticTreeResponse: (phylogeneticTree) => {
             const { reloadSortedData, reloadTree, reloadSelectedIds } = get();
 
-            if (phylogeneticTree.newick_repr) {
+            if (phylogeneticTree.newick_repr && phylogeneticTree.newick_repr.trim().length > 0 && phylogeneticTree.newick_repr !== '();') {
               // parse the newick into a tree
               const parsedTree = EpiNewickUtil.parse(phylogeneticTree.newick_repr);
               const sanitizedTree = EpiTreeUtil.sanitizeTree(parsedTree);
