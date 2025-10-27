@@ -179,7 +179,7 @@ export const EpiTree = ({ linkedScrollSubject, ref }: EpiTreeProps) => {
   });
 
   const isLoading = !!treeConfiguration && (isCaseDataLoading || (hasEnoughSequencesToShowTree && isTreeLoading));
-  const isTreeUnavailable = !isCaseDataLoading && ((!isLoading && !!treeError) || !hasEnoughSequencesToShowTree || tree?.maxBranchLength?.toNumber() === 0 || tree?.size === 0 || !treeConfiguration);
+  const isTreeUnavailable = !isCaseDataLoading && ((!isLoading && !!treeError) || !hasEnoughSequencesToShowTree || tree?.maxBranchLength?.toNumber() === 0 || tree?.size === 0 || !treeConfiguration || (!isLoading && tree === null));
   const shouldShowTree = !!treeConfiguration && !isCaseDataLoading && !treeError && !isTreeLoading && width > 0 && tree?.size > 0 && hasEnoughSequencesToShowTree;
 
   const treeCanvasWidth = width;
@@ -659,7 +659,6 @@ export const EpiTree = ({ linkedScrollSubject, ref }: EpiTreeProps) => {
       items: treeConfigurations?.map<MenuItemData>(config => ({
         label: getTitleMenuLabel(config.geneticDistanceProtocol, config.treeAlgorithm),
         callback: () => {
-          console.log('Switching tree configuration to', config);
           const perform = async () => {
             await removeTreeFilter();
             updateEpiTreeWidgetData({
