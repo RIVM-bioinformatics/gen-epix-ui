@@ -240,7 +240,7 @@ export const createEpiUploadStore = () => {
 
           const shareInDataCollectionOptions = dataCollectionOptions.filter(option => {
             const dataCollectionId = option.value;
-            return completeCaseType.case_type_access_abacs[dataCollectionId]?.is_private && !completeCaseType.case_type_access_abacs[dataCollectionId]?.add_case_set;
+            return !completeCaseType.case_type_access_abacs[dataCollectionId]?.is_private && completeCaseType.case_type_access_abacs[dataCollectionId]?.add_case_set;
           });
           set({ shareInDataCollectionOptions });
 
