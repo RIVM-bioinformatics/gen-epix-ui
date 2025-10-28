@@ -3,7 +3,10 @@ import { useMemo } from 'react';
 
 import type { ConceptSet } from '../../api';
 import { OntologyApi } from '../../api';
-import type { UseOptions } from '../../models/dataHooks';
+import type {
+  UseMap,
+  UseOptions,
+} from '../../models/dataHooks';
 import { QUERY_KEY } from '../../models/query';
 import { DataUtil } from '../../utils/DataUtil';
 import { QueryUtil } from '../../utils/QueryUtil';
@@ -17,6 +20,13 @@ export const useConceptSetsQuery = (): UseQueryResult<ConceptSet[]> => {
       return response.data;
     },
   });
+};
+
+export const useConceptSetMapQuery = (): UseMap<ConceptSet> => {
+  const response = useConceptSetsQuery();
+  return useMemo(() => {
+    return DataUtil.createUseMapDataHook<ConceptSet>(response, item => item.id);
+  }, [response]);
 };
 
 export const useConceptSetOptionsQuery = (): UseOptions<string> => {

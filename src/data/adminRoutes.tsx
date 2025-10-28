@@ -12,6 +12,7 @@ import { CaseTypesAdminPage } from '../pages/CaseTypesAdminPage';
 import { CaseTypeSetCategoriesAdminPage } from '../pages/CaseTypeSetCategoriesAdminPage';
 import { CaseTypeSetsAdminPage } from '../pages/CaseTypeSetsAdminPage';
 import { ColsAdminPage } from '../pages/ColsAdminPage';
+import { ConceptRelationsAdminPage } from '../pages/ConceptRelationsAdminPage';
 import { ConceptsAdminPage } from '../pages/ConceptsAdminPage';
 import { ConceptSetsAdminPage } from '../pages/ConceptSetsAdminPage';
 import { DataCollectionsAdminPage } from '../pages/DataCollectionsAdminPage';
@@ -28,6 +29,7 @@ import { OrganizationsAdminPage } from '../pages/OrganizationsAdminPage';
 import { OrganizationShareCasePoliciesAdminPage } from '../pages/OrganizationShareCasePoliciesAdminPage';
 import { OrganizationSitesAdminPage } from '../pages/OrganizationSitesAdminPage';
 import { OutagesAdminPage } from '../pages/OutagesAdminPage';
+import { RegionRelationsAdminPage } from '../pages/RegionRelationsAdminPage';
 import { RegionsAdminPage } from '../pages/RegionsAdminPage';
 import { RegionSetsAdminPage } from '../pages/RegionSetsAdminPage';
 import { RegionSetShapesAdminPage } from '../pages/RegionSetShapesAdminPage';
@@ -383,6 +385,21 @@ export const adminRoutes: MyNonIndexRouteObject[] = [
     ],
   },
   {
+    path: '/management/concept-relations',
+    Component: () => <ConceptRelationsAdminPage />,
+    errorElement: <RouterErrorPage />,
+    handle: {
+      titleKey: 'Concept Relations',
+      subTitleKey: 'Manage concept relations',
+      requiredPermissions: [
+        { command_name: CommandName.ConceptRelationCrudCommand, permission_type: PermissionType.READ },
+        { command_name: CommandName.ConceptCrudCommand, permission_type: PermissionType.READ },
+      ],
+      requiresUserProfile: true,
+      category: ADMIN_PAGE_CATEGORY.REFERENCE_DATA,
+    },
+  },
+  {
     path: '/management/diseases',
     Component: () => <DiseasesAdminPage />,
     errorElement: <RouterErrorPage />,
@@ -560,6 +577,21 @@ export const adminRoutes: MyNonIndexRouteObject[] = [
         },
       },
     ],
+  },
+  {
+    path: '/management/region-relations',
+    Component: () => <RegionRelationsAdminPage />,
+    errorElement: <RouterErrorPage />,
+    handle: {
+      titleKey: 'Region Relations',
+      subTitleKey: 'Manage region relations',
+      requiredPermissions: [
+        { command_name: CommandName.RegionRelationCrudCommand, permission_type: PermissionType.READ },
+        { command_name: CommandName.RegionCrudCommand, permission_type: PermissionType.READ },
+      ],
+      requiresUserProfile: true,
+      category: ADMIN_PAGE_CATEGORY.REFERENCE_DATA,
+    },
   },
 
   // SYSTEM
