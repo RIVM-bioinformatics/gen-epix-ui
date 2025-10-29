@@ -15,7 +15,6 @@ import {
 } from '@mui/material';
 import { useStore } from 'zustand';
 
-import { Spinner } from '../../ui/Spinner';
 import { EpiCaseTypeUtil } from '../../../utils/EpiCaseTypeUtil';
 import { RouterManager } from '../../../classes/managers/RouterManager';
 import { EPI_UPLOAD_ACTION } from '../../../models/epiUpload';
@@ -24,8 +23,12 @@ import { EpiUploadStoreContext } from '../../../stores/epiUploadStore';
 import type {
   CaseSeq,
   CaseReadSet,
+  Seq,
+  ReadSet,
 } from '../../../api';
 import { CaseApi } from '../../../api';
+import { GenericErrorMessage } from '../../ui/GenericErrorMessage';
+import { LinearProgressWithLabel } from '../../ui/LinearProgressWithLabel';
 
 import { EpiUploadNavigation } from './EpiUploadNavigation';
 
@@ -39,11 +42,18 @@ export const EpiUploadCreateCases = () => {
   const sequenceMapping = useStore(store, (state) => state.sequenceMapping);
   const sequenceFilesDataTransfer = useStore(store, (state) => state.sequenceFilesDataTransfer);
   const validatedCases = useStore(store, (state) => state.validatedCases);
+  const validatedCasesWithGeneratedId = useStore(store, (state) => state.validatedCasesWithGeneratedId);
   const completeCaseType = useStore(store, (state) => state.completeCaseType);
+  const libraryPrepProtocolId = useStore(store, (state) => state.libraryPrepProtocolId);
   const rawData = useStore(store, (state) => state.rawData);
+  const [progress, setProgress] = useState(0);
 
   const [isUploadStarted, setIsUploadStarted] = useState(false);
   const [error, setError] = useState<unknown>(undefined);
+
+  const sequenceFileStats = useMemo(() => {
+    return EpiUploadUtil.getSequenceMappingStats(sequenceMapping, sequenceFilesDataTransfer);
+  }, [sequenceFilesDataTransfer, sequenceMapping]);
 
   useEffect(() => {
     const abortController = new AbortController();
@@ -59,24 +69,33 @@ export const EpiUploadCreateCases = () => {
 
     const uploadCases = async () => {
       try {
-        await CaseApi.instance.createCases({
+        setProgress(0);
+        const createCasesResponse = await CaseApi.instance.createCases({
           case_type_id: store.getState().caseTypeId,
           created_in_data_collection_id: store.getState().createdInDataCollectionId,
           data_collection_ids: store.getState().shareInDataCollectionIds,
           is_update: store.getState().importAction === EPI_UPLOAD_ACTION.UPDATE,
           cases: validatedCases.map(c => c.case),
         }, { signal });
+        setProgress(5);
+
+        const caseIdMapping: { [generatedCaseId: string]: string } = {};
+        for (let i = 0; i < validatedCasesWithGeneratedId.length; i++) {
+          const validatedCase = validatedCasesWithGeneratedId[i];
+          const createdCase = createCasesResponse.data[i];
+          caseIdMapping[validatedCase.generated_id] = createdCase.id;
+        }
 
         const seqForCases: Array<{ caseSeq: CaseSeq; file: File }> = [];
         const readSetsForCases: Array<{ caseReadSet: CaseReadSet; fwdFile: File; revFile: File }> = [];
 
-        for (const [caseId, mapping] of Object.entries(sequenceMapping)) {
+        for (const [generatedCaseId, mapping] of Object.entries(sequenceMapping)) {
           for (const [columnId, fileName] of Object.entries(mapping.sequenceFileNames)) {
             const file = Array.from(sequenceFilesDataTransfer.files).find(f => f.name === fileName);
             if (file) {
               seqForCases.push({
                 caseSeq: {
-                  case_id: caseId,
+                  case_id: caseIdMapping[generatedCaseId],
                   case_type_col_id: columnId,
                 },
                 file,
@@ -96,9 +115,9 @@ export const EpiUploadCreateCases = () => {
             if (fwdFile) {
               readSetsForCases.push({
                 caseReadSet: {
-                  case_id: caseId,
+                  case_id: caseIdMapping[generatedCaseId],
                   case_type_col_id: columnId,
-                  library_prep_protocol_id: '', // FIXME
+                  library_prep_protocol_id: libraryPrepProtocolId,
                 },
                 fwdFile,
                 revFile,
@@ -106,17 +125,35 @@ export const EpiUploadCreateCases = () => {
             }
           }
         }
+        let seqs: Seq[] = [];
+        let readSets: ReadSet[] = [];
         if (seqForCases.length > 0) {
-          const seqForCasesResponse = await CaseApi.instance.createSeqsForCases(seqForCases.map(r => r.caseSeq), { signal });
-          console.log('seqForCasesResponse', seqForCasesResponse);
+          seqs = (await CaseApi.instance.createSeqsForCases(seqForCases.map(r => r.caseSeq), { signal })).data;
+          console.log('seqForCasesResponse', seqs);
         }
-
         if (readSetsForCases.length > 0) {
-          const readSetsForCasesResponse = await CaseApi.instance.createReadSetsForCases(readSetsForCases.map(r => r.caseReadSet), { signal });
-          console.log('readSetsForCasesResponse', readSetsForCasesResponse);
+          readSets = (await CaseApi.instance.createReadSetsForCases(readSetsForCases.map(r => r.caseReadSet), { signal })).data;
+          console.log('readSetsForCasesResponse', readSets);
+        }
+        setProgress(10);
+
+        for (let i = 0; i < seqForCases.length; i++) {
+          const { caseSeq, file } = seqForCases[i];
+          const seq = seqs[i];
+          if (seq) {
+            await CaseApi.instance.createFileForSeq(caseSeq.case_id, caseSeq.case_type_col_id, await EpiUploadUtil.readFileAsBase64(file), { signal });
+          }
         }
 
-
+        for (let i = 0; i < readSetsForCases.length; i++) {
+          const { caseReadSet, fwdFile, revFile } = readSetsForCases[i];
+          const readSet = readSets[i];
+          if (readSet) {
+            await CaseApi.instance.createFileForReadSet(readSet.id, caseReadSet.case_type_col_id, await EpiUploadUtil.readFileAsBase64(fwdFile), true, { signal });
+            await CaseApi.instance.createFileForReadSet(readSet.id, caseReadSet.case_type_col_id, await EpiUploadUtil.readFileAsBase64(revFile), false, { signal });
+          }
+        }
+        setProgress(100);
       } catch (e) {
         setError(e);
       }
@@ -126,12 +163,8 @@ export const EpiUploadCreateCases = () => {
     uploadCases();
 
     return abort;
-  }, [isUploadStarted, sequenceFilesDataTransfer.files, sequenceMapping, store, validatedCases]);
+  }, [isUploadStarted, libraryPrepProtocolId, sequenceFileStats, sequenceFilesDataTransfer.files, sequenceMapping, store, validatedCases, validatedCasesWithGeneratedId]);
 
-
-  const sequenceFileStats = useMemo(() => {
-    return EpiUploadUtil.getSequenceMappingStats(sequenceMapping, sequenceFilesDataTransfer);
-  }, [sequenceFilesDataTransfer, sequenceMapping]);
 
   const onStartOverButtonClick = useCallback(async () => {
     await reset();
@@ -147,14 +180,16 @@ export const EpiUploadCreateCases = () => {
   }, [completeCaseType]);
 
   if (isUploadStarted && !error) {
-    return <Spinner label={t`Uploading cases...`} />;
+    return (
+      <Box>
+        <LinearProgressWithLabel value={progress} />
+      </Box>
+    );
   }
   if (error) {
     return (
       <Box>
-        <Alert severity={'error'}>
-          {t`An error occurred while uploading cases`}
-        </Alert>
+        <GenericErrorMessage error={error} />
       </Box>
     );
   }

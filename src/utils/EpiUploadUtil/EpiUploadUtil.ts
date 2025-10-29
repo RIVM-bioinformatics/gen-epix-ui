@@ -487,6 +487,9 @@ export class EpiUploadUtil {
     unmappedFileNames: string[];
     unmappedSequenceFiles: string[];
     unmappedReadsFiles: string[];
+    readsFileSize: number;
+    sequencesFileSize: number;
+    mappedFileSize: number;
   } {
     const sequenceFiles = Array.from(sequenceFilesDataTransfer.files).map(file => file.name).filter(fileName => EpiUploadUtil.isGenomeFile(fileName));
     const readsFiles = Array.from(sequenceFilesDataTransfer.files).map(file => file.name).filter(fileName => EpiUploadUtil.isReadsFile(fileName));
@@ -501,7 +504,18 @@ export class EpiUploadUtil {
     const unmappedReadsFiles = difference(readsFiles, mappedReadsFiles);
     const unmappedFileNames = difference(files, mappedFiles);
 
+    const readsFileSize = Array.from(sequenceFilesDataTransfer.files)
+      .filter(file => mappedReadsFiles.includes(file.name))
+      .reduce((acc, file) => acc + file.size, 0);
+    const sequencesFileSize = Array.from(sequenceFilesDataTransfer.files)
+      .filter(file => mappedSequenceFiles.includes(file.name))
+      .reduce((acc, file) => acc + file.size, 0);
+    const mappedFileSize = readsFileSize + sequencesFileSize;
+
     return {
+      readsFileSize,
+      sequencesFileSize,
+      mappedFileSize,
       numberOfFilesToMap,
       mappedFiles,
       mappedSequenceFiles,
@@ -510,5 +524,20 @@ export class EpiUploadUtil {
       unmappedSequenceFiles,
       unmappedReadsFiles,
     };
+  }
+
+  public static async readFileAsBase64(file: File): Promise<string> {
+    return new Promise((resolve, reject) => {
+      const reader = new FileReader();
+      reader.onload = () => {
+        const result = reader.result as string;
+        const base64 = result.split(',')[1]; // Remove data:*/*;base64, prefix
+        resolve(base64);
+      };
+      reader.onerror = (_) => {
+        reject(new Error('File read error'));
+      };
+      reader.readAsDataURL(file);
+    });
   }
 }
