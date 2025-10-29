@@ -479,4 +479,36 @@ export class EpiUploadUtil {
     return result;
   }
 
+  public static getSequenceMappingStats(sequenceMapping: EpiUploadSequenceMapping, sequenceFilesDataTransfer: DataTransfer): {
+    numberOfFilesToMap: number;
+    mappedFiles: string[];
+    mappedSequenceFiles: string[];
+    mappedReadsFiles: string[];
+    unmappedFileNames: string[];
+    unmappedSequenceFiles: string[];
+    unmappedReadsFiles: string[];
+  } {
+    const sequenceFiles = Array.from(sequenceFilesDataTransfer.files).map(file => file.name).filter(fileName => EpiUploadUtil.isGenomeFile(fileName));
+    const readsFiles = Array.from(sequenceFilesDataTransfer.files).map(file => file.name).filter(fileName => EpiUploadUtil.isReadsFile(fileName));
+    const files = [...sequenceFiles, ...readsFiles];
+    const numberOfFilesToMap = files.length;
+
+    const mappedSequenceFiles = uniq(Object.values(sequenceMapping).flatMap(mapping => Object.values(mapping.sequenceFileNames)));
+    const mappedReadsFiles = uniq(Object.values(sequenceMapping).flatMap(mapping => Object.values(mapping.readsFileNames).flatMap(reads => [reads.fwd, reads.rev])));
+    const mappedFiles = [...mappedSequenceFiles, ...mappedReadsFiles];
+
+    const unmappedSequenceFiles = difference(sequenceFiles, mappedSequenceFiles);
+    const unmappedReadsFiles = difference(readsFiles, mappedReadsFiles);
+    const unmappedFileNames = difference(files, mappedFiles);
+
+    return {
+      numberOfFilesToMap,
+      mappedFiles,
+      mappedSequenceFiles,
+      mappedReadsFiles,
+      unmappedFileNames,
+      unmappedSequenceFiles,
+      unmappedReadsFiles,
+    };
+  }
 }

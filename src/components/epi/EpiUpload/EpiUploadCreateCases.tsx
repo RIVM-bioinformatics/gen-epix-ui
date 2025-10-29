@@ -13,7 +13,6 @@ import {
   Button,
   Container,
 } from '@mui/material';
-import difference from 'lodash/difference';
 import { useStore } from 'zustand';
 
 import { Spinner } from '../../ui/Spinner';
@@ -22,10 +21,11 @@ import { RouterManager } from '../../../classes/managers/RouterManager';
 import { EPI_UPLOAD_ACTION } from '../../../models/epiUpload';
 import { EpiUploadUtil } from '../../../utils/EpiUploadUtil';
 import { EpiUploadStoreContext } from '../../../stores/epiUploadStore';
-import {
-  CaseApi,
-  type CaseReadSet,
+import type {
+  CaseSeq,
+  CaseReadSet,
 } from '../../../api';
+import { CaseApi } from '../../../api';
 
 import { EpiUploadNavigation } from './EpiUploadNavigation';
 
@@ -67,23 +67,55 @@ export const EpiUploadCreateCases = () => {
           cases: validatedCases.map(c => c.case),
         }, { signal });
 
-        const readSetsForCases: Array<{ caseReadSet: CaseReadSet; file: File }> = [];
+        const seqForCases: Array<{ caseSeq: CaseSeq; file: File }> = [];
+        const readSetsForCases: Array<{ caseReadSet: CaseReadSet; fwdFile: File; revFile: File }> = [];
 
         for (const [caseId, mapping] of Object.entries(sequenceMapping)) {
           for (const [columnId, fileName] of Object.entries(mapping.sequenceFileNames)) {
             const file = Array.from(sequenceFilesDataTransfer.files).find(f => f.name === fileName);
             if (file) {
-              readSetsForCases.push({
-                caseReadSet: {
+              seqForCases.push({
+                caseSeq: {
                   case_id: caseId,
                   case_type_col_id: columnId,
-                  library_prep_protocol_id: '',
                 },
                 file,
               });
             }
           }
+          for (const [columnId, fileNames] of Object.entries(mapping.readsFileNames)) {
+            let fwdFile: File | undefined;
+            let revFile: File | undefined;
+            if (fileNames.fwd) {
+              fwdFile = Array.from(sequenceFilesDataTransfer.files).find(f => f.name === fileNames.fwd);
+            }
+            if (fileNames.rev) {
+              revFile = Array.from(sequenceFilesDataTransfer.files).find(f => f.name === fileNames.rev);
+            }
+
+            if (fwdFile) {
+              readSetsForCases.push({
+                caseReadSet: {
+                  case_id: caseId,
+                  case_type_col_id: columnId,
+                  library_prep_protocol_id: '', // FIXME
+                },
+                fwdFile,
+                revFile,
+              });
+            }
+          }
         }
+        if (seqForCases.length > 0) {
+          const seqForCasesResponse = await CaseApi.instance.createSeqsForCases(seqForCases.map(r => r.caseSeq), { signal });
+          console.log('seqForCasesResponse', seqForCasesResponse);
+        }
+
+        if (readSetsForCases.length > 0) {
+          const readSetsForCasesResponse = await CaseApi.instance.createReadSetsForCases(readSetsForCases.map(r => r.caseReadSet), { signal });
+          console.log('readSetsForCasesResponse', readSetsForCasesResponse);
+        }
+
 
       } catch (e) {
         setError(e);
@@ -98,22 +130,8 @@ export const EpiUploadCreateCases = () => {
 
 
   const sequenceFileStats = useMemo(() => {
-    const mappedFiles = Object.values(sequenceMapping).flatMap(x => Object.values(x));
-    const mappedSequenceFiles = mappedFiles.filter(x => EpiUploadUtil.isGenomeFile(x));
-    const mappedReadsFiles = mappedFiles.filter(x => EpiUploadUtil.isReadsFile(x));
-    const unmappedFiles = difference(Array.from(sequenceFilesDataTransfer.files).map(f => f.name), mappedFiles);
-    const unmappedSequenceFiles = unmappedFiles.filter(x => EpiUploadUtil.isGenomeFile(x));
-    const unmappedReadsFiles = unmappedFiles.filter(x => EpiUploadUtil.isReadsFile(x));
-
-    return {
-      mappedFiles,
-      mappedSequenceFiles,
-      mappedReadsFiles,
-      unmappedFiles,
-      unmappedSequenceFiles,
-      unmappedReadsFiles,
-    };
-  }, [sequenceFilesDataTransfer.files, sequenceMapping]);
+    return EpiUploadUtil.getSequenceMappingStats(sequenceMapping, sequenceFilesDataTransfer);
+  }, [sequenceFilesDataTransfer, sequenceMapping]);
 
   const onStartOverButtonClick = useCallback(async () => {
     await reset();

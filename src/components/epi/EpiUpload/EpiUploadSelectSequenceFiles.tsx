@@ -106,6 +106,11 @@ export const EpiUploadSelectSequenceFiles = () => {
       {canUpload && (
         <>
           <Box>
+            {canUploadSequences && (
+              <Box marginY={2}>
+                {t`Foo`}
+              </Box>
+            )}
             {!canUploadSequences && (
               <Box marginY={2}>
                 <Alert severity={'info'}>

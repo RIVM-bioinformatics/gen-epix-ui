@@ -15,7 +15,6 @@ import {
   useRef,
 } from 'react';
 import { useTranslation } from 'react-i18next';
-import uniq from 'lodash/uniq';
 import { useStore } from 'zustand';
 
 import type { EpiValidatedCaseWithGeneratedId } from '../../../models/epiUpload';
@@ -75,15 +74,15 @@ export const EpiUploadMapSequences = () => {
     if (!alertTitleElement || !alertContentElement) {
       return;
     }
-    const numberOfFilesToMap = Array.from(sequenceFilesDataTransfer.files).length;
-    const mappedSequenceFiles = uniq(Object.values(epiUploadSequenceMapping.current).flatMap(mapping => Object.values(mapping.sequenceFileNames)));
-    const mappedReadsFiles = uniq(Object.values(epiUploadSequenceMapping.current).flatMap(mapping => Object.values(mapping.readsFileNames).flatMap(reads => [reads.fwd, reads.rev])));
-    const mappedFiles = [...mappedSequenceFiles, ...mappedReadsFiles];
-    const unmappedFileNames = Array.from(sequenceFilesDataTransfer.files).map(file => file.name).filter(fileName => !mappedFiles.includes(fileName));
+    const {
+      numberOfFilesToMap,
+      mappedFiles,
+      unmappedFileNames,
+    } = EpiUploadUtil.getSequenceMappingStats(epiUploadSequenceMapping.current, sequenceFilesDataTransfer);
 
     alertTitleElement.innerHTML = numberOfFilesToMap === mappedFiles.length ? t('All {{numberOfFilesToMap}} files are mapped', { numberOfFilesToMap }) : t('{{mappedFilesLength}} of {{numberOfFilesToMap}} files mapped', { mappedFilesLength: mappedFiles.length, numberOfFilesToMap });
     alertContentElement.innerHTML = numberOfFilesToMap === mappedFiles.length ? '' : t('Unmapped files: {{unmappedFileNames}}', { unmappedFileNames: unmappedFileNames.join(', ') });
-  }, [alertContentId, alertTitleId, sequenceFilesDataTransfer.files, t]);
+  }, [alertContentId, alertTitleId, sequenceFilesDataTransfer, t]);
 
   useEffect(() => {
     updateAlert();
