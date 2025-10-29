@@ -1614,95 +1614,95 @@ export type ColType = typeof ColType[keyof typeof ColType];
  */
 
 export const CommandName = {
-    RegionSetCrudCommand: 'RegionSetCrudCommand',
-    TreeAlgorithmCrudCommand: 'TreeAlgorithmCrudCommand',
-    DataCollectionSetMemberCrudCommand: 'DataCollectionSetMemberCrudCommand',
-    DataCollectionSetCrudCommand: 'DataCollectionSetCrudCommand',
-    TreeAlgorithmClassCrudCommand: 'TreeAlgorithmClassCrudCommand',
-    CaseSetCategoryCrudCommand: 'CaseSetCategoryCrudCommand',
-    RetrieveLibraryPrepProtocolsCommand: 'RetrieveLibraryPrepProtocolsCommand',
-    ConceptRelationCrudCommand: 'ConceptRelationCrudCommand',
-    CaseTypeSetCrudCommand: 'CaseTypeSetCrudCommand',
-    GetIdentityProvidersCommand: 'GetIdentityProvidersCommand',
+    CaseDataCollectionLinkCrudCommand: 'CaseDataCollectionLinkCrudCommand',
+    UpdateUserCommand: 'UpdateUserCommand',
+    CreateFileForSeqCommand: 'CreateFileForSeqCommand',
+    CaseSetCrudCommand: 'CaseSetCrudCommand',
+    CaseTypeColSetMemberCrudCommand: 'CaseTypeColSetMemberCrudCommand',
+    EtiologyCrudCommand: 'EtiologyCrudCommand',
+    CaseTypeColSetCaseTypeColUpdateAssociationCommand: 'CaseTypeColSetCaseTypeColUpdateAssociationCommand',
+    CaseCrudCommand: 'CaseCrudCommand',
+    CaseTypeColCrudCommand: 'CaseTypeColCrudCommand',
     UserCrudCommand: 'UserCrudCommand',
     OrganizationShareCasePolicyCrudCommand: 'OrganizationShareCasePolicyCrudCommand',
-    RetrieveCaseTypeStatsCommand: 'RetrieveCaseTypeStatsCommand',
-    CaseTypeSetCategoryCrudCommand: 'CaseTypeSetCategoryCrudCommand',
-    DiseaseCrudCommand: 'DiseaseCrudCommand',
-    OrganizationSetCrudCommand: 'OrganizationSetCrudCommand',
-    RetrieveGeneticSequenceByIdCommand: 'RetrieveGeneticSequenceByIdCommand',
-    CreateFileForReadSetCommand: 'CreateFileForReadSetCommand',
-    UserShareCasePolicyCrudCommand: 'UserShareCasePolicyCrudCommand',
-    CreateCaseSetCommand: 'CreateCaseSetCommand',
-    RegisterInvitedUserCommand: 'RegisterInvitedUserCommand',
-    RetrieveLicensesCommand: 'RetrieveLicensesCommand',
-    RetrieveCaseRightsCommand: 'RetrieveCaseRightsCommand',
-    OrganizationAccessCasePolicyCrudCommand: 'OrganizationAccessCasePolicyCrudCommand',
-    CaseTypeSetMemberCrudCommand: 'CaseTypeSetMemberCrudCommand',
-    CaseTypeCrudCommand: 'CaseTypeCrudCommand',
-    RetrievePhylogeneticTreeBySequencesCommand: 'RetrievePhylogeneticTreeBySequencesCommand',
-    CreateFileForSeqCommand: 'CreateFileForSeqCommand',
-    EtiologyCrudCommand: 'EtiologyCrudCommand',
-    SiteCrudCommand: 'SiteCrudCommand',
-    CreateCasesCommand: 'CreateCasesCommand',
-    RetrieveCasesByIdCommand: 'RetrieveCasesByIdCommand',
-    RetrieveOrganizationContactCommand: 'RetrieveOrganizationContactCommand',
-    SubjectIdentifierCrudCommand: 'SubjectIdentifierCrudCommand',
-    UpdateUserOwnOrganizationCommand: 'UpdateUserOwnOrganizationCommand',
-    RetrieveOwnPermissionsCommand: 'RetrieveOwnPermissionsCommand',
-    RetrieveCompleteCaseTypeCommand: 'RetrieveCompleteCaseTypeCommand',
-    RetrieveSubRolesCommand: 'RetrieveSubRolesCommand',
-    ConceptCrudCommand: 'ConceptCrudCommand',
-    CaseTypeColSetMemberCrudCommand: 'CaseTypeColSetMemberCrudCommand',
-    RetrieveGeneticSequenceFastaByCaseCommand: 'RetrieveGeneticSequenceFastaByCaseCommand',
-    CaseDataCollectionLinkCrudCommand: 'CaseDataCollectionLinkCrudCommand',
-    OrganizationSetOrganizationUpdateAssociationCommand: 'OrganizationSetOrganizationUpdateAssociationCommand',
-    OrganizationSetMemberCrudCommand: 'OrganizationSetMemberCrudCommand',
-    CaseTypeSetCaseTypeUpdateAssociationCommand: 'CaseTypeSetCaseTypeUpdateAssociationCommand',
-    DimCrudCommand: 'DimCrudCommand',
-    DataCollectionSetDataCollectionUpdateAssociationCommand: 'DataCollectionSetDataCollectionUpdateAssociationCommand',
-    CaseSetStatusCrudCommand: 'CaseSetStatusCrudCommand',
-    ContactCrudCommand: 'ContactCrudCommand',
-    CaseSetCrudCommand: 'CaseSetCrudCommand',
-    CaseTypeColSetCrudCommand: 'CaseTypeColSetCrudCommand',
-    RetrieveGeneticSequenceByCaseCommand: 'RetrieveGeneticSequenceByCaseCommand',
-    EtiologicalAgentCrudCommand: 'EtiologicalAgentCrudCommand',
-    CreateSeqsForCasesCommand: 'CreateSeqsForCasesCommand',
-    ValidateCasesCommand: 'ValidateCasesCommand',
-    CaseTypeColSetCaseTypeColUpdateAssociationCommand: 'CaseTypeColSetCaseTypeColUpdateAssociationCommand',
-    CaseSetMemberCrudCommand: 'CaseSetMemberCrudCommand',
-    CaseTypeColCrudCommand: 'CaseTypeColCrudCommand',
-    RetrieveOrganizationsUnderAdminCommand: 'RetrieveOrganizationsUnderAdminCommand',
-    RetrieveInviteUserConstraintsCommand: 'RetrieveInviteUserConstraintsCommand',
-    CaseSetDataCollectionLinkCrudCommand: 'CaseSetDataCollectionLinkCrudCommand',
-    OutageCrudCommand: 'OutageCrudCommand',
-    UserAccessCasePolicyCrudCommand: 'UserAccessCasePolicyCrudCommand',
-    RetrieveAlleleProfileCommand: 'RetrieveAlleleProfileCommand',
-    RetrieveOutagesCommand: 'RetrieveOutagesCommand',
-    RegionRelationCrudCommand: 'RegionRelationCrudCommand',
-    SubjectCrudCommand: 'SubjectCrudCommand',
     RetrieveContainingRegionCommand: 'RetrieveContainingRegionCommand',
+    RegisterInvitedUserCommand: 'RegisterInvitedUserCommand',
+    IdentifierIssuerCrudCommand: 'IdentifierIssuerCrudCommand',
+    TreeAlgorithmCrudCommand: 'TreeAlgorithmCrudCommand',
+    SubjectIdentifierCrudCommand: 'SubjectIdentifierCrudCommand',
+    RetrieveOwnPermissionsCommand: 'RetrieveOwnPermissionsCommand',
+    ConceptSetCrudCommand: 'ConceptSetCrudCommand',
+    RetrieveCaseTypeStatsCommand: 'RetrieveCaseTypeStatsCommand',
+    RetrieveOrganizationAdminNameEmailsCommand: 'RetrieveOrganizationAdminNameEmailsCommand',
+    OrganizationSetCrudCommand: 'OrganizationSetCrudCommand',
+    CreateReadSetsForCasesCommand: 'CreateReadSetsForCasesCommand',
+    OrganizationSetOrganizationUpdateAssociationCommand: 'OrganizationSetOrganizationUpdateAssociationCommand',
+    DataCollectionSetMemberCrudCommand: 'DataCollectionSetMemberCrudCommand',
+    RetrieveGeneticSequenceByCaseCommand: 'RetrieveGeneticSequenceByCaseCommand',
+    RetrieveCaseRightsCommand: 'RetrieveCaseRightsCommand',
+    RetrieveOrganizationsUnderAdminCommand: 'RetrieveOrganizationsUnderAdminCommand',
+    CreateFileForReadSetCommand: 'CreateFileForReadSetCommand',
+    CaseTypeColSetCrudCommand: 'CaseTypeColSetCrudCommand',
+    ContactCrudCommand: 'ContactCrudCommand',
+    CaseTypeCrudCommand: 'CaseTypeCrudCommand',
+    RetrieveGeneticSequenceByIdCommand: 'RetrieveGeneticSequenceByIdCommand',
+    OrganizationAccessCasePolicyCrudCommand: 'OrganizationAccessCasePolicyCrudCommand',
+    GetIdentityProvidersCommand: 'GetIdentityProvidersCommand',
+    RetrieveLibraryPrepProtocolsCommand: 'RetrieveLibraryPrepProtocolsCommand',
+    TreeAlgorithmClassCrudCommand: 'TreeAlgorithmClassCrudCommand',
+    CaseSetStatusCrudCommand: 'CaseSetStatusCrudCommand',
+    DiseaseEtiologicalAgentUpdateAssociationCommand: 'DiseaseEtiologicalAgentUpdateAssociationCommand',
+    CreateCasesCommand: 'CreateCasesCommand',
+    UpdateUserOwnOrganizationCommand: 'UpdateUserOwnOrganizationCommand',
+    RetrieveCaseSetStatsCommand: 'RetrieveCaseSetStatsCommand',
+    DataCollectionSetCrudCommand: 'DataCollectionSetCrudCommand',
+    RetrieveGeneticSequenceFastaByCaseCommand: 'RetrieveGeneticSequenceFastaByCaseCommand',
+    OutageCrudCommand: 'OutageCrudCommand',
+    RetrieveAlleleProfileCommand: 'RetrieveAlleleProfileCommand',
+    InviteUserCommand: 'InviteUserCommand',
+    RetrieveLicensesCommand: 'RetrieveLicensesCommand',
+    ValidateCasesCommand: 'ValidateCasesCommand',
+    SubjectCrudCommand: 'SubjectCrudCommand',
+    CaseTypeSetCategoryCrudCommand: 'CaseTypeSetCategoryCrudCommand',
+    CaseSetCategoryCrudCommand: 'CaseSetCategoryCrudCommand',
+    ConceptRelationCrudCommand: 'ConceptRelationCrudCommand',
+    CreateCaseSetCommand: 'CreateCaseSetCommand',
+    CaseSetMemberCrudCommand: 'CaseSetMemberCrudCommand',
+    UserInvitationCrudCommand: 'UserInvitationCrudCommand',
+    DiseaseCrudCommand: 'DiseaseCrudCommand',
+    DataCollectionSetDataCollectionUpdateAssociationCommand: 'DataCollectionSetDataCollectionUpdateAssociationCommand',
+    RegionCrudCommand: 'RegionCrudCommand',
+    RetrieveCasesByQueryCommand: 'RetrieveCasesByQueryCommand',
+    CaseSetDataCollectionLinkCrudCommand: 'CaseSetDataCollectionLinkCrudCommand',
+    EtiologicalAgentCrudCommand: 'EtiologicalAgentCrudCommand',
+    DataCollectionCrudCommand: 'DataCollectionCrudCommand',
     ColCrudCommand: 'ColCrudCommand',
     OrganizationAdminPolicyCrudCommand: 'OrganizationAdminPolicyCrudCommand',
-    ConceptSetCrudCommand: 'ConceptSetCrudCommand',
-    CreateReadSetsForCasesCommand: 'CreateReadSetsForCasesCommand',
-    CaseCrudCommand: 'CaseCrudCommand',
-    RetrieveGeneticSequenceFastaByIdCommand: 'RetrieveGeneticSequenceFastaByIdCommand',
     RetrievePhylogeneticTreeByCasesCommand: 'RetrievePhylogeneticTreeByCasesCommand',
-    RetrieveOrganizationAdminNameEmailsCommand: 'RetrieveOrganizationAdminNameEmailsCommand',
-    RetrieveCaseSetStatsCommand: 'RetrieveCaseSetStatsCommand',
-    InviteUserCommand: 'InviteUserCommand',
-    RetrieveCaseSetRightsCommand: 'RetrieveCaseSetRightsCommand',
-    UpdateUserCommand: 'UpdateUserCommand',
-    RegionCrudCommand: 'RegionCrudCommand',
-    RegionSetShapeCrudCommand: 'RegionSetShapeCrudCommand',
-    DiseaseEtiologicalAgentUpdateAssociationCommand: 'DiseaseEtiologicalAgentUpdateAssociationCommand',
+    RetrievePhylogeneticTreeBySequencesCommand: 'RetrievePhylogeneticTreeBySequencesCommand',
+    OrganizationSetMemberCrudCommand: 'OrganizationSetMemberCrudCommand',
+    UserShareCasePolicyCrudCommand: 'UserShareCasePolicyCrudCommand',
+    RetrieveOrganizationContactCommand: 'RetrieveOrganizationContactCommand',
+    CaseTypeSetCrudCommand: 'CaseTypeSetCrudCommand',
     GeneticDistanceProtocolCrudCommand: 'GeneticDistanceProtocolCrudCommand',
-    IdentifierIssuerCrudCommand: 'IdentifierIssuerCrudCommand',
-    DataCollectionCrudCommand: 'DataCollectionCrudCommand',
-    UserInvitationCrudCommand: 'UserInvitationCrudCommand',
-    RetrieveCasesByQueryCommand: 'RetrieveCasesByQueryCommand',
-    OrganizationCrudCommand: 'OrganizationCrudCommand'
+    RegionSetShapeCrudCommand: 'RegionSetShapeCrudCommand',
+    CaseTypeSetCaseTypeUpdateAssociationCommand: 'CaseTypeSetCaseTypeUpdateAssociationCommand',
+    RetrieveCompleteCaseTypeCommand: 'RetrieveCompleteCaseTypeCommand',
+    RegionRelationCrudCommand: 'RegionRelationCrudCommand',
+    OrganizationCrudCommand: 'OrganizationCrudCommand',
+    RetrieveGeneticSequenceFastaByIdCommand: 'RetrieveGeneticSequenceFastaByIdCommand',
+    DimCrudCommand: 'DimCrudCommand',
+    ConceptCrudCommand: 'ConceptCrudCommand',
+    UserAccessCasePolicyCrudCommand: 'UserAccessCasePolicyCrudCommand',
+    RetrieveSubRolesCommand: 'RetrieveSubRolesCommand',
+    RetrieveInviteUserConstraintsCommand: 'RetrieveInviteUserConstraintsCommand',
+    RetrieveOutagesCommand: 'RetrieveOutagesCommand',
+    RegionSetCrudCommand: 'RegionSetCrudCommand',
+    RetrieveCaseSetRightsCommand: 'RetrieveCaseSetRightsCommand',
+    CreateSeqsForCasesCommand: 'CreateSeqsForCasesCommand',
+    RetrieveCasesByIdCommand: 'RetrieveCasesByIdCommand',
+    CaseTypeSetMemberCrudCommand: 'CaseTypeSetMemberCrudCommand',
+    SiteCrudCommand: 'SiteCrudCommand'
 } as const;
 
 export type CommandName = typeof CommandName[keyof typeof CommandName];
@@ -2134,6 +2134,38 @@ export interface CreateCasesRequestBody {
      * @memberof CreateCasesRequestBody
      */
     'cases': Array<CaseForCreateUpdate>;
+}
+/**
+ * 
+ * @export
+ * @interface CreateFileForForReadSetRequestBody
+ */
+export interface CreateFileForForReadSetRequestBody {
+    /**
+     * The content of the file to create.
+     * @type {string}
+     * @memberof CreateFileForForReadSetRequestBody
+     */
+    'file_content': string;
+    /**
+     * Whether the file is for the forward reads (True) or reverse reads (False).
+     * @type {boolean}
+     * @memberof CreateFileForForReadSetRequestBody
+     */
+    'is_fwd': boolean;
+}
+/**
+ * 
+ * @export
+ * @interface CreateFileForSeqRequestBody
+ */
+export interface CreateFileForSeqRequestBody {
+    /**
+     * The content of the file to create.
+     * @type {string}
+     * @memberof CreateFileForSeqRequestBody
+     */
+    'file_content': string;
 }
 /**
  * Represents a collection of data.
@@ -15626,18 +15658,17 @@ const CaseApiAxiosParamCreator = function (configuration?: Configuration) {
          * @summary Create File For Reads Set
          * @param {string} caseId 
          * @param {string} caseTypeColId 
-         * @param {string} fileContent 
-         * @param {boolean} [isFwd] 
+         * @param {CreateFileForForReadSetRequestBody} createFileForForReadSetRequestBody 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        createFileForReadSet: async (caseId: string, caseTypeColId: string, fileContent: string, isFwd?: boolean, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
+        createFileForReadSet: async (caseId: string, caseTypeColId: string, createFileForForReadSetRequestBody: CreateFileForForReadSetRequestBody, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
             // verify required parameter 'caseId' is not null or undefined
             assertParamExists('createFileForReadSet', 'caseId', caseId)
             // verify required parameter 'caseTypeColId' is not null or undefined
             assertParamExists('createFileForReadSet', 'caseTypeColId', caseTypeColId)
-            // verify required parameter 'fileContent' is not null or undefined
-            assertParamExists('createFileForReadSet', 'fileContent', fileContent)
+            // verify required parameter 'createFileForForReadSetRequestBody' is not null or undefined
+            assertParamExists('createFileForReadSet', 'createFileForForReadSetRequestBody', createFileForForReadSetRequestBody)
             const localVarPath = `/v1/create_file_for_read_set/{case_id}/{case_type_col_id}`
                 .replace(`{${"case_id"}}`, encodeURIComponent(String(caseId)))
                 .replace(`{${"case_type_col_id"}}`, encodeURIComponent(String(caseTypeColId)));
@@ -15652,19 +15683,14 @@ const CaseApiAxiosParamCreator = function (configuration?: Configuration) {
             const localVarHeaderParameter = {} as any;
             const localVarQueryParameter = {} as any;
 
-            if (fileContent !== undefined) {
-                localVarQueryParameter['file_content'] = fileContent;
-            }
-
-            if (isFwd !== undefined) {
-                localVarQueryParameter['is_fwd'] = isFwd;
-            }
-
 
     
+            localVarHeaderParameter['Content-Type'] = 'application/json';
+
             setSearchParams(localVarUrlObj, localVarQueryParameter);
             let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
             localVarRequestOptions.headers = {...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers};
+            localVarRequestOptions.data = serializeDataIfNeeded(createFileForForReadSetRequestBody, localVarRequestOptions, configuration)
 
             return {
                 url: toPathString(localVarUrlObj),
@@ -15676,17 +15702,17 @@ const CaseApiAxiosParamCreator = function (configuration?: Configuration) {
          * @summary Create File For Sequence
          * @param {string} caseId 
          * @param {string} caseTypeColId 
-         * @param {string} fileContent 
+         * @param {CreateFileForSeqRequestBody} createFileForSeqRequestBody 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        createFileForSeq: async (caseId: string, caseTypeColId: string, fileContent: string, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
+        createFileForSeq: async (caseId: string, caseTypeColId: string, createFileForSeqRequestBody: CreateFileForSeqRequestBody, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
             // verify required parameter 'caseId' is not null or undefined
             assertParamExists('createFileForSeq', 'caseId', caseId)
             // verify required parameter 'caseTypeColId' is not null or undefined
             assertParamExists('createFileForSeq', 'caseTypeColId', caseTypeColId)
-            // verify required parameter 'fileContent' is not null or undefined
-            assertParamExists('createFileForSeq', 'fileContent', fileContent)
+            // verify required parameter 'createFileForSeqRequestBody' is not null or undefined
+            assertParamExists('createFileForSeq', 'createFileForSeqRequestBody', createFileForSeqRequestBody)
             const localVarPath = `/v1/create_file_for_seq/{case_id}/{case_type_col_id}`
                 .replace(`{${"case_id"}}`, encodeURIComponent(String(caseId)))
                 .replace(`{${"case_type_col_id"}}`, encodeURIComponent(String(caseTypeColId)));
@@ -15701,15 +15727,14 @@ const CaseApiAxiosParamCreator = function (configuration?: Configuration) {
             const localVarHeaderParameter = {} as any;
             const localVarQueryParameter = {} as any;
 
-            if (fileContent !== undefined) {
-                localVarQueryParameter['file_content'] = fileContent;
-            }
-
 
     
+            localVarHeaderParameter['Content-Type'] = 'application/json';
+
             setSearchParams(localVarUrlObj, localVarQueryParameter);
             let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
             localVarRequestOptions.headers = {...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers};
+            localVarRequestOptions.data = serializeDataIfNeeded(createFileForSeqRequestBody, localVarRequestOptions, configuration)
 
             return {
                 url: toPathString(localVarUrlObj),
@@ -20371,13 +20396,12 @@ const CaseApiFp = function(configuration?: Configuration) {
          * @summary Create File For Reads Set
          * @param {string} caseId 
          * @param {string} caseTypeColId 
-         * @param {string} fileContent 
-         * @param {boolean} [isFwd] 
+         * @param {CreateFileForForReadSetRequestBody} createFileForForReadSetRequestBody 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        async createFileForReadSet(caseId: string, caseTypeColId: string, fileContent: string, isFwd?: boolean, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<string>> {
-            const localVarAxiosArgs = await localVarAxiosParamCreator.createFileForReadSet(caseId, caseTypeColId, fileContent, isFwd, options);
+        async createFileForReadSet(caseId: string, caseTypeColId: string, createFileForForReadSetRequestBody: CreateFileForForReadSetRequestBody, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<string>> {
+            const localVarAxiosArgs = await localVarAxiosParamCreator.createFileForReadSet(caseId, caseTypeColId, createFileForForReadSetRequestBody, options);
             const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
             const localVarOperationServerBasePath = operationServerMap['CaseApi.createFileForReadSet']?.[localVarOperationServerIndex]?.url;
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
@@ -20387,12 +20411,12 @@ const CaseApiFp = function(configuration?: Configuration) {
          * @summary Create File For Sequence
          * @param {string} caseId 
          * @param {string} caseTypeColId 
-         * @param {string} fileContent 
+         * @param {CreateFileForSeqRequestBody} createFileForSeqRequestBody 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        async createFileForSeq(caseId: string, caseTypeColId: string, fileContent: string, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<string>> {
-            const localVarAxiosArgs = await localVarAxiosParamCreator.createFileForSeq(caseId, caseTypeColId, fileContent, options);
+        async createFileForSeq(caseId: string, caseTypeColId: string, createFileForSeqRequestBody: CreateFileForSeqRequestBody, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<string>> {
+            const localVarAxiosArgs = await localVarAxiosParamCreator.createFileForSeq(caseId, caseTypeColId, createFileForSeqRequestBody, options);
             const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
             const localVarOperationServerBasePath = operationServerMap['CaseApi.createFileForSeq']?.[localVarOperationServerIndex]?.url;
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
@@ -23448,14 +23472,13 @@ export class CaseApi extends BaseAPI {
      * @summary Create File For Reads Set
      * @param {string} caseId 
      * @param {string} caseTypeColId 
-     * @param {string} fileContent 
-     * @param {boolean} [isFwd] 
+     * @param {CreateFileForForReadSetRequestBody} createFileForForReadSetRequestBody 
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
      * @memberof CaseApi
      */
-    public createFileForReadSet(caseId: string, caseTypeColId: string, fileContent: string, isFwd?: boolean, options?: RawAxiosRequestConfig) {
-        return CaseApiFp(this.configuration).createFileForReadSet(caseId, caseTypeColId, fileContent, isFwd, options).then((request) => request(this.axios, this.configuration.baseUrl));
+    public createFileForReadSet(caseId: string, caseTypeColId: string, createFileForForReadSetRequestBody: CreateFileForForReadSetRequestBody, options?: RawAxiosRequestConfig) {
+        return CaseApiFp(this.configuration).createFileForReadSet(caseId, caseTypeColId, createFileForForReadSetRequestBody, options).then((request) => request(this.axios, this.configuration.baseUrl));
     }
 
     /**
@@ -23463,13 +23486,13 @@ export class CaseApi extends BaseAPI {
      * @summary Create File For Sequence
      * @param {string} caseId 
      * @param {string} caseTypeColId 
-     * @param {string} fileContent 
+     * @param {CreateFileForSeqRequestBody} createFileForSeqRequestBody 
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
      * @memberof CaseApi
      */
-    public createFileForSeq(caseId: string, caseTypeColId: string, fileContent: string, options?: RawAxiosRequestConfig) {
-        return CaseApiFp(this.configuration).createFileForSeq(caseId, caseTypeColId, fileContent, options).then((request) => request(this.axios, this.configuration.baseUrl));
+    public createFileForSeq(caseId: string, caseTypeColId: string, createFileForSeqRequestBody: CreateFileForSeqRequestBody, options?: RawAxiosRequestConfig) {
+        return CaseApiFp(this.configuration).createFileForSeq(caseId, caseTypeColId, createFileForSeqRequestBody, options).then((request) => request(this.axios, this.configuration.baseUrl));
     }
 
     /**

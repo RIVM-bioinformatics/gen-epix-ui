@@ -141,7 +141,9 @@ export const EpiUploadCreateCases = () => {
           const { caseSeq, file } = seqForCases[i];
           const seq = seqs[i];
           if (seq) {
-            await CaseApi.instance.createFileForSeq(caseSeq.case_id, caseSeq.case_type_col_id, await EpiUploadUtil.readFileAsBase64(file), { signal });
+            await CaseApi.instance.createFileForSeq(caseSeq.case_id, caseSeq.case_type_col_id, {
+              file_content: await EpiUploadUtil.readFileAsBase64(file),
+            }, { signal });
           }
         }
 
@@ -149,8 +151,14 @@ export const EpiUploadCreateCases = () => {
           const { caseReadSet, fwdFile, revFile } = readSetsForCases[i];
           const readSet = readSets[i];
           if (readSet) {
-            await CaseApi.instance.createFileForReadSet(readSet.id, caseReadSet.case_type_col_id, await EpiUploadUtil.readFileAsBase64(fwdFile), true, { signal });
-            await CaseApi.instance.createFileForReadSet(readSet.id, caseReadSet.case_type_col_id, await EpiUploadUtil.readFileAsBase64(revFile), false, { signal });
+            await CaseApi.instance.createFileForReadSet(caseReadSet.case_id, caseReadSet.case_type_col_id, {
+              file_content: await EpiUploadUtil.readFileAsBase64(fwdFile),
+              is_fwd: true,
+            }, { signal });
+            await CaseApi.instance.createFileForReadSet(caseReadSet.case_id, caseReadSet.case_type_col_id, {
+              file_content: await EpiUploadUtil.readFileAsBase64(revFile),
+              is_fwd: false,
+            }, { signal });
           }
         }
         setProgress(100);
