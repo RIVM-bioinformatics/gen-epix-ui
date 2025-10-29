@@ -3,6 +3,7 @@ import {
   Box,
   Chip,
   Stack,
+  IconButton,
 } from '@mui/material';
 import DeleteIcon from '@mui/icons-material/Delete';
 import InsertDriveFileIcon from '@mui/icons-material/InsertDriveFile';
@@ -157,6 +158,12 @@ export const FileSelector = ({
     addFileList(event.target.files);
   }, [addFileList]);
 
+  const onClearAllButtonClick = useCallback(() => {
+    setErrorText(null);
+    setDataTransfer(new DataTransfer());
+    onDataTransferChange(new DataTransfer());
+  }, [onDataTransferChange]);
+
   return (
     <>
       <Box
@@ -255,6 +262,9 @@ export const FileSelector = ({
                     paddingY: 1,
                     backgroundColor: (theme) => theme.palette.background.paper,
                     zIndex: (theme) => theme.zIndex.tooltip - 1,
+                    display: 'flex',
+                    alignItems: 'center',
+                    gap: 1,
                   }}
                 >
                   <Typography
@@ -262,6 +272,13 @@ export const FileSelector = ({
                   >
                     {t('Selected files: {{numFiles}}', { numFiles: dataTransfer.files.length })}
                   </Typography>
+                  <IconButton
+                    aria-label={t('Clear all selected files')}
+                    size={'small'}
+                    onClick={onClearAllButtonClick}
+                  >
+                    <DeleteIcon fontSize={'small'} />
+                  </IconButton>
                 </Box>
                 <Stack
                   direction={'row'}

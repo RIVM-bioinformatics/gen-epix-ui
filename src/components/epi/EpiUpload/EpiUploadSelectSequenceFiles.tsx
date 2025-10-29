@@ -40,7 +40,7 @@ export const EpiUploadSelectSequenceFiles = () => {
   }, [completeCaseTypeColumnStats]);
 
   const caseTypeSupportsUploadingReads = useMemo(() => {
-    return completeCaseTypeColumnStats.readsFwdRevColumnPairs.length > 0 || completeCaseTypeColumnStats.readsColumns.length > 0;
+    return completeCaseTypeColumnStats.readsColumns.length > 0;
   }, [completeCaseTypeColumnStats]);
 
   const importDataSupportsUploadingSequences = useMemo(() => {
@@ -48,8 +48,7 @@ export const EpiUploadSelectSequenceFiles = () => {
   }, [completeCaseTypeColumnStats, mappedColumns]);
 
   const importDataSupportsUploadingReads = useMemo(() => {
-    return mappedColumns?.some(mappedColumn => mappedColumn.caseTypeCol?.id && completeCaseTypeColumnStats.readsFwdRevColumnPairs.flatMap(pair => [pair.fwd.id, pair.rev.id]).includes(mappedColumn.caseTypeCol.id))
-      || mappedColumns?.some(mappedColumn => mappedColumn.caseTypeCol?.id && completeCaseTypeColumnStats.readsColumns.map(c => c.id).includes(mappedColumn.caseTypeCol.id));
+    return mappedColumns?.some(mappedColumn => mappedColumn.caseTypeCol?.id && completeCaseTypeColumnStats.readsColumns.map(c => c.id).includes(mappedColumn.caseTypeCol.id));
   }, [completeCaseTypeColumnStats, mappedColumns]);
 
   const canUploadSequences = caseTypeSupportsUploadingSequences && importDataSupportsUploadingSequences;

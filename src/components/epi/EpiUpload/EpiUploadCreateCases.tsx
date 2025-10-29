@@ -2,7 +2,7 @@ import { useTranslation } from 'react-i18next';
 import {
   useCallback,
   useContext,
-  useId,
+  useEffect,
   useMemo,
   useState,
 } from 'react';
@@ -16,23 +16,22 @@ import {
 import difference from 'lodash/difference';
 import { useStore } from 'zustand';
 
-import { CaseApi } from '../../../api';
-import { useQueryMemo } from '../../../hooks/useQueryMemo';
-import { QueryUtil } from '../../../utils/QueryUtil';
-import { QUERY_KEY } from '../../../models/query';
 import { Spinner } from '../../ui/Spinner';
 import { EpiCaseTypeUtil } from '../../../utils/EpiCaseTypeUtil';
 import { RouterManager } from '../../../classes/managers/RouterManager';
 import { EPI_UPLOAD_ACTION } from '../../../models/epiUpload';
 import { EpiUploadUtil } from '../../../utils/EpiUploadUtil';
 import { EpiUploadStoreContext } from '../../../stores/epiUploadStore';
+import {
+  CaseApi,
+  type CaseReadSet,
+} from '../../../api';
 
 import { EpiUploadNavigation } from './EpiUploadNavigation';
 
 
 export const EpiUploadCreateCases = () => {
   const [t] = useTranslation();
-  const queryId = useId();
 
   const store = useContext(EpiUploadStoreContext);
   const reset = useStore(store, (state) => state.reset);
@@ -44,24 +43,59 @@ export const EpiUploadCreateCases = () => {
   const rawData = useStore(store, (state) => state.rawData);
 
   const [isUploadStarted, setIsUploadStarted] = useState(false);
+  const [error, setError] = useState<unknown>(undefined);
 
-  const createCasesQuery = useQueryMemo({
-    queryKey: QueryUtil.getGenericKey(QUERY_KEY.CREATE_CASES, queryId),
-    queryFn: async ({ signal }) => {
-      const response = await CaseApi.instance.createCases({
-        case_type_id: store.getState().caseTypeId,
-        created_in_data_collection_id: store.getState().createdInDataCollectionId,
-        data_collection_ids: store.getState().shareInDataCollectionIds,
-        is_update: store.getState().importAction === EPI_UPLOAD_ACTION.UPDATE,
-        cases: validatedCases.map(c => c.case),
-      }, { signal });
-      await QueryUtil.invalidateQueryKeys(QueryUtil.getQueryKeyDependencies([QUERY_KEY.CREATE_CASES], false));
-      return response.data;
-    },
-    gcTime: 0,
-    staleTime: 0,
-    enabled: isUploadStarted,
-  });
+  useEffect(() => {
+    const abortController = new AbortController();
+    const { signal } = abortController;
+
+    const abort = () => {
+      abortController.abort();
+    };
+
+    if (!isUploadStarted) {
+      return abort;
+    }
+
+    const uploadCases = async () => {
+      try {
+        await CaseApi.instance.createCases({
+          case_type_id: store.getState().caseTypeId,
+          created_in_data_collection_id: store.getState().createdInDataCollectionId,
+          data_collection_ids: store.getState().shareInDataCollectionIds,
+          is_update: store.getState().importAction === EPI_UPLOAD_ACTION.UPDATE,
+          cases: validatedCases.map(c => c.case),
+        }, { signal });
+
+        const readSetsForCases: Array<{ caseReadSet: CaseReadSet; file: File }> = [];
+
+        for (const [caseId, mapping] of Object.entries(sequenceMapping)) {
+          for (const [columnId, fileName] of Object.entries(mapping.sequenceFileNames)) {
+            const file = Array.from(sequenceFilesDataTransfer.files).find(f => f.name === fileName);
+            if (file) {
+              readSetsForCases.push({
+                caseReadSet: {
+                  case_id: caseId,
+                  case_type_col_id: columnId,
+                  library_prep_protocol_id: '',
+                },
+                file,
+              });
+            }
+          }
+        }
+
+      } catch (e) {
+        setError(e);
+      }
+    };
+
+    // eslint-disable-next-line @typescript-eslint/no-floating-promises
+    uploadCases();
+
+    return abort;
+  }, [isUploadStarted, sequenceFilesDataTransfer.files, sequenceMapping, store, validatedCases]);
+
 
   const sequenceFileStats = useMemo(() => {
     const mappedFiles = Object.values(sequenceMapping).flatMap(x => Object.values(x));
@@ -94,10 +128,10 @@ export const EpiUploadCreateCases = () => {
     await RouterManager.instance.router.navigate(link);
   }, [completeCaseType]);
 
-  if (createCasesQuery.isLoading) {
+  if (isUploadStarted && !error) {
     return <Spinner label={t`Uploading cases...`} />;
   }
-  if (createCasesQuery.isError) {
+  if (error) {
     return (
       <Box>
         <Alert severity={'error'}>
@@ -172,7 +206,7 @@ export const EpiUploadCreateCases = () => {
       {isUploadStarted && (
         <Alert severity={'success'}>
           <AlertTitle>
-            {t('Successfully uploaded {{numCases}} cases.', { numCases: createCasesQuery.data?.length ?? 0 })}
+            {t('Successfully uploaded cases.')}
           </AlertTitle>
         </Alert>
       )}

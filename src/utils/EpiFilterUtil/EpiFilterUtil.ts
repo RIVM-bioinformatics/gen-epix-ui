@@ -91,7 +91,7 @@ export class EpiFilterUtil {
 
   public static createFilters(completeCaseType: CompleteCaseType): Filters {
     // !FIXME: move to config
-    const filterBlacklist = new Set<ColType>([ColType.GENETIC_DISTANCE, ColType.GENETIC_SEQUENCE, ColType.GENETIC_READS, ColType.GENETIC_READS_FWD, ColType.GENETIC_READS_REV]);
+    const filterBlacklist = new Set<ColType>([ColType.GENETIC_DISTANCE, ColType.GENETIC_SEQUENCE, ColType.GENETIC_READS]);
 
     const filters: Filters = [];
     filters.push(new SelectionFilter({

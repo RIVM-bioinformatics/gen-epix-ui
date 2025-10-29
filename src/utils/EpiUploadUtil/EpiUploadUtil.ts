@@ -14,7 +14,6 @@ import difference from 'lodash/difference';
 import uniq from 'lodash/uniq';
 import {
   isValid,
-  parse as parseDate,
   parseISO,
 } from 'date-fns';
 
@@ -36,12 +35,12 @@ import type {
   EpiUploadCompleteCaseTypeColumnStats,
   EpiUploadSequenceMapping,
   EpiValidatedCaseWithGeneratedId,
+  EpiUploadSequenceMappingForCaseId,
 } from '../../models/epiUpload';
 import { EPI_UPLOAD_ACTION } from '../../models/epiUpload';
 import { EpiCaseTypeUtil } from '../EpiCaseTypeUtil';
 import { ConfigManager } from '../../classes/managers/ConfigManager';
 import { EpiCaseUtil } from '../EpiCaseUtil';
-import { DATE_FORMAT } from '../../data/date';
 
 export class EpiUploadUtil {
   public static readonly caseIdColumnAliases = ['_case_id', 'case id', 'case_id', 'caseid', 'case.id'];
@@ -283,15 +282,11 @@ export class EpiUploadUtil {
           }
           const columnIndex = parseInt(fieldValue, 10);
           const values = rawData.slice(1).map(row => row[columnIndex]);
-          const refDate = new Date();
           return values.every(value => {
             try {
-              if (isValid(parseISO(value))) {
+              if (isValid(value) || isValid(parseISO(value))) {
                 return true;
               }
-              return Object.values(DATE_FORMAT).some(format => {
-                return isValid(parseDate(value, format, refDate, { useAdditionalWeekYearTokens: true }));
-              });
             } catch (_e) {
               return false;
             }
@@ -404,10 +399,9 @@ export class EpiUploadUtil {
     const idColumns = EpiCaseTypeUtil.getCaseTypeColumnsByType(completeCaseType, [ColType.ID_ANONYMISED, ColType.ID_PSEUDONYMISED, ColType.ID_DIRECT]);
     const sequenceColumns = EpiCaseTypeUtil.getCaseTypeColumnsByType(completeCaseType, [ColType.GENETIC_SEQUENCE]);
     const readsColumns = EpiCaseTypeUtil.getCaseTypeColumnsByType(completeCaseType, [ColType.GENETIC_READS]);
-    const readsFwdRevColumnPairs = EpiCaseTypeUtil.findPairedReadsCaseTypeColumns(completeCaseType);
     const writableColumns = Object.values(completeCaseType.case_type_cols).filter(col => EpiUploadUtil.getWritableCaseTypeColIds(completeCaseType).includes(col.id));
 
-    return { idColumns, sequenceColumns, readsColumns, writableColumns, readsFwdRevColumnPairs };
+    return { idColumns, sequenceColumns, readsColumns, writableColumns };
   }
 
   private static idToRegex(id: string): RegExp {
@@ -420,9 +414,15 @@ export class EpiUploadUtil {
     const result: EpiUploadSequenceMapping = {};
 
     validatedCases.forEach((vc) => {
-      const sequenceMapping: { [seqOrReadColumnId: string]: string } = {};
+      const caseSequenceMapping: EpiUploadSequenceMappingForCaseId = {
+        sequenceFileNames: {},
+        readsFileNames: {},
+      };
 
-      if (stats.sequenceColumns.length !== 1 && stats.readsColumns.length !== 1 || stats.readsFwdRevColumnPairs.length !== 1) {
+      // modify by reference
+      result[vc.generated_id] = caseSequenceMapping;
+
+      if (stats.sequenceColumns.length !== 1 && stats.readsColumns.length !== 1) {
         return;
       }
 
@@ -436,6 +436,17 @@ export class EpiUploadUtil {
       if (!idColumnIds.length) {
         return;
       }
+
+      stats.sequenceColumns.forEach((seqCol) => {
+        caseSequenceMapping.sequenceFileNames[seqCol.id] = '';
+      });
+      stats.readsColumns.forEach((readCol) => {
+        caseSequenceMapping.readsFileNames[readCol.id] = {
+          fwd: '',
+          rev: '',
+        };
+      });
+
       const sequenceFiles: string[] = [];
       const readsFiles: string[] = [];
       Array.from(sequenceFilesDataTransfer.files).forEach((file) => {
@@ -450,20 +461,22 @@ export class EpiUploadUtil {
           }
         }
       });
-      if (stats.sequenceColumns.length === 1 && sequenceFiles.length === 1) {
-        sequenceMapping[stats.sequenceColumns[0].id] = sequenceFiles[0];
-      }
-      if (stats.readsColumns.length === 1 && readsFiles.length === 1) {
-        sequenceMapping[stats.readsColumns[0].id] = readsFiles[0];
-      }
-      if (stats.readsFwdRevColumnPairs.length === 1 && readsFiles.length === 2) {
-        const sortedReadsFiles = readsFiles.sort((a, b) => a.localeCompare(b));
-        sequenceMapping[stats.readsFwdRevColumnPairs[0].fwd.id] = sortedReadsFiles[0];
-        sequenceMapping[stats.readsFwdRevColumnPairs[0].rev.id] = sortedReadsFiles[1];
-      }
 
-      result[vc.generated_id] = sequenceMapping;
+      if (stats.sequenceColumns.length === 1 && sequenceFiles.length === 1) {
+        caseSequenceMapping.sequenceFileNames[stats.sequenceColumns[0].id] = sequenceFiles[0];
+      }
+      if (stats.readsColumns.length === 1) {
+        if (readsFiles.length === 1) {
+          caseSequenceMapping.readsFileNames[stats.readsColumns[0].id].fwd = readsFiles[0];
+        }
+        if (readsFiles.length === 2) {
+          const sortedReadsFiles = readsFiles.sort((a, b) => a.localeCompare(b));
+          caseSequenceMapping.readsFileNames[stats.readsColumns[0].id].fwd = sortedReadsFiles[0];
+          caseSequenceMapping.readsFileNames[stats.readsColumns[0].id].rev = sortedReadsFiles[1];
+        }
+      }
     });
     return result;
   }
+
 }

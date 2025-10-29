@@ -42,7 +42,7 @@ export class EpiCaseTypeUtil {
       } else {
         visibleColumnIds.push(...caseTypeColumns.filter(cc => {
           const col = completeCaseType.cols[cc.col_id];
-          const hiddenColTypes: ColType[] = [ColType.GENETIC_READS_FWD, ColType.GENETIC_READS_REV, ColType.GENETIC_READS, ColType.GENETIC_SEQUENCE];
+          const hiddenColTypes: ColType[] = [ColType.GENETIC_READS, ColType.GENETIC_SEQUENCE];
           return !hiddenColTypes.includes(col.col_type);
         }).map(c => c.id));
       }
@@ -152,9 +152,9 @@ export class EpiCaseTypeUtil {
 
 
   /**
-   * Find paired GENETIC_READS_FWD/REV columns in the same dimension.
+   * Find paired FWD/REV columns in the same dimension.
    * @param completeCaseType The complete case type object.
-   * @returns An array of paired GENETIC_READS_FWD/REV columns.
+   * @returns An array of paired FWD/REV columns.
    */
   public static findPairedReadsCaseTypeColumns(completeCaseType: CompleteCaseType): { fwd: CaseTypeCol; rev: CaseTypeCol }[] {
     const pairs: { fwd: CaseTypeCol; rev: CaseTypeCol }[] = [];
@@ -163,24 +163,13 @@ export class EpiCaseTypeUtil {
       if (!caseTypeColumns) {
         return;
       }
-      const caseTypeColsInDimension = caseTypeColumns.filter(ctc => {
+      const readsColumns = caseTypeColumns.filter(ctc => {
         const col = completeCaseType.cols[ctc.col_id];
-        return col?.col_type === ColType.GENETIC_READS_FWD || col?.col_type === ColType.GENETIC_READS_REV;
-      });
-      if (caseTypeColsInDimension.length !== 2) {
-        return;
-      }
-      const geneticReadsFwdCaseTypeCol = caseTypeColsInDimension.find(ctc => {
-        const col = completeCaseType.cols[ctc.col_id];
-        return col?.col_type === ColType.GENETIC_READS_FWD;
-      });
-      const geneticReadsRevCaseTypeCol = caseTypeColsInDimension.find(ctc => {
-        const col = completeCaseType.cols[ctc.col_id];
-        return col?.col_type === ColType.GENETIC_READS_REV;
+        return col?.col_type === ColType.GENETIC_READS;
       });
 
-      if (geneticReadsFwdCaseTypeCol && geneticReadsRevCaseTypeCol) {
-        pairs.push({ fwd: geneticReadsFwdCaseTypeCol, rev: geneticReadsRevCaseTypeCol });
+      if (readsColumns.length === 2) {
+        pairs.push({ fwd: readsColumns[0], rev: readsColumns[1] });
       }
     });
 
