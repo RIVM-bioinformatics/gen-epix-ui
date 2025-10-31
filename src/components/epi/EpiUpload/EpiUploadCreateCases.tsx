@@ -1,4 +1,5 @@
 import { useTranslation } from 'react-i18next';
+import type { ReactNode } from 'react';
 import {
   useCallback,
   useContext,
@@ -17,18 +18,10 @@ import { useStore } from 'zustand';
 
 import { EpiCaseTypeUtil } from '../../../utils/EpiCaseTypeUtil';
 import { RouterManager } from '../../../classes/managers/RouterManager';
-import { EPI_UPLOAD_ACTION } from '../../../models/epiUpload';
-import { EpiUploadUtil } from '../../../utils/EpiUploadUtil';
 import { EpiUploadStoreContext } from '../../../stores/epiUploadStore';
-import type {
-  CaseSeq,
-  CaseReadSet,
-  Seq,
-  ReadSet,
-} from '../../../api';
-import { CaseApi } from '../../../api';
 import { GenericErrorMessage } from '../../ui/GenericErrorMessage';
 import { LinearProgressWithLabel } from '../../ui/LinearProgressWithLabel';
+import { EpiUploadUtil } from '../../../utils/EpiUploadUtil';
 
 import { EpiUploadNavigation } from './EpiUploadNavigation';
 
@@ -44,11 +37,12 @@ export const EpiUploadCreateCases = () => {
   const validatedCases = useStore(store, (state) => state.validatedCases);
   const validatedCasesWithGeneratedId = useStore(store, (state) => state.validatedCasesWithGeneratedId);
   const completeCaseType = useStore(store, (state) => state.completeCaseType);
-  const libraryPrepProtocolId = useStore(store, (state) => state.libraryPrepProtocolId);
   const rawData = useStore(store, (state) => state.rawData);
   const [progress, setProgress] = useState(0);
+  const [progressMessage, setProgressMessage] = useState('');
 
   const [isUploadStarted, setIsUploadStarted] = useState(false);
+  const [isUploadCompleted, setIsUploadCompleted] = useState(false);
   const [error, setError] = useState<unknown>(undefined);
 
   const sequenceFileStats = useMemo(() => {
@@ -67,111 +61,36 @@ export const EpiUploadCreateCases = () => {
       return abort;
     }
 
-    const uploadCases = async () => {
-      try {
-        setProgress(0);
-        const createCasesResponse = await CaseApi.instance.createCases({
-          case_type_id: store.getState().caseTypeId,
-          created_in_data_collection_id: store.getState().createdInDataCollectionId,
-          data_collection_ids: store.getState().shareInDataCollectionIds,
-          is_update: store.getState().importAction === EPI_UPLOAD_ACTION.UPDATE,
-          cases: validatedCases.map(c => c.case),
-        }, { signal });
-        setProgress(5);
-
-        const caseIdMapping: { [generatedCaseId: string]: string } = {};
-        for (let i = 0; i < validatedCasesWithGeneratedId.length; i++) {
-          const validatedCase = validatedCasesWithGeneratedId[i];
-          const createdCase = createCasesResponse.data[i];
-          caseIdMapping[validatedCase.generated_id] = createdCase.id;
-        }
-
-        const seqForCases: Array<{ caseSeq: CaseSeq; file: File }> = [];
-        const readSetsForCases: Array<{ caseReadSet: CaseReadSet; fwdFile: File; revFile: File }> = [];
-
-        for (const [generatedCaseId, mapping] of Object.entries(sequenceMapping)) {
-          for (const [columnId, fileName] of Object.entries(mapping.sequenceFileNames)) {
-            const file = Array.from(sequenceFilesDataTransfer.files).find(f => f.name === fileName);
-            if (file) {
-              seqForCases.push({
-                caseSeq: {
-                  case_id: caseIdMapping[generatedCaseId],
-                  case_type_col_id: columnId,
-                },
-                file,
-              });
-            }
-          }
-          for (const [columnId, fileNames] of Object.entries(mapping.readsFileNames)) {
-            let fwdFile: File | undefined;
-            let revFile: File | undefined;
-            if (fileNames.fwd) {
-              fwdFile = Array.from(sequenceFilesDataTransfer.files).find(f => f.name === fileNames.fwd);
-            }
-            if (fileNames.rev) {
-              revFile = Array.from(sequenceFilesDataTransfer.files).find(f => f.name === fileNames.rev);
-            }
-
-            if (fwdFile) {
-              readSetsForCases.push({
-                caseReadSet: {
-                  case_id: caseIdMapping[generatedCaseId],
-                  case_type_col_id: columnId,
-                  library_prep_protocol_id: libraryPrepProtocolId,
-                },
-                fwdFile,
-                revFile,
-              });
-            }
-          }
-        }
-        let seqs: Seq[] = [];
-        let readSets: ReadSet[] = [];
-        if (seqForCases.length > 0) {
-          seqs = (await CaseApi.instance.createSeqsForCases(seqForCases.map(r => r.caseSeq), { signal })).data;
-          console.log('seqForCasesResponse', seqs);
-        }
-        if (readSetsForCases.length > 0) {
-          readSets = (await CaseApi.instance.createReadSetsForCases(readSetsForCases.map(r => r.caseReadSet), { signal })).data;
-          console.log('readSetsForCasesResponse', readSets);
-        }
-        setProgress(10);
-
-        for (let i = 0; i < seqForCases.length; i++) {
-          const { caseSeq, file } = seqForCases[i];
-          const seq = seqs[i];
-          if (seq) {
-            await CaseApi.instance.createFileForSeq(caseSeq.case_id, caseSeq.case_type_col_id, {
-              file_content: await EpiUploadUtil.readFileAsBase64(file),
-            }, { signal });
-          }
-        }
-
-        for (let i = 0; i < readSetsForCases.length; i++) {
-          const { caseReadSet, fwdFile, revFile } = readSetsForCases[i];
-          const readSet = readSets[i];
-          if (readSet) {
-            await CaseApi.instance.createFileForReadSet(caseReadSet.case_id, caseReadSet.case_type_col_id, {
-              file_content: await EpiUploadUtil.readFileAsBase64(fwdFile),
-              is_fwd: true,
-            }, { signal });
-            await CaseApi.instance.createFileForReadSet(caseReadSet.case_id, caseReadSet.case_type_col_id, {
-              file_content: await EpiUploadUtil.readFileAsBase64(revFile),
-              is_fwd: false,
-            }, { signal });
-          }
-        }
-        setProgress(100);
-      } catch (e) {
+    EpiUploadUtil.createCasesAndUploadFiles({
+      caseTypeId: store.getState().caseTypeId,
+      createdInDataCollectionId: store.getState().createdInDataCollectionId,
+      importAction: store.getState().importAction,
+      libraryPrepProtocolId: store.getState().libraryPrepProtocolId,
+      mappedFileSize: sequenceFileStats.mappedFileSize,
+      sequenceFilesDataTransfer,
+      sequenceMapping,
+      shareInDataCollectionIds: store.getState().shareInDataCollectionIds,
+      signal,
+      validatedCases,
+      validatedCasesWithGeneratedId,
+      onProgress: (percentage: number, message: string) => {
+        setProgress(percentage);
+        setProgressMessage(message);
+      },
+      onComplete: () => {
+        setIsUploadCompleted(true);
+      },
+      onError: (e: Error) => {
+        setError(e);
+      },
+    }).catch((e) => {
+      if (!signal.aborted) {
         setError(e);
       }
-    };
-
-    // eslint-disable-next-line @typescript-eslint/no-floating-promises
-    uploadCases();
+    });
 
     return abort;
-  }, [isUploadStarted, libraryPrepProtocolId, sequenceFileStats, sequenceFilesDataTransfer.files, sequenceMapping, store, validatedCases, validatedCasesWithGeneratedId]);
+  }, [isUploadStarted, sequenceFileStats.mappedFileSize, sequenceFilesDataTransfer, sequenceMapping, store, t, validatedCases, validatedCasesWithGeneratedId]);
 
 
   const onStartOverButtonClick = useCallback(async () => {
@@ -187,28 +106,77 @@ export const EpiUploadCreateCases = () => {
     await RouterManager.instance.router.navigate(link);
   }, [completeCaseType]);
 
-  if (isUploadStarted && !error) {
-    return (
-      <Box>
-        <LinearProgressWithLabel value={progress} />
-      </Box>
-    );
-  }
+  let content: ReactNode;
+
   if (error) {
-    return (
+    content = (
       <Box>
         <GenericErrorMessage error={error} />
       </Box>
     );
-  }
-  return (
-    <Container
-      maxWidth={'xl'}
-      sx={{
-        height: '100%',
-      }}
-    >
-      {!isUploadStarted && (
+  } else if (isUploadCompleted) {
+    content = (
+      <Box>
+        <Box>
+          <Alert severity={'success'}>
+            <AlertTitle>
+              {t('Upload completed.')}
+            </AlertTitle>
+          </Alert>
+        </Box>
+        <Box
+          marginTop={2}
+          marginBottom={1}
+          sx={{
+            display: 'flex',
+            gap: 2,
+            justifyContent: 'flex-end',
+          }}
+        >
+          <Button
+            variant={'outlined'}
+            onClick={onStartOverButtonClick}
+          >
+            {t('Upload more cases')}
+          </Button>
+          <Button
+            variant={'contained'}
+            onClick={onGotoCasesButtonClick}
+          >
+            {t('View uploaded cases')}
+          </Button>
+        </Box>
+      </Box>
+    );
+  } else if (isUploadStarted) {
+    content = (
+      <Box>
+        <Box marginBottom={4}>
+          <Alert severity={'info'}>
+            <AlertTitle>
+              {t('Uploading cases and files.')}
+            </AlertTitle>
+            {t('Please wait while the cases and associated files are being uploaded. This may take a while depending on the number and size of the files being uploaded.')}
+          </Alert>
+        </Box>
+        <Box
+          marginTop={4}
+          marginBottom={2}
+        >
+          <LinearProgressWithLabel value={progress} />
+        </Box>
+        <Box
+          sx={{
+            fontWeight: 700,
+          }}
+        >
+          {progressMessage}
+        </Box>
+      </Box>
+    );
+  } else {
+    content = (
+      <Box>
         <Box>
           <Box marginY={2}>
             <Alert severity={'info'}>
@@ -263,45 +231,23 @@ export const EpiUploadCreateCases = () => {
             </Box>
           )}
         </Box>
-      )}
-      {isUploadStarted && (
-        <Alert severity={'success'}>
-          <AlertTitle>
-            {t('Successfully uploaded cases.')}
-          </AlertTitle>
-        </Alert>
-      )}
-      {!isUploadStarted && (
         <EpiUploadNavigation
           proceedLabel={'Start upload'}
           onGoBackButtonClick={goToPreviousStep}
           onProceedButtonClick={onStartUploadButtonClick}
         />
-      )}
-      {isUploadStarted && (
-        <Box
-          marginTop={2}
-          marginBottom={1}
-          sx={{
-            display: 'flex',
-            gap: 2,
-            justifyContent: 'flex-end',
-          }}
-        >
-          <Button
-            variant={'outlined'}
-            onClick={onStartOverButtonClick}
-          >
-            {t('Upload more cases')}
-          </Button>
-          <Button
-            variant={'contained'}
-            onClick={onGotoCasesButtonClick}
-          >
-            {t('View uploaded cases')}
-          </Button>
-        </Box>
-      )}
+      </Box>
+    );
+  }
+
+  return (
+    <Container
+      maxWidth={'xl'}
+      sx={{
+        height: '100%',
+      }}
+    >
+      {content}
     </Container>
   );
 };

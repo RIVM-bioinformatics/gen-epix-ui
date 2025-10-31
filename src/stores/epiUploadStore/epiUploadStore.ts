@@ -296,7 +296,7 @@ export const createEpiUploadStore = () => {
       goToNextStep: async () => {
         const { activeStep, shouldResetColumnMapping, shouldResetSequenceMapping, validatedCasesWithGeneratedId, mappedColumns, sequenceFilesDataTransfer, sequenceMapping, setMappedColumns, completeCaseType, rawData, importAction } = get();
 
-        const nextStep = get().findNextStep(activeStep);
+        let nextStep = get().findNextStep(activeStep);
 
         if (nextStep === EPI_UPLOAD_STEP.MAP_COLUMNS) {
           if (shouldResetColumnMapping && mappedColumns) {
@@ -322,6 +322,9 @@ export const createEpiUploadStore = () => {
           if ((shouldResetSequenceMapping && sequenceMapping) || !sequenceMapping) {
             set({ sequenceMapping: EpiUploadUtil.getEpiUploadSequenceMapping(completeCaseType, validatedCasesWithGeneratedId, sequenceFilesDataTransfer) });
           }
+          if (EpiUploadUtil.getSequenceMappingStats(get().sequenceMapping, sequenceFilesDataTransfer).numberOfFilesToMap === 0) {
+            nextStep = get().findNextStep(nextStep);
+          }
         }
 
         if (nextStep !== null) {
@@ -330,8 +333,12 @@ export const createEpiUploadStore = () => {
       },
 
       goToPreviousStep: () => {
-        const { activeStep } = get();
-        const previousStep = get().findPreviousStep(activeStep);
+        const { activeStep, sequenceMapping, sequenceFilesDataTransfer } = get();
+        let previousStep = get().findPreviousStep(activeStep);
+        if (previousStep === EPI_UPLOAD_STEP.MAP_SEQUENCES && EpiUploadUtil.getSequenceMappingStats(sequenceMapping, sequenceFilesDataTransfer).numberOfFilesToMap === 0) {
+          previousStep = get().findPreviousStep(previousStep);
+        }
+
         if (previousStep !== null) {
           set({ activeStep: previousStep });
         }

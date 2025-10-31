@@ -28,11 +28,9 @@ import { EpiUploadStoreContext } from '../../../stores/epiUploadStore';
 import { useLibraryPrepProtocolsOptionsQuery } from '../../../dataHooks/useLibraryPrepProtocolsQuery';
 import { useArray } from '../../../hooks/useArray';
 import { ResponseHandler } from '../../ui/ResponseHandler';
-import {
-  FORM_FIELD_DEFINITION_TYPE,
-  GenericForm,
-  type FormFieldDefinition,
-} from '../../..';
+import type { FormFieldDefinition } from '../../../models/form';
+import { FORM_FIELD_DEFINITION_TYPE } from '../../../models/form';
+import { GenericForm } from '../../form/helpers/GenericForm';
 
 import { EpiUploadNavigation } from './EpiUploadNavigation';
 
