@@ -65,8 +65,8 @@ export const EpiUploadMapColumns = () => {
   const formId = useId();
 
   const schema = useMemo(() => {
-    return EpiUploadUtil.getSchema(rawData, completeCaseType, t, importAction);
-  }, [completeCaseType, importAction, rawData, t]);
+    return EpiUploadUtil.getSchema(rawData, completeCaseType, importAction);
+  }, [completeCaseType, importAction, rawData]);
 
   const defaultValues: EpiUploadMappedColumnsFormFields = useMemo(() => {
     return EpiUploadUtil.getDefaultFormValues(completeCaseType, store.getState().mappedColumns, importAction);

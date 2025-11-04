@@ -18,6 +18,7 @@ export type ResponseHandlerProps = PropsWithChildren<{
   readonly inlineSpinner?: boolean;
   readonly spinnerSize?: CircularProgressProps['size'];
   readonly loadingContent?: ReactNode;
+  readonly takingLongerTimeoutMs?: number;
 }>;
 
 export const ResponseHandler = ({
@@ -31,6 +32,7 @@ export const ResponseHandler = ({
   inlineSpinner,
   spinnerSize,
   loadingContent,
+  takingLongerTimeoutMs,
 }: ResponseHandlerProps): ReactNode => {
   if (enabled === false) {
     return children;
@@ -55,6 +57,7 @@ export const ResponseHandler = ({
               inline={inlineSpinner}
               label={loadingMessage}
               size={spinnerSize}
+              takingLongerTimeoutMs={takingLongerTimeoutMs}
             />
           )}
         </>

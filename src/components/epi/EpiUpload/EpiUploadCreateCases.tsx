@@ -1,8 +1,9 @@
 import { useTranslation } from 'react-i18next';
+import type { ReactNode } from 'react';
 import {
   useCallback,
   useContext,
-  useId,
+  useEffect,
   useMemo,
   useState,
 } from 'react';
@@ -13,26 +14,20 @@ import {
   Button,
   Container,
 } from '@mui/material';
-import difference from 'lodash/difference';
 import { useStore } from 'zustand';
 
-import { CaseApi } from '../../../api';
-import { useQueryMemo } from '../../../hooks/useQueryMemo';
-import { QueryUtil } from '../../../utils/QueryUtil';
-import { QUERY_KEY } from '../../../models/query';
-import { Spinner } from '../../ui/Spinner';
 import { EpiCaseTypeUtil } from '../../../utils/EpiCaseTypeUtil';
 import { RouterManager } from '../../../classes/managers/RouterManager';
-import { EPI_UPLOAD_ACTION } from '../../../models/epiUpload';
-import { EpiUploadUtil } from '../../../utils/EpiUploadUtil';
 import { EpiUploadStoreContext } from '../../../stores/epiUploadStore';
+import { GenericErrorMessage } from '../../ui/GenericErrorMessage';
+import { LinearProgressWithLabel } from '../../ui/LinearProgressWithLabel';
+import { EpiUploadUtil } from '../../../utils/EpiUploadUtil';
 
 import { EpiUploadNavigation } from './EpiUploadNavigation';
 
 
 export const EpiUploadCreateCases = () => {
   const [t] = useTranslation();
-  const queryId = useId();
 
   const store = useContext(EpiUploadStoreContext);
   const reset = useStore(store, (state) => state.reset);
@@ -40,46 +35,64 @@ export const EpiUploadCreateCases = () => {
   const sequenceMapping = useStore(store, (state) => state.sequenceMapping);
   const sequenceFilesDataTransfer = useStore(store, (state) => state.sequenceFilesDataTransfer);
   const validatedCases = useStore(store, (state) => state.validatedCases);
+  const validatedCasesWithGeneratedId = useStore(store, (state) => state.validatedCasesWithGeneratedId);
   const completeCaseType = useStore(store, (state) => state.completeCaseType);
   const rawData = useStore(store, (state) => state.rawData);
+  const [progress, setProgress] = useState(0);
+  const [progressMessage, setProgressMessage] = useState('');
 
   const [isUploadStarted, setIsUploadStarted] = useState(false);
-
-  const createCasesQuery = useQueryMemo({
-    queryKey: QueryUtil.getGenericKey(QUERY_KEY.CREATE_CASES, queryId),
-    queryFn: async ({ signal }) => {
-      const response = await CaseApi.instance.createCases({
-        case_type_id: store.getState().caseTypeId,
-        created_in_data_collection_id: store.getState().createdInDataCollectionId,
-        data_collection_ids: store.getState().shareInDataCollectionIds,
-        is_update: store.getState().importAction === EPI_UPLOAD_ACTION.UPDATE,
-        cases: validatedCases.map(c => c.case),
-      }, { signal });
-      await QueryUtil.invalidateQueryKeys(QueryUtil.getQueryKeyDependencies([QUERY_KEY.CREATE_CASES], false));
-      return response.data;
-    },
-    gcTime: 0,
-    staleTime: 0,
-    enabled: isUploadStarted,
-  });
+  const [isUploadCompleted, setIsUploadCompleted] = useState(false);
+  const [error, setError] = useState<unknown>(undefined);
 
   const sequenceFileStats = useMemo(() => {
-    const mappedFiles = Object.values(sequenceMapping).flatMap(x => Object.values(x));
-    const mappedSequenceFiles = mappedFiles.filter(x => EpiUploadUtil.isGenomeFile(x));
-    const mappedReadsFiles = mappedFiles.filter(x => EpiUploadUtil.isReadsFile(x));
-    const unmappedFiles = difference(Array.from(sequenceFilesDataTransfer.files).map(f => f.name), mappedFiles);
-    const unmappedSequenceFiles = unmappedFiles.filter(x => EpiUploadUtil.isGenomeFile(x));
-    const unmappedReadsFiles = unmappedFiles.filter(x => EpiUploadUtil.isReadsFile(x));
+    return EpiUploadUtil.getSequenceMappingStats(sequenceMapping, sequenceFilesDataTransfer);
+  }, [sequenceFilesDataTransfer, sequenceMapping]);
 
-    return {
-      mappedFiles,
-      mappedSequenceFiles,
-      mappedReadsFiles,
-      unmappedFiles,
-      unmappedSequenceFiles,
-      unmappedReadsFiles,
+  useEffect(() => {
+    const abortController = new AbortController();
+    const { signal } = abortController;
+
+    const abort = () => {
+      abortController.abort();
     };
-  }, [sequenceFilesDataTransfer.files, sequenceMapping]);
+
+    if (!isUploadStarted) {
+      return abort;
+    }
+
+    EpiUploadUtil.createCasesAndUploadFiles({
+      caseTypeId: store.getState().caseTypeId,
+      createdInDataCollectionId: store.getState().createdInDataCollectionId,
+      importAction: store.getState().importAction,
+      libraryPrepProtocolId: store.getState().libraryPrepProtocolId,
+      assemblyProtocolId: store.getState().assemblyProtocolId,
+      mappedFileSize: sequenceFileStats.mappedFileSize,
+      sequenceFilesDataTransfer,
+      sequenceMapping,
+      shareInDataCollectionIds: store.getState().shareInDataCollectionIds,
+      signal,
+      validatedCases,
+      validatedCasesWithGeneratedId,
+      onProgress: (percentage: number, message: string) => {
+        setProgress(percentage);
+        setProgressMessage(message);
+      },
+      onComplete: () => {
+        setIsUploadCompleted(true);
+      },
+      onError: (e: Error) => {
+        setError(e);
+      },
+    }).catch((e) => {
+      if (!signal.aborted) {
+        setError(e);
+      }
+    });
+
+    return abort;
+  }, [isUploadStarted, sequenceFileStats.mappedFileSize, sequenceFilesDataTransfer, sequenceMapping, store, t, validatedCases, validatedCasesWithGeneratedId]);
+
 
   const onStartOverButtonClick = useCallback(async () => {
     await reset();
@@ -94,26 +107,77 @@ export const EpiUploadCreateCases = () => {
     await RouterManager.instance.router.navigate(link);
   }, [completeCaseType]);
 
-  if (createCasesQuery.isLoading) {
-    return <Spinner label={t`Uploading cases...`} />;
-  }
-  if (createCasesQuery.isError) {
-    return (
+  let content: ReactNode;
+
+  if (error) {
+    content = (
       <Box>
-        <Alert severity={'error'}>
-          {t`An error occurred while uploading cases`}
-        </Alert>
+        <GenericErrorMessage error={error} />
       </Box>
     );
-  }
-  return (
-    <Container
-      maxWidth={'xl'}
-      sx={{
-        height: '100%',
-      }}
-    >
-      {!isUploadStarted && (
+  } else if (isUploadCompleted) {
+    content = (
+      <Box>
+        <Box>
+          <Alert severity={'success'}>
+            <AlertTitle>
+              {t('Upload completed.')}
+            </AlertTitle>
+          </Alert>
+        </Box>
+        <Box
+          marginTop={2}
+          marginBottom={1}
+          sx={{
+            display: 'flex',
+            gap: 2,
+            justifyContent: 'flex-end',
+          }}
+        >
+          <Button
+            variant={'outlined'}
+            onClick={onStartOverButtonClick}
+          >
+            {t('Upload more cases')}
+          </Button>
+          <Button
+            variant={'contained'}
+            onClick={onGotoCasesButtonClick}
+          >
+            {t('View uploaded cases')}
+          </Button>
+        </Box>
+      </Box>
+    );
+  } else if (isUploadStarted) {
+    content = (
+      <Box>
+        <Box marginBottom={4}>
+          <Alert severity={'info'}>
+            <AlertTitle>
+              {t('Uploading cases and files.')}
+            </AlertTitle>
+            {t('Please wait while the cases and associated files are being uploaded. This may take a while depending on the number and size of the files being uploaded.')}
+          </Alert>
+        </Box>
+        <Box
+          marginTop={4}
+          marginBottom={2}
+        >
+          <LinearProgressWithLabel value={progress} />
+        </Box>
+        <Box
+          sx={{
+            fontWeight: 700,
+          }}
+        >
+          {progressMessage}
+        </Box>
+      </Box>
+    );
+  } else {
+    content = (
+      <Box>
         <Box>
           <Box marginY={2}>
             <Alert severity={'info'}>
@@ -126,7 +190,7 @@ export const EpiUploadCreateCases = () => {
             <Box marginY={2}>
               <Alert severity={'info'}>
                 <AlertTitle>
-                  {t('{{numSequenceFiles}} sequence files are ready to be uploaded.', { numSequenceFiles: sequenceFileStats.mappedSequenceFiles.length })}
+                  {t('{{numSequenceFiles}} genome files are ready to be uploaded.', { numSequenceFiles: sequenceFileStats.mappedSequenceFiles.length })}
                 </AlertTitle>
               </Alert>
             </Box>
@@ -153,7 +217,7 @@ export const EpiUploadCreateCases = () => {
             <Box marginY={2}>
               <Alert severity={'warning'}>
                 <AlertTitle>
-                  {t('{{unmappedSequenceFiles}} unmapped sequence files will not be uploaded.', { unmappedSequenceFiles: sequenceFileStats.unmappedSequenceFiles.length })}
+                  {t('{{unmappedSequenceFiles}} unmapped genome files will not be uploaded.', { unmappedSequenceFiles: sequenceFileStats.unmappedSequenceFiles.length })}
                 </AlertTitle>
               </Alert>
             </Box>
@@ -168,45 +232,23 @@ export const EpiUploadCreateCases = () => {
             </Box>
           )}
         </Box>
-      )}
-      {isUploadStarted && (
-        <Alert severity={'success'}>
-          <AlertTitle>
-            {t('Successfully uploaded {{numCases}} cases.', { numCases: createCasesQuery.data?.length ?? 0 })}
-          </AlertTitle>
-        </Alert>
-      )}
-      {!isUploadStarted && (
         <EpiUploadNavigation
           proceedLabel={'Start upload'}
           onGoBackButtonClick={goToPreviousStep}
           onProceedButtonClick={onStartUploadButtonClick}
         />
-      )}
-      {isUploadStarted && (
-        <Box
-          marginTop={2}
-          marginBottom={1}
-          sx={{
-            display: 'flex',
-            gap: 2,
-            justifyContent: 'flex-end',
-          }}
-        >
-          <Button
-            variant={'outlined'}
-            onClick={onStartOverButtonClick}
-          >
-            {t('Upload more cases')}
-          </Button>
-          <Button
-            variant={'contained'}
-            onClick={onGotoCasesButtonClick}
-          >
-            {t('View uploaded cases')}
-          </Button>
-        </Box>
-      )}
+      </Box>
+    );
+  }
+
+  return (
+    <Container
+      maxWidth={'xl'}
+      sx={{
+        height: '100%',
+      }}
+    >
+      {content}
     </Container>
   );
 };

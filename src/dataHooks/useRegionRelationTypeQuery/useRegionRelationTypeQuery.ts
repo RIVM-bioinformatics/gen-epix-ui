@@ -9,7 +9,9 @@ import type { OptionBase } from '../../models/form';
 
 export const regionRelationTypePresentationValues: Partial<Record<RegionRelationType, string>> = {
   [RegionRelationType.CONTAINS]: 'CONTAINS',
-  [RegionRelationType.IS_CONTAINED_IN]: 'IS_CONTAINED_IN',
+  [RegionRelationType.IS_SEPARATE_FROM]: 'IS_SEPARATE_FROM',
+  [RegionRelationType.IS_ADJACENT_TO]: 'IS_ADJACENT_TO',
+  [RegionRelationType.OVERLAPS_WITH]: 'OVERLAPS_WITH',
 };
 
 export const useRegionRelationTypeOptionsQuery = (): UseOptions<string> => {

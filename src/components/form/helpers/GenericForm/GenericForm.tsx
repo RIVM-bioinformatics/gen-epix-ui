@@ -129,13 +129,14 @@ export const GenericForm = <TFormFields,>({
 
   return (
     <FormProvider {...formMethods}>
-      <form
+      <Box
+        component={'form'}
         autoComplete={'off'}
         id={formId}
         onSubmit={onSubmit}
       >
         {wrapForm ? wrapForm(formContent) : formContent}
-      </form>
+      </Box>
     </FormProvider>
   );
 };

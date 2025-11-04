@@ -66,6 +66,55 @@ export interface ApiPermission {
 /**
  * 
  * @export
+ * @interface AssemblyProtocol
+ */
+export interface AssemblyProtocol {
+    /**
+     * The code of the protocol
+     * @type {string}
+     * @memberof AssemblyProtocol
+     */
+    'code': string;
+    /**
+     * The name of the protocol
+     * @type {string}
+     * @memberof AssemblyProtocol
+     */
+    'name': string;
+    /**
+     * The version of the protocol
+     * @type {string}
+     * @memberof AssemblyProtocol
+     */
+    'version'?: string | null;
+    /**
+     * The description of the protocol
+     * @type {string}
+     * @memberof AssemblyProtocol
+     */
+    'description'?: string | null;
+    /**
+     * The properties of the protocol
+     * @type {{ [key: string]: string; }}
+     * @memberof AssemblyProtocol
+     */
+    'props'?: { [key: string]: string; };
+    /**
+     * The unique identifier for the obj.
+     * @type {string}
+     * @memberof AssemblyProtocol
+     */
+    'id'?: string | null;
+    /**
+     * Whether the assembly has a, potentially optional, manual curation step.
+     * @type {boolean}
+     * @memberof AssemblyProtocol
+     */
+    'has_manual_curation'?: boolean;
+}
+/**
+ * 
+ * @export
  * @ {string}
  */
 
@@ -334,6 +383,43 @@ export interface CaseQuery {
     'filter'?: TypedCompositeFilter;
 }
 /**
+ * 
+ * @export
+ * @interface CaseReadSet
+ */
+export interface CaseReadSet {
+    /**
+     * The unique identifier for the obj.
+     * @type {string}
+     * @memberof CaseReadSet
+     */
+    'id'?: string | null;
+    /**
+     * The ID of the case that the read set is or will be associated with.
+     * @type {string}
+     * @memberof CaseReadSet
+     */
+    'case_id': string;
+    /**
+     * The ID of the case type column that the read set is or will be associated with.
+     * @type {string}
+     * @memberof CaseReadSet
+     */
+    'case_type_col_id': string;
+    /**
+     * The ID of the read set.
+     * @type {string}
+     * @memberof CaseReadSet
+     */
+    'read_set_id'?: string | null;
+    /**
+     * The ID of the library prep protocol associated with the read set.
+     * @type {string}
+     * @memberof CaseReadSet
+     */
+    'library_prep_protocol_id': string;
+}
+/**
  * Describes all the rights that a user has on one particular case, based on the data collections in which it is currently shared.
  * @export
  * @interface CaseRights
@@ -411,6 +497,37 @@ export interface CaseRights {
      * @memberof CaseRights
      */
     'write_case_type_col_ids': Array<string>;
+}
+/**
+ * 
+ * @export
+ * @interface CaseSeq
+ */
+export interface CaseSeq {
+    /**
+     * The unique identifier for the obj.
+     * @type {string}
+     * @memberof CaseSeq
+     */
+    'id'?: string | null;
+    /**
+     * The ID of the case that the sequence is or will be associated with.
+     * @type {string}
+     * @memberof CaseSeq
+     */
+    'case_id': string;
+    /**
+     * The ID of the case type column that the sequence is or will be associated with.
+     * @type {string}
+     * @memberof CaseSeq
+     */
+    'case_type_col_id': string;
+    /**
+     * The ID of the sequence.
+     * @type {string}
+     * @memberof CaseSeq
+     */
+    'seq_id'?: string | null;
 }
 /**
  * 
@@ -1480,8 +1597,6 @@ export const ColType = {
     DECIMAL_5: 'DECIMAL_5',
     DECIMAL_6: 'DECIMAL_6',
     GENETIC_READS: 'GENETIC_READS',
-    GENETIC_READS_FWD: 'GENETIC_READS_FWD',
-    GENETIC_READS_REV: 'GENETIC_READS_REV',
     GENETIC_SEQUENCE: 'GENETIC_SEQUENCE',
     GENETIC_PROFILE: 'GENETIC_PROFILE',
     GENETIC_DISTANCE: 'GENETIC_DISTANCE',
@@ -1499,90 +1614,95 @@ export type ColType = typeof ColType[keyof typeof ColType];
  */
 
 export const CommandName = {
-    SubjectIdentifierCrudCommand: 'SubjectIdentifierCrudCommand',
-    OrganizationShareCasePolicyCrudCommand: 'OrganizationShareCasePolicyCrudCommand',
-    DataCollectionSetCrudCommand: 'DataCollectionSetCrudCommand',
-    RetrieveCaseRightsCommand: 'RetrieveCaseRightsCommand',
-    OrganizationCrudCommand: 'OrganizationCrudCommand',
-    RetrieveCasesByIdCommand: 'RetrieveCasesByIdCommand',
-    DimCrudCommand: 'DimCrudCommand',
-    RegionSetCrudCommand: 'RegionSetCrudCommand',
-    RetrieveOwnPermissionsCommand: 'RetrieveOwnPermissionsCommand',
-    OrganizationAccessCasePolicyCrudCommand: 'OrganizationAccessCasePolicyCrudCommand',
-    ConceptRelationCrudCommand: 'ConceptRelationCrudCommand',
-    RetrieveOrganizationsUnderAdminCommand: 'RetrieveOrganizationsUnderAdminCommand',
-    RetrieveAlleleProfileCommand: 'RetrieveAlleleProfileCommand',
-    DataCollectionSetMemberCrudCommand: 'DataCollectionSetMemberCrudCommand',
-    RetrieveOrganizationContactCommand: 'RetrieveOrganizationContactCommand',
-    RegionCrudCommand: 'RegionCrudCommand',
-    RetrieveGeneticSequenceFastaByIdCommand: 'RetrieveGeneticSequenceFastaByIdCommand',
-    CaseTypeSetCategoryCrudCommand: 'CaseTypeSetCategoryCrudCommand',
-    CaseTypeSetCaseTypeUpdateAssociationCommand: 'CaseTypeSetCaseTypeUpdateAssociationCommand',
-    EtiologicalAgentCrudCommand: 'EtiologicalAgentCrudCommand',
-    CreateCasesCommand: 'CreateCasesCommand',
-    CaseTypeSetCrudCommand: 'CaseTypeSetCrudCommand',
-    ContactCrudCommand: 'ContactCrudCommand',
-    UpdateUserOwnOrganizationCommand: 'UpdateUserOwnOrganizationCommand',
-    CaseCrudCommand: 'CaseCrudCommand',
-    UserInvitationCrudCommand: 'UserInvitationCrudCommand',
     RetrieveGeneticSequenceByIdCommand: 'RetrieveGeneticSequenceByIdCommand',
-    CreateCaseSetCommand: 'CreateCaseSetCommand',
-    RetrieveSubRolesCommand: 'RetrieveSubRolesCommand',
-    ValidateCasesCommand: 'ValidateCasesCommand',
-    OrganizationSetCrudCommand: 'OrganizationSetCrudCommand',
     RetrieveInviteUserConstraintsCommand: 'RetrieveInviteUserConstraintsCommand',
-    UpdateUserCommand: 'UpdateUserCommand',
-    RetrieveCasesByQueryCommand: 'RetrieveCasesByQueryCommand',
-    DiseaseEtiologicalAgentUpdateAssociationCommand: 'DiseaseEtiologicalAgentUpdateAssociationCommand',
-    RetrieveGeneticSequenceFastaByCaseCommand: 'RetrieveGeneticSequenceFastaByCaseCommand',
-    SiteCrudCommand: 'SiteCrudCommand',
-    DataCollectionCrudCommand: 'DataCollectionCrudCommand',
-    CaseTypeColSetMemberCrudCommand: 'CaseTypeColSetMemberCrudCommand',
-    TreeAlgorithmCrudCommand: 'TreeAlgorithmCrudCommand',
-    UserCrudCommand: 'UserCrudCommand',
-    OrganizationSetMemberCrudCommand: 'OrganizationSetMemberCrudCommand',
-    RetrieveGeneticSequenceByCaseCommand: 'RetrieveGeneticSequenceByCaseCommand',
-    EtiologyCrudCommand: 'EtiologyCrudCommand',
-    CaseSetCategoryCrudCommand: 'CaseSetCategoryCrudCommand',
-    RegionSetShapeCrudCommand: 'RegionSetShapeCrudCommand',
-    UserShareCasePolicyCrudCommand: 'UserShareCasePolicyCrudCommand',
-    DiseaseCrudCommand: 'DiseaseCrudCommand',
-    ConceptCrudCommand: 'ConceptCrudCommand',
-    CaseDataCollectionLinkCrudCommand: 'CaseDataCollectionLinkCrudCommand',
-    OrganizationAdminPolicyCrudCommand: 'OrganizationAdminPolicyCrudCommand',
-    RetrieveCaseSetStatsCommand: 'RetrieveCaseSetStatsCommand',
-    SubjectCrudCommand: 'SubjectCrudCommand',
-    RetrieveCompleteCaseTypeCommand: 'RetrieveCompleteCaseTypeCommand',
-    ConceptSetCrudCommand: 'ConceptSetCrudCommand',
-    GeneticDistanceProtocolCrudCommand: 'GeneticDistanceProtocolCrudCommand',
-    OutageCrudCommand: 'OutageCrudCommand',
-    GetIdentityProvidersCommand: 'GetIdentityProvidersCommand',
-    RetrieveCaseTypeStatsCommand: 'RetrieveCaseTypeStatsCommand',
-    RetrievePhylogeneticTreeBySequencesCommand: 'RetrievePhylogeneticTreeBySequencesCommand',
-    CaseTypeColSetCrudCommand: 'CaseTypeColSetCrudCommand',
-    IdentifierIssuerCrudCommand: 'IdentifierIssuerCrudCommand',
-    RetrieveOutagesCommand: 'RetrieveOutagesCommand',
-    RetrieveContainingRegionCommand: 'RetrieveContainingRegionCommand',
-    OrganizationSetOrganizationUpdateAssociationCommand: 'OrganizationSetOrganizationUpdateAssociationCommand',
-    CaseTypeColCrudCommand: 'CaseTypeColCrudCommand',
     RetrieveCaseSetRightsCommand: 'RetrieveCaseSetRightsCommand',
-    ColCrudCommand: 'ColCrudCommand',
-    RetrievePhylogeneticTreeByCasesCommand: 'RetrievePhylogeneticTreeByCasesCommand',
-    TreeAlgorithmClassCrudCommand: 'TreeAlgorithmClassCrudCommand',
-    InviteUserCommand: 'InviteUserCommand',
-    RetrieveLicensesCommand: 'RetrieveLicensesCommand',
+    RegionSetCrudCommand: 'RegionSetCrudCommand',
+    CreateFileForSeqCommand: 'CreateFileForSeqCommand',
+    ConceptSetCrudCommand: 'ConceptSetCrudCommand',
+    RetrieveLibraryPrepProtocolsCommand: 'RetrieveLibraryPrepProtocolsCommand',
     CaseTypeSetMemberCrudCommand: 'CaseTypeSetMemberCrudCommand',
-    CaseTypeColSetCaseTypeColUpdateAssociationCommand: 'CaseTypeColSetCaseTypeColUpdateAssociationCommand',
-    CaseTypeCrudCommand: 'CaseTypeCrudCommand',
-    RegisterInvitedUserCommand: 'RegisterInvitedUserCommand',
-    CaseSetDataCollectionLinkCrudCommand: 'CaseSetDataCollectionLinkCrudCommand',
-    CaseSetCrudCommand: 'CaseSetCrudCommand',
-    DataCollectionSetDataCollectionUpdateAssociationCommand: 'DataCollectionSetDataCollectionUpdateAssociationCommand',
-    CaseSetStatusCrudCommand: 'CaseSetStatusCrudCommand',
+    DataCollectionSetCrudCommand: 'DataCollectionSetCrudCommand',
+    TreeAlgorithmCrudCommand: 'TreeAlgorithmCrudCommand',
+    RetrievePhylogeneticTreeBySequencesCommand: 'RetrievePhylogeneticTreeBySequencesCommand',
+    ContactCrudCommand: 'ContactCrudCommand',
+    RetrieveCaseTypeStatsCommand: 'RetrieveCaseTypeStatsCommand',
+    RegionRelationCrudCommand: 'RegionRelationCrudCommand',
+    RetrieveSubRolesCommand: 'RetrieveSubRolesCommand',
+    OrganizationSetOrganizationUpdateAssociationCommand: 'OrganizationSetOrganizationUpdateAssociationCommand',
     RetrieveOrganizationAdminNameEmailsCommand: 'RetrieveOrganizationAdminNameEmailsCommand',
+    EtiologyCrudCommand: 'EtiologyCrudCommand',
+    DiseaseEtiologicalAgentUpdateAssociationCommand: 'DiseaseEtiologicalAgentUpdateAssociationCommand',
+    CreateFileForReadSetCommand: 'CreateFileForReadSetCommand',
+    OrganizationSetCrudCommand: 'OrganizationSetCrudCommand',
+    RetrievePhylogeneticTreeByCasesCommand: 'RetrievePhylogeneticTreeByCasesCommand',
+    OrganizationShareCasePolicyCrudCommand: 'OrganizationShareCasePolicyCrudCommand',
+    CreateSeqsForCasesCommand: 'CreateSeqsForCasesCommand',
+    CaseTypeCrudCommand: 'CaseTypeCrudCommand',
+    UserShareCasePolicyCrudCommand: 'UserShareCasePolicyCrudCommand',
+    RetrieveCaseRightsCommand: 'RetrieveCaseRightsCommand',
+    OrganizationAccessCasePolicyCrudCommand: 'OrganizationAccessCasePolicyCrudCommand',
+    CreateCaseSetCommand: 'CreateCaseSetCommand',
+    RetrieveOutagesCommand: 'RetrieveOutagesCommand',
+    CaseSetCrudCommand: 'CaseSetCrudCommand',
+    CaseCrudCommand: 'CaseCrudCommand',
+    IdentifierIssuerCrudCommand: 'IdentifierIssuerCrudCommand',
+    RetrieveGeneticSequenceFastaByCaseCommand: 'RetrieveGeneticSequenceFastaByCaseCommand',
+    TreeAlgorithmClassCrudCommand: 'TreeAlgorithmClassCrudCommand',
+    OutageCrudCommand: 'OutageCrudCommand',
+    RetrieveGeneticSequenceFastaByIdCommand: 'RetrieveGeneticSequenceFastaByIdCommand',
+    InviteUserCommand: 'InviteUserCommand',
+    CaseTypeColSetCrudCommand: 'CaseTypeColSetCrudCommand',
+    GetIdentityProvidersCommand: 'GetIdentityProvidersCommand',
+    OrganizationAdminPolicyCrudCommand: 'OrganizationAdminPolicyCrudCommand',
+    EtiologicalAgentCrudCommand: 'EtiologicalAgentCrudCommand',
+    RetrieveCasesByQueryCommand: 'RetrieveCasesByQueryCommand',
+    UserCrudCommand: 'UserCrudCommand',
+    RetrieveContainingRegionCommand: 'RetrieveContainingRegionCommand',
+    DimCrudCommand: 'DimCrudCommand',
+    RetrieveGeneticSequenceByCaseCommand: 'RetrieveGeneticSequenceByCaseCommand',
+    ValidateCasesCommand: 'ValidateCasesCommand',
+    CaseTypeColCrudCommand: 'CaseTypeColCrudCommand',
+    CaseDataCollectionLinkCrudCommand: 'CaseDataCollectionLinkCrudCommand',
+    DataCollectionSetDataCollectionUpdateAssociationCommand: 'DataCollectionSetDataCollectionUpdateAssociationCommand',
+    UpdateUserOwnOrganizationCommand: 'UpdateUserOwnOrganizationCommand',
+    RetrieveCaseSetStatsCommand: 'RetrieveCaseSetStatsCommand',
+    CaseTypeSetCategoryCrudCommand: 'CaseTypeSetCategoryCrudCommand',
+    RegionSetShapeCrudCommand: 'RegionSetShapeCrudCommand',
+    UserInvitationCrudCommand: 'UserInvitationCrudCommand',
+    CaseTypeColSetMemberCrudCommand: 'CaseTypeColSetMemberCrudCommand',
+    DiseaseCrudCommand: 'DiseaseCrudCommand',
+    OrganizationSetMemberCrudCommand: 'OrganizationSetMemberCrudCommand',
+    DataCollectionSetMemberCrudCommand: 'DataCollectionSetMemberCrudCommand',
+    SubjectCrudCommand: 'SubjectCrudCommand',
+    ConceptCrudCommand: 'ConceptCrudCommand',
     UserAccessCasePolicyCrudCommand: 'UserAccessCasePolicyCrudCommand',
+    ConceptRelationCrudCommand: 'ConceptRelationCrudCommand',
+    ColCrudCommand: 'ColCrudCommand',
+    CreateReadSetsForCasesCommand: 'CreateReadSetsForCasesCommand',
+    CaseTypeSetCaseTypeUpdateAssociationCommand: 'CaseTypeSetCaseTypeUpdateAssociationCommand',
     CaseSetMemberCrudCommand: 'CaseSetMemberCrudCommand',
-    RegionRelationCrudCommand: 'RegionRelationCrudCommand'
+    RegionCrudCommand: 'RegionCrudCommand',
+    RetrieveAssemblyProtocolsCommand: 'RetrieveAssemblyProtocolsCommand',
+    UpdateUserCommand: 'UpdateUserCommand',
+    RetrieveOwnPermissionsCommand: 'RetrieveOwnPermissionsCommand',
+    CaseTypeColSetCaseTypeColUpdateAssociationCommand: 'CaseTypeColSetCaseTypeColUpdateAssociationCommand',
+    RetrieveOrganizationsUnderAdminCommand: 'RetrieveOrganizationsUnderAdminCommand',
+    RetrieveCompleteCaseTypeCommand: 'RetrieveCompleteCaseTypeCommand',
+    RetrieveCasesByIdCommand: 'RetrieveCasesByIdCommand',
+    GeneticDistanceProtocolCrudCommand: 'GeneticDistanceProtocolCrudCommand',
+    RetrieveAlleleProfileCommand: 'RetrieveAlleleProfileCommand',
+    CaseSetDataCollectionLinkCrudCommand: 'CaseSetDataCollectionLinkCrudCommand',
+    RetrieveOrganizationContactCommand: 'RetrieveOrganizationContactCommand',
+    CaseSetCategoryCrudCommand: 'CaseSetCategoryCrudCommand',
+    CaseSetStatusCrudCommand: 'CaseSetStatusCrudCommand',
+    RetrieveLicensesCommand: 'RetrieveLicensesCommand',
+    SubjectIdentifierCrudCommand: 'SubjectIdentifierCrudCommand',
+    CaseTypeSetCrudCommand: 'CaseTypeSetCrudCommand',
+    DataCollectionCrudCommand: 'DataCollectionCrudCommand',
+    RegisterInvitedUserCommand: 'RegisterInvitedUserCommand',
+    OrganizationCrudCommand: 'OrganizationCrudCommand',
+    SiteCrudCommand: 'SiteCrudCommand'
 } as const;
 
 export type CommandName = typeof CommandName[keyof typeof CommandName];
@@ -1828,7 +1948,6 @@ export interface ConceptRelation {
  */
 
 export const ConceptRelationType = {
-    IS_CONTAINED_IN: 'IS_CONTAINED_IN',
     CONTAINS: 'CONTAINS'
 } as const;
 
@@ -1927,7 +2046,7 @@ export interface Contact {
      * @type {string}
      * @memberof Contact
      */
-    'site_id': string | null;
+    'site_id': string;
     /**
      * 
      * @type {Site}
@@ -2014,6 +2133,38 @@ export interface CreateCasesRequestBody {
      * @memberof CreateCasesRequestBody
      */
     'cases': Array<CaseForCreateUpdate>;
+}
+/**
+ * 
+ * @export
+ * @interface CreateFileForForReadSetRequestBody
+ */
+export interface CreateFileForForReadSetRequestBody {
+    /**
+     * The content of the file to create.
+     * @type {string}
+     * @memberof CreateFileForForReadSetRequestBody
+     */
+    'file_content': string;
+    /**
+     * Whether the file is for the forward reads (True) or reverse reads (False).
+     * @type {boolean}
+     * @memberof CreateFileForForReadSetRequestBody
+     */
+    'is_fwd': boolean;
+}
+/**
+ * 
+ * @export
+ * @interface CreateFileForSeqRequestBody
+ */
+export interface CreateFileForSeqRequestBody {
+    /**
+     * The content of the file to create.
+     * @type {string}
+     * @memberof CreateFileForSeqRequestBody
+     */
+    'file_content': string;
 }
 /**
  * Represents a collection of data.
@@ -2481,6 +2632,49 @@ export interface IdentityProvider {
 }
 
 
+/**
+ * 
+ * @export
+ * @interface LibraryPrepProtocol
+ */
+export interface LibraryPrepProtocol {
+    /**
+     * The code of the protocol
+     * @type {string}
+     * @memberof LibraryPrepProtocol
+     */
+    'code': string;
+    /**
+     * The name of the protocol
+     * @type {string}
+     * @memberof LibraryPrepProtocol
+     */
+    'name': string;
+    /**
+     * The version of the protocol
+     * @type {string}
+     * @memberof LibraryPrepProtocol
+     */
+    'version'?: string | null;
+    /**
+     * The description of the protocol
+     * @type {string}
+     * @memberof LibraryPrepProtocol
+     */
+    'description'?: string | null;
+    /**
+     * The properties of the protocol
+     * @type {{ [key: string]: string; }}
+     * @memberof LibraryPrepProtocol
+     */
+    'props'?: { [key: string]: string; };
+    /**
+     * The unique identifier for the obj.
+     * @type {string}
+     * @memberof LibraryPrepProtocol
+     */
+    'id'?: string | null;
+}
 /**
  * @type LocationInner
  * @export
@@ -3129,6 +3323,147 @@ export interface PhylogeneticTree {
 
 
 /**
+ * 
+ * @export
+ * @ {string}
+ */
+
+export const QualityControlResult = {
+    PASS: 'PASS',
+    WARN: 'WARN',
+    FAIL: 'FAIL'
+} as const;
+
+export type QualityControlResult = typeof QualityControlResult[keyof typeof QualityControlResult];
+
+
+/**
+ * 
+ * @export
+ * @interface RawSeq
+ */
+export interface RawSeq {
+    /**
+     * The sequence in the representation defined by seq_format
+     * @type {string}
+     * @memberof RawSeq
+     */
+    'seq': string;
+    /**
+     * 
+     * @type {SeqFormat}
+     * @memberof RawSeq
+     */
+    'seq_format'?: SeqFormat;
+    /**
+     * The SHA256 hash of the lower case ASCII encoded sequence without gaps. In the case of multiple contigs, this is the hash of the lexicographically sorted and concatenated contig sequences with a single gap (\'-\') as separator.
+     * @type {File}
+     * @memberof RawSeq
+     */
+    'seq_hash_sha256': File;
+    /**
+     * The length of the sequence. In case of multiple contigs, this is the sum of the lengths of all contigs.
+     * @type {number}
+     * @memberof RawSeq
+     */
+    'length': number;
+    /**
+     * The unique identifier for the obj.
+     * @type {string}
+     * @memberof RawSeq
+     */
+    'id'?: string | null;
+}
+
+
+/**
+ * 
+ * @export
+ * @interface ReadSet
+ */
+export interface ReadSet {
+    /**
+     * The quality of the sequence, as a numerical value.
+     * @type {number}
+     * @memberof ReadSet
+     */
+    'quality_score'?: number | null;
+    /**
+     * 
+     * @type {QualityControlResult}
+     * @memberof ReadSet
+     */
+    'quality'?: QualityControlResult;
+    /**
+     * A unique code for the instance, e.g. for external reference. Defaults to a UUID4.
+     * @type {string}
+     * @memberof ReadSet
+     */
+    'code'?: string;
+    /**
+     * The unique identifier for the obj.
+     * @type {string}
+     * @memberof ReadSet
+     */
+    'id'?: string | null;
+    /**
+     * The unique identifier for the library preparation protocol. FOREIGN KEY
+     * @type {string}
+     * @memberof ReadSet
+     */
+    'library_prep_protocol_id': string;
+    /**
+     * 
+     * @type {LibraryPrepProtocol}
+     * @memberof ReadSet
+     */
+    'library_prep_protocol'?: LibraryPrepProtocol;
+    /**
+     * The URI of the forward read set. In case of single-end reads, this is the only read set.
+     * @type {string}
+     * @memberof ReadSet
+     */
+    'fwd_uri'?: string | null;
+    /**
+     * The URI of the reverse read set, if any.
+     * @type {string}
+     * @memberof ReadSet
+     */
+    'rev_uri'?: string | null;
+    /**
+     * The unique file identifier for the forward read set. In case of single-end reads, this is the only read set. FOREIGN KEY
+     * @type {string}
+     * @memberof ReadSet
+     */
+    'fwd_file_id'?: string | null;
+    /**
+     * The unique file identifier for the reverse read set, if any.
+     * @type {string}
+     * @memberof ReadSet
+     */
+    'rev_file_id'?: string | null;
+    /**
+     * The SHA256 hash of the uncompressed FASTQ file representation of the forward read set.
+     * @type {string}
+     * @memberof ReadSet
+     */
+    'fwd_reads_hash_sha256'?: string | null;
+    /**
+     * The SHA256 hash of the uncompressed FASTQ file representation of the reverse read set.
+     * @type {string}
+     * @memberof ReadSet
+     */
+    'rev_reads_hash_sha256'?: string | null;
+    /**
+     * The code of the sequencing run.
+     * @type {string}
+     * @memberof ReadSet
+     */
+    'sequencing_run_code'?: string | null;
+}
+
+
+/**
  * Geographical representation of a region.
  * @export
  * @interface Region
@@ -3243,7 +3578,6 @@ export interface RegionRelation {
 export const RegionRelationType = {
     IS_SEPARATE_FROM: 'IS_SEPARATE_FROM',
     IS_ADJACENT_TO: 'IS_ADJACENT_TO',
-    IS_CONTAINED_IN: 'IS_CONTAINED_IN',
     OVERLAPS_WITH: 'OVERLAPS_WITH',
     CONTAINS: 'CONTAINS'
 } as const;
@@ -3295,7 +3629,7 @@ export interface RegionSetShape {
      */
     'id'?: string | null;
     /**
-     * 
+     * The ID of the region set. FOREIGN KEY
      * @type {string}
      * @memberof RegionSetShape
      */
@@ -3307,13 +3641,13 @@ export interface RegionSetShape {
      */
     'region_set'?: RegionSet;
     /**
-     * 
+     * The scale of the shape representation.
      * @type {number}
      * @memberof RegionSetShape
      */
     'scale': number;
     /**
-     * 
+     * The GeoJSON representation of the region set shape.
      * @type {string}
      * @memberof RegionSetShape
      */
@@ -3464,6 +3798,144 @@ export const Role = {
 } as const;
 
 export type Role = typeof Role[keyof typeof Role];
+
+
+/**
+ * 
+ * @export
+ * @interface Sample
+ */
+export interface Sample {
+    /**
+     * A unique code for the instance, e.g. for external reference. Defaults to a UUID4.
+     * @type {string}
+     * @memberof Sample
+     */
+    'code'?: string;
+    /**
+     * The unique identifier for the obj.
+     * @type {string}
+     * @memberof Sample
+     */
+    'id'?: string | null;
+    /**
+     * The properties of the sample.
+     * @type {{ [key: string]: string; }}
+     * @memberof Sample
+     */
+    'props'?: { [key: string]: string; };
+}
+/**
+ * 
+ * @export
+ * @interface Seq
+ */
+export interface Seq {
+    /**
+     * The quality of the sequence, as a numerical value.
+     * @type {number}
+     * @memberof Seq
+     */
+    'quality_score'?: number | null;
+    /**
+     * 
+     * @type {QualityControlResult}
+     * @memberof Seq
+     */
+    'quality'?: QualityControlResult;
+    /**
+     * A unique code for the instance, e.g. for external reference. Defaults to a UUID4.
+     * @type {string}
+     * @memberof Seq
+     */
+    'code'?: string;
+    /**
+     * The unique identifier for the obj.
+     * @type {string}
+     * @memberof Seq
+     */
+    'id'?: string | null;
+    /**
+     * The unique identifier for the sample, if available. FOREIGN KEY
+     * @type {string}
+     * @memberof Seq
+     */
+    'sample_id'?: string | null;
+    /**
+     * 
+     * @type {Sample}
+     * @memberof Seq
+     */
+    'sample'?: Sample;
+    /**
+     * The unique identifier for the single read set used to generate the assembly, if available. FOREIGN KEY
+     * @type {string}
+     * @memberof Seq
+     */
+    'read_set_id'?: string | null;
+    /**
+     * 
+     * @type {ReadSet}
+     * @memberof Seq
+     */
+    'read_set'?: ReadSet;
+    /**
+     * The unique identifier for a second read set used to generate the assembly, if more than one. FOREIGN KEY
+     * @type {string}
+     * @memberof Seq
+     */
+    'read_set2_id'?: string | null;
+    /**
+     * 
+     * @type {ReadSet}
+     * @memberof Seq
+     */
+    'read_set2'?: ReadSet;
+    /**
+     * The unique identifier for the assembly protocol, if available. FOREIGN KEY
+     * @type {string}
+     * @memberof Seq
+     */
+    'assembly_protocol_id'?: string | null;
+    /**
+     * 
+     * @type {AssemblyProtocol}
+     * @memberof Seq
+     */
+    'assembly_protocol'?: AssemblyProtocol;
+    /**
+     * The unique identifier for the raw sequence, if available. FOREIGN KEY
+     * @type {string}
+     * @memberof Seq
+     */
+    'raw_seq_id'?: string | null;
+    /**
+     * 
+     * @type {RawSeq}
+     * @memberof Seq
+     */
+    'raw_seq'?: RawSeq;
+    /**
+     * The unique file identifier.
+     * @type {string}
+     * @memberof Seq
+     */
+    'file_id'?: string | null;
+}
+
+
+/**
+ * 
+ * @export
+ * @ {string}
+ */
+
+export const SeqFormat = {
+    HASH_ONLY: 'HASH_ONLY',
+    STR_DNA5: 'STR_DNA5'
+} as const;
+
+export type SeqFormat = typeof SeqFormat[keyof typeof SeqFormat];
 
 
 /**
@@ -15180,6 +15652,166 @@ const CaseApiAxiosParamCreator = function (configuration?: Configuration) {
             };
         },
         /**
+         * Create a file for a read set associated with a case.
+         * @summary Create File For Reads Set
+         * @param {string} caseId 
+         * @param {string} caseTypeColId 
+         * @param {CreateFileForForReadSetRequestBody} createFileForForReadSetRequestBody 
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        createFileForReadSet: async (caseId: string, caseTypeColId: string, createFileForForReadSetRequestBody: CreateFileForForReadSetRequestBody, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
+            // verify required parameter 'caseId' is not null or undefined
+            assertParamExists('createFileForReadSet', 'caseId', caseId)
+            // verify required parameter 'caseTypeColId' is not null or undefined
+            assertParamExists('createFileForReadSet', 'caseTypeColId', caseTypeColId)
+            // verify required parameter 'createFileForForReadSetRequestBody' is not null or undefined
+            assertParamExists('createFileForReadSet', 'createFileForForReadSetRequestBody', createFileForForReadSetRequestBody)
+            const localVarPath = `/v1/create_file_for_read_set/{case_id}/{case_type_col_id}`
+                .replace(`{${"case_id"}}`, encodeURIComponent(String(caseId)))
+                .replace(`{${"case_type_col_id"}}`, encodeURIComponent(String(caseTypeColId)));
+            // use dummy base URL string because the URL constructor only accepts absolute URLs.
+            const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
+            let baseOptions;
+            if (configuration) {
+                baseOptions = configuration.baseOptions;
+            }
+
+            const localVarRequestOptions = { method: 'POST', ...baseOptions, ...options};
+            const localVarHeaderParameter = {} as any;
+            const localVarQueryParameter = {} as any;
+
+
+    
+            localVarHeaderParameter['Content-Type'] = 'application/json';
+
+            setSearchParams(localVarUrlObj, localVarQueryParameter);
+            let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
+            localVarRequestOptions.headers = {...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers};
+            localVarRequestOptions.data = serializeDataIfNeeded(createFileForForReadSetRequestBody, localVarRequestOptions, configuration)
+
+            return {
+                url: toPathString(localVarUrlObj),
+                options: localVarRequestOptions,
+            };
+        },
+        /**
+         * Create a file for a sequence associated with a case.
+         * @summary Create File For Sequence
+         * @param {string} caseId 
+         * @param {string} caseTypeColId 
+         * @param {CreateFileForSeqRequestBody} createFileForSeqRequestBody 
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        createFileForSeq: async (caseId: string, caseTypeColId: string, createFileForSeqRequestBody: CreateFileForSeqRequestBody, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
+            // verify required parameter 'caseId' is not null or undefined
+            assertParamExists('createFileForSeq', 'caseId', caseId)
+            // verify required parameter 'caseTypeColId' is not null or undefined
+            assertParamExists('createFileForSeq', 'caseTypeColId', caseTypeColId)
+            // verify required parameter 'createFileForSeqRequestBody' is not null or undefined
+            assertParamExists('createFileForSeq', 'createFileForSeqRequestBody', createFileForSeqRequestBody)
+            const localVarPath = `/v1/create_file_for_seq/{case_id}/{case_type_col_id}`
+                .replace(`{${"case_id"}}`, encodeURIComponent(String(caseId)))
+                .replace(`{${"case_type_col_id"}}`, encodeURIComponent(String(caseTypeColId)));
+            // use dummy base URL string because the URL constructor only accepts absolute URLs.
+            const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
+            let baseOptions;
+            if (configuration) {
+                baseOptions = configuration.baseOptions;
+            }
+
+            const localVarRequestOptions = { method: 'POST', ...baseOptions, ...options};
+            const localVarHeaderParameter = {} as any;
+            const localVarQueryParameter = {} as any;
+
+
+    
+            localVarHeaderParameter['Content-Type'] = 'application/json';
+
+            setSearchParams(localVarUrlObj, localVarQueryParameter);
+            let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
+            localVarRequestOptions.headers = {...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers};
+            localVarRequestOptions.data = serializeDataIfNeeded(createFileForSeqRequestBody, localVarRequestOptions, configuration)
+
+            return {
+                url: toPathString(localVarUrlObj),
+                options: localVarRequestOptions,
+            };
+        },
+        /**
+         * Create read sets for a set of cases based on a read set case type column.
+         * @summary Create Reads Sets For Cases
+         * @param {Array<CaseReadSet>} caseReadSet 
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        createReadSetsForCases: async (caseReadSet: Array<CaseReadSet>, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
+            // verify required parameter 'caseReadSet' is not null or undefined
+            assertParamExists('createReadSetsForCases', 'caseReadSet', caseReadSet)
+            const localVarPath = `/v1/create_read_sets_for_cases`;
+            // use dummy base URL string because the URL constructor only accepts absolute URLs.
+            const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
+            let baseOptions;
+            if (configuration) {
+                baseOptions = configuration.baseOptions;
+            }
+
+            const localVarRequestOptions = { method: 'POST', ...baseOptions, ...options};
+            const localVarHeaderParameter = {} as any;
+            const localVarQueryParameter = {} as any;
+
+
+    
+            localVarHeaderParameter['Content-Type'] = 'application/json';
+
+            setSearchParams(localVarUrlObj, localVarQueryParameter);
+            let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
+            localVarRequestOptions.headers = {...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers};
+            localVarRequestOptions.data = serializeDataIfNeeded(caseReadSet, localVarRequestOptions, configuration)
+
+            return {
+                url: toPathString(localVarUrlObj),
+                options: localVarRequestOptions,
+            };
+        },
+        /**
+         * Create sequences for a set of cases based on a genetic sequence case type column.
+         * @summary Create Sequences For Cases
+         * @param {Array<CaseSeq>} caseSeq 
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        createSeqsForCases: async (caseSeq: Array<CaseSeq>, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
+            // verify required parameter 'caseSeq' is not null or undefined
+            assertParamExists('createSeqsForCases', 'caseSeq', caseSeq)
+            const localVarPath = `/v1/create_seqs_for_cases`;
+            // use dummy base URL string because the URL constructor only accepts absolute URLs.
+            const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
+            let baseOptions;
+            if (configuration) {
+                baseOptions = configuration.baseOptions;
+            }
+
+            const localVarRequestOptions = { method: 'POST', ...baseOptions, ...options};
+            const localVarHeaderParameter = {} as any;
+            const localVarQueryParameter = {} as any;
+
+
+    
+            localVarHeaderParameter['Content-Type'] = 'application/json';
+
+            setSearchParams(localVarUrlObj, localVarQueryParameter);
+            let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
+            localVarRequestOptions.headers = {...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers};
+            localVarRequestOptions.data = serializeDataIfNeeded(caseSeq, localVarRequestOptions, configuration)
+
+            return {
+                url: toPathString(localVarUrlObj),
+                options: localVarRequestOptions,
+            };
+        },
+        /**
          * 
          * @summary Dims  Delete All
          * @param {*} [options] Override http request option.
@@ -16060,6 +16692,36 @@ const CaseApiAxiosParamCreator = function (configuration?: Configuration) {
             };
         },
         /**
+         * Retrieve assembly protocols from seqdb database
+         * @summary Retrieve Assembly Protocols
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        retrieveAssemblyProtocols: async (options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
+            const localVarPath = `/v1/retrieve/assembly_protocols`;
+            // use dummy base URL string because the URL constructor only accepts absolute URLs.
+            const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
+            let baseOptions;
+            if (configuration) {
+                baseOptions = configuration.baseOptions;
+            }
+
+            const localVarRequestOptions = { method: 'GET', ...baseOptions, ...options};
+            const localVarHeaderParameter = {} as any;
+            const localVarQueryParameter = {} as any;
+
+
+    
+            setSearchParams(localVarUrlObj, localVarQueryParameter);
+            let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
+            localVarRequestOptions.headers = {...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers};
+
+            return {
+                url: toPathString(localVarUrlObj),
+                options: localVarRequestOptions,
+            };
+        },
+        /**
          * Retrieve cases based on a query.
          * @summary Retrieve Case Ids By Query
          * @param {CaseQuery} caseQuery 
@@ -16367,6 +17029,36 @@ const CaseApiAxiosParamCreator = function (configuration?: Configuration) {
             let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
             localVarRequestOptions.headers = {...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers};
             localVarRequestOptions.data = localVarFormParams.toString();
+
+            return {
+                url: toPathString(localVarUrlObj),
+                options: localVarRequestOptions,
+            };
+        },
+        /**
+         * Retrieve library preparation protocols from seqdb database
+         * @summary Retrieve Library Preparation Protocols
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        retrieveLibraryPrepProtocols: async (options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
+            const localVarPath = `/v1/retrieve/library_prep_protocols`;
+            // use dummy base URL string because the URL constructor only accepts absolute URLs.
+            const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
+            let baseOptions;
+            if (configuration) {
+                baseOptions = configuration.baseOptions;
+            }
+
+            const localVarRequestOptions = { method: 'GET', ...baseOptions, ...options};
+            const localVarHeaderParameter = {} as any;
+            const localVarQueryParameter = {} as any;
+
+
+    
+            setSearchParams(localVarUrlObj, localVarQueryParameter);
+            let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
+            localVarRequestOptions.headers = {...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers};
 
             return {
                 url: toPathString(localVarUrlObj),
@@ -19728,6 +20420,62 @@ const CaseApiFp = function(configuration?: Configuration) {
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
         /**
+         * Create a file for a read set associated with a case.
+         * @summary Create File For Reads Set
+         * @param {string} caseId 
+         * @param {string} caseTypeColId 
+         * @param {CreateFileForForReadSetRequestBody} createFileForForReadSetRequestBody 
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        async createFileForReadSet(caseId: string, caseTypeColId: string, createFileForForReadSetRequestBody: CreateFileForForReadSetRequestBody, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<string>> {
+            const localVarAxiosArgs = await localVarAxiosParamCreator.createFileForReadSet(caseId, caseTypeColId, createFileForForReadSetRequestBody, options);
+            const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
+            const localVarOperationServerBasePath = operationServerMap['CaseApi.createFileForReadSet']?.[localVarOperationServerIndex]?.url;
+            return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
+        },
+        /**
+         * Create a file for a sequence associated with a case.
+         * @summary Create File For Sequence
+         * @param {string} caseId 
+         * @param {string} caseTypeColId 
+         * @param {CreateFileForSeqRequestBody} createFileForSeqRequestBody 
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        async createFileForSeq(caseId: string, caseTypeColId: string, createFileForSeqRequestBody: CreateFileForSeqRequestBody, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<string>> {
+            const localVarAxiosArgs = await localVarAxiosParamCreator.createFileForSeq(caseId, caseTypeColId, createFileForSeqRequestBody, options);
+            const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
+            const localVarOperationServerBasePath = operationServerMap['CaseApi.createFileForSeq']?.[localVarOperationServerIndex]?.url;
+            return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
+        },
+        /**
+         * Create read sets for a set of cases based on a read set case type column.
+         * @summary Create Reads Sets For Cases
+         * @param {Array<CaseReadSet>} caseReadSet 
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        async createReadSetsForCases(caseReadSet: Array<CaseReadSet>, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<Array<ReadSet>>> {
+            const localVarAxiosArgs = await localVarAxiosParamCreator.createReadSetsForCases(caseReadSet, options);
+            const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
+            const localVarOperationServerBasePath = operationServerMap['CaseApi.createReadSetsForCases']?.[localVarOperationServerIndex]?.url;
+            return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
+        },
+        /**
+         * Create sequences for a set of cases based on a genetic sequence case type column.
+         * @summary Create Sequences For Cases
+         * @param {Array<CaseSeq>} caseSeq 
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        async createSeqsForCases(caseSeq: Array<CaseSeq>, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<Array<Seq>>> {
+            const localVarAxiosArgs = await localVarAxiosParamCreator.createSeqsForCases(caseSeq, options);
+            const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
+            const localVarOperationServerBasePath = operationServerMap['CaseApi.createSeqsForCases']?.[localVarOperationServerIndex]?.url;
+            return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
+        },
+        /**
          * 
          * @summary Dims  Delete All
          * @param {*} [options] Override http request option.
@@ -20051,6 +20799,18 @@ const CaseApiFp = function(configuration?: Configuration) {
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
         /**
+         * Retrieve assembly protocols from seqdb database
+         * @summary Retrieve Assembly Protocols
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        async retrieveAssemblyProtocols(options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<Array<AssemblyProtocol>>> {
+            const localVarAxiosArgs = await localVarAxiosParamCreator.retrieveAssemblyProtocols(options);
+            const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
+            const localVarOperationServerBasePath = operationServerMap['CaseApi.retrieveAssemblyProtocols']?.[localVarOperationServerIndex]?.url;
+            return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
+        },
+        /**
          * Retrieve cases based on a query.
          * @summary Retrieve Case Ids By Query
          * @param {CaseQuery} caseQuery 
@@ -20155,6 +20915,18 @@ const CaseApiFp = function(configuration?: Configuration) {
             const localVarAxiosArgs = await localVarAxiosParamCreator.retrieveGeneticSequenceFasta(token, geneticSequenceCaseTypeColId, caseIds, fileName, options);
             const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
             const localVarOperationServerBasePath = operationServerMap['CaseApi.retrieveGeneticSequenceFasta']?.[localVarOperationServerIndex]?.url;
+            return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
+        },
+        /**
+         * Retrieve library preparation protocols from seqdb database
+         * @summary Retrieve Library Preparation Protocols
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        async retrieveLibraryPrepProtocols(options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<Array<LibraryPrepProtocol>>> {
+            const localVarAxiosArgs = await localVarAxiosParamCreator.retrieveLibraryPrepProtocols(options);
+            const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
+            const localVarOperationServerBasePath = operationServerMap['CaseApi.retrieveLibraryPrepProtocols']?.[localVarOperationServerIndex]?.url;
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
         /**
@@ -22736,6 +23508,58 @@ export class CaseApi extends BaseAPI {
     }
 
     /**
+     * Create a file for a read set associated with a case.
+     * @summary Create File For Reads Set
+     * @param {string} caseId 
+     * @param {string} caseTypeColId 
+     * @param {CreateFileForForReadSetRequestBody} createFileForForReadSetRequestBody 
+     * @param {*} [options] Override http request option.
+     * @throws {RequiredError}
+     * @memberof CaseApi
+     */
+    public createFileForReadSet(caseId: string, caseTypeColId: string, createFileForForReadSetRequestBody: CreateFileForForReadSetRequestBody, options?: RawAxiosRequestConfig) {
+        return CaseApiFp(this.configuration).createFileForReadSet(caseId, caseTypeColId, createFileForForReadSetRequestBody, options).then((request) => request(this.axios, this.configuration.baseUrl));
+    }
+
+    /**
+     * Create a file for a sequence associated with a case.
+     * @summary Create File For Sequence
+     * @param {string} caseId 
+     * @param {string} caseTypeColId 
+     * @param {CreateFileForSeqRequestBody} createFileForSeqRequestBody 
+     * @param {*} [options] Override http request option.
+     * @throws {RequiredError}
+     * @memberof CaseApi
+     */
+    public createFileForSeq(caseId: string, caseTypeColId: string, createFileForSeqRequestBody: CreateFileForSeqRequestBody, options?: RawAxiosRequestConfig) {
+        return CaseApiFp(this.configuration).createFileForSeq(caseId, caseTypeColId, createFileForSeqRequestBody, options).then((request) => request(this.axios, this.configuration.baseUrl));
+    }
+
+    /**
+     * Create read sets for a set of cases based on a read set case type column.
+     * @summary Create Reads Sets For Cases
+     * @param {Array<CaseReadSet>} caseReadSet 
+     * @param {*} [options] Override http request option.
+     * @throws {RequiredError}
+     * @memberof CaseApi
+     */
+    public createReadSetsForCases(caseReadSet: Array<CaseReadSet>, options?: RawAxiosRequestConfig) {
+        return CaseApiFp(this.configuration).createReadSetsForCases(caseReadSet, options).then((request) => request(this.axios, this.configuration.baseUrl));
+    }
+
+    /**
+     * Create sequences for a set of cases based on a genetic sequence case type column.
+     * @summary Create Sequences For Cases
+     * @param {Array<CaseSeq>} caseSeq 
+     * @param {*} [options] Override http request option.
+     * @throws {RequiredError}
+     * @memberof CaseApi
+     */
+    public createSeqsForCases(caseSeq: Array<CaseSeq>, options?: RawAxiosRequestConfig) {
+        return CaseApiFp(this.configuration).createSeqsForCases(caseSeq, options).then((request) => request(this.axios, this.configuration.baseUrl));
+    }
+
+    /**
      * 
      * @summary Dims  Delete All
      * @param {*} [options] Override http request option.
@@ -23034,6 +23858,17 @@ export class CaseApi extends BaseAPI {
     }
 
     /**
+     * Retrieve assembly protocols from seqdb database
+     * @summary Retrieve Assembly Protocols
+     * @param {*} [options] Override http request option.
+     * @throws {RequiredError}
+     * @memberof CaseApi
+     */
+    public retrieveAssemblyProtocols(options?: RawAxiosRequestConfig) {
+        return CaseApiFp(this.configuration).retrieveAssemblyProtocols(options).then((request) => request(this.axios, this.configuration.baseUrl));
+    }
+
+    /**
      * Retrieve cases based on a query.
      * @summary Retrieve Case Ids By Query
      * @param {CaseQuery} caseQuery 
@@ -23130,6 +23965,17 @@ export class CaseApi extends BaseAPI {
      */
     public retrieveGeneticSequenceFasta(token: string, geneticSequenceCaseTypeColId: string, caseIds: Array<string>, fileName: string, options?: RawAxiosRequestConfig) {
         return CaseApiFp(this.configuration).retrieveGeneticSequenceFasta(token, geneticSequenceCaseTypeColId, caseIds, fileName, options).then((request) => request(this.axios, this.configuration.baseUrl));
+    }
+
+    /**
+     * Retrieve library preparation protocols from seqdb database
+     * @summary Retrieve Library Preparation Protocols
+     * @param {*} [options] Override http request option.
+     * @throws {RequiredError}
+     * @memberof CaseApi
+     */
+    public retrieveLibraryPrepProtocols(options?: RawAxiosRequestConfig) {
+        return CaseApiFp(this.configuration).retrieveLibraryPrepProtocols(options).then((request) => request(this.axios, this.configuration.baseUrl));
     }
 
     /**

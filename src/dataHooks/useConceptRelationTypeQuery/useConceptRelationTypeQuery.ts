@@ -9,7 +9,6 @@ import type { OptionBase } from '../../models/form';
 
 export const conceptRelationTypePresentationValues: Partial<Record<ConceptRelationType, string>> = {
   [ConceptRelationType.CONTAINS]: 'CONTAINS',
-  [ConceptRelationType.IS_CONTAINED_IN]: 'IS_CONTAINED_IN',
 };
 
 export const useConceptRelationTypeOptionsQuery = (): UseOptions<string> => {

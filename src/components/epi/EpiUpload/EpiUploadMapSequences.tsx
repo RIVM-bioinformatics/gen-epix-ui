@@ -15,7 +15,6 @@ import {
   useRef,
 } from 'react';
 import { useTranslation } from 'react-i18next';
-import uniq from 'lodash/uniq';
 import { useStore } from 'zustand';
 
 import type { EpiValidatedCaseWithGeneratedId } from '../../../models/epiUpload';
@@ -75,12 +74,15 @@ export const EpiUploadMapSequences = () => {
     if (!alertTitleElement || !alertContentElement) {
       return;
     }
-    const numberOfFilesToMap = Array.from(sequenceFilesDataTransfer.files).length;
-    const mappedFiles = uniq(Object.values(epiUploadSequenceMapping.current).flatMap(Object.values)).filter(v => v);
-    const unmappedFileNames = Array.from(sequenceFilesDataTransfer.files).map(file => file.name).filter(fileName => !mappedFiles.includes(fileName));
+    const {
+      numberOfFilesToMap,
+      mappedFiles,
+      unmappedFileNames,
+    } = EpiUploadUtil.getSequenceMappingStats(epiUploadSequenceMapping.current, sequenceFilesDataTransfer);
+
     alertTitleElement.innerHTML = numberOfFilesToMap === mappedFiles.length ? t('All {{numberOfFilesToMap}} files are mapped', { numberOfFilesToMap }) : t('{{mappedFilesLength}} of {{numberOfFilesToMap}} files mapped', { mappedFilesLength: mappedFiles.length, numberOfFilesToMap });
     alertContentElement.innerHTML = numberOfFilesToMap === mappedFiles.length ? '' : t('Unmapped files: {{unmappedFileNames}}', { unmappedFileNames: unmappedFileNames.join(', ') });
-  }, [alertContentId, alertTitleId, sequenceFilesDataTransfer.files, t]);
+  }, [alertContentId, alertTitleId, sequenceFilesDataTransfer, t]);
 
   useEffect(() => {
     updateAlert();
@@ -105,16 +107,49 @@ export const EpiUploadMapSequences = () => {
     return Array.from(sequenceFilesDataTransfer.files).map((file) => file.name).filter(name => name.endsWith('.fastq') || name.endsWith('.fq') || name.endsWith('.fq.gz') || name.endsWith('.fastaq.gz'));
   }, [sequenceFilesDataTransfer.files]);
 
-  const renderDropDownCell = useCallback((tableRowParams: TableRowParams<EpiValidatedCaseWithGeneratedId>) => {
+  const createDropDown = useCallback((kwArgs: { dropDownValue: string; dropDownOptions: string[]; label: string; onChange: (newValue: string) => void }) => {
+    const { dropDownValue, dropDownOptions, label, onChange } = kwArgs;
+
+    return (
+      <Autocomplete
+        freeSolo
+        size={'small'}
+        sx={{
+          lineHeight: 'initial',
+        }}
+        value={dropDownValue}
+        options={dropDownOptions}
+        // eslint-disable-next-line react/jsx-no-bind
+        renderInput={(params) => (
+          <TextField
+            {...params}
+            size={'small'}
+            label={label}
+          />
+        )}
+        // eslint-disable-next-line react/jsx-no-bind
+        onChange={(_, newValue) => {
+          onChange(newValue);
+          setSequenceMapping(epiUploadSequenceMapping.current);
+          updateAlert();
+        }}
+      />
+    );
+  }, [setSequenceMapping, updateAlert]);
+
+  const renderSequenceCell = useCallback((tableRowParams: TableRowParams<EpiValidatedCaseWithGeneratedId>) => {
     const caseTypeColumn = completeCaseType.case_type_cols[tableRowParams.id];
-    const rowValue = EpiCaseUtil.getRowValue(tableRowParams.row.case as Case, caseTypeColumn, completeCaseType);
-    const isSequenceColumn = completeCaseTypeColumnStats.sequenceColumns.includes(caseTypeColumn);
+    // const rowValue = EpiCaseUtil.getRowValue(tableRowParams.row.case as Case, caseTypeColumn, completeCaseType);
 
-    if (rowValue.isMissing) {
-      return null;
-    }
-
-    const dropDownValue = epiUploadSequenceMapping.current?.[tableRowParams.row.generated_id]?.[caseTypeColumn.id] || '';
+    const id = tableRowParams.row.generated_id;
+    const dropDownValue = epiUploadSequenceMapping.current?.[tableRowParams.row.generated_id]?.sequenceFileNames[caseTypeColumn.id] || '';
+    const onChange = (newValue: string) => {
+      if (!newValue) {
+        delete epiUploadSequenceMapping.current?.[id]?.sequenceFileNames[caseTypeColumn.id];
+      } else {
+        epiUploadSequenceMapping.current[id].sequenceFileNames[caseTypeColumn.id] = newValue;
+      }
+    };
 
     return (
       <Box
@@ -126,36 +161,67 @@ export const EpiUploadMapSequences = () => {
         }}
         height={'100%'}
       >
-        <Autocomplete
-          freeSolo
-          size={'small'}
-          sx={{
-            lineHeight: 'initial',
-          }}
-          value={dropDownValue}
-          options={isSequenceColumn ? sequenceDropDownOptions : readsDropDownOptions}
-          // eslint-disable-next-line react/jsx-no-bind
-          renderInput={(params) => (
-            <TextField
-              {...params}
-              size={'small'}
-              label={rowValue.short}
-            />
-          )}
-          // eslint-disable-next-line react/jsx-no-bind
-          onChange={(_, newValue) => {
-            if (!newValue) {
-              delete epiUploadSequenceMapping.current?.[tableRowParams.row.generated_id]?.[caseTypeColumn.id];
-            } else {
-              epiUploadSequenceMapping.current[tableRowParams.row.generated_id][caseTypeColumn.id] = newValue;
-            }
-            setSequenceMapping(epiUploadSequenceMapping.current);
-            updateAlert();
-          }}
-        />
+        {createDropDown({
+          dropDownValue,
+          dropDownOptions: sequenceDropDownOptions,
+          label: caseTypeColumn.label,
+          onChange,
+        })}
       </Box>
     );
-  }, [completeCaseType, completeCaseTypeColumnStats.sequenceColumns, sequenceDropDownOptions, readsDropDownOptions, setSequenceMapping, updateAlert]);
+  }, [completeCaseType, createDropDown, sequenceDropDownOptions]);
+
+
+  const renderReadsCell = useCallback((tableRowParams: TableRowParams<EpiValidatedCaseWithGeneratedId>) => {
+    const caseTypeColumn = completeCaseType.case_type_cols[tableRowParams.id];
+    // const rowValue = EpiCaseUtil.getRowValue(tableRowParams.row.case as Case, caseTypeColumn, completeCaseType);
+    const isSequenceColumn = completeCaseTypeColumnStats.sequenceColumns.includes(caseTypeColumn);
+
+    const id = tableRowParams.row.generated_id;
+    const dropDownValueFwd = epiUploadSequenceMapping.current?.[tableRowParams.row.generated_id]?.readsFileNames?.[caseTypeColumn.id]?.fwd || '';
+    const dropDownValueRev = epiUploadSequenceMapping.current?.[tableRowParams.row.generated_id]?.readsFileNames?.[caseTypeColumn.id]?.rev || '';
+    const onChangeFwd = (newValue: string) => {
+      if (!newValue) {
+        delete epiUploadSequenceMapping.current?.[id]?.readsFileNames?.[caseTypeColumn.id]?.fwd;
+      } else {
+        epiUploadSequenceMapping.current[id].readsFileNames[caseTypeColumn.id].fwd = newValue;
+      }
+    };
+    const onChangeRev = (newValue: string) => {
+      if (!newValue) {
+        delete epiUploadSequenceMapping.current?.[id]?.readsFileNames?.[caseTypeColumn.id]?.rev;
+      } else {
+        epiUploadSequenceMapping.current[id].readsFileNames[caseTypeColumn.id].rev = newValue;
+      }
+    };
+
+    return (
+      <Box
+        sx={{
+          display: 'flex',
+          alignItems: 'center',
+          justifyContent: 'center',
+          flexDirection: 'row',
+          gap: 1,
+        }}
+        height={'100%'}
+      >
+        {createDropDown({
+          dropDownValue: dropDownValueFwd,
+          dropDownOptions: isSequenceColumn ? sequenceDropDownOptions : readsDropDownOptions,
+          label: `${caseTypeColumn.label} FWD`,
+          onChange: onChangeFwd,
+        })}
+        {createDropDown({
+          dropDownValue: dropDownValueRev,
+          dropDownOptions: isSequenceColumn ? sequenceDropDownOptions : readsDropDownOptions,
+          label: `${caseTypeColumn.label} REV`,
+          onChange: onChangeRev,
+        })}
+      </Box>
+    );
+  }, [completeCaseType, completeCaseTypeColumnStats.sequenceColumns, createDropDown, sequenceDropDownOptions, readsDropDownOptions]);
+
 
   const tableColumns = useMemo<TableColumn<EpiValidatedCaseWithGeneratedId>[]>(() => {
     const tableCols: TableColumn<EpiValidatedCaseWithGeneratedId>[] = [];
@@ -165,22 +231,45 @@ export const EpiUploadMapSequences = () => {
       ...completeCaseTypeColumnStats.idColumns,
       ...completeCaseTypeColumnStats.sequenceColumns,
       ...completeCaseTypeColumnStats.readsColumns,
-      ...completeCaseTypeColumnStats.readsFwdRevColumnPairs.flatMap(pair => [pair.fwd, pair.rev]),
     ];
 
-    columnsUsedForMapping.forEach((caseTypeColumn) => {
+    completeCaseTypeColumnStats.idColumns.forEach((caseTypeColumn) => {
       if (!caseHasColumnContent(validatedCasesWithGeneratedId, caseTypeColumn)) {
         return;
       }
-      const isIdColumn = completeCaseTypeColumnStats.idColumns.includes(caseTypeColumn);
       tableCols.push({
         type: 'text',
         isInitiallyVisible: true,
         hideInFilter: true,
         id: caseTypeColumn.id,
         headerName: caseTypeColumn.label,
-        widthPx: isIdColumn ? 300 : 400,
-        renderCell: isIdColumn ? undefined : renderDropDownCell,
+        widthPx: 300,
+        valueGetter: (params) => EpiCaseUtil.getRowValue(params.row.case as Case, caseTypeColumn, completeCaseType).short,
+      });
+    });
+
+    completeCaseTypeColumnStats.sequenceColumns.forEach((caseTypeColumn) => {
+      tableCols.push({
+        type: 'text',
+        isInitiallyVisible: true,
+        hideInFilter: true,
+        id: caseTypeColumn.id,
+        headerName: caseTypeColumn.label,
+        widthPx: 400,
+        renderCell: renderSequenceCell,
+        valueGetter: (params) => EpiCaseUtil.getRowValue(params.row.case as Case, caseTypeColumn, completeCaseType).short,
+      });
+    });
+
+    completeCaseTypeColumnStats.readsColumns.forEach((caseTypeColumn) => {
+      tableCols.push({
+        type: 'text',
+        isInitiallyVisible: true,
+        hideInFilter: true,
+        id: caseTypeColumn.id,
+        headerName: caseTypeColumn.label,
+        widthPx: 800,
+        renderCell: renderReadsCell,
         valueGetter: (params) => EpiCaseUtil.getRowValue(params.row.case as Case, caseTypeColumn, completeCaseType).short,
       });
     });
@@ -209,7 +298,7 @@ export const EpiUploadMapSequences = () => {
     });
 
     return tableCols;
-  }, [caseHasColumnContent, completeCaseType, completeCaseTypeColumnStats.idColumns, completeCaseTypeColumnStats.readsColumns, completeCaseTypeColumnStats.readsFwdRevColumnPairs, completeCaseTypeColumnStats.sequenceColumns, renderDropDownCell, validatedCases, validatedCasesWithGeneratedId]);
+  }, [caseHasColumnContent, completeCaseType, completeCaseTypeColumnStats.idColumns, completeCaseTypeColumnStats.readsColumns, completeCaseTypeColumnStats.sequenceColumns, renderReadsCell, renderSequenceCell, validatedCases, validatedCasesWithGeneratedId]);
 
   useInitializeTableStore<EpiValidatedCaseWithGeneratedId>({ store: tableStore, columns: tableColumns, rows: validatedCasesWithGeneratedId, createFiltersFromColumns: true });
 

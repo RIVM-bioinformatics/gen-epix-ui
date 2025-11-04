@@ -350,6 +350,7 @@ export const EpiUploadValidateContent = () => {
         inlineSpinner
         loadables={loadables}
         loadingMessage={t('Validating cases')}
+        takingLongerTimeoutMs={10000}
       >
         <TableStoreContextProvider store={tableStore}>
           <Table
