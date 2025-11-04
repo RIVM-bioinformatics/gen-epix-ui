@@ -22,7 +22,7 @@ export const useLibraryPrepProtocolsQuery = (): UseQueryResult<LibraryPrepProtoc
   });
 };
 
-export const useLibraryPrepProtocolsMapQuery = (): UseMap<LibraryPrepProtocol> => {
+export const useLibraryPrepProtocolMapQuery = (): UseMap<LibraryPrepProtocol> => {
   const response = useLibraryPrepProtocolsQuery();
 
   return useMemo(() => {
@@ -30,7 +30,7 @@ export const useLibraryPrepProtocolsMapQuery = (): UseMap<LibraryPrepProtocol> =
   }, [response]);
 };
 
-export const useLibraryPrepProtocolsOptionsQuery = (): UseOptions<string> => {
+export const useLibraryPrepProtocolOptionsQuery = (): UseOptions<string> => {
   const response = useLibraryPrepProtocolsQuery();
 
   return useMemo(() => {

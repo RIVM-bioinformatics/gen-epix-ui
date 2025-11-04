@@ -66,6 +66,7 @@ export const EpiUploadCreateCases = () => {
       createdInDataCollectionId: store.getState().createdInDataCollectionId,
       importAction: store.getState().importAction,
       libraryPrepProtocolId: store.getState().libraryPrepProtocolId,
+      assemblyProtocolId: store.getState().assemblyProtocolId,
       mappedFileSize: sequenceFileStats.mappedFileSize,
       sequenceFilesDataTransfer,
       sequenceMapping,
@@ -189,7 +190,7 @@ export const EpiUploadCreateCases = () => {
             <Box marginY={2}>
               <Alert severity={'info'}>
                 <AlertTitle>
-                  {t('{{numSequenceFiles}} sequence files are ready to be uploaded.', { numSequenceFiles: sequenceFileStats.mappedSequenceFiles.length })}
+                  {t('{{numSequenceFiles}} genome files are ready to be uploaded.', { numSequenceFiles: sequenceFileStats.mappedSequenceFiles.length })}
                 </AlertTitle>
               </Alert>
             </Box>
@@ -216,7 +217,7 @@ export const EpiUploadCreateCases = () => {
             <Box marginY={2}>
               <Alert severity={'warning'}>
                 <AlertTitle>
-                  {t('{{unmappedSequenceFiles}} unmapped sequence files will not be uploaded.', { unmappedSequenceFiles: sequenceFileStats.unmappedSequenceFiles.length })}
+                  {t('{{unmappedSequenceFiles}} unmapped genome files will not be uploaded.', { unmappedSequenceFiles: sequenceFileStats.unmappedSequenceFiles.length })}
                 </AlertTitle>
               </Alert>
             </Box>

@@ -44,6 +44,7 @@ export interface EpiUploadStoreState {
   fileList: FileList;
   fileName: string;
   libraryPrepProtocolId: string;
+  assemblyProtocolId: string;
   fileParsingError: string;
   importAction: EPI_UPLOAD_ACTION;
   initError: unknown;
@@ -94,6 +95,7 @@ export type EpiUploadStore = EpiUploadStoreState & EpiUploadStoreActions;
 
 const createEpiUploadStoreDefaultState: () => EpiUploadStoreState = () => ({
   activeStep: STEP_ORDER[0],
+  assemblyProtocolId: null,
   caseTypeCols: null,
   caseTypeId: null,
   completeCaseType: null,

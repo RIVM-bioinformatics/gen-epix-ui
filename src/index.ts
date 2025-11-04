@@ -164,6 +164,7 @@ export * from './dataHooks/useCaseSetStatsQuery';
 export * from './dataHooks/useCaseSetRightsQuery';
 export * from './dataHooks/useCaseSetCategoriesQuery';
 export * from './dataHooks/useCaseRightsQuery';
+export * from './dataHooks/useAssemblyProtocolsQuery';
 export * from './data/date.ts';
 export * from './data/table.ts';
 export * from './context/epiCaseTypeAbac';

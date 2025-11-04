@@ -11,6 +11,7 @@ import type { GenericData } from '../../models/data';
 import { QUERY_KEY } from '../../models/query';
 
 export const queryKeyDependencies: Record<QUERY_KEY, QUERY_KEY[]> = {
+  [QUERY_KEY.ASSEMBLY_PROTOCOLS]: [],
   [QUERY_KEY.VALIDATE_CASES]: [],
   [QUERY_KEY.CREATE_CASES]: [
     QUERY_KEY.CASES,

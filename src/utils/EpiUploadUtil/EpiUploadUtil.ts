@@ -561,6 +561,7 @@ export class EpiUploadUtil {
     createdInDataCollectionId: string;
     importAction: EPI_UPLOAD_ACTION;
     libraryPrepProtocolId: string;
+    assemblyProtocolId: string;
     mappedFileSize: number;
     sequenceFilesDataTransfer: DataTransfer;
     sequenceMapping: EpiUploadSequenceMapping;
@@ -667,13 +668,10 @@ export class EpiUploadUtil {
         onProgress(currentProgress, t('Uploading file: {{fileName}} ({{fileSize}})...', { fileName, fileSize: FileUtil.getReadableFileSize(fileSize) }));
       };
 
-      const waitFor = async (ms: number) => new Promise(resolve => setTimeout(resolve, ms));
-
       for (let i = 0; i < seqForCases.length; i++) {
         const { caseSeq, file } = seqForCases[i];
         const seq = seqs[i];
         if (seq) {
-          await waitFor(1000);
           await CaseApi.instance.createFileForSeq(caseSeq.case_id, caseSeq.case_type_col_id, {
             file_content: await EpiUploadUtil.readFileAsBase64(file),
           }, { signal });
@@ -685,14 +683,12 @@ export class EpiUploadUtil {
         const { caseReadSet, fwdFile, revFile } = readSetsForCases[i];
         const readSet = readSets[i];
         if (readSet) {
-          await waitFor(1000);
           await CaseApi.instance.createFileForReadSet(caseReadSet.case_id, caseReadSet.case_type_col_id, {
             file_content: await EpiUploadUtil.readFileAsBase64(fwdFile),
             is_fwd: true,
           }, { signal });
           updateProgress(fwdFile.size, fwdFile.name);
           if (revFile) {
-            await waitFor(1000);
             await CaseApi.instance.createFileForReadSet(caseReadSet.case_id, caseReadSet.case_type_col_id, {
               file_content: await EpiUploadUtil.readFileAsBase64(revFile),
               is_fwd: false,
