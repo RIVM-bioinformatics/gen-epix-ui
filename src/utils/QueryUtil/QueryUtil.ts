@@ -13,10 +13,6 @@ import { QUERY_KEY } from '../../models/query';
 export const queryKeyDependencies: Record<QUERY_KEY, QUERY_KEY[]> = {
   [QUERY_KEY.ASSEMBLY_PROTOCOLS]: [],
   [QUERY_KEY.VALIDATE_CASES]: [],
-  [QUERY_KEY.CREATE_CASES]: [
-    QUERY_KEY.CASES,
-  ],
-
   [QUERY_KEY.CASE_SET_CATEGORIES]: [],
   [QUERY_KEY.CASE_SET_MEMBERS]: [
     QUERY_KEY.CASE_SET_STATS,

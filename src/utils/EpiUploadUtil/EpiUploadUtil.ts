@@ -52,6 +52,8 @@ import { ConfigManager } from '../../classes/managers/ConfigManager';
 import { EpiCaseUtil } from '../EpiCaseUtil';
 import { FileUtil } from '../FileUtil';
 import { DATE_FORMAT } from '../../data/date';
+import { QueryUtil } from '../QueryUtil';
+import { QUERY_KEY } from '../../models/query';
 
 export class EpiUploadUtil {
   public static readonly caseIdColumnAliases = ['_case_id', 'case id', 'case_id', 'caseid', 'case.id'];
@@ -697,6 +699,7 @@ export class EpiUploadUtil {
           }
         }
       }
+      await QueryUtil.invalidateQueryKeys(QueryUtil.getQueryKeyDependencies([QUERY_KEY.CASES], true));
       onProgress(100, t('Upload complete.'));
       onComplete();
     } catch (error) {
