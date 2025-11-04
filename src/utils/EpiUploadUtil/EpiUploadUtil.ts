@@ -13,6 +13,7 @@ import { t } from 'i18next';
 import difference from 'lodash/difference';
 import uniq from 'lodash/uniq';
 import {
+  format,
   isValid,
   parseISO,
 } from 'date-fns';
@@ -50,6 +51,7 @@ import { EpiCaseTypeUtil } from '../EpiCaseTypeUtil';
 import { ConfigManager } from '../../classes/managers/ConfigManager';
 import { EpiCaseUtil } from '../EpiCaseUtil';
 import { FileUtil } from '../FileUtil';
+import { DATE_FORMAT } from '../../data/date';
 
 export class EpiUploadUtil {
   public static readonly caseIdColumnAliases = ['_case_id', 'case id', 'case_id', 'caseid', 'case.id'];
@@ -118,8 +120,12 @@ export class EpiUploadUtil {
         sheet,
         trim: true,
       });
-      // Convert CellValue[][] to string[][]
-      result = excelData.map(row => row.map(cell => cell?.toString() ?? undefined));
+      result = excelData.map(row => row.map(cell => {
+        if (cell instanceof Date) {
+          return format(cell, DATE_FORMAT.DATE);
+        }
+        return cell?.toString() ?? undefined;
+      }));
     } else {
       throw new Error('Unsupported file format. Please select a CSV or Excel file.');
     }
@@ -285,7 +291,7 @@ export class EpiUploadUtil {
           }
           return !!fieldValue;
         })
-        .test('all-column-values-valid', t('The column mapped to the case date field must contain valid date values for each row.'), (fieldValue) => {
+        .test('all-column-values-valid', t('The column mapped to the case date field must contain valid date values for each row. Only ISO-8601 date formats are allowed. For excel files, also cells formatted as "date" are allowed.'), (fieldValue) => {
           if (!fieldValue) {
             return true; // caught by another validation
           }
