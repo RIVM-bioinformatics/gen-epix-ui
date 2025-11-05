@@ -39,6 +39,8 @@ import type { IdentityProviderWithAvailability } from '../../../models/auth';
 export const RouterRoot = () => {
   const location = useLocation();
 
+  const oidcConfiguration = useSubscribable(AuthenticationManager.instance);
+
   const { isLoading: isIdentityProvidersLoading, error: identityProvidersError, data: identityProvidersWithAvailability } = useQuery<IdentityProviderWithAvailability[], Error, IdentityProviderWithAvailability[]>({
     queryKey: QueryUtil.getGenericKey(QUERY_KEY.IDENTITY_PROVIDERS),
     queryFn: async ({ signal }) => {
@@ -53,6 +55,9 @@ export const RouterRoot = () => {
           });
           isAvailable = true;
         } catch {
+          if (oidcConfiguration?.name === provider.name) {
+            AuthenticationManager.instance.next(undefined);
+          }
           isAvailable = false;
         }
         providersWithAvailability.push({
@@ -69,8 +74,6 @@ export const RouterRoot = () => {
   const availableIdentityProviders = useMemo<IdentityProviderWithAvailability[]>(() => {
     return identityProvidersWithAvailability?.filter(x => x.isAvailable) ?? [];
   }, [identityProvidersWithAvailability]);
-
-  const oidcConfiguration = useSubscribable(AuthenticationManager.instance);
 
   const onSignin = useCallback(() => {
     LogManager.instance.log([{
@@ -91,10 +94,10 @@ export const RouterRoot = () => {
   }, [location.pathname]);
 
   useEffect(() => {
-    if (availableIdentityProviders?.length === 1) {
-      AuthenticationManager.instance.next(availableIdentityProviders[0].provider);
+    if (identityProvidersWithAvailability?.length === 1 && availableIdentityProviders.length === 1) {
+      AuthenticationManager.instance.next(identityProvidersWithAvailability[0].provider);
     }
-  }, [availableIdentityProviders]);
+  }, [availableIdentityProviders.length, identityProvidersWithAvailability]);
 
   const userManager = useMemo<UserManager>(() => {
     if (!oidcConfiguration || !availableIdentityProviders?.length) {

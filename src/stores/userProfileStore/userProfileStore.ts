@@ -4,7 +4,6 @@ import {
   createJSONStorage,
 } from 'zustand/middleware';
 
-import type { IdentityProvider } from '../../api';
 import type { EpiDashboardLayoutUserConfig } from '../../models/epi';
 import { EpiDashboardUtil } from '../../utils/EpiDashboardUtil';
 
@@ -17,7 +16,6 @@ export type EpiDashboardTreeSettings = {
 };
 
 export interface UserProfileStoreState {
-  oidcConfiguration: IdentityProvider;
   epiDashboardPanels: {
     [key: string]: string;
   };
@@ -27,7 +25,6 @@ export interface UserProfileStoreState {
 }
 
 export interface UserProfileStoreActions {
-  setOidcConfiguration: (oidcConfiguration: IdentityProvider) => void;
   setEpiDashboardPanelConfiguration: (id: string, configuration: string) => void;
   setEpiDashboardLayoutUserConfig: (config: EpiDashboardLayoutUserConfig) => void;
   resetEpiDashboardLayout: () => void;
@@ -43,7 +40,6 @@ export type UserProfileStore = UserProfileStoreState & UserProfileStoreActions;
 export const createUserProfileStoreInitialState: () => UserProfileStoreState = () => ({
   tableSettings: {},
   epiDashboardPanels: {},
-  oidcConfiguration: undefined,
   epiDashboardLayoutUserConfig: EpiDashboardUtil.createDashboardLayoutUserConfigInitialState(),
   epiDashboardGeneralSettings: {
     isHighlightingEnabled: true,
@@ -58,10 +54,6 @@ export const userProfileStore = createStore<UserProfileStore>()(
     (set, get) => {
       return {
         ...createUserProfileStoreInitialState(),
-        setOidcConfiguration: (oidcConfiguration: IdentityProvider) => {
-          set({ oidcConfiguration });
-        },
-
         setEpiDashboardPanelConfiguration: (id: string, configuration: string) => {
           const epiDashboardPanels = get().epiDashboardPanels;
           set({
@@ -109,7 +101,6 @@ export const userProfileStore = createStore<UserProfileStore>()(
       name: 'GENEPIX-User-Profile',
       storage: createJSONStorage(() => localStorage),
       partialize: (state) => ({
-        oidcConfiguration: state.oidcConfiguration,
         epiDashboardPanels: state.epiDashboardPanels,
         epiDashboardLayoutUserConfig: state.epiDashboardLayoutUserConfig,
         epiDashboardGeneralSettings: state.epiDashboardGeneralSettings,

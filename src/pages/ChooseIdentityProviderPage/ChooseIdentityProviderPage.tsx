@@ -47,7 +47,7 @@ export const ChooseIdentityProviderPage = ({ identityProvidersWithAvailability }
       sx={{ marginTop: 2 }}
       onClick={onRefreshButtonClick}
     >
-      {t('Refresh identity providers')}
+      {t('Refresh')}
     </Button>
   ), [onRefreshButtonClick, t]);
 
@@ -57,14 +57,11 @@ export const ChooseIdentityProviderPage = ({ identityProvidersWithAvailability }
       testIdAttributes={TestIdUtil.createAttributes('ChooseIdentityProviderPage')}
       title={t`Choose identity provider`}
     >
-      <Typography marginBottom={2}>
-        {t('Welcome to {{applicationName}}', { applicationName: ConfigManager.instance.config.applicationName })}
-      </Typography>
-      <Typography marginBottom={2}>
-        {t`You need to be logged in to access this application. Login with one of the following identity providers:`}
-      </Typography>
       {availableIdentityProviders.length === 0 && (
-        <Box marginY={4}>
+        <Box
+          marginBottom={4}
+          marginTop={1}
+        >
           <Alert
             severity={'error'}
           >
@@ -76,7 +73,10 @@ export const ChooseIdentityProviderPage = ({ identityProvidersWithAvailability }
         </Box>
       )}
       {availableIdentityProviders.length !== identityProvidersWithAvailability.length && (
-        <Box marginY={4}>
+        <Box
+          marginBottom={4}
+          marginTop={1}
+        >
           <Alert
             severity={'info'}
           >
@@ -87,35 +87,46 @@ export const ChooseIdentityProviderPage = ({ identityProvidersWithAvailability }
           </Alert>
         </Box>
       )}
-      {identityProvidersWithAvailability.map((identityProviderWithAvailability) => {
-        const button = (
-          <Button
-            data-name={identityProviderWithAvailability.provider.name}
-            disabled={!identityProviderWithAvailability.isAvailable}
-            onClick={onIdentityProviderButtonClick}
-          >
-            {identityProviderWithAvailability.provider.label}
-          </Button>
-        );
-        return (
-          <Box
-            key={identityProviderWithAvailability.provider.name}
-            marginY={2}
-          >
-            {identityProviderWithAvailability.isAvailable && button}
-            {!identityProviderWithAvailability.isAvailable && (
-              <Tooltip
-                arrow
-                title={identityProviderWithAvailability.isAvailable ? '' : t('This identity provider is currently unavailable. Please try again later.')}
-              >
-                <span>
-                  {button}
-                </span>
-              </Tooltip>
-            )}
-          </Box>
-        );
-      })}
+      <Box sx={{ textAlign: 'center' }}>
+        <Typography
+          marginBottom={2}
+          variant={'h1'}
+        >
+          {t('Welcome to {{applicationName}}', { applicationName: ConfigManager.instance.config.applicationName })}
+        </Typography>
+        <Typography marginBottom={2}>
+          {t`Please login with one of the following identity providers:`}
+        </Typography>
+        {identityProvidersWithAvailability.map((identityProviderWithAvailability) => {
+          const button = (
+            <Button
+              data-name={identityProviderWithAvailability.provider.name}
+              disabled={!identityProviderWithAvailability.isAvailable}
+              onClick={onIdentityProviderButtonClick}
+            >
+              {identityProviderWithAvailability.provider.label}
+            </Button>
+          );
+          return (
+            <Box
+              key={identityProviderWithAvailability.provider.name}
+              marginY={2}
+            >
+              {identityProviderWithAvailability.isAvailable && button}
+              {!identityProviderWithAvailability.isAvailable && (
+                <Tooltip
+                  arrow
+                  title={identityProviderWithAvailability.isAvailable ? '' : t('This identity provider is currently unavailable. Please try again later.')}
+                >
+                  <span>
+                    {button}
+                  </span>
+                </Tooltip>
+              )}
+            </Box>
+          );
+        })}
+      </Box>
     </PageContainer>
   );
 };

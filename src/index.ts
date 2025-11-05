@@ -34,6 +34,7 @@ export * from './utils/AxiosUtil';
 export * from './stores/userProfileStore';
 export * from './stores/tableStore';
 export * from './stores/outagesStore';
+export * from './stores/oidcStore';
 export * from './stores/epiUploadStore';
 export * from './stores/epiStore';
 export * from './setup';
