@@ -232,19 +232,17 @@ export const EpiUploadSelectSequenceFiles = () => {
                 borderBottom: `1px solid ${theme.palette.divider}`,
               }}
             >
-              {canUploadSequences && (
-                <Box
-                  maxWidth={theme.spacing(128)}
-                >
-                  <GenericForm<FormFields>
-                    formFieldDefinitions={formFieldDefinitions}
-                    formId={formId}
-                    formMethods={formMethods}
-                    wrapForm={wrapForm}
-                    onSubmit={noop}
-                  />
-                </Box>
-              )}
+              <Box
+                maxWidth={theme.spacing(128)}
+              >
+                <GenericForm<FormFields>
+                  formFieldDefinitions={formFieldDefinitions}
+                  formId={formId}
+                  formMethods={formMethods}
+                  wrapForm={wrapForm}
+                  onSubmit={noop}
+                />
+              </Box>
               {!canUploadSequences && (
                 <Box marginY={1}>
                   <Alert severity={'info'}>

@@ -7,7 +7,10 @@ import {
   useContext,
   useMemo,
 } from 'react';
-import { useTheme } from '@mui/material';
+import {
+  Container,
+  useTheme,
+} from '@mui/material';
 import { useStore } from 'zustand';
 
 import { EPI_UPLOAD_STEP } from '../../../models/epiUpload';
@@ -51,21 +54,23 @@ export const EpiUpload = () => {
         gridTemplateRows: 'max-content auto',
       }}
     >
-      <Stepper activeStep={activeStep}>
-        {STEP_ORDER.map((step) => {
-          const stepProps: { completed?: boolean } = {};
-          return (
-            <Step
-              key={step}
-              {...stepProps}
-            >
-              <StepLabel>
-                {steps[step]}
-              </StepLabel>
-            </Step>
-          );
-        })}
-      </Stepper>
+      <Container>
+        <Stepper activeStep={activeStep}>
+          {STEP_ORDER.map((step) => {
+            const stepProps: { completed?: boolean } = {};
+            return (
+              <Step
+                key={step}
+                {...stepProps}
+              >
+                <StepLabel>
+                  {steps[step]}
+                </StepLabel>
+              </Step>
+            );
+          })}
+        </Stepper>
+      </Container>
       <Box
         sx={{
           marginTop: 2,
