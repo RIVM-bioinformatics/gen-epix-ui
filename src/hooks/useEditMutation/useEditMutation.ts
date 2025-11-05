@@ -19,7 +19,7 @@ export type UseEditMutationProps<TData, TVariables = TData> = {
   readonly resourceQueryKey?: string[];
   readonly associationQueryKeys?: string[][];
   readonly getProgressNotificationMessage: (data: TData, variables: TVariables) => string | ReactElement;
-  readonly getErrorNotificationMessage: (variables: TVariables, error: unknown) => string | ReactElement;
+  readonly getErrorNotificationMessage: (data: TData, variables: TVariables, error: unknown) => string | ReactElement;
   readonly getSuccessNotificationMessage: (data: TData, context: MutationContextEdit<TData>) => string | ReactElement;
   readonly onSuccess?: (item: TData, variables: TVariables, context: MutationContextEdit<TData>) => Promise<void>;
   readonly onError?: (error: unknown, variables: TVariables, context: MutationContextEdit<TData>) => Promise<void>;
@@ -82,14 +82,14 @@ export const useEditMutation = <TData extends GenericData | GenericData[], TVari
           if (!Array.isArray(oldItems)) {
             return oldItems;
           }
-          return [...oldItems, context.item];
+          return [...oldItems.filter(x => (x as GenericData).id !== (context.item as GenericData).id), context.item];
         });
       }
       await QueryUtil.invalidateQueryKeys(associationQueryKeys);
       if (onError) {
         await onError(error, variables, context);
       }
-      NotificationManager.instance.fulfillNotification(context.notificationKey, NotificationUtil.wrapErrorNotificationMessage(getErrorNotificationMessage(variables, error), error), 'error');
+      NotificationManager.instance.fulfillNotification(context.notificationKey, NotificationUtil.wrapErrorNotificationMessage(getErrorNotificationMessage(context.item, variables, error), error), 'error');
     },
     onSuccess: async (item, variables, context) => {
       await QueryUtil.invalidateQueryKeys(associationQueryKeys);

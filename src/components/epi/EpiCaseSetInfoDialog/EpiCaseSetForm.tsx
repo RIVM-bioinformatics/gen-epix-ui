@@ -107,7 +107,7 @@ export const EpiCaseSetForm = ({ caseSet, formId, onFinish, onIsSavingChange }: 
       return result.data;
     },
     getProgressNotificationMessage: (data) => t('Saving event: {{name}}', { name: data.name }),
-    getErrorNotificationMessage: (variables, _error) => t('Failed to edit event: {{name}}', { name: variables.name }),
+    getErrorNotificationMessage: (data) => t('Failed to edit event: {{name}}', { name: data.name }),
     // eslint-disable-next-line react/no-unstable-nested-components
     getSuccessNotificationMessage: (item) => <EpiCreateEventDialogSuccessNotificationMessage caseSet={item} />,
     getIntermediateItem: (variables: FormFields, previousItem: CaseSet) => ({ ...previousItem, ...variables }),

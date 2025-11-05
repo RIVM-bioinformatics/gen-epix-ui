@@ -284,7 +284,7 @@ export const CrudPage = <
     return name ? t('Item "{{name}}" has been deleted.', { name }) : t`Item has been deleted.`;
   }, [t, tryToGetName]);
 
-  const getEditErrorNotificationMessage = useCallback((data: TFormFields) => {
+  const getEditErrorNotificationMessage = useCallback((data: TData) => {
     const name = tryToGetName(data);
     return name ? t('Item "{{name}}" could not be saved.', { name }) : t`Item could not be saved.`;
   }, [t, tryToGetName]);
