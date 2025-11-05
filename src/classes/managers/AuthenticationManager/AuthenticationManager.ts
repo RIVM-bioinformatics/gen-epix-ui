@@ -6,10 +6,10 @@ import { AuthorizationManager } from '../AuthorizationManager';
 import { WindowManager } from '../WindowManager';
 import { Subject } from '../../Subject';
 import type { IdentityProvider } from '../../../api';
-import { userProfileStore } from '../../../stores/userProfileStore';
 import { AxiosUtil } from '../../../utils/AxiosUtil';
 import { SubscribableAbstract } from '../../abstracts/SubscribableAbstract';
 import type { AuthState } from '../../../models/auth';
+import { oidcStore } from '../../../stores/oidcStore';
 
 export const createdAtMetaDataKey = Symbol('createdAt');
 
@@ -24,15 +24,15 @@ export class AuthenticationManager extends SubscribableAbstract<IdentityProvider
   }
 
   private constructor() {
-    super(new Subject(userProfileStore.getState().oidcConfiguration));
+    super(new Subject(oidcStore.getState().configuration));
   }
 
   public next(oidcConfiguration: IdentityProvider) {
     if (oidcConfiguration) {
       Reflect.defineMetadata(createdAtMetaDataKey, new Date().getTime(), oidcConfiguration);
-      userProfileStore.getState().setOidcConfiguration(oidcConfiguration);
+      oidcStore.getState().setConfiguration(oidcConfiguration);
     } else {
-      userProfileStore.getState().setOidcConfiguration(undefined);
+      oidcStore.getState().setConfiguration(undefined);
     }
     super.next(oidcConfiguration);
   }

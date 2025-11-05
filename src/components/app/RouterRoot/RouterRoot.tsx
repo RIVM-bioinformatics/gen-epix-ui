@@ -11,6 +11,7 @@ import {
 import { useQuery } from '@tanstack/react-query';
 import { AuthProvider } from 'react-oidc-context';
 import { UserManager } from 'oidc-client-ts';
+import axios from 'axios';
 
 import {
   AuthApi,
@@ -32,19 +33,47 @@ import { NotificationsStack } from '../../ui/Notifications';
 import { OutageWrapper } from '../../ui/OutageWrapper';
 import { Spinner } from '../../ui/Spinner';
 import { UserInactivityConfirmation } from '../../ui/UserInactivityConfirmation';
+import type { IdentityProviderWithAvailability } from '../../../models/auth';
 
 
 export const RouterRoot = () => {
   const location = useLocation();
 
-  const { isLoading: isIdentityProvidersLoading, error: identityProvidersError, data: identityProviders } = useQuery({
+  const oidcConfiguration = useSubscribable(AuthenticationManager.instance);
+
+  const { isLoading: isIdentityProvidersLoading, error: identityProvidersError, data: identityProvidersWithAvailability } = useQuery<IdentityProviderWithAvailability[], Error, IdentityProviderWithAvailability[]>({
     queryKey: QueryUtil.getGenericKey(QUERY_KEY.IDENTITY_PROVIDERS),
-    queryFn: async ({ signal }) => (await AuthApi.getInstance().identityProvidersGetAll({ signal })).data,
+    queryFn: async ({ signal }) => {
+      const providers = (await AuthApi.getInstance().identityProvidersGetAll({ signal })).data;
+      const providersWithAvailability: IdentityProviderWithAvailability[] = [];
+      for (const provider of providers) {
+        let isAvailable = false;
+        try {
+          await axios.get(provider.discovery_url, {
+            signal,
+            timeout: 3000,
+          });
+          isAvailable = true;
+        } catch {
+          if (oidcConfiguration?.name === provider.name) {
+            AuthenticationManager.instance.next(undefined);
+          }
+          isAvailable = false;
+        }
+        providersWithAvailability.push({
+          provider,
+          isAvailable,
+        });
+      }
+      return providersWithAvailability;
+    },
     gcTime: Infinity,
     staleTime: Infinity,
   });
 
-  const oidcConfiguration = useSubscribable(AuthenticationManager.instance);
+  const availableIdentityProviders = useMemo<IdentityProviderWithAvailability[]>(() => {
+    return identityProvidersWithAvailability?.filter(x => x.isAvailable) ?? [];
+  }, [identityProvidersWithAvailability]);
 
   const onSignin = useCallback(() => {
     LogManager.instance.log([{
@@ -65,25 +94,25 @@ export const RouterRoot = () => {
   }, [location.pathname]);
 
   useEffect(() => {
-    if (identityProviders?.length === 1) {
-      AuthenticationManager.instance.next(identityProviders[0]);
+    if (identityProvidersWithAvailability?.length === 1 && availableIdentityProviders.length === 1) {
+      AuthenticationManager.instance.next(identityProvidersWithAvailability[0].provider);
     }
-  }, [identityProviders]);
+  }, [availableIdentityProviders.length, identityProvidersWithAvailability]);
 
   const userManager = useMemo<UserManager>(() => {
-    if (!oidcConfiguration || !identityProviders?.length) {
+    if (!oidcConfiguration || !availableIdentityProviders?.length) {
       return null;
     }
 
     // Validate the storage
-    const identityProvider = identityProviders.find(x => x.name === oidcConfiguration.name);
+    const identityProvider = identityProvidersWithAvailability.find(x => x.provider.name === oidcConfiguration.name)?.provider;
     if (!identityProvider || JSON.stringify(oidcConfiguration) !== JSON.stringify(identityProvider)) {
       AuthenticationManager.instance.next(undefined);
       return null;
     }
     window.userManager = new UserManager(UserManagerUtil.getSettings(oidcConfiguration));
     return window.userManager;
-  }, [identityProviders, oidcConfiguration]);
+  }, [availableIdentityProviders?.length, identityProvidersWithAvailability, oidcConfiguration]);
 
   if (isIdentityProvidersLoading) {
     return <Spinner />;
@@ -95,7 +124,7 @@ export const RouterRoot = () => {
 
   if (!oidcConfiguration) {
     return (
-      <ChooseIdentityProviderPage identityProviders={identityProviders} />
+      <ChooseIdentityProviderPage identityProvidersWithAvailability={identityProvidersWithAvailability} />
     );
   }
 

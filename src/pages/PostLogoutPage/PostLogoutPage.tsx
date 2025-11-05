@@ -23,8 +23,14 @@ export const PostLogoutPage = () => {
       testIdAttributes={TestIdUtil.createAttributes('PostLogoutPage')}
       title={t`Logged out`}
     >
-      <Box>
-        <Typography marginBottom={2}>
+      <Box
+        sx={{
+          textAlign: 'center',
+        }}
+      >
+        <Typography
+          marginBottom={2}
+        >
           {t`You have been logged out. You may close this window or log in again.`}
         </Typography>
         <Button

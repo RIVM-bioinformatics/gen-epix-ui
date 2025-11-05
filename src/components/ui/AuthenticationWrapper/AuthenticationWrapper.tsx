@@ -84,14 +84,20 @@ export const AuthenticationWrapper = ({ children }: PropsWithChildren) => {
 
   const loginElement = useMemo(() => (
     <>
-      <Box marginY={2}>
+      <Box
+        marginY={2}
+        sx={{ textAlign: 'center' }}
+      >
         <Button
           onClick={onLoginButtonClick}
         >
-          {oidcConfiguration.label}
+          {t(`Continue in with: {{identityProviderName}}`, { identityProviderName: oidcConfiguration.label })}
         </Button>
       </Box>
-      <Box marginY={2}>
+      <Box
+        marginY={2}
+        sx={{ textAlign: 'center' }}
+      >
         <Button
           color={'primary'}
           variant={'outlined'}
@@ -151,7 +157,10 @@ export const AuthenticationWrapper = ({ children }: PropsWithChildren) => {
         testIdAttributes={TestIdUtil.createAttributes('LoginPage')}
         title={t`Login`}
       >
-        <Box marginY={2}>
+        <Box
+          marginY={2}
+          sx={{ textAlign: 'center' }}
+        >
           <Typography component={'p'}>
             {t`You need to login to access this application.`}
           </Typography>

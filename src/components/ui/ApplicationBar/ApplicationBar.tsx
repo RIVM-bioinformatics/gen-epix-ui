@@ -48,10 +48,11 @@ export const ApplicationBar = ({
           sx={{
             height: 48,
             minHeight: '48px !important',
+            justifyContent: singleAction ? 'center' : undefined,
           }}
         >
           {singleAction && (
-            <Box marginLeft={theme.spacing(2)}>
+            <Box marginX={theme.spacing(2)}>
               <Typography
                 component={'h1'}
                 sx={{
