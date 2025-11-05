@@ -263,6 +263,7 @@ export * from './classes/managers/NotificationManager';
 export * from './classes/managers/NavigationHistoryManager';
 export * from './classes/managers/LogManager';
 export * from './classes/managers/KeyboardShortcutManager';
+export * from './classes/managers/InactivityManager';
 export * from './classes/managers/HighlightingManager';
 export * from './classes/managers/EpiListsCaseSetMembersManager';
 export * from './classes/managers/EpiEventBusManager';

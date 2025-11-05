@@ -60,7 +60,7 @@ export const NotificationItem = ({ notification, showTimestamp, onClose, allowCl
             textAlign: 'right',
           }}
         >
-          {TimeUtil.getReadableTimeRemaining(now - notification.timestamp, t, { postFix: ' ago', round: true })}
+          {TimeUtil.getReadableTimeRemaining(now - notification.timestamp, { postFix: ' ago', round: true })}
         </Box>
       )}
     </Alert>

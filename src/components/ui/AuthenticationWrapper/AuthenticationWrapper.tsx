@@ -138,9 +138,12 @@ export const AuthenticationWrapper = ({ children }: PropsWithChildren) => {
         testIdAttributes={TestIdUtil.createAttributes('LoginPageSessionExpired')}
         title={t`Login`}
       >
-        <p>
+        <Typography
+          sx={{ textAlign: 'center' }}
+          component={'p'}
+        >
           {t`We could not log you in, or your session has expired.`}
-        </p>
+        </Typography>
         {loginElement}
       </PageContainer>
     );

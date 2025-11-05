@@ -1,7 +1,7 @@
-import type { TFunction } from 'i18next';
+import { t } from 'i18next';
 
 export class TimeUtil {
-  public static getReadableTimeRemaining(milliseconds: number, t: TFunction<'translation', undefined>, options: { postFix?: string; round?: boolean } = {}): string {
+  public static getReadableTimeRemaining(milliseconds: number, options: { postFix?: string; round?: boolean } = {}): string {
     const { postFix, round } = options;
 
     if (milliseconds < 1000) {
