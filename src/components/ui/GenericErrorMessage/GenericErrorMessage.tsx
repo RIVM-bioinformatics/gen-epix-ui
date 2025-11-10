@@ -11,7 +11,6 @@ import {
 } from 'react';
 import { isRouteErrorResponse } from 'react-router-dom';
 import { isAxiosError } from 'axios';
-import { useAuth } from 'react-oidc-context';
 
 import { LogLevel } from '../../../api';
 import { AxiosUtil } from '../../../utils/AxiosUtil';
@@ -28,7 +27,6 @@ export type GenericErrorMessageProps = {
 
 export const GenericErrorMessage = ({ error, shouldHideActionButtons }: GenericErrorMessageProps) => {
   const [t] = useTranslation();
-  const auth = useAuth();
 
   useEffect(() => {
     LogManager.instance.log([{
@@ -57,15 +55,15 @@ export const GenericErrorMessage = ({ error, shouldHideActionButtons }: GenericE
 
   const onLogoutButtonClick = useCallback(async () => {
     AuthenticationManager.clearStaleState();
-    if (auth) {
+    if (AuthenticationManager.instance.authContextProps) {
       // eslint-disable-next-line @typescript-eslint/no-floating-promises
-      auth.signoutRedirect();
+      AuthenticationManager.instance.authContextProps.signoutRedirect();
     } else {
       await RouterManager.instance.router.navigate({
         pathname: '/',
       });
     }
-  }, [auth]);
+  }, []);
 
   const title = useMemo(() => {
     if (isRouteErrorResponse(error) || AxiosUtil.isAxiosNotFoundError(error)) {

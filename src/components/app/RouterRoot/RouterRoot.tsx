@@ -12,6 +12,12 @@ import { useQuery } from '@tanstack/react-query';
 import { AuthProvider } from 'react-oidc-context';
 import { UserManager } from 'oidc-client-ts';
 import axios from 'axios';
+import {
+  Box,
+  Button,
+  Typography,
+} from '@mui/material';
+import { t } from 'i18next';
 
 import {
   AuthApi,
@@ -23,7 +29,6 @@ import { NavigationHistoryManager } from '../../../classes/managers/NavigationHi
 import { useSubscribable } from '../../../hooks/useSubscribable';
 import { QUERY_KEY } from '../../../models/query';
 import { ChooseIdentityProviderPage } from '../../../pages/ChooseIdentityProviderPage';
-import { ErrorPage } from '../../../pages/ErrorPage';
 import { HomePage } from '../../../pages/HomePage';
 import { QueryUtil } from '../../../utils/QueryUtil';
 import { UserManagerUtil } from '../../../utils/UserManagerUtil';
@@ -34,6 +39,9 @@ import { OutageWrapper } from '../../ui/OutageWrapper';
 import { Spinner } from '../../ui/Spinner';
 import { UserInactivityConfirmation } from '../../ui/UserInactivityConfirmation';
 import type { IdentityProviderWithAvailability } from '../../../models/auth';
+import { ConfigManager } from '../../../classes/managers/ConfigManager';
+import { TestIdUtil } from '../../../utils/TestIdUtil';
+import { PageContainer } from '../../ui/PageContainer';
 
 
 export const RouterRoot = () => {
@@ -99,6 +107,10 @@ export const RouterRoot = () => {
     }
   }, [availableIdentityProviders.length, identityProvidersWithAvailability]);
 
+  const onTryAgainButtonClick = useCallback(() => {
+    window.location.reload();
+  }, []);
+
   const userManager = useMemo<UserManager>(() => {
     if (!oidcConfiguration || !availableIdentityProviders?.length) {
       return null;
@@ -118,8 +130,34 @@ export const RouterRoot = () => {
     return <Spinner />;
   }
 
+
   if (identityProvidersError) {
-    return <ErrorPage error={identityProvidersError} />;
+    return (
+      <PageContainer
+        singleAction
+        title={'Error'}
+        testIdAttributes={TestIdUtil.createAttributes('ErrorPage')}
+      >
+        <Box
+          marginY={2}
+          sx={{
+            textAlign: 'center',
+          }}
+        >
+          <Typography>
+            {t('{{applicationName}} is currently unavailable. Please try again later.', { applicationName: ConfigManager.instance.config.applicationName })}
+          </Typography>
+          <Box sx={{ marginTop: 2 }}>
+            <Button
+              variant={'outlined'}
+              onClick={onTryAgainButtonClick}
+            >
+              {t`Try again`}
+            </Button>
+          </Box>
+        </Box>
+      </PageContainer>
+    );
   }
 
   if (!oidcConfiguration) {
