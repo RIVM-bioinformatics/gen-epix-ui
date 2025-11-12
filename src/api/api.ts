@@ -1614,95 +1614,96 @@ export type ColType = typeof ColType[keyof typeof ColType];
  */
 
 export const CommandName = {
-    RetrieveGeneticSequenceByIdCommand: 'RetrieveGeneticSequenceByIdCommand',
-    RetrieveInviteUserConstraintsCommand: 'RetrieveInviteUserConstraintsCommand',
-    RetrieveCaseSetRightsCommand: 'RetrieveCaseSetRightsCommand',
-    RegionSetCrudCommand: 'RegionSetCrudCommand',
-    CreateFileForSeqCommand: 'CreateFileForSeqCommand',
-    ConceptSetCrudCommand: 'ConceptSetCrudCommand',
-    RetrieveLibraryPrepProtocolsCommand: 'RetrieveLibraryPrepProtocolsCommand',
-    CaseTypeSetMemberCrudCommand: 'CaseTypeSetMemberCrudCommand',
-    DataCollectionSetCrudCommand: 'DataCollectionSetCrudCommand',
-    TreeAlgorithmCrudCommand: 'TreeAlgorithmCrudCommand',
-    RetrievePhylogeneticTreeBySequencesCommand: 'RetrievePhylogeneticTreeBySequencesCommand',
-    ContactCrudCommand: 'ContactCrudCommand',
-    RetrieveCaseTypeStatsCommand: 'RetrieveCaseTypeStatsCommand',
-    RegionRelationCrudCommand: 'RegionRelationCrudCommand',
-    RetrieveSubRolesCommand: 'RetrieveSubRolesCommand',
-    OrganizationSetOrganizationUpdateAssociationCommand: 'OrganizationSetOrganizationUpdateAssociationCommand',
-    RetrieveOrganizationAdminNameEmailsCommand: 'RetrieveOrganizationAdminNameEmailsCommand',
-    EtiologyCrudCommand: 'EtiologyCrudCommand',
-    DiseaseEtiologicalAgentUpdateAssociationCommand: 'DiseaseEtiologicalAgentUpdateAssociationCommand',
-    CreateFileForReadSetCommand: 'CreateFileForReadSetCommand',
-    OrganizationSetCrudCommand: 'OrganizationSetCrudCommand',
-    RetrievePhylogeneticTreeByCasesCommand: 'RetrievePhylogeneticTreeByCasesCommand',
-    OrganizationShareCasePolicyCrudCommand: 'OrganizationShareCasePolicyCrudCommand',
-    CreateSeqsForCasesCommand: 'CreateSeqsForCasesCommand',
-    CaseTypeCrudCommand: 'CaseTypeCrudCommand',
-    UserShareCasePolicyCrudCommand: 'UserShareCasePolicyCrudCommand',
-    RetrieveCaseRightsCommand: 'RetrieveCaseRightsCommand',
-    OrganizationAccessCasePolicyCrudCommand: 'OrganizationAccessCasePolicyCrudCommand',
-    CreateCaseSetCommand: 'CreateCaseSetCommand',
-    RetrieveOutagesCommand: 'RetrieveOutagesCommand',
-    CaseSetCrudCommand: 'CaseSetCrudCommand',
-    CaseCrudCommand: 'CaseCrudCommand',
-    IdentifierIssuerCrudCommand: 'IdentifierIssuerCrudCommand',
-    RetrieveGeneticSequenceFastaByCaseCommand: 'RetrieveGeneticSequenceFastaByCaseCommand',
-    TreeAlgorithmClassCrudCommand: 'TreeAlgorithmClassCrudCommand',
-    OutageCrudCommand: 'OutageCrudCommand',
-    RetrieveGeneticSequenceFastaByIdCommand: 'RetrieveGeneticSequenceFastaByIdCommand',
-    InviteUserCommand: 'InviteUserCommand',
-    CaseTypeColSetCrudCommand: 'CaseTypeColSetCrudCommand',
-    GetIdentityProvidersCommand: 'GetIdentityProvidersCommand',
-    OrganizationAdminPolicyCrudCommand: 'OrganizationAdminPolicyCrudCommand',
-    EtiologicalAgentCrudCommand: 'EtiologicalAgentCrudCommand',
-    RetrieveCasesByQueryCommand: 'RetrieveCasesByQueryCommand',
-    UserCrudCommand: 'UserCrudCommand',
-    RetrieveContainingRegionCommand: 'RetrieveContainingRegionCommand',
-    DimCrudCommand: 'DimCrudCommand',
-    RetrieveGeneticSequenceByCaseCommand: 'RetrieveGeneticSequenceByCaseCommand',
-    ValidateCasesCommand: 'ValidateCasesCommand',
-    CaseTypeColCrudCommand: 'CaseTypeColCrudCommand',
-    CaseDataCollectionLinkCrudCommand: 'CaseDataCollectionLinkCrudCommand',
-    DataCollectionSetDataCollectionUpdateAssociationCommand: 'DataCollectionSetDataCollectionUpdateAssociationCommand',
-    UpdateUserOwnOrganizationCommand: 'UpdateUserOwnOrganizationCommand',
-    RetrieveCaseSetStatsCommand: 'RetrieveCaseSetStatsCommand',
-    CaseTypeSetCategoryCrudCommand: 'CaseTypeSetCategoryCrudCommand',
-    RegionSetShapeCrudCommand: 'RegionSetShapeCrudCommand',
     UserInvitationCrudCommand: 'UserInvitationCrudCommand',
-    CaseTypeColSetMemberCrudCommand: 'CaseTypeColSetMemberCrudCommand',
-    DiseaseCrudCommand: 'DiseaseCrudCommand',
-    OrganizationSetMemberCrudCommand: 'OrganizationSetMemberCrudCommand',
+    ConceptSetCrudCommand: 'ConceptSetCrudCommand',
+    RetrieveOutagesCommand: 'RetrieveOutagesCommand',
+    CaseSetCategoryCrudCommand: 'CaseSetCategoryCrudCommand',
+    TreeAlgorithmCrudCommand: 'TreeAlgorithmCrudCommand',
+    CaseCrudCommand: 'CaseCrudCommand',
     DataCollectionSetMemberCrudCommand: 'DataCollectionSetMemberCrudCommand',
-    SubjectCrudCommand: 'SubjectCrudCommand',
-    ConceptCrudCommand: 'ConceptCrudCommand',
-    UserAccessCasePolicyCrudCommand: 'UserAccessCasePolicyCrudCommand',
-    ConceptRelationCrudCommand: 'ConceptRelationCrudCommand',
-    ColCrudCommand: 'ColCrudCommand',
-    CreateReadSetsForCasesCommand: 'CreateReadSetsForCasesCommand',
-    CaseTypeSetCaseTypeUpdateAssociationCommand: 'CaseTypeSetCaseTypeUpdateAssociationCommand',
-    CaseSetMemberCrudCommand: 'CaseSetMemberCrudCommand',
-    RegionCrudCommand: 'RegionCrudCommand',
-    RetrieveAssemblyProtocolsCommand: 'RetrieveAssemblyProtocolsCommand',
-    UpdateUserCommand: 'UpdateUserCommand',
-    RetrieveOwnPermissionsCommand: 'RetrieveOwnPermissionsCommand',
-    CaseTypeColSetCaseTypeColUpdateAssociationCommand: 'CaseTypeColSetCaseTypeColUpdateAssociationCommand',
     RetrieveOrganizationsUnderAdminCommand: 'RetrieveOrganizationsUnderAdminCommand',
-    RetrieveCompleteCaseTypeCommand: 'RetrieveCompleteCaseTypeCommand',
+    RegionRelationCrudCommand: 'RegionRelationCrudCommand',
+    RetrieveAssemblyProtocolsCommand: 'RetrieveAssemblyProtocolsCommand',
+    EtiologyCrudCommand: 'EtiologyCrudCommand',
+    CreateReadSetsForCasesCommand: 'CreateReadSetsForCasesCommand',
+    DiseaseEtiologicalAgentUpdateAssociationCommand: 'DiseaseEtiologicalAgentUpdateAssociationCommand',
+    RetrieveCaseSetRightsCommand: 'RetrieveCaseSetRightsCommand',
+    RetrieveSubRolesCommand: 'RetrieveSubRolesCommand',
+    CaseSetDataCollectionLinkCrudCommand: 'CaseSetDataCollectionLinkCrudCommand',
     RetrieveCasesByIdCommand: 'RetrieveCasesByIdCommand',
+    RetrieveCompleteCaseTypeCommand: 'RetrieveCompleteCaseTypeCommand',
+    CaseTypeColCrudCommand: 'CaseTypeColCrudCommand',
+    CaseTypeCrudCommand: 'CaseTypeCrudCommand',
+    CaseTypeSetCategoryCrudCommand: 'CaseTypeSetCategoryCrudCommand',
+    CaseTypeColSetCrudCommand: 'CaseTypeColSetCrudCommand',
+    RetrieveGeneticSequenceFastaByIdCommand: 'RetrieveGeneticSequenceFastaByIdCommand',
+    RetrieveGeneticSequenceFastaByCaseCommand: 'RetrieveGeneticSequenceFastaByCaseCommand',
+    ColCrudCommand: 'ColCrudCommand',
+    CaseDataCollectionLinkCrudCommand: 'CaseDataCollectionLinkCrudCommand',
+    RetrievePhylogeneticTreeByCasesCommand: 'RetrievePhylogeneticTreeByCasesCommand',
+    RegisterInvitedUserCommand: 'RegisterInvitedUserCommand',
+    GetIdentityProvidersCommand: 'GetIdentityProvidersCommand',
+    RetrieveCaseTypeStatsCommand: 'RetrieveCaseTypeStatsCommand',
+    RetrieveGeneticSequenceByIdCommand: 'RetrieveGeneticSequenceByIdCommand',
+    CaseTypeSetMemberCrudCommand: 'CaseTypeSetMemberCrudCommand',
+    RetrieveCaseRightsCommand: 'RetrieveCaseRightsCommand',
+    DiseaseCrudCommand: 'DiseaseCrudCommand',
+    ValidateCasesCommand: 'ValidateCasesCommand',
+    DataCollectionSetDataCollectionUpdateAssociationCommand: 'DataCollectionSetDataCollectionUpdateAssociationCommand',
+    UpdateUserCommand: 'UpdateUserCommand',
+    CreateCasesCommand: 'CreateCasesCommand',
+    RetrieveContainingRegionCommand: 'RetrieveContainingRegionCommand',
+    OrganizationSetMemberCrudCommand: 'OrganizationSetMemberCrudCommand',
+    OrganizationAccessCasePolicyCrudCommand: 'OrganizationAccessCasePolicyCrudCommand',
+    OrganizationAdminPolicyCrudCommand: 'OrganizationAdminPolicyCrudCommand',
+    CaseTypeSetCrudCommand: 'CaseTypeSetCrudCommand',
+    SubjectCrudCommand: 'SubjectCrudCommand',
+    InviteUserCommand: 'InviteUserCommand',
+    UserShareCasePolicyCrudCommand: 'UserShareCasePolicyCrudCommand',
+    UserCrudCommand: 'UserCrudCommand',
+    CaseSetCrudCommand: 'CaseSetCrudCommand',
+    CreateFileForSeqCommand: 'CreateFileForSeqCommand',
+    UserAccessCasePolicyCrudCommand: 'UserAccessCasePolicyCrudCommand',
+    RetrieveLicensesCommand: 'RetrieveLicensesCommand',
+    OrganizationSetOrganizationUpdateAssociationCommand: 'OrganizationSetOrganizationUpdateAssociationCommand',
+    TreeAlgorithmClassCrudCommand: 'TreeAlgorithmClassCrudCommand',
+    RetrieveCaseSetStatsCommand: 'RetrieveCaseSetStatsCommand',
+    OrganizationCrudCommand: 'OrganizationCrudCommand',
+    RegionSetCrudCommand: 'RegionSetCrudCommand',
+    OrganizationShareCasePolicyCrudCommand: 'OrganizationShareCasePolicyCrudCommand',
+    CaseTypeColSetCaseTypeColUpdateAssociationCommand: 'CaseTypeColSetCaseTypeColUpdateAssociationCommand',
+    RetrieveLibraryPrepProtocolsCommand: 'RetrieveLibraryPrepProtocolsCommand',
     GeneticDistanceProtocolCrudCommand: 'GeneticDistanceProtocolCrudCommand',
     RetrieveAlleleProfileCommand: 'RetrieveAlleleProfileCommand',
-    CaseSetDataCollectionLinkCrudCommand: 'CaseSetDataCollectionLinkCrudCommand',
-    RetrieveOrganizationContactCommand: 'RetrieveOrganizationContactCommand',
-    CaseSetCategoryCrudCommand: 'CaseSetCategoryCrudCommand',
-    CaseSetStatusCrudCommand: 'CaseSetStatusCrudCommand',
-    RetrieveLicensesCommand: 'RetrieveLicensesCommand',
+    DimCrudCommand: 'DimCrudCommand',
+    RetrieveInviteUserConstraintsCommand: 'RetrieveInviteUserConstraintsCommand',
+    RetrievePhylogeneticTreeBySequencesCommand: 'RetrievePhylogeneticTreeBySequencesCommand',
+    ConceptRelationCrudCommand: 'ConceptRelationCrudCommand',
+    CreateSeqsForCasesCommand: 'CreateSeqsForCasesCommand',
+    CaseTypeSetCaseTypeUpdateAssociationCommand: 'CaseTypeSetCaseTypeUpdateAssociationCommand',
+    ContactCrudCommand: 'ContactCrudCommand',
+    RetrieveOwnPermissionsCommand: 'RetrieveOwnPermissionsCommand',
+    CaseSetMemberCrudCommand: 'CaseSetMemberCrudCommand',
+    CaseTypeColSetMemberCrudCommand: 'CaseTypeColSetMemberCrudCommand',
+    RetrieveGeneticSequenceByCaseCommand: 'RetrieveGeneticSequenceByCaseCommand',
+    RetrieveCasesByQueryCommand: 'RetrieveCasesByQueryCommand',
     SubjectIdentifierCrudCommand: 'SubjectIdentifierCrudCommand',
-    CaseTypeSetCrudCommand: 'CaseTypeSetCrudCommand',
+    CreateFileForReadSetCommand: 'CreateFileForReadSetCommand',
+    RetrieveOrganizationContactCommand: 'RetrieveOrganizationContactCommand',
+    CreateCaseSetCommand: 'CreateCaseSetCommand',
+    OutageCrudCommand: 'OutageCrudCommand',
+    UpdateUserOwnOrganizationCommand: 'UpdateUserOwnOrganizationCommand',
+    OrganizationSetCrudCommand: 'OrganizationSetCrudCommand',
+    RegionSetShapeCrudCommand: 'RegionSetShapeCrudCommand',
+    SiteCrudCommand: 'SiteCrudCommand',
+    EtiologicalAgentCrudCommand: 'EtiologicalAgentCrudCommand',
+    IdentifierIssuerCrudCommand: 'IdentifierIssuerCrudCommand',
+    RetrieveOrganizationAdminNameEmailsCommand: 'RetrieveOrganizationAdminNameEmailsCommand',
+    RegionCrudCommand: 'RegionCrudCommand',
+    ConceptCrudCommand: 'ConceptCrudCommand',
+    DataCollectionSetCrudCommand: 'DataCollectionSetCrudCommand',
     DataCollectionCrudCommand: 'DataCollectionCrudCommand',
-    RegisterInvitedUserCommand: 'RegisterInvitedUserCommand',
-    OrganizationCrudCommand: 'OrganizationCrudCommand',
-    SiteCrudCommand: 'SiteCrudCommand'
+    CaseSetStatusCrudCommand: 'CaseSetStatusCrudCommand'
 } as const;
 
 export type CommandName = typeof CommandName[keyof typeof CommandName];
@@ -3784,25 +3785,6 @@ export interface RetrievePhylogeneticTreeRequestBody {
 /**
  * 
  * @export
- * @ {string}
- */
-
-export const Role = {
-    ROOT: 'ROOT',
-    APP_ADMIN: 'APP_ADMIN',
-    ORG_ADMIN: 'ORG_ADMIN',
-    REFDATA_ADMIN: 'REFDATA_ADMIN',
-    ORG_USER: 'ORG_USER',
-    GUEST: 'GUEST',
-    ROLE1: 'ROLE1'
-} as const;
-
-export type Role = typeof Role[keyof typeof Role];
-
-
-/**
- * 
- * @export
  * @interface Sample
  */
 export interface Sample {
@@ -4829,10 +4811,10 @@ export interface UpdateUserRequestBody {
     'is_active': boolean | null;
     /**
      * The updated set of roles of the user. Not updated if not provided. If provided, should have at least one element.
-     * @type {Array<Role>}
+     * @type {Array<string>}
      * @memberof UpdateUserRequestBody
      */
-    'roles': Array<Role> | null;
+    'roles': Array<string> | null;
     /**
      * The updated organization ID of the user. Not updated if not provided.
      * @type {string}
@@ -4878,10 +4860,10 @@ export interface User {
     'is_active'?: boolean;
     /**
      * The roles of the user
-     * @type {Array<Role>}
+     * @type {Array<string>}
      * @memberof User
      */
-    'roles': Array<Role>;
+    'roles': Array<string>;
     /**
      * The ID of the organization of the user. FOREIGN KEY
      * @type {string}
@@ -5053,11 +5035,11 @@ export interface UserInvitation {
      */
     'expires_at': string;
     /**
-     * The roles of the user
-     * @type {Array<Role>}
+     * The initial roles that the new user will have
+     * @type {Array<string>}
      * @memberof UserInvitation
      */
-    'roles': Array<Role>;
+    'roles': Array<string>;
     /**
      * The ID of the user who invited the new user. FOREIGN KEY
      * @type {string}
@@ -5097,10 +5079,10 @@ export interface UserInvitationConstraints {
     'id'?: string | null;
     /**
      * The roles that the user may be assigned by the inviting user.
-     * @type {Array<Role>}
+     * @type {Array<string>}
      * @memberof UserInvitationConstraints
      */
-    'roles': Array<Role>;
+    'roles': Array<string>;
     /**
      * The organizations that the user may be assigned by the inviting user.
      * @type {Array<string>}
@@ -5122,10 +5104,10 @@ export interface UserInvitationRequestBody {
     'key': string;
     /**
      * The initial roles that the new user will have
-     * @type {Array<Role>}
+     * @type {Array<string>}
      * @memberof UserInvitationRequestBody
      */
-    'roles': Array<Role>;
+    'roles': Array<string>;
     /**
      * The ID of the organization that the new user will belong to. FOREIGN KEY
      * @type {string}

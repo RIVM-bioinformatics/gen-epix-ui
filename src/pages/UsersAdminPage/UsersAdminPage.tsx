@@ -24,9 +24,10 @@ import {
   PermissionType,
 } from '../../api';
 import { useOrganizationOptionsQuery } from '../../dataHooks/useOrganizationsQuery';
-import { useRoleOptionsQuery } from '../../dataHooks/useRolesQuery';
-import { useArray } from '../../hooks/useArray';
-import type { FormFieldDefinition } from '../../models/form';
+import type {
+  FormFieldDefinition,
+  OptionBase,
+} from '../../models/form';
 import { FORM_FIELD_DEFINITION_TYPE } from '../../models/form';
 import { QUERY_KEY } from '../../models/query';
 import type {
@@ -41,16 +42,38 @@ import { EpiUserRightsDialog } from '../../components/epi/EpiUserRightsDialog';
 import { RouterManager } from '../../classes/managers/RouterManager';
 import type { DialogAction } from '../../components/ui/Dialog';
 import { AuthorizationManager } from '../../classes/managers/AuthorizationManager';
+import { useInviteUserConstraintsQuery } from '../../dataHooks/useInviteUserConstraintsQuery';
+import { useArray } from '../../hooks/useArray';
+import { useUsersQuery } from '../../dataHooks/useUsersQuery';
 
 type FormFields = Pick<User, 'email' | 'is_active' | 'roles'>;
 
 export const UsersAdminPage = () => {
   const [t] = useTranslation();
-  const roleOptionsQuery = useRoleOptionsQuery();
   const organizationOptionsQuery = useOrganizationOptionsQuery();
   const epiUserRightsDialogRef = useRef<EpiUserRightsDialogRefMethods>(null);
+  const inviteUserConstraintsQuery = useInviteUserConstraintsQuery();
+  const usersQuery = useUsersQuery();
 
-  const loadables = useArray([roleOptionsQuery, organizationOptionsQuery]);
+  const loadables = useArray([
+    organizationOptionsQuery,
+    inviteUserConstraintsQuery,
+    usersQuery,
+  ]);
+
+  const roleOptions = useMemo<OptionBase<string>[]>(() => {
+    if (!usersQuery?.data) {
+      return [];
+    }
+    const roles = new Set<string>();
+    usersQuery.data.forEach((user) => {
+      user.roles.forEach((role) => roles.add(role));
+    });
+    return Array.from(roles).map((role) => ({
+      value: role,
+      label: role,
+    }));
+  }, [usersQuery.data]);
 
   const fetchAll = useCallback(async (signal: AbortSignal) => {
     const users = (await OrganizationApi.getInstance().usersGetAll({ signal }))?.data;
@@ -100,9 +123,9 @@ export const UsersAdminPage = () => {
         definition: FORM_FIELD_DEFINITION_TYPE.AUTOCOMPLETE,
         name: 'roles',
         label: t`Roles`,
-        options: roleOptionsQuery.options,
-        loading: roleOptionsQuery.isLoading,
+        options: roleOptions,
         multiple: true,
+        loading: usersQuery.isLoading,
       } as const satisfies FormFieldDefinition<FormFields>,
       {
         definition: FORM_FIELD_DEFINITION_TYPE.BOOLEAN,
@@ -110,17 +133,17 @@ export const UsersAdminPage = () => {
         label: t`Is active`,
       } as const satisfies FormFieldDefinition<FormFields>,
     ] as const;
-  }, [roleOptionsQuery.isLoading, roleOptionsQuery.options, t]);
+  }, [usersQuery.isLoading, roleOptions, t]);
 
   const tableColumns = useMemo((): TableColumn<User>[] => {
     return [
       TableUtil.createTextColumn<User>({ id: 'name', name: t`Name`, advancedSort: true }),
       TableUtil.createOptionsColumn<User>({ id: 'organization_id', name: t`Organization`, options: organizationOptionsQuery.options }),
       TableUtil.createTextColumn<User>({ id: 'email', name: t`E-Mail` }),
-      TableUtil.createOptionsColumn<User>({ id: 'roles', name: t`Roles`, options: roleOptionsQuery.options }),
+      TableUtil.createOptionsColumn<User>({ id: 'roles', name: t`Roles`, options: roleOptions }),
       TableUtil.createBooleanColumn<User>({ id: 'is_active', name: t`Is active` }),
     ];
-  }, [organizationOptionsQuery.options, roleOptionsQuery.options, t]);
+  }, [organizationOptionsQuery.options, roleOptions, t]);
 
   const doesUserHavePermissionToViewEffectiveRights = useMemo(() => {
     return AuthorizationManager.instance.doesUserHavePermission([
@@ -194,6 +217,7 @@ export const UsersAdminPage = () => {
   return (
     <>
       <CrudPage<FormFields, User>
+        loadables={loadables}
         canEditItem={canEditItem}
         crudCommandType={CommandName.UserCrudCommand}
         defaultSortByField={'name'}
@@ -205,7 +229,6 @@ export const UsersAdminPage = () => {
         formFieldDefinitions={formFieldDefinitions}
         getName={getName}
         getOptimisticUpdateIntermediateItem={getOptimisticUpdateIntermediateItem}
-        loadables={loadables}
         resourceQueryKeyBase={QUERY_KEY.USERS}
         schema={schema}
         tableColumns={tableColumns}
