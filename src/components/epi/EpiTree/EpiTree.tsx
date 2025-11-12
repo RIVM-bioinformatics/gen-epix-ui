@@ -729,12 +729,10 @@ export const EpiTree = ({ linkedScrollSubject, ref }: EpiTreeProps) => {
           {
             label: t`Save as JPEG`,
             callback: () => EpiDownloadUtil.downloadCanvasImage(baseName, treeCanvas, 'jpeg', completeCaseType, t),
-            disabled: !isLinked,
           },
           {
             label: t`Save as PNG`,
             callback: () => EpiDownloadUtil.downloadCanvasImage(baseName, treeCanvas, 'png', completeCaseType, t),
-            disabled: !isLinked,
           },
         ],
       });
