@@ -14,17 +14,13 @@ import {
   ListItemText,
 } from '@mui/material';
 
-import type {
-  UserInvitation,
-  Role,
-} from '../../api';
+import type { UserInvitation } from '../../api';
 import {
   OrganizationApi,
   CommandName,
 } from '../../api';
 import { useOrganizationAdminPolicyMapQuery } from '../../dataHooks/useOrganizationAdminPoliciesQuery';
 import { useOrganizationOptionsQuery } from '../../dataHooks/useOrganizationsQuery';
-import { useRoleOptionsQuery } from '../../dataHooks/useRolesQuery';
 import { useUserOptionsQuery } from '../../dataHooks/useUsersQuery';
 import { useArray } from '../../hooks/useArray';
 import type {
@@ -51,7 +47,6 @@ export const UserInvitationsAdminPage = () => {
   const [t] = useTranslation();
   const organizationOptionsQuery = useOrganizationOptionsQuery();
   const inviteUserConstraintsQuery = useInviteUserConstraintsQuery();
-  const roleOptionsQuery = useRoleOptionsQuery();
   const userOptionsQuery = useUserOptionsQuery();
   const organizationAdminPolicyMapQuery = useOrganizationAdminPolicyMapQuery();
 
@@ -63,17 +58,19 @@ export const UserInvitationsAdminPage = () => {
 
   }, [organizationOptionsQuery.options, inviteUserConstraintsQuery.data]);
 
-  const loadables = useArray([inviteUserConstraintsQuery, organizationOptionsQuery, roleOptionsQuery, userOptionsQuery, organizationAdminPolicyMapQuery]);
-
-  const userInvitationsAdminDetailDialogRef = useRef<UserInvitationsAdminDetailDialogRefMethods>(null);
-
-  const allowedRoleOptions = useMemo(() => {
-    if (!inviteUserConstraintsQuery?.data || !roleOptionsQuery.options?.length) {
+  const roleOptions = useMemo<OptionBase<string>[]>(() => {
+    if (!inviteUserConstraintsQuery?.data) {
       return [];
     }
-    return roleOptionsQuery.options.filter(option => inviteUserConstraintsQuery.data?.roles.includes(option.value as Role));
+    return inviteUserConstraintsQuery.data.roles.map(role => ({
+      value: role,
+      label: `ROLE_${role}`,
+    }));
+  }, [inviteUserConstraintsQuery.data]);
 
-  }, [inviteUserConstraintsQuery.data, roleOptionsQuery.options]);
+  const loadables = useArray([inviteUserConstraintsQuery, organizationOptionsQuery, userOptionsQuery, organizationAdminPolicyMapQuery]);
+
+  const userInvitationsAdminDetailDialogRef = useRef<UserInvitationsAdminDetailDialogRefMethods>(null);
 
   const fetchAll = useCallback(async (signal: AbortSignal) => {
     return (await OrganizationApi.getInstance().userInvitationsGetAll({ signal }))?.data;
@@ -133,12 +130,12 @@ export const UserInvitationsAdminPage = () => {
         multiple: true,
         name: 'roles',
         label: t`Roles`,
-        options: allowedRoleOptions,
-        loading: roleOptionsQuery.isLoading,
+        options: roleOptions,
+        loading: inviteUserConstraintsQuery.isLoading,
       } as const satisfies FormFieldDefinition<FormFields>,
     );
     return fields;
-  }, [t, organizationOptions, organizationOptionsQuery.isLoading, allowedRoleOptions, roleOptionsQuery.isLoading]);
+  }, [t, organizationOptions, organizationOptionsQuery.isLoading, roleOptions, inviteUserConstraintsQuery.isLoading]);
 
   const extraActionsFactory = useCallback((params: TableRowParams<UserInvitation>) => {
     return [(
@@ -159,10 +156,10 @@ export const UserInvitationsAdminPage = () => {
       TableUtil.createTextColumn<UserInvitation>({ id: 'email', name: t`Email` }),
       TableUtil.createOptionsColumn<UserInvitation>({ id: 'organization_id', name: t`Organization`, options: organizationOptions }),
       TableUtil.createOptionsColumn<UserInvitation>({ id: 'invited_by_user_id', name: t`Invited by user`, options: userOptionsQuery.options }),
-      TableUtil.createOptionsColumn<UserInvitation>({ id: 'roles', name: t`Roles`, options: roleOptionsQuery.options }),
+      TableUtil.createOptionsColumn<UserInvitation>({ id: 'roles', name: t`Roles`, options: roleOptions }),
       TableUtil.createDateColumn<UserInvitation>({ id: 'expires_at', name: t`Expires` }),
     ];
-  }, [t, organizationOptions, userOptionsQuery.options, roleOptionsQuery.options]);
+  }, [t, organizationOptions, userOptionsQuery.options, roleOptions]);
 
   return (
     <>

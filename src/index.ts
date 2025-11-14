@@ -128,7 +128,6 @@ export * from './dataHooks/useUsersQuery';
 export * from './dataHooks/useUserShareCasePoliciesQuery';
 export * from './dataHooks/useUserAccessCasePoliciesQuery';
 export * from './dataHooks/useTreeAlgorithmCodesQuery';
-export * from './dataHooks/useRolesQuery';
 export * from './dataHooks/useRegionSetsQuery';
 export * from './dataHooks/useRegionRelationTypeQuery';
 export * from './dataHooks/useRegionQuery';
