@@ -4,7 +4,6 @@ import {
 } from '@mui/material';
 import ErrorOutlineIcon from '@mui/icons-material/ErrorOutline';
 import { Box } from '@mui/system';
-import { t } from 'i18next';
 import {
   useCallback,
   useContext,
@@ -15,6 +14,7 @@ import { format } from 'date-fns';
 import { useStore } from 'zustand';
 import { useShallow } from 'zustand/shallow';
 import omit from 'lodash/omit';
+import { useTranslation } from 'react-i18next';
 
 import type {
   Case,
@@ -49,6 +49,7 @@ import { EpiUploadNavigation } from './EpiUploadNavigation';
 
 export const EpiUploadValidateContent = () => {
   const theme = useTheme();
+  const [t] = useTranslation();
 
   const store = useContext(EpiUploadStoreContext);
   const goToNextStep = useStore(store, (state) => state.goToNextStep);
@@ -130,7 +131,9 @@ export const EpiUploadValidateContent = () => {
     issues.forEach((issue) => {
       const issueMessage = issue.details.replace(issue.original_value, '"{{originalValue}}"');
       const translatedMessage = t(issueMessage, { originalValue: issue.original_value });
-      messages.push({ message: translatedMessage, key: issue.case_type_col_id });
+      const columnLabel = completeCaseType.case_type_cols[issue.case_type_col_id].label;
+      const message = t('{{columnLabel}}: {{issue}}', { columnLabel, issue: translatedMessage });
+      messages.push({ message, key: issue.case_type_col_id });
     });
     return (
       <>
@@ -144,7 +147,7 @@ export const EpiUploadValidateContent = () => {
         ))}
       </>
     );
-  }, []);
+  }, [completeCaseType.case_type_cols, t]);
 
   const renderHasIssueCell = useCallback(({ row }: TableRowParams<EpiValidatedCaseWithGeneratedId>) => {
     const errorIssues = row.data_issues.filter(i => i.data_rule === CaseColDataRule.INVALID || i.data_rule === CaseColDataRule.UNAUTHORIZED);
@@ -239,6 +242,7 @@ export const EpiUploadValidateContent = () => {
 
   const tableColumns = useMemo<TableColumn<EpiValidatedCaseWithGeneratedId>[]>(() => {
     const validatedCases = validationQuery?.data?.validated_cases;
+
     const tableCols: TableColumn<EpiValidatedCaseWithGeneratedId>[] = [];
     if (!validatedCases?.length) {
       return tableCols;
@@ -291,8 +295,9 @@ export const EpiUploadValidateContent = () => {
 
     // get union of caseTypeColIds from validationQuery.data.validated_cases
     const uniqueCaseTypeColIds: Set<string> = new Set();
-    validatedCases.forEach((vc) => {
-      Object.keys(vc.case.content || {}).forEach((colId) => uniqueCaseTypeColIds.add(colId));
+    validatedCases.forEach((validatedCase) => {
+      Object.keys(validatedCase.case.content || {}).forEach((colId) => uniqueCaseTypeColIds.add(colId));
+      validatedCase.data_issues.forEach((issue) => uniqueCaseTypeColIds.add(issue.case_type_col_id));
     });
 
     completeCaseType.case_type_col_order.forEach((caseTypeColId) => {
@@ -326,7 +331,7 @@ export const EpiUploadValidateContent = () => {
     });
 
     return tableCols;
-  }, [completeCaseType, importAction, mappedColumns, rawData, renderCell, renderHasIssueCell, validationQuery?.data?.validated_cases]);
+  }, [completeCaseType, importAction, mappedColumns, rawData, renderCell, renderHasIssueCell, t, validationQuery?.data?.validated_cases]);
 
   useInitializeTableStore<EpiValidatedCaseWithGeneratedId>({ store: tableStore, columns: tableColumns, rows: rowsWithGeneratedId, createFiltersFromColumns: true });
 
