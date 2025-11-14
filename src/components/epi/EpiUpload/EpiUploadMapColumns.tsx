@@ -24,7 +24,6 @@ import {
   TableRow,
 } from '@mui/material';
 import { useTranslation } from 'react-i18next';
-import invert from 'lodash/invert';
 import uniq from 'lodash/uniq';
 import { useStore } from 'zustand';
 
@@ -69,26 +68,29 @@ export const EpiUploadMapColumns = () => {
   }, [completeCaseType, importAction, rawData]);
 
   const defaultValues: EpiUploadMappedColumnsFormFields = useMemo(() => {
-    return EpiUploadUtil.getDefaultFormValues(completeCaseType, store.getState().mappedColumns, importAction);
-  }, [completeCaseType, store, importAction]);
+    return EpiUploadUtil.getDefaultFormValues(rawData[0], store.getState().mappedColumns);
+  }, [rawData, store]);
+
   const formMethods = useForm<EpiUploadMappedColumnsFormFields>({
     resolver: yupResolver(schema) as unknown as Resolver<EpiUploadMappedColumnsFormFields>,
     values: { ...defaultValues },
     defaultValues: { ...defaultValues },
   });
 
-  const { handleSubmit, control } = formMethods;
+  const { handleSubmit, control, clearErrors } = formMethods;
   const values = useWatch({ control });
 
   const formFieldDefinitions = useMemo<FormFieldDefinition<EpiUploadMappedColumnsFormFields>[]>(() => {
-    return EpiUploadUtil.getColumnMappingFormFieldDefinitions(completeCaseType, rawData[0], fileName, importAction);
-  }, [completeCaseType, rawData, fileName, importAction]);
+    return EpiUploadUtil.getColumnMappingFormFieldDefinitions(completeCaseType, rawData[0], fileName, importAction).map(def => ({
+      ...def,
+      onChange: () => clearErrors(),
+    }));
+  }, [completeCaseType, rawData, fileName, importAction, clearErrors]);
 
   const getMergedMappedColumns = useCallback((data: EpiUploadMappedColumnsFormFields) => {
-    const sheetValues = invert(data);
 
     const mergedMappedColumns = store.getState().mappedColumns.map((mappedColumn) => {
-      const formValue = sheetValues[mappedColumn.originalIndex.toString()];
+      const formValue = data[mappedColumn.originalIndex.toString()];
       const isCaseIdColumn = formValue === 'case_id';
       const isCaseDateColumn = formValue === 'case_date';
       let caseTypeCol: CaseTypeCol | null = null;
@@ -137,13 +139,9 @@ export const EpiUploadMapColumns = () => {
   }, [handleSubmit, onFormSubmit]);
 
   const renderField = useCallback((definition: FormFieldDefinition<EpiUploadMappedColumnsFormFields>, element: ReactElement) => {
-    const columnIndexInRawData = values[definition.name]; // Note, this is a string, so '0', '1', '2', etc.
-
-    let firstFiveValuesString = t('<not mapped>');
-    if (columnIndexInRawData) {
-      const columnValues = uniq(rawData.slice(1).map((row) => row[parseInt(columnIndexInRawData, 10)] ?? '')).filter(x => !!x);
-      firstFiveValuesString = columnValues.slice(0, 5).join(', ').trim() || t('<no data>');
-    }
+    const columnIndexInRawData = parseInt(definition.name, 10);
+    const columnValues = uniq(rawData.slice(1).map((row) => row[columnIndexInRawData] ?? '')).filter(x => !!x);
+    const firstFiveValuesString = columnValues.slice(0, 5).join(', ').trim() || t('<no data>');
 
     return (
       <TableRow key={definition.name}>
@@ -155,7 +153,7 @@ export const EpiUploadMapColumns = () => {
         </TableCell>
       </TableRow>
     );
-  }, [values, rawData, t]);
+  }, [rawData, t]);
 
   const wrapForm = useCallback((children: ReactElement) => {
     return (
