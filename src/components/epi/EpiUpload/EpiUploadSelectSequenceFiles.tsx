@@ -48,7 +48,6 @@ export const EpiUploadSelectSequenceFiles = () => {
   const theme = useTheme();
 
   const store = useContext(EpiUploadStoreContext);
-  const mappedColumns = useStore(store, (state) => state.mappedColumns);
   const completeCaseType = useStore(store, (state) => state.completeCaseType);
   const goToNextStep = useStore(store, (state) => state.goToNextStep);
   const goToPreviousStep = useStore(store, (state) => state.goToPreviousStep);
@@ -138,24 +137,13 @@ export const EpiUploadSelectSequenceFiles = () => {
     return EpiUploadUtil.getCompleteCaseTypeColumnStats(completeCaseType);
   }, [completeCaseType]);
 
-  const caseTypeSupportsUploadingSequences = useMemo(() => {
+  const canUploadSequences = useMemo(() => {
     return completeCaseTypeColumnStats.sequenceColumns.length > 0;
   }, [completeCaseTypeColumnStats]);
 
-  const caseTypeSupportsUploadingReads = useMemo(() => {
+  const canUploadReads = useMemo(() => {
     return completeCaseTypeColumnStats.readsColumns.length > 0;
   }, [completeCaseTypeColumnStats]);
-
-  const importDataSupportsUploadingSequences = useMemo(() => {
-    return mappedColumns?.some(mappedColumn => mappedColumn.caseTypeCol?.id && completeCaseTypeColumnStats.sequenceColumns.map(c => c.id).includes(mappedColumn.caseTypeCol.id));
-  }, [completeCaseTypeColumnStats, mappedColumns]);
-
-  const importDataSupportsUploadingReads = useMemo(() => {
-    return mappedColumns?.some(mappedColumn => mappedColumn.caseTypeCol?.id && completeCaseTypeColumnStats.readsColumns.map(c => c.id).includes(mappedColumn.caseTypeCol.id));
-  }, [completeCaseTypeColumnStats, mappedColumns]);
-
-  const canUploadSequences = caseTypeSupportsUploadingSequences && importDataSupportsUploadingSequences;
-  const canUploadReads = caseTypeSupportsUploadingReads && importDataSupportsUploadingReads;
 
   const accept = useMemo(() => {
     let acc = '';
@@ -249,16 +237,9 @@ export const EpiUploadSelectSequenceFiles = () => {
                     <AlertTitle>
                       {t('Uploading of sequences has been disabled.')}
                     </AlertTitle>
-                    {!caseTypeSupportsUploadingSequences && (
-                      <Box>
-                        {t('Uploading of sequences is not supported for the selected case type.')}
-                      </Box>
-                    )}
-                    {!importDataSupportsUploadingSequences && (
-                      <Box>
-                        {t('Uploading of sequences is not supported for the imported data.')}
-                      </Box>
-                    )}
+                    <Box>
+                      {t('Uploading of sequences is not supported for the selected case type.')}
+                    </Box>
                   </Alert>
                 </Box>
               )}
@@ -268,16 +249,9 @@ export const EpiUploadSelectSequenceFiles = () => {
                     <AlertTitle>
                       {t('Uploading of read files has been disabled.')}
                     </AlertTitle>
-                    {!caseTypeSupportsUploadingReads && (
-                      <Box>
-                        {t('Uploading of read files is not supported for the selected case type.')}
-                      </Box>
-                    )}
-                    {!importDataSupportsUploadingReads && (
-                      <Box>
-                        {t('Uploading of read files is not supported for the imported data.')}
-                      </Box>
-                    )}
+                    <Box>
+                      {t('Uploading of read files is not supported for the selected case type.')}
+                    </Box>
                   </Alert>
                 </Box>
               )}

@@ -571,9 +571,10 @@ export class EpiUploadUtil {
       caseTypeId,
       createdInDataCollectionId,
       importAction,
-      libraryPrepProtocolId,
       mappedFileSize,
       sequenceFilesDataTransfer,
+      assemblyProtocolId,
+      libraryPrepProtocolId,
       sequenceMapping,
       onProgress,
       onComplete,
@@ -613,6 +614,9 @@ export class EpiUploadUtil {
               caseSeq: {
                 case_id: caseIdMapping[generatedCaseId],
                 case_type_col_id: columnId,
+                seq: {
+                  assembly_protocol_id: assemblyProtocolId,
+                },
               },
               file,
             });
@@ -633,7 +637,9 @@ export class EpiUploadUtil {
               caseReadSet: {
                 case_id: caseIdMapping[generatedCaseId],
                 case_type_col_id: columnId,
-                library_prep_protocol_id: libraryPrepProtocolId,
+                read_set: {
+                  library_prep_protocol_id: libraryPrepProtocolId,
+                },
               },
               fwdFile,
               revFile,
@@ -644,10 +650,10 @@ export class EpiUploadUtil {
       let seqs: Seq[] = [];
       let readSets: ReadSet[] = [];
       if (seqForCases.length > 0) {
-        seqs = (await CaseApi.instance.createSeqsForCases(seqForCases.map(r => r.caseSeq), { signal })).data;
+        seqs = (await CaseApi.instance.createSeqsForCases(seqForCases.map(seqForCase => seqForCase.caseSeq), { signal })).data;
       }
       if (readSetsForCases.length > 0) {
-        readSets = (await CaseApi.instance.createReadSetsForCases(readSetsForCases.map(r => r.caseReadSet), { signal })).data;
+        readSets = (await CaseApi.instance.createReadSetsForCases(readSetsForCases.map(readSetForCase => readSetForCase.caseReadSet), { signal })).data;
       }
 
       onProgress(10, t('Starting file uploads...'));
