@@ -258,6 +258,7 @@ export const EpiUploadMapSequences = () => {
         widthPx: 400,
         renderCell: renderSequenceCell,
         valueGetter: (params) => EpiCaseUtil.getRowValue(params.row.case as Case, caseTypeColumn, completeCaseType).short,
+        cellTitleGetter: () => null,
       });
     });
 
@@ -271,6 +272,7 @@ export const EpiUploadMapSequences = () => {
         widthPx: 800,
         renderCell: renderReadsCell,
         valueGetter: (params) => EpiCaseUtil.getRowValue(params.row.case as Case, caseTypeColumn, completeCaseType).short,
+        cellTitleGetter: () => null,
       });
     });
 

@@ -165,7 +165,7 @@ export const EpiUploadMapColumns = () => {
             position: 'sticky',
             top: 0,
             backgroundColor: (theme) => theme.palette.background.paper,
-            zIndex: (theme) => theme.zIndex.tooltip - 1,
+            zIndex: (theme) => theme.zIndex.appBar - 1,
           }}
         >
           <TableRow>

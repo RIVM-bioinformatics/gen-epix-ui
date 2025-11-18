@@ -4,6 +4,7 @@ import {
 } from '@mui/material';
 import ErrorOutlineIcon from '@mui/icons-material/ErrorOutline';
 import { Box } from '@mui/system';
+import type { ReactElement } from 'react';
 import {
   useCallback,
   useContext,
@@ -15,6 +16,7 @@ import { useStore } from 'zustand';
 import { useShallow } from 'zustand/shallow';
 import omit from 'lodash/omit';
 import { useTranslation } from 'react-i18next';
+import difference from 'lodash/difference';
 
 import type {
   Case,
@@ -133,7 +135,7 @@ export const EpiUploadValidateContent = () => {
       const translatedMessage = t(issueMessage, { originalValue: issue.original_value });
       const columnLabel = completeCaseType.case_type_cols[issue.case_type_col_id].label;
       const message = t('{{columnLabel}}: {{issue}}', { columnLabel, issue: translatedMessage });
-      messages.push({ message, key: issue.case_type_col_id });
+      messages.push({ message, key: `${issue.case_type_col_id}-${issue.data_rule}` });
     });
     return (
       <>
@@ -170,75 +172,125 @@ export const EpiUploadValidateContent = () => {
     }
   }, [getIssueTooltipContent, theme.palette.error.main]);
 
+  const dataRulePriority: CaseColDataRule[] = useMemo(() => [
+    CaseColDataRule.UNAUTHORIZED,
+    CaseColDataRule.INVALID,
+    CaseColDataRule.CONFLICT,
+    CaseColDataRule.MISSING,
+    CaseColDataRule.DERIVED,
+  ], []);
+
+  const errorDataRules: CaseColDataRule[] = useMemo(() => [
+    CaseColDataRule.UNAUTHORIZED,
+    CaseColDataRule.INVALID,
+  ], []);
+
   const renderCell = useCallback(({ id, row }: TableRowParams<EpiValidatedCaseWithGeneratedId>) => {
     const rowValue = EpiCaseUtil.getRowValue(row.case as Case, completeCaseType.case_type_cols[id], completeCaseType);
-    const issue = row.data_issues.find((i) => i.case_type_col_id === id);
+    const issues = row.data_issues.filter((i) => i.case_type_col_id === id).sort((a, b) => dataRulePriority.indexOf(a.data_rule) - dataRulePriority.indexOf(b.data_rule));
 
-    if (issue) {
-      let color: string;
-      switch (issue.data_rule) {
-        case CaseColDataRule.MISSING:
-        case CaseColDataRule.CONFLICT:
-          color = theme.palette.warning.main;
-          break;
-        case CaseColDataRule.DERIVED:
-          color = theme.palette.info.main;
-          break;
-        case CaseColDataRule.UNAUTHORIZED:
-        case CaseColDataRule.INVALID:
-        default:
-          color = theme.palette.error.main;
-          break;
-      }
+    if (issues.length === 0) {
       return (
-        <Box
-          sx={{
-            display: 'flex',
-            alignItems: 'center',
-          }}
-        >
-          <Box
-            sx={{
-              width: theme.spacing(2),
-              height: theme.spacing(2),
-              minWidth: theme.spacing(2),
-              minHeight: theme.spacing(2),
-              marginRight: theme.spacing(1),
-              position: 'relative',
-            }}
-          >
-            <Tooltip
-              arrow
-              title={getIssueTooltipContent([issue])}
-            >
-              <ErrorOutlineIcon
-                fontSize={'small'}
-                sx={{
-                  color,
-                  position: 'absolute',
-                  marginTop: '-2px',
-                }}
-              />
-            </Tooltip>
-          </Box>
-          <Box
-            sx={{
-              overflow: 'hidden',
-              textOverflow: 'ellipsis',
-              whiteSpace: 'nowrap',
-            }}
-          >
-            {rowValue?.isMissing ? issue.original_value : rowValue?.short}
-          </Box>
-        </Box>
+        <>
+          {rowValue.short}
+        </>
       );
     }
+
+    let color: string;
+
+    switch (issues[0].data_rule) {
+      case CaseColDataRule.MISSING:
+      case CaseColDataRule.CONFLICT:
+        color = theme.palette.warning.main;
+        break;
+      case CaseColDataRule.DERIVED:
+        color = theme.palette.info.main;
+        break;
+      case CaseColDataRule.UNAUTHORIZED:
+      case CaseColDataRule.INVALID:
+      default:
+        color = theme.palette.error.main;
+        break;
+    }
+
+    let content: ReactElement;
+
+    const hasError = difference(errorDataRules, issues.map(x => x.data_rule)).length >= 1;
+    const originalValue = issues.find(x => x.original_value)?.original_value || '';
+
+    if (hasError) {
+      content = (
+        <>
+          {originalValue && (
+            <s>
+              {originalValue}
+            </s>
+          )}
+          {originalValue && rowValue?.short && (
+            <>
+              {'\u00A0'}
+            </>
+          )}
+          {rowValue?.short && (
+            <>
+              {rowValue?.short}
+            </>
+          )}
+        </>
+      );
+    } else {
+      content = (
+        <>
+          {rowValue?.isMissing ? issues[0].original_value : rowValue?.short}
+        </>
+      );
+    }
+
+
     return (
-      <>
-        {rowValue.short}
-      </>
+      <Box
+        sx={{
+          display: 'flex',
+          alignItems: 'center',
+        }}
+      >
+        <Box
+          sx={{
+            width: theme.spacing(2),
+            height: theme.spacing(2),
+            minWidth: theme.spacing(2),
+            minHeight: theme.spacing(2),
+            marginRight: theme.spacing(1),
+            position: 'relative',
+          }}
+        >
+          <Tooltip
+            arrow
+            title={getIssueTooltipContent(issues)}
+          >
+            <ErrorOutlineIcon
+              fontSize={'small'}
+              sx={{
+                color,
+                position: 'absolute',
+                marginTop: '-2px',
+              }}
+            />
+          </Tooltip>
+        </Box>
+        <Box
+          sx={{
+            overflow: 'hidden',
+            textOverflow: 'ellipsis',
+            whiteSpace: 'nowrap',
+          }}
+        >
+          {content}
+        </Box>
+      </Box>
     );
-  }, [completeCaseType, getIssueTooltipContent, theme]);
+  }, [completeCaseType, dataRulePriority, errorDataRules, getIssueTooltipContent, theme]);
 
   const tableColumns = useMemo<TableColumn<EpiValidatedCaseWithGeneratedId>[]>(() => {
     const validatedCases = validationQuery?.data?.validated_cases;
