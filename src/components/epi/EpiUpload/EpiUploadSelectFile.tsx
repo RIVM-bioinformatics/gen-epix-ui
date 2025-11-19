@@ -264,17 +264,17 @@ const EpiUploadSelectFile = () => {
   }, [handleSubmit, onFormSubmit]);
 
   const canUpload = useMemo(() => {
-    if (caseTypeColsQuery.isLoading === false && caseTypeColsQuery.data.length === 0) {
+    if (caseTypeColsQuery.isLoading === false && caseTypeColsQuery.data?.length === 0) {
       return false;
     }
-    if (caseTypeOptionsQuery.isLoading === false && caseTypeOptionsQuery.options.length === 0) {
+    if (caseTypeOptionsQuery.isLoading === false && caseTypeOptionsQuery.options?.length === 0) {
       return false;
     }
-    if (dataCollectionOptionsQuery.isLoading === false && dataCollectionOptionsQuery.options.length === 0) {
+    if (dataCollectionOptionsQuery.isLoading === false && dataCollectionOptionsQuery.options?.length === 0) {
       return false;
     }
     return true;
-  }, [caseTypeColsQuery.data.length, caseTypeColsQuery.isLoading, caseTypeOptionsQuery.isLoading, caseTypeOptionsQuery.options.length, dataCollectionOptionsQuery.isLoading, dataCollectionOptionsQuery.options.length]);
+  }, [caseTypeColsQuery.data?.length, caseTypeColsQuery.isLoading, caseTypeOptionsQuery.isLoading, caseTypeOptionsQuery.options?.length, dataCollectionOptionsQuery.isLoading, dataCollectionOptionsQuery.options?.length]);
 
   return (
 
