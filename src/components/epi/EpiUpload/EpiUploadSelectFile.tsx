@@ -289,7 +289,7 @@ const EpiUploadSelectFile = () => {
             severity={'warning'}
             sx={{ mb: 2 }}
           >
-            {t('Uploading is not possible you have insufficient data access to proceed.')}
+            {t('Uploading disabled because you have insufficient data access to proceed. Contact your organization administrator for assistance.')}
           </Alert>
         )}
         {canUpload && (
