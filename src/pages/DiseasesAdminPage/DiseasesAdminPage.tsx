@@ -79,6 +79,7 @@ export const DiseasesAdminPage = () => {
     <CrudPage<FormFields, Disease>
       createOne={createOne}
       crudCommandType={CommandName.DiseaseCrudCommand}
+      createItemDialogTitle={t`Create new disease`}
       defaultSortByField={'name'}
       defaultSortDirection={'asc'}
       deleteOne={deleteOne}

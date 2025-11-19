@@ -198,6 +198,7 @@ export const OrganizationAccessCasePoliciesAdminPage = () => {
     <CrudPage<FormFields, OrganizationAccessCasePolicy>
       createOne={createOne}
       crudCommandType={CommandName.OrganizationAccessCasePolicyCrudCommand}
+      createItemDialogTitle={t`Create new organization access case policy`}
       defaultSortByField={'organization_id'}
       defaultSortDirection={'asc'}
       deleteOne={deleteOne}

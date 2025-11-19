@@ -91,6 +91,7 @@ export const EtiologiesAdminPage = () => {
     <CrudPage<FormFields, Etiology>
       createOne={createOne}
       crudCommandType={CommandName.EtiologyCrudCommand}
+      createItemDialogTitle={t`Create new etiology`}
       defaultSortByField={'disease_id'}
       defaultSortDirection={'asc'}
       deleteOne={deleteOne}

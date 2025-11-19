@@ -137,6 +137,7 @@ export const DataCollectionSetsAdminPage = () => {
       convertToTableData={convertToTableData}
       createOne={createOne}
       crudCommandType={CommandName.DataCollectionSetCrudCommand}
+      createItemDialogTitle={t`Create new data collection set`}
       defaultSortByField={'name'}
       defaultSortDirection={'asc'}
       deleteOne={deleteOne}

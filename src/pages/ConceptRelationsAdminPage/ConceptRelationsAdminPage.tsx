@@ -115,6 +115,7 @@ export const ConceptRelationsAdminPage = () => {
     <CrudPage<FormFields, ConceptRelation>
       createOne={createOne}
       crudCommandType={CommandName.ConceptRelationCrudCommand}
+      createItemDialogTitle={t`Create new concept relation`}
       defaultSortByField={'from_concept_id'}
       loadables={loadables}
       defaultSortDirection={'asc'}

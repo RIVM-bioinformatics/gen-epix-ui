@@ -37,6 +37,7 @@ export interface CrudPageEditDialogProps<TData extends GenericData, TFormFields 
   readonly onSave: (formValues: TFormFields, item: TData) => void;
   readonly formFieldDefinitions: FormFieldDefinition<TFormFields>[];
   readonly getName: (item: TData | TFormFields) => string;
+  readonly createItemDialogTitle?: string;
   readonly schema: ObjectSchema<TFormFields>;
 }
 export type CrudPageEditDialogRefMethods<TData extends GenericData, TFormFields extends AnyObject> = WithDialogRefMethods<CrudPageEditDialogProps<TData, TFormFields>, CrudPageEditDialogOpenProps<TData>>;
@@ -52,6 +53,7 @@ export const CrudPageEditDialog = withDialog<CrudPageEditDialogProps<any, any>, 
     formFieldDefinitions,
     schema,
     getName,
+    createItemDialogTitle,
   }: CrudPageEditDialogProps<TData, TFormFields>,
 ): ReactElement => {
   const [t] = useTranslation();
@@ -80,9 +82,9 @@ export const CrudPageEditDialog = withDialog<CrudPageEditDialogProps<any, any>, 
     if (openProps.item) {
       onTitleChange(`Edit item: ${getName(openProps.item)}`);
     } else {
-      onTitleChange(t`Create new item`);
+      onTitleChange(createItemDialogTitle ?? t`Create new item`);
     }
-  }, [getName, onTitleChange, openProps, t]);
+  }, [getName, onTitleChange, openProps, t, createItemDialogTitle]);
 
   const values = useMemo<TFormFields>(() => FormUtil.createFormValues(formFieldDefinitions, openProps.item), [formFieldDefinitions, openProps.item]);
 

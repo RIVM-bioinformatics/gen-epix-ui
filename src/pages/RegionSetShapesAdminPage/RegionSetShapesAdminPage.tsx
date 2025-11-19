@@ -111,6 +111,7 @@ export const RegionSetShapesAdminPage = () => {
     <CrudPage<FormFields, RegionSetShape>
       createOne={createOne}
       crudCommandType={CommandName.RegionSetShapeCrudCommand}
+      createItemDialogTitle={t`Create new region set shape`}
       defaultSortByField={'scale'}
       defaultSortDirection={'asc'}
       deleteOne={deleteOne}

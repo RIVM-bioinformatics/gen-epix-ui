@@ -79,6 +79,7 @@ export const CaseSetStatusAdminPage = () => {
 
   return (
     <CrudPage<FormFields, CaseSetStatus>
+      createItemDialogTitle={t`Create new case set status`}
       createOne={createOne}
       crudCommandType={CommandName.CaseSetStatusCrudCommand}
       defaultSortByField={'name'}

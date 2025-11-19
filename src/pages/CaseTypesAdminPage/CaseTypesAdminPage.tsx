@@ -119,6 +119,7 @@ export const CaseTypesAdminPage = () => {
     <CrudPage<FormFields, CaseType>
       createOne={createOne}
       crudCommandType={CommandName.CaseTypeCrudCommand}
+      createItemDialogTitle={t`Create new case type`}
       defaultSortByField={'name'}
       defaultSortDirection={'asc'}
       deleteOne={deleteOne}

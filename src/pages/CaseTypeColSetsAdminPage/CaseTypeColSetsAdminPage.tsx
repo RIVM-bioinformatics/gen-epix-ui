@@ -159,6 +159,7 @@ export const CaseTypeColSetsAdminPage = () => {
     <CrudPage<FormFields, CaseTypeColSet, TableData>
       associationQueryKeys={associationQueryKeys}
       convertToTableData={convertToTableData}
+      createItemDialogTitle={t`Create new case type column set`}
       createOne={createOne}
       crudCommandType={CommandName.CaseTypeColSetCrudCommand}
       defaultSortByField={'name'}

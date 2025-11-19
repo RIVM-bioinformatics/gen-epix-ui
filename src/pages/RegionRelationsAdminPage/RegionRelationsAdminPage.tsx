@@ -113,6 +113,7 @@ export const RegionRelationsAdminPage = () => {
     <CrudPage<FormFields, RegionRelation>
       createOne={createOne}
       crudCommandType={CommandName.RegionRelationCrudCommand}
+      createItemDialogTitle={t`Create new region relation`}
       defaultSortByField={'from_region_id'}
       loadables={loadables}
       defaultSortDirection={'asc'}

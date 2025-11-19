@@ -190,6 +190,7 @@ export const UserAccessCasePoliciesAdminPage = () => {
     <CrudPage<FormFields, UserAccessCasePolicy>
       createOne={createOne}
       crudCommandType={CommandName.UserAccessCasePolicyCrudCommand}
+      createItemDialogTitle={t`Create new user access case policy`}
       defaultSortByField={'user_id'}
       defaultSortDirection={'asc'}
       deleteOne={deleteOne}

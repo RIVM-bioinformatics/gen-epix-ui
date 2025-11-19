@@ -130,6 +130,7 @@ export const RegionsAdminPage = () => {
     <CrudPage<FormFields, Region>
       createOne={createOne}
       crudCommandType={CommandName.RegionCrudCommand}
+      createItemDialogTitle={t`Create new region`}
       defaultSortByField={'name'}
       fetchAllSelect={fetchAllSelect}
       defaultSortDirection={'asc'}

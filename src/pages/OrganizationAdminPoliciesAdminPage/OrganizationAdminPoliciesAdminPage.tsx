@@ -100,6 +100,7 @@ export const OrganizationAdminPoliciesAdminPage = () => {
     <CrudPage<FormFields, OrganizationAdminPolicy>
       createOne={createOne}
       crudCommandType={CommandName.OrganizationAdminPolicyCrudCommand}
+      createItemDialogTitle={t`Create new organization admin policy`}
       defaultSortByField={'organization_id'}
       defaultSortDirection={'asc'}
       deleteOne={deleteOne}

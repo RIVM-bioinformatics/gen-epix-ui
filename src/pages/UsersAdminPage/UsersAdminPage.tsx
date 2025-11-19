@@ -220,6 +220,7 @@ export const UsersAdminPage = () => {
         loadables={loadables}
         canEditItem={canEditItem}
         crudCommandType={CommandName.UserCrudCommand}
+        createItemDialogTitle={t`Create new user`}
         defaultSortByField={'name'}
         defaultSortDirection={'asc'}
         deleteOne={deleteOne}

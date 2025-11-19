@@ -166,6 +166,7 @@ export const ColsAdminPage = () => {
     <CrudPage<FormFields, Col>
       createOne={createOne}
       crudCommandType={CommandName.ColCrudCommand}
+      createItemDialogTitle={t`Create new column`}
       defaultSortByField={'code'}
       defaultSortDirection={'asc'}
       deleteOne={deleteOne}

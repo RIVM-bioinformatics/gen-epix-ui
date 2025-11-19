@@ -135,6 +135,7 @@ export const OrganizationsAdminPage = () => {
     <CrudPage<FormFields, Organization>
       createOne={createOne}
       crudCommandType={CommandName.OrganizationCrudCommand}
+      createItemDialogTitle={t`Create new organization`}
       defaultSortByField={'name'}
       defaultSortDirection={'asc'}
       deleteOne={deleteOne}

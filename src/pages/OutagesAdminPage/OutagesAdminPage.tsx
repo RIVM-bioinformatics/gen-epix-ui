@@ -138,6 +138,7 @@ export const OutagesAdminPage = () => {
     <CrudPage<FormFields, Outage>
       createOne={createOne}
       crudCommandType={CommandName.OutageCrudCommand}
+      createItemDialogTitle={t`Create new outage`}
       defaultSortByField={'active_from'}
       defaultSortDirection={'asc'}
       deleteOne={deleteOne}

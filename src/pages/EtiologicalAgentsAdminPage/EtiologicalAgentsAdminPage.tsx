@@ -78,6 +78,7 @@ export const EtiologicalAgentsAdminPage = () => {
     <CrudPage<FormFields, EtiologicalAgent>
       createOne={createOne}
       crudCommandType={CommandName.EtiologicalAgentCrudCommand}
+      createItemDialogTitle={t`Create new etiological agent`}
       defaultSortByField={'name'}
       defaultSortDirection={'asc'}
       deleteOne={deleteOne}

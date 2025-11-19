@@ -164,6 +164,7 @@ export const UserInvitationsAdminPage = () => {
   return (
     <>
       <CrudPage<FormFields, UserInvitation>
+        createItemDialogTitle={t`Create new user invitation`}
         createItemButtonText={t`Invite user`}
         createOne={createOne}
         crudCommandType={CommandName.UserInvitationCrudCommand}

@@ -164,6 +164,7 @@ export const OrganizationShareCasePoliciesAdminPage = () => {
     <CrudPage<FormFields, OrganizationShareCasePolicy>
       createOne={createOne}
       crudCommandType={CommandName.OrganizationShareCasePolicyCrudCommand}
+      createItemDialogTitle={t`Create new organization share case policy`}
       defaultSortByField={'organization_id'}
       defaultSortDirection={'asc'}
       deleteOne={deleteOne}

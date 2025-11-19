@@ -164,6 +164,7 @@ export const UserShareCasePoliciesAdminPage = () => {
     <CrudPage<FormFields, UserShareCasePolicy>
       createOne={createOne}
       crudCommandType={CommandName.UserShareCasePolicyCrudCommand}
+      createItemDialogTitle={t`Create new user share case policy`}
       defaultSortByField={'user_id'}
       defaultSortDirection={'asc'}
       deleteOne={deleteOne}

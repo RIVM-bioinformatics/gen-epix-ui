@@ -186,6 +186,7 @@ export const ConceptSetsAdminPage = () => {
     <CrudPage<FormFields, ConceptSet>
       createOne={createOne}
       crudCommandType={CommandName.ConceptSetCrudCommand}
+      createItemDialogTitle={t`Create new concept set`}
       defaultSortByField={'name'}
       defaultSortDirection={'asc'}
       deleteOne={deleteOne}

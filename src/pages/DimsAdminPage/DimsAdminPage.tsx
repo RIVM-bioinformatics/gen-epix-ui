@@ -115,6 +115,7 @@ export const DimsAdminPage = () => {
     <CrudPage<FormFields, Dim>
       createOne={createOne}
       crudCommandType={CommandName.DimCrudCommand}
+      createItemDialogTitle={t`Create new dimension`}
       defaultSortByField={'code'}
       defaultSortDirection={'asc'}
       deleteOne={deleteOne}

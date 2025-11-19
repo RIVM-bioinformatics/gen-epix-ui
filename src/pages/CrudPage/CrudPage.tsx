@@ -73,6 +73,7 @@ export type CrudPageProps<
 > = PropsWithTestIdAttributes<{
   readonly contentHeader?: string;
   readonly createItemButtonText?: string;
+  readonly createItemDialogTitle?: string;
   readonly createOne?: (item: TFormFields) => Promise<TData>;
   readonly canEditItem?: (item: TData) => boolean;
   readonly crudCommandType?: CommandName;
@@ -121,6 +122,7 @@ export const CrudPage = <
   contentActions,
   convertToTableData,
   createItemButtonText,
+  createItemDialogTitle,
   createOne,
   crudCommandType,
   customOnRowClick,
@@ -544,6 +546,7 @@ export const CrudPage = <
           ref={editDialogRef}
           formFieldDefinitions={formFieldDefinitions}
           getName={getName}
+          createItemDialogTitle={createItemDialogTitle}
           schema={schema}
           onSave={onEditDialogSave}
         />

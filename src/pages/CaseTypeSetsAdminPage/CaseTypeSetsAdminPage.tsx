@@ -178,6 +178,7 @@ export const CaseTypeSetsAdminPage = () => {
       convertToTableData={convertToTableData}
       createOne={createOne}
       crudCommandType={CommandName.CaseTypeSetCrudCommand}
+      createItemDialogTitle={t`Create new case type set`}
       defaultSortByField={'name'}
       defaultSortDirection={'asc'}
       deleteOne={deleteOne}

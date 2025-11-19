@@ -78,6 +78,7 @@ export const DataCollectionsAdminPage = () => {
     <CrudPage<FormFields, DataCollection>
       createOne={createOne}
       crudCommandType={CommandName.DataCollectionCrudCommand}
+      createItemDialogTitle={t`Create new data collection`}
       defaultSortByField={'name'}
       defaultSortDirection={'asc'}
       deleteOne={deleteOne}

@@ -118,6 +118,7 @@ export const ConceptsAdminPage = () => {
     <CrudPage<FormFields, Concept>
       createOne={createOne}
       crudCommandType={CommandName.ConceptCrudCommand}
+      createItemDialogTitle={t`Create new concept`}
       defaultSortByField={'rank'}
       defaultSortDirection={'asc'}
       fetchAllSelect={fetchAllSelect}

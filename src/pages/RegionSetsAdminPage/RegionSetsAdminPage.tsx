@@ -177,6 +177,7 @@ export const RegionSetsAdminPage = () => {
     <CrudPage<FormFields, RegionSet>
       createOne={createOne}
       crudCommandType={CommandName.RegionSetCrudCommand}
+      createItemDialogTitle={t`Create new region set`}
       defaultSortByField={'name'}
       defaultSortDirection={'asc'}
       deleteOne={deleteOne}
