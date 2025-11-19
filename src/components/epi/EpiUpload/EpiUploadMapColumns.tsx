@@ -26,6 +26,7 @@ import {
 import { useTranslation } from 'react-i18next';
 import uniq from 'lodash/uniq';
 import { useStore } from 'zustand';
+import difference from 'lodash/difference';
 
 import type { FormFieldDefinition } from '../../../models/form';
 import { GenericForm } from '../../form/helpers/GenericForm';
@@ -36,7 +37,6 @@ import { EpiUploadUtil } from '../../../utils/EpiUploadUtil';
 import { ConfigManager } from '../../../classes/managers/ConfigManager';
 import { EpiUploadStoreContext } from '../../../stores/epiUploadStore';
 import type { EpiUploadMappedColumnsFormFields } from '../../../models/epiUpload';
-import { EPI_UPLOAD_ACTION } from '../../../models/epiUpload';
 
 import { EpiUploadNavigation } from './EpiUploadNavigation';
 
@@ -93,18 +93,15 @@ export const EpiUploadMapColumns = () => {
   }, [setMappedColumns, values, rawData, caseTypeColMap.map]);
 
   const unMappedColumns = useMemo(() => {
-    return EpiUploadUtil.getMappedColumnsFromFormData(values, rawData, caseTypeColMap.map).filter(mappedColumn => {
-      // ignore case type columns
-      if (mappedColumn.isCaseTypeColumn) {
-        return false;
-      }
-      // ignore case id column when creating cases
-      if (importAction === EPI_UPLOAD_ACTION.CREATE && mappedColumn.isCaseIdColumn) {
-        return false;
-      }
-      return !mappedColumn.isCaseIdColumn && !mappedColumn.isCaseDateColumn && !mappedColumn.caseTypeCol;
+    const knownIndicies = rawData[0].map((_col, index) => index);
+    const mappedIndicies = EpiUploadUtil.getMappedColumnsFromFormData(values, rawData, caseTypeColMap.map).map(col => col.originalIndex);
+    return difference(knownIndicies, mappedIndicies).map(index => {
+      return {
+        originalIndex: index,
+        originalLabel: rawData[0][index],
+      };
     });
-  }, [caseTypeColMap.map, importAction, rawData, values]);
+  }, [caseTypeColMap.map, rawData, values]);
 
   const onFormSubmit = useCallback(async (data: EpiUploadMappedColumnsFormFields) => {
     await setMappedColumns(EpiUploadUtil.getMappedColumnsFromFormData(data, rawData, caseTypeColMap.map));
@@ -176,7 +173,7 @@ export const EpiUploadMapColumns = () => {
             marginBottom: 2,
           }}
         >
-          <Alert severity={'info'}>
+          <Alert severity={unMappedColumns.length === 0 ? 'info' : 'warning'}>
             <AlertTitle>
               {unMappedColumns.length === 0 ? t('All columns in {{fileName}} have been mapped to known columns in {{applicationName}}', { fileName, applicationName: ConfigManager.instance.config.applicationName }) : t('{{numUnmappedColumns}} columns in {{fileName}} are not mapped', { numUnmappedColumns: unMappedColumns.length, fileName })}
             </AlertTitle>
