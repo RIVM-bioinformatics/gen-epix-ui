@@ -223,7 +223,7 @@ export class EpiUploadUtil {
     const filteredCaseTypeCols = EpiUploadUtil.getAllowedCaseTypeColIds(completeCaseType).map(id => completeCaseType.case_type_cols[id]);
 
     const mappedColumns = rawData[0].map((label, index) => {
-      const isCaseIdColumn = EpiUploadUtil.isCaseIdColumn(label);
+      const isCaseIdColumn = importAction === EPI_UPLOAD_ACTION.UPDATE && EpiUploadUtil.isCaseIdColumn(label);
       const isCaseDateColumn = EpiUploadUtil.isCaseDateColumn(label);
       const isCaseTypeColumn = EpiUploadUtil.isCaseTypeColumn(label);
 
@@ -246,7 +246,9 @@ export class EpiUploadUtil {
       } satisfies EpiUploadMappedColumn;
     });
 
-    return mappedColumns;
+    return mappedColumns.filter(mc => {
+      return mc.isCaseIdColumn || mc.isCaseDateColumn || mc.caseTypeCol;
+    });
   }
 
   public static areMappedColumnsEqual(a: EpiUploadMappedColumn[], b: EpiUploadMappedColumn[]): boolean {
@@ -373,7 +375,6 @@ export class EpiUploadUtil {
         defaultFormValues[mappedColumn.originalIndex.toString()] = mappedColumn.caseTypeCol.id;
       }
     });
-    console.log({ defaultFormValues });
     return defaultFormValues;
   }
 
