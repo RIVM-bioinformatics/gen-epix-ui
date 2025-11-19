@@ -42,7 +42,6 @@ import { EpiUserRightsDialog } from '../../components/epi/EpiUserRightsDialog';
 import { RouterManager } from '../../classes/managers/RouterManager';
 import type { DialogAction } from '../../components/ui/Dialog';
 import { AuthorizationManager } from '../../classes/managers/AuthorizationManager';
-import { useInviteUserConstraintsQuery } from '../../dataHooks/useInviteUserConstraintsQuery';
 import { useArray } from '../../hooks/useArray';
 import { useUsersQuery } from '../../dataHooks/useUsersQuery';
 
@@ -52,12 +51,10 @@ export const UsersAdminPage = () => {
   const [t] = useTranslation();
   const organizationOptionsQuery = useOrganizationOptionsQuery();
   const epiUserRightsDialogRef = useRef<EpiUserRightsDialogRefMethods>(null);
-  const inviteUserConstraintsQuery = useInviteUserConstraintsQuery();
   const usersQuery = useUsersQuery();
 
   const loadables = useArray([
     organizationOptionsQuery,
-    inviteUserConstraintsQuery,
     usersQuery,
   ]);
 
