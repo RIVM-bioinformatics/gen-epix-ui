@@ -207,7 +207,8 @@ export const createEpiUploadStore = () => {
         try {
           // Call the callback with parsed data
           await setRawData(await EpiUploadUtil.readRawData(fileList, sheet));
-        } catch (_error) {
+        } catch (error) {
+          console.log('Error reading sheet', error);
           set({ sheet: null });
           set({ fileParsingError: t('Error reading sheet') });
           await setRawData(null);

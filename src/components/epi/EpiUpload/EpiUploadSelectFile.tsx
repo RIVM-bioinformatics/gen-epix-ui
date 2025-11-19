@@ -118,7 +118,7 @@ const EpiUploadSelectFile = () => {
   const { handleSubmit, setValue, setError } = formMethods;
 
   useEffect(() => {
-    if (caseTypeColsQuery?.data?.length) {
+    if (Array.isArray(caseTypeColsQuery?.data)) {
       setCaseTypeCols(caseTypeColsQuery.data);
     }
   }, [caseTypeColsQuery.data, setCaseTypeCols]);
@@ -263,6 +263,19 @@ const EpiUploadSelectFile = () => {
     await handleSubmit(onFormSubmit)();
   }, [handleSubmit, onFormSubmit]);
 
+  const canUpload = useMemo(() => {
+    if (caseTypeColsQuery.isLoading === false && caseTypeColsQuery.data.length === 0) {
+      return false;
+    }
+    if (caseTypeOptionsQuery.isLoading === false && caseTypeOptionsQuery.options.length === 0) {
+      return false;
+    }
+    if (dataCollectionOptionsQuery.isLoading === false && dataCollectionOptionsQuery.options.length === 0) {
+      return false;
+    }
+    return true;
+  }, [caseTypeColsQuery.data.length, caseTypeColsQuery.isLoading, caseTypeOptionsQuery.isLoading, caseTypeOptionsQuery.options.length, dataCollectionOptionsQuery.isLoading, dataCollectionOptionsQuery.options.length]);
+
   return (
 
     <ResponseHandler
@@ -271,36 +284,49 @@ const EpiUploadSelectFile = () => {
       loadables={loadables}
     >
       <Container maxWidth={'lg'}>
-        <GenericForm<FormFields>
-          formFieldDefinitions={formFieldDefinitions}
-          formId={formId}
-          formMethods={formMethods}
-          onSubmit={handleSubmit(onFormSubmit)}
-        />
-        {rawData && rawData.length > 0 && (
+        {!canUpload && (
           <Alert
-            severity={'info'}
+            severity={'warning'}
             sx={{ mb: 2 }}
           >
-            <AlertTitle>
-              {t('{{fileName}} loaded successfully', { fileName })}
-            </AlertTitle>
-            {sheet && (
-              <Typography>
-                {t('Sheet name: {{sheet}}', { sheet: sheet || '' })}
-              </Typography>
-            )}
-            <Typography>
-              {t('Number of columns: {{columnCount}}', { columnCount: rawData[0].length })}
-            </Typography>
-            <Typography>
-              {t('Number of data rows: {{rowCount}}', { rowCount: rawData.length - 1 })}
-            </Typography>
+            {t('Uploading is not possible you have insufficient data access to proceed.')}
           </Alert>
         )}
-        <EpiUploadNavigation
-          onProceedButtonClick={onProceedButtonClick}
-        />
+        {canUpload && (
+          <>
+            <GenericForm<FormFields>
+              formFieldDefinitions={formFieldDefinitions}
+              formId={formId}
+              formMethods={formMethods}
+              onSubmit={handleSubmit(onFormSubmit)}
+            />
+            {rawData && rawData.length > 0 && (
+              <Alert
+                severity={'info'}
+                sx={{ mb: 2 }}
+              >
+                <AlertTitle>
+                  {t('{{fileName}} loaded successfully', { fileName })}
+                </AlertTitle>
+                {sheet && (
+                  <Typography>
+                    {t('Sheet name: {{sheet}}', { sheet: sheet || '' })}
+                  </Typography>
+                )}
+                <Typography>
+                  {t('Number of columns: {{columnCount}}', { columnCount: rawData[0].length })}
+                </Typography>
+                <Typography>
+                  {t('Number of data rows: {{rowCount}}', { rowCount: rawData.length - 1 })}
+                </Typography>
+              </Alert>
+            )}
+            <EpiUploadNavigation
+              onProceedButtonClick={onProceedButtonClick}
+            />
+          </>
+        )}
+
       </Container>
     </ResponseHandler>
   );

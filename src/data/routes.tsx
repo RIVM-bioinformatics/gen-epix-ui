@@ -186,7 +186,20 @@ export const routes: MyNonIndexRouteObject[] = [
         errorElement: <RouterErrorPage />,
         handle: {
           titleKey: 'Upload',
-          requiredPermissions: [],
+          requiredPermissions: [
+            { command_name: CommandName.CaseTypeCrudCommand, permission_type: PermissionType.READ },
+            { command_name: CommandName.DataCollectionCrudCommand, permission_type: PermissionType.READ },
+            { command_name: CommandName.CaseTypeColCrudCommand, permission_type: PermissionType.READ },
+            { command_name: CommandName.RetrieveLibraryPrepProtocolsCommand, permission_type: PermissionType.EXECUTE },
+            { command_name: CommandName.RetrieveAssemblyProtocolsCommand, permission_type: PermissionType.EXECUTE },
+            { command_name: CommandName.ValidateCasesCommand, permission_type: PermissionType.EXECUTE },
+            { command_name: CommandName.ValidateCasesCommand, permission_type: PermissionType.EXECUTE },
+            { command_name: CommandName.CreateSeqsForCasesCommand, permission_type: PermissionType.EXECUTE },
+            { command_name: CommandName.CreateReadSetsForCasesCommand, permission_type: PermissionType.EXECUTE },
+            { command_name: CommandName.CreateFileForReadSetCommand, permission_type: PermissionType.EXECUTE },
+            { command_name: CommandName.CreateFileForReadSetCommand, permission_type: PermissionType.EXECUTE },
+            // FIXME: no command for CaseApi.instance.createCases?
+          ],
           requiresUserProfile: true,
         },
       },
