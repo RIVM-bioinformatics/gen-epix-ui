@@ -163,6 +163,7 @@ export const routes: MyNonIndexRouteObject[] = [
                 { command_name: CommandName.RetrieveCasesByQueryCommand, permission_type: PermissionType.EXECUTE },
                 { command_name: CommandName.RetrievePhylogeneticTreeByCasesCommand, permission_type: PermissionType.EXECUTE },
                 { command_name: CommandName.RetrievePhylogeneticTreeByCasesCommand, permission_type: PermissionType.EXECUTE },
+                { command_name: CommandName.CreateCasesCommand, permission_type: PermissionType.EXECUTE },
               ],
               requiresUserProfile: true,
             },
