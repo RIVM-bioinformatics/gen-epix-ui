@@ -7,6 +7,7 @@ import createCache from '@emotion/cache';
 import { QueryClientProvider } from '@tanstack/react-query';
 import { ErrorBoundary } from 'react-error-boundary';
 import { RouterProvider } from 'react-router-dom';
+import { setNonce } from 'react-resizable-panels';
 
 import { BaseAPI } from '../../../api';
 import { AuthenticationManager } from '../../../classes/managers/AuthenticationManager';
@@ -45,6 +46,8 @@ export const App = () => {
     nonce: config.nonce,
     prepend: !!config.nonce,
   });
+
+  setNonce(config.nonce);
 
   const queryQueryManager = QueryClientManager.instance;
   const routerManager = RouterManager.instance;
