@@ -356,7 +356,7 @@ export class EpiUploadUtil {
     return fields;
   }
 
-  public static getDefaultFormValues(rawDataHeaders: string[], mappedColumns: EpiUploadMappedColumn[]): EpiUploadMappedColumnsFormFields {
+  public static getDefaultFormValues(rawDataHeaders: string[], mappedColumns: EpiUploadMappedColumn[], importAction: EPI_UPLOAD_ACTION): EpiUploadMappedColumnsFormFields {
     const defaultFormValues: EpiUploadMappedColumnsFormFields = Object.fromEntries(Object.keys(rawDataHeaders).map<[string, null]>(x => [x.toString(), null]));
     const caseIdColumn = mappedColumns.find(col => col.isCaseIdColumn);
     const caseDateColumn = mappedColumns.find(col => col.isCaseDateColumn);
@@ -364,7 +364,7 @@ export class EpiUploadUtil {
     if (caseDateColumn) {
       defaultFormValues[caseDateColumn.originalIndex.toString()] = 'case_date';
     }
-    if (caseIdColumn) {
+    if (caseIdColumn && importAction === EPI_UPLOAD_ACTION.UPDATE) {
       defaultFormValues[caseIdColumn.originalIndex.toString()] = 'case_id';
     }
 
@@ -373,6 +373,7 @@ export class EpiUploadUtil {
         defaultFormValues[mappedColumn.originalIndex.toString()] = mappedColumn.caseTypeCol.id;
       }
     });
+    console.log({ defaultFormValues });
     return defaultFormValues;
   }
 
