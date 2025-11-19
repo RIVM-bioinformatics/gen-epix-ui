@@ -12,6 +12,7 @@ import {
   useCallback,
   useState,
 } from 'react';
+import type { BoxProps } from '@mui/material';
 import {
   Box,
   Tooltip,
@@ -30,6 +31,8 @@ interface NestedDropdownProps {
   // eslint-disable-next-line @typescript-eslint/naming-convention
   readonly ButtonProps?: Partial<ButtonProps>;
   // eslint-disable-next-line @typescript-eslint/naming-convention
+  readonly ContainerProps?: Partial<BoxProps>;
+  // eslint-disable-next-line @typescript-eslint/naming-convention
   readonly MenuProps?: Partial<MenuProps>;
   readonly showTopLevelTooltip?: boolean;
   readonly ref?: Ref<HTMLDivElement>;
@@ -41,7 +44,7 @@ export const NestedDropdown = ({ ref, ...props }: NestedDropdownProps) => {
   const [t] = useTranslation();
   const theme = useTheme();
 
-  const { menuItemsData: data, onClick, ButtonProps, MenuProps, showTopLevelTooltip, ...rest } = props;
+  const { menuItemsData: data, onClick, ButtonProps, ContainerProps, MenuProps, showTopLevelTooltip, ...rest } = props;
 
   const onButtonClick = useCallback((event: MouseEvent<HTMLButtonElement>) => {
     setAnchorEl(event.currentTarget);
@@ -96,6 +99,7 @@ export const NestedDropdown = ({ ref, ...props }: NestedDropdownProps) => {
       sx={{
         maxWidth: '100%',
       }}
+      {...ContainerProps}
       {...rest}
     >
       {(ButtonProps.disabled || !showTopLevelTooltip) && buttonElement}

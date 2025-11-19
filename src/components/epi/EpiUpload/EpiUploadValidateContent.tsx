@@ -39,7 +39,10 @@ import type {
   TableRowParams,
 } from '../../../models/table';
 import { useInitializeTableStore } from '../../../hooks/useInitializeTableStore';
-import { Table } from '../../ui/Table';
+import {
+  Table,
+  TableMenu,
+} from '../../ui/Table';
 import { DATE_FORMAT } from '../../../data/date';
 import { TableUtil } from '../../../utils/TableUtil';
 import { EpiCaseUtil } from '../../../utils/EpiCaseUtil';
@@ -357,10 +360,14 @@ export const EpiUploadValidateContent = () => {
         return;
       }
       const caseTypeColumn = completeCaseType.case_type_cols[caseTypeColId];
+
+      const issuesForCaseTypeColumn = validatedCases.flatMap(vc => vc.data_issues.filter((i) => i.case_type_col_id === caseTypeColumn.id));
+      const isInitiallyVisible = issuesForCaseTypeColumn.length === 0 || issuesForCaseTypeColumn.some(i => i.data_rule !== CaseColDataRule.DERIVED);
+
       if (caseTypeColumn) {
         tableCols.push({
           type: 'text',
-          isInitiallyVisible: true,
+          isInitiallyVisible,
           hideInFilter: true,
           id: caseTypeColumn.id,
           headerName: caseTypeColumn.code,
@@ -400,7 +407,7 @@ export const EpiUploadValidateContent = () => {
         height: '100%',
         position: 'relative',
         display: 'grid',
-        gridTemplateRows: 'auto max-content',
+        gridTemplateRows: 'max-content auto max-content',
       }}
     >
       <ResponseHandler
@@ -410,6 +417,16 @@ export const EpiUploadValidateContent = () => {
         takingLongerTimeoutMs={10000}
       >
         <TableStoreContextProvider store={tableStore}>
+          <Box>
+            <TableMenu
+              ContainerProps={{
+                sx: {
+                  display: 'inline-block',
+                  float: 'right',
+                },
+              }}
+            />
+          </Box>
           <Table
             font={theme.epi.lineList.font}
           />

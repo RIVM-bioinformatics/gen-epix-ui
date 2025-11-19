@@ -175,7 +175,6 @@ export * from './components/ui/UserFeedbackDialog';
 export * from './components/ui/Table';
 export * from './components/ui/Spinner';
 export * from './components/ui/Sidebar';
-export * from './components/ui/SearchHistoryTable';
 export * from './components/ui/ResponseHandler';
 export * from './components/ui/PanelResizeHandle';
 export * from './components/ui/PageContainer';
