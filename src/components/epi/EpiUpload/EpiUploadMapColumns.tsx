@@ -27,19 +27,16 @@ import { useTranslation } from 'react-i18next';
 import uniq from 'lodash/uniq';
 import { useStore } from 'zustand';
 
-import type { CaseTypeCol } from '../../../api';
 import type { FormFieldDefinition } from '../../../models/form';
 import { GenericForm } from '../../form/helpers/GenericForm';
 import { useCaseTypeColMapQuery } from '../../../dataHooks/useCaseTypeColsQuery';
 import { useArray } from '../../../hooks/useArray';
 import { ResponseHandler } from '../../ui/ResponseHandler';
 import { EpiUploadUtil } from '../../../utils/EpiUploadUtil';
-import {
-  EPI_UPLOAD_ACTION,
-  type EpiUploadMappedColumnsFormFields,
-} from '../../../models/epiUpload';
 import { ConfigManager } from '../../../classes/managers/ConfigManager';
 import { EpiUploadStoreContext } from '../../../stores/epiUploadStore';
+import type { EpiUploadMappedColumnsFormFields } from '../../../models/epiUpload';
+import { EPI_UPLOAD_ACTION } from '../../../models/epiUpload';
 
 import { EpiUploadNavigation } from './EpiUploadNavigation';
 
@@ -87,36 +84,16 @@ export const EpiUploadMapColumns = () => {
     }));
   }, [completeCaseType, rawData, fileName, importAction, clearErrors]);
 
-  const getMergedMappedColumns = useCallback((data: EpiUploadMappedColumnsFormFields) => {
-
-    const mergedMappedColumns = store.getState().mappedColumns.map((mappedColumn) => {
-      const formValue = data[mappedColumn.originalIndex.toString()];
-      const isCaseIdColumn = formValue === 'case_id';
-      const isCaseDateColumn = formValue === 'case_date';
-      let caseTypeCol: CaseTypeCol | null = null;
-      if (!isCaseIdColumn && !isCaseDateColumn && !!formValue) {
-        caseTypeCol = caseTypeColMap.map.get(formValue) || null;
-      }
-      return {
-        ...mappedColumn,
-        isCaseIdColumn,
-        isCaseDateColumn,
-        caseTypeCol,
-      };
-    });
-    return mergedMappedColumns;
-  }, [caseTypeColMap.map, store]);
-
   useEffect(() => {
     const perform = async () => {
-      await setMappedColumns(getMergedMappedColumns(values));
+      await setMappedColumns(EpiUploadUtil.getMappedColumnsFromFormData(values, rawData, caseTypeColMap.map));
     };
     // eslint-disable-next-line @typescript-eslint/no-floating-promises
     perform();
-  }, [getMergedMappedColumns, setMappedColumns, values]);
+  }, [setMappedColumns, values, rawData, caseTypeColMap.map]);
 
   const unMappedColumns = useMemo(() => {
-    return getMergedMappedColumns(values).filter(mappedColumn => {
+    return EpiUploadUtil.getMappedColumnsFromFormData(values, rawData, caseTypeColMap.map).filter(mappedColumn => {
       // ignore case type columns
       if (mappedColumn.isCaseTypeColumn) {
         return false;
@@ -127,12 +104,12 @@ export const EpiUploadMapColumns = () => {
       }
       return !mappedColumn.isCaseIdColumn && !mappedColumn.isCaseDateColumn && !mappedColumn.caseTypeCol;
     });
-  }, [getMergedMappedColumns, importAction, values]);
+  }, [caseTypeColMap.map, importAction, rawData, values]);
 
   const onFormSubmit = useCallback(async (data: EpiUploadMappedColumnsFormFields) => {
-    await setMappedColumns(getMergedMappedColumns(data));
+    await setMappedColumns(EpiUploadUtil.getMappedColumnsFromFormData(data, rawData, caseTypeColMap.map));
     await goToNextStep();
-  }, [getMergedMappedColumns, goToNextStep, setMappedColumns]);
+  }, [rawData, caseTypeColMap.map, goToNextStep, setMappedColumns]);
 
   const onProceedButtonClick = useCallback(async () => {
     await handleSubmit(onFormSubmit)();

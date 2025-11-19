@@ -251,6 +251,30 @@ export class EpiUploadUtil {
     });
   }
 
+  public static getMappedColumnsFromFormData(data: EpiUploadMappedColumnsFormFields, rawData: string[][], caseTypeColMap: Map<string, CaseTypeCol>): EpiUploadMappedColumn[] {
+    const mappedColumns: EpiUploadMappedColumn[] = [];
+    Object.entries(data).forEach(([originalIndexString, formValue]) => {
+      if (!formValue) {
+        return;
+      }
+      const originalIndex = parseInt(originalIndexString, 10);
+      const isCaseIdColumn = formValue === 'case_id';
+      const isCaseDateColumn = formValue === 'case_date';
+      let caseTypeCol: CaseTypeCol | null = null;
+      if (!isCaseIdColumn && !isCaseDateColumn) {
+        caseTypeCol = caseTypeColMap.get(formValue) || null;
+      }
+      mappedColumns.push({
+        isCaseIdColumn,
+        isCaseDateColumn,
+        caseTypeCol,
+        originalIndex,
+        originalLabel: rawData[0][originalIndex] || '',
+      });
+    });
+    return mappedColumns;
+  }
+
   public static areMappedColumnsEqual(a: EpiUploadMappedColumn[], b: EpiUploadMappedColumn[]): boolean {
     if (a.length !== b.length) {
       return false;
