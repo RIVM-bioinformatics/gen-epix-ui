@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.8.4](https://github.com/RIVM-bioinformatics/gen-epix-ui/compare/v1.8.3...v1.8.4) (2025-11-25)
+
+
+### Bug Fixes
+
+* fix style rendering ([4ba4419](https://github.com/RIVM-bioinformatics/gen-epix-ui/commit/4ba44194487e0404541f4d22e3a4044275547e14))
+
 ## [1.8.3](https://github.com/RIVM-bioinformatics/gen-epix-ui/compare/v1.8.2...v1.8.3) (2025-11-25)
 
 
