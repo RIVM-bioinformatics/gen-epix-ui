@@ -1,4 +1,4 @@
-import debounce from 'lodash/debounce';
+import throttle from 'lodash/throttle';
 
 import { LogLevel } from '../../../api';
 import { SubscribableAbstract } from '../../abstracts/SubscribableAbstract';
@@ -22,6 +22,7 @@ export class InactivityManager extends SubscribableAbstract<InactivityState> {
   private idleDiff: number = 0;
   private notificationDiff: number = 0;
   private isIdle: boolean = false;
+  private isPaused: boolean = false;
   private readonly onActivityDebounced: () => void;
 
   private constructor() {
@@ -36,7 +37,7 @@ export class InactivityManager extends SubscribableAbstract<InactivityState> {
     const ALLOWED_IDLE_TIME_MS = ConfigManager.instance.config.userInactivityConfirmation.ALLOWED_IDLE_TIME_MS;
     const NOTIFICATION_TIME_MS = ConfigManager.instance.config.userInactivityConfirmation.NOTIFICATION_TIME_MS;
 
-    this.onActivityDebounced = debounce(this.onActivity.bind(this), 1000, {
+    this.onActivityDebounced = throttle(this.onActivity.bind(this), 1000, {
       leading: true,
       trailing: true,
     });
@@ -44,7 +45,7 @@ export class InactivityManager extends SubscribableAbstract<InactivityState> {
     ['mousemove', 'keydown', 'scroll'].forEach((event) => window.addEventListener(event, this.onActivityDebounced));
 
     setInterval(() => {
-      if (this.idleSince > 0 && (Date.now() - ALLOWED_IDLE_TIME_MS) > this.idleSince) {
+      if (this.idleSince > 0 && (Date.now() - ALLOWED_IDLE_TIME_MS) > this.idleSince && !this.isPaused) {
         this.idleDiff = Date.now() - this.idleSince;
         this.isIdle = true;
 
@@ -56,13 +57,7 @@ export class InactivityManager extends SubscribableAbstract<InactivityState> {
         }
 
         if (this.isIdle) {
-          this.next({
-            isIdle: this.isIdle,
-            idleDiff: this.idleDiff,
-            notificationDiff: this.notificationDiff,
-            readableIdleDiff: TimeUtil.getReadableTimeRemaining(this.idleDiff),
-            readableNotificationDiff: TimeUtil.getReadableTimeRemaining(this.notificationDiff),
-          });
+          this.doNext();
         }
       }
     }, 500);
@@ -87,6 +82,27 @@ export class InactivityManager extends SubscribableAbstract<InactivityState> {
     this.isIdle = false;
     this.idleDiff = 0;
     this.notificationDiff = 0;
+    this.doNext();
+  }
+
+  public pause(): void {
+    this.isPaused = true;
+    this.reset();
+  }
+
+  public resume(): void {
+    this.isPaused = false;
+    this.reset();
+  }
+
+  private doNext(): void {
+    this.next({
+      isIdle: this.isIdle,
+      idleDiff: this.idleDiff,
+      notificationDiff: this.notificationDiff,
+      readableIdleDiff: TimeUtil.getReadableTimeRemaining(this.idleDiff),
+      readableNotificationDiff: TimeUtil.getReadableTimeRemaining(this.notificationDiff),
+    });
   }
 
   public logout(): void {

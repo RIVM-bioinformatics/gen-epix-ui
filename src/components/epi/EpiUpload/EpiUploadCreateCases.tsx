@@ -22,6 +22,7 @@ import { EpiUploadStoreContext } from '../../../stores/epiUploadStore';
 import { GenericErrorMessage } from '../../ui/GenericErrorMessage';
 import { LinearProgressWithLabel } from '../../ui/LinearProgressWithLabel';
 import { EpiUploadUtil } from '../../../utils/EpiUploadUtil';
+import { InactivityManager } from '../../../classes/managers/InactivityManager';
 
 import { EpiUploadNavigation } from './EpiUploadNavigation';
 
@@ -55,11 +56,13 @@ export const EpiUploadCreateCases = () => {
 
     const abort = () => {
       abortController.abort();
+      InactivityManager.instance.resume();
     };
 
     if (!isUploadStarted) {
       return abort;
     }
+    InactivityManager.instance.pause();
 
     EpiUploadUtil.createCasesAndUploadFiles({
       caseTypeId: store.getState().caseTypeId,
