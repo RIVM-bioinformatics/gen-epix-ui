@@ -1,9 +1,9 @@
 import {
+  Box,
   Tooltip,
   useTheme,
 } from '@mui/material';
 import ErrorOutlineIcon from '@mui/icons-material/ErrorOutline';
-import { Box } from '@mui/system';
 import type { ReactElement } from 'react';
 import {
   useCallback,

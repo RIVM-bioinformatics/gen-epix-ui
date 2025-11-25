@@ -40,6 +40,7 @@ import type { AutoCompleteOption } from '../../models/form';
 import { DATE_FORMAT } from '../../data/date';
 
 export class EpiFilterUtil {
+  private static readonly colTypeBlackList = new Set<ColType>([ColType.GENETIC_DISTANCE, ColType.GENETIC_SEQUENCE, ColType.GENETIC_READS]);
 
   public static createFilterDimensions(completeCaseType: CompleteCaseType): FilterDimension[] {
     const filterDimensions: FilterDimension[] = [];
@@ -48,6 +49,9 @@ export class EpiFilterUtil {
       const dimension = completeCaseType.dims[caseTypeDimension.dim_id];
       const cols = caseTypeDimension.case_type_col_order.map(id => completeCaseType.case_type_cols[id]).map(caseTypeColumn => completeCaseType.cols[caseTypeColumn.col_id]);
       if (EpiCaseTypeUtil.isGeneticDistanceDimension(dimension, cols)) {
+        return;
+      }
+      if (cols.every(col => EpiFilterUtil.colTypeBlackList.has(col.col_type))) {
         return;
       }
 
@@ -90,9 +94,6 @@ export class EpiFilterUtil {
   }
 
   public static createFilters(completeCaseType: CompleteCaseType): Filters {
-    // !FIXME: move to config
-    const filterBlacklist = new Set<ColType>([ColType.GENETIC_DISTANCE, ColType.GENETIC_SEQUENCE, ColType.GENETIC_READS]);
-
     const filters: Filters = [];
     filters.push(new SelectionFilter({
       id: 'selected',
@@ -112,7 +113,7 @@ export class EpiFilterUtil {
       const caseTypeColumns = caseTypeDimension.case_type_col_order.map(id => completeCaseType.case_type_cols[id]);
       caseTypeColumns.forEach(caseTypeColumn => {
         const column = completeCaseType.cols[caseTypeColumn.col_id];
-        if (filterBlacklist.has(column.col_type)) {
+        if (EpiFilterUtil.colTypeBlackList.has(column.col_type)) {
           return;
         }
 
