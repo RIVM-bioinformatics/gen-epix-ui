@@ -265,6 +265,7 @@ export * from './classes/managers/InactivityManager';
 export * from './classes/managers/HighlightingManager';
 export * from './classes/managers/EpiListsCaseSetMembersManager';
 export * from './classes/managers/EpiEventBusManager';
+export * from './classes/managers/EmotionCacheManager';
 export * from './classes/managers/DevicePixelRatioManager';
 export * from './classes/managers/ConfigManager';
 export * from './classes/managers/BreadcrumbManager';
