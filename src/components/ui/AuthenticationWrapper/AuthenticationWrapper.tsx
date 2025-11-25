@@ -89,9 +89,11 @@ export const AuthenticationWrapper = ({ children }: PropsWithChildren) => {
         sx={{ textAlign: 'center' }}
       >
         <Button
+          color={'primary'}
+          variant={'contained'}
           onClick={onLoginButtonClick}
         >
-          {t(`Continue in with: {{identityProviderName}}`, { identityProviderName: oidcConfiguration.label })}
+          {oidcConfiguration.label}
         </Button>
       </Box>
       <Box
