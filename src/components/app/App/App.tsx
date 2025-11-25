@@ -1,9 +1,3 @@
-import { CacheProvider } from '@emotion/react';
-import {
-  CssBaseline,
-  ThemeProvider,
-} from '@mui/material';
-import createCache from '@emotion/cache';
 import { QueryClientProvider } from '@tanstack/react-query';
 import { ErrorBoundary } from 'react-error-boundary';
 import { RouterProvider } from 'react-router-dom';
@@ -40,13 +34,6 @@ export const App = () => {
     AuthenticationManager.instance.onResponseRejected.bind(AuthenticationManager.instance),
   ];
 
-  const emotionCache = createCache({
-    key: 'genepix',
-    stylisPlugins: [],
-    nonce: config.nonce,
-    prepend: !!config.nonce,
-  });
-
   setNonce(config.nonce);
 
   const queryQueryManager = QueryClientManager.instance;
@@ -54,14 +41,9 @@ export const App = () => {
 
   return (
     <QueryClientProvider client={queryQueryManager.queryClient}>
-      <CacheProvider value={emotionCache}>
-        <ThemeProvider theme={ConfigManager.instance.config.theme}>
-          <CssBaseline />
-          <ErrorBoundary FallbackComponent={ErrorPage}>
-            <RouterProvider router={routerManager.router} />
-          </ErrorBoundary>
-        </ThemeProvider>
-      </CacheProvider>
+      <ErrorBoundary FallbackComponent={ErrorPage}>
+        <RouterProvider router={routerManager.router} />
+      </ErrorBoundary>
     </QueryClientProvider>
   );
 };
