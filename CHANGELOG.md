@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.8.5](https://github.com/RIVM-bioinformatics/gen-epix-ui/compare/v1.8.4...v1.8.5) (2025-11-25)
+
+
+### Bug Fixes
+
+* move emotion cache to manager ([52742ec](https://github.com/RIVM-bioinformatics/gen-epix-ui/commit/52742ecde5c1ab7df7ede88d268875ee07a048d3))
+
 ## [1.8.4](https://github.com/RIVM-bioinformatics/gen-epix-ui/compare/v1.8.3...v1.8.4) (2025-11-25)
 
 
