@@ -34,8 +34,8 @@
   },
   "peerDependencies": {
     "@emotion/cache": "$@emotion/cache",
-    "@emotion/react": "@@emotion/react",
-    "@emotion/styled": "@@emotion/styled",
+    "@emotion/react": "$@emotion/react",
+    "@emotion/styled": "$@emotion/styled",
     "i18next": "$i18next",
     "react": "$react",
     "react-dom": "$react-dom",
