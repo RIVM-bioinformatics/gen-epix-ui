@@ -1,6 +1,6 @@
 {
   "name": "@gen-epix/ui",
-  "version": "1.8.1",
+  "version": "1.8.2",
   "license": "EUPL-1.2",
   "publishConfig": {
     "access": "public"
