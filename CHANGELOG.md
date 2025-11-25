@@ -1,5 +1,18 @@
 # Changelog
 
+## [1.8.0](https://github.com/RIVM-bioinformatics/gen-epix-ui/compare/v1.7.0...v1.8.0) (2025-11-25)
+
+
+### Features
+
+* pause inactivity notification when user is uploading ([d753002](https://github.com/RIVM-bioinformatics/gen-epix-ui/commit/d753002b2a081b01b1049af441d08d904d02625b))
+* update all dependencies to latest ([a400f8e](https://github.com/RIVM-bioinformatics/gen-epix-ui/commit/a400f8e2f8eec3468e37df53673e721c9310b765))
+
+
+### Bug Fixes
+
+* fix filter sidebar vor epi dashboard ([c2ad3da](https://github.com/RIVM-bioinformatics/gen-epix-ui/commit/c2ad3da13a304dead93afcc317ba21b688d32b5b))
+
 ## [1.7.0](https://github.com/RIVM-bioinformatics/gen-epix-ui/compare/v1.6.0...v1.7.0) (2025-11-20)
 
 
