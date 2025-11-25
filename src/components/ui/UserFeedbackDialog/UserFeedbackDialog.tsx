@@ -9,6 +9,7 @@ import {
   useCallback,
   useEffect,
 } from 'react';
+import type { Resolver } from 'react-hook-form';
 import {
   FormProvider,
   useForm,
@@ -58,12 +59,14 @@ export const UserFeedbackDialog = withDialog<UserFeedbackDialogProps, UserFeedba
   const [t] = useTranslation();
   const auth = useAuth();
 
+  const schema = object().shape({
+    message: string().freeFormText().required().max(5000),
+    email: string().email().required().max(200),
+    name: string().extendedAlpha().required().max(200),
+  }, []);
+
   const formMethods = useForm<FormValues>({
-    resolver: yupResolver(object().shape({
-      message: string().freeFormText().required().max(5000),
-      email: string().email().required().max(200),
-      name: string().extendedAlpha().required().max(200),
-    })),
+    resolver: yupResolver(schema) as Resolver<FormValues>,
     values: {
       message: '',
       email: auth.user?.profile?.email ?? '',

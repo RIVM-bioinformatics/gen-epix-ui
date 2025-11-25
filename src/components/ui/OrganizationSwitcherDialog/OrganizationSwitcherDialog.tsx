@@ -8,9 +8,11 @@ import type { ReactElement } from 'react';
 import {
   useCallback,
   useEffect,
+  useMemo,
   useState,
 } from 'react';
 import { yupResolver } from '@hookform/resolvers/yup';
+import type { Resolver } from 'react-hook-form';
 import {
   FormProvider,
   useForm,
@@ -45,8 +47,8 @@ export interface OrganizationSwitcherDialogProps extends WithDialogRenderProps<O
 
 export type OrganizationSwitcherDialogRefMethods = WithDialogRefMethods<OrganizationSwitcherDialogProps, OrganizationSwitcherDialogOpenProps>;
 
-type FormValues = {
-  organization_id: string;
+type FormFields = {
+  organization_id?: string;
 };
 
 export const OrganizationSwitcherDialog = withDialog<OrganizationSwitcherDialogProps, OrganizationSwitcherDialogOpenProps>((
@@ -64,10 +66,14 @@ export const OrganizationSwitcherDialog = withDialog<OrganizationSwitcherDialogP
 
   const loadables = useArray([organizationOptionsQuery]);
 
-  const formMethods = useForm<FormValues>({
-    resolver: yupResolver(object().shape({
+  const schema = useMemo(() => {
+    return object().shape({
       organization_id: string().uuid4().required(),
-    })),
+    });
+  }, []);
+
+  const formMethods = useForm<FormFields>({
+    resolver: yupResolver(schema) as Resolver<FormFields>,
     values: {
       organization_id: user.organization_id,
     },
@@ -78,7 +84,7 @@ export const OrganizationSwitcherDialog = withDialog<OrganizationSwitcherDialogP
     WindowManager.instance.window.location.reload();
   }, []);
 
-  const onFormSubmit = useCallback((formValues: FormValues): void => {
+  const onFormSubmit = useCallback((formValues: FormFields): void => {
     if (formValues.organization_id === user.organization_id) {
       onClose();
     }

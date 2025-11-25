@@ -10,6 +10,7 @@ import {
   string,
 } from 'yup';
 import { yupResolver } from '@hookform/resolvers/yup';
+import type { Resolver } from 'react-hook-form';
 import { useForm } from 'react-hook-form';
 import difference from 'lodash/difference';
 import {
@@ -38,7 +39,7 @@ export type EpiCaseSharingFormProps = {
 } & BoxProps;
 
 type FormFields = {
-  dataCollectionIds: string[];
+  dataCollectionIds?: string[];
 };
 
 export const EpiCaseSharingForm = ({ formId, epiCase, onFinish, onIsSavingChange, ...boxProps }: EpiCaseSharingFormProps) => {
@@ -69,7 +70,7 @@ export const EpiCaseSharingForm = ({ formId, epiCase, onFinish, onIsSavingChange
   const values = useMemo<FormFields>(() => FormUtil.createFormValues(formFieldDefinitions, item), [formFieldDefinitions, item]);
 
   const formMethods = useForm<FormFields>({
-    resolver: yupResolver(schema),
+    resolver: yupResolver(schema) as Resolver<FormFields>,
     values,
   });
   const { handleSubmit } = formMethods;

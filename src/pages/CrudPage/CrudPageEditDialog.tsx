@@ -38,7 +38,7 @@ export interface CrudPageEditDialogProps<TData extends GenericData, TFormFields 
   readonly formFieldDefinitions: FormFieldDefinition<TFormFields>[];
   readonly getName: (item: TData | TFormFields) => string;
   readonly createItemDialogTitle?: string;
-  readonly schema: ObjectSchema<TFormFields>;
+  readonly schema: ObjectSchema<TFormFields, TFormFields>;
 }
 export type CrudPageEditDialogRefMethods<TData extends GenericData, TFormFields extends AnyObject> = WithDialogRefMethods<CrudPageEditDialogProps<TData, TFormFields>, CrudPageEditDialogOpenProps<TData>>;
 

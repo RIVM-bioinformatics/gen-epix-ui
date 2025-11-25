@@ -94,7 +94,7 @@ export type CrudPageProps<
   readonly resourceQueryKeyBase: QUERY_KEY;
   readonly associationQueryKeys?: string[][];
   readonly readOnly?: boolean;
-  readonly schema?: ObjectSchema<TFormFields>;
+  readonly schema?: ObjectSchema<TFormFields, TFormFields>;
   readonly showBreadcrumbs?: boolean;
   readonly showIdColumn?: boolean;
   readonly tableColumns: TableColumn<TTableData>[];

@@ -11,6 +11,7 @@ import {
   string,
 } from 'yup';
 import { yupResolver } from '@hookform/resolvers/yup';
+import type { Resolver } from 'react-hook-form';
 import { useForm } from 'react-hook-form';
 import difference from 'lodash/difference';
 import type { BoxProps } from '@mui/material';
@@ -37,8 +38,8 @@ export type EpiCaseSetSharingFormProps = {
 } & BoxProps;
 
 type FormFields = {
-  dataCollectionIds: string[];
-  shouldApplySharingToCases: boolean;
+  dataCollectionIds?: string[];
+  shouldApplySharingToCases?: boolean;
 };
 
 export const EpiCaseSetSharingForm = ({ formId, caseSet, onFinish, onIsSavingChange, ...boxProps }: EpiCaseSetSharingFormProps) => {
@@ -123,7 +124,7 @@ export const EpiCaseSetSharingForm = ({ formId, caseSet, onFinish, onIsSavingCha
   const values = useMemo<FormFields>(() => FormUtil.createFormValues(formFieldDefinitions, item), [formFieldDefinitions, item]);
 
   const formMethods = useForm<FormFields>({
-    resolver: yupResolver(schema),
+    resolver: yupResolver(schema) as Resolver<FormFields>,
     values,
   });
   const { handleSubmit } = formMethods;

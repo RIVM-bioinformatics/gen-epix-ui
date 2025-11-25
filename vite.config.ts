@@ -11,6 +11,7 @@ import svgr from 'vite-plugin-svgr';
 import dts from 'vite-plugin-dts';
 import { libInjectCss } from 'vite-plugin-lib-inject-css';
 import type { UserConfig } from 'vite';
+import type { TestUserConfig as UserConfigVitest } from 'vitest/node';
 import { viteStaticCopy } from 'vite-plugin-static-copy';
 
 const createIndex = () => {
@@ -95,4 +96,4 @@ export default {
       ],
     },
   },
-} satisfies UserConfig;
+} satisfies UserConfig & { test: UserConfigVitest };

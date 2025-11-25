@@ -103,7 +103,7 @@ export const EpiCreateEventDialog = withDialog<EpiCreateEventDialogProps, EpiCre
   }), []);
 
   const formMethods = useForm<FormFields>({
-    resolver: yupResolver(schema) as unknown as Resolver<FormFields>,
+    resolver: yupResolver(schema) as Resolver<FormFields>,
     values: {
       name: openProps.completeCaseType ? t('New {{eventName}} event', { eventName: openProps.completeCaseType.name }) : '',
       description: '',
