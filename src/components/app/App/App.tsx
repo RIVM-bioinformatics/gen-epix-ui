@@ -16,7 +16,7 @@ import { LogManager } from '../../../classes/managers/LogManager';
 import { QueryClientManager } from '../../../classes/managers/QueryClientManager';
 import { RouterManager } from '../../../classes/managers/RouterManager';
 import { ErrorPage } from '../../../pages/ErrorPage';
-import { EmotionCacheManager } from '../../..';
+import { EmotionCacheManager } from '../../../classes/managers/EmotionCacheManager';
 
 export const App = () => {
   const { config } = ConfigManager.instance;
@@ -42,12 +42,13 @@ export const App = () => {
 
   const queryQueryManager = QueryClientManager.instance;
   const routerManager = RouterManager.instance;
+  const emotionCacheManager = EmotionCacheManager.instance;
 
   setNonce(config.nonce);
 
   return (
     <QueryClientProvider client={queryQueryManager.queryClient}>
-      <CacheProvider value={EmotionCacheManager.instance.emotionCache}>
+      <CacheProvider value={emotionCacheManager.emotionCache}>
         <ThemeProvider theme={ConfigManager.instance.config.theme}>
           <CssBaseline />
           <ErrorBoundary FallbackComponent={ErrorPage}>
