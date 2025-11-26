@@ -30,7 +30,8 @@
   "overrides": {
     "@openapitools/openapi-generator-cli": {
       "axios": "$axios"
-    }
+    },
+    "typescript": "$typescript"
   },
   "peerDependencies": {
     "@emotion/cache": "11.14.0",
