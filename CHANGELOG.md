@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.8.6](https://github.com/RIVM-bioinformatics/gen-epix-ui/compare/v1.8.5...v1.8.6) (2025-11-26)
+
+
+### Bug Fixes
+
+* set all peer dependencies as external in rollup build boptrions ([79e38a8](https://github.com/RIVM-bioinformatics/gen-epix-ui/commit/79e38a8262a3195c7ad5e2e329d5f62b9f95627d))
+
 ## [1.8.5](https://github.com/RIVM-bioinformatics/gen-epix-ui/compare/v1.8.4...v1.8.5) (2025-11-25)
 
 
