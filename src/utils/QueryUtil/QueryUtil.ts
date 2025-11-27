@@ -151,6 +151,10 @@ export const queryKeyDependencies: Record<QUERY_KEY, QUERY_KEY[]> = {
   ],
   [QUERY_KEY.LICENSES]: [],
   [QUERY_KEY.INVITE_USER_CONSTRAINTS]: [],
+  [QUERY_KEY.IDENTIFIER_ISSUERS]: [
+    QUERY_KEY.IDENTIFIER_ISSUER_LINKS,
+  ],
+  [QUERY_KEY.IDENTIFIER_ISSUER_LINKS]: [],
 };
 
 export class QueryUtil {
