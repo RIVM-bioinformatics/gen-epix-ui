@@ -12,7 +12,7 @@ export const useOrganizationAccessCasePoliciesQuery = (select?: (data: Organizat
   return useQueryMemo({
     queryKey: QueryUtil.getGenericKey(QUERY_KEY.ORGANIZATION_ACCESS_CASE_POLICIES),
     queryFn: async ({ signal }) => {
-      const response = await AbacApi.getInstance().organizationAccessCasePoliciesGetAll({ signal });
+      const response = await AbacApi.instance.organizationAccessCasePoliciesGetAll({ signal });
       return response.data;
     },
     select: select ? (data) => select(data) : undefined,

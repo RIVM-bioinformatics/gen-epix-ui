@@ -74,7 +74,7 @@ export const CasesPage = () => {
   const { isLoading: isCaseTypesLoading, error: caseTypesError, data: caseTypes } = useQuery({
     queryKey: QueryUtil.getGenericKey(QUERY_KEY.CASE_TYPES),
     queryFn: async ({ signal }) => {
-      const response = await CaseApi.getInstance().caseTypesGetAll({ signal });
+      const response = await CaseApi.instance.caseTypesGetAll({ signal });
       return response.data;
     },
   });
@@ -87,7 +87,7 @@ export const CasesPage = () => {
   const { isLoading: isCaseTypeSetsLoading, error: caseTypeSetsError, data: caseTypeSets } = useQuery({
     queryKey: QueryUtil.getGenericKey(QUERY_KEY.CASE_TYPE_SETS),
     queryFn: async ({ signal }) => {
-      const response = await CaseApi.getInstance().caseTypeSetsGetAll({ signal });
+      const response = await CaseApi.instance.caseTypeSetsGetAll({ signal });
       return response.data;
     },
   });
@@ -95,7 +95,7 @@ export const CasesPage = () => {
   const { isLoading: isCaseTypeSetMembersLoading, error: caseTypeSetMembersError, data: caseTypeSetMembers } = useQuery({
     queryKey: QueryUtil.getGenericKey(QUERY_KEY.CASE_TYPE_SET_MEMBERS),
     queryFn: async ({ signal }) => {
-      const response = await CaseApi.getInstance().caseTypeSetMembersGetAll({ signal });
+      const response = await CaseApi.instance.caseTypeSetMembersGetAll({ signal });
       return response.data;
     },
   });

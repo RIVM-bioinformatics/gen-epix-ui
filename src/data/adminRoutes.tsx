@@ -206,7 +206,6 @@ export const adminRoutes: MyNonIndexRouteObject[] = [
   },
 
   // ACCESS_RIGHTS
-
   {
     path: '/management/data-collections',
     Component: () => <DataCollectionsAdminPage />,

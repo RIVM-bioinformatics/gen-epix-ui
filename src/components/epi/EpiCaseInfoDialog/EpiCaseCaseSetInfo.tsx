@@ -43,7 +43,7 @@ export const EpiCaseCaseSetInfo = ({ epiCase, ...boxProps }: EpiCaseCaseSetInfoP
   const { isLoading: isCaseSetMembersLoading, error: caseSetMembersError, data: caseSetMembers } = useQuery({
     queryKey: QueryUtil.getGenericKey(QUERY_KEY.CASE_SET_MEMBERS, caseSetMembersFilter),
     queryFn: async ({ signal }) => {
-      const response = await CaseApi.getInstance().caseSetMembersPostQuery(caseSetMembersFilter, { signal });
+      const response = await CaseApi.instance.caseSetMembersPostQuery(caseSetMembersFilter, { signal });
       return response.data;
     },
   });
@@ -57,7 +57,7 @@ export const EpiCaseCaseSetInfo = ({ epiCase, ...boxProps }: EpiCaseCaseSetInfoP
   const { isLoading: isCaseSetsLoading, error: caseSetsError, data: caseSets } = useQuery({
     queryKey: QueryUtil.getGenericKey(QUERY_KEY.CASE_SETS, caseSetsFilter),
     queryFn: async ({ signal }) => {
-      const response = await CaseApi.getInstance().caseSetsPostQuery(caseSetsFilter, { signal });
+      const response = await CaseApi.instance.caseSetsPostQuery(caseSetsFilter, { signal });
       return response.data;
     },
     enabled: caseSetsFilter.members.length > 0,

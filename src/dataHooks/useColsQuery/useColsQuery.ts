@@ -13,7 +13,7 @@ export const useColsQuery = (): UseQueryResult<Col[]> => {
   return useQueryMemo({
     queryKey: QueryUtil.getGenericKey(QUERY_KEY.COLS),
     queryFn: async ({ signal }) => {
-      const response = await CaseApi.getInstance().colsGetAll({ signal });
+      const response = await CaseApi.instance.colsGetAll({ signal });
       return response.data;
     },
   });

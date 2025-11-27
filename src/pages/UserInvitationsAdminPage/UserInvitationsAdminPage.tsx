@@ -73,15 +73,15 @@ export const UserInvitationsAdminPage = () => {
   const userInvitationsAdminDetailDialogRef = useRef<UserInvitationsAdminDetailDialogRefMethods>(null);
 
   const fetchAll = useCallback(async (signal: AbortSignal) => {
-    return (await OrganizationApi.getInstance().userInvitationsGetAll({ signal }))?.data;
+    return (await OrganizationApi.instance.userInvitationsGetAll({ signal }))?.data;
   }, []);
 
   const deleteOne = useCallback(async (item: UserInvitation) => {
-    return await OrganizationApi.getInstance().userInvitationsDeleteOne(item.id);
+    return await OrganizationApi.instance.userInvitationsDeleteOne(item.id);
   }, []);
 
   const createOne = useCallback(async (variables: FormFields) => {
-    return (await OrganizationApi.getInstance().inviteUser({
+    return (await OrganizationApi.instance.inviteUser({
       ...variables,
       key: variables.email,
     })).data;

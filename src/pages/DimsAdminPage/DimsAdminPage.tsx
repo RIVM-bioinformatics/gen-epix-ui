@@ -32,19 +32,19 @@ export const DimsAdminPage = () => {
   const dimTypeOptionsQuery = useDimTypeOptionsQuery();
 
   const fetchAll = useCallback(async (signal: AbortSignal) => {
-    return (await CaseApi.getInstance().dimsGetAll({ signal }))?.data;
+    return (await CaseApi.instance.dimsGetAll({ signal }))?.data;
   }, []);
 
   const deleteOne = useCallback(async (item: Dim) => {
-    return await CaseApi.getInstance().dimsDeleteOne(item.id);
+    return await CaseApi.instance.dimsDeleteOne(item.id);
   }, []);
 
   const updateOne = useCallback(async (variables: FormFields, item: Dim) => {
-    return (await CaseApi.getInstance().dimsPutOne(item.id, { id: item.id, ...variables })).data;
+    return (await CaseApi.instance.dimsPutOne(item.id, { id: item.id, ...variables })).data;
   }, []);
 
   const createOne = useCallback(async (variables: FormFields) => {
-    return (await CaseApi.getInstance().dimsPostOne(variables)).data;
+    return (await CaseApi.instance.dimsPostOne(variables)).data;
   }, []);
 
   const getName = useCallback((item: Dim) => {

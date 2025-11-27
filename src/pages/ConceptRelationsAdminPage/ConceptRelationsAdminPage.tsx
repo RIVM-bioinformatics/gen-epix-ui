@@ -44,19 +44,19 @@ export const ConceptRelationsAdminPage = () => {
   const loadables = useArray([conceptOptionsQuery, conceptMapQuery, conceptRelationTypeOptionsQuery, nameFactory]);
 
   const fetchAll = useCallback(async (signal: AbortSignal) => {
-    return (await OntologyApi.getInstance().conceptRelationsGetAll({ signal }))?.data;
+    return (await OntologyApi.instance.conceptRelationsGetAll({ signal }))?.data;
   }, []);
 
   const deleteOne = useCallback(async (item: ConceptRelation) => {
-    return await OntologyApi.getInstance().conceptRelationsDeleteOne(item.id);
+    return await OntologyApi.instance.conceptRelationsDeleteOne(item.id);
   }, []);
 
   const updateOne = useCallback(async (variables: FormFields, item: ConceptRelation) => {
-    return (await OntologyApi.getInstance().conceptRelationsPutOne(item.id, { id: item.id, ...variables })).data;
+    return (await OntologyApi.instance.conceptRelationsPutOne(item.id, { id: item.id, ...variables })).data;
   }, []);
 
   const createOne = useCallback(async (variables: FormFields) => {
-    return (await OntologyApi.getInstance().conceptRelationsPostOne(variables)).data;
+    return (await OntologyApi.instance.conceptRelationsPostOne(variables)).data;
   }, []);
 
   const getName = useCallback((item: ConceptRelation) => {

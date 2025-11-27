@@ -16,7 +16,7 @@ export const useConceptSetsQuery = (): UseQueryResult<ConceptSet[]> => {
   return useQueryMemo({
     queryKey: QueryUtil.getGenericKey(QUERY_KEY.CONCEPT_SETS),
     queryFn: async ({ signal }) => {
-      const response = await OntologyApi.getInstance().conceptSetsGetAll({ signal });
+      const response = await OntologyApi.instance.conceptSetsGetAll({ signal });
       return response.data;
     },
   });

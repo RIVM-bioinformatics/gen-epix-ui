@@ -39,19 +39,19 @@ export const OrganizationsAdminPage = () => {
   const [t] = useTranslation();
 
   const fetchAll = useCallback(async (signal: AbortSignal) => {
-    return (await OrganizationApi.getInstance().organizationsGetAll({ signal }))?.data;
+    return (await OrganizationApi.instance.organizationsGetAll({ signal }))?.data;
   }, []);
 
   const updateOne = useCallback(async (variables: FormFields, item: Organization) => {
-    return (await OrganizationApi.getInstance().organizationsPutOne(item.id, { id: item.id, ...variables })).data;
+    return (await OrganizationApi.instance.organizationsPutOne(item.id, { id: item.id, ...variables })).data;
   }, []);
 
   const createOne = useCallback(async (variables: FormFields) => {
-    return (await OrganizationApi.getInstance().organizationsPostOne(variables)).data;
+    return (await OrganizationApi.instance.organizationsPostOne(variables)).data;
   }, []);
 
   const deleteOne = useCallback(async (item: Organization) => {
-    return await OrganizationApi.getInstance().organizationsDeleteOne(item.id);
+    return await OrganizationApi.instance.organizationsDeleteOne(item.id);
   }, []);
 
   const getName = useCallback((item: Organization) => {

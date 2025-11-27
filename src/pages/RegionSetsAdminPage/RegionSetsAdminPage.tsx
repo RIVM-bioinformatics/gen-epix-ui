@@ -42,19 +42,19 @@ export const RegionSetsAdminPage = () => {
   const [t] = useTranslation();
 
   const fetchAll = useCallback(async (signal: AbortSignal) => {
-    return (await GeoApi.getInstance().regionSetsGetAll({ signal }))?.data;
+    return (await GeoApi.instance.regionSetsGetAll({ signal }))?.data;
   }, []);
 
   const deleteOne = useCallback(async (item: RegionSet) => {
-    return await GeoApi.getInstance().regionSetsDeleteOne(item.id);
+    return await GeoApi.instance.regionSetsDeleteOne(item.id);
   }, []);
 
   const updateOne = useCallback(async (variables: FormFields, item: RegionSet) => {
-    return (await GeoApi.getInstance().regionSetsPutOne(item.id, { id: item.id, ...variables })).data;
+    return (await GeoApi.instance.regionSetsPutOne(item.id, { id: item.id, ...variables })).data;
   }, []);
 
   const createOne = useCallback(async (variables: FormFields) => {
-    return (await GeoApi.getInstance().regionSetsPostOne(variables)).data;
+    return (await GeoApi.instance.regionSetsPostOne(variables)).data;
   }, []);
 
   const getName = useCallback((item: RegionSet) => {

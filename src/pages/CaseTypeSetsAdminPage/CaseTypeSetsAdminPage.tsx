@@ -47,27 +47,27 @@ export const CaseTypeSetsAdminPage = () => {
   const loadables = useArray([caseTypeOptionsQuery, caseTypeSetCategoryOptionsQuery]);
 
   const fetchAll = useCallback(async (signal: AbortSignal): Promise<CaseTypeSet[]> => {
-    const caseTypesSets = (await CaseApi.getInstance().caseTypeSetsGetAll({ signal }))?.data;
+    const caseTypesSets = (await CaseApi.instance.caseTypeSetsGetAll({ signal }))?.data;
     return caseTypesSets;
   }, []);
 
   const deleteOne = useCallback(async (item: CaseTypeSet) => {
-    return await CaseApi.getInstance().caseTypeSetsDeleteOne(item.id);
+    return await CaseApi.instance.caseTypeSetsDeleteOne(item.id);
   }, []);
 
   const updateOne = useCallback(async (variables: FormFields, item: CaseTypeSet) => {
-    await CaseApi.getInstance().caseTypeSetsPutCaseTypes(item.id, {
+    await CaseApi.instance.caseTypeSetsPutCaseTypes(item.id, {
       case_type_set_members: variables.caseTypeIds.map(case_type_id => ({
         case_type_id,
         case_type_set_id: item.id,
       })),
     });
-    return (await CaseApi.getInstance().caseTypeSetsPutOne(item.id, omit({ id: item.id, ...variables }, ['caseTypeIds']))).data;
+    return (await CaseApi.instance.caseTypeSetsPutOne(item.id, omit({ id: item.id, ...variables }, ['caseTypeIds']))).data;
   }, []);
 
   const createOne = useCallback(async (variables: FormFields) => {
-    const resultItem = (await CaseApi.getInstance().caseTypeSetsPostOne(omit(variables, ['caseTypeIds']))).data;
-    await CaseApi.getInstance().caseTypeSetsPutCaseTypes(resultItem.id, {
+    const resultItem = (await CaseApi.instance.caseTypeSetsPostOne(omit(variables, ['caseTypeIds']))).data;
+    await CaseApi.instance.caseTypeSetsPutCaseTypes(resultItem.id, {
       case_type_set_members: variables.caseTypeIds.map(case_type_id => ({
         case_type_id,
         case_type_set_id: resultItem.id,

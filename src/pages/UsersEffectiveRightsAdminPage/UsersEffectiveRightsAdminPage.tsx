@@ -74,7 +74,7 @@ export const UsersEffectiveRightsAdminPage = () => {
     itemId: userId,
     useQueryOptions: {
       queryFn: async ({ signal }) => {
-        const response = await OrganizationApi.getInstance().usersGetOne(userId, { signal });
+        const response = await OrganizationApi.instance.usersGetOne(userId, { signal });
         return response.data;
       },
     },

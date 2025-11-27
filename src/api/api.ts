@@ -1736,98 +1736,98 @@ export type ColType = typeof ColType[keyof typeof ColType];
  */
 
 export const CommandName = {
-    TreeAlgorithmClassCrudCommand: 'TreeAlgorithmClassCrudCommand',
-    CaseTypeColSetMemberCrudCommand: 'CaseTypeColSetMemberCrudCommand',
-    DimCrudCommand: 'DimCrudCommand',
-    CreateCaseSetCommand: 'CreateCaseSetCommand',
-    CreateReadSetsForCasesCommand: 'CreateReadSetsForCasesCommand',
-    OrganizationShareCasePolicyCrudCommand: 'OrganizationShareCasePolicyCrudCommand',
-    GetIdentityProvidersCommand: 'GetIdentityProvidersCommand',
-    CaseSetCategoryCrudCommand: 'CaseSetCategoryCrudCommand',
-    RegionRelationCrudCommand: 'RegionRelationCrudCommand',
-    CreateFileForSeqCommand: 'CreateFileForSeqCommand',
-    RetrieveOwnPermissionsCommand: 'RetrieveOwnPermissionsCommand',
-    UpdateUserOwnOrganizationCommand: 'UpdateUserOwnOrganizationCommand',
-    CaseTypeColSetCaseTypeColUpdateAssociationCommand: 'CaseTypeColSetCaseTypeColUpdateAssociationCommand',
-    CaseSetStatusCrudCommand: 'CaseSetStatusCrudCommand',
-    ConceptCrudCommand: 'ConceptCrudCommand',
-    RetrievePhylogeneticTreeByCasesCommand: 'RetrievePhylogeneticTreeByCasesCommand',
-    RetrieveCaseRightsCommand: 'RetrieveCaseRightsCommand',
-    SubjectIdentifierCrudCommand: 'SubjectIdentifierCrudCommand',
-    RetrieveSequencingProtocolsCommand: 'RetrieveSequencingProtocolsCommand',
-    RegionCrudCommand: 'RegionCrudCommand',
-    OrganizationIdentifierIssuerLinkCrudCommand: 'OrganizationIdentifierIssuerLinkCrudCommand',
-    OrganizationSetCrudCommand: 'OrganizationSetCrudCommand',
-    ConceptSetCrudCommand: 'ConceptSetCrudCommand',
-    OrganizationCrudCommand: 'OrganizationCrudCommand',
-    CaseTypeColCrudCommand: 'CaseTypeColCrudCommand',
-    EtiologyCrudCommand: 'EtiologyCrudCommand',
-    DataCollectionCrudCommand: 'DataCollectionCrudCommand',
-    CaseDataCollectionLinkCrudCommand: 'CaseDataCollectionLinkCrudCommand',
-    RetrieveCasesByIdCommand: 'RetrieveCasesByIdCommand',
-    CaseSetCrudCommand: 'CaseSetCrudCommand',
-    CaseTypeSetCrudCommand: 'CaseTypeSetCrudCommand',
-    CreateSeqsForCasesCommand: 'CreateSeqsForCasesCommand',
-    OrganizationSetOrganizationUpdateAssociationCommand: 'OrganizationSetOrganizationUpdateAssociationCommand',
-    TreeAlgorithmCrudCommand: 'TreeAlgorithmCrudCommand',
-    IdentifierIssuerCrudCommand: 'IdentifierIssuerCrudCommand',
-    RetrieveOutagesCommand: 'RetrieveOutagesCommand',
-    RetrieveCasesByQueryCommand: 'RetrieveCasesByQueryCommand',
-    DiseaseCrudCommand: 'DiseaseCrudCommand',
-    RetrieveGeneticSequenceFastaByIdCommand: 'RetrieveGeneticSequenceFastaByIdCommand',
     RetrieveOrganizationAdminNameEmailsCommand: 'RetrieveOrganizationAdminNameEmailsCommand',
-    OrganizationAccessCasePolicyCrudCommand: 'OrganizationAccessCasePolicyCrudCommand',
-    SiteCrudCommand: 'SiteCrudCommand',
-    CaseTypeCrudCommand: 'CaseTypeCrudCommand',
-    OrganizationSetMemberCrudCommand: 'OrganizationSetMemberCrudCommand',
-    RetrieveOrganizationsUnderAdminCommand: 'RetrieveOrganizationsUnderAdminCommand',
-    ContactCrudCommand: 'ContactCrudCommand',
-    RetrieveGeneticSequenceByCaseCommand: 'RetrieveGeneticSequenceByCaseCommand',
-    CreateFileForReadSetCommand: 'CreateFileForReadSetCommand',
-    RetrieveInviteUserConstraintsCommand: 'RetrieveInviteUserConstraintsCommand',
-    UserShareCasePolicyCrudCommand: 'UserShareCasePolicyCrudCommand',
-    OutageCrudCommand: 'OutageCrudCommand',
-    RetrieveGeneticSequenceByIdCommand: 'RetrieveGeneticSequenceByIdCommand',
-    DiseaseEtiologicalAgentUpdateAssociationCommand: 'DiseaseEtiologicalAgentUpdateAssociationCommand',
-    InviteUserCommand: 'InviteUserCommand',
-    CaseTypeColSetCrudCommand: 'CaseTypeColSetCrudCommand',
-    CaseSetMemberCrudCommand: 'CaseSetMemberCrudCommand',
+    RetrieveCasesByIdCommand: 'RetrieveCasesByIdCommand',
+    CaseTypeColSetCaseTypeColUpdateAssociationCommand: 'CaseTypeColSetCaseTypeColUpdateAssociationCommand',
+    DataCollectionSetCrudCommand: 'DataCollectionSetCrudCommand',
+    CreateCaseSetCommand: 'CreateCaseSetCommand',
+    DataCollectionSetDataCollectionUpdateAssociationCommand: 'DataCollectionSetDataCollectionUpdateAssociationCommand',
+    RetrieveCaseRightsCommand: 'RetrieveCaseRightsCommand',
+    RetrieveContainingRegionCommand: 'RetrieveContainingRegionCommand',
+    OrganizationCrudCommand: 'OrganizationCrudCommand',
+    OrganizationAdminPolicyCrudCommand: 'OrganizationAdminPolicyCrudCommand',
+    CaseTypeSetCrudCommand: 'CaseTypeSetCrudCommand',
+    RegisterInvitedUserCommand: 'RegisterInvitedUserCommand',
+    ConceptRelationCrudCommand: 'ConceptRelationCrudCommand',
+    CreateFileForSeqCommand: 'CreateFileForSeqCommand',
+    CaseCrudCommand: 'CaseCrudCommand',
+    ConceptCrudCommand: 'ConceptCrudCommand',
+    CaseDataCollectionLinkCrudCommand: 'CaseDataCollectionLinkCrudCommand',
+    DiseaseCrudCommand: 'DiseaseCrudCommand',
+    ConceptSetCrudCommand: 'ConceptSetCrudCommand',
+    EtiologicalAgentCrudCommand: 'EtiologicalAgentCrudCommand',
     ColCrudCommand: 'ColCrudCommand',
     RetrievePhylogeneticTreeBySequencesCommand: 'RetrievePhylogeneticTreeBySequencesCommand',
-    RetrieveOrganizationContactCommand: 'RetrieveOrganizationContactCommand',
-    RetrieveCaseTypeStatsCommand: 'RetrieveCaseTypeStatsCommand',
-    RetrieveCaseSetStatsCommand: 'RetrieveCaseSetStatsCommand',
-    CaseTypeSetMemberCrudCommand: 'CaseTypeSetMemberCrudCommand',
-    RetrieveSubRolesCommand: 'RetrieveSubRolesCommand',
-    CaseSetDataCollectionLinkCrudCommand: 'CaseSetDataCollectionLinkCrudCommand',
-    DataCollectionSetDataCollectionUpdateAssociationCommand: 'DataCollectionSetDataCollectionUpdateAssociationCommand',
-    EtiologicalAgentCrudCommand: 'EtiologicalAgentCrudCommand',
-    RetrieveLicensesCommand: 'RetrieveLicensesCommand',
-    UserInvitationCrudCommand: 'UserInvitationCrudCommand',
-    CaseTypeSettingsCrudCommand: 'CaseTypeSettingsCrudCommand',
+    CreateSeqsForCasesCommand: 'CreateSeqsForCasesCommand',
     RetrieveAssemblyProtocolsCommand: 'RetrieveAssemblyProtocolsCommand',
-    UserCrudCommand: 'UserCrudCommand',
-    UserAccessCasePolicyCrudCommand: 'UserAccessCasePolicyCrudCommand',
-    CaseCrudCommand: 'CaseCrudCommand',
-    OrganizationAdminPolicyCrudCommand: 'OrganizationAdminPolicyCrudCommand',
-    RegionSetShapeCrudCommand: 'RegionSetShapeCrudCommand',
-    RetrieveGeneticSequenceFastaByCaseCommand: 'RetrieveGeneticSequenceFastaByCaseCommand',
-    ConceptRelationCrudCommand: 'ConceptRelationCrudCommand',
-    DataCollectionSetMemberCrudCommand: 'DataCollectionSetMemberCrudCommand',
-    CreateCasesCommand: 'CreateCasesCommand',
-    RetrieveCaseSetRightsCommand: 'RetrieveCaseSetRightsCommand',
-    UpdateUserCommand: 'UpdateUserCommand',
-    RetrieveContainingRegionCommand: 'RetrieveContainingRegionCommand',
-    GeneticDistanceProtocolCrudCommand: 'GeneticDistanceProtocolCrudCommand',
-    SubjectCrudCommand: 'SubjectCrudCommand',
-    RegisterInvitedUserCommand: 'RegisterInvitedUserCommand',
-    RetrieveCompleteCaseTypeCommand: 'RetrieveCompleteCaseTypeCommand',
     ValidateCasesCommand: 'ValidateCasesCommand',
-    RegionSetCrudCommand: 'RegionSetCrudCommand',
-    DataCollectionSetCrudCommand: 'DataCollectionSetCrudCommand',
-    CaseTypeSetCaseTypeUpdateAssociationCommand: 'CaseTypeSetCaseTypeUpdateAssociationCommand',
+    RetrieveCaseSetRightsCommand: 'RetrieveCaseSetRightsCommand',
     RetrieveAlleleProfileCommand: 'RetrieveAlleleProfileCommand',
-    CaseTypeSetCategoryCrudCommand: 'CaseTypeSetCategoryCrudCommand'
+    CreateReadSetsForCasesCommand: 'CreateReadSetsForCasesCommand',
+    UpdateUserOwnOrganizationCommand: 'UpdateUserOwnOrganizationCommand',
+    CaseSetMemberCrudCommand: 'CaseSetMemberCrudCommand',
+    UserCrudCommand: 'UserCrudCommand',
+    OrganizationSetMemberCrudCommand: 'OrganizationSetMemberCrudCommand',
+    RegionSetCrudCommand: 'RegionSetCrudCommand',
+    OrganizationAccessCasePolicyCrudCommand: 'OrganizationAccessCasePolicyCrudCommand',
+    RetrieveGeneticSequenceByCaseCommand: 'RetrieveGeneticSequenceByCaseCommand',
+    CaseTypeColSetMemberCrudCommand: 'CaseTypeColSetMemberCrudCommand',
+    CaseTypeSetCaseTypeUpdateAssociationCommand: 'CaseTypeSetCaseTypeUpdateAssociationCommand',
+    OrganizationIdentifierIssuerLinkCrudCommand: 'OrganizationIdentifierIssuerLinkCrudCommand',
+    DataCollectionCrudCommand: 'DataCollectionCrudCommand',
+    DimCrudCommand: 'DimCrudCommand',
+    DiseaseEtiologicalAgentUpdateAssociationCommand: 'DiseaseEtiologicalAgentUpdateAssociationCommand',
+    CreateFileForReadSetCommand: 'CreateFileForReadSetCommand',
+    RetrieveOrganizationsUnderAdminCommand: 'RetrieveOrganizationsUnderAdminCommand',
+    CreateCasesCommand: 'CreateCasesCommand',
+    RetrievePhylogeneticTreeByCasesCommand: 'RetrievePhylogeneticTreeByCasesCommand',
+    RetrieveLicensesCommand: 'RetrieveLicensesCommand',
+    CaseTypeColCrudCommand: 'CaseTypeColCrudCommand',
+    RetrieveOwnPermissionsCommand: 'RetrieveOwnPermissionsCommand',
+    RegionRelationCrudCommand: 'RegionRelationCrudCommand',
+    GeneticDistanceProtocolCrudCommand: 'GeneticDistanceProtocolCrudCommand',
+    RetrieveGeneticSequenceByIdCommand: 'RetrieveGeneticSequenceByIdCommand',
+    ContactCrudCommand: 'ContactCrudCommand',
+    RetrieveCompleteCaseTypeCommand: 'RetrieveCompleteCaseTypeCommand',
+    SubjectCrudCommand: 'SubjectCrudCommand',
+    SubjectIdentifierCrudCommand: 'SubjectIdentifierCrudCommand',
+    CaseTypeSetCategoryCrudCommand: 'CaseTypeSetCategoryCrudCommand',
+    RegionSetShapeCrudCommand: 'RegionSetShapeCrudCommand',
+    OrganizationSetCrudCommand: 'OrganizationSetCrudCommand',
+    RetrieveGeneticSequenceFastaByIdCommand: 'RetrieveGeneticSequenceFastaByIdCommand',
+    RetrieveCaseTypeStatsCommand: 'RetrieveCaseTypeStatsCommand',
+    CaseTypeCrudCommand: 'CaseTypeCrudCommand',
+    RetrieveOutagesCommand: 'RetrieveOutagesCommand',
+    CaseSetDataCollectionLinkCrudCommand: 'CaseSetDataCollectionLinkCrudCommand',
+    CaseSetCrudCommand: 'CaseSetCrudCommand',
+    OutageCrudCommand: 'OutageCrudCommand',
+    RetrieveInviteUserConstraintsCommand: 'RetrieveInviteUserConstraintsCommand',
+    CaseSetStatusCrudCommand: 'CaseSetStatusCrudCommand',
+    RetrieveCaseSetStatsCommand: 'RetrieveCaseSetStatsCommand',
+    OrganizationSetOrganizationUpdateAssociationCommand: 'OrganizationSetOrganizationUpdateAssociationCommand',
+    DataCollectionSetMemberCrudCommand: 'DataCollectionSetMemberCrudCommand',
+    RetrieveCasesByQueryCommand: 'RetrieveCasesByQueryCommand',
+    RetrieveSubRolesCommand: 'RetrieveSubRolesCommand',
+    SiteCrudCommand: 'SiteCrudCommand',
+    RetrieveOrganizationContactCommand: 'RetrieveOrganizationContactCommand',
+    CaseSetCategoryCrudCommand: 'CaseSetCategoryCrudCommand',
+    CaseTypeColSetCrudCommand: 'CaseTypeColSetCrudCommand',
+    OrganizationShareCasePolicyCrudCommand: 'OrganizationShareCasePolicyCrudCommand',
+    IdentifierIssuerCrudCommand: 'IdentifierIssuerCrudCommand',
+    UpdateUserCommand: 'UpdateUserCommand',
+    CaseTypeSetMemberCrudCommand: 'CaseTypeSetMemberCrudCommand',
+    UserInvitationCrudCommand: 'UserInvitationCrudCommand',
+    GetIdentityProvidersCommand: 'GetIdentityProvidersCommand',
+    TreeAlgorithmCrudCommand: 'TreeAlgorithmCrudCommand',
+    UserAccessCasePolicyCrudCommand: 'UserAccessCasePolicyCrudCommand',
+    RetrieveGeneticSequenceFastaByCaseCommand: 'RetrieveGeneticSequenceFastaByCaseCommand',
+    InviteUserCommand: 'InviteUserCommand',
+    TreeAlgorithmClassCrudCommand: 'TreeAlgorithmClassCrudCommand',
+    RetrieveSequencingProtocolsCommand: 'RetrieveSequencingProtocolsCommand',
+    RegionCrudCommand: 'RegionCrudCommand',
+    CaseTypeSettingsCrudCommand: 'CaseTypeSettingsCrudCommand',
+    EtiologyCrudCommand: 'EtiologyCrudCommand',
+    UserShareCasePolicyCrudCommand: 'UserShareCasePolicyCrudCommand'
 } as const;
 
 export type CommandName = typeof CommandName[keyof typeof CommandName];
@@ -8685,10 +8685,10 @@ const AbacApiFp = function(configuration?: Configuration) {
  * @extends {BaseAPI}
  */
 export class AbacApi extends BaseAPI {
-  public static instance: AbacApi;
-  public static getInstance(): AbacApi {
-    this.instance = this.instance || new AbacApi();
-    return this.instance;
+  private static __instance: AbacApi;
+  public static get instance(): AbacApi {
+    AbacApi.__instance = AbacApi.__instance || new AbacApi();
+    return AbacApi.__instance;
   }
 
     /**
@@ -9494,10 +9494,10 @@ const AuthApiFp = function(configuration?: Configuration) {
  * @extends {BaseAPI}
  */
 export class AuthApi extends BaseAPI {
-  public static instance: AuthApi;
-  public static getInstance(): AuthApi {
-    this.instance = this.instance || new AuthApi();
-    return this.instance;
+  private static __instance: AuthApi;
+  public static get instance(): AuthApi {
+    AuthApi.__instance = AuthApi.__instance || new AuthApi();
+    return AuthApi.__instance;
   }
 
     /**
@@ -22259,10 +22259,10 @@ const CaseApiFp = function(configuration?: Configuration) {
  * @extends {BaseAPI}
  */
 export class CaseApi extends BaseAPI {
-  public static instance: CaseApi;
-  public static getInstance(): CaseApi {
-    this.instance = this.instance || new CaseApi();
-    return this.instance;
+  private static __instance: CaseApi;
+  public static get instance(): CaseApi {
+    CaseApi.__instance = CaseApi.__instance || new CaseApi();
+    return CaseApi.__instance;
   }
 
     /**
@@ -25485,10 +25485,10 @@ const DefaultApiFp = function(configuration?: Configuration) {
  * @extends {BaseAPI}
  */
 export class DefaultApi extends BaseAPI {
-  public static instance: DefaultApi;
-  public static getInstance(): DefaultApi {
-    this.instance = this.instance || new DefaultApi();
-    return this.instance;
+  private static __instance: DefaultApi;
+  public static get instance(): DefaultApi {
+    DefaultApi.__instance = DefaultApi.__instance || new DefaultApi();
+    return DefaultApi.__instance;
   }
 
     /**
@@ -27845,10 +27845,10 @@ const GeoApiFp = function(configuration?: Configuration) {
  * @extends {BaseAPI}
  */
 export class GeoApi extends BaseAPI {
-  public static instance: GeoApi;
-  public static getInstance(): GeoApi {
-    this.instance = this.instance || new GeoApi();
-    return this.instance;
+  private static __instance: GeoApi;
+  public static get instance(): GeoApi {
+    GeoApi.__instance = GeoApi.__instance || new GeoApi();
+    return GeoApi.__instance;
   }
 
     /**
@@ -31974,10 +31974,10 @@ const OntologyApiFp = function(configuration?: Configuration) {
  * @extends {BaseAPI}
  */
 export class OntologyApi extends BaseAPI {
-  public static instance: OntologyApi;
-  public static getInstance(): OntologyApi {
-    this.instance = this.instance || new OntologyApi();
-    return this.instance;
+  private static __instance: OntologyApi;
+  public static get instance(): OntologyApi {
+    OntologyApi.__instance = OntologyApi.__instance || new OntologyApi();
+    return OntologyApi.__instance;
   }
 
     /**
@@ -40189,10 +40189,10 @@ const OrganizationApiFp = function(configuration?: Configuration) {
  * @extends {BaseAPI}
  */
 export class OrganizationApi extends BaseAPI {
-  public static instance: OrganizationApi;
-  public static getInstance(): OrganizationApi {
-    this.instance = this.instance || new OrganizationApi();
-    return this.instance;
+  private static __instance: OrganizationApi;
+  public static get instance(): OrganizationApi {
+    OrganizationApi.__instance = OrganizationApi.__instance || new OrganizationApi();
+    return OrganizationApi.__instance;
   }
 
     /**
@@ -43195,10 +43195,10 @@ const SubjectApiFp = function(configuration?: Configuration) {
  * @extends {BaseAPI}
  */
 export class SubjectApi extends BaseAPI {
-  public static instance: SubjectApi;
-  public static getInstance(): SubjectApi {
-    this.instance = this.instance || new SubjectApi();
-    return this.instance;
+  private static __instance: SubjectApi;
+  public static get instance(): SubjectApi {
+    SubjectApi.__instance = SubjectApi.__instance || new SubjectApi();
+    return SubjectApi.__instance;
   }
 
     /**
@@ -44274,10 +44274,10 @@ const SystemApiFp = function(configuration?: Configuration) {
  * @extends {BaseAPI}
  */
 export class SystemApi extends BaseAPI {
-  public static instance: SystemApi;
-  public static getInstance(): SystemApi {
-    this.instance = this.instance || new SystemApi();
-    return this.instance;
+  private static __instance: SystemApi;
+  public static get instance(): SystemApi {
+    SystemApi.__instance = SystemApi.__instance || new SystemApi();
+    return SystemApi.__instance;
   }
 
     /**

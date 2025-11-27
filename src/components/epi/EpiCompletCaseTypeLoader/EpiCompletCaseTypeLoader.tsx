@@ -30,7 +30,7 @@ export const EpiCompletCaseTypeLoader = ({ caseTypeId, onCompleteCaseTypeLoaded,
     itemId: caseTypeId,
     useQueryOptions: {
       queryFn: async ({ signal }) => {
-        return (await CaseApi.getInstance().completeCaseTypesGetOne(caseTypeId, { signal })).data;
+        return (await CaseApi.instance.completeCaseTypesGetOne(caseTypeId, { signal })).data;
       },
     },
   });

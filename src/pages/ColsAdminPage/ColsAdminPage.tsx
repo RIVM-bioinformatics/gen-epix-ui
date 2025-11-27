@@ -43,19 +43,19 @@ export const ColsAdminPage = () => {
   const loadables = useArray([dimOptionsQuery, colTypeOptionsQuery, conceptSetOptionsQuery, regionSetOptionsQuery, geneticDistanceProtocolOptionsQuery]);
 
   const fetchAll = useCallback(async (signal: AbortSignal) => {
-    return (await CaseApi.getInstance().colsGetAll({ signal }))?.data;
+    return (await CaseApi.instance.colsGetAll({ signal }))?.data;
   }, []);
 
   const deleteOne = useCallback(async (item: Col) => {
-    return await CaseApi.getInstance().colsDeleteOne(item.id);
+    return await CaseApi.instance.colsDeleteOne(item.id);
   }, []);
 
   const updateOne = useCallback(async (variables: FormFields, item: Col) => {
-    return (await CaseApi.getInstance().colsPutOne(item.id, { id: item.id, ...variables })).data;
+    return (await CaseApi.instance.colsPutOne(item.id, { id: item.id, ...variables })).data;
   }, []);
 
   const createOne = useCallback(async (variables: FormFields) => {
-    return (await CaseApi.getInstance().colsPostOne(variables)).data;
+    return (await CaseApi.instance.colsPostOne(variables)).data;
   }, []);
 
   const getName = useCallback((item: Col) => {

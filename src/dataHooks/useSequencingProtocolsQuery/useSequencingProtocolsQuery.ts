@@ -16,7 +16,7 @@ export const useSequencingProtocolsQuery = (): UseQueryResult<SequencingProtocol
   return useQueryMemo({
     queryKey: QueryUtil.getGenericKey(QUERY_KEY.SEQUENCING_PROTOCOLS),
     queryFn: async ({ signal }) => {
-      const response = await CaseApi.getInstance().retrieveSequencingProtocols({ signal });
+      const response = await CaseApi.instance.retrieveSequencingProtocols({ signal });
       return response.data;
     },
   });

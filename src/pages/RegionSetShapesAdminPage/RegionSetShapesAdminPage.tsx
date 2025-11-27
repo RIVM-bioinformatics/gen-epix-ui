@@ -35,7 +35,7 @@ export const RegionSetShapesAdminPage = () => {
   const loadables = useArray([regionSetsMapQuery]);
 
   const fetchAll = useCallback(async (signal: AbortSignal) => {
-    return (await GeoApi.getInstance().regionSetShapesGetAll({ signal }))?.data;
+    return (await GeoApi.instance.regionSetShapesGetAll({ signal }))?.data;
   }, []);
 
   const fetchAllSelect = useCallback((regionSetShapes: RegionSetShape[]) => {
@@ -43,11 +43,11 @@ export const RegionSetShapesAdminPage = () => {
   }, [regionSetId]);
 
   const deleteOne = useCallback(async (item: RegionSetShape) => {
-    return await GeoApi.getInstance().regionSetShapesDeleteOne(item.id);
+    return await GeoApi.instance.regionSetShapesDeleteOne(item.id);
   }, []);
 
   const updateOne = useCallback(async (variables: FormFields, item: RegionSetShape) => {
-    return (await GeoApi.getInstance().regionSetShapesPutOne(item.id, {
+    return (await GeoApi.instance.regionSetShapesPutOne(item.id, {
       ...variables,
       id: item.id,
       region_set_id: regionSetId,
@@ -55,7 +55,7 @@ export const RegionSetShapesAdminPage = () => {
   }, [regionSetId]);
 
   const createOne = useCallback(async (variables: FormFields) => {
-    return (await GeoApi.getInstance().regionSetShapesPostOne({
+    return (await GeoApi.instance.regionSetShapesPostOne({
       ...variables,
       region_set_id: regionSetId,
     })).data;

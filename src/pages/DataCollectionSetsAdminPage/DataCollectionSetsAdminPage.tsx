@@ -41,26 +41,26 @@ export const DataCollectionSetsAdminPage = () => {
   const loadables = useArray([dataCollectionSetMembersQuery, dataCollectionOptionsQuery]);
 
   const fetchAll = useCallback(async (signal: AbortSignal) => {
-    return (await OrganizationApi.getInstance().dataCollectionSetsGetAll({ signal }))?.data;
+    return (await OrganizationApi.instance.dataCollectionSetsGetAll({ signal }))?.data;
   }, []);
 
   const deleteOne = useCallback(async (item: DataCollectionSet) => {
-    return await OrganizationApi.getInstance().dataCollectionSetsDeleteOne(item.id);
+    return await OrganizationApi.instance.dataCollectionSetsDeleteOne(item.id);
   }, []);
 
   const updateOne = useCallback(async (variables: FormFields, item: DataCollectionSet) => {
-    await OrganizationApi.getInstance().dataCollectionSetsPutDataCollections(item.id, {
+    await OrganizationApi.instance.dataCollectionSetsPutDataCollections(item.id, {
       data_collection_set_members: variables.dataCollectionIds.map<DataCollectionSetMember>(data_collection_id => ({
         data_collection_id,
         data_collection_set_id: item.id,
       })),
     });
-    return (await OrganizationApi.getInstance().dataCollectionSetsPutOne(item.id, { id: item.id, ...variables })).data;
+    return (await OrganizationApi.instance.dataCollectionSetsPutOne(item.id, { id: item.id, ...variables })).data;
   }, []);
 
   const createOne = useCallback(async (variables: FormFields) => {
-    const resultItem = (await OrganizationApi.getInstance().dataCollectionSetsPostOne(variables)).data;
-    await OrganizationApi.getInstance().dataCollectionSetsPutDataCollections(resultItem.id, {
+    const resultItem = (await OrganizationApi.instance.dataCollectionSetsPostOne(variables)).data;
+    await OrganizationApi.instance.dataCollectionSetsPutDataCollections(resultItem.id, {
       data_collection_set_members: variables.dataCollectionIds.map<DataCollectionSetMember>(data_collection_id => ({
         data_collection_id,
         data_collection_set_id: resultItem.id,

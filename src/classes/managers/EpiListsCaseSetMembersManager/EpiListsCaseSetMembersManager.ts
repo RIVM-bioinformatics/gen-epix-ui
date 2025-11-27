@@ -48,7 +48,7 @@ export class EpiListsCaseSetMembersManager {
     try {
       const queryClient = QueryClientManager.instance.queryClient;
       const newCache = { ...cache };
-      const caseSetMembersResult = (await CaseApi.getInstance().caseSetMembersPostQuery({
+      const caseSetMembersResult = (await CaseApi.instance.caseSetMembersPostQuery({
         invert: false,
         key: 'case_id',
         type: 'UUID_SET',

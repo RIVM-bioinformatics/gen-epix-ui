@@ -13,7 +13,7 @@ export const useCaseTypeStatsQuery = (options?: RetrieveCaseTypeStatsRequestBody
   return useQueryMemo({
     queryKey: QueryUtil.getGenericKey(QUERY_KEY.CASE_TYPE_STATS, options ?? {}),
     queryFn: async ({ signal }) => {
-      const response = await CaseApi.getInstance().retrieveCaseTypeStats(options ?? {}, { signal });
+      const response = await CaseApi.instance.retrieveCaseTypeStats(options ?? {}, { signal });
       return response.data;
     },
   });

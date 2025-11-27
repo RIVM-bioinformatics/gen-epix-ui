@@ -30,7 +30,7 @@ export const ConceptsAdminPage = () => {
   const [t] = useTranslation();
 
   const fetchAll = useCallback(async (signal: AbortSignal) => {
-    return (await OntologyApi.getInstance().conceptsGetAll({ signal }))?.data;
+    return (await OntologyApi.instance.conceptsGetAll({ signal }))?.data;
   }, []);
 
   const fetchAllSelect = useCallback((concepts: Concept[]) => {
@@ -38,11 +38,11 @@ export const ConceptsAdminPage = () => {
   }, [conceptSetId]);
 
   const deleteOne = useCallback(async (item: Concept) => {
-    return await OntologyApi.getInstance().conceptsDeleteOne(item.id);
+    return await OntologyApi.instance.conceptsDeleteOne(item.id);
   }, []);
 
   const updateOne = useCallback(async (variables: FormFields, item: Concept) => {
-    const updatedItem = (await OntologyApi.getInstance().conceptsPutOne(item.id, {
+    const updatedItem = (await OntologyApi.instance.conceptsPutOne(item.id, {
       ...variables,
       id: item.id,
       concept_set_id: conceptSetId,
@@ -51,7 +51,7 @@ export const ConceptsAdminPage = () => {
   }, [conceptSetId]);
 
   const createOne = useCallback(async (variables: FormFields) => {
-    return (await OntologyApi.getInstance().conceptsPostOne({
+    return (await OntologyApi.instance.conceptsPostOne({
       ...variables,
       concept_set_id: conceptSetId,
     })).data;

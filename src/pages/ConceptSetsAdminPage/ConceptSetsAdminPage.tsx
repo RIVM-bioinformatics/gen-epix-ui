@@ -44,19 +44,19 @@ export const ConceptSetsAdminPage = () => {
   const [t] = useTranslation();
 
   const fetchAll = useCallback(async (signal: AbortSignal) => {
-    return (await OntologyApi.getInstance().conceptSetsGetAll({ signal }))?.data;
+    return (await OntologyApi.instance.conceptSetsGetAll({ signal }))?.data;
   }, []);
 
   const deleteOne = useCallback(async (item: ConceptSet) => {
-    return await OntologyApi.getInstance().conceptSetsDeleteOne(item.id);
+    return await OntologyApi.instance.conceptSetsDeleteOne(item.id);
   }, []);
 
   const updateOne = useCallback(async (variables: FormFields, item: ConceptSet) => {
-    return (await OntologyApi.getInstance().conceptSetsPutOne(item.id, { id: item.id, ...variables })).data;
+    return (await OntologyApi.instance.conceptSetsPutOne(item.id, { id: item.id, ...variables })).data;
   }, []);
 
   const createOne = useCallback(async (variables: FormFields) => {
-    return (await OntologyApi.getInstance().conceptSetsPostOne(variables)).data;
+    return (await OntologyApi.instance.conceptSetsPostOne(variables)).data;
   }, []);
 
   const getName = useCallback((item: ConceptSet) => {

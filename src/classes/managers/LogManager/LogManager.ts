@@ -64,7 +64,7 @@ export class LogManager {
     if (document.location.href.includes('accept-invitation')) {
       return;
     }
-    SystemApi.getInstance().log({
+    SystemApi.instance.log({
       log_items: this.logItems,
     }, {
       headers: {

@@ -10,7 +10,7 @@ export const useDataCollectionSetMembersQuery = (): UseQueryResult<DataCollectio
   return useQueryMemo({
     queryKey: QueryUtil.getGenericKey(QUERY_KEY.DATA_COLLECTION_SET_MEMBERS),
     queryFn: async ({ signal }) => {
-      const response = await OrganizationApi.getInstance().dataCollectionSetMembersGetAll({ signal });
+      const response = await OrganizationApi.instance.dataCollectionSetMembersGetAll({ signal });
       return response.data;
     },
   });

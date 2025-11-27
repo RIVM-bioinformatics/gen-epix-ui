@@ -16,7 +16,7 @@ export const useDataCollectionsQuery = (dataCollectionIds?: string[]): UseQueryR
   return useQueryMemo({
     queryKey: QueryUtil.getGenericKey(QUERY_KEY.DATA_COLLECTIONS),
     queryFn: async ({ signal }) => {
-      const response = await OrganizationApi.getInstance().dataCollectionsGetAll({ signal });
+      const response = await OrganizationApi.instance.dataCollectionsGetAll({ signal });
       return response.data;
     },
     select: (items) => {

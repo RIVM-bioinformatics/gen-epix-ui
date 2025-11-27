@@ -10,7 +10,7 @@ export const useCaseTypeColSetMembersQuery = (): UseQueryResult<CaseTypeColSetMe
   return useQueryMemo({
     queryKey: QueryUtil.getGenericKey(QUERY_KEY.CASE_TYPE_COL_SET_MEMBERS),
     queryFn: async ({ signal }) => {
-      const response = await CaseApi.getInstance().caseTypeColSetMembersGetAll({ signal });
+      const response = await CaseApi.instance.caseTypeColSetMembersGetAll({ signal });
       return response.data;
     },
   });

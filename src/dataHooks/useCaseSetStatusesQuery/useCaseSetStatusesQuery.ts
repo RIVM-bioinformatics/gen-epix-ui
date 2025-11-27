@@ -16,7 +16,7 @@ export const useCaseSetStatusesQuery = (): UseQueryResult<CaseSetStatus[]> => {
   return useQueryMemo({
     queryKey: QueryUtil.getGenericKey(QUERY_KEY.CASE_SET_STATUSES),
     queryFn: async ({ signal }) => {
-      const response = await CaseApi.getInstance().caseSetStatusesGetAll({ signal });
+      const response = await CaseApi.instance.caseSetStatusesGetAll({ signal });
       return response.data;
     },
   });

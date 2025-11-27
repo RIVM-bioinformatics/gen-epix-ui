@@ -13,7 +13,7 @@ import { QueryUtil } from '../../utils/QueryUtil';
 import { useQueryMemo } from '../../hooks/useQueryMemo';
 
 export const caseTypesQueryFn = async ({ signal }: { signal: AbortSignal }): Promise<CaseType[]> => {
-  const response = await CaseApi.getInstance().caseTypesGetAll({ signal });
+  const response = await CaseApi.instance.caseTypesGetAll({ signal });
   const items = response.data;
   items.sort((a, b) => a.name.localeCompare(b.name));
   return items;

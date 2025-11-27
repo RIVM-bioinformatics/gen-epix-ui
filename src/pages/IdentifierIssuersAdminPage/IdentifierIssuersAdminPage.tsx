@@ -28,19 +28,19 @@ export const IdentifierIssuersAdminPage = () => {
 
 
   const fetchAll = useCallback(async (signal: AbortSignal) => {
-    return (await OrganizationApi.getInstance().identifierIssuersGetAll({ signal }))?.data;
+    return (await OrganizationApi.instance.identifierIssuersGetAll({ signal }))?.data;
   }, []);
 
   const deleteOne = useCallback(async (item: IdentifierIssuer) => {
-    return await OrganizationApi.getInstance().identifierIssuersDeleteOne(item.id);
+    return await OrganizationApi.instance.identifierIssuersDeleteOne(item.id);
   }, []);
 
   const updateOne = useCallback(async (variables: FormFields, item: IdentifierIssuer) => {
-    return (await OrganizationApi.getInstance().identifierIssuersPutOne(item.id, { id: item.id, ...variables })).data;
+    return (await OrganizationApi.instance.identifierIssuersPutOne(item.id, { id: item.id, ...variables })).data;
   }, []);
 
   const createOne = useCallback(async (variables: FormFields) => {
-    return (await OrganizationApi.getInstance().identifierIssuersPostOne(variables)).data;
+    return (await OrganizationApi.instance.identifierIssuersPostOne(variables)).data;
   }, []);
 
   const getName = useCallback((item: IdentifierIssuer) => {

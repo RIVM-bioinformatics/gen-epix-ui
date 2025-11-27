@@ -30,7 +30,7 @@ export const RegionsAdminPage = () => {
   const [t] = useTranslation();
 
   const fetchAll = useCallback(async (signal: AbortSignal) => {
-    return (await GeoApi.getInstance().regionsGetAll({ signal }))?.data;
+    return (await GeoApi.instance.regionsGetAll({ signal }))?.data;
   }, []);
 
   const fetchAllSelect = useCallback((regions: Region[]) => {
@@ -38,11 +38,11 @@ export const RegionsAdminPage = () => {
   }, [regionSetId]);
 
   const deleteOne = useCallback(async (item: Region) => {
-    return await GeoApi.getInstance().regionsDeleteOne(item.id);
+    return await GeoApi.instance.regionsDeleteOne(item.id);
   }, []);
 
   const updateOne = useCallback(async (variables: FormFields, item: Region) => {
-    return (await GeoApi.getInstance().regionsPutOne(item.id, {
+    return (await GeoApi.instance.regionsPutOne(item.id, {
       ...variables,
       id: item.id,
       region_set_id: regionSetId,
@@ -50,7 +50,7 @@ export const RegionsAdminPage = () => {
   }, [regionSetId]);
 
   const createOne = useCallback(async (variables: FormFields) => {
-    return (await GeoApi.getInstance().regionsPostOne({
+    return (await GeoApi.instance.regionsPostOne({
       ...variables,
       region_set_id: regionSetId,
     })).data;

@@ -20,7 +20,7 @@ export const useOrganizationAdminPoliciesQuery = (): UseQueryResult<Organization
   return useQueryMemo({
     queryKey: QueryUtil.getGenericKey(QUERY_KEY.ORGANIZATION_ADMIN_POLICIES),
     queryFn: async ({ signal }) => {
-      const response = await AbacApi.getInstance().organizationAdminPoliciesGetAll({ signal });
+      const response = await AbacApi.instance.organizationAdminPoliciesGetAll({ signal });
       return response.data;
     },
   });

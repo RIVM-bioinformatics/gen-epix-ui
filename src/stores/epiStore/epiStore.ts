@@ -657,7 +657,7 @@ export const createEpiStore = (kwArgs: CreateEpiStoreKwArgs) => {
             try {
               let currentCaseIdsByQuery = QueryUtil.getValidQueryData<string[]>(retrieveCaseIdsByQueryQueryKey);
               if (!currentCaseIdsByQuery) {
-                currentCaseIdsByQuery = (await CaseApi.getInstance().retrieveCaseIdsByQuery(caseQuery, { signal: fetchAbortController.signal })).data.case_ids;
+                currentCaseIdsByQuery = (await CaseApi.instance.retrieveCaseIdsByQuery(caseQuery, { signal: fetchAbortController.signal })).data.case_ids;
                 queryClient.setQueryData(retrieveCaseIdsByQueryQueryKey, currentCaseIdsByQuery);
               }
 
@@ -665,7 +665,7 @@ export const createEpiStore = (kwArgs: CreateEpiStoreKwArgs) => {
               const currentCaseIds = (currentCases ?? []).map(x => x.id);
               const missingCaseIds = difference(currentCaseIdsByQuery, currentCaseIds);
               if (missingCaseIds.length) {
-                const missingCasesResult = (await CaseApi.getInstance().retrieveCasesByIds({
+                const missingCasesResult = (await CaseApi.instance.retrieveCasesByIds({
                   case_type_id: completeCaseType.id,
                   case_ids: missingCaseIds,
                 }, { signal: fetchAbortController.signal })).data;

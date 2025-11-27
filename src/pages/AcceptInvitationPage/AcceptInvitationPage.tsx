@@ -26,7 +26,7 @@ export const AcceptInvitationPage = () => {
   const { data, error, isLoading } = useQuery({
     queryKey: QueryUtil.getUserRegistrationsKey(token),
     queryFn: async ({ signal }) => {
-      const response = await OrganizationApi.getInstance().userRegistrationsPostOne(token, { signal });
+      const response = await OrganizationApi.instance.userRegistrationsPostOne(token, { signal });
       return response.data;
     },
     enabled: shouldRegister,
