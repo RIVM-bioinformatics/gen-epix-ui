@@ -1,5 +1,13 @@
 # Changelog
 
+## [1.8.7](https://github.com/RIVM-bioinformatics/gen-epix-ui/compare/v1.8.6...v1.8.7) (2025-11-27)
+
+
+### Bug Fixes
+
+* fix dependency cycle ([0059da8](https://github.com/RIVM-bioinformatics/gen-epix-ui/commit/0059da854052cfe1c4855ffae4073d6e6562cc9e))
+* force typescript version ([4221781](https://github.com/RIVM-bioinformatics/gen-epix-ui/commit/4221781f9f64f5ad6b472f81494c10ab4357dc15))
+
 ## [1.8.6](https://github.com/RIVM-bioinformatics/gen-epix-ui/compare/v1.8.5...v1.8.6) (2025-11-26)
 
 
