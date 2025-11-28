@@ -41,7 +41,7 @@ import { useInviteUserConstraintsQuery } from '../../dataHooks/useInviteUserCons
 import { UserInvitationsAdminDetailDialog } from './UserInvitationsAdminDetailDialog';
 import type { UserInvitationsAdminDetailDialogRefMethods } from './UserInvitationsAdminDetailDialog';
 
-type FormFields = Pick<UserInvitation, 'email' | 'organization_id' | 'roles'>;
+type FormFields = Pick<UserInvitation, 'key' | 'organization_id' | 'roles'>;
 
 export const UserInvitationsAdminPage = () => {
   const [t] = useTranslation();
@@ -83,17 +83,16 @@ export const UserInvitationsAdminPage = () => {
   const createOne = useCallback(async (variables: FormFields) => {
     return (await OrganizationApi.getInstance().inviteUser({
       ...variables,
-      key: variables.email,
     })).data;
   }, []);
 
   const getName = useCallback((item: FormFields) => {
-    return item.email;
+    return item.key;
   }, []);
 
   const schema = useMemo(() => {
     return object<FormFields>().shape({
-      email: string().email().required().max(100),
+      key: string().email().required().max(100),
       organization_id: string().uuid4().required().max(100),
       roles: array().min(1).required(),
     });
@@ -115,7 +114,7 @@ export const UserInvitationsAdminPage = () => {
     fields.push(
       {
         definition: FORM_FIELD_DEFINITION_TYPE.TEXTFIELD,
-        name: 'email',
+        name: 'key',
         label: t`Email`,
       } as const satisfies FormFieldDefinition<FormFields>,
       {
@@ -153,7 +152,7 @@ export const UserInvitationsAdminPage = () => {
 
   const tableColumns = useMemo((): TableColumn<UserInvitation>[] => {
     return [
-      TableUtil.createTextColumn<UserInvitation>({ id: 'email', name: t`Email` }),
+      TableUtil.createTextColumn<UserInvitation>({ id: 'key', name: t`Email` }),
       TableUtil.createOptionsColumn<UserInvitation>({ id: 'organization_id', name: t`Organization`, options: organizationOptions }),
       TableUtil.createOptionsColumn<UserInvitation>({ id: 'invited_by_user_id', name: t`Invited by user`, options: userOptionsQuery.options }),
       TableUtil.createOptionsColumn<UserInvitation>({ id: 'roles', name: t`Roles`, options: roleOptions }),
@@ -169,7 +168,7 @@ export const UserInvitationsAdminPage = () => {
         createOne={createOne}
         crudCommandType={CommandName.UserInvitationCrudCommand}
         customOnRowClick={customOnRowClick}
-        defaultSortByField={'email'}
+        defaultSortByField={'key'}
         defaultSortDirection={'asc'}
         deleteOne={deleteOne}
         extraActionsFactory={extraActionsFactory}
