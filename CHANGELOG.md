@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.9.1](https://github.com/RIVM-bioinformatics/gen-epix-ui/compare/v1.9.0...v1.9.1) (2025-11-28)
+
+
+### Bug Fixes
+
+* use updateUser endpoint and fix role options in user edit form ([f46eb7d](https://github.com/RIVM-bioinformatics/gen-epix-ui/commit/f46eb7db98e97d92d57e6c6d475d9f4506189d01))
+
 ## [1.9.0](https://github.com/RIVM-bioinformatics/gen-epix-ui/compare/v1.8.7...v1.9.0) (2025-11-28)
 
 
