@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.9.2](https://github.com/RIVM-bioinformatics/gen-epix-ui/compare/v1.9.1...v1.9.2) (2025-11-28)
+
+
+### Bug Fixes
+
+* make file_content in request body of type string instead of bytes ([676ed9d](https://github.com/RIVM-bioinformatics/gen-epix-ui/commit/676ed9dd998b6daf2e290acbec8cd93160ff9bbd))
+
 ## [1.9.1](https://github.com/RIVM-bioinformatics/gen-epix-ui/compare/v1.9.0...v1.9.1) (2025-11-28)
 
 
