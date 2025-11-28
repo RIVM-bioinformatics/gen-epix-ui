@@ -1,5 +1,20 @@
 # Changelog
 
+## [1.9.0](https://github.com/RIVM-bioinformatics/gen-epix-ui/compare/v1.8.7...v1.9.0) (2025-11-28)
+
+
+### Features
+
+* disable all form fields if user is not allowed to edit item ([82ed9c3](https://github.com/RIVM-bioinformatics/gen-epix-ui/commit/82ed9c34d46f72f43e6eacbb9b941fc3009873c8))
+
+
+### Bug Fixes
+
+* fix Your organization’s admins text ([b7e9bee](https://github.com/RIVM-bioinformatics/gen-epix-ui/commit/b7e9beeea62a6305fd6853f0ea2f3591ab7bc172))
+* remove DataCollectionVisualizationPage ([e995050](https://github.com/RIVM-bioinformatics/gen-epix-ui/commit/e995050f435aec09abf0ae1ff9de3e9a544e0585))
+* update immer to fix "Cannot assign to read only property" ([5fc1fa9](https://github.com/RIVM-bioinformatics/gen-epix-ui/commit/5fc1fa902f67838f79ff063dd8ca1c785d5067bb))
+* use key instead of email property to populate email field for user invitations ([9d5a01d](https://github.com/RIVM-bioinformatics/gen-epix-ui/commit/9d5a01d9d439c8f3e81bab95a600611b0171a2e8))
+
 ## [1.8.7](https://github.com/RIVM-bioinformatics/gen-epix-ui/compare/v1.8.6...v1.8.7) (2025-11-27)
 
 
