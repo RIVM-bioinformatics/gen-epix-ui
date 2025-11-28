@@ -17,7 +17,6 @@ import { ConceptsAdminPage } from '../pages/ConceptsAdminPage';
 import { ConceptSetsAdminPage } from '../pages/ConceptSetsAdminPage';
 import { DataCollectionsAdminPage } from '../pages/DataCollectionsAdminPage';
 import { DataCollectionSetsAdminPage } from '../pages/DataCollectionSetsAdminPage';
-import { DataCollectionVisualizationPage } from '../pages/DataCollectionVisualizationPage';
 import { DimsAdminPage } from '../pages/DimsAdminPage';
 import { DiseasesAdminPage } from '../pages/DiseasesAdminPage';
 import { EtiologicalAgentsAdminPage } from '../pages/EtiologicalAgentsAdminPage';
@@ -608,18 +607,18 @@ export const adminRoutes: MyNonIndexRouteObject[] = [
     },
   },
 
-  // HELPERS
+  // // HELPERS
 
-  {
-    path: '/management/data-collection-visualization-page',
-    Component: () => <DataCollectionVisualizationPage />,
-    errorElement: <RouterErrorPage />,
-    handle: {
-      titleKey: 'Data collection visualization',
-      subTitleKey: 'View data collection visualization',
-      requiredPermissions: [],
-      requiresUserProfile: true,
-      category: ADMIN_PAGE_CATEGORY.HELPERS,
-    },
-  },
+  // {
+  //   path: '/management/data-collection-visualization-page',
+  //   Component: () => <DataCollectionVisualizationPage />,
+  //   errorElement: <RouterErrorPage />,
+  //   handle: {
+  //     titleKey: 'Data collection visualization',
+  //     subTitleKey: 'View data collection visualization',
+  //     requiredPermissions: [],
+  //     requiresUserProfile: true,
+  //     category: ADMIN_PAGE_CATEGORY.HELPERS,
+  //   },
+  // },
 ];
