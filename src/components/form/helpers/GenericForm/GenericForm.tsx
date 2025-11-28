@@ -35,6 +35,7 @@ export type GenericFormProps<TFormFields> = {
   readonly formMethods: UseFormReturn<TFormFields>;
   readonly renderField?: (definition: FormFieldDefinition<TFormFields>, element: ReactElement) => ReactElement;
   readonly wrapForm?: (children: ReactElement) => ReactElement;
+  readonly disableAll?: boolean;
 };
 
 export const GenericForm = <TFormFields,>({
@@ -44,6 +45,7 @@ export const GenericForm = <TFormFields,>({
   formMethods,
   renderField,
   wrapForm,
+  disableAll,
 }: GenericFormProps<TFormFields>) => {
   const [t] = useTranslation();
 
@@ -54,18 +56,21 @@ export const GenericForm = <TFormFields,>({
       case FORM_FIELD_DEFINITION_TYPE.AUTOCOMPLETE:
         return (
           <Autocomplete
+            disabled={Object.hasOwn(formFieldDefinition, 'disabled') ? formFieldDefinition.disabled : disableAll}
             {...formFieldDefinition as AutocompleteProps<TFormFields, Path<TFormFields>, false>}
           />
         );
       case FORM_FIELD_DEFINITION_TYPE.TRANSFER_LIST:
         return (
           <TransferList
+            disabled={Object.hasOwn(formFieldDefinition, 'disabled') ? formFieldDefinition.disabled : disableAll}
             {...formFieldDefinition}
           />
         );
       case FORM_FIELD_DEFINITION_TYPE.BOOLEAN:
         return (
           <Select
+            disabled={Object.hasOwn(formFieldDefinition, 'disabled') ? formFieldDefinition.disabled : disableAll}
             options={booleanOptions}
             {...formFieldDefinition}
           />
@@ -73,24 +78,28 @@ export const GenericForm = <TFormFields,>({
       case FORM_FIELD_DEFINITION_TYPE.DATE:
         return (
           <DatePicker
+            disabled={Object.hasOwn(formFieldDefinition, 'disabled') ? formFieldDefinition.disabled : disableAll}
             {...formFieldDefinition}
           />
         );
       case FORM_FIELD_DEFINITION_TYPE.RICH_TEXT:
         return (
           <RichTextEditor
+            disabled={Object.hasOwn(formFieldDefinition, 'disabled') ? formFieldDefinition.disabled : disableAll}
             {...formFieldDefinition}
           />
         );
       case FORM_FIELD_DEFINITION_TYPE.FILE:
         return (
           <UploadButton
+            disabled={Object.hasOwn(formFieldDefinition, 'disabled') ? formFieldDefinition.disabled : disableAll}
             {...formFieldDefinition}
           />
         );
       case FORM_FIELD_DEFINITION_TYPE.RADIO_GROUP:
         return (
           <RadioGroup
+            disabled={Object.hasOwn(formFieldDefinition, 'disabled') ? formFieldDefinition.disabled : disableAll}
             {...formFieldDefinition}
           />
         );
@@ -98,11 +107,12 @@ export const GenericForm = <TFormFields,>({
       default:
         return (
           <TextField
+            disabled={Object.hasOwn(formFieldDefinition, 'disabled') ? formFieldDefinition.disabled : disableAll}
             {...formFieldDefinition}
           />
         );
     }
-  }, [booleanOptions]);
+  }, [booleanOptions, disableAll]);
 
 
   const formContent = (

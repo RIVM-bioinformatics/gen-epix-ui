@@ -206,22 +206,24 @@ export const NumberRangeInput = <TFieldValues extends FieldValues, TName extends
                 }}
               >
                 {label}
-                <IconButton
-                  {...TestIdUtil.createAttributes('RangeSlider-reset')}
-                  sx={{
-                    position: 'absolute',
-                    top: '-10px',
-                    '& svg': {
-                      fontSize: '16px',
-                    },
-                  }}
-                  tabIndex={-1}
-                  aria-label={t`Clear`}
-                  // eslint-disable-next-line react/jsx-no-bind
-                  onClick={onResetButtonClick}
-                >
-                  <ClearIcon />
-                </IconButton>
+                {!disabled && (
+                  <IconButton
+                    {...TestIdUtil.createAttributes('RangeSlider-reset')}
+                    sx={{
+                      position: 'absolute',
+                      top: '-10px',
+                      '& svg': {
+                        fontSize: '16px',
+                      },
+                    }}
+                    tabIndex={-1}
+                    aria-label={t`Clear`}
+                    // eslint-disable-next-line react/jsx-no-bind
+                    onClick={onResetButtonClick}
+                  >
+                    <ClearIcon />
+                  </IconButton>
+                )}
               </FormLabel>
               <Box
                 marginTop={4}

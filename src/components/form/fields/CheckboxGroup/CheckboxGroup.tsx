@@ -114,21 +114,23 @@ export const CheckboxGroup = <TFieldValues extends FieldValues, TName extends Pa
 
         >
           {label}
-          <IconButton
-            {...TestIdUtil.createAttributes('DateRangePicker-reset')}
-            sx={{
-              position: 'absolute',
-              top: '-10px',
-              '& svg': {
-                fontSize: '16px',
-              },
-            }}
-            tabIndex={-1}
-            // eslint-disable-next-line react/jsx-no-bind
-            onClick={onResetButtonClick}
-          >
-            <ClearIcon />
-          </IconButton>
+          {!disabled && (
+            <IconButton
+              {...TestIdUtil.createAttributes('DateRangePicker-reset')}
+              sx={{
+                position: 'absolute',
+                top: '-10px',
+                '& svg': {
+                  fontSize: '16px',
+                },
+              }}
+              tabIndex={-1}
+              // eslint-disable-next-line react/jsx-no-bind
+              onClick={onResetButtonClick}
+            >
+              <ClearIcon />
+            </IconButton>
+          )}
         </FormLabel>
         { !loading && (
           <FormGroup

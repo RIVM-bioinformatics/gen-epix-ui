@@ -176,6 +176,7 @@ export const TransferList = <TFieldValues extends FieldValues, TName extends Pat
                   padding: `0 0 0 ${theme.spacing(1)}`,
                   margin: 0,
                 }}
+                disabled={disabled}
                 onClick={handleToggle(option.value)}
               >
                 <ListItemIcon
@@ -187,8 +188,11 @@ export const TransferList = <TFieldValues extends FieldValues, TName extends Pat
                 >
                   <Checkbox
                     checked={checked.indexOf(item) !== -1}
-                    inputProps={{
-                      'aria-labelledby': labelId,
+                    disabled={disabled}
+                    slotProps={{
+                      input: {
+                        'aria-labelledby': labelId,
+                      },
                     }}
                     sx={{
                       padding: 0,
@@ -249,7 +253,7 @@ export const TransferList = <TFieldValues extends FieldValues, TName extends Pat
                 size={'small'}
                 sx={{ my: 0.5 }}
                 variant={'outlined'}
-                disabled={leftChecked.length === 0}
+                disabled={disabled || leftChecked.length === 0}
                 // eslint-disable-next-line react/jsx-no-bind
                 onClick={onMoveRightButtonClick}
               >
@@ -260,7 +264,7 @@ export const TransferList = <TFieldValues extends FieldValues, TName extends Pat
                 size={'small'}
                 sx={{ my: 0.5 }}
                 variant={'outlined'}
-                disabled={rightChecked.length === 0}
+                disabled={disabled || rightChecked.length === 0}
                 // eslint-disable-next-line react/jsx-no-bind
                 onClick={onMoveLeftButtonClick}
               >
@@ -271,7 +275,7 @@ export const TransferList = <TFieldValues extends FieldValues, TName extends Pat
                 size={'small'}
                 sx={{ my: 0.5, mt: 2 }}
                 variant={'outlined'}
-                disabled={left.length === 0}
+                disabled={disabled || left.length === 0}
                 // eslint-disable-next-line react/jsx-no-bind
                 onClick={onMoveAllRightButtonClick}
               >
@@ -282,7 +286,7 @@ export const TransferList = <TFieldValues extends FieldValues, TName extends Pat
                 size={'small'}
                 sx={{ my: 0.5 }}
                 variant={'outlined'}
-                disabled={right.length === 0}
+                disabled={disabled || right.length === 0}
                 // eslint-disable-next-line react/jsx-no-bind
                 onClick={onMoveAllLeftButtonClick}
               >
@@ -293,7 +297,7 @@ export const TransferList = <TFieldValues extends FieldValues, TName extends Pat
                 size={'small'}
                 sx={{ mt: 4 }}
                 variant={'outlined'}
-                disabled={options.length === 0}
+                disabled={disabled || options.length === 0}
                 // eslint-disable-next-line react/jsx-no-bind
                 onClick={onResetButtonClick}
               >
@@ -304,6 +308,7 @@ export const TransferList = <TFieldValues extends FieldValues, TName extends Pat
                 sx={{ mt: 0.5 }}
                 variant={'outlined'}
                 aria-label={t`clear`}
+                disabled={disabled}
                 // eslint-disable-next-line react/jsx-no-bind
                 onClick={onMoveAllLeftButtonClick}
               >
@@ -317,7 +322,7 @@ export const TransferList = <TFieldValues extends FieldValues, TName extends Pat
         </Box>
       </Box>
     );
-  }, [mappedOptions, checked, t, onFilterValueChangeDebounced, height, options.length, internalOnChange, resetField, name, filterValue, theme]);
+  }, [mappedOptions, checked, theme, t, onFilterValueChangeDebounced, height, disabled, options.length, internalOnChange, resetField, name, filterValue]);
 
   return (
     <FormControl

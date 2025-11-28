@@ -105,6 +105,7 @@ export const CrudPageEditDialog = withDialog<CrudPageEditDialogProps<any, any>, 
 
   return (
     <GenericForm<TFormFields>
+      disableAll={!openProps.canSave}
       formFieldDefinitions={formFieldDefinitions}
       formId={formId}
       formMethods={formMethods}
