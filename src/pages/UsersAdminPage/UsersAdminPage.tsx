@@ -17,7 +17,10 @@ import {
 } from '@mui/material';
 import PermIdentityIcon from '@mui/icons-material/PermIdentity';
 
-import type { User } from '../../api';
+import type {
+  ApiPermission,
+  User,
+} from '../../api';
 import {
   CommandName,
   OrganizationApi,
@@ -44,6 +47,7 @@ import type { DialogAction } from '../../components/ui/Dialog';
 import { AuthorizationManager } from '../../classes/managers/AuthorizationManager';
 import { useArray } from '../../hooks/useArray';
 import { useUsersQuery } from '../../dataHooks/useUsersQuery';
+import { useInviteUserConstraintsQuery } from '../../dataHooks/useInviteUserConstraintsQuery';
 
 type FormFields = Pick<User, 'email' | 'is_active' | 'roles'>;
 
@@ -51,14 +55,16 @@ export const UsersAdminPage = () => {
   const [t] = useTranslation();
   const organizationOptionsQuery = useOrganizationOptionsQuery();
   const epiUserRightsDialogRef = useRef<EpiUserRightsDialogRefMethods>(null);
+  const inviteUserConstraintsQuery = useInviteUserConstraintsQuery();
   const usersQuery = useUsersQuery();
 
   const loadables = useArray([
     organizationOptionsQuery,
     usersQuery,
+    inviteUserConstraintsQuery,
   ]);
 
-  const roleOptions = useMemo<OptionBase<string>[]>(() => {
+  const tableRoleOptions = useMemo<OptionBase<string>[]>(() => {
     if (!usersQuery?.data) {
       return [];
     }
@@ -72,6 +78,16 @@ export const UsersAdminPage = () => {
     }));
   }, [usersQuery.data]);
 
+  const formRoleOptions = useMemo<OptionBase<string>[]>(() => {
+    if (!inviteUserConstraintsQuery?.data) {
+      return [];
+    }
+    return inviteUserConstraintsQuery.data.roles.map(role => ({
+      value: role,
+      label: role,
+    }));
+  }, [inviteUserConstraintsQuery.data]);
+
   const fetchAll = useCallback(async (signal: AbortSignal) => {
     const users = (await OrganizationApi.getInstance().usersGetAll({ signal }))?.data;
 
@@ -79,12 +95,10 @@ export const UsersAdminPage = () => {
   }, []);
 
   const updateOne = useCallback(async (variables: FormFields, item: User) => {
-    return (await OrganizationApi.getInstance().usersPutOne(item.id, {
+    return (await OrganizationApi.getInstance().updateUser(item.id, {
       is_active: variables.is_active,
       organization_id: item.organization_id,
       roles: variables.roles,
-      email: item.email,
-      key: item.email,
     })).data;
   }, []);
 
@@ -120,9 +134,9 @@ export const UsersAdminPage = () => {
         definition: FORM_FIELD_DEFINITION_TYPE.AUTOCOMPLETE,
         name: 'roles',
         label: t`Roles`,
-        options: roleOptions,
+        options: formRoleOptions,
         multiple: true,
-        loading: usersQuery.isLoading,
+        loading: inviteUserConstraintsQuery.isLoading,
       } as const satisfies FormFieldDefinition<FormFields>,
       {
         definition: FORM_FIELD_DEFINITION_TYPE.BOOLEAN,
@@ -130,17 +144,17 @@ export const UsersAdminPage = () => {
         label: t`Is active`,
       } as const satisfies FormFieldDefinition<FormFields>,
     ] as const;
-  }, [usersQuery.isLoading, roleOptions, t]);
+  }, [t, formRoleOptions, inviteUserConstraintsQuery.isLoading]);
 
   const tableColumns = useMemo((): TableColumn<User>[] => {
     return [
       TableUtil.createTextColumn<User>({ id: 'name', name: t`Name`, advancedSort: true }),
       TableUtil.createOptionsColumn<User>({ id: 'organization_id', name: t`Organization`, options: organizationOptionsQuery.options }),
       TableUtil.createTextColumn<User>({ id: 'email', name: t`E-Mail` }),
-      TableUtil.createOptionsColumn<User>({ id: 'roles', name: t`Roles`, options: roleOptions }),
+      TableUtil.createOptionsColumn<User>({ id: 'roles', name: t`Roles`, options: tableRoleOptions }),
       TableUtil.createBooleanColumn<User>({ id: 'is_active', name: t`Is active` }),
     ];
-  }, [organizationOptionsQuery.options, roleOptions, t]);
+  }, [organizationOptionsQuery.options, tableRoleOptions, t]);
 
   const doesUserHavePermissionToViewEffectiveRights = useMemo(() => {
     return AuthorizationManager.instance.doesUserHavePermission([
@@ -211,12 +225,20 @@ export const UsersAdminPage = () => {
     ];
   }, [doesUserHavePermissionToViewEffectiveRights, t]);
 
+  const extraUpdateOnePermissions = useMemo<ApiPermission[]>(() => [
+    { command_name: CommandName.UpdateUserCommand, permission_type: PermissionType.EXECUTE },
+  ], []);
+  const extraDeleteOnePermissions = useMemo<ApiPermission[]>(() => [
+    { command_name: CommandName.UserCrudCommand, permission_type: PermissionType.DELETE },
+  ], []);
+
   return (
     <>
       <CrudPage<FormFields, User>
         loadables={loadables}
         canEditItem={canEditItem}
-        crudCommandType={CommandName.UserCrudCommand}
+        extraUpdateOnePermissions={extraUpdateOnePermissions}
+        extraDeleteOnePermissions={extraDeleteOnePermissions}
         createItemDialogTitle={t`Create new user`}
         defaultSortByField={'name'}
         defaultSortDirection={'asc'}
