@@ -79,14 +79,14 @@ export const UsersAdminPage = () => {
   }, [usersQuery.data]);
 
   const formRoleOptions = useMemo<OptionBase<string>[]>(() => {
-    if (!inviteUserConstraintsQuery?.data) {
-      return [];
+    if (!inviteUserConstraintsQuery?.data?.roles?.length) {
+      return tableRoleOptions;
     }
     return inviteUserConstraintsQuery.data.roles.map(role => ({
       value: role,
       label: role,
     }));
-  }, [inviteUserConstraintsQuery.data]);
+  }, [inviteUserConstraintsQuery.data, tableRoleOptions]);
 
   const fetchAll = useCallback(async (signal: AbortSignal) => {
     const users = (await OrganizationApi.instance.usersGetAll({ signal }))?.data;

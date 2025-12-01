@@ -28,8 +28,6 @@ import { PermissionType } from '../../api';
 import { AuthorizationManager } from '../../classes/managers/AuthorizationManager';
 import { ConfigManager } from '../../classes/managers/ConfigManager';
 import { RouterManager } from '../../classes/managers/RouterManager';
-import type { ConfirmationRefMethods } from '../../components/ui/Confirmation';
-import { Confirmation } from '../../components/ui/Confirmation';
 import { PageContainer } from '../../components/ui/PageContainer';
 import { ResponseHandler } from '../../components/ui/ResponseHandler';
 import {
@@ -65,6 +63,8 @@ import type { DialogAction } from '../../components/ui/Dialog';
 
 import type { CrudPageEditDialogRefMethods } from './CrudPageEditDialog';
 import { CrudPageEditDialog } from './CrudPageEditDialog';
+import type { CrudPageDeleteDialogRefMethods } from './CrudPageDeleteDialog';
+import { CrudPageDeleteDialog } from './CrudPageDeleteDialog';
 
 export type CrudPageProps<
   TFormFields,
@@ -158,7 +158,7 @@ export const CrudPage = <
 }: CrudPageProps<TFormFields, TData, TTableData>) => {
   const [t] = useTranslation();
   const theme = useTheme();
-  const deleteConfirmationRef = useRef<ConfirmationRefMethods<TableRowParams<TData>>>(null);
+  const deleteConfirmationRef = useRef<CrudPageDeleteDialogRefMethods<TData>>(null);
   const editDialogRef = useRef<CrudPageEditDialogRefMethods<TData, TFormFields>>(null);
   const authorizationManager = useMemo(() => AuthorizationManager.instance, []);
   const resourceQueryKey = useMemo(() => [resourceQueryKeyBase], [resourceQueryKeyBase]);
@@ -367,8 +367,8 @@ export const CrudPage = <
     }
   }, [customOnRowClick, onShowItem, editItem]);
 
-  const onDeleteConfirmationConfirm = useCallback((params: TableRowParams<TData>) => {
-    mutateDelete(params.row);
+  const onDeleteConfirmationConfirm = useCallback((item: TData) => {
+    mutateDelete(item);
   }, [mutateDelete]);
 
   const columns = useMemo<TableColumn<TTableData>[]>(() => {
@@ -430,7 +430,9 @@ export const CrudPage = <
                 <MenuItem
                   key={'actions3'}
                   // eslint-disable-next-line react/jsx-no-bind
-                  onClick={() => deleteConfirmationRef.current.open(params)}
+                  onClick={() => deleteConfirmationRef.current.open({
+                    item: params.row,
+                  })}
                 >
                   <ListItemIcon>
                     <DeleteForeverIcon />
@@ -550,12 +552,9 @@ export const CrudPage = <
           schema={schema}
           onSave={onEditDialogSave}
         />
-        <Confirmation
+        <CrudPageDeleteDialog
           ref={deleteConfirmationRef}
-          body={t`This will delete the item.`}
-          cancelLabel={t`Cancel`}
-          confirmLabel={t`Delete`}
-          title={t`Are you sure?`}
+          getName={getName}
           onConfirm={onDeleteConfirmationConfirm}
         />
       </PageContainer>
