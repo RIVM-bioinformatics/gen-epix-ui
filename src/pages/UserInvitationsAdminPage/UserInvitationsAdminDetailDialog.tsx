@@ -42,8 +42,8 @@ export const UserInvitationsAdminDetailDialog = withDialog<UserInvitationsAdminD
   const [t] = useTranslation();
 
   useEffect(() => {
-    onTitleChange(t('Invitation details for {{email}}', { email: openProps.item.email }));
-  }, [onTitleChange, openProps.item.email, t]);
+    onTitleChange(t('Invitation details for {{email}}', { email: openProps.item.key }));
+  }, [onTitleChange, openProps.item.key, t]);
 
   const expiryDate = useMemo(() => {
     return format(openProps.item.expires_at, DATE_FORMAT.DATE);
@@ -58,8 +58,8 @@ export const UserInvitationsAdminDetailDialog = withDialog<UserInvitationsAdminD
   }, [openProps.item.token]);
 
   const shareInvitationHref = useMemo(() => {
-    return `mailto:?subject=${t('Invitation to join {{applicationName}}', { applicationName: ConfigManager.instance.config.applicationName })}&body=${t('Use the following link to accept the invitation: {{invitationLink}}. This link will expire: {{expiryDate}}.', { invitationLink, expiryDate })}&to=${openProps.item.email}`;
-  }, [expiryDate, invitationLink, openProps.item.email, t]);
+    return `mailto:?subject=${t('Invitation to join {{applicationName}}', { applicationName: ConfigManager.instance.config.applicationName })}&body=${t('Use the following link to accept the invitation: {{invitationLink}}. This link will expire: {{expiryDate}}.', { invitationLink, expiryDate })}&to=${openProps.item.key}`;
+  }, [expiryDate, invitationLink, openProps.item.key, t]);
 
 
   useEffect(() => {
@@ -84,11 +84,11 @@ export const UserInvitationsAdminDetailDialog = withDialog<UserInvitationsAdminD
     <Box>
       <Box>
         <Typography>
-          {t('The invitation for {{email}} will expire on {{expiryDate}}.', { email: openProps.item.email, expiryDate })}
+          {t('The invitation for {{email}} will expire on {{expiryDate}}.', { email: openProps.item.key, expiryDate })}
         </Typography>
       </Box>
       <Box marginY={1}>
-        {t('Invitation link: {{invitationLink}}', { email: openProps.item.email, invitationLink })}
+        {t('Invitation link: {{invitationLink}}', { email: openProps.item.key, invitationLink })}
       </Box>
     </Box>
   );

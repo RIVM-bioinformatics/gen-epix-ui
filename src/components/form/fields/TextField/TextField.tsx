@@ -107,7 +107,7 @@ export const TextField = <TFieldValues extends FieldValues, TName extends Path<T
           },
           input: {
             className: classnames({ 'Mui-warning': hasWarning }),
-            endAdornment: (
+            endAdornment: disabled ? undefined : (
               <InputAdornment position={'end'}>
                 <IconButton
                   {...TestIdUtil.createAttributes('TextField-reset')}
