@@ -69,7 +69,7 @@ export const EpiRemoveCasesFromEventDialog = withDialog<EpiRemoveCasesFromEventD
   const { isLoading: isCaseSetMembersLoading, error: caseSetMembersError, data: caseSetMembers } = useQuery({
     queryKey: QueryUtil.getGenericKey(QUERY_KEY.CASE_SET_MEMBERS, caseSetMembersFilter),
     queryFn: async ({ signal }) => {
-      const response = await CaseApi.getInstance().caseSetMembersPostQuery(caseSetMembersFilter, { signal });
+      const response = await CaseApi.instance.caseSetMembersPostQuery(caseSetMembersFilter, { signal });
       return response.data;
     },
   });
@@ -88,7 +88,7 @@ export const EpiRemoveCasesFromEventDialog = withDialog<EpiRemoveCasesFromEventD
   const { mutate, isMutating } = useDeleteMutation<CaseSetMember[]>({
     associationQueryKeys: QueryUtil.getQueryKeyDependencies([QUERY_KEY.CASE_SET_MEMBERS], true),
     queryFn: async (items: CaseSetMember[]) => {
-      await CaseApi.getInstance().caseSetMembersDeleteSome(items.map(item => item.id).join(','));
+      await CaseApi.instance.caseSetMembersDeleteSome(items.map(item => item.id).join(','));
     },
     getProgressNotificationMessage: (items) => t('Removing {{numCases}} case(s) from {{eventName}}...', { numCases: items.length, eventName: openProps.caseSet.name }),
     getSuccessNotificationMessage: (items) => t('Successfully removed {{numCases}} case(s) from {{eventName}}.', { numCases: items.length, eventName: openProps.caseSet.name }),

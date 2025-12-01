@@ -44,28 +44,28 @@ export const CaseTypeColSetsAdminPage = () => {
   const loadables = useArray([caseTypeColOptionsQuery, caseTypeColSetMembersQuery]);
 
   const fetchAll = useCallback(async (signal: AbortSignal) => {
-    return (await CaseApi.getInstance().caseTypeColSetsGetAll({ signal }))?.data;
+    return (await CaseApi.instance.caseTypeColSetsGetAll({ signal }))?.data;
   }, []);
 
   const deleteOne = useCallback(async (item: CaseTypeColSet) => {
-    return await CaseApi.getInstance().caseTypeColSetsDeleteOne(item.id);
+    return await CaseApi.instance.caseTypeColSetsDeleteOne(item.id);
   }, []);
 
   const updateOne = useCallback(async (variables: FormFields, item: CaseTypeColSet) => {
-    await CaseApi.getInstance().caseTypeColSetsPutCaseTypeCols(item.id, {
+    await CaseApi.instance.caseTypeColSetsPutCaseTypeCols(item.id, {
       case_type_col_set_members: variables.caseTypeColIds.map<CaseTypeColSetMember>(case_type_col_id => ({
         case_type_col_id,
         case_type_col_set_id: item.id,
       })),
     });
 
-    return (await CaseApi.getInstance().caseTypeColSetsPutOne(item.id, omit({ id: item.id, ...variables }, ['caseTypeColIds']))).data;
+    return (await CaseApi.instance.caseTypeColSetsPutOne(item.id, omit({ id: item.id, ...variables }, ['caseTypeColIds']))).data;
   }, []);
 
   const createOne = useCallback(async (variables: FormFields) => {
-    const resultItem = (await CaseApi.getInstance().caseTypeColSetsPostOne(omit(variables, ['caseTypeColIds']))).data;
+    const resultItem = (await CaseApi.instance.caseTypeColSetsPostOne(omit(variables, ['caseTypeColIds']))).data;
 
-    await CaseApi.getInstance().caseTypeColSetsPutCaseTypeCols(resultItem.id, {
+    await CaseApi.instance.caseTypeColSetsPutCaseTypeCols(resultItem.id, {
       case_type_col_set_members: variables.caseTypeColIds.map<CaseTypeColSetMember>(case_type_col_id => ({
         case_type_col_id,
         case_type_col_set_id: resultItem.id,

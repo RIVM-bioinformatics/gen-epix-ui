@@ -9,7 +9,7 @@ import { TestIdUtil } from '../../../utils/TestIdUtil';
 
 import { SortableListItemContext } from './context/SortableListItemContext';
 
-export const SortableListItemDragHandle = () =>{
+export const SortableListItemDragHandle = () => {
   const theme = useTheme();
   const { attributes, listeners, ref } = useContext(SortableListItemContext);
 

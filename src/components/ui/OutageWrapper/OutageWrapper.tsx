@@ -34,7 +34,7 @@ export const OutageWrapper = ({ children }: PropsWithChildren): ReactNode => {
 
   const { isLoading: isOutagesPending, error: outagesError, data: outages } = useQuery({
     queryKey: QueryUtil.getGenericKey(QUERY_KEY.OUTAGES),
-    queryFn: async ({ signal }) => (await SystemApi.getInstance().retrieveOutages({ signal })).data,
+    queryFn: async ({ signal }) => (await SystemApi.instance.retrieveOutages({ signal })).data,
     gcTime: Infinity,
     staleTime: Infinity,
     refetchInterval: 5 * 60 * 1000,

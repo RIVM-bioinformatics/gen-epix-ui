@@ -42,28 +42,28 @@ export const RegionRelationsAdminPage = () => {
   const loadables = useArray([regionOptionsQuery, regionMapQuery, regionRelationTypeOptionsQuery]);
 
   const fetchAll = useCallback(async (signal: AbortSignal) => {
-    return (await GeoApi.getInstance().regionRelationsGetAll({ signal }))?.data;
+    return (await GeoApi.instance.regionRelationsGetAll({ signal }))?.data;
   }, []);
 
   const deleteOne = useCallback(async (item: RegionRelation) => {
-    return await GeoApi.getInstance().regionRelationsDeleteOne(item.id);
+    return await GeoApi.instance.regionRelationsDeleteOne(item.id);
   }, []);
 
   const updateOne = useCallback(async (variables: FormFields, item: RegionRelation) => {
-    return (await GeoApi.getInstance().regionRelationsPutOne(item.id, { id: item.id, ...variables })).data;
+    return (await GeoApi.instance.regionRelationsPutOne(item.id, { id: item.id, ...variables })).data;
   }, []);
 
   const createOne = useCallback(async (variables: FormFields) => {
-    return (await GeoApi.getInstance().regionRelationsPostOne(variables)).data;
+    return (await GeoApi.instance.regionRelationsPostOne(variables)).data;
   }, []);
 
   const getName = useCallback((item: RegionRelation) => {
     const fromRegion = regionMapQuery.map.get(item.from_region_id);
     const toRegion = regionMapQuery.map.get(item.to_region_id);
     if (fromRegion && toRegion) {
-      return fromRegion.name + ' -> ' + toRegion.name;
+      return `${fromRegion.name} -> ${toRegion.name}`;
     }
-    return item.from_region_id + ' -> ' + item.to_region_id;
+    return `${item.from_region_id} -> ${item.to_region_id}`;
   }, [regionMapQuery.map]);
 
   const schema = useMemo(() => {

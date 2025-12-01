@@ -49,7 +49,7 @@ import { FormFieldLoadingIndicator } from '../../helpers/FormFieldLoadingIndicat
 
 type Value = string | number;
 
-export type AutocompleteProps<TFieldValues extends FieldValues, TName extends Path<TFieldValues>, TMultiple extends boolean | undefined> = {
+export type AutocompleteProps<TFieldValues extends FieldValues, TName extends Path<TFieldValues>, TMultiple extends boolean> = {
   readonly disabled?: boolean;
   readonly label: string;
   readonly name: TName;
@@ -63,7 +63,7 @@ export type AutocompleteProps<TFieldValues extends FieldValues, TName extends Pa
   readonly loading?: boolean;
 };
 
-export const Autocomplete = <TFieldValues extends FieldValues, TName extends Path<TFieldValues> = Path<TFieldValues>, TMultiple extends boolean | undefined = false>({
+export const Autocomplete = <TFieldValues extends FieldValues, TName extends Path<TFieldValues> = Path<TFieldValues>, TMultiple extends boolean = false>({
   disabled = false,
   groupValues = false,
   label,

@@ -29,6 +29,7 @@ import {
   useCallback,
   useEffect,
   useImperativeHandle,
+  useLayoutEffect,
   useMemo,
   useRef,
   useState,
@@ -195,7 +196,10 @@ export const Table = <TRowData,>({
       tableElement.style.width = `${tableWidth}px`;
     }
   }, [container, getVisibleTableSettingsColumns]);
-  updateTableWidth();
+
+  useLayoutEffect(() => {
+    updateTableWidth();
+  }, [updateTableWidth]);
 
   const onTableReadableIndexClick = useCallback((row: TRowData, event: ReactMouseEvent) => {
     if (onReadableIndexClick) {
@@ -797,7 +801,7 @@ export const Table = <TRowData,>({
                 />
               );
             }),
-            // eslint-disable-next-line @typescript-eslint/naming-convention, react/no-unstable-nested-components
+            // eslint-disable-next-line @typescript-eslint/naming-convention, react/no-unstable-nested-components, react-hooks/refs
             Table: forwardRef((props: VirtuosoTableProps, tableElementRef) => (
               <Box
                 {...props}

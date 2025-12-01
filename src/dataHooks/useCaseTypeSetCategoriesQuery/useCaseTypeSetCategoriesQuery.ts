@@ -16,7 +16,7 @@ export const useCaseTypeSetCategoriesQuery = (): UseQueryResult<CaseTypeSetCateg
   return useQueryMemo({
     queryKey: QueryUtil.getGenericKey(QUERY_KEY.CASE_TYPE_SET_CATEGORIES),
     queryFn: async ({ signal }) => {
-      const response = await CaseApi.getInstance().caseTypeSetCategoriesGetAll({ signal });
+      const response = await CaseApi.instance.caseTypeSetCategoriesGetAll({ signal });
       const items = response.data;
       items.sort((a, b) => a.rank - b.rank);
       return items;

@@ -103,7 +103,7 @@ export const EpiCaseSetForm = ({ caseSet, formId, onFinish, onIsSavingChange }: 
     onSuccess,
     onError,
     queryFn: async (formData: FormFields, item: CaseSet): Promise<CaseSet> => {
-      const result = await CaseApi.getInstance().caseSetsPutOne(item.id, { ...item, ...formData });
+      const result = await CaseApi.instance.caseSetsPutOne(item.id, { ...item, ...formData });
       return result.data;
     },
     getProgressNotificationMessage: (data) => t('Saving event: {{name}}', { name: data.name }),

@@ -16,7 +16,7 @@ export const useCaseSetCategoriesQuery = (): UseQueryResult<CaseSetCategory[]> =
   return useQueryMemo({
     queryKey: QueryUtil.getGenericKey(QUERY_KEY.CASE_SET_CATEGORIES),
     queryFn: async ({ signal }) => {
-      const response = await CaseApi.getInstance().caseSetCategoriesGetAll({ signal });
+      const response = await CaseApi.instance.caseSetCategoriesGetAll({ signal });
       return response.data;
     },
   });

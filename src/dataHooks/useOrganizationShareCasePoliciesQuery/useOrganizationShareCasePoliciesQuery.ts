@@ -10,7 +10,7 @@ export const useOrganizationShareCasePoliciesQuery = (select?: (data: Organizati
   return useQueryMemo({
     queryKey: QueryUtil.getGenericKey(QUERY_KEY.ORGANIZATION_SHARE_CASE_POLICIES),
     queryFn: async ({ signal }) => {
-      const response = await AbacApi.getInstance().organizationShareCasePoliciesGetAll({ signal });
+      const response = await AbacApi.instance.organizationShareCasePoliciesGetAll({ signal });
       return response.data;
     },
     select: select ? (data) => select(data) : undefined,

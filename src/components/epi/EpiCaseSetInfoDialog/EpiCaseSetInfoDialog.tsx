@@ -105,7 +105,7 @@ export const EpiCaseSetInfoDialog = withDialog<EpiCaseSetInfoDialogProps, EpiCas
     resourceQueryKey: QueryUtil.getGenericKey(QUERY_KEY.CASE_SETS),
     associationQueryKeys: QueryUtil.getQueryKeyDependencies([QUERY_KEY.CASE_SETS], true),
     queryFn: async (item: CaseSet) => {
-      return await CaseApi.getInstance().caseSetsDeleteOne(item.id);
+      return await CaseApi.instance.caseSetsDeleteOne(item.id);
     },
     getProgressNotificationMessage: (data) => t('Deleting event: {{name}}...', { name: data.name }),
     getSuccessNotificationMessage: (data) => t('Event: {{name}}, has been removed.', { name: data.name }),
@@ -119,7 +119,7 @@ export const EpiCaseSetInfoDialog = withDialog<EpiCaseSetInfoDialogProps, EpiCas
     itemId: openProps.caseSetId,
     useQueryOptions: {
       queryFn: async ({ signal }) => {
-        const response = await CaseApi.getInstance().caseSetsGetOne(openProps.caseSetId, { signal });
+        const response = await CaseApi.instance.caseSetsGetOne(openProps.caseSetId, { signal });
         return response.data;
       },
       enabled: !isDeleteMutating,
@@ -135,7 +135,7 @@ export const EpiCaseSetInfoDialog = withDialog<EpiCaseSetInfoDialogProps, EpiCas
   const { isLoading: isSetCaseDataCollectionLinksLoading, error: caseSetDataCollectionLinksError, data: caseSetDataCollectionLinks } = useQuery({
     queryKey: QueryUtil.getGenericKey(QUERY_KEY.CASE_SET_DATA_COLLECTION_LINKS, caseSetDataCollectionLinksFilter),
     queryFn: async ({ signal }) => {
-      const response = await CaseApi.getInstance().caseSetDataCollectionLinksPostQuery(caseSetDataCollectionLinksFilter, { signal });
+      const response = await CaseApi.instance.caseSetDataCollectionLinksPostQuery(caseSetDataCollectionLinksFilter, { signal });
       return response.data;
     },
     enabled: !!caseSet && !isDeleteMutating,

@@ -84,6 +84,7 @@ export const EpiDashboardSettingsSidebarItem = ({ open, onClose, onReset }: EpiD
       open={open}
       title={t`Settings`}
       width={60}
+      testIdAttributes={{ name: 'EpiDashboardSettingsSidebarItem' }}
       onClose={onClose}
     >
       {open && <EpiDashboardSettingsSidebarItemContent onReset={onReset} />}

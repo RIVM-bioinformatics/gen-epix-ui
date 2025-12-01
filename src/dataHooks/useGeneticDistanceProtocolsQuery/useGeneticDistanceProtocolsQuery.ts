@@ -13,7 +13,7 @@ export const useGeneticDistanceProtocolsQuery = (): UseQueryResult<GeneticDistan
   return useQueryMemo({
     queryKey: QueryUtil.getGenericKey(QUERY_KEY.GENETIC_DISTANCE_PROTOCOLS),
     queryFn: async ({ signal }) => {
-      const response = await CaseApi.getInstance().geneticDistanceProtocolsGetAll({ signal });
+      const response = await CaseApi.instance.geneticDistanceProtocolsGetAll({ signal });
       return response.data;
     },
   });

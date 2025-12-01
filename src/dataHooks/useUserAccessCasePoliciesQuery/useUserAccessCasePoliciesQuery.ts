@@ -10,7 +10,7 @@ export const useUserAccessCasePoliciesQuery = (select?: (data: UserAccessCasePol
   return useQueryMemo({
     queryKey: QueryUtil.getGenericKey(QUERY_KEY.USER_ACCESS_CASE_POLICIES),
     queryFn: async ({ signal }) => {
-      const response = await AbacApi.getInstance().userAccessCasePoliciesGetAll({ signal });
+      const response = await AbacApi.instance.userAccessCasePoliciesGetAll({ signal });
       return response.data;
     },
     select: select ? (data) => select(data) : undefined,

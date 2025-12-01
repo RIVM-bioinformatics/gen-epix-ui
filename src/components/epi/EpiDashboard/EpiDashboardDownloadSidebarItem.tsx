@@ -145,6 +145,7 @@ export const EpiDashboardDownloadSidebarItem = ({ open, onClose }: EpiDashboardD
       open={open}
       title={t`Download`}
       width={60}
+      testIdAttributes={{ name: 'EpiDashboardDownloadSidebarItem' }}
       onClose={onClose}
     >
       {open && <EpiDashboardDownloadSidebarItemContent />}

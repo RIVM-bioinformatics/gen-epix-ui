@@ -16,7 +16,7 @@ export const useAssemblyProtocolsQuery = (): UseQueryResult<AssemblyProtocol[]> 
   return useQueryMemo({
     queryKey: QueryUtil.getGenericKey(QUERY_KEY.ASSEMBLY_PROTOCOLS),
     queryFn: async ({ signal }) => {
-      const response = await CaseApi.getInstance().retrieveAssemblyProtocols({ signal });
+      const response = await CaseApi.instance.retrieveAssemblyProtocols({ signal });
       return response.data;
     },
   });

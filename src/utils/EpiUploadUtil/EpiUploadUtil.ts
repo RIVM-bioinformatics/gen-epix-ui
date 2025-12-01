@@ -146,9 +146,9 @@ export class EpiUploadUtil {
     return labelLowerCase === caseTypeCol.label.toLocaleLowerCase() || labelLowerCase === caseTypeCol.code.toLowerCase() || labelLowerCase === caseTypeCol.id.toLocaleLowerCase();
   }
 
-  public static getCaseTypeFromColumnLabels(caseTypeCols: CaseTypeCol[], columnLabels: string[]): CaseType | null {
+  public static getCaseTypeFromColumnLabels(caseTypeCols: CaseTypeCol[], columnLabels: string[]): CaseType {
     const bestMatch = {
-      caseType: null as CaseType | null,
+      caseType: null as CaseType,
       matchCount: 0,
     };
 
@@ -227,7 +227,7 @@ export class EpiUploadUtil {
       const isCaseDateColumn = EpiUploadUtil.isCaseDateColumn(label);
       const isCaseTypeColumn = EpiUploadUtil.isCaseTypeColumn(label);
 
-      let caseTypeCol: CaseTypeCol | null = null;
+      let caseTypeCol: CaseTypeCol = null;
 
       if (!isCaseIdColumn && !isCaseDateColumn && !isCaseTypeColumn) {
         caseTypeCol = filteredCaseTypeCols.find(c => EpiUploadUtil.matchColumnLabel(label, c)) || null;
@@ -260,7 +260,7 @@ export class EpiUploadUtil {
       const originalIndex = parseInt(originalIndexString, 10);
       const isCaseIdColumn = formValue === 'case_id';
       const isCaseDateColumn = formValue === 'case_date';
-      let caseTypeCol: CaseTypeCol | null = null;
+      let caseTypeCol: CaseTypeCol = null;
       if (!isCaseIdColumn && !isCaseDateColumn) {
         caseTypeCol = caseTypeColMap.get(formValue) || null;
       }

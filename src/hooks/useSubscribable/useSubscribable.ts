@@ -13,7 +13,7 @@ type UseSubscribableKwArgs<TSubjectData> = {
 export const useSubscribable = <TSubjectData>(subscribable: SubscribableAbstract<TSubjectData>, kwArgs: UseSubscribableKwArgs<TSubjectData> = {}) => {
   const { select, callback } = kwArgs;
 
-  const [data, setData] = useState<TSubjectData | undefined>(subscribable.data);
+  const [data, setData] = useState<TSubjectData>(subscribable.data);
   useEffect(() => {
     const unsubscribe = subscribable.subscribe((x, prevX) => {
       const newData = select ? select(x) : x;

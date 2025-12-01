@@ -16,7 +16,7 @@ export const useCaseTypeColSetsQuery = (): UseQueryResult<CaseTypeColSet[]> => {
   return useQueryMemo({
     queryKey: QueryUtil.getGenericKey(QUERY_KEY.CASE_TYPE_COL_SETS),
     queryFn: async ({ signal }) => {
-      const response = await CaseApi.getInstance().caseTypeColSetsGetAll({ signal });
+      const response = await CaseApi.instance.caseTypeColSetsGetAll({ signal });
       return response.data;
     },
   });

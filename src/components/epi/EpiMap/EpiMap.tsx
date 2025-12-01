@@ -115,7 +115,7 @@ export const EpiMap = () => {
   const { isLoading: isRegionSetShapesLoading, error: regionSetShapesError, data: regionSetShapes } = useQuery({
     queryKey: QueryUtil.getGenericKey(QUERY_KEY.REGION_SET_SHAPES, regionSetShapesFilter),
     queryFn: async ({ signal }) => {
-      return (await GeoApi.getInstance().regionSetShapesPostQuery(regionSetShapesFilter, { signal })).data;
+      return (await GeoApi.instance.regionSetShapesPostQuery(regionSetShapesFilter, { signal })).data;
     },
     select: (shapes) => Object.fromEntries(shapes.map(regionSetShape => [regionSetShape.region_set_id, regionSetShape])),
     retry: false,

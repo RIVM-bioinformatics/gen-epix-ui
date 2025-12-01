@@ -61,7 +61,7 @@ export const EpiCaseForm = ({ epiCase, formId, onFinish, onIsSavingChange, ...bo
           ...epiCase,
           content: ObjectUtil.mergeWithUndefined(epiCase.content, content),
         };
-        await CaseApi.getInstance().casesPutOne(item.id, item);
+        await CaseApi.instance.casesPutOne(item.id, item);
         mutateCachedCase(item.id, item);
         NotificationManager.instance.fulfillNotification(notificationKey, t('Successfully saved case data.'), 'success');
       } catch (_error) {

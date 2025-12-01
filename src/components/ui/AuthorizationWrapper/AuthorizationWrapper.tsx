@@ -29,14 +29,14 @@ export const AuthorizationWrapper = ({ children }: PropsWithChildren): ReactNode
 
   const userQuery = useQuery({
     queryKey: QueryUtil.getGenericKey(QUERY_KEY.USER_ME),
-    queryFn: async ({ signal }) => (await OrganizationApi.getInstance().userMeGetOne({ signal })).data,
+    queryFn: async ({ signal }) => (await OrganizationApi.instance.userMeGetOne({ signal })).data,
     gcTime: Infinity,
     staleTime: Infinity,
     enabled: requiresUserProfile,
   });
   const userPermissionsQuery = useQuery({
     queryKey: QueryUtil.getGenericKey(QUERY_KEY.USER_PERMISSIONS),
-    queryFn: async ({ signal }) => (await OrganizationApi.getInstance().userMeRetrievePermissions({ signal })).data,
+    queryFn: async ({ signal }) => (await OrganizationApi.instance.userMeRetrievePermissions({ signal })).data,
     gcTime: Infinity,
     staleTime: Infinity,
     enabled: requiresUserProfile,

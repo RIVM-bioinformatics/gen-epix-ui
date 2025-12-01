@@ -18,7 +18,7 @@ export const useRegionQuery = (): UseQueryResult<Region[]> => {
   return useQueryMemo({
     queryKey: QueryUtil.getGenericKey(QUERY_KEY.REGIONS),
     queryFn: async ({ signal }) => {
-      const response = await GeoApi.getInstance().regionsGetAll({ signal });
+      const response = await GeoApi.instance.regionsGetAll({ signal });
       return response.data;
     },
   });

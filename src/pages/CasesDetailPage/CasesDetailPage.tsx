@@ -24,7 +24,7 @@ export const CasesDetailPage = () => {
     baseQueryKey: QUERY_KEY.CASE_TYPES,
     itemId: caseTypeId,
     useQueryOptions: {
-      queryFn: async ({ signal }) => (await CaseApi.getInstance().caseTypesGetOne(caseTypeId, { signal })).data,
+      queryFn: async ({ signal }) => (await CaseApi.instance.caseTypesGetOne(caseTypeId, { signal })).data,
     },
   });
 

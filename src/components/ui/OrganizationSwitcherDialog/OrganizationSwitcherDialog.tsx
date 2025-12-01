@@ -96,7 +96,7 @@ export const OrganizationSwitcherDialog = withDialog<OrganizationSwitcherDialogP
       });
       try {
         setIsChanging(true);
-        await OrganizationApi.getInstance().updateUserOwnOrganization({
+        await OrganizationApi.instance.updateUserOwnOrganization({
           organization_id: formValues.organization_id,
         }, {});
         setNewOrganizationId(formValues.organization_id);

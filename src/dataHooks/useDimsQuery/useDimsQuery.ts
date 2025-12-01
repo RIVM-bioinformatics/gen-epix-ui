@@ -13,7 +13,7 @@ export const useDimsQuery = (): UseQueryResult<Dim[]> => {
   return useQueryMemo({
     queryKey: QueryUtil.getGenericKey(QUERY_KEY.DIMS),
     queryFn: async ({ signal }) => {
-      const response = await CaseApi.getInstance().dimsGetAll({ signal });
+      const response = await CaseApi.instance.dimsGetAll({ signal });
       return response.data;
     },
   });

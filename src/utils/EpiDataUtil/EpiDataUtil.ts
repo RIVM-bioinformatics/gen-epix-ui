@@ -46,7 +46,7 @@ export class EpiDataUtil {
     if (currentTreeAlgorithms) {
       return;
     }
-    const treeAlgorithms = (await CaseApi.getInstance().treeAlgorithmsGetAll({ signal })).data.sort((a, b) => {
+    const treeAlgorithms = (await CaseApi.instance.treeAlgorithmsGetAll({ signal })).data.sort((a, b) => {
       if (a.rank === b.rank) {
         return a.name.localeCompare(b.name);
       }
@@ -67,7 +67,7 @@ export class EpiDataUtil {
     const currentRegionSets = QueryUtil.getValidQueryData<RegionSet[]>(QueryUtil.getGenericKey(QUERY_KEY.REGION_SETS_LAZY)) ?? [];
     const currentRegions = QueryUtil.getValidQueryData<Region[]>(QueryUtil.getGenericKey(QUERY_KEY.REGIONS_LAZY)) ?? [];
 
-    const regionSetsResult = (await GeoApi.getInstance().regionSetsPostQuery({
+    const regionSetsResult = (await GeoApi.instance.regionSetsPostQuery({
       invert: false,
       key: 'id',
       type: 'UUID_SET',
@@ -76,7 +76,7 @@ export class EpiDataUtil {
     const regionSets = [...regionSetsResult, ...currentRegionSets];
     queryClient.setQueryData(QueryUtil.getGenericKey(QUERY_KEY.REGION_SETS_LAZY), regionSets);
 
-    const regionsResult = (await GeoApi.getInstance().regionsPostQuery({
+    const regionsResult = (await GeoApi.instance.regionsPostQuery({
       invert: false,
       key: 'region_set_id',
       type: 'UUID_SET',
@@ -114,12 +114,12 @@ export class EpiDataUtil {
     }
 
     if (conceptSets === null) {
-      conceptSets = (await OntologyApi.getInstance().conceptSetsGetAll({ signal })).data;
+      conceptSets = (await OntologyApi.instance.conceptSetsGetAll({ signal })).data;
       queryClient.setQueryData(QueryUtil.getGenericKey(QUERY_KEY.CONCEPT_SETS), conceptSets);
     }
 
     if (concepts === null) {
-      concepts = (await OntologyApi.getInstance().conceptsGetAll({ signal })).data;
+      concepts = (await OntologyApi.instance.conceptsGetAll({ signal })).data;
       queryClient.setQueryData(QueryUtil.getGenericKey(QUERY_KEY.CONCEPTS), concepts);
     }
 
@@ -152,7 +152,7 @@ export class EpiDataUtil {
     if (organizations !== null) {
       return;
     }
-    organizations = (await OrganizationApi.getInstance().organizationsGetAll({ signal })).data;
+    organizations = (await OrganizationApi.instance.organizationsGetAll({ signal })).data;
     queryClient.setQueryData(QueryUtil.getGenericKey(QUERY_KEY.ORGANIZATIONS), organizations);
 
     // Rebuild the cache

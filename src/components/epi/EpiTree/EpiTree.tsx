@@ -170,7 +170,7 @@ export const EpiTree = ({ linkedScrollSubject, ref }: EpiTreeProps) => {
   const { isLoading: isTreeLoading, error: treeError, data: treeData } = useQuery({
     queryKey: QueryUtil.getRetrievePhylogeneticTreeKey(retrievePhylogeneticTreeRequestBody),
     queryFn: async ({ signal }) => {
-      const response = await CaseApi.getInstance().retrievePhylogeneticTree(retrievePhylogeneticTreeRequestBody, { signal });
+      const response = await CaseApi.instance.retrievePhylogeneticTree(retrievePhylogeneticTreeRequestBody, { signal });
       return response.data;
     },
     enabled: hasEnoughSequencesToShowTree && !!treeConfiguration,

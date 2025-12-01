@@ -20,7 +20,7 @@ export const UserOrganizationAdminMenuItem = withPermissions(() => {
 
   const { isLoading: isOrganizationAdminNameEmailsLoading, error: organizationAdminNameEmailsError, data: organizationAdminNameEmails } = useQuery({
     queryKey: QueryUtil.getGenericKey(QUERY_KEY.ORGANIZATION_ADMIN_NAME_EMAILS),
-    queryFn: async ({ signal }) => (await AbacApi.getInstance().retrieveOrganizationAdminNameEmails({ signal })).data,
+    queryFn: async ({ signal }) => (await AbacApi.instance.retrieveOrganizationAdminNameEmails({ signal })).data,
     gcTime: 0,
     staleTime: 0,
   });

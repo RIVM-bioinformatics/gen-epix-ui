@@ -92,13 +92,13 @@ export const EpiCaseSharingForm = ({ formId, epiCase, onFinish, onIsSavingChange
         const dataCollectionIdsToRemove = difference(rights.shared_in_data_collection_ids, dataCollectionIds);
 
         if (dataCollectionIdsToAdd.length > 0) {
-          await CaseApi.getInstance().caseDataCollectionLinksPostSome(dataCollectionIdsToAdd.map(data_collection_id => ({
+          await CaseApi.instance.caseDataCollectionLinksPostSome(dataCollectionIdsToAdd.map(data_collection_id => ({
             case_id: epiCase.id,
             data_collection_id,
           })));
         }
         if (dataCollectionIdsToRemove.length > 0) {
-          await CaseApi.getInstance().caseDataCollectionLinksDeleteSome(caseAbacContext.itemDataCollectionLinks[0]?.filter(x => dataCollectionIdsToRemove.includes(x.data_collection_id)).map(x => x.id).join(','));
+          await CaseApi.instance.caseDataCollectionLinksDeleteSome(caseAbacContext.itemDataCollectionLinks[0]?.filter(x => dataCollectionIdsToRemove.includes(x.data_collection_id)).map(x => x.id).join(','));
         }
         NotificationManager.instance.fulfillNotification(notificationKey, t('Successfully saved case data collections.'), 'success');
       } catch (_error) {

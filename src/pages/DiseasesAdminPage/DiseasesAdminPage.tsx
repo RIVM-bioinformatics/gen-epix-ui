@@ -27,19 +27,19 @@ export const DiseasesAdminPage = () => {
   const [t] = useTranslation();
 
   const fetchAll = useCallback(async (signal: AbortSignal) => {
-    return (await OntologyApi.getInstance().diseasesGetAll({ signal }))?.data;
+    return (await OntologyApi.instance.diseasesGetAll({ signal }))?.data;
   }, []);
 
   const deleteOne = useCallback(async (item: Disease) => {
-    return await OntologyApi.getInstance().diseasesDeleteOne(item.id);
+    return await OntologyApi.instance.diseasesDeleteOne(item.id);
   }, []);
 
   const updateOne = useCallback(async (variables: FormFields, item: Disease) => {
-    return (await OntologyApi.getInstance().diseasesPutOne(item.id, { id: item.id, ...variables })).data;
+    return (await OntologyApi.instance.diseasesPutOne(item.id, { id: item.id, ...variables })).data;
   }, []);
 
   const createOne = useCallback(async (variables: FormFields) => {
-    return (await OntologyApi.getInstance().diseasesPostOne(variables)).data;
+    return (await OntologyApi.instance.diseasesPostOne(variables)).data;
   }, []);
 
   const getName = useCallback((item: Disease) => {

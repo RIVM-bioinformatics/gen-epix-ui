@@ -77,7 +77,7 @@ export const HomePageTrends = withPermissions(() => {
   const { data: caseSetsThenData, ...caseSetsThenQuery } = useQuery({
     queryKey: QueryUtil.getGenericKey(QUERY_KEY.CASE_SETS, caseSetQueryFilter),
     queryFn: async ({ signal }) => {
-      const response = await CaseApi.getInstance().caseSetsPostQuery(caseSetQueryFilter, { signal });
+      const response = await CaseApi.instance.caseSetsPostQuery(caseSetQueryFilter, { signal });
       return response.data;
     },
   });

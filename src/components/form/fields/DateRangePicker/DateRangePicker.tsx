@@ -298,7 +298,7 @@ export const DateRangePicker = <TFieldValues extends FieldValues, TName extends 
                 },
               }}
               value={fromValue ?? null}
-              views={views as MuiDateTimePickerProps['views'] & MuiDatePickerProps['views']}
+              views={views as MuiDatePickerProps['views']}
               minDate={minDate}
               // eslint-disable-next-line react/jsx-no-bind
               onChange={onFromValueChange}
@@ -325,7 +325,7 @@ export const DateRangePicker = <TFieldValues extends FieldValues, TName extends 
                 },
               }}
               value={toValue ?? null}
-              views={views as MuiDateTimePickerProps['views'] & MuiDatePickerProps['views']}
+              views={views as MuiDatePickerProps['views']}
               minDate={fromValue ? new Date(Math.max.apply(null, [minDate, fromValue] as unknown as number[])) : minDate}
               // eslint-disable-next-line react/jsx-no-bind
               onChange={onToValueChange}

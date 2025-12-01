@@ -10,7 +10,7 @@ export const useCaseSetRightsQuery = (caseSetIds: string[]): UseQueryResult<Case
   return useQueryMemo({
     queryKey: QueryUtil.getGenericKey(QUERY_KEY.CASE_SET_RIGHTS, caseSetIds),
     queryFn: async ({ signal }) => {
-      const response = await CaseApi.getInstance().retrieveCaseSetRights(caseSetIds, { signal });
+      const response = await CaseApi.instance.retrieveCaseSetRights(caseSetIds, { signal });
       return response.data;
     },
   });

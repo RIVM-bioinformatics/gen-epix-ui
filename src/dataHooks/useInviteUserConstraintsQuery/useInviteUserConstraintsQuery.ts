@@ -11,7 +11,7 @@ export const useInviteUserConstraintsQuery = (): UseQueryResult<UserInvitationCo
   return useQueryMemo({
     queryKey: QueryUtil.getGenericKey(QUERY_KEY.INVITE_USER_CONSTRAINTS),
     queryFn: async ({ signal }) => {
-      const response = await OrganizationApi.getInstance().inviteUserConstraints({ signal });
+      const response = await OrganizationApi.instance.inviteUserConstraints({ signal });
       return response.data;
     },
   });

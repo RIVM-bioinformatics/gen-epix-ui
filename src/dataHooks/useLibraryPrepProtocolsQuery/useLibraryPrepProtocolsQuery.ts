@@ -16,7 +16,7 @@ export const useLibraryPrepProtocolsQuery = (): UseQueryResult<LibraryPrepProtoc
   return useQueryMemo({
     queryKey: QueryUtil.getGenericKey(QUERY_KEY.LIBRARY_PREP_PROTOCOLS),
     queryFn: async ({ signal }) => {
-      const response = await CaseApi.getInstance().retrieveLibraryPrepProtocols({ signal });
+      const response = await CaseApi.instance.retrieveLibraryPrepProtocols({ signal });
       return response.data;
     },
   });

@@ -37,19 +37,19 @@ export const OrganizationAdminPoliciesAdminPage = () => {
   const loadables = useArray([organizationOptionsQuery, userOptionsQuery, organizationAdminPolicyNameFactory]);
 
   const fetchAll = useCallback(async (signal: AbortSignal) => {
-    return (await AbacApi.getInstance().organizationAdminPoliciesGetAll({ signal }))?.data;
+    return (await AbacApi.instance.organizationAdminPoliciesGetAll({ signal }))?.data;
   }, []);
 
   const deleteOne = useCallback(async (item: OrganizationAdminPolicy) => {
-    return await AbacApi.getInstance().organizationAdminPoliciesDeleteOne(item.id);
+    return await AbacApi.instance.organizationAdminPoliciesDeleteOne(item.id);
   }, []);
 
   const updateOne = useCallback(async (variables: FormFields, item: OrganizationAdminPolicy) => {
-    return (await AbacApi.getInstance().organizationAdminPoliciesPutOne(item.id, { id: item.id, ...variables })).data;
+    return (await AbacApi.instance.organizationAdminPoliciesPutOne(item.id, { id: item.id, ...variables })).data;
   }, []);
 
   const createOne = useCallback(async (variables: FormFields) => {
-    return (await AbacApi.getInstance().organizationAdminPoliciesPostOne(variables)).data;
+    return (await AbacApi.instance.organizationAdminPoliciesPostOne(variables)).data;
   }, []);
 
   const getName = useCallback((item: OrganizationAdminPolicy) => {

@@ -17,7 +17,7 @@ export const useOrganizationsQuery = (): UseQueryResult<Organization[]> => {
   return useQueryMemo({
     queryKey: QueryUtil.getGenericKey(QUERY_KEY.ORGANIZATIONS),
     queryFn: async ({ signal }) => {
-      const response = await OrganizationApi.getInstance().organizationsGetAll({ signal });
+      const response = await OrganizationApi.instance.organizationsGetAll({ signal });
       return response.data;
     },
   });

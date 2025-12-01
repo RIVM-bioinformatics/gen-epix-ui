@@ -17,7 +17,7 @@ export type EpiStoreLoaderProps = PropsWithChildren<{
 }>;
 
 export const EpiStoreLoader = ({ caseTypeId, caseSet, children }: EpiStoreLoaderProps) => {
-  const [completeCaseType, setCompleteCaseType] = useState<CompleteCaseType | null>(null);
+  const [completeCaseType, setCompleteCaseType] = useState<CompleteCaseType>(null);
   return (
     <EpiCompletCaseTypeLoader
       caseTypeId={caseTypeId}

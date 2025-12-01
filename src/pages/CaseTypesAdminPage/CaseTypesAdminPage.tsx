@@ -34,19 +34,19 @@ export const CaseTypesAdminPage = () => {
   const loadables = useArray([diseaseOptionsQuery, etiologicalAgentOptionsQuery]);
 
   const fetchAll = useCallback(async (signal: AbortSignal) => {
-    return (await CaseApi.getInstance().caseTypesGetAll({ signal }))?.data;
+    return (await CaseApi.instance.caseTypesGetAll({ signal }))?.data;
   }, []);
 
   const deleteOne = useCallback(async (item: CaseType) => {
-    return await CaseApi.getInstance().caseTypesDeleteOne(item.id);
+    return await CaseApi.instance.caseTypesDeleteOne(item.id);
   }, []);
 
   const updateOne = useCallback(async (variables: FormFields, item: CaseType) => {
-    return (await CaseApi.getInstance().caseTypesPutOne(item.id, { id: item.id, ...variables })).data;
+    return (await CaseApi.instance.caseTypesPutOne(item.id, { id: item.id, ...variables })).data;
   }, []);
 
   const createOne = useCallback(async (variables: FormFields) => {
-    return (await CaseApi.getInstance().caseTypesPostOne(variables)).data;
+    return (await CaseApi.instance.caseTypesPostOne(variables)).data;
   }, []);
 
   const getName = useCallback((item: CaseType) => {

@@ -119,7 +119,7 @@ export const EpiAddCasesToEventDialog = withDialog<EpiAddCasesToEventDialogProps
   const { isLoading: isCaseSetMembersLoading, error: caseSetMembersError, data: caseSetMembers } = useQuery({
     queryKey: QueryUtil.getGenericKey(QUERY_KEY.CASE_SET_MEMBERS, caseSetMembersFilter),
     queryFn: async ({ signal }) => {
-      const response = await CaseApi.getInstance().caseSetMembersPostQuery(caseSetMembersFilter, { signal });
+      const response = await CaseApi.instance.caseSetMembersPostQuery(caseSetMembersFilter, { signal });
       return response.data;
     },
     enabled: !!caseSetId,
@@ -134,7 +134,7 @@ export const EpiAddCasesToEventDialog = withDialog<EpiAddCasesToEventDialogProps
   const { isLoading: isCaseSetDataCollectionLinksLoading, error: caseSetDataCollectionLinksError, data: caseSetDataCollectionLinks } = useQuery({
     queryKey: QueryUtil.getGenericKey(QUERY_KEY.CASE_SET_DATA_COLLECTION_LINKS, caseSetDataCollectionLinksFilter),
     queryFn: async ({ signal }) => {
-      const response = await CaseApi.getInstance().caseSetDataCollectionLinksPostQuery(caseSetDataCollectionLinksFilter, { signal });
+      const response = await CaseApi.instance.caseSetDataCollectionLinksPostQuery(caseSetDataCollectionLinksFilter, { signal });
       return response.data;
     },
     enabled: !!caseSetId,
@@ -168,7 +168,7 @@ export const EpiAddCasesToEventDialog = withDialog<EpiAddCasesToEventDialogProps
   const { mutate: mutateItems, isMutating: isMutatingItems } = useEditMutation<CaseSetMember[]>({
     associationQueryKeys: QueryUtil.getQueryKeyDependencies([QUERY_KEY.CASE_SET_MEMBERS], true),
     queryFn: async (items: CaseSetMember[]) => {
-      await CaseApi.getInstance().caseSetMembersPostSome(items);
+      await CaseApi.instance.caseSetMembersPostSome(items);
       return items;
     },
     onSuccess,

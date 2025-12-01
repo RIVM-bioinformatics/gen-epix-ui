@@ -29,7 +29,7 @@ export const OrganizationContactsAdminPage = () => {
   const [t] = useTranslation();
 
   const fetchAll = useCallback(async (signal: AbortSignal) => {
-    return (await OrganizationApi.getInstance().contactsGetAll({ signal })).data;
+    return (await OrganizationApi.instance.contactsGetAll({ signal })).data;
   }, []);
 
   const fetchAllSelect = useCallback((contacts: Contact[]) => {
@@ -37,7 +37,7 @@ export const OrganizationContactsAdminPage = () => {
   }, [siteId]);
 
   const updateOne = useCallback(async (variables: FormFields, item: Contact) => {
-    return (await OrganizationApi.getInstance().contactsPutOne(item.id, {
+    return (await OrganizationApi.instance.contactsPutOne(item.id, {
       id: item.id,
       site_id: siteId,
       ...variables,
@@ -45,14 +45,14 @@ export const OrganizationContactsAdminPage = () => {
   }, [siteId]);
 
   const createOne = useCallback(async (variables: FormFields) => {
-    return (await OrganizationApi.getInstance().contactsPostOne({
+    return (await OrganizationApi.instance.contactsPostOne({
       site_id: siteId,
       ...variables,
     })).data;
   }, [siteId]);
 
   const deleteOne = useCallback(async (item: Contact) => {
-    return await OrganizationApi.getInstance().contactsDeleteOne(item.id);
+    return await OrganizationApi.instance.contactsDeleteOne(item.id);
   }, []);
 
   const getName = useCallback((item: FormFields) => {

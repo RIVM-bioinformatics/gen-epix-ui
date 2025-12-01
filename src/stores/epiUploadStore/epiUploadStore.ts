@@ -86,8 +86,8 @@ export interface EpiUploadStoreActions {
   reset: () => Promise<void>;
   destroy: () => Promise<void>;
   invalidateCaseValidationQuery: () => Promise<void>;
-  findNextStep: (currentStep: EPI_UPLOAD_STEP) => EPI_UPLOAD_STEP | null;
-  findPreviousStep: (currentStep: EPI_UPLOAD_STEP) => EPI_UPLOAD_STEP | null;
+  findNextStep: (currentStep: EPI_UPLOAD_STEP) => EPI_UPLOAD_STEP;
+  findPreviousStep: (currentStep: EPI_UPLOAD_STEP) => EPI_UPLOAD_STEP;
 }
 
 export type EpiUploadStore = EpiUploadStoreState & EpiUploadStoreActions;
@@ -353,7 +353,7 @@ export const createEpiUploadStore = () => {
         set(createEpiUploadStoreDefaultState());
       },
 
-      findNextStep: (currentStep: EPI_UPLOAD_STEP): EPI_UPLOAD_STEP | null => {
+      findNextStep: (currentStep: EPI_UPLOAD_STEP): EPI_UPLOAD_STEP => {
         const currentIndex = STEP_ORDER.indexOf(currentStep);
         if (currentIndex === -1 || currentIndex === STEP_ORDER.length - 1) {
           return null;
@@ -361,7 +361,7 @@ export const createEpiUploadStore = () => {
         return STEP_ORDER[currentIndex + 1];
       },
 
-      findPreviousStep: (currentStep: EPI_UPLOAD_STEP): EPI_UPLOAD_STEP | null => {
+      findPreviousStep: (currentStep: EPI_UPLOAD_STEP): EPI_UPLOAD_STEP => {
         const currentIndex = STEP_ORDER.indexOf(currentStep);
         if (currentIndex <= 0) {
           return null;

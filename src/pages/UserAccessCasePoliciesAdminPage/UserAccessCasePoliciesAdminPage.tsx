@@ -56,19 +56,19 @@ export const UserAccessCasePoliciesAdminPage = () => {
   const loadables = useArray([nameFactory, userOptionsQuery, dataCollectionOptionsQuery, caseTypeColSetOptionsQuery, caseTypeSetOptions]);
 
   const fetchAll = useCallback(async (signal: AbortSignal) => {
-    return (await AbacApi.getInstance().userAccessCasePoliciesGetAll({ signal }))?.data;
+    return (await AbacApi.instance.userAccessCasePoliciesGetAll({ signal }))?.data;
   }, []);
 
   const deleteOne = useCallback(async (item: UserAccessCasePolicy) => {
-    return await AbacApi.getInstance().userAccessCasePoliciesDeleteOne(item.id);
+    return await AbacApi.instance.userAccessCasePoliciesDeleteOne(item.id);
   }, []);
 
   const updateOne = useCallback(async (variables: FormFields, item: UserAccessCasePolicy) => {
-    return (await AbacApi.getInstance().userAccessCasePoliciesPutOne(item.id, { id: item.id, ...variables })).data;
+    return (await AbacApi.instance.userAccessCasePoliciesPutOne(item.id, { id: item.id, ...variables })).data;
   }, []);
 
   const createOne = useCallback(async (variables: FormFields) => {
-    return (await AbacApi.getInstance().userAccessCasePoliciesPostOne(variables)).data;
+    return (await AbacApi.instance.userAccessCasePoliciesPostOne(variables)).data;
   }, []);
 
   const getName = useCallback((item: UserAccessCasePolicy) => {

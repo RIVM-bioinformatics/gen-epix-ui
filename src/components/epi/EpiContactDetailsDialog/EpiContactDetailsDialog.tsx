@@ -47,7 +47,7 @@ export const EpiContactDetailsDialog = withDialog<EpiContactDetailsDialogProps, 
   const { isLoading, error, data: contactInfos } = useQuery({
     queryKey,
     queryFn: async ({ signal }) => {
-      const response = await CaseApi.getInstance().retrieveOrganizationContact({
+      const response = await CaseApi.instance.retrieveOrganizationContact({
         organization_ids: [openProps.contactId],
       }, { signal });
       return response.data;

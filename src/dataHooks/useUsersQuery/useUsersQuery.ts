@@ -17,7 +17,7 @@ export const useUsersQuery = (): UseQueryResult<User[]> => {
   return useQueryMemo({
     queryKey: QueryUtil.getGenericKey(QUERY_KEY.USERS),
     queryFn: async ({ signal }) => {
-      const response = await OrganizationApi.getInstance().usersGetAll({ signal });
+      const response = await OrganizationApi.instance.usersGetAll({ signal });
       return response.data;
     },
   });

@@ -41,7 +41,7 @@ export const OrganizationSitesAdminPage = () => {
   const [t] = useTranslation();
 
   const fetchAll = useCallback(async (signal: AbortSignal) => {
-    return (await OrganizationApi.getInstance().sitesGetAll({ signal })).data;
+    return (await OrganizationApi.instance.sitesGetAll({ signal })).data;
   }, []);
 
   const fetchAllSelect = useCallback((sites: Site[]) => {
@@ -49,7 +49,7 @@ export const OrganizationSitesAdminPage = () => {
   }, [organizationId]);
 
   const updateOne = useCallback(async (variables: FormFields, item: Site) => {
-    return (await OrganizationApi.getInstance().sitesPutOne(item.id, {
+    return (await OrganizationApi.instance.sitesPutOne(item.id, {
       id: item.id,
       name: variables.name,
       organization_id: organizationId,
@@ -57,14 +57,14 @@ export const OrganizationSitesAdminPage = () => {
   }, [organizationId]);
 
   const createOne = useCallback(async (variables: FormFields) => {
-    return (await OrganizationApi.getInstance().sitesPostOne({
+    return (await OrganizationApi.instance.sitesPostOne({
       name: variables.name,
       organization_id: organizationId,
     })).data;
   }, [organizationId]);
 
   const deleteOne = useCallback(async (item: Site) => {
-    return await OrganizationApi.getInstance().sitesDeleteOne(item.id);
+    return await OrganizationApi.instance.sitesDeleteOne(item.id);
   }, []);
 
   const getName = useCallback((item: FormFields) => {
@@ -128,7 +128,7 @@ export const OrganizationSitesAdminPage = () => {
     )];
   }, [doesUserHavePermissionToViewContacts, t]);
 
-  const editDialogExtraActionsFactory = useCallback((item: Site): DialogAction[] =>{
+  const editDialogExtraActionsFactory = useCallback((item: Site): DialogAction[] => {
     if (!doesUserHavePermissionToViewContacts) {
       return [];
     }

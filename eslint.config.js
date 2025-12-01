@@ -16,4 +16,5 @@ eslintConfig.find(c => c.files && c.files.includes('**/*.ts')).ignores.push('**/
 //   multiline: 'ignore',
 // }];
 
+
 export default eslintConfig;

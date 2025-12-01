@@ -66,11 +66,13 @@ export const EpiUploadSelectSequenceFiles = () => {
   ]);
 
   const schema = useMemo(() => object<FormFields>().shape({
+    // eslint-disable-next-line react-hooks/refs
     libraryPrepProtocolId: string().when({
       is: () => Array.from(dataTransfer.current?.files ?? []).filter(f => EpiUploadUtil.isReadsFile(f.name)).length > 0,
       then: () => string().uuid4().required(),
       otherwise: () => string().nullable().notRequired(),
     }),
+    // eslint-disable-next-line react-hooks/refs
     assemblyProtocolId: string().when({
       is: () => Array.from(dataTransfer.current?.files ?? []).filter(f => EpiUploadUtil.isGenomeFile(f.name)).length > 0,
       then: () => string().uuid4().required(),

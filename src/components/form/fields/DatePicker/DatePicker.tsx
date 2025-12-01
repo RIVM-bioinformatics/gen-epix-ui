@@ -139,7 +139,7 @@ export const DatePicker = <TFieldValues extends FieldValues, TName extends Path<
               },
             }}
             value={value}
-            views={views as MuiDateTimePickerProps['views'] & MuiDatePickerProps['views']}
+            views={views as MuiDatePickerProps['views']}
             onChange={onMuiDatePickerChange(onChange)}
           />
         </LocalizationProvider>

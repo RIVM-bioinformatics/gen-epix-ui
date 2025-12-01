@@ -52,7 +52,7 @@ export const RouterRoot = () => {
   const { isLoading: isIdentityProvidersLoading, error: identityProvidersError, data: identityProvidersWithAvailability } = useQuery<IdentityProviderWithAvailability[], Error, IdentityProviderWithAvailability[]>({
     queryKey: QueryUtil.getGenericKey(QUERY_KEY.IDENTITY_PROVIDERS),
     queryFn: async ({ signal }) => {
-      const providers = (await AuthApi.getInstance().identityProvidersGetAll({ signal })).data;
+      const providers = (await AuthApi.instance.identityProvidersGetAll({ signal })).data;
       const providersWithAvailability: IdentityProviderWithAvailability[] = [];
       for (const provider of providers) {
         let isAvailable = false;

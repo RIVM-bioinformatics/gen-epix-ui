@@ -34,7 +34,7 @@ import { FormFieldLoadingIndicator } from '../../helpers/FormFieldLoadingIndicat
 
 type Value = string | number | boolean;
 
-export type SelectProps<TFieldValues extends FieldValues, TName extends Path<TFieldValues>, TMultiple extends boolean | undefined> = {
+export type SelectProps<TFieldValues extends FieldValues, TName extends Path<TFieldValues>, TMultiple extends boolean> = {
   readonly disabled?: boolean;
   readonly label: string;
   readonly name: TName;
@@ -47,7 +47,7 @@ export type SelectProps<TFieldValues extends FieldValues, TName extends Path<TFi
   readonly loading?: boolean;
 };
 
-export const Select = <TFieldValues extends FieldValues, TName extends Path<TFieldValues> = Path<TFieldValues>, TMultiple extends boolean | undefined = false>({
+export const Select = <TFieldValues extends FieldValues, TName extends Path<TFieldValues> = Path<TFieldValues>, TMultiple extends boolean = false>({
   disabled = false,
   groupValues = false,
   label,

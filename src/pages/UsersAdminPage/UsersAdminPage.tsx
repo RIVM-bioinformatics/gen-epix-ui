@@ -89,13 +89,13 @@ export const UsersAdminPage = () => {
   }, [inviteUserConstraintsQuery.data]);
 
   const fetchAll = useCallback(async (signal: AbortSignal) => {
-    const users = (await OrganizationApi.getInstance().usersGetAll({ signal }))?.data;
+    const users = (await OrganizationApi.instance.usersGetAll({ signal }))?.data;
 
     return users;
   }, []);
 
   const updateOne = useCallback(async (variables: FormFields, item: User) => {
-    return (await OrganizationApi.getInstance().updateUser(item.id, {
+    return (await OrganizationApi.instance.updateUser(item.id, {
       is_active: variables.is_active,
       organization_id: item.organization_id,
       roles: variables.roles,
@@ -103,7 +103,7 @@ export const UsersAdminPage = () => {
   }, []);
 
   const deleteOne = useCallback(async (item: User) => {
-    return await OrganizationApi.getInstance().usersDeleteOne(item.id);
+    return await OrganizationApi.instance.usersDeleteOne(item.id);
   }, []);
 
   const getName = useCallback((item: FormFields) => {
@@ -208,7 +208,7 @@ export const UsersAdminPage = () => {
   }, []);
 
 
-  const editDialogExtraActionsFactory = useCallback((item: User): DialogAction[] =>{
+  const editDialogExtraActionsFactory = useCallback((item: User): DialogAction[] => {
     if (!doesUserHavePermissionToViewEffectiveRights) {
       return [];
     }

@@ -42,19 +42,19 @@ export const CaseTypeColsAdminPage = () => {
   const loadables = useArray([caseTypeOptionsQuery, colOptionsQuery, treeAlgorithmCodesOptionsQuery, caseTypeColOptionsQuery]);
 
   const fetchAll = useCallback(async (signal: AbortSignal) => {
-    return (await CaseApi.getInstance().caseTypeColsGetAll({ signal }))?.data;
+    return (await CaseApi.instance.caseTypeColsGetAll({ signal }))?.data;
   }, []);
 
   const deleteOne = useCallback(async (item: CaseTypeCol) => {
-    return await CaseApi.getInstance().caseTypeColsDeleteOne(item.id);
+    return await CaseApi.instance.caseTypeColsDeleteOne(item.id);
   }, []);
 
   const updateOne = useCallback(async (variables: FormFields, item: CaseTypeCol) => {
-    return (await CaseApi.getInstance().caseTypeColsPutOne(item.id, { id: item.id, ...variables })).data;
+    return (await CaseApi.instance.caseTypeColsPutOne(item.id, { id: item.id, ...variables })).data;
   }, []);
 
   const createOne = useCallback(async (variables: FormFields) => {
-    return (await CaseApi.getInstance().caseTypeColsPostOne(variables)).data;
+    return (await CaseApi.instance.caseTypeColsPostOne(variables)).data;
   }, []);
 
   const getName = useCallback((item: CaseTypeCol) => {

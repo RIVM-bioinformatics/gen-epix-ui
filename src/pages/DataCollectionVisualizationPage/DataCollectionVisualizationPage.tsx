@@ -120,7 +120,9 @@ const DataCollectionVisualizationPageContent = () => {
         id: organizationId,
         name: organizationMapQuery.map.get(organizationId)?.name || 'Unknown',
         symbolSize: 15 + (numPolicies * 0.5),
+        // eslint-disable-next-line react-hooks/purity
         x: Math.random() * 1000,
+        // eslint-disable-next-line react-hooks/purity
         y: Math.random() * 1000,
         value: 1,
         category: 1,
@@ -132,7 +134,9 @@ const DataCollectionVisualizationPageContent = () => {
         id: dataCollection.id,
         name: dataCollection.name,
         symbolSize: 15 + ((numDataCollectionSourceLinks[dataCollection.id] || 1) * 1.5),
+        // eslint-disable-next-line react-hooks/purity
         x: 1000 + Math.random() * 1000,
+        // eslint-disable-next-line react-hooks/purity
         y: Math.random() * 1000,
         value: 1,
         category: 0,

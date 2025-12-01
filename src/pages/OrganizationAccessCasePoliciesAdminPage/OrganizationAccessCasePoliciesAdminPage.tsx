@@ -57,19 +57,19 @@ export const OrganizationAccessCasePoliciesAdminPage = () => {
   const loadables = useArray([nameFactory, organizationOptionsQuery, dataCollectionOptionsQuery, caseTypeColSetOptionsQuery, caseTypeSetOptionsQuery]);
 
   const fetchAll = useCallback(async (signal: AbortSignal) => {
-    return (await AbacApi.getInstance().organizationAccessCasePoliciesGetAll({ signal }))?.data;
+    return (await AbacApi.instance.organizationAccessCasePoliciesGetAll({ signal }))?.data;
   }, []);
 
   const deleteOne = useCallback(async (item: OrganizationAccessCasePolicy) => {
-    return await AbacApi.getInstance().organizationAccessCasePoliciesDeleteOne(item.id);
+    return await AbacApi.instance.organizationAccessCasePoliciesDeleteOne(item.id);
   }, []);
 
   const updateOne = useCallback(async (variables: FormFields, item: OrganizationAccessCasePolicy) => {
-    return (await AbacApi.getInstance().organizationAccessCasePoliciesPutOne(item.id, { id: item.id, ...variables })).data;
+    return (await AbacApi.instance.organizationAccessCasePoliciesPutOne(item.id, { id: item.id, ...variables })).data;
   }, []);
 
   const createOne = useCallback(async (variables: FormFields) => {
-    return (await AbacApi.getInstance().organizationAccessCasePoliciesPostOne(variables)).data;
+    return (await AbacApi.instance.organizationAccessCasePoliciesPostOne(variables)).data;
   }, []);
 
   const getName = useCallback((item: OrganizationAccessCasePolicy) => {

@@ -126,7 +126,7 @@ export const EpiCreateEventDialog = withDialog<EpiCreateEventDialogProps, EpiCre
     itemId: sanitizedCompleteCaseTypeId,
     useQueryOptions: {
       queryFn: async ({ signal }) => {
-        return (await CaseApi.getInstance().completeCaseTypesGetOne(sanitizedCompleteCaseTypeId, { signal })).data;
+        return (await CaseApi.instance.completeCaseTypesGetOne(sanitizedCompleteCaseTypeId, { signal })).data;
       },
       enabled: !openProps.completeCaseType && !!sanitizedCompleteCaseTypeId,
     },
@@ -278,7 +278,7 @@ export const EpiCreateEventDialog = withDialog<EpiCreateEventDialogProps, EpiCre
     onSuccess,
     onError,
     queryFn: async (formData: FormFields): Promise<CaseSet> => {
-      const caseSetResult = (await CaseApi.getInstance().createCaseSet({
+      const caseSetResult = (await CaseApi.instance.createCaseSet({
         case_set: {
           case_set_category_id: formData.case_set_category_id,
           case_set_status_id: formData.case_set_status_id,

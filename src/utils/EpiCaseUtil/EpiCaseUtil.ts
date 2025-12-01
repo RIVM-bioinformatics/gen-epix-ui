@@ -55,7 +55,7 @@ export class EpiCaseUtil {
       if (caseIds) {
         normalizedCaseIds = caseIds;
       } else {
-        normalizedCaseIds = (await CaseApi.getInstance().caseSetMembersPostQuery({
+        normalizedCaseIds = (await CaseApi.instance.caseSetMembersPostQuery({
           invert: false,
           key: 'case_set_id',
           type: 'UUID_SET',
@@ -68,7 +68,7 @@ export class EpiCaseUtil {
       }
 
       const dataLinksToAdd: CaseDataCollectionLink[] = [];
-      const caseRights = (await CaseApi.getInstance().retrieveCaseRights(normalizedCaseIds)).data;
+      const caseRights = (await CaseApi.instance.retrieveCaseRights(normalizedCaseIds)).data;
 
       caseRights.forEach((caseRight) => {
         const caseId = caseRight.case_id;
@@ -92,7 +92,7 @@ export class EpiCaseUtil {
       }
 
       // Batch add the data collection links
-      await CaseApi.getInstance().caseDataCollectionLinksPostSome(dataLinksToAdd);
+      await CaseApi.instance.caseDataCollectionLinksPostSome(dataLinksToAdd);
       await QueryUtil.invalidateQueryKeys(QueryUtil.getQueryKeyDependencies([QUERY_KEY.CASE_DATA_COLLECTION_LINKS], true));
       NotificationManager.instance.fulfillNotification(notificationKey, t('Sharing has been applied to the cases'), 'success');
 

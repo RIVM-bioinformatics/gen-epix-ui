@@ -1,1 +1,1 @@
-export type PropsWithTestIdAttributes<P> = P & { testIdAttributes?: Record<string, string> };
+export type PropsWithTestIdAttributes<P> = P & { testIdAttributes: Record<string, string> };

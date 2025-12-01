@@ -5,7 +5,7 @@ import { EpiStoreLoader } from './EpiStoreLoader';
 
 export type WithEpiStoreProps = EpiStoreLoaderProps;
 
-export const withEpiStore = <P extends WithEpiStoreProps>(WrappedComponent: ComponentType<P>): ComponentType<P> =>{
+export const withEpiStore = <P extends WithEpiStoreProps>(WrappedComponent: ComponentType<P>): ComponentType<P> => {
   return (props: WithEpiStoreProps) => (
     <EpiStoreLoader
       caseSet={props.caseSet}

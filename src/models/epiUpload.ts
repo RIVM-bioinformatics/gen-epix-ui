@@ -18,7 +18,7 @@ export enum EPI_UPLOAD_ACTION {
 }
 
 export type EpiUploadMappedColumnsFormFields = {
-  [key: string]: string | null;
+  [key: string]: string;
 };
 
 export type EpiUploadTableRow = {

@@ -18,7 +18,7 @@ export const useCaseTypeColsQuery = (): UseQueryResult<CaseTypeCol[]> => {
   return useQueryMemo({
     queryKey: QueryUtil.getGenericKey(QUERY_KEY.CASE_TYPE_COLS),
     queryFn: async ({ signal }) => {
-      const response = await CaseApi.getInstance().caseTypeColsGetAll({ signal });
+      const response = await CaseApi.instance.caseTypeColsGetAll({ signal });
       return response.data;
     },
   });

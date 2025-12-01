@@ -54,7 +54,7 @@ export const SortableList = <T extends BaseItem>({
   renderItemContent,
 }: Props<T>) => {
   const theme = useTheme();
-  const [active, setActive] = useState<Active | null>(null);
+  const [active, setActive] = useState<Active>(null);
   const activeItem = useMemo(
     () => items.find((item) => item.id === active?.id),
     [active, items],

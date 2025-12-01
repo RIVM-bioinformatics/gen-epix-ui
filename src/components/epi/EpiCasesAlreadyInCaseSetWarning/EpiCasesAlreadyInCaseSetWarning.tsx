@@ -50,7 +50,7 @@ export const EpiCasesAlreadyInCaseSetWarning = ({ cases }: EpiCasesAlreadyInCase
   const { isLoading: isCaseSetMembersLoading, error: caseSetMembersError, data: caseSetMembers } = useQuery({
     queryKey: QueryUtil.getGenericKey(QUERY_KEY.CASE_SET_MEMBERS, caseSetMembersFilter),
     queryFn: async ({ signal }) => {
-      const response = await CaseApi.getInstance().caseSetMembersPostQuery(caseSetMembersFilter, { signal });
+      const response = await CaseApi.instance.caseSetMembersPostQuery(caseSetMembersFilter, { signal });
       return response.data;
     },
   });
@@ -67,7 +67,7 @@ export const EpiCasesAlreadyInCaseSetWarning = ({ cases }: EpiCasesAlreadyInCase
   const { isLoading: isCaseSetsLoading, error: caseSetsError, data: caseSets } = useQuery({
     queryKey: QueryUtil.getGenericKey(QUERY_KEY.CASE_SETS, existingCaseSetsFilter),
     queryFn: async ({ signal }) => {
-      const response = await CaseApi.getInstance().caseSetsPostQuery(existingCaseSetsFilter, { signal });
+      const response = await CaseApi.instance.caseSetsPostQuery(existingCaseSetsFilter, { signal });
       return response.data;
     },
     enabled: existingCaseSetsFilter.members.length > 0,

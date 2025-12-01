@@ -10,7 +10,7 @@ export const useUserShareCasePoliciesQuery = (select?: (data: UserShareCasePolic
   return useQueryMemo({
     queryKey: QueryUtil.getGenericKey(QUERY_KEY.USER_SHARE_CASE_POLICIES),
     queryFn: async ({ signal }) => {
-      const response = await AbacApi.getInstance().userShareCasePoliciesGetAll({ signal });
+      const response = await AbacApi.instance.userShareCasePoliciesGetAll({ signal });
       return response.data;
     },
     select: select ? (data) => select(data) : undefined,

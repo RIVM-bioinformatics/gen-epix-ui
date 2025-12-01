@@ -16,7 +16,7 @@ export const useDiseasesQuery = (): UseQueryResult<Disease[]> => {
   return useQueryMemo({
     queryKey: QueryUtil.getGenericKey(QUERY_KEY.DISEASES),
     queryFn: async ({ signal }) => {
-      const response = await OntologyApi.getInstance().diseasesGetAll({ signal });
+      const response = await OntologyApi.instance.diseasesGetAll({ signal });
       return response.data;
     },
   });
