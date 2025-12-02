@@ -8,6 +8,7 @@ import {
 } from '@mui/material';
 import ArrowCircleRightIcon from '@mui/icons-material/ArrowCircleRight';
 import InfoIcon from '@mui/icons-material/Info';
+import FileDownloadIcon from '@mui/icons-material/FileDownload';
 import {
   useCallback,
   useMemo,
@@ -54,6 +55,7 @@ import { TableUtil } from '../../utils/TableUtil';
 import { TestIdUtil } from '../../utils/TestIdUtil';
 import { DATE_FORMAT } from '../../data/date';
 import { EpiCaseTypeUtil } from '../../utils/EpiCaseTypeUtil';
+import { EpiDownloadUtil } from '../../utils/EpiDownloadUtil';
 
 type Row = {
   id: string;
@@ -120,6 +122,10 @@ export const CasesPage = () => {
       caseTypeId: params.row.id,
     });
   }, []);
+
+  const onDownloadExcelTemplateButtonClick = useCallback(async (params: TableRowParams<Row>) => {
+    await EpiDownloadUtil.downloadExcelTemplate(params.row.id, t);
+  }, [t]);
 
   const onIndexCellClick = useCallback((row: Row) => {
     epiCaseTypeInfoDialogWithLoaderRef.current.open({
@@ -249,11 +255,25 @@ export const CasesPage = () => {
                 </ListItemText>
               </MenuItem>
             ),
+            (
+              <MenuItem
+                key={'actions3'}
+                // eslint-disable-next-line react/jsx-no-bind
+                onClick={async () => onDownloadExcelTemplateButtonClick(params)}
+              >
+                <ListItemIcon>
+                  <FileDownloadIcon />
+                </ListItemIcon>
+                <ListItemText>
+                  {t`Download Excel template`}
+                </ListItemText>
+              </MenuItem>
+            ),
           ];
         },
       }),
     ] satisfies TableColumn<Row>[];
-  }, [caseTypeSetCategoriesQuery, caseTypeSetCategoryOptions, error, isLoading, onShowCaseTypeInformationClick, onShowItemClick, t]);
+  }, [caseTypeSetCategoriesQuery.data, caseTypeSetCategoryOptions, error, isLoading, onDownloadExcelTemplateButtonClick, onShowCaseTypeInformationClick, onShowItemClick, t]);
 
   const tableStore = useMemo(() => createTableStore<Row>({
     navigatorFunction: RouterManager.instance.router.navigate,

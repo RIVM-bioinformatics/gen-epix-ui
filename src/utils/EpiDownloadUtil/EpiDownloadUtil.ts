@@ -1,13 +1,15 @@
-import type { TFunction } from 'i18next';
+import { type TFunction } from 'i18next';
 import { format } from 'date-fns';
 import type { ECharts } from 'echarts';
 import writeXlsxFile from 'write-excel-file';
 import { stringify } from 'csv-stringify/browser/esm/sync';
 
-import type {
-  Case,
-  CaseTypeCol,
-  CompleteCaseType,
+import {
+  CaseApi,
+  LogLevel,
+  type Case,
+  type CaseTypeCol,
+  type CompleteCaseType,
 } from '../../api';
 import { ConfigManager } from '../../classes/managers/ConfigManager';
 import { DATE_FORMAT } from '../../data/date';
@@ -15,8 +17,61 @@ import { StringUtil } from '../StringUtil';
 import { EpiCaseTypeUtil } from '../EpiCaseTypeUtil';
 import { EpiCaseUtil } from '../EpiCaseUtil';
 import { AuthenticationManager } from '../../classes/managers/AuthenticationManager';
+import { QueryClientManager } from '../../classes/managers/QueryClientManager';
+import { QueryUtil } from '../QueryUtil';
+import { QUERY_KEY } from '../../models/query';
+import { NotificationManager } from '../../classes/managers/NotificationManager';
+import { LogManager } from '../../classes/managers/LogManager';
 
 export class EpiDownloadUtil {
+  public static async downloadExcelTemplate(caseTypeId: string, t: TFunction<'translation', undefined>): Promise<void> {
+    const queryClient = QueryClientManager.instance.queryClient;
+    try {
+      const completeCaseType = await queryClient.fetchQuery({
+        queryKey: QueryUtil.getGenericKey(QUERY_KEY.COMPLETE_CASE_TYPES, caseTypeId),
+        queryFn: async ({ signal }) => {
+          return (await CaseApi.instance.completeCaseTypesGetOne(caseTypeId, { signal })).data;
+        },
+      });
+
+      const headers = EpiDownloadUtil.getColumnHeadersForImport(
+        EpiCaseTypeUtil.getWritableImportExportCaseTypeColIds(completeCaseType)
+          .sort((a, b) => completeCaseType.case_type_col_order.indexOf(a) - completeCaseType.case_type_col_order.indexOf(b))
+        , completeCaseType,
+      );
+      const data = [
+        headers.map(header => ({ type: String, value: header })),
+      ];
+      const fileName = `${EpiDownloadUtil.getTemplateFileName(completeCaseType)}.xlsx`;
+
+      // Generate Excel file as a Blob and download it
+      const blob = await writeXlsxFile(data, {
+        columns: headers.map(() => ({ width: 20 })),
+        stickyRowsCount: 1,
+        showGridLines: true,
+      });
+
+      // Convert blob to base64 and download
+      const arrayBuffer = await blob.arrayBuffer();
+      const base64 = EpiDownloadUtil.arrayBufferToBase64(arrayBuffer);
+      EpiDownloadUtil.createDownloadUrl(`data:application/vnd.openxmlformats-officedocument.spreadsheetml.sheet;base64,${base64}`, fileName);
+    } catch (error) {
+      LogManager.instance.log([{
+        detail: {
+          error,
+          stack: (error as Error)?.stack,
+        },
+        level: LogLevel.ERROR,
+        topic: (error as Error)?.message ? `Error: ${(error as Error)?.message}` : 'Error',
+      }]);
+      NotificationManager.instance.showNotification({
+        message: t('Excel template could not be created'),
+        severity: 'error',
+      });
+    }
+  }
+
+
   public static createDownloadUrl(url: string, name: string): void {
     const link = document.createElement('a');
     link.download = name;
@@ -60,12 +115,16 @@ export class EpiDownloadUtil {
   }
 
   public static getExportFileName(baseName: string, completeCaseType: CompleteCaseType, t: TFunction<'translation', undefined>): string {
-    return t('{{applicationName}}--{{date}}--{{caseTypeName}}--{{baseName}}', {
+    return t('{{date}}--{{applicationName}}--{{caseTypeName}}--{{baseName}}', {
       applicationName: StringUtil.createSlug(ConfigManager.instance.config.applicationName),
       baseName: StringUtil.createSlug(baseName),
       date: format(new Date(), DATE_FORMAT.DATE),
       caseTypeName: StringUtil.createSlug(completeCaseType.name),
     });
+  }
+
+  public static getTemplateFileName(completeCaseType: CompleteCaseType): string {
+    return `${StringUtil.createSlug(ConfigManager.instance.config.applicationName)}--${StringUtil.createSlug(completeCaseType.name)}--template`;
   }
 
   public static downloadEchartsImage(baseName: string, instance: ECharts, type: 'jpeg' | 'png', completeCaseType: CompleteCaseType, t: TFunction<'translation', undefined>): void {
@@ -122,6 +181,7 @@ export class EpiDownloadUtil {
     // Generate Excel file as a Blob and download it
     const blob = await writeXlsxFile(data, {
       columns: headers.map(() => ({ width: 20 })),
+      stickyRowsCount: 1,
     });
 
     // Convert blob to base64 and download
@@ -130,17 +190,25 @@ export class EpiDownloadUtil {
     EpiDownloadUtil.createDownloadUrl(`data:application/vnd.openxmlformats-officedocument.spreadsheetml.sheet;base64,${base64}`, fileName);
   }
 
+  private static getColumnHeadersForImport(caseTypeColumnIds: string[], completeCaseType: CompleteCaseType): string[] {
+    return [
+      '_case_id',
+      '_case_date',
+      ...EpiDownloadUtil.getCaseTypeColumnsForImportExport(caseTypeColumnIds, completeCaseType).map(caseTypeColumn => caseTypeColumn.label),
+    ];
+  }
+
   private static getColumnHeadersForExport(caseTypeColumnIds: string[], completeCaseType: CompleteCaseType): string[] {
     return [
       '_case_id',
       '_case_type',
       '_case_date',
-      ...EpiDownloadUtil.getCaseTypeColumnsForExport(caseTypeColumnIds, completeCaseType).map(caseTypeColumn => caseTypeColumn.label),
+      ...EpiDownloadUtil.getCaseTypeColumnsForImportExport(caseTypeColumnIds, completeCaseType).map(caseTypeColumn => caseTypeColumn.label),
     ];
   }
 
   private static getRowsForExport(cases: Case[], caseTypeColumnIds: string[], completeCaseType: CompleteCaseType): string[][] {
-    const caseTypeColumns = EpiDownloadUtil.getCaseTypeColumnsForExport(caseTypeColumnIds, completeCaseType);
+    const caseTypeColumns = EpiDownloadUtil.getCaseTypeColumnsForImportExport(caseTypeColumnIds, completeCaseType);
     return cases.map(row => [
       row.id,
       completeCaseType.name,
@@ -149,7 +217,7 @@ export class EpiDownloadUtil {
     ]);
   }
 
-  private static getCaseTypeColumnsForExport(caseTypeColumnIds: string[], completeCaseType: CompleteCaseType): CaseTypeCol[] {
+  private static getCaseTypeColumnsForImportExport(caseTypeColumnIds: string[], completeCaseType: CompleteCaseType): CaseTypeCol[] {
     return EpiCaseTypeUtil.getCaseTypeColumns(completeCaseType)
       .filter(x => caseTypeColumnIds.includes(x.id))
       .sort((a, b) => {

@@ -1,4 +1,5 @@
 import isNumber from 'lodash/isNumber';
+import uniq from 'lodash/uniq';
 
 import { StringUtil } from '../StringUtil';
 import type {
@@ -174,6 +175,29 @@ export class EpiCaseTypeUtil {
     });
 
     return pairs;
+  }
+
+  public static getWritableCaseTypeColIds(completeCaseType: CompleteCaseType): string[] {
+    const writableColIds: string[] = [];
+    Object.values(completeCaseType.case_type_access_abacs).forEach((abac) => {
+      writableColIds.push(...abac.write_case_type_col_ids);
+    });
+    return uniq(writableColIds);
+  }
+
+  public static getWritableImportExportCaseTypeColIds(completeCaseType: CompleteCaseType): string[] {
+    const writableColIds = EpiCaseTypeUtil.getWritableCaseTypeColIds(completeCaseType);
+    return Object.keys(completeCaseType.case_type_cols).filter(caseTypeColId => {
+      if (!writableColIds.includes(caseTypeColId)) {
+        return false;
+      }
+      const caseTypeCol = completeCaseType.case_type_cols[caseTypeColId];
+      const col = completeCaseType.cols[caseTypeCol.col_id];
+      if (([ColType.GENETIC_DISTANCE, ColType.GENETIC_PROFILE, ColType.GENETIC_READS, ColType.GENETIC_SEQUENCE] as ColType[]).includes(col.col_type)) {
+        return false;
+      }
+      return true;
+    });
   }
 
 }
