@@ -56,59 +56,59 @@ export const GenericForm = <TFormFields,>({
       case FORM_FIELD_DEFINITION_TYPE.AUTOCOMPLETE:
         return (
           <Autocomplete
-            disabled={Object.hasOwn(formFieldDefinition, 'disabled') ? formFieldDefinition.disabled : disableAll}
             {...formFieldDefinition as AutocompleteProps<TFormFields, Path<TFormFields>, false>}
+            disabled={disableAll ?? formFieldDefinition.disabled}
           />
         );
       case FORM_FIELD_DEFINITION_TYPE.TRANSFER_LIST:
         return (
           <TransferList
-            disabled={Object.hasOwn(formFieldDefinition, 'disabled') ? formFieldDefinition.disabled : disableAll}
             {...formFieldDefinition}
+            disabled={disableAll ?? formFieldDefinition.disabled}
           />
         );
       case FORM_FIELD_DEFINITION_TYPE.BOOLEAN:
         return (
           <Select
-            disabled={Object.hasOwn(formFieldDefinition, 'disabled') ? formFieldDefinition.disabled : disableAll}
-            options={booleanOptions}
             {...formFieldDefinition}
+            disabled={disableAll ?? formFieldDefinition.disabled}
+            options={booleanOptions}
           />
         );
       case FORM_FIELD_DEFINITION_TYPE.DATE:
         return (
           <DatePicker
-            disabled={Object.hasOwn(formFieldDefinition, 'disabled') ? formFieldDefinition.disabled : disableAll}
             {...formFieldDefinition}
+            disabled={disableAll ?? formFieldDefinition.disabled}
           />
         );
       case FORM_FIELD_DEFINITION_TYPE.RICH_TEXT:
         return (
           <RichTextEditor
-            disabled={Object.hasOwn(formFieldDefinition, 'disabled') ? formFieldDefinition.disabled : disableAll}
             {...formFieldDefinition}
+            disabled={disableAll ?? formFieldDefinition.disabled}
           />
         );
       case FORM_FIELD_DEFINITION_TYPE.FILE:
         return (
           <UploadButton
-            disabled={Object.hasOwn(formFieldDefinition, 'disabled') ? formFieldDefinition.disabled : disableAll}
             {...formFieldDefinition}
+            disabled={disableAll ?? formFieldDefinition.disabled}
           />
         );
       case FORM_FIELD_DEFINITION_TYPE.RADIO_GROUP:
         return (
           <RadioGroup
-            disabled={Object.hasOwn(formFieldDefinition, 'disabled') ? formFieldDefinition.disabled : disableAll}
             {...formFieldDefinition}
+            disabled={disableAll ?? formFieldDefinition.disabled}
           />
         );
       case FORM_FIELD_DEFINITION_TYPE.TEXTFIELD:
       default:
         return (
           <TextField
-            disabled={Object.hasOwn(formFieldDefinition, 'disabled') ? formFieldDefinition.disabled : disableAll}
             {...formFieldDefinition}
+            disabled={disableAll ?? formFieldDefinition.disabled}
           />
         );
     }

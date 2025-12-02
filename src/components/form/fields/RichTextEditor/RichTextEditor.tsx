@@ -133,15 +133,17 @@ export const RichTextEditor = <TFieldValues extends FieldValues, TName extends P
           },
         }}
       >
-        <Alert
-          severity={'info'}
-          sx={{ mt: 0.5 }}
-        >
-          <AlertTitle>
-            {t`Privacy notice`}
-          </AlertTitle>
-          {t`Do not enter any personal information here (such as name, address, telephone number or government-issued personal identifier).`}
-        </Alert>
+        {!disabled && (
+          <Alert
+            severity={'info'}
+            sx={{ mt: 0.5 }}
+          >
+            <AlertTitle>
+              {t`Privacy notice`}
+            </AlertTitle>
+            {t`Do not enter any personal information here (such as name, address, telephone number or government-issued personal identifier).`}
+          </Alert>
+        )}
         <FormLabel
           component={'legend'}
           disabled={disabled || loading}
@@ -183,6 +185,7 @@ export const RichTextEditor = <TFieldValues extends FieldValues, TName extends P
               }}
               content={value}
               extensions={extensions}
+              editable={!disabled}
               sx={{
                 '& .ProseMirror': {
                   whiteSpace: 'pre-wrap',

@@ -19,6 +19,10 @@ import {
   useWatch,
 } from 'react-hook-form';
 import { yupResolver } from '@hookform/resolvers/yup';
+import {
+  Alert,
+  Box,
+} from '@mui/material';
 
 import type {
   Case,
@@ -303,21 +307,28 @@ export const EpiCreateEventDialog = withDialog<EpiCreateEventDialogProps, EpiCre
     ),
   });
 
+  const isFormDisabled = useMemo(() => {
+    return isLoading || caseTypeOptionsQuery.options?.length === 0 || dataCollectionOptionsQuery.options?.length === 0;
+  }, [isLoading, caseTypeOptionsQuery.options?.length, dataCollectionOptionsQuery.options?.length]);
+
   useEffect(() => {
     const actions: DialogAction[] = [];
-    actions.push({
-      ...TestIdUtil.createAttributes('EpiCreateEventDialog-saveButton'),
-      color: 'secondary',
-      autoFocus: true,
-      variant: 'contained',
-      form: formId,
-      type: 'submit',
-      label: t`Save`,
-      startIcon: <SaveIcon />,
-      disabled: isLoading || isCreating,
-    });
+    if (isLoading || !isFormDisabled) {
+      actions.push({
+        ...TestIdUtil.createAttributes('EpiCreateEventDialog-saveButton'),
+        color: 'secondary',
+        autoFocus: true,
+        variant: 'contained',
+        form: formId,
+        type: 'submit',
+        label: t`Save`,
+        startIcon: <SaveIcon />,
+        loading: isLoading,
+        disabled: isLoading || isCreating,
+      });
+    }
     onActionsChange(actions);
-  }, [formId, isCreating, isLoading, onActionsChange, t]);
+  }, [formId, isCreating, isLoading, onActionsChange, t, caseTypeOptionsQuery.options?.length, isFormDisabled]);
 
   const onFormSubmit = useCallback((formData: FormFields) => {
     mutateCreate(formData);
@@ -344,12 +355,21 @@ export const EpiCreateEventDialog = withDialog<EpiCreateEventDialogProps, EpiCre
       isLoading={isCreating}
       loadables={loadables}
     >
-      <GenericForm<FormFields>
-        formFieldDefinitions={formFieldDefinitions}
-        formId={formId}
-        formMethods={formMethods}
-        onSubmit={handleSubmit(onFormSubmit)}
-      />
+      {isFormDisabled ? (
+        <Box>
+          <Alert severity={'error'}>
+            {t`You do not have the required permissions to create an event. Contact your organization administrator for assistance.`}
+          </Alert>
+        </Box>
+      ) : (
+        <GenericForm<FormFields>
+          formFieldDefinitions={formFieldDefinitions}
+          formId={formId}
+          formMethods={formMethods}
+          disableAll={isFormDisabled}
+          onSubmit={handleSubmit(onFormSubmit)}
+        />
+      )}
       {openProps.rows?.length > 0 && (
         <EpiCasesAlreadyInCaseSetWarning
           cases={openProps.rows}
