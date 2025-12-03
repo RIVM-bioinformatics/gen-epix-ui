@@ -97,6 +97,7 @@ export const TextField = <TFieldValues extends FieldValues, TName extends Path<T
           />
         )}
         inputRef={inputRef}
+        variant={'outlined'}
         label={label}
         multiline={multiline}
         placeholder={placeholder}

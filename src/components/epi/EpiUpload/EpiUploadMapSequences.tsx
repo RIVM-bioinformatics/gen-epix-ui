@@ -113,7 +113,7 @@ export const EpiUploadMapSequences = () => {
     return (
       <Autocomplete
         freeSolo
-        size={'small'}
+        fullWidth
         sx={{
           lineHeight: 'initial',
         }}

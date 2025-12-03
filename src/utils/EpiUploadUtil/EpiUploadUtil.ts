@@ -48,7 +48,6 @@ import type {
 } from '../../models/epiUpload';
 import { EPI_UPLOAD_ACTION } from '../../models/epiUpload';
 import { EpiCaseTypeUtil } from '../EpiCaseTypeUtil';
-import { ConfigManager } from '../../classes/managers/ConfigManager';
 import { EpiCaseUtil } from '../EpiCaseUtil';
 import { FileUtil } from '../FileUtil';
 import { DATE_FORMAT } from '../../data/date';
@@ -322,27 +321,19 @@ export class EpiUploadUtil {
     return object().shape(fields);
   }
 
-  public static getColumnMappingFormFieldDefinitions(completeCaseType: CompleteCaseType, rawDataHeaders: string[], fileName: string, importAction: EPI_UPLOAD_ACTION): FormFieldDefinition<EpiUploadMappedColumnsFormFields>[] {
+  public static getColumnMappingFormFieldDefinitions(completeCaseType: CompleteCaseType, rawDataHeaders: string[], _fileName: string, importAction: EPI_UPLOAD_ACTION): FormFieldDefinition<EpiUploadMappedColumnsFormFields>[] {
     const fields: FormFieldDefinition<EpiUploadMappedColumnsFormFields>[] = [];
     const options: AutoCompleteOption<string>[] = [];
 
-    const getOptionLabel = (label: string) => {
-      return `${label} (${ConfigManager.instance.config.applicationName})`;
-    };
-
-    const getFormElementLabel = (label: string) => {
-      return `${label} (${fileName.split('.').pop()})`;
-    };
-
     if (importAction === EPI_UPLOAD_ACTION.UPDATE) {
       options.push({
-        label: getOptionLabel('Case ID'),
+        label: 'Case ID',
         value: 'case_id',
       });
     }
     options.push({
       value: 'case_date',
-      label: getOptionLabel('Case Date'),
+      label: 'Case Date',
     });
 
     const allowedCaseTypeColIds = EpiCaseTypeUtil.getWritableImportExportCaseTypeColIds(completeCaseType);
@@ -350,16 +341,16 @@ export class EpiUploadUtil {
       const caseTypeCol = completeCaseType.case_type_cols[caseTypeColId];
 
       options.push({
-        label: getOptionLabel(caseTypeCol.label),
+        label: caseTypeCol.label,
         value: caseTypeCol.id,
       });
     });
 
     rawDataHeaders.forEach((header, index) => {
       fields.push({
-        definition: FORM_FIELD_DEFINITION_TYPE.AUTOCOMPLETE,
+        definition: FORM_FIELD_DEFINITION_TYPE.SELECT,
         name: index.toString(),
-        label: getFormElementLabel(header),
+        label: header,
         options,
       });
     });

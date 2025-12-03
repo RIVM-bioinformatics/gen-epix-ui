@@ -230,6 +230,7 @@ export const EpiUploadSelectSequenceFiles = () => {
                   formId={formId}
                   formMethods={formMethods}
                   wrapForm={wrapForm}
+                  schema={schema}
                   onSubmit={noop}
                 />
               </Box>

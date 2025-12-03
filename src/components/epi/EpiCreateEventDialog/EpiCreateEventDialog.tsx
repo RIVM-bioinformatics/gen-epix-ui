@@ -367,6 +367,7 @@ export const EpiCreateEventDialog = withDialog<EpiCreateEventDialogProps, EpiCre
           formId={formId}
           formMethods={formMethods}
           disableAll={isFormDisabled}
+          schema={schema}
           onSubmit={handleSubmit(onFormSubmit)}
         />
       )}

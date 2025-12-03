@@ -287,6 +287,7 @@ export const DateRangePicker = <TFieldValues extends FieldValues, TName extends 
               referenceDate={defaultFromDate}
               slotProps={{
                 textField: {
+                  variant: 'outlined',
                   className: classNames({ 'Mui-warning': hasWarning }),
                   onBlur: onFromBlur,
                   error: hasError,
@@ -314,6 +315,7 @@ export const DateRangePicker = <TFieldValues extends FieldValues, TName extends 
               referenceDate={maxDate}
               slotProps={{
                 textField: {
+                  variant: 'outlined',
                   className: classNames({ 'Mui-warning': hasWarning }),
                   onBlur: onToBlur,
                   error: hasError,

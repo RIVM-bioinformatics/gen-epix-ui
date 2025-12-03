@@ -159,6 +159,7 @@ export const Autocomplete = <TFieldValues extends FieldValues, TName extends Pat
         error={hasError}
         helperText={helperText}
         inputRef={inputRef}
+        variant={'outlined'}
         label={label}
         slotProps={{
           formHelperText: { className: classnames({ 'Mui-warning': hasWarning }) },

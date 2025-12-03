@@ -132,6 +132,7 @@ export const DatePicker = <TFieldValues extends FieldValues, TName extends Path<
                 className: classNames({ 'Mui-warning': hasWarning }),
                 onBlur,
                 error: hasError,
+                variant: 'outlined',
                 // eslint-disable-next-line @typescript-eslint/naming-convention
                 InputLabelProps: {
                   required,

@@ -51,7 +51,7 @@ type FormFields = {
   caseTypeId: string;
   createdInDataCollectionId: string;
   shareInDataCollectionIds: string[];
-  fileList: FileList;
+  fileList: unknown;
   sheet: string;
 };
 
@@ -196,7 +196,7 @@ const EpiUploadSelectFile = () => {
 
     if (EpiUploadUtil.isXlsxFile(fileName)) {
       fields.push({
-        definition: FORM_FIELD_DEFINITION_TYPE.AUTOCOMPLETE,
+        definition: FORM_FIELD_DEFINITION_TYPE.SELECT,
         name: 'sheet',
         label: t`Sheet`,
         options: sheetOptions,
@@ -215,7 +215,7 @@ const EpiUploadSelectFile = () => {
           onChange: onCaseTypeIdChange,
         } as const satisfies FormFieldDefinition<FormFields>,
         {
-          definition: FORM_FIELD_DEFINITION_TYPE.AUTOCOMPLETE,
+          definition: FORM_FIELD_DEFINITION_TYPE.SELECT,
           name: 'createdInDataCollectionId',
           label: t`Create in data collection`,
           options: createdInDataCollectionOptions,
@@ -225,9 +225,9 @@ const EpiUploadSelectFile = () => {
         } as const satisfies FormFieldDefinition<FormFields>,
     ] as const);
 
-    if (importAction === EPI_UPLOAD_ACTION.CREATE) {
+    if (importAction === EPI_UPLOAD_ACTION.CREATE && shareInDataCollectionOptions.length > 0) {
       fields.push({
-        definition: FORM_FIELD_DEFINITION_TYPE.AUTOCOMPLETE,
+        definition: FORM_FIELD_DEFINITION_TYPE.SELECT,
         name: 'shareInDataCollectionIds',
         label: t`Share in data collections`,
         options: shareInDataCollectionOptions,
@@ -298,6 +298,7 @@ const EpiUploadSelectFile = () => {
               formFieldDefinitions={formFieldDefinitions}
               formId={formId}
               formMethods={formMethods}
+              schema={schema}
               onSubmit={handleSubmit(onFormSubmit)}
             />
             {rawData && rawData.length > 0 && (

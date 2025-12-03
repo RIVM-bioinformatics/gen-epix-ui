@@ -32,6 +32,7 @@ export type TransferListOption = OptionBase<string>;
 export enum FORM_FIELD_DEFINITION_TYPE {
   TRANSFER_LIST = 'TRANSFER_LIST',
   AUTOCOMPLETE = 'AUTOCOMPLETE',
+  SELECT = 'SELECT',
   FILE = 'FILE',
   TEXTFIELD = 'TEXTFIELD',
   RICH_TEXT = 'RICH_TEXT',
@@ -51,6 +52,8 @@ export type FormFieldDefinitionRichText<TFormFields extends FieldValues> = { def
 export type FormFieldDefinitionDate<TFormFields extends FieldValues> = { definition: FORM_FIELD_DEFINITION_TYPE.DATE } & DatePickerProps<TFormFields, Path<TFormFields>>;
 export type FormFieldDefinitionFile<TFormFields extends FieldValues> = { definition: FORM_FIELD_DEFINITION_TYPE.FILE } & UploadButtonProps<TFormFields, Path<TFormFields>>;
 export type FormFieldDefinitionRadioGroup<TFormFields extends FieldValues> = { definition: FORM_FIELD_DEFINITION_TYPE.RADIO_GROUP } & RadioGroupProps<TFormFields, Path<TFormFields>>;
+export type FormFieldDefinitionSelect<TFormFields extends FieldValues> = { definition: FORM_FIELD_DEFINITION_TYPE.SELECT; multiple?: false } & SelectProps<TFormFields, Path<TFormFields>, false>;
+export type FormFieldDefinitionSelectMultiple<TFormFields extends FieldValues> = { definition: FORM_FIELD_DEFINITION_TYPE.SELECT; multiple?: true } & SelectProps<TFormFields, Path<TFormFields>, true>;
 
 export type FormFieldDefinition<TFormFields> =
   FormFieldDefinitionAutocomplete<TFormFields> |
@@ -62,4 +65,6 @@ export type FormFieldDefinition<TFormFields> =
   FormFieldDefinitionRichText<TFormFields> |
   FormFieldDefinitionDate<TFormFields> |
   FormFieldDefinitionFile<TFormFields> |
-  FormFieldDefinitionRadioGroup<TFormFields>;
+  FormFieldDefinitionRadioGroup<TFormFields> |
+  FormFieldDefinitionSelect<TFormFields> |
+  FormFieldDefinitionSelectMultiple<TFormFields>;
