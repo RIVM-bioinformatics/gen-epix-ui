@@ -115,6 +115,7 @@ export * from './hooks/useScrollbarSize';
 export * from './hooks/useQueryMemo';
 export * from './hooks/useOrganizationCasePolicyNameFactory';
 export * from './hooks/useItemQuery';
+export * from './hooks/useIsFormFieldRequiredFromSchema';
 export * from './hooks/useInitializeTableStore';
 export * from './hooks/useEditMutation';
 export * from './hooks/useDimensions';

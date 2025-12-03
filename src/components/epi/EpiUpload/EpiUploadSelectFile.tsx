@@ -51,7 +51,7 @@ type FormFields = {
   caseTypeId: string;
   createdInDataCollectionId: string;
   shareInDataCollectionIds: string[];
-  fileList: FileList;
+  fileList: unknown;
   sheet: string;
 };
 
@@ -298,6 +298,7 @@ const EpiUploadSelectFile = () => {
               formFieldDefinitions={formFieldDefinitions}
               formId={formId}
               formMethods={formMethods}
+              schema={schema}
               onSubmit={handleSubmit(onFormSubmit)}
             />
             {rawData && rawData.length > 0 && (

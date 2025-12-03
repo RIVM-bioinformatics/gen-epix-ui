@@ -132,6 +132,7 @@ export const EpiCaseSharingForm = ({ formId, epiCase, onFinish, onIsSavingChange
         formFieldDefinitions={formFieldDefinitions}
         formId={formId}
         formMethods={formMethods}
+        schema={schema}
         onSubmit={handleSubmit(onFormSubmit)}
       />
     </Box>

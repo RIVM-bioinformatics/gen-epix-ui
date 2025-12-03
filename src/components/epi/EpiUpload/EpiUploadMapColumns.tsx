@@ -213,6 +213,7 @@ export const EpiUploadMapColumns = () => {
                 formMethods={formMethods}
                 renderField={renderField}
                 wrapForm={wrapForm}
+                schema={schema}
                 onSubmit={handleSubmit(onFormSubmit)}
               />
             </Container>

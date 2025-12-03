@@ -145,6 +145,7 @@ export const EpiCaseSetSharingForm = ({ formId, caseSet, onFinish, onIsSavingCha
         formFieldDefinitions={formFieldDefinitions}
         formId={formId}
         formMethods={formMethods}
+        schema={schema}
         onSubmit={handleSubmit(onFormSubmit)}
       />
     </Box>

@@ -14,6 +14,7 @@ import type {
 } from 'react-hook-form';
 import { FormProvider } from 'react-hook-form';
 import { Box } from '@mui/material';
+import type { ObjectSchema } from 'yup';
 
 import type { FormFieldDefinition } from '../../../../models/form';
 import { FORM_FIELD_DEFINITION_TYPE } from '../../../../models/form';
@@ -28,6 +29,7 @@ import { TextField } from '../../fields/TextField';
 import { DatePicker } from '../../fields/DatePicker';
 import { UploadButton } from '../../fields/UploadButton/UploadButton';
 import { RadioGroup } from '../../fields/RadioGroup';
+import { useIsFormFieldRequiredFromSchema } from '../../../../hooks/useIsFormFieldRequiredFromSchema';
 
 export type GenericFormProps<TFormFields> = {
   readonly formFieldDefinitions: FormFieldDefinition<TFormFields>[];
@@ -37,6 +39,8 @@ export type GenericFormProps<TFormFields> = {
   readonly renderField?: (definition: FormFieldDefinition<TFormFields>, element: ReactElement) => ReactElement;
   readonly wrapForm?: (children: ReactElement) => ReactElement;
   readonly disableAll?: boolean;
+  readonly schema: ObjectSchema<TFormFields, TFormFields>;
+  readonly defaultFormValues?: Partial<TFormFields>;
 };
 
 export const GenericForm = <TFormFields,>({
@@ -47,10 +51,13 @@ export const GenericForm = <TFormFields,>({
   renderField,
   wrapForm,
   disableAll,
+  schema,
 }: GenericFormProps<TFormFields>) => {
   const [t] = useTranslation();
 
   const booleanOptions = useMemo(() => FormUtil.createBooleanOptions(t), [t]);
+
+  const isFormFieldRequired = useIsFormFieldRequiredFromSchema(schema, formMethods.getValues);
 
   const renderFormFieldDefinition = useCallback((formFieldDefinition: FormFieldDefinition<TFormFields>) => {
     switch (formFieldDefinition.definition) {
@@ -58,6 +65,7 @@ export const GenericForm = <TFormFields,>({
         return (
           <Autocomplete
             {...formFieldDefinition as AutocompleteProps<TFormFields, Path<TFormFields>, false>}
+            required={isFormFieldRequired(formFieldDefinition.name)}
             disabled={disableAll ?? formFieldDefinition.disabled}
           />
         );
@@ -65,6 +73,7 @@ export const GenericForm = <TFormFields,>({
         return (
           <Select
             {...formFieldDefinition as SelectProps<TFormFields, Path<TFormFields>, false>}
+            required={isFormFieldRequired(formFieldDefinition.name)}
             disabled={disableAll ?? formFieldDefinition.disabled}
           />
         );
@@ -72,6 +81,7 @@ export const GenericForm = <TFormFields,>({
         return (
           <TransferList
             {...formFieldDefinition}
+            required={isFormFieldRequired(formFieldDefinition.name)}
             disabled={disableAll ?? formFieldDefinition.disabled}
           />
         );
@@ -79,6 +89,7 @@ export const GenericForm = <TFormFields,>({
         return (
           <Select
             {...formFieldDefinition}
+            required={isFormFieldRequired(formFieldDefinition.name)}
             disabled={disableAll ?? formFieldDefinition.disabled}
             options={booleanOptions}
           />
@@ -87,6 +98,7 @@ export const GenericForm = <TFormFields,>({
         return (
           <DatePicker
             {...formFieldDefinition}
+            required={isFormFieldRequired(formFieldDefinition.name)}
             disabled={disableAll ?? formFieldDefinition.disabled}
           />
         );
@@ -94,6 +106,7 @@ export const GenericForm = <TFormFields,>({
         return (
           <RichTextEditor
             {...formFieldDefinition}
+            required={isFormFieldRequired(formFieldDefinition.name)}
             disabled={disableAll ?? formFieldDefinition.disabled}
           />
         );
@@ -101,6 +114,7 @@ export const GenericForm = <TFormFields,>({
         return (
           <UploadButton
             {...formFieldDefinition}
+            required={isFormFieldRequired(formFieldDefinition.name)}
             disabled={disableAll ?? formFieldDefinition.disabled}
           />
         );
@@ -108,19 +122,22 @@ export const GenericForm = <TFormFields,>({
         return (
           <RadioGroup
             {...formFieldDefinition}
+            required={isFormFieldRequired(formFieldDefinition.name)}
             disabled={disableAll ?? formFieldDefinition.disabled}
           />
         );
       case FORM_FIELD_DEFINITION_TYPE.TEXTFIELD:
-      default:
         return (
           <TextField
             {...formFieldDefinition}
+            required={isFormFieldRequired(formFieldDefinition.name)}
             disabled={disableAll ?? formFieldDefinition.disabled}
           />
         );
+      default:
+        throw Error(`Unsupported form field definition: ${formFieldDefinition.definition}`);
     }
-  }, [booleanOptions, disableAll]);
+  }, [booleanOptions, disableAll, isFormFieldRequired]);
 
 
   const formContent = (
