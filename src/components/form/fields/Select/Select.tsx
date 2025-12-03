@@ -107,6 +107,7 @@ export const Select = <TFieldValues extends FieldValues, TName extends Path<TFie
           className={classnames({ 'Mui-warning': hasWarning })}
           required={required && !disabled}
           id={labelId}
+          htmlFor={id}
         >
           {label}
         </InputLabel>
