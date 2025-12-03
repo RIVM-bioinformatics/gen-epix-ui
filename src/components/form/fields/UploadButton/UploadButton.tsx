@@ -99,6 +99,7 @@ export const UploadButton = <TFieldValues extends FieldValues, TName extends Pat
       <>
         <Button
           component={'label'}
+          size={'large'}
           // ref={buttonRef}
           disabled={disabled}
           role={undefined}

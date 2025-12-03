@@ -22,6 +22,7 @@ import { RichTextEditor } from '../../fields/RichTextEditor';
 import { TransferList } from '../../fields/TransferList';
 import type { AutocompleteProps } from '../../fields/Autocomplete';
 import { Autocomplete } from '../../fields/Autocomplete';
+import type { SelectProps } from '../../fields/Select';
 import { Select } from '../../fields/Select';
 import { TextField } from '../../fields/TextField';
 import { DatePicker } from '../../fields/DatePicker';
@@ -57,6 +58,13 @@ export const GenericForm = <TFormFields,>({
         return (
           <Autocomplete
             {...formFieldDefinition as AutocompleteProps<TFormFields, Path<TFormFields>, false>}
+            disabled={disableAll ?? formFieldDefinition.disabled}
+          />
+        );
+      case FORM_FIELD_DEFINITION_TYPE.SELECT:
+        return (
+          <Select
+            {...formFieldDefinition as SelectProps<TFormFields, Path<TFormFields>, false>}
             disabled={disableAll ?? formFieldDefinition.disabled}
           />
         );

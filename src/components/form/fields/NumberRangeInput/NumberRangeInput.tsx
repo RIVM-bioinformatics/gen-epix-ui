@@ -177,6 +177,7 @@ export const NumberRangeInput = <TFieldValues extends FieldValues, TName extends
                 fullWidth
                 inputProps={{
                   ...TestIdUtil.createAttributes('RangeSlider-from-input'),
+                  variant: 'outlined',
                   'aria-labelledby': id,
                 }}
                 placeholder={t`From`}
@@ -257,6 +258,7 @@ export const NumberRangeInput = <TFieldValues extends FieldValues, TName extends
                 fullWidth
                 inputProps={{
                   ...TestIdUtil.createAttributes('RangeSlider-to-input'),
+                  variant: 'outlined',
                   'aria-labelledby': id,
                 }}
                 placeholder={t`To`}

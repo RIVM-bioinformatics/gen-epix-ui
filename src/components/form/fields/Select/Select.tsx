@@ -11,6 +11,9 @@ import {
   FormHelperText,
   MenuItem,
   InputLabel,
+  ListItemText,
+  Checkbox,
+  OutlinedInput,
 } from '@mui/material';
 import type { SelectChangeEvent } from '@mui/material';
 import type {
@@ -31,7 +34,6 @@ import { TestIdUtil } from '../../../../utils/TestIdUtil';
 import { FormFieldHelperText } from '../../helpers/FormFieldHelperText';
 import { FormFieldLoadingIndicator } from '../../helpers/FormFieldLoadingIndicator';
 
-
 type Value = string | number | boolean;
 
 export type SelectProps<TFieldValues extends FieldValues, TName extends Path<TFieldValues>, TMultiple extends boolean> = {
@@ -41,7 +43,6 @@ export type SelectProps<TFieldValues extends FieldValues, TName extends Path<TFi
   readonly onChange?: (value: string) => void;
   readonly required?: boolean;
   readonly warningMessage?: string | boolean;
-  readonly groupValues?: boolean;
   readonly options: SelectOption[];
   readonly multiple?: TMultiple;
   readonly loading?: boolean;
@@ -49,7 +50,6 @@ export type SelectProps<TFieldValues extends FieldValues, TName extends Path<TFi
 
 export const Select = <TFieldValues extends FieldValues, TName extends Path<TFieldValues> = Path<TFieldValues>, TMultiple extends boolean = false>({
   disabled = false,
-  groupValues = false,
   label,
   loading = false,
   name,
@@ -63,17 +63,10 @@ export const Select = <TFieldValues extends FieldValues, TName extends Path<TFie
   const errorMessage = FormUtil.getFieldErrorMessage(errors, name);
   const inputRef = useRef<HTMLInputElement>(null);
   const id = useId();
+  const labelId = useId();
 
   const hasError = !!errorMessage;
   const hasWarning = !!warningMessage && !hasError;
-
-  if (groupValues) {
-    throw Error('groupValues is currently not supported');
-  }
-
-  if (multiple) {
-    throw Error('multiple is currently not supported');
-  }
 
   const mappedOptions = useMemo<Map<Value, SelectOption>>(() => {
     const mapped = new Map<Value, SelectOption>();
@@ -84,7 +77,10 @@ export const Select = <TFieldValues extends FieldValues, TName extends Path<TFie
   }, [options]);
 
   const getIsOptionDisabled = useCallback((value: SelectOption['value']): boolean => mappedOptions.get(value)?.disabled, [mappedOptions]);
-  const getOptionLabel = useCallback((value: SelectOption['value']) => mappedOptions.get(value)?.label, [mappedOptions]);
+  const renderValue = useCallback((value: string | string []) => {
+    const values = Array.isArray(value) ? value : [value];
+    return values.map(v => mappedOptions.get(v)?.label).join(', ');
+  }, [mappedOptions]);
 
   const onMuiSelectChange = useCallback((onChange: ControllerRenderProps<TFieldValues, TName>['onChange']) =>
     (event: SelectChangeEvent<string>) => {
@@ -107,23 +103,32 @@ export const Select = <TFieldValues extends FieldValues, TName extends Path<TFie
         fullWidth
       >
         <InputLabel
+          error={hasError}
           className={classnames({ 'Mui-warning': hasWarning })}
-          htmlFor={id}
           required={required && !disabled}
+          id={labelId}
         >
           {label}
         </InputLabel>
         <MuiSelect<TFieldValues[TName]>
+          error={hasError}
           disabled={disabled || loading}
+          // variant={'outlined'}
           id={id}
+          labelId={labelId}
+          input={(
+            <OutlinedInput
+              label={label}
+            />
+          )}
           inputProps={{
+            required: required && !disabled,
             className: classnames({
               'Mui-warning': hasWarning,
             }),
           }}
-          label={label}
           multiple={multiple}
-          renderValue={getOptionLabel}
+          renderValue={renderValue}
           required={required}
           value={value ?? ''}
           onBlur={onBlur}
@@ -136,7 +141,13 @@ export const Select = <TFieldValues extends FieldValues, TName extends Path<TFie
                 disabled={getIsOptionDisabled(option.value)}
                 value={option.value as string}
               >
-                {option.label}
+
+                {multiple && (
+                  <Checkbox
+                    checked={(value as string[]).includes(option.value as string)}
+                  />
+                )}
+                <ListItemText primary={option.label} />
               </MenuItem>
             );
           })}
@@ -154,14 +165,16 @@ export const Select = <TFieldValues extends FieldValues, TName extends Path<TFie
         { loading && <FormFieldLoadingIndicator />}
       </FormControl>
     );
-  }, [disabled, errorMessage, getIsOptionDisabled, getOptionLabel, hasWarning, id, label, loading, multiple, name, onMuiSelectChange, options, required, warningMessage]);
+  }, [label, name, hasWarning, required, disabled, labelId, hasError, loading, id, multiple, renderValue, onMuiSelectChange, options, errorMessage, warningMessage, getIsOptionDisabled]);
 
   return (
-    <Controller
-      control={control}
-      defaultValue={null}
-      name={name}
-      render={renderController}
-    />
+    <>
+      <Controller
+        control={control}
+        defaultValue={null}
+        name={name}
+        render={renderController}
+      />
+    </>
   );
 };

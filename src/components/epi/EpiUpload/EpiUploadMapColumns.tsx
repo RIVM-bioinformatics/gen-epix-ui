@@ -120,6 +120,9 @@ export const EpiUploadMapColumns = () => {
     return (
       <TableRow key={definition.name}>
         <TableCell>
+          {definition.label}
+        </TableCell>
+        <TableCell>
           {element}
         </TableCell>
         <TableCell>
@@ -143,10 +146,13 @@ export const EpiUploadMapColumns = () => {
           }}
         >
           <TableRow>
-            <TableCell sx={{ width: '50%' }}>
-              {t`Mapping`}
+            <TableCell sx={{ width: '33%' }}>
+              {t`Source`}
             </TableCell>
-            <TableCell sx={{ width: '50%' }}>
+            <TableCell sx={{ width: '33%' }}>
+              {ConfigManager.instance.config.applicationName}
+            </TableCell>
+            <TableCell sx={{ width: '34%' }}>
               {t`Data preview (first 5 unique values)`}
             </TableCell>
           </TableRow>
