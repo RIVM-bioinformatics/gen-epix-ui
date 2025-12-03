@@ -66,7 +66,7 @@ export interface EpiAddCasesToEventDialogProps extends WithDialogRenderProps<Epi
 
 export type EpiAddCasesToEventDialogRefMethods = WithDialogRefMethods<EpiAddCasesToEventDialogProps, EpiAddCasesToEventDialogOpenProps>;
 
-type FormValues = {
+type FormFields = {
   caseSetId: string;
   shouldApplySharingToCases: boolean;
 };
@@ -100,7 +100,7 @@ export const EpiAddCasesToEventDialog = withDialog<EpiAddCasesToEventDialogProps
     return true;
   }), [caseSetOptionsQuery.options, caseSetsMapQuery.map, completeCaseType.id, openProps.currentCaseSet]);
 
-  const formMethods = useForm<FormValues>({
+  const formMethods = useForm<FormFields>({
     values: {
       caseSetId: filteredCaseSetOptions?.length === 1 ? filteredCaseSetOptions[0].value : null,
       shouldApplySharingToCases: true,

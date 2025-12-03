@@ -1,25 +1,22 @@
 import { useTranslation } from 'react-i18next';
-import {
-  Box,
-  TextField,
-  Typography,
-} from '@mui/material';
 import type { ReactElement } from 'react';
 import {
   useCallback,
   useEffect,
+  useMemo,
 } from 'react';
 import type { Resolver } from 'react-hook-form';
-import {
-  FormProvider,
-  useForm,
-} from 'react-hook-form';
+import { useForm } from 'react-hook-form';
 import { yupResolver } from '@hookform/resolvers/yup';
 import {
   object,
   string,
 } from 'yup';
 import { useAuth } from 'react-oidc-context';
+import {
+  Box,
+  Typography,
+} from '@mui/material';
 
 import { ConfigManager } from '../../../classes/managers/ConfigManager';
 import { LogManager } from '../../../classes/managers/LogManager';
@@ -32,6 +29,9 @@ import type {
 } from '../../../hoc/withDialog';
 import { withDialog } from '../../../hoc/withDialog';
 import { TestIdUtil } from '../../../utils/TestIdUtil';
+import type { FormFieldDefinition } from '../../../models/form';
+import { FORM_FIELD_DEFINITION_TYPE } from '../../../models/form';
+import { GenericForm } from '../../form/helpers/GenericForm';
 
 export interface UserFeedbackDialogOpenProps {
   //
@@ -43,7 +43,7 @@ export interface UserFeedbackDialogProps extends WithDialogRenderProps<UserFeedb
 
 export type UserFeedbackDialogRefMethods = WithDialogRefMethods<UserFeedbackDialogProps, UserFeedbackDialogOpenProps>;
 
-type FormValues = {
+type FormFields = {
   message: string;
   email: string;
   name: string;
@@ -59,14 +59,14 @@ export const UserFeedbackDialog = withDialog<UserFeedbackDialogProps, UserFeedba
   const [t] = useTranslation();
   const auth = useAuth();
 
-  const schema = object().shape({
+  const schema = useMemo(() => object<FormFields>().shape({
     message: string().freeFormText().required().max(5000),
     email: string().email().required().max(200),
     name: string().extendedAlpha().required().max(200),
-  }, []);
+  }), []);
 
-  const formMethods = useForm<FormValues>({
-    resolver: yupResolver(schema) as Resolver<FormValues>,
+  const formMethods = useForm<FormFields>({
+    resolver: yupResolver(schema) as Resolver<FormFields>,
     values: {
       message: '',
       email: auth.user?.profile?.email ?? '',
@@ -79,11 +79,31 @@ export const UserFeedbackDialog = withDialog<UserFeedbackDialogProps, UserFeedba
     UserSettingsManager.instance.showShowUserFeedbackTooltip = false;
   }, []);
 
+  const formFieldDefinitions = useMemo<FormFieldDefinition<FormFields>[]>(() => [
+      {
+        definition: FORM_FIELD_DEFINITION_TYPE.TEXTFIELD,
+        name: 'name',
+        label: t`Name`,
+      } as const satisfies FormFieldDefinition<FormFields>,
+      {
+        definition: FORM_FIELD_DEFINITION_TYPE.TEXTFIELD,
+        name: 'email',
+        label: t`Email`,
+      } as const satisfies FormFieldDefinition<FormFields>,
+      {
+        definition: FORM_FIELD_DEFINITION_TYPE.TEXTFIELD,
+        name: 'message',
+        label: t`Your message`,
+        multiline: true,
+        rows: 15,
+      } as const satisfies FormFieldDefinition<FormFields>,
+  ] as const, [t]);
+
   useEffect(() => {
     onTitleChange(t`Feedback`);
   }, [onTitleChange, t]);
 
-  const onFormSubmit = useCallback((formValues: FormValues): void => {
+  const onFormSubmit = useCallback((formValues: FormFields): void => {
     const navigationHistory = NavigationHistoryManager.instance.navigationHistory;
     LogManager.instance.log([{
       level: 'INFO',
@@ -125,38 +145,19 @@ export const UserFeedbackDialog = withDialog<UserFeedbackDialogProps, UserFeedba
   }, [handleSubmit, onActionsChange, onClose, onFormSubmit, t]);
 
   return (
-    <FormProvider {...formMethods}>
-      <form
-        autoComplete={'off'}
+    <Box>
+      <Box marginBottom={2}>
+        <Typography component={'p'}>
+          {t('Please help make {{applicationName}} better by sharing your feedback with us. You may use this form as many times as you like.', { applicationName: ConfigManager.instance.config.applicationName })}
+        </Typography>
+      </Box>
+      <GenericForm<FormFields>
+        formFieldDefinitions={formFieldDefinitions}
+        formMethods={formMethods}
+        schema={schema}
         onSubmit={handleSubmit(onFormSubmit)}
-      >
-        <Box marginBottom={2}>
-          <Typography component={'p'}>
-            {t('Please help make {{applicationName}} better by sharing your feedback with us. You may use this form as many times as you like.', { applicationName: ConfigManager.instance.config.applicationName })}
-          </Typography>
-        </Box>
-        <Box>
-          <TextField
-            label={t`Name`}
-            name={'name'}
-          />
-        </Box>
-        <Box>
-          <TextField
-            label={t`Email`}
-            name={'email'}
-          />
-        </Box>
-        <Box>
-          <TextField
-            multiline
-            label={t`Your message`}
-            name={'message'}
-            rows={15}
-          />
-        </Box>
-      </form>
-    </FormProvider>
+      />
+    </Box>
   );
 }, {
   testId: 'UserFeedbackDialog',
