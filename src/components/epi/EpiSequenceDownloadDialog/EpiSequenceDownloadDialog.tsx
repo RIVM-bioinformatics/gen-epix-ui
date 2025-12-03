@@ -46,7 +46,7 @@ export interface EpiSequenceDownloadDialogProps extends WithDialogRenderProps<Ep
 
 export type EpiSequenceDownloadDialogRefMethods = WithDialogRefMethods<EpiSequenceDownloadDialogProps, EpiSequenceDownloadDialogOpenProps>;
 
-type FormValues = {
+type FormFields = {
   geneticSequenceCaseTypeColId: string;
 };
 
@@ -79,7 +79,7 @@ export const EpiSequenceDownloadDialog = withDialog<EpiSequenceDownloadDialogPro
 
   const [geneticSequenceCaseTypeColId, setGeneticSequenceCaseTypeColId] = useState(openProps?.geneticSequenceCaseTypeColId ?? geneticSequenceCaseTypeColOptions?.length === 1 ? geneticSequenceCaseTypeColOptions[0].value : '');
 
-  const formMethods = useForm<FormValues>({
+  const formMethods = useForm<FormFields>({
     values: {
       geneticSequenceCaseTypeColId,
     },

@@ -59,8 +59,8 @@ export const OrganizationAdminPoliciesAdminPage = () => {
   const schema = useMemo(() => {
     return object<FormFields>().shape({
       is_active: boolean(),
-      organization_id: string().uuid4().nullable().max(100),
-      user_id: string().uuid4().nullable().max(100),
+      organization_id: string().required().uuid4(),
+      user_id: string().required().uuid4(),
     });
   }, []);
 

@@ -15,7 +15,7 @@ export class DataUtil {
     if (!user) {
       return t`Unknown user`;
     }
-    return user.name ?? user.email;
+    return `${user.name} (${user.key})`;
   }
 
   public static isResponse<TValue>(response: unknown): response is UseQueryResult<TValue> {
