@@ -48,7 +48,7 @@ export const ApplicationBar = ({
           sx={{
             height: 48,
             minHeight: '48px !important',
-            justifyContent: singleAction ? 'center' : undefined,
+            justifyContent: singleAction ? 'center' : 'space-between',
           }}
         >
           {singleAction && (

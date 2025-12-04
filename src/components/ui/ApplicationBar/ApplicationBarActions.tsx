@@ -49,6 +49,10 @@ export const ApplicationBarActions = ({ fullWidth }: ApplicationBarActionsProps)
             background: theme.palette.background.paper,
             padding: `0 ${theme.spacing(1)} !important`,
             marginRight: fullWidth ? 0 : 1,
+            [theme.breakpoints.down('md')]: {
+              visibility: 'hidden',
+              position: 'absolute',
+            },
           }}
         >
           <AlertTitle>

@@ -1,11 +1,18 @@
 import {
   Box,
+  IconButton,
   styled,
   useTheme,
 } from '@mui/material';
+import MenuIcon from '@mui/icons-material/Menu';
 import { useTranslation } from 'react-i18next';
 import { NavLink as BaseNavLink } from 'react-router-dom';
-import { useMemo } from 'react';
+import {
+  useCallback,
+  useId,
+  useMemo,
+  useState,
+} from 'react';
 
 import { routes } from '../../../data/routes';
 import { AuthorizationManager } from '../../../classes/managers/AuthorizationManager';
@@ -35,69 +42,106 @@ export const ApplicationBarNavigationMenu = ({ fullWidth }: ApplicationBarNaviga
   const [t] = useTranslation();
   const theme = useTheme();
   const authorizationManager = useMemo(() => AuthorizationManager.instance, []);
+  const navId = useId();
 
   const menuItems = useMemo(() => {
     const rootItem = routes.find(r => r.handle.root);
     return [rootItem, ...rootItem.children.filter(r => !r.handle.hidden)] as MyNonIndexRouteObject[];
   }, []);
 
+  const [isMenuOpen, setIsMenuOpen] = useState(false);
+
+  const onMenuButtonClick = useCallback(() => {
+    setIsMenuOpen(x => !x);
+  }, []);
+
   return (
-    <Box
-      component={'nav'}
-      sx={{ flexGrow: 1 }}
-    >
-      <Box
-        component={'ul'}
+    <Box>
+      <IconButton
+        aria-label={t`Toggle navigation menu`}
+        aria-controls={navId}
         sx={{
-          padding: 0,
-          margin: 0,
-          display: 'flex',
-          marginLeft: fullWidth ? 0 : 2,
+          color: theme.palette.primary.contrastText,
+          [theme.breakpoints.up('md')]: {
+            display: 'none',
+          },
+        }}
+        onClick={onMenuButtonClick}
+      >
+        <MenuIcon />
+      </IconButton>
+      <Box
+        component={'nav'}
+        id={navId}
+        sx={{
+          flexGrow: 1,
+          [theme.breakpoints.down('md')]: {
+            display: isMenuOpen ? 'block' : 'none',
+            position: 'absolute',
+            background: theme.palette.secondary.main,
+            top: 48,
+            left: 0,
+            width: '100%',
+          },
         }}
       >
-        {menuItems.map(menuItem => {
-          const disabled = menuItem.handle.disabled || !authorizationManager.doesUserHavePermissionForRoute(menuItem);
-          return (
-            <Box
-              key={menuItem.path}
-              component={'li'}
-              sx={{
-                display: 'flex',
-                alignItems: 'center',
-                listStyle: 'none',
-                padding: `0 ${theme.spacing(2)}`,
-                height: 48,
-                '&:has(.active)': {
-                  background: theme.palette.primary.main,
-                  a: {
-                    color: theme.palette.primary.contrastText,
+        <Box
+          component={'ul'}
+          sx={{
+            padding: 0,
+            margin: 0,
+            display: 'flex',
+            marginLeft: fullWidth ? 0 : 2,
+            [theme.breakpoints.down('md')]: {
+              display: 'block',
+              marginRight: fullWidth ? 0 : 2,
+            },
+          }}
+        >
+          {menuItems.map(menuItem => {
+            const disabled = menuItem.handle.disabled || !authorizationManager.doesUserHavePermissionForRoute(menuItem);
+            return (
+              <Box
+                key={menuItem.path}
+                component={'li'}
+                sx={{
+                  display: 'flex',
+                  alignItems: 'center',
+                  listStyle: 'none',
+                  padding: `0 ${theme.spacing(2)}`,
+                  height: 48,
+                  '&:has(.active)': {
+                    background: theme.palette.primary.main,
+                    a: {
+                      color: theme.palette.primary.contrastText,
+                    },
                   },
-                },
-                '& svg': {
-                  marginTop: '6px',
-                },
-              }}
-            >
-              {!disabled && (
-                <NavLink
-                  aria-label={t(menuItem.handle.titleKey)}
-                  to={menuItem.path}
-                >
-                  {!!menuItem.handle.icon && menuItem.handle.icon}
-                  {!menuItem.handle.icon && t(menuItem.handle.titleKey)}
-                </NavLink>
-              )}
-              {disabled && (
-                <NavLinkDisabled
-                  aria-disabled
-                >
-                  {!!menuItem.handle.icon && menuItem.handle.icon}
-                  {!menuItem.handle.icon && t(menuItem.handle.titleKey)}
-                </NavLinkDisabled>
-              )}
-            </Box>
-          );
-        })}
+                  '& svg': {
+                    marginTop: '6px',
+                  },
+                }}
+              >
+                {!disabled && (
+                  <NavLink
+                    aria-label={t(menuItem.handle.titleKey)}
+                    to={menuItem.path}
+                  >
+                    {!!menuItem.handle.icon && menuItem.handle.icon}
+                    {!menuItem.handle.icon && t(menuItem.handle.titleKey)}
+                  </NavLink>
+                )}
+                {disabled && (
+                  <NavLinkDisabled
+                    aria-disabled
+                  >
+                    {!!menuItem.handle.icon && menuItem.handle.icon}
+                    {!menuItem.handle.icon && t(menuItem.handle.titleKey)}
+                  </NavLinkDisabled>
+                )}
+              </Box>
+            );
+          })}
+        </Box>
       </Box>
     </Box>
   );
