@@ -3,6 +3,7 @@ import {
   Button,
   Box,
   Skeleton,
+  useTheme,
 } from '@mui/material';
 import {
   useCallback,
@@ -51,6 +52,7 @@ type CaseTypeStatWithDiff = CaseTypeStat & {
 };
 
 export const HomePageTrends = withPermissions(() => {
+  const theme = useTheme();
   const [t] = useTranslation();
 
   const dateTimeRangeFilter = useMemo<TypedDatetimeRangeFilter>(() => ({
@@ -205,7 +207,13 @@ export const HomePageTrends = withPermissions(() => {
           <Box
             sx={{
               display: 'grid',
-              gridTemplateColumns: 'repeat(4, 1fr)',
+              gridTemplateColumns: 'repeat(1, 1fr)',
+              [theme.breakpoints.up('sm')]: {
+                gridTemplateColumns: 'repeat(2, 1fr)',
+              },
+              [theme.breakpoints.up('md')]: {
+                gridTemplateColumns: 'repeat(4, 1fr)',
+              },
               gap: 2,
               marginBottom: 2,
             }}
@@ -243,7 +251,13 @@ export const HomePageTrends = withPermissions(() => {
           <Box
             sx={{
               display: 'grid',
-              gridTemplateColumns: 'repeat(4, 1fr)',
+              gridTemplateColumns: 'repeat(1, 1fr)',
+              [theme.breakpoints.up('sm')]: {
+                gridTemplateColumns: 'repeat(2, 1fr)',
+              },
+              [theme.breakpoints.up('md')]: {
+                gridTemplateColumns: 'repeat(4, 1fr)',
+              },
               gap: 2,
               marginBottom: 2,
             }}

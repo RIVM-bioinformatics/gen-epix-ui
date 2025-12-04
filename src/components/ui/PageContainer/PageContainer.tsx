@@ -101,7 +101,6 @@ export const PageContainer = ({
           maxWidth={fullWidth ? false : 'xl'}
           sx={{
             position: 'relative',
-            minWidth: theme.breakpoints.values.lg,
             paddingLeft: `${theme.spacing(fullWidth ? 1 : 2)} !important`,
             paddingRight: `${theme.spacing(fullWidth ? 1 : 2)} !important`,
             height: '100%',
@@ -153,7 +152,13 @@ export const PageContainer = ({
             maxWidth={fullWidth ? false : 'xl'}
             sx={{
               display: 'grid',
-              gridTemplateColumns: 'repeat(4, 1fr)',
+              gridTemplateColumns: 'repeat(1, 1fr)',
+              [theme.breakpoints.up('sm')]: {
+                gridTemplateColumns: 'repeat(2, 1fr)',
+              },
+              [theme.breakpoints.up('md')]: {
+                gridTemplateColumns: 'repeat(4, 1fr)',
+              },
               paddingLeft: '0 !important',
               paddingRight: '0 !important',
             }}
