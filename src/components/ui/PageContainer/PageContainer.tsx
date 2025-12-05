@@ -138,9 +138,6 @@ export const PageContainer = ({
             </Container>
           )}
           <Container
-            id={'main-content'}
-            component={'article'}
-            tabIndex={-1}
             maxWidth={fullWidth ? false : 'xl'}
             sx={{
               position: 'relative',
@@ -177,10 +174,28 @@ export const PageContainer = ({
             )}
             {singleAction && (
               <Box marginY={1}>
+                <Box
+                  component={'a'}
+                  tabIndex={-1}
+                  id={'main-content'}
+                  href={'#main-content'}
+                  style={{ display: 'none' }}
+                />
                 {children}
               </Box>
             )}
-            {!singleAction && children}
+            {!singleAction && (
+              <>
+                <Box
+                  component={'a'}
+                  tabIndex={-1}
+                  id={'main-content'}
+                  href={'#main-content'}
+                  style={{ display: 'none' }}
+                />
+                {children}
+              </>
+            )}
           </Container>
         </Box>
         {hasFooterArea && (

@@ -66,7 +66,7 @@ export const NotificationsDrawer = ({ onDrawerClose, open }: NotificationsDrawer
           >
             {t`Notifications`}
           </Typography>
-          <IconButton>
+          <IconButton onClick={onDrawerClose}>
             <CloseIcon
               sx={{
                 color: theme.palette.text.secondary,
@@ -74,7 +74,6 @@ export const NotificationsDrawer = ({ onDrawerClose, open }: NotificationsDrawer
                   color: theme.palette.text.primary,
                 },
               }}
-              onClick={onDrawerClose}
             />
           </IconButton>
         </Box>

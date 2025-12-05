@@ -2,19 +2,15 @@ import {
   Tooltip,
   Box,
   styled,
-  Popper,
-  ClickAwayListener,
   Paper,
   useTheme,
   IconButton,
+  Popover,
 } from '@mui/material';
 import { visuallyHidden } from '@mui/utils';
 import { useTranslation } from 'react-i18next';
 import { useStore } from 'zustand';
-import type {
-  MouseEvent as ReactMouseEvent,
-  KeyboardEvent as ReactKeyboardEvent,
-} from 'react';
+import type { MouseEvent as ReactMouseEvent } from 'react';
 import {
   useCallback,
   useId,
@@ -170,10 +166,6 @@ export const TableHeaderCell = <TRowData,>(props: TableHeaderCellProps<TRowData>
     setFilterAnchorElement(null);
   }, []);
 
-  const onFilterIconClickAway = useCallback(() => {
-    setFilterAnchorElement(null);
-  }, []);
-
   const onColumnDividerMouseDown = useCallback((event: ReactMouseEvent<HTMLDivElement>) => {
     if (event.button !== 0) {
       return;
@@ -191,11 +183,8 @@ export const TableHeaderCell = <TRowData,>(props: TableHeaderCellProps<TRowData>
     return !!filter && !filter.isInitialFilterValue();
   }, [filter]);
 
-  const onFilterPopperKeyDown = useCallback((event: ReactKeyboardEvent<HTMLDivElement>) => {
-    if (event.key === 'Escape') {
-      setFilterAnchorElement(null);
-      tableCellRef.current?.focus();
-    }
+  const onFilterPopOverClose = useCallback(() => {
+    setFilterAnchorElement(null);
   }, []);
 
   const hasActiveSorting = sortByField === column.id;
@@ -266,122 +255,124 @@ export const TableHeaderCell = <TRowData,>(props: TableHeaderCellProps<TRowData>
         </Box>
       )}
       {column.type !== 'actions' && (
-        <ClickAwayListener
-          mouseEvent={'onMouseDown'}
-          onClickAway={onFilterIconClickAway}
+        <Box
+          sx={{
+            display: 'inline-flex',
+            alignItems: 'center',
+            '&:hover .GENEPIX-TableHeaderCell-content': {
+              maxWidth: `calc(100% + 16px - ${sum([shouldShowFilterIcon ? iconSpacing : 0, shouldShowSortIcon ? iconSpacing : 0, iconSpacing])}px)`,
+            },
+            width: '100%',
+          }}
         >
-          <Box
-            sx={{
-              display: 'inline-flex',
-              alignItems: 'center',
-              '&:hover .GENEPIX-TableHeaderCell-content': {
-                maxWidth: `calc(100% + 16px - ${sum([shouldShowFilterIcon ? iconSpacing : 0, shouldShowSortIcon ? iconSpacing : 0, iconSpacing])}px)`,
-              },
-              width: '100%',
-            }}
+          <Tooltip
+            arrow
+            placement={'top'}
+            title={column.headerTooltipContent}
           >
-            <Tooltip
-              arrow
-              placement={'top'}
-              title={column.headerTooltipContent}
+
+            <Box
+              ref={contentRef}
+              className={'GENEPIX-TableHeaderCell-content'}
+              sx={{
+                cursor: 'pointer',
+                overflow: 'hidden',
+                textOverflow: 'ellipsis',
+                whiteSpace: 'nowrap',
+                maxWidth: `calc(100% + 16px - ${sum([hasActiveSorting ? iconSpacing : 0, hasActiveFilter ? iconSpacing : 0, iconSpacing])}px)`,
+                flexGrow: 1,
+              }}
+              onClick={onContentClick}
             >
+              {column.renderHeader
+                ? column.renderHeader({
+                  columnIndex,
+                  column,
+                })
+                : column.headerName ?? ''}
+            </Box>
 
-              <Box
-                ref={contentRef}
-                className={'GENEPIX-TableHeaderCell-content'}
-                sx={{
-                  cursor: 'pointer',
-                  overflow: 'hidden',
-                  textOverflow: 'ellipsis',
-                  whiteSpace: 'nowrap',
-                  maxWidth: `calc(100% + 16px - ${sum([hasActiveSorting ? iconSpacing : 0, hasActiveFilter ? iconSpacing : 0, iconSpacing])}px)`,
-                  flexGrow: 1,
-                }}
-                onClick={onContentClick}
+          </Tooltip>
+          {shouldShowFilterIcon && (
+            <>
+              <TableFilterLabelIconButton
+                className={tableFilterLabelClassNames}
+                tabIndex={0}
+                title={t(`Show filter for {{name}}`, { name: column.headerName || t('unknown') })}
+                onClick={onFilterIconClick}
               >
-                {column.renderHeader
-                  ? column.renderHeader({
-                    columnIndex,
-                    column,
-                  })
-                  : column.headerName ?? ''}
-              </Box>
-
-            </Tooltip>
-            {shouldShowFilterIcon && (
-              <>
-                <TableFilterLabelIconButton
-                  className={tableFilterLabelClassNames}
-                  tabIndex={0}
-                  title={t(`Show filter for {{name}}`, { name: column.headerName || t('unknown') })}
-                  onClick={onFilterIconClick}
-                >
-                  <FilterAltIcon fontSize={'inherit'} />
-                </TableFilterLabelIconButton>
-                <Popper
-                  anchorEl={filterAnchorElement}
-                  id={popperId}
-                  open={!!filterAnchorElement}
-                  placement={'bottom-start'}
-                  sx={{
-                    zIndex: 1,
-                  }}
-                  onKeyDown={onFilterPopperKeyDown}
-                >
-                  <Paper
-                    square
-                    elevation={4}
-                    sx={{
-                      padding: theme.spacing(3),
-                    }}
-                  >
-                    <TableHeaderFilter
-                      filter={filter}
-                      onFilterChange={onFilterChange}
-                    />
-                  </Paper>
-                </Popper>
-              </>
-            )}
-            {shouldShowSortIcon && (
-              <>
-                <TableSortLabelIconButton
-                  tabIndex={0}
-                  title={t(`Toggle sorting for {{name}}`, { name: column.headerName || t('unknown') })}
-                  className={tableSortLabelClassNames}
-                  ownerState={tableSortLabelIconProps}
-                  onClick={onTableSortClick}
-                >
-                  <ArrowDownwardIcon fontSize={'inherit'} />
-                </TableSortLabelIconButton>
-                {sortByField === column.id && (
-                  <Box
-                    component={'span'}
-                    sx={visuallyHidden}
-                  >
-                    {sortDirection === 'desc' ? t`sorted descending` : t`sorted ascending`}
-                  </Box>
-                )}
-              </>
-            )}
-            {column.resizable !== false && (
-              <Box
-                className={tableHeaderCellClassNames.columnDivider}
-                sx={{
-                  width: '7px',
-                  height: '18px',
-                  position: 'absolute',
-                  right: 0,
-                  cursor: 'col-resize',
-                  borderRight: `1px solid ${dividerColor}`,
-                  boxSizing: 'border-box',
-                  opacity: 0,
+                <FilterAltIcon fontSize={'inherit'} />
+              </TableFilterLabelIconButton>
+              <Popover
+                anchorEl={filterAnchorElement}
+                id={popperId}
+                open={!!filterAnchorElement}
+                anchorOrigin={{
+                  vertical: 'bottom',
+                  horizontal: 'center',
                 }}
-                onMouseDown={onColumnDividerMouseDown}
-              />
-            )}
-          </Box>
-        </ClickAwayListener>
+                transformOrigin={{
+                  vertical: 'top',
+                  horizontal: 'center',
+                }}
+                sx={{
+                  zIndex: 1,
+                }}
+                onClose={onFilterPopOverClose}
+              >
+                <Paper
+                  square
+                  elevation={4}
+                  sx={{
+                    padding: theme.spacing(3),
+                  }}
+                >
+                  <TableHeaderFilter
+                    filter={filter}
+                    onFilterChange={onFilterChange}
+                  />
+                </Paper>
+              </Popover>
+            </>
+          )}
+          {shouldShowSortIcon && (
+            <>
+              <TableSortLabelIconButton
+                tabIndex={0}
+                title={t(`Toggle sorting for {{name}}`, { name: column.headerName || t('unknown') })}
+                className={tableSortLabelClassNames}
+                ownerState={tableSortLabelIconProps}
+                onClick={onTableSortClick}
+              >
+                <ArrowDownwardIcon fontSize={'inherit'} />
+              </TableSortLabelIconButton>
+              {sortByField === column.id && (
+                <Box
+                  component={'span'}
+                  sx={visuallyHidden}
+                >
+                  {sortDirection === 'desc' ? t`sorted descending` : t`sorted ascending`}
+                </Box>
+              )}
+            </>
+          )}
+          {column.resizable !== false && (
+            <Box
+              className={tableHeaderCellClassNames.columnDivider}
+              sx={{
+                width: '7px',
+                height: '18px',
+                position: 'absolute',
+                right: 0,
+                cursor: 'col-resize',
+                borderRight: `1px solid ${dividerColor}`,
+                boxSizing: 'border-box',
+                opacity: 0,
+              }}
+              onMouseDown={onColumnDividerMouseDown}
+            />
+          )}
+        </Box>
       )}
     </TableCell>
   );

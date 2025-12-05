@@ -79,7 +79,7 @@ export const ApplicationFooter = ({ fullWidth }: ApplicationFooterProps) => {
             gridTemplateColumns: 'repeat(2, 1fr)',
           },
           [theme.breakpoints.up('md')]: {
-            gridTemplateColumns: 'repeat(4, 1fr)',
+            gridTemplateColumns: `repeat(${ConfigManager.instance.config.footer.sections.length}, 1fr)`,
           },
           paddingLeft: '0 !important',
           paddingRight: '0 !important',
@@ -90,6 +90,7 @@ export const ApplicationFooter = ({ fullWidth }: ApplicationFooterProps) => {
             bottom: theme.spacing(5),
             left: 0,
             width: '100%',
+            zIndex: theme.zIndex.appBar - 1,
           },
         }}
       >
