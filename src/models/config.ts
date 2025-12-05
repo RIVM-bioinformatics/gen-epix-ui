@@ -18,21 +18,29 @@ export type ApplicationHeaderProps = {
   readonly singleAction?: boolean;
 };
 
-export type ApplicationFooterProps = {
-  readonly fullWidth?: boolean;
-  readonly fullHeight?: boolean;
-  readonly singleAction?: boolean;
+export type FooterSectionItem = {
+  readonly label: string;
+  readonly href?: string;
+  readonly onClick?: () => void;
+};
+
+export type FooterSection = {
+  readonly header: string;
+  readonly items: FooterSectionItem[];
+};
+
+export type FooterConfig = {
+  sections: FooterSection[];
 };
 
 export interface Config {
   enablePageVents: boolean;
   applicationName: string;
+  footer: FooterConfig;
   nonce?: string;
   theme: Theme;
   // eslint-disable-next-line @typescript-eslint/naming-convention
   ApplicationHeader: (props: ApplicationHeaderProps) => ReactElement;
-  // eslint-disable-next-line @typescript-eslint/naming-convention
-  ApplicationFooter: (props: ApplicationFooterProps) => ReactElement;
   // eslint-disable-next-line @typescript-eslint/naming-convention
   HomePageIntroduction: () => ReactElement;
   // eslint-disable-next-line @typescript-eslint/naming-convention

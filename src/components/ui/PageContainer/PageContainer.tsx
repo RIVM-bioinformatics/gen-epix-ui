@@ -16,6 +16,7 @@ import { PageEventBusManager } from '../../../classes/managers/PageEventBusManag
 import { WindowManager } from '../../../classes/managers/WindowManager';
 import { useUpdateDocumentTitle } from '../../../hooks/useUpdateDocumentTitle';
 import type { PropsWithTestIdAttributes } from '../../../models/testId';
+import { ApplicationFooter } from '../ApplicationFooter/ApplicationFooter';
 
 export type PageContainerProps = PropsWithTestIdAttributes<{
   readonly children: ReactNode;
@@ -46,7 +47,7 @@ export const PageContainer = ({
 
   const hasContentHeaderArea = contentHeader || contentActions;
   const hasFooterArea = !fullHeight && !singleAction;
-  const { ApplicationHeader, ApplicationFooter } = ConfigManager.instance.config;
+  const { ApplicationHeader } = ConfigManager.instance.config;
 
   useEffect(() => {
     const pageName = testIdAttributes['data-testid'];
@@ -141,32 +142,7 @@ export const PageContainer = ({
         </Container>
       </Box>
       {hasFooterArea && (
-        <Box
-          component={'footer'}
-          sx={{
-            background: theme.palette.secondary.main,
-            paddingBottom: theme.spacing(1),
-          }}
-        >
-          <Container
-            maxWidth={fullWidth ? false : 'xl'}
-            sx={{
-              display: 'grid',
-              gridTemplateColumns: 'repeat(1, 1fr)',
-              [theme.breakpoints.up('sm')]: {
-                gridTemplateColumns: 'repeat(2, 1fr)',
-              },
-              [theme.breakpoints.up('md')]: {
-                gridTemplateColumns: 'repeat(4, 1fr)',
-              },
-              paddingLeft: '0 !important',
-              paddingRight: '0 !important',
-            }}
-          >
-
-            <ApplicationFooter />
-          </Container>
-        </Box>
+        <ApplicationFooter />
       )}
     </Box>
   );

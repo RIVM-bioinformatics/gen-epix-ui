@@ -1,4 +1,8 @@
-import { IconButton } from '@mui/material';
+import {
+  Box,
+  IconButton,
+  useTheme,
+} from '@mui/material';
 import {
   useCallback,
   useRef,
@@ -13,6 +17,7 @@ import type { OrganizationSwitcherDialogRefMethods } from '../OrganizationSwitch
 
 export const ApplicationBarActionsOrganizationSwitcherItem = () => {
   const [t] = useTranslation();
+  const theme = useTheme();
   const organizationSwitcherDialogRef = useRef<OrganizationSwitcherDialogRefMethods>(null);
 
 
@@ -30,7 +35,18 @@ export const ApplicationBarActionsOrganizationSwitcherItem = () => {
         onClick={onMenuIconClick}
       >
         <ChangeCircleIcon color={'inherit'} />
-
+        <Box
+          sx={{
+            fontSize: '1.3rem',
+            marginLeft: theme.spacing(1),
+            [theme.breakpoints.up('md')]: {
+              visibility: 'hidden',
+              position: 'absolute',
+            },
+          }}
+        >
+          {t`Change organization`}
+        </Box>
       </IconButton>
       <OrganizationSwitcherDialog ref={organizationSwitcherDialogRef} />
     </Fragment>

@@ -2,6 +2,7 @@ import {
   Tooltip,
   IconButton,
   useTheme,
+  Box,
 } from '@mui/material';
 import {
   useCallback,
@@ -81,6 +82,18 @@ export const ApplicationBarActionsFeedbackItem = () => {
           onClick={onUserFeedbackMenuIconClick}
         >
           <ChatIcon color={'inherit'} />
+          <Box
+            sx={{
+              fontSize: '1.3rem',
+              marginLeft: theme.spacing(1),
+              [theme.breakpoints.up('md')]: {
+                visibility: 'hidden',
+                position: 'absolute',
+              },
+            }}
+          >
+            {t`Feedback`}
+          </Box>
         </IconButton>
       </Tooltip>
       <UserFeedbackDialog ref={userFeedbackDialogRef} />

@@ -9,6 +9,7 @@ import { useTranslation } from 'react-i18next';
 import { NavLink as BaseNavLink } from 'react-router-dom';
 import {
   useCallback,
+  useEffect,
   useId,
   useMemo,
   useState,
@@ -51,12 +52,30 @@ export const ApplicationBarNavigationMenu = ({ fullWidth }: ApplicationBarNaviga
 
   const [isMenuOpen, setIsMenuOpen] = useState(false);
 
+  useEffect(() => {
+    if (isMenuOpen) {
+      const handleKeyDown = (event: KeyboardEvent) => {
+        if (event.key === 'Escape') {
+          setIsMenuOpen(false);
+        }
+      };
+      document.addEventListener('keydown', handleKeyDown);
+      return () => {
+        document.removeEventListener('keydown', handleKeyDown);
+      };
+    }
+  }, [isMenuOpen]);
+
   const onMenuButtonClick = useCallback(() => {
     setIsMenuOpen(x => !x);
   }, []);
 
   return (
-    <Box>
+    <Box
+      sx={{
+        flexGrow: 1,
+      }}
+    >
       <IconButton
         aria-label={t`Toggle navigation menu`}
         aria-controls={navId}
@@ -94,7 +113,7 @@ export const ApplicationBarNavigationMenu = ({ fullWidth }: ApplicationBarNaviga
             marginLeft: fullWidth ? 0 : 2,
             [theme.breakpoints.down('md')]: {
               display: 'block',
-              marginRight: fullWidth ? 0 : 2,
+              margin: 0,
             },
           }}
         >

@@ -1,7 +1,9 @@
 import type { BadgeOwnProps } from '@mui/material';
 import {
   Badge,
+  Box,
   IconButton,
+  useTheme,
 } from '@mui/material';
 import {
   useCallback,
@@ -21,6 +23,7 @@ import { outagesStore } from '../../../stores/outagesStore';
 
 export const ApplicationBarActionsOutagesItem = () => {
   const [t] = useTranslation();
+  const theme = useTheme();
   const outagesDialogRef = useRef<OutagesDialogRefMethods>(null);
   const visibleOutages = useStore(outagesStore, (state) => state.visibleOutages);
   const activeOutages = useStore(outagesStore, (state) => state.activeOutages);
@@ -67,7 +70,18 @@ export const ApplicationBarActionsOutagesItem = () => {
         >
           <ConstructionIcon color={'inherit'} />
         </Badge>
-
+        <Box
+          sx={{
+            fontSize: '1.3rem',
+            marginLeft: theme.spacing(1),
+            [theme.breakpoints.up('md')]: {
+              visibility: 'hidden',
+              position: 'absolute',
+            },
+          }}
+        >
+          {t`Outages`}
+        </Box>
       </IconButton>
       <OutagesDialog ref={outagesDialogRef} />
     </Fragment>

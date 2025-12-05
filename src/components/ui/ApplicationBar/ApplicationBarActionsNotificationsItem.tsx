@@ -1,5 +1,6 @@
 import {
   Badge,
+  Box,
   CircularProgress,
   IconButton,
   useTheme,
@@ -59,6 +60,18 @@ export const ApplicationBarActionsNotificationsItem = () => {
             }}
           />
         )}
+        <Box
+          sx={{
+            fontSize: '1.3rem',
+            marginLeft: theme.spacing(1),
+            [theme.breakpoints.up('md')]: {
+              visibility: 'hidden',
+              position: 'absolute',
+            },
+          }}
+        >
+          {t`Notifications`}
+        </Box>
       </IconButton>
       <NotificationsDrawer
         open={open}
