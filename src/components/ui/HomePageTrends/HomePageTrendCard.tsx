@@ -45,7 +45,7 @@ export const HomePageTrendCard = ({ header, value, diffPercentage, sinceLabel, c
         }}
       >
         <Typography
-          component={'p'}
+          component={'h3'}
           sx={{
             fontSize: '1rem',
             textOverflow: 'ellipsis',
