@@ -127,6 +127,22 @@ export const EpiTree = ({ linkedScrollSubject, ref }: EpiTreeProps) => {
 
   const treeConfigurations = useMemo(() => EpiTreeUtil.getTreeConfigurations(completeCaseType), [completeCaseType]);
 
+  const treeCanvasAriaLabel = useMemo(() => {
+    if (!treeConfiguration) {
+      return t('Phylogenetic tree visualization');
+    }
+
+    const label = treeConfiguration.caseTypeCol?.label || t('data');
+    const geneticDistanceProtocol = treeConfiguration.geneticDistanceProtocol?.name || t('unknown protocol');
+    const treeAlgorithm = treeConfiguration.treeAlgorithm?.name || t('unknown algorithm');
+
+    return t('Figure of a phylogenetic tree belonging to {{label}}. Generated using {{geneticDistanceProtocol}} and {{treeAlgorithm}}.', {
+      label,
+      geneticDistanceProtocol,
+      treeAlgorithm,
+    });
+  }, [treeConfiguration, t]);
+
   useEffect(() => {
     const unsubscribeHighlightingManager = highlightingManager.subscribe((highlighting) => {
       if (highlighting.origin === EPI_ZONE.TREE) {
@@ -812,7 +828,7 @@ export const EpiTree = ({ linkedScrollSubject, ref }: EpiTreeProps) => {
           >
             <Box
               ref={setHeaderCanvas}
-              aria-label={t`Figure of a phylogenetic tree scale`.toString()}
+              aria-hidden
               component={'canvas'}
               role={'figure'}
               sx={{
@@ -835,7 +851,7 @@ export const EpiTree = ({ linkedScrollSubject, ref }: EpiTreeProps) => {
           {!isTreeUnavailable && shouldShowTree && (
             <Box
               ref={setTreeCanvas}
-              aria-label={t`Figure of a phylogenetic tree`.toString()}
+              aria-label={treeCanvasAriaLabel}
               component={'canvas'}
               role={'figure'}
               sx={{

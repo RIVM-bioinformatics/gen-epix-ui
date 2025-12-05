@@ -29,12 +29,6 @@ const NavLink = styled(BaseNavLink)(({ theme }) => ({
   },
 }));
 
-const NavLinkDisabled = styled(Box)(({ theme }) => ({
-  color: theme.palette.secondary.light,
-  display: 'inline-block',
-  fontSize: '1.3rem',
-}));
-
 export type ApplicationBarNavigationMenuProps = {
   readonly fullWidth?: boolean;
 };
@@ -101,6 +95,7 @@ export const ApplicationBarNavigationMenu = ({ fullWidth }: ApplicationBarNaviga
             top: 48,
             left: 0,
             width: '100%',
+            paddingBottom: 4,
           },
         }}
       >
@@ -117,8 +112,7 @@ export const ApplicationBarNavigationMenu = ({ fullWidth }: ApplicationBarNaviga
             },
           }}
         >
-          {menuItems.map(menuItem => {
-            const disabled = menuItem.handle.disabled || !authorizationManager.doesUserHavePermissionForRoute(menuItem);
+          {menuItems.filter(menuItem => !menuItem.handle.disabled && authorizationManager.doesUserHavePermissionForRoute(menuItem)).map(menuItem => {
             return (
               <Box
                 key={menuItem.path}
@@ -130,9 +124,12 @@ export const ApplicationBarNavigationMenu = ({ fullWidth }: ApplicationBarNaviga
                   padding: `0 ${theme.spacing(2)}`,
                   height: 48,
                   '&:has(.active)': {
-                    background: theme.palette.primary.main,
+                    background: theme.palette.background.paper,
                     a: {
-                      color: theme.palette.primary.contrastText,
+                      color: theme.palette.text.primary,
+                    },
+                    '& svg': {
+                      color: theme.palette.primary.main,
                     },
                   },
                   '& svg': {
@@ -140,23 +137,13 @@ export const ApplicationBarNavigationMenu = ({ fullWidth }: ApplicationBarNaviga
                   },
                 }}
               >
-                {!disabled && (
-                  <NavLink
-                    aria-label={t(menuItem.handle.titleKey)}
-                    to={menuItem.path}
-                  >
-                    {!!menuItem.handle.icon && menuItem.handle.icon}
-                    {!menuItem.handle.icon && t(menuItem.handle.titleKey)}
-                  </NavLink>
-                )}
-                {disabled && (
-                  <NavLinkDisabled
-                    aria-disabled
-                  >
-                    {!!menuItem.handle.icon && menuItem.handle.icon}
-                    {!menuItem.handle.icon && t(menuItem.handle.titleKey)}
-                  </NavLinkDisabled>
-                )}
+                <NavLink
+                  aria-label={t(menuItem.handle.titleKey)}
+                  to={menuItem.path}
+                >
+                  {!!menuItem.handle.icon && menuItem.handle.icon}
+                  {!menuItem.handle.icon && t(menuItem.handle.titleKey)}
+                </NavLink>
               </Box>
             );
           })}

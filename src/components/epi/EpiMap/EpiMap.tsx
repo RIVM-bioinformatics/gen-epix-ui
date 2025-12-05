@@ -330,7 +330,7 @@ export const EpiMap = () => {
     return {
       finished: !hasRenderedOnce ? () => {
         const dom = chartRef?.current?.getEchartsInstance()?.getDom();
-        dom?.setAttribute('aria-label', t`Figure of a map`);
+        dom?.setAttribute('aria-label', t('Figure of a map showing the geographical distribution of cases per region ({{label}})', { label: column?.label ?? '' }));
         dom?.setAttribute('role', 'img');
         setHasRenderedOnce(true);
       } : undefined,
@@ -365,7 +365,7 @@ export const EpiMap = () => {
         setFocussedRegion(region);
       },
     };
-  }, [hasRenderedOnce, highlightingManager, regions, t]);
+  }, [column?.label, hasRenderedOnce, highlightingManager, regions, t]);
 
   useEffect(() => {
     const unsubscribe = highlightingManager.subscribe((highlighting) => {
