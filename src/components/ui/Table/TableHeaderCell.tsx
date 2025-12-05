@@ -198,6 +198,7 @@ export const TableHeaderCell = <TRowData,>(props: TableHeaderCellProps<TRowData>
 
   const shouldShowSortIcon = !!column.comparatorFactory;
   const shouldShowFilterIcon = !!filter;
+  const tabIndex = shouldShowSortIcon || shouldShowFilterIcon ? 0 : -1;
 
   const iconSpacing = +theme.spacing(2).replace('px', '');
 
@@ -212,13 +213,14 @@ export const TableHeaderCell = <TRowData,>(props: TableHeaderCellProps<TRowData>
       height={height}
       order={order}
       role={'columnheader'}
+      tabIndex={tabIndex}
       sx={{
         textAlign: 'left',
         display: 'flex',
         alignItems: 'center',
         justifyContent: 'flex-start',
         backgroundColor: theme.palette.background.paper,
-        '&:hover': {
+        '&:hover, &:focus-visible, &:focus, &:focus-within': {
           '.TableSortLabelIcon, .TableFilterLabelIcon': {
             display: 'inline-block',
             opacity: 0.5,
@@ -294,6 +296,7 @@ export const TableHeaderCell = <TRowData,>(props: TableHeaderCellProps<TRowData>
               <>
                 <TableFilterLabelIcon
                   className={tableFilterLabelClassNames}
+                  tabIndex={0}
                   onClick={onFilterIconClick}
                 />
                 <Popper
@@ -323,6 +326,7 @@ export const TableHeaderCell = <TRowData,>(props: TableHeaderCellProps<TRowData>
             {shouldShowSortIcon && (
               <>
                 <TableSortLabelIcon
+                  tabIndex={0}
                   className={tableSortLabelClassNames}
                   ownerState={tableSortLabelIconProps}
                   onClick={onTableSortClick}

@@ -41,6 +41,7 @@ export type TableCellProps<TRowData> = PropsWithChildren<{
   readonly onCustomDrag?: (event: TableDragEvent, column: TableColumn<TRowData>) => void;
   readonly order: number;
   readonly ref?: ForwardedRef<TableCellRef>;
+  readonly tabIndex?: number;
 }>;
 
 export type TableCellRef = HTMLDivElement;
@@ -64,6 +65,7 @@ export const TableCell = <TRowData, >({
   title,
   width,
   xOffset,
+  tabIndex,
 }: TableCellProps<TRowData>) => {
   const theme = useTheme();
   const onTableCellClick = useCallback((event: ReactMouseEvent) => {
@@ -139,6 +141,7 @@ export const TableCell = <TRowData, >({
   return (
     <Box
       ref={ref}
+      tabIndex={tabIndex}
       className={className}
       data-column-index={columnIndex}
       data-frozen={column.frozen ? 1 : 0}
