@@ -6,11 +6,15 @@ import {
   ClickAwayListener,
   Paper,
   useTheme,
+  IconButton,
 } from '@mui/material';
 import { visuallyHidden } from '@mui/utils';
 import { useTranslation } from 'react-i18next';
 import { useStore } from 'zustand';
-import type { MouseEvent as ReactMouseEvent } from 'react';
+import type {
+  MouseEvent as ReactMouseEvent,
+  KeyboardEvent as ReactKeyboardEvent,
+} from 'react';
 import {
   useCallback,
   useId,
@@ -48,41 +52,46 @@ type TableSortLabelIconProps = {
   };
 };
 
-const TableSortLabelIcon = styled(ArrowDownwardIcon, {
+const iconSize = 18;
+
+const TableSortLabelIconButton = styled(IconButton, {
   name: 'GENEPIX-TableSortLabelIcon',
 })<TableSortLabelIconProps>(({ theme, ownerState }) => {
   return {
-    cursor: 'pointer',
-    fontSize: 18,
+    padding: 0,
+    fontSize: iconSize,
+    width: `${iconSize}px`,
+    height: `${iconSize}px`,
     display: 'none',
-    userSelect: 'none',
-    transition: theme.transitions.create(['opacity', 'transform'], {
-      duration: theme.transitions.duration.shorter,
-    }),
     opacity: 0,
+    userSelect: 'none',
     color: theme.palette.text.primary,
-    ...(ownerState.direction === 'desc' && {
-      transform: 'rotate(0deg)',
-    }),
-    ...(ownerState.direction === 'asc' && {
-      transform: 'rotate(180deg)',
-    }),
     '&:hover': {
       opacity: '1 !important',
       color: theme.palette.primary.main,
     },
+    '& svg': {
+      ...(ownerState.direction === 'desc' && {
+        transform: 'rotate(0deg)',
+      }),
+      ...(ownerState.direction === 'asc' && {
+        transform: 'rotate(180deg)',
+      }),
+    },
   };
 });
 
-const TableFilterLabelIcon = styled(FilterAltIcon, {
+const TableFilterLabelIconButton = styled(IconButton, {
   name: 'GENEPIX-TableFilterLabelIcon',
 })(({ theme }) => {
   return {
-    cursor: 'pointer',
+    fontSize: iconSize,
+    width: `${iconSize}px`,
+    height: `${iconSize}px`,
+    padding: 0,
     display: 'none',
-    fontSize: 18,
-    userSelect: 'none',
     opacity: 0,
+    userSelect: 'none',
     '&:hover': {
       opacity: '1 !important',
       color: theme.palette.primary.main,
@@ -149,7 +158,7 @@ export const TableHeaderCell = <TRowData,>(props: TableHeaderCellProps<TRowData>
     }
   }, [column.comparatorFactory, updateSorting]);
 
-  const onTableSortClick = useCallback(async (_event: ReactMouseEvent<SVGSVGElement>) => {
+  const onTableSortClick = useCallback(async (_event: ReactMouseEvent<HTMLButtonElement>) => {
     await updateSorting();
   }, [updateSorting]);
 
@@ -181,6 +190,13 @@ export const TableHeaderCell = <TRowData,>(props: TableHeaderCellProps<TRowData>
   const hasActiveFilter = useMemo(() => {
     return !!filter && !filter.isInitialFilterValue();
   }, [filter]);
+
+  const onFilterPopperKeyDown = useCallback((event: ReactKeyboardEvent<HTMLDivElement>) => {
+    if (event.key === 'Escape') {
+      setFilterAnchorElement(null);
+      tableCellRef.current?.focus();
+    }
+  }, []);
 
   const hasActiveSorting = sortByField === column.id;
 
@@ -294,11 +310,14 @@ export const TableHeaderCell = <TRowData,>(props: TableHeaderCellProps<TRowData>
             </Tooltip>
             {shouldShowFilterIcon && (
               <>
-                <TableFilterLabelIcon
+                <TableFilterLabelIconButton
                   className={tableFilterLabelClassNames}
                   tabIndex={0}
+                  title={t(`Show filter for {{name}}`, { name: column.headerName || t('unknown') })}
                   onClick={onFilterIconClick}
-                />
+                >
+                  <FilterAltIcon fontSize={'inherit'} />
+                </TableFilterLabelIconButton>
                 <Popper
                   anchorEl={filterAnchorElement}
                   id={popperId}
@@ -307,6 +326,7 @@ export const TableHeaderCell = <TRowData,>(props: TableHeaderCellProps<TRowData>
                   sx={{
                     zIndex: 1,
                   }}
+                  onKeyDown={onFilterPopperKeyDown}
                 >
                   <Paper
                     square
@@ -325,12 +345,15 @@ export const TableHeaderCell = <TRowData,>(props: TableHeaderCellProps<TRowData>
             )}
             {shouldShowSortIcon && (
               <>
-                <TableSortLabelIcon
+                <TableSortLabelIconButton
                   tabIndex={0}
+                  title={t(`Toggle sorting for {{name}}`, { name: column.headerName || t('unknown') })}
                   className={tableSortLabelClassNames}
                   ownerState={tableSortLabelIconProps}
                   onClick={onTableSortClick}
-                />
+                >
+                  <ArrowDownwardIcon fontSize={'inherit'} />
+                </TableSortLabelIconButton>
                 {sortByField === column.id && (
                   <Box
                     component={'span'}

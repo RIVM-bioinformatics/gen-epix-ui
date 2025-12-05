@@ -8,6 +8,7 @@ import {
 } from '@mui/material';
 import {
   useCallback,
+  useEffect,
   useMemo,
 } from 'react';
 import { useStore } from 'zustand';
@@ -49,7 +50,11 @@ export const TableHeaderFilter = <TRowData,>({ filter, onFilterChange }: TableHe
     values: initialValues,
   });
 
-  const { handleSubmit, formState: { isDirty } } = formMethods;
+  const { handleSubmit, formState: { isDirty }, setFocus } = formMethods;
+
+  useEffect(() => {
+    setFocus(filter.id);
+  }, [filter.id, setFocus]);
 
   const onFormSubmit = useCallback(async (formFields: FilterValues) => {
 
