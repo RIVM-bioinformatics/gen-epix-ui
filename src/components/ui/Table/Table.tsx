@@ -58,6 +58,7 @@ import type {
   TableColumnSettings,
   TableColumn,
   TableDragEvent,
+  TableColumnReadableIndex,
 } from '../../../models/table';
 import { useTableStoreContext } from '../../../stores/tableStore';
 import { TableUtil } from '../../../utils/TableUtil';
@@ -218,13 +219,14 @@ export const Table = <TRowData,>({
     }
   }, [getRowName, onReadableIndexClick]);
 
-  const renderReadableIndexCell = useCallback((cell: TableRowParams<TRowData>) => {
+  const renderReadableIndexCell = useCallback((tableColumn: TableColumnReadableIndex<TRowData>, cell: TableRowParams<TRowData>) => {
     if (!onReadableIndexClick) {
       return cell.rowIndex + 1;
     }
     return (
       <Link
         key={cell.id}
+        aria-label={tableColumn.getAriaLabel(cell)}
         color={'primary'}
         sx={{
           cursor: 'pointer',
@@ -632,7 +634,7 @@ export const Table = <TRowData,>({
               {!tableColumn.displayValueGetter && !tableColumn.renderCell && tableColumn.type === 'date' && TableUtil.getTableDateCellValue({ column: tableColumn, row, rowIndex: index })}
               {!tableColumn.displayValueGetter && !tableColumn.renderCell && tableColumn.type === 'options' && TableUtil.getTableOptionsCellDisplayValue({ column: tableColumn, row, rowIndex: index })}
               {!tableColumn.displayValueGetter && !tableColumn.renderCell && tableColumn.type === 'caseType' && TableUtil.getTableCaseTypeCellDisplayValue({ column: tableColumn, row, rowIndex: index })}
-              {!tableColumn.displayValueGetter && !tableColumn.renderCell && tableColumn.type === 'readableIndex' && renderReadableIndexCell({ id: column.id, row, rowIndex: index })}
+              {!tableColumn.displayValueGetter && !tableColumn.renderCell && tableColumn.type === 'readableIndex' && renderReadableIndexCell(tableColumn, { id: column.id, row, rowIndex: index })}
               {!tableColumn.displayValueGetter && !tableColumn.renderCell && tableColumn.type === 'selectable' && renderCheckboxCell({ id: column.id, row, rowIndex: index })}
             </TableCell>
           );

@@ -242,7 +242,9 @@ export const EpiList = ({ linkedScrollSubject, onLink, caseSet }: EpiListProps) 
 
   const staticTableColumns = useMemo<TableColumn<Case>[]>(() => {
     return [
-      TableUtil.createReadableIndexColumn(),
+      TableUtil.createReadableIndexColumn({
+        getAriaLabel: (params: TableRowParams<Case>) => t('Show case information for {{index}}', { index: params.rowIndex + 1 }),
+      }),
       TableUtil.createSelectableColumn(),
       {
         type: 'text',

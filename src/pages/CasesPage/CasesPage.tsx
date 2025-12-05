@@ -195,7 +195,9 @@ export const CasesPage = () => {
     }
 
     return [
-      TableUtil.createReadableIndexColumn(),
+      TableUtil.createReadableIndexColumn({
+        getAriaLabel: (params: TableRowParams<Row>) => t('Open case type information for {{name}}', { name: params.row.name }),
+      }),
       TableUtil.createTextColumn({
         name: t('Name'),
         id: 'name',

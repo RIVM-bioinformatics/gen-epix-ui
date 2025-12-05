@@ -225,7 +225,9 @@ export const EpiUploadMapSequences = () => {
 
   const tableColumns = useMemo<TableColumn<EpiValidatedCaseWithGeneratedId>[]>(() => {
     const tableCols: TableColumn<EpiValidatedCaseWithGeneratedId>[] = [];
-    tableCols.push(TableUtil.createReadableIndexColumn());
+    tableCols.push(
+      TableUtil.createReadableIndexColumn(),
+    );
 
     const columnsUsedForMapping = [
       ...completeCaseTypeColumnStats.idColumns,

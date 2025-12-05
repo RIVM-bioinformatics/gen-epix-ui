@@ -69,6 +69,7 @@ export interface TableColumnReadableIndex<TRowData> extends TableColumnBase<TRow
   frozen: true;
   resizable: false;
   disableEllipsis: true;
+  getAriaLabel: (params: TableRowParams<TRowData>) => string;
 }
 
 export interface TableColumnSelectable<TRowData> extends TableColumnBase<TRowData, never> {
