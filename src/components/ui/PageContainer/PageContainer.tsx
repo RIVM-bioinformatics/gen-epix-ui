@@ -1,6 +1,7 @@
 import {
   Box,
   Container,
+  Link,
   Typography,
   useTheme,
 } from '@mui/material';
@@ -9,6 +10,7 @@ import {
   type ReactElement,
   useEffect,
 } from 'react';
+import { useTranslation } from 'react-i18next';
 
 import { Breadcrumbs } from '../Breadcrumbs';
 import { ConfigManager } from '../../../classes/managers/ConfigManager';
@@ -44,6 +46,7 @@ export const PageContainer = ({
 }: PageContainerProps): ReactElement => {
   useUpdateDocumentTitle(title);
   const theme = useTheme();
+  const [t] = useTranslation();
 
   const hasContentHeaderArea = contentHeader || contentActions;
   const hasFooterArea = !fullHeight && !singleAction;
@@ -64,86 +67,126 @@ export const PageContainer = ({
   }, [ignorePageEvent, testIdAttributes]);
 
   return (
-    <Box
-      data-page-container
-      {...testIdAttributes}
-      sx={{
-        height: '100%',
-        display: 'grid',
-        gridTemplateRows: `max-content auto ${hasFooterArea ? 'max-content' : ''}`,
-      }}
-    >
-      <ApplicationHeader
-        fullHeight={fullHeight}
-        fullWidth={fullWidth}
-        singleAction={singleAction}
-      />
+    <>
       <Box
-        id={ConfigManager.instance.config.layout.MAIN_CONTENT_ID}
+        component={'nav'}
+        sx={{
+          marginTop: '-1px',
+          position: 'absolute',
+          background: theme.palette.background.default,
+          top: 0,
+          zIndex: theme.zIndex.appBar + 10,
+        }}
+      >
+        <Link
+          component={'a'}
+          sx={{
+            position: 'absolute',
+            top: 0,
+            left: 0,
+            width: '1px',
+            height: '1px',
+            overflow: 'hidden',
+            whiteSpace: 'nowrap',
+            border: 0,
+
+            '&:focus, &:active': {
+              position: 'static',
+              width: 'auto',
+              height: 'auto',
+              overflow: 'visible',
+              clip: 'auto',
+              whiteSpace: 'normal',
+            },
+          }}
+          href={'#main-content'}
+        >
+          {t`Skip to main content`}
+        </Link>
+      </Box>
+      <Box
+        data-page-container
+        {...testIdAttributes}
         sx={{
           height: '100%',
           display: 'grid',
-          gridTemplateRows: `${showBreadcrumbs ? 'max-content' : ''} auto`,
+          gridTemplateRows: `max-content auto ${hasFooterArea ? 'max-content' : ''}`,
         }}
       >
-        {showBreadcrumbs && (
-          <Container
-            maxWidth={fullWidth ? false : 'xl'}
-            sx={{
-              paddingLeft: `${theme.spacing(fullWidth ? 1 : 2)} !important`,
-              paddingRight: `${theme.spacing(fullWidth ? 1 : 2)} !important`,
-            }}
-          >
-            <Breadcrumbs />
-          </Container>
-        )}
-        <Container
-          component={'article'}
-          maxWidth={fullWidth ? false : 'xl'}
+        <ApplicationHeader
+          fullHeight={fullHeight}
+          fullWidth={fullWidth}
+          singleAction={singleAction}
+        />
+        <Box
+          id={ConfigManager.instance.config.layout.MAIN_CONTENT_ID}
           sx={{
-            position: 'relative',
-            paddingLeft: `${theme.spacing(fullWidth ? 1 : 2)} !important`,
-            paddingRight: `${theme.spacing(fullWidth ? 1 : 2)} !important`,
             height: '100%',
             display: 'grid',
-            gridTemplateRows: `${hasContentHeaderArea ? 'max-content' : ''} auto`,
+            gridTemplateRows: `${showBreadcrumbs ? 'max-content' : ''} auto`,
           }}
         >
-          {hasContentHeaderArea && (
-            <Box
+          {showBreadcrumbs && (
+            <Container
+              maxWidth={fullWidth ? false : 'xl'}
               sx={{
-                display: 'flex',
-                justifyContent: 'space-between',
-                flexDirection: 'row',
-                marginBottom: theme.spacing(1),
+                paddingLeft: `${theme.spacing(fullWidth ? 1 : 2)} !important`,
+                paddingRight: `${theme.spacing(fullWidth ? 1 : 2)} !important`,
               }}
             >
-              {contentHeader && typeof contentHeader === 'string' && (
-                <Box>
-                  <Typography variant={'h2'}>
-                    {contentHeader}
-                  </Typography>
-                </Box>
-              )}
-              {contentHeader && typeof contentHeader !== 'string' && contentHeader}
-              {contentActions && (
-                <Box>
-                  {contentActions}
-                </Box>
-              )}
-            </Box>
+              <Breadcrumbs />
+            </Container>
           )}
-          {singleAction && (
-            <Box marginY={1}>
-              {children}
-            </Box>
-          )}
-          {!singleAction && children}
-        </Container>
+          <Container
+            id={'main-content'}
+            component={'article'}
+            tabIndex={-1}
+            maxWidth={fullWidth ? false : 'xl'}
+            sx={{
+              position: 'relative',
+              paddingLeft: `${theme.spacing(fullWidth ? 1 : 2)} !important`,
+              paddingRight: `${theme.spacing(fullWidth ? 1 : 2)} !important`,
+              height: '100%',
+              display: 'grid',
+              gridTemplateRows: `${hasContentHeaderArea ? 'max-content' : ''} auto`,
+            }}
+          >
+            {hasContentHeaderArea && (
+              <Box
+                sx={{
+                  display: 'flex',
+                  justifyContent: 'space-between',
+                  flexDirection: 'row',
+                  marginBottom: theme.spacing(1),
+                }}
+              >
+                {contentHeader && typeof contentHeader === 'string' && (
+                  <Box>
+                    <Typography variant={'h2'}>
+                      {contentHeader}
+                    </Typography>
+                  </Box>
+                )}
+                {contentHeader && typeof contentHeader !== 'string' && contentHeader}
+                {contentActions && (
+                  <Box>
+                    {contentActions}
+                  </Box>
+                )}
+              </Box>
+            )}
+            {singleAction && (
+              <Box marginY={1}>
+                {children}
+              </Box>
+            )}
+            {!singleAction && children}
+          </Container>
+        </Box>
+        {hasFooterArea && (
+          <ApplicationFooter />
+        )}
       </Box>
-      {hasFooterArea && (
-        <ApplicationFooter />
-      )}
-    </Box>
+    </>
   );
 };

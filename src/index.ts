@@ -201,6 +201,7 @@ export * from './components/ui/AuthorizationWrapper';
 export * from './components/ui/AuthenticationWrapper';
 export * from './components/ui/ApplicationFooterLinkSection';
 export * from './components/ui/ApplicationFooterLink';
+export * from './components/ui/ApplicationFooter';
 export * from './components/ui/ApplicationBar';
 export * from './components/form/helpers/GenericForm';
 export * from './components/form/helpers/FormFieldLoadingIndicator';
