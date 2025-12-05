@@ -231,6 +231,7 @@ export const EpiWidget = ({ title, children, primaryMenu, secondaryMenu, warning
                 flexItem
                 orientation={'vertical'}
                 variant={'middle'}
+                aria-hidden={'true'}
               />
             )}
           </Box>
@@ -249,6 +250,7 @@ export const EpiWidget = ({ title, children, primaryMenu, secondaryMenu, warning
                 flexItem
                 orientation={'vertical'}
                 variant={'middle'}
+                aria-hidden={'true'}
               />
             )}
             {enabledLayoutZoneCount > 1 && (
