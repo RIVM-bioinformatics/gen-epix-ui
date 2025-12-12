@@ -2,7 +2,7 @@ import '@mui/material';
 
 declare module '@mui/material/styles' {
   interface Theme {
-    epi: {
+    'gen-epix': {
       tree: {
         font: string;
         fontVariationSettings?: string;
@@ -17,7 +17,7 @@ declare module '@mui/material/styles' {
   }
   // allow configuration using `createTheme()`
   interface ThemeOptions {
-    epi: {
+    'gen-epix': {
       tree: {
         font: string;
         fontVariationSettings?: string;

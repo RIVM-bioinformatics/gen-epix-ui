@@ -54,17 +54,17 @@ export const ApplicationBarActionsFeedbackItem = () => {
     <Fragment>
       <Tooltip
         arrow
-        color={'primary'}
-        componentsProps={{
+        color={'secondary'}
+        slotProps={{
           tooltip: {
             sx: {
-              backgroundColor: theme.palette.primary.main,
+              backgroundColor: theme.palette.secondary.main,
               marginRight: `${theme.spacing(0.5)} !important`,
             },
           },
           arrow: {
             sx: {
-              color: theme.palette.primary.main,
+              color: theme.palette.secondary.main,
             },
           },
           popper: {

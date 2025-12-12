@@ -187,7 +187,7 @@ export const EventsPage = () => {
       >
         <TableMenu />
         <Button
-          color={'primary'}
+          color={'secondary'}
           disabled={isLoading}
           loading={isLoading}
           size={'small'}

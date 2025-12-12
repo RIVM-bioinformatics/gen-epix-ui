@@ -147,14 +147,14 @@ export const UserMenu = ({ anchorElement, onClose }: UserMenuProps): ReactElemen
             onClick={onLogoutButtonClick}
           >
             <ListItemIcon>
-              <LogoutIcon />
+              <LogoutIcon color={'secondary'} />
             </ListItemIcon>
             <ListItemText
               primary={t`Logout`}
               slotProps={{
                 primary: {
                   sx: {
-                    color: 'primary.main',
+                    color: 'secondary.main',
                     fontWeight: 'bold',
                   },
                 },

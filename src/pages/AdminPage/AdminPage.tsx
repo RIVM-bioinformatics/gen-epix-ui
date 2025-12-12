@@ -135,12 +135,7 @@ export const AdminContent = () => {
                 >
                   <CardHeader title={t(item.handle.titleKey)} />
                   <CardContent>
-                    <Typography
-                      color={'text.primary'}
-                      sx={{ mb: 1.5 }}
-                    >
-                      {t(item.handle.subTitleKey)}
-                    </Typography>
+                    {t(item.handle.subTitleKey)}
                   </CardContent>
                 </CardActionArea>
               </Card>

@@ -13,9 +13,10 @@ import {
 } from 'react';
 import { useTranslation } from 'react-i18next';
 
-import { ApplicationFooterLink } from '../ApplicationFooterLink';
-import { ApplicationFooterLinkSection } from '../ApplicationFooterLinkSection';
 import { ConfigManager } from '../../../classes/managers/ConfigManager';
+
+import { ApplicationFooterLink } from './ApplicationFooterLink';
+import { ApplicationFooterLinkSection } from './ApplicationFooterLinkSection';
 
 export type ApplicationFooterProps = {
   readonly fullWidth?: boolean;
@@ -50,7 +51,7 @@ export const ApplicationFooter = ({ fullWidth }: ApplicationFooterProps) => {
     <Box
       component={'footer'}
       sx={{
-        background: theme.palette.secondary.main,
+        background: theme.palette.primary.main,
         [theme.breakpoints.up('md')]: {
           paddingBottom: theme.spacing(1),
         },
@@ -86,7 +87,7 @@ export const ApplicationFooter = ({ fullWidth }: ApplicationFooterProps) => {
           [theme.breakpoints.down('md')]: {
             display: isMenuOpen ? 'block' : 'none',
             position: 'absolute',
-            background: theme.palette.secondary.main,
+            background: theme.palette.primary.main,
             bottom: theme.spacing(5),
             left: 0,
             width: '100%',

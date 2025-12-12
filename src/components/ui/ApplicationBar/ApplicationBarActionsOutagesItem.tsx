@@ -1,4 +1,3 @@
-import type { BadgeOwnProps } from '@mui/material';
 import {
   Badge,
   Box,
@@ -30,19 +29,6 @@ export const ApplicationBarActionsOutagesItem = () => {
   const soonActiveOutages = useStore(outagesStore, (state) => state.soonActiveOutages);
 
 
-  const badgeColor = useMemo<BadgeOwnProps['color']>(() => {
-    if (activeOutages.length > 0) {
-      return 'error';
-    }
-    if (soonActiveOutages.length > 0) {
-      return 'warning';
-    }
-    if (visibleOutages.length > 0) {
-      return 'info';
-    }
-    return 'default';
-  }, [activeOutages.length, soonActiveOutages.length, visibleOutages.length]);
-
   const badgeContent = useMemo<string>(() => {
     if (activeOutages.length > 0 || visibleOutages.length > 0 || soonActiveOutages.length > 0) {
       return '!';
@@ -65,7 +51,7 @@ export const ApplicationBarActionsOutagesItem = () => {
       >
         <Badge
           badgeContent={badgeContent}
-          color={badgeColor}
+          color={'secondary'}
           sx={{ '& .MuiBadge-badge': { fontSize: 9, height: 15, minWidth: 15, border: '1px solid white' } }}
         >
           <ConstructionIcon color={'inherit'} />

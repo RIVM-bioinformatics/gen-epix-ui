@@ -46,7 +46,7 @@ export const ApplicationBarActionsNotificationsItem = () => {
       >
         <Badge
           badgeContent={notifications.length}
-          color={'primary'}
+          color={'secondary'}
           sx={{ '& .MuiBadge-badge': { fontSize: 9, height: 15, minWidth: 15, border: '1px solid white' } }}
         >
           <NotificationsIcon color={'inherit'} />

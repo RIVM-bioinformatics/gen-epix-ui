@@ -50,6 +50,8 @@ type TableSortLabelIconProps = {
 
 const iconSize = 18;
 
+const tableHeaderCellClassNamesFocus = `${tableHeaderCellClassNames.root}--focus`;
+
 const TableSortLabelIconButton = styled(IconButton, {
   name: 'GENEPIX-TableSortLabelIcon',
 })<TableSortLabelIconProps>(({ theme, ownerState }) => {
@@ -107,6 +109,7 @@ export const TableHeaderCell = <TRowData,>(props: TableHeaderCellProps<TRowData>
   const popperId = useId();
   const [filterAnchorElement, setFilterAnchorElement] = useState<HTMLDivElement>();
   const tableCellRef = useRef<TableCellRef>(null);
+  const filterLabelIconButtonRef = useRef<HTMLButtonElement>(null);
 
   const {
     column,
@@ -185,6 +188,12 @@ export const TableHeaderCell = <TRowData,>(props: TableHeaderCellProps<TRowData>
 
   const onFilterPopOverClose = useCallback(() => {
     setFilterAnchorElement(null);
+    // Focus back to the header cell and filter icon button after closing the popover. This must be done in a setTimeout to ensure the popover has closed before focusing.
+    setTimeout(() => {
+      tableCellRef.current.classList.add(tableHeaderCellClassNamesFocus);
+      tableCellRef.current?.focus();
+      filterLabelIconButtonRef.current?.focus();
+    });
   }, []);
 
   const hasActiveSorting = sortByField === column.id;
@@ -211,7 +220,9 @@ export const TableHeaderCell = <TRowData,>(props: TableHeaderCellProps<TRowData>
     <TableCell
       key={column.id}
       ref={tableCellRef}
-      className={tableHeaderCellClassNames.root}
+      className={clsx(tableHeaderCellClassNames.root, {
+        [tableHeaderCellClassNamesFocus]: !!filterAnchorElement,
+      })}
       column={column}
       columnIndex={columnIndex}
       draggable={!column.frozen && !column.isStatic}
@@ -225,7 +236,7 @@ export const TableHeaderCell = <TRowData,>(props: TableHeaderCellProps<TRowData>
         alignItems: 'center',
         justifyContent: 'flex-start',
         backgroundColor: theme.palette.background.paper,
-        '&:hover, &:focus-visible, &:focus, &:focus-within': {
+        [`&:hover, &:focus-visible, &:focus, &:focus-within, &.${tableHeaderCellClassNamesFocus}`]: {
           '.TableSortLabelIcon, .TableFilterLabelIcon': {
             display: 'inline-block',
             opacity: 0.5,
@@ -296,6 +307,7 @@ export const TableHeaderCell = <TRowData,>(props: TableHeaderCellProps<TRowData>
           {shouldShowFilterIcon && (
             <>
               <TableFilterLabelIconButton
+                ref={filterLabelIconButtonRef}
                 className={tableFilterLabelClassNames}
                 tabIndex={0}
                 title={t(`Show filter for {{name}}`, { name: column.headerName || t('unknown') })}

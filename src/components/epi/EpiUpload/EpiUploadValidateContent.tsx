@@ -428,7 +428,7 @@ export const EpiUploadValidateContent = () => {
             />
           </Box>
           <Table
-            font={theme.epi.lineList.font}
+            font={theme['gen-epix'].lineList.font}
           />
           <EpiUploadNavigation
             proceedLabel={t('Continue')}

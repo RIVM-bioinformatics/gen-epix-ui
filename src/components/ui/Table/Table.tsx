@@ -1,4 +1,5 @@
 import {
+  Button,
   type SxProps,
   type Theme,
 } from '@mui/material';
@@ -6,7 +7,6 @@ import IndeterminateCheckBoxIcon from '@mui/icons-material/IndeterminateCheckBox
 import {
   Box,
   Checkbox,
-  Link,
   alpha,
   darken,
   lighten,
@@ -224,16 +224,17 @@ export const Table = <TRowData,>({
       return cell.rowIndex + 1;
     }
     return (
-      <Link
+      <Button
         key={cell.id}
+        variant={'text'}
+        size={'small'}
         aria-label={tableColumn.getAriaLabel(cell)}
         color={'primary'}
         sx={{
-          cursor: 'pointer',
           width: '100%',
-          display: 'block',
-          textAlign: 'right',
           height: '100%',
+          minWidth: 'unset',
+          padding: 0,
         }}
         // eslint-disable-next-line react/jsx-no-bind
         onClick={(event) => {
@@ -241,7 +242,7 @@ export const Table = <TRowData,>({
         }}
       >
         {cell.rowIndex + 1}
-      </Link>
+      </Button>
     );
   }, [onReadableIndexClick, onTableReadableIndexClick]);
 

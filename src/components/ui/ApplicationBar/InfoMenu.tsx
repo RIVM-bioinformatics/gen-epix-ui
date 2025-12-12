@@ -96,14 +96,14 @@ export const InfoMenu = ({ anchorElement, onClose }: InfoMenuProps): ReactElemen
             onClick={onShowLicenseInformationButtonClick}
           >
             <ListItemIcon>
-              <CopyrightIcon />
+              <CopyrightIcon color={'secondary'} />
             </ListItemIcon>
             <ListItemText
               primary={t`Show license information`}
               slotProps={{
                 primary: {
                   sx: {
-                    color: 'primary.main',
+                    color: 'secondary.main',
                     fontWeight: 'bold',
                   },
                 },

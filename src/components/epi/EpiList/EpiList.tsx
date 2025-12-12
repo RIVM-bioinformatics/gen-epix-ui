@@ -611,7 +611,7 @@ export const EpiList = ({ linkedScrollSubject, onLink, caseSet }: EpiListProps) 
         <Table
           ref={tableRef}
           forceHorizontalOverflow
-          font={theme.epi.lineList.font}
+          font={theme['gen-epix'].lineList.font}
           getRowName={getRowName}
           initialVisibleItemIndex={epiListWidgetData.visibleItemItemIndex}
           rowHeight={3}

@@ -9,7 +9,7 @@ import type {
   ReactElement,
 } from 'react';
 
-import { ApplicationFooterLink } from '../ApplicationFooterLink';
+import { ApplicationFooterLink } from './ApplicationFooterLink';
 
 export type ApplicationFooterLinkSectionProps = PropsWithChildren<{
   readonly header: string;
@@ -35,7 +35,7 @@ export const ApplicationFooterLinkSection = ({ header, children }: ApplicationFo
           borderBottom: `1px solid ${theme.palette.primary.contrastText}`,
           marginBottom: theme.spacing(1),
           paddingBottom: theme.spacing(1),
-          fontWeight: 'normal',
+          fontWeight: 500,
         }}
         variant={'h4'}
       >

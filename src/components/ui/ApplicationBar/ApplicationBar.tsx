@@ -36,7 +36,7 @@ export const ApplicationBar = ({
       position={'static'}
       sx={{
         boxShadow: 'none',
-        background: theme.palette.secondary.main,
+        background: theme.palette.primary.main,
       }}
     >
       <Container

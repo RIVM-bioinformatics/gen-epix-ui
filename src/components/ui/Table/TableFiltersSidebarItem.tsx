@@ -324,6 +324,7 @@ export const TableFiltersSidebarItemContent = <TRowData,>({ onClose }: TableFilt
                     {...TestIdUtil.createAttributes('TableFiltersSidebarItem-apply')}
                     startIcon={<CheckIcon />}
                     type={'submit'}
+                    color={'secondary'}
                   >
                     {t`Apply`}
                   </Button>

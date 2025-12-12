@@ -91,7 +91,7 @@ export const ApplicationBarNavigationMenu = ({ fullWidth }: ApplicationBarNaviga
           [theme.breakpoints.down('md')]: {
             display: isMenuOpen ? 'block' : 'none',
             position: 'absolute',
-            background: theme.palette.secondary.main,
+            background: theme.palette.primary.main,
             top: 48,
             left: 0,
             width: '100%',
@@ -122,6 +122,7 @@ export const ApplicationBarNavigationMenu = ({ fullWidth }: ApplicationBarNaviga
                   alignItems: 'center',
                   listStyle: 'none',
                   padding: `0 ${theme.spacing(2)}`,
+                  fontWeight: 500,
                   height: 48,
                   '&:has(.active)': {
                     background: theme.palette.background.paper,

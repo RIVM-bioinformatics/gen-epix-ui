@@ -487,7 +487,7 @@ export const CrudPage = <
         <TableHeader />
         {userCanCreate && (
           <Button
-            color={'primary'}
+            color={'secondary'}
             disabled={isLoading || isCreating}
             loading={isLoading || isCreating}
             size={'small'}

@@ -1,6 +1,5 @@
 import {
   Alert,
-  AlertTitle,
   Box,
   IconButton,
   useTheme,
@@ -84,7 +83,7 @@ export const ApplicationBarActions = ({ fullWidth }: ApplicationBarActionsProps)
             position: 'absolute',
             alignItems: 'start',
             flexDirection: 'column',
-            background: theme.palette.secondary.main,
+            background: theme.palette.primary.main,
             top: theme.spacing(6),
             right: 0,
             left: 0,
@@ -101,21 +100,21 @@ export const ApplicationBarActions = ({ fullWidth }: ApplicationBarActionsProps)
         {environmentMessage && (
           <Alert
             {...TestIdUtil.createAttributes('ApplicationBarActions-EnvironmentMessage')}
-            severity={'warning'}
+            severity={'info'}
             sx={{
               paddingLeft: 1,
               background: theme.palette.background.paper,
               padding: `0 ${theme.spacing(1)} !important`,
               marginRight: fullWidth ? 0 : 1,
+              lineHeight: theme.spacing(3),
+              fontWeight: 700,
               [theme.breakpoints.down('md')]: {
                 visibility: 'hidden',
                 position: 'absolute',
               },
             }}
           >
-            <AlertTitle>
-              {t('{{environmentMessage}} ', { environmentMessage })}
-            </AlertTitle>
+            {t('{{environmentMessage}} ', { environmentMessage })}
           </Alert>
         )}
       </Box>
