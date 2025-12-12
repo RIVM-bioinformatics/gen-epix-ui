@@ -39,15 +39,18 @@ type IconMenuItemProps = {
   readonly rightIcon?: ReactNode;
   readonly sx?: SxProps;
   readonly divider?: boolean;
+  readonly checked?: 'true' | 'false' | 'mixed';
 };
 
-export const IconMenuItem = ({ MenuItemProps, className, label, leftIcon, rightIcon, ref, ...props }: IconMenuItemProps) => {
+export const IconMenuItem = ({ MenuItemProps, className, label, leftIcon, rightIcon, checked, ref, ...props }: IconMenuItemProps) => {
   return (
     <StyledMenuItem
       {...MenuItemProps}
       ref={ref}
       className={className}
       {...props}
+      role={checked ? 'menuitemcheckbox' : 'menuitem'}
+      aria-checked={checked}
     >
       <FlexBox>
         {leftIcon}

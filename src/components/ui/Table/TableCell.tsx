@@ -42,6 +42,7 @@ export type TableCellProps<TRowData> = PropsWithChildren<{
   readonly order: number;
   readonly ref?: ForwardedRef<TableCellRef>;
   readonly tabIndex?: number;
+  readonly ariaSort?: 'ascending' | 'descending' | 'other';
 }>;
 
 export type TableCellRef = HTMLDivElement;
@@ -66,6 +67,7 @@ export const TableCell = <TRowData, >({
   width,
   xOffset,
   tabIndex,
+  ariaSort,
 }: TableCellProps<TRowData>) => {
   const theme = useTheme();
   const onTableCellClick = useCallback((event: ReactMouseEvent) => {
@@ -141,6 +143,7 @@ export const TableCell = <TRowData, >({
   return (
     <Box
       ref={ref}
+      aria-sort={ariaSort}
       tabIndex={tabIndex}
       className={className}
       data-column-index={columnIndex}

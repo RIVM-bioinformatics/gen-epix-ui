@@ -17,4 +17,5 @@ export interface MenuItemData {
   autoCloseDisabled?: boolean;
   sx?: SxProps;
   active?: boolean;
+  checked?: 'true' | 'false' | 'mixed';
 }

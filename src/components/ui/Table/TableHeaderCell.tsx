@@ -216,10 +216,18 @@ export const TableHeaderCell = <TRowData,>(props: TableHeaderCellProps<TRowData>
 
   const iconSpacing = +theme.spacing(2).replace('px', '');
 
+  const ariaSortLabel = useMemo((): TableCellProps<TRowData>['ariaSort'] => {
+    if (sortByField !== column.id) {
+      return undefined;
+    }
+    return sortDirection === 'asc' ? 'ascending' : 'descending';
+  }, [column.id, sortByField, sortDirection]);
+
   return (
     <TableCell
       key={column.id}
       ref={tableCellRef}
+      ariaSort={ariaSortLabel}
       className={clsx(tableHeaderCellClassNames.root, {
         [tableHeaderCellClassNamesFocus]: !!filterAnchorElement,
       })}
@@ -358,14 +366,6 @@ export const TableHeaderCell = <TRowData,>(props: TableHeaderCellProps<TRowData>
               >
                 <ArrowDownwardIcon fontSize={'inherit'} />
               </TableSortLabelIconButton>
-              {sortByField === column.id && (
-                <Box
-                  component={'span'}
-                  sx={visuallyHidden}
-                >
-                  {sortDirection === 'desc' ? t`sorted descending` : t`sorted ascending`}
-                </Box>
-              )}
             </>
           )}
           {column.resizable !== false && (

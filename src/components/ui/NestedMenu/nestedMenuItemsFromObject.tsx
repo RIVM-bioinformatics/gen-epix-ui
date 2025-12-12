@@ -21,7 +21,7 @@ export const nestedMenuItemsFromObject = ({
   handleClose,
 }: NestedMenuItemsFromObjectProps) => {
   return items.map((item) => {
-    const { leftIcon, rightIcon, label, tooltip, items: menuItemsData, callback, sx, disabled, active, divider, autoCloseDisabled } = item;
+    const { leftIcon, rightIcon, label, tooltip, items: menuItemsData, callback, sx, disabled, active, divider, autoCloseDisabled, checked } = item;
     if (!disabled && menuItemsData && menuItemsData.length > 0) {
       return (
         <Tooltip
@@ -32,6 +32,7 @@ export const nestedMenuItemsFromObject = ({
         >
           <NestedMenuItem
             key={label}
+            checked={checked}
             active={active}
             callback={callback}
             disabled={disabled}
@@ -55,6 +56,7 @@ export const nestedMenuItemsFromObject = ({
     const iconMenuItem = (
       <IconMenuItem
         key={label}
+        checked={checked}
         disabled={disabled}
         divider={divider}
         label={label}
