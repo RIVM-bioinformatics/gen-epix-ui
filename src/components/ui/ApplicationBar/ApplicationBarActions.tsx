@@ -1,5 +1,4 @@
 import {
-  Alert,
   Box,
   IconButton,
   useTheme,
@@ -98,24 +97,24 @@ export const ApplicationBarActions = ({ fullWidth }: ApplicationBarActionsProps)
         <ApplicationBarActionsInfoItem />
         <ApplicationBarActionsUserItem />
         {environmentMessage && (
-          <Alert
+          <Box
             {...TestIdUtil.createAttributes('ApplicationBarActions-EnvironmentMessage')}
-            severity={'info'}
+            aria-hidden={'true'}
             sx={{
-              paddingLeft: 1,
-              background: theme.palette.background.paper,
               padding: `0 ${theme.spacing(1)} !important`,
               marginRight: fullWidth ? 0 : 1,
-              lineHeight: theme.spacing(3),
               fontWeight: 700,
+              textTransform: 'uppercase',
               [theme.breakpoints.down('md')]: {
                 visibility: 'hidden',
                 position: 'absolute',
               },
+              display: 'flex',
+              alignItems: 'center',
             }}
           >
-            {t('{{environmentMessage}} ', { environmentMessage })}
-          </Alert>
+            {t('{{environmentMessage}}', { environmentMessage })}
+          </Box>
         )}
       </Box>
     </Box>
