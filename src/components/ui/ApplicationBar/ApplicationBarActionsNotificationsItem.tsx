@@ -1,5 +1,6 @@
 import {
   Badge,
+  Box,
   CircularProgress,
   IconButton,
   useTheme,
@@ -45,7 +46,7 @@ export const ApplicationBarActionsNotificationsItem = () => {
       >
         <Badge
           badgeContent={notifications.length}
-          color={'primary'}
+          color={'secondary'}
           sx={{ '& .MuiBadge-badge': { fontSize: 9, height: 15, minWidth: 15, border: '1px solid white' } }}
         >
           <NotificationsIcon color={'inherit'} />
@@ -59,6 +60,18 @@ export const ApplicationBarActionsNotificationsItem = () => {
             }}
           />
         )}
+        <Box
+          sx={{
+            fontSize: '1.3rem',
+            marginLeft: theme.spacing(1),
+            [theme.breakpoints.up('md')]: {
+              visibility: 'hidden',
+              position: 'absolute',
+            },
+          }}
+        >
+          {t`Notifications`}
+        </Box>
       </IconButton>
       <NotificationsDrawer
         open={open}

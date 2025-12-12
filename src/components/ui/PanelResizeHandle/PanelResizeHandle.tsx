@@ -3,6 +3,7 @@ import {
   styled,
   useTheme,
 } from '@mui/material';
+import { useTranslation } from 'react-i18next';
 import type { PanelResizeHandleProps } from 'react-resizable-panels';
 import { PanelResizeHandle } from 'react-resizable-panels';
 
@@ -10,9 +11,11 @@ const StyledPanelResizeHandle = styled(PanelResizeHandle)(() => ({}));
 
 export const PanelResizeHandleHorizontal = (props: PanelResizeHandleProps) => {
   const theme = useTheme();
+  const [t] = useTranslation();
   return (
     <StyledPanelResizeHandle
       {...props}
+      aria-label={t('Horizontal resize Handle')}
       sx={{
         height: '11px',
         '&:hover > div': {
@@ -36,9 +39,12 @@ export const PanelResizeHandleHorizontal = (props: PanelResizeHandleProps) => {
 
 export const PanelResizeHandleVertical = (props: PanelResizeHandleProps) => {
   const theme = useTheme();
+  const [t] = useTranslation();
+
   return (
     <StyledPanelResizeHandle
       {...props}
+      aria-label={t('Horizontal resize Handle')}
       sx={{
         width: '11px',
         '&:hover > div': {

@@ -114,7 +114,9 @@ export const EventsPage = () => {
 
   const columns = useMemo<TableColumn<Row>[]>(() => {
     return [
-      TableUtil.createReadableIndexColumn(),
+      TableUtil.createReadableIndexColumn({
+        getAriaLabel: (params: TableRowParams<Row>) => t('Open event information for {{name}}', { name: params.row.name }),
+      }),
       TableUtil.createOptionsColumn({ id: 'case_type_id', name: t`Case type`, options: caseTypeOptionsQuery.options, flex: 1.5, shouldFilterOptions: true }),
       TableUtil.createTextColumn({ id: 'name', name: t`Name`, flex: 1.5 }),
       TableUtil.createOptionsColumn({ id: 'case_set_category_id', name: t`Category`, options: caseSetCategoryOptionsQuery.options, flex: 0.4 }),
@@ -185,7 +187,7 @@ export const EventsPage = () => {
       >
         <TableMenu />
         <Button
-          color={'primary'}
+          color={'secondary'}
           disabled={isLoading}
           loading={isLoading}
           size={'small'}

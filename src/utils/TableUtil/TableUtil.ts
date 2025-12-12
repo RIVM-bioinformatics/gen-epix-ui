@@ -365,7 +365,7 @@ export class TableUtil {
     };
   }
 
-  public static createReadableIndexColumn<TData>(): TableColumnReadableIndex<TData> {
+  public static createReadableIndexColumn<TData>(kwArgs: { getAriaLabel?: (params: TableRowParams<TData>) => string } = {}): TableColumnReadableIndex<TData> {
     return {
       id: FIXED_COLUMN_ID.READABLE_INDEX,
       type: 'readableIndex',
@@ -376,6 +376,7 @@ export class TableUtil {
       resizable: false,
       disableEllipsis: true,
       widthPxFn: (dataLength) => (dataLength.toString().length * 10) + 16,
+      getAriaLabel: kwArgs.getAriaLabel ?? (() => null),
       textAlign: 'right',
     };
   }

@@ -9,7 +9,11 @@ import { TestIdUtil } from '../../../utils/TestIdUtil';
 
 import { SortableListItemContext } from './context/SortableListItemContext';
 
-export const SortableListItemDragHandle = () => {
+export type SortableListItemDragHandleProps = {
+  readonly name: string;
+};
+
+export const SortableListItemDragHandle = ({ name }: SortableListItemDragHandleProps) => {
   const theme = useTheme();
   const { attributes, listeners, ref } = useContext(SortableListItemContext);
 
@@ -40,6 +44,8 @@ export const SortableListItemDragHandle = () => {
           boxShadow: `0 0px 0px 2px ${theme.palette.primary.main}`,
         },
       }}
+      aria-label={name}
+      name={name}
     >
       <DragIndicatorIcon />
     </Box>

@@ -39,6 +39,7 @@ export const EpiUploadNavigation = ({ onProceedButtonClick: onProceedButtonClick
       {onProceedButtonClick && (
         <Button
           variant={'contained'}
+          color={'secondary'}
           disabled={proceedDisabled}
           onClick={onProceedButtonClick}
         >

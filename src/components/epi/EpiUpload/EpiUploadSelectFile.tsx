@@ -294,13 +294,6 @@ const EpiUploadSelectFile = () => {
         )}
         {canUpload && (
           <>
-            <GenericForm<FormFields>
-              formFieldDefinitions={formFieldDefinitions}
-              formId={formId}
-              formMethods={formMethods}
-              schema={schema}
-              onSubmit={handleSubmit(onFormSubmit)}
-            />
             {rawData && rawData.length > 0 && (
               <Alert
                 severity={'info'}
@@ -322,6 +315,13 @@ const EpiUploadSelectFile = () => {
                 </Typography>
               </Alert>
             )}
+            <GenericForm<FormFields>
+              formFieldDefinitions={formFieldDefinitions}
+              formId={formId}
+              formMethods={formMethods}
+              schema={schema}
+              onSubmit={handleSubmit(onFormSubmit)}
+            />
             <EpiUploadNavigation
               onProceedButtonClick={onProceedButtonClick}
             />

@@ -115,21 +115,29 @@ export const UseColumnsMenu = <TRowData,>({ hasCellData }: UseColumnsMenuProps<T
           callback: () => toggleDimension(dimension.columnIds),
           // eslint-disable-next-line no-nested-ternary
           rightIcon: areAllVisible ? <CheckBoxOutlinedIcon /> : areSomeVisible ? <IndeterminateCheckBoxIcon /> : <CheckBoxOutlineBlankOutlinedIcon />,
-          items: dimension.columnIds.map((columnId) => ({
-            autoCloseDisabled: true,
-            label: tableColumns.find(c => c.id === columnId)?.headerName ?? '',
-            callback: () => toggleItem(columnId),
-            rightIcon: visibleColumnIds.includes(columnId) ? <CheckBoxOutlinedIcon /> : <CheckBoxOutlineBlankOutlinedIcon />,
-          })),
+          // eslint-disable-next-line no-nested-ternary
+          checked: areAllVisible ? 'true' : areSomeVisible ? 'mixed' : 'false',
+          items: dimension.columnIds.map((columnId) => {
+            const checked = visibleColumnIds.includes(columnId);
+            return {
+              autoCloseDisabled: true,
+              label: tableColumns.find(c => c.id === columnId)?.headerName ?? '',
+              callback: () => toggleItem(columnId),
+              rightIcon: checked ? <CheckBoxOutlinedIcon /> : <CheckBoxOutlineBlankOutlinedIcon />,
+              checked: checked ? 'true' : 'false',
+            };
+          }),
         });
       });
     } else {
       tableColumns.filter(c => !c.isStatic).forEach((column) => {
+        const checked = visibleColumnIds.includes(column.id);
         items.push({
           autoCloseDisabled: true,
           label: column.headerName,
           callback: () => toggleItem(column.id),
-          rightIcon: visibleColumnIds.includes(column.id) ? <CheckBoxOutlinedIcon /> : <CheckBoxOutlineBlankOutlinedIcon />,
+          rightIcon: checked ? <CheckBoxOutlinedIcon /> : <CheckBoxOutlineBlankOutlinedIcon />,
+          checked: checked ? 'true' : 'false',
         });
       });
     }

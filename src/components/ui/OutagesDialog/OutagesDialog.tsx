@@ -44,10 +44,10 @@ export const OutagesDialog = withDialog<OutagesDialogProps, OutagesDialogOpenPro
       [
         {
           ...TestIdUtil.createAttributes('OutagesDialog-close'),
-          color: 'primary',
+          color: 'secondary',
           autoFocus: true,
           onClick: onClose,
-          variant: 'outlined',
+          variant: 'contained',
           label: t`Close`,
         },
       ],

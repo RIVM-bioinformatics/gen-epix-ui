@@ -9,7 +9,7 @@ import type {
   ReactElement,
 } from 'react';
 
-import { ApplicationFooterLink } from '../ApplicationFooterLink';
+import { ApplicationFooterLink } from './ApplicationFooterLink';
 
 export type ApplicationFooterLinkSectionProps = PropsWithChildren<{
   readonly header: string;
@@ -31,11 +31,11 @@ export const ApplicationFooterLinkSection = ({ header, children }: ApplicationFo
       <Typography
         component={'h3'}
         sx={{
-          color: theme.palette.primary.contrastText,
-          borderBottom: `1px solid ${theme.palette.primary.contrastText}`,
+          color: theme['gen-epix'].footer.color,
+          borderBottom: `1px solid ${theme['gen-epix'].footer.sectionBorderColor}`,
           marginBottom: theme.spacing(1),
           paddingBottom: theme.spacing(1),
-          fontWeight: 'normal',
+          fontWeight: 500,
         }}
         variant={'h4'}
       >

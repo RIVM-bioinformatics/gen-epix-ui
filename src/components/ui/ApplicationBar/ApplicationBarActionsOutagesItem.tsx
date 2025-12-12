@@ -1,7 +1,8 @@
-import type { BadgeOwnProps } from '@mui/material';
 import {
   Badge,
+  Box,
   IconButton,
+  useTheme,
 } from '@mui/material';
 import {
   useCallback,
@@ -21,24 +22,12 @@ import { outagesStore } from '../../../stores/outagesStore';
 
 export const ApplicationBarActionsOutagesItem = () => {
   const [t] = useTranslation();
+  const theme = useTheme();
   const outagesDialogRef = useRef<OutagesDialogRefMethods>(null);
   const visibleOutages = useStore(outagesStore, (state) => state.visibleOutages);
   const activeOutages = useStore(outagesStore, (state) => state.activeOutages);
   const soonActiveOutages = useStore(outagesStore, (state) => state.soonActiveOutages);
 
-
-  const badgeColor = useMemo<BadgeOwnProps['color']>(() => {
-    if (activeOutages.length > 0) {
-      return 'error';
-    }
-    if (soonActiveOutages.length > 0) {
-      return 'warning';
-    }
-    if (visibleOutages.length > 0) {
-      return 'info';
-    }
-    return 'default';
-  }, [activeOutages.length, soonActiveOutages.length, visibleOutages.length]);
 
   const badgeContent = useMemo<string>(() => {
     if (activeOutages.length > 0 || visibleOutages.length > 0 || soonActiveOutages.length > 0) {
@@ -62,12 +51,23 @@ export const ApplicationBarActionsOutagesItem = () => {
       >
         <Badge
           badgeContent={badgeContent}
-          color={badgeColor}
+          color={'secondary'}
           sx={{ '& .MuiBadge-badge': { fontSize: 9, height: 15, minWidth: 15, border: '1px solid white' } }}
         >
           <ConstructionIcon color={'inherit'} />
         </Badge>
-
+        <Box
+          sx={{
+            fontSize: '1.3rem',
+            marginLeft: theme.spacing(1),
+            [theme.breakpoints.up('md')]: {
+              visibility: 'hidden',
+              position: 'absolute',
+            },
+          }}
+        >
+          {t`Outages`}
+        </Box>
       </IconButton>
       <OutagesDialog ref={outagesDialogRef} />
     </Fragment>

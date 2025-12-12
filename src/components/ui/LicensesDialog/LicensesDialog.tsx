@@ -181,7 +181,7 @@ export const LicensesDialog = withDialog<LicensesDialogProps, LicensesDialogOpen
                     <ListItem
                       secondaryAction={entry.homepage && (
                         <IconButton
-                          aria-label={'delete'}
+                          aria-label={'Open project homepage in new tab'}
                           edge={'end'}
                           // eslint-disable-next-line react/jsx-no-bind
                           onClick={() => onItemURLClick(entry.homepage)}

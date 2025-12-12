@@ -252,7 +252,7 @@ export const EpiCurve = () => {
     return {
       finished: !hasRenderedOnce ? () => {
         const dom = chartRef?.current?.getEchartsInstance()?.getDom();
-        dom?.setAttribute('aria-label', t`Figure of an epi curve`);
+        dom?.setAttribute('aria-label', t('Epidemiological curve showing the number of cases over time ({{label}})', { label: column?.label ?? '' }));
         dom?.setAttribute('role', 'img');
         setHasRenderedOnce(true);
       } : undefined,
@@ -283,7 +283,7 @@ export const EpiCurve = () => {
       },
 
     };
-  }, [chartRef, hasRenderedOnce, highlightingManager, t]);
+  }, [column?.label, hasRenderedOnce, highlightingManager, t]);
 
   useEffect(() => {
     const unsubscribe = highlightingManager.subscribe((highlighting) => {
@@ -327,9 +327,6 @@ export const EpiCurve = () => {
 
   const getOptions = useCallback(() => {
     return {
-      aria: {
-        enabled: true,
-      },
       grid: {
         bottom: 64,
         left: 48,

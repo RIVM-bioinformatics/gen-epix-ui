@@ -146,7 +146,12 @@ export const CheckboxGroup = <TFieldValues extends FieldValues, TName extends Pa
                   checked={(value as CheckBoxGroupValue)?.includes(option.value)}
                   control={(
                     <MuiCheckbox
-                      inputRef={index === 0 ? inputRef : undefined}
+                      slotProps={{
+                        input: {
+                          ref: index === 0 ? inputRef : undefined,
+                          name: `${name}-${option.value.toString()}`,
+                        },
+                      }}
                       sx={{
                         padding: '0 9px',
                       }}

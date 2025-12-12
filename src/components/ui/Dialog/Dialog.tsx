@@ -20,6 +20,7 @@ import type {
   PropsWithChildren,
 } from 'react';
 import { useCallback } from 'react';
+import { useTranslation } from 'react-i18next';
 
 import { CopyToClipboardButton } from '../CopyToClipboardButton';
 import { TestIdUtil } from '../../../utils/TestIdUtil';
@@ -71,6 +72,7 @@ export const Dialog = ({
   noPadding = false,
   dialogContentRef,
 }: PropsWithChildren<DialogProps>): ReactElement => {
+  const [t] = useTranslation();
   const onMuiDialogClose = useCallback((_event: unknown, reason: 'backdropClick' | 'escapeKeyDown') => {
     if (reason === 'backdropClick' && disableBackdropClick) {
       return;
@@ -108,13 +110,6 @@ export const Dialog = ({
             {...TestIdUtil.createAttributes(`${testId}-title`)}
             sx={{
               pr: 3,
-              '& .genepix-permalink': {
-                display: 'none',
-                position: 'absolute',
-              },
-              '&:hover .genepix-permalink': {
-                display: 'inline-block',
-              },
             }}
             variant={titleVariant}
           >
@@ -132,10 +127,10 @@ export const Dialog = ({
                   baseIcon={<LinkIcon />}
                   buttonProps={{
                     sx: {
-                      width: 16,
-                      height: 16,
+                      width: 20,
+                      height: 20,
                       '& svg': {
-                        fontSize: 16,
+                        fontSize: 20,
                       },
                     },
                   }}
@@ -147,6 +142,7 @@ export const Dialog = ({
           {!noCloseButton && (
             <IconButton
               {...TestIdUtil.createAttributes(`${testId}-closeButton`)}
+              title={t`Close`}
               sx={{
                 color: 'grey.500',
               }}

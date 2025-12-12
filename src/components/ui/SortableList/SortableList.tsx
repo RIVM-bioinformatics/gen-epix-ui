@@ -26,8 +26,11 @@ import {
 import {
   Box,
   Checkbox,
+  FormControlLabel,
+  FormGroup,
   useTheme,
 } from '@mui/material';
+import { useTranslation } from 'react-i18next';
 
 import { TestIdUtil } from '../../../utils/TestIdUtil';
 
@@ -54,6 +57,7 @@ export const SortableList = <T extends BaseItem>({
   renderItemContent,
 }: Props<T>) => {
   const theme = useTheme();
+  const [t] = useTranslation();
   const [active, setActive] = useState<Active>(null);
   const activeItem = useMemo(
     () => items.find((item) => item.id === active?.id),
@@ -110,26 +114,31 @@ export const SortableList = <T extends BaseItem>({
           },
         }}
       >
-        <Checkbox
-          checked={item.isSelected}
-          size={'small'}
-          slotProps={{
-            input: {
-              ...{ 'data-id': (item.id as string) },
-            },
-          }}
+        <FormControlLabel
+          label={renderItemContent(item)}
           sx={{
-            padding: `0 ${theme.spacing(0.5)}`,
+            flexGrow: 1,
+            paddingLeft: theme.spacing(1),
           }}
-          onChange={onCheckBoxChange}
+          control={(
+            <Checkbox
+              checked={item.isSelected}
+              size={'small'}
+              slotProps={{
+                input: {
+                  ...{ 'data-id': (item.id as string) },
+                },
+              }}
+              onChange={onCheckBoxChange}
+            />
+          )}
         />
-        <Box flexGrow={1}>
-          {renderItemContent(item)}
-        </Box>
-        <SortableListItemDragHandle />
+        <SortableListItemDragHandle
+          name={t('Drag handle for {{label}}', { label: item.label })}
+        />
       </SortableListItem>
     );
-  }, [onCheckBoxChange, renderItemContent, theme]);
+  }, [onCheckBoxChange, renderItemContent, t, theme]);
 
   return (
     <DndContext
@@ -139,20 +148,21 @@ export const SortableList = <T extends BaseItem>({
       onDragStart={onDragStart}
     >
       <SortableContext items={items}>
-        <Box
-          {...TestIdUtil.createAttributes('SortableList')}
-          component={'ul'}
-          role={'application'}
-          sx={{
-            display: 'flex',
-            flexDirection: 'column',
-            gap: theme.spacing(0.5),
-            padding: 0,
-            listStyle: 'none',
-          }}
-        >
-          {items.map((item) => renderItem(item))}
-        </Box>
+        <FormGroup>
+          <Box
+            {...TestIdUtil.createAttributes('SortableList')}
+            component={'ul'}
+            sx={{
+              display: 'flex',
+              flexDirection: 'column',
+              gap: theme.spacing(0.5),
+              padding: 0,
+              listStyle: 'none',
+            }}
+          >
+            {items.map((item) => renderItem(item))}
+          </Box>
+        </FormGroup>
       </SortableContext>
       <SortableOverlay>
         {activeItem ? renderItem(activeItem) : null}

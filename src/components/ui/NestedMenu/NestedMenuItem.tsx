@@ -53,6 +53,7 @@ export type NestedMenuItemProps = Omit<MenuItemProps, 'button'> & {
   readonly parentMenuOpen: boolean;
   readonly component?: ElementType;
   readonly label?: string;
+  readonly checked?: 'true' | 'false' | 'mixed';
   readonly rightIcon?: ReactNode;
   readonly leftIcon?: ReactNode;
   readonly children?: ReactNode;
@@ -87,6 +88,7 @@ export const NestedMenuItem = ({ ref, ...props }: NestedMenuItemProps) => {
     tabIndex: tabIndexProp,
     ContainerProps = {},
     MenuProps,
+    checked,
     ...MenuItemProps
   } = props;
 
@@ -214,6 +216,7 @@ export const NestedMenuItem = ({ ref, ...props }: NestedMenuItemProps) => {
         label={label}
         leftIcon={leftIcon}
         rightIcon={rightIcon}
+        checked={checked}
         onClick={onIconMenuItemClick}
       />
       <Menu

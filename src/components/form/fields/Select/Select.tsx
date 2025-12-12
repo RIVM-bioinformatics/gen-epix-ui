@@ -64,6 +64,7 @@ export const Select = <TFieldValues extends FieldValues, TName extends Path<TFie
   const inputRef = useRef<HTMLInputElement>(null);
   const id = useId();
   const labelId = useId();
+  const helperTextId = useId();
 
   const hasError = !!errorMessage;
   const hasWarning = !!warningMessage && !hasError;
@@ -106,17 +107,14 @@ export const Select = <TFieldValues extends FieldValues, TName extends Path<TFie
           error={hasError}
           className={classnames({ 'Mui-warning': hasWarning })}
           required={required && !disabled}
-          id={labelId}
           htmlFor={id}
+          id={labelId}
         >
           {label}
         </InputLabel>
         <MuiSelect<TFieldValues[TName]>
           error={hasError}
           disabled={disabled || loading}
-          // variant={'outlined'}
-          id={id}
-          labelId={labelId}
           input={(
             <OutlinedInput
               label={label}
@@ -124,6 +122,11 @@ export const Select = <TFieldValues extends FieldValues, TName extends Path<TFie
           )}
           inputProps={{
             required: required && !disabled,
+            id,
+            'aria-labelledby': labelId,
+            'aria-describedby': helperTextId,
+            'aria-label': label,
+            ref: inputRef,
             className: classnames({
               'Mui-warning': hasWarning,
             }),
@@ -156,6 +159,7 @@ export const Select = <TFieldValues extends FieldValues, TName extends Path<TFie
         <FormHelperText
           className={classnames({ 'Mui-warning': hasWarning })}
           sx={{ ml: 0 }}
+          id={helperTextId}
         >
           <FormFieldHelperText
             noIndent
@@ -166,7 +170,7 @@ export const Select = <TFieldValues extends FieldValues, TName extends Path<TFie
         { loading && <FormFieldLoadingIndicator />}
       </FormControl>
     );
-  }, [label, name, hasWarning, required, disabled, labelId, hasError, loading, id, multiple, renderValue, onMuiSelectChange, options, errorMessage, warningMessage, getIsOptionDisabled]);
+  }, [label, name, hasError, hasWarning, required, disabled, id, loading, labelId, helperTextId, multiple, renderValue, onMuiSelectChange, options, errorMessage, warningMessage, getIsOptionDisabled]);
 
   return (
     <>

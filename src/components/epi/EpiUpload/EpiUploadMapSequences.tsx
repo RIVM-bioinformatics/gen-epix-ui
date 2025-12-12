@@ -225,7 +225,9 @@ export const EpiUploadMapSequences = () => {
 
   const tableColumns = useMemo<TableColumn<EpiValidatedCaseWithGeneratedId>[]>(() => {
     const tableCols: TableColumn<EpiValidatedCaseWithGeneratedId>[] = [];
-    tableCols.push(TableUtil.createReadableIndexColumn());
+    tableCols.push(
+      TableUtil.createReadableIndexColumn(),
+    );
 
     const columnsUsedForMapping = [
       ...completeCaseTypeColumnStats.idColumns,
@@ -320,7 +322,7 @@ export const EpiUploadMapSequences = () => {
       </Box>
       <TableStoreContextProvider store={tableStore}>
         <Table
-          font={theme.epi.lineList.font}
+          font={theme['gen-epix'].lineList.font}
           rowHeight={7}
         />
         <EpiUploadNavigation

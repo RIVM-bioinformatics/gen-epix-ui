@@ -1,11 +1,19 @@
 import {
   Box,
+  IconButton,
   styled,
   useTheme,
 } from '@mui/material';
+import MenuIcon from '@mui/icons-material/Menu';
 import { useTranslation } from 'react-i18next';
 import { NavLink as BaseNavLink } from 'react-router-dom';
-import { useMemo } from 'react';
+import {
+  useCallback,
+  useEffect,
+  useId,
+  useMemo,
+  useState,
+} from 'react';
 
 import { routes } from '../../../data/routes';
 import { AuthorizationManager } from '../../../classes/managers/AuthorizationManager';
@@ -21,12 +29,6 @@ const NavLink = styled(BaseNavLink)(({ theme }) => ({
   },
 }));
 
-const NavLinkDisabled = styled(Box)(({ theme }) => ({
-  color: theme.palette.secondary.light,
-  display: 'inline-block',
-  fontSize: '1.3rem',
-}));
-
 export type ApplicationBarNavigationMenuProps = {
   readonly fullWidth?: boolean;
 };
@@ -35,69 +37,122 @@ export const ApplicationBarNavigationMenu = ({ fullWidth }: ApplicationBarNaviga
   const [t] = useTranslation();
   const theme = useTheme();
   const authorizationManager = useMemo(() => AuthorizationManager.instance, []);
+  const navId = useId();
 
   const menuItems = useMemo(() => {
     const rootItem = routes.find(r => r.handle.root);
     return [rootItem, ...rootItem.children.filter(r => !r.handle.hidden)] as MyNonIndexRouteObject[];
   }, []);
 
+  const [isMenuOpen, setIsMenuOpen] = useState(false);
+
+  useEffect(() => {
+    if (isMenuOpen) {
+      const handleKeyDown = (event: KeyboardEvent) => {
+        if (event.key === 'Escape') {
+          setIsMenuOpen(false);
+        }
+      };
+      document.addEventListener('keydown', handleKeyDown);
+      return () => {
+        document.removeEventListener('keydown', handleKeyDown);
+      };
+    }
+  }, [isMenuOpen]);
+
+  const onMenuButtonClick = useCallback(() => {
+    setIsMenuOpen(x => !x);
+  }, []);
+
   return (
     <Box
-      component={'nav'}
-      sx={{ flexGrow: 1 }}
+      sx={{
+        flexGrow: 1,
+      }}
     >
-      <Box
-        component={'ul'}
+      <IconButton
+        aria-label={t`Toggle navigation menu`}
+        aria-controls={navId}
         sx={{
-          padding: 0,
-          margin: 0,
-          display: 'flex',
-          marginLeft: fullWidth ? 0 : 2,
+          color: theme['gen-epix'].navbar.primaryColor,
+          [theme.breakpoints.up('md')]: {
+            display: 'none',
+          },
+        }}
+        onClick={onMenuButtonClick}
+      >
+        <MenuIcon />
+      </IconButton>
+      <Box
+        component={'nav'}
+        id={navId}
+        sx={{
+          flexGrow: 1,
+          [theme.breakpoints.down('md')]: {
+            display: isMenuOpen ? 'block' : 'none',
+            position: 'absolute',
+            background: theme['gen-epix'].navbar.background,
+            top: 48,
+            left: 0,
+            width: '100%',
+            paddingBottom: 4,
+          },
         }}
       >
-        {menuItems.map(menuItem => {
-          const disabled = menuItem.handle.disabled || !authorizationManager.doesUserHavePermissionForRoute(menuItem);
-          return (
-            <Box
-              key={menuItem.path}
-              component={'li'}
-              sx={{
-                display: 'flex',
-                alignItems: 'center',
-                listStyle: 'none',
-                padding: `0 ${theme.spacing(2)}`,
-                height: 48,
-                '&:has(.active)': {
-                  background: theme.palette.primary.main,
-                  a: {
-                    color: theme.palette.primary.contrastText,
+        <Box
+          component={'ul'}
+          sx={{
+            padding: 0,
+            margin: 0,
+            display: 'flex',
+            marginLeft: fullWidth ? 0 : 2,
+            [theme.breakpoints.down('md')]: {
+              display: 'block',
+              margin: 0,
+            },
+          }}
+        >
+          {menuItems.filter(menuItem => !menuItem.handle.disabled && authorizationManager.doesUserHavePermissionForRoute(menuItem)).map(menuItem => {
+            return (
+              <Box
+                key={menuItem.path}
+                component={'li'}
+                sx={{
+                  display: 'flex',
+                  alignItems: 'center',
+                  listStyle: 'none',
+                  padding: `0 ${theme.spacing(1)}`,
+                  fontWeight: 800,
+                  height: 48,
+                  color: theme['gen-epix'].navbar.primaryColor,
+                  '&:has(.active)': {
+                    background: theme['gen-epix'].navbar.activeBackground,
+                    a: {
+                      color: theme['gen-epix'].navbar.activeColor,
+                    },
+                    '& svg': {
+                      color: theme['gen-epix'].navbar.activeColor,
+                    },
                   },
-                },
-                '& svg': {
-                  marginTop: '6px',
-                },
-              }}
-            >
-              {!disabled && (
+                  '& svg': {
+                    marginTop: '6px',
+                  },
+                }}
+              >
                 <NavLink
                   aria-label={t(menuItem.handle.titleKey)}
                   to={menuItem.path}
+                  sx={{
+                    padding: `0 ${theme.spacing(1)}`,
+                  }}
                 >
                   {!!menuItem.handle.icon && menuItem.handle.icon}
                   {!menuItem.handle.icon && t(menuItem.handle.titleKey)}
                 </NavLink>
-              )}
-              {disabled && (
-                <NavLinkDisabled
-                  aria-disabled
-                >
-                  {!!menuItem.handle.icon && menuItem.handle.icon}
-                  {!menuItem.handle.icon && t(menuItem.handle.titleKey)}
-                </NavLinkDisabled>
-              )}
-            </Box>
-          );
-        })}
+              </Box>
+            );
+          })}
+        </Box>
       </Box>
     </Box>
   );

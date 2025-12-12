@@ -412,15 +412,15 @@ export class EpiTreeUtil {
     ctx.fillStyle = 'black';
     ctx.strokeStyle = 'black';
     ctx.textAlign = 'center';
-    ctx.font = theme.epi.tree.font;
+    ctx.font = theme['gen-epix'].tree.font;
     ctx.lineWidth = 1;
 
     treeAssembly.verticalAncestorTreeLines.forEach(({ shape, nodeNames }) => {
-      ctx.strokeStyle = EpiTreeUtil.getFillStyle(theme.epi.tree.color, theme.epi.tree.dimFn, highlightedNodeNames, nodeNames);
+      ctx.strokeStyle = EpiTreeUtil.getFillStyle(theme['gen-epix'].tree.color, theme['gen-epix'].tree.dimFn, highlightedNodeNames, nodeNames);
       ctx.stroke(shape);
     });
     treeAssembly.horizontalAncestorTreeLines.forEach(({ shape, nodeNames }) => {
-      ctx.strokeStyle = EpiTreeUtil.getFillStyle(theme.epi.tree.color, theme.epi.tree.dimFn, highlightedNodeNames, nodeNames);
+      ctx.strokeStyle = EpiTreeUtil.getFillStyle(theme['gen-epix'].tree.color, theme['gen-epix'].tree.dimFn, highlightedNodeNames, nodeNames);
       ctx.stroke(shape);
     });
 
@@ -428,7 +428,7 @@ export class EpiTreeUtil {
       treeAssembly.supportLines.forEach(({ nodeName, fromX, toX, y }) => {
         ctx.setLineDash([1, 4]);
         ctx.beginPath();
-        ctx.strokeStyle = EpiTreeUtil.getFillStyle(theme.epi.tree.color, theme.epi.tree.dimFn, highlightedNodeNames, nodeName);
+        ctx.strokeStyle = EpiTreeUtil.getFillStyle(theme['gen-epix'].tree.color, theme['gen-epix'].tree.dimFn, highlightedNodeNames, nodeName);
         ctx.moveTo(fromX, y);
         ctx.lineTo(toX + (horizontalScrollPosition / devicePixelRatio), y);
         ctx.stroke();
@@ -440,24 +440,24 @@ export class EpiTreeUtil {
       treeAssembly.distanceTexts.forEach(({ x, y, text, nodeNames }) => {
         const isHighlighted = highlightedNodeNames.length && intersection(nodeNames, highlightedNodeNames).length > 0;
         if (isHighlighted) {
-          ctx.fillStyle = theme.epi.tree.color;
+          ctx.fillStyle = theme['gen-epix'].tree.color;
           ctx.fillText(text, x, y);
         }
       });
     }
 
     treeAssembly.ancestorNodes.forEach(({ shape, nodeNames }) => {
-      ctx.fillStyle = EpiTreeUtil.getFillStyle(theme.epi.tree.color, theme.epi.tree.dimFn, highlightedNodeNames, nodeNames);
+      ctx.fillStyle = EpiTreeUtil.getFillStyle(theme['gen-epix'].tree.color, theme['gen-epix'].tree.dimFn, highlightedNodeNames, nodeNames);
       ctx.fill(shape);
     });
 
     treeAssembly.leafTreeLines.forEach(({ shape, nodeName }) => {
-      ctx.strokeStyle = EpiTreeUtil.getFillStyle(theme.epi.tree.color, theme.epi.tree.dimFn, highlightedNodeNames, nodeName);
+      ctx.strokeStyle = EpiTreeUtil.getFillStyle(theme['gen-epix'].tree.color, theme['gen-epix'].tree.dimFn, highlightedNodeNames, nodeName);
       ctx.stroke(shape);
     });
 
     treeAssembly.leafNodes.forEach(({ shape, nodeName }) => {
-      ctx.fillStyle = EpiTreeUtil.getFillStyle(stratification?.caseIdColors?.[nodeName] ?? theme.epi.tree.color, theme.epi.tree.dimFn, highlightedNodeNames, nodeName);
+      ctx.fillStyle = EpiTreeUtil.getFillStyle(stratification?.caseIdColors?.[nodeName] ?? theme['gen-epix'].tree.color, theme['gen-epix'].tree.dimFn, highlightedNodeNames, nodeName);
       ctx.fill(shape);
     });
   }

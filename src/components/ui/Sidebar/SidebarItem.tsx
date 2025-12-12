@@ -94,6 +94,7 @@ export const SidebarItem = ({ open, onClose, children, width, title, closeIconTo
               alignItems: 'center',
               height: theme.spacing(6),
               width: theme.spacing(width),
+              maxWidth: '100vw',
               background: theme.palette.grey[100],
             }}
           >
