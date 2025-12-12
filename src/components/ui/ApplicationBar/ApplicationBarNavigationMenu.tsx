@@ -74,7 +74,7 @@ export const ApplicationBarNavigationMenu = ({ fullWidth }: ApplicationBarNaviga
         aria-label={t`Toggle navigation menu`}
         aria-controls={navId}
         sx={{
-          color: theme.palette.primary.contrastText,
+          color: theme['gen-epix'].navbar.primaryColor,
           [theme.breakpoints.up('md')]: {
             display: 'none',
           },
@@ -91,7 +91,7 @@ export const ApplicationBarNavigationMenu = ({ fullWidth }: ApplicationBarNaviga
           [theme.breakpoints.down('md')]: {
             display: isMenuOpen ? 'block' : 'none',
             position: 'absolute',
-            background: theme.palette.primary.main,
+            background: theme['gen-epix'].navbar.background,
             top: 48,
             left: 0,
             width: '100%',
@@ -121,16 +121,17 @@ export const ApplicationBarNavigationMenu = ({ fullWidth }: ApplicationBarNaviga
                   display: 'flex',
                   alignItems: 'center',
                   listStyle: 'none',
-                  padding: `0 ${theme.spacing(2)}`,
-                  fontWeight: 500,
+                  padding: `0 ${theme.spacing(1)}`,
+                  fontWeight: 800,
                   height: 48,
+                  color: theme['gen-epix'].navbar.primaryColor,
                   '&:has(.active)': {
-                    background: theme.palette.background.paper,
+                    background: theme['gen-epix'].navbar.activeBackground,
                     a: {
-                      color: theme.palette.text.primary,
+                      color: theme['gen-epix'].navbar.activeColor,
                     },
                     '& svg': {
-                      color: theme.palette.primary.main,
+                      color: theme['gen-epix'].navbar.activeColor,
                     },
                   },
                   '& svg': {
@@ -141,6 +142,9 @@ export const ApplicationBarNavigationMenu = ({ fullWidth }: ApplicationBarNaviga
                 <NavLink
                   aria-label={t(menuItem.handle.titleKey)}
                   to={menuItem.path}
+                  sx={{
+                    padding: `0 ${theme.spacing(1)}`,
+                  }}
                 >
                   {!!menuItem.handle.icon && menuItem.handle.icon}
                   {!menuItem.handle.icon && t(menuItem.handle.titleKey)}

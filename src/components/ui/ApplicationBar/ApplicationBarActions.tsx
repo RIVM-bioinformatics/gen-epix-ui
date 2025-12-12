@@ -65,7 +65,7 @@ export const ApplicationBarActions = ({ fullWidth }: ApplicationBarActionsProps)
         aria-label={t`Toggle footer menu`}
         aria-controls={navId}
         sx={{
-          color: theme.palette.primary.contrastText,
+          color: theme['gen-epix'].navbar.primaryColor,
           [theme.breakpoints.up('md')]: {
             display: 'none',
           },
@@ -82,7 +82,7 @@ export const ApplicationBarActions = ({ fullWidth }: ApplicationBarActionsProps)
             position: 'absolute',
             alignItems: 'start',
             flexDirection: 'column',
-            background: theme.palette.primary.main,
+            background: theme['gen-epix'].navbar.background,
             top: theme.spacing(6),
             right: 0,
             left: 0,

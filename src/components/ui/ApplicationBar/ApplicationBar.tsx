@@ -36,7 +36,7 @@ export const ApplicationBar = ({
       position={'static'}
       sx={{
         boxShadow: 'none',
-        background: theme.palette.primary.main,
+        background: theme['gen-epix'].navbar.background,
       }}
     >
       <Container
@@ -56,7 +56,7 @@ export const ApplicationBar = ({
               <Typography
                 component={'h1'}
                 sx={{
-                  color: theme.palette.secondary.contrastText,
+                  color: theme['gen-epix'].navbar.primaryColor,
                   fontSize: '1.3rem',
                 }}
                 variant={'body2'}
