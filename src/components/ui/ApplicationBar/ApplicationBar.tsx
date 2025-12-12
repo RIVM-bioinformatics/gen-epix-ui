@@ -6,7 +6,6 @@ import {
   Typography,
   useTheme,
 } from '@mui/material';
-import type { ReactElement } from 'react';
 
 import { ConfigManager } from '../../../classes/managers/ConfigManager';
 import { TestIdUtil } from '../../../utils/TestIdUtil';
@@ -18,14 +17,11 @@ export type ApplicationBarProps = {
   readonly fullWidth?: boolean;
   readonly fullHeight?: boolean;
   readonly singleAction?: boolean;
-  readonly smallLogo: ReactElement;
 };
 
 export const ApplicationBar = ({
   fullWidth,
-  fullHeight,
   singleAction,
-  smallLogo,
 }: ApplicationBarProps) => {
   const theme = useTheme();
 
@@ -63,20 +59,6 @@ export const ApplicationBar = ({
               >
                 {ConfigManager.instance.config.applicationName}
               </Typography>
-            </Box>
-          )}
-          {fullHeight && (
-            <Box
-              marginX={1}
-              sx={{
-                height: '48px',
-                '& svg': {
-                  height: '100%',
-                  width: 'auto',
-                },
-              }}
-            >
-              { smallLogo }
             </Box>
           )}
           {!singleAction && (
