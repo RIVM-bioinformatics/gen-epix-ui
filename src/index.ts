@@ -59,6 +59,7 @@ export * from './pages/OrganizationShareCasePoliciesAdminPage';
 export * from './pages/OrganizationContactsAdminPage';
 export * from './pages/OrganizationAdminPoliciesAdminPage';
 export * from './pages/OrganizationAccessCasePoliciesAdminPage';
+export * from './pages/IdentifierIssuersAdminPage';
 export * from './pages/HomePage';
 export * from './pages/EventsPage';
 export * from './pages/EventsDetailPage';

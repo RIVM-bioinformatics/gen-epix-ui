@@ -6,6 +6,7 @@ import {
 import { useTranslation } from 'react-i18next';
 import {
   boolean,
+  number,
   object,
   string,
 } from 'yup';
@@ -35,7 +36,7 @@ import { AuthorizationManager } from '../../classes/managers/AuthorizationManage
 import { RouterManager } from '../../classes/managers/RouterManager';
 import type { DialogAction } from '../../components/ui/Dialog';
 
-type FormFields = Pick<RegionSet, 'name' | 'code' | 'region_code_as_label'>;
+type FormFields = Pick<RegionSet, 'name' | 'code' | 'region_code_as_label' | 'resolution'>;
 
 export const RegionSetsAdminPage = () => {
   const [t] = useTranslation();
@@ -64,6 +65,7 @@ export const RegionSetsAdminPage = () => {
     return object<FormFields>().shape({
       code: string().code().required().max(100),
       name: string().extendedAlphaNumeric().required().max(100),
+      resolution: number().integer().positive().max(10000).required().transform((_val: unknown, orig: string | number) => orig === '' ? undefined : orig),
       region_code_as_label: boolean().required(),
     });
   }, []);
@@ -81,6 +83,12 @@ export const RegionSetsAdminPage = () => {
         label: t`Code`,
       } as const satisfies FormFieldDefinition<FormFields>,
       {
+        definition: FORM_FIELD_DEFINITION_TYPE.TEXTFIELD,
+        name: 'resolution',
+        label: t`Resolution`,
+        type: 'number',
+      } as const satisfies FormFieldDefinition<FormFields>,
+      {
         definition: FORM_FIELD_DEFINITION_TYPE.BOOLEAN,
         name: 'region_code_as_label',
         label: t`Region code as label`,
@@ -92,6 +100,7 @@ export const RegionSetsAdminPage = () => {
     return [
       TableUtil.createTextColumn<RegionSet>({ id: 'name', name: t`Name` }),
       TableUtil.createTextColumn<RegionSet>({ id: 'code', name: t`Code` }),
+      TableUtil.createNumberColumn<RegionSet>({ id: 'resolution', name: t`Resolution` }),
       TableUtil.createBooleanColumn<RegionSet>({ id: 'region_code_as_label', name: t`Region code as label` }),
     ];
   }, [t]);

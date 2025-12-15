@@ -549,7 +549,7 @@ export class EpiUploadUtil {
     caseTypeId: string;
     createdInDataCollectionId: string;
     importAction: EPI_UPLOAD_ACTION;
-    libraryPrepProtocolId: string;
+    sequencingProtocolId: string;
     assemblyProtocolId: string;
     mappedFileSize: number;
     sequenceFilesDataTransfer: DataTransfer;
@@ -569,7 +569,7 @@ export class EpiUploadUtil {
       mappedFileSize,
       sequenceFilesDataTransfer,
       assemblyProtocolId,
-      libraryPrepProtocolId,
+      sequencingProtocolId,
       sequenceMapping,
       onProgress,
       onComplete,
@@ -611,6 +611,7 @@ export class EpiUploadUtil {
                 case_type_col_id: columnId,
                 seq: {
                   assembly_protocol_id: assemblyProtocolId,
+                  sample_id: '', // !FIXME
                 },
               },
               file,
@@ -633,7 +634,8 @@ export class EpiUploadUtil {
                 case_id: caseIdMapping[generatedCaseId],
                 case_type_col_id: columnId,
                 read_set: {
-                  library_prep_protocol_id: libraryPrepProtocolId,
+                  sequencing_protocol_id: sequencingProtocolId,
+                  sample_id: '', // !FIXME
                 },
               },
               fwdFile,
