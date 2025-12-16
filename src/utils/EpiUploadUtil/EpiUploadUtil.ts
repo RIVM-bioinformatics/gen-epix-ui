@@ -337,7 +337,7 @@ export class EpiUploadUtil {
     });
 
     const allowedCaseTypeColIds = EpiCaseTypeUtil.getWritableImportExportCaseTypeColIds(completeCaseType);
-    completeCaseType.case_type_col_order.filter(x => allowedCaseTypeColIds.includes(x)).forEach((caseTypeColId) => {
+    completeCaseType.ordered_case_type_col_ids.filter(x => allowedCaseTypeColIds.includes(x)).forEach((caseTypeColId) => {
       const caseTypeCol = completeCaseType.case_type_cols[caseTypeColId];
 
       options.push({
@@ -400,7 +400,7 @@ export class EpiUploadUtil {
 
 
   public static getCompleteCaseTypeColumnStats(completeCaseType: CompleteCaseType): EpiUploadCompleteCaseTypeColumnStats {
-    const idColumns = EpiCaseTypeUtil.getCaseTypeColumnsByType(completeCaseType, [ColType.ID_ANONYMISED, ColType.ID_PSEUDONYMISED, ColType.ID_DIRECT]);
+    const idColumns = EpiCaseTypeUtil.getCaseTypeColumnsByType(completeCaseType, [ColType.ID_SAMPLE]);
     const sequenceColumns = EpiCaseTypeUtil.getCaseTypeColumnsByType(completeCaseType, [ColType.GENETIC_SEQUENCE]);
     const readsColumns = EpiCaseTypeUtil.getCaseTypeColumnsByType(completeCaseType, [ColType.GENETIC_READS]);
     const writableColumns = Object.values(completeCaseType.case_type_cols).filter(col => EpiCaseTypeUtil.getWritableCaseTypeColIds(completeCaseType).includes(col.id));

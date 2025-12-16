@@ -113,9 +113,11 @@ export class EpiCaseUtil {
       const column = completeCaseType.cols[caseTypeColumn.col_id];
       switch (column.col_type) {
         case ColType.TEXT:
-        case ColType.ID_DIRECT:
-        case ColType.ID_PSEUDONYMISED:
-        case ColType.ID_ANONYMISED:
+        case ColType.ID_SAMPLE:
+        case ColType.ID_CASE:
+        case ColType.ID_EVENT:
+        case ColType.ID_GENETIC_SEQUENCE:
+        case ColType.ID_PERSON:
         case ColType.TIME_WEEK:
         case ColType.TIME_MONTH:
         case ColType.TIME_QUARTER:
@@ -213,9 +215,11 @@ export class EpiCaseUtil {
           return s.concat(object().shape({
             [caseTypeColumn.id]: string().nullable().extendedAlphaNumeric().max(65535).transform((_val: unknown, orig: string) => orig || null),
           }));
-        case ColType.ID_DIRECT:
-        case ColType.ID_PSEUDONYMISED:
-        case ColType.ID_ANONYMISED:
+        case ColType.ID_SAMPLE:
+        case ColType.ID_CASE:
+        case ColType.ID_EVENT:
+        case ColType.ID_GENETIC_SEQUENCE:
+        case ColType.ID_PERSON:
           return s.concat(object().shape({
             [caseTypeColumn.id]: string().nullable().extendedAlphaNumeric().max(255).transform((_val: unknown, orig: string) => orig || null),
           }));

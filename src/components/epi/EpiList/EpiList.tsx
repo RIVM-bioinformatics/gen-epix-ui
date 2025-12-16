@@ -267,14 +267,15 @@ export const EpiList = ({ linkedScrollSubject, onLink, caseSet }: EpiListProps) 
     const initialVisibleColumnIds = EpiCaseTypeUtil.getInitialVisibleColumnIds(completeCaseType);
     const caseTypeTableColumns: TableColumn<Case>[] = [];
 
-    EpiCaseTypeUtil.iterateOrderedDimensions(completeCaseType, (_dimension, dimensionCaseTypeColumns) => {
-      dimensionCaseTypeColumns.forEach(caseTypeColumn => {
-        const col = completeCaseType.cols[caseTypeColumn.col_id];
+
+    completeCaseType.ordered_case_type_dim_ids.map(x => completeCaseType.case_type_dims[x]).forEach((caseTypeDim) => {
+      completeCaseType.ordered_case_type_col_ids_by_dim[caseTypeDim.id].map(id => completeCaseType.case_type_cols[id]).forEach(caseTypeCol => {
+        const col = completeCaseType.cols[caseTypeCol.col_id];
         const baseCaseTypeTableColumn: Partial<TableColumn<Case>> = {
-          isInitiallyVisible: initialVisibleColumnIds.includes(caseTypeColumn.id),
-          id: caseTypeColumn.id,
+          isInitiallyVisible: initialVisibleColumnIds.includes(caseTypeCol.id),
+          id: caseTypeCol.id,
           headerTooltipContent: col.description,
-          headerName: caseTypeColumn.label,
+          headerName: caseTypeCol.label,
         };
         if (col.col_type === ColType.GENETIC_DISTANCE) {
           caseTypeTableColumns.push({
@@ -282,7 +283,7 @@ export const EpiList = ({ linkedScrollSubject, onLink, caseSet }: EpiListProps) 
             type: 'caseType',
             widthPx: 200,
             valueGetter: (params) => {
-              const value = treeAddresses[caseTypeColumn.id]?.addresses[params.row.id] ? `${treeAddresses[caseTypeColumn.id].algorithmCode} ${treeAddresses[caseTypeColumn.id].addresses[params.row.id]}` : undefined;
+              const value = treeAddresses[caseTypeCol.id]?.addresses[params.row.id] ? `${treeAddresses[caseTypeCol.id].algorithmCode} ${treeAddresses[caseTypeCol.id].addresses[params.row.id]}` : undefined;
               return {
                 raw: value,
                 short: value ?? DATA_MISSING_CHARACTER,
@@ -292,7 +293,7 @@ export const EpiList = ({ linkedScrollSubject, onLink, caseSet }: EpiListProps) 
               };
             },
             comparatorFactory: ({ direction }: GetTableCellRowComparatorProps<TableColumnCaseType<Case>>) => (a: Case, b: Case) => {
-              const sortValue = StringUtil.advancedSortComperator(treeAddresses[caseTypeColumn.id]?.addresses?.[a.id], treeAddresses[caseTypeColumn.id]?.addresses?.[b.id]);
+              const sortValue = StringUtil.advancedSortComperator(treeAddresses[caseTypeCol.id]?.addresses?.[a.id], treeAddresses[caseTypeCol.id]?.addresses?.[b.id]);
               return direction === 'asc' ? sortValue : -sortValue;
             },
           } as TableColumn<Case>);
@@ -308,10 +309,10 @@ export const EpiList = ({ linkedScrollSubject, onLink, caseSet }: EpiListProps) 
 
           caseTypeTableColumns.push({
             ...baseCaseTypeTableColumn,
-            widthPx: getColumnWidth(caseTypeColumn, caseTypeColumn.label),
+            widthPx: getColumnWidth(caseTypeCol, caseTypeCol.label),
             type: 'caseType',
             renderCell: cellRenderer,
-            caseTypeColumn,
+            caseTypeColumn: caseTypeCol,
             completeCaseType,
             comparatorFactory: TableUtil.createCaseTypeCellRowComperator,
             textAlign: ([ColType.DECIMAL_0, ColType.DECIMAL_1, ColType.DECIMAL_2, ColType.DECIMAL_3, ColType.DECIMAL_4, ColType.DECIMAL_4, ColType.DECIMAL_5, ColType.DECIMAL_6] as ColType[]).includes(col.col_type) ? 'right' : 'left',

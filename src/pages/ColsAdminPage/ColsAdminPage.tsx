@@ -30,7 +30,7 @@ import { TableUtil } from '../../utils/TableUtil';
 import { TestIdUtil } from '../../utils/TestIdUtil';
 import { CrudPage } from '../CrudPage';
 
-type FormFields = Pick<Col, 'dim_id' | 'code_suffix' | 'code' | 'rank_in_dim' | 'label' | 'col_type' | 'concept_set_id' | 'region_set_id' | 'genetic_distance_protocol_id' | 'description'>;
+type FormFields = Pick<Col, 'dim_id' | 'code_suffix' | 'code' | 'rank' | 'label' | 'col_type' | 'concept_set_id' | 'region_set_id' | 'genetic_distance_protocol_id' | 'description'>;
 
 export const ColsAdminPage = () => {
   const [t] = useTranslation();
@@ -67,7 +67,7 @@ export const ColsAdminPage = () => {
       label: string().extendedAlphaNumeric().required().max(100),
       code: string().code().required().max(100),
       code_suffix: string().alphaNumeric().required().max(100),
-      rank_in_dim: number().integer().positive().max(10000).optional().transform((val: number, orig) => orig === '' ? undefined : val),
+      rank: number().integer().positive().max(10000).optional().transform((val: number, orig) => orig === '' ? undefined : val),
       dim_id: string().uuid4().required().max(100),
       col_type: mixed<ColType>().required().oneOf(Object.values(ColType)),
       description: string().freeFormText().required().max(100),
@@ -145,8 +145,8 @@ export const ColsAdminPage = () => {
       } as const satisfies FormFieldDefinition<FormFields>,
       {
         definition: FORM_FIELD_DEFINITION_TYPE.TEXTFIELD,
-        name: 'rank_in_dim',
-        label: t`Rank in dimension`,
+        name: 'rank',
+        label: t`Rank`,
         type: 'number',
       } as const satisfies FormFieldDefinition<FormFields>,
     ] as const;
@@ -157,7 +157,7 @@ export const ColsAdminPage = () => {
       TableUtil.createTextColumn<Col>({ id: 'code', name: t`Code` }),
       TableUtil.createOptionsColumn<Col>({ id: 'dim_id', name: t`Dimension`, options: dimOptionsQuery.options }),
       TableUtil.createOptionsColumn<Col>({ id: 'col_type', name: t`Column type`, options: colTypeOptionsQuery.options }),
-      TableUtil.createTextColumn<Col>({ id: 'rank_in_dim', name: t`Rank in dimension` }),
+      TableUtil.createTextColumn<Col>({ id: 'rank', name: t`Rank` }),
       TableUtil.createTextColumn<Col>({ id: 'label', name: t`Label` }),
     ];
   }, [colTypeOptionsQuery.options, dimOptionsQuery.options, t]);

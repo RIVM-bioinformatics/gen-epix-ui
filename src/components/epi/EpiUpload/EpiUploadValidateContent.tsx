@@ -355,7 +355,7 @@ export const EpiUploadValidateContent = () => {
       validatedCase.data_issues.forEach((issue) => uniqueCaseTypeColIds.add(issue.case_type_col_id));
     });
 
-    completeCaseType.case_type_col_order.forEach((caseTypeColId) => {
+    completeCaseType.ordered_case_type_col_ids.forEach((caseTypeColId) => {
       if (!uniqueCaseTypeColIds.has(caseTypeColId)) {
         return;
       }

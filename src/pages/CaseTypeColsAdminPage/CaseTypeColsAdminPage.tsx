@@ -30,7 +30,7 @@ import { TestIdUtil } from '../../utils/TestIdUtil';
 import { CrudPage } from '../CrudPage';
 import { DATE_FORMAT } from '../../data/date';
 
-type FormFields = Pick<CaseTypeCol, 'case_type_id' | 'col_id' | 'occurrence' | 'code' | 'rank' | 'label' | 'description' | 'min_value' | 'max_value' | 'min_datetime' | 'max_datetime' | 'min_length' | 'genetic_sequence_case_type_col_id' | 'tree_algorithm_codes' | 'pattern'>;
+type FormFields = Pick<CaseTypeCol, 'case_type_id' | 'col_id' | 'case_type_dim_id' | 'code' | 'rank' | 'label' | 'description' | 'min_value' | 'max_value' | 'min_datetime' | 'max_datetime' | 'min_length' | 'genetic_sequence_case_type_col_id' | 'tree_algorithm_codes' | 'pattern'>;
 
 export const CaseTypeColsAdminPage = () => {
   const [t] = useTranslation();
@@ -67,9 +67,9 @@ export const CaseTypeColsAdminPage = () => {
       code: string().code().required().max(100),
       rank: number().integer().positive().max(10000).optional().transform((_val: unknown, orig: string | number) => orig === '' ? undefined : orig),
       col_id: string().uuid4().required().max(100),
+      case_type_dim_id: string().uuid4().required().max(100),
       case_type_id: string().uuid4().required().max(100),
       description: string().freeFormText().required().max(100),
-      occurrence: number().integer().positive().max(10000).optional().transform((_val: unknown, orig: string | number) => orig === '' ? undefined : orig),
       min_value: number().integer().positive().max(10000).optional().transform((_val: unknown, orig: string | number) => orig === '' ? undefined : orig),
       max_value: number().integer().positive().max(10000).optional().transform((_val: unknown, orig: string | number) => orig === '' ? undefined : orig),
       min_datetime: string().transform((_val: unknown, orig: Date) => isValid(orig) ? orig.toISOString() : undefined),

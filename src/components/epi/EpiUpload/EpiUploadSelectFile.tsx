@@ -148,7 +148,8 @@ const EpiUploadSelectFile = () => {
 
   const createOrUpdateOptions = useMemo<AutoCompleteOption[]>(() => ([
     { label: t('Create new cases'), value: EPI_UPLOAD_ACTION.CREATE },
-    { label: t('Update existing cases'), value: EPI_UPLOAD_ACTION.UPDATE },
+    // !FIXME: Update existing cases is not yet implemented
+    { label: t('Update existing cases'), value: EPI_UPLOAD_ACTION.UPDATE, disabled: true },
   ]), [t]);
 
   const onImportActionsChange = useCallback(async (value: unknown) => {

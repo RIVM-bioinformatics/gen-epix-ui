@@ -13,7 +13,6 @@ import {
 import isNumber from 'lodash/isNumber';
 
 import type {
-  Dim,
   CaseTypeDim,
   CompleteCaseType,
 } from '../../../api';
@@ -23,24 +22,24 @@ import { EpiDataUtil } from '../../../utils/EpiDataUtil';
 import { EpiCaseTypeInfoCaseTypeColumnAccessRights } from './EpiCaseTypeInfoCaseTypeColumnAccessRights';
 
 export type EpiCaseTypeInfoVariableDetailsProps = {
-  readonly dimension: Dim;
-  readonly caseTypeDim: CaseTypeDim;
+  readonly caseTypeDimension: CaseTypeDim;
   readonly completeCaseType: CompleteCaseType;
 };
 
-export const EpiCaseTypeInfoVariableDetails = ({ dimension, caseTypeDim, completeCaseType }: EpiCaseTypeInfoVariableDetailsProps) => {
+export const EpiCaseTypeInfoVariableDetails = ({ caseTypeDimension, completeCaseType }: EpiCaseTypeInfoVariableDetailsProps) => {
   const [t] = useTranslation();
-  const dimensionCaseTypeColumns = caseTypeDim.case_type_col_order.map(caseTypeColId => completeCaseType.case_type_cols[caseTypeColId]);
+  const dimensionCaseTypeColumns = completeCaseType.ordered_case_type_col_ids_by_dim[caseTypeDimension.id].map(x => completeCaseType.case_type_cols[x]);
+
   return (
     <>
       <Typography
         component={'p'}
         marginBottom={2}
       >
-        {dimension.description}
+        {caseTypeDimension.description}
       </Typography>
       <Table
-        aria-label={t('Table describing columns inside {{dimensionCode}}', { dimensionCode: dimension.code }).toString()}
+        aria-label={t('Table describing columns inside {{dimensionCode}}', { dimensionCode: caseTypeDimension.code }).toString()}
         size={'small'}
       >
         <TableHead>

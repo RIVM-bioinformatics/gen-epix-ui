@@ -18,7 +18,7 @@ export type EpiCaseTypeInfoValuesProps = {
 export const EpiCaseTypeInfoValues = ({ completeCaseType }: EpiCaseTypeInfoValuesProps) => {
   return (
     <>
-      {completeCaseType.case_type_dims.filter(caseTypeDim => {
+      {completeCaseType.ordered_case_type_dim_ids.map(x => completeCaseType.case_type_dims[x]).filter(caseTypeDim => {
         // Filter out dimensions that only include genetic distance columns
         const dim = completeCaseType.dims[caseTypeDim.dim_id];
         if (dim.dim_type !== DimType.OTHER) {
@@ -31,30 +31,26 @@ export const EpiCaseTypeInfoValues = ({ completeCaseType }: EpiCaseTypeInfoValue
         });
         return !colTypes.every(colType => colType === 'GENETIC_DISTANCE');
       }).map(caseTypeDim => {
-        const dimension = completeCaseType.dims[caseTypeDim.dim_id];
-        const dimensionCaseTypeColumns = caseTypeDim.case_type_col_order.map(caseTypeColId => completeCaseType.case_type_cols[caseTypeColId]);
-        const occurrence = dimensionCaseTypeColumns.find(c => c.occurrence)?.occurrence;
 
         return (
           <Accordion
-            key={`${dimension.id}-${occurrence ?? 0}`}
+            key={`${caseTypeDim.id}-${caseTypeDim.occurrence ?? 0}`}
             slotProps={{ transition: { unmountOnExit: true } }}
           >
             <AccordionSummary
-              aria-controls={`panel-${dimension.code}-${occurrence ?? 0}-content`}
+              aria-controls={`panel-${caseTypeDim.code}-${caseTypeDim.occurrence ?? 0}-content`}
               expandIcon={<ExpandMoreIcon />}
-              id={`panel-${dimension.code}-${occurrence ?? 0}-header`}
+              id={`panel-${caseTypeDim.code}-${caseTypeDim.occurrence ?? 0}-header`}
               sx={{
                 fontWeight: 'bold',
               }}
             >
-              {EpiCaseTypeUtil.getDimensionLabel(dimension, occurrence)}
+              {caseTypeDim.label}
             </AccordionSummary>
             <AccordionDetails>
               <EpiCaseTypeInfoVariableDetails
-                caseTypeDim={caseTypeDim}
+                caseTypeDimension={caseTypeDim}
                 completeCaseType={completeCaseType}
-                dimension={dimension}
               />
             </AccordionDetails>
           </Accordion>

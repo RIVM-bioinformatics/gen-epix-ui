@@ -36,7 +36,7 @@ export class EpiDownloadUtil {
 
       const headers = EpiDownloadUtil.getColumnHeadersForImport(
         EpiCaseTypeUtil.getWritableImportExportCaseTypeColIds(completeCaseType)
-          .sort((a, b) => completeCaseType.case_type_col_order.indexOf(a) - completeCaseType.case_type_col_order.indexOf(b))
+          .sort((a, b) => completeCaseType.ordered_case_type_col_ids.indexOf(a) - completeCaseType.ordered_case_type_col_ids.indexOf(b))
         , completeCaseType,
       );
       const data = [

@@ -117,20 +117,26 @@ export const EpiCurve = () => {
       items: [],
     };
 
-    EpiCaseTypeUtil.iterateOrderedDimensions(completeCaseType, (_dimension, dimensionCaseTypeColumns, dimIndex) => {
-      EpiCaseTypeUtil.iterateCaseTypeColumns(completeCaseType, dimensionCaseTypeColumns, (caseTypeColumn, col, colIndex) => {
+    completeCaseType.ordered_case_type_dim_ids.map(x => completeCaseType.case_type_dims[x]).filter(caseTypeDim => {
+      const dim = completeCaseType.dims[caseTypeDim.dim_id];
+      return dim.dim_type === DimType.TIME;
+    }).forEach((caseTypeDim) => {
+      if (menu.items.length) {
+        menu.items.at(-1).divider = true;
+      }
+      completeCaseType.ordered_case_type_col_ids_by_dim[caseTypeDim.id].map(id => completeCaseType.case_type_cols[id]).forEach((caseTypeCol) => {
         menu.items.push({
-          label: caseTypeColumn.label,
-          tooltip: col.description,
-          active: caseTypeColumn.id === column?.id,
-          divider: dimIndex < timeDimensions.length - 1 && colIndex === dimensionCaseTypeColumns.length - 1,
+          label: caseTypeCol.label,
+          tooltip: caseTypeCol.description,
+          active: caseTypeCol.id === column?.id,
           callback: () => {
-            updateEpiCurveWidgetData({ columnId: caseTypeColumn.id });
-            setColumn(caseTypeColumn);
+            updateEpiCurveWidgetData({ columnId: caseTypeCol.id });
+            setColumn(caseTypeCol);
           },
         });
       });
-    }, DimType.TIME);
+    });
+
     return menu;
   }, [column, completeCaseType, t, timeDimensions.length, updateEpiCurveWidgetData]);
 

@@ -283,7 +283,7 @@ export const EpiUploadMapSequences = () => {
       Object.keys(vc.case.content || {}).forEach((colId) => uniqueCaseTypeColIds.add(colId));
     });
 
-    completeCaseType.case_type_col_order.forEach((caseTypeColId) => {
+    completeCaseType.ordered_case_type_col_ids.forEach((caseTypeColId) => {
       if (!uniqueCaseTypeColIds.has(caseTypeColId) || columnsUsedForMapping.find(c => c.id === caseTypeColId)) {
         return;
       }
