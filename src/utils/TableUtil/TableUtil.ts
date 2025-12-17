@@ -155,7 +155,7 @@ export class TableUtil {
     if (column.valueGetter) {
       return column.valueGetter({ row, id: column.id, rowIndex });
     }
-    return EpiCaseUtil.getRowValue(row as Case, column.caseTypeColumn, column.completeCaseType);
+    return EpiCaseUtil.getRowValue(row as Case, column.caseTypeCol, column.completeCaseType);
   }
 
   public static getTableNumberCellValue<TRowData>({ row, column, rowIndex }: GetTableCellValueProps<TRowData, TableColumnNumber<TRowData>>): number {
@@ -235,7 +235,7 @@ export class TableUtil {
     return (a: TRowData, b: TRowData) => {
       const aValue = TableUtil.getTableCaseTypeCellValue({ column, row: a, rowIndex: 0 });
       const bValue = TableUtil.getTableCaseTypeCellValue({ column, row: b, rowIndex: 0 });
-      const col = column.completeCaseType.cols[column.caseTypeColumn.col_id];
+      const col = column.completeCaseType.cols[column.caseTypeCol.col_id];
 
       const directionMultiplier = direction === 'asc' ? 1 : -1;
 
@@ -578,8 +578,8 @@ export class TableUtil {
     direction: 1 | -1,
   ): boolean {
 
-    const elementDimension = columnDimensions?.find(dimension => dimension.columnIds.includes(elementSettingsColumn.id));
-    const swappingElementDimension = columnDimensions?.find(dimension => dimension.columnIds.includes(swappingElementSettingsColumn.id));
+    const elementDimension = columnDimensions?.find(columnDimension => columnDimension.columnIds.includes(elementSettingsColumn.id));
+    const swappingElementDimension = columnDimensions?.find(columnDimension => columnDimension.columnIds.includes(swappingElementSettingsColumn.id));
 
     if (columnDimensions?.length && (!elementDimension || !swappingElementDimension)) {
       return false;

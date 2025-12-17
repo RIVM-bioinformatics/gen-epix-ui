@@ -94,23 +94,23 @@ export const EpiList = ({ linkedScrollSubject, onLink, caseSet }: EpiListProps) 
     });
   }, []);
 
-  const getColumnWidth = useCallback((caseTypeColumn: CaseTypeCol, label: string) => {
+  const getColumnWidth = useCallback((caseTypeCol: CaseTypeCol, label: string) => {
     let maxTextLength = label?.length * 0.8;
     sortedData.forEach(row => {
-      const value = EpiCaseUtil.getRowValue(row, caseTypeColumn, completeCaseType).short;
+      const value = EpiCaseUtil.getRowValue(row, caseTypeCol, completeCaseType).short;
       if (value?.length > maxTextLength) {
         maxTextLength = value.length;
       }
     });
 
     let maxWidth = +theme.spacing(5).replace('px', '') + maxTextLength * 7;
-    if (stratification?.caseTypeColumn?.id === caseTypeColumn.id) {
+    if (stratification?.caseTypeCol?.id === caseTypeCol.id) {
       maxWidth = maxWidth + +theme.spacing(3).replace('px', '');
     }
 
     const { MAX_COLUMN_WIDTH, REQUIRED_EXTRA_CELL_PADDING_TO_FIT_CONTENT } = ConfigManager.instance.config.epiList;
     return Math.min(MAX_COLUMN_WIDTH, maxWidth) + REQUIRED_EXTRA_CELL_PADDING_TO_FIT_CONTENT;
-  }, [completeCaseType, sortedData, stratification?.caseTypeColumn?.id, theme]);
+  }, [completeCaseType, sortedData, stratification?.caseTypeCol?.id, theme]);
 
   const onOrganizationCellClick = useCallback((contactId: string) => {
     EpiEventBusManager.instance.emit('openContactDetailsDialog', {
@@ -148,7 +148,7 @@ export const EpiList = ({ linkedScrollSubject, onLink, caseSet }: EpiListProps) 
         {rowValue.short}
       </Link>
     );
-    if (id === stratification?.caseTypeColumn?.id) {
+    if (id === stratification?.caseTypeCol?.id) {
       return (
         <EpiLegendaItem
           color={stratification?.caseIdColors[row.id]}
@@ -159,7 +159,7 @@ export const EpiList = ({ linkedScrollSubject, onLink, caseSet }: EpiListProps) 
       );
     }
     return link;
-  }, [completeCaseType, onOrganizationCellClick, stratification?.caseIdColors, stratification?.caseTypeColumn?.id]);
+  }, [completeCaseType, onOrganizationCellClick, stratification?.caseIdColors, stratification?.caseTypeCol?.id]);
 
   const onGeneticSequenceCellClick = useCallback((id: string, row: Case) => {
     EpiEventBusManager.instance.emit('openSequenceDownloadDialog', {
@@ -224,7 +224,7 @@ export const EpiList = ({ linkedScrollSubject, onLink, caseSet }: EpiListProps) 
   const renderCell = useCallback(({ id, row }: TableRowParams<Case>) => {
     const rowValue = EpiCaseUtil.getRowValue(row, completeCaseType.case_type_cols[id], completeCaseType);
 
-    if (id === stratification?.caseTypeColumn?.id) {
+    if (id === stratification?.caseTypeCol?.id) {
       return (
         <EpiLegendaItem
           color={stratification?.caseIdColors[row.id]}
@@ -238,7 +238,7 @@ export const EpiList = ({ linkedScrollSubject, onLink, caseSet }: EpiListProps) 
         {rowValue.short}
       </>
     );
-  }, [completeCaseType, stratification?.caseIdColors, stratification?.caseTypeColumn?.id]);
+  }, [completeCaseType, stratification?.caseIdColors, stratification?.caseTypeCol?.id]);
 
   const staticTableColumns = useMemo<TableColumn<Case>[]>(() => {
     return [
@@ -312,7 +312,7 @@ export const EpiList = ({ linkedScrollSubject, onLink, caseSet }: EpiListProps) 
             widthPx: getColumnWidth(caseTypeCol, caseTypeCol.label),
             type: 'caseType',
             renderCell: cellRenderer,
-            caseTypeColumn: caseTypeCol,
+            caseTypeCol,
             completeCaseType,
             comparatorFactory: TableUtil.createCaseTypeCellRowComperator,
             textAlign: ([ColType.DECIMAL_0, ColType.DECIMAL_1, ColType.DECIMAL_2, ColType.DECIMAL_3, ColType.DECIMAL_4, ColType.DECIMAL_4, ColType.DECIMAL_5, ColType.DECIMAL_6] as ColType[]).includes(col.col_type) ? 'right' : 'left',

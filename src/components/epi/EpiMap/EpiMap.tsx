@@ -102,7 +102,7 @@ export const EpiMap = () => {
   const completeCaseType = useStore(epiStore, (state) => state.completeCaseType);
 
   const [focussedRegion, setFocussedRegion] = useState<Region>();
-  const geoDimensions = useMemo(() => EpiCaseTypeUtil.getDimensions(completeCaseType, [DimType.GEO]), [completeCaseType]);
+  const geoCaseTypeDims = useMemo(() => EpiCaseTypeUtil.getCaseTypeDims(completeCaseType, [DimType.GEO]), [completeCaseType]);
   const regionSetShapesFilter = useMemo<TypedUuidSetFilter>(() => {
     return {
       invert: false,
@@ -125,17 +125,17 @@ export const EpiMap = () => {
     if (column) {
       return;
     }
-    if (!geoDimensions.length) {
+    if (!geoCaseTypeDims.length) {
       throw Error('Epi map can not be shown');
     }
     let preferredCaseTypeColumn: CaseTypeCol;
     if (epiMapWidgetData.columnId) {
-      preferredCaseTypeColumn = EpiCaseTypeUtil.getCaseTypeColumns(completeCaseType).find(c => c.id === epiMapWidgetData.columnId);
+      preferredCaseTypeColumn = EpiCaseTypeUtil.getCaseTypeCols(completeCaseType).find(c => c.id === epiMapWidgetData.columnId);
     } else {
-      preferredCaseTypeColumn = EpiCaseTypeUtil.getPreferredGEOColumn(EpiCaseTypeUtil.getCaseTypeColumns(completeCaseType, geoDimensions[0].id));
+      preferredCaseTypeColumn = EpiCaseTypeUtil.getPreferredGEOColumn(EpiCaseTypeUtil.getCaseTypeCols(completeCaseType, geoCaseTypeDims[0].id));
     }
     setColumn(preferredCaseTypeColumn);
-  }, [column, completeCaseType, epiMapWidgetData.columnId, geoDimensions]);
+  }, [column, completeCaseType, epiMapWidgetData.columnId, geoCaseTypeDims]);
 
   const regions = useMemo(() => {
     if (!column) {
@@ -409,7 +409,7 @@ export const EpiMap = () => {
     const menu: MenuItemData = {
       label: column?.label ? t('Map: {{label}}', { label: column.label }) : t`Map`,
       tooltip: column ? completeCaseType.cols[column.col_id].description : undefined,
-      disabled: !geoDimensions?.length,
+      disabled: !geoCaseTypeDims?.length,
       items: [],
     };
 
@@ -434,7 +434,7 @@ export const EpiMap = () => {
     });
 
     return menu;
-  }, [column, completeCaseType, geoDimensions.length, t, updateEpiMapWidgetData]);
+  }, [column, completeCaseType, geoCaseTypeDims.length, t, updateEpiMapWidgetData]);
 
   const missingCasesCount = epiMapCaseCount !== undefined ? lineListCaseCount - epiMapCaseCount : 0;
   const missingCasesPercentage = missingCasesCount > 0 ? round(missingCasesCount / lineListCaseCount * 100, 1) : 0;

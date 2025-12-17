@@ -359,32 +359,32 @@ export const EpiUploadValidateContent = () => {
       if (!uniqueCaseTypeColIds.has(caseTypeColId)) {
         return;
       }
-      const caseTypeColumn = completeCaseType.case_type_cols[caseTypeColId];
+      const caseTypeCol = completeCaseType.case_type_cols[caseTypeColId];
 
-      const issuesForCaseTypeColumn = validatedCases.flatMap(vc => vc.data_issues.filter((i) => i.case_type_col_id === caseTypeColumn.id));
+      const issuesForCaseTypeColumn = validatedCases.flatMap(vc => vc.data_issues.filter((i) => i.case_type_col_id === caseTypeCol.id));
       const isInitiallyVisible = issuesForCaseTypeColumn.length === 0 || issuesForCaseTypeColumn.some(i => i.data_rule !== CaseColDataRule.DERIVED);
 
-      if (caseTypeColumn) {
+      if (caseTypeCol) {
         tableCols.push({
           type: 'text',
           isInitiallyVisible,
           hideInFilter: true,
-          id: caseTypeColumn.id,
-          headerName: caseTypeColumn.code,
+          id: caseTypeCol.id,
+          headerName: caseTypeCol.code,
           widthPx: 250,
           renderCell,
           cellTitleGetter: (params) => {
-            const issue = params.row.data_issues.find((i) => i.case_type_col_id === caseTypeColumn.id);
+            const issue = params.row.data_issues.find((i) => i.case_type_col_id === caseTypeCol.id);
             if (!issue) {
-              const originalValue = rawData.slice(1)[params.rowIndex][mappedColumns.find(mc => mc.caseTypeCol?.id === caseTypeColumn.id)?.originalIndex || -1];
+              const originalValue = rawData.slice(1)[params.rowIndex][mappedColumns.find(mc => mc.caseTypeCol?.id === caseTypeCol.id)?.originalIndex || -1];
               return t('{{value}} (original value: "{{originalValue}}")', {
-                value: EpiCaseUtil.getRowValue(params.row.case as Case, caseTypeColumn, completeCaseType).short,
+                value: EpiCaseUtil.getRowValue(params.row.case as Case, caseTypeCol, completeCaseType).short,
                 originalValue,
               });
             }
             return '';
           },
-          valueGetter: (params) => EpiCaseUtil.getRowValue(params.row.case as Case, caseTypeColumn, completeCaseType).short,
+          valueGetter: (params) => EpiCaseUtil.getRowValue(params.row.case as Case, caseTypeCol, completeCaseType).short,
         } satisfies TableColumn<EpiValidatedCaseWithGeneratedId>);
       }
     });

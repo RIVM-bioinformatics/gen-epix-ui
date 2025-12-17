@@ -119,7 +119,7 @@ export interface TableColumnActions<TRowData> extends TableColumnBase<TRowData, 
 export interface TableColumnCaseType<TRowData> extends TableColumnBase<TRowData, CaseTypeRowValue> {
   type: 'caseType';
   completeCaseType: CompleteCaseType;
-  caseTypeColumn: CaseTypeCol;
+  caseTypeCol: CaseTypeCol;
   comparatorFactory?: (params: GetTableCellRowComparatorProps<TableColumnCaseType<TRowData>>) => (a: TRowData, b: TRowData) => number;
 }
 

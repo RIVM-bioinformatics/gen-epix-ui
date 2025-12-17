@@ -165,9 +165,9 @@ export class EpiDataUtil {
 
   public static getRegionSetIds(completeCaseType: CompleteCaseType): string[] {
     const regionSetIds: string[] = [];
-    const caseTypeColumns = EpiCaseTypeUtil.getCaseTypeColumns(completeCaseType);
-    caseTypeColumns.forEach(caseTypeColumn => {
-      const column = completeCaseType.cols[caseTypeColumn.col_id];
+    const caseTypeColumns = EpiCaseTypeUtil.getCaseTypeCols(completeCaseType);
+    caseTypeColumns.forEach(caseTypeCol => {
+      const column = completeCaseType.cols[caseTypeCol.col_id];
       if (column.region_set_id && !regionSetIds.includes(column.region_set_id)) {
         regionSetIds.push(column.region_set_id);
       }

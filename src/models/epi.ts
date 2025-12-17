@@ -49,7 +49,7 @@ export type Stratification = {
   legendaItems?: StratificationLegendaItem[];
   legendaItemsByColor?: { [key: string]: StratificationLegendaItem };
   legendaItemsByValue?: { [key: string]: StratificationLegendaItem };
-  caseTypeColumn?: CaseTypeCol;
+  caseTypeCol?: CaseTypeCol;
 };
 
 export enum EPI_ZONE {

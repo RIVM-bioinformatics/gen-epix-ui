@@ -89,7 +89,7 @@ export const EpiCurve = () => {
   const epiCurveWidgetData = useStore(epiStore, (state) => state.epiCurveWidgetData);
   const setFilterValue = useStore(epiStore, (state) => state.setFilterValue);
   const filterDimensions = useStore(epiStore, (state) => state.filterDimensions);
-  const timeDimensions = useMemo(() => EpiCaseTypeUtil.getDimensions(completeCaseType, [DimType.TIME]), [completeCaseType]);
+  const timeCaseTypeDims = useMemo(() => EpiCaseTypeUtil.getCaseTypeDims(completeCaseType, [DimType.TIME]), [completeCaseType]);
   const [focussedDate, setFocussedDate] = useState<string>(null);
   const [column, setColumn] = useState<CaseTypeCol>(null);
 
@@ -113,7 +113,7 @@ export const EpiCurve = () => {
     const menu: MenuItemData = {
       label,
       tooltip: column ? completeCaseType.cols[column.col_id].description : undefined,
-      disabled: !timeDimensions.length,
+      disabled: !timeCaseTypeDims.length,
       items: [],
     };
 
@@ -138,25 +138,25 @@ export const EpiCurve = () => {
     });
 
     return menu;
-  }, [column, completeCaseType, t, timeDimensions.length, updateEpiCurveWidgetData]);
+  }, [column, completeCaseType, t, timeCaseTypeDims.length, updateEpiCurveWidgetData]);
 
   useEffect(() => {
     if (column) {
       return;
     }
-    if (!timeDimensions.length) {
+    if (!timeCaseTypeDims.length) {
       throw Error('Epi curve can not be shown');
     }
     if (epiCurveWidgetData.columnId) {
-      setColumn(EpiCaseTypeUtil.getCaseTypeColumns(completeCaseType).find(c => c.id === epiCurveWidgetData.columnId));
+      setColumn(EpiCaseTypeUtil.getCaseTypeCols(completeCaseType).find(c => c.id === epiCurveWidgetData.columnId));
     } else if (sortedData.length) {
       setColumn(EpiCurveUtil.getPreferredTimeColumn(
         completeCaseType,
         sortedData,
-        EpiCaseTypeUtil.getCaseTypeColumns(completeCaseType, timeDimensions[0].id),
+        EpiCaseTypeUtil.getCaseTypeCols(completeCaseType, completeCaseType.case_date_case_type_dim_id),
       ));
     }
-  }, [column, completeCaseType, epiCurveWidgetData.columnId, timeDimensions, sortedData]);
+  }, [column, completeCaseType, epiCurveWidgetData.columnId, timeCaseTypeDims, sortedData]);
 
   const items = useMemo(() => {
     if (!column) {
@@ -380,7 +380,7 @@ export const EpiCurve = () => {
       onMenuClose();
       return;
     }
-    const dateDimension = filterDimensions.find(dimension => dimension.filterIds.includes(column.id));
+    const dateDimension = filterDimensions.find(filterDimension => filterDimension.filterIds.includes(column.id));
     const dateColumnId = dateDimension.preferredFilterId;
 
     let fromDate: Date;
@@ -444,7 +444,7 @@ export const EpiCurve = () => {
 
   const missingCasesCount = lineListCaseCount - epiCurveCaseCount;
   const missingCasesPercentage = missingCasesCount > 0 ? round(missingCasesCount / lineListCaseCount * 100, 1) : 0;
-  const shouldShowEpiCurve = epiCurveCaseCount > 0 && timeDimensions.length > 0;
+  const shouldShowEpiCurve = epiCurveCaseCount > 0 && timeCaseTypeDims.length > 0;
 
 
   useEffect(() => {

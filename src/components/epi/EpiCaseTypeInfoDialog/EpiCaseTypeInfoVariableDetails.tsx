@@ -28,7 +28,7 @@ export type EpiCaseTypeInfoVariableDetailsProps = {
 
 export const EpiCaseTypeInfoVariableDetails = ({ caseTypeDimension, completeCaseType }: EpiCaseTypeInfoVariableDetailsProps) => {
   const [t] = useTranslation();
-  const dimensionCaseTypeColumns = completeCaseType.ordered_case_type_col_ids_by_dim[caseTypeDimension.id].map(x => completeCaseType.case_type_cols[x]);
+  const caseTypeCols = completeCaseType.ordered_case_type_col_ids_by_dim[caseTypeDimension.id].map(x => completeCaseType.case_type_cols[x]);
 
   return (
     <>
@@ -62,16 +62,16 @@ export const EpiCaseTypeInfoVariableDetails = ({ caseTypeDimension, completeCase
           </TableRow>
         </TableHead>
         <TableBody>
-          {dimensionCaseTypeColumns.filter(caseTypeColumn => {
+          {caseTypeCols.filter(caseTypeCol => {
             // filter out columns that are of type GENETIC_DISTANCE
-            const column = completeCaseType.cols[caseTypeColumn.col_id];
+            const column = completeCaseType.cols[caseTypeCol.col_id];
             return column.col_type !== ColType.GENETIC_DISTANCE;
-          }).map(dimensionCaseTypeColumn => {
-            const column = completeCaseType.cols[dimensionCaseTypeColumn.col_id];
+          }).map(caseTypeCol => {
+            const column = completeCaseType.cols[caseTypeCol.col_id];
             return (
-              <TableRow key={dimensionCaseTypeColumn.id}>
+              <TableRow key={caseTypeCol.id}>
                 <TableCell sx={{ width: '15%', verticalAlign: 'top' }}>
-                  {dimensionCaseTypeColumn.code}
+                  {caseTypeCol.code}
                 </TableCell>
                 <TableCell sx={{ width: '30%', verticalAlign: 'top' }}>
                   {column.description}
@@ -88,9 +88,9 @@ export const EpiCaseTypeInfoVariableDetails = ({ caseTypeDimension, completeCase
                     ColType.DECIMAL_4,
                     ColType.DECIMAL_5,
                     ColType.DECIMAL_6,
-                  ] as ColType[]).includes(column.col_type) && (isNumber(dimensionCaseTypeColumn.min_value) || isNumber(dimensionCaseTypeColumn.max_value)) && (
+                  ] as ColType[]).includes(column.col_type) && (isNumber(caseTypeCol.min_value) || isNumber(caseTypeCol.max_value)) && (
                     <>
-                      {t('min: {{min}}; max: {{max}}', { min: dimensionCaseTypeColumn.min_value, max: dimensionCaseTypeColumn.max_value })}
+                      {t('min: {{min}}; max: {{max}}', { min: caseTypeCol.min_value, max: caseTypeCol.max_value })}
                     </>
                   )}
                   {([
@@ -99,14 +99,14 @@ export const EpiCaseTypeInfoVariableDetails = ({ caseTypeDimension, completeCase
                     ColType.TIME_QUARTER,
                     ColType.TIME_WEEK,
                     ColType.TIME_YEAR,
-                  ] as ColType[]).includes(column.col_type) && (dimensionCaseTypeColumn.min_datetime || dimensionCaseTypeColumn.max_datetime) && (
+                  ] as ColType[]).includes(column.col_type) && (caseTypeCol.min_datetime || caseTypeCol.max_datetime) && (
                     <>
-                      {t('from: {{from}}; to: {{to}}', { from: dimensionCaseTypeColumn.min_datetime ?? '-', to: dimensionCaseTypeColumn.max_datetime ?? '-' })}
+                      {t('from: {{from}}; to: {{to}}', { from: caseTypeCol.min_datetime ?? '-', to: caseTypeCol.max_datetime ?? '-' })}
                     </>
                   )}
-                  {column.col_type === ColType.TEXT && dimensionCaseTypeColumn.max_length && (
+                  {column.col_type === ColType.TEXT && caseTypeCol.max_length && (
                     <>
-                      {t('Max length: {{maxLength}}', { maxLength: dimensionCaseTypeColumn.max_length })}
+                      {t('Max length: {{maxLength}}', { maxLength: caseTypeCol.max_length })}
                     </>
                   )}
                   {column.col_type === ColType.GEO_REGION && column.region_set_id && (
@@ -138,7 +138,7 @@ export const EpiCaseTypeInfoVariableDetails = ({ caseTypeDimension, completeCase
                 </TableCell>
                 <TableCell sx={{ width: '20%', verticalAlign: 'top' }}>
                   <EpiCaseTypeInfoCaseTypeColumnAccessRights
-                    caseTypeColumnId={dimensionCaseTypeColumn.id}
+                    caseTypeColumnId={caseTypeCol.id}
                   />
                 </TableCell>
               </TableRow>

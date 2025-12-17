@@ -24,9 +24,9 @@ export const EpiCaseTypeInfoValues = ({ completeCaseType }: EpiCaseTypeInfoValue
         if (dim.dim_type !== DimType.OTHER) {
           return true;
         }
-        const caseTypeColumns = EpiCaseTypeUtil.getCaseTypeColumns(completeCaseType, caseTypeDim.dim_id);
-        const colTypes = caseTypeColumns.map(caseTypeColumn => {
-          const col = completeCaseType.cols[caseTypeColumn.col_id];
+        const caseTypeCols = EpiCaseTypeUtil.getCaseTypeCols(completeCaseType, caseTypeDim.id);
+        const colTypes = caseTypeCols.map(caseTypeCol => {
+          const col = completeCaseType.cols[caseTypeCol.col_id];
           return col.col_type;
         });
         return !colTypes.every(colType => colType === 'GENETIC_DISTANCE');
@@ -45,7 +45,7 @@ export const EpiCaseTypeInfoValues = ({ completeCaseType }: EpiCaseTypeInfoValue
                 fontWeight: 'bold',
               }}
             >
-              {caseTypeDim.label}
+              {EpiCaseTypeUtil.getDimensionLabel(completeCaseType, caseTypeDim.id)}
             </AccordionSummary>
             <AccordionDetails>
               <EpiCaseTypeInfoVariableDetails

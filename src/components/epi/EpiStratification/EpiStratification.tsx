@@ -48,13 +48,13 @@ export const EpiStratification = () => {
   const stratifyableColumns = useStore(epiStore, (state) => state.stratifyableColumns);
   const [focussedLegendaItem, setFocussedLegendaItem] = useState<StratificationLegendaItem>(null);
 
-  const onStratifyMenuItemClick = useCallback((caseTypeColumn: CaseTypeCol) => {
-    if (caseTypeColumn.id === stratification?.caseTypeColumn?.id) {
+  const onStratifyMenuItemClick = useCallback((caseTypeCol: CaseTypeCol) => {
+    if (caseTypeCol.id === stratification?.caseTypeCol?.id) {
       stratify(null);
       return;
     }
-    stratify(STRATIFICATION_MODE.FIELD, caseTypeColumn);
-  }, [stratification?.caseTypeColumn?.id, stratify]);
+    stratify(STRATIFICATION_MODE.FIELD, caseTypeCol);
+  }, [stratification?.caseTypeCol?.id, stratify]);
 
   const stratificationMenu = useMemo<MenuItemData>(() => {
     let label = t`Grouping`;
@@ -62,7 +62,7 @@ export const EpiStratification = () => {
       if (stratification.mode === STRATIFICATION_MODE.SELECTION) {
         label = t`Grouped by Selected rows`;
       } else {
-        label = t('Grouped by {{fieldName}}', { fieldName: stratification.caseTypeColumn.label });
+        label = t('Grouped by {{fieldName}}', { fieldName: stratification.caseTypeCol.label });
       }
     }
 
@@ -89,12 +89,12 @@ export const EpiStratification = () => {
       }],
     }, draft => {
       stratifyableColumns
-        .forEach(stratifyableCaseTypeColumn => {
+        .forEach(stratifyableCaseTypeCol => {
           draft.items.push({
-            label: stratifyableCaseTypeColumn.caseTypeColumn.label,
-            callback: () => onStratifyMenuItemClick(stratifyableCaseTypeColumn.caseTypeColumn),
-            active: stratification?.caseTypeColumn?.id === stratifyableCaseTypeColumn.caseTypeColumn.id,
-            disabled: !stratifyableCaseTypeColumn.enabled,
+            label: stratifyableCaseTypeCol.caseTypeCol.label,
+            callback: () => onStratifyMenuItemClick(stratifyableCaseTypeCol.caseTypeCol),
+            active: stratification?.caseTypeCol?.id === stratifyableCaseTypeCol.caseTypeCol.id,
+            disabled: !stratifyableCaseTypeCol.enabled,
           });
         });
       return draft;
@@ -148,21 +148,21 @@ export const EpiStratification = () => {
   }, [highlightingManager]);
 
   const onShowOnlySelectedLegendaItemMenuItemClick = useCallback(async (onMenuClose: () => void) => {
-    const filter = filters.find(f => f.id === stratification.caseTypeColumn.id);
+    const filter = filters.find(f => f.id === stratification.caseTypeCol.id);
     if (!filter) {
       return;
     }
     const filterValue = isArray(filter.initialFilterValue) ? [focussedLegendaItem.rowValue.raw] : focussedLegendaItem.rowValue.raw;
 
-    await setFilterValue(stratification.caseTypeColumn.id, filterValue);
+    await setFilterValue(stratification.caseTypeCol.id, filterValue);
     onMenuClose();
-  }, [focussedLegendaItem?.rowValue?.raw, setFilterValue, stratification?.caseTypeColumn?.id, filters]);
+  }, [focussedLegendaItem?.rowValue?.raw, setFilterValue, stratification?.caseTypeCol?.id, filters]);
 
   const getEpiContextMenuExtraItems = useCallback((onMenuClose: () => void): ReactElement => {
-    if (!focussedLegendaItem || focussedLegendaItem?.rowValue?.isMissing || !stratification?.caseTypeColumn?.id) {
+    if (!focussedLegendaItem || focussedLegendaItem?.rowValue?.isMissing || !stratification?.caseTypeCol?.id) {
       return null;
     }
-    const filter = filters.find(f => f.id === stratification.caseTypeColumn.id);
+    const filter = filters.find(f => f.id === stratification.caseTypeCol.id);
     if (!filter) {
       return null;
     }
@@ -181,7 +181,7 @@ export const EpiStratification = () => {
         </ListItemText>
       </MenuItem>
     );
-  }, [filters, focussedLegendaItem, onShowOnlySelectedLegendaItemMenuItemClick, stratification?.caseTypeColumn?.id, t]);
+  }, [filters, focussedLegendaItem, onShowOnlySelectedLegendaItemMenuItemClick, stratification?.caseTypeCol?.id, t]);
 
   return (
     <Box

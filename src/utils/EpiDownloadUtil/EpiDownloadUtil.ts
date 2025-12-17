@@ -194,7 +194,7 @@ export class EpiDownloadUtil {
     return [
       '_case_id',
       '_case_date',
-      ...EpiDownloadUtil.getCaseTypeColumnsForImportExport(caseTypeColumnIds, completeCaseType).map(caseTypeColumn => caseTypeColumn.label),
+      ...EpiDownloadUtil.getCaseTypeColumnsForImportExport(caseTypeColumnIds, completeCaseType).map(caseTypeCol => caseTypeCol.label),
     ];
   }
 
@@ -203,7 +203,7 @@ export class EpiDownloadUtil {
       '_case_id',
       '_case_type',
       '_case_date',
-      ...EpiDownloadUtil.getCaseTypeColumnsForImportExport(caseTypeColumnIds, completeCaseType).map(caseTypeColumn => caseTypeColumn.label),
+      ...EpiDownloadUtil.getCaseTypeColumnsForImportExport(caseTypeColumnIds, completeCaseType).map(caseTypeCol => caseTypeCol.label),
     ];
   }
 
@@ -213,12 +213,12 @@ export class EpiDownloadUtil {
       row.id,
       completeCaseType.name,
       row.case_date ? format(row.case_date, DATE_FORMAT.DATE) : '',
-      ...caseTypeColumns.map(caseTypeColumn => EpiCaseUtil.getRowValue(row, caseTypeColumn, completeCaseType, true).long),
+      ...caseTypeColumns.map(caseTypeCol => EpiCaseUtil.getRowValue(row, caseTypeCol, completeCaseType, true).long),
     ]);
   }
 
   private static getCaseTypeColumnsForImportExport(caseTypeColumnIds: string[], completeCaseType: CompleteCaseType): CaseTypeCol[] {
-    return EpiCaseTypeUtil.getCaseTypeColumns(completeCaseType)
+    return EpiCaseTypeUtil.getCaseTypeCols(completeCaseType)
       .filter(x => caseTypeColumnIds.includes(x.id))
       .sort((a, b) => {
         return caseTypeColumnIds.indexOf(a.id) - caseTypeColumnIds.indexOf(b.id);
