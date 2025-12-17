@@ -4,6 +4,7 @@ import {
   useEffect,
   useId,
   useMemo,
+  useState,
 } from 'react';
 import SaveIcon from '@mui/icons-material/Save';
 import { useTranslation } from 'react-i18next';
@@ -13,8 +14,12 @@ import type {
 } from 'yup';
 import { yupResolver } from '@hookform/resolvers/yup';
 import type { Resolver } from 'react-hook-form';
-import { useForm } from 'react-hook-form';
+import {
+  useForm,
+  useWatch,
+} from 'react-hook-form';
 
+import type { GenericFormProps } from '../../components/form/helpers/GenericForm';
 import { GenericForm } from '../../components/form/helpers/GenericForm';
 import type { DialogAction } from '../../components/ui/Dialog';
 import type {
@@ -23,9 +28,9 @@ import type {
 } from '../../hoc/withDialog';
 import { withDialog } from '../../hoc/withDialog';
 import type { GenericData } from '../../models/data';
-import type { FormFieldDefinition } from '../../models/form';
 import { FormUtil } from '../../utils/FormUtil';
 import { TestIdUtil } from '../../utils/TestIdUtil';
+import type { FormFieldDefinition } from '../../models/form';
 
 
 export interface CrudPageEditDialogOpenProps<TData extends GenericData> {
@@ -35,9 +40,10 @@ export interface CrudPageEditDialogOpenProps<TData extends GenericData> {
 }
 export interface CrudPageEditDialogProps<TData extends GenericData, TFormFields extends AnyObject> extends WithDialogRenderProps<CrudPageEditDialogOpenProps<TData>> {
   readonly onSave: (formValues: TFormFields, item: TData) => void;
-  readonly formFieldDefinitions: FormFieldDefinition<TFormFields>[];
+  readonly formFieldDefinitions: GenericFormProps<TFormFields>['formFieldDefinitions'];
   readonly getName: (item: TData | TFormFields) => string;
   readonly createItemDialogTitle?: string;
+  readonly defaultNewItem?: Partial<TFormFields>;
   readonly schema: ObjectSchema<TFormFields, TFormFields>;
 }
 export type CrudPageEditDialogRefMethods<TData extends GenericData, TFormFields extends AnyObject> = WithDialogRefMethods<CrudPageEditDialogProps<TData, TFormFields>, CrudPageEditDialogOpenProps<TData>>;
@@ -54,10 +60,14 @@ export const CrudPageEditDialog = withDialog<CrudPageEditDialogProps<any, any>, 
     schema,
     getName,
     createItemDialogTitle,
+    defaultNewItem,
   }: CrudPageEditDialogProps<TData, TFormFields>,
 ): ReactElement => {
   const [t] = useTranslation();
   const formId = useId();
+
+  const [resolvedFormFieldDefinitions, setResolvedFormFieldDefinitions] = useState<FormFieldDefinition<TFormFields>[]>(typeof formFieldDefinitions === 'function' ? [] : formFieldDefinitions);
+
 
   useEffect(() => {
     const actions: DialogAction[] = [];
@@ -73,26 +83,43 @@ export const CrudPageEditDialog = withDialog<CrudPageEditDialogProps<any, any>, 
       type: 'submit',
       label: t`Save`,
       startIcon: <SaveIcon />,
-      disabled: !openProps.canSave || formFieldDefinitions.some(def => def.loading),
+      disabled: !openProps.canSave || resolvedFormFieldDefinitions.some(def => def.loading),
     });
     onActionsChange(actions);
-  }, [onActionsChange, formId, t, formFieldDefinitions, openProps]);
+  }, [onActionsChange, formId, t, resolvedFormFieldDefinitions, openProps]);
 
   useEffect(() => {
     if (openProps.item) {
-      onTitleChange(`Edit item: ${getName(openProps.item)}`);
+      onTitleChange(`Edit item: ${getName(openProps.item ?? defaultNewItem as TFormFields)}`);
     } else {
       onTitleChange(createItemDialogTitle ?? t`Create new item`);
     }
-  }, [getName, onTitleChange, openProps, t, createItemDialogTitle]);
+  }, [getName, onTitleChange, openProps, t, createItemDialogTitle, defaultNewItem]);
 
-  const values = useMemo<TFormFields>(() => FormUtil.createFormValues(formFieldDefinitions, openProps.item), [formFieldDefinitions, openProps.item]);
+  const values = useMemo<TFormFields>(() => {
+    return FormUtil.createFormValues(resolvedFormFieldDefinitions, openProps.item ?? defaultNewItem as TFormFields);
+  }, [resolvedFormFieldDefinitions, openProps.item, defaultNewItem]);
 
   const formMethods = useForm<TFormFields>({
     resolver: yupResolver(schema) as unknown as Resolver<TFormFields>,
     values,
   });
-  const { handleSubmit, formState } = formMethods;
+  const { handleSubmit, formState, control } = formMethods;
+
+  const watchedValues = useWatch({ control });
+
+  useEffect(() => {
+    if (typeof formFieldDefinitions !== 'function') {
+      setResolvedFormFieldDefinitions(formFieldDefinitions);
+      return;
+    }
+    const perform = async () => {
+      setResolvedFormFieldDefinitions(await formFieldDefinitions(watchedValues as TFormFields));
+    };
+    // eslint-disable-next-line @typescript-eslint/no-floating-promises
+    perform();
+
+  }, [formFieldDefinitions, watchedValues]);
 
   if (formState.errors && Object.keys(formState.errors).length > 0) {
     console.table(formState.errors);

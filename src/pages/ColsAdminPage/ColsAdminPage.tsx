@@ -19,7 +19,10 @@ import {
 } from '../../api';
 import { useColTypeOptionsQuery } from '../../dataHooks/useColTypesQuery';
 import { useConceptSetOptionsQuery } from '../../dataHooks/useConceptSetsQuery';
-import { useDimOptionsQuery } from '../../dataHooks/useDimsQuery';
+import {
+  useDimMapQuery,
+  useDimOptionsQuery,
+} from '../../dataHooks/useDimsQuery';
 import { useGeneticDistanceProtocolOptionsQuery } from '../../dataHooks/useGeneticDistanceProtocolsQuery';
 import { useRegionSetOptionsQuery } from '../../dataHooks/useRegionSetsQuery';
 import { useArray } from '../../hooks/useArray';
@@ -38,13 +41,14 @@ export const ColsAdminPage = () => {
   const { dimId } = useParams();
   const [t] = useTranslation();
   const dimOptionsQuery = useDimOptionsQuery();
+  const dimMapQuery = useDimMapQuery();
   const colTypeOptionsQuery = useColTypeOptionsQuery();
   const conceptSetOptionsQuery = useConceptSetOptionsQuery();
   const regionSetOptionsQuery = useRegionSetOptionsQuery();
   const geneticDistanceProtocolOptionsQuery = useGeneticDistanceProtocolOptionsQuery();
   const colsValidationRulesQuery = useColsValidationRulesQuery();
 
-  const loadables = useArray([dimOptionsQuery, colTypeOptionsQuery, conceptSetOptionsQuery, regionSetOptionsQuery, geneticDistanceProtocolOptionsQuery, colsValidationRulesQuery]);
+  const loadables = useArray([dimMapQuery, dimOptionsQuery, colTypeOptionsQuery, conceptSetOptionsQuery, regionSetOptionsQuery, geneticDistanceProtocolOptionsQuery, colsValidationRulesQuery]);
 
   const fetchAll = useCallback(async (signal: AbortSignal) => {
     return (await CaseApi.instance.colsGetAll({ signal }))?.data;
@@ -100,8 +104,16 @@ export const ColsAdminPage = () => {
     });
   }, []);
 
-  const formFieldDefinitions = useMemo<FormFieldDefinition<FormFields>[]>(() => {
-    return [
+  const formFieldDefinitions = useCallback(async (): Promise<FormFieldDefinition<FormFields>[]> => {
+    const colTypeOptions = dimId ? colTypeOptionsQuery.options.filter(option => {
+      const dim = dimMapQuery.map.get(dimId);
+      return colsValidationRulesQuery.data?.valid_col_types_by_dim_type[dim.dim_type].includes(option.value as ColType);
+    }) : colTypeOptionsQuery.options;
+
+    const definitions: FormFieldDefinition<FormFields>[] = [];
+
+    if (!dimId) {
+      definitions.push(
       {
         definition: FORM_FIELD_DEFINITION_TYPE.AUTOCOMPLETE,
         name: 'dim_id',
@@ -109,11 +121,17 @@ export const ColsAdminPage = () => {
         options: dimOptionsQuery.options,
         disabled: true,
       } as const satisfies FormFieldDefinition<FormFields>,
+      );
+    }
+
+    definitions.push(
       {
         definition: FORM_FIELD_DEFINITION_TYPE.AUTOCOMPLETE,
         name: 'col_type',
         label: t`Column type`,
-        options: colTypeOptionsQuery.options,
+        options: colTypeOptions,
+        loading: colTypeOptionsQuery.isLoading,
+        disabled: !dimId,
       } as const satisfies FormFieldDefinition<FormFields>,
       {
         definition: FORM_FIELD_DEFINITION_TYPE.TEXTFIELD,
@@ -161,8 +179,10 @@ export const ColsAdminPage = () => {
         label: t`Rank`,
         type: 'number',
       } as const satisfies FormFieldDefinition<FormFields>,
-    ] as const;
-  }, [colTypeOptionsQuery.options, conceptSetOptionsQuery.options, dimOptionsQuery.options, geneticDistanceProtocolOptionsQuery.options, regionSetOptionsQuery.options, t]);
+    );
+
+    return Promise.resolve(definitions);
+  }, [colTypeOptionsQuery.isLoading, colTypeOptionsQuery.options, colsValidationRulesQuery.data?.valid_col_types_by_dim_type, conceptSetOptionsQuery.options, dimId, dimMapQuery.map, dimOptionsQuery.options, geneticDistanceProtocolOptionsQuery.options, regionSetOptionsQuery.options, t]);
 
   const tableColumns = useMemo((): TableColumn<Col>[] => {
     return [
@@ -182,6 +202,12 @@ export const ColsAdminPage = () => {
     };
   }, []);
 
+  const defaultNewItem = useMemo<Partial<FormFields>>(() => {
+    return {
+      dim_id: dimId ?? '',
+    };
+  }, [dimId]);
+
   return (
     <CrudPage<FormFields, Col>
       createOne={dimId ? createOne : undefined}
@@ -191,6 +217,7 @@ export const ColsAdminPage = () => {
       defaultSortDirection={'asc'}
       deleteOne={deleteOne}
       fetchAll={fetchAll}
+      defaultNewItem={defaultNewItem}
       getOptimisticUpdateIntermediateItem={getOptimisticUpdateIntermediateItem}
       formFieldDefinitions={formFieldDefinitions}
       getName={getName}

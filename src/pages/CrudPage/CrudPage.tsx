@@ -45,7 +45,6 @@ import { useEditMutation } from '../../hooks/useEditMutation';
 import { useInitializeTableStore } from '../../hooks/useInitializeTableStore';
 import type { GenericData } from '../../models/data';
 import type { Loadable } from '../../models/dataHooks';
-import type { FormFieldDefinition } from '../../models/form';
 import type { QUERY_KEY } from '../../models/query';
 import type {
   TableRowParams,
@@ -60,6 +59,7 @@ import {
 import { QueryUtil } from '../../utils/QueryUtil';
 import { TableUtil } from '../../utils/TableUtil';
 import type { DialogAction } from '../../components/ui/Dialog';
+import type { GenericFormProps } from '../../components/form/helpers/GenericForm';
 
 import type { CrudPageEditDialogRefMethods } from './CrudPageEditDialog';
 import { CrudPageEditDialog } from './CrudPageEditDialog';
@@ -76,6 +76,7 @@ export type CrudPageProps<
   readonly createItemDialogTitle?: string;
   readonly createOne?: (item: TFormFields) => Promise<TData>;
   readonly canEditItem?: (item: TData) => boolean;
+  readonly defaultNewItem?: Partial<TFormFields>;
   readonly crudCommandType?: CommandName;
   readonly customOnRowClick?: (params: TableRowParams<TData>) => void;
   readonly defaultSortByField: keyof TTableData;
@@ -87,7 +88,7 @@ export type CrudPageProps<
   readonly extraUpdateOnePermissions?: ApiPermission[];
   readonly fetchAll: (signal: AbortSignal) => Promise<TData[]>;
   readonly fetchAllSelect?: (data: TData[]) => TData[];
-  readonly formFieldDefinitions?: FormFieldDefinition<TFormFields>[];
+  readonly formFieldDefinitions?: GenericFormProps<TFormFields>['formFieldDefinitions'];
   readonly getName: (item: TData | TFormFields) => string;
   readonly loadables?: Loadable[];
   readonly onShowItem?: (params: TableRowParams<TTableData>) => void;
@@ -117,9 +118,10 @@ export const CrudPage = <
   TData extends GenericData,
   TTableData extends TData = TData
 >({
-  contentHeader,
+  associationQueryKeys,
   canEditItem,
   contentActions,
+  contentHeader,
   convertToTableData,
   createItemButtonText,
   createItemDialogTitle,
@@ -129,6 +131,7 @@ export const CrudPage = <
   defaultSortByField,
   defaultSortDirection,
   deleteOne,
+  editDialogExtraActionsFactory,
   extraActionsFactory,
   extraCreateOnePermissions,
   extraDeleteOnePermissions,
@@ -136,25 +139,24 @@ export const CrudPage = <
   fetchAll,
   fetchAllSelect,
   formFieldDefinitions,
+  defaultNewItem,
   getName,
-  associationQueryKeys,
-  resourceQueryKeyBase,
+  getOptimisticUpdateIntermediateItem,
   loadables,
+  onCreateError,
+  onCreateSuccess,
+  onDeleteError,
+  onDeleteSuccess,
+  onEditError,
+  onEditSuccess,
   onShowItem,
+  resourceQueryKeyBase,
   schema,
   showIdColumn = false,
   tableColumns,
   testIdAttributes,
   title,
   updateOne,
-  onEditSuccess,
-  onEditError,
-  onCreateSuccess,
-  onCreateError,
-  onDeleteSuccess,
-  onDeleteError,
-  editDialogExtraActionsFactory,
-  getOptimisticUpdateIntermediateItem,
 }: CrudPageProps<TFormFields, TData, TTableData>) => {
   const [t] = useTranslation();
   const theme = useTheme();
@@ -546,6 +548,7 @@ export const CrudPage = <
         </Box>
         <CrudPageEditDialog
           ref={editDialogRef}
+          defaultNewItem={defaultNewItem}
           formFieldDefinitions={formFieldDefinitions}
           getName={getName}
           createItemDialogTitle={createItemDialogTitle}
