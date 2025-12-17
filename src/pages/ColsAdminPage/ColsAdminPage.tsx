@@ -67,7 +67,7 @@ export const ColsAdminPage = () => {
       label: string().extendedAlphaNumeric().required().max(100),
       code: string().code().required().max(100),
       code_suffix: string().alphaNumeric().required().max(100),
-      rank: number().integer().positive().max(10000).optional().transform((val: number, orig) => orig === '' ? undefined : val),
+      rank: number().integer().positive().max(10000).required().transform((val: number, orig) => orig === '' ? undefined : val),
       dim_id: string().uuid4().required().max(100),
       col_type: mixed<ColType>().required().oneOf(Object.values(ColType)),
       description: string().freeFormText().required().max(100),
@@ -91,6 +91,12 @@ export const ColsAdminPage = () => {
 
   const formFieldDefinitions = useMemo<FormFieldDefinition<FormFields>[]>(() => {
     return [
+      {
+        definition: FORM_FIELD_DEFINITION_TYPE.AUTOCOMPLETE,
+        name: 'dim_id',
+        label: t`Dimension`,
+        options: dimOptionsQuery.options,
+      } as const satisfies FormFieldDefinition<FormFields>,
       {
         definition: FORM_FIELD_DEFINITION_TYPE.AUTOCOMPLETE,
         name: 'col_type',
@@ -119,12 +125,7 @@ export const ColsAdminPage = () => {
         name: 'code_suffix',
         label: t`Column code prefix`,
       } as const satisfies FormFieldDefinition<FormFields>,
-      {
-        definition: FORM_FIELD_DEFINITION_TYPE.AUTOCOMPLETE,
-        name: 'dim_id',
-        label: t`Dimension`,
-        options: dimOptionsQuery.options,
-      } as const satisfies FormFieldDefinition<FormFields>,
+
       {
         definition: FORM_FIELD_DEFINITION_TYPE.AUTOCOMPLETE,
         name: 'concept_set_id',
@@ -156,9 +157,9 @@ export const ColsAdminPage = () => {
     return [
       TableUtil.createTextColumn<Col>({ id: 'code', name: t`Code` }),
       TableUtil.createOptionsColumn<Col>({ id: 'dim_id', name: t`Dimension`, options: dimOptionsQuery.options }),
+      TableUtil.createTextColumn<Col>({ id: 'label', name: t`Label` }),
       TableUtil.createOptionsColumn<Col>({ id: 'col_type', name: t`Column type`, options: colTypeOptionsQuery.options }),
       TableUtil.createTextColumn<Col>({ id: 'rank', name: t`Rank` }),
-      TableUtil.createTextColumn<Col>({ id: 'label', name: t`Label` }),
     ];
   }, [colTypeOptionsQuery.options, dimOptionsQuery.options, t]);
 

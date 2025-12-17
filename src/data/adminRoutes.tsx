@@ -21,6 +21,7 @@ import { DimsAdminPage } from '../pages/DimsAdminPage';
 import { DiseasesAdminPage } from '../pages/DiseasesAdminPage';
 import { EtiologicalAgentsAdminPage } from '../pages/EtiologicalAgentsAdminPage';
 import { EtiologiesAdminPage } from '../pages/EtiologiesAdminPage';
+import { IdentifierIssuersAdminPage } from '../pages/IdentifierIssuersAdminPage';
 import { OrganizationAccessCasePoliciesAdminPage } from '../pages/OrganizationAccessCasePoliciesAdminPage';
 import { OrganizationAdminPoliciesAdminPage } from '../pages/OrganizationAdminPoliciesAdminPage';
 import { OrganizationContactsAdminPage } from '../pages/OrganizationContactsAdminPage';
@@ -104,7 +105,6 @@ export const adminRoutes: MyNonIndexRouteObject[] = [
           },
         ],
       },
-
     ],
   },
   {
@@ -183,6 +183,20 @@ export const adminRoutes: MyNonIndexRouteObject[] = [
         { command_name: CommandName.OrganizationAdminPolicyCrudCommand, permission_type: PermissionType.READ },
         { command_name: CommandName.UserCrudCommand, permission_type: PermissionType.READ },
         { command_name: CommandName.OrganizationCrudCommand, permission_type: PermissionType.READ },
+      ],
+      requiresUserProfile: true,
+      category: ADMIN_PAGE_CATEGORY.USERS_AND_ORGANIZATIONS,
+    },
+  },
+  {
+    path: '/management/identifier-issuers',
+    Component: () => <IdentifierIssuersAdminPage />,
+    errorElement: <RouterErrorPage />,
+    handle: {
+      titleKey: 'Identifier issuers',
+      subTitleKey: 'Manage identifier issuers',
+      requiredPermissions: [
+        { command_name: CommandName.IdentifierIssuerCrudCommand, permission_type: PermissionType.READ },
       ],
       requiresUserProfile: true,
       category: ADMIN_PAGE_CATEGORY.USERS_AND_ORGANIZATIONS,

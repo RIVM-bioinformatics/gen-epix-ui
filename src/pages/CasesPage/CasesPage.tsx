@@ -215,7 +215,7 @@ export const CasesPage = () => {
           isInitiallyVisible: true,
         };
       }),
-      TableUtil.createNumberColumn({ name: t('Number of cases'), id: 'n_cases', flex: 0.5 }),
+      TableUtil.createNumberColumn({ name: t('Cases'), id: 'n_cases', flex: 0.5 }),
       {
         ...TableUtil.createDateColumn({ name: t('First case date'), id: 'first_case_date', flex: 0.5, dateFormat: DATE_FORMAT.DATE }),
         isInitiallyVisible: false,
