@@ -9,21 +9,33 @@ import {
   object,
   string,
 } from 'yup';
+import {
+  MenuItem,
+  ListItemIcon,
+  ListItemText,
+} from '@mui/material';
 
 import type { Dim } from '../../api';
 import {
   CaseApi,
   DimType,
   CommandName,
+  PermissionType,
 } from '../../api';
 import { useDimTypeOptionsQuery } from '../../dataHooks/useDimTypesQuery';
 import type { FormFieldDefinition } from '../../models/form';
 import { FORM_FIELD_DEFINITION_TYPE } from '../../models/form';
 import { QUERY_KEY } from '../../models/query';
-import type { TableColumn } from '../../models/table';
+import type {
+  TableColumn,
+  TableRowParams,
+} from '../../models/table';
 import { TableUtil } from '../../utils/TableUtil';
 import { TestIdUtil } from '../../utils/TestIdUtil';
 import { CrudPage } from '../CrudPage';
+import { AuthorizationManager } from '../../classes/managers/AuthorizationManager';
+import { RouterManager } from '../../classes/managers/RouterManager';
+import type { DialogAction } from '../../components/ui/Dialog';
 
 type FormFields = Pick<Dim, 'dim_type' | 'code' | 'label' | 'description' | 'rank' | 'col_code_prefix'>;
 
@@ -111,6 +123,51 @@ export const DimsAdminPage = () => {
     ];
   }, [dimTypeOptionsQuery.options, t]);
 
+  const doesUserHavePermissionToViewCols = useMemo(() => {
+    return AuthorizationManager.instance.doesUserHavePermission([
+      { command_name: CommandName.ContactCrudCommand, permission_type: PermissionType.READ },
+    ]);
+  }, []);
+
+  const extraActionsFactory = useCallback((params: TableRowParams<Dim>) => {
+    if (!doesUserHavePermissionToViewCols) {
+      return [];
+    }
+
+    return [(
+      <MenuItem
+        key={'custom-action-1'}
+        // eslint-disable-next-line react/jsx-no-bind
+        onClick={async () => await RouterManager.instance.router.navigate({
+          pathname: `/management/dims/${params.row.id}/cols`,
+        })}
+      >
+        <ListItemIcon />
+        <ListItemText>
+          {t`Manage cols`}
+        </ListItemText>
+      </MenuItem>
+    )];
+  }, [doesUserHavePermissionToViewCols, t]);
+
+
+  const editDialogExtraActionsFactory = useCallback((item: Dim): DialogAction[] => {
+    if (!doesUserHavePermissionToViewCols) {
+      return [];
+    }
+    return [
+      {
+        ...TestIdUtil.createAttributes('DimsAdminPage-ManageColsButton'),
+        label: t`Manage cols`,
+        color: 'primary',
+        variant: 'outlined',
+        onClick: async () => await RouterManager.instance.router.navigate({
+          pathname: `/management/dims/${item.id}/cols`,
+        }),
+      },
+    ];
+  }, [doesUserHavePermissionToViewCols, t]);
+
   return (
     <CrudPage<FormFields, Dim>
       createOne={createOne}
@@ -121,6 +178,8 @@ export const DimsAdminPage = () => {
       deleteOne={deleteOne}
       fetchAll={fetchAll}
       formFieldDefinitions={formFieldDefinitions}
+      editDialogExtraActionsFactory={editDialogExtraActionsFactory}
+      extraActionsFactory={extraActionsFactory}
       getName={getName}
       resourceQueryKeyBase={QUERY_KEY.DIMS}
       schema={schema}

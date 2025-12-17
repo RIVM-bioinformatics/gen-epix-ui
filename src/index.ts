@@ -150,6 +150,7 @@ export * from './dataHooks/useConceptSetsQuery';
 export * from './dataHooks/useConceptSetTypeQuery';
 export * from './dataHooks/useConceptRelationTypeQuery';
 export * from './dataHooks/useConceptQuery';
+export * from './dataHooks/useColsValidationRulesQuery';
 export * from './dataHooks/useColsQuery';
 export * from './dataHooks/useColTypesQuery';
 export * from './dataHooks/useCaseTypesQuery';

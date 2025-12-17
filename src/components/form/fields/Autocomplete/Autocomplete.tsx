@@ -76,6 +76,7 @@ export const Autocomplete = <TFieldValues extends FieldValues, TName extends Pat
   multiple,
   shouldSortOptions,
 }: AutocompleteProps<TFieldValues, TName, TMultiple>): ReactElement => {
+  console.log({ disabled });
   const [t] = useTranslation();
   const { control, formState: { errors } } = useFormContext<TFieldValues>();
   const errorMessage = FormUtil.getFieldErrorMessage(errors, name);

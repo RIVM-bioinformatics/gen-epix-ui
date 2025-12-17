@@ -66,7 +66,7 @@ export const GenericForm = <TFormFields,>({
           <Autocomplete
             {...formFieldDefinition as AutocompleteProps<TFormFields, Path<TFormFields>, false>}
             required={isFormFieldRequired(formFieldDefinition.name)}
-            disabled={disableAll ?? formFieldDefinition.disabled}
+            disabled={formFieldDefinition.disabled || disableAll}
           />
         );
       case FORM_FIELD_DEFINITION_TYPE.SELECT:
@@ -74,7 +74,7 @@ export const GenericForm = <TFormFields,>({
           <Select
             {...formFieldDefinition as SelectProps<TFormFields, Path<TFormFields>, false>}
             required={isFormFieldRequired(formFieldDefinition.name)}
-            disabled={disableAll ?? formFieldDefinition.disabled}
+            disabled={formFieldDefinition.disabled || disableAll}
           />
         );
       case FORM_FIELD_DEFINITION_TYPE.TRANSFER_LIST:
@@ -82,7 +82,7 @@ export const GenericForm = <TFormFields,>({
           <TransferList
             {...formFieldDefinition}
             required={isFormFieldRequired(formFieldDefinition.name)}
-            disabled={disableAll ?? formFieldDefinition.disabled}
+            disabled={formFieldDefinition.disabled || disableAll}
           />
         );
       case FORM_FIELD_DEFINITION_TYPE.BOOLEAN:
@@ -90,7 +90,7 @@ export const GenericForm = <TFormFields,>({
           <Select
             {...formFieldDefinition}
             required={isFormFieldRequired(formFieldDefinition.name)}
-            disabled={disableAll ?? formFieldDefinition.disabled}
+            disabled={formFieldDefinition.disabled || disableAll}
             options={booleanOptions}
           />
         );
@@ -99,7 +99,7 @@ export const GenericForm = <TFormFields,>({
           <DatePicker
             {...formFieldDefinition}
             required={isFormFieldRequired(formFieldDefinition.name)}
-            disabled={disableAll ?? formFieldDefinition.disabled}
+            disabled={formFieldDefinition.disabled || disableAll}
           />
         );
       case FORM_FIELD_DEFINITION_TYPE.RICH_TEXT:
@@ -107,7 +107,7 @@ export const GenericForm = <TFormFields,>({
           <RichTextEditor
             {...formFieldDefinition}
             required={isFormFieldRequired(formFieldDefinition.name)}
-            disabled={disableAll ?? formFieldDefinition.disabled}
+            disabled={formFieldDefinition.disabled || disableAll}
           />
         );
       case FORM_FIELD_DEFINITION_TYPE.FILE:
@@ -115,7 +115,7 @@ export const GenericForm = <TFormFields,>({
           <UploadButton
             {...formFieldDefinition}
             required={isFormFieldRequired(formFieldDefinition.name)}
-            disabled={disableAll ?? formFieldDefinition.disabled}
+            disabled={formFieldDefinition.disabled || disableAll}
           />
         );
       case FORM_FIELD_DEFINITION_TYPE.RADIO_GROUP:
@@ -123,7 +123,7 @@ export const GenericForm = <TFormFields,>({
           <RadioGroup
             {...formFieldDefinition}
             required={isFormFieldRequired(formFieldDefinition.name)}
-            disabled={disableAll ?? formFieldDefinition.disabled}
+            disabled={formFieldDefinition.disabled || disableAll}
           />
         );
       case FORM_FIELD_DEFINITION_TYPE.TEXTFIELD:
@@ -131,7 +131,7 @@ export const GenericForm = <TFormFields,>({
           <TextField
             {...formFieldDefinition}
             required={isFormFieldRequired(formFieldDefinition.name)}
-            disabled={disableAll ?? formFieldDefinition.disabled}
+            disabled={formFieldDefinition.disabled || disableAll}
           />
         );
       default:

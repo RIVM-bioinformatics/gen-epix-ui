@@ -155,6 +155,7 @@ export const queryKeyDependencies: Record<QUERY_KEY, QUERY_KEY[]> = {
     QUERY_KEY.IDENTIFIER_ISSUER_LINKS,
   ],
   [QUERY_KEY.IDENTIFIER_ISSUER_LINKS]: [],
+  [QUERY_KEY.COLS_VALIDATION_RULES]: [],
 };
 
 export class QueryUtil {

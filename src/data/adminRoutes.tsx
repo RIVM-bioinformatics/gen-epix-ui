@@ -326,17 +326,48 @@ export const adminRoutes: MyNonIndexRouteObject[] = [
   // REFERENCE_DATA
   {
     path: '/management/dims',
-    Component: () => <DimsAdminPage />,
     errorElement: <RouterErrorPage />,
     handle: {
       titleKey: 'Dimensions',
-      subTitleKey: 'Manage dimensions',
-      requiredPermissions: [
-        { command_name: CommandName.DimCrudCommand, permission_type: PermissionType.READ },
-      ],
+      requiredPermissions: [],
       requiresUserProfile: true,
-      category: ADMIN_PAGE_CATEGORY.REFERENCE_DATA,
+      requirePermissionForChildRoute: true,
     },
+    children: [
+      {
+        index: true,
+        path: '/management/dims',
+        Component: () => <DimsAdminPage />,
+        errorElement: <RouterErrorPage />,
+        handle: {
+          titleKey: 'Dimensions',
+          subTitleKey: 'Manage dimensions',
+          requiredPermissions: [
+            { command_name: CommandName.DimCrudCommand, permission_type: PermissionType.READ },
+          ],
+          requiresUserProfile: true,
+          category: ADMIN_PAGE_CATEGORY.REFERENCE_DATA,
+        },
+      },
+      {
+        path: '/management/dims/:dimId/cols',
+        Component: () => <ColsAdminPage />,
+        errorElement: <RouterErrorPage />,
+        handle: {
+          titleKey: 'Columns',
+          subTitleKey: 'Manage columns',
+          requiredPermissions: [
+            { command_name: CommandName.ColCrudCommand, permission_type: PermissionType.READ },
+            { command_name: CommandName.DimCrudCommand, permission_type: PermissionType.READ },
+            { command_name: CommandName.ConceptSetCrudCommand, permission_type: PermissionType.READ },
+            { command_name: CommandName.RegionSetCrudCommand, permission_type: PermissionType.READ },
+            { command_name: CommandName.GeneticDistanceProtocolCrudCommand, permission_type: PermissionType.READ },
+          ],
+          requiresUserProfile: true,
+          category: ADMIN_PAGE_CATEGORY.REFERENCE_DATA,
+        },
+      },
+    ],
   },
   {
     path: '/management/cols',

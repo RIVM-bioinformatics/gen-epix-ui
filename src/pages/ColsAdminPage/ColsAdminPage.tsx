@@ -9,6 +9,7 @@ import {
   object,
   string,
 } from 'yup';
+import { useParams } from 'react-router-dom';
 
 import type { Col } from '../../api';
 import {
@@ -29,22 +30,32 @@ import type { TableColumn } from '../../models/table';
 import { TableUtil } from '../../utils/TableUtil';
 import { TestIdUtil } from '../../utils/TestIdUtil';
 import { CrudPage } from '../CrudPage';
+import { useColsValidationRulesQuery } from '../../dataHooks/useColsValidationRulesQuery';
 
 type FormFields = Pick<Col, 'dim_id' | 'code_suffix' | 'code' | 'rank' | 'label' | 'col_type' | 'concept_set_id' | 'region_set_id' | 'genetic_distance_protocol_id' | 'description'>;
 
 export const ColsAdminPage = () => {
+  const { dimId } = useParams();
   const [t] = useTranslation();
   const dimOptionsQuery = useDimOptionsQuery();
   const colTypeOptionsQuery = useColTypeOptionsQuery();
   const conceptSetOptionsQuery = useConceptSetOptionsQuery();
   const regionSetOptionsQuery = useRegionSetOptionsQuery();
   const geneticDistanceProtocolOptionsQuery = useGeneticDistanceProtocolOptionsQuery();
+  const colsValidationRulesQuery = useColsValidationRulesQuery();
 
-  const loadables = useArray([dimOptionsQuery, colTypeOptionsQuery, conceptSetOptionsQuery, regionSetOptionsQuery, geneticDistanceProtocolOptionsQuery]);
+  const loadables = useArray([dimOptionsQuery, colTypeOptionsQuery, conceptSetOptionsQuery, regionSetOptionsQuery, geneticDistanceProtocolOptionsQuery, colsValidationRulesQuery]);
 
   const fetchAll = useCallback(async (signal: AbortSignal) => {
     return (await CaseApi.instance.colsGetAll({ signal }))?.data;
   }, []);
+
+  const fetchAllSelect = useCallback((cols: Col[]) => {
+    if (dimId) {
+      return cols.filter((col) => col.dim_id === dimId);
+    }
+    return cols;
+  }, [dimId]);
 
   const deleteOne = useCallback(async (item: Col) => {
     return await CaseApi.instance.colsDeleteOne(item.id);
@@ -96,6 +107,7 @@ export const ColsAdminPage = () => {
         name: 'dim_id',
         label: t`Dimension`,
         options: dimOptionsQuery.options,
+        disabled: true,
       } as const satisfies FormFieldDefinition<FormFields>,
       {
         definition: FORM_FIELD_DEFINITION_TYPE.AUTOCOMPLETE,
@@ -125,7 +137,6 @@ export const ColsAdminPage = () => {
         name: 'code_suffix',
         label: t`Column code prefix`,
       } as const satisfies FormFieldDefinition<FormFields>,
-
       {
         definition: FORM_FIELD_DEFINITION_TYPE.AUTOCOMPLETE,
         name: 'concept_set_id',
@@ -163,17 +174,27 @@ export const ColsAdminPage = () => {
     ];
   }, [colTypeOptionsQuery.options, dimOptionsQuery.options, t]);
 
+  const getOptimisticUpdateIntermediateItem = useCallback((variables: FormFields, previousItem: Col): Col => {
+    return {
+      id: previousItem.id,
+      dim_id: previousItem.dim_id,
+      ...variables,
+    };
+  }, []);
+
   return (
     <CrudPage<FormFields, Col>
-      createOne={createOne}
+      createOne={dimId ? createOne : undefined}
       crudCommandType={CommandName.ColCrudCommand}
       createItemDialogTitle={t`Create new column`}
       defaultSortByField={'code'}
       defaultSortDirection={'asc'}
       deleteOne={deleteOne}
       fetchAll={fetchAll}
+      getOptimisticUpdateIntermediateItem={getOptimisticUpdateIntermediateItem}
       formFieldDefinitions={formFieldDefinitions}
       getName={getName}
+      fetchAllSelect={fetchAllSelect}
       loadables={loadables}
       resourceQueryKeyBase={QUERY_KEY.COLS}
       schema={schema}
