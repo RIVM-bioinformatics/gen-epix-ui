@@ -65,7 +65,7 @@ export const ConceptsAdminPage = () => {
     return object<FormFields>().shape({
       name: string().freeFormText().required().max(100),
       code: string().freeFormText().required().max(100),
-      rank: number().required().min(0),
+      rank: number().integer().positive().required().transform((_val: unknown, orig: string | number) => orig === '' ? undefined : orig),
       description: string().freeFormText().max(1000),
     });
   }, []);

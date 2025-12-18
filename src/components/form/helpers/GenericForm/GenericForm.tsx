@@ -6,18 +6,13 @@ import {
   useMemo,
   useCallback,
   Fragment,
-  useState,
-  useEffect,
 } from 'react';
 import { useTranslation } from 'react-i18next';
 import type {
   Path,
   UseFormReturn,
 } from 'react-hook-form';
-import {
-  FormProvider,
-  useWatch,
-} from 'react-hook-form';
+import { FormProvider } from 'react-hook-form';
 import { Box } from '@mui/material';
 import type { ObjectSchema } from 'yup';
 
@@ -37,7 +32,7 @@ import { RadioGroup } from '../../fields/RadioGroup';
 import { useIsFormFieldRequiredFromSchema } from '../../../../hooks/useIsFormFieldRequiredFromSchema';
 
 export type GenericFormProps<TFormFields> = {
-  readonly formFieldDefinitions: FormFieldDefinition<TFormFields>[] | ((values: TFormFields) => Promise<FormFieldDefinition<TFormFields>[]>);
+  readonly formFieldDefinitions: FormFieldDefinition<TFormFields>[];
   readonly formId?: string;
   readonly onSubmit: FormEventHandler<HTMLFormElement>;
   readonly formMethods: UseFormReturn<TFormFields>;
@@ -61,26 +56,8 @@ export const GenericForm = <TFormFields,>({
   const [t] = useTranslation();
 
   const booleanOptions = useMemo(() => FormUtil.createBooleanOptions(t), [t]);
-  const [resolvedFormFieldDefinitions, setResolvedFormFieldDefinitions] = useState<FormFieldDefinition<TFormFields>[]>(typeof formFieldDefinitions === 'function' ? [] : formFieldDefinitions);
 
   const isFormFieldRequired = useIsFormFieldRequiredFromSchema(schema, formMethods.getValues);
-
-  const { control } = formMethods;
-
-  const values = useWatch({ control });
-
-  useEffect(() => {
-    if (typeof formFieldDefinitions !== 'function') {
-      setResolvedFormFieldDefinitions(formFieldDefinitions);
-      return;
-    }
-    const perform = async () => {
-      setResolvedFormFieldDefinitions(await formFieldDefinitions(values as TFormFields));
-    };
-    // eslint-disable-next-line @typescript-eslint/no-floating-promises
-    perform();
-
-  }, [formFieldDefinitions, values]);
 
   const renderFormFieldDefinition = useCallback((formFieldDefinition: FormFieldDefinition<TFormFields>) => {
     switch (formFieldDefinition.definition) {
@@ -165,7 +142,7 @@ export const GenericForm = <TFormFields,>({
 
   const formContent = (
     <>
-      {resolvedFormFieldDefinitions.map(formFieldDefinition => {
+      {formFieldDefinitions.map(formFieldDefinition => {
         if (renderField) {
           return (
             <Fragment key={formFieldDefinition.name}>

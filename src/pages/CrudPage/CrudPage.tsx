@@ -19,6 +19,7 @@ import {
 import type { ObjectSchema } from 'yup';
 import { useQuery } from '@tanstack/react-query';
 import isArray from 'lodash/isArray';
+import type { UseFormReturn } from 'react-hook-form';
 
 import type {
   CommandName,
@@ -88,7 +89,7 @@ export type CrudPageProps<
   readonly extraUpdateOnePermissions?: ApiPermission[];
   readonly fetchAll: (signal: AbortSignal) => Promise<TData[]>;
   readonly fetchAllSelect?: (data: TData[]) => TData[];
-  readonly formFieldDefinitions: FormFieldDefinition<TFormFields>[] | ((values: TFormFields, item: TData) => Promise<FormFieldDefinition<TFormFields>[]>);
+  readonly formFieldDefinitions: FormFieldDefinition<TFormFields>[] | ((values: TFormFields, item: TData) => FormFieldDefinition<TFormFields>[]);
   readonly getName: (item: TData | TFormFields) => string;
   readonly loadables?: Loadable[];
   readonly onShowItem?: (params: TableRowParams<TTableData>) => void;
@@ -103,6 +104,7 @@ export type CrudPageProps<
   readonly title: string;
   readonly updateOne?: (variables: TFormFields, data: TData) => Promise<TData>;
   readonly convertToTableData?: (items: TData[]) => TTableData[];
+  readonly onFormChange?: (item: TData, formValues: TFormFields, formMethods: UseFormReturn<TFormFields>) => void;
   readonly onEditSuccess?: (item: TData, variables: TFormFields, context: MutationContextEdit<TData>) => Promise<void>;
   readonly onEditError?: (error: unknown, variables: TFormFields, context: MutationContextEdit<TData>) => Promise<void>;
   readonly onCreateSuccess?: (item: TData, variables: TFormFields, context: MutationContextCreate<TData>) => Promise<void>;
@@ -150,6 +152,7 @@ export const CrudPage = <
   onEditError,
   onEditSuccess,
   onShowItem,
+  onFormChange,
   resourceQueryKeyBase,
   schema,
   showIdColumn = false,
@@ -554,6 +557,7 @@ export const CrudPage = <
           createItemDialogTitle={createItemDialogTitle}
           schema={schema}
           onSave={onEditDialogSave}
+          onChange={onFormChange}
         />
         <CrudPageDeleteDialog
           ref={deleteConfirmationRef}

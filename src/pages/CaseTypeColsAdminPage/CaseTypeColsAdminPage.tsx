@@ -65,7 +65,7 @@ export const CaseTypeColsAdminPage = () => {
     return object<FormFields>().shape({
       label: string().extendedAlphaNumeric().required().max(100),
       code: string().code().required().max(100),
-      rank: number().integer().positive().max(10000).required().transform((_val: unknown, orig: string | number) => orig === '' ? undefined : orig),
+      rank: number().integer().positive().required().transform((_val: unknown, orig: string | number) => orig === '' ? undefined : orig),
       col_id: string().uuid4().required().max(100),
       case_type_dim_id: string().uuid4().required().max(100),
       case_type_id: string().uuid4().required().max(100),

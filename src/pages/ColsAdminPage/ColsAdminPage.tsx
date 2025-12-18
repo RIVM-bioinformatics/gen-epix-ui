@@ -10,6 +10,7 @@ import {
   string,
 } from 'yup';
 import { useParams } from 'react-router-dom';
+import type { UseFormReturn } from 'react-hook-form';
 
 import type { Col } from '../../api';
 import {
@@ -36,6 +37,8 @@ import { CrudPage } from '../CrudPage';
 import { useColsValidationRulesQuery } from '../../dataHooks/useColsValidationRulesQuery';
 
 type FormFields = Pick<Col, 'dim_id' | 'code_suffix' | 'code' | 'rank' | 'label' | 'col_type' | 'concept_set_id' | 'region_set_id' | 'genetic_distance_protocol_id' | 'description'>;
+
+const CONCEPT_COL_TYPES: ColType[] = [ColType.NOMINAL, ColType.ORDINAL, ColType.INTERVAL];
 
 export const ColsAdminPage = () => {
   const { dimId } = useParams();
@@ -82,12 +85,12 @@ export const ColsAdminPage = () => {
       label: string().extendedAlphaNumeric().required().max(100),
       code: string().code().required().max(100),
       code_suffix: string().alphaNumeric().required().max(100),
-      rank: number().integer().positive().max(10000).required().transform((val: number, orig) => orig === '' ? undefined : val),
+      rank: number().integer().positive().required().transform((_val: unknown, orig: string | number) => orig === '' ? undefined : orig),
       dim_id: string().uuid4().required().max(100),
       col_type: mixed<ColType>().required().oneOf(Object.values(ColType)),
       description: string().freeFormText().required().max(100),
       concept_set_id: string().uuid4().when('col_type', {
-        is: (colType: ColType) => ([ColType.NOMINAL, ColType.ORDINAL, ColType.INTERVAL] as ColType[]).includes(colType),
+        is: (colType: ColType) => CONCEPT_COL_TYPES.includes(colType),
         then: () => string().required(),
         otherwise: () => string().nullable().notRequired(),
       }),
@@ -104,8 +107,20 @@ export const ColsAdminPage = () => {
     });
   }, []);
 
-  const formFieldDefinitions = useCallback(async (values: FormFields, item: Col): Promise<FormFieldDefinition<FormFields>[]> => {
-    console.log('Generating form field definitions for ColsAdminPage with values:', values, 'and item:', item);
+  const onFormChange = useCallback((_item: Col, values: FormFields, formMethods: UseFormReturn<FormFields>) => {
+    // Example: You can perform side effects here when the form changes
+    if (values.col_type && values.concept_set_id && !CONCEPT_COL_TYPES.includes(values.col_type)) {
+      formMethods.setValue('concept_set_id', null);
+    }
+    if (values.col_type && values.region_set_id && values.col_type !== ColType.GEO_REGION) {
+      formMethods.setValue('region_set_id', null);
+    }
+    if (values.col_type && values.genetic_distance_protocol_id && values.col_type !== ColType.GENETIC_DISTANCE) {
+      formMethods.setValue('genetic_distance_protocol_id', null);
+    }
+  }, []);
+
+  const formFieldDefinitions = useCallback((item: Col): FormFieldDefinition<FormFields>[] => {
     const colTypeOptions = dimId ? colTypeOptionsQuery.options.filter(option => {
       const dim = dimMapQuery.map.get(dimId);
       return colsValidationRulesQuery.data?.valid_col_types_by_dim_type[dim.dim_type].includes(option.value as ColType);
@@ -182,7 +197,7 @@ export const ColsAdminPage = () => {
       } as const satisfies FormFieldDefinition<FormFields>,
     );
 
-    return Promise.resolve(definitions);
+    return definitions;
   }, [colTypeOptionsQuery.isLoading, colTypeOptionsQuery.options, colsValidationRulesQuery.data?.valid_col_types_by_dim_type, conceptSetOptionsQuery.options, dimId, dimMapQuery.map, dimOptionsQuery.options, geneticDistanceProtocolOptionsQuery.options, regionSetOptionsQuery.options, t]);
 
   const tableColumns = useMemo((): TableColumn<Col>[] => {
@@ -191,7 +206,7 @@ export const ColsAdminPage = () => {
       TableUtil.createOptionsColumn<Col>({ id: 'dim_id', name: t`Dimension`, options: dimOptionsQuery.options }),
       TableUtil.createTextColumn<Col>({ id: 'label', name: t`Label` }),
       TableUtil.createOptionsColumn<Col>({ id: 'col_type', name: t`Column type`, options: colTypeOptionsQuery.options }),
-      TableUtil.createTextColumn<Col>({ id: 'rank', name: t`Rank` }),
+      TableUtil.createNumberColumn<Col>({ id: 'rank', name: t`Rank` }),
     ];
   }, [colTypeOptionsQuery.options, dimOptionsQuery.options, t]);
 
@@ -230,6 +245,7 @@ export const ColsAdminPage = () => {
       testIdAttributes={TestIdUtil.createAttributes('ColsAdminPage')}
       title={t`Columns`}
       updateOne={updateOne}
+      onFormChange={onFormChange}
     />
   );
 };
