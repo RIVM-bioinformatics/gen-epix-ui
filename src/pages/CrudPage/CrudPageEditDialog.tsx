@@ -19,7 +19,6 @@ import {
   useWatch,
 } from 'react-hook-form';
 
-import type { GenericFormProps } from '../../components/form/helpers/GenericForm';
 import { GenericForm } from '../../components/form/helpers/GenericForm';
 import type { DialogAction } from '../../components/ui/Dialog';
 import type {
@@ -40,7 +39,7 @@ export interface CrudPageEditDialogOpenProps<TData extends GenericData> {
 }
 export interface CrudPageEditDialogProps<TData extends GenericData, TFormFields extends AnyObject> extends WithDialogRenderProps<CrudPageEditDialogOpenProps<TData>> {
   readonly onSave: (formValues: TFormFields, item: TData) => void;
-  readonly formFieldDefinitions: GenericFormProps<TFormFields>['formFieldDefinitions'];
+  readonly formFieldDefinitions: FormFieldDefinition<TFormFields>[] | ((values: TFormFields, item: TData) => Promise<FormFieldDefinition<TFormFields>[]>);
   readonly getName: (item: TData | TFormFields) => string;
   readonly createItemDialogTitle?: string;
   readonly defaultNewItem?: Partial<TFormFields>;
@@ -66,8 +65,14 @@ export const CrudPageEditDialog = withDialog<CrudPageEditDialogProps<any, any>, 
   const [t] = useTranslation();
   const formId = useId();
 
-  const [resolvedFormFieldDefinitions, setResolvedFormFieldDefinitions] = useState<FormFieldDefinition<TFormFields>[]>(typeof formFieldDefinitions === 'function' ? [] : formFieldDefinitions);
+  const formFieldDefinitionsWithItem = useCallback(async (values: TFormFields): Promise<FormFieldDefinition<TFormFields>[]> => {
+    if (typeof formFieldDefinitions === 'function') {
+      return await formFieldDefinitions(values, openProps.item);
+    }
+    return formFieldDefinitions;
+  }, [formFieldDefinitions, openProps.item]);
 
+  const [resolvedFormFieldDefinitions, setResolvedFormFieldDefinitions] = useState<FormFieldDefinition<TFormFields>[]>(typeof formFieldDefinitions === 'function' ? [] : formFieldDefinitions);
 
   useEffect(() => {
     const actions: DialogAction[] = [];
@@ -114,12 +119,12 @@ export const CrudPageEditDialog = withDialog<CrudPageEditDialogProps<any, any>, 
       return;
     }
     const perform = async () => {
-      setResolvedFormFieldDefinitions(await formFieldDefinitions(watchedValues as TFormFields));
+      setResolvedFormFieldDefinitions(await formFieldDefinitions(watchedValues as TFormFields, openProps.item));
     };
     // eslint-disable-next-line @typescript-eslint/no-floating-promises
     perform();
 
-  }, [formFieldDefinitions, watchedValues]);
+  }, [formFieldDefinitions, watchedValues, openProps.item]);
 
   if (formState.errors && Object.keys(formState.errors).length > 0) {
     console.table(formState.errors);
@@ -134,7 +139,7 @@ export const CrudPageEditDialog = withDialog<CrudPageEditDialogProps<any, any>, 
     <GenericForm<TFormFields>
       schema={schema}
       disableAll={!openProps.canSave}
-      formFieldDefinitions={formFieldDefinitions}
+      formFieldDefinitions={formFieldDefinitionsWithItem}
       formId={formId}
       formMethods={formMethods}
       onSubmit={openProps.canSave ? handleSubmit(onFormSubmit) : undefined}

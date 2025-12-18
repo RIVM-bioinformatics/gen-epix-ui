@@ -104,7 +104,8 @@ export const ColsAdminPage = () => {
     });
   }, []);
 
-  const formFieldDefinitions = useCallback(async (): Promise<FormFieldDefinition<FormFields>[]> => {
+  const formFieldDefinitions = useCallback(async (values: FormFields, item: Col): Promise<FormFieldDefinition<FormFields>[]> => {
+    console.log('Generating form field definitions for ColsAdminPage with values:', values, 'and item:', item);
     const colTypeOptions = dimId ? colTypeOptionsQuery.options.filter(option => {
       const dim = dimMapQuery.map.get(dimId);
       return colsValidationRulesQuery.data?.valid_col_types_by_dim_type[dim.dim_type].includes(option.value as ColType);
@@ -131,7 +132,7 @@ export const ColsAdminPage = () => {
         label: t`Column type`,
         options: colTypeOptions,
         loading: colTypeOptionsQuery.isLoading,
-        disabled: !dimId,
+        disabled: !!item,
       } as const satisfies FormFieldDefinition<FormFields>,
       {
         definition: FORM_FIELD_DEFINITION_TYPE.TEXTFIELD,

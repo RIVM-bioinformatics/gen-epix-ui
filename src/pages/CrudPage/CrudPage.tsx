@@ -59,7 +59,7 @@ import {
 import { QueryUtil } from '../../utils/QueryUtil';
 import { TableUtil } from '../../utils/TableUtil';
 import type { DialogAction } from '../../components/ui/Dialog';
-import type { GenericFormProps } from '../../components/form/helpers/GenericForm';
+import type { FormFieldDefinition } from '../../models/form';
 
 import type { CrudPageEditDialogRefMethods } from './CrudPageEditDialog';
 import { CrudPageEditDialog } from './CrudPageEditDialog';
@@ -88,7 +88,7 @@ export type CrudPageProps<
   readonly extraUpdateOnePermissions?: ApiPermission[];
   readonly fetchAll: (signal: AbortSignal) => Promise<TData[]>;
   readonly fetchAllSelect?: (data: TData[]) => TData[];
-  readonly formFieldDefinitions?: GenericFormProps<TFormFields>['formFieldDefinitions'];
+  readonly formFieldDefinitions: FormFieldDefinition<TFormFields>[] | ((values: TFormFields, item: TData) => Promise<FormFieldDefinition<TFormFields>[]>);
   readonly getName: (item: TData | TFormFields) => string;
   readonly loadables?: Loadable[];
   readonly onShowItem?: (params: TableRowParams<TTableData>) => void;
