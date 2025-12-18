@@ -120,9 +120,10 @@ export const ColsAdminPage = () => {
     }
   }, []);
 
-  const formFieldDefinitions = useCallback((item: Col): FormFieldDefinition<FormFields>[] => {
-    const colTypeOptions = dimId ? colTypeOptionsQuery.options.filter(option => {
-      const dim = dimMapQuery.map.get(dimId);
+  const formFieldDefinitions = useCallback((item: Col, values?: FormFields): FormFieldDefinition<FormFields>[] => {
+    const sanitizedDimId = dimId ?? item?.dim_id ?? values?.dim_id;
+    const dim = sanitizedDimId ? dimMapQuery.map.get(sanitizedDimId) : null;
+    const colTypeOptions = dim ? colTypeOptionsQuery.options.filter(option => {
       return colsValidationRulesQuery.data?.valid_col_types_by_dim_type[dim.dim_type].includes(option.value as ColType);
     }) : colTypeOptionsQuery.options;
 
@@ -135,7 +136,7 @@ export const ColsAdminPage = () => {
         name: 'dim_id',
         label: t`Dimension`,
         options: dimOptionsQuery.options,
-        disabled: true,
+        disabled: !!item,
       } as const satisfies FormFieldDefinition<FormFields>,
       );
     }
@@ -220,13 +221,13 @@ export const ColsAdminPage = () => {
 
   const defaultNewItem = useMemo<Partial<FormFields>>(() => {
     return {
-      dim_id: dimId ?? '',
+      dim_id: dimId ?? null,
     };
   }, [dimId]);
 
   return (
     <CrudPage<FormFields, Col>
-      createOne={dimId ? createOne : undefined}
+      createOne={createOne}
       crudCommandType={CommandName.ColCrudCommand}
       createItemDialogTitle={t`Create new column`}
       defaultSortByField={'code'}

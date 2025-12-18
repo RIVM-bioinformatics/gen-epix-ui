@@ -68,7 +68,11 @@ export const CrudPageEditDialog = withDialog<CrudPageEditDialogProps<any, any>, 
   const [t] = useTranslation();
   const formId = useId();
 
-  const [resolvedFormFieldDefinitions, setResolvedFormFieldDefinitions] = useState<FormFieldDefinition<TFormFields>[]>(typeof formFieldDefinitions === 'function' ? formFieldDefinitions(openProps.item) : formFieldDefinitions);
+  const initialFormFieldDefinitions = useMemo(() => {
+    return typeof formFieldDefinitions === 'function' ? formFieldDefinitions(openProps.item) : formFieldDefinitions;
+  }, [formFieldDefinitions, openProps.item]);
+
+  const [resolvedFormFieldDefinitions, setResolvedFormFieldDefinitions] = useState<FormFieldDefinition<TFormFields>[]>(initialFormFieldDefinitions);
 
   useEffect(() => {
     const actions: DialogAction[] = [];
@@ -89,17 +93,18 @@ export const CrudPageEditDialog = withDialog<CrudPageEditDialogProps<any, any>, 
     onActionsChange(actions);
   }, [onActionsChange, formId, t, resolvedFormFieldDefinitions, openProps]);
 
+  const values = useMemo<TFormFields>(() => {
+    return { ...defaultNewItem, ...FormUtil.createFormValues(resolvedFormFieldDefinitions, { ...defaultNewItem, ...openProps.item }) };
+  }, [resolvedFormFieldDefinitions, openProps.item, defaultNewItem]);
+
   useEffect(() => {
     if (openProps.item) {
-      onTitleChange(`Edit item: ${getName(openProps.item ?? defaultNewItem as TFormFields)}`);
+      onTitleChange(`Edit item: ${getName({ ...defaultNewItem as TFormFields, ...openProps.item ?? {} })}`);
     } else {
       onTitleChange(createItemDialogTitle ?? t`Create new item`);
     }
   }, [getName, onTitleChange, openProps, t, createItemDialogTitle, defaultNewItem]);
 
-  const values = useMemo<TFormFields>(() => {
-    return FormUtil.createFormValues(resolvedFormFieldDefinitions, openProps.item ?? defaultNewItem as TFormFields);
-  }, [resolvedFormFieldDefinitions, openProps.item, defaultNewItem]);
 
   const formMethods = useForm<TFormFields>({
     resolver: yupResolver(schema) as unknown as Resolver<TFormFields>,
@@ -115,7 +120,6 @@ export const CrudPageEditDialog = withDialog<CrudPageEditDialogProps<any, any>, 
     if (typeof formFieldDefinitions !== 'function') {
       return;
     }
-    console.log('calling debounced form field definitions');
     setResolvedFormFieldDefinitions(formFieldDefinitions(openProps.item, formValues));
   }, 500, {
     leading: false,
