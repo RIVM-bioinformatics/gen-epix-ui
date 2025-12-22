@@ -94,6 +94,8 @@ export type CrudPageProps<
   readonly loadables?: Loadable[];
   readonly onShowItem?: (params: TableRowParams<TTableData>) => void;
   readonly resourceQueryKeyBase: QUERY_KEY;
+  readonly tableStoreStorageVersion?: number;
+  readonly tableStoreStorageNamePostFix?: string;
   readonly associationQueryKeys?: string[][];
   readonly readOnly?: boolean;
   readonly schema?: ObjectSchema<TFormFields, TFormFields>;
@@ -130,6 +132,7 @@ export const CrudPage = <
   createOne,
   crudCommandType,
   customOnRowClick,
+  defaultNewItem,
   defaultSortByField,
   defaultSortDirection,
   deleteOne,
@@ -141,7 +144,6 @@ export const CrudPage = <
   fetchAll,
   fetchAllSelect,
   formFieldDefinitions,
-  defaultNewItem,
   getName,
   getOptimisticUpdateIntermediateItem,
   loadables,
@@ -151,12 +153,14 @@ export const CrudPage = <
   onDeleteSuccess,
   onEditError,
   onEditSuccess,
-  onShowItem,
   onFormChange,
+  onShowItem,
   resourceQueryKeyBase,
   schema,
   showIdColumn = false,
   tableColumns,
+  tableStoreStorageNamePostFix,
+  tableStoreStorageVersion,
   testIdAttributes,
   title,
   updateOne,
@@ -172,9 +176,9 @@ export const CrudPage = <
     idSelectorCallback: (item) => item.id,
     defaultSortByField: defaultSortByField as string,
     defaultSortDirection,
-    storageNamePostFix: `CRUDPage-${resourceQueryKeyBase}`,
-    storageVersion: 1,
-  }), [defaultSortByField, defaultSortDirection, resourceQueryKeyBase]);
+    storageNamePostFix: tableStoreStorageNamePostFix ? `CRUDPage-${resourceQueryKeyBase}` : `CRUDPage-${resourceQueryKeyBase}-${tableStoreStorageNamePostFix}`,
+    storageVersion: tableStoreStorageVersion ?? 1,
+  }), [defaultSortByField, defaultSortDirection, resourceQueryKeyBase, tableStoreStorageNamePostFix, tableStoreStorageVersion]);
 
   const isLoadablesLoading = useMemo(() => {
     if (isArray(loadables)) {

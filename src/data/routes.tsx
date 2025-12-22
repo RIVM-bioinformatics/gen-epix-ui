@@ -198,7 +198,8 @@ export const routes: MyNonIndexRouteObject[] = [
             { command_name: CommandName.CreateReadSetsForCasesCommand, permission_type: PermissionType.EXECUTE },
             { command_name: CommandName.CreateFileForReadSetCommand, permission_type: PermissionType.EXECUTE },
             { command_name: CommandName.CreateFileForReadSetCommand, permission_type: PermissionType.EXECUTE },
-            { command_name: CommandName.CreateCasesCommand, permission_type: PermissionType.EXECUTE },
+            // !FIXME
+            // { command_name: CommandName.CreateCasesCommand, permission_type: PermissionType.EXECUTE },
           ],
           requiresUserProfile: true,
         },

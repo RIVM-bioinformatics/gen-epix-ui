@@ -8,6 +8,7 @@ import type { MyNonIndexRouteObject } from '../models/reactRouter';
 import { CaseSetStatusAdminPage } from '../pages/CaseSetStatusAdminPage';
 import { CaseTypeColsAdminPage } from '../pages/CaseTypeColsAdminPage';
 import { CaseTypeColSetsAdminPage } from '../pages/CaseTypeColSetsAdminPage';
+import { CaseTypeDimsAdminPage } from '../pages/CaseTypeDimsAdminPage';
 import { CaseTypesAdminPage } from '../pages/CaseTypesAdminPage';
 import { CaseTypeSetCategoriesAdminPage } from '../pages/CaseTypeSetCategoriesAdminPage';
 import { CaseTypeSetsAdminPage } from '../pages/CaseTypeSetsAdminPage';
@@ -370,24 +371,6 @@ export const adminRoutes: MyNonIndexRouteObject[] = [
     ],
   },
   {
-    path: '/management/cols',
-    Component: () => <ColsAdminPage />,
-    errorElement: <RouterErrorPage />,
-    handle: {
-      titleKey: 'Columns',
-      subTitleKey: 'Manage columns',
-      requiredPermissions: [
-        { command_name: CommandName.ColCrudCommand, permission_type: PermissionType.READ },
-        { command_name: CommandName.DimCrudCommand, permission_type: PermissionType.READ },
-        { command_name: CommandName.ConceptSetCrudCommand, permission_type: PermissionType.READ },
-        { command_name: CommandName.RegionSetCrudCommand, permission_type: PermissionType.READ },
-        { command_name: CommandName.GeneticDistanceProtocolCrudCommand, permission_type: PermissionType.READ },
-      ],
-      requiresUserProfile: true,
-      category: ADMIN_PAGE_CATEGORY.REFERENCE_DATA,
-    },
-  },
-  {
     path: '/management/concept-sets',
     errorElement: <RouterErrorPage />,
     handle: {
@@ -503,19 +486,48 @@ export const adminRoutes: MyNonIndexRouteObject[] = [
   },
   {
     path: '/management/case-types',
-    Component: () => <CaseTypesAdminPage />,
     errorElement: <RouterErrorPage />,
     handle: {
       titleKey: 'Case types',
-      subTitleKey: 'Manage case types',
-      requiredPermissions: [
-        { command_name: CommandName.CaseTypeCrudCommand, permission_type: PermissionType.READ },
-        { command_name: CommandName.DiseaseCrudCommand, permission_type: PermissionType.READ },
-        { command_name: CommandName.EtiologicalAgentCrudCommand, permission_type: PermissionType.READ },
-      ],
+      requiredPermissions: [],
       requiresUserProfile: true,
-      category: ADMIN_PAGE_CATEGORY.REFERENCE_DATA,
+      requirePermissionForChildRoute: true,
     },
+    children: [
+      {
+        index: true,
+        path: '/management/case-types',
+        Component: () => <CaseTypesAdminPage />,
+        errorElement: <RouterErrorPage />,
+        handle: {
+          titleKey: 'Case types',
+          subTitleKey: 'Manage case types',
+          requiredPermissions: [
+            { command_name: CommandName.CaseTypeCrudCommand, permission_type: PermissionType.READ },
+            { command_name: CommandName.DiseaseCrudCommand, permission_type: PermissionType.READ },
+            { command_name: CommandName.EtiologicalAgentCrudCommand, permission_type: PermissionType.READ },
+          ],
+          requiresUserProfile: true,
+          category: ADMIN_PAGE_CATEGORY.REFERENCE_DATA,
+        },
+      },
+      {
+        path: '/management/case-types/:caseTypeId/case-type-dims',
+        Component: () => <CaseTypeDimsAdminPage />,
+        errorElement: <RouterErrorPage />,
+        handle: {
+          titleKey: 'Case type dims',
+          subTitleKey: 'Manage case type dims',
+          requiredPermissions: [
+            { command_name: CommandName.CaseTypeDimCrudCommand, permission_type: PermissionType.READ },
+            { command_name: CommandName.CaseTypeCrudCommand, permission_type: PermissionType.READ },
+            { command_name: CommandName.DimCrudCommand, permission_type: PermissionType.READ },
+          ],
+          requiresUserProfile: true,
+          category: ADMIN_PAGE_CATEGORY.REFERENCE_DATA,
+        },
+      },
+    ],
   },
   {
     path: '/management/case-type-cols',
@@ -652,7 +664,41 @@ export const adminRoutes: MyNonIndexRouteObject[] = [
     },
   },
 
-  // // HELPERS
+  // HELPERS
+  {
+    path: '/management/cols',
+    Component: () => <ColsAdminPage />,
+    errorElement: <RouterErrorPage />,
+    handle: {
+      titleKey: 'Columns (all)',
+      subTitleKey: 'View all columns',
+      requiredPermissions: [
+        { command_name: CommandName.ColCrudCommand, permission_type: PermissionType.READ },
+        { command_name: CommandName.DimCrudCommand, permission_type: PermissionType.READ },
+        { command_name: CommandName.ConceptSetCrudCommand, permission_type: PermissionType.READ },
+        { command_name: CommandName.RegionSetCrudCommand, permission_type: PermissionType.READ },
+        { command_name: CommandName.GeneticDistanceProtocolCrudCommand, permission_type: PermissionType.READ },
+      ],
+      requiresUserProfile: true,
+      category: ADMIN_PAGE_CATEGORY.HELPERS,
+    },
+  },
+  {
+    path: '/management/case-type-dims',
+    Component: () => <CaseTypeDimsAdminPage />,
+    errorElement: <RouterErrorPage />,
+    handle: {
+      titleKey: 'Case type dims (all)',
+      subTitleKey: 'View all case type dims',
+      requiredPermissions: [
+        { command_name: CommandName.CaseTypeDimCrudCommand, permission_type: PermissionType.READ },
+        { command_name: CommandName.CaseTypeCrudCommand, permission_type: PermissionType.READ },
+        { command_name: CommandName.DimCrudCommand, permission_type: PermissionType.READ },
+      ],
+      requiresUserProfile: true,
+      category: ADMIN_PAGE_CATEGORY.HELPERS,
+    },
+  },
 
   // {
   //   path: '/management/data-collection-visualization-page',

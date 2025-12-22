@@ -158,6 +158,7 @@ export * from './dataHooks/useCaseTypeStatsQuery';
 export * from './dataHooks/useCaseTypeSetsQuery';
 export * from './dataHooks/useCaseTypeSetMembersQuery';
 export * from './dataHooks/useCaseTypeSetCategoriesQuery';
+export * from './dataHooks/useCaseTypeDimsQuery';
 export * from './dataHooks/useCaseTypeColsQuery';
 export * from './dataHooks/useCaseTypeColSetsQuery';
 export * from './dataHooks/useCaseTypeColSetMembersQuery';
