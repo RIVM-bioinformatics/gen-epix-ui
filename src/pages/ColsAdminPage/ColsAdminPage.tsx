@@ -202,14 +202,23 @@ export const ColsAdminPage = () => {
   }, [colTypeOptionsQuery.isLoading, colTypeOptionsQuery.options, colsValidationRulesQuery.data?.valid_col_types_by_dim_type, conceptSetOptionsQuery.options, dimId, dimMapQuery.map, dimOptionsQuery.options, geneticDistanceProtocolOptionsQuery.options, regionSetOptionsQuery.options, t]);
 
   const tableColumns = useMemo((): TableColumn<Col>[] => {
-    return [
-      TableUtil.createTextColumn<Col>({ id: 'code', name: t`Code` }),
-      TableUtil.createOptionsColumn<Col>({ id: 'dim_id', name: t`Dimension`, options: dimOptionsQuery.options }),
+    const columns: TableColumn<Col>[] = [];
+
+    if (!dimId) {
+      columns.push(
+        TableUtil.createOptionsColumn<Col>({ id: 'dim_id', name: t`Dimension`, options: dimOptionsQuery.options }),
+      );
+    }
+
+    columns.push(
       TableUtil.createTextColumn<Col>({ id: 'label', name: t`Label` }),
+      TableUtil.createOptionsColumn<Col>({ id: 'dim_id', name: t`Dimension`, options: dimOptionsQuery.options }),
       TableUtil.createOptionsColumn<Col>({ id: 'col_type', name: t`Column type`, options: colTypeOptionsQuery.options }),
       TableUtil.createNumberColumn<Col>({ id: 'rank', name: t`Rank` }),
-    ];
-  }, [colTypeOptionsQuery.options, dimOptionsQuery.options, t]);
+    );
+
+    return columns;
+  }, [colTypeOptionsQuery.options, dimId, dimOptionsQuery.options, t]);
 
   const getOptimisticUpdateIntermediateItem = useCallback((variables: FormFields, previousItem: Col): Col => {
     return {
@@ -225,16 +234,25 @@ export const ColsAdminPage = () => {
     };
   }, [dimId]);
 
+  const title = useMemo(() => {
+    if (dimId && dimMapQuery.map.has(dimId)) {
+      return t('{{dim}} → Columns', { dim: dimMapQuery.map.get(dimId)?.code });
+    }
+
+    return t`Columns`;
+  }, [dimId, dimMapQuery.map, t]);
+
   return (
     <CrudPage<FormFields, Col>
       createOne={createOne}
       crudCommandType={CommandName.ColCrudCommand}
       createItemDialogTitle={t`Create new column`}
-      defaultSortByField={'code'}
+      defaultSortByField={dimId ? 'rank' : 'dim_id'}
       defaultSortDirection={'asc'}
       deleteOne={deleteOne}
       fetchAll={fetchAll}
       defaultNewItem={defaultNewItem}
+      tableStoreStorageNamePostFix={dimId ? `Dim` : undefined}
       getOptimisticUpdateIntermediateItem={getOptimisticUpdateIntermediateItem}
       formFieldDefinitions={formFieldDefinitions}
       getName={getName}
@@ -244,7 +262,7 @@ export const ColsAdminPage = () => {
       schema={schema}
       tableColumns={tableColumns}
       testIdAttributes={TestIdUtil.createAttributes('ColsAdminPage')}
-      title={t`Columns`}
+      title={title}
       updateOne={updateOne}
       onFormChange={onFormChange}
     />

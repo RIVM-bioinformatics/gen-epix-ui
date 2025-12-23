@@ -10,6 +10,7 @@ import {
   string,
 } from 'yup';
 import { isValid } from 'date-fns';
+import { useParams } from 'react-router-dom';
 
 import type { CaseTypeCol } from '../../api';
 import {
@@ -17,7 +18,10 @@ import {
   CommandName,
 } from '../../api';
 import { useCaseTypeColOptionsQuery } from '../../dataHooks/useCaseTypeColsQuery';
-import { useCaseTypeOptionsQuery } from '../../dataHooks/useCaseTypesQuery';
+import {
+  useCaseTypeMapQuery,
+  useCaseTypeOptionsQuery,
+} from '../../dataHooks/useCaseTypesQuery';
 import { useColOptionsQuery } from '../../dataHooks/useColsQuery';
 import { useTreeAlgorithmCodeOptionsQuery } from '../../dataHooks/useTreeAlgorithmCodesQuery';
 import { useArray } from '../../hooks/useArray';
@@ -29,21 +33,42 @@ import { TableUtil } from '../../utils/TableUtil';
 import { TestIdUtil } from '../../utils/TestIdUtil';
 import { CrudPage } from '../CrudPage';
 import { DATE_FORMAT } from '../../data/date';
+import { useCaseTypeDimMapQuery } from '../../dataHooks/useCaseTypeDimsQuery';
 
 type FormFields = Pick<CaseTypeCol, 'case_type_id' | 'col_id' | 'case_type_dim_id' | 'code' | 'rank' | 'label' | 'description' | 'min_value' | 'max_value' | 'min_datetime' | 'max_datetime' | 'min_length' | 'genetic_sequence_case_type_col_id' | 'tree_algorithm_codes' | 'pattern'>;
 
 export const CaseTypeColsAdminPage = () => {
   const [t] = useTranslation();
+  const { caseTypeId, caseTypeDimId } = useParams();
   const colOptionsQuery = useColOptionsQuery();
   const treeAlgorithmCodesOptionsQuery = useTreeAlgorithmCodeOptionsQuery();
   const caseTypeOptionsQuery = useCaseTypeOptionsQuery();
   const caseTypeColOptionsQuery = useCaseTypeColOptionsQuery();
+  const caseTypeMapQuery = useCaseTypeMapQuery();
+  const caseTypeDimMapQuery = useCaseTypeDimMapQuery();
 
-  const loadables = useArray([caseTypeOptionsQuery, colOptionsQuery, treeAlgorithmCodesOptionsQuery, caseTypeColOptionsQuery]);
+  const loadables = useArray([caseTypeDimMapQuery, caseTypeMapQuery, caseTypeOptionsQuery, colOptionsQuery, treeAlgorithmCodesOptionsQuery, caseTypeColOptionsQuery]);
+
+  const normalizedCaseTypeId = useMemo(() => {
+    if (caseTypeDimId) {
+      return caseTypeDimMapQuery.map.get(caseTypeDimId)?.case_type_id ?? null;
+    }
+    if (caseTypeId) {
+      return caseTypeId;
+    }
+    return null;
+  }, [caseTypeDimId, caseTypeDimMapQuery.map, caseTypeId]);
 
   const fetchAll = useCallback(async (signal: AbortSignal) => {
     return (await CaseApi.instance.caseTypeColsGetAll({ signal }))?.data;
   }, []);
+
+  const fetchAllSelect = useCallback((cols: CaseTypeCol[]) => {
+    if (caseTypeDimId) {
+      return cols.filter((col) => col.case_type_dim_id === caseTypeDimId);
+    }
+    return cols;
+  }, [caseTypeDimId]);
 
   const deleteOne = useCallback(async (item: CaseTypeCol) => {
     return await CaseApi.instance.caseTypeColsDeleteOne(item.id);
@@ -85,15 +110,21 @@ export const CaseTypeColsAdminPage = () => {
   const formFieldDefinitions = useMemo<FormFieldDefinition<FormFields>[]>(() => {
     return [
       {
-        definition: FORM_FIELD_DEFINITION_TYPE.TEXTFIELD,
-        name: 'code',
-        label: t`Code`,
-      } as const satisfies FormFieldDefinition<FormFields>,
-      {
         definition: FORM_FIELD_DEFINITION_TYPE.AUTOCOMPLETE,
         name: 'case_type_id',
         label: t`Case type`,
         options: caseTypeOptionsQuery.options,
+      } as const satisfies FormFieldDefinition<FormFields>,
+      {
+        definition: FORM_FIELD_DEFINITION_TYPE.AUTOCOMPLETE,
+        name: 'col_id',
+        label: t`Column`,
+        options: colOptionsQuery.options,
+      } as const satisfies FormFieldDefinition<FormFields>,
+      {
+        definition: FORM_FIELD_DEFINITION_TYPE.TEXTFIELD,
+        name: 'code',
+        label: t`Code`,
       } as const satisfies FormFieldDefinition<FormFields>,
       {
         definition: FORM_FIELD_DEFINITION_TYPE.TEXTFIELD,
@@ -106,12 +137,6 @@ export const CaseTypeColsAdminPage = () => {
         label: t`Description`,
         multiline: true,
         rows: 5,
-      } as const satisfies FormFieldDefinition<FormFields>,
-      {
-        definition: FORM_FIELD_DEFINITION_TYPE.AUTOCOMPLETE,
-        name: 'col_id',
-        label: t`Column`,
-        options: colOptionsQuery.options,
       } as const satisfies FormFieldDefinition<FormFields>,
       {
         definition: FORM_FIELD_DEFINITION_TYPE.TEXTFIELD,
@@ -174,15 +199,34 @@ export const CaseTypeColsAdminPage = () => {
     ];
   }, [caseTypeOptionsQuery.options, colOptionsQuery.options, t]);
 
+  const getOptimisticUpdateIntermediateItem = useCallback((variables: FormFields, previousItem: CaseTypeCol): CaseTypeCol => {
+    return {
+      id: previousItem.id,
+      case_type_id: previousItem.case_type_id,
+      case_type_dim_id: previousItem.case_type_dim_id,
+      ...variables,
+    };
+  }, []);
+
+  const defaultNewItem = useMemo<Partial<FormFields>>(() => {
+    return {
+      case_type_dim_id: caseTypeDimId ?? null,
+      case_type_id: normalizedCaseTypeId,
+    };
+  }, [caseTypeDimId, normalizedCaseTypeId]);
+
   return (
     <CrudPage<FormFields, CaseTypeCol>
-      createOne={createOne}
+      createOne={caseTypeDimId ? createOne : undefined}
+      defaultNewItem={defaultNewItem}
       crudCommandType={CommandName.CaseTypeColCrudCommand}
+      getOptimisticUpdateIntermediateItem={getOptimisticUpdateIntermediateItem}
       createItemDialogTitle={t`Create new case type column`}
       defaultSortByField={'case_type_id'}
       defaultSortDirection={'asc'}
       deleteOne={deleteOne}
       fetchAll={fetchAll}
+      fetchAllSelect={fetchAllSelect}
       formFieldDefinitions={formFieldDefinitions}
       getName={getName}
       loadables={loadables}

@@ -143,12 +143,12 @@ export const CaseTypesAdminPage = () => {
         key={'custom-action-1'}
         // eslint-disable-next-line react/jsx-no-bind
         onClick={async () => await RouterManager.instance.router.navigate({
-          pathname: `/management/case-types/${params.row.id}/case-type-dims`,
+          pathname: `/management/case-types/${params.row.id}/case-type-dimensions`,
         })}
       >
         <ListItemIcon />
         <ListItemText>
-          {t`Manage case type dims`}
+          {t`Manage case type dimensions`}
         </ListItemText>
       </MenuItem>
     )];
@@ -161,12 +161,12 @@ export const CaseTypesAdminPage = () => {
     }
     return [
       {
-        ...TestIdUtil.createAttributes('CaseTypesAdminPage-ManageCaseTypeDimsButton'),
-        label: t`Manage case type dims`,
+        ...TestIdUtil.createAttributes('CaseTypesAdminPage-ManageCaseTypeDimensionsButton'),
+        label: t`Manage case type dimensions`,
         color: 'primary',
         variant: 'outlined',
         onClick: async () => await RouterManager.instance.router.navigate({
-          pathname: `/management/case-types/${item.id}/case-type-dims`,
+          pathname: `/management/case-types/${item.id}/case-type-dimensions`,
         }),
       },
     ];

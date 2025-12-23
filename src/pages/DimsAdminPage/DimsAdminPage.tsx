@@ -74,13 +74,14 @@ export const DimsAdminPage = () => {
     });
   }, []);
 
-  const formFieldDefinitions = useMemo<FormFieldDefinition<FormFields>[]>(() => {
+  const formFieldDefinitions = useCallback((item: Dim): FormFieldDefinition<FormFields>[] => {
     return [
       {
         definition: FORM_FIELD_DEFINITION_TYPE.AUTOCOMPLETE,
         name: 'dim_type',
         label: t`Dimension type`,
         options: dimTypeOptionsQuery.options,
+        disabled: Boolean(item),
       } as const satisfies FormFieldDefinition<FormFields>,
       {
         definition: FORM_FIELD_DEFINITION_TYPE.TEXTFIELD,
@@ -139,12 +140,12 @@ export const DimsAdminPage = () => {
         key={'custom-action-1'}
         // eslint-disable-next-line react/jsx-no-bind
         onClick={async () => await RouterManager.instance.router.navigate({
-          pathname: `/management/dims/${params.row.id}/cols`,
+          pathname: `/management/dimensions/${params.row.id}/columns`,
         })}
       >
         <ListItemIcon />
         <ListItemText>
-          {t`Manage cols`}
+          {t`Manage columns`}
         </ListItemText>
       </MenuItem>
     )];
@@ -157,12 +158,12 @@ export const DimsAdminPage = () => {
     }
     return [
       {
-        ...TestIdUtil.createAttributes('DimsAdminPage-ManageColsButton'),
-        label: t`Manage cols`,
+        ...TestIdUtil.createAttributes('DimsAdminPage-ManageColumnsButton'),
+        label: t`Manage columns`,
         color: 'primary',
         variant: 'outlined',
         onClick: async () => await RouterManager.instance.router.navigate({
-          pathname: `/management/dims/${item.id}/cols`,
+          pathname: `/management/dimensions/${item.id}/columns`,
         }),
       },
     ];
