@@ -211,9 +211,9 @@ export const ColsAdminPage = () => {
     }
 
     columns.push(
-      TableUtil.createTextColumn<Col>({ id: 'label', name: t`Label` }),
-      TableUtil.createOptionsColumn<Col>({ id: 'dim_id', name: t`Dimension`, options: dimOptionsQuery.options }),
+      TableUtil.createTextColumn<Col>({ id: 'code', name: t`Code` }),
       TableUtil.createOptionsColumn<Col>({ id: 'col_type', name: t`Column type`, options: colTypeOptionsQuery.options }),
+      TableUtil.createTextColumn<Col>({ id: 'label', name: t`Label` }),
       TableUtil.createNumberColumn<Col>({ id: 'rank', name: t`Rank` }),
     );
 
