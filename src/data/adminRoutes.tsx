@@ -698,19 +698,49 @@ export const adminRoutes: MyNonIndexRouteObject[] = [
   },
   {
     path: '/management/case-type-dimensions',
-    Component: () => <CaseTypeDimsAdminPage />,
     errorElement: <RouterErrorPage />,
     handle: {
       titleKey: 'Case type dimension (all)',
-      subTitleKey: 'View all case type dimensions',
-      requiredPermissions: [
-        { command_name: CommandName.CaseTypeDimCrudCommand, permission_type: PermissionType.READ },
-        { command_name: CommandName.CaseTypeCrudCommand, permission_type: PermissionType.READ },
-        { command_name: CommandName.DimCrudCommand, permission_type: PermissionType.READ },
-      ],
+      requiredPermissions: [],
       requiresUserProfile: true,
-      category: ADMIN_PAGE_CATEGORY.HELPERS,
+      requirePermissionForChildRoute: true,
     },
+    children: [
+      {
+        index: true,
+        path: '/management/case-type-dimensions',
+        Component: () => <CaseTypeDimsAdminPage />,
+        errorElement: <RouterErrorPage />,
+        handle: {
+          titleKey: 'Case type dimension (all)',
+          subTitleKey: 'View all case type dimensions',
+          requiredPermissions: [
+            { command_name: CommandName.CaseTypeDimCrudCommand, permission_type: PermissionType.READ },
+            { command_name: CommandName.CaseTypeCrudCommand, permission_type: PermissionType.READ },
+            { command_name: CommandName.DimCrudCommand, permission_type: PermissionType.READ },
+          ],
+          requiresUserProfile: true,
+          category: ADMIN_PAGE_CATEGORY.HELPERS,
+        },
+      },
+      {
+        path: '/management/case-type-dimensions/:caseTypeDimId/case-type-columns',
+        Component: () => <CaseTypeColsAdminPage />,
+        errorElement: <RouterErrorPage />,
+        handle: {
+          titleKey: 'Case type columns',
+          subTitleKey: 'Manage case type columns',
+          requiredPermissions: [
+            { command_name: CommandName.CaseTypeColCrudCommand, permission_type: PermissionType.READ },
+            { command_name: CommandName.ColCrudCommand, permission_type: PermissionType.READ },
+            { command_name: CommandName.TreeAlgorithmCrudCommand, permission_type: PermissionType.READ },
+            { command_name: CommandName.CaseTypeCrudCommand, permission_type: PermissionType.READ },
+          ],
+          requiresUserProfile: true,
+          category: ADMIN_PAGE_CATEGORY.HELPERS,
+        },
+      },
+    ],
   },
   {
     path: '/management/case-type-columns',

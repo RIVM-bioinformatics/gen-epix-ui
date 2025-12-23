@@ -11,6 +11,7 @@ import {
 } from 'yup';
 import { isValid } from 'date-fns';
 import { useParams } from 'react-router-dom';
+import type { UseFormReturn } from 'react-hook-form';
 
 import type { CaseTypeCol } from '../../api';
 import {
@@ -22,7 +23,10 @@ import {
   useCaseTypeMapQuery,
   useCaseTypeOptionsQuery,
 } from '../../dataHooks/useCaseTypesQuery';
-import { useColOptionsQuery } from '../../dataHooks/useColsQuery';
+import {
+  useColMapQuery,
+  useColOptionsQuery,
+} from '../../dataHooks/useColsQuery';
 import { useTreeAlgorithmCodeOptionsQuery } from '../../dataHooks/useTreeAlgorithmCodesQuery';
 import { useArray } from '../../hooks/useArray';
 import type { FormFieldDefinition } from '../../models/form';
@@ -33,7 +37,13 @@ import { TableUtil } from '../../utils/TableUtil';
 import { TestIdUtil } from '../../utils/TestIdUtil';
 import { CrudPage } from '../CrudPage';
 import { DATE_FORMAT } from '../../data/date';
-import { useCaseTypeDimMapQuery } from '../../dataHooks/useCaseTypeDimsQuery';
+import {
+  useCaseTypeDimMapQuery,
+  useCaseTypeDimOptionsQuery,
+} from '../../dataHooks/useCaseTypeDimsQuery';
+import { useColsValidationRulesQuery } from '../../dataHooks/useColsValidationRulesQuery';
+import { useDimMapQuery } from '../../dataHooks/useDimsQuery';
+import { DataUtil } from '../../utils/DataUtil';
 
 type FormFields = Pick<CaseTypeCol, 'case_type_id' | 'col_id' | 'case_type_dim_id' | 'code' | 'rank' | 'label' | 'description' | 'min_value' | 'max_value' | 'min_datetime' | 'max_datetime' | 'min_length' | 'genetic_sequence_case_type_col_id' | 'tree_algorithm_codes' | 'pattern'>;
 
@@ -41,13 +51,16 @@ export const CaseTypeColsAdminPage = () => {
   const [t] = useTranslation();
   const { caseTypeId, caseTypeDimId } = useParams();
   const colOptionsQuery = useColOptionsQuery();
+  const colMapQuery = useColMapQuery();
+  const dimMapQuery = useDimMapQuery();
   const treeAlgorithmCodesOptionsQuery = useTreeAlgorithmCodeOptionsQuery();
   const caseTypeOptionsQuery = useCaseTypeOptionsQuery();
   const caseTypeColOptionsQuery = useCaseTypeColOptionsQuery();
   const caseTypeMapQuery = useCaseTypeMapQuery();
   const caseTypeDimMapQuery = useCaseTypeDimMapQuery();
-
-  const loadables = useArray([caseTypeDimMapQuery, caseTypeMapQuery, caseTypeOptionsQuery, colOptionsQuery, treeAlgorithmCodesOptionsQuery, caseTypeColOptionsQuery]);
+  const caseTypeDimOptionsQuery = useCaseTypeDimOptionsQuery();
+  const colsValidationRulesQuery = useColsValidationRulesQuery();
+  const loadables = useArray([dimMapQuery, colMapQuery, colsValidationRulesQuery, caseTypeDimOptionsQuery, caseTypeDimMapQuery, caseTypeMapQuery, caseTypeOptionsQuery, colOptionsQuery, treeAlgorithmCodesOptionsQuery, caseTypeColOptionsQuery]);
 
   const normalizedCaseTypeId = useMemo(() => {
     if (caseTypeDimId) {
@@ -90,7 +103,7 @@ export const CaseTypeColsAdminPage = () => {
     return object<FormFields>().shape({
       label: string().extendedAlphaNumeric().required().max(100),
       code: string().code().required().max(100),
-      rank: number().integer().positive().required().transform((_val: unknown, orig: string | number) => orig === '' ? undefined : orig),
+      rank: number().integer().required().transform((_val: unknown, orig: string | number) => orig === '' ? undefined : orig),
       col_id: string().uuid4().required().max(100),
       case_type_dim_id: string().uuid4().required().max(100),
       case_type_id: string().uuid4().required().max(100),
@@ -107,19 +120,70 @@ export const CaseTypeColsAdminPage = () => {
     });
   }, []);
 
-  const formFieldDefinitions = useMemo<FormFieldDefinition<FormFields>[]>(() => {
-    return [
-      {
+  const caseTypeDimOptionsByCaseTypeId = useMemo(() => {
+    return DataUtil.getCaseTypeDimOptionsByCaseTypeId({ caseTypeDimOptions: caseTypeDimOptionsQuery.options, caseTypeDimMap: caseTypeDimMapQuery.map });
+  }, [caseTypeDimMapQuery.map, caseTypeDimOptionsQuery.options]);
+
+  const colOptionsByCaseTypeDimId = useMemo(() => {
+    return DataUtil.getColOptionsByCaseTypeDimId({ caseTypeDimMap: caseTypeDimMapQuery.map, dimMap: dimMapQuery.map, colOptions: colOptionsQuery.options, colMap: colMapQuery.map, colsValidationRules: colsValidationRulesQuery.data?.valid_col_types_by_dim_type ?? {} });
+  }, [caseTypeDimMapQuery.map, dimMapQuery.map, colOptionsQuery.options, colMapQuery.map, colsValidationRulesQuery.data?.valid_col_types_by_dim_type]);
+
+  const onFormChange = useCallback((_item: CaseTypeCol, values: FormFields, formMethods: UseFormReturn<FormFields>) => {
+    if (values.case_type_id && values.case_type_dim_id) {
+      const validCaseTypeDimOptions = caseTypeDimOptionsByCaseTypeId.get(values.case_type_id);
+      if (!validCaseTypeDimOptions.find(option => option.value === values.case_type_dim_id)) {
+        formMethods.setValue('case_type_dim_id', validCaseTypeDimOptions.length === 1 ? validCaseTypeDimOptions[0].value : null);
+        formMethods.setValue('col_id', null);
+      }
+    }
+
+    if (values.case_type_dim_id && values.col_id) {
+      const validColOptions = colOptionsByCaseTypeDimId.get(values.case_type_dim_id);
+      if (!validColOptions.find(option => option.value === values.col_id)) {
+        formMethods.setValue('col_id', validColOptions.length === 1 ? validColOptions[0].value : null);
+      }
+    }
+  }, [caseTypeDimOptionsByCaseTypeId, colOptionsByCaseTypeDimId]);
+
+  const formFieldDefinitions = useCallback((item: CaseTypeCol, values: FormFields): FormFieldDefinition<FormFields>[] => {
+    const definitions: FormFieldDefinition<FormFields>[] = [];
+    const normalizedCaseTypeIdWithValues = values?.case_type_id ?? normalizedCaseTypeId;
+
+    const caseTypeDimOptions = normalizedCaseTypeIdWithValues ?
+      (caseTypeDimOptionsByCaseTypeId.get(normalizedCaseTypeIdWithValues) ?? []) :
+      caseTypeDimOptionsQuery.options;
+
+    const colOptions = values?.case_type_dim_id ?
+      (colOptionsByCaseTypeDimId.get(values.case_type_dim_id) ?? []) :
+      colOptionsQuery.options;
+
+    if (!caseTypeId) {
+      definitions.push({
         definition: FORM_FIELD_DEFINITION_TYPE.AUTOCOMPLETE,
         name: 'case_type_id',
         label: t`Case type`,
         options: caseTypeOptionsQuery.options,
-      } as const satisfies FormFieldDefinition<FormFields>,
+        disabled: !!item,
+      } as const satisfies FormFieldDefinition<FormFields>);
+    }
+
+    if (!caseTypeDimId) {
+      definitions.push({
+        definition: FORM_FIELD_DEFINITION_TYPE.AUTOCOMPLETE,
+        name: 'case_type_dim_id',
+        label: t`Case type dimension`,
+        options: caseTypeDimOptions,
+        disabled: !!item || !values?.case_type_id,
+      } as const satisfies FormFieldDefinition<FormFields>);
+    }
+
+    definitions.push(
       {
         definition: FORM_FIELD_DEFINITION_TYPE.AUTOCOMPLETE,
         name: 'col_id',
         label: t`Column`,
-        options: colOptionsQuery.options,
+        options: colOptions,
+        disabled: !!item || !values?.case_type_dim_id,
       } as const satisfies FormFieldDefinition<FormFields>,
       {
         definition: FORM_FIELD_DEFINITION_TYPE.TEXTFIELD,
@@ -187,17 +251,26 @@ export const CaseTypeColsAdminPage = () => {
         label: t`Rank`,
         type: 'number',
       } as const satisfies FormFieldDefinition<FormFields>,
-    ] as const;
-  }, [caseTypeColOptionsQuery.options, caseTypeOptionsQuery.options, colOptionsQuery.options, t, treeAlgorithmCodesOptionsQuery.options]);
+    );
+    return definitions;
+  }, [caseTypeColOptionsQuery.options, caseTypeDimId, caseTypeDimOptionsByCaseTypeId, caseTypeDimOptionsQuery.options, caseTypeId, caseTypeOptionsQuery.options, colOptionsByCaseTypeDimId, colOptionsQuery.options, normalizedCaseTypeId, t, treeAlgorithmCodesOptionsQuery.options]);
 
   const tableColumns = useMemo((): TableColumn<CaseTypeCol>[] => {
-    return [
-      TableUtil.createOptionsColumn<CaseTypeCol>({ id: 'case_type_id', name: t`Case type`, options: caseTypeOptionsQuery.options }),
+    const columns: TableColumn<CaseTypeCol>[] = [];
+    if (!caseTypeId) {
+      columns.push(TableUtil.createOptionsColumn<CaseTypeCol>({ id: 'case_type_id', name: t`Case type`, options: caseTypeOptionsQuery.options }));
+    }
+    if (!caseTypeDimId) {
+      columns.push(TableUtil.createOptionsColumn<CaseTypeCol>({ id: 'case_type_dim_id', name: t`Case type dimension`, options: caseTypeDimOptionsQuery.options }));
+    }
+
+    columns.push(
       TableUtil.createOptionsColumn<CaseTypeCol>({ id: 'col_id', name: t`Column`, options: colOptionsQuery.options }),
       TableUtil.createTextColumn<CaseTypeCol>({ id: 'code', name: t`Code` }),
       TableUtil.createNumberColumn<CaseTypeCol>({ id: 'rank', name: t`Rank` }),
-    ];
-  }, [caseTypeOptionsQuery.options, colOptionsQuery.options, t]);
+    );
+    return columns;
+  }, [caseTypeDimId, caseTypeDimOptionsQuery.options, caseTypeId, caseTypeOptionsQuery.options, colOptionsQuery.options, t]);
 
   const getOptimisticUpdateIntermediateItem = useCallback((variables: FormFields, previousItem: CaseTypeCol): CaseTypeCol => {
     return {
@@ -215,14 +288,27 @@ export const CaseTypeColsAdminPage = () => {
     };
   }, [caseTypeDimId, normalizedCaseTypeId]);
 
+  const title = useMemo(() => {
+    const parts: string[] = [];
+
+    if (caseTypeId && caseTypeMapQuery.map.has(caseTypeId)) {
+      parts.push(caseTypeMapQuery.map.get(caseTypeId)?.name);
+    }
+    if (caseTypeDimId && caseTypeDimMapQuery.map.has(caseTypeDimId)) {
+      parts.push(caseTypeDimMapQuery.map.get(caseTypeDimId)?.label);
+    }
+    parts.push(t`Case type columns`);
+
+    return parts;
+  }, [caseTypeId, caseTypeDimId, caseTypeMapQuery.map, caseTypeDimMapQuery.map, t]);
   return (
     <CrudPage<FormFields, CaseTypeCol>
-      createOne={caseTypeDimId ? createOne : undefined}
+      createOne={createOne}
       defaultNewItem={defaultNewItem}
       crudCommandType={CommandName.CaseTypeColCrudCommand}
       getOptimisticUpdateIntermediateItem={getOptimisticUpdateIntermediateItem}
       createItemDialogTitle={t`Create new case type column`}
-      defaultSortByField={'case_type_id'}
+      defaultSortByField={(caseTypeDimId ?? caseTypeId) ? 'rank' : 'case_type_id'}
       defaultSortDirection={'asc'}
       deleteOne={deleteOne}
       fetchAll={fetchAll}
@@ -234,8 +320,9 @@ export const CaseTypeColsAdminPage = () => {
       schema={schema}
       tableColumns={tableColumns}
       testIdAttributes={TestIdUtil.createAttributes('CaseTypeColsAdminPage')}
-      title={t`Case type columns`}
+      title={title}
       updateOne={updateOne}
+      onFormChange={onFormChange}
     />
   );
 };

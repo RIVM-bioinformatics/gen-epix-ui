@@ -13,7 +13,7 @@ import { DataUtil } from '../../utils/DataUtil';
 import { QueryUtil } from '../../utils/QueryUtil';
 import { useCaseTypeMapQuery } from '../useCaseTypesQuery';
 import { useQueryMemo } from '../../hooks/useQueryMemo';
-import { useCaseTypeDimMapQuery } from '../..';
+import { useCaseTypeDimMapQuery } from '../useCaseTypeDimsQuery';
 
 export const useCaseTypeColsQuery = (): UseQueryResult<CaseTypeCol[]> => {
   return useQueryMemo({

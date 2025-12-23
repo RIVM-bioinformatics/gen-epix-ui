@@ -60,7 +60,7 @@ export const DimsAdminPage = () => {
       code: string().code().required().max(100),
       label: string().extendedAlphaNumeric().required().max(100),
       description: string().freeFormText().required().max(100),
-      rank: number().integer().positive().required().transform((_val: unknown, orig: string | number) => orig === '' ? undefined : orig),
+      rank: number().integer().required().transform((_val: unknown, orig: string | number) => orig === '' ? undefined : orig),
       col_code_prefix: string().alphaNumeric().required().max(100),
     });
   }, []);

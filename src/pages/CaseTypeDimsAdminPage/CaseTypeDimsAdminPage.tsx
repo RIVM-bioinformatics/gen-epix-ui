@@ -75,7 +75,7 @@ export const CaseTypeDimsAdminPage = () => {
     return object<FormFields>().shape({
       label: string().extendedAlphaNumeric().required().max(100),
       code: string().code().required().max(100),
-      rank: number().integer().positive().required().transform((_val: unknown, orig: string | number) => orig === '' ? undefined : orig),
+      rank: number().integer().required().transform((_val: unknown, orig: string | number) => orig === '' ? undefined : orig),
       occurrence: number().integer().positive().required().transform((_val: unknown, orig: string | number) => orig === '' ? undefined : orig),
       dim_id: string().uuid4().required().max(100),
       case_type_id: string().uuid4().required().max(100),
@@ -100,6 +100,12 @@ export const CaseTypeDimsAdminPage = () => {
 
     definitions.push(
       {
+        definition: FORM_FIELD_DEFINITION_TYPE.AUTOCOMPLETE,
+        name: 'dim_id',
+        label: t`Dimension`,
+        options: dimOptionsQuery.options,
+      } as const satisfies FormFieldDefinition<FormFields>,
+      {
         definition: FORM_FIELD_DEFINITION_TYPE.TEXTFIELD,
         name: 'code',
         label: t`Code`,
@@ -115,12 +121,6 @@ export const CaseTypeDimsAdminPage = () => {
         label: t`Description`,
         multiline: true,
         rows: 5,
-      } as const satisfies FormFieldDefinition<FormFields>,
-      {
-        definition: FORM_FIELD_DEFINITION_TYPE.AUTOCOMPLETE,
-        name: 'dim_id',
-        label: t`Dimension`,
-        options: dimOptionsQuery.options,
       } as const satisfies FormFieldDefinition<FormFields>,
       {
         definition: FORM_FIELD_DEFINITION_TYPE.TEXTFIELD,
@@ -179,11 +179,14 @@ export const CaseTypeDimsAdminPage = () => {
   }, [caseTypeId, t]);
 
   const title = useMemo(() => {
-    if (caseTypeId && caseTypeMapQuery.map.has(caseTypeId)) {
-      return t('{{caseType}} → Case type dimensions', { caseType: caseTypeMapQuery.map.get(caseTypeId)?.name });
-    }
+    const parts: string[] = [];
 
-    return t`Case type dimensions`;
+    if (caseTypeId && caseTypeMapQuery.map.has(caseTypeId)) {
+      parts.push(caseTypeMapQuery.map.get(caseTypeId)?.name);
+    }
+    parts.push(t`Case type dimensions`);
+
+    return parts;
   }, [caseTypeId, caseTypeMapQuery.map, t]);
 
   return (
@@ -193,7 +196,7 @@ export const CaseTypeDimsAdminPage = () => {
       fetchAllSelect={fetchAllSelect}
       subPages={subPages}
       crudCommandType={CommandName.CaseTypeDimCrudCommand}
-      createItemDialogTitle={t`Create new case type dim`}
+      createItemDialogTitle={t`Create new case type dimension`}
       defaultSortByField={caseTypeId ? 'rank' : 'case_type_id'}
       defaultSortDirection={'asc'}
       tableStoreStorageNamePostFix={caseTypeId ? `CaseType` : undefined}

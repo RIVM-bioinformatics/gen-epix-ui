@@ -110,7 +110,7 @@ export type CrudPageProps<
   readonly showIdColumn?: boolean;
   readonly tableColumns: TableColumn<TTableData>[];
   readonly contentActions?: ReactElement;
-  readonly title: string;
+  readonly title: string | string[];
   readonly updateOne?: (variables: TFormFields, data: TData) => Promise<TData>;
   readonly convertToTableData?: (items: TData[]) => TTableData[];
   readonly onFormChange?: (item: TData, formValues: TFormFields, formMethods: UseFormReturn<TFormFields>) => void;
@@ -568,6 +568,14 @@ export const CrudPage = <
     );
   }, [contentActions, userCanCreate, isLoading, isCreating, onCreateItemButtonClick, createItemButtonText, t, theme]);
 
+  const normalizedTitle = useMemo<string>(() => {
+    if (isArray(title)) {
+      return title.join(' → ');
+    }
+    return title;
+  }, [title]);
+
+
   return (
     <TableStoreContextProvider store={tableStore}>
       <PageContainer
@@ -576,13 +584,13 @@ export const CrudPage = <
         contentActions={customContentActions}
         contentHeader={(
           <TableCaption
-            caption={contentHeader ?? title}
+            caption={contentHeader ?? normalizedTitle}
             component={'h2'}
             variant={'h2'}
           />
         )}
         testIdAttributes={testIdAttributes}
-        title={title}
+        title={normalizedTitle}
       >
         <Box
           sx={{

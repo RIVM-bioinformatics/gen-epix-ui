@@ -35,6 +35,7 @@ import { TableUtil } from '../../utils/TableUtil';
 import { TestIdUtil } from '../../utils/TestIdUtil';
 import { CrudPage } from '../CrudPage';
 import { useColsValidationRulesQuery } from '../../dataHooks/useColsValidationRulesQuery';
+import { DataUtil } from '../../utils/DataUtil';
 
 type FormFields = Pick<Col, 'dim_id' | 'code_suffix' | 'code' | 'rank' | 'label' | 'col_type' | 'concept_set_id' | 'region_set_id' | 'genetic_distance_protocol_id' | 'description'>;
 
@@ -85,7 +86,7 @@ export const ColsAdminPage = () => {
       label: string().extendedAlphaNumeric().required().max(100),
       code: string().code().required().max(100),
       code_suffix: string().alphaNumeric().required().max(100),
-      rank: number().integer().positive().required().transform((_val: unknown, orig: string | number) => orig === '' ? undefined : orig),
+      rank: number().integer().required().transform((_val: unknown, orig: string | number) => orig === '' ? undefined : orig),
       dim_id: string().uuid4().required().max(100),
       col_type: mixed<ColType>().required().oneOf(Object.values(ColType)),
       description: string().freeFormText().required().max(100),
@@ -107,8 +108,11 @@ export const ColsAdminPage = () => {
     });
   }, []);
 
+  const colTypeOptionsByDimType = useMemo(() => {
+    return DataUtil.getColTypeOptionsByDimId({ dimMap: dimMapQuery.map, colTypeOptions: colTypeOptionsQuery.options, colsValidationRules: colsValidationRulesQuery.data?.valid_col_types_by_dim_type ?? {} });
+  }, [colTypeOptionsQuery.options, colsValidationRulesQuery.data?.valid_col_types_by_dim_type, dimMapQuery.map]);
+
   const onFormChange = useCallback((_item: Col, values: FormFields, formMethods: UseFormReturn<FormFields>) => {
-    // Example: You can perform side effects here when the form changes
     if (values.col_type && values.concept_set_id && !CONCEPT_COL_TYPES.includes(values.col_type)) {
       formMethods.setValue('concept_set_id', null);
     }
@@ -118,14 +122,21 @@ export const ColsAdminPage = () => {
     if (values.col_type && values.genetic_distance_protocol_id && values.col_type !== ColType.GENETIC_DISTANCE) {
       formMethods.setValue('genetic_distance_protocol_id', null);
     }
-  }, []);
+    if (values.col_type && values.dim_id) {
+      const validColOptions = colTypeOptionsByDimType.get(values.dim_id);
+      if (!validColOptions.find(option => option.value === values.col_type)) {
+        formMethods.setValue('col_type', validColOptions.length === 1 ? validColOptions[0].value as ColType : null);
+      }
+    }
+  }, [colTypeOptionsByDimType]);
 
-  const formFieldDefinitions = useCallback((item: Col, values?: FormFields): FormFieldDefinition<FormFields>[] => {
-    const sanitizedDimId = dimId ?? item?.dim_id ?? values?.dim_id;
-    const dim = sanitizedDimId ? dimMapQuery.map.get(sanitizedDimId) : null;
-    const colTypeOptions = dim ? colTypeOptionsQuery.options.filter(option => {
-      return colsValidationRulesQuery.data?.valid_col_types_by_dim_type[dim.dim_type].includes(option.value as ColType);
-    }) : colTypeOptionsQuery.options;
+
+  const formFieldDefinitions = useCallback((item: Col, values: FormFields): FormFieldDefinition<FormFields>[] => {
+    const normalizedDimId = values?.dim_id ?? item?.dim_id ?? dimId ?? null;
+
+    const colTypeOptions = normalizedDimId ?
+      (colTypeOptionsByDimType.get(normalizedDimId) ?? []) :
+      colTypeOptionsQuery.options;
 
     const definitions: FormFieldDefinition<FormFields>[] = [];
 
@@ -199,7 +210,7 @@ export const ColsAdminPage = () => {
     );
 
     return definitions;
-  }, [colTypeOptionsQuery.isLoading, colTypeOptionsQuery.options, colsValidationRulesQuery.data?.valid_col_types_by_dim_type, conceptSetOptionsQuery.options, dimId, dimMapQuery.map, dimOptionsQuery.options, geneticDistanceProtocolOptionsQuery.options, regionSetOptionsQuery.options, t]);
+  }, [colTypeOptionsByDimType, colTypeOptionsQuery.isLoading, colTypeOptionsQuery.options, conceptSetOptionsQuery.options, dimId, dimOptionsQuery.options, geneticDistanceProtocolOptionsQuery.options, regionSetOptionsQuery.options, t]);
 
   const tableColumns = useMemo((): TableColumn<Col>[] => {
     const columns: TableColumn<Col>[] = [];
@@ -235,11 +246,14 @@ export const ColsAdminPage = () => {
   }, [dimId]);
 
   const title = useMemo(() => {
-    if (dimId && dimMapQuery.map.has(dimId)) {
-      return t('{{dim}} → Columns', { dim: dimMapQuery.map.get(dimId)?.code });
-    }
+    const parts: string[] = [];
 
-    return t`Columns`;
+    if (dimId && dimMapQuery.map.has(dimId)) {
+      parts.push(dimMapQuery.map.get(dimId)?.code);
+    }
+    parts.push(t`Columns`);
+
+    return parts;
   }, [dimId, dimMapQuery.map, t]);
 
   return (
