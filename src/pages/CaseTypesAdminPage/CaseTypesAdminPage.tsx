@@ -7,11 +7,6 @@ import {
   object,
   string,
 } from 'yup';
-import {
-  MenuItem,
-  ListItemIcon,
-  ListItemText,
-} from '@mui/material';
 
 import type { CaseType } from '../../api';
 import {
@@ -25,16 +20,12 @@ import { useArray } from '../../hooks/useArray';
 import type { FormFieldDefinition } from '../../models/form';
 import { FORM_FIELD_DEFINITION_TYPE } from '../../models/form';
 import { QUERY_KEY } from '../../models/query';
-import type {
-  TableColumn,
-  TableRowParams,
-} from '../../models/table';
+import type { TableColumn } from '../../models/table';
 import { TableUtil } from '../../utils/TableUtil';
 import { TestIdUtil } from '../../utils/TestIdUtil';
+import type { CrudPageSubPage } from '../CrudPage';
 import { CrudPage } from '../CrudPage';
 import { AuthorizationManager } from '../../classes/managers/AuthorizationManager';
-import { RouterManager } from '../../classes/managers/RouterManager';
-import type { DialogAction } from '../../components/ui/Dialog';
 
 type FormFields = Pick<CaseType, 'name' | 'etiological_agent_id' | 'disease_id'>;
 
@@ -127,57 +118,25 @@ export const CaseTypesAdminPage = () => {
     ];
   }, [etiologicalAgentOptionsQuery.options, diseaseOptionsQuery.options, t]);
 
-  const doesUserHavePermissionToViewCaseTypeDims = useMemo(() => {
-    return AuthorizationManager.instance.doesUserHavePermission([
-      { command_name: CommandName.ContactCrudCommand, permission_type: PermissionType.READ },
-    ]);
-  }, []);
-
-  const extraActionsFactory = useCallback((params: TableRowParams<CaseType>) => {
-    if (!doesUserHavePermissionToViewCaseTypeDims) {
+  const subPages = useMemo<CrudPageSubPage<CaseType>[]>(() => {
+    if (!AuthorizationManager.instance.doesUserHavePermission([
+      { command_name: CommandName.CaseTypeDimCrudCommand, permission_type: PermissionType.READ },
+    ])) {
       return [];
     }
 
-    return [(
-      <MenuItem
-        key={'custom-action-1'}
-        // eslint-disable-next-line react/jsx-no-bind
-        onClick={async () => await RouterManager.instance.router.navigate({
-          pathname: `/management/case-types/${params.row.id}/case-type-dimensions`,
-        })}
-      >
-        <ListItemIcon />
-        <ListItemText>
-          {t`Manage case type dimensions`}
-        </ListItemText>
-      </MenuItem>
-    )];
-  }, [doesUserHavePermissionToViewCaseTypeDims, t]);
-
-
-  const editDialogExtraActionsFactory = useCallback((item: CaseType): DialogAction[] => {
-    if (!doesUserHavePermissionToViewCaseTypeDims) {
-      return [];
-    }
     return [
       {
-        ...TestIdUtil.createAttributes('CaseTypesAdminPage-ManageCaseTypeDimensionsButton'),
         label: t`Manage case type dimensions`,
-        color: 'primary',
-        variant: 'outlined',
-        onClick: async () => await RouterManager.instance.router.navigate({
-          pathname: `/management/case-types/${item.id}/case-type-dimensions`,
-        }),
-      },
+        getPathName: (item: CaseType) => `/management/case-types/${item.id}/case-type-dimensions`,
+      } satisfies CrudPageSubPage<CaseType>,
     ];
-  }, [doesUserHavePermissionToViewCaseTypeDims, t]);
-
+  }, [t]);
 
   return (
     <CrudPage<FormFields, CaseType>
       createOne={createOne}
-      extraActionsFactory={extraActionsFactory}
-      editDialogExtraActionsFactory={editDialogExtraActionsFactory}
+      subPages={subPages}
       crudCommandType={CommandName.CaseTypeCrudCommand}
       createItemDialogTitle={t`Create new case type`}
       defaultSortByField={'name'}

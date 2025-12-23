@@ -67,6 +67,12 @@ import { CrudPageEditDialog } from './CrudPageEditDialog';
 import type { CrudPageDeleteDialogRefMethods } from './CrudPageDeleteDialog';
 import { CrudPageDeleteDialog } from './CrudPageDeleteDialog';
 
+export type CrudPageSubPage<TData extends GenericData> = {
+  getPathName: (item: TData) => string;
+  label: string;
+  icon?: ReactElement;
+};
+
 export type CrudPageProps<
   TFormFields,
   TData extends GenericData,
@@ -77,6 +83,7 @@ export type CrudPageProps<
   readonly createItemDialogTitle?: string;
   readonly createOne?: (item: TFormFields) => Promise<TData>;
   readonly canEditItem?: (item: TData) => boolean;
+  readonly subPages?: CrudPageSubPage<TData>[];
   readonly defaultNewItem?: Partial<TFormFields>;
   readonly crudCommandType?: CommandName;
   readonly customOnRowClick?: (params: TableRowParams<TData>) => void;
@@ -136,6 +143,7 @@ export const CrudPage = <
   defaultSortByField,
   defaultSortDirection,
   deleteOne,
+  subPages,
   editDialogExtraActionsFactory,
   extraActionsFactory,
   extraCreateOnePermissions,
@@ -247,13 +255,33 @@ export const CrudPage = <
     );
   }, [createOne, error, authorizationManager, crudCommandType, extraCreateOnePermissions]);
 
+  const normalizedEditDialogExtraActionsFactory = useCallback((item: TData) => {
+    const actions: DialogAction[] = [];
+
+    if (editDialogExtraActionsFactory) {
+      actions.push(...editDialogExtraActionsFactory(item));
+    }
+    subPages?.forEach(subPage => {
+      actions.push({
+        label: subPage.label,
+        color: 'primary',
+        variant: 'outlined',
+        onClick: async () => await RouterManager.instance.router.navigate({
+          pathname: subPage.getPathName(item),
+        }),
+      });
+    });
+
+    return actions;
+  }, [editDialogExtraActionsFactory, subPages]);
+
   const editItem = useCallback((item: TTableData) => {
     editDialogRef.current.open({
-      extraActionsFactory: editDialogExtraActionsFactory,
+      extraActionsFactory: normalizedEditDialogExtraActionsFactory,
       item,
       canSave: userCanEdit && (!item || canEditItem ? canEditItem(item) : true),
     });
-  }, [canEditItem, editDialogExtraActionsFactory, userCanEdit]);
+  }, [canEditItem, normalizedEditDialogExtraActionsFactory, userCanEdit]);
 
   const tryToGetName = useCallback((item: TData | TFormFields) => {
     let name: string;
@@ -380,6 +408,35 @@ export const CrudPage = <
     mutateDelete(item);
   }, [mutateDelete]);
 
+  const normalizedExtraActions = useCallback((params: TableRowParams<TTableData>) => {
+    const actions: ReactElement[] = [];
+
+    const extraActions = extraActionsFactory ? extraActionsFactory(params) : [];
+    if (extraActions?.length > 0 && actions.length > 0) {
+      actions.push(...extraActions);
+    }
+    subPages?.forEach(subPage => {
+      actions.push((
+        <MenuItem
+          key={subPage.label}
+          // eslint-disable-next-line react/jsx-no-bind
+          onClick={async () => await RouterManager.instance.router.navigate({
+            pathname: subPage.getPathName(params.row),
+          })}
+        >
+          <ListItemIcon>
+            {subPage.icon ? subPage.icon : <ArrowCircleRightIcon />}
+          </ListItemIcon>
+          <ListItemText>
+            {subPage.label}
+          </ListItemText>
+        </MenuItem>
+      ));
+    });
+
+    return actions;
+  }, [extraActionsFactory, subPages]);
+
   const columns = useMemo<TableColumn<TTableData>[]>(() => {
     const internalColumns: TableColumn<TTableData>[] = [
       TableUtil.createReadableIndexColumn(),
@@ -396,7 +453,7 @@ export const CrudPage = <
     }
     internalColumns.push(...tableColumns);
 
-    if (userCanEdit || userCanDelete || onShowItem || extraActionsFactory) {
+    if (userCanEdit || userCanDelete || onShowItem || extraActionsFactory || subPages?.length) {
       internalColumns.push(
         TableUtil.createActionsColumn({
           t,
@@ -452,7 +509,7 @@ export const CrudPage = <
                 </MenuItem>,
               );
             }
-            const extraActions = extraActionsFactory ? extraActionsFactory(params) : [];
+            const extraActions = normalizedExtraActions(params) ?? [];
             if (extraActions?.length > 0 && actions.length > 0) {
               actions.push(...extraActions);
             }
@@ -462,7 +519,7 @@ export const CrudPage = <
       );
     }
     return internalColumns;
-  }, [extraActionsFactory, onEditIconClick, onShowItem, showIdColumn, t, tableColumns, userCanDelete, userCanEdit]);
+  }, [extraActionsFactory, normalizedExtraActions, onEditIconClick, onShowItem, showIdColumn, subPages?.length, t, tableColumns, userCanDelete, userCanEdit]);
 
   const tableRows = useMemo(() => {
     if (!convertToTableData) {

@@ -7,11 +7,6 @@ import {
   object,
   string,
 } from 'yup';
-import {
-  MenuItem,
-  ListItemIcon,
-  ListItemText,
-} from '@mui/material';
 
 import type { Organization } from '../../api';
 import {
@@ -22,16 +17,12 @@ import {
 import type { FormFieldDefinition } from '../../models/form';
 import { FORM_FIELD_DEFINITION_TYPE } from '../../models/form';
 import { QUERY_KEY } from '../../models/query';
-import type {
-  TableColumn,
-  TableRowParams,
-} from '../../models/table';
+import type { TableColumn } from '../../models/table';
 import { TableUtil } from '../../utils/TableUtil';
 import { TestIdUtil } from '../../utils/TestIdUtil';
+import type { CrudPageSubPage } from '../CrudPage';
 import { CrudPage } from '../CrudPage';
 import { AuthorizationManager } from '../../classes/managers/AuthorizationManager';
-import { RouterManager } from '../../classes/managers/RouterManager';
-import type { DialogAction } from '../../components/ui/Dialog';
 
 type FormFields = Pick<Organization, 'name' | 'legal_entity_code'>;
 
@@ -87,49 +78,20 @@ export const OrganizationsAdminPage = () => {
     ];
   }, [t]);
 
-  const doesUserHavePermissionToViewSites = useMemo(() => {
-    return AuthorizationManager.instance.doesUserHavePermission([
-      { command_name: CommandName.ContactCrudCommand, permission_type: PermissionType.READ },
-    ]);
-  }, []);
-
-  const extraActionsFactory = useCallback((params: TableRowParams<Organization>) => {
-    if (!doesUserHavePermissionToViewSites) {
+  const subPages = useMemo<CrudPageSubPage<Organization>[]>(() => {
+    if (!AuthorizationManager.instance.doesUserHavePermission([
+      { command_name: CommandName.SiteCrudCommand, permission_type: PermissionType.READ },
+    ])) {
       return [];
     }
 
-    return [(
-      <MenuItem
-        key={'custom-action-1'}
-        // eslint-disable-next-line react/jsx-no-bind
-        onClick={async () => await RouterManager.instance.router.navigate({
-          pathname: `/management/organizations/${params.row.id}/sites`,
-        })}
-      >
-        <ListItemIcon />
-        <ListItemText>
-          {t`Manage sites`}
-        </ListItemText>
-      </MenuItem>
-    )];
-  }, [doesUserHavePermissionToViewSites, t]);
-
-  const editDialogExtraActionsFactory = useCallback((item: Organization): DialogAction[] => {
-    if (!doesUserHavePermissionToViewSites) {
-      return [];
-    }
     return [
       {
-        ...TestIdUtil.createAttributes('OrganizationsAdminPage-ManageSitesButton'),
         label: t`Manage sites`,
-        color: 'primary',
-        variant: 'outlined',
-        onClick: async () => await RouterManager.instance.router.navigate({
-          pathname: `/management/organizations/${item.id}/sites`,
-        }),
-      },
+        getPathName: (item: Organization) => `/management/organizations/${item.id}/sites`,
+      } satisfies CrudPageSubPage<Organization>,
     ];
-  }, [doesUserHavePermissionToViewSites, t]);
+  }, [t]);
 
   return (
     <CrudPage<FormFields, Organization>
@@ -139,8 +101,7 @@ export const OrganizationsAdminPage = () => {
       defaultSortByField={'name'}
       defaultSortDirection={'asc'}
       deleteOne={deleteOne}
-      editDialogExtraActionsFactory={editDialogExtraActionsFactory}
-      extraActionsFactory={extraActionsFactory}
+      subPages={subPages}
       fetchAll={fetchAll}
       formFieldDefinitions={formFieldDefinitions}
       getName={getName}

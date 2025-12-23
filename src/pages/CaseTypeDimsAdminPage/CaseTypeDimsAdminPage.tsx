@@ -10,11 +10,6 @@ import {
   string,
 } from 'yup';
 import { useParams } from 'react-router-dom';
-import {
-  MenuItem,
-  ListItemIcon,
-  ListItemText,
-} from '@mui/material';
 
 import type { CaseTypeDim } from '../../api';
 import {
@@ -30,17 +25,13 @@ import { useArray } from '../../hooks/useArray';
 import type { FormFieldDefinition } from '../../models/form';
 import { FORM_FIELD_DEFINITION_TYPE } from '../../models/form';
 import { QUERY_KEY } from '../../models/query';
-import type {
-  TableColumn,
-  TableRowParams,
-} from '../../models/table';
+import type { TableColumn } from '../../models/table';
 import { TableUtil } from '../../utils/TableUtil';
 import { TestIdUtil } from '../../utils/TestIdUtil';
+import type { CrudPageSubPage } from '../CrudPage';
 import { CrudPage } from '../CrudPage';
 import { useDimOptionsQuery } from '../../dataHooks/useDimsQuery';
 import { AuthorizationManager } from '../../classes/managers/AuthorizationManager';
-import { RouterManager } from '../../classes/managers/RouterManager';
-import type { DialogAction } from '../../components/ui/Dialog';
 
 type FormFields = Pick<CaseTypeDim, 'case_type_id' | 'dim_id' | 'occurrence' | 'code' | 'label' | 'description' | 'rank' | 'is_case_date_dim'>;
 
@@ -172,50 +163,20 @@ export const CaseTypeDimsAdminPage = () => {
     };
   }, [caseTypeId]);
 
-  const doesUserHavePermissionToViewCaseTypeColumns = useMemo(() => {
-    return AuthorizationManager.instance.doesUserHavePermission([
-      { command_name: CommandName.ContactCrudCommand, permission_type: PermissionType.READ },
-    ]);
-  }, []);
-
-  const extraActionsFactory = useCallback((params: TableRowParams<CaseTypeDim>) => {
-    if (!doesUserHavePermissionToViewCaseTypeColumns) {
+  const subPages = useMemo<CrudPageSubPage<CaseTypeDim>[]>(() => {
+    if (!AuthorizationManager.instance.doesUserHavePermission([
+      { command_name: CommandName.ColCrudCommand, permission_type: PermissionType.READ },
+    ])) {
       return [];
     }
 
-    return [(
-      <MenuItem
-        key={'custom-action-1'}
-        // eslint-disable-next-line react/jsx-no-bind
-        onClick={async () => await RouterManager.instance.router.navigate({
-          pathname: caseTypeId ? `/management/case-types/${caseTypeId}/case-type-dimensions/${params.row.id}/case-type-columns` : `/management/case-type-dimensions/${params.row.id}/case-type-columns`,
-        })}
-      >
-        <ListItemIcon />
-        <ListItemText>
-          {t`Manage case type columns`}
-        </ListItemText>
-      </MenuItem>
-    )];
-  }, [caseTypeId, doesUserHavePermissionToViewCaseTypeColumns, t]);
-
-
-  const editDialogExtraActionsFactory = useCallback((item: CaseTypeDim): DialogAction[] => {
-    if (!doesUserHavePermissionToViewCaseTypeColumns) {
-      return [];
-    }
     return [
       {
-        ...TestIdUtil.createAttributes('CaseTypeDimsAdminPage-ManageCaseTypeDimensionsButton'),
         label: t`Manage case type columns`,
-        color: 'primary',
-        variant: 'outlined',
-        onClick: async () => await RouterManager.instance.router.navigate({
-          pathname: caseTypeId ? `/management/case-types/${caseTypeId}/case-type-dimensions/${item.id}/case-type-columns` : `/management/case-type-dimensions/${item.id}/case-type-columns`,
-        }),
-      },
+        getPathName: (item: CaseTypeDim) => caseTypeId ? `/management/case-types/${caseTypeId}/case-type-dimensions/${item.id}/case-type-columns` : `/management/case-type-dimensions/${item.id}/case-type-columns`,
+      } satisfies CrudPageSubPage<CaseTypeDim>,
     ];
-  }, [caseTypeId, doesUserHavePermissionToViewCaseTypeColumns, t]);
+  }, [caseTypeId, t]);
 
   const title = useMemo(() => {
     if (caseTypeId && caseTypeMapQuery.map.has(caseTypeId)) {
@@ -230,8 +191,7 @@ export const CaseTypeDimsAdminPage = () => {
       createOne={createOne}
       defaultNewItem={defaultNewItem}
       fetchAllSelect={fetchAllSelect}
-      extraActionsFactory={extraActionsFactory}
-      editDialogExtraActionsFactory={editDialogExtraActionsFactory}
+      subPages={subPages}
       crudCommandType={CommandName.CaseTypeDimCrudCommand}
       createItemDialogTitle={t`Create new case type dim`}
       defaultSortByField={caseTypeId ? 'rank' : 'case_type_id'}
