@@ -4,6 +4,7 @@ import {
   useEffect,
   useId,
   useMemo,
+  useState,
 } from 'react';
 import SaveIcon from '@mui/icons-material/Save';
 import { useTranslation } from 'react-i18next';
@@ -12,8 +13,12 @@ import type {
   AnyObject,
 } from 'yup';
 import { yupResolver } from '@hookform/resolvers/yup';
-import type { Resolver } from 'react-hook-form';
+import type {
+  Resolver,
+  UseFormReturn,
+} from 'react-hook-form';
 import { useForm } from 'react-hook-form';
+import { useDebouncedCallback } from 'use-debounce';
 
 import { GenericForm } from '../../components/form/helpers/GenericForm';
 import type { DialogAction } from '../../components/ui/Dialog';
@@ -23,9 +28,9 @@ import type {
 } from '../../hoc/withDialog';
 import { withDialog } from '../../hoc/withDialog';
 import type { GenericData } from '../../models/data';
-import type { FormFieldDefinition } from '../../models/form';
 import { FormUtil } from '../../utils/FormUtil';
 import { TestIdUtil } from '../../utils/TestIdUtil';
+import type { FormFieldDefinition } from '../../models/form';
 
 
 export interface CrudPageEditDialogOpenProps<TData extends GenericData> {
@@ -35,9 +40,11 @@ export interface CrudPageEditDialogOpenProps<TData extends GenericData> {
 }
 export interface CrudPageEditDialogProps<TData extends GenericData, TFormFields extends AnyObject> extends WithDialogRenderProps<CrudPageEditDialogOpenProps<TData>> {
   readonly onSave: (formValues: TFormFields, item: TData) => void;
-  readonly formFieldDefinitions: FormFieldDefinition<TFormFields>[];
+  readonly onChange?: (item: TData, formValues: TFormFields, formMethods: UseFormReturn<TFormFields>) => void;
+  readonly formFieldDefinitions: FormFieldDefinition<TFormFields>[] | ((item: TData, values?: TFormFields) => FormFieldDefinition<TFormFields>[]);
   readonly getName: (item: TData | TFormFields) => string;
   readonly createItemDialogTitle?: string;
+  readonly defaultNewItem?: Partial<TFormFields>;
   readonly schema: ObjectSchema<TFormFields, TFormFields>;
 }
 export type CrudPageEditDialogRefMethods<TData extends GenericData, TFormFields extends AnyObject> = WithDialogRefMethods<CrudPageEditDialogProps<TData, TFormFields>, CrudPageEditDialogOpenProps<TData>>;
@@ -47,6 +54,7 @@ export const CrudPageEditDialog = withDialog<CrudPageEditDialogProps<any, any>, 
   {
     onSave,
     onClose,
+    onChange,
     openProps,
     onTitleChange,
     onActionsChange,
@@ -54,10 +62,17 @@ export const CrudPageEditDialog = withDialog<CrudPageEditDialogProps<any, any>, 
     schema,
     getName,
     createItemDialogTitle,
+    defaultNewItem,
   }: CrudPageEditDialogProps<TData, TFormFields>,
 ): ReactElement => {
   const [t] = useTranslation();
   const formId = useId();
+
+  const initialFormFieldDefinitions = useMemo(() => {
+    return typeof formFieldDefinitions === 'function' ? formFieldDefinitions(openProps.item) : formFieldDefinitions;
+  }, [formFieldDefinitions, openProps.item]);
+
+  const [resolvedFormFieldDefinitions, setResolvedFormFieldDefinitions] = useState<FormFieldDefinition<TFormFields>[]>(initialFormFieldDefinitions);
 
   useEffect(() => {
     const actions: DialogAction[] = [];
@@ -73,26 +88,55 @@ export const CrudPageEditDialog = withDialog<CrudPageEditDialogProps<any, any>, 
       type: 'submit',
       label: t`Save`,
       startIcon: <SaveIcon />,
-      disabled: !openProps.canSave || formFieldDefinitions.some(def => def.loading),
+      disabled: !openProps.canSave || resolvedFormFieldDefinitions.some(def => def.loading),
     });
     onActionsChange(actions);
-  }, [onActionsChange, formId, t, formFieldDefinitions, openProps]);
+  }, [onActionsChange, formId, t, resolvedFormFieldDefinitions, openProps]);
+
+  const values = useMemo<TFormFields>(() => {
+    return { ...defaultNewItem, ...FormUtil.createFormValues(resolvedFormFieldDefinitions, { ...defaultNewItem, ...openProps.item }) };
+  }, [resolvedFormFieldDefinitions, openProps.item, defaultNewItem]);
 
   useEffect(() => {
     if (openProps.item) {
-      onTitleChange(`Edit item: ${getName(openProps.item)}`);
+      onTitleChange(`Edit item: ${getName({ ...defaultNewItem as TFormFields, ...openProps.item ?? {} })}`);
     } else {
       onTitleChange(createItemDialogTitle ?? t`Create new item`);
     }
-  }, [getName, onTitleChange, openProps, t, createItemDialogTitle]);
+  }, [getName, onTitleChange, openProps, t, createItemDialogTitle, defaultNewItem]);
 
-  const values = useMemo<TFormFields>(() => FormUtil.createFormValues(formFieldDefinitions, openProps.item), [formFieldDefinitions, openProps.item]);
 
   const formMethods = useForm<TFormFields>({
-    resolver: yupResolver(schema) as unknown as Resolver<TFormFields>,
+    resolver: yupResolver(schema) as Resolver<TFormFields>,
     values,
   });
-  const { handleSubmit, formState } = formMethods;
+  const { handleSubmit, formState, subscribe } = formMethods;
+
+  const debouncedHandleValuesChange = useDebouncedCallback((formValues: TFormFields) => {
+    if (onChange) {
+      onChange(openProps.item, formValues, formMethods);
+    }
+
+    if (typeof formFieldDefinitions !== 'function') {
+      return;
+    }
+    setResolvedFormFieldDefinitions(formFieldDefinitions(openProps.item, formValues));
+  }, 500, {
+    leading: false,
+    trailing: true,
+  });
+
+  useEffect(() => {
+    const unsubscribe = subscribe({
+      formState: {
+        values: true,
+      },
+      callback: ({ values: formValues }) => {
+        debouncedHandleValuesChange(formValues);
+      },
+    });
+    return () => unsubscribe();
+  }, [debouncedHandleValuesChange, formFieldDefinitions, subscribe]);
 
   if (formState.errors && Object.keys(formState.errors).length > 0) {
     console.table(formState.errors);
@@ -107,7 +151,7 @@ export const CrudPageEditDialog = withDialog<CrudPageEditDialogProps<any, any>, 
     <GenericForm<TFormFields>
       schema={schema}
       disableAll={!openProps.canSave}
-      formFieldDefinitions={formFieldDefinitions}
+      formFieldDefinitions={resolvedFormFieldDefinitions}
       formId={formId}
       formMethods={formMethods}
       onSubmit={openProps.canSave ? handleSubmit(onFormSubmit) : undefined}

@@ -121,11 +121,11 @@ export const EventsPage = () => {
       TableUtil.createTextColumn({ id: 'name', name: t`Name`, flex: 1.5 }),
       TableUtil.createOptionsColumn({ id: 'case_set_category_id', name: t`Category`, options: caseSetCategoryOptionsQuery.options, flex: 0.4 }),
       TableUtil.createOptionsColumn({ id: 'case_set_status_id', name: t`Status`, options: caseSetStatusOptionsQuery.options, flex: 0.4 }),
-      TableUtil.createNumberColumn({ id: 'n_cases', name: t`Cases`, flex: 0.35 }),
-      // TableUtil.createNumberColumn({ id: 'n_own_cases', name: t`Own cases`, flex: 0.35 }),
-      TableUtil.createDateColumn({ id: 'first_case_month', name: t`First case month`, dateFormat: DATE_FORMAT.YEAR_MONTH }),
-      TableUtil.createDateColumn({ id: 'last_case_month', name: t`Last case month`, dateFormat: DATE_FORMAT.YEAR_MONTH }),
+      TableUtil.createDateColumn({ id: 'first_case_date', name: t`First case date`, dateFormat: DATE_FORMAT.DATE }),
+      TableUtil.createDateColumn({ id: 'last_case_date', name: t`Last case date`, dateFormat: DATE_FORMAT.DATE }),
       TableUtil.createDateColumn({ id: 'created_at', name: t`Created on` }),
+      TableUtil.createNumberColumn({ id: 'n_own_cases', name: t`Own cases`, flex: 0.35 }),
+      TableUtil.createNumberColumn({ id: 'n_cases', name: t`Cases`, flex: 0.35 }),
       TableUtil.createActionsColumn({
         t,
         getActions: (params) => {

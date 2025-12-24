@@ -43,7 +43,7 @@ export interface EpiUploadStoreState {
   dataCollectionOptions: OptionBase<string>[];
   fileList: FileList;
   fileName: string;
-  libraryPrepProtocolId: string;
+  sequencingProtocolId: string;
   assemblyProtocolId: string;
   fileParsingError: string;
   importAction: EPI_UPLOAD_ACTION;
@@ -108,7 +108,7 @@ const createEpiUploadStoreDefaultState: () => EpiUploadStoreState = () => ({
   importAction: EPI_UPLOAD_ACTION.CREATE,
   initError: null,
   isInitLoading: true,
-  libraryPrepProtocolId: null,
+  sequencingProtocolId: null,
   mappedColumns: null,
   rawData: null,
   sequenceFilesDataTransfer: new DataTransfer(),

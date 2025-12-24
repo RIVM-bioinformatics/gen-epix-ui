@@ -27,7 +27,7 @@ import noop from 'lodash/noop';
 import { FileSelector } from '../../ui/FileSelector';
 import { EpiUploadUtil } from '../../../utils/EpiUploadUtil';
 import { EpiUploadStoreContext } from '../../../stores/epiUploadStore';
-import { useLibraryPrepProtocolOptionsQuery } from '../../../dataHooks/useLibraryPrepProtocolsQuery';
+import { useSequencingProtocolOptionsQuery } from '../../../dataHooks/useSequencingProtocolsQuery';
 import { useArray } from '../../../hooks/useArray';
 import { ResponseHandler } from '../../ui/ResponseHandler';
 import type { FormFieldDefinition } from '../../../models/form';
@@ -39,7 +39,7 @@ import { EpiUploadNavigation } from './EpiUploadNavigation';
 
 
 type FormFields = {
-  libraryPrepProtocolId: string;
+  sequencingProtocolId: string;
   assemblyProtocolId: string;
 };
 
@@ -57,17 +57,17 @@ export const EpiUploadSelectSequenceFiles = () => {
 
   const formId = useId();
 
-  const libraryPrepProtocolOptionsQuery = useLibraryPrepProtocolOptionsQuery();
+  const sequencingProtocolOptionsQuery = useSequencingProtocolOptionsQuery();
   const assemblyProtocolOptionsQuery = useAssemblyProtocolOptionsQuery();
 
   const loadables = useArray([
-    libraryPrepProtocolOptionsQuery,
+    sequencingProtocolOptionsQuery,
     assemblyProtocolOptionsQuery,
   ]);
 
   const schema = useMemo(() => object<FormFields>().shape({
     // eslint-disable-next-line react-hooks/refs
-    libraryPrepProtocolId: string().when({
+    sequencingProtocolId: string().when({
       is: () => Array.from(dataTransfer.current?.files ?? []).filter(f => EpiUploadUtil.isReadsFile(f.name)).length > 0,
       then: () => string().uuid4().required(),
       otherwise: () => string().nullable().notRequired(),
@@ -83,31 +83,31 @@ export const EpiUploadSelectSequenceFiles = () => {
   const formMethods = useForm<FormFields>({
     resolver: yupResolver(schema) as unknown as Resolver<FormFields>,
     defaultValues: {
-      libraryPrepProtocolId: null,
+      sequencingProtocolId: null,
     },
     values: {
-      libraryPrepProtocolId: store.getState().libraryPrepProtocolId ?? null,
+      sequencingProtocolId: store.getState().sequencingProtocolId ?? null,
       assemblyProtocolId: store.getState().assemblyProtocolId ?? null,
     },
   });
   const { handleSubmit, setValue } = formMethods;
 
   useEffect(() => {
-    if (libraryPrepProtocolOptionsQuery.isLoading || assemblyProtocolOptionsQuery.isLoading) {
+    if (sequencingProtocolOptionsQuery.isLoading || assemblyProtocolOptionsQuery.isLoading) {
       return;
     }
-    if (!store.getState().libraryPrepProtocolId) {
-      setValue('libraryPrepProtocolId', libraryPrepProtocolOptionsQuery.options[0]?.value || null);
-      store.setState({ libraryPrepProtocolId: libraryPrepProtocolOptionsQuery.options[0]?.value || null });
+    if (!store.getState().sequencingProtocolId) {
+      setValue('sequencingProtocolId', sequencingProtocolOptionsQuery.options[0]?.value || null);
+      store.setState({ sequencingProtocolId: sequencingProtocolOptionsQuery.options[0]?.value || null });
     }
     if (!store.getState().assemblyProtocolId) {
       setValue('assemblyProtocolId', assemblyProtocolOptionsQuery.options[0]?.value || null);
       store.setState({ assemblyProtocolId: assemblyProtocolOptionsQuery.options[0]?.value || null });
     }
-  }, [assemblyProtocolOptionsQuery.isLoading, assemblyProtocolOptionsQuery.options, libraryPrepProtocolOptionsQuery.isLoading, libraryPrepProtocolOptionsQuery.options, setValue, store]);
+  }, [assemblyProtocolOptionsQuery.isLoading, assemblyProtocolOptionsQuery.options, sequencingProtocolOptionsQuery.isLoading, sequencingProtocolOptionsQuery.options, setValue, store]);
 
-  const onLibraryPrepProtocolChange = useCallback((value: string) => {
-    store.setState({ libraryPrepProtocolId: value });
+  const onSequencingProtocolChange = useCallback((value: string) => {
+    store.setState({ sequencingProtocolId: value });
   }, [store]);
 
   const onAssemblyProtocolChange = useCallback((value: string) => {
@@ -126,14 +126,14 @@ export const EpiUploadSelectSequenceFiles = () => {
         } as const satisfies FormFieldDefinition<FormFields>,
         {
           definition: FORM_FIELD_DEFINITION_TYPE.AUTOCOMPLETE,
-          name: 'libraryPrepProtocolId',
-          label: t`Reads files: library prep protocol`,
-          options: libraryPrepProtocolOptionsQuery.options,
-          loading: libraryPrepProtocolOptionsQuery.isLoading,
-          onChange: onLibraryPrepProtocolChange,
+          name: 'sequencingProtocolId',
+          label: t`Reads files: sequencing protocol`,
+          options: sequencingProtocolOptionsQuery.options,
+          loading: sequencingProtocolOptionsQuery.isLoading,
+          onChange: onSequencingProtocolChange,
         } as const satisfies FormFieldDefinition<FormFields>,
     ];
-  }, [assemblyProtocolOptionsQuery.isLoading, assemblyProtocolOptionsQuery.options, libraryPrepProtocolOptionsQuery.isLoading, libraryPrepProtocolOptionsQuery.options, onAssemblyProtocolChange, onLibraryPrepProtocolChange, t]);
+  }, [assemblyProtocolOptionsQuery.isLoading, assemblyProtocolOptionsQuery.options, onAssemblyProtocolChange, onSequencingProtocolChange, sequencingProtocolOptionsQuery.isLoading, sequencingProtocolOptionsQuery.options, t]);
 
   const completeCaseTypeColumnStats = useMemo(() => {
     return EpiUploadUtil.getCompleteCaseTypeColumnStats(completeCaseType);

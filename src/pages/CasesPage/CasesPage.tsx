@@ -62,7 +62,7 @@ type Row = {
   name: string;
   hasCases: boolean;
   [key: string]: string[] | string | number | boolean;
-} & Pick<CaseTypeStat, 'n_cases' | 'first_case_month' | 'last_case_month'>;
+} & Pick<CaseTypeStat, 'n_cases' | 'first_case_date' | 'last_case_date'>;
 
 const getCaseTypeSetCategoryRowId = (id: string) => `caseTypeSetCategory-${id}`;
 
@@ -162,8 +162,8 @@ export const CasesPage = () => {
         name: caseType.name,
         hasCases: caseTypeStatsMap.get(caseType.id)?.n_cases > 0,
         n_cases: caseTypeStatsMap.get(caseType.id)?.n_cases ?? 0,
-        first_case_month: caseTypeStatsMap.get(caseType.id)?.first_case_month,
-        last_case_month: caseTypeStatsMap.get(caseType.id)?.last_case_month,
+        first_case_date: caseTypeStatsMap.get(caseType.id)?.first_case_date,
+        last_case_date: caseTypeStatsMap.get(caseType.id)?.last_case_date,
       };
       caseTypeSetCategoriesQuery.data.forEach((caseTypeSetCategorie) => {
         row[getCaseTypeSetCategoryRowId(caseTypeSetCategorie.id)] = [];
@@ -215,13 +215,13 @@ export const CasesPage = () => {
           isInitiallyVisible: true,
         };
       }),
-      TableUtil.createNumberColumn({ name: t('Number of cases'), id: 'n_cases', flex: 0.5 }),
+      TableUtil.createNumberColumn({ name: t('Cases'), id: 'n_cases', flex: 0.5 }),
       {
-        ...TableUtil.createDateColumn({ name: t('First case month'), id: 'first_case_month', flex: 0.5, dateFormat: DATE_FORMAT.YEAR_MONTH }),
+        ...TableUtil.createDateColumn({ name: t('First case date'), id: 'first_case_date', flex: 0.5, dateFormat: DATE_FORMAT.DATE }),
         isInitiallyVisible: false,
       },
       {
-        ...TableUtil.createDateColumn({ name: t('Last case month'), id: 'last_case_month', flex: 0.5, dateFormat: DATE_FORMAT.YEAR_MONTH }),
+        ...TableUtil.createDateColumn({ name: t('Last case date'), id: 'last_case_date', flex: 0.5, dateFormat: DATE_FORMAT.DATE }),
         isInitiallyVisible: false,
       },
       TableUtil.createActionsColumn({

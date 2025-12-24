@@ -12,6 +12,7 @@ import type { CaseType } from '../../api';
 import {
   CaseApi,
   CommandName,
+  PermissionType,
 } from '../../api';
 import { useDiseaseOptionsQuery } from '../../dataHooks/useDiseasesQuery';
 import { useEtiologicalAgentOptionsQuery } from '../../dataHooks/useEtiologicalAgentsQuery';
@@ -22,7 +23,9 @@ import { QUERY_KEY } from '../../models/query';
 import type { TableColumn } from '../../models/table';
 import { TableUtil } from '../../utils/TableUtil';
 import { TestIdUtil } from '../../utils/TestIdUtil';
+import type { CrudPageSubPage } from '../CrudPage';
 import { CrudPage } from '../CrudPage';
+import { AuthorizationManager } from '../../classes/managers/AuthorizationManager';
 
 type FormFields = Pick<CaseType, 'name' | 'etiological_agent_id' | 'disease_id'>;
 
@@ -115,9 +118,25 @@ export const CaseTypesAdminPage = () => {
     ];
   }, [etiologicalAgentOptionsQuery.options, diseaseOptionsQuery.options, t]);
 
+  const subPages = useMemo<CrudPageSubPage<CaseType>[]>(() => {
+    if (!AuthorizationManager.instance.doesUserHavePermission([
+      { command_name: CommandName.CaseTypeDimCrudCommand, permission_type: PermissionType.READ },
+    ])) {
+      return [];
+    }
+
+    return [
+      {
+        label: t`Manage case type dimensions`,
+        getPathName: (item: CaseType) => `/management/case-types/${item.id}/case-type-dimensions`,
+      } satisfies CrudPageSubPage<CaseType>,
+    ];
+  }, [t]);
+
   return (
     <CrudPage<FormFields, CaseType>
       createOne={createOne}
+      subPages={subPages}
       crudCommandType={CommandName.CaseTypeCrudCommand}
       createItemDialogTitle={t`Create new case type`}
       defaultSortByField={'name'}

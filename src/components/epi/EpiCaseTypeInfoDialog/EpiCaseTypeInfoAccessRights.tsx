@@ -21,7 +21,7 @@ export type EpiCaseTypeInfoAccessRightsProps = {
 };
 
 export const EpiCaseTypeInfoAccessRights = ({ completeCaseType }: EpiCaseTypeInfoAccessRightsProps) => {
-  const caseTypeColumns = useMemo(() => EpiCaseTypeUtil.getCaseTypeColumns(completeCaseType), [completeCaseType]);
+  const caseTypeCols = useMemo(() => EpiCaseTypeUtil.getCaseTypeCols(completeCaseType), [completeCaseType]);
   const caseTypeAbacContext = useEpiCaseTypeAbacContext();
 
   return (
@@ -60,21 +60,21 @@ export const EpiCaseTypeInfoAccessRights = ({ completeCaseType }: EpiCaseTypeInf
                   </TableRow>
                 </TableHead>
                 <TableBody>
-                  {caseTypeColumns.map(caseTypeColumn => {
+                  {caseTypeCols.map(caseTypeCol => {
                     return (
-                      <TableRow key={caseTypeColumn.id}>
+                      <TableRow key={caseTypeCol.id}>
                         <TableCell sx={{ width: '20%', verticalAlign: 'top' }}>
-                          {caseTypeColumn.label}
+                          {caseTypeCol.label}
                         </TableCell>
                         <TableCell
                           sx={{ width: '20%', verticalAlign: 'top' }}
                         >
-                          { caseTypeAccessAbac.read_case_type_col_ids.includes(caseTypeColumn.id) ? t`Yes` : t`No`}
+                          { caseTypeAccessAbac.read_case_type_col_ids.includes(caseTypeCol.id) ? t`Yes` : t`No`}
                         </TableCell>
                         <TableCell
                           sx={{ width: '20%', verticalAlign: 'top' }}
                         >
-                          { caseTypeAccessAbac.write_case_type_col_ids.includes(caseTypeColumn.id) ? t`Yes` : t`No`}
+                          { caseTypeAccessAbac.write_case_type_col_ids.includes(caseTypeCol.id) ? t`Yes` : t`No`}
                         </TableCell>
                         <TableCell sx={{ width: '40%' }} />
                       </TableRow>

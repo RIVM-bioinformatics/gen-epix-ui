@@ -8,11 +8,6 @@ import {
   object,
   string,
 } from 'yup';
-import {
-  MenuItem,
-  ListItemText,
-  ListItemIcon,
-} from '@mui/material';
 
 import type { ConceptSet } from '../../api';
 import {
@@ -24,17 +19,13 @@ import {
 import type { FormFieldDefinition } from '../../models/form';
 import { FORM_FIELD_DEFINITION_TYPE } from '../../models/form';
 import { QUERY_KEY } from '../../models/query';
-import type {
-  TableColumn,
-  TableRowParams,
-} from '../../models/table';
+import type { TableColumn } from '../../models/table';
 import { TableUtil } from '../../utils/TableUtil';
 import { TestIdUtil } from '../../utils/TestIdUtil';
+import type { CrudPageSubPage } from '../CrudPage';
 import { CrudPage } from '../CrudPage';
 import { useConceptSetTypeOptionsQuery } from '../../dataHooks/useConceptSetTypeQuery';
 import { AuthorizationManager } from '../../classes/managers/AuthorizationManager';
-import { RouterManager } from '../../classes/managers/RouterManager';
-import type { DialogAction } from '../../components/ui/Dialog';
 
 
 type FormFields = Omit<ConceptSet, 'id'>;
@@ -138,49 +129,20 @@ export const ConceptSetsAdminPage = () => {
     ];
   }, [conceptSetTypeOptionsQuery.options, t]);
 
-  const doesUserHavePermissionToViewConcepts = useMemo(() => {
-    return AuthorizationManager.instance.doesUserHavePermission([
+  const subPages = useMemo<CrudPageSubPage<ConceptSet>[]>(() => {
+    if (!AuthorizationManager.instance.doesUserHavePermission([
       { command_name: CommandName.ConceptCrudCommand, permission_type: PermissionType.READ },
-    ]);
-  }, []);
-
-  const extraActionsFactory = useCallback((params: TableRowParams<ConceptSet>) => {
-    if (!doesUserHavePermissionToViewConcepts) {
+    ])) {
       return [];
     }
 
-    return [(
-      <MenuItem
-        key={'custom-action-1'}
-        // eslint-disable-next-line react/jsx-no-bind
-        onClick={async () => await RouterManager.instance.router.navigate({
-          pathname: `/management/concept-sets/${params.row.id}/concepts`,
-        })}
-      >
-        <ListItemIcon />
-        <ListItemText>
-          {t`Manage concepts`}
-        </ListItemText>
-      </MenuItem>
-    )];
-  }, [doesUserHavePermissionToViewConcepts, t]);
-
-  const editDialogExtraActionsFactory = useCallback((item: ConceptSet): DialogAction[] => {
-    if (!doesUserHavePermissionToViewConcepts) {
-      return [];
-    }
     return [
       {
-        ...TestIdUtil.createAttributes('ConceptSetsAdminPage-ManageConceptsButton'),
         label: t`Manage concepts`,
-        color: 'primary',
-        variant: 'outlined',
-        onClick: async () => await RouterManager.instance.router.navigate({
-          pathname: `/management/concept-sets/${item.id}/concepts`,
-        }),
-      },
+        getPathName: (item: ConceptSet) => `/management/concept-sets/${item.id}/concepts`,
+      } satisfies CrudPageSubPage<ConceptSet>,
     ];
-  }, [doesUserHavePermissionToViewConcepts, t]);
+  }, [t]);
 
   return (
     <CrudPage<FormFields, ConceptSet>
@@ -192,8 +154,7 @@ export const ConceptSetsAdminPage = () => {
       deleteOne={deleteOne}
       fetchAll={fetchAll}
       formFieldDefinitions={formFieldDefinitions}
-      editDialogExtraActionsFactory={editDialogExtraActionsFactory}
-      extraActionsFactory={extraActionsFactory}
+      subPages={subPages}
       getName={getName}
       resourceQueryKeyBase={QUERY_KEY.CONCEPT_SETS}
       schema={schema}

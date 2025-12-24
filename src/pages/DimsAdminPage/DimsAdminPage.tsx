@@ -15,6 +15,7 @@ import {
   CaseApi,
   DimType,
   CommandName,
+  PermissionType,
 } from '../../api';
 import { useDimTypeOptionsQuery } from '../../dataHooks/useDimTypesQuery';
 import type { FormFieldDefinition } from '../../models/form';
@@ -23,7 +24,9 @@ import { QUERY_KEY } from '../../models/query';
 import type { TableColumn } from '../../models/table';
 import { TableUtil } from '../../utils/TableUtil';
 import { TestIdUtil } from '../../utils/TestIdUtil';
+import type { CrudPageSubPage } from '../CrudPage';
 import { CrudPage } from '../CrudPage';
+import { AuthorizationManager } from '../../classes/managers/AuthorizationManager';
 
 type FormFields = Pick<Dim, 'dim_type' | 'code' | 'label' | 'description' | 'rank' | 'col_code_prefix'>;
 
@@ -57,18 +60,19 @@ export const DimsAdminPage = () => {
       code: string().code().required().max(100),
       label: string().extendedAlphaNumeric().required().max(100),
       description: string().freeFormText().required().max(100),
-      rank: number().integer().positive().max(10000).optional().transform((val: number, orig) => orig === '' ? undefined : val),
+      rank: number().integer().required().transform((_val: unknown, orig: string | number) => orig === '' ? undefined : orig),
       col_code_prefix: string().alphaNumeric().required().max(100),
     });
   }, []);
 
-  const formFieldDefinitions = useMemo<FormFieldDefinition<FormFields>[]>(() => {
+  const formFieldDefinitions = useCallback((item: Dim): FormFieldDefinition<FormFields>[] => {
     return [
       {
         definition: FORM_FIELD_DEFINITION_TYPE.AUTOCOMPLETE,
         name: 'dim_type',
         label: t`Dimension type`,
         options: dimTypeOptionsQuery.options,
+        disabled: !!item,
       } as const satisfies FormFieldDefinition<FormFields>,
       {
         definition: FORM_FIELD_DEFINITION_TYPE.TEXTFIELD,
@@ -111,6 +115,21 @@ export const DimsAdminPage = () => {
     ];
   }, [dimTypeOptionsQuery.options, t]);
 
+  const subPages = useMemo<CrudPageSubPage<Dim>[]>(() => {
+    if (!AuthorizationManager.instance.doesUserHavePermission([
+      { command_name: CommandName.ColCrudCommand, permission_type: PermissionType.READ },
+    ])) {
+      return [];
+    }
+
+    return [
+      {
+        label: t`Manage columns`,
+        getPathName: (item: Dim) => `/management/dimensions/${item.id}/columns`,
+      } satisfies CrudPageSubPage<Dim>,
+    ];
+  }, [t]);
+
   return (
     <CrudPage<FormFields, Dim>
       createOne={createOne}
@@ -118,6 +137,7 @@ export const DimsAdminPage = () => {
       createItemDialogTitle={t`Create new dimension`}
       defaultSortByField={'code'}
       defaultSortDirection={'asc'}
+      subPages={subPages}
       deleteOne={deleteOne}
       fetchAll={fetchAll}
       formFieldDefinitions={formFieldDefinitions}

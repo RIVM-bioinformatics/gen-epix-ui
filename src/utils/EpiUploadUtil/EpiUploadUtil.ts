@@ -337,7 +337,7 @@ export class EpiUploadUtil {
     });
 
     const allowedCaseTypeColIds = EpiCaseTypeUtil.getWritableImportExportCaseTypeColIds(completeCaseType);
-    completeCaseType.case_type_col_order.filter(x => allowedCaseTypeColIds.includes(x)).forEach((caseTypeColId) => {
+    completeCaseType.ordered_case_type_col_ids.filter(x => allowedCaseTypeColIds.includes(x)).forEach((caseTypeColId) => {
       const caseTypeCol = completeCaseType.case_type_cols[caseTypeColId];
 
       options.push({
@@ -400,9 +400,9 @@ export class EpiUploadUtil {
 
 
   public static getCompleteCaseTypeColumnStats(completeCaseType: CompleteCaseType): EpiUploadCompleteCaseTypeColumnStats {
-    const idColumns = EpiCaseTypeUtil.getCaseTypeColumnsByType(completeCaseType, [ColType.ID_ANONYMISED, ColType.ID_PSEUDONYMISED, ColType.ID_DIRECT]);
-    const sequenceColumns = EpiCaseTypeUtil.getCaseTypeColumnsByType(completeCaseType, [ColType.GENETIC_SEQUENCE]);
-    const readsColumns = EpiCaseTypeUtil.getCaseTypeColumnsByType(completeCaseType, [ColType.GENETIC_READS]);
+    const idColumns = EpiCaseTypeUtil.getCaseTypeColsByType(completeCaseType, [ColType.ID_SAMPLE]);
+    const sequenceColumns = EpiCaseTypeUtil.getCaseTypeColsByType(completeCaseType, [ColType.GENETIC_SEQUENCE]);
+    const readsColumns = EpiCaseTypeUtil.getCaseTypeColsByType(completeCaseType, [ColType.GENETIC_READS]);
     const writableColumns = Object.values(completeCaseType.case_type_cols).filter(col => EpiCaseTypeUtil.getWritableCaseTypeColIds(completeCaseType).includes(col.id));
 
     return { idColumns, sequenceColumns, readsColumns, writableColumns };
@@ -549,7 +549,7 @@ export class EpiUploadUtil {
     caseTypeId: string;
     createdInDataCollectionId: string;
     importAction: EPI_UPLOAD_ACTION;
-    libraryPrepProtocolId: string;
+    sequencingProtocolId: string;
     assemblyProtocolId: string;
     mappedFileSize: number;
     sequenceFilesDataTransfer: DataTransfer;
@@ -569,7 +569,7 @@ export class EpiUploadUtil {
       mappedFileSize,
       sequenceFilesDataTransfer,
       assemblyProtocolId,
-      libraryPrepProtocolId,
+      sequencingProtocolId,
       sequenceMapping,
       onProgress,
       onComplete,
@@ -611,6 +611,7 @@ export class EpiUploadUtil {
                 case_type_col_id: columnId,
                 seq: {
                   assembly_protocol_id: assemblyProtocolId,
+                  sample_id: '', // !FIXME
                 },
               },
               file,
@@ -633,7 +634,8 @@ export class EpiUploadUtil {
                 case_id: caseIdMapping[generatedCaseId],
                 case_type_col_id: columnId,
                 read_set: {
-                  library_prep_protocol_id: libraryPrepProtocolId,
+                  sequencing_protocol_id: sequencingProtocolId,
+                  sample_id: '', // !FIXME
                 },
               },
               fwdFile,

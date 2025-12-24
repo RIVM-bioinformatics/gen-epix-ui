@@ -78,6 +78,7 @@ export const Select = <TFieldValues extends FieldValues, TName extends Path<TFie
   }, [options]);
 
   const getIsOptionDisabled = useCallback((value: SelectOption['value']): boolean => mappedOptions.get(value)?.disabled, [mappedOptions]);
+
   const renderValue = useCallback((value: string | string []) => {
     const values = Array.isArray(value) ? value : [value];
     return values.map(v => mappedOptions.get(v)?.label).join(', ');
@@ -99,10 +100,7 @@ export const Select = <TFieldValues extends FieldValues, TName extends Path<TFie
       },
     });
     return (
-      <FormControl
-        {...TestIdUtil.createAttributes('Select', { label, name: name as string })}
-        fullWidth
-      >
+      <>
         <InputLabel
           error={hasError}
           className={classnames({ 'Mui-warning': hasWarning })}
@@ -134,7 +132,7 @@ export const Select = <TFieldValues extends FieldValues, TName extends Path<TFie
           multiple={multiple}
           renderValue={renderValue}
           required={required}
-          value={value ?? ''}
+          value={value ?? (multiple ? [] : '') as TFieldValues[TName]}
           onBlur={onBlur}
           onChange={onMuiSelectChange(onChange)}
         >
@@ -167,19 +165,22 @@ export const Select = <TFieldValues extends FieldValues, TName extends Path<TFie
             warningMessage={warningMessage}
           />
         </FormHelperText>
-        { loading && <FormFieldLoadingIndicator />}
-      </FormControl>
+      </>
     );
-  }, [label, name, hasError, hasWarning, required, disabled, id, loading, labelId, helperTextId, multiple, renderValue, onMuiSelectChange, options, errorMessage, warningMessage, getIsOptionDisabled]);
+  }, [disabled, errorMessage, getIsOptionDisabled, hasError, hasWarning, helperTextId, id, label, labelId, loading, multiple, onMuiSelectChange, options, renderValue, required, warningMessage]);
 
   return (
-    <>
+    <FormControl
+      {...TestIdUtil.createAttributes('Select', { label, name: name as string })}
+      fullWidth
+    >
       <Controller
         control={control}
         defaultValue={null}
         name={name}
         render={renderController}
       />
-    </>
+      { loading && <FormFieldLoadingIndicator />}
+    </FormControl>
   );
 };

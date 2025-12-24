@@ -1,4 +1,3 @@
-import type { ReactElement } from 'react';
 import {
   useCallback,
   useMemo,
@@ -6,14 +5,10 @@ import {
 import { useTranslation } from 'react-i18next';
 import {
   boolean,
+  number,
   object,
   string,
 } from 'yup';
-import {
-  MenuItem,
-  ListItemIcon,
-  ListItemText,
-} from '@mui/material';
 
 import type { RegionSet } from '../../api';
 import {
@@ -24,18 +19,14 @@ import {
 import type { FormFieldDefinition } from '../../models/form';
 import { FORM_FIELD_DEFINITION_TYPE } from '../../models/form';
 import { QUERY_KEY } from '../../models/query';
-import type {
-  TableColumn,
-  TableRowParams,
-} from '../../models/table';
+import type { TableColumn } from '../../models/table';
 import { TableUtil } from '../../utils/TableUtil';
 import { TestIdUtil } from '../../utils/TestIdUtil';
+import type { CrudPageSubPage } from '../CrudPage';
 import { CrudPage } from '../CrudPage';
 import { AuthorizationManager } from '../../classes/managers/AuthorizationManager';
-import { RouterManager } from '../../classes/managers/RouterManager';
-import type { DialogAction } from '../../components/ui/Dialog';
 
-type FormFields = Pick<RegionSet, 'name' | 'code' | 'region_code_as_label'>;
+type FormFields = Pick<RegionSet, 'name' | 'code' | 'region_code_as_label' | 'resolution'>;
 
 export const RegionSetsAdminPage = () => {
   const [t] = useTranslation();
@@ -64,6 +55,7 @@ export const RegionSetsAdminPage = () => {
     return object<FormFields>().shape({
       code: string().code().required().max(100),
       name: string().extendedAlphaNumeric().required().max(100),
+      resolution: number().integer().positive().max(10000).required().transform((_val: unknown, orig: string | number) => orig === '' ? undefined : orig),
       region_code_as_label: boolean().required(),
     });
   }, []);
@@ -81,6 +73,12 @@ export const RegionSetsAdminPage = () => {
         label: t`Code`,
       } as const satisfies FormFieldDefinition<FormFields>,
       {
+        definition: FORM_FIELD_DEFINITION_TYPE.TEXTFIELD,
+        name: 'resolution',
+        label: t`Resolution`,
+        type: 'number',
+      } as const satisfies FormFieldDefinition<FormFields>,
+      {
         definition: FORM_FIELD_DEFINITION_TYPE.BOOLEAN,
         name: 'region_code_as_label',
         label: t`Region code as label`,
@@ -92,86 +90,39 @@ export const RegionSetsAdminPage = () => {
     return [
       TableUtil.createTextColumn<RegionSet>({ id: 'name', name: t`Name` }),
       TableUtil.createTextColumn<RegionSet>({ id: 'code', name: t`Code` }),
+      TableUtil.createNumberColumn<RegionSet>({ id: 'resolution', name: t`Resolution` }),
       TableUtil.createBooleanColumn<RegionSet>({ id: 'region_code_as_label', name: t`Region code as label` }),
     ];
   }, [t]);
 
-  const doesUserHavePermissionToViewRegions = useMemo(() => {
-    return AuthorizationManager.instance.doesUserHavePermission([
+
+  const subPages = useMemo<CrudPageSubPage<RegionSet>[]>(() => {
+    const pages: CrudPageSubPage<RegionSet>[] = [];
+
+    if (AuthorizationManager.instance.doesUserHavePermission([
       { command_name: CommandName.RegionCrudCommand, permission_type: PermissionType.READ },
-    ]);
-  }, []);
+    ])) {
+      pages.push(
+        {
+          label: t`Manage regions`,
+          getPathName: (item: RegionSet) => `/management/region-sets/${item.id}/regions`,
+        } satisfies CrudPageSubPage<RegionSet>,
+      );
+    }
 
-  const doesUserHavePermissionToViewRegionSetShapes = useMemo(() => {
-    return AuthorizationManager.instance.doesUserHavePermission([
+    if (AuthorizationManager.instance.doesUserHavePermission([
       { command_name: CommandName.RegionSetShapeCrudCommand, permission_type: PermissionType.READ },
-    ]);
-  }, []);
+    ])) {
+      pages.push(
+        {
+          label: t`Manage shapes`,
+          getPathName: (item: RegionSet) => `/management/region-sets/${item.id}/shapes`,
+        } satisfies CrudPageSubPage<RegionSet>,
+      );
+    }
+    return pages;
+  }, [t]);
 
-  const extraActionsFactory = useCallback((params: TableRowParams<RegionSet>) => {
-    const items: ReactElement[] = [];
-    if (doesUserHavePermissionToViewRegions) {
-      items.push((
-        <MenuItem
-          key={'custom-action-1'}
-          // eslint-disable-next-line react/jsx-no-bind
-          onClick={async () => await RouterManager.instance.router.navigate({
-            pathname: `/management/region-sets/${params.row.id}/regions`,
-          })}
-        >
-          <ListItemIcon />
-          <ListItemText>
-            {t`Manage regions`}
-          </ListItemText>
-        </MenuItem>
-      ));
-    }
-    if (doesUserHavePermissionToViewRegionSetShapes) {
-      items.push((
-        <MenuItem
-          key={'custom-action-1'}
-          // eslint-disable-next-line react/jsx-no-bind
-          onClick={async () => await RouterManager.instance.router.navigate({
-            pathname: `/management/region-sets/${params.row.id}/shapes`,
-          })}
-        >
-          <ListItemIcon />
-          <ListItemText>
-            {t`Manage shapes`}
-          </ListItemText>
-        </MenuItem>
-      ));
-    }
-    return items;
-  }, [doesUserHavePermissionToViewRegionSetShapes, doesUserHavePermissionToViewRegions, t]);
-
-  const editDialogExtraActionsFactory = useCallback((item: RegionSet): DialogAction[] => {
-    const items: DialogAction[] = [];
-    if (doesUserHavePermissionToViewRegionSetShapes) {
-      items.push({
-        ...TestIdUtil.createAttributes('RegionSetsAdminPage-ManageRegionsButton'),
-        label: t`Manage regions`,
-        color: 'primary',
-        variant: 'outlined',
-        onClick: async () => await RouterManager.instance.router.navigate({
-          pathname: `/management/region-sets/${item.id}/regions`,
-        }),
-      });
-    }
-    if (doesUserHavePermissionToViewRegionSetShapes) {
-      items.push({
-        ...TestIdUtil.createAttributes('RegionSetsAdminPage-ManageShapesButton'),
-        label: t`Manage shapes`,
-        color: 'primary',
-        variant: 'outlined',
-        onClick: async () => await RouterManager.instance.router.navigate({
-          pathname: `/management/region-sets/${item.id}/shapes`,
-        }),
-      });
-    }
-
-    return items;
-  }, [doesUserHavePermissionToViewRegionSetShapes, t]);
 
   return (
     <CrudPage<FormFields, RegionSet>
@@ -182,8 +133,7 @@ export const RegionSetsAdminPage = () => {
       defaultSortDirection={'asc'}
       deleteOne={deleteOne}
       fetchAll={fetchAll}
-      extraActionsFactory={extraActionsFactory}
-      editDialogExtraActionsFactory={editDialogExtraActionsFactory}
+      subPages={subPages}
       formFieldDefinitions={formFieldDefinitions}
       getName={getName}
       resourceQueryKeyBase={QUERY_KEY.REGION_SETS}

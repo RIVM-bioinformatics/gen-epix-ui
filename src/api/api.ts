@@ -30,7 +30,7 @@ import { BASE_PATH, COLLECTION_FORMATS, BaseAPI, RequiredError, operationServerM
  */
 export interface AlleleProfile {
     /**
-     * The unique identifier for the obj.
+     * The unique identifier for the object.
      * @type {string}
      * @memberof AlleleProfile
      */
@@ -100,7 +100,7 @@ export interface AssemblyProtocol {
      */
     'props'?: { [key: string]: string; };
     /**
-     * The unique identifier for the obj.
+     * The unique identifier for the object.
      * @type {string}
      * @memberof AssemblyProtocol
      */
@@ -134,7 +134,7 @@ export type AuthProtocol = typeof AuthProtocol[keyof typeof AuthProtocol];
  */
 export interface Case {
     /**
-     * The unique identifier for the obj.
+     * The unique identifier for the object.
      * @type {string}
      * @memberof Case
      */
@@ -176,23 +176,29 @@ export interface Case {
      */
     'created_in_data_collection'?: DataCollection;
     /**
-     * The number of cases, if applicable
+     * The number of cases that this case represents, if not one. This can be used to store aggregated cases (n>=0) as well as reference data (n=0).
      * @type {number}
      * @memberof Case
      */
     'count'?: number | null;
     /**
-     * The date of the case
+     * The datetime of the case used for sorting results, limiting results and statistics such as first and last case date. Normally re-calculated from the case content variables upon persisting. Default is the current datetime.
      * @type {string}
      * @memberof Case
      */
-    'case_date': string;
+    'case_date'?: string;
     /**
-     * The column data of the case as {col_id: str_value}
+     * The data content of the case as {case_type_col_id: str_value}. Only case type columns defined for the case type of the case should be present here, and if no value is present, the key should be omitted.
      * @type {{ [key: string]: string; }}
      * @memberof Case
      */
     'content': { [key: string]: string; };
+    /**
+     * A code for the case for further reference.
+     * @type {string}
+     * @memberof Case
+     */
+    'code'?: string | null;
 }
 /**
  * 
@@ -233,7 +239,7 @@ export type CaseColDataRule = typeof CaseColDataRule[keyof typeof CaseColDataRul
  */
 export interface CaseDataCollectionLink {
     /**
-     * The unique identifier for the obj.
+     * The unique identifier for the object.
      * @type {string}
      * @memberof CaseDataCollectionLink
      */
@@ -309,7 +315,7 @@ export interface CaseDataIssue {
  */
 export interface CaseForCreateUpdate {
     /**
-     * The unique identifier for the obj.
+     * The unique identifier for the object.
      * @type {string}
      * @memberof CaseForCreateUpdate
      */
@@ -321,7 +327,7 @@ export interface CaseForCreateUpdate {
      */
     'subject_id'?: string | null;
     /**
-     * The number of cases, if applicable
+     * The number of cases that this case represents, if not one. This can be used to store aggregated cases (n>=0) as well as reference data (n=0).
      * @type {number}
      * @memberof CaseForCreateUpdate
      */
@@ -346,7 +352,7 @@ export interface CaseForCreateUpdate {
  */
 export interface CaseQuery {
     /**
-     * The unique identifier for the obj.
+     * The unique identifier for the object.
      * @type {string}
      * @memberof CaseQuery
      */
@@ -358,13 +364,13 @@ export interface CaseQuery {
      */
     'label'?: string | null;
     /**
-     * The IDs of the case type(s) that the case must belong to. Not applied if not provided.
-     * @type {Array<string>}
+     * The ID of the case type that the cases must belong to.
+     * @type {string}
      * @memberof CaseQuery
      */
-    'case_type_ids'?: Array<string> | null;
+    'case_type_id': string;
     /**
-     * The IDs of the case set(s) that the case must belong to. Not applied if not provided.
+     * The IDs of the case set(s) that the case must belong to. Not applied if not provided. All case sets must belong to the same case type as case_type_id.
      * @type {Array<string>}
      * @memberof CaseQuery
      */
@@ -385,11 +391,42 @@ export interface CaseQuery {
 /**
  * 
  * @export
+ * @interface CaseQueryResult
+ */
+export interface CaseQueryResult {
+    /**
+     * The unique identifier for the object.
+     * @type {string}
+     * @memberof CaseQueryResult
+     */
+    'id'?: string | null;
+    /**
+     * 
+     * @type {CaseQuery}
+     * @memberof CaseQueryResult
+     */
+    'case_query': CaseQuery;
+    /**
+     * The IDs of the cases matching the query, possibly limited by CaseSettings.read_max_n_cases. If limited, the most recent cases according to CaseSettings.stats_time_dim_id are returned
+     * @type {Array<string>}
+     * @memberof CaseQueryResult
+     */
+    'case_ids': Array<string>;
+    /**
+     * Whether the number of results was limited.
+     * @type {boolean}
+     * @memberof CaseQueryResult
+     */
+    'is_max_results_exceeded': boolean;
+}
+/**
+ * 
+ * @export
  * @interface CaseReadSet
  */
 export interface CaseReadSet {
     /**
-     * The unique identifier for the obj.
+     * The unique identifier for the object.
      * @type {string}
      * @memberof CaseReadSet
      */
@@ -426,7 +463,7 @@ export interface CaseReadSet {
  */
 export interface CaseRights {
     /**
-     * The unique identifier for the obj.
+     * The unique identifier for the object.
      * @type {string}
      * @memberof CaseRights
      */
@@ -505,7 +542,7 @@ export interface CaseRights {
  */
 export interface CaseSeq {
     /**
-     * The unique identifier for the obj.
+     * The unique identifier for the object.
      * @type {string}
      * @memberof CaseSeq
      */
@@ -542,7 +579,7 @@ export interface CaseSeq {
  */
 export interface CaseSet {
     /**
-     * The unique identifier for the obj.
+     * The unique identifier for the object.
      * @type {string}
      * @memberof CaseSet
      */
@@ -621,7 +658,7 @@ export interface CaseSet {
  */
 export interface CaseSetCategory {
     /**
-     * The unique identifier for the obj.
+     * The unique identifier for the object.
      * @type {string}
      * @memberof CaseSetCategory
      */
@@ -646,7 +683,7 @@ export interface CaseSetCategory {
  */
 export interface CaseSetDataCollectionLink {
     /**
-     * The unique identifier for the obj.
+     * The unique identifier for the object.
      * @type {string}
      * @memberof CaseSetDataCollectionLink
      */
@@ -683,7 +720,7 @@ export interface CaseSetDataCollectionLink {
  */
 export interface CaseSetMember {
     /**
-     * The unique identifier for the obj.
+     * The unique identifier for the object.
      * @type {string}
      * @memberof CaseSetMember
      */
@@ -728,7 +765,7 @@ export interface CaseSetMember {
  */
 export interface CaseSetRights {
     /**
-     * The unique identifier for the obj.
+     * The unique identifier for the object.
      * @type {string}
      * @memberof CaseSetRights
      */
@@ -825,17 +862,17 @@ export interface CaseSetStat {
      */
     'n_own_cases'?: number | null;
     /**
-     * The ISO year and month of the first case.
+     * The date of the first case. In case the user has rights only to lower time resolution for the case date, the first day of the week, month, quarter, year, as available to the user, is used during calculation.
      * @type {string}
      * @memberof CaseSetStat
      */
-    'first_case_month'?: string | null;
+    'first_case_date'?: string | null;
     /**
-     * The ISO year and month of the last case.
+     * The date of the last case. In case the user has rights only to lower time resolution for the case date, the first day of the week, month, quarter, year, as available to the user, is used during calculation.
      * @type {string}
      * @memberof CaseSetStat
      */
-    'last_case_month'?: string | null;
+    'last_case_date'?: string | null;
 }
 /**
  * 
@@ -844,7 +881,7 @@ export interface CaseSetStat {
  */
 export interface CaseSetStatus {
     /**
-     * The unique identifier for the obj.
+     * The unique identifier for the object.
      * @type {string}
      * @memberof CaseSetStatus
      */
@@ -869,7 +906,7 @@ export interface CaseSetStatus {
  */
 export interface CaseType {
     /**
-     * The unique identifier for the obj.
+     * The unique identifier for the object.
      * @type {string}
      * @memberof CaseType
      */
@@ -910,6 +947,36 @@ export interface CaseType {
      * @memberof CaseType
      */
     'etiological_agent'?: EtiologicalAgent;
+    /**
+     * Maximum number of cases that can be created in one batch, if the user\'s rights are constrained by this setting. If 0, no restriction is applied.
+     * @type {number}
+     * @memberof CaseType
+     */
+    'create_max_n_cases'?: number;
+    /**
+     * Maximum number of cases that can be read in one batch, if the user\'s rights are constrained by this setting. If 0, no restriction is applied.
+     * @type {number}
+     * @memberof CaseType
+     */
+    'read_max_n_cases'?: number;
+    /**
+     * Maximum number of cases for which a tree may be calculated, if the user\'s rights are constrained by this setting. If 0, no restriction is applied.
+     * @type {number}
+     * @memberof CaseType
+     */
+    'read_max_tree_size'?: number;
+    /**
+     * Maximum number of cases that can be updated in one batch, if the user\'s rights are constrained by this setting. If 0, no restriction is applied.
+     * @type {number}
+     * @memberof CaseType
+     */
+    'update_max_n_cases'?: number;
+    /**
+     * Maximum number of cases that can be deleted in one batch, if the user\'s rights are constrained by this setting. If 0, no restriction is applied.
+     * @type {number}
+     * @memberof CaseType
+     */
+    'delete_max_n_cases'?: number;
 }
 /**
  * 
@@ -991,7 +1058,7 @@ export interface CaseTypeAccessAbac {
  */
 export interface CaseTypeCol {
     /**
-     * The unique identifier for the obj.
+     * The unique identifier for the object.
      * @type {string}
      * @memberof CaseTypeCol
      */
@@ -1009,6 +1076,18 @@ export interface CaseTypeCol {
      */
     'case_type'?: CaseType;
     /**
+     * The ID of the case type dimension. FOREIGN KEY
+     * @type {string}
+     * @memberof CaseTypeCol
+     */
+    'case_type_dim_id': string;
+    /**
+     * 
+     * @type {CaseTypeDim}
+     * @memberof CaseTypeCol
+     */
+    'case_type_dim'?: CaseTypeDim;
+    /**
      * The ID of the column. FOREIGN KEY
      * @type {string}
      * @memberof CaseTypeCol
@@ -1021,23 +1100,17 @@ export interface CaseTypeCol {
      */
     'col'?: Col;
     /**
-     * The index of the occurrence of the column for this case type. E.g. for first and second vaccination date it would be 1 and 2. Empty or 1 if only a single occurrence.
-     * @type {number}
-     * @memberof CaseTypeCol
-     */
-    'occurrence'?: number | null;
-    /**
-     * The code for the case type column, equal to the column code and, if present, dot \'x\' occurrence. E.g. \'Host.Vaccination.Date.COVID19.x1\' for occurrence=1, \'Specimen.Sampling.Date\' for occurrence null
+     * The code for the case type column, equal to the column code and, if present, dot \'x\' occurrence. E.g. \'Host.Vaccination.Date.COVID19.x1\' for occurrence=1, \'Specimen.Sampling.Date\' for occurrence=0
      * @type {string}
      * @memberof CaseTypeCol
      */
     'code': string;
     /**
-     * The rank of the column for this case type for ordering, if different from the general dimension and column rank.
+     * The rank of the column within the case type dim for (partial) ordering, if different from the general dimension and column rank.
      * @type {number}
      * @memberof CaseTypeCol
      */
-    'rank'?: number | null;
+    'rank': number;
     /**
      * The label of the column for this case type, if different from the general column label.
      * @type {string}
@@ -1124,7 +1197,7 @@ export interface CaseTypeCol {
  */
 export interface CaseTypeColSet {
     /**
-     * The unique identifier for the obj.
+     * The unique identifier for the object.
      * @type {string}
      * @memberof CaseTypeColSet
      */
@@ -1149,7 +1222,7 @@ export interface CaseTypeColSet {
  */
 export interface CaseTypeColSetMember {
     /**
-     * The unique identifier for the obj.
+     * The unique identifier for the object.
      * @type {string}
      * @memberof CaseTypeColSetMember
      */
@@ -1186,11 +1259,23 @@ export interface CaseTypeColSetMember {
  */
 export interface CaseTypeDim {
     /**
-     * The ID of the first case type column.
+     * The unique identifier for the object.
      * @type {string}
      * @memberof CaseTypeDim
      */
-    'id': string;
+    'id'?: string | null;
+    /**
+     * The ID of the case type. FOREIGN KEY
+     * @type {string}
+     * @memberof CaseTypeDim
+     */
+    'case_type_id': string;
+    /**
+     * 
+     * @type {CaseType}
+     * @memberof CaseTypeDim
+     */
+    'case_type'?: CaseType;
     /**
      * The ID of the dimension. FOREIGN KEY
      * @type {string}
@@ -1198,23 +1283,47 @@ export interface CaseTypeDim {
      */
     'dim_id': string;
     /**
-     * The index of the occurrence of the dimension for this case type. E.g. for first and second vaccination time it would be 1 and 2. Empty if only a single occurrence.
+     * 
+     * @type {Dim}
+     * @memberof CaseTypeDim
+     */
+    'dim'?: Dim;
+    /**
+     * The index of the occurrence of the dimension for this case type. E.g. for first and second vaccination time it would be 1 and 2. Zero if only a single occurrence is expected or created.
      * @type {number}
      * @memberof CaseTypeDim
      */
-    'occurrence'?: number | null;
+    'occurrence'?: number;
     /**
-     * The rank of the case type dimension for ordering.
+     * The code for the case type dimension, equal to the dimension code and, if present, dot \'x\' occurrence. E.g. \'Host.Vaccination.Date.COVID19.x1\' for occurrence=1, \'Specimen.Sampling.Date\' for occurrence=0
+     * @type {string}
+     * @memberof CaseTypeDim
+     */
+    'code': string;
+    /**
+     * The label of the dimension for this case type, if different from the general dimension label.
+     * @type {string}
+     * @memberof CaseTypeDim
+     */
+    'label'?: string | null;
+    /**
+     * Description of the case type dimension.
+     * @type {string}
+     * @memberof CaseTypeDim
+     */
+    'description'?: string | null;
+    /**
+     * The rank of the case type dimension within the case type for (partial) ordering.
      * @type {number}
      * @memberof CaseTypeDim
      */
     'rank': number;
     /**
-     * The order of the case type columns
-     * @type {Array<string>}
+     * Indicates if this dimension is to be used to derive the case date.
+     * @type {boolean}
      * @memberof CaseTypeDim
      */
-    'case_type_col_order': Array<string>;
+    'is_case_date_dim'?: boolean;
 }
 /**
  * 
@@ -1223,7 +1332,7 @@ export interface CaseTypeDim {
  */
 export interface CaseTypeSet {
     /**
-     * The unique identifier for the obj.
+     * The unique identifier for the object.
      * @type {string}
      * @memberof CaseTypeSet
      */
@@ -1266,7 +1375,7 @@ export interface CaseTypeSet {
  */
 export interface CaseTypeSetCategory {
     /**
-     * The unique identifier for the obj.
+     * The unique identifier for the object.
      * @type {string}
      * @memberof CaseTypeSetCategory
      */
@@ -1319,7 +1428,7 @@ export type CaseTypeSetCategoryPurpose = typeof CaseTypeSetCategoryPurpose[keyof
  */
 export interface CaseTypeSetMember {
     /**
-     * The unique identifier for the obj.
+     * The unique identifier for the object.
      * @type {string}
      * @memberof CaseTypeSetMember
      */
@@ -1411,17 +1520,17 @@ export interface CaseTypeStat {
      */
     'n_cases'?: number | null;
     /**
-     * The ISO year and month of the first case.
+     * The date of the first case. In case the user has rights only to lower time resolution for the case date, the first day of the week, month, quarter, year, as available to the user, is used during calculation.
      * @type {string}
      * @memberof CaseTypeStat
      */
-    'first_case_month'?: string | null;
+    'first_case_date'?: string | null;
     /**
-     * The ISO year and month of the last case.
+     * The date of the last case. In case the user has rights only to lower time resolution for the case date, the first day of the week, month, quarter, year, as available to the user, is used during calculation.
      * @type {string}
      * @memberof CaseTypeStat
      */
-    'last_case_month'?: string | null;
+    'last_case_date'?: string | null;
 }
 /**
  * 
@@ -1430,7 +1539,7 @@ export interface CaseTypeStat {
  */
 export interface CaseValidationReport {
     /**
-     * The unique identifier for the obj.
+     * The unique identifier for the object.
      * @type {string}
      * @memberof CaseValidationReport
      */
@@ -1473,7 +1582,7 @@ export interface CaseValidationReport {
  */
 export interface Col {
     /**
-     * The unique identifier for the obj.
+     * The unique identifier for the object.
      * @type {string}
      * @memberof Col
      */
@@ -1503,11 +1612,11 @@ export interface Col {
      */
     'code': string;
     /**
-     * The rank of the column within the dimension, if relevant.
+     * The rank of the column within the dimension, for (partial) ordering.
      * @type {number}
      * @memberof Col
      */
-    'rank_in_dim'?: number | null;
+    'rank'?: number;
     /**
      * The label for the column, if different from the code.
      * @type {string}
@@ -1592,9 +1701,11 @@ export const ColType = {
     TIME_YEAR: 'TIME_YEAR',
     GEO_LATLON: 'GEO_LATLON',
     GEO_REGION: 'GEO_REGION',
-    ID_DIRECT: 'ID_DIRECT',
-    ID_PSEUDONYMISED: 'ID_PSEUDONYMISED',
-    ID_ANONYMISED: 'ID_ANONYMISED',
+    ID_PERSON: 'ID_PERSON',
+    ID_CASE: 'ID_CASE',
+    ID_SAMPLE: 'ID_SAMPLE',
+    ID_EVENT: 'ID_EVENT',
+    ID_GENETIC_SEQUENCE: 'ID_GENETIC_SEQUENCE',
     DECIMAL_0: 'DECIMAL_0',
     DECIMAL_1: 'DECIMAL_1',
     DECIMAL_2: 'DECIMAL_2',
@@ -1614,102 +1725,119 @@ export type ColType = typeof ColType[keyof typeof ColType];
 
 
 /**
+ * The additional validation rules that a Col instance must comply with.
+ * @export
+ * @interface ColValidationRulesResponseBody
+ */
+export interface ColValidationRulesResponseBody {
+    /**
+     * The Col.col_type values that are allowed depending on the Col.dim.dim_type.
+     * @type {{ [key: string]: Array<ColType>; }}
+     * @memberof ColValidationRulesResponseBody
+     */
+    'valid_col_types_by_dim_type'?: { [key: string]: Array<ColType>; };
+}
+/**
  * 
  * @export
  * @ {string}
  */
 
 export const CommandName = {
-    RetrieveGeneticSequenceByCaseCommand: 'RetrieveGeneticSequenceByCaseCommand',
-    RetrieveAlleleProfileCommand: 'RetrieveAlleleProfileCommand',
-    RetrieveCompleteCaseTypeCommand: 'RetrieveCompleteCaseTypeCommand',
+    RetrieveOutagesCommand: 'RetrieveOutagesCommand',
+    CaseDataCollectionLinkCrudCommand: 'CaseDataCollectionLinkCrudCommand',
+    RetrieveCasesByQueryCommand: 'RetrieveCasesByQueryCommand',
+    OrganizationIdentifierIssuerLinkUpdateAssociationCommand: 'OrganizationIdentifierIssuerLinkUpdateAssociationCommand',
+    CreateReadSetsForCasesCommand: 'CreateReadSetsForCasesCommand',
+    RegionCrudCommand: 'RegionCrudCommand',
+    CaseTypeSetCategoryCrudCommand: 'CaseTypeSetCategoryCrudCommand',
+    RetrieveCasesByIdCommand: 'RetrieveCasesByIdCommand',
+    RetrieveOrganizationAdminNameEmailsCommand: 'RetrieveOrganizationAdminNameEmailsCommand',
+    OrganizationCrudCommand: 'OrganizationCrudCommand',
+    UserCrudCommand: 'UserCrudCommand',
+    RetrieveCaseSetStatsCommand: 'RetrieveCaseSetStatsCommand',
+    CaseTypeDimCrudCommand: 'CaseTypeDimCrudCommand',
     CaseTypeSetCaseTypeUpdateAssociationCommand: 'CaseTypeSetCaseTypeUpdateAssociationCommand',
     RetrieveCaseTypeStatsCommand: 'RetrieveCaseTypeStatsCommand',
-    CaseTypeSetCrudCommand: 'CaseTypeSetCrudCommand',
-    RegionCrudCommand: 'RegionCrudCommand',
-    RetrieveCaseSetRightsCommand: 'RetrieveCaseSetRightsCommand',
-    RegionRelationCrudCommand: 'RegionRelationCrudCommand',
-    CaseSetMemberCrudCommand: 'CaseSetMemberCrudCommand',
-    CaseTypeColSetCaseTypeColUpdateAssociationCommand: 'CaseTypeColSetCaseTypeColUpdateAssociationCommand',
-    DataCollectionSetMemberCrudCommand: 'DataCollectionSetMemberCrudCommand',
-    OrganizationShareCasePolicyCrudCommand: 'OrganizationShareCasePolicyCrudCommand',
-    UserAccessCasePolicyCrudCommand: 'UserAccessCasePolicyCrudCommand',
-    ValidateCasesCommand: 'ValidateCasesCommand',
-    CreateFileForSeqCommand: 'CreateFileForSeqCommand',
-    RetrieveLibraryPrepProtocolsCommand: 'RetrieveLibraryPrepProtocolsCommand',
-    SiteCrudCommand: 'SiteCrudCommand',
-    CaseSetStatusCrudCommand: 'CaseSetStatusCrudCommand',
-    IdentifierIssuerCrudCommand: 'IdentifierIssuerCrudCommand',
-    CaseCrudCommand: 'CaseCrudCommand',
-    OrganizationAdminPolicyCrudCommand: 'OrganizationAdminPolicyCrudCommand',
-    ColCrudCommand: 'ColCrudCommand',
-    DataCollectionSetDataCollectionUpdateAssociationCommand: 'DataCollectionSetDataCollectionUpdateAssociationCommand',
-    DiseaseEtiologicalAgentUpdateAssociationCommand: 'DiseaseEtiologicalAgentUpdateAssociationCommand',
-    CaseTypeColSetMemberCrudCommand: 'CaseTypeColSetMemberCrudCommand',
-    OrganizationSetCrudCommand: 'OrganizationSetCrudCommand',
-    RetrieveOwnPermissionsCommand: 'RetrieveOwnPermissionsCommand',
-    ConceptRelationCrudCommand: 'ConceptRelationCrudCommand',
     DiseaseCrudCommand: 'DiseaseCrudCommand',
-    CaseSetCategoryCrudCommand: 'CaseSetCategoryCrudCommand',
-    GetIdentityProvidersCommand: 'GetIdentityProvidersCommand',
-    CaseTypeCrudCommand: 'CaseTypeCrudCommand',
-    CaseTypeSetMemberCrudCommand: 'CaseTypeSetMemberCrudCommand',
-    CaseTypeColSetCrudCommand: 'CaseTypeColSetCrudCommand',
-    CaseDataCollectionLinkCrudCommand: 'CaseDataCollectionLinkCrudCommand',
-    SubjectIdentifierCrudCommand: 'SubjectIdentifierCrudCommand',
-    CreateReadSetsForCasesCommand: 'CreateReadSetsForCasesCommand',
-    OutageCrudCommand: 'OutageCrudCommand',
+    ExternalIdentifierCrudCommand: 'ExternalIdentifierCrudCommand',
     RetrieveContainingRegionCommand: 'RetrieveContainingRegionCommand',
-    CreateSeqsForCasesCommand: 'CreateSeqsForCasesCommand',
-    CreateCaseSetCommand: 'CreateCaseSetCommand',
-    RetrieveOrganizationAdminNameEmailsCommand: 'RetrieveOrganizationAdminNameEmailsCommand',
-    RetrieveGeneticSequenceByIdCommand: 'RetrieveGeneticSequenceByIdCommand',
-    EtiologyCrudCommand: 'EtiologyCrudCommand',
-    RegisterInvitedUserCommand: 'RegisterInvitedUserCommand',
-    RetrieveCasesByIdCommand: 'RetrieveCasesByIdCommand',
-    ContactCrudCommand: 'ContactCrudCommand',
-    CreateCasesCommand: 'CreateCasesCommand',
-    RetrieveSubRolesCommand: 'RetrieveSubRolesCommand',
-    OrganizationSetOrganizationUpdateAssociationCommand: 'OrganizationSetOrganizationUpdateAssociationCommand',
-    UserShareCasePolicyCrudCommand: 'UserShareCasePolicyCrudCommand',
-    DimCrudCommand: 'DimCrudCommand',
-    RetrieveCaseRightsCommand: 'RetrieveCaseRightsCommand',
-    RetrieveOrganizationsUnderAdminCommand: 'RetrieveOrganizationsUnderAdminCommand',
-    RetrieveGeneticSequenceFastaByIdCommand: 'RetrieveGeneticSequenceFastaByIdCommand',
-    UserInvitationCrudCommand: 'UserInvitationCrudCommand',
-    CaseSetCrudCommand: 'CaseSetCrudCommand',
-    SubjectCrudCommand: 'SubjectCrudCommand',
-    GeneticDistanceProtocolCrudCommand: 'GeneticDistanceProtocolCrudCommand',
-    DataCollectionSetCrudCommand: 'DataCollectionSetCrudCommand',
-    TreeAlgorithmClassCrudCommand: 'TreeAlgorithmClassCrudCommand',
-    RetrieveOutagesCommand: 'RetrieveOutagesCommand',
-    CreateFileForReadSetCommand: 'CreateFileForReadSetCommand',
-    RetrieveCaseSetStatsCommand: 'RetrieveCaseSetStatsCommand',
-    RetrievePhylogeneticTreeBySequencesCommand: 'RetrievePhylogeneticTreeBySequencesCommand',
-    EtiologicalAgentCrudCommand: 'EtiologicalAgentCrudCommand',
-    RegionSetShapeCrudCommand: 'RegionSetShapeCrudCommand',
-    CaseTypeSetCategoryCrudCommand: 'CaseTypeSetCategoryCrudCommand',
-    RetrievePhylogeneticTreeByCasesCommand: 'RetrievePhylogeneticTreeByCasesCommand',
-    RetrieveOrganizationContactCommand: 'RetrieveOrganizationContactCommand',
-    TreeAlgorithmCrudCommand: 'TreeAlgorithmCrudCommand',
-    CaseTypeColCrudCommand: 'CaseTypeColCrudCommand',
+    ConceptRelationCrudCommand: 'ConceptRelationCrudCommand',
+    RegionSetCrudCommand: 'RegionSetCrudCommand',
+    OrganizationIdentifierIssuerLinkCrudCommand: 'OrganizationIdentifierIssuerLinkCrudCommand',
     OrganizationSetMemberCrudCommand: 'OrganizationSetMemberCrudCommand',
-    UpdateUserOwnOrganizationCommand: 'UpdateUserOwnOrganizationCommand',
-    OrganizationCrudCommand: 'OrganizationCrudCommand',
-    RetrieveAssemblyProtocolsCommand: 'RetrieveAssemblyProtocolsCommand',
-    RetrieveCasesByQueryCommand: 'RetrieveCasesByQueryCommand',
-    InviteUserCommand: 'InviteUserCommand',
-    DataCollectionCrudCommand: 'DataCollectionCrudCommand',
-    CaseSetDataCollectionLinkCrudCommand: 'CaseSetDataCollectionLinkCrudCommand',
-    UserCrudCommand: 'UserCrudCommand',
-    RetrieveLicensesCommand: 'RetrieveLicensesCommand',
-    RetrieveGeneticSequenceFastaByCaseCommand: 'RetrieveGeneticSequenceFastaByCaseCommand',
-    UpdateUserCommand: 'UpdateUserCommand',
-    ConceptCrudCommand: 'ConceptCrudCommand',
-    OrganizationAccessCasePolicyCrudCommand: 'OrganizationAccessCasePolicyCrudCommand',
+    RegisterInvitedUserCommand: 'RegisterInvitedUserCommand',
+    CaseCrudCommand: 'CaseCrudCommand',
+    RetrieveAlleleProfileCommand: 'RetrieveAlleleProfileCommand',
+    UserInvitationCrudCommand: 'UserInvitationCrudCommand',
+    CaseSetMemberCrudCommand: 'CaseSetMemberCrudCommand',
+    CreateSeqsForCasesCommand: 'CreateSeqsForCasesCommand',
+    CaseSetStatusCrudCommand: 'CaseSetStatusCrudCommand',
+    UserShareCasePolicyCrudCommand: 'UserShareCasePolicyCrudCommand',
+    DataCollectionSetCrudCommand: 'DataCollectionSetCrudCommand',
+    RetrieveGeneticSequenceFastaByIdCommand: 'RetrieveGeneticSequenceFastaByIdCommand',
     ConceptSetCrudCommand: 'ConceptSetCrudCommand',
+    CaseTypeColSetCaseTypeColUpdateAssociationCommand: 'CaseTypeColSetCaseTypeColUpdateAssociationCommand',
+    RegionRelationCrudCommand: 'RegionRelationCrudCommand',
+    OrganizationSetCrudCommand: 'OrganizationSetCrudCommand',
+    TreeAlgorithmCrudCommand: 'TreeAlgorithmCrudCommand',
+    RetrieveGeneticSequenceByCaseCommand: 'RetrieveGeneticSequenceByCaseCommand',
+    TreeAlgorithmClassCrudCommand: 'TreeAlgorithmClassCrudCommand',
     RetrieveInviteUserConstraintsCommand: 'RetrieveInviteUserConstraintsCommand',
-    RegionSetCrudCommand: 'RegionSetCrudCommand'
+    RetrieveCompleteCaseTypeCommand: 'RetrieveCompleteCaseTypeCommand',
+    OrganizationAdminPolicyCrudCommand: 'OrganizationAdminPolicyCrudCommand',
+    EtiologicalAgentCrudCommand: 'EtiologicalAgentCrudCommand',
+    RetrieveOrganizationsUnderAdminCommand: 'RetrieveOrganizationsUnderAdminCommand',
+    RetrieveGeneticSequenceByIdCommand: 'RetrieveGeneticSequenceByIdCommand',
+    RetrieveAssemblyProtocolsCommand: 'RetrieveAssemblyProtocolsCommand',
+    CaseSetCrudCommand: 'CaseSetCrudCommand',
+    CreateCasesCommand: 'CreateCasesCommand',
+    DiseaseEtiologicalAgentUpdateAssociationCommand: 'DiseaseEtiologicalAgentUpdateAssociationCommand',
+    UpdateUserOwnOrganizationCommand: 'UpdateUserOwnOrganizationCommand',
+    GeneticDistanceProtocolCrudCommand: 'GeneticDistanceProtocolCrudCommand',
+    CreateFileForReadSetCommand: 'CreateFileForReadSetCommand',
+    OrganizationAccessCasePolicyCrudCommand: 'OrganizationAccessCasePolicyCrudCommand',
+    RetrievePhylogeneticTreeByCasesCommand: 'RetrievePhylogeneticTreeByCasesCommand',
+    DataCollectionSetDataCollectionUpdateAssociationCommand: 'DataCollectionSetDataCollectionUpdateAssociationCommand',
+    CaseTypeSetCrudCommand: 'CaseTypeSetCrudCommand',
+    UserAccessCasePolicyCrudCommand: 'UserAccessCasePolicyCrudCommand',
+    IdentifierIssuerCrudCommand: 'IdentifierIssuerCrudCommand',
+    EtiologyCrudCommand: 'EtiologyCrudCommand',
+    ConceptCrudCommand: 'ConceptCrudCommand',
+    OutageCrudCommand: 'OutageCrudCommand',
+    CaseTypeColSetCrudCommand: 'CaseTypeColSetCrudCommand',
+    CaseTypeColSetMemberCrudCommand: 'CaseTypeColSetMemberCrudCommand',
+    CaseSetDataCollectionLinkCrudCommand: 'CaseSetDataCollectionLinkCrudCommand',
+    RegionSetShapeCrudCommand: 'RegionSetShapeCrudCommand',
+    SiteCrudCommand: 'SiteCrudCommand',
+    RetrieveGeneticSequenceFastaByCaseCommand: 'RetrieveGeneticSequenceFastaByCaseCommand',
+    CaseSetCategoryCrudCommand: 'CaseSetCategoryCrudCommand',
+    SubjectCrudCommand: 'SubjectCrudCommand',
+    DataCollectionSetMemberCrudCommand: 'DataCollectionSetMemberCrudCommand',
+    RetrieveSequencingProtocolsCommand: 'RetrieveSequencingProtocolsCommand',
+    RetrieveCaseSetRightsCommand: 'RetrieveCaseSetRightsCommand',
+    DataCollectionCrudCommand: 'DataCollectionCrudCommand',
+    GetIdentityProvidersCommand: 'GetIdentityProvidersCommand',
+    DimCrudCommand: 'DimCrudCommand',
+    CaseTypeColCrudCommand: 'CaseTypeColCrudCommand',
+    CaseTypeSetMemberCrudCommand: 'CaseTypeSetMemberCrudCommand',
+    RetrieveCaseRightsCommand: 'RetrieveCaseRightsCommand',
+    CreateFileForSeqCommand: 'CreateFileForSeqCommand',
+    UpdateUserCommand: 'UpdateUserCommand',
+    SubjectIdentifierCrudCommand: 'SubjectIdentifierCrudCommand',
+    CreateCaseSetCommand: 'CreateCaseSetCommand',
+    CaseTypeCrudCommand: 'CaseTypeCrudCommand',
+    RetrieveLicensesCommand: 'RetrieveLicensesCommand',
+    ContactCrudCommand: 'ContactCrudCommand',
+    RetrieveOrganizationContactCommand: 'RetrieveOrganizationContactCommand',
+    OrganizationSetOrganizationUpdateAssociationCommand: 'OrganizationSetOrganizationUpdateAssociationCommand',
+    ValidateCasesCommand: 'ValidateCasesCommand',
+    RetrieveOwnPermissionsCommand: 'RetrieveOwnPermissionsCommand',
+    ColCrudCommand: 'ColCrudCommand',
+    RetrieveSubRolesCommand: 'RetrieveSubRolesCommand',
+    InviteUserCommand: 'InviteUserCommand',
+    RetrievePhylogeneticTreeBySequencesCommand: 'RetrievePhylogeneticTreeBySequencesCommand',
+    OrganizationShareCasePolicyCrudCommand: 'OrganizationShareCasePolicyCrudCommand'
 } as const;
 
 export type CommandName = typeof CommandName[keyof typeof CommandName];
@@ -1740,7 +1868,7 @@ export type ComparisonOperator = typeof ComparisonOperator[keyof typeof Comparis
  */
 export interface CompleteCaseType {
     /**
-     * The unique identifier for the obj.
+     * The unique identifier for the object.
      * @type {string}
      * @memberof CompleteCaseType
      */
@@ -1782,6 +1910,36 @@ export interface CompleteCaseType {
      */
     'etiological_agent'?: EtiologicalAgent;
     /**
+     * Maximum number of cases that can be created in one batch, if the user\'s rights are constrained by this setting. If 0, no restriction is applied.
+     * @type {number}
+     * @memberof CompleteCaseType
+     */
+    'create_max_n_cases'?: number;
+    /**
+     * Maximum number of cases that can be read in one batch, if the user\'s rights are constrained by this setting. If 0, no restriction is applied.
+     * @type {number}
+     * @memberof CompleteCaseType
+     */
+    'read_max_n_cases'?: number;
+    /**
+     * Maximum number of cases for which a tree may be calculated, if the user\'s rights are constrained by this setting. If 0, no restriction is applied.
+     * @type {number}
+     * @memberof CompleteCaseType
+     */
+    'read_max_tree_size'?: number;
+    /**
+     * Maximum number of cases that can be updated in one batch, if the user\'s rights are constrained by this setting. If 0, no restriction is applied.
+     * @type {number}
+     * @memberof CompleteCaseType
+     */
+    'update_max_n_cases'?: number;
+    /**
+     * Maximum number of cases that can be deleted in one batch, if the user\'s rights are constrained by this setting. If 0, no restriction is applied.
+     * @type {number}
+     * @memberof CompleteCaseType
+     */
+    'delete_max_n_cases'?: number;
+    /**
      * The etiologies used by the case type
      * @type {{ [key: string]: Etiology; }}
      * @memberof CompleteCaseType
@@ -1806,11 +1964,11 @@ export interface CompleteCaseType {
      */
     'cols': { [key: string]: Col; };
     /**
-     * The ordered list of case type dimensions
-     * @type {Array<CaseTypeDim>}
+     * The case type dimensions
+     * @type {{ [key: string]: CaseTypeDim; }}
      * @memberof CompleteCaseType
      */
-    'case_type_dims': Array<CaseTypeDim>;
+    'case_type_dims': { [key: string]: CaseTypeDim; };
     /**
      * The case type columns for the case type
      * @type {{ [key: string]: CaseTypeCol; }}
@@ -1818,11 +1976,23 @@ export interface CompleteCaseType {
      */
     'case_type_cols': { [key: string]: CaseTypeCol; };
     /**
-     * The order of the case type columns outside the context of a dimension
+     * The case type dimensions ordered by their (occurrence, rank, code). Calculated during model validation.
      * @type {Array<string>}
      * @memberof CompleteCaseType
      */
-    'case_type_col_order': Array<string>;
+    'ordered_case_type_dim_ids'?: Array<string>;
+    /**
+     * The case type columns ordered by their (ordered_case_type_dim, rank, code). Calculated during model validation.
+     * @type {Array<string>}
+     * @memberof CompleteCaseType
+     */
+    'ordered_case_type_col_ids'?: Array<string>;
+    /**
+     * The case type columns per case type dimension, ordered by (rank, code). Calculated during model validation.
+     * @type {{ [key: string]: Array<string>; }}
+     * @memberof CompleteCaseType
+     */
+    'ordered_case_type_col_ids_by_dim'?: { [key: string]: Array<string>; };
     /**
      * The genetic distance protocols used by the case type
      * @type {{ [key: string]: GeneticDistanceProtocol; }}
@@ -1847,6 +2017,12 @@ export interface CompleteCaseType {
      * @memberof CompleteCaseType
      */
     'case_type_share_abacs': { [key: string]: CaseTypeShareAbac; };
+    /**
+     * The case type dimension ID to use for time-based statistics unless otherwise specified
+     * @type {string}
+     * @memberof CompleteCaseType
+     */
+    'case_date_case_type_dim_id': string | null;
 }
 /**
  * 
@@ -1855,7 +2031,7 @@ export interface CompleteCaseType {
  */
 export interface Concept {
     /**
-     * The unique identifier for the obj.
+     * The unique identifier for the object.
      * @type {string}
      * @memberof Concept
      */
@@ -1910,7 +2086,7 @@ export interface Concept {
  */
 export interface ConceptRelation {
     /**
-     * The unique identifier for the obj.
+     * The unique identifier for the object.
      * @type {string}
      * @memberof ConceptRelation
      */
@@ -1968,7 +2144,7 @@ export type ConceptRelationType = typeof ConceptRelationType[keyof typeof Concep
  */
 export interface ConceptSet {
     /**
-     * The unique identifier for the obj.
+     * The unique identifier for the object.
      * @type {string}
      * @memberof ConceptSet
      */
@@ -2043,7 +2219,7 @@ export type ConceptSetType = typeof ConceptSetType[keyof typeof ConceptSetType];
  */
 export interface Contact {
     /**
-     * The unique identifier for the obj.
+     * The unique identifier for the object.
      * @type {string}
      * @memberof Contact
      */
@@ -2079,6 +2255,51 @@ export interface Contact {
      */
     'phone'?: string | null;
 }
+/**
+ * A contiguous DNA sequence. Any IUPAC ambiguity codes are allowed in the sequence. A contig is not persistable on its own, but is meant to be part of other objects through composition.  A contig has an id that is equal to the hash code that uniquely identifies it based on its sequence.  A contig is immutable: once created, it cannot be updated. As such, contig IDs can safely be referenced in other models and outside of the application.
+ * @export
+ * @interface Contig
+ */
+export interface Contig {
+    /**
+     * The quality of the result, as a numerical value. A higher score indicates better quality. The range and interpretation of this value is not in scope of the application and must be defined by the user.
+     * @type {number}
+     * @memberof Contig
+     */
+    'qc_score'?: number | null;
+    /**
+     * 
+     * @type {QualityControlResult}
+     * @memberof Contig
+     */
+    'qc_result'?: QualityControlResult;
+    /**
+     * The unique identifier for the object.
+     * @type {string}
+     * @memberof Contig
+     */
+    'id'?: string | null;
+    /**
+     * The sequence in the representation defined by seq_format
+     * @type {string}
+     * @memberof Contig
+     */
+    'seq': string;
+    /**
+     * 
+     * @type {SeqFormat}
+     * @memberof Contig
+     */
+    'seq_format'?: SeqFormat;
+    /**
+     * The length of the sequence. Derived from the sequence if possible and if the value is set to zero. If set to zero and it is not possible to derive the length, an error is raised.
+     * @type {number}
+     * @memberof Contig
+     */
+    'length'?: number;
+}
+
+
 /**
  * 
  * @export
@@ -2148,7 +2369,7 @@ export interface CreateCasesRequestBody {
  */
 export interface CreateFileForForReadSetRequestBody {
     /**
-     * The content of the file to create (base64 encoded bytes).
+     * The content of the file to create as base64 encoded bytes.
      * @type {string}
      * @memberof CreateFileForForReadSetRequestBody
      */
@@ -2159,7 +2380,21 @@ export interface CreateFileForForReadSetRequestBody {
      * @memberof CreateFileForForReadSetRequestBody
      */
     'is_fwd': boolean;
+    /**
+     * 
+     * @type {ReadsFileFormat}
+     * @memberof CreateFileForForReadSetRequestBody
+     */
+    'file_format'?: ReadsFileFormat;
+    /**
+     * 
+     * @type {FileCompression}
+     * @memberof CreateFileForForReadSetRequestBody
+     */
+    'file_compression'?: FileCompression;
 }
+
+
 /**
  * 
  * @export
@@ -2167,12 +2402,26 @@ export interface CreateFileForForReadSetRequestBody {
  */
 export interface CreateFileForSeqRequestBody {
     /**
-     * The content of the file to create (base64 encoded bytes).
+     * The content of the file to create as base64 encoded bytes.
      * @type {string}
      * @memberof CreateFileForSeqRequestBody
      */
     'file_content': string;
+    /**
+     * 
+     * @type {SeqFileFormat}
+     * @memberof CreateFileForSeqRequestBody
+     */
+    'file_format'?: SeqFileFormat;
+    /**
+     * 
+     * @type {FileCompression}
+     * @memberof CreateFileForSeqRequestBody
+     */
+    'file_compression'?: FileCompression;
 }
+
+
 /**
  * Represents a collection of data.
  * @export
@@ -2180,7 +2429,7 @@ export interface CreateFileForSeqRequestBody {
  */
 export interface DataCollection {
     /**
-     * The unique identifier for the obj.
+     * The unique identifier for the object.
      * @type {string}
      * @memberof DataCollection
      */
@@ -2205,7 +2454,7 @@ export interface DataCollection {
  */
 export interface DataCollectionSet {
     /**
-     * The unique identifier for the obj.
+     * The unique identifier for the object.
      * @type {string}
      * @memberof DataCollectionSet
      */
@@ -2230,7 +2479,7 @@ export interface DataCollectionSet {
  */
 export interface DataCollectionSetMember {
     /**
-     * The unique identifier for the obj.
+     * The unique identifier for the object.
      * @type {string}
      * @memberof DataCollectionSetMember
      */
@@ -2273,7 +2522,7 @@ export type Detail = string | { [key: string]: any; };
  */
 export interface Dim {
     /**
-     * The unique identifier for the obj.
+     * The unique identifier for the object.
      * @type {string}
      * @memberof Dim
      */
@@ -2297,11 +2546,11 @@ export interface Dim {
      */
     'label': string;
     /**
-     * The rank of the dimension, if relevant.
+     * The rank of the dimension, for (partial) ordering.
      * @type {number}
      * @memberof Dim
      */
-    'rank'?: number | null;
+    'rank'?: number;
     /**
      * The column code prefix used to compose a full column code, if different from the code field.
      * @type {string}
@@ -2349,7 +2598,7 @@ export type DimType = typeof DimType[keyof typeof DimType];
  */
 export interface Disease {
     /**
-     * The unique identifier for the obj.
+     * The unique identifier for the object.
      * @type {string}
      * @memberof Disease
      */
@@ -2374,7 +2623,7 @@ export interface Disease {
  */
 export interface EtiologicalAgent {
     /**
-     * The unique identifier for the obj.
+     * The unique identifier for the object.
      * @type {string}
      * @memberof EtiologicalAgent
      */
@@ -2399,7 +2648,7 @@ export interface EtiologicalAgent {
  */
 export interface Etiology {
     /**
-     * The unique identifier for the obj.
+     * The unique identifier for the object.
      * @type {string}
      * @memberof Etiology
      */
@@ -2430,6 +2679,65 @@ export interface Etiology {
     'etiological_agent'?: EtiologicalAgent;
 }
 /**
+ * An externally generated identifier of a particular type and its corresponding internal identifier. The externally generated identifier consists of the combination (identifier issuer, identifier)
+ * @export
+ * @interface ExternalIdentifier
+ */
+export interface ExternalIdentifier {
+    /**
+     * The unique identifier for the object.
+     * @type {string}
+     * @memberof ExternalIdentifier
+     */
+    'id'?: string | null;
+    /**
+     * 
+     * @type {IdentifierType}
+     * @memberof ExternalIdentifier
+     */
+    'identifier_type': IdentifierType;
+    /**
+     * The UUID of the identifier issuer that issued the external identifier
+     * @type {string}
+     * @memberof ExternalIdentifier
+     */
+    'identifier_issuer_id': string;
+    /**
+     * 
+     * @type {IdentifierIssuer}
+     * @memberof ExternalIdentifier
+     */
+    'identifier_issuer'?: IdentifierIssuer;
+    /**
+     * The external identifier
+     * @type {string}
+     * @memberof ExternalIdentifier
+     */
+    'external_id': string;
+    /**
+     * The internal identifier. This identifier is not guaranteed to still exist, so operations using it should check this first.
+     * @type {string}
+     * @memberof ExternalIdentifier
+     */
+    'internal_id': string;
+}
+
+
+/**
+ * 
+ * @export
+ * @ {string}
+ */
+
+export const FileCompression = {
+    NONE: 'NONE',
+    GZIP: 'GZIP'
+} as const;
+
+export type FileCompression = typeof FileCompression[keyof typeof FileCompression];
+
+
+/**
  * @type EpiFilter
  * @export
  */
@@ -2448,7 +2756,7 @@ export type FiltersInner = TypedCompositeFilter | TypedDateRangeFilter | TypedDa
  */
 export interface GeneticDistanceProtocol {
     /**
-     * The unique identifier for the obj.
+     * The unique identifier for the object.
      * @type {string}
      * @memberof GeneticDistanceProtocol
      */
@@ -2478,6 +2786,12 @@ export interface GeneticDistanceProtocol {
      */
     'seqdb_max_stored_distance'?: number | null;
     /**
+     * Whether the distances between two profiles generated by this protocol are integers in seqdb
+     * @type {boolean}
+     * @memberof GeneticDistanceProtocol
+     */
+    'seqdb_is_integer_distance': boolean;
+    /**
      * The minimum unit to be shown in a scale
      * @type {number}
      * @memberof GeneticDistanceProtocol
@@ -2491,7 +2805,7 @@ export interface GeneticDistanceProtocol {
  */
 export interface GeneticSequence {
     /**
-     * The unique identifier for the obj.
+     * The unique identifier for the object.
      * @type {string}
      * @memberof GeneticSequence
      */
@@ -2558,7 +2872,7 @@ export type HealthStatus = typeof HealthStatus[keyof typeof HealthStatus];
  */
 export interface IdentifierIssuer {
     /**
-     * The unique identifier for the obj.
+     * The unique identifier for the object.
      * @type {string}
      * @memberof IdentifierIssuer
      */
@@ -2568,8 +2882,38 @@ export interface IdentifierIssuer {
      * @type {string}
      * @memberof IdentifierIssuer
      */
+    'code': string;
+    /**
+     * The name of the issuer
+     * @type {string}
+     * @memberof IdentifierIssuer
+     */
     'name': string;
+    /**
+     * The description of the identifier issuer.
+     * @type {string}
+     * @memberof IdentifierIssuer
+     */
+    'description'?: string | null;
 }
+/**
+ * 
+ * @export
+ * @ {number}
+ */
+
+export const IdentifierType = {
+    NUMBER_1: 1,
+    NUMBER_2: 2,
+    NUMBER_3: 3,
+    NUMBER_4: 4,
+    NUMBER_5: 5,
+    NUMBER_6: 6
+} as const;
+
+export type IdentifierType = typeof IdentifierType[keyof typeof IdentifierType];
+
+
 /**
  * 
  * @export
@@ -2639,49 +2983,6 @@ export interface IdentityProvider {
 }
 
 
-/**
- * 
- * @export
- * @interface LibraryPrepProtocol
- */
-export interface LibraryPrepProtocol {
-    /**
-     * The code of the protocol
-     * @type {string}
-     * @memberof LibraryPrepProtocol
-     */
-    'code': string;
-    /**
-     * The name of the protocol
-     * @type {string}
-     * @memberof LibraryPrepProtocol
-     */
-    'name': string;
-    /**
-     * The version of the protocol
-     * @type {string}
-     * @memberof LibraryPrepProtocol
-     */
-    'version'?: string | null;
-    /**
-     * The description of the protocol
-     * @type {string}
-     * @memberof LibraryPrepProtocol
-     */
-    'description'?: string | null;
-    /**
-     * The properties of the protocol
-     * @type {{ [key: string]: string; }}
-     * @memberof LibraryPrepProtocol
-     */
-    'props'?: { [key: string]: string; };
-    /**
-     * The unique identifier for the obj.
-     * @type {string}
-     * @memberof LibraryPrepProtocol
-     */
-    'id'?: string | null;
-}
 /**
  * @type LocationInner
  * @export
@@ -2800,6 +3101,25 @@ export type MembersInner = number | string;
 /**
  * 
  * @export
+ * @interface ModelFile
+ */
+export interface ModelFile {
+    /**
+     * The unique identifier for the object.
+     * @type {string}
+     * @memberof ModelFile
+     */
+    'id'?: string | null;
+    /**
+     * The content of the file.
+     * @type {File}
+     * @memberof ModelFile
+     */
+    'content': File;
+}
+/**
+ * 
+ * @export
  * @ {string}
  */
 
@@ -2822,7 +3142,7 @@ export type OAuthFlow = typeof OAuthFlow[keyof typeof OAuthFlow];
  */
 export interface Organization {
     /**
-     * The unique identifier for the obj.
+     * The unique identifier for the object.
      * @type {string}
      * @memberof Organization
      */
@@ -2847,7 +3167,7 @@ export interface Organization {
  */
 export interface OrganizationAccessCasePolicy {
     /**
-     * The unique identifier for the obj.
+     * The unique identifier for the object.
      * @type {string}
      * @memberof OrganizationAccessCasePolicy
      */
@@ -2968,7 +3288,7 @@ export interface OrganizationAccessCasePolicy {
  */
 export interface OrganizationAdminPolicy {
     /**
-     * The unique identifier for the obj.
+     * The unique identifier for the object.
      * @type {string}
      * @memberof OrganizationAdminPolicy
      */
@@ -3005,13 +3325,50 @@ export interface OrganizationAdminPolicy {
     'is_active': boolean;
 }
 /**
+ * The association between an organization and an identifier issuer.  This information can be used to restrict which identifier issuers are available to users of a particular organization.
+ * @export
+ * @interface OrganizationIdentifierIssuerLink
+ */
+export interface OrganizationIdentifierIssuerLink {
+    /**
+     * The unique identifier for the object.
+     * @type {string}
+     * @memberof OrganizationIdentifierIssuerLink
+     */
+    'id'?: string | null;
+    /**
+     * The ID of the organization. FOREIGN KEY
+     * @type {string}
+     * @memberof OrganizationIdentifierIssuerLink
+     */
+    'organization_id': string;
+    /**
+     * 
+     * @type {Organization}
+     * @memberof OrganizationIdentifierIssuerLink
+     */
+    'organization'?: Organization;
+    /**
+     * The ID of the identifier issuer. FOREIGN KEY
+     * @type {string}
+     * @memberof OrganizationIdentifierIssuerLink
+     */
+    'identifier_issuer_id': string;
+    /**
+     * 
+     * @type {IdentifierIssuer}
+     * @memberof OrganizationIdentifierIssuerLink
+     */
+    'identifier_issuer'?: IdentifierIssuer;
+}
+/**
  * 
  * @export
  * @interface OrganizationSet
  */
 export interface OrganizationSet {
     /**
-     * The unique identifier for the obj.
+     * The unique identifier for the object.
      * @type {string}
      * @memberof OrganizationSet
      */
@@ -3036,7 +3393,7 @@ export interface OrganizationSet {
  */
 export interface OrganizationSetMember {
     /**
-     * The unique identifier for the obj.
+     * The unique identifier for the object.
      * @type {string}
      * @memberof OrganizationSetMember
      */
@@ -3073,7 +3430,7 @@ export interface OrganizationSetMember {
  */
 export interface OrganizationShareCasePolicy {
     /**
-     * The unique identifier for the obj.
+     * The unique identifier for the object.
      * @type {string}
      * @memberof OrganizationShareCasePolicy
      */
@@ -3164,7 +3521,7 @@ export interface OrganizationShareCasePolicy {
  */
 export interface Outage {
     /**
-     * The unique identifier for the obj.
+     * The unique identifier for the object.
      * @type {string}
      * @memberof Outage
      */
@@ -3219,7 +3576,7 @@ export interface Outage {
  */
 export interface PackageMetadata {
     /**
-     * The unique identifier for the obj.
+     * The unique identifier for the object.
      * @type {string}
      * @memberof PackageMetadata
      */
@@ -3273,7 +3630,7 @@ export type PermissionType = typeof PermissionType[keyof typeof PermissionType];
  */
 export interface PhylogeneticTree {
     /**
-     * The unique identifier for the obj.
+     * The unique identifier for the object.
      * @type {string}
      * @memberof PhylogeneticTree
      */
@@ -3330,6 +3687,12 @@ export interface PhylogeneticTree {
 
 
 /**
+ * @type PropsValue
+ * @export
+ */
+export type PropsValue = number | string;
+
+/**
  * 
  * @export
  * @ {string}
@@ -3347,60 +3710,21 @@ export type QualityControlResult = typeof QualityControlResult[keyof typeof Qual
 /**
  * 
  * @export
- * @interface RawSeq
- */
-export interface RawSeq {
-    /**
-     * The sequence in the representation defined by seq_format
-     * @type {string}
-     * @memberof RawSeq
-     */
-    'seq': string;
-    /**
-     * 
-     * @type {SeqFormat}
-     * @memberof RawSeq
-     */
-    'seq_format'?: SeqFormat;
-    /**
-     * The SHA256 hash of the lower case ASCII encoded sequence without gaps. In the case of multiple contigs, this is the hash of the lexicographically sorted and concatenated contig sequences with a single gap (\'-\') as separator.
-     * @type {File}
-     * @memberof RawSeq
-     */
-    'seq_hash_sha256': File;
-    /**
-     * The length of the sequence. In case of multiple contigs, this is the sum of the lengths of all contigs.
-     * @type {number}
-     * @memberof RawSeq
-     */
-    'length': number;
-    /**
-     * The unique identifier for the obj.
-     * @type {string}
-     * @memberof RawSeq
-     */
-    'id'?: string | null;
-}
-
-
-/**
- * 
- * @export
  * @interface ReadSet
  */
 export interface ReadSet {
     /**
-     * The quality of the sequence, as a numerical value.
+     * The quality of the result, as a numerical value. A higher score indicates better quality. The range and interpretation of this value is not in scope of the application and must be defined by the user.
      * @type {number}
      * @memberof ReadSet
      */
-    'quality_score'?: number | null;
+    'qc_score'?: number | null;
     /**
      * 
      * @type {QualityControlResult}
      * @memberof ReadSet
      */
-    'quality'?: QualityControlResult;
+    'qc_result'?: QualityControlResult;
     /**
      * A unique code for the instance, e.g. for external reference. Defaults to a UUID4.
      * @type {string}
@@ -3408,23 +3732,35 @@ export interface ReadSet {
      */
     'code'?: string;
     /**
-     * The unique identifier for the obj.
+     * The unique identifier for the sample from which these results were obtained. FOREIGN KEY
+     * @type {string}
+     * @memberof ReadSet
+     */
+    'sample_id': string;
+    /**
+     * 
+     * @type {Sample}
+     * @memberof ReadSet
+     */
+    'sample'?: Sample;
+    /**
+     * The unique identifier for the object.
      * @type {string}
      * @memberof ReadSet
      */
     'id'?: string | null;
     /**
-     * The unique identifier for the library preparation protocol. FOREIGN KEY
+     * The unique identifier for the sequencing protocol. FOREIGN KEY
      * @type {string}
      * @memberof ReadSet
      */
-    'library_prep_protocol_id': string;
+    'sequencing_protocol_id': string;
     /**
      * 
-     * @type {LibraryPrepProtocol}
+     * @type {SequencingProtocol}
      * @memberof ReadSet
      */
-    'library_prep_protocol'?: LibraryPrepProtocol;
+    'sequencing_protocol'?: SequencingProtocol;
     /**
      * The URI of the forward read set. In case of single-end reads, this is the only read set.
      * @type {string}
@@ -3444,23 +3780,47 @@ export interface ReadSet {
      */
     'fwd_file_id'?: string | null;
     /**
+     * 
+     * @type {any}
+     * @memberof ReadSet
+     */
+    'fwd_file'?: any;
+    /**
      * The unique file identifier for the reverse read set, if any.
      * @type {string}
      * @memberof ReadSet
      */
     'rev_file_id'?: string | null;
     /**
-     * The SHA256 hash of the uncompressed FASTQ file representation of the forward read set.
-     * @type {string}
+     * 
+     * @type {any}
      * @memberof ReadSet
      */
-    'fwd_reads_hash_sha256'?: string | null;
+    'rev_file'?: any;
     /**
-     * The SHA256 hash of the uncompressed FASTQ file representation of the reverse read set.
+     * 
+     * @type {ReadsFileFormat}
+     * @memberof ReadSet
+     */
+    'file_format'?: ReadsFileFormat;
+    /**
+     * 
+     * @type {FileCompression}
+     * @memberof ReadSet
+     */
+    'file_compression'?: FileCompression;
+    /**
+     * The first 128 bits of the SHA256 hash of the uncompressed FASTQ file representation of the forward read set.
      * @type {string}
      * @memberof ReadSet
      */
-    'rev_reads_hash_sha256'?: string | null;
+    'fwd_reads_hash'?: string | null;
+    /**
+     * The first 128 bits of the SHA256 hash of the uncompressed FASTQ file representation of the reverse read set.
+     * @type {string}
+     * @memberof ReadSet
+     */
+    'rev_reads_hash'?: string | null;
     /**
      * The code of the sequencing run.
      * @type {string}
@@ -3471,13 +3831,26 @@ export interface ReadSet {
 
 
 /**
+ * 
+ * @export
+ * @ {string}
+ */
+
+export const ReadsFileFormat = {
+    FASTQ: 'FASTQ'
+} as const;
+
+export type ReadsFileFormat = typeof ReadsFileFormat[keyof typeof ReadsFileFormat];
+
+
+/**
  * Geographical representation of a region.
  * @export
  * @interface Region
  */
 export interface Region {
     /**
-     * The unique identifier for the obj.
+     * The unique identifier for the object.
      * @type {string}
      * @memberof Region
      */
@@ -3538,7 +3911,7 @@ export interface Region {
  */
 export interface RegionRelation {
     /**
-     * The unique identifier for the obj.
+     * The unique identifier for the object.
      * @type {string}
      * @memberof RegionRelation
      */
@@ -3599,7 +3972,7 @@ export type RegionRelationType = typeof RegionRelationType[keyof typeof RegionRe
  */
 export interface RegionSet {
     /**
-     * The unique identifier for the obj.
+     * The unique identifier for the object.
      * @type {string}
      * @memberof RegionSet
      */
@@ -3622,6 +3995,12 @@ export interface RegionSet {
      * @memberof RegionSet
      */
     'region_code_as_label': boolean;
+    /**
+     * The geographic resolution; higher values indicate higher resolution.
+     * @type {number}
+     * @memberof RegionSet
+     */
+    'resolution': number;
 }
 /**
  * Geographical shape representation for a region set.
@@ -3630,7 +4009,7 @@ export interface RegionSet {
  */
 export interface RegionSetShape {
     /**
-     * The unique identifier for the obj.
+     * The unique identifier for the object.
      * @type {string}
      * @memberof RegionSetShape
      */
@@ -3667,17 +4046,17 @@ export interface RegionSetShape {
  */
 export interface RetrieveAlleleProfileRequestBody {
     /**
-     * 
+     * The ID of the genetic sequence case type column to use.
+     * @type {string}
+     * @memberof RetrieveAlleleProfileRequestBody
+     */
+    'genetic_sequence_case_type_col_id': string;
+    /**
+     * The IDs of the cases to retrieve genetic sequences for.
      * @type {Array<string>}
      * @memberof RetrieveAlleleProfileRequestBody
      */
-    'sequence_ids': Array<string>;
-    /**
-     * 
-     * @type {{ [key: string]: any; }}
-     * @memberof RetrieveAlleleProfileRequestBody
-     */
-    'props'?: { [key: string]: any; };
+    'case_ids': Array<string>;
 }
 /**
  * 
@@ -3714,17 +4093,36 @@ export interface RetrieveCaseTypeStatsRequestBody {
 /**
  * 
  * @export
+ * @interface RetrieveCasesByIdsRequestBody
+ */
+export interface RetrieveCasesByIdsRequestBody {
+    /**
+     * The case type id to retrieve cases for.
+     * @type {string}
+     * @memberof RetrieveCasesByIdsRequestBody
+     */
+    'case_type_id': string;
+    /**
+     * The case ids to retrieve cases for. All cases must belong to the given case type. UNIQUE
+     * @type {Array<string>}
+     * @memberof RetrieveCasesByIdsRequestBody
+     */
+    'case_ids': Array<string>;
+}
+/**
+ * 
+ * @export
  * @interface RetrieveGeneticSequenceRequestBody
  */
 export interface RetrieveGeneticSequenceRequestBody {
     /**
-     * The case type column that contains the genetic sequences to retrieve.
+     * The ID of the genetic sequence case type column to use.
      * @type {string}
      * @memberof RetrieveGeneticSequenceRequestBody
      */
     'genetic_sequence_case_type_col_id': string;
     /**
-     * The case ids to retrieve genetic sequences for.
+     * The IDs of the cases to retrieve genetic sequences for.
      * @type {Array<string>}
      * @memberof RetrieveGeneticSequenceRequestBody
      */
@@ -3737,25 +4135,25 @@ export interface RetrieveGeneticSequenceRequestBody {
  */
 export interface RetrieveOrganizationContactRequestBody {
     /**
-     * 
+     * The organization IDs to retrieve contacts for.
      * @type {Array<string>}
      * @memberof RetrieveOrganizationContactRequestBody
      */
     'organization_ids'?: Array<string> | null;
     /**
-     * 
+     * The site IDs to retrieve contacts for.
      * @type {Array<string>}
      * @memberof RetrieveOrganizationContactRequestBody
      */
     'site_ids'?: Array<string> | null;
     /**
-     * 
+     * The contact IDs to retrieve contacts for.
      * @type {Array<string>}
      * @memberof RetrieveOrganizationContactRequestBody
      */
     'contact_ids'?: Array<string> | null;
     /**
-     * 
+     * Additional properties for the request.
      * @type {{ [key: string]: any; }}
      * @memberof RetrieveOrganizationContactRequestBody
      */
@@ -3768,7 +4166,7 @@ export interface RetrieveOrganizationContactRequestBody {
  */
 export interface RetrievePhylogeneticTreeRequestBody {
     /**
-     * 
+     * The ID of the genetic distance case type column to use.
      * @type {string}
      * @memberof RetrievePhylogeneticTreeRequestBody
      */
@@ -3780,7 +4178,7 @@ export interface RetrievePhylogeneticTreeRequestBody {
      */
     'tree_algorithm_code': TreeAlgorithmType;
     /**
-     * 
+     * The IDs of the cases to calculate the phylogenetic tree for.
      * @type {Array<string>}
      * @memberof RetrievePhylogeneticTreeRequestBody
      */
@@ -3801,17 +4199,29 @@ export interface Sample {
      */
     'code'?: string;
     /**
-     * The unique identifier for the obj.
+     * The unique identifier for the object.
      * @type {string}
      * @memberof Sample
      */
     'id'?: string | null;
     /**
-     * The properties of the sample.
-     * @type {{ [key: string]: string; }}
+     * The ID of the data collection where the sample was created. FOREIGN KEY
+     * @type {string}
      * @memberof Sample
      */
-    'props'?: { [key: string]: string; };
+    'created_in_data_collection_id': string;
+    /**
+     * 
+     * @type {DataCollection}
+     * @memberof Sample
+     */
+    'created_in_data_collection'?: DataCollection;
+    /**
+     * The properties of the sample.
+     * @type {{ [key: string]: PropsValue; }}
+     * @memberof Sample
+     */
+    'props'?: { [key: string]: PropsValue; };
 }
 /**
  * 
@@ -3820,17 +4230,17 @@ export interface Sample {
  */
 export interface Seq {
     /**
-     * The quality of the sequence, as a numerical value.
+     * The quality of the result, as a numerical value. A higher score indicates better quality. The range and interpretation of this value is not in scope of the application and must be defined by the user.
      * @type {number}
      * @memberof Seq
      */
-    'quality_score'?: number | null;
+    'qc_score'?: number | null;
     /**
      * 
      * @type {QualityControlResult}
      * @memberof Seq
      */
-    'quality'?: QualityControlResult;
+    'qc_result'?: QualityControlResult;
     /**
      * A unique code for the instance, e.g. for external reference. Defaults to a UUID4.
      * @type {string}
@@ -3838,23 +4248,59 @@ export interface Seq {
      */
     'code'?: string;
     /**
-     * The unique identifier for the obj.
+     * The unique identifier for the sample from which these results were obtained. FOREIGN KEY
      * @type {string}
      * @memberof Seq
      */
-    'id'?: string | null;
-    /**
-     * The unique identifier for the sample, if available. FOREIGN KEY
-     * @type {string}
-     * @memberof Seq
-     */
-    'sample_id'?: string | null;
+    'sample_id': string;
     /**
      * 
      * @type {Sample}
      * @memberof Seq
      */
     'sample'?: Sample;
+    /**
+     * The unique identifier for the object.
+     * @type {string}
+     * @memberof Seq
+     */
+    'id'?: string | null;
+    /**
+     * The URI of the sequence data, if available.
+     * @type {string}
+     * @memberof Seq
+     */
+    'uri'?: string | null;
+    /**
+     * The unique file identifier for the sequence data. FOREIGN KEY
+     * @type {string}
+     * @memberof Seq
+     */
+    'file_id'?: string | null;
+    /**
+     * 
+     * @type {any}
+     * @memberof Seq
+     */
+    'file'?: any;
+    /**
+     * 
+     * @type {SeqFileFormat}
+     * @memberof Seq
+     */
+    'file_format'?: SeqFileFormat;
+    /**
+     * 
+     * @type {FileCompression}
+     * @memberof Seq
+     */
+    'file_compression'?: FileCompression;
+    /**
+     * The first 128 bits of the SHA256 hash of the uncompressed sequence file representation.
+     * @type {string}
+     * @memberof Seq
+     */
+    'file_hash'?: string | null;
     /**
      * The unique identifier for the single read set used to generate the assembly, if available. FOREIGN KEY
      * @type {string}
@@ -3868,7 +4314,7 @@ export interface Seq {
      */
     'read_set'?: ReadSet;
     /**
-     * The unique identifier for a second read set used to generate the assembly, if more than one. FOREIGN KEY
+     * The unique identifier for a potential second read set used to generate the assembly. FOREIGN KEY
      * @type {string}
      * @memberof Seq
      */
@@ -3880,7 +4326,7 @@ export interface Seq {
      */
     'read_set2'?: ReadSet;
     /**
-     * The unique identifier for the assembly protocol, if available. FOREIGN KEY
+     * The unique identifier for the assembly protocol used to generate the sequence from reads, if available. FOREIGN KEY
      * @type {string}
      * @memberof Seq
      */
@@ -3892,24 +4338,25 @@ export interface Seq {
      */
     'assembly_protocol'?: AssemblyProtocol;
     /**
-     * The unique identifier for the raw sequence, if available. FOREIGN KEY
-     * @type {string}
+     * The contigs that make up the sequence. No duplicate contigs are allowed. If zero contigs are provided, the sequence is considered to be not available yet.
+     * @type {Array<Contig>}
      * @memberof Seq
      */
-    'raw_seq_id'?: string | null;
-    /**
-     * 
-     * @type {RawSeq}
-     * @memberof Seq
-     */
-    'raw_seq'?: RawSeq;
-    /**
-     * The unique file identifier.
-     * @type {string}
-     * @memberof Seq
-     */
-    'file_id'?: string | null;
+    'contigs'?: Array<Contig>;
 }
+
+
+/**
+ * 
+ * @export
+ * @ {string}
+ */
+
+export const SeqFileFormat = {
+    FASTA: 'FASTA'
+} as const;
+
+export type SeqFileFormat = typeof SeqFileFormat[keyof typeof SeqFileFormat];
 
 
 /**
@@ -3920,12 +4367,56 @@ export interface Seq {
 
 export const SeqFormat = {
     HASH_ONLY: 'HASH_ONLY',
-    STR_DNA5: 'STR_DNA5'
+    STR_DNA: 'STR_DNA',
+    STR_DNA_INCL_GAP: 'STR_DNA_INCL_GAP'
 } as const;
 
 export type SeqFormat = typeof SeqFormat[keyof typeof SeqFormat];
 
 
+/**
+ * 
+ * @export
+ * @interface SequencingProtocol
+ */
+export interface SequencingProtocol {
+    /**
+     * The code of the protocol
+     * @type {string}
+     * @memberof SequencingProtocol
+     */
+    'code': string;
+    /**
+     * The name of the protocol
+     * @type {string}
+     * @memberof SequencingProtocol
+     */
+    'name': string;
+    /**
+     * The version of the protocol
+     * @type {string}
+     * @memberof SequencingProtocol
+     */
+    'version'?: string | null;
+    /**
+     * The description of the protocol
+     * @type {string}
+     * @memberof SequencingProtocol
+     */
+    'description'?: string | null;
+    /**
+     * The properties of the protocol
+     * @type {{ [key: string]: string; }}
+     * @memberof SequencingProtocol
+     */
+    'props'?: { [key: string]: string; };
+    /**
+     * The unique identifier for the object.
+     * @type {string}
+     * @memberof SequencingProtocol
+     */
+    'id'?: string | null;
+}
 /**
  * Represents a physical site of an organization.
  * @export
@@ -3933,7 +4424,7 @@ export type SeqFormat = typeof SeqFormat[keyof typeof SeqFormat];
  */
 export interface Site {
     /**
-     * The unique identifier for the obj.
+     * The unique identifier for the object.
      * @type {string}
      * @memberof Site
      */
@@ -3964,7 +4455,7 @@ export interface Site {
  */
 export interface EpiSubject {
     /**
-     * The unique identifier for the obj.
+     * The unique identifier for the object.
      * @type {string}
      * @memberof EpiSubject
      */
@@ -4001,7 +4492,7 @@ export interface EpiSubject {
  */
 export interface SubjectIdentifier {
     /**
-     * The unique identifier for the obj.
+     * The unique identifier for the object.
      * @type {string}
      * @memberof SubjectIdentifier
      */
@@ -4044,7 +4535,7 @@ export interface SubjectIdentifier {
  */
 export interface TreeAlgorithm {
     /**
-     * The unique identifier for the obj.
+     * The unique identifier for the object.
      * @type {string}
      * @memberof TreeAlgorithm
      */
@@ -4107,7 +4598,7 @@ export interface TreeAlgorithm {
  */
 export interface TreeAlgorithmClass {
     /**
-     * The unique identifier for the obj.
+     * The unique identifier for the object.
      * @type {string}
      * @memberof TreeAlgorithmClass
      */
@@ -4732,7 +5223,7 @@ export interface TypedUuidSetFilter {
  */
 export interface UpdateCaseTypeColSetCaseTypeColsRequestBody {
     /**
-     * 
+     * The members of the case type col set.
      * @type {Array<CaseTypeColSetMember>}
      * @memberof UpdateCaseTypeColSetCaseTypeColsRequestBody
      */
@@ -4745,7 +5236,7 @@ export interface UpdateCaseTypeColSetCaseTypeColsRequestBody {
  */
 export interface UpdateCaseTypeSetCaseTypesRequestBody {
     /**
-     * 
+     * The members of the case type set.
      * @type {Array<CaseTypeSetMember>}
      * @memberof UpdateCaseTypeSetCaseTypesRequestBody
      */
@@ -4776,6 +5267,19 @@ export interface UpdateDiseaseEtiologicalAgentRequestBody {
      * @memberof UpdateDiseaseEtiologicalAgentRequestBody
      */
     'etiologies': Array<Etiology>;
+}
+/**
+ * 
+ * @export
+ * @interface UpdateOrganizationIdentifierIssuerLinksRequestBody
+ */
+export interface UpdateOrganizationIdentifierIssuerLinksRequestBody {
+    /**
+     * The identifier issuers that the organization is linked to.
+     * @type {Array<OrganizationIdentifierIssuerLink>}
+     * @memberof UpdateOrganizationIdentifierIssuerLinksRequestBody
+     */
+    'organization_identifier_issuer_links': Array<OrganizationIdentifierIssuerLink>;
 }
 /**
  * 
@@ -4890,7 +5394,7 @@ export interface User {
  */
 export interface UserAccessCasePolicy {
     /**
-     * The unique identifier for the obj.
+     * The unique identifier for the object.
      * @type {string}
      * @memberof UserAccessCasePolicy
      */
@@ -5005,7 +5509,7 @@ export interface UserAccessCasePolicy {
  */
 export interface UserInvitation {
     /**
-     * The unique identifier for the obj.
+     * The unique identifier for the object.
      * @type {string}
      * @memberof UserInvitation
      */
@@ -5078,7 +5582,7 @@ export interface UserInvitation {
  */
 export interface UserInvitationConstraints {
     /**
-     * The unique identifier for the obj.
+     * The unique identifier for the object.
      * @type {string}
      * @memberof UserInvitationConstraints
      */
@@ -5153,7 +5657,7 @@ export interface UserNameEmail {
  */
 export interface UserShareCasePolicy {
     /**
-     * The unique identifier for the obj.
+     * The unique identifier for the object.
      * @type {string}
      * @memberof UserShareCasePolicy
      */
@@ -12960,6 +13464,428 @@ const CaseApiAxiosParamCreator = function (configuration?: Configuration) {
         },
         /**
          * 
+         * @summary Case Type Dims  Delete All
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        caseTypeDimsDeleteAll: async (options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
+            const localVarPath = `/v1/case_type_dims`;
+            // use dummy base URL string because the URL constructor only accepts absolute URLs.
+            const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
+            let baseOptions;
+            if (configuration) {
+                baseOptions = configuration.baseOptions;
+            }
+
+            const localVarRequestOptions = { method: 'DELETE', ...baseOptions, ...options};
+            const localVarHeaderParameter = {} as any;
+            const localVarQueryParameter = {} as any;
+
+
+    
+            setSearchParams(localVarUrlObj, localVarQueryParameter);
+            let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
+            localVarRequestOptions.headers = {...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers};
+
+            return {
+                url: toPathString(localVarUrlObj),
+                options: localVarRequestOptions,
+            };
+        },
+        /**
+         * 
+         * @summary Case Type Dims  Delete One
+         * @param {any} objectId 
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        caseTypeDimsDeleteOne: async (objectId: any, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
+            // verify required parameter 'objectId' is not null or undefined
+            assertParamExists('caseTypeDimsDeleteOne', 'objectId', objectId)
+            const localVarPath = `/v1/case_type_dims/{object_id}`
+                .replace(`{${"object_id"}}`, encodeURIComponent(String(objectId)));
+            // use dummy base URL string because the URL constructor only accepts absolute URLs.
+            const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
+            let baseOptions;
+            if (configuration) {
+                baseOptions = configuration.baseOptions;
+            }
+
+            const localVarRequestOptions = { method: 'DELETE', ...baseOptions, ...options};
+            const localVarHeaderParameter = {} as any;
+            const localVarQueryParameter = {} as any;
+
+
+    
+            setSearchParams(localVarUrlObj, localVarQueryParameter);
+            let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
+            localVarRequestOptions.headers = {...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers};
+
+            return {
+                url: toPathString(localVarUrlObj),
+                options: localVarRequestOptions,
+            };
+        },
+        /**
+         * 
+         * @summary Case Type Dims  Delete Some
+         * @param {string} ids 
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        caseTypeDimsDeleteSome: async (ids: string, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
+            // verify required parameter 'ids' is not null or undefined
+            assertParamExists('caseTypeDimsDeleteSome', 'ids', ids)
+            const localVarPath = `/v1/case_type_dims/batch`;
+            // use dummy base URL string because the URL constructor only accepts absolute URLs.
+            const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
+            let baseOptions;
+            if (configuration) {
+                baseOptions = configuration.baseOptions;
+            }
+
+            const localVarRequestOptions = { method: 'DELETE', ...baseOptions, ...options};
+            const localVarHeaderParameter = {} as any;
+            const localVarQueryParameter = {} as any;
+
+            if (ids !== undefined) {
+                localVarQueryParameter['ids'] = ids;
+            }
+
+
+    
+            setSearchParams(localVarUrlObj, localVarQueryParameter);
+            let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
+            localVarRequestOptions.headers = {...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers};
+
+            return {
+                url: toPathString(localVarUrlObj),
+                options: localVarRequestOptions,
+            };
+        },
+        /**
+         * 
+         * @summary Case Type Dims  Get All
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        caseTypeDimsGetAll: async (options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
+            const localVarPath = `/v1/case_type_dims`;
+            // use dummy base URL string because the URL constructor only accepts absolute URLs.
+            const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
+            let baseOptions;
+            if (configuration) {
+                baseOptions = configuration.baseOptions;
+            }
+
+            const localVarRequestOptions = { method: 'GET', ...baseOptions, ...options};
+            const localVarHeaderParameter = {} as any;
+            const localVarQueryParameter = {} as any;
+
+
+    
+            setSearchParams(localVarUrlObj, localVarQueryParameter);
+            let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
+            localVarRequestOptions.headers = {...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers};
+
+            return {
+                url: toPathString(localVarUrlObj),
+                options: localVarRequestOptions,
+            };
+        },
+        /**
+         * 
+         * @summary Case Type Dims  Get One
+         * @param {string} objectId 
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        caseTypeDimsGetOne: async (objectId: string, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
+            // verify required parameter 'objectId' is not null or undefined
+            assertParamExists('caseTypeDimsGetOne', 'objectId', objectId)
+            const localVarPath = `/v1/case_type_dims/{object_id}`
+                .replace(`{${"object_id"}}`, encodeURIComponent(String(objectId)));
+            // use dummy base URL string because the URL constructor only accepts absolute URLs.
+            const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
+            let baseOptions;
+            if (configuration) {
+                baseOptions = configuration.baseOptions;
+            }
+
+            const localVarRequestOptions = { method: 'GET', ...baseOptions, ...options};
+            const localVarHeaderParameter = {} as any;
+            const localVarQueryParameter = {} as any;
+
+
+    
+            setSearchParams(localVarUrlObj, localVarQueryParameter);
+            let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
+            localVarRequestOptions.headers = {...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers};
+
+            return {
+                url: toPathString(localVarUrlObj),
+                options: localVarRequestOptions,
+            };
+        },
+        /**
+         * 
+         * @summary Case Type Dims  Get Some
+         * @param {string} ids 
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        caseTypeDimsGetSome: async (ids: string, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
+            // verify required parameter 'ids' is not null or undefined
+            assertParamExists('caseTypeDimsGetSome', 'ids', ids)
+            const localVarPath = `/v1/case_type_dims/batch`;
+            // use dummy base URL string because the URL constructor only accepts absolute URLs.
+            const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
+            let baseOptions;
+            if (configuration) {
+                baseOptions = configuration.baseOptions;
+            }
+
+            const localVarRequestOptions = { method: 'GET', ...baseOptions, ...options};
+            const localVarHeaderParameter = {} as any;
+            const localVarQueryParameter = {} as any;
+
+            if (ids !== undefined) {
+                localVarQueryParameter['ids'] = ids;
+            }
+
+
+    
+            setSearchParams(localVarUrlObj, localVarQueryParameter);
+            let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
+            localVarRequestOptions.headers = {...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers};
+
+            return {
+                url: toPathString(localVarUrlObj),
+                options: localVarRequestOptions,
+            };
+        },
+        /**
+         * 
+         * @summary Case Type Dims  Post One
+         * @param {CaseTypeDim} caseTypeDim 
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        caseTypeDimsPostOne: async (caseTypeDim: CaseTypeDim, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
+            // verify required parameter 'caseTypeDim' is not null or undefined
+            assertParamExists('caseTypeDimsPostOne', 'caseTypeDim', caseTypeDim)
+            const localVarPath = `/v1/case_type_dims`;
+            // use dummy base URL string because the URL constructor only accepts absolute URLs.
+            const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
+            let baseOptions;
+            if (configuration) {
+                baseOptions = configuration.baseOptions;
+            }
+
+            const localVarRequestOptions = { method: 'POST', ...baseOptions, ...options};
+            const localVarHeaderParameter = {} as any;
+            const localVarQueryParameter = {} as any;
+
+
+    
+            localVarHeaderParameter['Content-Type'] = 'application/json';
+
+            setSearchParams(localVarUrlObj, localVarQueryParameter);
+            let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
+            localVarRequestOptions.headers = {...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers};
+            localVarRequestOptions.data = serializeDataIfNeeded(caseTypeDim, localVarRequestOptions, configuration)
+
+            return {
+                url: toPathString(localVarUrlObj),
+                options: localVarRequestOptions,
+            };
+        },
+        /**
+         * 
+         * @summary Case Type Dims  Post Query
+         * @param {EpiFilter} filter 
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        caseTypeDimsPostQuery: async (filter: EpiFilter, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
+            // verify required parameter 'filter' is not null or undefined
+            assertParamExists('caseTypeDimsPostQuery', 'filter', filter)
+            const localVarPath = `/v1/case_type_dims/query`;
+            // use dummy base URL string because the URL constructor only accepts absolute URLs.
+            const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
+            let baseOptions;
+            if (configuration) {
+                baseOptions = configuration.baseOptions;
+            }
+
+            const localVarRequestOptions = { method: 'POST', ...baseOptions, ...options};
+            const localVarHeaderParameter = {} as any;
+            const localVarQueryParameter = {} as any;
+
+
+    
+            localVarHeaderParameter['Content-Type'] = 'application/json';
+
+            setSearchParams(localVarUrlObj, localVarQueryParameter);
+            let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
+            localVarRequestOptions.headers = {...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers};
+            localVarRequestOptions.data = serializeDataIfNeeded(filter, localVarRequestOptions, configuration)
+
+            return {
+                url: toPathString(localVarUrlObj),
+                options: localVarRequestOptions,
+            };
+        },
+        /**
+         * 
+         * @summary Case Type Dims  Post Query  Ids
+         * @param {EpiFilter} filter 
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        caseTypeDimsPostQueryIds: async (filter: EpiFilter, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
+            // verify required parameter 'filter' is not null or undefined
+            assertParamExists('caseTypeDimsPostQueryIds', 'filter', filter)
+            const localVarPath = `/v1/case_type_dims/query/ids`;
+            // use dummy base URL string because the URL constructor only accepts absolute URLs.
+            const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
+            let baseOptions;
+            if (configuration) {
+                baseOptions = configuration.baseOptions;
+            }
+
+            const localVarRequestOptions = { method: 'POST', ...baseOptions, ...options};
+            const localVarHeaderParameter = {} as any;
+            const localVarQueryParameter = {} as any;
+
+
+    
+            localVarHeaderParameter['Content-Type'] = 'application/json';
+
+            setSearchParams(localVarUrlObj, localVarQueryParameter);
+            let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
+            localVarRequestOptions.headers = {...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers};
+            localVarRequestOptions.data = serializeDataIfNeeded(filter, localVarRequestOptions, configuration)
+
+            return {
+                url: toPathString(localVarUrlObj),
+                options: localVarRequestOptions,
+            };
+        },
+        /**
+         * 
+         * @summary Case Type Dims  Post Some
+         * @param {Array<CaseTypeDim>} caseTypeDim 
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        caseTypeDimsPostSome: async (caseTypeDim: Array<CaseTypeDim>, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
+            // verify required parameter 'caseTypeDim' is not null or undefined
+            assertParamExists('caseTypeDimsPostSome', 'caseTypeDim', caseTypeDim)
+            const localVarPath = `/v1/case_type_dims/batch`;
+            // use dummy base URL string because the URL constructor only accepts absolute URLs.
+            const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
+            let baseOptions;
+            if (configuration) {
+                baseOptions = configuration.baseOptions;
+            }
+
+            const localVarRequestOptions = { method: 'POST', ...baseOptions, ...options};
+            const localVarHeaderParameter = {} as any;
+            const localVarQueryParameter = {} as any;
+
+
+    
+            localVarHeaderParameter['Content-Type'] = 'application/json';
+
+            setSearchParams(localVarUrlObj, localVarQueryParameter);
+            let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
+            localVarRequestOptions.headers = {...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers};
+            localVarRequestOptions.data = serializeDataIfNeeded(caseTypeDim, localVarRequestOptions, configuration)
+
+            return {
+                url: toPathString(localVarUrlObj),
+                options: localVarRequestOptions,
+            };
+        },
+        /**
+         * 
+         * @summary Case Type Dims  Put One
+         * @param {string} objectId 
+         * @param {CaseTypeDim} caseTypeDim 
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        caseTypeDimsPutOne: async (objectId: string, caseTypeDim: CaseTypeDim, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
+            // verify required parameter 'objectId' is not null or undefined
+            assertParamExists('caseTypeDimsPutOne', 'objectId', objectId)
+            // verify required parameter 'caseTypeDim' is not null or undefined
+            assertParamExists('caseTypeDimsPutOne', 'caseTypeDim', caseTypeDim)
+            const localVarPath = `/v1/case_type_dims/{object_id}`
+                .replace(`{${"object_id"}}`, encodeURIComponent(String(objectId)));
+            // use dummy base URL string because the URL constructor only accepts absolute URLs.
+            const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
+            let baseOptions;
+            if (configuration) {
+                baseOptions = configuration.baseOptions;
+            }
+
+            const localVarRequestOptions = { method: 'PUT', ...baseOptions, ...options};
+            const localVarHeaderParameter = {} as any;
+            const localVarQueryParameter = {} as any;
+
+
+    
+            localVarHeaderParameter['Content-Type'] = 'application/json';
+
+            setSearchParams(localVarUrlObj, localVarQueryParameter);
+            let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
+            localVarRequestOptions.headers = {...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers};
+            localVarRequestOptions.data = serializeDataIfNeeded(caseTypeDim, localVarRequestOptions, configuration)
+
+            return {
+                url: toPathString(localVarUrlObj),
+                options: localVarRequestOptions,
+            };
+        },
+        /**
+         * 
+         * @summary Case Type Dims  Put Some
+         * @param {Array<CaseTypeDim>} caseTypeDim 
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        caseTypeDimsPutSome: async (caseTypeDim: Array<CaseTypeDim>, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
+            // verify required parameter 'caseTypeDim' is not null or undefined
+            assertParamExists('caseTypeDimsPutSome', 'caseTypeDim', caseTypeDim)
+            const localVarPath = `/v1/case_type_dims/batch`;
+            // use dummy base URL string because the URL constructor only accepts absolute URLs.
+            const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
+            let baseOptions;
+            if (configuration) {
+                baseOptions = configuration.baseOptions;
+            }
+
+            const localVarRequestOptions = { method: 'PUT', ...baseOptions, ...options};
+            const localVarHeaderParameter = {} as any;
+            const localVarQueryParameter = {} as any;
+
+
+    
+            localVarHeaderParameter['Content-Type'] = 'application/json';
+
+            setSearchParams(localVarUrlObj, localVarQueryParameter);
+            let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
+            localVarRequestOptions.headers = {...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers};
+            localVarRequestOptions.data = serializeDataIfNeeded(caseTypeDim, localVarRequestOptions, configuration)
+
+            return {
+                url: toPathString(localVarUrlObj),
+                options: localVarRequestOptions,
+            };
+        },
+        /**
+         * 
          * @summary Case Type Set Categories  Delete All
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
@@ -15531,6 +16457,36 @@ const CaseApiAxiosParamCreator = function (configuration?: Configuration) {
             };
         },
         /**
+         * The additional validation rules that a Col instance must comply with.
+         * @summary Col Validation Rules
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        colsValidationRules: async (options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
+            const localVarPath = `/v1/cols/validation_rules`;
+            // use dummy base URL string because the URL constructor only accepts absolute URLs.
+            const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
+            let baseOptions;
+            if (configuration) {
+                baseOptions = configuration.baseOptions;
+            }
+
+            const localVarRequestOptions = { method: 'GET', ...baseOptions, ...options};
+            const localVarHeaderParameter = {} as any;
+            const localVarQueryParameter = {} as any;
+
+
+    
+            setSearchParams(localVarUrlObj, localVarQueryParameter);
+            let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
+            localVarRequestOptions.headers = {...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers};
+
+            return {
+                url: toPathString(localVarUrlObj),
+                options: localVarRequestOptions,
+            };
+        },
+        /**
          * Retrieve a complete case type.
          * @summary Retrieve Complete Case Type
          * @param {string} caseTypeId 
@@ -16892,13 +17848,13 @@ const CaseApiAxiosParamCreator = function (configuration?: Configuration) {
         /**
          * Retrieve cases by their IDs.
          * @summary Retrieve Cases By Ids
-         * @param {Array<string>} requestBody 
+         * @param {RetrieveCasesByIdsRequestBody} retrieveCasesByIdsRequestBody 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        retrieveCasesByIds: async (requestBody: Array<string>, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
-            // verify required parameter 'requestBody' is not null or undefined
-            assertParamExists('retrieveCasesByIds', 'requestBody', requestBody)
+        retrieveCasesByIds: async (retrieveCasesByIdsRequestBody: RetrieveCasesByIdsRequestBody, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
+            // verify required parameter 'retrieveCasesByIdsRequestBody' is not null or undefined
+            assertParamExists('retrieveCasesByIds', 'retrieveCasesByIdsRequestBody', retrieveCasesByIdsRequestBody)
             const localVarPath = `/v1/retrieve/cases_by_ids`;
             // use dummy base URL string because the URL constructor only accepts absolute URLs.
             const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
@@ -16918,7 +17874,7 @@ const CaseApiAxiosParamCreator = function (configuration?: Configuration) {
             setSearchParams(localVarUrlObj, localVarQueryParameter);
             let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
             localVarRequestOptions.headers = {...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers};
-            localVarRequestOptions.data = serializeDataIfNeeded(requestBody, localVarRequestOptions, configuration)
+            localVarRequestOptions.data = serializeDataIfNeeded(retrieveCasesByIdsRequestBody, localVarRequestOptions, configuration)
 
             return {
                 url: toPathString(localVarUrlObj),
@@ -17024,36 +17980,6 @@ const CaseApiAxiosParamCreator = function (configuration?: Configuration) {
             };
         },
         /**
-         * Retrieve library preparation protocols from seqdb database
-         * @summary Retrieve Library Preparation Protocols
-         * @param {*} [options] Override http request option.
-         * @throws {RequiredError}
-         */
-        retrieveLibraryPrepProtocols: async (options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
-            const localVarPath = `/v1/retrieve/library_prep_protocols`;
-            // use dummy base URL string because the URL constructor only accepts absolute URLs.
-            const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
-            let baseOptions;
-            if (configuration) {
-                baseOptions = configuration.baseOptions;
-            }
-
-            const localVarRequestOptions = { method: 'GET', ...baseOptions, ...options};
-            const localVarHeaderParameter = {} as any;
-            const localVarQueryParameter = {} as any;
-
-
-    
-            setSearchParams(localVarUrlObj, localVarQueryParameter);
-            let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
-            localVarRequestOptions.headers = {...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers};
-
-            return {
-                url: toPathString(localVarUrlObj),
-                options: localVarRequestOptions,
-            };
-        },
-        /**
          * Retrieves Contacts associated with organizations, sites, or specific contacts.  Exactly one of organization_ids, site_ids, or contact_ids must be provided. Returns a list of contacts with their associated site and organization data cascaded.
          * @summary Retrieve Organization Contact
          * @param {RetrieveOrganizationContactRequestBody} retrieveOrganizationContactRequestBody 
@@ -17119,6 +18045,36 @@ const CaseApiAxiosParamCreator = function (configuration?: Configuration) {
             let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
             localVarRequestOptions.headers = {...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers};
             localVarRequestOptions.data = serializeDataIfNeeded(retrievePhylogeneticTreeRequestBody, localVarRequestOptions, configuration)
+
+            return {
+                url: toPathString(localVarUrlObj),
+                options: localVarRequestOptions,
+            };
+        },
+        /**
+         * Retrieve sequencing protocols from seqdb database
+         * @summary Retrieve Sequencing Protocols
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        retrieveSequencingProtocols: async (options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
+            const localVarPath = `/v1/retrieve/sequencing_protocols`;
+            // use dummy base URL string because the URL constructor only accepts absolute URLs.
+            const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
+            let baseOptions;
+            if (configuration) {
+                baseOptions = configuration.baseOptions;
+            }
+
+            const localVarRequestOptions = { method: 'GET', ...baseOptions, ...options};
+            const localVarHeaderParameter = {} as any;
+            const localVarQueryParameter = {} as any;
+
+
+    
+            setSearchParams(localVarUrlObj, localVarQueryParameter);
+            let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
+            localVarRequestOptions.headers = {...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers};
 
             return {
                 url: toPathString(localVarUrlObj),
@@ -19426,6 +20382,161 @@ const CaseApiFp = function(configuration?: Configuration) {
         },
         /**
          * 
+         * @summary Case Type Dims  Delete All
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        async caseTypeDimsDeleteAll(options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<any>> {
+            const localVarAxiosArgs = await localVarAxiosParamCreator.caseTypeDimsDeleteAll(options);
+            const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
+            const localVarOperationServerBasePath = operationServerMap['CaseApi.caseTypeDimsDeleteAll']?.[localVarOperationServerIndex]?.url;
+            return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
+        },
+        /**
+         * 
+         * @summary Case Type Dims  Delete One
+         * @param {any} objectId 
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        async caseTypeDimsDeleteOne(objectId: any, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<string>> {
+            const localVarAxiosArgs = await localVarAxiosParamCreator.caseTypeDimsDeleteOne(objectId, options);
+            const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
+            const localVarOperationServerBasePath = operationServerMap['CaseApi.caseTypeDimsDeleteOne']?.[localVarOperationServerIndex]?.url;
+            return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
+        },
+        /**
+         * 
+         * @summary Case Type Dims  Delete Some
+         * @param {string} ids 
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        async caseTypeDimsDeleteSome(ids: string, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<Array<string>>> {
+            const localVarAxiosArgs = await localVarAxiosParamCreator.caseTypeDimsDeleteSome(ids, options);
+            const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
+            const localVarOperationServerBasePath = operationServerMap['CaseApi.caseTypeDimsDeleteSome']?.[localVarOperationServerIndex]?.url;
+            return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
+        },
+        /**
+         * 
+         * @summary Case Type Dims  Get All
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        async caseTypeDimsGetAll(options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<Array<CaseTypeDim>>> {
+            const localVarAxiosArgs = await localVarAxiosParamCreator.caseTypeDimsGetAll(options);
+            const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
+            const localVarOperationServerBasePath = operationServerMap['CaseApi.caseTypeDimsGetAll']?.[localVarOperationServerIndex]?.url;
+            return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
+        },
+        /**
+         * 
+         * @summary Case Type Dims  Get One
+         * @param {string} objectId 
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        async caseTypeDimsGetOne(objectId: string, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<CaseTypeDim>> {
+            const localVarAxiosArgs = await localVarAxiosParamCreator.caseTypeDimsGetOne(objectId, options);
+            const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
+            const localVarOperationServerBasePath = operationServerMap['CaseApi.caseTypeDimsGetOne']?.[localVarOperationServerIndex]?.url;
+            return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
+        },
+        /**
+         * 
+         * @summary Case Type Dims  Get Some
+         * @param {string} ids 
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        async caseTypeDimsGetSome(ids: string, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<Array<CaseTypeDim>>> {
+            const localVarAxiosArgs = await localVarAxiosParamCreator.caseTypeDimsGetSome(ids, options);
+            const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
+            const localVarOperationServerBasePath = operationServerMap['CaseApi.caseTypeDimsGetSome']?.[localVarOperationServerIndex]?.url;
+            return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
+        },
+        /**
+         * 
+         * @summary Case Type Dims  Post One
+         * @param {CaseTypeDim} caseTypeDim 
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        async caseTypeDimsPostOne(caseTypeDim: CaseTypeDim, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<CaseTypeDim>> {
+            const localVarAxiosArgs = await localVarAxiosParamCreator.caseTypeDimsPostOne(caseTypeDim, options);
+            const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
+            const localVarOperationServerBasePath = operationServerMap['CaseApi.caseTypeDimsPostOne']?.[localVarOperationServerIndex]?.url;
+            return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
+        },
+        /**
+         * 
+         * @summary Case Type Dims  Post Query
+         * @param {EpiFilter} filter 
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        async caseTypeDimsPostQuery(filter: EpiFilter, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<Array<CaseTypeDim>>> {
+            const localVarAxiosArgs = await localVarAxiosParamCreator.caseTypeDimsPostQuery(filter, options);
+            const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
+            const localVarOperationServerBasePath = operationServerMap['CaseApi.caseTypeDimsPostQuery']?.[localVarOperationServerIndex]?.url;
+            return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
+        },
+        /**
+         * 
+         * @summary Case Type Dims  Post Query  Ids
+         * @param {EpiFilter} filter 
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        async caseTypeDimsPostQueryIds(filter: EpiFilter, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<Array<string>>> {
+            const localVarAxiosArgs = await localVarAxiosParamCreator.caseTypeDimsPostQueryIds(filter, options);
+            const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
+            const localVarOperationServerBasePath = operationServerMap['CaseApi.caseTypeDimsPostQueryIds']?.[localVarOperationServerIndex]?.url;
+            return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
+        },
+        /**
+         * 
+         * @summary Case Type Dims  Post Some
+         * @param {Array<CaseTypeDim>} caseTypeDim 
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        async caseTypeDimsPostSome(caseTypeDim: Array<CaseTypeDim>, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<Array<CaseTypeDim>>> {
+            const localVarAxiosArgs = await localVarAxiosParamCreator.caseTypeDimsPostSome(caseTypeDim, options);
+            const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
+            const localVarOperationServerBasePath = operationServerMap['CaseApi.caseTypeDimsPostSome']?.[localVarOperationServerIndex]?.url;
+            return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
+        },
+        /**
+         * 
+         * @summary Case Type Dims  Put One
+         * @param {string} objectId 
+         * @param {CaseTypeDim} caseTypeDim 
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        async caseTypeDimsPutOne(objectId: string, caseTypeDim: CaseTypeDim, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<CaseTypeDim>> {
+            const localVarAxiosArgs = await localVarAxiosParamCreator.caseTypeDimsPutOne(objectId, caseTypeDim, options);
+            const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
+            const localVarOperationServerBasePath = operationServerMap['CaseApi.caseTypeDimsPutOne']?.[localVarOperationServerIndex]?.url;
+            return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
+        },
+        /**
+         * 
+         * @summary Case Type Dims  Put Some
+         * @param {Array<CaseTypeDim>} caseTypeDim 
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        async caseTypeDimsPutSome(caseTypeDim: Array<CaseTypeDim>, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<Array<CaseTypeDim>>> {
+            const localVarAxiosArgs = await localVarAxiosParamCreator.caseTypeDimsPutSome(caseTypeDim, options);
+            const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
+            const localVarOperationServerBasePath = operationServerMap['CaseApi.caseTypeDimsPutSome']?.[localVarOperationServerIndex]?.url;
+            return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
+        },
+        /**
+         * 
          * @summary Case Type Set Categories  Delete All
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
@@ -20369,6 +21480,18 @@ const CaseApiFp = function(configuration?: Configuration) {
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
         /**
+         * The additional validation rules that a Col instance must comply with.
+         * @summary Col Validation Rules
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        async colsValidationRules(options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<ColValidationRulesResponseBody>> {
+            const localVarAxiosArgs = await localVarAxiosParamCreator.colsValidationRules(options);
+            const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
+            const localVarOperationServerBasePath = operationServerMap['CaseApi.colsValidationRules']?.[localVarOperationServerIndex]?.url;
+            return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
+        },
+        /**
          * Retrieve a complete case type.
          * @summary Retrieve Complete Case Type
          * @param {string} caseTypeId 
@@ -20805,7 +21928,7 @@ const CaseApiFp = function(configuration?: Configuration) {
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        async retrieveCaseIdsByQuery(caseQuery: CaseQuery, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<Array<string>>> {
+        async retrieveCaseIdsByQuery(caseQuery: CaseQuery, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<CaseQueryResult>> {
             const localVarAxiosArgs = await localVarAxiosParamCreator.retrieveCaseIdsByQuery(caseQuery, options);
             const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
             const localVarOperationServerBasePath = operationServerMap['CaseApi.retrieveCaseIdsByQuery']?.[localVarOperationServerIndex]?.url;
@@ -20866,12 +21989,12 @@ const CaseApiFp = function(configuration?: Configuration) {
         /**
          * Retrieve cases by their IDs.
          * @summary Retrieve Cases By Ids
-         * @param {Array<string>} requestBody 
+         * @param {RetrieveCasesByIdsRequestBody} retrieveCasesByIdsRequestBody 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        async retrieveCasesByIds(requestBody: Array<string>, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<Array<Case>>> {
-            const localVarAxiosArgs = await localVarAxiosParamCreator.retrieveCasesByIds(requestBody, options);
+        async retrieveCasesByIds(retrieveCasesByIdsRequestBody: RetrieveCasesByIdsRequestBody, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<Array<Case>>> {
+            const localVarAxiosArgs = await localVarAxiosParamCreator.retrieveCasesByIds(retrieveCasesByIdsRequestBody, options);
             const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
             const localVarOperationServerBasePath = operationServerMap['CaseApi.retrieveCasesByIds']?.[localVarOperationServerIndex]?.url;
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
@@ -20906,18 +22029,6 @@ const CaseApiFp = function(configuration?: Configuration) {
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
         /**
-         * Retrieve library preparation protocols from seqdb database
-         * @summary Retrieve Library Preparation Protocols
-         * @param {*} [options] Override http request option.
-         * @throws {RequiredError}
-         */
-        async retrieveLibraryPrepProtocols(options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<Array<LibraryPrepProtocol>>> {
-            const localVarAxiosArgs = await localVarAxiosParamCreator.retrieveLibraryPrepProtocols(options);
-            const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
-            const localVarOperationServerBasePath = operationServerMap['CaseApi.retrieveLibraryPrepProtocols']?.[localVarOperationServerIndex]?.url;
-            return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
-        },
-        /**
          * Retrieves Contacts associated with organizations, sites, or specific contacts.  Exactly one of organization_ids, site_ids, or contact_ids must be provided. Returns a list of contacts with their associated site and organization data cascaded.
          * @summary Retrieve Organization Contact
          * @param {RetrieveOrganizationContactRequestBody} retrieveOrganizationContactRequestBody 
@@ -20941,6 +22052,18 @@ const CaseApiFp = function(configuration?: Configuration) {
             const localVarAxiosArgs = await localVarAxiosParamCreator.retrievePhylogeneticTree(retrievePhylogeneticTreeRequestBody, options);
             const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
             const localVarOperationServerBasePath = operationServerMap['CaseApi.retrievePhylogeneticTree']?.[localVarOperationServerIndex]?.url;
+            return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
+        },
+        /**
+         * Retrieve sequencing protocols from seqdb database
+         * @summary Retrieve Sequencing Protocols
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        async retrieveSequencingProtocols(options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<Array<SequencingProtocol>>> {
+            const localVarAxiosArgs = await localVarAxiosParamCreator.retrieveSequencingProtocols(options);
+            const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
+            const localVarOperationServerBasePath = operationServerMap['CaseApi.retrieveSequencingProtocols']?.[localVarOperationServerIndex]?.url;
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
         /**
@@ -22590,6 +23713,149 @@ export class CaseApi extends BaseAPI {
 
     /**
      * 
+     * @summary Case Type Dims  Delete All
+     * @param {*} [options] Override http request option.
+     * @throws {RequiredError}
+     * @memberof CaseApi
+     */
+    public caseTypeDimsDeleteAll(options?: RawAxiosRequestConfig) {
+        return CaseApiFp(this.configuration).caseTypeDimsDeleteAll(options).then((request) => request(this.axios, this.configuration.baseUrl));
+    }
+
+    /**
+     * 
+     * @summary Case Type Dims  Delete One
+     * @param {any} objectId 
+     * @param {*} [options] Override http request option.
+     * @throws {RequiredError}
+     * @memberof CaseApi
+     */
+    public caseTypeDimsDeleteOne(objectId: any, options?: RawAxiosRequestConfig) {
+        return CaseApiFp(this.configuration).caseTypeDimsDeleteOne(objectId, options).then((request) => request(this.axios, this.configuration.baseUrl));
+    }
+
+    /**
+     * 
+     * @summary Case Type Dims  Delete Some
+     * @param {string} ids 
+     * @param {*} [options] Override http request option.
+     * @throws {RequiredError}
+     * @memberof CaseApi
+     */
+    public caseTypeDimsDeleteSome(ids: string, options?: RawAxiosRequestConfig) {
+        return CaseApiFp(this.configuration).caseTypeDimsDeleteSome(ids, options).then((request) => request(this.axios, this.configuration.baseUrl));
+    }
+
+    /**
+     * 
+     * @summary Case Type Dims  Get All
+     * @param {*} [options] Override http request option.
+     * @throws {RequiredError}
+     * @memberof CaseApi
+     */
+    public caseTypeDimsGetAll(options?: RawAxiosRequestConfig) {
+        return CaseApiFp(this.configuration).caseTypeDimsGetAll(options).then((request) => request(this.axios, this.configuration.baseUrl));
+    }
+
+    /**
+     * 
+     * @summary Case Type Dims  Get One
+     * @param {string} objectId 
+     * @param {*} [options] Override http request option.
+     * @throws {RequiredError}
+     * @memberof CaseApi
+     */
+    public caseTypeDimsGetOne(objectId: string, options?: RawAxiosRequestConfig) {
+        return CaseApiFp(this.configuration).caseTypeDimsGetOne(objectId, options).then((request) => request(this.axios, this.configuration.baseUrl));
+    }
+
+    /**
+     * 
+     * @summary Case Type Dims  Get Some
+     * @param {string} ids 
+     * @param {*} [options] Override http request option.
+     * @throws {RequiredError}
+     * @memberof CaseApi
+     */
+    public caseTypeDimsGetSome(ids: string, options?: RawAxiosRequestConfig) {
+        return CaseApiFp(this.configuration).caseTypeDimsGetSome(ids, options).then((request) => request(this.axios, this.configuration.baseUrl));
+    }
+
+    /**
+     * 
+     * @summary Case Type Dims  Post One
+     * @param {CaseTypeDim} caseTypeDim 
+     * @param {*} [options] Override http request option.
+     * @throws {RequiredError}
+     * @memberof CaseApi
+     */
+    public caseTypeDimsPostOne(caseTypeDim: CaseTypeDim, options?: RawAxiosRequestConfig) {
+        return CaseApiFp(this.configuration).caseTypeDimsPostOne(caseTypeDim, options).then((request) => request(this.axios, this.configuration.baseUrl));
+    }
+
+    /**
+     * 
+     * @summary Case Type Dims  Post Query
+     * @param {EpiFilter} filter 
+     * @param {*} [options] Override http request option.
+     * @throws {RequiredError}
+     * @memberof CaseApi
+     */
+    public caseTypeDimsPostQuery(filter: EpiFilter, options?: RawAxiosRequestConfig) {
+        return CaseApiFp(this.configuration).caseTypeDimsPostQuery(filter, options).then((request) => request(this.axios, this.configuration.baseUrl));
+    }
+
+    /**
+     * 
+     * @summary Case Type Dims  Post Query  Ids
+     * @param {EpiFilter} filter 
+     * @param {*} [options] Override http request option.
+     * @throws {RequiredError}
+     * @memberof CaseApi
+     */
+    public caseTypeDimsPostQueryIds(filter: EpiFilter, options?: RawAxiosRequestConfig) {
+        return CaseApiFp(this.configuration).caseTypeDimsPostQueryIds(filter, options).then((request) => request(this.axios, this.configuration.baseUrl));
+    }
+
+    /**
+     * 
+     * @summary Case Type Dims  Post Some
+     * @param {Array<CaseTypeDim>} caseTypeDim 
+     * @param {*} [options] Override http request option.
+     * @throws {RequiredError}
+     * @memberof CaseApi
+     */
+    public caseTypeDimsPostSome(caseTypeDim: Array<CaseTypeDim>, options?: RawAxiosRequestConfig) {
+        return CaseApiFp(this.configuration).caseTypeDimsPostSome(caseTypeDim, options).then((request) => request(this.axios, this.configuration.baseUrl));
+    }
+
+    /**
+     * 
+     * @summary Case Type Dims  Put One
+     * @param {string} objectId 
+     * @param {CaseTypeDim} caseTypeDim 
+     * @param {*} [options] Override http request option.
+     * @throws {RequiredError}
+     * @memberof CaseApi
+     */
+    public caseTypeDimsPutOne(objectId: string, caseTypeDim: CaseTypeDim, options?: RawAxiosRequestConfig) {
+        return CaseApiFp(this.configuration).caseTypeDimsPutOne(objectId, caseTypeDim, options).then((request) => request(this.axios, this.configuration.baseUrl));
+    }
+
+    /**
+     * 
+     * @summary Case Type Dims  Put Some
+     * @param {Array<CaseTypeDim>} caseTypeDim 
+     * @param {*} [options] Override http request option.
+     * @throws {RequiredError}
+     * @memberof CaseApi
+     */
+    public caseTypeDimsPutSome(caseTypeDim: Array<CaseTypeDim>, options?: RawAxiosRequestConfig) {
+        return CaseApiFp(this.configuration).caseTypeDimsPutSome(caseTypeDim, options).then((request) => request(this.axios, this.configuration.baseUrl));
+    }
+
+    /**
+     * 
      * @summary Case Type Set Categories  Delete All
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
@@ -23460,6 +24726,17 @@ export class CaseApi extends BaseAPI {
     }
 
     /**
+     * The additional validation rules that a Col instance must comply with.
+     * @summary Col Validation Rules
+     * @param {*} [options] Override http request option.
+     * @throws {RequiredError}
+     * @memberof CaseApi
+     */
+    public colsValidationRules(options?: RawAxiosRequestConfig) {
+        return CaseApiFp(this.configuration).colsValidationRules(options).then((request) => request(this.axios, this.configuration.baseUrl));
+    }
+
+    /**
      * Retrieve a complete case type.
      * @summary Retrieve Complete Case Type
      * @param {string} caseTypeId 
@@ -23919,13 +25196,13 @@ export class CaseApi extends BaseAPI {
     /**
      * Retrieve cases by their IDs.
      * @summary Retrieve Cases By Ids
-     * @param {Array<string>} requestBody 
+     * @param {RetrieveCasesByIdsRequestBody} retrieveCasesByIdsRequestBody 
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
      * @memberof CaseApi
      */
-    public retrieveCasesByIds(requestBody: Array<string>, options?: RawAxiosRequestConfig) {
-        return CaseApiFp(this.configuration).retrieveCasesByIds(requestBody, options).then((request) => request(this.axios, this.configuration.baseUrl));
+    public retrieveCasesByIds(retrieveCasesByIdsRequestBody: RetrieveCasesByIdsRequestBody, options?: RawAxiosRequestConfig) {
+        return CaseApiFp(this.configuration).retrieveCasesByIds(retrieveCasesByIdsRequestBody, options).then((request) => request(this.axios, this.configuration.baseUrl));
     }
 
     /**
@@ -23956,17 +25233,6 @@ export class CaseApi extends BaseAPI {
     }
 
     /**
-     * Retrieve library preparation protocols from seqdb database
-     * @summary Retrieve Library Preparation Protocols
-     * @param {*} [options] Override http request option.
-     * @throws {RequiredError}
-     * @memberof CaseApi
-     */
-    public retrieveLibraryPrepProtocols(options?: RawAxiosRequestConfig) {
-        return CaseApiFp(this.configuration).retrieveLibraryPrepProtocols(options).then((request) => request(this.axios, this.configuration.baseUrl));
-    }
-
-    /**
      * Retrieves Contacts associated with organizations, sites, or specific contacts.  Exactly one of organization_ids, site_ids, or contact_ids must be provided. Returns a list of contacts with their associated site and organization data cascaded.
      * @summary Retrieve Organization Contact
      * @param {RetrieveOrganizationContactRequestBody} retrieveOrganizationContactRequestBody 
@@ -23988,6 +25254,17 @@ export class CaseApi extends BaseAPI {
      */
     public retrievePhylogeneticTree(retrievePhylogeneticTreeRequestBody: RetrievePhylogeneticTreeRequestBody, options?: RawAxiosRequestConfig) {
         return CaseApiFp(this.configuration).retrievePhylogeneticTree(retrievePhylogeneticTreeRequestBody, options).then((request) => request(this.axios, this.configuration.baseUrl));
+    }
+
+    /**
+     * Retrieve sequencing protocols from seqdb database
+     * @summary Retrieve Sequencing Protocols
+     * @param {*} [options] Override http request option.
+     * @throws {RequiredError}
+     * @memberof CaseApi
+     */
+    public retrieveSequencingProtocols(options?: RawAxiosRequestConfig) {
+        return CaseApiFp(this.configuration).retrieveSequencingProtocols(options).then((request) => request(this.axios, this.configuration.baseUrl));
     }
 
     /**
@@ -33470,6 +34747,428 @@ const OrganizationApiAxiosParamCreator = function (configuration?: Configuration
         },
         /**
          * 
+         * @summary External Identifiers  Delete All
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        externalIdentifiersDeleteAll: async (options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
+            const localVarPath = `/v1/external_identifiers`;
+            // use dummy base URL string because the URL constructor only accepts absolute URLs.
+            const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
+            let baseOptions;
+            if (configuration) {
+                baseOptions = configuration.baseOptions;
+            }
+
+            const localVarRequestOptions = { method: 'DELETE', ...baseOptions, ...options};
+            const localVarHeaderParameter = {} as any;
+            const localVarQueryParameter = {} as any;
+
+
+    
+            setSearchParams(localVarUrlObj, localVarQueryParameter);
+            let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
+            localVarRequestOptions.headers = {...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers};
+
+            return {
+                url: toPathString(localVarUrlObj),
+                options: localVarRequestOptions,
+            };
+        },
+        /**
+         * 
+         * @summary External Identifiers  Delete One
+         * @param {any} objectId 
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        externalIdentifiersDeleteOne: async (objectId: any, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
+            // verify required parameter 'objectId' is not null or undefined
+            assertParamExists('externalIdentifiersDeleteOne', 'objectId', objectId)
+            const localVarPath = `/v1/external_identifiers/{object_id}`
+                .replace(`{${"object_id"}}`, encodeURIComponent(String(objectId)));
+            // use dummy base URL string because the URL constructor only accepts absolute URLs.
+            const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
+            let baseOptions;
+            if (configuration) {
+                baseOptions = configuration.baseOptions;
+            }
+
+            const localVarRequestOptions = { method: 'DELETE', ...baseOptions, ...options};
+            const localVarHeaderParameter = {} as any;
+            const localVarQueryParameter = {} as any;
+
+
+    
+            setSearchParams(localVarUrlObj, localVarQueryParameter);
+            let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
+            localVarRequestOptions.headers = {...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers};
+
+            return {
+                url: toPathString(localVarUrlObj),
+                options: localVarRequestOptions,
+            };
+        },
+        /**
+         * 
+         * @summary External Identifiers  Delete Some
+         * @param {string} ids 
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        externalIdentifiersDeleteSome: async (ids: string, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
+            // verify required parameter 'ids' is not null or undefined
+            assertParamExists('externalIdentifiersDeleteSome', 'ids', ids)
+            const localVarPath = `/v1/external_identifiers/batch`;
+            // use dummy base URL string because the URL constructor only accepts absolute URLs.
+            const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
+            let baseOptions;
+            if (configuration) {
+                baseOptions = configuration.baseOptions;
+            }
+
+            const localVarRequestOptions = { method: 'DELETE', ...baseOptions, ...options};
+            const localVarHeaderParameter = {} as any;
+            const localVarQueryParameter = {} as any;
+
+            if (ids !== undefined) {
+                localVarQueryParameter['ids'] = ids;
+            }
+
+
+    
+            setSearchParams(localVarUrlObj, localVarQueryParameter);
+            let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
+            localVarRequestOptions.headers = {...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers};
+
+            return {
+                url: toPathString(localVarUrlObj),
+                options: localVarRequestOptions,
+            };
+        },
+        /**
+         * 
+         * @summary External Identifiers  Get All
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        externalIdentifiersGetAll: async (options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
+            const localVarPath = `/v1/external_identifiers`;
+            // use dummy base URL string because the URL constructor only accepts absolute URLs.
+            const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
+            let baseOptions;
+            if (configuration) {
+                baseOptions = configuration.baseOptions;
+            }
+
+            const localVarRequestOptions = { method: 'GET', ...baseOptions, ...options};
+            const localVarHeaderParameter = {} as any;
+            const localVarQueryParameter = {} as any;
+
+
+    
+            setSearchParams(localVarUrlObj, localVarQueryParameter);
+            let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
+            localVarRequestOptions.headers = {...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers};
+
+            return {
+                url: toPathString(localVarUrlObj),
+                options: localVarRequestOptions,
+            };
+        },
+        /**
+         * 
+         * @summary External Identifiers  Get One
+         * @param {string} objectId 
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        externalIdentifiersGetOne: async (objectId: string, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
+            // verify required parameter 'objectId' is not null or undefined
+            assertParamExists('externalIdentifiersGetOne', 'objectId', objectId)
+            const localVarPath = `/v1/external_identifiers/{object_id}`
+                .replace(`{${"object_id"}}`, encodeURIComponent(String(objectId)));
+            // use dummy base URL string because the URL constructor only accepts absolute URLs.
+            const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
+            let baseOptions;
+            if (configuration) {
+                baseOptions = configuration.baseOptions;
+            }
+
+            const localVarRequestOptions = { method: 'GET', ...baseOptions, ...options};
+            const localVarHeaderParameter = {} as any;
+            const localVarQueryParameter = {} as any;
+
+
+    
+            setSearchParams(localVarUrlObj, localVarQueryParameter);
+            let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
+            localVarRequestOptions.headers = {...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers};
+
+            return {
+                url: toPathString(localVarUrlObj),
+                options: localVarRequestOptions,
+            };
+        },
+        /**
+         * 
+         * @summary External Identifiers  Get Some
+         * @param {string} ids 
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        externalIdentifiersGetSome: async (ids: string, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
+            // verify required parameter 'ids' is not null or undefined
+            assertParamExists('externalIdentifiersGetSome', 'ids', ids)
+            const localVarPath = `/v1/external_identifiers/batch`;
+            // use dummy base URL string because the URL constructor only accepts absolute URLs.
+            const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
+            let baseOptions;
+            if (configuration) {
+                baseOptions = configuration.baseOptions;
+            }
+
+            const localVarRequestOptions = { method: 'GET', ...baseOptions, ...options};
+            const localVarHeaderParameter = {} as any;
+            const localVarQueryParameter = {} as any;
+
+            if (ids !== undefined) {
+                localVarQueryParameter['ids'] = ids;
+            }
+
+
+    
+            setSearchParams(localVarUrlObj, localVarQueryParameter);
+            let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
+            localVarRequestOptions.headers = {...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers};
+
+            return {
+                url: toPathString(localVarUrlObj),
+                options: localVarRequestOptions,
+            };
+        },
+        /**
+         * 
+         * @summary External Identifiers  Post One
+         * @param {ExternalIdentifier} externalIdentifier 
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        externalIdentifiersPostOne: async (externalIdentifier: ExternalIdentifier, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
+            // verify required parameter 'externalIdentifier' is not null or undefined
+            assertParamExists('externalIdentifiersPostOne', 'externalIdentifier', externalIdentifier)
+            const localVarPath = `/v1/external_identifiers`;
+            // use dummy base URL string because the URL constructor only accepts absolute URLs.
+            const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
+            let baseOptions;
+            if (configuration) {
+                baseOptions = configuration.baseOptions;
+            }
+
+            const localVarRequestOptions = { method: 'POST', ...baseOptions, ...options};
+            const localVarHeaderParameter = {} as any;
+            const localVarQueryParameter = {} as any;
+
+
+    
+            localVarHeaderParameter['Content-Type'] = 'application/json';
+
+            setSearchParams(localVarUrlObj, localVarQueryParameter);
+            let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
+            localVarRequestOptions.headers = {...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers};
+            localVarRequestOptions.data = serializeDataIfNeeded(externalIdentifier, localVarRequestOptions, configuration)
+
+            return {
+                url: toPathString(localVarUrlObj),
+                options: localVarRequestOptions,
+            };
+        },
+        /**
+         * 
+         * @summary External Identifiers  Post Query
+         * @param {EpiFilter} filter 
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        externalIdentifiersPostQuery: async (filter: EpiFilter, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
+            // verify required parameter 'filter' is not null or undefined
+            assertParamExists('externalIdentifiersPostQuery', 'filter', filter)
+            const localVarPath = `/v1/external_identifiers/query`;
+            // use dummy base URL string because the URL constructor only accepts absolute URLs.
+            const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
+            let baseOptions;
+            if (configuration) {
+                baseOptions = configuration.baseOptions;
+            }
+
+            const localVarRequestOptions = { method: 'POST', ...baseOptions, ...options};
+            const localVarHeaderParameter = {} as any;
+            const localVarQueryParameter = {} as any;
+
+
+    
+            localVarHeaderParameter['Content-Type'] = 'application/json';
+
+            setSearchParams(localVarUrlObj, localVarQueryParameter);
+            let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
+            localVarRequestOptions.headers = {...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers};
+            localVarRequestOptions.data = serializeDataIfNeeded(filter, localVarRequestOptions, configuration)
+
+            return {
+                url: toPathString(localVarUrlObj),
+                options: localVarRequestOptions,
+            };
+        },
+        /**
+         * 
+         * @summary External Identifiers  Post Query  Ids
+         * @param {EpiFilter} filter 
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        externalIdentifiersPostQueryIds: async (filter: EpiFilter, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
+            // verify required parameter 'filter' is not null or undefined
+            assertParamExists('externalIdentifiersPostQueryIds', 'filter', filter)
+            const localVarPath = `/v1/external_identifiers/query/ids`;
+            // use dummy base URL string because the URL constructor only accepts absolute URLs.
+            const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
+            let baseOptions;
+            if (configuration) {
+                baseOptions = configuration.baseOptions;
+            }
+
+            const localVarRequestOptions = { method: 'POST', ...baseOptions, ...options};
+            const localVarHeaderParameter = {} as any;
+            const localVarQueryParameter = {} as any;
+
+
+    
+            localVarHeaderParameter['Content-Type'] = 'application/json';
+
+            setSearchParams(localVarUrlObj, localVarQueryParameter);
+            let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
+            localVarRequestOptions.headers = {...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers};
+            localVarRequestOptions.data = serializeDataIfNeeded(filter, localVarRequestOptions, configuration)
+
+            return {
+                url: toPathString(localVarUrlObj),
+                options: localVarRequestOptions,
+            };
+        },
+        /**
+         * 
+         * @summary External Identifiers  Post Some
+         * @param {Array<ExternalIdentifier>} externalIdentifier 
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        externalIdentifiersPostSome: async (externalIdentifier: Array<ExternalIdentifier>, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
+            // verify required parameter 'externalIdentifier' is not null or undefined
+            assertParamExists('externalIdentifiersPostSome', 'externalIdentifier', externalIdentifier)
+            const localVarPath = `/v1/external_identifiers/batch`;
+            // use dummy base URL string because the URL constructor only accepts absolute URLs.
+            const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
+            let baseOptions;
+            if (configuration) {
+                baseOptions = configuration.baseOptions;
+            }
+
+            const localVarRequestOptions = { method: 'POST', ...baseOptions, ...options};
+            const localVarHeaderParameter = {} as any;
+            const localVarQueryParameter = {} as any;
+
+
+    
+            localVarHeaderParameter['Content-Type'] = 'application/json';
+
+            setSearchParams(localVarUrlObj, localVarQueryParameter);
+            let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
+            localVarRequestOptions.headers = {...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers};
+            localVarRequestOptions.data = serializeDataIfNeeded(externalIdentifier, localVarRequestOptions, configuration)
+
+            return {
+                url: toPathString(localVarUrlObj),
+                options: localVarRequestOptions,
+            };
+        },
+        /**
+         * 
+         * @summary External Identifiers  Put One
+         * @param {string} objectId 
+         * @param {ExternalIdentifier} externalIdentifier 
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        externalIdentifiersPutOne: async (objectId: string, externalIdentifier: ExternalIdentifier, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
+            // verify required parameter 'objectId' is not null or undefined
+            assertParamExists('externalIdentifiersPutOne', 'objectId', objectId)
+            // verify required parameter 'externalIdentifier' is not null or undefined
+            assertParamExists('externalIdentifiersPutOne', 'externalIdentifier', externalIdentifier)
+            const localVarPath = `/v1/external_identifiers/{object_id}`
+                .replace(`{${"object_id"}}`, encodeURIComponent(String(objectId)));
+            // use dummy base URL string because the URL constructor only accepts absolute URLs.
+            const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
+            let baseOptions;
+            if (configuration) {
+                baseOptions = configuration.baseOptions;
+            }
+
+            const localVarRequestOptions = { method: 'PUT', ...baseOptions, ...options};
+            const localVarHeaderParameter = {} as any;
+            const localVarQueryParameter = {} as any;
+
+
+    
+            localVarHeaderParameter['Content-Type'] = 'application/json';
+
+            setSearchParams(localVarUrlObj, localVarQueryParameter);
+            let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
+            localVarRequestOptions.headers = {...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers};
+            localVarRequestOptions.data = serializeDataIfNeeded(externalIdentifier, localVarRequestOptions, configuration)
+
+            return {
+                url: toPathString(localVarUrlObj),
+                options: localVarRequestOptions,
+            };
+        },
+        /**
+         * 
+         * @summary External Identifiers  Put Some
+         * @param {Array<ExternalIdentifier>} externalIdentifier 
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        externalIdentifiersPutSome: async (externalIdentifier: Array<ExternalIdentifier>, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
+            // verify required parameter 'externalIdentifier' is not null or undefined
+            assertParamExists('externalIdentifiersPutSome', 'externalIdentifier', externalIdentifier)
+            const localVarPath = `/v1/external_identifiers/batch`;
+            // use dummy base URL string because the URL constructor only accepts absolute URLs.
+            const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
+            let baseOptions;
+            if (configuration) {
+                baseOptions = configuration.baseOptions;
+            }
+
+            const localVarRequestOptions = { method: 'PUT', ...baseOptions, ...options};
+            const localVarHeaderParameter = {} as any;
+            const localVarQueryParameter = {} as any;
+
+
+    
+            localVarHeaderParameter['Content-Type'] = 'application/json';
+
+            setSearchParams(localVarUrlObj, localVarQueryParameter);
+            let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
+            localVarRequestOptions.headers = {...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers};
+            localVarRequestOptions.data = serializeDataIfNeeded(externalIdentifier, localVarRequestOptions, configuration)
+
+            return {
+                url: toPathString(localVarUrlObj),
+                options: localVarRequestOptions,
+            };
+        },
+        /**
+         * 
          * @summary Identifier Issuers  Delete All
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
@@ -33950,6 +35649,428 @@ const OrganizationApiAxiosParamCreator = function (configuration?: Configuration
             setSearchParams(localVarUrlObj, localVarQueryParameter);
             let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
             localVarRequestOptions.headers = {...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers};
+
+            return {
+                url: toPathString(localVarUrlObj),
+                options: localVarRequestOptions,
+            };
+        },
+        /**
+         * 
+         * @summary Organization Identifier Issuer Links  Delete All
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        organizationIdentifierIssuerLinksDeleteAll: async (options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
+            const localVarPath = `/v1/organization_identifier_issuer_links`;
+            // use dummy base URL string because the URL constructor only accepts absolute URLs.
+            const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
+            let baseOptions;
+            if (configuration) {
+                baseOptions = configuration.baseOptions;
+            }
+
+            const localVarRequestOptions = { method: 'DELETE', ...baseOptions, ...options};
+            const localVarHeaderParameter = {} as any;
+            const localVarQueryParameter = {} as any;
+
+
+    
+            setSearchParams(localVarUrlObj, localVarQueryParameter);
+            let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
+            localVarRequestOptions.headers = {...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers};
+
+            return {
+                url: toPathString(localVarUrlObj),
+                options: localVarRequestOptions,
+            };
+        },
+        /**
+         * 
+         * @summary Organization Identifier Issuer Links  Delete One
+         * @param {any} objectId 
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        organizationIdentifierIssuerLinksDeleteOne: async (objectId: any, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
+            // verify required parameter 'objectId' is not null or undefined
+            assertParamExists('organizationIdentifierIssuerLinksDeleteOne', 'objectId', objectId)
+            const localVarPath = `/v1/organization_identifier_issuer_links/{object_id}`
+                .replace(`{${"object_id"}}`, encodeURIComponent(String(objectId)));
+            // use dummy base URL string because the URL constructor only accepts absolute URLs.
+            const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
+            let baseOptions;
+            if (configuration) {
+                baseOptions = configuration.baseOptions;
+            }
+
+            const localVarRequestOptions = { method: 'DELETE', ...baseOptions, ...options};
+            const localVarHeaderParameter = {} as any;
+            const localVarQueryParameter = {} as any;
+
+
+    
+            setSearchParams(localVarUrlObj, localVarQueryParameter);
+            let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
+            localVarRequestOptions.headers = {...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers};
+
+            return {
+                url: toPathString(localVarUrlObj),
+                options: localVarRequestOptions,
+            };
+        },
+        /**
+         * 
+         * @summary Organization Identifier Issuer Links  Delete Some
+         * @param {string} ids 
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        organizationIdentifierIssuerLinksDeleteSome: async (ids: string, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
+            // verify required parameter 'ids' is not null or undefined
+            assertParamExists('organizationIdentifierIssuerLinksDeleteSome', 'ids', ids)
+            const localVarPath = `/v1/organization_identifier_issuer_links/batch`;
+            // use dummy base URL string because the URL constructor only accepts absolute URLs.
+            const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
+            let baseOptions;
+            if (configuration) {
+                baseOptions = configuration.baseOptions;
+            }
+
+            const localVarRequestOptions = { method: 'DELETE', ...baseOptions, ...options};
+            const localVarHeaderParameter = {} as any;
+            const localVarQueryParameter = {} as any;
+
+            if (ids !== undefined) {
+                localVarQueryParameter['ids'] = ids;
+            }
+
+
+    
+            setSearchParams(localVarUrlObj, localVarQueryParameter);
+            let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
+            localVarRequestOptions.headers = {...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers};
+
+            return {
+                url: toPathString(localVarUrlObj),
+                options: localVarRequestOptions,
+            };
+        },
+        /**
+         * 
+         * @summary Organization Identifier Issuer Links  Get All
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        organizationIdentifierIssuerLinksGetAll: async (options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
+            const localVarPath = `/v1/organization_identifier_issuer_links`;
+            // use dummy base URL string because the URL constructor only accepts absolute URLs.
+            const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
+            let baseOptions;
+            if (configuration) {
+                baseOptions = configuration.baseOptions;
+            }
+
+            const localVarRequestOptions = { method: 'GET', ...baseOptions, ...options};
+            const localVarHeaderParameter = {} as any;
+            const localVarQueryParameter = {} as any;
+
+
+    
+            setSearchParams(localVarUrlObj, localVarQueryParameter);
+            let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
+            localVarRequestOptions.headers = {...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers};
+
+            return {
+                url: toPathString(localVarUrlObj),
+                options: localVarRequestOptions,
+            };
+        },
+        /**
+         * 
+         * @summary Organization Identifier Issuer Links  Get One
+         * @param {string} objectId 
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        organizationIdentifierIssuerLinksGetOne: async (objectId: string, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
+            // verify required parameter 'objectId' is not null or undefined
+            assertParamExists('organizationIdentifierIssuerLinksGetOne', 'objectId', objectId)
+            const localVarPath = `/v1/organization_identifier_issuer_links/{object_id}`
+                .replace(`{${"object_id"}}`, encodeURIComponent(String(objectId)));
+            // use dummy base URL string because the URL constructor only accepts absolute URLs.
+            const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
+            let baseOptions;
+            if (configuration) {
+                baseOptions = configuration.baseOptions;
+            }
+
+            const localVarRequestOptions = { method: 'GET', ...baseOptions, ...options};
+            const localVarHeaderParameter = {} as any;
+            const localVarQueryParameter = {} as any;
+
+
+    
+            setSearchParams(localVarUrlObj, localVarQueryParameter);
+            let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
+            localVarRequestOptions.headers = {...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers};
+
+            return {
+                url: toPathString(localVarUrlObj),
+                options: localVarRequestOptions,
+            };
+        },
+        /**
+         * 
+         * @summary Organization Identifier Issuer Links  Get Some
+         * @param {string} ids 
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        organizationIdentifierIssuerLinksGetSome: async (ids: string, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
+            // verify required parameter 'ids' is not null or undefined
+            assertParamExists('organizationIdentifierIssuerLinksGetSome', 'ids', ids)
+            const localVarPath = `/v1/organization_identifier_issuer_links/batch`;
+            // use dummy base URL string because the URL constructor only accepts absolute URLs.
+            const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
+            let baseOptions;
+            if (configuration) {
+                baseOptions = configuration.baseOptions;
+            }
+
+            const localVarRequestOptions = { method: 'GET', ...baseOptions, ...options};
+            const localVarHeaderParameter = {} as any;
+            const localVarQueryParameter = {} as any;
+
+            if (ids !== undefined) {
+                localVarQueryParameter['ids'] = ids;
+            }
+
+
+    
+            setSearchParams(localVarUrlObj, localVarQueryParameter);
+            let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
+            localVarRequestOptions.headers = {...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers};
+
+            return {
+                url: toPathString(localVarUrlObj),
+                options: localVarRequestOptions,
+            };
+        },
+        /**
+         * 
+         * @summary Organization Identifier Issuer Links  Post One
+         * @param {OrganizationIdentifierIssuerLink} organizationIdentifierIssuerLink 
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        organizationIdentifierIssuerLinksPostOne: async (organizationIdentifierIssuerLink: OrganizationIdentifierIssuerLink, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
+            // verify required parameter 'organizationIdentifierIssuerLink' is not null or undefined
+            assertParamExists('organizationIdentifierIssuerLinksPostOne', 'organizationIdentifierIssuerLink', organizationIdentifierIssuerLink)
+            const localVarPath = `/v1/organization_identifier_issuer_links`;
+            // use dummy base URL string because the URL constructor only accepts absolute URLs.
+            const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
+            let baseOptions;
+            if (configuration) {
+                baseOptions = configuration.baseOptions;
+            }
+
+            const localVarRequestOptions = { method: 'POST', ...baseOptions, ...options};
+            const localVarHeaderParameter = {} as any;
+            const localVarQueryParameter = {} as any;
+
+
+    
+            localVarHeaderParameter['Content-Type'] = 'application/json';
+
+            setSearchParams(localVarUrlObj, localVarQueryParameter);
+            let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
+            localVarRequestOptions.headers = {...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers};
+            localVarRequestOptions.data = serializeDataIfNeeded(organizationIdentifierIssuerLink, localVarRequestOptions, configuration)
+
+            return {
+                url: toPathString(localVarUrlObj),
+                options: localVarRequestOptions,
+            };
+        },
+        /**
+         * 
+         * @summary Organization Identifier Issuer Links  Post Query
+         * @param {EpiFilter} filter 
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        organizationIdentifierIssuerLinksPostQuery: async (filter: EpiFilter, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
+            // verify required parameter 'filter' is not null or undefined
+            assertParamExists('organizationIdentifierIssuerLinksPostQuery', 'filter', filter)
+            const localVarPath = `/v1/organization_identifier_issuer_links/query`;
+            // use dummy base URL string because the URL constructor only accepts absolute URLs.
+            const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
+            let baseOptions;
+            if (configuration) {
+                baseOptions = configuration.baseOptions;
+            }
+
+            const localVarRequestOptions = { method: 'POST', ...baseOptions, ...options};
+            const localVarHeaderParameter = {} as any;
+            const localVarQueryParameter = {} as any;
+
+
+    
+            localVarHeaderParameter['Content-Type'] = 'application/json';
+
+            setSearchParams(localVarUrlObj, localVarQueryParameter);
+            let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
+            localVarRequestOptions.headers = {...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers};
+            localVarRequestOptions.data = serializeDataIfNeeded(filter, localVarRequestOptions, configuration)
+
+            return {
+                url: toPathString(localVarUrlObj),
+                options: localVarRequestOptions,
+            };
+        },
+        /**
+         * 
+         * @summary Organization Identifier Issuer Links  Post Query  Ids
+         * @param {EpiFilter} filter 
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        organizationIdentifierIssuerLinksPostQueryIds: async (filter: EpiFilter, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
+            // verify required parameter 'filter' is not null or undefined
+            assertParamExists('organizationIdentifierIssuerLinksPostQueryIds', 'filter', filter)
+            const localVarPath = `/v1/organization_identifier_issuer_links/query/ids`;
+            // use dummy base URL string because the URL constructor only accepts absolute URLs.
+            const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
+            let baseOptions;
+            if (configuration) {
+                baseOptions = configuration.baseOptions;
+            }
+
+            const localVarRequestOptions = { method: 'POST', ...baseOptions, ...options};
+            const localVarHeaderParameter = {} as any;
+            const localVarQueryParameter = {} as any;
+
+
+    
+            localVarHeaderParameter['Content-Type'] = 'application/json';
+
+            setSearchParams(localVarUrlObj, localVarQueryParameter);
+            let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
+            localVarRequestOptions.headers = {...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers};
+            localVarRequestOptions.data = serializeDataIfNeeded(filter, localVarRequestOptions, configuration)
+
+            return {
+                url: toPathString(localVarUrlObj),
+                options: localVarRequestOptions,
+            };
+        },
+        /**
+         * 
+         * @summary Organization Identifier Issuer Links  Post Some
+         * @param {Array<OrganizationIdentifierIssuerLink>} organizationIdentifierIssuerLink 
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        organizationIdentifierIssuerLinksPostSome: async (organizationIdentifierIssuerLink: Array<OrganizationIdentifierIssuerLink>, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
+            // verify required parameter 'organizationIdentifierIssuerLink' is not null or undefined
+            assertParamExists('organizationIdentifierIssuerLinksPostSome', 'organizationIdentifierIssuerLink', organizationIdentifierIssuerLink)
+            const localVarPath = `/v1/organization_identifier_issuer_links/batch`;
+            // use dummy base URL string because the URL constructor only accepts absolute URLs.
+            const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
+            let baseOptions;
+            if (configuration) {
+                baseOptions = configuration.baseOptions;
+            }
+
+            const localVarRequestOptions = { method: 'POST', ...baseOptions, ...options};
+            const localVarHeaderParameter = {} as any;
+            const localVarQueryParameter = {} as any;
+
+
+    
+            localVarHeaderParameter['Content-Type'] = 'application/json';
+
+            setSearchParams(localVarUrlObj, localVarQueryParameter);
+            let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
+            localVarRequestOptions.headers = {...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers};
+            localVarRequestOptions.data = serializeDataIfNeeded(organizationIdentifierIssuerLink, localVarRequestOptions, configuration)
+
+            return {
+                url: toPathString(localVarUrlObj),
+                options: localVarRequestOptions,
+            };
+        },
+        /**
+         * 
+         * @summary Organization Identifier Issuer Links  Put One
+         * @param {string} objectId 
+         * @param {OrganizationIdentifierIssuerLink} organizationIdentifierIssuerLink 
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        organizationIdentifierIssuerLinksPutOne: async (objectId: string, organizationIdentifierIssuerLink: OrganizationIdentifierIssuerLink, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
+            // verify required parameter 'objectId' is not null or undefined
+            assertParamExists('organizationIdentifierIssuerLinksPutOne', 'objectId', objectId)
+            // verify required parameter 'organizationIdentifierIssuerLink' is not null or undefined
+            assertParamExists('organizationIdentifierIssuerLinksPutOne', 'organizationIdentifierIssuerLink', organizationIdentifierIssuerLink)
+            const localVarPath = `/v1/organization_identifier_issuer_links/{object_id}`
+                .replace(`{${"object_id"}}`, encodeURIComponent(String(objectId)));
+            // use dummy base URL string because the URL constructor only accepts absolute URLs.
+            const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
+            let baseOptions;
+            if (configuration) {
+                baseOptions = configuration.baseOptions;
+            }
+
+            const localVarRequestOptions = { method: 'PUT', ...baseOptions, ...options};
+            const localVarHeaderParameter = {} as any;
+            const localVarQueryParameter = {} as any;
+
+
+    
+            localVarHeaderParameter['Content-Type'] = 'application/json';
+
+            setSearchParams(localVarUrlObj, localVarQueryParameter);
+            let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
+            localVarRequestOptions.headers = {...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers};
+            localVarRequestOptions.data = serializeDataIfNeeded(organizationIdentifierIssuerLink, localVarRequestOptions, configuration)
+
+            return {
+                url: toPathString(localVarUrlObj),
+                options: localVarRequestOptions,
+            };
+        },
+        /**
+         * 
+         * @summary Organization Identifier Issuer Links  Put Some
+         * @param {Array<OrganizationIdentifierIssuerLink>} organizationIdentifierIssuerLink 
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        organizationIdentifierIssuerLinksPutSome: async (organizationIdentifierIssuerLink: Array<OrganizationIdentifierIssuerLink>, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
+            // verify required parameter 'organizationIdentifierIssuerLink' is not null or undefined
+            assertParamExists('organizationIdentifierIssuerLinksPutSome', 'organizationIdentifierIssuerLink', organizationIdentifierIssuerLink)
+            const localVarPath = `/v1/organization_identifier_issuer_links/batch`;
+            // use dummy base URL string because the URL constructor only accepts absolute URLs.
+            const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
+            let baseOptions;
+            if (configuration) {
+                baseOptions = configuration.baseOptions;
+            }
+
+            const localVarRequestOptions = { method: 'PUT', ...baseOptions, ...options};
+            const localVarHeaderParameter = {} as any;
+            const localVarQueryParameter = {} as any;
+
+
+    
+            localVarHeaderParameter['Content-Type'] = 'application/json';
+
+            setSearchParams(localVarUrlObj, localVarQueryParameter);
+            let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
+            localVarRequestOptions.headers = {...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers};
+            localVarRequestOptions.data = serializeDataIfNeeded(organizationIdentifierIssuerLink, localVarRequestOptions, configuration)
 
             return {
                 url: toPathString(localVarUrlObj),
@@ -35180,6 +37301,46 @@ const OrganizationApiAxiosParamCreator = function (configuration?: Configuration
             let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
             localVarRequestOptions.headers = {...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers};
             localVarRequestOptions.data = serializeDataIfNeeded(organization, localVarRequestOptions, configuration)
+
+            return {
+                url: toPathString(localVarUrlObj),
+                options: localVarRequestOptions,
+            };
+        },
+        /**
+         * 
+         * @summary Update Association Between Organization And Identifierissuer
+         * @param {string} organizationId 
+         * @param {UpdateOrganizationIdentifierIssuerLinksRequestBody} updateOrganizationIdentifierIssuerLinksRequestBody 
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        organizationsPutIdentifierIssuers: async (organizationId: string, updateOrganizationIdentifierIssuerLinksRequestBody: UpdateOrganizationIdentifierIssuerLinksRequestBody, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
+            // verify required parameter 'organizationId' is not null or undefined
+            assertParamExists('organizationsPutIdentifierIssuers', 'organizationId', organizationId)
+            // verify required parameter 'updateOrganizationIdentifierIssuerLinksRequestBody' is not null or undefined
+            assertParamExists('organizationsPutIdentifierIssuers', 'updateOrganizationIdentifierIssuerLinksRequestBody', updateOrganizationIdentifierIssuerLinksRequestBody)
+            const localVarPath = `/v1/organizations/{organization_id}/identifier_issuers`
+                .replace(`{${"organization_id"}}`, encodeURIComponent(String(organizationId)));
+            // use dummy base URL string because the URL constructor only accepts absolute URLs.
+            const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
+            let baseOptions;
+            if (configuration) {
+                baseOptions = configuration.baseOptions;
+            }
+
+            const localVarRequestOptions = { method: 'PUT', ...baseOptions, ...options};
+            const localVarHeaderParameter = {} as any;
+            const localVarQueryParameter = {} as any;
+
+
+    
+            localVarHeaderParameter['Content-Type'] = 'application/json';
+
+            setSearchParams(localVarUrlObj, localVarQueryParameter);
+            let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
+            localVarRequestOptions.headers = {...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers};
+            localVarRequestOptions.data = serializeDataIfNeeded(updateOrganizationIdentifierIssuerLinksRequestBody, localVarRequestOptions, configuration)
 
             return {
                 url: toPathString(localVarUrlObj),
@@ -37344,6 +39505,161 @@ const OrganizationApiFp = function(configuration?: Configuration) {
         },
         /**
          * 
+         * @summary External Identifiers  Delete All
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        async externalIdentifiersDeleteAll(options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<any>> {
+            const localVarAxiosArgs = await localVarAxiosParamCreator.externalIdentifiersDeleteAll(options);
+            const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
+            const localVarOperationServerBasePath = operationServerMap['OrganizationApi.externalIdentifiersDeleteAll']?.[localVarOperationServerIndex]?.url;
+            return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
+        },
+        /**
+         * 
+         * @summary External Identifiers  Delete One
+         * @param {any} objectId 
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        async externalIdentifiersDeleteOne(objectId: any, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<string>> {
+            const localVarAxiosArgs = await localVarAxiosParamCreator.externalIdentifiersDeleteOne(objectId, options);
+            const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
+            const localVarOperationServerBasePath = operationServerMap['OrganizationApi.externalIdentifiersDeleteOne']?.[localVarOperationServerIndex]?.url;
+            return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
+        },
+        /**
+         * 
+         * @summary External Identifiers  Delete Some
+         * @param {string} ids 
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        async externalIdentifiersDeleteSome(ids: string, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<Array<string>>> {
+            const localVarAxiosArgs = await localVarAxiosParamCreator.externalIdentifiersDeleteSome(ids, options);
+            const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
+            const localVarOperationServerBasePath = operationServerMap['OrganizationApi.externalIdentifiersDeleteSome']?.[localVarOperationServerIndex]?.url;
+            return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
+        },
+        /**
+         * 
+         * @summary External Identifiers  Get All
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        async externalIdentifiersGetAll(options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<Array<ExternalIdentifier>>> {
+            const localVarAxiosArgs = await localVarAxiosParamCreator.externalIdentifiersGetAll(options);
+            const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
+            const localVarOperationServerBasePath = operationServerMap['OrganizationApi.externalIdentifiersGetAll']?.[localVarOperationServerIndex]?.url;
+            return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
+        },
+        /**
+         * 
+         * @summary External Identifiers  Get One
+         * @param {string} objectId 
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        async externalIdentifiersGetOne(objectId: string, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<ExternalIdentifier>> {
+            const localVarAxiosArgs = await localVarAxiosParamCreator.externalIdentifiersGetOne(objectId, options);
+            const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
+            const localVarOperationServerBasePath = operationServerMap['OrganizationApi.externalIdentifiersGetOne']?.[localVarOperationServerIndex]?.url;
+            return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
+        },
+        /**
+         * 
+         * @summary External Identifiers  Get Some
+         * @param {string} ids 
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        async externalIdentifiersGetSome(ids: string, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<Array<ExternalIdentifier>>> {
+            const localVarAxiosArgs = await localVarAxiosParamCreator.externalIdentifiersGetSome(ids, options);
+            const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
+            const localVarOperationServerBasePath = operationServerMap['OrganizationApi.externalIdentifiersGetSome']?.[localVarOperationServerIndex]?.url;
+            return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
+        },
+        /**
+         * 
+         * @summary External Identifiers  Post One
+         * @param {ExternalIdentifier} externalIdentifier 
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        async externalIdentifiersPostOne(externalIdentifier: ExternalIdentifier, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<ExternalIdentifier>> {
+            const localVarAxiosArgs = await localVarAxiosParamCreator.externalIdentifiersPostOne(externalIdentifier, options);
+            const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
+            const localVarOperationServerBasePath = operationServerMap['OrganizationApi.externalIdentifiersPostOne']?.[localVarOperationServerIndex]?.url;
+            return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
+        },
+        /**
+         * 
+         * @summary External Identifiers  Post Query
+         * @param {EpiFilter} filter 
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        async externalIdentifiersPostQuery(filter: EpiFilter, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<Array<ExternalIdentifier>>> {
+            const localVarAxiosArgs = await localVarAxiosParamCreator.externalIdentifiersPostQuery(filter, options);
+            const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
+            const localVarOperationServerBasePath = operationServerMap['OrganizationApi.externalIdentifiersPostQuery']?.[localVarOperationServerIndex]?.url;
+            return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
+        },
+        /**
+         * 
+         * @summary External Identifiers  Post Query  Ids
+         * @param {EpiFilter} filter 
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        async externalIdentifiersPostQueryIds(filter: EpiFilter, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<Array<string>>> {
+            const localVarAxiosArgs = await localVarAxiosParamCreator.externalIdentifiersPostQueryIds(filter, options);
+            const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
+            const localVarOperationServerBasePath = operationServerMap['OrganizationApi.externalIdentifiersPostQueryIds']?.[localVarOperationServerIndex]?.url;
+            return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
+        },
+        /**
+         * 
+         * @summary External Identifiers  Post Some
+         * @param {Array<ExternalIdentifier>} externalIdentifier 
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        async externalIdentifiersPostSome(externalIdentifier: Array<ExternalIdentifier>, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<Array<ExternalIdentifier>>> {
+            const localVarAxiosArgs = await localVarAxiosParamCreator.externalIdentifiersPostSome(externalIdentifier, options);
+            const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
+            const localVarOperationServerBasePath = operationServerMap['OrganizationApi.externalIdentifiersPostSome']?.[localVarOperationServerIndex]?.url;
+            return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
+        },
+        /**
+         * 
+         * @summary External Identifiers  Put One
+         * @param {string} objectId 
+         * @param {ExternalIdentifier} externalIdentifier 
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        async externalIdentifiersPutOne(objectId: string, externalIdentifier: ExternalIdentifier, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<ExternalIdentifier>> {
+            const localVarAxiosArgs = await localVarAxiosParamCreator.externalIdentifiersPutOne(objectId, externalIdentifier, options);
+            const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
+            const localVarOperationServerBasePath = operationServerMap['OrganizationApi.externalIdentifiersPutOne']?.[localVarOperationServerIndex]?.url;
+            return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
+        },
+        /**
+         * 
+         * @summary External Identifiers  Put Some
+         * @param {Array<ExternalIdentifier>} externalIdentifier 
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        async externalIdentifiersPutSome(externalIdentifier: Array<ExternalIdentifier>, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<Array<ExternalIdentifier>>> {
+            const localVarAxiosArgs = await localVarAxiosParamCreator.externalIdentifiersPutSome(externalIdentifier, options);
+            const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
+            const localVarOperationServerBasePath = operationServerMap['OrganizationApi.externalIdentifiersPutSome']?.[localVarOperationServerIndex]?.url;
+            return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
+        },
+        /**
+         * 
          * @summary Identifier Issuers  Delete All
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
@@ -37520,6 +39836,161 @@ const OrganizationApiFp = function(configuration?: Configuration) {
             const localVarAxiosArgs = await localVarAxiosParamCreator.inviteUserConstraints(options);
             const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
             const localVarOperationServerBasePath = operationServerMap['OrganizationApi.inviteUserConstraints']?.[localVarOperationServerIndex]?.url;
+            return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
+        },
+        /**
+         * 
+         * @summary Organization Identifier Issuer Links  Delete All
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        async organizationIdentifierIssuerLinksDeleteAll(options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<any>> {
+            const localVarAxiosArgs = await localVarAxiosParamCreator.organizationIdentifierIssuerLinksDeleteAll(options);
+            const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
+            const localVarOperationServerBasePath = operationServerMap['OrganizationApi.organizationIdentifierIssuerLinksDeleteAll']?.[localVarOperationServerIndex]?.url;
+            return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
+        },
+        /**
+         * 
+         * @summary Organization Identifier Issuer Links  Delete One
+         * @param {any} objectId 
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        async organizationIdentifierIssuerLinksDeleteOne(objectId: any, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<string>> {
+            const localVarAxiosArgs = await localVarAxiosParamCreator.organizationIdentifierIssuerLinksDeleteOne(objectId, options);
+            const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
+            const localVarOperationServerBasePath = operationServerMap['OrganizationApi.organizationIdentifierIssuerLinksDeleteOne']?.[localVarOperationServerIndex]?.url;
+            return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
+        },
+        /**
+         * 
+         * @summary Organization Identifier Issuer Links  Delete Some
+         * @param {string} ids 
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        async organizationIdentifierIssuerLinksDeleteSome(ids: string, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<Array<string>>> {
+            const localVarAxiosArgs = await localVarAxiosParamCreator.organizationIdentifierIssuerLinksDeleteSome(ids, options);
+            const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
+            const localVarOperationServerBasePath = operationServerMap['OrganizationApi.organizationIdentifierIssuerLinksDeleteSome']?.[localVarOperationServerIndex]?.url;
+            return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
+        },
+        /**
+         * 
+         * @summary Organization Identifier Issuer Links  Get All
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        async organizationIdentifierIssuerLinksGetAll(options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<Array<OrganizationIdentifierIssuerLink>>> {
+            const localVarAxiosArgs = await localVarAxiosParamCreator.organizationIdentifierIssuerLinksGetAll(options);
+            const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
+            const localVarOperationServerBasePath = operationServerMap['OrganizationApi.organizationIdentifierIssuerLinksGetAll']?.[localVarOperationServerIndex]?.url;
+            return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
+        },
+        /**
+         * 
+         * @summary Organization Identifier Issuer Links  Get One
+         * @param {string} objectId 
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        async organizationIdentifierIssuerLinksGetOne(objectId: string, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<OrganizationIdentifierIssuerLink>> {
+            const localVarAxiosArgs = await localVarAxiosParamCreator.organizationIdentifierIssuerLinksGetOne(objectId, options);
+            const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
+            const localVarOperationServerBasePath = operationServerMap['OrganizationApi.organizationIdentifierIssuerLinksGetOne']?.[localVarOperationServerIndex]?.url;
+            return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
+        },
+        /**
+         * 
+         * @summary Organization Identifier Issuer Links  Get Some
+         * @param {string} ids 
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        async organizationIdentifierIssuerLinksGetSome(ids: string, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<Array<OrganizationIdentifierIssuerLink>>> {
+            const localVarAxiosArgs = await localVarAxiosParamCreator.organizationIdentifierIssuerLinksGetSome(ids, options);
+            const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
+            const localVarOperationServerBasePath = operationServerMap['OrganizationApi.organizationIdentifierIssuerLinksGetSome']?.[localVarOperationServerIndex]?.url;
+            return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
+        },
+        /**
+         * 
+         * @summary Organization Identifier Issuer Links  Post One
+         * @param {OrganizationIdentifierIssuerLink} organizationIdentifierIssuerLink 
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        async organizationIdentifierIssuerLinksPostOne(organizationIdentifierIssuerLink: OrganizationIdentifierIssuerLink, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<OrganizationIdentifierIssuerLink>> {
+            const localVarAxiosArgs = await localVarAxiosParamCreator.organizationIdentifierIssuerLinksPostOne(organizationIdentifierIssuerLink, options);
+            const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
+            const localVarOperationServerBasePath = operationServerMap['OrganizationApi.organizationIdentifierIssuerLinksPostOne']?.[localVarOperationServerIndex]?.url;
+            return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
+        },
+        /**
+         * 
+         * @summary Organization Identifier Issuer Links  Post Query
+         * @param {EpiFilter} filter 
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        async organizationIdentifierIssuerLinksPostQuery(filter: EpiFilter, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<Array<OrganizationIdentifierIssuerLink>>> {
+            const localVarAxiosArgs = await localVarAxiosParamCreator.organizationIdentifierIssuerLinksPostQuery(filter, options);
+            const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
+            const localVarOperationServerBasePath = operationServerMap['OrganizationApi.organizationIdentifierIssuerLinksPostQuery']?.[localVarOperationServerIndex]?.url;
+            return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
+        },
+        /**
+         * 
+         * @summary Organization Identifier Issuer Links  Post Query  Ids
+         * @param {EpiFilter} filter 
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        async organizationIdentifierIssuerLinksPostQueryIds(filter: EpiFilter, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<Array<string>>> {
+            const localVarAxiosArgs = await localVarAxiosParamCreator.organizationIdentifierIssuerLinksPostQueryIds(filter, options);
+            const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
+            const localVarOperationServerBasePath = operationServerMap['OrganizationApi.organizationIdentifierIssuerLinksPostQueryIds']?.[localVarOperationServerIndex]?.url;
+            return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
+        },
+        /**
+         * 
+         * @summary Organization Identifier Issuer Links  Post Some
+         * @param {Array<OrganizationIdentifierIssuerLink>} organizationIdentifierIssuerLink 
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        async organizationIdentifierIssuerLinksPostSome(organizationIdentifierIssuerLink: Array<OrganizationIdentifierIssuerLink>, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<Array<OrganizationIdentifierIssuerLink>>> {
+            const localVarAxiosArgs = await localVarAxiosParamCreator.organizationIdentifierIssuerLinksPostSome(organizationIdentifierIssuerLink, options);
+            const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
+            const localVarOperationServerBasePath = operationServerMap['OrganizationApi.organizationIdentifierIssuerLinksPostSome']?.[localVarOperationServerIndex]?.url;
+            return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
+        },
+        /**
+         * 
+         * @summary Organization Identifier Issuer Links  Put One
+         * @param {string} objectId 
+         * @param {OrganizationIdentifierIssuerLink} organizationIdentifierIssuerLink 
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        async organizationIdentifierIssuerLinksPutOne(objectId: string, organizationIdentifierIssuerLink: OrganizationIdentifierIssuerLink, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<OrganizationIdentifierIssuerLink>> {
+            const localVarAxiosArgs = await localVarAxiosParamCreator.organizationIdentifierIssuerLinksPutOne(objectId, organizationIdentifierIssuerLink, options);
+            const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
+            const localVarOperationServerBasePath = operationServerMap['OrganizationApi.organizationIdentifierIssuerLinksPutOne']?.[localVarOperationServerIndex]?.url;
+            return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
+        },
+        /**
+         * 
+         * @summary Organization Identifier Issuer Links  Put Some
+         * @param {Array<OrganizationIdentifierIssuerLink>} organizationIdentifierIssuerLink 
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        async organizationIdentifierIssuerLinksPutSome(organizationIdentifierIssuerLink: Array<OrganizationIdentifierIssuerLink>, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<Array<OrganizationIdentifierIssuerLink>>> {
+            const localVarAxiosArgs = await localVarAxiosParamCreator.organizationIdentifierIssuerLinksPutSome(organizationIdentifierIssuerLink, options);
+            const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
+            const localVarOperationServerBasePath = operationServerMap['OrganizationApi.organizationIdentifierIssuerLinksPutSome']?.[localVarOperationServerIndex]?.url;
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
         /**
@@ -37972,6 +40443,20 @@ const OrganizationApiFp = function(configuration?: Configuration) {
             const localVarAxiosArgs = await localVarAxiosParamCreator.organizationsPostSome(organization, options);
             const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
             const localVarOperationServerBasePath = operationServerMap['OrganizationApi.organizationsPostSome']?.[localVarOperationServerIndex]?.url;
+            return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
+        },
+        /**
+         * 
+         * @summary Update Association Between Organization And Identifierissuer
+         * @param {string} organizationId 
+         * @param {UpdateOrganizationIdentifierIssuerLinksRequestBody} updateOrganizationIdentifierIssuerLinksRequestBody 
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        async organizationsPutIdentifierIssuers(organizationId: string, updateOrganizationIdentifierIssuerLinksRequestBody: UpdateOrganizationIdentifierIssuerLinksRequestBody, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<Array<OrganizationIdentifierIssuerLink>>> {
+            const localVarAxiosArgs = await localVarAxiosParamCreator.organizationsPutIdentifierIssuers(organizationId, updateOrganizationIdentifierIssuerLinksRequestBody, options);
+            const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
+            const localVarOperationServerBasePath = operationServerMap['OrganizationApi.organizationsPutIdentifierIssuers']?.[localVarOperationServerIndex]?.url;
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
         /**
@@ -39139,6 +41624,149 @@ export class OrganizationApi extends BaseAPI {
 
     /**
      * 
+     * @summary External Identifiers  Delete All
+     * @param {*} [options] Override http request option.
+     * @throws {RequiredError}
+     * @memberof OrganizationApi
+     */
+    public externalIdentifiersDeleteAll(options?: RawAxiosRequestConfig) {
+        return OrganizationApiFp(this.configuration).externalIdentifiersDeleteAll(options).then((request) => request(this.axios, this.configuration.baseUrl));
+    }
+
+    /**
+     * 
+     * @summary External Identifiers  Delete One
+     * @param {any} objectId 
+     * @param {*} [options] Override http request option.
+     * @throws {RequiredError}
+     * @memberof OrganizationApi
+     */
+    public externalIdentifiersDeleteOne(objectId: any, options?: RawAxiosRequestConfig) {
+        return OrganizationApiFp(this.configuration).externalIdentifiersDeleteOne(objectId, options).then((request) => request(this.axios, this.configuration.baseUrl));
+    }
+
+    /**
+     * 
+     * @summary External Identifiers  Delete Some
+     * @param {string} ids 
+     * @param {*} [options] Override http request option.
+     * @throws {RequiredError}
+     * @memberof OrganizationApi
+     */
+    public externalIdentifiersDeleteSome(ids: string, options?: RawAxiosRequestConfig) {
+        return OrganizationApiFp(this.configuration).externalIdentifiersDeleteSome(ids, options).then((request) => request(this.axios, this.configuration.baseUrl));
+    }
+
+    /**
+     * 
+     * @summary External Identifiers  Get All
+     * @param {*} [options] Override http request option.
+     * @throws {RequiredError}
+     * @memberof OrganizationApi
+     */
+    public externalIdentifiersGetAll(options?: RawAxiosRequestConfig) {
+        return OrganizationApiFp(this.configuration).externalIdentifiersGetAll(options).then((request) => request(this.axios, this.configuration.baseUrl));
+    }
+
+    /**
+     * 
+     * @summary External Identifiers  Get One
+     * @param {string} objectId 
+     * @param {*} [options] Override http request option.
+     * @throws {RequiredError}
+     * @memberof OrganizationApi
+     */
+    public externalIdentifiersGetOne(objectId: string, options?: RawAxiosRequestConfig) {
+        return OrganizationApiFp(this.configuration).externalIdentifiersGetOne(objectId, options).then((request) => request(this.axios, this.configuration.baseUrl));
+    }
+
+    /**
+     * 
+     * @summary External Identifiers  Get Some
+     * @param {string} ids 
+     * @param {*} [options] Override http request option.
+     * @throws {RequiredError}
+     * @memberof OrganizationApi
+     */
+    public externalIdentifiersGetSome(ids: string, options?: RawAxiosRequestConfig) {
+        return OrganizationApiFp(this.configuration).externalIdentifiersGetSome(ids, options).then((request) => request(this.axios, this.configuration.baseUrl));
+    }
+
+    /**
+     * 
+     * @summary External Identifiers  Post One
+     * @param {ExternalIdentifier} externalIdentifier 
+     * @param {*} [options] Override http request option.
+     * @throws {RequiredError}
+     * @memberof OrganizationApi
+     */
+    public externalIdentifiersPostOne(externalIdentifier: ExternalIdentifier, options?: RawAxiosRequestConfig) {
+        return OrganizationApiFp(this.configuration).externalIdentifiersPostOne(externalIdentifier, options).then((request) => request(this.axios, this.configuration.baseUrl));
+    }
+
+    /**
+     * 
+     * @summary External Identifiers  Post Query
+     * @param {EpiFilter} filter 
+     * @param {*} [options] Override http request option.
+     * @throws {RequiredError}
+     * @memberof OrganizationApi
+     */
+    public externalIdentifiersPostQuery(filter: EpiFilter, options?: RawAxiosRequestConfig) {
+        return OrganizationApiFp(this.configuration).externalIdentifiersPostQuery(filter, options).then((request) => request(this.axios, this.configuration.baseUrl));
+    }
+
+    /**
+     * 
+     * @summary External Identifiers  Post Query  Ids
+     * @param {EpiFilter} filter 
+     * @param {*} [options] Override http request option.
+     * @throws {RequiredError}
+     * @memberof OrganizationApi
+     */
+    public externalIdentifiersPostQueryIds(filter: EpiFilter, options?: RawAxiosRequestConfig) {
+        return OrganizationApiFp(this.configuration).externalIdentifiersPostQueryIds(filter, options).then((request) => request(this.axios, this.configuration.baseUrl));
+    }
+
+    /**
+     * 
+     * @summary External Identifiers  Post Some
+     * @param {Array<ExternalIdentifier>} externalIdentifier 
+     * @param {*} [options] Override http request option.
+     * @throws {RequiredError}
+     * @memberof OrganizationApi
+     */
+    public externalIdentifiersPostSome(externalIdentifier: Array<ExternalIdentifier>, options?: RawAxiosRequestConfig) {
+        return OrganizationApiFp(this.configuration).externalIdentifiersPostSome(externalIdentifier, options).then((request) => request(this.axios, this.configuration.baseUrl));
+    }
+
+    /**
+     * 
+     * @summary External Identifiers  Put One
+     * @param {string} objectId 
+     * @param {ExternalIdentifier} externalIdentifier 
+     * @param {*} [options] Override http request option.
+     * @throws {RequiredError}
+     * @memberof OrganizationApi
+     */
+    public externalIdentifiersPutOne(objectId: string, externalIdentifier: ExternalIdentifier, options?: RawAxiosRequestConfig) {
+        return OrganizationApiFp(this.configuration).externalIdentifiersPutOne(objectId, externalIdentifier, options).then((request) => request(this.axios, this.configuration.baseUrl));
+    }
+
+    /**
+     * 
+     * @summary External Identifiers  Put Some
+     * @param {Array<ExternalIdentifier>} externalIdentifier 
+     * @param {*} [options] Override http request option.
+     * @throws {RequiredError}
+     * @memberof OrganizationApi
+     */
+    public externalIdentifiersPutSome(externalIdentifier: Array<ExternalIdentifier>, options?: RawAxiosRequestConfig) {
+        return OrganizationApiFp(this.configuration).externalIdentifiersPutSome(externalIdentifier, options).then((request) => request(this.axios, this.configuration.baseUrl));
+    }
+
+    /**
+     * 
      * @summary Identifier Issuers  Delete All
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
@@ -39301,6 +41929,149 @@ export class OrganizationApi extends BaseAPI {
      */
     public inviteUserConstraints(options?: RawAxiosRequestConfig) {
         return OrganizationApiFp(this.configuration).inviteUserConstraints(options).then((request) => request(this.axios, this.configuration.baseUrl));
+    }
+
+    /**
+     * 
+     * @summary Organization Identifier Issuer Links  Delete All
+     * @param {*} [options] Override http request option.
+     * @throws {RequiredError}
+     * @memberof OrganizationApi
+     */
+    public organizationIdentifierIssuerLinksDeleteAll(options?: RawAxiosRequestConfig) {
+        return OrganizationApiFp(this.configuration).organizationIdentifierIssuerLinksDeleteAll(options).then((request) => request(this.axios, this.configuration.baseUrl));
+    }
+
+    /**
+     * 
+     * @summary Organization Identifier Issuer Links  Delete One
+     * @param {any} objectId 
+     * @param {*} [options] Override http request option.
+     * @throws {RequiredError}
+     * @memberof OrganizationApi
+     */
+    public organizationIdentifierIssuerLinksDeleteOne(objectId: any, options?: RawAxiosRequestConfig) {
+        return OrganizationApiFp(this.configuration).organizationIdentifierIssuerLinksDeleteOne(objectId, options).then((request) => request(this.axios, this.configuration.baseUrl));
+    }
+
+    /**
+     * 
+     * @summary Organization Identifier Issuer Links  Delete Some
+     * @param {string} ids 
+     * @param {*} [options] Override http request option.
+     * @throws {RequiredError}
+     * @memberof OrganizationApi
+     */
+    public organizationIdentifierIssuerLinksDeleteSome(ids: string, options?: RawAxiosRequestConfig) {
+        return OrganizationApiFp(this.configuration).organizationIdentifierIssuerLinksDeleteSome(ids, options).then((request) => request(this.axios, this.configuration.baseUrl));
+    }
+
+    /**
+     * 
+     * @summary Organization Identifier Issuer Links  Get All
+     * @param {*} [options] Override http request option.
+     * @throws {RequiredError}
+     * @memberof OrganizationApi
+     */
+    public organizationIdentifierIssuerLinksGetAll(options?: RawAxiosRequestConfig) {
+        return OrganizationApiFp(this.configuration).organizationIdentifierIssuerLinksGetAll(options).then((request) => request(this.axios, this.configuration.baseUrl));
+    }
+
+    /**
+     * 
+     * @summary Organization Identifier Issuer Links  Get One
+     * @param {string} objectId 
+     * @param {*} [options] Override http request option.
+     * @throws {RequiredError}
+     * @memberof OrganizationApi
+     */
+    public organizationIdentifierIssuerLinksGetOne(objectId: string, options?: RawAxiosRequestConfig) {
+        return OrganizationApiFp(this.configuration).organizationIdentifierIssuerLinksGetOne(objectId, options).then((request) => request(this.axios, this.configuration.baseUrl));
+    }
+
+    /**
+     * 
+     * @summary Organization Identifier Issuer Links  Get Some
+     * @param {string} ids 
+     * @param {*} [options] Override http request option.
+     * @throws {RequiredError}
+     * @memberof OrganizationApi
+     */
+    public organizationIdentifierIssuerLinksGetSome(ids: string, options?: RawAxiosRequestConfig) {
+        return OrganizationApiFp(this.configuration).organizationIdentifierIssuerLinksGetSome(ids, options).then((request) => request(this.axios, this.configuration.baseUrl));
+    }
+
+    /**
+     * 
+     * @summary Organization Identifier Issuer Links  Post One
+     * @param {OrganizationIdentifierIssuerLink} organizationIdentifierIssuerLink 
+     * @param {*} [options] Override http request option.
+     * @throws {RequiredError}
+     * @memberof OrganizationApi
+     */
+    public organizationIdentifierIssuerLinksPostOne(organizationIdentifierIssuerLink: OrganizationIdentifierIssuerLink, options?: RawAxiosRequestConfig) {
+        return OrganizationApiFp(this.configuration).organizationIdentifierIssuerLinksPostOne(organizationIdentifierIssuerLink, options).then((request) => request(this.axios, this.configuration.baseUrl));
+    }
+
+    /**
+     * 
+     * @summary Organization Identifier Issuer Links  Post Query
+     * @param {EpiFilter} filter 
+     * @param {*} [options] Override http request option.
+     * @throws {RequiredError}
+     * @memberof OrganizationApi
+     */
+    public organizationIdentifierIssuerLinksPostQuery(filter: EpiFilter, options?: RawAxiosRequestConfig) {
+        return OrganizationApiFp(this.configuration).organizationIdentifierIssuerLinksPostQuery(filter, options).then((request) => request(this.axios, this.configuration.baseUrl));
+    }
+
+    /**
+     * 
+     * @summary Organization Identifier Issuer Links  Post Query  Ids
+     * @param {EpiFilter} filter 
+     * @param {*} [options] Override http request option.
+     * @throws {RequiredError}
+     * @memberof OrganizationApi
+     */
+    public organizationIdentifierIssuerLinksPostQueryIds(filter: EpiFilter, options?: RawAxiosRequestConfig) {
+        return OrganizationApiFp(this.configuration).organizationIdentifierIssuerLinksPostQueryIds(filter, options).then((request) => request(this.axios, this.configuration.baseUrl));
+    }
+
+    /**
+     * 
+     * @summary Organization Identifier Issuer Links  Post Some
+     * @param {Array<OrganizationIdentifierIssuerLink>} organizationIdentifierIssuerLink 
+     * @param {*} [options] Override http request option.
+     * @throws {RequiredError}
+     * @memberof OrganizationApi
+     */
+    public organizationIdentifierIssuerLinksPostSome(organizationIdentifierIssuerLink: Array<OrganizationIdentifierIssuerLink>, options?: RawAxiosRequestConfig) {
+        return OrganizationApiFp(this.configuration).organizationIdentifierIssuerLinksPostSome(organizationIdentifierIssuerLink, options).then((request) => request(this.axios, this.configuration.baseUrl));
+    }
+
+    /**
+     * 
+     * @summary Organization Identifier Issuer Links  Put One
+     * @param {string} objectId 
+     * @param {OrganizationIdentifierIssuerLink} organizationIdentifierIssuerLink 
+     * @param {*} [options] Override http request option.
+     * @throws {RequiredError}
+     * @memberof OrganizationApi
+     */
+    public organizationIdentifierIssuerLinksPutOne(objectId: string, organizationIdentifierIssuerLink: OrganizationIdentifierIssuerLink, options?: RawAxiosRequestConfig) {
+        return OrganizationApiFp(this.configuration).organizationIdentifierIssuerLinksPutOne(objectId, organizationIdentifierIssuerLink, options).then((request) => request(this.axios, this.configuration.baseUrl));
+    }
+
+    /**
+     * 
+     * @summary Organization Identifier Issuer Links  Put Some
+     * @param {Array<OrganizationIdentifierIssuerLink>} organizationIdentifierIssuerLink 
+     * @param {*} [options] Override http request option.
+     * @throws {RequiredError}
+     * @memberof OrganizationApi
+     */
+    public organizationIdentifierIssuerLinksPutSome(organizationIdentifierIssuerLink: Array<OrganizationIdentifierIssuerLink>, options?: RawAxiosRequestConfig) {
+        return OrganizationApiFp(this.configuration).organizationIdentifierIssuerLinksPutSome(organizationIdentifierIssuerLink, options).then((request) => request(this.axios, this.configuration.baseUrl));
     }
 
     /**
@@ -39718,6 +42489,19 @@ export class OrganizationApi extends BaseAPI {
      */
     public organizationsPostSome(organization: Array<Organization>, options?: RawAxiosRequestConfig) {
         return OrganizationApiFp(this.configuration).organizationsPostSome(organization, options).then((request) => request(this.axios, this.configuration.baseUrl));
+    }
+
+    /**
+     * 
+     * @summary Update Association Between Organization And Identifierissuer
+     * @param {string} organizationId 
+     * @param {UpdateOrganizationIdentifierIssuerLinksRequestBody} updateOrganizationIdentifierIssuerLinksRequestBody 
+     * @param {*} [options] Override http request option.
+     * @throws {RequiredError}
+     * @memberof OrganizationApi
+     */
+    public organizationsPutIdentifierIssuers(organizationId: string, updateOrganizationIdentifierIssuerLinksRequestBody: UpdateOrganizationIdentifierIssuerLinksRequestBody, options?: RawAxiosRequestConfig) {
+        return OrganizationApiFp(this.configuration).organizationsPutIdentifierIssuers(organizationId, updateOrganizationIdentifierIssuerLinksRequestBody, options).then((request) => request(this.axios, this.configuration.baseUrl));
     }
 
     /**

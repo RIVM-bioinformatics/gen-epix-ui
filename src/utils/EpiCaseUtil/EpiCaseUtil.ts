@@ -102,20 +102,22 @@ export class EpiCaseUtil {
   }
 
   public static createFormFieldDefinitions(completeCaseType: CompleteCaseType, organizationsQueryResult: UseQueryResult<Organization[]>): FormFieldDefinition<Case['content']>[] {
-    const caseTypeColumns = EpiCaseTypeUtil.getCaseTypeColumns(completeCaseType);
+    const caseTypeColumns = EpiCaseTypeUtil.getCaseTypeCols(completeCaseType);
     const effectiveColumnAccessRights = EpiAbacUtil.createEffectieveColumnAccessRights(Object.values(completeCaseType.case_type_access_abacs));
-    return caseTypeColumns.reduce((acc, caseTypeColumn) => {
-      const hasAccess = effectiveColumnAccessRights.get(caseTypeColumn.id)?.write;
+    return caseTypeColumns.reduce((acc, caseTypeCol) => {
+      const hasAccess = effectiveColumnAccessRights.get(caseTypeCol.id)?.write;
       if (!hasAccess) {
         return acc;
       }
 
-      const column = completeCaseType.cols[caseTypeColumn.col_id];
+      const column = completeCaseType.cols[caseTypeCol.col_id];
       switch (column.col_type) {
         case ColType.TEXT:
-        case ColType.ID_DIRECT:
-        case ColType.ID_PSEUDONYMISED:
-        case ColType.ID_ANONYMISED:
+        case ColType.ID_SAMPLE:
+        case ColType.ID_CASE:
+        case ColType.ID_EVENT:
+        case ColType.ID_GENETIC_SEQUENCE:
+        case ColType.ID_PERSON:
         case ColType.TIME_WEEK:
         case ColType.TIME_MONTH:
         case ColType.TIME_QUARTER:
@@ -129,23 +131,23 @@ export class EpiCaseUtil {
         case ColType.DECIMAL_6:
           acc.push({
             definition: FORM_FIELD_DEFINITION_TYPE.TEXTFIELD,
-            name: caseTypeColumn.id,
-            label: caseTypeColumn.label,
+            name: caseTypeCol.id,
+            label: caseTypeCol.label,
           } as const satisfies FormFieldDefinition<Case['content']>);
           break;
         case ColType.REGULAR_LANGUAGE:
           try {
-            new RegExp(caseTypeColumn.pattern);
+            new RegExp(caseTypeCol.pattern);
             acc.push({
               definition: FORM_FIELD_DEFINITION_TYPE.TEXTFIELD,
-              name: caseTypeColumn.id,
-              label: caseTypeColumn.label,
+              name: caseTypeCol.id,
+              label: caseTypeCol.label,
             } as const satisfies FormFieldDefinition<Case['content']>);
           } catch (_error) {
             acc.push({
               definition: FORM_FIELD_DEFINITION_TYPE.TEXTFIELD,
-              name: caseTypeColumn.id,
-              label: caseTypeColumn.label,
+              name: caseTypeCol.id,
+              label: caseTypeCol.label,
               warningMessage: t`Unable to parse regular expression. You may enter text, but it's not guaranteed to be valid.`,
             } as const satisfies FormFieldDefinition<Case['content']>);
           }
@@ -156,8 +158,8 @@ export class EpiCaseUtil {
           if (EpiDataUtil.data.conceptsBySetId[column.concept_set_id]) {
             acc.push({
               definition: FORM_FIELD_DEFINITION_TYPE.AUTOCOMPLETE,
-              name: caseTypeColumn.id,
-              label: caseTypeColumn.label,
+              name: caseTypeCol.id,
+              label: caseTypeCol.label,
               options: EpiDataUtil.data.conceptsBySetId[column.concept_set_id].map(concept => ({
                 value: concept.id,
                 label: concept.name,
@@ -169,8 +171,8 @@ export class EpiCaseUtil {
           if (EpiDataUtil.data.regionsByRegionSetId[column.region_set_id]) {
             acc.push({
               definition: FORM_FIELD_DEFINITION_TYPE.AUTOCOMPLETE,
-              name: caseTypeColumn.id,
-              label: caseTypeColumn.label,
+              name: caseTypeCol.id,
+              label: caseTypeCol.label,
               options: EpiDataUtil.data.regionsByRegionSetId[column.region_set_id].map(region => ({
                 value: region.id,
                 label: EpiDataUtil.data.regionSets[column.region_set_id].region_code_as_label ? region.code : region.name,
@@ -181,8 +183,8 @@ export class EpiCaseUtil {
         case ColType.ORGANIZATION:
           acc.push({
             definition: FORM_FIELD_DEFINITION_TYPE.AUTOCOMPLETE,
-            name: caseTypeColumn.id,
-            label: caseTypeColumn.label,
+            name: caseTypeCol.id,
+            label: caseTypeCol.label,
             loading: organizationsQueryResult.isLoading,
             options: (organizationsQueryResult.data ?? []).map(organization => ({
               value: organization.id,
@@ -201,23 +203,25 @@ export class EpiCaseUtil {
   public static createYupSchema(completeCaseType: CompleteCaseType): ObjectSchema<{ [key: string]: string }> {
     const effectiveColumnAccessRights = EpiAbacUtil.createEffectieveColumnAccessRights(Object.values(completeCaseType.case_type_access_abacs));
 
-    return EpiCaseTypeUtil.getCaseTypeColumns(completeCaseType).reduce((s, caseTypeColumn) => {
-      const hasAccess = effectiveColumnAccessRights.get(caseTypeColumn.id)?.write;
+    return EpiCaseTypeUtil.getCaseTypeCols(completeCaseType).reduce((s, caseTypeCol) => {
+      const hasAccess = effectiveColumnAccessRights.get(caseTypeCol.id)?.write;
       if (!hasAccess) {
         return s;
       }
 
-      const column = completeCaseType.cols[caseTypeColumn.col_id];
+      const column = completeCaseType.cols[caseTypeCol.col_id];
       switch (column.col_type) {
         case ColType.TEXT:
           return s.concat(object().shape({
-            [caseTypeColumn.id]: string().nullable().extendedAlphaNumeric().max(65535).transform((_val: unknown, orig: string) => orig || null),
+            [caseTypeCol.id]: string().nullable().extendedAlphaNumeric().max(65535).transform((_val: unknown, orig: string) => orig || null),
           }));
-        case ColType.ID_DIRECT:
-        case ColType.ID_PSEUDONYMISED:
-        case ColType.ID_ANONYMISED:
+        case ColType.ID_SAMPLE:
+        case ColType.ID_CASE:
+        case ColType.ID_EVENT:
+        case ColType.ID_GENETIC_SEQUENCE:
+        case ColType.ID_PERSON:
           return s.concat(object().shape({
-            [caseTypeColumn.id]: string().nullable().extendedAlphaNumeric().max(255).transform((_val: unknown, orig: string) => orig || null),
+            [caseTypeCol.id]: string().nullable().extendedAlphaNumeric().max(255).transform((_val: unknown, orig: string) => orig || null),
           }));
         case ColType.NOMINAL:
         case ColType.ORDINAL:
@@ -225,68 +229,68 @@ export class EpiCaseUtil {
         case ColType.GEO_REGION:
         case ColType.ORGANIZATION:
           return s.concat(object().shape({
-            [caseTypeColumn.id]: string().nullable().uuid4().transform((_val: unknown, orig: string) => orig || null),
+            [caseTypeCol.id]: string().nullable().uuid4().transform((_val: unknown, orig: string) => orig || null),
           }));
         case ColType.GEO_LATLON:
           return s.concat(object().shape({
-            [caseTypeColumn.id]: string().nullable().latLong().transform((_val: unknown, orig: string) => orig || null),
+            [caseTypeCol.id]: string().nullable().latLong().transform((_val: unknown, orig: string) => orig || null),
           }));
         case ColType.DECIMAL_0:
           return s.concat(object().shape({
-            [caseTypeColumn.id]: string().nullable().decimal0().transform((_val: unknown, orig: string) => orig || null),
+            [caseTypeCol.id]: string().nullable().decimal0().transform((_val: unknown, orig: string) => orig || null),
           }));
         case ColType.DECIMAL_1:
           return s.concat(object().shape({
-            [caseTypeColumn.id]: string().nullable().decimal1().transform((_val: unknown, orig: string) => orig ?? null),
+            [caseTypeCol.id]: string().nullable().decimal1().transform((_val: unknown, orig: string) => orig ?? null),
           }));
         case ColType.DECIMAL_2:
           return s.concat(object().shape({
-            [caseTypeColumn.id]: string().nullable().decimal2().transform((_val: unknown, orig: string) => orig ?? null),
+            [caseTypeCol.id]: string().nullable().decimal2().transform((_val: unknown, orig: string) => orig ?? null),
           }));
         case ColType.DECIMAL_3:
           return s.concat(object().shape({
-            [caseTypeColumn.id]: string().nullable().decimal3().transform((_val: unknown, orig: string) => orig ?? null),
+            [caseTypeCol.id]: string().nullable().decimal3().transform((_val: unknown, orig: string) => orig ?? null),
           }));
         case ColType.DECIMAL_4:
           return s.concat(object().shape({
-            [caseTypeColumn.id]: string().nullable().decimal4().transform((_val: unknown, orig: string) => orig ?? null),
+            [caseTypeCol.id]: string().nullable().decimal4().transform((_val: unknown, orig: string) => orig ?? null),
           }));
         case ColType.DECIMAL_5:
           return s.concat(object().shape({
-            [caseTypeColumn.id]: string().nullable().decimal5().transform((_val: unknown, orig: string) => orig ?? null),
+            [caseTypeCol.id]: string().nullable().decimal5().transform((_val: unknown, orig: string) => orig ?? null),
           }));
         case ColType.DECIMAL_6:
           return s.concat(object().shape({
-            [caseTypeColumn.id]: string().nullable().decimal6().transform((_val: unknown, orig: string) => orig ?? null),
+            [caseTypeCol.id]: string().nullable().decimal6().transform((_val: unknown, orig: string) => orig ?? null),
           }));
         case ColType.TIME_DAY:
           return s.concat(object().shape({
-            [caseTypeColumn.id]: string().nullable().transform((_val: unknown, orig: Date) => isValid(orig) ? orig.toISOString() : null),
+            [caseTypeCol.id]: string().nullable().transform((_val: unknown, orig: Date) => isValid(orig) ? orig.toISOString() : null),
           }));
         case ColType.TIME_WEEK:
           return s.concat(object().shape({
-            [caseTypeColumn.id]: string().nullable().timeWeek().transform((_val: unknown, orig: string) => orig || null),
+            [caseTypeCol.id]: string().nullable().timeWeek().transform((_val: unknown, orig: string) => orig || null),
           }));
         case ColType.TIME_MONTH:
           return s.concat(object().shape({
-            [caseTypeColumn.id]: string().nullable().timeMonth().transform((_val: unknown, orig: string) => orig || null),
+            [caseTypeCol.id]: string().nullable().timeMonth().transform((_val: unknown, orig: string) => orig || null),
           }));
         case ColType.TIME_QUARTER:
           return s.concat(object().shape({
-            [caseTypeColumn.id]: string().nullable().timeQuarter().transform((_val: unknown, orig: string) => orig || null),
+            [caseTypeCol.id]: string().nullable().timeQuarter().transform((_val: unknown, orig: string) => orig || null),
           }));
         case ColType.TIME_YEAR:
           return s.concat(object().shape({
-            [caseTypeColumn.id]: string().nullable().timeYear().transform((_val: unknown, orig: string) => orig || null),
+            [caseTypeCol.id]: string().nullable().timeYear().transform((_val: unknown, orig: string) => orig || null),
           }));
         case ColType.REGULAR_LANGUAGE:
           try {
             return s.concat(object().shape({
-              [caseTypeColumn.id]: string().nullable().matches(new RegExp(caseTypeColumn.pattern), t('Invalid value for pattern "{{pattern}}"', { pattern: caseTypeColumn.pattern })),
+              [caseTypeCol.id]: string().nullable().matches(new RegExp(caseTypeCol.pattern), t('Invalid value for pattern "{{pattern}}"', { pattern: caseTypeCol.pattern })),
             })).transform((_val: unknown, orig: string) => orig || null);
           } catch (_error) {
             return s.concat(object().shape({
-              [caseTypeColumn.id]: string().nullable().max(caseTypeColumn.max_length ?? 65535),
+              [caseTypeCol.id]: string().nullable().max(caseTypeCol.max_length ?? 65535),
             })).transform((_val: unknown, orig: string) => orig || null);
           }
         case ColType.GENETIC_SEQUENCE:
@@ -299,22 +303,22 @@ export class EpiCaseUtil {
     }, object({}));
   }
 
-  public static getRowValue(row: Case, caseTypeColumn: CaseTypeCol, completeCaseType: CompleteCaseType, machineReadable = false): CaseTypeRowValue {
-    const column = completeCaseType.cols[caseTypeColumn.col_id];
+  public static getRowValue(row: Case, caseTypeCol: CaseTypeCol, completeCaseType: CompleteCaseType, machineReadable = false): CaseTypeRowValue {
+    const column = completeCaseType.cols[caseTypeCol.col_id];
     const hasMappedValue = column.col_type === ColType.ORGANIZATION || column.region_set_id || column.concept_set_id;
     if (hasMappedValue) {
-      return EpiCaseUtil.getMappedValue(row.content[caseTypeColumn.id], caseTypeColumn, completeCaseType, machineReadable);
+      return EpiCaseUtil.getMappedValue(row.content[caseTypeCol.id], caseTypeCol, completeCaseType, machineReadable);
     }
 
     const { DATA_MISSING_CHARACTER } = ConfigManager.instance.config.epi;
     const dataMissingCharacter = machineReadable ? '' : DATA_MISSING_CHARACTER;
 
     const rowValue: CaseTypeRowValue = {
-      raw: row.content?.[caseTypeColumn.id],
-      isMissing: !row.content[caseTypeColumn.id],
-      short: row.content[caseTypeColumn.id] ?? dataMissingCharacter,
-      long: row.content[caseTypeColumn.id] ?? dataMissingCharacter,
-      full: row.content[caseTypeColumn.id] ?? t(`${dataMissingCharacter} (missing)`),
+      raw: row.content?.[caseTypeCol.id],
+      isMissing: !row.content[caseTypeCol.id],
+      short: row.content[caseTypeCol.id] ?? dataMissingCharacter,
+      long: row.content[caseTypeCol.id] ?? dataMissingCharacter,
+      full: row.content[caseTypeCol.id] ?? t(`${dataMissingCharacter} (missing)`),
     };
     return rowValue;
   }
@@ -332,12 +336,12 @@ export class EpiCaseUtil {
     };
   }
 
-  public static getMappedValue(raw: string, caseTypeColumn: CaseTypeCol, completeCaseType: CompleteCaseType, machineReadable = false): CaseTypeRowValue {
+  public static getMappedValue(raw: string, caseTypeCol: CaseTypeCol, completeCaseType: CompleteCaseType, machineReadable = false): CaseTypeRowValue {
     if (!raw) {
       return EpiCaseUtil.getMissingRowValue(raw, machineReadable);
     }
 
-    const column = completeCaseType.cols[caseTypeColumn.col_id];
+    const column = completeCaseType.cols[caseTypeCol.col_id];
 
     if (column.col_type === ColType.ORGANIZATION) {
       return EpiCaseUtil.getOrganizationMappedValue(raw);

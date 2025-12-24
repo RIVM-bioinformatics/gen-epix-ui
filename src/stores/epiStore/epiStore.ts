@@ -70,7 +70,7 @@ interface WidgetData {
 }
 
 interface StratifiableColumn {
-  caseTypeColumn: CaseTypeCol;
+  caseTypeCol: CaseTypeCol;
   enabled: boolean;
 }
 
@@ -119,7 +119,7 @@ interface EpiStoreActions extends TableStoreActions<Case> {
   removeTreeFilter: () => Promise<void>;
   mutateCachedCase: (caseId: string, item: Case) => void;
   setPhylogeneticTreeResponse: (phylogeneticTree: PhylogeneticTree) => void;
-  stratify: (mode: STRATIFICATION_MODE, caseTypeColumn?: CaseTypeCol) => void;
+  stratify: (mode: STRATIFICATION_MODE, caseTypeCol?: CaseTypeCol) => void;
   updateEpiCurveWidgetData: (data: Partial<EpiCurveWidgetData>) => void;
   updateEpiListWidgetData: (data: Partial<EpiListWidgetData>) => void;
   updateEpiMapWidgetData: (data: Partial<EpiMapWidgetData>) => void;
@@ -257,7 +257,7 @@ export const createEpiStore = (kwArgs: CreateEpiStoreKwArgs) => {
               await setFilterValue(treeFilter.id, treeFilter.initialFilterValue);
             }
           },
-          stratify: (mode, caseTypeColumn) => {
+          stratify: (mode, caseTypeCol) => {
             const { sortedData, selectedIds } = get();
             const caseIdColors: { [key: string]: string } = {};
 
@@ -268,7 +268,7 @@ export const createEpiStore = (kwArgs: CreateEpiStoreKwArgs) => {
             const { MAX_STRATIFICATION_UNIQUE_VALUES, STRATIFICATION_COLORS } = ConfigManager.instance.config.epi;
 
             if (mode === STRATIFICATION_MODE.FIELD) {
-              const column = completeCaseType.cols[caseTypeColumn.col_id];
+              const column = completeCaseType.cols[caseTypeCol.col_id];
               const conceptSetConceptIds = EpiDataUtil.data.conceptsIdsBySetId[column.concept_set_id];
               if (conceptSetConceptIds) {
                 if (conceptSetConceptIds.length < MAX_STRATIFICATION_UNIQUE_VALUES) {
@@ -302,7 +302,7 @@ export const createEpiStore = (kwArgs: CreateEpiStoreKwArgs) => {
                   legendaItems.push(legendaItemMissingData);
 
                   sortedData.forEach(row => {
-                    const rowValue = EpiCaseUtil.getRowValue(row, caseTypeColumn, completeCaseType);
+                    const rowValue = EpiCaseUtil.getRowValue(row, caseTypeCol, completeCaseType);
                     const legendaItem = rowValue.isMissing ? legendaItemMissingData : legendaItemsByValue[rowValue.raw];
                     legendaItem.caseIds.push(row.id);
                     caseIdColors[row.id] = legendaItem.color;
@@ -313,7 +313,7 @@ export const createEpiStore = (kwArgs: CreateEpiStoreKwArgs) => {
                     delete legendaItemsByValue[''];
                   }
                 } else {
-                  const rowValues = sortedData.map(row => EpiCaseUtil.getRowValue(row, caseTypeColumn, completeCaseType));
+                  const rowValues = sortedData.map(row => EpiCaseUtil.getRowValue(row, caseTypeCol, completeCaseType));
                   const uniqueRowValues = uniqBy(rowValues, (rowValue => rowValue.raw)).sort((a, b) => {
                     if (column.col_type === ColType.ORDINAL) {
                       if (a.isMissing && b.isMissing) {
@@ -344,7 +344,7 @@ export const createEpiStore = (kwArgs: CreateEpiStoreKwArgs) => {
                     legendaItems.push(legendaItem);
                   });
                   sortedData.forEach(row => {
-                    const rowValue = EpiCaseUtil.getRowValue(row, caseTypeColumn, completeCaseType);
+                    const rowValue = EpiCaseUtil.getRowValue(row, caseTypeCol, completeCaseType);
                     const legendaItem = legendaItemsByValue[rowValue.raw];
                     legendaItem.caseIds.push(row.id);
                     caseIdColors[row.id] = legendaItem.color;
@@ -352,7 +352,7 @@ export const createEpiStore = (kwArgs: CreateEpiStoreKwArgs) => {
                 }
 
               } else {
-                const rawValues = sortedData.map(row => EpiCaseUtil.getRowValue(row, caseTypeColumn, completeCaseType));
+                const rawValues = sortedData.map(row => EpiCaseUtil.getRowValue(row, caseTypeCol, completeCaseType));
                 const uniqueRowValues = uniqBy(rawValues, v => v.raw).sort(rowValueComperator);
 
                 uniqueRowValues.forEach((rowValue, index) => {
@@ -370,7 +370,7 @@ export const createEpiStore = (kwArgs: CreateEpiStoreKwArgs) => {
                 });
 
                 sortedData.forEach(row => {
-                  const rowValue = EpiCaseUtil.getRowValue(row, caseTypeColumn, completeCaseType);
+                  const rowValue = EpiCaseUtil.getRowValue(row, caseTypeCol, completeCaseType);
                   const legendaItem = legendaItemsByValue[rowValue.raw];
                   legendaItem.caseIds.push(row.id);
                   caseIdColors[row.id] = legendaItem.color;
@@ -379,7 +379,7 @@ export const createEpiStore = (kwArgs: CreateEpiStoreKwArgs) => {
               set({
                 stratification: {
                   mode: STRATIFICATION_MODE.FIELD,
-                  caseTypeColumn,
+                  caseTypeCol,
                   caseIdColors,
                   legendaItems,
                   legendaItemsByColor,
@@ -418,7 +418,7 @@ export const createEpiStore = (kwArgs: CreateEpiStoreKwArgs) => {
               set({
                 stratification: {
                   mode: STRATIFICATION_MODE.SELECTION,
-                  caseTypeColumn,
+                  caseTypeCol,
                   caseIdColors,
                   legendaItems,
                   legendaItemsByColor,
@@ -574,21 +574,21 @@ export const createEpiStore = (kwArgs: CreateEpiStoreKwArgs) => {
             const data = filteredData[last(frontendFilterPriorities)];
             const { ALLOWED_COL_TYPES_FOR_STRATIFICATION, MAX_STRATIFICATION_UNIQUE_VALUES } = ConfigManager.instance.config.epi;
 
-            const filteredCaseTypeColumns = EpiCaseTypeUtil.getCaseTypeColumns(completeCaseType).filter(caseTypeColumn => {
-              const column = completeCaseType.cols[caseTypeColumn.col_id];
+            const filteredCaseTypeColumns = EpiCaseTypeUtil.getCaseTypeCols(completeCaseType).filter(caseTypeCol => {
+              const column = completeCaseType.cols[caseTypeCol.col_id];
               if (!ALLOWED_COL_TYPES_FOR_STRATIFICATION.includes(column.col_type)) {
                 return false;
               }
               return true;
             });
-            const stratifyableColumns = filteredCaseTypeColumns.map<StratifiableColumn>(caseTypeColumn => {
-              const numUniqueValues = uniq(data.map(row => EpiCaseUtil.getRowValue(row, caseTypeColumn, completeCaseType).raw)).length;
+            const stratifyableColumns = filteredCaseTypeColumns.map<StratifiableColumn>(caseTypeCol => {
+              const numUniqueValues = uniq(data.map(row => EpiCaseUtil.getRowValue(row, caseTypeCol, completeCaseType).raw)).length;
               let enabled = true;
               if (numUniqueValues === 0 || numUniqueValues > MAX_STRATIFICATION_UNIQUE_VALUES) {
                 enabled = false;
               }
               return {
-                caseTypeColumn,
+                caseTypeCol,
                 enabled,
               };
             });
@@ -597,7 +597,7 @@ export const createEpiStore = (kwArgs: CreateEpiStoreKwArgs) => {
           reloadStratification: () => {
             const { stratification, stratify, stratifyableColumns } = get();
             if (stratification?.mode === STRATIFICATION_MODE.FIELD) {
-              const activeStratifyableColumn = stratifyableColumns.find(c => c.caseTypeColumn.col_id === stratification.caseTypeColumn.col_id);
+              const activeStratifyableColumn = stratifyableColumns.find(c => c.caseTypeCol.col_id === stratification.caseTypeCol.col_id);
               if (!activeStratifyableColumn?.enabled) {
                 // column no longer stratifiable
                 NotificationManager.instance.showNotification({
@@ -612,7 +612,7 @@ export const createEpiStore = (kwArgs: CreateEpiStoreKwArgs) => {
             if (!stratification) {
               return;
             }
-            stratify(stratification.mode, stratification.caseTypeColumn);
+            stratify(stratification.mode, stratification.caseTypeCol);
           },
           destroy: () => {
             HighlightingManager.instance.reset();
@@ -648,7 +648,7 @@ export const createEpiStore = (kwArgs: CreateEpiStoreKwArgs) => {
               : undefined;
 
             const caseQuery: CaseQuery = {
-              case_type_ids: [completeCaseType.id],
+              case_type_id: completeCaseType.id,
               case_set_ids: caseSetId ? [caseSetId] : undefined,
               filter: compositeFilter,
             };
@@ -657,7 +657,7 @@ export const createEpiStore = (kwArgs: CreateEpiStoreKwArgs) => {
             try {
               let currentCaseIdsByQuery = QueryUtil.getValidQueryData<string[]>(retrieveCaseIdsByQueryQueryKey);
               if (!currentCaseIdsByQuery) {
-                currentCaseIdsByQuery = (await CaseApi.instance.retrieveCaseIdsByQuery(caseQuery, { signal: fetchAbortController.signal })).data;
+                currentCaseIdsByQuery = (await CaseApi.instance.retrieveCaseIdsByQuery(caseQuery, { signal: fetchAbortController.signal })).data.case_ids;
                 queryClient.setQueryData(retrieveCaseIdsByQueryQueryKey, currentCaseIdsByQuery);
               }
 
@@ -665,7 +665,10 @@ export const createEpiStore = (kwArgs: CreateEpiStoreKwArgs) => {
               const currentCaseIds = (currentCases ?? []).map(x => x.id);
               const missingCaseIds = difference(currentCaseIdsByQuery, currentCaseIds);
               if (missingCaseIds.length) {
-                const missingCasesResult = (await CaseApi.instance.retrieveCasesByIds(missingCaseIds, { signal: fetchAbortController.signal })).data;
+                const missingCasesResult = (await CaseApi.instance.retrieveCasesByIds({
+                  case_type_id: completeCaseType.id,
+                  case_ids: missingCaseIds,
+                }, { signal: fetchAbortController.signal })).data;
                 queryClient.setQueryData(QueryUtil.getGenericKey(QUERY_KEY.CASES_LAZY), [...currentCases ?? [], ...missingCasesResult]);
               }
 

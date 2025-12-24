@@ -38,6 +38,7 @@ export class FormUtil {
           itemValues[formFieldDefinition.name] = item?.[formFieldDefinition.name as unknown as keyof typeof item] ?? [] as TFormFields[keyof TFormFields];
           break;
         case FORM_FIELD_DEFINITION_TYPE.AUTOCOMPLETE:
+        case FORM_FIELD_DEFINITION_TYPE.SELECT:
           if (formFieldDefinition.multiple) {
             itemValues[formFieldDefinition.name] = item?.[formFieldDefinition.name as unknown as keyof typeof item] ?? [] as TFormFields[keyof TFormFields];
           } else {

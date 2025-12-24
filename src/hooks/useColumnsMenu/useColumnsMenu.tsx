@@ -106,18 +106,18 @@ export const UseColumnsMenu = <TRowData,>({ hasCellData }: UseColumnsMenuProps<T
     ];
 
     if (columnDimensions) {
-      columnDimensions.forEach((dimension) => {
-        const areAllVisible = dimension.columnIds.every(columnId => visibleColumnIds.includes(columnId));
-        const areSomeVisible = dimension.columnIds.some(columnId => visibleColumnIds.includes(columnId));
+      columnDimensions.forEach((columnDimension) => {
+        const areAllVisible = columnDimension.columnIds.every(columnId => visibleColumnIds.includes(columnId));
+        const areSomeVisible = columnDimension.columnIds.some(columnId => visibleColumnIds.includes(columnId));
         items.push({
           autoCloseDisabled: true,
-          label: dimension.label,
-          callback: () => toggleDimension(dimension.columnIds),
+          label: columnDimension.label,
+          callback: () => toggleDimension(columnDimension.columnIds),
           // eslint-disable-next-line no-nested-ternary
           rightIcon: areAllVisible ? <CheckBoxOutlinedIcon /> : areSomeVisible ? <IndeterminateCheckBoxIcon /> : <CheckBoxOutlineBlankOutlinedIcon />,
           // eslint-disable-next-line no-nested-ternary
           checked: areAllVisible ? 'true' : areSomeVisible ? 'mixed' : 'false',
-          items: dimension.columnIds.map((columnId) => {
+          items: columnDimension.columnIds.map((columnId) => {
             const checked = visibleColumnIds.includes(columnId);
             return {
               autoCloseDisabled: true,

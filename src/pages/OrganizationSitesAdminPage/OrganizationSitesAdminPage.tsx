@@ -8,11 +8,6 @@ import {
   string,
 } from 'yup';
 import { useParams } from 'react-router-dom';
-import {
-  MenuItem,
-  ListItemIcon,
-  ListItemText,
-} from '@mui/material';
 
 import type { Site } from '../../api';
 import {
@@ -23,16 +18,12 @@ import {
 import type { FormFieldDefinition } from '../../models/form';
 import { FORM_FIELD_DEFINITION_TYPE } from '../../models/form';
 import { QUERY_KEY } from '../../models/query';
-import type {
-  TableColumn,
-  TableRowParams,
-} from '../../models/table';
+import type { TableColumn } from '../../models/table';
 import { TableUtil } from '../../utils/TableUtil';
 import { TestIdUtil } from '../../utils/TestIdUtil';
+import type { CrudPageSubPage } from '../CrudPage';
 import { CrudPage } from '../CrudPage';
 import { AuthorizationManager } from '../../classes/managers/AuthorizationManager';
-import { RouterManager } from '../../classes/managers/RouterManager';
-import type { DialogAction } from '../../components/ui/Dialog';
 
 type FormFields = Omit<Site, 'id' | 'organization_id' | 'organization'>;
 
@@ -101,49 +92,20 @@ export const OrganizationSitesAdminPage = () => {
     };
   }, []);
 
-  const doesUserHavePermissionToViewContacts = useMemo(() => {
-    return AuthorizationManager.instance.doesUserHavePermission([
+  const subPages = useMemo<CrudPageSubPage<Site>[]>(() => {
+    if (!AuthorizationManager.instance.doesUserHavePermission([
       { command_name: CommandName.ContactCrudCommand, permission_type: PermissionType.READ },
-    ]);
-  }, []);
-
-  const extraActionsFactory = useCallback((params: TableRowParams<Site>) => {
-    if (!doesUserHavePermissionToViewContacts) {
+    ])) {
       return [];
     }
 
-    return [(
-      <MenuItem
-        key={'custom-action-1'}
-        // eslint-disable-next-line react/jsx-no-bind
-        onClick={async () => await RouterManager.instance.router.navigate({
-          pathname: `/management/organizations/${params.row.organization_id}/sites/${params.row.id}/contacts`,
-        })}
-      >
-        <ListItemIcon />
-        <ListItemText>
-          {t`Manage contacts`}
-        </ListItemText>
-      </MenuItem>
-    )];
-  }, [doesUserHavePermissionToViewContacts, t]);
-
-  const editDialogExtraActionsFactory = useCallback((item: Site): DialogAction[] => {
-    if (!doesUserHavePermissionToViewContacts) {
-      return [];
-    }
     return [
       {
-        ...TestIdUtil.createAttributes('OrganizationSitesAdminPage-ManageContactsButton'),
         label: t`Manage contacts`,
-        color: 'primary',
-        variant: 'outlined',
-        onClick: async () => await RouterManager.instance.router.navigate({
-          pathname: `/management/organizations/${item.organization_id}/sites/${item.id}/contacts`,
-        }),
-      },
+        getPathName: (item: Site) => `/management/organizations/${item.organization_id}/sites/${item.id}/contacts`,
+      } satisfies CrudPageSubPage<Site>,
     ];
-  }, [doesUserHavePermissionToViewContacts, t]);
+  }, [t]);
 
   return (
     <CrudPage<FormFields, Site>
@@ -153,8 +115,7 @@ export const OrganizationSitesAdminPage = () => {
       defaultSortByField={'name'}
       defaultSortDirection={'asc'}
       deleteOne={deleteOne}
-      editDialogExtraActionsFactory={editDialogExtraActionsFactory}
-      extraActionsFactory={extraActionsFactory}
+      subPages={subPages}
       fetchAll={fetchAll}
       fetchAllSelect={fetchAllSelect}
       formFieldDefinitions={formFieldDefinitions}

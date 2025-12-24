@@ -37,7 +37,7 @@ export const EpiCaseContent = ({ epiCase, ...boxProps }: EpiCaseContentProps) =>
   const epiStore = useContext(EpiStoreContext);
   const completeCaseType = useStore(epiStore, (state) => state.completeCaseType);
 
-  const caseTypeColumns = useMemo(() => EpiCaseTypeUtil.getCaseTypeColumns(completeCaseType), [completeCaseType]);
+  const caseTypeCols = useMemo(() => EpiCaseTypeUtil.getCaseTypeCols(completeCaseType), [completeCaseType]);
 
   const onOrganizationLinkClick = useCallback((contactId: string) => {
     epiContactDetailsDialogRef.current.open({
@@ -76,17 +76,17 @@ export const EpiCaseContent = ({ epiCase, ...boxProps }: EpiCaseContentProps) =>
             </TableRow>
           </TableHead>
           <TableBody>
-            {caseTypeColumns.map(caseTypeColumn => {
-              const column = completeCaseType.cols[caseTypeColumn.col_id];
-              const columnValue = EpiCaseUtil.getRowValue(epiCase, caseTypeColumn, completeCaseType);
+            {caseTypeCols.map(caseTypeCol => {
+              const column = completeCaseType.cols[caseTypeCol.col_id];
+              const columnValue = EpiCaseUtil.getRowValue(epiCase, caseTypeCol, completeCaseType);
               return (
-                <TableRow key={caseTypeColumn.id}>
+                <TableRow key={caseTypeCol.id}>
                   <TableCell
                     sx={{
                       width: 'calc(100% / 3)',
                     }}
                   >
-                    {caseTypeColumn.label}
+                    {caseTypeCol.label}
                   </TableCell>
                   <TableCell
                     sx={{
@@ -101,7 +101,7 @@ export const EpiCaseContent = ({ epiCase, ...boxProps }: EpiCaseContentProps) =>
                         color={'primary'}
                         // eslint-disable-next-line react/jsx-no-bind
                         onClick={() => {
-                          onOrganizationLinkClick(epiCase.content[caseTypeColumn.id]);
+                          onOrganizationLinkClick(epiCase.content[caseTypeCol.id]);
                         }}
                       >
                         {columnValue.long}

@@ -68,7 +68,7 @@ export const EpiUploadCreateCases = () => {
       caseTypeId: store.getState().caseTypeId,
       createdInDataCollectionId: store.getState().createdInDataCollectionId,
       importAction: store.getState().importAction,
-      libraryPrepProtocolId: store.getState().libraryPrepProtocolId,
+      sequencingProtocolId: store.getState().sequencingProtocolId,
       assemblyProtocolId: store.getState().assemblyProtocolId,
       mappedFileSize: sequenceFileStats.mappedFileSize,
       sequenceFilesDataTransfer,

@@ -4,15 +4,14 @@ import {
 } from 'react';
 import { useTranslation } from 'react-i18next';
 import {
-  number,
   object,
   string,
 } from 'yup';
 
-import type { CaseTypeSetCategory } from '../../api';
+import type { IdentifierIssuer } from '../../api';
 import {
-  CaseApi,
   CommandName,
+  OrganizationApi,
 } from '../../api';
 import type { FormFieldDefinition } from '../../models/form';
 import { FORM_FIELD_DEFINITION_TYPE } from '../../models/form';
@@ -22,39 +21,39 @@ import { TableUtil } from '../../utils/TableUtil';
 import { TestIdUtil } from '../../utils/TestIdUtil';
 import { CrudPage } from '../CrudPage';
 
-type FormFields = Pick<CaseTypeSetCategory, 'name' | 'rank' | 'description'>;
+type FormFields = Pick<IdentifierIssuer, 'code' | 'description' | 'name'>;
 
-export const CaseTypeSetCategoriesAdminPage = () => {
+export const IdentifierIssuersAdminPage = () => {
   const [t] = useTranslation();
 
+
   const fetchAll = useCallback(async (signal: AbortSignal) => {
-    return (await CaseApi.instance.caseTypeSetCategoriesGetAll({ signal }))?.data;
+    return (await OrganizationApi.instance.identifierIssuersGetAll({ signal }))?.data;
   }, []);
 
-  const deleteOne = useCallback(async (item: CaseTypeSetCategory) => {
-    return await CaseApi.instance.caseTypeSetCategoriesDeleteOne(item.id);
+  const deleteOne = useCallback(async (item: IdentifierIssuer) => {
+    return await OrganizationApi.instance.identifierIssuersDeleteOne(item.id);
   }, []);
 
-  const updateOne = useCallback(async (variables: FormFields, item: CaseTypeSetCategory) => {
-    return (await CaseApi.instance.caseTypeSetCategoriesPutOne(item.id, { id: item.id, ...variables })).data;
+  const updateOne = useCallback(async (variables: FormFields, item: IdentifierIssuer) => {
+    return (await OrganizationApi.instance.identifierIssuersPutOne(item.id, { id: item.id, ...variables })).data;
   }, []);
 
   const createOne = useCallback(async (variables: FormFields) => {
-    return (await CaseApi.instance.caseTypeSetCategoriesPostOne(variables)).data;
+    return (await OrganizationApi.instance.identifierIssuersPostOne(variables)).data;
   }, []);
 
-  const getName = useCallback((item: CaseTypeSetCategory) => {
+  const getName = useCallback((item: IdentifierIssuer) => {
     return item.name;
   }, []);
 
   const schema = useMemo(() => {
     return object<FormFields>().shape({
       name: string().extendedAlphaNumeric().required().max(100),
-      rank: number().integer().required().transform((_val: unknown, orig: string | number) => orig === '' ? undefined : orig),
-      description: string().freeFormText().required().max(1000),
+      code: string().code().required().max(100),
+      description: string().freeFormText().required().max(100),
     });
   }, []);
-
 
   const formFieldDefinitions = useMemo<FormFieldDefinition<FormFields>[]>(() => {
     return [
@@ -72,37 +71,35 @@ export const CaseTypeSetCategoriesAdminPage = () => {
       } as const satisfies FormFieldDefinition<FormFields>,
       {
         definition: FORM_FIELD_DEFINITION_TYPE.TEXTFIELD,
-        name: 'rank',
-        label: t`Rank`,
-        type: 'number',
+        name: 'code',
+        label: t`Code`,
       } as const satisfies FormFieldDefinition<FormFields>,
     ] as const;
   }, [t]);
 
-  const tableColumns = useMemo((): TableColumn<CaseTypeSetCategory>[] => {
+  const tableColumns = useMemo((): TableColumn<IdentifierIssuer>[] => {
     return [
-      TableUtil.createTextColumn<CaseTypeSetCategory>({ id: 'name', name: t`Name` }),
-      TableUtil.createNumberColumn<CaseTypeSetCategory>({ id: 'rank', name: t`Rank` }),
-      TableUtil.createTextColumn<CaseTypeSetCategory>({ id: 'description', name: t`Description` }),
+      TableUtil.createTextColumn<IdentifierIssuer>({ id: 'code', name: t`Code` }),
+      TableUtil.createTextColumn<IdentifierIssuer>({ id: 'name', name: t`Name` }),
     ];
   }, [t]);
 
   return (
-    <CrudPage<FormFields, CaseTypeSetCategory>
+    <CrudPage<FormFields, IdentifierIssuer>
       createOne={createOne}
-      crudCommandType={CommandName.CaseTypeSetCategoryCrudCommand}
-      createItemDialogTitle={t`Create new case type set category`}
-      defaultSortByField={'name'}
+      crudCommandType={CommandName.IdentifierIssuerCrudCommand}
+      createItemDialogTitle={t`Create new identifier issuer`}
+      defaultSortByField={'code'}
       defaultSortDirection={'asc'}
       deleteOne={deleteOne}
       fetchAll={fetchAll}
       formFieldDefinitions={formFieldDefinitions}
       getName={getName}
-      resourceQueryKeyBase={QUERY_KEY.CASE_TYPE_SET_CATEGORIES}
+      resourceQueryKeyBase={QUERY_KEY.IDENTIFIER_ISSUERS}
       schema={schema}
       tableColumns={tableColumns}
-      testIdAttributes={TestIdUtil.createAttributes('CaseTypeSetCategoriesAdminPage')}
-      title={t`Case type set categories`}
+      testIdAttributes={TestIdUtil.createAttributes('IdentifierIssuersAdminPage')}
+      title={t`Identifier Issuers`}
       updateOne={updateOne}
     />
   );

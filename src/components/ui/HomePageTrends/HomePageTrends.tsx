@@ -130,9 +130,15 @@ export const HomePageTrends = withPermissions(() => {
 
     const caseTypeStatsThenByCaseTypeId = new Map<string, CaseTypeStat>(caseTypeStatsQueryPast.data?.map(stat => [stat.case_type_id, stat]));
     const sortedStats = caseTypeStatsQueryNow?.data?.map<CaseTypeStatWithDiff>(stat => {
-      const thenStat = caseTypeStatsThenByCaseTypeId.get(stat.case_type_id);
-      const diff = stat.n_cases - (thenStat?.n_cases ?? 0);
-      const diffPercentage = round((diff / (thenStat?.n_cases ?? 1)) * 100, 2);
+      const nowNCases = stat.n_cases;
+      const thenNCases = caseTypeStatsThenByCaseTypeId.get(stat.case_type_id)?.n_cases ?? 0;
+      const diff = nowNCases - thenNCases;
+      let diffPercentage: number;
+      if (thenNCases > 0) {
+        diffPercentage = round((diff / thenNCases) * 100, 2);
+      } else {
+        diffPercentage = 0;
+      }
       return ({
         ...stat,
         diffPercentage,

@@ -30,7 +30,6 @@ import { withDialog } from '../../../hoc/withDialog';
 import type { AutoCompleteOption } from '../../../models/form';
 import { EpiStoreContext } from '../../../stores/epiStore';
 import { EpiDownloadUtil } from '../../../utils/EpiDownloadUtil';
-import { EpiCaseTypeUtil } from '../../../utils/EpiCaseTypeUtil';
 import { Autocomplete } from '../../form/fields/Autocomplete';
 import { StringUtil } from '../../../utils/StringUtil';
 import { ConfigManager } from '../../../classes/managers/ConfigManager';
@@ -63,13 +62,14 @@ export const EpiSequenceDownloadDialog = withDialog<EpiSequenceDownloadDialogPro
 
   const geneticSequenceCaseTypeColOptions = useMemo<AutoCompleteOption<string>[]>(() => {
     const options: AutoCompleteOption<string>[] = [];
-    EpiCaseTypeUtil.iterateOrderedDimensions(completeCaseType, (_dimension, dimensionCaseTypeColumns) => {
-      dimensionCaseTypeColumns.forEach((caseTypeColumn) => {
-        const col = completeCaseType.cols[caseTypeColumn.col_id];
+
+    completeCaseType.ordered_case_type_dim_ids.map(x => completeCaseType.case_type_dims[x]).forEach((caseTypeDim) => {
+      completeCaseType.ordered_case_type_col_ids_by_dim[caseTypeDim.id].map(id => completeCaseType.case_type_cols[id]).forEach(caseTypeCol => {
+        const col = completeCaseType.cols[caseTypeCol.col_id];
         if (col?.col_type === ColType.GENETIC_SEQUENCE) {
           options.push({
-            value: caseTypeColumn.id,
-            label: caseTypeColumn.label,
+            value: caseTypeCol.id,
+            label: caseTypeCol.label,
           });
         }
       });

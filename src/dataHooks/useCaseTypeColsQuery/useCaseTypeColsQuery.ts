@@ -13,6 +13,7 @@ import { DataUtil } from '../../utils/DataUtil';
 import { QueryUtil } from '../../utils/QueryUtil';
 import { useCaseTypeMapQuery } from '../useCaseTypesQuery';
 import { useQueryMemo } from '../../hooks/useQueryMemo';
+import { useCaseTypeDimMapQuery } from '../useCaseTypeDimsQuery';
 
 export const useCaseTypeColsQuery = (): UseQueryResult<CaseTypeCol[]> => {
   return useQueryMemo({
@@ -34,14 +35,18 @@ export const useCaseTypeColMapQuery = (): UseMap<CaseTypeCol> => {
 
 export const useCaseTypeColNameFactory = (): UseNameFactory<CaseTypeCol> => {
   const caseTypeMapQuery = useCaseTypeMapQuery();
+  const caseTypeDimMapQuery = useCaseTypeDimMapQuery();
 
   return useMemo(() => {
     const getName = (item: CaseTypeCol) => {
+      const caseTypeName = caseTypeMapQuery.map.get(item.case_type_id)?.name ?? item.case_type_id;
+      const caseTypeDimName = caseTypeDimMapQuery.map.get(item.case_type_dim_id)?.label ?? item.case_type_dim_id;
 
-      return `${caseTypeMapQuery.map.get(item.case_type_id)?.name ?? item.case_type_id} → ${item.label}`;
+      return `${caseTypeName} → ${caseTypeDimName} → ${item.label}`;
+
     };
-    return DataUtil.createUseNameFactoryHook(getName, [caseTypeMapQuery]);
-  }, [caseTypeMapQuery]);
+    return DataUtil.createUseNameFactoryHook(getName, [caseTypeMapQuery, caseTypeDimMapQuery]);
+  }, [caseTypeDimMapQuery, caseTypeMapQuery]);
 };
 
 export const useCaseTypeColOptionsQuery = (): UseOptions<string> => {

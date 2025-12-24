@@ -19,6 +19,7 @@ import {
 import type { ObjectSchema } from 'yup';
 import { useQuery } from '@tanstack/react-query';
 import isArray from 'lodash/isArray';
+import type { UseFormReturn } from 'react-hook-form';
 
 import type {
   CommandName,
@@ -45,7 +46,6 @@ import { useEditMutation } from '../../hooks/useEditMutation';
 import { useInitializeTableStore } from '../../hooks/useInitializeTableStore';
 import type { GenericData } from '../../models/data';
 import type { Loadable } from '../../models/dataHooks';
-import type { FormFieldDefinition } from '../../models/form';
 import type { QUERY_KEY } from '../../models/query';
 import type {
   TableRowParams,
@@ -60,11 +60,18 @@ import {
 import { QueryUtil } from '../../utils/QueryUtil';
 import { TableUtil } from '../../utils/TableUtil';
 import type { DialogAction } from '../../components/ui/Dialog';
+import type { FormFieldDefinition } from '../../models/form';
 
 import type { CrudPageEditDialogRefMethods } from './CrudPageEditDialog';
 import { CrudPageEditDialog } from './CrudPageEditDialog';
 import type { CrudPageDeleteDialogRefMethods } from './CrudPageDeleteDialog';
 import { CrudPageDeleteDialog } from './CrudPageDeleteDialog';
+
+export type CrudPageSubPage<TData extends GenericData> = {
+  getPathName: (item: TData) => string;
+  label: string;
+  icon?: ReactElement;
+};
 
 export type CrudPageProps<
   TFormFields,
@@ -76,6 +83,8 @@ export type CrudPageProps<
   readonly createItemDialogTitle?: string;
   readonly createOne?: (item: TFormFields) => Promise<TData>;
   readonly canEditItem?: (item: TData) => boolean;
+  readonly subPages?: CrudPageSubPage<TData>[];
+  readonly defaultNewItem?: Partial<TFormFields>;
   readonly crudCommandType?: CommandName;
   readonly customOnRowClick?: (params: TableRowParams<TData>) => void;
   readonly defaultSortByField: keyof TTableData;
@@ -87,11 +96,13 @@ export type CrudPageProps<
   readonly extraUpdateOnePermissions?: ApiPermission[];
   readonly fetchAll: (signal: AbortSignal) => Promise<TData[]>;
   readonly fetchAllSelect?: (data: TData[]) => TData[];
-  readonly formFieldDefinitions?: FormFieldDefinition<TFormFields>[];
+  readonly formFieldDefinitions: FormFieldDefinition<TFormFields>[] | ((values: TFormFields, item: TData) => FormFieldDefinition<TFormFields>[]);
   readonly getName: (item: TData | TFormFields) => string;
   readonly loadables?: Loadable[];
   readonly onShowItem?: (params: TableRowParams<TTableData>) => void;
   readonly resourceQueryKeyBase: QUERY_KEY;
+  readonly tableStoreStorageVersion?: number;
+  readonly tableStoreStorageNamePostFix?: string;
   readonly associationQueryKeys?: string[][];
   readonly readOnly?: boolean;
   readonly schema?: ObjectSchema<TFormFields, TFormFields>;
@@ -99,9 +110,10 @@ export type CrudPageProps<
   readonly showIdColumn?: boolean;
   readonly tableColumns: TableColumn<TTableData>[];
   readonly contentActions?: ReactElement;
-  readonly title: string;
+  readonly title: string | string[];
   readonly updateOne?: (variables: TFormFields, data: TData) => Promise<TData>;
   readonly convertToTableData?: (items: TData[]) => TTableData[];
+  readonly onFormChange?: (item: TData, formValues: TFormFields, formMethods: UseFormReturn<TFormFields>) => void;
   readonly onEditSuccess?: (item: TData, variables: TFormFields, context: MutationContextEdit<TData>) => Promise<void>;
   readonly onEditError?: (error: unknown, variables: TFormFields, context: MutationContextEdit<TData>) => Promise<void>;
   readonly onCreateSuccess?: (item: TData, variables: TFormFields, context: MutationContextCreate<TData>) => Promise<void>;
@@ -117,18 +129,22 @@ export const CrudPage = <
   TData extends GenericData,
   TTableData extends TData = TData
 >({
-  contentHeader,
+  associationQueryKeys,
   canEditItem,
   contentActions,
+  contentHeader,
   convertToTableData,
   createItemButtonText,
   createItemDialogTitle,
   createOne,
   crudCommandType,
   customOnRowClick,
+  defaultNewItem,
   defaultSortByField,
   defaultSortDirection,
   deleteOne,
+  subPages,
+  editDialogExtraActionsFactory,
   extraActionsFactory,
   extraCreateOnePermissions,
   extraDeleteOnePermissions,
@@ -137,24 +153,25 @@ export const CrudPage = <
   fetchAllSelect,
   formFieldDefinitions,
   getName,
-  associationQueryKeys,
-  resourceQueryKeyBase,
+  getOptimisticUpdateIntermediateItem,
   loadables,
+  onCreateError,
+  onCreateSuccess,
+  onDeleteError,
+  onDeleteSuccess,
+  onEditError,
+  onEditSuccess,
+  onFormChange,
   onShowItem,
+  resourceQueryKeyBase,
   schema,
   showIdColumn = false,
   tableColumns,
+  tableStoreStorageNamePostFix,
+  tableStoreStorageVersion,
   testIdAttributes,
   title,
   updateOne,
-  onEditSuccess,
-  onEditError,
-  onCreateSuccess,
-  onCreateError,
-  onDeleteSuccess,
-  onDeleteError,
-  editDialogExtraActionsFactory,
-  getOptimisticUpdateIntermediateItem,
 }: CrudPageProps<TFormFields, TData, TTableData>) => {
   const [t] = useTranslation();
   const theme = useTheme();
@@ -167,9 +184,9 @@ export const CrudPage = <
     idSelectorCallback: (item) => item.id,
     defaultSortByField: defaultSortByField as string,
     defaultSortDirection,
-    storageNamePostFix: `CRUDPage-${resourceQueryKeyBase}`,
-    storageVersion: 1,
-  }), [defaultSortByField, defaultSortDirection, resourceQueryKeyBase]);
+    storageNamePostFix: tableStoreStorageNamePostFix ? `CRUDPage-${resourceQueryKeyBase}-${tableStoreStorageNamePostFix}` : `CRUDPage-${resourceQueryKeyBase}`,
+    storageVersion: tableStoreStorageVersion ?? 1,
+  }), [defaultSortByField, defaultSortDirection, resourceQueryKeyBase, tableStoreStorageNamePostFix, tableStoreStorageVersion]);
 
   const isLoadablesLoading = useMemo(() => {
     if (isArray(loadables)) {
@@ -238,13 +255,33 @@ export const CrudPage = <
     );
   }, [createOne, error, authorizationManager, crudCommandType, extraCreateOnePermissions]);
 
+  const normalizedEditDialogExtraActionsFactory = useCallback((item: TData) => {
+    const actions: DialogAction[] = [];
+
+    if (editDialogExtraActionsFactory) {
+      actions.push(...editDialogExtraActionsFactory(item));
+    }
+    subPages?.forEach(subPage => {
+      actions.push({
+        label: subPage.label,
+        color: 'primary',
+        variant: 'outlined',
+        onClick: async () => await RouterManager.instance.router.navigate({
+          pathname: subPage.getPathName(item),
+        }),
+      });
+    });
+
+    return actions;
+  }, [editDialogExtraActionsFactory, subPages]);
+
   const editItem = useCallback((item: TTableData) => {
     editDialogRef.current.open({
-      extraActionsFactory: editDialogExtraActionsFactory,
+      extraActionsFactory: normalizedEditDialogExtraActionsFactory,
       item,
       canSave: userCanEdit && (!item || canEditItem ? canEditItem(item) : true),
     });
-  }, [canEditItem, editDialogExtraActionsFactory, userCanEdit]);
+  }, [canEditItem, normalizedEditDialogExtraActionsFactory, userCanEdit]);
 
   const tryToGetName = useCallback((item: TData | TFormFields) => {
     let name: string;
@@ -371,6 +408,35 @@ export const CrudPage = <
     mutateDelete(item);
   }, [mutateDelete]);
 
+  const normalizedExtraActions = useCallback((params: TableRowParams<TTableData>) => {
+    const actions: ReactElement[] = [];
+
+    const extraActions = extraActionsFactory ? extraActionsFactory(params) : [];
+    if (extraActions?.length > 0 && actions.length > 0) {
+      actions.push(...extraActions);
+    }
+    subPages?.forEach(subPage => {
+      actions.push((
+        <MenuItem
+          key={subPage.label}
+          // eslint-disable-next-line react/jsx-no-bind
+          onClick={async () => await RouterManager.instance.router.navigate({
+            pathname: subPage.getPathName(params.row),
+          })}
+        >
+          <ListItemIcon>
+            {subPage.icon ? subPage.icon : <ArrowCircleRightIcon />}
+          </ListItemIcon>
+          <ListItemText>
+            {subPage.label}
+          </ListItemText>
+        </MenuItem>
+      ));
+    });
+
+    return actions;
+  }, [extraActionsFactory, subPages]);
+
   const columns = useMemo<TableColumn<TTableData>[]>(() => {
     const internalColumns: TableColumn<TTableData>[] = [
       TableUtil.createReadableIndexColumn(),
@@ -387,7 +453,7 @@ export const CrudPage = <
     }
     internalColumns.push(...tableColumns);
 
-    if (userCanEdit || userCanDelete || onShowItem || extraActionsFactory) {
+    if (userCanEdit || userCanDelete || onShowItem || extraActionsFactory || subPages?.length) {
       internalColumns.push(
         TableUtil.createActionsColumn({
           t,
@@ -443,7 +509,7 @@ export const CrudPage = <
                 </MenuItem>,
               );
             }
-            const extraActions = extraActionsFactory ? extraActionsFactory(params) : [];
+            const extraActions = normalizedExtraActions(params) ?? [];
             if (extraActions?.length > 0 && actions.length > 0) {
               actions.push(...extraActions);
             }
@@ -453,7 +519,7 @@ export const CrudPage = <
       );
     }
     return internalColumns;
-  }, [extraActionsFactory, onEditIconClick, onShowItem, showIdColumn, t, tableColumns, userCanDelete, userCanEdit]);
+  }, [extraActionsFactory, normalizedExtraActions, onEditIconClick, onShowItem, showIdColumn, subPages?.length, t, tableColumns, userCanDelete, userCanEdit]);
 
   const tableRows = useMemo(() => {
     if (!convertToTableData) {
@@ -502,6 +568,14 @@ export const CrudPage = <
     );
   }, [contentActions, userCanCreate, isLoading, isCreating, onCreateItemButtonClick, createItemButtonText, t, theme]);
 
+  const normalizedTitle = useMemo<string>(() => {
+    if (isArray(title)) {
+      return title.join(' → ');
+    }
+    return title;
+  }, [title]);
+
+
   return (
     <TableStoreContextProvider store={tableStore}>
       <PageContainer
@@ -510,13 +584,13 @@ export const CrudPage = <
         contentActions={customContentActions}
         contentHeader={(
           <TableCaption
-            caption={contentHeader ?? title}
+            caption={contentHeader ?? normalizedTitle}
             component={'h2'}
             variant={'h2'}
           />
         )}
         testIdAttributes={testIdAttributes}
-        title={title}
+        title={normalizedTitle}
       >
         <Box
           sx={{
@@ -546,11 +620,13 @@ export const CrudPage = <
         </Box>
         <CrudPageEditDialog
           ref={editDialogRef}
+          defaultNewItem={defaultNewItem}
           formFieldDefinitions={formFieldDefinitions}
           getName={getName}
           createItemDialogTitle={createItemDialogTitle}
           schema={schema}
           onSave={onEditDialogSave}
+          onChange={onFormChange}
         />
         <CrudPageDeleteDialog
           ref={deleteConfirmationRef}

@@ -3,7 +3,10 @@ import { useMemo } from 'react';
 
 import type { Col } from '../../api';
 import { CaseApi } from '../../api';
-import type { UseOptions } from '../../models/dataHooks';
+import type {
+  UseMap,
+  UseOptions,
+} from '../../models/dataHooks';
 import { QUERY_KEY } from '../../models/query';
 import { DataUtil } from '../../utils/DataUtil';
 import { QueryUtil } from '../../utils/QueryUtil';
@@ -17,6 +20,14 @@ export const useColsQuery = (): UseQueryResult<Col[]> => {
       return response.data;
     },
   });
+};
+
+export const useColMapQuery = (): UseMap<Col> => {
+  const response = useColsQuery();
+
+  return useMemo(() => {
+    return DataUtil.createUseMapDataHook<Col>(response, item => item.id);
+  }, [response]);
 };
 
 export const useColOptionsQuery = (): UseOptions<string> => {

@@ -60,7 +60,9 @@ export interface TableStoreState<TData> {
   navigateFunction: NavigateFunction;
   selectedIds: string[];
   sortByField: string;
+  defaultSortByField: string;
   sortDirection: TableSortDirection;
+  defaultSortDirection: TableSortDirection;
   sortedData: TData[];
   sortedIds: string[];
   visibleFilterWithinDimensions: { [key: string]: string };
@@ -158,6 +160,8 @@ export const createTableStoreInitialState = <TData>(kwArgs: CreateTableStoreInit
     selectedIds: [],
     sortByField,
     sortDirection,
+    defaultSortByField,
+    defaultSortDirection,
     sortedData: [],
     sortedIds: null,
     visibleFilterWithinDimensions: {},
@@ -304,19 +308,28 @@ export const createTableStoreActions = <TData>(kwArgs: {
       return items;
     },
     reloadSortedData: () => {
-      const { frontendFilterPriorities, filteredData, columns, sortByField, sortDirection, sortedIds, idSelectorCallback } = get();
+      const { frontendFilterPriorities, filteredData, columns, sortByField, sortDirection, sortedIds, idSelectorCallback, defaultSortByField, defaultSortDirection } = get();
 
       const preSortedData: TData[] = filteredData[last(frontendFilterPriorities)];
+      let sanitizedSortByField = sortByField;
+      let sanitizedSortDirection = sortDirection;
 
       // Nothing to sort
-      if ((!sortByField || !sortDirection) && !sortedIds) {
+      if ((!sanitizedSortByField || !sortDirection) && !sortedIds) {
         set({ sortedData: preSortedData });
         return;
       }
 
-      if (sortByField && sortDirection) {
+      if (sanitizedSortByField && sanitizedSortDirection) {
         // Sort according to the sortByField and sortDirection
-        const column = columns.find(col => col.id === sortByField);
+        let column = columns.find(col => col.id === sortByField);
+
+        if (!column || !(column as { comparatorFactory: unknown }).comparatorFactory) {
+          console.warn(`Column not found or missing comparatorFactory for field '${sortByField}', reverting to default sort settings.`);
+          sanitizedSortByField = defaultSortByField;
+          sanitizedSortDirection = defaultSortDirection;
+          column = columns.find(col => col.id === sanitizedSortByField);
+        }
 
         if (!column || !(column as { comparatorFactory: unknown }).comparatorFactory) {
           console.error(`Column not found or missing comparatorFactory for field '${sortByField}'`);
