@@ -95,19 +95,19 @@ export const ColsAdminPage = () => {
       dim_id: string().uuid4().required().max(100),
       col_type: mixed<ColType>().required().oneOf(Object.values(ColType)),
       description: string().freeFormText().required().max(100),
-      concept_set_id: string().uuid4().when('col_type', {
+      concept_set_id: string().when('col_type', {
         is: (colType: ColType) => CONCEPT_COL_TYPES.includes(colType),
-        then: () => string().required(),
+        then: () => string().uuid4().required(),
         otherwise: () => string().nullable().notRequired(),
       }),
-      region_set_id: string().uuid4().when('col_type', {
+      region_set_id: string().when('col_type', {
         is: (col_type: ColType) => col_type === ColType.GEO_REGION,
-        then: () => string().required(),
+        then: () => string().uuid4().required(),
         otherwise: () => string().nullable().notRequired(),
       }),
-      genetic_distance_protocol_id: string().uuid4().when('col_type', {
+      genetic_distance_protocol_id: string().when('col_type', {
         is: (col_type: ColType) => col_type === ColType.GENETIC_DISTANCE,
-        then: () => string().required(),
+        then: () => string().uuid4().required(),
         otherwise: () => string().nullable().notRequired(),
       }),
     });

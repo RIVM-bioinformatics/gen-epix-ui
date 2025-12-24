@@ -107,7 +107,7 @@ export const CrudPageEditDialog = withDialog<CrudPageEditDialogProps<any, any>, 
 
 
   const formMethods = useForm<TFormFields>({
-    resolver: yupResolver(schema) as unknown as Resolver<TFormFields>,
+    resolver: yupResolver(schema) as Resolver<TFormFields>,
     values,
   });
   const { handleSubmit, formState, subscribe } = formMethods;

@@ -72,7 +72,7 @@ export const DimsAdminPage = () => {
         name: 'dim_type',
         label: t`Dimension type`,
         options: dimTypeOptionsQuery.options,
-        disabled: Boolean(item),
+        disabled: !!item,
       } as const satisfies FormFieldDefinition<FormFields>,
       {
         definition: FORM_FIELD_DEFINITION_TYPE.TEXTFIELD,

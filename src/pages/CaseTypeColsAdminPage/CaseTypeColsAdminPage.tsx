@@ -17,6 +17,7 @@ import type { UseFormReturn } from 'react-hook-form';
 import type { CaseTypeCol } from '../../api';
 import {
   CaseApi,
+  ColType,
   CommandName,
 } from '../../api';
 import {
@@ -110,27 +111,6 @@ export const CaseTypeColsAdminPage = () => {
     return item.label;
   }, []);
 
-  const schema = useMemo(() => {
-    return object<FormFields>().shape({
-      label: string().extendedAlphaNumeric().required().max(100),
-      code: string().code().required().max(100),
-      rank: number().integer().required().transform((_val: unknown, orig: string | number) => orig === '' ? undefined : orig),
-      col_id: string().uuid4().required().max(100),
-      case_type_dim_id: string().uuid4().required().max(100),
-      case_type_id: string().uuid4().required().max(100),
-      description: string().freeFormText().required().max(100),
-      min_value: number().integer().positive().max(10000).optional().transform((_val: unknown, orig: string | number) => orig === '' ? undefined : orig),
-      max_value: number().integer().positive().max(10000).optional().transform((_val: unknown, orig: string | number) => orig === '' ? undefined : orig),
-      min_datetime: string().transform((_val: unknown, orig: Date) => isValid(orig) ? orig.toISOString() : undefined),
-      max_datetime: string().transform((_val: unknown, orig: Date) => isValid(orig) ? orig.toISOString() : undefined),
-      min_length: number().integer().positive().max(10000).optional().transform((_val: unknown, orig: string | number) => orig === '' ? undefined : orig),
-      max_length: number().integer().positive().max(10000).optional().transform((_val: unknown, orig: string | number) => orig === '' ? undefined : orig),
-      genetic_sequence_case_type_col_id: string().uuid4().transform((_val: unknown, orig: string) => orig === null || undefined ? undefined : orig),
-      tree_algorithm_codes: array(),
-      pattern: string().regex(),
-    });
-  }, []);
-
   const getCaseTypeDimOptionsForCaseTypeId = useCallback((id: string): OptionBase<string>[] => {
     if (caseTypeDimOptionsByCaseTypeIdCache.current.has(id)) {
       return caseTypeDimOptionsByCaseTypeIdCache.current.get(id);
@@ -173,6 +153,35 @@ export const CaseTypeColsAdminPage = () => {
     geneticSequenceCaseTypeColOptionsByCaseTypeIdCache.current.set(id, options);
     return options;
   }, [colMapQuery.map, caseTypeColMapQuery.map, caseTypeColOptionsQuery.options]);
+
+  const schema = useMemo(() => {
+    return object<FormFields>().shape({
+      label: string().extendedAlphaNumeric().required().max(100),
+      code: string().code().required().max(100),
+      rank: number().integer().required().transform((_val: unknown, orig: string | number) => orig === '' ? undefined : orig),
+      col_id: string().uuid4().required().max(100),
+      case_type_dim_id: string().uuid4().required().max(100),
+      case_type_id: string().uuid4().required().max(100),
+      description: string().freeFormText().required().max(100),
+      min_value: number().integer().positive().max(10000).optional().transform((_val: unknown, orig: string | number) => orig === '' ? undefined : orig),
+      max_value: number().integer().positive().max(10000).optional().transform((_val: unknown, orig: string | number) => orig === '' ? undefined : orig),
+      min_datetime: string().transform((_val: unknown, orig: Date) => isValid(orig) ? orig.toISOString() : undefined),
+      max_datetime: string().transform((_val: unknown, orig: Date) => isValid(orig) ? orig.toISOString() : undefined),
+      min_length: number().integer().positive().max(10000).optional().transform((_val: unknown, orig: string | number) => orig === '' ? undefined : orig),
+      max_length: number().integer().positive().max(10000).optional().transform((_val: unknown, orig: string | number) => orig === '' ? undefined : orig),
+      genetic_sequence_case_type_col_id: string().when('col_id', {
+        is: (col_id: string) => colMapQuery.map.get(col_id)?.col_type === ColType.GENETIC_DISTANCE,
+        then: () => string().uuid4().required(),
+        otherwise: () => string().nullable().notRequired(),
+      }),
+      tree_algorithm_codes: array().when('col_id', {
+        is: (col_id: string) => colMapQuery.map.get(col_id)?.col_type === ColType.GENETIC_DISTANCE,
+        then: () => array().min(1).required(),
+        otherwise: () => array().nullable().notRequired(),
+      }),
+      pattern: string().regex(),
+    });
+  }, [colMapQuery.map]);
 
   const onFormChange = useCallback((_item: CaseTypeCol, values: FormFields, formMethods: UseFormReturn<FormFields>) => {
     if (values.case_type_id && values.case_type_dim_id) {
@@ -277,13 +286,13 @@ export const CaseTypeColsAdminPage = () => {
         type: 'number',
       } as const satisfies FormFieldDefinition<FormFields>,
       {
-        definition: FORM_FIELD_DEFINITION_TYPE.AUTOCOMPLETE,
+        definition: FORM_FIELD_DEFINITION_TYPE.SELECT,
         name: 'genetic_sequence_case_type_col_id',
         label: t`Genetic sequence case type column`,
         options: geneticSequenceCaseTypeColOptions,
       } as const satisfies FormFieldDefinition<FormFields>,
       {
-        definition: FORM_FIELD_DEFINITION_TYPE.AUTOCOMPLETE,
+        definition: FORM_FIELD_DEFINITION_TYPE.SELECT,
         name: 'tree_algorithm_codes',
         label: t`Tree algorithm codes`,
         options: treeAlgorithmCodesOptionsQuery.options,
