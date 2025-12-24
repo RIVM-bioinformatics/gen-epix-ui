@@ -184,7 +184,7 @@ export const CrudPage = <
     idSelectorCallback: (item) => item.id,
     defaultSortByField: defaultSortByField as string,
     defaultSortDirection,
-    storageNamePostFix: tableStoreStorageNamePostFix ? `CRUDPage-${resourceQueryKeyBase}` : `CRUDPage-${resourceQueryKeyBase}-${tableStoreStorageNamePostFix}`,
+    storageNamePostFix: tableStoreStorageNamePostFix ? `CRUDPage-${resourceQueryKeyBase}-${tableStoreStorageNamePostFix}` : `CRUDPage-${resourceQueryKeyBase}`,
     storageVersion: tableStoreStorageVersion ?? 1,
   }), [defaultSortByField, defaultSortDirection, resourceQueryKeyBase, tableStoreStorageNamePostFix, tableStoreStorageVersion]);
 

@@ -85,20 +85,13 @@ export const CaseTypeDimsAdminPage = () => {
   }, []);
 
   const formFieldDefinitions = useMemo<FormFieldDefinition<FormFields>[]>(() => {
-    const definitions: FormFieldDefinition<FormFields>[] = [];
-
-    if (!caseTypeId) {
-      definitions.push(
-        {
-          definition: FORM_FIELD_DEFINITION_TYPE.AUTOCOMPLETE,
-          name: 'case_type_id',
-          label: t`Case type`,
-          options: caseTypeOptionsQuery.options,
-        } as const satisfies FormFieldDefinition<FormFields>,
-      );
-    }
-
-    definitions.push(
+    return [
+      {
+        definition: FORM_FIELD_DEFINITION_TYPE.AUTOCOMPLETE,
+        name: 'case_type_id',
+        label: t`Case type`,
+        options: caseTypeOptionsQuery.options,
+      } as const satisfies FormFieldDefinition<FormFields>,
       {
         definition: FORM_FIELD_DEFINITION_TYPE.AUTOCOMPLETE,
         name: 'dim_id',
@@ -134,10 +127,8 @@ export const CaseTypeDimsAdminPage = () => {
         label: t`Rank`,
         type: 'number',
       } as const satisfies FormFieldDefinition<FormFields>,
-    );
-
-    return definitions;
-  }, [caseTypeId, caseTypeOptionsQuery.options, dimOptionsQuery.options, t]);
+    ] as const satisfies FormFieldDefinition<FormFields>[];
+  }, [caseTypeOptionsQuery.options, dimOptionsQuery.options, t]);
 
   const tableColumns = useMemo((): TableColumn<CaseTypeDim>[] => {
     const columns: TableColumn<CaseTypeDim>[] = [];
@@ -152,6 +143,7 @@ export const CaseTypeDimsAdminPage = () => {
       TableUtil.createOptionsColumn<CaseTypeDim>({ id: 'dim_id', name: t`Dimension`, options: dimOptionsQuery.options }),
       TableUtil.createTextColumn<CaseTypeDim>({ id: 'code', name: t`Code` }),
       TableUtil.createTextColumn<CaseTypeDim>({ id: 'label', name: t`Label` }),
+      TableUtil.createNumberColumn<CaseTypeDim>({ id: 'occurrence', name: t`Occurrence` }),
       TableUtil.createNumberColumn<CaseTypeDim>({ id: 'rank', name: t`Rank` }),
     );
     return columns;

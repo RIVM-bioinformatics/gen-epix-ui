@@ -1,6 +1,7 @@
 import {
   useCallback,
   useMemo,
+  useRef,
 } from 'react';
 import { useTranslation } from 'react-i18next';
 import {
@@ -27,7 +28,10 @@ import {
 import { useGeneticDistanceProtocolOptionsQuery } from '../../dataHooks/useGeneticDistanceProtocolsQuery';
 import { useRegionSetOptionsQuery } from '../../dataHooks/useRegionSetsQuery';
 import { useArray } from '../../hooks/useArray';
-import type { FormFieldDefinition } from '../../models/form';
+import type {
+  FormFieldDefinition,
+  OptionBase,
+} from '../../models/form';
 import { FORM_FIELD_DEFINITION_TYPE } from '../../models/form';
 import { QUERY_KEY } from '../../models/query';
 import type { TableColumn } from '../../models/table';
@@ -51,6 +55,7 @@ export const ColsAdminPage = () => {
   const regionSetOptionsQuery = useRegionSetOptionsQuery();
   const geneticDistanceProtocolOptionsQuery = useGeneticDistanceProtocolOptionsQuery();
   const colsValidationRulesQuery = useColsValidationRulesQuery();
+  const colTypeOptionsByDimIdCache = useRef(new Map<string, OptionBase<string>[]>());
 
   const loadables = useArray([dimMapQuery, dimOptionsQuery, colTypeOptionsQuery, conceptSetOptionsQuery, regionSetOptionsQuery, geneticDistanceProtocolOptionsQuery, colsValidationRulesQuery]);
 
@@ -108,8 +113,18 @@ export const ColsAdminPage = () => {
     });
   }, []);
 
-  const colTypeOptionsByDimType = useMemo(() => {
-    return DataUtil.getColTypeOptionsByDimId({ dimMap: dimMapQuery.map, colTypeOptions: colTypeOptionsQuery.options, colsValidationRules: colsValidationRulesQuery.data?.valid_col_types_by_dim_type ?? {} });
+  const getColTypeOptionsForDimId = useCallback((id: string): OptionBase<string>[] => {
+    if (colTypeOptionsByDimIdCache.current.has(id)) {
+      return colTypeOptionsByDimIdCache.current.get(id);
+    }
+    const options = DataUtil.getColTypeOptionsForDimId({
+      dimId: id,
+      dimMap: dimMapQuery.map,
+      colTypeOptions: colTypeOptionsQuery.options,
+      colsValidationRules: colsValidationRulesQuery.data?.valid_col_types_by_dim_type ?? {},
+    });
+    colTypeOptionsByDimIdCache.current.set(id, options);
+    return options;
   }, [colTypeOptionsQuery.options, colsValidationRulesQuery.data?.valid_col_types_by_dim_type, dimMapQuery.map]);
 
   const onFormChange = useCallback((_item: Col, values: FormFields, formMethods: UseFormReturn<FormFields>) => {
@@ -123,25 +138,18 @@ export const ColsAdminPage = () => {
       formMethods.setValue('genetic_distance_protocol_id', null);
     }
     if (values.col_type && values.dim_id) {
-      const validColOptions = colTypeOptionsByDimType.get(values.dim_id);
+      const validColOptions = getColTypeOptionsForDimId(values.dim_id);
       if (!validColOptions.find(option => option.value === values.col_type)) {
         formMethods.setValue('col_type', validColOptions.length === 1 ? validColOptions[0].value as ColType : null);
       }
     }
-  }, [colTypeOptionsByDimType]);
+  }, [getColTypeOptionsForDimId]);
 
 
   const formFieldDefinitions = useCallback((item: Col, values: FormFields): FormFieldDefinition<FormFields>[] => {
     const normalizedDimId = values?.dim_id ?? item?.dim_id ?? dimId ?? null;
 
-    const colTypeOptions = normalizedDimId ?
-      (colTypeOptionsByDimType.get(normalizedDimId) ?? []) :
-      colTypeOptionsQuery.options;
-
-    const definitions: FormFieldDefinition<FormFields>[] = [];
-
-    if (!dimId) {
-      definitions.push(
+    return [
       {
         definition: FORM_FIELD_DEFINITION_TYPE.AUTOCOMPLETE,
         name: 'dim_id',
@@ -149,15 +157,11 @@ export const ColsAdminPage = () => {
         options: dimOptionsQuery.options,
         disabled: !!item,
       } as const satisfies FormFieldDefinition<FormFields>,
-      );
-    }
-
-    definitions.push(
       {
         definition: FORM_FIELD_DEFINITION_TYPE.AUTOCOMPLETE,
         name: 'col_type',
         label: t`Column type`,
-        options: colTypeOptions,
+        options: getColTypeOptionsForDimId(normalizedDimId),
         loading: colTypeOptionsQuery.isLoading,
         disabled: !!item,
       } as const satisfies FormFieldDefinition<FormFields>,
@@ -207,10 +211,8 @@ export const ColsAdminPage = () => {
         label: t`Rank`,
         type: 'number',
       } as const satisfies FormFieldDefinition<FormFields>,
-    );
-
-    return definitions;
-  }, [colTypeOptionsByDimType, colTypeOptionsQuery.isLoading, colTypeOptionsQuery.options, conceptSetOptionsQuery.options, dimId, dimOptionsQuery.options, geneticDistanceProtocolOptionsQuery.options, regionSetOptionsQuery.options, t]);
+    ] as const satisfies FormFieldDefinition<FormFields>[];
+  }, [colTypeOptionsQuery.isLoading, conceptSetOptionsQuery.options, dimId, dimOptionsQuery.options, geneticDistanceProtocolOptionsQuery.options, getColTypeOptionsForDimId, regionSetOptionsQuery.options, t]);
 
   const tableColumns = useMemo((): TableColumn<Col>[] => {
     const columns: TableColumn<Col>[] = [];
@@ -258,23 +260,23 @@ export const ColsAdminPage = () => {
 
   return (
     <CrudPage<FormFields, Col>
+      createItemDialogTitle={t`Create new column`}
       createOne={createOne}
       crudCommandType={CommandName.ColCrudCommand}
-      createItemDialogTitle={t`Create new column`}
+      defaultNewItem={defaultNewItem}
       defaultSortByField={dimId ? 'rank' : 'dim_id'}
       defaultSortDirection={'asc'}
       deleteOne={deleteOne}
       fetchAll={fetchAll}
-      defaultNewItem={defaultNewItem}
-      tableStoreStorageNamePostFix={dimId ? `Dim` : undefined}
-      getOptimisticUpdateIntermediateItem={getOptimisticUpdateIntermediateItem}
+      fetchAllSelect={fetchAllSelect}
       formFieldDefinitions={formFieldDefinitions}
       getName={getName}
-      fetchAllSelect={fetchAllSelect}
+      getOptimisticUpdateIntermediateItem={getOptimisticUpdateIntermediateItem}
       loadables={loadables}
       resourceQueryKeyBase={QUERY_KEY.COLS}
       schema={schema}
       tableColumns={tableColumns}
+      tableStoreStorageNamePostFix={dimId ? 'Dim' : undefined}
       testIdAttributes={TestIdUtil.createAttributes('ColsAdminPage')}
       title={title}
       updateOne={updateOne}

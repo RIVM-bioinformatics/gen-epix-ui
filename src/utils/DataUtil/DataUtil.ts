@@ -3,13 +3,14 @@ import type { UseQueryResult } from '@tanstack/react-query';
 
 import { StringUtil } from '../StringUtil';
 import type {
+  CaseTypeCol,
   CaseTypeDim,
   Col,
-  ColType,
   ColValidationRulesResponseBody,
   Dim,
   User,
 } from '../../api';
+import { ColType } from '../../api';
 import type {
   Loadable,
   UseMap,
@@ -19,43 +20,57 @@ import type {
 import type { OptionBase } from '../../models/form';
 
 export class DataUtil {
-  public static getCaseTypeDimOptionsByCaseTypeId(kwArgs: { caseTypeDimOptions: OptionBase<string>[]; caseTypeDimMap: Map<string, CaseTypeDim> }): Map<string, OptionBase<string>[]> {
-    const map = new Map<string, OptionBase<string>[]>();
-    kwArgs.caseTypeDimOptions.forEach((option) => {
-      const caseTypeDim = kwArgs.caseTypeDimMap.get(option.value);
-      if (caseTypeDim) {
-        const existing = map.get(caseTypeDim.case_type_id) ?? [];
-        existing.push(option);
-        map.set(caseTypeDim.case_type_id, existing);
+  public static getGeneticSequenceCaseTypeColOptionsForCaseTypeId(kwArgs: { caseTypeId: string; colMap: Map<string, Col>; caseTypeColMap: Map<string, CaseTypeCol>; caseTypeColOptions: OptionBase<string>[] }): OptionBase<string>[] {
+    if (!kwArgs.caseTypeId) {
+      return [];
+    }
+    return kwArgs.caseTypeColOptions.filter((option) => {
+      const caseTypeCol = kwArgs.caseTypeColMap.get(option.value);
+      if (caseTypeCol?.case_type_id !== kwArgs.caseTypeId) {
+        return false;
       }
+      const col = kwArgs.colMap.get(caseTypeCol.col_id);
+      return col?.col_type === ColType.GENETIC_SEQUENCE;
     });
-    return map;
   }
 
-  public static getColOptionsByCaseTypeDimId(kwArgs: { caseTypeDimMap: Map<string, CaseTypeDim>; dimMap: Map<string, Dim>; colOptions: OptionBase<string>[]; colMap: Map<string, Col>; colsValidationRules: ColValidationRulesResponseBody['valid_col_types_by_dim_type'] }): Map<string, OptionBase<string>[]> {
-    const map = new Map<string, OptionBase<string>[]>();
 
-    Array.from(kwArgs.caseTypeDimMap.values()).forEach(caseTypeDim => {
-      const dim = kwArgs.dimMap.get(caseTypeDim.dim_id);
-      map.set(caseTypeDim.id, kwArgs.colOptions.filter((option) => {
-        const col = kwArgs.colMap.get(option.value);
-        return col.dim_id === dim.id && kwArgs.colsValidationRules[dim.dim_type].includes(col.col_type);
-      }));
+  public static getCaseTypeDimOptionsForCaseTypeId(kwArgs: { caseTypeId: string; caseTypeDimOptions: OptionBase<string>[]; caseTypeDimMap: Map<string, CaseTypeDim> }): OptionBase<string>[] {
+    if (!kwArgs.caseTypeId) {
+      return [];
+    }
+
+    return kwArgs.caseTypeDimOptions.filter((option) => {
+      const caseTypeDim = kwArgs.caseTypeDimMap.get(option.value);
+      return caseTypeDim?.case_type_id === kwArgs.caseTypeId;
     });
-
-    return map;
   }
 
-  public static getColTypeOptionsByDimId(kwArgs: { dimMap: Map<string, Dim>; colTypeOptions: OptionBase<string>[]; colsValidationRules: ColValidationRulesResponseBody['valid_col_types_by_dim_type'] }): Map<string, OptionBase<string>[]> {
-    const map = new Map<string, OptionBase<string>[]>();
-
-    Array.from(kwArgs.dimMap.values()).forEach(dim => {
-      map.set(dim.id, kwArgs.colTypeOptions.filter((option) => {
-        return kwArgs.colsValidationRules?.[dim.dim_type]?.includes(option.value as ColType);
-      }));
+  public static getColOptionsForCaseTypeDimId(kwArgs: { caseTypeDimId: string; caseTypeDimMap: Map<string, CaseTypeDim>; dimMap: Map<string, Dim>; colOptions: OptionBase<string>[]; colMap: Map<string, Col>; colsValidationRules: ColValidationRulesResponseBody['valid_col_types_by_dim_type'] }): OptionBase<string>[] {
+    const caseTypeDim = kwArgs.caseTypeDimMap.get(kwArgs.caseTypeDimId);
+    if (!caseTypeDim) {
+      return [];
+    }
+    const dim = kwArgs.dimMap.get(caseTypeDim.dim_id);
+    return kwArgs.colOptions.filter((option) => {
+      const col = kwArgs.colMap.get(option.value);
+      if (col.dim_id !== caseTypeDim.dim_id) {
+        return false;
+      }
+      const colType = col.col_type;
+      return kwArgs.colsValidationRules[dim.dim_type].includes(colType);
     });
+  }
 
-    return map;
+  public static getColTypeOptionsForDimId(kwArgs: { dimId: string; dimMap: Map<string, Dim>; colTypeOptions: OptionBase<string>[]; colsValidationRules: ColValidationRulesResponseBody['valid_col_types_by_dim_type'] }): OptionBase<string>[] {
+    const dim = kwArgs.dimMap.get(kwArgs.dimId);
+    if (!dim) {
+      return [];
+    }
+    return kwArgs.colTypeOptions.filter((option) => {
+      const colType = option.value as ColType;
+      return kwArgs.colsValidationRules[dim.dim_type].includes(colType);
+    });
   }
 
 
