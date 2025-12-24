@@ -138,7 +138,7 @@ export const ConceptSetsAdminPage = () => {
 
     return [
       {
-        label: t`Manage case type dimensions`,
+        label: t`Manage concepts`,
         getPathName: (item: ConceptSet) => `/management/concept-sets/${item.id}/concepts`,
       } satisfies CrudPageSubPage<ConceptSet>,
     ];
