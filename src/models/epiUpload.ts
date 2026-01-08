@@ -21,10 +21,6 @@ export type EpiUploadMappedColumnsFormFields = {
   [key: string]: string;
 };
 
-export type EpiUploadMappedIdentifierIssuersFormFields = {
-  [key: string]: string;
-};
-
 export type EpiUploadTableRow = {
   [key: string]: string;
 };

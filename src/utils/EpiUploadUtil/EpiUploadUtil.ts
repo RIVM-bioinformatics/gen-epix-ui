@@ -267,12 +267,36 @@ export class EpiUploadUtil {
     });
   }
 
+  public static getSampleIdCaseTypeColIds(completeCaseType: CompleteCaseType): string[] {
+    const caseTypeColsIds: string[] = [];
+    Object.values(Object.keys(completeCaseType.case_type_cols)).forEach(caseTypeColId => {
+      const caseTypeCol = completeCaseType.case_type_cols[caseTypeColId];
+      const col = completeCaseType.cols[caseTypeCol.col_id];
+      if (col?.col_type === ColType.ID_SAMPLE) {
+        caseTypeColsIds.push(caseTypeCol.id);
+      }
+    });
+    return caseTypeColsIds;
+  }
+
   // eslint-disable-next-line @typescript-eslint/no-empty-object-type
-  public static getSchema(rawData: string[][], _completeCaseType: CompleteCaseType, importAction: EPI_UPLOAD_ACTION): ObjectSchema<{}, AnyObject, {}, ''> {
+  public static getSchema(rawData: string[][], completeCaseType: CompleteCaseType, importAction: EPI_UPLOAD_ACTION): ObjectSchema<{}, AnyObject, {}, ''> {
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
     const fields: { [key: string]: any } = {};
-
     const fieldNames: string[] = rawData[0].map((_, index) => index.toString());
+    const sampleIdCaseTypeColIds = EpiUploadUtil.getSampleIdCaseTypeColIds(completeCaseType);
+
+    sampleIdCaseTypeColIds.forEach((caseTypeColId) => {
+      fields[caseTypeColId] = lazy(() => string().nullable().when(fieldNames, (otherFieldValues, schema) => {
+        return schema.test('needs-identifier-issuer', t('An identifier issuer must be selected.'), (fieldValue) => {
+          const allFieldValues = [...otherFieldValues as string[], fieldValue];
+          if (allFieldValues.includes(caseTypeColId)) {
+            return !!fieldValue;
+          }
+          return true;
+        });
+      }));
+    });
 
     fieldNames.forEach((fieldName, fieldIndex) => {
       const otherFieldNames = fieldNames.filter(name => name !== fieldName);
@@ -353,7 +377,7 @@ export class EpiUploadUtil {
     return fields;
   }
 
-  public static getDefaultFormValues(rawDataHeaders: string[], mappedColumns: EpiUploadMappedColumn[], importAction: EPI_UPLOAD_ACTION): EpiUploadMappedColumnsFormFields {
+  public static getDefaultColumnMappingFormValues(rawDataHeaders: string[], mappedColumns: EpiUploadMappedColumn[], importAction: EPI_UPLOAD_ACTION): EpiUploadMappedColumnsFormFields {
     const defaultFormValues: EpiUploadMappedColumnsFormFields = Object.fromEntries(Object.keys(rawDataHeaders).map<[string, null]>(x => [x.toString(), null]));
     const caseIdColumn = mappedColumns.find(col => col.isCaseIdColumn);
     const caseDateColumn = mappedColumns.find(col => col.isCaseDateColumn);
