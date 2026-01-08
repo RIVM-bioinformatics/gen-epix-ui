@@ -21,11 +21,11 @@ import difference from 'lodash/difference';
 import type {
   Case,
   CaseDataIssue,
-  CaseForCreateUpdate,
+  CaseForUpload,
 } from '../../../api';
 import {
   CaseApi,
-  CaseColDataRule,
+  DataIssueType,
 } from '../../../api';
 import { useQueryMemo } from '../../../hooks/useQueryMemo';
 import { useArray } from '../../../hooks/useArray';
@@ -46,7 +46,7 @@ import {
 import { DATE_FORMAT } from '../../../data/date';
 import { TableUtil } from '../../../utils/TableUtil';
 import { EpiCaseUtil } from '../../../utils/EpiCaseUtil';
-import type { EpiValidatedCaseWithGeneratedId } from '../../../models/epiUpload';
+import type { CaseUploadResultWithGeneratedId } from '../../../models/epiUpload';
 import { EPI_UPLOAD_ACTION } from '../../../models/epiUpload';
 import { EpiUploadStoreContext } from '../../../stores/epiUploadStore';
 
@@ -65,19 +65,20 @@ export const EpiUploadValidateContent = () => {
   const setValidatedCases = useStore(store, (state) => state.setValidatedCases);
   const caseTypeId = useStore(store, (state) => state.caseTypeId);
   const createdInDataCollectionId = useStore(store, (state) => state.createdInDataCollectionId);
-  const shareInDataCollectionIds = useStore(store, (state) => state.shareInDataCollectionIds);
   const rawData = useStore(store, (state) => state.rawData);
   const validateCasesQueryKey = useStore(store, (state) => state.validateCasesQueryKey);
 
-  const inputCases = useMemo<CaseForCreateUpdate[]>(() => {
+  const inputCases = useMemo<CaseForUpload[]>(() => {
     return rawData.slice(1).map((row) => {
       const caseIdColumn = mappedColumns.find((mappedColumn) => mappedColumn.isCaseIdColumn)?.originalIndex;
       const caseDateColumn = mappedColumns.find((mappedColumn) => mappedColumn.isCaseDateColumn)?.originalIndex;
 
-      const caseForCreateUpdate: CaseForCreateUpdate = {
+      const caseForCreateUpdate: CaseForUpload = {
         id: importAction === EPI_UPLOAD_ACTION.UPDATE && caseIdColumn !== undefined ? row[caseIdColumn] : undefined,
         case_date: caseDateColumn !== undefined ? row[caseDateColumn] : undefined,
         content: undefined,
+        case_type_id: caseTypeId,
+        created_in_data_collection_id: createdInDataCollectionId,
       };
       const content: { [key: string]: string } = {};
       mappedColumns.forEach((mappedColumn) => {
@@ -87,17 +88,18 @@ export const EpiUploadValidateContent = () => {
       });
       return { ...caseForCreateUpdate, content };
     });
-  }, [importAction, mappedColumns, rawData]);
+  }, [caseTypeId, createdInDataCollectionId, importAction, mappedColumns, rawData]);
 
   const validationQuery = useQueryMemo({
     queryKey: validateCasesQueryKey,
     queryFn: async ({ signal }) => {
-      const response = await CaseApi.instance.validateCases({
+      const response = await CaseApi.instance.uploadCases({
         case_type_id: caseTypeId,
         created_in_data_collection_id: createdInDataCollectionId,
-        data_collection_ids: shareInDataCollectionIds,
-        is_update: importAction === EPI_UPLOAD_ACTION.UPDATE,
-        cases: inputCases,
+        verify_only: true,
+        case_batch: {
+          cases: inputCases,
+        },
       }, { signal });
       return response.data;
     },
@@ -106,7 +108,7 @@ export const EpiUploadValidateContent = () => {
     staleTime: Infinity,
   });
 
-  const rowsWithGeneratedId = useMemo<EpiValidatedCaseWithGeneratedId[]>(() => {
+  const rowsWithGeneratedId = useMemo<CaseUploadResultWithGeneratedId[]>(() => {
     return (validationQuery?.data?.validated_cases || []).map((vc, index) => ({
       ...vc,
       generated_id: vc.case.id || index.toString(),
@@ -117,7 +119,7 @@ export const EpiUploadValidateContent = () => {
     validationQuery,
   ]);
 
-  const tableStore = useMemo(() => createTableStore<EpiValidatedCaseWithGeneratedId>({
+  const tableStore = useMemo(() => createTableStore<CaseUploadResultWithGeneratedId>({
     idSelectorCallback: (row) => row.generated_id,
   }), []);
 
@@ -126,7 +128,7 @@ export const EpiUploadValidateContent = () => {
 
   useEffect(() => {
     const newSelectedIds = rowsWithGeneratedId.filter(validatedCase => {
-      return !validatedCase.data_issues.some(issue => issue.data_rule === CaseColDataRule.INVALID || issue.data_rule === CaseColDataRule.UNAUTHORIZED);
+      return !validatedCase.data_issues.some(issue => issue.data_rule === DataIssueType.INVALID || issue.data_rule === DataIssueType.UNAUTHORIZED);
     }).map(vc => vc.generated_id);
     setSelectedIds(newSelectedIds);
   }, [rowsWithGeneratedId, setSelectedIds]);
@@ -154,8 +156,8 @@ export const EpiUploadValidateContent = () => {
     );
   }, [completeCaseType.case_type_cols, t]);
 
-  const renderHasIssueCell = useCallback(({ row }: TableRowParams<EpiValidatedCaseWithGeneratedId>) => {
-    const errorIssues = row.data_issues.filter(i => i.data_rule === CaseColDataRule.INVALID || i.data_rule === CaseColDataRule.UNAUTHORIZED);
+  const renderHasIssueCell = useCallback(({ row }: TableRowParams<CaseUploadResultWithGeneratedId>) => {
+    const errorIssues = row.data_issues.filter(i => i.data_rule === DataIssueType.INVALID || i.data_rule === DataIssueType.UNAUTHORIZED);
     if (errorIssues.length > 0) {
       return (
         <Tooltip
@@ -175,20 +177,20 @@ export const EpiUploadValidateContent = () => {
     }
   }, [getIssueTooltipContent, theme.palette.error.main]);
 
-  const dataRulePriority: CaseColDataRule[] = useMemo(() => [
-    CaseColDataRule.UNAUTHORIZED,
-    CaseColDataRule.INVALID,
-    CaseColDataRule.CONFLICT,
-    CaseColDataRule.MISSING,
-    CaseColDataRule.DERIVED,
+  const dataRulePriority: DataIssueType[] = useMemo(() => [
+    DataIssueType.UNAUTHORIZED,
+    DataIssueType.INVALID,
+    DataIssueType.CONFLICT,
+    DataIssueType.MISSING,
+    DataIssueType.DERIVED,
   ], []);
 
-  const errorDataRules: CaseColDataRule[] = useMemo(() => [
-    CaseColDataRule.UNAUTHORIZED,
-    CaseColDataRule.INVALID,
+  const errorDataRules: DataIssueType[] = useMemo(() => [
+    DataIssueType.UNAUTHORIZED,
+    DataIssueType.INVALID,
   ], []);
 
-  const renderCell = useCallback(({ id, row }: TableRowParams<EpiValidatedCaseWithGeneratedId>) => {
+  const renderCell = useCallback(({ id, row }: TableRowParams<CaseUploadResultWithGeneratedId>) => {
     const rowValue = EpiCaseUtil.getRowValue(row.case as Case, completeCaseType.case_type_cols[id], completeCaseType);
     const issues = row.data_issues.filter((i) => i.case_type_col_id === id).sort((a, b) => dataRulePriority.indexOf(a.data_rule) - dataRulePriority.indexOf(b.data_rule));
 
@@ -203,15 +205,15 @@ export const EpiUploadValidateContent = () => {
     let color: string;
 
     switch (issues[0].data_rule) {
-      case CaseColDataRule.MISSING:
-      case CaseColDataRule.CONFLICT:
+      case DataIssueType.MISSING:
+      case DataIssueType.CONFLICT:
         color = theme.palette.warning.main;
         break;
-      case CaseColDataRule.DERIVED:
+      case DataIssueType.DERIVED:
         color = theme.palette.info.main;
         break;
-      case CaseColDataRule.UNAUTHORIZED:
-      case CaseColDataRule.INVALID:
+      case DataIssueType.UNAUTHORIZED:
+      case DataIssueType.INVALID:
       default:
         color = theme.palette.error.main;
         break;
@@ -295,10 +297,10 @@ export const EpiUploadValidateContent = () => {
     );
   }, [completeCaseType, dataRulePriority, errorDataRules, getIssueTooltipContent, theme]);
 
-  const tableColumns = useMemo<TableColumn<EpiValidatedCaseWithGeneratedId>[]>(() => {
+  const tableColumns = useMemo<TableColumn<CaseUploadResultWithGeneratedId>[]>(() => {
     const validatedCases = validationQuery?.data?.validated_cases;
 
-    const tableCols: TableColumn<EpiValidatedCaseWithGeneratedId>[] = [];
+    const tableCols: TableColumn<CaseUploadResultWithGeneratedId>[] = [];
     if (!validatedCases?.length) {
       return tableCols;
     }
@@ -328,7 +330,7 @@ export const EpiUploadValidateContent = () => {
         headerName: t('case_id'),
         valueGetter: (params) => params.row.case.id || '',
         widthPx: 250,
-      } satisfies TableColumn<EpiValidatedCaseWithGeneratedId>);
+      } satisfies TableColumn<CaseUploadResultWithGeneratedId>);
     }
     if (validatedCases.some(vc => !!vc.case.case_date)) {
       tableCols.push({
@@ -344,7 +346,7 @@ export const EpiUploadValidateContent = () => {
           return '';
         },
         widthPx: 250,
-      } satisfies TableColumn<EpiValidatedCaseWithGeneratedId>);
+      } satisfies TableColumn<CaseUploadResultWithGeneratedId>);
     }
 
 
@@ -362,7 +364,7 @@ export const EpiUploadValidateContent = () => {
       const caseTypeCol = completeCaseType.case_type_cols[caseTypeColId];
 
       const issuesForCaseTypeColumn = validatedCases.flatMap(vc => vc.data_issues.filter((i) => i.case_type_col_id === caseTypeCol.id));
-      const isInitiallyVisible = issuesForCaseTypeColumn.length === 0 || issuesForCaseTypeColumn.some(i => i.data_rule !== CaseColDataRule.DERIVED);
+      const isInitiallyVisible = issuesForCaseTypeColumn.length === 0 || issuesForCaseTypeColumn.some(i => i.data_rule !== DataIssueType.DERIVED);
 
       if (caseTypeCol) {
         tableCols.push({
@@ -385,14 +387,14 @@ export const EpiUploadValidateContent = () => {
             return '';
           },
           valueGetter: (params) => EpiCaseUtil.getRowValue(params.row.case as Case, caseTypeCol, completeCaseType).short,
-        } satisfies TableColumn<EpiValidatedCaseWithGeneratedId>);
+        } satisfies TableColumn<CaseUploadResultWithGeneratedId>);
       }
     });
 
     return tableCols;
   }, [completeCaseType, importAction, mappedColumns, rawData, renderCell, renderHasIssueCell, t, validationQuery?.data?.validated_cases]);
 
-  useInitializeTableStore<EpiValidatedCaseWithGeneratedId>({ store: tableStore, columns: tableColumns, rows: rowsWithGeneratedId, createFiltersFromColumns: true });
+  useInitializeTableStore<CaseUploadResultWithGeneratedId>({ store: tableStore, columns: tableColumns, rows: rowsWithGeneratedId, createFiltersFromColumns: true });
 
   const onProceedButtonClick = useCallback(async () => {
     const validatedCases = rowsWithGeneratedId.filter(r => selectedIds.includes(r.generated_id)).map(r => omit(r, 'generated_id'));

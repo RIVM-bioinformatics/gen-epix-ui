@@ -73,7 +73,6 @@ export const EpiUploadCreateCases = () => {
       mappedFileSize: sequenceFileStats.mappedFileSize,
       sequenceFilesDataTransfer,
       sequenceMapping,
-      shareInDataCollectionIds: store.getState().shareInDataCollectionIds,
       signal,
       validatedCases,
       validatedCasesWithGeneratedId,

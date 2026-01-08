@@ -105,6 +105,7 @@ export const ApplicationBarActions = ({ fullWidth }: ApplicationBarActionsProps)
               marginRight: fullWidth ? 0 : 1,
               fontWeight: 700,
               textTransform: 'uppercase',
+              color: theme['gen-epix'].navbar.environmentMessageColor,
               [theme.breakpoints.down('md')]: {
                 visibility: 'hidden',
                 position: 'absolute',

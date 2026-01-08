@@ -18,6 +18,7 @@ interface ThemeGenEpix {
       activeColor: string;
       primaryColor: string;
       secondaryColor: string;
+      environmentMessageColor: string;
     };
     footer: {
       background: string;

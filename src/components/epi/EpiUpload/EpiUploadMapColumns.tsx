@@ -27,8 +27,15 @@ import { useTranslation } from 'react-i18next';
 import uniq from 'lodash/uniq';
 import { useStore } from 'zustand';
 import difference from 'lodash/difference';
+import {
+  object,
+  string,
+} from 'yup';
 
-import type { FormFieldDefinition } from '../../../models/form';
+import {
+  FORM_FIELD_DEFINITION_TYPE,
+  type FormFieldDefinition,
+} from '../../../models/form';
 import { GenericForm } from '../../form/helpers/GenericForm';
 import { useCaseTypeColMapQuery } from '../../../dataHooks/useCaseTypeColsQuery';
 import { useArray } from '../../../hooks/useArray';
@@ -36,7 +43,12 @@ import { ResponseHandler } from '../../ui/ResponseHandler';
 import { EpiUploadUtil } from '../../../utils/EpiUploadUtil';
 import { ConfigManager } from '../../../classes/managers/ConfigManager';
 import { EpiUploadStoreContext } from '../../../stores/epiUploadStore';
-import type { EpiUploadMappedColumnsFormFields } from '../../../models/epiUpload';
+import type {
+  EpiUploadMappedColumnsFormFields,
+  EpiUploadMappedIdentifierIssuersFormFields,
+} from '../../../models/epiUpload';
+import { ColType } from '../../../api';
+import { useIdentifierIssuerOptionsQuery } from '../../../dataHooks/useIdentifierIssuersQuery';
 
 import { EpiUploadNavigation } from './EpiUploadNavigation';
 
@@ -44,6 +56,7 @@ import { EpiUploadNavigation } from './EpiUploadNavigation';
 export const EpiUploadMapColumns = () => {
   const [t] = useTranslation();
   const caseTypeColMap = useCaseTypeColMapQuery();
+  const identifierIssuerOptionsQuery = useIdentifierIssuerOptionsQuery();
 
   const store = useContext(EpiUploadStoreContext);
   const completeCaseType = useStore(store, (state) => state.completeCaseType);
@@ -56,63 +69,62 @@ export const EpiUploadMapColumns = () => {
 
   const loadables = useArray([
     caseTypeColMap,
+    identifierIssuerOptionsQuery,
   ]);
 
-  const formId = useId();
+  const columnMappingFormId = useId();
+  const identifierIssuerMappingFormId = useId();
 
-  const schema = useMemo(() => {
+  const columnMappingSchema = useMemo(() => {
     return EpiUploadUtil.getSchema(rawData, completeCaseType, importAction);
   }, [completeCaseType, importAction, rawData]);
 
-  const defaultValues: EpiUploadMappedColumnsFormFields = useMemo(() => {
+  const defaultColumnMappingValues: EpiUploadMappedColumnsFormFields = useMemo(() => {
     return EpiUploadUtil.getDefaultFormValues(rawData[0], store.getState().mappedColumns, importAction);
   }, [rawData, store, importAction]);
 
-  const formMethods = useForm<EpiUploadMappedColumnsFormFields>({
-    resolver: yupResolver(schema) as unknown as Resolver<EpiUploadMappedColumnsFormFields>,
-    values: { ...defaultValues },
-    defaultValues: { ...defaultValues },
+  const columnMappingFormMethods = useForm<EpiUploadMappedColumnsFormFields>({
+    resolver: yupResolver(columnMappingSchema) as unknown as Resolver<EpiUploadMappedColumnsFormFields>,
+    values: { ...defaultColumnMappingValues },
+    defaultValues: { ...defaultColumnMappingValues },
   });
 
-  const { handleSubmit, control, clearErrors } = formMethods;
-  const values = useWatch({ control });
+  const { handleSubmit: handleColumnMappingSubmit, control: columnMappingControl, clearErrors: clearColumnMappingErrors } = columnMappingFormMethods;
+  const columnMappingFormValues = useWatch({ control: columnMappingControl });
 
-  const formFieldDefinitions = useMemo<FormFieldDefinition<EpiUploadMappedColumnsFormFields>[]>(() => {
+  const columnMappingFormFieldDefinitions = useMemo<FormFieldDefinition<EpiUploadMappedColumnsFormFields>[]>(() => {
     return EpiUploadUtil.getColumnMappingFormFieldDefinitions(completeCaseType, rawData[0], fileName, importAction).map(def => ({
       ...def,
-      onChange: () => clearErrors(),
+      onChange: () => clearColumnMappingErrors(),
     }));
-  }, [completeCaseType, rawData, fileName, importAction, clearErrors]);
+  }, [completeCaseType, rawData, fileName, importAction, clearColumnMappingErrors]);
 
   useEffect(() => {
     const perform = async () => {
-      await setMappedColumns(EpiUploadUtil.getMappedColumnsFromFormData(values, rawData, caseTypeColMap.map));
+      await setMappedColumns(EpiUploadUtil.getMappedColumnsFromFormData(columnMappingFormValues, rawData, caseTypeColMap.map));
     };
     // eslint-disable-next-line @typescript-eslint/no-floating-promises
     perform();
-  }, [setMappedColumns, values, rawData, caseTypeColMap.map]);
+  }, [setMappedColumns, columnMappingFormValues, rawData, caseTypeColMap.map]);
 
   const unMappedColumns = useMemo(() => {
     const knownIndicies = rawData[0].map((_col, index) => index);
-    const mappedIndicies = EpiUploadUtil.getMappedColumnsFromFormData(values, rawData, caseTypeColMap.map).map(col => col.originalIndex);
+    const mappedIndicies = EpiUploadUtil.getMappedColumnsFromFormData(columnMappingFormValues, rawData, caseTypeColMap.map).map(col => col.originalIndex);
     return difference(knownIndicies, mappedIndicies).map(index => {
       return {
         originalIndex: index,
         originalLabel: rawData[0][index],
       };
     });
-  }, [caseTypeColMap.map, rawData, values]);
+  }, [caseTypeColMap.map, rawData, columnMappingFormValues]);
 
-  const onFormSubmit = useCallback(async (data: EpiUploadMappedColumnsFormFields) => {
+  const onColumnMappingFormSubmit = useCallback(async (data: EpiUploadMappedColumnsFormFields) => {
     await setMappedColumns(EpiUploadUtil.getMappedColumnsFromFormData(data, rawData, caseTypeColMap.map));
     await goToNextStep();
   }, [rawData, caseTypeColMap.map, goToNextStep, setMappedColumns]);
 
-  const onProceedButtonClick = useCallback(async () => {
-    await handleSubmit(onFormSubmit)();
-  }, [handleSubmit, onFormSubmit]);
 
-  const renderField = useCallback((definition: FormFieldDefinition<EpiUploadMappedColumnsFormFields>, element: ReactElement) => {
+  const renderColumnMappingField = useCallback((definition: FormFieldDefinition<EpiUploadMappedColumnsFormFields>, element: ReactElement) => {
     const columnIndexInRawData = parseInt(definition.name, 10);
     const columnValues = uniq(rawData.slice(1).map((row) => row[columnIndexInRawData] ?? '')).filter(x => !!x);
     const firstFiveValuesString = columnValues.slice(0, 5).join(', ').trim() || t('<no data>');
@@ -132,7 +144,7 @@ export const EpiUploadMapColumns = () => {
     );
   }, [rawData, t]);
 
-  const wrapForm = useCallback((children: ReactElement) => {
+  const wrapColumnMappingForm = useCallback((children: ReactElement) => {
     return (
       <Table
         size={'small'}
@@ -163,6 +175,48 @@ export const EpiUploadMapColumns = () => {
       </Table>
     );
   }, [t]);
+
+  const identifierIssuerMappingFormFieldDefinitions = useMemo(() => {
+    const definitions: FormFieldDefinition<EpiUploadMappedIdentifierIssuersFormFields>[] = [];
+    Object.values(columnMappingFormValues).forEach(caseTypeColId => {
+      if (!caseTypeColId) {
+        return;
+      }
+      const caseTypeCol = completeCaseType.case_type_cols[caseTypeColId];
+      if (!caseTypeCol) {
+        return;
+      }
+      const col = completeCaseType.cols[caseTypeCol.col_id];
+      if (col?.col_type !== ColType.ID_SAMPLE) {
+        return;
+      }
+      definitions.push({
+        definition: FORM_FIELD_DEFINITION_TYPE.SELECT,
+        name: caseTypeColId,
+        label: t('Identifier issuer for column "{{columnName}}"', { columnName: caseTypeCol.label }),
+        options: identifierIssuerOptionsQuery.options,
+        loading: identifierIssuerOptionsQuery.isLoading,
+      });
+    });
+
+    return definitions;
+  }, [columnMappingFormValues, completeCaseType.case_type_cols, completeCaseType.cols, identifierIssuerOptionsQuery.isLoading, identifierIssuerOptionsQuery.options, t]);
+
+  const identifierIssuerMappingSchema = useMemo(() => {
+    return object<EpiUploadMappedIdentifierIssuersFormFields>().shape(
+      Object.fromEntries(identifierIssuerMappingFormFieldDefinitions.map(x => [x.name, string().uuid4().required()])),
+    );
+  }, [identifierIssuerMappingFormFieldDefinitions]);
+
+  const identifierIssuerMappingFormMethods = useForm<EpiUploadMappedIdentifierIssuersFormFields>({
+    resolver: yupResolver(identifierIssuerMappingSchema) as unknown as Resolver<EpiUploadMappedIdentifierIssuersFormFields>,
+    values: { },
+    defaultValues: { },
+  });
+
+  const onProceedButtonClick = useCallback(async () => {
+    await handleColumnMappingSubmit(onColumnMappingFormSubmit)();
+  }, [handleColumnMappingSubmit, onColumnMappingFormSubmit]);
 
   return (
     <ResponseHandler loadables={loadables}>
@@ -208,14 +262,25 @@ export const EpiUploadMapColumns = () => {
           >
             <Container>
               <GenericForm<EpiUploadMappedColumnsFormFields>
-                formFieldDefinitions={formFieldDefinitions}
-                formId={formId}
-                formMethods={formMethods}
-                renderField={renderField}
-                wrapForm={wrapForm}
-                schema={schema}
-                onSubmit={handleSubmit(onFormSubmit)}
+                formFieldDefinitions={columnMappingFormFieldDefinitions}
+                formId={columnMappingFormId}
+                formMethods={columnMappingFormMethods}
+                renderField={renderColumnMappingField}
+                wrapForm={wrapColumnMappingForm}
+                schema={columnMappingSchema}
+                onSubmit={handleColumnMappingSubmit(onColumnMappingFormSubmit)}
               />
+              {identifierIssuerMappingFormFieldDefinitions.length > 0 && (
+                <Box marginY={2}>
+                  <GenericForm<EpiUploadMappedIdentifierIssuersFormFields>
+                    formFieldDefinitions={identifierIssuerMappingFormFieldDefinitions}
+                    formId={identifierIssuerMappingFormId}
+                    formMethods={identifierIssuerMappingFormMethods}
+                    schema={identifierIssuerMappingSchema}
+                    onSubmit={handleColumnMappingSubmit(onColumnMappingFormSubmit)}
+                  />
+                </Box>
+              )}
             </Container>
           </Box>
         </Box>

@@ -1,6 +1,6 @@
 import type {
   CaseTypeCol,
-  ValidatedCase,
+  CaseUploadResult,
 } from '../api';
 
 export type EpiUploadMappedColumn = {
@@ -21,6 +21,10 @@ export type EpiUploadMappedColumnsFormFields = {
   [key: string]: string;
 };
 
+export type EpiUploadMappedIdentifierIssuersFormFields = {
+  [key: string]: string;
+};
+
 export type EpiUploadTableRow = {
   [key: string]: string;
 };
@@ -33,7 +37,7 @@ export interface EpiUploadFileColumnAssignment {
   caseTypeCol: CaseTypeCol; // null if no suitable column found
 }
 
-export type EpiValidatedCaseWithGeneratedId = ValidatedCase & { generated_id: string };
+export type CaseUploadResultWithGeneratedId = CaseUploadResult & { generated_id: string };
 
 export type EpiUploadSequenceMappingForCaseId = {
   sequenceFileNames: {

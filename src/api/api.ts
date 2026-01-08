@@ -24,25 +24,6 @@ import type { RequestArgs } from './base';
 import { BASE_PATH, COLLECTION_FORMATS, BaseAPI, RequiredError, operationServerMap } from './base';
 
 /**
- * An allele profile. Temporary implementation.
- * @export
- * @interface AlleleProfile
- */
-export interface AlleleProfile {
-    /**
-     * The unique identifier for the object.
-     * @type {string}
-     * @memberof AlleleProfile
-     */
-    'id'?: string | null;
-    /**
-     * The allele profile
-     * @type {string}
-     * @memberof AlleleProfile
-     */
-    'allele_profile'?: string | null;
-}
-/**
  * 
  * @export
  * @interface ApiPermission
@@ -64,7 +45,7 @@ export interface ApiPermission {
 
 
 /**
- * 
+ * A protocol used for assembling sequencing reads into a sequence.  An assembly protocol is immutable: once created, it cannot be deleted and it should not be semantically updated. As such, assembly protocol IDs can safely be referenced in other models and outside of the application.    PARENT CLASS DOCUMENTATION   ProtocolMixin:  Mixin class to add protocol related fields to a model.
  * @export
  * @interface AssemblyProtocol
  */
@@ -140,6 +121,12 @@ export interface Case {
      */
     'id'?: string | null;
     /**
+     * A code for the case for further reference.
+     * @type {string}
+     * @memberof Case
+     */
+    'code'?: string | null;
+    /**
      * The ID of the case type. FOREIGN KEY
      * @type {string}
      * @memberof Case
@@ -188,18 +175,76 @@ export interface Case {
      */
     'case_date'?: string;
     /**
-     * The data content of the case as {case_type_col_id: str_value}. Only case type columns defined for the case type of the case should be present here, and if no value is present, the key should be omitted.
-     * @type {{ [key: string]: string; }}
+     * The data content of the case as {case_type_col_id: str_value | None}. Only case type columns defined for the case type of the case should be present here, and if no value is present, the key should be omitted. None content values are allowed but will be removed upon serialization.
+     * @type {{ [key: string]: string | null; }}
      * @memberof Case
      */
-    'content': { [key: string]: string; };
-    /**
-     * A code for the case for further reference.
-     * @type {string}
-     * @memberof Case
-     */
-    'code'?: string | null;
+    'content': { [key: string]: string | null; };
 }
+/**
+ * A number of unique cases intended for upload.    PARENT CLASS DOCUMENTATION   BaseBatchForUpload:  Base class for batches of ParentForUpload objects to be uploaded. A batch is intended as a single unit of work for an upload operation and as such to be processed atomically.  Additional validation: - All ParentForUpload objects must have unique IDs (if provided) - All ParentForUpload objects must have unique external identifiers
+ * @export
+ * @interface CaseBatchForUpload
+ */
+export interface CaseBatchForUpload {
+    /**
+     * The unique identifier for the upload batch.
+     * @type {string}
+     * @memberof CaseBatchForUpload
+     */
+    'id'?: string;
+    /**
+     * The UTC timestamp when the upload batch was created.
+     * @type {string}
+     * @memberof CaseBatchForUpload
+     */
+    'created_at'?: string;
+    /**
+     * The cases to be uploaded.
+     * @type {Array<CaseForUpload>}
+     * @memberof CaseBatchForUpload
+     */
+    'cases': Array<CaseForUpload>;
+}
+/**
+ * The result of uploading a batch of cases.    PARENT CLASS DOCUMENTATION   BaseBatchUploadResult: Base class for upload results corresponding to a complete batch of objects uploaded. The names of the fields in any child class must be exactly identical to those in the corresponding BaseBatchForUpload child class.    PARENT CLASS DOCUMENTATION   UploadResult:  Represents the result of an upload operation, including upload status and logs.  Additional validation: - If the status is successful (NOT_FAILED), there must be no error log items. - If the status is failed, there must be at least one error log item.    PARENT CLASS DOCUMENTATION   UploadResult:  Represents the result of an upload operation, including upload status and logs.  Additional validation: - If the status is successful (NOT_FAILED), there must be no error log items. - If the status is failed, there must be at least one error log item.
+ * @export
+ * @interface CaseBatchUploadResult
+ */
+export interface CaseBatchUploadResult {
+    /**
+     * The unique identifier for the specific object instance that this result pertains to, if applicable. E.g. the object that was created or updated as part of the upload.
+     * @type {string}
+     * @memberof CaseBatchUploadResult
+     */
+    'id'?: string | null;
+    /**
+     * 
+     * @type {UploadStatus}
+     * @memberof CaseBatchUploadResult
+     */
+    'status'?: UploadStatus;
+    /**
+     * A list of log items capturing messages and events that occurred during the upload operation.
+     * @type {Array<UploadLogItem>}
+     * @memberof CaseBatchUploadResult
+     */
+    'logs'?: Array<UploadLogItem>;
+    /**
+     * The unique identifier for the upload batch that this result belongs to.
+     * @type {string}
+     * @memberof CaseBatchUploadResult
+     */
+    'batch_id'?: string;
+    /**
+     * The results of uploading the cases.
+     * @type {Array<CaseUploadResult>}
+     * @memberof CaseBatchUploadResult
+     */
+    'cases': Array<CaseUploadResult>;
+}
+
+
 /**
  * 
  * @export
@@ -213,23 +258,6 @@ export const CaseClassification = {
 } as const;
 
 export type CaseClassification = typeof CaseClassification[keyof typeof CaseClassification];
-
-
-/**
- * 
- * @export
- * @ {string}
- */
-
-export const CaseColDataRule = {
-    MISSING: 'MISSING',
-    INVALID: 'INVALID',
-    UNAUTHORIZED: 'UNAUTHORIZED',
-    CONFLICT: 'CONFLICT',
-    DERIVED: 'DERIVED'
-} as const;
-
-export type CaseColDataRule = typeof CaseColDataRule[keyof typeof CaseColDataRule];
 
 
 /**
@@ -295,55 +323,67 @@ export interface CaseDataIssue {
     'updated_value': string | null;
     /**
      * 
-     * @type {CaseColDataRule}
+     * @type {DataIssueType}
      * @memberof CaseDataIssue
      */
-    'data_rule': CaseColDataRule;
+    'data_issue_type': DataIssueType;
+    /**
+     * The code of the data issue
+     * @type {string}
+     * @memberof CaseDataIssue
+     */
+    'code': string;
     /**
      * The details of the data issue
      * @type {string}
      * @memberof CaseDataIssue
      */
-    'details': string | null;
+    'message': string | null;
 }
 
 
 /**
- * A class representing a case to be created or updated.
+ * A case intended for upload, together with any relevant associated data.    PARENT CLASS DOCUMENTATION   ParentForUpload: Represents a parent model for upload, where the term \"parent\" refers to a model that can have child models associated with it through a link. External identifiers can also be added here.  This class must be subclassed for specific parent models, adding the following fields: - A parent Parent|None field where the parent model that needs to be uploaded, if   any, will be put - For each child model type that can be associated with the parent, a \"children\"   list|None field that will contain the actual child models to be uploaded along with   the parent model. Metadata on the parent and child models, allowing introspection, must be provided through the class variables.  Additional validation: - NULL_ID in the id field is converted to None. - If both the ParentForUpload id and the contained Parent model id are provided,   they must match. - For each child model type, if the ParentForUpload id is provided, the parent ID   field in each child model must either be None/NULL_ID or match the ParentForUpload   id.    PARENT CLASS DOCUMENTATION   IsNewIdMixin:  Mixin that adds an is_new_id field to indicate whether the model instance is new and has an externally assigned ID rather than one assigned by the system. Assumes that the inheriting model also has an \'id\' field.  Additional validation: - If is_new_id is True, the model id field field may not be None or NULL_ID.    PARENT CLASS DOCUMENTATION   IsNewIdMixin:  Mixin that adds an is_new_id field to indicate whether the model instance is new and has an externally assigned ID rather than one assigned by the system. Assumes that the inheriting model also has an \'id\' field.  Additional validation: - If is_new_id is True, the model id field field may not be None or NULL_ID.
  * @export
- * @interface CaseForCreateUpdate
+ * @interface CaseForUpload
  */
-export interface CaseForCreateUpdate {
+export interface CaseForUpload {
     /**
-     * The unique identifier for the object.
+     * Indicates whether the model instance is both new (not yet stored) and its ID is assigned outside the system, e.g. for having the same IDs between different environments.
+     * @type {boolean}
+     * @memberof CaseForUpload
+     */
+    'is_new_id'?: boolean;
+    /**
+     * The unique identifier for the Parent object. If NULL_ID is provided, it will be set to None.
      * @type {string}
-     * @memberof CaseForCreateUpdate
+     * @memberof CaseForUpload
      */
     'id'?: string | null;
     /**
-     * The ID of the subject. FOREIGN KEY
-     * @type {string}
-     * @memberof CaseForCreateUpdate
+     * External identifiers for the parent model, if any. Must be a unique values.
+     * @type {Array<ExternalIdentifierForUpload>}
+     * @memberof CaseForUpload
      */
-    'subject_id'?: string | null;
+    'external_identifiers'?: Array<ExternalIdentifierForUpload> | null;
     /**
-     * The number of cases that this case represents, if not one. This can be used to store aggregated cases (n>=0) as well as reference data (n=0).
-     * @type {number}
-     * @memberof CaseForCreateUpdate
+     * 
+     * @type {Case}
+     * @memberof CaseForUpload
      */
-    'count'?: number | null;
+    'case'?: Case;
     /**
-     * The date of the case. Required when creating a case, ignored when updating.
-     * @type {string}
-     * @memberof CaseForCreateUpdate
+     * The read sets to be uploaded and associated with the case. If None, this element is not taken into consideration during the upload. Must each be for a different case type column.
+     * @type {Array<ReadSetForUpload>}
+     * @memberof CaseForUpload
      */
-    'case_date'?: string | null;
+    'read_sets'?: Array<ReadSetForUpload> | null;
     /**
-     * The column data of the case as {col_id: str_value}. If None and the model is used for update, then any existing value will be deleted.
-     * @type {{ [key: string]: string | null; }}
-     * @memberof CaseForCreateUpdate
+     * The sequences to be uploaded and associated with the case. If None, this element is not taken into consideration during the upload. Must each be for a different case type column.
+     * @type {Array<SeqForUpload>}
+     * @memberof CaseForUpload
      */
-    'content': { [key: string]: string | null; };
+    'seqs'?: Array<SeqForUpload> | null;
 }
 /**
  * 
@@ -418,43 +458,6 @@ export interface CaseQueryResult {
      * @memberof CaseQueryResult
      */
     'is_max_results_exceeded': boolean;
-}
-/**
- * 
- * @export
- * @interface CaseReadSet
- */
-export interface CaseReadSet {
-    /**
-     * The unique identifier for the object.
-     * @type {string}
-     * @memberof CaseReadSet
-     */
-    'id'?: string | null;
-    /**
-     * The ID of the case that the read set is or will be associated with.
-     * @type {string}
-     * @memberof CaseReadSet
-     */
-    'case_id': string;
-    /**
-     * The ID of the case type column that the read set is or will be associated with.
-     * @type {string}
-     * @memberof CaseReadSet
-     */
-    'case_type_col_id': string;
-    /**
-     * The ID of the read set.
-     * @type {string}
-     * @memberof CaseReadSet
-     */
-    'read_set_id'?: string | null;
-    /**
-     * 
-     * @type {ReadSet}
-     * @memberof CaseReadSet
-     */
-    'read_set'?: ReadSet;
 }
 /**
  * Describes all the rights that a user has on one particular case, based on the data collections in which it is currently shared.
@@ -534,43 +537,6 @@ export interface CaseRights {
      * @memberof CaseRights
      */
     'write_case_type_col_ids': Array<string>;
-}
-/**
- * 
- * @export
- * @interface CaseSeq
- */
-export interface CaseSeq {
-    /**
-     * The unique identifier for the object.
-     * @type {string}
-     * @memberof CaseSeq
-     */
-    'id'?: string | null;
-    /**
-     * The ID of the case that the sequence is or will be associated with.
-     * @type {string}
-     * @memberof CaseSeq
-     */
-    'case_id': string;
-    /**
-     * The ID of the case type column that the sequence is or will be associated with.
-     * @type {string}
-     * @memberof CaseSeq
-     */
-    'case_type_col_id': string;
-    /**
-     * The ID of the sequence.
-     * @type {string}
-     * @memberof CaseSeq
-     */
-    'seq_id'?: string | null;
-    /**
-     * 
-     * @type {Seq}
-     * @memberof CaseSeq
-     */
-    'seq'?: Seq;
 }
 /**
  * 
@@ -838,7 +804,7 @@ export interface CaseSetRights {
     'write_case_set': boolean;
 }
 /**
- * 
+ * PARENT CLASS DOCUMENTATION   Model: PARENT CLASS DOCUMENTATION   BaseModel: !!! abstract \"Usage Documentation\"     [Models](../concepts/models.md)  A base class for creating Pydantic models.  Attributes:     __class_vars__: The names of the class variables defined on the model.     __private_attributes__: Metadata about the private attributes of the model.     __signature__: The synthesized `__init__` [`Signature`][inspect.Signature] of the model.      __pydantic_complete__: Whether model building is completed, or if there are still undefined fields.     __pydantic_core_schema__: The core schema of the model.     __pydantic_custom_init__: Whether the model has a custom `__init__` function.     __pydantic_decorators__: Metadata containing the decorators defined on the model.         This replaces `Model.__validators__` and `Model.__root_validators__` from Pydantic V1.     __pydantic_generic_metadata__: Metadata for generic models; contains data used for a similar purpose to         __args__, __origin__, __parameters__ in typing-module generics. May eventually be replaced by these.     __pydantic_parent_namespace__: Parent namespace of the model, used for automatic rebuilding of models.     __pydantic_post_init__: The name of the post-init method for the model, if defined.     __pydantic_root_model__: Whether the model is a [`RootModel`][pydantic.root_model.RootModel].     __pydantic_serializer__: The `pydantic-core` `SchemaSerializer` used to dump instances of the model.     __pydantic_validator__: The `pydantic-core` `SchemaValidator` used to validate instances of the model.      __pydantic_fields__: A dictionary of field names and their corresponding [`FieldInfo`][pydantic.fields.FieldInfo] objects.     __pydantic_computed_fields__: A dictionary of computed field names and their corresponding [`ComputedFieldInfo`][pydantic.fields.ComputedFieldInfo] objects.      __pydantic_extra__: A dictionary containing extra values, if [`extra`][pydantic.config.ConfigDict.extra]         is set to `\'allow\'`.     __pydantic_fields_set__: The names of fields explicitly set during instantiation.     __pydantic_private__: Values of private attributes set on the model instance.
  * @export
  * @interface CaseSetStat
  */
@@ -1502,7 +1468,7 @@ export interface CaseTypeShareAbac {
     'remove_case_set_from_data_collection_ids': Array<string>;
 }
 /**
- * 
+ * PARENT CLASS DOCUMENTATION   Model: PARENT CLASS DOCUMENTATION   BaseModel: !!! abstract \"Usage Documentation\"     [Models](../concepts/models.md)  A base class for creating Pydantic models.  Attributes:     __class_vars__: The names of the class variables defined on the model.     __private_attributes__: Metadata about the private attributes of the model.     __signature__: The synthesized `__init__` [`Signature`][inspect.Signature] of the model.      __pydantic_complete__: Whether model building is completed, or if there are still undefined fields.     __pydantic_core_schema__: The core schema of the model.     __pydantic_custom_init__: Whether the model has a custom `__init__` function.     __pydantic_decorators__: Metadata containing the decorators defined on the model.         This replaces `Model.__validators__` and `Model.__root_validators__` from Pydantic V1.     __pydantic_generic_metadata__: Metadata for generic models; contains data used for a similar purpose to         __args__, __origin__, __parameters__ in typing-module generics. May eventually be replaced by these.     __pydantic_parent_namespace__: Parent namespace of the model, used for automatic rebuilding of models.     __pydantic_post_init__: The name of the post-init method for the model, if defined.     __pydantic_root_model__: Whether the model is a [`RootModel`][pydantic.root_model.RootModel].     __pydantic_serializer__: The `pydantic-core` `SchemaSerializer` used to dump instances of the model.     __pydantic_validator__: The `pydantic-core` `SchemaValidator` used to validate instances of the model.      __pydantic_fields__: A dictionary of field names and their corresponding [`FieldInfo`][pydantic.fields.FieldInfo] objects.     __pydantic_computed_fields__: A dictionary of computed field names and their corresponding [`ComputedFieldInfo`][pydantic.fields.ComputedFieldInfo] objects.      __pydantic_extra__: A dictionary containing extra values, if [`extra`][pydantic.config.ConfigDict.extra]         is set to `\'allow\'`.     __pydantic_fields_set__: The names of fields explicitly set during instantiation.     __pydantic_private__: Values of private attributes set on the model instance.
  * @export
  * @interface CaseTypeStat
  */
@@ -1533,48 +1499,62 @@ export interface CaseTypeStat {
     'last_case_date'?: string | null;
 }
 /**
- * 
+ * The result of uploading a single case. The case content validation results as well as the resulting cases are included as well.    PARENT CLASS DOCUMENTATION   ParentUploadResult: Represents the upload result for a Parent model upload. This class must be subclassed analogous to the ParentForUpload model it corresponds to.    PARENT CLASS DOCUMENTATION   UploadResult:  Represents the result of an upload operation, including upload status and logs.  Additional validation: - If the status is successful (NOT_FAILED), there must be no error log items. - If the status is failed, there must be at least one error log item.    PARENT CLASS DOCUMENTATION   UploadResult:  Represents the result of an upload operation, including upload status and logs.  Additional validation: - If the status is successful (NOT_FAILED), there must be no error log items. - If the status is failed, there must be at least one error log item.
  * @export
- * @interface CaseValidationReport
+ * @interface CaseUploadResult
  */
-export interface CaseValidationReport {
+export interface CaseUploadResult {
     /**
-     * The unique identifier for the object.
+     * The unique identifier for the specific object instance that this result pertains to, if applicable. E.g. the object that was created or updated as part of the upload.
      * @type {string}
-     * @memberof CaseValidationReport
+     * @memberof CaseUploadResult
      */
     'id'?: string | null;
     /**
-     * The case type ID that the cases belong to.
-     * @type {string}
-     * @memberof CaseValidationReport
+     * 
+     * @type {UploadStatus}
+     * @memberof CaseUploadResult
      */
-    'case_type_id': string;
+    'status'?: UploadStatus;
     /**
-     * The data collection ID in which the cases would be created.
-     * @type {string}
-     * @memberof CaseValidationReport
+     * A list of log items capturing messages and events that occurred during the upload operation.
+     * @type {Array<UploadLogItem>}
+     * @memberof CaseUploadResult
      */
-    'created_in_data_collection_id': string;
+    'logs'?: Array<UploadLogItem>;
     /**
-     * Whether the cases are intended to be updated or newly created.
-     * @type {boolean}
-     * @memberof CaseValidationReport
+     * The results of uploading the external identifiers associated with the case, if any were provided, in the same order as provided.
+     * @type {Array<UploadResult>}
+     * @memberof CaseUploadResult
      */
-    'is_update': boolean;
+    'external_identifiers'?: Array<UploadResult> | null;
     /**
-     * The additional data collections that the cases would be put in, other than the created_in_data_collection.
-     * @type {Array<string>}
-     * @memberof CaseValidationReport
+     * The validated content of the case after validation or upload.
+     * @type {{ [key: string]: string | null; }}
+     * @memberof CaseUploadResult
      */
-    'data_collection_ids': Array<string>;
+    'validated_content'?: { [key: string]: string | null; };
     /**
-     * The cases containing validated content and any data issues found during validation.
-     * @type {Array<ValidatedCase>}
-     * @memberof CaseValidationReport
+     * The data issues found for the original case content.
+     * @type {Array<CaseDataIssue>}
+     * @memberof CaseUploadResult
      */
-    'validated_cases': Array<ValidatedCase>;
+    'data_issues'?: Array<CaseDataIssue>;
+    /**
+     * The results of uploading the read sets associated with the case, if any were provided, in the same order as provided.
+     * @type {Array<UploadResult>}
+     * @memberof CaseUploadResult
+     */
+    'read_sets'?: Array<UploadResult> | null;
+    /**
+     * The results of uploading the sequences associated with the case, if any were provided, in the same order as provided.
+     * @type {Array<UploadResult>}
+     * @memberof CaseUploadResult
+     */
+    'seqs'?: Array<UploadResult> | null;
 }
+
+
 /**
  * 
  * @export
@@ -1744,100 +1724,99 @@ export interface ColValidationRulesResponseBody {
  */
 
 export const CommandName = {
-    RetrieveOutagesCommand: 'RetrieveOutagesCommand',
-    CaseDataCollectionLinkCrudCommand: 'CaseDataCollectionLinkCrudCommand',
-    RetrieveCasesByQueryCommand: 'RetrieveCasesByQueryCommand',
-    OrganizationIdentifierIssuerLinkUpdateAssociationCommand: 'OrganizationIdentifierIssuerLinkUpdateAssociationCommand',
-    CreateReadSetsForCasesCommand: 'CreateReadSetsForCasesCommand',
-    RegionCrudCommand: 'RegionCrudCommand',
-    CaseTypeSetCategoryCrudCommand: 'CaseTypeSetCategoryCrudCommand',
-    RetrieveCasesByIdCommand: 'RetrieveCasesByIdCommand',
-    RetrieveOrganizationAdminNameEmailsCommand: 'RetrieveOrganizationAdminNameEmailsCommand',
-    OrganizationCrudCommand: 'OrganizationCrudCommand',
-    UserCrudCommand: 'UserCrudCommand',
-    RetrieveCaseSetStatsCommand: 'RetrieveCaseSetStatsCommand',
-    CaseTypeDimCrudCommand: 'CaseTypeDimCrudCommand',
-    CaseTypeSetCaseTypeUpdateAssociationCommand: 'CaseTypeSetCaseTypeUpdateAssociationCommand',
-    RetrieveCaseTypeStatsCommand: 'RetrieveCaseTypeStatsCommand',
-    DiseaseCrudCommand: 'DiseaseCrudCommand',
-    ExternalIdentifierCrudCommand: 'ExternalIdentifierCrudCommand',
-    RetrieveContainingRegionCommand: 'RetrieveContainingRegionCommand',
-    ConceptRelationCrudCommand: 'ConceptRelationCrudCommand',
-    RegionSetCrudCommand: 'RegionSetCrudCommand',
-    OrganizationIdentifierIssuerLinkCrudCommand: 'OrganizationIdentifierIssuerLinkCrudCommand',
-    OrganizationSetMemberCrudCommand: 'OrganizationSetMemberCrudCommand',
-    RegisterInvitedUserCommand: 'RegisterInvitedUserCommand',
-    CaseCrudCommand: 'CaseCrudCommand',
-    RetrieveAlleleProfileCommand: 'RetrieveAlleleProfileCommand',
-    UserInvitationCrudCommand: 'UserInvitationCrudCommand',
-    CaseSetMemberCrudCommand: 'CaseSetMemberCrudCommand',
-    CreateSeqsForCasesCommand: 'CreateSeqsForCasesCommand',
-    CaseSetStatusCrudCommand: 'CaseSetStatusCrudCommand',
-    UserShareCasePolicyCrudCommand: 'UserShareCasePolicyCrudCommand',
-    DataCollectionSetCrudCommand: 'DataCollectionSetCrudCommand',
-    RetrieveGeneticSequenceFastaByIdCommand: 'RetrieveGeneticSequenceFastaByIdCommand',
-    ConceptSetCrudCommand: 'ConceptSetCrudCommand',
-    CaseTypeColSetCaseTypeColUpdateAssociationCommand: 'CaseTypeColSetCaseTypeColUpdateAssociationCommand',
-    RegionRelationCrudCommand: 'RegionRelationCrudCommand',
-    OrganizationSetCrudCommand: 'OrganizationSetCrudCommand',
-    TreeAlgorithmCrudCommand: 'TreeAlgorithmCrudCommand',
-    RetrieveGeneticSequenceByCaseCommand: 'RetrieveGeneticSequenceByCaseCommand',
-    TreeAlgorithmClassCrudCommand: 'TreeAlgorithmClassCrudCommand',
-    RetrieveInviteUserConstraintsCommand: 'RetrieveInviteUserConstraintsCommand',
     RetrieveCompleteCaseTypeCommand: 'RetrieveCompleteCaseTypeCommand',
-    OrganizationAdminPolicyCrudCommand: 'OrganizationAdminPolicyCrudCommand',
-    EtiologicalAgentCrudCommand: 'EtiologicalAgentCrudCommand',
-    RetrieveOrganizationsUnderAdminCommand: 'RetrieveOrganizationsUnderAdminCommand',
-    RetrieveGeneticSequenceByIdCommand: 'RetrieveGeneticSequenceByIdCommand',
-    RetrieveAssemblyProtocolsCommand: 'RetrieveAssemblyProtocolsCommand',
-    CaseSetCrudCommand: 'CaseSetCrudCommand',
-    CreateCasesCommand: 'CreateCasesCommand',
+    ConceptCrudCommand: 'ConceptCrudCommand',
     DiseaseEtiologicalAgentUpdateAssociationCommand: 'DiseaseEtiologicalAgentUpdateAssociationCommand',
-    UpdateUserOwnOrganizationCommand: 'UpdateUserOwnOrganizationCommand',
+    RegionCrudCommand: 'RegionCrudCommand',
+    CaseSetDataCollectionLinkCrudCommand: 'CaseSetDataCollectionLinkCrudCommand',
+    RegionSetCrudCommand: 'RegionSetCrudCommand',
+    RetrieveContainingRegionCommand: 'RetrieveContainingRegionCommand',
+    ContactCrudCommand: 'ContactCrudCommand',
+    ConceptSetCrudCommand: 'ConceptSetCrudCommand',
+    RetrieveGeneticSequenceByIdCommand: 'RetrieveGeneticSequenceByIdCommand',
+    RegionRelationCrudCommand: 'RegionRelationCrudCommand',
+    RetrieveCasesByIdCommand: 'RetrieveCasesByIdCommand',
+    DataCollectionSetCrudCommand: 'DataCollectionSetCrudCommand',
+    TreeAlgorithmCrudCommand: 'TreeAlgorithmCrudCommand',
     GeneticDistanceProtocolCrudCommand: 'GeneticDistanceProtocolCrudCommand',
+    RetrieveOutagesCommand: 'RetrieveOutagesCommand',
+    DimCrudCommand: 'DimCrudCommand',
+    OrganizationSetOrganizationUpdateAssociationCommand: 'OrganizationSetOrganizationUpdateAssociationCommand',
+    OrganizationIdentifierIssuerLinkCrudCommand: 'OrganizationIdentifierIssuerLinkCrudCommand',
+    RetrieveCaseSetRightsCommand: 'RetrieveCaseSetRightsCommand',
+    CaseDataCollectionLinkCrudCommand: 'CaseDataCollectionLinkCrudCommand',
+    SubjectIdentifierCrudCommand: 'SubjectIdentifierCrudCommand',
+    UpdateUserOwnOrganizationCommand: 'UpdateUserOwnOrganizationCommand',
+    CreateCaseSetCommand: 'CreateCaseSetCommand',
+    RetrieveCaseTypeStatsCommand: 'RetrieveCaseTypeStatsCommand',
+    CaseTypeSetCaseTypeUpdateAssociationCommand: 'CaseTypeSetCaseTypeUpdateAssociationCommand',
+    UserInvitationCrudCommand: 'UserInvitationCrudCommand',
+    TreeAlgorithmClassCrudCommand: 'TreeAlgorithmClassCrudCommand',
+    CaseTypeColCrudCommand: 'CaseTypeColCrudCommand',
+    UserCrudCommand: 'UserCrudCommand',
+    CaseTypeColSetMemberCrudCommand: 'CaseTypeColSetMemberCrudCommand',
+    RetrieveGeneticSequenceFastaByCaseCommand: 'RetrieveGeneticSequenceFastaByCaseCommand',
+    CreateFileForSeqCommand: 'CreateFileForSeqCommand',
+    RetrieveOrganizationsUnderAdminCommand: 'RetrieveOrganizationsUnderAdminCommand',
+    CaseTypeDimCrudCommand: 'CaseTypeDimCrudCommand',
     CreateFileForReadSetCommand: 'CreateFileForReadSetCommand',
+    UserAccessCasePolicyCrudCommand: 'UserAccessCasePolicyCrudCommand',
+    CaseTypeColSetCrudCommand: 'CaseTypeColSetCrudCommand',
+    ColCrudCommand: 'ColCrudCommand',
+    RegisterInvitedUserCommand: 'RegisterInvitedUserCommand',
+    DataCollectionSetMemberCrudCommand: 'DataCollectionSetMemberCrudCommand',
+    CaseSetStatusCrudCommand: 'CaseSetStatusCrudCommand',
+    OrganizationSetMemberCrudCommand: 'OrganizationSetMemberCrudCommand',
+    UserShareCasePolicyCrudCommand: 'UserShareCasePolicyCrudCommand',
+    OrganizationIdentifierIssuerLinkUpdateAssociationCommand: 'OrganizationIdentifierIssuerLinkUpdateAssociationCommand',
+    CaseTypeSetCrudCommand: 'CaseTypeSetCrudCommand',
+    GetIdentityProvidersCommand: 'GetIdentityProvidersCommand',
+    ExternalIdentifierCrudCommand: 'ExternalIdentifierCrudCommand',
+    RetrieveSubRolesCommand: 'RetrieveSubRolesCommand',
     OrganizationAccessCasePolicyCrudCommand: 'OrganizationAccessCasePolicyCrudCommand',
     RetrievePhylogeneticTreeByCasesCommand: 'RetrievePhylogeneticTreeByCasesCommand',
+    OrganizationCrudCommand: 'OrganizationCrudCommand',
     DataCollectionSetDataCollectionUpdateAssociationCommand: 'DataCollectionSetDataCollectionUpdateAssociationCommand',
-    CaseTypeSetCrudCommand: 'CaseTypeSetCrudCommand',
-    UserAccessCasePolicyCrudCommand: 'UserAccessCasePolicyCrudCommand',
-    IdentifierIssuerCrudCommand: 'IdentifierIssuerCrudCommand',
+    OrganizationAdminPolicyCrudCommand: 'OrganizationAdminPolicyCrudCommand',
     EtiologyCrudCommand: 'EtiologyCrudCommand',
-    ConceptCrudCommand: 'ConceptCrudCommand',
-    OutageCrudCommand: 'OutageCrudCommand',
-    CaseTypeColSetCrudCommand: 'CaseTypeColSetCrudCommand',
-    CaseTypeColSetMemberCrudCommand: 'CaseTypeColSetMemberCrudCommand',
-    CaseSetDataCollectionLinkCrudCommand: 'CaseSetDataCollectionLinkCrudCommand',
-    RegionSetShapeCrudCommand: 'RegionSetShapeCrudCommand',
     SiteCrudCommand: 'SiteCrudCommand',
-    RetrieveGeneticSequenceFastaByCaseCommand: 'RetrieveGeneticSequenceFastaByCaseCommand',
-    CaseSetCategoryCrudCommand: 'CaseSetCategoryCrudCommand',
-    SubjectCrudCommand: 'SubjectCrudCommand',
-    DataCollectionSetMemberCrudCommand: 'DataCollectionSetMemberCrudCommand',
-    RetrieveSequencingProtocolsCommand: 'RetrieveSequencingProtocolsCommand',
-    RetrieveCaseSetRightsCommand: 'RetrieveCaseSetRightsCommand',
-    DataCollectionCrudCommand: 'DataCollectionCrudCommand',
-    GetIdentityProvidersCommand: 'GetIdentityProvidersCommand',
-    DimCrudCommand: 'DimCrudCommand',
-    CaseTypeColCrudCommand: 'CaseTypeColCrudCommand',
-    CaseTypeSetMemberCrudCommand: 'CaseTypeSetMemberCrudCommand',
+    RetrieveGeneticSequenceFastaByIdCommand: 'RetrieveGeneticSequenceFastaByIdCommand',
     RetrieveCaseRightsCommand: 'RetrieveCaseRightsCommand',
-    CreateFileForSeqCommand: 'CreateFileForSeqCommand',
-    UpdateUserCommand: 'UpdateUserCommand',
-    SubjectIdentifierCrudCommand: 'SubjectIdentifierCrudCommand',
-    CreateCaseSetCommand: 'CreateCaseSetCommand',
-    CaseTypeCrudCommand: 'CaseTypeCrudCommand',
-    RetrieveLicensesCommand: 'RetrieveLicensesCommand',
-    ContactCrudCommand: 'ContactCrudCommand',
-    RetrieveOrganizationContactCommand: 'RetrieveOrganizationContactCommand',
-    OrganizationSetOrganizationUpdateAssociationCommand: 'OrganizationSetOrganizationUpdateAssociationCommand',
-    ValidateCasesCommand: 'ValidateCasesCommand',
-    RetrieveOwnPermissionsCommand: 'RetrieveOwnPermissionsCommand',
-    ColCrudCommand: 'ColCrudCommand',
-    RetrieveSubRolesCommand: 'RetrieveSubRolesCommand',
-    InviteUserCommand: 'InviteUserCommand',
+    CaseTypeSetCategoryCrudCommand: 'CaseTypeSetCategoryCrudCommand',
+    CreateReadSetsForCasesCommand: 'CreateReadSetsForCasesCommand',
+    ConceptRelationCrudCommand: 'ConceptRelationCrudCommand',
     RetrievePhylogeneticTreeBySequencesCommand: 'RetrievePhylogeneticTreeBySequencesCommand',
-    OrganizationShareCasePolicyCrudCommand: 'OrganizationShareCasePolicyCrudCommand'
+    OutageCrudCommand: 'OutageCrudCommand',
+    CaseTypeCrudCommand: 'CaseTypeCrudCommand',
+    InviteUserCommand: 'InviteUserCommand',
+    CaseCrudCommand: 'CaseCrudCommand',
+    RetrieveInviteUserConstraintsCommand: 'RetrieveInviteUserConstraintsCommand',
+    SubjectCrudCommand: 'SubjectCrudCommand',
+    RetrieveCasesByQueryCommand: 'RetrieveCasesByQueryCommand',
+    CaseSetCrudCommand: 'CaseSetCrudCommand',
+    EtiologicalAgentCrudCommand: 'EtiologicalAgentCrudCommand',
+    RetrieveCaseSetStatsCommand: 'RetrieveCaseSetStatsCommand',
+    DiseaseCrudCommand: 'DiseaseCrudCommand',
+    RetrieveAssemblyProtocolsCommand: 'RetrieveAssemblyProtocolsCommand',
+    OrganizationShareCasePolicyCrudCommand: 'OrganizationShareCasePolicyCrudCommand',
+    UpdateUserCommand: 'UpdateUserCommand',
+    RetrieveSequencingProtocolsCommand: 'RetrieveSequencingProtocolsCommand',
+    CaseTypeSetMemberCrudCommand: 'CaseTypeSetMemberCrudCommand',
+    RetrieveLicensesCommand: 'RetrieveLicensesCommand',
+    DataCollectionCrudCommand: 'DataCollectionCrudCommand',
+    OrganizationSetCrudCommand: 'OrganizationSetCrudCommand',
+    RetrieveOrganizationContactCommand: 'RetrieveOrganizationContactCommand',
+    CaseSetCategoryCrudCommand: 'CaseSetCategoryCrudCommand',
+    RetrieveGeneticSequenceByCaseCommand: 'RetrieveGeneticSequenceByCaseCommand',
+    IdentifierIssuerCrudCommand: 'IdentifierIssuerCrudCommand',
+    RegionSetShapeCrudCommand: 'RegionSetShapeCrudCommand',
+    RetrieveOrganizationAdminNameEmailsCommand: 'RetrieveOrganizationAdminNameEmailsCommand',
+    CreateSeqsForCasesCommand: 'CreateSeqsForCasesCommand',
+    RetrieveOwnPermissionsCommand: 'RetrieveOwnPermissionsCommand',
+    CaseTypeColSetCaseTypeColUpdateAssociationCommand: 'CaseTypeColSetCaseTypeColUpdateAssociationCommand',
+    RetrieveAlleleProfileCommand: 'RetrieveAlleleProfileCommand',
+    CaseSetMemberCrudCommand: 'CaseSetMemberCrudCommand',
+    UploadCasesCommand: 'UploadCasesCommand'
 } as const;
 
 export type CommandName = typeof CommandName[keyof typeof CommandName];
@@ -2256,51 +2235,6 @@ export interface Contact {
     'phone'?: string | null;
 }
 /**
- * A contiguous DNA sequence. Any IUPAC ambiguity codes are allowed in the sequence. A contig is not persistable on its own, but is meant to be part of other objects through composition.  A contig has an id that is equal to the hash code that uniquely identifies it based on its sequence.  A contig is immutable: once created, it cannot be updated. As such, contig IDs can safely be referenced in other models and outside of the application.
- * @export
- * @interface Contig
- */
-export interface Contig {
-    /**
-     * The quality of the result, as a numerical value. A higher score indicates better quality. The range and interpretation of this value is not in scope of the application and must be defined by the user.
-     * @type {number}
-     * @memberof Contig
-     */
-    'qc_score'?: number | null;
-    /**
-     * 
-     * @type {QualityControlResult}
-     * @memberof Contig
-     */
-    'qc_result'?: QualityControlResult;
-    /**
-     * The unique identifier for the object.
-     * @type {string}
-     * @memberof Contig
-     */
-    'id'?: string | null;
-    /**
-     * The sequence in the representation defined by seq_format
-     * @type {string}
-     * @memberof Contig
-     */
-    'seq': string;
-    /**
-     * 
-     * @type {SeqFormat}
-     * @memberof Contig
-     */
-    'seq_format'?: SeqFormat;
-    /**
-     * The length of the sequence. Derived from the sequence if possible and if the value is set to zero. If set to zero and it is not possible to derive the length, an error is raised.
-     * @type {number}
-     * @memberof Contig
-     */
-    'length'?: number;
-}
-
-
-/**
  * 
  * @export
  * @interface CreateCaseSetRequestBody
@@ -2328,68 +2262,31 @@ export interface CreateCaseSetRequestBody {
 /**
  * 
  * @export
- * @interface CreateCasesRequestBody
+ * @interface CreateFileForReadSetRequestBody
  */
-export interface CreateCasesRequestBody {
-    /**
-     * The case type ID that the cases belong to.
-     * @type {string}
-     * @memberof CreateCasesRequestBody
-     */
-    'case_type_id': string;
-    /**
-     * The data collection ID in which the cases would be created.
-     * @type {string}
-     * @memberof CreateCasesRequestBody
-     */
-    'created_in_data_collection_id': string;
-    /**
-     * The additional data collections that the cases would be put in, other than the created_in_data_collection.
-     * @type {Array<string>}
-     * @memberof CreateCasesRequestBody
-     */
-    'data_collection_ids': Array<string>;
-    /**
-     * Whether this is an update operation.
-     * @type {boolean}
-     * @memberof CreateCasesRequestBody
-     */
-    'is_update': boolean;
-    /**
-     * The cases to validate.
-     * @type {Array<CaseForCreateUpdate>}
-     * @memberof CreateCasesRequestBody
-     */
-    'cases': Array<CaseForCreateUpdate>;
-}
-/**
- * 
- * @export
- * @interface CreateFileForForReadSetRequestBody
- */
-export interface CreateFileForForReadSetRequestBody {
+export interface CreateFileForReadSetRequestBody {
     /**
      * The content of the file to create as base64 encoded bytes.
      * @type {string}
-     * @memberof CreateFileForForReadSetRequestBody
+     * @memberof CreateFileForReadSetRequestBody
      */
     'file_content': string;
     /**
      * Whether the file is for the forward reads (True) or reverse reads (False).
      * @type {boolean}
-     * @memberof CreateFileForForReadSetRequestBody
+     * @memberof CreateFileForReadSetRequestBody
      */
     'is_fwd': boolean;
     /**
      * 
      * @type {ReadsFileFormat}
-     * @memberof CreateFileForForReadSetRequestBody
+     * @memberof CreateFileForReadSetRequestBody
      */
     'file_format'?: ReadsFileFormat;
     /**
      * 
      * @type {FileCompression}
-     * @memberof CreateFileForForReadSetRequestBody
+     * @memberof CreateFileForReadSetRequestBody
      */
     'file_compression'?: FileCompression;
 }
@@ -2509,6 +2406,23 @@ export interface DataCollectionSetMember {
      */
     'data_collection'?: DataCollection;
 }
+/**
+ * 
+ * @export
+ * @ {string}
+ */
+
+export const DataIssueType = {
+    MISSING: 'MISSING',
+    INVALID: 'INVALID',
+    UNAUTHORIZED: 'UNAUTHORIZED',
+    CONFLICT: 'CONFLICT',
+    DERIVED: 'DERIVED'
+} as const;
+
+export type DataIssueType = typeof DataIssueType[keyof typeof DataIssueType];
+
+
 /**
  * @type Detail
  * @export
@@ -2723,6 +2637,31 @@ export interface ExternalIdentifier {
 }
 
 
+/**
+ * An external identifier, defined as the combination of (identifier issuer, identifier), intended for an upload operation. The identifier issuer can be given either as its code or ID to facilitate the upload operation where applicable. The model is immutable (frozen) to allow its use in sets and as dictionary keys.
+ * @export
+ * @interface ExternalIdentifierForUpload
+ */
+export interface ExternalIdentifierForUpload {
+    /**
+     * The UUID of the identifier issuer that issued the identifier. Must be present if the identifier_issuer_code is not present.
+     * @type {string}
+     * @memberof ExternalIdentifierForUpload
+     */
+    'identifier_issuer_id'?: string | null;
+    /**
+     * The code of the identifier issuer that issued the identifier. Must be present if the identifier_issuer_id is not present.
+     * @type {string}
+     * @memberof ExternalIdentifierForUpload
+     */
+    'identifier_issuer_code'?: string | null;
+    /**
+     * The external identifier
+     * @type {string}
+     * @memberof ExternalIdentifierForUpload
+     */
+    'external_id': string;
+}
 /**
  * 
  * @export
@@ -3101,25 +3040,6 @@ export type MembersInner = number | string;
 /**
  * 
  * @export
- * @interface ModelFile
- */
-export interface ModelFile {
-    /**
-     * The unique identifier for the object.
-     * @type {string}
-     * @memberof ModelFile
-     */
-    'id'?: string | null;
-    /**
-     * The content of the file.
-     * @type {File}
-     * @memberof ModelFile
-     */
-    'content': File;
-}
-/**
- * 
- * @export
  * @ {string}
  */
 
@@ -3133,6 +3053,21 @@ export const OAuthFlow = {
 } as const;
 
 export type OAuthFlow = typeof OAuthFlow[keyof typeof OAuthFlow];
+
+
+/**
+ * 
+ * @export
+ * @ {string}
+ */
+
+export const OnExistsUploadAction = {
+    ERROR: 'ERROR',
+    UPDATE: 'UPDATE',
+    SKIP: 'SKIP'
+} as const;
+
+export type OnExistsUploadAction = typeof OnExistsUploadAction[keyof typeof OnExistsUploadAction];
 
 
 /**
@@ -3687,149 +3622,60 @@ export interface PhylogeneticTree {
 
 
 /**
- * @type PropsValue
+ * A single read set to be uploaded and associated with both an existing case in casedb and a potentially existing sample in seqdb.  The sample can be identified in seqdb either by its internal ID (sample_id) or by an external identifier (external_sample_id). The ID of created read set is intended to be added to the corresponding case in casedb as the content of the given case type column.    PARENT CLASS DOCUMENTATION   IsNewIdMixin:  Mixin that adds an is_new_id field to indicate whether the model instance is new and has an externally assigned ID rather than one assigned by the system. Assumes that the inheriting model also has an \'id\' field.  Additional validation: - If is_new_id is True, the model id field field may not be None or NULL_ID.
  * @export
+ * @interface ReadSetForUpload
  */
-export type PropsValue = number | string;
-
-/**
- * 
- * @export
- * @ {string}
- */
-
-export const QualityControlResult = {
-    PASS: 'PASS',
-    WARN: 'WARN',
-    FAIL: 'FAIL'
-} as const;
-
-export type QualityControlResult = typeof QualityControlResult[keyof typeof QualityControlResult];
-
-
-/**
- * 
- * @export
- * @interface ReadSet
- */
-export interface ReadSet {
+export interface ReadSetForUpload {
     /**
-     * The quality of the result, as a numerical value. A higher score indicates better quality. The range and interpretation of this value is not in scope of the application and must be defined by the user.
-     * @type {number}
-     * @memberof ReadSet
+     * Indicates whether the model instance is both new (not yet stored) and its ID is assigned outside the system, e.g. for having the same IDs between different environments.
+     * @type {boolean}
+     * @memberof ReadSetForUpload
      */
-    'qc_score'?: number | null;
-    /**
-     * 
-     * @type {QualityControlResult}
-     * @memberof ReadSet
-     */
-    'qc_result'?: QualityControlResult;
-    /**
-     * A unique code for the instance, e.g. for external reference. Defaults to a UUID4.
-     * @type {string}
-     * @memberof ReadSet
-     */
-    'code'?: string;
-    /**
-     * The unique identifier for the sample from which these results were obtained. FOREIGN KEY
-     * @type {string}
-     * @memberof ReadSet
-     */
-    'sample_id': string;
-    /**
-     * 
-     * @type {Sample}
-     * @memberof ReadSet
-     */
-    'sample'?: Sample;
+    'is_new_id'?: boolean;
     /**
      * The unique identifier for the object.
      * @type {string}
-     * @memberof ReadSet
+     * @memberof ReadSetForUpload
      */
     'id'?: string | null;
     /**
-     * The unique identifier for the sequencing protocol. FOREIGN KEY
+     * The UUID of the case that the read set is associated with. If not available, the null ID is put.
      * @type {string}
-     * @memberof ReadSet
+     * @memberof ReadSetForUpload
      */
-    'sequencing_protocol_id': string;
+    'case_id'?: string;
+    /**
+     * The ID of the case type column with column type genetic reads that the read set is or will be associated with.
+     * @type {string}
+     * @memberof ReadSetForUpload
+     */
+    'case_type_col_id': string;
+    /**
+     * The UUID of the sample in seqdb that the read set is associated with. If not available, the null ID is put. Must be provided if external_sample_id is not provided.
+     * @type {string}
+     * @memberof ReadSetForUpload
+     */
+    'sample_id'?: string;
     /**
      * 
-     * @type {SequencingProtocol}
-     * @memberof ReadSet
+     * @type {ExternalIdentifierForUpload}
+     * @memberof ReadSetForUpload
      */
-    'sequencing_protocol'?: SequencingProtocol;
+    'external_sample_id'?: ExternalIdentifierForUpload;
     /**
-     * The URI of the forward read set. In case of single-end reads, this is the only read set.
+     * The UUID of the sequencing protocol, if available. If not available, the null ID is put. Must be present if sequencing_protocol_code is not present. The use of sequencing_protocol_id is preferred over sequencing_protocol_code since the latter may change.
      * @type {string}
-     * @memberof ReadSet
+     * @memberof ReadSetForUpload
      */
-    'fwd_uri'?: string | null;
+    'sequencing_protocol_id'?: string;
     /**
-     * The URI of the reverse read set, if any.
+     * The code of the sequencing protocol. Must be present if sequencing_protocol_id is not present. The use of sequencing_protocol_code is meant for situations where the sequencing_protocol_id is not known, but the code is and/or improves human interpretation.
      * @type {string}
-     * @memberof ReadSet
+     * @memberof ReadSetForUpload
      */
-    'rev_uri'?: string | null;
-    /**
-     * The unique file identifier for the forward read set. In case of single-end reads, this is the only read set. FOREIGN KEY
-     * @type {string}
-     * @memberof ReadSet
-     */
-    'fwd_file_id'?: string | null;
-    /**
-     * 
-     * @type {any}
-     * @memberof ReadSet
-     */
-    'fwd_file'?: any;
-    /**
-     * The unique file identifier for the reverse read set, if any.
-     * @type {string}
-     * @memberof ReadSet
-     */
-    'rev_file_id'?: string | null;
-    /**
-     * 
-     * @type {any}
-     * @memberof ReadSet
-     */
-    'rev_file'?: any;
-    /**
-     * 
-     * @type {ReadsFileFormat}
-     * @memberof ReadSet
-     */
-    'file_format'?: ReadsFileFormat;
-    /**
-     * 
-     * @type {FileCompression}
-     * @memberof ReadSet
-     */
-    'file_compression'?: FileCompression;
-    /**
-     * The first 128 bits of the SHA256 hash of the uncompressed FASTQ file representation of the forward read set.
-     * @type {string}
-     * @memberof ReadSet
-     */
-    'fwd_reads_hash'?: string | null;
-    /**
-     * The first 128 bits of the SHA256 hash of the uncompressed FASTQ file representation of the reverse read set.
-     * @type {string}
-     * @memberof ReadSet
-     */
-    'rev_reads_hash'?: string | null;
-    /**
-     * The code of the sequencing run.
-     * @type {string}
-     * @memberof ReadSet
-     */
-    'sequencing_run_code'?: string | null;
+    'sequencing_protocol_code'?: string | null;
 }
-
-
 /**
  * 
  * @export
@@ -4042,25 +3888,6 @@ export interface RegionSetShape {
 /**
  * 
  * @export
- * @interface RetrieveAlleleProfileRequestBody
- */
-export interface RetrieveAlleleProfileRequestBody {
-    /**
-     * The ID of the genetic sequence case type column to use.
-     * @type {string}
-     * @memberof RetrieveAlleleProfileRequestBody
-     */
-    'genetic_sequence_case_type_col_id': string;
-    /**
-     * The IDs of the cases to retrieve genetic sequences for.
-     * @type {Array<string>}
-     * @memberof RetrieveAlleleProfileRequestBody
-     */
-    'case_ids': Array<string>;
-}
-/**
- * 
- * @export
  * @interface RetrieveCaseSetStatsRequestBody
  */
 export interface RetrieveCaseSetStatsRequestBody {
@@ -4189,166 +4016,6 @@ export interface RetrievePhylogeneticTreeRequestBody {
 /**
  * 
  * @export
- * @interface Sample
- */
-export interface Sample {
-    /**
-     * A unique code for the instance, e.g. for external reference. Defaults to a UUID4.
-     * @type {string}
-     * @memberof Sample
-     */
-    'code'?: string;
-    /**
-     * The unique identifier for the object.
-     * @type {string}
-     * @memberof Sample
-     */
-    'id'?: string | null;
-    /**
-     * The ID of the data collection where the sample was created. FOREIGN KEY
-     * @type {string}
-     * @memberof Sample
-     */
-    'created_in_data_collection_id': string;
-    /**
-     * 
-     * @type {DataCollection}
-     * @memberof Sample
-     */
-    'created_in_data_collection'?: DataCollection;
-    /**
-     * The properties of the sample.
-     * @type {{ [key: string]: PropsValue; }}
-     * @memberof Sample
-     */
-    'props'?: { [key: string]: PropsValue; };
-}
-/**
- * 
- * @export
- * @interface Seq
- */
-export interface Seq {
-    /**
-     * The quality of the result, as a numerical value. A higher score indicates better quality. The range and interpretation of this value is not in scope of the application and must be defined by the user.
-     * @type {number}
-     * @memberof Seq
-     */
-    'qc_score'?: number | null;
-    /**
-     * 
-     * @type {QualityControlResult}
-     * @memberof Seq
-     */
-    'qc_result'?: QualityControlResult;
-    /**
-     * A unique code for the instance, e.g. for external reference. Defaults to a UUID4.
-     * @type {string}
-     * @memberof Seq
-     */
-    'code'?: string;
-    /**
-     * The unique identifier for the sample from which these results were obtained. FOREIGN KEY
-     * @type {string}
-     * @memberof Seq
-     */
-    'sample_id': string;
-    /**
-     * 
-     * @type {Sample}
-     * @memberof Seq
-     */
-    'sample'?: Sample;
-    /**
-     * The unique identifier for the object.
-     * @type {string}
-     * @memberof Seq
-     */
-    'id'?: string | null;
-    /**
-     * The URI of the sequence data, if available.
-     * @type {string}
-     * @memberof Seq
-     */
-    'uri'?: string | null;
-    /**
-     * The unique file identifier for the sequence data. FOREIGN KEY
-     * @type {string}
-     * @memberof Seq
-     */
-    'file_id'?: string | null;
-    /**
-     * 
-     * @type {any}
-     * @memberof Seq
-     */
-    'file'?: any;
-    /**
-     * 
-     * @type {SeqFileFormat}
-     * @memberof Seq
-     */
-    'file_format'?: SeqFileFormat;
-    /**
-     * 
-     * @type {FileCompression}
-     * @memberof Seq
-     */
-    'file_compression'?: FileCompression;
-    /**
-     * The first 128 bits of the SHA256 hash of the uncompressed sequence file representation.
-     * @type {string}
-     * @memberof Seq
-     */
-    'file_hash'?: string | null;
-    /**
-     * The unique identifier for the single read set used to generate the assembly, if available. FOREIGN KEY
-     * @type {string}
-     * @memberof Seq
-     */
-    'read_set_id'?: string | null;
-    /**
-     * 
-     * @type {ReadSet}
-     * @memberof Seq
-     */
-    'read_set'?: ReadSet;
-    /**
-     * The unique identifier for a potential second read set used to generate the assembly. FOREIGN KEY
-     * @type {string}
-     * @memberof Seq
-     */
-    'read_set2_id'?: string | null;
-    /**
-     * 
-     * @type {ReadSet}
-     * @memberof Seq
-     */
-    'read_set2'?: ReadSet;
-    /**
-     * The unique identifier for the assembly protocol used to generate the sequence from reads, if available. FOREIGN KEY
-     * @type {string}
-     * @memberof Seq
-     */
-    'assembly_protocol_id'?: string | null;
-    /**
-     * 
-     * @type {AssemblyProtocol}
-     * @memberof Seq
-     */
-    'assembly_protocol'?: AssemblyProtocol;
-    /**
-     * The contigs that make up the sequence. No duplicate contigs are allowed. If zero contigs are provided, the sequence is considered to be not available yet.
-     * @type {Array<Contig>}
-     * @memberof Seq
-     */
-    'contigs'?: Array<Contig>;
-}
-
-
-/**
- * 
- * @export
  * @ {string}
  */
 
@@ -4360,22 +4027,62 @@ export type SeqFileFormat = typeof SeqFileFormat[keyof typeof SeqFileFormat];
 
 
 /**
- * 
+ * A single sequence to be uploaded and associated with both an existing case in casedb and a potentially existing sample in seqdb.  The sample can be identified in seqdb either by its internal ID (sample_id) or by an external identifier (external_sample_id). The ID of created sequence is intended to be added to the corresponding case in casedb as the content of the given case type column.    PARENT CLASS DOCUMENTATION   IsNewIdMixin:  Mixin that adds an is_new_id field to indicate whether the model instance is new and has an externally assigned ID rather than one assigned by the system. Assumes that the inheriting model also has an \'id\' field.  Additional validation: - If is_new_id is True, the model id field field may not be None or NULL_ID.
  * @export
- * @ {string}
+ * @interface SeqForUpload
  */
-
-export const SeqFormat = {
-    HASH_ONLY: 'HASH_ONLY',
-    STR_DNA: 'STR_DNA',
-    STR_DNA_INCL_GAP: 'STR_DNA_INCL_GAP'
-} as const;
-
-export type SeqFormat = typeof SeqFormat[keyof typeof SeqFormat];
-
-
+export interface SeqForUpload {
+    /**
+     * Indicates whether the model instance is both new (not yet stored) and its ID is assigned outside the system, e.g. for having the same IDs between different environments.
+     * @type {boolean}
+     * @memberof SeqForUpload
+     */
+    'is_new_id'?: boolean;
+    /**
+     * The unique identifier for the object.
+     * @type {string}
+     * @memberof SeqForUpload
+     */
+    'id'?: string | null;
+    /**
+     * The UUID of the case that the read set is associated with. If not available, the null ID is put.
+     * @type {string}
+     * @memberof SeqForUpload
+     */
+    'case_id'?: string;
+    /**
+     * The ID of the case type column that the sequence is or will be associated with.
+     * @type {string}
+     * @memberof SeqForUpload
+     */
+    'case_type_col_id': string;
+    /**
+     * The UUID of the sample in seqdb that the sequence is associated with. If not available, the null ID is put. Must be provided if external_sample_id is not provided.
+     * @type {string}
+     * @memberof SeqForUpload
+     */
+    'sample_id'?: string;
+    /**
+     * 
+     * @type {ExternalIdentifierForUpload}
+     * @memberof SeqForUpload
+     */
+    'external_sample_id'?: ExternalIdentifierForUpload;
+    /**
+     * The UUID of the assembly protocol, if available. If not available, the null ID is put. Must be present if assembly_protocol_code is not present. The use of assembly_protocol_id is preferred over assembly_protocol_code since the latter may change.
+     * @type {string}
+     * @memberof SeqForUpload
+     */
+    'assembly_protocol_id'?: string;
+    /**
+     * The code of the assembly protocol. Must be present if assembly_protocol_id is not present. The use of assembly_protocol_code is meant for situations where the assembly_protocol_id is not known, but the code is and/or improves human interpretation.
+     * @type {string}
+     * @memberof SeqForUpload
+     */
+    'assembly_protocol_code'?: string | null;
+}
 /**
- * 
+ * The protocol used for sequencing a sample.    PARENT CLASS DOCUMENTATION   ProtocolMixin:  Mixin class to add protocol related fields to a model.
  * @export
  * @interface SequencingProtocol
  */
@@ -4477,7 +4184,7 @@ export interface EpiSubject {
      * @type {{ [key: string]: string; }}
      * @memberof EpiSubject
      */
-    'external_ids'?: { [key: string]: string; } | null;
+    'external_identifiers'?: { [key: string]: string; } | null;
     /**
      * A dictionary containing the content of the subject
      * @type {{ [key: string]: any; }}
@@ -5333,6 +5040,147 @@ export interface UpdateUserRequestBody {
     'organization_id': string | null;
 }
 /**
+ * Upload a batch of cases along with their associated data and return an upload result. The upload can be stopped after the verification step by setting the \'verify_only\' property to True, so that the returned upload result only contains the verification results.  The data are uploaded as a single atomic unit of work, so that either all data are successfully uploaded or none are.
+ * @export
+ * @interface UploadCasesCommand
+ */
+export interface UploadCasesCommand {
+    /**
+     * If true, the upload is only verified but not actually performed.
+     * @type {boolean}
+     * @memberof UploadCasesCommand
+     */
+    'verify_only'?: boolean;
+    /**
+     * 
+     * @type {OnExistsUploadAction}
+     * @memberof UploadCasesCommand
+     */
+    'on_exists'?: OnExistsUploadAction;
+    /**
+     * The ID of the command
+     * @type {string}
+     * @memberof UploadCasesCommand
+     */
+    'id'?: string;
+    /**
+     * 
+     * @type {User}
+     * @memberof UploadCasesCommand
+     */
+    'user'?: User;
+    /**
+     * The created timestamp of the command
+     * @type {string}
+     * @memberof UploadCasesCommand
+     */
+    'created_at'?: string;
+    /**
+     * 
+     * @type {{ [key: string]: any; }}
+     * @memberof UploadCasesCommand
+     */
+    'props'?: { [key: string]: any; };
+    /**
+     * The case type ID that all the cases must belong to. All cases in the case set must have this case type ID.
+     * @type {string}
+     * @memberof UploadCasesCommand
+     */
+    'case_type_id': string;
+    /**
+     * The created in data collection ID that all the cases must belong to. All cases in the case set must have this created in data collection ID.
+     * @type {string}
+     * @memberof UploadCasesCommand
+     */
+    'created_in_data_collection_id': string;
+    /**
+     * 
+     * @type {CaseBatchForUpload}
+     * @memberof UploadCasesCommand
+     */
+    'case_batch': CaseBatchForUpload;
+}
+
+
+/**
+ * Represents a log item for an upload result, contain a timestamp, code, message and severity.
+ * @export
+ * @interface UploadLogItem
+ */
+export interface UploadLogItem {
+    /**
+     * The UTC timestamp when the log item was created.
+     * @type {string}
+     * @memberof UploadLogItem
+     */
+    'timestamp'?: string;
+    /**
+     * A code categorizing the log item.
+     * @type {string}
+     * @memberof UploadLogItem
+     */
+    'code': string;
+    /**
+     * The log message describing the event or information.
+     * @type {string}
+     * @memberof UploadLogItem
+     */
+    'message': string;
+    /**
+     * 
+     * @type {LogLevel}
+     * @memberof UploadLogItem
+     */
+    'severity': LogLevel;
+}
+
+
+/**
+ * Represents the result of an upload operation, including upload status and logs.  Additional validation: - If the status is successful (NOT_FAILED), there must be no error log items. - If the status is failed, there must be at least one error log item.
+ * @export
+ * @interface UploadResult
+ */
+export interface UploadResult {
+    /**
+     * The unique identifier for the specific object instance that this result pertains to, if applicable. E.g. the object that was created or updated as part of the upload.
+     * @type {string}
+     * @memberof UploadResult
+     */
+    'id'?: string | null;
+    /**
+     * 
+     * @type {UploadStatus}
+     * @memberof UploadResult
+     */
+    'status'?: UploadStatus;
+    /**
+     * A list of log items capturing messages and events that occurred during the upload operation.
+     * @type {Array<UploadLogItem>}
+     * @memberof UploadResult
+     */
+    'logs'?: Array<UploadLogItem>;
+}
+
+
+/**
+ * 
+ * @export
+ * @ {string}
+ */
+
+export const UploadStatus = {
+    PENDING: 'PENDING',
+    SKIPPED: 'SKIPPED',
+    FAILED: 'FAILED',
+    CREATED: 'CREATED',
+    UPDATED: 'UPDATED',
+    PROCESSED: 'PROCESSED'
+} as const;
+
+export type UploadStatus = typeof UploadStatus[keyof typeof UploadStatus];
+
+
+/**
  * 
  * @export
  * @interface User
@@ -5740,62 +5588,6 @@ export interface UserShareCasePolicy {
      * @memberof UserShareCasePolicy
      */
     'from_data_collection'?: DataCollection;
-}
-/**
- * 
- * @export
- * @interface ValidateCasesRequestBody
- */
-export interface ValidateCasesRequestBody {
-    /**
-     * The case type ID that the cases belong to.
-     * @type {string}
-     * @memberof ValidateCasesRequestBody
-     */
-    'case_type_id': string;
-    /**
-     * The data collection ID in which the cases would be created.
-     * @type {string}
-     * @memberof ValidateCasesRequestBody
-     */
-    'created_in_data_collection_id': string;
-    /**
-     * The additional data collections that the cases would be put in, other than the created_in_data_collection.
-     * @type {Array<string>}
-     * @memberof ValidateCasesRequestBody
-     */
-    'data_collection_ids': Array<string>;
-    /**
-     * Whether this is an update operation.
-     * @type {boolean}
-     * @memberof ValidateCasesRequestBody
-     */
-    'is_update': boolean;
-    /**
-     * The cases to validate.
-     * @type {Array<CaseForCreateUpdate>}
-     * @memberof ValidateCasesRequestBody
-     */
-    'cases': Array<CaseForCreateUpdate>;
-}
-/**
- * 
- * @export
- * @interface ValidatedCase
- */
-export interface ValidatedCase {
-    /**
-     * 
-     * @type {CaseForCreateUpdate}
-     * @memberof ValidatedCase
-     */
-    'case': CaseForCreateUpdate;
-    /**
-     * The data issues found for the case.
-     * @type {Array<CaseDataIssue>}
-     * @memberof ValidatedCase
-     */
-    'data_issues': Array<CaseDataIssue>;
 }
 /**
  * 
@@ -16560,57 +16352,21 @@ const CaseApiAxiosParamCreator = function (configuration?: Configuration) {
             };
         },
         /**
-         * Create the corresponding cases and return them.
-         * @summary Create Cases
-         * @param {CreateCasesRequestBody} createCasesRequestBody 
-         * @param {*} [options] Override http request option.
-         * @throws {RequiredError}
-         */
-        createCases: async (createCasesRequestBody: CreateCasesRequestBody, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
-            // verify required parameter 'createCasesRequestBody' is not null or undefined
-            assertParamExists('createCases', 'createCasesRequestBody', createCasesRequestBody)
-            const localVarPath = `/v1/create/cases`;
-            // use dummy base URL string because the URL constructor only accepts absolute URLs.
-            const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
-            let baseOptions;
-            if (configuration) {
-                baseOptions = configuration.baseOptions;
-            }
-
-            const localVarRequestOptions = { method: 'POST', ...baseOptions, ...options};
-            const localVarHeaderParameter = {} as any;
-            const localVarQueryParameter = {} as any;
-
-
-    
-            localVarHeaderParameter['Content-Type'] = 'application/json';
-
-            setSearchParams(localVarUrlObj, localVarQueryParameter);
-            let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
-            localVarRequestOptions.headers = {...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers};
-            localVarRequestOptions.data = serializeDataIfNeeded(createCasesRequestBody, localVarRequestOptions, configuration)
-
-            return {
-                url: toPathString(localVarUrlObj),
-                options: localVarRequestOptions,
-            };
-        },
-        /**
          * Create a file for a read set associated with a case.
          * @summary Create File For Reads Set
          * @param {string} caseId 
          * @param {string} caseTypeColId 
-         * @param {CreateFileForForReadSetRequestBody} createFileForForReadSetRequestBody 
+         * @param {CreateFileForReadSetRequestBody} createFileForReadSetRequestBody 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        createFileForReadSet: async (caseId: string, caseTypeColId: string, createFileForForReadSetRequestBody: CreateFileForForReadSetRequestBody, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
+        createFileForReadSet: async (caseId: string, caseTypeColId: string, createFileForReadSetRequestBody: CreateFileForReadSetRequestBody, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
             // verify required parameter 'caseId' is not null or undefined
             assertParamExists('createFileForReadSet', 'caseId', caseId)
             // verify required parameter 'caseTypeColId' is not null or undefined
             assertParamExists('createFileForReadSet', 'caseTypeColId', caseTypeColId)
-            // verify required parameter 'createFileForForReadSetRequestBody' is not null or undefined
-            assertParamExists('createFileForReadSet', 'createFileForForReadSetRequestBody', createFileForForReadSetRequestBody)
+            // verify required parameter 'createFileForReadSetRequestBody' is not null or undefined
+            assertParamExists('createFileForReadSet', 'createFileForReadSetRequestBody', createFileForReadSetRequestBody)
             const localVarPath = `/v1/create_file_for_read_set/{case_id}/{case_type_col_id}`
                 .replace(`{${"case_id"}}`, encodeURIComponent(String(caseId)))
                 .replace(`{${"case_type_col_id"}}`, encodeURIComponent(String(caseTypeColId)));
@@ -16632,7 +16388,7 @@ const CaseApiAxiosParamCreator = function (configuration?: Configuration) {
             setSearchParams(localVarUrlObj, localVarQueryParameter);
             let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
             localVarRequestOptions.headers = {...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers};
-            localVarRequestOptions.data = serializeDataIfNeeded(createFileForForReadSetRequestBody, localVarRequestOptions, configuration)
+            localVarRequestOptions.data = serializeDataIfNeeded(createFileForReadSetRequestBody, localVarRequestOptions, configuration)
 
             return {
                 url: toPathString(localVarUrlObj),
@@ -16686,13 +16442,13 @@ const CaseApiAxiosParamCreator = function (configuration?: Configuration) {
         /**
          * Create read sets for a set of cases based on a read set case type column.
          * @summary Create Reads Sets For Cases
-         * @param {Array<CaseReadSet>} caseReadSet 
+         * @param {Array<ReadSetForUpload>} readSetForUpload 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        createReadSetsForCases: async (caseReadSet: Array<CaseReadSet>, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
-            // verify required parameter 'caseReadSet' is not null or undefined
-            assertParamExists('createReadSetsForCases', 'caseReadSet', caseReadSet)
+        createReadSetsForCases: async (readSetForUpload: Array<ReadSetForUpload>, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
+            // verify required parameter 'readSetForUpload' is not null or undefined
+            assertParamExists('createReadSetsForCases', 'readSetForUpload', readSetForUpload)
             const localVarPath = `/v1/create_read_sets_for_cases`;
             // use dummy base URL string because the URL constructor only accepts absolute URLs.
             const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
@@ -16712,7 +16468,7 @@ const CaseApiAxiosParamCreator = function (configuration?: Configuration) {
             setSearchParams(localVarUrlObj, localVarQueryParameter);
             let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
             localVarRequestOptions.headers = {...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers};
-            localVarRequestOptions.data = serializeDataIfNeeded(caseReadSet, localVarRequestOptions, configuration)
+            localVarRequestOptions.data = serializeDataIfNeeded(readSetForUpload, localVarRequestOptions, configuration)
 
             return {
                 url: toPathString(localVarUrlObj),
@@ -16722,13 +16478,13 @@ const CaseApiAxiosParamCreator = function (configuration?: Configuration) {
         /**
          * Create sequences for a set of cases based on a genetic sequence case type column.
          * @summary Create Sequences For Cases
-         * @param {Array<CaseSeq>} caseSeq 
+         * @param {Array<SeqForUpload>} seqForUpload 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        createSeqsForCases: async (caseSeq: Array<CaseSeq>, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
-            // verify required parameter 'caseSeq' is not null or undefined
-            assertParamExists('createSeqsForCases', 'caseSeq', caseSeq)
+        createSeqsForCases: async (seqForUpload: Array<SeqForUpload>, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
+            // verify required parameter 'seqForUpload' is not null or undefined
+            assertParamExists('createSeqsForCases', 'seqForUpload', seqForUpload)
             const localVarPath = `/v1/create_seqs_for_cases`;
             // use dummy base URL string because the URL constructor only accepts absolute URLs.
             const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
@@ -16748,7 +16504,7 @@ const CaseApiAxiosParamCreator = function (configuration?: Configuration) {
             setSearchParams(localVarUrlObj, localVarQueryParameter);
             let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
             localVarRequestOptions.headers = {...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers};
-            localVarRequestOptions.data = serializeDataIfNeeded(caseSeq, localVarRequestOptions, configuration)
+            localVarRequestOptions.data = serializeDataIfNeeded(seqForUpload, localVarRequestOptions, configuration)
 
             return {
                 url: toPathString(localVarUrlObj),
@@ -17593,42 +17349,6 @@ const CaseApiAxiosParamCreator = function (configuration?: Configuration) {
             let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
             localVarRequestOptions.headers = {...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers};
             localVarRequestOptions.data = serializeDataIfNeeded(geneticDistanceProtocol, localVarRequestOptions, configuration)
-
-            return {
-                url: toPathString(localVarUrlObj),
-                options: localVarRequestOptions,
-            };
-        },
-        /**
-         * Retrieve a set of allele profiles based on a set of case IDs and a genetic distance case type column.
-         * @summary Retrieve Allele Profile
-         * @param {RetrieveAlleleProfileRequestBody} retrieveAlleleProfileRequestBody 
-         * @param {*} [options] Override http request option.
-         * @throws {RequiredError}
-         */
-        retrieveAlleleProfile: async (retrieveAlleleProfileRequestBody: RetrieveAlleleProfileRequestBody, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
-            // verify required parameter 'retrieveAlleleProfileRequestBody' is not null or undefined
-            assertParamExists('retrieveAlleleProfile', 'retrieveAlleleProfileRequestBody', retrieveAlleleProfileRequestBody)
-            const localVarPath = `/v1/retrieve/allele_profile`;
-            // use dummy base URL string because the URL constructor only accepts absolute URLs.
-            const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
-            let baseOptions;
-            if (configuration) {
-                baseOptions = configuration.baseOptions;
-            }
-
-            const localVarRequestOptions = { method: 'POST', ...baseOptions, ...options};
-            const localVarHeaderParameter = {} as any;
-            const localVarQueryParameter = {} as any;
-
-
-    
-            localVarHeaderParameter['Content-Type'] = 'application/json';
-
-            setSearchParams(localVarUrlObj, localVarQueryParameter);
-            let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
-            localVarRequestOptions.headers = {...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers};
-            localVarRequestOptions.data = serializeDataIfNeeded(retrieveAlleleProfileRequestBody, localVarRequestOptions, configuration)
 
             return {
                 url: toPathString(localVarUrlObj),
@@ -18926,16 +18646,16 @@ const CaseApiAxiosParamCreator = function (configuration?: Configuration) {
             };
         },
         /**
-         * Validate case data and return a validation report.
-         * @summary Validate Cases
-         * @param {ValidateCasesRequestBody} validateCasesRequestBody 
+         * Upload a batch of cases along with their associated data and return an upload result. The upload can be stopped after the verification step by setting the \'verify_only\' property to True, so that the returned upload result only contains the verification results.  The data are uploaded as a single atomic unit of work, so that either all data are successfully uploaded or none are.
+         * @summary Upload Cases
+         * @param {UploadCasesCommand} uploadCasesCommand 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        validateCases: async (validateCasesRequestBody: ValidateCasesRequestBody, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
-            // verify required parameter 'validateCasesRequestBody' is not null or undefined
-            assertParamExists('validateCases', 'validateCasesRequestBody', validateCasesRequestBody)
-            const localVarPath = `/v1/validate/cases`;
+        uploadCases: async (uploadCasesCommand: UploadCasesCommand, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
+            // verify required parameter 'uploadCasesCommand' is not null or undefined
+            assertParamExists('uploadCases', 'uploadCasesCommand', uploadCasesCommand)
+            const localVarPath = `/v1/upload/cases`;
             // use dummy base URL string because the URL constructor only accepts absolute URLs.
             const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
             let baseOptions;
@@ -18954,7 +18674,7 @@ const CaseApiAxiosParamCreator = function (configuration?: Configuration) {
             setSearchParams(localVarUrlObj, localVarQueryParameter);
             let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
             localVarRequestOptions.headers = {...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers};
-            localVarRequestOptions.data = serializeDataIfNeeded(validateCasesRequestBody, localVarRequestOptions, configuration)
+            localVarRequestOptions.data = serializeDataIfNeeded(uploadCasesCommand, localVarRequestOptions, configuration)
 
             return {
                 url: toPathString(localVarUrlObj),
@@ -21518,29 +21238,16 @@ const CaseApiFp = function(configuration?: Configuration) {
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
         /**
-         * Create the corresponding cases and return them.
-         * @summary Create Cases
-         * @param {CreateCasesRequestBody} createCasesRequestBody 
-         * @param {*} [options] Override http request option.
-         * @throws {RequiredError}
-         */
-        async createCases(createCasesRequestBody: CreateCasesRequestBody, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<Array<Case>>> {
-            const localVarAxiosArgs = await localVarAxiosParamCreator.createCases(createCasesRequestBody, options);
-            const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
-            const localVarOperationServerBasePath = operationServerMap['CaseApi.createCases']?.[localVarOperationServerIndex]?.url;
-            return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
-        },
-        /**
          * Create a file for a read set associated with a case.
          * @summary Create File For Reads Set
          * @param {string} caseId 
          * @param {string} caseTypeColId 
-         * @param {CreateFileForForReadSetRequestBody} createFileForForReadSetRequestBody 
+         * @param {CreateFileForReadSetRequestBody} createFileForReadSetRequestBody 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        async createFileForReadSet(caseId: string, caseTypeColId: string, createFileForForReadSetRequestBody: CreateFileForForReadSetRequestBody, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<string>> {
-            const localVarAxiosArgs = await localVarAxiosParamCreator.createFileForReadSet(caseId, caseTypeColId, createFileForForReadSetRequestBody, options);
+        async createFileForReadSet(caseId: string, caseTypeColId: string, createFileForReadSetRequestBody: CreateFileForReadSetRequestBody, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<string>> {
+            const localVarAxiosArgs = await localVarAxiosParamCreator.createFileForReadSet(caseId, caseTypeColId, createFileForReadSetRequestBody, options);
             const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
             const localVarOperationServerBasePath = operationServerMap['CaseApi.createFileForReadSet']?.[localVarOperationServerIndex]?.url;
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
@@ -21563,12 +21270,12 @@ const CaseApiFp = function(configuration?: Configuration) {
         /**
          * Create read sets for a set of cases based on a read set case type column.
          * @summary Create Reads Sets For Cases
-         * @param {Array<CaseReadSet>} caseReadSet 
+         * @param {Array<ReadSetForUpload>} readSetForUpload 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        async createReadSetsForCases(caseReadSet: Array<CaseReadSet>, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<Array<ReadSet>>> {
-            const localVarAxiosArgs = await localVarAxiosParamCreator.createReadSetsForCases(caseReadSet, options);
+        async createReadSetsForCases(readSetForUpload: Array<ReadSetForUpload>, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<Array<ReadSetForUpload>>> {
+            const localVarAxiosArgs = await localVarAxiosParamCreator.createReadSetsForCases(readSetForUpload, options);
             const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
             const localVarOperationServerBasePath = operationServerMap['CaseApi.createReadSetsForCases']?.[localVarOperationServerIndex]?.url;
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
@@ -21576,12 +21283,12 @@ const CaseApiFp = function(configuration?: Configuration) {
         /**
          * Create sequences for a set of cases based on a genetic sequence case type column.
          * @summary Create Sequences For Cases
-         * @param {Array<CaseSeq>} caseSeq 
+         * @param {Array<SeqForUpload>} seqForUpload 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        async createSeqsForCases(caseSeq: Array<CaseSeq>, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<Array<Seq>>> {
-            const localVarAxiosArgs = await localVarAxiosParamCreator.createSeqsForCases(caseSeq, options);
+        async createSeqsForCases(seqForUpload: Array<SeqForUpload>, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<Array<SeqForUpload>>> {
+            const localVarAxiosArgs = await localVarAxiosParamCreator.createSeqsForCases(seqForUpload, options);
             const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
             const localVarOperationServerBasePath = operationServerMap['CaseApi.createSeqsForCases']?.[localVarOperationServerIndex]?.url;
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
@@ -21894,19 +21601,6 @@ const CaseApiFp = function(configuration?: Configuration) {
             const localVarAxiosArgs = await localVarAxiosParamCreator.geneticDistanceProtocolsPutSome(geneticDistanceProtocol, options);
             const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
             const localVarOperationServerBasePath = operationServerMap['CaseApi.geneticDistanceProtocolsPutSome']?.[localVarOperationServerIndex]?.url;
-            return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
-        },
-        /**
-         * Retrieve a set of allele profiles based on a set of case IDs and a genetic distance case type column.
-         * @summary Retrieve Allele Profile
-         * @param {RetrieveAlleleProfileRequestBody} retrieveAlleleProfileRequestBody 
-         * @param {*} [options] Override http request option.
-         * @throws {RequiredError}
-         */
-        async retrieveAlleleProfile(retrieveAlleleProfileRequestBody: RetrieveAlleleProfileRequestBody, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<Array<AlleleProfile>>> {
-            const localVarAxiosArgs = await localVarAxiosParamCreator.retrieveAlleleProfile(retrieveAlleleProfileRequestBody, options);
-            const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
-            const localVarOperationServerBasePath = operationServerMap['CaseApi.retrieveAlleleProfile']?.[localVarOperationServerIndex]?.url;
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
         /**
@@ -22377,16 +22071,16 @@ const CaseApiFp = function(configuration?: Configuration) {
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
         /**
-         * Validate case data and return a validation report.
-         * @summary Validate Cases
-         * @param {ValidateCasesRequestBody} validateCasesRequestBody 
+         * Upload a batch of cases along with their associated data and return an upload result. The upload can be stopped after the verification step by setting the \'verify_only\' property to True, so that the returned upload result only contains the verification results.  The data are uploaded as a single atomic unit of work, so that either all data are successfully uploaded or none are.
+         * @summary Upload Cases
+         * @param {UploadCasesCommand} uploadCasesCommand 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        async validateCases(validateCasesRequestBody: ValidateCasesRequestBody, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<CaseValidationReport>> {
-            const localVarAxiosArgs = await localVarAxiosParamCreator.validateCases(validateCasesRequestBody, options);
+        async uploadCases(uploadCasesCommand: UploadCasesCommand, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<CaseBatchUploadResult>> {
+            const localVarAxiosArgs = await localVarAxiosParamCreator.uploadCases(uploadCasesCommand, options);
             const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
-            const localVarOperationServerBasePath = operationServerMap['CaseApi.validateCases']?.[localVarOperationServerIndex]?.url;
+            const localVarOperationServerBasePath = operationServerMap['CaseApi.uploadCases']?.[localVarOperationServerIndex]?.url;
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
     }
@@ -24761,29 +24455,17 @@ export class CaseApi extends BaseAPI {
     }
 
     /**
-     * Create the corresponding cases and return them.
-     * @summary Create Cases
-     * @param {CreateCasesRequestBody} createCasesRequestBody 
-     * @param {*} [options] Override http request option.
-     * @throws {RequiredError}
-     * @memberof CaseApi
-     */
-    public createCases(createCasesRequestBody: CreateCasesRequestBody, options?: RawAxiosRequestConfig) {
-        return CaseApiFp(this.configuration).createCases(createCasesRequestBody, options).then((request) => request(this.axios, this.configuration.baseUrl));
-    }
-
-    /**
      * Create a file for a read set associated with a case.
      * @summary Create File For Reads Set
      * @param {string} caseId 
      * @param {string} caseTypeColId 
-     * @param {CreateFileForForReadSetRequestBody} createFileForForReadSetRequestBody 
+     * @param {CreateFileForReadSetRequestBody} createFileForReadSetRequestBody 
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
      * @memberof CaseApi
      */
-    public createFileForReadSet(caseId: string, caseTypeColId: string, createFileForForReadSetRequestBody: CreateFileForForReadSetRequestBody, options?: RawAxiosRequestConfig) {
-        return CaseApiFp(this.configuration).createFileForReadSet(caseId, caseTypeColId, createFileForForReadSetRequestBody, options).then((request) => request(this.axios, this.configuration.baseUrl));
+    public createFileForReadSet(caseId: string, caseTypeColId: string, createFileForReadSetRequestBody: CreateFileForReadSetRequestBody, options?: RawAxiosRequestConfig) {
+        return CaseApiFp(this.configuration).createFileForReadSet(caseId, caseTypeColId, createFileForReadSetRequestBody, options).then((request) => request(this.axios, this.configuration.baseUrl));
     }
 
     /**
@@ -24803,25 +24485,25 @@ export class CaseApi extends BaseAPI {
     /**
      * Create read sets for a set of cases based on a read set case type column.
      * @summary Create Reads Sets For Cases
-     * @param {Array<CaseReadSet>} caseReadSet 
+     * @param {Array<ReadSetForUpload>} readSetForUpload 
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
      * @memberof CaseApi
      */
-    public createReadSetsForCases(caseReadSet: Array<CaseReadSet>, options?: RawAxiosRequestConfig) {
-        return CaseApiFp(this.configuration).createReadSetsForCases(caseReadSet, options).then((request) => request(this.axios, this.configuration.baseUrl));
+    public createReadSetsForCases(readSetForUpload: Array<ReadSetForUpload>, options?: RawAxiosRequestConfig) {
+        return CaseApiFp(this.configuration).createReadSetsForCases(readSetForUpload, options).then((request) => request(this.axios, this.configuration.baseUrl));
     }
 
     /**
      * Create sequences for a set of cases based on a genetic sequence case type column.
      * @summary Create Sequences For Cases
-     * @param {Array<CaseSeq>} caseSeq 
+     * @param {Array<SeqForUpload>} seqForUpload 
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
      * @memberof CaseApi
      */
-    public createSeqsForCases(caseSeq: Array<CaseSeq>, options?: RawAxiosRequestConfig) {
-        return CaseApiFp(this.configuration).createSeqsForCases(caseSeq, options).then((request) => request(this.axios, this.configuration.baseUrl));
+    public createSeqsForCases(seqForUpload: Array<SeqForUpload>, options?: RawAxiosRequestConfig) {
+        return CaseApiFp(this.configuration).createSeqsForCases(seqForUpload, options).then((request) => request(this.axios, this.configuration.baseUrl));
     }
 
     /**
@@ -25108,18 +24790,6 @@ export class CaseApi extends BaseAPI {
      */
     public geneticDistanceProtocolsPutSome(geneticDistanceProtocol: Array<GeneticDistanceProtocol>, options?: RawAxiosRequestConfig) {
         return CaseApiFp(this.configuration).geneticDistanceProtocolsPutSome(geneticDistanceProtocol, options).then((request) => request(this.axios, this.configuration.baseUrl));
-    }
-
-    /**
-     * Retrieve a set of allele profiles based on a set of case IDs and a genetic distance case type column.
-     * @summary Retrieve Allele Profile
-     * @param {RetrieveAlleleProfileRequestBody} retrieveAlleleProfileRequestBody 
-     * @param {*} [options] Override http request option.
-     * @throws {RequiredError}
-     * @memberof CaseApi
-     */
-    public retrieveAlleleProfile(retrieveAlleleProfileRequestBody: RetrieveAlleleProfileRequestBody, options?: RawAxiosRequestConfig) {
-        return CaseApiFp(this.configuration).retrieveAlleleProfile(retrieveAlleleProfileRequestBody, options).then((request) => request(this.axios, this.configuration.baseUrl));
     }
 
     /**
@@ -25554,15 +25224,15 @@ export class CaseApi extends BaseAPI {
     }
 
     /**
-     * Validate case data and return a validation report.
-     * @summary Validate Cases
-     * @param {ValidateCasesRequestBody} validateCasesRequestBody 
+     * Upload a batch of cases along with their associated data and return an upload result. The upload can be stopped after the verification step by setting the \'verify_only\' property to True, so that the returned upload result only contains the verification results.  The data are uploaded as a single atomic unit of work, so that either all data are successfully uploaded or none are.
+     * @summary Upload Cases
+     * @param {UploadCasesCommand} uploadCasesCommand 
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
      * @memberof CaseApi
      */
-    public validateCases(validateCasesRequestBody: ValidateCasesRequestBody, options?: RawAxiosRequestConfig) {
-        return CaseApiFp(this.configuration).validateCases(validateCasesRequestBody, options).then((request) => request(this.axios, this.configuration.baseUrl));
+    public uploadCases(uploadCasesCommand: UploadCasesCommand, options?: RawAxiosRequestConfig) {
+        return CaseApiFp(this.configuration).uploadCases(uploadCasesCommand, options).then((request) => request(this.axios, this.configuration.baseUrl));
     }
 }
 

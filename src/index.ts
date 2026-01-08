@@ -82,6 +82,7 @@ export * from './pages/CasesDetailPage';
 export * from './pages/CaseTypesAdminPage';
 export * from './pages/CaseTypeSetsAdminPage';
 export * from './pages/CaseTypeSetCategoriesAdminPage';
+export * from './pages/CaseTypeDimsAdminPage';
 export * from './pages/CaseTypeColsAdminPage';
 export * from './pages/CaseTypeColSetsAdminPage';
 export * from './pages/CaseSetStatusAdminPage';

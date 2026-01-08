@@ -17,7 +17,7 @@ import {
 import { useTranslation } from 'react-i18next';
 import { useStore } from 'zustand';
 
-import type { EpiValidatedCaseWithGeneratedId } from '../../../models/epiUpload';
+import type { CaseUploadResultWithGeneratedId } from '../../../models/epiUpload';
 import {
   createTableStore,
   TableStoreContextProvider,
@@ -88,11 +88,11 @@ export const EpiUploadMapSequences = () => {
     updateAlert();
   }, [updateAlert]);
 
-  const tableStore = useMemo(() => createTableStore<EpiValidatedCaseWithGeneratedId>({
+  const tableStore = useMemo(() => createTableStore<CaseUploadResultWithGeneratedId>({
     idSelectorCallback: (row) => row.generated_id,
   }), []);
 
-  const caseHasColumnContent = useCallback((rows: EpiValidatedCaseWithGeneratedId[], caseTypeCol: CaseTypeCol): boolean => {
+  const caseHasColumnContent = useCallback((rows: CaseUploadResultWithGeneratedId[], caseTypeCol: CaseTypeCol): boolean => {
     return rows.some((row) => {
       const value = EpiCaseUtil.getRowValue(row.case as Case, caseTypeCol, completeCaseType);
       return value && !value?.isMissing;
@@ -137,7 +137,7 @@ export const EpiUploadMapSequences = () => {
     );
   }, [setSequenceMapping, updateAlert]);
 
-  const renderSequenceCell = useCallback((tableRowParams: TableRowParams<EpiValidatedCaseWithGeneratedId>) => {
+  const renderSequenceCell = useCallback((tableRowParams: TableRowParams<CaseUploadResultWithGeneratedId>) => {
     const caseTypeCol = completeCaseType.case_type_cols[tableRowParams.id];
 
     const id = tableRowParams.row.generated_id;
@@ -171,7 +171,7 @@ export const EpiUploadMapSequences = () => {
   }, [completeCaseType, createDropDown, sequenceDropDownOptions]);
 
 
-  const renderReadsCell = useCallback((tableRowParams: TableRowParams<EpiValidatedCaseWithGeneratedId>) => {
+  const renderReadsCell = useCallback((tableRowParams: TableRowParams<CaseUploadResultWithGeneratedId>) => {
     const caseTypeCol = completeCaseType.case_type_cols[tableRowParams.id];
     const isSequenceColumn = completeCaseTypeColumnStats.sequenceColumns.includes(caseTypeCol);
 
@@ -221,8 +221,8 @@ export const EpiUploadMapSequences = () => {
   }, [completeCaseType, completeCaseTypeColumnStats.sequenceColumns, createDropDown, sequenceDropDownOptions, readsDropDownOptions]);
 
 
-  const tableColumns = useMemo<TableColumn<EpiValidatedCaseWithGeneratedId>[]>(() => {
-    const tableCols: TableColumn<EpiValidatedCaseWithGeneratedId>[] = [];
+  const tableColumns = useMemo<TableColumn<CaseUploadResultWithGeneratedId>[]>(() => {
+    const tableCols: TableColumn<CaseUploadResultWithGeneratedId>[] = [];
     tableCols.push(
       TableUtil.createReadableIndexColumn(),
     );
@@ -295,14 +295,14 @@ export const EpiUploadMapSequences = () => {
           headerName: caseTypeCol.code,
           widthPx: 250,
           valueGetter: (params) => EpiCaseUtil.getRowValue(params.row.case as Case, caseTypeCol, completeCaseType).short,
-        } satisfies TableColumn<EpiValidatedCaseWithGeneratedId>);
+        } satisfies TableColumn<CaseUploadResultWithGeneratedId>);
       }
     });
 
     return tableCols;
   }, [caseHasColumnContent, completeCaseType, completeCaseTypeColumnStats.idColumns, completeCaseTypeColumnStats.readsColumns, completeCaseTypeColumnStats.sequenceColumns, renderReadsCell, renderSequenceCell, validatedCases, validatedCasesWithGeneratedId]);
 
-  useInitializeTableStore<EpiValidatedCaseWithGeneratedId>({ store: tableStore, columns: tableColumns, rows: validatedCasesWithGeneratedId, createFiltersFromColumns: true });
+  useInitializeTableStore<CaseUploadResultWithGeneratedId>({ store: tableStore, columns: tableColumns, rows: validatedCasesWithGeneratedId, createFiltersFromColumns: true });
 
   return (
     <Box
