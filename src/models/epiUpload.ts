@@ -10,6 +10,8 @@ export type EpiUploadMappedColumn = {
   isCaseIdColumn?: boolean;
   isCaseDateColumn?: boolean;
   isCaseTypeColumn?: boolean;
+  isSampleIdColumn?: boolean;
+  sampleIdentifierIssuerId?: string;
 };
 
 export enum EPI_UPLOAD_ACTION {

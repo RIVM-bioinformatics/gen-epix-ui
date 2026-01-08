@@ -91,27 +91,26 @@ export const EpiUploadMapColumns = () => {
 
   useEffect(() => {
     const perform = async () => {
-      await setMappedColumns(EpiUploadUtil.getMappedColumnsFromFormData(columnMappingFormValues, rawData, caseTypeColMap.map));
+      await setMappedColumns(EpiUploadUtil.getMappedColumnsFromFormData(columnMappingFormValues, rawData, caseTypeColMap.map, completeCaseType));
     };
     // eslint-disable-next-line @typescript-eslint/no-floating-promises
     perform();
-  }, [setMappedColumns, columnMappingFormValues, rawData, caseTypeColMap.map]);
+  }, [setMappedColumns, columnMappingFormValues, rawData, caseTypeColMap.map, completeCaseType]);
 
   const unMappedColumns = useMemo(() => {
     const knownIndicies = rawData[0].map((_col, index) => index);
-    const mappedIndicies = EpiUploadUtil.getMappedColumnsFromFormData(columnMappingFormValues, rawData, caseTypeColMap.map).map(col => col.originalIndex);
+    const mappedIndicies = EpiUploadUtil.getMappedColumnsFromFormData(columnMappingFormValues, rawData, caseTypeColMap.map, completeCaseType).map(col => col.originalIndex);
     return difference(knownIndicies, mappedIndicies).map(index => {
       return {
         originalIndex: index,
         originalLabel: rawData[0][index],
       };
     });
-  }, [caseTypeColMap.map, rawData, columnMappingFormValues]);
-
+  }, [caseTypeColMap.map, rawData, columnMappingFormValues, completeCaseType]);
   const onColumnMappingFormSubmit = useCallback(async (data: EpiUploadMappedColumnsFormFields) => {
-    await setMappedColumns(EpiUploadUtil.getMappedColumnsFromFormData(data, rawData, caseTypeColMap.map));
+    await setMappedColumns(EpiUploadUtil.getMappedColumnsFromFormData(data, rawData, caseTypeColMap.map, completeCaseType));
     await goToNextStep();
-  }, [rawData, caseTypeColMap.map, goToNextStep, setMappedColumns]);
+  }, [rawData, caseTypeColMap.map, goToNextStep, setMappedColumns, completeCaseType]);
 
   const sampleIdCaseTypeColIds = useMemo(() => {
     return EpiUploadUtil.getSampleIdCaseTypeColIds(completeCaseType);

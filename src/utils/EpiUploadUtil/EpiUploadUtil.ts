@@ -131,6 +131,18 @@ export class EpiUploadUtil {
     return result;
   }
 
+  public static getSampleIdCaseTypeColIds(completeCaseType: CompleteCaseType): string[] {
+    const caseTypeColsIds: string[] = [];
+    Object.values(Object.keys(completeCaseType.case_type_cols)).forEach(caseTypeColId => {
+      const caseTypeCol = completeCaseType.case_type_cols[caseTypeColId];
+      const col = completeCaseType.cols[caseTypeCol.col_id];
+      if (col?.col_type === ColType.ID_SAMPLE) {
+        caseTypeColsIds.push(caseTypeCol.id);
+      }
+    });
+    return caseTypeColsIds;
+  }
+
 
   public static matchColumnLabel(columnLabel: string, caseTypeCol: CaseTypeCol): boolean {
     if (!columnLabel || typeof columnLabel !== 'string') {
@@ -200,19 +212,21 @@ export class EpiUploadUtil {
     }
     const writableColIds = EpiCaseTypeUtil.getWritableCaseTypeColIds(completeCaseType);
     const filteredCaseTypeCols = EpiCaseTypeUtil.getWritableImportExportCaseTypeColIds(completeCaseType).map(id => completeCaseType.case_type_cols[id]);
-
+    const sampleIdCaseTypeColIds = EpiUploadUtil.getSampleIdCaseTypeColIds(completeCaseType);
     const mappedColumns = rawData[0].map((label, index) => {
       const isCaseIdColumn = importAction === EPI_UPLOAD_ACTION.UPDATE && EpiUploadUtil.isCaseIdColumn(label);
       const isCaseDateColumn = EpiUploadUtil.isCaseDateColumn(label);
       const isCaseTypeColumn = EpiUploadUtil.isCaseTypeColumn(label);
 
       let caseTypeCol: CaseTypeCol = null;
+      let isSampleIdColumn = false;
 
       if (!isCaseIdColumn && !isCaseDateColumn && !isCaseTypeColumn) {
         caseTypeCol = filteredCaseTypeCols.find(c => EpiUploadUtil.matchColumnLabel(label, c)) || null;
         if (caseTypeCol && importAction === EPI_UPLOAD_ACTION.UPDATE && !writableColIds.includes(caseTypeCol.id)) {
           caseTypeCol = null;
         }
+        isSampleIdColumn = caseTypeCol ? sampleIdCaseTypeColIds.includes(caseTypeCol.id) : false;
       }
 
       return {
@@ -222,6 +236,8 @@ export class EpiUploadUtil {
         isCaseDateColumn,
         isCaseIdColumn,
         isCaseTypeColumn,
+        isSampleIdColumn,
+        sampleIdentifierIssuerId: null,
       } satisfies EpiUploadMappedColumn;
     });
 
@@ -230,8 +246,9 @@ export class EpiUploadUtil {
     });
   }
 
-  public static getMappedColumnsFromFormData(data: EpiUploadMappedColumnsFormFields, rawData: string[][], caseTypeColMap: Map<string, CaseTypeCol>): EpiUploadMappedColumn[] {
+  public static getMappedColumnsFromFormData(data: EpiUploadMappedColumnsFormFields, rawData: string[][], caseTypeColMap: Map<string, CaseTypeCol>, completeCaseType: CompleteCaseType): EpiUploadMappedColumn[] {
     const mappedColumns: EpiUploadMappedColumn[] = [];
+    const sampleIdCaseTypeColIds = EpiUploadUtil.getSampleIdCaseTypeColIds(completeCaseType);
     Object.entries(data).forEach(([originalIndexString, formValue]) => {
       if (!formValue) {
         return;
@@ -243,13 +260,20 @@ export class EpiUploadUtil {
       if (!isCaseIdColumn && !isCaseDateColumn) {
         caseTypeCol = caseTypeColMap.get(formValue) || null;
       }
+      let sampleIdentifierIssuerId: string = null;
+      const isSampleIdColumn = caseTypeCol ? sampleIdCaseTypeColIds.includes(caseTypeCol.id) : false;
+      if (isSampleIdColumn) {
+        sampleIdentifierIssuerId = data[formValue] || null;
+      }
       mappedColumns.push({
         isCaseIdColumn,
         isCaseDateColumn,
+        isSampleIdColumn,
         caseTypeCol,
         originalIndex,
         originalLabel: rawData[0][originalIndex] || '',
-      });
+        sampleIdentifierIssuerId,
+      } satisfies EpiUploadMappedColumn);
     });
     return mappedColumns;
   }
@@ -265,18 +289,6 @@ export class EpiUploadUtil {
       const stringifiedB = `${itemB.originalIndex}-${itemB.originalLabel}`;
       return stringifiedA === stringifiedB;
     });
-  }
-
-  public static getSampleIdCaseTypeColIds(completeCaseType: CompleteCaseType): string[] {
-    const caseTypeColsIds: string[] = [];
-    Object.values(Object.keys(completeCaseType.case_type_cols)).forEach(caseTypeColId => {
-      const caseTypeCol = completeCaseType.case_type_cols[caseTypeColId];
-      const col = completeCaseType.cols[caseTypeCol.col_id];
-      if (col?.col_type === ColType.ID_SAMPLE) {
-        caseTypeColsIds.push(caseTypeCol.id);
-      }
-    });
-    return caseTypeColsIds;
   }
 
   // eslint-disable-next-line @typescript-eslint/no-empty-object-type
@@ -392,6 +404,9 @@ export class EpiUploadUtil {
     mappedColumns.forEach((mappedColumn) => {
       if (mappedColumn.caseTypeCol) {
         defaultFormValues[mappedColumn.originalIndex.toString()] = mappedColumn.caseTypeCol.id;
+        if (mappedColumn.isSampleIdColumn) {
+          defaultFormValues[mappedColumn.caseTypeCol.id] = mappedColumn.sampleIdentifierIssuerId || null;
+        }
       }
     });
     return defaultFormValues;
