@@ -31,10 +31,7 @@ import { TableUtil } from '../../../utils/TableUtil';
 import { EpiUploadUtil } from '../../../utils/EpiUploadUtil';
 import { Table } from '../../ui/Table';
 import { EpiCaseUtil } from '../../../utils/EpiCaseUtil';
-import {
-  type Case,
-  type CaseTypeCol,
-} from '../../../api';
+import { type CaseTypeCol } from '../../../api';
 import { EpiUploadStoreContext } from '../../../stores/epiUploadStore';
 
 import { EpiUploadNavigation } from './EpiUploadNavigation';
@@ -94,7 +91,7 @@ export const EpiUploadMapSequences = () => {
 
   const caseHasColumnContent = useCallback((rows: CaseUploadResultWithGeneratedId[], caseTypeCol: CaseTypeCol): boolean => {
     return rows.some((row) => {
-      const value = EpiCaseUtil.getRowValue(row.case as Case, caseTypeCol, completeCaseType);
+      const value = EpiCaseUtil.getRowValue(row.validated_content, caseTypeCol, completeCaseType);
       return value && !value?.isMissing;
     });
   }, [completeCaseType]);
@@ -244,7 +241,7 @@ export const EpiUploadMapSequences = () => {
         id: caseTypeCol.id,
         headerName: caseTypeCol.label,
         widthPx: 300,
-        valueGetter: (params) => EpiCaseUtil.getRowValue(params.row.case as Case, caseTypeCol, completeCaseType).short,
+        valueGetter: (params) => EpiCaseUtil.getRowValue(params.row.validated_content, caseTypeCol, completeCaseType).short,
       });
     });
 
@@ -257,7 +254,7 @@ export const EpiUploadMapSequences = () => {
         headerName: caseTypeCol.label,
         widthPx: 400,
         renderCell: renderSequenceCell,
-        valueGetter: (params) => EpiCaseUtil.getRowValue(params.row.case as Case, caseTypeCol, completeCaseType).short,
+        valueGetter: (params) => EpiCaseUtil.getRowValue(params.row.validated_content, caseTypeCol, completeCaseType).short,
         cellTitleGetter: () => null,
       });
     });
@@ -271,14 +268,14 @@ export const EpiUploadMapSequences = () => {
         headerName: caseTypeCol.label,
         widthPx: 800,
         renderCell: renderReadsCell,
-        valueGetter: (params) => EpiCaseUtil.getRowValue(params.row.case as Case, caseTypeCol, completeCaseType).short,
+        valueGetter: (params) => EpiCaseUtil.getRowValue(params.row.validated_content, caseTypeCol, completeCaseType).short,
         cellTitleGetter: () => null,
       });
     });
 
     const uniqueCaseTypeColIds: Set<string> = new Set();
     validatedCases.forEach((vc) => {
-      Object.keys(vc.case.content || {}).forEach((colId) => uniqueCaseTypeColIds.add(colId));
+      Object.keys(vc.validated_content || {}).forEach((colId) => uniqueCaseTypeColIds.add(colId));
     });
 
     completeCaseType.ordered_case_type_col_ids.forEach((caseTypeColId) => {
@@ -294,7 +291,7 @@ export const EpiUploadMapSequences = () => {
           id: caseTypeCol.id,
           headerName: caseTypeCol.code,
           widthPx: 250,
-          valueGetter: (params) => EpiCaseUtil.getRowValue(params.row.case as Case, caseTypeCol, completeCaseType).short,
+          valueGetter: (params) => EpiCaseUtil.getRowValue(params.row.validated_content, caseTypeCol, completeCaseType).short,
         } satisfies TableColumn<CaseUploadResultWithGeneratedId>);
       }
     });

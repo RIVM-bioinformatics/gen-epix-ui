@@ -8,7 +8,6 @@ export type EpiUploadMappedColumn = {
   originalLabel: string;
   caseTypeCol: CaseTypeCol;
   isCaseIdColumn?: boolean;
-  isCaseDateColumn?: boolean;
   isCaseTypeColumn?: boolean;
   isSampleIdColumn?: boolean;
   sampleIdentifierIssuerId?: string;

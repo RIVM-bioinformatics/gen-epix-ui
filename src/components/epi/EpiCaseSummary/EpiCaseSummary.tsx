@@ -85,7 +85,7 @@ export const EpiCaseSummary = ({ epiCase }: EpiCaseSummaryProps) => {
       >
         {visibleAttributes.map(tableColumn => {
           try {
-            const value = EpiCaseUtil.getRowValue(epiCase, tableColumn.caseTypeCol, completeCaseType);
+            const value = EpiCaseUtil.getRowValue(epiCase.content, tableColumn.caseTypeCol, completeCaseType);
             return (
               <Fragment key={tableColumn.id}>
                 <dt>

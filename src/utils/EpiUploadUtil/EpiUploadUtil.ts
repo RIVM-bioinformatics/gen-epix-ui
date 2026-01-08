@@ -12,17 +12,12 @@ import {
 import { t } from 'i18next';
 import difference from 'lodash/difference';
 import uniq from 'lodash/uniq';
-import {
-  format,
-  isValid,
-  parseISO,
-} from 'date-fns';
+import { format } from 'date-fns';
 
 import type {
   CaseTypeCol,
   CaseType,
   CompleteCaseType,
-  Case,
   CaseUploadResult,
 } from '../../api';
 import {
@@ -198,12 +193,12 @@ export class EpiUploadUtil {
     return this.caseIdColumnAliases.includes(label.toLocaleLowerCase());
   }
 
-  public static isCaseDateColumn(label: string): boolean {
-    return this.caseDateColumnAliases.includes(label.toLocaleLowerCase());
-  }
-
   public static isCaseTypeColumn(label: string): boolean {
     return this.caseTypeColumnAliases.includes(label.toLocaleLowerCase());
+  }
+
+  public static isCaseDateColumn(label: string): boolean {
+    return this.caseDateColumnAliases.includes(label.toLocaleLowerCase());
   }
 
   public static getInitialMappedColumns(completeCaseType: CompleteCaseType, rawData: string[][], importAction: EPI_UPLOAD_ACTION): EpiUploadMappedColumn[] {
@@ -215,13 +210,12 @@ export class EpiUploadUtil {
     const sampleIdCaseTypeColIds = EpiUploadUtil.getSampleIdCaseTypeColIds(completeCaseType);
     const mappedColumns = rawData[0].map((label, index) => {
       const isCaseIdColumn = importAction === EPI_UPLOAD_ACTION.UPDATE && EpiUploadUtil.isCaseIdColumn(label);
-      const isCaseDateColumn = EpiUploadUtil.isCaseDateColumn(label);
       const isCaseTypeColumn = EpiUploadUtil.isCaseTypeColumn(label);
 
       let caseTypeCol: CaseTypeCol = null;
       let isSampleIdColumn = false;
 
-      if (!isCaseIdColumn && !isCaseDateColumn && !isCaseTypeColumn) {
+      if (!isCaseIdColumn && !isCaseTypeColumn) {
         caseTypeCol = filteredCaseTypeCols.find(c => EpiUploadUtil.matchColumnLabel(label, c)) || null;
         if (caseTypeCol && importAction === EPI_UPLOAD_ACTION.UPDATE && !writableColIds.includes(caseTypeCol.id)) {
           caseTypeCol = null;
@@ -233,7 +227,6 @@ export class EpiUploadUtil {
         originalIndex: index,
         originalLabel: label,
         caseTypeCol,
-        isCaseDateColumn,
         isCaseIdColumn,
         isCaseTypeColumn,
         isSampleIdColumn,
@@ -242,7 +235,7 @@ export class EpiUploadUtil {
     });
 
     return mappedColumns.filter(mc => {
-      return mc.isCaseIdColumn || mc.isCaseDateColumn || mc.caseTypeCol;
+      return mc.isCaseIdColumn || mc.caseTypeCol;
     });
   }
 
@@ -255,9 +248,8 @@ export class EpiUploadUtil {
       }
       const originalIndex = parseInt(originalIndexString, 10);
       const isCaseIdColumn = formValue === 'case_id';
-      const isCaseDateColumn = formValue === 'case_date';
       let caseTypeCol: CaseTypeCol = null;
-      if (!isCaseIdColumn && !isCaseDateColumn) {
+      if (!isCaseIdColumn) {
         caseTypeCol = caseTypeColMap.get(formValue) || null;
       }
       let sampleIdentifierIssuerId: string = null;
@@ -267,7 +259,6 @@ export class EpiUploadUtil {
       }
       mappedColumns.push({
         isCaseIdColumn,
-        isCaseDateColumn,
         isSampleIdColumn,
         caseTypeCol,
         originalIndex,
@@ -292,7 +283,7 @@ export class EpiUploadUtil {
   }
 
   // eslint-disable-next-line @typescript-eslint/no-empty-object-type
-  public static getSchema(rawData: string[][], completeCaseType: CompleteCaseType, importAction: EPI_UPLOAD_ACTION): ObjectSchema<{}, AnyObject, {}, ''> {
+  public static getColumnMappingSchema(rawData: string[][], completeCaseType: CompleteCaseType, importAction: EPI_UPLOAD_ACTION): ObjectSchema<{}, AnyObject, {}, ''> {
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
     const fields: { [key: string]: any } = {};
     const fieldNames: string[] = rawData[0].map((_, index) => index.toString());
@@ -310,7 +301,7 @@ export class EpiUploadUtil {
       }));
     });
 
-    fieldNames.forEach((fieldName, fieldIndex) => {
+    fieldNames.forEach((fieldName) => {
       const otherFieldNames = fieldNames.filter(name => name !== fieldName);
       fields[fieldName] = lazy(() => string().nullable().when(otherFieldNames, (otherFieldValues, schema) => {
         return schema
@@ -323,28 +314,6 @@ export class EpiUploadUtil {
             }
             const allFieldValues = [...otherFieldValues as string[], fieldValue];
             return allFieldValues.includes('case_id');
-          })
-          .test('needs-case-date-column', t('At least one column should be mapped to the case date column.'), (fieldValue) => {
-            if (importAction === EPI_UPLOAD_ACTION.UPDATE) {
-              return true;
-            }
-            const allFieldValues = [...otherFieldValues as string[], fieldValue];
-            return allFieldValues.includes('case_date');
-          })
-          .test('valid-case-id-values', t('The column mapped to the case date field must contain valid date values for each row. Only ISO-8601 date formats are allowed. For excel files, also cells formatted as "date" are allowed.'), (fieldValue) => {
-            if (fieldValue !== 'case_date') {
-              return true;
-            }
-            const values = rawData.slice(1).map(row => row[fieldIndex]);
-            return values.every(value => {
-              try {
-                if (isValid(value) || isValid(parseISO(value))) {
-                  return true;
-                }
-              } catch (_e) {
-                return false;
-              }
-            });
           });
       }));
     });
@@ -362,10 +331,6 @@ export class EpiUploadUtil {
         value: 'case_id',
       });
     }
-    options.push({
-      value: 'case_date',
-      label: 'Case Date',
-    });
 
     const allowedCaseTypeColIds = EpiCaseTypeUtil.getWritableImportExportCaseTypeColIds(completeCaseType);
     completeCaseType.ordered_case_type_col_ids.filter(x => allowedCaseTypeColIds.includes(x)).forEach((caseTypeColId) => {
@@ -392,11 +357,7 @@ export class EpiUploadUtil {
   public static getDefaultColumnMappingFormValues(rawDataHeaders: string[], mappedColumns: EpiUploadMappedColumn[], importAction: EPI_UPLOAD_ACTION): EpiUploadMappedColumnsFormFields {
     const defaultFormValues: EpiUploadMappedColumnsFormFields = Object.fromEntries(Object.keys(rawDataHeaders).map<[string, null]>(x => [x.toString(), null]));
     const caseIdColumn = mappedColumns.find(col => col.isCaseIdColumn);
-    const caseDateColumn = mappedColumns.find(col => col.isCaseDateColumn);
 
-    if (caseDateColumn) {
-      defaultFormValues[caseDateColumn.originalIndex.toString()] = 'case_date';
-    }
     if (caseIdColumn && importAction === EPI_UPLOAD_ACTION.UPDATE) {
       defaultFormValues[caseIdColumn.originalIndex.toString()] = 'case_id';
     }
@@ -466,7 +427,7 @@ export class EpiUploadUtil {
 
       const idColumnIds: string[] = [];
       stats.idColumns.forEach((idCol) => {
-        const rowValue = EpiCaseUtil.getRowValue(vc.case as Case, idCol, completeCaseType);
+        const rowValue = EpiCaseUtil.getRowValue(vc.validated_content, idCol, completeCaseType);
         if (rowValue && !rowValue.isMissing) {
           idColumnIds.push(rowValue.raw);
         }

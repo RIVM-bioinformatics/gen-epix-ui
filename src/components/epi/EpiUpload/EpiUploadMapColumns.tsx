@@ -65,29 +65,29 @@ export const EpiUploadMapColumns = () => {
   const columnMappingFormId = useId();
   // const identifierIssuerMappingFormId = useId();
 
-  const columnMappingSchema = useMemo(() => {
-    return EpiUploadUtil.getSchema(rawData, completeCaseType, importAction);
+  const schema = useMemo(() => {
+    return EpiUploadUtil.getColumnMappingSchema(rawData, completeCaseType, importAction);
   }, [completeCaseType, importAction, rawData]);
 
-  const defaultColumnMappingValues: EpiUploadMappedColumnsFormFields = useMemo(() => {
+  const defaultValues: EpiUploadMappedColumnsFormFields = useMemo(() => {
     return EpiUploadUtil.getDefaultColumnMappingFormValues(rawData[0], store.getState().mappedColumns, importAction);
   }, [rawData, store, importAction]);
 
-  const columnMappingFormMethods = useForm<EpiUploadMappedColumnsFormFields>({
-    resolver: yupResolver(columnMappingSchema) as unknown as Resolver<EpiUploadMappedColumnsFormFields>,
-    values: { ...defaultColumnMappingValues },
-    defaultValues: { ...defaultColumnMappingValues },
+  const formMethods = useForm<EpiUploadMappedColumnsFormFields>({
+    resolver: yupResolver(schema) as unknown as Resolver<EpiUploadMappedColumnsFormFields>,
+    values: { ...defaultValues },
+    defaultValues: { ...defaultValues },
   });
 
-  const { handleSubmit: handleColumnMappingSubmit, control: columnMappingControl, clearErrors: clearColumnMappingErrors } = columnMappingFormMethods;
-  const columnMappingFormValues = useWatch({ control: columnMappingControl });
+  const { handleSubmit, control, clearErrors } = formMethods;
+  const columnMappingFormValues = useWatch({ control });
 
   const columnMappingFormFieldDefinitions = useMemo<FormFieldDefinition<EpiUploadMappedColumnsFormFields>[]>(() => {
     return EpiUploadUtil.getColumnMappingFormFieldDefinitions(completeCaseType, rawData[0], fileName, importAction).map(def => ({
       ...def,
-      onChange: () => clearColumnMappingErrors(),
+      onChange: () => clearErrors(),
     }));
-  }, [completeCaseType, rawData, fileName, importAction, clearColumnMappingErrors]);
+  }, [completeCaseType, rawData, fileName, importAction, clearErrors]);
 
   useEffect(() => {
     const perform = async () => {
@@ -107,7 +107,8 @@ export const EpiUploadMapColumns = () => {
       };
     });
   }, [caseTypeColMap.map, rawData, columnMappingFormValues, completeCaseType]);
-  const onColumnMappingFormSubmit = useCallback(async (data: EpiUploadMappedColumnsFormFields) => {
+
+  const onFormSubmit = useCallback(async (data: EpiUploadMappedColumnsFormFields) => {
     await setMappedColumns(EpiUploadUtil.getMappedColumnsFromFormData(data, rawData, caseTypeColMap.map, completeCaseType));
     await goToNextStep();
   }, [rawData, caseTypeColMap.map, goToNextStep, setMappedColumns, completeCaseType]);
@@ -116,7 +117,7 @@ export const EpiUploadMapColumns = () => {
     return EpiUploadUtil.getSampleIdCaseTypeColIds(completeCaseType);
   }, [completeCaseType]);
 
-  const renderColumnMappingField = useCallback((definition: FormFieldDefinition<EpiUploadMappedColumnsFormFields>, element: ReactElement) => {
+  const renderField = useCallback((definition: FormFieldDefinition<EpiUploadMappedColumnsFormFields>, element: ReactElement) => {
     const columnIndexInRawData = parseInt(definition.name, 10);
     const columnValues = uniq(rawData.slice(1).map((row) => row[columnIndexInRawData] ?? '')).filter(x => !!x);
     const firstFiveValuesString = columnValues.slice(0, 5).join(', ').trim() || t('<no data>');
@@ -131,7 +132,7 @@ export const EpiUploadMapColumns = () => {
           </Box>
           <Box marginTop={1}>
             <Autocomplete
-              label={t('{{columnLabel}} issuer', { columnLabel: definition.label })}
+              label={t('{{columnLabel}}: Identifier issuer', { columnLabel: definition.label })}
               name={fieldValue}
               options={identifierIssuerOptionsQuery.options}
               loading={identifierIssuerOptionsQuery.isLoading}
@@ -156,7 +157,7 @@ export const EpiUploadMapColumns = () => {
     );
   }, [columnMappingFormValues, identifierIssuerOptionsQuery.isLoading, identifierIssuerOptionsQuery.options, rawData, sampleIdCaseTypeColIds, t]);
 
-  const wrapColumnMappingForm = useCallback((children: ReactElement) => {
+  const wrapForm = useCallback((children: ReactElement) => {
     return (
       <Table
         size={'small'}
@@ -189,8 +190,8 @@ export const EpiUploadMapColumns = () => {
   }, [t]);
 
   const onProceedButtonClick = useCallback(async () => {
-    await handleColumnMappingSubmit(onColumnMappingFormSubmit)();
-  }, [handleColumnMappingSubmit, onColumnMappingFormSubmit]);
+    await handleSubmit(onFormSubmit)();
+  }, [handleSubmit, onFormSubmit]);
 
   return (
     <ResponseHandler loadables={loadables}>
@@ -209,7 +210,9 @@ export const EpiUploadMapColumns = () => {
         >
           <Alert severity={unMappedColumns.length === 0 ? 'info' : 'warning'}>
             <AlertTitle>
-              {unMappedColumns.length === 0 ? t('All columns in {{fileName}} have been mapped to known columns in {{applicationName}}', { fileName, applicationName: ConfigManager.instance.config.applicationName }) : t('{{numUnmappedColumns}} columns in {{fileName}} are not mapped', { numUnmappedColumns: unMappedColumns.length, fileName })}
+              {unMappedColumns.length === 0 ?
+                t('All columns in {{fileName}} have been mapped to known columns in {{applicationName}}', { fileName, applicationName: ConfigManager.instance.config.applicationName })
+                : t('{{numUnmappedColumns}} column(s) in {{fileName}} are not mapped', { numUnmappedColumns: unMappedColumns.length, fileName })}
             </AlertTitle>
             {unMappedColumns.map((col) => (
               <Box key={col.originalIndex}>
@@ -238,11 +241,11 @@ export const EpiUploadMapColumns = () => {
               <GenericForm<EpiUploadMappedColumnsFormFields>
                 formFieldDefinitions={columnMappingFormFieldDefinitions}
                 formId={columnMappingFormId}
-                formMethods={columnMappingFormMethods}
-                renderField={renderColumnMappingField}
-                wrapForm={wrapColumnMappingForm}
-                schema={columnMappingSchema}
-                onSubmit={handleColumnMappingSubmit(onColumnMappingFormSubmit)}
+                formMethods={formMethods}
+                renderField={renderField}
+                wrapForm={wrapForm}
+                schema={schema}
+                onSubmit={handleSubmit(onFormSubmit)}
               />
             </Container>
           </Box>

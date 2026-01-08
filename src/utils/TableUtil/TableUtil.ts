@@ -155,7 +155,7 @@ export class TableUtil {
     if (column.valueGetter) {
       return column.valueGetter({ row, id: column.id, rowIndex });
     }
-    return EpiCaseUtil.getRowValue(row as Case, column.caseTypeCol, column.completeCaseType);
+    return EpiCaseUtil.getRowValue((row as Case).content, column.caseTypeCol, column.completeCaseType);
   }
 
   public static getTableNumberCellValue<TRowData>({ row, column, rowIndex }: GetTableCellValueProps<TRowData, TableColumnNumber<TRowData>>): number {

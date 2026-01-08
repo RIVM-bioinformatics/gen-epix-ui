@@ -11,7 +11,6 @@ import {
   useEffect,
   useMemo,
 } from 'react';
-import { format } from 'date-fns';
 import { useStore } from 'zustand';
 import { useShallow } from 'zustand/shallow';
 import omit from 'lodash/omit';
@@ -19,7 +18,6 @@ import { useTranslation } from 'react-i18next';
 import difference from 'lodash/difference';
 
 import type {
-  Case,
   CaseDataIssue,
   CaseForUpload,
 } from '../../../api';
@@ -43,7 +41,6 @@ import {
   Table,
   TableMenu,
 } from '../../ui/Table';
-import { DATE_FORMAT } from '../../../data/date';
 import { TableUtil } from '../../../utils/TableUtil';
 import { EpiCaseUtil } from '../../../utils/EpiCaseUtil';
 import type { CaseUploadResultWithGeneratedId } from '../../../models/epiUpload';
@@ -71,26 +68,28 @@ export const EpiUploadValidateContent = () => {
   const inputCases = useMemo<CaseForUpload[]>(() => {
     return rawData.slice(1).map((row) => {
       const caseIdColumn = mappedColumns.find((mappedColumn) => mappedColumn.isCaseIdColumn)?.originalIndex;
-      const caseDateColumn = mappedColumns.find((mappedColumn) => mappedColumn.isCaseDateColumn)?.originalIndex;
-
-      const caseForCreateUpdate: CaseForUpload = {
-        id: importAction === EPI_UPLOAD_ACTION.UPDATE && caseIdColumn !== undefined ? row[caseIdColumn] : undefined,
-        case_date: caseDateColumn !== undefined ? row[caseDateColumn] : undefined,
-        content: undefined,
-        case_type_id: caseTypeId,
-        created_in_data_collection_id: createdInDataCollectionId,
-      };
       const content: { [key: string]: string } = {};
+
       mappedColumns.forEach((mappedColumn) => {
         if (mappedColumn.caseTypeCol) {
           content[mappedColumn.caseTypeCol.id] = row[mappedColumn.originalIndex];
         }
       });
+
+      const caseForCreateUpdate: CaseForUpload = {
+        id: importAction === EPI_UPLOAD_ACTION.UPDATE && caseIdColumn !== undefined ? row[caseIdColumn] : undefined,
+        case: {
+          content,
+          case_type_id: caseTypeId,
+          created_in_data_collection_id: createdInDataCollectionId,
+        },
+      };
+
       return { ...caseForCreateUpdate, content };
     });
   }, [caseTypeId, createdInDataCollectionId, importAction, mappedColumns, rawData]);
 
-  const validationQuery = useQueryMemo({
+  const caseUploadResultQuery = useQueryMemo({
     queryKey: validateCasesQueryKey,
     queryFn: async ({ signal }) => {
       const response = await CaseApi.instance.uploadCases({
@@ -109,14 +108,14 @@ export const EpiUploadValidateContent = () => {
   });
 
   const rowsWithGeneratedId = useMemo<CaseUploadResultWithGeneratedId[]>(() => {
-    return (validationQuery?.data?.validated_cases || []).map((vc, index) => ({
+    return (caseUploadResultQuery?.data?.cases || []).map((vc, index) => ({
       ...vc,
-      generated_id: vc.case.id || index.toString(),
+      generated_id: vc.id || index.toString(),
     }));
-  }, [validationQuery?.data?.validated_cases]);
+  }, [caseUploadResultQuery?.data?.cases]);
 
   const loadables = useArray([
-    validationQuery,
+    caseUploadResultQuery,
   ]);
 
   const tableStore = useMemo(() => createTableStore<CaseUploadResultWithGeneratedId>({
@@ -128,7 +127,7 @@ export const EpiUploadValidateContent = () => {
 
   useEffect(() => {
     const newSelectedIds = rowsWithGeneratedId.filter(validatedCase => {
-      return !validatedCase.data_issues.some(issue => issue.data_rule === DataIssueType.INVALID || issue.data_rule === DataIssueType.UNAUTHORIZED);
+      return !validatedCase.data_issues.some(issue => issue.data_issue_type === DataIssueType.INVALID || issue.data_issue_type === DataIssueType.UNAUTHORIZED);
     }).map(vc => vc.generated_id);
     setSelectedIds(newSelectedIds);
   }, [rowsWithGeneratedId, setSelectedIds]);
@@ -136,11 +135,11 @@ export const EpiUploadValidateContent = () => {
   const getIssueTooltipContent = useCallback((issues: CaseDataIssue[]) => {
     const messages: { message: string; key: string }[] = [];
     issues.forEach((issue) => {
-      const issueMessage = issue.details.replace(issue.original_value, '"{{originalValue}}"');
+      const issueMessage = issue.message.replace(issue.original_value, '"{{originalValue}}"');
       const translatedMessage = t(issueMessage, { originalValue: issue.original_value });
       const columnLabel = completeCaseType.case_type_cols[issue.case_type_col_id].label;
       const message = t('{{columnLabel}}: {{issue}}', { columnLabel, issue: translatedMessage });
-      messages.push({ message, key: `${issue.case_type_col_id}-${issue.data_rule}` });
+      messages.push({ message, key: `${issue.case_type_col_id}-${issue.data_issue_type}` });
     });
     return (
       <>
@@ -157,7 +156,7 @@ export const EpiUploadValidateContent = () => {
   }, [completeCaseType.case_type_cols, t]);
 
   const renderHasIssueCell = useCallback(({ row }: TableRowParams<CaseUploadResultWithGeneratedId>) => {
-    const errorIssues = row.data_issues.filter(i => i.data_rule === DataIssueType.INVALID || i.data_rule === DataIssueType.UNAUTHORIZED);
+    const errorIssues = row.data_issues.filter(i => i.data_issue_type === DataIssueType.INVALID || i.data_issue_type === DataIssueType.UNAUTHORIZED);
     if (errorIssues.length > 0) {
       return (
         <Tooltip
@@ -191,8 +190,8 @@ export const EpiUploadValidateContent = () => {
   ], []);
 
   const renderCell = useCallback(({ id, row }: TableRowParams<CaseUploadResultWithGeneratedId>) => {
-    const rowValue = EpiCaseUtil.getRowValue(row.case as Case, completeCaseType.case_type_cols[id], completeCaseType);
-    const issues = row.data_issues.filter((i) => i.case_type_col_id === id).sort((a, b) => dataRulePriority.indexOf(a.data_rule) - dataRulePriority.indexOf(b.data_rule));
+    const rowValue = EpiCaseUtil.getRowValue(row.validated_content, completeCaseType.case_type_cols[id], completeCaseType);
+    const issues = row.data_issues.filter((i) => i.case_type_col_id === id).sort((a, b) => dataRulePriority.indexOf(a.data_issue_type) - dataRulePriority.indexOf(b.data_issue_type));
 
     if (issues.length === 0) {
       return (
@@ -204,7 +203,7 @@ export const EpiUploadValidateContent = () => {
 
     let color: string;
 
-    switch (issues[0].data_rule) {
+    switch (issues[0].data_issue_type) {
       case DataIssueType.MISSING:
       case DataIssueType.CONFLICT:
         color = theme.palette.warning.main;
@@ -221,7 +220,7 @@ export const EpiUploadValidateContent = () => {
 
     let content: ReactElement;
 
-    const hasError = difference(errorDataRules, issues.map(x => x.data_rule)).length >= 1;
+    const hasError = difference(errorDataRules, issues.map(x => x.data_issue_type)).length >= 1;
     const originalValue = issues.find(x => x.original_value)?.original_value || '';
 
     if (hasError) {
@@ -298,7 +297,7 @@ export const EpiUploadValidateContent = () => {
   }, [completeCaseType, dataRulePriority, errorDataRules, getIssueTooltipContent, theme]);
 
   const tableColumns = useMemo<TableColumn<CaseUploadResultWithGeneratedId>[]>(() => {
-    const validatedCases = validationQuery?.data?.validated_cases;
+    const validatedCases = caseUploadResultQuery?.data?.cases;
 
     const tableCols: TableColumn<CaseUploadResultWithGeneratedId>[] = [];
     if (!validatedCases?.length) {
@@ -321,39 +320,22 @@ export const EpiUploadValidateContent = () => {
       headerName: '',
     });
 
-    if (importAction === EPI_UPLOAD_ACTION.UPDATE && validatedCases.some(vc => !!vc.case.id)) {
+    if (importAction === EPI_UPLOAD_ACTION.UPDATE && validatedCases.some(vc => !!vc.id)) {
       tableCols.push({
         type: 'text',
         isInitiallyVisible: true,
         hideInFilter: true,
         id: 'case_id',
         headerName: t('case_id'),
-        valueGetter: (params) => params.row.case.id || '',
-        widthPx: 250,
-      } satisfies TableColumn<CaseUploadResultWithGeneratedId>);
-    }
-    if (validatedCases.some(vc => !!vc.case.case_date)) {
-      tableCols.push({
-        type: 'text',
-        isInitiallyVisible: true,
-        hideInFilter: true,
-        id: 'case_date',
-        headerName: t('case_date'),
-        valueGetter: (params) => {
-          if (params.row.case.case_date) {
-            return format(new Date(params.row.case.case_date), DATE_FORMAT.DATE);
-          }
-          return '';
-        },
+        valueGetter: (params) => params.row.id || '',
         widthPx: 250,
       } satisfies TableColumn<CaseUploadResultWithGeneratedId>);
     }
 
 
-    // get union of caseTypeColIds from validationQuery.data.validated_cases
     const uniqueCaseTypeColIds: Set<string> = new Set();
     validatedCases.forEach((validatedCase) => {
-      Object.keys(validatedCase.case.content || {}).forEach((colId) => uniqueCaseTypeColIds.add(colId));
+      Object.keys(validatedCase.validated_content || {}).forEach((colId) => uniqueCaseTypeColIds.add(colId));
       validatedCase.data_issues.forEach((issue) => uniqueCaseTypeColIds.add(issue.case_type_col_id));
     });
 
@@ -364,7 +346,7 @@ export const EpiUploadValidateContent = () => {
       const caseTypeCol = completeCaseType.case_type_cols[caseTypeColId];
 
       const issuesForCaseTypeColumn = validatedCases.flatMap(vc => vc.data_issues.filter((i) => i.case_type_col_id === caseTypeCol.id));
-      const isInitiallyVisible = issuesForCaseTypeColumn.length === 0 || issuesForCaseTypeColumn.some(i => i.data_rule !== DataIssueType.DERIVED);
+      const isInitiallyVisible = issuesForCaseTypeColumn.length === 0 || issuesForCaseTypeColumn.some(i => i.data_issue_type !== DataIssueType.DERIVED);
 
       if (caseTypeCol) {
         tableCols.push({
@@ -380,19 +362,19 @@ export const EpiUploadValidateContent = () => {
             if (!issue) {
               const originalValue = rawData.slice(1)[params.rowIndex][mappedColumns.find(mc => mc.caseTypeCol?.id === caseTypeCol.id)?.originalIndex || -1];
               return t('{{value}} (original value: "{{originalValue}}")', {
-                value: EpiCaseUtil.getRowValue(params.row.case as Case, caseTypeCol, completeCaseType).short,
+                value: EpiCaseUtil.getRowValue(params.row.validated_content, caseTypeCol, completeCaseType).short,
                 originalValue,
               });
             }
             return '';
           },
-          valueGetter: (params) => EpiCaseUtil.getRowValue(params.row.case as Case, caseTypeCol, completeCaseType).short,
+          valueGetter: (params) => EpiCaseUtil.getRowValue(params.row.validated_content, caseTypeCol, completeCaseType).short,
         } satisfies TableColumn<CaseUploadResultWithGeneratedId>);
       }
     });
 
     return tableCols;
-  }, [completeCaseType, importAction, mappedColumns, rawData, renderCell, renderHasIssueCell, t, validationQuery?.data?.validated_cases]);
+  }, [caseUploadResultQuery?.data?.cases, renderHasIssueCell, importAction, completeCaseType, t, renderCell, rawData, mappedColumns]);
 
   useInitializeTableStore<CaseUploadResultWithGeneratedId>({ store: tableStore, columns: tableColumns, rows: rowsWithGeneratedId, createFiltersFromColumns: true });
 

@@ -213,7 +213,7 @@ export class EpiDownloadUtil {
       row.id,
       completeCaseType.name,
       row.case_date ? format(row.case_date, DATE_FORMAT.DATE) : '',
-      ...caseTypeColumns.map(caseTypeCol => EpiCaseUtil.getRowValue(row, caseTypeCol, completeCaseType, true).long),
+      ...caseTypeColumns.map(caseTypeCol => EpiCaseUtil.getRowValue(row.content, caseTypeCol, completeCaseType, true).long),
     ]);
   }
 

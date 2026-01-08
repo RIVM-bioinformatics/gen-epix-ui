@@ -147,6 +147,10 @@ export const EpiUploadSelectSequenceFiles = () => {
     return completeCaseTypeColumnStats.readsColumns.length > 0;
   }, [completeCaseTypeColumnStats]);
 
+  const canUpload = useMemo(() => {
+    return canUploadSequences || canUploadReads;
+  }, [canUploadSequences, canUploadReads]);
+
   const accept = useMemo(() => {
     let acc = '';
     if (canUploadSequences) {
@@ -157,10 +161,6 @@ export const EpiUploadSelectSequenceFiles = () => {
     }
     return acc;
   }, [canUploadReads, canUploadSequences]);
-
-  const canUpload = useMemo(() => {
-    return (canUploadSequences) || (canUploadReads);
-  }, [canUploadSequences, canUploadReads]);
 
   const onProceedButtonClick = useCallback(async () => {
     setSequenceFilesDataTransfer(dataTransfer.current);
