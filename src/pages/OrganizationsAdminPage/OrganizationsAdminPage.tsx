@@ -8,8 +8,12 @@ import {
   object,
   string,
 } from 'yup';
+import omit from 'lodash/omit';
 
-import type { Organization } from '../../api';
+import type {
+  ApiPermission,
+  Organization,
+} from '../../api';
 import {
   OrganizationApi,
   CommandName,
@@ -44,14 +48,24 @@ export const OrganizationsAdminPage = () => {
   }, []);
 
   const updateOne = useCallback(async (variables: FormFields, item: Organization) => {
-    // OrganizationApi.instance.organizationsPutIdentifierIssuers(item.id, {
-    //   organization_identifier_issuer_links
-    // })
+    await OrganizationApi.instance.organizationsPutIdentifierIssuers(item.id, {
+      organization_identifier_issuer_links: variables.identifierIssuerIds.map(identifier_issuer_id => ({
+        identifier_issuer_id,
+        organization_id: item.id,
+      })),
+    });
     return (await OrganizationApi.instance.organizationsPutOne(item.id, { id: item.id, ...variables })).data;
   }, []);
 
   const createOne = useCallback(async (variables: FormFields) => {
-    return (await OrganizationApi.instance.organizationsPostOne(variables)).data;
+    const resultItem = (await OrganizationApi.instance.organizationsPostOne(omit(variables, ['identifierIssuerIds']))).data;
+    await OrganizationApi.instance.organizationsPutIdentifierIssuers(resultItem.id, {
+      organization_identifier_issuer_links: variables.identifierIssuerIds.map(identifier_issuer_id => ({
+        identifier_issuer_id,
+        organization_id: resultItem.id,
+      })),
+    });
+    return resultItem;
   }, []);
 
   const deleteOne = useCallback(async (item: Organization) => {
@@ -141,6 +155,10 @@ export const OrganizationsAdminPage = () => {
     [QUERY_KEY.IDENTIFIER_ISSUER_LINKS],
   ], []);
 
+  const extraPermissions = useMemo<ApiPermission[]>(() => [
+    { command_name: CommandName.OrganizationIdentifierIssuerLinkUpdateAssociationCommand, permission_type: PermissionType.EXECUTE },
+  ], []);
+
   return (
     <CrudPage<FormFields, Organization, TableData>
       associationQueryKeys={associationQueryKeys}
@@ -149,6 +167,9 @@ export const OrganizationsAdminPage = () => {
       loadables={loadables}
       crudCommandType={CommandName.OrganizationCrudCommand}
       createItemDialogTitle={t`Create new organization`}
+      extraCreateOnePermissions={extraPermissions}
+      extraDeleteOnePermissions={extraPermissions}
+      extraUpdateOnePermissions={extraPermissions}
       defaultSortByField={'name'}
       defaultSortDirection={'asc'}
       deleteOne={deleteOne}

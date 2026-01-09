@@ -395,12 +395,12 @@ export class EpiUploadUtil {
 
 
   public static getCompleteCaseTypeColumnStats(completeCaseType: CompleteCaseType): EpiUploadCompleteCaseTypeColumnStats {
-    const idColumns = EpiCaseTypeUtil.getCaseTypeColsByType(completeCaseType, [ColType.ID_SAMPLE]);
+    const sampleIdColumns = EpiCaseTypeUtil.getCaseTypeColsByType(completeCaseType, [ColType.ID_SAMPLE]);
     const sequenceColumns = EpiCaseTypeUtil.getCaseTypeColsByType(completeCaseType, [ColType.GENETIC_SEQUENCE]);
     const readsColumns = EpiCaseTypeUtil.getCaseTypeColsByType(completeCaseType, [ColType.GENETIC_READS]);
     const writableColumns = Object.values(completeCaseType.case_type_cols).filter(col => EpiCaseTypeUtil.getWritableCaseTypeColIds(completeCaseType).includes(col.id));
 
-    return { idColumns, sequenceColumns, readsColumns, writableColumns };
+    return { sampleIdColumns, sequenceColumns, readsColumns, writableColumns };
   }
 
   private static idToRegex(id: string): RegExp {
@@ -425,14 +425,14 @@ export class EpiUploadUtil {
         return;
       }
 
-      const idColumnIds: string[] = [];
-      stats.idColumns.forEach((idCol) => {
+      const sampleIdColumnIds: string[] = [];
+      stats.sampleIdColumns.forEach((idCol) => {
         const rowValue = EpiCaseUtil.getRowValue(vc.validated_content, idCol, completeCaseType);
         if (rowValue && !rowValue.isMissing) {
-          idColumnIds.push(rowValue.raw);
+          sampleIdColumnIds.push(rowValue.raw);
         }
       });
-      if (!idColumnIds.length) {
+      if (!sampleIdColumnIds.length) {
         return;
       }
 
@@ -451,7 +451,7 @@ export class EpiUploadUtil {
       Array.from(sequenceFilesDataTransfer.files).forEach((file) => {
         const fileName = file.name;
         const lowerName = fileName.toLowerCase();
-        const matchesId = idColumnIds.some((id) => lowerName.match(EpiUploadUtil.idToRegex(id.toLowerCase())));
+        const matchesId = sampleIdColumnIds.some((id) => lowerName.match(EpiUploadUtil.idToRegex(id.toLowerCase())));
         if (matchesId) {
           if (EpiUploadUtil.isGenomeFile(fileName)) {
             sequenceFiles.push(fileName);

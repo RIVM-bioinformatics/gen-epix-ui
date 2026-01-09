@@ -225,12 +225,12 @@ export const EpiUploadMapSequences = () => {
     );
 
     const columnsUsedForMapping = [
-      ...completeCaseTypeColumnStats.idColumns,
+      ...completeCaseTypeColumnStats.sampleIdColumns,
       ...completeCaseTypeColumnStats.sequenceColumns,
       ...completeCaseTypeColumnStats.readsColumns,
     ];
 
-    completeCaseTypeColumnStats.idColumns.forEach((caseTypeCol) => {
+    completeCaseTypeColumnStats.sampleIdColumns.forEach((caseTypeCol) => {
       if (!caseHasColumnContent(validatedCasesWithGeneratedId, caseTypeCol)) {
         return;
       }
@@ -297,7 +297,7 @@ export const EpiUploadMapSequences = () => {
     });
 
     return tableCols;
-  }, [caseHasColumnContent, completeCaseType, completeCaseTypeColumnStats.idColumns, completeCaseTypeColumnStats.readsColumns, completeCaseTypeColumnStats.sequenceColumns, renderReadsCell, renderSequenceCell, validatedCases, validatedCasesWithGeneratedId]);
+  }, [caseHasColumnContent, completeCaseType, completeCaseTypeColumnStats.readsColumns, completeCaseTypeColumnStats.sampleIdColumns, completeCaseTypeColumnStats.sequenceColumns, renderReadsCell, renderSequenceCell, validatedCases, validatedCasesWithGeneratedId]);
 
   useInitializeTableStore<CaseUploadResultWithGeneratedId>({ store: tableStore, columns: tableColumns, rows: validatedCasesWithGeneratedId, createFiltersFromColumns: true });
 

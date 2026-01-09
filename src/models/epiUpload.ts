@@ -54,7 +54,7 @@ export type EpiUploadSequenceMapping = {
 
 
 export type EpiUploadCompleteCaseTypeColumnStats = {
-  idColumns: CaseTypeCol[];
+  sampleIdColumns: CaseTypeCol[];
   sequenceColumns: CaseTypeCol[];
   readsColumns: CaseTypeCol[];
   writableColumns: CaseTypeCol[];
