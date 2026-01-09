@@ -12,26 +12,29 @@ import { DataUtil } from '../../utils/DataUtil';
 import { QueryUtil } from '../../utils/QueryUtil';
 import { useQueryMemo } from '../../hooks/useQueryMemo';
 
-export const useIdentifierIssuersQuery = (): UseQueryResult<IdentifierIssuer[]> => {
+type Select = (data: IdentifierIssuer[]) => IdentifierIssuer[];
+
+export const useIdentifierIssuersQuery = (select?: Select): UseQueryResult<IdentifierIssuer[]> => {
   return useQueryMemo({
     queryKey: QueryUtil.getGenericKey(QUERY_KEY.ASSEMBLY_PROTOCOLS),
     queryFn: async ({ signal }) => {
       const response = await OrganizationApi.instance.identifierIssuersGetAll({ signal });
       return response.data;
     },
+    select: select ? (data) => select(data) : undefined,
   });
 };
 
-export const useIdentifierIssuerMapQuery = (): UseMap<IdentifierIssuer> => {
-  const response = useIdentifierIssuersQuery();
+export const useIdentifierIssuerMapQuery = (select?: Select): UseMap<IdentifierIssuer> => {
+  const response = useIdentifierIssuersQuery(select);
 
   return useMemo(() => {
     return DataUtil.createUseMapDataHook<IdentifierIssuer>(response, item => item.id);
   }, [response]);
 };
 
-export const useIdentifierIssuerOptionsQuery = (): UseOptions<string> => {
-  const response = useIdentifierIssuersQuery();
+export const useIdentifierIssuerOptionsQuery = (select?: Select): UseOptions<string> => {
+  const response = useIdentifierIssuersQuery(select);
 
   return useMemo(() => {
     return DataUtil.createUseOptionsDataHook<IdentifierIssuer>(response, item => item.id, (item: IdentifierIssuer) => item.name);

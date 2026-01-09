@@ -224,6 +224,7 @@ export const TransferList = <TFieldValues extends FieldValues, TName extends Pat
       >
         <Box>
           <TextField
+            fullWidth
             label={t`Filter`}
             size={'small'}
             variant={'outlined'}

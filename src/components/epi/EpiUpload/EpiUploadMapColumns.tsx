@@ -37,7 +37,7 @@ import { EpiUploadUtil } from '../../../utils/EpiUploadUtil';
 import { ConfigManager } from '../../../classes/managers/ConfigManager';
 import { EpiUploadStoreContext } from '../../../stores/epiUploadStore';
 import type { EpiUploadMappedColumnsFormFields } from '../../../models/epiUpload';
-import { useIdentifierIssuerOptionsQuery } from '../../../dataHooks/useIdentifierIssuersQuery';
+import { useIdentifierIssuerOptionsQuery } from '../../../dataHooks/useIdentifierIssuerQuery';
 import { Autocomplete } from '../../form/fields/Autocomplete';
 
 import { EpiUploadNavigation } from './EpiUploadNavigation';

@@ -4,7 +4,6 @@ import {
   useTheme,
 } from '@mui/material';
 import ErrorOutlineIcon from '@mui/icons-material/ErrorOutline';
-import type { ReactElement } from 'react';
 import {
   useCallback,
   useContext,
@@ -15,7 +14,6 @@ import { useStore } from 'zustand';
 import { useShallow } from 'zustand/shallow';
 import omit from 'lodash/omit';
 import { useTranslation } from 'react-i18next';
-import difference from 'lodash/difference';
 
 import type {
   CaseDataIssue,
@@ -132,6 +130,25 @@ export const EpiUploadValidateContent = () => {
     setSelectedIds(newSelectedIds);
   }, [rowsWithGeneratedId, setSelectedIds]);
 
+  const dataRulePriority: DataIssueType[] = useMemo(() => [
+    DataIssueType.UNAUTHORIZED,
+    DataIssueType.INVALID,
+    DataIssueType.CONFLICT,
+    DataIssueType.MISSING,
+    DataIssueType.DERIVED,
+    DataIssueType.TRANSFORMED,
+  ], []);
+
+  const errorIssueTypes: DataIssueType[] = useMemo(() => [
+    DataIssueType.UNAUTHORIZED,
+    DataIssueType.INVALID,
+  ], []);
+
+  const warningIssueTypes: DataIssueType[] = useMemo(() => [
+    DataIssueType.MISSING,
+    DataIssueType.CONFLICT,
+  ], []);
+
   const getIssueTooltipContent = useCallback((issues: CaseDataIssue[]) => {
     const messages: { message: string; key: string }[] = [];
     issues.forEach((issue) => {
@@ -139,7 +156,7 @@ export const EpiUploadValidateContent = () => {
       const translatedMessage = t(issueMessage, { originalValue: issue.original_value });
       const columnLabel = completeCaseType.case_type_cols[issue.case_type_col_id].label;
       const message = t('{{columnLabel}}: {{issue}}', { columnLabel, issue: translatedMessage });
-      messages.push({ message, key: `${issue.case_type_col_id}-${issue.data_issue_type}` });
+      messages.push({ message, key: `${issue.case_type_col_id}-${issue.data_issue_type}-${issue.code}` });
     });
     return (
       <>
@@ -154,6 +171,14 @@ export const EpiUploadValidateContent = () => {
       </>
     );
   }, [completeCaseType.case_type_cols, t]);
+
+  const getFilteredIssueTypes = useCallback((id: string, issues: CaseDataIssue[], value: string) => {
+    const filteredIssues = issues.filter((i) => i.case_type_col_id === id).sort((a, b) => dataRulePriority.indexOf(a.data_issue_type) - dataRulePriority.indexOf(b.data_issue_type));
+    if (filteredIssues.length === 1 && filteredIssues[0].data_issue_type === DataIssueType.TRANSFORMED && filteredIssues[0].original_value === value) {
+      return [];
+    }
+    return filteredIssues;
+  }, [dataRulePriority]);
 
   const renderHasIssueCell = useCallback(({ row }: TableRowParams<CaseUploadResultWithGeneratedId>) => {
     const errorIssues = row.data_issues.filter(i => i.data_issue_type === DataIssueType.INVALID || i.data_issue_type === DataIssueType.UNAUTHORIZED);
@@ -176,80 +201,46 @@ export const EpiUploadValidateContent = () => {
     }
   }, [getIssueTooltipContent, theme.palette.error.main]);
 
-  const dataRulePriority: DataIssueType[] = useMemo(() => [
-    DataIssueType.UNAUTHORIZED,
-    DataIssueType.INVALID,
-    DataIssueType.CONFLICT,
-    DataIssueType.MISSING,
-    DataIssueType.DERIVED,
-  ], []);
-
-  const errorDataRules: DataIssueType[] = useMemo(() => [
-    DataIssueType.UNAUTHORIZED,
-    DataIssueType.INVALID,
-  ], []);
-
   const renderCell = useCallback(({ id, row }: TableRowParams<CaseUploadResultWithGeneratedId>) => {
     const rowValue = EpiCaseUtil.getRowValue(row.validated_content, completeCaseType.case_type_cols[id], completeCaseType);
-    const issues = row.data_issues.filter((i) => i.case_type_col_id === id).sort((a, b) => dataRulePriority.indexOf(a.data_issue_type) - dataRulePriority.indexOf(b.data_issue_type));
+    const value = rowValue.long;
+    const issues = getFilteredIssueTypes(id, row.data_issues, value);
 
     if (issues.length === 0) {
       return (
         <>
-          {rowValue.short}
+          {value}
         </>
       );
     }
 
-    let color: string;
-
-    switch (issues[0].data_issue_type) {
-      case DataIssueType.MISSING:
-      case DataIssueType.CONFLICT:
-        color = theme.palette.warning.main;
-        break;
-      case DataIssueType.DERIVED:
-        color = theme.palette.info.main;
-        break;
-      case DataIssueType.UNAUTHORIZED:
-      case DataIssueType.INVALID:
-      default:
-        color = theme.palette.error.main;
-        break;
+    let iconColor: string = theme.palette.info.main;
+    if (errorIssueTypes.includes(issues[0].data_issue_type)) {
+      iconColor = theme.palette.error.main;
+    } else if (warningIssueTypes.includes(issues[0].data_issue_type)) {
+      iconColor = theme.palette.warning.main;
     }
 
-    let content: ReactElement;
-
-    const hasError = difference(errorDataRules, issues.map(x => x.data_issue_type)).length >= 1;
     const originalValue = issues.find(x => x.original_value)?.original_value || '';
+    const shouldShowOriginalValue = originalValue && value && originalValue !== value;
 
-    if (hasError) {
-      content = (
-        <>
-          {originalValue && (
+    const content = (
+      <>
+        {shouldShowOriginalValue && (
+          <>
             <s>
               {originalValue}
             </s>
-          )}
-          {originalValue && rowValue?.short && (
-            <>
-              {'\u00A0'}
-            </>
-          )}
-          {rowValue?.short && (
-            <>
-              {rowValue?.short}
-            </>
-          )}
-        </>
-      );
-    } else {
-      content = (
-        <>
-          {rowValue?.isMissing ? issues[0].original_value : rowValue?.short}
-        </>
-      );
-    }
+            {'\u00A0'}
+          </>
+        )}
+        {value && (
+          <>
+            {value}
+          </>
+        )}
+      </>
+    );
 
 
     return (
@@ -276,7 +267,7 @@ export const EpiUploadValidateContent = () => {
             <ErrorOutlineIcon
               fontSize={'small'}
               sx={{
-                color,
+                color: iconColor,
                 position: 'absolute',
                 marginTop: '-2px',
               }}
@@ -294,7 +285,7 @@ export const EpiUploadValidateContent = () => {
         </Box>
       </Box>
     );
-  }, [completeCaseType, dataRulePriority, errorDataRules, getIssueTooltipContent, theme]);
+  }, [completeCaseType, errorIssueTypes, getFilteredIssueTypes, getIssueTooltipContent, theme, warningIssueTypes]);
 
   const tableColumns = useMemo<TableColumn<CaseUploadResultWithGeneratedId>[]>(() => {
     const validatedCases = caseUploadResultQuery?.data?.cases;
