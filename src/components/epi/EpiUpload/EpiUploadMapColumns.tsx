@@ -38,7 +38,7 @@ import { ConfigManager } from '../../../classes/managers/ConfigManager';
 import { EpiUploadStoreContext } from '../../../stores/epiUploadStore';
 import type { EpiUploadMappedColumnsFormFields } from '../../../models/epiUpload';
 import { useIdentifierIssuerOptionsQuery } from '../../../dataHooks/useIdentifierIssuerQuery';
-import { Autocomplete } from '../../form/fields/Autocomplete';
+import { Select } from '../../form/fields/Select';
 
 import { EpiUploadNavigation } from './EpiUploadNavigation';
 
@@ -82,7 +82,7 @@ export const EpiUploadMapColumns = () => {
   const { handleSubmit, control, clearErrors } = formMethods;
   const columnMappingFormValues = useWatch({ control });
 
-  const columnMappingFormFieldDefinitions = useMemo<FormFieldDefinition<EpiUploadMappedColumnsFormFields>[]>(() => {
+  const formFieldDefinitions = useMemo<FormFieldDefinition<EpiUploadMappedColumnsFormFields>[]>(() => {
     return EpiUploadUtil.getColumnMappingFormFieldDefinitions(completeCaseType, rawData[0], fileName, importAction).map(def => ({
       ...def,
       onChange: () => clearErrors(),
@@ -131,7 +131,7 @@ export const EpiUploadMapColumns = () => {
             {element}
           </Box>
           <Box marginTop={1}>
-            <Autocomplete
+            <Select
               label={t('{{columnLabel}}: Identifier issuer', { columnLabel: definition.label })}
               name={fieldValue}
               options={identifierIssuerOptionsQuery.options}
@@ -239,7 +239,7 @@ export const EpiUploadMapColumns = () => {
           >
             <Container>
               <GenericForm<EpiUploadMappedColumnsFormFields>
-                formFieldDefinitions={columnMappingFormFieldDefinitions}
+                formFieldDefinitions={formFieldDefinitions}
                 formId={columnMappingFormId}
                 formMethods={formMethods}
                 renderField={renderField}
