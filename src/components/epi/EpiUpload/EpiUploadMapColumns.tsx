@@ -37,8 +37,8 @@ import { EpiUploadUtil } from '../../../utils/EpiUploadUtil';
 import { ConfigManager } from '../../../classes/managers/ConfigManager';
 import { EpiUploadStoreContext } from '../../../stores/epiUploadStore';
 import type { EpiUploadMappedColumnsFormFields } from '../../../models/epiUpload';
-import { useIdentifierIssuerOptionsQuery } from '../../../dataHooks/useIdentifierIssuerQuery';
 import { Select } from '../../form/fields/Select';
+import { useIdentifierIssuerOwnOrganizationOptionsQuery } from '../../../dataHooks/useIdentifierIssuerOwnOrganizationQuery';
 
 import { EpiUploadNavigation } from './EpiUploadNavigation';
 
@@ -46,7 +46,7 @@ import { EpiUploadNavigation } from './EpiUploadNavigation';
 export const EpiUploadMapColumns = () => {
   const [t] = useTranslation();
   const caseTypeColMap = useCaseTypeColMapQuery();
-  const identifierIssuerOptionsQuery = useIdentifierIssuerOptionsQuery();
+  const identifierIssuerOptionsQuery = useIdentifierIssuerOwnOrganizationOptionsQuery();
 
   const store = useContext(EpiUploadStoreContext);
   const completeCaseType = useStore(store, (state) => state.completeCaseType);
@@ -70,8 +70,8 @@ export const EpiUploadMapColumns = () => {
   }, [completeCaseType, importAction, rawData]);
 
   const defaultValues: EpiUploadMappedColumnsFormFields = useMemo(() => {
-    return EpiUploadUtil.getDefaultColumnMappingFormValues(rawData[0], store.getState().mappedColumns, importAction);
-  }, [rawData, store, importAction]);
+    return EpiUploadUtil.getDefaultColumnMappingFormValues(rawData[0], store.getState().mappedColumns, importAction, identifierIssuerOptionsQuery.options);
+  }, [rawData, store, importAction, identifierIssuerOptionsQuery.options]);
 
   const formMethods = useForm<EpiUploadMappedColumnsFormFields>({
     resolver: yupResolver(schema) as unknown as Resolver<EpiUploadMappedColumnsFormFields>,

@@ -16,7 +16,7 @@ type Select = (data: IdentifierIssuer[]) => IdentifierIssuer[];
 
 export const useIdentifierIssuersQuery = (select?: Select): UseQueryResult<IdentifierIssuer[]> => {
   return useQueryMemo({
-    queryKey: QueryUtil.getGenericKey(QUERY_KEY.ASSEMBLY_PROTOCOLS),
+    queryKey: QueryUtil.getGenericKey(QUERY_KEY.IDENTIFIER_ISSUERS),
     queryFn: async ({ signal }) => {
       const response = await OrganizationApi.instance.identifierIssuersGetAll({ signal });
       return response.data;

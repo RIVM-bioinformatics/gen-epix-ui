@@ -21,11 +21,6 @@ import type {
   CaseUploadResult,
 } from '../../api';
 import {
-  FORM_FIELD_DEFINITION_TYPE,
-  type AutoCompleteOption,
-  type FormFieldDefinition,
-} from '../../models/form';
-import {
   CaseApi,
   ColType,
 } from '../../api';
@@ -43,6 +38,12 @@ import { EpiCaseUtil } from '../EpiCaseUtil';
 import { DATE_FORMAT } from '../../data/date';
 import { QueryUtil } from '../QueryUtil';
 import { QUERY_KEY } from '../../models/query';
+import type {
+  AutoCompleteOption,
+  FormFieldDefinition,
+  OptionBase,
+} from '../../models/form';
+import { FORM_FIELD_DEFINITION_TYPE } from '../../models/form';
 
 export class EpiUploadUtil {
   public static readonly caseIdColumnAliases = ['_case_id', 'case id', 'case_id', 'caseid', 'case.id'];
@@ -354,7 +355,7 @@ export class EpiUploadUtil {
     return fields;
   }
 
-  public static getDefaultColumnMappingFormValues(rawDataHeaders: string[], mappedColumns: EpiUploadMappedColumn[], importAction: EPI_UPLOAD_ACTION): EpiUploadMappedColumnsFormFields {
+  public static getDefaultColumnMappingFormValues(rawDataHeaders: string[], mappedColumns: EpiUploadMappedColumn[], importAction: EPI_UPLOAD_ACTION, identifierIssuerOptions: OptionBase<string>[]): EpiUploadMappedColumnsFormFields {
     const defaultFormValues: EpiUploadMappedColumnsFormFields = Object.fromEntries(Object.keys(rawDataHeaders).map<[string, null]>(x => [x.toString(), null]));
     const caseIdColumn = mappedColumns.find(col => col.isCaseIdColumn);
 
@@ -366,7 +367,7 @@ export class EpiUploadUtil {
       if (mappedColumn.caseTypeCol) {
         defaultFormValues[mappedColumn.originalIndex.toString()] = mappedColumn.caseTypeCol.id;
         if (mappedColumn.isSampleIdColumn) {
-          defaultFormValues[mappedColumn.caseTypeCol.id] = mappedColumn.sampleIdentifierIssuerId || null;
+          defaultFormValues[mappedColumn.caseTypeCol.id] = mappedColumn.sampleIdentifierIssuerId || identifierIssuerOptions.length === 1 ? identifierIssuerOptions[0].value : null;
         }
       }
     });
@@ -580,7 +581,6 @@ export class EpiUploadUtil {
         await CaseApi.instance.createCases({
           case_type_id: caseTypeId,
           created_in_data_collection_id: createdInDataCollectionId,
-          data_collection_ids: shareInDataCollectionIds,
           is_update: importAction === EPI_UPLOAD_ACTION.UPDATE,
           case_batch: {
             cases: [{
