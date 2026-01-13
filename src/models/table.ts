@@ -43,6 +43,7 @@ interface TableColumnBase<TRowData, TValue> {
   id?: string;
   isInitiallyVisible: boolean;
   renderCell?: (params: TableRowAndColumnParams<TRowData>) => ReactElement;
+  renderHeaderContent?: (params: TableColumnParams<TRowData>) => ReactElement;
   renderHeader?: (params: TableColumnParams<TRowData>) => ReactElement;
   resizable?: boolean;
   sx?: SxProps<Theme>;

@@ -49,7 +49,7 @@ type Graph = {
   categories: Category[];
 };
 
-const DataCollectionVisualizationPageContent = () => {
+const DataCollectionVisualizationPageInner = () => {
   const dataCollectionsQuery = useDataCollectionsQuery();
   const organizationMapQuery = useOrganizationMapQuery();
 
@@ -232,7 +232,7 @@ export const DataCollectionVisualizationPage = () => {
       testIdAttributes={TestIdUtil.createAttributes('DataCollectionVisualizationPage')}
       title={t`Data collection visualization`}
     >
-      <DataCollectionVisualizationPageContent />
+      <DataCollectionVisualizationPageInner />
     </PageContainer>
   );
 };

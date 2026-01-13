@@ -257,7 +257,7 @@ export const Table = <TRowData,>({
     }
   }, [sortedData, setSelectedIds, selectedIds, idSelectorCallback]);
 
-  const renderCheckboxHeader = useCallback(() => {
+  const renderCheckboxHeaderContent = useCallback(() => {
     const isAllChecked = sortedData.every(row => selectedIds.includes(idSelectorCallback(row)));
     const isSomeChecked = sortedData.some(row => selectedIds.includes(idSelectorCallback(row)));
     return (
@@ -541,7 +541,7 @@ export const Table = <TRowData,>({
           return (
             <TableHeaderCell<TRowData>
               key={column.id}
-              column={tableColumn.type === 'selectable' ? { ...tableColumn, renderHeader: renderCheckboxHeader } : tableColumn}
+              column={tableColumn.type === 'selectable' ? { ...tableColumn, renderHeaderContent: renderCheckboxHeaderContent } : tableColumn}
               columnIndex={columnIndex}
               dividerColor={headerBorderColor}
               height={theme.spacing(headerHeight)}
@@ -558,7 +558,7 @@ export const Table = <TRowData,>({
         })}
       </Box>
     );
-  }, [theme, headerHeight, headerBorderColor, getVisibleTableSettingsColumns, tableColumns, renderCheckboxHeader, onColumnDividerMouseDown, onTableHeaderCellDrag]);
+  }, [theme, headerHeight, headerBorderColor, getVisibleTableSettingsColumns, tableColumns, renderCheckboxHeaderContent, onColumnDividerMouseDown, onTableHeaderCellDrag]);
 
   const renderItemContent = useCallback((index: number, row: TRowData) => {
     return (

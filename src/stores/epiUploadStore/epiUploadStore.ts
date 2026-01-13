@@ -6,13 +6,6 @@ import type {
   CompleteCaseType,
   CaseUploadResult,
 } from '../../api';
-import {
-  EPI_UPLOAD_STEP,
-  EPI_UPLOAD_ACTION,
-  type CaseUploadResultWithGeneratedId,
-  type EpiUploadMappedColumn,
-  type EpiUploadSequenceMapping,
-} from '../../models/epiUpload';
 import { QueryUtil } from '../../utils/QueryUtil';
 import { StringUtil } from '../../utils/StringUtil';
 import { EpiUploadUtil } from '../../utils/EpiUploadUtil';
@@ -22,6 +15,12 @@ import type {
   OptionBase,
 } from '../../models/form';
 import { NotificationManager } from '../../classes/managers/NotificationManager';
+import type {
+  EpiUploadMappedColumn,
+  EpiUploadSequenceMapping,
+  CaseUploadResultWithGeneratedId,
+} from '../../models/epi';
+import { EPI_UPLOAD_STEP } from '../../models/epi';
 
 export const STEP_ORDER = [
   EPI_UPLOAD_STEP.SELECT_FILE,
@@ -36,6 +35,7 @@ export interface EpiUploadStoreState {
   activeStep: EPI_UPLOAD_STEP;
   caseTypeCols: CaseTypeCol[];
   caseTypeId: string;
+  sampleIdCaseTypeColId: string;
   completeCaseType: CompleteCaseType;
   createdInDataCollectionId: string;
   createdInDataCollectionOptions: AutoCompleteOption<string>[];
@@ -45,7 +45,6 @@ export interface EpiUploadStoreState {
   sequencingProtocolId: string;
   assemblyProtocolId: string;
   fileParsingError: string;
-  importAction: EPI_UPLOAD_ACTION;
   initError: unknown;
   isInitLoading: boolean;
   mappedColumns: EpiUploadMappedColumn[];
@@ -70,7 +69,6 @@ export interface EpiUploadStoreActions {
   setCaseTypeId: (caseTypeId: string) => void;
   setCompleteCaseType: (completeCaseType: CompleteCaseType) => void;
   setCreatedInDataCollectionId: (createdInDataCollectionId: string) => void;
-  setImportAction: (importAction: EPI_UPLOAD_ACTION) => Promise<void>;
   setRawData: (rawData: string[][]) => Promise<void>;
   setSheetOptions: (sheetOptions: AutoCompleteOption<string>[]) => Promise<void>;
   setCaseTypeCols: (caseTypeCols: CaseTypeCol[]) => void;
@@ -95,13 +93,13 @@ const createEpiUploadStoreDefaultState: () => EpiUploadStoreState = () => ({
   caseTypeCols: null,
   caseTypeId: null,
   completeCaseType: null,
+  sampleIdCaseTypeColId: null,
   createdInDataCollectionId: null,
   createdInDataCollectionOptions: [],
   dataCollectionOptions: [],
   fileList: null,
   fileName: null,
   fileParsingError: null,
-  importAction: EPI_UPLOAD_ACTION.CREATE,
   initError: null,
   isInitLoading: true,
   sequencingProtocolId: null,
@@ -243,15 +241,6 @@ export const createEpiUploadStore = () => {
         }
       },
 
-      setImportAction: async (importAction: EPI_UPLOAD_ACTION) => {
-        const { importAction: oldImportAction, invalidateCaseValidationQuery } = get();
-        if (importAction !== oldImportAction) {
-          set({ shouldResetColumnMapping: true });
-          await invalidateCaseValidationQuery();
-        }
-        set({ importAction });
-      },
-
       setMappedColumns: async (mappedColumns: EpiUploadMappedColumn[]) => {
         const { invalidateCaseValidationQuery } = get();
         await invalidateCaseValidationQuery();
@@ -274,7 +263,7 @@ export const createEpiUploadStore = () => {
       },
 
       goToNextStep: async () => {
-        const { activeStep, shouldResetColumnMapping, shouldResetSequenceMapping, validatedCasesWithGeneratedId, mappedColumns, sequenceFilesDataTransfer, sequenceMapping, setMappedColumns, completeCaseType, rawData, importAction } = get();
+        const { activeStep, shouldResetColumnMapping, shouldResetSequenceMapping, validatedCasesWithGeneratedId, mappedColumns, sequenceFilesDataTransfer, sequenceMapping, setMappedColumns, completeCaseType, rawData } = get();
 
         let nextStep = get().findNextStep(activeStep);
 
@@ -287,7 +276,7 @@ export const createEpiUploadStore = () => {
             });
           }
           if ((shouldResetColumnMapping && mappedColumns) || !mappedColumns) {
-            await setMappedColumns(EpiUploadUtil.getInitialMappedColumns(completeCaseType, rawData, importAction));
+            await setMappedColumns(EpiUploadUtil.getInitialMappedColumns(completeCaseType, rawData));
           }
         }
 

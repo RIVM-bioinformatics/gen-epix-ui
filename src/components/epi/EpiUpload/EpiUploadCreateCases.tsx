@@ -65,9 +65,11 @@ export const EpiUploadCreateCases = () => {
     InactivityManager.instance.pause();
 
     EpiUploadUtil.createCasesAndUploadFiles({
+      mappedColumns: store.getState().mappedColumns,
+      completeCaseType: store.getState().completeCaseType,
+      sampleIdCaseTypeColId: store.getState().sampleIdCaseTypeColId,
       caseTypeId: store.getState().caseTypeId,
       createdInDataCollectionId: store.getState().createdInDataCollectionId,
-      importAction: store.getState().importAction,
       sequencingProtocolId: store.getState().sequencingProtocolId,
       assemblyProtocolId: store.getState().assemblyProtocolId,
       mappedFileSize: sequenceFileStats.mappedFileSize,

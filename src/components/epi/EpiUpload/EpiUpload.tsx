@@ -13,11 +13,11 @@ import {
 } from '@mui/material';
 import { useStore } from 'zustand';
 
-import { EPI_UPLOAD_STEP } from '../../../models/epiUpload';
 import {
   EpiUploadStoreContext,
   STEP_ORDER,
 } from '../../../stores/epiUploadStore';
+import { EPI_UPLOAD_STEP } from '../../../models/epi';
 
 import EpiUploadSelectFile from './EpiUploadSelectFile';
 import { EpiUploadMapColumns } from './EpiUploadMapColumns';

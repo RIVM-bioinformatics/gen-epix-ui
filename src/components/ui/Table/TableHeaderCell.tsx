@@ -284,34 +284,42 @@ export const TableHeaderCell = <TRowData,>(props: TableHeaderCellProps<TRowData>
             width: '100%',
           }}
         >
-          <Tooltip
-            arrow
-            placement={'top'}
-            title={column.headerTooltipContent}
-          >
-
-            <Box
-              ref={contentRef}
-              className={'GENEPIX-TableHeaderCell-content'}
-              sx={{
-                cursor: 'pointer',
-                overflow: 'hidden',
-                textOverflow: 'ellipsis',
-                whiteSpace: 'nowrap',
-                maxWidth: `calc(100% + 16px - ${sum([hasActiveSorting ? iconSpacing : 0, hasActiveFilter ? iconSpacing : 0, iconSpacing])}px)`,
-                flexGrow: 1,
-              }}
-              onClick={onContentClick}
+          {column.renderHeader ? (
+            <>
+              {column.renderHeader({
+                columnIndex,
+                column,
+              })}
+            </>
+          ) : (
+            <Tooltip
+              arrow
+              placement={'top'}
+              title={column.headerTooltipContent}
             >
-              {column.renderHeader
-                ? column.renderHeader({
-                  columnIndex,
-                  column,
-                })
-                : column.headerName ?? ''}
-            </Box>
 
-          </Tooltip>
+              <Box
+                ref={contentRef}
+                className={'GENEPIX-TableHeaderCell-content'}
+                sx={{
+                  cursor: 'pointer',
+                  overflow: 'hidden',
+                  textOverflow: 'ellipsis',
+                  whiteSpace: 'nowrap',
+                  maxWidth: `calc(100% + 16px - ${sum([hasActiveSorting ? iconSpacing : 0, hasActiveFilter ? iconSpacing : 0, iconSpacing])}px)`,
+                  flexGrow: 1,
+                }}
+                onClick={onContentClick}
+              >
+                {column.renderHeaderContent
+                  ? column.renderHeaderContent({
+                    columnIndex,
+                    column,
+                  })
+                  : column.headerName ?? ''}
+              </Box>
+            </Tooltip>
+          )}
           {shouldShowFilterIcon && (
             <>
               <TableFilterLabelIconButton

@@ -36,9 +36,9 @@ import { ResponseHandler } from '../../ui/ResponseHandler';
 import { EpiUploadUtil } from '../../../utils/EpiUploadUtil';
 import { ConfigManager } from '../../../classes/managers/ConfigManager';
 import { EpiUploadStoreContext } from '../../../stores/epiUploadStore';
-import type { EpiUploadMappedColumnsFormFields } from '../../../models/epiUpload';
 import { Select } from '../../form/fields/Select';
 import { useIdentifierIssuerOwnOrganizationOptionsQuery } from '../../../dataHooks/useIdentifierIssuerOwnOrganizationQuery';
+import type { EpiUploadMappedColumnsFormFields } from '../../../models/epi';
 
 import { EpiUploadNavigation } from './EpiUploadNavigation';
 
@@ -52,7 +52,6 @@ export const EpiUploadMapColumns = () => {
   const completeCaseType = useStore(store, (state) => state.completeCaseType);
   const rawData = useStore(store, (state) => state.rawData);
   const fileName = useStore(store, (state) => state.fileName);
-  const importAction = useStore(store, (state) => state.importAction);
   const goToNextStep = useStore(store, (state) => state.goToNextStep);
   const goToPreviousStep = useStore(store, (state) => state.goToPreviousStep);
   const setMappedColumns = useStore(store, (state) => state.setMappedColumns);
@@ -66,12 +65,12 @@ export const EpiUploadMapColumns = () => {
   // const identifierIssuerMappingFormId = useId();
 
   const schema = useMemo(() => {
-    return EpiUploadUtil.getColumnMappingSchema(rawData, completeCaseType, importAction);
-  }, [completeCaseType, importAction, rawData]);
+    return EpiUploadUtil.getColumnMappingSchema(rawData, completeCaseType);
+  }, [completeCaseType, rawData]);
 
   const defaultValues: EpiUploadMappedColumnsFormFields = useMemo(() => {
-    return EpiUploadUtil.getDefaultColumnMappingFormValues(rawData[0], store.getState().mappedColumns, importAction, identifierIssuerOptionsQuery.options);
-  }, [rawData, store, importAction, identifierIssuerOptionsQuery.options]);
+    return EpiUploadUtil.getDefaultColumnMappingFormValues(rawData[0], store.getState().mappedColumns, identifierIssuerOptionsQuery.options);
+  }, [rawData, store, identifierIssuerOptionsQuery.options]);
 
   const formMethods = useForm<EpiUploadMappedColumnsFormFields>({
     resolver: yupResolver(schema) as unknown as Resolver<EpiUploadMappedColumnsFormFields>,
@@ -83,11 +82,11 @@ export const EpiUploadMapColumns = () => {
   const columnMappingFormValues = useWatch({ control });
 
   const formFieldDefinitions = useMemo<FormFieldDefinition<EpiUploadMappedColumnsFormFields>[]>(() => {
-    return EpiUploadUtil.getColumnMappingFormFieldDefinitions(completeCaseType, rawData[0], fileName, importAction).map(def => ({
+    return EpiUploadUtil.getColumnMappingFormFieldDefinitions(completeCaseType, rawData[0], fileName).map(def => ({
       ...def,
       onChange: () => clearErrors(),
     }));
-  }, [completeCaseType, rawData, fileName, importAction, clearErrors]);
+  }, [completeCaseType, rawData, fileName, clearErrors]);
 
   useEffect(() => {
     const perform = async () => {
