@@ -35,7 +35,7 @@ export const UserOwnOrganizationMenuItem = withPermissions(() => {
       }}
     >
       <ListItemText
-        primary={t`Your organization`}
+        primary={t`My organization`}
         secondary={userOrganization ?? t`Unknown`}
         slotProps={{
           primary: {

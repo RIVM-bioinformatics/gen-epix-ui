@@ -35,7 +35,7 @@ export const UserOrganizationAdminMenuItem = withPermissions(() => {
       }}
     >
       <ListItemText
-        primary={t`Your organization’s admins`}
+        primary={t`My organization’s admins`}
         secondary={(
           <>
             {isOrganizationAdminNameEmailsLoading && t`Loading...`}

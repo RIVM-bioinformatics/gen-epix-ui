@@ -104,8 +104,7 @@ export const UserMenu = ({ anchorElement, onClose }: UserMenuProps): ReactElemen
           }}
         >
           <ListItemText
-            primary={t`Logged in user`}
-            secondary={userName ?? t`Unknown`}
+            primary={userName ?? t`Unknown`}
             slotProps={{
               primary: {
                 sx: {
@@ -115,6 +114,8 @@ export const UserMenu = ({ anchorElement, onClose }: UserMenuProps): ReactElemen
             }}
           />
         </ListItem>
+        <UserOwnOrganizationMenuItem />
+        <UserOrganizationAdminMenuItem />
         <ListItem
           divider
           sx={{
@@ -163,7 +164,6 @@ export const UserMenu = ({ anchorElement, onClose }: UserMenuProps): ReactElemen
                 primary: {
                   sx: {
                     color: 'primary.main',
-                    fontWeight: 'bold',
                   },
                 },
               }}
@@ -173,8 +173,6 @@ export const UserMenu = ({ anchorElement, onClose }: UserMenuProps): ReactElemen
             ref={myPermissionsDialogRef}
           />
         </ListItem>
-        <UserOwnOrganizationMenuItem />
-        <UserOrganizationAdminMenuItem />
         <ListItem
           alignItems={'center'}
           sx={{ justifyContent: 'center' }}
