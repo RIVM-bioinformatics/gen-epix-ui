@@ -14,6 +14,7 @@ import {
   ListItemIcon,
 } from '@mui/material';
 import LogoutIcon from '@mui/icons-material/Logout';
+import KeyIcon from '@mui/icons-material/Key';
 import { useTranslation } from 'react-i18next';
 import { useAuth } from 'react-oidc-context';
 
@@ -27,6 +28,8 @@ import { LogManager } from '../../../classes/managers/LogManager';
 import { DataUtil } from '../../../utils/DataUtil';
 import { StringUtil } from '../../../utils/StringUtil';
 import { TestIdUtil } from '../../../utils/TestIdUtil';
+import type { MyPermissionsDialogRefMethods } from '../MyPermissionsDialog';
+import { MyPermissionsDialog } from '../MyPermissionsDialog';
 
 import { UserOrganizationAdminMenuItem } from './UserOrganizationAdminMenuItem';
 import { UserOwnOrganizationMenuItem } from './UserOwnOrganizationMenuItem';
@@ -42,6 +45,12 @@ export const UserMenu = ({ anchorElement, onClose }: UserMenuProps): ReactElemen
   const popoverId = useMemo(() => StringUtil.createUuid(), []);
   const isUserMenuOpen = !!anchorElement;
   const [t] = useTranslation();
+
+  const myPermissionsDialogRef = useRef<MyPermissionsDialogRefMethods>(null);
+
+  const onViewMyPermissionsButtonClick = useCallback(() => {
+    myPermissionsDialogRef.current.open();
+  }, []);
 
   const onLogoutButtonClick = useCallback(() => {
     logoutConfirmation.current.open();
@@ -113,7 +122,7 @@ export const UserMenu = ({ anchorElement, onClose }: UserMenuProps): ReactElemen
           }}
         >
           <ListItemText
-            primary={t`Your roles`}
+            primary={t`My roles`}
             secondary={(
               <>
                 {userRoles?.map((role) => (
@@ -135,6 +144,33 @@ export const UserMenu = ({ anchorElement, onClose }: UserMenuProps): ReactElemen
                 },
               },
             }}
+          />
+        </ListItem>
+        <ListItem
+          divider
+          alignItems={'center'}
+          sx={{ justifyContent: 'center' }}
+        >
+          <ListItemButton
+            onClick={onViewMyPermissionsButtonClick}
+          >
+            <ListItemIcon>
+              <KeyIcon color={'primary'} />
+            </ListItemIcon>
+            <ListItemText
+              primary={t`My API permissions`}
+              slotProps={{
+                primary: {
+                  sx: {
+                    color: 'primary.main',
+                    fontWeight: 'bold',
+                  },
+                },
+              }}
+            />
+          </ListItemButton>
+          <MyPermissionsDialog
+            ref={myPermissionsDialogRef}
           />
         </ListItem>
         <UserOwnOrganizationMenuItem />
