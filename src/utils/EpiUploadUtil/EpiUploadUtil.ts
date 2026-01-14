@@ -420,6 +420,10 @@ export class EpiUploadUtil {
   }
 
   public static getEpiUploadSequenceMapping(completeCaseType: CompleteCaseType, validatedCases: CaseUploadResultWithGeneratedId[], sequenceFilesDataTransfer: DataTransfer): EpiUploadSequenceMapping {
+    if (!sequenceFilesDataTransfer || sequenceFilesDataTransfer.files.length === 0) {
+      return {};
+    }
+
     const stats = EpiUploadUtil.getCompleteCaseTypeColumnStats(completeCaseType);
     const result: EpiUploadSequenceMapping = {};
 

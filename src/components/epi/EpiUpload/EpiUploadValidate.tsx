@@ -466,7 +466,6 @@ export const EpiUploadValidate = () => {
   const store = useContext(EpiUploadStoreContext);
   const completeCaseType = useStore(store, (state) => state.completeCaseType);
 
-
   const [isCompleteCaseTypeLoaded, setIsCompleteCaseTypeLoaded] = useState<boolean>(false);
 
   const onCompleteCaseTypeLoaded = useCallback(() => {

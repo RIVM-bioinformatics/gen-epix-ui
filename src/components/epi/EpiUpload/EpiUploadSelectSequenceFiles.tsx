@@ -217,7 +217,7 @@ export const EpiUploadSelectSequenceFiles = () => {
   }, [canUploadReads, canUploadSequences]);
 
   const onProceedButtonClick = useCallback(async () => {
-    setSequenceFilesDataTransfer(canUpload ? dataTransfer.current : null);
+    setSequenceFilesDataTransfer(canUpload ? dataTransfer.current : new DataTransfer());
     await handleSubmit(async () => {
       await goToNextStep();
     })();
