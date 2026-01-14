@@ -124,7 +124,7 @@ export const createEpiUploadStore = () => {
         set({
           validatedCases, validatedCasesWithGeneratedId: (validatedCases || []).map((vc, index) => ({
             ...vc,
-            generated_id: index.toString(),
+            generatedId: index.toString(),
           })),
         });
       },

@@ -97,7 +97,7 @@ export const EpiUploadValidateInner = () => {
   const rowsWithGeneratedId = useMemo<CaseUploadResultWithGeneratedId[]>(() => {
     return (caseUploadValidationResultQuery?.data?.cases || []).map((vc, index) => ({
       ...vc,
-      generated_id: vc.id || index.toString(),
+      generatedId: vc.id || index.toString(),
     }));
   }, [caseUploadValidationResultQuery?.data?.cases]);
 
@@ -106,7 +106,7 @@ export const EpiUploadValidateInner = () => {
   ]);
 
   const tableStore = useMemo(() => createTableStore<CaseUploadResultWithGeneratedId>({
-    idSelectorCallback: (row) => row.generated_id,
+    idSelectorCallback: (row) => row.generatedId,
   }), []);
 
   const setSelectedIds = useStore(tableStore, useShallow((state) => state.setSelectedIds));
@@ -115,7 +115,7 @@ export const EpiUploadValidateInner = () => {
   useEffect(() => {
     const newSelectedIds = rowsWithGeneratedId.filter(validatedCase => {
       return !validatedCase.data_issues.some(issue => issue.data_issue_type === DataIssueType.INVALID || issue.data_issue_type === DataIssueType.UNAUTHORIZED);
-    }).map(vc => vc.generated_id);
+    }).map(vc => vc.generatedId);
     setSelectedIds(newSelectedIds);
   }, [rowsWithGeneratedId, setSelectedIds]);
 
@@ -415,7 +415,7 @@ export const EpiUploadValidateInner = () => {
   useInitializeTableStore<CaseUploadResultWithGeneratedId>({ store: tableStore, columns: tableColumns, rows: rowsWithGeneratedId, createFiltersFromColumns: true });
 
   const onProceedButtonClick = useCallback(async () => {
-    const validatedCases = rowsWithGeneratedId.filter(r => selectedIds.includes(r.generated_id)).map(r => omit(r, 'generated_id'));
+    const validatedCases = rowsWithGeneratedId.filter(r => selectedIds.includes(r.generatedId)).map(r => omit(r, 'generatedId'));
     setValidatedCases(validatedCases);
     await goToNextStep();
   }, [goToNextStep, rowsWithGeneratedId, selectedIds, setValidatedCases]);

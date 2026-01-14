@@ -150,14 +150,14 @@ export interface EpiUploadFileColumnAssignment {
   caseTypeCol: CaseTypeCol; // null if no suitable column found
 }
 
-export type CaseUploadResultWithGeneratedId = CaseUploadResult & { generated_id: string };
+export type CaseUploadResultWithGeneratedId = CaseUploadResult & { generatedId: string };
 
 export type EpiUploadSequenceMappingForCaseId = {
   sequenceFileNames: {
-    [columnId: string]: string;
+    [caseTypeColId: string]: string;
   };
   readsFileNames: {
-    [columnId: string]: {
+    [caseTypeColId: string]: {
       fwd: string;
       rev: string;
     };

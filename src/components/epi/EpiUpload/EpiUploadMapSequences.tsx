@@ -86,7 +86,7 @@ export const EpiUploadMapSequences = () => {
   }, [updateAlert]);
 
   const tableStore = useMemo(() => createTableStore<CaseUploadResultWithGeneratedId>({
-    idSelectorCallback: (row) => row.generated_id,
+    idSelectorCallback: (row) => row.generatedId,
   }), []);
 
   const caseHasColumnContent = useCallback((rows: CaseUploadResultWithGeneratedId[], caseTypeCol: CaseTypeCol): boolean => {
@@ -137,8 +137,8 @@ export const EpiUploadMapSequences = () => {
   const renderSequenceCell = useCallback((tableRowParams: TableRowParams<CaseUploadResultWithGeneratedId>) => {
     const caseTypeCol = completeCaseType.case_type_cols[tableRowParams.id];
 
-    const id = tableRowParams.row.generated_id;
-    const dropDownValue = epiUploadSequenceMapping.current?.[tableRowParams.row.generated_id]?.sequenceFileNames[caseTypeCol.id] || '';
+    const id = tableRowParams.row.generatedId;
+    const dropDownValue = epiUploadSequenceMapping.current?.[tableRowParams.row.generatedId]?.sequenceFileNames[caseTypeCol.id] || '';
     const onChange = (newValue: string) => {
       if (!newValue) {
         delete epiUploadSequenceMapping.current?.[id]?.sequenceFileNames[caseTypeCol.id];
@@ -172,9 +172,9 @@ export const EpiUploadMapSequences = () => {
     const caseTypeCol = completeCaseType.case_type_cols[tableRowParams.id];
     const isSequenceColumn = completeCaseTypeColumnStats.sequenceColumns.includes(caseTypeCol);
 
-    const id = tableRowParams.row.generated_id;
-    const dropDownValueFwd = epiUploadSequenceMapping.current?.[tableRowParams.row.generated_id]?.readsFileNames?.[caseTypeCol.id]?.fwd || '';
-    const dropDownValueRev = epiUploadSequenceMapping.current?.[tableRowParams.row.generated_id]?.readsFileNames?.[caseTypeCol.id]?.rev || '';
+    const id = tableRowParams.row.generatedId;
+    const dropDownValueFwd = epiUploadSequenceMapping.current?.[tableRowParams.row.generatedId]?.readsFileNames?.[caseTypeCol.id]?.fwd || '';
+    const dropDownValueRev = epiUploadSequenceMapping.current?.[tableRowParams.row.generatedId]?.readsFileNames?.[caseTypeCol.id]?.rev || '';
     const onChangeFwd = (newValue: string) => {
       if (!newValue) {
         delete epiUploadSequenceMapping.current?.[id]?.readsFileNames?.[caseTypeCol.id]?.fwd;

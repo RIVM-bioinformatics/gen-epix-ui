@@ -72,7 +72,6 @@ export const EpiUploadCreateCases = () => {
       createdInDataCollectionId: store.getState().createdInDataCollectionId,
       sequencingProtocolId: store.getState().sequencingProtocolId,
       assemblyProtocolId: store.getState().assemblyProtocolId,
-      mappedFileSize: sequenceFileStats.mappedFileSize,
       sequenceFilesDataTransfer,
       sequenceMapping,
       signal,
@@ -95,7 +94,7 @@ export const EpiUploadCreateCases = () => {
     });
 
     return abort;
-  }, [isUploadStarted, sequenceFileStats.mappedFileSize, sequenceFilesDataTransfer, sequenceMapping, store, t, validatedCases, validatedCasesWithGeneratedId]);
+  }, [isUploadStarted, sequenceFilesDataTransfer, sequenceMapping, store, t, validatedCases, validatedCasesWithGeneratedId]);
 
 
   const onStartOverButtonClick = useCallback(async () => {
