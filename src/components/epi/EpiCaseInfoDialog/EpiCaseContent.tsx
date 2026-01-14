@@ -78,7 +78,7 @@ export const EpiCaseContent = ({ epiCase, ...boxProps }: EpiCaseContentProps) =>
           <TableBody>
             {caseTypeCols.map(caseTypeCol => {
               const column = completeCaseType.cols[caseTypeCol.col_id];
-              const columnValue = EpiCaseUtil.getRowValue(epiCase, caseTypeCol, completeCaseType);
+              const columnValue = EpiCaseUtil.getRowValue(epiCase.content, caseTypeCol, completeCaseType);
               return (
                 <TableRow key={caseTypeCol.id}>
                   <TableCell

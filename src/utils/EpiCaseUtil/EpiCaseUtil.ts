@@ -303,22 +303,22 @@ export class EpiCaseUtil {
     }, object({}));
   }
 
-  public static getRowValue(row: Case, caseTypeCol: CaseTypeCol, completeCaseType: CompleteCaseType, machineReadable = false): CaseTypeRowValue {
+  public static getRowValue(content: { [key: string]: string }, caseTypeCol: CaseTypeCol, completeCaseType: CompleteCaseType, machineReadable = false): CaseTypeRowValue {
     const column = completeCaseType.cols[caseTypeCol.col_id];
     const hasMappedValue = column.col_type === ColType.ORGANIZATION || column.region_set_id || column.concept_set_id;
     if (hasMappedValue) {
-      return EpiCaseUtil.getMappedValue(row.content[caseTypeCol.id], caseTypeCol, completeCaseType, machineReadable);
+      return EpiCaseUtil.getMappedValue(content[caseTypeCol.id], caseTypeCol, completeCaseType, machineReadable);
     }
 
     const { DATA_MISSING_CHARACTER } = ConfigManager.instance.config.epi;
     const dataMissingCharacter = machineReadable ? '' : DATA_MISSING_CHARACTER;
 
     const rowValue: CaseTypeRowValue = {
-      raw: row.content?.[caseTypeCol.id],
-      isMissing: !row.content[caseTypeCol.id],
-      short: row.content[caseTypeCol.id] ?? dataMissingCharacter,
-      long: row.content[caseTypeCol.id] ?? dataMissingCharacter,
-      full: row.content[caseTypeCol.id] ?? t(`${dataMissingCharacter} (missing)`),
+      raw: content?.[caseTypeCol.id],
+      isMissing: !content[caseTypeCol.id],
+      short: content[caseTypeCol.id] ?? dataMissingCharacter,
+      long: content[caseTypeCol.id] ?? dataMissingCharacter,
+      full: content[caseTypeCol.id] ?? t(`${dataMissingCharacter} (missing)`),
     };
     return rowValue;
   }

@@ -64,7 +64,6 @@ export const CaseTypeColSetsAdminPage = () => {
 
   const createOne = useCallback(async (variables: FormFields) => {
     const resultItem = (await CaseApi.instance.caseTypeColSetsPostOne(omit(variables, ['caseTypeColIds']))).data;
-
     await CaseApi.instance.caseTypeColSetsPutCaseTypeCols(resultItem.id, {
       case_type_col_set_members: variables.caseTypeColIds.map<CaseTypeColSetMember>(case_type_col_id => ({
         case_type_col_id,
@@ -128,13 +127,7 @@ export const CaseTypeColSetsAdminPage = () => {
     ];
   }, [caseTypeColOptionsQuery.options.length, t]);
 
-  const extraCreateOnePermissions = useMemo<ApiPermission[]>(() => [
-    { command_name: CommandName.CaseTypeColSetCaseTypeColUpdateAssociationCommand, permission_type: PermissionType.EXECUTE },
-  ], []);
-  const extraDeleteOnePermissions = useMemo<ApiPermission[]>(() => [
-    { command_name: CommandName.CaseTypeColSetCaseTypeColUpdateAssociationCommand, permission_type: PermissionType.EXECUTE },
-  ], []);
-  const extraUpdateOnePermissions = useMemo<ApiPermission[]>(() => [
+  const extraPermissions = useMemo<ApiPermission[]>(() => [
     { command_name: CommandName.CaseTypeColSetCaseTypeColUpdateAssociationCommand, permission_type: PermissionType.EXECUTE },
   ], []);
 
@@ -165,9 +158,9 @@ export const CaseTypeColSetsAdminPage = () => {
       defaultSortByField={'name'}
       defaultSortDirection={'asc'}
       deleteOne={deleteOne}
-      extraCreateOnePermissions={extraCreateOnePermissions}
-      extraDeleteOnePermissions={extraDeleteOnePermissions}
-      extraUpdateOnePermissions={extraUpdateOnePermissions}
+      extraCreateOnePermissions={extraPermissions}
+      extraDeleteOnePermissions={extraPermissions}
+      extraUpdateOnePermissions={extraPermissions}
       fetchAll={fetchAll}
       formFieldDefinitions={formFieldDefinitions}
       getName={getName}

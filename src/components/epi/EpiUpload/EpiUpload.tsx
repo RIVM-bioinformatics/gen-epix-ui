@@ -3,21 +3,23 @@ import Stepper from '@mui/material/Stepper';
 import Step from '@mui/material/Step';
 import StepLabel from '@mui/material/StepLabel';
 import { useTranslation } from 'react-i18next';
+import type { ReactNode } from 'react';
 import {
   useContext,
   useMemo,
 } from 'react';
 import {
   Container,
+  Typography,
   useTheme,
 } from '@mui/material';
 import { useStore } from 'zustand';
 
-import { EPI_UPLOAD_STEP } from '../../../models/epiUpload';
 import {
   EpiUploadStoreContext,
   STEP_ORDER,
 } from '../../../stores/epiUploadStore';
+import { EPI_UPLOAD_STEP } from '../../../models/epi';
 
 import EpiUploadSelectFile from './EpiUploadSelectFile';
 import { EpiUploadMapColumns } from './EpiUploadMapColumns';
@@ -35,13 +37,31 @@ export const EpiUpload = () => {
 
   const steps = useMemo(() => {
     return {
-      [EPI_UPLOAD_STEP.SELECT_FILE]: t`Select file`,
-      [EPI_UPLOAD_STEP.MAP_COLUMNS]: t`Map columns`,
-      [EPI_UPLOAD_STEP.VALIDATE]: t`Validate`,
-      [EPI_UPLOAD_STEP.SELECT_SEQUENCE_FILES]: t`Select sequence files`,
-      [EPI_UPLOAD_STEP.MAP_SEQUENCES]: t`Map sequences`,
-      [EPI_UPLOAD_STEP.CREATE_CASES]: t`Upload`,
-    } satisfies Record<EPI_UPLOAD_STEP, string>;
+      [EPI_UPLOAD_STEP.SELECT_FILE]: {
+        label: t`Select file`,
+        optional: false,
+      },
+      [EPI_UPLOAD_STEP.MAP_COLUMNS]: {
+        label: t`Map columns`,
+        optional: false,
+      },
+      [EPI_UPLOAD_STEP.VALIDATE]: {
+        label: t`Validate`,
+        optional: false,
+      },
+      [EPI_UPLOAD_STEP.SELECT_SEQUENCE_FILES]: {
+        label: t`Select sequence files`,
+        optional: true,
+      },
+      [EPI_UPLOAD_STEP.MAP_SEQUENCES]: {
+        label: t`Map sequences`,
+        optional: true,
+      },
+      [EPI_UPLOAD_STEP.CREATE_CASES]: {
+        label: t`Upload`,
+        optional: false,
+      },
+    } satisfies Record<EPI_UPLOAD_STEP, { label: string; optional: boolean }>;
   }, [t]);
 
   return (
@@ -58,13 +78,26 @@ export const EpiUpload = () => {
         <Stepper activeStep={activeStep}>
           {STEP_ORDER.map((step) => {
             const stepProps: { completed?: boolean } = {};
+            const labelProps: {
+              optional?: ReactNode;
+            } = {};
+            if (activeStep > step) {
+              stepProps.completed = true;
+            }
+            if (steps[step].optional) {
+              labelProps.optional = (
+                <Typography variant={'caption'}>
+                  {'Optional'}
+                </Typography>
+              );
+            }
             return (
               <Step
                 key={step}
                 {...stepProps}
               >
-                <StepLabel>
-                  {steps[step]}
+                <StepLabel {...labelProps}>
+                  {steps[step].label}
                 </StepLabel>
               </Step>
             );

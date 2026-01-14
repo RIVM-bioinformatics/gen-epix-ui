@@ -302,7 +302,7 @@ export const createEpiStore = (kwArgs: CreateEpiStoreKwArgs) => {
                   legendaItems.push(legendaItemMissingData);
 
                   sortedData.forEach(row => {
-                    const rowValue = EpiCaseUtil.getRowValue(row, caseTypeCol, completeCaseType);
+                    const rowValue = EpiCaseUtil.getRowValue(row.content, caseTypeCol, completeCaseType);
                     const legendaItem = rowValue.isMissing ? legendaItemMissingData : legendaItemsByValue[rowValue.raw];
                     legendaItem.caseIds.push(row.id);
                     caseIdColors[row.id] = legendaItem.color;
@@ -313,7 +313,7 @@ export const createEpiStore = (kwArgs: CreateEpiStoreKwArgs) => {
                     delete legendaItemsByValue[''];
                   }
                 } else {
-                  const rowValues = sortedData.map(row => EpiCaseUtil.getRowValue(row, caseTypeCol, completeCaseType));
+                  const rowValues = sortedData.map(row => EpiCaseUtil.getRowValue(row.content, caseTypeCol, completeCaseType));
                   const uniqueRowValues = uniqBy(rowValues, (rowValue => rowValue.raw)).sort((a, b) => {
                     if (column.col_type === ColType.ORDINAL) {
                       if (a.isMissing && b.isMissing) {
@@ -344,7 +344,7 @@ export const createEpiStore = (kwArgs: CreateEpiStoreKwArgs) => {
                     legendaItems.push(legendaItem);
                   });
                   sortedData.forEach(row => {
-                    const rowValue = EpiCaseUtil.getRowValue(row, caseTypeCol, completeCaseType);
+                    const rowValue = EpiCaseUtil.getRowValue(row.content, caseTypeCol, completeCaseType);
                     const legendaItem = legendaItemsByValue[rowValue.raw];
                     legendaItem.caseIds.push(row.id);
                     caseIdColors[row.id] = legendaItem.color;
@@ -352,7 +352,7 @@ export const createEpiStore = (kwArgs: CreateEpiStoreKwArgs) => {
                 }
 
               } else {
-                const rawValues = sortedData.map(row => EpiCaseUtil.getRowValue(row, caseTypeCol, completeCaseType));
+                const rawValues = sortedData.map(row => EpiCaseUtil.getRowValue(row.content, caseTypeCol, completeCaseType));
                 const uniqueRowValues = uniqBy(rawValues, v => v.raw).sort(rowValueComperator);
 
                 uniqueRowValues.forEach((rowValue, index) => {
@@ -370,7 +370,7 @@ export const createEpiStore = (kwArgs: CreateEpiStoreKwArgs) => {
                 });
 
                 sortedData.forEach(row => {
-                  const rowValue = EpiCaseUtil.getRowValue(row, caseTypeCol, completeCaseType);
+                  const rowValue = EpiCaseUtil.getRowValue(row.content, caseTypeCol, completeCaseType);
                   const legendaItem = legendaItemsByValue[rowValue.raw];
                   legendaItem.caseIds.push(row.id);
                   caseIdColors[row.id] = legendaItem.color;
@@ -582,7 +582,7 @@ export const createEpiStore = (kwArgs: CreateEpiStoreKwArgs) => {
               return true;
             });
             const stratifyableColumns = filteredCaseTypeColumns.map<StratifiableColumn>(caseTypeCol => {
-              const numUniqueValues = uniq(data.map(row => EpiCaseUtil.getRowValue(row, caseTypeCol, completeCaseType).raw)).length;
+              const numUniqueValues = uniq(data.map(row => EpiCaseUtil.getRowValue(row.content, caseTypeCol, completeCaseType).raw)).length;
               let enabled = true;
               if (numUniqueValues === 0 || numUniqueValues > MAX_STRATIFICATION_UNIQUE_VALUES) {
                 enabled = false;

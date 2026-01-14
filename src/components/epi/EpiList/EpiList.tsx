@@ -97,7 +97,7 @@ export const EpiList = ({ linkedScrollSubject, onLink, caseSet }: EpiListProps) 
   const getColumnWidth = useCallback((caseTypeCol: CaseTypeCol, label: string) => {
     let maxTextLength = label?.length * 0.8;
     sortedData.forEach(row => {
-      const value = EpiCaseUtil.getRowValue(row, caseTypeCol, completeCaseType).short;
+      const value = EpiCaseUtil.getRowValue(row.content, caseTypeCol, completeCaseType).short;
       if (value?.length > maxTextLength) {
         maxTextLength = value.length;
       }
@@ -126,11 +126,11 @@ export const EpiList = ({ linkedScrollSubject, onLink, caseSet }: EpiListProps) 
         rowIndex,
       }).isMissing;
     }
-    return !EpiCaseUtil.getRowValue(row, completeCaseType.case_type_cols[column.id], completeCaseType).isMissing;
+    return !EpiCaseUtil.getRowValue(row.content, completeCaseType.case_type_cols[column.id], completeCaseType).isMissing;
   }, [completeCaseType]);
 
   const renderOrganizationCell = useCallback(({ id, row }: TableRowParams<Case>) => {
-    const rowValue = EpiCaseUtil.getRowValue(row, completeCaseType.case_type_cols[id], completeCaseType);
+    const rowValue = EpiCaseUtil.getRowValue(row.content, completeCaseType.case_type_cols[id], completeCaseType);
     if (rowValue.isMissing) {
       return rowValue.short;
     }
@@ -222,7 +222,7 @@ export const EpiList = ({ linkedScrollSubject, onLink, caseSet }: EpiListProps) 
   }, [caseSet]);
 
   const renderCell = useCallback(({ id, row }: TableRowParams<Case>) => {
-    const rowValue = EpiCaseUtil.getRowValue(row, completeCaseType.case_type_cols[id], completeCaseType);
+    const rowValue = EpiCaseUtil.getRowValue(row.content, completeCaseType.case_type_cols[id], completeCaseType);
 
     if (id === stratification?.caseTypeCol?.id) {
       return (

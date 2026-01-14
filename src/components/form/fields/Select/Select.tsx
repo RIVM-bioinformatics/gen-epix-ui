@@ -14,8 +14,11 @@ import {
   ListItemText,
   Checkbox,
   OutlinedInput,
+  InputAdornment,
+  IconButton,
 } from '@mui/material';
 import type { SelectChangeEvent } from '@mui/material';
+import ClearIcon from '@mui/icons-material/Clear';
 import type {
   UseControllerReturn,
   FieldValues,
@@ -99,6 +102,10 @@ export const Select = <TFieldValues extends FieldValues, TName extends Path<TFie
         inputRef?.current?.focus();
       },
     });
+    const onResetButtonClick = () => {
+      onMuiSelectChange(onChange)({ target: { value: multiple ? [] : '' } } as SelectChangeEvent<string>);
+    };
+
     return (
       <>
         <InputLabel
@@ -116,6 +123,29 @@ export const Select = <TFieldValues extends FieldValues, TName extends Path<TFie
           input={(
             <OutlinedInput
               label={label}
+              endAdornment={disabled ? undefined : (
+                <InputAdornment
+                  position={'start'}
+                  sx={{
+                    position: 'absolute',
+                    right: theme => theme.spacing(2),
+                  }}
+                >
+                  <IconButton
+                    {...TestIdUtil.createAttributes('TextField-reset')}
+                    sx={{
+                      '& svg': {
+                        fontSize: '16px',
+                      },
+                    }}
+                    tabIndex={-1}
+                    // eslint-disable-next-line react/jsx-no-bind
+                    onClick={onResetButtonClick}
+                  >
+                    <ClearIcon />
+                  </IconButton>
+                </InputAdornment>
+              )}
             />
           )}
           inputProps={{

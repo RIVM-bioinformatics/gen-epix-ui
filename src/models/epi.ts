@@ -11,6 +11,7 @@ import type {
   RegionSet,
   Region,
   DataCollection,
+  CaseUploadResult,
 } from '../api';
 
 export type CaseTypeRowValue = {
@@ -122,3 +123,64 @@ export type EpiData = {
 };
 
 export type EpiCaseHasCaseSet = { [caseId: string]: boolean };
+
+export type EpiUploadMappedColumn = {
+  originalIndex: number;
+  originalLabel: string;
+  caseTypeCol: CaseTypeCol;
+  isCaseIdColumn?: boolean;
+  isCaseTypeColumn?: boolean;
+  isSampleIdColumn?: boolean;
+  sampleIdentifierIssuerId?: string;
+};
+
+export type EpiUploadMappedColumnsFormFields = {
+  [key: string]: string;
+};
+
+export type EpiUploadTableRow = {
+  [key: string]: string;
+};
+
+/**
+ * File assignment result for genetic file uploads
+ */
+export interface EpiUploadFileColumnAssignment {
+  file: File;
+  caseTypeCol: CaseTypeCol; // null if no suitable column found
+}
+
+export type CaseUploadResultWithGeneratedId = CaseUploadResult & { generatedId: string };
+
+export type EpiUploadSequenceMappingForCaseId = {
+  sequenceFileNames: {
+    [caseTypeColId: string]: string;
+  };
+  readsFileNames: {
+    [caseTypeColId: string]: {
+      fwd: string;
+      rev: string;
+    };
+  };
+};
+
+export type EpiUploadSequenceMapping = {
+  [caseId: string]: EpiUploadSequenceMappingForCaseId;
+};
+
+
+export type EpiUploadCompleteCaseTypeColumnStats = {
+  sampleIdColumns: CaseTypeCol[];
+  sequenceColumns: CaseTypeCol[];
+  readsColumns: CaseTypeCol[];
+  writableColumns: CaseTypeCol[];
+};
+
+export enum EPI_UPLOAD_STEP {
+  SELECT_FILE = 0,
+  MAP_COLUMNS = 1,
+  VALIDATE = 2,
+  SELECT_SEQUENCE_FILES = 3,
+  MAP_SEQUENCES = 4,
+  CREATE_CASES = 5,
+}
