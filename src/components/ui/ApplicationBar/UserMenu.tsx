@@ -99,9 +99,7 @@ export const UserMenu = ({ anchorElement, onClose }: UserMenuProps): ReactElemen
         }}
       >
         <ListItem
-          sx={{
-            paddingBottom: 0,
-          }}
+          divider
         >
           <ListItemText
             primary={userName ?? t`Unknown`}

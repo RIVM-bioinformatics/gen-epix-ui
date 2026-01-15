@@ -30,6 +30,7 @@ import {
   OnExistsUploadAction,
   ReadsFileFormat,
   SeqFileFormat,
+  UploadStatus,
 } from '../../api';
 import { EpiCaseTypeUtil } from '../EpiCaseTypeUtil';
 import { EpiCaseUtil } from '../EpiCaseUtil';
@@ -51,6 +52,7 @@ import type {
   EpiUploadSequenceMappingForCaseId,
 } from '../../models/epi';
 import { FileUtil } from '../FileUtil';
+import { UploadError } from '../../classes/errors';
 
 export class EpiUploadUtil {
   public static readonly caseIdColumnAliases = ['_case_id', 'case id', 'case_id', 'caseid', 'case.id'];
@@ -826,7 +828,10 @@ export class EpiUploadUtil {
     try {
       onProgress(0, t('Creating cases...'));
       const caseBatchUploadResult = await EpiUploadUtil.createCases(kwArgs);
-      console.log({ caseBatchUploadResult });
+
+      if (caseBatchUploadResult.status === UploadStatus.FAILED) {
+        throw new UploadError(t('Failed to create cases during upload.'));
+      }
 
       await EpiUploadUtil.uploadFilesForCases({ ...kwArgs, caseBatchUploadResult, startPercentage: 10, endPercentage: 100 });
       onProgress(100, t('Upload complete.'));

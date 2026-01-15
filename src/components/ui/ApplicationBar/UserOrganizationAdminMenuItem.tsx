@@ -27,7 +27,6 @@ export const UserOrganizationAdminMenuItem = withPermissions(() => {
 
   return (
     <ListItem
-      divider
       alignItems={'center'}
       sx={{
         justifyContent: 'center',

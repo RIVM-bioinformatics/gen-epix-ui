@@ -23,6 +23,7 @@ import { GenericErrorMessage } from '../../ui/GenericErrorMessage';
 import { LinearProgressWithLabel } from '../../ui/LinearProgressWithLabel';
 import { EpiUploadUtil } from '../../../utils/EpiUploadUtil';
 import { InactivityManager } from '../../../classes/managers/InactivityManager';
+import { UploadError } from '../../../classes/errors';
 
 import { EpiUploadNavigation } from './EpiUploadNavigation';
 
@@ -115,6 +116,14 @@ export const EpiUploadCreateCases = () => {
   if (error) {
     content = (
       <Box>
+        {error instanceof UploadError && (
+          <Alert severity={'error'}>
+            <AlertTitle>
+              {t('Failed to create cases during upload.')}
+            </AlertTitle>
+            {t('An error occurred while creating cases. Please try again or contact support if the issue persists. Cases may have been partially created. No files were uploaded.')}
+          </Alert>
+        )}
         <GenericErrorMessage error={error} />
       </Box>
     );
