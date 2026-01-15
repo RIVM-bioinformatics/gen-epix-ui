@@ -111,7 +111,6 @@ export const DimsAdminPage = () => {
       TableUtil.createOptionsColumn<Dim>({ id: 'dim_type', name: t`Dimension type`, options: dimTypeOptionsQuery.options }),
       TableUtil.createTextColumn<Dim>({ id: 'label', name: t`Label` }),
       TableUtil.createNumberColumn<Dim>({ id: 'rank', name: t`Rank` }),
-      TableUtil.createTextColumn<Dim>({ id: 'description', name: t`Description` }),
     ];
   }, [dimTypeOptionsQuery.options, t]);
 

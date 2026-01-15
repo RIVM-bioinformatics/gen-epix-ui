@@ -113,7 +113,6 @@ export const CaseTypeColSetsAdminPage = () => {
   const tableColumns = useMemo((): TableColumn<TableData>[] => {
     return [
       TableUtil.createTextColumn<TableData>({ id: 'name', name: t`Name` }),
-      TableUtil.createTextColumn<TableData>({ id: 'description', name: t`Description` }),
       {
         type: 'number',
         id: 'numCaseTypeColumns',

@@ -4,6 +4,7 @@ import {
 } from 'react';
 import { useTranslation } from 'react-i18next';
 import {
+  number,
   object,
   string,
 } from 'yup';
@@ -27,7 +28,7 @@ import type { CrudPageSubPage } from '../CrudPage';
 import { CrudPage } from '../CrudPage';
 import { AuthorizationManager } from '../../classes/managers/AuthorizationManager';
 
-type FormFields = Pick<CaseType, 'name' | 'etiological_agent_id' | 'disease_id'>;
+type FormFields = Pick<CaseType, 'name' | 'description' | 'etiological_agent_id' | 'disease_id' | 'create_max_n_cases' | 'delete_max_n_cases' | 'read_max_n_cases' | 'read_max_tree_size' | 'update_max_n_cases'>;
 
 export const CaseTypesAdminPage = () => {
   const [t] = useTranslation();
@@ -59,6 +60,12 @@ export const CaseTypesAdminPage = () => {
   const schema = useMemo(() => {
     return object<FormFields>().shape({
       name: string().extendedAlphaNumeric().required().max(100),
+      description: string().freeFormText(),
+      create_max_n_cases: number().integer().required().transform((_val: unknown, orig: string | number) => orig === '' ? undefined : orig),
+      delete_max_n_cases: number().integer().required().transform((_val: unknown, orig: string | number) => orig === '' ? undefined : orig),
+      read_max_n_cases: number().integer().required().transform((_val: unknown, orig: string | number) => orig === '' ? undefined : orig),
+      read_max_tree_size: number().integer().required().transform((_val: unknown, orig: string | number) => orig === '' ? undefined : orig),
+      update_max_n_cases: number().integer().required().transform((_val: unknown, orig: string | number) => orig === '' ? undefined : orig),
       etiological_agent_id: string().uuid4().nullable().test(function(value: string) {
         // eslint-disable-next-line react/no-this-in-sfc
         const { disease_id } = this.parent as FormFields;
@@ -107,6 +114,41 @@ export const CaseTypesAdminPage = () => {
         options: etiologicalAgentOptionsQuery.options,
         loading: etiologicalAgentOptionsQuery.isLoading,
       } as const satisfies FormFieldDefinition<FormFields>,
+      {
+        definition: FORM_FIELD_DEFINITION_TYPE.RICH_TEXT,
+        name: 'description',
+        label: t`Description`,
+      } as const satisfies FormFieldDefinition<FormFields>,
+      {
+        definition: FORM_FIELD_DEFINITION_TYPE.TEXTFIELD,
+        name: 'read_max_n_cases',
+        label: t`Read max number of cases`,
+        type: 'number',
+      } as const satisfies FormFieldDefinition<FormFields>,
+      {
+        definition: FORM_FIELD_DEFINITION_TYPE.TEXTFIELD,
+        name: 'create_max_n_cases',
+        label: t`Create max number of cases`,
+        type: 'number',
+      } as const satisfies FormFieldDefinition<FormFields>,
+      {
+        definition: FORM_FIELD_DEFINITION_TYPE.TEXTFIELD,
+        name: 'update_max_n_cases',
+        label: t`Update max number of cases`,
+        type: 'number',
+      } as const satisfies FormFieldDefinition<FormFields>,
+      {
+        definition: FORM_FIELD_DEFINITION_TYPE.TEXTFIELD,
+        name: 'delete_max_n_cases',
+        label: t`Delete max number of cases`,
+        type: 'number',
+      } as const satisfies FormFieldDefinition<FormFields>,
+      {
+        definition: FORM_FIELD_DEFINITION_TYPE.TEXTFIELD,
+        name: 'read_max_tree_size',
+        label: t`Read max tree size`,
+        type: 'number',
+      } as const satisfies FormFieldDefinition<FormFields>,
     ] as const;
   }, [etiologicalAgentOptionsQuery.isLoading, etiologicalAgentOptionsQuery.options, diseaseOptionsQuery, t]);
 
@@ -115,6 +157,11 @@ export const CaseTypesAdminPage = () => {
       TableUtil.createTextColumn<CaseType>({ id: 'name', name: t`Name` }),
       TableUtil.createOptionsColumn<CaseType>({ id: 'disease_id', name: t`Disease`, options: diseaseOptionsQuery.options }),
       TableUtil.createOptionsColumn<CaseType>({ id: 'etiological_agent_id', name: t`Etiological agent`, options: etiologicalAgentOptionsQuery.options }),
+      TableUtil.createNumberColumn<CaseType>({ id: 'create_max_n_cases', name: t`Create max number of cases` }),
+      TableUtil.createNumberColumn<CaseType>({ id: 'read_max_n_cases', name: t`Read max number of cases` }),
+      TableUtil.createNumberColumn<CaseType>({ id: 'read_max_tree_size', name: t`Read max tree size` }),
+      TableUtil.createNumberColumn<CaseType>({ id: 'update_max_n_cases', name: t`Update max number of cases` }),
+      TableUtil.createNumberColumn<CaseType>({ id: 'delete_max_n_cases', name: t`Delete max number of cases` }),
     ];
   }, [etiologicalAgentOptionsQuery.options, diseaseOptionsQuery.options, t]);
 

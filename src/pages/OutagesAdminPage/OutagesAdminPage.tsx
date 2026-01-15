@@ -113,7 +113,6 @@ export const OutagesAdminPage = () => {
 
   const tableColumns = useMemo((): TableColumn<Outage>[] => {
     return [
-      TableUtil.createTextColumn<Outage>({ id: 'description', name: t`Description` }),
       TableUtil.createDateColumn<Outage>({ id: 'active_from', name: t`Active from`, dateFormat: DATE_FORMAT.DATE_TIME }),
       TableUtil.createDateColumn<Outage>({ id: 'active_to', name: t`Active to`, dateFormat: DATE_FORMAT.DATE_TIME }),
       TableUtil.createDateColumn<Outage>({ id: 'visible_from', name: t`Visible from`, dateFormat: DATE_FORMAT.DATE_TIME }),

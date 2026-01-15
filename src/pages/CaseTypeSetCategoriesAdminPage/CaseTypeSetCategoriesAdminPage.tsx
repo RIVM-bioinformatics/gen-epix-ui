@@ -83,7 +83,6 @@ export const CaseTypeSetCategoriesAdminPage = () => {
     return [
       TableUtil.createTextColumn<CaseTypeSetCategory>({ id: 'name', name: t`Name` }),
       TableUtil.createNumberColumn<CaseTypeSetCategory>({ id: 'rank', name: t`Rank` }),
-      TableUtil.createTextColumn<CaseTypeSetCategory>({ id: 'description', name: t`Description` }),
     ];
   }, [t]);
 

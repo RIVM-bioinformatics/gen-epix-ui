@@ -73,7 +73,6 @@ export const CaseSetStatusAdminPage = () => {
   const tableColumns = useMemo((): TableColumn<CaseSetStatus>[] => {
     return [
       TableUtil.createTextColumn<CaseSetStatus>({ id: 'name', name: t`Name` }),
-      TableUtil.createTextColumn<CaseSetStatus>({ id: 'description', name: t`Description` }),
     ];
   }, [t]);
 
