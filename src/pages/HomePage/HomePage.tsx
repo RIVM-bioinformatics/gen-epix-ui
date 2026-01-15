@@ -2,7 +2,6 @@ import { useTranslation } from 'react-i18next';
 import { Box } from '@mui/material';
 
 import { ConfigManager } from '../../classes/managers/ConfigManager';
-import { HomePageTrends } from '../../components/ui/HomePageTrends';
 import { PageContainer } from '../../components/ui/PageContainer';
 import { TestIdUtil } from '../../utils/TestIdUtil';
 
@@ -28,7 +27,7 @@ const HomeContent = () => {
       >
         <HomePageIntroduction />
       </Box>
-      <HomePageTrends />
+      {/* <HomePageTrends /> */}
     </Box>
   );
 };
