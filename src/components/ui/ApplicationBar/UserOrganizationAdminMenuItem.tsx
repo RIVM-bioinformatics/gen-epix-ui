@@ -3,7 +3,6 @@ import {
   ListItem,
   Link,
 } from '@mui/material';
-import { useQuery } from '@tanstack/react-query';
 import { useTranslation } from 'react-i18next';
 
 import {
@@ -14,11 +13,12 @@ import {
 import { QUERY_KEY } from '../../../models/query';
 import { QueryUtil } from '../../../utils/QueryUtil';
 import { withPermissions } from '../../../hoc/withPermissions';
+import { useQueryMemo } from '../../../hooks/useQueryMemo';
 
 export const UserOrganizationAdminMenuItem = withPermissions(() => {
   const [t] = useTranslation();
 
-  const { isLoading: isOrganizationAdminNameEmailsLoading, error: organizationAdminNameEmailsError, data: organizationAdminNameEmails } = useQuery({
+  const { isLoading: isOrganizationAdminNameEmailsLoading, error: organizationAdminNameEmailsError, data: organizationAdminNameEmails } = useQueryMemo({
     queryKey: QueryUtil.getGenericKey(QUERY_KEY.ORGANIZATION_ADMIN_NAME_EMAILS),
     queryFn: async ({ signal }) => (await AbacApi.instance.retrieveOrganizationAdminNameEmails({ signal })).data,
     gcTime: 0,

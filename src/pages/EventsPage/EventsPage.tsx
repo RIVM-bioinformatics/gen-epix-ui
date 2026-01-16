@@ -13,7 +13,6 @@ import {
   useTheme,
 } from '@mui/material';
 import ArrowCircleRightIcon from '@mui/icons-material/ArrowCircleRight';
-import { useQuery } from '@tanstack/react-query';
 
 import CollectionIcon from '../../assets/icons/CollectionIcon.svg?react';
 import type {
@@ -55,6 +54,7 @@ import { QueryUtil } from '../../utils/QueryUtil';
 import { TableUtil } from '../../utils/TableUtil';
 import { TestIdUtil } from '../../utils/TestIdUtil';
 import { DATE_FORMAT } from '../../data/date';
+import { useQueryMemo } from '../../hooks/useQueryMemo';
 
 type Row = CaseSet & CaseSetStat;
 
@@ -70,7 +70,7 @@ export const EventsPage = () => {
 
   const loadables = useArray([caseTypeOptionsQuery, caseSetCategoryOptionsQuery, caseSetStatusOptionsQuery, caseSetStatsMapQuery]);
 
-  const { isLoading: isCaseSetsLoading, error: caseSetsError, data: caseSets } = useQuery({
+  const { isLoading: isCaseSetsLoading, error: caseSetsError, data: caseSets } = useQueryMemo({
     queryKey: QueryUtil.getGenericKey(QUERY_KEY.CASE_SETS),
     queryFn: async ({ signal }) => {
       const response = await CaseApi.instance.caseSetsGetAll({ signal });

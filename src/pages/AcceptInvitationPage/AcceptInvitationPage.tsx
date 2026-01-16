@@ -1,6 +1,5 @@
 import { useTranslation } from 'react-i18next';
 import { useParams } from 'react-router-dom';
-import { useQuery } from '@tanstack/react-query';
 import {
   Button,
   Typography,
@@ -18,12 +17,13 @@ import { PageContainer } from '../../components/ui/PageContainer';
 import { ResponseHandler } from '../../components/ui/ResponseHandler';
 import { QueryUtil } from '../../utils/QueryUtil';
 import { TestIdUtil } from '../../utils/TestIdUtil';
+import { useQueryMemo } from '../../hooks/useQueryMemo';
 
 export const AcceptInvitationPage = () => {
   const { token } = useParams();
   const [shouldRegister, setShouldRegister] = useState(false);
 
-  const { data, error, isLoading } = useQuery({
+  const { data, error, isLoading } = useQueryMemo({
     queryKey: QueryUtil.getUserRegistrationsKey(token),
     queryFn: async ({ signal }) => {
       const response = await OrganizationApi.instance.userRegistrationsPostOne(token, { signal });

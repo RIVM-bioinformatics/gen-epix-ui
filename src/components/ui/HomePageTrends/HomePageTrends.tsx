@@ -11,7 +11,6 @@ import {
 } from 'react';
 import { useTranslation } from 'react-i18next';
 import round from 'lodash/round';
-import { useQuery } from '@tanstack/react-query';
 
 import type {
   CaseTypeStat,
@@ -28,7 +27,6 @@ import { ConfigManager } from '../../../classes/managers/ConfigManager';
 import { RouterManager } from '../../../classes/managers/RouterManager';
 import { useCaseSetsQuery } from '../../../dataHooks/useCaseSetsQuery';
 import { useCaseTypeMapQuery } from '../../../dataHooks/useCaseTypesQuery';
-import { useCaseTypeStatsQuery } from '../../../dataHooks/useCaseTypeStatsQuery';
 import { QUERY_KEY } from '../../../models/query';
 import { EpiCaseTypeUtil } from '../../../utils/EpiCaseTypeUtil';
 import { QueryUtil } from '../../../utils/QueryUtil';
@@ -36,6 +34,7 @@ import { ResponseHandler } from '../ResponseHandler';
 import { useArray } from '../../../hooks/useArray';
 import { AxiosUtil } from '../../../utils/AxiosUtil';
 import { withPermissions } from '../../../hoc/withPermissions';
+import { useQueryMemo } from '../../../hooks/useQueryMemo';
 
 import { HomePageTrendCard } from './HomePageTrendCard';
 
@@ -60,6 +59,7 @@ export const HomePageTrends = withPermissions(() => {
     upper_bound: ConfigManager.instance.config.trends.homePage.getSinceDate(),
     upper_bound_censor: '<=',
   } satisfies TypedDatetimeRangeFilter), []);
+
   const caseSetQueryFilter = useMemo<EpiFilter>(() => ({
     type: 'DATETIME_RANGE',
     upper_bound: ConfigManager.instance.config.trends.homePage.getSinceDate(),
@@ -67,16 +67,36 @@ export const HomePageTrends = withPermissions(() => {
     key: 'created_at',
   } satisfies EpiFilter), []);
 
-  const retrieveCaseTypeStatsCommand = useMemo<RetrieveCaseTypeStatsRequestBody>(() => ({
-    datetime_range_filter: dateTimeRangeFilter,
-  }), [dateTimeRangeFilter]);
+  const caseTypeStatsQueryNow = useQueryMemo({
+    queryKey: QueryUtil.getGenericKey(QUERY_KEY.CASE_TYPE_STATS),
+    queryFn: async ({ signal }) => {
+      const response = await CaseApi.instance.retrieveCaseTypeStats({}, { signal });
+      return response.data;
+    },
+  });
 
-  const caseTypeStatsQueryNow = useCaseTypeStatsQuery();
-  const caseTypeStatsQueryPast = useCaseTypeStatsQuery(retrieveCaseTypeStatsCommand);
+  const retrieveCaseTypeStatsPastCommand = useMemo<RetrieveCaseTypeStatsRequestBody>(() => {
+    if (!caseTypeStatsQueryNow.data) {
+      return undefined;
+    }
+    return {
+      datetime_range_filter: dateTimeRangeFilter,
+      case_type_ids: caseTypeStatsQueryNow.data?.filter(stat => stat.n_cases > 0).map(stat => stat.case_type_id),
+    };
+  }, [dateTimeRangeFilter, caseTypeStatsQueryNow.data]);
+
+  const caseTypeStatsQueryPast = useQueryMemo({
+    queryKey: QueryUtil.getGenericKey(QUERY_KEY.CASE_TYPE_STATS, retrieveCaseTypeStatsPastCommand ?? {}),
+    queryFn: async ({ signal }) => {
+      const response = await CaseApi.instance.retrieveCaseTypeStats(retrieveCaseTypeStatsPastCommand ?? {}, { signal });
+      return response.data;
+    },
+    enabled: !!retrieveCaseTypeStatsPastCommand,
+  });
   const caseSetsNowQuery = useCaseSetsQuery();
   const caseTypeMapQuery = useCaseTypeMapQuery();
 
-  const { data: caseSetsThenData, ...caseSetsThenQuery } = useQuery({
+  const { data: caseSetsThenData, ...caseSetsThenQuery } = useQueryMemo({
     queryKey: QueryUtil.getGenericKey(QUERY_KEY.CASE_SETS, caseSetQueryFilter),
     queryFn: async ({ signal }) => {
       const response = await CaseApi.instance.caseSetsPostQuery(caseSetQueryFilter, { signal });

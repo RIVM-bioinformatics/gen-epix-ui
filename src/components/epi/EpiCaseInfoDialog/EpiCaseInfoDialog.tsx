@@ -16,7 +16,6 @@ import {
 import { useTranslation } from 'react-i18next';
 import { useStore } from 'zustand';
 import { useShallow } from 'zustand/shallow';
-import { useQuery } from '@tanstack/react-query';
 
 import {
   withDialog,
@@ -48,6 +47,7 @@ import type { DialogAction } from '../../ui/Dialog';
 import { ResponseHandler } from '../../ui/ResponseHandler';
 import { Spinner } from '../../ui/Spinner';
 import { useArray } from '../../../hooks/useArray';
+import { useQueryMemo } from '../../../hooks/useQueryMemo';
 
 import { EpiCaseCaseSetInfo } from './EpiCaseCaseSetInfo';
 import { EpiCaseForm } from './EpiCaseForm';
@@ -135,7 +135,7 @@ export const EpiCaseInfoDialog = withDialog<EpiCaseInfoDialogProps, EpiCaseInfoD
     type: 'UUID_SET',
     members: [epiCase?.id],
   }), [epiCase?.id]);
-  const { isLoading: isCaseDataCollectionLinksLoading, error: caseDataCollectionLinksError, data: caseDataCollectionLinks } = useQuery({
+  const { isLoading: isCaseDataCollectionLinksLoading, error: caseDataCollectionLinksError, data: caseDataCollectionLinks } = useQueryMemo({
     queryKey: QueryUtil.getGenericKey(QUERY_KEY.CASE_DATA_COLLECTION_LINKS, caseDataCollectionLinksFilter),
     queryFn: async ({ signal }) => {
       const response = await CaseApi.instance.caseDataCollectionLinksPostQuery(caseDataCollectionLinksFilter, { signal });

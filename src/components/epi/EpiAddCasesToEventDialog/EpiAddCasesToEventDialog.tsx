@@ -14,7 +14,6 @@ import {
 import { useTranslation } from 'react-i18next';
 import { useStore } from 'zustand';
 import { useShallow } from 'zustand/shallow';
-import { useQuery } from '@tanstack/react-query';
 import {
   FormProvider,
   useForm,
@@ -52,6 +51,7 @@ import type { DialogAction } from '../../ui/Dialog';
 import { Autocomplete } from '../../form/fields/Autocomplete';
 import { Select } from '../../form/fields/Select';
 import { useArray } from '../../../hooks/useArray';
+import { useQueryMemo } from '../../../hooks/useQueryMemo';
 
 import { EpiAddCasesToEventDialogSuccessNotificationMessage } from './EpiAddCasesToEventDialogSuccessNotificationMessage';
 
@@ -116,7 +116,7 @@ export const EpiAddCasesToEventDialog = withDialog<EpiAddCasesToEventDialogProps
     type: 'UUID_SET',
     members: [caseSetId],
   }), [caseSetId]);
-  const { isLoading: isCaseSetMembersLoading, error: caseSetMembersError, data: caseSetMembers } = useQuery({
+  const { isLoading: isCaseSetMembersLoading, error: caseSetMembersError, data: caseSetMembers } = useQueryMemo({
     queryKey: QueryUtil.getGenericKey(QUERY_KEY.CASE_SET_MEMBERS, caseSetMembersFilter),
     queryFn: async ({ signal }) => {
       const response = await CaseApi.instance.caseSetMembersPostQuery(caseSetMembersFilter, { signal });
@@ -131,7 +131,7 @@ export const EpiAddCasesToEventDialog = withDialog<EpiAddCasesToEventDialogProps
     type: 'UUID_SET',
     members: [caseSetId],
   }), [caseSetId]);
-  const { isLoading: isCaseSetDataCollectionLinksLoading, error: caseSetDataCollectionLinksError, data: caseSetDataCollectionLinks } = useQuery({
+  const { isLoading: isCaseSetDataCollectionLinksLoading, error: caseSetDataCollectionLinksError, data: caseSetDataCollectionLinks } = useQueryMemo({
     queryKey: QueryUtil.getGenericKey(QUERY_KEY.CASE_SET_DATA_COLLECTION_LINKS, caseSetDataCollectionLinksFilter),
     queryFn: async ({ signal }) => {
       const response = await CaseApi.instance.caseSetDataCollectionLinksPostQuery(caseSetDataCollectionLinksFilter, { signal });

@@ -17,7 +17,6 @@ import {
   useRef,
 } from 'react';
 import type { ObjectSchema } from 'yup';
-import { useQuery } from '@tanstack/react-query';
 import isArray from 'lodash/isArray';
 import type { UseFormReturn } from 'react-hook-form';
 
@@ -61,6 +60,7 @@ import { QueryUtil } from '../../utils/QueryUtil';
 import { TableUtil } from '../../utils/TableUtil';
 import type { DialogAction } from '../../components/ui/Dialog';
 import type { FormFieldDefinition } from '../../models/form';
+import { useQueryMemo } from '../../hooks/useQueryMemo';
 
 import type { CrudPageEditDialogRefMethods } from './CrudPageEditDialog';
 import { CrudPageEditDialog } from './CrudPageEditDialog';
@@ -195,7 +195,7 @@ export const CrudPage = <
     return false;
   }, [loadables]);
 
-  const { isLoading: isRowsLoading, error: rowsError, data: rows } = useQuery({
+  const { isLoading: isRowsLoading, error: rowsError, data: rows } = useQueryMemo({
     queryKey: resourceQueryKey,
     queryFn: async ({ signal }) => fetchAll(signal),
     select: fetchAllSelect,

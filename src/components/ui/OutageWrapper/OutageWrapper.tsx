@@ -1,4 +1,3 @@
-import { useQuery } from '@tanstack/react-query';
 import {
   useCallback,
   useEffect,
@@ -24,6 +23,7 @@ import { OutageUtil } from '../../../utils/OutageUtil';
 import { QueryUtil } from '../../../utils/QueryUtil';
 import { TestIdUtil } from '../../../utils/TestIdUtil';
 import { OutageList } from '../OutageList';
+import { useQueryMemo } from '../../../hooks/useQueryMemo';
 
 export const OutageWrapper = ({ children }: PropsWithChildren): ReactNode => {
   const [t] = useTranslation();
@@ -32,7 +32,7 @@ export const OutageWrapper = ({ children }: PropsWithChildren): ReactNode => {
   const [shouldContinue, setShouldContinue] = useState(false);
   const [buttonsEnabled, setButtonsEnabled] = useState(false);
 
-  const { isLoading: isOutagesPending, error: outagesError, data: outages } = useQuery({
+  const { isLoading: isOutagesPending, error: outagesError, data: outages } = useQueryMemo({
     queryKey: QueryUtil.getGenericKey(QUERY_KEY.OUTAGES),
     queryFn: async ({ signal }) => (await SystemApi.instance.retrieveOutages({ signal })).data,
     gcTime: Infinity,

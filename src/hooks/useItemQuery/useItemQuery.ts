@@ -7,12 +7,12 @@ import type {
   UseQueryOptions,
   QueryCacheNotifyEvent,
 } from '@tanstack/react-query';
-import { useQuery } from '@tanstack/react-query';
 
 import { QueryClientManager } from '../../classes/managers/QueryClientManager';
 import type { GenericData } from '../../models/data';
 import type { QUERY_KEY } from '../../models/query';
 import { QueryUtil } from '../../utils/QueryUtil';
+import { useQueryMemo } from '../useQueryMemo';
 
 export type UseItemQueryProps<T extends GenericData> = {
   readonly baseQueryKey: QUERY_KEY;
@@ -51,7 +51,7 @@ export const useItemQuery = <T extends GenericData>({
     };
   }, [baseQueryKey, itemId, queryCache]);
 
-  const useQueryResult = useQuery({
+  const useQueryResult = useQueryMemo({
     ...useQueryOptions,
     queryKey: QueryUtil.getGenericKey(baseQueryKey, itemId),
     enabled: !itemFromCache && useQueryOptions.enabled,

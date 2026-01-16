@@ -25,7 +25,6 @@ import {
 } from 'react';
 import { useTranslation } from 'react-i18next';
 import { useStore } from 'zustand';
-import { useQuery } from '@tanstack/react-query';
 import { useDebouncedCallback } from 'use-debounce';
 
 import type { EpiContextMenuConfigWithPosition } from '../EpiContextMenu';
@@ -66,6 +65,7 @@ import { QueryUtil } from '../../../utils/QueryUtil';
 import { Spinner } from '../../ui/Spinner';
 import { EpiWidget } from '../EpiWidget';
 import { EpiDownloadUtil } from '../../../utils/EpiDownloadUtil';
+import { useQueryMemo } from '../../../hooks/useQueryMemo';
 
 type ZoomInMenuItemConfig = {
   caseIds?: string[];
@@ -183,7 +183,7 @@ export const EpiTree = ({ linkedScrollSubject, ref }: EpiTreeProps) => {
     tree_algorithm_code: treeConfiguration?.treeAlgorithm.code,
   }), [caseIds, treeConfiguration?.caseTypeCol.id, treeConfiguration?.treeAlgorithm.code]);
 
-  const { isLoading: isTreeLoading, error: treeError, data: treeData } = useQuery({
+  const { isLoading: isTreeLoading, error: treeError, data: treeData } = useQueryMemo({
     queryKey: QueryUtil.getRetrievePhylogeneticTreeKey(retrievePhylogeneticTreeRequestBody),
     queryFn: async ({ signal }) => {
       const response = await CaseApi.instance.retrievePhylogeneticTree(retrievePhylogeneticTreeRequestBody, { signal });

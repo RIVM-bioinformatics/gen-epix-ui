@@ -11,7 +11,6 @@ import {
   useEffect,
   useMemo,
 } from 'react';
-import { useQuery } from '@tanstack/react-query';
 
 import { CaseApi } from '../../../api';
 import type {
@@ -21,6 +20,7 @@ import type {
 import { withDialog } from '../../../hoc/withDialog';
 import { GenericErrorMessage } from '../../ui/GenericErrorMessage';
 import { Spinner } from '../../ui/Spinner';
+import { useQueryMemo } from '../../../hooks/useQueryMemo';
 
 export interface EpiContactDetailsDialogOpenProps {
   contactId: string;
@@ -44,7 +44,7 @@ export const EpiContactDetailsDialog = withDialog<EpiContactDetailsDialogProps, 
     return ['contacts', openProps.contactId];
   }, [openProps.contactId]);
 
-  const { isLoading, error, data: contactInfos } = useQuery({
+  const { isLoading, error, data: contactInfos } = useQueryMemo({
     queryKey,
     queryFn: async ({ signal }) => {
       const response = await CaseApi.instance.retrieveOrganizationContact({

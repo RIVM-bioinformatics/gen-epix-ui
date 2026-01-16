@@ -9,7 +9,6 @@ import {
 import { useTranslation } from 'react-i18next';
 import { useStore } from 'zustand';
 import { useShallow } from 'zustand/shallow';
-import { useQuery } from '@tanstack/react-query';
 
 import type {
   Case,
@@ -31,6 +30,7 @@ import { TestIdUtil } from '../../../utils/TestIdUtil';
 import type { DialogAction } from '../../ui/Dialog';
 import { ResponseHandler } from '../../ui/ResponseHandler';
 import { Spinner } from '../../ui/Spinner';
+import { useQueryMemo } from '../../../hooks/useQueryMemo';
 
 export interface EpiRemoveCasesFromEventDialogOpenProps {
   rows: Case[];
@@ -66,7 +66,7 @@ export const EpiRemoveCasesFromEventDialog = withDialog<EpiRemoveCasesFromEventD
     members: openProps.rows.map(row => row.id),
   }), [openProps.rows]);
 
-  const { isLoading: isCaseSetMembersLoading, error: caseSetMembersError, data: caseSetMembers } = useQuery({
+  const { isLoading: isCaseSetMembersLoading, error: caseSetMembersError, data: caseSetMembers } = useQueryMemo({
     queryKey: QueryUtil.getGenericKey(QUERY_KEY.CASE_SET_MEMBERS, caseSetMembersFilter),
     queryFn: async ({ signal }) => {
       const response = await CaseApi.instance.caseSetMembersPostQuery(caseSetMembersFilter, { signal });

@@ -8,7 +8,6 @@ import {
   Outlet,
   useLocation,
 } from 'react-router-dom';
-import { useQuery } from '@tanstack/react-query';
 import { AuthProvider } from 'react-oidc-context';
 import { UserManager } from 'oidc-client-ts';
 import axios from 'axios';
@@ -42,6 +41,7 @@ import type { IdentityProviderWithAvailability } from '../../../models/auth';
 import { ConfigManager } from '../../../classes/managers/ConfigManager';
 import { TestIdUtil } from '../../../utils/TestIdUtil';
 import { PageContainer } from '../../ui/PageContainer';
+import { useQueryMemo } from '../../../hooks/useQueryMemo';
 
 
 export const RouterRoot = () => {
@@ -49,7 +49,7 @@ export const RouterRoot = () => {
 
   const oidcConfiguration = useSubscribable(AuthenticationManager.instance);
 
-  const { isLoading: isIdentityProvidersLoading, error: identityProvidersError, data: identityProvidersWithAvailability } = useQuery<IdentityProviderWithAvailability[], Error, IdentityProviderWithAvailability[]>({
+  const { isLoading: isIdentityProvidersLoading, error: identityProvidersError, data: identityProvidersWithAvailability } = useQueryMemo<IdentityProviderWithAvailability[], Error, IdentityProviderWithAvailability[]>({
     queryKey: QueryUtil.getGenericKey(QUERY_KEY.IDENTITY_PROVIDERS),
     queryFn: async ({ signal }) => {
       const providers = (await AuthApi.instance.identityProvidersGetAll({ signal })).data;

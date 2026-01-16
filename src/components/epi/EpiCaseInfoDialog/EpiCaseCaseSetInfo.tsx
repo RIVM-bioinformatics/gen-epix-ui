@@ -1,4 +1,3 @@
-import { useQuery } from '@tanstack/react-query';
 import type { BoxProps } from '@mui/material';
 import {
   Box,
@@ -24,6 +23,7 @@ import { QueryUtil } from '../../../utils/QueryUtil';
 import { NavLink } from '../../ui/NavLink';
 import { ResponseHandler } from '../../ui/ResponseHandler';
 import { useArray } from '../../../hooks/useArray';
+import { useQueryMemo } from '../../../hooks/useQueryMemo';
 
 export type EpiCaseCaseSetInfoProps = {
   readonly epiCase: Case;
@@ -40,7 +40,7 @@ export const EpiCaseCaseSetInfo = ({ epiCase, ...boxProps }: EpiCaseCaseSetInfoP
     type: 'UUID_SET',
     members: [epiCase.id],
   };
-  const { isLoading: isCaseSetMembersLoading, error: caseSetMembersError, data: caseSetMembers } = useQuery({
+  const { isLoading: isCaseSetMembersLoading, error: caseSetMembersError, data: caseSetMembers } = useQueryMemo({
     queryKey: QueryUtil.getGenericKey(QUERY_KEY.CASE_SET_MEMBERS, caseSetMembersFilter),
     queryFn: async ({ signal }) => {
       const response = await CaseApi.instance.caseSetMembersPostQuery(caseSetMembersFilter, { signal });
@@ -54,7 +54,7 @@ export const EpiCaseCaseSetInfo = ({ epiCase, ...boxProps }: EpiCaseCaseSetInfoP
     type: 'UUID_SET',
     members: caseSetMembers?.map((caseSetMember) => caseSetMember.case_set_id) ?? [],
   };
-  const { isLoading: isCaseSetsLoading, error: caseSetsError, data: caseSets } = useQuery({
+  const { isLoading: isCaseSetsLoading, error: caseSetsError, data: caseSets } = useQueryMemo({
     queryKey: QueryUtil.getGenericKey(QUERY_KEY.CASE_SETS, caseSetsFilter),
     queryFn: async ({ signal }) => {
       const response = await CaseApi.instance.caseSetsPostQuery(caseSetsFilter, { signal });

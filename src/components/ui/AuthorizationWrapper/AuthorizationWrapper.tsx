@@ -1,4 +1,3 @@
-import { useQuery } from '@tanstack/react-query';
 import {
   useMemo,
   type ReactNode,
@@ -20,6 +19,7 @@ import type { MyNonIndexRouteObject } from '../../../models/reactRouter';
 import { QueryUtil } from '../../../utils/QueryUtil';
 import { TestIdUtil } from '../../../utils/TestIdUtil';
 import { useArray } from '../../../hooks/useArray';
+import { useQueryMemo } from '../../../hooks/useQueryMemo';
 
 export const AuthorizationWrapper = ({ children }: PropsWithChildren): ReactNode => {
   const [t] = useTranslation();
@@ -27,14 +27,14 @@ export const AuthorizationWrapper = ({ children }: PropsWithChildren): ReactNode
 
   const requiresUserProfile = useMemo(() => last(matches).handle.requiresUserProfile, [matches]);
 
-  const userQuery = useQuery({
+  const userQuery = useQueryMemo({
     queryKey: QueryUtil.getGenericKey(QUERY_KEY.USER_ME),
     queryFn: async ({ signal }) => (await OrganizationApi.instance.userMeGetOne({ signal })).data,
     gcTime: Infinity,
     staleTime: Infinity,
     enabled: requiresUserProfile,
   });
-  const userPermissionsQuery = useQuery({
+  const userPermissionsQuery = useQueryMemo({
     queryKey: QueryUtil.getGenericKey(QUERY_KEY.USER_PERMISSIONS),
     queryFn: async ({ signal }) => (await OrganizationApi.instance.userMeRetrievePermissions({ signal })).data,
     gcTime: Infinity,

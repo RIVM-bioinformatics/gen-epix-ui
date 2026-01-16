@@ -24,7 +24,6 @@ import {
 } from '@mui/material';
 import FolderIcon from '@mui/icons-material/Folder';
 import OpenInNewIcon from '@mui/icons-material/OpenInNew';
-import { useQuery } from '@tanstack/react-query';
 import axios from 'axios';
 
 import { ConfigManager } from '../../../classes/managers/ConfigManager';
@@ -42,6 +41,7 @@ import {
 } from '../../../api';
 import { QUERY_KEY } from '../../../models/query';
 import { QueryUtil } from '../../../utils/QueryUtil';
+import { useQueryMemo } from '../../../hooks/useQueryMemo';
 
 
 export interface LicensesDialogOpenProps {
@@ -68,7 +68,7 @@ export const LicensesDialog = withDialog<LicensesDialogProps, LicensesDialogOpen
 
   const { LicenseInformation } = ConfigManager.instance.config;
 
-  const { isLoading: isFrontendLicensesLoading, error: frontendLicensesError, data: frontendLicenses } = useQuery({
+  const { isLoading: isFrontendLicensesLoading, error: frontendLicensesError, data: frontendLicenses } = useQueryMemo({
     queryKey: ['LICENSES.JSON'],
     queryFn: async ({ signal }) => {
       return (await axios.get('/licenses.json', {
@@ -77,7 +77,7 @@ export const LicensesDialog = withDialog<LicensesDialogProps, LicensesDialogOpen
     },
   });
 
-  const { isLoading: isBackendLicensesLoading, error: backendLicensesError, data: backendLicenses } = useQuery({
+  const { isLoading: isBackendLicensesLoading, error: backendLicensesError, data: backendLicenses } = useQueryMemo({
     queryKey: QueryUtil.getGenericKey(QUERY_KEY.LICENSES),
     queryFn: async ({ signal }) => {
       const response = await SystemApi.instance.retrieveLicenses({ signal });

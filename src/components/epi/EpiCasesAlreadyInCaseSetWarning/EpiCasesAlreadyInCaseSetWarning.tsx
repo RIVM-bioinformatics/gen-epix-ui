@@ -8,7 +8,6 @@ import {
   TableRow,
   useTheme,
 } from '@mui/material';
-import { useQuery } from '@tanstack/react-query';
 import uniq from 'lodash/uniq';
 import { useMemo } from 'react';
 import { useTranslation } from 'react-i18next';
@@ -27,6 +26,7 @@ import { LogManager } from '../../../classes/managers/LogManager';
 import { QUERY_KEY } from '../../../models/query';
 import { QueryUtil } from '../../../utils/QueryUtil';
 import { ResponseHandler } from '../../ui/ResponseHandler';
+import { useQueryMemo } from '../../../hooks/useQueryMemo';
 
 import { EpiCasesAlreadyInCaseSetWarningCaseSetLink } from './EpiCasesAlreadyInCaseSetWarningCaseSetLink';
 
@@ -47,7 +47,7 @@ export const EpiCasesAlreadyInCaseSetWarning = ({ cases }: EpiCasesAlreadyInCase
       members: cases?.map(row => row.id) ?? [],
     };
   }, [cases]);
-  const { isLoading: isCaseSetMembersLoading, error: caseSetMembersError, data: caseSetMembers } = useQuery({
+  const { isLoading: isCaseSetMembersLoading, error: caseSetMembersError, data: caseSetMembers } = useQueryMemo({
     queryKey: QueryUtil.getGenericKey(QUERY_KEY.CASE_SET_MEMBERS, caseSetMembersFilter),
     queryFn: async ({ signal }) => {
       const response = await CaseApi.instance.caseSetMembersPostQuery(caseSetMembersFilter, { signal });
@@ -64,7 +64,7 @@ export const EpiCasesAlreadyInCaseSetWarning = ({ cases }: EpiCasesAlreadyInCase
       members: uniq((caseSetMembers ?? []).map(x => x.case_set_id)) ?? [],
     };
   }, [caseSetMembers]);
-  const { isLoading: isCaseSetsLoading, error: caseSetsError, data: caseSets } = useQuery({
+  const { isLoading: isCaseSetsLoading, error: caseSetsError, data: caseSets } = useQueryMemo({
     queryKey: QueryUtil.getGenericKey(QUERY_KEY.CASE_SETS, existingCaseSetsFilter),
     queryFn: async ({ signal }) => {
       const response = await CaseApi.instance.caseSetsPostQuery(existingCaseSetsFilter, { signal });

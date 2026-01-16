@@ -14,7 +14,6 @@ import {
   useMemo,
   useRef,
 } from 'react';
-import { useQuery } from '@tanstack/react-query';
 
 import type {
   CaseTypeStat,
@@ -56,6 +55,7 @@ import { TestIdUtil } from '../../utils/TestIdUtil';
 import { DATE_FORMAT } from '../../data/date';
 import { EpiCaseTypeUtil } from '../../utils/EpiCaseTypeUtil';
 import { EpiDownloadUtil } from '../../utils/EpiDownloadUtil';
+import { useQueryMemo } from '../../hooks/useQueryMemo';
 
 type Row = {
   id: string;
@@ -73,7 +73,7 @@ export const CasesPage = () => {
   const caseTypeStatsQuery = useCaseTypeStatsQuery();
   const caseTypeSetCategoriesQuery = useCaseTypeSetCategoriesQuery();
 
-  const { isLoading: isCaseTypesLoading, error: caseTypesError, data: caseTypes } = useQuery({
+  const { isLoading: isCaseTypesLoading, error: caseTypesError, data: caseTypes } = useQueryMemo({
     queryKey: QueryUtil.getGenericKey(QUERY_KEY.CASE_TYPES),
     queryFn: async ({ signal }) => {
       const response = await CaseApi.instance.caseTypesGetAll({ signal });
@@ -86,7 +86,7 @@ export const CasesPage = () => {
   }, [caseTypeStatsQuery]);
 
 
-  const { isLoading: isCaseTypeSetsLoading, error: caseTypeSetsError, data: caseTypeSets } = useQuery({
+  const { isLoading: isCaseTypeSetsLoading, error: caseTypeSetsError, data: caseTypeSets } = useQueryMemo({
     queryKey: QueryUtil.getGenericKey(QUERY_KEY.CASE_TYPE_SETS),
     queryFn: async ({ signal }) => {
       const response = await CaseApi.instance.caseTypeSetsGetAll({ signal });
@@ -94,7 +94,7 @@ export const CasesPage = () => {
     },
   });
 
-  const { isLoading: isCaseTypeSetMembersLoading, error: caseTypeSetMembersError, data: caseTypeSetMembers } = useQuery({
+  const { isLoading: isCaseTypeSetMembersLoading, error: caseTypeSetMembersError, data: caseTypeSetMembers } = useQueryMemo({
     queryKey: QueryUtil.getGenericKey(QUERY_KEY.CASE_TYPE_SET_MEMBERS),
     queryFn: async ({ signal }) => {
       const response = await CaseApi.instance.caseTypeSetMembersGetAll({ signal });

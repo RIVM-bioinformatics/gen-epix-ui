@@ -32,7 +32,6 @@ import { useTranslation } from 'react-i18next';
 import intersection from 'lodash/intersection';
 import round from 'lodash/round';
 import { useStore } from 'zustand';
-import { useQuery } from '@tanstack/react-query';
 
 import { EpiWidget } from '../EpiWidget';
 import type { EpiContextMenuConfigWithPosition } from '../EpiContextMenu';
@@ -63,6 +62,7 @@ import { EpiMapUtil } from '../../../utils/EpiMapUtil';
 import { QueryUtil } from '../../../utils/QueryUtil';
 import { EpiEventBusManager } from '../../../classes/managers/EpiEventBusManager';
 import { EpiDownloadUtil } from '../../../utils/EpiDownloadUtil';
+import { useQueryMemo } from '../../../hooks/useQueryMemo';
 
 echarts.use([GeoComponent, TooltipComponent, LegendComponent, CanvasRenderer, PieChart]);
 
@@ -112,7 +112,7 @@ export const EpiMap = () => {
     };
   }, [completeCaseType]);
 
-  const { isLoading: isRegionSetShapesLoading, error: regionSetShapesError, data: regionSetShapes } = useQuery({
+  const { isLoading: isRegionSetShapesLoading, error: regionSetShapesError, data: regionSetShapes } = useQueryMemo({
     queryKey: QueryUtil.getGenericKey(QUERY_KEY.REGION_SET_SHAPES, regionSetShapesFilter),
     queryFn: async ({ signal }) => {
       return (await GeoApi.instance.regionSetShapesPostQuery(regionSetShapesFilter, { signal })).data;
