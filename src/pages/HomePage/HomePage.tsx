@@ -4,7 +4,6 @@ import { Box } from '@mui/material';
 import { ConfigManager } from '../../classes/managers/ConfigManager';
 import { PageContainer } from '../../components/ui/PageContainer';
 import { TestIdUtil } from '../../utils/TestIdUtil';
-import { HomePageTrends } from '../../components/ui/HomePageTrends';
 
 
 const HomeContent = () => {
@@ -28,7 +27,7 @@ const HomeContent = () => {
       >
         <HomePageIntroduction />
       </Box>
-      <HomePageTrends />
+      {/* <HomePageTrends /> */}
     </Box>
   );
 };
