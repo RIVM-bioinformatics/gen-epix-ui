@@ -352,7 +352,7 @@ export class TableUtil {
     };
   }
 
-  public static createSelectableColumn<TData>(): TableColumnSelectable<TData> {
+  public static createSelectableColumn<TData>(kwArgs: { isDisabled?: (params: TableRowParams<TData>) => boolean } = {}): TableColumnSelectable<TData> {
     return {
       id: FIXED_COLUMN_ID.ROW_SELECT,
       type: 'selectable',
@@ -362,6 +362,7 @@ export class TableUtil {
       resizable: false,
       disableEllipsis: true,
       widthPx: 38,
+      isDisabled: kwArgs.isDisabled,
     };
   }
 

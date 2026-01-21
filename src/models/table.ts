@@ -81,6 +81,7 @@ export interface TableColumnSelectable<TRowData> extends TableColumnBase<TRowDat
   frozen: true;
   resizable: false;
   disableEllipsis: true;
+  isDisabled?: (params: TableRowParams<TRowData>) => boolean;
 }
 
 export interface TableColumnBoolean<TRowData> extends TableColumnBase<TRowData, boolean> {

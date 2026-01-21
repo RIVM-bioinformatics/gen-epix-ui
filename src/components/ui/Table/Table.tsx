@@ -59,6 +59,7 @@ import type {
   TableColumn,
   TableDragEvent,
   TableColumnReadableIndex,
+  TableColumnSelectable,
 } from '../../../models/table';
 import { useTableStoreContext } from '../../../stores/tableStore';
 import { TableUtil } from '../../../utils/TableUtil';
@@ -288,13 +289,14 @@ export const Table = <TRowData,>({
     }
   }, [selectedIds, setSelectedIds]);
 
-  const renderCheckboxCell = useCallback((cell: TableRowParams<TRowData>) => {
+  const renderCheckboxCell = useCallback((cell: TableRowParams<TRowData>, tableColumn: TableColumnSelectable<TRowData>) => {
     const id = idSelectorCallback(cell.row);
     return (
       <Checkbox
         key={id}
         checked={selectedIds.includes(id)}
         name={idSelectorCallback(cell.row)}
+        disabled={tableColumn.isDisabled ? tableColumn.isDisabled(cell) : false}
         slotProps={{
           input: {
             'aria-label': t`Select row`,
@@ -636,7 +638,7 @@ export const Table = <TRowData,>({
               {!tableColumn.displayValueGetter && !tableColumn.renderCell && tableColumn.type === 'options' && TableUtil.getTableOptionsCellDisplayValue({ column: tableColumn, row, rowIndex: index })}
               {!tableColumn.displayValueGetter && !tableColumn.renderCell && tableColumn.type === 'caseType' && TableUtil.getTableCaseTypeCellDisplayValue({ column: tableColumn, row, rowIndex: index })}
               {!tableColumn.displayValueGetter && !tableColumn.renderCell && tableColumn.type === 'readableIndex' && renderReadableIndexCell(tableColumn, { id: column.id, row, rowIndex: index })}
-              {!tableColumn.displayValueGetter && !tableColumn.renderCell && tableColumn.type === 'selectable' && renderCheckboxCell({ id: column.id, row, rowIndex: index })}
+              {!tableColumn.displayValueGetter && !tableColumn.renderCell && tableColumn.type === 'selectable' && renderCheckboxCell({ id: column.id, row, rowIndex: index }, tableColumn)}
             </TableCell>
           );
         })}

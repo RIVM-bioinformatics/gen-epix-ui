@@ -325,7 +325,11 @@ export const EpiUploadValidateInner = () => {
       return tableCols;
     }
     tableCols.push(TableUtil.createReadableIndexColumn());
-    tableCols.push(TableUtil.createSelectableColumn());
+    tableCols.push(TableUtil.createSelectableColumn({
+      isDisabled: (params: TableRowParams<CaseUploadResultWithGeneratedId>) => {
+        return params.row.data_issues.some(issue => errorIssueTypes.includes(issue.data_issue_type));
+      },
+    }));
     tableCols.push({
       id: 'gen-epix-ui-issue',
       type: 'text',
@@ -410,7 +414,7 @@ export const EpiUploadValidateInner = () => {
     }
 
     return tableCols;
-  }, [caseUploadValidationResultQuery?.data?.cases, renderHasIssueCell, renderHasIssueHeader, renderIsNewCell, renderIsNewHeader, completeCaseType, renderCell, rawData, mappedColumns, t]);
+  }, [caseUploadValidationResultQuery?.data?.cases, renderHasIssueCell, renderHasIssueHeader, renderIsNewCell, renderIsNewHeader, completeCaseType, errorIssueTypes, renderCell, rawData, mappedColumns, t]);
 
   useInitializeTableStore<CaseUploadResultWithGeneratedId>({ store: tableStore, columns: tableColumns, rows: rowsWithGeneratedId, createFiltersFromColumns: true });
 
