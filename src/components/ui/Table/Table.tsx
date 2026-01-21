@@ -60,6 +60,7 @@ import type {
   TableDragEvent,
   TableColumnReadableIndex,
   TableColumnSelectable,
+  TableColumnParams,
 } from '../../../models/table';
 import { useTableStoreContext } from '../../../stores/tableStore';
 import { TableUtil } from '../../../utils/TableUtil';
@@ -247,20 +248,29 @@ export const Table = <TRowData,>({
     );
   }, [onReadableIndexClick, onTableReadableIndexClick]);
 
-  const onSelectAllCheckBoxChange = useCallback((_event: ChangeEvent<HTMLInputElement>) => {
-    const visibleRowIds = sortedData.map(r => idSelectorCallback(r));
-    if (sortedData.every(row => selectedIds.includes(idSelectorCallback(row)))) {
-      // all visible rows are selected, unselect all visible rows
-      setSelectedIds(selectedIds.filter(s => !visibleRowIds.includes(s)));
-    } else {
-      // not al visible rows are selected, select them
-      setSelectedIds(uniq([...selectedIds, ...visibleRowIds]));
-    }
-  }, [sortedData, setSelectedIds, selectedIds, idSelectorCallback]);
+  const renderCheckboxHeaderContent = useCallback((tableColumnParams: TableColumnParams<TRowData>) => {
+    const column = tableColumnParams.column as TableColumnSelectable<TRowData>;
 
-  const renderCheckboxHeaderContent = useCallback(() => {
-    const isAllChecked = sortedData.every(row => selectedIds.includes(idSelectorCallback(row)));
-    const isSomeChecked = sortedData.some(row => selectedIds.includes(idSelectorCallback(row)));
+    const enabledRows = sortedData.filter(row => column.isDisabled({
+      id: idSelectorCallback(row),
+      row,
+      rowIndex: sortedData.indexOf(row),
+    }) === false);
+
+    const isAllChecked = enabledRows.every(row => selectedIds.includes(idSelectorCallback(row)));
+    const isSomeChecked = enabledRows.some(row => selectedIds.includes(idSelectorCallback(row)));
+
+    const onSelectAllCheckBoxChange = (_event: ChangeEvent<HTMLInputElement>) => {
+      const visibleRowIds = enabledRows.map(r => idSelectorCallback(r));
+      if (isAllChecked) {
+      // all visible rows are selected, unselect all visible rows
+        setSelectedIds(selectedIds.filter(s => !visibleRowIds.includes(s)));
+      } else {
+      // not al visible rows are selected, select them
+        setSelectedIds(uniq([...selectedIds, ...visibleRowIds]));
+      }
+    };
+
     return (
       <Checkbox
         checked={isSomeChecked}
@@ -275,10 +285,11 @@ export const Table = <TRowData,>({
           padding: 0,
           marginTop: '-2px',
         }}
+        // eslint-disable-next-line react/jsx-no-bind
         onChange={onSelectAllCheckBoxChange}
       />
     );
-  }, [idSelectorCallback, onSelectAllCheckBoxChange, selectedIds, sortedData, t]);
+  }, [idSelectorCallback, selectedIds, setSelectedIds, sortedData, t]);
 
   const onRowCheckBoxChange = useCallback((event: ChangeEvent<HTMLInputElement>, checked: boolean) => {
     const rowId = event.target.getAttribute('name');
