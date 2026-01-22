@@ -6,7 +6,11 @@ import {
   useState,
 } from 'react';
 import { useStore } from 'zustand';
-import { Box } from '@mui/material';
+import {
+  Alert,
+  AlertTitle,
+  Box,
+} from '@mui/material';
 import omit from 'lodash/omit';
 import { useTranslation } from 'react-i18next';
 import { useShallow } from 'zustand/shallow';
@@ -103,6 +107,10 @@ export const EpiUploadValidateInner = () => {
     await goToNextStep();
   }, [goToNextStep, rowsWithGeneratedId, selectedIds, setValidatedCases]);
 
+  const exceedsMaxCases = useMemo(() => {
+    return selectedIds.length > completeCaseType.create_max_n_cases;
+  }, [completeCaseType.create_max_n_cases, selectedIds.length]);
+
   return (
     <Box
       sx={{
@@ -110,7 +118,7 @@ export const EpiUploadValidateInner = () => {
         height: '100%',
         position: 'relative',
         display: 'grid',
-        gridTemplateRows: 'max-content auto max-content',
+        gridTemplateRows: `${exceedsMaxCases ? 'max-content' : ''} max-content auto max-content`,
       }}
     >
       <ResponseHandler
@@ -119,6 +127,18 @@ export const EpiUploadValidateInner = () => {
         loadingMessage={t('Validating cases')}
         takingLongerTimeoutMs={10000}
       >
+        {exceedsMaxCases && (
+          <Box marginY={2}>
+            <Alert severity={'error'}>
+              <AlertTitle>
+                {t('You have selected {{numCases}} cases to upload, which exceeds the maximum allowed number of {{maxCases}} cases for this case type. Please reduce the number of selected cases before proceeding.', {
+                  numCases: selectedIds.length,
+                  maxCases: completeCaseType.create_max_n_cases,
+                })}
+              </AlertTitle>
+            </Alert>
+          </Box>
+        )}
         <EpiUploadCaseResultTable
           completeCaseType={completeCaseType}
           rowsWithGeneratedId={rowsWithGeneratedId}
@@ -129,7 +149,7 @@ export const EpiUploadValidateInner = () => {
         />
         <EpiUploadNavigation
           proceedLabel={t('Continue')}
-          proceedDisabled={selectedIds.length === 0}
+          proceedDisabled={selectedIds.length === 0 || exceedsMaxCases}
           onGoBackButtonClick={goToPreviousStep}
           onProceedButtonClick={onProceedButtonClick}
         />
