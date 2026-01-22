@@ -830,7 +830,7 @@ export class EpiUploadUtil {
       const caseBatchUploadResult = await EpiUploadUtil.createCases(kwArgs);
 
       if (caseBatchUploadResult.status === UploadStatus.FAILED) {
-        throw new UploadError(t('Failed to create cases during upload.'));
+        throw new UploadError(t('Failed to create cases during upload.'), caseBatchUploadResult);
       }
 
       await EpiUploadUtil.uploadFilesForCases({ ...kwArgs, caseBatchUploadResult, startPercentage: 10, endPercentage: 100 });
