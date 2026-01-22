@@ -1,10 +1,8 @@
 import {
   useCallback,
-  useEffect,
   useMemo,
-  useState,
 } from 'react';
-import { useStore } from 'zustand';
+import type { StoreApi } from 'zustand';
 import {
   Tooltip,
   Box,
@@ -13,9 +11,7 @@ import {
 import ErrorOutlineIcon from '@mui/icons-material/ErrorOutline';
 import AddIcon from '@mui/icons-material/Add';
 import { useTranslation } from 'react-i18next';
-import { useShallow } from 'zustand/shallow';
 
-import { EpiCompletCaseTypeLoader } from '../EpiCompletCaseTypeLoader';
 import type {
   CaseDataIssue,
   CaseUploadResult,
@@ -31,10 +27,8 @@ import type {
   TableRowParams,
   TableColumn,
 } from '../../../models/table';
-import {
-  createTableStore,
-  TableStoreContextProvider,
-} from '../../../stores/tableStore';
+import type { TableStore } from '../../../stores/tableStore';
+import { TableStoreContextProvider } from '../../../stores/tableStore';
 import { EpiCaseUtil } from '../../../utils/EpiCaseUtil';
 import { TableUtil } from '../../../utils/TableUtil';
 import {
@@ -49,24 +43,12 @@ export type EpiUploadCaseResultTableProps = {
   readonly validatedCases?: CaseUploadResult[];
   readonly rawData?: string[][];
   readonly mappedColumns: EpiUploadMappedColumn[];
+  readonly tableStore: StoreApi<TableStore<CaseUploadResultWithGeneratedId>>;
 };
 
-export const EpiUploadCaseResultTableInner = ({ rowsWithGeneratedId, completeCaseType, validatedCases, rawData, mappedColumns }: EpiUploadCaseResultTableProps) => {
+export const EpiUploadCaseResultTable = ({ tableStore, rowsWithGeneratedId, completeCaseType, validatedCases, rawData, mappedColumns }: EpiUploadCaseResultTableProps) => {
   const theme = useTheme();
   const [t] = useTranslation();
-
-  const tableStore = useMemo(() => createTableStore<CaseUploadResultWithGeneratedId>({
-    idSelectorCallback: (row) => row.generatedId,
-  }), []);
-
-  const setSelectedIds = useStore(tableStore, useShallow((state) => state.setSelectedIds));
-
-  useEffect(() => {
-    const newSelectedIds = rowsWithGeneratedId.filter(validatedCase => {
-      return !validatedCase.data_issues.some(issue => issue.data_issue_type === DataIssueType.INVALID || issue.data_issue_type === DataIssueType.UNAUTHORIZED);
-    }).map(vc => vc.generatedId);
-    setSelectedIds(newSelectedIds);
-  }, [rowsWithGeneratedId, setSelectedIds]);
 
   const dataRulePriority: DataIssueType[] = useMemo(() => [
     DataIssueType.UNAUTHORIZED,
@@ -381,24 +363,5 @@ export const EpiUploadCaseResultTableInner = ({ rowsWithGeneratedId, completeCas
         font={theme['gen-epix'].lineList.font}
       />
     </TableStoreContextProvider>
-  );
-};
-
-export const EpiUploadCaseResultTable = (props: EpiUploadCaseResultTableProps) => {
-  const [isCompleteCaseTypeLoaded, setIsCompleteCaseTypeLoaded] = useState<boolean>(false);
-
-  const onCompleteCaseTypeLoaded = useCallback(() => {
-    setIsCompleteCaseTypeLoaded(true);
-  }, []);
-
-  return (
-    <EpiCompletCaseTypeLoader
-      caseTypeId={props.completeCaseType.id}
-      onCompleteCaseTypeLoaded={onCompleteCaseTypeLoaded}
-    >
-      {isCompleteCaseTypeLoaded && (
-        <EpiUploadCaseResultTableInner {...props} />
-      )}
-    </EpiCompletCaseTypeLoader>
   );
 };
