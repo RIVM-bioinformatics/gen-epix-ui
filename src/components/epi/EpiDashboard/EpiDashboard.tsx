@@ -1,6 +1,9 @@
 import {
   useTheme,
   Box,
+  Alert,
+  AlertTitle,
+  Button,
 } from '@mui/material';
 import {
   useRef,
@@ -117,6 +120,8 @@ export const EpiDashboard = withEpiStore(({ caseSet }: EpiDashboardProps) => {
   const epiStore = useContext(EpiStoreContext);
   const fetchData = useStore(epiStore, useShallow((state) => state.fetchData));
   const dataError = useStore(epiStore, (state) => state.dataError);
+  const isMaxResultsExceeded = useStore(epiStore, (state) => state.isMaxResultsExceeded);
+  const completeCaseType = useStore(epiStore, (state) => state.completeCaseType);
   const activeFiltersCount = useStore(epiStore, (state) => state.filters.filter(f => !f.isInitialFilterValue()).length);
   const numLayoutZones = useStore(userProfileStore, (state) => Object.keys(state.epiDashboardLayoutUserConfig.zones).length);
   const numVisibleLayoutZones = useStore(userProfileStore, (state) => EpiDashboardUtil.getEnabledZones(state.epiDashboardLayoutUserConfig).length);
@@ -157,6 +162,10 @@ export const EpiDashboard = withEpiStore(({ caseSet }: EpiDashboardProps) => {
     return () => {
       removers.forEach(callbackfn => callbackfn());
     };
+  }, []);
+
+  const onOpenFiltersButtonClick = useCallback(() => {
+    setIsFilterSidebarOpen(true);
   }, []);
 
   const onEpiDashboardFilterSidebarClose = useCallback(() => {
@@ -275,62 +284,97 @@ export const EpiDashboard = withEpiStore(({ caseSet }: EpiDashboardProps) => {
           />
         </SidebarMenu>
         {/* Content */}
-        <Box
-          sx={{
-            width: '100%',
-            height: '100%',
-            display: 'grid',
-            gridTemplateRows: 'max-content auto',
-            paddingLeft: theme.spacing(ConfigManager.instance.config.layout.SIDEBAR_MENU_WIDTH + 1),
-          }}
-        >
-          <Box>
-            <EpiStratification />
+        {isMaxResultsExceeded && (
+          <Box
+            sx={{
+              width: '100%',
+              height: '100%',
+              display: 'flex',
+              alignItems: 'flex-start',
+              justifyContent: 'center',
+              paddingLeft: theme.spacing(ConfigManager.instance.config.layout.SIDEBAR_MENU_WIDTH + 1),
+            }}
+          >
+            <Alert
+              severity={'warning'}
+              sx={{
+                width: '100%',
+              }}
+            >
+              <AlertTitle>
+                {t`Maximum results exceeded`}
+              </AlertTitle>
+              <Box marginY={2}>
+                {t('The maximum number of {{maxResultsForCaseType}} results has been exceeded. Refine your filters to reduce the number of results.', { maxResultsForCaseType: completeCaseType.read_max_n_cases })}
+              </Box>
+              <Button
+                color={'inherit'}
+                variant={'outlined'}
+                onClick={onOpenFiltersButtonClick}
+              >
+                {t`Refine filters`}
+              </Button>
+            </Alert>
           </Box>
-          <Box>
-            <EpiDashboardLayoutRenderer
-              ref={epiDashboardLayoutRendererRef}
-              disabled={isFilterSidebarOpen || isSettingsSidebarOpen}
-              epiCurveWidget={(
-                <ErrorBoundary
-                  fallback={(
-                    <EpiWidgetUnavailable
-                      epiZone={EPI_ZONE.EPI_CURVE}
-                      widgetName={t`epi curve`}
-                    />
-                  )}
-                >
-                  <EpiCurve />
-                </ErrorBoundary>
-              )}
-              lineListWidget={(
-                <EpiList
-                  caseSet={caseSet}
-                  linkedScrollSubject={linkedScrollSubject}
-                  onLink={onEpiListLink}
-                />
-              )}
-              mapWidget={(
-                <ErrorBoundary
-                  fallback={(
-                    <EpiWidgetUnavailable
-                      epiZone={EPI_ZONE.MAP}
-                      widgetName={t`map`}
-                    />
-                  )}
-                >
-                  <EpiMap />
-                </ErrorBoundary>
-              )}
-              phylogeneticTreeWidget={(
-                <EpiTree
-                  ref={epiTreeRef}
-                  linkedScrollSubject={linkedScrollSubject}
-                />
-              )}
-            />
+        )}
+        {!isMaxResultsExceeded && (
+          <Box
+            sx={{
+              width: '100%',
+              height: '100%',
+              display: 'grid',
+              gridTemplateRows: 'max-content auto',
+              paddingLeft: theme.spacing(ConfigManager.instance.config.layout.SIDEBAR_MENU_WIDTH + 1),
+            }}
+          >
+            <Box>
+              <EpiStratification />
+            </Box>
+            <Box>
+              <EpiDashboardLayoutRenderer
+                ref={epiDashboardLayoutRendererRef}
+                disabled={isFilterSidebarOpen || isSettingsSidebarOpen}
+                epiCurveWidget={(
+                  <ErrorBoundary
+                    fallback={(
+                      <EpiWidgetUnavailable
+                        epiZone={EPI_ZONE.EPI_CURVE}
+                        widgetName={t`epi curve`}
+                      />
+                    )}
+                  >
+                    <EpiCurve />
+                  </ErrorBoundary>
+                )}
+                lineListWidget={(
+                  <EpiList
+                    caseSet={caseSet}
+                    linkedScrollSubject={linkedScrollSubject}
+                    onLink={onEpiListLink}
+                  />
+                )}
+                mapWidget={(
+                  <ErrorBoundary
+                    fallback={(
+                      <EpiWidgetUnavailable
+                        epiZone={EPI_ZONE.MAP}
+                        widgetName={t`map`}
+                      />
+                    )}
+                  >
+                    <EpiMap />
+                  </ErrorBoundary>
+                )}
+                phylogeneticTreeWidget={(
+                  <EpiTree
+                    ref={epiTreeRef}
+                    linkedScrollSubject={linkedScrollSubject}
+                  />
+                )}
+              />
+            </Box>
           </Box>
-        </Box>
+        )}
       </ResponseHandler>
       <EpiContactDetailsDialog ref={epiContactDetailsDialogRef} />
       <EpiSequenceDownloadDialog ref={epiSequenceDownloadDialogRef} />

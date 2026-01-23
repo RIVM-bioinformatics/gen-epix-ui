@@ -25,6 +25,7 @@ import type {
   PhylogeneticTree,
   TypedCompositeFilter,
   CaseQuery,
+  CaseQueryResult,
 } from '../../api';
 import {
   ColType,
@@ -112,6 +113,7 @@ interface EpiStoreState extends TableStoreState<Case> {
   caseSetId: string;
   stratifyableColumns: StratifiableColumn[];
   numVisibleAttributesInSummary: number;
+  isMaxResultsExceeded: boolean;
 }
 
 interface EpiStoreActions extends TableStoreActions<Case> {
@@ -192,6 +194,7 @@ const createEpiStoreInitialState = (kwArgs: CreateEpiStoreInitialStateKwArgs): E
     treeAddresses: {},
     newick: null,
     treeResponse: null,
+    isMaxResultsExceeded: false,
     epiTreeWidgetData: createEpiTreeWidgetDataInitialState(),
     epiListWidgetData: {
       ...createWidgetDataInitialState(),
@@ -619,6 +622,7 @@ export const createEpiStore = (kwArgs: CreateEpiStoreKwArgs) => {
             tableStoreActions.destroy();
           },
           fetchData: async () => {
+            set({ isMaxResultsExceeded: false });
             const { fetchAbortController: previousFetchAbortController, globalAbortSignal } = get();
             const queryClient = QueryClientManager.instance.queryClient;
 
@@ -655,15 +659,20 @@ export const createEpiStore = (kwArgs: CreateEpiStoreKwArgs) => {
             const retrieveCaseIdsByQueryQueryKey = QueryUtil.getRetrieveCaseIdsByQueryKey(completeCaseType.id, caseQuery);
 
             try {
-              let currentCaseIdsByQuery = QueryUtil.getValidQueryData<string[]>(retrieveCaseIdsByQueryQueryKey);
-              if (!currentCaseIdsByQuery) {
-                currentCaseIdsByQuery = (await CaseApi.instance.retrieveCaseIdsByQuery(caseQuery, { signal: fetchAbortController.signal })).data.case_ids;
-                queryClient.setQueryData(retrieveCaseIdsByQueryQueryKey, currentCaseIdsByQuery);
+              let currentCaseIdsByQueryResponse = QueryUtil.getValidQueryData<CaseQueryResult>(retrieveCaseIdsByQueryQueryKey);
+              if (!currentCaseIdsByQueryResponse) {
+                const retrieveCaseIdsByQueryResponse = (await CaseApi.instance.retrieveCaseIdsByQuery(caseQuery, { signal: fetchAbortController.signal })).data;
+                currentCaseIdsByQueryResponse = retrieveCaseIdsByQueryResponse;
+                queryClient.setQueryData(retrieveCaseIdsByQueryQueryKey, currentCaseIdsByQueryResponse);
+              }
+              if (currentCaseIdsByQueryResponse.is_max_results_exceeded) {
+                set({ isMaxResultsExceeded: true, isDataLoading: false });
+                return;
               }
 
               const currentCases = QueryUtil.getValidQueryData<Case[]>(QueryUtil.getGenericKey(QUERY_KEY.CASES_LAZY));
               const currentCaseIds = (currentCases ?? []).map(x => x.id);
-              const missingCaseIds = difference(currentCaseIdsByQuery, currentCaseIds);
+              const missingCaseIds = difference(currentCaseIdsByQueryResponse.case_ids, currentCaseIds);
               if (missingCaseIds.length) {
                 const missingCasesResult = (await CaseApi.instance.retrieveCasesByIds({
                   case_type_id: completeCaseType.id,
@@ -676,7 +685,7 @@ export const createEpiStore = (kwArgs: CreateEpiStoreKwArgs) => {
               casesMap.forEach((item) => {
                 queryClient.setQueryData(QueryUtil.getGenericKey(QUERY_KEY.CASES_LAZY, item.id), item);
               });
-              const cases = currentCaseIdsByQuery.map(id => casesMap.get(id));
+              const cases = currentCaseIdsByQueryResponse.case_ids.map(id => casesMap.get(id));
 
               setBaseData(cases);
               set({ isDataLoading: false });
