@@ -303,10 +303,10 @@ export const EpiDashboard = withEpiStore(({ caseSet }: EpiDashboardProps) => {
               }}
             >
               <AlertTitle>
-                {t`Maximum results exceeded`}
+                {t`Maximum number of results exceeded`}
               </AlertTitle>
               <Box marginY={2}>
-                {t('The maximum number of {{maxResultsForCaseType}} results has been exceeded. Refine your filters to reduce the number of results.', { maxResultsForCaseType: completeCaseType.read_max_n_cases })}
+                {t('The maximum number of results ({{maxResultsForCaseType}}) for {{caseTypeName}} has been exceeded. Refine your filters to reduce the number of results.', { maxResultsForCaseType: completeCaseType.read_max_n_cases, caseTypeName: completeCaseType.name })}
               </Box>
               <Button
                 color={'inherit'}
