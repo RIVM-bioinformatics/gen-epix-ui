@@ -163,6 +163,7 @@ export const RichTextEditor = <TFieldValues extends FieldValues, TName extends P
                 },
               }}
               tabIndex={-1}
+              aria-label={t`Clear rich text editor content`}
               // eslint-disable-next-line react/jsx-no-bind
               onClick={onResetButtonClick}
             >

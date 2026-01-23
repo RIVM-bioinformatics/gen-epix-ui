@@ -258,6 +258,7 @@ export const DateRangePicker = <TFieldValues extends FieldValues, TName extends 
                 },
               }}
               tabIndex={-1}
+              aria-label={t`Clear date range`}
               // eslint-disable-next-line react/jsx-no-bind
               onClick={onResetButtonClick}
             >

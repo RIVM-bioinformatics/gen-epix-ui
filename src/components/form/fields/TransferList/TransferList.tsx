@@ -294,7 +294,7 @@ export const TransferList = <TFieldValues extends FieldValues, TName extends Pat
                 {'≪'}
               </Button>
               <Button
-                aria-label={t`reset`}
+                aria-label={t`Reset selection`}
                 size={'small'}
                 sx={{ mt: 4 }}
                 variant={'outlined'}

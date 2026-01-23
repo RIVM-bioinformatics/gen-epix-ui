@@ -219,7 +219,7 @@ export const NumberRangeInput = <TFieldValues extends FieldValues, TName extends
                       },
                     }}
                     tabIndex={-1}
-                    aria-label={t`Clear`}
+                    aria-label={t`Clear number range`}
                     // eslint-disable-next-line react/jsx-no-bind
                     onClick={onResetButtonClick}
                   >

@@ -30,6 +30,7 @@ import {
   useFormContext,
 } from 'react-hook-form';
 import classnames from 'classnames';
+import { useTranslation } from 'react-i18next';
 
 import type { SelectOption } from '../../../../models/form';
 import { FormUtil } from '../../../../utils/FormUtil';
@@ -62,6 +63,7 @@ export const Select = <TFieldValues extends FieldValues, TName extends Path<TFie
   warningMessage,
   multiple,
 }: SelectProps<TFieldValues, TName, TMultiple>): ReactElement => {
+  const [t] = useTranslation();
   const { control, formState: { errors } } = useFormContext<TFieldValues>();
   const errorMessage = FormUtil.getFieldErrorMessage(errors, name);
   const inputRef = useRef<HTMLInputElement>(null);
@@ -139,6 +141,7 @@ export const Select = <TFieldValues extends FieldValues, TName extends Path<TFie
                       },
                     }}
                     tabIndex={-1}
+                    aria-label={t`Clear selection`}
                     // eslint-disable-next-line react/jsx-no-bind
                     onClick={onResetButtonClick}
                   >
@@ -197,7 +200,7 @@ export const Select = <TFieldValues extends FieldValues, TName extends Path<TFie
         </FormHelperText>
       </>
     );
-  }, [disabled, errorMessage, getIsOptionDisabled, hasError, hasWarning, helperTextId, id, label, labelId, loading, multiple, onMuiSelectChange, options, renderValue, required, warningMessage]);
+  }, [disabled, errorMessage, getIsOptionDisabled, t, hasError, hasWarning, helperTextId, id, label, labelId, loading, multiple, onMuiSelectChange, options, renderValue, required, warningMessage]);
 
   return (
     <FormControl

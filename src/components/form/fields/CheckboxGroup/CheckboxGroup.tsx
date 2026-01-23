@@ -27,6 +27,7 @@ import type {
   Path,
   ControllerRenderProps,
 } from 'react-hook-form';
+import { useTranslation } from 'react-i18next';
 
 import type { CheckboxOption } from '../../../../models/form';
 import { FormUtil } from '../../../../utils/FormUtil';
@@ -60,6 +61,7 @@ export const CheckboxGroup = <TFieldValues extends FieldValues, TName extends Pa
   warningMessage,
   onChange: onChangeProp,
 }: CheckboxGroupProps<TFieldValues, TName>): ReactElement => {
+  const [t] = useTranslation();
   const id = useId();
   const { control, formState: { errors } } = useFormContext<TFieldValues>();
   const errorMessage = FormUtil.getFieldErrorMessage(errors, name);
@@ -125,6 +127,7 @@ export const CheckboxGroup = <TFieldValues extends FieldValues, TName extends Pa
                 },
               }}
               tabIndex={-1}
+              aria-label={t`Clear checkbox selection`}
               // eslint-disable-next-line react/jsx-no-bind
               onClick={onResetButtonClick}
             >
@@ -175,7 +178,7 @@ export const CheckboxGroup = <TFieldValues extends FieldValues, TName extends Pa
         </FormHelperText>
       </FormControl>
     );
-  }, [hasError, label, name, disabled, loading, id, required, row, options, errorMessage, warningMessage, onMuiCheckboxChange]);
+  }, [hasError, label, name, disabled, loading, id, required, t, row, options, errorMessage, warningMessage, onMuiCheckboxChange]);
 
   return (
     <Controller

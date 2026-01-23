@@ -123,6 +123,7 @@ export const TextField = <TFieldValues extends FieldValues, TName extends Path<T
                     },
                   }}
                   tabIndex={-1}
+                  aria-label={`Clear text field`}
                   // eslint-disable-next-line react/jsx-no-bind
                   onClick={onResetButtonClick}
                 >
