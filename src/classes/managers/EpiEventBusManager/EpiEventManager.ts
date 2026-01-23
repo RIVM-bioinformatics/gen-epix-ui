@@ -37,6 +37,7 @@ type EpiEvent = {
   openRemoveCasesFromEventDialog: EpiRemoveCasesFromEventDialogOpenProps;
   openAddCasesToEventDialog: EpiAddCasesToEventDialogOpenProps;
   openBulkEditCaseDialog: EpiBulkEditCaseDialogOpenProps;
+  openFiltersMenu: void;
   onEventCreated: void;
   onDownloadOptionsRequested: void;
   onDownloadOptionsChanged: DownloadConfig;

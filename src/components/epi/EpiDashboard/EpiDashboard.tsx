@@ -141,6 +141,7 @@ export const EpiDashboard = withEpiStore(({ caseSet }: EpiDashboardProps) => {
       eventBus.addEventListener('openRemoveCasesFromEventDialog', (...args) => epiRemoveCasesFromEventDialogRef.current?.open(...args)),
       eventBus.addEventListener('openSequenceDownloadDialog', (...args) => epiSequenceDownloadDialogRef.current?.open(...args)),
       eventBus.addEventListener('openBulkEditCaseDialog', (...args) => epiBulkEditCaseDialogRef.current?.open(...args)),
+      eventBus.addEventListener('openFiltersMenu', () => setIsFilterSidebarOpen(true)),
     ];
     return () => {
       removers.forEach(callbackfn => callbackfn());

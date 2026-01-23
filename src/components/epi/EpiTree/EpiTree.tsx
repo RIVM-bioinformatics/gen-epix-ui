@@ -1,5 +1,8 @@
 import {
+  Alert,
+  AlertTitle,
   Box,
+  Button,
   ListItemIcon,
   ListItemText,
   MenuItem,
@@ -176,6 +179,7 @@ export const EpiTree = ({ linkedScrollSubject, ref }: EpiTreeProps) => {
   }, [caseIds, resetTreeAddresses]);
 
   const hasEnoughSequencesToShowTree = useMemo(() => caseIds.length >= 2 && caseIds.every(x => !!x), [caseIds]);
+  const hasToManyResultsToShowTree = useMemo(() => caseIds.length > 0 && completeCaseType.read_max_tree_size > 0 && caseIds.length > completeCaseType.read_max_tree_size, [caseIds, completeCaseType.read_max_tree_size]);
 
   const retrievePhylogeneticTreeRequestBody = useMemo<RetrievePhylogeneticTreeRequestBody>(() => ({
     case_ids: caseIds,
@@ -189,14 +193,14 @@ export const EpiTree = ({ linkedScrollSubject, ref }: EpiTreeProps) => {
       const response = await CaseApi.instance.retrievePhylogeneticTree(retrievePhylogeneticTreeRequestBody, { signal });
       return response.data;
     },
-    enabled: hasEnoughSequencesToShowTree && !!treeConfiguration,
+    enabled: hasEnoughSequencesToShowTree && !!treeConfiguration && !hasToManyResultsToShowTree,
     retry: false,
     staleTime: Infinity,
   });
 
   const isLoading = !!treeConfiguration && (isCaseDataLoading || (hasEnoughSequencesToShowTree && isTreeLoading));
-  const isTreeUnavailable = !isCaseDataLoading && ((!isLoading && !!treeError) || !hasEnoughSequencesToShowTree || tree?.maxBranchLength?.toNumber() === 0 || tree?.size === 0 || !treeConfiguration || (!isLoading && tree === null));
-  const shouldShowTree = !!treeConfiguration && !isCaseDataLoading && !treeError && !isTreeLoading && width > 0 && tree?.size > 0 && hasEnoughSequencesToShowTree;
+  const isTreeUnavailable = hasToManyResultsToShowTree || !isCaseDataLoading && ((!isLoading && !!treeError) || !hasEnoughSequencesToShowTree || tree?.maxBranchLength?.toNumber() === 0 || tree?.size === 0 || !treeConfiguration || (!isLoading && tree === null));
+  const shouldShowTree = !hasToManyResultsToShowTree && !!treeConfiguration && !isCaseDataLoading && !treeError && !isTreeLoading && width > 0 && tree?.size > 0 && hasEnoughSequencesToShowTree;
 
   const treeCanvasWidth = width;
   const treeCanvasHeight = height - ConfigManager.instance.config.epiTree.HEADER_HEIGHT;
@@ -340,6 +344,10 @@ export const EpiTree = ({ linkedScrollSubject, ref }: EpiTreeProps) => {
     linkLineListToTree();
 
   }, [linkLineListToTree]);
+
+  const onOpenFiltersButtonClick = useCallback(() => {
+    EpiEventBusManager.instance.emit('openFiltersMenu');
+  }, []);
 
   const resetZoomLevelAndScrollPosition = useCallback(() => {
     setZoomLevel(1);
@@ -797,17 +805,43 @@ export const EpiTree = ({ linkedScrollSubject, ref }: EpiTreeProps) => {
         }}
       >
         {isTreeUnavailable && (
-          <Box
-            sx={{
-              position: 'absolute',
-              zIndex: 1,
-            }}
-          >
-            <EpiWidgetUnavailable
-              epiZone={EPI_ZONE.TREE}
-              widgetName={t`phylogenetic tree`}
-            />
-          </Box>
+          <>
+            {hasToManyResultsToShowTree && (
+              <Box>
+                <Alert severity={'warning'}>
+                  <AlertTitle>
+                    {t`Too many cases to display the phylogenetic tree`}
+                  </AlertTitle>
+                  <Box marginY={2}>
+                    {t('The phylogenetic tree cannot be displayed because the number of cases ({{caseCount}}) exceeds the maximum allowed number of cases ({{maxSize}}) to display a phylogenetic tree. Refine your filters to reduce the number of results.', {
+                      caseCount: caseIds.length,
+                      maxSize: completeCaseType.read_max_tree_size,
+                    })}
+                  </Box>
+                  <Button
+                    color={'inherit'}
+                    variant={'outlined'}
+                    onClick={onOpenFiltersButtonClick}
+                  >
+                    {t`Refine filters`}
+                  </Button>
+                </Alert>
+              </Box>
+            )}
+            {!hasToManyResultsToShowTree && (
+              <Box
+                sx={{
+                  position: 'absolute',
+                  zIndex: 1,
+                }}
+              >
+                <EpiWidgetUnavailable
+                  epiZone={EPI_ZONE.TREE}
+                  widgetName={t`phylogenetic tree`}
+                />
+              </Box>
+            )}
+          </>
         )}
         {(isLoading && !isTreeUnavailable) && (
           <Spinner
