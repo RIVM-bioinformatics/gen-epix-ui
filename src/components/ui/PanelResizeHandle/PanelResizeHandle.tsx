@@ -44,7 +44,7 @@ export const PanelResizeHandleVertical = (props: PanelResizeHandleProps) => {
   return (
     <StyledPanelResizeHandle
       {...props}
-      aria-label={t('Horizontal resize Handle')}
+      aria-label={t('Vertical resize Handle')}
       sx={{
         width: '11px',
         '&:hover > div': {
