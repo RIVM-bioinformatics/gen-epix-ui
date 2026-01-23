@@ -251,11 +251,11 @@ export const Table = <TRowData,>({
   const renderCheckboxHeaderContent = useCallback((tableColumnParams: TableColumnParams<TRowData>) => {
     const column = tableColumnParams.column as TableColumnSelectable<TRowData>;
 
-    const enabledRows = sortedData.filter(row => column.isDisabled({
+    const enabledRows = column.isDisabled ? sortedData.filter(row => column.isDisabled({
       id: idSelectorCallback(row),
       row,
       rowIndex: sortedData.indexOf(row),
-    }) === false);
+    }) === false) : sortedData;
 
     const isAllChecked = enabledRows.every(row => selectedIds.includes(idSelectorCallback(row)));
     const isSomeChecked = enabledRows.some(row => selectedIds.includes(idSelectorCallback(row)));
