@@ -665,10 +665,6 @@ export const createEpiStore = (kwArgs: CreateEpiStoreKwArgs) => {
                 currentCaseIdsByQueryResponse = retrieveCaseIdsByQueryResponse;
                 queryClient.setQueryData(retrieveCaseIdsByQueryQueryKey, currentCaseIdsByQueryResponse);
               }
-              if (currentCaseIdsByQueryResponse.is_max_results_exceeded) {
-                set({ isMaxResultsExceeded: true, isDataLoading: false });
-                return;
-              }
 
               const currentCases = QueryUtil.getValidQueryData<Case[]>(QueryUtil.getGenericKey(QUERY_KEY.CASES_LAZY));
               const currentCaseIds = (currentCases ?? []).map(x => x.id);
@@ -688,7 +684,7 @@ export const createEpiStore = (kwArgs: CreateEpiStoreKwArgs) => {
               const cases = currentCaseIdsByQueryResponse.case_ids.map(id => casesMap.get(id));
 
               setBaseData(cases);
-              set({ isDataLoading: false });
+              set({ isDataLoading: false, isMaxResultsExceeded: currentCaseIdsByQueryResponse.is_max_results_exceeded });
             } catch (error: unknown) {
               if (!AxiosUtil.isAxiosCanceledError(error)) {
                 set({ dataError: error as Error });
