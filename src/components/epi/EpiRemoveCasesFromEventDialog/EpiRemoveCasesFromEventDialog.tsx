@@ -58,6 +58,7 @@ export const EpiRemoveCasesFromEventDialog = withDialog<EpiRemoveCasesFromEventD
   const fetchData = useStore(epiStore, useShallow((state) => state.fetchData));
   const setSelectedIds = useStore(epiStore, useShallow((state) => state.setSelectedIds));
 
+  const isMaxExceeded = openProps.rows.length > completeCaseType.delete_max_n_cases;
 
   const caseSetMembersFilter = useMemo<TypedUuidSetFilter>(() => ({
     invert: false,
@@ -114,18 +115,30 @@ export const EpiRemoveCasesFromEventDialog = withDialog<EpiRemoveCasesFromEventD
     const actions: DialogAction[] = [];
     actions.push(
       {
-        ...TestIdUtil.createAttributes('EpiRemoveCasesFromEventDialog-confirmButton'),
-        color: 'secondary',
+        ...TestIdUtil.createAttributes('EpiRemoveCasesFromEventDialog-closeButton'),
+        color: 'primary',
         autoFocus: true,
-        variant: 'contained',
-        onClick: onConfirmButtonClick,
+        variant: 'outlined',
+        onClick: onCancelButtonClick,
         disabled: isMutating,
-        label: t`Confirm`,
+        label: t`Close`,
       },
-
     );
+    if (!isMaxExceeded) {
+      actions.push(
+        {
+          ...TestIdUtil.createAttributes('EpiRemoveCasesFromEventDialog-confirmButton'),
+          color: 'secondary',
+          autoFocus: true,
+          variant: 'contained',
+          onClick: onConfirmButtonClick,
+          disabled: isMutating,
+          label: t`Confirm`,
+        },
+      );
+    }
     onActionsChange(actions);
-  }, [isMutating, onActionsChange, onCancelButtonClick, onConfirmButtonClick, t]);
+  }, [isMaxExceeded, isMutating, onActionsChange, onCancelButtonClick, onConfirmButtonClick, t]);
 
   if (isMutating) {
     return <Spinner />;
@@ -137,9 +150,15 @@ export const EpiRemoveCasesFromEventDialog = withDialog<EpiRemoveCasesFromEventD
       error={caseSetMembersError}
       isLoading={isCaseSetMembersLoading}
     >
-      <Box>
-        {t('Are you sure you want to remove {{numCases}} selected cases from {{caseTypeName}}?', { numCases: openProps.rows.length, caseTypeName: completeCaseType.name })}
-      </Box>
+      {isMaxExceeded ? (
+        <Box>
+          {t('You can only remove up to {{maxCases}} cases at a time. Please refine your selection and try again.', { maxCases: completeCaseType.delete_max_n_cases })}
+        </Box>
+      ) : (
+        <Box>
+          {t('Are you sure you want to remove {{numCases}} selected cases from {{caseTypeName}}?', { numCases: openProps.rows.length, caseTypeName: completeCaseType.name })}
+        </Box>
+      )}
     </ResponseHandler>
   );
 }, {
