@@ -6,24 +6,6 @@ import type { CategorizedOutages } from '../../models/outage';
 
 export class OutageUtil {
   public static getCategorizedOutages(outages: Outage[]): CategorizedOutages {
-    const visibleOutages = outages.filter((outage) => {
-      if (outage.is_visible) {
-        return true;
-      }
-      if (outage.visible_from || outage.visible_to) {
-        const now = new Date();
-        if (outage.visible_from && outage.visible_to) {
-          return now >= new Date(outage.visible_from) && now < new Date(outage.visible_to);
-        }
-        if (outage.visible_from && now >= new Date(outage.visible_from)) {
-          return true;
-        }
-        if (outage.visible_to && now < new Date(outage.visible_to)) {
-          return true;
-        }
-        return false;
-      }
-    });
 
     const activeOutages = outages.filter((outage) => {
       if (outage.is_active) {
@@ -44,6 +26,28 @@ export class OutageUtil {
       }
     });
     const activeOutageIds = activeOutages.map((outage) => outage.id);
+
+    const visibleOutages = outages.filter((outage) => {
+      if (activeOutageIds.includes(outage.id)) {
+        return false;
+      }
+      if (outage.is_visible) {
+        return true;
+      }
+      if (outage.visible_from || outage.visible_to) {
+        const now = new Date();
+        if (outage.visible_from && outage.visible_to) {
+          return now >= new Date(outage.visible_from) && now < new Date(outage.visible_to);
+        }
+        if (outage.visible_from && now >= new Date(outage.visible_from)) {
+          return true;
+        }
+        if (outage.visible_to && now < new Date(outage.visible_to)) {
+          return true;
+        }
+        return false;
+      }
+    });
 
     const soonActiveOutages = outages.filter((outage) => {
       if (activeOutageIds.includes(outage.id)) {
