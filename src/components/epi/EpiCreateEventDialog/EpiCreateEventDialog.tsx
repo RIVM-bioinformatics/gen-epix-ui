@@ -260,11 +260,12 @@ export const EpiCreateEventDialog = withDialog<EpiCreateEventDialogProps, EpiCre
         caseSetId: item.id,
         caseIds: openProps.rows ? openProps.rows.map(row => row.id) : undefined,
         caseSetDataCollectionIds: variables.share_in_data_collection_ids,
+        caseTypeId: completeCaseType.id,
       });
     }
     EpiEventBusManager.instance.emit('onEventCreated');
     onClose();
-  }, [onClose, openProps.rows]);
+  }, [completeCaseType?.id, onClose, openProps.rows]);
 
   // eslint-disable-next-line @typescript-eslint/require-await
   const onError = useCallback(async () => {

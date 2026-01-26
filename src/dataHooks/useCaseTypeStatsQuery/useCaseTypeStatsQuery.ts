@@ -2,14 +2,14 @@ import { type UseQueryResult } from '@tanstack/react-query';
 
 import type {
   RetrieveCaseTypeStatsRequestBody,
-  CaseTypeStat,
+  CaseStats,
 } from '../../api';
 import { CaseApi } from '../../api';
 import { QUERY_KEY } from '../../models/query';
 import { QueryUtil } from '../../utils/QueryUtil';
 import { useQueryMemo } from '../../hooks/useQueryMemo';
 
-export const useCaseTypeStatsQuery = (options?: RetrieveCaseTypeStatsRequestBody): UseQueryResult<CaseTypeStat[]> => {
+export const useCaseTypeStatsQuery = (options?: RetrieveCaseTypeStatsRequestBody): UseQueryResult<CaseStats[]> => {
   return useQueryMemo({
     queryKey: QueryUtil.getGenericKey(QUERY_KEY.CASE_TYPE_STATS, options ?? {}),
     queryFn: async ({ signal }) => {

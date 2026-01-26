@@ -31,6 +31,7 @@ import { GenericForm } from '../../form/helpers/GenericForm';
 import { Spinner } from '../../ui/Spinner';
 
 export type EpiCaseSetSharingFormProps = {
+  readonly caseTypeId: string;
   readonly caseSet: CaseSet;
   readonly formId: string;
   readonly onFinish: () => void;
@@ -42,7 +43,7 @@ type FormFields = {
   shouldApplySharingToCases?: boolean;
 };
 
-export const EpiCaseSetSharingForm = ({ formId, caseSet, onFinish, onIsSavingChange, ...boxProps }: EpiCaseSetSharingFormProps) => {
+export const EpiCaseSetSharingForm = ({ caseTypeId, formId, caseSet, onFinish, onIsSavingChange, ...boxProps }: EpiCaseSetSharingFormProps) => {
   const [t] = useTranslation();
   const [isSaving, setIsSaving] = useState(false);
 
@@ -87,6 +88,7 @@ export const EpiCaseSetSharingForm = ({ formId, caseSet, onFinish, onIsSavingCha
           await EpiCaseUtil.applyDataCollectionLinks({
             caseSetId: caseSet.id,
             caseSetDataCollectionIds: dataCollectionIds,
+            caseTypeId,
           });
         }
 
@@ -97,7 +99,7 @@ export const EpiCaseSetSharingForm = ({ formId, caseSet, onFinish, onIsSavingCha
     };
     // eslint-disable-next-line @typescript-eslint/no-floating-promises
     perform();
-  }, [onIsSavingChange, t, caseAbacContext?.rights, caseAbacContext.itemDataCollectionLinks, caseSet.id, onFinish]);
+  }, [onIsSavingChange, t, caseAbacContext?.rights, caseAbacContext.itemDataCollectionLinks, caseTypeId, caseSet.id, onFinish]);
 
   const formFieldDefinitions = useMemo<FormFieldDefinition<FormFields>[]>(() => [
     {

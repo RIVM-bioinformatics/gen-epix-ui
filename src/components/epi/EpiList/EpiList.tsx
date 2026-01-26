@@ -91,8 +91,9 @@ export const EpiList = ({ linkedScrollSubject, onLink, caseSet }: EpiListProps) 
   const onIndexCellClick = useCallback((row: Case) => {
     EpiEventBusManager.instance.emit('openCaseInfoDialog', {
       caseId: row.id,
+      caseTypeId: completeCaseType.id,
     });
-  }, []);
+  }, [completeCaseType.id]);
 
   const getColumnWidth = useCallback((caseTypeCol: CaseTypeCol, label: string) => {
     let maxTextLength = label?.length * 0.8;

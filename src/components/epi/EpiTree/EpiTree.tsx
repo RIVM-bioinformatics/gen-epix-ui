@@ -185,7 +185,8 @@ export const EpiTree = ({ linkedScrollSubject, ref }: EpiTreeProps) => {
     case_ids: caseIds,
     genetic_distance_case_type_col_id: treeConfiguration?.caseTypeCol.id,
     tree_algorithm_code: treeConfiguration?.treeAlgorithm.code,
-  }), [caseIds, treeConfiguration?.caseTypeCol.id, treeConfiguration?.treeAlgorithm.code]);
+    case_type_id: completeCaseType.id,
+  }), [caseIds, completeCaseType.id, treeConfiguration?.caseTypeCol.id, treeConfiguration?.treeAlgorithm.code]);
 
   const { isLoading: isTreeLoading, error: treeError, data: treeData } = useQueryMemo({
     queryKey: QueryUtil.getRetrievePhylogeneticTreeKey(retrievePhylogeneticTreeRequestBody),
@@ -622,9 +623,10 @@ export const EpiTree = ({ linkedScrollSubject, ref }: EpiTreeProps) => {
   const onShowDetailsSelectionMenuItemClick = useCallback((onMenuClose: () => void) => {
     EpiEventBusManager.instance.emit('openCaseInfoDialog', {
       caseId: baseData.find(c => c.id === extraLeafInfoId).id,
+      caseTypeId: completeCaseType.id,
     });
     onMenuClose();
-  }, [extraLeafInfoId, baseData]);
+  }, [extraLeafInfoId, baseData, completeCaseType.id]);
 
   const getEpiContextMenuExtraItems = useCallback((onMenuClose: () => void): ReactElement => {
     if (zoomInMenuItemConfig) {

@@ -56,6 +56,7 @@ import { EpiCaseSetContent } from './EpiCaseSetContent';
 
 export interface EpiCaseSetInfoDialogOpenProps {
   readonly caseSetId: string;
+  readonly caseTypeId: string;
 }
 
 export interface EpiCaseSetInfoDialogProps extends WithDialogRenderProps<EpiCaseSetInfoDialogOpenProps> {
@@ -360,6 +361,7 @@ export const EpiCaseSetInfoDialog = withDialog<EpiCaseSetInfoDialogProps, EpiCas
           )}
           {isEditingDataCollections && (
             <EpiCaseSetSharingForm
+              caseTypeId={openProps.caseTypeId}
               caseSet={caseSet}
               formId={dataCollectionsFormId}
               onFinish={onFinish}

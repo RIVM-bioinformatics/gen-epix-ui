@@ -154,11 +154,12 @@ export const EpiAddCasesToEventDialog = withDialog<EpiAddCasesToEventDialogProps
         caseSetId,
         caseIds: openProps.rows ? openProps.rows.map(row => row.id) : undefined,
         caseSetDataCollectionIds: caseSetDataCollectionLinks?.map(link => link.data_collection_id),
+        caseTypeId: completeCaseType.id,
       });
     }
     await fetchData();
     onClose();
-  }, [caseSetDataCollectionLinks, caseSetId, fetchData, onClose, openProps.rows, shouldApplySharingToCases]);
+  }, [caseSetDataCollectionLinks, caseSetId, completeCaseType.id, fetchData, onClose, openProps.rows, shouldApplySharingToCases]);
 
   const onError = useCallback(async () => {
     await fetchData();

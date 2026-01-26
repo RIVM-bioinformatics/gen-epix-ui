@@ -33,8 +33,8 @@ import { QUERY_KEY } from '../../models/query';
 import { EpiDataUtil } from '../EpiDataUtil';
 
 export class EpiCaseUtil {
-  public static async applyDataCollectionLinks(kwArgs: { caseSetId?: string; caseSetDataCollectionIds: string[]; caseIds?: string[] }): Promise<void> {
-    const { caseSetId, caseSetDataCollectionIds, caseIds } = kwArgs;
+  public static async applyDataCollectionLinks(kwArgs: { caseSetId?: string; caseSetDataCollectionIds: string[]; caseIds?: string[]; caseTypeId: string }): Promise<void> {
+    const { caseSetId, caseSetDataCollectionIds, caseIds, caseTypeId } = kwArgs;
 
     if (!caseSetId && !caseIds) {
       throw new Error('Either caseSetId or caseIds must be provided');
@@ -68,7 +68,10 @@ export class EpiCaseUtil {
       }
 
       const dataLinksToAdd: CaseDataCollectionLink[] = [];
-      const caseRights = (await CaseApi.instance.retrieveCaseRights(normalizedCaseIds)).data;
+      const caseRights = (await CaseApi.instance.retrieveCaseRights({
+        case_ids: normalizedCaseIds,
+        case_type_id: caseTypeId,
+      })).data;
 
       caseRights.forEach((caseRight) => {
         const caseId = caseRight.case_id;

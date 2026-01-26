@@ -16,7 +16,7 @@ import {
 } from 'react';
 
 import type {
-  CaseTypeStat,
+  CaseStats,
   CaseTypeSet,
   CaseTypeSetCategory,
 } from '../../api';
@@ -62,7 +62,7 @@ type Row = {
   name: string;
   hasCases: boolean;
   [key: string]: string[] | string | number | boolean;
-} & Pick<CaseTypeStat, 'n_cases' | 'first_case_date' | 'last_case_date'>;
+} & Pick<CaseStats, 'n_cases' | 'n_own_cases' | 'first_case_date' | 'last_case_date'>;
 
 const getCaseTypeSetCategoryRowId = (id: string) => `caseTypeSetCategory-${id}`;
 
@@ -82,7 +82,7 @@ export const CasesPage = () => {
   });
 
   const caseTypeStatsMap = useMemo(() => {
-    return new Map<string, CaseTypeStat>(caseTypeStatsQuery.data?.map(stat => [stat.case_type_id, stat]));
+    return new Map<string, CaseStats>(caseTypeStatsQuery.data?.map(stat => [stat.case_type_id, stat]));
   }, [caseTypeStatsQuery]);
 
 
@@ -162,6 +162,7 @@ export const CasesPage = () => {
         name: caseType.name,
         hasCases: caseTypeStatsMap.get(caseType.id)?.n_cases > 0,
         n_cases: caseTypeStatsMap.get(caseType.id)?.n_cases ?? 0,
+        n_own_cases: caseTypeStatsMap.get(caseType.id)?.n_own_cases ?? 0,
         first_case_date: caseTypeStatsMap.get(caseType.id)?.first_case_date,
         last_case_date: caseTypeStatsMap.get(caseType.id)?.last_case_date,
       };
@@ -216,14 +217,9 @@ export const CasesPage = () => {
         };
       }),
       TableUtil.createNumberColumn({ name: t('Cases'), id: 'n_cases', flex: 0.5 }),
-      {
-        ...TableUtil.createDateColumn({ name: t('First case date'), id: 'first_case_date', flex: 0.5, dateFormat: DATE_FORMAT.DATE }),
-        isInitiallyVisible: false,
-      },
-      {
-        ...TableUtil.createDateColumn({ name: t('Last case date'), id: 'last_case_date', flex: 0.5, dateFormat: DATE_FORMAT.DATE }),
-        isInitiallyVisible: false,
-      },
+      TableUtil.createNumberColumn({ name: t('Own cases'), id: 'n_own_cases', flex: 0.5 }),
+      TableUtil.createDateColumn({ name: t('First case date'), id: 'first_case_date', flex: 0.5, dateFormat: DATE_FORMAT.DATE }),
+      TableUtil.createDateColumn({ name: t('Last case date'), id: 'last_case_date', flex: 0.5, dateFormat: DATE_FORMAT.DATE }),
       TableUtil.createActionsColumn({
         t,
         getActions: (params) => {

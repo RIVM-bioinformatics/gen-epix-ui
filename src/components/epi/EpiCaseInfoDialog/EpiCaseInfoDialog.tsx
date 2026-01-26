@@ -59,6 +59,7 @@ import { EpiCaseSharingForm } from './EpiCaseSharingForm';
 
 export interface EpiCaseInfoDialogOpenProps {
   caseId: string;
+  caseTypeId: string;
 }
 
 export interface EpiCaseInfoDialogProps extends WithDialogRenderProps<EpiCaseInfoDialogOpenProps> {
@@ -77,7 +78,7 @@ export const EpiCaseInfoDialog = withDialog<EpiCaseInfoDialogProps, EpiCaseInfoD
 ): ReactElement => {
   const [t] = useTranslation();
   const caseIds = useMemo(() => [openProps.caseId], [openProps.caseId]);
-  const caseRightsQuery = useCaseRightsQuery(caseIds);
+  const caseRightsQuery = useCaseRightsQuery(caseIds, openProps.caseTypeId);
   const dataCollectionsQuery = useDataCollectionsQuery();
   const dataCollectionsMapQuery = useDataCollectionsMapQuery();
   const dataCollectionOptionsQuery = useDataCollectionOptionsQuery();

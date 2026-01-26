@@ -17,7 +17,7 @@ import ArrowCircleRightIcon from '@mui/icons-material/ArrowCircleRight';
 import CollectionIcon from '../../assets/icons/CollectionIcon.svg?react';
 import type {
   CaseSet,
-  CaseSetStat,
+  CaseStats,
 } from '../../api';
 import { CaseApi } from '../../api';
 import { ConfigManager } from '../../classes/managers/ConfigManager';
@@ -56,7 +56,7 @@ import { TestIdUtil } from '../../utils/TestIdUtil';
 import { DATE_FORMAT } from '../../data/date';
 import { useQueryMemo } from '../../hooks/useQueryMemo';
 
-type Row = CaseSet & CaseSetStat;
+type Row = CaseSet & CaseStats;
 
 export const EventsPage = () => {
   const [t] = useTranslation();
@@ -64,11 +64,8 @@ export const EventsPage = () => {
   const caseTypeOptionsQuery = useCaseTypeOptionsQuery();
   const caseSetCategoryOptionsQuery = useCaseSetCategoryOptionsQuery();
   const caseSetStatusOptionsQuery = useCaseSetStatusOptionsQuery();
-  const caseSetStatsMapQuery = useCaseSetStatsMapQuery();
   const epiCaseSetInfoDialogRef = useRef<EpiCaseSetInfoDialogRefMethods>(null);
   const epiCreateEventDialogRef = useRef<EpiCreateEventDialogRefMethods>(null);
-
-  const loadables = useArray([caseTypeOptionsQuery, caseSetCategoryOptionsQuery, caseSetStatusOptionsQuery, caseSetStatsMapQuery]);
 
   const { isLoading: isCaseSetsLoading, error: caseSetsError, data: caseSets } = useQueryMemo({
     queryKey: QueryUtil.getGenericKey(QUERY_KEY.CASE_SETS),
@@ -77,6 +74,8 @@ export const EventsPage = () => {
       return response.data;
     },
   });
+  const caseSetStatsMapQuery = useCaseSetStatsMapQuery(caseSets ? caseSets.map(cs => cs.id) : null);
+  const loadables = useArray([caseTypeOptionsQuery, caseSetCategoryOptionsQuery, caseSetStatusOptionsQuery, caseSetStatsMapQuery]);
 
   const navigateToEvent = useCallback(async (row: CaseSet) => {
     await RouterManager.instance.router.navigate(EpiCaseSetUtil.createCaseSetLink(row));
@@ -85,6 +84,7 @@ export const EventsPage = () => {
   const showEventInformation = useCallback((row: CaseSet) => {
     epiCaseSetInfoDialogRef.current?.open({
       caseSetId: row.id,
+      caseTypeId: row.case_type_id,
     });
   }, []);
 

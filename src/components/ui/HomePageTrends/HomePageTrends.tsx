@@ -13,7 +13,7 @@ import { useTranslation } from 'react-i18next';
 import round from 'lodash/round';
 
 import type {
-  CaseTypeStat,
+  CaseStats,
   EpiFilter,
   RetrieveCaseTypeStatsRequestBody,
   TypedDatetimeRangeFilter,
@@ -46,7 +46,7 @@ type Statistic = {
   callbackLabel?: string;
 };
 
-type CaseTypeStatWithDiff = CaseTypeStat & {
+type CaseStatsWithDiff = CaseStats & {
   diffPercentage: number;
 };
 
@@ -75,7 +75,7 @@ export const HomePageTrends = withPermissions(() => {
     },
   });
 
-  const retrieveCaseTypeStatsPastCommand = useMemo<RetrieveCaseTypeStatsRequestBody>(() => {
+  const retrieveTypeCaseStatsRequestBody = useMemo<RetrieveCaseTypeStatsRequestBody>(() => {
     if (!caseTypeStatsQueryNow.data) {
       return undefined;
     }
@@ -86,12 +86,12 @@ export const HomePageTrends = withPermissions(() => {
   }, [dateTimeRangeFilter, caseTypeStatsQueryNow.data]);
 
   const caseTypeStatsQueryPast = useQueryMemo({
-    queryKey: QueryUtil.getGenericKey(QUERY_KEY.CASE_TYPE_STATS, retrieveCaseTypeStatsPastCommand ?? {}),
+    queryKey: QueryUtil.getGenericKey(QUERY_KEY.CASE_TYPE_STATS, retrieveTypeCaseStatsRequestBody ?? {}),
     queryFn: async ({ signal }) => {
-      const response = await CaseApi.instance.retrieveCaseTypeStats(retrieveCaseTypeStatsPastCommand ?? {}, { signal });
+      const response = await CaseApi.instance.retrieveCaseTypeStats(retrieveTypeCaseStatsRequestBody ?? {}, { signal });
       return response.data;
     },
-    enabled: !!retrieveCaseTypeStatsPastCommand,
+    enabled: !!retrieveTypeCaseStatsRequestBody,
   });
   const caseSetsNowQuery = useCaseSetsQuery();
   const caseTypeMapQuery = useCaseTypeMapQuery();
@@ -148,10 +148,10 @@ export const HomePageTrends = withPermissions(() => {
       },
     );
 
-    const caseTypeStatsThenByCaseTypeId = new Map<string, CaseTypeStat>(caseTypeStatsQueryPast.data?.map(stat => [stat.case_type_id, stat]));
-    const sortedStats = caseTypeStatsQueryNow?.data?.map<CaseTypeStatWithDiff>(stat => {
+    const caseStatsThenByCaseTypeId = new Map<string, CaseStats>(caseTypeStatsQueryPast.data?.map(stat => [stat.case_type_id, stat]));
+    const sortedStats = caseTypeStatsQueryNow?.data?.map<CaseStatsWithDiff>(stat => {
       const nowNCases = stat.n_cases;
-      const thenNCases = caseTypeStatsThenByCaseTypeId.get(stat.case_type_id)?.n_cases ?? 0;
+      const thenNCases = caseStatsThenByCaseTypeId.get(stat.case_type_id)?.n_cases ?? 0;
       const diff = nowNCases - thenNCases;
       let diffPercentage: number;
       if (thenNCases > 0) {
@@ -306,7 +306,7 @@ export const HomePageTrends = withPermissions(() => {
   );
 }, {
   requiredPermissions: [
-    { command_name: CommandName.RetrieveCaseTypeStatsCommand, permission_type: PermissionType.EXECUTE },
+    { command_name: CommandName.RetrieveCaseStatsCommand, permission_type: PermissionType.EXECUTE },
     { command_name: CommandName.CaseSetCrudCommand, permission_type: PermissionType.READ },
     { command_name: CommandName.CaseTypeCrudCommand, permission_type: PermissionType.READ },
   ] });
