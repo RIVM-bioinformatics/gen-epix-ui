@@ -194,10 +194,10 @@ export const EpiDashboard = withEpiStore(({ caseSet }: EpiDashboardProps) => {
 
   const onEpiDashboardOpenCaseSetDescriptionButtonClick = useCallback(() => {
     epiCaseSetInfoDialogRef.current.open({
-      caseSetId: caseSet.id,
-      caseTypeId: completeCaseType.id,
+      caseSetId: caseSet?.id,
+      caseTypeId: completeCaseType?.id,
     });
-  }, [caseSet.id, completeCaseType.id]);
+  }, [caseSet?.id, completeCaseType?.id]);
 
   const onEpiDashboardLayoutSelectorSidebarReset = useCallback(() => {
     epiDashboardLayoutRendererRef.current?.reset();
