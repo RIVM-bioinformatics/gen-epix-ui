@@ -25,8 +25,8 @@ import type {
 } from '../../../api';
 import { CaseApi } from '../../../api';
 import { RouterManager } from '../../../classes/managers/RouterManager';
-import type { EpiCaseAbacContextValue } from '../../../context/epiCaseAbac';
-import { EpiCaseAbacContextProvider } from '../../../context/epiCaseAbac';
+import type { CaseAbacContext } from '../../../context/caseAbac';
+import { CaseAbacContextProvider } from '../../../context/caseAbac';
 import { useCaseSetRightsQuery } from '../../../dataHooks/useCaseSetRightsQuery';
 import {
   useDataCollectionsQuery,
@@ -36,7 +36,7 @@ import {
 import { useDeleteMutation } from '../../../hooks/useDeleteMutation';
 import { useItemQuery } from '../../../hooks/useItemQuery';
 import { QUERY_KEY } from '../../../models/query';
-import { EpiCaseSetUtil } from '../../../utils/EpiCaseSetUtil';
+import { CaseSetUtil } from '../../../utils/CaseSetUtil';
 import { QueryUtil } from '../../../utils/QueryUtil';
 import { TestIdUtil } from '../../../utils/TestIdUtil';
 import type { ConfirmationRefMethods } from '../../ui/Confirmation';
@@ -195,12 +195,12 @@ export const EpiCaseSetInfoDialog = withDialog<EpiCaseSetInfoDialogProps, EpiCas
   const isSaving = isEpiCaseSetFormSaving || isEpiCaseSetDataCollectionFormSaving;
 
   const onGotoEventButtonClick = useCallback(async () => {
-    await RouterManager.instance.router.navigate(EpiCaseSetUtil.createCaseSetLink(caseSet));
+    await RouterManager.instance.router.navigate(CaseSetUtil.createCaseSetLink(caseSet));
   }, [caseSet]);
 
   useEffect(() => {
     if (caseSet) {
-      onPermalinkChange(EpiCaseSetUtil.createCaseSetLink(caseSet, true));
+      onPermalinkChange(CaseSetUtil.createCaseSetLink(caseSet, true));
     }
   }, [caseSet, onPermalinkChange]);
 
@@ -306,7 +306,7 @@ export const EpiCaseSetInfoDialog = withDialog<EpiCaseSetInfoDialogProps, EpiCas
     onActionsChange(actions);
   }, [onActionsChange, showNavigationButton, onClose, onGotoEventButtonClick, t, caseSet, isEditingCaseSetContent, isEditingDataCollections, onGoBackButtonClick, isSaving, valuesFormId, dataCollectionsFormId, onEditDataCollectionsButtonClick, onEditCaseContentButtonClick, onDeleteEventButtonClick, canEdit, canShare, canDelete]);
 
-  const caseAbacContextValue = useMemo<EpiCaseAbacContextValue>(() => {
+  const caseAbacContextValue = useMemo<CaseAbacContext>(() => {
     return {
       userDataCollections: dataCollectionsQuery.data,
       userDataCollectionsMap: dataCollectionsMapQuery.map,
@@ -335,7 +335,7 @@ export const EpiCaseSetInfoDialog = withDialog<EpiCaseSetInfoDialogProps, EpiCas
         isLoading={isCaseSetLoading || isSetCaseDataCollectionLinksLoading}
         loadables={loadables}
       >
-        <EpiCaseAbacContextProvider caseAbac={caseAbacContextValue}>
+        <CaseAbacContextProvider caseAbac={caseAbacContextValue}>
           {!isEditingCaseSetContent && !isEditingDataCollections && (
             <>
               <EpiCaseSetContent
@@ -368,7 +368,7 @@ export const EpiCaseSetInfoDialog = withDialog<EpiCaseSetInfoDialogProps, EpiCas
               onIsSavingChange={onEpiCaseSetDataCollectionFormIsSavingChange}
             />
           )}
-        </EpiCaseAbacContextProvider>
+        </CaseAbacContextProvider>
       </ResponseHandler>
       <Confirmation
         ref={deleteConfirmation}

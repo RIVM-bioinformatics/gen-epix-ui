@@ -29,7 +29,7 @@ import type {
 } from '../../../models/table';
 import type { TableStore } from '../../../stores/tableStore';
 import { TableStoreContextProvider } from '../../../stores/tableStore';
-import { EpiCaseUtil } from '../../../utils/EpiCaseUtil';
+import { CaseUtil } from '../../../utils/CaseUtil';
 import { TableUtil } from '../../../utils/TableUtil';
 import {
   Table,
@@ -163,7 +163,7 @@ export const EpiUploadCaseResultTable = ({ tableStore, rowsWithGeneratedId, comp
   }, []);
 
   const renderCell = useCallback(({ id, row }: TableRowParams<CaseUploadResultWithGeneratedId>) => {
-    const rowValue = EpiCaseUtil.getRowValue(row.validated_content, completeCaseType.case_type_cols[id], completeCaseType);
+    const rowValue = CaseUtil.getRowValue(row.validated_content, completeCaseType.case_type_cols[id], completeCaseType);
     const value = rowValue.long;
     const issues = getFilteredIssueTypes(id, row.data_issues, value);
 
@@ -319,13 +319,13 @@ export const EpiUploadCaseResultTable = ({ tableStore, rowsWithGeneratedId, comp
             if (!issue) {
               const originalValue = rawData.slice(1)[params.rowIndex][mappedColumns.find(mc => mc.caseTypeCol?.id === caseTypeCol.id)?.originalIndex || -1];
               return t('{{value}} (original value: "{{originalValue}}")', {
-                value: EpiCaseUtil.getRowValue(params.row.validated_content, caseTypeCol, completeCaseType).short,
+                value: CaseUtil.getRowValue(params.row.validated_content, caseTypeCol, completeCaseType).short,
                 originalValue,
               });
             }
             return '';
           },
-          valueGetter: (params) => EpiCaseUtil.getRowValue(params.row.validated_content, caseTypeCol, completeCaseType).short,
+          valueGetter: (params) => CaseUtil.getRowValue(params.row.validated_content, caseTypeCol, completeCaseType).short,
         } satisfies TableColumn<CaseUploadResultWithGeneratedId>);
       }
     });

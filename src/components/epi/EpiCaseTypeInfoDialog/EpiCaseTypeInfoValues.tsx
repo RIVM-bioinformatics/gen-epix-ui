@@ -7,7 +7,7 @@ import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
 
 import type { CompleteCaseType } from '../../../api';
 import { DimType } from '../../../api';
-import { EpiCaseTypeUtil } from '../../../utils/EpiCaseTypeUtil';
+import { CaseTypeUtil } from '../../../utils/CaseTypeUtil';
 
 import { EpiCaseTypeInfoVariableDetails } from './EpiCaseTypeInfoVariableDetails';
 
@@ -24,7 +24,7 @@ export const EpiCaseTypeInfoValues = ({ completeCaseType }: EpiCaseTypeInfoValue
         if (dim.dim_type !== DimType.OTHER) {
           return true;
         }
-        const caseTypeCols = EpiCaseTypeUtil.getCaseTypeCols(completeCaseType, caseTypeDim.id);
+        const caseTypeCols = CaseTypeUtil.getCaseTypeCols(completeCaseType, caseTypeDim.id);
         const colTypes = caseTypeCols.map(caseTypeCol => {
           const col = completeCaseType.cols[caseTypeCol.col_id];
           return col.col_type;
@@ -45,7 +45,7 @@ export const EpiCaseTypeInfoValues = ({ completeCaseType }: EpiCaseTypeInfoValue
                 fontWeight: 'bold',
               }}
             >
-              {EpiCaseTypeUtil.getDimensionLabel(completeCaseType, caseTypeDim.id)}
+              {CaseTypeUtil.getDimensionLabel(completeCaseType, caseTypeDim.id)}
             </AccordionSummary>
             <AccordionDetails>
               <EpiCaseTypeInfoVariableDetails

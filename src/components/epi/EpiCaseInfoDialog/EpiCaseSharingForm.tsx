@@ -19,7 +19,7 @@ import {
   type BoxProps,
 } from '@mui/material';
 
-import { useEpiCaseAbacContext } from '../../../context/epiCaseAbac';
+import { useCaseAbacContext } from '../../../context/caseAbac';
 import type { Case } from '../../../api';
 import { CaseApi } from '../../../api';
 import { NotificationManager } from '../../../classes/managers/NotificationManager';
@@ -45,7 +45,7 @@ type FormFields = {
 export const EpiCaseSharingForm = ({ formId, epiCase, onFinish, onIsSavingChange, ...boxProps }: EpiCaseSharingFormProps) => {
   const [t] = useTranslation();
   const [isSaving, setIsSaving] = useState(false);
-  const caseAbacContext = useEpiCaseAbacContext();
+  const caseAbacContext = useCaseAbacContext();
 
   const schema = useMemo(() => object<FormFields>().shape({
     dataCollectionIds: array().of(string().uuid4()).required(),

@@ -38,7 +38,7 @@ import { useDataCollectionsMapQuery } from '../../../dataHooks/useDataCollection
 import { useEditMutation } from '../../../hooks/useEditMutation';
 import { QUERY_KEY } from '../../../models/query';
 import { EpiStoreContext } from '../../../stores/epiStore';
-import { EpiCaseUtil } from '../../../utils/EpiCaseUtil';
+import { CaseUtil } from '../../../utils/CaseUtil';
 import { FormUtil } from '../../../utils/FormUtil';
 import { QueryUtil } from '../../../utils/QueryUtil';
 import { TestIdUtil } from '../../../utils/TestIdUtil';
@@ -150,7 +150,7 @@ export const EpiAddCasesToEventDialog = withDialog<EpiAddCasesToEventDialogProps
 
   const onSuccess = useCallback(async () => {
     if (shouldApplySharingToCases) {
-      await EpiCaseUtil.applyDataCollectionLinks({
+      await CaseUtil.applyDataCollectionLinks({
         caseSetId,
         caseIds: openProps.rows ? openProps.rows.map(row => row.id) : undefined,
         caseSetDataCollectionIds: caseSetDataCollectionLinks?.map(link => link.data_collection_id),

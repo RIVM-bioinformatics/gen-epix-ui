@@ -53,8 +53,8 @@ import { QueryUtil } from '../../utils/QueryUtil';
 import { TableUtil } from '../../utils/TableUtil';
 import { TestIdUtil } from '../../utils/TestIdUtil';
 import { DATE_FORMAT } from '../../data/date';
-import { EpiCaseTypeUtil } from '../../utils/EpiCaseTypeUtil';
-import { EpiDownloadUtil } from '../../utils/EpiDownloadUtil';
+import { CaseTypeUtil } from '../../utils/CaseTypeUtil';
+import { DownloadUtil } from '../../utils/DownloadUtil';
 import { useQueryMemo } from '../../hooks/useQueryMemo';
 
 type Row = {
@@ -106,7 +106,7 @@ export const CasesPage = () => {
   const error = caseTypesError || caseTypeSetsError || caseTypeSetMembersError || caseTypeSetCategoriesQuery.error || caseTypeStatsQuery.error;
 
   const handleCellNavigation = useCallback(async (caseType: Row) => {
-    await RouterManager.instance.router.navigate(EpiCaseTypeUtil.createCaseTypeLink(caseType));
+    await RouterManager.instance.router.navigate(CaseTypeUtil.createCaseTypeLink(caseType));
   }, []);
 
   const onRowClick = useCallback(async (params: TableRowParams<Row>) => {
@@ -124,7 +124,7 @@ export const CasesPage = () => {
   }, []);
 
   const onDownloadExcelTemplateButtonClick = useCallback(async (params: TableRowParams<Row>) => {
-    await EpiDownloadUtil.downloadExcelTemplate(params.row.id, t);
+    await DownloadUtil.downloadExcelTemplate(params.row.id, t);
   }, [t]);
 
   const onIndexCellClick = useCallback((row: Row) => {

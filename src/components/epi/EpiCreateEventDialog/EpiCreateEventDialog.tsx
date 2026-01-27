@@ -48,7 +48,7 @@ import type {
 } from '../../../models/form';
 import { FORM_FIELD_DEFINITION_TYPE } from '../../../models/form';
 import { QUERY_KEY } from '../../../models/query';
-import { EpiCaseUtil } from '../../../utils/EpiCaseUtil';
+import { CaseUtil } from '../../../utils/CaseUtil';
 import { QueryUtil } from '../../../utils/QueryUtil';
 import { TestIdUtil } from '../../../utils/TestIdUtil';
 import { GenericForm } from '../../form/helpers/GenericForm';
@@ -256,7 +256,7 @@ export const EpiCreateEventDialog = withDialog<EpiCreateEventDialogProps, EpiCre
 
   const onSuccess = useCallback(async (item: CaseSet, variables: FormFields) => {
     if (variables.shouldApplySharingToCases) {
-      await EpiCaseUtil.applyDataCollectionLinks({
+      await CaseUtil.applyDataCollectionLinks({
         caseSetId: item.id,
         caseIds: openProps.rows ? openProps.rows.map(row => row.id) : undefined,
         caseSetDataCollectionIds: variables.share_in_data_collection_ids,

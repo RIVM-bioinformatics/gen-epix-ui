@@ -9,9 +9,10 @@ import type {
   UseOptions,
 } from '../../models/dataHooks';
 import { QUERY_KEY } from '../../models/query';
-import { DataUtil } from '../../utils/DataUtil';
+import { DataHookUtil } from '../../utils/DataHookUtil';
 import { QueryUtil } from '../../utils/QueryUtil';
 import { useQueryMemo } from '../../hooks/useQueryMemo';
+import { DataUtil } from '../../utils/DataUtil';
 
 export const useUsersQuery = (): UseQueryResult<User[]> => {
   return useQueryMemo({
@@ -27,7 +28,7 @@ export const useUsersMapQuery = (): UseMap<User> => {
   const usersQuery = useUsersQuery();
 
   return useMemo(() => {
-    return DataUtil.createUseMapDataHook<User>(usersQuery, item => item.id);
+    return DataHookUtil.createUseMapDataHook<User>(usersQuery, item => item.id);
   }, [usersQuery]);
 };
 
@@ -36,7 +37,7 @@ export const useUserOptionsQuery = (): UseOptions<string> => {
   const [t] = useTranslation();
 
   return useMemo(() => {
-    return DataUtil.createUseOptionsDataHook<User>(usersQuery, item => item.id, item => DataUtil.getUserDisplayValue(item, t));
+    return DataHookUtil.createUseOptionsDataHook<User>(usersQuery, item => item.id, item => DataUtil.getUserDisplayValue(item, t));
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [usersQuery]);
 };

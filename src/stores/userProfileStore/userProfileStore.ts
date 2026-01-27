@@ -5,7 +5,7 @@ import {
 } from 'zustand/middleware';
 
 import type { EpiDashboardLayoutUserConfig } from '../../models/epi';
-import { EpiDashboardUtil } from '../../utils/EpiDashboardUtil';
+import { DashboardUtil } from '../../utils/DashboardUtil';
 
 export type EpiDashboardGeneralSettings = {
   isHighlightingEnabled: boolean;
@@ -40,7 +40,7 @@ export type UserProfileStore = UserProfileStoreState & UserProfileStoreActions;
 export const createUserProfileStoreInitialState: () => UserProfileStoreState = () => ({
   tableSettings: {},
   epiDashboardPanels: {},
-  epiDashboardLayoutUserConfig: EpiDashboardUtil.createDashboardLayoutUserConfigInitialState(),
+  epiDashboardLayoutUserConfig: DashboardUtil.createDashboardLayoutUserConfigInitialState(),
   epiDashboardGeneralSettings: {
     isHighlightingEnabled: true,
   },
@@ -69,7 +69,7 @@ export const userProfileStore = createStore<UserProfileStore>()(
         },
         resetEpiDashboardLayout: () => {
           set({
-            epiDashboardLayoutUserConfig: EpiDashboardUtil.createDashboardLayoutUserConfigInitialState(),
+            epiDashboardLayoutUserConfig: DashboardUtil.createDashboardLayoutUserConfigInitialState(),
             epiDashboardPanels: {},
           });
         },

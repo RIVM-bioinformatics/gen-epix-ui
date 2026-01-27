@@ -8,7 +8,7 @@ import type {
   UseOptions,
 } from '../../models/dataHooks';
 import { QUERY_KEY } from '../../models/query';
-import { DataUtil } from '../../utils/DataUtil';
+import { DataHookUtil } from '../../utils/DataHookUtil';
 import { QueryUtil } from '../../utils/QueryUtil';
 import { useQueryMemo } from '../../hooks/useQueryMemo';
 
@@ -26,7 +26,7 @@ export const useCaseTypeColSetsMapQuery = (): UseMap<CaseTypeColSet> => {
   const response = useCaseTypeColSetsQuery();
 
   return useMemo(() => {
-    return DataUtil.createUseMapDataHook<CaseTypeColSet>(response, item => item.id);
+    return DataHookUtil.createUseMapDataHook<CaseTypeColSet>(response, item => item.id);
   }, [response]);
 };
 
@@ -34,6 +34,6 @@ export const useCaseTypeColSetOptionsQuery = (): UseOptions<string> => {
   const response = useCaseTypeColSetsQuery();
 
   return useMemo(() => {
-    return DataUtil.createUseOptionsDataHook<CaseTypeColSet>(response, item => item.id, item => item.name);
+    return DataHookUtil.createUseOptionsDataHook<CaseTypeColSet>(response, item => item.id, item => item.name);
   }, [response]);
 };

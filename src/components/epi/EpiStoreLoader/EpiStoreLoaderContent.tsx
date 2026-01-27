@@ -17,7 +17,7 @@ import {
 } from '../../../stores/epiStore';
 import { TableStoreContextProvider } from '../../../stores/tableStore';
 import { StringUtil } from '../../../utils/StringUtil';
-import { EpiCaseTypeUtil } from '../../../utils/EpiCaseTypeUtil';
+import { CaseTypeUtil } from '../../../utils/CaseTypeUtil';
 
 type EpiStoreInitializerProps = PropsWithChildren<{
   readonly completeCaseType: CompleteCaseType;
@@ -37,7 +37,7 @@ export const EpiStoreLoaderContent = ({ completeCaseType, caseSet, children }: E
     const items: TableColumnDimension[] = [];
     completeCaseType.ordered_case_type_dim_ids.map(x => completeCaseType.case_type_dims[x]).forEach((caseTypeDim) => {
       const item: TableColumnDimension = {
-        label: EpiCaseTypeUtil.getDimensionLabel(completeCaseType, caseTypeDim.id),
+        label: CaseTypeUtil.getDimensionLabel(completeCaseType, caseTypeDim.id),
         id: caseTypeDim.id,
         columnIds: completeCaseType.ordered_case_type_col_ids_by_dim[caseTypeDim.id],
       };

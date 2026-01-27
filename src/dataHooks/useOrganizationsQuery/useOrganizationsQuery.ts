@@ -8,7 +8,7 @@ import type {
   UseOptions,
 } from '../../models/dataHooks';
 import { QUERY_KEY } from '../../models/query';
-import { DataUtil } from '../../utils/DataUtil';
+import { DataHookUtil } from '../../utils/DataHookUtil';
 import { QueryUtil } from '../../utils/QueryUtil';
 import { StringUtil } from '../../utils/StringUtil';
 import { useQueryMemo } from '../../hooks/useQueryMemo';
@@ -27,7 +27,7 @@ export const useOrganizationMapQuery = (): UseMap<Organization> => {
   const organizationsQuery = useOrganizationsQuery();
 
   return useMemo(() => {
-    return DataUtil.createUseMapDataHook<Organization>(organizationsQuery, item => item.id);
+    return DataHookUtil.createUseMapDataHook<Organization>(organizationsQuery, item => item.id);
   }, [organizationsQuery]);
 };
 
@@ -35,6 +35,6 @@ export const useOrganizationOptionsQuery = (): UseOptions<string> => {
   const organizationsQuery = useOrganizationsQuery();
 
   return useMemo(() => {
-    return DataUtil.createUseOptionsDataHook<Organization>(organizationsQuery, item => item.id, item => item.name, [], StringUtil.advancedSortComperator);
+    return DataHookUtil.createUseOptionsDataHook<Organization>(organizationsQuery, item => item.id, item => item.name, [], StringUtil.advancedSortComperator);
   }, [organizationsQuery]);
 };

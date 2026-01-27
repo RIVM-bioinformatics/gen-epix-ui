@@ -9,7 +9,7 @@ import type {
   UseOptions,
 } from '../../models/dataHooks';
 import { QUERY_KEY } from '../../models/query';
-import { DataUtil } from '../../utils/DataUtil';
+import { DataHookUtil } from '../../utils/DataHookUtil';
 import { QueryUtil } from '../../utils/QueryUtil';
 import { useQueryMemo } from '../../hooks/useQueryMemo';
 import { useCaseTypeMapQuery } from '../useCaseTypesQuery';
@@ -28,7 +28,7 @@ export const useCaseTypeDimMapQuery = (): UseMap<CaseTypeDim> => {
   const response = useCaseTypeDimsQuery();
 
   return useMemo(() => {
-    return DataUtil.createUseMapDataHook<CaseTypeDim>(response, item => item.id);
+    return DataHookUtil.createUseMapDataHook<CaseTypeDim>(response, item => item.id);
   }, [response]);
 };
 
@@ -40,7 +40,7 @@ export const useCaseTypeDimNameFactory = (): UseNameFactory<CaseTypeDim> => {
       const caseTypeName = caseTypeMapQuery.map.get(item.case_type_id)?.name ?? item.case_type_id;
       return `${caseTypeName} → ${item.label}`;
     };
-    return DataUtil.createUseNameFactoryHook(getName, [caseTypeMapQuery]);
+    return DataHookUtil.createUseNameFactoryHook(getName, [caseTypeMapQuery]);
   }, [caseTypeMapQuery]);
 };
 
@@ -50,6 +50,6 @@ export const useCaseTypeDimOptionsQuery = (): UseOptions<string> => {
   const caseTypeDimNameFactory = useCaseTypeDimNameFactory();
 
   return useMemo(() => {
-    return DataUtil.createUseOptionsDataHook<CaseTypeDim>(response, item => item.id, caseTypeDimNameFactory.getName, [caseTypeDimNameFactory]);
+    return DataHookUtil.createUseOptionsDataHook<CaseTypeDim>(response, item => item.id, caseTypeDimNameFactory.getName, [caseTypeDimNameFactory]);
   }, [caseTypeDimNameFactory, response]);
 };

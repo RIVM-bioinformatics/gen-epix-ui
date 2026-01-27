@@ -8,7 +8,7 @@ import type {
   UseOptions,
 } from '../../models/dataHooks';
 import { QUERY_KEY } from '../../models/query';
-import { DataUtil } from '../../utils/DataUtil';
+import { DataHookUtil } from '../../utils/DataHookUtil';
 import { QueryUtil } from '../../utils/QueryUtil';
 import { useQueryMemo } from '../../hooks/useQueryMemo';
 
@@ -26,7 +26,7 @@ export const useDimMapQuery = (): UseMap<Dim> => {
   const response = useDimsQuery();
 
   return useMemo(() => {
-    return DataUtil.createUseMapDataHook<Dim>(response, item => item.id);
+    return DataHookUtil.createUseMapDataHook<Dim>(response, item => item.id);
   }, [response]);
 };
 
@@ -34,6 +34,6 @@ export const useDimOptionsQuery = (): UseOptions<string> => {
   const dimsQuery = useDimsQuery();
 
   return useMemo(() => {
-    return DataUtil.createUseOptionsDataHook<Dim>(dimsQuery, item => item.id, item => item.label);
+    return DataHookUtil.createUseOptionsDataHook<Dim>(dimsQuery, item => item.id, item => item.label);
   }, [dimsQuery]);
 };

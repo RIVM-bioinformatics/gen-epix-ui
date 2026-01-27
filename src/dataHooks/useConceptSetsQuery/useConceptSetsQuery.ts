@@ -8,7 +8,7 @@ import type {
   UseOptions,
 } from '../../models/dataHooks';
 import { QUERY_KEY } from '../../models/query';
-import { DataUtil } from '../../utils/DataUtil';
+import { DataHookUtil } from '../../utils/DataHookUtil';
 import { QueryUtil } from '../../utils/QueryUtil';
 import { useQueryMemo } from '../../hooks/useQueryMemo';
 
@@ -25,7 +25,7 @@ export const useConceptSetsQuery = (): UseQueryResult<ConceptSet[]> => {
 export const useConceptSetMapQuery = (): UseMap<ConceptSet> => {
   const response = useConceptSetsQuery();
   return useMemo(() => {
-    return DataUtil.createUseMapDataHook<ConceptSet>(response, item => item.id);
+    return DataHookUtil.createUseMapDataHook<ConceptSet>(response, item => item.id);
   }, [response]);
 };
 
@@ -33,6 +33,6 @@ export const useConceptSetOptionsQuery = (): UseOptions<string> => {
   const conceptSetsQuery = useConceptSetsQuery();
 
   return useMemo(() => {
-    return DataUtil.createUseOptionsDataHook<ConceptSet>(conceptSetsQuery, item => item.id, item => item.name);
+    return DataHookUtil.createUseOptionsDataHook<ConceptSet>(conceptSetsQuery, item => item.id, item => item.name);
   }, [conceptSetsQuery]);
 };

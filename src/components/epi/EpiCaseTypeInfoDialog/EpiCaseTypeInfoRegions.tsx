@@ -14,7 +14,7 @@ import { useTranslation } from 'react-i18next';
 import uniq from 'lodash/uniq';
 
 import type { CompleteCaseType } from '../../../api';
-import { EpiDataUtil } from '../../../utils/EpiDataUtil';
+import { EpiDataManager } from '../../../classes/managers/EpiDataManager';
 
 export type EpiCaseTypeInfoRegionsProps = {
   readonly completeCaseType: CompleteCaseType;
@@ -29,7 +29,7 @@ export const EpiCaseTypeInfoRegions = ({ completeCaseType }: EpiCaseTypeInfoRegi
     <>
       {regionSetIds.map(regionSetId => {
         // NOTE: this assumes a complete case type's regions have been loaded before
-        const regions = EpiDataUtil.data.regionsByRegionSetId[regionSetId];
+        const regions = EpiDataManager.instance.data.regionsByRegionSetId[regionSetId];
         const sortedRegions = regions.toSorted((a, b) => +a.code - +b.code);
         return (
           <Accordion
@@ -44,7 +44,7 @@ export const EpiCaseTypeInfoRegions = ({ completeCaseType }: EpiCaseTypeInfoRegi
                 fontWeight: 'bold',
               }}
             >
-              {EpiDataUtil.data.regionSets[regionSetId].name}
+              {EpiDataManager.instance.data.regionSets[regionSetId].name}
             </AccordionSummary>
             <AccordionDetails>
               <Stack

@@ -56,15 +56,15 @@ import { AxiosUtil } from '../../utils/AxiosUtil';
 import {
   SELECTION_FILTER_GROUP,
   TREE_FILTER_GROUP,
-  EpiCaseTypeUtil,
-} from '../../utils/EpiCaseTypeUtil';
-import { EpiCaseUtil } from '../../utils/EpiCaseUtil';
-import { EpiDataUtil } from '../../utils/EpiDataUtil';
+  CaseTypeUtil,
+} from '../../utils/CaseTypeUtil';
+import { CaseUtil } from '../../utils/CaseUtil';
 import { EpiFilterUtil } from '../../utils/EpiFilterUtil';
-import { EpiNewickUtil } from '../../utils/EpiNewickUtil';
+import { NewickUtil } from '../../utils/NewickUtil';
 import { EpiTreeUtil } from '../../utils/EpiTreeUtil';
 import { ObjectUtil } from '../../utils/ObjectUtil';
 import { QueryUtil } from '../../utils/QueryUtil';
+import { EpiDataManager } from '../../classes/managers/EpiDataManager';
 
 interface WidgetData {
   isUnavailable: boolean;
@@ -274,11 +274,11 @@ export const createEpiStore = (kwArgs: CreateEpiStoreKwArgs) => {
 
             if (mode === STRATIFICATION_MODE.FIELD) {
               const column = completeCaseType.cols[caseTypeCol.col_id];
-              const conceptSetConceptIds = EpiDataUtil.data.conceptsIdsBySetId[column.concept_set_id];
+              const conceptSetConceptIds = EpiDataManager.instance.data.conceptsIdsBySetId[column.concept_set_id];
               if (conceptSetConceptIds) {
                 if (conceptSetConceptIds.length < MAX_STRATIFICATION_UNIQUE_VALUES) {
                   conceptSetConceptIds.forEach((conceptId, index) => {
-                    const concept = EpiDataUtil.data.conceptsById[conceptId];
+                    const concept = EpiDataManager.instance.data.conceptsById[conceptId];
                     const color = STRATIFICATION_COLORS[index];
                     const legendaItem: StratificationLegendaItem = {
                       caseIds: [],
@@ -299,7 +299,7 @@ export const createEpiStore = (kwArgs: CreateEpiStoreKwArgs) => {
                   const legendaItemMissingData: StratificationLegendaItem = {
                     caseIds: [],
                     color: STRATIFICATION_COLORS[conceptSetConceptIds.length],
-                    rowValue: EpiCaseUtil.getMissingRowValue(''),
+                    rowValue: CaseUtil.getMissingRowValue(''),
                     columnType: column.col_type,
                   };
                   legendaItemsByColor[legendaItemMissingData.color] = legendaItemMissingData;
@@ -307,7 +307,7 @@ export const createEpiStore = (kwArgs: CreateEpiStoreKwArgs) => {
                   legendaItems.push(legendaItemMissingData);
 
                   sortedData.forEach(row => {
-                    const rowValue = EpiCaseUtil.getRowValue(row.content, caseTypeCol, completeCaseType);
+                    const rowValue = CaseUtil.getRowValue(row.content, caseTypeCol, completeCaseType);
                     const legendaItem = rowValue.isMissing ? legendaItemMissingData : legendaItemsByValue[rowValue.raw];
                     legendaItem.caseIds.push(row.id);
                     caseIdColors[row.id] = legendaItem.color;
@@ -318,7 +318,7 @@ export const createEpiStore = (kwArgs: CreateEpiStoreKwArgs) => {
                     delete legendaItemsByValue[''];
                   }
                 } else {
-                  const rowValues = sortedData.map(row => EpiCaseUtil.getRowValue(row.content, caseTypeCol, completeCaseType));
+                  const rowValues = sortedData.map(row => CaseUtil.getRowValue(row.content, caseTypeCol, completeCaseType));
                   const uniqueRowValues = uniqBy(rowValues, (rowValue => rowValue.raw)).sort((a, b) => {
                     if (column.col_type === ColType.ORDINAL) {
                       if (a.isMissing && b.isMissing) {
@@ -349,7 +349,7 @@ export const createEpiStore = (kwArgs: CreateEpiStoreKwArgs) => {
                     legendaItems.push(legendaItem);
                   });
                   sortedData.forEach(row => {
-                    const rowValue = EpiCaseUtil.getRowValue(row.content, caseTypeCol, completeCaseType);
+                    const rowValue = CaseUtil.getRowValue(row.content, caseTypeCol, completeCaseType);
                     const legendaItem = legendaItemsByValue[rowValue.raw];
                     legendaItem.caseIds.push(row.id);
                     caseIdColors[row.id] = legendaItem.color;
@@ -357,7 +357,7 @@ export const createEpiStore = (kwArgs: CreateEpiStoreKwArgs) => {
                 }
 
               } else {
-                const rawValues = sortedData.map(row => EpiCaseUtil.getRowValue(row.content, caseTypeCol, completeCaseType));
+                const rawValues = sortedData.map(row => CaseUtil.getRowValue(row.content, caseTypeCol, completeCaseType));
                 const uniqueRowValues = uniqBy(rawValues, v => v.raw).sort(rowValueComperator);
 
                 uniqueRowValues.forEach((rowValue, index) => {
@@ -375,7 +375,7 @@ export const createEpiStore = (kwArgs: CreateEpiStoreKwArgs) => {
                 });
 
                 sortedData.forEach(row => {
-                  const rowValue = EpiCaseUtil.getRowValue(row.content, caseTypeCol, completeCaseType);
+                  const rowValue = CaseUtil.getRowValue(row.content, caseTypeCol, completeCaseType);
                   const legendaItem = legendaItemsByValue[rowValue.raw];
                   legendaItem.caseIds.push(row.id);
                   caseIdColors[row.id] = legendaItem.color;
@@ -471,11 +471,11 @@ export const createEpiStore = (kwArgs: CreateEpiStoreKwArgs) => {
 
             if (phylogeneticTree.newick_repr && phylogeneticTree.newick_repr.trim().length > 0 && phylogeneticTree.newick_repr !== '();') {
               // parse the newick into a tree
-              const parsedTree = EpiNewickUtil.parse(phylogeneticTree.newick_repr);
+              const parsedTree = NewickUtil.parse(phylogeneticTree.newick_repr);
               const sanitizedTree = EpiTreeUtil.sanitizeTree(parsedTree);
 
               // the tree determines the order of the line list
-              const sortedIds = EpiNewickUtil.getSortedNames(sanitizedTree);
+              const sortedIds = NewickUtil.getSortedNames(sanitizedTree);
 
               set({
                 newick: phylogeneticTree.newick_repr,
@@ -579,7 +579,7 @@ export const createEpiStore = (kwArgs: CreateEpiStoreKwArgs) => {
             const data = filteredData[last(frontendFilterPriorities)];
             const { ALLOWED_COL_TYPES_FOR_STRATIFICATION, MAX_STRATIFICATION_UNIQUE_VALUES } = ConfigManager.instance.config.epi;
 
-            const filteredCaseTypeColumns = EpiCaseTypeUtil.getCaseTypeCols(completeCaseType).filter(caseTypeCol => {
+            const filteredCaseTypeColumns = CaseTypeUtil.getCaseTypeCols(completeCaseType).filter(caseTypeCol => {
               const column = completeCaseType.cols[caseTypeCol.col_id];
               if (!ALLOWED_COL_TYPES_FOR_STRATIFICATION.includes(column.col_type)) {
                 return false;
@@ -587,7 +587,7 @@ export const createEpiStore = (kwArgs: CreateEpiStoreKwArgs) => {
               return true;
             });
             const stratifyableColumns = filteredCaseTypeColumns.map<StratifiableColumn>(caseTypeCol => {
-              const numUniqueValues = uniq(data.map(row => EpiCaseUtil.getRowValue(row.content, caseTypeCol, completeCaseType).raw)).length;
+              const numUniqueValues = uniq(data.map(row => CaseUtil.getRowValue(row.content, caseTypeCol, completeCaseType).raw)).length;
               let enabled = true;
               if (numUniqueValues === 0 || numUniqueValues > MAX_STRATIFICATION_UNIQUE_VALUES) {
                 enabled = false;

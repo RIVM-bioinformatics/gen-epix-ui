@@ -23,7 +23,7 @@ import type { EPI_ZONE } from '../../../models/epi';
 import type { MenuItemData } from '../../../models/nestedMenu';
 import { EpiStoreContext } from '../../../stores/epiStore';
 import { userProfileStore } from '../../../stores/userProfileStore';
-import { EpiDashboardUtil } from '../../../utils/EpiDashboardUtil';
+import { DashboardUtil } from '../../../utils/DashboardUtil';
 import { TestIdUtil } from '../../../utils/TestIdUtil';
 import { NestedDropdown } from '../../ui/NestedMenu';
 import { Spinner } from '../../ui/Spinner';
@@ -86,7 +86,7 @@ export const EpiWidget = ({ title, children, primaryMenu, secondaryMenu, warning
   const epiStore = useContext(EpiStoreContext);
   const expandZone = useStore(epiStore, (state) => state.expandZone);
   const expandedZone = useStore(epiStore, (state) => state.expandedZone);
-  const enabledLayoutZoneCount = useStore(userProfileStore, (state) => EpiDashboardUtil.getEnabledZones(state.epiDashboardLayoutUserConfig).length);
+  const enabledLayoutZoneCount = useStore(userProfileStore, (state) => DashboardUtil.getEnabledZones(state.epiDashboardLayoutUserConfig).length);
 
   const isExpanded = expandedZone === zone;
 

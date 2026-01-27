@@ -12,8 +12,8 @@ import {
 import { useTranslation } from 'react-i18next';
 import { useStore } from 'zustand';
 
-import type { EpiCaseTypeAbacContextValue } from '../../../context/epiCaseTypeAbac';
-import { EpiCaseTypeAbacContextProvider } from '../../../context/epiCaseTypeAbac';
+import type { CaseTypeAbacContext } from '../../../context/caseTypeAbac';
+import { CaseTypeAbacContextProvider } from '../../../context/caseTypeAbac';
 import {
   useDataCollectionsMapQuery,
   useDataCollectionsQuery,
@@ -24,7 +24,7 @@ import { EpiStoreContext } from '../../../stores/epiStore';
 import { ResponseHandler } from '../../ui/ResponseHandler';
 import { useArray } from '../../../hooks/useArray';
 import type { WithDialogRenderProps } from '../../../hoc/withDialog';
-import { EpiCaseTypeUtil } from '../../../utils/EpiCaseTypeUtil';
+import { CaseTypeUtil } from '../../../utils/CaseTypeUtil';
 import { RichTextEditorContent } from '../../form/fields/RichTextEditor';
 
 import { EpiCaseTypeInfoValues } from './EpiCaseTypeInfoValues';
@@ -72,11 +72,11 @@ export const EpiCaseTypeInfoDialogContent = ({ onTitleChange, onPermalinkChange 
 
   useEffect(() => {
     if (completeCaseType) {
-      onPermalinkChange(EpiCaseTypeUtil.createCaseTypeLink(completeCaseType, true));
+      onPermalinkChange(CaseTypeUtil.createCaseTypeLink(completeCaseType, true));
     }
   }, [completeCaseType.name, completeCaseType.id, onPermalinkChange, completeCaseType]);
 
-  const caseTypeAbacContextValue = useMemo<EpiCaseTypeAbacContextValue>(() => {
+  const caseTypeAbacContextValue = useMemo<CaseTypeAbacContext>(() => {
     return {
       userDataCollections: dataCollectionsQuery.data,
       userDataCollectionsMap: dataCollectionsMapQuery.map,
@@ -89,7 +89,7 @@ export const EpiCaseTypeInfoDialogContent = ({ onTitleChange, onPermalinkChange 
       shouldHideActionButtons
       loadables={loadables}
     >
-      <EpiCaseTypeAbacContextProvider caseTypeAbac={caseTypeAbacContextValue}>
+      <CaseTypeAbacContextProvider caseTypeAbac={caseTypeAbacContextValue}>
         <Box
           sx={{
             '& dl': {
@@ -163,7 +163,7 @@ export const EpiCaseTypeInfoDialogContent = ({ onTitleChange, onPermalinkChange 
             />
           </Box>
         </Box>
-      </EpiCaseTypeAbacContextProvider>
+      </CaseTypeAbacContextProvider>
     </ResponseHandler>
   );
 };

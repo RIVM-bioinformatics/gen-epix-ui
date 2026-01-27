@@ -9,6 +9,7 @@ import { useCaseTypeSetsMapQuery } from '../../dataHooks/useCaseTypeSetsQuery';
 import { useDataCollectionsMapQuery } from '../../dataHooks/useDataCollectionsQuery';
 import { useUsersMapQuery } from '../../dataHooks/useUsersQuery';
 import type { UseNameFactory } from '../../models/dataHooks';
+import { DataHookUtil } from '../../utils/DataHookUtil';
 import { DataUtil } from '../../utils/DataUtil';
 
 export const useUserCasePolicyNameFactory = (): UseNameFactory<UserAccessCasePolicy | UserShareCasePolicy> => {
@@ -30,7 +31,7 @@ export const useUserCasePolicyNameFactory = (): UseNameFactory<UserAccessCasePol
       return `${userName} → ${dataCollection} → ${caseTypeSet}`;
     };
 
-    return DataUtil.createUseNameFactoryHook(getName, [caseTypeSetsMapQuery, usersMapQuery, dataCollectionsMapQuery]);
+    return DataHookUtil.createUseNameFactoryHook(getName, [caseTypeSetsMapQuery, usersMapQuery, dataCollectionsMapQuery]);
 
   }, [caseTypeSetsMapQuery, usersMapQuery, dataCollectionsMapQuery, t]);
 };

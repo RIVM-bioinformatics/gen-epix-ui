@@ -9,8 +9,7 @@ import type { TFunction } from 'i18next';
 import difference from 'lodash/difference';
 import sumBy from 'lodash/sumBy';
 
-import { EpiDataUtil } from '../EpiDataUtil';
-import { EpiCaseUtil } from '../EpiCaseUtil';
+import { CaseUtil } from '../CaseUtil';
 import type { Case } from '../../api';
 import { ColType } from '../../api';
 import {
@@ -46,6 +45,7 @@ import type {
 import { FIXED_COLUMN_ID } from '../../models/table';
 import { DATE_FORMAT } from '../../data/date';
 import { StringUtil } from '../StringUtil';
+import { EpiDataManager } from '../../classes/managers/EpiDataManager';
 
 export class TableUtil {
   public static createFiltersFromColumns<TData>(columns: TableColumn<TData>[], baseRows: TData[]): Filters {
@@ -155,7 +155,7 @@ export class TableUtil {
     if (column.valueGetter) {
       return column.valueGetter({ row, id: column.id, rowIndex });
     }
-    return EpiCaseUtil.getRowValue((row as Case).content, column.caseTypeCol, column.completeCaseType);
+    return CaseUtil.getRowValue((row as Case).content, column.caseTypeCol, column.completeCaseType);
   }
 
   public static getTableNumberCellValue<TRowData>({ row, column, rowIndex }: GetTableCellValueProps<TRowData, TableColumnNumber<TRowData>>): number {
@@ -250,7 +250,7 @@ export class TableUtil {
       }
 
       if (col.col_type === ColType.ORDINAL) {
-        const conceptSetConceptIds = EpiDataUtil.data.conceptsIdsBySetId[col.concept_set_id];
+        const conceptSetConceptIds = EpiDataManager.instance.data.conceptsIdsBySetId[col.concept_set_id];
         return (conceptSetConceptIds.indexOf(aValue.raw) - conceptSetConceptIds.indexOf(bValue.raw)) * directionMultiplier;
       }
 

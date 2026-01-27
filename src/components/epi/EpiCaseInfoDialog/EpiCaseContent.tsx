@@ -23,8 +23,8 @@ import { EpiContactDetailsDialog } from '../EpiContactDetailsDialog';
 import type { Case } from '../../../api';
 import { ColType } from '../../../api';
 import { EpiStoreContext } from '../../../stores/epiStore';
-import { EpiCaseTypeUtil } from '../../../utils/EpiCaseTypeUtil';
-import { EpiCaseUtil } from '../../../utils/EpiCaseUtil';
+import { CaseTypeUtil } from '../../../utils/CaseTypeUtil';
+import { CaseUtil } from '../../../utils/CaseUtil';
 import { GenericErrorMessage } from '../../ui/GenericErrorMessage';
 
 export type EpiCaseContentProps = {
@@ -37,7 +37,7 @@ export const EpiCaseContent = ({ epiCase, ...boxProps }: EpiCaseContentProps) =>
   const epiStore = useContext(EpiStoreContext);
   const completeCaseType = useStore(epiStore, (state) => state.completeCaseType);
 
-  const caseTypeCols = useMemo(() => EpiCaseTypeUtil.getCaseTypeCols(completeCaseType), [completeCaseType]);
+  const caseTypeCols = useMemo(() => CaseTypeUtil.getCaseTypeCols(completeCaseType), [completeCaseType]);
 
   const onOrganizationLinkClick = useCallback((contactId: string) => {
     epiContactDetailsDialogRef.current.open({
@@ -78,7 +78,7 @@ export const EpiCaseContent = ({ epiCase, ...boxProps }: EpiCaseContentProps) =>
           <TableBody>
             {caseTypeCols.map(caseTypeCol => {
               const column = completeCaseType.cols[caseTypeCol.col_id];
-              const columnValue = EpiCaseUtil.getRowValue(epiCase.content, caseTypeCol, completeCaseType);
+              const columnValue = CaseUtil.getRowValue(epiCase.content, caseTypeCol, completeCaseType);
               return (
                 <TableRow key={caseTypeCol.id}>
                   <TableCell

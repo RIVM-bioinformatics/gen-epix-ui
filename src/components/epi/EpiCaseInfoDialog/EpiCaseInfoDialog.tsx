@@ -22,8 +22,8 @@ import {
   type WithDialogRefMethods,
   type WithDialogRenderProps,
 } from '../../../hoc/withDialog';
-import type { EpiCaseAbacContextValue } from '../../../context/epiCaseAbac/EpiCaseAbacContext';
-import { EpiCaseAbacContextProvider } from '../../../context/epiCaseAbac';
+import type { CaseAbacContext } from '../../../context/caseAbac/CaseAbacContext';
+import { CaseAbacContextProvider } from '../../../context/caseAbac';
 import type {
   Case,
   TypedUuidSetFilter,
@@ -293,7 +293,7 @@ export const EpiCaseInfoDialog = withDialog<EpiCaseInfoDialogProps, EpiCaseInfoD
     onActionsChange(actions);
   }, [onActionsChange, onEditButtonClick, t, isEditingCaseContent, onGoBackButtonClick, onShareButtonClick, isEditingDataCollections, valuesFormId, dataCollectionsFormId, onClose, isSaving, canShare, onDeleteEventButtonClick, canDelete, canEdit]);
 
-  const caseAbacContextValue = useMemo<EpiCaseAbacContextValue>(() => {
+  const caseAbacContextValue = useMemo<CaseAbacContext>(() => {
     return {
       userDataCollections: dataCollectionsQuery.data,
       userDataCollectionsMap: dataCollectionsMapQuery.map,
@@ -322,7 +322,7 @@ export const EpiCaseInfoDialog = withDialog<EpiCaseInfoDialogProps, EpiCaseInfoD
         isLoading={epiCaseIsLoading || isCaseDataCollectionLinksLoading}
         loadables={loadables}
       >
-        <EpiCaseAbacContextProvider caseAbac={caseAbacContextValue}>
+        <CaseAbacContextProvider caseAbac={caseAbacContextValue}>
           <EpiReadOnlyCaseContent
             epiCase={epiCase}
             marginBottom={2}
@@ -358,7 +358,7 @@ export const EpiCaseInfoDialog = withDialog<EpiCaseInfoDialogProps, EpiCaseInfoD
               onIsSavingChange={onEpiCaseDataCollectionFormIsSavingChange}
             />
           )}
-        </EpiCaseAbacContextProvider>
+        </CaseAbacContextProvider>
       </ResponseHandler>
       <Confirmation
         ref={deleteConfirmation}

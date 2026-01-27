@@ -20,7 +20,7 @@ import { useTranslation } from 'react-i18next';
 import { useStore } from 'zustand';
 
 import { EpiStoreContext } from '../../../stores/epiStore';
-import { EpiCaseSelectionUtil } from '../../../utils/EpiCaseSelectionUtil';
+import { CaseSelectionUtil } from '../../../utils/CaseSelectionUtil';
 
 export type EpiContextMenuConfigWithAnchor = {
   anchorElement?: Element;
@@ -63,13 +63,13 @@ export const EpiContextMenu = ({ config, onMenuClose, getExtraItems }: EpiContex
     if (!mouseEvent || (!mouseEvent.metaKey && !mouseEvent.ctrlKey)) {
       return;
     }
-    if (EpiCaseSelectionUtil.canAddToSelection(componentCaseIds, selectedIds)) {
-      setSelectedIds(EpiCaseSelectionUtil.addComponentCaseIdsToSelection(componentCaseIds, selectedIds));
+    if (CaseSelectionUtil.canAddToSelection(componentCaseIds, selectedIds)) {
+      setSelectedIds(CaseSelectionUtil.addComponentCaseIdsToSelection(componentCaseIds, selectedIds));
       onMenuClose();
       return;
     }
-    if (EpiCaseSelectionUtil.canRemoveFromSelection(componentCaseIds, selectedIds)) {
-      setSelectedIds(EpiCaseSelectionUtil.removeComponentCaseIdsFromSelection(componentCaseIds, selectedIds));
+    if (CaseSelectionUtil.canRemoveFromSelection(componentCaseIds, selectedIds)) {
+      setSelectedIds(CaseSelectionUtil.removeComponentCaseIdsFromSelection(componentCaseIds, selectedIds));
       onMenuClose();
       return;
     }
@@ -82,17 +82,17 @@ export const EpiContextMenu = ({ config, onMenuClose, getExtraItems }: EpiContex
   }, [componentCaseIds, onMenuClose, setSelectedIds]);
 
   const onAddToSelectionMenuItemClick = useCallback(() => {
-    setSelectedIds(EpiCaseSelectionUtil.addComponentCaseIdsToSelection(componentCaseIds, selectedIds));
+    setSelectedIds(CaseSelectionUtil.addComponentCaseIdsToSelection(componentCaseIds, selectedIds));
     onMenuClose();
   }, [componentCaseIds, onMenuClose, setSelectedIds, selectedIds]);
 
   const onRemoveFromSelectionMenuItemClick = useCallback(() => {
-    setSelectedIds(EpiCaseSelectionUtil.removeComponentCaseIdsFromSelection(componentCaseIds, selectedIds));
+    setSelectedIds(CaseSelectionUtil.removeComponentCaseIdsFromSelection(componentCaseIds, selectedIds));
     onMenuClose();
   }, [componentCaseIds, onMenuClose, setSelectedIds, selectedIds]);
 
   const onRefineSelectionMenuItemClick = useCallback(() => {
-    setSelectedIds(EpiCaseSelectionUtil.refineSelectionWithComponentCaseIds(componentCaseIds, selectedIds));
+    setSelectedIds(CaseSelectionUtil.refineSelectionWithComponentCaseIds(componentCaseIds, selectedIds));
     onMenuClose();
   }, [componentCaseIds, onMenuClose, setSelectedIds, selectedIds]);
 
@@ -118,7 +118,7 @@ export const EpiContextMenu = ({ config, onMenuClose, getExtraItems }: EpiContex
         </ListItemText>
       </MenuItem>
       <MenuItem
-        disabled={!EpiCaseSelectionUtil.canAddToSelection(componentCaseIds, selectedIds)}
+        disabled={!CaseSelectionUtil.canAddToSelection(componentCaseIds, selectedIds)}
         onClick={onAddToSelectionMenuItemClick}
       >
         <ListItemIcon>
@@ -129,7 +129,7 @@ export const EpiContextMenu = ({ config, onMenuClose, getExtraItems }: EpiContex
         </ListItemText>
       </MenuItem>
       <MenuItem
-        disabled={!EpiCaseSelectionUtil.canRemoveFromSelection(componentCaseIds, selectedIds)}
+        disabled={!CaseSelectionUtil.canRemoveFromSelection(componentCaseIds, selectedIds)}
         onClick={onRemoveFromSelectionMenuItemClick}
       >
         <ListItemIcon>
@@ -140,7 +140,7 @@ export const EpiContextMenu = ({ config, onMenuClose, getExtraItems }: EpiContex
         </ListItemText>
       </MenuItem>
       <MenuItem
-        disabled={!EpiCaseSelectionUtil.canRefineSelection(componentCaseIds, selectedIds)}
+        disabled={!CaseSelectionUtil.canRefineSelection(componentCaseIds, selectedIds)}
         onClick={onRefineSelectionMenuItemClick}
       >
         <ListItemIcon>

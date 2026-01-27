@@ -29,7 +29,7 @@ import type {
 import { withDialog } from '../../../hoc/withDialog';
 import type { AutoCompleteOption } from '../../../models/form';
 import { EpiStoreContext } from '../../../stores/epiStore';
-import { EpiDownloadUtil } from '../../../utils/EpiDownloadUtil';
+import { DownloadUtil } from '../../../utils/DownloadUtil';
 import { Autocomplete } from '../../form/fields/Autocomplete';
 import { StringUtil } from '../../../utils/StringUtil';
 import { ConfigManager } from '../../../classes/managers/ConfigManager';
@@ -86,7 +86,7 @@ export const EpiSequenceDownloadDialog = withDialog<EpiSequenceDownloadDialogPro
   });
 
   const onDownloadFastaButtonClick = useCallback(() => {
-    EpiDownloadUtil.downloadAsMultiPartForm({
+    DownloadUtil.downloadAsMultiPartForm({
       action: `${ConfigManager.instance.config.getAPIBaseUrl()}/v1/retrieve/genetic_sequence/fasta`,
       data: {
         case_ids: openProps.cases.map(c => c.id),

@@ -10,11 +10,12 @@ import type {
   UseOptions,
 } from '../../models/dataHooks';
 import { QUERY_KEY } from '../../models/query';
-import { DataUtil } from '../../utils/DataUtil';
+import { DataHookUtil } from '../../utils/DataHookUtil';
 import { QueryUtil } from '../../utils/QueryUtil';
 import { useOrganizationMapQuery } from '../useOrganizationsQuery';
 import { useUsersMapQuery } from '../useUsersQuery';
 import { useQueryMemo } from '../../hooks/useQueryMemo';
+import { DataUtil } from '../../utils/DataUtil';
 
 export const useOrganizationAdminPoliciesQuery = (): UseQueryResult<OrganizationAdminPolicy[]> => {
   return useQueryMemo({
@@ -30,7 +31,7 @@ export const useOrganizationAdminPolicyMapQuery = (): UseMap<OrganizationAdminPo
   const organizationAdminPoliciesQuery = useOrganizationAdminPoliciesQuery();
 
   return useMemo(() => {
-    return DataUtil.createUseMapDataHook<OrganizationAdminPolicy>(organizationAdminPoliciesQuery, item => item.id);
+    return DataHookUtil.createUseMapDataHook<OrganizationAdminPolicy>(organizationAdminPoliciesQuery, item => item.id);
 
   }, [organizationAdminPoliciesQuery]);
 };
@@ -45,7 +46,7 @@ export const useOrganizationAdminPolicyNameFactory = (): UseNameFactory<Organiza
     const getName = (item: OrganizationAdminPolicy) => {
       return `${organizationMapQuery.map.get(item.organization_id)?.name ?? item.organization_id} → ${DataUtil.getUserDisplayValue(usersMapQuery.map.get(item.user_id), t)}`;
     };
-    return DataUtil.createUseNameFactoryHook(getName, [organizationMapQuery, usersMapQuery]);
+    return DataHookUtil.createUseNameFactoryHook(getName, [organizationMapQuery, usersMapQuery]);
   }, [organizationMapQuery, t, usersMapQuery]);
 };
 
@@ -54,6 +55,6 @@ export const useOrganizationAdminPolicyOptionsQuery = (): UseOptions<string> => 
   const organizationAdminPolicyNameFactory = useOrganizationAdminPolicyNameFactory();
 
   return useMemo(() => {
-    return DataUtil.createUseOptionsDataHook<OrganizationAdminPolicy>(organizationAdminPoliciesQuery, item => item.id, organizationAdminPolicyNameFactory.getName, [organizationAdminPolicyNameFactory]);
+    return DataHookUtil.createUseOptionsDataHook<OrganizationAdminPolicy>(organizationAdminPoliciesQuery, item => item.id, organizationAdminPolicyNameFactory.getName, [organizationAdminPolicyNameFactory]);
   }, [organizationAdminPolicyNameFactory, organizationAdminPoliciesQuery]);
 };

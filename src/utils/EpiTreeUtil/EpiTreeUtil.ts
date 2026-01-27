@@ -6,7 +6,6 @@ import round from 'lodash/round';
 import { type Theme } from '@mui/material';
 
 import { NumberUtil } from '../NumberUtil';
-import { EpiDataUtil } from '../EpiDataUtil';
 import type { CompleteCaseType } from '../../api';
 import { ColType } from '../../api';
 import { ConfigManager } from '../../classes/managers/ConfigManager';
@@ -18,6 +17,7 @@ import type {
   TreeNode,
   TreePathProperties,
 } from '../../models/tree';
+import { EpiDataManager } from '../../classes/managers/EpiDataManager';
 
 type SanitizeResult = { node: TreeNode; nodesToMove: TreeNode[] };
 
@@ -62,7 +62,7 @@ export class EpiTreeUtil {
   }): number {
     const { treeCanvasHeight, treeHeight, verticalScrollPosition, zoomLevel, treeSize } = kwArgs;
 
-    const scaledItemHeight = ConfigManager.instance.config.epiList.TABLE_ROW_HEIGHT / zoomLevel;
+    const scaledItemHeight = ConfigManager.instance.config.epiLineList.TABLE_ROW_HEIGHT / zoomLevel;
     const scrolledByItems = Math.round(verticalScrollPosition / scaledItemHeight);
     const maxItemsInView = Math.round(treeCanvasHeight / scaledItemHeight);
 
@@ -70,7 +70,7 @@ export class EpiTreeUtil {
     const lastItemInView = Math.min(scrolledByItems + maxItemsInView, treeSize);
     const averageItemInView = (firstItemInView + lastItemInView) / 2;
 
-    const newScrollPosition = Math.max(0, Math.min(treeHeight - treeCanvasHeight, averageItemInView * ConfigManager.instance.config.epiList.TABLE_ROW_HEIGHT - treeCanvasHeight / 2));
+    const newScrollPosition = Math.max(0, Math.min(treeHeight - treeCanvasHeight, averageItemInView * ConfigManager.instance.config.epiLineList.TABLE_ROW_HEIGHT - treeCanvasHeight / 2));
     return newScrollPosition;
   }
 
@@ -269,7 +269,7 @@ export class EpiTreeUtil {
   private static assembleLeafNode(treeAssemblyContext: TreeAssemblyContext, node: TreeNode, distance = 0, leafIndex = 0): NodeAssemblyResult {
     const leafX = (distance ?? 0) + (node.branchLength?.toNumber() ?? 0);
     const leafXPxEnd = leafX * treeAssemblyContext.pixelToGeneticDistanceRatio + ConfigManager.instance.config.epiTree.TREE_PADDING;
-    const leafYPx = ((leafIndex) * ConfigManager.instance.config.epiList.TABLE_ROW_HEIGHT) + (ConfigManager.instance.config.epiList.TABLE_ROW_HEIGHT / 2);
+    const leafYPx = ((leafIndex) * ConfigManager.instance.config.epiLineList.TABLE_ROW_HEIGHT) + (ConfigManager.instance.config.epiLineList.TABLE_ROW_HEIGHT / 2);
     const leafXPxDistance = (node.branchLength?.toNumber() ?? 0) * treeAssemblyContext.pixelToGeneticDistanceRatio;
     const leafXPxStart = leafXPxEnd - leafXPxDistance;
     const label = EpiTreeUtil.getDistanceLabel(treeAssemblyContext, node.branchLength);
@@ -712,7 +712,7 @@ export class EpiTreeUtil {
       return col.col_type === ColType.GENETIC_DISTANCE;
     });
 
-    const sortedTreeAlgorithmCodes = EpiDataUtil.data.treeAlgorithms.map(x => x.code);
+    const sortedTreeAlgorithmCodes = EpiDataManager.instance.data.treeAlgorithms.map(x => x.code);
 
     geneticDistanceCaseTypeCols.forEach(caseTypeCol => {
       const col = completeCaseType.cols[caseTypeCol.col_id];

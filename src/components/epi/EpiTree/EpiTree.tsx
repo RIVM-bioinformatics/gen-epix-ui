@@ -59,7 +59,7 @@ import type { MenuItemData } from '../../../models/nestedMenu';
 import type { TreePathProperties } from '../../../models/tree';
 import { EpiStoreContext } from '../../../stores/epiStore';
 import { userProfileStore } from '../../../stores/userProfileStore';
-import { SELECTION_FILTER_GROUP } from '../../../utils/EpiCaseTypeUtil';
+import { SELECTION_FILTER_GROUP } from '../../../utils/CaseTypeUtil';
 import {
   EpiTreeUtil,
   type TreeAssembly,
@@ -67,7 +67,7 @@ import {
 import { QueryUtil } from '../../../utils/QueryUtil';
 import { Spinner } from '../../ui/Spinner';
 import { EpiWidget } from '../EpiWidget';
-import { EpiDownloadUtil } from '../../../utils/EpiDownloadUtil';
+import { DownloadUtil } from '../../../utils/DownloadUtil';
 import { useQueryMemo } from '../../../hooks/useQueryMemo';
 
 type ZoomInMenuItemConfig = {
@@ -209,7 +209,7 @@ export const EpiTree = ({ linkedScrollSubject, ref }: EpiTreeProps) => {
   const treeWidthMinusPadding = treeCanvasWidth - (2 * ConfigManager.instance.config.epiTree.TREE_PADDING);
   const pixelToGeneticDistanceRatio = tree?.maxBranchLength ? treeWidthMinusPadding / tree.maxBranchLength.toNumber() : null;
   // Note: There is some magic here, because of the position: sticky for the table header
-  const treeHeight = tree?.size ? (tree.size * ConfigManager.instance.config.epiList.TABLE_ROW_HEIGHT) + scrollbarSize : ConfigManager.instance.config.epiList.TABLE_ROW_HEIGHT;
+  const treeHeight = tree?.size ? (tree.size * ConfigManager.instance.config.epiLineList.TABLE_ROW_HEIGHT) + scrollbarSize : ConfigManager.instance.config.epiLineList.TABLE_ROW_HEIGHT;
 
   useEffect(() => {
     if (treeData) {
@@ -750,15 +750,15 @@ export const EpiTree = ({ linkedScrollSubject, ref }: EpiTreeProps) => {
         items: [
           {
             label: t`Save as Newick`,
-            callback: () => EpiDownloadUtil.downloadNewick(baseName, newick, completeCaseType, t),
+            callback: () => DownloadUtil.downloadNewick(baseName, newick, completeCaseType, t),
           },
           {
             label: t`Save as JPEG`,
-            callback: () => EpiDownloadUtil.downloadCanvasImage(baseName, treeCanvas, 'jpeg', completeCaseType, t),
+            callback: () => DownloadUtil.downloadCanvasImage(baseName, treeCanvas, 'jpeg', completeCaseType, t),
           },
           {
             label: t`Save as PNG`,
-            callback: () => EpiDownloadUtil.downloadCanvasImage(baseName, treeCanvas, 'png', completeCaseType, t),
+            callback: () => DownloadUtil.downloadCanvasImage(baseName, treeCanvas, 'png', completeCaseType, t),
           },
         ],
       });

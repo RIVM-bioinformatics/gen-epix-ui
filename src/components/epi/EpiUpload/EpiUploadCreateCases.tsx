@@ -16,7 +16,7 @@ import {
 } from '@mui/material';
 import { useStore } from 'zustand';
 
-import { EpiCaseTypeUtil } from '../../../utils/EpiCaseTypeUtil';
+import { CaseTypeUtil } from '../../../utils/CaseTypeUtil';
 import { RouterManager } from '../../../classes/managers/RouterManager';
 import { EpiUploadStoreContext } from '../../../stores/epiUploadStore';
 import { GenericErrorMessage } from '../../ui/GenericErrorMessage';
@@ -107,7 +107,7 @@ export const EpiUploadCreateCases = () => {
   }, []);
 
   const onGotoCasesButtonClick = useCallback(async () => {
-    const link = EpiCaseTypeUtil.createCaseTypeLink(completeCaseType);
+    const link = CaseTypeUtil.createCaseTypeLink(completeCaseType);
     await RouterManager.instance.router.navigate(link);
   }, [completeCaseType]);
 

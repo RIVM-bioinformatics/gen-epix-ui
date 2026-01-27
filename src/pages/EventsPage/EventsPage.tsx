@@ -49,7 +49,7 @@ import {
   createTableStore,
   TableStoreContextProvider,
 } from '../../stores/tableStore';
-import { EpiCaseSetUtil } from '../../utils/EpiCaseSetUtil';
+import { CaseSetUtil } from '../../utils/CaseSetUtil';
 import { QueryUtil } from '../../utils/QueryUtil';
 import { TableUtil } from '../../utils/TableUtil';
 import { TestIdUtil } from '../../utils/TestIdUtil';
@@ -78,7 +78,7 @@ export const EventsPage = () => {
   const loadables = useArray([caseTypeOptionsQuery, caseSetCategoryOptionsQuery, caseSetStatusOptionsQuery, caseSetStatsMapQuery]);
 
   const navigateToEvent = useCallback(async (row: CaseSet) => {
-    await RouterManager.instance.router.navigate(EpiCaseSetUtil.createCaseSetLink(row));
+    await RouterManager.instance.router.navigate(CaseSetUtil.createCaseSetLink(row));
   }, []);
 
   const showEventInformation = useCallback((row: CaseSet) => {

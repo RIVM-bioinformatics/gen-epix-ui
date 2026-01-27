@@ -19,7 +19,7 @@ import type { Case } from '../../../api';
 import type { TableColumnCaseType } from '../../../models/table';
 import { EpiStoreContext } from '../../../stores/epiStore';
 import { useTableStoreContext } from '../../../stores/tableStore';
-import { EpiCaseUtil } from '../../../utils/EpiCaseUtil';
+import { CaseUtil } from '../../../utils/CaseUtil';
 
 export type EpiCaseSummaryProps = {
   readonly epiCase: Case;
@@ -85,7 +85,7 @@ export const EpiCaseSummary = ({ epiCase }: EpiCaseSummaryProps) => {
       >
         {visibleAttributes.map(tableColumn => {
           try {
-            const value = EpiCaseUtil.getRowValue(epiCase.content, tableColumn.caseTypeCol, completeCaseType);
+            const value = CaseUtil.getRowValue(epiCase.content, tableColumn.caseTypeCol, completeCaseType);
             return (
               <Fragment key={tableColumn.id}>
                 <dt>

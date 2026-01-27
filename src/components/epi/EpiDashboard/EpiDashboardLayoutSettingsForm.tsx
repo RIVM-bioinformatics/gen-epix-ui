@@ -27,7 +27,7 @@ import type {
 import { EPI_ZONE } from '../../../models/epi';
 import type { ToggleButtonOption } from '../../../models/form';
 import { userProfileStore } from '../../../stores/userProfileStore';
-import { EpiDashboardUtil } from '../../../utils/EpiDashboardUtil';
+import { DashboardUtil } from '../../../utils/DashboardUtil';
 import { Switch } from '../../form/fields/Switch';
 import { ToggleButtonGroup } from '../../form/fields/ToggleButtonGroup';
 
@@ -44,7 +44,7 @@ export const EpiDashboardLayoutSettingsForm = ({ onReset }: EpiDashboardLayoutSe
   const epiDashboardLayoutUserConfig = useStore(userProfileStore, useShallow((state) => state.epiDashboardLayoutUserConfig));
   const setEpiDashboardLayoutUserConfig = useStore(userProfileStore, useShallow((state) => state.setEpiDashboardLayoutUserConfig));
 
-  const layoutConfig: EpiDashboardLayoutConfig = EpiDashboardUtil.getDashboardLayoutConfig(epiDashboardLayoutUserConfig) ?? { zones: [], layouts: [] };
+  const layoutConfig: EpiDashboardLayoutConfig = DashboardUtil.getDashboardLayoutConfig(epiDashboardLayoutUserConfig) ?? { zones: [], layouts: [] };
 
   const arrangementOptions = useMemo<ToggleButtonOption[]>(() => layoutConfig.layouts.map<ToggleButtonOption>((_layout, index) => ({
     disabled: false,
