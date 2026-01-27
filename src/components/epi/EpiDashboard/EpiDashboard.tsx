@@ -119,12 +119,17 @@ export const EpiDashboard = withEpiStore(({ caseSet }: EpiDashboardProps) => {
   const epiStore = useContext(EpiStoreContext);
   const fetchData = useStore(epiStore, useShallow((state) => state.fetchData));
   const dataError = useStore(epiStore, (state) => state.dataError);
-  const isMaxResultsExceeded = useStore(epiStore, (state) => state.isMaxResultsExceeded);
   const completeCaseType = useStore(epiStore, (state) => state.completeCaseType);
   const activeFiltersCount = useStore(epiStore, (state) => state.filters.filter(f => !f.isInitialFilterValue()).length);
   const numLayoutZones = useStore(userProfileStore, (state) => Object.keys(state.epiDashboardLayoutUserConfig.zones).length);
   const numVisibleLayoutZones = useStore(userProfileStore, (state) => EpiDashboardUtil.getEnabledZones(state.epiDashboardLayoutUserConfig).length);
   const numHiddenLayoutZones = numLayoutZones - numVisibleLayoutZones;
+  const isMaxResultsExceeded = useStore(epiStore, (state) => state.isMaxResultsExceeded);
+  const isMaxResultsExceededDismissed = useStore(epiStore, (state) => state.isMaxResultsExceededDismissed);
+
+  const onMaxResultsExceededButtonClose = useCallback(() => {
+    epiStore.setState({ isMaxResultsExceededDismissed: true });
+  }, [epiStore]);
 
   useEffect(() => {
     const eventBus = EpiEventBusManager.instance;
@@ -207,6 +212,10 @@ export const EpiDashboard = withEpiStore(({ caseSet }: EpiDashboardProps) => {
     epiTreeRef.current?.link();
   }, []);
 
+  const shouldShowMaxResultsExceededAlert = useMemo(() => {
+    return !!isMaxResultsExceeded && !isMaxResultsExceededDismissed;
+  }, [isMaxResultsExceededDismissed, isMaxResultsExceeded]);
+
   return (
     <Box
       ref={containerRef}
@@ -286,17 +295,18 @@ export const EpiDashboard = withEpiStore(({ caseSet }: EpiDashboardProps) => {
             width: '100%',
             height: '100%',
             display: 'grid',
-            gridTemplateRows: `${isMaxResultsExceeded ? 'max-content ' : ''}max-content auto`,
+            gridTemplateRows: `${shouldShowMaxResultsExceededAlert ? 'max-content ' : ''}max-content auto`,
             paddingLeft: theme.spacing(ConfigManager.instance.config.layout.SIDEBAR_MENU_WIDTH + 1),
           }}
         >
-          {isMaxResultsExceeded && (
+          {shouldShowMaxResultsExceededAlert && (
             <Box>
               <Alert
                 severity={'warning'}
                 sx={{
                   width: '100%',
                 }}
+                onClose={onMaxResultsExceededButtonClose}
               >
                 <AlertTitle>
                   {t`Maximum number of results exceeded`}

@@ -114,6 +114,7 @@ interface EpiStoreState extends TableStoreState<Case> {
   stratifyableColumns: StratifiableColumn[];
   numVisibleAttributesInSummary: number;
   isMaxResultsExceeded: boolean;
+  isMaxResultsExceededDismissed: boolean;
 }
 
 interface EpiStoreActions extends TableStoreActions<Case> {
@@ -194,7 +195,6 @@ const createEpiStoreInitialState = (kwArgs: CreateEpiStoreInitialStateKwArgs): E
     treeAddresses: {},
     newick: null,
     treeResponse: null,
-    isMaxResultsExceeded: false,
     epiTreeWidgetData: createEpiTreeWidgetDataInitialState(),
     epiListWidgetData: {
       ...createWidgetDataInitialState(),
@@ -211,6 +211,8 @@ const createEpiStoreInitialState = (kwArgs: CreateEpiStoreInitialStateKwArgs): E
       columnId: null,
     },
     numVisibleAttributesInSummary: ConfigManager.instance.config.epi.INITIAL_NUM_VISIBLE_ATTRIBUTES_IN_CASE_SUMMARY,
+    isMaxResultsExceeded: false,
+    isMaxResultsExceededDismissed: false,
   };
 };
 
@@ -622,7 +624,7 @@ export const createEpiStore = (kwArgs: CreateEpiStoreKwArgs) => {
             tableStoreActions.destroy();
           },
           fetchData: async () => {
-            set({ isMaxResultsExceeded: false });
+            set({ isMaxResultsExceeded: false, isMaxResultsExceededDismissed: false, dataError: null });
             const { fetchAbortController: previousFetchAbortController, globalAbortSignal } = get();
             const queryClient = QueryClientManager.instance.queryClient;
 
