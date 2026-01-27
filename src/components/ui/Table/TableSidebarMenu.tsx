@@ -1,4 +1,5 @@
 import { t } from 'i18next';
+import type { ReactNode } from 'react';
 import {
   useCallback,
   useState,
@@ -16,7 +17,11 @@ import {
   TableFiltersSidebarItemIcon,
 } from './TableFiltersSidebarItem';
 
-export const TableSidebarMenu = <TRowData, >() => {
+export type TableSidebarMenuProps = {
+  readonly extraSidebarMenuItems?: ReactNode;
+};
+
+export const TableSidebarMenu = <TRowData, >({ extraSidebarMenuItems }: TableSidebarMenuProps) => {
   const tableStore = useTableStoreContext<TRowData>();
 
   const activeFiltersCount = useStore(tableStore, (state) => state.filters.filter(f => !f.isInitialFilterValue()).length);
@@ -43,6 +48,7 @@ export const TableSidebarMenu = <TRowData, >() => {
           title={t`Open filters`}
           onClick={onEpiDashboardOpenFilterSidebarButtonClick}
         />
+        {extraSidebarMenuItems}
       </SidebarMenu>
       <TableFiltersSidebarItem
         open={isTableFiltersSidebarItemOpen}

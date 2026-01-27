@@ -10,12 +10,6 @@ import {
   object,
   string,
 } from 'yup';
-import {
-  MenuItem,
-  ListItemText,
-  ListItemIcon,
-} from '@mui/material';
-import PermIdentityIcon from '@mui/icons-material/PermIdentity';
 
 import type {
   ApiPermission,
@@ -33,17 +27,13 @@ import type {
 } from '../../models/form';
 import { FORM_FIELD_DEFINITION_TYPE } from '../../models/form';
 import { QUERY_KEY } from '../../models/query';
-import type {
-  TableColumn,
-  TableRowParams,
-} from '../../models/table';
+import type { TableColumn } from '../../models/table';
 import { TableUtil } from '../../utils/TableUtil';
 import { TestIdUtil } from '../../utils/TestIdUtil';
+import type { CrudPageSubPage } from '../CrudPage';
 import { CrudPage } from '../CrudPage';
 import type { EpiUserRightsDialogRefMethods } from '../../components/epi/EpiUserRightsDialog';
 import { EpiUserRightsDialog } from '../../components/epi/EpiUserRightsDialog';
-import { RouterManager } from '../../classes/managers/RouterManager';
-import type { DialogAction } from '../../components/ui/Dialog';
 import { AuthorizationManager } from '../../classes/managers/AuthorizationManager';
 import { useArray } from '../../hooks/useArray';
 import { useUsersQuery } from '../../dataHooks/useUsersQuery';
@@ -156,45 +146,6 @@ export const UsersAdminPage = () => {
     ];
   }, [organizationOptionsQuery.options, tableRoleOptions, t]);
 
-  const doesUserHavePermissionToViewEffectiveRights = useMemo(() => {
-    return AuthorizationManager.instance.doesUserHavePermission([
-      { command_name: CommandName.CaseTypeColSetMemberCrudCommand, permission_type: PermissionType.READ },
-      { command_name: CommandName.CaseTypeSetCrudCommand, permission_type: PermissionType.READ },
-      { command_name: CommandName.CaseTypeColSetCrudCommand, permission_type: PermissionType.READ },
-      { command_name: CommandName.CaseTypeSetMemberCrudCommand, permission_type: PermissionType.READ },
-      { command_name: CommandName.CaseTypeSetCategoryCrudCommand, permission_type: PermissionType.READ },
-      { command_name: CommandName.DataCollectionCrudCommand, permission_type: PermissionType.READ },
-      { command_name: CommandName.OrganizationAccessCasePolicyCrudCommand, permission_type: PermissionType.READ },
-      { command_name: CommandName.OrganizationShareCasePolicyCrudCommand, permission_type: PermissionType.READ },
-      { command_name: CommandName.UserAccessCasePolicyCrudCommand, permission_type: PermissionType.READ },
-      { command_name: CommandName.UserShareCasePolicyCrudCommand, permission_type: PermissionType.READ },
-      { command_name: CommandName.CaseTypeColCrudCommand, permission_type: PermissionType.READ },
-    ]);
-  }, []);
-
-  const extraActionsFactory = useCallback((params: TableRowParams<User>) => {
-    if (!doesUserHavePermissionToViewEffectiveRights) {
-      return [];
-    }
-
-    return [(
-      <MenuItem
-        key={'custom-action-1'}
-        // eslint-disable-next-line react/jsx-no-bind
-        onClick={async () => await RouterManager.instance.router.navigate({
-          pathname: `/management/users/${params.row.id}/effective-rights`,
-        })}
-      >
-        <ListItemIcon>
-          <PermIdentityIcon fontSize={'small'} />
-        </ListItemIcon>
-        <ListItemText>
-          {t`View effective rights`}
-        </ListItemText>
-      </MenuItem>
-    )];
-  }, [doesUserHavePermissionToViewEffectiveRights, t]);
-
   const getOptimisticUpdateIntermediateItem = useCallback((variables: FormFields, previousItem: User): User => {
     return {
       id: previousItem.id,
@@ -207,23 +158,33 @@ export const UsersAdminPage = () => {
     };
   }, []);
 
+  const subPages = useMemo<CrudPageSubPage<User>[]>(() => {
+    const doesUserHavePermissionToViewEffectiveRights = AuthorizationManager.instance.doesUserHavePermission([
+      { command_name: CommandName.CaseTypeColSetMemberCrudCommand, permission_type: PermissionType.READ },
+      { command_name: CommandName.CaseTypeSetCrudCommand, permission_type: PermissionType.READ },
+      { command_name: CommandName.CaseTypeColSetCrudCommand, permission_type: PermissionType.READ },
+      { command_name: CommandName.CaseTypeSetMemberCrudCommand, permission_type: PermissionType.READ },
+      { command_name: CommandName.CaseTypeSetCategoryCrudCommand, permission_type: PermissionType.READ },
+      { command_name: CommandName.DataCollectionCrudCommand, permission_type: PermissionType.READ },
+      { command_name: CommandName.OrganizationAccessCasePolicyCrudCommand, permission_type: PermissionType.READ },
+      { command_name: CommandName.OrganizationShareCasePolicyCrudCommand, permission_type: PermissionType.READ },
+      { command_name: CommandName.UserAccessCasePolicyCrudCommand, permission_type: PermissionType.READ },
+      { command_name: CommandName.UserShareCasePolicyCrudCommand, permission_type: PermissionType.READ },
+      { command_name: CommandName.CaseTypeColCrudCommand, permission_type: PermissionType.READ },
+    ]);
 
-  const editDialogExtraActionsFactory = useCallback((item: User): DialogAction[] => {
     if (!doesUserHavePermissionToViewEffectiveRights) {
       return [];
     }
     return [
       {
-        ...TestIdUtil.createAttributes('UsersAdminPage-ViewUserRightsButton'),
         label: t`View effective rights`,
-        color: 'primary',
-        variant: 'outlined',
-        onClick: async () => await RouterManager.instance.router.navigate({
-          pathname: `/management/users/${item.id}/effective-rights`,
-        }),
-      },
+        getPathName: (item: User) => `/management/users/${item.id}/effective-rights`,
+      } satisfies CrudPageSubPage<User>,
     ];
-  }, [doesUserHavePermissionToViewEffectiveRights, t]);
+
+  }, [t]);
+
 
   const extraUpdateOnePermissions = useMemo<ApiPermission[]>(() => [
     { command_name: CommandName.UpdateUserCommand, permission_type: PermissionType.EXECUTE },
@@ -237,14 +198,13 @@ export const UsersAdminPage = () => {
       <CrudPage<FormFields, User>
         loadables={loadables}
         canEditItem={canEditItem}
+        subPages={subPages}
         extraUpdateOnePermissions={extraUpdateOnePermissions}
         extraDeleteOnePermissions={extraDeleteOnePermissions}
         createItemDialogTitle={t`Create new user`}
         defaultSortByField={'name'}
         defaultSortDirection={'asc'}
         deleteOne={deleteOne}
-        editDialogExtraActionsFactory={editDialogExtraActionsFactory}
-        extraActionsFactory={extraActionsFactory}
         fetchAll={fetchAll}
         formFieldDefinitions={formFieldDefinitions}
         getName={getName}
