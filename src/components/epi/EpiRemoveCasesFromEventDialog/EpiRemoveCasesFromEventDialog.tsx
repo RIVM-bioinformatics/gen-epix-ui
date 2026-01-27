@@ -24,7 +24,7 @@ import type {
 import { withDialog } from '../../../hoc/withDialog';
 import { useDeleteMutation } from '../../../hooks/useDeleteMutation';
 import { QUERY_KEY } from '../../../models/query';
-import { EpiStoreContext } from '../../../stores/epiStore';
+import { EpiDashboardStoreContext } from '../../../stores/epiDashboardStore';
 import { QueryUtil } from '../../../utils/QueryUtil';
 import { TestIdUtil } from '../../../utils/TestIdUtil';
 import type { DialogAction } from '../../ui/Dialog';
@@ -53,7 +53,7 @@ export const EpiRemoveCasesFromEventDialog = withDialog<EpiRemoveCasesFromEventD
 ): ReactElement => {
   const [t] = useTranslation();
 
-  const epiStore = useContext(EpiStoreContext);
+  const epiStore = useContext(EpiDashboardStoreContext);
   const completeCaseType = useStore(epiStore, useShallow((state) => state.completeCaseType));
   const fetchData = useStore(epiStore, useShallow((state) => state.fetchData));
   const setSelectedIds = useStore(epiStore, useShallow((state) => state.setSelectedIds));

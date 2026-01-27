@@ -28,7 +28,7 @@ import type {
 } from '../../../hoc/withDialog';
 import { withDialog } from '../../../hoc/withDialog';
 import type { AutoCompleteOption } from '../../../models/form';
-import { EpiStoreContext } from '../../../stores/epiStore';
+import { EpiDashboardStoreContext } from '../../../stores/epiDashboardStore';
 import { DownloadUtil } from '../../../utils/DownloadUtil';
 import { Autocomplete } from '../../form/fields/Autocomplete';
 import { StringUtil } from '../../../utils/StringUtil';
@@ -57,7 +57,7 @@ export const EpiSequenceDownloadDialog = withDialog<EpiSequenceDownloadDialogPro
   }: EpiSequenceDownloadDialogProps,
 ): ReactElement => {
   const [t] = useTranslation();
-  const epiStore = useContext(EpiStoreContext);
+  const epiStore = useContext(EpiDashboardStoreContext);
   const completeCaseType = useStore(epiStore, useShallow((state) => state.completeCaseType));
 
   const geneticSequenceCaseTypeColOptions = useMemo<AutoCompleteOption<string>[]>(() => {

@@ -37,7 +37,7 @@ import { CaseApi } from '../../../api';
 import { useDataCollectionsMapQuery } from '../../../dataHooks/useDataCollectionsQuery';
 import { useEditMutation } from '../../../hooks/useEditMutation';
 import { QUERY_KEY } from '../../../models/query';
-import { EpiStoreContext } from '../../../stores/epiStore';
+import { EpiDashboardStoreContext } from '../../../stores/epiDashboardStore';
 import { CaseUtil } from '../../../utils/CaseUtil';
 import { FormUtil } from '../../../utils/FormUtil';
 import { QueryUtil } from '../../../utils/QueryUtil';
@@ -84,7 +84,7 @@ export const EpiAddCasesToEventDialog = withDialog<EpiAddCasesToEventDialogProps
   const dataCollectionsMapQuery = useDataCollectionsMapQuery();
   const caseSetOptionsQuery = useCaseSetOptionsQuery();
   const caseSetsMapQuery = useCaseSetsMapQuery();
-  const epiStore = useContext(EpiStoreContext);
+  const epiStore = useContext(EpiDashboardStoreContext);
   const fetchData = useStore(epiStore, useShallow((state) => state.fetchData));
   const completeCaseType = useStore(epiStore, useShallow((state) => state.completeCaseType));
   const formId = useId();

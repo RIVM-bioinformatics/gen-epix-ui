@@ -19,7 +19,7 @@ import {
 import { useTranslation } from 'react-i18next';
 import { useStore } from 'zustand';
 
-import { EpiStoreContext } from '../../../stores/epiStore';
+import { EpiDashboardStoreContext } from '../../../stores/epiDashboardStore';
 import { CaseSelectionUtil } from '../../../utils/CaseSelectionUtil';
 
 export type EpiContextMenuConfigWithAnchor = {
@@ -44,7 +44,7 @@ export type EpiContextMenuProps = {
 
 export const EpiContextMenu = ({ config, onMenuClose, getExtraItems }: EpiContextMenuProps) => {
   const [t] = useTranslation();
-  const epiStore = useContext(EpiStoreContext);
+  const epiStore = useContext(EpiDashboardStoreContext);
   const selectedIds = useStore(epiStore, (state) => state.selectedIds);
   const setSelectedIds = useStore(epiStore, (state) => state.setSelectedIds);
 

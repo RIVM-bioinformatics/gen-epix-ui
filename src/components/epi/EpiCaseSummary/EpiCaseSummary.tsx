@@ -17,7 +17,7 @@ import { useTranslation } from 'react-i18next';
 
 import type { Case } from '../../../api';
 import type { TableColumnCaseType } from '../../../models/table';
-import { EpiStoreContext } from '../../../stores/epiStore';
+import { EpiDashboardStoreContext } from '../../../stores/epiDashboardStore';
 import { useTableStoreContext } from '../../../stores/tableStore';
 import { CaseUtil } from '../../../utils/CaseUtil';
 
@@ -27,7 +27,7 @@ export type EpiCaseSummaryProps = {
 
 export const EpiCaseSummary = ({ epiCase }: EpiCaseSummaryProps) => {
   const [t] = useTranslation();
-  const epiStore = useContext(EpiStoreContext);
+  const epiStore = useContext(EpiDashboardStoreContext);
   const tableStore = useTableStoreContext<Case>();
   const completeCaseType = useStore(epiStore, (state) => state.completeCaseType);
   const numVisibleAttributesInSummary = useStore(epiStore, (state) => state.numVisibleAttributesInSummary);

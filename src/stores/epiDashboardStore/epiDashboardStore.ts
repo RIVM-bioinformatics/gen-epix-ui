@@ -93,7 +93,7 @@ interface EpiMapWidgetData extends WidgetData {
   columnId: string;
 }
 
-interface EpiStoreState extends TableStoreState<Case> {
+interface EpiDashboardStoreState extends TableStoreState<Case> {
   expandedZone: EPI_ZONE;
   epiCurveWidgetData: EpiCurveWidgetData;
   epiListWidgetData: EpiListWidgetData;
@@ -117,7 +117,7 @@ interface EpiStoreState extends TableStoreState<Case> {
   isMaxResultsExceededDismissed: boolean;
 }
 
-interface EpiStoreActions extends TableStoreActions<Case> {
+interface EpiDashboardStoreActions extends TableStoreActions<Case> {
   expandZone: (zone: EPI_ZONE) => void;
   removeTreeFilter: () => Promise<void>;
   mutateCachedCase: (caseId: string, item: Case) => void;
@@ -139,14 +139,14 @@ interface EpiStoreActions extends TableStoreActions<Case> {
   reloadStratifyableColumns: () => void;
 }
 
-export type EpiStore = EpiStoreState & EpiStoreActions;
+export type EpiDashboardStore = EpiDashboardStoreState & EpiDashboardStoreActions;
 
-export type CreateEpiStoreKwArgs = CreateTableStoreKwArgs<Case> & {
+export type CreateEpiDashboardStoreKwArgs = CreateTableStoreKwArgs<Case> & {
   completeCaseType: CompleteCaseType;
   caseSetId: string;
 };
 
-export interface CreateEpiStoreInitialStateKwArgs extends CreateTableStoreInitialStateKwArgs<Case> {
+export interface CreateEpiDashboardStoreInitialStateKwArgs extends CreateTableStoreInitialStateKwArgs<Case> {
   completeCaseType: CompleteCaseType;
   caseSetId: string;
 }
@@ -176,7 +176,7 @@ const createEpiTreeWidgetDataInitialState = (): EpiTreeWidgetData => ({
   zoomLevel: 1,
 });
 
-const createEpiStoreInitialState = (kwArgs: CreateEpiStoreInitialStateKwArgs): EpiStoreState => {
+const createEpiDashboardStoreInitialState = (kwArgs: CreateEpiDashboardStoreInitialStateKwArgs): EpiDashboardStoreState => {
   const { completeCaseType, caseSetId, ...createTableStoreInitialStateKwArgs } = kwArgs;
 
   return {
@@ -216,13 +216,13 @@ const createEpiStoreInitialState = (kwArgs: CreateEpiStoreInitialStateKwArgs): E
   };
 };
 
-export const createEpiStore = (kwArgs: CreateEpiStoreKwArgs) => {
+export const createEpiDashboardStore = (kwArgs: CreateEpiDashboardStoreKwArgs) => {
   const { completeCaseType, caseSetId, ...createTableStoreKwArgs } = kwArgs;
 
-  const epiStore = createStore<EpiStore>()(
+  const epiDashboardStore = createStore<EpiDashboardStore>()(
     persist(
       (set, get) => {
-        const initialState = createEpiStoreInitialState({
+        const initialState = createEpiDashboardStoreInitialState({
           caseSetId,
           completeCaseType,
           ...createTableStoreKwArgs,
@@ -697,7 +697,7 @@ export const createEpiStore = (kwArgs: CreateEpiStoreKwArgs) => {
           },
         };
       },
-      createTableStorePersistConfiguration<Case, EpiStore>(kwArgs.storageNamePostFix, kwArgs.storageVersion, (state) => {
+      createTableStorePersistConfiguration<Case, EpiDashboardStore>(kwArgs.storageNamePostFix, kwArgs.storageVersion, (state) => {
         return {
           epiTreeWidgetData: {
             ...createEpiTreeWidgetDataInitialState(),
@@ -708,6 +708,6 @@ export const createEpiStore = (kwArgs: CreateEpiStoreKwArgs) => {
       }),
     ),
   );
-  epiStore.getState().setFilters(EpiFilterUtil.createFilters(completeCaseType), EpiFilterUtil.createFilterDimensions(completeCaseType), [SELECTION_FILTER_GROUP, TREE_FILTER_GROUP]);
-  return epiStore;
+  epiDashboardStore.getState().setFilters(EpiFilterUtil.createFilters(completeCaseType), EpiFilterUtil.createFilterDimensions(completeCaseType), [SELECTION_FILTER_GROUP, TREE_FILTER_GROUP]);
+  return epiDashboardStore;
 };

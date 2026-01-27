@@ -52,7 +52,7 @@ import { ConfigManager } from '../../../classes/managers/ConfigManager';
 import { HighlightingManager } from '../../../classes/managers/HighlightingManager';
 import { EPI_ZONE } from '../../../models/epi';
 import type { MenuItemData } from '../../../models/nestedMenu';
-import { EpiStoreContext } from '../../../stores/epiStore';
+import { EpiDashboardStoreContext } from '../../../stores/epiDashboardStore';
 import { CaseTypeUtil } from '../../../utils/CaseTypeUtil';
 import { EpiCurveUtil } from '../../../utils/EpiCurveUtil';
 import type { EpiContextMenuConfigWithPosition } from '../EpiContextMenu';
@@ -80,7 +80,7 @@ export const EpiCurve = () => {
   const highlightingManager = useMemo(() => HighlightingManager.instance, []);
   const chartRef = useRef<EChartsReact>(null);
 
-  const epiStore = useContext(EpiStoreContext);
+  const epiStore = useContext(EpiDashboardStoreContext);
   const stratification = useStore(epiStore, (state) => state.stratification);
   const isDataLoading = useStore(epiStore, (state) => state.isDataLoading);
   const sortedData = useStore(epiStore, (state) => state.sortedData);

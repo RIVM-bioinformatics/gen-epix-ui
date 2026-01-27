@@ -23,7 +23,7 @@ import type { EpiCaseSetInfoDialogRefMethods } from '../EpiCaseSetInfoDialog';
 import { EpiCaseSetInfoDialog } from '../EpiCaseSetInfoDialog';
 import type { EpiCaseTypeInfoDialogRefMethods } from '../EpiCaseTypeInfoDialog';
 import { EpiCaseTypeInfoDialog } from '../EpiCaseTypeInfoDialog';
-import { withEpiStore } from '../EpiStoreLoader';
+import { withEpiDashboardStore } from '../EpiDashboardStoreLoader';
 import {
   EpiAddCasesToEventDialog,
   type EpiAddCasesToEventDialogRefMethods,
@@ -59,7 +59,7 @@ import { KeyboardShortcutManager } from '../../../classes/managers/KeyboardShort
 import { Subject } from '../../../classes/Subject';
 import type { EpiLinkedScrollSubjectValue } from '../../../models/epi';
 import { EPI_ZONE } from '../../../models/epi';
-import { EpiStoreContext } from '../../../stores/epiStore';
+import { EpiDashboardStoreContext } from '../../../stores/epiDashboardStore';
 import { userProfileStore } from '../../../stores/userProfileStore';
 import { DashboardUtil } from '../../../utils/DashboardUtil';
 import { ResponseHandler } from '../../ui/ResponseHandler';
@@ -95,7 +95,7 @@ type EpiDashboardProps = {
   readonly caseTypeId: string;
 };
 
-export const EpiDashboard = withEpiStore(({ caseSet }: EpiDashboardProps) => {
+export const EpiDashboard = withEpiDashboardStore(({ caseSet }: EpiDashboardProps) => {
   const [t] = useTranslation();
   const theme = useTheme();
   const epiDashboardLayoutRendererRef = useRef<ForwardRefEpiDashboardLayoutRendererRefMethods>(null);
@@ -116,7 +116,7 @@ export const EpiDashboard = withEpiStore(({ caseSet }: EpiDashboardProps) => {
   const linkedScrollSubject = useMemo(() => {
     return new Subject<EpiLinkedScrollSubjectValue>();
   }, []);
-  const epiStore = useContext(EpiStoreContext);
+  const epiStore = useContext(EpiDashboardStoreContext);
   const fetchData = useStore(epiStore, useShallow((state) => state.fetchData));
   const dataError = useStore(epiStore, (state) => state.dataError);
   const completeCaseType = useStore(epiStore, (state) => state.completeCaseType);

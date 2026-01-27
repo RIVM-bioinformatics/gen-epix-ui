@@ -9,26 +9,26 @@ import type {
 } from '../../../api';
 import { EpiCompletCaseTypeLoader } from '../EpiCompletCaseTypeLoader';
 
-import { EpiStoreLoaderContent } from './EpiStoreLoaderContent';
+import { EpiDashboardStoreLoaderContent } from './EpiDashboardStoreLoaderContent';
 
-export type EpiStoreLoaderProps = PropsWithChildren<{
+export type EpiDashboardStoreLoaderProps = PropsWithChildren<{
   readonly caseSet?: CaseSet;
   readonly caseTypeId: string;
 }>;
 
-export const EpiStoreLoader = ({ caseTypeId, caseSet, children }: EpiStoreLoaderProps) => {
+export const EpiDashboardStoreLoader = ({ caseTypeId, caseSet, children }: EpiDashboardStoreLoaderProps) => {
   const [completeCaseType, setCompleteCaseType] = useState<CompleteCaseType>(null);
   return (
     <EpiCompletCaseTypeLoader
       caseTypeId={caseTypeId}
       onCompleteCaseTypeLoaded={setCompleteCaseType}
     >
-      <EpiStoreLoaderContent
+      <EpiDashboardStoreLoaderContent
         caseSet={caseSet}
         completeCaseType={completeCaseType}
       >
         {completeCaseType && children}
-      </EpiStoreLoaderContent>
+      </EpiDashboardStoreLoaderContent>
     </EpiCompletCaseTypeLoader>
   );
 };

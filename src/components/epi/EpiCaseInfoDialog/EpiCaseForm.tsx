@@ -21,7 +21,7 @@ import { CaseApi } from '../../../api';
 import { NotificationManager } from '../../../classes/managers/NotificationManager';
 import { useOrganizationsQuery } from '../../../dataHooks/useOrganizationsQuery';
 import { QUERY_KEY } from '../../../models/query';
-import { EpiStoreContext } from '../../../stores/epiStore';
+import { EpiDashboardStoreContext } from '../../../stores/epiDashboardStore';
 import { CaseUtil } from '../../../utils/CaseUtil';
 import { FormUtil } from '../../../utils/FormUtil';
 import { ObjectUtil } from '../../../utils/ObjectUtil';
@@ -38,7 +38,7 @@ export type EpiCaseFormProps = {
 
 export const EpiCaseForm = ({ epiCase, formId, onFinish, onIsSavingChange, ...boxProps }: EpiCaseFormProps) => {
   const organizationsQuery = useOrganizationsQuery();
-  const epiStore = useContext(EpiStoreContext);
+  const epiStore = useContext(EpiDashboardStoreContext);
   const completeCaseType = useStore(epiStore, (state) => state.completeCaseType);
   const schema = useMemo(() => CaseUtil.createYupSchema(completeCaseType), [completeCaseType]);
   const formFieldDefinitions = useMemo(() => CaseUtil.createFormFieldDefinitions(completeCaseType, organizationsQuery), [completeCaseType, organizationsQuery]);

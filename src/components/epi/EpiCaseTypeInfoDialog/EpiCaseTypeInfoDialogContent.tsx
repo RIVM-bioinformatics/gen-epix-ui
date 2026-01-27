@@ -20,7 +20,7 @@ import {
 } from '../../../dataHooks/useDataCollectionsQuery';
 import { useDiseasesMapQuery } from '../../../dataHooks/useDiseasesQuery';
 import { useEtiologicalAgentsMapQuery } from '../../../dataHooks/useEtiologicalAgentsQuery';
-import { EpiStoreContext } from '../../../stores/epiStore';
+import { EpiDashboardStoreContext } from '../../../stores/epiDashboardStore';
 import { ResponseHandler } from '../../ui/ResponseHandler';
 import { useArray } from '../../../hooks/useArray';
 import type { WithDialogRenderProps } from '../../../hoc/withDialog';
@@ -44,7 +44,7 @@ export const EpiCaseTypeInfoDialogContent = ({ onTitleChange, onPermalinkChange 
   const dataCollectionsQuery = useDataCollectionsQuery();
   const loadables = useArray([dataCollectionsMapQuery, dataCollectionsQuery, diseasesMapQuery, etiologicalAgentsMapQuery]);
 
-  const epiStore = useContext(EpiStoreContext);
+  const epiStore = useContext(EpiDashboardStoreContext);
   const completeCaseType = useStore(epiStore, (state) => state.completeCaseType);
 
   const getDiseaseName = useCallback((id: string) => {

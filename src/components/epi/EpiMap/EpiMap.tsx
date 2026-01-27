@@ -54,7 +54,7 @@ import { EPI_ZONE } from '../../../models/epi';
 import type { UnwrapArray } from '../../../models/generic';
 import type { MenuItemData } from '../../../models/nestedMenu';
 import { QUERY_KEY } from '../../../models/query';
-import { EpiStoreContext } from '../../../stores/epiStore';
+import { EpiDashboardStoreContext } from '../../../stores/epiDashboardStore';
 import { CaseTypeUtil } from '../../../utils/CaseTypeUtil';
 import { EpiLineListUtil } from '../../../utils/EpiLineListUtil';
 import { EpiMapUtil } from '../../../utils/EpiMapUtil';
@@ -92,7 +92,7 @@ export const EpiMap = () => {
   const { dimensions: { width, height } } = useDimensions(containerRef);
   const highlightingManager = useMemo(() => HighlightingManager.instance, []);
 
-  const epiStore = useContext(EpiStoreContext);
+  const epiStore = useContext(EpiDashboardStoreContext);
   const stratification = useStore(epiStore, (state) => state.stratification);
   const isDataLoading = useStore(epiStore, (state) => state.isDataLoading);
   const sortedData = useStore(epiStore, (state) => state.sortedData);

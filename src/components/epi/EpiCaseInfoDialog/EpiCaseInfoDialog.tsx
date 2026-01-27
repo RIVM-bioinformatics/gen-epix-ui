@@ -38,7 +38,7 @@ import {
 import { useDeleteMutation } from '../../../hooks/useDeleteMutation';
 import { useItemQuery } from '../../../hooks/useItemQuery';
 import { QUERY_KEY } from '../../../models/query';
-import { EpiStoreContext } from '../../../stores/epiStore';
+import { EpiDashboardStoreContext } from '../../../stores/epiDashboardStore';
 import { QueryUtil } from '../../../utils/QueryUtil';
 import { TestIdUtil } from '../../../utils/TestIdUtil';
 import type { ConfirmationRefMethods } from '../../ui/Confirmation';
@@ -83,7 +83,7 @@ export const EpiCaseInfoDialog = withDialog<EpiCaseInfoDialogProps, EpiCaseInfoD
   const dataCollectionsMapQuery = useDataCollectionsMapQuery();
   const dataCollectionOptionsQuery = useDataCollectionOptionsQuery();
 
-  const epiStore = useContext(EpiStoreContext);
+  const epiStore = useContext(EpiDashboardStoreContext);
   const fetchData = useStore(epiStore, useShallow((state) => state.fetchData));
   const [isEditingCaseContent, setIsEditingCaseContent] = useState(false);
   const [isEditingDataCollections, setIsEditingDataCollections] = useState(false);

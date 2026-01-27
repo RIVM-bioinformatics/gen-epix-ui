@@ -22,7 +22,7 @@ import type { EpiContactDetailsDialogRefMethods } from '../EpiContactDetailsDial
 import { EpiContactDetailsDialog } from '../EpiContactDetailsDialog';
 import type { Case } from '../../../api';
 import { ColType } from '../../../api';
-import { EpiStoreContext } from '../../../stores/epiStore';
+import { EpiDashboardStoreContext } from '../../../stores/epiDashboardStore';
 import { CaseTypeUtil } from '../../../utils/CaseTypeUtil';
 import { CaseUtil } from '../../../utils/CaseUtil';
 import { GenericErrorMessage } from '../../ui/GenericErrorMessage';
@@ -34,7 +34,7 @@ export type EpiCaseContentProps = {
 export const EpiCaseContent = ({ epiCase, ...boxProps }: EpiCaseContentProps) => {
   const [t] = useTranslation();
   const epiContactDetailsDialogRef = useRef<EpiContactDetailsDialogRefMethods>(null);
-  const epiStore = useContext(EpiStoreContext);
+  const epiStore = useContext(EpiDashboardStoreContext);
   const completeCaseType = useStore(epiStore, (state) => state.completeCaseType);
 
   const caseTypeCols = useMemo(() => CaseTypeUtil.getCaseTypeCols(completeCaseType), [completeCaseType]);

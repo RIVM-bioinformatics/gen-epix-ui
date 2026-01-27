@@ -30,7 +30,7 @@ import { useTranslation } from 'react-i18next';
 import { ConfigManager } from '../../../classes/managers/ConfigManager';
 import type { EpiDashboardLayoutFirstPanelDirection } from '../../../models/epi';
 import { EPI_ZONE } from '../../../models/epi';
-import { EpiStoreContext } from '../../../stores/epiStore';
+import { EpiDashboardStoreContext } from '../../../stores/epiDashboardStore';
 import { userProfileStore } from '../../../stores/userProfileStore';
 import { DashboardUtil } from '../../../utils/DashboardUtil';
 import { StringUtil } from '../../../utils/StringUtil';
@@ -77,7 +77,7 @@ export const ForwardRefEpiDashboardLayoutRenderer: ForwardRefRenderFunction<Forw
 }, forwardedRef) => {
   const [t] = useTranslation();
   const panelRefs = useRef<{ [key: string]: ImperativePanelGroupHandle }>({});
-  const epiStore = useContext(EpiStoreContext);
+  const epiStore = useContext(EpiDashboardStoreContext);
   const dashboardLayoutUserConfig = useStore(userProfileStore, (state) => state.epiDashboardLayoutUserConfig);
   const expandedZone = useStore(epiStore, (state) => state.expandedZone);
   const layout = DashboardUtil.getDashboardLayout(dashboardLayoutUserConfig);

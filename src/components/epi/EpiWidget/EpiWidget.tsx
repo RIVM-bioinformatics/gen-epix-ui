@@ -21,7 +21,7 @@ import { useStore } from 'zustand';
 
 import type { EPI_ZONE } from '../../../models/epi';
 import type { MenuItemData } from '../../../models/nestedMenu';
-import { EpiStoreContext } from '../../../stores/epiStore';
+import { EpiDashboardStoreContext } from '../../../stores/epiDashboardStore';
 import { userProfileStore } from '../../../stores/userProfileStore';
 import { DashboardUtil } from '../../../utils/DashboardUtil';
 import { TestIdUtil } from '../../../utils/TestIdUtil';
@@ -83,7 +83,7 @@ export const EpiWidget = ({ title, children, primaryMenu, secondaryMenu, warning
   const theme = useTheme();
   const [t] = useTranslation();
 
-  const epiStore = useContext(EpiStoreContext);
+  const epiStore = useContext(EpiDashboardStoreContext);
   const expandZone = useStore(epiStore, (state) => state.expandZone);
   const expandedZone = useStore(epiStore, (state) => state.expandedZone);
   const enabledLayoutZoneCount = useStore(userProfileStore, (state) => DashboardUtil.getEnabledZones(state.epiDashboardLayoutUserConfig).length);

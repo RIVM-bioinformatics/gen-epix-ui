@@ -57,7 +57,7 @@ import type {
 import { EPI_ZONE } from '../../../models/epi';
 import type { MenuItemData } from '../../../models/nestedMenu';
 import type { TreePathProperties } from '../../../models/tree';
-import { EpiStoreContext } from '../../../stores/epiStore';
+import { EpiDashboardStoreContext } from '../../../stores/epiDashboardStore';
 import { userProfileStore } from '../../../stores/userProfileStore';
 import { SELECTION_FILTER_GROUP } from '../../../utils/CaseTypeUtil';
 import {
@@ -95,7 +95,7 @@ export const EpiTree = ({ linkedScrollSubject, ref }: EpiTreeProps) => {
   const [headerCanvas, setHeaderCanvas] = useState<HTMLCanvasElement>();
   const highlightingManager = useMemo(() => HighlightingManager.instance, []);
   const canvasScrollSubject = useMemo<Subject<{ x: number; y: number }>>(() => new Subject({ x: 0, y: 0 }), []);
-  const epiStore = useContext(EpiStoreContext);
+  const epiStore = useContext(EpiDashboardStoreContext);
   const setPhylogeneticTreeResponse = useStore(epiStore, (state) => state.setPhylogeneticTreeResponse);
   const baseData = useStore(epiStore, (state) => state.baseData);
   const filteredCases = useStore(epiStore, (state) => state.filteredData[SELECTION_FILTER_GROUP]);

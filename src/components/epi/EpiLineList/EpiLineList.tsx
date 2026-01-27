@@ -48,7 +48,7 @@ import type {
   GetTableCellRowComparatorProps,
   TableColumnCaseType,
 } from '../../../models/table';
-import { EpiStoreContext } from '../../../stores/epiStore';
+import { EpiDashboardStoreContext } from '../../../stores/epiDashboardStore';
 import { CaseTypeUtil } from '../../../utils/CaseTypeUtil';
 import { CaseUtil } from '../../../utils/CaseUtil';
 import { StringUtil } from '../../../utils/StringUtil';
@@ -73,7 +73,7 @@ export const EpiLineList = ({ linkedScrollSubject, onLink, caseSet }: EpiLineLis
   const rowHighlightingSubject = useMemo(() => new Subject<string[]>([]), []);
   const tableRef = useRef<TableRef>(null);
 
-  const epiStore = useContext(EpiStoreContext);
+  const epiStore = useContext(EpiDashboardStoreContext);
   const completeCaseType = useStore(epiStore, useShallow((state) => state.completeCaseType));
   const sortedData = useStore(epiStore, useShallow((state) => state.sortedData));
   const setSorting = useStore(epiStore, useShallow((state) => state.setSorting));

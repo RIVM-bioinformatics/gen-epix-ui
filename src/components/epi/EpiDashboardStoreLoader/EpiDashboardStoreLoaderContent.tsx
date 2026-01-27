@@ -12,20 +12,20 @@ import type {
 } from '../../../api';
 import type { TableColumnDimension } from '../../../models/table';
 import {
-  createEpiStore,
-  EpiStoreContext,
-} from '../../../stores/epiStore';
+  createEpiDashboardStore,
+  EpiDashboardStoreContext,
+} from '../../../stores/epiDashboardStore';
 import { TableStoreContextProvider } from '../../../stores/tableStore';
 import { StringUtil } from '../../../utils/StringUtil';
 import { CaseTypeUtil } from '../../../utils/CaseTypeUtil';
 
-type EpiStoreInitializerProps = PropsWithChildren<{
+type EpiDashboardStoreLoaderContentProps = PropsWithChildren<{
   readonly completeCaseType: CompleteCaseType;
   readonly caseSet: CaseSet;
 }>;
 
-export const EpiStoreLoaderContent = ({ completeCaseType, caseSet, children }: EpiStoreInitializerProps) => {
-  const epiStore = useMemo(() => createEpiStore({
+export const EpiDashboardStoreLoaderContent = ({ completeCaseType, caseSet, children }: EpiDashboardStoreLoaderContentProps) => {
+  const epiStore = useMemo(() => createEpiDashboardStore({
     idSelectorCallback: (row) => row.id,
     caseSetId: caseSet?.id,
     completeCaseType,
@@ -62,9 +62,9 @@ export const EpiStoreLoaderContent = ({ completeCaseType, caseSet, children }: E
 
   return (
     <TableStoreContextProvider store={epiStore}>
-      <EpiStoreContext.Provider value={epiStore}>
+      <EpiDashboardStoreContext.Provider value={epiStore}>
         {children}
-      </EpiStoreContext.Provider>
+      </EpiDashboardStoreContext.Provider>
     </TableStoreContextProvider>
   );
 };
