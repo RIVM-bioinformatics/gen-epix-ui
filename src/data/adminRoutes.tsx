@@ -38,7 +38,8 @@ import { RouterErrorPage } from '../pages/RouterErrorPage';
 import { UserAccessCasePoliciesAdminPage } from '../pages/UserAccessCasePoliciesAdminPage';
 import { UserInvitationsAdminPage } from '../pages/UserInvitationsAdminPage';
 import { UsersAdminPage } from '../pages/UsersAdminPage';
-import { UsersEffectiveRightsAdminPage } from '../pages/UsersEffectiveRightsAdminPage';
+import { UserEffectiveRightsAdminPage } from '../pages/UserEffectiveRightsAdminPage';
+import { UserEffectiveRightsTesterAdminPage } from '../pages/UserEffectiveRightsTesterAdminPage';
 import { UserShareCasePoliciesAdminPage } from '../pages/UserShareCasePoliciesAdminPage';
 
 export const adminRoutes: MyNonIndexRouteObject[] = [
@@ -136,10 +137,32 @@ export const adminRoutes: MyNonIndexRouteObject[] = [
       },
       {
         path: '/management/users/:userId/effective-rights',
-        Component: () => <UsersEffectiveRightsAdminPage />,
+        Component: () => <UserEffectiveRightsAdminPage />,
         errorElement: <RouterErrorPage />,
         handle: {
           titleKey: 'Effective rights',
+          requiredPermissions: [
+            { command_name: CommandName.CaseTypeColSetMemberCrudCommand, permission_type: PermissionType.READ },
+            { command_name: CommandName.CaseTypeSetCrudCommand, permission_type: PermissionType.READ },
+            { command_name: CommandName.CaseTypeColSetCrudCommand, permission_type: PermissionType.READ },
+            { command_name: CommandName.CaseTypeSetMemberCrudCommand, permission_type: PermissionType.READ },
+            { command_name: CommandName.CaseTypeSetCategoryCrudCommand, permission_type: PermissionType.READ },
+            { command_name: CommandName.DataCollectionCrudCommand, permission_type: PermissionType.READ },
+            { command_name: CommandName.OrganizationAccessCasePolicyCrudCommand, permission_type: PermissionType.READ },
+            { command_name: CommandName.OrganizationShareCasePolicyCrudCommand, permission_type: PermissionType.READ },
+            { command_name: CommandName.UserAccessCasePolicyCrudCommand, permission_type: PermissionType.READ },
+            { command_name: CommandName.UserShareCasePolicyCrudCommand, permission_type: PermissionType.READ },
+            { command_name: CommandName.CaseTypeColCrudCommand, permission_type: PermissionType.READ },
+          ],
+          requiresUserProfile: true,
+        },
+      },
+      {
+        path: '/management/users/:userId/effective-rights-tester',
+        Component: () => <UserEffectiveRightsTesterAdminPage />,
+        errorElement: <RouterErrorPage />,
+        handle: {
+          titleKey: 'Effective rights test',
           requiredPermissions: [
             { command_name: CommandName.CaseTypeColSetMemberCrudCommand, permission_type: PermissionType.READ },
             { command_name: CommandName.CaseTypeSetCrudCommand, permission_type: PermissionType.READ },

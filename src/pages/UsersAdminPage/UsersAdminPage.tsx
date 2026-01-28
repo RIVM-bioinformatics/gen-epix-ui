@@ -178,6 +178,10 @@ export const UsersAdminPage = () => {
     }
     return [
       {
+        label: t`Test effective rights`,
+        getPathName: (item: User) => `/management/users/${item.id}/effective-rights-tester`,
+      } satisfies CrudPageSubPage<User>,
+      {
         label: t`View effective rights`,
         getPathName: (item: User) => `/management/users/${item.id}/effective-rights`,
       } satisfies CrudPageSubPage<User>,

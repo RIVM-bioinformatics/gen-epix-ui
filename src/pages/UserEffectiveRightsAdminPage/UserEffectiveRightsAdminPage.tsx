@@ -62,7 +62,7 @@ import { UsersEffectiveRightsDetailsDialog } from '../../components/ui/UsersEffe
 import { DataUtil } from '../../utils/DataUtil';
 import { EffectiveRightsUtil } from '../../utils/EffectiveRightsUtil';
 
-export const UsersEffectiveRightsAdminPage = () => {
+export const UserEffectiveRightsAdminPage = () => {
   const [t] = useTranslation();
   const theme = useTheme();
   const usersEffectiveRightsDetailsDialogRef = useRef<UsersEffectiveRightsDetailsDialogRefMethods>(null);
@@ -115,7 +115,7 @@ export const UsersEffectiveRightsAdminPage = () => {
     storageVersion: 1,
   }), []);
 
-  const effectiveAccessCasePolicies = useMemo<UserEffectiveRight[]>(() => {
+  const effectiveRights = useMemo<UserEffectiveRight[]>(() => {
     const { data: organizationAccessCasePolicies } = organizationAccessCasePoliciesQuery;
     const { data: organizationShareCasePolicies } = organizationShareCasePoliciesQuery;
     const { data: userAccessCasePolicies } = userAccessCasePoliciesQuery;
@@ -279,7 +279,7 @@ export const UsersEffectiveRightsAdminPage = () => {
     });
   }, [user]);
 
-  useInitializeTableStore({ store: tableStore, columns: tableColumns, rows: effectiveAccessCasePolicies, createFiltersFromColumns: true });
+  useInitializeTableStore({ store: tableStore, columns: tableColumns, rows: effectiveRights, createFiltersFromColumns: true });
 
   return (
     <TableStoreContextProvider store={tableStore}>

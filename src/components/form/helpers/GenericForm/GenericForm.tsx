@@ -34,7 +34,7 @@ import { useIsFormFieldRequiredFromSchema } from '../../../../hooks/useIsFormFie
 export type GenericFormProps<TFormFields> = {
   readonly formFieldDefinitions: FormFieldDefinition<TFormFields>[];
   readonly formId?: string;
-  readonly onSubmit: FormEventHandler<HTMLFormElement>;
+  readonly onSubmit?: FormEventHandler<HTMLFormElement>;
   readonly formMethods: UseFormReturn<TFormFields>;
   readonly renderField?: (definition: FormFieldDefinition<TFormFields>, element: ReactElement) => ReactElement;
   readonly wrapForm?: (children: ReactElement) => ReactElement;
