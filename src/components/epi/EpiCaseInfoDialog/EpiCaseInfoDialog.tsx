@@ -22,8 +22,8 @@ import {
   type WithDialogRefMethods,
   type WithDialogRenderProps,
 } from '../../../hoc/withDialog';
-import type { EpiCaseAbacContextValue } from '../../../context/epiCaseAbac/EpiCaseAbacContext';
-import { EpiCaseAbacContextProvider } from '../../../context/epiCaseAbac';
+import type { CaseAbacContext } from '../../../context/caseAbac/CaseAbacContext';
+import { CaseAbacContextProvider } from '../../../context/caseAbac';
 import type {
   Case,
   TypedUuidSetFilter,
@@ -38,7 +38,7 @@ import {
 import { useDeleteMutation } from '../../../hooks/useDeleteMutation';
 import { useItemQuery } from '../../../hooks/useItemQuery';
 import { QUERY_KEY } from '../../../models/query';
-import { EpiStoreContext } from '../../../stores/epiStore';
+import { EpiDashboardStoreContext } from '../../../stores/epiDashboardStore';
 import { QueryUtil } from '../../../utils/QueryUtil';
 import { TestIdUtil } from '../../../utils/TestIdUtil';
 import type { ConfirmationRefMethods } from '../../ui/Confirmation';
@@ -83,7 +83,7 @@ export const EpiCaseInfoDialog = withDialog<EpiCaseInfoDialogProps, EpiCaseInfoD
   const dataCollectionsMapQuery = useDataCollectionsMapQuery();
   const dataCollectionOptionsQuery = useDataCollectionOptionsQuery();
 
-  const epiStore = useContext(EpiStoreContext);
+  const epiStore = useContext(EpiDashboardStoreContext);
   const fetchData = useStore(epiStore, useShallow((state) => state.fetchData));
   const [isEditingCaseContent, setIsEditingCaseContent] = useState(false);
   const [isEditingDataCollections, setIsEditingDataCollections] = useState(false);
@@ -293,7 +293,7 @@ export const EpiCaseInfoDialog = withDialog<EpiCaseInfoDialogProps, EpiCaseInfoD
     onActionsChange(actions);
   }, [onActionsChange, onEditButtonClick, t, isEditingCaseContent, onGoBackButtonClick, onShareButtonClick, isEditingDataCollections, valuesFormId, dataCollectionsFormId, onClose, isSaving, canShare, onDeleteEventButtonClick, canDelete, canEdit]);
 
-  const caseAbacContextValue = useMemo<EpiCaseAbacContextValue>(() => {
+  const caseAbacContextValue = useMemo<CaseAbacContext>(() => {
     return {
       userDataCollections: dataCollectionsQuery.data,
       userDataCollectionsMap: dataCollectionsMapQuery.map,
@@ -322,7 +322,7 @@ export const EpiCaseInfoDialog = withDialog<EpiCaseInfoDialogProps, EpiCaseInfoD
         isLoading={epiCaseIsLoading || isCaseDataCollectionLinksLoading}
         loadables={loadables}
       >
-        <EpiCaseAbacContextProvider caseAbac={caseAbacContextValue}>
+        <CaseAbacContextProvider caseAbac={caseAbacContextValue}>
           <EpiReadOnlyCaseContent
             epiCase={epiCase}
             marginBottom={2}
@@ -358,7 +358,7 @@ export const EpiCaseInfoDialog = withDialog<EpiCaseInfoDialogProps, EpiCaseInfoD
               onIsSavingChange={onEpiCaseDataCollectionFormIsSavingChange}
             />
           )}
-        </EpiCaseAbacContextProvider>
+        </CaseAbacContextProvider>
       </ResponseHandler>
       <Confirmation
         ref={deleteConfirmation}

@@ -7,7 +7,7 @@ import { useCallback } from 'react';
 
 import type { CaseSet } from '../../../api';
 import { RouterManager } from '../../../classes/managers/RouterManager';
-import { EpiCaseSetUtil } from '../../../utils/EpiCaseSetUtil';
+import { CaseSetUtil } from '../../../utils/CaseSetUtil';
 
 export type EpiAddCasesToEventDialogSuccessNotificationMessageProps = {
   readonly caseSet: CaseSet;
@@ -17,7 +17,7 @@ export type EpiAddCasesToEventDialogSuccessNotificationMessageProps = {
 export const EpiAddCasesToEventDialogSuccessNotificationMessage = ({ caseSet, numAddedCases }: EpiAddCasesToEventDialogSuccessNotificationMessageProps) => {
 
   const onLinkClick = useCallback(async () => {
-    await RouterManager.instance.router.navigate({ pathname: EpiCaseSetUtil.createCaseSetLink(caseSet) });
+    await RouterManager.instance.router.navigate({ pathname: CaseSetUtil.createCaseSetLink(caseSet) });
   }, [caseSet]);
 
   return (

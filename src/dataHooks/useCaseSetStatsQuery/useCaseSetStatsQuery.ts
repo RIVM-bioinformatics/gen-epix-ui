@@ -5,7 +5,7 @@ import type { CaseStats } from '../../api';
 import { CaseApi } from '../../api';
 import type { UseMap } from '../../models/dataHooks';
 import { QUERY_KEY } from '../../models/query';
-import { DataUtil } from '../../utils/DataUtil';
+import { DataHookUtil } from '../../utils/DataHookUtil';
 import { QueryUtil } from '../../utils/QueryUtil';
 import { useQueryMemo } from '../../hooks/useQueryMemo';
 
@@ -26,6 +26,6 @@ export const useCaseSetStatsMapQuery = (caseSetIds: string[]): UseMap<CaseStats>
   const response = useCaseSetStatsQuery(caseSetIds);
 
   return useMemo(() => {
-    return DataUtil.createUseMapDataHook<CaseStats>(response, item => item.case_set_id);
+    return DataHookUtil.createUseMapDataHook<CaseStats>(response, item => item.case_set_id);
   }, [response]);
 };

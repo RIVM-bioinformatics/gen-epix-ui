@@ -9,7 +9,7 @@ import type { CaseSet } from '../../../api';
 import { RouterManager } from '../../../classes/managers/RouterManager';
 import { useCaseSetCategoryMapQuery } from '../../../dataHooks/useCaseSetCategoriesQuery';
 import { useCaseSetStatusMapQuery } from '../../../dataHooks/useCaseSetStatusesQuery';
-import { EpiCaseSetUtil } from '../../../utils/EpiCaseSetUtil';
+import { CaseSetUtil } from '../../../utils/CaseSetUtil';
 import type { ConfirmationRefMethods } from '../../ui/Confirmation';
 import { Confirmation } from '../../ui/Confirmation';
 import { ResponseHandler } from '../../ui/ResponseHandler';
@@ -30,7 +30,7 @@ export const EpiCasesAlreadyInCaseSetWarningCaseSetLink = ({ caseSet }: EpiCases
   }, []);
 
   const onConfirm = useCallback(async () => {
-    await RouterManager.instance.router.navigate(EpiCaseSetUtil.createCaseSetLink(caseSet));
+    await RouterManager.instance.router.navigate(CaseSetUtil.createCaseSetLink(caseSet));
   }, [caseSet]);
 
 

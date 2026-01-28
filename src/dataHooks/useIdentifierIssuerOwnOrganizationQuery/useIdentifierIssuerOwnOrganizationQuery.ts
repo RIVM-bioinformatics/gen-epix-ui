@@ -5,7 +5,7 @@ import type { IdentifierIssuer } from '../../api';
 import { OrganizationApi } from '../../api';
 import type { UseOptions } from '../../models/dataHooks';
 import { QUERY_KEY } from '../../models/query';
-import { DataUtil } from '../../utils/DataUtil';
+import { DataHookUtil } from '../../utils/DataHookUtil';
 import { QueryUtil } from '../../utils/QueryUtil';
 import { useQueryMemo } from '../../hooks/useQueryMemo';
 import { AuthorizationManager } from '../../classes/managers/AuthorizationManager';
@@ -29,6 +29,6 @@ export const useIdentifierIssuerOwnOrganizationOptionsQuery = (): UseOptions<str
   const response = useIdentifierIssuerOwnOrganizationQuery();
 
   return useMemo(() => {
-    return DataUtil.createUseOptionsDataHook<IdentifierIssuer>(response, item => item.id, (item: IdentifierIssuer) => item.name);
+    return DataHookUtil.createUseOptionsDataHook<IdentifierIssuer>(response, item => item.id, (item: IdentifierIssuer) => item.name);
   }, [response]);
 };

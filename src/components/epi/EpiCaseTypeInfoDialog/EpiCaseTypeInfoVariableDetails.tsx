@@ -17,7 +17,7 @@ import type {
   CompleteCaseType,
 } from '../../../api';
 import { ColType } from '../../../api';
-import { EpiDataUtil } from '../../../utils/EpiDataUtil';
+import { EpiDataManager } from '../../../classes/managers/EpiDataManager';
 
 import { EpiCaseTypeInfoCaseTypeColumnAccessRights } from './EpiCaseTypeInfoCaseTypeColumnAccessRights';
 
@@ -111,10 +111,10 @@ export const EpiCaseTypeInfoVariableDetails = ({ caseTypeDimension, completeCase
                   )}
                   {column.col_type === ColType.GEO_REGION && column.region_set_id && (
                     <>
-                      {EpiDataUtil.data.regionSets[column.region_set_id].name}
+                      {EpiDataManager.instance.data.regionSets[column.region_set_id].name}
                     </>
                   )}
-                  {([ColType.NOMINAL, ColType.ORDINAL] as ColType[]).includes(column.col_type) && column.concept_set_id && EpiDataUtil.data.conceptsBySetId[column.concept_set_id] && (
+                  {([ColType.NOMINAL, ColType.ORDINAL] as ColType[]).includes(column.col_type) && column.concept_set_id && EpiDataManager.instance.data.conceptsBySetId[column.concept_set_id] && (
                     <Box
                       sx={{
                         maxWidth: '100%',
@@ -126,7 +126,7 @@ export const EpiCaseTypeInfoVariableDetails = ({ caseTypeDimension, completeCase
                         flexWrap={'wrap'}
                         rowGap={1}
                       >
-                        {EpiDataUtil.data.conceptsBySetId[column.concept_set_id].map(concept => (
+                        {EpiDataManager.instance.data.conceptsBySetId[column.concept_set_id].map(concept => (
                           <Chip
                             key={concept.id}
                             label={`${concept.name} (${concept.code})`}

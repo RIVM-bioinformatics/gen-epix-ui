@@ -20,11 +20,11 @@ import { Box } from '@mui/material';
 import type { CaseSet } from '../../../api';
 import { CaseApi } from '../../../api';
 import { NotificationManager } from '../../../classes/managers/NotificationManager';
-import { useEpiCaseAbacContext } from '../../../context/epiCaseAbac';
+import { useCaseAbacContext } from '../../../context/caseAbac';
 import type { FormFieldDefinition } from '../../../models/form';
 import { FORM_FIELD_DEFINITION_TYPE } from '../../../models/form';
 import { QUERY_KEY } from '../../../models/query';
-import { EpiCaseUtil } from '../../../utils/EpiCaseUtil';
+import { CaseUtil } from '../../../utils/CaseUtil';
 import { FormUtil } from '../../../utils/FormUtil';
 import { QueryUtil } from '../../../utils/QueryUtil';
 import { GenericForm } from '../../form/helpers/GenericForm';
@@ -52,7 +52,7 @@ export const EpiCaseSetSharingForm = ({ caseTypeId, formId, caseSet, onFinish, o
     shouldApplySharingToCases: boolean().required(),
   }), []);
 
-  const caseAbacContext = useEpiCaseAbacContext();
+  const caseAbacContext = useCaseAbacContext();
 
   const onFormSubmit = useCallback(({ dataCollectionIds, shouldApplySharingToCases }: FormFields) => {
     const perform = async () => {
@@ -85,7 +85,7 @@ export const EpiCaseSetSharingForm = ({ caseTypeId, formId, caseSet, onFinish, o
       } finally {
         await QueryUtil.invalidateQueryKeys(queryKeys);
         if (shouldApplySharingToCases) {
-          await EpiCaseUtil.applyDataCollectionLinks({
+          await CaseUtil.applyDataCollectionLinks({
             caseSetId: caseSet.id,
             caseSetDataCollectionIds: dataCollectionIds,
             caseTypeId,

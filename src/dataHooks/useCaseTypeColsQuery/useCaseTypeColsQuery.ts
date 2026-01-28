@@ -9,7 +9,7 @@ import type {
   UseOptions,
 } from '../../models/dataHooks';
 import { QUERY_KEY } from '../../models/query';
-import { DataUtil } from '../../utils/DataUtil';
+import { DataHookUtil } from '../../utils/DataHookUtil';
 import { QueryUtil } from '../../utils/QueryUtil';
 import { useCaseTypeMapQuery } from '../useCaseTypesQuery';
 import { useQueryMemo } from '../../hooks/useQueryMemo';
@@ -29,7 +29,7 @@ export const useCaseTypeColMapQuery = (): UseMap<CaseTypeCol> => {
   const response = useCaseTypeColsQuery();
 
   return useMemo(() => {
-    return DataUtil.createUseMapDataHook<CaseTypeCol>(response, item => item.id);
+    return DataHookUtil.createUseMapDataHook<CaseTypeCol>(response, item => item.id);
   }, [response]);
 };
 
@@ -45,7 +45,7 @@ export const useCaseTypeColNameFactory = (): UseNameFactory<CaseTypeCol> => {
       return `${caseTypeName} → ${caseTypeDimName} → ${item.label}`;
 
     };
-    return DataUtil.createUseNameFactoryHook(getName, [caseTypeMapQuery, caseTypeDimMapQuery]);
+    return DataHookUtil.createUseNameFactoryHook(getName, [caseTypeMapQuery, caseTypeDimMapQuery]);
   }, [caseTypeDimMapQuery, caseTypeMapQuery]);
 };
 
@@ -55,6 +55,6 @@ export const useCaseTypeColOptionsQuery = (): UseOptions<string> => {
   const caseTypeColNameFactory = useCaseTypeColNameFactory();
 
   return useMemo(() => {
-    return DataUtil.createUseOptionsDataHook<CaseTypeCol>(response, item => item.id, caseTypeColNameFactory.getName, [caseTypeColNameFactory]);
+    return DataHookUtil.createUseOptionsDataHook<CaseTypeCol>(response, item => item.id, caseTypeColNameFactory.getName, [caseTypeColNameFactory]);
   }, [caseTypeColNameFactory, response]);
 };

@@ -8,7 +8,7 @@ import type {
   UseMap,
 } from '../../models/dataHooks';
 import { QUERY_KEY } from '../../models/query';
-import { DataUtil } from '../../utils/DataUtil';
+import { DataHookUtil } from '../../utils/DataHookUtil';
 import { QueryUtil } from '../../utils/QueryUtil';
 import { useQueryMemo } from '../../hooks/useQueryMemo';
 
@@ -26,7 +26,7 @@ export const useRegionSetOptionsQuery = (): UseOptions<string> => {
   const regionSetsQuery = useRegionSetsQuery();
 
   return useMemo(() => {
-    return DataUtil.createUseOptionsDataHook<RegionSet>(regionSetsQuery, item => item.id, item => item.name);
+    return DataHookUtil.createUseOptionsDataHook<RegionSet>(regionSetsQuery, item => item.id, item => item.name);
   }, [regionSetsQuery]);
 };
 
@@ -34,6 +34,6 @@ export const useRegionSetsMapQuery = (): UseMap<RegionSet> => {
   const regionSetsQuery = useRegionSetsQuery();
 
   return useMemo(() => {
-    return DataUtil.createUseMapDataHook<RegionSet>(regionSetsQuery, item => item.id);
+    return DataHookUtil.createUseMapDataHook<RegionSet>(regionSetsQuery, item => item.id);
   }, [regionSetsQuery]);
 };

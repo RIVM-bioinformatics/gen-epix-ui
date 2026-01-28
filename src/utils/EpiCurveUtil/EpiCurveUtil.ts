@@ -13,7 +13,7 @@ import {
   isValid,
 } from 'date-fns';
 
-import { EpiCaseTypeUtil } from '../EpiCaseTypeUtil';
+import { CaseTypeUtil } from '../CaseTypeUtil';
 import { EpiFilterUtil } from '../EpiFilterUtil';
 import type {
   Case,
@@ -126,7 +126,7 @@ export class EpiCurveUtil {
       return yearCol;
     }
 
-    return EpiCaseTypeUtil.getPreferredColumnInDimensionHavingHighestRank(caseTypeColumns, completeCaseType);
+    return CaseTypeUtil.getPreferredColumnInDimensionHavingHighestRank(caseTypeColumns, completeCaseType);
   }
 
   public static getXAxisLabel(colType: ColType, value: Date): string {

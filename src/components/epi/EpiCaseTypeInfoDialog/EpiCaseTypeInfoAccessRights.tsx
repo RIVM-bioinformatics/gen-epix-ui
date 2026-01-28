@@ -13,16 +13,16 @@ import {
 import { t } from 'i18next';
 
 import type { CompleteCaseType } from '../../../api';
-import { useEpiCaseTypeAbacContext } from '../../../context/epiCaseTypeAbac';
-import { EpiCaseTypeUtil } from '../../../utils/EpiCaseTypeUtil';
+import { useCaseTypeAbacContext } from '../../../context/caseTypeAbac';
+import { CaseTypeUtil } from '../../../utils/CaseTypeUtil';
 
 export type EpiCaseTypeInfoAccessRightsProps = {
   readonly completeCaseType: CompleteCaseType;
 };
 
 export const EpiCaseTypeInfoAccessRights = ({ completeCaseType }: EpiCaseTypeInfoAccessRightsProps) => {
-  const caseTypeCols = useMemo(() => EpiCaseTypeUtil.getCaseTypeCols(completeCaseType), [completeCaseType]);
-  const caseTypeAbacContext = useEpiCaseTypeAbacContext();
+  const caseTypeCols = useMemo(() => CaseTypeUtil.getCaseTypeCols(completeCaseType), [completeCaseType]);
+  const caseTypeAbacContext = useCaseTypeAbacContext();
 
   return (
     <>

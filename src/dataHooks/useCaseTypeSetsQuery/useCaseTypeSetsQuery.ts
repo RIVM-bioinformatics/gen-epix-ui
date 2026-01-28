@@ -9,7 +9,7 @@ import type {
   UseOptions,
 } from '../../models/dataHooks';
 import { QUERY_KEY } from '../../models/query';
-import { DataUtil } from '../../utils/DataUtil';
+import { DataHookUtil } from '../../utils/DataHookUtil';
 import { QueryUtil } from '../../utils/QueryUtil';
 import { useCaseTypeSetCategoryMapQuery } from '../useCaseTypeSetCategoriesQuery';
 import { useQueryMemo } from '../../hooks/useQueryMemo';
@@ -28,7 +28,7 @@ export const useCaseTypeSetsMapQuery = (): UseMap<CaseTypeSet> => {
   const caseTypeSetsQuery = useCaseTypeSetsQuery();
 
   return useMemo(() => {
-    return DataUtil.createUseMapDataHook<CaseTypeSet>(caseTypeSetsQuery, item => item.id);
+    return DataHookUtil.createUseMapDataHook<CaseTypeSet>(caseTypeSetsQuery, item => item.id);
   }, [caseTypeSetsQuery]);
 };
 
@@ -39,7 +39,7 @@ export const useCaseTypeSetNameFactory = (): UseNameFactory<CaseTypeSet> => {
     const getName = (item: CaseTypeSet) => {
       return `${caseTypeSetCategoryMapQuery.map.get(item.case_type_set_category_id)?.name ?? ''} | ${item.name}`;
     };
-    return DataUtil.createUseNameFactoryHook(getName, [caseTypeSetCategoryMapQuery]);
+    return DataHookUtil.createUseNameFactoryHook(getName, [caseTypeSetCategoryMapQuery]);
   }, [caseTypeSetCategoryMapQuery]);
 };
 
@@ -48,7 +48,7 @@ export const useCaseTypeSetOptionsQuery = (): UseOptions<string> => {
   const caseTypeSetNameFactory = useCaseTypeSetNameFactory();
 
   return useMemo(() => {
-    return DataUtil.createUseOptionsDataHook<CaseTypeSet>(
+    return DataHookUtil.createUseOptionsDataHook<CaseTypeSet>(
       caseTypeSetsQuery,
       item => item.id,
       caseTypeSetNameFactory.getName,

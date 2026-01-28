@@ -52,8 +52,8 @@ import { ConfigManager } from '../../../classes/managers/ConfigManager';
 import { HighlightingManager } from '../../../classes/managers/HighlightingManager';
 import { EPI_ZONE } from '../../../models/epi';
 import type { MenuItemData } from '../../../models/nestedMenu';
-import { EpiStoreContext } from '../../../stores/epiStore';
-import { EpiCaseTypeUtil } from '../../../utils/EpiCaseTypeUtil';
+import { EpiDashboardStoreContext } from '../../../stores/epiDashboardStore';
+import { CaseTypeUtil } from '../../../utils/CaseTypeUtil';
 import { EpiCurveUtil } from '../../../utils/EpiCurveUtil';
 import type { EpiContextMenuConfigWithPosition } from '../EpiContextMenu';
 import { EpiContextMenu } from '../EpiContextMenu';
@@ -61,8 +61,8 @@ import { EpiWidget } from '../EpiWidget';
 import { EpiWidgetUnavailable } from '../EpiWidgetUnavailable';
 import { DATE_FORMAT } from '../../../data/date';
 import { EpiEventBusManager } from '../../../classes/managers/EpiEventBusManager';
-import { EpiDownloadUtil } from '../../../utils/EpiDownloadUtil';
-import { EpiListUtil } from '../../../utils/EpiListUtil';
+import { DownloadUtil } from '../../../utils/DownloadUtil';
+import { EpiLineListUtil } from '../../../utils/EpiLineListUtil';
 
 echarts.use([TooltipComponent, GridComponent, DataZoomComponent, BarChart, CanvasRenderer]);
 
@@ -80,7 +80,7 @@ export const EpiCurve = () => {
   const highlightingManager = useMemo(() => HighlightingManager.instance, []);
   const chartRef = useRef<EChartsReact>(null);
 
-  const epiStore = useContext(EpiStoreContext);
+  const epiStore = useContext(EpiDashboardStoreContext);
   const stratification = useStore(epiStore, (state) => state.stratification);
   const isDataLoading = useStore(epiStore, (state) => state.isDataLoading);
   const sortedData = useStore(epiStore, (state) => state.sortedData);
@@ -89,7 +89,7 @@ export const EpiCurve = () => {
   const epiCurveWidgetData = useStore(epiStore, (state) => state.epiCurveWidgetData);
   const setFilterValue = useStore(epiStore, (state) => state.setFilterValue);
   const filterDimensions = useStore(epiStore, (state) => state.filterDimensions);
-  const timeCaseTypeDims = useMemo(() => EpiCaseTypeUtil.getCaseTypeDims(completeCaseType, [DimType.TIME]), [completeCaseType]);
+  const timeCaseTypeDims = useMemo(() => CaseTypeUtil.getCaseTypeDims(completeCaseType, [DimType.TIME]), [completeCaseType]);
   const [focussedDate, setFocussedDate] = useState<string>(null);
   const [column, setColumn] = useState<CaseTypeCol>(null);
 
@@ -99,7 +99,7 @@ export const EpiCurve = () => {
   }, []);
 
   const lineListCaseCount = useMemo(() => {
-    return EpiListUtil.getCaseCount(sortedData);
+    return EpiLineListUtil.getCaseCount(sortedData);
   }, [sortedData]);
 
   const titleMenu = useMemo<MenuItemData>(() => {
@@ -148,12 +148,12 @@ export const EpiCurve = () => {
       throw Error('Epi curve can not be shown');
     }
     if (epiCurveWidgetData.columnId) {
-      setColumn(EpiCaseTypeUtil.getCaseTypeCols(completeCaseType).find(c => c.id === epiCurveWidgetData.columnId));
+      setColumn(CaseTypeUtil.getCaseTypeCols(completeCaseType).find(c => c.id === epiCurveWidgetData.columnId));
     } else if (sortedData.length) {
       setColumn(EpiCurveUtil.getPreferredTimeColumn(
         completeCaseType,
         sortedData,
-        EpiCaseTypeUtil.getCaseTypeCols(completeCaseType, completeCaseType.case_date_case_type_dim_id),
+        CaseTypeUtil.getCaseTypeCols(completeCaseType, completeCaseType.case_date_case_type_dim_id),
       ));
     }
   }, [column, completeCaseType, epiCurveWidgetData.columnId, timeCaseTypeDims, sortedData]);
@@ -456,11 +456,11 @@ export const EpiCurve = () => {
         items: [
           {
             label: t`Save as PNG`,
-            callback: () => EpiDownloadUtil.downloadEchartsImage(t`Epi curve`, chartRef.current.getEchartsInstance(), 'png', completeCaseType, t),
+            callback: () => DownloadUtil.downloadEchartsImage(t`Epi curve`, chartRef.current.getEchartsInstance(), 'png', completeCaseType, t),
           },
           {
             label: t`Save as JPEG`,
-            callback: () => EpiDownloadUtil.downloadEchartsImage(t`Epi curve`, chartRef.current.getEchartsInstance(), 'jpeg', completeCaseType, t),
+            callback: () => DownloadUtil.downloadEchartsImage(t`Epi curve`, chartRef.current.getEchartsInstance(), 'jpeg', completeCaseType, t),
           },
         ],
       });

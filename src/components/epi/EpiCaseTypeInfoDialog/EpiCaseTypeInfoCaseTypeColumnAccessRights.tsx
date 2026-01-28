@@ -11,7 +11,7 @@ import {
 } from '@mui/material';
 import { useTranslation } from 'react-i18next';
 
-import { useEpiCaseTypeAbacContext } from '../../../context/epiCaseTypeAbac';
+import { useCaseTypeAbacContext } from '../../../context/caseTypeAbac';
 
 export type EpiCaseTypeInfoCaseTypeColumnAccessRightsProps = {
   readonly caseTypeColumnId: string;
@@ -28,7 +28,7 @@ const MAX_ITEMS = 5;
 
 export const EpiCaseTypeInfoCaseTypeColumnAccessRights = ({ caseTypeColumnId }: EpiCaseTypeInfoCaseTypeColumnAccessRightsProps) => {
   const [t] = useTranslation();
-  const caseTypeAbacContext = useEpiCaseTypeAbacContext();
+  const caseTypeAbacContext = useCaseTypeAbacContext();
   const [shouldShowMore, setShouldShowMore] = useState(false);
 
   const onShowMoreButtonClick = useCallback(() => {

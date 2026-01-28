@@ -33,12 +33,12 @@ import {
   EPI_ZONE,
 } from '../../../models/epi';
 import type { MenuItemData } from '../../../models/nestedMenu';
-import { EpiStoreContext } from '../../../stores/epiStore';
+import { EpiDashboardStoreContext } from '../../../stores/epiDashboardStore';
 import { NestedDropdown } from '../../ui/NestedMenu';
 
 export const EpiStratification = () => {
   const [t] = useTranslation();
-  const epiStore = useContext(EpiStoreContext);
+  const epiStore = useContext(EpiDashboardStoreContext);
   const highlightingManager = useMemo(() => HighlightingManager.instance, []);
 
   const stratification = useStore(epiStore, (state) => state.stratification);

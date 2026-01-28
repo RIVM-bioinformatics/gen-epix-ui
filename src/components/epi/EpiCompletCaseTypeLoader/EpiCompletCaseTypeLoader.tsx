@@ -11,8 +11,8 @@ import { CaseApi } from '../../../api';
 import { useItemQuery } from '../../../hooks/useItemQuery';
 import { QUERY_KEY } from '../../../models/query';
 import { AxiosUtil } from '../../../utils/AxiosUtil';
-import { EpiDataUtil } from '../../../utils/EpiDataUtil';
 import { ResponseHandler } from '../../ui/ResponseHandler';
+import { EpiDataManager } from '../../../classes/managers/EpiDataManager';
 
 
 export type EpiCompletCaseTypeLoaderProps = PropsWithChildren<{
@@ -47,10 +47,10 @@ export const EpiCompletCaseTypeLoader = ({ caseTypeId, onCompleteCaseTypeLoaded,
       const perform = async () => {
         try {
           await Promise.all([
-            EpiDataUtil.loadConcepts(abortController.signal),
-            EpiDataUtil.loadMissingRegions(completeCaseType, abortController.signal),
-            EpiDataUtil.loadTreeAlgorithms(completeCaseType, abortController.signal),
-            EpiDataUtil.loadOrganizations(abortController.signal),
+            EpiDataManager.instance.loadConcepts(abortController.signal),
+            EpiDataManager.instance.loadMissingRegions(completeCaseType, abortController.signal),
+            EpiDataManager.instance.loadTreeAlgorithms(completeCaseType, abortController.signal),
+            EpiDataManager.instance.loadOrganizations(abortController.signal),
           ]);
           setIsSideEffectLoading(false);
         } catch (error) {

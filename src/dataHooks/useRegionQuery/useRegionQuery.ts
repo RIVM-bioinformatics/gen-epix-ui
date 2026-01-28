@@ -9,7 +9,7 @@ import type {
   UseOptions,
 } from '../../models/dataHooks';
 import { QUERY_KEY } from '../../models/query';
-import { DataUtil } from '../../utils/DataUtil';
+import { DataHookUtil } from '../../utils/DataHookUtil';
 import { QueryUtil } from '../../utils/QueryUtil';
 import { useQueryMemo } from '../../hooks/useQueryMemo';
 import { useRegionSetsMapQuery } from '../useRegionSetsQuery';
@@ -27,7 +27,7 @@ export const useRegionQuery = (): UseQueryResult<Region[]> => {
 export const useRegionMapQuery = (): UseMap<Region> => {
   const response = useRegionQuery();
   return useMemo(() => {
-    return DataUtil.createUseMapDataHook<Region>(response, item => item.id);
+    return DataHookUtil.createUseMapDataHook<Region>(response, item => item.id);
   }, [response]);
 };
 
@@ -38,7 +38,7 @@ export const useRegionNameFactory = (): UseNameFactory<Region> => {
     const getName = (item: Region) => {
       return `${regionSetsMapQuery.map.get(item.region_set_id)?.name ?? item.region_set_id} → ${item.name}`;
     };
-    return DataUtil.createUseNameFactoryHook(getName, [regionSetsMapQuery]);
+    return DataHookUtil.createUseNameFactoryHook(getName, [regionSetsMapQuery]);
   }, [regionSetsMapQuery]);
 };
 
@@ -47,6 +47,6 @@ export const useRegionOptionsQuery = (): UseOptions<string> => {
   const regionMapQuery = useRegionNameFactory();
 
   return useMemo(() => {
-    return DataUtil.createUseOptionsDataHook<Region>(regionQuery, item => item.id, regionMapQuery.getName, [regionMapQuery]);
+    return DataHookUtil.createUseOptionsDataHook<Region>(regionQuery, item => item.id, regionMapQuery.getName, [regionMapQuery]);
   }, [regionMapQuery, regionQuery]);
 };

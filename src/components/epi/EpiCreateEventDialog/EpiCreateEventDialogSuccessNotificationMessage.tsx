@@ -2,7 +2,7 @@ import { t } from 'i18next';
 import { Box } from '@mui/material';
 
 import type { CaseSet } from '../../../api';
-import { EpiCaseSetUtil } from '../../../utils/EpiCaseSetUtil';
+import { CaseSetUtil } from '../../../utils/CaseSetUtil';
 import { NavLink } from '../../ui/NavLink';
 
 export type EpiCreateEventDialogSuccessNotificationMessageProps = {
@@ -20,7 +20,7 @@ export const EpiCreateEventDialogSuccessNotificationMessage = ({ caseSet, isCrea
       <Box marginY={2}>
         <NavLink
           activeAsText
-          to={EpiCaseSetUtil.createCaseSetLink(caseSet)}
+          to={CaseSetUtil.createCaseSetLink(caseSet)}
         >
           {t('View event: {{name}}', { name: caseSet.name })}
         </NavLink>

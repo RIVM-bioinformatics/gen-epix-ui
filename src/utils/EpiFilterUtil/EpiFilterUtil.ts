@@ -6,11 +6,10 @@ import {
 import { t } from 'i18next';
 
 import {
-  EpiCaseTypeUtil,
+  CaseTypeUtil,
   SELECTION_FILTER_GROUP,
   TREE_FILTER_GROUP,
-} from '../EpiCaseTypeUtil';
-import { EpiDataUtil } from '../EpiDataUtil';
+} from '../CaseTypeUtil';
 import type {
   CompleteCaseType,
   CaseTypeCol,
@@ -37,6 +36,7 @@ import type {
 } from '../../models/filter';
 import type { AutoCompleteOption } from '../../models/form';
 import { DATE_FORMAT } from '../../data/date';
+import { EpiDataManager } from '../../classes/managers/EpiDataManager';
 
 export class EpiFilterUtil {
   private static readonly colTypeBlackList = new Set<ColType>([ColType.GENETIC_DISTANCE, ColType.GENETIC_SEQUENCE, ColType.GENETIC_READS]);
@@ -50,7 +50,7 @@ export class EpiFilterUtil {
       const caseTypeColIds = completeCaseType.ordered_case_type_col_ids_by_dim[caseTypeDimId];
       const cols = caseTypeColIds.map(id => completeCaseType.cols[completeCaseType.case_type_cols[id].col_id]);
 
-      if (EpiCaseTypeUtil.isGeneticDistanceDimension(dim, cols)) {
+      if (CaseTypeUtil.isGeneticDistanceDimension(dim, cols)) {
         return;
       }
       if (cols.every(col => EpiFilterUtil.colTypeBlackList.has(col.col_type))) {
@@ -73,14 +73,14 @@ export class EpiFilterUtil {
       let allowOnlyPreferredFilter = false;
 
       if (dim.dim_type === DimType.TIME) {
-        const preferredCaseTypeColumn = EpiCaseTypeUtil.getPreferredColumnInDimensionHavingHighestRank(caseTypeColumns, completeCaseType);
+        const preferredCaseTypeColumn = CaseTypeUtil.getPreferredColumnInDimensionHavingHighestRank(caseTypeColumns, completeCaseType);
         preferredFilterId = preferredCaseTypeColumn.id;
         allowOnlyPreferredFilter = true;
       } else if (dim.dim_type === DimType.GEO) {
-        const preferredCaseTypeColumn = EpiCaseTypeUtil.getPreferredGEOColumn(caseTypeColumns);
+        const preferredCaseTypeColumn = CaseTypeUtil.getPreferredGEOColumn(caseTypeColumns);
         preferredFilterId = preferredCaseTypeColumn.id;
       } else {
-        const preferredCaseTypeColumn = EpiCaseTypeUtil.getPreferredColumnInDimensionHavingHighestRank(caseTypeColumns, completeCaseType);
+        const preferredCaseTypeColumn = CaseTypeUtil.getPreferredColumnInDimensionHavingHighestRank(caseTypeColumns, completeCaseType);
         preferredFilterId = preferredCaseTypeColumn.id;
         allowMultipleVisibleFilters = dim.dim_type !== DimType.NUMBER;
       }
@@ -137,8 +137,8 @@ export class EpiFilterUtil {
             }),
           );
         } else if (dim.dim_type === DimType.GEO) {
-          const regionSet = EpiDataUtil.data.regionSets[col.region_set_id];
-          const options = (EpiDataUtil.data.regionsByRegionSetId[col.region_set_id]?.map<AutoCompleteOption>(region => {
+          const regionSet = EpiDataManager.instance.data.regionSets[col.region_set_id];
+          const options = (EpiDataManager.instance.data.regionsByRegionSetId[col.region_set_id]?.map<AutoCompleteOption>(region => {
             return {
               value: region.id,
               label: regionSet.region_code_as_label ? region.code : region.name,
@@ -170,7 +170,7 @@ export class EpiFilterUtil {
           }
         } else if (dim.dim_type === DimType.ORGANIZATION) {
           // organizations are already sorted
-          const options = EpiDataUtil.data.organizations.map<AutoCompleteOption>(organization => {
+          const options = EpiDataManager.instance.data.organizations.map<AutoCompleteOption>(organization => {
             return {
               value: organization.id,
               label: organization.name,
@@ -200,8 +200,8 @@ export class EpiFilterUtil {
 
   public static createCategoricalFilter(caseTypeCol: CaseTypeCol, caseTypeDimId: string, completeCaseType: CompleteCaseType): MultiSelectFilter | TextFilter {
     const column = completeCaseType.cols[caseTypeCol.col_id];
-    if ((column.col_type === ColType.NOMINAL || column.col_type === ColType.ORDINAL || column.col_type === ColType.INTERVAL) && EpiDataUtil.data.conceptsBySetId[column.concept_set_id]) {
-      const options = EpiDataUtil.data.conceptsBySetId[column.concept_set_id].map<AutoCompleteOption>(concept => ({
+    if ((column.col_type === ColType.NOMINAL || column.col_type === ColType.ORDINAL || column.col_type === ColType.INTERVAL) && EpiDataManager.instance.data.conceptsBySetId[column.concept_set_id]) {
+      const options = EpiDataManager.instance.data.conceptsBySetId[column.concept_set_id].map<AutoCompleteOption>(concept => ({
         value: concept.id,
         label: `${concept.code} (${concept.name})`,
       }));

@@ -8,7 +8,7 @@ import { useCaseTypeSetsMapQuery } from '../../dataHooks/useCaseTypeSetsQuery';
 import { useDataCollectionsMapQuery } from '../../dataHooks/useDataCollectionsQuery';
 import { useOrganizationMapQuery } from '../../dataHooks/useOrganizationsQuery';
 import type { UseNameFactory } from '../../models/dataHooks';
-import { DataUtil } from '../../utils/DataUtil';
+import { DataHookUtil } from '../../utils/DataHookUtil';
 
 export const useOrganizationCasePolicyNameFactory = (): UseNameFactory<OrganizationAccessCasePolicy | OrganizationShareCasePolicy> => {
   const organizationMapQuery = useOrganizationMapQuery();
@@ -25,7 +25,7 @@ export const useOrganizationCasePolicyNameFactory = (): UseNameFactory<Organizat
       return `${organization.name} → ${dataCollection} → ${caseTypeSet}`;
     };
 
-    return DataUtil.createUseNameFactoryHook(getName, [caseTypeSetsMapQuery, organizationMapQuery, dataCollectionsMapQuery]);
+    return DataHookUtil.createUseNameFactoryHook(getName, [caseTypeSetsMapQuery, organizationMapQuery, dataCollectionsMapQuery]);
 
   }, [caseTypeSetsMapQuery, organizationMapQuery, dataCollectionsMapQuery]);
 };

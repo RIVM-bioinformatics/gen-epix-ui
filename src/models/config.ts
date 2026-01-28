@@ -97,7 +97,7 @@ export interface Config {
     MAX_ZOOM_SPEED: number;
     TAKING_LONGER_TIMEOUT_MS: number;
   };
-  epiList: {
+  epiLineList: {
     TABLE_ROW_HEIGHT: number;
     MAX_COLUMN_WIDTH: number;
     REQUIRED_EXTRA_CELL_PADDING_TO_FIT_CONTENT: number;

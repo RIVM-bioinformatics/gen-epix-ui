@@ -8,7 +8,7 @@ import type {
   UseOptions,
 } from '../../models/dataHooks';
 import { QUERY_KEY } from '../../models/query';
-import { DataUtil } from '../../utils/DataUtil';
+import { DataHookUtil } from '../../utils/DataHookUtil';
 import { QueryUtil } from '../../utils/QueryUtil';
 import { useQueryMemo } from '../../hooks/useQueryMemo';
 
@@ -26,7 +26,7 @@ export const useColMapQuery = (): UseMap<Col> => {
   const response = useColsQuery();
 
   return useMemo(() => {
-    return DataUtil.createUseMapDataHook<Col>(response, item => item.id);
+    return DataHookUtil.createUseMapDataHook<Col>(response, item => item.id);
   }, [response]);
 };
 
@@ -34,6 +34,6 @@ export const useColOptionsQuery = (): UseOptions<string> => {
   const colsQuery = useColsQuery();
 
   return useMemo(() => {
-    return DataUtil.createUseOptionsDataHook<Col>(colsQuery, item => item.id, item => item.label);
+    return DataHookUtil.createUseOptionsDataHook<Col>(colsQuery, item => item.id, item => item.label);
   }, [colsQuery]);
 };

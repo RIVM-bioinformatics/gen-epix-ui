@@ -8,7 +8,7 @@ import type {
   UseOptions,
 } from '../../models/dataHooks';
 import { QUERY_KEY } from '../../models/query';
-import { DataUtil } from '../../utils/DataUtil';
+import { DataHookUtil } from '../../utils/DataHookUtil';
 import { QueryUtil } from '../../utils/QueryUtil';
 import { useQueryMemo } from '../../hooks/useQueryMemo';
 
@@ -26,7 +26,7 @@ export const useAssemblyProtocolMapQuery = (): UseMap<AssemblyProtocol> => {
   const response = useAssemblyProtocolsQuery();
 
   return useMemo(() => {
-    return DataUtil.createUseMapDataHook<AssemblyProtocol>(response, item => item.id);
+    return DataHookUtil.createUseMapDataHook<AssemblyProtocol>(response, item => item.id);
   }, [response]);
 };
 
@@ -34,6 +34,6 @@ export const useAssemblyProtocolOptionsQuery = (): UseOptions<string> => {
   const response = useAssemblyProtocolsQuery();
 
   return useMemo(() => {
-    return DataUtil.createUseOptionsDataHook<AssemblyProtocol>(response, item => item.id, (item: AssemblyProtocol) => item.name);
+    return DataHookUtil.createUseOptionsDataHook<AssemblyProtocol>(response, item => item.id, (item: AssemblyProtocol) => item.name);
   }, [response]);
 };

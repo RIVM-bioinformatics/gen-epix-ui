@@ -8,7 +8,7 @@ import type {
   UseOptions,
 } from '../../models/dataHooks';
 import { QUERY_KEY } from '../../models/query';
-import { DataUtil } from '../../utils/DataUtil';
+import { DataHookUtil } from '../../utils/DataHookUtil';
 import { QueryUtil } from '../../utils/QueryUtil';
 import { useQueryMemo } from '../../hooks/useQueryMemo';
 
@@ -32,7 +32,7 @@ export const useDataCollectionsMapQuery = (dataCollectionIds?: string[]): UseMap
   const dataCollectionsQuery = useDataCollectionsQuery(dataCollectionIds);
 
   return useMemo(() => {
-    return DataUtil.createUseMapDataHook<DataCollection>(dataCollectionsQuery, item => item.id);
+    return DataHookUtil.createUseMapDataHook<DataCollection>(dataCollectionsQuery, item => item.id);
   }, [dataCollectionsQuery]);
 };
 
@@ -40,6 +40,6 @@ export const useDataCollectionOptionsQuery = (dataCollectionIds?: string[]): Use
   const dataCollectionsQuery = useDataCollectionsQuery(dataCollectionIds);
 
   return useMemo(() => {
-    return DataUtil.createUseOptionsDataHook<DataCollection>(dataCollectionsQuery, item => item.id, item => item.name);
+    return DataHookUtil.createUseOptionsDataHook<DataCollection>(dataCollectionsQuery, item => item.id, item => item.name);
   }, [dataCollectionsQuery]);
 };

@@ -9,7 +9,7 @@ import type {
   UseOptions,
 } from '../../models/dataHooks';
 import { QUERY_KEY } from '../../models/query';
-import { DataUtil } from '../../utils/DataUtil';
+import { DataHookUtil } from '../../utils/DataHookUtil';
 import { QueryUtil } from '../../utils/QueryUtil';
 import { useQueryMemo } from '../../hooks/useQueryMemo';
 import { useConceptSetMapQuery } from '../useConceptSetsQuery';
@@ -27,7 +27,7 @@ export const useConceptQuery = (): UseQueryResult<Concept[]> => {
 export const useConceptMapQuery = (): UseMap<Concept> => {
   const response = useConceptQuery();
   return useMemo(() => {
-    return DataUtil.createUseMapDataHook<Concept>(response, item => item.id);
+    return DataHookUtil.createUseMapDataHook<Concept>(response, item => item.id);
   }, [response]);
 };
 
@@ -38,7 +38,7 @@ export const useConceptNameFactory = (): UseNameFactory<Concept> => {
     const getName = (item: Concept) => {
       return `${conceptSetMapQuery.map.get(item.concept_set_id)?.name ?? item.concept_set_id} → ${item.name}`;
     };
-    return DataUtil.createUseNameFactoryHook(getName, [conceptSetMapQuery]);
+    return DataHookUtil.createUseNameFactoryHook(getName, [conceptSetMapQuery]);
   }, [conceptSetMapQuery]);
 };
 
@@ -47,6 +47,6 @@ export const useConceptOptionsQuery = (): UseOptions<string> => {
   const conceptNameFactory = useConceptNameFactory();
 
   return useMemo(() => {
-    return DataUtil.createUseOptionsDataHook<Concept>(conceptQuery, item => item.id, conceptNameFactory.getName, [conceptNameFactory]);
+    return DataHookUtil.createUseOptionsDataHook<Concept>(conceptQuery, item => item.id, conceptNameFactory.getName, [conceptNameFactory]);
   }, [conceptNameFactory, conceptQuery]);
 };

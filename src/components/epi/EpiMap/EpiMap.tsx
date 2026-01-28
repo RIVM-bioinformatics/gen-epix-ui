@@ -54,15 +54,15 @@ import { EPI_ZONE } from '../../../models/epi';
 import type { UnwrapArray } from '../../../models/generic';
 import type { MenuItemData } from '../../../models/nestedMenu';
 import { QUERY_KEY } from '../../../models/query';
-import { EpiStoreContext } from '../../../stores/epiStore';
-import { EpiCaseTypeUtil } from '../../../utils/EpiCaseTypeUtil';
-import { EpiDataUtil } from '../../../utils/EpiDataUtil';
-import { EpiListUtil } from '../../../utils/EpiListUtil';
+import { EpiDashboardStoreContext } from '../../../stores/epiDashboardStore';
+import { CaseTypeUtil } from '../../../utils/CaseTypeUtil';
+import { EpiLineListUtil } from '../../../utils/EpiLineListUtil';
 import { EpiMapUtil } from '../../../utils/EpiMapUtil';
 import { QueryUtil } from '../../../utils/QueryUtil';
 import { EpiEventBusManager } from '../../../classes/managers/EpiEventBusManager';
-import { EpiDownloadUtil } from '../../../utils/EpiDownloadUtil';
+import { DownloadUtil } from '../../../utils/DownloadUtil';
 import { useQueryMemo } from '../../../hooks/useQueryMemo';
+import { EpiDataManager } from '../../../classes/managers/EpiDataManager';
 
 echarts.use([GeoComponent, TooltipComponent, LegendComponent, CanvasRenderer, PieChart]);
 
@@ -92,7 +92,7 @@ export const EpiMap = () => {
   const { dimensions: { width, height } } = useDimensions(containerRef);
   const highlightingManager = useMemo(() => HighlightingManager.instance, []);
 
-  const epiStore = useContext(EpiStoreContext);
+  const epiStore = useContext(EpiDashboardStoreContext);
   const stratification = useStore(epiStore, (state) => state.stratification);
   const isDataLoading = useStore(epiStore, (state) => state.isDataLoading);
   const sortedData = useStore(epiStore, (state) => state.sortedData);
@@ -102,13 +102,13 @@ export const EpiMap = () => {
   const completeCaseType = useStore(epiStore, (state) => state.completeCaseType);
 
   const [focussedRegion, setFocussedRegion] = useState<Region>();
-  const geoCaseTypeDims = useMemo(() => EpiCaseTypeUtil.getCaseTypeDims(completeCaseType, [DimType.GEO]), [completeCaseType]);
+  const geoCaseTypeDims = useMemo(() => CaseTypeUtil.getCaseTypeDims(completeCaseType, [DimType.GEO]), [completeCaseType]);
   const regionSetShapesFilter = useMemo<TypedUuidSetFilter>(() => {
     return {
       invert: false,
       key: 'region_set_id',
       type: 'UUID_SET',
-      members: EpiDataUtil.getRegionSetIds(completeCaseType),
+      members: EpiDataManager.instance.getRegionSetIds(completeCaseType),
     };
   }, [completeCaseType]);
 
@@ -130,9 +130,9 @@ export const EpiMap = () => {
     }
     let preferredCaseTypeColumn: CaseTypeCol;
     if (epiMapWidgetData.columnId) {
-      preferredCaseTypeColumn = EpiCaseTypeUtil.getCaseTypeCols(completeCaseType).find(c => c.id === epiMapWidgetData.columnId);
+      preferredCaseTypeColumn = CaseTypeUtil.getCaseTypeCols(completeCaseType).find(c => c.id === epiMapWidgetData.columnId);
     } else {
-      preferredCaseTypeColumn = EpiCaseTypeUtil.getPreferredGEOColumn(EpiCaseTypeUtil.getCaseTypeCols(completeCaseType, geoCaseTypeDims[0].id));
+      preferredCaseTypeColumn = CaseTypeUtil.getPreferredGEOColumn(CaseTypeUtil.getCaseTypeCols(completeCaseType, geoCaseTypeDims[0].id));
     }
     setColumn(preferredCaseTypeColumn);
   }, [column, completeCaseType, epiMapWidgetData.columnId, geoCaseTypeDims]);
@@ -142,11 +142,11 @@ export const EpiMap = () => {
       return [];
     }
     const regionSetId = completeCaseType.cols[column.col_id].region_set_id;
-    return EpiDataUtil.data.regionsByRegionSetId[regionSetId];
+    return EpiDataManager.instance.data.regionsByRegionSetId[regionSetId];
   }, [column, completeCaseType.cols]);
 
   const lineListCaseCount = useMemo(() => {
-    return EpiListUtil.getCaseCount(sortedData);
+    return EpiLineListUtil.getCaseCount(sortedData);
   }, [sortedData]);
 
   const onEpiContextMenuClose = useCallback(() => {
@@ -247,7 +247,7 @@ export const EpiMap = () => {
         stratification.legendaItems.forEach(legendaItem => {
           const rows = regionData.rows.filter(row => legendaItem.caseIds.includes(row.id));
           const caseIds = rows.map(row => row.id);
-          const numCases = EpiListUtil.getCaseCount(rows);
+          const numCases = EpiLineListUtil.getCaseCount(rows);
           data.push({
             name: legendaItem.rowValue.full,
             value: numCases,
@@ -475,11 +475,11 @@ export const EpiMap = () => {
         items: [
           {
             label: t`Save as PNG`,
-            callback: () => EpiDownloadUtil.downloadEchartsImage(t`Incidence map`, chartRef.current.getEchartsInstance(), 'png', completeCaseType, t),
+            callback: () => DownloadUtil.downloadEchartsImage(t`Incidence map`, chartRef.current.getEchartsInstance(), 'png', completeCaseType, t),
           },
           {
             label: t`Save as JPEG`,
-            callback: () => EpiDownloadUtil.downloadEchartsImage(t`Incidence map`, chartRef.current.getEchartsInstance(), 'jpeg', completeCaseType, t),
+            callback: () => DownloadUtil.downloadEchartsImage(t`Incidence map`, chartRef.current.getEchartsInstance(), 'jpeg', completeCaseType, t),
           },
         ],
       });

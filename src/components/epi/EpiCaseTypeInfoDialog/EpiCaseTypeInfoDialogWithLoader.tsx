@@ -1,6 +1,6 @@
 import type { ReactElement } from 'react';
 
-import { EpiStoreLoader } from '../EpiStoreLoader';
+import { EpiDashboardStoreLoader } from '../EpiDashboardStoreLoader';
 import type {
   WithDialogRenderProps,
   WithDialogRefMethods,
@@ -27,12 +27,12 @@ export const EpiCaseTypeInfoDialogWithLoader = withDialog<EpiCaseTypeInfoDialogW
   }: EpiCaseTypeInfoDialogWithLoaderProps,
 ): ReactElement => {
   return (
-    <EpiStoreLoader caseTypeId={openProps.caseTypeId}>
+    <EpiDashboardStoreLoader caseTypeId={openProps.caseTypeId}>
       <EpiCaseTypeInfoDialogContent
         onPermalinkChange={onPermalinkChange}
         onTitleChange={onTitleChange}
       />
-    </EpiStoreLoader>
+    </EpiDashboardStoreLoader>
   );
 }, {
   testId: 'EpiCaseTypeInfoDialogWithLoader',

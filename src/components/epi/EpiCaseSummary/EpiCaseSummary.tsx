@@ -17,9 +17,9 @@ import { useTranslation } from 'react-i18next';
 
 import type { Case } from '../../../api';
 import type { TableColumnCaseType } from '../../../models/table';
-import { EpiStoreContext } from '../../../stores/epiStore';
+import { EpiDashboardStoreContext } from '../../../stores/epiDashboardStore';
 import { useTableStoreContext } from '../../../stores/tableStore';
-import { EpiCaseUtil } from '../../../utils/EpiCaseUtil';
+import { CaseUtil } from '../../../utils/CaseUtil';
 
 export type EpiCaseSummaryProps = {
   readonly epiCase: Case;
@@ -27,7 +27,7 @@ export type EpiCaseSummaryProps = {
 
 export const EpiCaseSummary = ({ epiCase }: EpiCaseSummaryProps) => {
   const [t] = useTranslation();
-  const epiStore = useContext(EpiStoreContext);
+  const epiStore = useContext(EpiDashboardStoreContext);
   const tableStore = useTableStoreContext<Case>();
   const completeCaseType = useStore(epiStore, (state) => state.completeCaseType);
   const numVisibleAttributesInSummary = useStore(epiStore, (state) => state.numVisibleAttributesInSummary);
@@ -85,7 +85,7 @@ export const EpiCaseSummary = ({ epiCase }: EpiCaseSummaryProps) => {
       >
         {visibleAttributes.map(tableColumn => {
           try {
-            const value = EpiCaseUtil.getRowValue(epiCase.content, tableColumn.caseTypeCol, completeCaseType);
+            const value = CaseUtil.getRowValue(epiCase.content, tableColumn.caseTypeCol, completeCaseType);
             return (
               <Fragment key={tableColumn.id}>
                 <dt>

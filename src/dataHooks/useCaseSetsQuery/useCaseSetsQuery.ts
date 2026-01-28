@@ -9,7 +9,7 @@ import type {
   UseOptions,
 } from '../../models/dataHooks';
 import { QUERY_KEY } from '../../models/query';
-import { DataUtil } from '../../utils/DataUtil';
+import { DataHookUtil } from '../../utils/DataHookUtil';
 import { QueryUtil } from '../../utils/QueryUtil';
 import { DATE_FORMAT } from '../../data/date';
 import { useQueryMemo } from '../../hooks/useQueryMemo';
@@ -28,7 +28,7 @@ export const useCaseSetsMapQuery = (): UseMap<CaseSet> => {
   const response = useCaseSetsQuery();
 
   return useMemo(() => {
-    return DataUtil.createUseMapDataHook<CaseSet>(response, item => item.id);
+    return DataHookUtil.createUseMapDataHook<CaseSet>(response, item => item.id);
   }, [response]);
 };
 
@@ -36,6 +36,6 @@ export const useCaseSetOptionsQuery = (): UseOptions<string> => {
   const response = useCaseSetsQuery();
 
   return useMemo(() => {
-    return DataUtil.createUseOptionsDataHook<CaseSet>(response, item => item.id, (item: CaseSet) => `${item.name} (${format(item.created_at, DATE_FORMAT.DATE)})`);
+    return DataHookUtil.createUseOptionsDataHook<CaseSet>(response, item => item.id, (item: CaseSet) => `${item.name} (${format(item.created_at, DATE_FORMAT.DATE)})`);
   }, [response]);
 };

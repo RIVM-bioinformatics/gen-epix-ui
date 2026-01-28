@@ -9,12 +9,12 @@ import {
 } from '@mui/material';
 import { useTranslation } from 'react-i18next';
 
-import { useEpiCaseAbacContext } from '../../../context/epiCaseAbac';
+import { useCaseAbacContext } from '../../../context/caseAbac';
 
 export const EpiDataCollectionAccessInfo = () => {
   const [t] = useTranslation();
 
-  const caseAbacContext = useEpiCaseAbacContext();
+  const caseAbacContext = useCaseAbacContext();
 
   const canRemoveItemFromDataCollection = useCallback((dataCollectionId: string) => {
     return caseAbacContext?.rights?.[0]?.remove_data_collection_ids?.includes(dataCollectionId);

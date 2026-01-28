@@ -8,7 +8,7 @@ import type {
   UseOptions,
 } from '../../models/dataHooks';
 import { QUERY_KEY } from '../../models/query';
-import { DataUtil } from '../../utils/DataUtil';
+import { DataHookUtil } from '../../utils/DataHookUtil';
 import { QueryUtil } from '../../utils/QueryUtil';
 import { useQueryMemo } from '../../hooks/useQueryMemo';
 
@@ -26,7 +26,7 @@ export const useEtiologicalAgentsMapQuery = (): UseMap<EtiologicalAgent> => {
   const etiologicalAgentsQuery = useEtiologicalAgentsQuery();
 
   return useMemo(() => {
-    return DataUtil.createUseMapDataHook<EtiologicalAgent>(etiologicalAgentsQuery, item => item.id);
+    return DataHookUtil.createUseMapDataHook<EtiologicalAgent>(etiologicalAgentsQuery, item => item.id);
   }, [etiologicalAgentsQuery]);
 };
 
@@ -34,6 +34,6 @@ export const useEtiologicalAgentOptionsQuery = (): UseOptions<string> => {
   const etiologicalAgentsQuery = useEtiologicalAgentsQuery();
 
   return useMemo(() => {
-    return DataUtil.createUseOptionsDataHook<EtiologicalAgent>(etiologicalAgentsQuery, item => item.id, item => item.name);
+    return DataHookUtil.createUseOptionsDataHook<EtiologicalAgent>(etiologicalAgentsQuery, item => item.id, item => item.name);
   }, [etiologicalAgentsQuery]);
 };

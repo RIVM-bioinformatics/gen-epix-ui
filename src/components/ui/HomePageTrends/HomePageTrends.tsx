@@ -28,7 +28,7 @@ import { RouterManager } from '../../../classes/managers/RouterManager';
 import { useCaseSetsQuery } from '../../../dataHooks/useCaseSetsQuery';
 import { useCaseTypeMapQuery } from '../../../dataHooks/useCaseTypesQuery';
 import { QUERY_KEY } from '../../../models/query';
-import { EpiCaseTypeUtil } from '../../../utils/EpiCaseTypeUtil';
+import { CaseTypeUtil } from '../../../utils/CaseTypeUtil';
 import { QueryUtil } from '../../../utils/QueryUtil';
 import { ResponseHandler } from '../ResponseHandler';
 import { useArray } from '../../../hooks/useArray';
@@ -177,7 +177,7 @@ export const HomePageTrends = withPermissions(() => {
               diffPercentage: sortedStats[i].diffPercentage,
               callbackLabel: t`View cases`,
               callback: async () => {
-                await RouterManager.instance.router.navigate(EpiCaseTypeUtil.createCaseTypeLink(caseType));
+                await RouterManager.instance.router.navigate(CaseTypeUtil.createCaseTypeLink(caseType));
               },
             },
           );

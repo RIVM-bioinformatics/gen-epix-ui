@@ -18,7 +18,7 @@ import { CaseApi } from '../../../api';
 import { useCaseSetCategoryMapQuery } from '../../../dataHooks/useCaseSetCategoriesQuery';
 import { useCaseSetStatusMapQuery } from '../../../dataHooks/useCaseSetStatusesQuery';
 import { QUERY_KEY } from '../../../models/query';
-import { EpiCaseSetUtil } from '../../../utils/EpiCaseSetUtil';
+import { CaseSetUtil } from '../../../utils/CaseSetUtil';
 import { QueryUtil } from '../../../utils/QueryUtil';
 import { NavLink } from '../../ui/NavLink';
 import { ResponseHandler } from '../../ui/ResponseHandler';
@@ -110,7 +110,7 @@ export const EpiCaseCaseSetInfo = ({ epiCase, ...boxProps }: EpiCaseCaseSetInfoP
                   <TableCell>
                     <NavLink
                       activeAsText
-                      to={EpiCaseSetUtil.createCaseSetLink(caseSet)}
+                      to={CaseSetUtil.createCaseSetLink(caseSet)}
                     >
                       {caseSet.name}
                     </NavLink>
