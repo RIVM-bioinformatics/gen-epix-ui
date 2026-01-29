@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.10.1](https://github.com/RIVM-bioinformatics/gen-epix-ui/compare/v1.10.0...v1.10.1) (2026-01-29)
+
+
+### Bug Fixes
+
+* fix npm authentication ([e97132e](https://github.com/RIVM-bioinformatics/gen-epix-ui/commit/e97132ef32db1db4ded945acfa18e1718b3bd4f6))
+
 ## [1.10.0](https://github.com/RIVM-bioinformatics/gen-epix-ui/compare/v1.9.2...v1.10.0) (2026-01-29)
 
 
