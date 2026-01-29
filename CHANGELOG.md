@@ -1,5 +1,54 @@
 # Changelog
 
+## [1.10.0](https://github.com/RIVM-bioinformatics/gen-epix-ui/compare/v1.9.2...v1.10.0) (2026-01-29)
+
+
+### Features
+
+* add AfterIdentityProviderSelection and AfterLoginElement to config ([8084893](https://github.com/RIVM-bioinformatics/gen-epix-ui/commit/8084893d2db4497902d1769d1537b25176f207e9))
+* add aria labels to reset buttons ([f0a40e2](https://github.com/RIVM-bioinformatics/gen-epix-ui/commit/f0a40e23fa63ebeea9f78e42a3179a757416b16e))
+* add case type dim and refactor everywhere accordingly ([129fabc](https://github.com/RIVM-bioinformatics/gen-epix-ui/commit/129fabc60555defbfea29076a2a8d279aab173dc))
+* add excel template download action to cases page ([4e373c0](https://github.com/RIVM-bioinformatics/gen-epix-ui/commit/4e373c0a8797a26c2561b02de5622144f905ccf9))
+* allow all users to see their own api permissions ([cb0e786](https://github.com/RIVM-bioinformatics/gen-epix-ui/commit/cb0e78605d160e91298b795a910c30dcb910bdb0))
+* allow user to dismiss the maximum results exceed message in the dashboard ([052db46](https://github.com/RIVM-bioinformatics/gen-epix-ui/commit/052db4690968e61a7ab56bd2a7500527fada9998))
+* apply new uploading structure ([#69](https://github.com/RIVM-bioinformatics/gen-epix-ui/issues/69)) ([fa9724e](https://github.com/RIVM-bioinformatics/gen-epix-ui/commit/fa9724e1bf18c73c1f257fe188c8a757863d52af))
+* better upload error feedback ([#70](https://github.com/RIVM-bioinformatics/gen-epix-ui/issues/70)) ([6cf325c](https://github.com/RIVM-bioinformatics/gen-epix-ui/commit/6cf325c63071a3d25399c7e57778ec8451fede27))
+* expand case type admin page with new attributes ([e093c76](https://github.com/RIVM-bioinformatics/gen-epix-ui/commit/e093c768e218f80b97b8d3ce2a819d8af1143eed))
+* implement completeCaseType.create_max_n_cases ([9f66ecf](https://github.com/RIVM-bioinformatics/gen-epix-ui/commit/9f66ecf709332ac412838df73f4b5da024bd067a))
+* implement completeCaseType.delete_max_n_cases ([786447b](https://github.com/RIVM-bioinformatics/gen-epix-ui/commit/786447bc9121ebff38abec6dd4d61bae845c7dcf))
+* implement completeCaseType.read_max_n_cases, add maximum results exceeded message ([ca9bf60](https://github.com/RIVM-bioinformatics/gen-epix-ui/commit/ca9bf6006ac39047b05b436cfee05721d9b9b3f8))
+* implement completeCaseType.read_max_tree_size ([0030705](https://github.com/RIVM-bioinformatics/gen-epix-ui/commit/00307053e6babf58034a6ba5f1c954897af99f9a))
+* improve accessibility ([#66](https://github.com/RIVM-bioinformatics/gen-epix-ui/issues/66)) ([fb7f8c9](https://github.com/RIVM-bioinformatics/gen-epix-ui/commit/fb7f8c90b3f281c12f91bbcfb62f973d2cc26aa7))
+* improve delete confirmation dialog ([4ec503d](https://github.com/RIVM-bioinformatics/gen-epix-ui/commit/4ec503d5db2db797e39ebd48bf0eb622ae86518b))
+* improve delete confirmation for all crud pages ([aab2e2d](https://github.com/RIVM-bioinformatics/gen-epix-ui/commit/aab2e2d63416c1a51298ec5c76090fbda294432e))
+* improve forms ([#65](https://github.com/RIVM-bioinformatics/gen-epix-ui/issues/65)) ([7e01c90](https://github.com/RIVM-bioinformatics/gen-epix-ui/commit/7e01c9063291ffa17d1f6599cac90e9525556d16))
+* re-enable home page trends with optimized query ([18fdad1](https://github.com/RIVM-bioinformatics/gen-epix-ui/commit/18fdad16cfe38c3fd62e51e04954df426ec2af75))
+* selectable rows in a table can be disabled - implement disabled state for upload validation when row has errors ([009bb1f](https://github.com/RIVM-bioinformatics/gen-epix-ui/commit/009bb1fcb17bd6ad20a23e7048fa666490e5da7f))
+* update dependencies ([0729d0d](https://github.com/RIVM-bioinformatics/gen-epix-ui/commit/0729d0d4f981e43fdb5ea012c4ea133120012655))
+* update to latest api - improve case stat performance ([daef8b4](https://github.com/RIVM-bioinformatics/gen-epix-ui/commit/daef8b4d5618f216dfd790edc0557e17e109aed7))
+* update user menu styling and ordering ([3383520](https://github.com/RIVM-bioinformatics/gen-epix-ui/commit/3383520b2c26ac84002beafc6ff1a93155d4980a))
+* use useQueryMemo instead of useQuery ([18fdad1](https://github.com/RIVM-bioinformatics/gen-epix-ui/commit/18fdad16cfe38c3fd62e51e04954df426ec2af75))
+* user effective rights tester ([#71](https://github.com/RIVM-bioinformatics/gen-epix-ui/issues/71)) ([b2bcbcf](https://github.com/RIVM-bioinformatics/gen-epix-ui/commit/b2bcbcf3ee0e4317e7a46dc36e9ad488a20511e1))
+
+
+### Bug Fixes
+
+* add outage date formatting and filtering ([ee21447](https://github.com/RIVM-bioinformatics/gen-epix-ui/commit/ee21447d7248278ee16bac3df354d4166286749d))
+* column.isDisabled is not a function ([605c2bc](https://github.com/RIVM-bioinformatics/gen-epix-ui/commit/605c2bcac7b01d631439f24e6ed2a52d2d189ead))
+* disable the home page trends ([1a698d3](https://github.com/RIVM-bioinformatics/gen-epix-ui/commit/1a698d32047d199521db61e262e9284861df25da))
+* fix aria-label vertical resize handle ([9af0ab6](https://github.com/RIVM-bioinformatics/gen-epix-ui/commit/9af0ab6ee1f4ed35b0a3a5eccc0b2b712e144333))
+* fix CASE_IDS_BY_QUERY cache invalidation ([2b3b895](https://github.com/RIVM-bioinformatics/gen-epix-ui/commit/2b3b8959146bb7c2b10b59c5eaa88b71ac46913d))
+* fix more forms ([c47ec3f](https://github.com/RIVM-bioinformatics/gen-epix-ui/commit/c47ec3f18a530093daab4e4772fc9846d5f9995d))
+* fix runtime error caseSet.id in EpiDashboard ([1dc0372](https://github.com/RIVM-bioinformatics/gen-epix-ui/commit/1dc0372f8966d87b274bf90c9ecba49a6b643b15))
+* fix the select all checkbox so it takes disabled rows into condideration ([a6be018](https://github.com/RIVM-bioinformatics/gen-epix-ui/commit/a6be018a09e44556fd44532c013715223c5964e2))
+* fix user feedback dialog form ([a85d87a](https://github.com/RIVM-bioinformatics/gen-epix-ui/commit/a85d87a3c874184ad61f67b738b11577fdf47f3f))
+* hide save button and form when user has insufficient rights to create an event ([d3ecbb6](https://github.com/RIVM-bioinformatics/gen-epix-ui/commit/d3ecbb61e56ba8bc99c8cc6b14b32f870aa447c0))
+* make selected sample column the first column in sequence mapping ([f9070d6](https://github.com/RIVM-bioinformatics/gen-epix-ui/commit/f9070d63115471074117e462aab53b91cdcf97cf))
+* remove description column from table in admin pages ([e093c76](https://github.com/RIVM-bioinformatics/gen-epix-ui/commit/e093c768e218f80b97b8d3ce2a819d8af1143eed))
+* show cases even if max number of results has been exceeded ([220f9af](https://github.com/RIVM-bioinformatics/gen-epix-ui/commit/220f9af3cade1a7ec60e3d46e28a98c1991e89bc))
+* swap n_cases with n_own_cases on events page ([9f18b6c](https://github.com/RIVM-bioinformatics/gen-epix-ui/commit/9f18b6cdc0027a4a13c728c22852e2d1d021acc8))
+* the Maximum results exceeded message ([203bbf7](https://github.com/RIVM-bioinformatics/gen-epix-ui/commit/203bbf7740b9e2d62c676f2e69cb45093bbb999e))
+
 ## [1.9.2](https://github.com/RIVM-bioinformatics/gen-epix-ui/compare/v1.9.1...v1.9.2) (2025-11-28)
 
 
