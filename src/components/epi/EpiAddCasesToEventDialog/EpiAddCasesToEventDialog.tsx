@@ -89,7 +89,7 @@ export const EpiAddCasesToEventDialog = withDialog<EpiAddCasesToEventDialogProps
   const completeCaseType = useStore(epiStore, useShallow((state) => state.completeCaseType));
   const formId = useId();
   const filteredCaseSetOptions = useMemo(() => (caseSetOptionsQuery.options ?? []).filter(option => {
-    if (openProps.currentCaseSet && option.value === openProps.currentCaseSet.id) {
+    if (openProps.currentCaseSet?.id === option.value) {
       return false;
     }
     const caseSet = caseSetsMapQuery.map.get(option.value);

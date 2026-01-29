@@ -35,7 +35,7 @@ export const useDimensions = (ref: RefObject<HTMLElement>, onResizeCallback?: ()
         height: mutations?.[0].contentRect.height,
       };
 
-      if (dimensionsRef?.current && dimensionsRef.current.width === dimensions.width && dimensionsRef.current.height === dimensions.height) {
+      if (dimensionsRef.current?.width === dimensions.width && dimensionsRef.current?.height === dimensions.height) {
         return;
       }
 
