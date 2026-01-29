@@ -27,7 +27,7 @@ export class QueryClientManager {
             ? () => false
             : (failureCount: number, error: unknown) => {
               if (AxiosUtil.isAxiosInternalServerError(error) || AxiosUtil.isAxiosTimeoutError(error)) {
-                return failureCount < 5;
+                return failureCount < 3;
               }
               return false;
             },

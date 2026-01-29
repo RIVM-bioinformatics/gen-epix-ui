@@ -13,6 +13,7 @@ import {
 import type { ReactElement } from 'react';
 import {
   useCallback,
+  useEffect,
   useMemo,
   useRef,
 } from 'react';
@@ -120,6 +121,7 @@ export type CrudPageProps<
   readonly onCreateError?: (error: unknown, variables: TFormFields, context: MutationContextCreate<TData>) => Promise<void>;
   readonly onDeleteSuccess?: (item: TData, context: MutationContextDelete<TData>) => Promise<void>;
   readonly onDeleteError?: (error: unknown, item: TData, context: MutationContextDelete<TData>) => Promise<void>;
+  readonly onRowsChange?: (items: TData[]) => void;
   readonly editDialogExtraActionsFactory?: (item: TData) => DialogAction[];
   readonly getOptimisticUpdateIntermediateItem?: (variables: TFormFields, previousItem: TData) => TData;
 }>;
@@ -162,6 +164,7 @@ export const CrudPage = <
   onEditError,
   onEditSuccess,
   onFormChange,
+  onRowsChange,
   onShowItem,
   resourceQueryKeyBase,
   schema,
@@ -201,6 +204,12 @@ export const CrudPage = <
     select: fetchAllSelect,
     enabled: !isLoadablesLoading,
   });
+
+  useEffect(() => {
+    if (onRowsChange && rows) {
+      onRowsChange(rows);
+    }
+  }, [onRowsChange, rows]);
 
   const isLoading = useMemo(() => {
     if (isRowsLoading) {
@@ -602,7 +611,6 @@ export const CrudPage = <
             error={error}
             isLoading={isLoading}
           >
-
             <TableSidebarMenu />
             <Box
               sx={{

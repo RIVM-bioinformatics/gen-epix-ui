@@ -29,6 +29,10 @@ export const GenericErrorMessage = ({ error, shouldHideActionButtons }: GenericE
   const [t] = useTranslation();
 
   useEffect(() => {
+    if (!error || isAxiosError(error)) {
+      // Axios errors are logged in LogManager already
+      return;
+    }
     LogManager.instance.log([{
       detail: {
         error,

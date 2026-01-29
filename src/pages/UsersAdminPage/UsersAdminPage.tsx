@@ -2,6 +2,7 @@ import {
   useCallback,
   useMemo,
   useRef,
+  useState,
 } from 'react';
 import { useTranslation } from 'react-i18next';
 import {
@@ -36,7 +37,6 @@ import type { EpiUserRightsDialogRefMethods } from '../../components/epi/EpiUser
 import { EpiUserRightsDialog } from '../../components/epi/EpiUserRightsDialog';
 import { AuthorizationManager } from '../../classes/managers/AuthorizationManager';
 import { useArray } from '../../hooks/useArray';
-import { useUsersQuery } from '../../dataHooks/useUsersQuery';
 import { useInviteUserConstraintsQuery } from '../../dataHooks/useInviteUserConstraintsQuery';
 
 type FormFields = Pick<User, 'email' | 'is_active' | 'roles'>;
@@ -46,37 +46,29 @@ export const UsersAdminPage = () => {
   const organizationOptionsQuery = useOrganizationOptionsQuery();
   const epiUserRightsDialogRef = useRef<EpiUserRightsDialogRefMethods>(null);
   const inviteUserConstraintsQuery = useInviteUserConstraintsQuery();
-  const usersQuery = useUsersQuery();
+  const [tableRoleOptions, setTableRoleOptions] = useState<OptionBase<string>[]>([]);
+  const [formRoleOptions, setFormRoleOptions] = useState<OptionBase<string>[]>([]);
 
   const loadables = useArray([
     organizationOptionsQuery,
-    usersQuery,
     inviteUserConstraintsQuery,
   ]);
 
-  const tableRoleOptions = useMemo<OptionBase<string>[]>(() => {
-    if (!usersQuery?.data) {
-      return [];
-    }
+  const onRowsChange = useCallback((items: User[]) => {
     const roles = new Set<string>();
-    usersQuery.data.forEach((user) => {
+    items.forEach((user) => {
       user.roles.forEach((role) => roles.add(role));
     });
-    return Array.from(roles).map((role) => ({
+    const _tableRoleOptions = Array.from(roles).map((role) => ({
       value: role,
       label: role,
     }));
-  }, [usersQuery.data]);
-
-  const formRoleOptions = useMemo<OptionBase<string>[]>(() => {
-    if (!inviteUserConstraintsQuery?.data?.roles?.length) {
-      return tableRoleOptions;
-    }
-    return inviteUserConstraintsQuery.data.roles.map(role => ({
+    setTableRoleOptions(_tableRoleOptions);
+    setFormRoleOptions(inviteUserConstraintsQuery?.data ? inviteUserConstraintsQuery.data.roles.map(role => ({
       value: role,
       label: role,
-    }));
-  }, [inviteUserConstraintsQuery.data, tableRoleOptions]);
+    })) : _tableRoleOptions);
+  }, [inviteUserConstraintsQuery.data]);
 
   const fetchAll = useCallback(async (signal: AbortSignal) => {
     const users = (await OrganizationApi.instance.usersGetAll({ signal }))?.data;
@@ -219,6 +211,7 @@ export const UsersAdminPage = () => {
         testIdAttributes={TestIdUtil.createAttributes('UsersAdminPage')}
         title={t`Users`}
         updateOne={updateOne}
+        onRowsChange={onRowsChange}
       />
       <EpiUserRightsDialog ref={epiUserRightsDialogRef} />
     </>

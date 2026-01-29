@@ -12,6 +12,7 @@ import {
 } from '../../../api';
 import { SystemApi } from '../../../api';
 import { StringUtil } from '../../../utils/StringUtil';
+import { AxiosUtil } from '../../../utils/AxiosUtil';
 
 type LogManagerItem = {
   detail?: unknown;
@@ -119,13 +120,18 @@ export class LogManager {
 
   public onResponseRejected(error: unknown): void {
     if (isAxiosError(error)) {
+      if (AxiosUtil.isAxiosCanceledError(error)) {
+        return;
+      }
       const requestId = error?.config?.headers.get('X-REQUEST-ID') as string;
       const duration = new Date().getTime() - this.requestMap.get(requestId);
       this.log([{
         topic: 'RESPONSE_ERROR',
         detail: {
           url: error.config.url,
-          error,
+          status: error.response.status,
+          responseData: error.response.data as unknown,
+          requestParams: error.config.params as unknown,
         },
         duration,
         level: LogLevel.ERROR,
