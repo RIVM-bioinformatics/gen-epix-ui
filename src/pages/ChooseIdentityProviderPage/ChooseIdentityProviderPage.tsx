@@ -23,38 +23,62 @@ export type ChooseIdentityProviderPageProps = {
   readonly identityProvidersWithAvailability: IdentityProviderWithAvailability[];
 };
 
-export const ChooseIdentityProviderPage = ({ identityProvidersWithAvailability }: ChooseIdentityProviderPageProps) => {
+export const ChooseIdentityProviderPage = ({
+  identityProvidersWithAvailability,
+}: ChooseIdentityProviderPageProps) => {
   const [t] = useTranslation();
 
-  const onIdentityProviderButtonClick = useCallback((event: MouseEvent<HTMLButtonElement>) => {
-    const name = (event.target as HTMLButtonElement).getAttribute('data-name');
+  const AfterIdentityProviderSelection =
+    ConfigManager.instance.config.login?.AfterIdentityProviderSelection;
 
-    AuthenticationManager.instance.next(identityProvidersWithAvailability.find(identityProviderWithAvailability => identityProviderWithAvailability.provider.name === name).provider);
-  }, [identityProvidersWithAvailability]);
+  const onIdentityProviderButtonClick = useCallback(
+    (event: MouseEvent<HTMLButtonElement>) => {
+      const name = (event.target as HTMLButtonElement).getAttribute(
+        'data-name',
+      );
 
-  const availableIdentityProviders = useMemo<IdentityProviderWithAvailability[]>(() => {
-    return identityProvidersWithAvailability?.filter(x => x.isAvailable) ?? [];
+      AuthenticationManager.instance.next(
+        identityProvidersWithAvailability.find(
+          (identityProviderWithAvailability) =>
+            identityProviderWithAvailability.provider.name === name,
+        ).provider,
+      );
+    },
+    [identityProvidersWithAvailability],
+  );
+
+  const availableIdentityProviders = useMemo<
+    IdentityProviderWithAvailability[]
+  >(() => {
+    return (
+      identityProvidersWithAvailability?.filter((x) => x.isAvailable) ?? []
+    );
   }, [identityProvidersWithAvailability]);
 
   const onRefreshButtonClick = useCallback(() => {
     window.location.reload();
   }, []);
 
-  const refreshButton = useMemo(() => (
-    <Button
-      variant={'outlined'}
-      color={'inherit'}
-      sx={{ marginTop: 2 }}
-      onClick={onRefreshButtonClick}
-    >
-      {t('Refresh')}
-    </Button>
-  ), [onRefreshButtonClick, t]);
+  const refreshButton = useMemo(
+    () => (
+      <Button
+        variant={'outlined'}
+        color={'inherit'}
+        sx={{ marginTop: 2 }}
+        onClick={onRefreshButtonClick}
+      >
+        {t('Refresh')}
+      </Button>
+    ),
+    [onRefreshButtonClick, t],
+  );
 
   return (
     <PageContainer
       singleAction
-      testIdAttributes={TestIdUtil.createAttributes('ChooseIdentityProviderPage')}
+      testIdAttributes={TestIdUtil.createAttributes(
+        'ChooseIdentityProviderPage',
+      )}
       title={t`Choose identity provider`}
     >
       {availableIdentityProviders.length === 0 && (
@@ -62,24 +86,23 @@ export const ChooseIdentityProviderPage = ({ identityProvidersWithAvailability }
           marginBottom={4}
           marginTop={1}
         >
-          <Alert
-            severity={'error'}
-          >
+          <Alert severity={'error'}>
             <AlertTitle>
-              {t('No identity providers are currently available. Please try again later.')}
+              {t(
+                'No identity providers are currently available. Please try again later.',
+              )}
             </AlertTitle>
             {refreshButton}
           </Alert>
         </Box>
       )}
-      {availableIdentityProviders.length !== identityProvidersWithAvailability.length && (
+      {availableIdentityProviders.length !==
+        identityProvidersWithAvailability.length && (
         <Box
           marginBottom={4}
           marginTop={1}
         >
-          <Alert
-            severity={'info'}
-          >
+          <Alert severity={'info'}>
             <AlertTitle>
               {t('Some identity providers are currently unavailable.')}
             </AlertTitle>
@@ -92,40 +115,51 @@ export const ChooseIdentityProviderPage = ({ identityProvidersWithAvailability }
           marginBottom={2}
           variant={'h1'}
         >
-          {t('Welcome to {{applicationName}}', { applicationName: ConfigManager.instance.config.applicationName })}
+          {t('Welcome to {{applicationName}}', {
+            applicationName: ConfigManager.instance.config.applicationName,
+          })}
         </Typography>
         <Typography marginBottom={2}>
           {t`Please login with one of the following identity providers:`}
         </Typography>
-        {identityProvidersWithAvailability.map((identityProviderWithAvailability) => {
-          const button = (
-            <Button
-              data-name={identityProviderWithAvailability.provider.name}
-              disabled={!identityProviderWithAvailability.isAvailable}
-              onClick={onIdentityProviderButtonClick}
-            >
-              {identityProviderWithAvailability.provider.label}
-            </Button>
-          );
-          return (
-            <Box
-              key={identityProviderWithAvailability.provider.name}
-              marginY={2}
-            >
-              {identityProviderWithAvailability.isAvailable && button}
-              {!identityProviderWithAvailability.isAvailable && (
-                <Tooltip
-                  arrow
-                  title={identityProviderWithAvailability.isAvailable ? '' : t('This identity provider is currently unavailable. Please try again later.')}
-                >
-                  <span>
-                    {button}
-                  </span>
-                </Tooltip>
-              )}
-            </Box>
-          );
-        })}
+        {identityProvidersWithAvailability.map(
+          (identityProviderWithAvailability) => {
+            const button = (
+              <Button
+                data-name={identityProviderWithAvailability.provider.name}
+                disabled={!identityProviderWithAvailability.isAvailable}
+                onClick={onIdentityProviderButtonClick}
+              >
+                {identityProviderWithAvailability.provider.label}
+              </Button>
+            );
+            return (
+              <Box
+                key={identityProviderWithAvailability.provider.name}
+                marginY={2}
+              >
+                {identityProviderWithAvailability.isAvailable && button}
+                {!identityProviderWithAvailability.isAvailable && (
+                  <Tooltip
+                    arrow
+                    title={
+                      identityProviderWithAvailability.isAvailable
+                        ? ''
+                        : t(
+                          'This identity provider is currently unavailable. Please try again later.',
+                        )
+                    }
+                  >
+                    <span>
+                      {button}
+                    </span>
+                  </Tooltip>
+                )}
+              </Box>
+            );
+          },
+        )}
+        {AfterIdentityProviderSelection && <AfterIdentityProviderSelection />}
       </Box>
     </PageContainer>
   );

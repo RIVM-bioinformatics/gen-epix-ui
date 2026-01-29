@@ -133,4 +133,10 @@ export interface Config {
     DEFAULT_OVERSCAN_MAIN: number;
     DEFAULT_OVERSCAN_REVERSE: number;
   };
+  login?: {
+    // eslint-disable-next-line @typescript-eslint/naming-convention
+    AfterIdentityProviderSelection?: () => ReactElement;
+    // eslint-disable-next-line @typescript-eslint/naming-convention
+    AfterLoginElement?: () => ReactElement;
+  };
 }

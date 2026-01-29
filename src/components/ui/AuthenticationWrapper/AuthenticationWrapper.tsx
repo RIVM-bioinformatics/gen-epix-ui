@@ -31,9 +31,13 @@ export const AuthenticationWrapper = ({ children }: PropsWithChildren) => {
   const [t] = useTranslation();
   const auth = useAuth();
   const consentDialogRef = useRef<ConsentDialogRefMethods>(null);
-  const [hasGivenConsent, setHasGivenConsent] = useState<boolean>(!ConfigManager.instance.config.consentDialog.getShouldShow());
+  const [hasGivenConsent, setHasGivenConsent] = useState<boolean>(
+    !ConfigManager.instance.config.consentDialog.getShouldShow(),
+  );
 
   const oidcConfiguration = useSubscribable(AuthenticationManager.instance);
+  const AfterLoginElement =
+    ConfigManager.instance.config.login?.AfterLoginElement;
 
   useEffect(() => {
     AuthenticationManager.instance.authContextProps = auth;
@@ -46,10 +50,12 @@ export const AuthenticationWrapper = ({ children }: PropsWithChildren) => {
   }, [auth.isAuthenticated, hasGivenConsent]);
 
   const onConsentDialogConsent = useCallback(() => {
-    LogManager.instance.log([{
-      topic: 'CONSENT',
-      level: LogLevel.INFO,
-    }]);
+    LogManager.instance.log([
+      {
+        topic: 'CONSENT',
+        level: LogLevel.INFO,
+      },
+    ]);
     setHasGivenConsent(true);
     consentDialogRef.current.close();
   }, []);
@@ -82,34 +88,38 @@ export const AuthenticationWrapper = ({ children }: PropsWithChildren) => {
     AuthenticationManager.instance.next(undefined);
   }, []);
 
-  const loginElement = useMemo(() => (
-    <>
-      <Box
-        marginY={2}
-        sx={{ textAlign: 'center' }}
-      >
-        <Button
-          color={'primary'}
-          variant={'contained'}
-          onClick={onLoginButtonClick}
+  const loginElement = useMemo(
+    () => (
+      <>
+        <Box
+          marginY={2}
+          sx={{ textAlign: 'center' }}
         >
-          {oidcConfiguration.label}
-        </Button>
-      </Box>
-      <Box
-        marginY={2}
-        sx={{ textAlign: 'center' }}
-      >
-        <Button
-          color={'primary'}
-          variant={'outlined'}
-          onClick={onChangeLoginProviderButtonClick}
+          <Button
+            color={'primary'}
+            variant={'contained'}
+            data-name={oidcConfiguration.name}
+            onClick={onLoginButtonClick}
+          >
+            {oidcConfiguration.label}
+          </Button>
+        </Box>
+        <Box
+          marginY={2}
+          sx={{ textAlign: 'center' }}
         >
-          {t`Choose a different identity provider`}
-        </Button>
-      </Box>
-    </>
-  ), [oidcConfiguration, onChangeLoginProviderButtonClick, onLoginButtonClick, t]);
+          <Button
+            color={'primary'}
+            variant={'outlined'}
+            onClick={onChangeLoginProviderButtonClick}
+          >
+            {t`Choose a different identity provider`}
+          </Button>
+        </Box>
+        {AfterLoginElement && <AfterLoginElement />}
+      </>
+    ), [oidcConfiguration, onChangeLoginProviderButtonClick, onLoginButtonClick, t, AfterLoginElement],
+  );
 
   if (auth.activeNavigator || auth.isLoading) {
     return (
@@ -126,18 +136,22 @@ export const AuthenticationWrapper = ({ children }: PropsWithChildren) => {
 
   if (auth.error) {
     AuthenticationManager.clearStaleState();
-    LogManager.instance.log([{
-      detail: {
-        error: auth.error,
+    LogManager.instance.log([
+      {
+        detail: {
+          error: auth.error,
+        },
+        level: LogLevel.ERROR,
+        topic: 'Authentication Error',
       },
-      level: LogLevel.ERROR,
-      topic: 'Authentication Error',
-    }]);
+    ]);
 
     return (
       <PageContainer
         singleAction
-        testIdAttributes={TestIdUtil.createAttributes('LoginPageSessionExpired')}
+        testIdAttributes={TestIdUtil.createAttributes(
+          'LoginPageSessionExpired',
+        )}
         title={t`Login`}
       >
         <Typography
@@ -152,7 +166,12 @@ export const AuthenticationWrapper = ({ children }: PropsWithChildren) => {
   }
 
   if (!auth.isAuthenticated) {
-    if (AuthenticationManager.instance.getUserManagerSettingsCreatedAt() && new Date().getTime() - AuthenticationManager.instance.getUserManagerSettingsCreatedAt() < AuthenticationManager.autoLoginSkew) {
+    if (
+      AuthenticationManager.instance.getUserManagerSettingsCreatedAt() &&
+      new Date().getTime() -
+        AuthenticationManager.instance.getUserManagerSettingsCreatedAt() <
+        AuthenticationManager.autoLoginSkew
+    ) {
       login();
       return;
     }
