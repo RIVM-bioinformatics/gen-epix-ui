@@ -26,7 +26,7 @@ type FormFields = Pick<Contact, 'name' | 'email' | 'phone'>;
 
 export const OrganizationContactsAdminPage = () => {
   const { siteId } = useParams();
-  const [t] = useTranslation();
+  const { t } = useTranslation();
 
   const fetchAll = useCallback(async (signal: AbortSignal) => {
     return (await OrganizationApi.instance.contactsGetAll({ signal })).data;

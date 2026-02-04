@@ -52,7 +52,7 @@ export const TableColumnsEditorDialog = withDialog<TableColumnsEditorDialogProps
     openProps: { hasCellData },
   }: TableColumnsEditorDialogProps,
 ): ReactElement => {
-  const [t] = useTranslation();
+  const { t } = useTranslation();
   const [items, setItems] = useState<Item[]>([]);
 
   const tableStore = useTableStoreContext<unknown>();

@@ -34,7 +34,7 @@ import { EpiUploadNavigation } from './EpiUploadNavigation';
 import { EpiUploadCaseResultTable } from './EpiUploadCaseResultTable';
 
 export const EpiUploadValidateInner = () => {
-  const [t] = useTranslation();
+  const { t } = useTranslation();
 
   const store = useContext(EpiUploadStoreContext);
   const goToNextStep = useStore(store, (state) => state.goToNextStep);

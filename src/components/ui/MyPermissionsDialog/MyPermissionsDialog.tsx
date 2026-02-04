@@ -38,7 +38,7 @@ export const MyPermissionsDialog = withDialog<MyPermissionsDialogProps, MyPermis
     onTitleChange,
   }: MyPermissionsDialogProps,
 ): ReactElement => {
-  const [t] = useTranslation();
+  const { t } = useTranslation();
   useEffect(() => {
     onTitleChange(t`My Permissions`);
   }, [onTitleChange, t]);

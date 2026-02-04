@@ -72,7 +72,7 @@ export const Dialog = ({
   noPadding = false,
   dialogContentRef,
 }: PropsWithChildren<DialogProps>): ReactElement => {
-  const [t] = useTranslation();
+  const { t } = useTranslation();
   const onMuiDialogClose = useCallback((_event: unknown, reason: 'backdropClick' | 'escapeKeyDown') => {
     if (reason === 'backdropClick' && disableBackdropClick) {
       return;

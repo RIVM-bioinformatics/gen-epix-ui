@@ -35,7 +35,7 @@ export const ConfirmationRender = <TOpenProps,>(
     openProps,
   }: ConfirmationProps<TOpenProps>,
 ): ReactElement => {
-  const [t] = useTranslation();
+  const { t } = useTranslation();
   const onCancelButtonClick = useCallback((): void => {
     if (onCancel) {
       onCancel(openProps);

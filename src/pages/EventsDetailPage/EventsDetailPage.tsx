@@ -17,7 +17,7 @@ import { QUERY_KEY } from '../../models/query';
 import { TestIdUtil } from '../../utils/TestIdUtil';
 
 export const EventsDetailPage = () => {
-  const [t] = useTranslation();
+  const { t } = useTranslation();
   const { caseSetId, slug } = useParams();
 
   const caseTypeMapQuery = useCaseTypeMapQuery();

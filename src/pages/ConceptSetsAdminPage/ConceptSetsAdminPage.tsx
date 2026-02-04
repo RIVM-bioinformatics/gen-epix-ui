@@ -32,7 +32,7 @@ type FormFields = Omit<ConceptSet, 'id'>;
 
 export const ConceptSetsAdminPage = () => {
   const conceptSetTypeOptionsQuery = useConceptSetTypeOptionsQuery();
-  const [t] = useTranslation();
+  const { t } = useTranslation();
 
   const fetchAll = useCallback(async (signal: AbortSignal) => {
     return (await OntologyApi.instance.conceptSetsGetAll({ signal }))?.data;

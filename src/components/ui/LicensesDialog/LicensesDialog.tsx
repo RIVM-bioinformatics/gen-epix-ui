@@ -63,7 +63,7 @@ export const LicensesDialog = withDialog<LicensesDialogProps, LicensesDialogOpen
     dialogContentRef,
   }: LicensesDialogProps,
 ): ReactElement => {
-  const [t] = useTranslation();
+  const { t } = useTranslation();
   const [item, setItem] = useState<PackageMetadata>(null);
 
   const { LicenseInformation } = ConfigManager.instance.config;

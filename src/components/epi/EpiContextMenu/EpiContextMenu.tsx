@@ -43,7 +43,7 @@ export type EpiContextMenuProps = {
 };
 
 export const EpiContextMenu = ({ config, onMenuClose, getExtraItems }: EpiContextMenuProps) => {
-  const [t] = useTranslation();
+  const { t } = useTranslation();
   const epiStore = useContext(EpiDashboardStoreContext);
   const selectedIds = useStore(epiStore, (state) => state.selectedIds);
   const setSelectedIds = useStore(epiStore, (state) => state.setSelectedIds);

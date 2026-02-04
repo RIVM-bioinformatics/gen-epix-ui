@@ -37,7 +37,7 @@ export const useOrganizationAdminPolicyMapQuery = (): UseMap<OrganizationAdminPo
 };
 
 export const useOrganizationAdminPolicyNameFactory = (): UseNameFactory<OrganizationAdminPolicy> => {
-  const [t] = useTranslation();
+  const { t } = useTranslation();
 
   const organizationMapQuery = useOrganizationMapQuery();
   const usersMapQuery = useUsersMapQuery();

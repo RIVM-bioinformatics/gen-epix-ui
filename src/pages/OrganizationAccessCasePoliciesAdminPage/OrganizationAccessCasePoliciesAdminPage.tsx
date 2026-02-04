@@ -46,7 +46,7 @@ type FormFields = Pick<
 >;
 
 export const OrganizationAccessCasePoliciesAdminPage = () => {
-  const [t] = useTranslation();
+  const { t } = useTranslation();
   const organizationOptionsQuery = useOrganizationOptionsQuery();
   const dataCollectionOptionsQuery = useDataCollectionOptionsQuery();
   const caseTypeColSetOptionsQuery = useCaseTypeColSetOptionsQuery();

@@ -18,7 +18,7 @@ export const conceptSetTypePresentationValues: Partial<Record<ConceptSetType, st
 };
 
 export const useConceptSetTypeOptionsQuery = (): UseOptions<string> => {
-  const [t] = useTranslation();
+  const { t } = useTranslation();
   return useMemo(() => {
     const options: OptionBase<string>[] = Object.entries(conceptSetTypePresentationValues).map(([value, label]) => ({ value, label }));
     return {

@@ -97,7 +97,7 @@ export const UsersEffectiveRightsDetailsDialog = withDialog<UsersEffectiveRights
   }: UsersEffectiveRightsDetailsDialogProps,
 ): ReactElement => {
 
-  const [t] = useTranslation();
+  const { t } = useTranslation();
   const [activeTab, setActiveTab] = useState(usersEffectiveRightsDetailsTypeOrder.indexOf(type));
   const [visibleItems, setVisibleItems] = useState<string[]>([]);
 

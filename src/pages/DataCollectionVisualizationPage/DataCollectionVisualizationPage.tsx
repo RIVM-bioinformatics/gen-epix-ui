@@ -224,7 +224,7 @@ const DataCollectionVisualizationPageInner = () => {
 };
 
 export const DataCollectionVisualizationPage = () => {
-  const [t] = useTranslation();
+  const { t } = useTranslation();
 
   return (
     <PageContainer

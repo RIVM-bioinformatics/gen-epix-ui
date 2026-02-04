@@ -75,7 +75,7 @@ export const ForwardRefEpiDashboardLayoutRenderer: ForwardRefRenderFunction<Forw
   epiCurveWidget,
   disabled,
 }, forwardedRef) => {
-  const [t] = useTranslation();
+  const { t } = useTranslation();
   const panelRefs = useRef<{ [key: string]: ImperativePanelGroupHandle }>({});
   const epiStore = useContext(EpiDashboardStoreContext);
   const dashboardLayoutUserConfig = useStore(userProfileStore, (state) => state.epiDashboardLayoutUserConfig);

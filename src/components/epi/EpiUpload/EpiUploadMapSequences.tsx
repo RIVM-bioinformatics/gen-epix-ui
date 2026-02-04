@@ -37,7 +37,7 @@ import type { CaseUploadResultWithGeneratedId } from '../../../models/epi';
 import { EpiUploadNavigation } from './EpiUploadNavigation';
 
 export const EpiUploadMapSequences = () => {
-  const [t] = useTranslation();
+  const { t } = useTranslation();
   const theme = useTheme();
 
   const store = useContext(EpiUploadStoreContext);

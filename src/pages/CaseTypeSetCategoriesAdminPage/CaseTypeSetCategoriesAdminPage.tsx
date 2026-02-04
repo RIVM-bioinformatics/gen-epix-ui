@@ -25,7 +25,7 @@ import { CrudPage } from '../CrudPage';
 type FormFields = Pick<CaseTypeSetCategory, 'name' | 'rank' | 'description'>;
 
 export const CaseTypeSetCategoriesAdminPage = () => {
-  const [t] = useTranslation();
+  const { t } = useTranslation();
 
   const fetchAll = useCallback(async (signal: AbortSignal) => {
     return (await CaseApi.instance.caseTypeSetCategoriesGetAll({ signal }))?.data;

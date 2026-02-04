@@ -24,7 +24,7 @@ export const EpiDashboardSettingsSidebarItemIcon = SettingsIcon;
 
 const EpiDashboardSettingsSidebarItemContent = ({ onReset }: EpiDashboardSettingsSidebarItemContentProps) => {
   const theme = useTheme();
-  const [t] = useTranslation();
+  const { t } = useTranslation();
 
   const items = useMemo(() => [
     {
@@ -75,7 +75,7 @@ const EpiDashboardSettingsSidebarItemContent = ({ onReset }: EpiDashboardSetting
 };
 
 export const EpiDashboardSettingsSidebarItem = ({ open, onClose, onReset }: EpiDashboardSettingsSidebarItemProps) => {
-  const [t] = useTranslation();
+  const { t } = useTranslation();
 
   return (
     <SidebarItem

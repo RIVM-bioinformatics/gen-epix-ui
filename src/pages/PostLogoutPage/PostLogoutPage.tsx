@@ -11,7 +11,7 @@ import { PageContainer } from '../../components/ui/PageContainer';
 import { TestIdUtil } from '../../utils/TestIdUtil';
 
 export const PostLogoutPage = () => {
-  const [t] = useTranslation();
+  const { t } = useTranslation();
   const onButtonClick = useCallback(async () => {
 
     await RouterManager.instance.router.navigate('/');

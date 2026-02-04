@@ -15,7 +15,7 @@ import { QUERY_KEY } from '../../models/query';
 import { TestIdUtil } from '../../utils/TestIdUtil';
 
 export const CasesDetailPage = () => {
-  const [t] = useTranslation();
+  const { t } = useTranslation();
   const { slug, caseTypeId } = useParams();
 
   const updateBreadcrumb = useUpdateBreadcrumb('Case type');

@@ -43,7 +43,7 @@ type FormFields = {
 };
 
 export const EpiCaseSharingForm = ({ formId, epiCase, onFinish, onIsSavingChange, ...boxProps }: EpiCaseSharingFormProps) => {
-  const [t] = useTranslation();
+  const { t } = useTranslation();
   const [isSaving, setIsSaving] = useState(false);
   const caseAbacContext = useCaseAbacContext();
 

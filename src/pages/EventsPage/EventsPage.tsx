@@ -59,7 +59,7 @@ import { useQueryMemo } from '../../hooks/useQueryMemo';
 type Row = CaseSet & CaseStats;
 
 export const EventsPage = () => {
-  const [t] = useTranslation();
+  const { t } = useTranslation();
   const theme = useTheme();
   const caseTypeOptionsQuery = useCaseTypeOptionsQuery();
   const caseSetCategoryOptionsQuery = useCaseSetCategoryOptionsQuery();

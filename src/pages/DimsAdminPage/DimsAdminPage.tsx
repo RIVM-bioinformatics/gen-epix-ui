@@ -31,7 +31,7 @@ import { AuthorizationManager } from '../../classes/managers/AuthorizationManage
 type FormFields = Pick<Dim, 'dim_type' | 'code' | 'label' | 'description' | 'rank' | 'col_code_prefix'>;
 
 export const DimsAdminPage = () => {
-  const [t] = useTranslation();
+  const { t } = useTranslation();
   const dimTypeOptionsQuery = useDimTypeOptionsQuery();
 
   const fetchAll = useCallback(async (signal: AbortSignal) => {

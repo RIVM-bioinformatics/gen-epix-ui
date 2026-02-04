@@ -30,7 +30,7 @@ export const EpiDashboardDownloadSidebarItemIcon = DownloadIcon;
 
 const EpiDashboardDownloadSidebarItemContent = () => {
   const theme = useTheme();
-  const [t] = useTranslation();
+  const { t } = useTranslation();
   const [downloadConfigs, setDownloadConfigs] = useState<DownloadConfig[]>([]);
 
   useEffect(() => {
@@ -136,7 +136,7 @@ const EpiDashboardDownloadSidebarItemContent = () => {
 };
 
 export const EpiDashboardDownloadSidebarItem = ({ open, onClose }: EpiDashboardDownloadSidebarItemProps) => {
-  const [t] = useTranslation();
+  const { t } = useTranslation();
 
   return (
     <SidebarItem

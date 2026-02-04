@@ -44,7 +44,7 @@ import type { UserInvitationsAdminDetailDialogRefMethods } from './UserInvitatio
 type FormFields = Pick<UserInvitation, 'key' | 'organization_id' | 'roles'>;
 
 export const UserInvitationsAdminPage = () => {
-  const [t] = useTranslation();
+  const { t } = useTranslation();
   const organizationOptionsQuery = useOrganizationOptionsQuery();
   const inviteUserConstraintsQuery = useInviteUserConstraintsQuery();
   const userOptionsQuery = useUserOptionsQuery();

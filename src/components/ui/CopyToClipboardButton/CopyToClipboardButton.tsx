@@ -24,7 +24,7 @@ export type CopyToClipboardButtonProps = {
 };
 
 export const CopyToClipboardButton = ({ clipboardValue, onGetClipboardValue, buttonText, buttonVariant, iconOnly, buttonProps, tooltipSuccessText, baseIcon }: CopyToClipboardButtonProps) => {
-  const [t] = useTranslation();
+  const { t } = useTranslation();
   const [copyToClipBoardButtonColor, setCopyToClipBoardButtonColor] = useState<ButtonOwnProps['color']>('primary');
   const [copyToClipBoardIcon, setCopyToClipBoardIcon] = useState<ReactElement>(baseIcon ?? <ContentCopyIcon />);
   const [tooltipText, setTooltipText] = useState<string>(buttonText ?? t`Copy to clipboard`);

@@ -24,7 +24,7 @@ import { UserSettingsManager } from '../../../classes/managers/UserSettingsManag
 const NOW = new Date().getTime();
 
 export const ApplicationBarActionsFeedbackItem = () => {
-  const [t] = useTranslation();
+  const { t } = useTranslation();
   const theme = useTheme();
   const userFeedbackDialogRef = useRef<UserFeedbackDialogRefMethods>(null);
   const [isFeedbackTooltipOpen, setIsFeedbackTooltipOpen] = useState(false);

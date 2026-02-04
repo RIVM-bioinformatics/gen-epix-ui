@@ -91,7 +91,7 @@ export const DateRangePicker = <TFieldValues extends FieldValues, TName extends 
   const toInputRef = useRef<HTMLInputElement>(null);
   const theme = useTheme();
   const id = useId();
-  const [t] = useTranslation();
+  const { t } = useTranslation();
 
   const defaultFromDate = useMemo(() => {
     const now = new Date();

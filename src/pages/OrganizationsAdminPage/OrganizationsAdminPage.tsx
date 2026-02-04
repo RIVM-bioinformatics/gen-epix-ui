@@ -37,7 +37,7 @@ type TableData = Organization & { identifierIssuerIds: string[] };
 type FormFields = Pick<TableData, 'name' | 'legal_entity_code' | 'identifierIssuerIds'>;
 
 export const OrganizationsAdminPage = () => {
-  const [t] = useTranslation();
+  const { t } = useTranslation();
   const identifierIssuerOptionsQuery = useIdentifierIssuerOptionsQuery();
   const organizationIdentifierIssuerLinksQuery = useOrganizationIdentifierIssuerLinksQuery();
 

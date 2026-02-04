@@ -19,7 +19,7 @@ export type NotificationItemProps = {
 };
 
 export const NotificationItem = ({ notification, showTimestamp, onClose, allowClose }: NotificationItemProps) => {
-  const [t] = useTranslation();
+  const { t } = useTranslation();
 
   const onCloseButtonClick = useCallback(() => {
     onClose(notification.key);

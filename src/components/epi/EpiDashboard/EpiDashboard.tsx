@@ -96,7 +96,7 @@ type EpiDashboardProps = {
 };
 
 export const EpiDashboard = withEpiDashboardStore(({ caseSet }: EpiDashboardProps) => {
-  const [t] = useTranslation();
+  const { t } = useTranslation();
   const theme = useTheme();
   const epiDashboardLayoutRendererRef = useRef<ForwardRefEpiDashboardLayoutRendererRefMethods>(null);
   const containerRef = useRef<HTMLDivElement>(null);

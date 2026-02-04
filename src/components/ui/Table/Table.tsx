@@ -126,7 +126,7 @@ export const Table = <TRowData,>({
   getRowName,
 }: TableProps<TRowData>) => {
   const theme = useTheme();
-  const [t] = useTranslation();
+  const { t } = useTranslation();
   const tableStore = useTableStoreContext<TRowData>();
 
   const { DEFAULT_OVERSCAN_MAIN, DEFAULT_OVERSCAN_REVERSE } = ConfigManager.instance.config.table;

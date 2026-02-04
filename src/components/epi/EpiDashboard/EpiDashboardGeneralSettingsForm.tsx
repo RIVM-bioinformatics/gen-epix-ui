@@ -27,7 +27,7 @@ export type EpiDashboardGeneralSettingsFormProps = {
 };
 
 export const EpiDashboardGeneralSettingsForm = ({ onReset }: EpiDashboardGeneralSettingsFormProps) => {
-  const [t] = useTranslation();
+  const { t } = useTranslation();
 
   const resetEpiDashboardGeneralSettings = useStore(userProfileStore, useShallow((state) => state.resetEpiDashboardGeneralSettings));
   const epiDashboardGeneralSettings = useStore(userProfileStore, useShallow((state) => state.epiDashboardGeneralSettings));

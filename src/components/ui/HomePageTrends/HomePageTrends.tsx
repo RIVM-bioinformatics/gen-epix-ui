@@ -52,7 +52,7 @@ type CaseStatsWithDiff = CaseStats & {
 
 export const HomePageTrends = withPermissions(() => {
   const theme = useTheme();
-  const [t] = useTranslation();
+  const { t } = useTranslation();
 
   const dateTimeRangeFilter = useMemo<TypedDatetimeRangeFilter>(() => ({
     type: 'DATETIME_RANGE',

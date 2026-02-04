@@ -12,7 +12,7 @@ export type EpiCaseSetDescriptionProps = {
   readonly caseSet: CaseSet;
 } & BoxProps;
 export const EpiCaseSetDescription = ({ caseSet, ...boxProps }: EpiCaseSetDescriptionProps) => {
-  const [t] = useTranslation();
+  const { t } = useTranslation();
   return (
     <Box {...boxProps}>
       <Typography variant={'h6'}>

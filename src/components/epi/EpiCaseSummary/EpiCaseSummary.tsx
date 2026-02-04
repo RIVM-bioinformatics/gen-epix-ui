@@ -26,7 +26,7 @@ export type EpiCaseSummaryProps = {
 };
 
 export const EpiCaseSummary = ({ epiCase }: EpiCaseSummaryProps) => {
-  const [t] = useTranslation();
+  const { t } = useTranslation();
   const epiStore = useContext(EpiDashboardStoreContext);
   const tableStore = useTableStoreContext<Case>();
   const completeCaseType = useStore(epiStore, (state) => state.completeCaseType);

@@ -7,7 +7,7 @@ import { TestIdUtil } from '../../utils/TestIdUtil';
 
 export const RouterErrorPage = () => {
   const error = useRouteError();
-  const [t] = useTranslation();
+  const { t } = useTranslation();
 
   return (
     <PageContainer

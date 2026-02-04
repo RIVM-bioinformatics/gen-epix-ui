@@ -53,7 +53,7 @@ export const GenericForm = <TFormFields,>({
   disableAll,
   schema,
 }: GenericFormProps<TFormFields>) => {
-  const [t] = useTranslation();
+  const { t } = useTranslation();
 
   const booleanOptions = useMemo(() => FormUtil.createBooleanOptions(t), [t]);
 

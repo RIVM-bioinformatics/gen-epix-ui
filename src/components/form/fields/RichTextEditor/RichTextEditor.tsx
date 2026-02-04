@@ -85,7 +85,7 @@ export const RichTextEditor = <TFieldValues extends FieldValues, TName extends P
   loading,
   warningMessage,
 }: RichTextEditorProps<TFieldValues, TName>): ReactElement => {
-  const [t] = useTranslation();
+  const { t } = useTranslation();
   const theme = useTheme();
   const extensions = useRichTextEditorExtensions({
     placeholder: '',

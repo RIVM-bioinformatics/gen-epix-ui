@@ -29,7 +29,7 @@ import { AuthorizationManager } from '../../classes/managers/AuthorizationManage
 type FormFields = Pick<RegionSet, 'name' | 'code' | 'region_code_as_label' | 'resolution'>;
 
 export const RegionSetsAdminPage = () => {
-  const [t] = useTranslation();
+  const { t } = useTranslation();
 
   const fetchAll = useCallback(async (signal: AbortSignal) => {
     return (await GeoApi.instance.regionSetsGetAll({ signal }))?.data;

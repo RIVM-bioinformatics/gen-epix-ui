@@ -41,7 +41,7 @@ interface NestedDropdownProps {
 export const NestedDropdown = ({ ref, ...props }: NestedDropdownProps) => {
   const [anchorEl, setAnchorEl] = useState<HTMLButtonElement | null>(null);
   const open = Boolean(anchorEl);
-  const [t] = useTranslation();
+  const { t } = useTranslation();
   const theme = useTheme();
 
   const { menuItemsData: data, onClick, ButtonProps, ContainerProps, MenuProps, showTopLevelTooltip, ...rest } = props;

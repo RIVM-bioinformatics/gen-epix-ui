@@ -14,7 +14,7 @@ import { AuthorizationManager } from '../../../classes/managers/AuthorizationMan
 import { useOrganizationMapQuery } from '../../../dataHooks/useOrganizationsQuery';
 
 export const UserOwnOrganizationMenuItem = withPermissions(() => {
-  const [t] = useTranslation();
+  const { t } = useTranslation();
 
   const organizationMapQuery = useOrganizationMapQuery();
 

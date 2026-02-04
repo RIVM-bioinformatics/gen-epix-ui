@@ -24,7 +24,7 @@ import { CrudPage } from '../CrudPage';
 type FormFields = Pick<IdentifierIssuer, 'code' | 'description' | 'name'>;
 
 export const IdentifierIssuersAdminPage = () => {
-  const [t] = useTranslation();
+  const { t } = useTranslation();
 
 
   const fetchAll = useCallback(async (signal: AbortSignal) => {

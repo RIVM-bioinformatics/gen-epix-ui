@@ -22,7 +22,7 @@ import { useArray } from '../../../hooks/useArray';
 import { useQueryMemo } from '../../../hooks/useQueryMemo';
 
 export const AuthorizationWrapper = ({ children }: PropsWithChildren): ReactNode => {
-  const [t] = useTranslation();
+  const { t } = useTranslation();
   const matches = (useMatches() as UIMatch<unknown, MyNonIndexRouteObject['handle']>[]);
 
   const requiresUserProfile = useMemo(() => last(matches).handle.requiresUserProfile, [matches]);

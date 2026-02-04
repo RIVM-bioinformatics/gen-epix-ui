@@ -34,7 +34,7 @@ const HomeContent = () => {
 };
 
 export const HomePage = () => {
-  const [t] = useTranslation();
+  const { t } = useTranslation();
 
   return (
     <PageContainer

@@ -74,7 +74,7 @@ type LspEchartsEvent = {
 };
 
 export const EpiCurve = () => {
-  const [t] = useTranslation();
+  const { t } = useTranslation();
   const [epiContextMenuConfig, setEpiContextMenuConfig] = useState<EpiContextMenuConfigWithPosition | null>(null);
   const [hasRenderedOnce, setHasRenderedOnce] = useState(false);
   const highlightingManager = useMemo(() => HighlightingManager.instance, []);

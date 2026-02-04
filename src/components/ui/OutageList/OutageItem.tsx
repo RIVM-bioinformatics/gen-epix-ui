@@ -17,7 +17,7 @@ type OutageItemProps = {
   readonly title: string;
 };
 export const OutageItem = ({ outage, severity, title }: OutageItemProps) => {
-  const [t] = useTranslation();
+  const { t } = useTranslation();
 
   return (
     <Alert

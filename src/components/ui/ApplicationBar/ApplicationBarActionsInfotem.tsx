@@ -16,7 +16,7 @@ import { InfoMenu } from './InfoMenu';
 
 export const ApplicationBarActionsInfoItem = () => {
   const [infoMenuAnchorElement, setInfoMenuAnchorElement] = useState<null | HTMLElement>(null);
-  const [t] = useTranslation();
+  const { t } = useTranslation();
   const theme = useTheme();
 
   const onInfoMenuIconClick = useCallback((event: MouseEvent<HTMLElement>): void => {

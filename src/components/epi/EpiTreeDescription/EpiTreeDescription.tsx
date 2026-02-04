@@ -14,7 +14,7 @@ export const EpiTreeDescription = ({
   treeConfiguration,
 }: EpiTreeDescriptionProps) => {
   const theme = useTheme();
-  const [t] = useTranslation();
+  const { t } = useTranslation();
 
   return (
     <Box

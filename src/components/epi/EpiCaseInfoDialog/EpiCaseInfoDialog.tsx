@@ -76,7 +76,7 @@ export const EpiCaseInfoDialog = withDialog<EpiCaseInfoDialogProps, EpiCaseInfoD
     onClose,
   }: EpiCaseInfoDialogProps,
 ): ReactElement => {
-  const [t] = useTranslation();
+  const { t } = useTranslation();
   const caseIds = useMemo(() => [openProps.caseId], [openProps.caseId]);
   const caseRightsQuery = useCaseRightsQuery(caseIds, openProps.caseTypeId);
   const dataCollectionsQuery = useDataCollectionsQuery();

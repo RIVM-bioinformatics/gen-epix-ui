@@ -31,7 +31,7 @@ import { DATE_FORMAT } from '../../data/date';
 type FormFields = Pick<Outage, 'description' | 'active_from' | 'active_to' | 'visible_from' | 'visible_to' | 'is_active' | 'is_visible'>;
 
 export const OutagesAdminPage = () => {
-  const [t] = useTranslation();
+  const { t } = useTranslation();
 
   const fetchAll = useCallback(async (signal: AbortSignal) => {
     return (await SystemApi.instance.outagesGetAll({ signal }))?.data;

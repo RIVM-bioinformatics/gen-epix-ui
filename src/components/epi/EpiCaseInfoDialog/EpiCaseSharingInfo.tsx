@@ -10,7 +10,7 @@ import { EpiDataCollectionAccessInfo } from '../EpiDataCollectionAccessInfo';
 export type EpiCaseSharingInfoProps = BoxProps;
 
 export const EpiCaseSharingInfo = ({ ...boxProps }: EpiCaseSharingInfoProps) => {
-  const [t] = useTranslation();
+  const { t } = useTranslation();
 
   return (
     <Box {...boxProps}>

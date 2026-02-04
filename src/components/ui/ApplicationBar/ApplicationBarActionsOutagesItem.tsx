@@ -21,7 +21,7 @@ import {
 import { outagesStore } from '../../../stores/outagesStore';
 
 export const ApplicationBarActionsOutagesItem = () => {
-  const [t] = useTranslation();
+  const { t } = useTranslation();
   const theme = useTheme();
   const outagesDialogRef = useRef<OutagesDialogRefMethods>(null);
   const visibleOutages = useStore(outagesStore, (state) => state.visibleOutages);

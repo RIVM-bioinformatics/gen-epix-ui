@@ -65,7 +65,7 @@ export const NumberRangeInput = <TFieldValues extends FieldValues, TName extends
   const shouldShowSlider = isFinite(min) && isFinite(max);
   const theme = useTheme();
 
-  const [t] = useTranslation();
+  const { t } = useTranslation();
   const { control, formState: { errors } } = useFormContext<TFieldValues>();
   const errorMessage = FormUtil.getFieldErrorMessage(errors, name);
   const hasError = !!errorMessage;

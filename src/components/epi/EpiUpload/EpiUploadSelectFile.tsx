@@ -49,7 +49,7 @@ type FormFields = {
 };
 
 const EpiUploadSelectFile = () => {
-  const [t] = useTranslation();
+  const { t } = useTranslation();
   const caseTypesQuery = useCaseTypesQuery();
   const caseTypeOptionsQuery = useCaseTypeOptionsQuery();
   const dataCollectionOptionsQuery = useDataCollectionOptionsQuery();

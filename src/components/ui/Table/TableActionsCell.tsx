@@ -25,7 +25,7 @@ export interface TableActionsCellProps<TRowData> extends TableCellProps<TRowData
 
 export const TableActionsCell = <TRowData,>(props: TableActionsCellProps<TRowData>) => {
   const [anchorElement, setAnchorElement] = useState<HTMLButtonElement>(null);
-  const [t] = useTranslation();
+  const { t } = useTranslation();
   const open = !!anchorElement;
 
   const onIconButtonClick = useCallback((event: MouseEvent<HTMLButtonElement>) => {

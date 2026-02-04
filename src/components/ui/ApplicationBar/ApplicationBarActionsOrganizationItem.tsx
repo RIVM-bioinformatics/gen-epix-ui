@@ -16,7 +16,7 @@ import type { OrganizationSwitcherDialogRefMethods } from '../OrganizationSwitch
 
 
 export const ApplicationBarActionsOrganizationSwitcherItem = () => {
-  const [t] = useTranslation();
+  const { t } = useTranslation();
   const theme = useTheme();
   const organizationSwitcherDialogRef = useRef<OrganizationSwitcherDialogRefMethods>(null);
 

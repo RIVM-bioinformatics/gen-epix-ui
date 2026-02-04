@@ -34,7 +34,7 @@ export const useUsersMapQuery = (): UseMap<User> => {
 
 export const useUserOptionsQuery = (): UseOptions<string> => {
   const usersQuery = useUsersQuery();
-  const [t] = useTranslation();
+  const { t } = useTranslation();
 
   return useMemo(() => {
     return DataHookUtil.createUseOptionsDataHook<User>(usersQuery, item => item.id, item => DataUtil.getUserDisplayValue(item, t));

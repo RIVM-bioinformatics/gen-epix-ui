@@ -27,7 +27,7 @@ type FormFields = Omit<Region, 'id' | 'region_set_id' | 'region_set'>;
 
 export const RegionsAdminPage = () => {
   const { regionSetId } = useParams();
-  const [t] = useTranslation();
+  const { t } = useTranslation();
 
   const fetchAll = useCallback(async (signal: AbortSignal) => {
     return (await GeoApi.instance.regionsGetAll({ signal }))?.data;

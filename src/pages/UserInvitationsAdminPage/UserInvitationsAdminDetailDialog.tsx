@@ -39,7 +39,7 @@ export const UserInvitationsAdminDetailDialog = withDialog<UserInvitationsAdminD
     onActionsChange,
   }: UserInvitationsAdminDetailDialogProps,
 ): ReactElement => {
-  const [t] = useTranslation();
+  const { t } = useTranslation();
 
   useEffect(() => {
     onTitleChange(t('Invitation details for {{email}}', { email: openProps.item.key }));

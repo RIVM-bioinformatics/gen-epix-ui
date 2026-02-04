@@ -14,7 +14,7 @@ export type OutageListProps = {
   readonly soonActiveOutages: Outage[];
 };
 export const OutageList = ({ visibleOutages, activeOutages, soonActiveOutages }: OutageListProps) => {
-  const [t] = useTranslation();
+  const { t } = useTranslation();
 
   return (
     <Box>

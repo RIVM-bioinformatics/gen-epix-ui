@@ -36,7 +36,7 @@ import { EpiCaseTypeInfoAccessRights } from './EpiCaseTypeInfoAccessRights';
 export type EpiCaseTypeInfoDialogContentProps = Pick<WithDialogRenderProps, 'onTitleChange' | 'onPermalinkChange'>;
 
 export const EpiCaseTypeInfoDialogContent = ({ onTitleChange, onPermalinkChange }: EpiCaseTypeInfoDialogContentProps) => {
-  const [t] = useTranslation();
+  const { t } = useTranslation();
   const theme = useTheme();
   const diseasesMapQuery = useDiseasesMapQuery();
   const etiologicalAgentsMapQuery = useEtiologicalAgentsMapQuery();

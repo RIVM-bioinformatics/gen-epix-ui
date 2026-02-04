@@ -48,7 +48,7 @@ type FormFields = {
 };
 
 export const EpiUploadSelectSequenceFiles = () => {
-  const [t] = useTranslation();
+  const { t } = useTranslation();
   const theme = useTheme();
 
   const store = useContext(EpiUploadStoreContext);

@@ -21,7 +21,7 @@ export type EpiCaseTypeInfoRegionsProps = {
 };
 
 export const EpiCaseTypeInfoRegions = ({ completeCaseType }: EpiCaseTypeInfoRegionsProps) => {
-  const [t] = useTranslation();
+  const { t } = useTranslation();
 
   const regionSetIds = uniq(Object.values(completeCaseType.cols).map(col => col.region_set_id).filter(x => !!x));
 

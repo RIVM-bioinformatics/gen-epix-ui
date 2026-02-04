@@ -63,7 +63,7 @@ import { DataUtil } from '../../utils/DataUtil';
 import { EffectiveRightsUtil } from '../../utils/EffectiveRightsUtil';
 
 export const UserEffectiveRightsAdminPage = () => {
-  const [t] = useTranslation();
+  const { t } = useTranslation();
   const theme = useTheme();
   const usersEffectiveRightsDetailsDialogRef = useRef<UsersEffectiveRightsDetailsDialogRefMethods>(null);
 

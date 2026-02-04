@@ -26,7 +26,7 @@ import { OutageList } from '../OutageList';
 import { useQueryMemo } from '../../../hooks/useQueryMemo';
 
 export const OutageWrapper = ({ children }: PropsWithChildren): ReactNode => {
-  const [t] = useTranslation();
+  const { t } = useTranslation();
 
   const setCategorizedOutages = useStore(outagesStore, (state) => state.setCategorizedOutages);
   const [shouldContinue, setShouldContinue] = useState(false);

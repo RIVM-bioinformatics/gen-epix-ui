@@ -20,7 +20,7 @@ import { useSubscribable } from '../../../hooks/useSubscribable';
 
 
 export const ApplicationBarActionsNotificationsItem = () => {
-  const [t] = useTranslation();
+  const { t } = useTranslation();
   const theme = useTheme();
   const notifications = useSubscribable(NotificationManager.instance);
   const isLoading = useMemo(() => notifications.some(x => x.isLoading), [notifications]);

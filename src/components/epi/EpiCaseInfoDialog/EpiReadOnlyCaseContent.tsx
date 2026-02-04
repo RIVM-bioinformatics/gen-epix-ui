@@ -23,7 +23,7 @@ export type EpiReadOnlyCaseContentProps = {
 } & BoxProps;
 
 export const EpiReadOnlyCaseContent = ({ epiCase, ...boxProps }: EpiReadOnlyCaseContentProps) => {
-  const [t] = useTranslation();
+  const { t } = useTranslation();
   const dataCollectionsMapQuery = useDataCollectionsMapQuery();
 
   const loadables = useArray([dataCollectionsMapQuery]);

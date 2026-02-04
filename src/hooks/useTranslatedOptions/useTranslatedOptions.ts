@@ -12,7 +12,7 @@ export const translateOptions = <T, K extends OptionBase<T>>(options: K[], t: TF
 };
 
 export const useTranslatedOptions = <T, K extends OptionBase<T>>(options: K[]): K[] => {
-  const [t] = useTranslation();
+  const { t } = useTranslation();
 
   return useMemo(() => translateOptions(options, t), [options, t]);
 };

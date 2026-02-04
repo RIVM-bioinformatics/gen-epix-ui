@@ -29,7 +29,7 @@ type FormFields = Omit<Site, 'id' | 'organization_id' | 'organization'>;
 
 export const OrganizationSitesAdminPage = () => {
   const { organizationId } = useParams();
-  const [t] = useTranslation();
+  const { t } = useTranslation();
 
   const fetchAll = useCallback(async (signal: AbortSignal) => {
     return (await OrganizationApi.instance.sitesGetAll({ signal })).data;

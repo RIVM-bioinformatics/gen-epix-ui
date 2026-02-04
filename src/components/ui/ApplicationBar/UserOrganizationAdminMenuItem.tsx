@@ -16,7 +16,7 @@ import { withPermissions } from '../../../hoc/withPermissions';
 import { useQueryMemo } from '../../../hooks/useQueryMemo';
 
 export const UserOrganizationAdminMenuItem = withPermissions(() => {
-  const [t] = useTranslation();
+  const { t } = useTranslation();
 
   const { isLoading: isOrganizationAdminNameEmailsLoading, error: organizationAdminNameEmailsError, data: organizationAdminNameEmails } = useQueryMemo({
     queryKey: QueryUtil.getGenericKey(QUERY_KEY.ORGANIZATION_ADMIN_NAME_EMAILS),

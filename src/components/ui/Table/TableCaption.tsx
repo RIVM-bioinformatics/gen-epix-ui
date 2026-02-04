@@ -13,7 +13,7 @@ export type TableCaptionProps = {
 };
 
 export const TableCaption = <TRowData,>({ caption, variant = 'h2', component = 'h2' }: TableCaptionProps) => {
-  const [t] = useTranslation();
+  const { t } = useTranslation();
   const tableStore = useTableStoreContext<TRowData>();
   const baseDataLength = useStore(tableStore, (state) => state.baseData.length);
   const sortedDataLength = useStore(tableStore, useShallow((state) => state.sortedData.length));

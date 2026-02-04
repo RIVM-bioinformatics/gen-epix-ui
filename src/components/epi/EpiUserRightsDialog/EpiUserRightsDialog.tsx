@@ -66,7 +66,7 @@ export const EpiUserRightsDialog = withDialog<EpiUserRightsDialogProps, EpiUserR
     openProps,
   }: EpiUserRightsDialogProps,
 ): ReactElement => {
-  const [t] = useTranslation();
+  const { t } = useTranslation();
 
 
   useEffect(() => {

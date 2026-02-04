@@ -35,7 +35,7 @@ export type EpiCasesAlreadyInCaseSetWarningProps = {
 };
 
 export const EpiCasesAlreadyInCaseSetWarning = ({ cases }: EpiCasesAlreadyInCaseSetWarningProps) => {
-  const [t] = useTranslation();
+  const { t } = useTranslation();
   const theme = useTheme();
 
   // Load all case set members for the given cases

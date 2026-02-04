@@ -86,7 +86,7 @@ export interface EpiTreeRef {
 
 export const EpiTree = ({ linkedScrollSubject, ref }: EpiTreeProps) => {
   const theme = useTheme();
-  const [t] = useTranslation();
+  const { t } = useTranslation();
   const scrollbarSize = useScrollbarSize();
   const scrollContainerRef = useRef<HTMLDivElement>(null);
   const containerRef = useRef<HTMLDivElement>(null);

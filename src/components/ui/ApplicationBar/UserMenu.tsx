@@ -44,7 +44,7 @@ export const UserMenu = ({ anchorElement, onClose }: UserMenuProps): ReactElemen
   const logoutConfirmation = useRef<ConfirmationRefMethods>(null);
   const popoverId = useMemo(() => StringUtil.createUuid(), []);
   const isUserMenuOpen = !!anchorElement;
-  const [t] = useTranslation();
+  const { t } = useTranslation();
 
   const myPermissionsDialogRef = useRef<MyPermissionsDialogRefMethods>(null);
 

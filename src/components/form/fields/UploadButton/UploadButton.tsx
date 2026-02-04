@@ -67,7 +67,7 @@ export const UploadButton = <TFieldValues extends FieldValues, TName extends Pat
   accept,
   onChange: onChangeProp,
 }: UploadButtonProps<TFieldValues, TName>): ReactElement => {
-  const [t] = useTranslation();
+  const { t } = useTranslation();
   const id = useId();
   const inputId = useId();
   const { control, formState: { errors } } = useFormContext<TFieldValues>();

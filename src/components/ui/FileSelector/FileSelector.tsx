@@ -38,7 +38,7 @@ export const FileSelector = ({
   numFilesAllowed = 1,
   initialDataTransfer: initialDataTransferProp,
 }: FileSelectorProps) => {
-  const [t] = useTranslation();
+  const { t } = useTranslation();
   const hoverLabel = numFilesAllowed === 1
     ? t('Click or drag to upload file ({{accept}})', { accept: accept.split(',').join(', ') })
     : t('Click or drag to upload files  ({{accept}})', { accept: accept.split(',').join(', ') });

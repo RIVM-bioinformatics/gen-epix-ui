@@ -67,7 +67,7 @@ export type EpiLineListProps = {
 
 export const EpiLineList = ({ linkedScrollSubject, onLink, caseSet }: EpiLineListProps) => {
   const containerRef = useRef<HTMLDivElement>(null);
-  const [t] = useTranslation();
+  const { t } = useTranslation();
   const theme = useTheme();
   const highlightingManager = useMemo(() => HighlightingManager.instance, []);
   const rowHighlightingSubject = useMemo(() => new Subject<string[]>([]), []);

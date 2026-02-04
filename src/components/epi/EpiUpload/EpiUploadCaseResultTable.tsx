@@ -48,7 +48,7 @@ export type EpiUploadCaseResultTableProps = {
 
 export const EpiUploadCaseResultTable = ({ tableStore, rowsWithGeneratedId, completeCaseType, validatedCases, rawData, mappedColumns }: EpiUploadCaseResultTableProps) => {
   const theme = useTheme();
-  const [t] = useTranslation();
+  const { t } = useTranslation();
 
   const dataRulePriority: DataIssueType[] = useMemo(() => [
     DataIssueType.UNAUTHORIZED,

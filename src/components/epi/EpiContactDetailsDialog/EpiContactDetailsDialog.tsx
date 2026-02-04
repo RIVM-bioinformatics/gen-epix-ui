@@ -38,7 +38,7 @@ export const EpiContactDetailsDialog = withDialog<EpiContactDetailsDialogProps, 
     openProps,
   }: EpiContactDetailsDialogProps,
 ): ReactElement => {
-  const [t] = useTranslation();
+  const { t } = useTranslation();
 
   const queryKey = useMemo(() => {
     return ['contacts', openProps.contactId];

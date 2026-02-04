@@ -56,7 +56,7 @@ import { DataUtil } from '../../utils/DataUtil';
 type FormFields = Pick<CaseTypeCol, 'case_type_id' | 'col_id' | 'case_type_dim_id' | 'code' | 'rank' | 'label' | 'description' | 'min_value' | 'max_value' | 'min_datetime' | 'max_datetime' | 'min_length' | 'genetic_sequence_case_type_col_id' | 'tree_algorithm_codes' | 'pattern'>;
 
 export const CaseTypeColsAdminPage = () => {
-  const [t] = useTranslation();
+  const { t } = useTranslation();
   const { caseTypeId, caseTypeDimId } = useParams();
   const colOptionsQuery = useColOptionsQuery();
   const colMapQuery = useColMapQuery();

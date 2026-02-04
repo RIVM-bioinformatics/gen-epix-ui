@@ -44,7 +44,7 @@ import { EpiUploadNavigation } from './EpiUploadNavigation';
 
 
 export const EpiUploadMapColumns = () => {
-  const [t] = useTranslation();
+  const { t } = useTranslation();
   const caseTypeColMap = useCaseTypeColMapQuery();
   const identifierIssuerOptionsQuery = useIdentifierIssuerOwnOrganizationOptionsQuery();
 

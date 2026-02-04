@@ -34,7 +34,7 @@ export const AcceptInvitationPage = () => {
     staleTime: 0,
   });
 
-  const [t] = useTranslation();
+  const { t } = useTranslation();
 
   const onGoToHomePageButtonClick = useCallback(() => {
     WindowManager.instance.window.location.href = '/';

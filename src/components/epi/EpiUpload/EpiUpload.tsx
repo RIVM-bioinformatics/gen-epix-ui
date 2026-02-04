@@ -29,7 +29,7 @@ import { EpiUploadSelectSequenceFiles } from './EpiUploadSelectSequenceFiles';
 import { EpiUploadMapSequences } from './EpiUploadMapSequences';
 
 export const EpiUpload = () => {
-  const [t] = useTranslation();
+  const { t } = useTranslation();
   const theme = useTheme();
 
   const store = useContext(EpiUploadStoreContext);

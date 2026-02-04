@@ -27,7 +27,7 @@ export const ConsentDialog = withDialog<ConsentDialogProps, ConsentDialogOpenPro
     onConsent,
   }: ConsentDialogProps,
 ): ReactElement => {
-  const [t] = useTranslation();
+  const { t } = useTranslation();
 
   useEffect(() => {
     onTitleChange(ConfigManager.instance.config.consentDialog.getTitle(t));

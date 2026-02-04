@@ -33,7 +33,7 @@ import { useRegionRelationTypeOptionsQuery } from '../../dataHooks/useRegionRela
 type FormFields = Omit<RegionRelation, 'id' | 'from_region' | 'to_region'>;
 
 export const RegionRelationsAdminPage = () => {
-  const [t] = useTranslation();
+  const { t } = useTranslation();
 
   const regionMapQuery = useRegionMapQuery();
   const regionOptionsQuery = useRegionOptionsQuery();

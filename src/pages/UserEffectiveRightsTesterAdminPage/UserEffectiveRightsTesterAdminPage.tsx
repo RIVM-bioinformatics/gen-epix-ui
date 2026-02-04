@@ -63,7 +63,7 @@ type Result = {
 };
 
 export const UserEffectiveRightsTesterAdminPage = () => {
-  const [t] = useTranslation();
+  const { t } = useTranslation();
   const formId = useId();
 
   const { userId } = useParams();

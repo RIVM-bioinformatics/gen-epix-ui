@@ -46,7 +46,7 @@ export const PageContainer = ({
 }: PageContainerProps): ReactElement => {
   useUpdateDocumentTitle(title);
   const theme = useTheme();
-  const [t] = useTranslation();
+  const { t } = useTranslation();
 
   const hasContentHeaderArea = contentHeader || contentActions;
   const hasFooterArea = !fullHeight && !singleAction;

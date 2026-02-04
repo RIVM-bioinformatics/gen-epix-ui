@@ -34,7 +34,7 @@ export type ApplicationBarNavigationMenuProps = {
 };
 
 export const ApplicationBarNavigationMenu = ({ fullWidth }: ApplicationBarNavigationMenuProps) => {
-  const [t] = useTranslation();
+  const { t } = useTranslation();
   const theme = useTheme();
   const authorizationManager = useMemo(() => AuthorizationManager.instance, []);
   const navId = useId();

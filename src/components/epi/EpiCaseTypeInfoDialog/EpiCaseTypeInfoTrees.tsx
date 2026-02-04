@@ -21,7 +21,7 @@ export type EpiCaseTypeInfoTreesProps = {
 };
 export const EpiCaseTypeInfoTrees = ({ completeCaseType }: EpiCaseTypeInfoTreesProps) => {
   const treeConfigurations = useMemo(() => EpiTreeUtil.getTreeConfigurations(completeCaseType), [completeCaseType]);
-  const [t] = useTranslation();
+  const { t } = useTranslation();
   const theme = useTheme();
 
   return (

@@ -14,7 +14,7 @@ import {
 } from '../../stores/epiUploadStore';
 
 export const UploadPage = () => {
-  const [t] = useTranslation();
+  const { t } = useTranslation();
   const epiUploadStore = useMemo(() => createEpiUploadStore(), []);
 
   useEffect(() => {

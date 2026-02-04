@@ -33,7 +33,7 @@ export const EpiCaseCaseSetInfo = ({ epiCase, ...boxProps }: EpiCaseCaseSetInfoP
   const caseSetCategoryMapQuery = useCaseSetCategoryMapQuery();
   const caseSetStatusMapQuery = useCaseSetStatusMapQuery();
 
-  const [t] = useTranslation();
+  const { t } = useTranslation();
   const caseSetMembersFilter: TypedUuidSetFilter = {
     invert: false,
     key: 'case_id',

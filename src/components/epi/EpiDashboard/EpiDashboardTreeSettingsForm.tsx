@@ -27,7 +27,7 @@ export type EpiDashboardTreeSettingsFormProps = {
 };
 
 export const EpiDashboardTreeSettingsForm = ({ onReset }: EpiDashboardTreeSettingsFormProps) => {
-  const [t] = useTranslation();
+  const { t } = useTranslation();
 
   const resetEpiDashboardTreeSettings = useStore(userProfileStore, useShallow((state) => state.resetEpiDashboardTreeSettings));
   const epiDashboardTreeSettings = useStore(userProfileStore, useShallow((state) => state.epiDashboardTreeSettings));

@@ -67,7 +67,7 @@ type Row = {
 const getCaseTypeSetCategoryRowId = (id: string) => `caseTypeSetCategory-${id}`;
 
 export const CasesPage = () => {
-  const [t] = useTranslation();
+  const { t } = useTranslation();
   const theme = useTheme();
   const epiCaseTypeInfoDialogWithLoaderRef = useRef<EpiCaseTypeInfoDialogWithLoaderRefMethods>(null);
   const caseTypeStatsQuery = useCaseTypeStatsQuery();

@@ -42,7 +42,7 @@ export const colTypePresentationValues: Record<ColType, string> = {
 };
 
 export const useColTypeOptionsQuery = (): UseOptions<string> => {
-  const [t] = useTranslation();
+  const { t } = useTranslation();
   return useMemo(() => {
     const options: OptionBase<string>[] = Object.entries(colTypePresentationValues).map(([value, label]) => ({ value, label }));
     return {

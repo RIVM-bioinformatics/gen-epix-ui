@@ -66,7 +66,7 @@ export const TransferList = <TFieldValues extends FieldValues, TName extends Pat
   label,
   height = 500,
 }: TransferListProps<TFieldValues, TName>): ReactElement => {
-  const [t] = useTranslation();
+  const { t } = useTranslation();
 
   const theme = useTheme();
   const { control, formState: { errors }, resetField } = useFormContext<TFieldValues>();

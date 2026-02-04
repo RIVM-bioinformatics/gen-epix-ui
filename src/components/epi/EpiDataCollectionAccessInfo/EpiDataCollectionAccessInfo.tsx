@@ -12,7 +12,7 @@ import { useTranslation } from 'react-i18next';
 import { useCaseAbacContext } from '../../../context/caseAbac';
 
 export const EpiDataCollectionAccessInfo = () => {
-  const [t] = useTranslation();
+  const { t } = useTranslation();
 
   const caseAbacContext = useCaseAbacContext();
 

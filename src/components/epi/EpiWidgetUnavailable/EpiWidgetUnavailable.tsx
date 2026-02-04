@@ -17,7 +17,7 @@ export type EpiWidgetUnavailableProps = {
 };
 
 export const EpiWidgetUnavailable = ({ widgetName, epiZone }: EpiWidgetUnavailableProps) => {
-  const [t] = useTranslation();
+  const { t } = useTranslation();
   const epiDashboardLayoutUserConfig = useStore(userProfileStore, (state) => state.epiDashboardLayoutUserConfig);
   const setEpiDashboardLayoutUserConfig = useStore(userProfileStore, (state) => state.setEpiDashboardLayoutUserConfig);
 

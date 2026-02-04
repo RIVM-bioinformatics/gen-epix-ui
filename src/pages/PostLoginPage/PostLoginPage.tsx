@@ -10,7 +10,7 @@ import { TestIdUtil } from '../../utils/TestIdUtil';
 import type { AuthState } from '../../models/auth';
 
 export const PostLoginPage = () => {
-  const [t] = useTranslation();
+  const { t } = useTranslation();
   const auth = useAuth();
   const authState = auth.user.state as AuthState;
 

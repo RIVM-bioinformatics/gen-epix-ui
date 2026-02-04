@@ -31,7 +31,7 @@ export const EpiBulkEditCaseDialog = withDialog<EpiBulkEditCaseDialogProps, EpiB
     onClose,
   }: EpiBulkEditCaseDialogProps,
 ): ReactElement => {
-  const [t] = useTranslation();
+  const { t } = useTranslation();
   console.log({ openProps });
 
   useEffect(() => {

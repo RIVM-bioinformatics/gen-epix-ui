@@ -29,7 +29,7 @@ import { EpiUploadNavigation } from './EpiUploadNavigation';
 
 
 export const EpiUploadCreateCases = () => {
-  const [t] = useTranslation();
+  const { t } = useTranslation();
 
   const store = useContext(EpiUploadStoreContext);
   const reset = useStore(store, (state) => state.reset);

@@ -65,7 +65,7 @@ export const CrudPageEditDialog = withDialog<CrudPageEditDialogProps<any, any>, 
     defaultNewItem,
   }: CrudPageEditDialogProps<TData, TFormFields>,
 ): ReactElement => {
-  const [t] = useTranslation();
+  const { t } = useTranslation();
   const formId = useId();
 
   const initialFormFieldDefinitions = useMemo(() => {

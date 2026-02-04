@@ -11,7 +11,7 @@ const StyledPanelResizeHandle = styled(PanelResizeHandle)(() => ({}));
 
 export const PanelResizeHandleHorizontal = (props: PanelResizeHandleProps) => {
   const theme = useTheme();
-  const [t] = useTranslation();
+  const { t } = useTranslation();
   return (
     <StyledPanelResizeHandle
       {...props}
@@ -39,7 +39,7 @@ export const PanelResizeHandleHorizontal = (props: PanelResizeHandleProps) => {
 
 export const PanelResizeHandleVertical = (props: PanelResizeHandleProps) => {
   const theme = useTheme();
-  const [t] = useTranslation();
+  const { t } = useTranslation();
 
   return (
     <StyledPanelResizeHandle

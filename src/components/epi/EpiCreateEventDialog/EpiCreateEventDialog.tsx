@@ -92,7 +92,7 @@ export const EpiCreateEventDialog = withDialog<EpiCreateEventDialogProps, EpiCre
   const caseSetCategoryOptionsQuery = useCaseSetCategoryOptionsQuery();
   const caseSetStatusOptionsQuery = useCaseSetStatusOptionsQuery();
   const dataCollectionOptionsQuery = useDataCollectionOptionsQuery();
-  const [t] = useTranslation();
+  const { t } = useTranslation();
   const formId = useId();
 
   const schema = useMemo(() => object<FormFields>().shape({

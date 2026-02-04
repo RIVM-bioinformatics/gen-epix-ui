@@ -51,7 +51,7 @@ export const EpiRemoveCasesFromEventDialog = withDialog<EpiRemoveCasesFromEventD
     onClose,
   }: EpiRemoveCasesFromEventDialogProps,
 ): ReactElement => {
-  const [t] = useTranslation();
+  const { t } = useTranslation();
 
   const epiStore = useContext(EpiDashboardStoreContext);
   const completeCaseType = useStore(epiStore, useShallow((state) => state.completeCaseType));

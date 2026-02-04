@@ -33,7 +33,7 @@ export const treeAlgorithmCodeValues: Record<TreeAlgorithmType, string> = {
 };
 
 export const useTreeAlgorithmCodeOptionsQuery = (): UseOptions<string> => {
-  const [t] = useTranslation();
+  const { t } = useTranslation();
   return useMemo(() => {
     const options: OptionBase<string>[] = Object.entries(treeAlgorithmCodeValues).map(([value, label]) => ({ value, label }));
     return {

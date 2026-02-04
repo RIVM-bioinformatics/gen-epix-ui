@@ -12,7 +12,7 @@ import type { InactivityState } from '../../../classes/managers/InactivityManage
 import { InactivityManager } from '../../../classes/managers/InactivityManager';
 
 export const UserInactivityConfirmation = () => {
-  const [t] = useTranslation();
+  const { t } = useTranslation();
   const confirmation = useRef<ConfirmationRefMethods>(null);
   const [idleState, setIdleState] = useState<InactivityState>(InactivityManager.instance.data);
 

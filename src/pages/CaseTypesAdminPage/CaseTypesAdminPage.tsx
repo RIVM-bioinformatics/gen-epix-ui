@@ -31,7 +31,7 @@ import { AuthorizationManager } from '../../classes/managers/AuthorizationManage
 type FormFields = Pick<CaseType, 'name' | 'description' | 'etiological_agent_id' | 'disease_id' | 'create_max_n_cases' | 'delete_max_n_cases' | 'read_max_n_cases' | 'read_max_tree_size' | 'update_max_n_cases'>;
 
 export const CaseTypesAdminPage = () => {
-  const [t] = useTranslation();
+  const { t } = useTranslation();
   const diseaseOptionsQuery = useDiseaseOptionsQuery();
   const etiologicalAgentOptionsQuery = useEtiologicalAgentOptionsQuery();
 

@@ -29,7 +29,7 @@ import { CrudPage } from '../CrudPage';
 type FormFields = Pick<OrganizationAdminPolicy, 'is_active' | 'organization_id' | 'user_id'>;
 
 export const OrganizationAdminPoliciesAdminPage = () => {
-  const [t] = useTranslation();
+  const { t } = useTranslation();
   const organizationOptionsQuery = useOrganizationOptionsQuery();
   const userOptionsQuery = useUserOptionsQuery();
   const organizationAdminPolicyNameFactory = useOrganizationAdminPolicyNameFactory();

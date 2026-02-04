@@ -12,7 +12,7 @@ export const conceptRelationTypePresentationValues: Partial<Record<ConceptRelati
 };
 
 export const useConceptRelationTypeOptionsQuery = (): UseOptions<string> => {
-  const [t] = useTranslation();
+  const { t } = useTranslation();
   return useMemo(() => {
     const options: OptionBase<string>[] = Object.entries(conceptRelationTypePresentationValues).map(([value, label]) => ({ value, label }));
     return {

@@ -44,7 +44,7 @@ type FormFields = {
 };
 
 export const EpiCaseSetSharingForm = ({ caseTypeId, formId, caseSet, onFinish, onIsSavingChange, ...boxProps }: EpiCaseSetSharingFormProps) => {
-  const [t] = useTranslation();
+  const { t } = useTranslation();
   const [isSaving, setIsSaving] = useState(false);
 
   const schema = useMemo(() => object<FormFields>().shape({

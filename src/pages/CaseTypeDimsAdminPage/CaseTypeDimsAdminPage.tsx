@@ -37,7 +37,7 @@ type FormFields = Pick<CaseTypeDim, 'case_type_id' | 'dim_id' | 'occurrence' | '
 
 export const CaseTypeDimsAdminPage = () => {
   const { caseTypeId } = useParams();
-  const [t] = useTranslation();
+  const { t } = useTranslation();
   const dimOptionsQuery = useDimOptionsQuery();
   const caseTypeOptionsQuery = useCaseTypeOptionsQuery();
   const caseTypeMapQuery = useCaseTypeMapQuery();

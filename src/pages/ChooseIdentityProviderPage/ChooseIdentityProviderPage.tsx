@@ -26,7 +26,7 @@ export type ChooseIdentityProviderPageProps = {
 export const ChooseIdentityProviderPage = ({
   identityProvidersWithAvailability,
 }: ChooseIdentityProviderPageProps) => {
-  const [t] = useTranslation();
+  const { t } = useTranslation();
 
   const AfterIdentityProviderSelection =
     ConfigManager.instance.config.login?.AfterIdentityProviderSelection;

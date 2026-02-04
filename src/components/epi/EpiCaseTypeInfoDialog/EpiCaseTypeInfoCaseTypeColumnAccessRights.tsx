@@ -27,7 +27,7 @@ type DataCollectionAccess = {
 const MAX_ITEMS = 5;
 
 export const EpiCaseTypeInfoCaseTypeColumnAccessRights = ({ caseTypeColumnId }: EpiCaseTypeInfoCaseTypeColumnAccessRightsProps) => {
-  const [t] = useTranslation();
+  const { t } = useTranslation();
   const caseTypeAbacContext = useCaseTypeAbacContext();
   const [shouldShowMore, setShouldShowMore] = useState(false);
 

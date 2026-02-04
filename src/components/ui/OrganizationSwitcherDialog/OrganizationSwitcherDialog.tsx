@@ -58,7 +58,7 @@ export const OrganizationSwitcherDialog = withDialog<OrganizationSwitcherDialogP
     onClose,
   }: OrganizationSwitcherDialogProps,
 ): ReactElement => {
-  const [t] = useTranslation();
+  const { t } = useTranslation();
   const organizationOptionsQuery = useOrganizationOptionsQuery();
   const user = AuthorizationManager.instance.user;
   const [isChanging, setIsChanging] = useState(false);

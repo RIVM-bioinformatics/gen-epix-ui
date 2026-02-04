@@ -15,7 +15,7 @@ export type EpiUploadNavigationProps = {
 };
 
 export const EpiUploadNavigation = ({ onProceedButtonClick: onProceedButtonClick, onGoBackButtonClick: onGoBack, proceedLabel, backLabel, proceedDisabled }: EpiUploadNavigationProps) => {
-  const [t] = useTranslation();
+  const { t } = useTranslation();
 
   return (
     <Box

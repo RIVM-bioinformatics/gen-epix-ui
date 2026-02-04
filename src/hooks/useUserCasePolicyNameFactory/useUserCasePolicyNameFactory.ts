@@ -13,7 +13,7 @@ import { DataHookUtil } from '../../utils/DataHookUtil';
 import { DataUtil } from '../../utils/DataUtil';
 
 export const useUserCasePolicyNameFactory = (): UseNameFactory<UserAccessCasePolicy | UserShareCasePolicy> => {
-  const [t] = useTranslation();
+  const { t } = useTranslation();
 
   const usersMapQuery = useUsersMapQuery();
   const dataCollectionsMapQuery = useDataCollectionsMapQuery();

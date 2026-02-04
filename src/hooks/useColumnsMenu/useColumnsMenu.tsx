@@ -28,7 +28,7 @@ export const UseColumnsMenu = <TRowData,>({ hasCellData }: UseColumnsMenuProps<T
   const visibleColumnIds = useStore(tableStore, useShallow((state) => state.columnSettings.filter(c => c.isVisible).map(c => c.id)));
   const columnDimensions = useStore(tableStore, useShallow((state) => state.columnDimensions));
   const sortedData = useStore(tableStore, useShallow((state) => state.sortedData));
-  const [t] = useTranslation();
+  const { t } = useTranslation();
 
   const onColumnsEditorMenuItemClick = useCallback(() => {
     emitTableEvent('openColumnsEditorDialog', hasCellData as HasCellDataFn<unknown>);

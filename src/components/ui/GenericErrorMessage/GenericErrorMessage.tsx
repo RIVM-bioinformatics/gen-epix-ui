@@ -26,7 +26,7 @@ export type GenericErrorMessageProps = {
 };
 
 export const GenericErrorMessage = ({ error, shouldHideActionButtons }: GenericErrorMessageProps) => {
-  const [t] = useTranslation();
+  const { t } = useTranslation();
 
   useEffect(() => {
     if (!error || isAxiosError(error)) {

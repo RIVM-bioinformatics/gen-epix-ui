@@ -42,7 +42,7 @@ type FormFields = Pick<
 >;
 
 export const OrganizationShareCasePoliciesAdminPage = () => {
-  const [t] = useTranslation();
+  const { t } = useTranslation();
   const organizationOptionsQuery = useOrganizationOptionsQuery();
   const dataCollectionOptionsQuery = useDataCollectionOptionsQuery();
   const caseTypeColSetOptionsQuery = useCaseTypeColSetOptionsQuery();

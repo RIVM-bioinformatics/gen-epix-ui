@@ -24,7 +24,7 @@ import { CrudPage } from '../CrudPage';
 type FormFields = Pick<EtiologicalAgent, 'name' | 'type'>;
 
 export const EtiologicalAgentsAdminPage = () => {
-  const [t] = useTranslation();
+  const { t } = useTranslation();
 
   const fetchAll = useCallback(async (signal: AbortSignal) => {
     return (await OntologyApi.instance.etiologicalAgentsGetAll({ signal }))?.data;

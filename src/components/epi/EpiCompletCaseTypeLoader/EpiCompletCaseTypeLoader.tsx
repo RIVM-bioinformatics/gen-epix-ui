@@ -21,7 +21,7 @@ export type EpiCompletCaseTypeLoaderProps = PropsWithChildren<{
 }>;
 
 export const EpiCompletCaseTypeLoader = ({ caseTypeId, onCompleteCaseTypeLoaded, children }: EpiCompletCaseTypeLoaderProps) => {
-  const [t] = useTranslation();
+  const { t } = useTranslation();
   const [isSideEffectLoading, setIsSideEffectLoading] = useState(true);
   const [sideEffectError, setSideEffectError] = useState<Error>();
 

@@ -83,7 +83,7 @@ type LspEchartsEvent = {
 };
 
 export const EpiMap = () => {
-  const [t] = useTranslation();
+  const { t } = useTranslation();
   const [column, setColumn] = useState<CaseTypeCol>(null);
   const [epiContextMenuConfig, setEpiContextMenuConfig] = useState<EpiContextMenuConfigWithPosition | null>(null);
   const [hasRenderedOnce, setHasRenderedOnce] = useState(false);

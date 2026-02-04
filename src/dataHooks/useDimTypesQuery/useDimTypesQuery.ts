@@ -17,7 +17,7 @@ export const dimTypePresentationValues: Record<DimType, string> = {
 };
 
 export const useDimTypeOptionsQuery = (): UseOptions<string> => {
-  const [t] = useTranslation();
+  const { t } = useTranslation();
   return useMemo(() => {
     const options: OptionBase<string>[] = Object.entries(dimTypePresentationValues).map(([value, label]) => ({ value, label }));
     return {

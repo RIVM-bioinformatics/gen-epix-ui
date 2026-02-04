@@ -27,7 +27,7 @@ export const EpiCaseSetContent = ({ caseSet, ...boxProps }: EpiCaseSetContentPro
   const caseSetCategoryMapQuery = useCaseSetCategoryMapQuery();
   const caseSetStatusMapQuery = useCaseSetStatusMapQuery();
   const caseTypeMapQuery = useCaseTypeMapQuery();
-  const [t] = useTranslation();
+  const { t } = useTranslation();
 
   const loadables = useArray([caseSetCategoryMapQuery, caseSetStatusMapQuery, caseTypeMapQuery]);
   return (

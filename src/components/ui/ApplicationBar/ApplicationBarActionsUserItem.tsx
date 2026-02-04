@@ -15,7 +15,7 @@ import { useTranslation } from 'react-i18next';
 import { UserMenu } from './UserMenu';
 
 export const ApplicationBarActionsUserItem = () => {
-  const [t] = useTranslation();
+  const { t } = useTranslation();
   const theme = useTheme();
   const [accountMenuAnchorElement, setAccountMenuAnchorElement] = useState<null | HTMLElement>(null);
 

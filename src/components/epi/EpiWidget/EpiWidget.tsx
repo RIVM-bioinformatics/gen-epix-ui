@@ -81,7 +81,7 @@ const StyledDivider = styled(Divider)(({ theme }) => ({
 
 export const EpiWidget = ({ title, children, primaryMenu, secondaryMenu, warningMessage, zone, expandDisabled, isLoading }: WidgetProps) => {
   const theme = useTheme();
-  const [t] = useTranslation();
+  const { t } = useTranslation();
 
   const epiStore = useContext(EpiDashboardStoreContext);
   const expandZone = useStore(epiStore, (state) => state.expandZone);

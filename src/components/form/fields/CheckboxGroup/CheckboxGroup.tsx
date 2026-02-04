@@ -61,7 +61,7 @@ export const CheckboxGroup = <TFieldValues extends FieldValues, TName extends Pa
   warningMessage,
   onChange: onChangeProp,
 }: CheckboxGroupProps<TFieldValues, TName>): ReactElement => {
-  const [t] = useTranslation();
+  const { t } = useTranslation();
   const id = useId();
   const { control, formState: { errors } } = useFormContext<TFieldValues>();
   const errorMessage = FormUtil.getFieldErrorMessage(errors, name);

@@ -33,7 +33,7 @@ type TableData = DataCollectionSet & { dataCollectionIds: string[] };
 type FormFields = Pick<TableData, 'name' | 'description' | 'dataCollectionIds'>;
 
 export const DataCollectionSetsAdminPage = () => {
-  const [t] = useTranslation();
+  const { t } = useTranslation();
 
   const dataCollectionSetMembersQuery = useDataCollectionSetMembersQuery();
   const dataCollectionOptionsQuery = useDataCollectionOptionsQuery();

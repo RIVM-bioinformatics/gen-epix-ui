@@ -56,7 +56,7 @@ export const UserFeedbackDialog = withDialog<UserFeedbackDialogProps, UserFeedba
     onClose,
   }: UserFeedbackDialogProps,
 ): ReactElement => {
-  const [t] = useTranslation();
+  const { t } = useTranslation();
   const auth = useAuth();
 
   const schema = useMemo(() => object<FormFields>().shape({

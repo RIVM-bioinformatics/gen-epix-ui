@@ -42,7 +42,7 @@ import { useInviteUserConstraintsQuery } from '../../dataHooks/useInviteUserCons
 type FormFields = Pick<User, 'email' | 'is_active' | 'roles'>;
 
 export const UsersAdminPage = () => {
-  const [t] = useTranslation();
+  const { t } = useTranslation();
   const organizationOptionsQuery = useOrganizationOptionsQuery();
   const epiUserRightsDialogRef = useRef<EpiUserRightsDialogRefMethods>(null);
   const inviteUserConstraintsQuery = useInviteUserConstraintsQuery();

@@ -24,7 +24,7 @@ import { CrudPage } from '../CrudPage';
 type FormFields = Omit<Disease, 'id'>;
 
 export const DiseasesAdminPage = () => {
-  const [t] = useTranslation();
+  const { t } = useTranslation();
 
   const fetchAll = useCallback(async (signal: AbortSignal) => {
     return (await OntologyApi.instance.diseasesGetAll({ signal }))?.data;

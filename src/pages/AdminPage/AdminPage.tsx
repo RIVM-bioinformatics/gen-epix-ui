@@ -35,7 +35,7 @@ type Category = {
 
 export const AdminContent = () => {
   const location = useLocation();
-  const [t] = useTranslation();
+  const { t } = useTranslation();
   const theme = useTheme();
   const authorizationManager = useMemo(() => AuthorizationManager.instance, []);
 
@@ -156,7 +156,7 @@ export const AdminContent = () => {
 };
 
 export const AdminPage = () => {
-  const [t] = useTranslation();
+  const { t } = useTranslation();
 
   return (
     <PageContainer

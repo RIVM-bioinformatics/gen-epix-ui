@@ -46,7 +46,7 @@ type AccessCasePolity = Omit<OrganizationAccessCasePolicy & UserAccessCasePolicy
 };
 
 export const EpiUserRightsDialogCaseAccessPolicy = ({ user }: EpiUserRightsDialogCaseAccessPolicyProps) => {
-  const [t] = useTranslation();
+  const { t } = useTranslation();
   const organizationAccessCasePoliciesQuery = useOrganizationAccessCasePoliciesQuery(policies => policies.filter(policy => policy.is_active && policy.organization_id === user.organization_id));
   const userAccessCasePoliciesQuery = useUserAccessCasePoliciesQuery(policies => policies.filter(policy => policy.is_active && policy.user_id === user.id));
   const caseTypeSetMembersQuery = useCaseTypeSetMembersQuery();

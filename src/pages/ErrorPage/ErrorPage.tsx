@@ -9,7 +9,7 @@ export type ErrorPageProps = {
 };
 
 export const ErrorPage = ({ error }: ErrorPageProps) => {
-  const [t] = useTranslation();
+  const { t } = useTranslation();
 
   return (
     <PageContainer

@@ -29,7 +29,7 @@ type FormFields = Omit<RegionSetShape, 'id' | 'region_set_id' | 'region_set'>;
 
 export const RegionSetShapesAdminPage = () => {
   const { regionSetId } = useParams();
-  const [t] = useTranslation();
+  const { t } = useTranslation();
   const regionSetsMapQuery = useRegionSetsMapQuery();
 
   const loadables = useArray([regionSetsMapQuery]);

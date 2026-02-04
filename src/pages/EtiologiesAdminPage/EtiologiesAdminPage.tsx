@@ -27,7 +27,7 @@ import { CrudPage } from '../CrudPage';
 type FormFields = Pick<Etiology, 'disease_id' | 'etiological_agent_id'>;
 
 export const EtiologiesAdminPage = () => {
-  const [t] = useTranslation();
+  const { t } = useTranslation();
   const diseaseOptionsQuery = useDiseaseOptionsQuery();
   const etiologicalAgentOptionsQuery = useEtiologicalAgentOptionsQuery();
 

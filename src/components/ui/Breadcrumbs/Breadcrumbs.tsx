@@ -28,7 +28,7 @@ type BreadcrumbProps = {
 };
 
 const Breadcrumb = ({ item, isLast }: BreadcrumbProps): ReactElement => {
-  const [t] = useTranslation();
+  const { t } = useTranslation();
   const breadcrumbsTitles = useSubscribable(BreadcrumbManager.instance);
 
   const title = useMemo(() => {

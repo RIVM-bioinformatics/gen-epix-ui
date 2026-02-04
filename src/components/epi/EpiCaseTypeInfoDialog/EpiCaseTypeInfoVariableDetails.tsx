@@ -27,7 +27,7 @@ export type EpiCaseTypeInfoVariableDetailsProps = {
 };
 
 export const EpiCaseTypeInfoVariableDetails = ({ caseTypeDimension, completeCaseType }: EpiCaseTypeInfoVariableDetailsProps) => {
-  const [t] = useTranslation();
+  const { t } = useTranslation();
   const caseTypeCols = completeCaseType.ordered_case_type_col_ids_by_dim[caseTypeDimension.id].map(x => completeCaseType.case_type_cols[x]);
 
   return (

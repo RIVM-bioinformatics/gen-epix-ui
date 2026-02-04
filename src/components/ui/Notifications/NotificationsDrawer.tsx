@@ -24,7 +24,7 @@ export type NotificationsDrawerProps = {
 };
 
 export const NotificationsDrawer = ({ onDrawerClose, open }: NotificationsDrawerProps) => {
-  const [t] = useTranslation();
+  const { t } = useTranslation();
   const theme = useTheme();
   const notifications = useSubscribable(NotificationManager.instance);
 

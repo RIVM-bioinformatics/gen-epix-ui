@@ -39,7 +39,7 @@ export const CrudPageDeleteDialog = withDialog<CrudPageDeleteDialogProps<any>, C
     createItemDialogTitle,
   }: CrudPageDeleteDialogProps<TData>,
 ): ReactElement => {
-  const [t] = useTranslation();
+  const { t } = useTranslation();
 
   const onConfirmButtonClick = useCallback(() => {
     onConfirm(openProps.item);

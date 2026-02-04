@@ -176,7 +176,7 @@ export const CrudPage = <
   title,
   updateOne,
 }: CrudPageProps<TFormFields, TData, TTableData>) => {
-  const [t] = useTranslation();
+  const { t } = useTranslation();
   const theme = useTheme();
   const deleteConfirmationRef = useRef<CrudPageDeleteDialogRefMethods<TData>>(null);
   const editDialogRef = useRef<CrudPageEditDialogRefMethods<TData, TFormFields>>(null);

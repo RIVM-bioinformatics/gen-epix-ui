@@ -45,7 +45,7 @@ type FormFields = Pick<
 >;
 
 export const UserAccessCasePoliciesAdminPage = () => {
-  const [t] = useTranslation();
+  const { t } = useTranslation();
   const userOptionsQuery = useUserOptionsQuery();
   const dataCollectionOptionsQuery = useDataCollectionOptionsQuery();
   const caseTypeColSetOptionsQuery = useCaseTypeColSetOptionsQuery();

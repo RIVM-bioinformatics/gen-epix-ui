@@ -63,7 +63,7 @@ export const Select = <TFieldValues extends FieldValues, TName extends Path<TFie
   warningMessage,
   multiple,
 }: SelectProps<TFieldValues, TName, TMultiple>): ReactElement => {
-  const [t] = useTranslation();
+  const { t } = useTranslation();
   const { control, formState: { errors } } = useFormContext<TFieldValues>();
   const errorMessage = FormUtil.getFieldErrorMessage(errors, name);
   const inputRef = useRef<HTMLInputElement>(null);

@@ -28,7 +28,7 @@ import { TestIdUtil } from '../../../utils/TestIdUtil';
 import type { AuthState } from '../../../models/auth';
 
 export const AuthenticationWrapper = ({ children }: PropsWithChildren) => {
-  const [t] = useTranslation();
+  const { t } = useTranslation();
   const auth = useAuth();
   const consentDialogRef = useRef<ConsentDialogRefMethods>(null);
   const [hasGivenConsent, setHasGivenConsent] = useState<boolean>(

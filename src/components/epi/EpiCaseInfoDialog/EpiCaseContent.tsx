@@ -32,7 +32,7 @@ export type EpiCaseContentProps = {
 } & BoxProps;
 
 export const EpiCaseContent = ({ epiCase, ...boxProps }: EpiCaseContentProps) => {
-  const [t] = useTranslation();
+  const { t } = useTranslation();
   const epiContactDetailsDialogRef = useRef<EpiContactDetailsDialogRefMethods>(null);
   const epiStore = useContext(EpiDashboardStoreContext);
   const completeCaseType = useStore(epiStore, (state) => state.completeCaseType);

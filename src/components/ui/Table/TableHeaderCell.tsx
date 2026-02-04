@@ -98,7 +98,7 @@ const TableFilterLabelIconButton = styled(IconButton, {
 });
 
 export const TableHeaderCell = <TRowData,>(props: TableHeaderCellProps<TRowData>) => {
-  const [t] = useTranslation();
+  const { t } = useTranslation();
   const theme = useTheme();
   const tableStore = useTableStoreContext<TRowData>();
   const sortByField = useStore(tableStore, (state) => state.sortByField);

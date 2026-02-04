@@ -30,7 +30,7 @@ export const OutagesDialog = withDialog<OutagesDialogProps, OutagesDialogOpenPro
     onClose,
   }: OutagesDialogProps,
 ): ReactElement => {
-  const [t] = useTranslation();
+  const { t } = useTranslation();
   const visibleOutages = useStore(outagesStore, (state) => state.visibleOutages);
   const activeOutages = useStore(outagesStore, (state) => state.activeOutages);
   const soonActiveOutages = useStore(outagesStore, (state) => state.soonActiveOutages);

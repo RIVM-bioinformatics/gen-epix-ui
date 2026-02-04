@@ -34,7 +34,7 @@ import { useConceptRelationTypeOptionsQuery } from '../../dataHooks/useConceptRe
 type FormFields = Omit<ConceptRelation, 'id' | 'from_concept' | 'to_concept'>;
 
 export const ConceptRelationsAdminPage = () => {
-  const [t] = useTranslation();
+  const { t } = useTranslation();
 
   const conceptMapQuery = useConceptMapQuery();
   const conceptOptionsQuery = useConceptOptionsQuery();

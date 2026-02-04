@@ -25,7 +25,7 @@ export type ApplicationFooterProps = {
 export const ApplicationFooter = ({ fullWidth }: ApplicationFooterProps) => {
   const theme = useTheme();
   const navId = useId();
-  const [t] = useTranslation();
+  const { t } = useTranslation();
 
   const [isMenuOpen, setIsMenuOpen] = useState(false);
 

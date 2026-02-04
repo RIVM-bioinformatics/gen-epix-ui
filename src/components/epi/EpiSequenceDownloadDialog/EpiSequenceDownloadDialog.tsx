@@ -56,7 +56,7 @@ export const EpiSequenceDownloadDialog = withDialog<EpiSequenceDownloadDialogPro
     onClose,
   }: EpiSequenceDownloadDialogProps,
 ): ReactElement => {
-  const [t] = useTranslation();
+  const { t } = useTranslation();
   const epiStore = useContext(EpiDashboardStoreContext);
   const completeCaseType = useStore(epiStore, useShallow((state) => state.completeCaseType));
 

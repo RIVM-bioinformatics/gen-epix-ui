@@ -171,7 +171,7 @@ const TableFiltersSidebarItemContentFilterDimension = <TRowData,>({ filterDimens
 };
 
 export const TableFiltersSidebarItemContent = <TRowData,>({ onClose }: TableFiltersSidebarItemContentProps) => {
-  const [t] = useTranslation();
+  const { t } = useTranslation();
 
   const tableStore = useTableStoreContext<TRowData>();
   const setFilterValues = useStore(tableStore, (state) => state.setFilterValues);
@@ -379,7 +379,7 @@ export const TableFiltersSidebarItemContent = <TRowData,>({ onClose }: TableFilt
 };
 
 export const TableFiltersSidebarItem = ({ open, onClose }: TableFiltersSidebarItemProps) => {
-  const [t] = useTranslation();
+  const { t } = useTranslation();
 
   return (
     <SidebarItem

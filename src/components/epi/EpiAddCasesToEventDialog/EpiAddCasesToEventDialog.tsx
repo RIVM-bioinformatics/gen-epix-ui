@@ -79,7 +79,7 @@ export const EpiAddCasesToEventDialog = withDialog<EpiAddCasesToEventDialogProps
     onClose,
   }: EpiAddCasesToEventDialogProps,
 ): ReactElement => {
-  const [t] = useTranslation();
+  const { t } = useTranslation();
 
   const dataCollectionsMapQuery = useDataCollectionsMapQuery();
   const caseSetOptionsQuery = useCaseSetOptionsQuery();

@@ -31,7 +31,7 @@ export const InfoMenu = ({ anchorElement, onClose }: InfoMenuProps): ReactElemen
   const popoverId = useMemo(() => StringUtil.createUuid(), []);
   const licensesDialogRef = useRef<LicensesDialogRefMethods>(null);
   const isInfoMenuOpen = !!anchorElement;
-  const [t] = useTranslation();
+  const { t } = useTranslation();
   const onShowLicenseInformationButtonClick = useCallback(() => {
     licensesDialogRef.current.open();
   }, []);

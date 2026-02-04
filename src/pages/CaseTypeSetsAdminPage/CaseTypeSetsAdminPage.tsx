@@ -39,7 +39,7 @@ interface TableData extends CaseTypeSet {
 type FormFields = Pick<TableData, 'name' | 'case_type_set_category_id' | 'caseTypeIds' | 'rank' | 'description'>;
 
 export const CaseTypeSetsAdminPage = () => {
-  const [t] = useTranslation();
+  const { t } = useTranslation();
   const caseTypeSetCategoryOptionsQuery = useCaseTypeSetCategoryOptionsQuery();
   const caseTypeSetMembersQuery = useCaseTypeSetMembersQuery();
   const caseTypeOptionsQuery = useCaseTypeOptionsQuery();

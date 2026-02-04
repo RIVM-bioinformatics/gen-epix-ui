@@ -75,7 +75,7 @@ export const EpiCaseSetInfoDialog = withDialog<EpiCaseSetInfoDialogProps, EpiCas
     showNavigationButton,
   }: EpiCaseSetInfoDialogProps,
 ): ReactElement => {
-  const [t] = useTranslation();
+  const { t } = useTranslation();
   const caseSetIds = useMemo(() => [openProps.caseSetId], [openProps.caseSetId]);
   const caseSetRightsQuery = useCaseSetRightsQuery(caseSetIds);
   const dataCollectionsQuery = useDataCollectionsQuery();

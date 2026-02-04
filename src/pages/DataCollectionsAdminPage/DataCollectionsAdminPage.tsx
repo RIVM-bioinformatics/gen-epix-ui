@@ -24,7 +24,7 @@ import { TestIdUtil } from '../../utils/TestIdUtil';
 type FormFields = Pick<DataCollection, 'name' | 'description'>;
 
 export const DataCollectionsAdminPage = () => {
-  const [t] = useTranslation();
+  const { t } = useTranslation();
 
   const fetchAll = useCallback(async (signal: AbortSignal) => {
     return (await OrganizationApi.instance.dataCollectionsGetAll({ signal }))?.data;

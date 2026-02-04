@@ -38,7 +38,7 @@ export type EpiDashboardLayoutSettingsFormProps = {
 };
 
 export const EpiDashboardLayoutSettingsForm = ({ onReset }: EpiDashboardLayoutSettingsFormProps) => {
-  const [t] = useTranslation();
+  const { t } = useTranslation();
 
   const resetEpiDashboardLayout = useStore(userProfileStore, useShallow((state) => state.resetEpiDashboardLayout));
   const epiDashboardLayoutUserConfig = useStore(userProfileStore, useShallow((state) => state.epiDashboardLayoutUserConfig));

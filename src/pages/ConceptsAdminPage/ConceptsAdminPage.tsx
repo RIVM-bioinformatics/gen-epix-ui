@@ -27,7 +27,7 @@ type FormFields = Omit<Concept, 'id' | 'concept_set_id' | 'concept_set' | 'props
 
 export const ConceptsAdminPage = () => {
   const { conceptSetId } = useParams();
-  const [t] = useTranslation();
+  const { t } = useTranslation();
 
   const fetchAll = useCallback(async (signal: AbortSignal) => {
     return (await OntologyApi.instance.conceptsGetAll({ signal }))?.data;

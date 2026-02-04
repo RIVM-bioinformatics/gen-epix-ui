@@ -36,7 +36,7 @@ type TableData = CaseTypeColSet & { caseTypeColIds: string[] };
 type FormFields = Pick<TableData, 'name' | 'description' | 'caseTypeColIds'>;
 
 export const CaseTypeColSetsAdminPage = () => {
-  const [t] = useTranslation();
+  const { t } = useTranslation();
 
   const caseTypeColOptionsQuery = useCaseTypeColOptionsQuery();
   const caseTypeColSetMembersQuery = useCaseTypeColSetMembersQuery();

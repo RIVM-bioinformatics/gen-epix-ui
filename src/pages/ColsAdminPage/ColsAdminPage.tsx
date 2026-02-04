@@ -47,7 +47,7 @@ const CONCEPT_COL_TYPES: ColType[] = [ColType.NOMINAL, ColType.ORDINAL, ColType.
 
 export const ColsAdminPage = () => {
   const { dimId } = useParams();
-  const [t] = useTranslation();
+  const { t } = useTranslation();
   const dimOptionsQuery = useDimOptionsQuery();
   const dimMapQuery = useDimMapQuery();
   const colTypeOptionsQuery = useColTypeOptionsQuery();

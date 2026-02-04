@@ -15,7 +15,7 @@ export const regionRelationTypePresentationValues: Partial<Record<RegionRelation
 };
 
 export const useRegionRelationTypeOptionsQuery = (): UseOptions<string> => {
-  const [t] = useTranslation();
+  const { t } = useTranslation();
   return useMemo(() => {
     const options: OptionBase<string>[] = Object.entries(regionRelationTypePresentationValues).map(([value, label]) => ({ value, label }));
     return {
