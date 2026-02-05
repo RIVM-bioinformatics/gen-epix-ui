@@ -12,7 +12,6 @@ import {
   object,
   string,
 } from 'yup';
-import { useAuth } from 'react-oidc-context';
 import {
   Box,
   Typography,
@@ -32,6 +31,7 @@ import { TestIdUtil } from '../../../utils/TestIdUtil';
 import type { FormFieldDefinition } from '../../../models/form';
 import { FORM_FIELD_DEFINITION_TYPE } from '../../../models/form';
 import { GenericForm } from '../../form/helpers/GenericForm';
+import { AuthorizationManager } from '../../../classes/managers/AuthorizationManager';
 
 export interface UserFeedbackDialogOpenProps {
   //
@@ -57,7 +57,6 @@ export const UserFeedbackDialog = withDialog<UserFeedbackDialogProps, UserFeedba
   }: UserFeedbackDialogProps,
 ): ReactElement => {
   const { t } = useTranslation();
-  const auth = useAuth();
 
   const schema = useMemo(() => object<FormFields>().shape({
     message: string().freeFormText().required().max(5000),
@@ -69,8 +68,8 @@ export const UserFeedbackDialog = withDialog<UserFeedbackDialogProps, UserFeedba
     resolver: yupResolver(schema) as Resolver<FormFields>,
     values: {
       message: '',
-      email: auth.user?.profile?.email ?? '',
-      name: auth.user?.profile?.name ?? '',
+      email: AuthorizationManager.instance.user?.email ?? AuthorizationManager.instance.user?.key ?? '',
+      name: AuthorizationManager.instance.user?.name ?? '',
     },
   });
   const { handleSubmit } = formMethods;
