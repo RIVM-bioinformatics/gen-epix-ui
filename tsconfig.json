@@ -8,6 +8,7 @@
   },
   "include": [
     "src/**/*",
+    "i18next.config.ts",
     "eslint.config.js",
     "vite.config.ts"
   ]

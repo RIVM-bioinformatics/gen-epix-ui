@@ -321,7 +321,7 @@ export class CaseUtil {
       isMissing: !content[caseTypeCol.id],
       short: content[caseTypeCol.id] ?? dataMissingCharacter,
       long: content[caseTypeCol.id] ?? dataMissingCharacter,
-      full: content[caseTypeCol.id] ?? t(`${dataMissingCharacter} (missing)`),
+      full: content[caseTypeCol.id] ?? t('{{dataMissingCharacter}} (missing)', { dataMissingCharacter }),
     };
     return rowValue;
   }
@@ -333,7 +333,7 @@ export class CaseUtil {
     return {
       raw,
       isMissing: true,
-      full: t(`${dataMissingCharacter} (missing)`),
+      full: t('{{dataMissingCharacter}} (missing)', { dataMissingCharacter }),
       long: dataMissingCharacter,
       short: dataMissingCharacter,
     };

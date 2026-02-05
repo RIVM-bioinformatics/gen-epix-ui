@@ -44,9 +44,9 @@
     "@mui/utils": "7.3.7",
     "@mui/x-date-pickers": "8.26.0",
     "i18next": "25.8.0",
+    "react": "19.2.4",
     "react-dom": "19.2.4",
     "react-i18next": "16.5.4",
-    "react": "19.2.4",
     "vite": "7.3.1"
   },
   "dependencies": {
@@ -140,6 +140,7 @@
     "@vitest/coverage-v8": "4.0.18",
     "eslint": "9.39.2",
     "glob": "13.0.0",
+    "i18next-cli": "^1.41.4",
     "jsdom": "27.4.0",
     "typescript": "5.9.3",
     "vite-plugin-dts": "4.5.4",

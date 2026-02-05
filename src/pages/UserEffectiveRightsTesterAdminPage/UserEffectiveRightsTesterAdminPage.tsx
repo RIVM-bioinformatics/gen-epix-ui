@@ -217,7 +217,7 @@ export const UserEffectiveRightsTesterAdminPage = () => {
                 component={'h2'}
                 variant={'h4'}
               >
-                {t(`Testing effective rights for user: {{userEmail}}`, { userEmail: user?.email })}
+                {t('Testing effective rights for user: {{userEmail}}', { userEmail: user?.email })}
               </Typography>
               <Typography>
                 {t('Organization: {{organizationName}}', { organizationName: organizationMapQuery.map.get(user.organization_id)?.name })}
@@ -236,7 +236,7 @@ export const UserEffectiveRightsTesterAdminPage = () => {
             {result !== null && typeof result === 'object' && (
               <Box marginY={2}>
                 <Typography variant={'h6'}>
-                  {t`Effective rights result:`}
+                  {t('Effective rights result:')}
                 </Typography>
                 {!formValues.fromDataCollectionId && result.has_share_case_rights && (
                   <Box marginY={2}>
@@ -250,22 +250,22 @@ export const UserEffectiveRightsTesterAdminPage = () => {
                   </Box>
                 )}
                 <Typography>
-                  {t('Add Case: {{addCase}}', { addCase: result?.add_case ? t`Yes` : t`No` })}
+                  {t('Add case: {{addCase}}', { addCase: result?.add_case ? t`Yes` : t`No` })}
                 </Typography>
                 <Typography>
-                  {t('Remove Case: {{removeCase}}', { removeCase: result?.remove_case ? t`Yes` : t`No` })}
+                  {t('Remove case: {{removeCase}}', { removeCase: result?.remove_case ? t`Yes` : t`No` })}
                 </Typography>
                 <Typography>
-                  {t('Add Case Set: {{addCaseSet}}', { addCaseSet: result?.add_case_set ? t`Yes` : t`No` })}
+                  {t('Add case set: {{addCaseSet}}', { addCaseSet: result?.add_case_set ? t`Yes` : t`No` })}
                 </Typography>
                 <Typography>
-                  {t('Remove Case Set: {{removeCaseSet}}', { removeCaseSet: result?.remove_case_set ? t`Yes` : t`No` })}
+                  {t('Remove case set: {{removeCaseSet}}', { removeCaseSet: result?.remove_case_set ? t`Yes` : t`No` })}
                 </Typography>
                 <Typography>
-                  {t('Read Case Set: {{readCaseSet}}', { readCaseSet: result?.read_case_set ? t`Yes` : t`No` })}
+                  {t('Read case set: {{readCaseSet}}', { readCaseSet: result?.read_case_set ? t`Yes` : t`No` })}
                 </Typography>
                 <Typography>
-                  {t('Write Case Set: {{writeCaseSet}}', { writeCaseSet: result?.write_case_set ? t`Yes` : t`No` })}
+                  {t('Write case set: {{writeCaseSet}}', { writeCaseSet: result?.write_case_set ? t`Yes` : t`No` })}
                 </Typography>
                 <Typography>
                   {t('Read case properties: {{readSomeProperties}}', { readSomeProperties: result?.read_case_type_col_ids?.length > 0 ? t`Yes` : t`No` })}
