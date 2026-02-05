@@ -18,7 +18,6 @@ import { TestIdUtil } from '../../../utils/TestIdUtil';
 import { ApplicationBarActionsFeedbackItem } from './ApplicationBarActionsFeedbackItem';
 import { ApplicationBarActionsInfoItem } from './ApplicationBarActionsInfotem';
 import { ApplicationBarActionsNotificationsItem } from './ApplicationBarActionsNotificationsItem';
-import { ApplicationBarActionsOrganizationSwitcherItem } from './ApplicationBarActionsOrganizationItem';
 import { ApplicationBarActionsOutagesItem } from './ApplicationBarActionsOutagesItem';
 import { ApplicationBarActionsUserItem } from './ApplicationBarActionsUserItem';
 
@@ -92,7 +91,6 @@ export const ApplicationBarActions = ({ fullWidth }: ApplicationBarActionsProps)
       >
         <ApplicationBarActionsFeedbackItem />
         <ApplicationBarActionsOutagesItem />
-        <ApplicationBarActionsOrganizationSwitcherItem />
         <ApplicationBarActionsNotificationsItem />
         <ApplicationBarActionsInfoItem />
         <ApplicationBarActionsUserItem />
