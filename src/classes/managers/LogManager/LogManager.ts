@@ -6,6 +6,7 @@ import {
 
 import { AuthenticationManager } from '../AuthenticationManager';
 import { ConfigManager } from '../ConfigManager';
+import { WindowManager } from '../WindowManager';
 import {
   type LogItem,
   LogLevel,
@@ -22,13 +23,12 @@ type LogManagerItem = {
 };
 
 export class LogManager {
-  private static __instance: LogManager;
   protected readonly requestMap: Map<string, number>;
   private logItems: LogItem[] = [];
 
   public static get instance(): LogManager {
-    LogManager.__instance = LogManager.__instance || new LogManager();
-    return LogManager.__instance;
+    WindowManager.instance.window.managers.log = WindowManager.instance.window.managers.log || new LogManager();
+    return WindowManager.instance.window.managers.log;
   }
 
   private constructor() {

@@ -1,9 +1,14 @@
+import { WindowManager } from '../WindowManager';
+
 export class NavigationHistoryManager {
-  private static __instance: NavigationHistoryManager;
   public readonly navigationHistory: string[] = [];
 
+  private constructor() {
+    //
+  }
+
   public static get instance(): NavigationHistoryManager {
-    NavigationHistoryManager.__instance = NavigationHistoryManager.__instance || new NavigationHistoryManager();
-    return NavigationHistoryManager.__instance;
+    WindowManager.instance.window.managers.navigationHistory = WindowManager.instance.window.managers.navigationHistory || new NavigationHistoryManager();
+    return WindowManager.instance.window.managers.navigationHistory;
   }
 }

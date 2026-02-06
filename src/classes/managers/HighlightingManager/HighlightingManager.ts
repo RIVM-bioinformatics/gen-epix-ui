@@ -2,10 +2,9 @@ import type { Highlighting } from '../../../models/epi';
 import { userProfileStore } from '../../../stores/userProfileStore';
 import { SubscribableAbstract } from '../../abstracts/SubscribableAbstract';
 import { Subject } from '../../Subject';
+import { WindowManager } from '../WindowManager';
 
 export class HighlightingManager extends SubscribableAbstract<Highlighting> {
-  private static __instance: HighlightingManager;
-
   protected constructor() {
     super(new Subject({
       caseIds: [],
@@ -14,8 +13,8 @@ export class HighlightingManager extends SubscribableAbstract<Highlighting> {
   }
 
   public static get instance(): HighlightingManager {
-    HighlightingManager.__instance = HighlightingManager.__instance || new HighlightingManager();
-    return HighlightingManager.__instance;
+    WindowManager.instance.window.managers.highlighting = WindowManager.instance.window.managers.highlighting || new HighlightingManager();
+    return WindowManager.instance.window.managers.highlighting;
   }
 
   public highlight(highlighting: Highlighting): void {

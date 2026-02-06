@@ -1,9 +1,10 @@
 import { createBrowserRouter } from 'react-router-dom';
 
 import { routes } from '../../../data/routes';
+import { WindowManager } from '../WindowManager';
+
 
 export class RouterManager {
-  private static __instance: RouterManager;
   public readonly router: ReturnType<typeof createBrowserRouter>;
 
   private constructor() {
@@ -11,7 +12,8 @@ export class RouterManager {
   }
 
   public static get instance(): RouterManager {
-    RouterManager.__instance = RouterManager.__instance || new RouterManager();
-    return RouterManager.__instance;
+    WindowManager.instance.window.managers.route = WindowManager.instance.window.managers.route || new RouterManager();
+    return WindowManager.instance.window.managers.route;
   }
+
 }

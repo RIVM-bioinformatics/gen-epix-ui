@@ -4,11 +4,11 @@ import {
 } from '../../../api';
 import type { MyNonIndexRouteObject } from '../../../models/reactRouter';
 import { PageEventBusManager } from '../PageEventBusManager';
+import { WindowManager } from '../WindowManager';
 
 export class AuthorizationManager {
   private __user: User;
   private __apiPermissions: ApiPermission[] = [];
-  private static __instance: AuthorizationManager;
 
   private constructor() {
     //
@@ -32,8 +32,8 @@ export class AuthorizationManager {
   }
 
   public static get instance(): AuthorizationManager {
-    AuthorizationManager.__instance = AuthorizationManager.__instance || new AuthorizationManager();
-    return AuthorizationManager.__instance;
+    WindowManager.instance.window.managers.authorization = WindowManager.instance.window.managers.authorization || new AuthorizationManager();
+    return WindowManager.instance.window.managers.authorization;
   }
 
   public doesUserHavePermissionForRoute(route: MyNonIndexRouteObject): boolean {

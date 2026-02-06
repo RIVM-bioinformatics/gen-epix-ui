@@ -2,11 +2,10 @@ import type { EmotionCache } from '@emotion/cache';
 import createCache from '@emotion/cache';
 
 import { ConfigManager } from '../ConfigManager';
+import { WindowManager } from '../WindowManager';
 
 
 export class EmotionCacheManager {
-  private static __instance: EmotionCacheManager;
-
   public emotionCache: EmotionCache;
 
   private constructor() {
@@ -20,7 +19,7 @@ export class EmotionCacheManager {
   }
 
   public static get instance(): EmotionCacheManager {
-    EmotionCacheManager.__instance = EmotionCacheManager.__instance || new EmotionCacheManager();
-    return EmotionCacheManager.__instance;
+    WindowManager.instance.window.managers.emotionCache = WindowManager.instance.window.managers.emotionCache || new EmotionCacheManager();
+    return WindowManager.instance.window.managers.emotionCache;
   }
 }

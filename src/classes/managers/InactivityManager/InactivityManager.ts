@@ -7,6 +7,7 @@ import { AuthenticationManager } from '../AuthenticationManager';
 import { ConfigManager } from '../ConfigManager';
 import { LogManager } from '../LogManager';
 import { TimeUtil } from '../../../utils/TimeUtil';
+import { WindowManager } from '../WindowManager';
 
 export type InactivityState = {
   isIdle: boolean;
@@ -17,7 +18,6 @@ export type InactivityState = {
 };
 
 export class InactivityManager extends SubscribableAbstract<InactivityState> {
-  private static __instance: InactivityManager;
   private idleSince: number = Date.now();
   private idleDiff: number = 0;
   private notificationDiff: number = 0;
@@ -71,10 +71,8 @@ export class InactivityManager extends SubscribableAbstract<InactivityState> {
   }
 
   public static get instance(): InactivityManager {
-    if (!this.__instance) {
-      this.__instance = new InactivityManager();
-    }
-    return this.__instance;
+    WindowManager.instance.window.managers.inactivity = WindowManager.instance.window.managers.inactivity || new InactivityManager();
+    return WindowManager.instance.window.managers.inactivity;
   }
 
   public reset(): void {

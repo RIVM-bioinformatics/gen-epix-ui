@@ -1,12 +1,17 @@
 import type { AxiosResponse } from 'axios';
 
+import { WindowManager } from '../WindowManager';
+
 export class BackendVersionManager {
   public version: string;
-  private static __instance: BackendVersionManager;
+
+  private constructor() {
+    //
+  }
 
   public static get instance(): BackendVersionManager {
-    BackendVersionManager.__instance = BackendVersionManager.__instance || new BackendVersionManager();
-    return BackendVersionManager.__instance;
+    WindowManager.instance.window.managers.backendVersion = WindowManager.instance.window.managers.backendVersion || new BackendVersionManager();
+    return WindowManager.instance.window.managers.backendVersion;
   }
 
   public onResponseFulfilled(response: AxiosResponse): AxiosResponse {

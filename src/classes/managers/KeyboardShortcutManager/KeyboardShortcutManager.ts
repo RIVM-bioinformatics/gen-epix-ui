@@ -1,3 +1,5 @@
+import { WindowManager } from '../WindowManager';
+
 const FORM_ELEMENT_TAG_NAMES = [
   'form',
   'input',
@@ -20,12 +22,11 @@ type KeyboardShortcutConfig = {
 };
 
 export class KeyboardShortcutManager {
-  private static __instance: KeyboardShortcutManager;
   private readonly configs: KeyboardShortcutConfig[] = [];
 
   public static get instance(): KeyboardShortcutManager {
-    KeyboardShortcutManager.__instance = KeyboardShortcutManager.__instance || new KeyboardShortcutManager();
-    return KeyboardShortcutManager.__instance;
+    WindowManager.instance.window.managers.keyboardShortcut = WindowManager.instance.window.managers.keyboardShortcut || new KeyboardShortcutManager();
+    return WindowManager.instance.window.managers.keyboardShortcut;
   }
 
   private constructor() {

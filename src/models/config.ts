@@ -34,6 +34,10 @@ export type FooterConfig = {
 };
 
 export interface Config {
+  i18n: {
+    defaultLanguage: string;
+    supportedLanguages: string[];
+  };
   enablePageVents: boolean;
   applicationName: string;
   footer: FooterConfig;

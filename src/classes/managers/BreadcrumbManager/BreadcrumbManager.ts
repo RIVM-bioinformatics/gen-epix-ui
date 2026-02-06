@@ -3,20 +3,19 @@ import set from 'lodash/set';
 
 import { Subject } from '../../Subject';
 import { SubscribableAbstract } from '../../abstracts/SubscribableAbstract';
+import { WindowManager } from '../WindowManager';
 
 
 type SubjectData = Record<string, string>;
 
 export class BreadcrumbManager extends SubscribableAbstract<SubjectData> {
-  private static __instance: BreadcrumbManager;
-
   private constructor() {
     super(new Subject<SubjectData>({}));
   }
 
   public static get instance(): BreadcrumbManager {
-    BreadcrumbManager.__instance = BreadcrumbManager.__instance || new BreadcrumbManager();
-    return BreadcrumbManager.__instance;
+    WindowManager.instance.window.managers.breadcrumb = WindowManager.instance.window.managers.breadcrumb || new BreadcrumbManager();
+    return WindowManager.instance.window.managers.breadcrumb;
   }
 
   public update(position: string, title: string): void {
