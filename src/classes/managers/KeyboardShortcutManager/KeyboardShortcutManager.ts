@@ -25,6 +25,8 @@ export class KeyboardShortcutManager {
   private readonly configs: KeyboardShortcutConfig[] = [];
 
   public static get instance(): KeyboardShortcutManager {
+    // Instances are stored on the window to prevent multiple instances of the same manager. HMR may load multiple instances of the same manager, but we only want one instance to be active at a time.
+
     WindowManager.instance.window.managers.keyboardShortcut = WindowManager.instance.window.managers.keyboardShortcut || new KeyboardShortcutManager();
     return WindowManager.instance.window.managers.keyboardShortcut;
   }

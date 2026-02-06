@@ -44,7 +44,7 @@ import { TreeFilter } from '../../../classes/filters/TreeFilter';
 import { ConfigManager } from '../../../classes/managers/ConfigManager';
 import { DevicePixelRatioManager } from '../../../classes/managers/DevicePixelRatioManager';
 import { EpiEventBusManager } from '../../../classes/managers/EpiEventBusManager';
-import { HighlightingManager } from '../../../classes/managers/HighlightingManager';
+import { EpiHighlightingManager } from '../../../classes/managers/EpiHighlightingManager';
 import { Subject } from '../../../classes/Subject';
 import { useDimensions } from '../../../hooks/useDimensions';
 import { useScrollbarSize } from '../../../hooks/useScrollbarSize';
@@ -93,7 +93,7 @@ export const EpiTree = ({ linkedScrollSubject, ref }: EpiTreeProps) => {
   const { dimensions: { width, height } } = useDimensions(containerRef);
   const [treeCanvas, setTreeCanvas] = useState<HTMLCanvasElement>();
   const [headerCanvas, setHeaderCanvas] = useState<HTMLCanvasElement>();
-  const highlightingManager = useMemo(() => HighlightingManager.instance, []);
+  const highlightingManager = useMemo(() => EpiHighlightingManager.instance, []);
   const canvasScrollSubject = useMemo<Subject<{ x: number; y: number }>>(() => new Subject({ x: 0, y: 0 }), []);
   const epiStore = useContext(EpiDashboardStoreContext);
   const setPhylogeneticTreeResponse = useStore(epiStore, (state) => state.setPhylogeneticTreeResponse);

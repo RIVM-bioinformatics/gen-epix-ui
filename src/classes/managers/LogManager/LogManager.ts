@@ -27,6 +27,8 @@ export class LogManager {
   private logItems: LogItem[] = [];
 
   public static get instance(): LogManager {
+    // Instances are stored on the window to prevent multiple instances of the same manager. HMR may load multiple instances of the same manager, but we only want one instance to be active at a time.
+
     WindowManager.instance.window.managers.log = WindowManager.instance.window.managers.log || new LogManager();
     return WindowManager.instance.window.managers.log;
   }

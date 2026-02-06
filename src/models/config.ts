@@ -33,11 +33,14 @@ export type FooterConfig = {
   sections: FooterSection[];
 };
 
+export type I18nConfig = {
+  bundles: string[];
+  isDefault?: boolean;
+  code: string;
+};
+
 export interface Config {
-  i18n: {
-    defaultLanguage: string;
-    supportedLanguages: string[];
-  };
+  i18n: I18nConfig[];
   enablePageVents: boolean;
   applicationName: string;
   footer: FooterConfig;

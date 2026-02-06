@@ -18,6 +18,8 @@ export class AuthenticationManager extends SubscribableAbstract<IdentityProvider
   public static autoLoginSkew = 500;
 
   public static get instance(): AuthenticationManager {
+    // Instances are stored on the window to prevent multiple instances of the same manager. HMR may load multiple instances of the same manager, but we only want one instance to be active at a time.
+
     WindowManager.instance.window.managers.authentication = WindowManager.instance.window.managers.authentication || new AuthenticationManager();
     return WindowManager.instance.window.managers.authentication;
   }

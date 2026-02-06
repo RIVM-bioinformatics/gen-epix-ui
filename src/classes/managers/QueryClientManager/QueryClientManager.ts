@@ -43,6 +43,8 @@ export class QueryClientManager {
   }
 
   public static get instance(): QueryClientManager {
+    // Instances are stored on the window to prevent multiple instances of the same manager. HMR may load multiple instances of the same manager, but we only want one instance to be active at a time.
+
     WindowManager.instance.window.managers.queryClient = WindowManager.instance.window.managers.queryClient || new QueryClientManager();
     return WindowManager.instance.window.managers.queryClient;
   }

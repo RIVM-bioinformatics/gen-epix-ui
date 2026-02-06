@@ -53,7 +53,7 @@ export default {
         },
         {
           src: [
-            './src/locales',
+            './src/locale',
           ],
           dest: './',
         },

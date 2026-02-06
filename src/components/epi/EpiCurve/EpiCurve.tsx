@@ -49,7 +49,7 @@ import {
 import type { CaseTypeCol } from '../../../api';
 import { DimType } from '../../../api';
 import { ConfigManager } from '../../../classes/managers/ConfigManager';
-import { HighlightingManager } from '../../../classes/managers/HighlightingManager';
+import { EpiHighlightingManager } from '../../../classes/managers/EpiHighlightingManager';
 import { EPI_ZONE } from '../../../models/epi';
 import type { MenuItemData } from '../../../models/nestedMenu';
 import { EpiDashboardStoreContext } from '../../../stores/epiDashboardStore';
@@ -77,7 +77,7 @@ export const EpiCurve = () => {
   const { t } = useTranslation();
   const [epiContextMenuConfig, setEpiContextMenuConfig] = useState<EpiContextMenuConfigWithPosition | null>(null);
   const [hasRenderedOnce, setHasRenderedOnce] = useState(false);
-  const highlightingManager = useMemo(() => HighlightingManager.instance, []);
+  const highlightingManager = useMemo(() => EpiHighlightingManager.instance, []);
   const chartRef = useRef<EChartsReact>(null);
 
   const epiStore = useContext(EpiDashboardStoreContext);

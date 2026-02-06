@@ -9,6 +9,8 @@ export class ConfigManager {
   }
 
   public static get instance(): ConfigManager {
+    // Instances are stored on the window to prevent multiple instances of the same manager. HMR may load multiple instances of the same manager, but we only want one instance to be active at a time.
+
     WindowManager.instance.window.managers.config = WindowManager.instance.window.managers.config || new ConfigManager();
     return WindowManager.instance.window.managers.config;
   }

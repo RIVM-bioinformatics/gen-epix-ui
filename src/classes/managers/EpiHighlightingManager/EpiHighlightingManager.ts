@@ -4,7 +4,7 @@ import { SubscribableAbstract } from '../../abstracts/SubscribableAbstract';
 import { Subject } from '../../Subject';
 import { WindowManager } from '../WindowManager';
 
-export class HighlightingManager extends SubscribableAbstract<Highlighting> {
+export class EpiHighlightingManager extends SubscribableAbstract<Highlighting> {
   protected constructor() {
     super(new Subject({
       caseIds: [],
@@ -12,9 +12,9 @@ export class HighlightingManager extends SubscribableAbstract<Highlighting> {
     }));
   }
 
-  public static get instance(): HighlightingManager {
-    WindowManager.instance.window.managers.highlighting = WindowManager.instance.window.managers.highlighting || new HighlightingManager();
-    return WindowManager.instance.window.managers.highlighting;
+  public static get instance(): EpiHighlightingManager {
+    WindowManager.instance.window.managers.epiHighlighting = WindowManager.instance.window.managers.epiHighlighting || new EpiHighlightingManager();
+    return WindowManager.instance.window.managers.epiHighlighting;
   }
 
   public highlight(highlighting: Highlighting): void {

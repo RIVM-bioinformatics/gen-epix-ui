@@ -9,6 +9,8 @@ export class NotificationManager extends SubscribableAbstract<Notification[]> {
   private readonly notificationTimeouts: Record<string, ReturnType<typeof setTimeout>>;
 
   public static get instance(): NotificationManager {
+    // Instances are stored on the window to prevent multiple instances of the same manager. HMR may load multiple instances of the same manager, but we only want one instance to be active at a time.
+
     WindowManager.instance.window.managers.notification = WindowManager.instance.window.managers.notification || new NotificationManager();
     return WindowManager.instance.window.managers.notification;
   }

@@ -1,1 +1,1 @@
-export * from './EpiEventManager';
+export * from './EpiEventBusManager';

@@ -19,6 +19,8 @@ export class EmotionCacheManager {
   }
 
   public static get instance(): EmotionCacheManager {
+    // Instances are stored on the window to prevent multiple instances of the same manager. HMR may load multiple instances of the same manager, but we only want one instance to be active at a time.
+
     WindowManager.instance.window.managers.emotionCache = WindowManager.instance.window.managers.emotionCache || new EmotionCacheManager();
     return WindowManager.instance.window.managers.emotionCache;
   }

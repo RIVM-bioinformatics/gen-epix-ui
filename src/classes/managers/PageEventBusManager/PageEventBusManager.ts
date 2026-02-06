@@ -29,6 +29,8 @@ export class PageEventBusManager extends EventBusAbstract<EpiEvent> {
   }
 
   public static get instance(): PageEventBusManager {
+    // Instances are stored on the window to prevent multiple instances of the same manager. HMR may load multiple instances of the same manager, but we only want one instance to be active at a time.
+
     WindowManager.instance.window.managers.pageEventBus = WindowManager.instance.window.managers.pageEventBus || new PageEventBusManager();
     return WindowManager.instance.window.managers.pageEventBus;
   }

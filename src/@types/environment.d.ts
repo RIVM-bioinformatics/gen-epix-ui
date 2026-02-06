@@ -11,7 +11,7 @@ import type { EmotionCacheManager } from '../classes/managers/EmotionCacheManage
 import type { EpiDataManager } from '../classes/managers/EpiDataManager';
 import type { EpiEventBusManager } from '../classes/managers/EpiEventBusManager';
 import type { EpiLineListCaseSetMembersManager } from '../classes/managers/EpiLineListCaseSetMembersManager';
-import type { HighlightingManager } from '../classes/managers/HighlightingManager';
+import type { EpiHighlightingManager } from '../classes/managers/EpiHighlightingManager';
 import type { InactivityManager } from '../classes/managers/InactivityManager';
 import type { KeyboardShortcutManager } from '../classes/managers/KeyboardShortcutManager';
 import type { LogManager } from '../classes/managers/LogManager';
@@ -20,6 +20,7 @@ import type { NotificationManager } from '../classes/managers/NotificationManage
 import type { PageEventBusManager } from '../classes/managers/PageEventBusManager';
 import type { QueryClientManager } from '../classes/managers/QueryClientManager';
 import type { UserSettingsManager } from '../classes/managers/UserSettingsManager';
+import type { I18nManager } from '../classes/managers/I18nManager';
 
 declare global {
   interface Window {
@@ -36,7 +37,7 @@ declare global {
       epiData?: EpiDataManager;
       epiEventBus?: EpiEventBusManager;
       epiLineListCaseSetMembers?: EpiLineListCaseSetMembersManager;
-      highlighting?: HighlightingManager;
+      epiHighlighting?: EpiHighlightingManager;
       inactivity?: InactivityManager;
       keyboardShortcut?: KeyboardShortcutManager;
       log?: LogManager;
@@ -45,6 +46,7 @@ declare global {
       pageEventBus?: PageEventBusManager;
       queryClient?: QueryClientManager;
       userSettings?: UserSettingsManager;
+      i18n?: I18nManager;
     };
   }
 }

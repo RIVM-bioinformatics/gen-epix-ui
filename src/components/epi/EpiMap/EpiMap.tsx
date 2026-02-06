@@ -48,7 +48,7 @@ import {
   GeoApi,
 } from '../../../api';
 import { ConfigManager } from '../../../classes/managers/ConfigManager';
-import { HighlightingManager } from '../../../classes/managers/HighlightingManager';
+import { EpiHighlightingManager } from '../../../classes/managers/EpiHighlightingManager';
 import { useDimensions } from '../../../hooks/useDimensions';
 import { EPI_ZONE } from '../../../models/epi';
 import type { UnwrapArray } from '../../../models/generic';
@@ -90,7 +90,7 @@ export const EpiMap = () => {
   const containerRef = useRef<HTMLDivElement>(null);
   const chartRef = useRef<EChartsReact>(null);
   const { dimensions: { width, height } } = useDimensions(containerRef);
-  const highlightingManager = useMemo(() => HighlightingManager.instance, []);
+  const highlightingManager = useMemo(() => EpiHighlightingManager.instance, []);
 
   const epiStore = useContext(EpiDashboardStoreContext);
   const stratification = useStore(epiStore, (state) => state.stratification);
@@ -447,7 +447,7 @@ export const EpiMap = () => {
   }, [column?.id, focussedRegion, setFilterValue]);
 
   const getEpiContextMenuExtraItems = useCallback((onMenuClose: () => void): ReactElement => {
-    if (!column) {
+    if (!column || !focussedRegion?.name) {
       return null;
     }
     return (
@@ -460,7 +460,7 @@ export const EpiMap = () => {
           <FilterAltIcon fontSize={'small'} />
         </ListItemIcon>
         <ListItemText>
-          {t('Filter (show only {{regionName}})', { regionName: focussedRegion?.name })}
+          {t('Filter (show only {{regionName}})', { regionName: focussedRegion?.name ?? '-' })}
         </ListItemText>
       </MenuItem>
     );
