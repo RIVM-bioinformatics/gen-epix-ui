@@ -756,6 +756,12 @@
     "Your message": "Your message",
     "Your organization has been changed. You are now a member of \"{{organization}}\". You will need to refresh the page for changes to take effect.": "Your organization has been changed. You are now a member of \"{{organization}}\". You will need to refresh the page for changes to take effect.",
     "This application uses the following open source libraries:": "This application uses the following open source libraries:",
-    "Open project homepage in new tab": "Open project homepage in new tab"
+    "Open project homepage in new tab": "Open project homepage in new tab",
+    "View all cases": "View all cases",
+    "View all events": "View all events",
+    "View cases": "View cases",
+    "Trends summary": "Trends summary",
+    "View more trends": "View more trends",
+    "No trends available.": "No trends available."
   }
 }

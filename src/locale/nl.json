@@ -756,6 +756,12 @@
     "Your message": "Uw bericht",
     "Your organization has been changed. You are now a member of \"{{organization}}\". You will need to refresh the page for changes to take effect.": "Uw organisatie is gewijzigd. U bent nu lid van \"{{organization}}\". U moet de pagina vernieuwen om de wijzigingen door te voeren.",
     "This application uses the following open source libraries:": "Deze applicatie gebruikt de volgende open source bibliotheken:",
-    "Open project homepage in new tab": "Open project homepage in nieuw tabblad"
+    "Open project homepage in new tab": "Open project homepage in nieuw tabblad",
+    "View all cases": "Bekijk alle casussen",
+    "View all events": "Bekijk alle events",
+    "View cases": "Bekijk casussen",
+    "Trends summary": "Trends samenvatting",
+    "View more trends": "Bekijk meer trends",
+    "No trends available.": "Geen trends beschikbaar."
   }
 }
