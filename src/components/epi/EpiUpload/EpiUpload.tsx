@@ -87,7 +87,7 @@ export const EpiUpload = () => {
             if (steps[step].optional) {
               labelProps.optional = (
                 <Typography variant={'caption'}>
-                  {'Optional'}
+                  {t`Optional`}
                 </Typography>
               );
             }

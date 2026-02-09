@@ -152,7 +152,7 @@ export const LicensesDialog = withDialog<LicensesDialogProps, LicensesDialogOpen
               <Divider />
             </Box>
             <Typography>
-              {'This application uses the following open source libraries:'}
+              {t`This application uses the following open source libraries:`}
             </Typography>
             <List dense>
               {mergedLicenses?.map(entry => {
@@ -181,7 +181,7 @@ export const LicensesDialog = withDialog<LicensesDialogProps, LicensesDialogOpen
                     <ListItem
                       secondaryAction={entry.homepage && (
                         <IconButton
-                          aria-label={'Open project homepage in new tab'}
+                          aria-label={t`Open project homepage in new tab`}
                           edge={'end'}
                           // eslint-disable-next-line react/jsx-no-bind
                           onClick={() => onItemURLClick(entry.homepage)}

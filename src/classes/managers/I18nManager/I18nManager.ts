@@ -27,7 +27,8 @@ export class I18nManager {
       console.warn('I18nManager is already initialized');
       return;
     }
-    const defaultLanguageConfig = ConfigManager.instance.config.i18n.find(x => x.isDefault);
+    const currentLanguageCode = await ConfigManager.instance.config.i18n.getCurrentLanguageCode();
+    const defaultLanguageConfig = ConfigManager.instance.config.i18n.languages.find(x => x.code === currentLanguageCode);
 
     await i18next
       .use(initReactI18next)
@@ -50,6 +51,7 @@ export class I18nManager {
   }
 
   public async switchLanguage(code: string): Promise<void> {
+    await ConfigManager.instance.config.i18n.setNewLanguageCode(code);
     await this.loadResources(code);
     await i18next.changeLanguage(code);
   }
@@ -58,7 +60,7 @@ export class I18nManager {
     if (this.languageLoaded[code]) {
       return;
     }
-    const config = ConfigManager.instance.config.i18n.find(x => x.code === code);
+    const config = ConfigManager.instance.config.i18n.languages.find(x => x.code === code);
     if (!config) {
       throw new Error(`No i18n config found for code: ${code}`);
     }

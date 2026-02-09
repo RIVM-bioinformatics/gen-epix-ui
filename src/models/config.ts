@@ -35,13 +35,16 @@ export type FooterConfig = {
 
 export type I18nConfig = {
   bundles: string[];
-  isDefault?: boolean;
   code: string;
 };
 
 export interface Config {
-  i18n: I18nConfig[];
-  enablePageVents: boolean;
+  i18n: {
+    getCurrentLanguageCode: () => Promise<string>;
+    setNewLanguageCode: (code: string) => Promise<void>;
+    languages: I18nConfig[];
+  };
+  enablePageEvents: boolean;
   applicationName: string;
   footer: FooterConfig;
   nonce?: string;
