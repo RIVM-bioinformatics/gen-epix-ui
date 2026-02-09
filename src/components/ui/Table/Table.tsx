@@ -171,7 +171,7 @@ export const Table = <TRowData,>({
       if (!getRowName) {
         throw new Error('getRowName is required when onRowClick is provided');
       }
-      if (ConfigManager.instance.config.enablePageVents) {
+      if (ConfigManager.instance.config.enablePageEvents) {
         PageEventBusManager.instance.emit('click', {
           label: getRowName(row.row),
           type: 'table-row',
@@ -209,7 +209,7 @@ export const Table = <TRowData,>({
       if (!getRowName) {
         throw new Error('getRowName is required when onReadableIndexClick is provided');
       }
-      if (ConfigManager.instance.config.enablePageVents) {
+      if (ConfigManager.instance.config.enablePageEvents) {
         PageEventBusManager.instance.emit('click', {
           label: getRowName(row),
           type: 'table-row-index',

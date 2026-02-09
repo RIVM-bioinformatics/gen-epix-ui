@@ -42,7 +42,7 @@ export const GenericErrorMessage = ({ error, shouldHideActionButtons }: GenericE
       topic: (error as Error)?.message ? `Error: ${(error as Error)?.message}` : 'Error',
     }]);
     LogManager.instance.flushLog();
-    if (error instanceof Error && ConfigManager.instance.config.enablePageVents) {
+    if (error instanceof Error && ConfigManager.instance.config.enablePageEvents) {
       PageEventBusManager.instance.emit('error', error);
     }
   }, [error]);

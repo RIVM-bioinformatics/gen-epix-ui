@@ -52,7 +52,7 @@ export class PageEventBusManager extends EventBusAbstract<EpiEvent> {
 
 
   private setupClickEventListener(): void {
-    if (!ConfigManager.instance.config.enablePageVents) {
+    if (!ConfigManager.instance.config.enablePageEvents) {
       return;
     }
     WindowManager.instance.window.addEventListener('click', (event: Event): void => {
