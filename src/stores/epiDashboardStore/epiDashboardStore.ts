@@ -35,7 +35,7 @@ import { FILTER_MODE } from '../../classes/abstracts/FilterAbstract';
 import { SelectionFilter } from '../../classes/filters/SelectionFilter';
 import { TreeFilter } from '../../classes/filters/TreeFilter';
 import { ConfigManager } from '../../classes/managers/ConfigManager';
-import { HighlightingManager } from '../../classes/managers/HighlightingManager';
+import { EpiHighlightingManager } from '../../classes/managers/EpiHighlightingManager';
 import { NotificationManager } from '../../classes/managers/NotificationManager';
 import { QueryClientManager } from '../../classes/managers/QueryClientManager';
 import type {
@@ -620,7 +620,7 @@ export const createEpiDashboardStore = (kwArgs: CreateEpiDashboardStoreKwArgs) =
             stratify(stratification.mode, stratification.caseTypeCol);
           },
           destroy: () => {
-            HighlightingManager.instance.reset();
+            EpiHighlightingManager.instance.reset();
             tableStoreActions.destroy();
           },
           fetchData: async () => {

@@ -3,11 +3,11 @@ import { Subject } from '../../Subject';
 import { WindowManager } from '../WindowManager';
 
 export class DevicePixelRatioManager extends SubscribableAbstract<number> {
-  private static __instance: DevicePixelRatioManager;
-
   public static get instance(): DevicePixelRatioManager {
-    DevicePixelRatioManager.__instance = DevicePixelRatioManager.__instance || new DevicePixelRatioManager();
-    return DevicePixelRatioManager.__instance;
+    // Instances are stored on the window to prevent multiple instances of the same manager. HMR may load multiple instances of the same manager, but we only want one instance to be active at a time.
+
+    WindowManager.instance.window.managers.devicePixelRatio = WindowManager.instance.window.managers.devicePixelRatio || new DevicePixelRatioManager();
+    return WindowManager.instance.window.managers.devicePixelRatio;
   }
 
   private constructor() {

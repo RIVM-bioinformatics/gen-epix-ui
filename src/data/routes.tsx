@@ -28,7 +28,7 @@ export const routes: MyNonIndexRouteObject[] = [
     Component: () => <PostLogoutPage />,
     errorElement: <RouterErrorPage />,
     handle: {
-      titleKey: 'PostLogout',
+      titleKey: 'Post Logout',
       hidden: true,
       requiredPermissions: [],
       requiresUserProfile: false,
@@ -51,7 +51,7 @@ export const routes: MyNonIndexRouteObject[] = [
         Component: () => <AcceptInvitationPage />,
         errorElement: <RouterErrorPage />,
         handle: {
-          titleKey: 'AcceptInvitation',
+          titleKey: 'Accept Invitation',
           hidden: true,
           requiredPermissions: [],
           requiresUserProfile: false,
@@ -62,7 +62,7 @@ export const routes: MyNonIndexRouteObject[] = [
         Component: () => <PostLoginPage />,
         errorElement: <RouterErrorPage />,
         handle: {
-          titleKey: 'PostLogin',
+          titleKey: 'Post Login',
           hidden: true,
           requiredPermissions: [],
           requiresUserProfile: false,

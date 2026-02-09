@@ -24,7 +24,7 @@ export const TableCaption = <TRowData,>({ caption, variant = 'h2', component = '
       variant={variant}
     >
       <>
-        {sortedDataLength === 0 && (caption ?? t(`Items`))}
+        {sortedDataLength === 0 && (caption ?? t('Items'))}
         {sortedDataLength > 0 && sortedDataLength === baseDataLength && t('{{items}} ({{count}})', { items: caption ?? t('Items'), count: sortedDataLength, totalCount: baseDataLength })}
         {sortedDataLength > 0 && sortedDataLength !== baseDataLength && t('{{items}} ({{count}} of {{totalCount}})', { items: caption ?? t('Items'), count: sortedDataLength, totalCount: baseDataLength })}
       </>

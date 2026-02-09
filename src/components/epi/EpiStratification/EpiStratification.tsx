@@ -26,7 +26,7 @@ import { EpiContextMenu } from '../EpiContextMenu';
 import { EpiLegendaItem } from '../EpiLegendaItem';
 import type { CaseTypeCol } from '../../../api';
 import { ConfigManager } from '../../../classes/managers/ConfigManager';
-import { HighlightingManager } from '../../../classes/managers/HighlightingManager';
+import { EpiHighlightingManager } from '../../../classes/managers/EpiHighlightingManager';
 import type { StratificationLegendaItem } from '../../../models/epi';
 import {
   STRATIFICATION_MODE,
@@ -39,7 +39,7 @@ import { NestedDropdown } from '../../ui/NestedMenu';
 export const EpiStratification = () => {
   const { t } = useTranslation();
   const epiStore = useContext(EpiDashboardStoreContext);
-  const highlightingManager = useMemo(() => HighlightingManager.instance, []);
+  const highlightingManager = useMemo(() => EpiHighlightingManager.instance, []);
 
   const stratification = useStore(epiStore, (state) => state.stratification);
   const stratify = useStore(epiStore, (state) => state.stratify);

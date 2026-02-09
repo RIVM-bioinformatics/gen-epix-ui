@@ -21,7 +21,6 @@ type EpiEvent = {
 };
 
 export class PageEventBusManager extends EventBusAbstract<EpiEvent> {
-  private static __instance: PageEventBusManager;
   private lastPageEventPayload: string = null;
 
   private constructor() {
@@ -30,8 +29,10 @@ export class PageEventBusManager extends EventBusAbstract<EpiEvent> {
   }
 
   public static get instance(): PageEventBusManager {
-    PageEventBusManager.__instance = PageEventBusManager.__instance || new PageEventBusManager();
-    return PageEventBusManager.__instance;
+    // Instances are stored on the window to prevent multiple instances of the same manager. HMR may load multiple instances of the same manager, but we only want one instance to be active at a time.
+
+    WindowManager.instance.window.managers.pageEventBus = WindowManager.instance.window.managers.pageEventBus || new PageEventBusManager();
+    return WindowManager.instance.window.managers.pageEventBus;
   }
 
   public emit<TEventName extends keyof EpiEvent>(eventName: TEventName, payload?: EpiEvent[TEventName]): void {

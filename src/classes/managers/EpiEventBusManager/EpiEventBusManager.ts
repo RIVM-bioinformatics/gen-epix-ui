@@ -7,6 +7,7 @@ import type { EpiRemoveCasesFromEventDialogOpenProps } from '../../../components
 import type { EpiSequenceDownloadDialogOpenProps } from '../../../components/epi/EpiSequenceDownloadDialog';
 import type { EPI_ZONE } from '../../../models/epi';
 import { EventBusAbstract } from '../../abstracts/EventBusAbstract';
+import { WindowManager } from '../WindowManager';
 
 export type DownloadConfigItem = {
   label: string;
@@ -44,15 +45,13 @@ type EpiEvent = {
 };
 
 export class EpiEventBusManager extends EventBusAbstract<EpiEvent> {
-  private static __instance: EpiEventBusManager;
-
   private constructor() {
     super();
   }
 
   public static get instance(): EpiEventBusManager {
-    EpiEventBusManager.__instance = EpiEventBusManager.__instance || new EpiEventBusManager();
-    return EpiEventBusManager.__instance;
+    WindowManager.instance.window.managers.epiEventBus = WindowManager.instance.window.managers.epiEventBus || new EpiEventBusManager();
+    return WindowManager.instance.window.managers.epiEventBus;
   }
 
 }

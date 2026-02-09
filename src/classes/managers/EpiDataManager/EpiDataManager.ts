@@ -18,13 +18,18 @@ import { QUERY_KEY } from '../../../models/query';
 import { CaseTypeUtil } from '../../../utils/CaseTypeUtil';
 import { QueryUtil } from '../../../utils/QueryUtil';
 import { QueryClientManager } from '../QueryClientManager';
+import { WindowManager } from '../WindowManager';
 
 export class EpiDataManager {
-  private static __instance: EpiDataManager;
+  private constructor() {
+    //
+  }
 
   public static get instance(): EpiDataManager {
-    EpiDataManager.__instance = EpiDataManager.__instance || new EpiDataManager();
-    return EpiDataManager.__instance;
+    // Instances are stored on the window to prevent multiple instances of the same manager. HMR may load multiple instances of the same manager, but we only want one instance to be active at a time.
+
+    WindowManager.instance.window.managers.epiData = WindowManager.instance.window.managers.epiData || new EpiDataManager();
+    return WindowManager.instance.window.managers.epiData;
   }
 
   public readonly data: EpiData = {

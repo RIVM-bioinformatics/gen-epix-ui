@@ -326,7 +326,7 @@ export const TableHeaderCell = <TRowData,>(props: TableHeaderCellProps<TRowData>
                 ref={filterLabelIconButtonRef}
                 className={tableFilterLabelClassNames}
                 tabIndex={0}
-                title={t(`Show filter for {{name}}`, { name: column.headerName || t('unknown') })}
+                title={t('Show filter for {{name}}', { name: column.headerName || t('unknown') })}
                 onClick={onFilterIconClick}
               >
                 <FilterAltIcon fontSize={'inherit'} />
@@ -367,7 +367,7 @@ export const TableHeaderCell = <TRowData,>(props: TableHeaderCellProps<TRowData>
             <>
               <TableSortLabelIconButton
                 tabIndex={0}
-                title={t(`Toggle sorting for {{name}}`, { name: column.headerName || t('unknown') })}
+                title={t('Toggle sorting for {{name}}', { name: column.headerName || t('unknown') })}
                 className={tableSortLabelClassNames}
                 ownerState={tableSortLabelIconProps}
                 onClick={onTableSortClick}

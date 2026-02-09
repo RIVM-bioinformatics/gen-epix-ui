@@ -1,12 +1,19 @@
 import type { AxiosResponse } from 'axios';
 
+import { WindowManager } from '../WindowManager';
+
 export class BackendVersionManager {
   public version: string;
-  private static __instance: BackendVersionManager;
+
+  private constructor() {
+    //
+  }
 
   public static get instance(): BackendVersionManager {
-    BackendVersionManager.__instance = BackendVersionManager.__instance || new BackendVersionManager();
-    return BackendVersionManager.__instance;
+    // Instances are stored on the window to prevent multiple instances of the same manager. HMR may load multiple instances of the same manager, but we only want one instance to be active at a time.
+
+    WindowManager.instance.window.managers.backendVersion = WindowManager.instance.window.managers.backendVersion || new BackendVersionManager();
+    return WindowManager.instance.window.managers.backendVersion;
   }
 
   public onResponseFulfilled(response: AxiosResponse): AxiosResponse {

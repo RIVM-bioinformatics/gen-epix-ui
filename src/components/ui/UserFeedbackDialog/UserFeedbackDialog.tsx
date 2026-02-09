@@ -129,7 +129,7 @@ export const UserFeedbackDialog = withDialog<UserFeedbackDialogProps, UserFeedba
           autoFocus: true,
           onClick: onClose,
           variant: 'outlined',
-          label: t`Discard`,
+          label: t`Cancel`,
         },
         {
           ...TestIdUtil.createAttributes('UserFeedbackDialog-send'),

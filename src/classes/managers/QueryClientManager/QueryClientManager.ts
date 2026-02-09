@@ -5,11 +5,10 @@ import {
 } from '@tanstack/react-query';
 
 import { AxiosUtil } from '../../../utils/AxiosUtil';
+import { WindowManager } from '../WindowManager';
 
 
 export class QueryClientManager {
-  private static __instance: QueryClientManager;
-
   public readonly queryCache: QueryCache;
   public readonly queryClient: QueryClient;
   public readonly mutationCache: MutationCache;
@@ -44,7 +43,9 @@ export class QueryClientManager {
   }
 
   public static get instance(): QueryClientManager {
-    QueryClientManager.__instance = QueryClientManager.__instance || new QueryClientManager();
-    return QueryClientManager.__instance;
+    // Instances are stored on the window to prevent multiple instances of the same manager. HMR may load multiple instances of the same manager, but we only want one instance to be active at a time.
+
+    WindowManager.instance.window.managers.queryClient = WindowManager.instance.window.managers.queryClient || new QueryClientManager();
+    return WindowManager.instance.window.managers.queryClient;
   }
 }

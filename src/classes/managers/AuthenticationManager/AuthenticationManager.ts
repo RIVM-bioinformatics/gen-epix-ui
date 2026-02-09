@@ -16,11 +16,12 @@ export const createdAtMetaDataKey = Symbol('createdAt');
 export class AuthenticationManager extends SubscribableAbstract<IdentityProvider> {
   public authContextProps: AuthContextProps;
   public static autoLoginSkew = 500;
-  private static __instance: AuthenticationManager;
 
   public static get instance(): AuthenticationManager {
-    AuthenticationManager.__instance = AuthenticationManager.__instance || new AuthenticationManager();
-    return AuthenticationManager.__instance;
+    // Instances are stored on the window to prevent multiple instances of the same manager. HMR may load multiple instances of the same manager, but we only want one instance to be active at a time.
+
+    WindowManager.instance.window.managers.authentication = WindowManager.instance.window.managers.authentication || new AuthenticationManager();
+    return WindowManager.instance.window.managers.authentication;
   }
 
   private constructor() {

@@ -1,9 +1,16 @@
+import { WindowManager } from '../WindowManager';
+
 export class NavigationHistoryManager {
-  private static __instance: NavigationHistoryManager;
   public readonly navigationHistory: string[] = [];
 
+  private constructor() {
+    //
+  }
+
   public static get instance(): NavigationHistoryManager {
-    NavigationHistoryManager.__instance = NavigationHistoryManager.__instance || new NavigationHistoryManager();
-    return NavigationHistoryManager.__instance;
+    // Instances are stored on the window to prevent multiple instances of the same manager. HMR may load multiple instances of the same manager, but we only want one instance to be active at a time.
+
+    WindowManager.instance.window.managers.navigationHistory = WindowManager.instance.window.managers.navigationHistory || new NavigationHistoryManager();
+    return WindowManager.instance.window.managers.navigationHistory;
   }
 }

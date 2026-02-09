@@ -292,7 +292,7 @@ export const EpiAddCasesToEventDialog = withDialog<EpiAddCasesToEventDialogProps
                   <Box marginY={2}>
                     <Alert severity={'error'}>
                       <AlertTitle>
-                        {t(`All selected case(s) are already part of the selected event.`)}
+                        {t('All selected case(s) are already part of the selected event.')}
                       </AlertTitle>
                     </Alert>
                   </Box>

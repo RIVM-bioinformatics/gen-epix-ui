@@ -2,16 +2,17 @@ import { StringUtil } from '../../../utils/StringUtil';
 import { SubscribableAbstract } from '../../abstracts/SubscribableAbstract';
 import { Subject } from '../../Subject';
 import { ConfigManager } from '../ConfigManager';
+import { WindowManager } from '../WindowManager';
 import type { Notification } from '../../../models/notification';
 
 export class NotificationManager extends SubscribableAbstract<Notification[]> {
   private readonly notificationTimeouts: Record<string, ReturnType<typeof setTimeout>>;
 
-  private static __instance: NotificationManager;
-
   public static get instance(): NotificationManager {
-    NotificationManager.__instance = NotificationManager.__instance || new NotificationManager();
-    return NotificationManager.__instance;
+    // Instances are stored on the window to prevent multiple instances of the same manager. HMR may load multiple instances of the same manager, but we only want one instance to be active at a time.
+
+    WindowManager.instance.window.managers.notification = WindowManager.instance.window.managers.notification || new NotificationManager();
+    return WindowManager.instance.window.managers.notification;
   }
 
   private constructor() {

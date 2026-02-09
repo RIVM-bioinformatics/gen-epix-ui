@@ -36,7 +36,7 @@ import { AuthorizationManager } from '../../../classes/managers/AuthorizationMan
 import { ConfigManager } from '../../../classes/managers/ConfigManager';
 import { EpiEventBusManager } from '../../../classes/managers/EpiEventBusManager';
 import { EpiLineListCaseSetMembersManager } from '../../../classes/managers/EpiLineListCaseSetMembersManager';
-import { HighlightingManager } from '../../../classes/managers/HighlightingManager';
+import { EpiHighlightingManager } from '../../../classes/managers/EpiHighlightingManager';
 import { Subject } from '../../../classes/Subject';
 import { UseColumnsMenu } from '../../../hooks/useColumnsMenu';
 import type { EpiLinkedScrollSubjectValue } from '../../../models/epi';
@@ -69,7 +69,7 @@ export const EpiLineList = ({ linkedScrollSubject, onLink, caseSet }: EpiLineLis
   const containerRef = useRef<HTMLDivElement>(null);
   const { t } = useTranslation();
   const theme = useTheme();
-  const highlightingManager = useMemo(() => HighlightingManager.instance, []);
+  const highlightingManager = useMemo(() => EpiHighlightingManager.instance, []);
   const rowHighlightingSubject = useMemo(() => new Subject<string[]>([]), []);
   const tableRef = useRef<TableRef>(null);
 

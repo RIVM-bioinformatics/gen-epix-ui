@@ -1,4 +1,5 @@
 import { QueryClientManager } from '../QueryClientManager';
+import { WindowManager } from '../WindowManager';
 import type { CaseSetMember } from '../../../api';
 import { CaseApi } from '../../../api';
 import type { EpiCaseHasCaseSet } from '../../../models/epi';
@@ -9,11 +10,16 @@ type QueueItem = { caseId: string; promise: Promise<boolean>; resolve: (result: 
 
 export class EpiLineListCaseSetMembersManager {
   private readonly queuedCases: { [caseId: string]: QueueItem } = {};
-  private static __instance: EpiLineListCaseSetMembersManager;
+
+  private constructor() {
+    //
+  }
 
   public static get instance(): EpiLineListCaseSetMembersManager {
-    EpiLineListCaseSetMembersManager.__instance = EpiLineListCaseSetMembersManager.__instance || new EpiLineListCaseSetMembersManager();
-    return EpiLineListCaseSetMembersManager.__instance;
+    // Instances are stored on the window to prevent multiple instances of the same manager. HMR may load multiple instances of the same manager, but we only want one instance to be active at a time.
+
+    WindowManager.instance.window.managers.epiLineListCaseSetMembers = WindowManager.instance.window.managers.epiLineListCaseSetMembers || new EpiLineListCaseSetMembersManager();
+    return WindowManager.instance.window.managers.epiLineListCaseSetMembers;
   }
 
   public cleanStaleQueue(): void {

@@ -8,6 +8,7 @@ import type {
   PropsWithChildren,
   ReactElement,
 } from 'react';
+import { useTranslation } from 'react-i18next';
 
 import { ApplicationFooterLink } from './ApplicationFooterLink';
 
@@ -17,6 +18,7 @@ export type ApplicationFooterLinkSectionProps = PropsWithChildren<{
 
 export const ApplicationFooterLinkSection = ({ header, children }: ApplicationFooterLinkSectionProps) => {
   const theme = useTheme();
+  const { t } = useTranslation();
 
   Children.forEach(children, (child) => {
     if ((child as ReactElement)?.type !== ApplicationFooterLink) {
@@ -39,7 +41,7 @@ export const ApplicationFooterLinkSection = ({ header, children }: ApplicationFo
         }}
         variant={'h4'}
       >
-        {header}
+        {t(header)}
       </Typography>
       <Box
         component={'ul'}
