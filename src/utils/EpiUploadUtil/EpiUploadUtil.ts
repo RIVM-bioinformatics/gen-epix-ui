@@ -53,6 +53,7 @@ import type {
 } from '../../models/epi';
 import { FileUtil } from '../FileUtil';
 import { UploadError } from '../../classes/errors';
+import { ValidationUtil } from '../ValidationUtil';
 
 export class EpiUploadUtil {
   public static readonly caseIdColumnAliases = ['_case_id', 'case id', 'case_id', 'caseid', 'case.id'];
@@ -311,12 +312,19 @@ export class EpiUploadUtil {
       }));
     });
 
-    fieldNames.forEach((fieldName) => {
+    fieldNames.forEach((fieldName, fieldIndex) => {
       const otherFieldNames = fieldNames.filter(name => name !== fieldName);
       fields[fieldName] = lazy(() => string().nullable().when(otherFieldNames, (otherFieldValues, schema) => {
         return schema
           .test('unique', t('This column has already been mapped to another field.'), (fieldValue) => {
             return !fieldValue || !otherFieldValues.includes(fieldValue);
+          })
+          .test('valid-case-id-values', t('The column mapped to the case id field must contain valid UUID\'s.'), (fieldValue) => {
+            if (fieldValue !== 'case_id') {
+              return true;
+            }
+            const values = rawData.slice(1).map(row => row[fieldIndex]);
+            return values.every(value => ValidationUtil.validate('UUID4', value));
           });
       }));
     });
