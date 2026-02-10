@@ -89,13 +89,14 @@ export const EpiSequenceDownloadDialog = withDialog<EpiSequenceDownloadDialogPro
     DownloadUtil.downloadAsMultiPartForm({
       action: `${ConfigManager.instance.config.getAPIBaseUrl()}/v1/retrieve/genetic_sequence/fasta`,
       data: {
+        case_type_id: completeCaseType.id,
         case_ids: openProps.cases.map(c => c.id),
         genetic_sequence_case_type_col_id: geneticSequenceCaseTypeColId,
         file_name: `${StringUtil.createSlug(completeCaseType.name)}-${StringUtil.createSlug(geneticSequenceCaseTypeColOptions.find(x => x.value === geneticSequenceCaseTypeColId)?.label)}-sequences.fasta`,
       },
     });
     onClose();
-  }, [completeCaseType.name, geneticSequenceCaseTypeColId, geneticSequenceCaseTypeColOptions, onClose, openProps.cases]);
+  }, [completeCaseType.id, completeCaseType.name, geneticSequenceCaseTypeColId, geneticSequenceCaseTypeColOptions, onClose, openProps.cases]);
 
   useEffect(() => {
     onTitleChange(t`Download sequences`);
