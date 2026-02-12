@@ -186,7 +186,7 @@ export * from './components/ui/Table';
 export * from './components/ui/Spinner';
 export * from './components/ui/Sidebar';
 export * from './components/ui/ResponseHandler';
-export * from './components/ui/PanelResizeHandle';
+export * from './components/ui/PanelSeparator/index.ts';
 export * from './components/ui/PageContainer';
 export * from './components/ui/OutagesDialog';
 export * from './components/ui/OutageWrapper';

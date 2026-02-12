@@ -79,10 +79,10 @@ export enum FILTER_TYPE {
   GEO = 'GEO',
 }
 
-export type EpiDashboardLayoutFirstPanelDirection = 'vertical' | 'horizontal';
+export type EpiDashboardLayoutPanelOrientation = 'vertical' | 'horizontal';
 export type EpiDashboardLayoutSecondAxisPanel = [30 | 70 | 50 | 100, EPI_ZONE];
 export type EpiDashboardLayoutFirstAxisPanel = [30 | 70 | 50 | 100, ...EpiDashboardLayoutSecondAxisPanel[]];
-export type EpiDashboardLayout = [EpiDashboardLayoutFirstPanelDirection, ...EpiDashboardLayoutFirstAxisPanel[]];
+export type EpiDashboardLayout = [EpiDashboardLayoutPanelOrientation, ...EpiDashboardLayoutFirstAxisPanel[]];
 export type EpiDashboardLayoutConfig = { zones: EPI_ZONE[]; layouts: EpiDashboardLayout[] };
 export type EpiDashboardLayoutUserConfig = {
   arrangement: number;

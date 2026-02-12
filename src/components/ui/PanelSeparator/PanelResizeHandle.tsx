@@ -4,18 +4,18 @@ import {
   useTheme,
 } from '@mui/material';
 import { useTranslation } from 'react-i18next';
-import type { PanelResizeHandleProps } from 'react-resizable-panels';
-import { PanelResizeHandle } from 'react-resizable-panels';
+import type { SeparatorProps } from 'react-resizable-panels';
+import { Separator } from 'react-resizable-panels';
 
-const StyledPanelResizeHandle = styled(PanelResizeHandle)(() => ({}));
+const StyledSeparator = styled(Separator)(() => ({}));
 
-export const PanelResizeHandleHorizontal = (props: PanelResizeHandleProps) => {
+export const PanelSeparatorHorizontal = (props: SeparatorProps) => {
   const theme = useTheme();
   const { t } = useTranslation();
   return (
-    <StyledPanelResizeHandle
+    <StyledSeparator
       {...props}
-      aria-label={t('Horizontal resize Handle')}
+      aria-label={t('Horizontal separator')}
       sx={{
         height: '11px',
         '&:hover > div': {
@@ -33,18 +33,18 @@ export const PanelResizeHandleHorizontal = (props: PanelResizeHandleProps) => {
           height: '1px',
         }}
       />
-    </StyledPanelResizeHandle>
+    </StyledSeparator>
   );
 };
 
-export const PanelResizeHandleVertical = (props: PanelResizeHandleProps) => {
+export const PanelSeparatorVertical = (props: SeparatorProps) => {
   const theme = useTheme();
   const { t } = useTranslation();
 
   return (
-    <StyledPanelResizeHandle
+    <StyledSeparator
       {...props}
-      aria-label={t('Vertical resize Handle')}
+      aria-label={t('Vertical separator')}
       sx={{
         width: '11px',
         '&:hover > div': {
@@ -62,6 +62,6 @@ export const PanelResizeHandleVertical = (props: PanelResizeHandleProps) => {
           width: '1px',
         }}
       />
-    </StyledPanelResizeHandle>
+    </StyledSeparator>
   );
 };

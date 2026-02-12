@@ -5,19 +5,16 @@ import type {
 import {
   Fragment,
   forwardRef,
-  useCallback,
   useContext,
   useImperativeHandle,
   useMemo,
-  useRef,
 } from 'react';
-import type {
-  ImperativePanelGroupHandle,
-  PanelGroupStorage,
-} from 'react-resizable-panels';
+import type { LayoutStorage } from 'react-resizable-panels';
 import {
-  PanelGroup,
+  Group,
   Panel,
+  useDefaultLayout,
+  useGroupRef,
 } from 'react-resizable-panels';
 import { useStore } from 'zustand';
 import {
@@ -28,16 +25,16 @@ import {
 import { useTranslation } from 'react-i18next';
 
 import { ConfigManager } from '../../../classes/managers/ConfigManager';
-import type { EpiDashboardLayoutFirstPanelDirection } from '../../../models/epi';
+import type { EpiDashboardLayoutPanelOrientation } from '../../../models/epi';
 import { EPI_ZONE } from '../../../models/epi';
 import { EpiDashboardStoreContext } from '../../../stores/epiDashboardStore';
 import { userProfileStore } from '../../../stores/userProfileStore';
 import { DashboardUtil } from '../../../utils/DashboardUtil';
 import { StringUtil } from '../../../utils/StringUtil';
 import {
-  PanelResizeHandleVertical,
-  PanelResizeHandleHorizontal,
-} from '../../ui/PanelResizeHandle';
+  PanelSeparatorVertical,
+  PanelSeparatorHorizontal,
+} from '../../ui/PanelSeparator';
 
 export type EpiDashboardLayoutRendererProps = {
   readonly lineListWidget: ReactElement;
@@ -47,7 +44,7 @@ export type EpiDashboardLayoutRendererProps = {
   readonly disabled?: boolean;
 };
 
-const panelStorageFactory = (panelNamePrefix: string): PanelGroupStorage => ({
+const panelStorageFactory = (panelNamePrefix: string): LayoutStorage => ({
   getItem: (name: string) => {
     return userProfileStore.getState().epiDashboardPanels[`${panelNamePrefix}-${name}`];
   },
@@ -60,12 +57,25 @@ export type ForwardRefEpiDashboardLayoutRendererRefMethods = {
   reset: () => void;
 };
 
-const createOuterPanelId = (direction: EpiDashboardLayoutFirstPanelDirection): string => {
-  return `outer-${direction}`;
+const createOuterGroupId = (orientation: EpiDashboardLayoutPanelOrientation): string => {
+  return `outer-${orientation}`;
 };
 
-const createInnerPanelId = (direction: EpiDashboardLayoutFirstPanelDirection, index: number): string => {
-  return `${index}-${direction}`;
+const createOuterPanelId = (orientation: EpiDashboardLayoutPanelOrientation, index: number): string => {
+  return `outer-${orientation}-panel-${index}`;
+};
+
+const createInnerGroupId = (orientation: EpiDashboardLayoutPanelOrientation, index: number): string => {
+  return `inner-${orientation}-${index}`;
+};
+
+const createInnerPanelId = (orientation: EpiDashboardLayoutPanelOrientation, outerIndex: number, innerIndex: number): string => {
+  return `${createInnerGroupId(orientation, outerIndex)}-panel-${innerIndex}`;
+};
+
+const getIndexFromId = (id: string): number => {
+  const match = id.match(/(\d+)(?!.*\d)/);
+  return match ? parseInt(match[1], 10) : -1;
 };
 
 export const ForwardRefEpiDashboardLayoutRenderer: ForwardRefRenderFunction<ForwardRefEpiDashboardLayoutRendererRefMethods, EpiDashboardLayoutRendererProps> = ({
@@ -76,36 +86,58 @@ export const ForwardRefEpiDashboardLayoutRenderer: ForwardRefRenderFunction<Forw
   disabled,
 }, forwardedRef) => {
   const { t } = useTranslation();
-  const panelRefs = useRef<{ [key: string]: ImperativePanelGroupHandle }>({});
   const epiStore = useContext(EpiDashboardStoreContext);
   const dashboardLayoutUserConfig = useStore(userProfileStore, (state) => state.epiDashboardLayoutUserConfig);
   const expandedZone = useStore(epiStore, (state) => state.expandedZone);
   const layout = DashboardUtil.getDashboardLayout(dashboardLayoutUserConfig);
   const enabledLayoutZones = DashboardUtil.getEnabledZones(dashboardLayoutUserConfig);
 
-  const panelNamePrefix = useMemo(() => StringUtil.createHash(JSON.stringify(layout ?? '')), [layout]);
-  const [outerDirection, ...panels] = layout ?? [];
-  const innerDirection: EpiDashboardLayoutFirstPanelDirection = outerDirection === 'horizontal' ? 'vertical' : 'horizontal';
+  const storagePrefix = useMemo(() => `${StringUtil.createHash(JSON.stringify(layout ?? ''))}-v2-`, [layout]);
+  const [outerOrientation, ...panels] = layout ?? [];
+  const innerOrientation: EpiDashboardLayoutPanelOrientation = outerOrientation === 'horizontal' ? 'vertical' : 'horizontal';
 
-  const registerPanel = useCallback((handle: ImperativePanelGroupHandle) => {
-    if (handle?.getId()) {
-      panelRefs.current[handle.getId()] = handle;
-    }
-  }, []);
+  const { defaultLayout: defaultLayoutOuter, onLayoutChanged: onLayoutChangedOuter } = useDefaultLayout({
+    groupId: createOuterGroupId(outerOrientation),
+    storage: panelStorageFactory(`${storagePrefix}-outer`),
+  });
+
+  const { defaultLayout: defaultLayoutInner0, onLayoutChanged: onLayoutChangedInner0 } = useDefaultLayout({
+    groupId: createInnerGroupId(innerOrientation, 0),
+    storage: panelStorageFactory(`${storagePrefix}-inner-0-${innerOrientation}`),
+  });
+
+  const { defaultLayout: defaultLayoutInner1, onLayoutChanged: onLayoutChangedInner1 } = useDefaultLayout({
+    groupId: createInnerGroupId(innerOrientation, 1),
+    storage: panelStorageFactory(`${storagePrefix}-inner-1-${innerOrientation}`),
+  });
+
+  const groupRefOuter = useGroupRef();
+  const groupRefInner0 = useGroupRef();
+  const groupRefInner1 = useGroupRef();
 
   const { MIN_PANEL_HEIGHT, MIN_PANEL_WIDTH } = ConfigManager.instance.config.epiDashboard;
 
   useImperativeHandle(forwardedRef, () => ({
     reset: () => {
       try {
-        if (panelRefs.current?.[createOuterPanelId(outerDirection)]) {
-          panelRefs.current?.[createOuterPanelId(outerDirection)].setLayout(panels.map(panel => panel[0]));
+        if (groupRefOuter.current) {
+          const newLayout = Object.fromEntries(Object.entries(groupRefOuter.current.getLayout()).map(([id, size]) => {
+            return [id, panels?.[getIndexFromId(id)]?.[0] ?? size] as [string, number];
+          }));
+          groupRefOuter.current.setLayout(newLayout);
         }
-        panels.forEach(([_outerPanelSize, ...widgetPanels], index) => {
-          if (widgetPanels.length > 1 && panelRefs.current?.[createInnerPanelId(innerDirection, index)]) {
-            panelRefs.current?.[createInnerPanelId(innerDirection, index)].setLayout(widgetPanels.map(panel => panel[0]));
-          }
-        });
+        if (groupRefInner0.current) {
+          const newLayout = Object.fromEntries(Object.entries(groupRefInner0.current.getLayout()).map(([id, size]) => {
+            return [id, (panels?.[0]?.[getIndexFromId(id) + 1] as Array<number>)?.[0] ?? size] as [string, number];
+          }));
+          groupRefInner0.current.setLayout(newLayout);
+        }
+        if (groupRefInner1.current) {
+          const newLayout = Object.fromEntries(Object.entries(groupRefInner1.current.getLayout()).map(([id, size]) => {
+            return [id, (panels?.[1]?.[getIndexFromId(id) + 1] as Array<number>)?.[0] ?? size] as [string, number];
+          }));
+          groupRefInner1.current.setLayout(newLayout);
+        }
       } catch (_error) {
         // allow to fail (it doesn't change functionality)
       }
@@ -148,68 +180,66 @@ export const ForwardRefEpiDashboardLayoutRenderer: ForwardRefRenderFunction<Forw
   }
 
   return (
-    <PanelGroup
-      ref={registerPanel}
-      autoSaveId={createOuterPanelId(outerDirection)}
-      direction={outerDirection}
-      id={createOuterPanelId(outerDirection)}
-      storage={panelStorageFactory(`${panelNamePrefix}-outer`)}
+    <Group
+      groupRef={groupRefOuter}
+      orientation={outerOrientation}
       style={{
         width: '100%',
         height: '100%',
       }}
+      id={createOuterGroupId(outerOrientation)}
+      defaultLayout={defaultLayoutOuter}
+      onLayoutChanged={onLayoutChangedOuter}
     >
       {panels.map(([outerPanelSize, ...widgetPanels], index) => {
         return (
           <Fragment key={JSON.stringify(widgetPanels)}>
             <Panel
               defaultSize={outerPanelSize}
-              id={`${createOuterPanelId(outerDirection)}-panel-${index}`}
-              minSize={outerDirection === 'vertical' ? MIN_PANEL_HEIGHT : MIN_PANEL_WIDTH}
-              order={index}
+              id={createOuterPanelId(outerOrientation, index)}
+              minSize={outerOrientation === 'vertical' ? MIN_PANEL_HEIGHT : MIN_PANEL_WIDTH}
             >
               {widgetPanels.length === 1 && panelMap[widgetPanels[0][1] as keyof typeof panelMap]}
               {widgetPanels.length > 1 && (
-                <PanelGroup
-                  ref={registerPanel}
-                  autoSaveId={createInnerPanelId(innerDirection, index)}
-                  direction={innerDirection}
-                  id={createInnerPanelId(innerDirection, index)}
-                  storage={panelStorageFactory(`${panelNamePrefix}-inner-${index}-${innerDirection}`)}
+                <Group
+                  groupRef={index === 0 ? groupRefInner0 : groupRefInner1}
+                  orientation={innerOrientation}
+                  id={createInnerGroupId(innerOrientation, index)}
+                  defaultLayout={index === 0 ? defaultLayoutInner0 : defaultLayoutInner1}
+                  onLayoutChanged={index === 0 ? onLayoutChangedInner0 : onLayoutChangedInner1}
                 >
                   {widgetPanels.map(([widgetPanelSize, zone], innerIndex) => {
                     return (
                       <Fragment key={zone}>
                         <Panel
                           defaultSize={widgetPanelSize}
-                          id={`${createInnerPanelId(innerDirection, index)}-panel-${innerIndex}`}
-                          minSize={innerDirection === 'vertical' ? MIN_PANEL_HEIGHT : MIN_PANEL_WIDTH}
-                          order={index}
+                          id={createInnerPanelId(innerOrientation, index, innerIndex)}
+                          minSize={innerOrientation === 'vertical' ? MIN_PANEL_HEIGHT : MIN_PANEL_WIDTH}
                         >
                           {panelMap[zone as keyof typeof panelMap]}
                         </Panel>
-                        {innerIndex < widgetPanels.length - 1 && innerDirection === 'horizontal' && (
-                          <PanelResizeHandleVertical disabled={disabled} />
+                        {innerIndex < widgetPanels.length - 1 && innerOrientation === 'horizontal' && (
+                          <PanelSeparatorVertical disabled={disabled} />
                         )}
-                        {innerIndex < widgetPanels.length - 1 && innerDirection === 'vertical' && (
-                          <PanelResizeHandleHorizontal disabled={disabled} />
+                        {innerIndex < widgetPanels.length - 1 && innerOrientation === 'vertical' && (
+                          <PanelSeparatorHorizontal disabled={disabled} />
                         )}
                       </Fragment>
                     );
                   })}
-                </PanelGroup>
+                </Group>
               )}
             </Panel>
-            {index < panels.length - 1 && outerDirection === 'horizontal' && (
-              <PanelResizeHandleVertical disabled={disabled} />
+            {index < panels.length - 1 && outerOrientation === 'horizontal' && (
+              <PanelSeparatorVertical disabled={disabled} />
             )}
-            {index < panels.length - 1 && outerDirection === 'vertical' && (
-              <PanelResizeHandleHorizontal disabled={disabled} />
+            {index < panels.length - 1 && outerOrientation === 'vertical' && (
+              <PanelSeparatorHorizontal disabled={disabled} />
             )}
           </Fragment>
         );
       })}
-    </PanelGroup>
+    </Group>
   );
 };
 
