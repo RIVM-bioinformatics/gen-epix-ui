@@ -68,7 +68,7 @@ export const UserEffectiveRightsTesterAdminPage = () => {
 
   const { userId } = useParams();
 
-  const { isLoading: isUserLoading, error: userError, data: user } = useItemQuery<User>({
+  const userQuery = useItemQuery<User>({
     baseQueryKey: QUERY_KEY.USERS,
     itemId: userId,
     useQueryOptions: {
@@ -84,12 +84,13 @@ export const UserEffectiveRightsTesterAdminPage = () => {
   const organizationMapQuery = useOrganizationMapQuery();
   const caseTypeSetMembersQuery = useCaseTypeSetMembersQuery();
   const dataCollectionOptionsQuery = useDataCollectionOptionsQuery();
-  const organizationAccessCasePoliciesQuery = useOrganizationAccessCasePoliciesQuery(policies => policies.filter(policy => policy.is_active && policy.organization_id === user.organization_id));
-  const organizationShareCasePoliciesQuery = useOrganizationShareCasePoliciesQuery(policies => policies.filter(policy => policy.is_active && policy.organization_id === user.organization_id));
-  const userAccessCasePoliciesQuery = useUserAccessCasePoliciesQuery(policies => policies.filter(policy => policy.is_active && policy.user_id === user.id));
-  const userShareCasePoliciesQuery = useUserShareCasePoliciesQuery(policies => policies.filter(policy => policy.is_active && policy.user_id === user.id));
+  const organizationAccessCasePoliciesQuery = useOrganizationAccessCasePoliciesQuery(policies => policies.filter(policy => policy.is_active && policy.organization_id === userQuery.data?.organization_id));
+  const organizationShareCasePoliciesQuery = useOrganizationShareCasePoliciesQuery(policies => policies.filter(policy => policy.is_active && policy.organization_id === userQuery.data?.organization_id));
+  const userAccessCasePoliciesQuery = useUserAccessCasePoliciesQuery(policies => policies.filter(policy => policy.is_active && policy.user_id === userQuery.data?.id));
+  const userShareCasePoliciesQuery = useUserShareCasePoliciesQuery(policies => policies.filter(policy => policy.is_active && policy.user_id === userQuery.data?.id));
 
   const loadables = useArray([
+    userQuery,
     caseTypeColSetMembersQuery,
     caseTypeOptionsQuery,
     caseTypeSetMembersQuery,
@@ -111,7 +112,7 @@ export const UserEffectiveRightsTesterAdminPage = () => {
     const { data: caseTypeColSetMembers } = caseTypeColSetMembersQuery;
 
     return EffectiveRightsUtil.assembleUserEffectiveRights({
-      user,
+      user: userQuery.data,
       organizationAccessCasePolicies,
       organizationShareCasePolicies,
       userAccessCasePolicies,
@@ -120,7 +121,7 @@ export const UserEffectiveRightsTesterAdminPage = () => {
       caseTypeColSetMembers,
     });
 
-  }, [caseTypeColSetMembersQuery, caseTypeSetMembersQuery, organizationAccessCasePoliciesQuery, organizationShareCasePoliciesQuery, user, userAccessCasePoliciesQuery, userShareCasePoliciesQuery]);
+  }, [caseTypeColSetMembersQuery, caseTypeSetMembersQuery, organizationAccessCasePoliciesQuery, organizationShareCasePoliciesQuery, userAccessCasePoliciesQuery, userQuery.data, userShareCasePoliciesQuery]);
 
   const schema = useMemo(() => object<FormFields>().shape({
     caseTypeId: string().uuid4().required(),
@@ -207,8 +208,6 @@ export const UserEffectiveRightsTesterAdminPage = () => {
       >
         <ResponseHandler
           inlineSpinner
-          error={userError}
-          isLoading={isUserLoading}
           loadables={loadables}
         >
           <Container maxWidth={'md'}>
@@ -217,13 +216,13 @@ export const UserEffectiveRightsTesterAdminPage = () => {
                 component={'h2'}
                 variant={'h4'}
               >
-                {t('Testing effective rights for user: {{userEmail}}', { userEmail: user?.email })}
+                {t('Testing effective rights for user: {{userEmail}}', { userEmail: userQuery.data?.email })}
               </Typography>
               <Typography>
-                {t('Organization: {{organizationName}}', { organizationName: organizationMapQuery.map.get(user.organization_id)?.name })}
+                {t('Organization: {{organizationName}}', { organizationName: organizationMapQuery.map.get(userQuery.data?.organization_id)?.name })}
               </Typography>
               <Typography>
-                {t('Roles: {{roles}}', { roles: user.roles.join(', ') })}
+                {t('Roles: {{roles}}', { roles: userQuery.data?.roles.join(', ') })}
               </Typography>
             </Box>
             <GenericForm<FormFields>
