@@ -10,11 +10,13 @@ import InsertDriveFileIcon from '@mui/icons-material/InsertDriveFile';
 import type {
   ChangeEvent,
   DragEvent,
+  KeyboardEvent as ReactKeyboardEvent,
 } from 'react';
 import {
   useCallback,
   useId,
   useMemo,
+  useRef,
   useState,
 } from 'react';
 import CloudUploadIcon from '@mui/icons-material/CloudUpload';
@@ -47,6 +49,7 @@ export const FileSelector = ({
     : t`Drop files here`;
 
   const inputId = useId();
+  const inputRef = useRef<HTMLInputElement>(null);
 
   const initialDataTransfer = useMemo(() => {
     return initialDataTransferProp ?? new DataTransfer();
@@ -62,20 +65,20 @@ export const FileSelector = ({
     e.preventDefault();
   }, []);
 
-  const onDragEnter = useCallback((event: DragEvent) => {
+  const onLabelDragEnter = useCallback((event: DragEvent) => {
     setErrorText(null);
     stopDefaults(event);
     setIsDragOver(true);
     setLabelText(dropLabel);
   }, [stopDefaults, dropLabel]);
 
-  const onDragLeave = useCallback((event: DragEvent) => {
+  const onLabelDragLeave = useCallback((event: DragEvent) => {
     stopDefaults(event);
     setIsDragOver(false);
     setLabelText(hoverLabel);
   }, [stopDefaults, hoverLabel]);
 
-  const onDragOver = useCallback((event: DragEvent) => {
+  const onLabelDragOver = useCallback((event: DragEvent) => {
     stopDefaults(event);
   }, [stopDefaults]);
 
@@ -154,6 +157,13 @@ export const FileSelector = ({
 
   }, [stopDefaults, hoverLabel, addFileList]);
 
+  const onLabelKeyDown = useCallback((event: ReactKeyboardEvent<HTMLElement>) => {
+    if (event.key === 'Enter' || event.key === ' ') {
+      event.preventDefault();
+      inputRef.current?.click();
+    }
+  }, []);
+
   const onFileInputChange = useCallback((event: ChangeEvent<HTMLInputElement>) => {
     addFileList(event.target.files);
   }, [addFileList]);
@@ -167,6 +177,7 @@ export const FileSelector = ({
   return (
     <>
       <Box
+        ref={inputRef}
         accept={accept}
         component={'input'}
         id={inputId}
@@ -201,9 +212,11 @@ export const FileSelector = ({
               opacity: 1,
             },
           }}
-          onDragEnter={onDragEnter}
-          onDragLeave={onDragLeave}
-          onDragOver={onDragOver}
+          tabIndex={0}
+          onKeyDown={onLabelKeyDown}
+          onDragEnter={onLabelDragEnter}
+          onDragLeave={onLabelDragLeave}
+          onDragOver={onLabelDragOver}
           onDrop={onDrop}
         >
           <Box
@@ -293,6 +306,7 @@ export const FileSelector = ({
                       sx={{
                         margin: 0.25,
                       }}
+                      tabIndex={-1}
                       variant={'outlined'}
                       label={
                         (
@@ -309,9 +323,22 @@ export const FileSelector = ({
                           </>
                         )
                       }
-                      deleteIcon={<DeleteIcon />}
+                      deleteIcon={(
+                        <DeleteIcon
+                          tabIndex={0}
+                          // eslint-disable-next-line react/jsx-no-bind
+                          onKeyDown={(event) => {
+                            if (event.key === 'Enter' || event.key === ' ') {
+                              event.preventDefault();
+                              removeFile(file.name);
+                            }
+                          }}
+                        />
+                      )}
                       // eslint-disable-next-line react/jsx-no-bind
-                      onDelete={() => removeFile(file.name)}
+                      onDelete={() => {
+                        removeFile(file.name);
+                      }}
                     />
                   ))}
                 </Stack>
