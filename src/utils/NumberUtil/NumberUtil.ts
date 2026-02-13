@@ -12,4 +12,46 @@ export class NumberUtil {
     }
     return stringValue;
   }
+
+
+  public static parse(value: string): number {
+    if (typeof value !== 'string') {
+      return NaN;
+    }
+
+    let sanitizedValue = value
+      .trim()
+      .replace(/[^0-9,.-\s]/g, ''); // Remove all except digits, commas, periods, minus signs, and whitespace
+
+    // if multiple commas or periods exist, assume they are thousands separators and remove them
+    const periodMatchesLength = (sanitizedValue.match(/[.]/g) || []).length;
+    const commaMatchesLength = (sanitizedValue.match(/[,]/g) || []).length;
+    const spaceMatchesLength = (sanitizedValue.match(/[\s]/g) || []).length;
+
+    if ([periodMatchesLength, commaMatchesLength, spaceMatchesLength].filter(count => count > 1).length > 1) {
+      return NaN;
+    }
+
+    if (commaMatchesLength > 1) {
+      // Remove all commas if there are multiple, assuming they are thousands separators
+      // Note: remaining periods are treated as decimal separators
+      return parseFloat(sanitizedValue.replace(/[,\s]/g, ''));
+    }
+    if (spaceMatchesLength > 1) {
+      // Remove all whitespace if there are multiple, assuming they are thousands separators
+      sanitizedValue = sanitizedValue.replace(/\s/g, '');
+      // Note: remaining commas or periods are treated as decimal separators
+      return parseFloat(sanitizedValue.replace(',', '.'));
+    }
+    if (periodMatchesLength > 1) {
+      // Remove all periods if there are multiple, assuming they are thousands separators
+      sanitizedValue = sanitizedValue.replace(/[.\s]/g, '').replace(',', '.'); // Replace remaining comma with period for decimal
+      return parseFloat(sanitizedValue);
+    }
+
+    sanitizedValue = sanitizedValue.replace(/[,.\s](?=.*[,.\s])/g, '')
+      .replace(',', '.');                  // Replace remaining comma with period for decimal
+
+    return parseFloat(sanitizedValue);
+  }
 }
