@@ -36,6 +36,7 @@ export const FormFieldHelperText = ({ errorMessage, warningMessage, noIndent }: 
       <FormHelperText
         {...testIdAttributes}
         error
+        role={'alert'}
         component={'span'}
         sx={{
           marginLeft: noIndent ? 0 : theme.spacing(-2),
@@ -51,6 +52,7 @@ export const FormFieldHelperText = ({ errorMessage, warningMessage, noIndent }: 
       <Box
         {...testIdAttributes}
         className={'Mui-warning'}
+        role={'alert'}
         component={'span'}
         sx={{
           marginLeft: noIndent ? 0 : theme.spacing(-2),

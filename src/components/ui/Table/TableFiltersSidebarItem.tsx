@@ -289,6 +289,7 @@ export const TableFiltersSidebarItemContent = <TRowData,>({ onClose }: TableFilt
                           </Box>
                         </Box>
                         <IconButton
+                          aria-label={t('Remove filter with label {{filterLabel}} and value {{filterValue}}', { filterLabel: filter.label, filterValue: filter.getPresentationValue(value, t) })}
                           size={'small'}
                           // eslint-disable-next-line react/jsx-no-bind
                           onClick={() => removeFilter(id)}

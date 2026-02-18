@@ -66,7 +66,10 @@ export const NotificationsDrawer = ({ onDrawerClose, open }: NotificationsDrawer
           >
             {t`Notifications`}
           </Typography>
-          <IconButton onClick={onDrawerClose}>
+          <IconButton
+            aria-label={t`Close notifications drawer`}
+            onClick={onDrawerClose}
+          >
             <CloseIcon
               sx={{
                 color: theme.palette.text.secondary,
@@ -116,6 +119,7 @@ export const NotificationsDrawer = ({ onDrawerClose, open }: NotificationsDrawer
               <Button
                 color={'primary'}
                 variant={'outlined'}
+                aria-label={t`Clear all notifications`}
                 onClick={onClearAllButtonClick}
               >
                 {t`Clear all notifications`}

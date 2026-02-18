@@ -3,7 +3,7 @@ import type { ReactElement } from 'react';
 import {
   useCallback,
   useMemo,
-  useState,
+  useRef,
 } from 'react';
 
 import { NotificationManager } from '../../classes/managers/NotificationManager';
@@ -42,41 +42,45 @@ export const useEditMutation = <TData extends GenericData | GenericData[], TVari
   getIntermediateItem,
 }: UseEditMutationProps<TData, TVariables>) => {
   const queryClient = QueryClientManager.instance.queryClient;
+  const previousItem = useRef<TData>(undefined);
 
-  const [previousItem, setPreviousItem] = useState<TData>(undefined);
+  const setPreviousItem = useCallback((item: TData) => {
+    previousItem.current = item;
+  }, []);
 
   const mutationFn = useCallback(async (variables: TVariables) => {
-    return queryFn(variables, previousItem);
+    return queryFn(variables, previousItem.current);
   }, [previousItem, queryFn]);
 
   const editMutation = useMutation<TData, Error, TVariables, MutationContextEdit<TData>>({
     mutationFn,
     onMutate: async (variables) => {
       const notificationKey = NotificationManager.instance.showNotification({
-        message: getProgressNotificationMessage(previousItem, variables),
+        message: getProgressNotificationMessage(previousItem.current, variables),
         severity: 'info',
         isLoading: true,
       });
       if (resourceQueryKey) {
-        if (!previousItem) {
+        if (!previousItem.current) {
           throw new Error('previousItem is not set');
         }
         await queryClient.cancelQueries({ queryKey: resourceQueryKey });
         const previousData = queryClient.getQueryData<TData[]>(resourceQueryKey);
         if (Array.isArray(previousData) && !Array.isArray(variables)) {
-          const intermediateItem = getIntermediateItem ? getIntermediateItem(variables, previousItem) : {
+          const intermediateItem = getIntermediateItem ? getIntermediateItem(variables, previousItem.current) : {
             ...variables,
-            id: (previousItem as GenericData).id,
+            id: (previousItem.current as GenericData).id,
           } as GenericData;
           queryClient.setQueryData<GenericData[]>(resourceQueryKey, (oldItems) => {
-            return [...oldItems.filter(x => x.id !== (previousItem as GenericData).id), intermediateItem] as GenericData[];
+            return [...oldItems.filter(x => x.id !== (previousItem.current as GenericData).id), intermediateItem] as GenericData[];
           });
-          return { previousData, notificationKey, item: previousItem };
+          return { previousData, notificationKey, item: previousItem.current };
         }
       }
       return { notificationKey };
     },
     onError: async (error, variables, context) => {
+      previousItem.current = undefined;
       if (resourceQueryKey && Array.isArray(context.previousData)) {
         queryClient.setQueryData(resourceQueryKey, (oldItems: TData[]) => {
           if (!Array.isArray(oldItems)) {
@@ -92,6 +96,7 @@ export const useEditMutation = <TData extends GenericData | GenericData[], TVari
       NotificationManager.instance.fulfillNotification(context.notificationKey, NotificationUtil.wrapErrorNotificationMessage(getErrorNotificationMessage(context.item, variables, error), error), 'error');
     },
     onSuccess: async (item, variables, context) => {
+      previousItem.current = undefined;
       await QueryUtil.invalidateQueryKeys(associationQueryKeys);
       if (onSuccess) {
         await onSuccess(item, variables, context);
@@ -103,5 +108,5 @@ export const useEditMutation = <TData extends GenericData | GenericData[], TVari
   // Note: must be done in useMemo to avoid render loops (useMutation returns a new object every time)
   const mutate = useMemo(() => editMutation.mutate, [editMutation.mutate]);
   const isMutating = useMemo(() => editMutation.isPending, [editMutation.isPending]);
-  return useMemo(() => ({ mutate, isMutating, setPreviousItem }), [isMutating, mutate]);
+  return useMemo(() => ({ mutate, isMutating, setPreviousItem }), [isMutating, mutate, setPreviousItem]);
 };

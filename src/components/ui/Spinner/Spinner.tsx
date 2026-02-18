@@ -4,12 +4,13 @@ import {
   Typography,
   CircularProgress,
 } from '@mui/material';
-import { t } from 'i18next';
 import type { ReactElement } from 'react';
 import {
   useState,
   useEffect,
 } from 'react';
+import { useTranslation } from 'react-i18next';
+import { visuallyHidden } from '@mui/utils';
 
 import { ConfigManager } from '../../../classes/managers/ConfigManager';
 
@@ -25,6 +26,7 @@ export type SpinnerProps = {
 
 export const Spinner = ({ label, inline, color = 'primary', takingLongerLabel, takingLongerTimeoutMs, size }: SpinnerProps): ReactElement => {
   const [isTakingLonger, setIsTakingLonger] = useState(false);
+  const { t } = useTranslation();
 
   useEffect(() => {
     const handle = setTimeout(() => {
@@ -49,6 +51,8 @@ export const Spinner = ({ label, inline, color = 'primary', takingLongerLabel, t
         flexDirection: 'column',
         position: inline ? 'relative' : 'absolute',
       }}
+      role={'status'}
+      aria-busy={'true'}
     >
       <Box margin={1}>
         <CircularProgress
@@ -56,13 +60,14 @@ export const Spinner = ({ label, inline, color = 'primary', takingLongerLabel, t
           size={size ?? ConfigManager.instance.config.spinner.DEFAULT_CIRCULAR_PROGRESS_SIZE}
         />
       </Box>
-      {label && (
-        <Box margin={1}>
-          <Typography>
-            {label}
-          </Typography>
-        </Box>
-      )}
+      <Box
+        margin={1}
+        sx={!label ? visuallyHidden : undefined}
+      >
+        <Typography>
+          {label ?? t`Loading`}
+        </Typography>
+      </Box>
       {isTakingLonger && (
         <Box margin={1}>
           <Typography>

@@ -88,6 +88,7 @@ export const NestedDropdown = ({ ref, ...props }: NestedDropdownProps) => {
           top: '2px',
         },
       }}
+      aria-expanded={open ? 'true' : 'false'}
     >
       {data?.label ?? t`Menu`}
     </Button>

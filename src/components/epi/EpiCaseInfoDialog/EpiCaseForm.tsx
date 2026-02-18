@@ -96,7 +96,6 @@ export const EpiCaseForm = ({ epiCase, formId, onFinish, onIsSavingChange, ...bo
         />
       )}
       {!isSaving && (
-
         <GenericForm<Case['content']>
           formFieldDefinitions={formFieldDefinitions}
           formId={formId}
