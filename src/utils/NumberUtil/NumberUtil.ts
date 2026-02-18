@@ -1,4 +1,10 @@
+import { number } from 'yup';
+
 export class NumberUtil {
+  public static get yup() {
+    return number().typeError('');
+  }
+
   public static toStringWithPrecision(value: number, base: number): string {
     if (typeof value !== 'number' || !isFinite(value)) {
       return '';

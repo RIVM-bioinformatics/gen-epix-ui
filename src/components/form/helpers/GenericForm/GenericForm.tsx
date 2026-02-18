@@ -26,6 +26,7 @@ import { Autocomplete } from '../../fields/Autocomplete';
 import type { SelectProps } from '../../fields/Select';
 import { Select } from '../../fields/Select';
 import { TextField } from '../../fields/TextField';
+import { NumberField } from '../../fields/NumberField';
 import { DatePicker } from '../../fields/DatePicker';
 import { UploadButton } from '../../fields/UploadButton/UploadButton';
 import { RadioGroup } from '../../fields/RadioGroup';
@@ -129,6 +130,14 @@ export const GenericForm = <TFormFields,>({
       case FORM_FIELD_DEFINITION_TYPE.TEXTFIELD:
         return (
           <TextField
+            {...formFieldDefinition}
+            required={isFormFieldRequired(formFieldDefinition.name)}
+            disabled={formFieldDefinition.disabled || disableAll}
+          />
+        );
+      case FORM_FIELD_DEFINITION_TYPE.NUMBER:
+        return (
+          <NumberField
             {...formFieldDefinition}
             required={isFormFieldRequired(formFieldDefinition.name)}
             disabled={formFieldDefinition.disabled || disableAll}

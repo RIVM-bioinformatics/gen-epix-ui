@@ -741,4 +741,8 @@ export class EpiTreeUtil {
   public static getTreeConfigurationId(treeConfiguration: Omit<TreeConfiguration, 'computedId'>): string {
     return `${treeConfiguration.caseTypeCol.id}_${treeConfiguration.col.id}_${treeConfiguration.geneticDistanceProtocol.id}_${treeConfiguration.treeAlgorithm.id}`;
   }
+
+  public static getTreeConfigurationLabel(config: TreeConfiguration): string {
+    return `${config.geneticDistanceProtocol.name} - ${config.treeAlgorithm.name}`;
+  }
 }

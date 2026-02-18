@@ -33,7 +33,6 @@ describe('NumberUtil', () => {
     it('should parse decimal formats with dots', () => {
       expect(NumberUtil.parse('1.0')).toBe(1.0);
       expect(NumberUtil.parse('1.5')).toBe(1.5);
-      expect(NumberUtil.parse(' ')).toBe(NaN);
       expect(NumberUtil.parse('0.001')).toBe(0.001);
     });
 
@@ -106,6 +105,9 @@ describe('NumberUtil', () => {
       expect(NumberUtil.parse('123.45,67')).toBe(12345.67);
       expect(NumberUtil.parse('0.0')).toBe(0.0);
       expect(NumberUtil.parse('0,0')).toBe(0.0);
+      expect(NumberUtil.parse(' ')).toBe(NaN);
+      expect(NumberUtil.parse('')).toBe(NaN);
+
     });
   });
 });

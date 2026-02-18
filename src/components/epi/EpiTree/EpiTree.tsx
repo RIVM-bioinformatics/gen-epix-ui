@@ -34,11 +34,7 @@ import type { EpiContextMenuConfigWithPosition } from '../EpiContextMenu';
 import { EpiContextMenu } from '../EpiContextMenu';
 import { EpiWidgetUnavailable } from '../EpiWidgetUnavailable';
 import { EpiTreeDescription } from '../EpiTreeDescription';
-import type {
-  RetrievePhylogeneticTreeRequestBody,
-  GeneticDistanceProtocol,
-  TreeAlgorithm,
-} from '../../../api';
+import type { RetrievePhylogeneticTreeRequestBody } from '../../../api';
 import { CaseApi } from '../../../api';
 import { TreeFilter } from '../../../classes/filters/TreeFilter';
 import { ConfigManager } from '../../../classes/managers/ConfigManager';
@@ -663,17 +659,13 @@ export const EpiTree = ({ linkedScrollSubject, ref }: EpiTreeProps) => {
     }
   }, [extraLeafInfoId, onShowDetailsSelectionMenuItemClick, onAddTreeFilterMenuItemClick, t, zoomInMenuItemConfig]);
 
-  const getTitleMenuLabel = useCallback((geneticDistanceProtocol: GeneticDistanceProtocol, treeAlgorithm: TreeAlgorithm) => {
-    return `${geneticDistanceProtocol.name} - ${treeAlgorithm.name}`;
-  }, []);
-
   const titleMenu = useMemo<MenuItemData | string>(() => {
     if (!treeConfigurations?.length) {
       return t`Tree`;
     }
 
     const menu: MenuItemData = {
-      label: treeConfiguration ? t('Tree: {{algorithm}}', { algorithm: getTitleMenuLabel(treeConfiguration.geneticDistanceProtocol, treeConfiguration.treeAlgorithm) }) : t`Tree`,
+      label: treeConfiguration ? t('Tree: {{algorithm}}', { algorithm: EpiTreeUtil.getTreeConfigurationLabel(treeConfiguration) }) : t`Tree`,
       tooltip: treeConfiguration
         ? (
           <EpiTreeDescription
@@ -683,7 +675,7 @@ export const EpiTree = ({ linkedScrollSubject, ref }: EpiTreeProps) => {
         : undefined,
       disabled: !treeConfiguration,
       items: treeConfigurations?.map<MenuItemData>(config => ({
-        label: getTitleMenuLabel(config.geneticDistanceProtocol, config.treeAlgorithm),
+        label: EpiTreeUtil.getTreeConfigurationLabel(config),
         callback: () => {
           const perform = async () => {
             await removeTreeFilter();
@@ -705,7 +697,7 @@ export const EpiTree = ({ linkedScrollSubject, ref }: EpiTreeProps) => {
     };
 
     return menu;
-  }, [treeConfigurations, treeConfiguration, t, getTitleMenuLabel, removeTreeFilter, updateEpiTreeWidgetData]);
+  }, [treeConfigurations, treeConfiguration, t, removeTreeFilter, updateEpiTreeWidgetData]);
 
   const primaryMenu = useMemo<MenuItemData[]>(() => {
     return [

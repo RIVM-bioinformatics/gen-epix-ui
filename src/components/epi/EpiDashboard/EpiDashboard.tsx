@@ -78,6 +78,10 @@ import { EpiStratification } from '../EpiStratification';
 import type { EpiTreeRef } from '../EpiTree';
 import { EpiTree } from '../EpiTree';
 import { EpiWidgetUnavailable } from '../EpiWidgetUnavailable';
+import {
+  EpiFindSimilarCasesDialog,
+  type EpiFindSimilarCasesDialogRefMethods,
+} from '../EpiFindSimilarCasesDialog';
 
 import {
   EpiDashboardSettingsSidebarItemIcon,
@@ -105,6 +109,7 @@ export const EpiDashboard = withEpiDashboardStore(({ caseSet }: EpiDashboardProp
   const epiContactDetailsDialogRef = useRef<EpiContactDetailsDialogRefMethods>(null);
   const epiSequenceDownloadDialogRef = useRef<EpiSequenceDownloadDialogRefMethods>(null);
   const epiCaseInfoDialogRef = useRef<EpiCaseInfoDialogRefMethods>(null);
+  const epiFindSimilarCasesDialogRef = useRef<EpiFindSimilarCasesDialogRefMethods>(null);
   const epiCreateEventDialogRef = useRef<EpiCreateEventDialogRefMethods>(null);
   const epiRemoveCasesFromEventDialogRef = useRef<EpiRemoveCasesFromEventDialogRefMethods>(null);
   const epiAddCasesToEventDialogRef = useRef<EpiAddCasesToEventDialogRefMethods>(null);
@@ -142,6 +147,7 @@ export const EpiDashboard = withEpiDashboardStore(({ caseSet }: EpiDashboardProp
       eventBus.addEventListener('openCaseInfoDialog', (...args) => epiCaseInfoDialogRef.current?.open(...args)),
       eventBus.addEventListener('openContactDetailsDialog', (...args) => epiContactDetailsDialogRef.current?.open(...args)),
       eventBus.addEventListener('openCreateEventDialog', (...args) => epiCreateEventDialogRef.current?.open(...args)),
+      eventBus.addEventListener('openFindSimilarCasesDialog', (...args) => epiFindSimilarCasesDialogRef.current?.open(...args)),
       eventBus.addEventListener('openRemoveCasesFromEventDialog', (...args) => epiRemoveCasesFromEventDialogRef.current?.open(...args)),
       eventBus.addEventListener('openSequenceDownloadDialog', (...args) => epiSequenceDownloadDialogRef.current?.open(...args)),
       eventBus.addEventListener('openBulkEditCaseDialog', (...args) => epiBulkEditCaseDialogRef.current?.open(...args)),
@@ -364,6 +370,7 @@ export const EpiDashboard = withEpiDashboardStore(({ caseSet }: EpiDashboardProp
         </Box>
       </ResponseHandler>
       <EpiContactDetailsDialog ref={epiContactDetailsDialogRef} />
+      <EpiFindSimilarCasesDialog ref={epiFindSimilarCasesDialogRef} />
       <EpiSequenceDownloadDialog ref={epiSequenceDownloadDialogRef} />
       <EpiCaseInfoDialog ref={epiCaseInfoDialogRef} />
       <EpiCreateEventDialog ref={epiCreateEventDialogRef} />

@@ -14,7 +14,6 @@ import {
   useRef,
 } from 'react';
 import { useTranslation } from 'react-i18next';
-import noop from 'lodash/noop';
 import { useStore } from 'zustand';
 import { useShallow } from 'zustand/shallow';
 import { useDebouncedCallback } from 'use-debounce';
@@ -391,8 +390,18 @@ export const EpiLineList = ({ linkedScrollSubject, onLink, caseSet }: EpiLineLis
         },
         {
           label: t`Find similar cases`,
-          disabled: true,
-          callback: noop,
+          callback: () => EpiEventBusManager.instance.emit('openFindSimilarCasesDialog', {
+            rows: sortedData,
+            completeCaseType,
+          }),
+        },
+        {
+          label: t`Find similar cases (based on selected cases)`,
+          disabled: !selectedRowCaseIds?.length,
+          callback: () => EpiEventBusManager.instance.emit('openFindSimilarCasesDialog', {
+            rows: getSelectedRows(),
+            completeCaseType,
+          }),
         },
       ],
     };
@@ -430,7 +439,7 @@ export const EpiLineList = ({ linkedScrollSubject, onLink, caseSet }: EpiLineLis
       );
     }
     if (actionsColumnMenuItem.items.length > 2) {
-      actionsColumnMenuItem.items[1].divider = true;
+      actionsColumnMenuItem.items[2].divider = true;
     }
 
     // last(actionsColumnMenuItem.items).divider = true;
@@ -450,7 +459,7 @@ export const EpiLineList = ({ linkedScrollSubject, onLink, caseSet }: EpiLineLis
     ];
 
     return menus;
-  }, [caseSet, t, selectedRowCaseIds, createFilterFromSelectedRowCaseIds, columnsMenuItem, getSelectedRows, completeCaseType]);
+  }, [caseSet, t, selectedRowCaseIds?.length, createFilterFromSelectedRowCaseIds, columnsMenuItem, sortedData, completeCaseType, getSelectedRows]);
 
 
   useEffect(() => {

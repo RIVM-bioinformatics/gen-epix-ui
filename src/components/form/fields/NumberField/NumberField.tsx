@@ -1,11 +1,12 @@
 import type {
   ChangeEvent,
-  InputHTMLAttributes,
   ReactElement,
+  FocusEvent,
 } from 'react';
 import {
   useCallback,
   useRef,
+  useState,
 } from 'react';
 import {
   TextField as MuiTextField,
@@ -26,58 +27,79 @@ import {
   useFormContext,
 } from 'react-hook-form';
 import classnames from 'classnames';
+import { is } from 'date-fns/locale';
 
 import { FormUtil } from '../../../../utils/FormUtil';
 import { TestIdUtil } from '../../../../utils/TestIdUtil';
+import { NumberUtil } from '../../../../utils/NumberUtil';
 import { FormFieldHelperText } from '../../helpers/FormFieldHelperText';
 import { FormFieldLoadingIndicator } from '../../helpers/FormFieldLoadingIndicator';
 
-export type TextFieldProps<TFieldValues extends FieldValues, TName extends Path<TFieldValues> = Path<TFieldValues>> = {
+export type NumberFieldProps<TFieldValues extends FieldValues, TName extends Path<TFieldValues> = Path<TFieldValues>> = {
   readonly disabled?: boolean;
   readonly label: string;
   readonly name: TName;
-  readonly onChange?: (value: string) => void;
+  readonly onChange?: (value: number) => void;
   readonly required?: boolean;
   readonly warningMessage?: string | boolean;
-  readonly multiline?: boolean;
-  readonly rows?: number;
-  readonly type?: InputHTMLAttributes<unknown>['type'];
   readonly loading?: boolean;
   readonly placeholder?: string;
   readonly autocomplete?: string;
 };
 
-export const TextField = <TFieldValues extends FieldValues, TName extends Path<TFieldValues> = Path<TFieldValues>>({
+export const NumberField = <TFieldValues extends FieldValues, TName extends Path<TFieldValues> = Path<TFieldValues>>({
   disabled = false,
   label,
-  rows = 3,
-  multiline = false,
   name,
   onChange: onChangeProp,
   loading = false,
   required = false,
   placeholder,
-  type = 'text',
   warningMessage,
   autocomplete,
-}: TextFieldProps<TFieldValues, TName>): ReactElement => {
+}: NumberFieldProps<TFieldValues, TName>): ReactElement => {
   const { control, formState: { errors } } = useFormContext<TFieldValues>();
   const errorMessage = FormUtil.getFieldErrorMessage(errors, name);
   const hasError = !!errorMessage;
   const hasWarning = !!warningMessage && !hasError;
   const inputRef = useRef<HTMLInputElement>(null);
+  const valueRef = useRef<string>('');
+  const [triggerValue, setTriggerValue] = useState(0);
 
   const onMuiTextFieldChange = useCallback((onChange: ControllerRenderProps<TFieldValues, TName>['onChange']) =>
-    (event: ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
+    (event: ChangeEvent<HTMLInputElement>) => {
       const value = event.target.value;
-      if (onChangeProp) {
-        onChangeProp(value);
+      valueRef.current = value;
+      onChange(NumberUtil.parse(value));
+    }
+  , []);
+
+  const onMuiTextFieldBlur = useCallback((onBlur: ControllerRenderProps<TFieldValues, TName>['onBlur'], onChange: ControllerRenderProps<TFieldValues, TName>['onChange']) =>
+    () => {
+      console.log('blurring with value', valueRef.current);
+      const value = valueRef.current;
+      const parsedValue = NumberUtil.parse(value);
+
+      if (isNaN(parsedValue)) {
+        valueRef.current = undefined;
+        onChange(undefined);
+        if (onChangeProp) {
+          onChangeProp(undefined);
+        }
+      } else {
+        valueRef.current = parsedValue.toString().replace('.', ','); // Update the input value to the parsed number with comma as decimal separator
+        onChange(parsedValue);
+        if (onChangeProp) {
+          onChangeProp(parsedValue);
+        }
       }
-      onChange(value);
+      setTriggerValue(prev => prev + 1); // Trigger re-render to update the displayed value based on the parsed number
+      onBlur();
     }
   , [onChangeProp]);
 
   const renderController = useCallback(({ field: { onChange, onBlur, value, ref } }: UseControllerReturn<TFieldValues, TName>) => {
+    console.log('rendering controller with value', value, 'and valueRef', valueRef.current);
     ref({
       focus: () => {
         inputRef?.current?.focus();
@@ -90,6 +112,7 @@ export const TextField = <TFieldValues extends FieldValues, TName extends Path<T
 
     return (
       <MuiTextField
+        data-trigger={triggerValue}
         disabled={disabled || loading}
         error={hasError}
         helperText={(
@@ -101,9 +124,7 @@ export const TextField = <TFieldValues extends FieldValues, TName extends Path<T
         inputRef={inputRef}
         variant={'outlined'}
         label={label}
-        multiline={multiline}
         placeholder={placeholder}
-        rows={rows}
         slotProps={{
           formHelperText: {
             className: classnames({ 'Mui-warning': hasWarning }),
@@ -111,7 +132,6 @@ export const TextField = <TFieldValues extends FieldValues, TName extends Path<T
           input: {
             inputProps: {
               autoComplete: autocomplete ?? name,
-              type,
             },
             className: classnames({ 'Mui-warning': hasWarning }),
             endAdornment: disabled ? undefined : (
@@ -138,16 +158,16 @@ export const TextField = <TFieldValues extends FieldValues, TName extends Path<T
             className: classnames({ 'Mui-warning': hasWarning }),
           },
         }}
-        value={value ?? '' as string}
-        onBlur={onBlur}
+        value={valueRef.current ?? value ?? '' as string}
+        onBlur={onMuiTextFieldBlur(onBlur, onChange)}
         onChange={onMuiTextFieldChange(onChange)}
       />
     );
-  }, [disabled, loading, hasError, errorMessage, warningMessage, label, multiline, placeholder, rows, hasWarning, autocomplete, name, type, required, onMuiTextFieldChange]);
+  }, [triggerValue, disabled, loading, hasError, errorMessage, warningMessage, label, placeholder, hasWarning, autocomplete, name, required, onMuiTextFieldBlur, onMuiTextFieldChange]);
 
   return (
     <FormControl
-      {...TestIdUtil.createAttributes('TextField', { label, name: name as string })}
+      {...TestIdUtil.createAttributes('NumberField', { label, name: name as string })}
       fullWidth
       sx={{
         button: {
