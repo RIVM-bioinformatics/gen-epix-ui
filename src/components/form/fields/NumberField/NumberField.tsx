@@ -1,7 +1,6 @@
 import type {
   ChangeEvent,
   ReactElement,
-  FocusEvent,
 } from 'react';
 import {
   useCallback,
@@ -27,7 +26,6 @@ import {
   useFormContext,
 } from 'react-hook-form';
 import classnames from 'classnames';
-import { is } from 'date-fns/locale';
 
 import { FormUtil } from '../../../../utils/FormUtil';
 import { TestIdUtil } from '../../../../utils/TestIdUtil';
