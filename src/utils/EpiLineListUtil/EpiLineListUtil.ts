@@ -8,4 +8,8 @@ export class EpiLineListUtil {
     // when count is null, 1 should be assumed
     return sumBy(cases, (row) => (row.count ?? 1));
   }
+
+  public static getSelectedRows(cases: Case[], selectedIds: string[]): Case[] {
+    return cases.filter(row => selectedIds.includes(row.id));
+  }
 }

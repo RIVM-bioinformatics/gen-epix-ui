@@ -3,10 +3,8 @@ import {
   type SxProps,
   type Theme,
 } from '@mui/material';
-import IndeterminateCheckBoxIcon from '@mui/icons-material/IndeterminateCheckBox';
 import {
   Box,
-  Checkbox,
   alpha,
   darken,
   lighten,
@@ -16,9 +14,7 @@ import isNumber from 'lodash/isNumber';
 import noop from 'lodash/noop';
 import omit from 'lodash/omit';
 import sumBy from 'lodash/sumBy';
-import uniq from 'lodash/uniq';
 import type {
-  ChangeEvent,
   MouseEvent as ReactMouseEvent,
   Ref,
   CSSProperties,
@@ -78,6 +74,8 @@ import {
   TableColumnsEditorDialog,
   type TableColumnsEditorDialogRefMethods,
 } from './TableColumnsEditorDialog';
+import { TableCheckboxCell } from './TableCheckboxCell';
+import { TableCheckboxHeader } from './TableCheckboxHeader';
 
 
 export type TableProps<TRowData> = {
@@ -136,9 +134,8 @@ export const Table = <TRowData,>({
 
   const setColumnSettingsInStore = useStore(tableStore, useShallow((state) => state.setColumnSettings));
   const sortedData = useStore(tableStore, useShallow((state) => state.sortedData));
-  const setSelectedIds = useStore(tableStore, useShallow((state) => state.setSelectedIds));
   const idSelectorCallback = useStore(tableStore, useShallow((state) => state.idSelectorCallback));
-  const selectedIds = useStore(tableStore, useShallow((state) => state.selectedIds));
+  // const selectedIds = useStore(tableStore, useShallow((state) => state.selectedIds));
   const tableColumns = useStore(tableStore, useShallow((state) => state.columns));
   const isStoreInitialized = useStore(tableStore, useShallow((state) => state.isInitialized));
   const isRowEnabledCallback = useStore(tableStore, useShallow((state) => state.isRowEnabledCallback));
@@ -163,8 +160,8 @@ export const Table = <TRowData,>({
   // re-render the table when the filters change
   useStore(tableStore, (state) => JSON.stringify(state.filters.map(x => x.filterValue)));
   // re-render the table when the sort by field or direction changes
-  useStore(tableStore, (state) => state.sortByField);
-  useStore(tableStore, (state) => state.sortDirection);
+  useStore(tableStore, useShallow((state) => state.sortByField));
+  useStore(tableStore, useShallow((state) => state.sortDirection));
 
   const onTableRowClick = useCallback((row: TableRowParams<TRowData>, event: MouseEvent) => {
     if (onRowClick) {
@@ -249,78 +246,24 @@ export const Table = <TRowData,>({
   }, [onReadableIndexClick, onTableReadableIndexClick]);
 
   const renderCheckboxHeaderContent = useCallback((tableColumnParams: TableColumnParams<TRowData>) => {
-    const column = tableColumnParams.column as TableColumnSelectable<TRowData>;
-
-    const enabledRows = column.isDisabled ? sortedData.filter(row => column.isDisabled({
-      id: idSelectorCallback(row),
-      row,
-      rowIndex: sortedData.indexOf(row),
-    }) === false) : sortedData;
-
-    const isAllChecked = enabledRows.every(row => selectedIds.includes(idSelectorCallback(row)));
-    const isSomeChecked = enabledRows.some(row => selectedIds.includes(idSelectorCallback(row)));
-
-    const onSelectAllCheckBoxChange = (_event: ChangeEvent<HTMLInputElement>) => {
-      const visibleRowIds = enabledRows.map(r => idSelectorCallback(r));
-      if (isAllChecked) {
-      // all visible rows are selected, unselect all visible rows
-        setSelectedIds(selectedIds.filter(s => !visibleRowIds.includes(s)));
-      } else {
-      // not al visible rows are selected, select them
-        setSelectedIds(uniq([...selectedIds, ...visibleRowIds]));
-      }
-    };
-
     return (
-      <Checkbox
-        checked={isSomeChecked}
-        slotProps={{
-          input: {
-            'aria-label': t`Select all`,
-          },
-        }}
-        checkedIcon={isAllChecked ? undefined : <IndeterminateCheckBoxIcon />}
-        name={'select-all'}
-        sx={{
-          padding: 0,
-          marginTop: '-2px',
-        }}
-        // eslint-disable-next-line react/jsx-no-bind
-        onChange={onSelectAllCheckBoxChange}
+      <TableCheckboxHeader
+        tableColumnParams={tableColumnParams}
       />
     );
-  }, [idSelectorCallback, selectedIds, setSelectedIds, sortedData, t]);
-
-  const onRowCheckBoxChange = useCallback((event: ChangeEvent<HTMLInputElement>, checked: boolean) => {
-    const rowId = event.target.getAttribute('name');
-    if (checked && !selectedIds.includes(rowId)) {
-      setSelectedIds([...selectedIds, rowId]);
-    } else if (!checked) {
-      setSelectedIds([...selectedIds].filter(x => x !== rowId));
-    }
-  }, [selectedIds, setSelectedIds]);
+  }, []);
 
   const renderCheckboxCell = useCallback((cell: TableRowParams<TRowData>, tableColumn: TableColumnSelectable<TRowData>) => {
     const id = idSelectorCallback(cell.row);
+
     return (
-      <Checkbox
+      <TableCheckboxCell
         key={id}
-        checked={selectedIds.includes(id)}
-        name={idSelectorCallback(cell.row)}
-        disabled={tableColumn.isDisabled ? tableColumn.isDisabled(cell) : false}
-        slotProps={{
-          input: {
-            'aria-label': t`Select row`,
-          },
-        }}
-        sx={{
-          padding: 0,
-          marginTop: '-2px',
-        }}
-        onChange={onRowCheckBoxChange}
+        cell={cell}
+        tableColumn={tableColumn}
       />
     );
-  }, [idSelectorCallback, onRowCheckBoxChange, selectedIds, t]);
+  }, [idSelectorCallback]);
 
   const updateColumnSizes = useCallback(() => {
     if (!tableColumns.length || !container) {

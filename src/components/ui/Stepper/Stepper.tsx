@@ -48,7 +48,7 @@ export const Stepper = ({ steps, activeStep, ...boxProps }: StepperProps) => {
 
   return (
     <Box
-      {...TestIdUtil.createAttributes('Stepper', { activeStep })}
+      {...TestIdUtil.createAttributes('Stepper', { 'active-step': activeStep })}
       {...omit(boxProps, ['sx'])}
       sx={{
         width: '100%',
@@ -92,6 +92,7 @@ export const Stepper = ({ steps, activeStep, ...boxProps }: StepperProps) => {
                 completed={isCompletedStep(step.key)}
                 active={isActiveStep(step.key)}
                 icon={index + 1}
+                aria-hidden={'true'}
               />
             </Box>
             <Box>
