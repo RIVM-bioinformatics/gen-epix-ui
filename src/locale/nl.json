@@ -126,6 +126,7 @@
     "Choose a different identity provider": "Kies een andere identiteitsprovider",
     "Clear all notifications": "Alle meldingen wissen",
     "Clear all selected files": "Wis alle geselecteerde bestanden",
+    "Clear {{fileName}}": "Wis {{fileName}}",
     "Clear date range": "Wis datumbereik",
     "Click or drag to upload file ({{accept}})": "Klik of sleep om bestand te uploaden ({{accept}})",
     "Click or drag to upload files  ({{accept}})": "Klik of sleep om bestanden te uploaden ({{accept}})",

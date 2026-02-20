@@ -23,8 +23,6 @@ export const EpiUploadValidateNavigation = ({ onGoBackButtonClick, onProceedButt
 
   const proceedDisabled = !selectedIds.length || selectedIds.length > completeCaseType.create_max_n_cases;
 
-  // console.log('proceedDisabled', proceedDisabled, 'selectedIds', selectedIds, 'completeCaseType.create_max_n_cases', completeCaseType.create_max_n_cases);
-
   return (
     <EpiUploadNavigation
       proceedLabel={t`Continue`}
