@@ -3,6 +3,7 @@ import {
   useContext,
   useEffect,
   useMemo,
+  useRef,
   useState,
 } from 'react';
 import { useStore } from 'zustand';
@@ -26,12 +27,15 @@ import {
 import { useArray } from '../../../hooks/useArray';
 import { useQueryMemo } from '../../../hooks/useQueryMemo';
 import type { CaseUploadResultWithGeneratedId } from '../../../models/epi';
-import { createTableStore } from '../../../stores/tableStore';
+import {
+  createTableStore,
+  TableStoreContextProvider,
+} from '../../../stores/tableStore';
 import { ResponseHandler } from '../../ui/ResponseHandler';
 import { EpiUploadUtil } from '../../../utils/EpiUploadUtil';
 
-import { EpiUploadNavigation } from './EpiUploadNavigation';
 import { EpiUploadCaseResultTable } from './EpiUploadCaseResultTable';
+import { EpiUploadValidateNavigation } from './EpiUploadValidateNavigation';
 
 export const EpiUploadValidateInner = () => {
   const { t } = useTranslation();
@@ -46,6 +50,7 @@ export const EpiUploadValidateInner = () => {
   const createdInDataCollectionId = useStore(store, (state) => state.createdInDataCollectionId);
   const rawData = useStore(store, (state) => state.rawData);
   const validateCasesQueryKey = useStore(store, (state) => state.validateCasesQueryKey);
+  const [exceedsMaxNumCases, setExceedsMaxNumCases] = useState(false);
 
   const casesForVerification = useMemo<CaseForUpload[]>(() => {
     return EpiUploadUtil.getCasesForVerification({
@@ -90,8 +95,26 @@ export const EpiUploadValidateInner = () => {
     idSelectorCallback: (row) => row.generatedId,
   }), []);
 
-  const selectedIds = useStore(tableStore, (state) => state.selectedIds);
+  const selectedIdsRef = useRef<string[]>([]);
+
+  // const selectedIds = useStore(tableStore, (state) => state.selectedIds);
   const setSelectedIds = useStore(tableStore, useShallow((state) => state.setSelectedIds));
+
+
+  useEffect(() => {
+    const unsubscribe = tableStore.subscribe((state, prevState) => {
+      if (state.selectedIds === prevState.selectedIds) {
+        return;
+      }
+      selectedIdsRef.current = state.selectedIds;
+      const newExceedsMaxNumCases = state.selectedIds.length > completeCaseType.create_max_n_cases;
+      setExceedsMaxNumCases(newExceedsMaxNumCases);
+    });
+
+    return () => {
+      unsubscribe();
+    };
+  }, [completeCaseType.create_max_n_cases, tableStore]);
 
   useEffect(() => {
     const newSelectedIds = rowsWithGeneratedId.filter(validatedCase => {
@@ -100,16 +123,12 @@ export const EpiUploadValidateInner = () => {
     setSelectedIds(newSelectedIds);
   }, [rowsWithGeneratedId, setSelectedIds]);
 
-
   const onProceedButtonClick = useCallback(async () => {
-    const validatedCases = rowsWithGeneratedId.filter(r => selectedIds.includes(r.generatedId)).map(r => omit(r, 'generatedId'));
+    const validatedCases = rowsWithGeneratedId.filter(r => selectedIdsRef.current.includes(r.generatedId)).map(r => omit(r, 'generatedId'));
     setValidatedCases(validatedCases);
     await goToNextStep();
-  }, [goToNextStep, rowsWithGeneratedId, selectedIds, setValidatedCases]);
+  }, [goToNextStep, rowsWithGeneratedId, selectedIdsRef, setValidatedCases]);
 
-  const exceedsMaxCases = useMemo(() => {
-    return selectedIds.length > completeCaseType.create_max_n_cases;
-  }, [completeCaseType.create_max_n_cases, selectedIds.length]);
 
   return (
     <Box
@@ -118,42 +137,41 @@ export const EpiUploadValidateInner = () => {
         height: '100%',
         position: 'relative',
         display: 'grid',
-        gridTemplateRows: `${exceedsMaxCases ? 'max-content' : ''} max-content auto max-content`,
+        gridTemplateRows: `${exceedsMaxNumCases ? 'max-content' : ''} max-content auto max-content`,
       }}
     >
-      <ResponseHandler
-        inlineSpinner
-        loadables={loadables}
-        loadingMessage={t('Validating cases')}
-        takingLongerTimeoutMs={10000}
-      >
-        {exceedsMaxCases && (
-          <Box marginY={2}>
-            <Alert severity={'error'}>
-              <AlertTitle>
-                {t('You have selected {{numCases}} cases to upload, which exceeds the maximum allowed number of {{maxCases}} cases for this case type. Please reduce the number of selected cases before proceeding.', {
-                  numCases: selectedIds.length,
-                  maxCases: completeCaseType.create_max_n_cases,
-                })}
-              </AlertTitle>
-            </Alert>
-          </Box>
-        )}
-        <EpiUploadCaseResultTable
-          completeCaseType={completeCaseType}
-          rowsWithGeneratedId={rowsWithGeneratedId}
-          validatedCases={caseUploadValidationResultQuery?.data?.cases || []}
-          rawData={rawData}
-          mappedColumns={mappedColumns}
-          tableStore={tableStore}
-        />
-        <EpiUploadNavigation
-          proceedLabel={t('Continue')}
-          proceedDisabled={selectedIds.length === 0 || exceedsMaxCases}
-          onGoBackButtonClick={goToPreviousStep}
-          onProceedButtonClick={onProceedButtonClick}
-        />
-      </ResponseHandler>
+      <TableStoreContextProvider store={tableStore}>
+        <ResponseHandler
+          inlineSpinner
+          loadables={loadables}
+          loadingMessage={t('Validating cases')}
+          takingLongerTimeoutMs={10000}
+        >
+          {exceedsMaxNumCases && (
+            <Box marginY={2}>
+              <Alert severity={'error'}>
+                <AlertTitle>
+                  {t('You have exceeded the maximum number of {{maxCases}} cases for this case type. Please reduce the number of selected cases before proceeding.', {
+                    maxCases: completeCaseType.create_max_n_cases,
+                  })}
+                </AlertTitle>
+              </Alert>
+            </Box>
+          )}
+          <EpiUploadCaseResultTable
+            completeCaseType={completeCaseType}
+            rowsWithGeneratedId={rowsWithGeneratedId}
+            validatedCases={caseUploadValidationResultQuery?.data?.cases || []}
+            rawData={rawData}
+            mappedColumns={mappedColumns}
+            tableStore={tableStore}
+          />
+          <EpiUploadValidateNavigation
+            onGoBackButtonClick={goToPreviousStep}
+            onProceedButtonClick={onProceedButtonClick}
+          />
+        </ResponseHandler>
+      </TableStoreContextProvider>
     </Box>
   );
 };

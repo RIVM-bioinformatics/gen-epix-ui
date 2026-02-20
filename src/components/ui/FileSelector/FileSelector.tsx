@@ -311,20 +311,26 @@ export const FileSelector = ({
                       label={
                         (
                           <>
-                            <strong>
+                            <Box
+                              component={'span'}
+                              sx={{ fontWeight: 'bold' }}
+                            >
                               {file.name}
-                            </strong>
-                            <span>
+                            </Box>
+                            <Box component={'span'}>
                               {' '}
                               {t('(size: {{size}})', { size: FileUtil.getReadableFileSize(file.size) })}
                               {' '}
                               {t('(last modified: {{lastModified}})', { lastModified: format(new Date(file.lastModified), DATE_FORMAT.DATE_TIME) })}
-                            </span>
+                            </Box>
                           </>
                         )
                       }
                       deleteIcon={(
                         <DeleteIcon
+                          focusable
+                          aria-hidden={false}
+                          aria-label={t('Clear {{fileName}}', { fileName: file.name })}
                           tabIndex={0}
                           // eslint-disable-next-line react/jsx-no-bind
                           onKeyDown={(event) => {

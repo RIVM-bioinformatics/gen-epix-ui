@@ -126,6 +126,7 @@
     "Choose a different identity provider": "Choose a different identity provider",
     "Clear all notifications": "Clear all notifications",
     "Clear all selected files": "Clear all selected files",
+    "Clear {{fileName}}": "Clear {{fileName}}",
     "Clear date range": "Clear date range",
     "Click or drag to upload file ({{accept}})": "Click or drag to upload file ({{accept}})",
     "Click or drag to upload files  ({{accept}})": "Click or drag to upload files  ({{accept}})",

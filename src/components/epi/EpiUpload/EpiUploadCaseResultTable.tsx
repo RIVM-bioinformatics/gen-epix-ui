@@ -28,7 +28,6 @@ import type {
   TableColumn,
 } from '../../../models/table';
 import type { TableStore } from '../../../stores/tableStore';
-import { TableStoreContextProvider } from '../../../stores/tableStore';
 import { CaseUtil } from '../../../utils/CaseUtil';
 import { TableUtil } from '../../../utils/TableUtil';
 import {
@@ -364,7 +363,7 @@ export const EpiUploadCaseResultTable = ({ tableStore, rowsWithGeneratedId, comp
   useInitializeTableStore<CaseUploadResultWithGeneratedId>({ store: tableStore, columns: tableColumns, rows: rowsWithGeneratedId, createFiltersFromColumns: true });
 
   return (
-    <TableStoreContextProvider store={tableStore}>
+    <>
       <Box>
         <TableMenu
           ContainerProps={{
@@ -378,6 +377,6 @@ export const EpiUploadCaseResultTable = ({ tableStore, rowsWithGeneratedId, comp
       <Table
         font={theme['gen-epix'].lineList.font}
       />
-    </TableStoreContextProvider>
+    </>
   );
 };
