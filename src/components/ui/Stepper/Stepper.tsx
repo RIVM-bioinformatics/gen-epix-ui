@@ -24,6 +24,8 @@ export type StepperProps = {
   readonly activeStep: string;
 } & BoxProps;
 
+// NOTE: This Stepper component is an alternative for the MUI Stepper component, because it is more accessibility friendly
+
 export const Stepper = ({ steps, activeStep, ...boxProps }: StepperProps) => {
   const theme = useTheme();
   const { t } = useTranslation();
@@ -55,6 +57,7 @@ export const Stepper = ({ steps, activeStep, ...boxProps }: StepperProps) => {
         position: 'relative',
         ...boxProps.sx,
       }}
+      role={'presentation'}
     >
       <Box
         sx={{
@@ -86,6 +89,7 @@ export const Stepper = ({ steps, activeStep, ...boxProps }: StepperProps) => {
               alignItems: 'center',
               gap: 1,
             }}
+            aria-current={isActiveStep(step.key) ? 'step' : undefined}
           >
             <Box>
               <StepIcon
