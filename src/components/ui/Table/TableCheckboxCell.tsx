@@ -46,7 +46,6 @@ export const TableCheckboxCell = <TRowData, >({
 
   return (
     <Checkbox
-      key={id}
       checked={selectedIds.includes(id)}
       name={idSelectorCallback(cell.row)}
       slotProps={{

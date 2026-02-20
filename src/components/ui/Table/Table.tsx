@@ -1,5 +1,4 @@
 import {
-  Button,
   type SxProps,
   type Theme,
 } from '@mui/material';
@@ -76,6 +75,7 @@ import {
 } from './TableColumnsEditorDialog';
 import { TableCheckboxCell } from './TableCheckboxCell';
 import { TableCheckboxHeader } from './TableCheckboxHeader';
+import { TableReadableIndexCell } from './TableReadableIndexCell';
 
 
 export type TableProps<TRowData> = {
@@ -156,7 +156,6 @@ export const Table = <TRowData,>({
   const dragConfig = useRef<{ clonedElement: HTMLDivElement; scrollPosition: number; elementOffsetX: number }>(null);
 
   // If applying filters or sorting and the results in the table don't change, we need to re-render the table manually to reflect the changes in filters / sorting in the headers.
-
   // re-render the table when the filters change
   useStore(tableStore, (state) => JSON.stringify(state.filters.map(x => x.filterValue)));
   // re-render the table when the sort by field or direction changes
@@ -201,49 +200,17 @@ export const Table = <TRowData,>({
     updateTableWidth();
   }, [updateTableWidth]);
 
-  const onTableReadableIndexClick = useCallback((row: TRowData, event: ReactMouseEvent) => {
-    if (onReadableIndexClick) {
-      if (!getRowName) {
-        throw new Error('getRowName is required when onReadableIndexClick is provided');
-      }
-      if (ConfigManager.instance.config.enablePageEvents) {
-        PageEventBusManager.instance.emit('click', {
-          label: getRowName(row),
-          type: 'table-row-index',
-        });
-      }
-      event.preventDefault();
-      event.stopPropagation();
-      onReadableIndexClick(row);
-    }
-  }, [getRowName, onReadableIndexClick]);
-
   const renderReadableIndexCell = useCallback((tableColumn: TableColumnReadableIndex<TRowData>, cell: TableRowParams<TRowData>) => {
-    if (!onReadableIndexClick) {
-      return cell.rowIndex + 1;
-    }
     return (
-      <Button
+      <TableReadableIndexCell
         key={cell.id}
-        variant={'text'}
-        size={'small'}
-        aria-label={tableColumn.getAriaLabel(cell)}
-        color={'primary'}
-        sx={{
-          width: '100%',
-          height: '100%',
-          minWidth: 'unset',
-          padding: 0,
-        }}
-        // eslint-disable-next-line react/jsx-no-bind
-        onClick={(event) => {
-          onTableReadableIndexClick(cell.row, event);
-        }}
-      >
-        {cell.rowIndex + 1}
-      </Button>
+        tableColumn={tableColumn}
+        cell={cell}
+        getRowName={getRowName}
+        onReadableIndexClick={onReadableIndexClick}
+      />
     );
-  }, [onReadableIndexClick, onTableReadableIndexClick]);
+  }, [getRowName, onReadableIndexClick]);
 
   const renderCheckboxHeaderContent = useCallback((tableColumnParams: TableColumnParams<TRowData>) => {
     return (
