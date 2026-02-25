@@ -64,13 +64,17 @@ export const Spinner = ({ label, inline, color = 'primary', takingLongerLabel, t
         margin={1}
         sx={!label ? visuallyHidden : undefined}
       >
-        <Typography>
+        <Typography
+          aria-live={'polite'}
+        >
           {label ?? t`Loading`}
         </Typography>
       </Box>
       {isTakingLonger && (
         <Box margin={1}>
-          <Typography>
+          <Typography
+            aria-live={'polite'}
+          >
             {takingLongerLabel || t`This is taking longer than expected. We are still trying.`}
           </Typography>
         </Box>
