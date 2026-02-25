@@ -462,73 +462,69 @@ export const CrudPage = <
     }
     internalColumns.push(...tableColumns);
 
-    if (userCanEdit || userCanDelete || onShowItem || extraActionsFactory || subPages?.length) {
-      internalColumns.push(
-        TableUtil.createActionsColumn({
-          t,
-          getActions: (params) => {
-            const actions: ReactElement[] = [];
-            if (onShowItem) {
-              actions.push(
-                <MenuItem
-                  key={'actions1'}
-                  // eslint-disable-next-line react/jsx-no-bind
-                  onClick={() => onShowItem(params)}
-                >
-                  <ListItemIcon>
-                    <ArrowCircleRightIcon />
-                  </ListItemIcon>
-                  <ListItemText>
-                    {t`Show`}
-                  </ListItemText>
-                </MenuItem>,
-              );
-            }
-            if (userCanEdit) {
-              actions.push(
-                <MenuItem
-                  key={'actions2'}
-                  // eslint-disable-next-line react/jsx-no-bind
-                  onClick={() => onEditIconClick(params)}
-                >
-                  <ListItemIcon>
-                    <EditIcon />
-                  </ListItemIcon>
-                  <ListItemText>
-                    {t`Edit`}
-                  </ListItemText>
-                </MenuItem>,
-              );
-            }
-            if (userCanDelete) {
-              actions.push(
-                <MenuItem
-                  key={'actions3'}
-                  // eslint-disable-next-line react/jsx-no-bind
-                  onClick={() => deleteConfirmationRef.current.open({
-                    item: params.row,
-                  })}
-                >
-                  <ListItemIcon>
-                    <DeleteForeverIcon />
-                  </ListItemIcon>
-                  <ListItemText>
-                    {t`Delete`}
-                  </ListItemText>
-                </MenuItem>,
-              );
-            }
-            const extraActions = normalizedExtraActions(params) ?? [];
-            if (extraActions?.length > 0 && actions.length > 0) {
-              actions.push(...extraActions);
-            }
-            return actions;
-          },
-        }),
-      );
-    }
+    internalColumns.push(
+      TableUtil.createActionsColumn({
+        t,
+        getActions: (params) => {
+          const actions: ReactElement[] = [];
+          if (onShowItem) {
+            actions.push(
+              <MenuItem
+                key={'actions1'}
+                // eslint-disable-next-line react/jsx-no-bind
+                onClick={() => onShowItem(params)}
+              >
+                <ListItemIcon>
+                  <ArrowCircleRightIcon />
+                </ListItemIcon>
+                <ListItemText>
+                  {t`Show`}
+                </ListItemText>
+              </MenuItem>,
+            );
+          }
+          actions.push(
+            <MenuItem
+              key={'actions2'}
+              // eslint-disable-next-line react/jsx-no-bind
+              onClick={() => onEditIconClick(params)}
+            >
+              <ListItemIcon>
+                <EditIcon />
+              </ListItemIcon>
+              <ListItemText>
+                {t`Edit`}
+              </ListItemText>
+            </MenuItem>,
+          );
+          if (userCanDelete) {
+            actions.push(
+              <MenuItem
+                key={'actions3'}
+                // eslint-disable-next-line react/jsx-no-bind
+                onClick={() => deleteConfirmationRef.current.open({
+                  item: params.row,
+                })}
+              >
+                <ListItemIcon>
+                  <DeleteForeverIcon />
+                </ListItemIcon>
+                <ListItemText>
+                  {t`Delete`}
+                </ListItemText>
+              </MenuItem>,
+            );
+          }
+          const extraActions = normalizedExtraActions(params) ?? [];
+          if (extraActions?.length > 0 && actions.length > 0) {
+            actions.push(...extraActions);
+          }
+          return actions;
+        },
+      }),
+    );
     return internalColumns;
-  }, [extraActionsFactory, normalizedExtraActions, onEditIconClick, onShowItem, showIdColumn, subPages?.length, t, tableColumns, userCanDelete, userCanEdit]);
+  }, [normalizedExtraActions, onEditIconClick, onShowItem, showIdColumn, t, tableColumns, userCanDelete]);
 
   const tableRows = useMemo(() => {
     if (!convertToTableData) {
