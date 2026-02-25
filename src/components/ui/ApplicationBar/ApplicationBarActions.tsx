@@ -74,6 +74,7 @@ export const ApplicationBarActions = ({ fullWidth }: ApplicationBarActionsProps)
         <MoreVertIcon />
       </IconButton>
       <Box
+        id={navId}
         sx={{
           display: 'flex',
           [theme.breakpoints.down('md')]: {
