@@ -3,8 +3,8 @@ import { isValidElement } from 'react';
 
 import type { MenuItemData } from '../../../models/nestedMenu';
 import { NestedDropdown } from '../../ui/NestedMenu';
-import { WidgetHeaderIconButton } from '../EpiWidget/EpiWidget';
 import { MenuDataUtil } from '../../../utils/MenuDataUtil';
+import { WidgetHeaderIconButton } from '../EpiWidgetHeaderIconButton';
 
 export type EpiWidgetMenuProps = {
   readonly menu: MenuItemData[] | ReactNode;

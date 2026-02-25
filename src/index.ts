@@ -236,6 +236,7 @@ export * from './components/filters/DateFilterField';
 export * from './components/filters/BooleanFilterField';
 export * from './components/epi/EpiWidgetUnavailable';
 export * from './components/epi/EpiWidgetMenu';
+export * from './components/epi/EpiWidgetHeaderIconButton';
 export * from './components/epi/EpiWidget';
 export * from './components/epi/EpiWarning';
 export * from './components/epi/EpiUserRightsDialog';
