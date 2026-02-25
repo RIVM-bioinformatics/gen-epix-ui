@@ -39,9 +39,11 @@ export const EpiCaseContent = ({ epiCase, ...boxProps }: EpiCaseContentProps) =>
 
   const caseTypeCols = useMemo(() => CaseTypeUtil.getCaseTypeCols(completeCaseType), [completeCaseType]);
 
-  const onOrganizationLinkClick = useCallback((contactId: string) => {
+  const onOrganizationLinkClick = useCallback((organizationId: string, organizationName: string) => {
+    console.log('onOrganizationLinkClick', organizationId, organizationName);
     epiContactDetailsDialogRef.current.open({
-      contactId,
+      organizationId,
+      organizationName,
     });
   }, []);
 
@@ -101,7 +103,7 @@ export const EpiCaseContent = ({ epiCase, ...boxProps }: EpiCaseContentProps) =>
                         color={'primary'}
                         // eslint-disable-next-line react/jsx-no-bind
                         onClick={() => {
-                          onOrganizationLinkClick(epiCase.content[caseTypeCol.id]);
+                          onOrganizationLinkClick(epiCase.content[caseTypeCol.id], columnValue.long);
                         }}
                       >
                         {columnValue.long}

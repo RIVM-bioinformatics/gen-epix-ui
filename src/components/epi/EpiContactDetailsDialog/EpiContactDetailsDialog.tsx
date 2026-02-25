@@ -12,18 +12,19 @@ import {
   useMemo,
 } from 'react';
 
-import { CaseApi } from '../../../api';
+import { OrganizationApi } from '../../../api';
 import type {
   WithDialogRenderProps,
   WithDialogRefMethods,
 } from '../../../hoc/withDialog';
 import { withDialog } from '../../../hoc/withDialog';
-import { GenericErrorMessage } from '../../ui/GenericErrorMessage';
-import { Spinner } from '../../ui/Spinner';
 import { useQueryMemo } from '../../../hooks/useQueryMemo';
+import { ResponseHandler } from '../../ui/ResponseHandler';
+import { useArray } from '../../../hooks/useArray';
 
 export interface EpiContactDetailsDialogOpenProps {
-  contactId: string;
+  organizationId: string;
+  organizationName: string;
 }
 
 export interface EpiContactDetailsDialogProps extends WithDialogRenderProps<EpiContactDetailsDialogOpenProps> {
@@ -41,99 +42,105 @@ export const EpiContactDetailsDialog = withDialog<EpiContactDetailsDialogProps, 
   const { t } = useTranslation();
 
   const queryKey = useMemo(() => {
-    return ['contacts', openProps.contactId];
-  }, [openProps.contactId]);
+    return ['contacts', openProps.organizationId];
+  }, [openProps.organizationId]);
 
-  const { isLoading, error, data: contactInfos } = useQueryMemo({
+  const organizationContactsQuery = useQueryMemo({
     queryKey,
     queryFn: async ({ signal }) => {
-      const response = await CaseApi.instance.retrieveOrganizationContact({
-        organization_ids: [openProps.contactId],
+      const response = await OrganizationApi.instance.retrieveOrganizationContacts({
+        organization_id: openProps.organizationId,
       }, { signal });
       return response.data;
     },
   });
 
   useEffect(() => {
-    if (!contactInfos?.length) {
-      onTitleChange(t`Contact details`);
-    } else {
-      onTitleChange(t('{{organizationName}} contact details', { organizationName: contactInfos[0].site?.organization?.name }));
-    }
-  }, [contactInfos, onTitleChange, t]);
+    onTitleChange(t('{{organizationName}} contact details', { organizationName: openProps.organizationName }));
+  }, [openProps.organizationName, onTitleChange, t]);
+
+  const loadables = useArray([organizationContactsQuery]);
 
   return (
     <Box>
-      {isLoading && !error && (
-        <Spinner
-          inline
-          label={t`Loading`}
-        />
-      )}
-      {!isLoading && error && (
-        <GenericErrorMessage
-          shouldHideActionButtons
-          error={error}
-        />
-      )}
-      {!isLoading && !contactInfos?.length && (
-        <Box>
-          {t`No contact details found for this organization`}
-        </Box>
-      )}
-      {!isLoading && contactInfos?.length && (
-        <Box
-          sx={{
-            display: 'grid',
-            gridTemplateColumns: '1fr 1fr',
-            gap: 2,
-          }}
-        >
-          {contactInfos.map(contactInfo => (
-            <Card
-              key={contactInfo.id}
-              square
-              elevation={2}
+      <ResponseHandler loadables={loadables}>
+        {!organizationContactsQuery.data?.contacts?.length && (
+          <Box>
+            {t`No contact details found for this organization`}
+          </Box>
+        )}
+        {organizationContactsQuery?.data?.sites?.map(site => {
+          const siteContacts = organizationContactsQuery.data?.contacts?.filter(c => c.site_id === site.id);
+
+          return (
+            <Box
+              key={site.id}
+              marginBottom={2}
             >
-              <CardContent>
+              <Typography
+                variant={'h5'}
+              >
+                {site.name}
+              </Typography>
+              {siteContacts.length === 0 && (
                 <Typography
                   component={'div'}
-                  variant={'h5'}
                 >
-                  {contactInfo.site.name}
+                  {t`No contact details found for this site`}
                 </Typography>
-                <Typography
-                  component={'div'}
-                  variant={'h6'}
+              )}
+              {siteContacts.length > 0 && (
+                <Box
+                  sx={{
+                    display: 'grid',
+                    gridTemplateColumns: '1fr 1fr',
+                    gap: 2,
+                  }}
                 >
-                  {contactInfo.name}
-                </Typography>
-                <Box>
-                  {contactInfo.email && (
-                    <Link href={`mailto:${contactInfo.email}`}>
-                      {contactInfo.email}
-                    </Link>
-                  )}
-                  {!contactInfo.email && (
-                    <Typography
-                      component={'div'}
-                      variant={'body1'}
+                  {siteContacts.map(contact => (
+                    <Card
+                      key={contact.id}
+                      square
+                      elevation={2}
                     >
-                      {t`Email address: unknown`}
-                    </Typography>
-                  )}
+                      <CardContent>
+                        <Typography
+                          component={'div'}
+                          variant={'h6'}
+                        >
+                          {contact.name}
+                        </Typography>
+                        <Box>
+                          {contact.email && (
+                            <Link href={`mailto:${contact.email}`}>
+                              {contact.email}
+                            </Link>
+                          )}
+                          {!contact.email && (
+                            <Typography
+                              component={'div'}
+                              variant={'body1'}
+                            >
+                              {t`Email address: unknown`}
+                            </Typography>
+                          )}
+                        </Box>
+                        <Typography
+                          component={'div'}
+                          variant={'body1'}
+                        >
+                          {contact.phone ? contact.phone : t`Phone number: unknown`}
+                        </Typography>
+                      </CardContent>
+                    </Card>
+                  ))}
                 </Box>
-                <Typography
-                  component={'div'}
-                  variant={'body1'}
-                >
-                  {contactInfo.phone ? contactInfo.phone : t`Phone number: unknown`}
-                </Typography>
-              </CardContent>
-            </Card>
-          ))}
-        </Box>
-      )}
+              )}
+
+            </Box>
+          );
+        })}
+      </ResponseHandler>
     </Box>
   );
 }, {

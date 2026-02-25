@@ -106,9 +106,10 @@ export const EpiLineList = ({ linkedScrollSubject, onLink, caseSet }: EpiLineLis
     return Math.min(MAX_COLUMN_WIDTH, maxWidth) + REQUIRED_EXTRA_CELL_PADDING_TO_FIT_CONTENT;
   }, [completeCaseType, sortedData, stratification?.caseTypeCol?.id, theme]);
 
-  const onOrganizationCellClick = useCallback((contactId: string) => {
+  const onOrganizationCellClick = useCallback((organizationId: string, organizationName: string) => {
     EpiEventBusManager.instance.emit('openContactDetailsDialog', {
-      contactId,
+      organizationId,
+      organizationName,
     });
   }, []);
 
@@ -119,13 +120,14 @@ export const EpiLineList = ({ linkedScrollSubject, onLink, caseSet }: EpiLineLis
     }
     const link = (
       <Link
+        component={'button'}
         sx={{
           cursor: 'pointer',
         }}
         color={'primary'}
         // eslint-disable-next-line react/jsx-no-bind
         onClick={() => {
-          onOrganizationCellClick(row.content[id]);
+          onOrganizationCellClick(row.content[id], rowValue.long);
         }}
       >
         {rowValue.short}
@@ -154,6 +156,7 @@ export const EpiLineList = ({ linkedScrollSubject, onLink, caseSet }: EpiLineLis
   const renderGeneticSequenceCell = useCallback(({ id, row }: TableRowParams<Case>) => {
     return (
       <Link
+        component={'button'}
         sx={{
           cursor: 'pointer',
         }}
