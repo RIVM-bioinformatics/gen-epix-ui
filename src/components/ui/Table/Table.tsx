@@ -15,6 +15,7 @@ import omit from 'lodash/omit';
 import sumBy from 'lodash/sumBy';
 import type {
   MouseEvent as ReactMouseEvent,
+  KeyboardEvent as ReactKeyboardEvent,
   Ref,
   CSSProperties,
 } from 'react';
@@ -278,6 +279,25 @@ export const Table = <TRowData,>({
     saveColumnSettingsToStore();
   }, 500, { trailing: true });
 
+  const updateColumnSize = useCallback((columnSettings: TableColumnSettings, newWidth: number) => {
+    columnSettings.calculatedWidth = newWidth;
+    columnSettings.widthPx = newWidth;
+    columnSettings.hasResized = true;
+    updateColumnSizes();
+    saveColumnSettingsToStoreDebounced();
+  }, [updateColumnSizes, saveColumnSettingsToStoreDebounced]);
+
+  const onColumnDividerKeyDown = useCallback((event: ReactKeyboardEvent<HTMLDivElement>, tableColumn: TableColumn<TRowData>) => {
+    if (event.key !== 'ArrowLeft' && event.key !== 'ArrowRight') {
+      return;
+    }
+    event.preventDefault();
+
+    const columnSettings = tableColumnSettings.current.find(c => c.id === tableColumn.id);
+    const currentWidth = columnSettings.calculatedWidth;
+    const newWidth = event.key === 'ArrowLeft' ? Math.max(50, currentWidth - 10) : currentWidth + 10;
+    updateColumnSize(columnSettings, newWidth);
+  }, [updateColumnSize]);
 
   const onColumnDividerMouseDown = useCallback((event: ReactMouseEvent<HTMLDivElement>, tableColumn: TableColumn<TRowData>) => {
     event.preventDefault();
@@ -298,13 +318,7 @@ export const Table = <TRowData,>({
       if (startingCellWidth === newWidth) {
         return;
       }
-      columnSettings.calculatedWidth = newWidth;
-      columnSettings.widthPx = newWidth;
-      columnSettings.hasResized = true;
-      // update the column sizes for when virtuoso is rending next cells
-      updateColumnSizes();
-      // update the width of the cells in the current table
-      saveColumnSettingsToStoreDebounced();
+      updateColumnSize(columnSettings, newWidth);
     };
     const mouseUpListener = (_mouseUpEvent: MouseEvent) => {
       eventListenersCleaner.current();
@@ -318,7 +332,7 @@ export const Table = <TRowData,>({
       document.removeEventListener('mousemove', mouseMoveListener);
       document.removeEventListener('mouseup', mouseUpListener);
     };
-  }, [updateColumnSizes, saveColumnSettingsToStoreDebounced]);
+  }, [updateColumnSize]);
 
   useEffect(() => {
     return () => {
@@ -475,13 +489,14 @@ export const Table = <TRowData,>({
               width={column.calculatedWidth}
               xOffset={column.offsetX}
               onColumnDividerMouseDown={onColumnDividerMouseDown}
+              onColumnDividerKeyDown={onColumnDividerKeyDown}
               onCustomDrag={onTableHeaderCellDrag}
             />
           );
         })}
       </Box>
     );
-  }, [theme, headerHeight, headerBorderColor, getVisibleTableSettingsColumns, tableColumns, renderCheckboxHeaderContent, onColumnDividerMouseDown, onTableHeaderCellDrag]);
+  }, [theme, headerHeight, headerBorderColor, getVisibleTableSettingsColumns, tableColumns, renderCheckboxHeaderContent, onColumnDividerMouseDown, onColumnDividerKeyDown, onTableHeaderCellDrag]);
 
   const renderItemContent = useCallback((index: number, row: TRowData) => {
     return (

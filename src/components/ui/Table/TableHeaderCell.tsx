@@ -10,7 +10,10 @@ import {
 import { visuallyHidden } from '@mui/utils';
 import { useTranslation } from 'react-i18next';
 import { useStore } from 'zustand';
-import type { MouseEvent as ReactMouseEvent } from 'react';
+import type {
+  MouseEvent as ReactMouseEvent,
+  KeyboardEvent as ReactKeyboardEvent,
+} from 'react';
 import {
   useCallback,
   useId,
@@ -39,6 +42,7 @@ import { TableCell } from './TableCell';
 
 export interface TableHeaderCellProps<TRowData> extends TableCellProps<TRowData> {
   readonly onColumnDividerMouseDown: (event: ReactMouseEvent<HTMLDivElement>, column: TableColumn<TRowData>) => void;
+  readonly onColumnDividerKeyDown: (event: ReactKeyboardEvent<HTMLDivElement>, column: TableColumn<TRowData>) => void;
   readonly dividerColor: string;
 }
 
@@ -117,6 +121,7 @@ export const TableHeaderCell = <TRowData,>(props: TableHeaderCellProps<TRowData>
     dividerColor,
     height,
     onColumnDividerMouseDown: onColumnDividerMouseDownProp,
+    onColumnDividerKeyDown: onColumnDividerKeyDownProp,
     onCustomDrag,
     order,
     width,
@@ -177,6 +182,10 @@ export const TableHeaderCell = <TRowData,>(props: TableHeaderCellProps<TRowData>
     event.stopPropagation();
     onColumnDividerMouseDownProp(event, column);
   }, [column, onColumnDividerMouseDownProp]);
+
+  const onColumnDividerKeyDown = useCallback((event: ReactKeyboardEvent<HTMLDivElement>) => {
+    onColumnDividerKeyDownProp(event, column);
+  }, [column, onColumnDividerKeyDownProp]);
 
   const filter = useMemo(() => {
     return filters.find((f) => f.id === column.id);
@@ -379,6 +388,7 @@ export const TableHeaderCell = <TRowData,>(props: TableHeaderCellProps<TRowData>
           {column.resizable !== false && (
             <Box
               className={tableHeaderCellClassNames.columnDivider}
+              tabIndex={0}
               sx={{
                 width: '7px',
                 height: '18px',
@@ -390,6 +400,7 @@ export const TableHeaderCell = <TRowData,>(props: TableHeaderCellProps<TRowData>
                 opacity: 0,
               }}
               onMouseDown={onColumnDividerMouseDown}
+              onKeyDown={onColumnDividerKeyDown}
             />
           )}
         </Box>

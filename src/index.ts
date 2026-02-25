@@ -252,6 +252,7 @@ export * from './components/epi/EpiLegendaItem';
 export * from './components/epi/EpiDataCollectionAccessInfo';
 export * from './components/epi/EpiDashboardStoreLoader';
 export * from './components/epi/EpiDashboard';
+export * from './components/epi/EpiCustomTabPanel';
 export * from './components/epi/EpiCurve';
 export * from './components/epi/EpiCreateEventDialog';
 export * from './components/epi/EpiContextMenu';

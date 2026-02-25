@@ -7,7 +7,6 @@ import {
   Typography,
 } from '@mui/material';
 import type {
-  PropsWithChildren,
   ReactElement,
   SyntheticEvent,
 } from 'react';
@@ -42,6 +41,7 @@ import {
 import { useCaseTypeColSetMembersQuery } from '../../../dataHooks/useCaseTypeColSetMembersQuery';
 import { useCaseTypeSetMembersQuery } from '../../../dataHooks/useCaseTypeSetMembersQuery';
 import type { User } from '../../../api';
+import { EpiCustomTabPanel } from '../../epi/EpiCustomTabPanel';
 
 
 export type UsersEffectiveRightsDetailsType = 'caseTypeSets' | 'readColSets' | 'writeColSets';
@@ -59,27 +59,6 @@ export interface UsersEffectiveRightsDetailsDialogProps extends WithDialogRender
 }
 
 export type UsersEffectiveRightsDetailsDialogRefMethods = WithDialogRefMethods<UsersEffectiveRightsDetailsDialogProps, UsersEffectiveRightsDetailsDialogOpenProps>;
-
-type CustomTabPanelProps = PropsWithChildren<{
-  readonly index: number;
-  readonly value: number;
-}>;
-
-const CustomTabPanel = (props: CustomTabPanelProps) => {
-  const { children, value, index, ...other } = props;
-
-  return (
-    <div
-      aria-labelledby={`simple-tab-${index}`}
-      hidden={value !== index}
-      id={`simple-tabpanel-${index}`}
-      role={'tabpanel'}
-      {...other}
-    >
-      {value === index && children}
-    </div>
-  );
-};
 
 const a11yProps = (index: number) => {
   return {
@@ -187,7 +166,7 @@ export const UsersEffectiveRightsDetailsDialog = withDialog<UsersEffectiveRights
               />
             </Tabs>
           </Box>
-          <CustomTabPanel
+          <EpiCustomTabPanel
             index={0}
             value={activeTab}
           >
@@ -259,8 +238,8 @@ export const UsersEffectiveRightsDetailsDialog = withDialog<UsersEffectiveRights
                 </Box>
               </Box>
             )}
-          </CustomTabPanel>
-          <CustomTabPanel
+          </EpiCustomTabPanel>
+          <EpiCustomTabPanel
             index={1}
             value={activeTab}
           >
@@ -339,8 +318,8 @@ export const UsersEffectiveRightsDetailsDialog = withDialog<UsersEffectiveRights
                 </Box>
               </Box>
             )}
-          </CustomTabPanel>
-          <CustomTabPanel
+          </EpiCustomTabPanel>
+          <EpiCustomTabPanel
             index={2}
             value={activeTab}
           >
@@ -416,8 +395,8 @@ export const UsersEffectiveRightsDetailsDialog = withDialog<UsersEffectiveRights
                 </Box>
               </Box>
             )}
-          </CustomTabPanel>
-          <CustomTabPanel
+          </EpiCustomTabPanel>
+          <EpiCustomTabPanel
             index={3}
             value={activeTab}
           >
@@ -468,8 +447,8 @@ export const UsersEffectiveRightsDetailsDialog = withDialog<UsersEffectiveRights
                 {userEffectiveRight.is_private ? t`Yes` : t`No`}
               </dd>
             </Box>
-          </CustomTabPanel>
-          <CustomTabPanel
+          </EpiCustomTabPanel>
+          <EpiCustomTabPanel
             index={4}
             value={activeTab}
           >
@@ -590,7 +569,7 @@ export const UsersEffectiveRightsDetailsDialog = withDialog<UsersEffectiveRights
               ))}
 
             </Box>
-          </CustomTabPanel>
+          </EpiCustomTabPanel>
         </Box>
       )}
     </ResponseHandler>
