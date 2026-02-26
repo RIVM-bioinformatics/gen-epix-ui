@@ -44,7 +44,6 @@ import { TableVirtuoso } from 'react-virtuoso';
 import { useDebouncedCallback } from 'use-debounce';
 import { useShallow } from 'zustand/shallow';
 
-import { tableHeaderCellClassNames } from '../../../data/table';
 import { ConfigManager } from '../../../classes/managers/ConfigManager';
 import { PageEventBusManager } from '../../../classes/managers/PageEventBusManager';
 import { WindowManager } from '../../../classes/managers/WindowManager';
@@ -77,6 +76,7 @@ import {
 import { TableCheckboxCell } from './TableCheckboxCell';
 import { TableCheckboxHeader } from './TableCheckboxHeader';
 import { TableReadableIndexCell } from './TableReadableIndexCell';
+import { tableHeaderCellClassNames } from './classNames';
 
 
 export type TableProps<TRowData> = {

@@ -26,7 +26,6 @@ import clsx from 'clsx';
 import FilterAltIcon from '@mui/icons-material/FilterAlt';
 import sum from 'lodash/sum';
 
-import { tableHeaderCellClassNames } from '../../../data/table';
 import type {
   TableColumn,
   TableDragEvent,
@@ -39,6 +38,7 @@ import type {
   TableCellRef,
 } from './TableCell';
 import { TableCell } from './TableCell';
+import { tableHeaderCellClassNames } from './classNames';
 
 export interface TableHeaderCellProps<TRowData> extends TableCellProps<TRowData> {
   readonly onColumnDividerMouseDown: (event: ReactMouseEvent<HTMLDivElement>, column: TableColumn<TRowData>) => void;
@@ -211,12 +211,12 @@ export const TableHeaderCell = <TRowData,>(props: TableHeaderCellProps<TRowData>
     direction: sortByField === column.id ? sortDirection : 'asc',
   };
 
-  const tableSortLabelClassNames = clsx('TableSortLabelIcon', {
-    'TableSortLabelIcon--active': hasActiveSorting,
+  const tableSortLabelClassNames = clsx(tableHeaderCellClassNames.sortLabelIcon, {
+    [`${tableHeaderCellClassNames.sortLabelIcon}--active`]: hasActiveSorting,
   });
 
-  const tableFilterLabelClassNames = clsx('TableFilterLabelIcon', {
-    'TableFilterLabelIcon--active': hasActiveFilter,
+  const tableFilterLabelClassNames = clsx(tableHeaderCellClassNames.filterLabelIcon, {
+    [`${tableHeaderCellClassNames.filterLabelIcon}--active`]: hasActiveFilter,
   });
 
   const shouldShowSortIcon = !!column.comparatorFactory;
@@ -254,19 +254,22 @@ export const TableHeaderCell = <TRowData,>(props: TableHeaderCellProps<TRowData>
         justifyContent: 'flex-start',
         backgroundColor: theme.palette.background.paper,
         [`&:hover, &:focus-visible, &:focus, &:focus-within, &.${tableHeaderCellClassNamesFocus}`]: {
-          '.TableSortLabelIcon, .TableFilterLabelIcon': {
+          [`.${tableHeaderCellClassNames.sortLabelIcon}, .${tableHeaderCellClassNames.filterLabelIcon}`]: {
             display: 'inline-block',
             opacity: 0.5,
           },
+          [`.${tableHeaderCellClassNames.columnDivider}`]: {
+            opacity: 1,
+          },
         },
-        '.TableSortLabelIcon--active, .TableFilterLabelIcon--active': {
+        [`.${tableHeaderCellClassNames.sortLabelIcon}--active, .${tableHeaderCellClassNames.filterLabelIcon}--active`]: {
           display: 'inline-block',
           opacity: '1 !important',
         },
-        '.TableSortLabelIcon--active': {
+        [`.${tableHeaderCellClassNames.sortLabelIcon}--active`]: {
           color: theme.palette.text.secondary,
         },
-        '.TableFilterLabelIcon--active': {
+        [`.${tableHeaderCellClassNames.filterLabelIcon}--active`]: {
           color: theme.palette.secondary.main,
         },
       }}
@@ -276,7 +279,7 @@ export const TableHeaderCell = <TRowData,>(props: TableHeaderCellProps<TRowData>
     >
       {column.type === 'actions' && (
         <Box
-          className={'GENEPIX-TableHeaderCell-content'}
+          className={tableHeaderCellClassNames.content}
           sx={visuallyHidden}
         >
           {t`Actions`}
@@ -287,7 +290,7 @@ export const TableHeaderCell = <TRowData,>(props: TableHeaderCellProps<TRowData>
           sx={{
             display: 'inline-flex',
             alignItems: 'center',
-            '&:hover .GENEPIX-TableHeaderCell-content': {
+            [`&:hover .${tableHeaderCellClassNames.content}`]: {
               maxWidth: `calc(100% + 16px - ${sum([shouldShowFilterIcon ? iconSpacing : 0, shouldShowSortIcon ? iconSpacing : 0, iconSpacing])}px)`,
             },
             width: '100%',
@@ -309,7 +312,7 @@ export const TableHeaderCell = <TRowData,>(props: TableHeaderCellProps<TRowData>
 
               <Box
                 ref={contentRef}
-                className={'GENEPIX-TableHeaderCell-content'}
+                className={tableHeaderCellClassNames.content}
                 sx={{
                   cursor: 'pointer',
                   overflow: 'hidden',
@@ -388,6 +391,8 @@ export const TableHeaderCell = <TRowData,>(props: TableHeaderCellProps<TRowData>
           {column.resizable !== false && (
             <Box
               className={tableHeaderCellClassNames.columnDivider}
+              aria-label={t('Resize column {{name}}, use arrow keys to adjust the size.', { name: column.headerName || t('unknown') })}
+              role={'separator'}
               tabIndex={0}
               sx={{
                 width: '7px',
@@ -398,6 +403,15 @@ export const TableHeaderCell = <TRowData,>(props: TableHeaderCellProps<TRowData>
                 borderRight: `1px solid ${dividerColor}`,
                 boxSizing: 'border-box',
                 opacity: 0,
+
+                '&:focus-visible, &:focus, &:focus-within': {
+                  opacity: 1,
+                  borderColor: theme.palette.primary.main,
+                },
+                '&:hover': {
+                  opacity: 1,
+                  borderColor: theme.palette.primary.main,
+                },
               }}
               onMouseDown={onColumnDividerMouseDown}
               onKeyDown={onColumnDividerKeyDown}
