@@ -75,7 +75,6 @@ export const EpiLineList = ({ linkedScrollSubject, onLink, caseSet }: EpiLineLis
   const completeCaseType = useStore(epiStore, useShallow((state) => state.completeCaseType));
   const sortedData = useStore(epiStore, useShallow((state) => state.sortedData));
   const stratification = useStore(epiStore, useShallow((state) => state.stratification?.mode === STRATIFICATION_MODE.FIELD ? state.stratification : null));
-  const epiListWidgetData = useStore(epiStore, useShallow((state) => state.epiListWidgetData));
   const updateEpiListWidgetData = useStore(epiStore, useShallow((state) => state.updateEpiListWidgetData));
   const treeAddresses = useStore(epiStore, useShallow((state) => state.treeAddresses));
   const setTableColumns = useStore(epiStore, useShallow((state) => state.setColumns));
@@ -412,7 +411,7 @@ export const EpiLineList = ({ linkedScrollSubject, onLink, caseSet }: EpiLineLis
           forceHorizontalOverflow
           font={theme['gen-epix'].lineList.font}
           getRowName={getRowName}
-          initialVisibleItemIndex={epiListWidgetData.visibleItemItemIndex}
+          initialVisibleItemIndex={epiStore.getState().epiListWidgetData.visibleItemItemIndex}
           rowHeight={3}
           rowHighlightingSubject={rowHighlightingSubject}
           onRangeChanged={onRangeChangedDebounced}

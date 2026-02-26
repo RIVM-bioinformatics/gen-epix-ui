@@ -136,7 +136,6 @@ export const Table = <TRowData,>({
   const setColumnSettingsInStore = useStore(tableStore, useShallow((state) => state.setColumnSettings));
   const sortedData = useStore(tableStore, useShallow((state) => state.sortedData));
   const idSelectorCallback = useStore(tableStore, useShallow((state) => state.idSelectorCallback));
-  // const selectedIds = useStore(tableStore, useShallow((state) => state.selectedIds));
   const tableColumns = useStore(tableStore, useShallow((state) => state.columns));
   const isStoreInitialized = useStore(tableStore, useShallow((state) => state.isInitialized));
   const isRowEnabledCallback = useStore(tableStore, useShallow((state) => state.isRowEnabledCallback));
