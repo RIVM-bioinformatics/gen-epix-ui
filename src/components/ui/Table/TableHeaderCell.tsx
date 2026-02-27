@@ -356,7 +356,7 @@ export const TableHeaderCell = <TRowData,>(props: TableHeaderCellProps<TRowData>
                   horizontal: 'center',
                 }}
                 sx={{
-                  zIndex: 1,
+                  zIndex: theme.zIndex.appBar + 1,
                 }}
                 onClose={onFilterPopOverClose}
               >
