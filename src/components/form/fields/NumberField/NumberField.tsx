@@ -75,7 +75,7 @@ export const NumberField = <TFieldValues extends FieldValues, TName extends Path
 
   const onMuiTextFieldBlur = useCallback((onBlur: ControllerRenderProps<TFieldValues, TName>['onBlur'], onChange: ControllerRenderProps<TFieldValues, TName>['onChange']) =>
     () => {
-      const value = valueRef.current;
+      const value = isNumber(valueRef.current) ? valueRef.current : inputRef.current.value;
       const parsedValue = NumberUtil.parse(value);
 
       if (isNaN(parsedValue)) {
