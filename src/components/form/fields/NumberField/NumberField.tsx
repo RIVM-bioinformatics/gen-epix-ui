@@ -26,6 +26,7 @@ import {
   useFormContext,
 } from 'react-hook-form';
 import classnames from 'classnames';
+import isNumber from 'lodash/isNumber';
 
 import { FormUtil } from '../../../../utils/FormUtil';
 import { TestIdUtil } from '../../../../utils/TestIdUtil';
@@ -74,7 +75,6 @@ export const NumberField = <TFieldValues extends FieldValues, TName extends Path
 
   const onMuiTextFieldBlur = useCallback((onBlur: ControllerRenderProps<TFieldValues, TName>['onBlur'], onChange: ControllerRenderProps<TFieldValues, TName>['onChange']) =>
     () => {
-      console.log('blurring with value', valueRef.current);
       const value = valueRef.current;
       const parsedValue = NumberUtil.parse(value);
 
@@ -97,7 +97,6 @@ export const NumberField = <TFieldValues extends FieldValues, TName extends Path
   , [onChangeProp]);
 
   const renderController = useCallback(({ field: { onChange, onBlur, value, ref } }: UseControllerReturn<TFieldValues, TName>) => {
-    console.log('rendering controller with value', value, 'and valueRef', valueRef.current);
     ref({
       focus: () => {
         inputRef?.current?.focus();
@@ -156,7 +155,7 @@ export const NumberField = <TFieldValues extends FieldValues, TName extends Path
             className: classnames({ 'Mui-warning': hasWarning }),
           },
         }}
-        value={valueRef.current ?? value ?? '' as string}
+        value={isNumber(valueRef.current) ? valueRef.current : (value ?? '') as string}
         onBlur={onMuiTextFieldBlur(onBlur, onChange)}
         onChange={onMuiTextFieldChange(onChange)}
       />

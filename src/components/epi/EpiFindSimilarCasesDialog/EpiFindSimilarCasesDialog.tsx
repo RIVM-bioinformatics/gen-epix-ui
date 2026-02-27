@@ -14,10 +14,7 @@ import {
 } from 'yup';
 import { yupResolver } from '@hookform/resolvers/yup';
 import type { Resolver } from 'react-hook-form';
-import {
-  useForm,
-  useWatch,
-} from 'react-hook-form';
+import { useForm } from 'react-hook-form';
 import {
   Box,
   Button,
@@ -118,14 +115,11 @@ export const EpiFindSimilarCasesDialog = withDialog<EpiFindSimilarCasesDialogPro
   const formMethods = useForm<FormFields>({
     resolver: yupResolver(schema, undefined,{ raw: true }) as Resolver<FormFields>,
     values: {
-      maxDistance: null,
       treeCaseTypeColId: treeConfiguration ? treeConfiguration.caseTypeCol.id : null,
+      maxDistance: 20, // !FIXME
     },
   });
-  const { handleSubmit, control } = formMethods;
-
-  const values = useWatch({ control });
-  console.log('form values', values);
+  const { handleSubmit } = formMethods;
 
   useEffect(() => {
     onTitleChange(t`Find similar cases`);
@@ -144,12 +138,11 @@ export const EpiFindSimilarCasesDialog = withDialog<EpiFindSimilarCasesDialogPro
   }, [onActionsChange, onClose, t]);
 
   const onFormSubmit = useCallback((data: FormFields) => {
-    console.log({ data });
     setFormData(data);
   }, []);
 
   const query = useQueryMemo({
-    queryKey: [QueryUtil.getGenericKey(QUERY_KEY.SIMILAR_CASES), formData?.treeCaseTypeColId, openProps.rows.map(row => row.id)],
+    queryKey: [QueryUtil.getGenericKey(QUERY_KEY.SIMILAR_CASES), JSON.stringify({ formData, rowIds: openProps.rows.map(row => row.id) })],
     queryFn: async ({ signal }) => {
       const response = await CaseApi.instance.retrieveSimilarCases({
         case_ids: openProps.rows.map(x => x.id),
