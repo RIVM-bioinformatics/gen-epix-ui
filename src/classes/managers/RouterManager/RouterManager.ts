@@ -1,6 +1,6 @@
 import { createBrowserRouter } from 'react-router-dom';
 
-import { routes } from '../../../data/routes';
+import { routes } from '../../../routes';
 import { WindowManager } from '../WindowManager';
 
 

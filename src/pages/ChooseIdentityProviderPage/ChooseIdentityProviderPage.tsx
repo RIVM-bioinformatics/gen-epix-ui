@@ -96,7 +96,7 @@ export const ChooseIdentityProviderPage = ({
           </Alert>
         </Box>
       )}
-      {availableIdentityProviders.length !==
+      {availableIdentityProviders.length > 0 && availableIdentityProviders.length !==
         identityProvidersWithAvailability.length && (
         <Box
           marginBottom={4}

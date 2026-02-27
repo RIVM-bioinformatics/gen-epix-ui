@@ -1,5 +1,31 @@
 # Changelog
 
+## [1.13.0](https://github.com/RIVM-bioinformatics/gen-epix-ui/compare/v1.12.0...v1.13.0) (2026-02-23)
+
+
+### Features
+
+* further improve accessibility ([7266e6b](https://github.com/RIVM-bioinformatics/gen-epix-ui/commit/7266e6b1c781ba36d22c0e28e089f064fd670d7b))
+* i18n ([#77](https://github.com/RIVM-bioinformatics/gen-epix-ui/issues/77)) ([1bb6fce](https://github.com/RIVM-bioinformatics/gen-epix-ui/commit/1bb6fce689810fe8898ff84393ea60e2fcdf0f35))
+* improve FileSelector accessibility ([af7f842](https://github.com/RIVM-bioinformatics/gen-epix-ui/commit/af7f842d868ee0063ec8b74a9e4cda55ccb39587))
+* improve table performance ([#78](https://github.com/RIVM-bioinformatics/gen-epix-ui/issues/78)) ([e38137e](https://github.com/RIVM-bioinformatics/gen-epix-ui/commit/e38137efd8935600068f9704eb51f377d9006dfa))
+* update api ([699d8c8](https://github.com/RIVM-bioinformatics/gen-epix-ui/commit/699d8c8664b87cfc34ff835a18fcf82337c4336f))
+
+
+### Bug Fixes
+
+* add case_type_id to request when downloading fasta ([7708da5](https://github.com/RIVM-bioinformatics/gen-epix-ui/commit/7708da582c8dd9419df49196cb847a47a8345374))
+* disable organisation switcher ([5562598](https://github.com/RIVM-bioinformatics/gen-epix-ui/commit/55625988d4e30d017ca8303e44deeec75022e03c))
+* fix re-rendering of users admin page on users error. ([f241b6c](https://github.com/RIVM-bioinformatics/gen-epix-ui/commit/f241b6c1052499785ad5da4cd47c3aeaef3b37f0))
+* fix typo in enablePageEvents ([717ea1c](https://github.com/RIVM-bioinformatics/gen-epix-ui/commit/717ea1c84265baf9aabceab69a8839a25b73dd95))
+* fix upload progress indicator ([70c8d66](https://github.com/RIVM-bioinformatics/gen-epix-ui/commit/70c8d661be60943f1105b13bdb7b97b38816d6b5))
+* fix user feedback dialog default form state ([4649d6b](https://github.com/RIVM-bioinformatics/gen-epix-ui/commit/4649d6be10c97cf70d0c979826f583aebb3717b1))
+* make effective rights tester more robust ([f4e0ecf](https://github.com/RIVM-bioinformatics/gen-epix-ui/commit/f4e0ecfa5b5193922063fe0ae8a4e598f87f3941))
+* stop logging request headers ([f241b6c](https://github.com/RIVM-bioinformatics/gen-epix-ui/commit/f241b6c1052499785ad5da4cd47c3aeaef3b37f0))
+* update api interface ([fe7e574](https://github.com/RIVM-bioinformatics/gen-epix-ui/commit/fe7e57480f41dd664f746a9f903d55d6a71cf9ee))
+* upgrade react-resizable-panels ([bc26153](https://github.com/RIVM-bioinformatics/gen-epix-ui/commit/bc26153e0b77d64227948f376c0b0a41353bb389))
+* when uploading with case id's, the case id's must be valid UUID's ([35d70fd](https://github.com/RIVM-bioinformatics/gen-epix-ui/commit/35d70fdf74146e074780955173dac408bd44d59b))
+
 ## [1.12.0](https://github.com/RIVM-bioinformatics/gen-epix-ui/compare/v1.11.0...v1.12.0) (2026-01-29)
 
 

@@ -1699,95 +1699,95 @@ export interface ColValidationRulesResponseBody {
  */
 
 export const CommandName = {
-    OrganizationAdminPolicyCrudCommand: 'OrganizationAdminPolicyCrudCommand',
-    CaseSetDataCollectionLinkCrudCommand: 'CaseSetDataCollectionLinkCrudCommand',
-    DiseaseEtiologicalAgentUpdateAssociationCommand: 'DiseaseEtiologicalAgentUpdateAssociationCommand',
+    ConceptRelationCrudCommand: 'ConceptRelationCrudCommand',
+    CaseTypeCrudCommand: 'CaseTypeCrudCommand',
+    CaseTypeColSetCrudCommand: 'CaseTypeColSetCrudCommand',
+    SubjectIdentifierCrudCommand: 'SubjectIdentifierCrudCommand',
+    RetrieveCaseRightsCommand: 'RetrieveCaseRightsCommand',
+    CaseSetStatusCrudCommand: 'CaseSetStatusCrudCommand',
+    SubjectCrudCommand: 'SubjectCrudCommand',
+    RetrievePhylogeneticTreeBySequencesCommand: 'RetrievePhylogeneticTreeBySequencesCommand',
+    RetrieveAssemblyProtocolsCommand: 'RetrieveAssemblyProtocolsCommand',
+    OrganizationSetCrudCommand: 'OrganizationSetCrudCommand',
+    ColCrudCommand: 'ColCrudCommand',
+    CaseTypeSetCategoryCrudCommand: 'CaseTypeSetCategoryCrudCommand',
     CaseSetCrudCommand: 'CaseSetCrudCommand',
-    RetrieveCaseStatsCommand: 'RetrieveCaseStatsCommand',
+    RetrieveCasesByQueryCommand: 'RetrieveCasesByQueryCommand',
+    RetrieveCaseSetRightsCommand: 'RetrieveCaseSetRightsCommand',
+    DataCollectionSetDataCollectionUpdateAssociationCommand: 'DataCollectionSetDataCollectionUpdateAssociationCommand',
+    RegionCrudCommand: 'RegionCrudCommand',
+    EtiologyCrudCommand: 'EtiologyCrudCommand',
+    RetrieveInviteUserConstraintsCommand: 'RetrieveInviteUserConstraintsCommand',
+    OrganizationIdentifierIssuerLinkCrudCommand: 'OrganizationIdentifierIssuerLinkCrudCommand',
+    CaseTypeDimCrudCommand: 'CaseTypeDimCrudCommand',
+    RetrieveSimilarCasesCommand: 'RetrieveSimilarCasesCommand',
+    CreateCaseSetCommand: 'CreateCaseSetCommand',
+    SiteCrudCommand: 'SiteCrudCommand',
+    CaseSetDataCollectionLinkCrudCommand: 'CaseSetDataCollectionLinkCrudCommand',
+    CaseDataCollectionLinkCrudCommand: 'CaseDataCollectionLinkCrudCommand',
+    ExternalIdentifierCrudCommand: 'ExternalIdentifierCrudCommand',
+    InviteUserCommand: 'InviteUserCommand',
+    TreeAlgorithmCrudCommand: 'TreeAlgorithmCrudCommand',
+    RetrievePhylogeneticTreeByCasesCommand: 'RetrievePhylogeneticTreeByCasesCommand',
+    RetrieveOutagesCommand: 'RetrieveOutagesCommand',
+    DiseaseEtiologicalAgentUpdateAssociationCommand: 'DiseaseEtiologicalAgentUpdateAssociationCommand',
+    DiseaseCrudCommand: 'DiseaseCrudCommand',
+    UserAccessCasePolicyCrudCommand: 'UserAccessCasePolicyCrudCommand',
+    RetrieveGeneticSequenceFastaByCaseCommand: 'RetrieveGeneticSequenceFastaByCaseCommand',
+    UpdateUserCommand: 'UpdateUserCommand',
+    OrganizationCrudCommand: 'OrganizationCrudCommand',
+    DataCollectionSetCrudCommand: 'DataCollectionSetCrudCommand',
+    CaseCrudCommand: 'CaseCrudCommand',
+    RegionRelationCrudCommand: 'RegionRelationCrudCommand',
+    RetrieveGeneticSequenceByIdCommand: 'RetrieveGeneticSequenceByIdCommand',
+    DimCrudCommand: 'DimCrudCommand',
+    EtiologicalAgentCrudCommand: 'EtiologicalAgentCrudCommand',
+    UserCrudCommand: 'UserCrudCommand',
+    DataCollectionCrudCommand: 'DataCollectionCrudCommand',
+    RetrieveOrganizationContactsCommand: 'RetrieveOrganizationContactsCommand',
+    CaseTypeSetCaseTypeUpdateAssociationCommand: 'CaseTypeSetCaseTypeUpdateAssociationCommand',
+    OrganizationSetMemberCrudCommand: 'OrganizationSetMemberCrudCommand',
+    UserInvitationCrudCommand: 'UserInvitationCrudCommand',
+    ConceptCrudCommand: 'ConceptCrudCommand',
+    OrganizationAdminPolicyCrudCommand: 'OrganizationAdminPolicyCrudCommand',
     RegisterInvitedUserCommand: 'RegisterInvitedUserCommand',
     OrganizationSetOrganizationUpdateAssociationCommand: 'OrganizationSetOrganizationUpdateAssociationCommand',
-    ConceptRelationCrudCommand: 'ConceptRelationCrudCommand',
-    CaseSetMemberCrudCommand: 'CaseSetMemberCrudCommand',
-    RetrieveOwnPermissionsCommand: 'RetrieveOwnPermissionsCommand',
-    CaseTypeColSetCaseTypeColUpdateAssociationCommand: 'CaseTypeColSetCaseTypeColUpdateAssociationCommand',
-    RegionCrudCommand: 'RegionCrudCommand',
-    RetrieveSubRolesCommand: 'RetrieveSubRolesCommand',
-    DataCollectionCrudCommand: 'DataCollectionCrudCommand',
-    TreeAlgorithmCrudCommand: 'TreeAlgorithmCrudCommand',
-    GetIdentityProvidersCommand: 'GetIdentityProvidersCommand',
-    DataCollectionSetMemberCrudCommand: 'DataCollectionSetMemberCrudCommand',
-    RetrieveCasesByIdCommand: 'RetrieveCasesByIdCommand',
-    SubjectCrudCommand: 'SubjectCrudCommand',
-    OrganizationIdentifierIssuerLinkUpdateAssociationCommand: 'OrganizationIdentifierIssuerLinkUpdateAssociationCommand',
-    RetrieveLicensesCommand: 'RetrieveLicensesCommand',
-    CaseSetStatusCrudCommand: 'CaseSetStatusCrudCommand',
-    CaseDataCollectionLinkCrudCommand: 'CaseDataCollectionLinkCrudCommand',
-    ConceptSetCrudCommand: 'ConceptSetCrudCommand',
-    IdentifierIssuerCrudCommand: 'IdentifierIssuerCrudCommand',
-    CaseTypeColSetMemberCrudCommand: 'CaseTypeColSetMemberCrudCommand',
-    CaseTypeSetCaseTypeUpdateAssociationCommand: 'CaseTypeSetCaseTypeUpdateAssociationCommand',
-    RetrieveGeneticSequenceFastaByCaseCommand: 'RetrieveGeneticSequenceFastaByCaseCommand',
-    UserAccessCasePolicyCrudCommand: 'UserAccessCasePolicyCrudCommand',
-    UserShareCasePolicyCrudCommand: 'UserShareCasePolicyCrudCommand',
-    SubjectIdentifierCrudCommand: 'SubjectIdentifierCrudCommand',
-    RetrievePhylogeneticTreeByCasesCommand: 'RetrievePhylogeneticTreeByCasesCommand',
-    OutageCrudCommand: 'OutageCrudCommand',
-    InviteUserCommand: 'InviteUserCommand',
-    RetrieveOutagesCommand: 'RetrieveOutagesCommand',
-    RetrieveCompleteCaseTypeCommand: 'RetrieveCompleteCaseTypeCommand',
-    CreateCaseSetCommand: 'CreateCaseSetCommand',
-    OrganizationIdentifierIssuerLinkCrudCommand: 'OrganizationIdentifierIssuerLinkCrudCommand',
-    RetrieveOrganizationContactCommand: 'RetrieveOrganizationContactCommand',
-    EtiologicalAgentCrudCommand: 'EtiologicalAgentCrudCommand',
-    RetrieveSequencingProtocolsCommand: 'RetrieveSequencingProtocolsCommand',
-    SiteCrudCommand: 'SiteCrudCommand',
-    CaseTypeSetMemberCrudCommand: 'CaseTypeSetMemberCrudCommand',
-    CaseTypeCrudCommand: 'CaseTypeCrudCommand',
-    UploadCasesCommand: 'UploadCasesCommand',
-    DimCrudCommand: 'DimCrudCommand',
-    RegionRelationCrudCommand: 'RegionRelationCrudCommand',
-    GeneticDistanceProtocolCrudCommand: 'GeneticDistanceProtocolCrudCommand',
-    RegionSetCrudCommand: 'RegionSetCrudCommand',
-    DataCollectionSetDataCollectionUpdateAssociationCommand: 'DataCollectionSetDataCollectionUpdateAssociationCommand',
-    UserCrudCommand: 'UserCrudCommand',
-    CaseTypeSetCategoryCrudCommand: 'CaseTypeSetCategoryCrudCommand',
-    RetrieveSimilarCasesCommand: 'RetrieveSimilarCasesCommand',
-    UserInvitationCrudCommand: 'UserInvitationCrudCommand',
-    UpdateUserOwnOrganizationCommand: 'UpdateUserOwnOrganizationCommand',
-    RetrieveCaseRightsCommand: 'RetrieveCaseRightsCommand',
-    ContactCrudCommand: 'ContactCrudCommand',
-    OrganizationAccessCasePolicyCrudCommand: 'OrganizationAccessCasePolicyCrudCommand',
-    RetrieveInviteUserConstraintsCommand: 'RetrieveInviteUserConstraintsCommand',
-    CaseSetCategoryCrudCommand: 'CaseSetCategoryCrudCommand',
-    OrganizationCrudCommand: 'OrganizationCrudCommand',
-    CreateFileForSeqCommand: 'CreateFileForSeqCommand',
-    RetrieveOrganizationAdminNameEmailsCommand: 'RetrieveOrganizationAdminNameEmailsCommand',
-    DataCollectionSetCrudCommand: 'DataCollectionSetCrudCommand',
-    RegionSetShapeCrudCommand: 'RegionSetShapeCrudCommand',
     CreateFileForReadSetCommand: 'CreateFileForReadSetCommand',
-    DiseaseCrudCommand: 'DiseaseCrudCommand',
-    RetrieveGeneticSequenceByIdCommand: 'RetrieveGeneticSequenceByIdCommand',
-    RetrievePhylogeneticTreeBySequencesCommand: 'RetrievePhylogeneticTreeBySequencesCommand',
-    CaseTypeColSetCrudCommand: 'CaseTypeColSetCrudCommand',
-    CaseCrudCommand: 'CaseCrudCommand',
-    RetrieveCaseSetRightsCommand: 'RetrieveCaseSetRightsCommand',
-    ExternalIdentifierCrudCommand: 'ExternalIdentifierCrudCommand',
-    UpdateUserCommand: 'UpdateUserCommand',
-    RetrieveOrganizationsUnderAdminCommand: 'RetrieveOrganizationsUnderAdminCommand',
+    ConceptSetCrudCommand: 'ConceptSetCrudCommand',
+    RetrieveSubRolesCommand: 'RetrieveSubRolesCommand',
+    OrganizationAccessCasePolicyCrudCommand: 'OrganizationAccessCasePolicyCrudCommand',
     RetrieveContainingRegionCommand: 'RetrieveContainingRegionCommand',
-    RetrieveGeneticSequenceFastaByIdCommand: 'RetrieveGeneticSequenceFastaByIdCommand',
-    ColCrudCommand: 'ColCrudCommand',
-    RetrieveAssemblyProtocolsCommand: 'RetrieveAssemblyProtocolsCommand',
+    IdentifierIssuerCrudCommand: 'IdentifierIssuerCrudCommand',
+    OrganizationIdentifierIssuerLinkUpdateAssociationCommand: 'OrganizationIdentifierIssuerLinkUpdateAssociationCommand',
+    UploadCasesCommand: 'UploadCasesCommand',
+    RetrieveLicensesCommand: 'RetrieveLicensesCommand',
+    DataCollectionSetMemberCrudCommand: 'DataCollectionSetMemberCrudCommand',
+    RetrieveOrganizationsUnderAdminCommand: 'RetrieveOrganizationsUnderAdminCommand',
+    RegionSetShapeCrudCommand: 'RegionSetShapeCrudCommand',
+    RegionSetCrudCommand: 'RegionSetCrudCommand',
+    CaseTypeColSetCaseTypeColUpdateAssociationCommand: 'CaseTypeColSetCaseTypeColUpdateAssociationCommand',
+    RetrieveOrganizationAdminNameEmailsCommand: 'RetrieveOrganizationAdminNameEmailsCommand',
     CaseTypeSetCrudCommand: 'CaseTypeSetCrudCommand',
-    OrganizationSetMemberCrudCommand: 'OrganizationSetMemberCrudCommand',
-    RetrieveCasesByQueryCommand: 'RetrieveCasesByQueryCommand',
-    CaseTypeColCrudCommand: 'CaseTypeColCrudCommand',
-    EtiologyCrudCommand: 'EtiologyCrudCommand',
-    OrganizationSetCrudCommand: 'OrganizationSetCrudCommand',
+    ContactCrudCommand: 'ContactCrudCommand',
+    OutageCrudCommand: 'OutageCrudCommand',
+    RetrieveCompleteCaseTypeCommand: 'RetrieveCompleteCaseTypeCommand',
+    UserShareCasePolicyCrudCommand: 'UserShareCasePolicyCrudCommand',
+    RetrieveOwnPermissionsCommand: 'RetrieveOwnPermissionsCommand',
     OrganizationShareCasePolicyCrudCommand: 'OrganizationShareCasePolicyCrudCommand',
-    CaseTypeDimCrudCommand: 'CaseTypeDimCrudCommand',
-    ConceptCrudCommand: 'ConceptCrudCommand',
-    TreeAlgorithmClassCrudCommand: 'TreeAlgorithmClassCrudCommand'
+    TreeAlgorithmClassCrudCommand: 'TreeAlgorithmClassCrudCommand',
+    RetrieveCasesByIdCommand: 'RetrieveCasesByIdCommand',
+    CaseTypeSetMemberCrudCommand: 'CaseTypeSetMemberCrudCommand',
+    CreateFileForSeqCommand: 'CreateFileForSeqCommand',
+    CaseSetCategoryCrudCommand: 'CaseSetCategoryCrudCommand',
+    RetrieveCaseStatsCommand: 'RetrieveCaseStatsCommand',
+    UpdateUserOwnOrganizationCommand: 'UpdateUserOwnOrganizationCommand',
+    CaseSetMemberCrudCommand: 'CaseSetMemberCrudCommand',
+    RetrieveGeneticSequenceFastaByIdCommand: 'RetrieveGeneticSequenceFastaByIdCommand',
+    GeneticDistanceProtocolCrudCommand: 'GeneticDistanceProtocolCrudCommand',
+    RetrieveSequencingProtocolsCommand: 'RetrieveSequencingProtocolsCommand',
+    CaseTypeColCrudCommand: 'CaseTypeColCrudCommand',
+    GetIdentityProvidersCommand: 'GetIdentityProvidersCommand',
+    CaseTypeColSetMemberCrudCommand: 'CaseTypeColSetMemberCrudCommand'
 } as const;
 
 export type CommandName = typeof CommandName[keyof typeof CommandName];
@@ -3227,6 +3227,31 @@ export interface OrganizationAdminPolicy {
     'is_active': boolean;
 }
 /**
+ * 
+ * @export
+ * @interface OrganizationContacts
+ */
+export interface OrganizationContacts {
+    /**
+     * 
+     * @type {Organization}
+     * @memberof OrganizationContacts
+     */
+    'organization': Organization;
+    /**
+     * The list of sites for the organization
+     * @type {Array<Site>}
+     * @memberof OrganizationContacts
+     */
+    'sites': Array<Site>;
+    /**
+     * The list of contacts for the organization
+     * @type {Array<Contact>}
+     * @memberof OrganizationContacts
+     */
+    'contacts': Array<Contact>;
+}
+/**
  * The association between an organization and an identifier issuer.  This information can be used to restrict which identifier issuers are available to users of a particular organization.
  * @export
  * @interface OrganizationIdentifierIssuerLink
@@ -3925,33 +3950,15 @@ export interface RetrieveCasesByIdsRequestBody {
 /**
  * 
  * @export
- * @interface RetrieveOrganizationContactRequestBody
+ * @interface RetrieveOrganizationContactsRequestBody
  */
-export interface RetrieveOrganizationContactRequestBody {
+export interface RetrieveOrganizationContactsRequestBody {
     /**
-     * The organization IDs to retrieve contacts for.
-     * @type {Array<string>}
-     * @memberof RetrieveOrganizationContactRequestBody
+     * The ID of the organization to retrieve contacts for.
+     * @type {string}
+     * @memberof RetrieveOrganizationContactsRequestBody
      */
-    'organization_ids'?: Array<string> | null;
-    /**
-     * The site IDs to retrieve contacts for.
-     * @type {Array<string>}
-     * @memberof RetrieveOrganizationContactRequestBody
-     */
-    'site_ids'?: Array<string> | null;
-    /**
-     * The contact IDs to retrieve contacts for.
-     * @type {Array<string>}
-     * @memberof RetrieveOrganizationContactRequestBody
-     */
-    'contact_ids'?: Array<string> | null;
-    /**
-     * Additional properties for the request.
-     * @type {{ [key: string]: any; }}
-     * @memberof RetrieveOrganizationContactRequestBody
-     */
-    'props'?: { [key: string]: any; };
+    'organization_id': string;
 }
 /**
  * 
@@ -17620,42 +17627,6 @@ const CaseApiAxiosParamCreator = function (configuration?: Configuration) {
             };
         },
         /**
-         * Retrieves Contacts associated with organizations, sites, or specific contacts.  Exactly one of organization_ids, site_ids, or contact_ids must be provided. Returns a list of contacts with their associated site and organization data cascaded.
-         * @summary Retrieve Organization Contact
-         * @param {RetrieveOrganizationContactRequestBody} retrieveOrganizationContactRequestBody 
-         * @param {*} [options] Override http request option.
-         * @throws {RequiredError}
-         */
-        retrieveOrganizationContact: async (retrieveOrganizationContactRequestBody: RetrieveOrganizationContactRequestBody, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
-            // verify required parameter 'retrieveOrganizationContactRequestBody' is not null or undefined
-            assertParamExists('retrieveOrganizationContact', 'retrieveOrganizationContactRequestBody', retrieveOrganizationContactRequestBody)
-            const localVarPath = `/v1/retrieve/organization_contact`;
-            // use dummy base URL string because the URL constructor only accepts absolute URLs.
-            const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
-            let baseOptions;
-            if (configuration) {
-                baseOptions = configuration.baseOptions;
-            }
-
-            const localVarRequestOptions = { method: 'POST', ...baseOptions, ...options};
-            const localVarHeaderParameter = {} as any;
-            const localVarQueryParameter = {} as any;
-
-
-    
-            localVarHeaderParameter['Content-Type'] = 'application/json';
-
-            setSearchParams(localVarUrlObj, localVarQueryParameter);
-            let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
-            localVarRequestOptions.headers = {...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers};
-            localVarRequestOptions.data = serializeDataIfNeeded(retrieveOrganizationContactRequestBody, localVarRequestOptions, configuration)
-
-            return {
-                url: toPathString(localVarUrlObj),
-                options: localVarRequestOptions,
-            };
-        },
-        /**
          * Retrieve a phylogenetic tree based on a set of case IDs, a tree algorithm, and a genetic distance case type column.
          * @summary Retrieve Phylogenetic Tree
          * @param {RetrievePhylogeneticTreeRequestBody} retrievePhylogeneticTreeRequestBody 
@@ -21641,19 +21612,6 @@ const CaseApiFp = function(configuration?: Configuration) {
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
         /**
-         * Retrieves Contacts associated with organizations, sites, or specific contacts.  Exactly one of organization_ids, site_ids, or contact_ids must be provided. Returns a list of contacts with their associated site and organization data cascaded.
-         * @summary Retrieve Organization Contact
-         * @param {RetrieveOrganizationContactRequestBody} retrieveOrganizationContactRequestBody 
-         * @param {*} [options] Override http request option.
-         * @throws {RequiredError}
-         */
-        async retrieveOrganizationContact(retrieveOrganizationContactRequestBody: RetrieveOrganizationContactRequestBody, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<Array<Contact>>> {
-            const localVarAxiosArgs = await localVarAxiosParamCreator.retrieveOrganizationContact(retrieveOrganizationContactRequestBody, options);
-            const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
-            const localVarOperationServerBasePath = operationServerMap['CaseApi.retrieveOrganizationContact']?.[localVarOperationServerIndex]?.url;
-            return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
-        },
-        /**
          * Retrieve a phylogenetic tree based on a set of case IDs, a tree algorithm, and a genetic distance case type column.
          * @summary Retrieve Phylogenetic Tree
          * @param {RetrievePhylogeneticTreeRequestBody} retrievePhylogeneticTreeRequestBody 
@@ -24796,18 +24754,6 @@ export class CaseApi extends BaseAPI {
      */
     public retrieveGeneticSequenceFasta(token: string, caseTypeId: string, geneticSequenceCaseTypeColId: string, caseIds: Array<string>, fileName: string, options?: RawAxiosRequestConfig) {
         return CaseApiFp(this.configuration).retrieveGeneticSequenceFasta(token, caseTypeId, geneticSequenceCaseTypeColId, caseIds, fileName, options).then((request) => request(this.axios, this.configuration.baseUrl));
-    }
-
-    /**
-     * Retrieves Contacts associated with organizations, sites, or specific contacts.  Exactly one of organization_ids, site_ids, or contact_ids must be provided. Returns a list of contacts with their associated site and organization data cascaded.
-     * @summary Retrieve Organization Contact
-     * @param {RetrieveOrganizationContactRequestBody} retrieveOrganizationContactRequestBody 
-     * @param {*} [options] Override http request option.
-     * @throws {RequiredError}
-     * @memberof CaseApi
-     */
-    public retrieveOrganizationContact(retrieveOrganizationContactRequestBody: RetrieveOrganizationContactRequestBody, options?: RawAxiosRequestConfig) {
-        return CaseApiFp(this.configuration).retrieveOrganizationContact(retrieveOrganizationContactRequestBody, options).then((request) => request(this.axios, this.configuration.baseUrl));
     }
 
     /**
@@ -37002,6 +36948,42 @@ const OrganizationApiAxiosParamCreator = function (configuration?: Configuration
             };
         },
         /**
+         * Retrieves Contacts associated with organizations, sites, or specific contacts.  Exactly one of organization_ids, site_ids, or contact_ids must be provided. Returns a list of contacts with their associated site and organization data cascaded.
+         * @summary Retrieve Organization Contacts
+         * @param {RetrieveOrganizationContactsRequestBody} retrieveOrganizationContactsRequestBody 
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        retrieveOrganizationContacts: async (retrieveOrganizationContactsRequestBody: RetrieveOrganizationContactsRequestBody, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
+            // verify required parameter 'retrieveOrganizationContactsRequestBody' is not null or undefined
+            assertParamExists('retrieveOrganizationContacts', 'retrieveOrganizationContactsRequestBody', retrieveOrganizationContactsRequestBody)
+            const localVarPath = `/v1/retrieve/organization_contacts`;
+            // use dummy base URL string because the URL constructor only accepts absolute URLs.
+            const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
+            let baseOptions;
+            if (configuration) {
+                baseOptions = configuration.baseOptions;
+            }
+
+            const localVarRequestOptions = { method: 'POST', ...baseOptions, ...options};
+            const localVarHeaderParameter = {} as any;
+            const localVarQueryParameter = {} as any;
+
+
+    
+            localVarHeaderParameter['Content-Type'] = 'application/json';
+
+            setSearchParams(localVarUrlObj, localVarQueryParameter);
+            let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
+            localVarRequestOptions.headers = {...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers};
+            localVarRequestOptions.data = serializeDataIfNeeded(retrieveOrganizationContactsRequestBody, localVarRequestOptions, configuration)
+
+            return {
+                url: toPathString(localVarUrlObj),
+                options: localVarRequestOptions,
+            };
+        },
+        /**
          * 
          * @summary Sites  Delete All
          * @param {*} [options] Override http request option.
@@ -40065,6 +40047,19 @@ const OrganizationApiFp = function(configuration?: Configuration) {
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
         /**
+         * Retrieves Contacts associated with organizations, sites, or specific contacts.  Exactly one of organization_ids, site_ids, or contact_ids must be provided. Returns a list of contacts with their associated site and organization data cascaded.
+         * @summary Retrieve Organization Contacts
+         * @param {RetrieveOrganizationContactsRequestBody} retrieveOrganizationContactsRequestBody 
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        async retrieveOrganizationContacts(retrieveOrganizationContactsRequestBody: RetrieveOrganizationContactsRequestBody, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<OrganizationContacts>> {
+            const localVarAxiosArgs = await localVarAxiosParamCreator.retrieveOrganizationContacts(retrieveOrganizationContactsRequestBody, options);
+            const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
+            const localVarOperationServerBasePath = operationServerMap['OrganizationApi.retrieveOrganizationContacts']?.[localVarOperationServerIndex]?.url;
+            return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
+        },
+        /**
          * 
          * @summary Sites  Delete All
          * @param {*} [options] Override http request option.
@@ -42105,6 +42100,18 @@ export class OrganizationApi extends BaseAPI {
      */
     public organizationsPutSome(organization: Array<Organization>, options?: RawAxiosRequestConfig) {
         return OrganizationApiFp(this.configuration).organizationsPutSome(organization, options).then((request) => request(this.axios, this.configuration.baseUrl));
+    }
+
+    /**
+     * Retrieves Contacts associated with organizations, sites, or specific contacts.  Exactly one of organization_ids, site_ids, or contact_ids must be provided. Returns a list of contacts with their associated site and organization data cascaded.
+     * @summary Retrieve Organization Contacts
+     * @param {RetrieveOrganizationContactsRequestBody} retrieveOrganizationContactsRequestBody 
+     * @param {*} [options] Override http request option.
+     * @throws {RequiredError}
+     * @memberof OrganizationApi
+     */
+    public retrieveOrganizationContacts(retrieveOrganizationContactsRequestBody: RetrieveOrganizationContactsRequestBody, options?: RawAxiosRequestConfig) {
+        return OrganizationApiFp(this.configuration).retrieveOrganizationContacts(retrieveOrganizationContactsRequestBody, options).then((request) => request(this.axios, this.configuration.baseUrl));
     }
 
     /**

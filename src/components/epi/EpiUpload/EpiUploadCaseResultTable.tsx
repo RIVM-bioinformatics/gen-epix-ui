@@ -28,7 +28,6 @@ import type {
   TableColumn,
 } from '../../../models/table';
 import type { TableStore } from '../../../stores/tableStore';
-import { TableStoreContextProvider } from '../../../stores/tableStore';
 import { CaseUtil } from '../../../utils/CaseUtil';
 import { TableUtil } from '../../../utils/TableUtil';
 import {
@@ -69,7 +68,7 @@ export const EpiUploadCaseResultTable = ({ tableStore, rowsWithGeneratedId, comp
     DataIssueType.CONFLICT,
   ], []);
 
-  const getIssueTooltipContent = useCallback((issues: CaseDataIssue[]) => {
+  const getIssueTooltipMessages = useCallback((issues: CaseDataIssue[]) => {
     const messages: { message: string; key: string }[] = [];
     issues.forEach((issue) => {
       const issueMessage = issue.message.replace(issue.original_value, '"{{originalValue}}"');
@@ -78,6 +77,11 @@ export const EpiUploadCaseResultTable = ({ tableStore, rowsWithGeneratedId, comp
       const message = t('{{columnLabel}}: {{issue}}', { columnLabel, issue: translatedMessage });
       messages.push({ message, key: `${issue.case_type_col_id}-${issue.data_issue_type}-${issue.code}` });
     });
+    return messages;
+  }, [completeCaseType.case_type_cols, t]);
+
+  const getIssueTooltipContent = useCallback((issues: CaseDataIssue[]) => {
+    const messages = getIssueTooltipMessages(issues);
     return (
       <>
         {messages.map(({ message, key }, index) => (
@@ -90,7 +94,12 @@ export const EpiUploadCaseResultTable = ({ tableStore, rowsWithGeneratedId, comp
         ))}
       </>
     );
-  }, [completeCaseType.case_type_cols, t]);
+  }, [getIssueTooltipMessages]);
+
+  const getIssueTooltipLabel = useCallback((issues: CaseDataIssue[]) => {
+    const messages = getIssueTooltipMessages(issues);
+    return messages.map(m => m.message).join(', ');
+  }, [getIssueTooltipMessages]);
 
   const getFilteredIssueTypes = useCallback((id: string, issues: CaseDataIssue[], value: string) => {
     return issues.filter((issue) => {
@@ -109,6 +118,7 @@ export const EpiUploadCaseResultTable = ({ tableStore, rowsWithGeneratedId, comp
       <Tooltip
         arrow
         title={t('Indicates if there are any issues with the case')}
+        aria-hidden={false}
       >
         <ErrorOutlineIcon
           fontSize={'small'}
@@ -124,6 +134,8 @@ export const EpiUploadCaseResultTable = ({ tableStore, rowsWithGeneratedId, comp
         <Tooltip
           arrow
           title={getIssueTooltipContent(errorIssues)}
+          aria-label={getIssueTooltipLabel(errorIssues)}
+          aria-hidden={false}
         >
           <ErrorOutlineIcon
             fontSize={'small'}
@@ -135,13 +147,14 @@ export const EpiUploadCaseResultTable = ({ tableStore, rowsWithGeneratedId, comp
         </Tooltip>
       );
     }
-  }, [getIssueTooltipContent, theme.palette.error.main]);
+  }, [getIssueTooltipContent, getIssueTooltipLabel, theme.palette.error.main]);
 
   const renderIsNewHeader = useCallback(() => {
     return (
       <Tooltip
         arrow
         title={t('Indicates if case is new (will be created)')}
+        aria-hidden={false}
       >
         <AddIcon
           fontSize={'small'}
@@ -153,6 +166,8 @@ export const EpiUploadCaseResultTable = ({ tableStore, rowsWithGeneratedId, comp
   const renderIsNewCell = useCallback(({ row }: TableRowParams<CaseUploadResultWithGeneratedId>) => {
     return row.id ? null : (
       <AddIcon
+        aria-hidden={false}
+        aria-label={t`This case does not have an ID and will be created`}
         fontSize={'small'}
         sx={{
           position: 'absolute',
@@ -160,7 +175,7 @@ export const EpiUploadCaseResultTable = ({ tableStore, rowsWithGeneratedId, comp
         }}
       />
     );
-  }, []);
+  }, [t]);
 
   const renderCell = useCallback(({ id, row }: TableRowParams<CaseUploadResultWithGeneratedId>) => {
     const rowValue = CaseUtil.getRowValue(row.validated_content, completeCaseType.case_type_cols[id], completeCaseType);
@@ -348,7 +363,7 @@ export const EpiUploadCaseResultTable = ({ tableStore, rowsWithGeneratedId, comp
   useInitializeTableStore<CaseUploadResultWithGeneratedId>({ store: tableStore, columns: tableColumns, rows: rowsWithGeneratedId, createFiltersFromColumns: true });
 
   return (
-    <TableStoreContextProvider store={tableStore}>
+    <>
       <Box>
         <TableMenu
           ContainerProps={{
@@ -362,6 +377,6 @@ export const EpiUploadCaseResultTable = ({ tableStore, rowsWithGeneratedId, comp
       <Table
         font={theme['gen-epix'].lineList.font}
       />
-    </TableStoreContextProvider>
+    </>
   );
 };

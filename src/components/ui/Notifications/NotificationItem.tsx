@@ -30,7 +30,7 @@ export const NotificationItem = ({ notification, showTimestamp, onClose, allowCl
   return (
     <Alert
       {...TestIdUtil.createAttributes('NotificationItem', { key: notification.key })}
-      closeText={t`Close`}
+      closeText={t`Clear notification`}
       icon={notification.isLoading ? <CircularProgress size={16} /> : undefined}
       severity={notification.isLoading ? 'info' : notification.severity}
       slotProps={{

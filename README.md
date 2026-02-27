@@ -22,16 +22,28 @@ import { createRoot } from 'react-dom/client';
 import {
   App,
   ConfigManager,
+  I18nManager,
   setup,
 } from '@gen-epix/ui';
-
-// call setup before anything else
-setup();
 
 ConfigManager.instance.config = {
   // add your config
 }
-createRoot(document.getElementById('root')).render(<App />);
+
+// initialize the I18nManager
+I18nManager.instance.init()
+  .then(() => {
+    // call setup
+    setup();
+
+    // run the app
+    createRoot(document.getElementById('root')).render(
+      <App />,
+    );
+  })
+  .catch(() => {
+    alert('Failed to initialize the application');
+  });
 ```
 
 ## Funding

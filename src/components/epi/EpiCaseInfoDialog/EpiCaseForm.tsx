@@ -89,22 +89,23 @@ export const EpiCaseForm = ({ epiCase, formId, onFinish, onIsSavingChange, ...bo
       <Typography variant={'h6'}>
         {t`Content`}
       </Typography>
-      {isSaving && (
-        <Spinner
-          inline
-          label={t`Saving case data`}
-        />
-      )}
-      {!isSaving && (
-
-        <GenericForm<Case['content']>
-          formFieldDefinitions={formFieldDefinitions}
-          formId={formId}
-          formMethods={formMethods}
-          schema={schema}
-          onSubmit={handleSubmit(onFormSubmit)}
-        />
-      )}
+      <Box>
+        {isSaving && (
+          <Spinner
+            inline
+            label={t`Saving case data`}
+          />
+        )}
+        {!isSaving && (
+          <GenericForm<Case['content']>
+            formFieldDefinitions={formFieldDefinitions}
+            formId={formId}
+            formMethods={formMethods}
+            schema={schema}
+            onSubmit={handleSubmit(onFormSubmit)}
+          />
+        )}
+      </Box>
     </Box>
   );
 };

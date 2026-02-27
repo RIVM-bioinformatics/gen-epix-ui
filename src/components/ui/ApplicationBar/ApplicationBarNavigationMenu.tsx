@@ -15,7 +15,7 @@ import {
   useState,
 } from 'react';
 
-import { routes } from '../../../data/routes';
+import { routes } from '../../../routes';
 import { AuthorizationManager } from '../../../classes/managers/AuthorizationManager';
 import type { MyNonIndexRouteObject } from '../../../models/reactRouter';
 

@@ -61,7 +61,7 @@ export const ApplicationBarActions = ({ fullWidth }: ApplicationBarActionsProps)
       }}
     >
       <IconButton
-        aria-label={t`Toggle footer menu`}
+        aria-label={t`Toggle menu`}
         aria-controls={navId}
         sx={{
           color: theme['gen-epix'].navbar.primaryColor,
@@ -74,6 +74,7 @@ export const ApplicationBarActions = ({ fullWidth }: ApplicationBarActionsProps)
         <MoreVertIcon />
       </IconButton>
       <Box
+        id={navId}
         sx={{
           display: 'flex',
           [theme.breakpoints.down('md')]: {

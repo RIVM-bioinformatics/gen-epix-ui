@@ -5,7 +5,6 @@ import {
   Tabs,
 } from '@mui/material';
 import type {
-  PropsWithChildren,
   ReactElement,
   SyntheticEvent,
 } from 'react';
@@ -21,6 +20,7 @@ import type {
 } from '../../../hoc/withDialog';
 import { withDialog } from '../../../hoc/withDialog';
 import type { User } from '../../../api';
+import { EpiCustomTabPanel } from '../EpiCustomTabPanel/EpiCustomTabPanel';
 
 import { EpiUserRightsDialogCaseAccessPolicy } from './EpiUserRightsDialogCaseAccessPolicy';
 
@@ -34,31 +34,6 @@ export interface EpiUserRightsDialogProps extends WithDialogRenderProps<EpiUserR
 
 export type EpiUserRightsDialogRefMethods = WithDialogRefMethods<EpiUserRightsDialogProps, EpiUserRightsDialogOpenProps>;
 
-
-type CustomTabPanelProps = PropsWithChildren<{
-  readonly index: number;
-  readonly value: number;
-}>;
-
-const CustomTabPanel = (props: CustomTabPanelProps) => {
-  const { children, value, index, ...other } = props;
-
-  return (
-    <div
-      aria-labelledby={`simple-tab-${index}`}
-      hidden={value !== index}
-      id={`simple-tabpanel-${index}`}
-      role={'tabpanel'}
-      {...other}
-    >
-      {value === index && (
-        <Box sx={{ p: 3 }}>
-          {children}
-        </Box>
-      )}
-    </div>
-  );
-};
 
 export const EpiUserRightsDialog = withDialog<EpiUserRightsDialogProps, EpiUserRightsDialogOpenProps>((
   {
@@ -104,18 +79,18 @@ export const EpiUserRightsDialog = withDialog<EpiUserRightsDialogProps, EpiUserR
           />
         </Tabs>
       </Box>
-      <CustomTabPanel
+      <EpiCustomTabPanel
         index={0}
         value={activeTab}
       >
         <EpiUserRightsDialogCaseAccessPolicy user={openProps.user} />
-      </CustomTabPanel>
-      <CustomTabPanel
+      </EpiCustomTabPanel>
+      <EpiCustomTabPanel
         index={1}
         value={activeTab}
       >
         {t`Case type access`}
-      </CustomTabPanel>
+      </EpiCustomTabPanel>
     </Box>
   );
 }, {

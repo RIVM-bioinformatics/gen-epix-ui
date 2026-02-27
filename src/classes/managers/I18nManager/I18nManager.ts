@@ -47,13 +47,24 @@ export class I18nManager {
       });
 
     await this.loadResources(defaultLanguageConfig.code);
+    this.updateLangAttribute(defaultLanguageConfig.code);
     this.isInitialized = true;
+  }
+
+  private updateLangAttribute(code: string): void {
+    const doc = WindowManager.instance.document;
+    if (!doc) {
+      console.warn('Document is not available, cannot set lang attribute');
+      return;
+    }
+    doc.documentElement.setAttribute('lang', code);
   }
 
   public async switchLanguage(code: string): Promise<void> {
     await ConfigManager.instance.config.i18n.setNewLanguageCode(code);
     await this.loadResources(code);
     await i18next.changeLanguage(code);
+    this.updateLangAttribute(code);
   }
 
   private async loadResources(code: string): Promise<void> {

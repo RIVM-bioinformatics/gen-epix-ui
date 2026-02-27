@@ -18,7 +18,7 @@ import {
   useMemo,
 } from 'react';
 
-import { adminRoutes } from '../../data/adminRoutes';
+import { adminRoutes } from '../../routes';
 import { AuthorizationManager } from '../../classes/managers/AuthorizationManager';
 import { RouterManager } from '../../classes/managers/RouterManager';
 import { PageContainer } from '../../components/ui/PageContainer';

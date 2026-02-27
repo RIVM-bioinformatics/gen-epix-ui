@@ -1,12 +1,9 @@
 import {
-  Button,
   type SxProps,
   type Theme,
 } from '@mui/material';
-import IndeterminateCheckBoxIcon from '@mui/icons-material/IndeterminateCheckBox';
 import {
   Box,
-  Checkbox,
   alpha,
   darken,
   lighten,
@@ -16,10 +13,9 @@ import isNumber from 'lodash/isNumber';
 import noop from 'lodash/noop';
 import omit from 'lodash/omit';
 import sumBy from 'lodash/sumBy';
-import uniq from 'lodash/uniq';
 import type {
-  ChangeEvent,
   MouseEvent as ReactMouseEvent,
+  KeyboardEvent as ReactKeyboardEvent,
   Ref,
   CSSProperties,
 } from 'react';
@@ -48,7 +44,6 @@ import { TableVirtuoso } from 'react-virtuoso';
 import { useDebouncedCallback } from 'use-debounce';
 import { useShallow } from 'zustand/shallow';
 
-import { tableHeaderCellClassNames } from '../../../data/table';
 import { ConfigManager } from '../../../classes/managers/ConfigManager';
 import { PageEventBusManager } from '../../../classes/managers/PageEventBusManager';
 import { WindowManager } from '../../../classes/managers/WindowManager';
@@ -78,6 +73,10 @@ import {
   TableColumnsEditorDialog,
   type TableColumnsEditorDialogRefMethods,
 } from './TableColumnsEditorDialog';
+import { TableCheckboxCell } from './TableCheckboxCell';
+import { TableCheckboxHeader } from './TableCheckboxHeader';
+import { TableReadableIndexCell } from './TableReadableIndexCell';
+import { tableHeaderCellClassNames } from './classNames';
 
 
 export type TableProps<TRowData> = {
@@ -136,9 +135,7 @@ export const Table = <TRowData,>({
 
   const setColumnSettingsInStore = useStore(tableStore, useShallow((state) => state.setColumnSettings));
   const sortedData = useStore(tableStore, useShallow((state) => state.sortedData));
-  const setSelectedIds = useStore(tableStore, useShallow((state) => state.setSelectedIds));
   const idSelectorCallback = useStore(tableStore, useShallow((state) => state.idSelectorCallback));
-  const selectedIds = useStore(tableStore, useShallow((state) => state.selectedIds));
   const tableColumns = useStore(tableStore, useShallow((state) => state.columns));
   const isStoreInitialized = useStore(tableStore, useShallow((state) => state.isInitialized));
   const isRowEnabledCallback = useStore(tableStore, useShallow((state) => state.isRowEnabledCallback));
@@ -159,12 +156,11 @@ export const Table = <TRowData,>({
   const dragConfig = useRef<{ clonedElement: HTMLDivElement; scrollPosition: number; elementOffsetX: number }>(null);
 
   // If applying filters or sorting and the results in the table don't change, we need to re-render the table manually to reflect the changes in filters / sorting in the headers.
-
   // re-render the table when the filters change
   useStore(tableStore, (state) => JSON.stringify(state.filters.map(x => x.filterValue)));
   // re-render the table when the sort by field or direction changes
-  useStore(tableStore, (state) => state.sortByField);
-  useStore(tableStore, (state) => state.sortDirection);
+  useStore(tableStore, useShallow((state) => state.sortByField));
+  useStore(tableStore, useShallow((state) => state.sortDirection));
 
   const onTableRowClick = useCallback((row: TableRowParams<TRowData>, event: MouseEvent) => {
     if (onRowClick) {
@@ -204,123 +200,37 @@ export const Table = <TRowData,>({
     updateTableWidth();
   }, [updateTableWidth]);
 
-  const onTableReadableIndexClick = useCallback((row: TRowData, event: ReactMouseEvent) => {
-    if (onReadableIndexClick) {
-      if (!getRowName) {
-        throw new Error('getRowName is required when onReadableIndexClick is provided');
-      }
-      if (ConfigManager.instance.config.enablePageEvents) {
-        PageEventBusManager.instance.emit('click', {
-          label: getRowName(row),
-          type: 'table-row-index',
-        });
-      }
-      event.preventDefault();
-      event.stopPropagation();
-      onReadableIndexClick(row);
-    }
-  }, [getRowName, onReadableIndexClick]);
-
   const renderReadableIndexCell = useCallback((tableColumn: TableColumnReadableIndex<TRowData>, cell: TableRowParams<TRowData>) => {
-    if (!onReadableIndexClick) {
-      return cell.rowIndex + 1;
-    }
     return (
-      <Button
+      <TableReadableIndexCell
         key={cell.id}
-        variant={'text'}
-        size={'small'}
-        aria-label={tableColumn.getAriaLabel(cell)}
-        color={'primary'}
-        sx={{
-          width: '100%',
-          height: '100%',
-          minWidth: 'unset',
-          padding: 0,
-        }}
-        // eslint-disable-next-line react/jsx-no-bind
-        onClick={(event) => {
-          onTableReadableIndexClick(cell.row, event);
-        }}
-      >
-        {cell.rowIndex + 1}
-      </Button>
-    );
-  }, [onReadableIndexClick, onTableReadableIndexClick]);
-
-  const renderCheckboxHeaderContent = useCallback((tableColumnParams: TableColumnParams<TRowData>) => {
-    const column = tableColumnParams.column as TableColumnSelectable<TRowData>;
-
-    const enabledRows = column.isDisabled ? sortedData.filter(row => column.isDisabled({
-      id: idSelectorCallback(row),
-      row,
-      rowIndex: sortedData.indexOf(row),
-    }) === false) : sortedData;
-
-    const isAllChecked = enabledRows.every(row => selectedIds.includes(idSelectorCallback(row)));
-    const isSomeChecked = enabledRows.some(row => selectedIds.includes(idSelectorCallback(row)));
-
-    const onSelectAllCheckBoxChange = (_event: ChangeEvent<HTMLInputElement>) => {
-      const visibleRowIds = enabledRows.map(r => idSelectorCallback(r));
-      if (isAllChecked) {
-      // all visible rows are selected, unselect all visible rows
-        setSelectedIds(selectedIds.filter(s => !visibleRowIds.includes(s)));
-      } else {
-      // not al visible rows are selected, select them
-        setSelectedIds(uniq([...selectedIds, ...visibleRowIds]));
-      }
-    };
-
-    return (
-      <Checkbox
-        checked={isSomeChecked}
-        slotProps={{
-          input: {
-            'aria-label': t`Select all`,
-          },
-        }}
-        checkedIcon={isAllChecked ? undefined : <IndeterminateCheckBoxIcon />}
-        name={'select-all'}
-        sx={{
-          padding: 0,
-          marginTop: '-2px',
-        }}
-        // eslint-disable-next-line react/jsx-no-bind
-        onChange={onSelectAllCheckBoxChange}
+        tableColumn={tableColumn}
+        cell={cell}
+        getRowName={getRowName}
+        onReadableIndexClick={onReadableIndexClick}
       />
     );
-  }, [idSelectorCallback, selectedIds, setSelectedIds, sortedData, t]);
+  }, [getRowName, onReadableIndexClick]);
 
-  const onRowCheckBoxChange = useCallback((event: ChangeEvent<HTMLInputElement>, checked: boolean) => {
-    const rowId = event.target.getAttribute('name');
-    if (checked && !selectedIds.includes(rowId)) {
-      setSelectedIds([...selectedIds, rowId]);
-    } else if (!checked) {
-      setSelectedIds([...selectedIds].filter(x => x !== rowId));
-    }
-  }, [selectedIds, setSelectedIds]);
+  const renderCheckboxHeaderContent = useCallback((tableColumnParams: TableColumnParams<TRowData>) => {
+    return (
+      <TableCheckboxHeader
+        tableColumnParams={tableColumnParams}
+      />
+    );
+  }, []);
 
   const renderCheckboxCell = useCallback((cell: TableRowParams<TRowData>, tableColumn: TableColumnSelectable<TRowData>) => {
     const id = idSelectorCallback(cell.row);
+
     return (
-      <Checkbox
+      <TableCheckboxCell
         key={id}
-        checked={selectedIds.includes(id)}
-        name={idSelectorCallback(cell.row)}
-        disabled={tableColumn.isDisabled ? tableColumn.isDisabled(cell) : false}
-        slotProps={{
-          input: {
-            'aria-label': t`Select row`,
-          },
-        }}
-        sx={{
-          padding: 0,
-          marginTop: '-2px',
-        }}
-        onChange={onRowCheckBoxChange}
+        cell={cell}
+        tableColumn={tableColumn}
       />
     );
-  }, [idSelectorCallback, onRowCheckBoxChange, selectedIds, t]);
+  }, [idSelectorCallback]);
 
   const updateColumnSizes = useCallback(() => {
     if (!tableColumns.length || !container) {
@@ -368,6 +278,25 @@ export const Table = <TRowData,>({
     saveColumnSettingsToStore();
   }, 500, { trailing: true });
 
+  const updateColumnSize = useCallback((columnSettings: TableColumnSettings, newWidth: number) => {
+    columnSettings.calculatedWidth = newWidth;
+    columnSettings.widthPx = newWidth;
+    columnSettings.hasResized = true;
+    updateColumnSizes();
+    saveColumnSettingsToStoreDebounced();
+  }, [updateColumnSizes, saveColumnSettingsToStoreDebounced]);
+
+  const onColumnDividerKeyDown = useCallback((event: ReactKeyboardEvent<HTMLDivElement>, tableColumn: TableColumn<TRowData>) => {
+    if (event.key !== 'ArrowLeft' && event.key !== 'ArrowRight') {
+      return;
+    }
+    event.preventDefault();
+
+    const columnSettings = tableColumnSettings.current.find(c => c.id === tableColumn.id);
+    const currentWidth = columnSettings.calculatedWidth;
+    const newWidth = event.key === 'ArrowLeft' ? Math.max(50, currentWidth - 10) : currentWidth + 10;
+    updateColumnSize(columnSettings, newWidth);
+  }, [updateColumnSize]);
 
   const onColumnDividerMouseDown = useCallback((event: ReactMouseEvent<HTMLDivElement>, tableColumn: TableColumn<TRowData>) => {
     event.preventDefault();
@@ -388,13 +317,7 @@ export const Table = <TRowData,>({
       if (startingCellWidth === newWidth) {
         return;
       }
-      columnSettings.calculatedWidth = newWidth;
-      columnSettings.widthPx = newWidth;
-      columnSettings.hasResized = true;
-      // update the column sizes for when virtuoso is rending next cells
-      updateColumnSizes();
-      // update the width of the cells in the current table
-      saveColumnSettingsToStoreDebounced();
+      updateColumnSize(columnSettings, newWidth);
     };
     const mouseUpListener = (_mouseUpEvent: MouseEvent) => {
       eventListenersCleaner.current();
@@ -408,7 +331,7 @@ export const Table = <TRowData,>({
       document.removeEventListener('mousemove', mouseMoveListener);
       document.removeEventListener('mouseup', mouseUpListener);
     };
-  }, [updateColumnSizes, saveColumnSettingsToStoreDebounced]);
+  }, [updateColumnSize]);
 
   useEffect(() => {
     return () => {
@@ -565,13 +488,14 @@ export const Table = <TRowData,>({
               width={column.calculatedWidth}
               xOffset={column.offsetX}
               onColumnDividerMouseDown={onColumnDividerMouseDown}
+              onColumnDividerKeyDown={onColumnDividerKeyDown}
               onCustomDrag={onTableHeaderCellDrag}
             />
           );
         })}
       </Box>
     );
-  }, [theme, headerHeight, headerBorderColor, getVisibleTableSettingsColumns, tableColumns, renderCheckboxHeaderContent, onColumnDividerMouseDown, onTableHeaderCellDrag]);
+  }, [theme, headerHeight, headerBorderColor, getVisibleTableSettingsColumns, tableColumns, renderCheckboxHeaderContent, onColumnDividerMouseDown, onColumnDividerKeyDown, onTableHeaderCellDrag]);
 
   const renderItemContent = useCallback((index: number, row: TRowData) => {
     return (

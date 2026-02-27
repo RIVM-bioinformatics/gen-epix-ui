@@ -4,7 +4,6 @@ import {
   Link,
   useTheme,
 } from '@mui/material';
-import LinkIcon from '@mui/icons-material/Link';
 import type { ReactElement } from 'react';
 import {
   useCallback,
@@ -26,21 +25,17 @@ import type {
   Case,
   CaseTypeCol,
 } from '../../../api';
-import {
-  ColType,
-  CommandName,
-  PermissionType,
-} from '../../../api';
-import { AuthorizationManager } from '../../../classes/managers/AuthorizationManager';
+import { ColType } from '../../../api';
 import { ConfigManager } from '../../../classes/managers/ConfigManager';
 import { EpiEventBusManager } from '../../../classes/managers/EpiEventBusManager';
 import { EpiLineListCaseSetMembersManager } from '../../../classes/managers/EpiLineListCaseSetMembersManager';
 import { EpiHighlightingManager } from '../../../classes/managers/EpiHighlightingManager';
 import { Subject } from '../../../classes/Subject';
-import { UseColumnsMenu } from '../../../hooks/useColumnsMenu';
 import type { EpiLinkedScrollSubjectValue } from '../../../models/epi';
-import { EPI_ZONE } from '../../../models/epi';
-import type { MenuItemData } from '../../../models/nestedMenu';
+import {
+  EPI_ZONE,
+  STRATIFICATION_MODE,
+} from '../../../models/epi';
 import type {
   TableColumn,
   TableRowParams,
@@ -56,7 +51,11 @@ import {
   Table,
   type TableRef,
 } from '../../ui/Table';
-import { DownloadUtil } from '../../../utils/DownloadUtil';
+
+import { EpiLineListTitle } from './EpiLineListTitle';
+import { EpiLineListPrimaryMenu } from './EpiLineListPrimaryMenu';
+import { EpiLineListSecondaryMenu } from './EpiLineListSecondaryMenu';
+import { useEpiLineListEmitDownloadOptions } from './useEpiLineListEmitDownloadOptions';
 
 export type EpiLineListProps = {
   readonly linkedScrollSubject: Subject<EpiLinkedScrollSubjectValue>;
@@ -75,17 +74,11 @@ export const EpiLineList = ({ linkedScrollSubject, onLink, caseSet }: EpiLineLis
   const epiStore = useContext(EpiDashboardStoreContext);
   const completeCaseType = useStore(epiStore, useShallow((state) => state.completeCaseType));
   const sortedData = useStore(epiStore, useShallow((state) => state.sortedData));
-  const setSorting = useStore(epiStore, useShallow((state) => state.setSorting));
-  const selectedRowCaseIds = useStore(epiStore, useShallow((state) => state.selectedIds));
-  const selectRows = useStore(epiStore, useShallow((state) => state.setSelectedIds));
-  const stratification = useStore(epiStore, useShallow((state) => state.stratification));
-  const epiListWidgetData = useStore(epiStore, useShallow((state) => state.epiListWidgetData));
+  const stratification = useStore(epiStore, useShallow((state) => state.stratification?.mode === STRATIFICATION_MODE.FIELD ? state.stratification : null));
   const updateEpiListWidgetData = useStore(epiStore, useShallow((state) => state.updateEpiListWidgetData));
   const treeAddresses = useStore(epiStore, useShallow((state) => state.treeAddresses));
-  const setFilterValue = useStore(epiStore, useShallow((state) => state.setFilterValue));
   const setTableColumns = useStore(epiStore, useShallow((state) => state.setColumns));
   const isDataLoading = useStore(epiStore, useShallow((state) => state.isDataLoading));
-  const isTreeLinked = useStore(epiStore, useShallow((state) => state.epiTreeWidgetData.zoomLevel === 1));
 
   const onIndexCellClick = useCallback((row: Case) => {
     EpiEventBusManager.instance.emit('openCaseInfoDialog', {
@@ -112,22 +105,12 @@ export const EpiLineList = ({ linkedScrollSubject, onLink, caseSet }: EpiLineLis
     return Math.min(MAX_COLUMN_WIDTH, maxWidth) + REQUIRED_EXTRA_CELL_PADDING_TO_FIT_CONTENT;
   }, [completeCaseType, sortedData, stratification?.caseTypeCol?.id, theme]);
 
-  const onOrganizationCellClick = useCallback((contactId: string) => {
+  const onOrganizationCellClick = useCallback((organizationId: string, organizationName: string) => {
     EpiEventBusManager.instance.emit('openContactDetailsDialog', {
-      contactId,
+      organizationId,
+      organizationName,
     });
   }, []);
-
-  const hasCellData = useCallback((row: Case, column: TableColumn<Case>, rowIndex: number) => {
-    if (column.type === 'caseType' && column.valueGetter) {
-      return !column.valueGetter({
-        row,
-        id: column.id,
-        rowIndex,
-      }).isMissing;
-    }
-    return !CaseUtil.getRowValue(row.content, completeCaseType.case_type_cols[column.id], completeCaseType).isMissing;
-  }, [completeCaseType]);
 
   const renderOrganizationCell = useCallback(({ id, row }: TableRowParams<Case>) => {
     const rowValue = CaseUtil.getRowValue(row.content, completeCaseType.case_type_cols[id], completeCaseType);
@@ -136,13 +119,14 @@ export const EpiLineList = ({ linkedScrollSubject, onLink, caseSet }: EpiLineLis
     }
     const link = (
       <Link
+        component={'button'}
         sx={{
           cursor: 'pointer',
         }}
         color={'primary'}
         // eslint-disable-next-line react/jsx-no-bind
         onClick={() => {
-          onOrganizationCellClick(row.content[id]);
+          onOrganizationCellClick(row.content[id], rowValue.long);
         }}
       >
         {rowValue.short}
@@ -171,6 +155,7 @@ export const EpiLineList = ({ linkedScrollSubject, onLink, caseSet }: EpiLineLis
   const renderGeneticSequenceCell = useCallback(({ id, row }: TableRowParams<Case>) => {
     return (
       <Link
+        component={'button'}
         sx={{
           cursor: 'pointer',
         }}
@@ -357,187 +342,7 @@ export const EpiLineList = ({ linkedScrollSubject, onLink, caseSet }: EpiLineLis
     };
   }, [highlightingManager, rowHighlightingSubject]);
 
-  const getSelectedRows = useCallback(() => {
-    return sortedData.filter(row => selectedRowCaseIds.includes(row.id));
-  }, [sortedData, selectedRowCaseIds]);
-
-  const createFilterFromSelectedRowCaseIds = useCallback(async () => {
-    await setFilterValue('selected', selectedRowCaseIds);
-    selectRows([]);
-  }, [selectRows, selectedRowCaseIds, setFilterValue]);
-
-  const getVisibleColumnIds = useCallback(() => {
-    return epiStore.getState().columnSettings.filter(x => x.isVisible).map(x => x.id);
-  }, [epiStore]);
-
-  const columnsMenuItem = UseColumnsMenu({ hasCellData });
-
-  const primaryMenu = useMemo<MenuItemData[]>(() => {
-    const shouldShowCreateEventMenuItem = AuthorizationManager.instance.doesUserHavePermission([{ command_name: CommandName.CreateCaseSetCommand, permission_type: PermissionType.EXECUTE }]);
-    const shouldShowAddToEventMenuItem = AuthorizationManager.instance.doesUserHavePermission([{ command_name: CommandName.CaseSetMemberCrudCommand, permission_type: PermissionType.CREATE }]);
-    const shouldShowRemoveFromEventMenuItem = !!caseSet && AuthorizationManager.instance.doesUserHavePermission([{ command_name: CommandName.CaseSetMemberCrudCommand, permission_type: PermissionType.DELETE }]);
-    // FIXME
-    // const shouldShowBulkEditCaseMenuItem = true;
-
-    const actionsColumnMenuItem: MenuItemData = {
-      label: t`Actions`,
-      items: [
-        {
-          label: t`Create filter from selected cases`,
-          disabled: !selectedRowCaseIds?.length,
-          callback: createFilterFromSelectedRowCaseIds,
-          divider: true,
-        },
-        {
-          label: t`Find similar cases`,
-          callback: () => EpiEventBusManager.instance.emit('openFindSimilarCasesDialog', {
-            rows: sortedData,
-            completeCaseType,
-          }),
-        },
-        {
-          label: t`Find similar cases (based on selected cases)`,
-          disabled: !selectedRowCaseIds?.length,
-          callback: () => EpiEventBusManager.instance.emit('openFindSimilarCasesDialog', {
-            rows: getSelectedRows(),
-            completeCaseType,
-          }),
-        },
-      ],
-    };
-
-    if (shouldShowCreateEventMenuItem) {
-      actionsColumnMenuItem.items.push(
-        {
-          label: t`Create new event with selected cases`,
-          disabled: !selectedRowCaseIds?.length,
-          callback: () => EpiEventBusManager.instance.emit('openCreateEventDialog', {
-            rows: getSelectedRows(),
-            completeCaseType,
-          }),
-        },
-      );
-    }
-
-    if (shouldShowAddToEventMenuItem) {
-      actionsColumnMenuItem.items.push(
-        {
-          disabled: !selectedRowCaseIds?.length,
-          label: t`Add selected cases to existing event`,
-          callback: () => EpiEventBusManager.instance.emit('openAddCasesToEventDialog', { rows: getSelectedRows(), currentCaseSet: caseSet }),
-        },
-      );
-    }
-
-    if (shouldShowRemoveFromEventMenuItem) {
-      actionsColumnMenuItem.items.push(
-        {
-          disabled: !selectedRowCaseIds?.length,
-          label: t`Remove selected cases from this event`,
-          callback: () => EpiEventBusManager.instance.emit('openRemoveCasesFromEventDialog', { rows: getSelectedRows(), caseSet }),
-        },
-      );
-    }
-    if (actionsColumnMenuItem.items.length > 2) {
-      actionsColumnMenuItem.items[2].divider = true;
-    }
-
-    // last(actionsColumnMenuItem.items).divider = true;
-    // if (shouldShowBulkEditCaseMenuItem) {
-    //   actionsColumnMenuItem.items.push(
-    //     {
-    //       disabled: !selectedRowCaseIds?.length,
-    //       label: t`Bulk edit selected cases`,
-    //       callback: () => EpiEventBusManager.instance.emit('openBulkEditCaseDialog', { rows: getSelectedRows() }),
-    //     },
-    //   );
-    // }
-
-    const menus: MenuItemData[] = [
-      columnsMenuItem,
-      actionsColumnMenuItem,
-    ];
-
-    return menus;
-  }, [caseSet, t, selectedRowCaseIds?.length, createFilterFromSelectedRowCaseIds, columnsMenuItem, sortedData, completeCaseType, getSelectedRows]);
-
-
-  useEffect(() => {
-    const emitDownloadOptions = () => {
-      EpiEventBusManager.instance.emit('onDownloadOptionsChanged', {
-        zone: EPI_ZONE.LINE_LIST,
-        zoneLabel: t`Line list`,
-        items: [
-          {
-            label: t`All rows`,
-            items: [
-              {
-                label: t`Download as Excel`,
-                callback: async () => DownloadUtil.downloadAsExcel(sortedData, getVisibleColumnIds(), completeCaseType, t),
-              },
-              {
-                label: t`Download as CSV`,
-                callback: () => DownloadUtil.downloadAsCsv(sortedData, getVisibleColumnIds(), completeCaseType, t),
-              },
-              {
-                label: t`Download sequences`,
-                callback: () => EpiEventBusManager.instance.emit('openSequenceDownloadDialog', { cases: sortedData }),
-              },
-              {
-                label: t`Download allele profiles`,
-                disabled: true,
-                callback: () => null,
-              },
-            ],
-            disabled: !sortedData?.length,
-          },
-          {
-            label: t`Selected rows`,
-            items: [
-              {
-                label: t`Download as Excel`,
-                callback: async () => DownloadUtil.downloadAsExcel(getSelectedRows(), getVisibleColumnIds(), completeCaseType, t),
-              },
-              {
-                label: t`Download as CSV`,
-                callback: () => DownloadUtil.downloadAsCsv(getSelectedRows(), getVisibleColumnIds(), completeCaseType, t),
-              },
-              {
-                label: t`Download sequences`,
-                callback: () => EpiEventBusManager.instance.emit('openSequenceDownloadDialog', { cases: sortedData.filter(c => selectedRowCaseIds.includes(c.id)) }),
-              },
-              {
-                label: t`Download allele profiles`,
-                disabled: true,
-                callback: () => null,
-              },
-            ],
-            disabled: selectedRowCaseIds.length === 0,
-          },
-        ],
-      });
-    };
-    emitDownloadOptions();
-    const remove = EpiEventBusManager.instance.addEventListener('onDownloadOptionsRequested', emitDownloadOptions);
-
-    return () => {
-      EpiEventBusManager.instance.emit('onDownloadOptionsChanged', {
-        zone: EPI_ZONE.LINE_LIST,
-        items: null,
-        zoneLabel: t`Line list`,
-      });
-      remove();
-    };
-  }, [completeCaseType, getSelectedRows, getVisibleColumnIds, selectedRowCaseIds, sortedData, t]);
-
-  const onLinkButtonClick = useCallback(() => {
-    const perform = async () => {
-      await setSorting(null, null);
-      onLink();
-    };
-    // eslint-disable-next-line @typescript-eslint/no-floating-promises
-    perform();
-  }, [onLink, setSorting]);
+  useEpiLineListEmitDownloadOptions();
 
   const updateVisibleIndexDebounced = useDebouncedCallback((index: number) => {
     updateEpiListWidgetData({
@@ -561,24 +366,6 @@ export const EpiLineList = ({ linkedScrollSubject, onLink, caseSet }: EpiLineLis
       EpiLineListCaseSetMembersManager.instance.cleanStaleQueue();
     };
   }, []);
-
-  const secondaryMenu = useMemo<MenuItemData[]>(() => {
-    return [
-      {
-        disabled: isTreeLinked,
-        label: t`Link and snap the Tree to the Line list (resets tree zoom level and Line List sorting)`,
-        leftIcon: (
-          <LinkIcon
-            sx={{
-              color: isTreeLinked ? undefined : theme.palette.error.main,
-            }}
-          />
-        ),
-        callback: onLinkButtonClick,
-      },
-    ];
-  }, [isTreeLinked, onLinkButtonClick, t, theme.palette.error.main]);
-
 
   const onVerticalScrollPositionChange = useCallback((position: number) => {
     linkedScrollSubject.next({
@@ -607,9 +394,9 @@ export const EpiLineList = ({ linkedScrollSubject, onLink, caseSet }: EpiLineLis
   return (
     <EpiWidget
       isLoading={isDataLoading}
-      primaryMenu={primaryMenu}
-      secondaryMenu={secondaryMenu}
-      title={t('Line list: {{shownCount}} cases, {{selectedCount}} selected', { shownCount: sortedData.length ?? 0, selectedCount: selectedRowCaseIds.length ?? 0 })}
+      primaryMenu={<EpiLineListPrimaryMenu caseSet={caseSet} />}
+      secondaryMenu={<EpiLineListSecondaryMenu onLink={onLink} />}
+      title={<EpiLineListTitle />}
       zone={EPI_ZONE.LINE_LIST}
     >
       <Box
@@ -624,7 +411,7 @@ export const EpiLineList = ({ linkedScrollSubject, onLink, caseSet }: EpiLineLis
           forceHorizontalOverflow
           font={theme['gen-epix'].lineList.font}
           getRowName={getRowName}
-          initialVisibleItemIndex={epiListWidgetData.visibleItemItemIndex}
+          initialVisibleItemIndex={epiStore.getState().epiListWidgetData.visibleItemItemIndex}
           rowHeight={3}
           rowHighlightingSubject={rowHighlightingSubject}
           onRangeChanged={onRangeChangedDebounced}

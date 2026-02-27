@@ -686,9 +686,9 @@ export class EpiUploadUtil {
       message,
     } = kwArgs;
 
-    const progressRange = endPercentage - startPercentage;
-    const progressWithinRange = (uploadedFileSize + fileSize) / totalFileSizeToUpload * progressRange;
-    const overallProgress = startPercentage + progressWithinRange;
+    const percentageRange = endPercentage - startPercentage;
+    const percentageRangePerByte = percentageRange / totalFileSizeToUpload;
+    const overallProgress = startPercentage + (uploadedFileSize * percentageRangePerByte) + (fileSize * percentageRangePerByte);
 
     onProgress(overallProgress, message);
   }
@@ -736,7 +736,7 @@ export class EpiUploadUtil {
             const file = Array.from(sequenceFilesDataTransfer.files).find(f => f.name === fileName);
             if (file) {
               seqsToBeUploaded.push({ caseId, caseTypeColId, fileName });
-              totalFileSizeToUpload += file?.size || 0;
+              totalFileSizeToUpload = totalFileSizeToUpload + (file?.size || 0);
             }
           }
         }
@@ -745,14 +745,14 @@ export class EpiUploadUtil {
             const file = Array.from(sequenceFilesDataTransfer.files).find(f => f.name === fileNames.fwd);
             if (file) {
               readSetsToBeUploaded.push({ caseId, caseTypeColId, fileName: fileNames.fwd, is_fwd: true });
-              totalFileSizeToUpload += file?.size || 0;
+              totalFileSizeToUpload = totalFileSizeToUpload + (file?.size || 0);
             }
           }
           if (fileNames.rev) {
             const file = Array.from(sequenceFilesDataTransfer.files).find(f => f.name === fileNames.rev);
             if (file) {
               readSetsToBeUploaded.push({ caseId, caseTypeColId, fileName: fileNames.rev, is_fwd: false });
-              totalFileSizeToUpload += file?.size || 0;
+              totalFileSizeToUpload = totalFileSizeToUpload + (file?.size || 0);
             }
           }
         }
@@ -760,6 +760,7 @@ export class EpiUploadUtil {
     }
 
     // upload in order of cases
+    let uploadedFileSize = 0;
     for (const caseUploadResult of caseBatchUploadResult.cases) {
       const caseSeqToBeUploaded = seqsToBeUploaded.find(s => s.caseId === caseUploadResult.id);
       const caseReadSetsToBeUploaded = readSetsToBeUploaded.filter(rs => rs.caseId === caseUploadResult.id);
@@ -779,10 +780,11 @@ export class EpiUploadUtil {
             endPercentage,
             onProgress,
             totalFileSizeToUpload,
-            uploadedFileSize: 0,
+            uploadedFileSize,
             fileSize,
             message: t('Uploading sequence file "{{fileName}}" for case ID "{{caseId}}"...', { fileName: caseSeqToBeUploaded.fileName, caseId: caseSeqToBeUploaded.caseId }),
           });
+          uploadedFileSize += fileSize;
         }
       }
       for (const caseReadSetToBeUploaded of caseReadSetsToBeUploaded) {
@@ -801,10 +803,11 @@ export class EpiUploadUtil {
             endPercentage,
             onProgress,
             totalFileSizeToUpload,
-            uploadedFileSize: 0,
+            uploadedFileSize,
             fileSize,
             message: t('Uploading read set file "{{fileName}}" for case ID "{{caseId}}"...', { fileName: caseReadSetToBeUploaded.fileName, caseId: caseReadSetToBeUploaded.caseId }),
           });
+          uploadedFileSize += fileSize;
         }
       }
     }
@@ -841,7 +844,7 @@ export class EpiUploadUtil {
         throw new UploadError(t('Failed to create cases during upload.'), caseBatchUploadResult);
       }
 
-      await EpiUploadUtil.uploadFilesForCases({ ...kwArgs, caseBatchUploadResult, startPercentage: 10, endPercentage: 100 });
+      await EpiUploadUtil.uploadFilesForCases({ ...kwArgs, caseBatchUploadResult, startPercentage: 1, endPercentage: 99 });
       onProgress(100, t('Upload complete.'));
 
       await QueryUtil.invalidateQueryKeys(QueryUtil.getQueryKeyDependencies([QUERY_KEY.CASES], true));
