@@ -481,8 +481,6 @@ export const Table = <TRowData,>({
               columnIndex={columnIndex}
               dividerColor={headerBorderColor}
               height={theme.spacing(headerHeight)}
-              // onDragEnd={onTableHeaderCellDragEnd}
-              // onDragStart={onTableHeaderCellDragStart}
               order={tableColumnSettings.current.findIndex(c => c.id === column.id)}
               role={'columnheader'}
               width={column.calculatedWidth}

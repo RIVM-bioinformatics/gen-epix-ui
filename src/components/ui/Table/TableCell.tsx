@@ -27,10 +27,10 @@ export type TableCellProps<TRowData> = PropsWithChildren<{
   readonly className?: string;
   readonly column: TableColumn<TRowData>;
   readonly columnIndex: number;
-  readonly draggable?: boolean;
   readonly enabled?: boolean;
   readonly height: string;
   readonly onClick?: (row: TableRowParams<TRowData>, event?: MouseEvent) => void;
+  readonly canDrag?: (event: ReactMouseEvent<HTMLDivElement>) => boolean;
   readonly role?: AriaRole;
   readonly row?: TRowData;
   readonly rowIndex?: number;
@@ -52,7 +52,6 @@ export const TableCell = <TRowData, >({
   className,
   column,
   columnIndex,
-  draggable,
   enabled,
   height,
   onClick,
@@ -62,6 +61,7 @@ export const TableCell = <TRowData, >({
   role,
   row,
   rowIndex,
+  canDrag,
   sx,
   title,
   width,
@@ -76,7 +76,7 @@ export const TableCell = <TRowData, >({
   const dragPosition = useRef<{ x: number; y: number; target: HTMLDivElement } | null>(null);
 
   const onMouseDown = useCallback((mouseDownEvent: ReactMouseEvent<HTMLDivElement>) => {
-    if (!onCustomDrag || !draggable) {
+    if (!onCustomDrag || (canDrag && !canDrag(mouseDownEvent))) {
       return;
     }
 
@@ -115,7 +115,7 @@ export const TableCell = <TRowData, >({
       once: true,
     });
     document.addEventListener('mousemove', onMouseMove);
-  }, [onCustomDrag, draggable, column]);
+  }, [onCustomDrag, canDrag, column]);
 
 
   const isMovable = column.isStatic !== true && column.frozen !== true;
