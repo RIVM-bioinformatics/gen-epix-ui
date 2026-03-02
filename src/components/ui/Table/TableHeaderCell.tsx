@@ -130,6 +130,16 @@ export const TableHeaderCell = <TRowData,>(props: TableHeaderCellProps<TRowData>
 
   const ignoreNextClick = useRef(false);
 
+  const canDrag = useCallback((event: ReactMouseEvent<HTMLDivElement>) => {
+    if (column.frozen || column.isStatic) {
+      return false;
+    }
+    if (event.button !== 0) {
+      return false;
+    }
+    return (event.nativeEvent.target as HTMLDivElement).classList.contains(tableHeaderCellClassNames.content);
+  }, [column.frozen, column.isStatic]);
+
   const onCustomDragTableHeaderCell = useCallback((event: TableDragEvent, col: TableColumn<TRowData>) => {
     if (onCustomDrag) {
       if (event.type === 'start') {
@@ -242,7 +252,7 @@ export const TableHeaderCell = <TRowData,>(props: TableHeaderCellProps<TRowData>
       })}
       column={column}
       columnIndex={columnIndex}
-      draggable={!column.frozen && !column.isStatic}
+      canDrag={canDrag}
       height={height}
       order={order}
       role={'columnheader'}
