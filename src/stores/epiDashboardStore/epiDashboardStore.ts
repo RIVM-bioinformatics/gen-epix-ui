@@ -133,7 +133,7 @@ interface EpiDashboardStoreActions extends TableStoreActions<Case> {
   destroy: () => void;
   resetTreeAddresses: () => void;
   setNumVisibleAttributesInSummary: (numVisibleAttributesInSummary: number) => void;
-  setSimilarCasesIds: (similarCaseIds: string[]) => void;
+  setSimilarCasesIds: (similarCaseIds: string[]) => Promise<void>;
 
   // Private
   reloadStratification: () => void;
@@ -265,10 +265,9 @@ export const createEpiDashboardStore = (kwArgs: CreateEpiDashboardStoreKwArgs) =
               await setFilterValue(treeFilter.id, treeFilter.initialFilterValue);
             }
           },
-          setSimilarCasesIds: (similarCaseIds: string[]) => {
+          setSimilarCasesIds: async (similarCaseIds: string[]) => {
             set({ similarCaseIds });
-
-            console.log('do something');
+            await get().fetchData();
           },
           stratify: (mode, caseTypeCol) => {
             const { sortedData, selectedIds } = get();
@@ -633,7 +632,7 @@ export const createEpiDashboardStore = (kwArgs: CreateEpiDashboardStoreKwArgs) =
           },
           fetchData: async () => {
             set({ isMaxResultsExceeded: false, isMaxResultsExceededDismissed: false, dataError: null });
-            const { fetchAbortController: previousFetchAbortController, globalAbortSignal } = get();
+            const { fetchAbortController: previousFetchAbortController, globalAbortSignal, similarCaseIds } = get();
             const queryClient = QueryClientManager.instance.queryClient;
 
             if (previousFetchAbortController && !previousFetchAbortController.signal.aborted) {
@@ -676,9 +675,11 @@ export const createEpiDashboardStore = (kwArgs: CreateEpiDashboardStoreKwArgs) =
                 queryClient.setQueryData(retrieveCaseIdsByQueryQueryKey, currentCaseIdsByQueryResponse);
               }
 
+              const caseIds = [...currentCaseIdsByQueryResponse.case_ids, ...similarCaseIds];
+
               const currentCases = QueryUtil.getValidQueryData<Case[]>(QueryUtil.getGenericKey(QUERY_KEY.CASES_LAZY));
               const currentCaseIds = (currentCases ?? []).map(x => x.id);
-              const missingCaseIds = difference(currentCaseIdsByQueryResponse.case_ids, currentCaseIds);
+              const missingCaseIds = difference(caseIds, currentCaseIds);
               if (missingCaseIds.length) {
                 const missingCasesResult = (await CaseApi.instance.retrieveCasesByIds({
                   case_type_id: completeCaseType.id,
@@ -691,7 +692,7 @@ export const createEpiDashboardStore = (kwArgs: CreateEpiDashboardStoreKwArgs) =
               casesMap.forEach((item) => {
                 queryClient.setQueryData(QueryUtil.getGenericKey(QUERY_KEY.CASES_LAZY, item.id), item);
               });
-              const cases = currentCaseIdsByQueryResponse.case_ids.map(id => casesMap.get(id));
+              const cases = caseIds.map(id => casesMap.get(id));
 
               setBaseData(cases);
               set({ isDataLoading: false, isMaxResultsExceeded: currentCaseIdsByQueryResponse.is_max_results_exceeded });

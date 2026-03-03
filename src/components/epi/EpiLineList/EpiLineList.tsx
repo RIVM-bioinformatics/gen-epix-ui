@@ -2,6 +2,7 @@ import {
   Box,
   CircularProgress,
   Link,
+  Tooltip,
   useTheme,
 } from '@mui/material';
 import type { ReactElement } from 'react';
@@ -17,7 +18,9 @@ import { useStore } from 'zustand';
 import { useShallow } from 'zustand/shallow';
 import { useDebouncedCallback } from 'use-debounce';
 import type { ListRange } from 'react-virtuoso';
+import TroubleshootIcon from '@mui/icons-material/Troubleshoot';
 
+import CollectionIcon from '../../../assets/icons/CollectionIcon.svg?react';
 import { EpiWidget } from '../EpiWidget';
 import { EpiLegendaItem } from '../EpiLegendaItem';
 import type {
@@ -170,14 +173,28 @@ export const EpiLineList = ({ linkedScrollSubject, onLink, caseSet }: EpiLineLis
     );
   }, [onGeneticSequenceCellClick]);
 
+  const renderEventsHeader = useCallback(() => {
+    return (
+      <Tooltip
+        arrow
+        title={t('Indicates if case is in an event')}
+        aria-hidden={false}
+      >
+        <CollectionIcon
+          style={{
+            color: theme.palette.primary.main,
+            position: 'absolute',
+            width: 20,
+            height: 20,
+            marginLeft: theme.spacing(-0.5),
+          }}
+          fontSize={'small'}
+        />
+      </Tooltip>
+    );
+  }, [t, theme]);
+
   const renderEventsCell = useCallback(({ row }: TableRowParams<Case>) => {
-    if (caseSet) {
-      return (
-        <Box>
-          {`✓`}
-        </Box>
-      );
-    }
     let queryResult;
     const rowId = `row_${row.id}`;
 
@@ -204,7 +221,42 @@ export const EpiLineList = ({ linkedScrollSubject, onLink, caseSet }: EpiLineLis
         />
       </Box>
     );
-  }, [caseSet]);
+  }, []);
+
+  const renderSimilarCell = useCallback(({ row }: TableRowParams<Case>) => {
+    const similarCaseIds = epiStore.getState().similarCaseIds;
+    if (similarCaseIds.includes(row.id)) {
+      return (
+        <Box>
+          {`✓`}
+        </Box>
+      );
+    }
+    return null;
+  }, [epiStore]);
+
+
+  const renderSimilarHeader = useCallback(() => {
+    return (
+      <Tooltip
+        arrow
+        title={t('Indicates if the case has been identified as similar to another case based on the selected tree algorithm and distance threshold')}
+        aria-hidden={false}
+      >
+        <TroubleshootIcon
+          style={{
+            color: theme.palette.primary.main,
+            position: 'absolute',
+            width: 20,
+            height: 20,
+            marginLeft: theme.spacing(-0.5),
+          }}
+          fontSize={'small'}
+        />
+      </Tooltip>
+    );
+  }, [t, theme]);
+
 
   const renderCell = useCallback(({ id, row }: TableRowParams<Case>) => {
     const rowValue = CaseUtil.getRowValue(row.content, completeCaseType.case_type_cols[id], completeCaseType);
@@ -234,17 +286,28 @@ export const EpiLineList = ({ linkedScrollSubject, onLink, caseSet }: EpiLineLis
       {
         type: 'text',
         renderCell: renderEventsCell,
-        headerTooltipContent: t`Is case in an event?`,
         isInitiallyVisible: true,
         isStatic: true,
         frozen: true,
         resizable: false,
         id: 'events',
-        headerName: '✓',
-        widthPx: 32,
+        renderHeader: renderEventsHeader,
+        widthPx: 24,
+      },
+      {
+        type: 'text',
+        renderCell: renderSimilarCell,
+        headerTooltipContent: t`Is similar case?`,
+        isInitiallyVisible: true,
+        isStatic: true,
+        frozen: true,
+        resizable: false,
+        id: 'similar',
+        renderHeader: renderSimilarHeader,
+        widthPx: 24,
       },
     ];
-  }, [renderEventsCell, t]);
+  }, [renderEventsCell, renderSimilarCell, renderEventsHeader, renderSimilarHeader, t]);
 
   const tableColumns = useMemo<TableColumn<Case>[]>(() => {
     const { DATA_MISSING_CHARACTER } = ConfigManager.instance.config.epi;

@@ -1,5 +1,4 @@
 import type {
-  Case,
   ColType,
   CaseTypeCol,
   Col,
@@ -25,11 +24,6 @@ export type CaseTypeRowValue = {
 export enum STRATIFICATION_MODE {
   FIELD = 'FIELD',
   SELECTION = 'SELECTION',
-}
-
-export interface CaseWithMetaData extends Case {
-  isSelected: boolean;
-  groupColor?: string;
 }
 
 export type StratificationLegendaItem = {

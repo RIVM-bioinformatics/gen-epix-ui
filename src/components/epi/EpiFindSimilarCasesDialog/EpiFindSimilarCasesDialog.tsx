@@ -178,6 +178,7 @@ export const EpiFindSimilarCasesDialog = withDialog<EpiFindSimilarCasesDialogPro
   }, [query.data, openProps.allRows]);
 
   const onAddToLineListButtonClick = useCallback(() => {
+    // eslint-disable-next-line @typescript-eslint/no-floating-promises
     setSimilarCasesIds(similarCaseIdsNotInView);
     onClose();
   }, [onClose, setSimilarCasesIds, similarCaseIdsNotInView]);
