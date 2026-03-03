@@ -14,11 +14,17 @@ import {
 } from 'yup';
 import { yupResolver } from '@hookform/resolvers/yup';
 import type { Resolver } from 'react-hook-form';
-import { useForm } from 'react-hook-form';
 import {
+  useForm,
+  useWatch,
+} from 'react-hook-form';
+import {
+  Alert,
+  AlertTitle,
   Box,
-  Button,
+  Typography,
 } from '@mui/material';
+import { useStore } from 'zustand';
 
 import {
   type WithDialogRenderProps,
@@ -48,7 +54,8 @@ import { NumberUtil } from '../../../utils/NumberUtil';
 import { ResponseHandler } from '../../ui/ResponseHandler';
 
 export interface EpiFindSimilarCasesDialogOpenProps {
-  rows: Case[];
+  allRows: Case[];
+  selectedRows: Case[];
   completeCaseType: CompleteCaseType;
 }
 
@@ -76,6 +83,7 @@ export const EpiFindSimilarCasesDialog = withDialog<EpiFindSimilarCasesDialogPro
   const formId = useId();
   const epiStore = useContext(EpiDashboardStoreContext);
   const treeConfiguration = epiStore.getState().epiTreeWidgetData.treeConfiguration;
+  const setSimilarCasesIds = useStore(epiStore, (state) => state.setSimilarCasesIds);
   const treeConfigurations = useMemo(() => EpiTreeUtil.getTreeConfigurations(openProps.completeCaseType), [openProps.completeCaseType]);
   const [formData, setFormData] = useState<FormFields>(null);
 
@@ -116,36 +124,34 @@ export const EpiFindSimilarCasesDialog = withDialog<EpiFindSimilarCasesDialogPro
     resolver: yupResolver(schema, undefined,{ raw: true }) as Resolver<FormFields>,
     values: {
       treeCaseTypeColId: treeConfiguration ? treeConfiguration.caseTypeCol.id : null,
-      maxDistance: 20, // !FIXME
+      maxDistance: 5, // !FIXME
     },
   });
-  const { handleSubmit } = formMethods;
+  const { handleSubmit, control } = formMethods;
+
+  const formValues = useWatch({ control });
+
+  // Note: keeping track of dirty against submitted value, not the form dirty state.
+  const isDirty = useMemo(() => {
+    if (!formData) {
+      return false;
+    }
+    return formValues.treeCaseTypeColId !== formData.treeCaseTypeColId || formValues.maxDistance !== formData.maxDistance;
+  }, [formData, formValues]);
 
   useEffect(() => {
     onTitleChange(t`Find similar cases`);
   }, [t, onTitleChange]);
-
-  useEffect(() => {
-    const actions: DialogAction[] = [];
-    actions.push({
-      ...TestIdUtil.createAttributes('EpiFindSimilarCasesDialog-closeButton'),
-      color: 'secondary',
-      variant: 'contained',
-      label: t`Close`,
-      onClick: onClose,
-    });
-    onActionsChange(actions);
-  }, [onActionsChange, onClose, t]);
 
   const onFormSubmit = useCallback((data: FormFields) => {
     setFormData(data);
   }, []);
 
   const query = useQueryMemo({
-    queryKey: [QueryUtil.getGenericKey(QUERY_KEY.SIMILAR_CASES), JSON.stringify({ formData, rowIds: openProps.rows.map(row => row.id) })],
+    queryKey: [QueryUtil.getGenericKey(QUERY_KEY.SIMILAR_CASES), JSON.stringify({ formData, rowIds: openProps.selectedRows.map(row => row.id) })],
     queryFn: async ({ signal }) => {
       const response = await CaseApi.instance.retrieveSimilarCases({
-        case_ids: openProps.rows.map(x => x.id),
+        case_ids: openProps.selectedRows.map(x => x.id),
         case_type_id: openProps.completeCaseType.id,
         genetic_distance_case_type_col_id: formData?.treeCaseTypeColId,
         max_distance: formData?.maxDistance,
@@ -155,8 +161,63 @@ export const EpiFindSimilarCasesDialog = withDialog<EpiFindSimilarCasesDialogPro
     enabled: !!formData,
   });
 
+  const similarCaseIdsNotInView = useMemo(() => {
+    if (!query.data) {
+      return [];
+    }
+    const allRowIds = openProps.allRows.map(x => x.id);
+    return query.data.filter(x => !allRowIds.includes(x));
+  }, [query.data, openProps.allRows]);
+
+  const similarCaseIdsAlreadyInView = useMemo(() => {
+    if (!query.data) {
+      return [];
+    }
+    const allRowIds = openProps.allRows.map(x => x.id);
+    return query.data.filter(x => allRowIds.includes(x));
+  }, [query.data, openProps.allRows]);
+
+  const onAddToLineListButtonClick = useCallback(() => {
+    setSimilarCasesIds(similarCaseIdsNotInView);
+    onClose();
+  }, [onClose, setSimilarCasesIds, similarCaseIdsNotInView]);
+
+  useEffect(() => {
+    const actions: DialogAction[] = [];
+    actions.push({
+      ...TestIdUtil.createAttributes('EpiFindSimilarCasesDialog-closeButton'),
+      color: 'primary',
+      variant: 'outlined',
+      label: t`Close`,
+      onClick: onClose,
+    });
+    actions.push({
+      ...TestIdUtil.createAttributes('EpiFindSimilarCasesDialog-findSimilarCasesButton'),
+      color: 'secondary',
+      variant: 'contained',
+      form: formId,
+      type: 'submit',
+      label: t`Search`,
+    });
+    if (similarCaseIdsNotInView.length > 0 && !isDirty) {
+      actions.push({
+        ...TestIdUtil.createAttributes('EpiFindSimilarCasesDialog-addSimilarCasesButton'),
+        color: 'secondary',
+        variant: 'contained',
+        label: t('Add {{count}} similar cases to line list', { count: similarCaseIdsNotInView.length }),
+        onClick: onAddToLineListButtonClick,
+      });
+    }
+    onActionsChange(actions);
+  }, [formId, isDirty, onActionsChange, onAddToLineListButtonClick, onClose, similarCaseIdsNotInView.length, t]);
+
   return (
     <Box>
+      <Box marginBottom={2}>
+        <Typography>
+          {t('Select a tree and maximum distance to find similar cases for the {{count}} selected cases.', { count: openProps.selectedRows.length })}
+        </Typography>
+      </Box>
       <GenericForm<FormFields>
         formFieldDefinitions={formFieldDefinitions}
         formId={formId}
@@ -164,25 +225,41 @@ export const EpiFindSimilarCasesDialog = withDialog<EpiFindSimilarCasesDialogPro
         schema={schema}
         onSubmit={handleSubmit(onFormSubmit)}
       />
-      <Button
-        type={'submit'}
-        form={formId}
-        variant={'contained'}
-        color={'primary'}
-      >
-        {t`Find similar cases`}
-      </Button>
       <ResponseHandler loadables={query}>
-        {query.data && (
-          <Box mt={2}>
-            {JSON.stringify(query?.data)}
-          </Box>
+        {query.data && !isDirty && (
+          <>
+            <Box marginY={2}>
+              <Alert
+                severity={query.data.length > 0 ? 'success' : 'warning'}
+              >
+                <AlertTitle>
+                  {t('Found {{count}} similar cases with a distance of {{distance}}.', { count: query.data.length, distance: formData?.maxDistance })}
+                </AlertTitle>
+              </Alert>
+            </Box>
+            {similarCaseIdsNotInView.length !== query.data.length && (
+              <Box marginY={2}>
+                <Alert
+                  severity={'info'}
+                >
+                  <AlertTitle>
+                    {t('{{count}} similar cases can be added to the line list.', { count: similarCaseIdsNotInView.length })}
+                  </AlertTitle>
+                </Alert>
+              </Box>
+            )}
+            {similarCaseIdsAlreadyInView.length > 0 && (
+              <Alert
+                severity={'warning'}
+              >
+                <AlertTitle>
+                  {t('{{count}} similar cases found that are already in the line list.', { count: similarCaseIdsAlreadyInView.length })}
+                </AlertTitle>
+              </Alert>
+            )}
+          </>
         )}
-
       </ResponseHandler>
-      <Box>
-        {}
-      </Box>
     </Box>
   );
 }, {

@@ -80,7 +80,8 @@ export const EpiLineListPrimaryMenu = ({
         {
           label: t`Find similar cases`,
           callback: () => EpiEventBusManager.instance.emit('openFindSimilarCasesDialog', {
-            rows: sortedData,
+            selectedRows: sortedData,
+            allRows: sortedData,
             completeCaseType,
           }),
         },
@@ -88,7 +89,8 @@ export const EpiLineListPrimaryMenu = ({
           label: t`Find similar cases (based on selected cases)`,
           disabled: !selectedIds?.length,
           callback: () => EpiEventBusManager.instance.emit('openFindSimilarCasesDialog', {
-            rows: EpiLineListUtil.getSelectedRows(sortedData, selectedIds),
+            selectedRows: EpiLineListUtil.getSelectedRows(sortedData, selectedIds),
+            allRows: sortedData,
             completeCaseType,
           }),
         },

@@ -115,6 +115,7 @@ interface EpiDashboardStoreState extends TableStoreState<Case> {
   numVisibleAttributesInSummary: number;
   isMaxResultsExceeded: boolean;
   isMaxResultsExceededDismissed: boolean;
+  similarCaseIds: string[];
 }
 
 interface EpiDashboardStoreActions extends TableStoreActions<Case> {
@@ -132,6 +133,7 @@ interface EpiDashboardStoreActions extends TableStoreActions<Case> {
   destroy: () => void;
   resetTreeAddresses: () => void;
   setNumVisibleAttributesInSummary: (numVisibleAttributesInSummary: number) => void;
+  setSimilarCasesIds: (similarCaseIds: string[]) => void;
 
   // Private
   reloadStratification: () => void;
@@ -195,6 +197,7 @@ const createEpiDashboardStoreInitialState = (kwArgs: CreateEpiDashboardStoreInit
     treeAddresses: {},
     newick: null,
     treeResponse: null,
+    similarCaseIds: [],
     epiTreeWidgetData: createEpiTreeWidgetDataInitialState(),
     epiListWidgetData: {
       ...createWidgetDataInitialState(),
@@ -261,6 +264,11 @@ export const createEpiDashboardStore = (kwArgs: CreateEpiDashboardStoreKwArgs) =
               resetTreeAddresses();
               await setFilterValue(treeFilter.id, treeFilter.initialFilterValue);
             }
+          },
+          setSimilarCasesIds: (similarCaseIds: string[]) => {
+            set({ similarCaseIds });
+
+            console.log('do something');
           },
           stratify: (mode, caseTypeCol) => {
             const { sortedData, selectedIds } = get();
