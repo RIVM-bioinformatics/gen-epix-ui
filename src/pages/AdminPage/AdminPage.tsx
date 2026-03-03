@@ -18,7 +18,6 @@ import {
   useMemo,
 } from 'react';
 
-import { adminRoutes } from '../../routes';
 import { AuthorizationManager } from '../../classes/managers/AuthorizationManager';
 import { RouterManager } from '../../classes/managers/RouterManager';
 import { PageContainer } from '../../components/ui/PageContainer';
@@ -33,21 +32,25 @@ type Category = {
   items: MyNonIndexRouteObject[];
 };
 
-export const AdminContent = () => {
-  const location = useLocation();
+export type AdminPageProps = {
+  readonly routes: MyNonIndexRouteObject[];
+};
+
+export const AdminPage = ({ routes }: AdminPageProps) => {
   const { t } = useTranslation();
+  const location = useLocation();
   const theme = useTheme();
   const authorizationManager = useMemo(() => AuthorizationManager.instance, []);
 
   const menuItems = useMemo(() => {
-    const items = adminRoutes
+    const items = routes
       .map(r => r.children?.length ? r.children.find(child => child.index) as MyNonIndexRouteObject : r)
       .filter(r => {
         const hasPermission = authorizationManager.doesUserHavePermission(r.handle.requiredPermissions);
         return !r.handle?.hidden && hasPermission;
       });
     return items;
-  }, [authorizationManager]);
+  }, [authorizationManager, routes]);
 
   const categoryToLabelMap = useMemo<Record<ADMIN_PAGE_CATEGORY, string>>(() => {
     return {
@@ -85,78 +88,6 @@ export const AdminContent = () => {
       <Outlet />
     );
   }
-  return (
-    <Box>
-      {categories.map(category => (
-        <Box
-          key={category.name}
-          sx={{
-            marginTop: 1,
-            marginBottom: 3,
-          }}
-        >
-          <Typography
-            component={'h2'}
-            sx={{
-              marginBottom: 1,
-            }}
-            variant={'h3'}
-          >
-            {category.label}
-          </Typography>
-          <Box
-            sx={{
-              display: 'grid',
-              gridTemplateColumns: 'repeat(1, 1fr)',
-              gap: theme.spacing(1),
-              [theme.breakpoints.up('md')]: {
-                gridTemplateColumns: 'repeat(2, 1fr)',
-              },
-              [theme.breakpoints.up('lg')]: {
-                gridTemplateColumns: 'repeat(3, 1fr)',
-              },
-              [theme.breakpoints.up('xl')]: {
-                gridTemplateColumns: 'repeat(4, 1fr)',
-              },
-            }}
-          >
-            {category.items.map(item => (
-              <Card
-                key={item.path}
-                square
-                sx={{
-                  flexDirection: 'column',
-                  justifyContent: 'space-between',
-                }}
-              >
-                <CardActionArea
-                // eslint-disable-next-line react/jsx-no-bind
-                  onClick={async () => onCardClick(item.path)}
-                >
-                  <CardHeader title={t(item.handle.titleKey)} />
-                  <CardContent>
-                    {t(item.handle.subTitleKey)}
-                  </CardContent>
-                </CardActionArea>
-              </Card>
-            ))}
-          </Box>
-          <Divider
-            sx={{
-              marginTop: 2,
-              marginBottom: 2,
-            }}
-          />
-        </Box>
-      ))}
-
-
-    </Box>
-  );
-};
-
-export const AdminPage = () => {
-  const { t } = useTranslation();
 
   return (
     <PageContainer
@@ -164,7 +95,70 @@ export const AdminPage = () => {
       testIdAttributes={TestIdUtil.createAttributes('AdminPage')}
       title={t`Management`}
     >
-      <AdminContent />
+      <Box>
+        {categories.map(category => (
+          <Box
+            key={category.name}
+            sx={{
+              marginTop: 1,
+              marginBottom: 3,
+            }}
+          >
+            <Typography
+              component={'h2'}
+              sx={{
+                marginBottom: 1,
+              }}
+              variant={'h3'}
+            >
+              {category.label}
+            </Typography>
+            <Box
+              sx={{
+                display: 'grid',
+                gridTemplateColumns: 'repeat(1, 1fr)',
+                gap: theme.spacing(1),
+                [theme.breakpoints.up('md')]: {
+                  gridTemplateColumns: 'repeat(2, 1fr)',
+                },
+                [theme.breakpoints.up('lg')]: {
+                  gridTemplateColumns: 'repeat(3, 1fr)',
+                },
+                [theme.breakpoints.up('xl')]: {
+                  gridTemplateColumns: 'repeat(4, 1fr)',
+                },
+              }}
+            >
+              {category.items.map(item => (
+                <Card
+                  key={item.path}
+                  square
+                  sx={{
+                    flexDirection: 'column',
+                    justifyContent: 'space-between',
+                  }}
+                >
+                  <CardActionArea
+                    // eslint-disable-next-line react/jsx-no-bind
+                    onClick={async () => onCardClick(item.path)}
+                  >
+                    <CardHeader title={t(item.handle.titleKey)} />
+                    <CardContent>
+                      {t(item.handle.subTitleKey)}
+                    </CardContent>
+                  </CardActionArea>
+                </Card>
+              ))}
+            </Box>
+            <Divider
+              sx={{
+                marginTop: 2,
+                marginBottom: 2,
+              }}
+            />
+          </Box>
+        ))}
+      </Box>
     </PageContainer>
   );
 };
