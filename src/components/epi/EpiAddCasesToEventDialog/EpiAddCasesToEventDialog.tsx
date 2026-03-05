@@ -13,7 +13,6 @@ import {
 } from 'react';
 import { useTranslation } from 'react-i18next';
 import { useStore } from 'zustand';
-import { useShallow } from 'zustand/shallow';
 import {
   FormProvider,
   useForm,
@@ -84,21 +83,18 @@ export const EpiAddCasesToEventDialog = withDialog<EpiAddCasesToEventDialogProps
   const dataCollectionsMapQuery = useDataCollectionsMapQuery();
   const caseSetOptionsQuery = useCaseSetOptionsQuery();
   const caseSetsMapQuery = useCaseSetsMapQuery();
-  const epiStore = useContext(EpiDashboardStoreContext);
-  const fetchData = useStore(epiStore, useShallow((state) => state.fetchData));
-  const completeCaseType = useStore(epiStore, useShallow((state) => state.completeCaseType));
+  const epiDashboardStore = useContext(EpiDashboardStoreContext);
+  const fetchData = useStore(epiDashboardStore, (state) => state.fetchData);
+  const completeCaseType = useStore(epiDashboardStore, (state) => state.completeCaseType);
   const formId = useId();
   const filteredCaseSetOptions = useMemo(() => (caseSetOptionsQuery.options ?? []).filter(option => {
-    if (openProps.currentCaseSet?.id === option.value) {
-      return false;
-    }
     const caseSet = caseSetsMapQuery.map.get(option.value);
     if (caseSet.case_type_id !== completeCaseType.id) {
       return false;
     }
 
     return true;
-  }), [caseSetOptionsQuery.options, caseSetsMapQuery.map, completeCaseType.id, openProps.currentCaseSet]);
+  }), [caseSetOptionsQuery.options, caseSetsMapQuery.map, completeCaseType.id]);
 
   const formMethods = useForm<FormFields>({
     values: {

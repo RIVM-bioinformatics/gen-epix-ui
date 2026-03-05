@@ -5,6 +5,7 @@ import type { EpiContactDetailsDialogOpenProps } from '../../../components/epi/E
 import type { EpiCreateEventDialogOpenProps } from '../../../components/epi/EpiCreateEventDialog';
 import type { EpiFindSimilarCasesDialogOpenProps } from '../../../components/epi/EpiFindSimilarCasesDialog';
 import type { EpiRemoveCasesFromEventDialogOpenProps } from '../../../components/epi/EpiRemoveCasesFromEventDialog';
+import type { EpiRemoveFindSimilarCasesResultDialogOpenProps } from '../../../components/epi/EpiRemoveFindSimilarCasesResultDialog/EpiRemoveFindSimilarCasesResultDialog';
 import type { EpiSequenceDownloadDialogOpenProps } from '../../../components/epi/EpiSequenceDownloadDialog';
 import type { EPI_ZONE } from '../../../models/epi';
 import { EventBusAbstract } from '../../abstracts/EventBusAbstract';
@@ -40,6 +41,7 @@ type EpiEvent = {
   openRemoveCasesFromEventDialog: EpiRemoveCasesFromEventDialogOpenProps;
   openAddCasesToEventDialog: EpiAddCasesToEventDialogOpenProps;
   openBulkEditCaseDialog: EpiBulkEditCaseDialogOpenProps;
+  openRemoveFindSimilarCasesResultDialog: EpiRemoveFindSimilarCasesResultDialogOpenProps;
   openFiltersMenu: void;
   onEventCreated: void;
   onDownloadOptionsRequested: void;

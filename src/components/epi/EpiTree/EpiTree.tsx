@@ -91,32 +91,32 @@ export const EpiTree = ({ linkedScrollSubject, ref }: EpiTreeProps) => {
   const [headerCanvas, setHeaderCanvas] = useState<HTMLCanvasElement>();
   const highlightingManager = useMemo(() => EpiHighlightingManager.instance, []);
   const canvasScrollSubject = useMemo<Subject<{ x: number; y: number }>>(() => new Subject({ x: 0, y: 0 }), []);
-  const epiStore = useContext(EpiDashboardStoreContext);
-  const setPhylogeneticTreeResponse = useStore(epiStore, (state) => state.setPhylogeneticTreeResponse);
-  const baseData = useStore(epiStore, (state) => state.baseData);
-  const filteredCases = useStore(epiStore, (state) => state.filteredData[SELECTION_FILTER_GROUP]);
-  const setSorting = useStore(epiStore, (state) => state.setSorting);
-  const tree = useStore(epiStore, (state) => state.tree);
-  const sortByField = useStore(epiStore, (state) => state.sortByField);
-  const stratification = useStore(epiStore, (state) => state.stratification);
-  const completeCaseType = useStore(epiStore, (state) => state.completeCaseType);
-  const hasActiveTreeFilter = useStore(epiStore, (state) => !state.filters.find(filter => filter instanceof TreeFilter).isInitialFilterValue());
-  const addTreeFilter = useStore(epiStore, (state) => state.addTreeFilter);
-  const treeFilterStepOut = useStore(epiStore, (state) => state.treeFilterStepOut);
-  const updateEpiTreeWidgetData = useStore(epiStore, (state) => state.updateEpiTreeWidgetData);
-  const removeTreeFilter = useStore(epiStore, (state) => state.removeTreeFilter);
-  const isCaseDataLoading = useStore(epiStore, (state) => state.isDataLoading);
-  const newick = useStore(epiStore, (state) => state.newick);
-  const resetTreeAddresses = useStore(epiStore, (state) => state.resetTreeAddresses);
+  const epiDashboardStore = useContext(EpiDashboardStoreContext);
+  const setPhylogeneticTreeResponse = useStore(epiDashboardStore, (state) => state.setPhylogeneticTreeResponse);
+  const baseData = useStore(epiDashboardStore, (state) => state.baseData);
+  const filteredCases = useStore(epiDashboardStore, (state) => state.filteredData[SELECTION_FILTER_GROUP]);
+  const setSorting = useStore(epiDashboardStore, (state) => state.setSorting);
+  const tree = useStore(epiDashboardStore, (state) => state.tree);
+  const sortByField = useStore(epiDashboardStore, (state) => state.sortByField);
+  const stratification = useStore(epiDashboardStore, (state) => state.stratification);
+  const completeCaseType = useStore(epiDashboardStore, (state) => state.completeCaseType);
+  const hasActiveTreeFilter = useStore(epiDashboardStore, (state) => !state.filters.find(filter => filter instanceof TreeFilter).isInitialFilterValue());
+  const addTreeFilter = useStore(epiDashboardStore, (state) => state.addTreeFilter);
+  const treeFilterStepOut = useStore(epiDashboardStore, (state) => state.treeFilterStepOut);
+  const updateEpiTreeWidgetData = useStore(epiDashboardStore, (state) => state.updateEpiTreeWidgetData);
+  const removeTreeFilter = useStore(epiDashboardStore, (state) => state.removeTreeFilter);
+  const isCaseDataLoading = useStore(epiDashboardStore, (state) => state.isDataLoading);
+  const newick = useStore(epiDashboardStore, (state) => state.newick);
+  const resetTreeAddresses = useStore(epiDashboardStore, (state) => state.resetTreeAddresses);
   const isShowDistancesEnabled = useStore(userProfileStore, (state) => state.epiDashboardTreeSettings.isShowDistancesEnabled);
   const [epiContextMenuConfig, setEpiContextMenuConfig] = useState<EpiContextMenuConfigWithPosition | null>(null);
   const [zoomInMenuItemConfig, setZoomInMenuItemConfig] = useState<ZoomInMenuItemConfig>(null);
   const [extraLeafInfoId, setExtraLeafInfoId] = useState<string>(null);
-  const [treeConfiguration, setTreeConfiguration] = useState<TreeConfiguration>(epiStore.getState().epiTreeWidgetData.treeConfiguration);
+  const [treeConfiguration, setTreeConfiguration] = useState<TreeConfiguration>(epiDashboardStore.getState().epiTreeWidgetData.treeConfiguration);
   const [treeAssembly, setTreeAssembly] = useState<TreeAssembly>(null);
-  const [verticalScrollPosition, setVerticalScrollPosition] = useState<number>(epiStore.getState().epiTreeWidgetData.verticalScrollPosition);
-  const [horizontalScrollPosition, setHorizontalScrollPosition] = useState<number>(epiStore.getState().epiTreeWidgetData.horizontalScrollPosition);
-  const [zoomLevel, setZoomLevel] = useState<number>(epiStore.getState().epiTreeWidgetData.zoomLevel);
+  const [verticalScrollPosition, setVerticalScrollPosition] = useState<number>(epiDashboardStore.getState().epiTreeWidgetData.verticalScrollPosition);
+  const [horizontalScrollPosition, setHorizontalScrollPosition] = useState<number>(epiDashboardStore.getState().epiTreeWidgetData.horizontalScrollPosition);
+  const [zoomLevel, setZoomLevel] = useState<number>(epiDashboardStore.getState().epiTreeWidgetData.zoomLevel);
   const [devicePixelRatio, setDevicePixelRatio] = useState<number>(DevicePixelRatioManager.instance.data);
   const [isLinked, setIsLinked] = useState(true);
   const internalHighlightingSubject = useMemo(() => new Subject<Highlighting>({
@@ -228,13 +228,13 @@ export const EpiTree = ({ linkedScrollSubject, ref }: EpiTreeProps) => {
     if (!treeConfigurations?.length) {
       setTreeConfiguration(null);
     }
-    const newConfig = epiStore.getState().epiTreeWidgetData.treeConfiguration || treeConfigurations[0];
+    const newConfig = epiDashboardStore.getState().epiTreeWidgetData.treeConfiguration || treeConfigurations[0];
 
     setTreeConfiguration(newConfig);
     updateEpiTreeWidgetData({
       treeConfiguration: newConfig,
     });
-  }, [epiStore, treeConfigurations, updateEpiTreeWidgetData]);
+  }, [epiDashboardStore, treeConfigurations, updateEpiTreeWidgetData]);
 
   const updateLinkedScrollSubjectDebounced = useDebouncedCallback((position: number) => {
     linkedScrollSubject.next({

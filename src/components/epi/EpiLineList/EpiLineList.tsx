@@ -15,7 +15,6 @@ import {
 } from 'react';
 import { useTranslation } from 'react-i18next';
 import { useStore } from 'zustand';
-import { useShallow } from 'zustand/shallow';
 import { useDebouncedCallback } from 'use-debounce';
 import type { ListRange } from 'react-virtuoso';
 import TroubleshootIcon from '@mui/icons-material/Troubleshoot';
@@ -74,14 +73,14 @@ export const EpiLineList = ({ linkedScrollSubject, onLink, caseSet }: EpiLineLis
   const rowHighlightingSubject = useMemo(() => new Subject<string[]>([]), []);
   const tableRef = useRef<TableRef>(null);
 
-  const epiStore = useContext(EpiDashboardStoreContext);
-  const completeCaseType = useStore(epiStore, useShallow((state) => state.completeCaseType));
-  const sortedData = useStore(epiStore, useShallow((state) => state.sortedData));
-  const stratification = useStore(epiStore, useShallow((state) => state.stratification?.mode === STRATIFICATION_MODE.FIELD ? state.stratification : null));
-  const updateEpiListWidgetData = useStore(epiStore, useShallow((state) => state.updateEpiListWidgetData));
-  const treeAddresses = useStore(epiStore, useShallow((state) => state.treeAddresses));
-  const setTableColumns = useStore(epiStore, useShallow((state) => state.setColumns));
-  const isDataLoading = useStore(epiStore, useShallow((state) => state.isDataLoading));
+  const epiDashboardStore = useContext(EpiDashboardStoreContext);
+  const completeCaseType = useStore(epiDashboardStore, (state) => state.completeCaseType);
+  const sortedData = useStore(epiDashboardStore, (state) => state.sortedData);
+  const stratification = useStore(epiDashboardStore, (state) => state.stratification?.mode === STRATIFICATION_MODE.FIELD ? state.stratification : null);
+  const updateEpiListWidgetData = useStore(epiDashboardStore, (state) => state.updateEpiListWidgetData);
+  const treeAddresses = useStore(epiDashboardStore, (state) => state.treeAddresses);
+  const setTableColumns = useStore(epiDashboardStore, (state) => state.setColumns);
+  const isDataLoading = useStore(epiDashboardStore, (state) => state.isDataLoading);
 
   const onIndexCellClick = useCallback((row: Case) => {
     EpiEventBusManager.instance.emit('openCaseInfoDialog', {
@@ -224,7 +223,7 @@ export const EpiLineList = ({ linkedScrollSubject, onLink, caseSet }: EpiLineLis
   }, []);
 
   const renderSimilarCell = useCallback(({ row }: TableRowParams<Case>) => {
-    const similarCaseIds = epiStore.getState().similarCaseIds;
+    const similarCaseIds = epiDashboardStore.getState().findSimilarCasesResults.reduce<string[]>((acc, result) => [...acc, ...result.similarCaseIds], []);
     if (similarCaseIds.includes(row.id)) {
       return (
         <Box>
@@ -233,7 +232,7 @@ export const EpiLineList = ({ linkedScrollSubject, onLink, caseSet }: EpiLineLis
       );
     }
     return null;
-  }, [epiStore]);
+  }, [epiDashboardStore]);
 
 
   const renderSimilarHeader = useCallback(() => {
@@ -474,7 +473,7 @@ export const EpiLineList = ({ linkedScrollSubject, onLink, caseSet }: EpiLineLis
           forceHorizontalOverflow
           font={theme['gen-epix'].lineList.font}
           getRowName={getRowName}
-          initialVisibleItemIndex={epiStore.getState().epiListWidgetData.visibleItemItemIndex}
+          initialVisibleItemIndex={epiDashboardStore.getState().epiListWidgetData.visibleItemItemIndex}
           rowHeight={3}
           rowHighlightingSubject={rowHighlightingSubject}
           onRangeChanged={onRangeChangedDebounced}

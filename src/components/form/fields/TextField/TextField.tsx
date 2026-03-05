@@ -164,7 +164,7 @@ export const TextField = <TFieldValues extends FieldValues, TName extends Path<T
         name={name}
         render={renderController}
       />
-      { loading && <FormFieldLoadingIndicator />}
+      { !!loading && <FormFieldLoadingIndicator />}
     </FormControl>
   );
 };

@@ -213,7 +213,7 @@ export const Select = <TFieldValues extends FieldValues, TName extends Path<TFie
         name={name}
         render={renderController}
       />
-      { loading && <FormFieldLoadingIndicator />}
+      { !!loading && <FormFieldLoadingIndicator />}
     </FormControl>
   );
 };

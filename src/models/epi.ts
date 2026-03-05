@@ -116,6 +116,14 @@ export type EpiData = {
   treeAlgorithms: TreeAlgorithm[];
 };
 
+export type FindSimilarCasesResult = {
+  key: string;
+  similarCaseIds: string[];
+  originalCaseIds: string[];
+  distance: number;
+  caseTypeColId: string;
+};
+
 export type EpiCaseHasCaseSet = { [caseId: string]: boolean };
 
 export type EpiUploadMappedColumn = {

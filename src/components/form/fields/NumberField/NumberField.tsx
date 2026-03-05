@@ -181,7 +181,7 @@ export const NumberField = <TFieldValues extends FieldValues, TName extends Path
         name={name}
         render={renderController}
       />
-      { loading && <FormFieldLoadingIndicator />}
+      { !!loading && <FormFieldLoadingIndicator />}
     </FormControl>
   );
 };

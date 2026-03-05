@@ -57,8 +57,8 @@ export const EpiSequenceDownloadDialog = withDialog<EpiSequenceDownloadDialogPro
   }: EpiSequenceDownloadDialogProps,
 ): ReactElement => {
   const { t } = useTranslation();
-  const epiStore = useContext(EpiDashboardStoreContext);
-  const completeCaseType = useStore(epiStore, useShallow((state) => state.completeCaseType));
+  const epiDashboardStore = useContext(EpiDashboardStoreContext);
+  const completeCaseType = useStore(epiDashboardStore, useShallow((state) => state.completeCaseType));
 
   const geneticSequenceCaseTypeColOptions = useMemo<AutoCompleteOption<string>[]>(() => {
     const options: AutoCompleteOption<string>[] = [];

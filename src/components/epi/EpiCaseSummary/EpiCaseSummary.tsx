@@ -27,11 +27,11 @@ export type EpiCaseSummaryProps = {
 
 export const EpiCaseSummary = ({ epiCase }: EpiCaseSummaryProps) => {
   const { t } = useTranslation();
-  const epiStore = useContext(EpiDashboardStoreContext);
+  const epiDashboardStore = useContext(EpiDashboardStoreContext);
   const tableStore = useTableStoreContext<Case>();
-  const completeCaseType = useStore(epiStore, (state) => state.completeCaseType);
-  const numVisibleAttributesInSummary = useStore(epiStore, (state) => state.numVisibleAttributesInSummary);
-  const setNumVisibleAttributesInSummary = useStore(epiStore, (state) => state.setNumVisibleAttributesInSummary);
+  const completeCaseType = useStore(epiDashboardStore, (state) => state.completeCaseType);
+  const numVisibleAttributesInSummary = useStore(epiDashboardStore, (state) => state.numVisibleAttributesInSummary);
+  const setNumVisibleAttributesInSummary = useStore(epiDashboardStore, (state) => state.setNumVisibleAttributesInSummary);
   const tableColumns = useStore(tableStore, useShallow((state) => state.columns));
   const columnSettings = useStore(tableStore, useShallow((state) => state.columnSettings));
   const visibleColumnIds = useStore(tableStore, useShallow((state) => state.columnSettings.filter(c => c.isVisible).map(c => c.id)));

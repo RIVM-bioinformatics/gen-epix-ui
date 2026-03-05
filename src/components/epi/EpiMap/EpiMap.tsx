@@ -92,14 +92,14 @@ export const EpiMap = () => {
   const { dimensions: { width, height } } = useDimensions(containerRef);
   const highlightingManager = useMemo(() => EpiHighlightingManager.instance, []);
 
-  const epiStore = useContext(EpiDashboardStoreContext);
-  const stratification = useStore(epiStore, (state) => state.stratification);
-  const isDataLoading = useStore(epiStore, (state) => state.isDataLoading);
-  const sortedData = useStore(epiStore, (state) => state.sortedData);
-  const updateEpiMapWidgetData = useStore(epiStore, (state) => state.updateEpiMapWidgetData);
-  const epiMapWidgetData = useStore(epiStore, (state) => state.epiMapWidgetData);
-  const setFilterValue = useStore(epiStore, (state) => state.setFilterValue);
-  const completeCaseType = useStore(epiStore, (state) => state.completeCaseType);
+  const epiDashboardStore = useContext(EpiDashboardStoreContext);
+  const stratification = useStore(epiDashboardStore, (state) => state.stratification);
+  const isDataLoading = useStore(epiDashboardStore, (state) => state.isDataLoading);
+  const sortedData = useStore(epiDashboardStore, (state) => state.sortedData);
+  const updateEpiMapWidgetData = useStore(epiDashboardStore, (state) => state.updateEpiMapWidgetData);
+  const epiMapWidgetData = useStore(epiDashboardStore, (state) => state.epiMapWidgetData);
+  const setFilterValue = useStore(epiDashboardStore, (state) => state.setFilterValue);
+  const completeCaseType = useStore(epiDashboardStore, (state) => state.completeCaseType);
 
   const [focussedRegion, setFocussedRegion] = useState<Region>();
   const geoCaseTypeDims = useMemo(() => CaseTypeUtil.getCaseTypeDims(completeCaseType, [DimType.GEO]), [completeCaseType]);

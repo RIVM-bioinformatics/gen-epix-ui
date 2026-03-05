@@ -1,11 +1,11 @@
 import type { BoxProps } from '@mui/material';
 import {
   Box,
-  Divider,
   useTheme,
   StepIcon,
   Typography,
 } from '@mui/material';
+import type { ReactNode } from 'react';
 import { useCallback } from 'react';
 import omit from 'lodash/omit';
 import { useTranslation } from 'react-i18next';
@@ -13,20 +13,26 @@ import { visuallyHidden } from '@mui/utils';
 
 import { TestIdUtil } from '../../../utils/TestIdUtil';
 
+import { STEPPER_DIRECTION } from './stepperModel';
+
 export type Step = {
   key: string;
   label: string;
   optional?: boolean;
+  content?: ReactNode;
+  index?: string;
 };
 
 export type StepperProps = {
   readonly steps: Step[];
   readonly activeStep: string;
+  readonly direction?: STEPPER_DIRECTION;
+  readonly hideCompletedIndicator?: boolean;
 } & BoxProps;
 
 // NOTE: This Stepper component is an alternative for the MUI Stepper component, because it is more accessibility friendly
 
-export const Stepper = ({ steps, activeStep, ...boxProps }: StepperProps) => {
+export const Stepper = ({ steps, activeStep, direction = STEPPER_DIRECTION.HORIZONTAL, hideCompletedIndicator = false, ...boxProps }: StepperProps) => {
   const theme = useTheme();
   const { t } = useTranslation();
 
@@ -53,14 +59,13 @@ export const Stepper = ({ steps, activeStep, ...boxProps }: StepperProps) => {
       {...TestIdUtil.createAttributes('Stepper', { 'active-step': activeStep })}
       {...omit(boxProps, ['sx'])}
       sx={{
-        width: '100%',
         position: 'relative',
         ...boxProps.sx,
       }}
       role={'presentation'}
     >
       <Box
-        sx={{
+        sx={direction === STEPPER_DIRECTION.HORIZONTAL ? {
           display: 'flex',
           flexDirection: 'row',
           alignItems: 'center',
@@ -73,6 +78,15 @@ export const Stepper = ({ steps, activeStep, ...boxProps }: StepperProps) => {
           bottom: 0,
           margin: 0,
           padding: 0,
+        } : {
+          display: 'flex',
+          flexDirection: 'column',
+          alignItems: 'flex-start',
+          justifyContent: 'space-between',
+          gap: 1,
+          position: 'relative',
+          padding: 0,
+          margin: 0,
         }}
         component={'ol'}
       >
@@ -82,23 +96,39 @@ export const Stepper = ({ steps, activeStep, ...boxProps }: StepperProps) => {
             component={'li'}
             sx={{
               background: theme.palette.background.default,
-              paddingLeft: isFirstStep(step.key) ? 0 : 2,
-              paddingRight: isLastStep(step.key) ? 0 : 2,
+              paddingLeft: direction === STEPPER_DIRECTION.VERTICAL || isFirstStep(step.key) ? 0 : 2,
+              paddingRight: direction === STEPPER_DIRECTION.VERTICAL || isLastStep(step.key) ? 0 : 2,
               display: 'flex',
               flexDirection: 'row',
-              alignItems: 'center',
+              alignItems: direction === STEPPER_DIRECTION.HORIZONTAL ? 'center' : 'flex-start',
               gap: 1,
+              zIndex: 2,
+              position: 'relative',
             }}
             aria-current={isActiveStep(step.key) ? 'step' : undefined}
           >
             <Box>
               <StepIcon
-                completed={isCompletedStep(step.key)}
+                completed={hideCompletedIndicator ? false : isCompletedStep(step.key)}
                 active={isActiveStep(step.key)}
-                icon={index + 1}
+                icon={step.index ?? index + 1}
                 aria-hidden={'true'}
               />
             </Box>
+            {direction === STEPPER_DIRECTION.VERTICAL && (
+              <Box
+                role={'presentation'}
+                sx={{
+                  width: '1px',
+                  height: '100%',
+                  position: 'absolute',
+                  background: isLastStep(step.key) ? theme.palette.background.default : theme.palette.divider,
+                  marginLeft: theme.spacing(1.5),
+                  top: theme.spacing(1.5),
+                  zIndex: -1,
+                }}
+              />
+            )}
             <Box>
               {isActiveStep(step.key) && (
                 <Typography
@@ -118,6 +148,9 @@ export const Stepper = ({ steps, activeStep, ...boxProps }: StepperProps) => {
               )}
               <Typography
                 component={'span'}
+                sx={{
+                  fontWeight: isActiveStep(step.key) ? 'bold' : 'normal',
+                }}
               >
                 {step.label}
               </Typography>
@@ -133,13 +166,29 @@ export const Stepper = ({ steps, activeStep, ...boxProps }: StepperProps) => {
                   {t`Optional`}
                 </Typography>
               )}
+              {step.content && (
+                <Box
+                  sx={{
+                    marginTop: 1,
+                  }}
+                >
+                  {step.content}
+                </Box>
+              )}
             </Box>
           </Box>
         ))}
       </Box>
-      <Box>
-        <Divider />
-      </Box>
+      {direction === STEPPER_DIRECTION.HORIZONTAL && (
+        <Box
+          role={'presentation'}
+          sx={{
+            background: theme.palette.divider,
+            height: '1px',
+            width: '100%',
+          }}
+        />
+      )}
     </Box>
   );
 };

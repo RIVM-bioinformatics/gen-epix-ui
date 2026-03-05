@@ -53,10 +53,10 @@ export const EpiRemoveCasesFromEventDialog = withDialog<EpiRemoveCasesFromEventD
 ): ReactElement => {
   const { t } = useTranslation();
 
-  const epiStore = useContext(EpiDashboardStoreContext);
-  const completeCaseType = useStore(epiStore, useShallow((state) => state.completeCaseType));
-  const fetchData = useStore(epiStore, useShallow((state) => state.fetchData));
-  const setSelectedIds = useStore(epiStore, useShallow((state) => state.setSelectedIds));
+  const epiDashboardStore = useContext(EpiDashboardStoreContext);
+  const completeCaseType = useStore(epiDashboardStore, useShallow((state) => state.completeCaseType));
+  const fetchData = useStore(epiDashboardStore, useShallow((state) => state.fetchData));
+  const setSelectedIds = useStore(epiDashboardStore, useShallow((state) => state.setSelectedIds));
 
   const isMaxExceeded = openProps.rows.length > completeCaseType.delete_max_n_cases;
 
@@ -156,7 +156,7 @@ export const EpiRemoveCasesFromEventDialog = withDialog<EpiRemoveCasesFromEventD
         </Box>
       ) : (
         <Box>
-          {t('Are you sure you want to remove {{numCases}} selected cases from {{caseTypeName}}?', { numCases: openProps.rows.length, caseTypeName: completeCaseType.name })}
+          {t('Are you sure you want to remove {{numCases}} selected cases from {{eventName}}?', { numCases: openProps.rows.length, eventName: openProps.caseSet.name })}
         </Box>
       )}
     </ResponseHandler>

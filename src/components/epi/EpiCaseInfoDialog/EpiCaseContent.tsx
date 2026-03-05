@@ -34,8 +34,8 @@ export type EpiCaseContentProps = {
 export const EpiCaseContent = ({ epiCase, ...boxProps }: EpiCaseContentProps) => {
   const { t } = useTranslation();
   const epiContactDetailsDialogRef = useRef<EpiContactDetailsDialogRefMethods>(null);
-  const epiStore = useContext(EpiDashboardStoreContext);
-  const completeCaseType = useStore(epiStore, (state) => state.completeCaseType);
+  const epiDashboardStore = useContext(EpiDashboardStoreContext);
+  const completeCaseType = useStore(epiDashboardStore, (state) => state.completeCaseType);
 
   const caseTypeCols = useMemo(() => CaseTypeUtil.getCaseTypeCols(completeCaseType), [completeCaseType]);
 

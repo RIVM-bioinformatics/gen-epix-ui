@@ -66,6 +66,7 @@ export interface TableStoreState<TData> {
   sortedData: TData[];
   sortedIds: string[];
   visibleFilterWithinDimensions: { [key: string]: string };
+  creationTime: number;
 }
 
 export interface TableStoreActions<TData> {
@@ -165,6 +166,7 @@ export const createTableStoreInitialState = <TData>(kwArgs: CreateTableStoreInit
     sortedData: [],
     sortedIds: null,
     visibleFilterWithinDimensions: {},
+    creationTime: Date.now(),
   };
 };
 
@@ -378,8 +380,8 @@ export const createTableStoreActions = <TData>(kwArgs: {
       set({ selectedIds });
     },
     reloadSelectedIds: () => {
-      const { selectedIds, sortedData, idSelectorCallback } = get();
-      set({ selectedIds: intersection(selectedIds, sortedData.map(item => idSelectorCallback(item))) });
+      const { selectedIds, sortedData, idSelectorCallback, setSelectedIds } = get();
+      setSelectedIds(intersection(selectedIds, sortedData.map(item => idSelectorCallback(item))));
     },
     setColumns: (columns: TableColumn<TData>[]) => {
       set({ columns });

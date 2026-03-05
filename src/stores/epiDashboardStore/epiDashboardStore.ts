@@ -44,6 +44,7 @@ import type {
   Stratification,
   CaseTypeRowValue,
   StratificationLegendaItem,
+  FindSimilarCasesResult,
 } from '../../models/epi';
 import {
   STRATIFICATION_MODE,
@@ -115,7 +116,7 @@ interface EpiDashboardStoreState extends TableStoreState<Case> {
   numVisibleAttributesInSummary: number;
   isMaxResultsExceeded: boolean;
   isMaxResultsExceededDismissed: boolean;
-  similarCaseIds: string[];
+  findSimilarCasesResults: FindSimilarCasesResult[];
 }
 
 interface EpiDashboardStoreActions extends TableStoreActions<Case> {
@@ -133,7 +134,7 @@ interface EpiDashboardStoreActions extends TableStoreActions<Case> {
   destroy: () => void;
   resetTreeAddresses: () => void;
   setNumVisibleAttributesInSummary: (numVisibleAttributesInSummary: number) => void;
-  setSimilarCasesIds: (similarCaseIds: string[]) => Promise<void>;
+  setFindSimilarCasesResults: (findSimilarCasesResults: FindSimilarCasesResult[]) => Promise<void>;
 
   // Private
   reloadStratification: () => void;
@@ -197,7 +198,7 @@ const createEpiDashboardStoreInitialState = (kwArgs: CreateEpiDashboardStoreInit
     treeAddresses: {},
     newick: null,
     treeResponse: null,
-    similarCaseIds: [],
+    findSimilarCasesResults: [],
     epiTreeWidgetData: createEpiTreeWidgetDataInitialState(),
     epiListWidgetData: {
       ...createWidgetDataInitialState(),
@@ -225,6 +226,8 @@ export const createEpiDashboardStore = (kwArgs: CreateEpiDashboardStoreKwArgs) =
   const epiDashboardStore = createStore<EpiDashboardStore>()(
     persist(
       (set, get) => {
+        console.trace();
+
         const initialState = createEpiDashboardStoreInitialState({
           caseSetId,
           completeCaseType,
@@ -265,8 +268,8 @@ export const createEpiDashboardStore = (kwArgs: CreateEpiDashboardStoreKwArgs) =
               await setFilterValue(treeFilter.id, treeFilter.initialFilterValue);
             }
           },
-          setSimilarCasesIds: async (similarCaseIds: string[]) => {
-            set({ similarCaseIds });
+          setFindSimilarCasesResults: async (findSimilarCasesResults: FindSimilarCasesResult[]) => {
+            set({ findSimilarCasesResults });
             await get().fetchData();
           },
           stratify: (mode, caseTypeCol) => {
@@ -474,7 +477,13 @@ export const createEpiDashboardStore = (kwArgs: CreateEpiDashboardStoreKwArgs) =
             queryClient.setQueryData(QueryUtil.getGenericKey(QUERY_KEY.CASES_LAZY), currentCases.map(c => c.id === caseId ? item : c));
           },
           setPhylogeneticTreeResponse: (phylogeneticTree) => {
-            const { reloadSortedData, reloadTree, reloadSelectedIds } = get();
+            const { reloadSortedData, reloadTree, reloadSelectedIds, newick, creationTime } = get();
+
+            console.log('setPhylogeneticTreeResponse called with newick:', creationTime);
+
+            if (newick === phylogeneticTree.newick_repr) {
+              return;
+            }
 
             if (phylogeneticTree.newick_repr && phylogeneticTree.newick_repr.trim().length > 0 && phylogeneticTree.newick_repr !== '();') {
               // parse the newick into a tree
@@ -632,8 +641,10 @@ export const createEpiDashboardStore = (kwArgs: CreateEpiDashboardStoreKwArgs) =
           },
           fetchData: async () => {
             set({ isMaxResultsExceeded: false, isMaxResultsExceededDismissed: false, dataError: null });
-            const { fetchAbortController: previousFetchAbortController, globalAbortSignal, similarCaseIds } = get();
+            const { fetchAbortController: previousFetchAbortController, globalAbortSignal, findSimilarCasesResults } = get();
             const queryClient = QueryClientManager.instance.queryClient;
+
+            const similarCaseIds = findSimilarCasesResults?.flatMap((result) => result.similarCaseIds) || [];
 
             if (previousFetchAbortController && !previousFetchAbortController.signal.aborted) {
               previousFetchAbortController.abort();

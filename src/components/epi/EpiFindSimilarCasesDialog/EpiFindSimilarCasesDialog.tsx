@@ -25,6 +25,7 @@ import {
   Typography,
 } from '@mui/material';
 import { useStore } from 'zustand';
+import { produce } from 'immer';
 
 import {
   type WithDialogRenderProps,
@@ -81,9 +82,10 @@ export const EpiFindSimilarCasesDialog = withDialog<EpiFindSimilarCasesDialogPro
 ): ReactElement => {
   const { t } = useTranslation();
   const formId = useId();
-  const epiStore = useContext(EpiDashboardStoreContext);
-  const treeConfiguration = epiStore.getState().epiTreeWidgetData.treeConfiguration;
-  const setSimilarCasesIds = useStore(epiStore, (state) => state.setSimilarCasesIds);
+  const epiDashboardStore = useContext(EpiDashboardStoreContext);
+  const treeConfiguration = epiDashboardStore.getState().epiTreeWidgetData.treeConfiguration;
+  const setFindSimilarCasesResults = useStore(epiDashboardStore, (state) => state.setFindSimilarCasesResults);
+  const findSimilarCasesResults = useStore(epiDashboardStore, (state) => state.findSimilarCasesResults);
   const treeConfigurations = useMemo(() => EpiTreeUtil.getTreeConfigurations(openProps.completeCaseType), [openProps.completeCaseType]);
   const [formData, setFormData] = useState<FormFields>(null);
 
@@ -179,9 +181,19 @@ export const EpiFindSimilarCasesDialog = withDialog<EpiFindSimilarCasesDialogPro
 
   const onAddToLineListButtonClick = useCallback(() => {
     // eslint-disable-next-line @typescript-eslint/no-floating-promises
-    setSimilarCasesIds(similarCaseIdsNotInView);
+    setFindSimilarCasesResults(produce(findSimilarCasesResults, draft => {
+      draft.push({
+        key: findSimilarCasesResults.length.toString(),
+        similarCaseIds: similarCaseIdsNotInView,
+        distance: formData?.maxDistance,
+        caseTypeColId: formData?.treeCaseTypeColId,
+        originalCaseIds: openProps.allRows.map(x => x.id),
+      });
+      return draft;
+    }));
+
     onClose();
-  }, [onClose, setSimilarCasesIds, similarCaseIdsNotInView]);
+  }, [setFindSimilarCasesResults, findSimilarCasesResults, onClose, similarCaseIdsNotInView, formData?.maxDistance, formData?.treeCaseTypeColId, openProps.allRows]);
 
   useEffect(() => {
     const actions: DialogAction[] = [];
@@ -226,7 +238,10 @@ export const EpiFindSimilarCasesDialog = withDialog<EpiFindSimilarCasesDialogPro
         schema={schema}
         onSubmit={handleSubmit(onFormSubmit)}
       />
-      <ResponseHandler loadables={query}>
+      <ResponseHandler
+        inlineSpinner
+        loadables={query}
+      >
         {query.data && !isDirty && (
           <>
             <Box marginY={2}>

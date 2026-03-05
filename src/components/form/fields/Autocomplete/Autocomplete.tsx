@@ -264,7 +264,7 @@ export const Autocomplete = <TFieldValues extends FieldValues, TName extends Pat
         name={name}
         render={renderController}
       />
-      {loading && <FormFieldLoadingIndicator />}
+      {!!loading && <FormFieldLoadingIndicator />}
     </FormControl>
   );
 };

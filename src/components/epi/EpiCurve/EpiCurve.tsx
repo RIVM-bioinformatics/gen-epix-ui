@@ -80,15 +80,15 @@ export const EpiCurve = () => {
   const highlightingManager = useMemo(() => EpiHighlightingManager.instance, []);
   const chartRef = useRef<EChartsReact>(null);
 
-  const epiStore = useContext(EpiDashboardStoreContext);
-  const stratification = useStore(epiStore, (state) => state.stratification);
-  const isDataLoading = useStore(epiStore, (state) => state.isDataLoading);
-  const sortedData = useStore(epiStore, (state) => state.sortedData);
-  const completeCaseType = useStore(epiStore, (state) => state.completeCaseType);
-  const updateEpiCurveWidgetData = useStore(epiStore, (state) => state.updateEpiCurveWidgetData);
-  const epiCurveWidgetData = useStore(epiStore, (state) => state.epiCurveWidgetData);
-  const setFilterValue = useStore(epiStore, (state) => state.setFilterValue);
-  const filterDimensions = useStore(epiStore, (state) => state.filterDimensions);
+  const epiDashboardStore = useContext(EpiDashboardStoreContext);
+  const stratification = useStore(epiDashboardStore, (state) => state.stratification);
+  const isDataLoading = useStore(epiDashboardStore, (state) => state.isDataLoading);
+  const sortedData = useStore(epiDashboardStore, (state) => state.sortedData);
+  const completeCaseType = useStore(epiDashboardStore, (state) => state.completeCaseType);
+  const updateEpiCurveWidgetData = useStore(epiDashboardStore, (state) => state.updateEpiCurveWidgetData);
+  const epiCurveWidgetData = useStore(epiDashboardStore, (state) => state.epiCurveWidgetData);
+  const setFilterValue = useStore(epiDashboardStore, (state) => state.setFilterValue);
+  const filterDimensions = useStore(epiDashboardStore, (state) => state.filterDimensions);
   const timeCaseTypeDims = useMemo(() => CaseTypeUtil.getCaseTypeDims(completeCaseType, [DimType.TIME]), [completeCaseType]);
   const [focussedDate, setFocussedDate] = useState<string>(null);
   const [column, setColumn] = useState<CaseTypeCol>(null);

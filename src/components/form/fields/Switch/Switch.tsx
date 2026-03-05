@@ -97,7 +97,7 @@ export const Switch = <TFieldValues extends FieldValues, TName extends Path<TFie
             warningMessage={warningMessage}
           />
         </FormHelperText>
-        { loading && <FormFieldLoadingIndicator />}
+        { !!loading && <FormFieldLoadingIndicator />}
       </FormControl>
 
     );

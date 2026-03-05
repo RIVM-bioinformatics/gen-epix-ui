@@ -82,6 +82,10 @@ import {
   EpiFindSimilarCasesDialog,
   type EpiFindSimilarCasesDialogRefMethods,
 } from '../EpiFindSimilarCasesDialog';
+import {
+  EpiRemoveFindSimilarCasesResultDialog,
+  type EpiRemoveFindSimilarCasesResultDialogRefMethods,
+} from '../EpiRemoveFindSimilarCasesResultDialog/EpiRemoveFindSimilarCasesResultDialog';
 
 import {
   EpiDashboardSettingsSidebarItemIcon,
@@ -114,6 +118,7 @@ export const EpiDashboard = withEpiDashboardStore(({ caseSet }: EpiDashboardProp
   const epiRemoveCasesFromEventDialogRef = useRef<EpiRemoveCasesFromEventDialogRefMethods>(null);
   const epiAddCasesToEventDialogRef = useRef<EpiAddCasesToEventDialogRefMethods>(null);
   const epiBulkEditCaseDialogRef = useRef<EpiBulkEditCaseDialogRefMethods>(null);
+  const epiRemoveFindSimilarCasesResultDialogRef = useRef<EpiRemoveFindSimilarCasesResultDialogRefMethods>(null);
   const [isFilterSidebarOpen, setIsFilterSidebarOpen] = useState(false);
   const [isSettingsSidebarOpen, setIsSettingsSidebarOpen] = useState(false);
   const [isDownloadSidebarOpen, setIsDownloadSidebarOpen] = useState(false);
@@ -121,20 +126,20 @@ export const EpiDashboard = withEpiDashboardStore(({ caseSet }: EpiDashboardProp
   const linkedScrollSubject = useMemo(() => {
     return new Subject<EpiLinkedScrollSubjectValue>();
   }, []);
-  const epiStore = useContext(EpiDashboardStoreContext);
-  const fetchData = useStore(epiStore, useShallow((state) => state.fetchData));
-  const dataError = useStore(epiStore, (state) => state.dataError);
-  const completeCaseType = useStore(epiStore, (state) => state.completeCaseType);
-  const activeFiltersCount = useStore(epiStore, (state) => state.filters.filter(f => !f.isInitialFilterValue()).length);
+  const epiDashboardStore = useContext(EpiDashboardStoreContext);
+  const fetchData = useStore(epiDashboardStore, useShallow((state) => state.fetchData));
+  const dataError = useStore(epiDashboardStore, (state) => state.dataError);
+  const completeCaseType = useStore(epiDashboardStore, (state) => state.completeCaseType);
+  const activeFiltersCount = useStore(epiDashboardStore, (state) => state.filters.filter(f => !f.isInitialFilterValue()).length);
   const numLayoutZones = useStore(userProfileStore, (state) => Object.keys(state.epiDashboardLayoutUserConfig.zones).length);
   const numVisibleLayoutZones = useStore(userProfileStore, (state) => DashboardUtil.getEnabledZones(state.epiDashboardLayoutUserConfig).length);
   const numHiddenLayoutZones = numLayoutZones - numVisibleLayoutZones;
-  const isMaxResultsExceeded = useStore(epiStore, (state) => state.isMaxResultsExceeded);
-  const isMaxResultsExceededDismissed = useStore(epiStore, (state) => state.isMaxResultsExceededDismissed);
+  const isMaxResultsExceeded = useStore(epiDashboardStore, (state) => state.isMaxResultsExceeded);
+  const isMaxResultsExceededDismissed = useStore(epiDashboardStore, (state) => state.isMaxResultsExceededDismissed);
 
   const onMaxResultsExceededButtonClose = useCallback(() => {
-    epiStore.setState({ isMaxResultsExceededDismissed: true });
-  }, [epiStore]);
+    epiDashboardStore.setState({ isMaxResultsExceededDismissed: true });
+  }, [epiDashboardStore]);
 
   useEffect(() => {
     const eventBus = EpiEventBusManager.instance;
@@ -148,6 +153,7 @@ export const EpiDashboard = withEpiDashboardStore(({ caseSet }: EpiDashboardProp
       eventBus.addEventListener('openContactDetailsDialog', (...args) => epiContactDetailsDialogRef.current?.open(...args)),
       eventBus.addEventListener('openCreateEventDialog', (...args) => epiCreateEventDialogRef.current?.open(...args)),
       eventBus.addEventListener('openFindSimilarCasesDialog', (...args) => epiFindSimilarCasesDialogRef.current?.open(...args)),
+      eventBus.addEventListener('openRemoveFindSimilarCasesResultDialog', (...args) => epiRemoveFindSimilarCasesResultDialogRef.current?.open(...args)),
       eventBus.addEventListener('openRemoveCasesFromEventDialog', (...args) => epiRemoveCasesFromEventDialogRef.current?.open(...args)),
       eventBus.addEventListener('openSequenceDownloadDialog', (...args) => epiSequenceDownloadDialogRef.current?.open(...args)),
       eventBus.addEventListener('openBulkEditCaseDialog', (...args) => epiBulkEditCaseDialogRef.current?.open(...args)),
@@ -371,6 +377,7 @@ export const EpiDashboard = withEpiDashboardStore(({ caseSet }: EpiDashboardProp
       </ResponseHandler>
       <EpiContactDetailsDialog ref={epiContactDetailsDialogRef} />
       <EpiFindSimilarCasesDialog ref={epiFindSimilarCasesDialogRef} />
+      <EpiRemoveFindSimilarCasesResultDialog ref={epiRemoveFindSimilarCasesResultDialogRef} />
       <EpiSequenceDownloadDialog ref={epiSequenceDownloadDialogRef} />
       <EpiCaseInfoDialog ref={epiCaseInfoDialogRef} />
       <EpiCreateEventDialog ref={epiCreateEventDialogRef} />

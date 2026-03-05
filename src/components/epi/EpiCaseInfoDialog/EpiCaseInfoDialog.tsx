@@ -83,8 +83,8 @@ export const EpiCaseInfoDialog = withDialog<EpiCaseInfoDialogProps, EpiCaseInfoD
   const dataCollectionsMapQuery = useDataCollectionsMapQuery();
   const dataCollectionOptionsQuery = useDataCollectionOptionsQuery();
 
-  const epiStore = useContext(EpiDashboardStoreContext);
-  const fetchData = useStore(epiStore, useShallow((state) => state.fetchData));
+  const epiDashboardStore = useContext(EpiDashboardStoreContext);
+  const fetchData = useStore(epiDashboardStore, useShallow((state) => state.fetchData));
   const [isEditingCaseContent, setIsEditingCaseContent] = useState(false);
   const [isEditingDataCollections, setIsEditingDataCollections] = useState(false);
   const [isEpiCaseFormSaving, setIsEpiCaseFormSaving] = useState(false);
