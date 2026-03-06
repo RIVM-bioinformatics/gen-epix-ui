@@ -12,7 +12,10 @@ import {
 import {
   MenuItem,
   ListItemText,
+  ListItemIcon,
 } from '@mui/material';
+import MailIcon from '@mui/icons-material/Mail';
+import PasswordIcon from '@mui/icons-material/Password';
 
 import type { UserInvitation } from '../../api';
 import {
@@ -38,8 +41,12 @@ import { TestIdUtil } from '../../utils/TestIdUtil';
 import { CrudPage } from '../CrudPage';
 import { useInviteUserConstraintsQuery } from '../../dataHooks/useInviteUserConstraintsQuery';
 
-import { UserInvitationsAdminDetailDialog } from './UserInvitationsAdminDetailDialog';
-import type { UserInvitationsAdminDetailDialogRefMethods } from './UserInvitationsAdminDetailDialog';
+import { UserInvitationShareDialog } from './UserInvitationShareDialog';
+import type { UserInvitationShareDialogRefMethods } from './UserInvitationShareDialog';
+import {
+  UserInvitationConsumeDialog,
+  type UserInvitationConsumeDialogRefMethods,
+} from './UserInvitationConsumeDialog';
 
 type FormFields = Pick<UserInvitation, 'key' | 'organization_id' | 'roles'>;
 
@@ -70,7 +77,8 @@ export const UserInvitationsAdminPage = () => {
 
   const loadables = useArray([inviteUserConstraintsQuery, organizationOptionsQuery, userOptionsQuery, organizationAdminPolicyMapQuery]);
 
-  const userInvitationsAdminDetailDialogRef = useRef<UserInvitationsAdminDetailDialogRefMethods>(null);
+  const userInvitationShareDialogRef = useRef<UserInvitationShareDialogRefMethods>(null);
+  const userInvitationConsumeDialogRef = useRef<UserInvitationConsumeDialogRefMethods>(null);
 
   const fetchAll = useCallback(async (signal: AbortSignal) => {
     return (await OrganizationApi.instance.userInvitationsGetAll({ signal }))?.data;
@@ -92,7 +100,7 @@ export const UserInvitationsAdminPage = () => {
 
   const schema = useMemo(() => {
     return object<FormFields>().shape({
-      key: string().email().required().max(100),
+      key: string().max(100).transform((value) => value === '' ? undefined : value as string),
       organization_id: string().uuid4().required().max(100),
       roles: array().min(1).required(),
     });
@@ -100,11 +108,11 @@ export const UserInvitationsAdminPage = () => {
 
   // eslint-disable-next-line @typescript-eslint/require-await
   const onCreateSuccess = useCallback(async (item: UserInvitation) => {
-    userInvitationsAdminDetailDialogRef.current.open({ item });
+    userInvitationShareDialogRef.current.open({ item });
   }, []);
 
   const customOnRowClick = useCallback((params: TableRowParams<UserInvitation>) => {
-    userInvitationsAdminDetailDialogRef.current.open({ item: params.row });
+    userInvitationShareDialogRef.current.open({ item: params.row });
   }, []);
 
 
@@ -115,7 +123,8 @@ export const UserInvitationsAdminPage = () => {
       {
         definition: FORM_FIELD_DEFINITION_TYPE.TEXTFIELD,
         name: 'key',
-        label: t`Email`,
+        label: t`Key`,
+        warningMessage: t`If known, fill in the user's key. This is typically the user's email address, but can be any string depending on the Identity Provider. Filling in a key makes the invitation more secure. If left empty, the invitation can be consumed by anyone with the invite link.`,
       } as const satisfies FormFieldDefinition<FormFields>,
       {
         definition: FORM_FIELD_DEFINITION_TYPE.AUTOCOMPLETE,
@@ -137,17 +146,36 @@ export const UserInvitationsAdminPage = () => {
   }, [t, organizationOptions, organizationOptionsQuery.isLoading, roleOptions, inviteUserConstraintsQuery.isLoading]);
 
   const extraActionsFactory = useCallback((params: TableRowParams<UserInvitation>) => {
-    return [(
-      <MenuItem
-        key={'custom-action-1'}
-        // eslint-disable-next-line react/jsx-no-bind
-        onClick={() => userInvitationsAdminDetailDialogRef.current.open({ item: params.row })}
-      >
-        <ListItemText>
-          {t`Send invitation`}
-        </ListItemText>
-      </MenuItem>
-    )];
+    return [
+      (
+        <MenuItem
+          key={'custom-action-1'}
+          // eslint-disable-next-line react/jsx-no-bind
+          onClick={() => userInvitationShareDialogRef.current.open({ item: params.row })}
+        >
+          <ListItemIcon>
+            <MailIcon fontSize={'small'} />
+          </ListItemIcon>
+          <ListItemText>
+            {t`Send invitation`}
+          </ListItemText>
+        </MenuItem>
+      ),
+      (
+        <MenuItem
+          key={'custom-action-2'}
+          // eslint-disable-next-line react/jsx-no-bind
+          onClick={() => userInvitationConsumeDialogRef.current.open({ item: params.row })}
+        >
+          <ListItemIcon>
+            <PasswordIcon fontSize={'small'} />
+          </ListItemIcon>
+          <ListItemText>
+            {t`Consume invitation (advanced)`}
+          </ListItemText>
+        </MenuItem>
+      ),
+    ];
   }, [t]);
 
   const tableColumns = useMemo((): TableColumn<UserInvitation>[] => {
@@ -176,14 +204,15 @@ export const UserInvitationsAdminPage = () => {
         formFieldDefinitions={formFieldDefinitions}
         getName={getName}
         loadables={loadables}
-        resourceQueryKeyBase={QUERY_KEY.USER_REGISTRATIONS}
+        resourceQueryKeyBase={QUERY_KEY.USER_INVITATIONS}
         schema={schema}
         tableColumns={tableColumns}
         testIdAttributes={TestIdUtil.createAttributes('UserInvitationsAdminPage')}
         title={t`User invitations`}
         onCreateSuccess={onCreateSuccess}
       />
-      <UserInvitationsAdminDetailDialog ref={userInvitationsAdminDetailDialogRef} />
+      <UserInvitationShareDialog ref={userInvitationShareDialogRef} />
+      <UserInvitationConsumeDialog ref={userInvitationConsumeDialogRef} />
     </>
   );
 };

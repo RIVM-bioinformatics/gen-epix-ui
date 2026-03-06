@@ -23,21 +23,21 @@ import { withDialog } from '../../hoc/withDialog';
 import { TestIdUtil } from '../../utils/TestIdUtil';
 import { DATE_FORMAT } from '../../data/date';
 
-export interface UserInvitationsAdminDetailDialogOpenProps {
+export interface UserInvitationShareDialogOpenProps {
   item: UserInvitation;
 }
 
-export interface UserInvitationsAdminDetailDialogProps extends WithDialogRenderProps<UserInvitationsAdminDetailDialogOpenProps> {
+export interface UserInvitationShareDialogProps extends WithDialogRenderProps<UserInvitationShareDialogOpenProps> {
 }
 
-export type UserInvitationsAdminDetailDialogRefMethods = WithDialogRefMethods<UserInvitationsAdminDetailDialogProps, UserInvitationsAdminDetailDialogOpenProps>;
+export type UserInvitationShareDialogRefMethods = WithDialogRefMethods<UserInvitationShareDialogProps, UserInvitationShareDialogOpenProps>;
 
-export const UserInvitationsAdminDetailDialog = withDialog<UserInvitationsAdminDetailDialogProps, UserInvitationsAdminDetailDialogOpenProps>((
+export const UserInvitationShareDialog = withDialog<UserInvitationShareDialogProps, UserInvitationShareDialogOpenProps>((
   {
     onTitleChange,
     openProps,
     onActionsChange,
-  }: UserInvitationsAdminDetailDialogProps,
+  }: UserInvitationShareDialogProps,
 ): ReactElement => {
   const { t } = useTranslation();
 
@@ -65,7 +65,7 @@ export const UserInvitationsAdminDetailDialog = withDialog<UserInvitationsAdminD
   useEffect(() => {
     onActionsChange([
       {
-        ...TestIdUtil.createAttributes('UserInvitationsAdminDetailDialog-agree'),
+        ...TestIdUtil.createAttributes('UserInvitationShareDialog-agree'),
         href: shareInvitationHref,
         color: 'primary',
         variant: 'contained',
@@ -93,7 +93,7 @@ export const UserInvitationsAdminDetailDialog = withDialog<UserInvitationsAdminD
     </Box>
   );
 }, {
-  testId: 'UserInvitationsAdminDetailDialog',
+  testId: 'UserInvitationShareDialog',
   maxWidth: 'md',
   fullWidth: true,
   defaultTitle: '',

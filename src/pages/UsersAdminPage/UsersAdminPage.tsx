@@ -39,7 +39,7 @@ import { AuthorizationManager } from '../../classes/managers/AuthorizationManage
 import { useArray } from '../../hooks/useArray';
 import { useInviteUserConstraintsQuery } from '../../dataHooks/useInviteUserConstraintsQuery';
 
-type FormFields = Pick<User, 'email' | 'is_active' | 'roles'>;
+type FormFields = Pick<User, 'key' | 'email' | 'name' | 'is_active' | 'roles'>;
 
 export const UsersAdminPage = () => {
   const { t } = useTranslation();
@@ -55,6 +55,8 @@ export const UsersAdminPage = () => {
   ]);
 
   const onRowsChange = useCallback((items: User[]) => {
+    // Because roles are a string array (instead of an enum or similar), we need to dynamically determine the options for the roles column in the table and in the form.
+    // The options for the form are determined by the invite user constraints endpoint, but if the user doesn't have access to that endpoint, we fall back to using the roles that are currently in use by users in the system.
     const roles = new Set<string>();
     items.forEach((user) => {
       user.roles.forEach((role) => roles.add(role));
@@ -64,10 +66,16 @@ export const UsersAdminPage = () => {
       label: role,
     }));
     setTableRoleOptions(_tableRoleOptions);
-    setFormRoleOptions(inviteUserConstraintsQuery?.data ? inviteUserConstraintsQuery.data.roles.map(role => ({
-      value: role,
-      label: role,
-    })) : _tableRoleOptions);
+    if (AuthorizationManager.instance.doesUserHavePermission([
+      { command_name: CommandName.RetrieveInviteUserConstraintsCommand, permission_type: PermissionType.EXECUTE },
+    ])) {
+      setFormRoleOptions(inviteUserConstraintsQuery?.data ? inviteUserConstraintsQuery.data.roles.map(role => ({
+        value: role,
+        label: role,
+      })) : _tableRoleOptions);
+    } else {
+      setFormRoleOptions(_tableRoleOptions);
+    }
   }, [inviteUserConstraintsQuery.data]);
 
   const fetchAll = useCallback(async (signal: AbortSignal) => {
@@ -98,7 +106,9 @@ export const UsersAdminPage = () => {
 
   const schema = useMemo(() => {
     return object<FormFields>().shape({
-      email: string().email().required(),
+      key: string().optional(),
+      email: string().email().nullable(),
+      name: string().nullable(),
       roles: array().required().min(1),
       is_active: boolean().required(),
     });
@@ -108,9 +118,19 @@ export const UsersAdminPage = () => {
     return [
       {
         definition: FORM_FIELD_DEFINITION_TYPE.TEXTFIELD,
+        name: 'key',
+        label: t`Key`,
+        disabled: true,
+      } as const satisfies FormFieldDefinition<FormFields>,
+      {
+        definition: FORM_FIELD_DEFINITION_TYPE.TEXTFIELD,
         name: 'email',
         label: t`Email`,
-        disabled: true,
+      } as const satisfies FormFieldDefinition<FormFields>,
+      {
+        definition: FORM_FIELD_DEFINITION_TYPE.TEXTFIELD,
+        name: 'name',
+        label: t`Name`,
       } as const satisfies FormFieldDefinition<FormFields>,
       {
         definition: FORM_FIELD_DEFINITION_TYPE.AUTOCOMPLETE,
@@ -130,9 +150,10 @@ export const UsersAdminPage = () => {
 
   const tableColumns = useMemo((): TableColumn<User>[] => {
     return [
-      TableUtil.createTextColumn<User>({ id: 'name', name: t`Name`, advancedSort: true }),
       TableUtil.createOptionsColumn<User>({ id: 'organization_id', name: t`Organization`, options: organizationOptionsQuery.options }),
+      TableUtil.createTextColumn<User>({ id: 'key', name: t`Key` }),
       TableUtil.createTextColumn<User>({ id: 'email', name: t`E-Mail` }),
+      TableUtil.createTextColumn<User>({ id: 'name', name: t`Name`, advancedSort: true }),
       TableUtil.createOptionsColumn<User>({ id: 'roles', name: t`Roles`, options: tableRoleOptions }),
       TableUtil.createBooleanColumn<User>({ id: 'is_active', name: t`Is active` }),
     ];

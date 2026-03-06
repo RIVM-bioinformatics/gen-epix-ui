@@ -125,7 +125,9 @@ export const queryKeyDependencies: Record<QUERY_KEY, QUERY_KEY[]> = {
   [QUERY_KEY.CASE_IDS_BY_QUERY]: [],
   [QUERY_KEY.USER_ME]: [],
   [QUERY_KEY.USER_PERMISSIONS]: [],
-  [QUERY_KEY.USER_REGISTRATIONS]: [],
+  [QUERY_KEY.USER_INVITATIONS]: [
+    QUERY_KEY.USERS,
+  ],
   [QUERY_KEY.USERS]: [
     QUERY_KEY.USER_ACCESS_CASE_POLICIES,
     QUERY_KEY.USER_PERMISSIONS,
@@ -184,7 +186,7 @@ export class QueryUtil {
   }
 
   public static getUserRegistrationsKey(token: string) {
-    return QueryUtil.getGenericKey(QUERY_KEY.USER_REGISTRATIONS, token);
+    return QueryUtil.getGenericKey(QUERY_KEY.USER_INVITATIONS, token);
   }
 
   public static getGenericKey(key: QUERY_KEY, arg?: unknown) {

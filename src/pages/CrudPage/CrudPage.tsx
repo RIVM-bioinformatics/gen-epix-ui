@@ -421,7 +421,7 @@ export const CrudPage = <
     const actions: ReactElement[] = [];
 
     const extraActions = extraActionsFactory ? extraActionsFactory(params) : [];
-    if (extraActions?.length > 0 && actions.length > 0) {
+    if (extraActions?.length > 0) {
       actions.push(...extraActions);
     }
     subPages?.forEach(subPage => {

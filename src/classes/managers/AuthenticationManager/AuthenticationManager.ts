@@ -16,6 +16,7 @@ export const createdAtMetaDataKey = Symbol('createdAt');
 export class AuthenticationManager extends SubscribableAbstract<IdentityProvider> {
   public authContextProps: AuthContextProps;
   public static autoLoginSkew = 500;
+  public temporaryToken: string;
 
   public static get instance(): AuthenticationManager {
     // Instances are stored on the window to prevent multiple instances of the same manager. HMR may load multiple instances of the same manager, but we only want one instance to be active at a time.
@@ -43,7 +44,7 @@ export class AuthenticationManager extends SubscribableAbstract<IdentityProvider
   }
 
   public onRequest(request: InternalAxiosRequestConfig): InternalAxiosRequestConfig {
-    const accessToken = this.authContextProps?.user?.access_token;
+    const accessToken = this.temporaryToken ?? this.authContextProps?.user?.access_token;
     if (accessToken) {
       request.headers.set('Authorization', `Bearer ${accessToken}`);
     }

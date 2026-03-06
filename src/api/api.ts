@@ -182,7 +182,7 @@ export interface Case {
     'content': { [key: string]: string | null; };
 }
 /**
- * A number of unique cases intended for upload.    PARENT CLASS DOCUMENTATION   BaseBatchForUpload:  Base class for batches of ParentForUpload objects to be uploaded. A batch is intended as a single unit of work for an upload operation and as such to be processed atomically.  Additional validation: - All ParentForUpload objects must have unique IDs (if provided) - All ParentForUpload objects must have unique external identifiers
+ * A number of unique cases intended for upload.    PARENT CLASS DOCUMENTATION   BaseBatchForUpload: Base class for batches of ParentForUpload objects to be uploaded. A batch is intended as a single unit of work for an upload operation and as such to be processed atomically.  Additional validation: - All ParentForUpload objects must have unique IDs (if provided) - All ParentForUpload objects must have unique external identifiers    PARENT CLASS DOCUMENTATION   Model: PARENT CLASS DOCUMENTATION   BaseModel: !!! abstract \"Usage Documentation\"     [Models](../concepts/models.md)  A base class for creating Pydantic models.  Attributes:     __class_vars__: The names of the class variables defined on the model.     __private_attributes__: Metadata about the private attributes of the model.     __signature__: The synthesized `__init__` [`Signature`][inspect.Signature] of the model.      __pydantic_complete__: Whether model building is completed, or if there are still undefined fields.     __pydantic_core_schema__: The core schema of the model.     __pydantic_custom_init__: Whether the model has a custom `__init__` function.     __pydantic_decorators__: Metadata containing the decorators defined on the model.         This replaces `Model.__validators__` and `Model.__root_validators__` from Pydantic V1.     __pydantic_generic_metadata__: Metadata for generic models; contains data used for a similar purpose to         __args__, __origin__, __parameters__ in typing-module generics. May eventually be replaced by these.     __pydantic_parent_namespace__: Parent namespace of the model, used for automatic rebuilding of models.     __pydantic_post_init__: The name of the post-init method for the model, if defined.     __pydantic_root_model__: Whether the model is a [`RootModel`][pydantic.root_model.RootModel].     __pydantic_serializer__: The `pydantic-core` `SchemaSerializer` used to dump instances of the model.     __pydantic_validator__: The `pydantic-core` `SchemaValidator` used to validate instances of the model.      __pydantic_fields__: A dictionary of field names and their corresponding [`FieldInfo`][pydantic.fields.FieldInfo] objects.     __pydantic_computed_fields__: A dictionary of computed field names and their corresponding [`ComputedFieldInfo`][pydantic.fields.ComputedFieldInfo] objects.      __pydantic_extra__: A dictionary containing extra values, if [`extra`][pydantic.config.ConfigDict.extra]         is set to `\'allow\'`.     __pydantic_fields_set__: The names of fields explicitly set during instantiation.     __pydantic_private__: Values of private attributes set on the model instance.    PARENT CLASS DOCUMENTATION   Model: PARENT CLASS DOCUMENTATION   BaseModel: !!! abstract \"Usage Documentation\"     [Models](../concepts/models.md)  A base class for creating Pydantic models.  Attributes:     __class_vars__: The names of the class variables defined on the model.     __private_attributes__: Metadata about the private attributes of the model.     __signature__: The synthesized `__init__` [`Signature`][inspect.Signature] of the model.      __pydantic_complete__: Whether model building is completed, or if there are still undefined fields.     __pydantic_core_schema__: The core schema of the model.     __pydantic_custom_init__: Whether the model has a custom `__init__` function.     __pydantic_decorators__: Metadata containing the decorators defined on the model.         This replaces `Model.__validators__` and `Model.__root_validators__` from Pydantic V1.     __pydantic_generic_metadata__: Metadata for generic models; contains data used for a similar purpose to         __args__, __origin__, __parameters__ in typing-module generics. May eventually be replaced by these.     __pydantic_parent_namespace__: Parent namespace of the model, used for automatic rebuilding of models.     __pydantic_post_init__: The name of the post-init method for the model, if defined.     __pydantic_root_model__: Whether the model is a [`RootModel`][pydantic.root_model.RootModel].     __pydantic_serializer__: The `pydantic-core` `SchemaSerializer` used to dump instances of the model.     __pydantic_validator__: The `pydantic-core` `SchemaValidator` used to validate instances of the model.      __pydantic_fields__: A dictionary of field names and their corresponding [`FieldInfo`][pydantic.fields.FieldInfo] objects.     __pydantic_computed_fields__: A dictionary of computed field names and their corresponding [`ComputedFieldInfo`][pydantic.fields.ComputedFieldInfo] objects.      __pydantic_extra__: A dictionary containing extra values, if [`extra`][pydantic.config.ConfigDict.extra]         is set to `\'allow\'`.     __pydantic_fields_set__: The names of fields explicitly set during instantiation.     __pydantic_private__: Values of private attributes set on the model instance.    PARENT CLASS DOCUMENTATION   BaseModel: !!! abstract \"Usage Documentation\"     [Models](../concepts/models.md)  A base class for creating Pydantic models.  Attributes:     __class_vars__: The names of the class variables defined on the model.     __private_attributes__: Metadata about the private attributes of the model.     __signature__: The synthesized `__init__` [`Signature`][inspect.Signature] of the model.      __pydantic_complete__: Whether model building is completed, or if there are still undefined fields.     __pydantic_core_schema__: The core schema of the model.     __pydantic_custom_init__: Whether the model has a custom `__init__` function.     __pydantic_decorators__: Metadata containing the decorators defined on the model.         This replaces `Model.__validators__` and `Model.__root_validators__` from Pydantic V1.     __pydantic_generic_metadata__: Metadata for generic models; contains data used for a similar purpose to         __args__, __origin__, __parameters__ in typing-module generics. May eventually be replaced by these.     __pydantic_parent_namespace__: Parent namespace of the model, used for automatic rebuilding of models.     __pydantic_post_init__: The name of the post-init method for the model, if defined.     __pydantic_root_model__: Whether the model is a [`RootModel`][pydantic.root_model.RootModel].     __pydantic_serializer__: The `pydantic-core` `SchemaSerializer` used to dump instances of the model.     __pydantic_validator__: The `pydantic-core` `SchemaValidator` used to validate instances of the model.      __pydantic_fields__: A dictionary of field names and their corresponding [`FieldInfo`][pydantic.fields.FieldInfo] objects.     __pydantic_computed_fields__: A dictionary of computed field names and their corresponding [`ComputedFieldInfo`][pydantic.fields.ComputedFieldInfo] objects.      __pydantic_extra__: A dictionary containing extra values, if [`extra`][pydantic.config.ConfigDict.extra]         is set to `\'allow\'`.     __pydantic_fields_set__: The names of fields explicitly set during instantiation.     __pydantic_private__: Values of private attributes set on the model instance.
  * @export
  * @interface CaseBatchForUpload
  */
@@ -207,7 +207,7 @@ export interface CaseBatchForUpload {
     'cases': Array<CaseForUpload>;
 }
 /**
- * The result of uploading a batch of cases.    PARENT CLASS DOCUMENTATION   BaseBatchUploadResult: Base class for upload results corresponding to a complete batch of objects uploaded. The names of the fields in any child class must be exactly identical to those in the corresponding BaseBatchForUpload child class.    PARENT CLASS DOCUMENTATION   UploadResult:  Represents the result of an upload operation, including upload status and logs.  Additional validation: - If the status is successful (NOT_FAILED), there must be no error log items. - If the status is failed, there must be at least one error log item.    PARENT CLASS DOCUMENTATION   UploadResult:  Represents the result of an upload operation, including upload status and logs.  Additional validation: - If the status is successful (NOT_FAILED), there must be no error log items. - If the status is failed, there must be at least one error log item.
+ * The result of uploading a batch of cases.    PARENT CLASS DOCUMENTATION   BaseBatchUploadResult: Base class for upload results corresponding to a complete batch of objects uploaded. The names of the fields in any child class must be exactly identical to those in the corresponding BaseBatchForUpload child class.    PARENT CLASS DOCUMENTATION   UploadResult: Represents the result of an upload operation, including upload status and logs.  Additional validation: - If the status is successful (NOT_FAILED), there must be no error log items. - If the status is failed, there must be at least one error log item.    PARENT CLASS DOCUMENTATION   Model: PARENT CLASS DOCUMENTATION   BaseModel: !!! abstract \"Usage Documentation\"     [Models](../concepts/models.md)  A base class for creating Pydantic models.  Attributes:     __class_vars__: The names of the class variables defined on the model.     __private_attributes__: Metadata about the private attributes of the model.     __signature__: The synthesized `__init__` [`Signature`][inspect.Signature] of the model.      __pydantic_complete__: Whether model building is completed, or if there are still undefined fields.     __pydantic_core_schema__: The core schema of the model.     __pydantic_custom_init__: Whether the model has a custom `__init__` function.     __pydantic_decorators__: Metadata containing the decorators defined on the model.         This replaces `Model.__validators__` and `Model.__root_validators__` from Pydantic V1.     __pydantic_generic_metadata__: Metadata for generic models; contains data used for a similar purpose to         __args__, __origin__, __parameters__ in typing-module generics. May eventually be replaced by these.     __pydantic_parent_namespace__: Parent namespace of the model, used for automatic rebuilding of models.     __pydantic_post_init__: The name of the post-init method for the model, if defined.     __pydantic_root_model__: Whether the model is a [`RootModel`][pydantic.root_model.RootModel].     __pydantic_serializer__: The `pydantic-core` `SchemaSerializer` used to dump instances of the model.     __pydantic_validator__: The `pydantic-core` `SchemaValidator` used to validate instances of the model.      __pydantic_fields__: A dictionary of field names and their corresponding [`FieldInfo`][pydantic.fields.FieldInfo] objects.     __pydantic_computed_fields__: A dictionary of computed field names and their corresponding [`ComputedFieldInfo`][pydantic.fields.ComputedFieldInfo] objects.      __pydantic_extra__: A dictionary containing extra values, if [`extra`][pydantic.config.ConfigDict.extra]         is set to `\'allow\'`.     __pydantic_fields_set__: The names of fields explicitly set during instantiation.     __pydantic_private__: Values of private attributes set on the model instance.    PARENT CLASS DOCUMENTATION   UploadResult: Represents the result of an upload operation, including upload status and logs.  Additional validation: - If the status is successful (NOT_FAILED), there must be no error log items. - If the status is failed, there must be at least one error log item.    PARENT CLASS DOCUMENTATION   Model: PARENT CLASS DOCUMENTATION   BaseModel: !!! abstract \"Usage Documentation\"     [Models](../concepts/models.md)  A base class for creating Pydantic models.  Attributes:     __class_vars__: The names of the class variables defined on the model.     __private_attributes__: Metadata about the private attributes of the model.     __signature__: The synthesized `__init__` [`Signature`][inspect.Signature] of the model.      __pydantic_complete__: Whether model building is completed, or if there are still undefined fields.     __pydantic_core_schema__: The core schema of the model.     __pydantic_custom_init__: Whether the model has a custom `__init__` function.     __pydantic_decorators__: Metadata containing the decorators defined on the model.         This replaces `Model.__validators__` and `Model.__root_validators__` from Pydantic V1.     __pydantic_generic_metadata__: Metadata for generic models; contains data used for a similar purpose to         __args__, __origin__, __parameters__ in typing-module generics. May eventually be replaced by these.     __pydantic_parent_namespace__: Parent namespace of the model, used for automatic rebuilding of models.     __pydantic_post_init__: The name of the post-init method for the model, if defined.     __pydantic_root_model__: Whether the model is a [`RootModel`][pydantic.root_model.RootModel].     __pydantic_serializer__: The `pydantic-core` `SchemaSerializer` used to dump instances of the model.     __pydantic_validator__: The `pydantic-core` `SchemaValidator` used to validate instances of the model.      __pydantic_fields__: A dictionary of field names and their corresponding [`FieldInfo`][pydantic.fields.FieldInfo] objects.     __pydantic_computed_fields__: A dictionary of computed field names and their corresponding [`ComputedFieldInfo`][pydantic.fields.ComputedFieldInfo] objects.      __pydantic_extra__: A dictionary containing extra values, if [`extra`][pydantic.config.ConfigDict.extra]         is set to `\'allow\'`.     __pydantic_fields_set__: The names of fields explicitly set during instantiation.     __pydantic_private__: Values of private attributes set on the model instance.    PARENT CLASS DOCUMENTATION   Model: PARENT CLASS DOCUMENTATION   BaseModel: !!! abstract \"Usage Documentation\"     [Models](../concepts/models.md)  A base class for creating Pydantic models.  Attributes:     __class_vars__: The names of the class variables defined on the model.     __private_attributes__: Metadata about the private attributes of the model.     __signature__: The synthesized `__init__` [`Signature`][inspect.Signature] of the model.      __pydantic_complete__: Whether model building is completed, or if there are still undefined fields.     __pydantic_core_schema__: The core schema of the model.     __pydantic_custom_init__: Whether the model has a custom `__init__` function.     __pydantic_decorators__: Metadata containing the decorators defined on the model.         This replaces `Model.__validators__` and `Model.__root_validators__` from Pydantic V1.     __pydantic_generic_metadata__: Metadata for generic models; contains data used for a similar purpose to         __args__, __origin__, __parameters__ in typing-module generics. May eventually be replaced by these.     __pydantic_parent_namespace__: Parent namespace of the model, used for automatic rebuilding of models.     __pydantic_post_init__: The name of the post-init method for the model, if defined.     __pydantic_root_model__: Whether the model is a [`RootModel`][pydantic.root_model.RootModel].     __pydantic_serializer__: The `pydantic-core` `SchemaSerializer` used to dump instances of the model.     __pydantic_validator__: The `pydantic-core` `SchemaValidator` used to validate instances of the model.      __pydantic_fields__: A dictionary of field names and their corresponding [`FieldInfo`][pydantic.fields.FieldInfo] objects.     __pydantic_computed_fields__: A dictionary of computed field names and their corresponding [`ComputedFieldInfo`][pydantic.fields.ComputedFieldInfo] objects.      __pydantic_extra__: A dictionary containing extra values, if [`extra`][pydantic.config.ConfigDict.extra]         is set to `\'allow\'`.     __pydantic_fields_set__: The names of fields explicitly set during instantiation.     __pydantic_private__: Values of private attributes set on the model instance.    PARENT CLASS DOCUMENTATION   BaseModel: !!! abstract \"Usage Documentation\"     [Models](../concepts/models.md)  A base class for creating Pydantic models.  Attributes:     __class_vars__: The names of the class variables defined on the model.     __private_attributes__: Metadata about the private attributes of the model.     __signature__: The synthesized `__init__` [`Signature`][inspect.Signature] of the model.      __pydantic_complete__: Whether model building is completed, or if there are still undefined fields.     __pydantic_core_schema__: The core schema of the model.     __pydantic_custom_init__: Whether the model has a custom `__init__` function.     __pydantic_decorators__: Metadata containing the decorators defined on the model.         This replaces `Model.__validators__` and `Model.__root_validators__` from Pydantic V1.     __pydantic_generic_metadata__: Metadata for generic models; contains data used for a similar purpose to         __args__, __origin__, __parameters__ in typing-module generics. May eventually be replaced by these.     __pydantic_parent_namespace__: Parent namespace of the model, used for automatic rebuilding of models.     __pydantic_post_init__: The name of the post-init method for the model, if defined.     __pydantic_root_model__: Whether the model is a [`RootModel`][pydantic.root_model.RootModel].     __pydantic_serializer__: The `pydantic-core` `SchemaSerializer` used to dump instances of the model.     __pydantic_validator__: The `pydantic-core` `SchemaValidator` used to validate instances of the model.      __pydantic_fields__: A dictionary of field names and their corresponding [`FieldInfo`][pydantic.fields.FieldInfo] objects.     __pydantic_computed_fields__: A dictionary of computed field names and their corresponding [`ComputedFieldInfo`][pydantic.fields.ComputedFieldInfo] objects.      __pydantic_extra__: A dictionary containing extra values, if [`extra`][pydantic.config.ConfigDict.extra]         is set to `\'allow\'`.     __pydantic_fields_set__: The names of fields explicitly set during instantiation.     __pydantic_private__: Values of private attributes set on the model instance.
  * @export
  * @interface CaseBatchUploadResult
  */
@@ -304,19 +304,13 @@ export interface CaseDataCollectionLink {
  */
 export interface CaseDataIssue {
     /**
-     * The ID of the case type column
-     * @type {string}
-     * @memberof CaseDataIssue
-     */
-    'case_type_col_id': string;
-    /**
-     * The value of the case type column
+     * The original value
      * @type {string}
      * @memberof CaseDataIssue
      */
     'original_value': string | null;
     /**
-     * The new value of the case type column after potential resolution. If not resolved, this will be None.
+     * The new value after potential resolution of the issue. If not resolved, this will be None.
      * @type {string}
      * @memberof CaseDataIssue
      */
@@ -339,15 +333,27 @@ export interface CaseDataIssue {
      * @memberof CaseDataIssue
      */
     'message': string | null;
+    /**
+     * The ID of the case type column
+     * @type {string}
+     * @memberof CaseDataIssue
+     */
+    'case_type_col_id': string;
 }
 
 
 /**
- * A case intended for upload, together with any relevant associated data.    PARENT CLASS DOCUMENTATION   ParentForUpload: Represents a parent model for upload, where the term \"parent\" refers to a model that can have child models associated with it through a link. External identifiers can also be added here.  This class must be subclassed for specific parent models, adding the following fields: - A parent Parent|None field where the parent model that needs to be uploaded, if   any, will be put - For each child model type that can be associated with the parent, a \"children\"   list|None field that will contain the actual child models to be uploaded along with   the parent model. Metadata on the parent and child models, allowing introspection, must be provided through the class variables.  Additional validation: - NULL_ID in the id field is converted to None. - If both the ParentForUpload id and the contained Parent model id are provided,   they must match. - For each child model type, if the ParentForUpload id is provided, the parent ID   field in each child model must either be None/NULL_ID or match the ParentForUpload   id.    PARENT CLASS DOCUMENTATION   IsNewIdMixin:  Mixin that adds an is_new_id field to indicate whether the model instance is new and has an externally assigned ID rather than one assigned by the system. Assumes that the inheriting model also has an \'id\' field.  Additional validation: - If is_new_id is True, the model id field field may not be None or NULL_ID.    PARENT CLASS DOCUMENTATION   IsNewIdMixin:  Mixin that adds an is_new_id field to indicate whether the model instance is new and has an externally assigned ID rather than one assigned by the system. Assumes that the inheriting model also has an \'id\' field.  Additional validation: - If is_new_id is True, the model id field field may not be None or NULL_ID.
+ * A case intended for upload, together with any relevant associated data.    PARENT CLASS DOCUMENTATION   ParentForUpload: Represents a parent model for upload, where the term \"parent\" refers to a model that can have child models associated with it through a link. External identifiers can also be added here.  This class must be subclassed for specific parent models, adding the following fields: - A parent Parent|None field where the parent model that needs to be uploaded, if   any, will be put - For each child model type that can be associated with the parent, a \"children\"   list|None field that will contain the actual child models to be uploaded along with   the parent model. Metadata on the parent and child models, allowing introspection, must be provided through the class variables.  Additional validation: - NULL_ID in the id field is converted to None. - If both the ParentForUpload id and the contained Parent model id are provided,   they must match. - For each child model type, if the ParentForUpload id is provided, the parent ID   field in each child model must either be None/NULL_ID or match the ParentForUpload   id.    PARENT CLASS DOCUMENTATION   Model: PARENT CLASS DOCUMENTATION   BaseModel: !!! abstract \"Usage Documentation\"     [Models](../concepts/models.md)  A base class for creating Pydantic models.  Attributes:     __class_vars__: The names of the class variables defined on the model.     __private_attributes__: Metadata about the private attributes of the model.     __signature__: The synthesized `__init__` [`Signature`][inspect.Signature] of the model.      __pydantic_complete__: Whether model building is completed, or if there are still undefined fields.     __pydantic_core_schema__: The core schema of the model.     __pydantic_custom_init__: Whether the model has a custom `__init__` function.     __pydantic_decorators__: Metadata containing the decorators defined on the model.         This replaces `Model.__validators__` and `Model.__root_validators__` from Pydantic V1.     __pydantic_generic_metadata__: Metadata for generic models; contains data used for a similar purpose to         __args__, __origin__, __parameters__ in typing-module generics. May eventually be replaced by these.     __pydantic_parent_namespace__: Parent namespace of the model, used for automatic rebuilding of models.     __pydantic_post_init__: The name of the post-init method for the model, if defined.     __pydantic_root_model__: Whether the model is a [`RootModel`][pydantic.root_model.RootModel].     __pydantic_serializer__: The `pydantic-core` `SchemaSerializer` used to dump instances of the model.     __pydantic_validator__: The `pydantic-core` `SchemaValidator` used to validate instances of the model.      __pydantic_fields__: A dictionary of field names and their corresponding [`FieldInfo`][pydantic.fields.FieldInfo] objects.     __pydantic_computed_fields__: A dictionary of computed field names and their corresponding [`ComputedFieldInfo`][pydantic.fields.ComputedFieldInfo] objects.      __pydantic_extra__: A dictionary containing extra values, if [`extra`][pydantic.config.ConfigDict.extra]         is set to `\'allow\'`.     __pydantic_fields_set__: The names of fields explicitly set during instantiation.     __pydantic_private__: Values of private attributes set on the model instance.    IsNewIdMixin:  Mixin that adds an is_new_id field to indicate whether the model instance is new and has an externally assigned ID rather than one assigned by the system. Assumes that the inheriting model also has an \'id\' field.  Additional validation: - If is_new_id is True, the model id field field may not be None or NULL_ID.    ExternalIdentifiersMixin:  Mixin that adds external identifiers fields and validation. Assumes that the inheriting model also has an \'external_identifiers\' field.  Additional validation: - All external identifiers must have the same identifier type. - All external identifiers must have unique values.    PARENT CLASS DOCUMENTATION   Model: PARENT CLASS DOCUMENTATION   BaseModel: !!! abstract \"Usage Documentation\"     [Models](../concepts/models.md)  A base class for creating Pydantic models.  Attributes:     __class_vars__: The names of the class variables defined on the model.     __private_attributes__: Metadata about the private attributes of the model.     __signature__: The synthesized `__init__` [`Signature`][inspect.Signature] of the model.      __pydantic_complete__: Whether model building is completed, or if there are still undefined fields.     __pydantic_core_schema__: The core schema of the model.     __pydantic_custom_init__: Whether the model has a custom `__init__` function.     __pydantic_decorators__: Metadata containing the decorators defined on the model.         This replaces `Model.__validators__` and `Model.__root_validators__` from Pydantic V1.     __pydantic_generic_metadata__: Metadata for generic models; contains data used for a similar purpose to         __args__, __origin__, __parameters__ in typing-module generics. May eventually be replaced by these.     __pydantic_parent_namespace__: Parent namespace of the model, used for automatic rebuilding of models.     __pydantic_post_init__: The name of the post-init method for the model, if defined.     __pydantic_root_model__: Whether the model is a [`RootModel`][pydantic.root_model.RootModel].     __pydantic_serializer__: The `pydantic-core` `SchemaSerializer` used to dump instances of the model.     __pydantic_validator__: The `pydantic-core` `SchemaValidator` used to validate instances of the model.      __pydantic_fields__: A dictionary of field names and their corresponding [`FieldInfo`][pydantic.fields.FieldInfo] objects.     __pydantic_computed_fields__: A dictionary of computed field names and their corresponding [`ComputedFieldInfo`][pydantic.fields.ComputedFieldInfo] objects.      __pydantic_extra__: A dictionary containing extra values, if [`extra`][pydantic.config.ConfigDict.extra]         is set to `\'allow\'`.     __pydantic_fields_set__: The names of fields explicitly set during instantiation.     __pydantic_private__: Values of private attributes set on the model instance.    PARENT CLASS DOCUMENTATION   BaseModel: !!! abstract \"Usage Documentation\"     [Models](../concepts/models.md)  A base class for creating Pydantic models.  Attributes:     __class_vars__: The names of the class variables defined on the model.     __private_attributes__: Metadata about the private attributes of the model.     __signature__: The synthesized `__init__` [`Signature`][inspect.Signature] of the model.      __pydantic_complete__: Whether model building is completed, or if there are still undefined fields.     __pydantic_core_schema__: The core schema of the model.     __pydantic_custom_init__: Whether the model has a custom `__init__` function.     __pydantic_decorators__: Metadata containing the decorators defined on the model.         This replaces `Model.__validators__` and `Model.__root_validators__` from Pydantic V1.     __pydantic_generic_metadata__: Metadata for generic models; contains data used for a similar purpose to         __args__, __origin__, __parameters__ in typing-module generics. May eventually be replaced by these.     __pydantic_parent_namespace__: Parent namespace of the model, used for automatic rebuilding of models.     __pydantic_post_init__: The name of the post-init method for the model, if defined.     __pydantic_root_model__: Whether the model is a [`RootModel`][pydantic.root_model.RootModel].     __pydantic_serializer__: The `pydantic-core` `SchemaSerializer` used to dump instances of the model.     __pydantic_validator__: The `pydantic-core` `SchemaValidator` used to validate instances of the model.      __pydantic_fields__: A dictionary of field names and their corresponding [`FieldInfo`][pydantic.fields.FieldInfo] objects.     __pydantic_computed_fields__: A dictionary of computed field names and their corresponding [`ComputedFieldInfo`][pydantic.fields.ComputedFieldInfo] objects.      __pydantic_extra__: A dictionary containing extra values, if [`extra`][pydantic.config.ConfigDict.extra]         is set to `\'allow\'`.     __pydantic_fields_set__: The names of fields explicitly set during instantiation.     __pydantic_private__: Values of private attributes set on the model instance.    IsNewIdMixin:  Mixin that adds an is_new_id field to indicate whether the model instance is new and has an externally assigned ID rather than one assigned by the system. Assumes that the inheriting model also has an \'id\' field.  Additional validation: - If is_new_id is True, the model id field field may not be None or NULL_ID.    ExternalIdentifiersMixin:  Mixin that adds external identifiers fields and validation. Assumes that the inheriting model also has an \'external_identifiers\' field.  Additional validation: - All external identifiers must have the same identifier type. - All external identifiers must have unique values.
  * @export
  * @interface CaseForUpload
  */
 export interface CaseForUpload {
+    /**
+     * External identifiers for the model, if any. Must be a unique values.
+     * @type {Array<ExternalIdentifierForUpload>}
+     * @memberof CaseForUpload
+     */
+    'external_identifiers'?: Array<ExternalIdentifierForUpload> | null;
     /**
      * Indicates whether the model instance is both new (not yet stored) and its ID is assigned outside the system, e.g. for having the same IDs between different environments.
      * @type {boolean}
@@ -355,17 +361,11 @@ export interface CaseForUpload {
      */
     'is_new_id'?: boolean;
     /**
-     * The unique identifier for the Parent object. If NULL_ID is provided, it will be set to None.
+     * The unique identifier for the Parent object. If NULL_ID is provided, it will be set to None. The id must match that of the contained Parent model, if provided, and be consistent with the parent ID in the child models, if provided. The contained Parent model may have a different ID field than \'id\', but this class uses \'id\' instead.
      * @type {string}
      * @memberof CaseForUpload
      */
     'id'?: string | null;
-    /**
-     * External identifiers for the parent model, if any. Must be a unique values.
-     * @type {Array<ExternalIdentifierForUpload>}
-     * @memberof CaseForUpload
-     */
-    'external_identifiers'?: Array<ExternalIdentifierForUpload> | null;
     /**
      * 
      * @type {Case}
@@ -829,7 +829,7 @@ export interface CaseSetStatus {
     'description': string | null;
 }
 /**
- * PARENT CLASS DOCUMENTATION   Model: PARENT CLASS DOCUMENTATION   BaseModel: !!! abstract \"Usage Documentation\"     [Models](../concepts/models.md)  A base class for creating Pydantic models.  Attributes:     __class_vars__: The names of the class variables defined on the model.     __private_attributes__: Metadata about the private attributes of the model.     __signature__: The synthesized `__init__` [`Signature`][inspect.Signature] of the model.      __pydantic_complete__: Whether model building is completed, or if there are still undefined fields.     __pydantic_core_schema__: The core schema of the model.     __pydantic_custom_init__: Whether the model has a custom `__init__` function.     __pydantic_decorators__: Metadata containing the decorators defined on the model.         This replaces `Model.__validators__` and `Model.__root_validators__` from Pydantic V1.     __pydantic_generic_metadata__: Metadata for generic models; contains data used for a similar purpose to         __args__, __origin__, __parameters__ in typing-module generics. May eventually be replaced by these.     __pydantic_parent_namespace__: Parent namespace of the model, used for automatic rebuilding of models.     __pydantic_post_init__: The name of the post-init method for the model, if defined.     __pydantic_root_model__: Whether the model is a [`RootModel`][pydantic.root_model.RootModel].     __pydantic_serializer__: The `pydantic-core` `SchemaSerializer` used to dump instances of the model.     __pydantic_validator__: The `pydantic-core` `SchemaValidator` used to validate instances of the model.      __pydantic_fields__: A dictionary of field names and their corresponding [`FieldInfo`][pydantic.fields.FieldInfo] objects.     __pydantic_computed_fields__: A dictionary of computed field names and their corresponding [`ComputedFieldInfo`][pydantic.fields.ComputedFieldInfo] objects.      __pydantic_extra__: A dictionary containing extra values, if [`extra`][pydantic.config.ConfigDict.extra]         is set to `\'allow\'`.     __pydantic_fields_set__: The names of fields explicitly set during instantiation.     __pydantic_private__: Values of private attributes set on the model instance.
+ * PARENT CLASS DOCUMENTATION   Model: PARENT CLASS DOCUMENTATION   BaseModel: !!! abstract \"Usage Documentation\"     [Models](../concepts/models.md)  A base class for creating Pydantic models.  Attributes:     __class_vars__: The names of the class variables defined on the model.     __private_attributes__: Metadata about the private attributes of the model.     __signature__: The synthesized `__init__` [`Signature`][inspect.Signature] of the model.      __pydantic_complete__: Whether model building is completed, or if there are still undefined fields.     __pydantic_core_schema__: The core schema of the model.     __pydantic_custom_init__: Whether the model has a custom `__init__` function.     __pydantic_decorators__: Metadata containing the decorators defined on the model.         This replaces `Model.__validators__` and `Model.__root_validators__` from Pydantic V1.     __pydantic_generic_metadata__: Metadata for generic models; contains data used for a similar purpose to         __args__, __origin__, __parameters__ in typing-module generics. May eventually be replaced by these.     __pydantic_parent_namespace__: Parent namespace of the model, used for automatic rebuilding of models.     __pydantic_post_init__: The name of the post-init method for the model, if defined.     __pydantic_root_model__: Whether the model is a [`RootModel`][pydantic.root_model.RootModel].     __pydantic_serializer__: The `pydantic-core` `SchemaSerializer` used to dump instances of the model.     __pydantic_validator__: The `pydantic-core` `SchemaValidator` used to validate instances of the model.      __pydantic_fields__: A dictionary of field names and their corresponding [`FieldInfo`][pydantic.fields.FieldInfo] objects.     __pydantic_computed_fields__: A dictionary of computed field names and their corresponding [`ComputedFieldInfo`][pydantic.fields.ComputedFieldInfo] objects.      __pydantic_extra__: A dictionary containing extra values, if [`extra`][pydantic.config.ConfigDict.extra]         is set to `\'allow\'`.     __pydantic_fields_set__: The names of fields explicitly set during instantiation.     __pydantic_private__: Values of private attributes set on the model instance.    PARENT CLASS DOCUMENTATION   BaseModel: !!! abstract \"Usage Documentation\"     [Models](../concepts/models.md)  A base class for creating Pydantic models.  Attributes:     __class_vars__: The names of the class variables defined on the model.     __private_attributes__: Metadata about the private attributes of the model.     __signature__: The synthesized `__init__` [`Signature`][inspect.Signature] of the model.      __pydantic_complete__: Whether model building is completed, or if there are still undefined fields.     __pydantic_core_schema__: The core schema of the model.     __pydantic_custom_init__: Whether the model has a custom `__init__` function.     __pydantic_decorators__: Metadata containing the decorators defined on the model.         This replaces `Model.__validators__` and `Model.__root_validators__` from Pydantic V1.     __pydantic_generic_metadata__: Metadata for generic models; contains data used for a similar purpose to         __args__, __origin__, __parameters__ in typing-module generics. May eventually be replaced by these.     __pydantic_parent_namespace__: Parent namespace of the model, used for automatic rebuilding of models.     __pydantic_post_init__: The name of the post-init method for the model, if defined.     __pydantic_root_model__: Whether the model is a [`RootModel`][pydantic.root_model.RootModel].     __pydantic_serializer__: The `pydantic-core` `SchemaSerializer` used to dump instances of the model.     __pydantic_validator__: The `pydantic-core` `SchemaValidator` used to validate instances of the model.      __pydantic_fields__: A dictionary of field names and their corresponding [`FieldInfo`][pydantic.fields.FieldInfo] objects.     __pydantic_computed_fields__: A dictionary of computed field names and their corresponding [`ComputedFieldInfo`][pydantic.fields.ComputedFieldInfo] objects.      __pydantic_extra__: A dictionary containing extra values, if [`extra`][pydantic.config.ConfigDict.extra]         is set to `\'allow\'`.     __pydantic_fields_set__: The names of fields explicitly set during instantiation.     __pydantic_private__: Values of private attributes set on the model instance.
  * @export
  * @interface CaseStats
  */
@@ -1474,7 +1474,7 @@ export interface CaseTypeShareAbac {
     'remove_case_set_from_data_collection_ids': Array<string>;
 }
 /**
- * The result of uploading a single case. The case content validation results as well as the resulting cases are included as well.    PARENT CLASS DOCUMENTATION   ParentUploadResult: Represents the upload result for a Parent model upload. This class must be subclassed analogous to the ParentForUpload model it corresponds to.    PARENT CLASS DOCUMENTATION   UploadResult:  Represents the result of an upload operation, including upload status and logs.  Additional validation: - If the status is successful (NOT_FAILED), there must be no error log items. - If the status is failed, there must be at least one error log item.    PARENT CLASS DOCUMENTATION   UploadResult:  Represents the result of an upload operation, including upload status and logs.  Additional validation: - If the status is successful (NOT_FAILED), there must be no error log items. - If the status is failed, there must be at least one error log item.
+ * The result of uploading a single case. The case content validation results as well as the resulting cases are included as well.    PARENT CLASS DOCUMENTATION   ParentUploadResult: Represents the upload result for a Parent model upload. This class must be subclassed analogous to the ParentForUpload model it corresponds to.    PARENT CLASS DOCUMENTATION   UploadResultWithExternalIdentifiers: Represents an upload result that also includes upload results for external identifiers, mirroring a for upload class that has external identifiers.    PARENT CLASS DOCUMENTATION   UploadResult: Represents the result of an upload operation, including upload status and logs.  Additional validation: - If the status is successful (NOT_FAILED), there must be no error log items. - If the status is failed, there must be at least one error log item.    PARENT CLASS DOCUMENTATION   Model: PARENT CLASS DOCUMENTATION   BaseModel: !!! abstract \"Usage Documentation\"     [Models](../concepts/models.md)  A base class for creating Pydantic models.  Attributes:     __class_vars__: The names of the class variables defined on the model.     __private_attributes__: Metadata about the private attributes of the model.     __signature__: The synthesized `__init__` [`Signature`][inspect.Signature] of the model.      __pydantic_complete__: Whether model building is completed, or if there are still undefined fields.     __pydantic_core_schema__: The core schema of the model.     __pydantic_custom_init__: Whether the model has a custom `__init__` function.     __pydantic_decorators__: Metadata containing the decorators defined on the model.         This replaces `Model.__validators__` and `Model.__root_validators__` from Pydantic V1.     __pydantic_generic_metadata__: Metadata for generic models; contains data used for a similar purpose to         __args__, __origin__, __parameters__ in typing-module generics. May eventually be replaced by these.     __pydantic_parent_namespace__: Parent namespace of the model, used for automatic rebuilding of models.     __pydantic_post_init__: The name of the post-init method for the model, if defined.     __pydantic_root_model__: Whether the model is a [`RootModel`][pydantic.root_model.RootModel].     __pydantic_serializer__: The `pydantic-core` `SchemaSerializer` used to dump instances of the model.     __pydantic_validator__: The `pydantic-core` `SchemaValidator` used to validate instances of the model.      __pydantic_fields__: A dictionary of field names and their corresponding [`FieldInfo`][pydantic.fields.FieldInfo] objects.     __pydantic_computed_fields__: A dictionary of computed field names and their corresponding [`ComputedFieldInfo`][pydantic.fields.ComputedFieldInfo] objects.      __pydantic_extra__: A dictionary containing extra values, if [`extra`][pydantic.config.ConfigDict.extra]         is set to `\'allow\'`.     __pydantic_fields_set__: The names of fields explicitly set during instantiation.     __pydantic_private__: Values of private attributes set on the model instance.    PARENT CLASS DOCUMENTATION   UploadResultWithExternalIdentifiers: Represents an upload result that also includes upload results for external identifiers, mirroring a for upload class that has external identifiers.    PARENT CLASS DOCUMENTATION   UploadResult: Represents the result of an upload operation, including upload status and logs.  Additional validation: - If the status is successful (NOT_FAILED), there must be no error log items. - If the status is failed, there must be at least one error log item.    PARENT CLASS DOCUMENTATION   Model: PARENT CLASS DOCUMENTATION   BaseModel: !!! abstract \"Usage Documentation\"     [Models](../concepts/models.md)  A base class for creating Pydantic models.  Attributes:     __class_vars__: The names of the class variables defined on the model.     __private_attributes__: Metadata about the private attributes of the model.     __signature__: The synthesized `__init__` [`Signature`][inspect.Signature] of the model.      __pydantic_complete__: Whether model building is completed, or if there are still undefined fields.     __pydantic_core_schema__: The core schema of the model.     __pydantic_custom_init__: Whether the model has a custom `__init__` function.     __pydantic_decorators__: Metadata containing the decorators defined on the model.         This replaces `Model.__validators__` and `Model.__root_validators__` from Pydantic V1.     __pydantic_generic_metadata__: Metadata for generic models; contains data used for a similar purpose to         __args__, __origin__, __parameters__ in typing-module generics. May eventually be replaced by these.     __pydantic_parent_namespace__: Parent namespace of the model, used for automatic rebuilding of models.     __pydantic_post_init__: The name of the post-init method for the model, if defined.     __pydantic_root_model__: Whether the model is a [`RootModel`][pydantic.root_model.RootModel].     __pydantic_serializer__: The `pydantic-core` `SchemaSerializer` used to dump instances of the model.     __pydantic_validator__: The `pydantic-core` `SchemaValidator` used to validate instances of the model.      __pydantic_fields__: A dictionary of field names and their corresponding [`FieldInfo`][pydantic.fields.FieldInfo] objects.     __pydantic_computed_fields__: A dictionary of computed field names and their corresponding [`ComputedFieldInfo`][pydantic.fields.ComputedFieldInfo] objects.      __pydantic_extra__: A dictionary containing extra values, if [`extra`][pydantic.config.ConfigDict.extra]         is set to `\'allow\'`.     __pydantic_fields_set__: The names of fields explicitly set during instantiation.     __pydantic_private__: Values of private attributes set on the model instance.    PARENT CLASS DOCUMENTATION   UploadResult: Represents the result of an upload operation, including upload status and logs.  Additional validation: - If the status is successful (NOT_FAILED), there must be no error log items. - If the status is failed, there must be at least one error log item.    PARENT CLASS DOCUMENTATION   Model: PARENT CLASS DOCUMENTATION   BaseModel: !!! abstract \"Usage Documentation\"     [Models](../concepts/models.md)  A base class for creating Pydantic models.  Attributes:     __class_vars__: The names of the class variables defined on the model.     __private_attributes__: Metadata about the private attributes of the model.     __signature__: The synthesized `__init__` [`Signature`][inspect.Signature] of the model.      __pydantic_complete__: Whether model building is completed, or if there are still undefined fields.     __pydantic_core_schema__: The core schema of the model.     __pydantic_custom_init__: Whether the model has a custom `__init__` function.     __pydantic_decorators__: Metadata containing the decorators defined on the model.         This replaces `Model.__validators__` and `Model.__root_validators__` from Pydantic V1.     __pydantic_generic_metadata__: Metadata for generic models; contains data used for a similar purpose to         __args__, __origin__, __parameters__ in typing-module generics. May eventually be replaced by these.     __pydantic_parent_namespace__: Parent namespace of the model, used for automatic rebuilding of models.     __pydantic_post_init__: The name of the post-init method for the model, if defined.     __pydantic_root_model__: Whether the model is a [`RootModel`][pydantic.root_model.RootModel].     __pydantic_serializer__: The `pydantic-core` `SchemaSerializer` used to dump instances of the model.     __pydantic_validator__: The `pydantic-core` `SchemaValidator` used to validate instances of the model.      __pydantic_fields__: A dictionary of field names and their corresponding [`FieldInfo`][pydantic.fields.FieldInfo] objects.     __pydantic_computed_fields__: A dictionary of computed field names and their corresponding [`ComputedFieldInfo`][pydantic.fields.ComputedFieldInfo] objects.      __pydantic_extra__: A dictionary containing extra values, if [`extra`][pydantic.config.ConfigDict.extra]         is set to `\'allow\'`.     __pydantic_fields_set__: The names of fields explicitly set during instantiation.     __pydantic_private__: Values of private attributes set on the model instance.    PARENT CLASS DOCUMENTATION   Model: PARENT CLASS DOCUMENTATION   BaseModel: !!! abstract \"Usage Documentation\"     [Models](../concepts/models.md)  A base class for creating Pydantic models.  Attributes:     __class_vars__: The names of the class variables defined on the model.     __private_attributes__: Metadata about the private attributes of the model.     __signature__: The synthesized `__init__` [`Signature`][inspect.Signature] of the model.      __pydantic_complete__: Whether model building is completed, or if there are still undefined fields.     __pydantic_core_schema__: The core schema of the model.     __pydantic_custom_init__: Whether the model has a custom `__init__` function.     __pydantic_decorators__: Metadata containing the decorators defined on the model.         This replaces `Model.__validators__` and `Model.__root_validators__` from Pydantic V1.     __pydantic_generic_metadata__: Metadata for generic models; contains data used for a similar purpose to         __args__, __origin__, __parameters__ in typing-module generics. May eventually be replaced by these.     __pydantic_parent_namespace__: Parent namespace of the model, used for automatic rebuilding of models.     __pydantic_post_init__: The name of the post-init method for the model, if defined.     __pydantic_root_model__: Whether the model is a [`RootModel`][pydantic.root_model.RootModel].     __pydantic_serializer__: The `pydantic-core` `SchemaSerializer` used to dump instances of the model.     __pydantic_validator__: The `pydantic-core` `SchemaValidator` used to validate instances of the model.      __pydantic_fields__: A dictionary of field names and their corresponding [`FieldInfo`][pydantic.fields.FieldInfo] objects.     __pydantic_computed_fields__: A dictionary of computed field names and their corresponding [`ComputedFieldInfo`][pydantic.fields.ComputedFieldInfo] objects.      __pydantic_extra__: A dictionary containing extra values, if [`extra`][pydantic.config.ConfigDict.extra]         is set to `\'allow\'`.     __pydantic_fields_set__: The names of fields explicitly set during instantiation.     __pydantic_private__: Values of private attributes set on the model instance.    PARENT CLASS DOCUMENTATION   BaseModel: !!! abstract \"Usage Documentation\"     [Models](../concepts/models.md)  A base class for creating Pydantic models.  Attributes:     __class_vars__: The names of the class variables defined on the model.     __private_attributes__: Metadata about the private attributes of the model.     __signature__: The synthesized `__init__` [`Signature`][inspect.Signature] of the model.      __pydantic_complete__: Whether model building is completed, or if there are still undefined fields.     __pydantic_core_schema__: The core schema of the model.     __pydantic_custom_init__: Whether the model has a custom `__init__` function.     __pydantic_decorators__: Metadata containing the decorators defined on the model.         This replaces `Model.__validators__` and `Model.__root_validators__` from Pydantic V1.     __pydantic_generic_metadata__: Metadata for generic models; contains data used for a similar purpose to         __args__, __origin__, __parameters__ in typing-module generics. May eventually be replaced by these.     __pydantic_parent_namespace__: Parent namespace of the model, used for automatic rebuilding of models.     __pydantic_post_init__: The name of the post-init method for the model, if defined.     __pydantic_root_model__: Whether the model is a [`RootModel`][pydantic.root_model.RootModel].     __pydantic_serializer__: The `pydantic-core` `SchemaSerializer` used to dump instances of the model.     __pydantic_validator__: The `pydantic-core` `SchemaValidator` used to validate instances of the model.      __pydantic_fields__: A dictionary of field names and their corresponding [`FieldInfo`][pydantic.fields.FieldInfo] objects.     __pydantic_computed_fields__: A dictionary of computed field names and their corresponding [`ComputedFieldInfo`][pydantic.fields.ComputedFieldInfo] objects.      __pydantic_extra__: A dictionary containing extra values, if [`extra`][pydantic.config.ConfigDict.extra]         is set to `\'allow\'`.     __pydantic_fields_set__: The names of fields explicitly set during instantiation.     __pydantic_private__: Values of private attributes set on the model instance.
  * @export
  * @interface CaseUploadResult
  */
@@ -1504,17 +1504,17 @@ export interface CaseUploadResult {
      */
     'external_identifiers'?: Array<UploadResult> | null;
     /**
-     * The validated content of the case after validation or upload.
-     * @type {{ [key: string]: string | null; }}
-     * @memberof CaseUploadResult
-     */
-    'validated_content'?: { [key: string]: string | null; };
-    /**
      * The data issues found for the original case content.
      * @type {Array<CaseDataIssue>}
      * @memberof CaseUploadResult
      */
     'data_issues'?: Array<CaseDataIssue>;
+    /**
+     * The validated content of the case after validation or upload.
+     * @type {{ [key: string]: string | null; }}
+     * @memberof CaseUploadResult
+     */
+    'validated_content'?: { [key: string]: string | null; };
     /**
      * The results of uploading the read sets associated with the case, if any were provided, in the same order as provided.
      * @type {Array<UploadResult>}
@@ -1699,95 +1699,95 @@ export interface ColValidationRulesResponseBody {
  */
 
 export const CommandName = {
-    ConceptRelationCrudCommand: 'ConceptRelationCrudCommand',
-    CaseTypeCrudCommand: 'CaseTypeCrudCommand',
-    CaseTypeColSetCrudCommand: 'CaseTypeColSetCrudCommand',
-    SubjectIdentifierCrudCommand: 'SubjectIdentifierCrudCommand',
-    RetrieveCaseRightsCommand: 'RetrieveCaseRightsCommand',
-    CaseSetStatusCrudCommand: 'CaseSetStatusCrudCommand',
-    SubjectCrudCommand: 'SubjectCrudCommand',
-    RetrievePhylogeneticTreeBySequencesCommand: 'RetrievePhylogeneticTreeBySequencesCommand',
-    RetrieveAssemblyProtocolsCommand: 'RetrieveAssemblyProtocolsCommand',
-    OrganizationSetCrudCommand: 'OrganizationSetCrudCommand',
-    ColCrudCommand: 'ColCrudCommand',
-    CaseTypeSetCategoryCrudCommand: 'CaseTypeSetCategoryCrudCommand',
-    CaseSetCrudCommand: 'CaseSetCrudCommand',
-    RetrieveCasesByQueryCommand: 'RetrieveCasesByQueryCommand',
-    RetrieveCaseSetRightsCommand: 'RetrieveCaseSetRightsCommand',
-    DataCollectionSetDataCollectionUpdateAssociationCommand: 'DataCollectionSetDataCollectionUpdateAssociationCommand',
-    RegionCrudCommand: 'RegionCrudCommand',
-    EtiologyCrudCommand: 'EtiologyCrudCommand',
-    RetrieveInviteUserConstraintsCommand: 'RetrieveInviteUserConstraintsCommand',
-    OrganizationIdentifierIssuerLinkCrudCommand: 'OrganizationIdentifierIssuerLinkCrudCommand',
-    CaseTypeDimCrudCommand: 'CaseTypeDimCrudCommand',
-    RetrieveSimilarCasesCommand: 'RetrieveSimilarCasesCommand',
-    CreateCaseSetCommand: 'CreateCaseSetCommand',
-    SiteCrudCommand: 'SiteCrudCommand',
-    CaseSetDataCollectionLinkCrudCommand: 'CaseSetDataCollectionLinkCrudCommand',
-    CaseDataCollectionLinkCrudCommand: 'CaseDataCollectionLinkCrudCommand',
-    ExternalIdentifierCrudCommand: 'ExternalIdentifierCrudCommand',
-    InviteUserCommand: 'InviteUserCommand',
-    TreeAlgorithmCrudCommand: 'TreeAlgorithmCrudCommand',
-    RetrievePhylogeneticTreeByCasesCommand: 'RetrievePhylogeneticTreeByCasesCommand',
-    RetrieveOutagesCommand: 'RetrieveOutagesCommand',
-    DiseaseEtiologicalAgentUpdateAssociationCommand: 'DiseaseEtiologicalAgentUpdateAssociationCommand',
-    DiseaseCrudCommand: 'DiseaseCrudCommand',
-    UserAccessCasePolicyCrudCommand: 'UserAccessCasePolicyCrudCommand',
-    RetrieveGeneticSequenceFastaByCaseCommand: 'RetrieveGeneticSequenceFastaByCaseCommand',
-    UpdateUserCommand: 'UpdateUserCommand',
-    OrganizationCrudCommand: 'OrganizationCrudCommand',
-    DataCollectionSetCrudCommand: 'DataCollectionSetCrudCommand',
-    CaseCrudCommand: 'CaseCrudCommand',
-    RegionRelationCrudCommand: 'RegionRelationCrudCommand',
-    RetrieveGeneticSequenceByIdCommand: 'RetrieveGeneticSequenceByIdCommand',
-    DimCrudCommand: 'DimCrudCommand',
-    EtiologicalAgentCrudCommand: 'EtiologicalAgentCrudCommand',
-    UserCrudCommand: 'UserCrudCommand',
-    DataCollectionCrudCommand: 'DataCollectionCrudCommand',
-    RetrieveOrganizationContactsCommand: 'RetrieveOrganizationContactsCommand',
     CaseTypeSetCaseTypeUpdateAssociationCommand: 'CaseTypeSetCaseTypeUpdateAssociationCommand',
-    OrganizationSetMemberCrudCommand: 'OrganizationSetMemberCrudCommand',
-    UserInvitationCrudCommand: 'UserInvitationCrudCommand',
-    ConceptCrudCommand: 'ConceptCrudCommand',
-    OrganizationAdminPolicyCrudCommand: 'OrganizationAdminPolicyCrudCommand',
-    RegisterInvitedUserCommand: 'RegisterInvitedUserCommand',
-    OrganizationSetOrganizationUpdateAssociationCommand: 'OrganizationSetOrganizationUpdateAssociationCommand',
-    CreateFileForReadSetCommand: 'CreateFileForReadSetCommand',
-    ConceptSetCrudCommand: 'ConceptSetCrudCommand',
-    RetrieveSubRolesCommand: 'RetrieveSubRolesCommand',
-    OrganizationAccessCasePolicyCrudCommand: 'OrganizationAccessCasePolicyCrudCommand',
-    RetrieveContainingRegionCommand: 'RetrieveContainingRegionCommand',
-    IdentifierIssuerCrudCommand: 'IdentifierIssuerCrudCommand',
-    OrganizationIdentifierIssuerLinkUpdateAssociationCommand: 'OrganizationIdentifierIssuerLinkUpdateAssociationCommand',
-    UploadCasesCommand: 'UploadCasesCommand',
-    RetrieveLicensesCommand: 'RetrieveLicensesCommand',
-    DataCollectionSetMemberCrudCommand: 'DataCollectionSetMemberCrudCommand',
-    RetrieveOrganizationsUnderAdminCommand: 'RetrieveOrganizationsUnderAdminCommand',
-    RegionSetShapeCrudCommand: 'RegionSetShapeCrudCommand',
-    RegionSetCrudCommand: 'RegionSetCrudCommand',
-    CaseTypeColSetCaseTypeColUpdateAssociationCommand: 'CaseTypeColSetCaseTypeColUpdateAssociationCommand',
-    RetrieveOrganizationAdminNameEmailsCommand: 'RetrieveOrganizationAdminNameEmailsCommand',
-    CaseTypeSetCrudCommand: 'CaseTypeSetCrudCommand',
-    ContactCrudCommand: 'ContactCrudCommand',
-    OutageCrudCommand: 'OutageCrudCommand',
-    RetrieveCompleteCaseTypeCommand: 'RetrieveCompleteCaseTypeCommand',
-    UserShareCasePolicyCrudCommand: 'UserShareCasePolicyCrudCommand',
-    RetrieveOwnPermissionsCommand: 'RetrieveOwnPermissionsCommand',
-    OrganizationShareCasePolicyCrudCommand: 'OrganizationShareCasePolicyCrudCommand',
-    TreeAlgorithmClassCrudCommand: 'TreeAlgorithmClassCrudCommand',
-    RetrieveCasesByIdCommand: 'RetrieveCasesByIdCommand',
+    EtiologicalAgentCrudCommand: 'EtiologicalAgentCrudCommand',
     CaseTypeSetMemberCrudCommand: 'CaseTypeSetMemberCrudCommand',
     CreateFileForSeqCommand: 'CreateFileForSeqCommand',
-    CaseSetCategoryCrudCommand: 'CaseSetCategoryCrudCommand',
-    RetrieveCaseStatsCommand: 'RetrieveCaseStatsCommand',
-    UpdateUserOwnOrganizationCommand: 'UpdateUserOwnOrganizationCommand',
-    CaseSetMemberCrudCommand: 'CaseSetMemberCrudCommand',
     RetrieveGeneticSequenceFastaByIdCommand: 'RetrieveGeneticSequenceFastaByIdCommand',
+    EtiologyCrudCommand: 'EtiologyCrudCommand',
+    ConceptRelationCrudCommand: 'ConceptRelationCrudCommand',
+    UserShareCasePolicyCrudCommand: 'UserShareCasePolicyCrudCommand',
+    DataCollectionSetMemberCrudCommand: 'DataCollectionSetMemberCrudCommand',
+    CaseTypeColSetCaseTypeColUpdateAssociationCommand: 'CaseTypeColSetCaseTypeColUpdateAssociationCommand',
+    TreeAlgorithmClassCrudCommand: 'TreeAlgorithmClassCrudCommand',
+    OrganizationSetCrudCommand: 'OrganizationSetCrudCommand',
+    DimCrudCommand: 'DimCrudCommand',
+    ExternalIdentifierCrudCommand: 'ExternalIdentifierCrudCommand',
+    DiseaseCrudCommand: 'DiseaseCrudCommand',
+    CaseTypeDimCrudCommand: 'CaseTypeDimCrudCommand',
+    RetrieveOwnPermissionsCommand: 'RetrieveOwnPermissionsCommand',
+    RetrieveOrganizationAdminNameEmailsCommand: 'RetrieveOrganizationAdminNameEmailsCommand',
+    CaseDataCollectionLinkCrudCommand: 'CaseDataCollectionLinkCrudCommand',
+    SiteCrudCommand: 'SiteCrudCommand',
+    OrganizationAdminPolicyCrudCommand: 'OrganizationAdminPolicyCrudCommand',
+    RegionCrudCommand: 'RegionCrudCommand',
+    RetrieveAssemblyProtocolsCommand: 'RetrieveAssemblyProtocolsCommand',
+    OrganizationAccessCasePolicyCrudCommand: 'OrganizationAccessCasePolicyCrudCommand',
+    RetrieveSubRolesCommand: 'RetrieveSubRolesCommand',
+    RegionSetShapeCrudCommand: 'RegionSetShapeCrudCommand',
     GeneticDistanceProtocolCrudCommand: 'GeneticDistanceProtocolCrudCommand',
+    CaseSetMemberCrudCommand: 'CaseSetMemberCrudCommand',
+    UserAccessCasePolicyCrudCommand: 'UserAccessCasePolicyCrudCommand',
+    DataCollectionSetCrudCommand: 'DataCollectionSetCrudCommand',
+    OrganizationSetOrganizationUpdateAssociationCommand: 'OrganizationSetOrganizationUpdateAssociationCommand',
+    RetrieveInviteUserConstraintsCommand: 'RetrieveInviteUserConstraintsCommand',
     RetrieveSequencingProtocolsCommand: 'RetrieveSequencingProtocolsCommand',
+    DiseaseEtiologicalAgentUpdateAssociationCommand: 'DiseaseEtiologicalAgentUpdateAssociationCommand',
+    DataCollectionSetDataCollectionUpdateAssociationCommand: 'DataCollectionSetDataCollectionUpdateAssociationCommand',
+    CaseTypeColSetCrudCommand: 'CaseTypeColSetCrudCommand',
+    UploadCasesCommand: 'UploadCasesCommand',
+    RetrieveGeneticSequenceByIdCommand: 'RetrieveGeneticSequenceByIdCommand',
+    CaseTypeSetCrudCommand: 'CaseTypeSetCrudCommand',
+    RegionRelationCrudCommand: 'RegionRelationCrudCommand',
     CaseTypeColCrudCommand: 'CaseTypeColCrudCommand',
+    OrganizationIdentifierIssuerLinkCrudCommand: 'OrganizationIdentifierIssuerLinkCrudCommand',
+    CaseSetCategoryCrudCommand: 'CaseSetCategoryCrudCommand',
+    UserCrudCommand: 'UserCrudCommand',
+    OrganizationSetMemberCrudCommand: 'OrganizationSetMemberCrudCommand',
+    ColCrudCommand: 'ColCrudCommand',
+    RetrieveOrganizationsUnderAdminCommand: 'RetrieveOrganizationsUnderAdminCommand',
+    RetrieveCompleteCaseTypeCommand: 'RetrieveCompleteCaseTypeCommand',
+    DataCollectionCrudCommand: 'DataCollectionCrudCommand',
+    RetrieveCaseSetRightsCommand: 'RetrieveCaseSetRightsCommand',
+    OutageCrudCommand: 'OutageCrudCommand',
+    CreateFileForReadSetCommand: 'CreateFileForReadSetCommand',
+    CaseSetStatusCrudCommand: 'CaseSetStatusCrudCommand',
+    RetrieveGeneticSequenceFastaByCaseCommand: 'RetrieveGeneticSequenceFastaByCaseCommand',
+    RetrieveLicensesCommand: 'RetrieveLicensesCommand',
+    OrganizationCrudCommand: 'OrganizationCrudCommand',
+    CaseCrudCommand: 'CaseCrudCommand',
+    UpdateUserCommand: 'UpdateUserCommand',
+    TreeAlgorithmCrudCommand: 'TreeAlgorithmCrudCommand',
+    ConceptSetCrudCommand: 'ConceptSetCrudCommand',
+    CaseTypeColSetMemberCrudCommand: 'CaseTypeColSetMemberCrudCommand',
+    CreateCaseSetCommand: 'CreateCaseSetCommand',
+    InviteUserCommand: 'InviteUserCommand',
     GetIdentityProvidersCommand: 'GetIdentityProvidersCommand',
-    CaseTypeColSetMemberCrudCommand: 'CaseTypeColSetMemberCrudCommand'
+    OrganizationShareCasePolicyCrudCommand: 'OrganizationShareCasePolicyCrudCommand',
+    OrganizationIdentifierIssuerLinkUpdateAssociationCommand: 'OrganizationIdentifierIssuerLinkUpdateAssociationCommand',
+    UpdateUserOwnOrganizationCommand: 'UpdateUserOwnOrganizationCommand',
+    SubjectCrudCommand: 'SubjectCrudCommand',
+    CaseSetCrudCommand: 'CaseSetCrudCommand',
+    IdentifierIssuerCrudCommand: 'IdentifierIssuerCrudCommand',
+    RetrieveOrganizationContactsCommand: 'RetrieveOrganizationContactsCommand',
+    RegisterInvitedUserCommand: 'RegisterInvitedUserCommand',
+    RetrieveSimilarCasesCommand: 'RetrieveSimilarCasesCommand',
+    CaseTypeCrudCommand: 'CaseTypeCrudCommand',
+    CaseSetDataCollectionLinkCrudCommand: 'CaseSetDataCollectionLinkCrudCommand',
+    RetrieveCasesByIdCommand: 'RetrieveCasesByIdCommand',
+    CaseTypeSetCategoryCrudCommand: 'CaseTypeSetCategoryCrudCommand',
+    RetrievePhylogeneticTreeByCasesCommand: 'RetrievePhylogeneticTreeByCasesCommand',
+    RegionSetCrudCommand: 'RegionSetCrudCommand',
+    ConceptCrudCommand: 'ConceptCrudCommand',
+    UserInvitationCrudCommand: 'UserInvitationCrudCommand',
+    ContactCrudCommand: 'ContactCrudCommand',
+    RetrieveCaseRightsCommand: 'RetrieveCaseRightsCommand',
+    RetrieveOutagesCommand: 'RetrieveOutagesCommand',
+    RetrieveContainingRegionCommand: 'RetrieveContainingRegionCommand',
+    SubjectIdentifierCrudCommand: 'SubjectIdentifierCrudCommand',
+    RetrieveCaseStatsCommand: 'RetrieveCaseStatsCommand',
+    RetrievePhylogeneticTreeBySequencesCommand: 'RetrievePhylogeneticTreeBySequencesCommand',
+    RetrieveCasesByQueryCommand: 'RetrieveCasesByQueryCommand'
 } as const;
 
 export type CommandName = typeof CommandName[keyof typeof CommandName];
@@ -5131,7 +5131,7 @@ export interface UploadCasesCommand {
 
 
 /**
- * Represents a log item for an upload result, contain a timestamp, code, message and severity.
+ * Represents a log item for an upload result, containing a timestamp, code, message and severity.
  * @export
  * @interface UploadLogItem
  */
@@ -5164,7 +5164,7 @@ export interface UploadLogItem {
 
 
 /**
- * Represents the result of an upload operation, including upload status and logs.  Additional validation: - If the status is successful (NOT_FAILED), there must be no error log items. - If the status is failed, there must be at least one error log item.
+ * Represents the result of an upload operation, including upload status and logs.  Additional validation: - If the status is successful (NOT_FAILED), there must be no error log items. - If the status is failed, there must be at least one error log item.    PARENT CLASS DOCUMENTATION   Model: PARENT CLASS DOCUMENTATION   BaseModel: !!! abstract \"Usage Documentation\"     [Models](../concepts/models.md)  A base class for creating Pydantic models.  Attributes:     __class_vars__: The names of the class variables defined on the model.     __private_attributes__: Metadata about the private attributes of the model.     __signature__: The synthesized `__init__` [`Signature`][inspect.Signature] of the model.      __pydantic_complete__: Whether model building is completed, or if there are still undefined fields.     __pydantic_core_schema__: The core schema of the model.     __pydantic_custom_init__: Whether the model has a custom `__init__` function.     __pydantic_decorators__: Metadata containing the decorators defined on the model.         This replaces `Model.__validators__` and `Model.__root_validators__` from Pydantic V1.     __pydantic_generic_metadata__: Metadata for generic models; contains data used for a similar purpose to         __args__, __origin__, __parameters__ in typing-module generics. May eventually be replaced by these.     __pydantic_parent_namespace__: Parent namespace of the model, used for automatic rebuilding of models.     __pydantic_post_init__: The name of the post-init method for the model, if defined.     __pydantic_root_model__: Whether the model is a [`RootModel`][pydantic.root_model.RootModel].     __pydantic_serializer__: The `pydantic-core` `SchemaSerializer` used to dump instances of the model.     __pydantic_validator__: The `pydantic-core` `SchemaValidator` used to validate instances of the model.      __pydantic_fields__: A dictionary of field names and their corresponding [`FieldInfo`][pydantic.fields.FieldInfo] objects.     __pydantic_computed_fields__: A dictionary of computed field names and their corresponding [`ComputedFieldInfo`][pydantic.fields.ComputedFieldInfo] objects.      __pydantic_extra__: A dictionary containing extra values, if [`extra`][pydantic.config.ConfigDict.extra]         is set to `\'allow\'`.     __pydantic_fields_set__: The names of fields explicitly set during instantiation.     __pydantic_private__: Values of private attributes set on the model instance.    PARENT CLASS DOCUMENTATION   Model: PARENT CLASS DOCUMENTATION   BaseModel: !!! abstract \"Usage Documentation\"     [Models](../concepts/models.md)  A base class for creating Pydantic models.  Attributes:     __class_vars__: The names of the class variables defined on the model.     __private_attributes__: Metadata about the private attributes of the model.     __signature__: The synthesized `__init__` [`Signature`][inspect.Signature] of the model.      __pydantic_complete__: Whether model building is completed, or if there are still undefined fields.     __pydantic_core_schema__: The core schema of the model.     __pydantic_custom_init__: Whether the model has a custom `__init__` function.     __pydantic_decorators__: Metadata containing the decorators defined on the model.         This replaces `Model.__validators__` and `Model.__root_validators__` from Pydantic V1.     __pydantic_generic_metadata__: Metadata for generic models; contains data used for a similar purpose to         __args__, __origin__, __parameters__ in typing-module generics. May eventually be replaced by these.     __pydantic_parent_namespace__: Parent namespace of the model, used for automatic rebuilding of models.     __pydantic_post_init__: The name of the post-init method for the model, if defined.     __pydantic_root_model__: Whether the model is a [`RootModel`][pydantic.root_model.RootModel].     __pydantic_serializer__: The `pydantic-core` `SchemaSerializer` used to dump instances of the model.     __pydantic_validator__: The `pydantic-core` `SchemaValidator` used to validate instances of the model.      __pydantic_fields__: A dictionary of field names and their corresponding [`FieldInfo`][pydantic.fields.FieldInfo] objects.     __pydantic_computed_fields__: A dictionary of computed field names and their corresponding [`ComputedFieldInfo`][pydantic.fields.ComputedFieldInfo] objects.      __pydantic_extra__: A dictionary containing extra values, if [`extra`][pydantic.config.ConfigDict.extra]         is set to `\'allow\'`.     __pydantic_fields_set__: The names of fields explicitly set during instantiation.     __pydantic_private__: Values of private attributes set on the model instance.    PARENT CLASS DOCUMENTATION   BaseModel: !!! abstract \"Usage Documentation\"     [Models](../concepts/models.md)  A base class for creating Pydantic models.  Attributes:     __class_vars__: The names of the class variables defined on the model.     __private_attributes__: Metadata about the private attributes of the model.     __signature__: The synthesized `__init__` [`Signature`][inspect.Signature] of the model.      __pydantic_complete__: Whether model building is completed, or if there are still undefined fields.     __pydantic_core_schema__: The core schema of the model.     __pydantic_custom_init__: Whether the model has a custom `__init__` function.     __pydantic_decorators__: Metadata containing the decorators defined on the model.         This replaces `Model.__validators__` and `Model.__root_validators__` from Pydantic V1.     __pydantic_generic_metadata__: Metadata for generic models; contains data used for a similar purpose to         __args__, __origin__, __parameters__ in typing-module generics. May eventually be replaced by these.     __pydantic_parent_namespace__: Parent namespace of the model, used for automatic rebuilding of models.     __pydantic_post_init__: The name of the post-init method for the model, if defined.     __pydantic_root_model__: Whether the model is a [`RootModel`][pydantic.root_model.RootModel].     __pydantic_serializer__: The `pydantic-core` `SchemaSerializer` used to dump instances of the model.     __pydantic_validator__: The `pydantic-core` `SchemaValidator` used to validate instances of the model.      __pydantic_fields__: A dictionary of field names and their corresponding [`FieldInfo`][pydantic.fields.FieldInfo] objects.     __pydantic_computed_fields__: A dictionary of computed field names and their corresponding [`ComputedFieldInfo`][pydantic.fields.ComputedFieldInfo] objects.      __pydantic_extra__: A dictionary containing extra values, if [`extra`][pydantic.config.ConfigDict.extra]         is set to `\'allow\'`.     __pydantic_fields_set__: The names of fields explicitly set during instantiation.     __pydantic_private__: Values of private attributes set on the model instance.
  * @export
  * @interface UploadResult
  */
@@ -5657,7 +5657,7 @@ export type Value = number | string;
 const AbacApiAxiosParamCreator = function (configuration?: Configuration) {
     return {
         /**
-         * 
+         * Manage organization-level access policies to cases and case sets in a data collection, scoped by case-type and read/write column sets.
          * @summary Organization Access Case Policies  Delete All
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
@@ -5687,7 +5687,7 @@ const AbacApiAxiosParamCreator = function (configuration?: Configuration) {
             };
         },
         /**
-         * 
+         * Manage organization-level access policies to cases and case sets in a data collection, scoped by case-type and read/write column sets.
          * @summary Organization Access Case Policies  Delete One
          * @param {any} objectId 
          * @param {*} [options] Override http request option.
@@ -5721,7 +5721,7 @@ const AbacApiAxiosParamCreator = function (configuration?: Configuration) {
             };
         },
         /**
-         * 
+         * Manage organization-level access policies to cases and case sets in a data collection, scoped by case-type and read/write column sets.
          * @summary Organization Access Case Policies  Delete Some
          * @param {string} ids 
          * @param {*} [options] Override http request option.
@@ -5758,7 +5758,7 @@ const AbacApiAxiosParamCreator = function (configuration?: Configuration) {
             };
         },
         /**
-         * 
+         * Manage organization-level access policies to cases and case sets in a data collection, scoped by case-type and read/write column sets.
          * @summary Organization Access Case Policies  Get All
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
@@ -5788,7 +5788,7 @@ const AbacApiAxiosParamCreator = function (configuration?: Configuration) {
             };
         },
         /**
-         * 
+         * Manage organization-level access policies to cases and case sets in a data collection, scoped by case-type and read/write column sets.
          * @summary Organization Access Case Policies  Get One
          * @param {string} objectId 
          * @param {*} [options] Override http request option.
@@ -5822,7 +5822,7 @@ const AbacApiAxiosParamCreator = function (configuration?: Configuration) {
             };
         },
         /**
-         * 
+         * Manage organization-level access policies to cases and case sets in a data collection, scoped by case-type and read/write column sets.
          * @summary Organization Access Case Policies  Get Some
          * @param {string} ids 
          * @param {*} [options] Override http request option.
@@ -5859,7 +5859,7 @@ const AbacApiAxiosParamCreator = function (configuration?: Configuration) {
             };
         },
         /**
-         * 
+         * Manage organization-level access policies to cases and case sets in a data collection, scoped by case-type and read/write column sets.
          * @summary Organization Access Case Policies  Post One
          * @param {OrganizationAccessCasePolicy} organizationAccessCasePolicy 
          * @param {*} [options] Override http request option.
@@ -5895,7 +5895,7 @@ const AbacApiAxiosParamCreator = function (configuration?: Configuration) {
             };
         },
         /**
-         * 
+         * Manage organization-level access policies to cases and case sets in a data collection, scoped by case-type and read/write column sets.
          * @summary Organization Access Case Policies  Post Query
          * @param {EpiFilter} filter 
          * @param {*} [options] Override http request option.
@@ -5931,7 +5931,7 @@ const AbacApiAxiosParamCreator = function (configuration?: Configuration) {
             };
         },
         /**
-         * 
+         * Manage organization-level access policies to cases and case sets in a data collection, scoped by case-type and read/write column sets.
          * @summary Organization Access Case Policies  Post Query  Ids
          * @param {EpiFilter} filter 
          * @param {*} [options] Override http request option.
@@ -5967,7 +5967,7 @@ const AbacApiAxiosParamCreator = function (configuration?: Configuration) {
             };
         },
         /**
-         * 
+         * Manage organization-level access policies to cases and case sets in a data collection, scoped by case-type and read/write column sets.
          * @summary Organization Access Case Policies  Post Some
          * @param {Array<OrganizationAccessCasePolicy>} organizationAccessCasePolicy 
          * @param {*} [options] Override http request option.
@@ -6003,7 +6003,7 @@ const AbacApiAxiosParamCreator = function (configuration?: Configuration) {
             };
         },
         /**
-         * 
+         * Manage organization-level access policies to cases and case sets in a data collection, scoped by case-type and read/write column sets.
          * @summary Organization Access Case Policies  Put One
          * @param {string} objectId 
          * @param {OrganizationAccessCasePolicy} organizationAccessCasePolicy 
@@ -6043,7 +6043,7 @@ const AbacApiAxiosParamCreator = function (configuration?: Configuration) {
             };
         },
         /**
-         * 
+         * Manage organization-level access policies to cases and case sets in a data collection, scoped by case-type and read/write column sets.
          * @summary Organization Access Case Policies  Put Some
          * @param {Array<OrganizationAccessCasePolicy>} organizationAccessCasePolicy 
          * @param {*} [options] Override http request option.
@@ -6079,7 +6079,7 @@ const AbacApiAxiosParamCreator = function (configuration?: Configuration) {
             };
         },
         /**
-         * 
+         * Manage policies that define which organizations an administrator can manage across the platform.
          * @summary Organization Admin Policies  Delete All
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
@@ -6109,7 +6109,7 @@ const AbacApiAxiosParamCreator = function (configuration?: Configuration) {
             };
         },
         /**
-         * 
+         * Manage policies that define which organizations an administrator can manage across the platform.
          * @summary Organization Admin Policies  Delete One
          * @param {any} objectId 
          * @param {*} [options] Override http request option.
@@ -6143,7 +6143,7 @@ const AbacApiAxiosParamCreator = function (configuration?: Configuration) {
             };
         },
         /**
-         * 
+         * Manage policies that define which organizations an administrator can manage across the platform.
          * @summary Organization Admin Policies  Delete Some
          * @param {string} ids 
          * @param {*} [options] Override http request option.
@@ -6180,7 +6180,7 @@ const AbacApiAxiosParamCreator = function (configuration?: Configuration) {
             };
         },
         /**
-         * 
+         * Manage policies that define which organizations an administrator can manage across the platform.
          * @summary Organization Admin Policies  Get All
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
@@ -6210,7 +6210,7 @@ const AbacApiAxiosParamCreator = function (configuration?: Configuration) {
             };
         },
         /**
-         * 
+         * Manage policies that define which organizations an administrator can manage across the platform.
          * @summary Organization Admin Policies  Get One
          * @param {string} objectId 
          * @param {*} [options] Override http request option.
@@ -6244,7 +6244,7 @@ const AbacApiAxiosParamCreator = function (configuration?: Configuration) {
             };
         },
         /**
-         * 
+         * Manage policies that define which organizations an administrator can manage across the platform.
          * @summary Organization Admin Policies  Get Some
          * @param {string} ids 
          * @param {*} [options] Override http request option.
@@ -6281,7 +6281,7 @@ const AbacApiAxiosParamCreator = function (configuration?: Configuration) {
             };
         },
         /**
-         * 
+         * Manage policies that define which organizations an administrator can manage across the platform.
          * @summary Organization Admin Policies  Post One
          * @param {OrganizationAdminPolicy} organizationAdminPolicy 
          * @param {*} [options] Override http request option.
@@ -6317,7 +6317,7 @@ const AbacApiAxiosParamCreator = function (configuration?: Configuration) {
             };
         },
         /**
-         * 
+         * Manage policies that define which organizations an administrator can manage across the platform.
          * @summary Organization Admin Policies  Post Query
          * @param {EpiFilter} filter 
          * @param {*} [options] Override http request option.
@@ -6353,7 +6353,7 @@ const AbacApiAxiosParamCreator = function (configuration?: Configuration) {
             };
         },
         /**
-         * 
+         * Manage policies that define which organizations an administrator can manage across the platform.
          * @summary Organization Admin Policies  Post Query  Ids
          * @param {EpiFilter} filter 
          * @param {*} [options] Override http request option.
@@ -6389,7 +6389,7 @@ const AbacApiAxiosParamCreator = function (configuration?: Configuration) {
             };
         },
         /**
-         * 
+         * Manage policies that define which organizations an administrator can manage across the platform.
          * @summary Organization Admin Policies  Post Some
          * @param {Array<OrganizationAdminPolicy>} organizationAdminPolicy 
          * @param {*} [options] Override http request option.
@@ -6425,7 +6425,7 @@ const AbacApiAxiosParamCreator = function (configuration?: Configuration) {
             };
         },
         /**
-         * 
+         * Manage policies that define which organizations an administrator can manage across the platform.
          * @summary Organization Admin Policies  Put One
          * @param {string} objectId 
          * @param {OrganizationAdminPolicy} organizationAdminPolicy 
@@ -6465,7 +6465,7 @@ const AbacApiAxiosParamCreator = function (configuration?: Configuration) {
             };
         },
         /**
-         * 
+         * Manage policies that define which organizations an administrator can manage across the platform.
          * @summary Organization Admin Policies  Put Some
          * @param {Array<OrganizationAdminPolicy>} organizationAdminPolicy 
          * @param {*} [options] Override http request option.
@@ -6501,7 +6501,7 @@ const AbacApiAxiosParamCreator = function (configuration?: Configuration) {
             };
         },
         /**
-         * 
+         * Manage which cases or case sets an organization may share from one data collection into another for specific case-type sets.
          * @summary Organization Share Case Policies  Delete All
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
@@ -6531,7 +6531,7 @@ const AbacApiAxiosParamCreator = function (configuration?: Configuration) {
             };
         },
         /**
-         * 
+         * Manage which cases or case sets an organization may share from one data collection into another for specific case-type sets.
          * @summary Organization Share Case Policies  Delete One
          * @param {any} objectId 
          * @param {*} [options] Override http request option.
@@ -6565,7 +6565,7 @@ const AbacApiAxiosParamCreator = function (configuration?: Configuration) {
             };
         },
         /**
-         * 
+         * Manage which cases or case sets an organization may share from one data collection into another for specific case-type sets.
          * @summary Organization Share Case Policies  Delete Some
          * @param {string} ids 
          * @param {*} [options] Override http request option.
@@ -6602,7 +6602,7 @@ const AbacApiAxiosParamCreator = function (configuration?: Configuration) {
             };
         },
         /**
-         * 
+         * Manage which cases or case sets an organization may share from one data collection into another for specific case-type sets.
          * @summary Organization Share Case Policies  Get All
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
@@ -6632,7 +6632,7 @@ const AbacApiAxiosParamCreator = function (configuration?: Configuration) {
             };
         },
         /**
-         * 
+         * Manage which cases or case sets an organization may share from one data collection into another for specific case-type sets.
          * @summary Organization Share Case Policies  Get One
          * @param {string} objectId 
          * @param {*} [options] Override http request option.
@@ -6666,7 +6666,7 @@ const AbacApiAxiosParamCreator = function (configuration?: Configuration) {
             };
         },
         /**
-         * 
+         * Manage which cases or case sets an organization may share from one data collection into another for specific case-type sets.
          * @summary Organization Share Case Policies  Get Some
          * @param {string} ids 
          * @param {*} [options] Override http request option.
@@ -6703,7 +6703,7 @@ const AbacApiAxiosParamCreator = function (configuration?: Configuration) {
             };
         },
         /**
-         * 
+         * Manage which cases or case sets an organization may share from one data collection into another for specific case-type sets.
          * @summary Organization Share Case Policies  Post One
          * @param {OrganizationShareCasePolicy} organizationShareCasePolicy 
          * @param {*} [options] Override http request option.
@@ -6739,7 +6739,7 @@ const AbacApiAxiosParamCreator = function (configuration?: Configuration) {
             };
         },
         /**
-         * 
+         * Manage which cases or case sets an organization may share from one data collection into another for specific case-type sets.
          * @summary Organization Share Case Policies  Post Query
          * @param {EpiFilter} filter 
          * @param {*} [options] Override http request option.
@@ -6775,7 +6775,7 @@ const AbacApiAxiosParamCreator = function (configuration?: Configuration) {
             };
         },
         /**
-         * 
+         * Manage which cases or case sets an organization may share from one data collection into another for specific case-type sets.
          * @summary Organization Share Case Policies  Post Query  Ids
          * @param {EpiFilter} filter 
          * @param {*} [options] Override http request option.
@@ -6811,7 +6811,7 @@ const AbacApiAxiosParamCreator = function (configuration?: Configuration) {
             };
         },
         /**
-         * 
+         * Manage which cases or case sets an organization may share from one data collection into another for specific case-type sets.
          * @summary Organization Share Case Policies  Post Some
          * @param {Array<OrganizationShareCasePolicy>} organizationShareCasePolicy 
          * @param {*} [options] Override http request option.
@@ -6847,7 +6847,7 @@ const AbacApiAxiosParamCreator = function (configuration?: Configuration) {
             };
         },
         /**
-         * 
+         * Manage which cases or case sets an organization may share from one data collection into another for specific case-type sets.
          * @summary Organization Share Case Policies  Put One
          * @param {string} objectId 
          * @param {OrganizationShareCasePolicy} organizationShareCasePolicy 
@@ -6887,7 +6887,7 @@ const AbacApiAxiosParamCreator = function (configuration?: Configuration) {
             };
         },
         /**
-         * 
+         * Manage which cases or case sets an organization may share from one data collection into another for specific case-type sets.
          * @summary Organization Share Case Policies  Put Some
          * @param {Array<OrganizationShareCasePolicy>} organizationShareCasePolicy 
          * @param {*} [options] Override http request option.
@@ -6953,7 +6953,7 @@ const AbacApiAxiosParamCreator = function (configuration?: Configuration) {
             };
         },
         /**
-         * 
+         * Manage per-user maximum access policies to cases and case sets in a data collection; effective rights intersect with the organization policy.
          * @summary User Access Case Policies  Delete All
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
@@ -6983,7 +6983,7 @@ const AbacApiAxiosParamCreator = function (configuration?: Configuration) {
             };
         },
         /**
-         * 
+         * Manage per-user maximum access policies to cases and case sets in a data collection; effective rights intersect with the organization policy.
          * @summary User Access Case Policies  Delete One
          * @param {any} objectId 
          * @param {*} [options] Override http request option.
@@ -7017,7 +7017,7 @@ const AbacApiAxiosParamCreator = function (configuration?: Configuration) {
             };
         },
         /**
-         * 
+         * Manage per-user maximum access policies to cases and case sets in a data collection; effective rights intersect with the organization policy.
          * @summary User Access Case Policies  Delete Some
          * @param {string} ids 
          * @param {*} [options] Override http request option.
@@ -7054,7 +7054,7 @@ const AbacApiAxiosParamCreator = function (configuration?: Configuration) {
             };
         },
         /**
-         * 
+         * Manage per-user maximum access policies to cases and case sets in a data collection; effective rights intersect with the organization policy.
          * @summary User Access Case Policies  Get All
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
@@ -7084,7 +7084,7 @@ const AbacApiAxiosParamCreator = function (configuration?: Configuration) {
             };
         },
         /**
-         * 
+         * Manage per-user maximum access policies to cases and case sets in a data collection; effective rights intersect with the organization policy.
          * @summary User Access Case Policies  Get One
          * @param {string} objectId 
          * @param {*} [options] Override http request option.
@@ -7118,7 +7118,7 @@ const AbacApiAxiosParamCreator = function (configuration?: Configuration) {
             };
         },
         /**
-         * 
+         * Manage per-user maximum access policies to cases and case sets in a data collection; effective rights intersect with the organization policy.
          * @summary User Access Case Policies  Get Some
          * @param {string} ids 
          * @param {*} [options] Override http request option.
@@ -7155,7 +7155,7 @@ const AbacApiAxiosParamCreator = function (configuration?: Configuration) {
             };
         },
         /**
-         * 
+         * Manage per-user maximum access policies to cases and case sets in a data collection; effective rights intersect with the organization policy.
          * @summary User Access Case Policies  Post One
          * @param {UserAccessCasePolicy} userAccessCasePolicy 
          * @param {*} [options] Override http request option.
@@ -7191,7 +7191,7 @@ const AbacApiAxiosParamCreator = function (configuration?: Configuration) {
             };
         },
         /**
-         * 
+         * Manage per-user maximum access policies to cases and case sets in a data collection; effective rights intersect with the organization policy.
          * @summary User Access Case Policies  Post Query
          * @param {EpiFilter} filter 
          * @param {*} [options] Override http request option.
@@ -7227,7 +7227,7 @@ const AbacApiAxiosParamCreator = function (configuration?: Configuration) {
             };
         },
         /**
-         * 
+         * Manage per-user maximum access policies to cases and case sets in a data collection; effective rights intersect with the organization policy.
          * @summary User Access Case Policies  Post Query  Ids
          * @param {EpiFilter} filter 
          * @param {*} [options] Override http request option.
@@ -7263,7 +7263,7 @@ const AbacApiAxiosParamCreator = function (configuration?: Configuration) {
             };
         },
         /**
-         * 
+         * Manage per-user maximum access policies to cases and case sets in a data collection; effective rights intersect with the organization policy.
          * @summary User Access Case Policies  Post Some
          * @param {Array<UserAccessCasePolicy>} userAccessCasePolicy 
          * @param {*} [options] Override http request option.
@@ -7299,7 +7299,7 @@ const AbacApiAxiosParamCreator = function (configuration?: Configuration) {
             };
         },
         /**
-         * 
+         * Manage per-user maximum access policies to cases and case sets in a data collection; effective rights intersect with the organization policy.
          * @summary User Access Case Policies  Put One
          * @param {string} objectId 
          * @param {UserAccessCasePolicy} userAccessCasePolicy 
@@ -7339,7 +7339,7 @@ const AbacApiAxiosParamCreator = function (configuration?: Configuration) {
             };
         },
         /**
-         * 
+         * Manage per-user maximum access policies to cases and case sets in a data collection; effective rights intersect with the organization policy.
          * @summary User Access Case Policies  Put Some
          * @param {Array<UserAccessCasePolicy>} userAccessCasePolicy 
          * @param {*} [options] Override http request option.
@@ -7375,7 +7375,7 @@ const AbacApiAxiosParamCreator = function (configuration?: Configuration) {
             };
         },
         /**
-         * 
+         * Manage per-user share permissions for moving cases or case sets between data collections, bounded by the organization\'s share policy.
          * @summary User Share Case Policies  Delete All
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
@@ -7405,7 +7405,7 @@ const AbacApiAxiosParamCreator = function (configuration?: Configuration) {
             };
         },
         /**
-         * 
+         * Manage per-user share permissions for moving cases or case sets between data collections, bounded by the organization\'s share policy.
          * @summary User Share Case Policies  Delete One
          * @param {any} objectId 
          * @param {*} [options] Override http request option.
@@ -7439,7 +7439,7 @@ const AbacApiAxiosParamCreator = function (configuration?: Configuration) {
             };
         },
         /**
-         * 
+         * Manage per-user share permissions for moving cases or case sets between data collections, bounded by the organization\'s share policy.
          * @summary User Share Case Policies  Delete Some
          * @param {string} ids 
          * @param {*} [options] Override http request option.
@@ -7476,7 +7476,7 @@ const AbacApiAxiosParamCreator = function (configuration?: Configuration) {
             };
         },
         /**
-         * 
+         * Manage per-user share permissions for moving cases or case sets between data collections, bounded by the organization\'s share policy.
          * @summary User Share Case Policies  Get All
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
@@ -7506,7 +7506,7 @@ const AbacApiAxiosParamCreator = function (configuration?: Configuration) {
             };
         },
         /**
-         * 
+         * Manage per-user share permissions for moving cases or case sets between data collections, bounded by the organization\'s share policy.
          * @summary User Share Case Policies  Get One
          * @param {string} objectId 
          * @param {*} [options] Override http request option.
@@ -7540,7 +7540,7 @@ const AbacApiAxiosParamCreator = function (configuration?: Configuration) {
             };
         },
         /**
-         * 
+         * Manage per-user share permissions for moving cases or case sets between data collections, bounded by the organization\'s share policy.
          * @summary User Share Case Policies  Get Some
          * @param {string} ids 
          * @param {*} [options] Override http request option.
@@ -7577,7 +7577,7 @@ const AbacApiAxiosParamCreator = function (configuration?: Configuration) {
             };
         },
         /**
-         * 
+         * Manage per-user share permissions for moving cases or case sets between data collections, bounded by the organization\'s share policy.
          * @summary User Share Case Policies  Post One
          * @param {UserShareCasePolicy} userShareCasePolicy 
          * @param {*} [options] Override http request option.
@@ -7613,7 +7613,7 @@ const AbacApiAxiosParamCreator = function (configuration?: Configuration) {
             };
         },
         /**
-         * 
+         * Manage per-user share permissions for moving cases or case sets between data collections, bounded by the organization\'s share policy.
          * @summary User Share Case Policies  Post Query
          * @param {EpiFilter} filter 
          * @param {*} [options] Override http request option.
@@ -7649,7 +7649,7 @@ const AbacApiAxiosParamCreator = function (configuration?: Configuration) {
             };
         },
         /**
-         * 
+         * Manage per-user share permissions for moving cases or case sets between data collections, bounded by the organization\'s share policy.
          * @summary User Share Case Policies  Post Query  Ids
          * @param {EpiFilter} filter 
          * @param {*} [options] Override http request option.
@@ -7685,7 +7685,7 @@ const AbacApiAxiosParamCreator = function (configuration?: Configuration) {
             };
         },
         /**
-         * 
+         * Manage per-user share permissions for moving cases or case sets between data collections, bounded by the organization\'s share policy.
          * @summary User Share Case Policies  Post Some
          * @param {Array<UserShareCasePolicy>} userShareCasePolicy 
          * @param {*} [options] Override http request option.
@@ -7721,7 +7721,7 @@ const AbacApiAxiosParamCreator = function (configuration?: Configuration) {
             };
         },
         /**
-         * 
+         * Manage per-user share permissions for moving cases or case sets between data collections, bounded by the organization\'s share policy.
          * @summary User Share Case Policies  Put One
          * @param {string} objectId 
          * @param {UserShareCasePolicy} userShareCasePolicy 
@@ -7761,7 +7761,7 @@ const AbacApiAxiosParamCreator = function (configuration?: Configuration) {
             };
         },
         /**
-         * 
+         * Manage per-user share permissions for moving cases or case sets between data collections, bounded by the organization\'s share policy.
          * @summary User Share Case Policies  Put Some
          * @param {Array<UserShareCasePolicy>} userShareCasePolicy 
          * @param {*} [options] Override http request option.
@@ -7807,7 +7807,7 @@ const AbacApiFp = function(configuration?: Configuration) {
     const localVarAxiosParamCreator = AbacApiAxiosParamCreator(configuration)
     return {
         /**
-         * 
+         * Manage organization-level access policies to cases and case sets in a data collection, scoped by case-type and read/write column sets.
          * @summary Organization Access Case Policies  Delete All
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
@@ -7819,7 +7819,7 @@ const AbacApiFp = function(configuration?: Configuration) {
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
         /**
-         * 
+         * Manage organization-level access policies to cases and case sets in a data collection, scoped by case-type and read/write column sets.
          * @summary Organization Access Case Policies  Delete One
          * @param {any} objectId 
          * @param {*} [options] Override http request option.
@@ -7832,7 +7832,7 @@ const AbacApiFp = function(configuration?: Configuration) {
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
         /**
-         * 
+         * Manage organization-level access policies to cases and case sets in a data collection, scoped by case-type and read/write column sets.
          * @summary Organization Access Case Policies  Delete Some
          * @param {string} ids 
          * @param {*} [options] Override http request option.
@@ -7845,7 +7845,7 @@ const AbacApiFp = function(configuration?: Configuration) {
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
         /**
-         * 
+         * Manage organization-level access policies to cases and case sets in a data collection, scoped by case-type and read/write column sets.
          * @summary Organization Access Case Policies  Get All
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
@@ -7857,7 +7857,7 @@ const AbacApiFp = function(configuration?: Configuration) {
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
         /**
-         * 
+         * Manage organization-level access policies to cases and case sets in a data collection, scoped by case-type and read/write column sets.
          * @summary Organization Access Case Policies  Get One
          * @param {string} objectId 
          * @param {*} [options] Override http request option.
@@ -7870,7 +7870,7 @@ const AbacApiFp = function(configuration?: Configuration) {
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
         /**
-         * 
+         * Manage organization-level access policies to cases and case sets in a data collection, scoped by case-type and read/write column sets.
          * @summary Organization Access Case Policies  Get Some
          * @param {string} ids 
          * @param {*} [options] Override http request option.
@@ -7883,7 +7883,7 @@ const AbacApiFp = function(configuration?: Configuration) {
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
         /**
-         * 
+         * Manage organization-level access policies to cases and case sets in a data collection, scoped by case-type and read/write column sets.
          * @summary Organization Access Case Policies  Post One
          * @param {OrganizationAccessCasePolicy} organizationAccessCasePolicy 
          * @param {*} [options] Override http request option.
@@ -7896,7 +7896,7 @@ const AbacApiFp = function(configuration?: Configuration) {
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
         /**
-         * 
+         * Manage organization-level access policies to cases and case sets in a data collection, scoped by case-type and read/write column sets.
          * @summary Organization Access Case Policies  Post Query
          * @param {EpiFilter} filter 
          * @param {*} [options] Override http request option.
@@ -7909,7 +7909,7 @@ const AbacApiFp = function(configuration?: Configuration) {
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
         /**
-         * 
+         * Manage organization-level access policies to cases and case sets in a data collection, scoped by case-type and read/write column sets.
          * @summary Organization Access Case Policies  Post Query  Ids
          * @param {EpiFilter} filter 
          * @param {*} [options] Override http request option.
@@ -7922,7 +7922,7 @@ const AbacApiFp = function(configuration?: Configuration) {
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
         /**
-         * 
+         * Manage organization-level access policies to cases and case sets in a data collection, scoped by case-type and read/write column sets.
          * @summary Organization Access Case Policies  Post Some
          * @param {Array<OrganizationAccessCasePolicy>} organizationAccessCasePolicy 
          * @param {*} [options] Override http request option.
@@ -7935,7 +7935,7 @@ const AbacApiFp = function(configuration?: Configuration) {
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
         /**
-         * 
+         * Manage organization-level access policies to cases and case sets in a data collection, scoped by case-type and read/write column sets.
          * @summary Organization Access Case Policies  Put One
          * @param {string} objectId 
          * @param {OrganizationAccessCasePolicy} organizationAccessCasePolicy 
@@ -7949,7 +7949,7 @@ const AbacApiFp = function(configuration?: Configuration) {
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
         /**
-         * 
+         * Manage organization-level access policies to cases and case sets in a data collection, scoped by case-type and read/write column sets.
          * @summary Organization Access Case Policies  Put Some
          * @param {Array<OrganizationAccessCasePolicy>} organizationAccessCasePolicy 
          * @param {*} [options] Override http request option.
@@ -7962,7 +7962,7 @@ const AbacApiFp = function(configuration?: Configuration) {
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
         /**
-         * 
+         * Manage policies that define which organizations an administrator can manage across the platform.
          * @summary Organization Admin Policies  Delete All
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
@@ -7974,7 +7974,7 @@ const AbacApiFp = function(configuration?: Configuration) {
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
         /**
-         * 
+         * Manage policies that define which organizations an administrator can manage across the platform.
          * @summary Organization Admin Policies  Delete One
          * @param {any} objectId 
          * @param {*} [options] Override http request option.
@@ -7987,7 +7987,7 @@ const AbacApiFp = function(configuration?: Configuration) {
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
         /**
-         * 
+         * Manage policies that define which organizations an administrator can manage across the platform.
          * @summary Organization Admin Policies  Delete Some
          * @param {string} ids 
          * @param {*} [options] Override http request option.
@@ -8000,7 +8000,7 @@ const AbacApiFp = function(configuration?: Configuration) {
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
         /**
-         * 
+         * Manage policies that define which organizations an administrator can manage across the platform.
          * @summary Organization Admin Policies  Get All
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
@@ -8012,7 +8012,7 @@ const AbacApiFp = function(configuration?: Configuration) {
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
         /**
-         * 
+         * Manage policies that define which organizations an administrator can manage across the platform.
          * @summary Organization Admin Policies  Get One
          * @param {string} objectId 
          * @param {*} [options] Override http request option.
@@ -8025,7 +8025,7 @@ const AbacApiFp = function(configuration?: Configuration) {
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
         /**
-         * 
+         * Manage policies that define which organizations an administrator can manage across the platform.
          * @summary Organization Admin Policies  Get Some
          * @param {string} ids 
          * @param {*} [options] Override http request option.
@@ -8038,7 +8038,7 @@ const AbacApiFp = function(configuration?: Configuration) {
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
         /**
-         * 
+         * Manage policies that define which organizations an administrator can manage across the platform.
          * @summary Organization Admin Policies  Post One
          * @param {OrganizationAdminPolicy} organizationAdminPolicy 
          * @param {*} [options] Override http request option.
@@ -8051,7 +8051,7 @@ const AbacApiFp = function(configuration?: Configuration) {
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
         /**
-         * 
+         * Manage policies that define which organizations an administrator can manage across the platform.
          * @summary Organization Admin Policies  Post Query
          * @param {EpiFilter} filter 
          * @param {*} [options] Override http request option.
@@ -8064,7 +8064,7 @@ const AbacApiFp = function(configuration?: Configuration) {
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
         /**
-         * 
+         * Manage policies that define which organizations an administrator can manage across the platform.
          * @summary Organization Admin Policies  Post Query  Ids
          * @param {EpiFilter} filter 
          * @param {*} [options] Override http request option.
@@ -8077,7 +8077,7 @@ const AbacApiFp = function(configuration?: Configuration) {
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
         /**
-         * 
+         * Manage policies that define which organizations an administrator can manage across the platform.
          * @summary Organization Admin Policies  Post Some
          * @param {Array<OrganizationAdminPolicy>} organizationAdminPolicy 
          * @param {*} [options] Override http request option.
@@ -8090,7 +8090,7 @@ const AbacApiFp = function(configuration?: Configuration) {
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
         /**
-         * 
+         * Manage policies that define which organizations an administrator can manage across the platform.
          * @summary Organization Admin Policies  Put One
          * @param {string} objectId 
          * @param {OrganizationAdminPolicy} organizationAdminPolicy 
@@ -8104,7 +8104,7 @@ const AbacApiFp = function(configuration?: Configuration) {
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
         /**
-         * 
+         * Manage policies that define which organizations an administrator can manage across the platform.
          * @summary Organization Admin Policies  Put Some
          * @param {Array<OrganizationAdminPolicy>} organizationAdminPolicy 
          * @param {*} [options] Override http request option.
@@ -8117,7 +8117,7 @@ const AbacApiFp = function(configuration?: Configuration) {
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
         /**
-         * 
+         * Manage which cases or case sets an organization may share from one data collection into another for specific case-type sets.
          * @summary Organization Share Case Policies  Delete All
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
@@ -8129,7 +8129,7 @@ const AbacApiFp = function(configuration?: Configuration) {
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
         /**
-         * 
+         * Manage which cases or case sets an organization may share from one data collection into another for specific case-type sets.
          * @summary Organization Share Case Policies  Delete One
          * @param {any} objectId 
          * @param {*} [options] Override http request option.
@@ -8142,7 +8142,7 @@ const AbacApiFp = function(configuration?: Configuration) {
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
         /**
-         * 
+         * Manage which cases or case sets an organization may share from one data collection into another for specific case-type sets.
          * @summary Organization Share Case Policies  Delete Some
          * @param {string} ids 
          * @param {*} [options] Override http request option.
@@ -8155,7 +8155,7 @@ const AbacApiFp = function(configuration?: Configuration) {
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
         /**
-         * 
+         * Manage which cases or case sets an organization may share from one data collection into another for specific case-type sets.
          * @summary Organization Share Case Policies  Get All
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
@@ -8167,7 +8167,7 @@ const AbacApiFp = function(configuration?: Configuration) {
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
         /**
-         * 
+         * Manage which cases or case sets an organization may share from one data collection into another for specific case-type sets.
          * @summary Organization Share Case Policies  Get One
          * @param {string} objectId 
          * @param {*} [options] Override http request option.
@@ -8180,7 +8180,7 @@ const AbacApiFp = function(configuration?: Configuration) {
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
         /**
-         * 
+         * Manage which cases or case sets an organization may share from one data collection into another for specific case-type sets.
          * @summary Organization Share Case Policies  Get Some
          * @param {string} ids 
          * @param {*} [options] Override http request option.
@@ -8193,7 +8193,7 @@ const AbacApiFp = function(configuration?: Configuration) {
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
         /**
-         * 
+         * Manage which cases or case sets an organization may share from one data collection into another for specific case-type sets.
          * @summary Organization Share Case Policies  Post One
          * @param {OrganizationShareCasePolicy} organizationShareCasePolicy 
          * @param {*} [options] Override http request option.
@@ -8206,7 +8206,7 @@ const AbacApiFp = function(configuration?: Configuration) {
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
         /**
-         * 
+         * Manage which cases or case sets an organization may share from one data collection into another for specific case-type sets.
          * @summary Organization Share Case Policies  Post Query
          * @param {EpiFilter} filter 
          * @param {*} [options] Override http request option.
@@ -8219,7 +8219,7 @@ const AbacApiFp = function(configuration?: Configuration) {
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
         /**
-         * 
+         * Manage which cases or case sets an organization may share from one data collection into another for specific case-type sets.
          * @summary Organization Share Case Policies  Post Query  Ids
          * @param {EpiFilter} filter 
          * @param {*} [options] Override http request option.
@@ -8232,7 +8232,7 @@ const AbacApiFp = function(configuration?: Configuration) {
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
         /**
-         * 
+         * Manage which cases or case sets an organization may share from one data collection into another for specific case-type sets.
          * @summary Organization Share Case Policies  Post Some
          * @param {Array<OrganizationShareCasePolicy>} organizationShareCasePolicy 
          * @param {*} [options] Override http request option.
@@ -8245,7 +8245,7 @@ const AbacApiFp = function(configuration?: Configuration) {
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
         /**
-         * 
+         * Manage which cases or case sets an organization may share from one data collection into another for specific case-type sets.
          * @summary Organization Share Case Policies  Put One
          * @param {string} objectId 
          * @param {OrganizationShareCasePolicy} organizationShareCasePolicy 
@@ -8259,7 +8259,7 @@ const AbacApiFp = function(configuration?: Configuration) {
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
         /**
-         * 
+         * Manage which cases or case sets an organization may share from one data collection into another for specific case-type sets.
          * @summary Organization Share Case Policies  Put Some
          * @param {Array<OrganizationShareCasePolicy>} organizationShareCasePolicy 
          * @param {*} [options] Override http request option.
@@ -8284,7 +8284,7 @@ const AbacApiFp = function(configuration?: Configuration) {
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
         /**
-         * 
+         * Manage per-user maximum access policies to cases and case sets in a data collection; effective rights intersect with the organization policy.
          * @summary User Access Case Policies  Delete All
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
@@ -8296,7 +8296,7 @@ const AbacApiFp = function(configuration?: Configuration) {
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
         /**
-         * 
+         * Manage per-user maximum access policies to cases and case sets in a data collection; effective rights intersect with the organization policy.
          * @summary User Access Case Policies  Delete One
          * @param {any} objectId 
          * @param {*} [options] Override http request option.
@@ -8309,7 +8309,7 @@ const AbacApiFp = function(configuration?: Configuration) {
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
         /**
-         * 
+         * Manage per-user maximum access policies to cases and case sets in a data collection; effective rights intersect with the organization policy.
          * @summary User Access Case Policies  Delete Some
          * @param {string} ids 
          * @param {*} [options] Override http request option.
@@ -8322,7 +8322,7 @@ const AbacApiFp = function(configuration?: Configuration) {
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
         /**
-         * 
+         * Manage per-user maximum access policies to cases and case sets in a data collection; effective rights intersect with the organization policy.
          * @summary User Access Case Policies  Get All
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
@@ -8334,7 +8334,7 @@ const AbacApiFp = function(configuration?: Configuration) {
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
         /**
-         * 
+         * Manage per-user maximum access policies to cases and case sets in a data collection; effective rights intersect with the organization policy.
          * @summary User Access Case Policies  Get One
          * @param {string} objectId 
          * @param {*} [options] Override http request option.
@@ -8347,7 +8347,7 @@ const AbacApiFp = function(configuration?: Configuration) {
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
         /**
-         * 
+         * Manage per-user maximum access policies to cases and case sets in a data collection; effective rights intersect with the organization policy.
          * @summary User Access Case Policies  Get Some
          * @param {string} ids 
          * @param {*} [options] Override http request option.
@@ -8360,7 +8360,7 @@ const AbacApiFp = function(configuration?: Configuration) {
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
         /**
-         * 
+         * Manage per-user maximum access policies to cases and case sets in a data collection; effective rights intersect with the organization policy.
          * @summary User Access Case Policies  Post One
          * @param {UserAccessCasePolicy} userAccessCasePolicy 
          * @param {*} [options] Override http request option.
@@ -8373,7 +8373,7 @@ const AbacApiFp = function(configuration?: Configuration) {
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
         /**
-         * 
+         * Manage per-user maximum access policies to cases and case sets in a data collection; effective rights intersect with the organization policy.
          * @summary User Access Case Policies  Post Query
          * @param {EpiFilter} filter 
          * @param {*} [options] Override http request option.
@@ -8386,7 +8386,7 @@ const AbacApiFp = function(configuration?: Configuration) {
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
         /**
-         * 
+         * Manage per-user maximum access policies to cases and case sets in a data collection; effective rights intersect with the organization policy.
          * @summary User Access Case Policies  Post Query  Ids
          * @param {EpiFilter} filter 
          * @param {*} [options] Override http request option.
@@ -8399,7 +8399,7 @@ const AbacApiFp = function(configuration?: Configuration) {
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
         /**
-         * 
+         * Manage per-user maximum access policies to cases and case sets in a data collection; effective rights intersect with the organization policy.
          * @summary User Access Case Policies  Post Some
          * @param {Array<UserAccessCasePolicy>} userAccessCasePolicy 
          * @param {*} [options] Override http request option.
@@ -8412,7 +8412,7 @@ const AbacApiFp = function(configuration?: Configuration) {
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
         /**
-         * 
+         * Manage per-user maximum access policies to cases and case sets in a data collection; effective rights intersect with the organization policy.
          * @summary User Access Case Policies  Put One
          * @param {string} objectId 
          * @param {UserAccessCasePolicy} userAccessCasePolicy 
@@ -8426,7 +8426,7 @@ const AbacApiFp = function(configuration?: Configuration) {
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
         /**
-         * 
+         * Manage per-user maximum access policies to cases and case sets in a data collection; effective rights intersect with the organization policy.
          * @summary User Access Case Policies  Put Some
          * @param {Array<UserAccessCasePolicy>} userAccessCasePolicy 
          * @param {*} [options] Override http request option.
@@ -8439,7 +8439,7 @@ const AbacApiFp = function(configuration?: Configuration) {
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
         /**
-         * 
+         * Manage per-user share permissions for moving cases or case sets between data collections, bounded by the organization\'s share policy.
          * @summary User Share Case Policies  Delete All
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
@@ -8451,7 +8451,7 @@ const AbacApiFp = function(configuration?: Configuration) {
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
         /**
-         * 
+         * Manage per-user share permissions for moving cases or case sets between data collections, bounded by the organization\'s share policy.
          * @summary User Share Case Policies  Delete One
          * @param {any} objectId 
          * @param {*} [options] Override http request option.
@@ -8464,7 +8464,7 @@ const AbacApiFp = function(configuration?: Configuration) {
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
         /**
-         * 
+         * Manage per-user share permissions for moving cases or case sets between data collections, bounded by the organization\'s share policy.
          * @summary User Share Case Policies  Delete Some
          * @param {string} ids 
          * @param {*} [options] Override http request option.
@@ -8477,7 +8477,7 @@ const AbacApiFp = function(configuration?: Configuration) {
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
         /**
-         * 
+         * Manage per-user share permissions for moving cases or case sets between data collections, bounded by the organization\'s share policy.
          * @summary User Share Case Policies  Get All
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
@@ -8489,7 +8489,7 @@ const AbacApiFp = function(configuration?: Configuration) {
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
         /**
-         * 
+         * Manage per-user share permissions for moving cases or case sets between data collections, bounded by the organization\'s share policy.
          * @summary User Share Case Policies  Get One
          * @param {string} objectId 
          * @param {*} [options] Override http request option.
@@ -8502,7 +8502,7 @@ const AbacApiFp = function(configuration?: Configuration) {
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
         /**
-         * 
+         * Manage per-user share permissions for moving cases or case sets between data collections, bounded by the organization\'s share policy.
          * @summary User Share Case Policies  Get Some
          * @param {string} ids 
          * @param {*} [options] Override http request option.
@@ -8515,7 +8515,7 @@ const AbacApiFp = function(configuration?: Configuration) {
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
         /**
-         * 
+         * Manage per-user share permissions for moving cases or case sets between data collections, bounded by the organization\'s share policy.
          * @summary User Share Case Policies  Post One
          * @param {UserShareCasePolicy} userShareCasePolicy 
          * @param {*} [options] Override http request option.
@@ -8528,7 +8528,7 @@ const AbacApiFp = function(configuration?: Configuration) {
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
         /**
-         * 
+         * Manage per-user share permissions for moving cases or case sets between data collections, bounded by the organization\'s share policy.
          * @summary User Share Case Policies  Post Query
          * @param {EpiFilter} filter 
          * @param {*} [options] Override http request option.
@@ -8541,7 +8541,7 @@ const AbacApiFp = function(configuration?: Configuration) {
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
         /**
-         * 
+         * Manage per-user share permissions for moving cases or case sets between data collections, bounded by the organization\'s share policy.
          * @summary User Share Case Policies  Post Query  Ids
          * @param {EpiFilter} filter 
          * @param {*} [options] Override http request option.
@@ -8554,7 +8554,7 @@ const AbacApiFp = function(configuration?: Configuration) {
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
         /**
-         * 
+         * Manage per-user share permissions for moving cases or case sets between data collections, bounded by the organization\'s share policy.
          * @summary User Share Case Policies  Post Some
          * @param {Array<UserShareCasePolicy>} userShareCasePolicy 
          * @param {*} [options] Override http request option.
@@ -8567,7 +8567,7 @@ const AbacApiFp = function(configuration?: Configuration) {
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
         /**
-         * 
+         * Manage per-user share permissions for moving cases or case sets between data collections, bounded by the organization\'s share policy.
          * @summary User Share Case Policies  Put One
          * @param {string} objectId 
          * @param {UserShareCasePolicy} userShareCasePolicy 
@@ -8581,7 +8581,7 @@ const AbacApiFp = function(configuration?: Configuration) {
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
         /**
-         * 
+         * Manage per-user share permissions for moving cases or case sets between data collections, bounded by the organization\'s share policy.
          * @summary User Share Case Policies  Put Some
          * @param {Array<UserShareCasePolicy>} userShareCasePolicy 
          * @param {*} [options] Override http request option.
@@ -8616,7 +8616,7 @@ export class AbacApi extends BaseAPI {
   }
 
     /**
-     * 
+     * Manage organization-level access policies to cases and case sets in a data collection, scoped by case-type and read/write column sets.
      * @summary Organization Access Case Policies  Delete All
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
@@ -8627,7 +8627,7 @@ export class AbacApi extends BaseAPI {
     }
 
     /**
-     * 
+     * Manage organization-level access policies to cases and case sets in a data collection, scoped by case-type and read/write column sets.
      * @summary Organization Access Case Policies  Delete One
      * @param {any} objectId 
      * @param {*} [options] Override http request option.
@@ -8639,7 +8639,7 @@ export class AbacApi extends BaseAPI {
     }
 
     /**
-     * 
+     * Manage organization-level access policies to cases and case sets in a data collection, scoped by case-type and read/write column sets.
      * @summary Organization Access Case Policies  Delete Some
      * @param {string} ids 
      * @param {*} [options] Override http request option.
@@ -8651,7 +8651,7 @@ export class AbacApi extends BaseAPI {
     }
 
     /**
-     * 
+     * Manage organization-level access policies to cases and case sets in a data collection, scoped by case-type and read/write column sets.
      * @summary Organization Access Case Policies  Get All
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
@@ -8662,7 +8662,7 @@ export class AbacApi extends BaseAPI {
     }
 
     /**
-     * 
+     * Manage organization-level access policies to cases and case sets in a data collection, scoped by case-type and read/write column sets.
      * @summary Organization Access Case Policies  Get One
      * @param {string} objectId 
      * @param {*} [options] Override http request option.
@@ -8674,7 +8674,7 @@ export class AbacApi extends BaseAPI {
     }
 
     /**
-     * 
+     * Manage organization-level access policies to cases and case sets in a data collection, scoped by case-type and read/write column sets.
      * @summary Organization Access Case Policies  Get Some
      * @param {string} ids 
      * @param {*} [options] Override http request option.
@@ -8686,7 +8686,7 @@ export class AbacApi extends BaseAPI {
     }
 
     /**
-     * 
+     * Manage organization-level access policies to cases and case sets in a data collection, scoped by case-type and read/write column sets.
      * @summary Organization Access Case Policies  Post One
      * @param {OrganizationAccessCasePolicy} organizationAccessCasePolicy 
      * @param {*} [options] Override http request option.
@@ -8698,7 +8698,7 @@ export class AbacApi extends BaseAPI {
     }
 
     /**
-     * 
+     * Manage organization-level access policies to cases and case sets in a data collection, scoped by case-type and read/write column sets.
      * @summary Organization Access Case Policies  Post Query
      * @param {EpiFilter} filter 
      * @param {*} [options] Override http request option.
@@ -8710,7 +8710,7 @@ export class AbacApi extends BaseAPI {
     }
 
     /**
-     * 
+     * Manage organization-level access policies to cases and case sets in a data collection, scoped by case-type and read/write column sets.
      * @summary Organization Access Case Policies  Post Query  Ids
      * @param {EpiFilter} filter 
      * @param {*} [options] Override http request option.
@@ -8722,7 +8722,7 @@ export class AbacApi extends BaseAPI {
     }
 
     /**
-     * 
+     * Manage organization-level access policies to cases and case sets in a data collection, scoped by case-type and read/write column sets.
      * @summary Organization Access Case Policies  Post Some
      * @param {Array<OrganizationAccessCasePolicy>} organizationAccessCasePolicy 
      * @param {*} [options] Override http request option.
@@ -8734,7 +8734,7 @@ export class AbacApi extends BaseAPI {
     }
 
     /**
-     * 
+     * Manage organization-level access policies to cases and case sets in a data collection, scoped by case-type and read/write column sets.
      * @summary Organization Access Case Policies  Put One
      * @param {string} objectId 
      * @param {OrganizationAccessCasePolicy} organizationAccessCasePolicy 
@@ -8747,7 +8747,7 @@ export class AbacApi extends BaseAPI {
     }
 
     /**
-     * 
+     * Manage organization-level access policies to cases and case sets in a data collection, scoped by case-type and read/write column sets.
      * @summary Organization Access Case Policies  Put Some
      * @param {Array<OrganizationAccessCasePolicy>} organizationAccessCasePolicy 
      * @param {*} [options] Override http request option.
@@ -8759,7 +8759,7 @@ export class AbacApi extends BaseAPI {
     }
 
     /**
-     * 
+     * Manage policies that define which organizations an administrator can manage across the platform.
      * @summary Organization Admin Policies  Delete All
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
@@ -8770,7 +8770,7 @@ export class AbacApi extends BaseAPI {
     }
 
     /**
-     * 
+     * Manage policies that define which organizations an administrator can manage across the platform.
      * @summary Organization Admin Policies  Delete One
      * @param {any} objectId 
      * @param {*} [options] Override http request option.
@@ -8782,7 +8782,7 @@ export class AbacApi extends BaseAPI {
     }
 
     /**
-     * 
+     * Manage policies that define which organizations an administrator can manage across the platform.
      * @summary Organization Admin Policies  Delete Some
      * @param {string} ids 
      * @param {*} [options] Override http request option.
@@ -8794,7 +8794,7 @@ export class AbacApi extends BaseAPI {
     }
 
     /**
-     * 
+     * Manage policies that define which organizations an administrator can manage across the platform.
      * @summary Organization Admin Policies  Get All
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
@@ -8805,7 +8805,7 @@ export class AbacApi extends BaseAPI {
     }
 
     /**
-     * 
+     * Manage policies that define which organizations an administrator can manage across the platform.
      * @summary Organization Admin Policies  Get One
      * @param {string} objectId 
      * @param {*} [options] Override http request option.
@@ -8817,7 +8817,7 @@ export class AbacApi extends BaseAPI {
     }
 
     /**
-     * 
+     * Manage policies that define which organizations an administrator can manage across the platform.
      * @summary Organization Admin Policies  Get Some
      * @param {string} ids 
      * @param {*} [options] Override http request option.
@@ -8829,7 +8829,7 @@ export class AbacApi extends BaseAPI {
     }
 
     /**
-     * 
+     * Manage policies that define which organizations an administrator can manage across the platform.
      * @summary Organization Admin Policies  Post One
      * @param {OrganizationAdminPolicy} organizationAdminPolicy 
      * @param {*} [options] Override http request option.
@@ -8841,7 +8841,7 @@ export class AbacApi extends BaseAPI {
     }
 
     /**
-     * 
+     * Manage policies that define which organizations an administrator can manage across the platform.
      * @summary Organization Admin Policies  Post Query
      * @param {EpiFilter} filter 
      * @param {*} [options] Override http request option.
@@ -8853,7 +8853,7 @@ export class AbacApi extends BaseAPI {
     }
 
     /**
-     * 
+     * Manage policies that define which organizations an administrator can manage across the platform.
      * @summary Organization Admin Policies  Post Query  Ids
      * @param {EpiFilter} filter 
      * @param {*} [options] Override http request option.
@@ -8865,7 +8865,7 @@ export class AbacApi extends BaseAPI {
     }
 
     /**
-     * 
+     * Manage policies that define which organizations an administrator can manage across the platform.
      * @summary Organization Admin Policies  Post Some
      * @param {Array<OrganizationAdminPolicy>} organizationAdminPolicy 
      * @param {*} [options] Override http request option.
@@ -8877,7 +8877,7 @@ export class AbacApi extends BaseAPI {
     }
 
     /**
-     * 
+     * Manage policies that define which organizations an administrator can manage across the platform.
      * @summary Organization Admin Policies  Put One
      * @param {string} objectId 
      * @param {OrganizationAdminPolicy} organizationAdminPolicy 
@@ -8890,7 +8890,7 @@ export class AbacApi extends BaseAPI {
     }
 
     /**
-     * 
+     * Manage policies that define which organizations an administrator can manage across the platform.
      * @summary Organization Admin Policies  Put Some
      * @param {Array<OrganizationAdminPolicy>} organizationAdminPolicy 
      * @param {*} [options] Override http request option.
@@ -8902,7 +8902,7 @@ export class AbacApi extends BaseAPI {
     }
 
     /**
-     * 
+     * Manage which cases or case sets an organization may share from one data collection into another for specific case-type sets.
      * @summary Organization Share Case Policies  Delete All
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
@@ -8913,7 +8913,7 @@ export class AbacApi extends BaseAPI {
     }
 
     /**
-     * 
+     * Manage which cases or case sets an organization may share from one data collection into another for specific case-type sets.
      * @summary Organization Share Case Policies  Delete One
      * @param {any} objectId 
      * @param {*} [options] Override http request option.
@@ -8925,7 +8925,7 @@ export class AbacApi extends BaseAPI {
     }
 
     /**
-     * 
+     * Manage which cases or case sets an organization may share from one data collection into another for specific case-type sets.
      * @summary Organization Share Case Policies  Delete Some
      * @param {string} ids 
      * @param {*} [options] Override http request option.
@@ -8937,7 +8937,7 @@ export class AbacApi extends BaseAPI {
     }
 
     /**
-     * 
+     * Manage which cases or case sets an organization may share from one data collection into another for specific case-type sets.
      * @summary Organization Share Case Policies  Get All
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
@@ -8948,7 +8948,7 @@ export class AbacApi extends BaseAPI {
     }
 
     /**
-     * 
+     * Manage which cases or case sets an organization may share from one data collection into another for specific case-type sets.
      * @summary Organization Share Case Policies  Get One
      * @param {string} objectId 
      * @param {*} [options] Override http request option.
@@ -8960,7 +8960,7 @@ export class AbacApi extends BaseAPI {
     }
 
     /**
-     * 
+     * Manage which cases or case sets an organization may share from one data collection into another for specific case-type sets.
      * @summary Organization Share Case Policies  Get Some
      * @param {string} ids 
      * @param {*} [options] Override http request option.
@@ -8972,7 +8972,7 @@ export class AbacApi extends BaseAPI {
     }
 
     /**
-     * 
+     * Manage which cases or case sets an organization may share from one data collection into another for specific case-type sets.
      * @summary Organization Share Case Policies  Post One
      * @param {OrganizationShareCasePolicy} organizationShareCasePolicy 
      * @param {*} [options] Override http request option.
@@ -8984,7 +8984,7 @@ export class AbacApi extends BaseAPI {
     }
 
     /**
-     * 
+     * Manage which cases or case sets an organization may share from one data collection into another for specific case-type sets.
      * @summary Organization Share Case Policies  Post Query
      * @param {EpiFilter} filter 
      * @param {*} [options] Override http request option.
@@ -8996,7 +8996,7 @@ export class AbacApi extends BaseAPI {
     }
 
     /**
-     * 
+     * Manage which cases or case sets an organization may share from one data collection into another for specific case-type sets.
      * @summary Organization Share Case Policies  Post Query  Ids
      * @param {EpiFilter} filter 
      * @param {*} [options] Override http request option.
@@ -9008,7 +9008,7 @@ export class AbacApi extends BaseAPI {
     }
 
     /**
-     * 
+     * Manage which cases or case sets an organization may share from one data collection into another for specific case-type sets.
      * @summary Organization Share Case Policies  Post Some
      * @param {Array<OrganizationShareCasePolicy>} organizationShareCasePolicy 
      * @param {*} [options] Override http request option.
@@ -9020,7 +9020,7 @@ export class AbacApi extends BaseAPI {
     }
 
     /**
-     * 
+     * Manage which cases or case sets an organization may share from one data collection into another for specific case-type sets.
      * @summary Organization Share Case Policies  Put One
      * @param {string} objectId 
      * @param {OrganizationShareCasePolicy} organizationShareCasePolicy 
@@ -9033,7 +9033,7 @@ export class AbacApi extends BaseAPI {
     }
 
     /**
-     * 
+     * Manage which cases or case sets an organization may share from one data collection into another for specific case-type sets.
      * @summary Organization Share Case Policies  Put Some
      * @param {Array<OrganizationShareCasePolicy>} organizationShareCasePolicy 
      * @param {*} [options] Override http request option.
@@ -9056,7 +9056,7 @@ export class AbacApi extends BaseAPI {
     }
 
     /**
-     * 
+     * Manage per-user maximum access policies to cases and case sets in a data collection; effective rights intersect with the organization policy.
      * @summary User Access Case Policies  Delete All
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
@@ -9067,7 +9067,7 @@ export class AbacApi extends BaseAPI {
     }
 
     /**
-     * 
+     * Manage per-user maximum access policies to cases and case sets in a data collection; effective rights intersect with the organization policy.
      * @summary User Access Case Policies  Delete One
      * @param {any} objectId 
      * @param {*} [options] Override http request option.
@@ -9079,7 +9079,7 @@ export class AbacApi extends BaseAPI {
     }
 
     /**
-     * 
+     * Manage per-user maximum access policies to cases and case sets in a data collection; effective rights intersect with the organization policy.
      * @summary User Access Case Policies  Delete Some
      * @param {string} ids 
      * @param {*} [options] Override http request option.
@@ -9091,7 +9091,7 @@ export class AbacApi extends BaseAPI {
     }
 
     /**
-     * 
+     * Manage per-user maximum access policies to cases and case sets in a data collection; effective rights intersect with the organization policy.
      * @summary User Access Case Policies  Get All
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
@@ -9102,7 +9102,7 @@ export class AbacApi extends BaseAPI {
     }
 
     /**
-     * 
+     * Manage per-user maximum access policies to cases and case sets in a data collection; effective rights intersect with the organization policy.
      * @summary User Access Case Policies  Get One
      * @param {string} objectId 
      * @param {*} [options] Override http request option.
@@ -9114,7 +9114,7 @@ export class AbacApi extends BaseAPI {
     }
 
     /**
-     * 
+     * Manage per-user maximum access policies to cases and case sets in a data collection; effective rights intersect with the organization policy.
      * @summary User Access Case Policies  Get Some
      * @param {string} ids 
      * @param {*} [options] Override http request option.
@@ -9126,7 +9126,7 @@ export class AbacApi extends BaseAPI {
     }
 
     /**
-     * 
+     * Manage per-user maximum access policies to cases and case sets in a data collection; effective rights intersect with the organization policy.
      * @summary User Access Case Policies  Post One
      * @param {UserAccessCasePolicy} userAccessCasePolicy 
      * @param {*} [options] Override http request option.
@@ -9138,7 +9138,7 @@ export class AbacApi extends BaseAPI {
     }
 
     /**
-     * 
+     * Manage per-user maximum access policies to cases and case sets in a data collection; effective rights intersect with the organization policy.
      * @summary User Access Case Policies  Post Query
      * @param {EpiFilter} filter 
      * @param {*} [options] Override http request option.
@@ -9150,7 +9150,7 @@ export class AbacApi extends BaseAPI {
     }
 
     /**
-     * 
+     * Manage per-user maximum access policies to cases and case sets in a data collection; effective rights intersect with the organization policy.
      * @summary User Access Case Policies  Post Query  Ids
      * @param {EpiFilter} filter 
      * @param {*} [options] Override http request option.
@@ -9162,7 +9162,7 @@ export class AbacApi extends BaseAPI {
     }
 
     /**
-     * 
+     * Manage per-user maximum access policies to cases and case sets in a data collection; effective rights intersect with the organization policy.
      * @summary User Access Case Policies  Post Some
      * @param {Array<UserAccessCasePolicy>} userAccessCasePolicy 
      * @param {*} [options] Override http request option.
@@ -9174,7 +9174,7 @@ export class AbacApi extends BaseAPI {
     }
 
     /**
-     * 
+     * Manage per-user maximum access policies to cases and case sets in a data collection; effective rights intersect with the organization policy.
      * @summary User Access Case Policies  Put One
      * @param {string} objectId 
      * @param {UserAccessCasePolicy} userAccessCasePolicy 
@@ -9187,7 +9187,7 @@ export class AbacApi extends BaseAPI {
     }
 
     /**
-     * 
+     * Manage per-user maximum access policies to cases and case sets in a data collection; effective rights intersect with the organization policy.
      * @summary User Access Case Policies  Put Some
      * @param {Array<UserAccessCasePolicy>} userAccessCasePolicy 
      * @param {*} [options] Override http request option.
@@ -9199,7 +9199,7 @@ export class AbacApi extends BaseAPI {
     }
 
     /**
-     * 
+     * Manage per-user share permissions for moving cases or case sets between data collections, bounded by the organization\'s share policy.
      * @summary User Share Case Policies  Delete All
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
@@ -9210,7 +9210,7 @@ export class AbacApi extends BaseAPI {
     }
 
     /**
-     * 
+     * Manage per-user share permissions for moving cases or case sets between data collections, bounded by the organization\'s share policy.
      * @summary User Share Case Policies  Delete One
      * @param {any} objectId 
      * @param {*} [options] Override http request option.
@@ -9222,7 +9222,7 @@ export class AbacApi extends BaseAPI {
     }
 
     /**
-     * 
+     * Manage per-user share permissions for moving cases or case sets between data collections, bounded by the organization\'s share policy.
      * @summary User Share Case Policies  Delete Some
      * @param {string} ids 
      * @param {*} [options] Override http request option.
@@ -9234,7 +9234,7 @@ export class AbacApi extends BaseAPI {
     }
 
     /**
-     * 
+     * Manage per-user share permissions for moving cases or case sets between data collections, bounded by the organization\'s share policy.
      * @summary User Share Case Policies  Get All
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
@@ -9245,7 +9245,7 @@ export class AbacApi extends BaseAPI {
     }
 
     /**
-     * 
+     * Manage per-user share permissions for moving cases or case sets between data collections, bounded by the organization\'s share policy.
      * @summary User Share Case Policies  Get One
      * @param {string} objectId 
      * @param {*} [options] Override http request option.
@@ -9257,7 +9257,7 @@ export class AbacApi extends BaseAPI {
     }
 
     /**
-     * 
+     * Manage per-user share permissions for moving cases or case sets between data collections, bounded by the organization\'s share policy.
      * @summary User Share Case Policies  Get Some
      * @param {string} ids 
      * @param {*} [options] Override http request option.
@@ -9269,7 +9269,7 @@ export class AbacApi extends BaseAPI {
     }
 
     /**
-     * 
+     * Manage per-user share permissions for moving cases or case sets between data collections, bounded by the organization\'s share policy.
      * @summary User Share Case Policies  Post One
      * @param {UserShareCasePolicy} userShareCasePolicy 
      * @param {*} [options] Override http request option.
@@ -9281,7 +9281,7 @@ export class AbacApi extends BaseAPI {
     }
 
     /**
-     * 
+     * Manage per-user share permissions for moving cases or case sets between data collections, bounded by the organization\'s share policy.
      * @summary User Share Case Policies  Post Query
      * @param {EpiFilter} filter 
      * @param {*} [options] Override http request option.
@@ -9293,7 +9293,7 @@ export class AbacApi extends BaseAPI {
     }
 
     /**
-     * 
+     * Manage per-user share permissions for moving cases or case sets between data collections, bounded by the organization\'s share policy.
      * @summary User Share Case Policies  Post Query  Ids
      * @param {EpiFilter} filter 
      * @param {*} [options] Override http request option.
@@ -9305,7 +9305,7 @@ export class AbacApi extends BaseAPI {
     }
 
     /**
-     * 
+     * Manage per-user share permissions for moving cases or case sets between data collections, bounded by the organization\'s share policy.
      * @summary User Share Case Policies  Post Some
      * @param {Array<UserShareCasePolicy>} userShareCasePolicy 
      * @param {*} [options] Override http request option.
@@ -9317,7 +9317,7 @@ export class AbacApi extends BaseAPI {
     }
 
     /**
-     * 
+     * Manage per-user share permissions for moving cases or case sets between data collections, bounded by the organization\'s share policy.
      * @summary User Share Case Policies  Put One
      * @param {string} objectId 
      * @param {UserShareCasePolicy} userShareCasePolicy 
@@ -9330,7 +9330,7 @@ export class AbacApi extends BaseAPI {
     }
 
     /**
-     * 
+     * Manage per-user share permissions for moving cases or case sets between data collections, bounded by the organization\'s share policy.
      * @summary User Share Case Policies  Put Some
      * @param {Array<UserShareCasePolicy>} userShareCasePolicy 
      * @param {*} [options] Override http request option.
@@ -9445,7 +9445,7 @@ export class AuthApi extends BaseAPI {
 const CaseApiAxiosParamCreator = function (configuration?: Configuration) {
     return {
         /**
-         * 
+         * Manage links that associate cases with additional data collections to widen or restrict sharing beyond their origin.
          * @summary Case Data Collection Links  Delete All
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
@@ -9475,7 +9475,7 @@ const CaseApiAxiosParamCreator = function (configuration?: Configuration) {
             };
         },
         /**
-         * 
+         * Manage links that associate cases with additional data collections to widen or restrict sharing beyond their origin.
          * @summary Case Data Collection Links  Delete One
          * @param {any} objectId 
          * @param {*} [options] Override http request option.
@@ -9509,7 +9509,7 @@ const CaseApiAxiosParamCreator = function (configuration?: Configuration) {
             };
         },
         /**
-         * 
+         * Manage links that associate cases with additional data collections to widen or restrict sharing beyond their origin.
          * @summary Case Data Collection Links  Delete Some
          * @param {string} ids 
          * @param {*} [options] Override http request option.
@@ -9546,7 +9546,7 @@ const CaseApiAxiosParamCreator = function (configuration?: Configuration) {
             };
         },
         /**
-         * 
+         * Manage links that associate cases with additional data collections to widen or restrict sharing beyond their origin.
          * @summary Case Data Collection Links  Get All
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
@@ -9576,7 +9576,7 @@ const CaseApiAxiosParamCreator = function (configuration?: Configuration) {
             };
         },
         /**
-         * 
+         * Manage links that associate cases with additional data collections to widen or restrict sharing beyond their origin.
          * @summary Case Data Collection Links  Get One
          * @param {string} objectId 
          * @param {*} [options] Override http request option.
@@ -9610,7 +9610,7 @@ const CaseApiAxiosParamCreator = function (configuration?: Configuration) {
             };
         },
         /**
-         * 
+         * Manage links that associate cases with additional data collections to widen or restrict sharing beyond their origin.
          * @summary Case Data Collection Links  Get Some
          * @param {string} ids 
          * @param {*} [options] Override http request option.
@@ -9647,7 +9647,7 @@ const CaseApiAxiosParamCreator = function (configuration?: Configuration) {
             };
         },
         /**
-         * 
+         * Manage links that associate cases with additional data collections to widen or restrict sharing beyond their origin.
          * @summary Case Data Collection Links  Post One
          * @param {CaseDataCollectionLink} caseDataCollectionLink 
          * @param {*} [options] Override http request option.
@@ -9683,7 +9683,7 @@ const CaseApiAxiosParamCreator = function (configuration?: Configuration) {
             };
         },
         /**
-         * 
+         * Manage links that associate cases with additional data collections to widen or restrict sharing beyond their origin.
          * @summary Case Data Collection Links  Post Query
          * @param {EpiFilter} filter 
          * @param {*} [options] Override http request option.
@@ -9719,7 +9719,7 @@ const CaseApiAxiosParamCreator = function (configuration?: Configuration) {
             };
         },
         /**
-         * 
+         * Manage links that associate cases with additional data collections to widen or restrict sharing beyond their origin.
          * @summary Case Data Collection Links  Post Query  Ids
          * @param {EpiFilter} filter 
          * @param {*} [options] Override http request option.
@@ -9755,7 +9755,7 @@ const CaseApiAxiosParamCreator = function (configuration?: Configuration) {
             };
         },
         /**
-         * 
+         * Manage links that associate cases with additional data collections to widen or restrict sharing beyond their origin.
          * @summary Case Data Collection Links  Post Some
          * @param {Array<CaseDataCollectionLink>} caseDataCollectionLink 
          * @param {*} [options] Override http request option.
@@ -9791,7 +9791,7 @@ const CaseApiAxiosParamCreator = function (configuration?: Configuration) {
             };
         },
         /**
-         * 
+         * Manage links that associate cases with additional data collections to widen or restrict sharing beyond their origin.
          * @summary Case Data Collection Links  Put One
          * @param {string} objectId 
          * @param {CaseDataCollectionLink} caseDataCollectionLink 
@@ -9831,7 +9831,7 @@ const CaseApiAxiosParamCreator = function (configuration?: Configuration) {
             };
         },
         /**
-         * 
+         * Manage links that associate cases with additional data collections to widen or restrict sharing beyond their origin.
          * @summary Case Data Collection Links  Put Some
          * @param {Array<CaseDataCollectionLink>} caseDataCollectionLink 
          * @param {*} [options] Override http request option.
@@ -9867,7 +9867,7 @@ const CaseApiAxiosParamCreator = function (configuration?: Configuration) {
             };
         },
         /**
-         * 
+         * Maintain the categories used to tag case sets (e.g., outbreak, surveillance, QA).
          * @summary Case Set Categories  Delete All
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
@@ -9897,7 +9897,7 @@ const CaseApiAxiosParamCreator = function (configuration?: Configuration) {
             };
         },
         /**
-         * 
+         * Maintain the categories used to tag case sets (e.g., outbreak, surveillance, QA).
          * @summary Case Set Categories  Delete One
          * @param {any} objectId 
          * @param {*} [options] Override http request option.
@@ -9931,7 +9931,7 @@ const CaseApiAxiosParamCreator = function (configuration?: Configuration) {
             };
         },
         /**
-         * 
+         * Maintain the categories used to tag case sets (e.g., outbreak, surveillance, QA).
          * @summary Case Set Categories  Delete Some
          * @param {string} ids 
          * @param {*} [options] Override http request option.
@@ -9968,7 +9968,7 @@ const CaseApiAxiosParamCreator = function (configuration?: Configuration) {
             };
         },
         /**
-         * 
+         * Maintain the categories used to tag case sets (e.g., outbreak, surveillance, QA).
          * @summary Case Set Categories  Get All
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
@@ -9998,7 +9998,7 @@ const CaseApiAxiosParamCreator = function (configuration?: Configuration) {
             };
         },
         /**
-         * 
+         * Maintain the categories used to tag case sets (e.g., outbreak, surveillance, QA).
          * @summary Case Set Categories  Get One
          * @param {string} objectId 
          * @param {*} [options] Override http request option.
@@ -10032,7 +10032,7 @@ const CaseApiAxiosParamCreator = function (configuration?: Configuration) {
             };
         },
         /**
-         * 
+         * Maintain the categories used to tag case sets (e.g., outbreak, surveillance, QA).
          * @summary Case Set Categories  Get Some
          * @param {string} ids 
          * @param {*} [options] Override http request option.
@@ -10069,7 +10069,7 @@ const CaseApiAxiosParamCreator = function (configuration?: Configuration) {
             };
         },
         /**
-         * 
+         * Maintain the categories used to tag case sets (e.g., outbreak, surveillance, QA).
          * @summary Case Set Categories  Post One
          * @param {CaseSetCategory} caseSetCategory 
          * @param {*} [options] Override http request option.
@@ -10105,7 +10105,7 @@ const CaseApiAxiosParamCreator = function (configuration?: Configuration) {
             };
         },
         /**
-         * 
+         * Maintain the categories used to tag case sets (e.g., outbreak, surveillance, QA).
          * @summary Case Set Categories  Post Query
          * @param {EpiFilter} filter 
          * @param {*} [options] Override http request option.
@@ -10141,7 +10141,7 @@ const CaseApiAxiosParamCreator = function (configuration?: Configuration) {
             };
         },
         /**
-         * 
+         * Maintain the categories used to tag case sets (e.g., outbreak, surveillance, QA).
          * @summary Case Set Categories  Post Query  Ids
          * @param {EpiFilter} filter 
          * @param {*} [options] Override http request option.
@@ -10177,7 +10177,7 @@ const CaseApiAxiosParamCreator = function (configuration?: Configuration) {
             };
         },
         /**
-         * 
+         * Maintain the categories used to tag case sets (e.g., outbreak, surveillance, QA).
          * @summary Case Set Categories  Post Some
          * @param {Array<CaseSetCategory>} caseSetCategory 
          * @param {*} [options] Override http request option.
@@ -10213,7 +10213,7 @@ const CaseApiAxiosParamCreator = function (configuration?: Configuration) {
             };
         },
         /**
-         * 
+         * Maintain the categories used to tag case sets (e.g., outbreak, surveillance, QA).
          * @summary Case Set Categories  Put One
          * @param {string} objectId 
          * @param {CaseSetCategory} caseSetCategory 
@@ -10253,7 +10253,7 @@ const CaseApiAxiosParamCreator = function (configuration?: Configuration) {
             };
         },
         /**
-         * 
+         * Maintain the categories used to tag case sets (e.g., outbreak, surveillance, QA).
          * @summary Case Set Categories  Put Some
          * @param {Array<CaseSetCategory>} caseSetCategory 
          * @param {*} [options] Override http request option.
@@ -10289,7 +10289,7 @@ const CaseApiAxiosParamCreator = function (configuration?: Configuration) {
             };
         },
         /**
-         * 
+         * Manage links that share case sets into additional data collections for cross-group collaboration.
          * @summary Case Set Data Collection Links  Delete All
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
@@ -10319,7 +10319,7 @@ const CaseApiAxiosParamCreator = function (configuration?: Configuration) {
             };
         },
         /**
-         * 
+         * Manage links that share case sets into additional data collections for cross-group collaboration.
          * @summary Case Set Data Collection Links  Delete One
          * @param {any} objectId 
          * @param {*} [options] Override http request option.
@@ -10353,7 +10353,7 @@ const CaseApiAxiosParamCreator = function (configuration?: Configuration) {
             };
         },
         /**
-         * 
+         * Manage links that share case sets into additional data collections for cross-group collaboration.
          * @summary Case Set Data Collection Links  Delete Some
          * @param {string} ids 
          * @param {*} [options] Override http request option.
@@ -10390,7 +10390,7 @@ const CaseApiAxiosParamCreator = function (configuration?: Configuration) {
             };
         },
         /**
-         * 
+         * Manage links that share case sets into additional data collections for cross-group collaboration.
          * @summary Case Set Data Collection Links  Get All
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
@@ -10420,7 +10420,7 @@ const CaseApiAxiosParamCreator = function (configuration?: Configuration) {
             };
         },
         /**
-         * 
+         * Manage links that share case sets into additional data collections for cross-group collaboration.
          * @summary Case Set Data Collection Links  Get One
          * @param {string} objectId 
          * @param {*} [options] Override http request option.
@@ -10454,7 +10454,7 @@ const CaseApiAxiosParamCreator = function (configuration?: Configuration) {
             };
         },
         /**
-         * 
+         * Manage links that share case sets into additional data collections for cross-group collaboration.
          * @summary Case Set Data Collection Links  Get Some
          * @param {string} ids 
          * @param {*} [options] Override http request option.
@@ -10491,7 +10491,7 @@ const CaseApiAxiosParamCreator = function (configuration?: Configuration) {
             };
         },
         /**
-         * 
+         * Manage links that share case sets into additional data collections for cross-group collaboration.
          * @summary Case Set Data Collection Links  Post One
          * @param {CaseSetDataCollectionLink} caseSetDataCollectionLink 
          * @param {*} [options] Override http request option.
@@ -10527,7 +10527,7 @@ const CaseApiAxiosParamCreator = function (configuration?: Configuration) {
             };
         },
         /**
-         * 
+         * Manage links that share case sets into additional data collections for cross-group collaboration.
          * @summary Case Set Data Collection Links  Post Query
          * @param {EpiFilter} filter 
          * @param {*} [options] Override http request option.
@@ -10563,7 +10563,7 @@ const CaseApiAxiosParamCreator = function (configuration?: Configuration) {
             };
         },
         /**
-         * 
+         * Manage links that share case sets into additional data collections for cross-group collaboration.
          * @summary Case Set Data Collection Links  Post Query  Ids
          * @param {EpiFilter} filter 
          * @param {*} [options] Override http request option.
@@ -10599,7 +10599,7 @@ const CaseApiAxiosParamCreator = function (configuration?: Configuration) {
             };
         },
         /**
-         * 
+         * Manage links that share case sets into additional data collections for cross-group collaboration.
          * @summary Case Set Data Collection Links  Post Some
          * @param {Array<CaseSetDataCollectionLink>} caseSetDataCollectionLink 
          * @param {*} [options] Override http request option.
@@ -10635,7 +10635,7 @@ const CaseApiAxiosParamCreator = function (configuration?: Configuration) {
             };
         },
         /**
-         * 
+         * Manage links that share case sets into additional data collections for cross-group collaboration.
          * @summary Case Set Data Collection Links  Put One
          * @param {string} objectId 
          * @param {CaseSetDataCollectionLink} caseSetDataCollectionLink 
@@ -10675,7 +10675,7 @@ const CaseApiAxiosParamCreator = function (configuration?: Configuration) {
             };
         },
         /**
-         * 
+         * Manage links that share case sets into additional data collections for cross-group collaboration.
          * @summary Case Set Data Collection Links  Put Some
          * @param {Array<CaseSetDataCollectionLink>} caseSetDataCollectionLink 
          * @param {*} [options] Override http request option.
@@ -10711,7 +10711,7 @@ const CaseApiAxiosParamCreator = function (configuration?: Configuration) {
             };
         },
         /**
-         * 
+         * Manage membership of cases in a case set, including per-member classification when present.
          * @summary Case Set Members  Delete All
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
@@ -10741,7 +10741,7 @@ const CaseApiAxiosParamCreator = function (configuration?: Configuration) {
             };
         },
         /**
-         * 
+         * Manage membership of cases in a case set, including per-member classification when present.
          * @summary Case Set Members  Delete One
          * @param {any} objectId 
          * @param {*} [options] Override http request option.
@@ -10775,7 +10775,7 @@ const CaseApiAxiosParamCreator = function (configuration?: Configuration) {
             };
         },
         /**
-         * 
+         * Manage membership of cases in a case set, including per-member classification when present.
          * @summary Case Set Members  Delete Some
          * @param {string} ids 
          * @param {*} [options] Override http request option.
@@ -10812,7 +10812,7 @@ const CaseApiAxiosParamCreator = function (configuration?: Configuration) {
             };
         },
         /**
-         * 
+         * Manage membership of cases in a case set, including per-member classification when present.
          * @summary Case Set Members  Get All
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
@@ -10842,7 +10842,7 @@ const CaseApiAxiosParamCreator = function (configuration?: Configuration) {
             };
         },
         /**
-         * 
+         * Manage membership of cases in a case set, including per-member classification when present.
          * @summary Case Set Members  Get One
          * @param {string} objectId 
          * @param {*} [options] Override http request option.
@@ -10876,7 +10876,7 @@ const CaseApiAxiosParamCreator = function (configuration?: Configuration) {
             };
         },
         /**
-         * 
+         * Manage membership of cases in a case set, including per-member classification when present.
          * @summary Case Set Members  Get Some
          * @param {string} ids 
          * @param {*} [options] Override http request option.
@@ -10913,7 +10913,7 @@ const CaseApiAxiosParamCreator = function (configuration?: Configuration) {
             };
         },
         /**
-         * 
+         * Manage membership of cases in a case set, including per-member classification when present.
          * @summary Case Set Members  Post One
          * @param {CaseSetMember} caseSetMember 
          * @param {*} [options] Override http request option.
@@ -10949,7 +10949,7 @@ const CaseApiAxiosParamCreator = function (configuration?: Configuration) {
             };
         },
         /**
-         * 
+         * Manage membership of cases in a case set, including per-member classification when present.
          * @summary Case Set Members  Post Query
          * @param {EpiFilter} filter 
          * @param {*} [options] Override http request option.
@@ -10985,7 +10985,7 @@ const CaseApiAxiosParamCreator = function (configuration?: Configuration) {
             };
         },
         /**
-         * 
+         * Manage membership of cases in a case set, including per-member classification when present.
          * @summary Case Set Members  Post Query  Ids
          * @param {EpiFilter} filter 
          * @param {*} [options] Override http request option.
@@ -11021,7 +11021,7 @@ const CaseApiAxiosParamCreator = function (configuration?: Configuration) {
             };
         },
         /**
-         * 
+         * Manage membership of cases in a case set, including per-member classification when present.
          * @summary Case Set Members  Post Some
          * @param {Array<CaseSetMember>} caseSetMember 
          * @param {*} [options] Override http request option.
@@ -11057,7 +11057,7 @@ const CaseApiAxiosParamCreator = function (configuration?: Configuration) {
             };
         },
         /**
-         * 
+         * Manage membership of cases in a case set, including per-member classification when present.
          * @summary Case Set Members  Put One
          * @param {string} objectId 
          * @param {CaseSetMember} caseSetMember 
@@ -11097,7 +11097,7 @@ const CaseApiAxiosParamCreator = function (configuration?: Configuration) {
             };
         },
         /**
-         * 
+         * Manage membership of cases in a case set, including per-member classification when present.
          * @summary Case Set Members  Put Some
          * @param {Array<CaseSetMember>} caseSetMember 
          * @param {*} [options] Override http request option.
@@ -11133,7 +11133,7 @@ const CaseApiAxiosParamCreator = function (configuration?: Configuration) {
             };
         },
         /**
-         * 
+         * Maintain lifecycle/status values for case sets (e.g., draft, active, closed).
          * @summary Case Set Statuses  Delete All
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
@@ -11163,7 +11163,7 @@ const CaseApiAxiosParamCreator = function (configuration?: Configuration) {
             };
         },
         /**
-         * 
+         * Maintain lifecycle/status values for case sets (e.g., draft, active, closed).
          * @summary Case Set Statuses  Delete One
          * @param {any} objectId 
          * @param {*} [options] Override http request option.
@@ -11197,7 +11197,7 @@ const CaseApiAxiosParamCreator = function (configuration?: Configuration) {
             };
         },
         /**
-         * 
+         * Maintain lifecycle/status values for case sets (e.g., draft, active, closed).
          * @summary Case Set Statuses  Delete Some
          * @param {string} ids 
          * @param {*} [options] Override http request option.
@@ -11234,7 +11234,7 @@ const CaseApiAxiosParamCreator = function (configuration?: Configuration) {
             };
         },
         /**
-         * 
+         * Maintain lifecycle/status values for case sets (e.g., draft, active, closed).
          * @summary Case Set Statuses  Get All
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
@@ -11264,7 +11264,7 @@ const CaseApiAxiosParamCreator = function (configuration?: Configuration) {
             };
         },
         /**
-         * 
+         * Maintain lifecycle/status values for case sets (e.g., draft, active, closed).
          * @summary Case Set Statuses  Get One
          * @param {string} objectId 
          * @param {*} [options] Override http request option.
@@ -11298,7 +11298,7 @@ const CaseApiAxiosParamCreator = function (configuration?: Configuration) {
             };
         },
         /**
-         * 
+         * Maintain lifecycle/status values for case sets (e.g., draft, active, closed).
          * @summary Case Set Statuses  Get Some
          * @param {string} ids 
          * @param {*} [options] Override http request option.
@@ -11335,7 +11335,7 @@ const CaseApiAxiosParamCreator = function (configuration?: Configuration) {
             };
         },
         /**
-         * 
+         * Maintain lifecycle/status values for case sets (e.g., draft, active, closed).
          * @summary Case Set Statuses  Post One
          * @param {CaseSetStatus} caseSetStatus 
          * @param {*} [options] Override http request option.
@@ -11371,7 +11371,7 @@ const CaseApiAxiosParamCreator = function (configuration?: Configuration) {
             };
         },
         /**
-         * 
+         * Maintain lifecycle/status values for case sets (e.g., draft, active, closed).
          * @summary Case Set Statuses  Post Query
          * @param {EpiFilter} filter 
          * @param {*} [options] Override http request option.
@@ -11407,7 +11407,7 @@ const CaseApiAxiosParamCreator = function (configuration?: Configuration) {
             };
         },
         /**
-         * 
+         * Maintain lifecycle/status values for case sets (e.g., draft, active, closed).
          * @summary Case Set Statuses  Post Query  Ids
          * @param {EpiFilter} filter 
          * @param {*} [options] Override http request option.
@@ -11443,7 +11443,7 @@ const CaseApiAxiosParamCreator = function (configuration?: Configuration) {
             };
         },
         /**
-         * 
+         * Maintain lifecycle/status values for case sets (e.g., draft, active, closed).
          * @summary Case Set Statuses  Post Some
          * @param {Array<CaseSetStatus>} caseSetStatus 
          * @param {*} [options] Override http request option.
@@ -11479,7 +11479,7 @@ const CaseApiAxiosParamCreator = function (configuration?: Configuration) {
             };
         },
         /**
-         * 
+         * Maintain lifecycle/status values for case sets (e.g., draft, active, closed).
          * @summary Case Set Statuses  Put One
          * @param {string} objectId 
          * @param {CaseSetStatus} caseSetStatus 
@@ -11519,7 +11519,7 @@ const CaseApiAxiosParamCreator = function (configuration?: Configuration) {
             };
         },
         /**
-         * 
+         * Maintain lifecycle/status values for case sets (e.g., draft, active, closed).
          * @summary Case Set Statuses  Put Some
          * @param {Array<CaseSetStatus>} caseSetStatus 
          * @param {*} [options] Override http request option.
@@ -11555,7 +11555,7 @@ const CaseApiAxiosParamCreator = function (configuration?: Configuration) {
             };
         },
         /**
-         * 
+         * Manage case sets (list/get/create/update/delete) including type, category, status, and data-collection context.
          * @summary Case Sets  Delete All
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
@@ -11585,7 +11585,7 @@ const CaseApiAxiosParamCreator = function (configuration?: Configuration) {
             };
         },
         /**
-         * 
+         * Manage case sets (list/get/create/update/delete) including type, category, status, and data-collection context.
          * @summary Case Sets  Delete One
          * @param {any} objectId 
          * @param {*} [options] Override http request option.
@@ -11619,7 +11619,7 @@ const CaseApiAxiosParamCreator = function (configuration?: Configuration) {
             };
         },
         /**
-         * 
+         * Manage case sets (list/get/create/update/delete) including type, category, status, and data-collection context.
          * @summary Case Sets  Delete Some
          * @param {string} ids 
          * @param {*} [options] Override http request option.
@@ -11656,7 +11656,7 @@ const CaseApiAxiosParamCreator = function (configuration?: Configuration) {
             };
         },
         /**
-         * 
+         * Manage case sets (list/get/create/update/delete) including type, category, status, and data-collection context.
          * @summary Case Sets  Get All
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
@@ -11686,7 +11686,7 @@ const CaseApiAxiosParamCreator = function (configuration?: Configuration) {
             };
         },
         /**
-         * 
+         * Manage case sets (list/get/create/update/delete) including type, category, status, and data-collection context.
          * @summary Case Sets  Get One
          * @param {string} objectId 
          * @param {*} [options] Override http request option.
@@ -11720,7 +11720,7 @@ const CaseApiAxiosParamCreator = function (configuration?: Configuration) {
             };
         },
         /**
-         * 
+         * Manage case sets (list/get/create/update/delete) including type, category, status, and data-collection context.
          * @summary Case Sets  Get Some
          * @param {string} ids 
          * @param {*} [options] Override http request option.
@@ -11757,7 +11757,7 @@ const CaseApiAxiosParamCreator = function (configuration?: Configuration) {
             };
         },
         /**
-         * 
+         * Manage case sets (list/get/create/update/delete) including type, category, status, and data-collection context.
          * @summary Case Sets  Post One
          * @param {CaseSet} caseSet 
          * @param {*} [options] Override http request option.
@@ -11793,7 +11793,7 @@ const CaseApiAxiosParamCreator = function (configuration?: Configuration) {
             };
         },
         /**
-         * 
+         * Manage case sets (list/get/create/update/delete) including type, category, status, and data-collection context.
          * @summary Case Sets  Post Query
          * @param {EpiFilter} filter 
          * @param {*} [options] Override http request option.
@@ -11829,7 +11829,7 @@ const CaseApiAxiosParamCreator = function (configuration?: Configuration) {
             };
         },
         /**
-         * 
+         * Manage case sets (list/get/create/update/delete) including type, category, status, and data-collection context.
          * @summary Case Sets  Post Query  Ids
          * @param {EpiFilter} filter 
          * @param {*} [options] Override http request option.
@@ -11865,7 +11865,7 @@ const CaseApiAxiosParamCreator = function (configuration?: Configuration) {
             };
         },
         /**
-         * 
+         * Manage case sets (list/get/create/update/delete) including type, category, status, and data-collection context.
          * @summary Case Sets  Post Some
          * @param {Array<CaseSet>} caseSet 
          * @param {*} [options] Override http request option.
@@ -11901,7 +11901,7 @@ const CaseApiAxiosParamCreator = function (configuration?: Configuration) {
             };
         },
         /**
-         * 
+         * Manage case sets (list/get/create/update/delete) including type, category, status, and data-collection context.
          * @summary Case Sets  Put One
          * @param {string} objectId 
          * @param {CaseSet} caseSet 
@@ -11941,7 +11941,7 @@ const CaseApiAxiosParamCreator = function (configuration?: Configuration) {
             };
         },
         /**
-         * 
+         * Manage case sets (list/get/create/update/delete) including type, category, status, and data-collection context.
          * @summary Case Sets  Put Some
          * @param {Array<CaseSet>} caseSet 
          * @param {*} [options] Override http request option.
@@ -11977,7 +11977,7 @@ const CaseApiAxiosParamCreator = function (configuration?: Configuration) {
             };
         },
         /**
-         * 
+         * Manage which columns belong to a column set used in policies or UI presets.
          * @summary Case Type Col Set Members  Delete All
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
@@ -12007,7 +12007,7 @@ const CaseApiAxiosParamCreator = function (configuration?: Configuration) {
             };
         },
         /**
-         * 
+         * Manage which columns belong to a column set used in policies or UI presets.
          * @summary Case Type Col Set Members  Delete One
          * @param {any} objectId 
          * @param {*} [options] Override http request option.
@@ -12041,7 +12041,7 @@ const CaseApiAxiosParamCreator = function (configuration?: Configuration) {
             };
         },
         /**
-         * 
+         * Manage which columns belong to a column set used in policies or UI presets.
          * @summary Case Type Col Set Members  Delete Some
          * @param {string} ids 
          * @param {*} [options] Override http request option.
@@ -12078,7 +12078,7 @@ const CaseApiAxiosParamCreator = function (configuration?: Configuration) {
             };
         },
         /**
-         * 
+         * Manage which columns belong to a column set used in policies or UI presets.
          * @summary Case Type Col Set Members  Get All
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
@@ -12108,7 +12108,7 @@ const CaseApiAxiosParamCreator = function (configuration?: Configuration) {
             };
         },
         /**
-         * 
+         * Manage which columns belong to a column set used in policies or UI presets.
          * @summary Case Type Col Set Members  Get One
          * @param {string} objectId 
          * @param {*} [options] Override http request option.
@@ -12142,7 +12142,7 @@ const CaseApiAxiosParamCreator = function (configuration?: Configuration) {
             };
         },
         /**
-         * 
+         * Manage which columns belong to a column set used in policies or UI presets.
          * @summary Case Type Col Set Members  Get Some
          * @param {string} ids 
          * @param {*} [options] Override http request option.
@@ -12179,7 +12179,7 @@ const CaseApiAxiosParamCreator = function (configuration?: Configuration) {
             };
         },
         /**
-         * 
+         * Manage which columns belong to a column set used in policies or UI presets.
          * @summary Case Type Col Set Members  Post One
          * @param {CaseTypeColSetMember} caseTypeColSetMember 
          * @param {*} [options] Override http request option.
@@ -12215,7 +12215,7 @@ const CaseApiAxiosParamCreator = function (configuration?: Configuration) {
             };
         },
         /**
-         * 
+         * Manage which columns belong to a column set used in policies or UI presets.
          * @summary Case Type Col Set Members  Post Query
          * @param {EpiFilter} filter 
          * @param {*} [options] Override http request option.
@@ -12251,7 +12251,7 @@ const CaseApiAxiosParamCreator = function (configuration?: Configuration) {
             };
         },
         /**
-         * 
+         * Manage which columns belong to a column set used in policies or UI presets.
          * @summary Case Type Col Set Members  Post Query  Ids
          * @param {EpiFilter} filter 
          * @param {*} [options] Override http request option.
@@ -12287,7 +12287,7 @@ const CaseApiAxiosParamCreator = function (configuration?: Configuration) {
             };
         },
         /**
-         * 
+         * Manage which columns belong to a column set used in policies or UI presets.
          * @summary Case Type Col Set Members  Post Some
          * @param {Array<CaseTypeColSetMember>} caseTypeColSetMember 
          * @param {*} [options] Override http request option.
@@ -12323,7 +12323,7 @@ const CaseApiAxiosParamCreator = function (configuration?: Configuration) {
             };
         },
         /**
-         * 
+         * Manage which columns belong to a column set used in policies or UI presets.
          * @summary Case Type Col Set Members  Put One
          * @param {string} objectId 
          * @param {CaseTypeColSetMember} caseTypeColSetMember 
@@ -12363,7 +12363,7 @@ const CaseApiAxiosParamCreator = function (configuration?: Configuration) {
             };
         },
         /**
-         * 
+         * Manage which columns belong to a column set used in policies or UI presets.
          * @summary Case Type Col Set Members  Put Some
          * @param {Array<CaseTypeColSetMember>} caseTypeColSetMember 
          * @param {*} [options] Override http request option.
@@ -12399,7 +12399,7 @@ const CaseApiAxiosParamCreator = function (configuration?: Configuration) {
             };
         },
         /**
-         * 
+         * Manage column sets used for read/write scopes and default column groupings.
          * @summary Case Type Col Sets  Delete All
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
@@ -12429,7 +12429,7 @@ const CaseApiAxiosParamCreator = function (configuration?: Configuration) {
             };
         },
         /**
-         * 
+         * Manage column sets used for read/write scopes and default column groupings.
          * @summary Case Type Col Sets  Delete One
          * @param {any} objectId 
          * @param {*} [options] Override http request option.
@@ -12463,7 +12463,7 @@ const CaseApiAxiosParamCreator = function (configuration?: Configuration) {
             };
         },
         /**
-         * 
+         * Manage column sets used for read/write scopes and default column groupings.
          * @summary Case Type Col Sets  Delete Some
          * @param {string} ids 
          * @param {*} [options] Override http request option.
@@ -12500,7 +12500,7 @@ const CaseApiAxiosParamCreator = function (configuration?: Configuration) {
             };
         },
         /**
-         * 
+         * Manage column sets used for read/write scopes and default column groupings.
          * @summary Case Type Col Sets  Get All
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
@@ -12530,7 +12530,7 @@ const CaseApiAxiosParamCreator = function (configuration?: Configuration) {
             };
         },
         /**
-         * 
+         * Manage column sets used for read/write scopes and default column groupings.
          * @summary Case Type Col Sets  Get One
          * @param {string} objectId 
          * @param {*} [options] Override http request option.
@@ -12564,7 +12564,7 @@ const CaseApiAxiosParamCreator = function (configuration?: Configuration) {
             };
         },
         /**
-         * 
+         * Manage column sets used for read/write scopes and default column groupings.
          * @summary Case Type Col Sets  Get Some
          * @param {string} ids 
          * @param {*} [options] Override http request option.
@@ -12601,7 +12601,7 @@ const CaseApiAxiosParamCreator = function (configuration?: Configuration) {
             };
         },
         /**
-         * 
+         * Manage column sets used for read/write scopes and default column groupings.
          * @summary Case Type Col Sets  Post One
          * @param {CaseTypeColSet} caseTypeColSet 
          * @param {*} [options] Override http request option.
@@ -12637,7 +12637,7 @@ const CaseApiAxiosParamCreator = function (configuration?: Configuration) {
             };
         },
         /**
-         * 
+         * Manage column sets used for read/write scopes and default column groupings.
          * @summary Case Type Col Sets  Post Query
          * @param {EpiFilter} filter 
          * @param {*} [options] Override http request option.
@@ -12673,7 +12673,7 @@ const CaseApiAxiosParamCreator = function (configuration?: Configuration) {
             };
         },
         /**
-         * 
+         * Manage column sets used for read/write scopes and default column groupings.
          * @summary Case Type Col Sets  Post Query  Ids
          * @param {EpiFilter} filter 
          * @param {*} [options] Override http request option.
@@ -12709,7 +12709,7 @@ const CaseApiAxiosParamCreator = function (configuration?: Configuration) {
             };
         },
         /**
-         * 
+         * Manage column sets used for read/write scopes and default column groupings.
          * @summary Case Type Col Sets  Post Some
          * @param {Array<CaseTypeColSet>} caseTypeColSet 
          * @param {*} [options] Override http request option.
@@ -12745,7 +12745,7 @@ const CaseApiAxiosParamCreator = function (configuration?: Configuration) {
             };
         },
         /**
-         * 
+         * Replace the columns in a case-type column set with the provided members so read/write scopes and UI column groupings stay aligned.
          * @summary Update Association Between Casetypecolset And Casetypecol
          * @param {string} caseTypeColSetId 
          * @param {UpdateCaseTypeColSetCaseTypeColsRequestBody} updateCaseTypeColSetCaseTypeColsRequestBody 
@@ -12785,7 +12785,7 @@ const CaseApiAxiosParamCreator = function (configuration?: Configuration) {
             };
         },
         /**
-         * 
+         * Manage column sets used for read/write scopes and default column groupings.
          * @summary Case Type Col Sets  Put One
          * @param {string} objectId 
          * @param {CaseTypeColSet} caseTypeColSet 
@@ -12825,7 +12825,7 @@ const CaseApiAxiosParamCreator = function (configuration?: Configuration) {
             };
         },
         /**
-         * 
+         * Manage column sets used for read/write scopes and default column groupings.
          * @summary Case Type Col Sets  Put Some
          * @param {Array<CaseTypeColSet>} caseTypeColSet 
          * @param {*} [options] Override http request option.
@@ -12861,7 +12861,7 @@ const CaseApiAxiosParamCreator = function (configuration?: Configuration) {
             };
         },
         /**
-         * 
+         * Manage case-type columns: datatype, vocab/region bindings, and genetic-distance settings.
          * @summary Case Type Cols  Delete All
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
@@ -12891,7 +12891,7 @@ const CaseApiAxiosParamCreator = function (configuration?: Configuration) {
             };
         },
         /**
-         * 
+         * Manage case-type columns: datatype, vocab/region bindings, and genetic-distance settings.
          * @summary Case Type Cols  Delete One
          * @param {any} objectId 
          * @param {*} [options] Override http request option.
@@ -12925,7 +12925,7 @@ const CaseApiAxiosParamCreator = function (configuration?: Configuration) {
             };
         },
         /**
-         * 
+         * Manage case-type columns: datatype, vocab/region bindings, and genetic-distance settings.
          * @summary Case Type Cols  Delete Some
          * @param {string} ids 
          * @param {*} [options] Override http request option.
@@ -12962,7 +12962,7 @@ const CaseApiAxiosParamCreator = function (configuration?: Configuration) {
             };
         },
         /**
-         * 
+         * Manage case-type columns: datatype, vocab/region bindings, and genetic-distance settings.
          * @summary Case Type Cols  Get All
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
@@ -12992,7 +12992,7 @@ const CaseApiAxiosParamCreator = function (configuration?: Configuration) {
             };
         },
         /**
-         * 
+         * Manage case-type columns: datatype, vocab/region bindings, and genetic-distance settings.
          * @summary Case Type Cols  Get One
          * @param {string} objectId 
          * @param {*} [options] Override http request option.
@@ -13026,7 +13026,7 @@ const CaseApiAxiosParamCreator = function (configuration?: Configuration) {
             };
         },
         /**
-         * 
+         * Manage case-type columns: datatype, vocab/region bindings, and genetic-distance settings.
          * @summary Case Type Cols  Get Some
          * @param {string} ids 
          * @param {*} [options] Override http request option.
@@ -13063,7 +13063,7 @@ const CaseApiAxiosParamCreator = function (configuration?: Configuration) {
             };
         },
         /**
-         * 
+         * Manage case-type columns: datatype, vocab/region bindings, and genetic-distance settings.
          * @summary Case Type Cols  Post One
          * @param {CaseTypeCol} caseTypeCol 
          * @param {*} [options] Override http request option.
@@ -13099,7 +13099,7 @@ const CaseApiAxiosParamCreator = function (configuration?: Configuration) {
             };
         },
         /**
-         * 
+         * Manage case-type columns: datatype, vocab/region bindings, and genetic-distance settings.
          * @summary Case Type Cols  Post Query
          * @param {EpiFilter} filter 
          * @param {*} [options] Override http request option.
@@ -13135,7 +13135,7 @@ const CaseApiAxiosParamCreator = function (configuration?: Configuration) {
             };
         },
         /**
-         * 
+         * Manage case-type columns: datatype, vocab/region bindings, and genetic-distance settings.
          * @summary Case Type Cols  Post Query  Ids
          * @param {EpiFilter} filter 
          * @param {*} [options] Override http request option.
@@ -13171,7 +13171,7 @@ const CaseApiAxiosParamCreator = function (configuration?: Configuration) {
             };
         },
         /**
-         * 
+         * Manage case-type columns: datatype, vocab/region bindings, and genetic-distance settings.
          * @summary Case Type Cols  Post Some
          * @param {Array<CaseTypeCol>} caseTypeCol 
          * @param {*} [options] Override http request option.
@@ -13207,7 +13207,7 @@ const CaseApiAxiosParamCreator = function (configuration?: Configuration) {
             };
         },
         /**
-         * 
+         * Manage case-type columns: datatype, vocab/region bindings, and genetic-distance settings.
          * @summary Case Type Cols  Put One
          * @param {string} objectId 
          * @param {CaseTypeCol} caseTypeCol 
@@ -13247,7 +13247,7 @@ const CaseApiAxiosParamCreator = function (configuration?: Configuration) {
             };
         },
         /**
-         * 
+         * Manage case-type columns: datatype, vocab/region bindings, and genetic-distance settings.
          * @summary Case Type Cols  Put Some
          * @param {Array<CaseTypeCol>} caseTypeCol 
          * @param {*} [options] Override http request option.
@@ -13283,7 +13283,7 @@ const CaseApiAxiosParamCreator = function (configuration?: Configuration) {
             };
         },
         /**
-         * 
+         * Manage dimensions that group case-type columns (e.g., demographics, sample, sequencing).
          * @summary Case Type Dims  Delete All
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
@@ -13313,7 +13313,7 @@ const CaseApiAxiosParamCreator = function (configuration?: Configuration) {
             };
         },
         /**
-         * 
+         * Manage dimensions that group case-type columns (e.g., demographics, sample, sequencing).
          * @summary Case Type Dims  Delete One
          * @param {any} objectId 
          * @param {*} [options] Override http request option.
@@ -13347,7 +13347,7 @@ const CaseApiAxiosParamCreator = function (configuration?: Configuration) {
             };
         },
         /**
-         * 
+         * Manage dimensions that group case-type columns (e.g., demographics, sample, sequencing).
          * @summary Case Type Dims  Delete Some
          * @param {string} ids 
          * @param {*} [options] Override http request option.
@@ -13384,7 +13384,7 @@ const CaseApiAxiosParamCreator = function (configuration?: Configuration) {
             };
         },
         /**
-         * 
+         * Manage dimensions that group case-type columns (e.g., demographics, sample, sequencing).
          * @summary Case Type Dims  Get All
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
@@ -13414,7 +13414,7 @@ const CaseApiAxiosParamCreator = function (configuration?: Configuration) {
             };
         },
         /**
-         * 
+         * Manage dimensions that group case-type columns (e.g., demographics, sample, sequencing).
          * @summary Case Type Dims  Get One
          * @param {string} objectId 
          * @param {*} [options] Override http request option.
@@ -13448,7 +13448,7 @@ const CaseApiAxiosParamCreator = function (configuration?: Configuration) {
             };
         },
         /**
-         * 
+         * Manage dimensions that group case-type columns (e.g., demographics, sample, sequencing).
          * @summary Case Type Dims  Get Some
          * @param {string} ids 
          * @param {*} [options] Override http request option.
@@ -13485,7 +13485,7 @@ const CaseApiAxiosParamCreator = function (configuration?: Configuration) {
             };
         },
         /**
-         * 
+         * Manage dimensions that group case-type columns (e.g., demographics, sample, sequencing).
          * @summary Case Type Dims  Post One
          * @param {CaseTypeDim} caseTypeDim 
          * @param {*} [options] Override http request option.
@@ -13521,7 +13521,7 @@ const CaseApiAxiosParamCreator = function (configuration?: Configuration) {
             };
         },
         /**
-         * 
+         * Manage dimensions that group case-type columns (e.g., demographics, sample, sequencing).
          * @summary Case Type Dims  Post Query
          * @param {EpiFilter} filter 
          * @param {*} [options] Override http request option.
@@ -13557,7 +13557,7 @@ const CaseApiAxiosParamCreator = function (configuration?: Configuration) {
             };
         },
         /**
-         * 
+         * Manage dimensions that group case-type columns (e.g., demographics, sample, sequencing).
          * @summary Case Type Dims  Post Query  Ids
          * @param {EpiFilter} filter 
          * @param {*} [options] Override http request option.
@@ -13593,7 +13593,7 @@ const CaseApiAxiosParamCreator = function (configuration?: Configuration) {
             };
         },
         /**
-         * 
+         * Manage dimensions that group case-type columns (e.g., demographics, sample, sequencing).
          * @summary Case Type Dims  Post Some
          * @param {Array<CaseTypeDim>} caseTypeDim 
          * @param {*} [options] Override http request option.
@@ -13629,7 +13629,7 @@ const CaseApiAxiosParamCreator = function (configuration?: Configuration) {
             };
         },
         /**
-         * 
+         * Manage dimensions that group case-type columns (e.g., demographics, sample, sequencing).
          * @summary Case Type Dims  Put One
          * @param {string} objectId 
          * @param {CaseTypeDim} caseTypeDim 
@@ -13669,7 +13669,7 @@ const CaseApiAxiosParamCreator = function (configuration?: Configuration) {
             };
         },
         /**
-         * 
+         * Manage dimensions that group case-type columns (e.g., demographics, sample, sequencing).
          * @summary Case Type Dims  Put Some
          * @param {Array<CaseTypeDim>} caseTypeDim 
          * @param {*} [options] Override http request option.
@@ -13705,7 +13705,7 @@ const CaseApiAxiosParamCreator = function (configuration?: Configuration) {
             };
         },
         /**
-         * 
+         * Maintain categories used to organize case-type sets for policy scoping.
          * @summary Case Type Set Categories  Delete All
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
@@ -13735,7 +13735,7 @@ const CaseApiAxiosParamCreator = function (configuration?: Configuration) {
             };
         },
         /**
-         * 
+         * Maintain categories used to organize case-type sets for policy scoping.
          * @summary Case Type Set Categories  Delete One
          * @param {any} objectId 
          * @param {*} [options] Override http request option.
@@ -13769,7 +13769,7 @@ const CaseApiAxiosParamCreator = function (configuration?: Configuration) {
             };
         },
         /**
-         * 
+         * Maintain categories used to organize case-type sets for policy scoping.
          * @summary Case Type Set Categories  Delete Some
          * @param {string} ids 
          * @param {*} [options] Override http request option.
@@ -13806,7 +13806,7 @@ const CaseApiAxiosParamCreator = function (configuration?: Configuration) {
             };
         },
         /**
-         * 
+         * Maintain categories used to organize case-type sets for policy scoping.
          * @summary Case Type Set Categories  Get All
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
@@ -13836,7 +13836,7 @@ const CaseApiAxiosParamCreator = function (configuration?: Configuration) {
             };
         },
         /**
-         * 
+         * Maintain categories used to organize case-type sets for policy scoping.
          * @summary Case Type Set Categories  Get One
          * @param {string} objectId 
          * @param {*} [options] Override http request option.
@@ -13870,7 +13870,7 @@ const CaseApiAxiosParamCreator = function (configuration?: Configuration) {
             };
         },
         /**
-         * 
+         * Maintain categories used to organize case-type sets for policy scoping.
          * @summary Case Type Set Categories  Get Some
          * @param {string} ids 
          * @param {*} [options] Override http request option.
@@ -13907,7 +13907,7 @@ const CaseApiAxiosParamCreator = function (configuration?: Configuration) {
             };
         },
         /**
-         * 
+         * Maintain categories used to organize case-type sets for policy scoping.
          * @summary Case Type Set Categories  Post One
          * @param {CaseTypeSetCategory} caseTypeSetCategory 
          * @param {*} [options] Override http request option.
@@ -13943,7 +13943,7 @@ const CaseApiAxiosParamCreator = function (configuration?: Configuration) {
             };
         },
         /**
-         * 
+         * Maintain categories used to organize case-type sets for policy scoping.
          * @summary Case Type Set Categories  Post Query
          * @param {EpiFilter} filter 
          * @param {*} [options] Override http request option.
@@ -13979,7 +13979,7 @@ const CaseApiAxiosParamCreator = function (configuration?: Configuration) {
             };
         },
         /**
-         * 
+         * Maintain categories used to organize case-type sets for policy scoping.
          * @summary Case Type Set Categories  Post Query  Ids
          * @param {EpiFilter} filter 
          * @param {*} [options] Override http request option.
@@ -14015,7 +14015,7 @@ const CaseApiAxiosParamCreator = function (configuration?: Configuration) {
             };
         },
         /**
-         * 
+         * Maintain categories used to organize case-type sets for policy scoping.
          * @summary Case Type Set Categories  Post Some
          * @param {Array<CaseTypeSetCategory>} caseTypeSetCategory 
          * @param {*} [options] Override http request option.
@@ -14051,7 +14051,7 @@ const CaseApiAxiosParamCreator = function (configuration?: Configuration) {
             };
         },
         /**
-         * 
+         * Maintain categories used to organize case-type sets for policy scoping.
          * @summary Case Type Set Categories  Put One
          * @param {string} objectId 
          * @param {CaseTypeSetCategory} caseTypeSetCategory 
@@ -14091,7 +14091,7 @@ const CaseApiAxiosParamCreator = function (configuration?: Configuration) {
             };
         },
         /**
-         * 
+         * Maintain categories used to organize case-type sets for policy scoping.
          * @summary Case Type Set Categories  Put Some
          * @param {Array<CaseTypeSetCategory>} caseTypeSetCategory 
          * @param {*} [options] Override http request option.
@@ -14127,7 +14127,7 @@ const CaseApiAxiosParamCreator = function (configuration?: Configuration) {
             };
         },
         /**
-         * 
+         * Manage which case types belong to a case-type set.
          * @summary Case Type Set Members  Delete All
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
@@ -14157,7 +14157,7 @@ const CaseApiAxiosParamCreator = function (configuration?: Configuration) {
             };
         },
         /**
-         * 
+         * Manage which case types belong to a case-type set.
          * @summary Case Type Set Members  Delete One
          * @param {any} objectId 
          * @param {*} [options] Override http request option.
@@ -14191,7 +14191,7 @@ const CaseApiAxiosParamCreator = function (configuration?: Configuration) {
             };
         },
         /**
-         * 
+         * Manage which case types belong to a case-type set.
          * @summary Case Type Set Members  Delete Some
          * @param {string} ids 
          * @param {*} [options] Override http request option.
@@ -14228,7 +14228,7 @@ const CaseApiAxiosParamCreator = function (configuration?: Configuration) {
             };
         },
         /**
-         * 
+         * Manage which case types belong to a case-type set.
          * @summary Case Type Set Members  Get All
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
@@ -14258,7 +14258,7 @@ const CaseApiAxiosParamCreator = function (configuration?: Configuration) {
             };
         },
         /**
-         * 
+         * Manage which case types belong to a case-type set.
          * @summary Case Type Set Members  Get One
          * @param {string} objectId 
          * @param {*} [options] Override http request option.
@@ -14292,7 +14292,7 @@ const CaseApiAxiosParamCreator = function (configuration?: Configuration) {
             };
         },
         /**
-         * 
+         * Manage which case types belong to a case-type set.
          * @summary Case Type Set Members  Get Some
          * @param {string} ids 
          * @param {*} [options] Override http request option.
@@ -14329,7 +14329,7 @@ const CaseApiAxiosParamCreator = function (configuration?: Configuration) {
             };
         },
         /**
-         * 
+         * Manage which case types belong to a case-type set.
          * @summary Case Type Set Members  Post One
          * @param {CaseTypeSetMember} caseTypeSetMember 
          * @param {*} [options] Override http request option.
@@ -14365,7 +14365,7 @@ const CaseApiAxiosParamCreator = function (configuration?: Configuration) {
             };
         },
         /**
-         * 
+         * Manage which case types belong to a case-type set.
          * @summary Case Type Set Members  Post Query
          * @param {EpiFilter} filter 
          * @param {*} [options] Override http request option.
@@ -14401,7 +14401,7 @@ const CaseApiAxiosParamCreator = function (configuration?: Configuration) {
             };
         },
         /**
-         * 
+         * Manage which case types belong to a case-type set.
          * @summary Case Type Set Members  Post Query  Ids
          * @param {EpiFilter} filter 
          * @param {*} [options] Override http request option.
@@ -14437,7 +14437,7 @@ const CaseApiAxiosParamCreator = function (configuration?: Configuration) {
             };
         },
         /**
-         * 
+         * Manage which case types belong to a case-type set.
          * @summary Case Type Set Members  Post Some
          * @param {Array<CaseTypeSetMember>} caseTypeSetMember 
          * @param {*} [options] Override http request option.
@@ -14473,7 +14473,7 @@ const CaseApiAxiosParamCreator = function (configuration?: Configuration) {
             };
         },
         /**
-         * 
+         * Manage which case types belong to a case-type set.
          * @summary Case Type Set Members  Put One
          * @param {string} objectId 
          * @param {CaseTypeSetMember} caseTypeSetMember 
@@ -14513,7 +14513,7 @@ const CaseApiAxiosParamCreator = function (configuration?: Configuration) {
             };
         },
         /**
-         * 
+         * Manage which case types belong to a case-type set.
          * @summary Case Type Set Members  Put Some
          * @param {Array<CaseTypeSetMember>} caseTypeSetMember 
          * @param {*} [options] Override http request option.
@@ -14549,7 +14549,7 @@ const CaseApiAxiosParamCreator = function (configuration?: Configuration) {
             };
         },
         /**
-         * 
+         * Manage sets of related case types reused in access policies and presets.
          * @summary Case Type Sets  Delete All
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
@@ -14579,7 +14579,7 @@ const CaseApiAxiosParamCreator = function (configuration?: Configuration) {
             };
         },
         /**
-         * 
+         * Manage sets of related case types reused in access policies and presets.
          * @summary Case Type Sets  Delete One
          * @param {any} objectId 
          * @param {*} [options] Override http request option.
@@ -14613,7 +14613,7 @@ const CaseApiAxiosParamCreator = function (configuration?: Configuration) {
             };
         },
         /**
-         * 
+         * Manage sets of related case types reused in access policies and presets.
          * @summary Case Type Sets  Delete Some
          * @param {string} ids 
          * @param {*} [options] Override http request option.
@@ -14650,7 +14650,7 @@ const CaseApiAxiosParamCreator = function (configuration?: Configuration) {
             };
         },
         /**
-         * 
+         * Manage sets of related case types reused in access policies and presets.
          * @summary Case Type Sets  Get All
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
@@ -14680,7 +14680,7 @@ const CaseApiAxiosParamCreator = function (configuration?: Configuration) {
             };
         },
         /**
-         * 
+         * Manage sets of related case types reused in access policies and presets.
          * @summary Case Type Sets  Get One
          * @param {string} objectId 
          * @param {*} [options] Override http request option.
@@ -14714,7 +14714,7 @@ const CaseApiAxiosParamCreator = function (configuration?: Configuration) {
             };
         },
         /**
-         * 
+         * Manage sets of related case types reused in access policies and presets.
          * @summary Case Type Sets  Get Some
          * @param {string} ids 
          * @param {*} [options] Override http request option.
@@ -14751,7 +14751,7 @@ const CaseApiAxiosParamCreator = function (configuration?: Configuration) {
             };
         },
         /**
-         * 
+         * Manage sets of related case types reused in access policies and presets.
          * @summary Case Type Sets  Post One
          * @param {CaseTypeSet} caseTypeSet 
          * @param {*} [options] Override http request option.
@@ -14787,7 +14787,7 @@ const CaseApiAxiosParamCreator = function (configuration?: Configuration) {
             };
         },
         /**
-         * 
+         * Manage sets of related case types reused in access policies and presets.
          * @summary Case Type Sets  Post Query
          * @param {EpiFilter} filter 
          * @param {*} [options] Override http request option.
@@ -14823,7 +14823,7 @@ const CaseApiAxiosParamCreator = function (configuration?: Configuration) {
             };
         },
         /**
-         * 
+         * Manage sets of related case types reused in access policies and presets.
          * @summary Case Type Sets  Post Query  Ids
          * @param {EpiFilter} filter 
          * @param {*} [options] Override http request option.
@@ -14859,7 +14859,7 @@ const CaseApiAxiosParamCreator = function (configuration?: Configuration) {
             };
         },
         /**
-         * 
+         * Manage sets of related case types reused in access policies and presets.
          * @summary Case Type Sets  Post Some
          * @param {Array<CaseTypeSet>} caseTypeSet 
          * @param {*} [options] Override http request option.
@@ -14895,7 +14895,7 @@ const CaseApiAxiosParamCreator = function (configuration?: Configuration) {
             };
         },
         /**
-         * 
+         * Replace the case types in a case-type set with the provided list of members, keeping the set in sync for downstream access policies and presets.
          * @summary Update Association Between Casetypeset And Casetype
          * @param {string} caseTypeSetId 
          * @param {UpdateCaseTypeSetCaseTypesRequestBody} updateCaseTypeSetCaseTypesRequestBody 
@@ -14935,7 +14935,7 @@ const CaseApiAxiosParamCreator = function (configuration?: Configuration) {
             };
         },
         /**
-         * 
+         * Manage sets of related case types reused in access policies and presets.
          * @summary Case Type Sets  Put One
          * @param {string} objectId 
          * @param {CaseTypeSet} caseTypeSet 
@@ -14975,7 +14975,7 @@ const CaseApiAxiosParamCreator = function (configuration?: Configuration) {
             };
         },
         /**
-         * 
+         * Manage sets of related case types reused in access policies and presets.
          * @summary Case Type Sets  Put Some
          * @param {Array<CaseTypeSet>} caseTypeSet 
          * @param {*} [options] Override http request option.
@@ -15011,7 +15011,7 @@ const CaseApiAxiosParamCreator = function (configuration?: Configuration) {
             };
         },
         /**
-         * 
+         * Manage case types—the structural and default definitions cases must follow.
          * @summary Case Types  Delete All
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
@@ -15041,7 +15041,7 @@ const CaseApiAxiosParamCreator = function (configuration?: Configuration) {
             };
         },
         /**
-         * 
+         * Manage case types—the structural and default definitions cases must follow.
          * @summary Case Types  Delete One
          * @param {any} objectId 
          * @param {*} [options] Override http request option.
@@ -15075,7 +15075,7 @@ const CaseApiAxiosParamCreator = function (configuration?: Configuration) {
             };
         },
         /**
-         * 
+         * Manage case types—the structural and default definitions cases must follow.
          * @summary Case Types  Delete Some
          * @param {string} ids 
          * @param {*} [options] Override http request option.
@@ -15112,7 +15112,7 @@ const CaseApiAxiosParamCreator = function (configuration?: Configuration) {
             };
         },
         /**
-         * 
+         * Manage case types—the structural and default definitions cases must follow.
          * @summary Case Types  Get All
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
@@ -15142,7 +15142,7 @@ const CaseApiAxiosParamCreator = function (configuration?: Configuration) {
             };
         },
         /**
-         * 
+         * Manage case types—the structural and default definitions cases must follow.
          * @summary Case Types  Get One
          * @param {string} objectId 
          * @param {*} [options] Override http request option.
@@ -15176,7 +15176,7 @@ const CaseApiAxiosParamCreator = function (configuration?: Configuration) {
             };
         },
         /**
-         * 
+         * Manage case types—the structural and default definitions cases must follow.
          * @summary Case Types  Get Some
          * @param {string} ids 
          * @param {*} [options] Override http request option.
@@ -15213,7 +15213,7 @@ const CaseApiAxiosParamCreator = function (configuration?: Configuration) {
             };
         },
         /**
-         * 
+         * Manage case types—the structural and default definitions cases must follow.
          * @summary Case Types  Post One
          * @param {CaseType} caseType 
          * @param {*} [options] Override http request option.
@@ -15249,7 +15249,7 @@ const CaseApiAxiosParamCreator = function (configuration?: Configuration) {
             };
         },
         /**
-         * 
+         * Manage case types—the structural and default definitions cases must follow.
          * @summary Case Types  Post Query
          * @param {EpiFilter} filter 
          * @param {*} [options] Override http request option.
@@ -15285,7 +15285,7 @@ const CaseApiAxiosParamCreator = function (configuration?: Configuration) {
             };
         },
         /**
-         * 
+         * Manage case types—the structural and default definitions cases must follow.
          * @summary Case Types  Post Query  Ids
          * @param {EpiFilter} filter 
          * @param {*} [options] Override http request option.
@@ -15321,7 +15321,7 @@ const CaseApiAxiosParamCreator = function (configuration?: Configuration) {
             };
         },
         /**
-         * 
+         * Manage case types—the structural and default definitions cases must follow.
          * @summary Case Types  Post Some
          * @param {Array<CaseType>} caseType 
          * @param {*} [options] Override http request option.
@@ -15357,7 +15357,7 @@ const CaseApiAxiosParamCreator = function (configuration?: Configuration) {
             };
         },
         /**
-         * 
+         * Manage case types—the structural and default definitions cases must follow.
          * @summary Case Types  Put One
          * @param {string} objectId 
          * @param {CaseType} caseType 
@@ -15397,7 +15397,7 @@ const CaseApiAxiosParamCreator = function (configuration?: Configuration) {
             };
         },
         /**
-         * 
+         * Manage case types—the structural and default definitions cases must follow.
          * @summary Case Types  Put Some
          * @param {Array<CaseType>} caseType 
          * @param {*} [options] Override http request option.
@@ -15433,7 +15433,7 @@ const CaseApiAxiosParamCreator = function (configuration?: Configuration) {
             };
         },
         /**
-         * 
+         * Manage cases (list/get/create/update/delete) with typed content tied to a case type, subject, and data collection.
          * @summary Cases  Delete All
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
@@ -15463,7 +15463,7 @@ const CaseApiAxiosParamCreator = function (configuration?: Configuration) {
             };
         },
         /**
-         * 
+         * Manage cases (list/get/create/update/delete) with typed content tied to a case type, subject, and data collection.
          * @summary Cases  Delete One
          * @param {any} objectId 
          * @param {*} [options] Override http request option.
@@ -15497,7 +15497,7 @@ const CaseApiAxiosParamCreator = function (configuration?: Configuration) {
             };
         },
         /**
-         * 
+         * Manage cases (list/get/create/update/delete) with typed content tied to a case type, subject, and data collection.
          * @summary Cases  Delete Some
          * @param {string} ids 
          * @param {*} [options] Override http request option.
@@ -15534,7 +15534,7 @@ const CaseApiAxiosParamCreator = function (configuration?: Configuration) {
             };
         },
         /**
-         * 
+         * Manage cases (list/get/create/update/delete) with typed content tied to a case type, subject, and data collection.
          * @summary Cases  Get All
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
@@ -15564,7 +15564,7 @@ const CaseApiAxiosParamCreator = function (configuration?: Configuration) {
             };
         },
         /**
-         * 
+         * Manage cases (list/get/create/update/delete) with typed content tied to a case type, subject, and data collection.
          * @summary Cases  Get One
          * @param {string} objectId 
          * @param {*} [options] Override http request option.
@@ -15598,7 +15598,7 @@ const CaseApiAxiosParamCreator = function (configuration?: Configuration) {
             };
         },
         /**
-         * 
+         * Manage cases (list/get/create/update/delete) with typed content tied to a case type, subject, and data collection.
          * @summary Cases  Get Some
          * @param {string} ids 
          * @param {*} [options] Override http request option.
@@ -15635,7 +15635,7 @@ const CaseApiAxiosParamCreator = function (configuration?: Configuration) {
             };
         },
         /**
-         * 
+         * Manage cases (list/get/create/update/delete) with typed content tied to a case type, subject, and data collection.
          * @summary Cases  Post One
          * @param {Case} _case 
          * @param {*} [options] Override http request option.
@@ -15671,7 +15671,7 @@ const CaseApiAxiosParamCreator = function (configuration?: Configuration) {
             };
         },
         /**
-         * 
+         * Manage cases (list/get/create/update/delete) with typed content tied to a case type, subject, and data collection.
          * @summary Cases  Post Query
          * @param {EpiFilter} filter 
          * @param {*} [options] Override http request option.
@@ -15707,7 +15707,7 @@ const CaseApiAxiosParamCreator = function (configuration?: Configuration) {
             };
         },
         /**
-         * 
+         * Manage cases (list/get/create/update/delete) with typed content tied to a case type, subject, and data collection.
          * @summary Cases  Post Query  Ids
          * @param {EpiFilter} filter 
          * @param {*} [options] Override http request option.
@@ -15743,7 +15743,7 @@ const CaseApiAxiosParamCreator = function (configuration?: Configuration) {
             };
         },
         /**
-         * 
+         * Manage cases (list/get/create/update/delete) with typed content tied to a case type, subject, and data collection.
          * @summary Cases  Post Some
          * @param {Array<Case>} _case 
          * @param {*} [options] Override http request option.
@@ -15779,7 +15779,7 @@ const CaseApiAxiosParamCreator = function (configuration?: Configuration) {
             };
         },
         /**
-         * 
+         * Manage cases (list/get/create/update/delete) with typed content tied to a case type, subject, and data collection.
          * @summary Cases  Put One
          * @param {string} objectId 
          * @param {Case} _case 
@@ -15819,7 +15819,7 @@ const CaseApiAxiosParamCreator = function (configuration?: Configuration) {
             };
         },
         /**
-         * 
+         * Manage cases (list/get/create/update/delete) with typed content tied to a case type, subject, and data collection.
          * @summary Cases  Put Some
          * @param {Array<Case>} _case 
          * @param {*} [options] Override http request option.
@@ -15855,7 +15855,7 @@ const CaseApiAxiosParamCreator = function (configuration?: Configuration) {
             };
         },
         /**
-         * 
+         * Manage reusable column definitions (code/label/type) referenced by case-type columns and vocabularies.
          * @summary Cols  Delete All
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
@@ -15885,7 +15885,7 @@ const CaseApiAxiosParamCreator = function (configuration?: Configuration) {
             };
         },
         /**
-         * 
+         * Manage reusable column definitions (code/label/type) referenced by case-type columns and vocabularies.
          * @summary Cols  Delete One
          * @param {any} objectId 
          * @param {*} [options] Override http request option.
@@ -15919,7 +15919,7 @@ const CaseApiAxiosParamCreator = function (configuration?: Configuration) {
             };
         },
         /**
-         * 
+         * Manage reusable column definitions (code/label/type) referenced by case-type columns and vocabularies.
          * @summary Cols  Delete Some
          * @param {string} ids 
          * @param {*} [options] Override http request option.
@@ -15956,7 +15956,7 @@ const CaseApiAxiosParamCreator = function (configuration?: Configuration) {
             };
         },
         /**
-         * 
+         * Manage reusable column definitions (code/label/type) referenced by case-type columns and vocabularies.
          * @summary Cols  Get All
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
@@ -15986,7 +15986,7 @@ const CaseApiAxiosParamCreator = function (configuration?: Configuration) {
             };
         },
         /**
-         * 
+         * Manage reusable column definitions (code/label/type) referenced by case-type columns and vocabularies.
          * @summary Cols  Get One
          * @param {string} objectId 
          * @param {*} [options] Override http request option.
@@ -16020,7 +16020,7 @@ const CaseApiAxiosParamCreator = function (configuration?: Configuration) {
             };
         },
         /**
-         * 
+         * Manage reusable column definitions (code/label/type) referenced by case-type columns and vocabularies.
          * @summary Cols  Get Some
          * @param {string} ids 
          * @param {*} [options] Override http request option.
@@ -16057,7 +16057,7 @@ const CaseApiAxiosParamCreator = function (configuration?: Configuration) {
             };
         },
         /**
-         * 
+         * Manage reusable column definitions (code/label/type) referenced by case-type columns and vocabularies.
          * @summary Cols  Post One
          * @param {Col} col 
          * @param {*} [options] Override http request option.
@@ -16093,7 +16093,7 @@ const CaseApiAxiosParamCreator = function (configuration?: Configuration) {
             };
         },
         /**
-         * 
+         * Manage reusable column definitions (code/label/type) referenced by case-type columns and vocabularies.
          * @summary Cols  Post Query
          * @param {EpiFilter} filter 
          * @param {*} [options] Override http request option.
@@ -16129,7 +16129,7 @@ const CaseApiAxiosParamCreator = function (configuration?: Configuration) {
             };
         },
         /**
-         * 
+         * Manage reusable column definitions (code/label/type) referenced by case-type columns and vocabularies.
          * @summary Cols  Post Query  Ids
          * @param {EpiFilter} filter 
          * @param {*} [options] Override http request option.
@@ -16165,7 +16165,7 @@ const CaseApiAxiosParamCreator = function (configuration?: Configuration) {
             };
         },
         /**
-         * 
+         * Manage reusable column definitions (code/label/type) referenced by case-type columns and vocabularies.
          * @summary Cols  Post Some
          * @param {Array<Col>} col 
          * @param {*} [options] Override http request option.
@@ -16201,7 +16201,7 @@ const CaseApiAxiosParamCreator = function (configuration?: Configuration) {
             };
         },
         /**
-         * 
+         * Manage reusable column definitions (code/label/type) referenced by case-type columns and vocabularies.
          * @summary Cols  Put One
          * @param {string} objectId 
          * @param {Col} col 
@@ -16241,7 +16241,7 @@ const CaseApiAxiosParamCreator = function (configuration?: Configuration) {
             };
         },
         /**
-         * 
+         * Manage reusable column definitions (code/label/type) referenced by case-type columns and vocabularies.
          * @summary Cols  Put Some
          * @param {Array<Col>} col 
          * @param {*} [options] Override http request option.
@@ -16380,7 +16380,7 @@ const CaseApiAxiosParamCreator = function (configuration?: Configuration) {
             };
         },
         /**
-         * Create a file for a read set associated with a case.
+         * Upload a raw reads file (e.g., FASTQ) for a case\'s read-set column and return the stored file ID. Accepts base64 content, optional compression, and marks whether the payload is forward or reverse reads.
          * @summary Create File For Reads Set
          * @param {string} caseId 
          * @param {string} caseTypeColId 
@@ -16424,7 +16424,7 @@ const CaseApiAxiosParamCreator = function (configuration?: Configuration) {
             };
         },
         /**
-         * Create a file for a sequence associated with a case.
+         * Upload an assembled sequence file (e.g., FASTA) for a case\'s sequence column and return the stored file ID. Accepts base64 content with optional compression.
          * @summary Create File For Sequence
          * @param {string} caseId 
          * @param {string} caseTypeColId 
@@ -16468,7 +16468,7 @@ const CaseApiAxiosParamCreator = function (configuration?: Configuration) {
             };
         },
         /**
-         * 
+         * Manage column dimensions, including code prefixes and ordering, reused across case types.
          * @summary Dims  Delete All
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
@@ -16498,7 +16498,7 @@ const CaseApiAxiosParamCreator = function (configuration?: Configuration) {
             };
         },
         /**
-         * 
+         * Manage column dimensions, including code prefixes and ordering, reused across case types.
          * @summary Dims  Delete One
          * @param {any} objectId 
          * @param {*} [options] Override http request option.
@@ -16532,7 +16532,7 @@ const CaseApiAxiosParamCreator = function (configuration?: Configuration) {
             };
         },
         /**
-         * 
+         * Manage column dimensions, including code prefixes and ordering, reused across case types.
          * @summary Dims  Delete Some
          * @param {string} ids 
          * @param {*} [options] Override http request option.
@@ -16569,7 +16569,7 @@ const CaseApiAxiosParamCreator = function (configuration?: Configuration) {
             };
         },
         /**
-         * 
+         * Manage column dimensions, including code prefixes and ordering, reused across case types.
          * @summary Dims  Get All
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
@@ -16599,7 +16599,7 @@ const CaseApiAxiosParamCreator = function (configuration?: Configuration) {
             };
         },
         /**
-         * 
+         * Manage column dimensions, including code prefixes and ordering, reused across case types.
          * @summary Dims  Get One
          * @param {string} objectId 
          * @param {*} [options] Override http request option.
@@ -16633,7 +16633,7 @@ const CaseApiAxiosParamCreator = function (configuration?: Configuration) {
             };
         },
         /**
-         * 
+         * Manage column dimensions, including code prefixes and ordering, reused across case types.
          * @summary Dims  Get Some
          * @param {string} ids 
          * @param {*} [options] Override http request option.
@@ -16670,7 +16670,7 @@ const CaseApiAxiosParamCreator = function (configuration?: Configuration) {
             };
         },
         /**
-         * 
+         * Manage column dimensions, including code prefixes and ordering, reused across case types.
          * @summary Dims  Post One
          * @param {Dim} dim 
          * @param {*} [options] Override http request option.
@@ -16706,7 +16706,7 @@ const CaseApiAxiosParamCreator = function (configuration?: Configuration) {
             };
         },
         /**
-         * 
+         * Manage column dimensions, including code prefixes and ordering, reused across case types.
          * @summary Dims  Post Query
          * @param {EpiFilter} filter 
          * @param {*} [options] Override http request option.
@@ -16742,7 +16742,7 @@ const CaseApiAxiosParamCreator = function (configuration?: Configuration) {
             };
         },
         /**
-         * 
+         * Manage column dimensions, including code prefixes and ordering, reused across case types.
          * @summary Dims  Post Query  Ids
          * @param {EpiFilter} filter 
          * @param {*} [options] Override http request option.
@@ -16778,7 +16778,7 @@ const CaseApiAxiosParamCreator = function (configuration?: Configuration) {
             };
         },
         /**
-         * 
+         * Manage column dimensions, including code prefixes and ordering, reused across case types.
          * @summary Dims  Post Some
          * @param {Array<Dim>} dim 
          * @param {*} [options] Override http request option.
@@ -16814,7 +16814,7 @@ const CaseApiAxiosParamCreator = function (configuration?: Configuration) {
             };
         },
         /**
-         * 
+         * Manage column dimensions, including code prefixes and ordering, reused across case types.
          * @summary Dims  Put One
          * @param {string} objectId 
          * @param {Dim} dim 
@@ -16854,7 +16854,7 @@ const CaseApiAxiosParamCreator = function (configuration?: Configuration) {
             };
         },
         /**
-         * 
+         * Manage column dimensions, including code prefixes and ordering, reused across case types.
          * @summary Dims  Put Some
          * @param {Array<Dim>} dim 
          * @param {*} [options] Override http request option.
@@ -16890,7 +16890,7 @@ const CaseApiAxiosParamCreator = function (configuration?: Configuration) {
             };
         },
         /**
-         * 
+         * Manage genetic distance protocols (e.g., TN93) available for sequence comparisons in phylogenetic analyses.
          * @summary Genetic Distance Protocols  Delete All
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
@@ -16920,7 +16920,7 @@ const CaseApiAxiosParamCreator = function (configuration?: Configuration) {
             };
         },
         /**
-         * 
+         * Manage genetic distance protocols (e.g., TN93) available for sequence comparisons in phylogenetic analyses.
          * @summary Genetic Distance Protocols  Delete One
          * @param {any} objectId 
          * @param {*} [options] Override http request option.
@@ -16954,7 +16954,7 @@ const CaseApiAxiosParamCreator = function (configuration?: Configuration) {
             };
         },
         /**
-         * 
+         * Manage genetic distance protocols (e.g., TN93) available for sequence comparisons in phylogenetic analyses.
          * @summary Genetic Distance Protocols  Delete Some
          * @param {string} ids 
          * @param {*} [options] Override http request option.
@@ -16991,7 +16991,7 @@ const CaseApiAxiosParamCreator = function (configuration?: Configuration) {
             };
         },
         /**
-         * 
+         * Manage genetic distance protocols (e.g., TN93) available for sequence comparisons in phylogenetic analyses.
          * @summary Genetic Distance Protocols  Get All
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
@@ -17021,7 +17021,7 @@ const CaseApiAxiosParamCreator = function (configuration?: Configuration) {
             };
         },
         /**
-         * 
+         * Manage genetic distance protocols (e.g., TN93) available for sequence comparisons in phylogenetic analyses.
          * @summary Genetic Distance Protocols  Get One
          * @param {string} objectId 
          * @param {*} [options] Override http request option.
@@ -17055,7 +17055,7 @@ const CaseApiAxiosParamCreator = function (configuration?: Configuration) {
             };
         },
         /**
-         * 
+         * Manage genetic distance protocols (e.g., TN93) available for sequence comparisons in phylogenetic analyses.
          * @summary Genetic Distance Protocols  Get Some
          * @param {string} ids 
          * @param {*} [options] Override http request option.
@@ -17092,7 +17092,7 @@ const CaseApiAxiosParamCreator = function (configuration?: Configuration) {
             };
         },
         /**
-         * 
+         * Manage genetic distance protocols (e.g., TN93) available for sequence comparisons in phylogenetic analyses.
          * @summary Genetic Distance Protocols  Post One
          * @param {GeneticDistanceProtocol} geneticDistanceProtocol 
          * @param {*} [options] Override http request option.
@@ -17128,7 +17128,7 @@ const CaseApiAxiosParamCreator = function (configuration?: Configuration) {
             };
         },
         /**
-         * 
+         * Manage genetic distance protocols (e.g., TN93) available for sequence comparisons in phylogenetic analyses.
          * @summary Genetic Distance Protocols  Post Query
          * @param {EpiFilter} filter 
          * @param {*} [options] Override http request option.
@@ -17164,7 +17164,7 @@ const CaseApiAxiosParamCreator = function (configuration?: Configuration) {
             };
         },
         /**
-         * 
+         * Manage genetic distance protocols (e.g., TN93) available for sequence comparisons in phylogenetic analyses.
          * @summary Genetic Distance Protocols  Post Query  Ids
          * @param {EpiFilter} filter 
          * @param {*} [options] Override http request option.
@@ -17200,7 +17200,7 @@ const CaseApiAxiosParamCreator = function (configuration?: Configuration) {
             };
         },
         /**
-         * 
+         * Manage genetic distance protocols (e.g., TN93) available for sequence comparisons in phylogenetic analyses.
          * @summary Genetic Distance Protocols  Post Some
          * @param {Array<GeneticDistanceProtocol>} geneticDistanceProtocol 
          * @param {*} [options] Override http request option.
@@ -17236,7 +17236,7 @@ const CaseApiAxiosParamCreator = function (configuration?: Configuration) {
             };
         },
         /**
-         * 
+         * Manage genetic distance protocols (e.g., TN93) available for sequence comparisons in phylogenetic analyses.
          * @summary Genetic Distance Protocols  Put One
          * @param {string} objectId 
          * @param {GeneticDistanceProtocol} geneticDistanceProtocol 
@@ -17276,7 +17276,7 @@ const CaseApiAxiosParamCreator = function (configuration?: Configuration) {
             };
         },
         /**
-         * 
+         * Manage genetic distance protocols (e.g., TN93) available for sequence comparisons in phylogenetic analyses.
          * @summary Genetic Distance Protocols  Put Some
          * @param {Array<GeneticDistanceProtocol>} geneticDistanceProtocol 
          * @param {*} [options] Override http request option.
@@ -17312,7 +17312,7 @@ const CaseApiAxiosParamCreator = function (configuration?: Configuration) {
             };
         },
         /**
-         * Retrieve assembly protocols from seqdb database
+         * Retrieve the assembly protocols registered in seqdb for downstream sequence processing and provenance.
          * @summary Retrieve Assembly Protocols
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
@@ -17663,7 +17663,7 @@ const CaseApiAxiosParamCreator = function (configuration?: Configuration) {
             };
         },
         /**
-         * Retrieve sequencing protocols from seqdb database
+         * Retrieve the sequencing protocols registered in seqdb so clients can populate protocol pickers when uploading read sets.
          * @summary Retrieve Sequencing Protocols
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
@@ -17729,7 +17729,7 @@ const CaseApiAxiosParamCreator = function (configuration?: Configuration) {
             };
         },
         /**
-         * 
+         * Manage categories of phylogenetic algorithms and whether they require sequences vs. distance matrices.
          * @summary Tree Algorithm Classes  Delete All
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
@@ -17759,7 +17759,7 @@ const CaseApiAxiosParamCreator = function (configuration?: Configuration) {
             };
         },
         /**
-         * 
+         * Manage categories of phylogenetic algorithms and whether they require sequences vs. distance matrices.
          * @summary Tree Algorithm Classes  Delete One
          * @param {any} objectId 
          * @param {*} [options] Override http request option.
@@ -17793,7 +17793,7 @@ const CaseApiAxiosParamCreator = function (configuration?: Configuration) {
             };
         },
         /**
-         * 
+         * Manage categories of phylogenetic algorithms and whether they require sequences vs. distance matrices.
          * @summary Tree Algorithm Classes  Delete Some
          * @param {string} ids 
          * @param {*} [options] Override http request option.
@@ -17830,7 +17830,7 @@ const CaseApiAxiosParamCreator = function (configuration?: Configuration) {
             };
         },
         /**
-         * 
+         * Manage categories of phylogenetic algorithms and whether they require sequences vs. distance matrices.
          * @summary Tree Algorithm Classes  Get All
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
@@ -17860,7 +17860,7 @@ const CaseApiAxiosParamCreator = function (configuration?: Configuration) {
             };
         },
         /**
-         * 
+         * Manage categories of phylogenetic algorithms and whether they require sequences vs. distance matrices.
          * @summary Tree Algorithm Classes  Get One
          * @param {string} objectId 
          * @param {*} [options] Override http request option.
@@ -17894,7 +17894,7 @@ const CaseApiAxiosParamCreator = function (configuration?: Configuration) {
             };
         },
         /**
-         * 
+         * Manage categories of phylogenetic algorithms and whether they require sequences vs. distance matrices.
          * @summary Tree Algorithm Classes  Get Some
          * @param {string} ids 
          * @param {*} [options] Override http request option.
@@ -17931,7 +17931,7 @@ const CaseApiAxiosParamCreator = function (configuration?: Configuration) {
             };
         },
         /**
-         * 
+         * Manage categories of phylogenetic algorithms and whether they require sequences vs. distance matrices.
          * @summary Tree Algorithm Classes  Post One
          * @param {TreeAlgorithmClass} treeAlgorithmClass 
          * @param {*} [options] Override http request option.
@@ -17967,7 +17967,7 @@ const CaseApiAxiosParamCreator = function (configuration?: Configuration) {
             };
         },
         /**
-         * 
+         * Manage categories of phylogenetic algorithms and whether they require sequences vs. distance matrices.
          * @summary Tree Algorithm Classes  Post Query
          * @param {EpiFilter} filter 
          * @param {*} [options] Override http request option.
@@ -18003,7 +18003,7 @@ const CaseApiAxiosParamCreator = function (configuration?: Configuration) {
             };
         },
         /**
-         * 
+         * Manage categories of phylogenetic algorithms and whether they require sequences vs. distance matrices.
          * @summary Tree Algorithm Classes  Post Query  Ids
          * @param {EpiFilter} filter 
          * @param {*} [options] Override http request option.
@@ -18039,7 +18039,7 @@ const CaseApiAxiosParamCreator = function (configuration?: Configuration) {
             };
         },
         /**
-         * 
+         * Manage categories of phylogenetic algorithms and whether they require sequences vs. distance matrices.
          * @summary Tree Algorithm Classes  Post Some
          * @param {Array<TreeAlgorithmClass>} treeAlgorithmClass 
          * @param {*} [options] Override http request option.
@@ -18075,7 +18075,7 @@ const CaseApiAxiosParamCreator = function (configuration?: Configuration) {
             };
         },
         /**
-         * 
+         * Manage categories of phylogenetic algorithms and whether they require sequences vs. distance matrices.
          * @summary Tree Algorithm Classes  Put One
          * @param {string} objectId 
          * @param {TreeAlgorithmClass} treeAlgorithmClass 
@@ -18115,7 +18115,7 @@ const CaseApiAxiosParamCreator = function (configuration?: Configuration) {
             };
         },
         /**
-         * 
+         * Manage categories of phylogenetic algorithms and whether they require sequences vs. distance matrices.
          * @summary Tree Algorithm Classes  Put Some
          * @param {Array<TreeAlgorithmClass>} treeAlgorithmClass 
          * @param {*} [options] Override http request option.
@@ -18151,7 +18151,7 @@ const CaseApiAxiosParamCreator = function (configuration?: Configuration) {
             };
         },
         /**
-         * 
+         * Manage specific phylogenetic tree algorithms linked to seqdb implementations and parameters.
          * @summary Tree Algorithms  Delete All
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
@@ -18181,7 +18181,7 @@ const CaseApiAxiosParamCreator = function (configuration?: Configuration) {
             };
         },
         /**
-         * 
+         * Manage specific phylogenetic tree algorithms linked to seqdb implementations and parameters.
          * @summary Tree Algorithms  Delete One
          * @param {any} objectId 
          * @param {*} [options] Override http request option.
@@ -18215,7 +18215,7 @@ const CaseApiAxiosParamCreator = function (configuration?: Configuration) {
             };
         },
         /**
-         * 
+         * Manage specific phylogenetic tree algorithms linked to seqdb implementations and parameters.
          * @summary Tree Algorithms  Delete Some
          * @param {string} ids 
          * @param {*} [options] Override http request option.
@@ -18252,7 +18252,7 @@ const CaseApiAxiosParamCreator = function (configuration?: Configuration) {
             };
         },
         /**
-         * 
+         * Manage specific phylogenetic tree algorithms linked to seqdb implementations and parameters.
          * @summary Tree Algorithms  Get All
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
@@ -18282,7 +18282,7 @@ const CaseApiAxiosParamCreator = function (configuration?: Configuration) {
             };
         },
         /**
-         * 
+         * Manage specific phylogenetic tree algorithms linked to seqdb implementations and parameters.
          * @summary Tree Algorithms  Get One
          * @param {string} objectId 
          * @param {*} [options] Override http request option.
@@ -18316,7 +18316,7 @@ const CaseApiAxiosParamCreator = function (configuration?: Configuration) {
             };
         },
         /**
-         * 
+         * Manage specific phylogenetic tree algorithms linked to seqdb implementations and parameters.
          * @summary Tree Algorithms  Get Some
          * @param {string} ids 
          * @param {*} [options] Override http request option.
@@ -18353,7 +18353,7 @@ const CaseApiAxiosParamCreator = function (configuration?: Configuration) {
             };
         },
         /**
-         * 
+         * Manage specific phylogenetic tree algorithms linked to seqdb implementations and parameters.
          * @summary Tree Algorithms  Post One
          * @param {TreeAlgorithm} treeAlgorithm 
          * @param {*} [options] Override http request option.
@@ -18389,7 +18389,7 @@ const CaseApiAxiosParamCreator = function (configuration?: Configuration) {
             };
         },
         /**
-         * 
+         * Manage specific phylogenetic tree algorithms linked to seqdb implementations and parameters.
          * @summary Tree Algorithms  Post Query
          * @param {EpiFilter} filter 
          * @param {*} [options] Override http request option.
@@ -18425,7 +18425,7 @@ const CaseApiAxiosParamCreator = function (configuration?: Configuration) {
             };
         },
         /**
-         * 
+         * Manage specific phylogenetic tree algorithms linked to seqdb implementations and parameters.
          * @summary Tree Algorithms  Post Query  Ids
          * @param {EpiFilter} filter 
          * @param {*} [options] Override http request option.
@@ -18461,7 +18461,7 @@ const CaseApiAxiosParamCreator = function (configuration?: Configuration) {
             };
         },
         /**
-         * 
+         * Manage specific phylogenetic tree algorithms linked to seqdb implementations and parameters.
          * @summary Tree Algorithms  Post Some
          * @param {Array<TreeAlgorithm>} treeAlgorithm 
          * @param {*} [options] Override http request option.
@@ -18497,7 +18497,7 @@ const CaseApiAxiosParamCreator = function (configuration?: Configuration) {
             };
         },
         /**
-         * 
+         * Manage specific phylogenetic tree algorithms linked to seqdb implementations and parameters.
          * @summary Tree Algorithms  Put One
          * @param {string} objectId 
          * @param {TreeAlgorithm} treeAlgorithm 
@@ -18537,7 +18537,7 @@ const CaseApiAxiosParamCreator = function (configuration?: Configuration) {
             };
         },
         /**
-         * 
+         * Manage specific phylogenetic tree algorithms linked to seqdb implementations and parameters.
          * @summary Tree Algorithms  Put Some
          * @param {Array<TreeAlgorithm>} treeAlgorithm 
          * @param {*} [options] Override http request option.
@@ -18619,7 +18619,7 @@ const CaseApiFp = function(configuration?: Configuration) {
     const localVarAxiosParamCreator = CaseApiAxiosParamCreator(configuration)
     return {
         /**
-         * 
+         * Manage links that associate cases with additional data collections to widen or restrict sharing beyond their origin.
          * @summary Case Data Collection Links  Delete All
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
@@ -18631,7 +18631,7 @@ const CaseApiFp = function(configuration?: Configuration) {
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
         /**
-         * 
+         * Manage links that associate cases with additional data collections to widen or restrict sharing beyond their origin.
          * @summary Case Data Collection Links  Delete One
          * @param {any} objectId 
          * @param {*} [options] Override http request option.
@@ -18644,7 +18644,7 @@ const CaseApiFp = function(configuration?: Configuration) {
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
         /**
-         * 
+         * Manage links that associate cases with additional data collections to widen or restrict sharing beyond their origin.
          * @summary Case Data Collection Links  Delete Some
          * @param {string} ids 
          * @param {*} [options] Override http request option.
@@ -18657,7 +18657,7 @@ const CaseApiFp = function(configuration?: Configuration) {
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
         /**
-         * 
+         * Manage links that associate cases with additional data collections to widen or restrict sharing beyond their origin.
          * @summary Case Data Collection Links  Get All
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
@@ -18669,7 +18669,7 @@ const CaseApiFp = function(configuration?: Configuration) {
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
         /**
-         * 
+         * Manage links that associate cases with additional data collections to widen or restrict sharing beyond their origin.
          * @summary Case Data Collection Links  Get One
          * @param {string} objectId 
          * @param {*} [options] Override http request option.
@@ -18682,7 +18682,7 @@ const CaseApiFp = function(configuration?: Configuration) {
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
         /**
-         * 
+         * Manage links that associate cases with additional data collections to widen or restrict sharing beyond their origin.
          * @summary Case Data Collection Links  Get Some
          * @param {string} ids 
          * @param {*} [options] Override http request option.
@@ -18695,7 +18695,7 @@ const CaseApiFp = function(configuration?: Configuration) {
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
         /**
-         * 
+         * Manage links that associate cases with additional data collections to widen or restrict sharing beyond their origin.
          * @summary Case Data Collection Links  Post One
          * @param {CaseDataCollectionLink} caseDataCollectionLink 
          * @param {*} [options] Override http request option.
@@ -18708,7 +18708,7 @@ const CaseApiFp = function(configuration?: Configuration) {
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
         /**
-         * 
+         * Manage links that associate cases with additional data collections to widen or restrict sharing beyond their origin.
          * @summary Case Data Collection Links  Post Query
          * @param {EpiFilter} filter 
          * @param {*} [options] Override http request option.
@@ -18721,7 +18721,7 @@ const CaseApiFp = function(configuration?: Configuration) {
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
         /**
-         * 
+         * Manage links that associate cases with additional data collections to widen or restrict sharing beyond their origin.
          * @summary Case Data Collection Links  Post Query  Ids
          * @param {EpiFilter} filter 
          * @param {*} [options] Override http request option.
@@ -18734,7 +18734,7 @@ const CaseApiFp = function(configuration?: Configuration) {
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
         /**
-         * 
+         * Manage links that associate cases with additional data collections to widen or restrict sharing beyond their origin.
          * @summary Case Data Collection Links  Post Some
          * @param {Array<CaseDataCollectionLink>} caseDataCollectionLink 
          * @param {*} [options] Override http request option.
@@ -18747,7 +18747,7 @@ const CaseApiFp = function(configuration?: Configuration) {
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
         /**
-         * 
+         * Manage links that associate cases with additional data collections to widen or restrict sharing beyond their origin.
          * @summary Case Data Collection Links  Put One
          * @param {string} objectId 
          * @param {CaseDataCollectionLink} caseDataCollectionLink 
@@ -18761,7 +18761,7 @@ const CaseApiFp = function(configuration?: Configuration) {
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
         /**
-         * 
+         * Manage links that associate cases with additional data collections to widen or restrict sharing beyond their origin.
          * @summary Case Data Collection Links  Put Some
          * @param {Array<CaseDataCollectionLink>} caseDataCollectionLink 
          * @param {*} [options] Override http request option.
@@ -18774,7 +18774,7 @@ const CaseApiFp = function(configuration?: Configuration) {
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
         /**
-         * 
+         * Maintain the categories used to tag case sets (e.g., outbreak, surveillance, QA).
          * @summary Case Set Categories  Delete All
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
@@ -18786,7 +18786,7 @@ const CaseApiFp = function(configuration?: Configuration) {
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
         /**
-         * 
+         * Maintain the categories used to tag case sets (e.g., outbreak, surveillance, QA).
          * @summary Case Set Categories  Delete One
          * @param {any} objectId 
          * @param {*} [options] Override http request option.
@@ -18799,7 +18799,7 @@ const CaseApiFp = function(configuration?: Configuration) {
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
         /**
-         * 
+         * Maintain the categories used to tag case sets (e.g., outbreak, surveillance, QA).
          * @summary Case Set Categories  Delete Some
          * @param {string} ids 
          * @param {*} [options] Override http request option.
@@ -18812,7 +18812,7 @@ const CaseApiFp = function(configuration?: Configuration) {
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
         /**
-         * 
+         * Maintain the categories used to tag case sets (e.g., outbreak, surveillance, QA).
          * @summary Case Set Categories  Get All
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
@@ -18824,7 +18824,7 @@ const CaseApiFp = function(configuration?: Configuration) {
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
         /**
-         * 
+         * Maintain the categories used to tag case sets (e.g., outbreak, surveillance, QA).
          * @summary Case Set Categories  Get One
          * @param {string} objectId 
          * @param {*} [options] Override http request option.
@@ -18837,7 +18837,7 @@ const CaseApiFp = function(configuration?: Configuration) {
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
         /**
-         * 
+         * Maintain the categories used to tag case sets (e.g., outbreak, surveillance, QA).
          * @summary Case Set Categories  Get Some
          * @param {string} ids 
          * @param {*} [options] Override http request option.
@@ -18850,7 +18850,7 @@ const CaseApiFp = function(configuration?: Configuration) {
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
         /**
-         * 
+         * Maintain the categories used to tag case sets (e.g., outbreak, surveillance, QA).
          * @summary Case Set Categories  Post One
          * @param {CaseSetCategory} caseSetCategory 
          * @param {*} [options] Override http request option.
@@ -18863,7 +18863,7 @@ const CaseApiFp = function(configuration?: Configuration) {
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
         /**
-         * 
+         * Maintain the categories used to tag case sets (e.g., outbreak, surveillance, QA).
          * @summary Case Set Categories  Post Query
          * @param {EpiFilter} filter 
          * @param {*} [options] Override http request option.
@@ -18876,7 +18876,7 @@ const CaseApiFp = function(configuration?: Configuration) {
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
         /**
-         * 
+         * Maintain the categories used to tag case sets (e.g., outbreak, surveillance, QA).
          * @summary Case Set Categories  Post Query  Ids
          * @param {EpiFilter} filter 
          * @param {*} [options] Override http request option.
@@ -18889,7 +18889,7 @@ const CaseApiFp = function(configuration?: Configuration) {
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
         /**
-         * 
+         * Maintain the categories used to tag case sets (e.g., outbreak, surveillance, QA).
          * @summary Case Set Categories  Post Some
          * @param {Array<CaseSetCategory>} caseSetCategory 
          * @param {*} [options] Override http request option.
@@ -18902,7 +18902,7 @@ const CaseApiFp = function(configuration?: Configuration) {
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
         /**
-         * 
+         * Maintain the categories used to tag case sets (e.g., outbreak, surveillance, QA).
          * @summary Case Set Categories  Put One
          * @param {string} objectId 
          * @param {CaseSetCategory} caseSetCategory 
@@ -18916,7 +18916,7 @@ const CaseApiFp = function(configuration?: Configuration) {
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
         /**
-         * 
+         * Maintain the categories used to tag case sets (e.g., outbreak, surveillance, QA).
          * @summary Case Set Categories  Put Some
          * @param {Array<CaseSetCategory>} caseSetCategory 
          * @param {*} [options] Override http request option.
@@ -18929,7 +18929,7 @@ const CaseApiFp = function(configuration?: Configuration) {
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
         /**
-         * 
+         * Manage links that share case sets into additional data collections for cross-group collaboration.
          * @summary Case Set Data Collection Links  Delete All
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
@@ -18941,7 +18941,7 @@ const CaseApiFp = function(configuration?: Configuration) {
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
         /**
-         * 
+         * Manage links that share case sets into additional data collections for cross-group collaboration.
          * @summary Case Set Data Collection Links  Delete One
          * @param {any} objectId 
          * @param {*} [options] Override http request option.
@@ -18954,7 +18954,7 @@ const CaseApiFp = function(configuration?: Configuration) {
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
         /**
-         * 
+         * Manage links that share case sets into additional data collections for cross-group collaboration.
          * @summary Case Set Data Collection Links  Delete Some
          * @param {string} ids 
          * @param {*} [options] Override http request option.
@@ -18967,7 +18967,7 @@ const CaseApiFp = function(configuration?: Configuration) {
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
         /**
-         * 
+         * Manage links that share case sets into additional data collections for cross-group collaboration.
          * @summary Case Set Data Collection Links  Get All
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
@@ -18979,7 +18979,7 @@ const CaseApiFp = function(configuration?: Configuration) {
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
         /**
-         * 
+         * Manage links that share case sets into additional data collections for cross-group collaboration.
          * @summary Case Set Data Collection Links  Get One
          * @param {string} objectId 
          * @param {*} [options] Override http request option.
@@ -18992,7 +18992,7 @@ const CaseApiFp = function(configuration?: Configuration) {
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
         /**
-         * 
+         * Manage links that share case sets into additional data collections for cross-group collaboration.
          * @summary Case Set Data Collection Links  Get Some
          * @param {string} ids 
          * @param {*} [options] Override http request option.
@@ -19005,7 +19005,7 @@ const CaseApiFp = function(configuration?: Configuration) {
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
         /**
-         * 
+         * Manage links that share case sets into additional data collections for cross-group collaboration.
          * @summary Case Set Data Collection Links  Post One
          * @param {CaseSetDataCollectionLink} caseSetDataCollectionLink 
          * @param {*} [options] Override http request option.
@@ -19018,7 +19018,7 @@ const CaseApiFp = function(configuration?: Configuration) {
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
         /**
-         * 
+         * Manage links that share case sets into additional data collections for cross-group collaboration.
          * @summary Case Set Data Collection Links  Post Query
          * @param {EpiFilter} filter 
          * @param {*} [options] Override http request option.
@@ -19031,7 +19031,7 @@ const CaseApiFp = function(configuration?: Configuration) {
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
         /**
-         * 
+         * Manage links that share case sets into additional data collections for cross-group collaboration.
          * @summary Case Set Data Collection Links  Post Query  Ids
          * @param {EpiFilter} filter 
          * @param {*} [options] Override http request option.
@@ -19044,7 +19044,7 @@ const CaseApiFp = function(configuration?: Configuration) {
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
         /**
-         * 
+         * Manage links that share case sets into additional data collections for cross-group collaboration.
          * @summary Case Set Data Collection Links  Post Some
          * @param {Array<CaseSetDataCollectionLink>} caseSetDataCollectionLink 
          * @param {*} [options] Override http request option.
@@ -19057,7 +19057,7 @@ const CaseApiFp = function(configuration?: Configuration) {
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
         /**
-         * 
+         * Manage links that share case sets into additional data collections for cross-group collaboration.
          * @summary Case Set Data Collection Links  Put One
          * @param {string} objectId 
          * @param {CaseSetDataCollectionLink} caseSetDataCollectionLink 
@@ -19071,7 +19071,7 @@ const CaseApiFp = function(configuration?: Configuration) {
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
         /**
-         * 
+         * Manage links that share case sets into additional data collections for cross-group collaboration.
          * @summary Case Set Data Collection Links  Put Some
          * @param {Array<CaseSetDataCollectionLink>} caseSetDataCollectionLink 
          * @param {*} [options] Override http request option.
@@ -19084,7 +19084,7 @@ const CaseApiFp = function(configuration?: Configuration) {
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
         /**
-         * 
+         * Manage membership of cases in a case set, including per-member classification when present.
          * @summary Case Set Members  Delete All
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
@@ -19096,7 +19096,7 @@ const CaseApiFp = function(configuration?: Configuration) {
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
         /**
-         * 
+         * Manage membership of cases in a case set, including per-member classification when present.
          * @summary Case Set Members  Delete One
          * @param {any} objectId 
          * @param {*} [options] Override http request option.
@@ -19109,7 +19109,7 @@ const CaseApiFp = function(configuration?: Configuration) {
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
         /**
-         * 
+         * Manage membership of cases in a case set, including per-member classification when present.
          * @summary Case Set Members  Delete Some
          * @param {string} ids 
          * @param {*} [options] Override http request option.
@@ -19122,7 +19122,7 @@ const CaseApiFp = function(configuration?: Configuration) {
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
         /**
-         * 
+         * Manage membership of cases in a case set, including per-member classification when present.
          * @summary Case Set Members  Get All
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
@@ -19134,7 +19134,7 @@ const CaseApiFp = function(configuration?: Configuration) {
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
         /**
-         * 
+         * Manage membership of cases in a case set, including per-member classification when present.
          * @summary Case Set Members  Get One
          * @param {string} objectId 
          * @param {*} [options] Override http request option.
@@ -19147,7 +19147,7 @@ const CaseApiFp = function(configuration?: Configuration) {
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
         /**
-         * 
+         * Manage membership of cases in a case set, including per-member classification when present.
          * @summary Case Set Members  Get Some
          * @param {string} ids 
          * @param {*} [options] Override http request option.
@@ -19160,7 +19160,7 @@ const CaseApiFp = function(configuration?: Configuration) {
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
         /**
-         * 
+         * Manage membership of cases in a case set, including per-member classification when present.
          * @summary Case Set Members  Post One
          * @param {CaseSetMember} caseSetMember 
          * @param {*} [options] Override http request option.
@@ -19173,7 +19173,7 @@ const CaseApiFp = function(configuration?: Configuration) {
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
         /**
-         * 
+         * Manage membership of cases in a case set, including per-member classification when present.
          * @summary Case Set Members  Post Query
          * @param {EpiFilter} filter 
          * @param {*} [options] Override http request option.
@@ -19186,7 +19186,7 @@ const CaseApiFp = function(configuration?: Configuration) {
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
         /**
-         * 
+         * Manage membership of cases in a case set, including per-member classification when present.
          * @summary Case Set Members  Post Query  Ids
          * @param {EpiFilter} filter 
          * @param {*} [options] Override http request option.
@@ -19199,7 +19199,7 @@ const CaseApiFp = function(configuration?: Configuration) {
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
         /**
-         * 
+         * Manage membership of cases in a case set, including per-member classification when present.
          * @summary Case Set Members  Post Some
          * @param {Array<CaseSetMember>} caseSetMember 
          * @param {*} [options] Override http request option.
@@ -19212,7 +19212,7 @@ const CaseApiFp = function(configuration?: Configuration) {
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
         /**
-         * 
+         * Manage membership of cases in a case set, including per-member classification when present.
          * @summary Case Set Members  Put One
          * @param {string} objectId 
          * @param {CaseSetMember} caseSetMember 
@@ -19226,7 +19226,7 @@ const CaseApiFp = function(configuration?: Configuration) {
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
         /**
-         * 
+         * Manage membership of cases in a case set, including per-member classification when present.
          * @summary Case Set Members  Put Some
          * @param {Array<CaseSetMember>} caseSetMember 
          * @param {*} [options] Override http request option.
@@ -19239,7 +19239,7 @@ const CaseApiFp = function(configuration?: Configuration) {
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
         /**
-         * 
+         * Maintain lifecycle/status values for case sets (e.g., draft, active, closed).
          * @summary Case Set Statuses  Delete All
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
@@ -19251,7 +19251,7 @@ const CaseApiFp = function(configuration?: Configuration) {
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
         /**
-         * 
+         * Maintain lifecycle/status values for case sets (e.g., draft, active, closed).
          * @summary Case Set Statuses  Delete One
          * @param {any} objectId 
          * @param {*} [options] Override http request option.
@@ -19264,7 +19264,7 @@ const CaseApiFp = function(configuration?: Configuration) {
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
         /**
-         * 
+         * Maintain lifecycle/status values for case sets (e.g., draft, active, closed).
          * @summary Case Set Statuses  Delete Some
          * @param {string} ids 
          * @param {*} [options] Override http request option.
@@ -19277,7 +19277,7 @@ const CaseApiFp = function(configuration?: Configuration) {
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
         /**
-         * 
+         * Maintain lifecycle/status values for case sets (e.g., draft, active, closed).
          * @summary Case Set Statuses  Get All
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
@@ -19289,7 +19289,7 @@ const CaseApiFp = function(configuration?: Configuration) {
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
         /**
-         * 
+         * Maintain lifecycle/status values for case sets (e.g., draft, active, closed).
          * @summary Case Set Statuses  Get One
          * @param {string} objectId 
          * @param {*} [options] Override http request option.
@@ -19302,7 +19302,7 @@ const CaseApiFp = function(configuration?: Configuration) {
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
         /**
-         * 
+         * Maintain lifecycle/status values for case sets (e.g., draft, active, closed).
          * @summary Case Set Statuses  Get Some
          * @param {string} ids 
          * @param {*} [options] Override http request option.
@@ -19315,7 +19315,7 @@ const CaseApiFp = function(configuration?: Configuration) {
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
         /**
-         * 
+         * Maintain lifecycle/status values for case sets (e.g., draft, active, closed).
          * @summary Case Set Statuses  Post One
          * @param {CaseSetStatus} caseSetStatus 
          * @param {*} [options] Override http request option.
@@ -19328,7 +19328,7 @@ const CaseApiFp = function(configuration?: Configuration) {
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
         /**
-         * 
+         * Maintain lifecycle/status values for case sets (e.g., draft, active, closed).
          * @summary Case Set Statuses  Post Query
          * @param {EpiFilter} filter 
          * @param {*} [options] Override http request option.
@@ -19341,7 +19341,7 @@ const CaseApiFp = function(configuration?: Configuration) {
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
         /**
-         * 
+         * Maintain lifecycle/status values for case sets (e.g., draft, active, closed).
          * @summary Case Set Statuses  Post Query  Ids
          * @param {EpiFilter} filter 
          * @param {*} [options] Override http request option.
@@ -19354,7 +19354,7 @@ const CaseApiFp = function(configuration?: Configuration) {
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
         /**
-         * 
+         * Maintain lifecycle/status values for case sets (e.g., draft, active, closed).
          * @summary Case Set Statuses  Post Some
          * @param {Array<CaseSetStatus>} caseSetStatus 
          * @param {*} [options] Override http request option.
@@ -19367,7 +19367,7 @@ const CaseApiFp = function(configuration?: Configuration) {
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
         /**
-         * 
+         * Maintain lifecycle/status values for case sets (e.g., draft, active, closed).
          * @summary Case Set Statuses  Put One
          * @param {string} objectId 
          * @param {CaseSetStatus} caseSetStatus 
@@ -19381,7 +19381,7 @@ const CaseApiFp = function(configuration?: Configuration) {
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
         /**
-         * 
+         * Maintain lifecycle/status values for case sets (e.g., draft, active, closed).
          * @summary Case Set Statuses  Put Some
          * @param {Array<CaseSetStatus>} caseSetStatus 
          * @param {*} [options] Override http request option.
@@ -19394,7 +19394,7 @@ const CaseApiFp = function(configuration?: Configuration) {
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
         /**
-         * 
+         * Manage case sets (list/get/create/update/delete) including type, category, status, and data-collection context.
          * @summary Case Sets  Delete All
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
@@ -19406,7 +19406,7 @@ const CaseApiFp = function(configuration?: Configuration) {
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
         /**
-         * 
+         * Manage case sets (list/get/create/update/delete) including type, category, status, and data-collection context.
          * @summary Case Sets  Delete One
          * @param {any} objectId 
          * @param {*} [options] Override http request option.
@@ -19419,7 +19419,7 @@ const CaseApiFp = function(configuration?: Configuration) {
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
         /**
-         * 
+         * Manage case sets (list/get/create/update/delete) including type, category, status, and data-collection context.
          * @summary Case Sets  Delete Some
          * @param {string} ids 
          * @param {*} [options] Override http request option.
@@ -19432,7 +19432,7 @@ const CaseApiFp = function(configuration?: Configuration) {
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
         /**
-         * 
+         * Manage case sets (list/get/create/update/delete) including type, category, status, and data-collection context.
          * @summary Case Sets  Get All
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
@@ -19444,7 +19444,7 @@ const CaseApiFp = function(configuration?: Configuration) {
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
         /**
-         * 
+         * Manage case sets (list/get/create/update/delete) including type, category, status, and data-collection context.
          * @summary Case Sets  Get One
          * @param {string} objectId 
          * @param {*} [options] Override http request option.
@@ -19457,7 +19457,7 @@ const CaseApiFp = function(configuration?: Configuration) {
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
         /**
-         * 
+         * Manage case sets (list/get/create/update/delete) including type, category, status, and data-collection context.
          * @summary Case Sets  Get Some
          * @param {string} ids 
          * @param {*} [options] Override http request option.
@@ -19470,7 +19470,7 @@ const CaseApiFp = function(configuration?: Configuration) {
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
         /**
-         * 
+         * Manage case sets (list/get/create/update/delete) including type, category, status, and data-collection context.
          * @summary Case Sets  Post One
          * @param {CaseSet} caseSet 
          * @param {*} [options] Override http request option.
@@ -19483,7 +19483,7 @@ const CaseApiFp = function(configuration?: Configuration) {
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
         /**
-         * 
+         * Manage case sets (list/get/create/update/delete) including type, category, status, and data-collection context.
          * @summary Case Sets  Post Query
          * @param {EpiFilter} filter 
          * @param {*} [options] Override http request option.
@@ -19496,7 +19496,7 @@ const CaseApiFp = function(configuration?: Configuration) {
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
         /**
-         * 
+         * Manage case sets (list/get/create/update/delete) including type, category, status, and data-collection context.
          * @summary Case Sets  Post Query  Ids
          * @param {EpiFilter} filter 
          * @param {*} [options] Override http request option.
@@ -19509,7 +19509,7 @@ const CaseApiFp = function(configuration?: Configuration) {
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
         /**
-         * 
+         * Manage case sets (list/get/create/update/delete) including type, category, status, and data-collection context.
          * @summary Case Sets  Post Some
          * @param {Array<CaseSet>} caseSet 
          * @param {*} [options] Override http request option.
@@ -19522,7 +19522,7 @@ const CaseApiFp = function(configuration?: Configuration) {
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
         /**
-         * 
+         * Manage case sets (list/get/create/update/delete) including type, category, status, and data-collection context.
          * @summary Case Sets  Put One
          * @param {string} objectId 
          * @param {CaseSet} caseSet 
@@ -19536,7 +19536,7 @@ const CaseApiFp = function(configuration?: Configuration) {
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
         /**
-         * 
+         * Manage case sets (list/get/create/update/delete) including type, category, status, and data-collection context.
          * @summary Case Sets  Put Some
          * @param {Array<CaseSet>} caseSet 
          * @param {*} [options] Override http request option.
@@ -19549,7 +19549,7 @@ const CaseApiFp = function(configuration?: Configuration) {
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
         /**
-         * 
+         * Manage which columns belong to a column set used in policies or UI presets.
          * @summary Case Type Col Set Members  Delete All
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
@@ -19561,7 +19561,7 @@ const CaseApiFp = function(configuration?: Configuration) {
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
         /**
-         * 
+         * Manage which columns belong to a column set used in policies or UI presets.
          * @summary Case Type Col Set Members  Delete One
          * @param {any} objectId 
          * @param {*} [options] Override http request option.
@@ -19574,7 +19574,7 @@ const CaseApiFp = function(configuration?: Configuration) {
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
         /**
-         * 
+         * Manage which columns belong to a column set used in policies or UI presets.
          * @summary Case Type Col Set Members  Delete Some
          * @param {string} ids 
          * @param {*} [options] Override http request option.
@@ -19587,7 +19587,7 @@ const CaseApiFp = function(configuration?: Configuration) {
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
         /**
-         * 
+         * Manage which columns belong to a column set used in policies or UI presets.
          * @summary Case Type Col Set Members  Get All
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
@@ -19599,7 +19599,7 @@ const CaseApiFp = function(configuration?: Configuration) {
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
         /**
-         * 
+         * Manage which columns belong to a column set used in policies or UI presets.
          * @summary Case Type Col Set Members  Get One
          * @param {string} objectId 
          * @param {*} [options] Override http request option.
@@ -19612,7 +19612,7 @@ const CaseApiFp = function(configuration?: Configuration) {
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
         /**
-         * 
+         * Manage which columns belong to a column set used in policies or UI presets.
          * @summary Case Type Col Set Members  Get Some
          * @param {string} ids 
          * @param {*} [options] Override http request option.
@@ -19625,7 +19625,7 @@ const CaseApiFp = function(configuration?: Configuration) {
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
         /**
-         * 
+         * Manage which columns belong to a column set used in policies or UI presets.
          * @summary Case Type Col Set Members  Post One
          * @param {CaseTypeColSetMember} caseTypeColSetMember 
          * @param {*} [options] Override http request option.
@@ -19638,7 +19638,7 @@ const CaseApiFp = function(configuration?: Configuration) {
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
         /**
-         * 
+         * Manage which columns belong to a column set used in policies or UI presets.
          * @summary Case Type Col Set Members  Post Query
          * @param {EpiFilter} filter 
          * @param {*} [options] Override http request option.
@@ -19651,7 +19651,7 @@ const CaseApiFp = function(configuration?: Configuration) {
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
         /**
-         * 
+         * Manage which columns belong to a column set used in policies or UI presets.
          * @summary Case Type Col Set Members  Post Query  Ids
          * @param {EpiFilter} filter 
          * @param {*} [options] Override http request option.
@@ -19664,7 +19664,7 @@ const CaseApiFp = function(configuration?: Configuration) {
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
         /**
-         * 
+         * Manage which columns belong to a column set used in policies or UI presets.
          * @summary Case Type Col Set Members  Post Some
          * @param {Array<CaseTypeColSetMember>} caseTypeColSetMember 
          * @param {*} [options] Override http request option.
@@ -19677,7 +19677,7 @@ const CaseApiFp = function(configuration?: Configuration) {
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
         /**
-         * 
+         * Manage which columns belong to a column set used in policies or UI presets.
          * @summary Case Type Col Set Members  Put One
          * @param {string} objectId 
          * @param {CaseTypeColSetMember} caseTypeColSetMember 
@@ -19691,7 +19691,7 @@ const CaseApiFp = function(configuration?: Configuration) {
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
         /**
-         * 
+         * Manage which columns belong to a column set used in policies or UI presets.
          * @summary Case Type Col Set Members  Put Some
          * @param {Array<CaseTypeColSetMember>} caseTypeColSetMember 
          * @param {*} [options] Override http request option.
@@ -19704,7 +19704,7 @@ const CaseApiFp = function(configuration?: Configuration) {
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
         /**
-         * 
+         * Manage column sets used for read/write scopes and default column groupings.
          * @summary Case Type Col Sets  Delete All
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
@@ -19716,7 +19716,7 @@ const CaseApiFp = function(configuration?: Configuration) {
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
         /**
-         * 
+         * Manage column sets used for read/write scopes and default column groupings.
          * @summary Case Type Col Sets  Delete One
          * @param {any} objectId 
          * @param {*} [options] Override http request option.
@@ -19729,7 +19729,7 @@ const CaseApiFp = function(configuration?: Configuration) {
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
         /**
-         * 
+         * Manage column sets used for read/write scopes and default column groupings.
          * @summary Case Type Col Sets  Delete Some
          * @param {string} ids 
          * @param {*} [options] Override http request option.
@@ -19742,7 +19742,7 @@ const CaseApiFp = function(configuration?: Configuration) {
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
         /**
-         * 
+         * Manage column sets used for read/write scopes and default column groupings.
          * @summary Case Type Col Sets  Get All
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
@@ -19754,7 +19754,7 @@ const CaseApiFp = function(configuration?: Configuration) {
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
         /**
-         * 
+         * Manage column sets used for read/write scopes and default column groupings.
          * @summary Case Type Col Sets  Get One
          * @param {string} objectId 
          * @param {*} [options] Override http request option.
@@ -19767,7 +19767,7 @@ const CaseApiFp = function(configuration?: Configuration) {
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
         /**
-         * 
+         * Manage column sets used for read/write scopes and default column groupings.
          * @summary Case Type Col Sets  Get Some
          * @param {string} ids 
          * @param {*} [options] Override http request option.
@@ -19780,7 +19780,7 @@ const CaseApiFp = function(configuration?: Configuration) {
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
         /**
-         * 
+         * Manage column sets used for read/write scopes and default column groupings.
          * @summary Case Type Col Sets  Post One
          * @param {CaseTypeColSet} caseTypeColSet 
          * @param {*} [options] Override http request option.
@@ -19793,7 +19793,7 @@ const CaseApiFp = function(configuration?: Configuration) {
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
         /**
-         * 
+         * Manage column sets used for read/write scopes and default column groupings.
          * @summary Case Type Col Sets  Post Query
          * @param {EpiFilter} filter 
          * @param {*} [options] Override http request option.
@@ -19806,7 +19806,7 @@ const CaseApiFp = function(configuration?: Configuration) {
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
         /**
-         * 
+         * Manage column sets used for read/write scopes and default column groupings.
          * @summary Case Type Col Sets  Post Query  Ids
          * @param {EpiFilter} filter 
          * @param {*} [options] Override http request option.
@@ -19819,7 +19819,7 @@ const CaseApiFp = function(configuration?: Configuration) {
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
         /**
-         * 
+         * Manage column sets used for read/write scopes and default column groupings.
          * @summary Case Type Col Sets  Post Some
          * @param {Array<CaseTypeColSet>} caseTypeColSet 
          * @param {*} [options] Override http request option.
@@ -19832,7 +19832,7 @@ const CaseApiFp = function(configuration?: Configuration) {
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
         /**
-         * 
+         * Replace the columns in a case-type column set with the provided members so read/write scopes and UI column groupings stay aligned.
          * @summary Update Association Between Casetypecolset And Casetypecol
          * @param {string} caseTypeColSetId 
          * @param {UpdateCaseTypeColSetCaseTypeColsRequestBody} updateCaseTypeColSetCaseTypeColsRequestBody 
@@ -19846,7 +19846,7 @@ const CaseApiFp = function(configuration?: Configuration) {
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
         /**
-         * 
+         * Manage column sets used for read/write scopes and default column groupings.
          * @summary Case Type Col Sets  Put One
          * @param {string} objectId 
          * @param {CaseTypeColSet} caseTypeColSet 
@@ -19860,7 +19860,7 @@ const CaseApiFp = function(configuration?: Configuration) {
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
         /**
-         * 
+         * Manage column sets used for read/write scopes and default column groupings.
          * @summary Case Type Col Sets  Put Some
          * @param {Array<CaseTypeColSet>} caseTypeColSet 
          * @param {*} [options] Override http request option.
@@ -19873,7 +19873,7 @@ const CaseApiFp = function(configuration?: Configuration) {
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
         /**
-         * 
+         * Manage case-type columns: datatype, vocab/region bindings, and genetic-distance settings.
          * @summary Case Type Cols  Delete All
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
@@ -19885,7 +19885,7 @@ const CaseApiFp = function(configuration?: Configuration) {
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
         /**
-         * 
+         * Manage case-type columns: datatype, vocab/region bindings, and genetic-distance settings.
          * @summary Case Type Cols  Delete One
          * @param {any} objectId 
          * @param {*} [options] Override http request option.
@@ -19898,7 +19898,7 @@ const CaseApiFp = function(configuration?: Configuration) {
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
         /**
-         * 
+         * Manage case-type columns: datatype, vocab/region bindings, and genetic-distance settings.
          * @summary Case Type Cols  Delete Some
          * @param {string} ids 
          * @param {*} [options] Override http request option.
@@ -19911,7 +19911,7 @@ const CaseApiFp = function(configuration?: Configuration) {
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
         /**
-         * 
+         * Manage case-type columns: datatype, vocab/region bindings, and genetic-distance settings.
          * @summary Case Type Cols  Get All
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
@@ -19923,7 +19923,7 @@ const CaseApiFp = function(configuration?: Configuration) {
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
         /**
-         * 
+         * Manage case-type columns: datatype, vocab/region bindings, and genetic-distance settings.
          * @summary Case Type Cols  Get One
          * @param {string} objectId 
          * @param {*} [options] Override http request option.
@@ -19936,7 +19936,7 @@ const CaseApiFp = function(configuration?: Configuration) {
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
         /**
-         * 
+         * Manage case-type columns: datatype, vocab/region bindings, and genetic-distance settings.
          * @summary Case Type Cols  Get Some
          * @param {string} ids 
          * @param {*} [options] Override http request option.
@@ -19949,7 +19949,7 @@ const CaseApiFp = function(configuration?: Configuration) {
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
         /**
-         * 
+         * Manage case-type columns: datatype, vocab/region bindings, and genetic-distance settings.
          * @summary Case Type Cols  Post One
          * @param {CaseTypeCol} caseTypeCol 
          * @param {*} [options] Override http request option.
@@ -19962,7 +19962,7 @@ const CaseApiFp = function(configuration?: Configuration) {
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
         /**
-         * 
+         * Manage case-type columns: datatype, vocab/region bindings, and genetic-distance settings.
          * @summary Case Type Cols  Post Query
          * @param {EpiFilter} filter 
          * @param {*} [options] Override http request option.
@@ -19975,7 +19975,7 @@ const CaseApiFp = function(configuration?: Configuration) {
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
         /**
-         * 
+         * Manage case-type columns: datatype, vocab/region bindings, and genetic-distance settings.
          * @summary Case Type Cols  Post Query  Ids
          * @param {EpiFilter} filter 
          * @param {*} [options] Override http request option.
@@ -19988,7 +19988,7 @@ const CaseApiFp = function(configuration?: Configuration) {
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
         /**
-         * 
+         * Manage case-type columns: datatype, vocab/region bindings, and genetic-distance settings.
          * @summary Case Type Cols  Post Some
          * @param {Array<CaseTypeCol>} caseTypeCol 
          * @param {*} [options] Override http request option.
@@ -20001,7 +20001,7 @@ const CaseApiFp = function(configuration?: Configuration) {
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
         /**
-         * 
+         * Manage case-type columns: datatype, vocab/region bindings, and genetic-distance settings.
          * @summary Case Type Cols  Put One
          * @param {string} objectId 
          * @param {CaseTypeCol} caseTypeCol 
@@ -20015,7 +20015,7 @@ const CaseApiFp = function(configuration?: Configuration) {
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
         /**
-         * 
+         * Manage case-type columns: datatype, vocab/region bindings, and genetic-distance settings.
          * @summary Case Type Cols  Put Some
          * @param {Array<CaseTypeCol>} caseTypeCol 
          * @param {*} [options] Override http request option.
@@ -20028,7 +20028,7 @@ const CaseApiFp = function(configuration?: Configuration) {
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
         /**
-         * 
+         * Manage dimensions that group case-type columns (e.g., demographics, sample, sequencing).
          * @summary Case Type Dims  Delete All
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
@@ -20040,7 +20040,7 @@ const CaseApiFp = function(configuration?: Configuration) {
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
         /**
-         * 
+         * Manage dimensions that group case-type columns (e.g., demographics, sample, sequencing).
          * @summary Case Type Dims  Delete One
          * @param {any} objectId 
          * @param {*} [options] Override http request option.
@@ -20053,7 +20053,7 @@ const CaseApiFp = function(configuration?: Configuration) {
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
         /**
-         * 
+         * Manage dimensions that group case-type columns (e.g., demographics, sample, sequencing).
          * @summary Case Type Dims  Delete Some
          * @param {string} ids 
          * @param {*} [options] Override http request option.
@@ -20066,7 +20066,7 @@ const CaseApiFp = function(configuration?: Configuration) {
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
         /**
-         * 
+         * Manage dimensions that group case-type columns (e.g., demographics, sample, sequencing).
          * @summary Case Type Dims  Get All
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
@@ -20078,7 +20078,7 @@ const CaseApiFp = function(configuration?: Configuration) {
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
         /**
-         * 
+         * Manage dimensions that group case-type columns (e.g., demographics, sample, sequencing).
          * @summary Case Type Dims  Get One
          * @param {string} objectId 
          * @param {*} [options] Override http request option.
@@ -20091,7 +20091,7 @@ const CaseApiFp = function(configuration?: Configuration) {
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
         /**
-         * 
+         * Manage dimensions that group case-type columns (e.g., demographics, sample, sequencing).
          * @summary Case Type Dims  Get Some
          * @param {string} ids 
          * @param {*} [options] Override http request option.
@@ -20104,7 +20104,7 @@ const CaseApiFp = function(configuration?: Configuration) {
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
         /**
-         * 
+         * Manage dimensions that group case-type columns (e.g., demographics, sample, sequencing).
          * @summary Case Type Dims  Post One
          * @param {CaseTypeDim} caseTypeDim 
          * @param {*} [options] Override http request option.
@@ -20117,7 +20117,7 @@ const CaseApiFp = function(configuration?: Configuration) {
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
         /**
-         * 
+         * Manage dimensions that group case-type columns (e.g., demographics, sample, sequencing).
          * @summary Case Type Dims  Post Query
          * @param {EpiFilter} filter 
          * @param {*} [options] Override http request option.
@@ -20130,7 +20130,7 @@ const CaseApiFp = function(configuration?: Configuration) {
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
         /**
-         * 
+         * Manage dimensions that group case-type columns (e.g., demographics, sample, sequencing).
          * @summary Case Type Dims  Post Query  Ids
          * @param {EpiFilter} filter 
          * @param {*} [options] Override http request option.
@@ -20143,7 +20143,7 @@ const CaseApiFp = function(configuration?: Configuration) {
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
         /**
-         * 
+         * Manage dimensions that group case-type columns (e.g., demographics, sample, sequencing).
          * @summary Case Type Dims  Post Some
          * @param {Array<CaseTypeDim>} caseTypeDim 
          * @param {*} [options] Override http request option.
@@ -20156,7 +20156,7 @@ const CaseApiFp = function(configuration?: Configuration) {
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
         /**
-         * 
+         * Manage dimensions that group case-type columns (e.g., demographics, sample, sequencing).
          * @summary Case Type Dims  Put One
          * @param {string} objectId 
          * @param {CaseTypeDim} caseTypeDim 
@@ -20170,7 +20170,7 @@ const CaseApiFp = function(configuration?: Configuration) {
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
         /**
-         * 
+         * Manage dimensions that group case-type columns (e.g., demographics, sample, sequencing).
          * @summary Case Type Dims  Put Some
          * @param {Array<CaseTypeDim>} caseTypeDim 
          * @param {*} [options] Override http request option.
@@ -20183,7 +20183,7 @@ const CaseApiFp = function(configuration?: Configuration) {
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
         /**
-         * 
+         * Maintain categories used to organize case-type sets for policy scoping.
          * @summary Case Type Set Categories  Delete All
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
@@ -20195,7 +20195,7 @@ const CaseApiFp = function(configuration?: Configuration) {
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
         /**
-         * 
+         * Maintain categories used to organize case-type sets for policy scoping.
          * @summary Case Type Set Categories  Delete One
          * @param {any} objectId 
          * @param {*} [options] Override http request option.
@@ -20208,7 +20208,7 @@ const CaseApiFp = function(configuration?: Configuration) {
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
         /**
-         * 
+         * Maintain categories used to organize case-type sets for policy scoping.
          * @summary Case Type Set Categories  Delete Some
          * @param {string} ids 
          * @param {*} [options] Override http request option.
@@ -20221,7 +20221,7 @@ const CaseApiFp = function(configuration?: Configuration) {
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
         /**
-         * 
+         * Maintain categories used to organize case-type sets for policy scoping.
          * @summary Case Type Set Categories  Get All
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
@@ -20233,7 +20233,7 @@ const CaseApiFp = function(configuration?: Configuration) {
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
         /**
-         * 
+         * Maintain categories used to organize case-type sets for policy scoping.
          * @summary Case Type Set Categories  Get One
          * @param {string} objectId 
          * @param {*} [options] Override http request option.
@@ -20246,7 +20246,7 @@ const CaseApiFp = function(configuration?: Configuration) {
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
         /**
-         * 
+         * Maintain categories used to organize case-type sets for policy scoping.
          * @summary Case Type Set Categories  Get Some
          * @param {string} ids 
          * @param {*} [options] Override http request option.
@@ -20259,7 +20259,7 @@ const CaseApiFp = function(configuration?: Configuration) {
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
         /**
-         * 
+         * Maintain categories used to organize case-type sets for policy scoping.
          * @summary Case Type Set Categories  Post One
          * @param {CaseTypeSetCategory} caseTypeSetCategory 
          * @param {*} [options] Override http request option.
@@ -20272,7 +20272,7 @@ const CaseApiFp = function(configuration?: Configuration) {
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
         /**
-         * 
+         * Maintain categories used to organize case-type sets for policy scoping.
          * @summary Case Type Set Categories  Post Query
          * @param {EpiFilter} filter 
          * @param {*} [options] Override http request option.
@@ -20285,7 +20285,7 @@ const CaseApiFp = function(configuration?: Configuration) {
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
         /**
-         * 
+         * Maintain categories used to organize case-type sets for policy scoping.
          * @summary Case Type Set Categories  Post Query  Ids
          * @param {EpiFilter} filter 
          * @param {*} [options] Override http request option.
@@ -20298,7 +20298,7 @@ const CaseApiFp = function(configuration?: Configuration) {
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
         /**
-         * 
+         * Maintain categories used to organize case-type sets for policy scoping.
          * @summary Case Type Set Categories  Post Some
          * @param {Array<CaseTypeSetCategory>} caseTypeSetCategory 
          * @param {*} [options] Override http request option.
@@ -20311,7 +20311,7 @@ const CaseApiFp = function(configuration?: Configuration) {
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
         /**
-         * 
+         * Maintain categories used to organize case-type sets for policy scoping.
          * @summary Case Type Set Categories  Put One
          * @param {string} objectId 
          * @param {CaseTypeSetCategory} caseTypeSetCategory 
@@ -20325,7 +20325,7 @@ const CaseApiFp = function(configuration?: Configuration) {
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
         /**
-         * 
+         * Maintain categories used to organize case-type sets for policy scoping.
          * @summary Case Type Set Categories  Put Some
          * @param {Array<CaseTypeSetCategory>} caseTypeSetCategory 
          * @param {*} [options] Override http request option.
@@ -20338,7 +20338,7 @@ const CaseApiFp = function(configuration?: Configuration) {
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
         /**
-         * 
+         * Manage which case types belong to a case-type set.
          * @summary Case Type Set Members  Delete All
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
@@ -20350,7 +20350,7 @@ const CaseApiFp = function(configuration?: Configuration) {
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
         /**
-         * 
+         * Manage which case types belong to a case-type set.
          * @summary Case Type Set Members  Delete One
          * @param {any} objectId 
          * @param {*} [options] Override http request option.
@@ -20363,7 +20363,7 @@ const CaseApiFp = function(configuration?: Configuration) {
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
         /**
-         * 
+         * Manage which case types belong to a case-type set.
          * @summary Case Type Set Members  Delete Some
          * @param {string} ids 
          * @param {*} [options] Override http request option.
@@ -20376,7 +20376,7 @@ const CaseApiFp = function(configuration?: Configuration) {
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
         /**
-         * 
+         * Manage which case types belong to a case-type set.
          * @summary Case Type Set Members  Get All
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
@@ -20388,7 +20388,7 @@ const CaseApiFp = function(configuration?: Configuration) {
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
         /**
-         * 
+         * Manage which case types belong to a case-type set.
          * @summary Case Type Set Members  Get One
          * @param {string} objectId 
          * @param {*} [options] Override http request option.
@@ -20401,7 +20401,7 @@ const CaseApiFp = function(configuration?: Configuration) {
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
         /**
-         * 
+         * Manage which case types belong to a case-type set.
          * @summary Case Type Set Members  Get Some
          * @param {string} ids 
          * @param {*} [options] Override http request option.
@@ -20414,7 +20414,7 @@ const CaseApiFp = function(configuration?: Configuration) {
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
         /**
-         * 
+         * Manage which case types belong to a case-type set.
          * @summary Case Type Set Members  Post One
          * @param {CaseTypeSetMember} caseTypeSetMember 
          * @param {*} [options] Override http request option.
@@ -20427,7 +20427,7 @@ const CaseApiFp = function(configuration?: Configuration) {
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
         /**
-         * 
+         * Manage which case types belong to a case-type set.
          * @summary Case Type Set Members  Post Query
          * @param {EpiFilter} filter 
          * @param {*} [options] Override http request option.
@@ -20440,7 +20440,7 @@ const CaseApiFp = function(configuration?: Configuration) {
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
         /**
-         * 
+         * Manage which case types belong to a case-type set.
          * @summary Case Type Set Members  Post Query  Ids
          * @param {EpiFilter} filter 
          * @param {*} [options] Override http request option.
@@ -20453,7 +20453,7 @@ const CaseApiFp = function(configuration?: Configuration) {
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
         /**
-         * 
+         * Manage which case types belong to a case-type set.
          * @summary Case Type Set Members  Post Some
          * @param {Array<CaseTypeSetMember>} caseTypeSetMember 
          * @param {*} [options] Override http request option.
@@ -20466,7 +20466,7 @@ const CaseApiFp = function(configuration?: Configuration) {
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
         /**
-         * 
+         * Manage which case types belong to a case-type set.
          * @summary Case Type Set Members  Put One
          * @param {string} objectId 
          * @param {CaseTypeSetMember} caseTypeSetMember 
@@ -20480,7 +20480,7 @@ const CaseApiFp = function(configuration?: Configuration) {
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
         /**
-         * 
+         * Manage which case types belong to a case-type set.
          * @summary Case Type Set Members  Put Some
          * @param {Array<CaseTypeSetMember>} caseTypeSetMember 
          * @param {*} [options] Override http request option.
@@ -20493,7 +20493,7 @@ const CaseApiFp = function(configuration?: Configuration) {
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
         /**
-         * 
+         * Manage sets of related case types reused in access policies and presets.
          * @summary Case Type Sets  Delete All
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
@@ -20505,7 +20505,7 @@ const CaseApiFp = function(configuration?: Configuration) {
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
         /**
-         * 
+         * Manage sets of related case types reused in access policies and presets.
          * @summary Case Type Sets  Delete One
          * @param {any} objectId 
          * @param {*} [options] Override http request option.
@@ -20518,7 +20518,7 @@ const CaseApiFp = function(configuration?: Configuration) {
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
         /**
-         * 
+         * Manage sets of related case types reused in access policies and presets.
          * @summary Case Type Sets  Delete Some
          * @param {string} ids 
          * @param {*} [options] Override http request option.
@@ -20531,7 +20531,7 @@ const CaseApiFp = function(configuration?: Configuration) {
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
         /**
-         * 
+         * Manage sets of related case types reused in access policies and presets.
          * @summary Case Type Sets  Get All
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
@@ -20543,7 +20543,7 @@ const CaseApiFp = function(configuration?: Configuration) {
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
         /**
-         * 
+         * Manage sets of related case types reused in access policies and presets.
          * @summary Case Type Sets  Get One
          * @param {string} objectId 
          * @param {*} [options] Override http request option.
@@ -20556,7 +20556,7 @@ const CaseApiFp = function(configuration?: Configuration) {
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
         /**
-         * 
+         * Manage sets of related case types reused in access policies and presets.
          * @summary Case Type Sets  Get Some
          * @param {string} ids 
          * @param {*} [options] Override http request option.
@@ -20569,7 +20569,7 @@ const CaseApiFp = function(configuration?: Configuration) {
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
         /**
-         * 
+         * Manage sets of related case types reused in access policies and presets.
          * @summary Case Type Sets  Post One
          * @param {CaseTypeSet} caseTypeSet 
          * @param {*} [options] Override http request option.
@@ -20582,7 +20582,7 @@ const CaseApiFp = function(configuration?: Configuration) {
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
         /**
-         * 
+         * Manage sets of related case types reused in access policies and presets.
          * @summary Case Type Sets  Post Query
          * @param {EpiFilter} filter 
          * @param {*} [options] Override http request option.
@@ -20595,7 +20595,7 @@ const CaseApiFp = function(configuration?: Configuration) {
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
         /**
-         * 
+         * Manage sets of related case types reused in access policies and presets.
          * @summary Case Type Sets  Post Query  Ids
          * @param {EpiFilter} filter 
          * @param {*} [options] Override http request option.
@@ -20608,7 +20608,7 @@ const CaseApiFp = function(configuration?: Configuration) {
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
         /**
-         * 
+         * Manage sets of related case types reused in access policies and presets.
          * @summary Case Type Sets  Post Some
          * @param {Array<CaseTypeSet>} caseTypeSet 
          * @param {*} [options] Override http request option.
@@ -20621,7 +20621,7 @@ const CaseApiFp = function(configuration?: Configuration) {
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
         /**
-         * 
+         * Replace the case types in a case-type set with the provided list of members, keeping the set in sync for downstream access policies and presets.
          * @summary Update Association Between Casetypeset And Casetype
          * @param {string} caseTypeSetId 
          * @param {UpdateCaseTypeSetCaseTypesRequestBody} updateCaseTypeSetCaseTypesRequestBody 
@@ -20635,7 +20635,7 @@ const CaseApiFp = function(configuration?: Configuration) {
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
         /**
-         * 
+         * Manage sets of related case types reused in access policies and presets.
          * @summary Case Type Sets  Put One
          * @param {string} objectId 
          * @param {CaseTypeSet} caseTypeSet 
@@ -20649,7 +20649,7 @@ const CaseApiFp = function(configuration?: Configuration) {
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
         /**
-         * 
+         * Manage sets of related case types reused in access policies and presets.
          * @summary Case Type Sets  Put Some
          * @param {Array<CaseTypeSet>} caseTypeSet 
          * @param {*} [options] Override http request option.
@@ -20662,7 +20662,7 @@ const CaseApiFp = function(configuration?: Configuration) {
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
         /**
-         * 
+         * Manage case types—the structural and default definitions cases must follow.
          * @summary Case Types  Delete All
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
@@ -20674,7 +20674,7 @@ const CaseApiFp = function(configuration?: Configuration) {
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
         /**
-         * 
+         * Manage case types—the structural and default definitions cases must follow.
          * @summary Case Types  Delete One
          * @param {any} objectId 
          * @param {*} [options] Override http request option.
@@ -20687,7 +20687,7 @@ const CaseApiFp = function(configuration?: Configuration) {
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
         /**
-         * 
+         * Manage case types—the structural and default definitions cases must follow.
          * @summary Case Types  Delete Some
          * @param {string} ids 
          * @param {*} [options] Override http request option.
@@ -20700,7 +20700,7 @@ const CaseApiFp = function(configuration?: Configuration) {
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
         /**
-         * 
+         * Manage case types—the structural and default definitions cases must follow.
          * @summary Case Types  Get All
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
@@ -20712,7 +20712,7 @@ const CaseApiFp = function(configuration?: Configuration) {
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
         /**
-         * 
+         * Manage case types—the structural and default definitions cases must follow.
          * @summary Case Types  Get One
          * @param {string} objectId 
          * @param {*} [options] Override http request option.
@@ -20725,7 +20725,7 @@ const CaseApiFp = function(configuration?: Configuration) {
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
         /**
-         * 
+         * Manage case types—the structural and default definitions cases must follow.
          * @summary Case Types  Get Some
          * @param {string} ids 
          * @param {*} [options] Override http request option.
@@ -20738,7 +20738,7 @@ const CaseApiFp = function(configuration?: Configuration) {
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
         /**
-         * 
+         * Manage case types—the structural and default definitions cases must follow.
          * @summary Case Types  Post One
          * @param {CaseType} caseType 
          * @param {*} [options] Override http request option.
@@ -20751,7 +20751,7 @@ const CaseApiFp = function(configuration?: Configuration) {
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
         /**
-         * 
+         * Manage case types—the structural and default definitions cases must follow.
          * @summary Case Types  Post Query
          * @param {EpiFilter} filter 
          * @param {*} [options] Override http request option.
@@ -20764,7 +20764,7 @@ const CaseApiFp = function(configuration?: Configuration) {
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
         /**
-         * 
+         * Manage case types—the structural and default definitions cases must follow.
          * @summary Case Types  Post Query  Ids
          * @param {EpiFilter} filter 
          * @param {*} [options] Override http request option.
@@ -20777,7 +20777,7 @@ const CaseApiFp = function(configuration?: Configuration) {
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
         /**
-         * 
+         * Manage case types—the structural and default definitions cases must follow.
          * @summary Case Types  Post Some
          * @param {Array<CaseType>} caseType 
          * @param {*} [options] Override http request option.
@@ -20790,7 +20790,7 @@ const CaseApiFp = function(configuration?: Configuration) {
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
         /**
-         * 
+         * Manage case types—the structural and default definitions cases must follow.
          * @summary Case Types  Put One
          * @param {string} objectId 
          * @param {CaseType} caseType 
@@ -20804,7 +20804,7 @@ const CaseApiFp = function(configuration?: Configuration) {
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
         /**
-         * 
+         * Manage case types—the structural and default definitions cases must follow.
          * @summary Case Types  Put Some
          * @param {Array<CaseType>} caseType 
          * @param {*} [options] Override http request option.
@@ -20817,7 +20817,7 @@ const CaseApiFp = function(configuration?: Configuration) {
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
         /**
-         * 
+         * Manage cases (list/get/create/update/delete) with typed content tied to a case type, subject, and data collection.
          * @summary Cases  Delete All
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
@@ -20829,7 +20829,7 @@ const CaseApiFp = function(configuration?: Configuration) {
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
         /**
-         * 
+         * Manage cases (list/get/create/update/delete) with typed content tied to a case type, subject, and data collection.
          * @summary Cases  Delete One
          * @param {any} objectId 
          * @param {*} [options] Override http request option.
@@ -20842,7 +20842,7 @@ const CaseApiFp = function(configuration?: Configuration) {
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
         /**
-         * 
+         * Manage cases (list/get/create/update/delete) with typed content tied to a case type, subject, and data collection.
          * @summary Cases  Delete Some
          * @param {string} ids 
          * @param {*} [options] Override http request option.
@@ -20855,7 +20855,7 @@ const CaseApiFp = function(configuration?: Configuration) {
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
         /**
-         * 
+         * Manage cases (list/get/create/update/delete) with typed content tied to a case type, subject, and data collection.
          * @summary Cases  Get All
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
@@ -20867,7 +20867,7 @@ const CaseApiFp = function(configuration?: Configuration) {
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
         /**
-         * 
+         * Manage cases (list/get/create/update/delete) with typed content tied to a case type, subject, and data collection.
          * @summary Cases  Get One
          * @param {string} objectId 
          * @param {*} [options] Override http request option.
@@ -20880,7 +20880,7 @@ const CaseApiFp = function(configuration?: Configuration) {
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
         /**
-         * 
+         * Manage cases (list/get/create/update/delete) with typed content tied to a case type, subject, and data collection.
          * @summary Cases  Get Some
          * @param {string} ids 
          * @param {*} [options] Override http request option.
@@ -20893,7 +20893,7 @@ const CaseApiFp = function(configuration?: Configuration) {
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
         /**
-         * 
+         * Manage cases (list/get/create/update/delete) with typed content tied to a case type, subject, and data collection.
          * @summary Cases  Post One
          * @param {Case} _case 
          * @param {*} [options] Override http request option.
@@ -20906,7 +20906,7 @@ const CaseApiFp = function(configuration?: Configuration) {
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
         /**
-         * 
+         * Manage cases (list/get/create/update/delete) with typed content tied to a case type, subject, and data collection.
          * @summary Cases  Post Query
          * @param {EpiFilter} filter 
          * @param {*} [options] Override http request option.
@@ -20919,7 +20919,7 @@ const CaseApiFp = function(configuration?: Configuration) {
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
         /**
-         * 
+         * Manage cases (list/get/create/update/delete) with typed content tied to a case type, subject, and data collection.
          * @summary Cases  Post Query  Ids
          * @param {EpiFilter} filter 
          * @param {*} [options] Override http request option.
@@ -20932,7 +20932,7 @@ const CaseApiFp = function(configuration?: Configuration) {
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
         /**
-         * 
+         * Manage cases (list/get/create/update/delete) with typed content tied to a case type, subject, and data collection.
          * @summary Cases  Post Some
          * @param {Array<Case>} _case 
          * @param {*} [options] Override http request option.
@@ -20945,7 +20945,7 @@ const CaseApiFp = function(configuration?: Configuration) {
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
         /**
-         * 
+         * Manage cases (list/get/create/update/delete) with typed content tied to a case type, subject, and data collection.
          * @summary Cases  Put One
          * @param {string} objectId 
          * @param {Case} _case 
@@ -20959,7 +20959,7 @@ const CaseApiFp = function(configuration?: Configuration) {
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
         /**
-         * 
+         * Manage cases (list/get/create/update/delete) with typed content tied to a case type, subject, and data collection.
          * @summary Cases  Put Some
          * @param {Array<Case>} _case 
          * @param {*} [options] Override http request option.
@@ -20972,7 +20972,7 @@ const CaseApiFp = function(configuration?: Configuration) {
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
         /**
-         * 
+         * Manage reusable column definitions (code/label/type) referenced by case-type columns and vocabularies.
          * @summary Cols  Delete All
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
@@ -20984,7 +20984,7 @@ const CaseApiFp = function(configuration?: Configuration) {
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
         /**
-         * 
+         * Manage reusable column definitions (code/label/type) referenced by case-type columns and vocabularies.
          * @summary Cols  Delete One
          * @param {any} objectId 
          * @param {*} [options] Override http request option.
@@ -20997,7 +20997,7 @@ const CaseApiFp = function(configuration?: Configuration) {
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
         /**
-         * 
+         * Manage reusable column definitions (code/label/type) referenced by case-type columns and vocabularies.
          * @summary Cols  Delete Some
          * @param {string} ids 
          * @param {*} [options] Override http request option.
@@ -21010,7 +21010,7 @@ const CaseApiFp = function(configuration?: Configuration) {
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
         /**
-         * 
+         * Manage reusable column definitions (code/label/type) referenced by case-type columns and vocabularies.
          * @summary Cols  Get All
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
@@ -21022,7 +21022,7 @@ const CaseApiFp = function(configuration?: Configuration) {
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
         /**
-         * 
+         * Manage reusable column definitions (code/label/type) referenced by case-type columns and vocabularies.
          * @summary Cols  Get One
          * @param {string} objectId 
          * @param {*} [options] Override http request option.
@@ -21035,7 +21035,7 @@ const CaseApiFp = function(configuration?: Configuration) {
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
         /**
-         * 
+         * Manage reusable column definitions (code/label/type) referenced by case-type columns and vocabularies.
          * @summary Cols  Get Some
          * @param {string} ids 
          * @param {*} [options] Override http request option.
@@ -21048,7 +21048,7 @@ const CaseApiFp = function(configuration?: Configuration) {
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
         /**
-         * 
+         * Manage reusable column definitions (code/label/type) referenced by case-type columns and vocabularies.
          * @summary Cols  Post One
          * @param {Col} col 
          * @param {*} [options] Override http request option.
@@ -21061,7 +21061,7 @@ const CaseApiFp = function(configuration?: Configuration) {
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
         /**
-         * 
+         * Manage reusable column definitions (code/label/type) referenced by case-type columns and vocabularies.
          * @summary Cols  Post Query
          * @param {EpiFilter} filter 
          * @param {*} [options] Override http request option.
@@ -21074,7 +21074,7 @@ const CaseApiFp = function(configuration?: Configuration) {
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
         /**
-         * 
+         * Manage reusable column definitions (code/label/type) referenced by case-type columns and vocabularies.
          * @summary Cols  Post Query  Ids
          * @param {EpiFilter} filter 
          * @param {*} [options] Override http request option.
@@ -21087,7 +21087,7 @@ const CaseApiFp = function(configuration?: Configuration) {
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
         /**
-         * 
+         * Manage reusable column definitions (code/label/type) referenced by case-type columns and vocabularies.
          * @summary Cols  Post Some
          * @param {Array<Col>} col 
          * @param {*} [options] Override http request option.
@@ -21100,7 +21100,7 @@ const CaseApiFp = function(configuration?: Configuration) {
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
         /**
-         * 
+         * Manage reusable column definitions (code/label/type) referenced by case-type columns and vocabularies.
          * @summary Cols  Put One
          * @param {string} objectId 
          * @param {Col} col 
@@ -21114,7 +21114,7 @@ const CaseApiFp = function(configuration?: Configuration) {
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
         /**
-         * 
+         * Manage reusable column definitions (code/label/type) referenced by case-type columns and vocabularies.
          * @summary Cols  Put Some
          * @param {Array<Col>} col 
          * @param {*} [options] Override http request option.
@@ -21165,7 +21165,7 @@ const CaseApiFp = function(configuration?: Configuration) {
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
         /**
-         * Create a file for a read set associated with a case.
+         * Upload a raw reads file (e.g., FASTQ) for a case\'s read-set column and return the stored file ID. Accepts base64 content, optional compression, and marks whether the payload is forward or reverse reads.
          * @summary Create File For Reads Set
          * @param {string} caseId 
          * @param {string} caseTypeColId 
@@ -21180,7 +21180,7 @@ const CaseApiFp = function(configuration?: Configuration) {
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
         /**
-         * Create a file for a sequence associated with a case.
+         * Upload an assembled sequence file (e.g., FASTA) for a case\'s sequence column and return the stored file ID. Accepts base64 content with optional compression.
          * @summary Create File For Sequence
          * @param {string} caseId 
          * @param {string} caseTypeColId 
@@ -21195,7 +21195,7 @@ const CaseApiFp = function(configuration?: Configuration) {
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
         /**
-         * 
+         * Manage column dimensions, including code prefixes and ordering, reused across case types.
          * @summary Dims  Delete All
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
@@ -21207,7 +21207,7 @@ const CaseApiFp = function(configuration?: Configuration) {
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
         /**
-         * 
+         * Manage column dimensions, including code prefixes and ordering, reused across case types.
          * @summary Dims  Delete One
          * @param {any} objectId 
          * @param {*} [options] Override http request option.
@@ -21220,7 +21220,7 @@ const CaseApiFp = function(configuration?: Configuration) {
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
         /**
-         * 
+         * Manage column dimensions, including code prefixes and ordering, reused across case types.
          * @summary Dims  Delete Some
          * @param {string} ids 
          * @param {*} [options] Override http request option.
@@ -21233,7 +21233,7 @@ const CaseApiFp = function(configuration?: Configuration) {
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
         /**
-         * 
+         * Manage column dimensions, including code prefixes and ordering, reused across case types.
          * @summary Dims  Get All
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
@@ -21245,7 +21245,7 @@ const CaseApiFp = function(configuration?: Configuration) {
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
         /**
-         * 
+         * Manage column dimensions, including code prefixes and ordering, reused across case types.
          * @summary Dims  Get One
          * @param {string} objectId 
          * @param {*} [options] Override http request option.
@@ -21258,7 +21258,7 @@ const CaseApiFp = function(configuration?: Configuration) {
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
         /**
-         * 
+         * Manage column dimensions, including code prefixes and ordering, reused across case types.
          * @summary Dims  Get Some
          * @param {string} ids 
          * @param {*} [options] Override http request option.
@@ -21271,7 +21271,7 @@ const CaseApiFp = function(configuration?: Configuration) {
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
         /**
-         * 
+         * Manage column dimensions, including code prefixes and ordering, reused across case types.
          * @summary Dims  Post One
          * @param {Dim} dim 
          * @param {*} [options] Override http request option.
@@ -21284,7 +21284,7 @@ const CaseApiFp = function(configuration?: Configuration) {
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
         /**
-         * 
+         * Manage column dimensions, including code prefixes and ordering, reused across case types.
          * @summary Dims  Post Query
          * @param {EpiFilter} filter 
          * @param {*} [options] Override http request option.
@@ -21297,7 +21297,7 @@ const CaseApiFp = function(configuration?: Configuration) {
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
         /**
-         * 
+         * Manage column dimensions, including code prefixes and ordering, reused across case types.
          * @summary Dims  Post Query  Ids
          * @param {EpiFilter} filter 
          * @param {*} [options] Override http request option.
@@ -21310,7 +21310,7 @@ const CaseApiFp = function(configuration?: Configuration) {
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
         /**
-         * 
+         * Manage column dimensions, including code prefixes and ordering, reused across case types.
          * @summary Dims  Post Some
          * @param {Array<Dim>} dim 
          * @param {*} [options] Override http request option.
@@ -21323,7 +21323,7 @@ const CaseApiFp = function(configuration?: Configuration) {
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
         /**
-         * 
+         * Manage column dimensions, including code prefixes and ordering, reused across case types.
          * @summary Dims  Put One
          * @param {string} objectId 
          * @param {Dim} dim 
@@ -21337,7 +21337,7 @@ const CaseApiFp = function(configuration?: Configuration) {
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
         /**
-         * 
+         * Manage column dimensions, including code prefixes and ordering, reused across case types.
          * @summary Dims  Put Some
          * @param {Array<Dim>} dim 
          * @param {*} [options] Override http request option.
@@ -21350,7 +21350,7 @@ const CaseApiFp = function(configuration?: Configuration) {
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
         /**
-         * 
+         * Manage genetic distance protocols (e.g., TN93) available for sequence comparisons in phylogenetic analyses.
          * @summary Genetic Distance Protocols  Delete All
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
@@ -21362,7 +21362,7 @@ const CaseApiFp = function(configuration?: Configuration) {
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
         /**
-         * 
+         * Manage genetic distance protocols (e.g., TN93) available for sequence comparisons in phylogenetic analyses.
          * @summary Genetic Distance Protocols  Delete One
          * @param {any} objectId 
          * @param {*} [options] Override http request option.
@@ -21375,7 +21375,7 @@ const CaseApiFp = function(configuration?: Configuration) {
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
         /**
-         * 
+         * Manage genetic distance protocols (e.g., TN93) available for sequence comparisons in phylogenetic analyses.
          * @summary Genetic Distance Protocols  Delete Some
          * @param {string} ids 
          * @param {*} [options] Override http request option.
@@ -21388,7 +21388,7 @@ const CaseApiFp = function(configuration?: Configuration) {
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
         /**
-         * 
+         * Manage genetic distance protocols (e.g., TN93) available for sequence comparisons in phylogenetic analyses.
          * @summary Genetic Distance Protocols  Get All
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
@@ -21400,7 +21400,7 @@ const CaseApiFp = function(configuration?: Configuration) {
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
         /**
-         * 
+         * Manage genetic distance protocols (e.g., TN93) available for sequence comparisons in phylogenetic analyses.
          * @summary Genetic Distance Protocols  Get One
          * @param {string} objectId 
          * @param {*} [options] Override http request option.
@@ -21413,7 +21413,7 @@ const CaseApiFp = function(configuration?: Configuration) {
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
         /**
-         * 
+         * Manage genetic distance protocols (e.g., TN93) available for sequence comparisons in phylogenetic analyses.
          * @summary Genetic Distance Protocols  Get Some
          * @param {string} ids 
          * @param {*} [options] Override http request option.
@@ -21426,7 +21426,7 @@ const CaseApiFp = function(configuration?: Configuration) {
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
         /**
-         * 
+         * Manage genetic distance protocols (e.g., TN93) available for sequence comparisons in phylogenetic analyses.
          * @summary Genetic Distance Protocols  Post One
          * @param {GeneticDistanceProtocol} geneticDistanceProtocol 
          * @param {*} [options] Override http request option.
@@ -21439,7 +21439,7 @@ const CaseApiFp = function(configuration?: Configuration) {
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
         /**
-         * 
+         * Manage genetic distance protocols (e.g., TN93) available for sequence comparisons in phylogenetic analyses.
          * @summary Genetic Distance Protocols  Post Query
          * @param {EpiFilter} filter 
          * @param {*} [options] Override http request option.
@@ -21452,7 +21452,7 @@ const CaseApiFp = function(configuration?: Configuration) {
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
         /**
-         * 
+         * Manage genetic distance protocols (e.g., TN93) available for sequence comparisons in phylogenetic analyses.
          * @summary Genetic Distance Protocols  Post Query  Ids
          * @param {EpiFilter} filter 
          * @param {*} [options] Override http request option.
@@ -21465,7 +21465,7 @@ const CaseApiFp = function(configuration?: Configuration) {
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
         /**
-         * 
+         * Manage genetic distance protocols (e.g., TN93) available for sequence comparisons in phylogenetic analyses.
          * @summary Genetic Distance Protocols  Post Some
          * @param {Array<GeneticDistanceProtocol>} geneticDistanceProtocol 
          * @param {*} [options] Override http request option.
@@ -21478,7 +21478,7 @@ const CaseApiFp = function(configuration?: Configuration) {
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
         /**
-         * 
+         * Manage genetic distance protocols (e.g., TN93) available for sequence comparisons in phylogenetic analyses.
          * @summary Genetic Distance Protocols  Put One
          * @param {string} objectId 
          * @param {GeneticDistanceProtocol} geneticDistanceProtocol 
@@ -21492,7 +21492,7 @@ const CaseApiFp = function(configuration?: Configuration) {
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
         /**
-         * 
+         * Manage genetic distance protocols (e.g., TN93) available for sequence comparisons in phylogenetic analyses.
          * @summary Genetic Distance Protocols  Put Some
          * @param {Array<GeneticDistanceProtocol>} geneticDistanceProtocol 
          * @param {*} [options] Override http request option.
@@ -21505,7 +21505,7 @@ const CaseApiFp = function(configuration?: Configuration) {
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
         /**
-         * Retrieve assembly protocols from seqdb database
+         * Retrieve the assembly protocols registered in seqdb for downstream sequence processing and provenance.
          * @summary Retrieve Assembly Protocols
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
@@ -21625,7 +21625,7 @@ const CaseApiFp = function(configuration?: Configuration) {
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
         /**
-         * Retrieve sequencing protocols from seqdb database
+         * Retrieve the sequencing protocols registered in seqdb so clients can populate protocol pickers when uploading read sets.
          * @summary Retrieve Sequencing Protocols
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
@@ -21650,7 +21650,7 @@ const CaseApiFp = function(configuration?: Configuration) {
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
         /**
-         * 
+         * Manage categories of phylogenetic algorithms and whether they require sequences vs. distance matrices.
          * @summary Tree Algorithm Classes  Delete All
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
@@ -21662,7 +21662,7 @@ const CaseApiFp = function(configuration?: Configuration) {
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
         /**
-         * 
+         * Manage categories of phylogenetic algorithms and whether they require sequences vs. distance matrices.
          * @summary Tree Algorithm Classes  Delete One
          * @param {any} objectId 
          * @param {*} [options] Override http request option.
@@ -21675,7 +21675,7 @@ const CaseApiFp = function(configuration?: Configuration) {
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
         /**
-         * 
+         * Manage categories of phylogenetic algorithms and whether they require sequences vs. distance matrices.
          * @summary Tree Algorithm Classes  Delete Some
          * @param {string} ids 
          * @param {*} [options] Override http request option.
@@ -21688,7 +21688,7 @@ const CaseApiFp = function(configuration?: Configuration) {
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
         /**
-         * 
+         * Manage categories of phylogenetic algorithms and whether they require sequences vs. distance matrices.
          * @summary Tree Algorithm Classes  Get All
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
@@ -21700,7 +21700,7 @@ const CaseApiFp = function(configuration?: Configuration) {
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
         /**
-         * 
+         * Manage categories of phylogenetic algorithms and whether they require sequences vs. distance matrices.
          * @summary Tree Algorithm Classes  Get One
          * @param {string} objectId 
          * @param {*} [options] Override http request option.
@@ -21713,7 +21713,7 @@ const CaseApiFp = function(configuration?: Configuration) {
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
         /**
-         * 
+         * Manage categories of phylogenetic algorithms and whether they require sequences vs. distance matrices.
          * @summary Tree Algorithm Classes  Get Some
          * @param {string} ids 
          * @param {*} [options] Override http request option.
@@ -21726,7 +21726,7 @@ const CaseApiFp = function(configuration?: Configuration) {
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
         /**
-         * 
+         * Manage categories of phylogenetic algorithms and whether they require sequences vs. distance matrices.
          * @summary Tree Algorithm Classes  Post One
          * @param {TreeAlgorithmClass} treeAlgorithmClass 
          * @param {*} [options] Override http request option.
@@ -21739,7 +21739,7 @@ const CaseApiFp = function(configuration?: Configuration) {
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
         /**
-         * 
+         * Manage categories of phylogenetic algorithms and whether they require sequences vs. distance matrices.
          * @summary Tree Algorithm Classes  Post Query
          * @param {EpiFilter} filter 
          * @param {*} [options] Override http request option.
@@ -21752,7 +21752,7 @@ const CaseApiFp = function(configuration?: Configuration) {
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
         /**
-         * 
+         * Manage categories of phylogenetic algorithms and whether they require sequences vs. distance matrices.
          * @summary Tree Algorithm Classes  Post Query  Ids
          * @param {EpiFilter} filter 
          * @param {*} [options] Override http request option.
@@ -21765,7 +21765,7 @@ const CaseApiFp = function(configuration?: Configuration) {
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
         /**
-         * 
+         * Manage categories of phylogenetic algorithms and whether they require sequences vs. distance matrices.
          * @summary Tree Algorithm Classes  Post Some
          * @param {Array<TreeAlgorithmClass>} treeAlgorithmClass 
          * @param {*} [options] Override http request option.
@@ -21778,7 +21778,7 @@ const CaseApiFp = function(configuration?: Configuration) {
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
         /**
-         * 
+         * Manage categories of phylogenetic algorithms and whether they require sequences vs. distance matrices.
          * @summary Tree Algorithm Classes  Put One
          * @param {string} objectId 
          * @param {TreeAlgorithmClass} treeAlgorithmClass 
@@ -21792,7 +21792,7 @@ const CaseApiFp = function(configuration?: Configuration) {
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
         /**
-         * 
+         * Manage categories of phylogenetic algorithms and whether they require sequences vs. distance matrices.
          * @summary Tree Algorithm Classes  Put Some
          * @param {Array<TreeAlgorithmClass>} treeAlgorithmClass 
          * @param {*} [options] Override http request option.
@@ -21805,7 +21805,7 @@ const CaseApiFp = function(configuration?: Configuration) {
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
         /**
-         * 
+         * Manage specific phylogenetic tree algorithms linked to seqdb implementations and parameters.
          * @summary Tree Algorithms  Delete All
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
@@ -21817,7 +21817,7 @@ const CaseApiFp = function(configuration?: Configuration) {
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
         /**
-         * 
+         * Manage specific phylogenetic tree algorithms linked to seqdb implementations and parameters.
          * @summary Tree Algorithms  Delete One
          * @param {any} objectId 
          * @param {*} [options] Override http request option.
@@ -21830,7 +21830,7 @@ const CaseApiFp = function(configuration?: Configuration) {
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
         /**
-         * 
+         * Manage specific phylogenetic tree algorithms linked to seqdb implementations and parameters.
          * @summary Tree Algorithms  Delete Some
          * @param {string} ids 
          * @param {*} [options] Override http request option.
@@ -21843,7 +21843,7 @@ const CaseApiFp = function(configuration?: Configuration) {
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
         /**
-         * 
+         * Manage specific phylogenetic tree algorithms linked to seqdb implementations and parameters.
          * @summary Tree Algorithms  Get All
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
@@ -21855,7 +21855,7 @@ const CaseApiFp = function(configuration?: Configuration) {
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
         /**
-         * 
+         * Manage specific phylogenetic tree algorithms linked to seqdb implementations and parameters.
          * @summary Tree Algorithms  Get One
          * @param {string} objectId 
          * @param {*} [options] Override http request option.
@@ -21868,7 +21868,7 @@ const CaseApiFp = function(configuration?: Configuration) {
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
         /**
-         * 
+         * Manage specific phylogenetic tree algorithms linked to seqdb implementations and parameters.
          * @summary Tree Algorithms  Get Some
          * @param {string} ids 
          * @param {*} [options] Override http request option.
@@ -21881,7 +21881,7 @@ const CaseApiFp = function(configuration?: Configuration) {
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
         /**
-         * 
+         * Manage specific phylogenetic tree algorithms linked to seqdb implementations and parameters.
          * @summary Tree Algorithms  Post One
          * @param {TreeAlgorithm} treeAlgorithm 
          * @param {*} [options] Override http request option.
@@ -21894,7 +21894,7 @@ const CaseApiFp = function(configuration?: Configuration) {
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
         /**
-         * 
+         * Manage specific phylogenetic tree algorithms linked to seqdb implementations and parameters.
          * @summary Tree Algorithms  Post Query
          * @param {EpiFilter} filter 
          * @param {*} [options] Override http request option.
@@ -21907,7 +21907,7 @@ const CaseApiFp = function(configuration?: Configuration) {
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
         /**
-         * 
+         * Manage specific phylogenetic tree algorithms linked to seqdb implementations and parameters.
          * @summary Tree Algorithms  Post Query  Ids
          * @param {EpiFilter} filter 
          * @param {*} [options] Override http request option.
@@ -21920,7 +21920,7 @@ const CaseApiFp = function(configuration?: Configuration) {
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
         /**
-         * 
+         * Manage specific phylogenetic tree algorithms linked to seqdb implementations and parameters.
          * @summary Tree Algorithms  Post Some
          * @param {Array<TreeAlgorithm>} treeAlgorithm 
          * @param {*} [options] Override http request option.
@@ -21933,7 +21933,7 @@ const CaseApiFp = function(configuration?: Configuration) {
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
         /**
-         * 
+         * Manage specific phylogenetic tree algorithms linked to seqdb implementations and parameters.
          * @summary Tree Algorithms  Put One
          * @param {string} objectId 
          * @param {TreeAlgorithm} treeAlgorithm 
@@ -21947,7 +21947,7 @@ const CaseApiFp = function(configuration?: Configuration) {
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
         /**
-         * 
+         * Manage specific phylogenetic tree algorithms linked to seqdb implementations and parameters.
          * @summary Tree Algorithms  Put Some
          * @param {Array<TreeAlgorithm>} treeAlgorithm 
          * @param {*} [options] Override http request option.
@@ -21995,7 +21995,7 @@ export class CaseApi extends BaseAPI {
   }
 
     /**
-     * 
+     * Manage links that associate cases with additional data collections to widen or restrict sharing beyond their origin.
      * @summary Case Data Collection Links  Delete All
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
@@ -22006,7 +22006,7 @@ export class CaseApi extends BaseAPI {
     }
 
     /**
-     * 
+     * Manage links that associate cases with additional data collections to widen or restrict sharing beyond their origin.
      * @summary Case Data Collection Links  Delete One
      * @param {any} objectId 
      * @param {*} [options] Override http request option.
@@ -22018,7 +22018,7 @@ export class CaseApi extends BaseAPI {
     }
 
     /**
-     * 
+     * Manage links that associate cases with additional data collections to widen or restrict sharing beyond their origin.
      * @summary Case Data Collection Links  Delete Some
      * @param {string} ids 
      * @param {*} [options] Override http request option.
@@ -22030,7 +22030,7 @@ export class CaseApi extends BaseAPI {
     }
 
     /**
-     * 
+     * Manage links that associate cases with additional data collections to widen or restrict sharing beyond their origin.
      * @summary Case Data Collection Links  Get All
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
@@ -22041,7 +22041,7 @@ export class CaseApi extends BaseAPI {
     }
 
     /**
-     * 
+     * Manage links that associate cases with additional data collections to widen or restrict sharing beyond their origin.
      * @summary Case Data Collection Links  Get One
      * @param {string} objectId 
      * @param {*} [options] Override http request option.
@@ -22053,7 +22053,7 @@ export class CaseApi extends BaseAPI {
     }
 
     /**
-     * 
+     * Manage links that associate cases with additional data collections to widen or restrict sharing beyond their origin.
      * @summary Case Data Collection Links  Get Some
      * @param {string} ids 
      * @param {*} [options] Override http request option.
@@ -22065,7 +22065,7 @@ export class CaseApi extends BaseAPI {
     }
 
     /**
-     * 
+     * Manage links that associate cases with additional data collections to widen or restrict sharing beyond their origin.
      * @summary Case Data Collection Links  Post One
      * @param {CaseDataCollectionLink} caseDataCollectionLink 
      * @param {*} [options] Override http request option.
@@ -22077,7 +22077,7 @@ export class CaseApi extends BaseAPI {
     }
 
     /**
-     * 
+     * Manage links that associate cases with additional data collections to widen or restrict sharing beyond their origin.
      * @summary Case Data Collection Links  Post Query
      * @param {EpiFilter} filter 
      * @param {*} [options] Override http request option.
@@ -22089,7 +22089,7 @@ export class CaseApi extends BaseAPI {
     }
 
     /**
-     * 
+     * Manage links that associate cases with additional data collections to widen or restrict sharing beyond their origin.
      * @summary Case Data Collection Links  Post Query  Ids
      * @param {EpiFilter} filter 
      * @param {*} [options] Override http request option.
@@ -22101,7 +22101,7 @@ export class CaseApi extends BaseAPI {
     }
 
     /**
-     * 
+     * Manage links that associate cases with additional data collections to widen or restrict sharing beyond their origin.
      * @summary Case Data Collection Links  Post Some
      * @param {Array<CaseDataCollectionLink>} caseDataCollectionLink 
      * @param {*} [options] Override http request option.
@@ -22113,7 +22113,7 @@ export class CaseApi extends BaseAPI {
     }
 
     /**
-     * 
+     * Manage links that associate cases with additional data collections to widen or restrict sharing beyond their origin.
      * @summary Case Data Collection Links  Put One
      * @param {string} objectId 
      * @param {CaseDataCollectionLink} caseDataCollectionLink 
@@ -22126,7 +22126,7 @@ export class CaseApi extends BaseAPI {
     }
 
     /**
-     * 
+     * Manage links that associate cases with additional data collections to widen or restrict sharing beyond their origin.
      * @summary Case Data Collection Links  Put Some
      * @param {Array<CaseDataCollectionLink>} caseDataCollectionLink 
      * @param {*} [options] Override http request option.
@@ -22138,7 +22138,7 @@ export class CaseApi extends BaseAPI {
     }
 
     /**
-     * 
+     * Maintain the categories used to tag case sets (e.g., outbreak, surveillance, QA).
      * @summary Case Set Categories  Delete All
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
@@ -22149,7 +22149,7 @@ export class CaseApi extends BaseAPI {
     }
 
     /**
-     * 
+     * Maintain the categories used to tag case sets (e.g., outbreak, surveillance, QA).
      * @summary Case Set Categories  Delete One
      * @param {any} objectId 
      * @param {*} [options] Override http request option.
@@ -22161,7 +22161,7 @@ export class CaseApi extends BaseAPI {
     }
 
     /**
-     * 
+     * Maintain the categories used to tag case sets (e.g., outbreak, surveillance, QA).
      * @summary Case Set Categories  Delete Some
      * @param {string} ids 
      * @param {*} [options] Override http request option.
@@ -22173,7 +22173,7 @@ export class CaseApi extends BaseAPI {
     }
 
     /**
-     * 
+     * Maintain the categories used to tag case sets (e.g., outbreak, surveillance, QA).
      * @summary Case Set Categories  Get All
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
@@ -22184,7 +22184,7 @@ export class CaseApi extends BaseAPI {
     }
 
     /**
-     * 
+     * Maintain the categories used to tag case sets (e.g., outbreak, surveillance, QA).
      * @summary Case Set Categories  Get One
      * @param {string} objectId 
      * @param {*} [options] Override http request option.
@@ -22196,7 +22196,7 @@ export class CaseApi extends BaseAPI {
     }
 
     /**
-     * 
+     * Maintain the categories used to tag case sets (e.g., outbreak, surveillance, QA).
      * @summary Case Set Categories  Get Some
      * @param {string} ids 
      * @param {*} [options] Override http request option.
@@ -22208,7 +22208,7 @@ export class CaseApi extends BaseAPI {
     }
 
     /**
-     * 
+     * Maintain the categories used to tag case sets (e.g., outbreak, surveillance, QA).
      * @summary Case Set Categories  Post One
      * @param {CaseSetCategory} caseSetCategory 
      * @param {*} [options] Override http request option.
@@ -22220,7 +22220,7 @@ export class CaseApi extends BaseAPI {
     }
 
     /**
-     * 
+     * Maintain the categories used to tag case sets (e.g., outbreak, surveillance, QA).
      * @summary Case Set Categories  Post Query
      * @param {EpiFilter} filter 
      * @param {*} [options] Override http request option.
@@ -22232,7 +22232,7 @@ export class CaseApi extends BaseAPI {
     }
 
     /**
-     * 
+     * Maintain the categories used to tag case sets (e.g., outbreak, surveillance, QA).
      * @summary Case Set Categories  Post Query  Ids
      * @param {EpiFilter} filter 
      * @param {*} [options] Override http request option.
@@ -22244,7 +22244,7 @@ export class CaseApi extends BaseAPI {
     }
 
     /**
-     * 
+     * Maintain the categories used to tag case sets (e.g., outbreak, surveillance, QA).
      * @summary Case Set Categories  Post Some
      * @param {Array<CaseSetCategory>} caseSetCategory 
      * @param {*} [options] Override http request option.
@@ -22256,7 +22256,7 @@ export class CaseApi extends BaseAPI {
     }
 
     /**
-     * 
+     * Maintain the categories used to tag case sets (e.g., outbreak, surveillance, QA).
      * @summary Case Set Categories  Put One
      * @param {string} objectId 
      * @param {CaseSetCategory} caseSetCategory 
@@ -22269,7 +22269,7 @@ export class CaseApi extends BaseAPI {
     }
 
     /**
-     * 
+     * Maintain the categories used to tag case sets (e.g., outbreak, surveillance, QA).
      * @summary Case Set Categories  Put Some
      * @param {Array<CaseSetCategory>} caseSetCategory 
      * @param {*} [options] Override http request option.
@@ -22281,7 +22281,7 @@ export class CaseApi extends BaseAPI {
     }
 
     /**
-     * 
+     * Manage links that share case sets into additional data collections for cross-group collaboration.
      * @summary Case Set Data Collection Links  Delete All
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
@@ -22292,7 +22292,7 @@ export class CaseApi extends BaseAPI {
     }
 
     /**
-     * 
+     * Manage links that share case sets into additional data collections for cross-group collaboration.
      * @summary Case Set Data Collection Links  Delete One
      * @param {any} objectId 
      * @param {*} [options] Override http request option.
@@ -22304,7 +22304,7 @@ export class CaseApi extends BaseAPI {
     }
 
     /**
-     * 
+     * Manage links that share case sets into additional data collections for cross-group collaboration.
      * @summary Case Set Data Collection Links  Delete Some
      * @param {string} ids 
      * @param {*} [options] Override http request option.
@@ -22316,7 +22316,7 @@ export class CaseApi extends BaseAPI {
     }
 
     /**
-     * 
+     * Manage links that share case sets into additional data collections for cross-group collaboration.
      * @summary Case Set Data Collection Links  Get All
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
@@ -22327,7 +22327,7 @@ export class CaseApi extends BaseAPI {
     }
 
     /**
-     * 
+     * Manage links that share case sets into additional data collections for cross-group collaboration.
      * @summary Case Set Data Collection Links  Get One
      * @param {string} objectId 
      * @param {*} [options] Override http request option.
@@ -22339,7 +22339,7 @@ export class CaseApi extends BaseAPI {
     }
 
     /**
-     * 
+     * Manage links that share case sets into additional data collections for cross-group collaboration.
      * @summary Case Set Data Collection Links  Get Some
      * @param {string} ids 
      * @param {*} [options] Override http request option.
@@ -22351,7 +22351,7 @@ export class CaseApi extends BaseAPI {
     }
 
     /**
-     * 
+     * Manage links that share case sets into additional data collections for cross-group collaboration.
      * @summary Case Set Data Collection Links  Post One
      * @param {CaseSetDataCollectionLink} caseSetDataCollectionLink 
      * @param {*} [options] Override http request option.
@@ -22363,7 +22363,7 @@ export class CaseApi extends BaseAPI {
     }
 
     /**
-     * 
+     * Manage links that share case sets into additional data collections for cross-group collaboration.
      * @summary Case Set Data Collection Links  Post Query
      * @param {EpiFilter} filter 
      * @param {*} [options] Override http request option.
@@ -22375,7 +22375,7 @@ export class CaseApi extends BaseAPI {
     }
 
     /**
-     * 
+     * Manage links that share case sets into additional data collections for cross-group collaboration.
      * @summary Case Set Data Collection Links  Post Query  Ids
      * @param {EpiFilter} filter 
      * @param {*} [options] Override http request option.
@@ -22387,7 +22387,7 @@ export class CaseApi extends BaseAPI {
     }
 
     /**
-     * 
+     * Manage links that share case sets into additional data collections for cross-group collaboration.
      * @summary Case Set Data Collection Links  Post Some
      * @param {Array<CaseSetDataCollectionLink>} caseSetDataCollectionLink 
      * @param {*} [options] Override http request option.
@@ -22399,7 +22399,7 @@ export class CaseApi extends BaseAPI {
     }
 
     /**
-     * 
+     * Manage links that share case sets into additional data collections for cross-group collaboration.
      * @summary Case Set Data Collection Links  Put One
      * @param {string} objectId 
      * @param {CaseSetDataCollectionLink} caseSetDataCollectionLink 
@@ -22412,7 +22412,7 @@ export class CaseApi extends BaseAPI {
     }
 
     /**
-     * 
+     * Manage links that share case sets into additional data collections for cross-group collaboration.
      * @summary Case Set Data Collection Links  Put Some
      * @param {Array<CaseSetDataCollectionLink>} caseSetDataCollectionLink 
      * @param {*} [options] Override http request option.
@@ -22424,7 +22424,7 @@ export class CaseApi extends BaseAPI {
     }
 
     /**
-     * 
+     * Manage membership of cases in a case set, including per-member classification when present.
      * @summary Case Set Members  Delete All
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
@@ -22435,7 +22435,7 @@ export class CaseApi extends BaseAPI {
     }
 
     /**
-     * 
+     * Manage membership of cases in a case set, including per-member classification when present.
      * @summary Case Set Members  Delete One
      * @param {any} objectId 
      * @param {*} [options] Override http request option.
@@ -22447,7 +22447,7 @@ export class CaseApi extends BaseAPI {
     }
 
     /**
-     * 
+     * Manage membership of cases in a case set, including per-member classification when present.
      * @summary Case Set Members  Delete Some
      * @param {string} ids 
      * @param {*} [options] Override http request option.
@@ -22459,7 +22459,7 @@ export class CaseApi extends BaseAPI {
     }
 
     /**
-     * 
+     * Manage membership of cases in a case set, including per-member classification when present.
      * @summary Case Set Members  Get All
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
@@ -22470,7 +22470,7 @@ export class CaseApi extends BaseAPI {
     }
 
     /**
-     * 
+     * Manage membership of cases in a case set, including per-member classification when present.
      * @summary Case Set Members  Get One
      * @param {string} objectId 
      * @param {*} [options] Override http request option.
@@ -22482,7 +22482,7 @@ export class CaseApi extends BaseAPI {
     }
 
     /**
-     * 
+     * Manage membership of cases in a case set, including per-member classification when present.
      * @summary Case Set Members  Get Some
      * @param {string} ids 
      * @param {*} [options] Override http request option.
@@ -22494,7 +22494,7 @@ export class CaseApi extends BaseAPI {
     }
 
     /**
-     * 
+     * Manage membership of cases in a case set, including per-member classification when present.
      * @summary Case Set Members  Post One
      * @param {CaseSetMember} caseSetMember 
      * @param {*} [options] Override http request option.
@@ -22506,7 +22506,7 @@ export class CaseApi extends BaseAPI {
     }
 
     /**
-     * 
+     * Manage membership of cases in a case set, including per-member classification when present.
      * @summary Case Set Members  Post Query
      * @param {EpiFilter} filter 
      * @param {*} [options] Override http request option.
@@ -22518,7 +22518,7 @@ export class CaseApi extends BaseAPI {
     }
 
     /**
-     * 
+     * Manage membership of cases in a case set, including per-member classification when present.
      * @summary Case Set Members  Post Query  Ids
      * @param {EpiFilter} filter 
      * @param {*} [options] Override http request option.
@@ -22530,7 +22530,7 @@ export class CaseApi extends BaseAPI {
     }
 
     /**
-     * 
+     * Manage membership of cases in a case set, including per-member classification when present.
      * @summary Case Set Members  Post Some
      * @param {Array<CaseSetMember>} caseSetMember 
      * @param {*} [options] Override http request option.
@@ -22542,7 +22542,7 @@ export class CaseApi extends BaseAPI {
     }
 
     /**
-     * 
+     * Manage membership of cases in a case set, including per-member classification when present.
      * @summary Case Set Members  Put One
      * @param {string} objectId 
      * @param {CaseSetMember} caseSetMember 
@@ -22555,7 +22555,7 @@ export class CaseApi extends BaseAPI {
     }
 
     /**
-     * 
+     * Manage membership of cases in a case set, including per-member classification when present.
      * @summary Case Set Members  Put Some
      * @param {Array<CaseSetMember>} caseSetMember 
      * @param {*} [options] Override http request option.
@@ -22567,7 +22567,7 @@ export class CaseApi extends BaseAPI {
     }
 
     /**
-     * 
+     * Maintain lifecycle/status values for case sets (e.g., draft, active, closed).
      * @summary Case Set Statuses  Delete All
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
@@ -22578,7 +22578,7 @@ export class CaseApi extends BaseAPI {
     }
 
     /**
-     * 
+     * Maintain lifecycle/status values for case sets (e.g., draft, active, closed).
      * @summary Case Set Statuses  Delete One
      * @param {any} objectId 
      * @param {*} [options] Override http request option.
@@ -22590,7 +22590,7 @@ export class CaseApi extends BaseAPI {
     }
 
     /**
-     * 
+     * Maintain lifecycle/status values for case sets (e.g., draft, active, closed).
      * @summary Case Set Statuses  Delete Some
      * @param {string} ids 
      * @param {*} [options] Override http request option.
@@ -22602,7 +22602,7 @@ export class CaseApi extends BaseAPI {
     }
 
     /**
-     * 
+     * Maintain lifecycle/status values for case sets (e.g., draft, active, closed).
      * @summary Case Set Statuses  Get All
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
@@ -22613,7 +22613,7 @@ export class CaseApi extends BaseAPI {
     }
 
     /**
-     * 
+     * Maintain lifecycle/status values for case sets (e.g., draft, active, closed).
      * @summary Case Set Statuses  Get One
      * @param {string} objectId 
      * @param {*} [options] Override http request option.
@@ -22625,7 +22625,7 @@ export class CaseApi extends BaseAPI {
     }
 
     /**
-     * 
+     * Maintain lifecycle/status values for case sets (e.g., draft, active, closed).
      * @summary Case Set Statuses  Get Some
      * @param {string} ids 
      * @param {*} [options] Override http request option.
@@ -22637,7 +22637,7 @@ export class CaseApi extends BaseAPI {
     }
 
     /**
-     * 
+     * Maintain lifecycle/status values for case sets (e.g., draft, active, closed).
      * @summary Case Set Statuses  Post One
      * @param {CaseSetStatus} caseSetStatus 
      * @param {*} [options] Override http request option.
@@ -22649,7 +22649,7 @@ export class CaseApi extends BaseAPI {
     }
 
     /**
-     * 
+     * Maintain lifecycle/status values for case sets (e.g., draft, active, closed).
      * @summary Case Set Statuses  Post Query
      * @param {EpiFilter} filter 
      * @param {*} [options] Override http request option.
@@ -22661,7 +22661,7 @@ export class CaseApi extends BaseAPI {
     }
 
     /**
-     * 
+     * Maintain lifecycle/status values for case sets (e.g., draft, active, closed).
      * @summary Case Set Statuses  Post Query  Ids
      * @param {EpiFilter} filter 
      * @param {*} [options] Override http request option.
@@ -22673,7 +22673,7 @@ export class CaseApi extends BaseAPI {
     }
 
     /**
-     * 
+     * Maintain lifecycle/status values for case sets (e.g., draft, active, closed).
      * @summary Case Set Statuses  Post Some
      * @param {Array<CaseSetStatus>} caseSetStatus 
      * @param {*} [options] Override http request option.
@@ -22685,7 +22685,7 @@ export class CaseApi extends BaseAPI {
     }
 
     /**
-     * 
+     * Maintain lifecycle/status values for case sets (e.g., draft, active, closed).
      * @summary Case Set Statuses  Put One
      * @param {string} objectId 
      * @param {CaseSetStatus} caseSetStatus 
@@ -22698,7 +22698,7 @@ export class CaseApi extends BaseAPI {
     }
 
     /**
-     * 
+     * Maintain lifecycle/status values for case sets (e.g., draft, active, closed).
      * @summary Case Set Statuses  Put Some
      * @param {Array<CaseSetStatus>} caseSetStatus 
      * @param {*} [options] Override http request option.
@@ -22710,7 +22710,7 @@ export class CaseApi extends BaseAPI {
     }
 
     /**
-     * 
+     * Manage case sets (list/get/create/update/delete) including type, category, status, and data-collection context.
      * @summary Case Sets  Delete All
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
@@ -22721,7 +22721,7 @@ export class CaseApi extends BaseAPI {
     }
 
     /**
-     * 
+     * Manage case sets (list/get/create/update/delete) including type, category, status, and data-collection context.
      * @summary Case Sets  Delete One
      * @param {any} objectId 
      * @param {*} [options] Override http request option.
@@ -22733,7 +22733,7 @@ export class CaseApi extends BaseAPI {
     }
 
     /**
-     * 
+     * Manage case sets (list/get/create/update/delete) including type, category, status, and data-collection context.
      * @summary Case Sets  Delete Some
      * @param {string} ids 
      * @param {*} [options] Override http request option.
@@ -22745,7 +22745,7 @@ export class CaseApi extends BaseAPI {
     }
 
     /**
-     * 
+     * Manage case sets (list/get/create/update/delete) including type, category, status, and data-collection context.
      * @summary Case Sets  Get All
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
@@ -22756,7 +22756,7 @@ export class CaseApi extends BaseAPI {
     }
 
     /**
-     * 
+     * Manage case sets (list/get/create/update/delete) including type, category, status, and data-collection context.
      * @summary Case Sets  Get One
      * @param {string} objectId 
      * @param {*} [options] Override http request option.
@@ -22768,7 +22768,7 @@ export class CaseApi extends BaseAPI {
     }
 
     /**
-     * 
+     * Manage case sets (list/get/create/update/delete) including type, category, status, and data-collection context.
      * @summary Case Sets  Get Some
      * @param {string} ids 
      * @param {*} [options] Override http request option.
@@ -22780,7 +22780,7 @@ export class CaseApi extends BaseAPI {
     }
 
     /**
-     * 
+     * Manage case sets (list/get/create/update/delete) including type, category, status, and data-collection context.
      * @summary Case Sets  Post One
      * @param {CaseSet} caseSet 
      * @param {*} [options] Override http request option.
@@ -22792,7 +22792,7 @@ export class CaseApi extends BaseAPI {
     }
 
     /**
-     * 
+     * Manage case sets (list/get/create/update/delete) including type, category, status, and data-collection context.
      * @summary Case Sets  Post Query
      * @param {EpiFilter} filter 
      * @param {*} [options] Override http request option.
@@ -22804,7 +22804,7 @@ export class CaseApi extends BaseAPI {
     }
 
     /**
-     * 
+     * Manage case sets (list/get/create/update/delete) including type, category, status, and data-collection context.
      * @summary Case Sets  Post Query  Ids
      * @param {EpiFilter} filter 
      * @param {*} [options] Override http request option.
@@ -22816,7 +22816,7 @@ export class CaseApi extends BaseAPI {
     }
 
     /**
-     * 
+     * Manage case sets (list/get/create/update/delete) including type, category, status, and data-collection context.
      * @summary Case Sets  Post Some
      * @param {Array<CaseSet>} caseSet 
      * @param {*} [options] Override http request option.
@@ -22828,7 +22828,7 @@ export class CaseApi extends BaseAPI {
     }
 
     /**
-     * 
+     * Manage case sets (list/get/create/update/delete) including type, category, status, and data-collection context.
      * @summary Case Sets  Put One
      * @param {string} objectId 
      * @param {CaseSet} caseSet 
@@ -22841,7 +22841,7 @@ export class CaseApi extends BaseAPI {
     }
 
     /**
-     * 
+     * Manage case sets (list/get/create/update/delete) including type, category, status, and data-collection context.
      * @summary Case Sets  Put Some
      * @param {Array<CaseSet>} caseSet 
      * @param {*} [options] Override http request option.
@@ -22853,7 +22853,7 @@ export class CaseApi extends BaseAPI {
     }
 
     /**
-     * 
+     * Manage which columns belong to a column set used in policies or UI presets.
      * @summary Case Type Col Set Members  Delete All
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
@@ -22864,7 +22864,7 @@ export class CaseApi extends BaseAPI {
     }
 
     /**
-     * 
+     * Manage which columns belong to a column set used in policies or UI presets.
      * @summary Case Type Col Set Members  Delete One
      * @param {any} objectId 
      * @param {*} [options] Override http request option.
@@ -22876,7 +22876,7 @@ export class CaseApi extends BaseAPI {
     }
 
     /**
-     * 
+     * Manage which columns belong to a column set used in policies or UI presets.
      * @summary Case Type Col Set Members  Delete Some
      * @param {string} ids 
      * @param {*} [options] Override http request option.
@@ -22888,7 +22888,7 @@ export class CaseApi extends BaseAPI {
     }
 
     /**
-     * 
+     * Manage which columns belong to a column set used in policies or UI presets.
      * @summary Case Type Col Set Members  Get All
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
@@ -22899,7 +22899,7 @@ export class CaseApi extends BaseAPI {
     }
 
     /**
-     * 
+     * Manage which columns belong to a column set used in policies or UI presets.
      * @summary Case Type Col Set Members  Get One
      * @param {string} objectId 
      * @param {*} [options] Override http request option.
@@ -22911,7 +22911,7 @@ export class CaseApi extends BaseAPI {
     }
 
     /**
-     * 
+     * Manage which columns belong to a column set used in policies or UI presets.
      * @summary Case Type Col Set Members  Get Some
      * @param {string} ids 
      * @param {*} [options] Override http request option.
@@ -22923,7 +22923,7 @@ export class CaseApi extends BaseAPI {
     }
 
     /**
-     * 
+     * Manage which columns belong to a column set used in policies or UI presets.
      * @summary Case Type Col Set Members  Post One
      * @param {CaseTypeColSetMember} caseTypeColSetMember 
      * @param {*} [options] Override http request option.
@@ -22935,7 +22935,7 @@ export class CaseApi extends BaseAPI {
     }
 
     /**
-     * 
+     * Manage which columns belong to a column set used in policies or UI presets.
      * @summary Case Type Col Set Members  Post Query
      * @param {EpiFilter} filter 
      * @param {*} [options] Override http request option.
@@ -22947,7 +22947,7 @@ export class CaseApi extends BaseAPI {
     }
 
     /**
-     * 
+     * Manage which columns belong to a column set used in policies or UI presets.
      * @summary Case Type Col Set Members  Post Query  Ids
      * @param {EpiFilter} filter 
      * @param {*} [options] Override http request option.
@@ -22959,7 +22959,7 @@ export class CaseApi extends BaseAPI {
     }
 
     /**
-     * 
+     * Manage which columns belong to a column set used in policies or UI presets.
      * @summary Case Type Col Set Members  Post Some
      * @param {Array<CaseTypeColSetMember>} caseTypeColSetMember 
      * @param {*} [options] Override http request option.
@@ -22971,7 +22971,7 @@ export class CaseApi extends BaseAPI {
     }
 
     /**
-     * 
+     * Manage which columns belong to a column set used in policies or UI presets.
      * @summary Case Type Col Set Members  Put One
      * @param {string} objectId 
      * @param {CaseTypeColSetMember} caseTypeColSetMember 
@@ -22984,7 +22984,7 @@ export class CaseApi extends BaseAPI {
     }
 
     /**
-     * 
+     * Manage which columns belong to a column set used in policies or UI presets.
      * @summary Case Type Col Set Members  Put Some
      * @param {Array<CaseTypeColSetMember>} caseTypeColSetMember 
      * @param {*} [options] Override http request option.
@@ -22996,7 +22996,7 @@ export class CaseApi extends BaseAPI {
     }
 
     /**
-     * 
+     * Manage column sets used for read/write scopes and default column groupings.
      * @summary Case Type Col Sets  Delete All
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
@@ -23007,7 +23007,7 @@ export class CaseApi extends BaseAPI {
     }
 
     /**
-     * 
+     * Manage column sets used for read/write scopes and default column groupings.
      * @summary Case Type Col Sets  Delete One
      * @param {any} objectId 
      * @param {*} [options] Override http request option.
@@ -23019,7 +23019,7 @@ export class CaseApi extends BaseAPI {
     }
 
     /**
-     * 
+     * Manage column sets used for read/write scopes and default column groupings.
      * @summary Case Type Col Sets  Delete Some
      * @param {string} ids 
      * @param {*} [options] Override http request option.
@@ -23031,7 +23031,7 @@ export class CaseApi extends BaseAPI {
     }
 
     /**
-     * 
+     * Manage column sets used for read/write scopes and default column groupings.
      * @summary Case Type Col Sets  Get All
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
@@ -23042,7 +23042,7 @@ export class CaseApi extends BaseAPI {
     }
 
     /**
-     * 
+     * Manage column sets used for read/write scopes and default column groupings.
      * @summary Case Type Col Sets  Get One
      * @param {string} objectId 
      * @param {*} [options] Override http request option.
@@ -23054,7 +23054,7 @@ export class CaseApi extends BaseAPI {
     }
 
     /**
-     * 
+     * Manage column sets used for read/write scopes and default column groupings.
      * @summary Case Type Col Sets  Get Some
      * @param {string} ids 
      * @param {*} [options] Override http request option.
@@ -23066,7 +23066,7 @@ export class CaseApi extends BaseAPI {
     }
 
     /**
-     * 
+     * Manage column sets used for read/write scopes and default column groupings.
      * @summary Case Type Col Sets  Post One
      * @param {CaseTypeColSet} caseTypeColSet 
      * @param {*} [options] Override http request option.
@@ -23078,7 +23078,7 @@ export class CaseApi extends BaseAPI {
     }
 
     /**
-     * 
+     * Manage column sets used for read/write scopes and default column groupings.
      * @summary Case Type Col Sets  Post Query
      * @param {EpiFilter} filter 
      * @param {*} [options] Override http request option.
@@ -23090,7 +23090,7 @@ export class CaseApi extends BaseAPI {
     }
 
     /**
-     * 
+     * Manage column sets used for read/write scopes and default column groupings.
      * @summary Case Type Col Sets  Post Query  Ids
      * @param {EpiFilter} filter 
      * @param {*} [options] Override http request option.
@@ -23102,7 +23102,7 @@ export class CaseApi extends BaseAPI {
     }
 
     /**
-     * 
+     * Manage column sets used for read/write scopes and default column groupings.
      * @summary Case Type Col Sets  Post Some
      * @param {Array<CaseTypeColSet>} caseTypeColSet 
      * @param {*} [options] Override http request option.
@@ -23114,7 +23114,7 @@ export class CaseApi extends BaseAPI {
     }
 
     /**
-     * 
+     * Replace the columns in a case-type column set with the provided members so read/write scopes and UI column groupings stay aligned.
      * @summary Update Association Between Casetypecolset And Casetypecol
      * @param {string} caseTypeColSetId 
      * @param {UpdateCaseTypeColSetCaseTypeColsRequestBody} updateCaseTypeColSetCaseTypeColsRequestBody 
@@ -23127,7 +23127,7 @@ export class CaseApi extends BaseAPI {
     }
 
     /**
-     * 
+     * Manage column sets used for read/write scopes and default column groupings.
      * @summary Case Type Col Sets  Put One
      * @param {string} objectId 
      * @param {CaseTypeColSet} caseTypeColSet 
@@ -23140,7 +23140,7 @@ export class CaseApi extends BaseAPI {
     }
 
     /**
-     * 
+     * Manage column sets used for read/write scopes and default column groupings.
      * @summary Case Type Col Sets  Put Some
      * @param {Array<CaseTypeColSet>} caseTypeColSet 
      * @param {*} [options] Override http request option.
@@ -23152,7 +23152,7 @@ export class CaseApi extends BaseAPI {
     }
 
     /**
-     * 
+     * Manage case-type columns: datatype, vocab/region bindings, and genetic-distance settings.
      * @summary Case Type Cols  Delete All
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
@@ -23163,7 +23163,7 @@ export class CaseApi extends BaseAPI {
     }
 
     /**
-     * 
+     * Manage case-type columns: datatype, vocab/region bindings, and genetic-distance settings.
      * @summary Case Type Cols  Delete One
      * @param {any} objectId 
      * @param {*} [options] Override http request option.
@@ -23175,7 +23175,7 @@ export class CaseApi extends BaseAPI {
     }
 
     /**
-     * 
+     * Manage case-type columns: datatype, vocab/region bindings, and genetic-distance settings.
      * @summary Case Type Cols  Delete Some
      * @param {string} ids 
      * @param {*} [options] Override http request option.
@@ -23187,7 +23187,7 @@ export class CaseApi extends BaseAPI {
     }
 
     /**
-     * 
+     * Manage case-type columns: datatype, vocab/region bindings, and genetic-distance settings.
      * @summary Case Type Cols  Get All
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
@@ -23198,7 +23198,7 @@ export class CaseApi extends BaseAPI {
     }
 
     /**
-     * 
+     * Manage case-type columns: datatype, vocab/region bindings, and genetic-distance settings.
      * @summary Case Type Cols  Get One
      * @param {string} objectId 
      * @param {*} [options] Override http request option.
@@ -23210,7 +23210,7 @@ export class CaseApi extends BaseAPI {
     }
 
     /**
-     * 
+     * Manage case-type columns: datatype, vocab/region bindings, and genetic-distance settings.
      * @summary Case Type Cols  Get Some
      * @param {string} ids 
      * @param {*} [options] Override http request option.
@@ -23222,7 +23222,7 @@ export class CaseApi extends BaseAPI {
     }
 
     /**
-     * 
+     * Manage case-type columns: datatype, vocab/region bindings, and genetic-distance settings.
      * @summary Case Type Cols  Post One
      * @param {CaseTypeCol} caseTypeCol 
      * @param {*} [options] Override http request option.
@@ -23234,7 +23234,7 @@ export class CaseApi extends BaseAPI {
     }
 
     /**
-     * 
+     * Manage case-type columns: datatype, vocab/region bindings, and genetic-distance settings.
      * @summary Case Type Cols  Post Query
      * @param {EpiFilter} filter 
      * @param {*} [options] Override http request option.
@@ -23246,7 +23246,7 @@ export class CaseApi extends BaseAPI {
     }
 
     /**
-     * 
+     * Manage case-type columns: datatype, vocab/region bindings, and genetic-distance settings.
      * @summary Case Type Cols  Post Query  Ids
      * @param {EpiFilter} filter 
      * @param {*} [options] Override http request option.
@@ -23258,7 +23258,7 @@ export class CaseApi extends BaseAPI {
     }
 
     /**
-     * 
+     * Manage case-type columns: datatype, vocab/region bindings, and genetic-distance settings.
      * @summary Case Type Cols  Post Some
      * @param {Array<CaseTypeCol>} caseTypeCol 
      * @param {*} [options] Override http request option.
@@ -23270,7 +23270,7 @@ export class CaseApi extends BaseAPI {
     }
 
     /**
-     * 
+     * Manage case-type columns: datatype, vocab/region bindings, and genetic-distance settings.
      * @summary Case Type Cols  Put One
      * @param {string} objectId 
      * @param {CaseTypeCol} caseTypeCol 
@@ -23283,7 +23283,7 @@ export class CaseApi extends BaseAPI {
     }
 
     /**
-     * 
+     * Manage case-type columns: datatype, vocab/region bindings, and genetic-distance settings.
      * @summary Case Type Cols  Put Some
      * @param {Array<CaseTypeCol>} caseTypeCol 
      * @param {*} [options] Override http request option.
@@ -23295,7 +23295,7 @@ export class CaseApi extends BaseAPI {
     }
 
     /**
-     * 
+     * Manage dimensions that group case-type columns (e.g., demographics, sample, sequencing).
      * @summary Case Type Dims  Delete All
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
@@ -23306,7 +23306,7 @@ export class CaseApi extends BaseAPI {
     }
 
     /**
-     * 
+     * Manage dimensions that group case-type columns (e.g., demographics, sample, sequencing).
      * @summary Case Type Dims  Delete One
      * @param {any} objectId 
      * @param {*} [options] Override http request option.
@@ -23318,7 +23318,7 @@ export class CaseApi extends BaseAPI {
     }
 
     /**
-     * 
+     * Manage dimensions that group case-type columns (e.g., demographics, sample, sequencing).
      * @summary Case Type Dims  Delete Some
      * @param {string} ids 
      * @param {*} [options] Override http request option.
@@ -23330,7 +23330,7 @@ export class CaseApi extends BaseAPI {
     }
 
     /**
-     * 
+     * Manage dimensions that group case-type columns (e.g., demographics, sample, sequencing).
      * @summary Case Type Dims  Get All
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
@@ -23341,7 +23341,7 @@ export class CaseApi extends BaseAPI {
     }
 
     /**
-     * 
+     * Manage dimensions that group case-type columns (e.g., demographics, sample, sequencing).
      * @summary Case Type Dims  Get One
      * @param {string} objectId 
      * @param {*} [options] Override http request option.
@@ -23353,7 +23353,7 @@ export class CaseApi extends BaseAPI {
     }
 
     /**
-     * 
+     * Manage dimensions that group case-type columns (e.g., demographics, sample, sequencing).
      * @summary Case Type Dims  Get Some
      * @param {string} ids 
      * @param {*} [options] Override http request option.
@@ -23365,7 +23365,7 @@ export class CaseApi extends BaseAPI {
     }
 
     /**
-     * 
+     * Manage dimensions that group case-type columns (e.g., demographics, sample, sequencing).
      * @summary Case Type Dims  Post One
      * @param {CaseTypeDim} caseTypeDim 
      * @param {*} [options] Override http request option.
@@ -23377,7 +23377,7 @@ export class CaseApi extends BaseAPI {
     }
 
     /**
-     * 
+     * Manage dimensions that group case-type columns (e.g., demographics, sample, sequencing).
      * @summary Case Type Dims  Post Query
      * @param {EpiFilter} filter 
      * @param {*} [options] Override http request option.
@@ -23389,7 +23389,7 @@ export class CaseApi extends BaseAPI {
     }
 
     /**
-     * 
+     * Manage dimensions that group case-type columns (e.g., demographics, sample, sequencing).
      * @summary Case Type Dims  Post Query  Ids
      * @param {EpiFilter} filter 
      * @param {*} [options] Override http request option.
@@ -23401,7 +23401,7 @@ export class CaseApi extends BaseAPI {
     }
 
     /**
-     * 
+     * Manage dimensions that group case-type columns (e.g., demographics, sample, sequencing).
      * @summary Case Type Dims  Post Some
      * @param {Array<CaseTypeDim>} caseTypeDim 
      * @param {*} [options] Override http request option.
@@ -23413,7 +23413,7 @@ export class CaseApi extends BaseAPI {
     }
 
     /**
-     * 
+     * Manage dimensions that group case-type columns (e.g., demographics, sample, sequencing).
      * @summary Case Type Dims  Put One
      * @param {string} objectId 
      * @param {CaseTypeDim} caseTypeDim 
@@ -23426,7 +23426,7 @@ export class CaseApi extends BaseAPI {
     }
 
     /**
-     * 
+     * Manage dimensions that group case-type columns (e.g., demographics, sample, sequencing).
      * @summary Case Type Dims  Put Some
      * @param {Array<CaseTypeDim>} caseTypeDim 
      * @param {*} [options] Override http request option.
@@ -23438,7 +23438,7 @@ export class CaseApi extends BaseAPI {
     }
 
     /**
-     * 
+     * Maintain categories used to organize case-type sets for policy scoping.
      * @summary Case Type Set Categories  Delete All
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
@@ -23449,7 +23449,7 @@ export class CaseApi extends BaseAPI {
     }
 
     /**
-     * 
+     * Maintain categories used to organize case-type sets for policy scoping.
      * @summary Case Type Set Categories  Delete One
      * @param {any} objectId 
      * @param {*} [options] Override http request option.
@@ -23461,7 +23461,7 @@ export class CaseApi extends BaseAPI {
     }
 
     /**
-     * 
+     * Maintain categories used to organize case-type sets for policy scoping.
      * @summary Case Type Set Categories  Delete Some
      * @param {string} ids 
      * @param {*} [options] Override http request option.
@@ -23473,7 +23473,7 @@ export class CaseApi extends BaseAPI {
     }
 
     /**
-     * 
+     * Maintain categories used to organize case-type sets for policy scoping.
      * @summary Case Type Set Categories  Get All
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
@@ -23484,7 +23484,7 @@ export class CaseApi extends BaseAPI {
     }
 
     /**
-     * 
+     * Maintain categories used to organize case-type sets for policy scoping.
      * @summary Case Type Set Categories  Get One
      * @param {string} objectId 
      * @param {*} [options] Override http request option.
@@ -23496,7 +23496,7 @@ export class CaseApi extends BaseAPI {
     }
 
     /**
-     * 
+     * Maintain categories used to organize case-type sets for policy scoping.
      * @summary Case Type Set Categories  Get Some
      * @param {string} ids 
      * @param {*} [options] Override http request option.
@@ -23508,7 +23508,7 @@ export class CaseApi extends BaseAPI {
     }
 
     /**
-     * 
+     * Maintain categories used to organize case-type sets for policy scoping.
      * @summary Case Type Set Categories  Post One
      * @param {CaseTypeSetCategory} caseTypeSetCategory 
      * @param {*} [options] Override http request option.
@@ -23520,7 +23520,7 @@ export class CaseApi extends BaseAPI {
     }
 
     /**
-     * 
+     * Maintain categories used to organize case-type sets for policy scoping.
      * @summary Case Type Set Categories  Post Query
      * @param {EpiFilter} filter 
      * @param {*} [options] Override http request option.
@@ -23532,7 +23532,7 @@ export class CaseApi extends BaseAPI {
     }
 
     /**
-     * 
+     * Maintain categories used to organize case-type sets for policy scoping.
      * @summary Case Type Set Categories  Post Query  Ids
      * @param {EpiFilter} filter 
      * @param {*} [options] Override http request option.
@@ -23544,7 +23544,7 @@ export class CaseApi extends BaseAPI {
     }
 
     /**
-     * 
+     * Maintain categories used to organize case-type sets for policy scoping.
      * @summary Case Type Set Categories  Post Some
      * @param {Array<CaseTypeSetCategory>} caseTypeSetCategory 
      * @param {*} [options] Override http request option.
@@ -23556,7 +23556,7 @@ export class CaseApi extends BaseAPI {
     }
 
     /**
-     * 
+     * Maintain categories used to organize case-type sets for policy scoping.
      * @summary Case Type Set Categories  Put One
      * @param {string} objectId 
      * @param {CaseTypeSetCategory} caseTypeSetCategory 
@@ -23569,7 +23569,7 @@ export class CaseApi extends BaseAPI {
     }
 
     /**
-     * 
+     * Maintain categories used to organize case-type sets for policy scoping.
      * @summary Case Type Set Categories  Put Some
      * @param {Array<CaseTypeSetCategory>} caseTypeSetCategory 
      * @param {*} [options] Override http request option.
@@ -23581,7 +23581,7 @@ export class CaseApi extends BaseAPI {
     }
 
     /**
-     * 
+     * Manage which case types belong to a case-type set.
      * @summary Case Type Set Members  Delete All
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
@@ -23592,7 +23592,7 @@ export class CaseApi extends BaseAPI {
     }
 
     /**
-     * 
+     * Manage which case types belong to a case-type set.
      * @summary Case Type Set Members  Delete One
      * @param {any} objectId 
      * @param {*} [options] Override http request option.
@@ -23604,7 +23604,7 @@ export class CaseApi extends BaseAPI {
     }
 
     /**
-     * 
+     * Manage which case types belong to a case-type set.
      * @summary Case Type Set Members  Delete Some
      * @param {string} ids 
      * @param {*} [options] Override http request option.
@@ -23616,7 +23616,7 @@ export class CaseApi extends BaseAPI {
     }
 
     /**
-     * 
+     * Manage which case types belong to a case-type set.
      * @summary Case Type Set Members  Get All
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
@@ -23627,7 +23627,7 @@ export class CaseApi extends BaseAPI {
     }
 
     /**
-     * 
+     * Manage which case types belong to a case-type set.
      * @summary Case Type Set Members  Get One
      * @param {string} objectId 
      * @param {*} [options] Override http request option.
@@ -23639,7 +23639,7 @@ export class CaseApi extends BaseAPI {
     }
 
     /**
-     * 
+     * Manage which case types belong to a case-type set.
      * @summary Case Type Set Members  Get Some
      * @param {string} ids 
      * @param {*} [options] Override http request option.
@@ -23651,7 +23651,7 @@ export class CaseApi extends BaseAPI {
     }
 
     /**
-     * 
+     * Manage which case types belong to a case-type set.
      * @summary Case Type Set Members  Post One
      * @param {CaseTypeSetMember} caseTypeSetMember 
      * @param {*} [options] Override http request option.
@@ -23663,7 +23663,7 @@ export class CaseApi extends BaseAPI {
     }
 
     /**
-     * 
+     * Manage which case types belong to a case-type set.
      * @summary Case Type Set Members  Post Query
      * @param {EpiFilter} filter 
      * @param {*} [options] Override http request option.
@@ -23675,7 +23675,7 @@ export class CaseApi extends BaseAPI {
     }
 
     /**
-     * 
+     * Manage which case types belong to a case-type set.
      * @summary Case Type Set Members  Post Query  Ids
      * @param {EpiFilter} filter 
      * @param {*} [options] Override http request option.
@@ -23687,7 +23687,7 @@ export class CaseApi extends BaseAPI {
     }
 
     /**
-     * 
+     * Manage which case types belong to a case-type set.
      * @summary Case Type Set Members  Post Some
      * @param {Array<CaseTypeSetMember>} caseTypeSetMember 
      * @param {*} [options] Override http request option.
@@ -23699,7 +23699,7 @@ export class CaseApi extends BaseAPI {
     }
 
     /**
-     * 
+     * Manage which case types belong to a case-type set.
      * @summary Case Type Set Members  Put One
      * @param {string} objectId 
      * @param {CaseTypeSetMember} caseTypeSetMember 
@@ -23712,7 +23712,7 @@ export class CaseApi extends BaseAPI {
     }
 
     /**
-     * 
+     * Manage which case types belong to a case-type set.
      * @summary Case Type Set Members  Put Some
      * @param {Array<CaseTypeSetMember>} caseTypeSetMember 
      * @param {*} [options] Override http request option.
@@ -23724,7 +23724,7 @@ export class CaseApi extends BaseAPI {
     }
 
     /**
-     * 
+     * Manage sets of related case types reused in access policies and presets.
      * @summary Case Type Sets  Delete All
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
@@ -23735,7 +23735,7 @@ export class CaseApi extends BaseAPI {
     }
 
     /**
-     * 
+     * Manage sets of related case types reused in access policies and presets.
      * @summary Case Type Sets  Delete One
      * @param {any} objectId 
      * @param {*} [options] Override http request option.
@@ -23747,7 +23747,7 @@ export class CaseApi extends BaseAPI {
     }
 
     /**
-     * 
+     * Manage sets of related case types reused in access policies and presets.
      * @summary Case Type Sets  Delete Some
      * @param {string} ids 
      * @param {*} [options] Override http request option.
@@ -23759,7 +23759,7 @@ export class CaseApi extends BaseAPI {
     }
 
     /**
-     * 
+     * Manage sets of related case types reused in access policies and presets.
      * @summary Case Type Sets  Get All
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
@@ -23770,7 +23770,7 @@ export class CaseApi extends BaseAPI {
     }
 
     /**
-     * 
+     * Manage sets of related case types reused in access policies and presets.
      * @summary Case Type Sets  Get One
      * @param {string} objectId 
      * @param {*} [options] Override http request option.
@@ -23782,7 +23782,7 @@ export class CaseApi extends BaseAPI {
     }
 
     /**
-     * 
+     * Manage sets of related case types reused in access policies and presets.
      * @summary Case Type Sets  Get Some
      * @param {string} ids 
      * @param {*} [options] Override http request option.
@@ -23794,7 +23794,7 @@ export class CaseApi extends BaseAPI {
     }
 
     /**
-     * 
+     * Manage sets of related case types reused in access policies and presets.
      * @summary Case Type Sets  Post One
      * @param {CaseTypeSet} caseTypeSet 
      * @param {*} [options] Override http request option.
@@ -23806,7 +23806,7 @@ export class CaseApi extends BaseAPI {
     }
 
     /**
-     * 
+     * Manage sets of related case types reused in access policies and presets.
      * @summary Case Type Sets  Post Query
      * @param {EpiFilter} filter 
      * @param {*} [options] Override http request option.
@@ -23818,7 +23818,7 @@ export class CaseApi extends BaseAPI {
     }
 
     /**
-     * 
+     * Manage sets of related case types reused in access policies and presets.
      * @summary Case Type Sets  Post Query  Ids
      * @param {EpiFilter} filter 
      * @param {*} [options] Override http request option.
@@ -23830,7 +23830,7 @@ export class CaseApi extends BaseAPI {
     }
 
     /**
-     * 
+     * Manage sets of related case types reused in access policies and presets.
      * @summary Case Type Sets  Post Some
      * @param {Array<CaseTypeSet>} caseTypeSet 
      * @param {*} [options] Override http request option.
@@ -23842,7 +23842,7 @@ export class CaseApi extends BaseAPI {
     }
 
     /**
-     * 
+     * Replace the case types in a case-type set with the provided list of members, keeping the set in sync for downstream access policies and presets.
      * @summary Update Association Between Casetypeset And Casetype
      * @param {string} caseTypeSetId 
      * @param {UpdateCaseTypeSetCaseTypesRequestBody} updateCaseTypeSetCaseTypesRequestBody 
@@ -23855,7 +23855,7 @@ export class CaseApi extends BaseAPI {
     }
 
     /**
-     * 
+     * Manage sets of related case types reused in access policies and presets.
      * @summary Case Type Sets  Put One
      * @param {string} objectId 
      * @param {CaseTypeSet} caseTypeSet 
@@ -23868,7 +23868,7 @@ export class CaseApi extends BaseAPI {
     }
 
     /**
-     * 
+     * Manage sets of related case types reused in access policies and presets.
      * @summary Case Type Sets  Put Some
      * @param {Array<CaseTypeSet>} caseTypeSet 
      * @param {*} [options] Override http request option.
@@ -23880,7 +23880,7 @@ export class CaseApi extends BaseAPI {
     }
 
     /**
-     * 
+     * Manage case types—the structural and default definitions cases must follow.
      * @summary Case Types  Delete All
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
@@ -23891,7 +23891,7 @@ export class CaseApi extends BaseAPI {
     }
 
     /**
-     * 
+     * Manage case types—the structural and default definitions cases must follow.
      * @summary Case Types  Delete One
      * @param {any} objectId 
      * @param {*} [options] Override http request option.
@@ -23903,7 +23903,7 @@ export class CaseApi extends BaseAPI {
     }
 
     /**
-     * 
+     * Manage case types—the structural and default definitions cases must follow.
      * @summary Case Types  Delete Some
      * @param {string} ids 
      * @param {*} [options] Override http request option.
@@ -23915,7 +23915,7 @@ export class CaseApi extends BaseAPI {
     }
 
     /**
-     * 
+     * Manage case types—the structural and default definitions cases must follow.
      * @summary Case Types  Get All
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
@@ -23926,7 +23926,7 @@ export class CaseApi extends BaseAPI {
     }
 
     /**
-     * 
+     * Manage case types—the structural and default definitions cases must follow.
      * @summary Case Types  Get One
      * @param {string} objectId 
      * @param {*} [options] Override http request option.
@@ -23938,7 +23938,7 @@ export class CaseApi extends BaseAPI {
     }
 
     /**
-     * 
+     * Manage case types—the structural and default definitions cases must follow.
      * @summary Case Types  Get Some
      * @param {string} ids 
      * @param {*} [options] Override http request option.
@@ -23950,7 +23950,7 @@ export class CaseApi extends BaseAPI {
     }
 
     /**
-     * 
+     * Manage case types—the structural and default definitions cases must follow.
      * @summary Case Types  Post One
      * @param {CaseType} caseType 
      * @param {*} [options] Override http request option.
@@ -23962,7 +23962,7 @@ export class CaseApi extends BaseAPI {
     }
 
     /**
-     * 
+     * Manage case types—the structural and default definitions cases must follow.
      * @summary Case Types  Post Query
      * @param {EpiFilter} filter 
      * @param {*} [options] Override http request option.
@@ -23974,7 +23974,7 @@ export class CaseApi extends BaseAPI {
     }
 
     /**
-     * 
+     * Manage case types—the structural and default definitions cases must follow.
      * @summary Case Types  Post Query  Ids
      * @param {EpiFilter} filter 
      * @param {*} [options] Override http request option.
@@ -23986,7 +23986,7 @@ export class CaseApi extends BaseAPI {
     }
 
     /**
-     * 
+     * Manage case types—the structural and default definitions cases must follow.
      * @summary Case Types  Post Some
      * @param {Array<CaseType>} caseType 
      * @param {*} [options] Override http request option.
@@ -23998,7 +23998,7 @@ export class CaseApi extends BaseAPI {
     }
 
     /**
-     * 
+     * Manage case types—the structural and default definitions cases must follow.
      * @summary Case Types  Put One
      * @param {string} objectId 
      * @param {CaseType} caseType 
@@ -24011,7 +24011,7 @@ export class CaseApi extends BaseAPI {
     }
 
     /**
-     * 
+     * Manage case types—the structural and default definitions cases must follow.
      * @summary Case Types  Put Some
      * @param {Array<CaseType>} caseType 
      * @param {*} [options] Override http request option.
@@ -24023,7 +24023,7 @@ export class CaseApi extends BaseAPI {
     }
 
     /**
-     * 
+     * Manage cases (list/get/create/update/delete) with typed content tied to a case type, subject, and data collection.
      * @summary Cases  Delete All
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
@@ -24034,7 +24034,7 @@ export class CaseApi extends BaseAPI {
     }
 
     /**
-     * 
+     * Manage cases (list/get/create/update/delete) with typed content tied to a case type, subject, and data collection.
      * @summary Cases  Delete One
      * @param {any} objectId 
      * @param {*} [options] Override http request option.
@@ -24046,7 +24046,7 @@ export class CaseApi extends BaseAPI {
     }
 
     /**
-     * 
+     * Manage cases (list/get/create/update/delete) with typed content tied to a case type, subject, and data collection.
      * @summary Cases  Delete Some
      * @param {string} ids 
      * @param {*} [options] Override http request option.
@@ -24058,7 +24058,7 @@ export class CaseApi extends BaseAPI {
     }
 
     /**
-     * 
+     * Manage cases (list/get/create/update/delete) with typed content tied to a case type, subject, and data collection.
      * @summary Cases  Get All
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
@@ -24069,7 +24069,7 @@ export class CaseApi extends BaseAPI {
     }
 
     /**
-     * 
+     * Manage cases (list/get/create/update/delete) with typed content tied to a case type, subject, and data collection.
      * @summary Cases  Get One
      * @param {string} objectId 
      * @param {*} [options] Override http request option.
@@ -24081,7 +24081,7 @@ export class CaseApi extends BaseAPI {
     }
 
     /**
-     * 
+     * Manage cases (list/get/create/update/delete) with typed content tied to a case type, subject, and data collection.
      * @summary Cases  Get Some
      * @param {string} ids 
      * @param {*} [options] Override http request option.
@@ -24093,7 +24093,7 @@ export class CaseApi extends BaseAPI {
     }
 
     /**
-     * 
+     * Manage cases (list/get/create/update/delete) with typed content tied to a case type, subject, and data collection.
      * @summary Cases  Post One
      * @param {Case} _case 
      * @param {*} [options] Override http request option.
@@ -24105,7 +24105,7 @@ export class CaseApi extends BaseAPI {
     }
 
     /**
-     * 
+     * Manage cases (list/get/create/update/delete) with typed content tied to a case type, subject, and data collection.
      * @summary Cases  Post Query
      * @param {EpiFilter} filter 
      * @param {*} [options] Override http request option.
@@ -24117,7 +24117,7 @@ export class CaseApi extends BaseAPI {
     }
 
     /**
-     * 
+     * Manage cases (list/get/create/update/delete) with typed content tied to a case type, subject, and data collection.
      * @summary Cases  Post Query  Ids
      * @param {EpiFilter} filter 
      * @param {*} [options] Override http request option.
@@ -24129,7 +24129,7 @@ export class CaseApi extends BaseAPI {
     }
 
     /**
-     * 
+     * Manage cases (list/get/create/update/delete) with typed content tied to a case type, subject, and data collection.
      * @summary Cases  Post Some
      * @param {Array<Case>} _case 
      * @param {*} [options] Override http request option.
@@ -24141,7 +24141,7 @@ export class CaseApi extends BaseAPI {
     }
 
     /**
-     * 
+     * Manage cases (list/get/create/update/delete) with typed content tied to a case type, subject, and data collection.
      * @summary Cases  Put One
      * @param {string} objectId 
      * @param {Case} _case 
@@ -24154,7 +24154,7 @@ export class CaseApi extends BaseAPI {
     }
 
     /**
-     * 
+     * Manage cases (list/get/create/update/delete) with typed content tied to a case type, subject, and data collection.
      * @summary Cases  Put Some
      * @param {Array<Case>} _case 
      * @param {*} [options] Override http request option.
@@ -24166,7 +24166,7 @@ export class CaseApi extends BaseAPI {
     }
 
     /**
-     * 
+     * Manage reusable column definitions (code/label/type) referenced by case-type columns and vocabularies.
      * @summary Cols  Delete All
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
@@ -24177,7 +24177,7 @@ export class CaseApi extends BaseAPI {
     }
 
     /**
-     * 
+     * Manage reusable column definitions (code/label/type) referenced by case-type columns and vocabularies.
      * @summary Cols  Delete One
      * @param {any} objectId 
      * @param {*} [options] Override http request option.
@@ -24189,7 +24189,7 @@ export class CaseApi extends BaseAPI {
     }
 
     /**
-     * 
+     * Manage reusable column definitions (code/label/type) referenced by case-type columns and vocabularies.
      * @summary Cols  Delete Some
      * @param {string} ids 
      * @param {*} [options] Override http request option.
@@ -24201,7 +24201,7 @@ export class CaseApi extends BaseAPI {
     }
 
     /**
-     * 
+     * Manage reusable column definitions (code/label/type) referenced by case-type columns and vocabularies.
      * @summary Cols  Get All
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
@@ -24212,7 +24212,7 @@ export class CaseApi extends BaseAPI {
     }
 
     /**
-     * 
+     * Manage reusable column definitions (code/label/type) referenced by case-type columns and vocabularies.
      * @summary Cols  Get One
      * @param {string} objectId 
      * @param {*} [options] Override http request option.
@@ -24224,7 +24224,7 @@ export class CaseApi extends BaseAPI {
     }
 
     /**
-     * 
+     * Manage reusable column definitions (code/label/type) referenced by case-type columns and vocabularies.
      * @summary Cols  Get Some
      * @param {string} ids 
      * @param {*} [options] Override http request option.
@@ -24236,7 +24236,7 @@ export class CaseApi extends BaseAPI {
     }
 
     /**
-     * 
+     * Manage reusable column definitions (code/label/type) referenced by case-type columns and vocabularies.
      * @summary Cols  Post One
      * @param {Col} col 
      * @param {*} [options] Override http request option.
@@ -24248,7 +24248,7 @@ export class CaseApi extends BaseAPI {
     }
 
     /**
-     * 
+     * Manage reusable column definitions (code/label/type) referenced by case-type columns and vocabularies.
      * @summary Cols  Post Query
      * @param {EpiFilter} filter 
      * @param {*} [options] Override http request option.
@@ -24260,7 +24260,7 @@ export class CaseApi extends BaseAPI {
     }
 
     /**
-     * 
+     * Manage reusable column definitions (code/label/type) referenced by case-type columns and vocabularies.
      * @summary Cols  Post Query  Ids
      * @param {EpiFilter} filter 
      * @param {*} [options] Override http request option.
@@ -24272,7 +24272,7 @@ export class CaseApi extends BaseAPI {
     }
 
     /**
-     * 
+     * Manage reusable column definitions (code/label/type) referenced by case-type columns and vocabularies.
      * @summary Cols  Post Some
      * @param {Array<Col>} col 
      * @param {*} [options] Override http request option.
@@ -24284,7 +24284,7 @@ export class CaseApi extends BaseAPI {
     }
 
     /**
-     * 
+     * Manage reusable column definitions (code/label/type) referenced by case-type columns and vocabularies.
      * @summary Cols  Put One
      * @param {string} objectId 
      * @param {Col} col 
@@ -24297,7 +24297,7 @@ export class CaseApi extends BaseAPI {
     }
 
     /**
-     * 
+     * Manage reusable column definitions (code/label/type) referenced by case-type columns and vocabularies.
      * @summary Cols  Put Some
      * @param {Array<Col>} col 
      * @param {*} [options] Override http request option.
@@ -24344,7 +24344,7 @@ export class CaseApi extends BaseAPI {
     }
 
     /**
-     * Create a file for a read set associated with a case.
+     * Upload a raw reads file (e.g., FASTQ) for a case\'s read-set column and return the stored file ID. Accepts base64 content, optional compression, and marks whether the payload is forward or reverse reads.
      * @summary Create File For Reads Set
      * @param {string} caseId 
      * @param {string} caseTypeColId 
@@ -24358,7 +24358,7 @@ export class CaseApi extends BaseAPI {
     }
 
     /**
-     * Create a file for a sequence associated with a case.
+     * Upload an assembled sequence file (e.g., FASTA) for a case\'s sequence column and return the stored file ID. Accepts base64 content with optional compression.
      * @summary Create File For Sequence
      * @param {string} caseId 
      * @param {string} caseTypeColId 
@@ -24372,7 +24372,7 @@ export class CaseApi extends BaseAPI {
     }
 
     /**
-     * 
+     * Manage column dimensions, including code prefixes and ordering, reused across case types.
      * @summary Dims  Delete All
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
@@ -24383,7 +24383,7 @@ export class CaseApi extends BaseAPI {
     }
 
     /**
-     * 
+     * Manage column dimensions, including code prefixes and ordering, reused across case types.
      * @summary Dims  Delete One
      * @param {any} objectId 
      * @param {*} [options] Override http request option.
@@ -24395,7 +24395,7 @@ export class CaseApi extends BaseAPI {
     }
 
     /**
-     * 
+     * Manage column dimensions, including code prefixes and ordering, reused across case types.
      * @summary Dims  Delete Some
      * @param {string} ids 
      * @param {*} [options] Override http request option.
@@ -24407,7 +24407,7 @@ export class CaseApi extends BaseAPI {
     }
 
     /**
-     * 
+     * Manage column dimensions, including code prefixes and ordering, reused across case types.
      * @summary Dims  Get All
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
@@ -24418,7 +24418,7 @@ export class CaseApi extends BaseAPI {
     }
 
     /**
-     * 
+     * Manage column dimensions, including code prefixes and ordering, reused across case types.
      * @summary Dims  Get One
      * @param {string} objectId 
      * @param {*} [options] Override http request option.
@@ -24430,7 +24430,7 @@ export class CaseApi extends BaseAPI {
     }
 
     /**
-     * 
+     * Manage column dimensions, including code prefixes and ordering, reused across case types.
      * @summary Dims  Get Some
      * @param {string} ids 
      * @param {*} [options] Override http request option.
@@ -24442,7 +24442,7 @@ export class CaseApi extends BaseAPI {
     }
 
     /**
-     * 
+     * Manage column dimensions, including code prefixes and ordering, reused across case types.
      * @summary Dims  Post One
      * @param {Dim} dim 
      * @param {*} [options] Override http request option.
@@ -24454,7 +24454,7 @@ export class CaseApi extends BaseAPI {
     }
 
     /**
-     * 
+     * Manage column dimensions, including code prefixes and ordering, reused across case types.
      * @summary Dims  Post Query
      * @param {EpiFilter} filter 
      * @param {*} [options] Override http request option.
@@ -24466,7 +24466,7 @@ export class CaseApi extends BaseAPI {
     }
 
     /**
-     * 
+     * Manage column dimensions, including code prefixes and ordering, reused across case types.
      * @summary Dims  Post Query  Ids
      * @param {EpiFilter} filter 
      * @param {*} [options] Override http request option.
@@ -24478,7 +24478,7 @@ export class CaseApi extends BaseAPI {
     }
 
     /**
-     * 
+     * Manage column dimensions, including code prefixes and ordering, reused across case types.
      * @summary Dims  Post Some
      * @param {Array<Dim>} dim 
      * @param {*} [options] Override http request option.
@@ -24490,7 +24490,7 @@ export class CaseApi extends BaseAPI {
     }
 
     /**
-     * 
+     * Manage column dimensions, including code prefixes and ordering, reused across case types.
      * @summary Dims  Put One
      * @param {string} objectId 
      * @param {Dim} dim 
@@ -24503,7 +24503,7 @@ export class CaseApi extends BaseAPI {
     }
 
     /**
-     * 
+     * Manage column dimensions, including code prefixes and ordering, reused across case types.
      * @summary Dims  Put Some
      * @param {Array<Dim>} dim 
      * @param {*} [options] Override http request option.
@@ -24515,7 +24515,7 @@ export class CaseApi extends BaseAPI {
     }
 
     /**
-     * 
+     * Manage genetic distance protocols (e.g., TN93) available for sequence comparisons in phylogenetic analyses.
      * @summary Genetic Distance Protocols  Delete All
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
@@ -24526,7 +24526,7 @@ export class CaseApi extends BaseAPI {
     }
 
     /**
-     * 
+     * Manage genetic distance protocols (e.g., TN93) available for sequence comparisons in phylogenetic analyses.
      * @summary Genetic Distance Protocols  Delete One
      * @param {any} objectId 
      * @param {*} [options] Override http request option.
@@ -24538,7 +24538,7 @@ export class CaseApi extends BaseAPI {
     }
 
     /**
-     * 
+     * Manage genetic distance protocols (e.g., TN93) available for sequence comparisons in phylogenetic analyses.
      * @summary Genetic Distance Protocols  Delete Some
      * @param {string} ids 
      * @param {*} [options] Override http request option.
@@ -24550,7 +24550,7 @@ export class CaseApi extends BaseAPI {
     }
 
     /**
-     * 
+     * Manage genetic distance protocols (e.g., TN93) available for sequence comparisons in phylogenetic analyses.
      * @summary Genetic Distance Protocols  Get All
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
@@ -24561,7 +24561,7 @@ export class CaseApi extends BaseAPI {
     }
 
     /**
-     * 
+     * Manage genetic distance protocols (e.g., TN93) available for sequence comparisons in phylogenetic analyses.
      * @summary Genetic Distance Protocols  Get One
      * @param {string} objectId 
      * @param {*} [options] Override http request option.
@@ -24573,7 +24573,7 @@ export class CaseApi extends BaseAPI {
     }
 
     /**
-     * 
+     * Manage genetic distance protocols (e.g., TN93) available for sequence comparisons in phylogenetic analyses.
      * @summary Genetic Distance Protocols  Get Some
      * @param {string} ids 
      * @param {*} [options] Override http request option.
@@ -24585,7 +24585,7 @@ export class CaseApi extends BaseAPI {
     }
 
     /**
-     * 
+     * Manage genetic distance protocols (e.g., TN93) available for sequence comparisons in phylogenetic analyses.
      * @summary Genetic Distance Protocols  Post One
      * @param {GeneticDistanceProtocol} geneticDistanceProtocol 
      * @param {*} [options] Override http request option.
@@ -24597,7 +24597,7 @@ export class CaseApi extends BaseAPI {
     }
 
     /**
-     * 
+     * Manage genetic distance protocols (e.g., TN93) available for sequence comparisons in phylogenetic analyses.
      * @summary Genetic Distance Protocols  Post Query
      * @param {EpiFilter} filter 
      * @param {*} [options] Override http request option.
@@ -24609,7 +24609,7 @@ export class CaseApi extends BaseAPI {
     }
 
     /**
-     * 
+     * Manage genetic distance protocols (e.g., TN93) available for sequence comparisons in phylogenetic analyses.
      * @summary Genetic Distance Protocols  Post Query  Ids
      * @param {EpiFilter} filter 
      * @param {*} [options] Override http request option.
@@ -24621,7 +24621,7 @@ export class CaseApi extends BaseAPI {
     }
 
     /**
-     * 
+     * Manage genetic distance protocols (e.g., TN93) available for sequence comparisons in phylogenetic analyses.
      * @summary Genetic Distance Protocols  Post Some
      * @param {Array<GeneticDistanceProtocol>} geneticDistanceProtocol 
      * @param {*} [options] Override http request option.
@@ -24633,7 +24633,7 @@ export class CaseApi extends BaseAPI {
     }
 
     /**
-     * 
+     * Manage genetic distance protocols (e.g., TN93) available for sequence comparisons in phylogenetic analyses.
      * @summary Genetic Distance Protocols  Put One
      * @param {string} objectId 
      * @param {GeneticDistanceProtocol} geneticDistanceProtocol 
@@ -24646,7 +24646,7 @@ export class CaseApi extends BaseAPI {
     }
 
     /**
-     * 
+     * Manage genetic distance protocols (e.g., TN93) available for sequence comparisons in phylogenetic analyses.
      * @summary Genetic Distance Protocols  Put Some
      * @param {Array<GeneticDistanceProtocol>} geneticDistanceProtocol 
      * @param {*} [options] Override http request option.
@@ -24658,7 +24658,7 @@ export class CaseApi extends BaseAPI {
     }
 
     /**
-     * Retrieve assembly protocols from seqdb database
+     * Retrieve the assembly protocols registered in seqdb for downstream sequence processing and provenance.
      * @summary Retrieve Assembly Protocols
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
@@ -24769,7 +24769,7 @@ export class CaseApi extends BaseAPI {
     }
 
     /**
-     * Retrieve sequencing protocols from seqdb database
+     * Retrieve the sequencing protocols registered in seqdb so clients can populate protocol pickers when uploading read sets.
      * @summary Retrieve Sequencing Protocols
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
@@ -24792,7 +24792,7 @@ export class CaseApi extends BaseAPI {
     }
 
     /**
-     * 
+     * Manage categories of phylogenetic algorithms and whether they require sequences vs. distance matrices.
      * @summary Tree Algorithm Classes  Delete All
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
@@ -24803,7 +24803,7 @@ export class CaseApi extends BaseAPI {
     }
 
     /**
-     * 
+     * Manage categories of phylogenetic algorithms and whether they require sequences vs. distance matrices.
      * @summary Tree Algorithm Classes  Delete One
      * @param {any} objectId 
      * @param {*} [options] Override http request option.
@@ -24815,7 +24815,7 @@ export class CaseApi extends BaseAPI {
     }
 
     /**
-     * 
+     * Manage categories of phylogenetic algorithms and whether they require sequences vs. distance matrices.
      * @summary Tree Algorithm Classes  Delete Some
      * @param {string} ids 
      * @param {*} [options] Override http request option.
@@ -24827,7 +24827,7 @@ export class CaseApi extends BaseAPI {
     }
 
     /**
-     * 
+     * Manage categories of phylogenetic algorithms and whether they require sequences vs. distance matrices.
      * @summary Tree Algorithm Classes  Get All
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
@@ -24838,7 +24838,7 @@ export class CaseApi extends BaseAPI {
     }
 
     /**
-     * 
+     * Manage categories of phylogenetic algorithms and whether they require sequences vs. distance matrices.
      * @summary Tree Algorithm Classes  Get One
      * @param {string} objectId 
      * @param {*} [options] Override http request option.
@@ -24850,7 +24850,7 @@ export class CaseApi extends BaseAPI {
     }
 
     /**
-     * 
+     * Manage categories of phylogenetic algorithms and whether they require sequences vs. distance matrices.
      * @summary Tree Algorithm Classes  Get Some
      * @param {string} ids 
      * @param {*} [options] Override http request option.
@@ -24862,7 +24862,7 @@ export class CaseApi extends BaseAPI {
     }
 
     /**
-     * 
+     * Manage categories of phylogenetic algorithms and whether they require sequences vs. distance matrices.
      * @summary Tree Algorithm Classes  Post One
      * @param {TreeAlgorithmClass} treeAlgorithmClass 
      * @param {*} [options] Override http request option.
@@ -24874,7 +24874,7 @@ export class CaseApi extends BaseAPI {
     }
 
     /**
-     * 
+     * Manage categories of phylogenetic algorithms and whether they require sequences vs. distance matrices.
      * @summary Tree Algorithm Classes  Post Query
      * @param {EpiFilter} filter 
      * @param {*} [options] Override http request option.
@@ -24886,7 +24886,7 @@ export class CaseApi extends BaseAPI {
     }
 
     /**
-     * 
+     * Manage categories of phylogenetic algorithms and whether they require sequences vs. distance matrices.
      * @summary Tree Algorithm Classes  Post Query  Ids
      * @param {EpiFilter} filter 
      * @param {*} [options] Override http request option.
@@ -24898,7 +24898,7 @@ export class CaseApi extends BaseAPI {
     }
 
     /**
-     * 
+     * Manage categories of phylogenetic algorithms and whether they require sequences vs. distance matrices.
      * @summary Tree Algorithm Classes  Post Some
      * @param {Array<TreeAlgorithmClass>} treeAlgorithmClass 
      * @param {*} [options] Override http request option.
@@ -24910,7 +24910,7 @@ export class CaseApi extends BaseAPI {
     }
 
     /**
-     * 
+     * Manage categories of phylogenetic algorithms and whether they require sequences vs. distance matrices.
      * @summary Tree Algorithm Classes  Put One
      * @param {string} objectId 
      * @param {TreeAlgorithmClass} treeAlgorithmClass 
@@ -24923,7 +24923,7 @@ export class CaseApi extends BaseAPI {
     }
 
     /**
-     * 
+     * Manage categories of phylogenetic algorithms and whether they require sequences vs. distance matrices.
      * @summary Tree Algorithm Classes  Put Some
      * @param {Array<TreeAlgorithmClass>} treeAlgorithmClass 
      * @param {*} [options] Override http request option.
@@ -24935,7 +24935,7 @@ export class CaseApi extends BaseAPI {
     }
 
     /**
-     * 
+     * Manage specific phylogenetic tree algorithms linked to seqdb implementations and parameters.
      * @summary Tree Algorithms  Delete All
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
@@ -24946,7 +24946,7 @@ export class CaseApi extends BaseAPI {
     }
 
     /**
-     * 
+     * Manage specific phylogenetic tree algorithms linked to seqdb implementations and parameters.
      * @summary Tree Algorithms  Delete One
      * @param {any} objectId 
      * @param {*} [options] Override http request option.
@@ -24958,7 +24958,7 @@ export class CaseApi extends BaseAPI {
     }
 
     /**
-     * 
+     * Manage specific phylogenetic tree algorithms linked to seqdb implementations and parameters.
      * @summary Tree Algorithms  Delete Some
      * @param {string} ids 
      * @param {*} [options] Override http request option.
@@ -24970,7 +24970,7 @@ export class CaseApi extends BaseAPI {
     }
 
     /**
-     * 
+     * Manage specific phylogenetic tree algorithms linked to seqdb implementations and parameters.
      * @summary Tree Algorithms  Get All
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
@@ -24981,7 +24981,7 @@ export class CaseApi extends BaseAPI {
     }
 
     /**
-     * 
+     * Manage specific phylogenetic tree algorithms linked to seqdb implementations and parameters.
      * @summary Tree Algorithms  Get One
      * @param {string} objectId 
      * @param {*} [options] Override http request option.
@@ -24993,7 +24993,7 @@ export class CaseApi extends BaseAPI {
     }
 
     /**
-     * 
+     * Manage specific phylogenetic tree algorithms linked to seqdb implementations and parameters.
      * @summary Tree Algorithms  Get Some
      * @param {string} ids 
      * @param {*} [options] Override http request option.
@@ -25005,7 +25005,7 @@ export class CaseApi extends BaseAPI {
     }
 
     /**
-     * 
+     * Manage specific phylogenetic tree algorithms linked to seqdb implementations and parameters.
      * @summary Tree Algorithms  Post One
      * @param {TreeAlgorithm} treeAlgorithm 
      * @param {*} [options] Override http request option.
@@ -25017,7 +25017,7 @@ export class CaseApi extends BaseAPI {
     }
 
     /**
-     * 
+     * Manage specific phylogenetic tree algorithms linked to seqdb implementations and parameters.
      * @summary Tree Algorithms  Post Query
      * @param {EpiFilter} filter 
      * @param {*} [options] Override http request option.
@@ -25029,7 +25029,7 @@ export class CaseApi extends BaseAPI {
     }
 
     /**
-     * 
+     * Manage specific phylogenetic tree algorithms linked to seqdb implementations and parameters.
      * @summary Tree Algorithms  Post Query  Ids
      * @param {EpiFilter} filter 
      * @param {*} [options] Override http request option.
@@ -25041,7 +25041,7 @@ export class CaseApi extends BaseAPI {
     }
 
     /**
-     * 
+     * Manage specific phylogenetic tree algorithms linked to seqdb implementations and parameters.
      * @summary Tree Algorithms  Post Some
      * @param {Array<TreeAlgorithm>} treeAlgorithm 
      * @param {*} [options] Override http request option.
@@ -25053,7 +25053,7 @@ export class CaseApi extends BaseAPI {
     }
 
     /**
-     * 
+     * Manage specific phylogenetic tree algorithms linked to seqdb implementations and parameters.
      * @summary Tree Algorithms  Put One
      * @param {string} objectId 
      * @param {TreeAlgorithm} treeAlgorithm 
@@ -25066,7 +25066,7 @@ export class CaseApi extends BaseAPI {
     }
 
     /**
-     * 
+     * Manage specific phylogenetic tree algorithms linked to seqdb implementations and parameters.
      * @summary Tree Algorithms  Put Some
      * @param {Array<TreeAlgorithm>} treeAlgorithm 
      * @param {*} [options] Override http request option.
@@ -28114,7 +28114,7 @@ export class GeoApi extends BaseAPI {
 const OntologyApiAxiosParamCreator = function (configuration?: Configuration) {
     return {
         /**
-         * 
+         * Manage hierarchical or semantic relationships between concepts (e.g., parent/child, broader/narrower).
          * @summary Concept Relations  Delete All
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
@@ -28144,7 +28144,7 @@ const OntologyApiAxiosParamCreator = function (configuration?: Configuration) {
             };
         },
         /**
-         * 
+         * Manage hierarchical or semantic relationships between concepts (e.g., parent/child, broader/narrower).
          * @summary Concept Relations  Delete One
          * @param {any} objectId 
          * @param {*} [options] Override http request option.
@@ -28178,7 +28178,7 @@ const OntologyApiAxiosParamCreator = function (configuration?: Configuration) {
             };
         },
         /**
-         * 
+         * Manage hierarchical or semantic relationships between concepts (e.g., parent/child, broader/narrower).
          * @summary Concept Relations  Delete Some
          * @param {string} ids 
          * @param {*} [options] Override http request option.
@@ -28215,7 +28215,7 @@ const OntologyApiAxiosParamCreator = function (configuration?: Configuration) {
             };
         },
         /**
-         * 
+         * Manage hierarchical or semantic relationships between concepts (e.g., parent/child, broader/narrower).
          * @summary Concept Relations  Get All
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
@@ -28245,7 +28245,7 @@ const OntologyApiAxiosParamCreator = function (configuration?: Configuration) {
             };
         },
         /**
-         * 
+         * Manage hierarchical or semantic relationships between concepts (e.g., parent/child, broader/narrower).
          * @summary Concept Relations  Get One
          * @param {string} objectId 
          * @param {*} [options] Override http request option.
@@ -28279,7 +28279,7 @@ const OntologyApiAxiosParamCreator = function (configuration?: Configuration) {
             };
         },
         /**
-         * 
+         * Manage hierarchical or semantic relationships between concepts (e.g., parent/child, broader/narrower).
          * @summary Concept Relations  Get Some
          * @param {string} ids 
          * @param {*} [options] Override http request option.
@@ -28316,7 +28316,7 @@ const OntologyApiAxiosParamCreator = function (configuration?: Configuration) {
             };
         },
         /**
-         * 
+         * Manage hierarchical or semantic relationships between concepts (e.g., parent/child, broader/narrower).
          * @summary Concept Relations  Post One
          * @param {ConceptRelation} conceptRelation 
          * @param {*} [options] Override http request option.
@@ -28352,7 +28352,7 @@ const OntologyApiAxiosParamCreator = function (configuration?: Configuration) {
             };
         },
         /**
-         * 
+         * Manage hierarchical or semantic relationships between concepts (e.g., parent/child, broader/narrower).
          * @summary Concept Relations  Post Query
          * @param {EpiFilter} filter 
          * @param {*} [options] Override http request option.
@@ -28388,7 +28388,7 @@ const OntologyApiAxiosParamCreator = function (configuration?: Configuration) {
             };
         },
         /**
-         * 
+         * Manage hierarchical or semantic relationships between concepts (e.g., parent/child, broader/narrower).
          * @summary Concept Relations  Post Query  Ids
          * @param {EpiFilter} filter 
          * @param {*} [options] Override http request option.
@@ -28424,7 +28424,7 @@ const OntologyApiAxiosParamCreator = function (configuration?: Configuration) {
             };
         },
         /**
-         * 
+         * Manage hierarchical or semantic relationships between concepts (e.g., parent/child, broader/narrower).
          * @summary Concept Relations  Post Some
          * @param {Array<ConceptRelation>} conceptRelation 
          * @param {*} [options] Override http request option.
@@ -28460,7 +28460,7 @@ const OntologyApiAxiosParamCreator = function (configuration?: Configuration) {
             };
         },
         /**
-         * 
+         * Manage hierarchical or semantic relationships between concepts (e.g., parent/child, broader/narrower).
          * @summary Concept Relations  Put One
          * @param {string} objectId 
          * @param {ConceptRelation} conceptRelation 
@@ -28500,7 +28500,7 @@ const OntologyApiAxiosParamCreator = function (configuration?: Configuration) {
             };
         },
         /**
-         * 
+         * Manage hierarchical or semantic relationships between concepts (e.g., parent/child, broader/narrower).
          * @summary Concept Relations  Put Some
          * @param {Array<ConceptRelation>} conceptRelation 
          * @param {*} [options] Override http request option.
@@ -28536,7 +28536,7 @@ const OntologyApiAxiosParamCreator = function (configuration?: Configuration) {
             };
         },
         /**
-         * 
+         * Manage controlled vocabularies and value sets (coded lists, regex/grammar-based) used by case variables.
          * @summary Concept Sets  Delete All
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
@@ -28566,7 +28566,7 @@ const OntologyApiAxiosParamCreator = function (configuration?: Configuration) {
             };
         },
         /**
-         * 
+         * Manage controlled vocabularies and value sets (coded lists, regex/grammar-based) used by case variables.
          * @summary Concept Sets  Delete One
          * @param {any} objectId 
          * @param {*} [options] Override http request option.
@@ -28600,7 +28600,7 @@ const OntologyApiAxiosParamCreator = function (configuration?: Configuration) {
             };
         },
         /**
-         * 
+         * Manage controlled vocabularies and value sets (coded lists, regex/grammar-based) used by case variables.
          * @summary Concept Sets  Delete Some
          * @param {string} ids 
          * @param {*} [options] Override http request option.
@@ -28637,7 +28637,7 @@ const OntologyApiAxiosParamCreator = function (configuration?: Configuration) {
             };
         },
         /**
-         * 
+         * Manage controlled vocabularies and value sets (coded lists, regex/grammar-based) used by case variables.
          * @summary Concept Sets  Get All
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
@@ -28667,7 +28667,7 @@ const OntologyApiAxiosParamCreator = function (configuration?: Configuration) {
             };
         },
         /**
-         * 
+         * Manage controlled vocabularies and value sets (coded lists, regex/grammar-based) used by case variables.
          * @summary Concept Sets  Get One
          * @param {string} objectId 
          * @param {*} [options] Override http request option.
@@ -28701,7 +28701,7 @@ const OntologyApiAxiosParamCreator = function (configuration?: Configuration) {
             };
         },
         /**
-         * 
+         * Manage controlled vocabularies and value sets (coded lists, regex/grammar-based) used by case variables.
          * @summary Concept Sets  Get Some
          * @param {string} ids 
          * @param {*} [options] Override http request option.
@@ -28738,7 +28738,7 @@ const OntologyApiAxiosParamCreator = function (configuration?: Configuration) {
             };
         },
         /**
-         * 
+         * Manage controlled vocabularies and value sets (coded lists, regex/grammar-based) used by case variables.
          * @summary Concept Sets  Post One
          * @param {ConceptSet} conceptSet 
          * @param {*} [options] Override http request option.
@@ -28774,7 +28774,7 @@ const OntologyApiAxiosParamCreator = function (configuration?: Configuration) {
             };
         },
         /**
-         * 
+         * Manage controlled vocabularies and value sets (coded lists, regex/grammar-based) used by case variables.
          * @summary Concept Sets  Post Query
          * @param {EpiFilter} filter 
          * @param {*} [options] Override http request option.
@@ -28810,7 +28810,7 @@ const OntologyApiAxiosParamCreator = function (configuration?: Configuration) {
             };
         },
         /**
-         * 
+         * Manage controlled vocabularies and value sets (coded lists, regex/grammar-based) used by case variables.
          * @summary Concept Sets  Post Query  Ids
          * @param {EpiFilter} filter 
          * @param {*} [options] Override http request option.
@@ -28846,7 +28846,7 @@ const OntologyApiAxiosParamCreator = function (configuration?: Configuration) {
             };
         },
         /**
-         * 
+         * Manage controlled vocabularies and value sets (coded lists, regex/grammar-based) used by case variables.
          * @summary Concept Sets  Post Some
          * @param {Array<ConceptSet>} conceptSet 
          * @param {*} [options] Override http request option.
@@ -28882,7 +28882,7 @@ const OntologyApiAxiosParamCreator = function (configuration?: Configuration) {
             };
         },
         /**
-         * 
+         * Manage controlled vocabularies and value sets (coded lists, regex/grammar-based) used by case variables.
          * @summary Concept Sets  Put One
          * @param {string} objectId 
          * @param {ConceptSet} conceptSet 
@@ -28922,7 +28922,7 @@ const OntologyApiAxiosParamCreator = function (configuration?: Configuration) {
             };
         },
         /**
-         * 
+         * Manage controlled vocabularies and value sets (coded lists, regex/grammar-based) used by case variables.
          * @summary Concept Sets  Put Some
          * @param {Array<ConceptSet>} conceptSet 
          * @param {*} [options] Override http request option.
@@ -28958,7 +28958,7 @@ const OntologyApiAxiosParamCreator = function (configuration?: Configuration) {
             };
         },
         /**
-         * 
+         * Manage concepts within a concept set, including codes, labels, and ordering.
          * @summary Concepts  Delete All
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
@@ -28988,7 +28988,7 @@ const OntologyApiAxiosParamCreator = function (configuration?: Configuration) {
             };
         },
         /**
-         * 
+         * Manage concepts within a concept set, including codes, labels, and ordering.
          * @summary Concepts  Delete One
          * @param {any} objectId 
          * @param {*} [options] Override http request option.
@@ -29022,7 +29022,7 @@ const OntologyApiAxiosParamCreator = function (configuration?: Configuration) {
             };
         },
         /**
-         * 
+         * Manage concepts within a concept set, including codes, labels, and ordering.
          * @summary Concepts  Delete Some
          * @param {string} ids 
          * @param {*} [options] Override http request option.
@@ -29059,7 +29059,7 @@ const OntologyApiAxiosParamCreator = function (configuration?: Configuration) {
             };
         },
         /**
-         * 
+         * Manage concepts within a concept set, including codes, labels, and ordering.
          * @summary Concepts  Get All
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
@@ -29089,7 +29089,7 @@ const OntologyApiAxiosParamCreator = function (configuration?: Configuration) {
             };
         },
         /**
-         * 
+         * Manage concepts within a concept set, including codes, labels, and ordering.
          * @summary Concepts  Get One
          * @param {string} objectId 
          * @param {*} [options] Override http request option.
@@ -29123,7 +29123,7 @@ const OntologyApiAxiosParamCreator = function (configuration?: Configuration) {
             };
         },
         /**
-         * 
+         * Manage concepts within a concept set, including codes, labels, and ordering.
          * @summary Concepts  Get Some
          * @param {string} ids 
          * @param {*} [options] Override http request option.
@@ -29160,7 +29160,7 @@ const OntologyApiAxiosParamCreator = function (configuration?: Configuration) {
             };
         },
         /**
-         * 
+         * Manage concepts within a concept set, including codes, labels, and ordering.
          * @summary Concepts  Post One
          * @param {Concept} concept 
          * @param {*} [options] Override http request option.
@@ -29196,7 +29196,7 @@ const OntologyApiAxiosParamCreator = function (configuration?: Configuration) {
             };
         },
         /**
-         * 
+         * Manage concepts within a concept set, including codes, labels, and ordering.
          * @summary Concepts  Post Query
          * @param {EpiFilter} filter 
          * @param {*} [options] Override http request option.
@@ -29232,7 +29232,7 @@ const OntologyApiAxiosParamCreator = function (configuration?: Configuration) {
             };
         },
         /**
-         * 
+         * Manage concepts within a concept set, including codes, labels, and ordering.
          * @summary Concepts  Post Query  Ids
          * @param {EpiFilter} filter 
          * @param {*} [options] Override http request option.
@@ -29268,7 +29268,7 @@ const OntologyApiAxiosParamCreator = function (configuration?: Configuration) {
             };
         },
         /**
-         * 
+         * Manage concepts within a concept set, including codes, labels, and ordering.
          * @summary Concepts  Post Some
          * @param {Array<Concept>} concept 
          * @param {*} [options] Override http request option.
@@ -29304,7 +29304,7 @@ const OntologyApiAxiosParamCreator = function (configuration?: Configuration) {
             };
         },
         /**
-         * 
+         * Manage concepts within a concept set, including codes, labels, and ordering.
          * @summary Concepts  Put One
          * @param {string} objectId 
          * @param {Concept} concept 
@@ -29344,7 +29344,7 @@ const OntologyApiAxiosParamCreator = function (configuration?: Configuration) {
             };
         },
         /**
-         * 
+         * Manage concepts within a concept set, including codes, labels, and ordering.
          * @summary Concepts  Put Some
          * @param {Array<Concept>} concept 
          * @param {*} [options] Override http request option.
@@ -29380,7 +29380,7 @@ const OntologyApiAxiosParamCreator = function (configuration?: Configuration) {
             };
         },
         /**
-         * 
+         * Manage diseases (ICD-coded when available) to anchor case types and etiologies to specific conditions.
          * @summary Diseases  Delete All
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
@@ -29410,7 +29410,7 @@ const OntologyApiAxiosParamCreator = function (configuration?: Configuration) {
             };
         },
         /**
-         * 
+         * Manage diseases (ICD-coded when available) to anchor case types and etiologies to specific conditions.
          * @summary Diseases  Delete One
          * @param {any} objectId 
          * @param {*} [options] Override http request option.
@@ -29444,7 +29444,7 @@ const OntologyApiAxiosParamCreator = function (configuration?: Configuration) {
             };
         },
         /**
-         * 
+         * Manage diseases (ICD-coded when available) to anchor case types and etiologies to specific conditions.
          * @summary Diseases  Delete Some
          * @param {string} ids 
          * @param {*} [options] Override http request option.
@@ -29481,7 +29481,7 @@ const OntologyApiAxiosParamCreator = function (configuration?: Configuration) {
             };
         },
         /**
-         * 
+         * Manage diseases (ICD-coded when available) to anchor case types and etiologies to specific conditions.
          * @summary Diseases  Get All
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
@@ -29511,7 +29511,7 @@ const OntologyApiAxiosParamCreator = function (configuration?: Configuration) {
             };
         },
         /**
-         * 
+         * Manage diseases (ICD-coded when available) to anchor case types and etiologies to specific conditions.
          * @summary Diseases  Get One
          * @param {string} objectId 
          * @param {*} [options] Override http request option.
@@ -29545,7 +29545,7 @@ const OntologyApiAxiosParamCreator = function (configuration?: Configuration) {
             };
         },
         /**
-         * 
+         * Manage diseases (ICD-coded when available) to anchor case types and etiologies to specific conditions.
          * @summary Diseases  Get Some
          * @param {string} ids 
          * @param {*} [options] Override http request option.
@@ -29582,7 +29582,7 @@ const OntologyApiAxiosParamCreator = function (configuration?: Configuration) {
             };
         },
         /**
-         * 
+         * Manage diseases (ICD-coded when available) to anchor case types and etiologies to specific conditions.
          * @summary Diseases  Post One
          * @param {Disease} disease 
          * @param {*} [options] Override http request option.
@@ -29618,7 +29618,7 @@ const OntologyApiAxiosParamCreator = function (configuration?: Configuration) {
             };
         },
         /**
-         * 
+         * Manage diseases (ICD-coded when available) to anchor case types and etiologies to specific conditions.
          * @summary Diseases  Post Query
          * @param {EpiFilter} filter 
          * @param {*} [options] Override http request option.
@@ -29654,7 +29654,7 @@ const OntologyApiAxiosParamCreator = function (configuration?: Configuration) {
             };
         },
         /**
-         * 
+         * Manage diseases (ICD-coded when available) to anchor case types and etiologies to specific conditions.
          * @summary Diseases  Post Query  Ids
          * @param {EpiFilter} filter 
          * @param {*} [options] Override http request option.
@@ -29690,7 +29690,7 @@ const OntologyApiAxiosParamCreator = function (configuration?: Configuration) {
             };
         },
         /**
-         * 
+         * Manage diseases (ICD-coded when available) to anchor case types and etiologies to specific conditions.
          * @summary Diseases  Post Some
          * @param {Array<Disease>} disease 
          * @param {*} [options] Override http request option.
@@ -29726,7 +29726,7 @@ const OntologyApiAxiosParamCreator = function (configuration?: Configuration) {
             };
         },
         /**
-         * 
+         * Set the etiological agents for a disease by replacing existing disease–agent links with the provided etiologies, then return the updated list.
          * @summary Disease Etiologicalagent
          * @param {string} diseaseId 
          * @param {UpdateDiseaseEtiologicalAgentRequestBody} updateDiseaseEtiologicalAgentRequestBody 
@@ -29766,7 +29766,7 @@ const OntologyApiAxiosParamCreator = function (configuration?: Configuration) {
             };
         },
         /**
-         * 
+         * Manage diseases (ICD-coded when available) to anchor case types and etiologies to specific conditions.
          * @summary Diseases  Put One
          * @param {string} objectId 
          * @param {Disease} disease 
@@ -29806,7 +29806,7 @@ const OntologyApiAxiosParamCreator = function (configuration?: Configuration) {
             };
         },
         /**
-         * 
+         * Manage diseases (ICD-coded when available) to anchor case types and etiologies to specific conditions.
          * @summary Diseases  Put Some
          * @param {Array<Disease>} disease 
          * @param {*} [options] Override http request option.
@@ -29842,7 +29842,7 @@ const OntologyApiAxiosParamCreator = function (configuration?: Configuration) {
             };
         },
         /**
-         * 
+         * Manage etiological agents (pathogens/causative organisms) used in disease etiologies and sequencing metadata.
          * @summary Etiological Agents  Delete All
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
@@ -29872,7 +29872,7 @@ const OntologyApiAxiosParamCreator = function (configuration?: Configuration) {
             };
         },
         /**
-         * 
+         * Manage etiological agents (pathogens/causative organisms) used in disease etiologies and sequencing metadata.
          * @summary Etiological Agents  Delete One
          * @param {any} objectId 
          * @param {*} [options] Override http request option.
@@ -29906,7 +29906,7 @@ const OntologyApiAxiosParamCreator = function (configuration?: Configuration) {
             };
         },
         /**
-         * 
+         * Manage etiological agents (pathogens/causative organisms) used in disease etiologies and sequencing metadata.
          * @summary Etiological Agents  Delete Some
          * @param {string} ids 
          * @param {*} [options] Override http request option.
@@ -29943,7 +29943,7 @@ const OntologyApiAxiosParamCreator = function (configuration?: Configuration) {
             };
         },
         /**
-         * 
+         * Manage etiological agents (pathogens/causative organisms) used in disease etiologies and sequencing metadata.
          * @summary Etiological Agents  Get All
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
@@ -29973,7 +29973,7 @@ const OntologyApiAxiosParamCreator = function (configuration?: Configuration) {
             };
         },
         /**
-         * 
+         * Manage etiological agents (pathogens/causative organisms) used in disease etiologies and sequencing metadata.
          * @summary Etiological Agents  Get One
          * @param {string} objectId 
          * @param {*} [options] Override http request option.
@@ -30007,7 +30007,7 @@ const OntologyApiAxiosParamCreator = function (configuration?: Configuration) {
             };
         },
         /**
-         * 
+         * Manage etiological agents (pathogens/causative organisms) used in disease etiologies and sequencing metadata.
          * @summary Etiological Agents  Get Some
          * @param {string} ids 
          * @param {*} [options] Override http request option.
@@ -30044,7 +30044,7 @@ const OntologyApiAxiosParamCreator = function (configuration?: Configuration) {
             };
         },
         /**
-         * 
+         * Manage etiological agents (pathogens/causative organisms) used in disease etiologies and sequencing metadata.
          * @summary Etiological Agents  Post One
          * @param {EtiologicalAgent} etiologicalAgent 
          * @param {*} [options] Override http request option.
@@ -30080,7 +30080,7 @@ const OntologyApiAxiosParamCreator = function (configuration?: Configuration) {
             };
         },
         /**
-         * 
+         * Manage etiological agents (pathogens/causative organisms) used in disease etiologies and sequencing metadata.
          * @summary Etiological Agents  Post Query
          * @param {EpiFilter} filter 
          * @param {*} [options] Override http request option.
@@ -30116,7 +30116,7 @@ const OntologyApiAxiosParamCreator = function (configuration?: Configuration) {
             };
         },
         /**
-         * 
+         * Manage etiological agents (pathogens/causative organisms) used in disease etiologies and sequencing metadata.
          * @summary Etiological Agents  Post Query  Ids
          * @param {EpiFilter} filter 
          * @param {*} [options] Override http request option.
@@ -30152,7 +30152,7 @@ const OntologyApiAxiosParamCreator = function (configuration?: Configuration) {
             };
         },
         /**
-         * 
+         * Manage etiological agents (pathogens/causative organisms) used in disease etiologies and sequencing metadata.
          * @summary Etiological Agents  Post Some
          * @param {Array<EtiologicalAgent>} etiologicalAgent 
          * @param {*} [options] Override http request option.
@@ -30188,7 +30188,7 @@ const OntologyApiAxiosParamCreator = function (configuration?: Configuration) {
             };
         },
         /**
-         * 
+         * Manage etiological agents (pathogens/causative organisms) used in disease etiologies and sequencing metadata.
          * @summary Etiological Agents  Put One
          * @param {string} objectId 
          * @param {EtiologicalAgent} etiologicalAgent 
@@ -30228,7 +30228,7 @@ const OntologyApiAxiosParamCreator = function (configuration?: Configuration) {
             };
         },
         /**
-         * 
+         * Manage etiological agents (pathogens/causative organisms) used in disease etiologies and sequencing metadata.
          * @summary Etiological Agents  Put Some
          * @param {Array<EtiologicalAgent>} etiologicalAgent 
          * @param {*} [options] Override http request option.
@@ -30264,7 +30264,7 @@ const OntologyApiAxiosParamCreator = function (configuration?: Configuration) {
             };
         },
         /**
-         * 
+         * Manage disease–etiological agent links defining valid disease–pathogen combinations.
          * @summary Etiologies  Delete All
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
@@ -30294,7 +30294,7 @@ const OntologyApiAxiosParamCreator = function (configuration?: Configuration) {
             };
         },
         /**
-         * 
+         * Manage disease–etiological agent links defining valid disease–pathogen combinations.
          * @summary Etiologies  Delete One
          * @param {any} objectId 
          * @param {*} [options] Override http request option.
@@ -30328,7 +30328,7 @@ const OntologyApiAxiosParamCreator = function (configuration?: Configuration) {
             };
         },
         /**
-         * 
+         * Manage disease–etiological agent links defining valid disease–pathogen combinations.
          * @summary Etiologies  Delete Some
          * @param {string} ids 
          * @param {*} [options] Override http request option.
@@ -30365,7 +30365,7 @@ const OntologyApiAxiosParamCreator = function (configuration?: Configuration) {
             };
         },
         /**
-         * 
+         * Manage disease–etiological agent links defining valid disease–pathogen combinations.
          * @summary Etiologies  Get All
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
@@ -30395,7 +30395,7 @@ const OntologyApiAxiosParamCreator = function (configuration?: Configuration) {
             };
         },
         /**
-         * 
+         * Manage disease–etiological agent links defining valid disease–pathogen combinations.
          * @summary Etiologies  Get One
          * @param {string} objectId 
          * @param {*} [options] Override http request option.
@@ -30429,7 +30429,7 @@ const OntologyApiAxiosParamCreator = function (configuration?: Configuration) {
             };
         },
         /**
-         * 
+         * Manage disease–etiological agent links defining valid disease–pathogen combinations.
          * @summary Etiologies  Get Some
          * @param {string} ids 
          * @param {*} [options] Override http request option.
@@ -30466,7 +30466,7 @@ const OntologyApiAxiosParamCreator = function (configuration?: Configuration) {
             };
         },
         /**
-         * 
+         * Manage disease–etiological agent links defining valid disease–pathogen combinations.
          * @summary Etiologies  Post One
          * @param {Etiology} etiology 
          * @param {*} [options] Override http request option.
@@ -30502,7 +30502,7 @@ const OntologyApiAxiosParamCreator = function (configuration?: Configuration) {
             };
         },
         /**
-         * 
+         * Manage disease–etiological agent links defining valid disease–pathogen combinations.
          * @summary Etiologies  Post Query
          * @param {EpiFilter} filter 
          * @param {*} [options] Override http request option.
@@ -30538,7 +30538,7 @@ const OntologyApiAxiosParamCreator = function (configuration?: Configuration) {
             };
         },
         /**
-         * 
+         * Manage disease–etiological agent links defining valid disease–pathogen combinations.
          * @summary Etiologies  Post Query  Ids
          * @param {EpiFilter} filter 
          * @param {*} [options] Override http request option.
@@ -30574,7 +30574,7 @@ const OntologyApiAxiosParamCreator = function (configuration?: Configuration) {
             };
         },
         /**
-         * 
+         * Manage disease–etiological agent links defining valid disease–pathogen combinations.
          * @summary Etiologies  Post Some
          * @param {Array<Etiology>} etiology 
          * @param {*} [options] Override http request option.
@@ -30610,7 +30610,7 @@ const OntologyApiAxiosParamCreator = function (configuration?: Configuration) {
             };
         },
         /**
-         * 
+         * Manage disease–etiological agent links defining valid disease–pathogen combinations.
          * @summary Etiologies  Put One
          * @param {string} objectId 
          * @param {Etiology} etiology 
@@ -30650,7 +30650,7 @@ const OntologyApiAxiosParamCreator = function (configuration?: Configuration) {
             };
         },
         /**
-         * 
+         * Manage disease–etiological agent links defining valid disease–pathogen combinations.
          * @summary Etiologies  Put Some
          * @param {Array<Etiology>} etiology 
          * @param {*} [options] Override http request option.
@@ -30696,7 +30696,7 @@ const OntologyApiFp = function(configuration?: Configuration) {
     const localVarAxiosParamCreator = OntologyApiAxiosParamCreator(configuration)
     return {
         /**
-         * 
+         * Manage hierarchical or semantic relationships between concepts (e.g., parent/child, broader/narrower).
          * @summary Concept Relations  Delete All
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
@@ -30708,7 +30708,7 @@ const OntologyApiFp = function(configuration?: Configuration) {
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
         /**
-         * 
+         * Manage hierarchical or semantic relationships between concepts (e.g., parent/child, broader/narrower).
          * @summary Concept Relations  Delete One
          * @param {any} objectId 
          * @param {*} [options] Override http request option.
@@ -30721,7 +30721,7 @@ const OntologyApiFp = function(configuration?: Configuration) {
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
         /**
-         * 
+         * Manage hierarchical or semantic relationships between concepts (e.g., parent/child, broader/narrower).
          * @summary Concept Relations  Delete Some
          * @param {string} ids 
          * @param {*} [options] Override http request option.
@@ -30734,7 +30734,7 @@ const OntologyApiFp = function(configuration?: Configuration) {
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
         /**
-         * 
+         * Manage hierarchical or semantic relationships between concepts (e.g., parent/child, broader/narrower).
          * @summary Concept Relations  Get All
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
@@ -30746,7 +30746,7 @@ const OntologyApiFp = function(configuration?: Configuration) {
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
         /**
-         * 
+         * Manage hierarchical or semantic relationships between concepts (e.g., parent/child, broader/narrower).
          * @summary Concept Relations  Get One
          * @param {string} objectId 
          * @param {*} [options] Override http request option.
@@ -30759,7 +30759,7 @@ const OntologyApiFp = function(configuration?: Configuration) {
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
         /**
-         * 
+         * Manage hierarchical or semantic relationships between concepts (e.g., parent/child, broader/narrower).
          * @summary Concept Relations  Get Some
          * @param {string} ids 
          * @param {*} [options] Override http request option.
@@ -30772,7 +30772,7 @@ const OntologyApiFp = function(configuration?: Configuration) {
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
         /**
-         * 
+         * Manage hierarchical or semantic relationships between concepts (e.g., parent/child, broader/narrower).
          * @summary Concept Relations  Post One
          * @param {ConceptRelation} conceptRelation 
          * @param {*} [options] Override http request option.
@@ -30785,7 +30785,7 @@ const OntologyApiFp = function(configuration?: Configuration) {
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
         /**
-         * 
+         * Manage hierarchical or semantic relationships between concepts (e.g., parent/child, broader/narrower).
          * @summary Concept Relations  Post Query
          * @param {EpiFilter} filter 
          * @param {*} [options] Override http request option.
@@ -30798,7 +30798,7 @@ const OntologyApiFp = function(configuration?: Configuration) {
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
         /**
-         * 
+         * Manage hierarchical or semantic relationships between concepts (e.g., parent/child, broader/narrower).
          * @summary Concept Relations  Post Query  Ids
          * @param {EpiFilter} filter 
          * @param {*} [options] Override http request option.
@@ -30811,7 +30811,7 @@ const OntologyApiFp = function(configuration?: Configuration) {
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
         /**
-         * 
+         * Manage hierarchical or semantic relationships between concepts (e.g., parent/child, broader/narrower).
          * @summary Concept Relations  Post Some
          * @param {Array<ConceptRelation>} conceptRelation 
          * @param {*} [options] Override http request option.
@@ -30824,7 +30824,7 @@ const OntologyApiFp = function(configuration?: Configuration) {
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
         /**
-         * 
+         * Manage hierarchical or semantic relationships between concepts (e.g., parent/child, broader/narrower).
          * @summary Concept Relations  Put One
          * @param {string} objectId 
          * @param {ConceptRelation} conceptRelation 
@@ -30838,7 +30838,7 @@ const OntologyApiFp = function(configuration?: Configuration) {
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
         /**
-         * 
+         * Manage hierarchical or semantic relationships between concepts (e.g., parent/child, broader/narrower).
          * @summary Concept Relations  Put Some
          * @param {Array<ConceptRelation>} conceptRelation 
          * @param {*} [options] Override http request option.
@@ -30851,7 +30851,7 @@ const OntologyApiFp = function(configuration?: Configuration) {
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
         /**
-         * 
+         * Manage controlled vocabularies and value sets (coded lists, regex/grammar-based) used by case variables.
          * @summary Concept Sets  Delete All
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
@@ -30863,7 +30863,7 @@ const OntologyApiFp = function(configuration?: Configuration) {
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
         /**
-         * 
+         * Manage controlled vocabularies and value sets (coded lists, regex/grammar-based) used by case variables.
          * @summary Concept Sets  Delete One
          * @param {any} objectId 
          * @param {*} [options] Override http request option.
@@ -30876,7 +30876,7 @@ const OntologyApiFp = function(configuration?: Configuration) {
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
         /**
-         * 
+         * Manage controlled vocabularies and value sets (coded lists, regex/grammar-based) used by case variables.
          * @summary Concept Sets  Delete Some
          * @param {string} ids 
          * @param {*} [options] Override http request option.
@@ -30889,7 +30889,7 @@ const OntologyApiFp = function(configuration?: Configuration) {
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
         /**
-         * 
+         * Manage controlled vocabularies and value sets (coded lists, regex/grammar-based) used by case variables.
          * @summary Concept Sets  Get All
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
@@ -30901,7 +30901,7 @@ const OntologyApiFp = function(configuration?: Configuration) {
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
         /**
-         * 
+         * Manage controlled vocabularies and value sets (coded lists, regex/grammar-based) used by case variables.
          * @summary Concept Sets  Get One
          * @param {string} objectId 
          * @param {*} [options] Override http request option.
@@ -30914,7 +30914,7 @@ const OntologyApiFp = function(configuration?: Configuration) {
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
         /**
-         * 
+         * Manage controlled vocabularies and value sets (coded lists, regex/grammar-based) used by case variables.
          * @summary Concept Sets  Get Some
          * @param {string} ids 
          * @param {*} [options] Override http request option.
@@ -30927,7 +30927,7 @@ const OntologyApiFp = function(configuration?: Configuration) {
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
         /**
-         * 
+         * Manage controlled vocabularies and value sets (coded lists, regex/grammar-based) used by case variables.
          * @summary Concept Sets  Post One
          * @param {ConceptSet} conceptSet 
          * @param {*} [options] Override http request option.
@@ -30940,7 +30940,7 @@ const OntologyApiFp = function(configuration?: Configuration) {
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
         /**
-         * 
+         * Manage controlled vocabularies and value sets (coded lists, regex/grammar-based) used by case variables.
          * @summary Concept Sets  Post Query
          * @param {EpiFilter} filter 
          * @param {*} [options] Override http request option.
@@ -30953,7 +30953,7 @@ const OntologyApiFp = function(configuration?: Configuration) {
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
         /**
-         * 
+         * Manage controlled vocabularies and value sets (coded lists, regex/grammar-based) used by case variables.
          * @summary Concept Sets  Post Query  Ids
          * @param {EpiFilter} filter 
          * @param {*} [options] Override http request option.
@@ -30966,7 +30966,7 @@ const OntologyApiFp = function(configuration?: Configuration) {
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
         /**
-         * 
+         * Manage controlled vocabularies and value sets (coded lists, regex/grammar-based) used by case variables.
          * @summary Concept Sets  Post Some
          * @param {Array<ConceptSet>} conceptSet 
          * @param {*} [options] Override http request option.
@@ -30979,7 +30979,7 @@ const OntologyApiFp = function(configuration?: Configuration) {
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
         /**
-         * 
+         * Manage controlled vocabularies and value sets (coded lists, regex/grammar-based) used by case variables.
          * @summary Concept Sets  Put One
          * @param {string} objectId 
          * @param {ConceptSet} conceptSet 
@@ -30993,7 +30993,7 @@ const OntologyApiFp = function(configuration?: Configuration) {
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
         /**
-         * 
+         * Manage controlled vocabularies and value sets (coded lists, regex/grammar-based) used by case variables.
          * @summary Concept Sets  Put Some
          * @param {Array<ConceptSet>} conceptSet 
          * @param {*} [options] Override http request option.
@@ -31006,7 +31006,7 @@ const OntologyApiFp = function(configuration?: Configuration) {
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
         /**
-         * 
+         * Manage concepts within a concept set, including codes, labels, and ordering.
          * @summary Concepts  Delete All
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
@@ -31018,7 +31018,7 @@ const OntologyApiFp = function(configuration?: Configuration) {
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
         /**
-         * 
+         * Manage concepts within a concept set, including codes, labels, and ordering.
          * @summary Concepts  Delete One
          * @param {any} objectId 
          * @param {*} [options] Override http request option.
@@ -31031,7 +31031,7 @@ const OntologyApiFp = function(configuration?: Configuration) {
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
         /**
-         * 
+         * Manage concepts within a concept set, including codes, labels, and ordering.
          * @summary Concepts  Delete Some
          * @param {string} ids 
          * @param {*} [options] Override http request option.
@@ -31044,7 +31044,7 @@ const OntologyApiFp = function(configuration?: Configuration) {
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
         /**
-         * 
+         * Manage concepts within a concept set, including codes, labels, and ordering.
          * @summary Concepts  Get All
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
@@ -31056,7 +31056,7 @@ const OntologyApiFp = function(configuration?: Configuration) {
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
         /**
-         * 
+         * Manage concepts within a concept set, including codes, labels, and ordering.
          * @summary Concepts  Get One
          * @param {string} objectId 
          * @param {*} [options] Override http request option.
@@ -31069,7 +31069,7 @@ const OntologyApiFp = function(configuration?: Configuration) {
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
         /**
-         * 
+         * Manage concepts within a concept set, including codes, labels, and ordering.
          * @summary Concepts  Get Some
          * @param {string} ids 
          * @param {*} [options] Override http request option.
@@ -31082,7 +31082,7 @@ const OntologyApiFp = function(configuration?: Configuration) {
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
         /**
-         * 
+         * Manage concepts within a concept set, including codes, labels, and ordering.
          * @summary Concepts  Post One
          * @param {Concept} concept 
          * @param {*} [options] Override http request option.
@@ -31095,7 +31095,7 @@ const OntologyApiFp = function(configuration?: Configuration) {
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
         /**
-         * 
+         * Manage concepts within a concept set, including codes, labels, and ordering.
          * @summary Concepts  Post Query
          * @param {EpiFilter} filter 
          * @param {*} [options] Override http request option.
@@ -31108,7 +31108,7 @@ const OntologyApiFp = function(configuration?: Configuration) {
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
         /**
-         * 
+         * Manage concepts within a concept set, including codes, labels, and ordering.
          * @summary Concepts  Post Query  Ids
          * @param {EpiFilter} filter 
          * @param {*} [options] Override http request option.
@@ -31121,7 +31121,7 @@ const OntologyApiFp = function(configuration?: Configuration) {
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
         /**
-         * 
+         * Manage concepts within a concept set, including codes, labels, and ordering.
          * @summary Concepts  Post Some
          * @param {Array<Concept>} concept 
          * @param {*} [options] Override http request option.
@@ -31134,7 +31134,7 @@ const OntologyApiFp = function(configuration?: Configuration) {
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
         /**
-         * 
+         * Manage concepts within a concept set, including codes, labels, and ordering.
          * @summary Concepts  Put One
          * @param {string} objectId 
          * @param {Concept} concept 
@@ -31148,7 +31148,7 @@ const OntologyApiFp = function(configuration?: Configuration) {
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
         /**
-         * 
+         * Manage concepts within a concept set, including codes, labels, and ordering.
          * @summary Concepts  Put Some
          * @param {Array<Concept>} concept 
          * @param {*} [options] Override http request option.
@@ -31161,7 +31161,7 @@ const OntologyApiFp = function(configuration?: Configuration) {
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
         /**
-         * 
+         * Manage diseases (ICD-coded when available) to anchor case types and etiologies to specific conditions.
          * @summary Diseases  Delete All
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
@@ -31173,7 +31173,7 @@ const OntologyApiFp = function(configuration?: Configuration) {
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
         /**
-         * 
+         * Manage diseases (ICD-coded when available) to anchor case types and etiologies to specific conditions.
          * @summary Diseases  Delete One
          * @param {any} objectId 
          * @param {*} [options] Override http request option.
@@ -31186,7 +31186,7 @@ const OntologyApiFp = function(configuration?: Configuration) {
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
         /**
-         * 
+         * Manage diseases (ICD-coded when available) to anchor case types and etiologies to specific conditions.
          * @summary Diseases  Delete Some
          * @param {string} ids 
          * @param {*} [options] Override http request option.
@@ -31199,7 +31199,7 @@ const OntologyApiFp = function(configuration?: Configuration) {
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
         /**
-         * 
+         * Manage diseases (ICD-coded when available) to anchor case types and etiologies to specific conditions.
          * @summary Diseases  Get All
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
@@ -31211,7 +31211,7 @@ const OntologyApiFp = function(configuration?: Configuration) {
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
         /**
-         * 
+         * Manage diseases (ICD-coded when available) to anchor case types and etiologies to specific conditions.
          * @summary Diseases  Get One
          * @param {string} objectId 
          * @param {*} [options] Override http request option.
@@ -31224,7 +31224,7 @@ const OntologyApiFp = function(configuration?: Configuration) {
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
         /**
-         * 
+         * Manage diseases (ICD-coded when available) to anchor case types and etiologies to specific conditions.
          * @summary Diseases  Get Some
          * @param {string} ids 
          * @param {*} [options] Override http request option.
@@ -31237,7 +31237,7 @@ const OntologyApiFp = function(configuration?: Configuration) {
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
         /**
-         * 
+         * Manage diseases (ICD-coded when available) to anchor case types and etiologies to specific conditions.
          * @summary Diseases  Post One
          * @param {Disease} disease 
          * @param {*} [options] Override http request option.
@@ -31250,7 +31250,7 @@ const OntologyApiFp = function(configuration?: Configuration) {
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
         /**
-         * 
+         * Manage diseases (ICD-coded when available) to anchor case types and etiologies to specific conditions.
          * @summary Diseases  Post Query
          * @param {EpiFilter} filter 
          * @param {*} [options] Override http request option.
@@ -31263,7 +31263,7 @@ const OntologyApiFp = function(configuration?: Configuration) {
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
         /**
-         * 
+         * Manage diseases (ICD-coded when available) to anchor case types and etiologies to specific conditions.
          * @summary Diseases  Post Query  Ids
          * @param {EpiFilter} filter 
          * @param {*} [options] Override http request option.
@@ -31276,7 +31276,7 @@ const OntologyApiFp = function(configuration?: Configuration) {
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
         /**
-         * 
+         * Manage diseases (ICD-coded when available) to anchor case types and etiologies to specific conditions.
          * @summary Diseases  Post Some
          * @param {Array<Disease>} disease 
          * @param {*} [options] Override http request option.
@@ -31289,7 +31289,7 @@ const OntologyApiFp = function(configuration?: Configuration) {
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
         /**
-         * 
+         * Set the etiological agents for a disease by replacing existing disease–agent links with the provided etiologies, then return the updated list.
          * @summary Disease Etiologicalagent
          * @param {string} diseaseId 
          * @param {UpdateDiseaseEtiologicalAgentRequestBody} updateDiseaseEtiologicalAgentRequestBody 
@@ -31303,7 +31303,7 @@ const OntologyApiFp = function(configuration?: Configuration) {
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
         /**
-         * 
+         * Manage diseases (ICD-coded when available) to anchor case types and etiologies to specific conditions.
          * @summary Diseases  Put One
          * @param {string} objectId 
          * @param {Disease} disease 
@@ -31317,7 +31317,7 @@ const OntologyApiFp = function(configuration?: Configuration) {
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
         /**
-         * 
+         * Manage diseases (ICD-coded when available) to anchor case types and etiologies to specific conditions.
          * @summary Diseases  Put Some
          * @param {Array<Disease>} disease 
          * @param {*} [options] Override http request option.
@@ -31330,7 +31330,7 @@ const OntologyApiFp = function(configuration?: Configuration) {
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
         /**
-         * 
+         * Manage etiological agents (pathogens/causative organisms) used in disease etiologies and sequencing metadata.
          * @summary Etiological Agents  Delete All
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
@@ -31342,7 +31342,7 @@ const OntologyApiFp = function(configuration?: Configuration) {
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
         /**
-         * 
+         * Manage etiological agents (pathogens/causative organisms) used in disease etiologies and sequencing metadata.
          * @summary Etiological Agents  Delete One
          * @param {any} objectId 
          * @param {*} [options] Override http request option.
@@ -31355,7 +31355,7 @@ const OntologyApiFp = function(configuration?: Configuration) {
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
         /**
-         * 
+         * Manage etiological agents (pathogens/causative organisms) used in disease etiologies and sequencing metadata.
          * @summary Etiological Agents  Delete Some
          * @param {string} ids 
          * @param {*} [options] Override http request option.
@@ -31368,7 +31368,7 @@ const OntologyApiFp = function(configuration?: Configuration) {
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
         /**
-         * 
+         * Manage etiological agents (pathogens/causative organisms) used in disease etiologies and sequencing metadata.
          * @summary Etiological Agents  Get All
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
@@ -31380,7 +31380,7 @@ const OntologyApiFp = function(configuration?: Configuration) {
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
         /**
-         * 
+         * Manage etiological agents (pathogens/causative organisms) used in disease etiologies and sequencing metadata.
          * @summary Etiological Agents  Get One
          * @param {string} objectId 
          * @param {*} [options] Override http request option.
@@ -31393,7 +31393,7 @@ const OntologyApiFp = function(configuration?: Configuration) {
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
         /**
-         * 
+         * Manage etiological agents (pathogens/causative organisms) used in disease etiologies and sequencing metadata.
          * @summary Etiological Agents  Get Some
          * @param {string} ids 
          * @param {*} [options] Override http request option.
@@ -31406,7 +31406,7 @@ const OntologyApiFp = function(configuration?: Configuration) {
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
         /**
-         * 
+         * Manage etiological agents (pathogens/causative organisms) used in disease etiologies and sequencing metadata.
          * @summary Etiological Agents  Post One
          * @param {EtiologicalAgent} etiologicalAgent 
          * @param {*} [options] Override http request option.
@@ -31419,7 +31419,7 @@ const OntologyApiFp = function(configuration?: Configuration) {
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
         /**
-         * 
+         * Manage etiological agents (pathogens/causative organisms) used in disease etiologies and sequencing metadata.
          * @summary Etiological Agents  Post Query
          * @param {EpiFilter} filter 
          * @param {*} [options] Override http request option.
@@ -31432,7 +31432,7 @@ const OntologyApiFp = function(configuration?: Configuration) {
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
         /**
-         * 
+         * Manage etiological agents (pathogens/causative organisms) used in disease etiologies and sequencing metadata.
          * @summary Etiological Agents  Post Query  Ids
          * @param {EpiFilter} filter 
          * @param {*} [options] Override http request option.
@@ -31445,7 +31445,7 @@ const OntologyApiFp = function(configuration?: Configuration) {
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
         /**
-         * 
+         * Manage etiological agents (pathogens/causative organisms) used in disease etiologies and sequencing metadata.
          * @summary Etiological Agents  Post Some
          * @param {Array<EtiologicalAgent>} etiologicalAgent 
          * @param {*} [options] Override http request option.
@@ -31458,7 +31458,7 @@ const OntologyApiFp = function(configuration?: Configuration) {
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
         /**
-         * 
+         * Manage etiological agents (pathogens/causative organisms) used in disease etiologies and sequencing metadata.
          * @summary Etiological Agents  Put One
          * @param {string} objectId 
          * @param {EtiologicalAgent} etiologicalAgent 
@@ -31472,7 +31472,7 @@ const OntologyApiFp = function(configuration?: Configuration) {
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
         /**
-         * 
+         * Manage etiological agents (pathogens/causative organisms) used in disease etiologies and sequencing metadata.
          * @summary Etiological Agents  Put Some
          * @param {Array<EtiologicalAgent>} etiologicalAgent 
          * @param {*} [options] Override http request option.
@@ -31485,7 +31485,7 @@ const OntologyApiFp = function(configuration?: Configuration) {
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
         /**
-         * 
+         * Manage disease–etiological agent links defining valid disease–pathogen combinations.
          * @summary Etiologies  Delete All
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
@@ -31497,7 +31497,7 @@ const OntologyApiFp = function(configuration?: Configuration) {
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
         /**
-         * 
+         * Manage disease–etiological agent links defining valid disease–pathogen combinations.
          * @summary Etiologies  Delete One
          * @param {any} objectId 
          * @param {*} [options] Override http request option.
@@ -31510,7 +31510,7 @@ const OntologyApiFp = function(configuration?: Configuration) {
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
         /**
-         * 
+         * Manage disease–etiological agent links defining valid disease–pathogen combinations.
          * @summary Etiologies  Delete Some
          * @param {string} ids 
          * @param {*} [options] Override http request option.
@@ -31523,7 +31523,7 @@ const OntologyApiFp = function(configuration?: Configuration) {
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
         /**
-         * 
+         * Manage disease–etiological agent links defining valid disease–pathogen combinations.
          * @summary Etiologies  Get All
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
@@ -31535,7 +31535,7 @@ const OntologyApiFp = function(configuration?: Configuration) {
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
         /**
-         * 
+         * Manage disease–etiological agent links defining valid disease–pathogen combinations.
          * @summary Etiologies  Get One
          * @param {string} objectId 
          * @param {*} [options] Override http request option.
@@ -31548,7 +31548,7 @@ const OntologyApiFp = function(configuration?: Configuration) {
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
         /**
-         * 
+         * Manage disease–etiological agent links defining valid disease–pathogen combinations.
          * @summary Etiologies  Get Some
          * @param {string} ids 
          * @param {*} [options] Override http request option.
@@ -31561,7 +31561,7 @@ const OntologyApiFp = function(configuration?: Configuration) {
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
         /**
-         * 
+         * Manage disease–etiological agent links defining valid disease–pathogen combinations.
          * @summary Etiologies  Post One
          * @param {Etiology} etiology 
          * @param {*} [options] Override http request option.
@@ -31574,7 +31574,7 @@ const OntologyApiFp = function(configuration?: Configuration) {
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
         /**
-         * 
+         * Manage disease–etiological agent links defining valid disease–pathogen combinations.
          * @summary Etiologies  Post Query
          * @param {EpiFilter} filter 
          * @param {*} [options] Override http request option.
@@ -31587,7 +31587,7 @@ const OntologyApiFp = function(configuration?: Configuration) {
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
         /**
-         * 
+         * Manage disease–etiological agent links defining valid disease–pathogen combinations.
          * @summary Etiologies  Post Query  Ids
          * @param {EpiFilter} filter 
          * @param {*} [options] Override http request option.
@@ -31600,7 +31600,7 @@ const OntologyApiFp = function(configuration?: Configuration) {
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
         /**
-         * 
+         * Manage disease–etiological agent links defining valid disease–pathogen combinations.
          * @summary Etiologies  Post Some
          * @param {Array<Etiology>} etiology 
          * @param {*} [options] Override http request option.
@@ -31613,7 +31613,7 @@ const OntologyApiFp = function(configuration?: Configuration) {
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
         /**
-         * 
+         * Manage disease–etiological agent links defining valid disease–pathogen combinations.
          * @summary Etiologies  Put One
          * @param {string} objectId 
          * @param {Etiology} etiology 
@@ -31627,7 +31627,7 @@ const OntologyApiFp = function(configuration?: Configuration) {
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
         /**
-         * 
+         * Manage disease–etiological agent links defining valid disease–pathogen combinations.
          * @summary Etiologies  Put Some
          * @param {Array<Etiology>} etiology 
          * @param {*} [options] Override http request option.
@@ -31662,7 +31662,7 @@ export class OntologyApi extends BaseAPI {
   }
 
     /**
-     * 
+     * Manage hierarchical or semantic relationships between concepts (e.g., parent/child, broader/narrower).
      * @summary Concept Relations  Delete All
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
@@ -31673,7 +31673,7 @@ export class OntologyApi extends BaseAPI {
     }
 
     /**
-     * 
+     * Manage hierarchical or semantic relationships between concepts (e.g., parent/child, broader/narrower).
      * @summary Concept Relations  Delete One
      * @param {any} objectId 
      * @param {*} [options] Override http request option.
@@ -31685,7 +31685,7 @@ export class OntologyApi extends BaseAPI {
     }
 
     /**
-     * 
+     * Manage hierarchical or semantic relationships between concepts (e.g., parent/child, broader/narrower).
      * @summary Concept Relations  Delete Some
      * @param {string} ids 
      * @param {*} [options] Override http request option.
@@ -31697,7 +31697,7 @@ export class OntologyApi extends BaseAPI {
     }
 
     /**
-     * 
+     * Manage hierarchical or semantic relationships between concepts (e.g., parent/child, broader/narrower).
      * @summary Concept Relations  Get All
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
@@ -31708,7 +31708,7 @@ export class OntologyApi extends BaseAPI {
     }
 
     /**
-     * 
+     * Manage hierarchical or semantic relationships between concepts (e.g., parent/child, broader/narrower).
      * @summary Concept Relations  Get One
      * @param {string} objectId 
      * @param {*} [options] Override http request option.
@@ -31720,7 +31720,7 @@ export class OntologyApi extends BaseAPI {
     }
 
     /**
-     * 
+     * Manage hierarchical or semantic relationships between concepts (e.g., parent/child, broader/narrower).
      * @summary Concept Relations  Get Some
      * @param {string} ids 
      * @param {*} [options] Override http request option.
@@ -31732,7 +31732,7 @@ export class OntologyApi extends BaseAPI {
     }
 
     /**
-     * 
+     * Manage hierarchical or semantic relationships between concepts (e.g., parent/child, broader/narrower).
      * @summary Concept Relations  Post One
      * @param {ConceptRelation} conceptRelation 
      * @param {*} [options] Override http request option.
@@ -31744,7 +31744,7 @@ export class OntologyApi extends BaseAPI {
     }
 
     /**
-     * 
+     * Manage hierarchical or semantic relationships between concepts (e.g., parent/child, broader/narrower).
      * @summary Concept Relations  Post Query
      * @param {EpiFilter} filter 
      * @param {*} [options] Override http request option.
@@ -31756,7 +31756,7 @@ export class OntologyApi extends BaseAPI {
     }
 
     /**
-     * 
+     * Manage hierarchical or semantic relationships between concepts (e.g., parent/child, broader/narrower).
      * @summary Concept Relations  Post Query  Ids
      * @param {EpiFilter} filter 
      * @param {*} [options] Override http request option.
@@ -31768,7 +31768,7 @@ export class OntologyApi extends BaseAPI {
     }
 
     /**
-     * 
+     * Manage hierarchical or semantic relationships between concepts (e.g., parent/child, broader/narrower).
      * @summary Concept Relations  Post Some
      * @param {Array<ConceptRelation>} conceptRelation 
      * @param {*} [options] Override http request option.
@@ -31780,7 +31780,7 @@ export class OntologyApi extends BaseAPI {
     }
 
     /**
-     * 
+     * Manage hierarchical or semantic relationships between concepts (e.g., parent/child, broader/narrower).
      * @summary Concept Relations  Put One
      * @param {string} objectId 
      * @param {ConceptRelation} conceptRelation 
@@ -31793,7 +31793,7 @@ export class OntologyApi extends BaseAPI {
     }
 
     /**
-     * 
+     * Manage hierarchical or semantic relationships between concepts (e.g., parent/child, broader/narrower).
      * @summary Concept Relations  Put Some
      * @param {Array<ConceptRelation>} conceptRelation 
      * @param {*} [options] Override http request option.
@@ -31805,7 +31805,7 @@ export class OntologyApi extends BaseAPI {
     }
 
     /**
-     * 
+     * Manage controlled vocabularies and value sets (coded lists, regex/grammar-based) used by case variables.
      * @summary Concept Sets  Delete All
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
@@ -31816,7 +31816,7 @@ export class OntologyApi extends BaseAPI {
     }
 
     /**
-     * 
+     * Manage controlled vocabularies and value sets (coded lists, regex/grammar-based) used by case variables.
      * @summary Concept Sets  Delete One
      * @param {any} objectId 
      * @param {*} [options] Override http request option.
@@ -31828,7 +31828,7 @@ export class OntologyApi extends BaseAPI {
     }
 
     /**
-     * 
+     * Manage controlled vocabularies and value sets (coded lists, regex/grammar-based) used by case variables.
      * @summary Concept Sets  Delete Some
      * @param {string} ids 
      * @param {*} [options] Override http request option.
@@ -31840,7 +31840,7 @@ export class OntologyApi extends BaseAPI {
     }
 
     /**
-     * 
+     * Manage controlled vocabularies and value sets (coded lists, regex/grammar-based) used by case variables.
      * @summary Concept Sets  Get All
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
@@ -31851,7 +31851,7 @@ export class OntologyApi extends BaseAPI {
     }
 
     /**
-     * 
+     * Manage controlled vocabularies and value sets (coded lists, regex/grammar-based) used by case variables.
      * @summary Concept Sets  Get One
      * @param {string} objectId 
      * @param {*} [options] Override http request option.
@@ -31863,7 +31863,7 @@ export class OntologyApi extends BaseAPI {
     }
 
     /**
-     * 
+     * Manage controlled vocabularies and value sets (coded lists, regex/grammar-based) used by case variables.
      * @summary Concept Sets  Get Some
      * @param {string} ids 
      * @param {*} [options] Override http request option.
@@ -31875,7 +31875,7 @@ export class OntologyApi extends BaseAPI {
     }
 
     /**
-     * 
+     * Manage controlled vocabularies and value sets (coded lists, regex/grammar-based) used by case variables.
      * @summary Concept Sets  Post One
      * @param {ConceptSet} conceptSet 
      * @param {*} [options] Override http request option.
@@ -31887,7 +31887,7 @@ export class OntologyApi extends BaseAPI {
     }
 
     /**
-     * 
+     * Manage controlled vocabularies and value sets (coded lists, regex/grammar-based) used by case variables.
      * @summary Concept Sets  Post Query
      * @param {EpiFilter} filter 
      * @param {*} [options] Override http request option.
@@ -31899,7 +31899,7 @@ export class OntologyApi extends BaseAPI {
     }
 
     /**
-     * 
+     * Manage controlled vocabularies and value sets (coded lists, regex/grammar-based) used by case variables.
      * @summary Concept Sets  Post Query  Ids
      * @param {EpiFilter} filter 
      * @param {*} [options] Override http request option.
@@ -31911,7 +31911,7 @@ export class OntologyApi extends BaseAPI {
     }
 
     /**
-     * 
+     * Manage controlled vocabularies and value sets (coded lists, regex/grammar-based) used by case variables.
      * @summary Concept Sets  Post Some
      * @param {Array<ConceptSet>} conceptSet 
      * @param {*} [options] Override http request option.
@@ -31923,7 +31923,7 @@ export class OntologyApi extends BaseAPI {
     }
 
     /**
-     * 
+     * Manage controlled vocabularies and value sets (coded lists, regex/grammar-based) used by case variables.
      * @summary Concept Sets  Put One
      * @param {string} objectId 
      * @param {ConceptSet} conceptSet 
@@ -31936,7 +31936,7 @@ export class OntologyApi extends BaseAPI {
     }
 
     /**
-     * 
+     * Manage controlled vocabularies and value sets (coded lists, regex/grammar-based) used by case variables.
      * @summary Concept Sets  Put Some
      * @param {Array<ConceptSet>} conceptSet 
      * @param {*} [options] Override http request option.
@@ -31948,7 +31948,7 @@ export class OntologyApi extends BaseAPI {
     }
 
     /**
-     * 
+     * Manage concepts within a concept set, including codes, labels, and ordering.
      * @summary Concepts  Delete All
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
@@ -31959,7 +31959,7 @@ export class OntologyApi extends BaseAPI {
     }
 
     /**
-     * 
+     * Manage concepts within a concept set, including codes, labels, and ordering.
      * @summary Concepts  Delete One
      * @param {any} objectId 
      * @param {*} [options] Override http request option.
@@ -31971,7 +31971,7 @@ export class OntologyApi extends BaseAPI {
     }
 
     /**
-     * 
+     * Manage concepts within a concept set, including codes, labels, and ordering.
      * @summary Concepts  Delete Some
      * @param {string} ids 
      * @param {*} [options] Override http request option.
@@ -31983,7 +31983,7 @@ export class OntologyApi extends BaseAPI {
     }
 
     /**
-     * 
+     * Manage concepts within a concept set, including codes, labels, and ordering.
      * @summary Concepts  Get All
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
@@ -31994,7 +31994,7 @@ export class OntologyApi extends BaseAPI {
     }
 
     /**
-     * 
+     * Manage concepts within a concept set, including codes, labels, and ordering.
      * @summary Concepts  Get One
      * @param {string} objectId 
      * @param {*} [options] Override http request option.
@@ -32006,7 +32006,7 @@ export class OntologyApi extends BaseAPI {
     }
 
     /**
-     * 
+     * Manage concepts within a concept set, including codes, labels, and ordering.
      * @summary Concepts  Get Some
      * @param {string} ids 
      * @param {*} [options] Override http request option.
@@ -32018,7 +32018,7 @@ export class OntologyApi extends BaseAPI {
     }
 
     /**
-     * 
+     * Manage concepts within a concept set, including codes, labels, and ordering.
      * @summary Concepts  Post One
      * @param {Concept} concept 
      * @param {*} [options] Override http request option.
@@ -32030,7 +32030,7 @@ export class OntologyApi extends BaseAPI {
     }
 
     /**
-     * 
+     * Manage concepts within a concept set, including codes, labels, and ordering.
      * @summary Concepts  Post Query
      * @param {EpiFilter} filter 
      * @param {*} [options] Override http request option.
@@ -32042,7 +32042,7 @@ export class OntologyApi extends BaseAPI {
     }
 
     /**
-     * 
+     * Manage concepts within a concept set, including codes, labels, and ordering.
      * @summary Concepts  Post Query  Ids
      * @param {EpiFilter} filter 
      * @param {*} [options] Override http request option.
@@ -32054,7 +32054,7 @@ export class OntologyApi extends BaseAPI {
     }
 
     /**
-     * 
+     * Manage concepts within a concept set, including codes, labels, and ordering.
      * @summary Concepts  Post Some
      * @param {Array<Concept>} concept 
      * @param {*} [options] Override http request option.
@@ -32066,7 +32066,7 @@ export class OntologyApi extends BaseAPI {
     }
 
     /**
-     * 
+     * Manage concepts within a concept set, including codes, labels, and ordering.
      * @summary Concepts  Put One
      * @param {string} objectId 
      * @param {Concept} concept 
@@ -32079,7 +32079,7 @@ export class OntologyApi extends BaseAPI {
     }
 
     /**
-     * 
+     * Manage concepts within a concept set, including codes, labels, and ordering.
      * @summary Concepts  Put Some
      * @param {Array<Concept>} concept 
      * @param {*} [options] Override http request option.
@@ -32091,7 +32091,7 @@ export class OntologyApi extends BaseAPI {
     }
 
     /**
-     * 
+     * Manage diseases (ICD-coded when available) to anchor case types and etiologies to specific conditions.
      * @summary Diseases  Delete All
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
@@ -32102,7 +32102,7 @@ export class OntologyApi extends BaseAPI {
     }
 
     /**
-     * 
+     * Manage diseases (ICD-coded when available) to anchor case types and etiologies to specific conditions.
      * @summary Diseases  Delete One
      * @param {any} objectId 
      * @param {*} [options] Override http request option.
@@ -32114,7 +32114,7 @@ export class OntologyApi extends BaseAPI {
     }
 
     /**
-     * 
+     * Manage diseases (ICD-coded when available) to anchor case types and etiologies to specific conditions.
      * @summary Diseases  Delete Some
      * @param {string} ids 
      * @param {*} [options] Override http request option.
@@ -32126,7 +32126,7 @@ export class OntologyApi extends BaseAPI {
     }
 
     /**
-     * 
+     * Manage diseases (ICD-coded when available) to anchor case types and etiologies to specific conditions.
      * @summary Diseases  Get All
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
@@ -32137,7 +32137,7 @@ export class OntologyApi extends BaseAPI {
     }
 
     /**
-     * 
+     * Manage diseases (ICD-coded when available) to anchor case types and etiologies to specific conditions.
      * @summary Diseases  Get One
      * @param {string} objectId 
      * @param {*} [options] Override http request option.
@@ -32149,7 +32149,7 @@ export class OntologyApi extends BaseAPI {
     }
 
     /**
-     * 
+     * Manage diseases (ICD-coded when available) to anchor case types and etiologies to specific conditions.
      * @summary Diseases  Get Some
      * @param {string} ids 
      * @param {*} [options] Override http request option.
@@ -32161,7 +32161,7 @@ export class OntologyApi extends BaseAPI {
     }
 
     /**
-     * 
+     * Manage diseases (ICD-coded when available) to anchor case types and etiologies to specific conditions.
      * @summary Diseases  Post One
      * @param {Disease} disease 
      * @param {*} [options] Override http request option.
@@ -32173,7 +32173,7 @@ export class OntologyApi extends BaseAPI {
     }
 
     /**
-     * 
+     * Manage diseases (ICD-coded when available) to anchor case types and etiologies to specific conditions.
      * @summary Diseases  Post Query
      * @param {EpiFilter} filter 
      * @param {*} [options] Override http request option.
@@ -32185,7 +32185,7 @@ export class OntologyApi extends BaseAPI {
     }
 
     /**
-     * 
+     * Manage diseases (ICD-coded when available) to anchor case types and etiologies to specific conditions.
      * @summary Diseases  Post Query  Ids
      * @param {EpiFilter} filter 
      * @param {*} [options] Override http request option.
@@ -32197,7 +32197,7 @@ export class OntologyApi extends BaseAPI {
     }
 
     /**
-     * 
+     * Manage diseases (ICD-coded when available) to anchor case types and etiologies to specific conditions.
      * @summary Diseases  Post Some
      * @param {Array<Disease>} disease 
      * @param {*} [options] Override http request option.
@@ -32209,7 +32209,7 @@ export class OntologyApi extends BaseAPI {
     }
 
     /**
-     * 
+     * Set the etiological agents for a disease by replacing existing disease–agent links with the provided etiologies, then return the updated list.
      * @summary Disease Etiologicalagent
      * @param {string} diseaseId 
      * @param {UpdateDiseaseEtiologicalAgentRequestBody} updateDiseaseEtiologicalAgentRequestBody 
@@ -32222,7 +32222,7 @@ export class OntologyApi extends BaseAPI {
     }
 
     /**
-     * 
+     * Manage diseases (ICD-coded when available) to anchor case types and etiologies to specific conditions.
      * @summary Diseases  Put One
      * @param {string} objectId 
      * @param {Disease} disease 
@@ -32235,7 +32235,7 @@ export class OntologyApi extends BaseAPI {
     }
 
     /**
-     * 
+     * Manage diseases (ICD-coded when available) to anchor case types and etiologies to specific conditions.
      * @summary Diseases  Put Some
      * @param {Array<Disease>} disease 
      * @param {*} [options] Override http request option.
@@ -32247,7 +32247,7 @@ export class OntologyApi extends BaseAPI {
     }
 
     /**
-     * 
+     * Manage etiological agents (pathogens/causative organisms) used in disease etiologies and sequencing metadata.
      * @summary Etiological Agents  Delete All
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
@@ -32258,7 +32258,7 @@ export class OntologyApi extends BaseAPI {
     }
 
     /**
-     * 
+     * Manage etiological agents (pathogens/causative organisms) used in disease etiologies and sequencing metadata.
      * @summary Etiological Agents  Delete One
      * @param {any} objectId 
      * @param {*} [options] Override http request option.
@@ -32270,7 +32270,7 @@ export class OntologyApi extends BaseAPI {
     }
 
     /**
-     * 
+     * Manage etiological agents (pathogens/causative organisms) used in disease etiologies and sequencing metadata.
      * @summary Etiological Agents  Delete Some
      * @param {string} ids 
      * @param {*} [options] Override http request option.
@@ -32282,7 +32282,7 @@ export class OntologyApi extends BaseAPI {
     }
 
     /**
-     * 
+     * Manage etiological agents (pathogens/causative organisms) used in disease etiologies and sequencing metadata.
      * @summary Etiological Agents  Get All
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
@@ -32293,7 +32293,7 @@ export class OntologyApi extends BaseAPI {
     }
 
     /**
-     * 
+     * Manage etiological agents (pathogens/causative organisms) used in disease etiologies and sequencing metadata.
      * @summary Etiological Agents  Get One
      * @param {string} objectId 
      * @param {*} [options] Override http request option.
@@ -32305,7 +32305,7 @@ export class OntologyApi extends BaseAPI {
     }
 
     /**
-     * 
+     * Manage etiological agents (pathogens/causative organisms) used in disease etiologies and sequencing metadata.
      * @summary Etiological Agents  Get Some
      * @param {string} ids 
      * @param {*} [options] Override http request option.
@@ -32317,7 +32317,7 @@ export class OntologyApi extends BaseAPI {
     }
 
     /**
-     * 
+     * Manage etiological agents (pathogens/causative organisms) used in disease etiologies and sequencing metadata.
      * @summary Etiological Agents  Post One
      * @param {EtiologicalAgent} etiologicalAgent 
      * @param {*} [options] Override http request option.
@@ -32329,7 +32329,7 @@ export class OntologyApi extends BaseAPI {
     }
 
     /**
-     * 
+     * Manage etiological agents (pathogens/causative organisms) used in disease etiologies and sequencing metadata.
      * @summary Etiological Agents  Post Query
      * @param {EpiFilter} filter 
      * @param {*} [options] Override http request option.
@@ -32341,7 +32341,7 @@ export class OntologyApi extends BaseAPI {
     }
 
     /**
-     * 
+     * Manage etiological agents (pathogens/causative organisms) used in disease etiologies and sequencing metadata.
      * @summary Etiological Agents  Post Query  Ids
      * @param {EpiFilter} filter 
      * @param {*} [options] Override http request option.
@@ -32353,7 +32353,7 @@ export class OntologyApi extends BaseAPI {
     }
 
     /**
-     * 
+     * Manage etiological agents (pathogens/causative organisms) used in disease etiologies and sequencing metadata.
      * @summary Etiological Agents  Post Some
      * @param {Array<EtiologicalAgent>} etiologicalAgent 
      * @param {*} [options] Override http request option.
@@ -32365,7 +32365,7 @@ export class OntologyApi extends BaseAPI {
     }
 
     /**
-     * 
+     * Manage etiological agents (pathogens/causative organisms) used in disease etiologies and sequencing metadata.
      * @summary Etiological Agents  Put One
      * @param {string} objectId 
      * @param {EtiologicalAgent} etiologicalAgent 
@@ -32378,7 +32378,7 @@ export class OntologyApi extends BaseAPI {
     }
 
     /**
-     * 
+     * Manage etiological agents (pathogens/causative organisms) used in disease etiologies and sequencing metadata.
      * @summary Etiological Agents  Put Some
      * @param {Array<EtiologicalAgent>} etiologicalAgent 
      * @param {*} [options] Override http request option.
@@ -32390,7 +32390,7 @@ export class OntologyApi extends BaseAPI {
     }
 
     /**
-     * 
+     * Manage disease–etiological agent links defining valid disease–pathogen combinations.
      * @summary Etiologies  Delete All
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
@@ -32401,7 +32401,7 @@ export class OntologyApi extends BaseAPI {
     }
 
     /**
-     * 
+     * Manage disease–etiological agent links defining valid disease–pathogen combinations.
      * @summary Etiologies  Delete One
      * @param {any} objectId 
      * @param {*} [options] Override http request option.
@@ -32413,7 +32413,7 @@ export class OntologyApi extends BaseAPI {
     }
 
     /**
-     * 
+     * Manage disease–etiological agent links defining valid disease–pathogen combinations.
      * @summary Etiologies  Delete Some
      * @param {string} ids 
      * @param {*} [options] Override http request option.
@@ -32425,7 +32425,7 @@ export class OntologyApi extends BaseAPI {
     }
 
     /**
-     * 
+     * Manage disease–etiological agent links defining valid disease–pathogen combinations.
      * @summary Etiologies  Get All
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
@@ -32436,7 +32436,7 @@ export class OntologyApi extends BaseAPI {
     }
 
     /**
-     * 
+     * Manage disease–etiological agent links defining valid disease–pathogen combinations.
      * @summary Etiologies  Get One
      * @param {string} objectId 
      * @param {*} [options] Override http request option.
@@ -32448,7 +32448,7 @@ export class OntologyApi extends BaseAPI {
     }
 
     /**
-     * 
+     * Manage disease–etiological agent links defining valid disease–pathogen combinations.
      * @summary Etiologies  Get Some
      * @param {string} ids 
      * @param {*} [options] Override http request option.
@@ -32460,7 +32460,7 @@ export class OntologyApi extends BaseAPI {
     }
 
     /**
-     * 
+     * Manage disease–etiological agent links defining valid disease–pathogen combinations.
      * @summary Etiologies  Post One
      * @param {Etiology} etiology 
      * @param {*} [options] Override http request option.
@@ -32472,7 +32472,7 @@ export class OntologyApi extends BaseAPI {
     }
 
     /**
-     * 
+     * Manage disease–etiological agent links defining valid disease–pathogen combinations.
      * @summary Etiologies  Post Query
      * @param {EpiFilter} filter 
      * @param {*} [options] Override http request option.
@@ -32484,7 +32484,7 @@ export class OntologyApi extends BaseAPI {
     }
 
     /**
-     * 
+     * Manage disease–etiological agent links defining valid disease–pathogen combinations.
      * @summary Etiologies  Post Query  Ids
      * @param {EpiFilter} filter 
      * @param {*} [options] Override http request option.
@@ -32496,7 +32496,7 @@ export class OntologyApi extends BaseAPI {
     }
 
     /**
-     * 
+     * Manage disease–etiological agent links defining valid disease–pathogen combinations.
      * @summary Etiologies  Post Some
      * @param {Array<Etiology>} etiology 
      * @param {*} [options] Override http request option.
@@ -32508,7 +32508,7 @@ export class OntologyApi extends BaseAPI {
     }
 
     /**
-     * 
+     * Manage disease–etiological agent links defining valid disease–pathogen combinations.
      * @summary Etiologies  Put One
      * @param {string} objectId 
      * @param {Etiology} etiology 
@@ -32521,7 +32521,7 @@ export class OntologyApi extends BaseAPI {
     }
 
     /**
-     * 
+     * Manage disease–etiological agent links defining valid disease–pathogen combinations.
      * @summary Etiologies  Put Some
      * @param {Array<Etiology>} etiology 
      * @param {*} [options] Override http request option.
