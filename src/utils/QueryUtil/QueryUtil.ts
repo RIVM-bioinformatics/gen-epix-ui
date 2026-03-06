@@ -169,6 +169,7 @@ export const queryKeyDependencies: Record<QUERY_KEY, QUERY_KEY[]> = {
     QUERY_KEY.IDENTIFIER_ISSUERS_OWN_ORGANIZATION,
   ],
   [QUERY_KEY.COLS_VALIDATION_RULES]: [],
+  [QUERY_KEY.SIMILAR_CASES]: [],
 };
 
 export class QueryUtil {

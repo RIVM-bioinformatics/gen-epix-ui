@@ -226,8 +226,6 @@ export const createEpiDashboardStore = (kwArgs: CreateEpiDashboardStoreKwArgs) =
   const epiDashboardStore = createStore<EpiDashboardStore>()(
     persist(
       (set, get) => {
-        console.trace();
-
         const initialState = createEpiDashboardStoreInitialState({
           caseSetId,
           completeCaseType,
@@ -477,9 +475,7 @@ export const createEpiDashboardStore = (kwArgs: CreateEpiDashboardStoreKwArgs) =
             queryClient.setQueryData(QueryUtil.getGenericKey(QUERY_KEY.CASES_LAZY), currentCases.map(c => c.id === caseId ? item : c));
           },
           setPhylogeneticTreeResponse: (phylogeneticTree) => {
-            const { reloadSortedData, reloadTree, reloadSelectedIds, newick, creationTime } = get();
-
-            console.log('setPhylogeneticTreeResponse called with newick:', creationTime);
+            const { reloadSortedData, reloadTree, reloadSelectedIds, newick } = get();
 
             if (newick === phylogeneticTree.newick_repr) {
               return;
@@ -686,7 +682,9 @@ export const createEpiDashboardStore = (kwArgs: CreateEpiDashboardStoreKwArgs) =
                 queryClient.setQueryData(retrieveCaseIdsByQueryQueryKey, currentCaseIdsByQueryResponse);
               }
 
-              const caseIds = [...currentCaseIdsByQueryResponse.case_ids, ...similarCaseIds];
+              // Note:  Combine the case ids from the query with similar case ids from the "find similar cases" feature, to make sure the similar cases are included in the data even if they do not match the current filters
+              //        It's possible the user added similar cases to the current case_set after. Then the case will be included in the query AND the similar case result. So we need to make sure to only include unique case ids.
+              const caseIds = uniq([...currentCaseIdsByQueryResponse.case_ids, ...similarCaseIds]);
 
               const currentCases = QueryUtil.getValidQueryData<Case[]>(QueryUtil.getGenericKey(QUERY_KEY.CASES_LAZY));
               const currentCaseIds = (currentCases ?? []).map(x => x.id);

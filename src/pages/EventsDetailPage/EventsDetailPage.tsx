@@ -23,7 +23,7 @@ export const EventsDetailPage = () => {
   const caseTypeMapQuery = useCaseTypeMapQuery();
   const updateBreadcrumb = useUpdateBreadcrumb('Event');
 
-  const { isPending, error, data: caseSet } = useItemQuery({
+  const caseSetQuery = useItemQuery({
     baseQueryKey: QUERY_KEY.CASE_SETS,
     itemId: caseSetId,
     useQueryOptions: {
@@ -32,19 +32,19 @@ export const EventsDetailPage = () => {
   });
 
   const title = useMemo(() => {
-    if (!caseSet) {
+    if (!caseSetQuery.data) {
       return t`Event`;
     }
-    const caseTypeName = caseTypeMapQuery.isLoading || !caseTypeMapQuery.map.has(caseSet.case_type_id) ? '⌛' : caseTypeMapQuery.map.get(caseSet.case_type_id).name;
+    const caseTypeName = caseTypeMapQuery.isLoading || !caseTypeMapQuery.map.has(caseSetQuery.data.case_type_id) ? '⌛' : caseTypeMapQuery.map.get(caseSetQuery.data.case_type_id).name;
 
-    return `${caseSet.name} (${caseTypeName})`;
-  }, [caseSet, caseTypeMapQuery.isLoading, caseTypeMapQuery.map, t]);
+    return `${caseSetQuery.data.name} (${caseTypeName})`;
+  }, [caseSetQuery.data, caseTypeMapQuery.isLoading, caseTypeMapQuery.map, t]);
 
   useEffect(() => {
     updateBreadcrumb(title);
   }, [title, updateBreadcrumb]);
 
-  const loadables = useArray([caseTypeMapQuery]);
+  const loadables = useArray([caseTypeMapQuery, caseSetQuery]);
 
   return (
     <PageContainer
@@ -55,13 +55,11 @@ export const EventsDetailPage = () => {
       title={title}
     >
       <ResponseHandler
-        error={error}
-        isLoading={isPending}
         loadables={loadables}
       >
         <EpiDashboard
-          caseSet={caseSet}
-          caseTypeId={caseSet?.case_type_id}
+          caseSet={caseSetQuery.data}
+          caseTypeId={caseSetQuery.data?.case_type_id}
         />
       </ResponseHandler>
     </PageContainer>

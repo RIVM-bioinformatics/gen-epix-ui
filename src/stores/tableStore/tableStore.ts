@@ -66,7 +66,6 @@ export interface TableStoreState<TData> {
   sortedData: TData[];
   sortedIds: string[];
   visibleFilterWithinDimensions: { [key: string]: string };
-  creationTime: number;
 }
 
 export interface TableStoreActions<TData> {
@@ -166,7 +165,6 @@ export const createTableStoreInitialState = <TData>(kwArgs: CreateTableStoreInit
     sortedData: [],
     sortedIds: null,
     visibleFilterWithinDimensions: {},
-    creationTime: Date.now(),
   };
 };
 

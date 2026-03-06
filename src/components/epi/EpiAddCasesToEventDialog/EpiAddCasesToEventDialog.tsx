@@ -19,6 +19,7 @@ import {
   useWatch,
 } from 'react-hook-form';
 import noop from 'lodash/noop';
+import { useShallow } from 'zustand/shallow';
 
 import {
   withDialog,
@@ -86,19 +87,38 @@ export const EpiAddCasesToEventDialog = withDialog<EpiAddCasesToEventDialogProps
   const epiDashboardStore = useContext(EpiDashboardStoreContext);
   const fetchData = useStore(epiDashboardStore, (state) => state.fetchData);
   const completeCaseType = useStore(epiDashboardStore, (state) => state.completeCaseType);
+  const similarCaseIds = useStore(epiDashboardStore, useShallow((state) => state.findSimilarCasesResults?.flatMap(result => result.similarCaseIds) ?? []));
   const formId = useId();
+  const similarCaseIdsInRows = useMemo(() => {
+    return openProps.rows.map(row => row.id).filter(id => similarCaseIds.includes(id));
+  }, [openProps.rows, similarCaseIds]);
+
   const filteredCaseSetOptions = useMemo(() => (caseSetOptionsQuery.options ?? []).filter(option => {
     const caseSet = caseSetsMapQuery.map.get(option.value);
+    if (similarCaseIdsInRows.length === 0 && caseSet?.id === openProps.currentCaseSet.id) {
+      return false;
+    }
+
     if (caseSet.case_type_id !== completeCaseType.id) {
       return false;
     }
 
     return true;
-  }), [caseSetOptionsQuery.options, caseSetsMapQuery.map, completeCaseType.id]);
+  }), [caseSetOptionsQuery.options, caseSetsMapQuery.map, completeCaseType.id, openProps.currentCaseSet.id, similarCaseIdsInRows.length]);
+
+  const initialSetSetId = useMemo(() => {
+    if (filteredCaseSetOptions.length === 1) {
+      return filteredCaseSetOptions[0].value;
+    }
+    if (similarCaseIdsInRows.length > 0) {
+      return openProps.currentCaseSet.id;
+    }
+    return null;
+  }, [filteredCaseSetOptions, openProps.currentCaseSet.id, similarCaseIdsInRows.length]);
 
   const formMethods = useForm<FormFields>({
     values: {
-      caseSetId: filteredCaseSetOptions?.length === 1 ? filteredCaseSetOptions[0].value : null,
+      caseSetId: initialSetSetId,
       shouldApplySharingToCases: true,
     },
   });

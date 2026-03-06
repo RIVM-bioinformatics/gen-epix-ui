@@ -137,7 +137,7 @@ export const EpiLineListPrimaryMenu = ({
       actionsColumnMenuItem.items.push(
         {
           disabled: !selectedIds?.length,
-          label: t`Add selected cases to existing event`,
+          label: t`Add selected cases to an existing event`,
           callback: () => EpiEventBusManager.instance.emit('openAddCasesToEventDialog', {
             rows: selectedRows,
             currentCaseSet: caseSet,

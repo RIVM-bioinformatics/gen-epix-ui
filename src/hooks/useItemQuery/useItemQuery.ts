@@ -30,17 +30,33 @@ export const useItemQuery = <T extends GenericData>({
   const { queryCache } = QueryClientManager.instance;
   const [itemFromCache, setItemFromCache] = useState<T>(QueryUtil.getItemFromCache<T>(baseQueryKey, itemId));
 
+  const useQueryResult = useQueryMemo({
+    ...useQueryOptions,
+    queryKey: QueryUtil.getGenericKey(baseQueryKey, itemId),
+    enabled: !itemFromCache && useQueryOptions.enabled,
+  });
+
   useEffect(() => {
     const handleQueryCacheEvent = (event: QueryCacheNotifyEvent) => {
       if (Array.isArray(event.query.queryKey) && event.query.queryKey[0] === baseQueryKey && eventTypes.includes(event.type)) {
         if (event.query.queryKey.length === 1) {
           const list = (event.query.state.data as T[]);
-          if ((event.type === 'added' || event.type === 'removed') && !list) {
+          if (event.type === 'removed') {
+            setItemFromCache(undefined);
             return;
           }
-          setItemFromCache(list?.find(item => item.id === itemId));
+          if (!list) {
+            return;
+          }
+          const newValue = list?.find(item => item.id === itemId);
+          if (JSON.stringify(itemFromCache) !== JSON.stringify(newValue)) {
+            setItemFromCache(newValue);
+          }
         } else if (event.query.queryKey.length === 2 && (event.query.state.data as T)?.id === itemId) {
-          setItemFromCache(event.query.state.data as T);
+          const newValue = event.query.state.data as T;
+          if (JSON.stringify(itemFromCache) !== JSON.stringify(newValue)) {
+            setItemFromCache(newValue);
+          }
         }
       }
     };
@@ -49,13 +65,8 @@ export const useItemQuery = <T extends GenericData>({
     return () => {
       removeListener();
     };
-  }, [baseQueryKey, itemId, queryCache]);
+  }, [baseQueryKey, itemId, queryCache, itemFromCache]);
 
-  const useQueryResult = useQueryMemo({
-    ...useQueryOptions,
-    queryKey: QueryUtil.getGenericKey(baseQueryKey, itemId),
-    enabled: !itemFromCache && useQueryOptions.enabled,
-  });
 
   const result = useMemo(() => {
     return {
