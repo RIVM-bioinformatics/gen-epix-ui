@@ -23,6 +23,7 @@ import { UseColumnsMenu } from '../../../hooks/useColumnsMenu';
 import type { TableColumn } from '../../../models/table';
 import { CaseUtil } from '../../../utils/CaseUtil';
 import { EpiWidgetMenu } from '../EpiWidgetMenu';
+import { SelectionFilter } from '../../../classes/filters/SelectionFilter';
 
 export type EpiLineListPrimaryMenuProps = {
   readonly caseSet?: CaseSet;
@@ -38,6 +39,7 @@ export const EpiLineListPrimaryMenu = ({
   const sortedData = useStore(epiDashboardStore, useShallow((state) => state.sortedData));
   const completeCaseType = useStore(epiDashboardStore, useShallow((state) => state.completeCaseType));
   const setFilterValue = useStore(epiDashboardStore, useShallow((state) => state.setFilterValue));
+  const filters = useStore(epiDashboardStore, useShallow((state) => state.filters));
   const setSelectedIds = useStore(epiDashboardStore, useShallow((state) => state.setSelectedIds));
   const findSimilarCasesResults = useStore(epiDashboardStore, useShallow((state) => state.findSimilarCasesResults));
 
@@ -57,7 +59,7 @@ export const EpiLineListPrimaryMenu = ({
     setSelectedIds([]);
   }, [setFilterValue, selectedIds, setSelectedIds]);
 
-
+  const hasSelectionFilter = filters.some((filter) => filter instanceof SelectionFilter && filter.filterValue.length > 0);
   const columnsMenuItem = UseColumnsMenu({ hasCellData });
 
   const similarCaseIds = useMemo(() => findSimilarCasesResults?.flatMap((result) => result.similarCaseIds) || [], [findSimilarCasesResults]);
@@ -89,12 +91,13 @@ export const EpiLineListPrimaryMenu = ({
       items: [
         {
           label: t`Create filter from selected cases`,
-          disabled: !selectedIds?.length,
+          disabled: !selectedIds?.length || similarCaseIds.length > 0,
           callback: createFilterFromSelectedRowCaseIds,
           divider: true,
         },
         {
           label: t`Find similar cases`,
+          disabled: hasSelectionFilter,
           callback: () => EpiEventBusManager.instance.emit('openFindSimilarCasesDialog', {
             selectedRows: sortedData,
             allRows: sortedData,
@@ -103,7 +106,7 @@ export const EpiLineListPrimaryMenu = ({
         },
         {
           label: t`Find similar cases (based on selected cases)`,
-          disabled: !selectedIds?.length,
+          disabled: !selectedIds?.length || hasSelectionFilter,
           callback: () => EpiEventBusManager.instance.emit('openFindSimilarCasesDialog', {
             selectedRows,
             allRows: sortedData,
@@ -179,7 +182,7 @@ export const EpiLineListPrimaryMenu = ({
     ];
 
     return menus;
-  }, [caseSet, t, selectedIds?.length, createFilterFromSelectedRowCaseIds, findSimilarCasesResults?.length, columnsMenuItem, selectedRows, sortedData, completeCaseType, selectedRowsWithoutSimilarCases]);
+  }, [caseSet, t, selectedIds?.length, hasSelectionFilter, similarCaseIds.length, createFilterFromSelectedRowCaseIds, findSimilarCasesResults?.length, columnsMenuItem, sortedData, completeCaseType, selectedRows, selectedRowsWithoutSimilarCases]);
 
 
   return <EpiWidgetMenu menu={menu} />;

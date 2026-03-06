@@ -267,6 +267,23 @@ export const createEpiDashboardStore = (kwArgs: CreateEpiDashboardStoreKwArgs) =
             }
           },
           setFindSimilarCasesResults: async (findSimilarCasesResults: FindSimilarCasesResult[]) => {
+            const { filters } = get();
+            const filterValues: FilterValues = {};
+            filters.forEach(filter => {
+              filterValues[filter.id] = filter.filterValue;
+            });
+            const treeFilter = filters.find(filter => filter instanceof TreeFilter);
+            const hasTreeFilter = !treeFilter.isInitialFilterValue(filterValues[treeFilter.id]);
+            if (hasTreeFilter) {
+              NotificationManager.instance.showNotification({
+                message: t`The tree filter has automatically been removed, because it's incompatible with the results of "Find Similar Cases".`,
+                severity: 'info',
+              });
+              await tableStoreActions.setFilterValues({
+                ...filterValues,
+                [treeFilter.id]: treeFilter.initialFilterValue,
+              });
+            }
             set({ findSimilarCasesResults });
             await get().fetchData();
           },
@@ -521,7 +538,7 @@ export const createEpiDashboardStore = (kwArgs: CreateEpiDashboardStoreKwArgs) =
             const hadTreeFilter = !treeFilter.isInitialFilterValue(previousFilterValues[treeFilter.id]);
             if (hadTreeFilter && !filterValuesDiff.includes(treeFilter.id)) {
               NotificationManager.instance.showNotification({
-                message: t`The tree filter has automatically been removed`,
+                message: t`The tree filter has automatically been removed, because it's incompatible with the results of the other filters.`,
                 severity: 'info',
               });
               await tableStoreActions.setFilterValues({
@@ -682,7 +699,7 @@ export const createEpiDashboardStore = (kwArgs: CreateEpiDashboardStoreKwArgs) =
                 queryClient.setQueryData(retrieveCaseIdsByQueryQueryKey, currentCaseIdsByQueryResponse);
               }
 
-              // Note:  Combine the case ids from the query with similar case ids from the "find similar cases" feature, to make sure the similar cases are included in the data even if they do not match the current filters
+              // Note:  Combine the case ids from the query with similar case ids from the "find similar cases" feature, to make sure the similar cases are included in the data even if they do not match the current filters.
               //        It's possible the user added similar cases to the current case_set after. Then the case will be included in the query AND the similar case result. So we need to make sure to only include unique case ids.
               const caseIds = uniq([...currentCaseIdsByQueryResponse.case_ids, ...similarCaseIds]);
 
