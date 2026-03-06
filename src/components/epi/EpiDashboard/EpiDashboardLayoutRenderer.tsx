@@ -86,9 +86,9 @@ export const ForwardRefEpiDashboardLayoutRenderer: ForwardRefRenderFunction<Forw
   disabled,
 }, forwardedRef) => {
   const { t } = useTranslation();
-  const epiStore = useContext(EpiDashboardStoreContext);
+  const epiDashboardStore = useContext(EpiDashboardStoreContext);
   const dashboardLayoutUserConfig = useStore(userProfileStore, (state) => state.epiDashboardLayoutUserConfig);
-  const expandedZone = useStore(epiStore, (state) => state.expandedZone);
+  const expandedZone = useStore(epiDashboardStore, (state) => state.expandedZone);
   const layout = DashboardUtil.getDashboardLayout(dashboardLayoutUserConfig);
   const enabledLayoutZones = DashboardUtil.getEnabledZones(dashboardLayoutUserConfig);
 

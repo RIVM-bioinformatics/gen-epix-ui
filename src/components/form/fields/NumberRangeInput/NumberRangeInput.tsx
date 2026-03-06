@@ -274,7 +274,7 @@ export const NumberRangeInput = <TFieldValues extends FieldValues, TName extends
             </Box>
           </Box>
         )}
-        { loading && <FormFieldLoadingIndicator inline />}
+        { !!loading && <FormFieldLoadingIndicator inline />}
         <FormHelperText sx={{ ml: 0 }}>
           <FormFieldHelperText
             noIndent

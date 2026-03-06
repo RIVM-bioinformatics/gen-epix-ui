@@ -35,6 +35,9 @@ export class EpiLineListCaseSetMembersManager {
     const cache = QueryUtil.getValidQueryData<EpiCaseHasCaseSet>([QUERY_KEY.XXX_CASE_ID_HAS_CASE_SET]) ?? {};
     const caseIdsToFetch: string[] = [];
     caseIds.forEach((caseId) => {
+      if (caseIdsToFetch.includes(caseId)) {
+        return;
+      }
       if (cache[caseId] !== undefined) {
         return;
       }
@@ -44,7 +47,6 @@ export class EpiLineListCaseSetMembersManager {
       if (!this.queuedCases[caseId]) {
         this.queuedCases[caseId] = this.createQueueItem(caseId);
       }
-
       caseIdsToFetch.push(caseId);
     });
     if (caseIdsToFetch.length === 0) {

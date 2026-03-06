@@ -168,7 +168,7 @@ export const CheckboxGroup = <TFieldValues extends FieldValues, TName extends Pa
             })}
           </FormGroup>
         )}
-        { loading && <FormFieldLoadingIndicator inline />}
+        { !!loading && <FormFieldLoadingIndicator inline />}
         <FormHelperText sx={{ ml: 0 }}>
           <FormFieldHelperText
             noIndent

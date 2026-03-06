@@ -21,10 +21,10 @@ export const EpiLineListSecondaryMenu = ({
   onLink,
 }: EpiLineListSecondaryMenuProps) => {
   const theme = useTheme();
-  const epiStore = useContext(EpiDashboardStoreContext);
+  const epiDashboardStore = useContext(EpiDashboardStoreContext);
   const { t } = useTranslation();
-  const isTreeLinked = useStore(epiStore, useShallow((state) => state.epiTreeWidgetData.zoomLevel === 1));
-  const setSorting = useStore(epiStore, useShallow((state) => state.setSorting));
+  const isTreeLinked = useStore(epiDashboardStore, useShallow((state) => state.epiTreeWidgetData.zoomLevel === 1));
+  const setSorting = useStore(epiDashboardStore, useShallow((state) => state.setSorting));
 
   const onLinkButtonClick = useCallback(() => {
     const perform = async () => {

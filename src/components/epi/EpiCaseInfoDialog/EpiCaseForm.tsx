@@ -38,11 +38,11 @@ export type EpiCaseFormProps = {
 
 export const EpiCaseForm = ({ epiCase, formId, onFinish, onIsSavingChange, ...boxProps }: EpiCaseFormProps) => {
   const organizationsQuery = useOrganizationsQuery();
-  const epiStore = useContext(EpiDashboardStoreContext);
-  const completeCaseType = useStore(epiStore, (state) => state.completeCaseType);
+  const epiDashboardStore = useContext(EpiDashboardStoreContext);
+  const completeCaseType = useStore(epiDashboardStore, (state) => state.completeCaseType);
   const schema = useMemo(() => CaseUtil.createYupSchema(completeCaseType), [completeCaseType]);
   const formFieldDefinitions = useMemo(() => CaseUtil.createFormFieldDefinitions(completeCaseType, organizationsQuery), [completeCaseType, organizationsQuery]);
-  const mutateCachedCase = useStore(epiStore, useShallow((state) => state.mutateCachedCase));
+  const mutateCachedCase = useStore(epiDashboardStore, useShallow((state) => state.mutateCachedCase));
   const [isSaving, setIsSaving] = useState(false);
 
   const onFormSubmit = useCallback((content: Case['content']) => {

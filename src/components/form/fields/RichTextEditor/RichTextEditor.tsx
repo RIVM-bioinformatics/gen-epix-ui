@@ -296,7 +296,7 @@ export const RichTextEditor = <TFieldValues extends FieldValues, TName extends P
             </RichTextEditorComponent>
           </FormGroup>
         )}
-        { loading && <FormFieldLoadingIndicator inline />}
+        { !!loading && <FormFieldLoadingIndicator inline />}
         <FormHelperText sx={{ ml: 0 }}>
           <FormFieldHelperText
             noIndent

@@ -7,10 +7,10 @@ import { Typography } from '@mui/material';
 import { EpiDashboardStoreContext } from '../../../stores/epiDashboardStore';
 
 export const EpiLineListTitle = () => {
-  const epiStore = useContext(EpiDashboardStoreContext);
+  const epiDashboardStore = useContext(EpiDashboardStoreContext);
   const { t } = useTranslation();
-  const sortedData = useStore(epiStore, useShallow((state) => state.sortedData));
-  const selectedIds = useStore(epiStore, useShallow((state) => state.selectedIds));
+  const sortedData = useStore(epiDashboardStore, useShallow((state) => state.sortedData));
+  const selectedIds = useStore(epiDashboardStore, useShallow((state) => state.selectedIds));
 
   return (
     <Typography

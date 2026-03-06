@@ -15,13 +15,13 @@ import { EpiLineListUtil } from '../../../utils/EpiLineListUtil';
 
 export const useEpiLineListEmitDownloadOptions = () => {
   const { t } = useTranslation();
-  const epiStore = useContext(EpiDashboardStoreContext);
-  const sortedData = useStore(epiStore, useShallow((state) => state.sortedData));
-  const completeCaseType = useStore(epiStore, useShallow((state) => state.completeCaseType));
+  const epiDashboardStore = useContext(EpiDashboardStoreContext);
+  const sortedData = useStore(epiDashboardStore, useShallow((state) => state.sortedData));
+  const completeCaseType = useStore(epiDashboardStore, useShallow((state) => state.completeCaseType));
 
   const getVisibleColumnIds = useCallback(() => {
-    return epiStore.getState().columnSettings.filter(x => x.isVisible).map(x => x.id);
-  }, [epiStore]);
+    return epiDashboardStore.getState().columnSettings.filter(x => x.isVisible).map(x => x.id);
+  }, [epiDashboardStore]);
 
   useEffect(() => {
     const emitDownloadOptions = (selectedIds: string[]) => {
@@ -78,8 +78,8 @@ export const useEpiLineListEmitDownloadOptions = () => {
         ],
       });
     };
-    emitDownloadOptions(epiStore.getState().selectedIds);
-    const unsubscribe = epiStore.subscribe((state, prevState) => {
+    emitDownloadOptions(epiDashboardStore.getState().selectedIds);
+    const unsubscribe = epiDashboardStore.subscribe((state, prevState) => {
       if (JSON.stringify(state.selectedIds) !== JSON.stringify(prevState.selectedIds)) {
         emitDownloadOptions(state.selectedIds);
       }
@@ -87,7 +87,7 @@ export const useEpiLineListEmitDownloadOptions = () => {
 
 
     const removeEventListener = EpiEventBusManager.instance.addEventListener('onDownloadOptionsRequested', () => {
-      emitDownloadOptions(epiStore.getState().selectedIds);
+      emitDownloadOptions(epiDashboardStore.getState().selectedIds);
     });
     return () => {
       EpiEventBusManager.instance.emit('onDownloadOptionsChanged', {
@@ -98,5 +98,5 @@ export const useEpiLineListEmitDownloadOptions = () => {
       removeEventListener();
       unsubscribe();
     };
-  }, [completeCaseType, epiStore, getVisibleColumnIds, sortedData, t]);
+  }, [completeCaseType, epiDashboardStore, getVisibleColumnIds, sortedData, t]);
 };

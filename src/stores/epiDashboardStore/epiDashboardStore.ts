@@ -44,6 +44,7 @@ import type {
   Stratification,
   CaseTypeRowValue,
   StratificationLegendaItem,
+  FindSimilarCasesResult,
 } from '../../models/epi';
 import {
   STRATIFICATION_MODE,
@@ -115,6 +116,7 @@ interface EpiDashboardStoreState extends TableStoreState<Case> {
   numVisibleAttributesInSummary: number;
   isMaxResultsExceeded: boolean;
   isMaxResultsExceededDismissed: boolean;
+  findSimilarCasesResults: FindSimilarCasesResult[];
 }
 
 interface EpiDashboardStoreActions extends TableStoreActions<Case> {
@@ -132,6 +134,7 @@ interface EpiDashboardStoreActions extends TableStoreActions<Case> {
   destroy: () => void;
   resetTreeAddresses: () => void;
   setNumVisibleAttributesInSummary: (numVisibleAttributesInSummary: number) => void;
+  setFindSimilarCasesResults: (findSimilarCasesResults: FindSimilarCasesResult[]) => Promise<void>;
 
   // Private
   reloadStratification: () => void;
@@ -195,6 +198,7 @@ const createEpiDashboardStoreInitialState = (kwArgs: CreateEpiDashboardStoreInit
     treeAddresses: {},
     newick: null,
     treeResponse: null,
+    findSimilarCasesResults: [],
     epiTreeWidgetData: createEpiTreeWidgetDataInitialState(),
     epiListWidgetData: {
       ...createWidgetDataInitialState(),
@@ -261,6 +265,27 @@ export const createEpiDashboardStore = (kwArgs: CreateEpiDashboardStoreKwArgs) =
               resetTreeAddresses();
               await setFilterValue(treeFilter.id, treeFilter.initialFilterValue);
             }
+          },
+          setFindSimilarCasesResults: async (findSimilarCasesResults: FindSimilarCasesResult[]) => {
+            const { filters } = get();
+            const filterValues: FilterValues = {};
+            filters.forEach(filter => {
+              filterValues[filter.id] = filter.filterValue;
+            });
+            const treeFilter = filters.find(filter => filter instanceof TreeFilter);
+            const hasTreeFilter = !treeFilter.isInitialFilterValue(filterValues[treeFilter.id]);
+            if (hasTreeFilter) {
+              NotificationManager.instance.showNotification({
+                message: t`The tree filter has automatically been removed, because it's incompatible with the results of "Find Similar Cases".`,
+                severity: 'info',
+              });
+              await tableStoreActions.setFilterValues({
+                ...filterValues,
+                [treeFilter.id]: treeFilter.initialFilterValue,
+              });
+            }
+            set({ findSimilarCasesResults });
+            await get().fetchData();
           },
           stratify: (mode, caseTypeCol) => {
             const { sortedData, selectedIds } = get();
@@ -467,7 +492,11 @@ export const createEpiDashboardStore = (kwArgs: CreateEpiDashboardStoreKwArgs) =
             queryClient.setQueryData(QueryUtil.getGenericKey(QUERY_KEY.CASES_LAZY), currentCases.map(c => c.id === caseId ? item : c));
           },
           setPhylogeneticTreeResponse: (phylogeneticTree) => {
-            const { reloadSortedData, reloadTree, reloadSelectedIds } = get();
+            const { reloadSortedData, reloadTree, reloadSelectedIds, newick } = get();
+
+            if (newick === phylogeneticTree.newick_repr) {
+              return;
+            }
 
             if (phylogeneticTree.newick_repr && phylogeneticTree.newick_repr.trim().length > 0 && phylogeneticTree.newick_repr !== '();') {
               // parse the newick into a tree
@@ -509,7 +538,7 @@ export const createEpiDashboardStore = (kwArgs: CreateEpiDashboardStoreKwArgs) =
             const hadTreeFilter = !treeFilter.isInitialFilterValue(previousFilterValues[treeFilter.id]);
             if (hadTreeFilter && !filterValuesDiff.includes(treeFilter.id)) {
               NotificationManager.instance.showNotification({
-                message: t`The tree filter has automatically been removed`,
+                message: t`The tree filter has automatically been removed, because it's incompatible with the results of the other filters.`,
                 severity: 'info',
               });
               await tableStoreActions.setFilterValues({
@@ -625,8 +654,10 @@ export const createEpiDashboardStore = (kwArgs: CreateEpiDashboardStoreKwArgs) =
           },
           fetchData: async () => {
             set({ isMaxResultsExceeded: false, isMaxResultsExceededDismissed: false, dataError: null });
-            const { fetchAbortController: previousFetchAbortController, globalAbortSignal } = get();
+            const { fetchAbortController: previousFetchAbortController, globalAbortSignal, findSimilarCasesResults } = get();
             const queryClient = QueryClientManager.instance.queryClient;
+
+            const similarCaseIds = findSimilarCasesResults?.flatMap((result) => result.similarCaseIds) || [];
 
             if (previousFetchAbortController && !previousFetchAbortController.signal.aborted) {
               previousFetchAbortController.abort();
@@ -668,9 +699,13 @@ export const createEpiDashboardStore = (kwArgs: CreateEpiDashboardStoreKwArgs) =
                 queryClient.setQueryData(retrieveCaseIdsByQueryQueryKey, currentCaseIdsByQueryResponse);
               }
 
+              // Note:  Combine the case ids from the query with similar case ids from the "find similar cases" feature, to make sure the similar cases are included in the data even if they do not match the current filters.
+              //        It's possible the user added similar cases to the current case_set after. Then the case will be included in the query AND the similar case result. So we need to make sure to only include unique case ids.
+              const caseIds = uniq([...currentCaseIdsByQueryResponse.case_ids, ...similarCaseIds]);
+
               const currentCases = QueryUtil.getValidQueryData<Case[]>(QueryUtil.getGenericKey(QUERY_KEY.CASES_LAZY));
               const currentCaseIds = (currentCases ?? []).map(x => x.id);
-              const missingCaseIds = difference(currentCaseIdsByQueryResponse.case_ids, currentCaseIds);
+              const missingCaseIds = difference(caseIds, currentCaseIds);
               if (missingCaseIds.length) {
                 const missingCasesResult = (await CaseApi.instance.retrieveCasesByIds({
                   case_type_id: completeCaseType.id,
@@ -683,7 +718,7 @@ export const createEpiDashboardStore = (kwArgs: CreateEpiDashboardStoreKwArgs) =
               casesMap.forEach((item) => {
                 queryClient.setQueryData(QueryUtil.getGenericKey(QUERY_KEY.CASES_LAZY, item.id), item);
               });
-              const cases = currentCaseIdsByQueryResponse.case_ids.map(id => casesMap.get(id));
+              const cases = caseIds.map(id => casesMap.get(id));
 
               setBaseData(cases);
               set({ isDataLoading: false, isMaxResultsExceeded: currentCaseIdsByQueryResponse.is_max_results_exceeded });

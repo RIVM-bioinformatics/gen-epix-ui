@@ -144,7 +144,7 @@ export const DatePicker = <TFieldValues extends FieldValues, TName extends Path<
             onChange={onMuiDatePickerChange(onChange)}
           />
         </LocalizationProvider>
-        { loading && <FormFieldLoadingIndicator />}
+        { !!loading && <FormFieldLoadingIndicator /> }
         <FormHelperText sx={{ ml: 0 }}>
           <FormFieldHelperText
             noIndent

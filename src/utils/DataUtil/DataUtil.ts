@@ -1,6 +1,8 @@
 import type { TFunction } from 'i18next';
+import { format } from 'date-fns';
 
 import type {
+  CaseSet,
   CaseTypeCol,
   CaseTypeDim,
   Col,
@@ -10,6 +12,7 @@ import type {
 } from '../../api';
 import { ColType } from '../../api';
 import type { OptionBase } from '../../models/form';
+import { DATE_FORMAT } from '../../data/date';
 
 export class DataUtil {
   public static getGeneticSequenceCaseTypeColOptionsForCaseTypeId(kwArgs: { caseTypeId: string; colMap: Map<string, Col>; caseTypeColMap: Map<string, CaseTypeCol>; caseTypeColOptions: OptionBase<string>[] }): OptionBase<string>[] {
@@ -71,6 +74,10 @@ export class DataUtil {
       return t`Unknown user`;
     }
     return `${user.name} (${user.key})`;
+  }
+
+  public static getCaseSetName(caseSet: CaseSet): string {
+    return `${caseSet.name} (${format(caseSet.created_at, DATE_FORMAT.DATE)})`;
   }
 
 

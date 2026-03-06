@@ -87,7 +87,10 @@ export const GenericErrorMessage = ({ error, shouldHideActionButtons }: GenericE
       return t`The item you requested can not be found. It may have been moved or deleted.`;
     }
     if (AxiosUtil.isAxiosForbiddenError(error)) {
-      return t`You don't have access to this page or item.`;
+      return t`You are not authorized to access this page or item.`;
+    }
+    if (AxiosUtil.isAxiosUnauthorizedError(error)) {
+      return t`You are not authorized to access this page or item. Please logout and login again.`;
     }
     if (AxiosUtil.isAxiosUnprocessableEntityError(error)) {
       return t`We were unable to process this page or item.`;

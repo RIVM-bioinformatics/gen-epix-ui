@@ -11,6 +11,7 @@ import type { SelectProps } from '../components/form/fields/Select';
 import type { DatePickerProps } from '../components/form/fields/DatePicker';
 import type { UploadButtonProps } from '../components/form/fields/UploadButton/UploadButton';
 import type { RadioGroupProps } from '../components/form/fields/RadioGroup';
+import type { NumberFieldProps } from '../components/form/fields/NumberField';
 
 
 export interface OptionBase<TValue> {
@@ -35,6 +36,7 @@ export enum FORM_FIELD_DEFINITION_TYPE {
   SELECT = 'SELECT',
   FILE = 'FILE',
   TEXTFIELD = 'TEXTFIELD',
+  NUMBER = 'NUMBER',
   RICH_TEXT = 'RICH_TEXT',
   BOOLEAN = 'BOOLEAN',
   HIDDEN = 'HIDDEN',
@@ -45,6 +47,7 @@ export enum FORM_FIELD_DEFINITION_TYPE {
 export type FormFieldDefinitionAutocomplete<TFormFields extends FieldValues> = { definition: FORM_FIELD_DEFINITION_TYPE.AUTOCOMPLETE; multiple?: false } & AutocompleteProps<TFormFields, Path<TFormFields>, false>;
 export type FormFieldDefinitionAutocompleteMultiple<TFormFields extends FieldValues> = { definition: FORM_FIELD_DEFINITION_TYPE.AUTOCOMPLETE; multiple?: true } & AutocompleteProps<TFormFields, Path<TFormFields>, true>;
 export type FormFieldDefinitionTextField<TFormFields extends FieldValues> = { definition: FORM_FIELD_DEFINITION_TYPE.TEXTFIELD } & TextFieldProps<TFormFields, Path<TFormFields>>;
+export type FormFieldDefinitionNumber<TFormFields extends FieldValues> = { definition: FORM_FIELD_DEFINITION_TYPE.NUMBER } & NumberFieldProps<TFormFields, Path<TFormFields>>;
 export type FormFieldDefinitionBoolean<TFormFields extends FieldValues> = { definition: FORM_FIELD_DEFINITION_TYPE.BOOLEAN } & Omit<SelectProps<TFormFields, Path<TFormFields>, false>, 'options'>;
 export type FormFieldDefinitionTransferList<TFormFields extends FieldValues> = { definition: FORM_FIELD_DEFINITION_TYPE.TRANSFER_LIST } & TransferListProps<TFormFields, Path<TFormFields>>;
 export type FormFieldDefinitionHidden<TFormFields extends FieldValues> = { definition: FORM_FIELD_DEFINITION_TYPE.HIDDEN } & TextFieldProps<TFormFields, Path<TFormFields>>;
@@ -59,6 +62,7 @@ export type FormFieldDefinition<TFormFields> =
   FormFieldDefinitionAutocomplete<TFormFields> |
   FormFieldDefinitionAutocompleteMultiple<TFormFields> |
   FormFieldDefinitionTextField<TFormFields> |
+  FormFieldDefinitionNumber<TFormFields> |
   FormFieldDefinitionBoolean<TFormFields> |
   FormFieldDefinitionTransferList<TFormFields> |
   FormFieldDefinitionHidden<TFormFields> |

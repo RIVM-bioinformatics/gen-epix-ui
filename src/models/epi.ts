@@ -1,5 +1,4 @@
 import type {
-  Case,
   ColType,
   CaseTypeCol,
   Col,
@@ -25,11 +24,6 @@ export type CaseTypeRowValue = {
 export enum STRATIFICATION_MODE {
   FIELD = 'FIELD',
   SELECTION = 'SELECTION',
-}
-
-export interface CaseWithMetaData extends Case {
-  isSelected: boolean;
-  groupColor?: string;
 }
 
 export type StratificationLegendaItem = {
@@ -120,6 +114,14 @@ export type EpiData = {
   userDataCollections: DataCollection[];
   userDataCollectionsById: { [id: string]: DataCollection };
   treeAlgorithms: TreeAlgorithm[];
+};
+
+export type FindSimilarCasesResult = {
+  key: string;
+  similarCaseIds: string[];
+  originalCaseIds: string[];
+  distance: number;
+  caseTypeColId: string;
 };
 
 export type EpiCaseHasCaseSet = { [caseId: string]: boolean };

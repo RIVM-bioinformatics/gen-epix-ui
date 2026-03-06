@@ -13,13 +13,13 @@ import {
 } from 'react';
 import { useTranslation } from 'react-i18next';
 import { useStore } from 'zustand';
-import { useShallow } from 'zustand/shallow';
 import {
   FormProvider,
   useForm,
   useWatch,
 } from 'react-hook-form';
 import noop from 'lodash/noop';
+import { useShallow } from 'zustand/shallow';
 
 import {
   withDialog,
@@ -52,8 +52,10 @@ import { Autocomplete } from '../../form/fields/Autocomplete';
 import { Select } from '../../form/fields/Select';
 import { useArray } from '../../../hooks/useArray';
 import { useQueryMemo } from '../../../hooks/useQueryMemo';
+import { DataUtil } from '../../../utils/DataUtil';
 
 import { EpiAddCasesToEventDialogSuccessNotificationMessage } from './EpiAddCasesToEventDialogSuccessNotificationMessage';
+
 
 export interface EpiAddCasesToEventDialogOpenProps {
   rows: Case[];
@@ -84,25 +86,46 @@ export const EpiAddCasesToEventDialog = withDialog<EpiAddCasesToEventDialogProps
   const dataCollectionsMapQuery = useDataCollectionsMapQuery();
   const caseSetOptionsQuery = useCaseSetOptionsQuery();
   const caseSetsMapQuery = useCaseSetsMapQuery();
-  const epiStore = useContext(EpiDashboardStoreContext);
-  const fetchData = useStore(epiStore, useShallow((state) => state.fetchData));
-  const completeCaseType = useStore(epiStore, useShallow((state) => state.completeCaseType));
+  const epiDashboardStore = useContext(EpiDashboardStoreContext);
+  const fetchData = useStore(epiDashboardStore, (state) => state.fetchData);
+  const completeCaseType = useStore(epiDashboardStore, (state) => state.completeCaseType);
+  const similarCaseIds = useStore(epiDashboardStore, useShallow((state) => state.findSimilarCasesResults?.flatMap(result => result.similarCaseIds) ?? []));
   const formId = useId();
+  const similarCaseIdsInRows = useMemo(() => {
+    return openProps.rows.map(row => row.id).filter(id => similarCaseIds.includes(id));
+  }, [openProps.rows, similarCaseIds]);
+
   const filteredCaseSetOptions = useMemo(() => (caseSetOptionsQuery.options ?? []).filter(option => {
-    if (openProps.currentCaseSet?.id === option.value) {
+    const caseSet = caseSetsMapQuery.map.get(option.value);
+    if (similarCaseIdsInRows.length === 0 && caseSet?.id === openProps.currentCaseSet.id) {
       return false;
     }
-    const caseSet = caseSetsMapQuery.map.get(option.value);
+
     if (caseSet.case_type_id !== completeCaseType.id) {
       return false;
     }
 
     return true;
-  }), [caseSetOptionsQuery.options, caseSetsMapQuery.map, completeCaseType.id, openProps.currentCaseSet]);
+  }).map(option => {
+    return {
+      ...option,
+      label: option.value === openProps.currentCaseSet.id ? t('{{eventName}} (currently shown event)', { eventName: option.label }) : option.label,
+    };
+  }), [caseSetOptionsQuery.options, caseSetsMapQuery.map, completeCaseType.id, openProps.currentCaseSet.id, similarCaseIdsInRows.length, t]);
+
+  const initialSetSetId = useMemo(() => {
+    if (filteredCaseSetOptions.length === 1) {
+      return filteredCaseSetOptions[0].value;
+    }
+    if (similarCaseIdsInRows.length > 0) {
+      return openProps.currentCaseSet.id;
+    }
+    return null;
+  }, [filteredCaseSetOptions, openProps.currentCaseSet.id, similarCaseIdsInRows.length]);
 
   const formMethods = useForm<FormFields>({
     values: {
-      caseSetId: filteredCaseSetOptions?.length === 1 ? filteredCaseSetOptions[0].value : null,
+      caseSetId: initialSetSetId,
       shouldApplySharingToCases: true,
     },
   });
@@ -196,8 +219,13 @@ export const EpiAddCasesToEventDialog = withDialog<EpiAddCasesToEventDialogProps
   }), [onClose]);
 
   useEffect(() => {
+    const caseSet = caseSetId ? caseSetsMapQuery.map.get(caseSetId) : null;
+    if (caseSet) {
+      onTitleChange(t('Add {{numCases}} selected case(s) to {{eventName}}', { numCases: openProps.rows.length, eventName: DataUtil.getCaseSetName(caseSet) }));
+      return;
+    }
     onTitleChange(t('Add {{numCases}} selected case(s) to an existing event', { numCases: openProps.rows.length }));
-  }, [completeCaseType.name, onTitleChange, openProps.rows.length, t]);
+  }, [caseSetId, caseSetsMapQuery.map, completeCaseType.name, onTitleChange, openProps.rows.length, t]);
 
   useEffect(() => {
     const actions: DialogAction[] = [];

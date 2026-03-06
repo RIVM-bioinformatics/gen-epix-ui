@@ -1,4 +1,4 @@
-import readXlsxFile, { readSheetNames } from 'read-excel-file';
+import readXlsxFile, { readSheetNames } from 'read-excel-file/browser';
 import { parse } from 'csv/browser/esm/sync';
 import type {
   ObjectSchema,

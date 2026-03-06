@@ -44,8 +44,8 @@ export const EpiCaseTypeInfoDialogContent = ({ onTitleChange, onPermalinkChange 
   const dataCollectionsQuery = useDataCollectionsQuery();
   const loadables = useArray([dataCollectionsMapQuery, dataCollectionsQuery, diseasesMapQuery, etiologicalAgentsMapQuery]);
 
-  const epiStore = useContext(EpiDashboardStoreContext);
-  const completeCaseType = useStore(epiStore, (state) => state.completeCaseType);
+  const epiDashboardStore = useContext(EpiDashboardStoreContext);
+  const completeCaseType = useStore(epiDashboardStore, (state) => state.completeCaseType);
 
   const getDiseaseName = useCallback((id: string) => {
     if (!id || !diseasesMapQuery.map.has(id)) {

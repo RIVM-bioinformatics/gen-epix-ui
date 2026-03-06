@@ -1,6 +1,7 @@
-import type {
-  PropsWithChildren,
-  ReactNode,
+import {
+  useMemo,
+  type PropsWithChildren,
+  type ReactNode,
 } from 'react';
 import type { CircularProgressProps } from '@mui/material';
 
@@ -13,7 +14,7 @@ export type ResponseHandlerProps = PropsWithChildren<{
   readonly error?: unknown;
   readonly enabled?: boolean;
   readonly loadingMessage?: string;
-  readonly loadables?: Loadable[];
+  readonly loadables?: Loadable[] | Loadable;
   readonly shouldHideActionButtons?: boolean;
   readonly inlineSpinner?: boolean;
   readonly spinnerSize?: CircularProgressProps['size'];
@@ -34,12 +35,21 @@ export const ResponseHandler = ({
   loadingContent,
   takingLongerTimeoutMs,
 }: ResponseHandlerProps): ReactNode => {
+  const loadablesArray = useMemo(() => {
+    if (!loadables) {
+      return [];
+    }
+    if (Array.isArray(loadables)) {
+      return loadables;
+    }
+    return [loadables];
+  }, [loadables]);
   if (enabled === false) {
     return children;
   }
 
-  const error = userError || (loadables?.find((loadable) => loadable.error))?.error;
-  const isLoading = userIsLoading || (loadables?.some((loadable) => loadable.isLoading));
+  const error = userError || (loadablesArray?.find((loadable) => loadable.error))?.error;
+  const isLoading = userIsLoading || (loadablesArray?.some((loadable) => loadable.isLoading));
 
   return (
     <>

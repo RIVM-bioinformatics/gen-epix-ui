@@ -335,7 +335,7 @@ export const DateRangePicker = <TFieldValues extends FieldValues, TName extends 
             />
           </Box>
         </LocalizationProvider>
-        { loading && <FormFieldLoadingIndicator />}
+        { !!loading && <FormFieldLoadingIndicator />}
         <FormHelperText sx={{ ml: 0 }}>
           <FormFieldHelperText
             noIndent

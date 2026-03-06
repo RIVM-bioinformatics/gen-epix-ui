@@ -54,9 +54,9 @@ export const EpiWidget = ({ title, children, primaryMenu, secondaryMenu, warning
   const theme = useTheme();
   const { t } = useTranslation();
 
-  const epiStore = useContext(EpiDashboardStoreContext);
-  const expandZone = useStore(epiStore, (state) => state.expandZone);
-  const expandedZone = useStore(epiStore, (state) => state.expandedZone);
+  const epiDashboardStore = useContext(EpiDashboardStoreContext);
+  const expandZone = useStore(epiDashboardStore, (state) => state.expandZone);
+  const expandedZone = useStore(epiDashboardStore, (state) => state.expandedZone);
   const enabledLayoutZoneCount = useStore(userProfileStore, (state) => DashboardUtil.getEnabledZones(state.epiDashboardLayoutUserConfig).length);
 
   const isExpanded = expandedZone === zone;

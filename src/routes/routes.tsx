@@ -213,7 +213,7 @@ export const routes: MyNonIndexRouteObject[] = [
           {
             path: '/management',
             index: true,
-            Component: () => <AdminPage />,
+            Component: () => <AdminPage routes={adminRoutes} />,
             errorElement: <RouterErrorPage />,
             handle: {
               titleKey: 'Management',

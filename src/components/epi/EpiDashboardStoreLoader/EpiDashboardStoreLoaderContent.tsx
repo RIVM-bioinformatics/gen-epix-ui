@@ -25,13 +25,16 @@ type EpiDashboardStoreLoaderContentProps = PropsWithChildren<{
 }>;
 
 export const EpiDashboardStoreLoaderContent = ({ completeCaseType, caseSet, children }: EpiDashboardStoreLoaderContentProps) => {
-  const epiStore = useMemo(() => createEpiDashboardStore({
-    idSelectorCallback: (row) => row.id,
-    caseSetId: caseSet?.id,
-    completeCaseType,
-    storageNamePostFix: `EpiStoreLoader-${StringUtil.createSlug(completeCaseType.name)}-${StringUtil.createHash(completeCaseType.id)}`,
-    storageVersion: 1,
-  }), [caseSet, completeCaseType]);
+  const epiDashBoardStore = useMemo(() => {
+    const store = createEpiDashboardStore({
+      idSelectorCallback: (row) => row.id,
+      caseSetId: caseSet?.id,
+      completeCaseType,
+      storageNamePostFix: `epiDashboardStoreLoader-${StringUtil.createSlug(completeCaseType.name)}-${StringUtil.createHash(completeCaseType.id)}`,
+      storageVersion: 1,
+    });
+    return store;
+  }, [caseSet, completeCaseType]);
 
   const tableColumnDimensions = useMemo<TableColumnDimension[]>(() => {
     const items: TableColumnDimension[] = [];
@@ -46,8 +49,8 @@ export const EpiDashboardStoreLoaderContent = ({ completeCaseType, caseSet, chil
     return items;
   }, [completeCaseType]);
 
-  const initialize = useStore(epiStore, useShallow((state) => state.initialize));
-  const setColumnDimensions = useStore(epiStore, useShallow((state) => state.setColumnDimensions));
+  const initialize = useStore(epiDashBoardStore, useShallow((state) => state.initialize));
+  const setColumnDimensions = useStore(epiDashBoardStore, useShallow((state) => state.setColumnDimensions));
 
   useEffect(() => {
     const abortController = new AbortController();
@@ -61,8 +64,8 @@ export const EpiDashboardStoreLoaderContent = ({ completeCaseType, caseSet, chil
   }, [initialize, setColumnDimensions, tableColumnDimensions]);
 
   return (
-    <TableStoreContextProvider store={epiStore}>
-      <EpiDashboardStoreContext.Provider value={epiStore}>
+    <TableStoreContextProvider store={epiDashBoardStore}>
+      <EpiDashboardStoreContext.Provider value={epiDashBoardStore}>
         {children}
       </EpiDashboardStoreContext.Provider>
     </TableStoreContextProvider>

@@ -38,14 +38,14 @@ import { NestedDropdown } from '../../ui/NestedMenu';
 
 export const EpiStratification = () => {
   const { t } = useTranslation();
-  const epiStore = useContext(EpiDashboardStoreContext);
+  const epiDashboardStore = useContext(EpiDashboardStoreContext);
   const highlightingManager = useMemo(() => EpiHighlightingManager.instance, []);
 
-  const stratification = useStore(epiStore, (state) => state.stratification);
-  const stratify = useStore(epiStore, (state) => state.stratify);
-  const setFilterValue = useStore(epiStore, (state) => state.setFilterValue);
-  const filters = useStoreWithEqualityFn(epiStore, (state) => state.filters, (a, b) => JSON.stringify(a.map(filter => filter.filterValue)) === JSON.stringify(b.map(filter => filter.filterValue)));
-  const stratifyableColumns = useStore(epiStore, (state) => state.stratifyableColumns);
+  const stratification = useStore(epiDashboardStore, (state) => state.stratification);
+  const stratify = useStore(epiDashboardStore, (state) => state.stratify);
+  const setFilterValue = useStore(epiDashboardStore, (state) => state.setFilterValue);
+  const filters = useStoreWithEqualityFn(epiDashboardStore, (state) => state.filters, (a, b) => JSON.stringify(a.map(filter => filter.filterValue)) === JSON.stringify(b.map(filter => filter.filterValue)));
+  const stratifyableColumns = useStore(epiDashboardStore, (state) => state.stratifyableColumns);
   const [focussedLegendaItem, setFocussedLegendaItem] = useState<StratificationLegendaItem>(null);
 
   const onStratifyMenuItemClick = useCallback((caseTypeCol: CaseTypeCol) => {
