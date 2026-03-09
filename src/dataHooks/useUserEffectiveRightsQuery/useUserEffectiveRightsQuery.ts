@@ -2,8 +2,8 @@ import { useMemo } from 'react';
 import type { UseQueryResult } from '@tanstack/react-query';
 
 import type {
-  CaseTypeColSet,
-  CaseTypeColSetMember,
+  ColSet,
+  ColSetMember,
   CaseTypeSetMember,
   OrganizationAccessCasePolicy,
   OrganizationShareCasePolicy,
@@ -17,8 +17,8 @@ import { useItemQuery } from '../../hooks/useItemQuery';
 import type { UserEffectiveRight } from '../../models/caseAccess';
 import { QUERY_KEY } from '../../models/query';
 import { EffectiveRightsUtil } from '../../utils/EffectiveRightsUtil';
-import { useCaseTypeColSetMembersQuery } from '../useCaseTypeColSetMembersQuery';
-import { useCaseTypeColSetsMapQuery } from '../useCaseTypeColSetsQuery';
+import { useColSetMembersQuery } from '../useColSetMembersQuery';
+import { useColSetMapQuery } from '../useColSetsQuery';
 import { useCaseTypeSetMembersQuery } from '../useCaseTypeSetMembersQuery';
 import {
   useCaseTypeSetsMapQuery,
@@ -42,8 +42,8 @@ export type UserEffectiveRightsQueryResult = {
   userAccessCasePolicies: UserAccessCasePolicy[];
   userShareCasePolicies: UserShareCasePolicy[];
   caseTypeSetMembers: CaseTypeSetMember[];
-  caseTypeColSetMembers: CaseTypeColSetMember[];
-  caseTypeColSetsMap: UseMap<CaseTypeColSet>['map'];
+  colSetMembers: ColSetMember[];
+  colSetsMap: UseMap<ColSet>['map'];
 };
 
 
@@ -61,9 +61,9 @@ export const useUserEffectiveRightsQuery = (userId: string): Partial<UseQueryRes
 
   const { data: user } = userQuery;
 
-  const caseTypeColSetMembersQuery = useCaseTypeColSetMembersQuery();
+  const colSetMembersQuery = useColSetMembersQuery();
   const caseTypeSetsMapQuery = useCaseTypeSetsMapQuery();
-  const caseTypeColSetsMapQuery = useCaseTypeColSetsMapQuery();
+  const colSetMapQuery = useColSetMapQuery();
   const caseTypeSetMembersQuery = useCaseTypeSetMembersQuery();
   const caseTypeSetNameFactory = useCaseTypeSetNameFactory();
   const dataCollectionMapQuery = useDataCollectionsMapQuery();
@@ -80,10 +80,10 @@ export const useUserEffectiveRightsQuery = (userId: string): Partial<UseQueryRes
     userAccessCasePoliciesQuery,
     userShareCasePoliciesQuery,
     caseTypeSetMembersQuery,
-    caseTypeColSetMembersQuery,
+    colSetMembersQuery,
     dataCollectionMapQuery,
     dataCollectionOptionsQuery,
-    caseTypeColSetsMapQuery,
+    colSetMapQuery,
     caseTypeSetNameFactory,
     caseTypeSetsMapQuery,
   ]);
@@ -98,10 +98,10 @@ export const useUserEffectiveRightsQuery = (userId: string): Partial<UseQueryRes
       userAccessCasePolicies: userAccessCasePoliciesQuery.data || [],
       userShareCasePolicies: userShareCasePoliciesQuery.data || [],
       caseTypeSetMembers: caseTypeSetMembersQuery.data || [],
-      caseTypeColSetMembers: caseTypeColSetMembersQuery.data || [],
+      colSetMembers: colSetMembersQuery.data || [],
     });
 
-  }, [caseTypeColSetMembersQuery, caseTypeSetMembersQuery, organizationAccessCasePoliciesQuery, organizationShareCasePoliciesQuery, user, userAccessCasePoliciesQuery, userShareCasePoliciesQuery]);
+  }, [colSetMembersQuery, caseTypeSetMembersQuery, organizationAccessCasePoliciesQuery, organizationShareCasePoliciesQuery, user, userAccessCasePoliciesQuery, userShareCasePoliciesQuery]);
 
   const result = useMemo(() => {
     return {
@@ -115,11 +115,11 @@ export const useUserEffectiveRightsQuery = (userId: string): Partial<UseQueryRes
         userAccessCasePolicies: userAccessCasePoliciesQuery.data,
         userShareCasePolicies: userShareCasePoliciesQuery.data,
         caseTypeSetMembers: caseTypeSetMembersQuery.data,
-        caseTypeColSetMembers: caseTypeColSetMembersQuery.data,
-        caseTypeColSetsMap: caseTypeColSetsMapQuery.map,
+        colSetMembers: colSetMembersQuery.data,
+        colSetsMap: colSetMapQuery.map,
       },
     };
-  }, [caseTypeColSetMembersQuery.data, caseTypeColSetsMapQuery.map, caseTypeSetMembersQuery.data, effectiveRights, loadables, organizationAccessCasePoliciesQuery.data, organizationShareCasePoliciesQuery.data, user, userAccessCasePoliciesQuery.data, userShareCasePoliciesQuery.data]);
+  }, [colSetMembersQuery.data, colSetMapQuery.map, caseTypeSetMembersQuery.data, effectiveRights, loadables, organizationAccessCasePoliciesQuery.data, organizationShareCasePoliciesQuery.data, user, userAccessCasePoliciesQuery.data, userShareCasePoliciesQuery.data]);
 
   return result;
 };

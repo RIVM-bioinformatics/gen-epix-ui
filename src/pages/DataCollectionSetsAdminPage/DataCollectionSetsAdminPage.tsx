@@ -96,7 +96,7 @@ export const DataCollectionSetsAdminPage = () => {
       {
         definition: FORM_FIELD_DEFINITION_TYPE.TRANSFER_LIST,
         name: 'dataCollectionIds',
-        label: t`Case type columns`,
+        label: t`Columns`,
         options: dataCollectionOptionsQuery.options,
         loading: dataCollectionOptionsQuery.isLoading,
       } as const satisfies FormFieldDefinition<FormFields>,

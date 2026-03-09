@@ -24,7 +24,7 @@ import noop from 'lodash/noop';
 import { TestIdUtil } from '../../utils/TestIdUtil';
 import { PageContainer } from '../../components/ui/PageContainer';
 import { ResponseHandler } from '../../components/ui/ResponseHandler';
-import { useCaseTypeColSetMembersQuery } from '../../dataHooks/useCaseTypeColSetMembersQuery';
+import { useColSetMembersQuery } from '../../dataHooks/useColSetMembersQuery';
 import { useCaseTypeSetMembersQuery } from '../../dataHooks/useCaseTypeSetMembersQuery';
 import { useDataCollectionOptionsQuery } from '../../dataHooks/useDataCollectionsQuery';
 import { useOrganizationAccessCasePoliciesQuery } from '../../dataHooks/useOrganizationAccessCasePoliciesQuery';
@@ -55,8 +55,8 @@ type Result = {
   remove_case: boolean;
   add_case_set: boolean;
   remove_case_set: boolean;
-  read_case_type_col_ids: string[];
-  write_case_type_col_ids: string[];
+  read_col_ids: string[];
+  write_col_ids: string[];
   read_case_set: boolean;
   write_case_set: boolean;
   has_share_case_rights?: boolean;
@@ -79,7 +79,7 @@ export const UserEffectiveRightsTesterAdminPage = () => {
     },
   });
 
-  const caseTypeColSetMembersQuery = useCaseTypeColSetMembersQuery();
+  const colSetMembersQuery = useColSetMembersQuery();
   const caseTypeOptionsQuery = useCaseTypeOptionsQuery();
   const organizationMapQuery = useOrganizationMapQuery();
   const caseTypeSetMembersQuery = useCaseTypeSetMembersQuery();
@@ -91,7 +91,7 @@ export const UserEffectiveRightsTesterAdminPage = () => {
 
   const loadables = useArray([
     userQuery,
-    caseTypeColSetMembersQuery,
+    colSetMembersQuery,
     caseTypeOptionsQuery,
     caseTypeSetMembersQuery,
     dataCollectionOptionsQuery,
@@ -109,7 +109,7 @@ export const UserEffectiveRightsTesterAdminPage = () => {
     const { data: userAccessCasePolicies } = userAccessCasePoliciesQuery;
     const { data: userShareCasePolicies } = userShareCasePoliciesQuery;
     const { data: caseTypeSetMembers } = caseTypeSetMembersQuery;
-    const { data: caseTypeColSetMembers } = caseTypeColSetMembersQuery;
+    const { data: colSetMembers } = colSetMembersQuery;
 
     return EffectiveRightsUtil.assembleUserEffectiveRights({
       user: userQuery.data,
@@ -118,10 +118,10 @@ export const UserEffectiveRightsTesterAdminPage = () => {
       userAccessCasePolicies,
       userShareCasePolicies,
       caseTypeSetMembers,
-      caseTypeColSetMembers,
+      colSetMembers,
     });
 
-  }, [caseTypeColSetMembersQuery, caseTypeSetMembersQuery, organizationAccessCasePoliciesQuery, organizationShareCasePoliciesQuery, userAccessCasePoliciesQuery, userQuery.data, userShareCasePoliciesQuery]);
+  }, [colSetMembersQuery, caseTypeSetMembersQuery, organizationAccessCasePoliciesQuery, organizationShareCasePoliciesQuery, userAccessCasePoliciesQuery, userQuery.data, userShareCasePoliciesQuery]);
 
   const schema = useMemo(() => object<FormFields>().shape({
     caseTypeId: string().uuid4().required(),
@@ -159,8 +159,8 @@ export const UserEffectiveRightsTesterAdminPage = () => {
       remove_case_set: effectiveRight?.remove_case_set || shareCaseRight?.remove_case_set,
       read_case_set: effectiveRight?.read_case_set,
       write_case_set: effectiveRight?.write_case_set,
-      read_case_type_col_ids: effectiveRight?.categorized_read_case_type_col_ids,
-      write_case_type_col_ids: effectiveRight?.categorized_write_case_type_col_ids,
+      read_col_ids: effectiveRight?.categorized_read_col_ids,
+      write_col_ids: effectiveRight?.categorized_write_col_ids,
       has_share_case_rights: effectiveRight?.effective_share_case_rights.length > 0,
     } satisfies Result;
   }, [effectiveRights, formValues.caseTypeId, formValues.dataCollectionId, formValues.fromDataCollectionId]);
@@ -267,10 +267,10 @@ export const UserEffectiveRightsTesterAdminPage = () => {
                   {t('Write case set: {{writeCaseSet}}', { writeCaseSet: result?.write_case_set ? t`Yes` : t`No` })}
                 </Typography>
                 <Typography>
-                  {t('Read case properties: {{readSomeProperties}}', { readSomeProperties: result?.read_case_type_col_ids?.length > 0 ? t`Yes` : t`No` })}
+                  {t('Read case properties: {{readSomeProperties}}', { readSomeProperties: result?.read_col_ids?.length > 0 ? t`Yes` : t`No` })}
                 </Typography>
                 <Typography>
-                  {t('Write case properties: {{writeSomeProperties}}', { writeSomeProperties: result?.write_case_type_col_ids?.length > 0 ? t`Yes` : t`No` })}
+                  {t('Write case properties: {{writeSomeProperties}}', { writeSomeProperties: result?.write_col_ids?.length > 0 ? t`Yes` : t`No` })}
                 </Typography>
 
               </Box>

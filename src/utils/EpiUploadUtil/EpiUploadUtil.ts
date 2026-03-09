@@ -15,7 +15,7 @@ import uniq from 'lodash/uniq';
 import { format } from 'date-fns';
 
 import type {
-  CaseTypeCol,
+  Col,
   CaseType,
   CompleteCaseType,
   CaseUploadResult,
@@ -46,7 +46,7 @@ import { FORM_FIELD_DEFINITION_TYPE } from '../../models/form';
 import type {
   EpiUploadMappedColumn,
   EpiUploadMappedColumnsFormFields,
-  EpiUploadCompleteCaseTypeColumnStats,
+  EpiUploadCompleteColStats,
   CaseUploadResultWithGeneratedId,
   EpiUploadSequenceMapping,
   EpiUploadSequenceMappingForCaseId,
@@ -58,7 +58,7 @@ import { ValidationUtil } from '../ValidationUtil';
 export class EpiUploadUtil {
   public static readonly caseIdColumnAliases = ['_case_id', 'case id', 'case_id', 'caseid', 'case.id'];
   public static readonly caseDateColumnAliases = ['_case_date', 'case date', 'case_date', 'casedate', 'case.date'];
-  public static readonly caseTypeColumnAliases = ['_case_type', 'case type', 'case_type', 'casetype', 'case.type'];
+  public static readonly colAliases = ['_case_type', 'case type', 'case_type', 'casetype', 'case.type'];
 
   public static isXlsxFile(fileName: string): boolean {
     return fileName?.toLowerCase()?.endsWith('.xlsx');
@@ -137,42 +137,42 @@ export class EpiUploadUtil {
     return result;
   }
 
-  public static getSampleIdCaseTypeColIds(completeCaseType: CompleteCaseType): string[] {
-    const caseTypeColsIds: string[] = [];
-    Object.values(Object.keys(completeCaseType.case_type_cols)).forEach(caseTypeColId => {
-      const caseTypeCol = completeCaseType.case_type_cols[caseTypeColId];
-      const refCol = completeCaseType.ref_cols[caseTypeCol.ref_col_id];
+  public static getSampleIdColIds(completeCaseType: CompleteCaseType): string[] {
+    const colsIds: string[] = [];
+    Object.values(Object.keys(completeCaseType.cols)).forEach(colId => {
+      const col = completeCaseType.cols[colId];
+      const refCol = completeCaseType.ref_cols[col.ref_col_id];
       if (refCol?.col_type === ColType.ID_SAMPLE) {
-        caseTypeColsIds.push(caseTypeCol.id);
+        colsIds.push(col.id);
       }
     });
-    return caseTypeColsIds;
+    return colsIds;
   }
 
 
-  public static matchColumnLabel(columnLabel: string, caseTypeCol: CaseTypeCol): boolean {
+  public static matchColumnLabel(columnLabel: string, col: Col): boolean {
     if (!columnLabel || typeof columnLabel !== 'string') {
       return false;
     }
     const labelLowerCase = columnLabel.toLocaleLowerCase();
-    return labelLowerCase === caseTypeCol.label.toLocaleLowerCase() || labelLowerCase === caseTypeCol.code.toLowerCase() || labelLowerCase === caseTypeCol.id.toLocaleLowerCase();
+    return labelLowerCase === col.label.toLocaleLowerCase() || labelLowerCase === col.code.toLowerCase() || labelLowerCase === col.id.toLocaleLowerCase();
   }
 
-  public static getCaseTypeFromColumnLabels(caseTypeCols: CaseTypeCol[], columnLabels: string[]): CaseType {
+  public static getCaseTypeFromColumnLabels(cols: Col[], columnLabels: string[]): CaseType {
     const bestMatch = {
       caseType: null as CaseType,
       matchCount: 0,
     };
 
-    // Group case type columns by case type ID to count matches per case type
+    // Group columns by case type ID to count matches per case type
     const caseTypeMatches = new Map<string, { caseType: CaseType; matchCount: number }>();
 
-    caseTypeCols.forEach(caseTypeCol => {
+    cols.forEach(col => {
       const matchCount = columnLabels.filter(label =>
-        this.matchColumnLabel(label, caseTypeCol)).length;
+        this.matchColumnLabel(label, col)).length;
 
       if (matchCount > 0) {
-        const caseTypeId = caseTypeCol.case_type_id;
+        const caseTypeId = col.case_type_id;
         const existing = caseTypeMatches.get(caseTypeId);
 
         if (existing) {
@@ -204,8 +204,8 @@ export class EpiUploadUtil {
     return this.caseIdColumnAliases.includes(label.toLocaleLowerCase());
   }
 
-  public static isCaseTypeColumn(label: string): boolean {
-    return this.caseTypeColumnAliases.includes(label.toLocaleLowerCase());
+  public static isCol(label: string): boolean {
+    return this.colAliases.includes(label.toLocaleLowerCase());
   }
 
   public static isCaseDateColumn(label: string): boolean {
@@ -216,62 +216,62 @@ export class EpiUploadUtil {
     if (rawData.length === 0) {
       return [];
     }
-    const writableColIds = CaseTypeUtil.getWritableCaseTypeColIds(completeCaseType);
-    const filteredCaseTypeCols = CaseTypeUtil.getWritableImportExportCaseTypeColIds(completeCaseType).map(id => completeCaseType.case_type_cols[id]);
-    const sampleIdCaseTypeColIds = EpiUploadUtil.getSampleIdCaseTypeColIds(completeCaseType);
+    const writableColIds = CaseTypeUtil.getWritableColIds(completeCaseType);
+    const filteredCols = CaseTypeUtil.getWritableImportExportColIds(completeCaseType).map(id => completeCaseType.cols[id]);
+    const sampleIdColIds = EpiUploadUtil.getSampleIdColIds(completeCaseType);
     const mappedColumns = rawData[0].map((label, index) => {
       const isCaseIdColumn = EpiUploadUtil.isCaseIdColumn(label);
-      const isCaseTypeColumn = EpiUploadUtil.isCaseTypeColumn(label);
+      const isCol = EpiUploadUtil.isCol(label);
 
-      let caseTypeCol: CaseTypeCol = null;
+      let col: Col = null;
       let isSampleIdColumn = false;
 
-      if (!isCaseIdColumn && !isCaseTypeColumn) {
-        caseTypeCol = filteredCaseTypeCols.find(c => EpiUploadUtil.matchColumnLabel(label, c)) || null;
-        if (caseTypeCol && !writableColIds.includes(caseTypeCol.id)) {
-          caseTypeCol = null;
+      if (!isCaseIdColumn && !isCol) {
+        col = filteredCols.find(c => EpiUploadUtil.matchColumnLabel(label, c)) || null;
+        if (col && !writableColIds.includes(col.id)) {
+          col = null;
         }
-        isSampleIdColumn = caseTypeCol ? sampleIdCaseTypeColIds.includes(caseTypeCol.id) : false;
+        isSampleIdColumn = col ? sampleIdColIds.includes(col.id) : false;
       }
 
       return {
         originalIndex: index,
         originalLabel: label,
-        caseTypeCol,
+        col,
         isCaseIdColumn,
-        isCaseTypeColumn,
+        isCol,
         isSampleIdColumn,
         sampleIdentifierIssuerId: null as string,
       } satisfies EpiUploadMappedColumn;
     });
 
     return mappedColumns.filter(mc => {
-      return mc.isCaseIdColumn || mc.caseTypeCol;
+      return mc.isCaseIdColumn || mc.col;
     });
   }
 
-  public static getMappedColumnsFromFormData(data: EpiUploadMappedColumnsFormFields, rawData: string[][], caseTypeColMap: Map<string, CaseTypeCol>, completeCaseType: CompleteCaseType): EpiUploadMappedColumn[] {
+  public static getMappedColumnsFromFormData(data: EpiUploadMappedColumnsFormFields, rawData: string[][], colMap: Map<string, Col>, completeCaseType: CompleteCaseType): EpiUploadMappedColumn[] {
     const mappedColumns: EpiUploadMappedColumn[] = [];
-    const sampleIdCaseTypeColIds = EpiUploadUtil.getSampleIdCaseTypeColIds(completeCaseType);
+    const sampleIdColIds = EpiUploadUtil.getSampleIdColIds(completeCaseType);
     Object.entries(data).forEach(([originalIndexString, formValue]) => {
       if (!formValue) {
         return;
       }
       const originalIndex = parseInt(originalIndexString, 10);
       const isCaseIdColumn = formValue === 'case_id';
-      let caseTypeCol: CaseTypeCol = null;
+      let col: Col = null;
       if (!isCaseIdColumn) {
-        caseTypeCol = caseTypeColMap.get(formValue) || null;
+        col = colMap.get(formValue) || null;
       }
       let sampleIdentifierIssuerId: string = null;
-      const isSampleIdColumn = caseTypeCol ? sampleIdCaseTypeColIds.includes(caseTypeCol.id) : false;
+      const isSampleIdColumn = col ? sampleIdColIds.includes(col.id) : false;
       if (isSampleIdColumn) {
         sampleIdentifierIssuerId = data[formValue] || null;
       }
       mappedColumns.push({
         isCaseIdColumn,
         isSampleIdColumn,
-        caseTypeCol,
+        col,
         originalIndex,
         originalLabel: rawData[0][originalIndex] || '',
         sampleIdentifierIssuerId,
@@ -298,13 +298,13 @@ export class EpiUploadUtil {
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
     const fields: { [key: string]: any } = {};
     const fieldNames: string[] = rawData[0].map((_, index) => index.toString());
-    const sampleIdCaseTypeColIds = EpiUploadUtil.getSampleIdCaseTypeColIds(completeCaseType);
+    const sampleIdColIds = EpiUploadUtil.getSampleIdColIds(completeCaseType);
 
-    sampleIdCaseTypeColIds.forEach((caseTypeColId) => {
-      fields[caseTypeColId] = lazy(() => string().nullable().when(fieldNames, (otherFieldValues, schema) => {
+    sampleIdColIds.forEach((colId) => {
+      fields[colId] = lazy(() => string().nullable().when(fieldNames, (otherFieldValues, schema) => {
         return schema.test('needs-identifier-issuer', t('An identifier issuer must be selected.'), (fieldValue) => {
           const allFieldValues = [...otherFieldValues as string[], fieldValue];
-          if (allFieldValues.includes(caseTypeColId)) {
+          if (allFieldValues.includes(colId)) {
             return !!fieldValue;
           }
           return true;
@@ -341,13 +341,13 @@ export class EpiUploadUtil {
       value: 'case_id',
     });
 
-    const allowedCaseTypeColIds = CaseTypeUtil.getWritableImportExportCaseTypeColIds(completeCaseType);
-    completeCaseType.ordered_case_type_col_ids.filter(x => allowedCaseTypeColIds.includes(x)).forEach((caseTypeColId) => {
-      const caseTypeCol = completeCaseType.case_type_cols[caseTypeColId];
+    const allowedColIds = CaseTypeUtil.getWritableImportExportColIds(completeCaseType);
+    completeCaseType.ordered_col_ids.filter(x => allowedColIds.includes(x)).forEach((colId) => {
+      const col = completeCaseType.cols[colId];
 
       options.push({
-        label: caseTypeCol.label,
-        value: caseTypeCol.id,
+        label: col.label,
+        value: col.id,
       });
     });
 
@@ -372,10 +372,10 @@ export class EpiUploadUtil {
     }
 
     mappedColumns.forEach((mappedColumn) => {
-      if (mappedColumn.caseTypeCol) {
-        defaultFormValues[mappedColumn.originalIndex.toString()] = mappedColumn.caseTypeCol.id;
+      if (mappedColumn.col) {
+        defaultFormValues[mappedColumn.originalIndex.toString()] = mappedColumn.col.id;
         if (mappedColumn.isSampleIdColumn) {
-          defaultFormValues[mappedColumn.caseTypeCol.id] = mappedColumn.sampleIdentifierIssuerId || identifierIssuerOptions.length === 1 ? identifierIssuerOptions[0].value : null;
+          defaultFormValues[mappedColumn.col.id] = mappedColumn.sampleIdentifierIssuerId || identifierIssuerOptions.length === 1 ? identifierIssuerOptions[0].value : null;
         }
       }
     });
@@ -402,24 +402,24 @@ export class EpiUploadUtil {
     return EpiUploadUtil.isGenomeFile(fileName) || EpiUploadUtil.isReadsFile(fileName);
   }
 
-  public static hasSequenceColumnMapped(mappedColumns: EpiUploadMappedColumn[], completeCaseTypeColumnStats: EpiUploadCompleteCaseTypeColumnStats): boolean {
+  public static hasSequenceColumnMapped(mappedColumns: EpiUploadMappedColumn[], completeCaseTypeColStats: EpiUploadCompleteColStats): boolean {
     return mappedColumns.some((mappedColumn) => {
-      return completeCaseTypeColumnStats.sequenceColumns.some(seqCol => mappedColumn.caseTypeCol?.id === seqCol.id);
+      return completeCaseTypeColStats.sequenceColumns.some(seqCol => mappedColumn.col?.id === seqCol.id);
     });
   }
 
-  public static hasReadsColumnMapped(mappedColumns: EpiUploadMappedColumn[], completeCaseTypeColumnStats: EpiUploadCompleteCaseTypeColumnStats): boolean {
+  public static hasReadsColumnMapped(mappedColumns: EpiUploadMappedColumn[], completeCaseTypeColStats: EpiUploadCompleteColStats): boolean {
     return mappedColumns.some((mappedColumn) => {
-      return completeCaseTypeColumnStats.readsColumns.some(readCol => mappedColumn.caseTypeCol?.id === readCol.id);
+      return completeCaseTypeColStats.readsColumns.some(readCol => mappedColumn.col?.id === readCol.id);
     });
   }
 
 
-  public static getCompleteCaseTypeColumnStats(completeCaseType: CompleteCaseType): EpiUploadCompleteCaseTypeColumnStats {
-    const sampleIdColumns = CaseTypeUtil.getCaseTypeColsByType(completeCaseType, [ColType.ID_SAMPLE]);
-    const sequenceColumns = CaseTypeUtil.getCaseTypeColsByType(completeCaseType, [ColType.GENETIC_SEQUENCE]);
-    const readsColumns = CaseTypeUtil.getCaseTypeColsByType(completeCaseType, [ColType.GENETIC_READS]);
-    const writableColumns = Object.values(completeCaseType.case_type_cols).filter(caseTypeCol => CaseTypeUtil.getWritableCaseTypeColIds(completeCaseType).includes(caseTypeCol.id));
+  public static getCompleteCaseTypeColStats(completeCaseType: CompleteCaseType): EpiUploadCompleteColStats {
+    const sampleIdColumns = CaseTypeUtil.getColsByType(completeCaseType, [ColType.ID_SAMPLE]);
+    const sequenceColumns = CaseTypeUtil.getColsByType(completeCaseType, [ColType.GENETIC_SEQUENCE]);
+    const readsColumns = CaseTypeUtil.getColsByType(completeCaseType, [ColType.GENETIC_READS]);
+    const writableColumns = Object.values(completeCaseType.cols).filter(col => CaseTypeUtil.getWritableColIds(completeCaseType).includes(col.id));
 
     return { sampleIdColumns, sequenceColumns, readsColumns, writableColumns };
   }
@@ -434,7 +434,7 @@ export class EpiUploadUtil {
       return {};
     }
 
-    const stats = EpiUploadUtil.getCompleteCaseTypeColumnStats(completeCaseType);
+    const stats = EpiUploadUtil.getCompleteCaseTypeColStats(completeCaseType);
     const result: EpiUploadSequenceMapping = {};
 
     validatedCases.forEach((vc) => {
@@ -558,8 +558,8 @@ export class EpiUploadUtil {
       const content: { [key: string]: string } = {};
 
       mappedColumns.forEach((mappedColumn) => {
-        if (mappedColumn.caseTypeCol) {
-          content[mappedColumn.caseTypeCol.id] = row[mappedColumn.originalIndex];
+        if (mappedColumn.col) {
+          content[mappedColumn.col.id] = row[mappedColumn.originalIndex];
         }
       });
 
@@ -582,7 +582,7 @@ export class EpiUploadUtil {
     caseTypeId: string;
     createdInDataCollectionId: string;
     mappedColumns: EpiUploadMappedColumn[];
-    sampleIdCaseTypeColId: string;
+    sampleIdColId: string;
     sequenceMapping: EpiUploadSequenceMapping;
     sequencingProtocolId: string;
     signal: AbortSignal;
@@ -595,14 +595,14 @@ export class EpiUploadUtil {
       caseTypeId,
       createdInDataCollectionId,
       mappedColumns,
-      sampleIdCaseTypeColId,
+      sampleIdColId,
       sequenceMapping,
       sequencingProtocolId,
       signal,
       validatedCases,
       validatedCasesWithGeneratedId,
     } = kwArgs;
-    const { caseTypeCol: mappedSampleIdCol, sampleIdentifierIssuerId } = mappedColumns.find(mc => mc.caseTypeCol.id === sampleIdCaseTypeColId);
+    const { col: mappedSampleIdCol, sampleIdentifierIssuerId } = mappedColumns.find(mc => mc.col.id === sampleIdColId);
 
     return (await CaseApi.instance.uploadCases({
       case_type_id: caseTypeId,
@@ -624,7 +624,7 @@ export class EpiUploadUtil {
               Object.entries(sequenceMapping[vc.generatedId].sequenceFileNames).forEach(([colId, fileName]) => {
                 if (fileName) {
                   seqsForUpload.push({
-                    case_type_col_id: colId,
+                    col_id: colId,
                     case_id: caseId,
                     external_sample_id: {
                       external_id: externalSampleId,
@@ -639,7 +639,7 @@ export class EpiUploadUtil {
               Object.entries(sequenceMapping[vc.generatedId].readsFileNames).forEach(([colId, fileNames]) => {
                 if (fileNames.fwd || fileNames.rev) {
                   readSetsForUpload.push({
-                    case_type_col_id: colId,
+                    col_id: colId,
                     case_id: caseId,
                     external_sample_id: {
                       external_id: externalSampleId,
@@ -705,7 +705,7 @@ export class EpiUploadUtil {
     onComplete: () => void;
     onError: (error: Error) => void;
     onProgress: (progress: number, message: string) => void;
-    sampleIdCaseTypeColId: string;
+    sampleIdColId: string;
     sequenceFilesDataTransfer: DataTransfer;
     sequenceMapping: EpiUploadSequenceMapping;
     sequencingProtocolId: string;
@@ -723,35 +723,35 @@ export class EpiUploadUtil {
       signal,
     } = kwArgs;
 
-    const seqsToBeUploaded: Array<{ caseId: string; caseTypeColId: string; fileName: string }> = [];
-    const readSetsToBeUploaded: Array<{ caseId: string; caseTypeColId: string; fileName: string; is_fwd: boolean }> = [];
+    const seqsToBeUploaded: Array<{ caseId: string; colId: string; fileName: string }> = [];
+    const readSetsToBeUploaded: Array<{ caseId: string; colId: string; fileName: string; is_fwd: boolean }> = [];
     let totalFileSizeToUpload = 0;
 
     for (const [index, caseUploadResult] of caseBatchUploadResult.cases.entries()) {
       const { generatedId } = kwArgs.validatedCasesWithGeneratedId[index];
       if (sequenceMapping[generatedId]) {
         const caseId = caseUploadResult.id;
-        for (const [caseTypeColId, fileName] of Object.entries(sequenceMapping[generatedId].sequenceFileNames)) {
+        for (const [colId, fileName] of Object.entries(sequenceMapping[generatedId].sequenceFileNames)) {
           if (fileName) {
             const file = Array.from(sequenceFilesDataTransfer.files).find(f => f.name === fileName);
             if (file) {
-              seqsToBeUploaded.push({ caseId, caseTypeColId, fileName });
+              seqsToBeUploaded.push({ caseId, colId, fileName });
               totalFileSizeToUpload = totalFileSizeToUpload + (file?.size || 0);
             }
           }
         }
-        for (const [caseTypeColId, fileNames] of Object.entries(sequenceMapping[generatedId].readsFileNames)) {
+        for (const [colId, fileNames] of Object.entries(sequenceMapping[generatedId].readsFileNames)) {
           if (fileNames.fwd) {
             const file = Array.from(sequenceFilesDataTransfer.files).find(f => f.name === fileNames.fwd);
             if (file) {
-              readSetsToBeUploaded.push({ caseId, caseTypeColId, fileName: fileNames.fwd, is_fwd: true });
+              readSetsToBeUploaded.push({ caseId, colId, fileName: fileNames.fwd, is_fwd: true });
               totalFileSizeToUpload = totalFileSizeToUpload + (file?.size || 0);
             }
           }
           if (fileNames.rev) {
             const file = Array.from(sequenceFilesDataTransfer.files).find(f => f.name === fileNames.rev);
             if (file) {
-              readSetsToBeUploaded.push({ caseId, caseTypeColId, fileName: fileNames.rev, is_fwd: false });
+              readSetsToBeUploaded.push({ caseId, colId, fileName: fileNames.rev, is_fwd: false });
               totalFileSizeToUpload = totalFileSizeToUpload + (file?.size || 0);
             }
           }
@@ -770,7 +770,7 @@ export class EpiUploadUtil {
         if (file) {
           const fileSize = file.size;
           const base64Data = await EpiUploadUtil.readFileAsBase64(file);
-          await CaseApi.instance.createFileForSeq(caseSeqToBeUploaded.caseId, caseSeqToBeUploaded.caseTypeColId, {
+          await CaseApi.instance.createFileForSeq(caseSeqToBeUploaded.caseId, caseSeqToBeUploaded.colId, {
             file_content: base64Data,
             file_compression: FileUtil.getFileCompressionFromFileName(caseSeqToBeUploaded.fileName),
             file_format: SeqFileFormat.FASTA,
@@ -792,7 +792,7 @@ export class EpiUploadUtil {
         if (file) {
           const fileSize = file.size;
           const base64Data = await EpiUploadUtil.readFileAsBase64(file);
-          await CaseApi.instance.createFileForReadSet(caseReadSetToBeUploaded.caseId, caseReadSetToBeUploaded.caseTypeColId, {
+          await CaseApi.instance.createFileForReadSet(caseReadSetToBeUploaded.caseId, caseReadSetToBeUploaded.colId, {
             file_content: base64Data,
             file_compression: FileUtil.getFileCompressionFromFileName(caseReadSetToBeUploaded.fileName),
             file_format: ReadsFileFormat.FASTQ,
@@ -820,7 +820,7 @@ export class EpiUploadUtil {
     createdInDataCollectionId: string;
     mappedColumns: EpiUploadMappedColumn[];
     onComplete: () => void;
-    sampleIdCaseTypeColId: string;
+    sampleIdColId: string;
     onError: (error: Error) => void;
     onProgress: (progress: number, message: string) => void;
     sequenceFilesDataTransfer: DataTransfer;

@@ -8,7 +8,7 @@ import {
   CaseApi,
   LogLevel,
   type Case,
-  type CaseTypeCol,
+  type Col,
   type CompleteCaseType,
 } from '../../api';
 import { ConfigManager } from '../../classes/managers/ConfigManager';
@@ -35,8 +35,8 @@ export class DownloadUtil {
       });
 
       const headers = DownloadUtil.getColumnHeadersForImport(
-        CaseTypeUtil.getWritableImportExportCaseTypeColIds(completeCaseType)
-          .sort((a, b) => completeCaseType.ordered_case_type_col_ids.indexOf(a) - completeCaseType.ordered_case_type_col_ids.indexOf(b))
+        CaseTypeUtil.getWritableImportExportColIds(completeCaseType)
+          .sort((a, b) => completeCaseType.ordered_col_ids.indexOf(a) - completeCaseType.ordered_col_ids.indexOf(b))
         , completeCaseType,
       );
       const data = [
@@ -148,10 +148,10 @@ export class DownloadUtil {
     DownloadUtil.createDownloadUrl(`data:text/x-nh;base64,${btoa(newick)}`, fileName);
   }
 
-  public static downloadAsCsv(cases: Case[], caseTypeColumnIds: string[], completeCaseType: CompleteCaseType, t: TFunction<'translation', undefined>): void {
+  public static downloadAsCsv(cases: Case[], colIds: string[], completeCaseType: CompleteCaseType, t: TFunction<'translation', undefined>): void {
     const data = [
-      DownloadUtil.getColumnHeadersForExport(caseTypeColumnIds, completeCaseType),
-      ...DownloadUtil.getRowsForExport(cases, caseTypeColumnIds, completeCaseType),
+      DownloadUtil.getColumnHeadersForExport(colIds, completeCaseType),
+      ...DownloadUtil.getRowsForExport(cases, colIds, completeCaseType),
     ];
     const csv = stringify(data, {
       defaultEncoding: 'utf-8',
@@ -160,12 +160,12 @@ export class DownloadUtil {
     DownloadUtil.createDownloadUrl(`data:text/csv;base64,${btoa(csv)}`, fileName);
   }
 
-  public static async downloadAsExcel(cases: Case[], caseTypeColumnIds: string[], completeCaseType: CompleteCaseType, t: TFunction<'translation', undefined>): Promise<void> {
+  public static async downloadAsExcel(cases: Case[], colIds: string[], completeCaseType: CompleteCaseType, t: TFunction<'translation', undefined>): Promise<void> {
     // Prepare headers
-    const headers = DownloadUtil.getColumnHeadersForExport(caseTypeColumnIds, completeCaseType);
+    const headers = DownloadUtil.getColumnHeadersForExport(colIds, completeCaseType);
 
     // Prepare data rows
-    const rows = DownloadUtil.getRowsForExport(cases, caseTypeColumnIds, completeCaseType);
+    const rows = DownloadUtil.getRowsForExport(cases, colIds, completeCaseType);
 
     // Convert data to the format expected by write-excel-file (SheetData)
     // Each row is an array of Cell objects
@@ -190,38 +190,38 @@ export class DownloadUtil {
     DownloadUtil.createDownloadUrl(`data:application/vnd.openxmlformats-officedocument.spreadsheetml.sheet;base64,${base64}`, fileName);
   }
 
-  private static getColumnHeadersForImport(caseTypeColumnIds: string[], completeCaseType: CompleteCaseType): string[] {
+  private static getColumnHeadersForImport(colIds: string[], completeCaseType: CompleteCaseType): string[] {
     return [
       '_case_id',
       '_case_date',
-      ...DownloadUtil.getCaseTypeColumnsForImportExport(caseTypeColumnIds, completeCaseType).map(caseTypeCol => caseTypeCol.label),
+      ...DownloadUtil.getColsForImportExport(colIds, completeCaseType).map(col => col.label),
     ];
   }
 
-  private static getColumnHeadersForExport(caseTypeColumnIds: string[], completeCaseType: CompleteCaseType): string[] {
+  private static getColumnHeadersForExport(colIds: string[], completeCaseType: CompleteCaseType): string[] {
     return [
       '_case_id',
       '_case_type',
       '_case_date',
-      ...DownloadUtil.getCaseTypeColumnsForImportExport(caseTypeColumnIds, completeCaseType).map(caseTypeCol => caseTypeCol.label),
+      ...DownloadUtil.getColsForImportExport(colIds, completeCaseType).map(col => col.label),
     ];
   }
 
-  private static getRowsForExport(cases: Case[], caseTypeColumnIds: string[], completeCaseType: CompleteCaseType): string[][] {
-    const caseTypeColumns = DownloadUtil.getCaseTypeColumnsForImportExport(caseTypeColumnIds, completeCaseType);
+  private static getRowsForExport(cases: Case[], colIds: string[], completeCaseType: CompleteCaseType): string[][] {
+    const cols = DownloadUtil.getColsForImportExport(colIds, completeCaseType);
     return cases.map(row => [
       row.id,
       completeCaseType.name,
       row.case_date ? format(row.case_date, DATE_FORMAT.DATE) : '',
-      ...caseTypeColumns.map(caseTypeCol => CaseUtil.getRowValue(row.content, caseTypeCol, completeCaseType, true).long),
+      ...cols.map(col => CaseUtil.getRowValue(row.content, col, completeCaseType, true).long),
     ]);
   }
 
-  private static getCaseTypeColumnsForImportExport(caseTypeColumnIds: string[], completeCaseType: CompleteCaseType): CaseTypeCol[] {
-    return CaseTypeUtil.getCaseTypeCols(completeCaseType)
-      .filter(x => caseTypeColumnIds.includes(x.id))
+  private static getColsForImportExport(colIds: string[], completeCaseType: CompleteCaseType): Col[] {
+    return CaseTypeUtil.getCols(completeCaseType)
+      .filter(x => colIds.includes(x.id))
       .sort((a, b) => {
-        return caseTypeColumnIds.indexOf(a.id) - caseTypeColumnIds.indexOf(b.id);
+        return colIds.indexOf(a.id) - colIds.indexOf(b.id);
       });
   }
 

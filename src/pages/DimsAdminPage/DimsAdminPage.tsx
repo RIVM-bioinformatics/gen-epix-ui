@@ -11,7 +11,7 @@ import {
 } from 'yup';
 import { useParams } from 'react-router-dom';
 
-import type { CaseTypeDim } from '../../api';
+import type { Dim } from '../../api';
 import {
   CaseApi,
   CommandName,
@@ -33,9 +33,9 @@ import { CrudPage } from '../CrudPage';
 import { useRefDimOptionsQuery } from '../../dataHooks/useRefDimsQuery';
 import { AuthorizationManager } from '../../classes/managers/AuthorizationManager';
 
-type FormFields = Pick<CaseTypeDim, 'case_type_id' | 'ref_dim_id' | 'occurrence' | 'code' | 'label' | 'description' | 'rank' | 'is_case_date_dim'>;
+type FormFields = Pick<Dim, 'case_type_id' | 'ref_dim_id' | 'occurrence' | 'code' | 'label' | 'description' | 'rank' | 'is_case_date_dim'>;
 
-export const CaseTypeDimsAdminPage = () => {
+export const DimsAdminPage = () => {
   const { caseTypeId } = useParams();
   const { t } = useTranslation();
   const refDimOptionsQuery = useRefDimOptionsQuery();
@@ -45,29 +45,29 @@ export const CaseTypeDimsAdminPage = () => {
   const loadables = useArray([caseTypeOptionsQuery, refDimOptionsQuery]);
 
   const fetchAll = useCallback(async (signal: AbortSignal) => {
-    return (await CaseApi.instance.caseTypeDimsGetAll({ signal }))?.data;
+    return (await CaseApi.instance.dimsGetAll({ signal }))?.data;
   }, []);
 
-  const fetchAllSelect = useCallback((caseTypeDims: CaseTypeDim[]) => {
+  const fetchAllSelect = useCallback((dims: Dim[]) => {
     if (caseTypeId) {
-      return caseTypeDims.filter((caseTypeDim) => caseTypeDim.case_type_id === caseTypeId);
+      return dims.filter((dim) => dim.case_type_id === caseTypeId);
     }
-    return caseTypeDims;
+    return dims;
   }, [caseTypeId]);
 
-  const deleteOne = useCallback(async (item: CaseTypeDim) => {
-    return await CaseApi.instance.caseTypeDimsDeleteOne(item.id);
+  const deleteOne = useCallback(async (item: Dim) => {
+    return await CaseApi.instance.dimsDeleteOne(item.id);
   }, []);
 
-  const updateOne = useCallback(async (variables: FormFields, item: CaseTypeDim) => {
-    return (await CaseApi.instance.caseTypeDimsPutOne(item.id, { id: item.id, ...variables })).data;
+  const updateOne = useCallback(async (variables: FormFields, item: Dim) => {
+    return (await CaseApi.instance.dimsPutOne(item.id, { id: item.id, ...variables })).data;
   }, []);
 
   const createOne = useCallback(async (variables: FormFields) => {
-    return (await CaseApi.instance.caseTypeDimsPostOne(variables)).data;
+    return (await CaseApi.instance.dimsPostOne(variables)).data;
   }, []);
 
-  const getName = useCallback((item: CaseTypeDim) => {
+  const getName = useCallback((item: Dim) => {
     return item.label;
   }, []);
 
@@ -130,21 +130,21 @@ export const CaseTypeDimsAdminPage = () => {
     ] as const satisfies FormFieldDefinition<FormFields>[];
   }, [caseTypeOptionsQuery.options, refDimOptionsQuery.options, t]);
 
-  const tableColumns = useMemo((): TableColumn<CaseTypeDim>[] => {
-    const columns: TableColumn<CaseTypeDim>[] = [];
+  const tableColumns = useMemo((): TableColumn<Dim>[] => {
+    const columns: TableColumn<Dim>[] = [];
 
     if (!caseTypeId) {
       columns.push(
-        TableUtil.createOptionsColumn<CaseTypeDim>({ id: 'case_type_id', name: t`Case type`, options: caseTypeOptionsQuery.options }),
+        TableUtil.createOptionsColumn<Dim>({ id: 'case_type_id', name: t`Case type`, options: caseTypeOptionsQuery.options }),
       );
     }
 
     columns.push(
-      TableUtil.createOptionsColumn<CaseTypeDim>({ id: 'ref_dim_id', name: t`Reference dimension`, options: refDimOptionsQuery.options }),
-      TableUtil.createTextColumn<CaseTypeDim>({ id: 'code', name: t`Code` }),
-      TableUtil.createTextColumn<CaseTypeDim>({ id: 'label', name: t`Label` }),
-      TableUtil.createNumberColumn<CaseTypeDim>({ id: 'occurrence', name: t`Occurrence` }),
-      TableUtil.createNumberColumn<CaseTypeDim>({ id: 'rank', name: t`Rank` }),
+      TableUtil.createOptionsColumn<Dim>({ id: 'ref_dim_id', name: t`Reference dimension`, options: refDimOptionsQuery.options }),
+      TableUtil.createTextColumn<Dim>({ id: 'code', name: t`Code` }),
+      TableUtil.createTextColumn<Dim>({ id: 'label', name: t`Label` }),
+      TableUtil.createNumberColumn<Dim>({ id: 'occurrence', name: t`Occurrence` }),
+      TableUtil.createNumberColumn<Dim>({ id: 'rank', name: t`Rank` }),
     );
     return columns;
   }, [caseTypeId, caseTypeOptionsQuery.options, refDimOptionsQuery.options, t]);
@@ -155,7 +155,7 @@ export const CaseTypeDimsAdminPage = () => {
     };
   }, [caseTypeId]);
 
-  const subPages = useMemo<CrudPageSubPage<CaseTypeDim>[]>(() => {
+  const subPages = useMemo<CrudPageSubPage<Dim>[]>(() => {
     if (!AuthorizationManager.instance.doesUserHavePermission([
       { command_name: CommandName.RefColCrudCommand, permission_type: PermissionType.READ },
     ])) {
@@ -164,9 +164,9 @@ export const CaseTypeDimsAdminPage = () => {
 
     return [
       {
-        label: t`Manage case type columns`,
-        getPathName: (item: CaseTypeDim) => caseTypeId ? `/management/case-types/${caseTypeId}/case-type-dimensions/${item.id}/case-type-columns` : `/management/case-type-dimensions/${item.id}/case-type-columns`,
-      } satisfies CrudPageSubPage<CaseTypeDim>,
+        label: t`Manage columns`,
+        getPathName: (item: Dim) => caseTypeId ? `/management/case-types/${caseTypeId}/dimensions/${item.id}/columns` : `/management/dimensions/${item.id}/columns`,
+      } satisfies CrudPageSubPage<Dim>,
     ];
   }, [caseTypeId, t]);
 
@@ -176,19 +176,19 @@ export const CaseTypeDimsAdminPage = () => {
     if (caseTypeId && caseTypeMapQuery.map.has(caseTypeId)) {
       parts.push(caseTypeMapQuery.map.get(caseTypeId)?.name);
     }
-    parts.push(t`Case type dimensions`);
+    parts.push(t`Dimensions`);
 
     return parts;
   }, [caseTypeId, caseTypeMapQuery.map, t]);
 
   return (
-    <CrudPage<FormFields, CaseTypeDim>
+    <CrudPage<FormFields, Dim>
       createOne={createOne}
       defaultNewItem={defaultNewItem}
       fetchAllSelect={fetchAllSelect}
       subPages={subPages}
-      crudCommandType={CommandName.CaseTypeDimCrudCommand}
-      createItemDialogTitle={t`Create new case type dimension`}
+      crudCommandType={CommandName.DimCrudCommand}
+      createItemDialogTitle={t`Create new dimensions`}
       defaultSortByField={caseTypeId ? 'rank' : 'case_type_id'}
       defaultSortDirection={'asc'}
       tableStoreStorageNamePostFix={caseTypeId ? `CaseType` : undefined}
@@ -197,10 +197,10 @@ export const CaseTypeDimsAdminPage = () => {
       formFieldDefinitions={formFieldDefinitions}
       getName={getName}
       loadables={loadables}
-      resourceQueryKeyBase={QUERY_KEY.CASE_TYPE_DIMS}
+      resourceQueryKeyBase={QUERY_KEY.DIMS}
       schema={schema}
       tableColumns={tableColumns}
-      testIdAttributes={TestIdUtil.createAttributes('CaseTypeDimsAdminPage')}
+      testIdAttributes={TestIdUtil.createAttributes('DimsAdminPage')}
       title={title}
       updateOne={updateOne}
     />

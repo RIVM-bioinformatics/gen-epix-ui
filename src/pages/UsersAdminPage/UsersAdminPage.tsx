@@ -173,9 +173,9 @@ export const UsersAdminPage = () => {
 
   const subPages = useMemo<CrudPageSubPage<User>[]>(() => {
     const doesUserHavePermissionToViewEffectiveRights = AuthorizationManager.instance.doesUserHavePermission([
-      { command_name: CommandName.CaseTypeColSetMemberCrudCommand, permission_type: PermissionType.READ },
+      { command_name: CommandName.ColSetMemberCrudCommand, permission_type: PermissionType.READ },
       { command_name: CommandName.CaseTypeSetCrudCommand, permission_type: PermissionType.READ },
-      { command_name: CommandName.CaseTypeColSetCrudCommand, permission_type: PermissionType.READ },
+      { command_name: CommandName.ColSetCrudCommand, permission_type: PermissionType.READ },
       { command_name: CommandName.CaseTypeSetMemberCrudCommand, permission_type: PermissionType.READ },
       { command_name: CommandName.CaseTypeSetCategoryCrudCommand, permission_type: PermissionType.READ },
       { command_name: CommandName.DataCollectionCrudCommand, permission_type: PermissionType.READ },
@@ -183,7 +183,7 @@ export const UsersAdminPage = () => {
       { command_name: CommandName.OrganizationShareCasePolicyCrudCommand, permission_type: PermissionType.READ },
       { command_name: CommandName.UserAccessCasePolicyCrudCommand, permission_type: PermissionType.READ },
       { command_name: CommandName.UserShareCasePolicyCrudCommand, permission_type: PermissionType.READ },
-      { command_name: CommandName.CaseTypeColCrudCommand, permission_type: PermissionType.READ },
+      { command_name: CommandName.ColCrudCommand, permission_type: PermissionType.READ },
     ]);
 
     if (!doesUserHavePermissionToViewEffectiveRights) {

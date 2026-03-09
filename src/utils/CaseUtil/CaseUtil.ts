@@ -17,7 +17,7 @@ import type {
   CompleteCaseType,
   Organization,
   Case,
-  CaseTypeCol,
+  Col,
   RefCol,
 } from '../../api';
 import {
@@ -105,15 +105,15 @@ export class CaseUtil {
   }
 
   public static createFormFieldDefinitions(completeCaseType: CompleteCaseType, organizationsQueryResult: UseQueryResult<Organization[]>): FormFieldDefinition<Case['content']>[] {
-    const caseTypeColumns = CaseTypeUtil.getCaseTypeCols(completeCaseType);
+    const cols = CaseTypeUtil.getCols(completeCaseType);
     const effectiveColumnAccessRights = AbacUtil.createEffectieveColumnAccessRights(Object.values(completeCaseType.case_type_access_abacs));
-    return caseTypeColumns.reduce((acc, caseTypeCol) => {
-      const hasAccess = effectiveColumnAccessRights.get(caseTypeCol.id)?.write;
+    return cols.reduce((acc, col) => {
+      const hasAccess = effectiveColumnAccessRights.get(col.id)?.write;
       if (!hasAccess) {
         return acc;
       }
 
-      const refCol = completeCaseType.ref_cols[caseTypeCol.ref_col_id];
+      const refCol = completeCaseType.ref_cols[col.ref_col_id];
       switch (refCol.col_type) {
         case ColType.TEXT:
         case ColType.ID_SAMPLE:
@@ -134,23 +134,23 @@ export class CaseUtil {
         case ColType.DECIMAL_6:
           acc.push({
             definition: FORM_FIELD_DEFINITION_TYPE.TEXTFIELD,
-            name: caseTypeCol.id,
-            label: caseTypeCol.label,
+            name: col.id,
+            label: col.label,
           } as const satisfies FormFieldDefinition<Case['content']>);
           break;
         case ColType.REGULAR_LANGUAGE:
           try {
-            new RegExp(caseTypeCol.pattern);
+            new RegExp(col.pattern);
             acc.push({
               definition: FORM_FIELD_DEFINITION_TYPE.TEXTFIELD,
-              name: caseTypeCol.id,
-              label: caseTypeCol.label,
+              name: col.id,
+              label: col.label,
             } as const satisfies FormFieldDefinition<Case['content']>);
           } catch (_error) {
             acc.push({
               definition: FORM_FIELD_DEFINITION_TYPE.TEXTFIELD,
-              name: caseTypeCol.id,
-              label: caseTypeCol.label,
+              name: col.id,
+              label: col.label,
               warningMessage: t`Unable to parse regular expression. You may enter text, but it's not guaranteed to be valid.`,
             } as const satisfies FormFieldDefinition<Case['content']>);
           }
@@ -161,8 +161,8 @@ export class CaseUtil {
           if (EpiDataManager.instance.data.conceptsBySetId[refCol.concept_set_id]) {
             acc.push({
               definition: FORM_FIELD_DEFINITION_TYPE.AUTOCOMPLETE,
-              name: caseTypeCol.id,
-              label: caseTypeCol.label,
+              name: col.id,
+              label: col.label,
               options: EpiDataManager.instance.data.conceptsBySetId[refCol.concept_set_id].map(concept => ({
                 value: concept.id,
                 label: concept.name,
@@ -174,8 +174,8 @@ export class CaseUtil {
           if (EpiDataManager.instance.data.regionsByRegionSetId[refCol.region_set_id]) {
             acc.push({
               definition: FORM_FIELD_DEFINITION_TYPE.AUTOCOMPLETE,
-              name: caseTypeCol.id,
-              label: caseTypeCol.label,
+              name: col.id,
+              label: col.label,
               options: EpiDataManager.instance.data.regionsByRegionSetId[refCol.region_set_id].map(region => ({
                 value: region.id,
                 label: EpiDataManager.instance.data.regionSets[refCol.region_set_id].region_code_as_label ? region.code : region.name,
@@ -186,8 +186,8 @@ export class CaseUtil {
         case ColType.ORGANIZATION:
           acc.push({
             definition: FORM_FIELD_DEFINITION_TYPE.AUTOCOMPLETE,
-            name: caseTypeCol.id,
-            label: caseTypeCol.label,
+            name: col.id,
+            label: col.label,
             loading: organizationsQueryResult.isLoading,
             options: (organizationsQueryResult.data ?? []).map(organization => ({
               value: organization.id,
@@ -206,17 +206,17 @@ export class CaseUtil {
   public static createYupSchema(completeCaseType: CompleteCaseType): ObjectSchema<{ [key: string]: string }> {
     const effectiveColumnAccessRights = AbacUtil.createEffectieveColumnAccessRights(Object.values(completeCaseType.case_type_access_abacs));
 
-    return CaseTypeUtil.getCaseTypeCols(completeCaseType).reduce((s, caseTypeCol) => {
-      const hasAccess = effectiveColumnAccessRights.get(caseTypeCol.id)?.write;
+    return CaseTypeUtil.getCols(completeCaseType).reduce((s, col) => {
+      const hasAccess = effectiveColumnAccessRights.get(col.id)?.write;
       if (!hasAccess) {
         return s;
       }
 
-      const refCol = completeCaseType.ref_cols[caseTypeCol.ref_col_id];
+      const refCol = completeCaseType.ref_cols[col.ref_col_id];
       switch (refCol.col_type) {
         case ColType.TEXT:
           return s.concat(object().shape({
-            [caseTypeCol.id]: string().nullable().extendedAlphaNumeric().max(65535).transform((_val: unknown, orig: string) => orig || null),
+            [col.id]: string().nullable().extendedAlphaNumeric().max(65535).transform((_val: unknown, orig: string) => orig || null),
           }));
         case ColType.ID_SAMPLE:
         case ColType.ID_CASE:
@@ -224,7 +224,7 @@ export class CaseUtil {
         case ColType.ID_GENETIC_SEQUENCE:
         case ColType.ID_PERSON:
           return s.concat(object().shape({
-            [caseTypeCol.id]: string().nullable().extendedAlphaNumeric().max(255).transform((_val: unknown, orig: string) => orig || null),
+            [col.id]: string().nullable().extendedAlphaNumeric().max(255).transform((_val: unknown, orig: string) => orig || null),
           }));
         case ColType.NOMINAL:
         case ColType.ORDINAL:
@@ -232,68 +232,68 @@ export class CaseUtil {
         case ColType.GEO_REGION:
         case ColType.ORGANIZATION:
           return s.concat(object().shape({
-            [caseTypeCol.id]: string().nullable().uuid4().transform((_val: unknown, orig: string) => orig || null),
+            [col.id]: string().nullable().uuid4().transform((_val: unknown, orig: string) => orig || null),
           }));
         case ColType.GEO_LATLON:
           return s.concat(object().shape({
-            [caseTypeCol.id]: string().nullable().latLong().transform((_val: unknown, orig: string) => orig || null),
+            [col.id]: string().nullable().latLong().transform((_val: unknown, orig: string) => orig || null),
           }));
         case ColType.DECIMAL_0:
           return s.concat(object().shape({
-            [caseTypeCol.id]: string().nullable().decimal0().transform((_val: unknown, orig: string) => orig || null),
+            [col.id]: string().nullable().decimal0().transform((_val: unknown, orig: string) => orig || null),
           }));
         case ColType.DECIMAL_1:
           return s.concat(object().shape({
-            [caseTypeCol.id]: string().nullable().decimal1().transform((_val: unknown, orig: string) => orig ?? null),
+            [col.id]: string().nullable().decimal1().transform((_val: unknown, orig: string) => orig ?? null),
           }));
         case ColType.DECIMAL_2:
           return s.concat(object().shape({
-            [caseTypeCol.id]: string().nullable().decimal2().transform((_val: unknown, orig: string) => orig ?? null),
+            [col.id]: string().nullable().decimal2().transform((_val: unknown, orig: string) => orig ?? null),
           }));
         case ColType.DECIMAL_3:
           return s.concat(object().shape({
-            [caseTypeCol.id]: string().nullable().decimal3().transform((_val: unknown, orig: string) => orig ?? null),
+            [col.id]: string().nullable().decimal3().transform((_val: unknown, orig: string) => orig ?? null),
           }));
         case ColType.DECIMAL_4:
           return s.concat(object().shape({
-            [caseTypeCol.id]: string().nullable().decimal4().transform((_val: unknown, orig: string) => orig ?? null),
+            [col.id]: string().nullable().decimal4().transform((_val: unknown, orig: string) => orig ?? null),
           }));
         case ColType.DECIMAL_5:
           return s.concat(object().shape({
-            [caseTypeCol.id]: string().nullable().decimal5().transform((_val: unknown, orig: string) => orig ?? null),
+            [col.id]: string().nullable().decimal5().transform((_val: unknown, orig: string) => orig ?? null),
           }));
         case ColType.DECIMAL_6:
           return s.concat(object().shape({
-            [caseTypeCol.id]: string().nullable().decimal6().transform((_val: unknown, orig: string) => orig ?? null),
+            [col.id]: string().nullable().decimal6().transform((_val: unknown, orig: string) => orig ?? null),
           }));
         case ColType.TIME_DAY:
           return s.concat(object().shape({
-            [caseTypeCol.id]: string().nullable().transform((_val: unknown, orig: Date) => isValid(orig) ? orig.toISOString() : null),
+            [col.id]: string().nullable().transform((_val: unknown, orig: Date) => isValid(orig) ? orig.toISOString() : null),
           }));
         case ColType.TIME_WEEK:
           return s.concat(object().shape({
-            [caseTypeCol.id]: string().nullable().timeWeek().transform((_val: unknown, orig: string) => orig || null),
+            [col.id]: string().nullable().timeWeek().transform((_val: unknown, orig: string) => orig || null),
           }));
         case ColType.TIME_MONTH:
           return s.concat(object().shape({
-            [caseTypeCol.id]: string().nullable().timeMonth().transform((_val: unknown, orig: string) => orig || null),
+            [col.id]: string().nullable().timeMonth().transform((_val: unknown, orig: string) => orig || null),
           }));
         case ColType.TIME_QUARTER:
           return s.concat(object().shape({
-            [caseTypeCol.id]: string().nullable().timeQuarter().transform((_val: unknown, orig: string) => orig || null),
+            [col.id]: string().nullable().timeQuarter().transform((_val: unknown, orig: string) => orig || null),
           }));
         case ColType.TIME_YEAR:
           return s.concat(object().shape({
-            [caseTypeCol.id]: string().nullable().timeYear().transform((_val: unknown, orig: string) => orig || null),
+            [col.id]: string().nullable().timeYear().transform((_val: unknown, orig: string) => orig || null),
           }));
         case ColType.REGULAR_LANGUAGE:
           try {
             return s.concat(object().shape({
-              [caseTypeCol.id]: string().nullable().matches(new RegExp(caseTypeCol.pattern), t('Invalid value for pattern "{{pattern}}"', { pattern: caseTypeCol.pattern })),
+              [col.id]: string().nullable().matches(new RegExp(col.pattern), t('Invalid value for pattern "{{pattern}}"', { pattern: col.pattern })),
             })).transform((_val: unknown, orig: string) => orig || null);
           } catch (_error) {
             return s.concat(object().shape({
-              [caseTypeCol.id]: string().nullable().max(caseTypeCol.max_length ?? 65535),
+              [col.id]: string().nullable().max(col.max_length ?? 65535),
             })).transform((_val: unknown, orig: string) => orig || null);
           }
         case ColType.GENETIC_SEQUENCE:
@@ -306,22 +306,22 @@ export class CaseUtil {
     }, object({}));
   }
 
-  public static getRowValue(content: { [key: string]: string }, caseTypeCol: CaseTypeCol, completeCaseType: CompleteCaseType, machineReadable = false): CaseTypeRowValue {
-    const refCol = completeCaseType.ref_cols[caseTypeCol.ref_col_id];
+  public static getRowValue(content: { [key: string]: string }, col: Col, completeCaseType: CompleteCaseType, machineReadable = false): CaseTypeRowValue {
+    const refCol = completeCaseType.ref_cols[col.ref_col_id];
     const hasMappedValue = refCol.col_type === ColType.ORGANIZATION || refCol.region_set_id || refCol.concept_set_id;
     if (hasMappedValue) {
-      return CaseUtil.getMappedValue(content[caseTypeCol.id], caseTypeCol, completeCaseType, machineReadable);
+      return CaseUtil.getMappedValue(content[col.id], col, completeCaseType, machineReadable);
     }
 
     const { DATA_MISSING_CHARACTER } = ConfigManager.instance.config.epi;
     const dataMissingCharacter = machineReadable ? '' : DATA_MISSING_CHARACTER;
 
     const rowValue: CaseTypeRowValue = {
-      raw: content?.[caseTypeCol.id],
-      isMissing: !content[caseTypeCol.id],
-      short: content[caseTypeCol.id] ?? dataMissingCharacter,
-      long: content[caseTypeCol.id] ?? dataMissingCharacter,
-      full: content[caseTypeCol.id] ?? t('{{dataMissingCharacter}} (missing)', { dataMissingCharacter }),
+      raw: content?.[col.id],
+      isMissing: !content[col.id],
+      short: content[col.id] ?? dataMissingCharacter,
+      long: content[col.id] ?? dataMissingCharacter,
+      full: content[col.id] ?? t('{{dataMissingCharacter}} (missing)', { dataMissingCharacter }),
     };
     return rowValue;
   }
@@ -339,12 +339,12 @@ export class CaseUtil {
     };
   }
 
-  public static getMappedValue(raw: string, caseTypeCol: CaseTypeCol, completeCaseType: CompleteCaseType, machineReadable = false): CaseTypeRowValue {
+  public static getMappedValue(raw: string, col: Col, completeCaseType: CompleteCaseType, machineReadable = false): CaseTypeRowValue {
     if (!raw) {
       return CaseUtil.getMissingRowValue(raw, machineReadable);
     }
 
-    const refCol = completeCaseType.ref_cols[caseTypeCol.ref_col_id];
+    const refCol = completeCaseType.ref_cols[col.ref_col_id];
 
     if (refCol.col_type === ColType.ORGANIZATION) {
       return CaseUtil.getOrganizationMappedValue(raw);

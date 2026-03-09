@@ -13,8 +13,8 @@ import { useTranslation } from 'react-i18next';
 
 import { useCaseTypeAbacContext } from '../../../context/caseTypeAbac';
 
-export type EpiCaseTypeInfoCaseTypeColumnAccessRightsProps = {
-  readonly caseTypeColumnId: string;
+export type EpiCaseTypeInfoColAccessRightsProps = {
+  readonly colId: string;
 };
 
 type DataCollectionAccess = {
@@ -26,7 +26,7 @@ type DataCollectionAccess = {
 
 const MAX_ITEMS = 5;
 
-export const EpiCaseTypeInfoCaseTypeColumnAccessRights = ({ caseTypeColumnId }: EpiCaseTypeInfoCaseTypeColumnAccessRightsProps) => {
+export const EpiCaseTypeInfoColAccessRights = ({ colId }: EpiCaseTypeInfoColAccessRightsProps) => {
   const { t } = useTranslation();
   const caseTypeAbacContext = useCaseTypeAbacContext();
   const [shouldShowMore, setShouldShowMore] = useState(false);
@@ -39,8 +39,8 @@ export const EpiCaseTypeInfoCaseTypeColumnAccessRights = ({ caseTypeColumnId }: 
     const x: DataCollectionAccess[] = [];
     caseTypeAbacContext.caseTypeAccessAbacs.forEach(caseTypeAccessAbac => {
       const dataCollection = caseTypeAbacContext.userDataCollectionsMap.get(caseTypeAccessAbac.data_collection_id);
-      const hasWriteAccess = caseTypeAccessAbac.write_case_type_col_ids.includes(caseTypeColumnId);
-      const hasReadAccess = caseTypeAccessAbac.read_case_type_col_ids.includes(caseTypeColumnId);
+      const hasWriteAccess = caseTypeAccessAbac.write_col_ids.includes(colId);
+      const hasReadAccess = caseTypeAccessAbac.read_col_ids.includes(colId);
       if (hasWriteAccess || hasReadAccess) {
         x.push({
           dataCollectionId: dataCollection.id,
@@ -51,10 +51,10 @@ export const EpiCaseTypeInfoCaseTypeColumnAccessRights = ({ caseTypeColumnId }: 
       }
     });
     return x;
-  }, [caseTypeAbacContext.caseTypeAccessAbacs, caseTypeAbacContext.userDataCollectionsMap, caseTypeColumnId]);
+  }, [caseTypeAbacContext.caseTypeAccessAbacs, caseTypeAbacContext.userDataCollectionsMap, colId]);
 
-  const canRead = caseTypeAbacContext.effectiveColumnAccessRights.get(caseTypeColumnId)?.read;
-  const canWrite = caseTypeAbacContext.effectiveColumnAccessRights.get(caseTypeColumnId)?.write;
+  const canRead = caseTypeAbacContext.effectiveColumnAccessRights.get(colId)?.read;
+  const canWrite = caseTypeAbacContext.effectiveColumnAccessRights.get(colId)?.write;
   let effectiveRightLabel;
   if (canRead && canWrite) {
     effectiveRightLabel = t`read/write`;

@@ -155,7 +155,7 @@ export class TableUtil {
     if (column.valueGetter) {
       return column.valueGetter({ row, id: column.id, rowIndex });
     }
-    return CaseUtil.getRowValue((row as Case).content, column.caseTypeCol, column.completeCaseType);
+    return CaseUtil.getRowValue((row as Case).content, column.col, column.completeCaseType);
   }
 
   public static getTableNumberCellValue<TRowData>({ row, column, rowIndex }: GetTableCellValueProps<TRowData, TableColumnNumber<TRowData>>): number {
@@ -235,7 +235,7 @@ export class TableUtil {
     return (a: TRowData, b: TRowData) => {
       const aValue = TableUtil.getTableCaseTypeCellValue({ column, row: a, rowIndex: 0 });
       const bValue = TableUtil.getTableCaseTypeCellValue({ column, row: b, rowIndex: 0 });
-      const refCol = column.completeCaseType.ref_cols[column.caseTypeCol.ref_col_id];
+      const refCol = column.completeCaseType.ref_cols[column.col.ref_col_id];
 
       const directionMultiplier = direction === 'asc' ? 1 : -1;
 

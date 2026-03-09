@@ -19,7 +19,7 @@ import {
   createTableStorePersistConfiguration,
 } from '../tableStore';
 import type {
-  CaseTypeCol,
+  Col,
   Case,
   CompleteCaseType,
   PhylogeneticTree,
@@ -72,7 +72,7 @@ interface WidgetData {
 }
 
 interface StratifiableColumn {
-  caseTypeCol: CaseTypeCol;
+  col: Col;
   enabled: boolean;
 }
 
@@ -124,7 +124,7 @@ interface EpiDashboardStoreActions extends TableStoreActions<Case> {
   removeTreeFilter: () => Promise<void>;
   mutateCachedCase: (caseId: string, item: Case) => void;
   setPhylogeneticTreeResponse: (phylogeneticTree: PhylogeneticTree) => void;
-  stratify: (mode: STRATIFICATION_MODE, caseTypeCol?: CaseTypeCol) => void;
+  stratify: (mode: STRATIFICATION_MODE, col?: Col) => void;
   updateEpiCurveWidgetData: (data: Partial<EpiCurveWidgetData>) => void;
   updateEpiListWidgetData: (data: Partial<EpiListWidgetData>) => void;
   updateEpiMapWidgetData: (data: Partial<EpiMapWidgetData>) => void;
@@ -287,7 +287,7 @@ export const createEpiDashboardStore = (kwArgs: CreateEpiDashboardStoreKwArgs) =
             set({ findSimilarCasesResults });
             await get().fetchData();
           },
-          stratify: (mode, caseTypeCol) => {
+          stratify: (mode, col) => {
             const { sortedData, selectedIds } = get();
             const caseIdColors: { [key: string]: string } = {};
 
@@ -298,7 +298,7 @@ export const createEpiDashboardStore = (kwArgs: CreateEpiDashboardStoreKwArgs) =
             const { MAX_STRATIFICATION_UNIQUE_VALUES, STRATIFICATION_COLORS } = ConfigManager.instance.config.epi;
 
             if (mode === STRATIFICATION_MODE.FIELD) {
-              const column = completeCaseType.ref_cols[caseTypeCol.ref_col_id];
+              const column = completeCaseType.ref_cols[col.ref_col_id];
               const conceptSetConceptIds = EpiDataManager.instance.data.conceptsIdsBySetId[column.concept_set_id];
               if (conceptSetConceptIds) {
                 if (conceptSetConceptIds.length < MAX_STRATIFICATION_UNIQUE_VALUES) {
@@ -332,7 +332,7 @@ export const createEpiDashboardStore = (kwArgs: CreateEpiDashboardStoreKwArgs) =
                   legendaItems.push(legendaItemMissingData);
 
                   sortedData.forEach(row => {
-                    const rowValue = CaseUtil.getRowValue(row.content, caseTypeCol, completeCaseType);
+                    const rowValue = CaseUtil.getRowValue(row.content, col, completeCaseType);
                     const legendaItem = rowValue.isMissing ? legendaItemMissingData : legendaItemsByValue[rowValue.raw];
                     legendaItem.caseIds.push(row.id);
                     caseIdColors[row.id] = legendaItem.color;
@@ -343,7 +343,7 @@ export const createEpiDashboardStore = (kwArgs: CreateEpiDashboardStoreKwArgs) =
                     delete legendaItemsByValue[''];
                   }
                 } else {
-                  const rowValues = sortedData.map(row => CaseUtil.getRowValue(row.content, caseTypeCol, completeCaseType));
+                  const rowValues = sortedData.map(row => CaseUtil.getRowValue(row.content, col, completeCaseType));
                   const uniqueRowValues = uniqBy(rowValues, (rowValue => rowValue.raw)).sort((a, b) => {
                     if (column.col_type === ColType.ORDINAL) {
                       if (a.isMissing && b.isMissing) {
@@ -374,7 +374,7 @@ export const createEpiDashboardStore = (kwArgs: CreateEpiDashboardStoreKwArgs) =
                     legendaItems.push(legendaItem);
                   });
                   sortedData.forEach(row => {
-                    const rowValue = CaseUtil.getRowValue(row.content, caseTypeCol, completeCaseType);
+                    const rowValue = CaseUtil.getRowValue(row.content, col, completeCaseType);
                     const legendaItem = legendaItemsByValue[rowValue.raw];
                     legendaItem.caseIds.push(row.id);
                     caseIdColors[row.id] = legendaItem.color;
@@ -382,7 +382,7 @@ export const createEpiDashboardStore = (kwArgs: CreateEpiDashboardStoreKwArgs) =
                 }
 
               } else {
-                const rawValues = sortedData.map(row => CaseUtil.getRowValue(row.content, caseTypeCol, completeCaseType));
+                const rawValues = sortedData.map(row => CaseUtil.getRowValue(row.content, col, completeCaseType));
                 const uniqueRowValues = uniqBy(rawValues, v => v.raw).sort(rowValueComperator);
 
                 uniqueRowValues.forEach((rowValue, index) => {
@@ -400,7 +400,7 @@ export const createEpiDashboardStore = (kwArgs: CreateEpiDashboardStoreKwArgs) =
                 });
 
                 sortedData.forEach(row => {
-                  const rowValue = CaseUtil.getRowValue(row.content, caseTypeCol, completeCaseType);
+                  const rowValue = CaseUtil.getRowValue(row.content, col, completeCaseType);
                   const legendaItem = legendaItemsByValue[rowValue.raw];
                   legendaItem.caseIds.push(row.id);
                   caseIdColors[row.id] = legendaItem.color;
@@ -409,7 +409,7 @@ export const createEpiDashboardStore = (kwArgs: CreateEpiDashboardStoreKwArgs) =
               set({
                 stratification: {
                   mode: STRATIFICATION_MODE.FIELD,
-                  caseTypeCol,
+                  col,
                   caseIdColors,
                   legendaItems,
                   legendaItemsByColor,
@@ -448,7 +448,7 @@ export const createEpiDashboardStore = (kwArgs: CreateEpiDashboardStoreKwArgs) =
               set({
                 stratification: {
                   mode: STRATIFICATION_MODE.SELECTION,
-                  caseTypeCol,
+                  col,
                   caseIdColors,
                   legendaItems,
                   legendaItemsByColor,
@@ -593,7 +593,7 @@ export const createEpiDashboardStore = (kwArgs: CreateEpiDashboardStoreKwArgs) =
               set({
                 treeAddresses: {
                   ...get().treeAddresses,
-                  [treeConfiguration.caseTypeCol.id]: {
+                  [treeConfiguration.col.id]: {
                     addresses: EpiTreeUtil.createTreeAddresses(tree),
                     algorithmCode: treeConfiguration.treeAlgorithm.code,
                   },
@@ -608,21 +608,21 @@ export const createEpiDashboardStore = (kwArgs: CreateEpiDashboardStoreKwArgs) =
             const data = filteredData[last(frontendFilterPriorities)];
             const { ALLOWED_COL_TYPES_FOR_STRATIFICATION, MAX_STRATIFICATION_UNIQUE_VALUES } = ConfigManager.instance.config.epi;
 
-            const filteredCaseTypeColumns = CaseTypeUtil.getCaseTypeCols(completeCaseType).filter(caseTypeCol => {
-              const column = completeCaseType.ref_cols[caseTypeCol.ref_col_id];
+            const filteredCols = CaseTypeUtil.getCols(completeCaseType).filter(col => {
+              const column = completeCaseType.ref_cols[col.ref_col_id];
               if (!ALLOWED_COL_TYPES_FOR_STRATIFICATION.includes(column.col_type)) {
                 return false;
               }
               return true;
             });
-            const stratifyableColumns = filteredCaseTypeColumns.map<StratifiableColumn>(caseTypeCol => {
-              const numUniqueValues = uniq(data.map(row => CaseUtil.getRowValue(row.content, caseTypeCol, completeCaseType).raw)).length;
+            const stratifyableColumns = filteredCols.map<StratifiableColumn>(col => {
+              const numUniqueValues = uniq(data.map(row => CaseUtil.getRowValue(row.content, col, completeCaseType).raw)).length;
               let enabled = true;
               if (numUniqueValues === 0 || numUniqueValues > MAX_STRATIFICATION_UNIQUE_VALUES) {
                 enabled = false;
               }
               return {
-                caseTypeCol,
+                col,
                 enabled,
               };
             });
@@ -631,7 +631,7 @@ export const createEpiDashboardStore = (kwArgs: CreateEpiDashboardStoreKwArgs) =
           reloadStratification: () => {
             const { stratification, stratify, stratifyableColumns } = get();
             if (stratification?.mode === STRATIFICATION_MODE.FIELD) {
-              const activeStratifyableColumn = stratifyableColumns.find(c => c.caseTypeCol.ref_col_id === stratification.caseTypeCol.ref_col_id);
+              const activeStratifyableColumn = stratifyableColumns.find(c => c.col.ref_col_id === stratification.col.ref_col_id);
               if (!activeStratifyableColumn?.enabled) {
                 // column no longer stratifiable
                 NotificationManager.instance.showNotification({
@@ -646,7 +646,7 @@ export const createEpiDashboardStore = (kwArgs: CreateEpiDashboardStoreKwArgs) =
             if (!stratification) {
               return;
             }
-            stratify(stratification.mode, stratification.caseTypeCol);
+            stratify(stratification.mode, stratification.col);
           },
           destroy: () => {
             EpiHighlightingManager.instance.reset();

@@ -167,15 +167,15 @@ export const CaseTypesAdminPage = () => {
 
   const subPages = useMemo<CrudPageSubPage<CaseType>[]>(() => {
     if (!AuthorizationManager.instance.doesUserHavePermission([
-      { command_name: CommandName.CaseTypeDimCrudCommand, permission_type: PermissionType.READ },
+      { command_name: CommandName.DimCrudCommand, permission_type: PermissionType.READ },
     ])) {
       return [];
     }
 
     return [
       {
-        label: t`Manage case type dimensions`,
-        getPathName: (item: CaseType) => `/management/case-types/${item.id}/case-type-dimensions`,
+        label: t`Manage dimensions`,
+        getPathName: (item: CaseType) => `/management/case-types/${item.id}/dimensions`,
       } satisfies CrudPageSubPage<CaseType>,
     ];
   }, [t]);

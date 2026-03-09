@@ -51,7 +51,7 @@ export const EpiLineListPrimaryMenu = ({
         rowIndex,
       }).isMissing;
     }
-    return !CaseUtil.getRowValue(row.content, completeCaseType.case_type_cols[tableColumn.id], completeCaseType).isMissing;
+    return !CaseUtil.getRowValue(row.content, completeCaseType.cols[tableColumn.id], completeCaseType).isMissing;
   }, [completeCaseType]);
 
   const createFilterFromSelectedRowCaseIds = useCallback(async () => {

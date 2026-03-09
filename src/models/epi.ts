@@ -1,6 +1,6 @@
 import type {
   ColType,
-  CaseTypeCol,
+  Col,
   RefCol,
   GeneticDistanceProtocol,
   TreeAlgorithm,
@@ -44,7 +44,7 @@ export type Stratification = {
   legendaItems?: StratificationLegendaItem[];
   legendaItemsByColor?: { [key: string]: StratificationLegendaItem };
   legendaItemsByValue?: { [key: string]: StratificationLegendaItem };
-  caseTypeCol?: CaseTypeCol;
+  col?: Col;
 };
 
 export enum EPI_ZONE {
@@ -91,7 +91,7 @@ export type EpiDashboardLayoutUserConfig = {
 export type TreeConfiguration = {
   computedId: string;
   refCol: RefCol;
-  caseTypeCol: CaseTypeCol;
+  col: Col;
   geneticDistanceProtocol: GeneticDistanceProtocol;
   treeAlgorithm: TreeAlgorithm;
 };
@@ -121,7 +121,7 @@ export type FindSimilarCasesResult = {
   similarCaseIds: string[];
   originalCaseIds: string[];
   distance: number;
-  caseTypeColId: string;
+  colId: string;
 };
 
 export type EpiCaseHasCaseSet = { [caseId: string]: boolean };
@@ -129,9 +129,9 @@ export type EpiCaseHasCaseSet = { [caseId: string]: boolean };
 export type EpiUploadMappedColumn = {
   originalIndex: number;
   originalLabel: string;
-  caseTypeCol: CaseTypeCol;
+  col: Col;
   isCaseIdColumn?: boolean;
-  isCaseTypeColumn?: boolean;
+  isCol?: boolean;
   isSampleIdColumn?: boolean;
   sampleIdentifierIssuerId?: string;
 };
@@ -149,17 +149,17 @@ export type EpiUploadTableRow = {
  */
 export interface EpiUploadFileColumnAssignment {
   file: File;
-  caseTypeCol: CaseTypeCol; // null if no suitable column found
+  col: Col; // null if no suitable column found
 }
 
 export type CaseUploadResultWithGeneratedId = CaseUploadResult & { generatedId: string };
 
 export type EpiUploadSequenceMappingForCaseId = {
   sequenceFileNames: {
-    [caseTypeColId: string]: string;
+    [colId: string]: string;
   };
   readsFileNames: {
-    [caseTypeColId: string]: {
+    [colId: string]: {
       fwd: string;
       rev: string;
     };
@@ -171,11 +171,11 @@ export type EpiUploadSequenceMapping = {
 };
 
 
-export type EpiUploadCompleteCaseTypeColumnStats = {
-  sampleIdColumns: CaseTypeCol[];
-  sequenceColumns: CaseTypeCol[];
-  readsColumns: CaseTypeCol[];
-  writableColumns: CaseTypeCol[];
+export type EpiUploadCompleteColStats = {
+  sampleIdColumns: Col[];
+  sequenceColumns: Col[];
+  readsColumns: Col[];
+  writableColumns: Col[];
 };
 
 export enum EPI_UPLOAD_STEP {

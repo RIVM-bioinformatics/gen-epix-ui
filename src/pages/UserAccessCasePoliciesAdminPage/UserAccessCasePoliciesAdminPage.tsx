@@ -14,7 +14,7 @@ import {
   AbacApi,
   CommandName,
 } from '../../api';
-import { useCaseTypeColSetOptionsQuery } from '../../dataHooks/useCaseTypeColSetsQuery';
+import { useColSetOptionsQuery } from '../../dataHooks/useColSetsQuery';
 import { useCaseTypeSetOptionsQuery } from '../../dataHooks/useCaseTypeSetsQuery';
 import { useDataCollectionOptionsQuery } from '../../dataHooks/useDataCollectionsQuery';
 import { useUserOptionsQuery } from '../../dataHooks/useUsersQuery';
@@ -33,8 +33,8 @@ type FormFields = Pick<
   'user_id' |
   'data_collection_id' |
   'case_type_set_id' |
-  'read_case_type_col_set_id' |
-  'write_case_type_col_set_id' |
+  'read_col_set_id' |
+  'write_col_set_id' |
   'add_case' |
   'remove_case' |
   'add_case_set' |
@@ -48,12 +48,12 @@ export const UserAccessCasePoliciesAdminPage = () => {
   const { t } = useTranslation();
   const userOptionsQuery = useUserOptionsQuery();
   const dataCollectionOptionsQuery = useDataCollectionOptionsQuery();
-  const caseTypeColSetOptionsQuery = useCaseTypeColSetOptionsQuery();
+  const colSetOptionsQuery = useColSetOptionsQuery();
   const caseTypeSetOptions = useCaseTypeSetOptionsQuery();
 
   const nameFactory = useUserCasePolicyNameFactory();
 
-  const loadables = useArray([nameFactory, userOptionsQuery, dataCollectionOptionsQuery, caseTypeColSetOptionsQuery, caseTypeSetOptions]);
+  const loadables = useArray([nameFactory, userOptionsQuery, dataCollectionOptionsQuery, colSetOptionsQuery, caseTypeSetOptions]);
 
   const fetchAll = useCallback(async (signal: AbortSignal) => {
     return (await AbacApi.instance.userAccessCasePoliciesGetAll({ signal }))?.data;
@@ -80,8 +80,8 @@ export const UserAccessCasePoliciesAdminPage = () => {
       user_id: string().uuid4().required().max(100),
       data_collection_id: string().uuid4().required().max(100),
       case_type_set_id: string().uuid4().required().max(100),
-      read_case_type_col_set_id: string().uuid4().required().max(100),
-      write_case_type_col_set_id: string().uuid4().nullable().notRequired().max(100),
+      read_col_set_id: string().uuid4().required().max(100),
+      write_col_set_id: string().uuid4().nullable().notRequired().max(100),
       add_case: boolean().required(),
       remove_case: boolean().required(),
       add_case_set: boolean().required(),
@@ -117,17 +117,17 @@ export const UserAccessCasePoliciesAdminPage = () => {
       } as const satisfies FormFieldDefinition<FormFields>,
       {
         definition: FORM_FIELD_DEFINITION_TYPE.AUTOCOMPLETE,
-        name: 'read_case_type_col_set_id',
-        label: t`Read case type column set`,
-        options: caseTypeColSetOptionsQuery.options,
-        loading: caseTypeColSetOptionsQuery.isLoading,
+        name: 'read_col_set_id',
+        label: t`Read column set`,
+        options: colSetOptionsQuery.options,
+        loading: colSetOptionsQuery.isLoading,
       } as const satisfies FormFieldDefinition<FormFields>,
       {
         definition: FORM_FIELD_DEFINITION_TYPE.AUTOCOMPLETE,
-        name: 'write_case_type_col_set_id',
-        label: t`Write case type column set`,
-        options: caseTypeColSetOptionsQuery.options,
-        loading: caseTypeColSetOptionsQuery.isLoading,
+        name: 'write_col_set_id',
+        label: t`Write column set`,
+        options: colSetOptionsQuery.options,
+        loading: colSetOptionsQuery.isLoading,
       } as const satisfies FormFieldDefinition<FormFields>,
       {
         definition: FORM_FIELD_DEFINITION_TYPE.BOOLEAN,
@@ -165,15 +165,15 @@ export const UserAccessCasePoliciesAdminPage = () => {
         label: t`Is active`,
       } as const satisfies FormFieldDefinition<FormFields>,
     ] as const;
-  }, [caseTypeColSetOptionsQuery.isLoading, caseTypeColSetOptionsQuery.options, caseTypeSetOptions.isLoading, caseTypeSetOptions.options, dataCollectionOptionsQuery.isLoading, dataCollectionOptionsQuery.options, userOptionsQuery.isLoading, userOptionsQuery.options, t]);
+  }, [colSetOptionsQuery.isLoading, colSetOptionsQuery.options, caseTypeSetOptions.isLoading, caseTypeSetOptions.options, dataCollectionOptionsQuery.isLoading, dataCollectionOptionsQuery.options, userOptionsQuery.isLoading, userOptionsQuery.options, t]);
 
   const tableColumns = useMemo((): TableColumn<UserAccessCasePolicy>[] => {
     return [
       TableUtil.createOptionsColumn<UserAccessCasePolicy>({ id: 'user_id', name: t`User`, options: userOptionsQuery.options }),
       TableUtil.createOptionsColumn<UserAccessCasePolicy>({ id: 'data_collection_id', name: t`Data collection`, options: dataCollectionOptionsQuery.options }),
       TableUtil.createOptionsColumn<UserAccessCasePolicy>({ id: 'case_type_set_id', name: t`Case type set`, options: caseTypeSetOptions.options }),
-      TableUtil.createOptionsColumn<UserAccessCasePolicy>({ id: 'read_case_type_col_set_id', name: t`Read column set`, options: caseTypeColSetOptionsQuery.options }),
-      TableUtil.createOptionsColumn<UserAccessCasePolicy>({ id: 'write_case_type_col_set_id', name: t`Write column set`, options: caseTypeColSetOptionsQuery.options }),
+      TableUtil.createOptionsColumn<UserAccessCasePolicy>({ id: 'read_col_set_id', name: t`Read column set`, options: colSetOptionsQuery.options }),
+      TableUtil.createOptionsColumn<UserAccessCasePolicy>({ id: 'write_col_set_id', name: t`Write column set`, options: colSetOptionsQuery.options }),
 
       TableUtil.createBooleanColumn<UserAccessCasePolicy>({ id: 'add_case', name: t`Add case` }),
       TableUtil.createBooleanColumn<UserAccessCasePolicy>({ id: 'remove_case', name: t`Remove case` }),
@@ -184,7 +184,7 @@ export const UserAccessCasePoliciesAdminPage = () => {
 
       TableUtil.createBooleanColumn<UserAccessCasePolicy>({ id: 'is_active', name: t`Active` }),
     ];
-  }, [caseTypeColSetOptionsQuery.options, caseTypeSetOptions.options, dataCollectionOptionsQuery.options, userOptionsQuery.options, t]);
+  }, [colSetOptionsQuery.options, caseTypeSetOptions.options, dataCollectionOptionsQuery.options, userOptionsQuery.options, t]);
 
   return (
     <CrudPage<FormFields, UserAccessCasePolicy>

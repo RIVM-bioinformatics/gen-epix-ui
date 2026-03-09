@@ -21,7 +21,7 @@ export type EpiCaseTypeInfoAccessRightsProps = {
 };
 
 export const EpiCaseTypeInfoAccessRights = ({ completeCaseType }: EpiCaseTypeInfoAccessRightsProps) => {
-  const caseTypeCols = useMemo(() => CaseTypeUtil.getCaseTypeCols(completeCaseType), [completeCaseType]);
+  const cols = useMemo(() => CaseTypeUtil.getCols(completeCaseType), [completeCaseType]);
   const caseTypeAbacContext = useCaseTypeAbacContext();
 
   return (
@@ -48,7 +48,7 @@ export const EpiCaseTypeInfoAccessRights = ({ completeCaseType }: EpiCaseTypeInf
                 <TableHead>
                   <TableRow>
                     <TableCell sx={{ width: '20%', verticalAlign: 'top' }}>
-                      {t`Case type column`}
+                      {t`Column`}
                     </TableCell>
                     <TableCell sx={{ width: '20%', verticalAlign: 'top' }}>
                       {t`Read`}
@@ -60,21 +60,21 @@ export const EpiCaseTypeInfoAccessRights = ({ completeCaseType }: EpiCaseTypeInf
                   </TableRow>
                 </TableHead>
                 <TableBody>
-                  {caseTypeCols.map(caseTypeCol => {
+                  {cols.map(col => {
                     return (
-                      <TableRow key={caseTypeCol.id}>
+                      <TableRow key={col.id}>
                         <TableCell sx={{ width: '20%', verticalAlign: 'top' }}>
-                          {caseTypeCol.label}
+                          {col.label}
                         </TableCell>
                         <TableCell
                           sx={{ width: '20%', verticalAlign: 'top' }}
                         >
-                          { caseTypeAccessAbac.read_case_type_col_ids.includes(caseTypeCol.id) ? t`Yes` : t`No`}
+                          { caseTypeAccessAbac.read_col_ids.includes(col.id) ? t`Yes` : t`No`}
                         </TableCell>
                         <TableCell
                           sx={{ width: '20%', verticalAlign: 'top' }}
                         >
-                          { caseTypeAccessAbac.write_case_type_col_ids.includes(caseTypeCol.id) ? t`Yes` : t`No`}
+                          { caseTypeAccessAbac.write_col_ids.includes(col.id) ? t`Yes` : t`No`}
                         </TableCell>
                         <TableCell sx={{ width: '40%' }} />
                       </TableRow>

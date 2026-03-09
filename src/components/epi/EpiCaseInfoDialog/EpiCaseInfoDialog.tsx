@@ -147,7 +147,7 @@ export const EpiCaseInfoDialog = withDialog<EpiCaseInfoDialogProps, EpiCaseInfoD
 
 
   const canEdit = useMemo(() => {
-    return !!caseRightsQuery.data && caseRightsQuery.data.some((right) => right.is_full_access || right.write_case_type_col_ids.length);
+    return !!caseRightsQuery.data && caseRightsQuery.data.some((right) => right.is_full_access || right.write_col_ids.length);
   }, [caseRightsQuery.data]);
 
   const canShare = useMemo(() => {

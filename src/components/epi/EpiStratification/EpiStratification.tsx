@@ -24,7 +24,7 @@ import { useStoreWithEqualityFn } from 'zustand/traditional';
 import type { EpiContextMenuConfigWithAnchor } from '../EpiContextMenu';
 import { EpiContextMenu } from '../EpiContextMenu';
 import { EpiLegendaItem } from '../EpiLegendaItem';
-import type { CaseTypeCol } from '../../../api';
+import type { Col } from '../../../api';
 import { ConfigManager } from '../../../classes/managers/ConfigManager';
 import { EpiHighlightingManager } from '../../../classes/managers/EpiHighlightingManager';
 import type { StratificationLegendaItem } from '../../../models/epi';
@@ -48,13 +48,13 @@ export const EpiStratification = () => {
   const stratifyableColumns = useStore(epiDashboardStore, (state) => state.stratifyableColumns);
   const [focussedLegendaItem, setFocussedLegendaItem] = useState<StratificationLegendaItem>(null);
 
-  const onStratifyMenuItemClick = useCallback((caseTypeCol: CaseTypeCol) => {
-    if (caseTypeCol.id === stratification?.caseTypeCol?.id) {
+  const onStratifyMenuItemClick = useCallback((col: Col) => {
+    if (col.id === stratification?.col?.id) {
       stratify(null);
       return;
     }
-    stratify(STRATIFICATION_MODE.FIELD, caseTypeCol);
-  }, [stratification?.caseTypeCol?.id, stratify]);
+    stratify(STRATIFICATION_MODE.FIELD, col);
+  }, [stratification?.col?.id, stratify]);
 
   const stratificationMenu = useMemo<MenuItemData>(() => {
     let label = t`Grouping`;
@@ -62,7 +62,7 @@ export const EpiStratification = () => {
       if (stratification.mode === STRATIFICATION_MODE.SELECTION) {
         label = t`Grouped by Selected rows`;
       } else {
-        label = t('Grouped by {{fieldName}}', { fieldName: stratification.caseTypeCol.label });
+        label = t('Grouped by {{fieldName}}', { fieldName: stratification.col.label });
       }
     }
 
@@ -89,12 +89,12 @@ export const EpiStratification = () => {
       }],
     }, draft => {
       stratifyableColumns
-        .forEach(stratifyableCaseTypeCol => {
+        .forEach(stratifyableCol => {
           draft.items.push({
-            label: stratifyableCaseTypeCol.caseTypeCol.label,
-            callback: () => onStratifyMenuItemClick(stratifyableCaseTypeCol.caseTypeCol),
-            active: stratification?.caseTypeCol?.id === stratifyableCaseTypeCol.caseTypeCol.id,
-            disabled: !stratifyableCaseTypeCol.enabled,
+            label: stratifyableCol.col.label,
+            callback: () => onStratifyMenuItemClick(stratifyableCol.col),
+            active: stratification?.col?.id === stratifyableCol.col.id,
+            disabled: !stratifyableCol.enabled,
           });
         });
       return draft;
@@ -148,21 +148,21 @@ export const EpiStratification = () => {
   }, [highlightingManager]);
 
   const onShowOnlySelectedLegendaItemMenuItemClick = useCallback(async (onMenuClose: () => void) => {
-    const filter = filters.find(f => f.id === stratification.caseTypeCol.id);
+    const filter = filters.find(f => f.id === stratification.col.id);
     if (!filter) {
       return;
     }
     const filterValue = isArray(filter.initialFilterValue) ? [focussedLegendaItem.rowValue.raw] : focussedLegendaItem.rowValue.raw;
 
-    await setFilterValue(stratification.caseTypeCol.id, filterValue);
+    await setFilterValue(stratification.col.id, filterValue);
     onMenuClose();
-  }, [focussedLegendaItem?.rowValue?.raw, setFilterValue, stratification?.caseTypeCol?.id, filters]);
+  }, [focussedLegendaItem?.rowValue?.raw, setFilterValue, stratification?.col?.id, filters]);
 
   const getEpiContextMenuExtraItems = useCallback((onMenuClose: () => void): ReactElement => {
-    if (!focussedLegendaItem || focussedLegendaItem?.rowValue?.isMissing || !stratification?.caseTypeCol?.id) {
+    if (!focussedLegendaItem || focussedLegendaItem?.rowValue?.isMissing || !stratification?.col?.id) {
       return null;
     }
-    const filter = filters.find(f => f.id === stratification.caseTypeCol.id);
+    const filter = filters.find(f => f.id === stratification.col.id);
     if (!filter) {
       return null;
     }
@@ -181,7 +181,7 @@ export const EpiStratification = () => {
         </ListItemText>
       </MenuItem>
     );
-  }, [filters, focussedLegendaItem, onShowOnlySelectedLegendaItemMenuItemClick, stratification?.caseTypeCol?.id, t]);
+  }, [filters, focussedLegendaItem, onShowOnlySelectedLegendaItemMenuItemClick, stratification?.col?.id, t]);
 
   return (
     <Box

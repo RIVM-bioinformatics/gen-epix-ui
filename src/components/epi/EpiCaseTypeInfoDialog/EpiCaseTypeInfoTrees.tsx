@@ -13,7 +13,7 @@ import { EpiTreeDescription } from '../EpiTreeDescription';
 import type { CompleteCaseType } from '../../../api';
 import { EpiTreeUtil } from '../../../utils/EpiTreeUtil';
 
-import { EpiCaseTypeInfoCaseTypeColumnAccessRights } from './EpiCaseTypeInfoCaseTypeColumnAccessRights';
+import { EpiCaseTypeInfoColAccessRights } from './EpiCaseTypeInfoColAccessRights';
 
 
 export type EpiCaseTypeInfoTreesProps = {
@@ -59,8 +59,8 @@ export const EpiCaseTypeInfoTrees = ({ completeCaseType }: EpiCaseTypeInfoTreesP
                 <strong style={{ fontSize: '1rem' }}>
                   {t`Access rights`}
                 </strong>
-                <EpiCaseTypeInfoCaseTypeColumnAccessRights
-                  caseTypeColumnId={treeConfiguration.caseTypeCol.id}
+                <EpiCaseTypeInfoColAccessRights
+                  colId={treeConfiguration.col.id}
                 />
               </Box>
 

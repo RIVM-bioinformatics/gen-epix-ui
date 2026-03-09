@@ -6,8 +6,8 @@ import type {
   CompleteCaseType,
   RefDim,
   RefCol,
-  CaseTypeCol,
-  CaseTypeDim,
+  Col,
+  Dim,
 } from '../../api';
 import {
   DimType,
@@ -27,21 +27,21 @@ export class CaseTypeUtil {
     return path;
   }
 
-  public static getInitialVisibleColumnIds(completeCaseType: CompleteCaseType): string[] {
+  public static getInitialVisibleColIds(completeCaseType: CompleteCaseType): string[] {
     const visibleColumnIds: string[] = [];
 
-    completeCaseType.ordered_case_type_dim_ids.map(x => completeCaseType.case_type_dims[x]).forEach((caseTypeDimension) => {
-      const refDims = completeCaseType.ref_dims[caseTypeDimension.ref_dim_id];
+    completeCaseType.ordered_dim_ids.map(x => completeCaseType.dims[x]).forEach((dim) => {
+      const refDims = completeCaseType.ref_dims[dim.ref_dim_id];
 
-      const caseTypeCols = completeCaseType.ordered_case_type_col_ids_by_dim[caseTypeDimension.id].map(id => completeCaseType.case_type_cols[id]);
-      const refCols = caseTypeCols.map(caseTypeCol => completeCaseType.ref_cols[caseTypeCol.ref_col_id]);
+      const cols = completeCaseType.ordered_col_ids_by_dim[dim.id].map(id => completeCaseType.cols[id]);
+      const refCols = cols.map(col => completeCaseType.ref_cols[col.ref_col_id]);
 
       if (refDims.dim_type === DimType.GEO) {
-        visibleColumnIds.push(CaseTypeUtil.getPreferredGEOColumn(caseTypeCols).id);
-      } else if (refDims.dim_type === DimType.TIME || refDims.dim_type === DimType.NUMBER || CaseTypeUtil.isGeneticDistanceDimension(refDims, refCols)) {
-        visibleColumnIds.push(CaseTypeUtil.getPreferredColumnInDimensionHavingHighestRank(caseTypeCols, completeCaseType).id);
+        visibleColumnIds.push(CaseTypeUtil.getPreferredGEOCol(cols).id);
+      } else if (refDims.dim_type === DimType.TIME || refDims.dim_type === DimType.NUMBER || CaseTypeUtil.isGeneticDistanceDim(refDims, refCols)) {
+        visibleColumnIds.push(CaseTypeUtil.getPreferredColInDimHavingHighestRank(cols, completeCaseType).id);
       } else {
-        visibleColumnIds.push(...caseTypeCols.filter(cc => {
+        visibleColumnIds.push(...cols.filter(cc => {
           const refCol = completeCaseType.ref_cols[cc.ref_col_id];
           const hiddenColTypes: ColType[] = [ColType.GENETIC_READS, ColType.GENETIC_SEQUENCE];
           return !hiddenColTypes.includes(refCol.col_type);
@@ -52,76 +52,76 @@ export class CaseTypeUtil {
     return visibleColumnIds;
   }
 
-  public static getDimensionLabel(completeCaseType: CompleteCaseType, caseTypeDimId: string): string {
-    const caseTypeDim = completeCaseType.case_type_dims[caseTypeDimId];
-    return caseTypeDim.code;
+  public static getDimLabel(completeCaseType: CompleteCaseType, dimId: string): string {
+    const dim = completeCaseType.dims[dimId];
+    return dim.code;
   }
 
-  public static isGeneticDistanceDimension(refDim: RefDim, refCols: RefCol[]): boolean {
+  public static isGeneticDistanceDim(refDim: RefDim, refCols: RefCol[]): boolean {
     return refDim.dim_type === DimType.OTHER && refCols.find(refCol => refCol.col_type === ColType.GENETIC_DISTANCE) !== undefined;
   }
 
-  public static getPreferredGEOColumn(caseTypeCols: CaseTypeCol[]): CaseTypeCol {
-    return caseTypeCols[Math.min(caseTypeCols.length - 1, Math.floor((caseTypeCols.length - 1) / 2))];
+  public static getPreferredGEOCol(cols: Col[]): Col {
+    return cols[Math.min(cols.length - 1, Math.floor((cols.length - 1) / 2))];
   }
 
-  public static getPreferredColumnInDimensionHavingHighestRank(caseTypeCols: CaseTypeCol[], completeCaseType: CompleteCaseType): CaseTypeCol {
-    return caseTypeCols.find(caseTypeCol => completeCaseType.ref_cols[caseTypeCol.ref_col_id].rank === 1) ?? caseTypeCols?.[0];
+  public static getPreferredColInDimHavingHighestRank(cols: Col[], completeCaseType: CompleteCaseType): Col {
+    return cols.find(col => completeCaseType.ref_cols[col.ref_col_id].rank === 1) ?? cols?.[0];
   }
 
-  public static getCaseTypeDims(completeCaseType: CompleteCaseType, dimTypes?: DimType[]): CaseTypeDim[] {
-    const caseTypeDims = Object.values(completeCaseType.ordered_case_type_dim_ids).map(x => completeCaseType.case_type_dims[x]);
+  public static getDims(completeCaseType: CompleteCaseType, dimTypes?: DimType[]): Dim[] {
+    const dims = Object.values(completeCaseType.ordered_dim_ids).map(x => completeCaseType.dims[x]);
     if (!dimTypes?.length) {
-      return caseTypeDims;
+      return dims;
     }
-    return caseTypeDims.filter(caseTypeDim => {
-      const refDim = completeCaseType.ref_dims[caseTypeDim.ref_dim_id];
+    return dims.filter(dim => {
+      const refDim = completeCaseType.ref_dims[dim.ref_dim_id];
       return dimTypes.includes(refDim.dim_type);
     });
   }
 
-  public static getCaseTypeCols(completeCaseType: CompleteCaseType, caseTypeDimId?: string): CaseTypeCol[] {
-    if (!caseTypeDimId) {
-      return Object.values(completeCaseType.case_type_cols);
+  public static getCols(completeCaseType: CompleteCaseType, dimId?: string): Col[] {
+    if (!dimId) {
+      return Object.values(completeCaseType.cols);
     }
-    return completeCaseType.ordered_case_type_col_ids_by_dim[caseTypeDimId].map(id => completeCaseType.case_type_cols[id]);
+    return completeCaseType.ordered_col_ids_by_dim[dimId].map(id => completeCaseType.cols[id]);
   }
 
 
   /**
-   * Get case type columns by their column type.
+   * Get columns by their column type.
    * @param completeCaseType The complete case type object.
    * @param colType The column type to filter by.
-   * @returns An array of case type columns matching the specified column type.
+   * @returns An array of columns matching the specified column type.
    */
-  public static getCaseTypeColsByType(completeCaseType: CompleteCaseType, colType: ColType[]): CaseTypeCol[] {
-    return Object.values(completeCaseType.case_type_cols).filter(caseTypeCol => {
-      const refCol = completeCaseType.ref_cols[caseTypeCol.ref_col_id];
+  public static getColsByType(completeCaseType: CompleteCaseType, colType: ColType[]): Col[] {
+    return Object.values(completeCaseType.cols).filter(col => {
+      const refCol = completeCaseType.ref_cols[col.ref_col_id];
       return colType.includes(refCol?.col_type);
     });
   }
 
 
   /**
-   * Find a unique case type column by its case type column ID or column ID.
+   * Find a unique column by its column ID or column ID.
    * @param completeCaseType The complete case type object.
-   * @param id The ID of the case type column or column.
-   * @returns The unique case type column if found, otherwise null.
+   * @param id The ID of the column or column.
+   * @returns The unique column if found, otherwise null.
    */
-  public static findUniqueCaseTypeColByCaseTypeColIdOrColId(completeCaseType: CompleteCaseType, id: string): CaseTypeCol {
-    const caseTypeColId = Object.values(completeCaseType.case_type_cols).find(caseTypeCol => caseTypeCol.ref_col_id === id);
-    if (caseTypeColId) {
-      return caseTypeColId;
+  public static findUniqueColByColIdRefOrColId(completeCaseType: CompleteCaseType, id: string): Col {
+    const colId = Object.values(completeCaseType.cols).find(col => col.ref_col_id === id);
+    if (colId) {
+      return colId;
     }
     const colIds = Object.values(completeCaseType.ref_cols).filter(ref_col => ref_col.id === id);
     if (colIds.length !== 1) {
       return null;
     }
-    const caseTypeCols = Object.values(completeCaseType.case_type_cols).filter(caseTypeCol => caseTypeCol.ref_col_id === colIds[0].id);
-    if (caseTypeCols.length !== 1) {
+    const cols = Object.values(completeCaseType.cols).filter(col => col.ref_col_id === colIds[0].id);
+    if (cols.length !== 1) {
       return null;
     }
-    return caseTypeCols[0];
+    return cols[0];
   }
 
 
@@ -130,16 +130,16 @@ export class CaseTypeUtil {
    * @param completeCaseType The complete case type object.
    * @returns An array of paired FWD/REV columns.
    */
-  public static findPairedReadsCaseTypeCols(completeCaseType: CompleteCaseType): { fwd: CaseTypeCol; rev: CaseTypeCol }[] {
-    const pairs: { fwd: CaseTypeCol; rev: CaseTypeCol }[] = [];
+  public static findPairedReadsCols(completeCaseType: CompleteCaseType): { fwd: Col; rev: Col }[] {
+    const pairs: { fwd: Col; rev: Col }[] = [];
 
-    completeCaseType.ordered_case_type_dim_ids.forEach(caseTypeDimId => {
-      const caseTypeCols = completeCaseType.ordered_case_type_col_ids_by_dim[caseTypeDimId].map(x => completeCaseType.case_type_cols[x]);
-      if (!caseTypeCols) {
+    completeCaseType.ordered_dim_ids.forEach(dimId => {
+      const cols = completeCaseType.ordered_col_ids_by_dim[dimId].map(x => completeCaseType.cols[x]);
+      if (!cols) {
         return;
       }
-      const readsColumns = caseTypeCols.filter(caseTypeCol => {
-        const refCol = completeCaseType.ref_cols[caseTypeCol.ref_col_id];
+      const readsColumns = cols.filter(col => {
+        const refCol = completeCaseType.ref_cols[col.ref_col_id];
         return refCol?.col_type === ColType.GENETIC_READS;
       });
 
@@ -152,22 +152,22 @@ export class CaseTypeUtil {
     return pairs;
   }
 
-  public static getWritableCaseTypeColIds(completeCaseType: CompleteCaseType): string[] {
+  public static getWritableColIds(completeCaseType: CompleteCaseType): string[] {
     const writableColIds: string[] = [];
     Object.values(completeCaseType.case_type_access_abacs).forEach((abac) => {
-      writableColIds.push(...abac.write_case_type_col_ids);
+      writableColIds.push(...abac.write_col_ids);
     });
     return uniq(writableColIds);
   }
 
-  public static getWritableImportExportCaseTypeColIds(completeCaseType: CompleteCaseType): string[] {
-    const writableColIds = CaseTypeUtil.getWritableCaseTypeColIds(completeCaseType);
-    return Object.keys(completeCaseType.case_type_cols).filter(caseTypeColId => {
-      if (!writableColIds.includes(caseTypeColId)) {
+  public static getWritableImportExportColIds(completeCaseType: CompleteCaseType): string[] {
+    const writableColIds = CaseTypeUtil.getWritableColIds(completeCaseType);
+    return Object.keys(completeCaseType.cols).filter(colId => {
+      if (!writableColIds.includes(colId)) {
         return false;
       }
-      const caseTypeCol = completeCaseType.case_type_cols[caseTypeColId];
-      const refCol = completeCaseType.ref_cols[caseTypeCol.ref_col_id];
+      const col = completeCaseType.cols[colId];
+      const refCol = completeCaseType.ref_cols[col.ref_col_id];
       if (([ColType.GENETIC_DISTANCE, ColType.GENETIC_PROFILE, ColType.GENETIC_READS, ColType.GENETIC_SEQUENCE] as ColType[]).includes(refCol.col_type)) {
         return false;
       }

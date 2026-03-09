@@ -37,7 +37,7 @@ export const EpiCaseContent = ({ epiCase, ...boxProps }: EpiCaseContentProps) =>
   const epiDashboardStore = useContext(EpiDashboardStoreContext);
   const completeCaseType = useStore(epiDashboardStore, (state) => state.completeCaseType);
 
-  const caseTypeCols = useMemo(() => CaseTypeUtil.getCaseTypeCols(completeCaseType), [completeCaseType]);
+  const cols = useMemo(() => CaseTypeUtil.getCols(completeCaseType), [completeCaseType]);
 
   const onOrganizationLinkClick = useCallback((organizationId: string, organizationName: string) => {
     console.log('onOrganizationLinkClick', organizationId, organizationName);
@@ -78,17 +78,17 @@ export const EpiCaseContent = ({ epiCase, ...boxProps }: EpiCaseContentProps) =>
             </TableRow>
           </TableHead>
           <TableBody>
-            {caseTypeCols.map(caseTypeCol => {
-              const refCol = completeCaseType.ref_cols[caseTypeCol.ref_col_id];
-              const columnValue = CaseUtil.getRowValue(epiCase.content, caseTypeCol, completeCaseType);
+            {cols.map(col => {
+              const refCol = completeCaseType.ref_cols[col.ref_col_id];
+              const columnValue = CaseUtil.getRowValue(epiCase.content, col, completeCaseType);
               return (
-                <TableRow key={caseTypeCol.id}>
+                <TableRow key={col.id}>
                   <TableCell
                     sx={{
                       width: 'calc(100% / 3)',
                     }}
                   >
-                    {caseTypeCol.label}
+                    {col.label}
                   </TableCell>
                   <TableCell
                     sx={{
@@ -103,7 +103,7 @@ export const EpiCaseContent = ({ epiCase, ...boxProps }: EpiCaseContentProps) =>
                         color={'primary'}
                         // eslint-disable-next-line react/jsx-no-bind
                         onClick={() => {
-                          onOrganizationLinkClick(epiCase.content[caseTypeCol.id], columnValue.long);
+                          onOrganizationLinkClick(epiCase.content[col.id], columnValue.long);
                         }}
                       >
                         {columnValue.long}

@@ -44,7 +44,7 @@ import { EpiUploadNavigation } from './EpiUploadNavigation';
 type FormFields = {
   sequencingProtocolId: string;
   assemblyProtocolId: string;
-  sampleIdCaseTypeColId: string;
+  sampleIdColId: string;
 };
 
 export const EpiUploadSelectSequenceFiles = () => {
@@ -58,7 +58,7 @@ export const EpiUploadSelectSequenceFiles = () => {
   const goToNextStep = useStore(store, (state) => state.goToNextStep);
   const goToPreviousStep = useStore(store, (state) => state.goToPreviousStep);
   const setSequenceFilesDataTransfer = useStore(store, (state) => state.setSequenceFilesDataTransfer);
-  const sampleIdCaseTypeColId = useStore(store, (state) => state.sampleIdCaseTypeColId);
+  const sampleIdColId = useStore(store, (state) => state.sampleIdColId);
   const initialDataTransfer = useStore(store, (state) => state.sequenceFilesDataTransfer);
   const dataTransfer = useRef(initialDataTransfer);
 
@@ -72,10 +72,10 @@ export const EpiUploadSelectSequenceFiles = () => {
     assemblyProtocolOptionsQuery,
   ]);
 
-  const sampleIdCaseTypeColIdOptions = useMemo<SelectOption<string>[]>(() => {
+  const sampleIdColIdOptions = useMemo<SelectOption<string>[]>(() => {
     return mappedColumns.filter(mc => mc.isSampleIdColumn).map(mc => ({
-      label: mc.caseTypeCol.label,
-      value: mc.caseTypeCol.id,
+      label: mc.col.label,
+      value: mc.col.id,
     } satisfies SelectOption<string>));
   }, [mappedColumns]);
 
@@ -93,7 +93,7 @@ export const EpiUploadSelectSequenceFiles = () => {
       otherwise: () => string().nullable().notRequired(),
     }),
     // eslint-disable-next-line react-hooks/refs
-    sampleIdCaseTypeColId: string().when({
+    sampleIdColId: string().when({
       is: () => Array.from(dataTransfer.current?.files ?? []).length > 0,
       then: () => string().uuid4().required(),
       otherwise: () => string().nullable().notRequired(),
@@ -104,7 +104,7 @@ export const EpiUploadSelectSequenceFiles = () => {
     return {
       sequencingProtocolId: store.getState().sequencingProtocolId ?? null,
       assemblyProtocolId: store.getState().assemblyProtocolId ?? null,
-      sampleIdCaseTypeColId: store.getState().sampleIdCaseTypeColId ?? null,
+      sampleIdColId: store.getState().sampleIdColId ?? null,
     };
   }, [store]);
 
@@ -127,11 +127,11 @@ export const EpiUploadSelectSequenceFiles = () => {
       setValue('assemblyProtocolId', assemblyProtocolOptionsQuery.options[0]?.value || null);
       store.setState({ assemblyProtocolId: assemblyProtocolOptionsQuery.options[0]?.value || null });
     }
-    if (!store.getState().sampleIdCaseTypeColId) {
-      setValue('sampleIdCaseTypeColId', sampleIdCaseTypeColIdOptions[0]?.value || null);
-      store.setState({ sampleIdCaseTypeColId: sampleIdCaseTypeColIdOptions[0]?.value || null });
+    if (!store.getState().sampleIdColId) {
+      setValue('sampleIdColId', sampleIdColIdOptions[0]?.value || null);
+      store.setState({ sampleIdColId: sampleIdColIdOptions[0]?.value || null });
     }
-  }, [assemblyProtocolOptionsQuery.isLoading, assemblyProtocolOptionsQuery.options, sequencingProtocolOptionsQuery.isLoading, sequencingProtocolOptionsQuery.options, setValue, store, sampleIdCaseTypeColIdOptions]);
+  }, [assemblyProtocolOptionsQuery.isLoading, assemblyProtocolOptionsQuery.options, sequencingProtocolOptionsQuery.isLoading, sequencingProtocolOptionsQuery.options, setValue, store, sampleIdColIdOptions]);
 
   const onSequencingProtocolChange = useCallback((value: string) => {
     store.setState({ sequencingProtocolId: value });
@@ -141,8 +141,8 @@ export const EpiUploadSelectSequenceFiles = () => {
     store.setState({ assemblyProtocolId: value });
   }, [store]);
 
-  const onSampleIdCaseTypeColIdChange = useCallback((value: string) => {
-    store.setState({ sampleIdCaseTypeColId: value });
+  const onSampleIdColIdChange = useCallback((value: string) => {
+    store.setState({ sampleIdColId: value });
   }, [store]);
 
   const formFieldDefinitions = useMemo<FormFieldDefinition<FormFields>[]>(() => {
@@ -165,13 +165,13 @@ export const EpiUploadSelectSequenceFiles = () => {
         } as const satisfies FormFieldDefinition<FormFields>,
         {
           definition: FORM_FIELD_DEFINITION_TYPE.SELECT,
-          name: 'sampleIdCaseTypeColId',
+          name: 'sampleIdColId',
           label: t`Sample ID column`,
-          options: sampleIdCaseTypeColIdOptions,
-          onChange: onSampleIdCaseTypeColIdChange,
+          options: sampleIdColIdOptions,
+          onChange: onSampleIdColIdChange,
         } as const satisfies FormFieldDefinition<FormFields>,
     ];
-  }, [assemblyProtocolOptionsQuery.isLoading, assemblyProtocolOptionsQuery.options, onAssemblyProtocolChange, onSampleIdCaseTypeColIdChange, onSequencingProtocolChange, sampleIdCaseTypeColIdOptions, sequencingProtocolOptionsQuery.isLoading, sequencingProtocolOptionsQuery.options, t]);
+  }, [assemblyProtocolOptionsQuery.isLoading, assemblyProtocolOptionsQuery.options, onAssemblyProtocolChange, onSampleIdColIdChange, onSequencingProtocolChange, sampleIdColIdOptions, sequencingProtocolOptionsQuery.isLoading, sequencingProtocolOptionsQuery.options, t]);
 
 
   const hasWritableSampleIdColumn = useMemo(() => {
@@ -180,30 +180,30 @@ export const EpiUploadSelectSequenceFiles = () => {
     });
   }, [mappedColumns]);
 
-  const hasRowContentForSampleIdCaseTypeColId = useMemo(() => {
-    if (!sampleIdCaseTypeColId) {
+  const hasRowContentForSampleIdColId = useMemo(() => {
+    if (!sampleIdColId) {
       return false;
     }
     return validatedCases.some(vc => {
-      return vc.validated_content[sampleIdCaseTypeColId]?.trim().length > 0;
+      return vc.validated_content[sampleIdColId]?.trim().length > 0;
     });
-  }, [sampleIdCaseTypeColId, validatedCases]);
+  }, [sampleIdColId, validatedCases]);
 
-  const completeCaseTypeColumnStats = useMemo(() => {
-    return EpiUploadUtil.getCompleteCaseTypeColumnStats(completeCaseType);
+  const completeCaseTypeColStats = useMemo(() => {
+    return EpiUploadUtil.getCompleteCaseTypeColStats(completeCaseType);
   }, [completeCaseType]);
 
   const canUploadSequences = useMemo(() => {
-    return completeCaseTypeColumnStats.sequenceColumns.length > 0;
-  }, [completeCaseTypeColumnStats]);
+    return completeCaseTypeColStats.sequenceColumns.length > 0;
+  }, [completeCaseTypeColStats]);
 
   const canUploadReads = useMemo(() => {
-    return completeCaseTypeColumnStats.readsColumns.length > 0;
-  }, [completeCaseTypeColumnStats]);
+    return completeCaseTypeColStats.readsColumns.length > 0;
+  }, [completeCaseTypeColStats]);
 
   const canUpload = useMemo(() => {
-    return hasWritableSampleIdColumn && hasRowContentForSampleIdCaseTypeColId && (canUploadSequences || canUploadReads);
-  }, [hasWritableSampleIdColumn, hasRowContentForSampleIdCaseTypeColId, canUploadSequences, canUploadReads]);
+    return hasWritableSampleIdColumn && hasRowContentForSampleIdColId && (canUploadSequences || canUploadReads);
+  }, [hasWritableSampleIdColumn, hasRowContentForSampleIdColId, canUploadSequences, canUploadReads]);
 
   const accept = useMemo(() => {
     let acc = '';
@@ -253,7 +253,7 @@ export const EpiUploadSelectSequenceFiles = () => {
         message: t`No columns have been mapped as writable sample ID column with selected identifier issuer provider.`,
       };
     }
-    if (!hasRowContentForSampleIdCaseTypeColId) {
+    if (!hasRowContentForSampleIdColId) {
       return {
         title: t('Uploading of files is disabled.'),
         message: t`No rows have a sample ID filled for the selected sample ID column.`,
@@ -272,7 +272,7 @@ export const EpiUploadSelectSequenceFiles = () => {
       };
     }
     return null;
-  }, [canUploadReads, canUploadSequences, hasRowContentForSampleIdCaseTypeColId, hasWritableSampleIdColumn, t]);
+  }, [canUploadReads, canUploadSequences, hasRowContentForSampleIdColId, hasWritableSampleIdColumn, t]);
 
   return (
     <ResponseHandler

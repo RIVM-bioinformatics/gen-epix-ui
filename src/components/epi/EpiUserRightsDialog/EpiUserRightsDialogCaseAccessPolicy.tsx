@@ -17,8 +17,8 @@ import { useUserAccessCasePoliciesQuery } from '../../../dataHooks/useUserAccess
 import { useArray } from '../../../hooks/useArray';
 import { useCaseTypeSetMembersQuery } from '../../../dataHooks/useCaseTypeSetMembersQuery';
 import { useCaseTypeMapQuery } from '../../../dataHooks/useCaseTypesQuery';
-import { useCaseTypeColMapQuery } from '../../../dataHooks/useCaseTypeColsQuery';
-import { useCaseTypeColSetMembersQuery } from '../../../dataHooks/useCaseTypeColSetMembersQuery';
+import { useColMapQuery } from '../../../dataHooks/useColsQuery';
+import { useColSetMembersQuery } from '../../../dataHooks/useColSetMembersQuery';
 import {
   useDataCollectionOptionsQuery,
   useDataCollectionsMapQuery,
@@ -41,8 +41,8 @@ export type EpiUserRightsDialogCaseAccessPolicyProps = {
 
 type AccessCasePolity = Omit<OrganizationAccessCasePolicy & UserAccessCasePolicy, 'id' | 'user_id' | 'is_active' | 'case_type_set_id'> & {
   readonly case_type_set_ids: string[];
-  readonly write_case_type_col_ids: string[];
-  readonly read_case_type_col_ids?: string[];
+  readonly write_col_ids: string[];
+  readonly read_col_ids?: string[];
 };
 
 export const EpiUserRightsDialogCaseAccessPolicy = ({ user }: EpiUserRightsDialogCaseAccessPolicyProps) => {
@@ -51,8 +51,8 @@ export const EpiUserRightsDialogCaseAccessPolicy = ({ user }: EpiUserRightsDialo
   const userAccessCasePoliciesQuery = useUserAccessCasePoliciesQuery(policies => policies.filter(policy => policy.is_active && policy.user_id === user.id));
   const caseTypeSetMembersQuery = useCaseTypeSetMembersQuery();
   const caseTypeMapQuery = useCaseTypeMapQuery();
-  const caseTypeColSetMembersQuery = useCaseTypeColSetMembersQuery();
-  const caseTypeColMapQuery = useCaseTypeColMapQuery();
+  const colSetMembersQuery = useColSetMembersQuery();
+  const colMapQuery = useColMapQuery();
   const dataCollectionMapQuery = useDataCollectionsMapQuery();
   const dataCollectionOptionsQuery = useDataCollectionOptionsQuery();
 
@@ -61,8 +61,8 @@ export const EpiUserRightsDialogCaseAccessPolicy = ({ user }: EpiUserRightsDialo
     userAccessCasePoliciesQuery,
     caseTypeSetMembersQuery,
     caseTypeMapQuery,
-    caseTypeColSetMembersQuery,
-    caseTypeColMapQuery,
+    colSetMembersQuery,
+    colMapQuery,
     dataCollectionMapQuery,
     dataCollectionOptionsQuery,
   ]);
@@ -79,11 +79,11 @@ export const EpiUserRightsDialogCaseAccessPolicy = ({ user }: EpiUserRightsDialo
     const { data: organizationAccessCasePolicies } = organizationAccessCasePoliciesQuery;
     const { data: userAccessCasePolicies } = userAccessCasePoliciesQuery;
     const { data: caseTypeSetMembers } = caseTypeSetMembersQuery;
-    const { data: caseTypeColSetMembers } = caseTypeColSetMembersQuery;
+    const { data: colSetMembers } = colSetMembersQuery;
     const { map: caseTypeMap } = caseTypeMapQuery;
-    const { map: caseTypeColMap } = caseTypeColMapQuery;
+    const { map: colMap } = colMapQuery;
 
-    if (!organizationAccessCasePolicies || !userAccessCasePolicies || !caseTypeSetMembers || !caseTypeMap || !caseTypeColSetMembers || !caseTypeColMap) {
+    if (!organizationAccessCasePolicies || !userAccessCasePolicies || !caseTypeSetMembers || !caseTypeMap || !colSetMembers || !colMap) {
       return [];
     }
     return organizationAccessCasePolicies.map(organizationPolicy => {
@@ -99,13 +99,13 @@ export const EpiUserRightsDialogCaseAccessPolicy = ({ user }: EpiUserRightsDialo
         return undefined;
       }
 
-      const organizationWriteCaseTypeColIds = caseTypeColSetMembers.filter(member => member.case_type_col_set_id === organizationPolicy.write_case_type_col_set_id).map(member => member.case_type_col_id);
-      const userWriteCaseTypeColIds = caseTypeColSetMembers.filter(member => member.case_type_col_set_id === userPolicy.write_case_type_col_set_id).map(member => member.case_type_col_id);
-      const write_case_type_col_ids = intersection(organizationWriteCaseTypeColIds, userWriteCaseTypeColIds);
+      const organizationWriteColIds = colSetMembers.filter(member => member.col_set_id === organizationPolicy.write_col_set_id).map(member => member.col_id);
+      const userWriteColIds = colSetMembers.filter(member => member.col_set_id === userPolicy.write_col_set_id).map(member => member.col_id);
+      const write_col_ids = intersection(organizationWriteColIds, userWriteColIds);
 
-      const organizationReadCaseTypeColIds = caseTypeColSetMembers.filter(member => member.case_type_col_set_id === organizationPolicy.read_case_type_col_set_id).map(member => member.case_type_col_id);
-      const userReadCaseTypeColIds = caseTypeColSetMembers.filter(member => member.case_type_col_set_id === userPolicy.read_case_type_col_set_id).map(member => member.case_type_col_id);
-      const read_case_type_col_ids = intersection(organizationReadCaseTypeColIds, userReadCaseTypeColIds);
+      const organizationReadColIds = colSetMembers.filter(member => member.col_set_id === organizationPolicy.read_col_set_id).map(member => member.col_id);
+      const userReadColIds = colSetMembers.filter(member => member.col_set_id === userPolicy.read_col_set_id).map(member => member.col_id);
+      const read_col_ids = intersection(organizationReadColIds, userReadColIds);
 
       return {
         add_case: organizationPolicy.add_case && userPolicy.add_case,
@@ -117,15 +117,15 @@ export const EpiUserRightsDialogCaseAccessPolicy = ({ user }: EpiUserRightsDialo
         remove_case: organizationPolicy.remove_case && userPolicy.remove_case,
         remove_case_set: organizationPolicy.remove_case_set && userPolicy.remove_case_set,
         write_case_set: organizationPolicy.write_case_set && userPolicy.write_case_set,
-        write_case_type_col_set_id: organizationPolicy.write_case_type_col_set_id,
-        read_case_type_col_set_id: organizationPolicy.read_case_type_col_set_id,
+        write_col_set_id: organizationPolicy.write_col_set_id,
+        read_col_set_id: organizationPolicy.read_col_set_id,
         case_type_set_ids,
-        write_case_type_col_ids,
-        read_case_type_col_ids,
+        write_col_ids,
+        read_col_ids,
       } satisfies AccessCasePolity;
     }).filter((policy => !!policy));
 
-  }, [caseTypeColMapQuery, caseTypeColSetMembersQuery, caseTypeMapQuery, caseTypeSetMembersQuery, organizationAccessCasePoliciesQuery, userAccessCasePoliciesQuery]);
+  }, [colMapQuery, colSetMembersQuery, caseTypeMapQuery, caseTypeSetMembersQuery, organizationAccessCasePoliciesQuery, userAccessCasePoliciesQuery]);
 
   const tableColumns = useMemo<TableColumn<AccessCasePolity>[]>(() => [
     TableUtil.createReadableIndexColumn(),

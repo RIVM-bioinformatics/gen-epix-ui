@@ -33,12 +33,12 @@ import {
 } from '../../../dataHooks/useCaseTypeSetsQuery';
 import { useDataCollectionsMapQuery } from '../../../dataHooks/useDataCollectionsQuery';
 import { DataUtil } from '../../../utils/DataUtil';
-import { useCaseTypeColSetsMapQuery } from '../../../dataHooks/useCaseTypeColSetsQuery';
+import { useColSetMapQuery } from '../../../dataHooks/useColSetsQuery';
 import {
-  useCaseTypeColMapQuery,
-  useCaseTypeColNameFactory,
-} from '../../../dataHooks/useCaseTypeColsQuery';
-import { useCaseTypeColSetMembersQuery } from '../../../dataHooks/useCaseTypeColSetMembersQuery';
+  useColMapQuery,
+  useColNameFactory,
+} from '../../../dataHooks/useColsQuery';
+import { useColSetMembersQuery } from '../../../dataHooks/useColSetMembersQuery';
 import { useCaseTypeSetMembersQuery } from '../../../dataHooks/useCaseTypeSetMembersQuery';
 import type { User } from '../../../api';
 import { EpiCustomTabPanel } from '../../epi/EpiCustomTabPanel';
@@ -84,22 +84,22 @@ export const UsersEffectiveRightsDetailsDialog = withDialog<UsersEffectiveRights
   const caseTypeSetMapQuery = useCaseTypeSetsMapQuery();
   const caseTypeSetNameFactory = useCaseTypeSetNameFactory();
   const dataCollectionsMapQuery = useDataCollectionsMapQuery();
-  const caseTypeColSetsMapQuery = useCaseTypeColSetsMapQuery();
-  const caseTypeColMapQuery = useCaseTypeColMapQuery();
-  const caseTypeColNameFactory = useCaseTypeColNameFactory();
+  const colSetMapQuery = useColSetMapQuery();
+  const colMapQuery = useColMapQuery();
+  const colNameFactory = useColNameFactory();
   const caseTypeSetMembersQuery = useCaseTypeSetMembersQuery();
-  const caseTypeColSetMembersQuery = useCaseTypeColSetMembersQuery();
+  const colSetMembersQuery = useColSetMembersQuery();
 
   const loadables = useArray([
     caseTypeMapQuery,
     caseTypeSetMapQuery,
     caseTypeSetNameFactory,
     dataCollectionsMapQuery,
-    caseTypeColSetsMapQuery,
-    caseTypeColMapQuery,
-    caseTypeColNameFactory,
+    colSetMapQuery,
+    colMapQuery,
+    colNameFactory,
     caseTypeSetMembersQuery,
-    caseTypeColSetMembersQuery,
+    colSetMembersQuery,
   ]);
 
   const handleTabChange = useCallback((_event: SyntheticEvent, newValue: number) => {
@@ -243,21 +243,21 @@ export const UsersEffectiveRightsDetailsDialog = withDialog<UsersEffectiveRights
             index={1}
             value={activeTab}
           >
-            { !userEffectiveRight.categorized_read_case_type_col_ids.length && !userEffectiveRight.uncategorized_read_case_type_col_ids.length && (
+            { !userEffectiveRight.categorized_read_col_ids.length && !userEffectiveRight.uncategorized_read_col_ids.length && (
               <Box marginY={2}>
                 {t`No read columns assigned`}
               </Box>
             )}
-            { userEffectiveRight.read_case_type_col_set_ids.length > 0 && (
+            { userEffectiveRight.read_col_set_ids.length > 0 && (
               <Box>
-                {userEffectiveRight.read_case_type_col_set_ids.map((colSetId) => {
-                  const colSet = caseTypeColSetsMapQuery.map.get(colSetId);
-                  const colSetMembers = caseTypeColSetMembersQuery.data.filter(x => x.case_type_col_set_id === colSetId);
+                {userEffectiveRight.read_col_set_ids.map((colSetId) => {
+                  const colSet = colSetMapQuery.map.get(colSetId);
+                  const colSetMembers = colSetMembersQuery.data.filter(x => x.col_set_id === colSetId);
                   const sortedColSetMembers = colSetMembers.sort((a, b) => {
-                    const colA = caseTypeColMapQuery.map.get(a.case_type_col_id);
-                    const colB = caseTypeColMapQuery.map.get(b.case_type_col_id);
-                    const colAName = caseTypeColNameFactory.getName(colA) ?? a.case_type_col_id;
-                    const colBName = caseTypeColNameFactory.getName(colB) ?? b.case_type_col_id;
+                    const colA = colMapQuery.map.get(a.col_id);
+                    const colB = colMapQuery.map.get(b.col_id);
+                    const colAName = colNameFactory.getName(colA) ?? a.col_id;
+                    const colBName = colNameFactory.getName(colB) ?? b.col_id;
                     return colAName.localeCompare(colBName);
                   });
                   return (
@@ -273,10 +273,10 @@ export const UsersEffectiveRightsDetailsDialog = withDialog<UsersEffectiveRights
                         </Link>
                         <Box sx={{ display: visibleItems.includes(`read-col-sets-${colSetId}`) ? 'block' : 'none' }}>
                           {sortedColSetMembers.map((colSetMember) => {
-                            const refCol = caseTypeColMapQuery.map.get(colSetMember.case_type_col_id);
+                            const refCol = colMapQuery.map.get(colSetMember.col_id);
                             return (
                               <Box key={refCol.id}>
-                                {(refCol && caseTypeColNameFactory.getName(refCol)) ?? colSetMember.case_type_col_id}
+                                {(refCol && colNameFactory.getName(refCol)) ?? colSetMember.col_id}
                               </Box>
                             );
                           })}
@@ -287,7 +287,7 @@ export const UsersEffectiveRightsDetailsDialog = withDialog<UsersEffectiveRights
                 })}
               </Box>
             )}
-            { userEffectiveRight.uncategorized_read_case_type_col_ids.length > 0 && (
+            { userEffectiveRight.uncategorized_read_col_ids.length > 0 && (
               <Box marginY={1}>
                 <Typography variant={'h5'}>
                   {t`Uncategorized read columns sets`}
@@ -301,17 +301,17 @@ export const UsersEffectiveRightsDetailsDialog = withDialog<UsersEffectiveRights
                   {t`Uncategorized read columns sets`}
                 </Link>
                 <Box sx={{ display: visibleItems.includes(`uncategorized-read-col-sets`) ? 'block' : 'none' }}>
-                  {userEffectiveRight.uncategorized_read_case_type_col_ids.sort((a, b) => {
-                    const colA = caseTypeColMapQuery.map.get(a);
-                    const colB = caseTypeColMapQuery.map.get(b);
-                    const colAName = caseTypeColNameFactory.getName(colA) ?? a;
-                    const colBName = caseTypeColNameFactory.getName(colB) ?? b;
+                  {userEffectiveRight.uncategorized_read_col_ids.sort((a, b) => {
+                    const colA = colMapQuery.map.get(a);
+                    const colB = colMapQuery.map.get(b);
+                    const colAName = colNameFactory.getName(colA) ?? a;
+                    const colBName = colNameFactory.getName(colB) ?? b;
                     return colAName.localeCompare(colBName);
                   }).map((colId) => {
-                    const refCol = caseTypeColMapQuery.map.get(colId);
+                    const refCol = colMapQuery.map.get(colId);
                     return (
                       <Box key={colId}>
-                        {caseTypeColNameFactory.getName(refCol) ?? colId}
+                        {colNameFactory.getName(refCol) ?? colId}
                       </Box>
                     );
                   })}
@@ -323,21 +323,21 @@ export const UsersEffectiveRightsDetailsDialog = withDialog<UsersEffectiveRights
             index={2}
             value={activeTab}
           >
-            { !userEffectiveRight.categorized_write_case_type_col_ids.length && !userEffectiveRight.uncategorized_write_case_type_col_ids.length && (
+            { !userEffectiveRight.categorized_write_col_ids.length && !userEffectiveRight.uncategorized_write_col_ids.length && (
               <Box marginY={2}>
                 {t`No write columns assigned`}
               </Box>
             )}
-            { userEffectiveRight.write_case_type_col_set_ids.length > 0 && (
+            { userEffectiveRight.write_col_set_ids.length > 0 && (
               <Box>
-                {userEffectiveRight.write_case_type_col_set_ids.map((colSetId) => {
-                  const colSet = caseTypeColSetsMapQuery.map.get(colSetId);
-                  const colSetMembers = caseTypeColSetMembersQuery.data.filter(x => x.case_type_col_set_id === colSetId);
+                {userEffectiveRight.write_col_set_ids.map((colSetId) => {
+                  const colSet = colSetMapQuery.map.get(colSetId);
+                  const colSetMembers = colSetMembersQuery.data.filter(x => x.col_set_id === colSetId);
                   const sortedColSetMembers = colSetMembers.sort((a, b) => {
-                    const colA = caseTypeColMapQuery.map.get(a.case_type_col_id);
-                    const colB = caseTypeColMapQuery.map.get(b.case_type_col_id);
-                    const colAName = caseTypeColNameFactory.getName(colA) ?? a.case_type_col_id;
-                    const colBName = caseTypeColNameFactory.getName(colB) ?? b.case_type_col_id;
+                    const colA = colMapQuery.map.get(a.col_id);
+                    const colB = colMapQuery.map.get(b.col_id);
+                    const colAName = colNameFactory.getName(colA) ?? a.col_id;
+                    const colBName = colNameFactory.getName(colB) ?? b.col_id;
                     return colAName.localeCompare(colBName);
                   });
                   return (
@@ -353,10 +353,10 @@ export const UsersEffectiveRightsDetailsDialog = withDialog<UsersEffectiveRights
                         </Link>
                         <Box sx={{ display: visibleItems.includes(`write-col-sets-${colSetId}`) ? 'block' : 'none' }}>
                           {sortedColSetMembers.map((colSetMember) => {
-                            const refCol = caseTypeColMapQuery.map.get(colSetMember.case_type_col_id);
+                            const refCol = colMapQuery.map.get(colSetMember.col_id);
                             return (
                               <Box key={refCol.id}>
-                                {caseTypeColNameFactory.getName(refCol) ?? colSetMember.case_type_col_id}
+                                {colNameFactory.getName(refCol) ?? colSetMember.col_id}
                               </Box>
                             );
                           })}
@@ -367,7 +367,7 @@ export const UsersEffectiveRightsDetailsDialog = withDialog<UsersEffectiveRights
                 })}
               </Box>
             )}
-            { userEffectiveRight.uncategorized_write_case_type_col_ids.length > 0 && (
+            { userEffectiveRight.uncategorized_write_col_ids.length > 0 && (
               <Box marginY={1}>
                 <Link
                   tabIndex={0}
@@ -378,17 +378,17 @@ export const UsersEffectiveRightsDetailsDialog = withDialog<UsersEffectiveRights
                   {t`Uncategorized write columns sets`}
                 </Link>
                 <Box sx={{ display: visibleItems.includes(`uncategorized-write-col-sets`) ? 'block' : 'none' }}>
-                  {userEffectiveRight.uncategorized_write_case_type_col_ids.sort((a, b) => {
-                    const colA = caseTypeColMapQuery.map.get(a);
-                    const colB = caseTypeColMapQuery.map.get(b);
-                    const colAName = caseTypeColNameFactory.getName(colA) ?? a;
-                    const colBName = caseTypeColNameFactory.getName(colB) ?? b;
+                  {userEffectiveRight.uncategorized_write_col_ids.sort((a, b) => {
+                    const colA = colMapQuery.map.get(a);
+                    const colB = colMapQuery.map.get(b);
+                    const colAName = colNameFactory.getName(colA) ?? a;
+                    const colBName = colNameFactory.getName(colB) ?? b;
                     return colAName.localeCompare(colBName);
                   }).map((colId) => {
-                    const refCol = caseTypeColMapQuery.map.get(colId);
+                    const refCol = colMapQuery.map.get(colId);
                     return (
                       <Box key={colId}>
-                        {caseTypeColNameFactory.getName(refCol) ?? colId}
+                        {colNameFactory.getName(refCol) ?? colId}
                       </Box>
                     );
                   })}

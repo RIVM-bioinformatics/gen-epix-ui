@@ -30,7 +30,7 @@ import difference from 'lodash/difference';
 
 import { type FormFieldDefinition } from '../../../models/form';
 import { GenericForm } from '../../form/helpers/GenericForm';
-import { useCaseTypeColMapQuery } from '../../../dataHooks/useCaseTypeColsQuery';
+import { useColMapQuery } from '../../../dataHooks/useColsQuery';
 import { useArray } from '../../../hooks/useArray';
 import { ResponseHandler } from '../../ui/ResponseHandler';
 import { EpiUploadUtil } from '../../../utils/EpiUploadUtil';
@@ -45,7 +45,7 @@ import { EpiUploadNavigation } from './EpiUploadNavigation';
 
 export const EpiUploadMapColumns = () => {
   const { t } = useTranslation();
-  const caseTypeColMap = useCaseTypeColMapQuery();
+  const colMap = useColMapQuery();
   const identifierIssuerOptionsQuery = useIdentifierIssuerOwnOrganizationOptionsQuery();
 
   const store = useContext(EpiUploadStoreContext);
@@ -57,7 +57,7 @@ export const EpiUploadMapColumns = () => {
   const setMappedColumns = useStore(store, (state) => state.setMappedColumns);
 
   const loadables = useArray([
-    caseTypeColMap,
+    colMap,
     identifierIssuerOptionsQuery,
   ]);
 
@@ -90,30 +90,30 @@ export const EpiUploadMapColumns = () => {
 
   useEffect(() => {
     const perform = async () => {
-      await setMappedColumns(EpiUploadUtil.getMappedColumnsFromFormData(columnMappingFormValues, rawData, caseTypeColMap.map, completeCaseType));
+      await setMappedColumns(EpiUploadUtil.getMappedColumnsFromFormData(columnMappingFormValues, rawData, colMap.map, completeCaseType));
     };
     // eslint-disable-next-line @typescript-eslint/no-floating-promises
     perform();
-  }, [setMappedColumns, columnMappingFormValues, rawData, caseTypeColMap.map, completeCaseType]);
+  }, [setMappedColumns, columnMappingFormValues, rawData, colMap.map, completeCaseType]);
 
   const unMappedColumns = useMemo(() => {
     const knownIndicies = rawData[0].map((_col, index) => index);
-    const mappedIndicies = EpiUploadUtil.getMappedColumnsFromFormData(columnMappingFormValues, rawData, caseTypeColMap.map, completeCaseType).map(mappedColumn => mappedColumn.originalIndex);
+    const mappedIndicies = EpiUploadUtil.getMappedColumnsFromFormData(columnMappingFormValues, rawData, colMap.map, completeCaseType).map(mappedColumn => mappedColumn.originalIndex);
     return difference(knownIndicies, mappedIndicies).map(index => {
       return {
         originalIndex: index,
         originalLabel: rawData[0][index],
       };
     });
-  }, [caseTypeColMap.map, rawData, columnMappingFormValues, completeCaseType]);
+  }, [colMap.map, rawData, columnMappingFormValues, completeCaseType]);
 
   const onFormSubmit = useCallback(async (data: EpiUploadMappedColumnsFormFields) => {
-    await setMappedColumns(EpiUploadUtil.getMappedColumnsFromFormData(data, rawData, caseTypeColMap.map, completeCaseType));
+    await setMappedColumns(EpiUploadUtil.getMappedColumnsFromFormData(data, rawData, colMap.map, completeCaseType));
     await goToNextStep();
-  }, [rawData, caseTypeColMap.map, goToNextStep, setMappedColumns, completeCaseType]);
+  }, [rawData, colMap.map, goToNextStep, setMappedColumns, completeCaseType]);
 
-  const sampleIdCaseTypeColIds = useMemo(() => {
-    return EpiUploadUtil.getSampleIdCaseTypeColIds(completeCaseType);
+  const sampleIdColIds = useMemo(() => {
+    return EpiUploadUtil.getSampleIdColIds(completeCaseType);
   }, [completeCaseType]);
 
   const renderField = useCallback((definition: FormFieldDefinition<EpiUploadMappedColumnsFormFields>, element: ReactElement) => {
@@ -123,7 +123,7 @@ export const EpiUploadMapColumns = () => {
 
     let elementWithIssuer = element;
     const fieldValue = columnMappingFormValues[definition.name];
-    if (sampleIdCaseTypeColIds.includes(fieldValue)) {
+    if (sampleIdColIds.includes(fieldValue)) {
       elementWithIssuer = (
         <>
           <Box>
@@ -154,7 +154,7 @@ export const EpiUploadMapColumns = () => {
         </TableCell>
       </TableRow>
     );
-  }, [columnMappingFormValues, identifierIssuerOptionsQuery.isLoading, identifierIssuerOptionsQuery.options, rawData, sampleIdCaseTypeColIds, t]);
+  }, [columnMappingFormValues, identifierIssuerOptionsQuery.isLoading, identifierIssuerOptionsQuery.options, rawData, sampleIdColIds, t]);
 
   const wrapForm = useCallback((children: ReactElement) => {
     return (

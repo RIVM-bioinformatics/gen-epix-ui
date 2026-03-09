@@ -1,7 +1,7 @@
 import type { UseQueryResult } from '@tanstack/react-query';
 import { useMemo } from 'react';
 
-import type { CaseTypeDim } from '../../api';
+import type { Dim } from '../../api';
 import { CaseApi } from '../../api';
 import type {
   UseMap,
@@ -14,29 +14,29 @@ import { QueryUtil } from '../../utils/QueryUtil';
 import { useQueryMemo } from '../../hooks/useQueryMemo';
 import { useCaseTypeMapQuery } from '../useCaseTypesQuery';
 
-export const useCaseTypeDimsQuery = (): UseQueryResult<CaseTypeDim[]> => {
+export const useDimsQuery = (): UseQueryResult<Dim[]> => {
   return useQueryMemo({
-    queryKey: QueryUtil.getGenericKey(QUERY_KEY.CASE_TYPE_DIMS),
+    queryKey: QueryUtil.getGenericKey(QUERY_KEY.DIMS),
     queryFn: async ({ signal }) => {
-      const response = await CaseApi.instance.caseTypeDimsGetAll({ signal });
+      const response = await CaseApi.instance.dimsGetAll({ signal });
       return response.data;
     },
   });
 };
 
-export const useCaseTypeDimMapQuery = (): UseMap<CaseTypeDim> => {
-  const response = useCaseTypeDimsQuery();
+export const useDimMapQuery = (): UseMap<Dim> => {
+  const response = useDimsQuery();
 
   return useMemo(() => {
-    return DataHookUtil.createUseMapDataHook<CaseTypeDim>(response, item => item.id);
+    return DataHookUtil.createUseMapDataHook<Dim>(response, item => item.id);
   }, [response]);
 };
 
-export const useCaseTypeDimNameFactory = (): UseNameFactory<CaseTypeDim> => {
+export const useDimNameFactory = (): UseNameFactory<Dim> => {
   const caseTypeMapQuery = useCaseTypeMapQuery();
 
   return useMemo(() => {
-    const getName = (item: CaseTypeDim) => {
+    const getName = (item: Dim) => {
       const caseTypeName = caseTypeMapQuery.map.get(item.case_type_id)?.name ?? item.case_type_id;
       return `${caseTypeName} → ${item.label}`;
     };
@@ -44,12 +44,12 @@ export const useCaseTypeDimNameFactory = (): UseNameFactory<CaseTypeDim> => {
   }, [caseTypeMapQuery]);
 };
 
-export const useCaseTypeDimOptionsQuery = (): UseOptions<string> => {
-  const response = useCaseTypeDimsQuery();
+export const useDimOptionsQuery = (): UseOptions<string> => {
+  const response = useDimsQuery();
 
-  const caseTypeDimNameFactory = useCaseTypeDimNameFactory();
+  const dimNameFactory = useDimNameFactory();
 
   return useMemo(() => {
-    return DataHookUtil.createUseOptionsDataHook<CaseTypeDim>(response, item => item.id, caseTypeDimNameFactory.getName, [caseTypeDimNameFactory]);
-  }, [caseTypeDimNameFactory, response]);
+    return DataHookUtil.createUseOptionsDataHook<Dim>(response, item => item.id, dimNameFactory.getName, [dimNameFactory]);
+  }, [dimNameFactory, response]);
 };

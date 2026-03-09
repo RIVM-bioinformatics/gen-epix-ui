@@ -48,7 +48,7 @@ import { GenericForm } from '../../form/helpers/GenericForm';
 import type {
   Case,
   CompleteCaseType,
-  CaseTypeCol,
+  Col,
 } from '../../../api';
 import { CaseApi } from '../../../api';
 import { NumberUtil } from '../../../utils/NumberUtil';
@@ -68,7 +68,7 @@ export type EpiFindSimilarCasesDialogRefMethods = WithDialogRefMethods<EpiFindSi
 
 
 type FormFields = {
-  treeCaseTypeColId: string;
+  treeColId: string;
   maxDistance: number;
 };
 
@@ -90,16 +90,16 @@ export const EpiFindSimilarCasesDialog = withDialog<EpiFindSimilarCasesDialogPro
   const [formData, setFormData] = useState<FormFields>(null);
 
   const schema = useMemo(() => object<FormFields>().shape({
-    treeCaseTypeColId: string().required(),
+    treeColId: string().required(),
     maxDistance: NumberUtil.yup.required().min(0),
   }), []);
 
   const treeOptions = useMemo<AutoCompleteOption<string>[]>(() => {
-    const caseTypeCols = new Set<CaseTypeCol>();
+    const cols = new Set<Col>();
     treeConfigurations.forEach(x => {
-      caseTypeCols.add(x.caseTypeCol);
+      cols.add(x.col);
     });
-    return Array.from(caseTypeCols).map(x => {
+    return Array.from(cols).map(x => {
       return {
         label: x.label,
         value: x.id,
@@ -111,7 +111,7 @@ export const EpiFindSimilarCasesDialog = withDialog<EpiFindSimilarCasesDialogPro
   const formFieldDefinitions = useMemo<FormFieldDefinition<FormFields>[]>(() => [
       {
         definition: FORM_FIELD_DEFINITION_TYPE.AUTOCOMPLETE,
-        name: 'treeCaseTypeColId',
+        name: 'treeColId',
         label: t`Tree`,
         options: treeOptions,
       } as const satisfies FormFieldDefinition<FormFields>,
@@ -125,7 +125,7 @@ export const EpiFindSimilarCasesDialog = withDialog<EpiFindSimilarCasesDialogPro
   const formMethods = useForm<FormFields>({
     resolver: yupResolver(schema, undefined,{ raw: true }) as Resolver<FormFields>,
     values: {
-      treeCaseTypeColId: treeConfiguration ? treeConfiguration.caseTypeCol.id : null,
+      treeColId: treeConfiguration ? treeConfiguration.col.id : null,
       maxDistance: 5, // !FIXME
     },
   });
@@ -138,7 +138,7 @@ export const EpiFindSimilarCasesDialog = withDialog<EpiFindSimilarCasesDialogPro
     if (!formData) {
       return false;
     }
-    return formValues.treeCaseTypeColId !== formData.treeCaseTypeColId || formValues.maxDistance !== formData.maxDistance;
+    return formValues.treeColId !== formData.treeColId || formValues.maxDistance !== formData.maxDistance;
   }, [formData, formValues]);
 
   useEffect(() => {
@@ -155,7 +155,7 @@ export const EpiFindSimilarCasesDialog = withDialog<EpiFindSimilarCasesDialogPro
       const response = await CaseApi.instance.retrieveSimilarCases({
         case_ids: openProps.selectedRows.map(x => x.id),
         case_type_id: openProps.completeCaseType.id,
-        genetic_distance_case_type_col_id: formData?.treeCaseTypeColId,
+        genetic_distance_col_id: formData?.treeColId,
         max_distance: formData?.maxDistance,
       }, { signal });
       return response.data;
@@ -186,14 +186,14 @@ export const EpiFindSimilarCasesDialog = withDialog<EpiFindSimilarCasesDialogPro
         key: findSimilarCasesResults.length.toString(),
         similarCaseIds: similarCaseIdsNotInView,
         distance: formData?.maxDistance,
-        caseTypeColId: formData?.treeCaseTypeColId,
+        colId: formData?.treeColId,
         originalCaseIds: openProps.allRows.map(x => x.id),
       });
       return draft;
     }));
 
     onClose();
-  }, [setFindSimilarCasesResults, findSimilarCasesResults, onClose, similarCaseIdsNotInView, formData?.maxDistance, formData?.treeCaseTypeColId, openProps.allRows]);
+  }, [setFindSimilarCasesResults, findSimilarCasesResults, onClose, similarCaseIdsNotInView, formData?.maxDistance, formData?.treeColId, openProps.allRows]);
 
   useEffect(() => {
     const actions: DialogAction[] = [];
