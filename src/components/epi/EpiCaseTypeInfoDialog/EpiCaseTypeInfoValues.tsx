@@ -20,14 +20,14 @@ export const EpiCaseTypeInfoValues = ({ completeCaseType }: EpiCaseTypeInfoValue
     <>
       {completeCaseType.ordered_case_type_dim_ids.map(x => completeCaseType.case_type_dims[x]).filter(caseTypeDim => {
         // Filter out dimensions that only include genetic distance columns
-        const dim = completeCaseType.dims[caseTypeDim.dim_id];
-        if (dim.dim_type !== DimType.OTHER) {
+        const refDim = completeCaseType.ref_dims[caseTypeDim.ref_dim_id];
+        if (refDim.dim_type !== DimType.OTHER) {
           return true;
         }
         const caseTypeCols = CaseTypeUtil.getCaseTypeCols(completeCaseType, caseTypeDim.id);
         const colTypes = caseTypeCols.map(caseTypeCol => {
-          const col = completeCaseType.cols[caseTypeCol.col_id];
-          return col.col_type;
+          const refCol = completeCaseType.ref_cols[caseTypeCol.ref_col_id];
+          return refCol.col_type;
         });
         return !colTypes.every(colType => colType === 'GENETIC_DISTANCE');
       }).map(caseTypeDim => {

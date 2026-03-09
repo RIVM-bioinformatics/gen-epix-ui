@@ -1,7 +1,7 @@
 import type {
   ColType,
   CaseTypeCol,
-  Col,
+  RefCol,
   GeneticDistanceProtocol,
   TreeAlgorithm,
   Organization,
@@ -90,7 +90,7 @@ export type EpiDashboardLayoutUserConfig = {
 
 export type TreeConfiguration = {
   computedId: string;
-  col: Col;
+  refCol: RefCol;
   caseTypeCol: CaseTypeCol;
   geneticDistanceProtocol: GeneticDistanceProtocol;
   treeAlgorithm: TreeAlgorithm;

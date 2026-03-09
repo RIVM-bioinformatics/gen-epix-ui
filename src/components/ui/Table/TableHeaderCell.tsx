@@ -140,12 +140,12 @@ export const TableHeaderCell = <TRowData,>(props: TableHeaderCellProps<TRowData>
     return (event.nativeEvent.target as HTMLDivElement).classList.contains(tableHeaderCellClassNames.content);
   }, [column.frozen, column.isStatic]);
 
-  const onCustomDragTableHeaderCell = useCallback((event: TableDragEvent, col: TableColumn<TRowData>) => {
+  const onCustomDragTableHeaderCell = useCallback((event: TableDragEvent, tableColumn: TableColumn<TRowData>) => {
     if (onCustomDrag) {
       if (event.type === 'start') {
         ignoreNextClick.current = true;
       }
-      onCustomDrag(event, col);
+      onCustomDrag(event, tableColumn);
     }
   }, [onCustomDrag]);
 

@@ -4,8 +4,8 @@ import { StringUtil } from '../StringUtil';
 import type {
   CaseType,
   CompleteCaseType,
-  Dim,
-  Col,
+  RefDim,
+  RefCol,
   CaseTypeCol,
   CaseTypeDim,
 } from '../../api';
@@ -31,20 +31,20 @@ export class CaseTypeUtil {
     const visibleColumnIds: string[] = [];
 
     completeCaseType.ordered_case_type_dim_ids.map(x => completeCaseType.case_type_dims[x]).forEach((caseTypeDimension) => {
-      const dim = completeCaseType.dims[caseTypeDimension.dim_id];
+      const refDims = completeCaseType.ref_dims[caseTypeDimension.ref_dim_id];
 
       const caseTypeCols = completeCaseType.ordered_case_type_col_ids_by_dim[caseTypeDimension.id].map(id => completeCaseType.case_type_cols[id]);
-      const cols = caseTypeCols.map(caseTypeCol => completeCaseType.cols[caseTypeCol.col_id]);
+      const refCols = caseTypeCols.map(caseTypeCol => completeCaseType.ref_cols[caseTypeCol.ref_col_id]);
 
-      if (dim.dim_type === DimType.GEO) {
+      if (refDims.dim_type === DimType.GEO) {
         visibleColumnIds.push(CaseTypeUtil.getPreferredGEOColumn(caseTypeCols).id);
-      } else if (dim.dim_type === DimType.TIME || dim.dim_type === DimType.NUMBER || CaseTypeUtil.isGeneticDistanceDimension(dim, cols)) {
+      } else if (refDims.dim_type === DimType.TIME || refDims.dim_type === DimType.NUMBER || CaseTypeUtil.isGeneticDistanceDimension(refDims, refCols)) {
         visibleColumnIds.push(CaseTypeUtil.getPreferredColumnInDimensionHavingHighestRank(caseTypeCols, completeCaseType).id);
       } else {
         visibleColumnIds.push(...caseTypeCols.filter(cc => {
-          const col = completeCaseType.cols[cc.col_id];
+          const refCol = completeCaseType.ref_cols[cc.ref_col_id];
           const hiddenColTypes: ColType[] = [ColType.GENETIC_READS, ColType.GENETIC_SEQUENCE];
-          return !hiddenColTypes.includes(col.col_type);
+          return !hiddenColTypes.includes(refCol.col_type);
         }).map(c => c.id));
       }
     });
@@ -57,8 +57,8 @@ export class CaseTypeUtil {
     return caseTypeDim.code;
   }
 
-  public static isGeneticDistanceDimension(dim: Dim, cols: Col[]): boolean {
-    return dim.dim_type === DimType.OTHER && cols.find(col => col.col_type === ColType.GENETIC_DISTANCE) !== undefined;
+  public static isGeneticDistanceDimension(refDim: RefDim, refCols: RefCol[]): boolean {
+    return refDim.dim_type === DimType.OTHER && refCols.find(refCol => refCol.col_type === ColType.GENETIC_DISTANCE) !== undefined;
   }
 
   public static getPreferredGEOColumn(caseTypeCols: CaseTypeCol[]): CaseTypeCol {
@@ -66,7 +66,7 @@ export class CaseTypeUtil {
   }
 
   public static getPreferredColumnInDimensionHavingHighestRank(caseTypeCols: CaseTypeCol[], completeCaseType: CompleteCaseType): CaseTypeCol {
-    return caseTypeCols.find(caseTypeCol => completeCaseType.cols[caseTypeCol.col_id].rank === 1) ?? caseTypeCols?.[0];
+    return caseTypeCols.find(caseTypeCol => completeCaseType.ref_cols[caseTypeCol.ref_col_id].rank === 1) ?? caseTypeCols?.[0];
   }
 
   public static getCaseTypeDims(completeCaseType: CompleteCaseType, dimTypes?: DimType[]): CaseTypeDim[] {
@@ -75,8 +75,8 @@ export class CaseTypeUtil {
       return caseTypeDims;
     }
     return caseTypeDims.filter(caseTypeDim => {
-      const dim = completeCaseType.dims[caseTypeDim.dim_id];
-      return dimTypes.includes(dim.dim_type);
+      const refDim = completeCaseType.ref_dims[caseTypeDim.ref_dim_id];
+      return dimTypes.includes(refDim.dim_type);
     });
   }
 
@@ -96,8 +96,8 @@ export class CaseTypeUtil {
    */
   public static getCaseTypeColsByType(completeCaseType: CompleteCaseType, colType: ColType[]): CaseTypeCol[] {
     return Object.values(completeCaseType.case_type_cols).filter(caseTypeCol => {
-      const col = completeCaseType.cols[caseTypeCol.col_id];
-      return colType.includes(col?.col_type);
+      const refCol = completeCaseType.ref_cols[caseTypeCol.ref_col_id];
+      return colType.includes(refCol?.col_type);
     });
   }
 
@@ -109,15 +109,15 @@ export class CaseTypeUtil {
    * @returns The unique case type column if found, otherwise null.
    */
   public static findUniqueCaseTypeColByCaseTypeColIdOrColId(completeCaseType: CompleteCaseType, id: string): CaseTypeCol {
-    const caseTypeColId = Object.values(completeCaseType.case_type_cols).find(caseTypeCol => caseTypeCol.col_id === id);
+    const caseTypeColId = Object.values(completeCaseType.case_type_cols).find(caseTypeCol => caseTypeCol.ref_col_id === id);
     if (caseTypeColId) {
       return caseTypeColId;
     }
-    const colIds = Object.values(completeCaseType.cols).filter(col => col.id === id);
+    const colIds = Object.values(completeCaseType.ref_cols).filter(ref_col => ref_col.id === id);
     if (colIds.length !== 1) {
       return null;
     }
-    const caseTypeCols = Object.values(completeCaseType.case_type_cols).filter(caseTypeCol => caseTypeCol.col_id === colIds[0].id);
+    const caseTypeCols = Object.values(completeCaseType.case_type_cols).filter(caseTypeCol => caseTypeCol.ref_col_id === colIds[0].id);
     if (caseTypeCols.length !== 1) {
       return null;
     }
@@ -139,8 +139,8 @@ export class CaseTypeUtil {
         return;
       }
       const readsColumns = caseTypeCols.filter(caseTypeCol => {
-        const col = completeCaseType.cols[caseTypeCol.col_id];
-        return col?.col_type === ColType.GENETIC_READS;
+        const refCol = completeCaseType.ref_cols[caseTypeCol.ref_col_id];
+        return refCol?.col_type === ColType.GENETIC_READS;
       });
 
       if (readsColumns.length === 2) {
@@ -167,8 +167,8 @@ export class CaseTypeUtil {
         return false;
       }
       const caseTypeCol = completeCaseType.case_type_cols[caseTypeColId];
-      const col = completeCaseType.cols[caseTypeCol.col_id];
-      if (([ColType.GENETIC_DISTANCE, ColType.GENETIC_PROFILE, ColType.GENETIC_READS, ColType.GENETIC_SEQUENCE] as ColType[]).includes(col.col_type)) {
+      const refCol = completeCaseType.ref_cols[caseTypeCol.ref_col_id];
+      if (([ColType.GENETIC_DISTANCE, ColType.GENETIC_PROFILE, ColType.GENETIC_READS, ColType.GENETIC_SEQUENCE] as ColType[]).includes(refCol.col_type)) {
         return false;
       }
       return true;

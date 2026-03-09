@@ -118,14 +118,14 @@ export const UserAccessCasePoliciesAdminPage = () => {
       {
         definition: FORM_FIELD_DEFINITION_TYPE.AUTOCOMPLETE,
         name: 'read_case_type_col_set_id',
-        label: t`Read column set`,
+        label: t`Read case type column set`,
         options: caseTypeColSetOptionsQuery.options,
         loading: caseTypeColSetOptionsQuery.isLoading,
       } as const satisfies FormFieldDefinition<FormFields>,
       {
         definition: FORM_FIELD_DEFINITION_TYPE.AUTOCOMPLETE,
         name: 'write_case_type_col_set_id',
-        label: t`Write column set`,
+        label: t`Write case type column set`,
         options: caseTypeColSetOptionsQuery.options,
         loading: caseTypeColSetOptionsQuery.isLoading,
       } as const satisfies FormFieldDefinition<FormFields>,

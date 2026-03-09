@@ -317,14 +317,14 @@ export const EpiLineList = ({ linkedScrollSubject, onLink, caseSet }: EpiLineLis
 
     completeCaseType.ordered_case_type_dim_ids.map(x => completeCaseType.case_type_dims[x]).forEach((caseTypeDim) => {
       completeCaseType.ordered_case_type_col_ids_by_dim[caseTypeDim.id].map(id => completeCaseType.case_type_cols[id]).forEach(caseTypeCol => {
-        const col = completeCaseType.cols[caseTypeCol.col_id];
+        const refCol = completeCaseType.ref_cols[caseTypeCol.ref_col_id];
         const baseCaseTypeTableColumn: Partial<TableColumn<Case>> = {
           isInitiallyVisible: initialVisibleColumnIds.includes(caseTypeCol.id),
           id: caseTypeCol.id,
-          headerTooltipContent: col.description,
+          headerTooltipContent: refCol.description,
           headerName: caseTypeCol.label,
         };
-        if (col.col_type === ColType.GENETIC_DISTANCE) {
+        if (refCol.col_type === ColType.GENETIC_DISTANCE) {
           caseTypeTableColumns.push({
             ...baseCaseTypeTableColumn,
             type: 'caseType',
@@ -346,9 +346,9 @@ export const EpiLineList = ({ linkedScrollSubject, onLink, caseSet }: EpiLineLis
           } as TableColumn<Case>);
         } else {
           let cellRenderer: (params: TableRowParams<Case>) => string | ReactElement;
-          if (col.col_type === ColType.ORGANIZATION) {
+          if (refCol.col_type === ColType.ORGANIZATION) {
             cellRenderer = renderOrganizationCell;
-          } else if (col.col_type === ColType.GENETIC_SEQUENCE) {
+          } else if (refCol.col_type === ColType.GENETIC_SEQUENCE) {
             cellRenderer = renderGeneticSequenceCell;
           } else {
             cellRenderer = renderCell;
@@ -362,7 +362,7 @@ export const EpiLineList = ({ linkedScrollSubject, onLink, caseSet }: EpiLineLis
             caseTypeCol,
             completeCaseType,
             comparatorFactory: TableUtil.createCaseTypeCellRowComperator,
-            textAlign: ([ColType.DECIMAL_0, ColType.DECIMAL_1, ColType.DECIMAL_2, ColType.DECIMAL_3, ColType.DECIMAL_4, ColType.DECIMAL_4, ColType.DECIMAL_5, ColType.DECIMAL_6] as ColType[]).includes(col.col_type) ? 'right' : 'left',
+            textAlign: ([ColType.DECIMAL_0, ColType.DECIMAL_1, ColType.DECIMAL_2, ColType.DECIMAL_3, ColType.DECIMAL_4, ColType.DECIMAL_4, ColType.DECIMAL_5, ColType.DECIMAL_6] as ColType[]).includes(refCol.col_type) ? 'right' : 'left',
           } as TableColumn<Case>);
         }
       });

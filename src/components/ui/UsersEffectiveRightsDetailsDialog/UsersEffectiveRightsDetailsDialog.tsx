@@ -273,10 +273,10 @@ export const UsersEffectiveRightsDetailsDialog = withDialog<UsersEffectiveRights
                         </Link>
                         <Box sx={{ display: visibleItems.includes(`read-col-sets-${colSetId}`) ? 'block' : 'none' }}>
                           {sortedColSetMembers.map((colSetMember) => {
-                            const col = caseTypeColMapQuery.map.get(colSetMember.case_type_col_id);
+                            const refCol = caseTypeColMapQuery.map.get(colSetMember.case_type_col_id);
                             return (
-                              <Box key={col.id}>
-                                {(col && caseTypeColNameFactory.getName(col)) ?? colSetMember.case_type_col_id}
+                              <Box key={refCol.id}>
+                                {(refCol && caseTypeColNameFactory.getName(refCol)) ?? colSetMember.case_type_col_id}
                               </Box>
                             );
                           })}
@@ -308,10 +308,10 @@ export const UsersEffectiveRightsDetailsDialog = withDialog<UsersEffectiveRights
                     const colBName = caseTypeColNameFactory.getName(colB) ?? b;
                     return colAName.localeCompare(colBName);
                   }).map((colId) => {
-                    const col = caseTypeColMapQuery.map.get(colId);
+                    const refCol = caseTypeColMapQuery.map.get(colId);
                     return (
                       <Box key={colId}>
-                        {caseTypeColNameFactory.getName(col) ?? colId}
+                        {caseTypeColNameFactory.getName(refCol) ?? colId}
                       </Box>
                     );
                   })}
@@ -353,10 +353,10 @@ export const UsersEffectiveRightsDetailsDialog = withDialog<UsersEffectiveRights
                         </Link>
                         <Box sx={{ display: visibleItems.includes(`write-col-sets-${colSetId}`) ? 'block' : 'none' }}>
                           {sortedColSetMembers.map((colSetMember) => {
-                            const col = caseTypeColMapQuery.map.get(colSetMember.case_type_col_id);
+                            const refCol = caseTypeColMapQuery.map.get(colSetMember.case_type_col_id);
                             return (
-                              <Box key={col.id}>
-                                {caseTypeColNameFactory.getName(col) ?? colSetMember.case_type_col_id}
+                              <Box key={refCol.id}>
+                                {caseTypeColNameFactory.getName(refCol) ?? colSetMember.case_type_col_id}
                               </Box>
                             );
                           })}
@@ -385,10 +385,10 @@ export const UsersEffectiveRightsDetailsDialog = withDialog<UsersEffectiveRights
                     const colBName = caseTypeColNameFactory.getName(colB) ?? b;
                     return colAName.localeCompare(colBName);
                   }).map((colId) => {
-                    const col = caseTypeColMapQuery.map.get(colId);
+                    const refCol = caseTypeColMapQuery.map.get(colId);
                     return (
                       <Box key={colId}>
-                        {caseTypeColNameFactory.getName(col) ?? colId}
+                        {caseTypeColNameFactory.getName(refCol) ?? colId}
                       </Box>
                     );
                   })}

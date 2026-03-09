@@ -120,14 +120,14 @@ export const OrganizationAccessCasePoliciesAdminPage = () => {
       {
         definition: FORM_FIELD_DEFINITION_TYPE.AUTOCOMPLETE,
         name: 'read_case_type_col_set_id',
-        label: t`Read column set`,
+        label: t`Read case type column set`,
         options: caseTypeColSetOptionsQuery.options,
         loading: caseTypeColSetOptionsQuery.isLoading,
       } as const satisfies FormFieldDefinition<FormFields>,
       {
         definition: FORM_FIELD_DEFINITION_TYPE.AUTOCOMPLETE,
         name: 'write_case_type_col_set_id',
-        label: t`Write column set`,
+        label: t`Write case type column set`,
         options: caseTypeColSetOptionsQuery.options,
         loading: caseTypeColSetOptionsQuery.isLoading,
       } as const satisfies FormFieldDefinition<FormFields>,
@@ -179,8 +179,8 @@ export const OrganizationAccessCasePoliciesAdminPage = () => {
       TableUtil.createOptionsColumn<OrganizationAccessCasePolicy>({ id: 'organization_id', name: t`Organization`, options: organizationOptionsQuery.options }),
       TableUtil.createOptionsColumn<OrganizationAccessCasePolicy>({ id: 'data_collection_id', name: t`Data collection`, options: dataCollectionOptionsQuery.options }),
       TableUtil.createOptionsColumn<OrganizationAccessCasePolicy>({ id: 'case_type_set_id', name: t`Case type set`, options: caseTypeSetOptionsQuery.options }),
-      TableUtil.createOptionsColumn<OrganizationAccessCasePolicy>({ id: 'read_case_type_col_set_id', name: t`Read column set`, options: caseTypeColSetOptionsQuery.options }),
-      TableUtil.createOptionsColumn<OrganizationAccessCasePolicy>({ id: 'write_case_type_col_set_id', name: t`Write column set`, options: caseTypeColSetOptionsQuery.options }),
+      TableUtil.createOptionsColumn<OrganizationAccessCasePolicy>({ id: 'read_case_type_col_set_id', name: t`Read case type column set`, options: caseTypeColSetOptionsQuery.options }),
+      TableUtil.createOptionsColumn<OrganizationAccessCasePolicy>({ id: 'write_case_type_col_set_id', name: t`Write case type column set`, options: caseTypeColSetOptionsQuery.options }),
 
       TableUtil.createBooleanColumn<OrganizationAccessCasePolicy>({ id: 'add_case', name: t`Add case` }),
       TableUtil.createBooleanColumn<OrganizationAccessCasePolicy>({ id: 'remove_case', name: t`Remove case` }),

@@ -18,7 +18,7 @@ import type {
   Organization,
   Case,
   CaseTypeCol,
-  Col,
+  RefCol,
 } from '../../api';
 import {
   CaseApi,
@@ -113,8 +113,8 @@ export class CaseUtil {
         return acc;
       }
 
-      const column = completeCaseType.cols[caseTypeCol.col_id];
-      switch (column.col_type) {
+      const refCol = completeCaseType.ref_cols[caseTypeCol.ref_col_id];
+      switch (refCol.col_type) {
         case ColType.TEXT:
         case ColType.ID_SAMPLE:
         case ColType.ID_CASE:
@@ -158,12 +158,12 @@ export class CaseUtil {
         case ColType.NOMINAL:
         case ColType.ORDINAL:
         case ColType.INTERVAL:
-          if (EpiDataManager.instance.data.conceptsBySetId[column.concept_set_id]) {
+          if (EpiDataManager.instance.data.conceptsBySetId[refCol.concept_set_id]) {
             acc.push({
               definition: FORM_FIELD_DEFINITION_TYPE.AUTOCOMPLETE,
               name: caseTypeCol.id,
               label: caseTypeCol.label,
-              options: EpiDataManager.instance.data.conceptsBySetId[column.concept_set_id].map(concept => ({
+              options: EpiDataManager.instance.data.conceptsBySetId[refCol.concept_set_id].map(concept => ({
                 value: concept.id,
                 label: concept.name,
               })),
@@ -171,14 +171,14 @@ export class CaseUtil {
           }
           break;
         case ColType.GEO_REGION:
-          if (EpiDataManager.instance.data.regionsByRegionSetId[column.region_set_id]) {
+          if (EpiDataManager.instance.data.regionsByRegionSetId[refCol.region_set_id]) {
             acc.push({
               definition: FORM_FIELD_DEFINITION_TYPE.AUTOCOMPLETE,
               name: caseTypeCol.id,
               label: caseTypeCol.label,
-              options: EpiDataManager.instance.data.regionsByRegionSetId[column.region_set_id].map(region => ({
+              options: EpiDataManager.instance.data.regionsByRegionSetId[refCol.region_set_id].map(region => ({
                 value: region.id,
-                label: EpiDataManager.instance.data.regionSets[column.region_set_id].region_code_as_label ? region.code : region.name,
+                label: EpiDataManager.instance.data.regionSets[refCol.region_set_id].region_code_as_label ? region.code : region.name,
               })),
             } as const satisfies FormFieldDefinition<Case['content']>);
           }
@@ -212,8 +212,8 @@ export class CaseUtil {
         return s;
       }
 
-      const column = completeCaseType.cols[caseTypeCol.col_id];
-      switch (column.col_type) {
+      const refCol = completeCaseType.ref_cols[caseTypeCol.ref_col_id];
+      switch (refCol.col_type) {
         case ColType.TEXT:
           return s.concat(object().shape({
             [caseTypeCol.id]: string().nullable().extendedAlphaNumeric().max(65535).transform((_val: unknown, orig: string) => orig || null),
@@ -300,15 +300,15 @@ export class CaseUtil {
         case ColType.GENETIC_DISTANCE:
           return s;
         default:
-          console.error(`Unknown column type: ${column.col_type}`);
+          console.error(`Unknown column type: ${refCol.col_type}`);
           return s;
       }
     }, object({}));
   }
 
   public static getRowValue(content: { [key: string]: string }, caseTypeCol: CaseTypeCol, completeCaseType: CompleteCaseType, machineReadable = false): CaseTypeRowValue {
-    const column = completeCaseType.cols[caseTypeCol.col_id];
-    const hasMappedValue = column.col_type === ColType.ORGANIZATION || column.region_set_id || column.concept_set_id;
+    const refCol = completeCaseType.ref_cols[caseTypeCol.ref_col_id];
+    const hasMappedValue = refCol.col_type === ColType.ORGANIZATION || refCol.region_set_id || refCol.concept_set_id;
     if (hasMappedValue) {
       return CaseUtil.getMappedValue(content[caseTypeCol.id], caseTypeCol, completeCaseType, machineReadable);
     }
@@ -344,13 +344,13 @@ export class CaseUtil {
       return CaseUtil.getMissingRowValue(raw, machineReadable);
     }
 
-    const column = completeCaseType.cols[caseTypeCol.col_id];
+    const refCol = completeCaseType.ref_cols[caseTypeCol.ref_col_id];
 
-    if (column.col_type === ColType.ORGANIZATION) {
+    if (refCol.col_type === ColType.ORGANIZATION) {
       return CaseUtil.getOrganizationMappedValue(raw);
-    } else if (column.region_set_id) {
-      return CaseUtil.getRegionMappedValue(column, raw);
-    } else if (column.concept_set_id) {
+    } else if (refCol.region_set_id) {
+      return CaseUtil.getRegionMappedValue(refCol, raw);
+    } else if (refCol.concept_set_id) {
       return CaseUtil.getConceptMappedValue(raw);
     }
     return CaseUtil.getMissingRowValue(raw, machineReadable);
@@ -370,8 +370,8 @@ export class CaseUtil {
     };
   }
 
-  private static getRegionMappedValue(column: Col, raw: string): CaseTypeRowValue {
-    const regionSet = EpiDataManager.instance.data.regionSets[column.region_set_id];
+  private static getRegionMappedValue(refCol: RefCol, raw: string): CaseTypeRowValue {
+    const regionSet = EpiDataManager.instance.data.regionSets[refCol.region_set_id];
     const region = EpiDataManager.instance.data.regionsById?.[raw];
     if (!region) {
       return CaseUtil.getMissingRowValue(raw);

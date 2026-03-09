@@ -79,7 +79,7 @@ export const EpiCaseContent = ({ epiCase, ...boxProps }: EpiCaseContentProps) =>
           </TableHead>
           <TableBody>
             {caseTypeCols.map(caseTypeCol => {
-              const column = completeCaseType.cols[caseTypeCol.col_id];
+              const refCol = completeCaseType.ref_cols[caseTypeCol.ref_col_id];
               const columnValue = CaseUtil.getRowValue(epiCase.content, caseTypeCol, completeCaseType);
               return (
                 <TableRow key={caseTypeCol.id}>
@@ -95,7 +95,7 @@ export const EpiCaseContent = ({ epiCase, ...boxProps }: EpiCaseContentProps) =>
                       width: 'calc(100% / 3 * 2)',
                     }}
                   >
-                    {column.col_type === ColType.ORGANIZATION && !columnValue.isMissing && (
+                    {refCol.col_type === ColType.ORGANIZATION && !columnValue.isMissing && (
                       <Link
                         sx={{
                           cursor: 'pointer',
@@ -109,7 +109,7 @@ export const EpiCaseContent = ({ epiCase, ...boxProps }: EpiCaseContentProps) =>
                         {columnValue.long}
                       </Link>
                     )}
-                    {column.col_type !== ColType.ORGANIZATION && (
+                    {refCol.col_type !== ColType.ORGANIZATION && (
                       <>
                         {columnValue.long}
                       </>

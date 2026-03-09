@@ -13,7 +13,7 @@ import {
 import { useParams } from 'react-router-dom';
 import type { UseFormReturn } from 'react-hook-form';
 
-import type { Col } from '../../api';
+import type { RefCol } from '../../api';
 import {
   CaseApi,
   ColType,
@@ -22,9 +22,9 @@ import {
 import { useColTypeOptionsQuery } from '../../dataHooks/useColTypesQuery';
 import { useConceptSetOptionsQuery } from '../../dataHooks/useConceptSetsQuery';
 import {
-  useDimMapQuery,
-  useDimOptionsQuery,
-} from '../../dataHooks/useDimsQuery';
+  useRefDimMapQuery,
+  useRefDimOptionsQuery,
+} from '../../dataHooks/useRefDimsQuery';
 import { useGeneticDistanceProtocolOptionsQuery } from '../../dataHooks/useGeneticDistanceProtocolsQuery';
 import { useRegionSetOptionsQuery } from '../../dataHooks/useRegionSetsQuery';
 import { useArray } from '../../hooks/useArray';
@@ -38,51 +38,51 @@ import type { TableColumn } from '../../models/table';
 import { TableUtil } from '../../utils/TableUtil';
 import { TestIdUtil } from '../../utils/TestIdUtil';
 import { CrudPage } from '../CrudPage';
-import { useColsValidationRulesQuery } from '../../dataHooks/useColsValidationRulesQuery';
+import { useRefColsValidationRulesQuery } from '../../dataHooks/useRefColsValidationRulesQuery';
 import { DataUtil } from '../../utils/DataUtil';
 
-type FormFields = Pick<Col, 'dim_id' | 'code_suffix' | 'code' | 'rank' | 'label' | 'col_type' | 'concept_set_id' | 'region_set_id' | 'genetic_distance_protocol_id' | 'description'>;
+type FormFields = Pick<RefCol, 'ref_dim_id' | 'code_suffix' | 'code' | 'rank' | 'label' | 'col_type' | 'concept_set_id' | 'region_set_id' | 'genetic_distance_protocol_id' | 'description'>;
 
 const CONCEPT_COL_TYPES: ColType[] = [ColType.NOMINAL, ColType.ORDINAL, ColType.INTERVAL];
 
-export const ColsAdminPage = () => {
-  const { dimId } = useParams();
+export const RefColsAdminPage = () => {
+  const { refDimId } = useParams();
   const { t } = useTranslation();
-  const dimOptionsQuery = useDimOptionsQuery();
-  const dimMapQuery = useDimMapQuery();
+  const refDimOptionsQuery = useRefDimOptionsQuery();
+  const refDimMapQuery = useRefDimMapQuery();
   const colTypeOptionsQuery = useColTypeOptionsQuery();
   const conceptSetOptionsQuery = useConceptSetOptionsQuery();
   const regionSetOptionsQuery = useRegionSetOptionsQuery();
   const geneticDistanceProtocolOptionsQuery = useGeneticDistanceProtocolOptionsQuery();
-  const colsValidationRulesQuery = useColsValidationRulesQuery();
+  const colsValidationRulesQuery = useRefColsValidationRulesQuery();
   const colTypeOptionsByDimIdCache = useRef(new Map<string, OptionBase<string>[]>());
 
-  const loadables = useArray([dimMapQuery, dimOptionsQuery, colTypeOptionsQuery, conceptSetOptionsQuery, regionSetOptionsQuery, geneticDistanceProtocolOptionsQuery, colsValidationRulesQuery]);
+  const loadables = useArray([refDimMapQuery, refDimOptionsQuery, colTypeOptionsQuery, conceptSetOptionsQuery, regionSetOptionsQuery, geneticDistanceProtocolOptionsQuery, colsValidationRulesQuery]);
 
   const fetchAll = useCallback(async (signal: AbortSignal) => {
-    return (await CaseApi.instance.colsGetAll({ signal }))?.data;
+    return (await CaseApi.instance.refColsGetAll({ signal }))?.data;
   }, []);
 
-  const fetchAllSelect = useCallback((cols: Col[]) => {
-    if (dimId) {
-      return cols.filter((col) => col.dim_id === dimId);
+  const fetchAllSelect = useCallback((refCols: RefCol[]) => {
+    if (refDimId) {
+      return refCols.filter((refCol) => refCol.ref_dim_id === refDimId);
     }
-    return cols;
-  }, [dimId]);
+    return refCols;
+  }, [refDimId]);
 
-  const deleteOne = useCallback(async (item: Col) => {
-    return await CaseApi.instance.colsDeleteOne(item.id);
+  const deleteOne = useCallback(async (item: RefCol) => {
+    return await CaseApi.instance.refColsDeleteOne(item.id);
   }, []);
 
-  const updateOne = useCallback(async (variables: FormFields, item: Col) => {
-    return (await CaseApi.instance.colsPutOne(item.id, { id: item.id, ...variables })).data;
+  const updateOne = useCallback(async (variables: FormFields, item: RefCol) => {
+    return (await CaseApi.instance.refColsPutOne(item.id, { id: item.id, ...variables })).data;
   }, []);
 
   const createOne = useCallback(async (variables: FormFields) => {
-    return (await CaseApi.instance.colsPostOne(variables)).data;
+    return (await CaseApi.instance.refColsPostOne(variables)).data;
   }, []);
 
-  const getName = useCallback((item: Col) => {
+  const getName = useCallback((item: RefCol) => {
     return item.label;
   }, []);
 
@@ -92,7 +92,7 @@ export const ColsAdminPage = () => {
       code: string().code().required().max(100),
       code_suffix: string().alphaNumeric().required().max(100),
       rank: number().integer().required().transform((_val: unknown, orig: string | number) => orig === '' ? undefined : orig),
-      dim_id: string().uuid4().required().max(100),
+      ref_dim_id: string().uuid4().required().max(100),
       col_type: mixed<ColType>().required().oneOf(Object.values(ColType)),
       description: string().freeFormText().required().max(100),
       concept_set_id: string().when('col_type', {
@@ -117,17 +117,17 @@ export const ColsAdminPage = () => {
     if (colTypeOptionsByDimIdCache.current.has(id)) {
       return colTypeOptionsByDimIdCache.current.get(id);
     }
-    const options = DataUtil.getColTypeOptionsForDimId({
-      dimId: id,
-      dimMap: dimMapQuery.map,
+    const options = DataUtil.getColTypeOptionsForRefDimId({
+      refDimId: id,
+      refDimMap: refDimMapQuery.map,
       colTypeOptions: colTypeOptionsQuery.options,
       colsValidationRules: colsValidationRulesQuery.data?.valid_col_types_by_dim_type ?? {},
     });
     colTypeOptionsByDimIdCache.current.set(id, options);
     return options;
-  }, [colTypeOptionsQuery.options, colsValidationRulesQuery.data?.valid_col_types_by_dim_type, dimMapQuery.map]);
+  }, [colTypeOptionsQuery.options, colsValidationRulesQuery.data?.valid_col_types_by_dim_type, refDimMapQuery.map]);
 
-  const onFormChange = useCallback((_item: Col, values: FormFields, formMethods: UseFormReturn<FormFields>) => {
+  const onFormChange = useCallback((_item: RefCol, values: FormFields, formMethods: UseFormReturn<FormFields>) => {
     if (values.col_type && values.concept_set_id && !CONCEPT_COL_TYPES.includes(values.col_type)) {
       formMethods.setValue('concept_set_id', null);
     }
@@ -137,8 +137,8 @@ export const ColsAdminPage = () => {
     if (values.col_type && values.genetic_distance_protocol_id && values.col_type !== ColType.GENETIC_DISTANCE) {
       formMethods.setValue('genetic_distance_protocol_id', null);
     }
-    if (values.col_type && values.dim_id) {
-      const validColOptions = getColTypeOptionsForDimId(values.dim_id);
+    if (values.col_type && values.ref_dim_id) {
+      const validColOptions = getColTypeOptionsForDimId(values.ref_dim_id);
       if (!validColOptions.find(option => option.value === values.col_type)) {
         formMethods.setValue('col_type', validColOptions.length === 1 ? validColOptions[0].value as ColType : null);
       }
@@ -146,22 +146,22 @@ export const ColsAdminPage = () => {
   }, [getColTypeOptionsForDimId]);
 
 
-  const formFieldDefinitions = useCallback((item: Col, values: FormFields): FormFieldDefinition<FormFields>[] => {
-    const normalizedDimId = values?.dim_id ?? item?.dim_id ?? dimId ?? null;
+  const formFieldDefinitions = useCallback((item: RefCol, values: FormFields): FormFieldDefinition<FormFields>[] => {
+    const normalizedRefDimId = values?.ref_dim_id ?? item?.ref_dim_id ?? refDimId ?? null;
 
     return [
       {
         definition: FORM_FIELD_DEFINITION_TYPE.AUTOCOMPLETE,
-        name: 'dim_id',
-        label: t`Dimension`,
-        options: dimOptionsQuery.options,
+        name: 'ref_dim_id',
+        label: t`Reference dimension`,
+        options: refDimOptionsQuery.options,
         disabled: !!item,
       } as const satisfies FormFieldDefinition<FormFields>,
       {
         definition: FORM_FIELD_DEFINITION_TYPE.AUTOCOMPLETE,
         name: 'col_type',
         label: t`Column type`,
-        options: getColTypeOptionsForDimId(normalizedDimId),
+        options: getColTypeOptionsForDimId(normalizedRefDimId),
         loading: colTypeOptionsQuery.isLoading,
         disabled: !!item,
       } as const satisfies FormFieldDefinition<FormFields>,
@@ -212,59 +212,59 @@ export const ColsAdminPage = () => {
         type: 'number',
       } as const satisfies FormFieldDefinition<FormFields>,
     ] as const satisfies FormFieldDefinition<FormFields>[];
-  }, [colTypeOptionsQuery.isLoading, conceptSetOptionsQuery.options, dimId, dimOptionsQuery.options, geneticDistanceProtocolOptionsQuery.options, getColTypeOptionsForDimId, regionSetOptionsQuery.options, t]);
+  }, [colTypeOptionsQuery.isLoading, conceptSetOptionsQuery.options, refDimId, refDimOptionsQuery.options, geneticDistanceProtocolOptionsQuery.options, getColTypeOptionsForDimId, regionSetOptionsQuery.options, t]);
 
-  const tableColumns = useMemo((): TableColumn<Col>[] => {
-    const columns: TableColumn<Col>[] = [];
+  const tableColumns = useMemo((): TableColumn<RefCol>[] => {
+    const columns: TableColumn<RefCol>[] = [];
 
-    if (!dimId) {
+    if (!refDimId) {
       columns.push(
-        TableUtil.createOptionsColumn<Col>({ id: 'dim_id', name: t`Dimension`, options: dimOptionsQuery.options }),
+        TableUtil.createOptionsColumn<RefCol>({ id: 'ref_dim_id', name: t`Reference dimension`, options: refDimOptionsQuery.options }),
       );
     }
 
     columns.push(
-      TableUtil.createTextColumn<Col>({ id: 'code', name: t`Code` }),
-      TableUtil.createOptionsColumn<Col>({ id: 'col_type', name: t`Column type`, options: colTypeOptionsQuery.options }),
-      TableUtil.createTextColumn<Col>({ id: 'label', name: t`Label` }),
-      TableUtil.createNumberColumn<Col>({ id: 'rank', name: t`Rank` }),
+      TableUtil.createTextColumn<RefCol>({ id: 'code', name: t`Code` }),
+      TableUtil.createOptionsColumn<RefCol>({ id: 'col_type', name: t`Column type`, options: colTypeOptionsQuery.options }),
+      TableUtil.createTextColumn<RefCol>({ id: 'label', name: t`Label` }),
+      TableUtil.createNumberColumn<RefCol>({ id: 'rank', name: t`Rank` }),
     );
 
     return columns;
-  }, [colTypeOptionsQuery.options, dimId, dimOptionsQuery.options, t]);
+  }, [colTypeOptionsQuery.options, refDimId, refDimOptionsQuery.options, t]);
 
-  const getOptimisticUpdateIntermediateItem = useCallback((variables: FormFields, previousItem: Col): Col => {
+  const getOptimisticUpdateIntermediateItem = useCallback((variables: FormFields, previousItem: RefCol): RefCol => {
     return {
       id: previousItem.id,
-      dim_id: previousItem.dim_id,
+      ref_dim_id: previousItem.ref_dim_id,
       ...variables,
     };
   }, []);
 
   const defaultNewItem = useMemo<Partial<FormFields>>(() => {
     return {
-      dim_id: dimId ?? null,
+      ref_dim_id: refDimId ?? null,
     };
-  }, [dimId]);
+  }, [refDimId]);
 
   const title = useMemo(() => {
     const parts: string[] = [];
 
-    if (dimId && dimMapQuery.map.has(dimId)) {
-      parts.push(dimMapQuery.map.get(dimId)?.code);
+    if (refDimId && refDimMapQuery.map.has(refDimId)) {
+      parts.push(refDimMapQuery.map.get(refDimId)?.code);
     }
-    parts.push(t`Columns`);
+    parts.push(t`Reference columns`);
 
     return parts;
-  }, [dimId, dimMapQuery.map, t]);
+  }, [refDimId, refDimMapQuery.map, t]);
 
   return (
-    <CrudPage<FormFields, Col>
-      createItemDialogTitle={t`Create new column`}
+    <CrudPage<FormFields, RefCol>
+      createItemDialogTitle={t`Create new reference column`}
       createOne={createOne}
-      crudCommandType={CommandName.ColCrudCommand}
+      crudCommandType={CommandName.RefColCrudCommand}
       defaultNewItem={defaultNewItem}
-      defaultSortByField={dimId ? 'rank' : 'dim_id'}
+      defaultSortByField={refDimId ? 'rank' : 'ref_dim_id'}
       defaultSortDirection={'asc'}
       deleteOne={deleteOne}
       fetchAll={fetchAll}
@@ -273,11 +273,11 @@ export const ColsAdminPage = () => {
       getName={getName}
       getOptimisticUpdateIntermediateItem={getOptimisticUpdateIntermediateItem}
       loadables={loadables}
-      resourceQueryKeyBase={QUERY_KEY.COLS}
+      resourceQueryKeyBase={QUERY_KEY.REF_COLS}
       schema={schema}
       tableColumns={tableColumns}
-      tableStoreStorageNamePostFix={dimId ? 'Dim' : undefined}
-      testIdAttributes={TestIdUtil.createAttributes('ColsAdminPage')}
+      tableStoreStorageNamePostFix={refDimId ? 'RefDim' : undefined}
+      testIdAttributes={TestIdUtil.createAttributes('RefColsAdminPage')}
       title={title}
       updateOne={updateOne}
       onFormChange={onFormChange}

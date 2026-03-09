@@ -64,20 +64,20 @@ export const EpiCaseTypeInfoVariableDetails = ({ caseTypeDimension, completeCase
         <TableBody>
           {caseTypeCols.filter(caseTypeCol => {
             // filter out columns that are of type GENETIC_DISTANCE
-            const column = completeCaseType.cols[caseTypeCol.col_id];
-            return column.col_type !== ColType.GENETIC_DISTANCE;
+            const refCol = completeCaseType.ref_cols[caseTypeCol.ref_col_id];
+            return refCol.col_type !== ColType.GENETIC_DISTANCE;
           }).map(caseTypeCol => {
-            const column = completeCaseType.cols[caseTypeCol.col_id];
+            const refCol = completeCaseType.ref_cols[caseTypeCol.ref_col_id];
             return (
               <TableRow key={caseTypeCol.id}>
                 <TableCell sx={{ width: '15%', verticalAlign: 'top' }}>
                   {caseTypeCol.code}
                 </TableCell>
                 <TableCell sx={{ width: '30%', verticalAlign: 'top' }}>
-                  {column.description}
+                  {refCol.description}
                 </TableCell>
                 <TableCell sx={{ width: '15%', verticalAlign: 'top' }}>
-                  {column.col_type}
+                  {refCol.col_type}
                 </TableCell>
                 <TableCell sx={{ width: '20%', verticalAlign: 'top' }}>
                   {([
@@ -88,7 +88,7 @@ export const EpiCaseTypeInfoVariableDetails = ({ caseTypeDimension, completeCase
                     ColType.DECIMAL_4,
                     ColType.DECIMAL_5,
                     ColType.DECIMAL_6,
-                  ] as ColType[]).includes(column.col_type) && (isNumber(caseTypeCol.min_value) || isNumber(caseTypeCol.max_value)) && (
+                  ] as ColType[]).includes(refCol.col_type) && (isNumber(caseTypeCol.min_value) || isNumber(caseTypeCol.max_value)) && (
                     <>
                       {t('min: {{min}}; max: {{max}}', { min: caseTypeCol.min_value, max: caseTypeCol.max_value })}
                     </>
@@ -99,22 +99,22 @@ export const EpiCaseTypeInfoVariableDetails = ({ caseTypeDimension, completeCase
                     ColType.TIME_QUARTER,
                     ColType.TIME_WEEK,
                     ColType.TIME_YEAR,
-                  ] as ColType[]).includes(column.col_type) && (caseTypeCol.min_datetime || caseTypeCol.max_datetime) && (
+                  ] as ColType[]).includes(refCol.col_type) && (caseTypeCol.min_datetime || caseTypeCol.max_datetime) && (
                     <>
                       {t('from: {{from}}; to: {{to}}', { from: caseTypeCol.min_datetime ?? '-', to: caseTypeCol.max_datetime ?? '-' })}
                     </>
                   )}
-                  {column.col_type === ColType.TEXT && caseTypeCol.max_length && (
+                  {refCol.col_type === ColType.TEXT && caseTypeCol.max_length && (
                     <>
                       {t('Max length: {{maxLength}}', { maxLength: caseTypeCol.max_length })}
                     </>
                   )}
-                  {column.col_type === ColType.GEO_REGION && column.region_set_id && (
+                  {refCol.col_type === ColType.GEO_REGION && refCol.region_set_id && (
                     <>
-                      {EpiDataManager.instance.data.regionSets[column.region_set_id].name}
+                      {EpiDataManager.instance.data.regionSets[refCol.region_set_id].name}
                     </>
                   )}
-                  {([ColType.NOMINAL, ColType.ORDINAL] as ColType[]).includes(column.col_type) && column.concept_set_id && EpiDataManager.instance.data.conceptsBySetId[column.concept_set_id] && (
+                  {([ColType.NOMINAL, ColType.ORDINAL] as ColType[]).includes(refCol.col_type) && refCol.concept_set_id && EpiDataManager.instance.data.conceptsBySetId[refCol.concept_set_id] && (
                     <Box
                       sx={{
                         maxWidth: '100%',
@@ -126,7 +126,7 @@ export const EpiCaseTypeInfoVariableDetails = ({ caseTypeDimension, completeCase
                         flexWrap={'wrap'}
                         rowGap={1}
                       >
-                        {EpiDataManager.instance.data.conceptsBySetId[column.concept_set_id].map(concept => (
+                        {EpiDataManager.instance.data.conceptsBySetId[refCol.concept_set_id].map(concept => (
                           <Chip
                             key={concept.id}
                             label={`${concept.name} (${concept.code})`}

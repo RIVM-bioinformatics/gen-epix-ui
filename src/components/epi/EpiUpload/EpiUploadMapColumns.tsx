@@ -98,7 +98,7 @@ export const EpiUploadMapColumns = () => {
 
   const unMappedColumns = useMemo(() => {
     const knownIndicies = rawData[0].map((_col, index) => index);
-    const mappedIndicies = EpiUploadUtil.getMappedColumnsFromFormData(columnMappingFormValues, rawData, caseTypeColMap.map, completeCaseType).map(col => col.originalIndex);
+    const mappedIndicies = EpiUploadUtil.getMappedColumnsFromFormData(columnMappingFormValues, rawData, caseTypeColMap.map, completeCaseType).map(mappedColumn => mappedColumn.originalIndex);
     return difference(knownIndicies, mappedIndicies).map(index => {
       return {
         originalIndex: index,
@@ -213,9 +213,9 @@ export const EpiUploadMapColumns = () => {
                 t('All columns in {{fileName}} have been mapped to known columns in {{applicationName}}', { fileName, applicationName: ConfigManager.instance.config.applicationName })
                 : t('{{numUnmappedColumns}} column(s) in {{fileName}} are not mapped', { numUnmappedColumns: unMappedColumns.length, fileName })}
             </AlertTitle>
-            {unMappedColumns.map((col) => (
-              <Box key={col.originalIndex}>
-                {t('The column "{{columnName}}" (column {{columnIndex}}) has not been mapped.', { columnName: col.originalLabel, columnIndex: col.originalIndex + 1 })}
+            {unMappedColumns.map((unmappedColumn) => (
+              <Box key={unmappedColumn.originalIndex}>
+                {t('The column "{{columnName}}" (column {{columnIndex}}) has not been mapped.', { columnName: unmappedColumn.originalLabel, columnIndex: unmappedColumn.originalIndex + 1 })}
               </Box>
             ))}
             {unMappedColumns.length === 0 && t('You can proceed to the next step.')}

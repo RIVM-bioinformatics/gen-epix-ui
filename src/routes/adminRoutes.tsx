@@ -12,13 +12,13 @@ import { CaseTypeDimsAdminPage } from '../pages/CaseTypeDimsAdminPage';
 import { CaseTypesAdminPage } from '../pages/CaseTypesAdminPage';
 import { CaseTypeSetCategoriesAdminPage } from '../pages/CaseTypeSetCategoriesAdminPage';
 import { CaseTypeSetsAdminPage } from '../pages/CaseTypeSetsAdminPage';
-import { ColsAdminPage } from '../pages/ColsAdminPage';
+import { RefColsAdminPage } from '../pages/RefColsAdminPage';
 import { ConceptRelationsAdminPage } from '../pages/ConceptRelationsAdminPage';
 import { ConceptsAdminPage } from '../pages/ConceptsAdminPage';
 import { ConceptSetsAdminPage } from '../pages/ConceptSetsAdminPage';
 import { DataCollectionsAdminPage } from '../pages/DataCollectionsAdminPage';
 import { DataCollectionSetsAdminPage } from '../pages/DataCollectionSetsAdminPage';
-import { DimsAdminPage } from '../pages/DimsAdminPage';
+import { RefDimsAdminPage } from '../pages/RefDimsAdminPage';
 import { DiseasesAdminPage } from '../pages/DiseasesAdminPage';
 import { EtiologicalAgentsAdminPage } from '../pages/EtiologicalAgentsAdminPage';
 import { EtiologiesAdminPage } from '../pages/EtiologiesAdminPage';
@@ -270,7 +270,7 @@ export const adminRoutes: MyNonIndexRouteObject[] = [
         { command_name: CommandName.CaseTypeColSetCrudCommand, permission_type: PermissionType.READ },
         { command_name: CommandName.CaseTypeColSetMemberCrudCommand, permission_type: PermissionType.READ },
         { command_name: CommandName.CaseTypeColCrudCommand, permission_type: PermissionType.READ },
-        { command_name: CommandName.ColCrudCommand, permission_type: PermissionType.READ },
+        { command_name: CommandName.RefColCrudCommand, permission_type: PermissionType.READ },
       ],
       requiresUserProfile: true,
       category: ADMIN_PAGE_CATEGORY.ACCESS_RIGHTS,
@@ -349,10 +349,10 @@ export const adminRoutes: MyNonIndexRouteObject[] = [
 
   // REFERENCE_DATA
   {
-    path: '/management/dimensions',
+    path: '/management/reference-dimensions',
     errorElement: <RouterErrorPage />,
     handle: {
-      titleKey: 'Dimensions',
+      titleKey: 'Reference dimensions',
       requiredPermissions: [],
       requiresUserProfile: true,
       requirePermissionForChildRoute: true,
@@ -360,29 +360,29 @@ export const adminRoutes: MyNonIndexRouteObject[] = [
     children: [
       {
         index: true,
-        path: '/management/dimensions',
-        Component: () => <DimsAdminPage />,
+        path: '/management/reference-dimensions',
+        Component: () => <RefDimsAdminPage />,
         errorElement: <RouterErrorPage />,
         handle: {
-          titleKey: 'Dimensions',
-          subTitleKey: 'Manage dimensions',
+          titleKey: 'Reference dimensions',
+          subTitleKey: 'Manage reference dimensions',
           requiredPermissions: [
-            { command_name: CommandName.DimCrudCommand, permission_type: PermissionType.READ },
+            { command_name: CommandName.RefDimCrudCommand, permission_type: PermissionType.READ },
           ],
           requiresUserProfile: true,
           category: ADMIN_PAGE_CATEGORY.REFERENCE_DATA,
         },
       },
       {
-        path: '/management/dimensions/:dimId/columns',
-        Component: () => <ColsAdminPage />,
+        path: '/management/reference-dimensions/:refDimId/reference-columns',
+        Component: () => <RefColsAdminPage />,
         errorElement: <RouterErrorPage />,
         handle: {
-          titleKey: 'Columns',
-          subTitleKey: 'Manage columns',
+          titleKey: 'Reference columns',
+          subTitleKey: 'Manage reference columns',
           requiredPermissions: [
-            { command_name: CommandName.ColCrudCommand, permission_type: PermissionType.READ },
-            { command_name: CommandName.DimCrudCommand, permission_type: PermissionType.READ },
+            { command_name: CommandName.RefColCrudCommand, permission_type: PermissionType.READ },
+            { command_name: CommandName.RefDimCrudCommand, permission_type: PermissionType.READ },
             { command_name: CommandName.ConceptSetCrudCommand, permission_type: PermissionType.READ },
             { command_name: CommandName.RegionSetCrudCommand, permission_type: PermissionType.READ },
             { command_name: CommandName.GeneticDistanceProtocolCrudCommand, permission_type: PermissionType.READ },
@@ -555,7 +555,7 @@ export const adminRoutes: MyNonIndexRouteObject[] = [
               requiredPermissions: [
                 { command_name: CommandName.CaseTypeDimCrudCommand, permission_type: PermissionType.READ },
                 { command_name: CommandName.CaseTypeCrudCommand, permission_type: PermissionType.READ },
-                { command_name: CommandName.DimCrudCommand, permission_type: PermissionType.READ },
+                { command_name: CommandName.RefDimCrudCommand, permission_type: PermissionType.READ },
               ],
               requiresUserProfile: true,
               category: ADMIN_PAGE_CATEGORY.REFERENCE_DATA,
@@ -570,7 +570,7 @@ export const adminRoutes: MyNonIndexRouteObject[] = [
               subTitleKey: 'Manage case type columns',
               requiredPermissions: [
                 { command_name: CommandName.CaseTypeColCrudCommand, permission_type: PermissionType.READ },
-                { command_name: CommandName.ColCrudCommand, permission_type: PermissionType.READ },
+                { command_name: CommandName.RefColCrudCommand, permission_type: PermissionType.READ },
                 { command_name: CommandName.TreeAlgorithmCrudCommand, permission_type: PermissionType.READ },
                 { command_name: CommandName.CaseTypeCrudCommand, permission_type: PermissionType.READ },
               ],
@@ -702,15 +702,15 @@ export const adminRoutes: MyNonIndexRouteObject[] = [
 
   // HELPERS
   {
-    path: '/management/columns',
-    Component: () => <ColsAdminPage />,
+    path: '/management/reference-columns',
+    Component: () => <RefColsAdminPage />,
     errorElement: <RouterErrorPage />,
     handle: {
-      titleKey: 'Columns (all)',
-      subTitleKey: 'View all columns',
+      titleKey: 'Reference columns (all)',
+      subTitleKey: 'View all reference columns',
       requiredPermissions: [
-        { command_name: CommandName.ColCrudCommand, permission_type: PermissionType.READ },
-        { command_name: CommandName.DimCrudCommand, permission_type: PermissionType.READ },
+        { command_name: CommandName.RefColCrudCommand, permission_type: PermissionType.READ },
+        { command_name: CommandName.RefDimCrudCommand, permission_type: PermissionType.READ },
         { command_name: CommandName.ConceptSetCrudCommand, permission_type: PermissionType.READ },
         { command_name: CommandName.RegionSetCrudCommand, permission_type: PermissionType.READ },
         { command_name: CommandName.GeneticDistanceProtocolCrudCommand, permission_type: PermissionType.READ },
@@ -723,7 +723,7 @@ export const adminRoutes: MyNonIndexRouteObject[] = [
     path: '/management/case-type-dimensions',
     errorElement: <RouterErrorPage />,
     handle: {
-      titleKey: 'Case type dimension (all)',
+      titleKey: 'Case type dimensions (all)',
       requiredPermissions: [],
       requiresUserProfile: true,
       requirePermissionForChildRoute: true,
@@ -735,12 +735,12 @@ export const adminRoutes: MyNonIndexRouteObject[] = [
         Component: () => <CaseTypeDimsAdminPage />,
         errorElement: <RouterErrorPage />,
         handle: {
-          titleKey: 'Case type dimension (all)',
+          titleKey: 'Case type dimensions (all)',
           subTitleKey: 'View all case type dimensions',
           requiredPermissions: [
             { command_name: CommandName.CaseTypeDimCrudCommand, permission_type: PermissionType.READ },
             { command_name: CommandName.CaseTypeCrudCommand, permission_type: PermissionType.READ },
-            { command_name: CommandName.DimCrudCommand, permission_type: PermissionType.READ },
+            { command_name: CommandName.RefDimCrudCommand, permission_type: PermissionType.READ },
           ],
           requiresUserProfile: true,
           category: ADMIN_PAGE_CATEGORY.HELPERS,
@@ -755,7 +755,7 @@ export const adminRoutes: MyNonIndexRouteObject[] = [
           subTitleKey: 'Manage case type columns',
           requiredPermissions: [
             { command_name: CommandName.CaseTypeColCrudCommand, permission_type: PermissionType.READ },
-            { command_name: CommandName.ColCrudCommand, permission_type: PermissionType.READ },
+            { command_name: CommandName.RefColCrudCommand, permission_type: PermissionType.READ },
             { command_name: CommandName.TreeAlgorithmCrudCommand, permission_type: PermissionType.READ },
             { command_name: CommandName.CaseTypeCrudCommand, permission_type: PermissionType.READ },
           ],
@@ -774,7 +774,7 @@ export const adminRoutes: MyNonIndexRouteObject[] = [
       subTitleKey: 'View all case type columns',
       requiredPermissions: [
         { command_name: CommandName.CaseTypeColCrudCommand, permission_type: PermissionType.READ },
-        { command_name: CommandName.ColCrudCommand, permission_type: PermissionType.READ },
+        { command_name: CommandName.RefColCrudCommand, permission_type: PermissionType.READ },
         { command_name: CommandName.TreeAlgorithmCrudCommand, permission_type: PermissionType.READ },
         { command_name: CommandName.CaseTypeCrudCommand, permission_type: PermissionType.READ },
       ],

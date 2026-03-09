@@ -65,8 +65,8 @@ export const EpiSequenceDownloadDialog = withDialog<EpiSequenceDownloadDialogPro
 
     completeCaseType.ordered_case_type_dim_ids.map(x => completeCaseType.case_type_dims[x]).forEach((caseTypeDim) => {
       completeCaseType.ordered_case_type_col_ids_by_dim[caseTypeDim.id].map(id => completeCaseType.case_type_cols[id]).forEach(caseTypeCol => {
-        const col = completeCaseType.cols[caseTypeCol.col_id];
-        if (col?.col_type === ColType.GENETIC_SEQUENCE) {
+        const refCol = completeCaseType.ref_cols[caseTypeCol.ref_col_id];
+        if (refCol?.col_type === ColType.GENETIC_SEQUENCE) {
           options.push({
             value: caseTypeCol.id,
             label: caseTypeCol.label,

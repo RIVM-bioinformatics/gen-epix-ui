@@ -45,7 +45,7 @@ export class EpiCurveUtil {
     // cache the parsers
     const dateParsers: { [key: string]: (date: string) => Date } = {};
     caseTypeColumns.forEach(caseTypeCol => {
-      dateParsers[caseTypeCol.id] = EpiFilterUtil.getDateParser(completeCaseType.cols[caseTypeCol.col_id]);
+      dateParsers[caseTypeCol.id] = EpiFilterUtil.getDateParser(completeCaseType.ref_cols[caseTypeCol.ref_col_id]);
     });
 
     const items: Item[] = cases.map(row => {
@@ -105,23 +105,23 @@ export class EpiCurveUtil {
       }),
     };
 
-    const dayCol = caseTypeColumns.find(caseTypeCol => completeCaseType.cols[caseTypeCol.col_id].col_type === ColType.TIME_DAY);
+    const dayCol = caseTypeColumns.find(caseTypeCol => completeCaseType.ref_cols[caseTypeCol.ref_col_id].col_type === ColType.TIME_DAY);
     if (dayCol && (duration.years ?? 0) === 0 && duration.months <= 3) {
       return dayCol;
     }
-    const weekCol = caseTypeColumns.find(caseTypeCol => completeCaseType.cols[caseTypeCol.col_id].col_type === ColType.TIME_WEEK);
+    const weekCol = caseTypeColumns.find(caseTypeCol => completeCaseType.ref_cols[caseTypeCol.ref_col_id].col_type === ColType.TIME_WEEK);
     if (weekCol && (duration.years ?? 0) <= 1) {
       return weekCol;
     }
-    const monthCol = caseTypeColumns.find(caseTypeCol => completeCaseType.cols[caseTypeCol.col_id].col_type === ColType.TIME_MONTH);
+    const monthCol = caseTypeColumns.find(caseTypeCol => completeCaseType.ref_cols[caseTypeCol.ref_col_id].col_type === ColType.TIME_MONTH);
     if (monthCol && (duration.years ?? 0) <= 2) {
       return monthCol;
     }
-    const quarterCol = caseTypeColumns.find(caseTypeCol => completeCaseType.cols[caseTypeCol.col_id].col_type === ColType.TIME_QUARTER);
+    const quarterCol = caseTypeColumns.find(caseTypeCol => completeCaseType.ref_cols[caseTypeCol.ref_col_id].col_type === ColType.TIME_QUARTER);
     if (quarterCol && (duration.years ?? 0) <= 5) {
       return quarterCol;
     }
-    const yearCol = caseTypeColumns.find(caseTypeCol => completeCaseType.cols[caseTypeCol.col_id].col_type === ColType.TIME_QUARTER);
+    const yearCol = caseTypeColumns.find(caseTypeCol => completeCaseType.ref_cols[caseTypeCol.ref_col_id].col_type === ColType.TIME_QUARTER);
     if (yearCol) {
       return yearCol;
     }

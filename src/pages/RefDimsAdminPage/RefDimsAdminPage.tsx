@@ -10,7 +10,7 @@ import {
   string,
 } from 'yup';
 
-import type { Dim } from '../../api';
+import type { RefDim } from '../../api';
 import {
   CaseApi,
   DimType,
@@ -28,29 +28,29 @@ import type { CrudPageSubPage } from '../CrudPage';
 import { CrudPage } from '../CrudPage';
 import { AuthorizationManager } from '../../classes/managers/AuthorizationManager';
 
-type FormFields = Pick<Dim, 'dim_type' | 'code' | 'label' | 'description' | 'rank' | 'col_code_prefix'>;
+type FormFields = Pick<RefDim, 'dim_type' | 'code' | 'label' | 'description' | 'rank' | 'col_code_prefix'>;
 
-export const DimsAdminPage = () => {
+export const RefDimsAdminPage = () => {
   const { t } = useTranslation();
   const dimTypeOptionsQuery = useDimTypeOptionsQuery();
 
   const fetchAll = useCallback(async (signal: AbortSignal) => {
-    return (await CaseApi.instance.dimsGetAll({ signal }))?.data;
+    return (await CaseApi.instance.refDimsGetAll({ signal }))?.data;
   }, []);
 
-  const deleteOne = useCallback(async (item: Dim) => {
-    return await CaseApi.instance.dimsDeleteOne(item.id);
+  const deleteOne = useCallback(async (item: RefDim) => {
+    return await CaseApi.instance.refDimsDeleteOne(item.id);
   }, []);
 
-  const updateOne = useCallback(async (variables: FormFields, item: Dim) => {
-    return (await CaseApi.instance.dimsPutOne(item.id, { id: item.id, ...variables })).data;
+  const updateOne = useCallback(async (variables: FormFields, item: RefDim) => {
+    return (await CaseApi.instance.refDimsPutOne(item.id, { id: item.id, ...variables })).data;
   }, []);
 
   const createOne = useCallback(async (variables: FormFields) => {
-    return (await CaseApi.instance.dimsPostOne(variables)).data;
+    return (await CaseApi.instance.refDimsPostOne(variables)).data;
   }, []);
 
-  const getName = useCallback((item: Dim) => {
+  const getName = useCallback((item: RefDim) => {
     return item.label;
   }, []);
 
@@ -65,7 +65,7 @@ export const DimsAdminPage = () => {
     });
   }, []);
 
-  const formFieldDefinitions = useCallback((item: Dim): FormFieldDefinition<FormFields>[] => {
+  const formFieldDefinitions = useCallback((item: RefDim): FormFieldDefinition<FormFields>[] => {
     return [
       {
         definition: FORM_FIELD_DEFINITION_TYPE.AUTOCOMPLETE,
@@ -105,35 +105,35 @@ export const DimsAdminPage = () => {
     ] as const;
   }, [dimTypeOptionsQuery.options, t]);
 
-  const tableColumns = useMemo((): TableColumn<Dim>[] => {
+  const tableColumns = useMemo((): TableColumn<RefDim>[] => {
     return [
-      TableUtil.createTextColumn<Dim>({ id: 'code', name: t`Code` }),
-      TableUtil.createOptionsColumn<Dim>({ id: 'dim_type', name: t`Dimension type`, options: dimTypeOptionsQuery.options }),
-      TableUtil.createTextColumn<Dim>({ id: 'label', name: t`Label` }),
-      TableUtil.createNumberColumn<Dim>({ id: 'rank', name: t`Rank` }),
+      TableUtil.createTextColumn<RefDim>({ id: 'code', name: t`Code` }),
+      TableUtil.createOptionsColumn<RefDim>({ id: 'dim_type', name: t`Dimension type`, options: dimTypeOptionsQuery.options }),
+      TableUtil.createTextColumn<RefDim>({ id: 'label', name: t`Label` }),
+      TableUtil.createNumberColumn<RefDim>({ id: 'rank', name: t`Rank` }),
     ];
   }, [dimTypeOptionsQuery.options, t]);
 
-  const subPages = useMemo<CrudPageSubPage<Dim>[]>(() => {
+  const subPages = useMemo<CrudPageSubPage<RefDim>[]>(() => {
     if (!AuthorizationManager.instance.doesUserHavePermission([
-      { command_name: CommandName.ColCrudCommand, permission_type: PermissionType.READ },
+      { command_name: CommandName.RefColCrudCommand, permission_type: PermissionType.READ },
     ])) {
       return [];
     }
 
     return [
       {
-        label: t`Manage columns`,
-        getPathName: (item: Dim) => `/management/dimensions/${item.id}/columns`,
-      } satisfies CrudPageSubPage<Dim>,
+        label: t`Manage reference columns`,
+        getPathName: (item: RefDim) => `/management/reference-dimensions/${item.id}/reference-columns`,
+      } satisfies CrudPageSubPage<RefDim>,
     ];
   }, [t]);
 
   return (
-    <CrudPage<FormFields, Dim>
+    <CrudPage<FormFields, RefDim>
       createOne={createOne}
-      crudCommandType={CommandName.DimCrudCommand}
-      createItemDialogTitle={t`Create new dimension`}
+      crudCommandType={CommandName.RefDimCrudCommand}
+      createItemDialogTitle={t`Create new reference dimension`}
       defaultSortByField={'code'}
       defaultSortDirection={'asc'}
       subPages={subPages}
@@ -141,10 +141,10 @@ export const DimsAdminPage = () => {
       fetchAll={fetchAll}
       formFieldDefinitions={formFieldDefinitions}
       getName={getName}
-      resourceQueryKeyBase={QUERY_KEY.DIMS}
+      resourceQueryKeyBase={QUERY_KEY.REF_DIMS}
       schema={schema}
       tableColumns={tableColumns}
-      testIdAttributes={TestIdUtil.createAttributes('DimsAdminPage')}
+      testIdAttributes={TestIdUtil.createAttributes('RefDimsAdminPage')}
       title={t`Dimensions`}
       updateOne={updateOne}
     />

@@ -22,7 +22,7 @@ import type { CaseForUpload } from '../../../api';
 import {
   CaseApi,
   DataIssueType,
-  OnExistsUploadAction,
+  UploadAction,
 } from '../../../api';
 import { useArray } from '../../../hooks/useArray';
 import { useQueryMemo } from '../../../hooks/useQueryMemo';
@@ -68,7 +68,7 @@ export const EpiUploadValidateInner = () => {
         case_type_id: caseTypeId,
         created_in_data_collection_id: createdInDataCollectionId,
         verify_only: true,
-        on_exists: OnExistsUploadAction.UPDATE,
+        on_exists: UploadAction.UPDATE,
         case_batch: {
           cases: casesForVerification,
         },

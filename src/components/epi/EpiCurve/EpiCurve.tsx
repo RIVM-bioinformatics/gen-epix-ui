@@ -91,7 +91,7 @@ export const EpiCurve = () => {
   const filterDimensions = useStore(epiDashboardStore, (state) => state.filterDimensions);
   const timeCaseTypeDims = useMemo(() => CaseTypeUtil.getCaseTypeDims(completeCaseType, [DimType.TIME]), [completeCaseType]);
   const [focussedDate, setFocussedDate] = useState<string>(null);
-  const [column, setColumn] = useState<CaseTypeCol>(null);
+  const [caseTypeCol, setCaseTypeCol] = useState<CaseTypeCol>(null);
 
   const onEpiContextMenuClose = useCallback(() => {
     setEpiContextMenuConfig(null);
@@ -104,66 +104,66 @@ export const EpiCurve = () => {
 
   const titleMenu = useMemo<MenuItemData>(() => {
     let label: string;
-    if (column) {
-      label = t('Epi curve: {{label}}', { label: column.label });
+    if (caseTypeCol) {
+      label = t('Epi curve: {{label}}', { label: caseTypeCol.label });
     } else {
       label = t`Epi curve`;
     }
 
     const menu: MenuItemData = {
       label,
-      tooltip: column ? completeCaseType.cols[column.col_id].description : undefined,
+      tooltip: caseTypeCol ? completeCaseType.ref_cols[caseTypeCol.ref_col_id].description : undefined,
       disabled: !timeCaseTypeDims.length,
       items: [],
     };
 
     completeCaseType.ordered_case_type_dim_ids.map(x => completeCaseType.case_type_dims[x]).filter(caseTypeDim => {
-      const dim = completeCaseType.dims[caseTypeDim.dim_id];
-      return dim.dim_type === DimType.TIME;
+      const refDim = completeCaseType.ref_dims[caseTypeDim.ref_dim_id];
+      return refDim.dim_type === DimType.TIME;
     }).forEach((caseTypeDim) => {
       if (menu.items.length) {
         menu.items.at(-1).divider = true;
       }
-      completeCaseType.ordered_case_type_col_ids_by_dim[caseTypeDim.id].map(id => completeCaseType.case_type_cols[id]).forEach((caseTypeCol) => {
+      completeCaseType.ordered_case_type_col_ids_by_dim[caseTypeDim.id].map(id => completeCaseType.case_type_cols[id]).forEach((c) => {
         menu.items.push({
-          label: caseTypeCol.label,
-          tooltip: caseTypeCol.description,
-          active: caseTypeCol.id === column?.id,
+          label: c.label,
+          tooltip: c.description,
+          active: c.id === c?.id,
           callback: () => {
-            updateEpiCurveWidgetData({ columnId: caseTypeCol.id });
-            setColumn(caseTypeCol);
+            updateEpiCurveWidgetData({ columnId: c.id });
+            setCaseTypeCol(c);
           },
         });
       });
     });
 
     return menu;
-  }, [column, completeCaseType, t, timeCaseTypeDims.length, updateEpiCurveWidgetData]);
+  }, [caseTypeCol, completeCaseType, t, timeCaseTypeDims.length, updateEpiCurveWidgetData]);
 
   useEffect(() => {
-    if (column) {
+    if (caseTypeCol) {
       return;
     }
     if (!timeCaseTypeDims.length) {
       throw Error('Epi curve can not be shown');
     }
     if (epiCurveWidgetData.columnId) {
-      setColumn(CaseTypeUtil.getCaseTypeCols(completeCaseType).find(c => c.id === epiCurveWidgetData.columnId));
+      setCaseTypeCol(CaseTypeUtil.getCaseTypeCols(completeCaseType).find(c => c.id === epiCurveWidgetData.columnId));
     } else if (sortedData.length) {
-      setColumn(EpiCurveUtil.getPreferredTimeColumn(
+      setCaseTypeCol(EpiCurveUtil.getPreferredTimeColumn(
         completeCaseType,
         sortedData,
         CaseTypeUtil.getCaseTypeCols(completeCaseType, completeCaseType.case_date_case_type_dim_id),
       ));
     }
-  }, [column, completeCaseType, epiCurveWidgetData.columnId, timeCaseTypeDims, sortedData]);
+  }, [caseTypeCol, completeCaseType, epiCurveWidgetData.columnId, timeCaseTypeDims, sortedData]);
 
   const items = useMemo(() => {
-    if (!column) {
+    if (!caseTypeCol) {
       return [];
     }
-    return EpiCurveUtil.getSortedItems(completeCaseType, sortedData, [column]);
-  }, [column, sortedData, completeCaseType]);
+    return EpiCurveUtil.getSortedItems(completeCaseType, sortedData, [caseTypeCol]);
+  }, [caseTypeCol, sortedData, completeCaseType]);
 
   const epiCurveCaseCount = useMemo(() => {
     return items.reduce((prev, current) => {
@@ -172,19 +172,19 @@ export const EpiCurve = () => {
   }, [items]);
 
   const getXAxisLabel = useCallback((value: Date): string => {
-    if (!column) {
+    if (!caseTypeCol) {
       return null;
     }
 
-    return EpiCurveUtil.getXAxisLabel(completeCaseType.cols[column.col_id].col_type, value);
-  }, [column, completeCaseType.cols]);
+    return EpiCurveUtil.getXAxisLabel(completeCaseType.ref_cols[caseTypeCol.ref_col_id].col_type, value);
+  }, [caseTypeCol, completeCaseType.ref_cols]);
 
   const xAxisIntervals = useMemo<Date[]>(() => {
-    if (!column) {
+    if (!caseTypeCol) {
       return [];
     }
-    return EpiCurveUtil.getXAxisIntervals(completeCaseType.cols[column.col_id].col_type, items);
-  }, [column, completeCaseType.cols, items]);
+    return EpiCurveUtil.getXAxisIntervals(completeCaseType.ref_cols[caseTypeCol.ref_col_id].col_type, items);
+  }, [caseTypeCol, completeCaseType.ref_cols, items]);
 
   const serieData = useMemo<{ series: BarSeriesOption[]; max: number }>(() => {
     if (!items) {
@@ -258,7 +258,7 @@ export const EpiCurve = () => {
     return {
       finished: !hasRenderedOnce ? () => {
         const dom = chartRef?.current?.getEchartsInstance()?.getDom();
-        dom?.setAttribute('aria-label', t('Epidemiological curve showing the number of cases over time ({{label}})', { label: column?.label ?? '' }));
+        dom?.setAttribute('aria-label', t('Epidemiological curve showing the number of cases over time ({{label}})', { label: caseTypeCol?.label ?? '' }));
         dom?.setAttribute('role', 'img');
         setHasRenderedOnce(true);
       } : undefined,
@@ -289,7 +289,7 @@ export const EpiCurve = () => {
       },
 
     };
-  }, [column?.label, hasRenderedOnce, highlightingManager, t]);
+  }, [caseTypeCol?.label, hasRenderedOnce, highlightingManager, t]);
 
   useEffect(() => {
     const unsubscribe = highlightingManager.subscribe((highlighting) => {
@@ -376,11 +376,11 @@ export const EpiCurve = () => {
   }, [serieData, xAxisIntervals, getXAxisLabel, stratification]);
 
   const onShowOnlySelectedDateMenuItemClick = useCallback(async (onMenuClose: () => void) => {
-    if (!isString(focussedDate) || !column?.id) {
+    if (!isString(focussedDate) || !caseTypeCol?.id) {
       onMenuClose();
       return;
     }
-    const dateDimension = filterDimensions.find(filterDimension => filterDimension.filterIds.includes(column.id));
+    const dateDimension = filterDimensions.find(filterDimension => filterDimension.filterIds.includes(caseTypeCol.id));
     const dateColumnId = dateDimension.preferredFilterId;
 
     let fromDate: Date;
@@ -420,7 +420,7 @@ export const EpiCurve = () => {
     }
 
     onMenuClose();
-  }, [focussedDate, column?.id, filterDimensions, setFilterValue]);
+  }, [focussedDate, caseTypeCol?.id, filterDimensions, setFilterValue]);
 
   const getEpiContextMenuExtraItems = useCallback((onMenuClose: () => void): ReactElement => {
     if (!focussedDate) {

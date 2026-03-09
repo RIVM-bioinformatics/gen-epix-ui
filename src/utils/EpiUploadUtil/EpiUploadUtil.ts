@@ -27,7 +27,7 @@ import type {
 import {
   CaseApi,
   ColType,
-  OnExistsUploadAction,
+  UploadAction,
   ReadsFileFormat,
   SeqFileFormat,
   UploadStatus,
@@ -141,8 +141,8 @@ export class EpiUploadUtil {
     const caseTypeColsIds: string[] = [];
     Object.values(Object.keys(completeCaseType.case_type_cols)).forEach(caseTypeColId => {
       const caseTypeCol = completeCaseType.case_type_cols[caseTypeColId];
-      const col = completeCaseType.cols[caseTypeCol.col_id];
-      if (col?.col_type === ColType.ID_SAMPLE) {
+      const refCol = completeCaseType.ref_cols[caseTypeCol.ref_col_id];
+      if (refCol?.col_type === ColType.ID_SAMPLE) {
         caseTypeColsIds.push(caseTypeCol.id);
       }
     });
@@ -365,7 +365,7 @@ export class EpiUploadUtil {
 
   public static getDefaultColumnMappingFormValues(rawDataHeaders: string[], mappedColumns: EpiUploadMappedColumn[], identifierIssuerOptions: OptionBase<string>[]): EpiUploadMappedColumnsFormFields {
     const defaultFormValues: EpiUploadMappedColumnsFormFields = Object.fromEntries(Object.keys(rawDataHeaders).map<[string, null]>(x => [x.toString(), null]));
-    const caseIdColumn = mappedColumns.find(col => col.isCaseIdColumn);
+    const caseIdColumn = mappedColumns.find(mappedColumn => mappedColumn.isCaseIdColumn);
 
     if (caseIdColumn) {
       defaultFormValues[caseIdColumn.originalIndex.toString()] = 'case_id';
@@ -419,7 +419,7 @@ export class EpiUploadUtil {
     const sampleIdColumns = CaseTypeUtil.getCaseTypeColsByType(completeCaseType, [ColType.ID_SAMPLE]);
     const sequenceColumns = CaseTypeUtil.getCaseTypeColsByType(completeCaseType, [ColType.GENETIC_SEQUENCE]);
     const readsColumns = CaseTypeUtil.getCaseTypeColsByType(completeCaseType, [ColType.GENETIC_READS]);
-    const writableColumns = Object.values(completeCaseType.case_type_cols).filter(col => CaseTypeUtil.getWritableCaseTypeColIds(completeCaseType).includes(col.id));
+    const writableColumns = Object.values(completeCaseType.case_type_cols).filter(caseTypeCol => CaseTypeUtil.getWritableCaseTypeColIds(completeCaseType).includes(caseTypeCol.id));
 
     return { sampleIdColumns, sequenceColumns, readsColumns, writableColumns };
   }
@@ -607,7 +607,7 @@ export class EpiUploadUtil {
     return (await CaseApi.instance.uploadCases({
       case_type_id: caseTypeId,
       created_in_data_collection_id: createdInDataCollectionId,
-      on_exists: OnExistsUploadAction.UPDATE,
+      on_exists: UploadAction.UPDATE,
       case_batch: {
         cases: validatedCasesWithGeneratedId.map((vc, index) => {
           const caseId = validatedCases[index].id ?? undefined;

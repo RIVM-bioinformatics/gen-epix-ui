@@ -30,19 +30,19 @@ import { TableUtil } from '../../utils/TableUtil';
 import { TestIdUtil } from '../../utils/TestIdUtil';
 import type { CrudPageSubPage } from '../CrudPage';
 import { CrudPage } from '../CrudPage';
-import { useDimOptionsQuery } from '../../dataHooks/useDimsQuery';
+import { useRefDimOptionsQuery } from '../../dataHooks/useRefDimsQuery';
 import { AuthorizationManager } from '../../classes/managers/AuthorizationManager';
 
-type FormFields = Pick<CaseTypeDim, 'case_type_id' | 'dim_id' | 'occurrence' | 'code' | 'label' | 'description' | 'rank' | 'is_case_date_dim'>;
+type FormFields = Pick<CaseTypeDim, 'case_type_id' | 'ref_dim_id' | 'occurrence' | 'code' | 'label' | 'description' | 'rank' | 'is_case_date_dim'>;
 
 export const CaseTypeDimsAdminPage = () => {
   const { caseTypeId } = useParams();
   const { t } = useTranslation();
-  const dimOptionsQuery = useDimOptionsQuery();
+  const refDimOptionsQuery = useRefDimOptionsQuery();
   const caseTypeOptionsQuery = useCaseTypeOptionsQuery();
   const caseTypeMapQuery = useCaseTypeMapQuery();
 
-  const loadables = useArray([caseTypeOptionsQuery, dimOptionsQuery]);
+  const loadables = useArray([caseTypeOptionsQuery, refDimOptionsQuery]);
 
   const fetchAll = useCallback(async (signal: AbortSignal) => {
     return (await CaseApi.instance.caseTypeDimsGetAll({ signal }))?.data;
@@ -50,7 +50,7 @@ export const CaseTypeDimsAdminPage = () => {
 
   const fetchAllSelect = useCallback((caseTypeDims: CaseTypeDim[]) => {
     if (caseTypeId) {
-      return caseTypeDims.filter((dim) => dim.case_type_id === caseTypeId);
+      return caseTypeDims.filter((caseTypeDim) => caseTypeDim.case_type_id === caseTypeId);
     }
     return caseTypeDims;
   }, [caseTypeId]);
@@ -77,7 +77,7 @@ export const CaseTypeDimsAdminPage = () => {
       code: string().code().required().max(100),
       rank: number().integer().required().transform((_val: unknown, orig: string | number) => orig === '' ? undefined : orig),
       occurrence: number().integer().positive().required().transform((_val: unknown, orig: string | number) => orig === '' ? undefined : orig),
-      dim_id: string().uuid4().required().max(100),
+      ref_dim_id: string().uuid4().required().max(100),
       case_type_id: string().uuid4().required().max(100),
       description: string().freeFormText().required().max(100),
       is_case_date_dim: boolean().required(),
@@ -94,9 +94,9 @@ export const CaseTypeDimsAdminPage = () => {
       } as const satisfies FormFieldDefinition<FormFields>,
       {
         definition: FORM_FIELD_DEFINITION_TYPE.AUTOCOMPLETE,
-        name: 'dim_id',
-        label: t`Dimension`,
-        options: dimOptionsQuery.options,
+        name: 'ref_dim_id',
+        label: t`Reference dimension`,
+        options: refDimOptionsQuery.options,
       } as const satisfies FormFieldDefinition<FormFields>,
       {
         definition: FORM_FIELD_DEFINITION_TYPE.TEXTFIELD,
@@ -128,7 +128,7 @@ export const CaseTypeDimsAdminPage = () => {
         type: 'number',
       } as const satisfies FormFieldDefinition<FormFields>,
     ] as const satisfies FormFieldDefinition<FormFields>[];
-  }, [caseTypeOptionsQuery.options, dimOptionsQuery.options, t]);
+  }, [caseTypeOptionsQuery.options, refDimOptionsQuery.options, t]);
 
   const tableColumns = useMemo((): TableColumn<CaseTypeDim>[] => {
     const columns: TableColumn<CaseTypeDim>[] = [];
@@ -140,14 +140,14 @@ export const CaseTypeDimsAdminPage = () => {
     }
 
     columns.push(
-      TableUtil.createOptionsColumn<CaseTypeDim>({ id: 'dim_id', name: t`Dimension`, options: dimOptionsQuery.options }),
+      TableUtil.createOptionsColumn<CaseTypeDim>({ id: 'ref_dim_id', name: t`Reference dimension`, options: refDimOptionsQuery.options }),
       TableUtil.createTextColumn<CaseTypeDim>({ id: 'code', name: t`Code` }),
       TableUtil.createTextColumn<CaseTypeDim>({ id: 'label', name: t`Label` }),
       TableUtil.createNumberColumn<CaseTypeDim>({ id: 'occurrence', name: t`Occurrence` }),
       TableUtil.createNumberColumn<CaseTypeDim>({ id: 'rank', name: t`Rank` }),
     );
     return columns;
-  }, [caseTypeId, caseTypeOptionsQuery.options, dimOptionsQuery.options, t]);
+  }, [caseTypeId, caseTypeOptionsQuery.options, refDimOptionsQuery.options, t]);
 
   const defaultNewItem = useMemo<Partial<FormFields>>(() => {
     return {
@@ -157,7 +157,7 @@ export const CaseTypeDimsAdminPage = () => {
 
   const subPages = useMemo<CrudPageSubPage<CaseTypeDim>[]>(() => {
     if (!AuthorizationManager.instance.doesUserHavePermission([
-      { command_name: CommandName.ColCrudCommand, permission_type: PermissionType.READ },
+      { command_name: CommandName.RefColCrudCommand, permission_type: PermissionType.READ },
     ])) {
       return [];
     }

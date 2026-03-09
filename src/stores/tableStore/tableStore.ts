@@ -322,13 +322,13 @@ export const createTableStoreActions = <TData>(kwArgs: {
 
       if (sanitizedSortByField && sanitizedSortDirection) {
         // Sort according to the sortByField and sortDirection
-        let column = columns.find(col => col.id === sortByField);
+        let column = columns.find(c => c.id === sortByField);
 
         if (!column || !(column as { comparatorFactory: unknown }).comparatorFactory) {
           console.warn(`Column not found or missing comparatorFactory for field '${sortByField}', reverting to default sort settings.`);
           sanitizedSortByField = defaultSortByField;
           sanitizedSortDirection = defaultSortDirection;
-          column = columns.find(col => col.id === sanitizedSortByField);
+          column = columns.find(c => c.id === sanitizedSortByField);
         }
 
         if (!column || !(column as { comparatorFactory: unknown }).comparatorFactory) {

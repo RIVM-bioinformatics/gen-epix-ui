@@ -298,7 +298,7 @@ export const createEpiDashboardStore = (kwArgs: CreateEpiDashboardStoreKwArgs) =
             const { MAX_STRATIFICATION_UNIQUE_VALUES, STRATIFICATION_COLORS } = ConfigManager.instance.config.epi;
 
             if (mode === STRATIFICATION_MODE.FIELD) {
-              const column = completeCaseType.cols[caseTypeCol.col_id];
+              const column = completeCaseType.ref_cols[caseTypeCol.ref_col_id];
               const conceptSetConceptIds = EpiDataManager.instance.data.conceptsIdsBySetId[column.concept_set_id];
               if (conceptSetConceptIds) {
                 if (conceptSetConceptIds.length < MAX_STRATIFICATION_UNIQUE_VALUES) {
@@ -609,7 +609,7 @@ export const createEpiDashboardStore = (kwArgs: CreateEpiDashboardStoreKwArgs) =
             const { ALLOWED_COL_TYPES_FOR_STRATIFICATION, MAX_STRATIFICATION_UNIQUE_VALUES } = ConfigManager.instance.config.epi;
 
             const filteredCaseTypeColumns = CaseTypeUtil.getCaseTypeCols(completeCaseType).filter(caseTypeCol => {
-              const column = completeCaseType.cols[caseTypeCol.col_id];
+              const column = completeCaseType.ref_cols[caseTypeCol.ref_col_id];
               if (!ALLOWED_COL_TYPES_FOR_STRATIFICATION.includes(column.col_type)) {
                 return false;
               }
@@ -631,7 +631,7 @@ export const createEpiDashboardStore = (kwArgs: CreateEpiDashboardStoreKwArgs) =
           reloadStratification: () => {
             const { stratification, stratify, stratifyableColumns } = get();
             if (stratification?.mode === STRATIFICATION_MODE.FIELD) {
-              const activeStratifyableColumn = stratifyableColumns.find(c => c.caseTypeCol.col_id === stratification.caseTypeCol.col_id);
+              const activeStratifyableColumn = stratifyableColumns.find(c => c.caseTypeCol.ref_col_id === stratification.caseTypeCol.ref_col_id);
               if (!activeStratifyableColumn?.enabled) {
                 // column no longer stratifiable
                 NotificationManager.instance.showNotification({
