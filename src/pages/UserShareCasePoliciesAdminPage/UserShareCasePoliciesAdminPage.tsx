@@ -14,7 +14,7 @@ import {
   AbacApi,
   CommandName,
 } from '../../api';
-import { useCaseTypeColSetOptionsQuery } from '../../dataHooks/useCaseTypeColSetsQuery';
+import { useColSetsQuery } from '../../dataHooks/useColSetsQuery';
 import { useCaseTypeSetOptionsQuery } from '../../dataHooks/useCaseTypeSetsQuery';
 import { useDataCollectionOptionsQuery } from '../../dataHooks/useDataCollectionsQuery';
 import { useUserOptionsQuery } from '../../dataHooks/useUsersQuery';
@@ -45,12 +45,12 @@ export const UserShareCasePoliciesAdminPage = () => {
   const { t } = useTranslation();
   const userOptionsQuery = useUserOptionsQuery();
   const dataCollectionOptionsQuery = useDataCollectionOptionsQuery();
-  const caseTypeColSetOptionsQuery = useCaseTypeColSetOptionsQuery();
+  const colSetOptionsQuery = useColSetsQuery();
   const caseTypeSetOptionsQuery = useCaseTypeSetOptionsQuery();
 
   const nameFactory = useUserCasePolicyNameFactory();
 
-  const loadables = useArray([userOptionsQuery, dataCollectionOptionsQuery, caseTypeColSetOptionsQuery, caseTypeSetOptionsQuery]);
+  const loadables = useArray([userOptionsQuery, dataCollectionOptionsQuery, colSetOptionsQuery, caseTypeSetOptionsQuery]);
 
   const fetchAll = useCallback(async (signal: AbortSignal) => {
     return (await AbacApi.instance.userShareCasePoliciesGetAll({ signal }))?.data;

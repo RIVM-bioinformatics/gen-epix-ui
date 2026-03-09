@@ -2,7 +2,7 @@ import { createStore } from 'zustand';
 import { t } from 'i18next';
 
 import type {
-  CaseTypeCol,
+  Col,
   CompleteCaseType,
   CaseUploadResult,
 } from '../../api';
@@ -33,9 +33,9 @@ export const STEP_ORDER = [
 
 export interface EpiUploadStoreState {
   activeStep: EPI_UPLOAD_STEP;
-  caseTypeCols: CaseTypeCol[];
+  cols: Col[];
   caseTypeId: string;
-  sampleIdCaseTypeColId: string;
+  sampleIdColId: string;
   completeCaseType: CompleteCaseType;
   createdInDataCollectionId: string;
   createdInDataCollectionOptions: AutoCompleteOption<string>[];
@@ -71,7 +71,7 @@ export interface EpiUploadStoreActions {
   setCreatedInDataCollectionId: (createdInDataCollectionId: string) => void;
   setRawData: (rawData: string[][]) => Promise<void>;
   setSheetOptions: (sheetOptions: AutoCompleteOption<string>[]) => Promise<void>;
-  setCaseTypeCols: (caseTypeCols: CaseTypeCol[]) => void;
+  setCols: (cols: Col[]) => void;
   setDataCollectionOptions: (options: OptionBase<string>[]) => void;
   setValidatedCases: (validatedCases: CaseUploadResult[]) => void;
 
@@ -90,10 +90,10 @@ export type EpiUploadStore = EpiUploadStoreState & EpiUploadStoreActions;
 const createEpiUploadStoreDefaultState: () => EpiUploadStoreState = () => ({
   activeStep: STEP_ORDER[0],
   assemblyProtocolId: null,
-  caseTypeCols: null,
+  cols: null,
   caseTypeId: null,
   completeCaseType: null,
-  sampleIdCaseTypeColId: null,
+  sampleIdColId: null,
   createdInDataCollectionId: null,
   createdInDataCollectionOptions: [],
   dataCollectionOptions: [],
@@ -129,8 +129,8 @@ export const createEpiUploadStore = () => {
         });
       },
 
-      setCaseTypeCols: (caseTypeCols: CaseTypeCol[]) => {
-        set({ caseTypeCols });
+      setCols: (cols: Col[]) => {
+        set({ cols });
       },
 
       setDataCollectionOptions: (options: OptionBase<string>[]) => {
@@ -138,7 +138,7 @@ export const createEpiUploadStore = () => {
       },
 
       setRawData: async (rawData: string[][]) => {
-        const { caseTypeCols, setCaseTypeId, rawData: oldRawData, invalidateCaseValidationQuery } = get();
+        const { cols, setCaseTypeId, rawData: oldRawData, invalidateCaseValidationQuery } = get();
         if (JSON.stringify(oldRawData) !== JSON.stringify(rawData)) {
           set({ shouldResetColumnMapping: true });
           await invalidateCaseValidationQuery();
@@ -147,7 +147,7 @@ export const createEpiUploadStore = () => {
         if (!rawData || rawData.length === 0) {
           return;
         }
-        const bestMatchingCaseType = EpiUploadUtil.getCaseTypeFromColumnLabels(caseTypeCols, rawData[0]);
+        const bestMatchingCaseType = EpiUploadUtil.getCaseTypeFromColumnLabels(cols, rawData[0]);
         if (bestMatchingCaseType) {
           setCaseTypeId(bestMatchingCaseType.id);
         }

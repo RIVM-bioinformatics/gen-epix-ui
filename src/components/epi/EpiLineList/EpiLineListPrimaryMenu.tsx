@@ -43,15 +43,15 @@ export const EpiLineListPrimaryMenu = ({
   const setSelectedIds = useStore(epiDashboardStore, useShallow((state) => state.setSelectedIds));
   const findSimilarCasesResults = useStore(epiDashboardStore, useShallow((state) => state.findSimilarCasesResults));
 
-  const hasCellData = useCallback((row: Case, column: TableColumn<Case>, rowIndex: number) => {
-    if (column.type === 'caseType' && column.valueGetter) {
-      return !column.valueGetter({
+  const hasCellData = useCallback((row: Case, tableColumn: TableColumn<Case>, rowIndex: number) => {
+    if (tableColumn.type === 'caseType' && tableColumn.valueGetter) {
+      return !tableColumn.valueGetter({
         row,
-        id: column.id,
+        id: tableColumn.id,
         rowIndex,
       }).isMissing;
     }
-    return !CaseUtil.getRowValue(row.content, completeCaseType.case_type_cols[column.id], completeCaseType).isMissing;
+    return !CaseUtil.getRowValue(row.content, completeCaseType.cols[tableColumn.id], completeCaseType).isMissing;
   }, [completeCaseType]);
 
   const createFilterFromSelectedRowCaseIds = useCallback(async () => {

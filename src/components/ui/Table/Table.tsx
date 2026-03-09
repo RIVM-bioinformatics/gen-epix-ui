@@ -187,7 +187,7 @@ export const Table = <TRowData,>({
     if (!tableColumnSettings?.current?.length || !container) {
       return;
     }
-    const tableWidth = sumBy(getVisibleTableSettingsColumns(), column => column.calculatedWidth);
+    const tableWidth = sumBy(getVisibleTableSettingsColumns(), tableSettingsColumn => tableSettingsColumn.calculatedWidth);
     const tableElement: HTMLDivElement = container.querySelector('[role=table]');
     tableWidthRef.current = tableWidth;
     if (tableElement) {
@@ -469,22 +469,22 @@ export const Table = <TRowData,>({
           },
         }}
       >
-        {getVisibleTableSettingsColumns().map((column, columnIndex) => {
-          const tableColumn = tableColumns.find(c => c.id === column.id);
+        {getVisibleTableSettingsColumns().map((tableSettingsColumn, tableSettingsColumnIndex) => {
+          const tableColumn = tableColumns.find(c => c.id === tableSettingsColumn.id);
           if (!tableColumn) {
             return null;
           }
           return (
             <TableHeaderCell<TRowData>
-              key={column.id}
+              key={tableSettingsColumn.id}
               column={tableColumn.type === 'selectable' ? { ...tableColumn, renderHeaderContent: renderCheckboxHeaderContent } : tableColumn}
-              columnIndex={columnIndex}
+              columnIndex={tableSettingsColumnIndex}
               dividerColor={headerBorderColor}
               height={theme.spacing(headerHeight)}
-              order={tableColumnSettings.current.findIndex(c => c.id === column.id)}
+              order={tableColumnSettings.current.findIndex(c => c.id === tableSettingsColumn.id)}
               role={'columnheader'}
-              width={column.calculatedWidth}
-              xOffset={column.offsetX}
+              width={tableSettingsColumn.calculatedWidth}
+              xOffset={tableSettingsColumn.offsetX}
               onColumnDividerMouseDown={onColumnDividerMouseDown}
               onColumnDividerKeyDown={onColumnDividerKeyDown}
               onCustomDrag={onTableHeaderCellDrag}

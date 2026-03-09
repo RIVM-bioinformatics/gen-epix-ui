@@ -1,5 +1,5 @@
 export * from './EpiCaseTypeInfoAccessRights.tsx';
-export * from './EpiCaseTypeInfoCaseTypeColumnAccessRights.tsx';
+export * from './EpiCaseTypeInfoColAccessRights.tsx';
 export * from './EpiCaseTypeInfoData.tsx';
 export * from './EpiCaseTypeInfoDialog.tsx';
 export * from './EpiCaseTypeInfoDialogContent.tsx';

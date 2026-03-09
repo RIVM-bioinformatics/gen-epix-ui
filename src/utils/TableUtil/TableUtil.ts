@@ -155,7 +155,7 @@ export class TableUtil {
     if (column.valueGetter) {
       return column.valueGetter({ row, id: column.id, rowIndex });
     }
-    return CaseUtil.getRowValue((row as Case).content, column.caseTypeCol, column.completeCaseType);
+    return CaseUtil.getRowValue((row as Case).content, column.col, column.completeCaseType);
   }
 
   public static getTableNumberCellValue<TRowData>({ row, column, rowIndex }: GetTableCellValueProps<TRowData, TableColumnNumber<TRowData>>): number {
@@ -235,7 +235,7 @@ export class TableUtil {
     return (a: TRowData, b: TRowData) => {
       const aValue = TableUtil.getTableCaseTypeCellValue({ column, row: a, rowIndex: 0 });
       const bValue = TableUtil.getTableCaseTypeCellValue({ column, row: b, rowIndex: 0 });
-      const col = column.completeCaseType.cols[column.caseTypeCol.col_id];
+      const refCol = column.completeCaseType.ref_cols[column.col.ref_col_id];
 
       const directionMultiplier = direction === 'asc' ? 1 : -1;
 
@@ -249,12 +249,12 @@ export class TableUtil {
         return -1;
       }
 
-      if (col.col_type === ColType.ORDINAL) {
-        const conceptSetConceptIds = EpiDataManager.instance.data.conceptsIdsBySetId[col.concept_set_id];
+      if (refCol.col_type === ColType.ORDINAL) {
+        const conceptSetConceptIds = EpiDataManager.instance.data.conceptsIdsBySetId[refCol.concept_set_id];
         return (conceptSetConceptIds.indexOf(aValue.raw) - conceptSetConceptIds.indexOf(bValue.raw)) * directionMultiplier;
       }
 
-      if (([ColType.DECIMAL_0, ColType.DECIMAL_1, ColType.DECIMAL_2, ColType.DECIMAL_3, ColType.DECIMAL_4, ColType.DECIMAL_4, ColType.DECIMAL_5, ColType.DECIMAL_6] as ColType[]).includes(col.col_type)) {
+      if (([ColType.DECIMAL_0, ColType.DECIMAL_1, ColType.DECIMAL_2, ColType.DECIMAL_3, ColType.DECIMAL_4, ColType.DECIMAL_4, ColType.DECIMAL_5, ColType.DECIMAL_6] as ColType[]).includes(refCol.col_type)) {
         return (+aValue.raw - +bValue.raw) * directionMultiplier;
       }
 

@@ -38,11 +38,11 @@ export const EpiDashboardStoreLoaderContent = ({ completeCaseType, caseSet, chil
 
   const tableColumnDimensions = useMemo<TableColumnDimension[]>(() => {
     const items: TableColumnDimension[] = [];
-    completeCaseType.ordered_case_type_dim_ids.map(x => completeCaseType.case_type_dims[x]).forEach((caseTypeDim) => {
+    completeCaseType.ordered_dim_ids.map(x => completeCaseType.dims[x]).forEach((dim) => {
       const item: TableColumnDimension = {
-        label: CaseTypeUtil.getDimensionLabel(completeCaseType, caseTypeDim.id),
-        id: caseTypeDim.id,
-        columnIds: completeCaseType.ordered_case_type_col_ids_by_dim[caseTypeDim.id],
+        label: CaseTypeUtil.getDimLabel(completeCaseType, dim.id),
+        id: dim.id,
+        columnIds: completeCaseType.ordered_col_ids_by_dim[dim.id],
       };
       items.push(item);
     });

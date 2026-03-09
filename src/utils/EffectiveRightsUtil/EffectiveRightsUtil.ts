@@ -1,6 +1,6 @@
 import type {
   User,
-  CaseTypeColSetMember,
+  ColSetMember,
   CaseTypeSetMember,
   OrganizationAccessCasePolicy,
   OrganizationShareCasePolicy,
@@ -17,7 +17,7 @@ type AssembleUserEffectiveRightsKwArgs = {
   userAccessCasePolicies: UserAccessCasePolicy[];
   userShareCasePolicies: UserShareCasePolicy[];
   caseTypeSetMembers: CaseTypeSetMember[];
-  caseTypeColSetMembers: CaseTypeColSetMember[];
+  colSetMembers: ColSetMember[];
 };
 
 export class EffectiveRightsUtil {
@@ -28,13 +28,13 @@ export class EffectiveRightsUtil {
     userAccessCasePolicies,
     userShareCasePolicies,
     caseTypeSetMembers,
-    caseTypeColSetMembers,
+    colSetMembers,
   }: AssembleUserEffectiveRightsKwArgs): UserEffectiveRight[] {
     if (!user) {
       return [];
     }
 
-    if (!organizationAccessCasePolicies || !organizationShareCasePolicies || !userAccessCasePolicies || !userShareCasePolicies || !caseTypeSetMembers || !caseTypeColSetMembers) {
+    if (!organizationAccessCasePolicies || !organizationShareCasePolicies || !userAccessCasePolicies || !userShareCasePolicies || !caseTypeSetMembers || !colSetMembers) {
       return [];
     }
 
@@ -44,10 +44,10 @@ export class EffectiveRightsUtil {
       memberProperty: 'case_type_id',
     });
 
-    const mappedCaseTypeColSetMembers = DataSetUtil.getMappedSetMembers({
-      items: caseTypeColSetMembers,
-      setProperty: 'case_type_col_set_id',
-      memberProperty: 'case_type_col_id',
+    const mappedColSetMembers = DataSetUtil.getMappedSetMembers({
+      items: colSetMembers,
+      setProperty: 'col_set_id',
+      memberProperty: 'col_id',
     });
 
     return organizationAccessCasePolicies.map(organizationPolicy => {
@@ -96,22 +96,22 @@ export class EffectiveRightsUtil {
         childMemberIds: userCaseTypeIds,
       });
 
-      const organizationReadCaseTypeColIds = caseTypeColSetMembers.filter(member => member.case_type_col_set_id === organizationPolicy.read_case_type_col_set_id).map(member => member.case_type_col_id);
-      const userReadCaseTypeColIds = caseTypeColSetMembers.filter(member => member.case_type_col_set_id === userPolicy?.read_case_type_col_set_id).map(member => member.case_type_col_id);
-      const { setIds: read_case_type_col_set_ids, categorizedMemberIds: categorized_read_case_type_col_ids, uncategorizedMemberIds: uncategorized_read_case_type_col_ids } = DataSetUtil.getCategorizedSetMembers({
-        mappedSetMembers: mappedCaseTypeColSetMembers,
-        parentSetId: organizationPolicy.read_case_type_col_set_id,
-        parentMemberIds: organizationReadCaseTypeColIds,
-        childMemberIds: userReadCaseTypeColIds,
+      const organizationReadColIds = colSetMembers.filter(member => member.col_set_id === organizationPolicy.read_col_set_id).map(member => member.col_id);
+      const userReadColIds = colSetMembers.filter(member => member.col_set_id === userPolicy?.read_col_set_id).map(member => member.col_id);
+      const { setIds: read_col_set_ids, categorizedMemberIds: categorized_read_col_ids, uncategorizedMemberIds: uncategorized_read_col_ids } = DataSetUtil.getCategorizedSetMembers({
+        mappedSetMembers: mappedColSetMembers,
+        parentSetId: organizationPolicy.read_col_set_id,
+        parentMemberIds: organizationReadColIds,
+        childMemberIds: userReadColIds,
       });
 
-      const organizationWriteCaseTypeColIds = caseTypeColSetMembers.filter(member => member.case_type_col_set_id === organizationPolicy.write_case_type_col_set_id).map(member => member.case_type_col_id);
-      const userWriteCaseTypeColIds = caseTypeColSetMembers.filter(member => member.case_type_col_set_id === userPolicy?.write_case_type_col_set_id).map(member => member.case_type_col_id);
-      const { setIds: write_case_type_col_set_ids, categorizedMemberIds: categorized_write_case_type_col_ids, uncategorizedMemberIds: uncategorized_write_case_type_col_ids } = DataSetUtil.getCategorizedSetMembers({
-        mappedSetMembers: mappedCaseTypeColSetMembers,
-        parentSetId: organizationPolicy.write_case_type_col_set_id,
-        parentMemberIds: organizationWriteCaseTypeColIds,
-        childMemberIds: userWriteCaseTypeColIds,
+      const organizationWriteColIds = colSetMembers.filter(member => member.col_set_id === organizationPolicy.write_col_set_id).map(member => member.col_id);
+      const userWriteColIds = colSetMembers.filter(member => member.col_set_id === userPolicy?.write_col_set_id).map(member => member.col_id);
+      const { setIds: write_col_set_ids, categorizedMemberIds: categorized_write_col_ids, uncategorizedMemberIds: uncategorized_write_col_ids } = DataSetUtil.getCategorizedSetMembers({
+        mappedSetMembers: mappedColSetMembers,
+        parentSetId: organizationPolicy.write_col_set_id,
+        parentMemberIds: organizationWriteColIds,
+        childMemberIds: userWriteColIds,
       });
 
       return {
@@ -124,17 +124,17 @@ export class EffectiveRightsUtil {
         remove_case: organizationPolicy.remove_case && userPolicy?.remove_case,
         remove_case_set: organizationPolicy.remove_case_set && userPolicy?.remove_case_set,
         write_case_set: organizationPolicy.write_case_set && userPolicy?.write_case_set,
-        write_case_type_col_set_id: organizationPolicy.write_case_type_col_set_id,
-        read_case_type_col_set_id: organizationPolicy.read_case_type_col_set_id,
+        write_col_set_id: organizationPolicy.write_col_set_id,
+        read_col_set_id: organizationPolicy.read_col_set_id,
         case_type_set_ids,
         categorized_case_type_ids,
         uncategorized_case_type_ids,
-        read_case_type_col_set_ids,
-        categorized_read_case_type_col_ids,
-        uncategorized_read_case_type_col_ids,
-        write_case_type_col_set_ids,
-        categorized_write_case_type_col_ids,
-        uncategorized_write_case_type_col_ids,
+        read_col_set_ids,
+        categorized_read_col_ids,
+        uncategorized_read_col_ids,
+        write_col_set_ids,
+        categorized_write_col_ids,
+        uncategorized_write_col_ids,
         effective_share_case_rights: effectiveShareCaseRights,
       } satisfies UserEffectiveRight;
     }).filter((policy => !!policy));

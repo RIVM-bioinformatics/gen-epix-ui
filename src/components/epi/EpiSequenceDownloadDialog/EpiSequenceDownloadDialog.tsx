@@ -36,7 +36,7 @@ import { ConfigManager } from '../../../classes/managers/ConfigManager';
 
 export interface EpiSequenceDownloadDialogOpenProps {
   cases: Case[];
-  geneticSequenceCaseTypeColId?: string;
+  geneticSequenceColId?: string;
 }
 
 export interface EpiSequenceDownloadDialogProps extends WithDialogRenderProps<EpiSequenceDownloadDialogOpenProps> {
@@ -46,7 +46,7 @@ export interface EpiSequenceDownloadDialogProps extends WithDialogRenderProps<Ep
 export type EpiSequenceDownloadDialogRefMethods = WithDialogRefMethods<EpiSequenceDownloadDialogProps, EpiSequenceDownloadDialogOpenProps>;
 
 type FormFields = {
-  geneticSequenceCaseTypeColId: string;
+  geneticSequenceColId: string;
 };
 
 export const EpiSequenceDownloadDialog = withDialog<EpiSequenceDownloadDialogProps, EpiSequenceDownloadDialogOpenProps>((
@@ -60,16 +60,16 @@ export const EpiSequenceDownloadDialog = withDialog<EpiSequenceDownloadDialogPro
   const epiDashboardStore = useContext(EpiDashboardStoreContext);
   const completeCaseType = useStore(epiDashboardStore, useShallow((state) => state.completeCaseType));
 
-  const geneticSequenceCaseTypeColOptions = useMemo<AutoCompleteOption<string>[]>(() => {
+  const geneticSequenceColOptions = useMemo<AutoCompleteOption<string>[]>(() => {
     const options: AutoCompleteOption<string>[] = [];
 
-    completeCaseType.ordered_case_type_dim_ids.map(x => completeCaseType.case_type_dims[x]).forEach((caseTypeDim) => {
-      completeCaseType.ordered_case_type_col_ids_by_dim[caseTypeDim.id].map(id => completeCaseType.case_type_cols[id]).forEach(caseTypeCol => {
-        const col = completeCaseType.cols[caseTypeCol.col_id];
-        if (col?.col_type === ColType.GENETIC_SEQUENCE) {
+    completeCaseType.ordered_dim_ids.map(x => completeCaseType.dims[x]).forEach((dim) => {
+      completeCaseType.ordered_col_ids_by_dim[dim.id].map(id => completeCaseType.cols[id]).forEach(col => {
+        const refCol = completeCaseType.ref_cols[col.ref_col_id];
+        if (refCol?.col_type === ColType.GENETIC_SEQUENCE) {
           options.push({
-            value: caseTypeCol.id,
-            label: caseTypeCol.label,
+            value: col.id,
+            label: col.label,
           });
         }
       });
@@ -77,11 +77,11 @@ export const EpiSequenceDownloadDialog = withDialog<EpiSequenceDownloadDialogPro
     return options;
   }, [completeCaseType]);
 
-  const [geneticSequenceCaseTypeColId, setGeneticSequenceCaseTypeColId] = useState(openProps?.geneticSequenceCaseTypeColId ?? geneticSequenceCaseTypeColOptions?.length === 1 ? geneticSequenceCaseTypeColOptions[0].value : '');
+  const [geneticSequenceColId, setGeneticSequenceColId] = useState(openProps?.geneticSequenceColId ?? geneticSequenceColOptions?.length === 1 ? geneticSequenceColOptions[0].value : '');
 
   const formMethods = useForm<FormFields>({
     values: {
-      geneticSequenceCaseTypeColId,
+      geneticSequenceColId,
     },
   });
 
@@ -91,12 +91,12 @@ export const EpiSequenceDownloadDialog = withDialog<EpiSequenceDownloadDialogPro
       data: {
         case_type_id: completeCaseType.id,
         case_ids: openProps.cases.map(c => c.id),
-        genetic_sequence_case_type_col_id: geneticSequenceCaseTypeColId,
-        file_name: `${StringUtil.createSlug(completeCaseType.name)}-${StringUtil.createSlug(geneticSequenceCaseTypeColOptions.find(x => x.value === geneticSequenceCaseTypeColId)?.label)}-sequences.fasta`,
+        genetic_sequence_col_id: geneticSequenceColId,
+        file_name: `${StringUtil.createSlug(completeCaseType.name)}-${StringUtil.createSlug(geneticSequenceColOptions.find(x => x.value === geneticSequenceColId)?.label)}-sequences.fasta`,
       },
     });
     onClose();
-  }, [completeCaseType.id, completeCaseType.name, geneticSequenceCaseTypeColId, geneticSequenceCaseTypeColOptions, onClose, openProps.cases]);
+  }, [completeCaseType.id, completeCaseType.name, geneticSequenceColId, geneticSequenceColOptions, onClose, openProps.cases]);
 
   useEffect(() => {
     onTitleChange(t`Download sequences`);
@@ -111,17 +111,17 @@ export const EpiSequenceDownloadDialog = withDialog<EpiSequenceDownloadDialogPro
             onSubmit={noop}
           >
             <Autocomplete
-              disabled={geneticSequenceCaseTypeColOptions.length < 2}
+              disabled={geneticSequenceColOptions.length < 2}
               label={t`Genetic sequence column`}
-              options={geneticSequenceCaseTypeColOptions}
-              name={'geneticSequenceCaseTypeColId'}
+              options={geneticSequenceColOptions}
+              name={'geneticSequenceColId'}
               // eslint-disable-next-line react/jsx-no-bind
-              onChange={(value: string) => setGeneticSequenceCaseTypeColId(value)}
+              onChange={(value: string) => setGeneticSequenceColId(value)}
             />
           </form>
         </FormProvider>
       </Box>
-      {geneticSequenceCaseTypeColId && (
+      {geneticSequenceColId && (
         <Box
           marginBottom={1}
           sx={{

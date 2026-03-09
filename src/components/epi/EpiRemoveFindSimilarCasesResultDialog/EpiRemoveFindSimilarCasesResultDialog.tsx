@@ -148,7 +148,7 @@ export const EpiRemoveFindSimilarCasesResultDialog = withDialog<EpiRemoveFindSim
             <Box component={'ul'}>
               <Box component={'li'}>
                 {t('Tree: {{treeLabel}}', {
-                  treeLabel: treeConfigurations.find((config) => config.caseTypeCol.id === item.caseTypeColId)?.caseTypeCol?.label || item.caseTypeColId,
+                  treeLabel: treeConfigurations.find((config) => config.col.id === item.colId)?.col?.label || item.colId,
                 })}
               </Box>
               <Box component={'li'}>

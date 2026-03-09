@@ -18,7 +18,7 @@ import { EpiFilterUtil } from '../EpiFilterUtil';
 import type {
   Case,
   CompleteCaseType,
-  CaseTypeCol,
+  Col,
 } from '../../api';
 import { ColType } from '../../api';
 import { DATE_FORMAT } from '../../data/date';
@@ -34,27 +34,27 @@ export class EpiCurveUtil {
    * Gets rows sorted by time
    * @param completeCaseType
    * @param lineList
-   * @param caseTypeColumns
+   * @param cols
    * @returns
    */
-  public static getSortedItems(completeCaseType: CompleteCaseType, cases: Case[], caseTypeColumns: CaseTypeCol[]): Item[] {
-    if (!caseTypeColumns.length || !cases.length || !completeCaseType) {
+  public static getSortedItems(completeCaseType: CompleteCaseType, cases: Case[], cols: Col[]): Item[] {
+    if (!cols.length || !cases.length || !completeCaseType) {
       return [];
     }
 
     // cache the parsers
     const dateParsers: { [key: string]: (date: string) => Date } = {};
-    caseTypeColumns.forEach(caseTypeCol => {
-      dateParsers[caseTypeCol.id] = EpiFilterUtil.getDateParser(completeCaseType.cols[caseTypeCol.col_id]);
+    cols.forEach(col => {
+      dateParsers[col.id] = EpiFilterUtil.getDateParser(completeCaseType.ref_cols[col.ref_col_id]);
     });
 
     const items: Item[] = cases.map(row => {
-      const dates = caseTypeColumns.map(caseTypeCol => {
-        const columnDate = row.content[caseTypeCol.id];
+      const dates = cols.map(col => {
+        const columnDate = row.content[col.id];
         if (!columnDate) {
           return null;
         }
-        const parsedColumnDate = dateParsers[caseTypeCol.id](columnDate);
+        const parsedColumnDate = dateParsers[col.id](columnDate);
         if (!isValid(parsedColumnDate)) {
           return null;
         }
@@ -87,14 +87,14 @@ export class EpiCurveUtil {
    * Finds the initial column (resolution) for the given dimensionId in the given lineList
    * @param completeCaseType
    * @param lineList
-   * @param caseTypeColumns
+   * @param cols
    * @returns
    */
-  public static getPreferredTimeColumn(completeCaseType: CompleteCaseType, cases: Case[], caseTypeColumns: CaseTypeCol[]): CaseTypeCol {
-    const items = EpiCurveUtil.getSortedItems(completeCaseType, cases, caseTypeColumns);
+  public static getPreferredTimeColumn(completeCaseType: CompleteCaseType, cases: Case[], cols: Col[]): Col {
+    const items = EpiCurveUtil.getSortedItems(completeCaseType, cases, cols);
 
     if (!items?.length) {
-      return caseTypeColumns?.[0] ?? null;
+      return cols?.[0] ?? null;
     }
 
     const duration: Duration = {
@@ -105,28 +105,28 @@ export class EpiCurveUtil {
       }),
     };
 
-    const dayCol = caseTypeColumns.find(caseTypeCol => completeCaseType.cols[caseTypeCol.col_id].col_type === ColType.TIME_DAY);
+    const dayCol = cols.find(col => completeCaseType.ref_cols[col.ref_col_id].col_type === ColType.TIME_DAY);
     if (dayCol && (duration.years ?? 0) === 0 && duration.months <= 3) {
       return dayCol;
     }
-    const weekCol = caseTypeColumns.find(caseTypeCol => completeCaseType.cols[caseTypeCol.col_id].col_type === ColType.TIME_WEEK);
+    const weekCol = cols.find(col => completeCaseType.ref_cols[col.ref_col_id].col_type === ColType.TIME_WEEK);
     if (weekCol && (duration.years ?? 0) <= 1) {
       return weekCol;
     }
-    const monthCol = caseTypeColumns.find(caseTypeCol => completeCaseType.cols[caseTypeCol.col_id].col_type === ColType.TIME_MONTH);
+    const monthCol = cols.find(col => completeCaseType.ref_cols[col.ref_col_id].col_type === ColType.TIME_MONTH);
     if (monthCol && (duration.years ?? 0) <= 2) {
       return monthCol;
     }
-    const quarterCol = caseTypeColumns.find(caseTypeCol => completeCaseType.cols[caseTypeCol.col_id].col_type === ColType.TIME_QUARTER);
+    const quarterCol = cols.find(col => completeCaseType.ref_cols[col.ref_col_id].col_type === ColType.TIME_QUARTER);
     if (quarterCol && (duration.years ?? 0) <= 5) {
       return quarterCol;
     }
-    const yearCol = caseTypeColumns.find(caseTypeCol => completeCaseType.cols[caseTypeCol.col_id].col_type === ColType.TIME_QUARTER);
+    const yearCol = cols.find(col => completeCaseType.ref_cols[col.ref_col_id].col_type === ColType.TIME_QUARTER);
     if (yearCol) {
       return yearCol;
     }
 
-    return CaseTypeUtil.getPreferredColumnInDimensionHavingHighestRank(caseTypeColumns, completeCaseType);
+    return CaseTypeUtil.getPreferredColInDimHavingHighestRank(cols, completeCaseType);
   }
 
   public static getXAxisLabel(colType: ColType, value: Date): string {

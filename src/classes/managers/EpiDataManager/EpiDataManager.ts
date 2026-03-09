@@ -177,11 +177,11 @@ export class EpiDataManager {
 
   public getRegionSetIds(completeCaseType: CompleteCaseType): string[] {
     const regionSetIds: string[] = [];
-    const caseTypeColumns = CaseTypeUtil.getCaseTypeCols(completeCaseType);
-    caseTypeColumns.forEach(caseTypeCol => {
-      const column = completeCaseType.cols[caseTypeCol.col_id];
-      if (column.region_set_id && !regionSetIds.includes(column.region_set_id)) {
-        regionSetIds.push(column.region_set_id);
+    const cols = CaseTypeUtil.getCols(completeCaseType);
+    cols.forEach(col => {
+      const refCol = completeCaseType.ref_cols[col.ref_col_id];
+      if (refCol.region_set_id && !regionSetIds.includes(refCol.region_set_id)) {
+        regionSetIds.push(refCol.region_set_id);
       }
     });
     return regionSetIds;

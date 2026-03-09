@@ -21,7 +21,7 @@ import {
   TableMenu,
   TableSidebarMenu,
 } from '../../components/ui/Table';
-import { useCaseTypeColSetMembersQuery } from '../../dataHooks/useCaseTypeColSetMembersQuery';
+import { useColSetMembersQuery } from '../../dataHooks/useColSetMembersQuery';
 import { useCaseTypeSetMembersQuery } from '../../dataHooks/useCaseTypeSetMembersQuery';
 import {
   useDataCollectionsMapQuery,
@@ -50,7 +50,7 @@ import {
   useCaseTypeSetNameFactory,
   useCaseTypeSetsMapQuery,
 } from '../../dataHooks/useCaseTypeSetsQuery';
-import { useCaseTypeColSetsMapQuery } from '../../dataHooks/useCaseTypeColSetsQuery';
+import { useColSetMapQuery } from '../../dataHooks/useColSetsQuery';
 import { ConfigManager } from '../../classes/managers/ConfigManager';
 import { RouterManager } from '../../classes/managers/RouterManager';
 import type { UserEffectiveRight } from '../../models/caseAccess';
@@ -80,9 +80,9 @@ export const UserEffectiveRightsAdminPage = () => {
     },
   });
 
-  const caseTypeColSetMembersQuery = useCaseTypeColSetMembersQuery();
+  const colSetMembersQuery = useColSetMembersQuery();
   const caseTypeSetsMapQuery = useCaseTypeSetsMapQuery();
-  const caseTypeColSetsMapQuery = useCaseTypeColSetsMapQuery();
+  const colSetMapQuery = useColSetMapQuery();
   const caseTypeSetMembersQuery = useCaseTypeSetMembersQuery();
   const caseTypeSetNameFactory = useCaseTypeSetNameFactory();
   const dataCollectionMapQuery = useDataCollectionsMapQuery();
@@ -98,10 +98,10 @@ export const UserEffectiveRightsAdminPage = () => {
     userAccessCasePoliciesQuery,
     userShareCasePoliciesQuery,
     caseTypeSetMembersQuery,
-    caseTypeColSetMembersQuery,
+    colSetMembersQuery,
     dataCollectionMapQuery,
     dataCollectionOptionsQuery,
-    caseTypeColSetsMapQuery,
+    colSetMapQuery,
     caseTypeSetNameFactory,
     caseTypeSetsMapQuery,
   ]);
@@ -121,7 +121,7 @@ export const UserEffectiveRightsAdminPage = () => {
     const { data: userAccessCasePolicies } = userAccessCasePoliciesQuery;
     const { data: userShareCasePolicies } = userShareCasePoliciesQuery;
     const { data: caseTypeSetMembers } = caseTypeSetMembersQuery;
-    const { data: caseTypeColSetMembers } = caseTypeColSetMembersQuery;
+    const { data: colSetMembers } = colSetMembersQuery;
 
     return EffectiveRightsUtil.assembleUserEffectiveRights({
       user,
@@ -130,10 +130,10 @@ export const UserEffectiveRightsAdminPage = () => {
       userAccessCasePolicies,
       userShareCasePolicies,
       caseTypeSetMembers,
-      caseTypeColSetMembers,
+      colSetMembers,
     });
 
-  }, [caseTypeColSetMembersQuery, caseTypeSetMembersQuery, organizationAccessCasePoliciesQuery, organizationShareCasePoliciesQuery, user, userAccessCasePoliciesQuery, userShareCasePoliciesQuery]);
+  }, [colSetMembersQuery, caseTypeSetMembersQuery, organizationAccessCasePoliciesQuery, organizationShareCasePoliciesQuery, user, userAccessCasePoliciesQuery, userShareCasePoliciesQuery]);
 
   const renderSetCell = useCallback((params: { userEffectiveRight: UserEffectiveRight; setIds: string[]; uncategorizedMemberIds: string[]; getName: (memberId: string) => string; type: UsersEffectiveRightsDetailsDialogOpenProps['type'] }) => {
     const { userEffectiveRight, setIds, uncategorizedMemberIds, getName, type } = params;
@@ -200,23 +200,23 @@ export const UserEffectiveRightsAdminPage = () => {
 
   const renderReadCaseSetsCell = useCallback(({ row }: TableRowParams<UserEffectiveRight>) => {
     return renderSetCell({
-      setIds: row.read_case_type_col_set_ids,
-      uncategorizedMemberIds: row.uncategorized_read_case_type_col_ids,
-      getName: (caseTypeColId: string) => caseTypeColSetsMapQuery.map.get(caseTypeColId).name,
+      setIds: row.read_col_set_ids,
+      uncategorizedMemberIds: row.uncategorized_read_col_ids,
+      getName: (colId: string) => colSetMapQuery.map.get(colId).name,
       userEffectiveRight: row,
       type: 'readColSets',
     });
-  }, [caseTypeColSetsMapQuery.map, renderSetCell]);
+  }, [colSetMapQuery.map, renderSetCell]);
 
   const renderWriteCaseSetsCell = useCallback(({ row }: TableRowParams<UserEffectiveRight>) => {
     return renderSetCell({
-      setIds: row.write_case_type_col_set_ids,
-      uncategorizedMemberIds: row.uncategorized_write_case_type_col_ids,
-      getName: (caseTypeColId: string) => caseTypeColSetsMapQuery.map.get(caseTypeColId)?.name,
+      setIds: row.write_col_set_ids,
+      uncategorizedMemberIds: row.uncategorized_write_col_ids,
+      getName: (colId: string) => colSetMapQuery.map.get(colId)?.name,
       userEffectiveRight: row,
       type: 'writeColSets',
     });
-  }, [caseTypeColSetsMapQuery.map, renderSetCell]);
+  }, [colSetMapQuery.map, renderSetCell]);
 
   const tableColumns = useMemo<TableColumn<UserEffectiveRight>[]>(() => {
     return [
@@ -233,7 +233,7 @@ export const UserEffectiveRightsAdminPage = () => {
       },
       {
         type: 'text',
-        id: 'read_case_type_col_set_ids',
+        id: 'read_col_set_ids',
         headerName: t`Read column sets`,
         isInitiallyVisible: true,
         renderCell: renderReadCaseSetsCell,
@@ -242,7 +242,7 @@ export const UserEffectiveRightsAdminPage = () => {
       },
       {
         type: 'text',
-        id: 'write_case_type_col_set_ids',
+        id: 'write_col_set_ids',
         headerName: t`Write column sets`,
         isInitiallyVisible: true,
         renderCell: renderWriteCaseSetsCell,

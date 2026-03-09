@@ -35,7 +35,7 @@ import { useArray } from '../../../hooks/useArray';
 import { GenericForm } from '../../form/helpers/GenericForm';
 import { ResponseHandler } from '../../ui/ResponseHandler';
 import { useDataCollectionOptionsQuery } from '../../../dataHooks/useDataCollectionsQuery';
-import { useCaseTypeColsQuery } from '../../../dataHooks/useCaseTypeColsQuery';
+import { useColsQuery } from '../../../dataHooks/useColsQuery';
 import { EpiUploadUtil } from '../../../utils/EpiUploadUtil';
 import { EpiUploadStoreContext } from '../../../stores/epiUploadStore';
 
@@ -53,7 +53,7 @@ const EpiUploadSelectFile = () => {
   const caseTypesQuery = useCaseTypesQuery();
   const caseTypeOptionsQuery = useCaseTypeOptionsQuery();
   const dataCollectionOptionsQuery = useDataCollectionOptionsQuery();
-  const caseTypeColsQuery = useCaseTypeColsQuery();
+  const colsQuery = useColsQuery();
   const formId = useId();
 
   const store = useContext(EpiUploadStoreContext);
@@ -65,7 +65,7 @@ const EpiUploadSelectFile = () => {
   const goToNextStep = useStore(store, (state) => state.goToNextStep);
   const createdInDataCollectionOptions = useStore(store, (state) => state.createdInDataCollectionOptions);
   const rawData = useStore(store, (state) => state.rawData);
-  const setCaseTypeCols = useStore(store, (state) => state.setCaseTypeCols);
+  const setCols = useStore(store, (state) => state.setCols);
   const setCaseTypeId = useStore(store, (state) => state.setCaseTypeId);
   const setCompleteCaseType = useStore(store, (state) => state.setCompleteCaseType);
   const setCreatedInDataCollectionId = useStore(store, (state) => state.setCreatedInDataCollectionId);
@@ -100,10 +100,10 @@ const EpiUploadSelectFile = () => {
   const { handleSubmit, setValue, setError } = formMethods;
 
   useEffect(() => {
-    if (Array.isArray(caseTypeColsQuery?.data)) {
-      setCaseTypeCols(caseTypeColsQuery.data);
+    if (Array.isArray(colsQuery?.data)) {
+      setCols(colsQuery.data);
     }
-  }, [caseTypeColsQuery.data, setCaseTypeCols]);
+  }, [colsQuery.data, setCols]);
 
   useEffect(() => {
     if (dataCollectionOptionsQuery?.options?.length) {
@@ -205,7 +205,7 @@ const EpiUploadSelectFile = () => {
     caseTypesQuery,
     caseTypeOptionsQuery,
     dataCollectionOptionsQuery,
-    caseTypeColsQuery,
+    colsQuery,
   ]);
 
   const onProceedButtonClick = useCallback(async () => {
@@ -213,7 +213,7 @@ const EpiUploadSelectFile = () => {
   }, [handleSubmit, onFormSubmit]);
 
   const canUpload = useMemo(() => {
-    if (caseTypeColsQuery.isLoading === false && caseTypeColsQuery.data?.length === 0) {
+    if (colsQuery.isLoading === false && colsQuery.data?.length === 0) {
       return false;
     }
     if (caseTypeOptionsQuery.isLoading === false && caseTypeOptionsQuery.options?.length === 0) {
@@ -223,7 +223,7 @@ const EpiUploadSelectFile = () => {
       return false;
     }
     return true;
-  }, [caseTypeColsQuery.data?.length, caseTypeColsQuery.isLoading, caseTypeOptionsQuery.isLoading, caseTypeOptionsQuery.options?.length, dataCollectionOptionsQuery.isLoading, dataCollectionOptionsQuery.options?.length]);
+  }, [colsQuery.data?.length, colsQuery.isLoading, caseTypeOptionsQuery.isLoading, caseTypeOptionsQuery.options?.length, dataCollectionOptionsQuery.isLoading, dataCollectionOptionsQuery.options?.length]);
 
   return (
 

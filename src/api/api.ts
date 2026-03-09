@@ -109,7 +109,7 @@ export type AuthProtocol = typeof AuthProtocol[keyof typeof AuthProtocol];
 
 
 /**
- * A class representing a case.
+ * A class representing an epidemiological case.
  * @export
  * @interface Case
  */
@@ -127,7 +127,7 @@ export interface Case {
      */
     'code'?: string | null;
     /**
-     * The ID of the case type. FOREIGN KEY
+     * The ID of the CaseType. FOREIGN KEY
      * @type {string}
      * @memberof Case
      */
@@ -175,7 +175,7 @@ export interface Case {
      */
     'case_date'?: string;
     /**
-     * The data content of the case as {case_type_col_id: str_value | None}. Only case type columns defined for the case type of the case should be present here, and if no value is present, the key should be omitted. None content values are allowed but will be removed upon serialization.
+     * The data content of the case as {col_id: str_value | None}. Only columns defined for the CaseType of the case should be present here, and if no value is present, the key should be omitted. None content values are allowed but will be removed upon serialization.
      * @type {{ [key: string]: string | null; }}
      * @memberof Case
      */
@@ -207,7 +207,7 @@ export interface CaseBatchForUpload {
     'cases': Array<CaseForUpload>;
 }
 /**
- * The result of uploading a batch of cases.    PARENT CLASS DOCUMENTATION   BaseBatchUploadResult: Base class for upload results corresponding to a complete batch of objects uploaded. The names of the fields in any child class must be exactly identical to those in the corresponding BaseBatchForUpload child class.    PARENT CLASS DOCUMENTATION   UploadResult: Represents the result of an upload operation, including upload status and logs.  Additional validation: - If the status is successful (NOT_FAILED), there must be no error log items. - If the status is failed, there must be at least one error log item.    PARENT CLASS DOCUMENTATION   Model: PARENT CLASS DOCUMENTATION   BaseModel: !!! abstract \"Usage Documentation\"     [Models](../concepts/models.md)  A base class for creating Pydantic models.  Attributes:     __class_vars__: The names of the class variables defined on the model.     __private_attributes__: Metadata about the private attributes of the model.     __signature__: The synthesized `__init__` [`Signature`][inspect.Signature] of the model.      __pydantic_complete__: Whether model building is completed, or if there are still undefined fields.     __pydantic_core_schema__: The core schema of the model.     __pydantic_custom_init__: Whether the model has a custom `__init__` function.     __pydantic_decorators__: Metadata containing the decorators defined on the model.         This replaces `Model.__validators__` and `Model.__root_validators__` from Pydantic V1.     __pydantic_generic_metadata__: Metadata for generic models; contains data used for a similar purpose to         __args__, __origin__, __parameters__ in typing-module generics. May eventually be replaced by these.     __pydantic_parent_namespace__: Parent namespace of the model, used for automatic rebuilding of models.     __pydantic_post_init__: The name of the post-init method for the model, if defined.     __pydantic_root_model__: Whether the model is a [`RootModel`][pydantic.root_model.RootModel].     __pydantic_serializer__: The `pydantic-core` `SchemaSerializer` used to dump instances of the model.     __pydantic_validator__: The `pydantic-core` `SchemaValidator` used to validate instances of the model.      __pydantic_fields__: A dictionary of field names and their corresponding [`FieldInfo`][pydantic.fields.FieldInfo] objects.     __pydantic_computed_fields__: A dictionary of computed field names and their corresponding [`ComputedFieldInfo`][pydantic.fields.ComputedFieldInfo] objects.      __pydantic_extra__: A dictionary containing extra values, if [`extra`][pydantic.config.ConfigDict.extra]         is set to `\'allow\'`.     __pydantic_fields_set__: The names of fields explicitly set during instantiation.     __pydantic_private__: Values of private attributes set on the model instance.    PARENT CLASS DOCUMENTATION   UploadResult: Represents the result of an upload operation, including upload status and logs.  Additional validation: - If the status is successful (NOT_FAILED), there must be no error log items. - If the status is failed, there must be at least one error log item.    PARENT CLASS DOCUMENTATION   Model: PARENT CLASS DOCUMENTATION   BaseModel: !!! abstract \"Usage Documentation\"     [Models](../concepts/models.md)  A base class for creating Pydantic models.  Attributes:     __class_vars__: The names of the class variables defined on the model.     __private_attributes__: Metadata about the private attributes of the model.     __signature__: The synthesized `__init__` [`Signature`][inspect.Signature] of the model.      __pydantic_complete__: Whether model building is completed, or if there are still undefined fields.     __pydantic_core_schema__: The core schema of the model.     __pydantic_custom_init__: Whether the model has a custom `__init__` function.     __pydantic_decorators__: Metadata containing the decorators defined on the model.         This replaces `Model.__validators__` and `Model.__root_validators__` from Pydantic V1.     __pydantic_generic_metadata__: Metadata for generic models; contains data used for a similar purpose to         __args__, __origin__, __parameters__ in typing-module generics. May eventually be replaced by these.     __pydantic_parent_namespace__: Parent namespace of the model, used for automatic rebuilding of models.     __pydantic_post_init__: The name of the post-init method for the model, if defined.     __pydantic_root_model__: Whether the model is a [`RootModel`][pydantic.root_model.RootModel].     __pydantic_serializer__: The `pydantic-core` `SchemaSerializer` used to dump instances of the model.     __pydantic_validator__: The `pydantic-core` `SchemaValidator` used to validate instances of the model.      __pydantic_fields__: A dictionary of field names and their corresponding [`FieldInfo`][pydantic.fields.FieldInfo] objects.     __pydantic_computed_fields__: A dictionary of computed field names and their corresponding [`ComputedFieldInfo`][pydantic.fields.ComputedFieldInfo] objects.      __pydantic_extra__: A dictionary containing extra values, if [`extra`][pydantic.config.ConfigDict.extra]         is set to `\'allow\'`.     __pydantic_fields_set__: The names of fields explicitly set during instantiation.     __pydantic_private__: Values of private attributes set on the model instance.    PARENT CLASS DOCUMENTATION   Model: PARENT CLASS DOCUMENTATION   BaseModel: !!! abstract \"Usage Documentation\"     [Models](../concepts/models.md)  A base class for creating Pydantic models.  Attributes:     __class_vars__: The names of the class variables defined on the model.     __private_attributes__: Metadata about the private attributes of the model.     __signature__: The synthesized `__init__` [`Signature`][inspect.Signature] of the model.      __pydantic_complete__: Whether model building is completed, or if there are still undefined fields.     __pydantic_core_schema__: The core schema of the model.     __pydantic_custom_init__: Whether the model has a custom `__init__` function.     __pydantic_decorators__: Metadata containing the decorators defined on the model.         This replaces `Model.__validators__` and `Model.__root_validators__` from Pydantic V1.     __pydantic_generic_metadata__: Metadata for generic models; contains data used for a similar purpose to         __args__, __origin__, __parameters__ in typing-module generics. May eventually be replaced by these.     __pydantic_parent_namespace__: Parent namespace of the model, used for automatic rebuilding of models.     __pydantic_post_init__: The name of the post-init method for the model, if defined.     __pydantic_root_model__: Whether the model is a [`RootModel`][pydantic.root_model.RootModel].     __pydantic_serializer__: The `pydantic-core` `SchemaSerializer` used to dump instances of the model.     __pydantic_validator__: The `pydantic-core` `SchemaValidator` used to validate instances of the model.      __pydantic_fields__: A dictionary of field names and their corresponding [`FieldInfo`][pydantic.fields.FieldInfo] objects.     __pydantic_computed_fields__: A dictionary of computed field names and their corresponding [`ComputedFieldInfo`][pydantic.fields.ComputedFieldInfo] objects.      __pydantic_extra__: A dictionary containing extra values, if [`extra`][pydantic.config.ConfigDict.extra]         is set to `\'allow\'`.     __pydantic_fields_set__: The names of fields explicitly set during instantiation.     __pydantic_private__: Values of private attributes set on the model instance.    PARENT CLASS DOCUMENTATION   BaseModel: !!! abstract \"Usage Documentation\"     [Models](../concepts/models.md)  A base class for creating Pydantic models.  Attributes:     __class_vars__: The names of the class variables defined on the model.     __private_attributes__: Metadata about the private attributes of the model.     __signature__: The synthesized `__init__` [`Signature`][inspect.Signature] of the model.      __pydantic_complete__: Whether model building is completed, or if there are still undefined fields.     __pydantic_core_schema__: The core schema of the model.     __pydantic_custom_init__: Whether the model has a custom `__init__` function.     __pydantic_decorators__: Metadata containing the decorators defined on the model.         This replaces `Model.__validators__` and `Model.__root_validators__` from Pydantic V1.     __pydantic_generic_metadata__: Metadata for generic models; contains data used for a similar purpose to         __args__, __origin__, __parameters__ in typing-module generics. May eventually be replaced by these.     __pydantic_parent_namespace__: Parent namespace of the model, used for automatic rebuilding of models.     __pydantic_post_init__: The name of the post-init method for the model, if defined.     __pydantic_root_model__: Whether the model is a [`RootModel`][pydantic.root_model.RootModel].     __pydantic_serializer__: The `pydantic-core` `SchemaSerializer` used to dump instances of the model.     __pydantic_validator__: The `pydantic-core` `SchemaValidator` used to validate instances of the model.      __pydantic_fields__: A dictionary of field names and their corresponding [`FieldInfo`][pydantic.fields.FieldInfo] objects.     __pydantic_computed_fields__: A dictionary of computed field names and their corresponding [`ComputedFieldInfo`][pydantic.fields.ComputedFieldInfo] objects.      __pydantic_extra__: A dictionary containing extra values, if [`extra`][pydantic.config.ConfigDict.extra]         is set to `\'allow\'`.     __pydantic_fields_set__: The names of fields explicitly set during instantiation.     __pydantic_private__: Values of private attributes set on the model instance.
+ * The result of uploading a batch of cases.    PARENT CLASS DOCUMENTATION   BaseBatchUploadResult: Base class for upload results corresponding to a complete batch of objects uploaded. The names of the fields in any child class must be exactly identical to those in the corresponding BaseBatchForUpload child class.    PARENT CLASS DOCUMENTATION   UploadResult: Represents the result of an upload operation for a particular object, including upload status and logs.  Additional validation: - If the status is successful (NOT_FAILED), there must be no error log items. - If the status is failed, there must be at least one error log item.    PARENT CLASS DOCUMENTATION   Model: PARENT CLASS DOCUMENTATION   BaseModel: !!! abstract \"Usage Documentation\"     [Models](../concepts/models.md)  A base class for creating Pydantic models.  Attributes:     __class_vars__: The names of the class variables defined on the model.     __private_attributes__: Metadata about the private attributes of the model.     __signature__: The synthesized `__init__` [`Signature`][inspect.Signature] of the model.      __pydantic_complete__: Whether model building is completed, or if there are still undefined fields.     __pydantic_core_schema__: The core schema of the model.     __pydantic_custom_init__: Whether the model has a custom `__init__` function.     __pydantic_decorators__: Metadata containing the decorators defined on the model.         This replaces `Model.__validators__` and `Model.__root_validators__` from Pydantic V1.     __pydantic_generic_metadata__: Metadata for generic models; contains data used for a similar purpose to         __args__, __origin__, __parameters__ in typing-module generics. May eventually be replaced by these.     __pydantic_parent_namespace__: Parent namespace of the model, used for automatic rebuilding of models.     __pydantic_post_init__: The name of the post-init method for the model, if defined.     __pydantic_root_model__: Whether the model is a [`RootModel`][pydantic.root_model.RootModel].     __pydantic_serializer__: The `pydantic-core` `SchemaSerializer` used to dump instances of the model.     __pydantic_validator__: The `pydantic-core` `SchemaValidator` used to validate instances of the model.      __pydantic_fields__: A dictionary of field names and their corresponding [`FieldInfo`][pydantic.fields.FieldInfo] objects.     __pydantic_computed_fields__: A dictionary of computed field names and their corresponding [`ComputedFieldInfo`][pydantic.fields.ComputedFieldInfo] objects.      __pydantic_extra__: A dictionary containing extra values, if [`extra`][pydantic.config.ConfigDict.extra]         is set to `\'allow\'`.     __pydantic_fields_set__: The names of fields explicitly set during instantiation.     __pydantic_private__: Values of private attributes set on the model instance.    PARENT CLASS DOCUMENTATION   UploadResult: Represents the result of an upload operation for a particular object, including upload status and logs.  Additional validation: - If the status is successful (NOT_FAILED), there must be no error log items. - If the status is failed, there must be at least one error log item.    PARENT CLASS DOCUMENTATION   Model: PARENT CLASS DOCUMENTATION   BaseModel: !!! abstract \"Usage Documentation\"     [Models](../concepts/models.md)  A base class for creating Pydantic models.  Attributes:     __class_vars__: The names of the class variables defined on the model.     __private_attributes__: Metadata about the private attributes of the model.     __signature__: The synthesized `__init__` [`Signature`][inspect.Signature] of the model.      __pydantic_complete__: Whether model building is completed, or if there are still undefined fields.     __pydantic_core_schema__: The core schema of the model.     __pydantic_custom_init__: Whether the model has a custom `__init__` function.     __pydantic_decorators__: Metadata containing the decorators defined on the model.         This replaces `Model.__validators__` and `Model.__root_validators__` from Pydantic V1.     __pydantic_generic_metadata__: Metadata for generic models; contains data used for a similar purpose to         __args__, __origin__, __parameters__ in typing-module generics. May eventually be replaced by these.     __pydantic_parent_namespace__: Parent namespace of the model, used for automatic rebuilding of models.     __pydantic_post_init__: The name of the post-init method for the model, if defined.     __pydantic_root_model__: Whether the model is a [`RootModel`][pydantic.root_model.RootModel].     __pydantic_serializer__: The `pydantic-core` `SchemaSerializer` used to dump instances of the model.     __pydantic_validator__: The `pydantic-core` `SchemaValidator` used to validate instances of the model.      __pydantic_fields__: A dictionary of field names and their corresponding [`FieldInfo`][pydantic.fields.FieldInfo] objects.     __pydantic_computed_fields__: A dictionary of computed field names and their corresponding [`ComputedFieldInfo`][pydantic.fields.ComputedFieldInfo] objects.      __pydantic_extra__: A dictionary containing extra values, if [`extra`][pydantic.config.ConfigDict.extra]         is set to `\'allow\'`.     __pydantic_fields_set__: The names of fields explicitly set during instantiation.     __pydantic_private__: Values of private attributes set on the model instance.    PARENT CLASS DOCUMENTATION   Model: PARENT CLASS DOCUMENTATION   BaseModel: !!! abstract \"Usage Documentation\"     [Models](../concepts/models.md)  A base class for creating Pydantic models.  Attributes:     __class_vars__: The names of the class variables defined on the model.     __private_attributes__: Metadata about the private attributes of the model.     __signature__: The synthesized `__init__` [`Signature`][inspect.Signature] of the model.      __pydantic_complete__: Whether model building is completed, or if there are still undefined fields.     __pydantic_core_schema__: The core schema of the model.     __pydantic_custom_init__: Whether the model has a custom `__init__` function.     __pydantic_decorators__: Metadata containing the decorators defined on the model.         This replaces `Model.__validators__` and `Model.__root_validators__` from Pydantic V1.     __pydantic_generic_metadata__: Metadata for generic models; contains data used for a similar purpose to         __args__, __origin__, __parameters__ in typing-module generics. May eventually be replaced by these.     __pydantic_parent_namespace__: Parent namespace of the model, used for automatic rebuilding of models.     __pydantic_post_init__: The name of the post-init method for the model, if defined.     __pydantic_root_model__: Whether the model is a [`RootModel`][pydantic.root_model.RootModel].     __pydantic_serializer__: The `pydantic-core` `SchemaSerializer` used to dump instances of the model.     __pydantic_validator__: The `pydantic-core` `SchemaValidator` used to validate instances of the model.      __pydantic_fields__: A dictionary of field names and their corresponding [`FieldInfo`][pydantic.fields.FieldInfo] objects.     __pydantic_computed_fields__: A dictionary of computed field names and their corresponding [`ComputedFieldInfo`][pydantic.fields.ComputedFieldInfo] objects.      __pydantic_extra__: A dictionary containing extra values, if [`extra`][pydantic.config.ConfigDict.extra]         is set to `\'allow\'`.     __pydantic_fields_set__: The names of fields explicitly set during instantiation.     __pydantic_private__: Values of private attributes set on the model instance.    PARENT CLASS DOCUMENTATION   BaseModel: !!! abstract \"Usage Documentation\"     [Models](../concepts/models.md)  A base class for creating Pydantic models.  Attributes:     __class_vars__: The names of the class variables defined on the model.     __private_attributes__: Metadata about the private attributes of the model.     __signature__: The synthesized `__init__` [`Signature`][inspect.Signature] of the model.      __pydantic_complete__: Whether model building is completed, or if there are still undefined fields.     __pydantic_core_schema__: The core schema of the model.     __pydantic_custom_init__: Whether the model has a custom `__init__` function.     __pydantic_decorators__: Metadata containing the decorators defined on the model.         This replaces `Model.__validators__` and `Model.__root_validators__` from Pydantic V1.     __pydantic_generic_metadata__: Metadata for generic models; contains data used for a similar purpose to         __args__, __origin__, __parameters__ in typing-module generics. May eventually be replaced by these.     __pydantic_parent_namespace__: Parent namespace of the model, used for automatic rebuilding of models.     __pydantic_post_init__: The name of the post-init method for the model, if defined.     __pydantic_root_model__: Whether the model is a [`RootModel`][pydantic.root_model.RootModel].     __pydantic_serializer__: The `pydantic-core` `SchemaSerializer` used to dump instances of the model.     __pydantic_validator__: The `pydantic-core` `SchemaValidator` used to validate instances of the model.      __pydantic_fields__: A dictionary of field names and their corresponding [`FieldInfo`][pydantic.fields.FieldInfo] objects.     __pydantic_computed_fields__: A dictionary of computed field names and their corresponding [`ComputedFieldInfo`][pydantic.fields.ComputedFieldInfo] objects.      __pydantic_extra__: A dictionary containing extra values, if [`extra`][pydantic.config.ConfigDict.extra]         is set to `\'allow\'`.     __pydantic_fields_set__: The names of fields explicitly set during instantiation.     __pydantic_private__: Values of private attributes set on the model instance.
  * @export
  * @interface CaseBatchUploadResult
  */
@@ -224,6 +224,12 @@ export interface CaseBatchUploadResult {
      * @memberof CaseBatchUploadResult
      */
     'status'?: UploadStatus;
+    /**
+     * Indicates whether the object did not exist before start of the upload. False in case upload failed before this could be determined.
+     * @type {boolean}
+     * @memberof CaseBatchUploadResult
+     */
+    'is_new'?: boolean;
     /**
      * A list of log items capturing messages and events that occurred during the upload operation.
      * @type {Array<UploadLogItem>}
@@ -334,16 +340,16 @@ export interface CaseDataIssue {
      */
     'message': string | null;
     /**
-     * The ID of the case type column
+     * The ID of the column
      * @type {string}
      * @memberof CaseDataIssue
      */
-    'case_type_col_id': string;
+    'col_id': string;
 }
 
 
 /**
- * A case intended for upload, together with any relevant associated data.    PARENT CLASS DOCUMENTATION   ParentForUpload: Represents a parent model for upload, where the term \"parent\" refers to a model that can have child models associated with it through a link. External identifiers can also be added here.  This class must be subclassed for specific parent models, adding the following fields: - A parent Parent|None field where the parent model that needs to be uploaded, if   any, will be put - For each child model type that can be associated with the parent, a \"children\"   list|None field that will contain the actual child models to be uploaded along with   the parent model. Metadata on the parent and child models, allowing introspection, must be provided through the class variables.  Additional validation: - NULL_ID in the id field is converted to None. - If both the ParentForUpload id and the contained Parent model id are provided,   they must match. - For each child model type, if the ParentForUpload id is provided, the parent ID   field in each child model must either be None/NULL_ID or match the ParentForUpload   id.    PARENT CLASS DOCUMENTATION   Model: PARENT CLASS DOCUMENTATION   BaseModel: !!! abstract \"Usage Documentation\"     [Models](../concepts/models.md)  A base class for creating Pydantic models.  Attributes:     __class_vars__: The names of the class variables defined on the model.     __private_attributes__: Metadata about the private attributes of the model.     __signature__: The synthesized `__init__` [`Signature`][inspect.Signature] of the model.      __pydantic_complete__: Whether model building is completed, or if there are still undefined fields.     __pydantic_core_schema__: The core schema of the model.     __pydantic_custom_init__: Whether the model has a custom `__init__` function.     __pydantic_decorators__: Metadata containing the decorators defined on the model.         This replaces `Model.__validators__` and `Model.__root_validators__` from Pydantic V1.     __pydantic_generic_metadata__: Metadata for generic models; contains data used for a similar purpose to         __args__, __origin__, __parameters__ in typing-module generics. May eventually be replaced by these.     __pydantic_parent_namespace__: Parent namespace of the model, used for automatic rebuilding of models.     __pydantic_post_init__: The name of the post-init method for the model, if defined.     __pydantic_root_model__: Whether the model is a [`RootModel`][pydantic.root_model.RootModel].     __pydantic_serializer__: The `pydantic-core` `SchemaSerializer` used to dump instances of the model.     __pydantic_validator__: The `pydantic-core` `SchemaValidator` used to validate instances of the model.      __pydantic_fields__: A dictionary of field names and their corresponding [`FieldInfo`][pydantic.fields.FieldInfo] objects.     __pydantic_computed_fields__: A dictionary of computed field names and their corresponding [`ComputedFieldInfo`][pydantic.fields.ComputedFieldInfo] objects.      __pydantic_extra__: A dictionary containing extra values, if [`extra`][pydantic.config.ConfigDict.extra]         is set to `\'allow\'`.     __pydantic_fields_set__: The names of fields explicitly set during instantiation.     __pydantic_private__: Values of private attributes set on the model instance.    IsNewIdMixin:  Mixin that adds an is_new_id field to indicate whether the model instance is new and has an externally assigned ID rather than one assigned by the system. Assumes that the inheriting model also has an \'id\' field.  Additional validation: - If is_new_id is True, the model id field field may not be None or NULL_ID.    ExternalIdentifiersMixin:  Mixin that adds external identifiers fields and validation. Assumes that the inheriting model also has an \'external_identifiers\' field.  Additional validation: - All external identifiers must have the same identifier type. - All external identifiers must have unique values.    PARENT CLASS DOCUMENTATION   Model: PARENT CLASS DOCUMENTATION   BaseModel: !!! abstract \"Usage Documentation\"     [Models](../concepts/models.md)  A base class for creating Pydantic models.  Attributes:     __class_vars__: The names of the class variables defined on the model.     __private_attributes__: Metadata about the private attributes of the model.     __signature__: The synthesized `__init__` [`Signature`][inspect.Signature] of the model.      __pydantic_complete__: Whether model building is completed, or if there are still undefined fields.     __pydantic_core_schema__: The core schema of the model.     __pydantic_custom_init__: Whether the model has a custom `__init__` function.     __pydantic_decorators__: Metadata containing the decorators defined on the model.         This replaces `Model.__validators__` and `Model.__root_validators__` from Pydantic V1.     __pydantic_generic_metadata__: Metadata for generic models; contains data used for a similar purpose to         __args__, __origin__, __parameters__ in typing-module generics. May eventually be replaced by these.     __pydantic_parent_namespace__: Parent namespace of the model, used for automatic rebuilding of models.     __pydantic_post_init__: The name of the post-init method for the model, if defined.     __pydantic_root_model__: Whether the model is a [`RootModel`][pydantic.root_model.RootModel].     __pydantic_serializer__: The `pydantic-core` `SchemaSerializer` used to dump instances of the model.     __pydantic_validator__: The `pydantic-core` `SchemaValidator` used to validate instances of the model.      __pydantic_fields__: A dictionary of field names and their corresponding [`FieldInfo`][pydantic.fields.FieldInfo] objects.     __pydantic_computed_fields__: A dictionary of computed field names and their corresponding [`ComputedFieldInfo`][pydantic.fields.ComputedFieldInfo] objects.      __pydantic_extra__: A dictionary containing extra values, if [`extra`][pydantic.config.ConfigDict.extra]         is set to `\'allow\'`.     __pydantic_fields_set__: The names of fields explicitly set during instantiation.     __pydantic_private__: Values of private attributes set on the model instance.    PARENT CLASS DOCUMENTATION   BaseModel: !!! abstract \"Usage Documentation\"     [Models](../concepts/models.md)  A base class for creating Pydantic models.  Attributes:     __class_vars__: The names of the class variables defined on the model.     __private_attributes__: Metadata about the private attributes of the model.     __signature__: The synthesized `__init__` [`Signature`][inspect.Signature] of the model.      __pydantic_complete__: Whether model building is completed, or if there are still undefined fields.     __pydantic_core_schema__: The core schema of the model.     __pydantic_custom_init__: Whether the model has a custom `__init__` function.     __pydantic_decorators__: Metadata containing the decorators defined on the model.         This replaces `Model.__validators__` and `Model.__root_validators__` from Pydantic V1.     __pydantic_generic_metadata__: Metadata for generic models; contains data used for a similar purpose to         __args__, __origin__, __parameters__ in typing-module generics. May eventually be replaced by these.     __pydantic_parent_namespace__: Parent namespace of the model, used for automatic rebuilding of models.     __pydantic_post_init__: The name of the post-init method for the model, if defined.     __pydantic_root_model__: Whether the model is a [`RootModel`][pydantic.root_model.RootModel].     __pydantic_serializer__: The `pydantic-core` `SchemaSerializer` used to dump instances of the model.     __pydantic_validator__: The `pydantic-core` `SchemaValidator` used to validate instances of the model.      __pydantic_fields__: A dictionary of field names and their corresponding [`FieldInfo`][pydantic.fields.FieldInfo] objects.     __pydantic_computed_fields__: A dictionary of computed field names and their corresponding [`ComputedFieldInfo`][pydantic.fields.ComputedFieldInfo] objects.      __pydantic_extra__: A dictionary containing extra values, if [`extra`][pydantic.config.ConfigDict.extra]         is set to `\'allow\'`.     __pydantic_fields_set__: The names of fields explicitly set during instantiation.     __pydantic_private__: Values of private attributes set on the model instance.    IsNewIdMixin:  Mixin that adds an is_new_id field to indicate whether the model instance is new and has an externally assigned ID rather than one assigned by the system. Assumes that the inheriting model also has an \'id\' field.  Additional validation: - If is_new_id is True, the model id field field may not be None or NULL_ID.    ExternalIdentifiersMixin:  Mixin that adds external identifiers fields and validation. Assumes that the inheriting model also has an \'external_identifiers\' field.  Additional validation: - All external identifiers must have the same identifier type. - All external identifiers must have unique values.
+ * A case intended for upload, together with any relevant associated data.    PARENT CLASS DOCUMENTATION   ParentForUpload: Represents a parent model for upload, where the term \"parent\" refers to a model that can have child models associated with it through a link. External identifiers can also be added here.  This class must be subclassed for specific parent models, adding the following fields: - A parent Parent|None field where the parent model that needs to be uploaded, if   any, will be put - For each child model type that can be associated with the parent, a \"children\"   list|None field that will contain the actual child models to be uploaded along with   the parent model. Metadata on the parent and child models, allowing introspection, must be provided through the class variables.  Additional validation: - NULL_ID in the id field is converted to None. - If both the ParentForUpload id and the contained Parent model id are provided,   they must match. - For each child model type, if the ParentForUpload id is provided, the parent ID   field in each child model must either be None/NULL_ID or match the ParentForUpload   id.    PARENT CLASS DOCUMENTATION   Model: PARENT CLASS DOCUMENTATION   BaseModel: !!! abstract \"Usage Documentation\"     [Models](../concepts/models.md)  A base class for creating Pydantic models.  Attributes:     __class_vars__: The names of the class variables defined on the model.     __private_attributes__: Metadata about the private attributes of the model.     __signature__: The synthesized `__init__` [`Signature`][inspect.Signature] of the model.      __pydantic_complete__: Whether model building is completed, or if there are still undefined fields.     __pydantic_core_schema__: The core schema of the model.     __pydantic_custom_init__: Whether the model has a custom `__init__` function.     __pydantic_decorators__: Metadata containing the decorators defined on the model.         This replaces `Model.__validators__` and `Model.__root_validators__` from Pydantic V1.     __pydantic_generic_metadata__: Metadata for generic models; contains data used for a similar purpose to         __args__, __origin__, __parameters__ in typing-module generics. May eventually be replaced by these.     __pydantic_parent_namespace__: Parent namespace of the model, used for automatic rebuilding of models.     __pydantic_post_init__: The name of the post-init method for the model, if defined.     __pydantic_root_model__: Whether the model is a [`RootModel`][pydantic.root_model.RootModel].     __pydantic_serializer__: The `pydantic-core` `SchemaSerializer` used to dump instances of the model.     __pydantic_validator__: The `pydantic-core` `SchemaValidator` used to validate instances of the model.      __pydantic_fields__: A dictionary of field names and their corresponding [`FieldInfo`][pydantic.fields.FieldInfo] objects.     __pydantic_computed_fields__: A dictionary of computed field names and their corresponding [`ComputedFieldInfo`][pydantic.fields.ComputedFieldInfo] objects.      __pydantic_extra__: A dictionary containing extra values, if [`extra`][pydantic.config.ConfigDict.extra]         is set to `\'allow\'`.     __pydantic_fields_set__: The names of fields explicitly set during instantiation.     __pydantic_private__: Values of private attributes set on the model instance.    ExternalIdentifiersMixin:  Mixin that adds external identifiers fields and validation. Assumes that the inheriting model also has an \'external_identifiers\' field.  Additional validation: - All external identifiers must have the same identifier type. - All external identifiers must have unique values.    PARENT CLASS DOCUMENTATION   Model: PARENT CLASS DOCUMENTATION   BaseModel: !!! abstract \"Usage Documentation\"     [Models](../concepts/models.md)  A base class for creating Pydantic models.  Attributes:     __class_vars__: The names of the class variables defined on the model.     __private_attributes__: Metadata about the private attributes of the model.     __signature__: The synthesized `__init__` [`Signature`][inspect.Signature] of the model.      __pydantic_complete__: Whether model building is completed, or if there are still undefined fields.     __pydantic_core_schema__: The core schema of the model.     __pydantic_custom_init__: Whether the model has a custom `__init__` function.     __pydantic_decorators__: Metadata containing the decorators defined on the model.         This replaces `Model.__validators__` and `Model.__root_validators__` from Pydantic V1.     __pydantic_generic_metadata__: Metadata for generic models; contains data used for a similar purpose to         __args__, __origin__, __parameters__ in typing-module generics. May eventually be replaced by these.     __pydantic_parent_namespace__: Parent namespace of the model, used for automatic rebuilding of models.     __pydantic_post_init__: The name of the post-init method for the model, if defined.     __pydantic_root_model__: Whether the model is a [`RootModel`][pydantic.root_model.RootModel].     __pydantic_serializer__: The `pydantic-core` `SchemaSerializer` used to dump instances of the model.     __pydantic_validator__: The `pydantic-core` `SchemaValidator` used to validate instances of the model.      __pydantic_fields__: A dictionary of field names and their corresponding [`FieldInfo`][pydantic.fields.FieldInfo] objects.     __pydantic_computed_fields__: A dictionary of computed field names and their corresponding [`ComputedFieldInfo`][pydantic.fields.ComputedFieldInfo] objects.      __pydantic_extra__: A dictionary containing extra values, if [`extra`][pydantic.config.ConfigDict.extra]         is set to `\'allow\'`.     __pydantic_fields_set__: The names of fields explicitly set during instantiation.     __pydantic_private__: Values of private attributes set on the model instance.    PARENT CLASS DOCUMENTATION   BaseModel: !!! abstract \"Usage Documentation\"     [Models](../concepts/models.md)  A base class for creating Pydantic models.  Attributes:     __class_vars__: The names of the class variables defined on the model.     __private_attributes__: Metadata about the private attributes of the model.     __signature__: The synthesized `__init__` [`Signature`][inspect.Signature] of the model.      __pydantic_complete__: Whether model building is completed, or if there are still undefined fields.     __pydantic_core_schema__: The core schema of the model.     __pydantic_custom_init__: Whether the model has a custom `__init__` function.     __pydantic_decorators__: Metadata containing the decorators defined on the model.         This replaces `Model.__validators__` and `Model.__root_validators__` from Pydantic V1.     __pydantic_generic_metadata__: Metadata for generic models; contains data used for a similar purpose to         __args__, __origin__, __parameters__ in typing-module generics. May eventually be replaced by these.     __pydantic_parent_namespace__: Parent namespace of the model, used for automatic rebuilding of models.     __pydantic_post_init__: The name of the post-init method for the model, if defined.     __pydantic_root_model__: Whether the model is a [`RootModel`][pydantic.root_model.RootModel].     __pydantic_serializer__: The `pydantic-core` `SchemaSerializer` used to dump instances of the model.     __pydantic_validator__: The `pydantic-core` `SchemaValidator` used to validate instances of the model.      __pydantic_fields__: A dictionary of field names and their corresponding [`FieldInfo`][pydantic.fields.FieldInfo] objects.     __pydantic_computed_fields__: A dictionary of computed field names and their corresponding [`ComputedFieldInfo`][pydantic.fields.ComputedFieldInfo] objects.      __pydantic_extra__: A dictionary containing extra values, if [`extra`][pydantic.config.ConfigDict.extra]         is set to `\'allow\'`.     __pydantic_fields_set__: The names of fields explicitly set during instantiation.     __pydantic_private__: Values of private attributes set on the model instance.    ExternalIdentifiersMixin:  Mixin that adds external identifiers fields and validation. Assumes that the inheriting model also has an \'external_identifiers\' field.  Additional validation: - All external identifiers must have the same identifier type. - All external identifiers must have unique values.
  * @export
  * @interface CaseForUpload
  */
@@ -354,12 +360,6 @@ export interface CaseForUpload {
      * @memberof CaseForUpload
      */
     'external_identifiers'?: Array<ExternalIdentifierForUpload> | null;
-    /**
-     * Indicates whether the model instance is both new (not yet stored) and its ID is assigned outside the system, e.g. for having the same IDs between different environments.
-     * @type {boolean}
-     * @memberof CaseForUpload
-     */
-    'is_new_id'?: boolean;
     /**
      * The unique identifier for the Parent object. If NULL_ID is provided, it will be set to None. The id must match that of the contained Parent model, if provided, and be consistent with the parent ID in the child models, if provided. The contained Parent model may have a different ID field than \'id\', but this class uses \'id\' instead.
      * @type {string}
@@ -373,13 +373,13 @@ export interface CaseForUpload {
      */
     'case'?: Case;
     /**
-     * The read sets to be uploaded and associated with the case. If None, this element is not taken into consideration during the upload. Must each be for a different case type column.
+     * The read sets to be uploaded and associated with the case. If None, this element is not taken into consideration during the upload. Must each be for a different Col.
      * @type {Array<ReadSetForUpload>}
      * @memberof CaseForUpload
      */
     'read_sets'?: Array<ReadSetForUpload> | null;
     /**
-     * The sequences to be uploaded and associated with the case. If None, this element is not taken into consideration during the upload. Must each be for a different case type column.
+     * The sequences to be uploaded and associated with the case. If None, this element is not taken into consideration during the upload. Must each be for a different Col.
      * @type {Array<SeqForUpload>}
      * @memberof CaseForUpload
      */
@@ -404,13 +404,13 @@ export interface CaseQuery {
      */
     'label'?: string | null;
     /**
-     * The ID of the case type that the cases must belong to.
+     * The ID of the CaseType that the cases must belong to.
      * @type {string}
      * @memberof CaseQuery
      */
     'case_type_id': string;
     /**
-     * The IDs of the case set(s) that the case must belong to. Not applied if not provided. All case sets must belong to the same case type as case_type_id.
+     * The IDs of the case set(s) that the case must belong to. Not applied if not provided. All case sets must belong to the same CaseType as case_type_id.
      * @type {Array<string>}
      * @memberof CaseQuery
      */
@@ -478,7 +478,7 @@ export interface CaseRights {
      */
     'created_in_data_collection_id': string;
     /**
-     * The ID of the case type
+     * The ID of the CaseType
      * @type {string}
      * @memberof CaseRights
      */
@@ -526,17 +526,17 @@ export interface CaseRights {
      */
     'case_id': string;
     /**
-     * The IDs of the case type columns that are allowed to be read for the case
+     * The IDs of the Cols that are allowed to be read for the case
      * @type {Array<string>}
      * @memberof CaseRights
      */
-    'read_case_type_col_ids': Array<string>;
+    'read_col_ids': Array<string>;
     /**
-     * The IDs of the case type columns that are allowed to be written for the case
+     * The IDs of the Cols that are allowed to be written for the case
      * @type {Array<string>}
      * @memberof CaseRights
      */
-    'write_case_type_col_ids': Array<string>;
+    'write_col_ids': Array<string>;
 }
 /**
  * 
@@ -551,7 +551,7 @@ export interface CaseSet {
      */
     'id'?: string | null;
     /**
-     * The ID of the case type. FOREIGN KEY
+     * The ID of the CaseType. FOREIGN KEY
      * @type {string}
      * @memberof CaseSet
      */
@@ -593,7 +593,7 @@ export interface CaseSet {
      */
     'created_at'?: string;
     /**
-     * The id of the category of the case set
+     * The CaseSetCategory ID. FOREIGN KEY
      * @type {string}
      * @memberof CaseSet
      */
@@ -605,7 +605,7 @@ export interface CaseSet {
      */
     'case_set_category'?: CaseSetCategory;
     /**
-     * The id of the status of the case set
+     * The CaseSetStatus ID. FOREIGN KEY
      * @type {string}
      * @memberof CaseSet
      */
@@ -630,13 +630,13 @@ export interface CaseSetCategory {
      */
     'id'?: string | null;
     /**
-     * The name of the case set category, UNIQUE
+     * The name of the CaseSetCategory, UNIQUE
      * @type {string}
      * @memberof CaseSetCategory
      */
     'name': string;
     /**
-     * The description of the case set category
+     * The description of the CaseSetCategory
      * @type {string}
      * @memberof CaseSetCategory
      */
@@ -743,7 +743,7 @@ export interface CaseSetRights {
      */
     'created_in_data_collection_id': string;
     /**
-     * The ID of the case type
+     * The ID of the CaseType
      * @type {string}
      * @memberof CaseSetRights
      */
@@ -816,13 +816,13 @@ export interface CaseSetStatus {
      */
     'id'?: string | null;
     /**
-     * The name of the case set status, UNIQUE
+     * The name of the CaseSetStatus, UNIQUE
      * @type {string}
      * @memberof CaseSetStatus
      */
     'name': string;
     /**
-     * The description of the case set status
+     * The description of the CaseSetStatus
      * @type {string}
      * @memberof CaseSetStatus
      */
@@ -835,7 +835,7 @@ export interface CaseSetStatus {
  */
 export interface CaseStats {
     /**
-     * The ID of the case type.
+     * The ID of the CaseType.
      * @type {string}
      * @memberof CaseStats
      */
@@ -872,7 +872,7 @@ export interface CaseStats {
     'last_case_date'?: string | null;
 }
 /**
- * 
+ * A CaseType is the data equivalent of an epidemiological case definition. By extension, it can also include non-cases that are relevant for the case definition, e.g. controls or samples from non-human origin. In addition, the CaseType contains some operational settings information.  Columns and dimensions are linked to CaseTypes.
  * @export
  * @interface CaseType
  */
@@ -884,13 +884,13 @@ export interface CaseType {
      */
     'id'?: string | null;
     /**
-     * The name of the case type
+     * The name of the CaseType
      * @type {string}
      * @memberof CaseType
      */
     'name': string;
     /**
-     * The description of the case type
+     * The description of the CaseType
      * @type {string}
      * @memberof CaseType
      */
@@ -957,7 +957,7 @@ export interface CaseType {
  */
 export interface CaseTypeAccessAbac {
     /**
-     * The ID of the case type
+     * The ID of the CaseType
      * @type {string}
      * @memberof CaseTypeAccessAbac
      */
@@ -969,333 +969,59 @@ export interface CaseTypeAccessAbac {
      */
     'data_collection_id': string;
     /**
-     * Whether the data collection is private, limited to the case types in the case type set. When true, add/remove case and add/remove case set are considered (i) as the right to create/delete a case or case set in this data collection (setting case.created_in_data_collection to this data collection) and (ii) as the right to share the case or case set further in other data collections. Deleting a case or case set is only allowed when it can or has been removed from all other data collections as well.
+     * Whether the data collection is private, limited to the CaseTypes in the CaseTypeSet. When true, add/remove case and add/remove case set are considered (i) as the right to create/delete a case or case set in this data collection (setting case.created_in_data_collection to this data collection) and (ii) as the right to share the case or case set further in other data collections. Deleting a case or case set is only allowed when it can or has been removed from all other data collections as well.
      * @type {boolean}
      * @memberof CaseTypeAccessAbac
      */
     'is_private': boolean;
     /**
-     * Whether cases may be added, limited to the case type and data collection
+     * Whether cases may be added, limited to the CaseType and data collection
      * @type {boolean}
      * @memberof CaseTypeAccessAbac
      */
     'add_case': boolean;
     /**
-     * Whether cases may be removed, limited to the case type and data collection
+     * Whether cases may be removed, limited to the CaseType and data collection
      * @type {boolean}
      * @memberof CaseTypeAccessAbac
      */
     'remove_case': boolean;
     /**
-     * Whether case sets may be added, limited to the case type and data collection
+     * Whether case sets may be added, limited to the CaseType and data collection
      * @type {boolean}
      * @memberof CaseTypeAccessAbac
      */
     'add_case_set': boolean;
     /**
-     * Whether case sets may be removed, limited to the case type and data collection
+     * Whether case sets may be removed, limited to the CaseType and data collection
      * @type {boolean}
      * @memberof CaseTypeAccessAbac
      */
     'remove_case_set': boolean;
     /**
-     * The IDs of the case type columns for which values can be read, limited to the case type and data collection
+     * The IDs of the columns for which values can be read, limited to the CaseType and data collection
      * @type {Array<string>}
      * @memberof CaseTypeAccessAbac
      */
-    'read_case_type_col_ids': Array<string>;
+    'read_col_ids': Array<string>;
     /**
-     * The IDs of the case type columns for which values can be updated, limited to the case types in the case type set
+     * The IDs of the columns for which values can be updated, limited to the CaseTypes in the CaseTypeSet
      * @type {Array<string>}
      * @memberof CaseTypeAccessAbac
      */
-    'write_case_type_col_ids': Array<string>;
+    'write_col_ids': Array<string>;
     /**
-     * Whether case set be read, limited to the case type and data collection
+     * Whether case set be read, limited to the CaseType and data collection
      * @type {boolean}
      * @memberof CaseTypeAccessAbac
      */
     'read_case_set': boolean;
     /**
-     * Whether case set be updated, limited to the case type and data collection
+     * Whether case set be updated, limited to the CaseType and data collection
      * @type {boolean}
      * @memberof CaseTypeAccessAbac
      */
     'write_case_set': boolean;
-}
-/**
- * 
- * @export
- * @interface CaseTypeCol
- */
-export interface CaseTypeCol {
-    /**
-     * The unique identifier for the object.
-     * @type {string}
-     * @memberof CaseTypeCol
-     */
-    'id'?: string | null;
-    /**
-     * The ID of the case type. FOREIGN KEY
-     * @type {string}
-     * @memberof CaseTypeCol
-     */
-    'case_type_id': string;
-    /**
-     * 
-     * @type {CaseType}
-     * @memberof CaseTypeCol
-     */
-    'case_type'?: CaseType;
-    /**
-     * The ID of the case type dimension. FOREIGN KEY
-     * @type {string}
-     * @memberof CaseTypeCol
-     */
-    'case_type_dim_id': string;
-    /**
-     * 
-     * @type {CaseTypeDim}
-     * @memberof CaseTypeCol
-     */
-    'case_type_dim'?: CaseTypeDim;
-    /**
-     * The ID of the column. FOREIGN KEY
-     * @type {string}
-     * @memberof CaseTypeCol
-     */
-    'col_id': string;
-    /**
-     * 
-     * @type {Col}
-     * @memberof CaseTypeCol
-     */
-    'col'?: Col;
-    /**
-     * The code for the case type column, equal to the column code and, if present, dot \'x\' occurrence. E.g. \'Host.Vaccination.Date.COVID19.x1\' for occurrence=1, \'Specimen.Sampling.Date\' for occurrence=0
-     * @type {string}
-     * @memberof CaseTypeCol
-     */
-    'code': string;
-    /**
-     * The rank of the column within the case type dim for (partial) ordering, if different from the general dimension and column rank.
-     * @type {number}
-     * @memberof CaseTypeCol
-     */
-    'rank': number;
-    /**
-     * The label of the column for this case type, if different from the general column label.
-     * @type {string}
-     * @memberof CaseTypeCol
-     */
-    'label'?: string | null;
-    /**
-     * Description of the case type column.
-     * @type {string}
-     * @memberof CaseTypeCol
-     */
-    'description'?: string | null;
-    /**
-     * The minimum value for a numeric column
-     * @type {number}
-     * @memberof CaseTypeCol
-     */
-    'min_value'?: number | null;
-    /**
-     * The maximum value for a numeric column
-     * @type {number}
-     * @memberof CaseTypeCol
-     */
-    'max_value'?: number | null;
-    /**
-     * The minimum datetime for a time column
-     * @type {string}
-     * @memberof CaseTypeCol
-     */
-    'min_datetime'?: string | null;
-    /**
-     * The maximum datetime for a time column
-     * @type {string}
-     * @memberof CaseTypeCol
-     */
-    'max_datetime'?: string | null;
-    /**
-     * The minimum length for a text column, if not empty
-     * @type {number}
-     * @memberof CaseTypeCol
-     */
-    'min_length'?: number | null;
-    /**
-     * The maximum length for a text column, if not empty
-     * @type {number}
-     * @memberof CaseTypeCol
-     */
-    'max_length'?: number | null;
-    /**
-     * The regular expression for a text column, if not empty
-     * @type {string}
-     * @memberof CaseTypeCol
-     */
-    'pattern'?: string | null;
-    /**
-     * The NCBI taxid for the column, if the column is a genetic sequence
-     * @type {string}
-     * @memberof CaseTypeCol
-     */
-    'ncbi_taxid'?: string | null;
-    /**
-     * The ID of the genetic sequence case type column, if this is a genetic sequence column. FOREIGN KEY
-     * @type {string}
-     * @memberof CaseTypeCol
-     */
-    'genetic_sequence_case_type_col_id'?: string | null;
-    /**
-     * The set of tree algorithms that can be used for the case type column
-     * @type {Array<TreeAlgorithmType>}
-     * @memberof CaseTypeCol
-     */
-    'tree_algorithm_codes'?: Array<TreeAlgorithmType> | null;
-    /**
-     * Additional properties of the case type column.
-     * @type {{ [key: string]: any; }}
-     * @memberof CaseTypeCol
-     */
-    'props'?: { [key: string]: any; };
-}
-/**
- * 
- * @export
- * @interface CaseTypeColSet
- */
-export interface CaseTypeColSet {
-    /**
-     * The unique identifier for the object.
-     * @type {string}
-     * @memberof CaseTypeColSet
-     */
-    'id'?: string | null;
-    /**
-     * The name of a case type column set, UNIQUE
-     * @type {string}
-     * @memberof CaseTypeColSet
-     */
-    'name': string;
-    /**
-     * The description of the case type column set
-     * @type {string}
-     * @memberof CaseTypeColSet
-     */
-    'description'?: string | null;
-}
-/**
- * 
- * @export
- * @interface CaseTypeColSetMember
- */
-export interface CaseTypeColSetMember {
-    /**
-     * The unique identifier for the object.
-     * @type {string}
-     * @memberof CaseTypeColSetMember
-     */
-    'id'?: string | null;
-    /**
-     * The ID of the case type column set. FOREIGN KEY
-     * @type {string}
-     * @memberof CaseTypeColSetMember
-     */
-    'case_type_col_set_id': string;
-    /**
-     * 
-     * @type {CaseTypeColSet}
-     * @memberof CaseTypeColSetMember
-     */
-    'case_type_col_set'?: CaseTypeColSet;
-    /**
-     * The ID of the case type column. FOREIGN KEY
-     * @type {string}
-     * @memberof CaseTypeColSetMember
-     */
-    'case_type_col_id': string;
-    /**
-     * 
-     * @type {CaseTypeCol}
-     * @memberof CaseTypeColSetMember
-     */
-    'case_type_col'?: CaseTypeCol;
-}
-/**
- * 
- * @export
- * @interface CaseTypeDim
- */
-export interface CaseTypeDim {
-    /**
-     * The unique identifier for the object.
-     * @type {string}
-     * @memberof CaseTypeDim
-     */
-    'id'?: string | null;
-    /**
-     * The ID of the case type. FOREIGN KEY
-     * @type {string}
-     * @memberof CaseTypeDim
-     */
-    'case_type_id': string;
-    /**
-     * 
-     * @type {CaseType}
-     * @memberof CaseTypeDim
-     */
-    'case_type'?: CaseType;
-    /**
-     * The ID of the dimension. FOREIGN KEY
-     * @type {string}
-     * @memberof CaseTypeDim
-     */
-    'dim_id': string;
-    /**
-     * 
-     * @type {Dim}
-     * @memberof CaseTypeDim
-     */
-    'dim'?: Dim;
-    /**
-     * The index of the occurrence of the dimension for this case type. E.g. for first and second vaccination time it would be 1 and 2. Zero if only a single occurrence is expected or created.
-     * @type {number}
-     * @memberof CaseTypeDim
-     */
-    'occurrence'?: number;
-    /**
-     * The code for the case type dimension, equal to the dimension code and, if present, dot \'x\' occurrence. E.g. \'Host.Vaccination.Date.COVID19.x1\' for occurrence=1, \'Specimen.Sampling.Date\' for occurrence=0
-     * @type {string}
-     * @memberof CaseTypeDim
-     */
-    'code': string;
-    /**
-     * The label of the dimension for this case type, if different from the general dimension label.
-     * @type {string}
-     * @memberof CaseTypeDim
-     */
-    'label'?: string | null;
-    /**
-     * Description of the case type dimension.
-     * @type {string}
-     * @memberof CaseTypeDim
-     */
-    'description'?: string | null;
-    /**
-     * The rank of the case type dimension within the case type for (partial) ordering.
-     * @type {number}
-     * @memberof CaseTypeDim
-     */
-    'rank': number;
-    /**
-     * Indicates if this dimension is to be used to derive the case date.
-     * @type {boolean}
-     * @memberof CaseTypeDim
-     */
-    'is_case_date_dim'?: boolean;
 }
 /**
  * 
@@ -1310,19 +1036,19 @@ export interface CaseTypeSet {
      */
     'id'?: string | null;
     /**
-     * The name of the case type set
+     * The name of the CaseTypeSet, UNIQUE
      * @type {string}
      * @memberof CaseTypeSet
      */
     'name': string;
     /**
-     * The description of the case type set
+     * The description of the CaseTypeSet
      * @type {string}
      * @memberof CaseTypeSet
      */
     'description'?: string | null;
     /**
-     * The id of the category of the case type set. FOREIGN KEY
+     * The ID of the category of the CaseTypeSet. FOREIGN KEY
      * @type {string}
      * @memberof CaseTypeSet
      */
@@ -1334,7 +1060,7 @@ export interface CaseTypeSet {
      */
     'case_type_set_category'?: CaseTypeSetCategory;
     /**
-     * The rank of the case type set, establishing a partial order
+     * The rank of the CaseTypeSet, establishing a partial order
      * @type {number}
      * @memberof CaseTypeSet
      */
@@ -1353,19 +1079,19 @@ export interface CaseTypeSetCategory {
      */
     'id'?: string | null;
     /**
-     * The name of the case type set category
+     * The name of the CaseTypeSet category
      * @type {string}
      * @memberof CaseTypeSetCategory
      */
     'name': string;
     /**
-     * The description of the case type set category
+     * The description of the CaseTypeSet category
      * @type {string}
      * @memberof CaseTypeSetCategory
      */
     'description'?: string | null;
     /**
-     * The rank of the case type set category
+     * The rank of the CaseTypeSet category
      * @type {number}
      * @memberof CaseTypeSetCategory
      */
@@ -1406,7 +1132,7 @@ export interface CaseTypeSetMember {
      */
     'id'?: string | null;
     /**
-     * The ID of the case type set. FOREIGN KEY
+     * The ID of the CaseTypeSet. FOREIGN KEY
      * @type {string}
      * @memberof CaseTypeSetMember
      */
@@ -1418,7 +1144,7 @@ export interface CaseTypeSetMember {
      */
     'case_type_set'?: CaseTypeSet;
     /**
-     * The ID of the case type. FOREIGN KEY
+     * The ID of the CaseType. FOREIGN KEY
      * @type {string}
      * @memberof CaseTypeSetMember
      */
@@ -1437,7 +1163,7 @@ export interface CaseTypeSetMember {
  */
 export interface CaseTypeShareAbac {
     /**
-     * The ID of the case type
+     * The ID of the CaseType
      * @type {string}
      * @memberof CaseTypeShareAbac
      */
@@ -1449,32 +1175,32 @@ export interface CaseTypeShareAbac {
      */
     'data_collection_id': string;
     /**
-     * The IDs of the data collections from which cases may be added to this data collection, limited to the case type
+     * The IDs of the data collections from which cases may be added to this data collection, limited to the CaseType
      * @type {Array<string>}
      * @memberof CaseTypeShareAbac
      */
     'add_case_from_data_collection_ids': Array<string>;
     /**
-     * The IDs of the data collections from which cases may be removed from this data collection, limited to the case type
+     * The IDs of the data collections from which cases may be removed from this data collection, limited to the CaseType
      * @type {Array<string>}
      * @memberof CaseTypeShareAbac
      */
     'remove_case_from_data_collection_ids': Array<string>;
     /**
-     * The IDs of the data collections from which case sets may be added to this data collection, limited to the case type
+     * The IDs of the data collections from which case sets may be added to this data collection, limited to the CaseType
      * @type {Array<string>}
      * @memberof CaseTypeShareAbac
      */
     'add_case_set_from_data_collection_ids': Array<string>;
     /**
-     * The IDs of the data collections from which case sets may be removed from this data collection, limited to the case type
+     * The IDs of the data collections from which case sets may be removed from this data collection, limited to the CaseType
      * @type {Array<string>}
      * @memberof CaseTypeShareAbac
      */
     'remove_case_set_from_data_collection_ids': Array<string>;
 }
 /**
- * The result of uploading a single case. The case content validation results as well as the resulting cases are included as well.    PARENT CLASS DOCUMENTATION   ParentUploadResult: Represents the upload result for a Parent model upload. This class must be subclassed analogous to the ParentForUpload model it corresponds to.    PARENT CLASS DOCUMENTATION   UploadResultWithExternalIdentifiers: Represents an upload result that also includes upload results for external identifiers, mirroring a for upload class that has external identifiers.    PARENT CLASS DOCUMENTATION   UploadResult: Represents the result of an upload operation, including upload status and logs.  Additional validation: - If the status is successful (NOT_FAILED), there must be no error log items. - If the status is failed, there must be at least one error log item.    PARENT CLASS DOCUMENTATION   Model: PARENT CLASS DOCUMENTATION   BaseModel: !!! abstract \"Usage Documentation\"     [Models](../concepts/models.md)  A base class for creating Pydantic models.  Attributes:     __class_vars__: The names of the class variables defined on the model.     __private_attributes__: Metadata about the private attributes of the model.     __signature__: The synthesized `__init__` [`Signature`][inspect.Signature] of the model.      __pydantic_complete__: Whether model building is completed, or if there are still undefined fields.     __pydantic_core_schema__: The core schema of the model.     __pydantic_custom_init__: Whether the model has a custom `__init__` function.     __pydantic_decorators__: Metadata containing the decorators defined on the model.         This replaces `Model.__validators__` and `Model.__root_validators__` from Pydantic V1.     __pydantic_generic_metadata__: Metadata for generic models; contains data used for a similar purpose to         __args__, __origin__, __parameters__ in typing-module generics. May eventually be replaced by these.     __pydantic_parent_namespace__: Parent namespace of the model, used for automatic rebuilding of models.     __pydantic_post_init__: The name of the post-init method for the model, if defined.     __pydantic_root_model__: Whether the model is a [`RootModel`][pydantic.root_model.RootModel].     __pydantic_serializer__: The `pydantic-core` `SchemaSerializer` used to dump instances of the model.     __pydantic_validator__: The `pydantic-core` `SchemaValidator` used to validate instances of the model.      __pydantic_fields__: A dictionary of field names and their corresponding [`FieldInfo`][pydantic.fields.FieldInfo] objects.     __pydantic_computed_fields__: A dictionary of computed field names and their corresponding [`ComputedFieldInfo`][pydantic.fields.ComputedFieldInfo] objects.      __pydantic_extra__: A dictionary containing extra values, if [`extra`][pydantic.config.ConfigDict.extra]         is set to `\'allow\'`.     __pydantic_fields_set__: The names of fields explicitly set during instantiation.     __pydantic_private__: Values of private attributes set on the model instance.    PARENT CLASS DOCUMENTATION   UploadResultWithExternalIdentifiers: Represents an upload result that also includes upload results for external identifiers, mirroring a for upload class that has external identifiers.    PARENT CLASS DOCUMENTATION   UploadResult: Represents the result of an upload operation, including upload status and logs.  Additional validation: - If the status is successful (NOT_FAILED), there must be no error log items. - If the status is failed, there must be at least one error log item.    PARENT CLASS DOCUMENTATION   Model: PARENT CLASS DOCUMENTATION   BaseModel: !!! abstract \"Usage Documentation\"     [Models](../concepts/models.md)  A base class for creating Pydantic models.  Attributes:     __class_vars__: The names of the class variables defined on the model.     __private_attributes__: Metadata about the private attributes of the model.     __signature__: The synthesized `__init__` [`Signature`][inspect.Signature] of the model.      __pydantic_complete__: Whether model building is completed, or if there are still undefined fields.     __pydantic_core_schema__: The core schema of the model.     __pydantic_custom_init__: Whether the model has a custom `__init__` function.     __pydantic_decorators__: Metadata containing the decorators defined on the model.         This replaces `Model.__validators__` and `Model.__root_validators__` from Pydantic V1.     __pydantic_generic_metadata__: Metadata for generic models; contains data used for a similar purpose to         __args__, __origin__, __parameters__ in typing-module generics. May eventually be replaced by these.     __pydantic_parent_namespace__: Parent namespace of the model, used for automatic rebuilding of models.     __pydantic_post_init__: The name of the post-init method for the model, if defined.     __pydantic_root_model__: Whether the model is a [`RootModel`][pydantic.root_model.RootModel].     __pydantic_serializer__: The `pydantic-core` `SchemaSerializer` used to dump instances of the model.     __pydantic_validator__: The `pydantic-core` `SchemaValidator` used to validate instances of the model.      __pydantic_fields__: A dictionary of field names and their corresponding [`FieldInfo`][pydantic.fields.FieldInfo] objects.     __pydantic_computed_fields__: A dictionary of computed field names and their corresponding [`ComputedFieldInfo`][pydantic.fields.ComputedFieldInfo] objects.      __pydantic_extra__: A dictionary containing extra values, if [`extra`][pydantic.config.ConfigDict.extra]         is set to `\'allow\'`.     __pydantic_fields_set__: The names of fields explicitly set during instantiation.     __pydantic_private__: Values of private attributes set on the model instance.    PARENT CLASS DOCUMENTATION   UploadResult: Represents the result of an upload operation, including upload status and logs.  Additional validation: - If the status is successful (NOT_FAILED), there must be no error log items. - If the status is failed, there must be at least one error log item.    PARENT CLASS DOCUMENTATION   Model: PARENT CLASS DOCUMENTATION   BaseModel: !!! abstract \"Usage Documentation\"     [Models](../concepts/models.md)  A base class for creating Pydantic models.  Attributes:     __class_vars__: The names of the class variables defined on the model.     __private_attributes__: Metadata about the private attributes of the model.     __signature__: The synthesized `__init__` [`Signature`][inspect.Signature] of the model.      __pydantic_complete__: Whether model building is completed, or if there are still undefined fields.     __pydantic_core_schema__: The core schema of the model.     __pydantic_custom_init__: Whether the model has a custom `__init__` function.     __pydantic_decorators__: Metadata containing the decorators defined on the model.         This replaces `Model.__validators__` and `Model.__root_validators__` from Pydantic V1.     __pydantic_generic_metadata__: Metadata for generic models; contains data used for a similar purpose to         __args__, __origin__, __parameters__ in typing-module generics. May eventually be replaced by these.     __pydantic_parent_namespace__: Parent namespace of the model, used for automatic rebuilding of models.     __pydantic_post_init__: The name of the post-init method for the model, if defined.     __pydantic_root_model__: Whether the model is a [`RootModel`][pydantic.root_model.RootModel].     __pydantic_serializer__: The `pydantic-core` `SchemaSerializer` used to dump instances of the model.     __pydantic_validator__: The `pydantic-core` `SchemaValidator` used to validate instances of the model.      __pydantic_fields__: A dictionary of field names and their corresponding [`FieldInfo`][pydantic.fields.FieldInfo] objects.     __pydantic_computed_fields__: A dictionary of computed field names and their corresponding [`ComputedFieldInfo`][pydantic.fields.ComputedFieldInfo] objects.      __pydantic_extra__: A dictionary containing extra values, if [`extra`][pydantic.config.ConfigDict.extra]         is set to `\'allow\'`.     __pydantic_fields_set__: The names of fields explicitly set during instantiation.     __pydantic_private__: Values of private attributes set on the model instance.    PARENT CLASS DOCUMENTATION   Model: PARENT CLASS DOCUMENTATION   BaseModel: !!! abstract \"Usage Documentation\"     [Models](../concepts/models.md)  A base class for creating Pydantic models.  Attributes:     __class_vars__: The names of the class variables defined on the model.     __private_attributes__: Metadata about the private attributes of the model.     __signature__: The synthesized `__init__` [`Signature`][inspect.Signature] of the model.      __pydantic_complete__: Whether model building is completed, or if there are still undefined fields.     __pydantic_core_schema__: The core schema of the model.     __pydantic_custom_init__: Whether the model has a custom `__init__` function.     __pydantic_decorators__: Metadata containing the decorators defined on the model.         This replaces `Model.__validators__` and `Model.__root_validators__` from Pydantic V1.     __pydantic_generic_metadata__: Metadata for generic models; contains data used for a similar purpose to         __args__, __origin__, __parameters__ in typing-module generics. May eventually be replaced by these.     __pydantic_parent_namespace__: Parent namespace of the model, used for automatic rebuilding of models.     __pydantic_post_init__: The name of the post-init method for the model, if defined.     __pydantic_root_model__: Whether the model is a [`RootModel`][pydantic.root_model.RootModel].     __pydantic_serializer__: The `pydantic-core` `SchemaSerializer` used to dump instances of the model.     __pydantic_validator__: The `pydantic-core` `SchemaValidator` used to validate instances of the model.      __pydantic_fields__: A dictionary of field names and their corresponding [`FieldInfo`][pydantic.fields.FieldInfo] objects.     __pydantic_computed_fields__: A dictionary of computed field names and their corresponding [`ComputedFieldInfo`][pydantic.fields.ComputedFieldInfo] objects.      __pydantic_extra__: A dictionary containing extra values, if [`extra`][pydantic.config.ConfigDict.extra]         is set to `\'allow\'`.     __pydantic_fields_set__: The names of fields explicitly set during instantiation.     __pydantic_private__: Values of private attributes set on the model instance.    PARENT CLASS DOCUMENTATION   BaseModel: !!! abstract \"Usage Documentation\"     [Models](../concepts/models.md)  A base class for creating Pydantic models.  Attributes:     __class_vars__: The names of the class variables defined on the model.     __private_attributes__: Metadata about the private attributes of the model.     __signature__: The synthesized `__init__` [`Signature`][inspect.Signature] of the model.      __pydantic_complete__: Whether model building is completed, or if there are still undefined fields.     __pydantic_core_schema__: The core schema of the model.     __pydantic_custom_init__: Whether the model has a custom `__init__` function.     __pydantic_decorators__: Metadata containing the decorators defined on the model.         This replaces `Model.__validators__` and `Model.__root_validators__` from Pydantic V1.     __pydantic_generic_metadata__: Metadata for generic models; contains data used for a similar purpose to         __args__, __origin__, __parameters__ in typing-module generics. May eventually be replaced by these.     __pydantic_parent_namespace__: Parent namespace of the model, used for automatic rebuilding of models.     __pydantic_post_init__: The name of the post-init method for the model, if defined.     __pydantic_root_model__: Whether the model is a [`RootModel`][pydantic.root_model.RootModel].     __pydantic_serializer__: The `pydantic-core` `SchemaSerializer` used to dump instances of the model.     __pydantic_validator__: The `pydantic-core` `SchemaValidator` used to validate instances of the model.      __pydantic_fields__: A dictionary of field names and their corresponding [`FieldInfo`][pydantic.fields.FieldInfo] objects.     __pydantic_computed_fields__: A dictionary of computed field names and their corresponding [`ComputedFieldInfo`][pydantic.fields.ComputedFieldInfo] objects.      __pydantic_extra__: A dictionary containing extra values, if [`extra`][pydantic.config.ConfigDict.extra]         is set to `\'allow\'`.     __pydantic_fields_set__: The names of fields explicitly set during instantiation.     __pydantic_private__: Values of private attributes set on the model instance.
+ * The result of uploading a single case. The case content validation results as well as the resulting cases are included as well.    PARENT CLASS DOCUMENTATION   ParentUploadResult: Represents the upload result for a Parent model upload. This class must be subclassed analogous to the ParentForUpload model it corresponds to.    PARENT CLASS DOCUMENTATION   UploadResultWithExternalIdentifiers: Represents an upload result that also includes upload results for external identifiers, mirroring a for upload class that has external identifiers.    PARENT CLASS DOCUMENTATION   UploadResult: Represents the result of an upload operation for a particular object, including upload status and logs.  Additional validation: - If the status is successful (NOT_FAILED), there must be no error log items. - If the status is failed, there must be at least one error log item.    PARENT CLASS DOCUMENTATION   Model: PARENT CLASS DOCUMENTATION   BaseModel: !!! abstract \"Usage Documentation\"     [Models](../concepts/models.md)  A base class for creating Pydantic models.  Attributes:     __class_vars__: The names of the class variables defined on the model.     __private_attributes__: Metadata about the private attributes of the model.     __signature__: The synthesized `__init__` [`Signature`][inspect.Signature] of the model.      __pydantic_complete__: Whether model building is completed, or if there are still undefined fields.     __pydantic_core_schema__: The core schema of the model.     __pydantic_custom_init__: Whether the model has a custom `__init__` function.     __pydantic_decorators__: Metadata containing the decorators defined on the model.         This replaces `Model.__validators__` and `Model.__root_validators__` from Pydantic V1.     __pydantic_generic_metadata__: Metadata for generic models; contains data used for a similar purpose to         __args__, __origin__, __parameters__ in typing-module generics. May eventually be replaced by these.     __pydantic_parent_namespace__: Parent namespace of the model, used for automatic rebuilding of models.     __pydantic_post_init__: The name of the post-init method for the model, if defined.     __pydantic_root_model__: Whether the model is a [`RootModel`][pydantic.root_model.RootModel].     __pydantic_serializer__: The `pydantic-core` `SchemaSerializer` used to dump instances of the model.     __pydantic_validator__: The `pydantic-core` `SchemaValidator` used to validate instances of the model.      __pydantic_fields__: A dictionary of field names and their corresponding [`FieldInfo`][pydantic.fields.FieldInfo] objects.     __pydantic_computed_fields__: A dictionary of computed field names and their corresponding [`ComputedFieldInfo`][pydantic.fields.ComputedFieldInfo] objects.      __pydantic_extra__: A dictionary containing extra values, if [`extra`][pydantic.config.ConfigDict.extra]         is set to `\'allow\'`.     __pydantic_fields_set__: The names of fields explicitly set during instantiation.     __pydantic_private__: Values of private attributes set on the model instance.    PARENT CLASS DOCUMENTATION   UploadResultWithExternalIdentifiers: Represents an upload result that also includes upload results for external identifiers, mirroring a for upload class that has external identifiers.    PARENT CLASS DOCUMENTATION   UploadResult: Represents the result of an upload operation for a particular object, including upload status and logs.  Additional validation: - If the status is successful (NOT_FAILED), there must be no error log items. - If the status is failed, there must be at least one error log item.    PARENT CLASS DOCUMENTATION   Model: PARENT CLASS DOCUMENTATION   BaseModel: !!! abstract \"Usage Documentation\"     [Models](../concepts/models.md)  A base class for creating Pydantic models.  Attributes:     __class_vars__: The names of the class variables defined on the model.     __private_attributes__: Metadata about the private attributes of the model.     __signature__: The synthesized `__init__` [`Signature`][inspect.Signature] of the model.      __pydantic_complete__: Whether model building is completed, or if there are still undefined fields.     __pydantic_core_schema__: The core schema of the model.     __pydantic_custom_init__: Whether the model has a custom `__init__` function.     __pydantic_decorators__: Metadata containing the decorators defined on the model.         This replaces `Model.__validators__` and `Model.__root_validators__` from Pydantic V1.     __pydantic_generic_metadata__: Metadata for generic models; contains data used for a similar purpose to         __args__, __origin__, __parameters__ in typing-module generics. May eventually be replaced by these.     __pydantic_parent_namespace__: Parent namespace of the model, used for automatic rebuilding of models.     __pydantic_post_init__: The name of the post-init method for the model, if defined.     __pydantic_root_model__: Whether the model is a [`RootModel`][pydantic.root_model.RootModel].     __pydantic_serializer__: The `pydantic-core` `SchemaSerializer` used to dump instances of the model.     __pydantic_validator__: The `pydantic-core` `SchemaValidator` used to validate instances of the model.      __pydantic_fields__: A dictionary of field names and their corresponding [`FieldInfo`][pydantic.fields.FieldInfo] objects.     __pydantic_computed_fields__: A dictionary of computed field names and their corresponding [`ComputedFieldInfo`][pydantic.fields.ComputedFieldInfo] objects.      __pydantic_extra__: A dictionary containing extra values, if [`extra`][pydantic.config.ConfigDict.extra]         is set to `\'allow\'`.     __pydantic_fields_set__: The names of fields explicitly set during instantiation.     __pydantic_private__: Values of private attributes set on the model instance.    PARENT CLASS DOCUMENTATION   UploadResult: Represents the result of an upload operation for a particular object, including upload status and logs.  Additional validation: - If the status is successful (NOT_FAILED), there must be no error log items. - If the status is failed, there must be at least one error log item.    PARENT CLASS DOCUMENTATION   Model: PARENT CLASS DOCUMENTATION   BaseModel: !!! abstract \"Usage Documentation\"     [Models](../concepts/models.md)  A base class for creating Pydantic models.  Attributes:     __class_vars__: The names of the class variables defined on the model.     __private_attributes__: Metadata about the private attributes of the model.     __signature__: The synthesized `__init__` [`Signature`][inspect.Signature] of the model.      __pydantic_complete__: Whether model building is completed, or if there are still undefined fields.     __pydantic_core_schema__: The core schema of the model.     __pydantic_custom_init__: Whether the model has a custom `__init__` function.     __pydantic_decorators__: Metadata containing the decorators defined on the model.         This replaces `Model.__validators__` and `Model.__root_validators__` from Pydantic V1.     __pydantic_generic_metadata__: Metadata for generic models; contains data used for a similar purpose to         __args__, __origin__, __parameters__ in typing-module generics. May eventually be replaced by these.     __pydantic_parent_namespace__: Parent namespace of the model, used for automatic rebuilding of models.     __pydantic_post_init__: The name of the post-init method for the model, if defined.     __pydantic_root_model__: Whether the model is a [`RootModel`][pydantic.root_model.RootModel].     __pydantic_serializer__: The `pydantic-core` `SchemaSerializer` used to dump instances of the model.     __pydantic_validator__: The `pydantic-core` `SchemaValidator` used to validate instances of the model.      __pydantic_fields__: A dictionary of field names and their corresponding [`FieldInfo`][pydantic.fields.FieldInfo] objects.     __pydantic_computed_fields__: A dictionary of computed field names and their corresponding [`ComputedFieldInfo`][pydantic.fields.ComputedFieldInfo] objects.      __pydantic_extra__: A dictionary containing extra values, if [`extra`][pydantic.config.ConfigDict.extra]         is set to `\'allow\'`.     __pydantic_fields_set__: The names of fields explicitly set during instantiation.     __pydantic_private__: Values of private attributes set on the model instance.    PARENT CLASS DOCUMENTATION   Model: PARENT CLASS DOCUMENTATION   BaseModel: !!! abstract \"Usage Documentation\"     [Models](../concepts/models.md)  A base class for creating Pydantic models.  Attributes:     __class_vars__: The names of the class variables defined on the model.     __private_attributes__: Metadata about the private attributes of the model.     __signature__: The synthesized `__init__` [`Signature`][inspect.Signature] of the model.      __pydantic_complete__: Whether model building is completed, or if there are still undefined fields.     __pydantic_core_schema__: The core schema of the model.     __pydantic_custom_init__: Whether the model has a custom `__init__` function.     __pydantic_decorators__: Metadata containing the decorators defined on the model.         This replaces `Model.__validators__` and `Model.__root_validators__` from Pydantic V1.     __pydantic_generic_metadata__: Metadata for generic models; contains data used for a similar purpose to         __args__, __origin__, __parameters__ in typing-module generics. May eventually be replaced by these.     __pydantic_parent_namespace__: Parent namespace of the model, used for automatic rebuilding of models.     __pydantic_post_init__: The name of the post-init method for the model, if defined.     __pydantic_root_model__: Whether the model is a [`RootModel`][pydantic.root_model.RootModel].     __pydantic_serializer__: The `pydantic-core` `SchemaSerializer` used to dump instances of the model.     __pydantic_validator__: The `pydantic-core` `SchemaValidator` used to validate instances of the model.      __pydantic_fields__: A dictionary of field names and their corresponding [`FieldInfo`][pydantic.fields.FieldInfo] objects.     __pydantic_computed_fields__: A dictionary of computed field names and their corresponding [`ComputedFieldInfo`][pydantic.fields.ComputedFieldInfo] objects.      __pydantic_extra__: A dictionary containing extra values, if [`extra`][pydantic.config.ConfigDict.extra]         is set to `\'allow\'`.     __pydantic_fields_set__: The names of fields explicitly set during instantiation.     __pydantic_private__: Values of private attributes set on the model instance.    PARENT CLASS DOCUMENTATION   BaseModel: !!! abstract \"Usage Documentation\"     [Models](../concepts/models.md)  A base class for creating Pydantic models.  Attributes:     __class_vars__: The names of the class variables defined on the model.     __private_attributes__: Metadata about the private attributes of the model.     __signature__: The synthesized `__init__` [`Signature`][inspect.Signature] of the model.      __pydantic_complete__: Whether model building is completed, or if there are still undefined fields.     __pydantic_core_schema__: The core schema of the model.     __pydantic_custom_init__: Whether the model has a custom `__init__` function.     __pydantic_decorators__: Metadata containing the decorators defined on the model.         This replaces `Model.__validators__` and `Model.__root_validators__` from Pydantic V1.     __pydantic_generic_metadata__: Metadata for generic models; contains data used for a similar purpose to         __args__, __origin__, __parameters__ in typing-module generics. May eventually be replaced by these.     __pydantic_parent_namespace__: Parent namespace of the model, used for automatic rebuilding of models.     __pydantic_post_init__: The name of the post-init method for the model, if defined.     __pydantic_root_model__: Whether the model is a [`RootModel`][pydantic.root_model.RootModel].     __pydantic_serializer__: The `pydantic-core` `SchemaSerializer` used to dump instances of the model.     __pydantic_validator__: The `pydantic-core` `SchemaValidator` used to validate instances of the model.      __pydantic_fields__: A dictionary of field names and their corresponding [`FieldInfo`][pydantic.fields.FieldInfo] objects.     __pydantic_computed_fields__: A dictionary of computed field names and their corresponding [`ComputedFieldInfo`][pydantic.fields.ComputedFieldInfo] objects.      __pydantic_extra__: A dictionary containing extra values, if [`extra`][pydantic.config.ConfigDict.extra]         is set to `\'allow\'`.     __pydantic_fields_set__: The names of fields explicitly set during instantiation.     __pydantic_private__: Values of private attributes set on the model instance.
  * @export
  * @interface CaseUploadResult
  */
@@ -1491,6 +1217,12 @@ export interface CaseUploadResult {
      * @memberof CaseUploadResult
      */
     'status'?: UploadStatus;
+    /**
+     * Indicates whether the object did not exist before start of the upload. False in case upload failed before this could be determined.
+     * @type {boolean}
+     * @memberof CaseUploadResult
+     */
+    'is_new'?: boolean;
     /**
      * A list of log items capturing messages and events that occurred during the upload operation.
      * @type {Array<UploadLogItem>}
@@ -1531,7 +1263,7 @@ export interface CaseUploadResult {
 
 
 /**
- * 
+ * A column of a CaseType, part of a Dim, and containing the actual data for the case. It is derived from a RefCol, from which it takes its properties such as the column type.
  * @export
  * @interface Col
  */
@@ -1542,6 +1274,18 @@ export interface Col {
      * @memberof Col
      */
     'id'?: string | null;
+    /**
+     * The ID of the CaseType. FOREIGN KEY
+     * @type {string}
+     * @memberof Col
+     */
+    'case_type_id': string;
+    /**
+     * 
+     * @type {CaseType}
+     * @memberof Col
+     */
+    'case_type'?: CaseType;
     /**
      * The ID of the dimension. FOREIGN KEY
      * @type {string}
@@ -1555,86 +1299,170 @@ export interface Col {
      */
     'dim'?: Dim;
     /**
-     * The code suffix for the column used to compose a full column code, if needed in addition to the dimension column code prefix. See code field.
+     * The ID of the column. FOREIGN KEY
      * @type {string}
      * @memberof Col
      */
-    'code_suffix'?: string | null;
+    'ref_col_id': string;
     /**
-     * The code for the column, equal to the dimension column code prefix dot code_suffix (dot code_suffix only if the latter is not null).
+     * 
+     * @type {RefCol}
+     * @memberof Col
+     */
+    'ref_col'?: RefCol;
+    /**
+     * The code for the Col, equal to the RefCol code and, if present, dot \'x\' occurrence. E.g. \'Host.Vaccination.Date.COVID19.x1\' for occurrence=1, \'Specimen.Sampling.Date\' for occurrence=0
      * @type {string}
      * @memberof Col
      */
     'code': string;
     /**
-     * The rank of the column within the dimension, for (partial) ordering.
+     * The rank of the Col within the CaseType Dim for (partial) ordering, if different from the RefDim and RefCol rank.
      * @type {number}
      * @memberof Col
      */
-    'rank'?: number;
+    'rank': number;
     /**
-     * The label for the column, if different from the code.
+     * The label of the Col for this CaseType, if different from the RefCol label.
      * @type {string}
      * @memberof Col
      */
     'label'?: string | null;
     /**
-     * 
-     * @type {ColType}
-     * @memberof Col
-     */
-    'col_type': ColType;
-    /**
-     * The ID of the concept set for the column in case of type NOMINAL, ORDINAL, INTERVAL. FOREIGN KEY
-     * @type {string}
-     * @memberof Col
-     */
-    'concept_set_id'?: string | null;
-    /**
-     * 
-     * @type {ConceptSet}
-     * @memberof Col
-     */
-    'concept_set'?: ConceptSet;
-    /**
-     * The ID of the region set for the column in case of type GEO. FOREIGN KEY
-     * @type {string}
-     * @memberof Col
-     */
-    'region_set_id'?: string | null;
-    /**
-     * 
-     * @type {RegionSet}
-     * @memberof Col
-     */
-    'region_set'?: RegionSet;
-    /**
-     * The ID of the genetic distance protocol that produces the input for the tree algorithm. FOREIGN KEY
-     * @type {string}
-     * @memberof Col
-     */
-    'genetic_distance_protocol_id'?: string | null;
-    /**
-     * 
-     * @type {GeneticDistanceProtocol}
-     * @memberof Col
-     */
-    'genetic_distance_protocol'?: GeneticDistanceProtocol;
-    /**
-     * Description of the column.
+     * Description of the Col.
      * @type {string}
      * @memberof Col
      */
     'description'?: string | null;
     /**
-     * Additional properties of the column.
+     * The minimum value for a numeric column
+     * @type {number}
+     * @memberof Col
+     */
+    'min_value'?: number | null;
+    /**
+     * The maximum value for a numeric column
+     * @type {number}
+     * @memberof Col
+     */
+    'max_value'?: number | null;
+    /**
+     * The minimum datetime for a time column
+     * @type {string}
+     * @memberof Col
+     */
+    'min_datetime'?: string | null;
+    /**
+     * The maximum datetime for a time column
+     * @type {string}
+     * @memberof Col
+     */
+    'max_datetime'?: string | null;
+    /**
+     * The minimum length for a text column, if not empty
+     * @type {number}
+     * @memberof Col
+     */
+    'min_length'?: number | null;
+    /**
+     * The maximum length for a text column, if not empty
+     * @type {number}
+     * @memberof Col
+     */
+    'max_length'?: number | null;
+    /**
+     * The regular expression for a text column, if not empty
+     * @type {string}
+     * @memberof Col
+     */
+    'pattern'?: string | null;
+    /**
+     * The NCBI taxid for the column, if the column is a genetic sequence
+     * @type {string}
+     * @memberof Col
+     */
+    'ncbi_taxid'?: string | null;
+    /**
+     * The ID of the genetic sequence column, if this is a genetic sequence column. FOREIGN KEY
+     * @type {string}
+     * @memberof Col
+     */
+    'genetic_sequence_col_id'?: string | null;
+    /**
+     * The set of tree algorithms that can be used for the Col
+     * @type {Array<TreeAlgorithmType>}
+     * @memberof Col
+     */
+    'tree_algorithm_codes'?: Array<TreeAlgorithmType> | null;
+    /**
+     * Additional properties of the Col.
      * @type {{ [key: string]: any; }}
      * @memberof Col
      */
     'props'?: { [key: string]: any; };
 }
-
-
+/**
+ * 
+ * @export
+ * @interface ColSet
+ */
+export interface ColSet {
+    /**
+     * The unique identifier for the object.
+     * @type {string}
+     * @memberof ColSet
+     */
+    'id'?: string | null;
+    /**
+     * The name of the ColSet, UNIQUE
+     * @type {string}
+     * @memberof ColSet
+     */
+    'name': string;
+    /**
+     * The description of the ColSet
+     * @type {string}
+     * @memberof ColSet
+     */
+    'description'?: string | null;
+}
+/**
+ * 
+ * @export
+ * @interface ColSetMember
+ */
+export interface ColSetMember {
+    /**
+     * The unique identifier for the object.
+     * @type {string}
+     * @memberof ColSetMember
+     */
+    'id'?: string | null;
+    /**
+     * The ID of the ColSet. FOREIGN KEY
+     * @type {string}
+     * @memberof ColSetMember
+     */
+    'col_set_id': string;
+    /**
+     * 
+     * @type {ColSet}
+     * @memberof ColSetMember
+     */
+    'col_set'?: ColSet;
+    /**
+     * The ID of the Col. FOREIGN KEY
+     * @type {string}
+     * @memberof ColSetMember
+     */
+    'col_id': string;
+    /**
+     * 
+     * @type {Col}
+     * @memberof ColSetMember
+     */
+    'col'?: Col;
+}
 /**
  * 
  * @export
@@ -1680,114 +1508,101 @@ export type ColType = typeof ColType[keyof typeof ColType];
 
 
 /**
- * The additional validation rules that a Col instance must comply with.
- * @export
- * @interface ColValidationRulesResponseBody
- */
-export interface ColValidationRulesResponseBody {
-    /**
-     * The Col.col_type values that are allowed depending on the Col.dim.dim_type.
-     * @type {{ [key: string]: Array<ColType>; }}
-     * @memberof ColValidationRulesResponseBody
-     */
-    'valid_col_types_by_dim_type'?: { [key: string]: Array<ColType>; };
-}
-/**
  * 
  * @export
  * @ {string}
  */
 
 export const CommandName = {
-    CaseTypeSetCaseTypeUpdateAssociationCommand: 'CaseTypeSetCaseTypeUpdateAssociationCommand',
-    EtiologicalAgentCrudCommand: 'EtiologicalAgentCrudCommand',
-    CaseTypeSetMemberCrudCommand: 'CaseTypeSetMemberCrudCommand',
-    CreateFileForSeqCommand: 'CreateFileForSeqCommand',
-    RetrieveGeneticSequenceFastaByIdCommand: 'RetrieveGeneticSequenceFastaByIdCommand',
-    EtiologyCrudCommand: 'EtiologyCrudCommand',
-    ConceptRelationCrudCommand: 'ConceptRelationCrudCommand',
-    UserShareCasePolicyCrudCommand: 'UserShareCasePolicyCrudCommand',
-    DataCollectionSetMemberCrudCommand: 'DataCollectionSetMemberCrudCommand',
-    CaseTypeColSetCaseTypeColUpdateAssociationCommand: 'CaseTypeColSetCaseTypeColUpdateAssociationCommand',
-    TreeAlgorithmClassCrudCommand: 'TreeAlgorithmClassCrudCommand',
-    OrganizationSetCrudCommand: 'OrganizationSetCrudCommand',
-    DimCrudCommand: 'DimCrudCommand',
-    ExternalIdentifierCrudCommand: 'ExternalIdentifierCrudCommand',
-    DiseaseCrudCommand: 'DiseaseCrudCommand',
-    CaseTypeDimCrudCommand: 'CaseTypeDimCrudCommand',
-    RetrieveOwnPermissionsCommand: 'RetrieveOwnPermissionsCommand',
-    RetrieveOrganizationAdminNameEmailsCommand: 'RetrieveOrganizationAdminNameEmailsCommand',
-    CaseDataCollectionLinkCrudCommand: 'CaseDataCollectionLinkCrudCommand',
-    SiteCrudCommand: 'SiteCrudCommand',
-    OrganizationAdminPolicyCrudCommand: 'OrganizationAdminPolicyCrudCommand',
-    RegionCrudCommand: 'RegionCrudCommand',
-    RetrieveAssemblyProtocolsCommand: 'RetrieveAssemblyProtocolsCommand',
-    OrganizationAccessCasePolicyCrudCommand: 'OrganizationAccessCasePolicyCrudCommand',
-    RetrieveSubRolesCommand: 'RetrieveSubRolesCommand',
-    RegionSetShapeCrudCommand: 'RegionSetShapeCrudCommand',
-    GeneticDistanceProtocolCrudCommand: 'GeneticDistanceProtocolCrudCommand',
-    CaseSetMemberCrudCommand: 'CaseSetMemberCrudCommand',
-    UserAccessCasePolicyCrudCommand: 'UserAccessCasePolicyCrudCommand',
-    DataCollectionSetCrudCommand: 'DataCollectionSetCrudCommand',
-    OrganizationSetOrganizationUpdateAssociationCommand: 'OrganizationSetOrganizationUpdateAssociationCommand',
-    RetrieveInviteUserConstraintsCommand: 'RetrieveInviteUserConstraintsCommand',
-    RetrieveSequencingProtocolsCommand: 'RetrieveSequencingProtocolsCommand',
-    DiseaseEtiologicalAgentUpdateAssociationCommand: 'DiseaseEtiologicalAgentUpdateAssociationCommand',
-    DataCollectionSetDataCollectionUpdateAssociationCommand: 'DataCollectionSetDataCollectionUpdateAssociationCommand',
-    CaseTypeColSetCrudCommand: 'CaseTypeColSetCrudCommand',
+    TreeAlgorithmCrudCommand: 'TreeAlgorithmCrudCommand',
+    IdentifierIssuerCrudCommand: 'IdentifierIssuerCrudCommand',
     UploadCasesCommand: 'UploadCasesCommand',
-    RetrieveGeneticSequenceByIdCommand: 'RetrieveGeneticSequenceByIdCommand',
-    CaseTypeSetCrudCommand: 'CaseTypeSetCrudCommand',
-    RegionRelationCrudCommand: 'RegionRelationCrudCommand',
-    CaseTypeColCrudCommand: 'CaseTypeColCrudCommand',
-    OrganizationIdentifierIssuerLinkCrudCommand: 'OrganizationIdentifierIssuerLinkCrudCommand',
-    CaseSetCategoryCrudCommand: 'CaseSetCategoryCrudCommand',
-    UserCrudCommand: 'UserCrudCommand',
-    OrganizationSetMemberCrudCommand: 'OrganizationSetMemberCrudCommand',
-    ColCrudCommand: 'ColCrudCommand',
-    RetrieveOrganizationsUnderAdminCommand: 'RetrieveOrganizationsUnderAdminCommand',
-    RetrieveCompleteCaseTypeCommand: 'RetrieveCompleteCaseTypeCommand',
-    DataCollectionCrudCommand: 'DataCollectionCrudCommand',
     RetrieveCaseSetRightsCommand: 'RetrieveCaseSetRightsCommand',
+    EtiologicalAgentCrudCommand: 'EtiologicalAgentCrudCommand',
+    RegisterInvitedUserCommand: 'RegisterInvitedUserCommand',
+    UpdateUserCommand: 'UpdateUserCommand',
+    OrganizationIdentifierIssuerLinkUpdateAssociationCommand: 'OrganizationIdentifierIssuerLinkUpdateAssociationCommand',
+    RetrieveSubRolesCommand: 'RetrieveSubRolesCommand',
+    RetrieveCompleteCaseTypeCommand: 'RetrieveCompleteCaseTypeCommand',
+    CaseSetCategoryCrudCommand: 'CaseSetCategoryCrudCommand',
+    SiteCrudCommand: 'SiteCrudCommand',
+    TreeAlgorithmClassCrudCommand: 'TreeAlgorithmClassCrudCommand',
+    DataCollectionSetCrudCommand: 'DataCollectionSetCrudCommand',
+    CaseTypeCrudCommand: 'CaseTypeCrudCommand',
+    OrganizationShareCasePolicyCrudCommand: 'OrganizationShareCasePolicyCrudCommand',
+    ConceptSetCrudCommand: 'ConceptSetCrudCommand',
+    ColSetCrudCommand: 'ColSetCrudCommand',
+    UserCrudCommand: 'UserCrudCommand',
+    CreateFileForSeqCommand: 'CreateFileForSeqCommand',
+    UserShareCasePolicyCrudCommand: 'UserShareCasePolicyCrudCommand',
+    DataCollectionCrudCommand: 'DataCollectionCrudCommand',
+    CaseDataCollectionLinkCrudCommand: 'CaseDataCollectionLinkCrudCommand',
+    CaseTypeSetCrudCommand: 'CaseTypeSetCrudCommand',
+    RegionSetCrudCommand: 'RegionSetCrudCommand',
+    DiseaseEtiologicalAgentUpdateAssociationCommand: 'DiseaseEtiologicalAgentUpdateAssociationCommand',
+    OrganizationAdminPolicyCrudCommand: 'OrganizationAdminPolicyCrudCommand',
+    RetrieveAssemblyProtocolsCommand: 'RetrieveAssemblyProtocolsCommand',
+    EtiologyCrudCommand: 'EtiologyCrudCommand',
+    CaseTypeSetCaseTypeUpdateAssociationCommand: 'CaseTypeSetCaseTypeUpdateAssociationCommand',
+    RetrieveSimilarCasesCommand: 'RetrieveSimilarCasesCommand',
+    ConceptRelationCrudCommand: 'ConceptRelationCrudCommand',
+    SubjectCrudCommand: 'SubjectCrudCommand',
+    RetrievePhylogeneticTreeByCasesCommand: 'RetrievePhylogeneticTreeByCasesCommand',
+    CaseCrudCommand: 'CaseCrudCommand',
+    ColCrudCommand: 'ColCrudCommand',
+    RegionRelationCrudCommand: 'RegionRelationCrudCommand',
+    ColSetMemberCrudCommand: 'ColSetMemberCrudCommand',
+    RetrieveCaseRightsCommand: 'RetrieveCaseRightsCommand',
     OutageCrudCommand: 'OutageCrudCommand',
+    RetrieveSequencingProtocolsCommand: 'RetrieveSequencingProtocolsCommand',
+    RetrieveContainingRegionCommand: 'RetrieveContainingRegionCommand',
+    ExternalIdentifierCrudCommand: 'ExternalIdentifierCrudCommand',
+    RetrieveInviteUserConstraintsCommand: 'RetrieveInviteUserConstraintsCommand',
+    UserAccessCasePolicyCrudCommand: 'UserAccessCasePolicyCrudCommand',
+    CaseTypeSetCategoryCrudCommand: 'CaseTypeSetCategoryCrudCommand',
+    DataCollectionSetDataCollectionUpdateAssociationCommand: 'DataCollectionSetDataCollectionUpdateAssociationCommand',
+    DimCrudCommand: 'DimCrudCommand',
+    InviteUserCommand: 'InviteUserCommand',
+    DiseaseCrudCommand: 'DiseaseCrudCommand',
+    GeneticDistanceProtocolCrudCommand: 'GeneticDistanceProtocolCrudCommand',
+    OrganizationAccessCasePolicyCrudCommand: 'OrganizationAccessCasePolicyCrudCommand',
+    OrganizationIdentifierIssuerLinkCrudCommand: 'OrganizationIdentifierIssuerLinkCrudCommand',
+    CaseSetCrudCommand: 'CaseSetCrudCommand',
+    OrganizationSetMemberCrudCommand: 'OrganizationSetMemberCrudCommand',
+    ConceptCrudCommand: 'ConceptCrudCommand',
     CreateFileForReadSetCommand: 'CreateFileForReadSetCommand',
+    CaseSetDataCollectionLinkCrudCommand: 'CaseSetDataCollectionLinkCrudCommand',
+    RetrievePhylogeneticTreeBySequencesCommand: 'RetrievePhylogeneticTreeBySequencesCommand',
+    RefColCrudCommand: 'RefColCrudCommand',
     CaseSetStatusCrudCommand: 'CaseSetStatusCrudCommand',
-    RetrieveGeneticSequenceFastaByCaseCommand: 'RetrieveGeneticSequenceFastaByCaseCommand',
+    OrganizationSetCrudCommand: 'OrganizationSetCrudCommand',
+    RetrieveOutagesCommand: 'RetrieveOutagesCommand',
+    CreateCaseSetCommand: 'CreateCaseSetCommand',
     RetrieveLicensesCommand: 'RetrieveLicensesCommand',
     OrganizationCrudCommand: 'OrganizationCrudCommand',
-    CaseCrudCommand: 'CaseCrudCommand',
-    UpdateUserCommand: 'UpdateUserCommand',
-    TreeAlgorithmCrudCommand: 'TreeAlgorithmCrudCommand',
-    ConceptSetCrudCommand: 'ConceptSetCrudCommand',
-    CaseTypeColSetMemberCrudCommand: 'CaseTypeColSetMemberCrudCommand',
-    CreateCaseSetCommand: 'CreateCaseSetCommand',
-    InviteUserCommand: 'InviteUserCommand',
-    GetIdentityProvidersCommand: 'GetIdentityProvidersCommand',
-    OrganizationShareCasePolicyCrudCommand: 'OrganizationShareCasePolicyCrudCommand',
-    OrganizationIdentifierIssuerLinkUpdateAssociationCommand: 'OrganizationIdentifierIssuerLinkUpdateAssociationCommand',
-    UpdateUserOwnOrganizationCommand: 'UpdateUserOwnOrganizationCommand',
-    SubjectCrudCommand: 'SubjectCrudCommand',
-    CaseSetCrudCommand: 'CaseSetCrudCommand',
-    IdentifierIssuerCrudCommand: 'IdentifierIssuerCrudCommand',
+    RetrieveOrganizationsUnderAdminCommand: 'RetrieveOrganizationsUnderAdminCommand',
+    RetrieveCasesByQueryCommand: 'RetrieveCasesByQueryCommand',
+    RefDimCrudCommand: 'RefDimCrudCommand',
+    RetrieveGeneticSequenceFastaByCaseCommand: 'RetrieveGeneticSequenceFastaByCaseCommand',
     RetrieveOrganizationContactsCommand: 'RetrieveOrganizationContactsCommand',
-    RegisterInvitedUserCommand: 'RegisterInvitedUserCommand',
-    RetrieveSimilarCasesCommand: 'RetrieveSimilarCasesCommand',
-    CaseTypeCrudCommand: 'CaseTypeCrudCommand',
-    CaseSetDataCollectionLinkCrudCommand: 'CaseSetDataCollectionLinkCrudCommand',
-    RetrieveCasesByIdCommand: 'RetrieveCasesByIdCommand',
-    CaseTypeSetCategoryCrudCommand: 'CaseTypeSetCategoryCrudCommand',
-    RetrievePhylogeneticTreeByCasesCommand: 'RetrievePhylogeneticTreeByCasesCommand',
-    RegionSetCrudCommand: 'RegionSetCrudCommand',
-    ConceptCrudCommand: 'ConceptCrudCommand',
+    RetrieveOrganizationAdminNameEmailsCommand: 'RetrieveOrganizationAdminNameEmailsCommand',
+    DataCollectionSetMemberCrudCommand: 'DataCollectionSetMemberCrudCommand',
+    CaseSetMemberCrudCommand: 'CaseSetMemberCrudCommand',
+    RegionCrudCommand: 'RegionCrudCommand',
+    RetrieveGeneticSequenceByIdCommand: 'RetrieveGeneticSequenceByIdCommand',
+    OrganizationSetOrganizationUpdateAssociationCommand: 'OrganizationSetOrganizationUpdateAssociationCommand',
     UserInvitationCrudCommand: 'UserInvitationCrudCommand',
-    ContactCrudCommand: 'ContactCrudCommand',
-    RetrieveCaseRightsCommand: 'RetrieveCaseRightsCommand',
-    RetrieveOutagesCommand: 'RetrieveOutagesCommand',
-    RetrieveContainingRegionCommand: 'RetrieveContainingRegionCommand',
-    SubjectIdentifierCrudCommand: 'SubjectIdentifierCrudCommand',
+    RegionSetShapeCrudCommand: 'RegionSetShapeCrudCommand',
+    UpdateUserOwnOrganizationCommand: 'UpdateUserOwnOrganizationCommand',
     RetrieveCaseStatsCommand: 'RetrieveCaseStatsCommand',
-    RetrievePhylogeneticTreeBySequencesCommand: 'RetrievePhylogeneticTreeBySequencesCommand',
-    RetrieveCasesByQueryCommand: 'RetrieveCasesByQueryCommand'
+    ContactCrudCommand: 'ContactCrudCommand',
+    RetrieveCasesByIdCommand: 'RetrieveCasesByIdCommand',
+    RetrieveOwnPermissionsCommand: 'RetrieveOwnPermissionsCommand',
+    GetIdentityProvidersCommand: 'GetIdentityProvidersCommand',
+    ColSetColUpdateAssociationCommand: 'ColSetColUpdateAssociationCommand',
+    CaseTypeSetMemberCrudCommand: 'CaseTypeSetMemberCrudCommand',
+    SubjectIdentifierCrudCommand: 'SubjectIdentifierCrudCommand',
+    RetrieveGeneticSequenceFastaByIdCommand: 'RetrieveGeneticSequenceFastaByIdCommand'
 } as const;
 
 export type CommandName = typeof CommandName[keyof typeof CommandName];
@@ -1812,7 +1627,7 @@ export type ComparisonOperator = typeof ComparisonOperator[keyof typeof Comparis
 
 
 /**
- * A complete case type with all its related entities, to avoid multiple queries and allow efficient access. The complete case type is unique for each (id, user_id) whereby id is the inherited case type id.
+ * A complete CaseType with all its related entities, to avoid multiple queries and allow efficient access. The complete CaseType is unique for each (id, user_id) whereby ID is the inherited CaseType ID.    PARENT CLASS DOCUMENTATION   CaseType:  A CaseType is the data equivalent of an epidemiological case definition. By extension, it can also include non-cases that are relevant for the case definition, e.g. controls or samples from non-human origin. In addition, the CaseType contains some operational settings information.  Columns and dimensions are linked to CaseTypes.
  * @export
  * @interface CompleteCaseType
  */
@@ -1824,13 +1639,13 @@ export interface CompleteCaseType {
      */
     'id'?: string | null;
     /**
-     * The name of the case type
+     * The name of the CaseType
      * @type {string}
      * @memberof CompleteCaseType
      */
     'name': string;
     /**
-     * The description of the case type
+     * The description of the CaseType
      * @type {string}
      * @memberof CompleteCaseType
      */
@@ -1890,97 +1705,97 @@ export interface CompleteCaseType {
      */
     'delete_max_n_cases'?: number;
     /**
-     * The ID of the user for whom the complete case type is retrieved.
+     * The ID of the user for whom the complete CaseType is retrieved.
      * @type {string}
      * @memberof CompleteCaseType
      */
     'user_id': string | null;
     /**
-     * The etiologies used by the case type
+     * The etiologies used by the CaseType
      * @type {{ [key: string]: Etiology; }}
      * @memberof CompleteCaseType
      */
     'etiologies': { [key: string]: Etiology; };
     /**
-     * The etiological agents used by the case type
+     * The etiological agents used by the CaseType
      * @type {{ [key: string]: EtiologicalAgent; }}
      * @memberof CompleteCaseType
      */
     'etiological_agents': { [key: string]: EtiologicalAgent; };
     /**
-     * The dimensions used by the case type
+     * The reference dimensions used by the CaseType
+     * @type {{ [key: string]: RefDim; }}
+     * @memberof CompleteCaseType
+     */
+    'ref_dims': { [key: string]: RefDim; };
+    /**
+     * The reference columns used by the CaseType
+     * @type {{ [key: string]: RefCol; }}
+     * @memberof CompleteCaseType
+     */
+    'ref_cols': { [key: string]: RefCol; };
+    /**
+     * The Dims for the CaseType
      * @type {{ [key: string]: Dim; }}
      * @memberof CompleteCaseType
      */
     'dims': { [key: string]: Dim; };
     /**
-     * The columns used by the case type
+     * The Cols for the CaseType
      * @type {{ [key: string]: Col; }}
      * @memberof CompleteCaseType
      */
     'cols': { [key: string]: Col; };
     /**
-     * The case type dimensions
-     * @type {{ [key: string]: CaseTypeDim; }}
-     * @memberof CompleteCaseType
-     */
-    'case_type_dims': { [key: string]: CaseTypeDim; };
-    /**
-     * The case type columns for the case type
-     * @type {{ [key: string]: CaseTypeCol; }}
-     * @memberof CompleteCaseType
-     */
-    'case_type_cols': { [key: string]: CaseTypeCol; };
-    /**
-     * The case type dimensions ordered by their (occurrence, rank, code). Calculated during model validation.
+     * The Dims ordered by their (occurrence, rank, code). Calculated during model validation.
      * @type {Array<string>}
      * @memberof CompleteCaseType
      */
-    'ordered_case_type_dim_ids'?: Array<string>;
+    'ordered_dim_ids'?: Array<string>;
     /**
-     * The case type columns ordered by their (ordered_case_type_dim, rank, code). Calculated during model validation.
+     * The Cols ordered by their (ordered_dim, rank, code). Calculated during model validation.
      * @type {Array<string>}
      * @memberof CompleteCaseType
      */
-    'ordered_case_type_col_ids'?: Array<string>;
+    'ordered_col_ids'?: Array<string>;
     /**
-     * The case type columns per case type dimension, ordered by (rank, code). Calculated during model validation.
+     * The Cols per Dim, ordered by (rank, code). Calculated during model validation.
      * @type {{ [key: string]: Array<string>; }}
      * @memberof CompleteCaseType
      */
-    'ordered_case_type_col_ids_by_dim'?: { [key: string]: Array<string>; };
+    'ordered_col_ids_by_dim'?: { [key: string]: Array<string>; };
     /**
-     * The genetic distance protocols used by the case type
+     * The genetic distance protocols used by the CaseType
      * @type {{ [key: string]: GeneticDistanceProtocol; }}
      * @memberof CompleteCaseType
      */
     'genetic_distance_protocols': { [key: string]: GeneticDistanceProtocol; };
     /**
-     * The tree algorithms used by the case type
+     * The tree algorithms used by the CaseType
      * @type {{ [key: string]: TreeAlgorithm; }}
      * @memberof CompleteCaseType
      */
     'tree_algorithms': { [key: string]: TreeAlgorithm; };
     /**
-     * The case type access ABAC object by data collection ID
+     * The CaseTypeAccessAbac objects by data collection ID
      * @type {{ [key: string]: CaseTypeAccessAbac; }}
      * @memberof CompleteCaseType
      */
     'case_type_access_abacs': { [key: string]: CaseTypeAccessAbac; };
     /**
-     * The case type share ABAC object by data collection ID
+     * The CaseTypeShareAbac objects by data collection ID
      * @type {{ [key: string]: CaseTypeShareAbac; }}
      * @memberof CompleteCaseType
      */
     'case_type_share_abacs': { [key: string]: CaseTypeShareAbac; };
     /**
-     * The case type dimension ID to use for time-based statistics unless otherwise specified
+     * The Dim ID to use for time-based statistics unless otherwise specified
      * @type {string}
      * @memberof CompleteCaseType
      */
-    'case_date_case_type_dim_id': string | null;
+    'case_date_dim_id': string | null;
     /**
-     * The mapping of column types, restricted to time-related column types, to column IDs for the case date column of the case type. Calculated during model validation.
+     * The mapping of column types, restricted to time-related column types, to column IDs for the case date column of the CaseType. Calculated during model validation.
      * @type {{ [key: string]: string; }}
      * @memberof CompleteCaseType
      */
@@ -2414,7 +2229,7 @@ export type DataIssueType = typeof DataIssueType[keyof typeof DataIssueType];
 export type Detail = string | { [key: string]: any; };
 
 /**
- * 
+ * A dimension of a CaseType, logically grouping a number of columns. It is derived from a reference dimension and possibly occurs multiple times in the same case type. Multiple occurrences can capture e.g. multiple vaccinations or multiple samples taken during the time span of the case.
  * @export
  * @interface Dim
  */
@@ -2426,50 +2241,66 @@ export interface Dim {
      */
     'id'?: string | null;
     /**
-     * 
-     * @type {DimType}
+     * The ID of the CaseType. FOREIGN KEY
+     * @type {string}
      * @memberof Dim
      */
-    'dim_type': DimType;
+    'case_type_id': string;
     /**
-     * The code for the dimension.
+     * 
+     * @type {CaseType}
+     * @memberof Dim
+     */
+    'case_type'?: CaseType;
+    /**
+     * The ID of the dimension. FOREIGN KEY
+     * @type {string}
+     * @memberof Dim
+     */
+    'ref_dim_id': string;
+    /**
+     * 
+     * @type {RefDim}
+     * @memberof Dim
+     */
+    'ref_dim'?: RefDim;
+    /**
+     * The index of the occurrence of the dimension for this CaseType. E.g. for first and second vaccination time it would be 1 and 2. Zero if only a single occurrence is expected or created.
+     * @type {number}
+     * @memberof Dim
+     */
+    'occurrence'?: number;
+    /**
+     * The code for the Dim, equal to the RefDim code and, if present, dot \'x\' occurrence. E.g. \'Host.Vaccination.Date.COVID19.x1\' for occurrence=1, \'Specimen.Sampling.Date\' for occurrence=0
      * @type {string}
      * @memberof Dim
      */
     'code': string;
     /**
-     * The label for the dimension.
+     * The label of the Dim for this CaseType, if different from the RefDim label.
      * @type {string}
      * @memberof Dim
      */
-    'label': string;
+    'label'?: string | null;
     /**
-     * The rank of the dimension, for (partial) ordering.
-     * @type {number}
-     * @memberof Dim
-     */
-    'rank'?: number;
-    /**
-     * The column code prefix used to compose a full column code, if different from the code field.
-     * @type {string}
-     * @memberof Dim
-     */
-    'col_code_prefix'?: string | null;
-    /**
-     * Description of the dimension.
+     * Description of the Dim.
      * @type {string}
      * @memberof Dim
      */
     'description'?: string | null;
     /**
-     * Additional properties of the dimension.
-     * @type {{ [key: string]: any; }}
+     * The rank of the Dim within the CaseType for (partial) ordering.
+     * @type {number}
      * @memberof Dim
      */
-    'props'?: { [key: string]: any; };
+    'rank': number;
+    /**
+     * Indicates if this Dim is to be used to derive the case date.
+     * @type {boolean}
+     * @memberof Dim
+     */
+    'is_case_date_dim'?: boolean;
 }
-
-
 /**
  * 
  * @export
@@ -2583,7 +2414,7 @@ export interface Etiology {
  */
 export interface ExternalIdentifier {
     /**
-     * The unique identifier for the object.
+     * The ID of the external identifier. Computed as the UUID of the first 16 bytes of the SHA-256 hash of the concatenated identifier_issuer_id bytes and the external_id encoded as UTF-8. PRIMARY KEY
      * @type {string}
      * @memberof ExternalIdentifier
      */
@@ -3023,21 +2854,6 @@ export type OAuthFlow = typeof OAuthFlow[keyof typeof OAuthFlow];
 
 
 /**
- * 
- * @export
- * @ {string}
- */
-
-export const OnExistsUploadAction = {
-    ERROR: 'ERROR',
-    UPDATE: 'UPDATE',
-    SKIP: 'SKIP'
-} as const;
-
-export type OnExistsUploadAction = typeof OnExistsUploadAction[keyof typeof OnExistsUploadAction];
-
-
-/**
  * Represents an organization.
  * @export
  * @interface Organization
@@ -3063,7 +2879,7 @@ export interface Organization {
     'legal_entity_code': string;
 }
 /**
- * Stores the access rights of an organization to a particular data collection. If an organization does not have a policy to a data collection, it has no access rights to that data collection.  The access rights are limited to the case types in the case type set. If a case type is not in the case type set, the organization has no access rights to that data collection for that case type.
+ * Stores the access rights of an organization to a particular data collection. If an organization does not have a policy to a data collection, it has no access rights to that data collection.  The access rights are limited to the CaseTypes in the CaseTypeSet. If a CaseType is not in the CaseTypeSet, the organization has no access rights to that data collection for that CaseType.
  * @export
  * @interface OrganizationAccessCasePolicy
  */
@@ -3087,7 +2903,7 @@ export interface OrganizationAccessCasePolicy {
      */
     'data_collection'?: DataCollection;
     /**
-     * The ID of the case type set. FOREIGN KEY
+     * The ID of the CaseTypeSet. FOREIGN KEY
      * @type {string}
      * @memberof OrganizationAccessCasePolicy
      */
@@ -3141,43 +2957,43 @@ export interface OrganizationAccessCasePolicy {
      */
     'organization'?: Organization;
     /**
-     * Whether the data collection is private, limited to the case types in the case type set. When true, add/remove case and add/remove case set are considered (i) as the right to create/delete a case or case set in this data collection (setting case.created_in_data_collection to this data collection) and (ii) as the right to share the case or case set further in other data collections. Deleting a case or case set is only allowed when it can or has been removed from all other data collections as well.
+     * Whether the data collection is private, limited to the CaseTypes in the CaseTypeSet. When true, add/remove case and add/remove case set are considered (i) as the right to create/delete a case or case set in this data collection (setting case.created_in_data_collection to this data collection) and (ii) as the right to share the case or case set further in other data collections. Deleting a case or case set is only allowed when it can or has been removed from all other data collections as well.
      * @type {boolean}
      * @memberof OrganizationAccessCasePolicy
      */
     'is_private': boolean;
     /**
-     * The ID of the case type column set for which values can be read, limited to the case types in the case type set. If empty, there are no read rights. FOREIGN KEY
+     * The ID of the column set for which values can be read, limited to the CaseTypes in the CaseTypeSet. If empty, there are no read rights. FOREIGN KEY
      * @type {string}
      * @memberof OrganizationAccessCasePolicy
      */
-    'read_case_type_col_set_id'?: string | null;
+    'read_col_set_id'?: string | null;
     /**
      * 
-     * @type {CaseTypeColSet}
+     * @type {ColSet}
      * @memberof OrganizationAccessCasePolicy
      */
-    'read_case_type_col_set'?: CaseTypeColSet;
+    'read_col_set'?: ColSet;
     /**
-     * The ID of the case type column set for which values can be updated, limited to the case types in the case type set.  If empty, there are no write rights. FOREIGN KEY
+     * The ID of the column set for which values can be updated, limited to the CaseTypes in the CaseTypeSet.  If empty, there are no write rights. FOREIGN KEY
      * @type {string}
      * @memberof OrganizationAccessCasePolicy
      */
-    'write_case_type_col_set_id'?: string | null;
+    'write_col_set_id'?: string | null;
     /**
      * 
-     * @type {CaseTypeColSet}
+     * @type {ColSet}
      * @memberof OrganizationAccessCasePolicy
      */
-    'write_case_type_col_set'?: CaseTypeColSet;
+    'write_col_set'?: ColSet;
     /**
-     * Whether case set be read, limited to the case types in the case type set
+     * Whether case set be read, limited to the CaseTypes in the CaseTypeSet
      * @type {boolean}
      * @memberof OrganizationAccessCasePolicy
      */
     'read_case_set': boolean;
     /**
-     * Whether case set be updated, limited to the case types in the case type set
+     * Whether case set be updated, limited to the CaseTypes in the CaseTypeSet
      * @type {boolean}
      * @memberof OrganizationAccessCasePolicy
      */
@@ -3351,7 +3167,7 @@ export interface OrganizationSetMember {
     'organization'?: Organization;
 }
 /**
- * Stores any additional case or case set share rights of an organization to a particular data collection, if the case or case set is already in a particular other data collection.  The share rights are limited to the case types in the case type set. If a case type is not in the case type set, the organization has no share rights to that data collection for that case type.
+ * Stores any additional case or case set share rights of an organization to a particular data collection, if the case or case set is already in a particular other data collection.  The share rights are limited to the CaseTypes in the CaseTypeSet. If a CaseType is not in the CaseTypeSet, the organization has no share rights to that data collection for that CaseType.
  * @export
  * @interface OrganizationShareCasePolicy
  */
@@ -3375,7 +3191,7 @@ export interface OrganizationShareCasePolicy {
      */
     'data_collection'?: DataCollection;
     /**
-     * The ID of the case type set. FOREIGN KEY
+     * The ID of the CaseTypeSet. FOREIGN KEY
      * @type {string}
      * @memberof OrganizationShareCasePolicy
      */
@@ -3429,7 +3245,7 @@ export interface OrganizationShareCasePolicy {
      */
     'organization'?: Organization;
     /**
-     * The ID of the data collection from which the case type set is shared. FOREIGN KEY
+     * The ID of the data collection from which the CaseTypeSet is shared. FOREIGN KEY
      * @type {string}
      * @memberof OrganizationShareCasePolicy
      */
@@ -3614,17 +3430,11 @@ export interface PhylogeneticTree {
 
 
 /**
- * A single read set to be uploaded and associated with both an existing case in casedb and a potentially existing sample in seqdb.  The sample can be identified in seqdb either by its internal ID (sample_id) or by an external identifier (external_sample_id). The ID of created read set is intended to be added to the corresponding case in casedb as the content of the given case type column.    PARENT CLASS DOCUMENTATION   IsNewIdMixin:  Mixin that adds an is_new_id field to indicate whether the model instance is new and has an externally assigned ID rather than one assigned by the system. Assumes that the inheriting model also has an \'id\' field.  Additional validation: - If is_new_id is True, the model id field field may not be None or NULL_ID.
+ * A single read set to be uploaded and associated with both an existing case in casedb and a potentially existing sample in seqdb.  The sample can be identified in seqdb either by its internal ID (sample_id) or by an external identifier (external_sample_id). The ID of created read set is intended to be added to the corresponding case in casedb as the content of the given Col.
  * @export
  * @interface ReadSetForUpload
  */
 export interface ReadSetForUpload {
-    /**
-     * Indicates whether the model instance is both new (not yet stored) and its ID is assigned outside the system, e.g. for having the same IDs between different environments.
-     * @type {boolean}
-     * @memberof ReadSetForUpload
-     */
-    'is_new_id'?: boolean;
     /**
      * The unique identifier for the object.
      * @type {string}
@@ -3638,11 +3448,11 @@ export interface ReadSetForUpload {
      */
     'case_id'?: string;
     /**
-     * The ID of the case type column with column type genetic reads that the read set is or will be associated with.
+     * The ID of the column with column type genetic reads that the read set is or will be associated with.
      * @type {string}
      * @memberof ReadSetForUpload
      */
-    'case_type_col_id': string;
+    'col_id': string;
     /**
      * The UUID of the sample in seqdb that the read set is associated with. If not available, the null ID is put. Must be provided if external_sample_id is not provided.
      * @type {string}
@@ -3679,6 +3489,181 @@ export const ReadsFileFormat = {
 } as const;
 
 export type ReadsFileFormat = typeof ReadsFileFormat[keyof typeof ReadsFileFormat];
+
+
+/**
+ * A reference column that is not linked to a specific CaseType, to promote reuse and consistency. The reference column belongs to a reference dimension and contains part of the information needed to define a column in a case, such as the code, type and possible concept set.
+ * @export
+ * @interface RefCol
+ */
+export interface RefCol {
+    /**
+     * The unique identifier for the object.
+     * @type {string}
+     * @memberof RefCol
+     */
+    'id'?: string | null;
+    /**
+     * The ID of the dimension. FOREIGN KEY
+     * @type {string}
+     * @memberof RefCol
+     */
+    'ref_dim_id': string;
+    /**
+     * 
+     * @type {RefDim}
+     * @memberof RefCol
+     */
+    'ref_dim'?: RefDim;
+    /**
+     * The code suffix for the column used to compose a full column code, if needed in addition to the dimension column code prefix. See code field.
+     * @type {string}
+     * @memberof RefCol
+     */
+    'code_suffix'?: string | null;
+    /**
+     * The code for the column, equal to the dimension column code prefix dot code_suffix (dot code_suffix only if the latter is not null).
+     * @type {string}
+     * @memberof RefCol
+     */
+    'code': string;
+    /**
+     * The rank of the column within the dimension, for (partial) ordering.
+     * @type {number}
+     * @memberof RefCol
+     */
+    'rank'?: number;
+    /**
+     * The label for the column, if different from the code.
+     * @type {string}
+     * @memberof RefCol
+     */
+    'label'?: string | null;
+    /**
+     * 
+     * @type {ColType}
+     * @memberof RefCol
+     */
+    'col_type': ColType;
+    /**
+     * The ID of the concept set for the column in case of type NOMINAL, ORDINAL, INTERVAL. FOREIGN KEY
+     * @type {string}
+     * @memberof RefCol
+     */
+    'concept_set_id'?: string | null;
+    /**
+     * 
+     * @type {ConceptSet}
+     * @memberof RefCol
+     */
+    'concept_set'?: ConceptSet;
+    /**
+     * The ID of the region set for the column in case of type GEO. FOREIGN KEY
+     * @type {string}
+     * @memberof RefCol
+     */
+    'region_set_id'?: string | null;
+    /**
+     * 
+     * @type {RegionSet}
+     * @memberof RefCol
+     */
+    'region_set'?: RegionSet;
+    /**
+     * The ID of the genetic distance protocol that produces the input for the tree algorithm. FOREIGN KEY
+     * @type {string}
+     * @memberof RefCol
+     */
+    'genetic_distance_protocol_id'?: string | null;
+    /**
+     * 
+     * @type {GeneticDistanceProtocol}
+     * @memberof RefCol
+     */
+    'genetic_distance_protocol'?: GeneticDistanceProtocol;
+    /**
+     * Description of the column.
+     * @type {string}
+     * @memberof RefCol
+     */
+    'description'?: string | null;
+    /**
+     * Additional properties of the column.
+     * @type {{ [key: string]: any; }}
+     * @memberof RefCol
+     */
+    'props'?: { [key: string]: any; };
+}
+
+
+/**
+ * The additional validation rules that a RefCol instance must comply with.
+ * @export
+ * @interface RefColValidationRulesResponseBody
+ */
+export interface RefColValidationRulesResponseBody {
+    /**
+     * The RefCol.col_type values that are allowed depending on the RefCol.ref_dim.dim_type.
+     * @type {{ [key: string]: Array<ColType>; }}
+     * @memberof RefColValidationRulesResponseBody
+     */
+    'valid_col_types_by_dim_type'?: { [key: string]: Array<ColType>; };
+}
+/**
+ * A reference dimension that is not linked to a specific CaseType, to promote reuse and consistency. The reference dimension groups a number of reference columns that logically belong together and contains part of the information needed to define a dimension in a case, such as the code and label.
+ * @export
+ * @interface RefDim
+ */
+export interface RefDim {
+    /**
+     * The unique identifier for the object.
+     * @type {string}
+     * @memberof RefDim
+     */
+    'id'?: string | null;
+    /**
+     * 
+     * @type {DimType}
+     * @memberof RefDim
+     */
+    'dim_type': DimType;
+    /**
+     * The code for the dimension.
+     * @type {string}
+     * @memberof RefDim
+     */
+    'code': string;
+    /**
+     * The label for the dimension.
+     * @type {string}
+     * @memberof RefDim
+     */
+    'label': string;
+    /**
+     * The rank of the dimension, for (partial) ordering.
+     * @type {number}
+     * @memberof RefDim
+     */
+    'rank'?: number;
+    /**
+     * The column code prefix used to compose a full column code, if different from the code field.
+     * @type {string}
+     * @memberof RefDim
+     */
+    'col_code_prefix'?: string | null;
+    /**
+     * Description of the dimension.
+     * @type {string}
+     * @memberof RefDim
+     */
+    'description'?: string | null;
+    /**
+     * Additional properties of the dimension.
+     * @type {{ [key: string]: any; }}
+     * @memberof RefDim
+     */
+    'props'?: { [key: string]: any; };
+}
 
 
 /**
@@ -3884,13 +3869,13 @@ export interface RegionSetShape {
  */
 export interface RetrieveCaseRightsRequestBody {
     /**
-     * The case type id to retrieve case access for.
+     * The CaseType ID to retrieve case access for.
      * @type {string}
      * @memberof RetrieveCaseRightsRequestBody
      */
     'case_type_id': string;
     /**
-     * The case ids to retrieve access for. UNIQUE
+     * The Case IDs to retrieve access for. UNIQUE
      * @type {Array<string>}
      * @memberof RetrieveCaseRightsRequestBody
      */
@@ -3903,7 +3888,7 @@ export interface RetrieveCaseRightsRequestBody {
  */
 export interface RetrieveCaseSetStatsRequestBody {
     /**
-     * The case set ids to retrieve stats for, if not all.
+     * The case set IDs to retrieve stats for, if not all.
      * @type {Array<string>}
      * @memberof RetrieveCaseSetStatsRequestBody
      */
@@ -3916,7 +3901,7 @@ export interface RetrieveCaseSetStatsRequestBody {
  */
 export interface RetrieveCaseTypeStatsRequestBody {
     /**
-     * The case type ids to retrieve stats for, if not all.
+     * The CaseType IDs to retrieve stats for, if not all.
      * @type {Array<string>}
      * @memberof RetrieveCaseTypeStatsRequestBody
      */
@@ -3935,13 +3920,13 @@ export interface RetrieveCaseTypeStatsRequestBody {
  */
 export interface RetrieveCasesByIdsRequestBody {
     /**
-     * The case type id to retrieve cases for.
+     * The CaseType ID to retrieve cases for.
      * @type {string}
      * @memberof RetrieveCasesByIdsRequestBody
      */
     'case_type_id': string;
     /**
-     * The case ids to retrieve cases for. All cases must belong to the given case type. UNIQUE
+     * The case IDs to retrieve cases for. All cases must belong to the given CaseType. UNIQUE
      * @type {Array<string>}
      * @memberof RetrieveCasesByIdsRequestBody
      */
@@ -3967,17 +3952,17 @@ export interface RetrieveOrganizationContactsRequestBody {
  */
 export interface RetrievePhylogeneticTreeRequestBody {
     /**
-     * The case type ID that all the cases must belong to.
+     * The CaseType ID that all the cases must belong to.
      * @type {string}
      * @memberof RetrievePhylogeneticTreeRequestBody
      */
     'case_type_id': string;
     /**
-     * The ID of the genetic distance case type column to use.
+     * The ID of the genetic distance Col to use.
      * @type {string}
      * @memberof RetrievePhylogeneticTreeRequestBody
      */
-    'genetic_distance_case_type_col_id': string;
+    'genetic_distance_col_id': string;
     /**
      * 
      * @type {TreeAlgorithmType}
@@ -4000,7 +3985,7 @@ export interface RetrievePhylogeneticTreeRequestBody {
  */
 export interface RetrieveSimilarCasesRequestBody {
     /**
-     * The case type ID that all the cases must belong to.
+     * The CaseType ID that all the cases must belong to.
      * @type {string}
      * @memberof RetrieveSimilarCasesRequestBody
      */
@@ -4018,11 +4003,11 @@ export interface RetrieveSimilarCasesRequestBody {
      */
     'case_ids': Array<string>;
     /**
-     * The case type column ID to use for determining the genetic distance between cases.
+     * The Col ID to use for determining the genetic distance between cases.
      * @type {string}
      * @memberof RetrieveSimilarCasesRequestBody
      */
-    'genetic_distance_case_type_col_id': string;
+    'genetic_distance_col_id': string;
 }
 /**
  * 
@@ -4055,17 +4040,11 @@ export type SeqFileFormat = typeof SeqFileFormat[keyof typeof SeqFileFormat];
 
 
 /**
- * A single sequence to be uploaded and associated with both an existing case in casedb and a potentially existing sample in seqdb.  The sample can be identified in seqdb either by its internal ID (sample_id) or by an external identifier (external_sample_id). The ID of created sequence is intended to be added to the corresponding case in casedb as the content of the given case type column.    PARENT CLASS DOCUMENTATION   IsNewIdMixin:  Mixin that adds an is_new_id field to indicate whether the model instance is new and has an externally assigned ID rather than one assigned by the system. Assumes that the inheriting model also has an \'id\' field.  Additional validation: - If is_new_id is True, the model id field field may not be None or NULL_ID.
+ * A single sequence to be uploaded and associated with both an existing case in casedb and a potentially existing sample in seqdb.  The sample can be identified in seqdb either by its internal ID (sample_id) or by an external identifier (external_sample_id). The ID of created sequence is intended to be added to the corresponding case in casedb as the content of the given Col.
  * @export
  * @interface SeqForUpload
  */
 export interface SeqForUpload {
-    /**
-     * Indicates whether the model instance is both new (not yet stored) and its ID is assigned outside the system, e.g. for having the same IDs between different environments.
-     * @type {boolean}
-     * @memberof SeqForUpload
-     */
-    'is_new_id'?: boolean;
     /**
      * The unique identifier for the object.
      * @type {string}
@@ -4079,11 +4058,11 @@ export interface SeqForUpload {
      */
     'case_id'?: string;
     /**
-     * The ID of the case type column that the sequence is or will be associated with.
+     * The ID of the column that the sequence is or will be associated with.
      * @type {string}
      * @memberof SeqForUpload
      */
-    'case_type_col_id': string;
+    'col_id': string;
     /**
      * The UUID of the sample in seqdb that the sequence is associated with. If not available, the null ID is put. Must be provided if external_sample_id is not provided.
      * @type {string}
@@ -4954,28 +4933,28 @@ export interface TypedUuidSetFilter {
 /**
  * 
  * @export
- * @interface UpdateCaseTypeColSetCaseTypeColsRequestBody
- */
-export interface UpdateCaseTypeColSetCaseTypeColsRequestBody {
-    /**
-     * The members of the case type col set.
-     * @type {Array<CaseTypeColSetMember>}
-     * @memberof UpdateCaseTypeColSetCaseTypeColsRequestBody
-     */
-    'case_type_col_set_members': Array<CaseTypeColSetMember>;
-}
-/**
- * 
- * @export
  * @interface UpdateCaseTypeSetCaseTypesRequestBody
  */
 export interface UpdateCaseTypeSetCaseTypesRequestBody {
     /**
-     * The members of the case type set.
+     * The members of the CaseTypeSet.
      * @type {Array<CaseTypeSetMember>}
      * @memberof UpdateCaseTypeSetCaseTypesRequestBody
      */
     'case_type_set_members': Array<CaseTypeSetMember>;
+}
+/**
+ * 
+ * @export
+ * @interface UpdateColSetColsRequestBody
+ */
+export interface UpdateColSetColsRequestBody {
+    /**
+     * The members of the ColSet.
+     * @type {Array<ColSetMember>}
+     * @memberof UpdateColSetColsRequestBody
+     */
+    'col_set_members': Array<ColSetMember>;
 }
 /**
  * 
@@ -5068,6 +5047,22 @@ export interface UpdateUserRequestBody {
     'organization_id': string | null;
 }
 /**
+ * 
+ * @export
+ * @ {string}
+ */
+
+export const UploadAction = {
+    ERROR: 'ERROR',
+    UPDATE: 'UPDATE',
+    CREATE: 'CREATE',
+    SKIP: 'SKIP'
+} as const;
+
+export type UploadAction = typeof UploadAction[keyof typeof UploadAction];
+
+
+/**
  * Upload a batch of cases along with their associated data and return an upload result. The upload can be stopped after the verification step by setting the \'verify_only\' property to True, so that the returned upload result only contains the verification results.  The data are uploaded as a single atomic unit of work, so that either all data are successfully uploaded or none are.
  * @export
  * @interface UploadCasesCommand
@@ -5081,10 +5076,16 @@ export interface UploadCasesCommand {
     'verify_only'?: boolean;
     /**
      * 
-     * @type {OnExistsUploadAction}
+     * @type {UploadAction}
      * @memberof UploadCasesCommand
      */
-    'on_exists'?: OnExistsUploadAction;
+    'on_exists'?: UploadAction;
+    /**
+     * 
+     * @type {UploadAction}
+     * @memberof UploadCasesCommand
+     */
+    'on_new'?: UploadAction;
     /**
      * The ID of the command
      * @type {string}
@@ -5110,7 +5111,7 @@ export interface UploadCasesCommand {
      */
     'props'?: { [key: string]: any; };
     /**
-     * The case type ID that all the cases must belong to. All cases in the case set must have this case type ID.
+     * The CaseType ID that all the cases must belong to. All cases in the case set must have this CaseType ID.
      * @type {string}
      * @memberof UploadCasesCommand
      */
@@ -5164,7 +5165,7 @@ export interface UploadLogItem {
 
 
 /**
- * Represents the result of an upload operation, including upload status and logs.  Additional validation: - If the status is successful (NOT_FAILED), there must be no error log items. - If the status is failed, there must be at least one error log item.    PARENT CLASS DOCUMENTATION   Model: PARENT CLASS DOCUMENTATION   BaseModel: !!! abstract \"Usage Documentation\"     [Models](../concepts/models.md)  A base class for creating Pydantic models.  Attributes:     __class_vars__: The names of the class variables defined on the model.     __private_attributes__: Metadata about the private attributes of the model.     __signature__: The synthesized `__init__` [`Signature`][inspect.Signature] of the model.      __pydantic_complete__: Whether model building is completed, or if there are still undefined fields.     __pydantic_core_schema__: The core schema of the model.     __pydantic_custom_init__: Whether the model has a custom `__init__` function.     __pydantic_decorators__: Metadata containing the decorators defined on the model.         This replaces `Model.__validators__` and `Model.__root_validators__` from Pydantic V1.     __pydantic_generic_metadata__: Metadata for generic models; contains data used for a similar purpose to         __args__, __origin__, __parameters__ in typing-module generics. May eventually be replaced by these.     __pydantic_parent_namespace__: Parent namespace of the model, used for automatic rebuilding of models.     __pydantic_post_init__: The name of the post-init method for the model, if defined.     __pydantic_root_model__: Whether the model is a [`RootModel`][pydantic.root_model.RootModel].     __pydantic_serializer__: The `pydantic-core` `SchemaSerializer` used to dump instances of the model.     __pydantic_validator__: The `pydantic-core` `SchemaValidator` used to validate instances of the model.      __pydantic_fields__: A dictionary of field names and their corresponding [`FieldInfo`][pydantic.fields.FieldInfo] objects.     __pydantic_computed_fields__: A dictionary of computed field names and their corresponding [`ComputedFieldInfo`][pydantic.fields.ComputedFieldInfo] objects.      __pydantic_extra__: A dictionary containing extra values, if [`extra`][pydantic.config.ConfigDict.extra]         is set to `\'allow\'`.     __pydantic_fields_set__: The names of fields explicitly set during instantiation.     __pydantic_private__: Values of private attributes set on the model instance.    PARENT CLASS DOCUMENTATION   Model: PARENT CLASS DOCUMENTATION   BaseModel: !!! abstract \"Usage Documentation\"     [Models](../concepts/models.md)  A base class for creating Pydantic models.  Attributes:     __class_vars__: The names of the class variables defined on the model.     __private_attributes__: Metadata about the private attributes of the model.     __signature__: The synthesized `__init__` [`Signature`][inspect.Signature] of the model.      __pydantic_complete__: Whether model building is completed, or if there are still undefined fields.     __pydantic_core_schema__: The core schema of the model.     __pydantic_custom_init__: Whether the model has a custom `__init__` function.     __pydantic_decorators__: Metadata containing the decorators defined on the model.         This replaces `Model.__validators__` and `Model.__root_validators__` from Pydantic V1.     __pydantic_generic_metadata__: Metadata for generic models; contains data used for a similar purpose to         __args__, __origin__, __parameters__ in typing-module generics. May eventually be replaced by these.     __pydantic_parent_namespace__: Parent namespace of the model, used for automatic rebuilding of models.     __pydantic_post_init__: The name of the post-init method for the model, if defined.     __pydantic_root_model__: Whether the model is a [`RootModel`][pydantic.root_model.RootModel].     __pydantic_serializer__: The `pydantic-core` `SchemaSerializer` used to dump instances of the model.     __pydantic_validator__: The `pydantic-core` `SchemaValidator` used to validate instances of the model.      __pydantic_fields__: A dictionary of field names and their corresponding [`FieldInfo`][pydantic.fields.FieldInfo] objects.     __pydantic_computed_fields__: A dictionary of computed field names and their corresponding [`ComputedFieldInfo`][pydantic.fields.ComputedFieldInfo] objects.      __pydantic_extra__: A dictionary containing extra values, if [`extra`][pydantic.config.ConfigDict.extra]         is set to `\'allow\'`.     __pydantic_fields_set__: The names of fields explicitly set during instantiation.     __pydantic_private__: Values of private attributes set on the model instance.    PARENT CLASS DOCUMENTATION   BaseModel: !!! abstract \"Usage Documentation\"     [Models](../concepts/models.md)  A base class for creating Pydantic models.  Attributes:     __class_vars__: The names of the class variables defined on the model.     __private_attributes__: Metadata about the private attributes of the model.     __signature__: The synthesized `__init__` [`Signature`][inspect.Signature] of the model.      __pydantic_complete__: Whether model building is completed, or if there are still undefined fields.     __pydantic_core_schema__: The core schema of the model.     __pydantic_custom_init__: Whether the model has a custom `__init__` function.     __pydantic_decorators__: Metadata containing the decorators defined on the model.         This replaces `Model.__validators__` and `Model.__root_validators__` from Pydantic V1.     __pydantic_generic_metadata__: Metadata for generic models; contains data used for a similar purpose to         __args__, __origin__, __parameters__ in typing-module generics. May eventually be replaced by these.     __pydantic_parent_namespace__: Parent namespace of the model, used for automatic rebuilding of models.     __pydantic_post_init__: The name of the post-init method for the model, if defined.     __pydantic_root_model__: Whether the model is a [`RootModel`][pydantic.root_model.RootModel].     __pydantic_serializer__: The `pydantic-core` `SchemaSerializer` used to dump instances of the model.     __pydantic_validator__: The `pydantic-core` `SchemaValidator` used to validate instances of the model.      __pydantic_fields__: A dictionary of field names and their corresponding [`FieldInfo`][pydantic.fields.FieldInfo] objects.     __pydantic_computed_fields__: A dictionary of computed field names and their corresponding [`ComputedFieldInfo`][pydantic.fields.ComputedFieldInfo] objects.      __pydantic_extra__: A dictionary containing extra values, if [`extra`][pydantic.config.ConfigDict.extra]         is set to `\'allow\'`.     __pydantic_fields_set__: The names of fields explicitly set during instantiation.     __pydantic_private__: Values of private attributes set on the model instance.
+ * Represents the result of an upload operation for a particular object, including upload status and logs.  Additional validation: - If the status is successful (NOT_FAILED), there must be no error log items. - If the status is failed, there must be at least one error log item.    PARENT CLASS DOCUMENTATION   Model: PARENT CLASS DOCUMENTATION   BaseModel: !!! abstract \"Usage Documentation\"     [Models](../concepts/models.md)  A base class for creating Pydantic models.  Attributes:     __class_vars__: The names of the class variables defined on the model.     __private_attributes__: Metadata about the private attributes of the model.     __signature__: The synthesized `__init__` [`Signature`][inspect.Signature] of the model.      __pydantic_complete__: Whether model building is completed, or if there are still undefined fields.     __pydantic_core_schema__: The core schema of the model.     __pydantic_custom_init__: Whether the model has a custom `__init__` function.     __pydantic_decorators__: Metadata containing the decorators defined on the model.         This replaces `Model.__validators__` and `Model.__root_validators__` from Pydantic V1.     __pydantic_generic_metadata__: Metadata for generic models; contains data used for a similar purpose to         __args__, __origin__, __parameters__ in typing-module generics. May eventually be replaced by these.     __pydantic_parent_namespace__: Parent namespace of the model, used for automatic rebuilding of models.     __pydantic_post_init__: The name of the post-init method for the model, if defined.     __pydantic_root_model__: Whether the model is a [`RootModel`][pydantic.root_model.RootModel].     __pydantic_serializer__: The `pydantic-core` `SchemaSerializer` used to dump instances of the model.     __pydantic_validator__: The `pydantic-core` `SchemaValidator` used to validate instances of the model.      __pydantic_fields__: A dictionary of field names and their corresponding [`FieldInfo`][pydantic.fields.FieldInfo] objects.     __pydantic_computed_fields__: A dictionary of computed field names and their corresponding [`ComputedFieldInfo`][pydantic.fields.ComputedFieldInfo] objects.      __pydantic_extra__: A dictionary containing extra values, if [`extra`][pydantic.config.ConfigDict.extra]         is set to `\'allow\'`.     __pydantic_fields_set__: The names of fields explicitly set during instantiation.     __pydantic_private__: Values of private attributes set on the model instance.    PARENT CLASS DOCUMENTATION   Model: PARENT CLASS DOCUMENTATION   BaseModel: !!! abstract \"Usage Documentation\"     [Models](../concepts/models.md)  A base class for creating Pydantic models.  Attributes:     __class_vars__: The names of the class variables defined on the model.     __private_attributes__: Metadata about the private attributes of the model.     __signature__: The synthesized `__init__` [`Signature`][inspect.Signature] of the model.      __pydantic_complete__: Whether model building is completed, or if there are still undefined fields.     __pydantic_core_schema__: The core schema of the model.     __pydantic_custom_init__: Whether the model has a custom `__init__` function.     __pydantic_decorators__: Metadata containing the decorators defined on the model.         This replaces `Model.__validators__` and `Model.__root_validators__` from Pydantic V1.     __pydantic_generic_metadata__: Metadata for generic models; contains data used for a similar purpose to         __args__, __origin__, __parameters__ in typing-module generics. May eventually be replaced by these.     __pydantic_parent_namespace__: Parent namespace of the model, used for automatic rebuilding of models.     __pydantic_post_init__: The name of the post-init method for the model, if defined.     __pydantic_root_model__: Whether the model is a [`RootModel`][pydantic.root_model.RootModel].     __pydantic_serializer__: The `pydantic-core` `SchemaSerializer` used to dump instances of the model.     __pydantic_validator__: The `pydantic-core` `SchemaValidator` used to validate instances of the model.      __pydantic_fields__: A dictionary of field names and their corresponding [`FieldInfo`][pydantic.fields.FieldInfo] objects.     __pydantic_computed_fields__: A dictionary of computed field names and their corresponding [`ComputedFieldInfo`][pydantic.fields.ComputedFieldInfo] objects.      __pydantic_extra__: A dictionary containing extra values, if [`extra`][pydantic.config.ConfigDict.extra]         is set to `\'allow\'`.     __pydantic_fields_set__: The names of fields explicitly set during instantiation.     __pydantic_private__: Values of private attributes set on the model instance.    PARENT CLASS DOCUMENTATION   BaseModel: !!! abstract \"Usage Documentation\"     [Models](../concepts/models.md)  A base class for creating Pydantic models.  Attributes:     __class_vars__: The names of the class variables defined on the model.     __private_attributes__: Metadata about the private attributes of the model.     __signature__: The synthesized `__init__` [`Signature`][inspect.Signature] of the model.      __pydantic_complete__: Whether model building is completed, or if there are still undefined fields.     __pydantic_core_schema__: The core schema of the model.     __pydantic_custom_init__: Whether the model has a custom `__init__` function.     __pydantic_decorators__: Metadata containing the decorators defined on the model.         This replaces `Model.__validators__` and `Model.__root_validators__` from Pydantic V1.     __pydantic_generic_metadata__: Metadata for generic models; contains data used for a similar purpose to         __args__, __origin__, __parameters__ in typing-module generics. May eventually be replaced by these.     __pydantic_parent_namespace__: Parent namespace of the model, used for automatic rebuilding of models.     __pydantic_post_init__: The name of the post-init method for the model, if defined.     __pydantic_root_model__: Whether the model is a [`RootModel`][pydantic.root_model.RootModel].     __pydantic_serializer__: The `pydantic-core` `SchemaSerializer` used to dump instances of the model.     __pydantic_validator__: The `pydantic-core` `SchemaValidator` used to validate instances of the model.      __pydantic_fields__: A dictionary of field names and their corresponding [`FieldInfo`][pydantic.fields.FieldInfo] objects.     __pydantic_computed_fields__: A dictionary of computed field names and their corresponding [`ComputedFieldInfo`][pydantic.fields.ComputedFieldInfo] objects.      __pydantic_extra__: A dictionary containing extra values, if [`extra`][pydantic.config.ConfigDict.extra]         is set to `\'allow\'`.     __pydantic_fields_set__: The names of fields explicitly set during instantiation.     __pydantic_private__: Values of private attributes set on the model instance.
  * @export
  * @interface UploadResult
  */
@@ -5181,6 +5182,12 @@ export interface UploadResult {
      * @memberof UploadResult
      */
     'status'?: UploadStatus;
+    /**
+     * Indicates whether the object did not exist before start of the upload. False in case upload failed before this could be determined.
+     * @type {boolean}
+     * @memberof UploadResult
+     */
+    'is_new'?: boolean;
     /**
      * A list of log items capturing messages and events that occurred during the upload operation.
      * @type {Array<UploadLogItem>}
@@ -5225,7 +5232,7 @@ export interface User {
      * @type {string}
      * @memberof User
      */
-    'key': string;
+    'key'?: string | null;
     /**
      * The email of the user
      * @type {string}
@@ -5288,7 +5295,7 @@ export interface UserAccessCasePolicy {
      */
     'data_collection'?: DataCollection;
     /**
-     * The ID of the case type set. FOREIGN KEY
+     * The ID of the CaseTypeSet. FOREIGN KEY
      * @type {string}
      * @memberof UserAccessCasePolicy
      */
@@ -5342,37 +5349,37 @@ export interface UserAccessCasePolicy {
      */
     'user'?: User;
     /**
-     * The ID of the case type column set for which values can be read, limited to the case types in the case type set.  If empty, there are no read rights. FOREIGN KEY
+     * The ID of the column set for which values can be read, limited to the CaseTypes in the CaseTypeSet.  If empty, there are no read rights. FOREIGN KEY
      * @type {string}
      * @memberof UserAccessCasePolicy
      */
-    'read_case_type_col_set_id'?: string | null;
+    'read_col_set_id'?: string | null;
     /**
      * 
-     * @type {CaseTypeColSet}
+     * @type {ColSet}
      * @memberof UserAccessCasePolicy
      */
-    'read_case_type_col_set'?: CaseTypeColSet;
+    'read_col_set'?: ColSet;
     /**
-     * The ID of the case type column set for which values can be updated, limited to the case types in the case type set.  If empty, there are no write rights. FOREIGN KEY
+     * The ID of the column set for which values can be updated, limited to the CaseTypes in the CaseTypeSet.  If empty, there are no write rights. FOREIGN KEY
      * @type {string}
      * @memberof UserAccessCasePolicy
      */
-    'write_case_type_col_set_id'?: string | null;
+    'write_col_set_id'?: string | null;
     /**
      * 
-     * @type {CaseTypeColSet}
+     * @type {ColSet}
      * @memberof UserAccessCasePolicy
      */
-    'write_case_type_col_set'?: CaseTypeColSet;
+    'write_col_set'?: ColSet;
     /**
-     * Whether case set be read, limited to the case types in the case type set
+     * Whether case set be read, limited to the CaseTypes in the CaseTypeSet
      * @type {boolean}
      * @memberof UserAccessCasePolicy
      */
     'read_case_set': boolean;
     /**
-     * Whether case set be updated, limited to the case types in the case type set
+     * Whether case set be updated, limited to the CaseTypes in the CaseTypeSet
      * @type {boolean}
      * @memberof UserAccessCasePolicy
      */
@@ -5395,7 +5402,7 @@ export interface UserInvitation {
      * @type {string}
      * @memberof UserInvitation
      */
-    'key': string;
+    'key'?: string | null;
     /**
      * The email of the user
      * @type {string}
@@ -5487,7 +5494,7 @@ export interface UserInvitationRequestBody {
      * @type {string}
      * @memberof UserInvitationRequestBody
      */
-    'key': string;
+    'key'?: string | null;
     /**
      * The initial roles that the new user will have
      * @type {Array<string>}
@@ -5551,7 +5558,7 @@ export interface UserShareCasePolicy {
      */
     'data_collection'?: DataCollection;
     /**
-     * The ID of the case type set. FOREIGN KEY
+     * The ID of the CaseTypeSet. FOREIGN KEY
      * @type {string}
      * @memberof UserShareCasePolicy
      */
@@ -5605,7 +5612,7 @@ export interface UserShareCasePolicy {
      */
     'user'?: User;
     /**
-     * The ID of the data collection from which the case type set is shared. FOREIGN KEY
+     * The ID of the data collection from which the CaseTypeSet is shared. FOREIGN KEY
      * @type {string}
      * @memberof UserShareCasePolicy
      */
@@ -11977,1734 +11984,6 @@ const CaseApiAxiosParamCreator = function (configuration?: Configuration) {
             };
         },
         /**
-         * Manage which columns belong to a column set used in policies or UI presets.
-         * @summary Case Type Col Set Members  Delete All
-         * @param {*} [options] Override http request option.
-         * @throws {RequiredError}
-         */
-        caseTypeColSetMembersDeleteAll: async (options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
-            const localVarPath = `/v1/case_type_col_set_members`;
-            // use dummy base URL string because the URL constructor only accepts absolute URLs.
-            const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
-            let baseOptions;
-            if (configuration) {
-                baseOptions = configuration.baseOptions;
-            }
-
-            const localVarRequestOptions = { method: 'DELETE', ...baseOptions, ...options};
-            const localVarHeaderParameter = {} as any;
-            const localVarQueryParameter = {} as any;
-
-
-    
-            setSearchParams(localVarUrlObj, localVarQueryParameter);
-            let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
-            localVarRequestOptions.headers = {...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers};
-
-            return {
-                url: toPathString(localVarUrlObj),
-                options: localVarRequestOptions,
-            };
-        },
-        /**
-         * Manage which columns belong to a column set used in policies or UI presets.
-         * @summary Case Type Col Set Members  Delete One
-         * @param {any} objectId 
-         * @param {*} [options] Override http request option.
-         * @throws {RequiredError}
-         */
-        caseTypeColSetMembersDeleteOne: async (objectId: any, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
-            // verify required parameter 'objectId' is not null or undefined
-            assertParamExists('caseTypeColSetMembersDeleteOne', 'objectId', objectId)
-            const localVarPath = `/v1/case_type_col_set_members/{object_id}`
-                .replace(`{${"object_id"}}`, encodeURIComponent(String(objectId)));
-            // use dummy base URL string because the URL constructor only accepts absolute URLs.
-            const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
-            let baseOptions;
-            if (configuration) {
-                baseOptions = configuration.baseOptions;
-            }
-
-            const localVarRequestOptions = { method: 'DELETE', ...baseOptions, ...options};
-            const localVarHeaderParameter = {} as any;
-            const localVarQueryParameter = {} as any;
-
-
-    
-            setSearchParams(localVarUrlObj, localVarQueryParameter);
-            let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
-            localVarRequestOptions.headers = {...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers};
-
-            return {
-                url: toPathString(localVarUrlObj),
-                options: localVarRequestOptions,
-            };
-        },
-        /**
-         * Manage which columns belong to a column set used in policies or UI presets.
-         * @summary Case Type Col Set Members  Delete Some
-         * @param {string} ids 
-         * @param {*} [options] Override http request option.
-         * @throws {RequiredError}
-         */
-        caseTypeColSetMembersDeleteSome: async (ids: string, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
-            // verify required parameter 'ids' is not null or undefined
-            assertParamExists('caseTypeColSetMembersDeleteSome', 'ids', ids)
-            const localVarPath = `/v1/case_type_col_set_members/batch`;
-            // use dummy base URL string because the URL constructor only accepts absolute URLs.
-            const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
-            let baseOptions;
-            if (configuration) {
-                baseOptions = configuration.baseOptions;
-            }
-
-            const localVarRequestOptions = { method: 'DELETE', ...baseOptions, ...options};
-            const localVarHeaderParameter = {} as any;
-            const localVarQueryParameter = {} as any;
-
-            if (ids !== undefined) {
-                localVarQueryParameter['ids'] = ids;
-            }
-
-
-    
-            setSearchParams(localVarUrlObj, localVarQueryParameter);
-            let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
-            localVarRequestOptions.headers = {...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers};
-
-            return {
-                url: toPathString(localVarUrlObj),
-                options: localVarRequestOptions,
-            };
-        },
-        /**
-         * Manage which columns belong to a column set used in policies or UI presets.
-         * @summary Case Type Col Set Members  Get All
-         * @param {*} [options] Override http request option.
-         * @throws {RequiredError}
-         */
-        caseTypeColSetMembersGetAll: async (options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
-            const localVarPath = `/v1/case_type_col_set_members`;
-            // use dummy base URL string because the URL constructor only accepts absolute URLs.
-            const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
-            let baseOptions;
-            if (configuration) {
-                baseOptions = configuration.baseOptions;
-            }
-
-            const localVarRequestOptions = { method: 'GET', ...baseOptions, ...options};
-            const localVarHeaderParameter = {} as any;
-            const localVarQueryParameter = {} as any;
-
-
-    
-            setSearchParams(localVarUrlObj, localVarQueryParameter);
-            let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
-            localVarRequestOptions.headers = {...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers};
-
-            return {
-                url: toPathString(localVarUrlObj),
-                options: localVarRequestOptions,
-            };
-        },
-        /**
-         * Manage which columns belong to a column set used in policies or UI presets.
-         * @summary Case Type Col Set Members  Get One
-         * @param {string} objectId 
-         * @param {*} [options] Override http request option.
-         * @throws {RequiredError}
-         */
-        caseTypeColSetMembersGetOne: async (objectId: string, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
-            // verify required parameter 'objectId' is not null or undefined
-            assertParamExists('caseTypeColSetMembersGetOne', 'objectId', objectId)
-            const localVarPath = `/v1/case_type_col_set_members/{object_id}`
-                .replace(`{${"object_id"}}`, encodeURIComponent(String(objectId)));
-            // use dummy base URL string because the URL constructor only accepts absolute URLs.
-            const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
-            let baseOptions;
-            if (configuration) {
-                baseOptions = configuration.baseOptions;
-            }
-
-            const localVarRequestOptions = { method: 'GET', ...baseOptions, ...options};
-            const localVarHeaderParameter = {} as any;
-            const localVarQueryParameter = {} as any;
-
-
-    
-            setSearchParams(localVarUrlObj, localVarQueryParameter);
-            let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
-            localVarRequestOptions.headers = {...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers};
-
-            return {
-                url: toPathString(localVarUrlObj),
-                options: localVarRequestOptions,
-            };
-        },
-        /**
-         * Manage which columns belong to a column set used in policies or UI presets.
-         * @summary Case Type Col Set Members  Get Some
-         * @param {string} ids 
-         * @param {*} [options] Override http request option.
-         * @throws {RequiredError}
-         */
-        caseTypeColSetMembersGetSome: async (ids: string, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
-            // verify required parameter 'ids' is not null or undefined
-            assertParamExists('caseTypeColSetMembersGetSome', 'ids', ids)
-            const localVarPath = `/v1/case_type_col_set_members/batch`;
-            // use dummy base URL string because the URL constructor only accepts absolute URLs.
-            const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
-            let baseOptions;
-            if (configuration) {
-                baseOptions = configuration.baseOptions;
-            }
-
-            const localVarRequestOptions = { method: 'GET', ...baseOptions, ...options};
-            const localVarHeaderParameter = {} as any;
-            const localVarQueryParameter = {} as any;
-
-            if (ids !== undefined) {
-                localVarQueryParameter['ids'] = ids;
-            }
-
-
-    
-            setSearchParams(localVarUrlObj, localVarQueryParameter);
-            let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
-            localVarRequestOptions.headers = {...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers};
-
-            return {
-                url: toPathString(localVarUrlObj),
-                options: localVarRequestOptions,
-            };
-        },
-        /**
-         * Manage which columns belong to a column set used in policies or UI presets.
-         * @summary Case Type Col Set Members  Post One
-         * @param {CaseTypeColSetMember} caseTypeColSetMember 
-         * @param {*} [options] Override http request option.
-         * @throws {RequiredError}
-         */
-        caseTypeColSetMembersPostOne: async (caseTypeColSetMember: CaseTypeColSetMember, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
-            // verify required parameter 'caseTypeColSetMember' is not null or undefined
-            assertParamExists('caseTypeColSetMembersPostOne', 'caseTypeColSetMember', caseTypeColSetMember)
-            const localVarPath = `/v1/case_type_col_set_members`;
-            // use dummy base URL string because the URL constructor only accepts absolute URLs.
-            const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
-            let baseOptions;
-            if (configuration) {
-                baseOptions = configuration.baseOptions;
-            }
-
-            const localVarRequestOptions = { method: 'POST', ...baseOptions, ...options};
-            const localVarHeaderParameter = {} as any;
-            const localVarQueryParameter = {} as any;
-
-
-    
-            localVarHeaderParameter['Content-Type'] = 'application/json';
-
-            setSearchParams(localVarUrlObj, localVarQueryParameter);
-            let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
-            localVarRequestOptions.headers = {...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers};
-            localVarRequestOptions.data = serializeDataIfNeeded(caseTypeColSetMember, localVarRequestOptions, configuration)
-
-            return {
-                url: toPathString(localVarUrlObj),
-                options: localVarRequestOptions,
-            };
-        },
-        /**
-         * Manage which columns belong to a column set used in policies or UI presets.
-         * @summary Case Type Col Set Members  Post Query
-         * @param {EpiFilter} filter 
-         * @param {*} [options] Override http request option.
-         * @throws {RequiredError}
-         */
-        caseTypeColSetMembersPostQuery: async (filter: EpiFilter, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
-            // verify required parameter 'filter' is not null or undefined
-            assertParamExists('caseTypeColSetMembersPostQuery', 'filter', filter)
-            const localVarPath = `/v1/case_type_col_set_members/query`;
-            // use dummy base URL string because the URL constructor only accepts absolute URLs.
-            const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
-            let baseOptions;
-            if (configuration) {
-                baseOptions = configuration.baseOptions;
-            }
-
-            const localVarRequestOptions = { method: 'POST', ...baseOptions, ...options};
-            const localVarHeaderParameter = {} as any;
-            const localVarQueryParameter = {} as any;
-
-
-    
-            localVarHeaderParameter['Content-Type'] = 'application/json';
-
-            setSearchParams(localVarUrlObj, localVarQueryParameter);
-            let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
-            localVarRequestOptions.headers = {...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers};
-            localVarRequestOptions.data = serializeDataIfNeeded(filter, localVarRequestOptions, configuration)
-
-            return {
-                url: toPathString(localVarUrlObj),
-                options: localVarRequestOptions,
-            };
-        },
-        /**
-         * Manage which columns belong to a column set used in policies or UI presets.
-         * @summary Case Type Col Set Members  Post Query  Ids
-         * @param {EpiFilter} filter 
-         * @param {*} [options] Override http request option.
-         * @throws {RequiredError}
-         */
-        caseTypeColSetMembersPostQueryIds: async (filter: EpiFilter, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
-            // verify required parameter 'filter' is not null or undefined
-            assertParamExists('caseTypeColSetMembersPostQueryIds', 'filter', filter)
-            const localVarPath = `/v1/case_type_col_set_members/query/ids`;
-            // use dummy base URL string because the URL constructor only accepts absolute URLs.
-            const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
-            let baseOptions;
-            if (configuration) {
-                baseOptions = configuration.baseOptions;
-            }
-
-            const localVarRequestOptions = { method: 'POST', ...baseOptions, ...options};
-            const localVarHeaderParameter = {} as any;
-            const localVarQueryParameter = {} as any;
-
-
-    
-            localVarHeaderParameter['Content-Type'] = 'application/json';
-
-            setSearchParams(localVarUrlObj, localVarQueryParameter);
-            let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
-            localVarRequestOptions.headers = {...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers};
-            localVarRequestOptions.data = serializeDataIfNeeded(filter, localVarRequestOptions, configuration)
-
-            return {
-                url: toPathString(localVarUrlObj),
-                options: localVarRequestOptions,
-            };
-        },
-        /**
-         * Manage which columns belong to a column set used in policies or UI presets.
-         * @summary Case Type Col Set Members  Post Some
-         * @param {Array<CaseTypeColSetMember>} caseTypeColSetMember 
-         * @param {*} [options] Override http request option.
-         * @throws {RequiredError}
-         */
-        caseTypeColSetMembersPostSome: async (caseTypeColSetMember: Array<CaseTypeColSetMember>, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
-            // verify required parameter 'caseTypeColSetMember' is not null or undefined
-            assertParamExists('caseTypeColSetMembersPostSome', 'caseTypeColSetMember', caseTypeColSetMember)
-            const localVarPath = `/v1/case_type_col_set_members/batch`;
-            // use dummy base URL string because the URL constructor only accepts absolute URLs.
-            const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
-            let baseOptions;
-            if (configuration) {
-                baseOptions = configuration.baseOptions;
-            }
-
-            const localVarRequestOptions = { method: 'POST', ...baseOptions, ...options};
-            const localVarHeaderParameter = {} as any;
-            const localVarQueryParameter = {} as any;
-
-
-    
-            localVarHeaderParameter['Content-Type'] = 'application/json';
-
-            setSearchParams(localVarUrlObj, localVarQueryParameter);
-            let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
-            localVarRequestOptions.headers = {...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers};
-            localVarRequestOptions.data = serializeDataIfNeeded(caseTypeColSetMember, localVarRequestOptions, configuration)
-
-            return {
-                url: toPathString(localVarUrlObj),
-                options: localVarRequestOptions,
-            };
-        },
-        /**
-         * Manage which columns belong to a column set used in policies or UI presets.
-         * @summary Case Type Col Set Members  Put One
-         * @param {string} objectId 
-         * @param {CaseTypeColSetMember} caseTypeColSetMember 
-         * @param {*} [options] Override http request option.
-         * @throws {RequiredError}
-         */
-        caseTypeColSetMembersPutOne: async (objectId: string, caseTypeColSetMember: CaseTypeColSetMember, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
-            // verify required parameter 'objectId' is not null or undefined
-            assertParamExists('caseTypeColSetMembersPutOne', 'objectId', objectId)
-            // verify required parameter 'caseTypeColSetMember' is not null or undefined
-            assertParamExists('caseTypeColSetMembersPutOne', 'caseTypeColSetMember', caseTypeColSetMember)
-            const localVarPath = `/v1/case_type_col_set_members/{object_id}`
-                .replace(`{${"object_id"}}`, encodeURIComponent(String(objectId)));
-            // use dummy base URL string because the URL constructor only accepts absolute URLs.
-            const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
-            let baseOptions;
-            if (configuration) {
-                baseOptions = configuration.baseOptions;
-            }
-
-            const localVarRequestOptions = { method: 'PUT', ...baseOptions, ...options};
-            const localVarHeaderParameter = {} as any;
-            const localVarQueryParameter = {} as any;
-
-
-    
-            localVarHeaderParameter['Content-Type'] = 'application/json';
-
-            setSearchParams(localVarUrlObj, localVarQueryParameter);
-            let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
-            localVarRequestOptions.headers = {...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers};
-            localVarRequestOptions.data = serializeDataIfNeeded(caseTypeColSetMember, localVarRequestOptions, configuration)
-
-            return {
-                url: toPathString(localVarUrlObj),
-                options: localVarRequestOptions,
-            };
-        },
-        /**
-         * Manage which columns belong to a column set used in policies or UI presets.
-         * @summary Case Type Col Set Members  Put Some
-         * @param {Array<CaseTypeColSetMember>} caseTypeColSetMember 
-         * @param {*} [options] Override http request option.
-         * @throws {RequiredError}
-         */
-        caseTypeColSetMembersPutSome: async (caseTypeColSetMember: Array<CaseTypeColSetMember>, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
-            // verify required parameter 'caseTypeColSetMember' is not null or undefined
-            assertParamExists('caseTypeColSetMembersPutSome', 'caseTypeColSetMember', caseTypeColSetMember)
-            const localVarPath = `/v1/case_type_col_set_members/batch`;
-            // use dummy base URL string because the URL constructor only accepts absolute URLs.
-            const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
-            let baseOptions;
-            if (configuration) {
-                baseOptions = configuration.baseOptions;
-            }
-
-            const localVarRequestOptions = { method: 'PUT', ...baseOptions, ...options};
-            const localVarHeaderParameter = {} as any;
-            const localVarQueryParameter = {} as any;
-
-
-    
-            localVarHeaderParameter['Content-Type'] = 'application/json';
-
-            setSearchParams(localVarUrlObj, localVarQueryParameter);
-            let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
-            localVarRequestOptions.headers = {...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers};
-            localVarRequestOptions.data = serializeDataIfNeeded(caseTypeColSetMember, localVarRequestOptions, configuration)
-
-            return {
-                url: toPathString(localVarUrlObj),
-                options: localVarRequestOptions,
-            };
-        },
-        /**
-         * Manage column sets used for read/write scopes and default column groupings.
-         * @summary Case Type Col Sets  Delete All
-         * @param {*} [options] Override http request option.
-         * @throws {RequiredError}
-         */
-        caseTypeColSetsDeleteAll: async (options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
-            const localVarPath = `/v1/case_type_col_sets`;
-            // use dummy base URL string because the URL constructor only accepts absolute URLs.
-            const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
-            let baseOptions;
-            if (configuration) {
-                baseOptions = configuration.baseOptions;
-            }
-
-            const localVarRequestOptions = { method: 'DELETE', ...baseOptions, ...options};
-            const localVarHeaderParameter = {} as any;
-            const localVarQueryParameter = {} as any;
-
-
-    
-            setSearchParams(localVarUrlObj, localVarQueryParameter);
-            let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
-            localVarRequestOptions.headers = {...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers};
-
-            return {
-                url: toPathString(localVarUrlObj),
-                options: localVarRequestOptions,
-            };
-        },
-        /**
-         * Manage column sets used for read/write scopes and default column groupings.
-         * @summary Case Type Col Sets  Delete One
-         * @param {any} objectId 
-         * @param {*} [options] Override http request option.
-         * @throws {RequiredError}
-         */
-        caseTypeColSetsDeleteOne: async (objectId: any, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
-            // verify required parameter 'objectId' is not null or undefined
-            assertParamExists('caseTypeColSetsDeleteOne', 'objectId', objectId)
-            const localVarPath = `/v1/case_type_col_sets/{object_id}`
-                .replace(`{${"object_id"}}`, encodeURIComponent(String(objectId)));
-            // use dummy base URL string because the URL constructor only accepts absolute URLs.
-            const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
-            let baseOptions;
-            if (configuration) {
-                baseOptions = configuration.baseOptions;
-            }
-
-            const localVarRequestOptions = { method: 'DELETE', ...baseOptions, ...options};
-            const localVarHeaderParameter = {} as any;
-            const localVarQueryParameter = {} as any;
-
-
-    
-            setSearchParams(localVarUrlObj, localVarQueryParameter);
-            let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
-            localVarRequestOptions.headers = {...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers};
-
-            return {
-                url: toPathString(localVarUrlObj),
-                options: localVarRequestOptions,
-            };
-        },
-        /**
-         * Manage column sets used for read/write scopes and default column groupings.
-         * @summary Case Type Col Sets  Delete Some
-         * @param {string} ids 
-         * @param {*} [options] Override http request option.
-         * @throws {RequiredError}
-         */
-        caseTypeColSetsDeleteSome: async (ids: string, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
-            // verify required parameter 'ids' is not null or undefined
-            assertParamExists('caseTypeColSetsDeleteSome', 'ids', ids)
-            const localVarPath = `/v1/case_type_col_sets/batch`;
-            // use dummy base URL string because the URL constructor only accepts absolute URLs.
-            const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
-            let baseOptions;
-            if (configuration) {
-                baseOptions = configuration.baseOptions;
-            }
-
-            const localVarRequestOptions = { method: 'DELETE', ...baseOptions, ...options};
-            const localVarHeaderParameter = {} as any;
-            const localVarQueryParameter = {} as any;
-
-            if (ids !== undefined) {
-                localVarQueryParameter['ids'] = ids;
-            }
-
-
-    
-            setSearchParams(localVarUrlObj, localVarQueryParameter);
-            let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
-            localVarRequestOptions.headers = {...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers};
-
-            return {
-                url: toPathString(localVarUrlObj),
-                options: localVarRequestOptions,
-            };
-        },
-        /**
-         * Manage column sets used for read/write scopes and default column groupings.
-         * @summary Case Type Col Sets  Get All
-         * @param {*} [options] Override http request option.
-         * @throws {RequiredError}
-         */
-        caseTypeColSetsGetAll: async (options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
-            const localVarPath = `/v1/case_type_col_sets`;
-            // use dummy base URL string because the URL constructor only accepts absolute URLs.
-            const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
-            let baseOptions;
-            if (configuration) {
-                baseOptions = configuration.baseOptions;
-            }
-
-            const localVarRequestOptions = { method: 'GET', ...baseOptions, ...options};
-            const localVarHeaderParameter = {} as any;
-            const localVarQueryParameter = {} as any;
-
-
-    
-            setSearchParams(localVarUrlObj, localVarQueryParameter);
-            let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
-            localVarRequestOptions.headers = {...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers};
-
-            return {
-                url: toPathString(localVarUrlObj),
-                options: localVarRequestOptions,
-            };
-        },
-        /**
-         * Manage column sets used for read/write scopes and default column groupings.
-         * @summary Case Type Col Sets  Get One
-         * @param {string} objectId 
-         * @param {*} [options] Override http request option.
-         * @throws {RequiredError}
-         */
-        caseTypeColSetsGetOne: async (objectId: string, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
-            // verify required parameter 'objectId' is not null or undefined
-            assertParamExists('caseTypeColSetsGetOne', 'objectId', objectId)
-            const localVarPath = `/v1/case_type_col_sets/{object_id}`
-                .replace(`{${"object_id"}}`, encodeURIComponent(String(objectId)));
-            // use dummy base URL string because the URL constructor only accepts absolute URLs.
-            const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
-            let baseOptions;
-            if (configuration) {
-                baseOptions = configuration.baseOptions;
-            }
-
-            const localVarRequestOptions = { method: 'GET', ...baseOptions, ...options};
-            const localVarHeaderParameter = {} as any;
-            const localVarQueryParameter = {} as any;
-
-
-    
-            setSearchParams(localVarUrlObj, localVarQueryParameter);
-            let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
-            localVarRequestOptions.headers = {...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers};
-
-            return {
-                url: toPathString(localVarUrlObj),
-                options: localVarRequestOptions,
-            };
-        },
-        /**
-         * Manage column sets used for read/write scopes and default column groupings.
-         * @summary Case Type Col Sets  Get Some
-         * @param {string} ids 
-         * @param {*} [options] Override http request option.
-         * @throws {RequiredError}
-         */
-        caseTypeColSetsGetSome: async (ids: string, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
-            // verify required parameter 'ids' is not null or undefined
-            assertParamExists('caseTypeColSetsGetSome', 'ids', ids)
-            const localVarPath = `/v1/case_type_col_sets/batch`;
-            // use dummy base URL string because the URL constructor only accepts absolute URLs.
-            const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
-            let baseOptions;
-            if (configuration) {
-                baseOptions = configuration.baseOptions;
-            }
-
-            const localVarRequestOptions = { method: 'GET', ...baseOptions, ...options};
-            const localVarHeaderParameter = {} as any;
-            const localVarQueryParameter = {} as any;
-
-            if (ids !== undefined) {
-                localVarQueryParameter['ids'] = ids;
-            }
-
-
-    
-            setSearchParams(localVarUrlObj, localVarQueryParameter);
-            let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
-            localVarRequestOptions.headers = {...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers};
-
-            return {
-                url: toPathString(localVarUrlObj),
-                options: localVarRequestOptions,
-            };
-        },
-        /**
-         * Manage column sets used for read/write scopes and default column groupings.
-         * @summary Case Type Col Sets  Post One
-         * @param {CaseTypeColSet} caseTypeColSet 
-         * @param {*} [options] Override http request option.
-         * @throws {RequiredError}
-         */
-        caseTypeColSetsPostOne: async (caseTypeColSet: CaseTypeColSet, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
-            // verify required parameter 'caseTypeColSet' is not null or undefined
-            assertParamExists('caseTypeColSetsPostOne', 'caseTypeColSet', caseTypeColSet)
-            const localVarPath = `/v1/case_type_col_sets`;
-            // use dummy base URL string because the URL constructor only accepts absolute URLs.
-            const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
-            let baseOptions;
-            if (configuration) {
-                baseOptions = configuration.baseOptions;
-            }
-
-            const localVarRequestOptions = { method: 'POST', ...baseOptions, ...options};
-            const localVarHeaderParameter = {} as any;
-            const localVarQueryParameter = {} as any;
-
-
-    
-            localVarHeaderParameter['Content-Type'] = 'application/json';
-
-            setSearchParams(localVarUrlObj, localVarQueryParameter);
-            let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
-            localVarRequestOptions.headers = {...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers};
-            localVarRequestOptions.data = serializeDataIfNeeded(caseTypeColSet, localVarRequestOptions, configuration)
-
-            return {
-                url: toPathString(localVarUrlObj),
-                options: localVarRequestOptions,
-            };
-        },
-        /**
-         * Manage column sets used for read/write scopes and default column groupings.
-         * @summary Case Type Col Sets  Post Query
-         * @param {EpiFilter} filter 
-         * @param {*} [options] Override http request option.
-         * @throws {RequiredError}
-         */
-        caseTypeColSetsPostQuery: async (filter: EpiFilter, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
-            // verify required parameter 'filter' is not null or undefined
-            assertParamExists('caseTypeColSetsPostQuery', 'filter', filter)
-            const localVarPath = `/v1/case_type_col_sets/query`;
-            // use dummy base URL string because the URL constructor only accepts absolute URLs.
-            const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
-            let baseOptions;
-            if (configuration) {
-                baseOptions = configuration.baseOptions;
-            }
-
-            const localVarRequestOptions = { method: 'POST', ...baseOptions, ...options};
-            const localVarHeaderParameter = {} as any;
-            const localVarQueryParameter = {} as any;
-
-
-    
-            localVarHeaderParameter['Content-Type'] = 'application/json';
-
-            setSearchParams(localVarUrlObj, localVarQueryParameter);
-            let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
-            localVarRequestOptions.headers = {...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers};
-            localVarRequestOptions.data = serializeDataIfNeeded(filter, localVarRequestOptions, configuration)
-
-            return {
-                url: toPathString(localVarUrlObj),
-                options: localVarRequestOptions,
-            };
-        },
-        /**
-         * Manage column sets used for read/write scopes and default column groupings.
-         * @summary Case Type Col Sets  Post Query  Ids
-         * @param {EpiFilter} filter 
-         * @param {*} [options] Override http request option.
-         * @throws {RequiredError}
-         */
-        caseTypeColSetsPostQueryIds: async (filter: EpiFilter, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
-            // verify required parameter 'filter' is not null or undefined
-            assertParamExists('caseTypeColSetsPostQueryIds', 'filter', filter)
-            const localVarPath = `/v1/case_type_col_sets/query/ids`;
-            // use dummy base URL string because the URL constructor only accepts absolute URLs.
-            const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
-            let baseOptions;
-            if (configuration) {
-                baseOptions = configuration.baseOptions;
-            }
-
-            const localVarRequestOptions = { method: 'POST', ...baseOptions, ...options};
-            const localVarHeaderParameter = {} as any;
-            const localVarQueryParameter = {} as any;
-
-
-    
-            localVarHeaderParameter['Content-Type'] = 'application/json';
-
-            setSearchParams(localVarUrlObj, localVarQueryParameter);
-            let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
-            localVarRequestOptions.headers = {...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers};
-            localVarRequestOptions.data = serializeDataIfNeeded(filter, localVarRequestOptions, configuration)
-
-            return {
-                url: toPathString(localVarUrlObj),
-                options: localVarRequestOptions,
-            };
-        },
-        /**
-         * Manage column sets used for read/write scopes and default column groupings.
-         * @summary Case Type Col Sets  Post Some
-         * @param {Array<CaseTypeColSet>} caseTypeColSet 
-         * @param {*} [options] Override http request option.
-         * @throws {RequiredError}
-         */
-        caseTypeColSetsPostSome: async (caseTypeColSet: Array<CaseTypeColSet>, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
-            // verify required parameter 'caseTypeColSet' is not null or undefined
-            assertParamExists('caseTypeColSetsPostSome', 'caseTypeColSet', caseTypeColSet)
-            const localVarPath = `/v1/case_type_col_sets/batch`;
-            // use dummy base URL string because the URL constructor only accepts absolute URLs.
-            const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
-            let baseOptions;
-            if (configuration) {
-                baseOptions = configuration.baseOptions;
-            }
-
-            const localVarRequestOptions = { method: 'POST', ...baseOptions, ...options};
-            const localVarHeaderParameter = {} as any;
-            const localVarQueryParameter = {} as any;
-
-
-    
-            localVarHeaderParameter['Content-Type'] = 'application/json';
-
-            setSearchParams(localVarUrlObj, localVarQueryParameter);
-            let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
-            localVarRequestOptions.headers = {...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers};
-            localVarRequestOptions.data = serializeDataIfNeeded(caseTypeColSet, localVarRequestOptions, configuration)
-
-            return {
-                url: toPathString(localVarUrlObj),
-                options: localVarRequestOptions,
-            };
-        },
-        /**
-         * Replace the columns in a case-type column set with the provided members so read/write scopes and UI column groupings stay aligned.
-         * @summary Update Association Between Casetypecolset And Casetypecol
-         * @param {string} caseTypeColSetId 
-         * @param {UpdateCaseTypeColSetCaseTypeColsRequestBody} updateCaseTypeColSetCaseTypeColsRequestBody 
-         * @param {*} [options] Override http request option.
-         * @throws {RequiredError}
-         */
-        caseTypeColSetsPutCaseTypeCols: async (caseTypeColSetId: string, updateCaseTypeColSetCaseTypeColsRequestBody: UpdateCaseTypeColSetCaseTypeColsRequestBody, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
-            // verify required parameter 'caseTypeColSetId' is not null or undefined
-            assertParamExists('caseTypeColSetsPutCaseTypeCols', 'caseTypeColSetId', caseTypeColSetId)
-            // verify required parameter 'updateCaseTypeColSetCaseTypeColsRequestBody' is not null or undefined
-            assertParamExists('caseTypeColSetsPutCaseTypeCols', 'updateCaseTypeColSetCaseTypeColsRequestBody', updateCaseTypeColSetCaseTypeColsRequestBody)
-            const localVarPath = `/v1/case_type_col_sets/{case_type_col_set_id}/case_type_cols`
-                .replace(`{${"case_type_col_set_id"}}`, encodeURIComponent(String(caseTypeColSetId)));
-            // use dummy base URL string because the URL constructor only accepts absolute URLs.
-            const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
-            let baseOptions;
-            if (configuration) {
-                baseOptions = configuration.baseOptions;
-            }
-
-            const localVarRequestOptions = { method: 'PUT', ...baseOptions, ...options};
-            const localVarHeaderParameter = {} as any;
-            const localVarQueryParameter = {} as any;
-
-
-    
-            localVarHeaderParameter['Content-Type'] = 'application/json';
-
-            setSearchParams(localVarUrlObj, localVarQueryParameter);
-            let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
-            localVarRequestOptions.headers = {...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers};
-            localVarRequestOptions.data = serializeDataIfNeeded(updateCaseTypeColSetCaseTypeColsRequestBody, localVarRequestOptions, configuration)
-
-            return {
-                url: toPathString(localVarUrlObj),
-                options: localVarRequestOptions,
-            };
-        },
-        /**
-         * Manage column sets used for read/write scopes and default column groupings.
-         * @summary Case Type Col Sets  Put One
-         * @param {string} objectId 
-         * @param {CaseTypeColSet} caseTypeColSet 
-         * @param {*} [options] Override http request option.
-         * @throws {RequiredError}
-         */
-        caseTypeColSetsPutOne: async (objectId: string, caseTypeColSet: CaseTypeColSet, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
-            // verify required parameter 'objectId' is not null or undefined
-            assertParamExists('caseTypeColSetsPutOne', 'objectId', objectId)
-            // verify required parameter 'caseTypeColSet' is not null or undefined
-            assertParamExists('caseTypeColSetsPutOne', 'caseTypeColSet', caseTypeColSet)
-            const localVarPath = `/v1/case_type_col_sets/{object_id}`
-                .replace(`{${"object_id"}}`, encodeURIComponent(String(objectId)));
-            // use dummy base URL string because the URL constructor only accepts absolute URLs.
-            const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
-            let baseOptions;
-            if (configuration) {
-                baseOptions = configuration.baseOptions;
-            }
-
-            const localVarRequestOptions = { method: 'PUT', ...baseOptions, ...options};
-            const localVarHeaderParameter = {} as any;
-            const localVarQueryParameter = {} as any;
-
-
-    
-            localVarHeaderParameter['Content-Type'] = 'application/json';
-
-            setSearchParams(localVarUrlObj, localVarQueryParameter);
-            let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
-            localVarRequestOptions.headers = {...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers};
-            localVarRequestOptions.data = serializeDataIfNeeded(caseTypeColSet, localVarRequestOptions, configuration)
-
-            return {
-                url: toPathString(localVarUrlObj),
-                options: localVarRequestOptions,
-            };
-        },
-        /**
-         * Manage column sets used for read/write scopes and default column groupings.
-         * @summary Case Type Col Sets  Put Some
-         * @param {Array<CaseTypeColSet>} caseTypeColSet 
-         * @param {*} [options] Override http request option.
-         * @throws {RequiredError}
-         */
-        caseTypeColSetsPutSome: async (caseTypeColSet: Array<CaseTypeColSet>, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
-            // verify required parameter 'caseTypeColSet' is not null or undefined
-            assertParamExists('caseTypeColSetsPutSome', 'caseTypeColSet', caseTypeColSet)
-            const localVarPath = `/v1/case_type_col_sets/batch`;
-            // use dummy base URL string because the URL constructor only accepts absolute URLs.
-            const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
-            let baseOptions;
-            if (configuration) {
-                baseOptions = configuration.baseOptions;
-            }
-
-            const localVarRequestOptions = { method: 'PUT', ...baseOptions, ...options};
-            const localVarHeaderParameter = {} as any;
-            const localVarQueryParameter = {} as any;
-
-
-    
-            localVarHeaderParameter['Content-Type'] = 'application/json';
-
-            setSearchParams(localVarUrlObj, localVarQueryParameter);
-            let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
-            localVarRequestOptions.headers = {...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers};
-            localVarRequestOptions.data = serializeDataIfNeeded(caseTypeColSet, localVarRequestOptions, configuration)
-
-            return {
-                url: toPathString(localVarUrlObj),
-                options: localVarRequestOptions,
-            };
-        },
-        /**
-         * Manage case-type columns: datatype, vocab/region bindings, and genetic-distance settings.
-         * @summary Case Type Cols  Delete All
-         * @param {*} [options] Override http request option.
-         * @throws {RequiredError}
-         */
-        caseTypeColsDeleteAll: async (options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
-            const localVarPath = `/v1/case_type_cols`;
-            // use dummy base URL string because the URL constructor only accepts absolute URLs.
-            const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
-            let baseOptions;
-            if (configuration) {
-                baseOptions = configuration.baseOptions;
-            }
-
-            const localVarRequestOptions = { method: 'DELETE', ...baseOptions, ...options};
-            const localVarHeaderParameter = {} as any;
-            const localVarQueryParameter = {} as any;
-
-
-    
-            setSearchParams(localVarUrlObj, localVarQueryParameter);
-            let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
-            localVarRequestOptions.headers = {...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers};
-
-            return {
-                url: toPathString(localVarUrlObj),
-                options: localVarRequestOptions,
-            };
-        },
-        /**
-         * Manage case-type columns: datatype, vocab/region bindings, and genetic-distance settings.
-         * @summary Case Type Cols  Delete One
-         * @param {any} objectId 
-         * @param {*} [options] Override http request option.
-         * @throws {RequiredError}
-         */
-        caseTypeColsDeleteOne: async (objectId: any, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
-            // verify required parameter 'objectId' is not null or undefined
-            assertParamExists('caseTypeColsDeleteOne', 'objectId', objectId)
-            const localVarPath = `/v1/case_type_cols/{object_id}`
-                .replace(`{${"object_id"}}`, encodeURIComponent(String(objectId)));
-            // use dummy base URL string because the URL constructor only accepts absolute URLs.
-            const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
-            let baseOptions;
-            if (configuration) {
-                baseOptions = configuration.baseOptions;
-            }
-
-            const localVarRequestOptions = { method: 'DELETE', ...baseOptions, ...options};
-            const localVarHeaderParameter = {} as any;
-            const localVarQueryParameter = {} as any;
-
-
-    
-            setSearchParams(localVarUrlObj, localVarQueryParameter);
-            let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
-            localVarRequestOptions.headers = {...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers};
-
-            return {
-                url: toPathString(localVarUrlObj),
-                options: localVarRequestOptions,
-            };
-        },
-        /**
-         * Manage case-type columns: datatype, vocab/region bindings, and genetic-distance settings.
-         * @summary Case Type Cols  Delete Some
-         * @param {string} ids 
-         * @param {*} [options] Override http request option.
-         * @throws {RequiredError}
-         */
-        caseTypeColsDeleteSome: async (ids: string, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
-            // verify required parameter 'ids' is not null or undefined
-            assertParamExists('caseTypeColsDeleteSome', 'ids', ids)
-            const localVarPath = `/v1/case_type_cols/batch`;
-            // use dummy base URL string because the URL constructor only accepts absolute URLs.
-            const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
-            let baseOptions;
-            if (configuration) {
-                baseOptions = configuration.baseOptions;
-            }
-
-            const localVarRequestOptions = { method: 'DELETE', ...baseOptions, ...options};
-            const localVarHeaderParameter = {} as any;
-            const localVarQueryParameter = {} as any;
-
-            if (ids !== undefined) {
-                localVarQueryParameter['ids'] = ids;
-            }
-
-
-    
-            setSearchParams(localVarUrlObj, localVarQueryParameter);
-            let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
-            localVarRequestOptions.headers = {...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers};
-
-            return {
-                url: toPathString(localVarUrlObj),
-                options: localVarRequestOptions,
-            };
-        },
-        /**
-         * Manage case-type columns: datatype, vocab/region bindings, and genetic-distance settings.
-         * @summary Case Type Cols  Get All
-         * @param {*} [options] Override http request option.
-         * @throws {RequiredError}
-         */
-        caseTypeColsGetAll: async (options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
-            const localVarPath = `/v1/case_type_cols`;
-            // use dummy base URL string because the URL constructor only accepts absolute URLs.
-            const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
-            let baseOptions;
-            if (configuration) {
-                baseOptions = configuration.baseOptions;
-            }
-
-            const localVarRequestOptions = { method: 'GET', ...baseOptions, ...options};
-            const localVarHeaderParameter = {} as any;
-            const localVarQueryParameter = {} as any;
-
-
-    
-            setSearchParams(localVarUrlObj, localVarQueryParameter);
-            let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
-            localVarRequestOptions.headers = {...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers};
-
-            return {
-                url: toPathString(localVarUrlObj),
-                options: localVarRequestOptions,
-            };
-        },
-        /**
-         * Manage case-type columns: datatype, vocab/region bindings, and genetic-distance settings.
-         * @summary Case Type Cols  Get One
-         * @param {string} objectId 
-         * @param {*} [options] Override http request option.
-         * @throws {RequiredError}
-         */
-        caseTypeColsGetOne: async (objectId: string, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
-            // verify required parameter 'objectId' is not null or undefined
-            assertParamExists('caseTypeColsGetOne', 'objectId', objectId)
-            const localVarPath = `/v1/case_type_cols/{object_id}`
-                .replace(`{${"object_id"}}`, encodeURIComponent(String(objectId)));
-            // use dummy base URL string because the URL constructor only accepts absolute URLs.
-            const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
-            let baseOptions;
-            if (configuration) {
-                baseOptions = configuration.baseOptions;
-            }
-
-            const localVarRequestOptions = { method: 'GET', ...baseOptions, ...options};
-            const localVarHeaderParameter = {} as any;
-            const localVarQueryParameter = {} as any;
-
-
-    
-            setSearchParams(localVarUrlObj, localVarQueryParameter);
-            let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
-            localVarRequestOptions.headers = {...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers};
-
-            return {
-                url: toPathString(localVarUrlObj),
-                options: localVarRequestOptions,
-            };
-        },
-        /**
-         * Manage case-type columns: datatype, vocab/region bindings, and genetic-distance settings.
-         * @summary Case Type Cols  Get Some
-         * @param {string} ids 
-         * @param {*} [options] Override http request option.
-         * @throws {RequiredError}
-         */
-        caseTypeColsGetSome: async (ids: string, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
-            // verify required parameter 'ids' is not null or undefined
-            assertParamExists('caseTypeColsGetSome', 'ids', ids)
-            const localVarPath = `/v1/case_type_cols/batch`;
-            // use dummy base URL string because the URL constructor only accepts absolute URLs.
-            const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
-            let baseOptions;
-            if (configuration) {
-                baseOptions = configuration.baseOptions;
-            }
-
-            const localVarRequestOptions = { method: 'GET', ...baseOptions, ...options};
-            const localVarHeaderParameter = {} as any;
-            const localVarQueryParameter = {} as any;
-
-            if (ids !== undefined) {
-                localVarQueryParameter['ids'] = ids;
-            }
-
-
-    
-            setSearchParams(localVarUrlObj, localVarQueryParameter);
-            let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
-            localVarRequestOptions.headers = {...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers};
-
-            return {
-                url: toPathString(localVarUrlObj),
-                options: localVarRequestOptions,
-            };
-        },
-        /**
-         * Manage case-type columns: datatype, vocab/region bindings, and genetic-distance settings.
-         * @summary Case Type Cols  Post One
-         * @param {CaseTypeCol} caseTypeCol 
-         * @param {*} [options] Override http request option.
-         * @throws {RequiredError}
-         */
-        caseTypeColsPostOne: async (caseTypeCol: CaseTypeCol, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
-            // verify required parameter 'caseTypeCol' is not null or undefined
-            assertParamExists('caseTypeColsPostOne', 'caseTypeCol', caseTypeCol)
-            const localVarPath = `/v1/case_type_cols`;
-            // use dummy base URL string because the URL constructor only accepts absolute URLs.
-            const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
-            let baseOptions;
-            if (configuration) {
-                baseOptions = configuration.baseOptions;
-            }
-
-            const localVarRequestOptions = { method: 'POST', ...baseOptions, ...options};
-            const localVarHeaderParameter = {} as any;
-            const localVarQueryParameter = {} as any;
-
-
-    
-            localVarHeaderParameter['Content-Type'] = 'application/json';
-
-            setSearchParams(localVarUrlObj, localVarQueryParameter);
-            let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
-            localVarRequestOptions.headers = {...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers};
-            localVarRequestOptions.data = serializeDataIfNeeded(caseTypeCol, localVarRequestOptions, configuration)
-
-            return {
-                url: toPathString(localVarUrlObj),
-                options: localVarRequestOptions,
-            };
-        },
-        /**
-         * Manage case-type columns: datatype, vocab/region bindings, and genetic-distance settings.
-         * @summary Case Type Cols  Post Query
-         * @param {EpiFilter} filter 
-         * @param {*} [options] Override http request option.
-         * @throws {RequiredError}
-         */
-        caseTypeColsPostQuery: async (filter: EpiFilter, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
-            // verify required parameter 'filter' is not null or undefined
-            assertParamExists('caseTypeColsPostQuery', 'filter', filter)
-            const localVarPath = `/v1/case_type_cols/query`;
-            // use dummy base URL string because the URL constructor only accepts absolute URLs.
-            const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
-            let baseOptions;
-            if (configuration) {
-                baseOptions = configuration.baseOptions;
-            }
-
-            const localVarRequestOptions = { method: 'POST', ...baseOptions, ...options};
-            const localVarHeaderParameter = {} as any;
-            const localVarQueryParameter = {} as any;
-
-
-    
-            localVarHeaderParameter['Content-Type'] = 'application/json';
-
-            setSearchParams(localVarUrlObj, localVarQueryParameter);
-            let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
-            localVarRequestOptions.headers = {...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers};
-            localVarRequestOptions.data = serializeDataIfNeeded(filter, localVarRequestOptions, configuration)
-
-            return {
-                url: toPathString(localVarUrlObj),
-                options: localVarRequestOptions,
-            };
-        },
-        /**
-         * Manage case-type columns: datatype, vocab/region bindings, and genetic-distance settings.
-         * @summary Case Type Cols  Post Query  Ids
-         * @param {EpiFilter} filter 
-         * @param {*} [options] Override http request option.
-         * @throws {RequiredError}
-         */
-        caseTypeColsPostQueryIds: async (filter: EpiFilter, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
-            // verify required parameter 'filter' is not null or undefined
-            assertParamExists('caseTypeColsPostQueryIds', 'filter', filter)
-            const localVarPath = `/v1/case_type_cols/query/ids`;
-            // use dummy base URL string because the URL constructor only accepts absolute URLs.
-            const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
-            let baseOptions;
-            if (configuration) {
-                baseOptions = configuration.baseOptions;
-            }
-
-            const localVarRequestOptions = { method: 'POST', ...baseOptions, ...options};
-            const localVarHeaderParameter = {} as any;
-            const localVarQueryParameter = {} as any;
-
-
-    
-            localVarHeaderParameter['Content-Type'] = 'application/json';
-
-            setSearchParams(localVarUrlObj, localVarQueryParameter);
-            let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
-            localVarRequestOptions.headers = {...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers};
-            localVarRequestOptions.data = serializeDataIfNeeded(filter, localVarRequestOptions, configuration)
-
-            return {
-                url: toPathString(localVarUrlObj),
-                options: localVarRequestOptions,
-            };
-        },
-        /**
-         * Manage case-type columns: datatype, vocab/region bindings, and genetic-distance settings.
-         * @summary Case Type Cols  Post Some
-         * @param {Array<CaseTypeCol>} caseTypeCol 
-         * @param {*} [options] Override http request option.
-         * @throws {RequiredError}
-         */
-        caseTypeColsPostSome: async (caseTypeCol: Array<CaseTypeCol>, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
-            // verify required parameter 'caseTypeCol' is not null or undefined
-            assertParamExists('caseTypeColsPostSome', 'caseTypeCol', caseTypeCol)
-            const localVarPath = `/v1/case_type_cols/batch`;
-            // use dummy base URL string because the URL constructor only accepts absolute URLs.
-            const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
-            let baseOptions;
-            if (configuration) {
-                baseOptions = configuration.baseOptions;
-            }
-
-            const localVarRequestOptions = { method: 'POST', ...baseOptions, ...options};
-            const localVarHeaderParameter = {} as any;
-            const localVarQueryParameter = {} as any;
-
-
-    
-            localVarHeaderParameter['Content-Type'] = 'application/json';
-
-            setSearchParams(localVarUrlObj, localVarQueryParameter);
-            let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
-            localVarRequestOptions.headers = {...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers};
-            localVarRequestOptions.data = serializeDataIfNeeded(caseTypeCol, localVarRequestOptions, configuration)
-
-            return {
-                url: toPathString(localVarUrlObj),
-                options: localVarRequestOptions,
-            };
-        },
-        /**
-         * Manage case-type columns: datatype, vocab/region bindings, and genetic-distance settings.
-         * @summary Case Type Cols  Put One
-         * @param {string} objectId 
-         * @param {CaseTypeCol} caseTypeCol 
-         * @param {*} [options] Override http request option.
-         * @throws {RequiredError}
-         */
-        caseTypeColsPutOne: async (objectId: string, caseTypeCol: CaseTypeCol, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
-            // verify required parameter 'objectId' is not null or undefined
-            assertParamExists('caseTypeColsPutOne', 'objectId', objectId)
-            // verify required parameter 'caseTypeCol' is not null or undefined
-            assertParamExists('caseTypeColsPutOne', 'caseTypeCol', caseTypeCol)
-            const localVarPath = `/v1/case_type_cols/{object_id}`
-                .replace(`{${"object_id"}}`, encodeURIComponent(String(objectId)));
-            // use dummy base URL string because the URL constructor only accepts absolute URLs.
-            const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
-            let baseOptions;
-            if (configuration) {
-                baseOptions = configuration.baseOptions;
-            }
-
-            const localVarRequestOptions = { method: 'PUT', ...baseOptions, ...options};
-            const localVarHeaderParameter = {} as any;
-            const localVarQueryParameter = {} as any;
-
-
-    
-            localVarHeaderParameter['Content-Type'] = 'application/json';
-
-            setSearchParams(localVarUrlObj, localVarQueryParameter);
-            let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
-            localVarRequestOptions.headers = {...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers};
-            localVarRequestOptions.data = serializeDataIfNeeded(caseTypeCol, localVarRequestOptions, configuration)
-
-            return {
-                url: toPathString(localVarUrlObj),
-                options: localVarRequestOptions,
-            };
-        },
-        /**
-         * Manage case-type columns: datatype, vocab/region bindings, and genetic-distance settings.
-         * @summary Case Type Cols  Put Some
-         * @param {Array<CaseTypeCol>} caseTypeCol 
-         * @param {*} [options] Override http request option.
-         * @throws {RequiredError}
-         */
-        caseTypeColsPutSome: async (caseTypeCol: Array<CaseTypeCol>, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
-            // verify required parameter 'caseTypeCol' is not null or undefined
-            assertParamExists('caseTypeColsPutSome', 'caseTypeCol', caseTypeCol)
-            const localVarPath = `/v1/case_type_cols/batch`;
-            // use dummy base URL string because the URL constructor only accepts absolute URLs.
-            const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
-            let baseOptions;
-            if (configuration) {
-                baseOptions = configuration.baseOptions;
-            }
-
-            const localVarRequestOptions = { method: 'PUT', ...baseOptions, ...options};
-            const localVarHeaderParameter = {} as any;
-            const localVarQueryParameter = {} as any;
-
-
-    
-            localVarHeaderParameter['Content-Type'] = 'application/json';
-
-            setSearchParams(localVarUrlObj, localVarQueryParameter);
-            let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
-            localVarRequestOptions.headers = {...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers};
-            localVarRequestOptions.data = serializeDataIfNeeded(caseTypeCol, localVarRequestOptions, configuration)
-
-            return {
-                url: toPathString(localVarUrlObj),
-                options: localVarRequestOptions,
-            };
-        },
-        /**
-         * Manage dimensions that group case-type columns (e.g., demographics, sample, sequencing).
-         * @summary Case Type Dims  Delete All
-         * @param {*} [options] Override http request option.
-         * @throws {RequiredError}
-         */
-        caseTypeDimsDeleteAll: async (options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
-            const localVarPath = `/v1/case_type_dims`;
-            // use dummy base URL string because the URL constructor only accepts absolute URLs.
-            const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
-            let baseOptions;
-            if (configuration) {
-                baseOptions = configuration.baseOptions;
-            }
-
-            const localVarRequestOptions = { method: 'DELETE', ...baseOptions, ...options};
-            const localVarHeaderParameter = {} as any;
-            const localVarQueryParameter = {} as any;
-
-
-    
-            setSearchParams(localVarUrlObj, localVarQueryParameter);
-            let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
-            localVarRequestOptions.headers = {...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers};
-
-            return {
-                url: toPathString(localVarUrlObj),
-                options: localVarRequestOptions,
-            };
-        },
-        /**
-         * Manage dimensions that group case-type columns (e.g., demographics, sample, sequencing).
-         * @summary Case Type Dims  Delete One
-         * @param {any} objectId 
-         * @param {*} [options] Override http request option.
-         * @throws {RequiredError}
-         */
-        caseTypeDimsDeleteOne: async (objectId: any, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
-            // verify required parameter 'objectId' is not null or undefined
-            assertParamExists('caseTypeDimsDeleteOne', 'objectId', objectId)
-            const localVarPath = `/v1/case_type_dims/{object_id}`
-                .replace(`{${"object_id"}}`, encodeURIComponent(String(objectId)));
-            // use dummy base URL string because the URL constructor only accepts absolute URLs.
-            const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
-            let baseOptions;
-            if (configuration) {
-                baseOptions = configuration.baseOptions;
-            }
-
-            const localVarRequestOptions = { method: 'DELETE', ...baseOptions, ...options};
-            const localVarHeaderParameter = {} as any;
-            const localVarQueryParameter = {} as any;
-
-
-    
-            setSearchParams(localVarUrlObj, localVarQueryParameter);
-            let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
-            localVarRequestOptions.headers = {...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers};
-
-            return {
-                url: toPathString(localVarUrlObj),
-                options: localVarRequestOptions,
-            };
-        },
-        /**
-         * Manage dimensions that group case-type columns (e.g., demographics, sample, sequencing).
-         * @summary Case Type Dims  Delete Some
-         * @param {string} ids 
-         * @param {*} [options] Override http request option.
-         * @throws {RequiredError}
-         */
-        caseTypeDimsDeleteSome: async (ids: string, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
-            // verify required parameter 'ids' is not null or undefined
-            assertParamExists('caseTypeDimsDeleteSome', 'ids', ids)
-            const localVarPath = `/v1/case_type_dims/batch`;
-            // use dummy base URL string because the URL constructor only accepts absolute URLs.
-            const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
-            let baseOptions;
-            if (configuration) {
-                baseOptions = configuration.baseOptions;
-            }
-
-            const localVarRequestOptions = { method: 'DELETE', ...baseOptions, ...options};
-            const localVarHeaderParameter = {} as any;
-            const localVarQueryParameter = {} as any;
-
-            if (ids !== undefined) {
-                localVarQueryParameter['ids'] = ids;
-            }
-
-
-    
-            setSearchParams(localVarUrlObj, localVarQueryParameter);
-            let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
-            localVarRequestOptions.headers = {...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers};
-
-            return {
-                url: toPathString(localVarUrlObj),
-                options: localVarRequestOptions,
-            };
-        },
-        /**
-         * Manage dimensions that group case-type columns (e.g., demographics, sample, sequencing).
-         * @summary Case Type Dims  Get All
-         * @param {*} [options] Override http request option.
-         * @throws {RequiredError}
-         */
-        caseTypeDimsGetAll: async (options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
-            const localVarPath = `/v1/case_type_dims`;
-            // use dummy base URL string because the URL constructor only accepts absolute URLs.
-            const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
-            let baseOptions;
-            if (configuration) {
-                baseOptions = configuration.baseOptions;
-            }
-
-            const localVarRequestOptions = { method: 'GET', ...baseOptions, ...options};
-            const localVarHeaderParameter = {} as any;
-            const localVarQueryParameter = {} as any;
-
-
-    
-            setSearchParams(localVarUrlObj, localVarQueryParameter);
-            let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
-            localVarRequestOptions.headers = {...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers};
-
-            return {
-                url: toPathString(localVarUrlObj),
-                options: localVarRequestOptions,
-            };
-        },
-        /**
-         * Manage dimensions that group case-type columns (e.g., demographics, sample, sequencing).
-         * @summary Case Type Dims  Get One
-         * @param {string} objectId 
-         * @param {*} [options] Override http request option.
-         * @throws {RequiredError}
-         */
-        caseTypeDimsGetOne: async (objectId: string, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
-            // verify required parameter 'objectId' is not null or undefined
-            assertParamExists('caseTypeDimsGetOne', 'objectId', objectId)
-            const localVarPath = `/v1/case_type_dims/{object_id}`
-                .replace(`{${"object_id"}}`, encodeURIComponent(String(objectId)));
-            // use dummy base URL string because the URL constructor only accepts absolute URLs.
-            const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
-            let baseOptions;
-            if (configuration) {
-                baseOptions = configuration.baseOptions;
-            }
-
-            const localVarRequestOptions = { method: 'GET', ...baseOptions, ...options};
-            const localVarHeaderParameter = {} as any;
-            const localVarQueryParameter = {} as any;
-
-
-    
-            setSearchParams(localVarUrlObj, localVarQueryParameter);
-            let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
-            localVarRequestOptions.headers = {...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers};
-
-            return {
-                url: toPathString(localVarUrlObj),
-                options: localVarRequestOptions,
-            };
-        },
-        /**
-         * Manage dimensions that group case-type columns (e.g., demographics, sample, sequencing).
-         * @summary Case Type Dims  Get Some
-         * @param {string} ids 
-         * @param {*} [options] Override http request option.
-         * @throws {RequiredError}
-         */
-        caseTypeDimsGetSome: async (ids: string, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
-            // verify required parameter 'ids' is not null or undefined
-            assertParamExists('caseTypeDimsGetSome', 'ids', ids)
-            const localVarPath = `/v1/case_type_dims/batch`;
-            // use dummy base URL string because the URL constructor only accepts absolute URLs.
-            const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
-            let baseOptions;
-            if (configuration) {
-                baseOptions = configuration.baseOptions;
-            }
-
-            const localVarRequestOptions = { method: 'GET', ...baseOptions, ...options};
-            const localVarHeaderParameter = {} as any;
-            const localVarQueryParameter = {} as any;
-
-            if (ids !== undefined) {
-                localVarQueryParameter['ids'] = ids;
-            }
-
-
-    
-            setSearchParams(localVarUrlObj, localVarQueryParameter);
-            let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
-            localVarRequestOptions.headers = {...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers};
-
-            return {
-                url: toPathString(localVarUrlObj),
-                options: localVarRequestOptions,
-            };
-        },
-        /**
-         * Manage dimensions that group case-type columns (e.g., demographics, sample, sequencing).
-         * @summary Case Type Dims  Post One
-         * @param {CaseTypeDim} caseTypeDim 
-         * @param {*} [options] Override http request option.
-         * @throws {RequiredError}
-         */
-        caseTypeDimsPostOne: async (caseTypeDim: CaseTypeDim, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
-            // verify required parameter 'caseTypeDim' is not null or undefined
-            assertParamExists('caseTypeDimsPostOne', 'caseTypeDim', caseTypeDim)
-            const localVarPath = `/v1/case_type_dims`;
-            // use dummy base URL string because the URL constructor only accepts absolute URLs.
-            const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
-            let baseOptions;
-            if (configuration) {
-                baseOptions = configuration.baseOptions;
-            }
-
-            const localVarRequestOptions = { method: 'POST', ...baseOptions, ...options};
-            const localVarHeaderParameter = {} as any;
-            const localVarQueryParameter = {} as any;
-
-
-    
-            localVarHeaderParameter['Content-Type'] = 'application/json';
-
-            setSearchParams(localVarUrlObj, localVarQueryParameter);
-            let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
-            localVarRequestOptions.headers = {...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers};
-            localVarRequestOptions.data = serializeDataIfNeeded(caseTypeDim, localVarRequestOptions, configuration)
-
-            return {
-                url: toPathString(localVarUrlObj),
-                options: localVarRequestOptions,
-            };
-        },
-        /**
-         * Manage dimensions that group case-type columns (e.g., demographics, sample, sequencing).
-         * @summary Case Type Dims  Post Query
-         * @param {EpiFilter} filter 
-         * @param {*} [options] Override http request option.
-         * @throws {RequiredError}
-         */
-        caseTypeDimsPostQuery: async (filter: EpiFilter, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
-            // verify required parameter 'filter' is not null or undefined
-            assertParamExists('caseTypeDimsPostQuery', 'filter', filter)
-            const localVarPath = `/v1/case_type_dims/query`;
-            // use dummy base URL string because the URL constructor only accepts absolute URLs.
-            const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
-            let baseOptions;
-            if (configuration) {
-                baseOptions = configuration.baseOptions;
-            }
-
-            const localVarRequestOptions = { method: 'POST', ...baseOptions, ...options};
-            const localVarHeaderParameter = {} as any;
-            const localVarQueryParameter = {} as any;
-
-
-    
-            localVarHeaderParameter['Content-Type'] = 'application/json';
-
-            setSearchParams(localVarUrlObj, localVarQueryParameter);
-            let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
-            localVarRequestOptions.headers = {...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers};
-            localVarRequestOptions.data = serializeDataIfNeeded(filter, localVarRequestOptions, configuration)
-
-            return {
-                url: toPathString(localVarUrlObj),
-                options: localVarRequestOptions,
-            };
-        },
-        /**
-         * Manage dimensions that group case-type columns (e.g., demographics, sample, sequencing).
-         * @summary Case Type Dims  Post Query  Ids
-         * @param {EpiFilter} filter 
-         * @param {*} [options] Override http request option.
-         * @throws {RequiredError}
-         */
-        caseTypeDimsPostQueryIds: async (filter: EpiFilter, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
-            // verify required parameter 'filter' is not null or undefined
-            assertParamExists('caseTypeDimsPostQueryIds', 'filter', filter)
-            const localVarPath = `/v1/case_type_dims/query/ids`;
-            // use dummy base URL string because the URL constructor only accepts absolute URLs.
-            const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
-            let baseOptions;
-            if (configuration) {
-                baseOptions = configuration.baseOptions;
-            }
-
-            const localVarRequestOptions = { method: 'POST', ...baseOptions, ...options};
-            const localVarHeaderParameter = {} as any;
-            const localVarQueryParameter = {} as any;
-
-
-    
-            localVarHeaderParameter['Content-Type'] = 'application/json';
-
-            setSearchParams(localVarUrlObj, localVarQueryParameter);
-            let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
-            localVarRequestOptions.headers = {...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers};
-            localVarRequestOptions.data = serializeDataIfNeeded(filter, localVarRequestOptions, configuration)
-
-            return {
-                url: toPathString(localVarUrlObj),
-                options: localVarRequestOptions,
-            };
-        },
-        /**
-         * Manage dimensions that group case-type columns (e.g., demographics, sample, sequencing).
-         * @summary Case Type Dims  Post Some
-         * @param {Array<CaseTypeDim>} caseTypeDim 
-         * @param {*} [options] Override http request option.
-         * @throws {RequiredError}
-         */
-        caseTypeDimsPostSome: async (caseTypeDim: Array<CaseTypeDim>, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
-            // verify required parameter 'caseTypeDim' is not null or undefined
-            assertParamExists('caseTypeDimsPostSome', 'caseTypeDim', caseTypeDim)
-            const localVarPath = `/v1/case_type_dims/batch`;
-            // use dummy base URL string because the URL constructor only accepts absolute URLs.
-            const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
-            let baseOptions;
-            if (configuration) {
-                baseOptions = configuration.baseOptions;
-            }
-
-            const localVarRequestOptions = { method: 'POST', ...baseOptions, ...options};
-            const localVarHeaderParameter = {} as any;
-            const localVarQueryParameter = {} as any;
-
-
-    
-            localVarHeaderParameter['Content-Type'] = 'application/json';
-
-            setSearchParams(localVarUrlObj, localVarQueryParameter);
-            let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
-            localVarRequestOptions.headers = {...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers};
-            localVarRequestOptions.data = serializeDataIfNeeded(caseTypeDim, localVarRequestOptions, configuration)
-
-            return {
-                url: toPathString(localVarUrlObj),
-                options: localVarRequestOptions,
-            };
-        },
-        /**
-         * Manage dimensions that group case-type columns (e.g., demographics, sample, sequencing).
-         * @summary Case Type Dims  Put One
-         * @param {string} objectId 
-         * @param {CaseTypeDim} caseTypeDim 
-         * @param {*} [options] Override http request option.
-         * @throws {RequiredError}
-         */
-        caseTypeDimsPutOne: async (objectId: string, caseTypeDim: CaseTypeDim, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
-            // verify required parameter 'objectId' is not null or undefined
-            assertParamExists('caseTypeDimsPutOne', 'objectId', objectId)
-            // verify required parameter 'caseTypeDim' is not null or undefined
-            assertParamExists('caseTypeDimsPutOne', 'caseTypeDim', caseTypeDim)
-            const localVarPath = `/v1/case_type_dims/{object_id}`
-                .replace(`{${"object_id"}}`, encodeURIComponent(String(objectId)));
-            // use dummy base URL string because the URL constructor only accepts absolute URLs.
-            const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
-            let baseOptions;
-            if (configuration) {
-                baseOptions = configuration.baseOptions;
-            }
-
-            const localVarRequestOptions = { method: 'PUT', ...baseOptions, ...options};
-            const localVarHeaderParameter = {} as any;
-            const localVarQueryParameter = {} as any;
-
-
-    
-            localVarHeaderParameter['Content-Type'] = 'application/json';
-
-            setSearchParams(localVarUrlObj, localVarQueryParameter);
-            let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
-            localVarRequestOptions.headers = {...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers};
-            localVarRequestOptions.data = serializeDataIfNeeded(caseTypeDim, localVarRequestOptions, configuration)
-
-            return {
-                url: toPathString(localVarUrlObj),
-                options: localVarRequestOptions,
-            };
-        },
-        /**
-         * Manage dimensions that group case-type columns (e.g., demographics, sample, sequencing).
-         * @summary Case Type Dims  Put Some
-         * @param {Array<CaseTypeDim>} caseTypeDim 
-         * @param {*} [options] Override http request option.
-         * @throws {RequiredError}
-         */
-        caseTypeDimsPutSome: async (caseTypeDim: Array<CaseTypeDim>, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
-            // verify required parameter 'caseTypeDim' is not null or undefined
-            assertParamExists('caseTypeDimsPutSome', 'caseTypeDim', caseTypeDim)
-            const localVarPath = `/v1/case_type_dims/batch`;
-            // use dummy base URL string because the URL constructor only accepts absolute URLs.
-            const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
-            let baseOptions;
-            if (configuration) {
-                baseOptions = configuration.baseOptions;
-            }
-
-            const localVarRequestOptions = { method: 'PUT', ...baseOptions, ...options};
-            const localVarHeaderParameter = {} as any;
-            const localVarQueryParameter = {} as any;
-
-
-    
-            localVarHeaderParameter['Content-Type'] = 'application/json';
-
-            setSearchParams(localVarUrlObj, localVarQueryParameter);
-            let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
-            localVarRequestOptions.headers = {...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers};
-            localVarRequestOptions.data = serializeDataIfNeeded(caseTypeDim, localVarRequestOptions, configuration)
-
-            return {
-                url: toPathString(localVarUrlObj),
-                options: localVarRequestOptions,
-            };
-        },
-        /**
          * Maintain categories used to organize case-type sets for policy scoping.
          * @summary Case Type Set Categories  Delete All
          * @param {*} [options] Override http request option.
@@ -14127,7 +12406,7 @@ const CaseApiAxiosParamCreator = function (configuration?: Configuration) {
             };
         },
         /**
-         * Manage which case types belong to a case-type set.
+         * Manage which CaseTypes belong to a case-type set.
          * @summary Case Type Set Members  Delete All
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
@@ -14157,7 +12436,7 @@ const CaseApiAxiosParamCreator = function (configuration?: Configuration) {
             };
         },
         /**
-         * Manage which case types belong to a case-type set.
+         * Manage which CaseTypes belong to a case-type set.
          * @summary Case Type Set Members  Delete One
          * @param {any} objectId 
          * @param {*} [options] Override http request option.
@@ -14191,7 +12470,7 @@ const CaseApiAxiosParamCreator = function (configuration?: Configuration) {
             };
         },
         /**
-         * Manage which case types belong to a case-type set.
+         * Manage which CaseTypes belong to a case-type set.
          * @summary Case Type Set Members  Delete Some
          * @param {string} ids 
          * @param {*} [options] Override http request option.
@@ -14228,7 +12507,7 @@ const CaseApiAxiosParamCreator = function (configuration?: Configuration) {
             };
         },
         /**
-         * Manage which case types belong to a case-type set.
+         * Manage which CaseTypes belong to a case-type set.
          * @summary Case Type Set Members  Get All
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
@@ -14258,7 +12537,7 @@ const CaseApiAxiosParamCreator = function (configuration?: Configuration) {
             };
         },
         /**
-         * Manage which case types belong to a case-type set.
+         * Manage which CaseTypes belong to a case-type set.
          * @summary Case Type Set Members  Get One
          * @param {string} objectId 
          * @param {*} [options] Override http request option.
@@ -14292,7 +12571,7 @@ const CaseApiAxiosParamCreator = function (configuration?: Configuration) {
             };
         },
         /**
-         * Manage which case types belong to a case-type set.
+         * Manage which CaseTypes belong to a case-type set.
          * @summary Case Type Set Members  Get Some
          * @param {string} ids 
          * @param {*} [options] Override http request option.
@@ -14329,7 +12608,7 @@ const CaseApiAxiosParamCreator = function (configuration?: Configuration) {
             };
         },
         /**
-         * Manage which case types belong to a case-type set.
+         * Manage which CaseTypes belong to a case-type set.
          * @summary Case Type Set Members  Post One
          * @param {CaseTypeSetMember} caseTypeSetMember 
          * @param {*} [options] Override http request option.
@@ -14365,7 +12644,7 @@ const CaseApiAxiosParamCreator = function (configuration?: Configuration) {
             };
         },
         /**
-         * Manage which case types belong to a case-type set.
+         * Manage which CaseTypes belong to a case-type set.
          * @summary Case Type Set Members  Post Query
          * @param {EpiFilter} filter 
          * @param {*} [options] Override http request option.
@@ -14401,7 +12680,7 @@ const CaseApiAxiosParamCreator = function (configuration?: Configuration) {
             };
         },
         /**
-         * Manage which case types belong to a case-type set.
+         * Manage which CaseTypes belong to a case-type set.
          * @summary Case Type Set Members  Post Query  Ids
          * @param {EpiFilter} filter 
          * @param {*} [options] Override http request option.
@@ -14437,7 +12716,7 @@ const CaseApiAxiosParamCreator = function (configuration?: Configuration) {
             };
         },
         /**
-         * Manage which case types belong to a case-type set.
+         * Manage which CaseTypes belong to a case-type set.
          * @summary Case Type Set Members  Post Some
          * @param {Array<CaseTypeSetMember>} caseTypeSetMember 
          * @param {*} [options] Override http request option.
@@ -14473,7 +12752,7 @@ const CaseApiAxiosParamCreator = function (configuration?: Configuration) {
             };
         },
         /**
-         * Manage which case types belong to a case-type set.
+         * Manage which CaseTypes belong to a case-type set.
          * @summary Case Type Set Members  Put One
          * @param {string} objectId 
          * @param {CaseTypeSetMember} caseTypeSetMember 
@@ -14513,7 +12792,7 @@ const CaseApiAxiosParamCreator = function (configuration?: Configuration) {
             };
         },
         /**
-         * Manage which case types belong to a case-type set.
+         * Manage which CaseTypes belong to a case-type set.
          * @summary Case Type Set Members  Put Some
          * @param {Array<CaseTypeSetMember>} caseTypeSetMember 
          * @param {*} [options] Override http request option.
@@ -14549,7 +12828,7 @@ const CaseApiAxiosParamCreator = function (configuration?: Configuration) {
             };
         },
         /**
-         * Manage sets of related case types reused in access policies and presets.
+         * Manage sets of related CaseTypes reused in access policies and presets.
          * @summary Case Type Sets  Delete All
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
@@ -14579,7 +12858,7 @@ const CaseApiAxiosParamCreator = function (configuration?: Configuration) {
             };
         },
         /**
-         * Manage sets of related case types reused in access policies and presets.
+         * Manage sets of related CaseTypes reused in access policies and presets.
          * @summary Case Type Sets  Delete One
          * @param {any} objectId 
          * @param {*} [options] Override http request option.
@@ -14613,7 +12892,7 @@ const CaseApiAxiosParamCreator = function (configuration?: Configuration) {
             };
         },
         /**
-         * Manage sets of related case types reused in access policies and presets.
+         * Manage sets of related CaseTypes reused in access policies and presets.
          * @summary Case Type Sets  Delete Some
          * @param {string} ids 
          * @param {*} [options] Override http request option.
@@ -14650,7 +12929,7 @@ const CaseApiAxiosParamCreator = function (configuration?: Configuration) {
             };
         },
         /**
-         * Manage sets of related case types reused in access policies and presets.
+         * Manage sets of related CaseTypes reused in access policies and presets.
          * @summary Case Type Sets  Get All
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
@@ -14680,7 +12959,7 @@ const CaseApiAxiosParamCreator = function (configuration?: Configuration) {
             };
         },
         /**
-         * Manage sets of related case types reused in access policies and presets.
+         * Manage sets of related CaseTypes reused in access policies and presets.
          * @summary Case Type Sets  Get One
          * @param {string} objectId 
          * @param {*} [options] Override http request option.
@@ -14714,7 +12993,7 @@ const CaseApiAxiosParamCreator = function (configuration?: Configuration) {
             };
         },
         /**
-         * Manage sets of related case types reused in access policies and presets.
+         * Manage sets of related CaseTypes reused in access policies and presets.
          * @summary Case Type Sets  Get Some
          * @param {string} ids 
          * @param {*} [options] Override http request option.
@@ -14751,7 +13030,7 @@ const CaseApiAxiosParamCreator = function (configuration?: Configuration) {
             };
         },
         /**
-         * Manage sets of related case types reused in access policies and presets.
+         * Manage sets of related CaseTypes reused in access policies and presets.
          * @summary Case Type Sets  Post One
          * @param {CaseTypeSet} caseTypeSet 
          * @param {*} [options] Override http request option.
@@ -14787,7 +13066,7 @@ const CaseApiAxiosParamCreator = function (configuration?: Configuration) {
             };
         },
         /**
-         * Manage sets of related case types reused in access policies and presets.
+         * Manage sets of related CaseTypes reused in access policies and presets.
          * @summary Case Type Sets  Post Query
          * @param {EpiFilter} filter 
          * @param {*} [options] Override http request option.
@@ -14823,7 +13102,7 @@ const CaseApiAxiosParamCreator = function (configuration?: Configuration) {
             };
         },
         /**
-         * Manage sets of related case types reused in access policies and presets.
+         * Manage sets of related CaseTypes reused in access policies and presets.
          * @summary Case Type Sets  Post Query  Ids
          * @param {EpiFilter} filter 
          * @param {*} [options] Override http request option.
@@ -14859,7 +13138,7 @@ const CaseApiAxiosParamCreator = function (configuration?: Configuration) {
             };
         },
         /**
-         * Manage sets of related case types reused in access policies and presets.
+         * Manage sets of related CaseTypes reused in access policies and presets.
          * @summary Case Type Sets  Post Some
          * @param {Array<CaseTypeSet>} caseTypeSet 
          * @param {*} [options] Override http request option.
@@ -14895,7 +13174,7 @@ const CaseApiAxiosParamCreator = function (configuration?: Configuration) {
             };
         },
         /**
-         * Replace the case types in a case-type set with the provided list of members, keeping the set in sync for downstream access policies and presets.
+         * Replace the CaseTypes in a CaseTypeSet with the provided list of members, keeping the set in sync for downstream access policies and presets.
          * @summary Update Association Between Casetypeset And Casetype
          * @param {string} caseTypeSetId 
          * @param {UpdateCaseTypeSetCaseTypesRequestBody} updateCaseTypeSetCaseTypesRequestBody 
@@ -14935,7 +13214,7 @@ const CaseApiAxiosParamCreator = function (configuration?: Configuration) {
             };
         },
         /**
-         * Manage sets of related case types reused in access policies and presets.
+         * Manage sets of related CaseTypes reused in access policies and presets.
          * @summary Case Type Sets  Put One
          * @param {string} objectId 
          * @param {CaseTypeSet} caseTypeSet 
@@ -14975,7 +13254,7 @@ const CaseApiAxiosParamCreator = function (configuration?: Configuration) {
             };
         },
         /**
-         * Manage sets of related case types reused in access policies and presets.
+         * Manage sets of related CaseTypes reused in access policies and presets.
          * @summary Case Type Sets  Put Some
          * @param {Array<CaseTypeSet>} caseTypeSet 
          * @param {*} [options] Override http request option.
@@ -15011,7 +13290,7 @@ const CaseApiAxiosParamCreator = function (configuration?: Configuration) {
             };
         },
         /**
-         * Manage case types—the structural and default definitions cases must follow.
+         * Manage CaseTypes—the structural and default definitions cases must follow.
          * @summary Case Types  Delete All
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
@@ -15041,7 +13320,7 @@ const CaseApiAxiosParamCreator = function (configuration?: Configuration) {
             };
         },
         /**
-         * Manage case types—the structural and default definitions cases must follow.
+         * Manage CaseTypes—the structural and default definitions cases must follow.
          * @summary Case Types  Delete One
          * @param {any} objectId 
          * @param {*} [options] Override http request option.
@@ -15075,7 +13354,7 @@ const CaseApiAxiosParamCreator = function (configuration?: Configuration) {
             };
         },
         /**
-         * Manage case types—the structural and default definitions cases must follow.
+         * Manage CaseTypes—the structural and default definitions cases must follow.
          * @summary Case Types  Delete Some
          * @param {string} ids 
          * @param {*} [options] Override http request option.
@@ -15112,7 +13391,7 @@ const CaseApiAxiosParamCreator = function (configuration?: Configuration) {
             };
         },
         /**
-         * Manage case types—the structural and default definitions cases must follow.
+         * Manage CaseTypes—the structural and default definitions cases must follow.
          * @summary Case Types  Get All
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
@@ -15142,7 +13421,7 @@ const CaseApiAxiosParamCreator = function (configuration?: Configuration) {
             };
         },
         /**
-         * Manage case types—the structural and default definitions cases must follow.
+         * Manage CaseTypes—the structural and default definitions cases must follow.
          * @summary Case Types  Get One
          * @param {string} objectId 
          * @param {*} [options] Override http request option.
@@ -15176,7 +13455,7 @@ const CaseApiAxiosParamCreator = function (configuration?: Configuration) {
             };
         },
         /**
-         * Manage case types—the structural and default definitions cases must follow.
+         * Manage CaseTypes—the structural and default definitions cases must follow.
          * @summary Case Types  Get Some
          * @param {string} ids 
          * @param {*} [options] Override http request option.
@@ -15213,7 +13492,7 @@ const CaseApiAxiosParamCreator = function (configuration?: Configuration) {
             };
         },
         /**
-         * Manage case types—the structural and default definitions cases must follow.
+         * Manage CaseTypes—the structural and default definitions cases must follow.
          * @summary Case Types  Post One
          * @param {CaseType} caseType 
          * @param {*} [options] Override http request option.
@@ -15249,7 +13528,7 @@ const CaseApiAxiosParamCreator = function (configuration?: Configuration) {
             };
         },
         /**
-         * Manage case types—the structural and default definitions cases must follow.
+         * Manage CaseTypes—the structural and default definitions cases must follow.
          * @summary Case Types  Post Query
          * @param {EpiFilter} filter 
          * @param {*} [options] Override http request option.
@@ -15285,7 +13564,7 @@ const CaseApiAxiosParamCreator = function (configuration?: Configuration) {
             };
         },
         /**
-         * Manage case types—the structural and default definitions cases must follow.
+         * Manage CaseTypes—the structural and default definitions cases must follow.
          * @summary Case Types  Post Query  Ids
          * @param {EpiFilter} filter 
          * @param {*} [options] Override http request option.
@@ -15321,7 +13600,7 @@ const CaseApiAxiosParamCreator = function (configuration?: Configuration) {
             };
         },
         /**
-         * Manage case types—the structural and default definitions cases must follow.
+         * Manage CaseTypes—the structural and default definitions cases must follow.
          * @summary Case Types  Post Some
          * @param {Array<CaseType>} caseType 
          * @param {*} [options] Override http request option.
@@ -15357,7 +13636,7 @@ const CaseApiAxiosParamCreator = function (configuration?: Configuration) {
             };
         },
         /**
-         * Manage case types—the structural and default definitions cases must follow.
+         * Manage CaseTypes—the structural and default definitions cases must follow.
          * @summary Case Types  Put One
          * @param {string} objectId 
          * @param {CaseType} caseType 
@@ -15397,7 +13676,7 @@ const CaseApiAxiosParamCreator = function (configuration?: Configuration) {
             };
         },
         /**
-         * Manage case types—the structural and default definitions cases must follow.
+         * Manage CaseTypes—the structural and default definitions cases must follow.
          * @summary Case Types  Put Some
          * @param {Array<CaseType>} caseType 
          * @param {*} [options] Override http request option.
@@ -15433,7 +13712,7 @@ const CaseApiAxiosParamCreator = function (configuration?: Configuration) {
             };
         },
         /**
-         * Manage cases (list/get/create/update/delete) with typed content tied to a case type, subject, and data collection.
+         * Manage cases (list/get/create/update/delete) with typed content tied to a CaseType, subject, and data collection.
          * @summary Cases  Delete All
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
@@ -15463,7 +13742,7 @@ const CaseApiAxiosParamCreator = function (configuration?: Configuration) {
             };
         },
         /**
-         * Manage cases (list/get/create/update/delete) with typed content tied to a case type, subject, and data collection.
+         * Manage cases (list/get/create/update/delete) with typed content tied to a CaseType, subject, and data collection.
          * @summary Cases  Delete One
          * @param {any} objectId 
          * @param {*} [options] Override http request option.
@@ -15497,7 +13776,7 @@ const CaseApiAxiosParamCreator = function (configuration?: Configuration) {
             };
         },
         /**
-         * Manage cases (list/get/create/update/delete) with typed content tied to a case type, subject, and data collection.
+         * Manage cases (list/get/create/update/delete) with typed content tied to a CaseType, subject, and data collection.
          * @summary Cases  Delete Some
          * @param {string} ids 
          * @param {*} [options] Override http request option.
@@ -15534,7 +13813,7 @@ const CaseApiAxiosParamCreator = function (configuration?: Configuration) {
             };
         },
         /**
-         * Manage cases (list/get/create/update/delete) with typed content tied to a case type, subject, and data collection.
+         * Manage cases (list/get/create/update/delete) with typed content tied to a CaseType, subject, and data collection.
          * @summary Cases  Get All
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
@@ -15564,7 +13843,7 @@ const CaseApiAxiosParamCreator = function (configuration?: Configuration) {
             };
         },
         /**
-         * Manage cases (list/get/create/update/delete) with typed content tied to a case type, subject, and data collection.
+         * Manage cases (list/get/create/update/delete) with typed content tied to a CaseType, subject, and data collection.
          * @summary Cases  Get One
          * @param {string} objectId 
          * @param {*} [options] Override http request option.
@@ -15598,7 +13877,7 @@ const CaseApiAxiosParamCreator = function (configuration?: Configuration) {
             };
         },
         /**
-         * Manage cases (list/get/create/update/delete) with typed content tied to a case type, subject, and data collection.
+         * Manage cases (list/get/create/update/delete) with typed content tied to a CaseType, subject, and data collection.
          * @summary Cases  Get Some
          * @param {string} ids 
          * @param {*} [options] Override http request option.
@@ -15635,7 +13914,7 @@ const CaseApiAxiosParamCreator = function (configuration?: Configuration) {
             };
         },
         /**
-         * Manage cases (list/get/create/update/delete) with typed content tied to a case type, subject, and data collection.
+         * Manage cases (list/get/create/update/delete) with typed content tied to a CaseType, subject, and data collection.
          * @summary Cases  Post One
          * @param {Case} _case 
          * @param {*} [options] Override http request option.
@@ -15671,7 +13950,7 @@ const CaseApiAxiosParamCreator = function (configuration?: Configuration) {
             };
         },
         /**
-         * Manage cases (list/get/create/update/delete) with typed content tied to a case type, subject, and data collection.
+         * Manage cases (list/get/create/update/delete) with typed content tied to a CaseType, subject, and data collection.
          * @summary Cases  Post Query
          * @param {EpiFilter} filter 
          * @param {*} [options] Override http request option.
@@ -15707,7 +13986,7 @@ const CaseApiAxiosParamCreator = function (configuration?: Configuration) {
             };
         },
         /**
-         * Manage cases (list/get/create/update/delete) with typed content tied to a case type, subject, and data collection.
+         * Manage cases (list/get/create/update/delete) with typed content tied to a CaseType, subject, and data collection.
          * @summary Cases  Post Query  Ids
          * @param {EpiFilter} filter 
          * @param {*} [options] Override http request option.
@@ -15743,7 +14022,7 @@ const CaseApiAxiosParamCreator = function (configuration?: Configuration) {
             };
         },
         /**
-         * Manage cases (list/get/create/update/delete) with typed content tied to a case type, subject, and data collection.
+         * Manage cases (list/get/create/update/delete) with typed content tied to a CaseType, subject, and data collection.
          * @summary Cases  Post Some
          * @param {Array<Case>} _case 
          * @param {*} [options] Override http request option.
@@ -15779,7 +14058,7 @@ const CaseApiAxiosParamCreator = function (configuration?: Configuration) {
             };
         },
         /**
-         * Manage cases (list/get/create/update/delete) with typed content tied to a case type, subject, and data collection.
+         * Manage cases (list/get/create/update/delete) with typed content tied to a CaseType, subject, and data collection.
          * @summary Cases  Put One
          * @param {string} objectId 
          * @param {Case} _case 
@@ -15819,7 +14098,7 @@ const CaseApiAxiosParamCreator = function (configuration?: Configuration) {
             };
         },
         /**
-         * Manage cases (list/get/create/update/delete) with typed content tied to a case type, subject, and data collection.
+         * Manage cases (list/get/create/update/delete) with typed content tied to a CaseType, subject, and data collection.
          * @summary Cases  Put Some
          * @param {Array<Case>} _case 
          * @param {*} [options] Override http request option.
@@ -15855,7 +14134,891 @@ const CaseApiAxiosParamCreator = function (configuration?: Configuration) {
             };
         },
         /**
-         * Manage reusable column definitions (code/label/type) referenced by case-type columns and vocabularies.
+         * Manage which columns belong to a column set used in policies or UI presets.
+         * @summary Col Set Members  Delete All
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        colSetMembersDeleteAll: async (options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
+            const localVarPath = `/v1/col_set_members`;
+            // use dummy base URL string because the URL constructor only accepts absolute URLs.
+            const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
+            let baseOptions;
+            if (configuration) {
+                baseOptions = configuration.baseOptions;
+            }
+
+            const localVarRequestOptions = { method: 'DELETE', ...baseOptions, ...options};
+            const localVarHeaderParameter = {} as any;
+            const localVarQueryParameter = {} as any;
+
+
+    
+            setSearchParams(localVarUrlObj, localVarQueryParameter);
+            let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
+            localVarRequestOptions.headers = {...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers};
+
+            return {
+                url: toPathString(localVarUrlObj),
+                options: localVarRequestOptions,
+            };
+        },
+        /**
+         * Manage which columns belong to a column set used in policies or UI presets.
+         * @summary Col Set Members  Delete One
+         * @param {any} objectId 
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        colSetMembersDeleteOne: async (objectId: any, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
+            // verify required parameter 'objectId' is not null or undefined
+            assertParamExists('colSetMembersDeleteOne', 'objectId', objectId)
+            const localVarPath = `/v1/col_set_members/{object_id}`
+                .replace(`{${"object_id"}}`, encodeURIComponent(String(objectId)));
+            // use dummy base URL string because the URL constructor only accepts absolute URLs.
+            const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
+            let baseOptions;
+            if (configuration) {
+                baseOptions = configuration.baseOptions;
+            }
+
+            const localVarRequestOptions = { method: 'DELETE', ...baseOptions, ...options};
+            const localVarHeaderParameter = {} as any;
+            const localVarQueryParameter = {} as any;
+
+
+    
+            setSearchParams(localVarUrlObj, localVarQueryParameter);
+            let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
+            localVarRequestOptions.headers = {...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers};
+
+            return {
+                url: toPathString(localVarUrlObj),
+                options: localVarRequestOptions,
+            };
+        },
+        /**
+         * Manage which columns belong to a column set used in policies or UI presets.
+         * @summary Col Set Members  Delete Some
+         * @param {string} ids 
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        colSetMembersDeleteSome: async (ids: string, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
+            // verify required parameter 'ids' is not null or undefined
+            assertParamExists('colSetMembersDeleteSome', 'ids', ids)
+            const localVarPath = `/v1/col_set_members/batch`;
+            // use dummy base URL string because the URL constructor only accepts absolute URLs.
+            const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
+            let baseOptions;
+            if (configuration) {
+                baseOptions = configuration.baseOptions;
+            }
+
+            const localVarRequestOptions = { method: 'DELETE', ...baseOptions, ...options};
+            const localVarHeaderParameter = {} as any;
+            const localVarQueryParameter = {} as any;
+
+            if (ids !== undefined) {
+                localVarQueryParameter['ids'] = ids;
+            }
+
+
+    
+            setSearchParams(localVarUrlObj, localVarQueryParameter);
+            let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
+            localVarRequestOptions.headers = {...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers};
+
+            return {
+                url: toPathString(localVarUrlObj),
+                options: localVarRequestOptions,
+            };
+        },
+        /**
+         * Manage which columns belong to a column set used in policies or UI presets.
+         * @summary Col Set Members  Get All
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        colSetMembersGetAll: async (options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
+            const localVarPath = `/v1/col_set_members`;
+            // use dummy base URL string because the URL constructor only accepts absolute URLs.
+            const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
+            let baseOptions;
+            if (configuration) {
+                baseOptions = configuration.baseOptions;
+            }
+
+            const localVarRequestOptions = { method: 'GET', ...baseOptions, ...options};
+            const localVarHeaderParameter = {} as any;
+            const localVarQueryParameter = {} as any;
+
+
+    
+            setSearchParams(localVarUrlObj, localVarQueryParameter);
+            let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
+            localVarRequestOptions.headers = {...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers};
+
+            return {
+                url: toPathString(localVarUrlObj),
+                options: localVarRequestOptions,
+            };
+        },
+        /**
+         * Manage which columns belong to a column set used in policies or UI presets.
+         * @summary Col Set Members  Get One
+         * @param {string} objectId 
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        colSetMembersGetOne: async (objectId: string, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
+            // verify required parameter 'objectId' is not null or undefined
+            assertParamExists('colSetMembersGetOne', 'objectId', objectId)
+            const localVarPath = `/v1/col_set_members/{object_id}`
+                .replace(`{${"object_id"}}`, encodeURIComponent(String(objectId)));
+            // use dummy base URL string because the URL constructor only accepts absolute URLs.
+            const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
+            let baseOptions;
+            if (configuration) {
+                baseOptions = configuration.baseOptions;
+            }
+
+            const localVarRequestOptions = { method: 'GET', ...baseOptions, ...options};
+            const localVarHeaderParameter = {} as any;
+            const localVarQueryParameter = {} as any;
+
+
+    
+            setSearchParams(localVarUrlObj, localVarQueryParameter);
+            let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
+            localVarRequestOptions.headers = {...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers};
+
+            return {
+                url: toPathString(localVarUrlObj),
+                options: localVarRequestOptions,
+            };
+        },
+        /**
+         * Manage which columns belong to a column set used in policies or UI presets.
+         * @summary Col Set Members  Get Some
+         * @param {string} ids 
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        colSetMembersGetSome: async (ids: string, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
+            // verify required parameter 'ids' is not null or undefined
+            assertParamExists('colSetMembersGetSome', 'ids', ids)
+            const localVarPath = `/v1/col_set_members/batch`;
+            // use dummy base URL string because the URL constructor only accepts absolute URLs.
+            const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
+            let baseOptions;
+            if (configuration) {
+                baseOptions = configuration.baseOptions;
+            }
+
+            const localVarRequestOptions = { method: 'GET', ...baseOptions, ...options};
+            const localVarHeaderParameter = {} as any;
+            const localVarQueryParameter = {} as any;
+
+            if (ids !== undefined) {
+                localVarQueryParameter['ids'] = ids;
+            }
+
+
+    
+            setSearchParams(localVarUrlObj, localVarQueryParameter);
+            let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
+            localVarRequestOptions.headers = {...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers};
+
+            return {
+                url: toPathString(localVarUrlObj),
+                options: localVarRequestOptions,
+            };
+        },
+        /**
+         * Manage which columns belong to a column set used in policies or UI presets.
+         * @summary Col Set Members  Post One
+         * @param {ColSetMember} colSetMember 
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        colSetMembersPostOne: async (colSetMember: ColSetMember, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
+            // verify required parameter 'colSetMember' is not null or undefined
+            assertParamExists('colSetMembersPostOne', 'colSetMember', colSetMember)
+            const localVarPath = `/v1/col_set_members`;
+            // use dummy base URL string because the URL constructor only accepts absolute URLs.
+            const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
+            let baseOptions;
+            if (configuration) {
+                baseOptions = configuration.baseOptions;
+            }
+
+            const localVarRequestOptions = { method: 'POST', ...baseOptions, ...options};
+            const localVarHeaderParameter = {} as any;
+            const localVarQueryParameter = {} as any;
+
+
+    
+            localVarHeaderParameter['Content-Type'] = 'application/json';
+
+            setSearchParams(localVarUrlObj, localVarQueryParameter);
+            let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
+            localVarRequestOptions.headers = {...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers};
+            localVarRequestOptions.data = serializeDataIfNeeded(colSetMember, localVarRequestOptions, configuration)
+
+            return {
+                url: toPathString(localVarUrlObj),
+                options: localVarRequestOptions,
+            };
+        },
+        /**
+         * Manage which columns belong to a column set used in policies or UI presets.
+         * @summary Col Set Members  Post Query
+         * @param {EpiFilter} filter 
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        colSetMembersPostQuery: async (filter: EpiFilter, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
+            // verify required parameter 'filter' is not null or undefined
+            assertParamExists('colSetMembersPostQuery', 'filter', filter)
+            const localVarPath = `/v1/col_set_members/query`;
+            // use dummy base URL string because the URL constructor only accepts absolute URLs.
+            const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
+            let baseOptions;
+            if (configuration) {
+                baseOptions = configuration.baseOptions;
+            }
+
+            const localVarRequestOptions = { method: 'POST', ...baseOptions, ...options};
+            const localVarHeaderParameter = {} as any;
+            const localVarQueryParameter = {} as any;
+
+
+    
+            localVarHeaderParameter['Content-Type'] = 'application/json';
+
+            setSearchParams(localVarUrlObj, localVarQueryParameter);
+            let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
+            localVarRequestOptions.headers = {...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers};
+            localVarRequestOptions.data = serializeDataIfNeeded(filter, localVarRequestOptions, configuration)
+
+            return {
+                url: toPathString(localVarUrlObj),
+                options: localVarRequestOptions,
+            };
+        },
+        /**
+         * Manage which columns belong to a column set used in policies or UI presets.
+         * @summary Col Set Members  Post Query  Ids
+         * @param {EpiFilter} filter 
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        colSetMembersPostQueryIds: async (filter: EpiFilter, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
+            // verify required parameter 'filter' is not null or undefined
+            assertParamExists('colSetMembersPostQueryIds', 'filter', filter)
+            const localVarPath = `/v1/col_set_members/query/ids`;
+            // use dummy base URL string because the URL constructor only accepts absolute URLs.
+            const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
+            let baseOptions;
+            if (configuration) {
+                baseOptions = configuration.baseOptions;
+            }
+
+            const localVarRequestOptions = { method: 'POST', ...baseOptions, ...options};
+            const localVarHeaderParameter = {} as any;
+            const localVarQueryParameter = {} as any;
+
+
+    
+            localVarHeaderParameter['Content-Type'] = 'application/json';
+
+            setSearchParams(localVarUrlObj, localVarQueryParameter);
+            let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
+            localVarRequestOptions.headers = {...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers};
+            localVarRequestOptions.data = serializeDataIfNeeded(filter, localVarRequestOptions, configuration)
+
+            return {
+                url: toPathString(localVarUrlObj),
+                options: localVarRequestOptions,
+            };
+        },
+        /**
+         * Manage which columns belong to a column set used in policies or UI presets.
+         * @summary Col Set Members  Post Some
+         * @param {Array<ColSetMember>} colSetMember 
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        colSetMembersPostSome: async (colSetMember: Array<ColSetMember>, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
+            // verify required parameter 'colSetMember' is not null or undefined
+            assertParamExists('colSetMembersPostSome', 'colSetMember', colSetMember)
+            const localVarPath = `/v1/col_set_members/batch`;
+            // use dummy base URL string because the URL constructor only accepts absolute URLs.
+            const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
+            let baseOptions;
+            if (configuration) {
+                baseOptions = configuration.baseOptions;
+            }
+
+            const localVarRequestOptions = { method: 'POST', ...baseOptions, ...options};
+            const localVarHeaderParameter = {} as any;
+            const localVarQueryParameter = {} as any;
+
+
+    
+            localVarHeaderParameter['Content-Type'] = 'application/json';
+
+            setSearchParams(localVarUrlObj, localVarQueryParameter);
+            let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
+            localVarRequestOptions.headers = {...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers};
+            localVarRequestOptions.data = serializeDataIfNeeded(colSetMember, localVarRequestOptions, configuration)
+
+            return {
+                url: toPathString(localVarUrlObj),
+                options: localVarRequestOptions,
+            };
+        },
+        /**
+         * Manage which columns belong to a column set used in policies or UI presets.
+         * @summary Col Set Members  Put One
+         * @param {string} objectId 
+         * @param {ColSetMember} colSetMember 
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        colSetMembersPutOne: async (objectId: string, colSetMember: ColSetMember, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
+            // verify required parameter 'objectId' is not null or undefined
+            assertParamExists('colSetMembersPutOne', 'objectId', objectId)
+            // verify required parameter 'colSetMember' is not null or undefined
+            assertParamExists('colSetMembersPutOne', 'colSetMember', colSetMember)
+            const localVarPath = `/v1/col_set_members/{object_id}`
+                .replace(`{${"object_id"}}`, encodeURIComponent(String(objectId)));
+            // use dummy base URL string because the URL constructor only accepts absolute URLs.
+            const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
+            let baseOptions;
+            if (configuration) {
+                baseOptions = configuration.baseOptions;
+            }
+
+            const localVarRequestOptions = { method: 'PUT', ...baseOptions, ...options};
+            const localVarHeaderParameter = {} as any;
+            const localVarQueryParameter = {} as any;
+
+
+    
+            localVarHeaderParameter['Content-Type'] = 'application/json';
+
+            setSearchParams(localVarUrlObj, localVarQueryParameter);
+            let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
+            localVarRequestOptions.headers = {...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers};
+            localVarRequestOptions.data = serializeDataIfNeeded(colSetMember, localVarRequestOptions, configuration)
+
+            return {
+                url: toPathString(localVarUrlObj),
+                options: localVarRequestOptions,
+            };
+        },
+        /**
+         * Manage which columns belong to a column set used in policies or UI presets.
+         * @summary Col Set Members  Put Some
+         * @param {Array<ColSetMember>} colSetMember 
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        colSetMembersPutSome: async (colSetMember: Array<ColSetMember>, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
+            // verify required parameter 'colSetMember' is not null or undefined
+            assertParamExists('colSetMembersPutSome', 'colSetMember', colSetMember)
+            const localVarPath = `/v1/col_set_members/batch`;
+            // use dummy base URL string because the URL constructor only accepts absolute URLs.
+            const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
+            let baseOptions;
+            if (configuration) {
+                baseOptions = configuration.baseOptions;
+            }
+
+            const localVarRequestOptions = { method: 'PUT', ...baseOptions, ...options};
+            const localVarHeaderParameter = {} as any;
+            const localVarQueryParameter = {} as any;
+
+
+    
+            localVarHeaderParameter['Content-Type'] = 'application/json';
+
+            setSearchParams(localVarUrlObj, localVarQueryParameter);
+            let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
+            localVarRequestOptions.headers = {...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers};
+            localVarRequestOptions.data = serializeDataIfNeeded(colSetMember, localVarRequestOptions, configuration)
+
+            return {
+                url: toPathString(localVarUrlObj),
+                options: localVarRequestOptions,
+            };
+        },
+        /**
+         * Manage column sets used for read/write scopes and default column groupings.
+         * @summary Col Sets  Delete All
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        colSetsDeleteAll: async (options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
+            const localVarPath = `/v1/col_sets`;
+            // use dummy base URL string because the URL constructor only accepts absolute URLs.
+            const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
+            let baseOptions;
+            if (configuration) {
+                baseOptions = configuration.baseOptions;
+            }
+
+            const localVarRequestOptions = { method: 'DELETE', ...baseOptions, ...options};
+            const localVarHeaderParameter = {} as any;
+            const localVarQueryParameter = {} as any;
+
+
+    
+            setSearchParams(localVarUrlObj, localVarQueryParameter);
+            let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
+            localVarRequestOptions.headers = {...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers};
+
+            return {
+                url: toPathString(localVarUrlObj),
+                options: localVarRequestOptions,
+            };
+        },
+        /**
+         * Manage column sets used for read/write scopes and default column groupings.
+         * @summary Col Sets  Delete One
+         * @param {any} objectId 
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        colSetsDeleteOne: async (objectId: any, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
+            // verify required parameter 'objectId' is not null or undefined
+            assertParamExists('colSetsDeleteOne', 'objectId', objectId)
+            const localVarPath = `/v1/col_sets/{object_id}`
+                .replace(`{${"object_id"}}`, encodeURIComponent(String(objectId)));
+            // use dummy base URL string because the URL constructor only accepts absolute URLs.
+            const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
+            let baseOptions;
+            if (configuration) {
+                baseOptions = configuration.baseOptions;
+            }
+
+            const localVarRequestOptions = { method: 'DELETE', ...baseOptions, ...options};
+            const localVarHeaderParameter = {} as any;
+            const localVarQueryParameter = {} as any;
+
+
+    
+            setSearchParams(localVarUrlObj, localVarQueryParameter);
+            let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
+            localVarRequestOptions.headers = {...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers};
+
+            return {
+                url: toPathString(localVarUrlObj),
+                options: localVarRequestOptions,
+            };
+        },
+        /**
+         * Manage column sets used for read/write scopes and default column groupings.
+         * @summary Col Sets  Delete Some
+         * @param {string} ids 
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        colSetsDeleteSome: async (ids: string, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
+            // verify required parameter 'ids' is not null or undefined
+            assertParamExists('colSetsDeleteSome', 'ids', ids)
+            const localVarPath = `/v1/col_sets/batch`;
+            // use dummy base URL string because the URL constructor only accepts absolute URLs.
+            const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
+            let baseOptions;
+            if (configuration) {
+                baseOptions = configuration.baseOptions;
+            }
+
+            const localVarRequestOptions = { method: 'DELETE', ...baseOptions, ...options};
+            const localVarHeaderParameter = {} as any;
+            const localVarQueryParameter = {} as any;
+
+            if (ids !== undefined) {
+                localVarQueryParameter['ids'] = ids;
+            }
+
+
+    
+            setSearchParams(localVarUrlObj, localVarQueryParameter);
+            let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
+            localVarRequestOptions.headers = {...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers};
+
+            return {
+                url: toPathString(localVarUrlObj),
+                options: localVarRequestOptions,
+            };
+        },
+        /**
+         * Manage column sets used for read/write scopes and default column groupings.
+         * @summary Col Sets  Get All
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        colSetsGetAll: async (options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
+            const localVarPath = `/v1/col_sets`;
+            // use dummy base URL string because the URL constructor only accepts absolute URLs.
+            const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
+            let baseOptions;
+            if (configuration) {
+                baseOptions = configuration.baseOptions;
+            }
+
+            const localVarRequestOptions = { method: 'GET', ...baseOptions, ...options};
+            const localVarHeaderParameter = {} as any;
+            const localVarQueryParameter = {} as any;
+
+
+    
+            setSearchParams(localVarUrlObj, localVarQueryParameter);
+            let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
+            localVarRequestOptions.headers = {...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers};
+
+            return {
+                url: toPathString(localVarUrlObj),
+                options: localVarRequestOptions,
+            };
+        },
+        /**
+         * Manage column sets used for read/write scopes and default column groupings.
+         * @summary Col Sets  Get One
+         * @param {string} objectId 
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        colSetsGetOne: async (objectId: string, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
+            // verify required parameter 'objectId' is not null or undefined
+            assertParamExists('colSetsGetOne', 'objectId', objectId)
+            const localVarPath = `/v1/col_sets/{object_id}`
+                .replace(`{${"object_id"}}`, encodeURIComponent(String(objectId)));
+            // use dummy base URL string because the URL constructor only accepts absolute URLs.
+            const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
+            let baseOptions;
+            if (configuration) {
+                baseOptions = configuration.baseOptions;
+            }
+
+            const localVarRequestOptions = { method: 'GET', ...baseOptions, ...options};
+            const localVarHeaderParameter = {} as any;
+            const localVarQueryParameter = {} as any;
+
+
+    
+            setSearchParams(localVarUrlObj, localVarQueryParameter);
+            let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
+            localVarRequestOptions.headers = {...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers};
+
+            return {
+                url: toPathString(localVarUrlObj),
+                options: localVarRequestOptions,
+            };
+        },
+        /**
+         * Manage column sets used for read/write scopes and default column groupings.
+         * @summary Col Sets  Get Some
+         * @param {string} ids 
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        colSetsGetSome: async (ids: string, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
+            // verify required parameter 'ids' is not null or undefined
+            assertParamExists('colSetsGetSome', 'ids', ids)
+            const localVarPath = `/v1/col_sets/batch`;
+            // use dummy base URL string because the URL constructor only accepts absolute URLs.
+            const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
+            let baseOptions;
+            if (configuration) {
+                baseOptions = configuration.baseOptions;
+            }
+
+            const localVarRequestOptions = { method: 'GET', ...baseOptions, ...options};
+            const localVarHeaderParameter = {} as any;
+            const localVarQueryParameter = {} as any;
+
+            if (ids !== undefined) {
+                localVarQueryParameter['ids'] = ids;
+            }
+
+
+    
+            setSearchParams(localVarUrlObj, localVarQueryParameter);
+            let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
+            localVarRequestOptions.headers = {...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers};
+
+            return {
+                url: toPathString(localVarUrlObj),
+                options: localVarRequestOptions,
+            };
+        },
+        /**
+         * Manage column sets used for read/write scopes and default column groupings.
+         * @summary Col Sets  Post One
+         * @param {ColSet} colSet 
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        colSetsPostOne: async (colSet: ColSet, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
+            // verify required parameter 'colSet' is not null or undefined
+            assertParamExists('colSetsPostOne', 'colSet', colSet)
+            const localVarPath = `/v1/col_sets`;
+            // use dummy base URL string because the URL constructor only accepts absolute URLs.
+            const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
+            let baseOptions;
+            if (configuration) {
+                baseOptions = configuration.baseOptions;
+            }
+
+            const localVarRequestOptions = { method: 'POST', ...baseOptions, ...options};
+            const localVarHeaderParameter = {} as any;
+            const localVarQueryParameter = {} as any;
+
+
+    
+            localVarHeaderParameter['Content-Type'] = 'application/json';
+
+            setSearchParams(localVarUrlObj, localVarQueryParameter);
+            let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
+            localVarRequestOptions.headers = {...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers};
+            localVarRequestOptions.data = serializeDataIfNeeded(colSet, localVarRequestOptions, configuration)
+
+            return {
+                url: toPathString(localVarUrlObj),
+                options: localVarRequestOptions,
+            };
+        },
+        /**
+         * Manage column sets used for read/write scopes and default column groupings.
+         * @summary Col Sets  Post Query
+         * @param {EpiFilter} filter 
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        colSetsPostQuery: async (filter: EpiFilter, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
+            // verify required parameter 'filter' is not null or undefined
+            assertParamExists('colSetsPostQuery', 'filter', filter)
+            const localVarPath = `/v1/col_sets/query`;
+            // use dummy base URL string because the URL constructor only accepts absolute URLs.
+            const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
+            let baseOptions;
+            if (configuration) {
+                baseOptions = configuration.baseOptions;
+            }
+
+            const localVarRequestOptions = { method: 'POST', ...baseOptions, ...options};
+            const localVarHeaderParameter = {} as any;
+            const localVarQueryParameter = {} as any;
+
+
+    
+            localVarHeaderParameter['Content-Type'] = 'application/json';
+
+            setSearchParams(localVarUrlObj, localVarQueryParameter);
+            let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
+            localVarRequestOptions.headers = {...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers};
+            localVarRequestOptions.data = serializeDataIfNeeded(filter, localVarRequestOptions, configuration)
+
+            return {
+                url: toPathString(localVarUrlObj),
+                options: localVarRequestOptions,
+            };
+        },
+        /**
+         * Manage column sets used for read/write scopes and default column groupings.
+         * @summary Col Sets  Post Query  Ids
+         * @param {EpiFilter} filter 
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        colSetsPostQueryIds: async (filter: EpiFilter, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
+            // verify required parameter 'filter' is not null or undefined
+            assertParamExists('colSetsPostQueryIds', 'filter', filter)
+            const localVarPath = `/v1/col_sets/query/ids`;
+            // use dummy base URL string because the URL constructor only accepts absolute URLs.
+            const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
+            let baseOptions;
+            if (configuration) {
+                baseOptions = configuration.baseOptions;
+            }
+
+            const localVarRequestOptions = { method: 'POST', ...baseOptions, ...options};
+            const localVarHeaderParameter = {} as any;
+            const localVarQueryParameter = {} as any;
+
+
+    
+            localVarHeaderParameter['Content-Type'] = 'application/json';
+
+            setSearchParams(localVarUrlObj, localVarQueryParameter);
+            let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
+            localVarRequestOptions.headers = {...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers};
+            localVarRequestOptions.data = serializeDataIfNeeded(filter, localVarRequestOptions, configuration)
+
+            return {
+                url: toPathString(localVarUrlObj),
+                options: localVarRequestOptions,
+            };
+        },
+        /**
+         * Manage column sets used for read/write scopes and default column groupings.
+         * @summary Col Sets  Post Some
+         * @param {Array<ColSet>} colSet 
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        colSetsPostSome: async (colSet: Array<ColSet>, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
+            // verify required parameter 'colSet' is not null or undefined
+            assertParamExists('colSetsPostSome', 'colSet', colSet)
+            const localVarPath = `/v1/col_sets/batch`;
+            // use dummy base URL string because the URL constructor only accepts absolute URLs.
+            const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
+            let baseOptions;
+            if (configuration) {
+                baseOptions = configuration.baseOptions;
+            }
+
+            const localVarRequestOptions = { method: 'POST', ...baseOptions, ...options};
+            const localVarHeaderParameter = {} as any;
+            const localVarQueryParameter = {} as any;
+
+
+    
+            localVarHeaderParameter['Content-Type'] = 'application/json';
+
+            setSearchParams(localVarUrlObj, localVarQueryParameter);
+            let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
+            localVarRequestOptions.headers = {...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers};
+            localVarRequestOptions.data = serializeDataIfNeeded(colSet, localVarRequestOptions, configuration)
+
+            return {
+                url: toPathString(localVarUrlObj),
+                options: localVarRequestOptions,
+            };
+        },
+        /**
+         * Replace the columns in a ColSet with the provided members so read/write scopes and UI column groupings stay aligned.
+         * @summary Update Association Between Colset And Col
+         * @param {string} colSetId 
+         * @param {UpdateColSetColsRequestBody} updateColSetColsRequestBody 
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        colSetsPutCols: async (colSetId: string, updateColSetColsRequestBody: UpdateColSetColsRequestBody, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
+            // verify required parameter 'colSetId' is not null or undefined
+            assertParamExists('colSetsPutCols', 'colSetId', colSetId)
+            // verify required parameter 'updateColSetColsRequestBody' is not null or undefined
+            assertParamExists('colSetsPutCols', 'updateColSetColsRequestBody', updateColSetColsRequestBody)
+            const localVarPath = `/v1/col_sets/{col_set_id}/cols`
+                .replace(`{${"col_set_id"}}`, encodeURIComponent(String(colSetId)));
+            // use dummy base URL string because the URL constructor only accepts absolute URLs.
+            const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
+            let baseOptions;
+            if (configuration) {
+                baseOptions = configuration.baseOptions;
+            }
+
+            const localVarRequestOptions = { method: 'PUT', ...baseOptions, ...options};
+            const localVarHeaderParameter = {} as any;
+            const localVarQueryParameter = {} as any;
+
+
+    
+            localVarHeaderParameter['Content-Type'] = 'application/json';
+
+            setSearchParams(localVarUrlObj, localVarQueryParameter);
+            let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
+            localVarRequestOptions.headers = {...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers};
+            localVarRequestOptions.data = serializeDataIfNeeded(updateColSetColsRequestBody, localVarRequestOptions, configuration)
+
+            return {
+                url: toPathString(localVarUrlObj),
+                options: localVarRequestOptions,
+            };
+        },
+        /**
+         * Manage column sets used for read/write scopes and default column groupings.
+         * @summary Col Sets  Put One
+         * @param {string} objectId 
+         * @param {ColSet} colSet 
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        colSetsPutOne: async (objectId: string, colSet: ColSet, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
+            // verify required parameter 'objectId' is not null or undefined
+            assertParamExists('colSetsPutOne', 'objectId', objectId)
+            // verify required parameter 'colSet' is not null or undefined
+            assertParamExists('colSetsPutOne', 'colSet', colSet)
+            const localVarPath = `/v1/col_sets/{object_id}`
+                .replace(`{${"object_id"}}`, encodeURIComponent(String(objectId)));
+            // use dummy base URL string because the URL constructor only accepts absolute URLs.
+            const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
+            let baseOptions;
+            if (configuration) {
+                baseOptions = configuration.baseOptions;
+            }
+
+            const localVarRequestOptions = { method: 'PUT', ...baseOptions, ...options};
+            const localVarHeaderParameter = {} as any;
+            const localVarQueryParameter = {} as any;
+
+
+    
+            localVarHeaderParameter['Content-Type'] = 'application/json';
+
+            setSearchParams(localVarUrlObj, localVarQueryParameter);
+            let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
+            localVarRequestOptions.headers = {...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers};
+            localVarRequestOptions.data = serializeDataIfNeeded(colSet, localVarRequestOptions, configuration)
+
+            return {
+                url: toPathString(localVarUrlObj),
+                options: localVarRequestOptions,
+            };
+        },
+        /**
+         * Manage column sets used for read/write scopes and default column groupings.
+         * @summary Col Sets  Put Some
+         * @param {Array<ColSet>} colSet 
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        colSetsPutSome: async (colSet: Array<ColSet>, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
+            // verify required parameter 'colSet' is not null or undefined
+            assertParamExists('colSetsPutSome', 'colSet', colSet)
+            const localVarPath = `/v1/col_sets/batch`;
+            // use dummy base URL string because the URL constructor only accepts absolute URLs.
+            const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
+            let baseOptions;
+            if (configuration) {
+                baseOptions = configuration.baseOptions;
+            }
+
+            const localVarRequestOptions = { method: 'PUT', ...baseOptions, ...options};
+            const localVarHeaderParameter = {} as any;
+            const localVarQueryParameter = {} as any;
+
+
+    
+            localVarHeaderParameter['Content-Type'] = 'application/json';
+
+            setSearchParams(localVarUrlObj, localVarQueryParameter);
+            let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
+            localVarRequestOptions.headers = {...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers};
+            localVarRequestOptions.data = serializeDataIfNeeded(colSet, localVarRequestOptions, configuration)
+
+            return {
+                url: toPathString(localVarUrlObj),
+                options: localVarRequestOptions,
+            };
+        },
+        /**
+         * Manage case-type columns: datatype, vocab/region bindings, and genetic-distance settings.
          * @summary Cols  Delete All
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
@@ -15885,7 +15048,7 @@ const CaseApiAxiosParamCreator = function (configuration?: Configuration) {
             };
         },
         /**
-         * Manage reusable column definitions (code/label/type) referenced by case-type columns and vocabularies.
+         * Manage case-type columns: datatype, vocab/region bindings, and genetic-distance settings.
          * @summary Cols  Delete One
          * @param {any} objectId 
          * @param {*} [options] Override http request option.
@@ -15919,7 +15082,7 @@ const CaseApiAxiosParamCreator = function (configuration?: Configuration) {
             };
         },
         /**
-         * Manage reusable column definitions (code/label/type) referenced by case-type columns and vocabularies.
+         * Manage case-type columns: datatype, vocab/region bindings, and genetic-distance settings.
          * @summary Cols  Delete Some
          * @param {string} ids 
          * @param {*} [options] Override http request option.
@@ -15956,7 +15119,7 @@ const CaseApiAxiosParamCreator = function (configuration?: Configuration) {
             };
         },
         /**
-         * Manage reusable column definitions (code/label/type) referenced by case-type columns and vocabularies.
+         * Manage case-type columns: datatype, vocab/region bindings, and genetic-distance settings.
          * @summary Cols  Get All
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
@@ -15986,7 +15149,7 @@ const CaseApiAxiosParamCreator = function (configuration?: Configuration) {
             };
         },
         /**
-         * Manage reusable column definitions (code/label/type) referenced by case-type columns and vocabularies.
+         * Manage case-type columns: datatype, vocab/region bindings, and genetic-distance settings.
          * @summary Cols  Get One
          * @param {string} objectId 
          * @param {*} [options] Override http request option.
@@ -16020,7 +15183,7 @@ const CaseApiAxiosParamCreator = function (configuration?: Configuration) {
             };
         },
         /**
-         * Manage reusable column definitions (code/label/type) referenced by case-type columns and vocabularies.
+         * Manage case-type columns: datatype, vocab/region bindings, and genetic-distance settings.
          * @summary Cols  Get Some
          * @param {string} ids 
          * @param {*} [options] Override http request option.
@@ -16057,7 +15220,7 @@ const CaseApiAxiosParamCreator = function (configuration?: Configuration) {
             };
         },
         /**
-         * Manage reusable column definitions (code/label/type) referenced by case-type columns and vocabularies.
+         * Manage case-type columns: datatype, vocab/region bindings, and genetic-distance settings.
          * @summary Cols  Post One
          * @param {Col} col 
          * @param {*} [options] Override http request option.
@@ -16093,7 +15256,7 @@ const CaseApiAxiosParamCreator = function (configuration?: Configuration) {
             };
         },
         /**
-         * Manage reusable column definitions (code/label/type) referenced by case-type columns and vocabularies.
+         * Manage case-type columns: datatype, vocab/region bindings, and genetic-distance settings.
          * @summary Cols  Post Query
          * @param {EpiFilter} filter 
          * @param {*} [options] Override http request option.
@@ -16129,7 +15292,7 @@ const CaseApiAxiosParamCreator = function (configuration?: Configuration) {
             };
         },
         /**
-         * Manage reusable column definitions (code/label/type) referenced by case-type columns and vocabularies.
+         * Manage case-type columns: datatype, vocab/region bindings, and genetic-distance settings.
          * @summary Cols  Post Query  Ids
          * @param {EpiFilter} filter 
          * @param {*} [options] Override http request option.
@@ -16165,7 +15328,7 @@ const CaseApiAxiosParamCreator = function (configuration?: Configuration) {
             };
         },
         /**
-         * Manage reusable column definitions (code/label/type) referenced by case-type columns and vocabularies.
+         * Manage case-type columns: datatype, vocab/region bindings, and genetic-distance settings.
          * @summary Cols  Post Some
          * @param {Array<Col>} col 
          * @param {*} [options] Override http request option.
@@ -16201,7 +15364,7 @@ const CaseApiAxiosParamCreator = function (configuration?: Configuration) {
             };
         },
         /**
-         * Manage reusable column definitions (code/label/type) referenced by case-type columns and vocabularies.
+         * Manage case-type columns: datatype, vocab/region bindings, and genetic-distance settings.
          * @summary Cols  Put One
          * @param {string} objectId 
          * @param {Col} col 
@@ -16241,7 +15404,7 @@ const CaseApiAxiosParamCreator = function (configuration?: Configuration) {
             };
         },
         /**
-         * Manage reusable column definitions (code/label/type) referenced by case-type columns and vocabularies.
+         * Manage case-type columns: datatype, vocab/region bindings, and genetic-distance settings.
          * @summary Cols  Put Some
          * @param {Array<Col>} col 
          * @param {*} [options] Override http request option.
@@ -16277,38 +15440,8 @@ const CaseApiAxiosParamCreator = function (configuration?: Configuration) {
             };
         },
         /**
-         * The additional validation rules that a Col instance must comply with.
-         * @summary Col Validation Rules
-         * @param {*} [options] Override http request option.
-         * @throws {RequiredError}
-         */
-        colsValidationRules: async (options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
-            const localVarPath = `/v1/cols/validation_rules`;
-            // use dummy base URL string because the URL constructor only accepts absolute URLs.
-            const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
-            let baseOptions;
-            if (configuration) {
-                baseOptions = configuration.baseOptions;
-            }
-
-            const localVarRequestOptions = { method: 'GET', ...baseOptions, ...options};
-            const localVarHeaderParameter = {} as any;
-            const localVarQueryParameter = {} as any;
-
-
-    
-            setSearchParams(localVarUrlObj, localVarQueryParameter);
-            let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
-            localVarRequestOptions.headers = {...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers};
-
-            return {
-                url: toPathString(localVarUrlObj),
-                options: localVarRequestOptions,
-            };
-        },
-        /**
-         * Retrieve a complete case type.
-         * @summary Retrieve Complete Case Type
+         * Retrieve a complete CaseType.
+         * @summary Retrieve Complete Casetype
          * @param {string} caseTypeId 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
@@ -16383,21 +15516,21 @@ const CaseApiAxiosParamCreator = function (configuration?: Configuration) {
          * Upload a raw reads file (e.g., FASTQ) for a case\'s read-set column and return the stored file ID. Accepts base64 content, optional compression, and marks whether the payload is forward or reverse reads.
          * @summary Create File For Reads Set
          * @param {string} caseId 
-         * @param {string} caseTypeColId 
+         * @param {string} colId 
          * @param {CreateFileForReadSetRequestBody} createFileForReadSetRequestBody 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        createFileForReadSet: async (caseId: string, caseTypeColId: string, createFileForReadSetRequestBody: CreateFileForReadSetRequestBody, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
+        createFileForReadSet: async (caseId: string, colId: string, createFileForReadSetRequestBody: CreateFileForReadSetRequestBody, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
             // verify required parameter 'caseId' is not null or undefined
             assertParamExists('createFileForReadSet', 'caseId', caseId)
-            // verify required parameter 'caseTypeColId' is not null or undefined
-            assertParamExists('createFileForReadSet', 'caseTypeColId', caseTypeColId)
+            // verify required parameter 'colId' is not null or undefined
+            assertParamExists('createFileForReadSet', 'colId', colId)
             // verify required parameter 'createFileForReadSetRequestBody' is not null or undefined
             assertParamExists('createFileForReadSet', 'createFileForReadSetRequestBody', createFileForReadSetRequestBody)
-            const localVarPath = `/v1/create_file_for_read_set/{case_id}/{case_type_col_id}`
+            const localVarPath = `/v1/create_file_for_read_set/{case_id}/{col_id}`
                 .replace(`{${"case_id"}}`, encodeURIComponent(String(caseId)))
-                .replace(`{${"case_type_col_id"}}`, encodeURIComponent(String(caseTypeColId)));
+                .replace(`{${"col_id"}}`, encodeURIComponent(String(colId)));
             // use dummy base URL string because the URL constructor only accepts absolute URLs.
             const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
             let baseOptions;
@@ -16427,21 +15560,21 @@ const CaseApiAxiosParamCreator = function (configuration?: Configuration) {
          * Upload an assembled sequence file (e.g., FASTA) for a case\'s sequence column and return the stored file ID. Accepts base64 content with optional compression.
          * @summary Create File For Sequence
          * @param {string} caseId 
-         * @param {string} caseTypeColId 
+         * @param {string} colId 
          * @param {CreateFileForSeqRequestBody} createFileForSeqRequestBody 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        createFileForSeq: async (caseId: string, caseTypeColId: string, createFileForSeqRequestBody: CreateFileForSeqRequestBody, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
+        createFileForSeq: async (caseId: string, colId: string, createFileForSeqRequestBody: CreateFileForSeqRequestBody, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
             // verify required parameter 'caseId' is not null or undefined
             assertParamExists('createFileForSeq', 'caseId', caseId)
-            // verify required parameter 'caseTypeColId' is not null or undefined
-            assertParamExists('createFileForSeq', 'caseTypeColId', caseTypeColId)
+            // verify required parameter 'colId' is not null or undefined
+            assertParamExists('createFileForSeq', 'colId', colId)
             // verify required parameter 'createFileForSeqRequestBody' is not null or undefined
             assertParamExists('createFileForSeq', 'createFileForSeqRequestBody', createFileForSeqRequestBody)
-            const localVarPath = `/v1/create_file_for_seq/{case_id}/{case_type_col_id}`
+            const localVarPath = `/v1/create_file_for_seq/{case_id}/{col_id}`
                 .replace(`{${"case_id"}}`, encodeURIComponent(String(caseId)))
-                .replace(`{${"case_type_col_id"}}`, encodeURIComponent(String(caseTypeColId)));
+                .replace(`{${"col_id"}}`, encodeURIComponent(String(colId)));
             // use dummy base URL string because the URL constructor only accepts absolute URLs.
             const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
             let baseOptions;
@@ -16468,7 +15601,7 @@ const CaseApiAxiosParamCreator = function (configuration?: Configuration) {
             };
         },
         /**
-         * Manage column dimensions, including code prefixes and ordering, reused across case types.
+         * Manage dimensions that group case-type columns (e.g., demographics, sample, sequencing).
          * @summary Dims  Delete All
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
@@ -16498,7 +15631,7 @@ const CaseApiAxiosParamCreator = function (configuration?: Configuration) {
             };
         },
         /**
-         * Manage column dimensions, including code prefixes and ordering, reused across case types.
+         * Manage dimensions that group case-type columns (e.g., demographics, sample, sequencing).
          * @summary Dims  Delete One
          * @param {any} objectId 
          * @param {*} [options] Override http request option.
@@ -16532,7 +15665,7 @@ const CaseApiAxiosParamCreator = function (configuration?: Configuration) {
             };
         },
         /**
-         * Manage column dimensions, including code prefixes and ordering, reused across case types.
+         * Manage dimensions that group case-type columns (e.g., demographics, sample, sequencing).
          * @summary Dims  Delete Some
          * @param {string} ids 
          * @param {*} [options] Override http request option.
@@ -16569,7 +15702,7 @@ const CaseApiAxiosParamCreator = function (configuration?: Configuration) {
             };
         },
         /**
-         * Manage column dimensions, including code prefixes and ordering, reused across case types.
+         * Manage dimensions that group case-type columns (e.g., demographics, sample, sequencing).
          * @summary Dims  Get All
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
@@ -16599,7 +15732,7 @@ const CaseApiAxiosParamCreator = function (configuration?: Configuration) {
             };
         },
         /**
-         * Manage column dimensions, including code prefixes and ordering, reused across case types.
+         * Manage dimensions that group case-type columns (e.g., demographics, sample, sequencing).
          * @summary Dims  Get One
          * @param {string} objectId 
          * @param {*} [options] Override http request option.
@@ -16633,7 +15766,7 @@ const CaseApiAxiosParamCreator = function (configuration?: Configuration) {
             };
         },
         /**
-         * Manage column dimensions, including code prefixes and ordering, reused across case types.
+         * Manage dimensions that group case-type columns (e.g., demographics, sample, sequencing).
          * @summary Dims  Get Some
          * @param {string} ids 
          * @param {*} [options] Override http request option.
@@ -16670,7 +15803,7 @@ const CaseApiAxiosParamCreator = function (configuration?: Configuration) {
             };
         },
         /**
-         * Manage column dimensions, including code prefixes and ordering, reused across case types.
+         * Manage dimensions that group case-type columns (e.g., demographics, sample, sequencing).
          * @summary Dims  Post One
          * @param {Dim} dim 
          * @param {*} [options] Override http request option.
@@ -16706,7 +15839,7 @@ const CaseApiAxiosParamCreator = function (configuration?: Configuration) {
             };
         },
         /**
-         * Manage column dimensions, including code prefixes and ordering, reused across case types.
+         * Manage dimensions that group case-type columns (e.g., demographics, sample, sequencing).
          * @summary Dims  Post Query
          * @param {EpiFilter} filter 
          * @param {*} [options] Override http request option.
@@ -16742,7 +15875,7 @@ const CaseApiAxiosParamCreator = function (configuration?: Configuration) {
             };
         },
         /**
-         * Manage column dimensions, including code prefixes and ordering, reused across case types.
+         * Manage dimensions that group case-type columns (e.g., demographics, sample, sequencing).
          * @summary Dims  Post Query  Ids
          * @param {EpiFilter} filter 
          * @param {*} [options] Override http request option.
@@ -16778,7 +15911,7 @@ const CaseApiAxiosParamCreator = function (configuration?: Configuration) {
             };
         },
         /**
-         * Manage column dimensions, including code prefixes and ordering, reused across case types.
+         * Manage dimensions that group case-type columns (e.g., demographics, sample, sequencing).
          * @summary Dims  Post Some
          * @param {Array<Dim>} dim 
          * @param {*} [options] Override http request option.
@@ -16814,7 +15947,7 @@ const CaseApiAxiosParamCreator = function (configuration?: Configuration) {
             };
         },
         /**
-         * Manage column dimensions, including code prefixes and ordering, reused across case types.
+         * Manage dimensions that group case-type columns (e.g., demographics, sample, sequencing).
          * @summary Dims  Put One
          * @param {string} objectId 
          * @param {Dim} dim 
@@ -16854,7 +15987,7 @@ const CaseApiAxiosParamCreator = function (configuration?: Configuration) {
             };
         },
         /**
-         * Manage column dimensions, including code prefixes and ordering, reused across case types.
+         * Manage dimensions that group case-type columns (e.g., demographics, sample, sequencing).
          * @summary Dims  Put Some
          * @param {Array<Dim>} dim 
          * @param {*} [options] Override http request option.
@@ -17312,6 +16445,880 @@ const CaseApiAxiosParamCreator = function (configuration?: Configuration) {
             };
         },
         /**
+         * Manage reusable column definitions (code/label/type) referenced by case-type columns and vocabularies.
+         * @summary Ref Cols  Delete All
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        refColsDeleteAll: async (options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
+            const localVarPath = `/v1/ref_cols`;
+            // use dummy base URL string because the URL constructor only accepts absolute URLs.
+            const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
+            let baseOptions;
+            if (configuration) {
+                baseOptions = configuration.baseOptions;
+            }
+
+            const localVarRequestOptions = { method: 'DELETE', ...baseOptions, ...options};
+            const localVarHeaderParameter = {} as any;
+            const localVarQueryParameter = {} as any;
+
+
+    
+            setSearchParams(localVarUrlObj, localVarQueryParameter);
+            let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
+            localVarRequestOptions.headers = {...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers};
+
+            return {
+                url: toPathString(localVarUrlObj),
+                options: localVarRequestOptions,
+            };
+        },
+        /**
+         * Manage reusable column definitions (code/label/type) referenced by case-type columns and vocabularies.
+         * @summary Ref Cols  Delete One
+         * @param {any} objectId 
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        refColsDeleteOne: async (objectId: any, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
+            // verify required parameter 'objectId' is not null or undefined
+            assertParamExists('refColsDeleteOne', 'objectId', objectId)
+            const localVarPath = `/v1/ref_cols/{object_id}`
+                .replace(`{${"object_id"}}`, encodeURIComponent(String(objectId)));
+            // use dummy base URL string because the URL constructor only accepts absolute URLs.
+            const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
+            let baseOptions;
+            if (configuration) {
+                baseOptions = configuration.baseOptions;
+            }
+
+            const localVarRequestOptions = { method: 'DELETE', ...baseOptions, ...options};
+            const localVarHeaderParameter = {} as any;
+            const localVarQueryParameter = {} as any;
+
+
+    
+            setSearchParams(localVarUrlObj, localVarQueryParameter);
+            let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
+            localVarRequestOptions.headers = {...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers};
+
+            return {
+                url: toPathString(localVarUrlObj),
+                options: localVarRequestOptions,
+            };
+        },
+        /**
+         * Manage reusable column definitions (code/label/type) referenced by case-type columns and vocabularies.
+         * @summary Ref Cols  Delete Some
+         * @param {string} ids 
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        refColsDeleteSome: async (ids: string, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
+            // verify required parameter 'ids' is not null or undefined
+            assertParamExists('refColsDeleteSome', 'ids', ids)
+            const localVarPath = `/v1/ref_cols/batch`;
+            // use dummy base URL string because the URL constructor only accepts absolute URLs.
+            const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
+            let baseOptions;
+            if (configuration) {
+                baseOptions = configuration.baseOptions;
+            }
+
+            const localVarRequestOptions = { method: 'DELETE', ...baseOptions, ...options};
+            const localVarHeaderParameter = {} as any;
+            const localVarQueryParameter = {} as any;
+
+            if (ids !== undefined) {
+                localVarQueryParameter['ids'] = ids;
+            }
+
+
+    
+            setSearchParams(localVarUrlObj, localVarQueryParameter);
+            let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
+            localVarRequestOptions.headers = {...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers};
+
+            return {
+                url: toPathString(localVarUrlObj),
+                options: localVarRequestOptions,
+            };
+        },
+        /**
+         * Manage reusable column definitions (code/label/type) referenced by case-type columns and vocabularies.
+         * @summary Ref Cols  Get All
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        refColsGetAll: async (options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
+            const localVarPath = `/v1/ref_cols`;
+            // use dummy base URL string because the URL constructor only accepts absolute URLs.
+            const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
+            let baseOptions;
+            if (configuration) {
+                baseOptions = configuration.baseOptions;
+            }
+
+            const localVarRequestOptions = { method: 'GET', ...baseOptions, ...options};
+            const localVarHeaderParameter = {} as any;
+            const localVarQueryParameter = {} as any;
+
+
+    
+            setSearchParams(localVarUrlObj, localVarQueryParameter);
+            let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
+            localVarRequestOptions.headers = {...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers};
+
+            return {
+                url: toPathString(localVarUrlObj),
+                options: localVarRequestOptions,
+            };
+        },
+        /**
+         * Manage reusable column definitions (code/label/type) referenced by case-type columns and vocabularies.
+         * @summary Ref Cols  Get One
+         * @param {string} objectId 
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        refColsGetOne: async (objectId: string, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
+            // verify required parameter 'objectId' is not null or undefined
+            assertParamExists('refColsGetOne', 'objectId', objectId)
+            const localVarPath = `/v1/ref_cols/{object_id}`
+                .replace(`{${"object_id"}}`, encodeURIComponent(String(objectId)));
+            // use dummy base URL string because the URL constructor only accepts absolute URLs.
+            const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
+            let baseOptions;
+            if (configuration) {
+                baseOptions = configuration.baseOptions;
+            }
+
+            const localVarRequestOptions = { method: 'GET', ...baseOptions, ...options};
+            const localVarHeaderParameter = {} as any;
+            const localVarQueryParameter = {} as any;
+
+
+    
+            setSearchParams(localVarUrlObj, localVarQueryParameter);
+            let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
+            localVarRequestOptions.headers = {...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers};
+
+            return {
+                url: toPathString(localVarUrlObj),
+                options: localVarRequestOptions,
+            };
+        },
+        /**
+         * Manage reusable column definitions (code/label/type) referenced by case-type columns and vocabularies.
+         * @summary Ref Cols  Get Some
+         * @param {string} ids 
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        refColsGetSome: async (ids: string, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
+            // verify required parameter 'ids' is not null or undefined
+            assertParamExists('refColsGetSome', 'ids', ids)
+            const localVarPath = `/v1/ref_cols/batch`;
+            // use dummy base URL string because the URL constructor only accepts absolute URLs.
+            const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
+            let baseOptions;
+            if (configuration) {
+                baseOptions = configuration.baseOptions;
+            }
+
+            const localVarRequestOptions = { method: 'GET', ...baseOptions, ...options};
+            const localVarHeaderParameter = {} as any;
+            const localVarQueryParameter = {} as any;
+
+            if (ids !== undefined) {
+                localVarQueryParameter['ids'] = ids;
+            }
+
+
+    
+            setSearchParams(localVarUrlObj, localVarQueryParameter);
+            let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
+            localVarRequestOptions.headers = {...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers};
+
+            return {
+                url: toPathString(localVarUrlObj),
+                options: localVarRequestOptions,
+            };
+        },
+        /**
+         * Manage reusable column definitions (code/label/type) referenced by case-type columns and vocabularies.
+         * @summary Ref Cols  Post One
+         * @param {RefCol} refCol 
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        refColsPostOne: async (refCol: RefCol, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
+            // verify required parameter 'refCol' is not null or undefined
+            assertParamExists('refColsPostOne', 'refCol', refCol)
+            const localVarPath = `/v1/ref_cols`;
+            // use dummy base URL string because the URL constructor only accepts absolute URLs.
+            const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
+            let baseOptions;
+            if (configuration) {
+                baseOptions = configuration.baseOptions;
+            }
+
+            const localVarRequestOptions = { method: 'POST', ...baseOptions, ...options};
+            const localVarHeaderParameter = {} as any;
+            const localVarQueryParameter = {} as any;
+
+
+    
+            localVarHeaderParameter['Content-Type'] = 'application/json';
+
+            setSearchParams(localVarUrlObj, localVarQueryParameter);
+            let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
+            localVarRequestOptions.headers = {...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers};
+            localVarRequestOptions.data = serializeDataIfNeeded(refCol, localVarRequestOptions, configuration)
+
+            return {
+                url: toPathString(localVarUrlObj),
+                options: localVarRequestOptions,
+            };
+        },
+        /**
+         * Manage reusable column definitions (code/label/type) referenced by case-type columns and vocabularies.
+         * @summary Ref Cols  Post Query
+         * @param {EpiFilter} filter 
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        refColsPostQuery: async (filter: EpiFilter, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
+            // verify required parameter 'filter' is not null or undefined
+            assertParamExists('refColsPostQuery', 'filter', filter)
+            const localVarPath = `/v1/ref_cols/query`;
+            // use dummy base URL string because the URL constructor only accepts absolute URLs.
+            const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
+            let baseOptions;
+            if (configuration) {
+                baseOptions = configuration.baseOptions;
+            }
+
+            const localVarRequestOptions = { method: 'POST', ...baseOptions, ...options};
+            const localVarHeaderParameter = {} as any;
+            const localVarQueryParameter = {} as any;
+
+
+    
+            localVarHeaderParameter['Content-Type'] = 'application/json';
+
+            setSearchParams(localVarUrlObj, localVarQueryParameter);
+            let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
+            localVarRequestOptions.headers = {...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers};
+            localVarRequestOptions.data = serializeDataIfNeeded(filter, localVarRequestOptions, configuration)
+
+            return {
+                url: toPathString(localVarUrlObj),
+                options: localVarRequestOptions,
+            };
+        },
+        /**
+         * Manage reusable column definitions (code/label/type) referenced by case-type columns and vocabularies.
+         * @summary Ref Cols  Post Query  Ids
+         * @param {EpiFilter} filter 
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        refColsPostQueryIds: async (filter: EpiFilter, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
+            // verify required parameter 'filter' is not null or undefined
+            assertParamExists('refColsPostQueryIds', 'filter', filter)
+            const localVarPath = `/v1/ref_cols/query/ids`;
+            // use dummy base URL string because the URL constructor only accepts absolute URLs.
+            const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
+            let baseOptions;
+            if (configuration) {
+                baseOptions = configuration.baseOptions;
+            }
+
+            const localVarRequestOptions = { method: 'POST', ...baseOptions, ...options};
+            const localVarHeaderParameter = {} as any;
+            const localVarQueryParameter = {} as any;
+
+
+    
+            localVarHeaderParameter['Content-Type'] = 'application/json';
+
+            setSearchParams(localVarUrlObj, localVarQueryParameter);
+            let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
+            localVarRequestOptions.headers = {...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers};
+            localVarRequestOptions.data = serializeDataIfNeeded(filter, localVarRequestOptions, configuration)
+
+            return {
+                url: toPathString(localVarUrlObj),
+                options: localVarRequestOptions,
+            };
+        },
+        /**
+         * Manage reusable column definitions (code/label/type) referenced by case-type columns and vocabularies.
+         * @summary Ref Cols  Post Some
+         * @param {Array<RefCol>} refCol 
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        refColsPostSome: async (refCol: Array<RefCol>, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
+            // verify required parameter 'refCol' is not null or undefined
+            assertParamExists('refColsPostSome', 'refCol', refCol)
+            const localVarPath = `/v1/ref_cols/batch`;
+            // use dummy base URL string because the URL constructor only accepts absolute URLs.
+            const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
+            let baseOptions;
+            if (configuration) {
+                baseOptions = configuration.baseOptions;
+            }
+
+            const localVarRequestOptions = { method: 'POST', ...baseOptions, ...options};
+            const localVarHeaderParameter = {} as any;
+            const localVarQueryParameter = {} as any;
+
+
+    
+            localVarHeaderParameter['Content-Type'] = 'application/json';
+
+            setSearchParams(localVarUrlObj, localVarQueryParameter);
+            let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
+            localVarRequestOptions.headers = {...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers};
+            localVarRequestOptions.data = serializeDataIfNeeded(refCol, localVarRequestOptions, configuration)
+
+            return {
+                url: toPathString(localVarUrlObj),
+                options: localVarRequestOptions,
+            };
+        },
+        /**
+         * Manage reusable column definitions (code/label/type) referenced by case-type columns and vocabularies.
+         * @summary Ref Cols  Put One
+         * @param {string} objectId 
+         * @param {RefCol} refCol 
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        refColsPutOne: async (objectId: string, refCol: RefCol, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
+            // verify required parameter 'objectId' is not null or undefined
+            assertParamExists('refColsPutOne', 'objectId', objectId)
+            // verify required parameter 'refCol' is not null or undefined
+            assertParamExists('refColsPutOne', 'refCol', refCol)
+            const localVarPath = `/v1/ref_cols/{object_id}`
+                .replace(`{${"object_id"}}`, encodeURIComponent(String(objectId)));
+            // use dummy base URL string because the URL constructor only accepts absolute URLs.
+            const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
+            let baseOptions;
+            if (configuration) {
+                baseOptions = configuration.baseOptions;
+            }
+
+            const localVarRequestOptions = { method: 'PUT', ...baseOptions, ...options};
+            const localVarHeaderParameter = {} as any;
+            const localVarQueryParameter = {} as any;
+
+
+    
+            localVarHeaderParameter['Content-Type'] = 'application/json';
+
+            setSearchParams(localVarUrlObj, localVarQueryParameter);
+            let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
+            localVarRequestOptions.headers = {...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers};
+            localVarRequestOptions.data = serializeDataIfNeeded(refCol, localVarRequestOptions, configuration)
+
+            return {
+                url: toPathString(localVarUrlObj),
+                options: localVarRequestOptions,
+            };
+        },
+        /**
+         * Manage reusable column definitions (code/label/type) referenced by case-type columns and vocabularies.
+         * @summary Ref Cols  Put Some
+         * @param {Array<RefCol>} refCol 
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        refColsPutSome: async (refCol: Array<RefCol>, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
+            // verify required parameter 'refCol' is not null or undefined
+            assertParamExists('refColsPutSome', 'refCol', refCol)
+            const localVarPath = `/v1/ref_cols/batch`;
+            // use dummy base URL string because the URL constructor only accepts absolute URLs.
+            const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
+            let baseOptions;
+            if (configuration) {
+                baseOptions = configuration.baseOptions;
+            }
+
+            const localVarRequestOptions = { method: 'PUT', ...baseOptions, ...options};
+            const localVarHeaderParameter = {} as any;
+            const localVarQueryParameter = {} as any;
+
+
+    
+            localVarHeaderParameter['Content-Type'] = 'application/json';
+
+            setSearchParams(localVarUrlObj, localVarQueryParameter);
+            let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
+            localVarRequestOptions.headers = {...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers};
+            localVarRequestOptions.data = serializeDataIfNeeded(refCol, localVarRequestOptions, configuration)
+
+            return {
+                url: toPathString(localVarUrlObj),
+                options: localVarRequestOptions,
+            };
+        },
+        /**
+         * The additional validation rules that a RefCol instance must comply with.
+         * @summary Refcol Validation Rules
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        refColsValidationRules: async (options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
+            const localVarPath = `/v1/ref_cols/validation_rules`;
+            // use dummy base URL string because the URL constructor only accepts absolute URLs.
+            const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
+            let baseOptions;
+            if (configuration) {
+                baseOptions = configuration.baseOptions;
+            }
+
+            const localVarRequestOptions = { method: 'GET', ...baseOptions, ...options};
+            const localVarHeaderParameter = {} as any;
+            const localVarQueryParameter = {} as any;
+
+
+    
+            setSearchParams(localVarUrlObj, localVarQueryParameter);
+            let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
+            localVarRequestOptions.headers = {...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers};
+
+            return {
+                url: toPathString(localVarUrlObj),
+                options: localVarRequestOptions,
+            };
+        },
+        /**
+         * Manage column dimensions, including code prefixes and ordering, reused across CaseTypes.
+         * @summary Ref Dims  Delete All
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        refDimsDeleteAll: async (options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
+            const localVarPath = `/v1/ref_dims`;
+            // use dummy base URL string because the URL constructor only accepts absolute URLs.
+            const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
+            let baseOptions;
+            if (configuration) {
+                baseOptions = configuration.baseOptions;
+            }
+
+            const localVarRequestOptions = { method: 'DELETE', ...baseOptions, ...options};
+            const localVarHeaderParameter = {} as any;
+            const localVarQueryParameter = {} as any;
+
+
+    
+            setSearchParams(localVarUrlObj, localVarQueryParameter);
+            let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
+            localVarRequestOptions.headers = {...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers};
+
+            return {
+                url: toPathString(localVarUrlObj),
+                options: localVarRequestOptions,
+            };
+        },
+        /**
+         * Manage column dimensions, including code prefixes and ordering, reused across CaseTypes.
+         * @summary Ref Dims  Delete One
+         * @param {any} objectId 
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        refDimsDeleteOne: async (objectId: any, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
+            // verify required parameter 'objectId' is not null or undefined
+            assertParamExists('refDimsDeleteOne', 'objectId', objectId)
+            const localVarPath = `/v1/ref_dims/{object_id}`
+                .replace(`{${"object_id"}}`, encodeURIComponent(String(objectId)));
+            // use dummy base URL string because the URL constructor only accepts absolute URLs.
+            const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
+            let baseOptions;
+            if (configuration) {
+                baseOptions = configuration.baseOptions;
+            }
+
+            const localVarRequestOptions = { method: 'DELETE', ...baseOptions, ...options};
+            const localVarHeaderParameter = {} as any;
+            const localVarQueryParameter = {} as any;
+
+
+    
+            setSearchParams(localVarUrlObj, localVarQueryParameter);
+            let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
+            localVarRequestOptions.headers = {...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers};
+
+            return {
+                url: toPathString(localVarUrlObj),
+                options: localVarRequestOptions,
+            };
+        },
+        /**
+         * Manage column dimensions, including code prefixes and ordering, reused across CaseTypes.
+         * @summary Ref Dims  Delete Some
+         * @param {string} ids 
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        refDimsDeleteSome: async (ids: string, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
+            // verify required parameter 'ids' is not null or undefined
+            assertParamExists('refDimsDeleteSome', 'ids', ids)
+            const localVarPath = `/v1/ref_dims/batch`;
+            // use dummy base URL string because the URL constructor only accepts absolute URLs.
+            const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
+            let baseOptions;
+            if (configuration) {
+                baseOptions = configuration.baseOptions;
+            }
+
+            const localVarRequestOptions = { method: 'DELETE', ...baseOptions, ...options};
+            const localVarHeaderParameter = {} as any;
+            const localVarQueryParameter = {} as any;
+
+            if (ids !== undefined) {
+                localVarQueryParameter['ids'] = ids;
+            }
+
+
+    
+            setSearchParams(localVarUrlObj, localVarQueryParameter);
+            let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
+            localVarRequestOptions.headers = {...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers};
+
+            return {
+                url: toPathString(localVarUrlObj),
+                options: localVarRequestOptions,
+            };
+        },
+        /**
+         * Manage column dimensions, including code prefixes and ordering, reused across CaseTypes.
+         * @summary Ref Dims  Get All
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        refDimsGetAll: async (options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
+            const localVarPath = `/v1/ref_dims`;
+            // use dummy base URL string because the URL constructor only accepts absolute URLs.
+            const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
+            let baseOptions;
+            if (configuration) {
+                baseOptions = configuration.baseOptions;
+            }
+
+            const localVarRequestOptions = { method: 'GET', ...baseOptions, ...options};
+            const localVarHeaderParameter = {} as any;
+            const localVarQueryParameter = {} as any;
+
+
+    
+            setSearchParams(localVarUrlObj, localVarQueryParameter);
+            let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
+            localVarRequestOptions.headers = {...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers};
+
+            return {
+                url: toPathString(localVarUrlObj),
+                options: localVarRequestOptions,
+            };
+        },
+        /**
+         * Manage column dimensions, including code prefixes and ordering, reused across CaseTypes.
+         * @summary Ref Dims  Get One
+         * @param {string} objectId 
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        refDimsGetOne: async (objectId: string, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
+            // verify required parameter 'objectId' is not null or undefined
+            assertParamExists('refDimsGetOne', 'objectId', objectId)
+            const localVarPath = `/v1/ref_dims/{object_id}`
+                .replace(`{${"object_id"}}`, encodeURIComponent(String(objectId)));
+            // use dummy base URL string because the URL constructor only accepts absolute URLs.
+            const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
+            let baseOptions;
+            if (configuration) {
+                baseOptions = configuration.baseOptions;
+            }
+
+            const localVarRequestOptions = { method: 'GET', ...baseOptions, ...options};
+            const localVarHeaderParameter = {} as any;
+            const localVarQueryParameter = {} as any;
+
+
+    
+            setSearchParams(localVarUrlObj, localVarQueryParameter);
+            let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
+            localVarRequestOptions.headers = {...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers};
+
+            return {
+                url: toPathString(localVarUrlObj),
+                options: localVarRequestOptions,
+            };
+        },
+        /**
+         * Manage column dimensions, including code prefixes and ordering, reused across CaseTypes.
+         * @summary Ref Dims  Get Some
+         * @param {string} ids 
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        refDimsGetSome: async (ids: string, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
+            // verify required parameter 'ids' is not null or undefined
+            assertParamExists('refDimsGetSome', 'ids', ids)
+            const localVarPath = `/v1/ref_dims/batch`;
+            // use dummy base URL string because the URL constructor only accepts absolute URLs.
+            const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
+            let baseOptions;
+            if (configuration) {
+                baseOptions = configuration.baseOptions;
+            }
+
+            const localVarRequestOptions = { method: 'GET', ...baseOptions, ...options};
+            const localVarHeaderParameter = {} as any;
+            const localVarQueryParameter = {} as any;
+
+            if (ids !== undefined) {
+                localVarQueryParameter['ids'] = ids;
+            }
+
+
+    
+            setSearchParams(localVarUrlObj, localVarQueryParameter);
+            let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
+            localVarRequestOptions.headers = {...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers};
+
+            return {
+                url: toPathString(localVarUrlObj),
+                options: localVarRequestOptions,
+            };
+        },
+        /**
+         * Manage column dimensions, including code prefixes and ordering, reused across CaseTypes.
+         * @summary Ref Dims  Post One
+         * @param {RefDim} refDim 
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        refDimsPostOne: async (refDim: RefDim, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
+            // verify required parameter 'refDim' is not null or undefined
+            assertParamExists('refDimsPostOne', 'refDim', refDim)
+            const localVarPath = `/v1/ref_dims`;
+            // use dummy base URL string because the URL constructor only accepts absolute URLs.
+            const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
+            let baseOptions;
+            if (configuration) {
+                baseOptions = configuration.baseOptions;
+            }
+
+            const localVarRequestOptions = { method: 'POST', ...baseOptions, ...options};
+            const localVarHeaderParameter = {} as any;
+            const localVarQueryParameter = {} as any;
+
+
+    
+            localVarHeaderParameter['Content-Type'] = 'application/json';
+
+            setSearchParams(localVarUrlObj, localVarQueryParameter);
+            let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
+            localVarRequestOptions.headers = {...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers};
+            localVarRequestOptions.data = serializeDataIfNeeded(refDim, localVarRequestOptions, configuration)
+
+            return {
+                url: toPathString(localVarUrlObj),
+                options: localVarRequestOptions,
+            };
+        },
+        /**
+         * Manage column dimensions, including code prefixes and ordering, reused across CaseTypes.
+         * @summary Ref Dims  Post Query
+         * @param {EpiFilter} filter 
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        refDimsPostQuery: async (filter: EpiFilter, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
+            // verify required parameter 'filter' is not null or undefined
+            assertParamExists('refDimsPostQuery', 'filter', filter)
+            const localVarPath = `/v1/ref_dims/query`;
+            // use dummy base URL string because the URL constructor only accepts absolute URLs.
+            const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
+            let baseOptions;
+            if (configuration) {
+                baseOptions = configuration.baseOptions;
+            }
+
+            const localVarRequestOptions = { method: 'POST', ...baseOptions, ...options};
+            const localVarHeaderParameter = {} as any;
+            const localVarQueryParameter = {} as any;
+
+
+    
+            localVarHeaderParameter['Content-Type'] = 'application/json';
+
+            setSearchParams(localVarUrlObj, localVarQueryParameter);
+            let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
+            localVarRequestOptions.headers = {...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers};
+            localVarRequestOptions.data = serializeDataIfNeeded(filter, localVarRequestOptions, configuration)
+
+            return {
+                url: toPathString(localVarUrlObj),
+                options: localVarRequestOptions,
+            };
+        },
+        /**
+         * Manage column dimensions, including code prefixes and ordering, reused across CaseTypes.
+         * @summary Ref Dims  Post Query  Ids
+         * @param {EpiFilter} filter 
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        refDimsPostQueryIds: async (filter: EpiFilter, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
+            // verify required parameter 'filter' is not null or undefined
+            assertParamExists('refDimsPostQueryIds', 'filter', filter)
+            const localVarPath = `/v1/ref_dims/query/ids`;
+            // use dummy base URL string because the URL constructor only accepts absolute URLs.
+            const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
+            let baseOptions;
+            if (configuration) {
+                baseOptions = configuration.baseOptions;
+            }
+
+            const localVarRequestOptions = { method: 'POST', ...baseOptions, ...options};
+            const localVarHeaderParameter = {} as any;
+            const localVarQueryParameter = {} as any;
+
+
+    
+            localVarHeaderParameter['Content-Type'] = 'application/json';
+
+            setSearchParams(localVarUrlObj, localVarQueryParameter);
+            let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
+            localVarRequestOptions.headers = {...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers};
+            localVarRequestOptions.data = serializeDataIfNeeded(filter, localVarRequestOptions, configuration)
+
+            return {
+                url: toPathString(localVarUrlObj),
+                options: localVarRequestOptions,
+            };
+        },
+        /**
+         * Manage column dimensions, including code prefixes and ordering, reused across CaseTypes.
+         * @summary Ref Dims  Post Some
+         * @param {Array<RefDim>} refDim 
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        refDimsPostSome: async (refDim: Array<RefDim>, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
+            // verify required parameter 'refDim' is not null or undefined
+            assertParamExists('refDimsPostSome', 'refDim', refDim)
+            const localVarPath = `/v1/ref_dims/batch`;
+            // use dummy base URL string because the URL constructor only accepts absolute URLs.
+            const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
+            let baseOptions;
+            if (configuration) {
+                baseOptions = configuration.baseOptions;
+            }
+
+            const localVarRequestOptions = { method: 'POST', ...baseOptions, ...options};
+            const localVarHeaderParameter = {} as any;
+            const localVarQueryParameter = {} as any;
+
+
+    
+            localVarHeaderParameter['Content-Type'] = 'application/json';
+
+            setSearchParams(localVarUrlObj, localVarQueryParameter);
+            let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
+            localVarRequestOptions.headers = {...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers};
+            localVarRequestOptions.data = serializeDataIfNeeded(refDim, localVarRequestOptions, configuration)
+
+            return {
+                url: toPathString(localVarUrlObj),
+                options: localVarRequestOptions,
+            };
+        },
+        /**
+         * Manage column dimensions, including code prefixes and ordering, reused across CaseTypes.
+         * @summary Ref Dims  Put One
+         * @param {string} objectId 
+         * @param {RefDim} refDim 
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        refDimsPutOne: async (objectId: string, refDim: RefDim, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
+            // verify required parameter 'objectId' is not null or undefined
+            assertParamExists('refDimsPutOne', 'objectId', objectId)
+            // verify required parameter 'refDim' is not null or undefined
+            assertParamExists('refDimsPutOne', 'refDim', refDim)
+            const localVarPath = `/v1/ref_dims/{object_id}`
+                .replace(`{${"object_id"}}`, encodeURIComponent(String(objectId)));
+            // use dummy base URL string because the URL constructor only accepts absolute URLs.
+            const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
+            let baseOptions;
+            if (configuration) {
+                baseOptions = configuration.baseOptions;
+            }
+
+            const localVarRequestOptions = { method: 'PUT', ...baseOptions, ...options};
+            const localVarHeaderParameter = {} as any;
+            const localVarQueryParameter = {} as any;
+
+
+    
+            localVarHeaderParameter['Content-Type'] = 'application/json';
+
+            setSearchParams(localVarUrlObj, localVarQueryParameter);
+            let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
+            localVarRequestOptions.headers = {...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers};
+            localVarRequestOptions.data = serializeDataIfNeeded(refDim, localVarRequestOptions, configuration)
+
+            return {
+                url: toPathString(localVarUrlObj),
+                options: localVarRequestOptions,
+            };
+        },
+        /**
+         * Manage column dimensions, including code prefixes and ordering, reused across CaseTypes.
+         * @summary Ref Dims  Put Some
+         * @param {Array<RefDim>} refDim 
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        refDimsPutSome: async (refDim: Array<RefDim>, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
+            // verify required parameter 'refDim' is not null or undefined
+            assertParamExists('refDimsPutSome', 'refDim', refDim)
+            const localVarPath = `/v1/ref_dims/batch`;
+            // use dummy base URL string because the URL constructor only accepts absolute URLs.
+            const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
+            let baseOptions;
+            if (configuration) {
+                baseOptions = configuration.baseOptions;
+            }
+
+            const localVarRequestOptions = { method: 'PUT', ...baseOptions, ...options};
+            const localVarHeaderParameter = {} as any;
+            const localVarQueryParameter = {} as any;
+
+
+    
+            localVarHeaderParameter['Content-Type'] = 'application/json';
+
+            setSearchParams(localVarUrlObj, localVarQueryParameter);
+            let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
+            localVarRequestOptions.headers = {...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers};
+            localVarRequestOptions.data = serializeDataIfNeeded(refDim, localVarRequestOptions, configuration)
+
+            return {
+                url: toPathString(localVarUrlObj),
+                options: localVarRequestOptions,
+            };
+        },
+        /**
          * Retrieve the assembly protocols registered in seqdb for downstream sequence processing and provenance.
          * @summary Retrieve Assembly Protocols
          * @param {*} [options] Override http request option.
@@ -17450,7 +17457,7 @@ const CaseApiAxiosParamCreator = function (configuration?: Configuration) {
             };
         },
         /**
-         * Retrieve statistics for a set of case types. Each of the parameters, when provided, will further filter the cases that are considered for the statistics.
+         * Retrieve statistics for a set of CaseTypes. Each of the parameters, when provided, will further filter the cases that are considered for the statistics.
          * @summary Retrieve Case Set Statistics
          * @param {RetrieveCaseSetStatsRequestBody} retrieveCaseSetStatsRequestBody 
          * @param {*} [options] Override http request option.
@@ -17486,8 +17493,8 @@ const CaseApiAxiosParamCreator = function (configuration?: Configuration) {
             };
         },
         /**
-         * Retrieve statistics for a set of case types. Each of the parameters, when provided, will further filter the cases that are considered for the statistics.
-         * @summary Retrieve Case Type Statistics
+         * Retrieve statistics for a set of CaseTypes. Each of the parameters, when provided, will further filter the cases that are considered for the statistics.
+         * @summary Retrieve Casetype Statistics
          * @param {RetrieveCaseTypeStatsRequestBody} retrieveCaseTypeStatsRequestBody 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
@@ -17558,23 +17565,23 @@ const CaseApiAxiosParamCreator = function (configuration?: Configuration) {
             };
         },
         /**
-         * Retrieve a set of genetic sequences in FASTA format based on a set of case IDs and a genetic sequence case type column. An iterator is returned that yields the FASTA lines.
+         * Retrieve a set of genetic sequences in FASTA format based on a set of case IDs and a genetic sequence Col. An iterator is returned that yields the FASTA lines.
          * @summary Retrieve Genetic Sequence By Case, In Fasta Format And Streamed
          * @param {string} token 
          * @param {string} caseTypeId 
-         * @param {string} geneticSequenceCaseTypeColId 
+         * @param {string} geneticSequenceColId 
          * @param {Array<string>} caseIds 
          * @param {string} fileName 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        retrieveGeneticSequenceFasta: async (token: string, caseTypeId: string, geneticSequenceCaseTypeColId: string, caseIds: Array<string>, fileName: string, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
+        retrieveGeneticSequenceFasta: async (token: string, caseTypeId: string, geneticSequenceColId: string, caseIds: Array<string>, fileName: string, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
             // verify required parameter 'token' is not null or undefined
             assertParamExists('retrieveGeneticSequenceFasta', 'token', token)
             // verify required parameter 'caseTypeId' is not null or undefined
             assertParamExists('retrieveGeneticSequenceFasta', 'caseTypeId', caseTypeId)
-            // verify required parameter 'geneticSequenceCaseTypeColId' is not null or undefined
-            assertParamExists('retrieveGeneticSequenceFasta', 'geneticSequenceCaseTypeColId', geneticSequenceCaseTypeColId)
+            // verify required parameter 'geneticSequenceColId' is not null or undefined
+            assertParamExists('retrieveGeneticSequenceFasta', 'geneticSequenceColId', geneticSequenceColId)
             // verify required parameter 'caseIds' is not null or undefined
             assertParamExists('retrieveGeneticSequenceFasta', 'caseIds', caseIds)
             // verify required parameter 'fileName' is not null or undefined
@@ -17601,8 +17608,8 @@ const CaseApiAxiosParamCreator = function (configuration?: Configuration) {
                 localVarFormParams.set('case_type_id', caseTypeId as any);
             }
     
-            if (geneticSequenceCaseTypeColId !== undefined) { 
-                localVarFormParams.set('genetic_sequence_case_type_col_id', geneticSequenceCaseTypeColId as any);
+            if (geneticSequenceColId !== undefined) { 
+                localVarFormParams.set('genetic_sequence_col_id', geneticSequenceColId as any);
             }
                 if (caseIds) {
                 localVarFormParams.set('case_ids', caseIds.join(COLLECTION_FORMATS.csv));
@@ -17627,7 +17634,7 @@ const CaseApiAxiosParamCreator = function (configuration?: Configuration) {
             };
         },
         /**
-         * Retrieve a phylogenetic tree based on a set of case IDs, a tree algorithm, and a genetic distance case type column.
+         * Retrieve a phylogenetic tree based on a set of case IDs, a tree algorithm, and a genetic distance Col.
          * @summary Retrieve Phylogenetic Tree
          * @param {RetrievePhylogeneticTreeRequestBody} retrievePhylogeneticTreeRequestBody 
          * @param {*} [options] Override http request option.
@@ -17693,7 +17700,7 @@ const CaseApiAxiosParamCreator = function (configuration?: Configuration) {
             };
         },
         /**
-         * Retrieve cases that are (genetically) similar to a given list of case_ids, based on the genetic distance values in a specified genetic distance case type column and a maximum distance threshold.
+         * Retrieve cases that are (genetically) similar to a given list of case_ids, based on the genetic distance values in a specified genetic distance Col and a maximum distance threshold.
          * @summary Retrieve Similar Cases
          * @param {RetrieveSimilarCasesRequestBody} retrieveSimilarCasesRequestBody 
          * @param {*} [options] Override http request option.
@@ -19549,640 +19556,6 @@ const CaseApiFp = function(configuration?: Configuration) {
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
         /**
-         * Manage which columns belong to a column set used in policies or UI presets.
-         * @summary Case Type Col Set Members  Delete All
-         * @param {*} [options] Override http request option.
-         * @throws {RequiredError}
-         */
-        async caseTypeColSetMembersDeleteAll(options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<any>> {
-            const localVarAxiosArgs = await localVarAxiosParamCreator.caseTypeColSetMembersDeleteAll(options);
-            const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
-            const localVarOperationServerBasePath = operationServerMap['CaseApi.caseTypeColSetMembersDeleteAll']?.[localVarOperationServerIndex]?.url;
-            return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
-        },
-        /**
-         * Manage which columns belong to a column set used in policies or UI presets.
-         * @summary Case Type Col Set Members  Delete One
-         * @param {any} objectId 
-         * @param {*} [options] Override http request option.
-         * @throws {RequiredError}
-         */
-        async caseTypeColSetMembersDeleteOne(objectId: any, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<string>> {
-            const localVarAxiosArgs = await localVarAxiosParamCreator.caseTypeColSetMembersDeleteOne(objectId, options);
-            const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
-            const localVarOperationServerBasePath = operationServerMap['CaseApi.caseTypeColSetMembersDeleteOne']?.[localVarOperationServerIndex]?.url;
-            return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
-        },
-        /**
-         * Manage which columns belong to a column set used in policies or UI presets.
-         * @summary Case Type Col Set Members  Delete Some
-         * @param {string} ids 
-         * @param {*} [options] Override http request option.
-         * @throws {RequiredError}
-         */
-        async caseTypeColSetMembersDeleteSome(ids: string, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<Array<string>>> {
-            const localVarAxiosArgs = await localVarAxiosParamCreator.caseTypeColSetMembersDeleteSome(ids, options);
-            const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
-            const localVarOperationServerBasePath = operationServerMap['CaseApi.caseTypeColSetMembersDeleteSome']?.[localVarOperationServerIndex]?.url;
-            return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
-        },
-        /**
-         * Manage which columns belong to a column set used in policies or UI presets.
-         * @summary Case Type Col Set Members  Get All
-         * @param {*} [options] Override http request option.
-         * @throws {RequiredError}
-         */
-        async caseTypeColSetMembersGetAll(options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<Array<CaseTypeColSetMember>>> {
-            const localVarAxiosArgs = await localVarAxiosParamCreator.caseTypeColSetMembersGetAll(options);
-            const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
-            const localVarOperationServerBasePath = operationServerMap['CaseApi.caseTypeColSetMembersGetAll']?.[localVarOperationServerIndex]?.url;
-            return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
-        },
-        /**
-         * Manage which columns belong to a column set used in policies or UI presets.
-         * @summary Case Type Col Set Members  Get One
-         * @param {string} objectId 
-         * @param {*} [options] Override http request option.
-         * @throws {RequiredError}
-         */
-        async caseTypeColSetMembersGetOne(objectId: string, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<CaseTypeColSetMember>> {
-            const localVarAxiosArgs = await localVarAxiosParamCreator.caseTypeColSetMembersGetOne(objectId, options);
-            const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
-            const localVarOperationServerBasePath = operationServerMap['CaseApi.caseTypeColSetMembersGetOne']?.[localVarOperationServerIndex]?.url;
-            return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
-        },
-        /**
-         * Manage which columns belong to a column set used in policies or UI presets.
-         * @summary Case Type Col Set Members  Get Some
-         * @param {string} ids 
-         * @param {*} [options] Override http request option.
-         * @throws {RequiredError}
-         */
-        async caseTypeColSetMembersGetSome(ids: string, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<Array<CaseTypeColSetMember>>> {
-            const localVarAxiosArgs = await localVarAxiosParamCreator.caseTypeColSetMembersGetSome(ids, options);
-            const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
-            const localVarOperationServerBasePath = operationServerMap['CaseApi.caseTypeColSetMembersGetSome']?.[localVarOperationServerIndex]?.url;
-            return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
-        },
-        /**
-         * Manage which columns belong to a column set used in policies or UI presets.
-         * @summary Case Type Col Set Members  Post One
-         * @param {CaseTypeColSetMember} caseTypeColSetMember 
-         * @param {*} [options] Override http request option.
-         * @throws {RequiredError}
-         */
-        async caseTypeColSetMembersPostOne(caseTypeColSetMember: CaseTypeColSetMember, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<CaseTypeColSetMember>> {
-            const localVarAxiosArgs = await localVarAxiosParamCreator.caseTypeColSetMembersPostOne(caseTypeColSetMember, options);
-            const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
-            const localVarOperationServerBasePath = operationServerMap['CaseApi.caseTypeColSetMembersPostOne']?.[localVarOperationServerIndex]?.url;
-            return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
-        },
-        /**
-         * Manage which columns belong to a column set used in policies or UI presets.
-         * @summary Case Type Col Set Members  Post Query
-         * @param {EpiFilter} filter 
-         * @param {*} [options] Override http request option.
-         * @throws {RequiredError}
-         */
-        async caseTypeColSetMembersPostQuery(filter: EpiFilter, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<Array<CaseTypeColSetMember>>> {
-            const localVarAxiosArgs = await localVarAxiosParamCreator.caseTypeColSetMembersPostQuery(filter, options);
-            const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
-            const localVarOperationServerBasePath = operationServerMap['CaseApi.caseTypeColSetMembersPostQuery']?.[localVarOperationServerIndex]?.url;
-            return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
-        },
-        /**
-         * Manage which columns belong to a column set used in policies or UI presets.
-         * @summary Case Type Col Set Members  Post Query  Ids
-         * @param {EpiFilter} filter 
-         * @param {*} [options] Override http request option.
-         * @throws {RequiredError}
-         */
-        async caseTypeColSetMembersPostQueryIds(filter: EpiFilter, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<Array<string>>> {
-            const localVarAxiosArgs = await localVarAxiosParamCreator.caseTypeColSetMembersPostQueryIds(filter, options);
-            const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
-            const localVarOperationServerBasePath = operationServerMap['CaseApi.caseTypeColSetMembersPostQueryIds']?.[localVarOperationServerIndex]?.url;
-            return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
-        },
-        /**
-         * Manage which columns belong to a column set used in policies or UI presets.
-         * @summary Case Type Col Set Members  Post Some
-         * @param {Array<CaseTypeColSetMember>} caseTypeColSetMember 
-         * @param {*} [options] Override http request option.
-         * @throws {RequiredError}
-         */
-        async caseTypeColSetMembersPostSome(caseTypeColSetMember: Array<CaseTypeColSetMember>, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<Array<CaseTypeColSetMember>>> {
-            const localVarAxiosArgs = await localVarAxiosParamCreator.caseTypeColSetMembersPostSome(caseTypeColSetMember, options);
-            const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
-            const localVarOperationServerBasePath = operationServerMap['CaseApi.caseTypeColSetMembersPostSome']?.[localVarOperationServerIndex]?.url;
-            return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
-        },
-        /**
-         * Manage which columns belong to a column set used in policies or UI presets.
-         * @summary Case Type Col Set Members  Put One
-         * @param {string} objectId 
-         * @param {CaseTypeColSetMember} caseTypeColSetMember 
-         * @param {*} [options] Override http request option.
-         * @throws {RequiredError}
-         */
-        async caseTypeColSetMembersPutOne(objectId: string, caseTypeColSetMember: CaseTypeColSetMember, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<CaseTypeColSetMember>> {
-            const localVarAxiosArgs = await localVarAxiosParamCreator.caseTypeColSetMembersPutOne(objectId, caseTypeColSetMember, options);
-            const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
-            const localVarOperationServerBasePath = operationServerMap['CaseApi.caseTypeColSetMembersPutOne']?.[localVarOperationServerIndex]?.url;
-            return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
-        },
-        /**
-         * Manage which columns belong to a column set used in policies or UI presets.
-         * @summary Case Type Col Set Members  Put Some
-         * @param {Array<CaseTypeColSetMember>} caseTypeColSetMember 
-         * @param {*} [options] Override http request option.
-         * @throws {RequiredError}
-         */
-        async caseTypeColSetMembersPutSome(caseTypeColSetMember: Array<CaseTypeColSetMember>, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<Array<CaseTypeColSetMember>>> {
-            const localVarAxiosArgs = await localVarAxiosParamCreator.caseTypeColSetMembersPutSome(caseTypeColSetMember, options);
-            const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
-            const localVarOperationServerBasePath = operationServerMap['CaseApi.caseTypeColSetMembersPutSome']?.[localVarOperationServerIndex]?.url;
-            return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
-        },
-        /**
-         * Manage column sets used for read/write scopes and default column groupings.
-         * @summary Case Type Col Sets  Delete All
-         * @param {*} [options] Override http request option.
-         * @throws {RequiredError}
-         */
-        async caseTypeColSetsDeleteAll(options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<any>> {
-            const localVarAxiosArgs = await localVarAxiosParamCreator.caseTypeColSetsDeleteAll(options);
-            const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
-            const localVarOperationServerBasePath = operationServerMap['CaseApi.caseTypeColSetsDeleteAll']?.[localVarOperationServerIndex]?.url;
-            return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
-        },
-        /**
-         * Manage column sets used for read/write scopes and default column groupings.
-         * @summary Case Type Col Sets  Delete One
-         * @param {any} objectId 
-         * @param {*} [options] Override http request option.
-         * @throws {RequiredError}
-         */
-        async caseTypeColSetsDeleteOne(objectId: any, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<string>> {
-            const localVarAxiosArgs = await localVarAxiosParamCreator.caseTypeColSetsDeleteOne(objectId, options);
-            const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
-            const localVarOperationServerBasePath = operationServerMap['CaseApi.caseTypeColSetsDeleteOne']?.[localVarOperationServerIndex]?.url;
-            return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
-        },
-        /**
-         * Manage column sets used for read/write scopes and default column groupings.
-         * @summary Case Type Col Sets  Delete Some
-         * @param {string} ids 
-         * @param {*} [options] Override http request option.
-         * @throws {RequiredError}
-         */
-        async caseTypeColSetsDeleteSome(ids: string, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<Array<string>>> {
-            const localVarAxiosArgs = await localVarAxiosParamCreator.caseTypeColSetsDeleteSome(ids, options);
-            const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
-            const localVarOperationServerBasePath = operationServerMap['CaseApi.caseTypeColSetsDeleteSome']?.[localVarOperationServerIndex]?.url;
-            return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
-        },
-        /**
-         * Manage column sets used for read/write scopes and default column groupings.
-         * @summary Case Type Col Sets  Get All
-         * @param {*} [options] Override http request option.
-         * @throws {RequiredError}
-         */
-        async caseTypeColSetsGetAll(options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<Array<CaseTypeColSet>>> {
-            const localVarAxiosArgs = await localVarAxiosParamCreator.caseTypeColSetsGetAll(options);
-            const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
-            const localVarOperationServerBasePath = operationServerMap['CaseApi.caseTypeColSetsGetAll']?.[localVarOperationServerIndex]?.url;
-            return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
-        },
-        /**
-         * Manage column sets used for read/write scopes and default column groupings.
-         * @summary Case Type Col Sets  Get One
-         * @param {string} objectId 
-         * @param {*} [options] Override http request option.
-         * @throws {RequiredError}
-         */
-        async caseTypeColSetsGetOne(objectId: string, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<CaseTypeColSet>> {
-            const localVarAxiosArgs = await localVarAxiosParamCreator.caseTypeColSetsGetOne(objectId, options);
-            const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
-            const localVarOperationServerBasePath = operationServerMap['CaseApi.caseTypeColSetsGetOne']?.[localVarOperationServerIndex]?.url;
-            return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
-        },
-        /**
-         * Manage column sets used for read/write scopes and default column groupings.
-         * @summary Case Type Col Sets  Get Some
-         * @param {string} ids 
-         * @param {*} [options] Override http request option.
-         * @throws {RequiredError}
-         */
-        async caseTypeColSetsGetSome(ids: string, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<Array<CaseTypeColSet>>> {
-            const localVarAxiosArgs = await localVarAxiosParamCreator.caseTypeColSetsGetSome(ids, options);
-            const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
-            const localVarOperationServerBasePath = operationServerMap['CaseApi.caseTypeColSetsGetSome']?.[localVarOperationServerIndex]?.url;
-            return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
-        },
-        /**
-         * Manage column sets used for read/write scopes and default column groupings.
-         * @summary Case Type Col Sets  Post One
-         * @param {CaseTypeColSet} caseTypeColSet 
-         * @param {*} [options] Override http request option.
-         * @throws {RequiredError}
-         */
-        async caseTypeColSetsPostOne(caseTypeColSet: CaseTypeColSet, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<CaseTypeColSet>> {
-            const localVarAxiosArgs = await localVarAxiosParamCreator.caseTypeColSetsPostOne(caseTypeColSet, options);
-            const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
-            const localVarOperationServerBasePath = operationServerMap['CaseApi.caseTypeColSetsPostOne']?.[localVarOperationServerIndex]?.url;
-            return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
-        },
-        /**
-         * Manage column sets used for read/write scopes and default column groupings.
-         * @summary Case Type Col Sets  Post Query
-         * @param {EpiFilter} filter 
-         * @param {*} [options] Override http request option.
-         * @throws {RequiredError}
-         */
-        async caseTypeColSetsPostQuery(filter: EpiFilter, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<Array<CaseTypeColSet>>> {
-            const localVarAxiosArgs = await localVarAxiosParamCreator.caseTypeColSetsPostQuery(filter, options);
-            const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
-            const localVarOperationServerBasePath = operationServerMap['CaseApi.caseTypeColSetsPostQuery']?.[localVarOperationServerIndex]?.url;
-            return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
-        },
-        /**
-         * Manage column sets used for read/write scopes and default column groupings.
-         * @summary Case Type Col Sets  Post Query  Ids
-         * @param {EpiFilter} filter 
-         * @param {*} [options] Override http request option.
-         * @throws {RequiredError}
-         */
-        async caseTypeColSetsPostQueryIds(filter: EpiFilter, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<Array<string>>> {
-            const localVarAxiosArgs = await localVarAxiosParamCreator.caseTypeColSetsPostQueryIds(filter, options);
-            const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
-            const localVarOperationServerBasePath = operationServerMap['CaseApi.caseTypeColSetsPostQueryIds']?.[localVarOperationServerIndex]?.url;
-            return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
-        },
-        /**
-         * Manage column sets used for read/write scopes and default column groupings.
-         * @summary Case Type Col Sets  Post Some
-         * @param {Array<CaseTypeColSet>} caseTypeColSet 
-         * @param {*} [options] Override http request option.
-         * @throws {RequiredError}
-         */
-        async caseTypeColSetsPostSome(caseTypeColSet: Array<CaseTypeColSet>, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<Array<CaseTypeColSet>>> {
-            const localVarAxiosArgs = await localVarAxiosParamCreator.caseTypeColSetsPostSome(caseTypeColSet, options);
-            const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
-            const localVarOperationServerBasePath = operationServerMap['CaseApi.caseTypeColSetsPostSome']?.[localVarOperationServerIndex]?.url;
-            return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
-        },
-        /**
-         * Replace the columns in a case-type column set with the provided members so read/write scopes and UI column groupings stay aligned.
-         * @summary Update Association Between Casetypecolset And Casetypecol
-         * @param {string} caseTypeColSetId 
-         * @param {UpdateCaseTypeColSetCaseTypeColsRequestBody} updateCaseTypeColSetCaseTypeColsRequestBody 
-         * @param {*} [options] Override http request option.
-         * @throws {RequiredError}
-         */
-        async caseTypeColSetsPutCaseTypeCols(caseTypeColSetId: string, updateCaseTypeColSetCaseTypeColsRequestBody: UpdateCaseTypeColSetCaseTypeColsRequestBody, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<Array<CaseTypeColSetMember>>> {
-            const localVarAxiosArgs = await localVarAxiosParamCreator.caseTypeColSetsPutCaseTypeCols(caseTypeColSetId, updateCaseTypeColSetCaseTypeColsRequestBody, options);
-            const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
-            const localVarOperationServerBasePath = operationServerMap['CaseApi.caseTypeColSetsPutCaseTypeCols']?.[localVarOperationServerIndex]?.url;
-            return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
-        },
-        /**
-         * Manage column sets used for read/write scopes and default column groupings.
-         * @summary Case Type Col Sets  Put One
-         * @param {string} objectId 
-         * @param {CaseTypeColSet} caseTypeColSet 
-         * @param {*} [options] Override http request option.
-         * @throws {RequiredError}
-         */
-        async caseTypeColSetsPutOne(objectId: string, caseTypeColSet: CaseTypeColSet, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<CaseTypeColSet>> {
-            const localVarAxiosArgs = await localVarAxiosParamCreator.caseTypeColSetsPutOne(objectId, caseTypeColSet, options);
-            const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
-            const localVarOperationServerBasePath = operationServerMap['CaseApi.caseTypeColSetsPutOne']?.[localVarOperationServerIndex]?.url;
-            return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
-        },
-        /**
-         * Manage column sets used for read/write scopes and default column groupings.
-         * @summary Case Type Col Sets  Put Some
-         * @param {Array<CaseTypeColSet>} caseTypeColSet 
-         * @param {*} [options] Override http request option.
-         * @throws {RequiredError}
-         */
-        async caseTypeColSetsPutSome(caseTypeColSet: Array<CaseTypeColSet>, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<Array<CaseTypeColSet>>> {
-            const localVarAxiosArgs = await localVarAxiosParamCreator.caseTypeColSetsPutSome(caseTypeColSet, options);
-            const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
-            const localVarOperationServerBasePath = operationServerMap['CaseApi.caseTypeColSetsPutSome']?.[localVarOperationServerIndex]?.url;
-            return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
-        },
-        /**
-         * Manage case-type columns: datatype, vocab/region bindings, and genetic-distance settings.
-         * @summary Case Type Cols  Delete All
-         * @param {*} [options] Override http request option.
-         * @throws {RequiredError}
-         */
-        async caseTypeColsDeleteAll(options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<any>> {
-            const localVarAxiosArgs = await localVarAxiosParamCreator.caseTypeColsDeleteAll(options);
-            const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
-            const localVarOperationServerBasePath = operationServerMap['CaseApi.caseTypeColsDeleteAll']?.[localVarOperationServerIndex]?.url;
-            return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
-        },
-        /**
-         * Manage case-type columns: datatype, vocab/region bindings, and genetic-distance settings.
-         * @summary Case Type Cols  Delete One
-         * @param {any} objectId 
-         * @param {*} [options] Override http request option.
-         * @throws {RequiredError}
-         */
-        async caseTypeColsDeleteOne(objectId: any, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<string>> {
-            const localVarAxiosArgs = await localVarAxiosParamCreator.caseTypeColsDeleteOne(objectId, options);
-            const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
-            const localVarOperationServerBasePath = operationServerMap['CaseApi.caseTypeColsDeleteOne']?.[localVarOperationServerIndex]?.url;
-            return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
-        },
-        /**
-         * Manage case-type columns: datatype, vocab/region bindings, and genetic-distance settings.
-         * @summary Case Type Cols  Delete Some
-         * @param {string} ids 
-         * @param {*} [options] Override http request option.
-         * @throws {RequiredError}
-         */
-        async caseTypeColsDeleteSome(ids: string, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<Array<string>>> {
-            const localVarAxiosArgs = await localVarAxiosParamCreator.caseTypeColsDeleteSome(ids, options);
-            const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
-            const localVarOperationServerBasePath = operationServerMap['CaseApi.caseTypeColsDeleteSome']?.[localVarOperationServerIndex]?.url;
-            return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
-        },
-        /**
-         * Manage case-type columns: datatype, vocab/region bindings, and genetic-distance settings.
-         * @summary Case Type Cols  Get All
-         * @param {*} [options] Override http request option.
-         * @throws {RequiredError}
-         */
-        async caseTypeColsGetAll(options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<Array<CaseTypeCol>>> {
-            const localVarAxiosArgs = await localVarAxiosParamCreator.caseTypeColsGetAll(options);
-            const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
-            const localVarOperationServerBasePath = operationServerMap['CaseApi.caseTypeColsGetAll']?.[localVarOperationServerIndex]?.url;
-            return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
-        },
-        /**
-         * Manage case-type columns: datatype, vocab/region bindings, and genetic-distance settings.
-         * @summary Case Type Cols  Get One
-         * @param {string} objectId 
-         * @param {*} [options] Override http request option.
-         * @throws {RequiredError}
-         */
-        async caseTypeColsGetOne(objectId: string, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<CaseTypeCol>> {
-            const localVarAxiosArgs = await localVarAxiosParamCreator.caseTypeColsGetOne(objectId, options);
-            const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
-            const localVarOperationServerBasePath = operationServerMap['CaseApi.caseTypeColsGetOne']?.[localVarOperationServerIndex]?.url;
-            return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
-        },
-        /**
-         * Manage case-type columns: datatype, vocab/region bindings, and genetic-distance settings.
-         * @summary Case Type Cols  Get Some
-         * @param {string} ids 
-         * @param {*} [options] Override http request option.
-         * @throws {RequiredError}
-         */
-        async caseTypeColsGetSome(ids: string, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<Array<CaseTypeCol>>> {
-            const localVarAxiosArgs = await localVarAxiosParamCreator.caseTypeColsGetSome(ids, options);
-            const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
-            const localVarOperationServerBasePath = operationServerMap['CaseApi.caseTypeColsGetSome']?.[localVarOperationServerIndex]?.url;
-            return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
-        },
-        /**
-         * Manage case-type columns: datatype, vocab/region bindings, and genetic-distance settings.
-         * @summary Case Type Cols  Post One
-         * @param {CaseTypeCol} caseTypeCol 
-         * @param {*} [options] Override http request option.
-         * @throws {RequiredError}
-         */
-        async caseTypeColsPostOne(caseTypeCol: CaseTypeCol, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<CaseTypeCol>> {
-            const localVarAxiosArgs = await localVarAxiosParamCreator.caseTypeColsPostOne(caseTypeCol, options);
-            const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
-            const localVarOperationServerBasePath = operationServerMap['CaseApi.caseTypeColsPostOne']?.[localVarOperationServerIndex]?.url;
-            return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
-        },
-        /**
-         * Manage case-type columns: datatype, vocab/region bindings, and genetic-distance settings.
-         * @summary Case Type Cols  Post Query
-         * @param {EpiFilter} filter 
-         * @param {*} [options] Override http request option.
-         * @throws {RequiredError}
-         */
-        async caseTypeColsPostQuery(filter: EpiFilter, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<Array<CaseTypeCol>>> {
-            const localVarAxiosArgs = await localVarAxiosParamCreator.caseTypeColsPostQuery(filter, options);
-            const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
-            const localVarOperationServerBasePath = operationServerMap['CaseApi.caseTypeColsPostQuery']?.[localVarOperationServerIndex]?.url;
-            return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
-        },
-        /**
-         * Manage case-type columns: datatype, vocab/region bindings, and genetic-distance settings.
-         * @summary Case Type Cols  Post Query  Ids
-         * @param {EpiFilter} filter 
-         * @param {*} [options] Override http request option.
-         * @throws {RequiredError}
-         */
-        async caseTypeColsPostQueryIds(filter: EpiFilter, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<Array<string>>> {
-            const localVarAxiosArgs = await localVarAxiosParamCreator.caseTypeColsPostQueryIds(filter, options);
-            const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
-            const localVarOperationServerBasePath = operationServerMap['CaseApi.caseTypeColsPostQueryIds']?.[localVarOperationServerIndex]?.url;
-            return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
-        },
-        /**
-         * Manage case-type columns: datatype, vocab/region bindings, and genetic-distance settings.
-         * @summary Case Type Cols  Post Some
-         * @param {Array<CaseTypeCol>} caseTypeCol 
-         * @param {*} [options] Override http request option.
-         * @throws {RequiredError}
-         */
-        async caseTypeColsPostSome(caseTypeCol: Array<CaseTypeCol>, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<Array<CaseTypeCol>>> {
-            const localVarAxiosArgs = await localVarAxiosParamCreator.caseTypeColsPostSome(caseTypeCol, options);
-            const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
-            const localVarOperationServerBasePath = operationServerMap['CaseApi.caseTypeColsPostSome']?.[localVarOperationServerIndex]?.url;
-            return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
-        },
-        /**
-         * Manage case-type columns: datatype, vocab/region bindings, and genetic-distance settings.
-         * @summary Case Type Cols  Put One
-         * @param {string} objectId 
-         * @param {CaseTypeCol} caseTypeCol 
-         * @param {*} [options] Override http request option.
-         * @throws {RequiredError}
-         */
-        async caseTypeColsPutOne(objectId: string, caseTypeCol: CaseTypeCol, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<CaseTypeCol>> {
-            const localVarAxiosArgs = await localVarAxiosParamCreator.caseTypeColsPutOne(objectId, caseTypeCol, options);
-            const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
-            const localVarOperationServerBasePath = operationServerMap['CaseApi.caseTypeColsPutOne']?.[localVarOperationServerIndex]?.url;
-            return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
-        },
-        /**
-         * Manage case-type columns: datatype, vocab/region bindings, and genetic-distance settings.
-         * @summary Case Type Cols  Put Some
-         * @param {Array<CaseTypeCol>} caseTypeCol 
-         * @param {*} [options] Override http request option.
-         * @throws {RequiredError}
-         */
-        async caseTypeColsPutSome(caseTypeCol: Array<CaseTypeCol>, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<Array<CaseTypeCol>>> {
-            const localVarAxiosArgs = await localVarAxiosParamCreator.caseTypeColsPutSome(caseTypeCol, options);
-            const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
-            const localVarOperationServerBasePath = operationServerMap['CaseApi.caseTypeColsPutSome']?.[localVarOperationServerIndex]?.url;
-            return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
-        },
-        /**
-         * Manage dimensions that group case-type columns (e.g., demographics, sample, sequencing).
-         * @summary Case Type Dims  Delete All
-         * @param {*} [options] Override http request option.
-         * @throws {RequiredError}
-         */
-        async caseTypeDimsDeleteAll(options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<any>> {
-            const localVarAxiosArgs = await localVarAxiosParamCreator.caseTypeDimsDeleteAll(options);
-            const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
-            const localVarOperationServerBasePath = operationServerMap['CaseApi.caseTypeDimsDeleteAll']?.[localVarOperationServerIndex]?.url;
-            return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
-        },
-        /**
-         * Manage dimensions that group case-type columns (e.g., demographics, sample, sequencing).
-         * @summary Case Type Dims  Delete One
-         * @param {any} objectId 
-         * @param {*} [options] Override http request option.
-         * @throws {RequiredError}
-         */
-        async caseTypeDimsDeleteOne(objectId: any, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<string>> {
-            const localVarAxiosArgs = await localVarAxiosParamCreator.caseTypeDimsDeleteOne(objectId, options);
-            const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
-            const localVarOperationServerBasePath = operationServerMap['CaseApi.caseTypeDimsDeleteOne']?.[localVarOperationServerIndex]?.url;
-            return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
-        },
-        /**
-         * Manage dimensions that group case-type columns (e.g., demographics, sample, sequencing).
-         * @summary Case Type Dims  Delete Some
-         * @param {string} ids 
-         * @param {*} [options] Override http request option.
-         * @throws {RequiredError}
-         */
-        async caseTypeDimsDeleteSome(ids: string, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<Array<string>>> {
-            const localVarAxiosArgs = await localVarAxiosParamCreator.caseTypeDimsDeleteSome(ids, options);
-            const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
-            const localVarOperationServerBasePath = operationServerMap['CaseApi.caseTypeDimsDeleteSome']?.[localVarOperationServerIndex]?.url;
-            return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
-        },
-        /**
-         * Manage dimensions that group case-type columns (e.g., demographics, sample, sequencing).
-         * @summary Case Type Dims  Get All
-         * @param {*} [options] Override http request option.
-         * @throws {RequiredError}
-         */
-        async caseTypeDimsGetAll(options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<Array<CaseTypeDim>>> {
-            const localVarAxiosArgs = await localVarAxiosParamCreator.caseTypeDimsGetAll(options);
-            const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
-            const localVarOperationServerBasePath = operationServerMap['CaseApi.caseTypeDimsGetAll']?.[localVarOperationServerIndex]?.url;
-            return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
-        },
-        /**
-         * Manage dimensions that group case-type columns (e.g., demographics, sample, sequencing).
-         * @summary Case Type Dims  Get One
-         * @param {string} objectId 
-         * @param {*} [options] Override http request option.
-         * @throws {RequiredError}
-         */
-        async caseTypeDimsGetOne(objectId: string, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<CaseTypeDim>> {
-            const localVarAxiosArgs = await localVarAxiosParamCreator.caseTypeDimsGetOne(objectId, options);
-            const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
-            const localVarOperationServerBasePath = operationServerMap['CaseApi.caseTypeDimsGetOne']?.[localVarOperationServerIndex]?.url;
-            return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
-        },
-        /**
-         * Manage dimensions that group case-type columns (e.g., demographics, sample, sequencing).
-         * @summary Case Type Dims  Get Some
-         * @param {string} ids 
-         * @param {*} [options] Override http request option.
-         * @throws {RequiredError}
-         */
-        async caseTypeDimsGetSome(ids: string, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<Array<CaseTypeDim>>> {
-            const localVarAxiosArgs = await localVarAxiosParamCreator.caseTypeDimsGetSome(ids, options);
-            const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
-            const localVarOperationServerBasePath = operationServerMap['CaseApi.caseTypeDimsGetSome']?.[localVarOperationServerIndex]?.url;
-            return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
-        },
-        /**
-         * Manage dimensions that group case-type columns (e.g., demographics, sample, sequencing).
-         * @summary Case Type Dims  Post One
-         * @param {CaseTypeDim} caseTypeDim 
-         * @param {*} [options] Override http request option.
-         * @throws {RequiredError}
-         */
-        async caseTypeDimsPostOne(caseTypeDim: CaseTypeDim, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<CaseTypeDim>> {
-            const localVarAxiosArgs = await localVarAxiosParamCreator.caseTypeDimsPostOne(caseTypeDim, options);
-            const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
-            const localVarOperationServerBasePath = operationServerMap['CaseApi.caseTypeDimsPostOne']?.[localVarOperationServerIndex]?.url;
-            return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
-        },
-        /**
-         * Manage dimensions that group case-type columns (e.g., demographics, sample, sequencing).
-         * @summary Case Type Dims  Post Query
-         * @param {EpiFilter} filter 
-         * @param {*} [options] Override http request option.
-         * @throws {RequiredError}
-         */
-        async caseTypeDimsPostQuery(filter: EpiFilter, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<Array<CaseTypeDim>>> {
-            const localVarAxiosArgs = await localVarAxiosParamCreator.caseTypeDimsPostQuery(filter, options);
-            const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
-            const localVarOperationServerBasePath = operationServerMap['CaseApi.caseTypeDimsPostQuery']?.[localVarOperationServerIndex]?.url;
-            return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
-        },
-        /**
-         * Manage dimensions that group case-type columns (e.g., demographics, sample, sequencing).
-         * @summary Case Type Dims  Post Query  Ids
-         * @param {EpiFilter} filter 
-         * @param {*} [options] Override http request option.
-         * @throws {RequiredError}
-         */
-        async caseTypeDimsPostQueryIds(filter: EpiFilter, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<Array<string>>> {
-            const localVarAxiosArgs = await localVarAxiosParamCreator.caseTypeDimsPostQueryIds(filter, options);
-            const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
-            const localVarOperationServerBasePath = operationServerMap['CaseApi.caseTypeDimsPostQueryIds']?.[localVarOperationServerIndex]?.url;
-            return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
-        },
-        /**
-         * Manage dimensions that group case-type columns (e.g., demographics, sample, sequencing).
-         * @summary Case Type Dims  Post Some
-         * @param {Array<CaseTypeDim>} caseTypeDim 
-         * @param {*} [options] Override http request option.
-         * @throws {RequiredError}
-         */
-        async caseTypeDimsPostSome(caseTypeDim: Array<CaseTypeDim>, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<Array<CaseTypeDim>>> {
-            const localVarAxiosArgs = await localVarAxiosParamCreator.caseTypeDimsPostSome(caseTypeDim, options);
-            const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
-            const localVarOperationServerBasePath = operationServerMap['CaseApi.caseTypeDimsPostSome']?.[localVarOperationServerIndex]?.url;
-            return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
-        },
-        /**
-         * Manage dimensions that group case-type columns (e.g., demographics, sample, sequencing).
-         * @summary Case Type Dims  Put One
-         * @param {string} objectId 
-         * @param {CaseTypeDim} caseTypeDim 
-         * @param {*} [options] Override http request option.
-         * @throws {RequiredError}
-         */
-        async caseTypeDimsPutOne(objectId: string, caseTypeDim: CaseTypeDim, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<CaseTypeDim>> {
-            const localVarAxiosArgs = await localVarAxiosParamCreator.caseTypeDimsPutOne(objectId, caseTypeDim, options);
-            const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
-            const localVarOperationServerBasePath = operationServerMap['CaseApi.caseTypeDimsPutOne']?.[localVarOperationServerIndex]?.url;
-            return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
-        },
-        /**
-         * Manage dimensions that group case-type columns (e.g., demographics, sample, sequencing).
-         * @summary Case Type Dims  Put Some
-         * @param {Array<CaseTypeDim>} caseTypeDim 
-         * @param {*} [options] Override http request option.
-         * @throws {RequiredError}
-         */
-        async caseTypeDimsPutSome(caseTypeDim: Array<CaseTypeDim>, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<Array<CaseTypeDim>>> {
-            const localVarAxiosArgs = await localVarAxiosParamCreator.caseTypeDimsPutSome(caseTypeDim, options);
-            const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
-            const localVarOperationServerBasePath = operationServerMap['CaseApi.caseTypeDimsPutSome']?.[localVarOperationServerIndex]?.url;
-            return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
-        },
-        /**
          * Maintain categories used to organize case-type sets for policy scoping.
          * @summary Case Type Set Categories  Delete All
          * @param {*} [options] Override http request option.
@@ -20338,7 +19711,7 @@ const CaseApiFp = function(configuration?: Configuration) {
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
         /**
-         * Manage which case types belong to a case-type set.
+         * Manage which CaseTypes belong to a case-type set.
          * @summary Case Type Set Members  Delete All
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
@@ -20350,7 +19723,7 @@ const CaseApiFp = function(configuration?: Configuration) {
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
         /**
-         * Manage which case types belong to a case-type set.
+         * Manage which CaseTypes belong to a case-type set.
          * @summary Case Type Set Members  Delete One
          * @param {any} objectId 
          * @param {*} [options] Override http request option.
@@ -20363,7 +19736,7 @@ const CaseApiFp = function(configuration?: Configuration) {
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
         /**
-         * Manage which case types belong to a case-type set.
+         * Manage which CaseTypes belong to a case-type set.
          * @summary Case Type Set Members  Delete Some
          * @param {string} ids 
          * @param {*} [options] Override http request option.
@@ -20376,7 +19749,7 @@ const CaseApiFp = function(configuration?: Configuration) {
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
         /**
-         * Manage which case types belong to a case-type set.
+         * Manage which CaseTypes belong to a case-type set.
          * @summary Case Type Set Members  Get All
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
@@ -20388,7 +19761,7 @@ const CaseApiFp = function(configuration?: Configuration) {
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
         /**
-         * Manage which case types belong to a case-type set.
+         * Manage which CaseTypes belong to a case-type set.
          * @summary Case Type Set Members  Get One
          * @param {string} objectId 
          * @param {*} [options] Override http request option.
@@ -20401,7 +19774,7 @@ const CaseApiFp = function(configuration?: Configuration) {
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
         /**
-         * Manage which case types belong to a case-type set.
+         * Manage which CaseTypes belong to a case-type set.
          * @summary Case Type Set Members  Get Some
          * @param {string} ids 
          * @param {*} [options] Override http request option.
@@ -20414,7 +19787,7 @@ const CaseApiFp = function(configuration?: Configuration) {
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
         /**
-         * Manage which case types belong to a case-type set.
+         * Manage which CaseTypes belong to a case-type set.
          * @summary Case Type Set Members  Post One
          * @param {CaseTypeSetMember} caseTypeSetMember 
          * @param {*} [options] Override http request option.
@@ -20427,7 +19800,7 @@ const CaseApiFp = function(configuration?: Configuration) {
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
         /**
-         * Manage which case types belong to a case-type set.
+         * Manage which CaseTypes belong to a case-type set.
          * @summary Case Type Set Members  Post Query
          * @param {EpiFilter} filter 
          * @param {*} [options] Override http request option.
@@ -20440,7 +19813,7 @@ const CaseApiFp = function(configuration?: Configuration) {
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
         /**
-         * Manage which case types belong to a case-type set.
+         * Manage which CaseTypes belong to a case-type set.
          * @summary Case Type Set Members  Post Query  Ids
          * @param {EpiFilter} filter 
          * @param {*} [options] Override http request option.
@@ -20453,7 +19826,7 @@ const CaseApiFp = function(configuration?: Configuration) {
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
         /**
-         * Manage which case types belong to a case-type set.
+         * Manage which CaseTypes belong to a case-type set.
          * @summary Case Type Set Members  Post Some
          * @param {Array<CaseTypeSetMember>} caseTypeSetMember 
          * @param {*} [options] Override http request option.
@@ -20466,7 +19839,7 @@ const CaseApiFp = function(configuration?: Configuration) {
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
         /**
-         * Manage which case types belong to a case-type set.
+         * Manage which CaseTypes belong to a case-type set.
          * @summary Case Type Set Members  Put One
          * @param {string} objectId 
          * @param {CaseTypeSetMember} caseTypeSetMember 
@@ -20480,7 +19853,7 @@ const CaseApiFp = function(configuration?: Configuration) {
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
         /**
-         * Manage which case types belong to a case-type set.
+         * Manage which CaseTypes belong to a case-type set.
          * @summary Case Type Set Members  Put Some
          * @param {Array<CaseTypeSetMember>} caseTypeSetMember 
          * @param {*} [options] Override http request option.
@@ -20493,7 +19866,7 @@ const CaseApiFp = function(configuration?: Configuration) {
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
         /**
-         * Manage sets of related case types reused in access policies and presets.
+         * Manage sets of related CaseTypes reused in access policies and presets.
          * @summary Case Type Sets  Delete All
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
@@ -20505,7 +19878,7 @@ const CaseApiFp = function(configuration?: Configuration) {
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
         /**
-         * Manage sets of related case types reused in access policies and presets.
+         * Manage sets of related CaseTypes reused in access policies and presets.
          * @summary Case Type Sets  Delete One
          * @param {any} objectId 
          * @param {*} [options] Override http request option.
@@ -20518,7 +19891,7 @@ const CaseApiFp = function(configuration?: Configuration) {
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
         /**
-         * Manage sets of related case types reused in access policies and presets.
+         * Manage sets of related CaseTypes reused in access policies and presets.
          * @summary Case Type Sets  Delete Some
          * @param {string} ids 
          * @param {*} [options] Override http request option.
@@ -20531,7 +19904,7 @@ const CaseApiFp = function(configuration?: Configuration) {
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
         /**
-         * Manage sets of related case types reused in access policies and presets.
+         * Manage sets of related CaseTypes reused in access policies and presets.
          * @summary Case Type Sets  Get All
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
@@ -20543,7 +19916,7 @@ const CaseApiFp = function(configuration?: Configuration) {
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
         /**
-         * Manage sets of related case types reused in access policies and presets.
+         * Manage sets of related CaseTypes reused in access policies and presets.
          * @summary Case Type Sets  Get One
          * @param {string} objectId 
          * @param {*} [options] Override http request option.
@@ -20556,7 +19929,7 @@ const CaseApiFp = function(configuration?: Configuration) {
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
         /**
-         * Manage sets of related case types reused in access policies and presets.
+         * Manage sets of related CaseTypes reused in access policies and presets.
          * @summary Case Type Sets  Get Some
          * @param {string} ids 
          * @param {*} [options] Override http request option.
@@ -20569,7 +19942,7 @@ const CaseApiFp = function(configuration?: Configuration) {
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
         /**
-         * Manage sets of related case types reused in access policies and presets.
+         * Manage sets of related CaseTypes reused in access policies and presets.
          * @summary Case Type Sets  Post One
          * @param {CaseTypeSet} caseTypeSet 
          * @param {*} [options] Override http request option.
@@ -20582,7 +19955,7 @@ const CaseApiFp = function(configuration?: Configuration) {
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
         /**
-         * Manage sets of related case types reused in access policies and presets.
+         * Manage sets of related CaseTypes reused in access policies and presets.
          * @summary Case Type Sets  Post Query
          * @param {EpiFilter} filter 
          * @param {*} [options] Override http request option.
@@ -20595,7 +19968,7 @@ const CaseApiFp = function(configuration?: Configuration) {
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
         /**
-         * Manage sets of related case types reused in access policies and presets.
+         * Manage sets of related CaseTypes reused in access policies and presets.
          * @summary Case Type Sets  Post Query  Ids
          * @param {EpiFilter} filter 
          * @param {*} [options] Override http request option.
@@ -20608,7 +19981,7 @@ const CaseApiFp = function(configuration?: Configuration) {
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
         /**
-         * Manage sets of related case types reused in access policies and presets.
+         * Manage sets of related CaseTypes reused in access policies and presets.
          * @summary Case Type Sets  Post Some
          * @param {Array<CaseTypeSet>} caseTypeSet 
          * @param {*} [options] Override http request option.
@@ -20621,7 +19994,7 @@ const CaseApiFp = function(configuration?: Configuration) {
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
         /**
-         * Replace the case types in a case-type set with the provided list of members, keeping the set in sync for downstream access policies and presets.
+         * Replace the CaseTypes in a CaseTypeSet with the provided list of members, keeping the set in sync for downstream access policies and presets.
          * @summary Update Association Between Casetypeset And Casetype
          * @param {string} caseTypeSetId 
          * @param {UpdateCaseTypeSetCaseTypesRequestBody} updateCaseTypeSetCaseTypesRequestBody 
@@ -20635,7 +20008,7 @@ const CaseApiFp = function(configuration?: Configuration) {
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
         /**
-         * Manage sets of related case types reused in access policies and presets.
+         * Manage sets of related CaseTypes reused in access policies and presets.
          * @summary Case Type Sets  Put One
          * @param {string} objectId 
          * @param {CaseTypeSet} caseTypeSet 
@@ -20649,7 +20022,7 @@ const CaseApiFp = function(configuration?: Configuration) {
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
         /**
-         * Manage sets of related case types reused in access policies and presets.
+         * Manage sets of related CaseTypes reused in access policies and presets.
          * @summary Case Type Sets  Put Some
          * @param {Array<CaseTypeSet>} caseTypeSet 
          * @param {*} [options] Override http request option.
@@ -20662,7 +20035,7 @@ const CaseApiFp = function(configuration?: Configuration) {
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
         /**
-         * Manage case types—the structural and default definitions cases must follow.
+         * Manage CaseTypes—the structural and default definitions cases must follow.
          * @summary Case Types  Delete All
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
@@ -20674,7 +20047,7 @@ const CaseApiFp = function(configuration?: Configuration) {
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
         /**
-         * Manage case types—the structural and default definitions cases must follow.
+         * Manage CaseTypes—the structural and default definitions cases must follow.
          * @summary Case Types  Delete One
          * @param {any} objectId 
          * @param {*} [options] Override http request option.
@@ -20687,7 +20060,7 @@ const CaseApiFp = function(configuration?: Configuration) {
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
         /**
-         * Manage case types—the structural and default definitions cases must follow.
+         * Manage CaseTypes—the structural and default definitions cases must follow.
          * @summary Case Types  Delete Some
          * @param {string} ids 
          * @param {*} [options] Override http request option.
@@ -20700,7 +20073,7 @@ const CaseApiFp = function(configuration?: Configuration) {
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
         /**
-         * Manage case types—the structural and default definitions cases must follow.
+         * Manage CaseTypes—the structural and default definitions cases must follow.
          * @summary Case Types  Get All
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
@@ -20712,7 +20085,7 @@ const CaseApiFp = function(configuration?: Configuration) {
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
         /**
-         * Manage case types—the structural and default definitions cases must follow.
+         * Manage CaseTypes—the structural and default definitions cases must follow.
          * @summary Case Types  Get One
          * @param {string} objectId 
          * @param {*} [options] Override http request option.
@@ -20725,7 +20098,7 @@ const CaseApiFp = function(configuration?: Configuration) {
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
         /**
-         * Manage case types—the structural and default definitions cases must follow.
+         * Manage CaseTypes—the structural and default definitions cases must follow.
          * @summary Case Types  Get Some
          * @param {string} ids 
          * @param {*} [options] Override http request option.
@@ -20738,7 +20111,7 @@ const CaseApiFp = function(configuration?: Configuration) {
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
         /**
-         * Manage case types—the structural and default definitions cases must follow.
+         * Manage CaseTypes—the structural and default definitions cases must follow.
          * @summary Case Types  Post One
          * @param {CaseType} caseType 
          * @param {*} [options] Override http request option.
@@ -20751,7 +20124,7 @@ const CaseApiFp = function(configuration?: Configuration) {
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
         /**
-         * Manage case types—the structural and default definitions cases must follow.
+         * Manage CaseTypes—the structural and default definitions cases must follow.
          * @summary Case Types  Post Query
          * @param {EpiFilter} filter 
          * @param {*} [options] Override http request option.
@@ -20764,7 +20137,7 @@ const CaseApiFp = function(configuration?: Configuration) {
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
         /**
-         * Manage case types—the structural and default definitions cases must follow.
+         * Manage CaseTypes—the structural and default definitions cases must follow.
          * @summary Case Types  Post Query  Ids
          * @param {EpiFilter} filter 
          * @param {*} [options] Override http request option.
@@ -20777,7 +20150,7 @@ const CaseApiFp = function(configuration?: Configuration) {
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
         /**
-         * Manage case types—the structural and default definitions cases must follow.
+         * Manage CaseTypes—the structural and default definitions cases must follow.
          * @summary Case Types  Post Some
          * @param {Array<CaseType>} caseType 
          * @param {*} [options] Override http request option.
@@ -20790,7 +20163,7 @@ const CaseApiFp = function(configuration?: Configuration) {
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
         /**
-         * Manage case types—the structural and default definitions cases must follow.
+         * Manage CaseTypes—the structural and default definitions cases must follow.
          * @summary Case Types  Put One
          * @param {string} objectId 
          * @param {CaseType} caseType 
@@ -20804,7 +20177,7 @@ const CaseApiFp = function(configuration?: Configuration) {
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
         /**
-         * Manage case types—the structural and default definitions cases must follow.
+         * Manage CaseTypes—the structural and default definitions cases must follow.
          * @summary Case Types  Put Some
          * @param {Array<CaseType>} caseType 
          * @param {*} [options] Override http request option.
@@ -20817,7 +20190,7 @@ const CaseApiFp = function(configuration?: Configuration) {
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
         /**
-         * Manage cases (list/get/create/update/delete) with typed content tied to a case type, subject, and data collection.
+         * Manage cases (list/get/create/update/delete) with typed content tied to a CaseType, subject, and data collection.
          * @summary Cases  Delete All
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
@@ -20829,7 +20202,7 @@ const CaseApiFp = function(configuration?: Configuration) {
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
         /**
-         * Manage cases (list/get/create/update/delete) with typed content tied to a case type, subject, and data collection.
+         * Manage cases (list/get/create/update/delete) with typed content tied to a CaseType, subject, and data collection.
          * @summary Cases  Delete One
          * @param {any} objectId 
          * @param {*} [options] Override http request option.
@@ -20842,7 +20215,7 @@ const CaseApiFp = function(configuration?: Configuration) {
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
         /**
-         * Manage cases (list/get/create/update/delete) with typed content tied to a case type, subject, and data collection.
+         * Manage cases (list/get/create/update/delete) with typed content tied to a CaseType, subject, and data collection.
          * @summary Cases  Delete Some
          * @param {string} ids 
          * @param {*} [options] Override http request option.
@@ -20855,7 +20228,7 @@ const CaseApiFp = function(configuration?: Configuration) {
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
         /**
-         * Manage cases (list/get/create/update/delete) with typed content tied to a case type, subject, and data collection.
+         * Manage cases (list/get/create/update/delete) with typed content tied to a CaseType, subject, and data collection.
          * @summary Cases  Get All
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
@@ -20867,7 +20240,7 @@ const CaseApiFp = function(configuration?: Configuration) {
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
         /**
-         * Manage cases (list/get/create/update/delete) with typed content tied to a case type, subject, and data collection.
+         * Manage cases (list/get/create/update/delete) with typed content tied to a CaseType, subject, and data collection.
          * @summary Cases  Get One
          * @param {string} objectId 
          * @param {*} [options] Override http request option.
@@ -20880,7 +20253,7 @@ const CaseApiFp = function(configuration?: Configuration) {
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
         /**
-         * Manage cases (list/get/create/update/delete) with typed content tied to a case type, subject, and data collection.
+         * Manage cases (list/get/create/update/delete) with typed content tied to a CaseType, subject, and data collection.
          * @summary Cases  Get Some
          * @param {string} ids 
          * @param {*} [options] Override http request option.
@@ -20893,7 +20266,7 @@ const CaseApiFp = function(configuration?: Configuration) {
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
         /**
-         * Manage cases (list/get/create/update/delete) with typed content tied to a case type, subject, and data collection.
+         * Manage cases (list/get/create/update/delete) with typed content tied to a CaseType, subject, and data collection.
          * @summary Cases  Post One
          * @param {Case} _case 
          * @param {*} [options] Override http request option.
@@ -20906,7 +20279,7 @@ const CaseApiFp = function(configuration?: Configuration) {
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
         /**
-         * Manage cases (list/get/create/update/delete) with typed content tied to a case type, subject, and data collection.
+         * Manage cases (list/get/create/update/delete) with typed content tied to a CaseType, subject, and data collection.
          * @summary Cases  Post Query
          * @param {EpiFilter} filter 
          * @param {*} [options] Override http request option.
@@ -20919,7 +20292,7 @@ const CaseApiFp = function(configuration?: Configuration) {
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
         /**
-         * Manage cases (list/get/create/update/delete) with typed content tied to a case type, subject, and data collection.
+         * Manage cases (list/get/create/update/delete) with typed content tied to a CaseType, subject, and data collection.
          * @summary Cases  Post Query  Ids
          * @param {EpiFilter} filter 
          * @param {*} [options] Override http request option.
@@ -20932,7 +20305,7 @@ const CaseApiFp = function(configuration?: Configuration) {
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
         /**
-         * Manage cases (list/get/create/update/delete) with typed content tied to a case type, subject, and data collection.
+         * Manage cases (list/get/create/update/delete) with typed content tied to a CaseType, subject, and data collection.
          * @summary Cases  Post Some
          * @param {Array<Case>} _case 
          * @param {*} [options] Override http request option.
@@ -20945,7 +20318,7 @@ const CaseApiFp = function(configuration?: Configuration) {
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
         /**
-         * Manage cases (list/get/create/update/delete) with typed content tied to a case type, subject, and data collection.
+         * Manage cases (list/get/create/update/delete) with typed content tied to a CaseType, subject, and data collection.
          * @summary Cases  Put One
          * @param {string} objectId 
          * @param {Case} _case 
@@ -20959,7 +20332,7 @@ const CaseApiFp = function(configuration?: Configuration) {
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
         /**
-         * Manage cases (list/get/create/update/delete) with typed content tied to a case type, subject, and data collection.
+         * Manage cases (list/get/create/update/delete) with typed content tied to a CaseType, subject, and data collection.
          * @summary Cases  Put Some
          * @param {Array<Case>} _case 
          * @param {*} [options] Override http request option.
@@ -20972,7 +20345,331 @@ const CaseApiFp = function(configuration?: Configuration) {
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
         /**
-         * Manage reusable column definitions (code/label/type) referenced by case-type columns and vocabularies.
+         * Manage which columns belong to a column set used in policies or UI presets.
+         * @summary Col Set Members  Delete All
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        async colSetMembersDeleteAll(options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<any>> {
+            const localVarAxiosArgs = await localVarAxiosParamCreator.colSetMembersDeleteAll(options);
+            const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
+            const localVarOperationServerBasePath = operationServerMap['CaseApi.colSetMembersDeleteAll']?.[localVarOperationServerIndex]?.url;
+            return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
+        },
+        /**
+         * Manage which columns belong to a column set used in policies or UI presets.
+         * @summary Col Set Members  Delete One
+         * @param {any} objectId 
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        async colSetMembersDeleteOne(objectId: any, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<string>> {
+            const localVarAxiosArgs = await localVarAxiosParamCreator.colSetMembersDeleteOne(objectId, options);
+            const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
+            const localVarOperationServerBasePath = operationServerMap['CaseApi.colSetMembersDeleteOne']?.[localVarOperationServerIndex]?.url;
+            return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
+        },
+        /**
+         * Manage which columns belong to a column set used in policies or UI presets.
+         * @summary Col Set Members  Delete Some
+         * @param {string} ids 
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        async colSetMembersDeleteSome(ids: string, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<Array<string>>> {
+            const localVarAxiosArgs = await localVarAxiosParamCreator.colSetMembersDeleteSome(ids, options);
+            const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
+            const localVarOperationServerBasePath = operationServerMap['CaseApi.colSetMembersDeleteSome']?.[localVarOperationServerIndex]?.url;
+            return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
+        },
+        /**
+         * Manage which columns belong to a column set used in policies or UI presets.
+         * @summary Col Set Members  Get All
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        async colSetMembersGetAll(options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<Array<ColSetMember>>> {
+            const localVarAxiosArgs = await localVarAxiosParamCreator.colSetMembersGetAll(options);
+            const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
+            const localVarOperationServerBasePath = operationServerMap['CaseApi.colSetMembersGetAll']?.[localVarOperationServerIndex]?.url;
+            return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
+        },
+        /**
+         * Manage which columns belong to a column set used in policies or UI presets.
+         * @summary Col Set Members  Get One
+         * @param {string} objectId 
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        async colSetMembersGetOne(objectId: string, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<ColSetMember>> {
+            const localVarAxiosArgs = await localVarAxiosParamCreator.colSetMembersGetOne(objectId, options);
+            const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
+            const localVarOperationServerBasePath = operationServerMap['CaseApi.colSetMembersGetOne']?.[localVarOperationServerIndex]?.url;
+            return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
+        },
+        /**
+         * Manage which columns belong to a column set used in policies or UI presets.
+         * @summary Col Set Members  Get Some
+         * @param {string} ids 
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        async colSetMembersGetSome(ids: string, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<Array<ColSetMember>>> {
+            const localVarAxiosArgs = await localVarAxiosParamCreator.colSetMembersGetSome(ids, options);
+            const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
+            const localVarOperationServerBasePath = operationServerMap['CaseApi.colSetMembersGetSome']?.[localVarOperationServerIndex]?.url;
+            return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
+        },
+        /**
+         * Manage which columns belong to a column set used in policies or UI presets.
+         * @summary Col Set Members  Post One
+         * @param {ColSetMember} colSetMember 
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        async colSetMembersPostOne(colSetMember: ColSetMember, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<ColSetMember>> {
+            const localVarAxiosArgs = await localVarAxiosParamCreator.colSetMembersPostOne(colSetMember, options);
+            const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
+            const localVarOperationServerBasePath = operationServerMap['CaseApi.colSetMembersPostOne']?.[localVarOperationServerIndex]?.url;
+            return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
+        },
+        /**
+         * Manage which columns belong to a column set used in policies or UI presets.
+         * @summary Col Set Members  Post Query
+         * @param {EpiFilter} filter 
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        async colSetMembersPostQuery(filter: EpiFilter, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<Array<ColSetMember>>> {
+            const localVarAxiosArgs = await localVarAxiosParamCreator.colSetMembersPostQuery(filter, options);
+            const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
+            const localVarOperationServerBasePath = operationServerMap['CaseApi.colSetMembersPostQuery']?.[localVarOperationServerIndex]?.url;
+            return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
+        },
+        /**
+         * Manage which columns belong to a column set used in policies or UI presets.
+         * @summary Col Set Members  Post Query  Ids
+         * @param {EpiFilter} filter 
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        async colSetMembersPostQueryIds(filter: EpiFilter, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<Array<string>>> {
+            const localVarAxiosArgs = await localVarAxiosParamCreator.colSetMembersPostQueryIds(filter, options);
+            const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
+            const localVarOperationServerBasePath = operationServerMap['CaseApi.colSetMembersPostQueryIds']?.[localVarOperationServerIndex]?.url;
+            return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
+        },
+        /**
+         * Manage which columns belong to a column set used in policies or UI presets.
+         * @summary Col Set Members  Post Some
+         * @param {Array<ColSetMember>} colSetMember 
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        async colSetMembersPostSome(colSetMember: Array<ColSetMember>, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<Array<ColSetMember>>> {
+            const localVarAxiosArgs = await localVarAxiosParamCreator.colSetMembersPostSome(colSetMember, options);
+            const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
+            const localVarOperationServerBasePath = operationServerMap['CaseApi.colSetMembersPostSome']?.[localVarOperationServerIndex]?.url;
+            return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
+        },
+        /**
+         * Manage which columns belong to a column set used in policies or UI presets.
+         * @summary Col Set Members  Put One
+         * @param {string} objectId 
+         * @param {ColSetMember} colSetMember 
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        async colSetMembersPutOne(objectId: string, colSetMember: ColSetMember, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<ColSetMember>> {
+            const localVarAxiosArgs = await localVarAxiosParamCreator.colSetMembersPutOne(objectId, colSetMember, options);
+            const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
+            const localVarOperationServerBasePath = operationServerMap['CaseApi.colSetMembersPutOne']?.[localVarOperationServerIndex]?.url;
+            return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
+        },
+        /**
+         * Manage which columns belong to a column set used in policies or UI presets.
+         * @summary Col Set Members  Put Some
+         * @param {Array<ColSetMember>} colSetMember 
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        async colSetMembersPutSome(colSetMember: Array<ColSetMember>, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<Array<ColSetMember>>> {
+            const localVarAxiosArgs = await localVarAxiosParamCreator.colSetMembersPutSome(colSetMember, options);
+            const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
+            const localVarOperationServerBasePath = operationServerMap['CaseApi.colSetMembersPutSome']?.[localVarOperationServerIndex]?.url;
+            return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
+        },
+        /**
+         * Manage column sets used for read/write scopes and default column groupings.
+         * @summary Col Sets  Delete All
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        async colSetsDeleteAll(options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<any>> {
+            const localVarAxiosArgs = await localVarAxiosParamCreator.colSetsDeleteAll(options);
+            const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
+            const localVarOperationServerBasePath = operationServerMap['CaseApi.colSetsDeleteAll']?.[localVarOperationServerIndex]?.url;
+            return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
+        },
+        /**
+         * Manage column sets used for read/write scopes and default column groupings.
+         * @summary Col Sets  Delete One
+         * @param {any} objectId 
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        async colSetsDeleteOne(objectId: any, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<string>> {
+            const localVarAxiosArgs = await localVarAxiosParamCreator.colSetsDeleteOne(objectId, options);
+            const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
+            const localVarOperationServerBasePath = operationServerMap['CaseApi.colSetsDeleteOne']?.[localVarOperationServerIndex]?.url;
+            return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
+        },
+        /**
+         * Manage column sets used for read/write scopes and default column groupings.
+         * @summary Col Sets  Delete Some
+         * @param {string} ids 
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        async colSetsDeleteSome(ids: string, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<Array<string>>> {
+            const localVarAxiosArgs = await localVarAxiosParamCreator.colSetsDeleteSome(ids, options);
+            const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
+            const localVarOperationServerBasePath = operationServerMap['CaseApi.colSetsDeleteSome']?.[localVarOperationServerIndex]?.url;
+            return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
+        },
+        /**
+         * Manage column sets used for read/write scopes and default column groupings.
+         * @summary Col Sets  Get All
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        async colSetsGetAll(options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<Array<ColSet>>> {
+            const localVarAxiosArgs = await localVarAxiosParamCreator.colSetsGetAll(options);
+            const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
+            const localVarOperationServerBasePath = operationServerMap['CaseApi.colSetsGetAll']?.[localVarOperationServerIndex]?.url;
+            return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
+        },
+        /**
+         * Manage column sets used for read/write scopes and default column groupings.
+         * @summary Col Sets  Get One
+         * @param {string} objectId 
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        async colSetsGetOne(objectId: string, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<ColSet>> {
+            const localVarAxiosArgs = await localVarAxiosParamCreator.colSetsGetOne(objectId, options);
+            const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
+            const localVarOperationServerBasePath = operationServerMap['CaseApi.colSetsGetOne']?.[localVarOperationServerIndex]?.url;
+            return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
+        },
+        /**
+         * Manage column sets used for read/write scopes and default column groupings.
+         * @summary Col Sets  Get Some
+         * @param {string} ids 
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        async colSetsGetSome(ids: string, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<Array<ColSet>>> {
+            const localVarAxiosArgs = await localVarAxiosParamCreator.colSetsGetSome(ids, options);
+            const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
+            const localVarOperationServerBasePath = operationServerMap['CaseApi.colSetsGetSome']?.[localVarOperationServerIndex]?.url;
+            return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
+        },
+        /**
+         * Manage column sets used for read/write scopes and default column groupings.
+         * @summary Col Sets  Post One
+         * @param {ColSet} colSet 
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        async colSetsPostOne(colSet: ColSet, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<ColSet>> {
+            const localVarAxiosArgs = await localVarAxiosParamCreator.colSetsPostOne(colSet, options);
+            const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
+            const localVarOperationServerBasePath = operationServerMap['CaseApi.colSetsPostOne']?.[localVarOperationServerIndex]?.url;
+            return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
+        },
+        /**
+         * Manage column sets used for read/write scopes and default column groupings.
+         * @summary Col Sets  Post Query
+         * @param {EpiFilter} filter 
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        async colSetsPostQuery(filter: EpiFilter, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<Array<ColSet>>> {
+            const localVarAxiosArgs = await localVarAxiosParamCreator.colSetsPostQuery(filter, options);
+            const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
+            const localVarOperationServerBasePath = operationServerMap['CaseApi.colSetsPostQuery']?.[localVarOperationServerIndex]?.url;
+            return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
+        },
+        /**
+         * Manage column sets used for read/write scopes and default column groupings.
+         * @summary Col Sets  Post Query  Ids
+         * @param {EpiFilter} filter 
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        async colSetsPostQueryIds(filter: EpiFilter, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<Array<string>>> {
+            const localVarAxiosArgs = await localVarAxiosParamCreator.colSetsPostQueryIds(filter, options);
+            const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
+            const localVarOperationServerBasePath = operationServerMap['CaseApi.colSetsPostQueryIds']?.[localVarOperationServerIndex]?.url;
+            return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
+        },
+        /**
+         * Manage column sets used for read/write scopes and default column groupings.
+         * @summary Col Sets  Post Some
+         * @param {Array<ColSet>} colSet 
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        async colSetsPostSome(colSet: Array<ColSet>, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<Array<ColSet>>> {
+            const localVarAxiosArgs = await localVarAxiosParamCreator.colSetsPostSome(colSet, options);
+            const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
+            const localVarOperationServerBasePath = operationServerMap['CaseApi.colSetsPostSome']?.[localVarOperationServerIndex]?.url;
+            return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
+        },
+        /**
+         * Replace the columns in a ColSet with the provided members so read/write scopes and UI column groupings stay aligned.
+         * @summary Update Association Between Colset And Col
+         * @param {string} colSetId 
+         * @param {UpdateColSetColsRequestBody} updateColSetColsRequestBody 
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        async colSetsPutCols(colSetId: string, updateColSetColsRequestBody: UpdateColSetColsRequestBody, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<Array<ColSetMember>>> {
+            const localVarAxiosArgs = await localVarAxiosParamCreator.colSetsPutCols(colSetId, updateColSetColsRequestBody, options);
+            const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
+            const localVarOperationServerBasePath = operationServerMap['CaseApi.colSetsPutCols']?.[localVarOperationServerIndex]?.url;
+            return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
+        },
+        /**
+         * Manage column sets used for read/write scopes and default column groupings.
+         * @summary Col Sets  Put One
+         * @param {string} objectId 
+         * @param {ColSet} colSet 
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        async colSetsPutOne(objectId: string, colSet: ColSet, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<ColSet>> {
+            const localVarAxiosArgs = await localVarAxiosParamCreator.colSetsPutOne(objectId, colSet, options);
+            const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
+            const localVarOperationServerBasePath = operationServerMap['CaseApi.colSetsPutOne']?.[localVarOperationServerIndex]?.url;
+            return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
+        },
+        /**
+         * Manage column sets used for read/write scopes and default column groupings.
+         * @summary Col Sets  Put Some
+         * @param {Array<ColSet>} colSet 
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        async colSetsPutSome(colSet: Array<ColSet>, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<Array<ColSet>>> {
+            const localVarAxiosArgs = await localVarAxiosParamCreator.colSetsPutSome(colSet, options);
+            const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
+            const localVarOperationServerBasePath = operationServerMap['CaseApi.colSetsPutSome']?.[localVarOperationServerIndex]?.url;
+            return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
+        },
+        /**
+         * Manage case-type columns: datatype, vocab/region bindings, and genetic-distance settings.
          * @summary Cols  Delete All
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
@@ -20984,7 +20681,7 @@ const CaseApiFp = function(configuration?: Configuration) {
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
         /**
-         * Manage reusable column definitions (code/label/type) referenced by case-type columns and vocabularies.
+         * Manage case-type columns: datatype, vocab/region bindings, and genetic-distance settings.
          * @summary Cols  Delete One
          * @param {any} objectId 
          * @param {*} [options] Override http request option.
@@ -20997,7 +20694,7 @@ const CaseApiFp = function(configuration?: Configuration) {
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
         /**
-         * Manage reusable column definitions (code/label/type) referenced by case-type columns and vocabularies.
+         * Manage case-type columns: datatype, vocab/region bindings, and genetic-distance settings.
          * @summary Cols  Delete Some
          * @param {string} ids 
          * @param {*} [options] Override http request option.
@@ -21010,7 +20707,7 @@ const CaseApiFp = function(configuration?: Configuration) {
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
         /**
-         * Manage reusable column definitions (code/label/type) referenced by case-type columns and vocabularies.
+         * Manage case-type columns: datatype, vocab/region bindings, and genetic-distance settings.
          * @summary Cols  Get All
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
@@ -21022,7 +20719,7 @@ const CaseApiFp = function(configuration?: Configuration) {
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
         /**
-         * Manage reusable column definitions (code/label/type) referenced by case-type columns and vocabularies.
+         * Manage case-type columns: datatype, vocab/region bindings, and genetic-distance settings.
          * @summary Cols  Get One
          * @param {string} objectId 
          * @param {*} [options] Override http request option.
@@ -21035,7 +20732,7 @@ const CaseApiFp = function(configuration?: Configuration) {
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
         /**
-         * Manage reusable column definitions (code/label/type) referenced by case-type columns and vocabularies.
+         * Manage case-type columns: datatype, vocab/region bindings, and genetic-distance settings.
          * @summary Cols  Get Some
          * @param {string} ids 
          * @param {*} [options] Override http request option.
@@ -21048,7 +20745,7 @@ const CaseApiFp = function(configuration?: Configuration) {
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
         /**
-         * Manage reusable column definitions (code/label/type) referenced by case-type columns and vocabularies.
+         * Manage case-type columns: datatype, vocab/region bindings, and genetic-distance settings.
          * @summary Cols  Post One
          * @param {Col} col 
          * @param {*} [options] Override http request option.
@@ -21061,7 +20758,7 @@ const CaseApiFp = function(configuration?: Configuration) {
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
         /**
-         * Manage reusable column definitions (code/label/type) referenced by case-type columns and vocabularies.
+         * Manage case-type columns: datatype, vocab/region bindings, and genetic-distance settings.
          * @summary Cols  Post Query
          * @param {EpiFilter} filter 
          * @param {*} [options] Override http request option.
@@ -21074,7 +20771,7 @@ const CaseApiFp = function(configuration?: Configuration) {
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
         /**
-         * Manage reusable column definitions (code/label/type) referenced by case-type columns and vocabularies.
+         * Manage case-type columns: datatype, vocab/region bindings, and genetic-distance settings.
          * @summary Cols  Post Query  Ids
          * @param {EpiFilter} filter 
          * @param {*} [options] Override http request option.
@@ -21087,7 +20784,7 @@ const CaseApiFp = function(configuration?: Configuration) {
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
         /**
-         * Manage reusable column definitions (code/label/type) referenced by case-type columns and vocabularies.
+         * Manage case-type columns: datatype, vocab/region bindings, and genetic-distance settings.
          * @summary Cols  Post Some
          * @param {Array<Col>} col 
          * @param {*} [options] Override http request option.
@@ -21100,7 +20797,7 @@ const CaseApiFp = function(configuration?: Configuration) {
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
         /**
-         * Manage reusable column definitions (code/label/type) referenced by case-type columns and vocabularies.
+         * Manage case-type columns: datatype, vocab/region bindings, and genetic-distance settings.
          * @summary Cols  Put One
          * @param {string} objectId 
          * @param {Col} col 
@@ -21114,7 +20811,7 @@ const CaseApiFp = function(configuration?: Configuration) {
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
         /**
-         * Manage reusable column definitions (code/label/type) referenced by case-type columns and vocabularies.
+         * Manage case-type columns: datatype, vocab/region bindings, and genetic-distance settings.
          * @summary Cols  Put Some
          * @param {Array<Col>} col 
          * @param {*} [options] Override http request option.
@@ -21127,20 +20824,8 @@ const CaseApiFp = function(configuration?: Configuration) {
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
         /**
-         * The additional validation rules that a Col instance must comply with.
-         * @summary Col Validation Rules
-         * @param {*} [options] Override http request option.
-         * @throws {RequiredError}
-         */
-        async colsValidationRules(options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<ColValidationRulesResponseBody>> {
-            const localVarAxiosArgs = await localVarAxiosParamCreator.colsValidationRules(options);
-            const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
-            const localVarOperationServerBasePath = operationServerMap['CaseApi.colsValidationRules']?.[localVarOperationServerIndex]?.url;
-            return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
-        },
-        /**
-         * Retrieve a complete case type.
-         * @summary Retrieve Complete Case Type
+         * Retrieve a complete CaseType.
+         * @summary Retrieve Complete Casetype
          * @param {string} caseTypeId 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
@@ -21168,13 +20853,13 @@ const CaseApiFp = function(configuration?: Configuration) {
          * Upload a raw reads file (e.g., FASTQ) for a case\'s read-set column and return the stored file ID. Accepts base64 content, optional compression, and marks whether the payload is forward or reverse reads.
          * @summary Create File For Reads Set
          * @param {string} caseId 
-         * @param {string} caseTypeColId 
+         * @param {string} colId 
          * @param {CreateFileForReadSetRequestBody} createFileForReadSetRequestBody 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        async createFileForReadSet(caseId: string, caseTypeColId: string, createFileForReadSetRequestBody: CreateFileForReadSetRequestBody, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<string>> {
-            const localVarAxiosArgs = await localVarAxiosParamCreator.createFileForReadSet(caseId, caseTypeColId, createFileForReadSetRequestBody, options);
+        async createFileForReadSet(caseId: string, colId: string, createFileForReadSetRequestBody: CreateFileForReadSetRequestBody, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<string>> {
+            const localVarAxiosArgs = await localVarAxiosParamCreator.createFileForReadSet(caseId, colId, createFileForReadSetRequestBody, options);
             const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
             const localVarOperationServerBasePath = operationServerMap['CaseApi.createFileForReadSet']?.[localVarOperationServerIndex]?.url;
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
@@ -21183,19 +20868,19 @@ const CaseApiFp = function(configuration?: Configuration) {
          * Upload an assembled sequence file (e.g., FASTA) for a case\'s sequence column and return the stored file ID. Accepts base64 content with optional compression.
          * @summary Create File For Sequence
          * @param {string} caseId 
-         * @param {string} caseTypeColId 
+         * @param {string} colId 
          * @param {CreateFileForSeqRequestBody} createFileForSeqRequestBody 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        async createFileForSeq(caseId: string, caseTypeColId: string, createFileForSeqRequestBody: CreateFileForSeqRequestBody, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<string>> {
-            const localVarAxiosArgs = await localVarAxiosParamCreator.createFileForSeq(caseId, caseTypeColId, createFileForSeqRequestBody, options);
+        async createFileForSeq(caseId: string, colId: string, createFileForSeqRequestBody: CreateFileForSeqRequestBody, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<string>> {
+            const localVarAxiosArgs = await localVarAxiosParamCreator.createFileForSeq(caseId, colId, createFileForSeqRequestBody, options);
             const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
             const localVarOperationServerBasePath = operationServerMap['CaseApi.createFileForSeq']?.[localVarOperationServerIndex]?.url;
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
         /**
-         * Manage column dimensions, including code prefixes and ordering, reused across case types.
+         * Manage dimensions that group case-type columns (e.g., demographics, sample, sequencing).
          * @summary Dims  Delete All
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
@@ -21207,7 +20892,7 @@ const CaseApiFp = function(configuration?: Configuration) {
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
         /**
-         * Manage column dimensions, including code prefixes and ordering, reused across case types.
+         * Manage dimensions that group case-type columns (e.g., demographics, sample, sequencing).
          * @summary Dims  Delete One
          * @param {any} objectId 
          * @param {*} [options] Override http request option.
@@ -21220,7 +20905,7 @@ const CaseApiFp = function(configuration?: Configuration) {
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
         /**
-         * Manage column dimensions, including code prefixes and ordering, reused across case types.
+         * Manage dimensions that group case-type columns (e.g., demographics, sample, sequencing).
          * @summary Dims  Delete Some
          * @param {string} ids 
          * @param {*} [options] Override http request option.
@@ -21233,7 +20918,7 @@ const CaseApiFp = function(configuration?: Configuration) {
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
         /**
-         * Manage column dimensions, including code prefixes and ordering, reused across case types.
+         * Manage dimensions that group case-type columns (e.g., demographics, sample, sequencing).
          * @summary Dims  Get All
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
@@ -21245,7 +20930,7 @@ const CaseApiFp = function(configuration?: Configuration) {
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
         /**
-         * Manage column dimensions, including code prefixes and ordering, reused across case types.
+         * Manage dimensions that group case-type columns (e.g., demographics, sample, sequencing).
          * @summary Dims  Get One
          * @param {string} objectId 
          * @param {*} [options] Override http request option.
@@ -21258,7 +20943,7 @@ const CaseApiFp = function(configuration?: Configuration) {
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
         /**
-         * Manage column dimensions, including code prefixes and ordering, reused across case types.
+         * Manage dimensions that group case-type columns (e.g., demographics, sample, sequencing).
          * @summary Dims  Get Some
          * @param {string} ids 
          * @param {*} [options] Override http request option.
@@ -21271,7 +20956,7 @@ const CaseApiFp = function(configuration?: Configuration) {
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
         /**
-         * Manage column dimensions, including code prefixes and ordering, reused across case types.
+         * Manage dimensions that group case-type columns (e.g., demographics, sample, sequencing).
          * @summary Dims  Post One
          * @param {Dim} dim 
          * @param {*} [options] Override http request option.
@@ -21284,7 +20969,7 @@ const CaseApiFp = function(configuration?: Configuration) {
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
         /**
-         * Manage column dimensions, including code prefixes and ordering, reused across case types.
+         * Manage dimensions that group case-type columns (e.g., demographics, sample, sequencing).
          * @summary Dims  Post Query
          * @param {EpiFilter} filter 
          * @param {*} [options] Override http request option.
@@ -21297,7 +20982,7 @@ const CaseApiFp = function(configuration?: Configuration) {
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
         /**
-         * Manage column dimensions, including code prefixes and ordering, reused across case types.
+         * Manage dimensions that group case-type columns (e.g., demographics, sample, sequencing).
          * @summary Dims  Post Query  Ids
          * @param {EpiFilter} filter 
          * @param {*} [options] Override http request option.
@@ -21310,7 +20995,7 @@ const CaseApiFp = function(configuration?: Configuration) {
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
         /**
-         * Manage column dimensions, including code prefixes and ordering, reused across case types.
+         * Manage dimensions that group case-type columns (e.g., demographics, sample, sequencing).
          * @summary Dims  Post Some
          * @param {Array<Dim>} dim 
          * @param {*} [options] Override http request option.
@@ -21323,7 +21008,7 @@ const CaseApiFp = function(configuration?: Configuration) {
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
         /**
-         * Manage column dimensions, including code prefixes and ordering, reused across case types.
+         * Manage dimensions that group case-type columns (e.g., demographics, sample, sequencing).
          * @summary Dims  Put One
          * @param {string} objectId 
          * @param {Dim} dim 
@@ -21337,7 +21022,7 @@ const CaseApiFp = function(configuration?: Configuration) {
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
         /**
-         * Manage column dimensions, including code prefixes and ordering, reused across case types.
+         * Manage dimensions that group case-type columns (e.g., demographics, sample, sequencing).
          * @summary Dims  Put Some
          * @param {Array<Dim>} dim 
          * @param {*} [options] Override http request option.
@@ -21505,6 +21190,328 @@ const CaseApiFp = function(configuration?: Configuration) {
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
         /**
+         * Manage reusable column definitions (code/label/type) referenced by case-type columns and vocabularies.
+         * @summary Ref Cols  Delete All
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        async refColsDeleteAll(options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<any>> {
+            const localVarAxiosArgs = await localVarAxiosParamCreator.refColsDeleteAll(options);
+            const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
+            const localVarOperationServerBasePath = operationServerMap['CaseApi.refColsDeleteAll']?.[localVarOperationServerIndex]?.url;
+            return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
+        },
+        /**
+         * Manage reusable column definitions (code/label/type) referenced by case-type columns and vocabularies.
+         * @summary Ref Cols  Delete One
+         * @param {any} objectId 
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        async refColsDeleteOne(objectId: any, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<string>> {
+            const localVarAxiosArgs = await localVarAxiosParamCreator.refColsDeleteOne(objectId, options);
+            const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
+            const localVarOperationServerBasePath = operationServerMap['CaseApi.refColsDeleteOne']?.[localVarOperationServerIndex]?.url;
+            return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
+        },
+        /**
+         * Manage reusable column definitions (code/label/type) referenced by case-type columns and vocabularies.
+         * @summary Ref Cols  Delete Some
+         * @param {string} ids 
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        async refColsDeleteSome(ids: string, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<Array<string>>> {
+            const localVarAxiosArgs = await localVarAxiosParamCreator.refColsDeleteSome(ids, options);
+            const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
+            const localVarOperationServerBasePath = operationServerMap['CaseApi.refColsDeleteSome']?.[localVarOperationServerIndex]?.url;
+            return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
+        },
+        /**
+         * Manage reusable column definitions (code/label/type) referenced by case-type columns and vocabularies.
+         * @summary Ref Cols  Get All
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        async refColsGetAll(options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<Array<RefCol>>> {
+            const localVarAxiosArgs = await localVarAxiosParamCreator.refColsGetAll(options);
+            const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
+            const localVarOperationServerBasePath = operationServerMap['CaseApi.refColsGetAll']?.[localVarOperationServerIndex]?.url;
+            return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
+        },
+        /**
+         * Manage reusable column definitions (code/label/type) referenced by case-type columns and vocabularies.
+         * @summary Ref Cols  Get One
+         * @param {string} objectId 
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        async refColsGetOne(objectId: string, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<RefCol>> {
+            const localVarAxiosArgs = await localVarAxiosParamCreator.refColsGetOne(objectId, options);
+            const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
+            const localVarOperationServerBasePath = operationServerMap['CaseApi.refColsGetOne']?.[localVarOperationServerIndex]?.url;
+            return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
+        },
+        /**
+         * Manage reusable column definitions (code/label/type) referenced by case-type columns and vocabularies.
+         * @summary Ref Cols  Get Some
+         * @param {string} ids 
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        async refColsGetSome(ids: string, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<Array<RefCol>>> {
+            const localVarAxiosArgs = await localVarAxiosParamCreator.refColsGetSome(ids, options);
+            const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
+            const localVarOperationServerBasePath = operationServerMap['CaseApi.refColsGetSome']?.[localVarOperationServerIndex]?.url;
+            return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
+        },
+        /**
+         * Manage reusable column definitions (code/label/type) referenced by case-type columns and vocabularies.
+         * @summary Ref Cols  Post One
+         * @param {RefCol} refCol 
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        async refColsPostOne(refCol: RefCol, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<RefCol>> {
+            const localVarAxiosArgs = await localVarAxiosParamCreator.refColsPostOne(refCol, options);
+            const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
+            const localVarOperationServerBasePath = operationServerMap['CaseApi.refColsPostOne']?.[localVarOperationServerIndex]?.url;
+            return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
+        },
+        /**
+         * Manage reusable column definitions (code/label/type) referenced by case-type columns and vocabularies.
+         * @summary Ref Cols  Post Query
+         * @param {EpiFilter} filter 
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        async refColsPostQuery(filter: EpiFilter, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<Array<RefCol>>> {
+            const localVarAxiosArgs = await localVarAxiosParamCreator.refColsPostQuery(filter, options);
+            const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
+            const localVarOperationServerBasePath = operationServerMap['CaseApi.refColsPostQuery']?.[localVarOperationServerIndex]?.url;
+            return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
+        },
+        /**
+         * Manage reusable column definitions (code/label/type) referenced by case-type columns and vocabularies.
+         * @summary Ref Cols  Post Query  Ids
+         * @param {EpiFilter} filter 
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        async refColsPostQueryIds(filter: EpiFilter, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<Array<string>>> {
+            const localVarAxiosArgs = await localVarAxiosParamCreator.refColsPostQueryIds(filter, options);
+            const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
+            const localVarOperationServerBasePath = operationServerMap['CaseApi.refColsPostQueryIds']?.[localVarOperationServerIndex]?.url;
+            return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
+        },
+        /**
+         * Manage reusable column definitions (code/label/type) referenced by case-type columns and vocabularies.
+         * @summary Ref Cols  Post Some
+         * @param {Array<RefCol>} refCol 
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        async refColsPostSome(refCol: Array<RefCol>, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<Array<RefCol>>> {
+            const localVarAxiosArgs = await localVarAxiosParamCreator.refColsPostSome(refCol, options);
+            const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
+            const localVarOperationServerBasePath = operationServerMap['CaseApi.refColsPostSome']?.[localVarOperationServerIndex]?.url;
+            return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
+        },
+        /**
+         * Manage reusable column definitions (code/label/type) referenced by case-type columns and vocabularies.
+         * @summary Ref Cols  Put One
+         * @param {string} objectId 
+         * @param {RefCol} refCol 
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        async refColsPutOne(objectId: string, refCol: RefCol, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<RefCol>> {
+            const localVarAxiosArgs = await localVarAxiosParamCreator.refColsPutOne(objectId, refCol, options);
+            const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
+            const localVarOperationServerBasePath = operationServerMap['CaseApi.refColsPutOne']?.[localVarOperationServerIndex]?.url;
+            return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
+        },
+        /**
+         * Manage reusable column definitions (code/label/type) referenced by case-type columns and vocabularies.
+         * @summary Ref Cols  Put Some
+         * @param {Array<RefCol>} refCol 
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        async refColsPutSome(refCol: Array<RefCol>, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<Array<RefCol>>> {
+            const localVarAxiosArgs = await localVarAxiosParamCreator.refColsPutSome(refCol, options);
+            const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
+            const localVarOperationServerBasePath = operationServerMap['CaseApi.refColsPutSome']?.[localVarOperationServerIndex]?.url;
+            return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
+        },
+        /**
+         * The additional validation rules that a RefCol instance must comply with.
+         * @summary Refcol Validation Rules
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        async refColsValidationRules(options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<RefColValidationRulesResponseBody>> {
+            const localVarAxiosArgs = await localVarAxiosParamCreator.refColsValidationRules(options);
+            const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
+            const localVarOperationServerBasePath = operationServerMap['CaseApi.refColsValidationRules']?.[localVarOperationServerIndex]?.url;
+            return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
+        },
+        /**
+         * Manage column dimensions, including code prefixes and ordering, reused across CaseTypes.
+         * @summary Ref Dims  Delete All
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        async refDimsDeleteAll(options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<any>> {
+            const localVarAxiosArgs = await localVarAxiosParamCreator.refDimsDeleteAll(options);
+            const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
+            const localVarOperationServerBasePath = operationServerMap['CaseApi.refDimsDeleteAll']?.[localVarOperationServerIndex]?.url;
+            return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
+        },
+        /**
+         * Manage column dimensions, including code prefixes and ordering, reused across CaseTypes.
+         * @summary Ref Dims  Delete One
+         * @param {any} objectId 
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        async refDimsDeleteOne(objectId: any, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<string>> {
+            const localVarAxiosArgs = await localVarAxiosParamCreator.refDimsDeleteOne(objectId, options);
+            const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
+            const localVarOperationServerBasePath = operationServerMap['CaseApi.refDimsDeleteOne']?.[localVarOperationServerIndex]?.url;
+            return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
+        },
+        /**
+         * Manage column dimensions, including code prefixes and ordering, reused across CaseTypes.
+         * @summary Ref Dims  Delete Some
+         * @param {string} ids 
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        async refDimsDeleteSome(ids: string, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<Array<string>>> {
+            const localVarAxiosArgs = await localVarAxiosParamCreator.refDimsDeleteSome(ids, options);
+            const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
+            const localVarOperationServerBasePath = operationServerMap['CaseApi.refDimsDeleteSome']?.[localVarOperationServerIndex]?.url;
+            return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
+        },
+        /**
+         * Manage column dimensions, including code prefixes and ordering, reused across CaseTypes.
+         * @summary Ref Dims  Get All
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        async refDimsGetAll(options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<Array<RefDim>>> {
+            const localVarAxiosArgs = await localVarAxiosParamCreator.refDimsGetAll(options);
+            const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
+            const localVarOperationServerBasePath = operationServerMap['CaseApi.refDimsGetAll']?.[localVarOperationServerIndex]?.url;
+            return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
+        },
+        /**
+         * Manage column dimensions, including code prefixes and ordering, reused across CaseTypes.
+         * @summary Ref Dims  Get One
+         * @param {string} objectId 
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        async refDimsGetOne(objectId: string, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<RefDim>> {
+            const localVarAxiosArgs = await localVarAxiosParamCreator.refDimsGetOne(objectId, options);
+            const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
+            const localVarOperationServerBasePath = operationServerMap['CaseApi.refDimsGetOne']?.[localVarOperationServerIndex]?.url;
+            return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
+        },
+        /**
+         * Manage column dimensions, including code prefixes and ordering, reused across CaseTypes.
+         * @summary Ref Dims  Get Some
+         * @param {string} ids 
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        async refDimsGetSome(ids: string, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<Array<RefDim>>> {
+            const localVarAxiosArgs = await localVarAxiosParamCreator.refDimsGetSome(ids, options);
+            const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
+            const localVarOperationServerBasePath = operationServerMap['CaseApi.refDimsGetSome']?.[localVarOperationServerIndex]?.url;
+            return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
+        },
+        /**
+         * Manage column dimensions, including code prefixes and ordering, reused across CaseTypes.
+         * @summary Ref Dims  Post One
+         * @param {RefDim} refDim 
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        async refDimsPostOne(refDim: RefDim, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<RefDim>> {
+            const localVarAxiosArgs = await localVarAxiosParamCreator.refDimsPostOne(refDim, options);
+            const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
+            const localVarOperationServerBasePath = operationServerMap['CaseApi.refDimsPostOne']?.[localVarOperationServerIndex]?.url;
+            return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
+        },
+        /**
+         * Manage column dimensions, including code prefixes and ordering, reused across CaseTypes.
+         * @summary Ref Dims  Post Query
+         * @param {EpiFilter} filter 
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        async refDimsPostQuery(filter: EpiFilter, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<Array<RefDim>>> {
+            const localVarAxiosArgs = await localVarAxiosParamCreator.refDimsPostQuery(filter, options);
+            const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
+            const localVarOperationServerBasePath = operationServerMap['CaseApi.refDimsPostQuery']?.[localVarOperationServerIndex]?.url;
+            return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
+        },
+        /**
+         * Manage column dimensions, including code prefixes and ordering, reused across CaseTypes.
+         * @summary Ref Dims  Post Query  Ids
+         * @param {EpiFilter} filter 
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        async refDimsPostQueryIds(filter: EpiFilter, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<Array<string>>> {
+            const localVarAxiosArgs = await localVarAxiosParamCreator.refDimsPostQueryIds(filter, options);
+            const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
+            const localVarOperationServerBasePath = operationServerMap['CaseApi.refDimsPostQueryIds']?.[localVarOperationServerIndex]?.url;
+            return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
+        },
+        /**
+         * Manage column dimensions, including code prefixes and ordering, reused across CaseTypes.
+         * @summary Ref Dims  Post Some
+         * @param {Array<RefDim>} refDim 
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        async refDimsPostSome(refDim: Array<RefDim>, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<Array<RefDim>>> {
+            const localVarAxiosArgs = await localVarAxiosParamCreator.refDimsPostSome(refDim, options);
+            const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
+            const localVarOperationServerBasePath = operationServerMap['CaseApi.refDimsPostSome']?.[localVarOperationServerIndex]?.url;
+            return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
+        },
+        /**
+         * Manage column dimensions, including code prefixes and ordering, reused across CaseTypes.
+         * @summary Ref Dims  Put One
+         * @param {string} objectId 
+         * @param {RefDim} refDim 
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        async refDimsPutOne(objectId: string, refDim: RefDim, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<RefDim>> {
+            const localVarAxiosArgs = await localVarAxiosParamCreator.refDimsPutOne(objectId, refDim, options);
+            const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
+            const localVarOperationServerBasePath = operationServerMap['CaseApi.refDimsPutOne']?.[localVarOperationServerIndex]?.url;
+            return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
+        },
+        /**
+         * Manage column dimensions, including code prefixes and ordering, reused across CaseTypes.
+         * @summary Ref Dims  Put Some
+         * @param {Array<RefDim>} refDim 
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        async refDimsPutSome(refDim: Array<RefDim>, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<Array<RefDim>>> {
+            const localVarAxiosArgs = await localVarAxiosParamCreator.refDimsPutSome(refDim, options);
+            const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
+            const localVarOperationServerBasePath = operationServerMap['CaseApi.refDimsPutSome']?.[localVarOperationServerIndex]?.url;
+            return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
+        },
+        /**
          * Retrieve the assembly protocols registered in seqdb for downstream sequence processing and provenance.
          * @summary Retrieve Assembly Protocols
          * @param {*} [options] Override http request option.
@@ -21556,7 +21563,7 @@ const CaseApiFp = function(configuration?: Configuration) {
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
         /**
-         * Retrieve statistics for a set of case types. Each of the parameters, when provided, will further filter the cases that are considered for the statistics.
+         * Retrieve statistics for a set of CaseTypes. Each of the parameters, when provided, will further filter the cases that are considered for the statistics.
          * @summary Retrieve Case Set Statistics
          * @param {RetrieveCaseSetStatsRequestBody} retrieveCaseSetStatsRequestBody 
          * @param {*} [options] Override http request option.
@@ -21569,8 +21576,8 @@ const CaseApiFp = function(configuration?: Configuration) {
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
         /**
-         * Retrieve statistics for a set of case types. Each of the parameters, when provided, will further filter the cases that are considered for the statistics.
-         * @summary Retrieve Case Type Statistics
+         * Retrieve statistics for a set of CaseTypes. Each of the parameters, when provided, will further filter the cases that are considered for the statistics.
+         * @summary Retrieve Casetype Statistics
          * @param {RetrieveCaseTypeStatsRequestBody} retrieveCaseTypeStatsRequestBody 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
@@ -21595,24 +21602,24 @@ const CaseApiFp = function(configuration?: Configuration) {
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
         /**
-         * Retrieve a set of genetic sequences in FASTA format based on a set of case IDs and a genetic sequence case type column. An iterator is returned that yields the FASTA lines.
+         * Retrieve a set of genetic sequences in FASTA format based on a set of case IDs and a genetic sequence Col. An iterator is returned that yields the FASTA lines.
          * @summary Retrieve Genetic Sequence By Case, In Fasta Format And Streamed
          * @param {string} token 
          * @param {string} caseTypeId 
-         * @param {string} geneticSequenceCaseTypeColId 
+         * @param {string} geneticSequenceColId 
          * @param {Array<string>} caseIds 
          * @param {string} fileName 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        async retrieveGeneticSequenceFasta(token: string, caseTypeId: string, geneticSequenceCaseTypeColId: string, caseIds: Array<string>, fileName: string, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<any>> {
-            const localVarAxiosArgs = await localVarAxiosParamCreator.retrieveGeneticSequenceFasta(token, caseTypeId, geneticSequenceCaseTypeColId, caseIds, fileName, options);
+        async retrieveGeneticSequenceFasta(token: string, caseTypeId: string, geneticSequenceColId: string, caseIds: Array<string>, fileName: string, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<any>> {
+            const localVarAxiosArgs = await localVarAxiosParamCreator.retrieveGeneticSequenceFasta(token, caseTypeId, geneticSequenceColId, caseIds, fileName, options);
             const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
             const localVarOperationServerBasePath = operationServerMap['CaseApi.retrieveGeneticSequenceFasta']?.[localVarOperationServerIndex]?.url;
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
         /**
-         * Retrieve a phylogenetic tree based on a set of case IDs, a tree algorithm, and a genetic distance case type column.
+         * Retrieve a phylogenetic tree based on a set of case IDs, a tree algorithm, and a genetic distance Col.
          * @summary Retrieve Phylogenetic Tree
          * @param {RetrievePhylogeneticTreeRequestBody} retrievePhylogeneticTreeRequestBody 
          * @param {*} [options] Override http request option.
@@ -21637,7 +21644,7 @@ const CaseApiFp = function(configuration?: Configuration) {
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
         /**
-         * Retrieve cases that are (genetically) similar to a given list of case_ids, based on the genetic distance values in a specified genetic distance case type column and a maximum distance threshold.
+         * Retrieve cases that are (genetically) similar to a given list of case_ids, based on the genetic distance values in a specified genetic distance Col and a maximum distance threshold.
          * @summary Retrieve Similar Cases
          * @param {RetrieveSimilarCasesRequestBody} retrieveSimilarCasesRequestBody 
          * @param {*} [options] Override http request option.
@@ -22853,591 +22860,6 @@ export class CaseApi extends BaseAPI {
     }
 
     /**
-     * Manage which columns belong to a column set used in policies or UI presets.
-     * @summary Case Type Col Set Members  Delete All
-     * @param {*} [options] Override http request option.
-     * @throws {RequiredError}
-     * @memberof CaseApi
-     */
-    public caseTypeColSetMembersDeleteAll(options?: RawAxiosRequestConfig) {
-        return CaseApiFp(this.configuration).caseTypeColSetMembersDeleteAll(options).then((request) => request(this.axios, this.configuration.baseUrl));
-    }
-
-    /**
-     * Manage which columns belong to a column set used in policies or UI presets.
-     * @summary Case Type Col Set Members  Delete One
-     * @param {any} objectId 
-     * @param {*} [options] Override http request option.
-     * @throws {RequiredError}
-     * @memberof CaseApi
-     */
-    public caseTypeColSetMembersDeleteOne(objectId: any, options?: RawAxiosRequestConfig) {
-        return CaseApiFp(this.configuration).caseTypeColSetMembersDeleteOne(objectId, options).then((request) => request(this.axios, this.configuration.baseUrl));
-    }
-
-    /**
-     * Manage which columns belong to a column set used in policies or UI presets.
-     * @summary Case Type Col Set Members  Delete Some
-     * @param {string} ids 
-     * @param {*} [options] Override http request option.
-     * @throws {RequiredError}
-     * @memberof CaseApi
-     */
-    public caseTypeColSetMembersDeleteSome(ids: string, options?: RawAxiosRequestConfig) {
-        return CaseApiFp(this.configuration).caseTypeColSetMembersDeleteSome(ids, options).then((request) => request(this.axios, this.configuration.baseUrl));
-    }
-
-    /**
-     * Manage which columns belong to a column set used in policies or UI presets.
-     * @summary Case Type Col Set Members  Get All
-     * @param {*} [options] Override http request option.
-     * @throws {RequiredError}
-     * @memberof CaseApi
-     */
-    public caseTypeColSetMembersGetAll(options?: RawAxiosRequestConfig) {
-        return CaseApiFp(this.configuration).caseTypeColSetMembersGetAll(options).then((request) => request(this.axios, this.configuration.baseUrl));
-    }
-
-    /**
-     * Manage which columns belong to a column set used in policies or UI presets.
-     * @summary Case Type Col Set Members  Get One
-     * @param {string} objectId 
-     * @param {*} [options] Override http request option.
-     * @throws {RequiredError}
-     * @memberof CaseApi
-     */
-    public caseTypeColSetMembersGetOne(objectId: string, options?: RawAxiosRequestConfig) {
-        return CaseApiFp(this.configuration).caseTypeColSetMembersGetOne(objectId, options).then((request) => request(this.axios, this.configuration.baseUrl));
-    }
-
-    /**
-     * Manage which columns belong to a column set used in policies or UI presets.
-     * @summary Case Type Col Set Members  Get Some
-     * @param {string} ids 
-     * @param {*} [options] Override http request option.
-     * @throws {RequiredError}
-     * @memberof CaseApi
-     */
-    public caseTypeColSetMembersGetSome(ids: string, options?: RawAxiosRequestConfig) {
-        return CaseApiFp(this.configuration).caseTypeColSetMembersGetSome(ids, options).then((request) => request(this.axios, this.configuration.baseUrl));
-    }
-
-    /**
-     * Manage which columns belong to a column set used in policies or UI presets.
-     * @summary Case Type Col Set Members  Post One
-     * @param {CaseTypeColSetMember} caseTypeColSetMember 
-     * @param {*} [options] Override http request option.
-     * @throws {RequiredError}
-     * @memberof CaseApi
-     */
-    public caseTypeColSetMembersPostOne(caseTypeColSetMember: CaseTypeColSetMember, options?: RawAxiosRequestConfig) {
-        return CaseApiFp(this.configuration).caseTypeColSetMembersPostOne(caseTypeColSetMember, options).then((request) => request(this.axios, this.configuration.baseUrl));
-    }
-
-    /**
-     * Manage which columns belong to a column set used in policies or UI presets.
-     * @summary Case Type Col Set Members  Post Query
-     * @param {EpiFilter} filter 
-     * @param {*} [options] Override http request option.
-     * @throws {RequiredError}
-     * @memberof CaseApi
-     */
-    public caseTypeColSetMembersPostQuery(filter: EpiFilter, options?: RawAxiosRequestConfig) {
-        return CaseApiFp(this.configuration).caseTypeColSetMembersPostQuery(filter, options).then((request) => request(this.axios, this.configuration.baseUrl));
-    }
-
-    /**
-     * Manage which columns belong to a column set used in policies or UI presets.
-     * @summary Case Type Col Set Members  Post Query  Ids
-     * @param {EpiFilter} filter 
-     * @param {*} [options] Override http request option.
-     * @throws {RequiredError}
-     * @memberof CaseApi
-     */
-    public caseTypeColSetMembersPostQueryIds(filter: EpiFilter, options?: RawAxiosRequestConfig) {
-        return CaseApiFp(this.configuration).caseTypeColSetMembersPostQueryIds(filter, options).then((request) => request(this.axios, this.configuration.baseUrl));
-    }
-
-    /**
-     * Manage which columns belong to a column set used in policies or UI presets.
-     * @summary Case Type Col Set Members  Post Some
-     * @param {Array<CaseTypeColSetMember>} caseTypeColSetMember 
-     * @param {*} [options] Override http request option.
-     * @throws {RequiredError}
-     * @memberof CaseApi
-     */
-    public caseTypeColSetMembersPostSome(caseTypeColSetMember: Array<CaseTypeColSetMember>, options?: RawAxiosRequestConfig) {
-        return CaseApiFp(this.configuration).caseTypeColSetMembersPostSome(caseTypeColSetMember, options).then((request) => request(this.axios, this.configuration.baseUrl));
-    }
-
-    /**
-     * Manage which columns belong to a column set used in policies or UI presets.
-     * @summary Case Type Col Set Members  Put One
-     * @param {string} objectId 
-     * @param {CaseTypeColSetMember} caseTypeColSetMember 
-     * @param {*} [options] Override http request option.
-     * @throws {RequiredError}
-     * @memberof CaseApi
-     */
-    public caseTypeColSetMembersPutOne(objectId: string, caseTypeColSetMember: CaseTypeColSetMember, options?: RawAxiosRequestConfig) {
-        return CaseApiFp(this.configuration).caseTypeColSetMembersPutOne(objectId, caseTypeColSetMember, options).then((request) => request(this.axios, this.configuration.baseUrl));
-    }
-
-    /**
-     * Manage which columns belong to a column set used in policies or UI presets.
-     * @summary Case Type Col Set Members  Put Some
-     * @param {Array<CaseTypeColSetMember>} caseTypeColSetMember 
-     * @param {*} [options] Override http request option.
-     * @throws {RequiredError}
-     * @memberof CaseApi
-     */
-    public caseTypeColSetMembersPutSome(caseTypeColSetMember: Array<CaseTypeColSetMember>, options?: RawAxiosRequestConfig) {
-        return CaseApiFp(this.configuration).caseTypeColSetMembersPutSome(caseTypeColSetMember, options).then((request) => request(this.axios, this.configuration.baseUrl));
-    }
-
-    /**
-     * Manage column sets used for read/write scopes and default column groupings.
-     * @summary Case Type Col Sets  Delete All
-     * @param {*} [options] Override http request option.
-     * @throws {RequiredError}
-     * @memberof CaseApi
-     */
-    public caseTypeColSetsDeleteAll(options?: RawAxiosRequestConfig) {
-        return CaseApiFp(this.configuration).caseTypeColSetsDeleteAll(options).then((request) => request(this.axios, this.configuration.baseUrl));
-    }
-
-    /**
-     * Manage column sets used for read/write scopes and default column groupings.
-     * @summary Case Type Col Sets  Delete One
-     * @param {any} objectId 
-     * @param {*} [options] Override http request option.
-     * @throws {RequiredError}
-     * @memberof CaseApi
-     */
-    public caseTypeColSetsDeleteOne(objectId: any, options?: RawAxiosRequestConfig) {
-        return CaseApiFp(this.configuration).caseTypeColSetsDeleteOne(objectId, options).then((request) => request(this.axios, this.configuration.baseUrl));
-    }
-
-    /**
-     * Manage column sets used for read/write scopes and default column groupings.
-     * @summary Case Type Col Sets  Delete Some
-     * @param {string} ids 
-     * @param {*} [options] Override http request option.
-     * @throws {RequiredError}
-     * @memberof CaseApi
-     */
-    public caseTypeColSetsDeleteSome(ids: string, options?: RawAxiosRequestConfig) {
-        return CaseApiFp(this.configuration).caseTypeColSetsDeleteSome(ids, options).then((request) => request(this.axios, this.configuration.baseUrl));
-    }
-
-    /**
-     * Manage column sets used for read/write scopes and default column groupings.
-     * @summary Case Type Col Sets  Get All
-     * @param {*} [options] Override http request option.
-     * @throws {RequiredError}
-     * @memberof CaseApi
-     */
-    public caseTypeColSetsGetAll(options?: RawAxiosRequestConfig) {
-        return CaseApiFp(this.configuration).caseTypeColSetsGetAll(options).then((request) => request(this.axios, this.configuration.baseUrl));
-    }
-
-    /**
-     * Manage column sets used for read/write scopes and default column groupings.
-     * @summary Case Type Col Sets  Get One
-     * @param {string} objectId 
-     * @param {*} [options] Override http request option.
-     * @throws {RequiredError}
-     * @memberof CaseApi
-     */
-    public caseTypeColSetsGetOne(objectId: string, options?: RawAxiosRequestConfig) {
-        return CaseApiFp(this.configuration).caseTypeColSetsGetOne(objectId, options).then((request) => request(this.axios, this.configuration.baseUrl));
-    }
-
-    /**
-     * Manage column sets used for read/write scopes and default column groupings.
-     * @summary Case Type Col Sets  Get Some
-     * @param {string} ids 
-     * @param {*} [options] Override http request option.
-     * @throws {RequiredError}
-     * @memberof CaseApi
-     */
-    public caseTypeColSetsGetSome(ids: string, options?: RawAxiosRequestConfig) {
-        return CaseApiFp(this.configuration).caseTypeColSetsGetSome(ids, options).then((request) => request(this.axios, this.configuration.baseUrl));
-    }
-
-    /**
-     * Manage column sets used for read/write scopes and default column groupings.
-     * @summary Case Type Col Sets  Post One
-     * @param {CaseTypeColSet} caseTypeColSet 
-     * @param {*} [options] Override http request option.
-     * @throws {RequiredError}
-     * @memberof CaseApi
-     */
-    public caseTypeColSetsPostOne(caseTypeColSet: CaseTypeColSet, options?: RawAxiosRequestConfig) {
-        return CaseApiFp(this.configuration).caseTypeColSetsPostOne(caseTypeColSet, options).then((request) => request(this.axios, this.configuration.baseUrl));
-    }
-
-    /**
-     * Manage column sets used for read/write scopes and default column groupings.
-     * @summary Case Type Col Sets  Post Query
-     * @param {EpiFilter} filter 
-     * @param {*} [options] Override http request option.
-     * @throws {RequiredError}
-     * @memberof CaseApi
-     */
-    public caseTypeColSetsPostQuery(filter: EpiFilter, options?: RawAxiosRequestConfig) {
-        return CaseApiFp(this.configuration).caseTypeColSetsPostQuery(filter, options).then((request) => request(this.axios, this.configuration.baseUrl));
-    }
-
-    /**
-     * Manage column sets used for read/write scopes and default column groupings.
-     * @summary Case Type Col Sets  Post Query  Ids
-     * @param {EpiFilter} filter 
-     * @param {*} [options] Override http request option.
-     * @throws {RequiredError}
-     * @memberof CaseApi
-     */
-    public caseTypeColSetsPostQueryIds(filter: EpiFilter, options?: RawAxiosRequestConfig) {
-        return CaseApiFp(this.configuration).caseTypeColSetsPostQueryIds(filter, options).then((request) => request(this.axios, this.configuration.baseUrl));
-    }
-
-    /**
-     * Manage column sets used for read/write scopes and default column groupings.
-     * @summary Case Type Col Sets  Post Some
-     * @param {Array<CaseTypeColSet>} caseTypeColSet 
-     * @param {*} [options] Override http request option.
-     * @throws {RequiredError}
-     * @memberof CaseApi
-     */
-    public caseTypeColSetsPostSome(caseTypeColSet: Array<CaseTypeColSet>, options?: RawAxiosRequestConfig) {
-        return CaseApiFp(this.configuration).caseTypeColSetsPostSome(caseTypeColSet, options).then((request) => request(this.axios, this.configuration.baseUrl));
-    }
-
-    /**
-     * Replace the columns in a case-type column set with the provided members so read/write scopes and UI column groupings stay aligned.
-     * @summary Update Association Between Casetypecolset And Casetypecol
-     * @param {string} caseTypeColSetId 
-     * @param {UpdateCaseTypeColSetCaseTypeColsRequestBody} updateCaseTypeColSetCaseTypeColsRequestBody 
-     * @param {*} [options] Override http request option.
-     * @throws {RequiredError}
-     * @memberof CaseApi
-     */
-    public caseTypeColSetsPutCaseTypeCols(caseTypeColSetId: string, updateCaseTypeColSetCaseTypeColsRequestBody: UpdateCaseTypeColSetCaseTypeColsRequestBody, options?: RawAxiosRequestConfig) {
-        return CaseApiFp(this.configuration).caseTypeColSetsPutCaseTypeCols(caseTypeColSetId, updateCaseTypeColSetCaseTypeColsRequestBody, options).then((request) => request(this.axios, this.configuration.baseUrl));
-    }
-
-    /**
-     * Manage column sets used for read/write scopes and default column groupings.
-     * @summary Case Type Col Sets  Put One
-     * @param {string} objectId 
-     * @param {CaseTypeColSet} caseTypeColSet 
-     * @param {*} [options] Override http request option.
-     * @throws {RequiredError}
-     * @memberof CaseApi
-     */
-    public caseTypeColSetsPutOne(objectId: string, caseTypeColSet: CaseTypeColSet, options?: RawAxiosRequestConfig) {
-        return CaseApiFp(this.configuration).caseTypeColSetsPutOne(objectId, caseTypeColSet, options).then((request) => request(this.axios, this.configuration.baseUrl));
-    }
-
-    /**
-     * Manage column sets used for read/write scopes and default column groupings.
-     * @summary Case Type Col Sets  Put Some
-     * @param {Array<CaseTypeColSet>} caseTypeColSet 
-     * @param {*} [options] Override http request option.
-     * @throws {RequiredError}
-     * @memberof CaseApi
-     */
-    public caseTypeColSetsPutSome(caseTypeColSet: Array<CaseTypeColSet>, options?: RawAxiosRequestConfig) {
-        return CaseApiFp(this.configuration).caseTypeColSetsPutSome(caseTypeColSet, options).then((request) => request(this.axios, this.configuration.baseUrl));
-    }
-
-    /**
-     * Manage case-type columns: datatype, vocab/region bindings, and genetic-distance settings.
-     * @summary Case Type Cols  Delete All
-     * @param {*} [options] Override http request option.
-     * @throws {RequiredError}
-     * @memberof CaseApi
-     */
-    public caseTypeColsDeleteAll(options?: RawAxiosRequestConfig) {
-        return CaseApiFp(this.configuration).caseTypeColsDeleteAll(options).then((request) => request(this.axios, this.configuration.baseUrl));
-    }
-
-    /**
-     * Manage case-type columns: datatype, vocab/region bindings, and genetic-distance settings.
-     * @summary Case Type Cols  Delete One
-     * @param {any} objectId 
-     * @param {*} [options] Override http request option.
-     * @throws {RequiredError}
-     * @memberof CaseApi
-     */
-    public caseTypeColsDeleteOne(objectId: any, options?: RawAxiosRequestConfig) {
-        return CaseApiFp(this.configuration).caseTypeColsDeleteOne(objectId, options).then((request) => request(this.axios, this.configuration.baseUrl));
-    }
-
-    /**
-     * Manage case-type columns: datatype, vocab/region bindings, and genetic-distance settings.
-     * @summary Case Type Cols  Delete Some
-     * @param {string} ids 
-     * @param {*} [options] Override http request option.
-     * @throws {RequiredError}
-     * @memberof CaseApi
-     */
-    public caseTypeColsDeleteSome(ids: string, options?: RawAxiosRequestConfig) {
-        return CaseApiFp(this.configuration).caseTypeColsDeleteSome(ids, options).then((request) => request(this.axios, this.configuration.baseUrl));
-    }
-
-    /**
-     * Manage case-type columns: datatype, vocab/region bindings, and genetic-distance settings.
-     * @summary Case Type Cols  Get All
-     * @param {*} [options] Override http request option.
-     * @throws {RequiredError}
-     * @memberof CaseApi
-     */
-    public caseTypeColsGetAll(options?: RawAxiosRequestConfig) {
-        return CaseApiFp(this.configuration).caseTypeColsGetAll(options).then((request) => request(this.axios, this.configuration.baseUrl));
-    }
-
-    /**
-     * Manage case-type columns: datatype, vocab/region bindings, and genetic-distance settings.
-     * @summary Case Type Cols  Get One
-     * @param {string} objectId 
-     * @param {*} [options] Override http request option.
-     * @throws {RequiredError}
-     * @memberof CaseApi
-     */
-    public caseTypeColsGetOne(objectId: string, options?: RawAxiosRequestConfig) {
-        return CaseApiFp(this.configuration).caseTypeColsGetOne(objectId, options).then((request) => request(this.axios, this.configuration.baseUrl));
-    }
-
-    /**
-     * Manage case-type columns: datatype, vocab/region bindings, and genetic-distance settings.
-     * @summary Case Type Cols  Get Some
-     * @param {string} ids 
-     * @param {*} [options] Override http request option.
-     * @throws {RequiredError}
-     * @memberof CaseApi
-     */
-    public caseTypeColsGetSome(ids: string, options?: RawAxiosRequestConfig) {
-        return CaseApiFp(this.configuration).caseTypeColsGetSome(ids, options).then((request) => request(this.axios, this.configuration.baseUrl));
-    }
-
-    /**
-     * Manage case-type columns: datatype, vocab/region bindings, and genetic-distance settings.
-     * @summary Case Type Cols  Post One
-     * @param {CaseTypeCol} caseTypeCol 
-     * @param {*} [options] Override http request option.
-     * @throws {RequiredError}
-     * @memberof CaseApi
-     */
-    public caseTypeColsPostOne(caseTypeCol: CaseTypeCol, options?: RawAxiosRequestConfig) {
-        return CaseApiFp(this.configuration).caseTypeColsPostOne(caseTypeCol, options).then((request) => request(this.axios, this.configuration.baseUrl));
-    }
-
-    /**
-     * Manage case-type columns: datatype, vocab/region bindings, and genetic-distance settings.
-     * @summary Case Type Cols  Post Query
-     * @param {EpiFilter} filter 
-     * @param {*} [options] Override http request option.
-     * @throws {RequiredError}
-     * @memberof CaseApi
-     */
-    public caseTypeColsPostQuery(filter: EpiFilter, options?: RawAxiosRequestConfig) {
-        return CaseApiFp(this.configuration).caseTypeColsPostQuery(filter, options).then((request) => request(this.axios, this.configuration.baseUrl));
-    }
-
-    /**
-     * Manage case-type columns: datatype, vocab/region bindings, and genetic-distance settings.
-     * @summary Case Type Cols  Post Query  Ids
-     * @param {EpiFilter} filter 
-     * @param {*} [options] Override http request option.
-     * @throws {RequiredError}
-     * @memberof CaseApi
-     */
-    public caseTypeColsPostQueryIds(filter: EpiFilter, options?: RawAxiosRequestConfig) {
-        return CaseApiFp(this.configuration).caseTypeColsPostQueryIds(filter, options).then((request) => request(this.axios, this.configuration.baseUrl));
-    }
-
-    /**
-     * Manage case-type columns: datatype, vocab/region bindings, and genetic-distance settings.
-     * @summary Case Type Cols  Post Some
-     * @param {Array<CaseTypeCol>} caseTypeCol 
-     * @param {*} [options] Override http request option.
-     * @throws {RequiredError}
-     * @memberof CaseApi
-     */
-    public caseTypeColsPostSome(caseTypeCol: Array<CaseTypeCol>, options?: RawAxiosRequestConfig) {
-        return CaseApiFp(this.configuration).caseTypeColsPostSome(caseTypeCol, options).then((request) => request(this.axios, this.configuration.baseUrl));
-    }
-
-    /**
-     * Manage case-type columns: datatype, vocab/region bindings, and genetic-distance settings.
-     * @summary Case Type Cols  Put One
-     * @param {string} objectId 
-     * @param {CaseTypeCol} caseTypeCol 
-     * @param {*} [options] Override http request option.
-     * @throws {RequiredError}
-     * @memberof CaseApi
-     */
-    public caseTypeColsPutOne(objectId: string, caseTypeCol: CaseTypeCol, options?: RawAxiosRequestConfig) {
-        return CaseApiFp(this.configuration).caseTypeColsPutOne(objectId, caseTypeCol, options).then((request) => request(this.axios, this.configuration.baseUrl));
-    }
-
-    /**
-     * Manage case-type columns: datatype, vocab/region bindings, and genetic-distance settings.
-     * @summary Case Type Cols  Put Some
-     * @param {Array<CaseTypeCol>} caseTypeCol 
-     * @param {*} [options] Override http request option.
-     * @throws {RequiredError}
-     * @memberof CaseApi
-     */
-    public caseTypeColsPutSome(caseTypeCol: Array<CaseTypeCol>, options?: RawAxiosRequestConfig) {
-        return CaseApiFp(this.configuration).caseTypeColsPutSome(caseTypeCol, options).then((request) => request(this.axios, this.configuration.baseUrl));
-    }
-
-    /**
-     * Manage dimensions that group case-type columns (e.g., demographics, sample, sequencing).
-     * @summary Case Type Dims  Delete All
-     * @param {*} [options] Override http request option.
-     * @throws {RequiredError}
-     * @memberof CaseApi
-     */
-    public caseTypeDimsDeleteAll(options?: RawAxiosRequestConfig) {
-        return CaseApiFp(this.configuration).caseTypeDimsDeleteAll(options).then((request) => request(this.axios, this.configuration.baseUrl));
-    }
-
-    /**
-     * Manage dimensions that group case-type columns (e.g., demographics, sample, sequencing).
-     * @summary Case Type Dims  Delete One
-     * @param {any} objectId 
-     * @param {*} [options] Override http request option.
-     * @throws {RequiredError}
-     * @memberof CaseApi
-     */
-    public caseTypeDimsDeleteOne(objectId: any, options?: RawAxiosRequestConfig) {
-        return CaseApiFp(this.configuration).caseTypeDimsDeleteOne(objectId, options).then((request) => request(this.axios, this.configuration.baseUrl));
-    }
-
-    /**
-     * Manage dimensions that group case-type columns (e.g., demographics, sample, sequencing).
-     * @summary Case Type Dims  Delete Some
-     * @param {string} ids 
-     * @param {*} [options] Override http request option.
-     * @throws {RequiredError}
-     * @memberof CaseApi
-     */
-    public caseTypeDimsDeleteSome(ids: string, options?: RawAxiosRequestConfig) {
-        return CaseApiFp(this.configuration).caseTypeDimsDeleteSome(ids, options).then((request) => request(this.axios, this.configuration.baseUrl));
-    }
-
-    /**
-     * Manage dimensions that group case-type columns (e.g., demographics, sample, sequencing).
-     * @summary Case Type Dims  Get All
-     * @param {*} [options] Override http request option.
-     * @throws {RequiredError}
-     * @memberof CaseApi
-     */
-    public caseTypeDimsGetAll(options?: RawAxiosRequestConfig) {
-        return CaseApiFp(this.configuration).caseTypeDimsGetAll(options).then((request) => request(this.axios, this.configuration.baseUrl));
-    }
-
-    /**
-     * Manage dimensions that group case-type columns (e.g., demographics, sample, sequencing).
-     * @summary Case Type Dims  Get One
-     * @param {string} objectId 
-     * @param {*} [options] Override http request option.
-     * @throws {RequiredError}
-     * @memberof CaseApi
-     */
-    public caseTypeDimsGetOne(objectId: string, options?: RawAxiosRequestConfig) {
-        return CaseApiFp(this.configuration).caseTypeDimsGetOne(objectId, options).then((request) => request(this.axios, this.configuration.baseUrl));
-    }
-
-    /**
-     * Manage dimensions that group case-type columns (e.g., demographics, sample, sequencing).
-     * @summary Case Type Dims  Get Some
-     * @param {string} ids 
-     * @param {*} [options] Override http request option.
-     * @throws {RequiredError}
-     * @memberof CaseApi
-     */
-    public caseTypeDimsGetSome(ids: string, options?: RawAxiosRequestConfig) {
-        return CaseApiFp(this.configuration).caseTypeDimsGetSome(ids, options).then((request) => request(this.axios, this.configuration.baseUrl));
-    }
-
-    /**
-     * Manage dimensions that group case-type columns (e.g., demographics, sample, sequencing).
-     * @summary Case Type Dims  Post One
-     * @param {CaseTypeDim} caseTypeDim 
-     * @param {*} [options] Override http request option.
-     * @throws {RequiredError}
-     * @memberof CaseApi
-     */
-    public caseTypeDimsPostOne(caseTypeDim: CaseTypeDim, options?: RawAxiosRequestConfig) {
-        return CaseApiFp(this.configuration).caseTypeDimsPostOne(caseTypeDim, options).then((request) => request(this.axios, this.configuration.baseUrl));
-    }
-
-    /**
-     * Manage dimensions that group case-type columns (e.g., demographics, sample, sequencing).
-     * @summary Case Type Dims  Post Query
-     * @param {EpiFilter} filter 
-     * @param {*} [options] Override http request option.
-     * @throws {RequiredError}
-     * @memberof CaseApi
-     */
-    public caseTypeDimsPostQuery(filter: EpiFilter, options?: RawAxiosRequestConfig) {
-        return CaseApiFp(this.configuration).caseTypeDimsPostQuery(filter, options).then((request) => request(this.axios, this.configuration.baseUrl));
-    }
-
-    /**
-     * Manage dimensions that group case-type columns (e.g., demographics, sample, sequencing).
-     * @summary Case Type Dims  Post Query  Ids
-     * @param {EpiFilter} filter 
-     * @param {*} [options] Override http request option.
-     * @throws {RequiredError}
-     * @memberof CaseApi
-     */
-    public caseTypeDimsPostQueryIds(filter: EpiFilter, options?: RawAxiosRequestConfig) {
-        return CaseApiFp(this.configuration).caseTypeDimsPostQueryIds(filter, options).then((request) => request(this.axios, this.configuration.baseUrl));
-    }
-
-    /**
-     * Manage dimensions that group case-type columns (e.g., demographics, sample, sequencing).
-     * @summary Case Type Dims  Post Some
-     * @param {Array<CaseTypeDim>} caseTypeDim 
-     * @param {*} [options] Override http request option.
-     * @throws {RequiredError}
-     * @memberof CaseApi
-     */
-    public caseTypeDimsPostSome(caseTypeDim: Array<CaseTypeDim>, options?: RawAxiosRequestConfig) {
-        return CaseApiFp(this.configuration).caseTypeDimsPostSome(caseTypeDim, options).then((request) => request(this.axios, this.configuration.baseUrl));
-    }
-
-    /**
-     * Manage dimensions that group case-type columns (e.g., demographics, sample, sequencing).
-     * @summary Case Type Dims  Put One
-     * @param {string} objectId 
-     * @param {CaseTypeDim} caseTypeDim 
-     * @param {*} [options] Override http request option.
-     * @throws {RequiredError}
-     * @memberof CaseApi
-     */
-    public caseTypeDimsPutOne(objectId: string, caseTypeDim: CaseTypeDim, options?: RawAxiosRequestConfig) {
-        return CaseApiFp(this.configuration).caseTypeDimsPutOne(objectId, caseTypeDim, options).then((request) => request(this.axios, this.configuration.baseUrl));
-    }
-
-    /**
-     * Manage dimensions that group case-type columns (e.g., demographics, sample, sequencing).
-     * @summary Case Type Dims  Put Some
-     * @param {Array<CaseTypeDim>} caseTypeDim 
-     * @param {*} [options] Override http request option.
-     * @throws {RequiredError}
-     * @memberof CaseApi
-     */
-    public caseTypeDimsPutSome(caseTypeDim: Array<CaseTypeDim>, options?: RawAxiosRequestConfig) {
-        return CaseApiFp(this.configuration).caseTypeDimsPutSome(caseTypeDim, options).then((request) => request(this.axios, this.configuration.baseUrl));
-    }
-
-    /**
      * Maintain categories used to organize case-type sets for policy scoping.
      * @summary Case Type Set Categories  Delete All
      * @param {*} [options] Override http request option.
@@ -23581,7 +23003,7 @@ export class CaseApi extends BaseAPI {
     }
 
     /**
-     * Manage which case types belong to a case-type set.
+     * Manage which CaseTypes belong to a case-type set.
      * @summary Case Type Set Members  Delete All
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
@@ -23592,7 +23014,7 @@ export class CaseApi extends BaseAPI {
     }
 
     /**
-     * Manage which case types belong to a case-type set.
+     * Manage which CaseTypes belong to a case-type set.
      * @summary Case Type Set Members  Delete One
      * @param {any} objectId 
      * @param {*} [options] Override http request option.
@@ -23604,7 +23026,7 @@ export class CaseApi extends BaseAPI {
     }
 
     /**
-     * Manage which case types belong to a case-type set.
+     * Manage which CaseTypes belong to a case-type set.
      * @summary Case Type Set Members  Delete Some
      * @param {string} ids 
      * @param {*} [options] Override http request option.
@@ -23616,7 +23038,7 @@ export class CaseApi extends BaseAPI {
     }
 
     /**
-     * Manage which case types belong to a case-type set.
+     * Manage which CaseTypes belong to a case-type set.
      * @summary Case Type Set Members  Get All
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
@@ -23627,7 +23049,7 @@ export class CaseApi extends BaseAPI {
     }
 
     /**
-     * Manage which case types belong to a case-type set.
+     * Manage which CaseTypes belong to a case-type set.
      * @summary Case Type Set Members  Get One
      * @param {string} objectId 
      * @param {*} [options] Override http request option.
@@ -23639,7 +23061,7 @@ export class CaseApi extends BaseAPI {
     }
 
     /**
-     * Manage which case types belong to a case-type set.
+     * Manage which CaseTypes belong to a case-type set.
      * @summary Case Type Set Members  Get Some
      * @param {string} ids 
      * @param {*} [options] Override http request option.
@@ -23651,7 +23073,7 @@ export class CaseApi extends BaseAPI {
     }
 
     /**
-     * Manage which case types belong to a case-type set.
+     * Manage which CaseTypes belong to a case-type set.
      * @summary Case Type Set Members  Post One
      * @param {CaseTypeSetMember} caseTypeSetMember 
      * @param {*} [options] Override http request option.
@@ -23663,7 +23085,7 @@ export class CaseApi extends BaseAPI {
     }
 
     /**
-     * Manage which case types belong to a case-type set.
+     * Manage which CaseTypes belong to a case-type set.
      * @summary Case Type Set Members  Post Query
      * @param {EpiFilter} filter 
      * @param {*} [options] Override http request option.
@@ -23675,7 +23097,7 @@ export class CaseApi extends BaseAPI {
     }
 
     /**
-     * Manage which case types belong to a case-type set.
+     * Manage which CaseTypes belong to a case-type set.
      * @summary Case Type Set Members  Post Query  Ids
      * @param {EpiFilter} filter 
      * @param {*} [options] Override http request option.
@@ -23687,7 +23109,7 @@ export class CaseApi extends BaseAPI {
     }
 
     /**
-     * Manage which case types belong to a case-type set.
+     * Manage which CaseTypes belong to a case-type set.
      * @summary Case Type Set Members  Post Some
      * @param {Array<CaseTypeSetMember>} caseTypeSetMember 
      * @param {*} [options] Override http request option.
@@ -23699,7 +23121,7 @@ export class CaseApi extends BaseAPI {
     }
 
     /**
-     * Manage which case types belong to a case-type set.
+     * Manage which CaseTypes belong to a case-type set.
      * @summary Case Type Set Members  Put One
      * @param {string} objectId 
      * @param {CaseTypeSetMember} caseTypeSetMember 
@@ -23712,7 +23134,7 @@ export class CaseApi extends BaseAPI {
     }
 
     /**
-     * Manage which case types belong to a case-type set.
+     * Manage which CaseTypes belong to a case-type set.
      * @summary Case Type Set Members  Put Some
      * @param {Array<CaseTypeSetMember>} caseTypeSetMember 
      * @param {*} [options] Override http request option.
@@ -23724,7 +23146,7 @@ export class CaseApi extends BaseAPI {
     }
 
     /**
-     * Manage sets of related case types reused in access policies and presets.
+     * Manage sets of related CaseTypes reused in access policies and presets.
      * @summary Case Type Sets  Delete All
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
@@ -23735,7 +23157,7 @@ export class CaseApi extends BaseAPI {
     }
 
     /**
-     * Manage sets of related case types reused in access policies and presets.
+     * Manage sets of related CaseTypes reused in access policies and presets.
      * @summary Case Type Sets  Delete One
      * @param {any} objectId 
      * @param {*} [options] Override http request option.
@@ -23747,7 +23169,7 @@ export class CaseApi extends BaseAPI {
     }
 
     /**
-     * Manage sets of related case types reused in access policies and presets.
+     * Manage sets of related CaseTypes reused in access policies and presets.
      * @summary Case Type Sets  Delete Some
      * @param {string} ids 
      * @param {*} [options] Override http request option.
@@ -23759,7 +23181,7 @@ export class CaseApi extends BaseAPI {
     }
 
     /**
-     * Manage sets of related case types reused in access policies and presets.
+     * Manage sets of related CaseTypes reused in access policies and presets.
      * @summary Case Type Sets  Get All
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
@@ -23770,7 +23192,7 @@ export class CaseApi extends BaseAPI {
     }
 
     /**
-     * Manage sets of related case types reused in access policies and presets.
+     * Manage sets of related CaseTypes reused in access policies and presets.
      * @summary Case Type Sets  Get One
      * @param {string} objectId 
      * @param {*} [options] Override http request option.
@@ -23782,7 +23204,7 @@ export class CaseApi extends BaseAPI {
     }
 
     /**
-     * Manage sets of related case types reused in access policies and presets.
+     * Manage sets of related CaseTypes reused in access policies and presets.
      * @summary Case Type Sets  Get Some
      * @param {string} ids 
      * @param {*} [options] Override http request option.
@@ -23794,7 +23216,7 @@ export class CaseApi extends BaseAPI {
     }
 
     /**
-     * Manage sets of related case types reused in access policies and presets.
+     * Manage sets of related CaseTypes reused in access policies and presets.
      * @summary Case Type Sets  Post One
      * @param {CaseTypeSet} caseTypeSet 
      * @param {*} [options] Override http request option.
@@ -23806,7 +23228,7 @@ export class CaseApi extends BaseAPI {
     }
 
     /**
-     * Manage sets of related case types reused in access policies and presets.
+     * Manage sets of related CaseTypes reused in access policies and presets.
      * @summary Case Type Sets  Post Query
      * @param {EpiFilter} filter 
      * @param {*} [options] Override http request option.
@@ -23818,7 +23240,7 @@ export class CaseApi extends BaseAPI {
     }
 
     /**
-     * Manage sets of related case types reused in access policies and presets.
+     * Manage sets of related CaseTypes reused in access policies and presets.
      * @summary Case Type Sets  Post Query  Ids
      * @param {EpiFilter} filter 
      * @param {*} [options] Override http request option.
@@ -23830,7 +23252,7 @@ export class CaseApi extends BaseAPI {
     }
 
     /**
-     * Manage sets of related case types reused in access policies and presets.
+     * Manage sets of related CaseTypes reused in access policies and presets.
      * @summary Case Type Sets  Post Some
      * @param {Array<CaseTypeSet>} caseTypeSet 
      * @param {*} [options] Override http request option.
@@ -23842,7 +23264,7 @@ export class CaseApi extends BaseAPI {
     }
 
     /**
-     * Replace the case types in a case-type set with the provided list of members, keeping the set in sync for downstream access policies and presets.
+     * Replace the CaseTypes in a CaseTypeSet with the provided list of members, keeping the set in sync for downstream access policies and presets.
      * @summary Update Association Between Casetypeset And Casetype
      * @param {string} caseTypeSetId 
      * @param {UpdateCaseTypeSetCaseTypesRequestBody} updateCaseTypeSetCaseTypesRequestBody 
@@ -23855,7 +23277,7 @@ export class CaseApi extends BaseAPI {
     }
 
     /**
-     * Manage sets of related case types reused in access policies and presets.
+     * Manage sets of related CaseTypes reused in access policies and presets.
      * @summary Case Type Sets  Put One
      * @param {string} objectId 
      * @param {CaseTypeSet} caseTypeSet 
@@ -23868,7 +23290,7 @@ export class CaseApi extends BaseAPI {
     }
 
     /**
-     * Manage sets of related case types reused in access policies and presets.
+     * Manage sets of related CaseTypes reused in access policies and presets.
      * @summary Case Type Sets  Put Some
      * @param {Array<CaseTypeSet>} caseTypeSet 
      * @param {*} [options] Override http request option.
@@ -23880,7 +23302,7 @@ export class CaseApi extends BaseAPI {
     }
 
     /**
-     * Manage case types—the structural and default definitions cases must follow.
+     * Manage CaseTypes—the structural and default definitions cases must follow.
      * @summary Case Types  Delete All
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
@@ -23891,7 +23313,7 @@ export class CaseApi extends BaseAPI {
     }
 
     /**
-     * Manage case types—the structural and default definitions cases must follow.
+     * Manage CaseTypes—the structural and default definitions cases must follow.
      * @summary Case Types  Delete One
      * @param {any} objectId 
      * @param {*} [options] Override http request option.
@@ -23903,7 +23325,7 @@ export class CaseApi extends BaseAPI {
     }
 
     /**
-     * Manage case types—the structural and default definitions cases must follow.
+     * Manage CaseTypes—the structural and default definitions cases must follow.
      * @summary Case Types  Delete Some
      * @param {string} ids 
      * @param {*} [options] Override http request option.
@@ -23915,7 +23337,7 @@ export class CaseApi extends BaseAPI {
     }
 
     /**
-     * Manage case types—the structural and default definitions cases must follow.
+     * Manage CaseTypes—the structural and default definitions cases must follow.
      * @summary Case Types  Get All
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
@@ -23926,7 +23348,7 @@ export class CaseApi extends BaseAPI {
     }
 
     /**
-     * Manage case types—the structural and default definitions cases must follow.
+     * Manage CaseTypes—the structural and default definitions cases must follow.
      * @summary Case Types  Get One
      * @param {string} objectId 
      * @param {*} [options] Override http request option.
@@ -23938,7 +23360,7 @@ export class CaseApi extends BaseAPI {
     }
 
     /**
-     * Manage case types—the structural and default definitions cases must follow.
+     * Manage CaseTypes—the structural and default definitions cases must follow.
      * @summary Case Types  Get Some
      * @param {string} ids 
      * @param {*} [options] Override http request option.
@@ -23950,7 +23372,7 @@ export class CaseApi extends BaseAPI {
     }
 
     /**
-     * Manage case types—the structural and default definitions cases must follow.
+     * Manage CaseTypes—the structural and default definitions cases must follow.
      * @summary Case Types  Post One
      * @param {CaseType} caseType 
      * @param {*} [options] Override http request option.
@@ -23962,7 +23384,7 @@ export class CaseApi extends BaseAPI {
     }
 
     /**
-     * Manage case types—the structural and default definitions cases must follow.
+     * Manage CaseTypes—the structural and default definitions cases must follow.
      * @summary Case Types  Post Query
      * @param {EpiFilter} filter 
      * @param {*} [options] Override http request option.
@@ -23974,7 +23396,7 @@ export class CaseApi extends BaseAPI {
     }
 
     /**
-     * Manage case types—the structural and default definitions cases must follow.
+     * Manage CaseTypes—the structural and default definitions cases must follow.
      * @summary Case Types  Post Query  Ids
      * @param {EpiFilter} filter 
      * @param {*} [options] Override http request option.
@@ -23986,7 +23408,7 @@ export class CaseApi extends BaseAPI {
     }
 
     /**
-     * Manage case types—the structural and default definitions cases must follow.
+     * Manage CaseTypes—the structural and default definitions cases must follow.
      * @summary Case Types  Post Some
      * @param {Array<CaseType>} caseType 
      * @param {*} [options] Override http request option.
@@ -23998,7 +23420,7 @@ export class CaseApi extends BaseAPI {
     }
 
     /**
-     * Manage case types—the structural and default definitions cases must follow.
+     * Manage CaseTypes—the structural and default definitions cases must follow.
      * @summary Case Types  Put One
      * @param {string} objectId 
      * @param {CaseType} caseType 
@@ -24011,7 +23433,7 @@ export class CaseApi extends BaseAPI {
     }
 
     /**
-     * Manage case types—the structural and default definitions cases must follow.
+     * Manage CaseTypes—the structural and default definitions cases must follow.
      * @summary Case Types  Put Some
      * @param {Array<CaseType>} caseType 
      * @param {*} [options] Override http request option.
@@ -24023,7 +23445,7 @@ export class CaseApi extends BaseAPI {
     }
 
     /**
-     * Manage cases (list/get/create/update/delete) with typed content tied to a case type, subject, and data collection.
+     * Manage cases (list/get/create/update/delete) with typed content tied to a CaseType, subject, and data collection.
      * @summary Cases  Delete All
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
@@ -24034,7 +23456,7 @@ export class CaseApi extends BaseAPI {
     }
 
     /**
-     * Manage cases (list/get/create/update/delete) with typed content tied to a case type, subject, and data collection.
+     * Manage cases (list/get/create/update/delete) with typed content tied to a CaseType, subject, and data collection.
      * @summary Cases  Delete One
      * @param {any} objectId 
      * @param {*} [options] Override http request option.
@@ -24046,7 +23468,7 @@ export class CaseApi extends BaseAPI {
     }
 
     /**
-     * Manage cases (list/get/create/update/delete) with typed content tied to a case type, subject, and data collection.
+     * Manage cases (list/get/create/update/delete) with typed content tied to a CaseType, subject, and data collection.
      * @summary Cases  Delete Some
      * @param {string} ids 
      * @param {*} [options] Override http request option.
@@ -24058,7 +23480,7 @@ export class CaseApi extends BaseAPI {
     }
 
     /**
-     * Manage cases (list/get/create/update/delete) with typed content tied to a case type, subject, and data collection.
+     * Manage cases (list/get/create/update/delete) with typed content tied to a CaseType, subject, and data collection.
      * @summary Cases  Get All
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
@@ -24069,7 +23491,7 @@ export class CaseApi extends BaseAPI {
     }
 
     /**
-     * Manage cases (list/get/create/update/delete) with typed content tied to a case type, subject, and data collection.
+     * Manage cases (list/get/create/update/delete) with typed content tied to a CaseType, subject, and data collection.
      * @summary Cases  Get One
      * @param {string} objectId 
      * @param {*} [options] Override http request option.
@@ -24081,7 +23503,7 @@ export class CaseApi extends BaseAPI {
     }
 
     /**
-     * Manage cases (list/get/create/update/delete) with typed content tied to a case type, subject, and data collection.
+     * Manage cases (list/get/create/update/delete) with typed content tied to a CaseType, subject, and data collection.
      * @summary Cases  Get Some
      * @param {string} ids 
      * @param {*} [options] Override http request option.
@@ -24093,7 +23515,7 @@ export class CaseApi extends BaseAPI {
     }
 
     /**
-     * Manage cases (list/get/create/update/delete) with typed content tied to a case type, subject, and data collection.
+     * Manage cases (list/get/create/update/delete) with typed content tied to a CaseType, subject, and data collection.
      * @summary Cases  Post One
      * @param {Case} _case 
      * @param {*} [options] Override http request option.
@@ -24105,7 +23527,7 @@ export class CaseApi extends BaseAPI {
     }
 
     /**
-     * Manage cases (list/get/create/update/delete) with typed content tied to a case type, subject, and data collection.
+     * Manage cases (list/get/create/update/delete) with typed content tied to a CaseType, subject, and data collection.
      * @summary Cases  Post Query
      * @param {EpiFilter} filter 
      * @param {*} [options] Override http request option.
@@ -24117,7 +23539,7 @@ export class CaseApi extends BaseAPI {
     }
 
     /**
-     * Manage cases (list/get/create/update/delete) with typed content tied to a case type, subject, and data collection.
+     * Manage cases (list/get/create/update/delete) with typed content tied to a CaseType, subject, and data collection.
      * @summary Cases  Post Query  Ids
      * @param {EpiFilter} filter 
      * @param {*} [options] Override http request option.
@@ -24129,7 +23551,7 @@ export class CaseApi extends BaseAPI {
     }
 
     /**
-     * Manage cases (list/get/create/update/delete) with typed content tied to a case type, subject, and data collection.
+     * Manage cases (list/get/create/update/delete) with typed content tied to a CaseType, subject, and data collection.
      * @summary Cases  Post Some
      * @param {Array<Case>} _case 
      * @param {*} [options] Override http request option.
@@ -24141,7 +23563,7 @@ export class CaseApi extends BaseAPI {
     }
 
     /**
-     * Manage cases (list/get/create/update/delete) with typed content tied to a case type, subject, and data collection.
+     * Manage cases (list/get/create/update/delete) with typed content tied to a CaseType, subject, and data collection.
      * @summary Cases  Put One
      * @param {string} objectId 
      * @param {Case} _case 
@@ -24154,7 +23576,7 @@ export class CaseApi extends BaseAPI {
     }
 
     /**
-     * Manage cases (list/get/create/update/delete) with typed content tied to a case type, subject, and data collection.
+     * Manage cases (list/get/create/update/delete) with typed content tied to a CaseType, subject, and data collection.
      * @summary Cases  Put Some
      * @param {Array<Case>} _case 
      * @param {*} [options] Override http request option.
@@ -24166,7 +23588,306 @@ export class CaseApi extends BaseAPI {
     }
 
     /**
-     * Manage reusable column definitions (code/label/type) referenced by case-type columns and vocabularies.
+     * Manage which columns belong to a column set used in policies or UI presets.
+     * @summary Col Set Members  Delete All
+     * @param {*} [options] Override http request option.
+     * @throws {RequiredError}
+     * @memberof CaseApi
+     */
+    public colSetMembersDeleteAll(options?: RawAxiosRequestConfig) {
+        return CaseApiFp(this.configuration).colSetMembersDeleteAll(options).then((request) => request(this.axios, this.configuration.baseUrl));
+    }
+
+    /**
+     * Manage which columns belong to a column set used in policies or UI presets.
+     * @summary Col Set Members  Delete One
+     * @param {any} objectId 
+     * @param {*} [options] Override http request option.
+     * @throws {RequiredError}
+     * @memberof CaseApi
+     */
+    public colSetMembersDeleteOne(objectId: any, options?: RawAxiosRequestConfig) {
+        return CaseApiFp(this.configuration).colSetMembersDeleteOne(objectId, options).then((request) => request(this.axios, this.configuration.baseUrl));
+    }
+
+    /**
+     * Manage which columns belong to a column set used in policies or UI presets.
+     * @summary Col Set Members  Delete Some
+     * @param {string} ids 
+     * @param {*} [options] Override http request option.
+     * @throws {RequiredError}
+     * @memberof CaseApi
+     */
+    public colSetMembersDeleteSome(ids: string, options?: RawAxiosRequestConfig) {
+        return CaseApiFp(this.configuration).colSetMembersDeleteSome(ids, options).then((request) => request(this.axios, this.configuration.baseUrl));
+    }
+
+    /**
+     * Manage which columns belong to a column set used in policies or UI presets.
+     * @summary Col Set Members  Get All
+     * @param {*} [options] Override http request option.
+     * @throws {RequiredError}
+     * @memberof CaseApi
+     */
+    public colSetMembersGetAll(options?: RawAxiosRequestConfig) {
+        return CaseApiFp(this.configuration).colSetMembersGetAll(options).then((request) => request(this.axios, this.configuration.baseUrl));
+    }
+
+    /**
+     * Manage which columns belong to a column set used in policies or UI presets.
+     * @summary Col Set Members  Get One
+     * @param {string} objectId 
+     * @param {*} [options] Override http request option.
+     * @throws {RequiredError}
+     * @memberof CaseApi
+     */
+    public colSetMembersGetOne(objectId: string, options?: RawAxiosRequestConfig) {
+        return CaseApiFp(this.configuration).colSetMembersGetOne(objectId, options).then((request) => request(this.axios, this.configuration.baseUrl));
+    }
+
+    /**
+     * Manage which columns belong to a column set used in policies or UI presets.
+     * @summary Col Set Members  Get Some
+     * @param {string} ids 
+     * @param {*} [options] Override http request option.
+     * @throws {RequiredError}
+     * @memberof CaseApi
+     */
+    public colSetMembersGetSome(ids: string, options?: RawAxiosRequestConfig) {
+        return CaseApiFp(this.configuration).colSetMembersGetSome(ids, options).then((request) => request(this.axios, this.configuration.baseUrl));
+    }
+
+    /**
+     * Manage which columns belong to a column set used in policies or UI presets.
+     * @summary Col Set Members  Post One
+     * @param {ColSetMember} colSetMember 
+     * @param {*} [options] Override http request option.
+     * @throws {RequiredError}
+     * @memberof CaseApi
+     */
+    public colSetMembersPostOne(colSetMember: ColSetMember, options?: RawAxiosRequestConfig) {
+        return CaseApiFp(this.configuration).colSetMembersPostOne(colSetMember, options).then((request) => request(this.axios, this.configuration.baseUrl));
+    }
+
+    /**
+     * Manage which columns belong to a column set used in policies or UI presets.
+     * @summary Col Set Members  Post Query
+     * @param {EpiFilter} filter 
+     * @param {*} [options] Override http request option.
+     * @throws {RequiredError}
+     * @memberof CaseApi
+     */
+    public colSetMembersPostQuery(filter: EpiFilter, options?: RawAxiosRequestConfig) {
+        return CaseApiFp(this.configuration).colSetMembersPostQuery(filter, options).then((request) => request(this.axios, this.configuration.baseUrl));
+    }
+
+    /**
+     * Manage which columns belong to a column set used in policies or UI presets.
+     * @summary Col Set Members  Post Query  Ids
+     * @param {EpiFilter} filter 
+     * @param {*} [options] Override http request option.
+     * @throws {RequiredError}
+     * @memberof CaseApi
+     */
+    public colSetMembersPostQueryIds(filter: EpiFilter, options?: RawAxiosRequestConfig) {
+        return CaseApiFp(this.configuration).colSetMembersPostQueryIds(filter, options).then((request) => request(this.axios, this.configuration.baseUrl));
+    }
+
+    /**
+     * Manage which columns belong to a column set used in policies or UI presets.
+     * @summary Col Set Members  Post Some
+     * @param {Array<ColSetMember>} colSetMember 
+     * @param {*} [options] Override http request option.
+     * @throws {RequiredError}
+     * @memberof CaseApi
+     */
+    public colSetMembersPostSome(colSetMember: Array<ColSetMember>, options?: RawAxiosRequestConfig) {
+        return CaseApiFp(this.configuration).colSetMembersPostSome(colSetMember, options).then((request) => request(this.axios, this.configuration.baseUrl));
+    }
+
+    /**
+     * Manage which columns belong to a column set used in policies or UI presets.
+     * @summary Col Set Members  Put One
+     * @param {string} objectId 
+     * @param {ColSetMember} colSetMember 
+     * @param {*} [options] Override http request option.
+     * @throws {RequiredError}
+     * @memberof CaseApi
+     */
+    public colSetMembersPutOne(objectId: string, colSetMember: ColSetMember, options?: RawAxiosRequestConfig) {
+        return CaseApiFp(this.configuration).colSetMembersPutOne(objectId, colSetMember, options).then((request) => request(this.axios, this.configuration.baseUrl));
+    }
+
+    /**
+     * Manage which columns belong to a column set used in policies or UI presets.
+     * @summary Col Set Members  Put Some
+     * @param {Array<ColSetMember>} colSetMember 
+     * @param {*} [options] Override http request option.
+     * @throws {RequiredError}
+     * @memberof CaseApi
+     */
+    public colSetMembersPutSome(colSetMember: Array<ColSetMember>, options?: RawAxiosRequestConfig) {
+        return CaseApiFp(this.configuration).colSetMembersPutSome(colSetMember, options).then((request) => request(this.axios, this.configuration.baseUrl));
+    }
+
+    /**
+     * Manage column sets used for read/write scopes and default column groupings.
+     * @summary Col Sets  Delete All
+     * @param {*} [options] Override http request option.
+     * @throws {RequiredError}
+     * @memberof CaseApi
+     */
+    public colSetsDeleteAll(options?: RawAxiosRequestConfig) {
+        return CaseApiFp(this.configuration).colSetsDeleteAll(options).then((request) => request(this.axios, this.configuration.baseUrl));
+    }
+
+    /**
+     * Manage column sets used for read/write scopes and default column groupings.
+     * @summary Col Sets  Delete One
+     * @param {any} objectId 
+     * @param {*} [options] Override http request option.
+     * @throws {RequiredError}
+     * @memberof CaseApi
+     */
+    public colSetsDeleteOne(objectId: any, options?: RawAxiosRequestConfig) {
+        return CaseApiFp(this.configuration).colSetsDeleteOne(objectId, options).then((request) => request(this.axios, this.configuration.baseUrl));
+    }
+
+    /**
+     * Manage column sets used for read/write scopes and default column groupings.
+     * @summary Col Sets  Delete Some
+     * @param {string} ids 
+     * @param {*} [options] Override http request option.
+     * @throws {RequiredError}
+     * @memberof CaseApi
+     */
+    public colSetsDeleteSome(ids: string, options?: RawAxiosRequestConfig) {
+        return CaseApiFp(this.configuration).colSetsDeleteSome(ids, options).then((request) => request(this.axios, this.configuration.baseUrl));
+    }
+
+    /**
+     * Manage column sets used for read/write scopes and default column groupings.
+     * @summary Col Sets  Get All
+     * @param {*} [options] Override http request option.
+     * @throws {RequiredError}
+     * @memberof CaseApi
+     */
+    public colSetsGetAll(options?: RawAxiosRequestConfig) {
+        return CaseApiFp(this.configuration).colSetsGetAll(options).then((request) => request(this.axios, this.configuration.baseUrl));
+    }
+
+    /**
+     * Manage column sets used for read/write scopes and default column groupings.
+     * @summary Col Sets  Get One
+     * @param {string} objectId 
+     * @param {*} [options] Override http request option.
+     * @throws {RequiredError}
+     * @memberof CaseApi
+     */
+    public colSetsGetOne(objectId: string, options?: RawAxiosRequestConfig) {
+        return CaseApiFp(this.configuration).colSetsGetOne(objectId, options).then((request) => request(this.axios, this.configuration.baseUrl));
+    }
+
+    /**
+     * Manage column sets used for read/write scopes and default column groupings.
+     * @summary Col Sets  Get Some
+     * @param {string} ids 
+     * @param {*} [options] Override http request option.
+     * @throws {RequiredError}
+     * @memberof CaseApi
+     */
+    public colSetsGetSome(ids: string, options?: RawAxiosRequestConfig) {
+        return CaseApiFp(this.configuration).colSetsGetSome(ids, options).then((request) => request(this.axios, this.configuration.baseUrl));
+    }
+
+    /**
+     * Manage column sets used for read/write scopes and default column groupings.
+     * @summary Col Sets  Post One
+     * @param {ColSet} colSet 
+     * @param {*} [options] Override http request option.
+     * @throws {RequiredError}
+     * @memberof CaseApi
+     */
+    public colSetsPostOne(colSet: ColSet, options?: RawAxiosRequestConfig) {
+        return CaseApiFp(this.configuration).colSetsPostOne(colSet, options).then((request) => request(this.axios, this.configuration.baseUrl));
+    }
+
+    /**
+     * Manage column sets used for read/write scopes and default column groupings.
+     * @summary Col Sets  Post Query
+     * @param {EpiFilter} filter 
+     * @param {*} [options] Override http request option.
+     * @throws {RequiredError}
+     * @memberof CaseApi
+     */
+    public colSetsPostQuery(filter: EpiFilter, options?: RawAxiosRequestConfig) {
+        return CaseApiFp(this.configuration).colSetsPostQuery(filter, options).then((request) => request(this.axios, this.configuration.baseUrl));
+    }
+
+    /**
+     * Manage column sets used for read/write scopes and default column groupings.
+     * @summary Col Sets  Post Query  Ids
+     * @param {EpiFilter} filter 
+     * @param {*} [options] Override http request option.
+     * @throws {RequiredError}
+     * @memberof CaseApi
+     */
+    public colSetsPostQueryIds(filter: EpiFilter, options?: RawAxiosRequestConfig) {
+        return CaseApiFp(this.configuration).colSetsPostQueryIds(filter, options).then((request) => request(this.axios, this.configuration.baseUrl));
+    }
+
+    /**
+     * Manage column sets used for read/write scopes and default column groupings.
+     * @summary Col Sets  Post Some
+     * @param {Array<ColSet>} colSet 
+     * @param {*} [options] Override http request option.
+     * @throws {RequiredError}
+     * @memberof CaseApi
+     */
+    public colSetsPostSome(colSet: Array<ColSet>, options?: RawAxiosRequestConfig) {
+        return CaseApiFp(this.configuration).colSetsPostSome(colSet, options).then((request) => request(this.axios, this.configuration.baseUrl));
+    }
+
+    /**
+     * Replace the columns in a ColSet with the provided members so read/write scopes and UI column groupings stay aligned.
+     * @summary Update Association Between Colset And Col
+     * @param {string} colSetId 
+     * @param {UpdateColSetColsRequestBody} updateColSetColsRequestBody 
+     * @param {*} [options] Override http request option.
+     * @throws {RequiredError}
+     * @memberof CaseApi
+     */
+    public colSetsPutCols(colSetId: string, updateColSetColsRequestBody: UpdateColSetColsRequestBody, options?: RawAxiosRequestConfig) {
+        return CaseApiFp(this.configuration).colSetsPutCols(colSetId, updateColSetColsRequestBody, options).then((request) => request(this.axios, this.configuration.baseUrl));
+    }
+
+    /**
+     * Manage column sets used for read/write scopes and default column groupings.
+     * @summary Col Sets  Put One
+     * @param {string} objectId 
+     * @param {ColSet} colSet 
+     * @param {*} [options] Override http request option.
+     * @throws {RequiredError}
+     * @memberof CaseApi
+     */
+    public colSetsPutOne(objectId: string, colSet: ColSet, options?: RawAxiosRequestConfig) {
+        return CaseApiFp(this.configuration).colSetsPutOne(objectId, colSet, options).then((request) => request(this.axios, this.configuration.baseUrl));
+    }
+
+    /**
+     * Manage column sets used for read/write scopes and default column groupings.
+     * @summary Col Sets  Put Some
+     * @param {Array<ColSet>} colSet 
+     * @param {*} [options] Override http request option.
+     * @throws {RequiredError}
+     * @memberof CaseApi
+     */
+    public colSetsPutSome(colSet: Array<ColSet>, options?: RawAxiosRequestConfig) {
+        return CaseApiFp(this.configuration).colSetsPutSome(colSet, options).then((request) => request(this.axios, this.configuration.baseUrl));
+    }
+
+    /**
+     * Manage case-type columns: datatype, vocab/region bindings, and genetic-distance settings.
      * @summary Cols  Delete All
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
@@ -24177,7 +23898,7 @@ export class CaseApi extends BaseAPI {
     }
 
     /**
-     * Manage reusable column definitions (code/label/type) referenced by case-type columns and vocabularies.
+     * Manage case-type columns: datatype, vocab/region bindings, and genetic-distance settings.
      * @summary Cols  Delete One
      * @param {any} objectId 
      * @param {*} [options] Override http request option.
@@ -24189,7 +23910,7 @@ export class CaseApi extends BaseAPI {
     }
 
     /**
-     * Manage reusable column definitions (code/label/type) referenced by case-type columns and vocabularies.
+     * Manage case-type columns: datatype, vocab/region bindings, and genetic-distance settings.
      * @summary Cols  Delete Some
      * @param {string} ids 
      * @param {*} [options] Override http request option.
@@ -24201,7 +23922,7 @@ export class CaseApi extends BaseAPI {
     }
 
     /**
-     * Manage reusable column definitions (code/label/type) referenced by case-type columns and vocabularies.
+     * Manage case-type columns: datatype, vocab/region bindings, and genetic-distance settings.
      * @summary Cols  Get All
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
@@ -24212,7 +23933,7 @@ export class CaseApi extends BaseAPI {
     }
 
     /**
-     * Manage reusable column definitions (code/label/type) referenced by case-type columns and vocabularies.
+     * Manage case-type columns: datatype, vocab/region bindings, and genetic-distance settings.
      * @summary Cols  Get One
      * @param {string} objectId 
      * @param {*} [options] Override http request option.
@@ -24224,7 +23945,7 @@ export class CaseApi extends BaseAPI {
     }
 
     /**
-     * Manage reusable column definitions (code/label/type) referenced by case-type columns and vocabularies.
+     * Manage case-type columns: datatype, vocab/region bindings, and genetic-distance settings.
      * @summary Cols  Get Some
      * @param {string} ids 
      * @param {*} [options] Override http request option.
@@ -24236,7 +23957,7 @@ export class CaseApi extends BaseAPI {
     }
 
     /**
-     * Manage reusable column definitions (code/label/type) referenced by case-type columns and vocabularies.
+     * Manage case-type columns: datatype, vocab/region bindings, and genetic-distance settings.
      * @summary Cols  Post One
      * @param {Col} col 
      * @param {*} [options] Override http request option.
@@ -24248,7 +23969,7 @@ export class CaseApi extends BaseAPI {
     }
 
     /**
-     * Manage reusable column definitions (code/label/type) referenced by case-type columns and vocabularies.
+     * Manage case-type columns: datatype, vocab/region bindings, and genetic-distance settings.
      * @summary Cols  Post Query
      * @param {EpiFilter} filter 
      * @param {*} [options] Override http request option.
@@ -24260,7 +23981,7 @@ export class CaseApi extends BaseAPI {
     }
 
     /**
-     * Manage reusable column definitions (code/label/type) referenced by case-type columns and vocabularies.
+     * Manage case-type columns: datatype, vocab/region bindings, and genetic-distance settings.
      * @summary Cols  Post Query  Ids
      * @param {EpiFilter} filter 
      * @param {*} [options] Override http request option.
@@ -24272,7 +23993,7 @@ export class CaseApi extends BaseAPI {
     }
 
     /**
-     * Manage reusable column definitions (code/label/type) referenced by case-type columns and vocabularies.
+     * Manage case-type columns: datatype, vocab/region bindings, and genetic-distance settings.
      * @summary Cols  Post Some
      * @param {Array<Col>} col 
      * @param {*} [options] Override http request option.
@@ -24284,7 +24005,7 @@ export class CaseApi extends BaseAPI {
     }
 
     /**
-     * Manage reusable column definitions (code/label/type) referenced by case-type columns and vocabularies.
+     * Manage case-type columns: datatype, vocab/region bindings, and genetic-distance settings.
      * @summary Cols  Put One
      * @param {string} objectId 
      * @param {Col} col 
@@ -24297,7 +24018,7 @@ export class CaseApi extends BaseAPI {
     }
 
     /**
-     * Manage reusable column definitions (code/label/type) referenced by case-type columns and vocabularies.
+     * Manage case-type columns: datatype, vocab/region bindings, and genetic-distance settings.
      * @summary Cols  Put Some
      * @param {Array<Col>} col 
      * @param {*} [options] Override http request option.
@@ -24309,19 +24030,8 @@ export class CaseApi extends BaseAPI {
     }
 
     /**
-     * The additional validation rules that a Col instance must comply with.
-     * @summary Col Validation Rules
-     * @param {*} [options] Override http request option.
-     * @throws {RequiredError}
-     * @memberof CaseApi
-     */
-    public colsValidationRules(options?: RawAxiosRequestConfig) {
-        return CaseApiFp(this.configuration).colsValidationRules(options).then((request) => request(this.axios, this.configuration.baseUrl));
-    }
-
-    /**
-     * Retrieve a complete case type.
-     * @summary Retrieve Complete Case Type
+     * Retrieve a complete CaseType.
+     * @summary Retrieve Complete Casetype
      * @param {string} caseTypeId 
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
@@ -24347,32 +24057,32 @@ export class CaseApi extends BaseAPI {
      * Upload a raw reads file (e.g., FASTQ) for a case\'s read-set column and return the stored file ID. Accepts base64 content, optional compression, and marks whether the payload is forward or reverse reads.
      * @summary Create File For Reads Set
      * @param {string} caseId 
-     * @param {string} caseTypeColId 
+     * @param {string} colId 
      * @param {CreateFileForReadSetRequestBody} createFileForReadSetRequestBody 
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
      * @memberof CaseApi
      */
-    public createFileForReadSet(caseId: string, caseTypeColId: string, createFileForReadSetRequestBody: CreateFileForReadSetRequestBody, options?: RawAxiosRequestConfig) {
-        return CaseApiFp(this.configuration).createFileForReadSet(caseId, caseTypeColId, createFileForReadSetRequestBody, options).then((request) => request(this.axios, this.configuration.baseUrl));
+    public createFileForReadSet(caseId: string, colId: string, createFileForReadSetRequestBody: CreateFileForReadSetRequestBody, options?: RawAxiosRequestConfig) {
+        return CaseApiFp(this.configuration).createFileForReadSet(caseId, colId, createFileForReadSetRequestBody, options).then((request) => request(this.axios, this.configuration.baseUrl));
     }
 
     /**
      * Upload an assembled sequence file (e.g., FASTA) for a case\'s sequence column and return the stored file ID. Accepts base64 content with optional compression.
      * @summary Create File For Sequence
      * @param {string} caseId 
-     * @param {string} caseTypeColId 
+     * @param {string} colId 
      * @param {CreateFileForSeqRequestBody} createFileForSeqRequestBody 
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
      * @memberof CaseApi
      */
-    public createFileForSeq(caseId: string, caseTypeColId: string, createFileForSeqRequestBody: CreateFileForSeqRequestBody, options?: RawAxiosRequestConfig) {
-        return CaseApiFp(this.configuration).createFileForSeq(caseId, caseTypeColId, createFileForSeqRequestBody, options).then((request) => request(this.axios, this.configuration.baseUrl));
+    public createFileForSeq(caseId: string, colId: string, createFileForSeqRequestBody: CreateFileForSeqRequestBody, options?: RawAxiosRequestConfig) {
+        return CaseApiFp(this.configuration).createFileForSeq(caseId, colId, createFileForSeqRequestBody, options).then((request) => request(this.axios, this.configuration.baseUrl));
     }
 
     /**
-     * Manage column dimensions, including code prefixes and ordering, reused across case types.
+     * Manage dimensions that group case-type columns (e.g., demographics, sample, sequencing).
      * @summary Dims  Delete All
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
@@ -24383,7 +24093,7 @@ export class CaseApi extends BaseAPI {
     }
 
     /**
-     * Manage column dimensions, including code prefixes and ordering, reused across case types.
+     * Manage dimensions that group case-type columns (e.g., demographics, sample, sequencing).
      * @summary Dims  Delete One
      * @param {any} objectId 
      * @param {*} [options] Override http request option.
@@ -24395,7 +24105,7 @@ export class CaseApi extends BaseAPI {
     }
 
     /**
-     * Manage column dimensions, including code prefixes and ordering, reused across case types.
+     * Manage dimensions that group case-type columns (e.g., demographics, sample, sequencing).
      * @summary Dims  Delete Some
      * @param {string} ids 
      * @param {*} [options] Override http request option.
@@ -24407,7 +24117,7 @@ export class CaseApi extends BaseAPI {
     }
 
     /**
-     * Manage column dimensions, including code prefixes and ordering, reused across case types.
+     * Manage dimensions that group case-type columns (e.g., demographics, sample, sequencing).
      * @summary Dims  Get All
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
@@ -24418,7 +24128,7 @@ export class CaseApi extends BaseAPI {
     }
 
     /**
-     * Manage column dimensions, including code prefixes and ordering, reused across case types.
+     * Manage dimensions that group case-type columns (e.g., demographics, sample, sequencing).
      * @summary Dims  Get One
      * @param {string} objectId 
      * @param {*} [options] Override http request option.
@@ -24430,7 +24140,7 @@ export class CaseApi extends BaseAPI {
     }
 
     /**
-     * Manage column dimensions, including code prefixes and ordering, reused across case types.
+     * Manage dimensions that group case-type columns (e.g., demographics, sample, sequencing).
      * @summary Dims  Get Some
      * @param {string} ids 
      * @param {*} [options] Override http request option.
@@ -24442,7 +24152,7 @@ export class CaseApi extends BaseAPI {
     }
 
     /**
-     * Manage column dimensions, including code prefixes and ordering, reused across case types.
+     * Manage dimensions that group case-type columns (e.g., demographics, sample, sequencing).
      * @summary Dims  Post One
      * @param {Dim} dim 
      * @param {*} [options] Override http request option.
@@ -24454,7 +24164,7 @@ export class CaseApi extends BaseAPI {
     }
 
     /**
-     * Manage column dimensions, including code prefixes and ordering, reused across case types.
+     * Manage dimensions that group case-type columns (e.g., demographics, sample, sequencing).
      * @summary Dims  Post Query
      * @param {EpiFilter} filter 
      * @param {*} [options] Override http request option.
@@ -24466,7 +24176,7 @@ export class CaseApi extends BaseAPI {
     }
 
     /**
-     * Manage column dimensions, including code prefixes and ordering, reused across case types.
+     * Manage dimensions that group case-type columns (e.g., demographics, sample, sequencing).
      * @summary Dims  Post Query  Ids
      * @param {EpiFilter} filter 
      * @param {*} [options] Override http request option.
@@ -24478,7 +24188,7 @@ export class CaseApi extends BaseAPI {
     }
 
     /**
-     * Manage column dimensions, including code prefixes and ordering, reused across case types.
+     * Manage dimensions that group case-type columns (e.g., demographics, sample, sequencing).
      * @summary Dims  Post Some
      * @param {Array<Dim>} dim 
      * @param {*} [options] Override http request option.
@@ -24490,7 +24200,7 @@ export class CaseApi extends BaseAPI {
     }
 
     /**
-     * Manage column dimensions, including code prefixes and ordering, reused across case types.
+     * Manage dimensions that group case-type columns (e.g., demographics, sample, sequencing).
      * @summary Dims  Put One
      * @param {string} objectId 
      * @param {Dim} dim 
@@ -24503,7 +24213,7 @@ export class CaseApi extends BaseAPI {
     }
 
     /**
-     * Manage column dimensions, including code prefixes and ordering, reused across case types.
+     * Manage dimensions that group case-type columns (e.g., demographics, sample, sequencing).
      * @summary Dims  Put Some
      * @param {Array<Dim>} dim 
      * @param {*} [options] Override http request option.
@@ -24658,6 +24368,303 @@ export class CaseApi extends BaseAPI {
     }
 
     /**
+     * Manage reusable column definitions (code/label/type) referenced by case-type columns and vocabularies.
+     * @summary Ref Cols  Delete All
+     * @param {*} [options] Override http request option.
+     * @throws {RequiredError}
+     * @memberof CaseApi
+     */
+    public refColsDeleteAll(options?: RawAxiosRequestConfig) {
+        return CaseApiFp(this.configuration).refColsDeleteAll(options).then((request) => request(this.axios, this.configuration.baseUrl));
+    }
+
+    /**
+     * Manage reusable column definitions (code/label/type) referenced by case-type columns and vocabularies.
+     * @summary Ref Cols  Delete One
+     * @param {any} objectId 
+     * @param {*} [options] Override http request option.
+     * @throws {RequiredError}
+     * @memberof CaseApi
+     */
+    public refColsDeleteOne(objectId: any, options?: RawAxiosRequestConfig) {
+        return CaseApiFp(this.configuration).refColsDeleteOne(objectId, options).then((request) => request(this.axios, this.configuration.baseUrl));
+    }
+
+    /**
+     * Manage reusable column definitions (code/label/type) referenced by case-type columns and vocabularies.
+     * @summary Ref Cols  Delete Some
+     * @param {string} ids 
+     * @param {*} [options] Override http request option.
+     * @throws {RequiredError}
+     * @memberof CaseApi
+     */
+    public refColsDeleteSome(ids: string, options?: RawAxiosRequestConfig) {
+        return CaseApiFp(this.configuration).refColsDeleteSome(ids, options).then((request) => request(this.axios, this.configuration.baseUrl));
+    }
+
+    /**
+     * Manage reusable column definitions (code/label/type) referenced by case-type columns and vocabularies.
+     * @summary Ref Cols  Get All
+     * @param {*} [options] Override http request option.
+     * @throws {RequiredError}
+     * @memberof CaseApi
+     */
+    public refColsGetAll(options?: RawAxiosRequestConfig) {
+        return CaseApiFp(this.configuration).refColsGetAll(options).then((request) => request(this.axios, this.configuration.baseUrl));
+    }
+
+    /**
+     * Manage reusable column definitions (code/label/type) referenced by case-type columns and vocabularies.
+     * @summary Ref Cols  Get One
+     * @param {string} objectId 
+     * @param {*} [options] Override http request option.
+     * @throws {RequiredError}
+     * @memberof CaseApi
+     */
+    public refColsGetOne(objectId: string, options?: RawAxiosRequestConfig) {
+        return CaseApiFp(this.configuration).refColsGetOne(objectId, options).then((request) => request(this.axios, this.configuration.baseUrl));
+    }
+
+    /**
+     * Manage reusable column definitions (code/label/type) referenced by case-type columns and vocabularies.
+     * @summary Ref Cols  Get Some
+     * @param {string} ids 
+     * @param {*} [options] Override http request option.
+     * @throws {RequiredError}
+     * @memberof CaseApi
+     */
+    public refColsGetSome(ids: string, options?: RawAxiosRequestConfig) {
+        return CaseApiFp(this.configuration).refColsGetSome(ids, options).then((request) => request(this.axios, this.configuration.baseUrl));
+    }
+
+    /**
+     * Manage reusable column definitions (code/label/type) referenced by case-type columns and vocabularies.
+     * @summary Ref Cols  Post One
+     * @param {RefCol} refCol 
+     * @param {*} [options] Override http request option.
+     * @throws {RequiredError}
+     * @memberof CaseApi
+     */
+    public refColsPostOne(refCol: RefCol, options?: RawAxiosRequestConfig) {
+        return CaseApiFp(this.configuration).refColsPostOne(refCol, options).then((request) => request(this.axios, this.configuration.baseUrl));
+    }
+
+    /**
+     * Manage reusable column definitions (code/label/type) referenced by case-type columns and vocabularies.
+     * @summary Ref Cols  Post Query
+     * @param {EpiFilter} filter 
+     * @param {*} [options] Override http request option.
+     * @throws {RequiredError}
+     * @memberof CaseApi
+     */
+    public refColsPostQuery(filter: EpiFilter, options?: RawAxiosRequestConfig) {
+        return CaseApiFp(this.configuration).refColsPostQuery(filter, options).then((request) => request(this.axios, this.configuration.baseUrl));
+    }
+
+    /**
+     * Manage reusable column definitions (code/label/type) referenced by case-type columns and vocabularies.
+     * @summary Ref Cols  Post Query  Ids
+     * @param {EpiFilter} filter 
+     * @param {*} [options] Override http request option.
+     * @throws {RequiredError}
+     * @memberof CaseApi
+     */
+    public refColsPostQueryIds(filter: EpiFilter, options?: RawAxiosRequestConfig) {
+        return CaseApiFp(this.configuration).refColsPostQueryIds(filter, options).then((request) => request(this.axios, this.configuration.baseUrl));
+    }
+
+    /**
+     * Manage reusable column definitions (code/label/type) referenced by case-type columns and vocabularies.
+     * @summary Ref Cols  Post Some
+     * @param {Array<RefCol>} refCol 
+     * @param {*} [options] Override http request option.
+     * @throws {RequiredError}
+     * @memberof CaseApi
+     */
+    public refColsPostSome(refCol: Array<RefCol>, options?: RawAxiosRequestConfig) {
+        return CaseApiFp(this.configuration).refColsPostSome(refCol, options).then((request) => request(this.axios, this.configuration.baseUrl));
+    }
+
+    /**
+     * Manage reusable column definitions (code/label/type) referenced by case-type columns and vocabularies.
+     * @summary Ref Cols  Put One
+     * @param {string} objectId 
+     * @param {RefCol} refCol 
+     * @param {*} [options] Override http request option.
+     * @throws {RequiredError}
+     * @memberof CaseApi
+     */
+    public refColsPutOne(objectId: string, refCol: RefCol, options?: RawAxiosRequestConfig) {
+        return CaseApiFp(this.configuration).refColsPutOne(objectId, refCol, options).then((request) => request(this.axios, this.configuration.baseUrl));
+    }
+
+    /**
+     * Manage reusable column definitions (code/label/type) referenced by case-type columns and vocabularies.
+     * @summary Ref Cols  Put Some
+     * @param {Array<RefCol>} refCol 
+     * @param {*} [options] Override http request option.
+     * @throws {RequiredError}
+     * @memberof CaseApi
+     */
+    public refColsPutSome(refCol: Array<RefCol>, options?: RawAxiosRequestConfig) {
+        return CaseApiFp(this.configuration).refColsPutSome(refCol, options).then((request) => request(this.axios, this.configuration.baseUrl));
+    }
+
+    /**
+     * The additional validation rules that a RefCol instance must comply with.
+     * @summary Refcol Validation Rules
+     * @param {*} [options] Override http request option.
+     * @throws {RequiredError}
+     * @memberof CaseApi
+     */
+    public refColsValidationRules(options?: RawAxiosRequestConfig) {
+        return CaseApiFp(this.configuration).refColsValidationRules(options).then((request) => request(this.axios, this.configuration.baseUrl));
+    }
+
+    /**
+     * Manage column dimensions, including code prefixes and ordering, reused across CaseTypes.
+     * @summary Ref Dims  Delete All
+     * @param {*} [options] Override http request option.
+     * @throws {RequiredError}
+     * @memberof CaseApi
+     */
+    public refDimsDeleteAll(options?: RawAxiosRequestConfig) {
+        return CaseApiFp(this.configuration).refDimsDeleteAll(options).then((request) => request(this.axios, this.configuration.baseUrl));
+    }
+
+    /**
+     * Manage column dimensions, including code prefixes and ordering, reused across CaseTypes.
+     * @summary Ref Dims  Delete One
+     * @param {any} objectId 
+     * @param {*} [options] Override http request option.
+     * @throws {RequiredError}
+     * @memberof CaseApi
+     */
+    public refDimsDeleteOne(objectId: any, options?: RawAxiosRequestConfig) {
+        return CaseApiFp(this.configuration).refDimsDeleteOne(objectId, options).then((request) => request(this.axios, this.configuration.baseUrl));
+    }
+
+    /**
+     * Manage column dimensions, including code prefixes and ordering, reused across CaseTypes.
+     * @summary Ref Dims  Delete Some
+     * @param {string} ids 
+     * @param {*} [options] Override http request option.
+     * @throws {RequiredError}
+     * @memberof CaseApi
+     */
+    public refDimsDeleteSome(ids: string, options?: RawAxiosRequestConfig) {
+        return CaseApiFp(this.configuration).refDimsDeleteSome(ids, options).then((request) => request(this.axios, this.configuration.baseUrl));
+    }
+
+    /**
+     * Manage column dimensions, including code prefixes and ordering, reused across CaseTypes.
+     * @summary Ref Dims  Get All
+     * @param {*} [options] Override http request option.
+     * @throws {RequiredError}
+     * @memberof CaseApi
+     */
+    public refDimsGetAll(options?: RawAxiosRequestConfig) {
+        return CaseApiFp(this.configuration).refDimsGetAll(options).then((request) => request(this.axios, this.configuration.baseUrl));
+    }
+
+    /**
+     * Manage column dimensions, including code prefixes and ordering, reused across CaseTypes.
+     * @summary Ref Dims  Get One
+     * @param {string} objectId 
+     * @param {*} [options] Override http request option.
+     * @throws {RequiredError}
+     * @memberof CaseApi
+     */
+    public refDimsGetOne(objectId: string, options?: RawAxiosRequestConfig) {
+        return CaseApiFp(this.configuration).refDimsGetOne(objectId, options).then((request) => request(this.axios, this.configuration.baseUrl));
+    }
+
+    /**
+     * Manage column dimensions, including code prefixes and ordering, reused across CaseTypes.
+     * @summary Ref Dims  Get Some
+     * @param {string} ids 
+     * @param {*} [options] Override http request option.
+     * @throws {RequiredError}
+     * @memberof CaseApi
+     */
+    public refDimsGetSome(ids: string, options?: RawAxiosRequestConfig) {
+        return CaseApiFp(this.configuration).refDimsGetSome(ids, options).then((request) => request(this.axios, this.configuration.baseUrl));
+    }
+
+    /**
+     * Manage column dimensions, including code prefixes and ordering, reused across CaseTypes.
+     * @summary Ref Dims  Post One
+     * @param {RefDim} refDim 
+     * @param {*} [options] Override http request option.
+     * @throws {RequiredError}
+     * @memberof CaseApi
+     */
+    public refDimsPostOne(refDim: RefDim, options?: RawAxiosRequestConfig) {
+        return CaseApiFp(this.configuration).refDimsPostOne(refDim, options).then((request) => request(this.axios, this.configuration.baseUrl));
+    }
+
+    /**
+     * Manage column dimensions, including code prefixes and ordering, reused across CaseTypes.
+     * @summary Ref Dims  Post Query
+     * @param {EpiFilter} filter 
+     * @param {*} [options] Override http request option.
+     * @throws {RequiredError}
+     * @memberof CaseApi
+     */
+    public refDimsPostQuery(filter: EpiFilter, options?: RawAxiosRequestConfig) {
+        return CaseApiFp(this.configuration).refDimsPostQuery(filter, options).then((request) => request(this.axios, this.configuration.baseUrl));
+    }
+
+    /**
+     * Manage column dimensions, including code prefixes and ordering, reused across CaseTypes.
+     * @summary Ref Dims  Post Query  Ids
+     * @param {EpiFilter} filter 
+     * @param {*} [options] Override http request option.
+     * @throws {RequiredError}
+     * @memberof CaseApi
+     */
+    public refDimsPostQueryIds(filter: EpiFilter, options?: RawAxiosRequestConfig) {
+        return CaseApiFp(this.configuration).refDimsPostQueryIds(filter, options).then((request) => request(this.axios, this.configuration.baseUrl));
+    }
+
+    /**
+     * Manage column dimensions, including code prefixes and ordering, reused across CaseTypes.
+     * @summary Ref Dims  Post Some
+     * @param {Array<RefDim>} refDim 
+     * @param {*} [options] Override http request option.
+     * @throws {RequiredError}
+     * @memberof CaseApi
+     */
+    public refDimsPostSome(refDim: Array<RefDim>, options?: RawAxiosRequestConfig) {
+        return CaseApiFp(this.configuration).refDimsPostSome(refDim, options).then((request) => request(this.axios, this.configuration.baseUrl));
+    }
+
+    /**
+     * Manage column dimensions, including code prefixes and ordering, reused across CaseTypes.
+     * @summary Ref Dims  Put One
+     * @param {string} objectId 
+     * @param {RefDim} refDim 
+     * @param {*} [options] Override http request option.
+     * @throws {RequiredError}
+     * @memberof CaseApi
+     */
+    public refDimsPutOne(objectId: string, refDim: RefDim, options?: RawAxiosRequestConfig) {
+        return CaseApiFp(this.configuration).refDimsPutOne(objectId, refDim, options).then((request) => request(this.axios, this.configuration.baseUrl));
+    }
+
+    /**
+     * Manage column dimensions, including code prefixes and ordering, reused across CaseTypes.
+     * @summary Ref Dims  Put Some
+     * @param {Array<RefDim>} refDim 
+     * @param {*} [options] Override http request option.
+     * @throws {RequiredError}
+     * @memberof CaseApi
+     */
+    public refDimsPutSome(refDim: Array<RefDim>, options?: RawAxiosRequestConfig) {
+        return CaseApiFp(this.configuration).refDimsPutSome(refDim, options).then((request) => request(this.axios, this.configuration.baseUrl));
+    }
+
+    /**
      * Retrieve the assembly protocols registered in seqdb for downstream sequence processing and provenance.
      * @summary Retrieve Assembly Protocols
      * @param {*} [options] Override http request option.
@@ -24705,7 +24712,7 @@ export class CaseApi extends BaseAPI {
     }
 
     /**
-     * Retrieve statistics for a set of case types. Each of the parameters, when provided, will further filter the cases that are considered for the statistics.
+     * Retrieve statistics for a set of CaseTypes. Each of the parameters, when provided, will further filter the cases that are considered for the statistics.
      * @summary Retrieve Case Set Statistics
      * @param {RetrieveCaseSetStatsRequestBody} retrieveCaseSetStatsRequestBody 
      * @param {*} [options] Override http request option.
@@ -24717,8 +24724,8 @@ export class CaseApi extends BaseAPI {
     }
 
     /**
-     * Retrieve statistics for a set of case types. Each of the parameters, when provided, will further filter the cases that are considered for the statistics.
-     * @summary Retrieve Case Type Statistics
+     * Retrieve statistics for a set of CaseTypes. Each of the parameters, when provided, will further filter the cases that are considered for the statistics.
+     * @summary Retrieve Casetype Statistics
      * @param {RetrieveCaseTypeStatsRequestBody} retrieveCaseTypeStatsRequestBody 
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
@@ -24741,23 +24748,23 @@ export class CaseApi extends BaseAPI {
     }
 
     /**
-     * Retrieve a set of genetic sequences in FASTA format based on a set of case IDs and a genetic sequence case type column. An iterator is returned that yields the FASTA lines.
+     * Retrieve a set of genetic sequences in FASTA format based on a set of case IDs and a genetic sequence Col. An iterator is returned that yields the FASTA lines.
      * @summary Retrieve Genetic Sequence By Case, In Fasta Format And Streamed
      * @param {string} token 
      * @param {string} caseTypeId 
-     * @param {string} geneticSequenceCaseTypeColId 
+     * @param {string} geneticSequenceColId 
      * @param {Array<string>} caseIds 
      * @param {string} fileName 
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
      * @memberof CaseApi
      */
-    public retrieveGeneticSequenceFasta(token: string, caseTypeId: string, geneticSequenceCaseTypeColId: string, caseIds: Array<string>, fileName: string, options?: RawAxiosRequestConfig) {
-        return CaseApiFp(this.configuration).retrieveGeneticSequenceFasta(token, caseTypeId, geneticSequenceCaseTypeColId, caseIds, fileName, options).then((request) => request(this.axios, this.configuration.baseUrl));
+    public retrieveGeneticSequenceFasta(token: string, caseTypeId: string, geneticSequenceColId: string, caseIds: Array<string>, fileName: string, options?: RawAxiosRequestConfig) {
+        return CaseApiFp(this.configuration).retrieveGeneticSequenceFasta(token, caseTypeId, geneticSequenceColId, caseIds, fileName, options).then((request) => request(this.axios, this.configuration.baseUrl));
     }
 
     /**
-     * Retrieve a phylogenetic tree based on a set of case IDs, a tree algorithm, and a genetic distance case type column.
+     * Retrieve a phylogenetic tree based on a set of case IDs, a tree algorithm, and a genetic distance Col.
      * @summary Retrieve Phylogenetic Tree
      * @param {RetrievePhylogeneticTreeRequestBody} retrievePhylogeneticTreeRequestBody 
      * @param {*} [options] Override http request option.
@@ -24780,7 +24787,7 @@ export class CaseApi extends BaseAPI {
     }
 
     /**
-     * Retrieve cases that are (genetically) similar to a given list of case_ids, based on the genetic distance values in a specified genetic distance case type column and a maximum distance threshold.
+     * Retrieve cases that are (genetically) similar to a given list of case_ids, based on the genetic distance values in a specified genetic distance Col and a maximum distance threshold.
      * @summary Retrieve Similar Cases
      * @param {RetrieveSimilarCasesRequestBody} retrieveSimilarCasesRequestBody 
      * @param {*} [options] Override http request option.
@@ -29380,7 +29387,7 @@ const OntologyApiAxiosParamCreator = function (configuration?: Configuration) {
             };
         },
         /**
-         * Manage diseases (ICD-coded when available) to anchor case types and etiologies to specific conditions.
+         * Manage diseases (ICD-coded when available) to anchor CaseTypes and etiologies to specific conditions.
          * @summary Diseases  Delete All
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
@@ -29410,7 +29417,7 @@ const OntologyApiAxiosParamCreator = function (configuration?: Configuration) {
             };
         },
         /**
-         * Manage diseases (ICD-coded when available) to anchor case types and etiologies to specific conditions.
+         * Manage diseases (ICD-coded when available) to anchor CaseTypes and etiologies to specific conditions.
          * @summary Diseases  Delete One
          * @param {any} objectId 
          * @param {*} [options] Override http request option.
@@ -29444,7 +29451,7 @@ const OntologyApiAxiosParamCreator = function (configuration?: Configuration) {
             };
         },
         /**
-         * Manage diseases (ICD-coded when available) to anchor case types and etiologies to specific conditions.
+         * Manage diseases (ICD-coded when available) to anchor CaseTypes and etiologies to specific conditions.
          * @summary Diseases  Delete Some
          * @param {string} ids 
          * @param {*} [options] Override http request option.
@@ -29481,7 +29488,7 @@ const OntologyApiAxiosParamCreator = function (configuration?: Configuration) {
             };
         },
         /**
-         * Manage diseases (ICD-coded when available) to anchor case types and etiologies to specific conditions.
+         * Manage diseases (ICD-coded when available) to anchor CaseTypes and etiologies to specific conditions.
          * @summary Diseases  Get All
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
@@ -29511,7 +29518,7 @@ const OntologyApiAxiosParamCreator = function (configuration?: Configuration) {
             };
         },
         /**
-         * Manage diseases (ICD-coded when available) to anchor case types and etiologies to specific conditions.
+         * Manage diseases (ICD-coded when available) to anchor CaseTypes and etiologies to specific conditions.
          * @summary Diseases  Get One
          * @param {string} objectId 
          * @param {*} [options] Override http request option.
@@ -29545,7 +29552,7 @@ const OntologyApiAxiosParamCreator = function (configuration?: Configuration) {
             };
         },
         /**
-         * Manage diseases (ICD-coded when available) to anchor case types and etiologies to specific conditions.
+         * Manage diseases (ICD-coded when available) to anchor CaseTypes and etiologies to specific conditions.
          * @summary Diseases  Get Some
          * @param {string} ids 
          * @param {*} [options] Override http request option.
@@ -29582,7 +29589,7 @@ const OntologyApiAxiosParamCreator = function (configuration?: Configuration) {
             };
         },
         /**
-         * Manage diseases (ICD-coded when available) to anchor case types and etiologies to specific conditions.
+         * Manage diseases (ICD-coded when available) to anchor CaseTypes and etiologies to specific conditions.
          * @summary Diseases  Post One
          * @param {Disease} disease 
          * @param {*} [options] Override http request option.
@@ -29618,7 +29625,7 @@ const OntologyApiAxiosParamCreator = function (configuration?: Configuration) {
             };
         },
         /**
-         * Manage diseases (ICD-coded when available) to anchor case types and etiologies to specific conditions.
+         * Manage diseases (ICD-coded when available) to anchor CaseTypes and etiologies to specific conditions.
          * @summary Diseases  Post Query
          * @param {EpiFilter} filter 
          * @param {*} [options] Override http request option.
@@ -29654,7 +29661,7 @@ const OntologyApiAxiosParamCreator = function (configuration?: Configuration) {
             };
         },
         /**
-         * Manage diseases (ICD-coded when available) to anchor case types and etiologies to specific conditions.
+         * Manage diseases (ICD-coded when available) to anchor CaseTypes and etiologies to specific conditions.
          * @summary Diseases  Post Query  Ids
          * @param {EpiFilter} filter 
          * @param {*} [options] Override http request option.
@@ -29690,7 +29697,7 @@ const OntologyApiAxiosParamCreator = function (configuration?: Configuration) {
             };
         },
         /**
-         * Manage diseases (ICD-coded when available) to anchor case types and etiologies to specific conditions.
+         * Manage diseases (ICD-coded when available) to anchor CaseTypes and etiologies to specific conditions.
          * @summary Diseases  Post Some
          * @param {Array<Disease>} disease 
          * @param {*} [options] Override http request option.
@@ -29766,7 +29773,7 @@ const OntologyApiAxiosParamCreator = function (configuration?: Configuration) {
             };
         },
         /**
-         * Manage diseases (ICD-coded when available) to anchor case types and etiologies to specific conditions.
+         * Manage diseases (ICD-coded when available) to anchor CaseTypes and etiologies to specific conditions.
          * @summary Diseases  Put One
          * @param {string} objectId 
          * @param {Disease} disease 
@@ -29806,7 +29813,7 @@ const OntologyApiAxiosParamCreator = function (configuration?: Configuration) {
             };
         },
         /**
-         * Manage diseases (ICD-coded when available) to anchor case types and etiologies to specific conditions.
+         * Manage diseases (ICD-coded when available) to anchor CaseTypes and etiologies to specific conditions.
          * @summary Diseases  Put Some
          * @param {Array<Disease>} disease 
          * @param {*} [options] Override http request option.
@@ -31161,7 +31168,7 @@ const OntologyApiFp = function(configuration?: Configuration) {
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
         /**
-         * Manage diseases (ICD-coded when available) to anchor case types and etiologies to specific conditions.
+         * Manage diseases (ICD-coded when available) to anchor CaseTypes and etiologies to specific conditions.
          * @summary Diseases  Delete All
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
@@ -31173,7 +31180,7 @@ const OntologyApiFp = function(configuration?: Configuration) {
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
         /**
-         * Manage diseases (ICD-coded when available) to anchor case types and etiologies to specific conditions.
+         * Manage diseases (ICD-coded when available) to anchor CaseTypes and etiologies to specific conditions.
          * @summary Diseases  Delete One
          * @param {any} objectId 
          * @param {*} [options] Override http request option.
@@ -31186,7 +31193,7 @@ const OntologyApiFp = function(configuration?: Configuration) {
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
         /**
-         * Manage diseases (ICD-coded when available) to anchor case types and etiologies to specific conditions.
+         * Manage diseases (ICD-coded when available) to anchor CaseTypes and etiologies to specific conditions.
          * @summary Diseases  Delete Some
          * @param {string} ids 
          * @param {*} [options] Override http request option.
@@ -31199,7 +31206,7 @@ const OntologyApiFp = function(configuration?: Configuration) {
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
         /**
-         * Manage diseases (ICD-coded when available) to anchor case types and etiologies to specific conditions.
+         * Manage diseases (ICD-coded when available) to anchor CaseTypes and etiologies to specific conditions.
          * @summary Diseases  Get All
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
@@ -31211,7 +31218,7 @@ const OntologyApiFp = function(configuration?: Configuration) {
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
         /**
-         * Manage diseases (ICD-coded when available) to anchor case types and etiologies to specific conditions.
+         * Manage diseases (ICD-coded when available) to anchor CaseTypes and etiologies to specific conditions.
          * @summary Diseases  Get One
          * @param {string} objectId 
          * @param {*} [options] Override http request option.
@@ -31224,7 +31231,7 @@ const OntologyApiFp = function(configuration?: Configuration) {
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
         /**
-         * Manage diseases (ICD-coded when available) to anchor case types and etiologies to specific conditions.
+         * Manage diseases (ICD-coded when available) to anchor CaseTypes and etiologies to specific conditions.
          * @summary Diseases  Get Some
          * @param {string} ids 
          * @param {*} [options] Override http request option.
@@ -31237,7 +31244,7 @@ const OntologyApiFp = function(configuration?: Configuration) {
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
         /**
-         * Manage diseases (ICD-coded when available) to anchor case types and etiologies to specific conditions.
+         * Manage diseases (ICD-coded when available) to anchor CaseTypes and etiologies to specific conditions.
          * @summary Diseases  Post One
          * @param {Disease} disease 
          * @param {*} [options] Override http request option.
@@ -31250,7 +31257,7 @@ const OntologyApiFp = function(configuration?: Configuration) {
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
         /**
-         * Manage diseases (ICD-coded when available) to anchor case types and etiologies to specific conditions.
+         * Manage diseases (ICD-coded when available) to anchor CaseTypes and etiologies to specific conditions.
          * @summary Diseases  Post Query
          * @param {EpiFilter} filter 
          * @param {*} [options] Override http request option.
@@ -31263,7 +31270,7 @@ const OntologyApiFp = function(configuration?: Configuration) {
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
         /**
-         * Manage diseases (ICD-coded when available) to anchor case types and etiologies to specific conditions.
+         * Manage diseases (ICD-coded when available) to anchor CaseTypes and etiologies to specific conditions.
          * @summary Diseases  Post Query  Ids
          * @param {EpiFilter} filter 
          * @param {*} [options] Override http request option.
@@ -31276,7 +31283,7 @@ const OntologyApiFp = function(configuration?: Configuration) {
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
         /**
-         * Manage diseases (ICD-coded when available) to anchor case types and etiologies to specific conditions.
+         * Manage diseases (ICD-coded when available) to anchor CaseTypes and etiologies to specific conditions.
          * @summary Diseases  Post Some
          * @param {Array<Disease>} disease 
          * @param {*} [options] Override http request option.
@@ -31303,7 +31310,7 @@ const OntologyApiFp = function(configuration?: Configuration) {
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
         /**
-         * Manage diseases (ICD-coded when available) to anchor case types and etiologies to specific conditions.
+         * Manage diseases (ICD-coded when available) to anchor CaseTypes and etiologies to specific conditions.
          * @summary Diseases  Put One
          * @param {string} objectId 
          * @param {Disease} disease 
@@ -31317,7 +31324,7 @@ const OntologyApiFp = function(configuration?: Configuration) {
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
         /**
-         * Manage diseases (ICD-coded when available) to anchor case types and etiologies to specific conditions.
+         * Manage diseases (ICD-coded when available) to anchor CaseTypes and etiologies to specific conditions.
          * @summary Diseases  Put Some
          * @param {Array<Disease>} disease 
          * @param {*} [options] Override http request option.
@@ -32091,7 +32098,7 @@ export class OntologyApi extends BaseAPI {
     }
 
     /**
-     * Manage diseases (ICD-coded when available) to anchor case types and etiologies to specific conditions.
+     * Manage diseases (ICD-coded when available) to anchor CaseTypes and etiologies to specific conditions.
      * @summary Diseases  Delete All
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
@@ -32102,7 +32109,7 @@ export class OntologyApi extends BaseAPI {
     }
 
     /**
-     * Manage diseases (ICD-coded when available) to anchor case types and etiologies to specific conditions.
+     * Manage diseases (ICD-coded when available) to anchor CaseTypes and etiologies to specific conditions.
      * @summary Diseases  Delete One
      * @param {any} objectId 
      * @param {*} [options] Override http request option.
@@ -32114,7 +32121,7 @@ export class OntologyApi extends BaseAPI {
     }
 
     /**
-     * Manage diseases (ICD-coded when available) to anchor case types and etiologies to specific conditions.
+     * Manage diseases (ICD-coded when available) to anchor CaseTypes and etiologies to specific conditions.
      * @summary Diseases  Delete Some
      * @param {string} ids 
      * @param {*} [options] Override http request option.
@@ -32126,7 +32133,7 @@ export class OntologyApi extends BaseAPI {
     }
 
     /**
-     * Manage diseases (ICD-coded when available) to anchor case types and etiologies to specific conditions.
+     * Manage diseases (ICD-coded when available) to anchor CaseTypes and etiologies to specific conditions.
      * @summary Diseases  Get All
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
@@ -32137,7 +32144,7 @@ export class OntologyApi extends BaseAPI {
     }
 
     /**
-     * Manage diseases (ICD-coded when available) to anchor case types and etiologies to specific conditions.
+     * Manage diseases (ICD-coded when available) to anchor CaseTypes and etiologies to specific conditions.
      * @summary Diseases  Get One
      * @param {string} objectId 
      * @param {*} [options] Override http request option.
@@ -32149,7 +32156,7 @@ export class OntologyApi extends BaseAPI {
     }
 
     /**
-     * Manage diseases (ICD-coded when available) to anchor case types and etiologies to specific conditions.
+     * Manage diseases (ICD-coded when available) to anchor CaseTypes and etiologies to specific conditions.
      * @summary Diseases  Get Some
      * @param {string} ids 
      * @param {*} [options] Override http request option.
@@ -32161,7 +32168,7 @@ export class OntologyApi extends BaseAPI {
     }
 
     /**
-     * Manage diseases (ICD-coded when available) to anchor case types and etiologies to specific conditions.
+     * Manage diseases (ICD-coded when available) to anchor CaseTypes and etiologies to specific conditions.
      * @summary Diseases  Post One
      * @param {Disease} disease 
      * @param {*} [options] Override http request option.
@@ -32173,7 +32180,7 @@ export class OntologyApi extends BaseAPI {
     }
 
     /**
-     * Manage diseases (ICD-coded when available) to anchor case types and etiologies to specific conditions.
+     * Manage diseases (ICD-coded when available) to anchor CaseTypes and etiologies to specific conditions.
      * @summary Diseases  Post Query
      * @param {EpiFilter} filter 
      * @param {*} [options] Override http request option.
@@ -32185,7 +32192,7 @@ export class OntologyApi extends BaseAPI {
     }
 
     /**
-     * Manage diseases (ICD-coded when available) to anchor case types and etiologies to specific conditions.
+     * Manage diseases (ICD-coded when available) to anchor CaseTypes and etiologies to specific conditions.
      * @summary Diseases  Post Query  Ids
      * @param {EpiFilter} filter 
      * @param {*} [options] Override http request option.
@@ -32197,7 +32204,7 @@ export class OntologyApi extends BaseAPI {
     }
 
     /**
-     * Manage diseases (ICD-coded when available) to anchor case types and etiologies to specific conditions.
+     * Manage diseases (ICD-coded when available) to anchor CaseTypes and etiologies to specific conditions.
      * @summary Diseases  Post Some
      * @param {Array<Disease>} disease 
      * @param {*} [options] Override http request option.
@@ -32222,7 +32229,7 @@ export class OntologyApi extends BaseAPI {
     }
 
     /**
-     * Manage diseases (ICD-coded when available) to anchor case types and etiologies to specific conditions.
+     * Manage diseases (ICD-coded when available) to anchor CaseTypes and etiologies to specific conditions.
      * @summary Diseases  Put One
      * @param {string} objectId 
      * @param {Disease} disease 
@@ -32235,7 +32242,7 @@ export class OntologyApi extends BaseAPI {
     }
 
     /**
-     * Manage diseases (ICD-coded when available) to anchor case types and etiologies to specific conditions.
+     * Manage diseases (ICD-coded when available) to anchor CaseTypes and etiologies to specific conditions.
      * @summary Diseases  Put Some
      * @param {Array<Disease>} disease 
      * @param {*} [options] Override http request option.
@@ -37964,8 +37971,8 @@ const OrganizationApiAxiosParamCreator = function (configuration?: Configuration
             };
         },
         /**
-         * Registers (creates) the user of the command. The key and token must match that of an existing UserInvitation. The newly registered user is assigned the organization and roles from the invitation. The invitation is deleted.
-         * @summary Registerinviteduser
+         * Registers (creates) the user of the command. The token must match that of an existing UserInvitation. The newly registered user is assigned the organization and roles from the invitation. The invitation is deleted.
+         * @summary Register Inviteduser
          * @param {string} token 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
@@ -40421,8 +40428,8 @@ const OrganizationApiFp = function(configuration?: Configuration) {
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
         /**
-         * Registers (creates) the user of the command. The key and token must match that of an existing UserInvitation. The newly registered user is assigned the organization and roles from the invitation. The invitation is deleted.
-         * @summary Registerinviteduser
+         * Registers (creates) the user of the command. The token must match that of an existing UserInvitation. The newly registered user is assigned the organization and roles from the invitation. The invitation is deleted.
+         * @summary Register Inviteduser
          * @param {string} token 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
@@ -42448,8 +42455,8 @@ export class OrganizationApi extends BaseAPI {
     }
 
     /**
-     * Registers (creates) the user of the command. The key and token must match that of an existing UserInvitation. The newly registered user is assigned the organization and roles from the invitation. The invitation is deleted.
-     * @summary Registerinviteduser
+     * Registers (creates) the user of the command. The token must match that of an existing UserInvitation. The newly registered user is assigned the organization and roles from the invitation. The invitation is deleted.
+     * @summary Register Inviteduser
      * @param {string} token 
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}

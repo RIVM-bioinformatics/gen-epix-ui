@@ -30,7 +30,7 @@ import { TableUtil } from '../../../utils/TableUtil';
 import { EpiUploadUtil } from '../../../utils/EpiUploadUtil';
 import { Table } from '../../ui/Table';
 import { CaseUtil } from '../../../utils/CaseUtil';
-import { type CaseTypeCol } from '../../../api';
+import { type Col } from '../../../api';
 import { EpiUploadStoreContext } from '../../../stores/epiUploadStore';
 import type { CaseUploadResultWithGeneratedId } from '../../../models/epi';
 
@@ -44,14 +44,14 @@ export const EpiUploadMapSequences = () => {
   const goToNextStep = useStore(store, (state) => state.goToNextStep);
   const goToPreviousStep = useStore(store, (state) => state.goToPreviousStep);
   const completeCaseType = useStore(store, (state) => state.completeCaseType);
-  const sampleIdCaseTypeColId = useStore(store, (state) => state.sampleIdCaseTypeColId);
+  const sampleIdColId = useStore(store, (state) => state.sampleIdColId);
   const sequenceFilesDataTransfer = useStore(store, (state) => state.sequenceFilesDataTransfer);
   const validatedCasesWithGeneratedId = useStore(store, (state) => state.validatedCasesWithGeneratedId);
   const validatedCases = useStore(store, (state) => state.validatedCases);
   const setSequenceMapping = useStore(store, (state) => state.setSequenceMapping);
 
-  const completeCaseTypeColumnStats = useMemo(() => {
-    return EpiUploadUtil.getCompleteCaseTypeColumnStats(completeCaseType);
+  const completeCaseTypeColStats = useMemo(() => {
+    return EpiUploadUtil.getCompleteCaseTypeColStats(completeCaseType);
   }, [completeCaseType]);
 
   const alertTitleId = useId();
@@ -90,9 +90,9 @@ export const EpiUploadMapSequences = () => {
     idSelectorCallback: (row) => row.generatedId,
   }), []);
 
-  const caseHasColumnContent = useCallback((rows: CaseUploadResultWithGeneratedId[], caseTypeCol: CaseTypeCol): boolean => {
+  const caseHasColumnContent = useCallback((rows: CaseUploadResultWithGeneratedId[], col: Col): boolean => {
     return rows.some((row) => {
-      const value = CaseUtil.getRowValue(row.validated_content, caseTypeCol, completeCaseType);
+      const value = CaseUtil.getRowValue(row.validated_content, col, completeCaseType);
       return value && !value?.isMissing;
     });
   }, [completeCaseType]);
@@ -136,15 +136,15 @@ export const EpiUploadMapSequences = () => {
   }, [setSequenceMapping, updateAlert]);
 
   const renderSequenceCell = useCallback((tableRowParams: TableRowParams<CaseUploadResultWithGeneratedId>) => {
-    const caseTypeCol = completeCaseType.case_type_cols[tableRowParams.id];
+    const col = completeCaseType.cols[tableRowParams.id];
 
     const id = tableRowParams.row.generatedId;
-    const dropDownValue = epiUploadSequenceMapping.current?.[tableRowParams.row.generatedId]?.sequenceFileNames[caseTypeCol.id] || '';
+    const dropDownValue = epiUploadSequenceMapping.current?.[tableRowParams.row.generatedId]?.sequenceFileNames[col.id] || '';
     const onChange = (newValue: string) => {
       if (!newValue) {
-        delete epiUploadSequenceMapping.current?.[id]?.sequenceFileNames[caseTypeCol.id];
+        delete epiUploadSequenceMapping.current?.[id]?.sequenceFileNames[col.id];
       } else {
-        epiUploadSequenceMapping.current[id].sequenceFileNames[caseTypeCol.id] = newValue;
+        epiUploadSequenceMapping.current[id].sequenceFileNames[col.id] = newValue;
       }
     };
 
@@ -161,7 +161,7 @@ export const EpiUploadMapSequences = () => {
         {createDropDown({
           dropDownValue,
           dropDownOptions: sequenceDropDownOptions,
-          label: caseTypeCol.label,
+          label: col.label,
           onChange,
         })}
       </Box>
@@ -170,24 +170,24 @@ export const EpiUploadMapSequences = () => {
 
 
   const renderReadsCell = useCallback((tableRowParams: TableRowParams<CaseUploadResultWithGeneratedId>) => {
-    const caseTypeCol = completeCaseType.case_type_cols[tableRowParams.id];
-    const isSequenceColumn = completeCaseTypeColumnStats.sequenceColumns.includes(caseTypeCol);
+    const col = completeCaseType.cols[tableRowParams.id];
+    const isSequenceColumn = completeCaseTypeColStats.sequenceColumns.includes(col);
 
     const id = tableRowParams.row.generatedId;
-    const dropDownValueFwd = epiUploadSequenceMapping.current?.[tableRowParams.row.generatedId]?.readsFileNames?.[caseTypeCol.id]?.fwd || '';
-    const dropDownValueRev = epiUploadSequenceMapping.current?.[tableRowParams.row.generatedId]?.readsFileNames?.[caseTypeCol.id]?.rev || '';
+    const dropDownValueFwd = epiUploadSequenceMapping.current?.[tableRowParams.row.generatedId]?.readsFileNames?.[col.id]?.fwd || '';
+    const dropDownValueRev = epiUploadSequenceMapping.current?.[tableRowParams.row.generatedId]?.readsFileNames?.[col.id]?.rev || '';
     const onChangeFwd = (newValue: string) => {
       if (!newValue) {
-        delete epiUploadSequenceMapping.current?.[id]?.readsFileNames?.[caseTypeCol.id]?.fwd;
+        delete epiUploadSequenceMapping.current?.[id]?.readsFileNames?.[col.id]?.fwd;
       } else {
-        epiUploadSequenceMapping.current[id].readsFileNames[caseTypeCol.id].fwd = newValue;
+        epiUploadSequenceMapping.current[id].readsFileNames[col.id].fwd = newValue;
       }
     };
     const onChangeRev = (newValue: string) => {
       if (!newValue) {
-        delete epiUploadSequenceMapping.current?.[id]?.readsFileNames?.[caseTypeCol.id]?.rev;
+        delete epiUploadSequenceMapping.current?.[id]?.readsFileNames?.[col.id]?.rev;
       } else {
-        epiUploadSequenceMapping.current[id].readsFileNames[caseTypeCol.id].rev = newValue;
+        epiUploadSequenceMapping.current[id].readsFileNames[col.id].rev = newValue;
       }
     };
 
@@ -205,18 +205,18 @@ export const EpiUploadMapSequences = () => {
         {createDropDown({
           dropDownValue: dropDownValueFwd,
           dropDownOptions: isSequenceColumn ? sequenceDropDownOptions : readsDropDownOptions,
-          label: `${caseTypeCol.label} FWD`,
+          label: `${col.label} FWD`,
           onChange: onChangeFwd,
         })}
         {createDropDown({
           dropDownValue: dropDownValueRev,
           dropDownOptions: isSequenceColumn ? sequenceDropDownOptions : readsDropDownOptions,
-          label: `${caseTypeCol.label} REV`,
+          label: `${col.label} REV`,
           onChange: onChangeRev,
         })}
       </Box>
     );
-  }, [completeCaseType, completeCaseTypeColumnStats.sequenceColumns, createDropDown, sequenceDropDownOptions, readsDropDownOptions]);
+  }, [completeCaseType, completeCaseTypeColStats.sequenceColumns, createDropDown, sequenceDropDownOptions, readsDropDownOptions]);
 
 
   const tableColumns = useMemo<TableColumn<CaseUploadResultWithGeneratedId>[]>(() => {
@@ -226,80 +226,80 @@ export const EpiUploadMapSequences = () => {
     );
 
     const columnsUsedForMapping = [
-      ...completeCaseTypeColumnStats.sampleIdColumns,
-      ...completeCaseTypeColumnStats.sequenceColumns,
-      ...completeCaseTypeColumnStats.readsColumns,
+      ...completeCaseTypeColStats.sampleIdColumns,
+      ...completeCaseTypeColStats.sequenceColumns,
+      ...completeCaseTypeColStats.readsColumns,
     ];
 
-    const sampleIdCaseTypeCol = completeCaseTypeColumnStats.sampleIdColumns.find(x => x.id === sampleIdCaseTypeColId);
-    if (sampleIdCaseTypeCol && caseHasColumnContent(validatedCasesWithGeneratedId, sampleIdCaseTypeCol)) {
+    const sampleIdCol = completeCaseTypeColStats.sampleIdColumns.find(x => x.id === sampleIdColId);
+    if (sampleIdCol && caseHasColumnContent(validatedCasesWithGeneratedId, sampleIdCol)) {
       tableCols.push({
         type: 'text',
         isInitiallyVisible: true,
         hideInFilter: true,
-        id: sampleIdCaseTypeCol.id,
-        headerName: sampleIdCaseTypeCol.label,
+        id: sampleIdCol.id,
+        headerName: sampleIdCol.label,
         widthPx: 300,
-        valueGetter: (params) => CaseUtil.getRowValue(params.row.validated_content, sampleIdCaseTypeCol, completeCaseType).short,
+        valueGetter: (params) => CaseUtil.getRowValue(params.row.validated_content, sampleIdCol, completeCaseType).short,
       });
     }
 
-    completeCaseTypeColumnStats.sequenceColumns.forEach((caseTypeCol) => {
+    completeCaseTypeColStats.sequenceColumns.forEach((col) => {
       tableCols.push({
         type: 'text',
         isInitiallyVisible: true,
         hideInFilter: true,
-        id: caseTypeCol.id,
-        headerName: caseTypeCol.label,
+        id: col.id,
+        headerName: col.label,
         widthPx: 400,
         renderCell: renderSequenceCell,
-        valueGetter: (params) => CaseUtil.getRowValue(params.row.validated_content, caseTypeCol, completeCaseType).short,
+        valueGetter: (params) => CaseUtil.getRowValue(params.row.validated_content, col, completeCaseType).short,
         cellTitleGetter: () => null,
       });
     });
 
-    completeCaseTypeColumnStats.readsColumns.forEach((caseTypeCol) => {
+    completeCaseTypeColStats.readsColumns.forEach((col) => {
       tableCols.push({
         type: 'text',
         isInitiallyVisible: true,
         hideInFilter: true,
-        id: caseTypeCol.id,
-        headerName: caseTypeCol.label,
+        id: col.id,
+        headerName: col.label,
         widthPx: 800,
         renderCell: renderReadsCell,
-        valueGetter: (params) => CaseUtil.getRowValue(params.row.validated_content, caseTypeCol, completeCaseType).short,
+        valueGetter: (params) => CaseUtil.getRowValue(params.row.validated_content, col, completeCaseType).short,
         cellTitleGetter: () => null,
       });
     });
 
-    const uniqueCaseTypeColIds: Set<string> = new Set();
+    const uniqueColIds: Set<string> = new Set();
     validatedCases.forEach((vc) => {
-      Object.keys(vc.validated_content || {}).forEach((colId) => uniqueCaseTypeColIds.add(colId));
+      Object.keys(vc.validated_content || {}).forEach((colId) => uniqueColIds.add(colId));
     });
 
-    const caseTypeColIdsToIgnore = [...completeCaseTypeColumnStats.sequenceColumns.map(x => x.id), ...completeCaseTypeColumnStats.readsColumns.map(x => x.id), sampleIdCaseTypeCol?.id];
+    const colIdsToIgnore = [...completeCaseTypeColStats.sequenceColumns.map(x => x.id), ...completeCaseTypeColStats.readsColumns.map(x => x.id), sampleIdCol?.id];
 
-    completeCaseType.ordered_case_type_col_ids.forEach((caseTypeColId) => {
-      if (caseTypeColIdsToIgnore.includes(caseTypeColId) || !uniqueCaseTypeColIds.has(caseTypeColId) || columnsUsedForMapping.find(c => c.id === caseTypeColId)) {
+    completeCaseType.ordered_col_ids.forEach((colId) => {
+      if (colIdsToIgnore.includes(colId) || !uniqueColIds.has(colId) || columnsUsedForMapping.find(c => c.id === colId)) {
         return;
       }
 
-      const caseTypeCol = completeCaseType.case_type_cols[caseTypeColId];
-      if (caseTypeCol) {
+      const col = completeCaseType.cols[colId];
+      if (col) {
         tableCols.push({
           type: 'text',
           isInitiallyVisible: true,
           hideInFilter: true,
-          id: caseTypeCol.id,
-          headerName: caseTypeCol.code,
+          id: col.id,
+          headerName: col.code,
           widthPx: 250,
-          valueGetter: (params) => CaseUtil.getRowValue(params.row.validated_content, caseTypeCol, completeCaseType).short,
+          valueGetter: (params) => CaseUtil.getRowValue(params.row.validated_content, col, completeCaseType).short,
         } satisfies TableColumn<CaseUploadResultWithGeneratedId>);
       }
     });
 
     return tableCols;
-  }, [caseHasColumnContent, completeCaseType, completeCaseTypeColumnStats.readsColumns, completeCaseTypeColumnStats.sampleIdColumns, completeCaseTypeColumnStats.sequenceColumns, renderReadsCell, renderSequenceCell, sampleIdCaseTypeColId, validatedCases, validatedCasesWithGeneratedId]);
+  }, [caseHasColumnContent, completeCaseType, completeCaseTypeColStats.readsColumns, completeCaseTypeColStats.sampleIdColumns, completeCaseTypeColStats.sequenceColumns, renderReadsCell, renderSequenceCell, sampleIdColId, validatedCases, validatedCasesWithGeneratedId]);
 
   useInitializeTableStore<CaseUploadResultWithGeneratedId>({ store: tableStore, columns: tableColumns, rows: validatedCasesWithGeneratedId, createFiltersFromColumns: true });
 

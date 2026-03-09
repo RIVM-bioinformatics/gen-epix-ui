@@ -7,7 +7,7 @@ import type { TFunction } from 'i18next';
 
 import type {
   CompleteCaseType,
-  CaseTypeCol,
+  Col,
 } from '../api';
 import type { DATE_FORMAT } from '../data/date';
 
@@ -121,7 +121,7 @@ export interface TableColumnActions<TRowData> extends TableColumnBase<TRowData, 
 export interface TableColumnCaseType<TRowData> extends TableColumnBase<TRowData, CaseTypeRowValue> {
   type: 'caseType';
   completeCaseType: CompleteCaseType;
-  caseTypeCol: CaseTypeCol;
+  col: Col;
   comparatorFactory?: (params: GetTableCellRowComparatorProps<TableColumnCaseType<TRowData>>) => (a: TRowData, b: TRowData) => number;
 }
 

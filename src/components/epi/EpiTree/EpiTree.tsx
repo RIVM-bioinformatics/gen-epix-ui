@@ -131,7 +131,7 @@ export const EpiTree = ({ linkedScrollSubject, ref }: EpiTreeProps) => {
       return t('Phylogenetic tree visualization');
     }
 
-    const label = treeConfiguration.caseTypeCol?.label || t('data');
+    const label = treeConfiguration.col?.label || t('data');
     const geneticDistanceProtocol = treeConfiguration.geneticDistanceProtocol?.name || t('unknown protocol');
     const treeAlgorithm = treeConfiguration.treeAlgorithm?.name || t('unknown algorithm');
 
@@ -179,10 +179,10 @@ export const EpiTree = ({ linkedScrollSubject, ref }: EpiTreeProps) => {
 
   const retrievePhylogeneticTreeRequestBody = useMemo<RetrievePhylogeneticTreeRequestBody>(() => ({
     case_ids: caseIds,
-    genetic_distance_case_type_col_id: treeConfiguration?.caseTypeCol.id,
+    genetic_distance_col_id: treeConfiguration?.col.id,
     tree_algorithm_code: treeConfiguration?.treeAlgorithm.code,
     case_type_id: completeCaseType.id,
-  }), [caseIds, completeCaseType.id, treeConfiguration?.caseTypeCol.id, treeConfiguration?.treeAlgorithm.code]);
+  }), [caseIds, completeCaseType.id, treeConfiguration?.col.id, treeConfiguration?.treeAlgorithm.code]);
 
   const { isLoading: isTreeLoading, error: treeError, data: treeData } = useQueryMemo({
     queryKey: QueryUtil.getRetrievePhylogeneticTreeKey(retrievePhylogeneticTreeRequestBody),

@@ -25,7 +25,7 @@ import { EpiLegendaItem } from '../EpiLegendaItem';
 import type {
   CaseSet,
   Case,
-  CaseTypeCol,
+  Col,
 } from '../../../api';
 import { ColType } from '../../../api';
 import { ConfigManager } from '../../../classes/managers/ConfigManager';
@@ -89,23 +89,23 @@ export const EpiLineList = ({ linkedScrollSubject, onLink, caseSet }: EpiLineLis
     });
   }, [completeCaseType.id]);
 
-  const getColumnWidth = useCallback((caseTypeCol: CaseTypeCol, label: string) => {
+  const getColumnWidth = useCallback((col: Col, label: string) => {
     let maxTextLength = label?.length * 0.8;
     sortedData.forEach(row => {
-      const value = CaseUtil.getRowValue(row.content, caseTypeCol, completeCaseType).short;
+      const value = CaseUtil.getRowValue(row.content, col, completeCaseType).short;
       if (value?.length > maxTextLength) {
         maxTextLength = value.length;
       }
     });
 
     let maxWidth = +theme.spacing(5).replace('px', '') + maxTextLength * 7;
-    if (stratification?.caseTypeCol?.id === caseTypeCol.id) {
+    if (stratification?.col?.id === col.id) {
       maxWidth = maxWidth + +theme.spacing(3).replace('px', '');
     }
 
     const { MAX_COLUMN_WIDTH, REQUIRED_EXTRA_CELL_PADDING_TO_FIT_CONTENT } = ConfigManager.instance.config.epiLineList;
     return Math.min(MAX_COLUMN_WIDTH, maxWidth) + REQUIRED_EXTRA_CELL_PADDING_TO_FIT_CONTENT;
-  }, [completeCaseType, sortedData, stratification?.caseTypeCol?.id, theme]);
+  }, [completeCaseType, sortedData, stratification?.col?.id, theme]);
 
   const onOrganizationCellClick = useCallback((organizationId: string, organizationName: string) => {
     EpiEventBusManager.instance.emit('openContactDetailsDialog', {
@@ -115,7 +115,7 @@ export const EpiLineList = ({ linkedScrollSubject, onLink, caseSet }: EpiLineLis
   }, []);
 
   const renderOrganizationCell = useCallback(({ id, row }: TableRowParams<Case>) => {
-    const rowValue = CaseUtil.getRowValue(row.content, completeCaseType.case_type_cols[id], completeCaseType);
+    const rowValue = CaseUtil.getRowValue(row.content, completeCaseType.cols[id], completeCaseType);
     if (rowValue.isMissing) {
       return rowValue.short;
     }
@@ -134,7 +134,7 @@ export const EpiLineList = ({ linkedScrollSubject, onLink, caseSet }: EpiLineLis
         {rowValue.short}
       </Link>
     );
-    if (id === stratification?.caseTypeCol?.id) {
+    if (id === stratification?.col?.id) {
       return (
         <EpiLegendaItem
           color={stratification?.caseIdColors[row.id]}
@@ -145,11 +145,11 @@ export const EpiLineList = ({ linkedScrollSubject, onLink, caseSet }: EpiLineLis
       );
     }
     return link;
-  }, [completeCaseType, onOrganizationCellClick, stratification?.caseIdColors, stratification?.caseTypeCol?.id]);
+  }, [completeCaseType, onOrganizationCellClick, stratification?.caseIdColors, stratification?.col?.id]);
 
   const onGeneticSequenceCellClick = useCallback((id: string, row: Case) => {
     EpiEventBusManager.instance.emit('openSequenceDownloadDialog', {
-      geneticSequenceCaseTypeColId: id,
+      geneticSequenceColId: id,
       cases: [row],
     });
   }, []);
@@ -258,9 +258,9 @@ export const EpiLineList = ({ linkedScrollSubject, onLink, caseSet }: EpiLineLis
 
 
   const renderCell = useCallback(({ id, row }: TableRowParams<Case>) => {
-    const rowValue = CaseUtil.getRowValue(row.content, completeCaseType.case_type_cols[id], completeCaseType);
+    const rowValue = CaseUtil.getRowValue(row.content, completeCaseType.cols[id], completeCaseType);
 
-    if (id === stratification?.caseTypeCol?.id) {
+    if (id === stratification?.col?.id) {
       return (
         <EpiLegendaItem
           color={stratification?.caseIdColors[row.id]}
@@ -274,7 +274,7 @@ export const EpiLineList = ({ linkedScrollSubject, onLink, caseSet }: EpiLineLis
         {rowValue.short}
       </>
     );
-  }, [completeCaseType, stratification?.caseIdColors, stratification?.caseTypeCol?.id]);
+  }, [completeCaseType, stratification?.caseIdColors, stratification?.col?.id]);
 
   const staticTableColumns = useMemo<TableColumn<Case>[]>(() => {
     return [
@@ -311,26 +311,26 @@ export const EpiLineList = ({ linkedScrollSubject, onLink, caseSet }: EpiLineLis
   const tableColumns = useMemo<TableColumn<Case>[]>(() => {
     const { DATA_MISSING_CHARACTER } = ConfigManager.instance.config.epi;
 
-    const initialVisibleColumnIds = CaseTypeUtil.getInitialVisibleColumnIds(completeCaseType);
+    const initialVisibleColumnIds = CaseTypeUtil.getInitialVisibleColIds(completeCaseType);
     const caseTypeTableColumns: TableColumn<Case>[] = [];
 
 
-    completeCaseType.ordered_case_type_dim_ids.map(x => completeCaseType.case_type_dims[x]).forEach((caseTypeDim) => {
-      completeCaseType.ordered_case_type_col_ids_by_dim[caseTypeDim.id].map(id => completeCaseType.case_type_cols[id]).forEach(caseTypeCol => {
-        const col = completeCaseType.cols[caseTypeCol.col_id];
+    completeCaseType.ordered_dim_ids.map(x => completeCaseType.dims[x]).forEach((dim) => {
+      completeCaseType.ordered_col_ids_by_dim[dim.id].map(id => completeCaseType.cols[id]).forEach(col => {
+        const refCol = completeCaseType.ref_cols[col.ref_col_id];
         const baseCaseTypeTableColumn: Partial<TableColumn<Case>> = {
-          isInitiallyVisible: initialVisibleColumnIds.includes(caseTypeCol.id),
-          id: caseTypeCol.id,
-          headerTooltipContent: col.description,
-          headerName: caseTypeCol.label,
+          isInitiallyVisible: initialVisibleColumnIds.includes(col.id),
+          id: col.id,
+          headerTooltipContent: refCol.description,
+          headerName: col.label,
         };
-        if (col.col_type === ColType.GENETIC_DISTANCE) {
+        if (refCol.col_type === ColType.GENETIC_DISTANCE) {
           caseTypeTableColumns.push({
             ...baseCaseTypeTableColumn,
             type: 'caseType',
             widthPx: 200,
             valueGetter: (params) => {
-              const value = treeAddresses[caseTypeCol.id]?.addresses[params.row.id] ? `${treeAddresses[caseTypeCol.id].algorithmCode} ${treeAddresses[caseTypeCol.id].addresses[params.row.id]}` : undefined;
+              const value = treeAddresses[col.id]?.addresses[params.row.id] ? `${treeAddresses[col.id].algorithmCode} ${treeAddresses[col.id].addresses[params.row.id]}` : undefined;
               return {
                 raw: value,
                 short: value ?? DATA_MISSING_CHARACTER,
@@ -340,15 +340,15 @@ export const EpiLineList = ({ linkedScrollSubject, onLink, caseSet }: EpiLineLis
               };
             },
             comparatorFactory: ({ direction }: GetTableCellRowComparatorProps<TableColumnCaseType<Case>>) => (a: Case, b: Case) => {
-              const sortValue = StringUtil.advancedSortComperator(treeAddresses[caseTypeCol.id]?.addresses?.[a.id], treeAddresses[caseTypeCol.id]?.addresses?.[b.id]);
+              const sortValue = StringUtil.advancedSortComperator(treeAddresses[col.id]?.addresses?.[a.id], treeAddresses[col.id]?.addresses?.[b.id]);
               return direction === 'asc' ? sortValue : -sortValue;
             },
           } as TableColumn<Case>);
         } else {
           let cellRenderer: (params: TableRowParams<Case>) => string | ReactElement;
-          if (col.col_type === ColType.ORGANIZATION) {
+          if (refCol.col_type === ColType.ORGANIZATION) {
             cellRenderer = renderOrganizationCell;
-          } else if (col.col_type === ColType.GENETIC_SEQUENCE) {
+          } else if (refCol.col_type === ColType.GENETIC_SEQUENCE) {
             cellRenderer = renderGeneticSequenceCell;
           } else {
             cellRenderer = renderCell;
@@ -356,13 +356,13 @@ export const EpiLineList = ({ linkedScrollSubject, onLink, caseSet }: EpiLineLis
 
           caseTypeTableColumns.push({
             ...baseCaseTypeTableColumn,
-            widthPx: getColumnWidth(caseTypeCol, caseTypeCol.label),
+            widthPx: getColumnWidth(col, col.label),
             type: 'caseType',
             renderCell: cellRenderer,
-            caseTypeCol,
+            col,
             completeCaseType,
             comparatorFactory: TableUtil.createCaseTypeCellRowComperator,
-            textAlign: ([ColType.DECIMAL_0, ColType.DECIMAL_1, ColType.DECIMAL_2, ColType.DECIMAL_3, ColType.DECIMAL_4, ColType.DECIMAL_4, ColType.DECIMAL_5, ColType.DECIMAL_6] as ColType[]).includes(col.col_type) ? 'right' : 'left',
+            textAlign: ([ColType.DECIMAL_0, ColType.DECIMAL_1, ColType.DECIMAL_2, ColType.DECIMAL_3, ColType.DECIMAL_4, ColType.DECIMAL_4, ColType.DECIMAL_5, ColType.DECIMAL_6] as ColType[]).includes(refCol.col_type) ? 'right' : 'left',
           } as TableColumn<Case>);
         }
       });
