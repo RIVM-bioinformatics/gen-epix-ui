@@ -52,7 +52,7 @@ export class AuthenticationManager extends SubscribableAbstract<IdentityProvider
   }
 
   public onResponseRejected(error: unknown): void {
-    if (AxiosUtil.isAxiosUnauthorizedError(error)) {
+    if (!this.temporaryToken && AxiosUtil.isAxiosUnauthorizedError(error)) {
       const redirectCounter = (this.authContextProps?.user?.state as AuthState)?.redirectCounter ?? 0;
 
       // If the user is not logged in, or the user is already redirected, throw the error

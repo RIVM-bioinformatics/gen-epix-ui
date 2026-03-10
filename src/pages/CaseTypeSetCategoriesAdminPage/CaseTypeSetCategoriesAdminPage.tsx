@@ -4,7 +4,6 @@ import {
 } from 'react';
 import { useTranslation } from 'react-i18next';
 import {
-  number,
   object,
   string,
 } from 'yup';
@@ -21,6 +20,7 @@ import type { TableColumn } from '../../models/table';
 import { TableUtil } from '../../utils/TableUtil';
 import { TestIdUtil } from '../../utils/TestIdUtil';
 import { CrudPage } from '../CrudPage';
+import { NumberUtil } from '../..';
 
 type FormFields = Pick<CaseTypeSetCategory, 'name' | 'rank' | 'description'>;
 
@@ -50,7 +50,7 @@ export const CaseTypeSetCategoriesAdminPage = () => {
   const schema = useMemo(() => {
     return object<FormFields>().shape({
       name: string().extendedAlphaNumeric().required().max(100),
-      rank: number().integer().required().transform((_val: unknown, orig: string | number) => orig === '' ? undefined : orig),
+      rank: NumberUtil.yup.required().min(0).integer(),
       description: string().freeFormText().required().max(1000),
     });
   }, []);

@@ -52,6 +52,7 @@ import {
 import { useRefColsValidationRulesQuery } from '../../dataHooks/useRefColsValidationRulesQuery';
 import { useRefDimMapQuery } from '../../dataHooks/useRefDimsQuery';
 import { DataUtil } from '../../utils/DataUtil';
+import { NumberUtil } from '../../utils/NumberUtil';
 
 type FormFields = Pick<Col, 'case_type_id' | 'ref_col_id' | 'dim_id' | 'code' | 'rank' | 'label' | 'description' | 'min_value' | 'max_value' | 'min_datetime' | 'max_datetime' | 'min_length' | 'genetic_sequence_col_id' | 'tree_algorithm_codes' | 'pattern'>;
 
@@ -158,7 +159,7 @@ export const ColsAdminPage = () => {
     return object<FormFields>().shape({
       label: string().extendedAlphaNumeric().required().max(100),
       code: string().code().required().max(100),
-      rank: number().integer().required().transform((_val: unknown, orig: string | number) => orig === '' ? undefined : orig),
+      rank: NumberUtil.yup.required().min(0).integer(),
       ref_col_id: string().uuid4().required().max(100),
       dim_id: string().uuid4().required().max(100),
       case_type_id: string().uuid4().required().max(100),

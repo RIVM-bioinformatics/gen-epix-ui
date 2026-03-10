@@ -5,7 +5,6 @@ import {
 import { useTranslation } from 'react-i18next';
 import {
   mixed,
-  number,
   object,
   string,
 } from 'yup';
@@ -27,6 +26,7 @@ import { TestIdUtil } from '../../utils/TestIdUtil';
 import type { CrudPageSubPage } from '../CrudPage';
 import { CrudPage } from '../CrudPage';
 import { AuthorizationManager } from '../../classes/managers/AuthorizationManager';
+import { NumberUtil } from '../../utils/NumberUtil';
 
 type FormFields = Pick<RefDim, 'dim_type' | 'code' | 'label' | 'description' | 'rank' | 'col_code_prefix'>;
 
@@ -60,7 +60,7 @@ export const RefDimsAdminPage = () => {
       code: string().code().required().max(100),
       label: string().extendedAlphaNumeric().required().max(100),
       description: string().freeFormText().required().max(100),
-      rank: number().integer().required().transform((_val: unknown, orig: string | number) => orig === '' ? undefined : orig),
+      rank: NumberUtil.yup.required().min(0).integer(),
       col_code_prefix: string().alphaNumeric().required().max(100),
     });
   }, []);

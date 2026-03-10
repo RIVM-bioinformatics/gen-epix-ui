@@ -5,7 +5,6 @@ import {
 import { useTranslation } from 'react-i18next';
 import {
   boolean,
-  number,
   object,
   string,
 } from 'yup';
@@ -32,6 +31,7 @@ import type { CrudPageSubPage } from '../CrudPage';
 import { CrudPage } from '../CrudPage';
 import { useRefDimOptionsQuery } from '../../dataHooks/useRefDimsQuery';
 import { AuthorizationManager } from '../../classes/managers/AuthorizationManager';
+import { NumberUtil } from '../../utils/NumberUtil';
 
 type FormFields = Pick<Dim, 'case_type_id' | 'ref_dim_id' | 'occurrence' | 'code' | 'label' | 'description' | 'rank' | 'is_case_date_dim'>;
 
@@ -75,8 +75,8 @@ export const DimsAdminPage = () => {
     return object<FormFields>().shape({
       label: string().extendedAlphaNumeric().required().max(100),
       code: string().code().required().max(100),
-      rank: number().integer().required().transform((_val: unknown, orig: string | number) => orig === '' ? undefined : orig),
-      occurrence: number().integer().positive().required().transform((_val: unknown, orig: string | number) => orig === '' ? undefined : orig),
+      rank: NumberUtil.yup.required().min(0).integer(),
+      occurrence: NumberUtil.yup.required().min(0).integer().positive(),
       ref_dim_id: string().uuid4().required().max(100),
       case_type_id: string().uuid4().required().max(100),
       description: string().freeFormText().required().max(100),

@@ -180,7 +180,7 @@ export const UserInvitationsAdminPage = () => {
 
   const tableColumns = useMemo((): TableColumn<UserInvitation>[] => {
     return [
-      TableUtil.createTextColumn<UserInvitation>({ id: 'key', name: t`Email` }),
+      TableUtil.createTextColumn<UserInvitation>({ id: 'key', name: t`Key` }),
       TableUtil.createOptionsColumn<UserInvitation>({ id: 'organization_id', name: t`Organization`, options: organizationOptions }),
       TableUtil.createOptionsColumn<UserInvitation>({ id: 'invited_by_user_id', name: t`Invited by user`, options: userOptionsQuery.options }),
       TableUtil.createOptionsColumn<UserInvitation>({ id: 'roles', name: t`Roles`, options: roleOptions }),

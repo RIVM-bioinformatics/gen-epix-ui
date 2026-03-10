@@ -6,7 +6,6 @@ import {
 import { useTranslation } from 'react-i18next';
 import {
   mixed,
-  number,
   object,
   string,
 } from 'yup';
@@ -40,6 +39,7 @@ import { TestIdUtil } from '../../utils/TestIdUtil';
 import { CrudPage } from '../CrudPage';
 import { useRefColsValidationRulesQuery } from '../../dataHooks/useRefColsValidationRulesQuery';
 import { DataUtil } from '../../utils/DataUtil';
+import { NumberUtil } from '../../utils/NumberUtil';
 
 type FormFields = Pick<RefCol, 'ref_dim_id' | 'code_suffix' | 'code' | 'rank' | 'label' | 'col_type' | 'concept_set_id' | 'region_set_id' | 'genetic_distance_protocol_id' | 'description'>;
 
@@ -91,7 +91,7 @@ export const RefColsAdminPage = () => {
       label: string().extendedAlphaNumeric().required().max(100),
       code: string().code().required().max(100),
       code_suffix: string().alphaNumeric().required().max(100),
-      rank: number().integer().required().transform((_val: unknown, orig: string | number) => orig === '' ? undefined : orig),
+      rank: NumberUtil.yup.required().min(0).integer(),
       ref_dim_id: string().uuid4().required().max(100),
       col_type: mixed<ColType>().required().oneOf(Object.values(ColType)),
       description: string().freeFormText().required().max(100),

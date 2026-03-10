@@ -5,7 +5,6 @@ import {
 import { useTranslation } from 'react-i18next';
 import {
   boolean,
-  number,
   object,
   string,
 } from 'yup';
@@ -25,6 +24,7 @@ import { TestIdUtil } from '../../utils/TestIdUtil';
 import type { CrudPageSubPage } from '../CrudPage';
 import { CrudPage } from '../CrudPage';
 import { AuthorizationManager } from '../../classes/managers/AuthorizationManager';
+import { NumberUtil } from '../../utils/NumberUtil';
 
 type FormFields = Pick<RegionSet, 'name' | 'code' | 'region_code_as_label' | 'resolution'>;
 
@@ -55,7 +55,7 @@ export const RegionSetsAdminPage = () => {
     return object<FormFields>().shape({
       code: string().code().required().max(100),
       name: string().extendedAlphaNumeric().required().max(100),
-      resolution: number().integer().positive().max(10000).required().transform((_val: unknown, orig: string | number) => orig === '' ? undefined : orig),
+      resolution: NumberUtil.yup.integer().positive().max(10000).required(),
       region_code_as_label: boolean().required(),
     });
   }, []);

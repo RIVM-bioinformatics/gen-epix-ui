@@ -4,7 +4,6 @@ import {
 } from 'react';
 import { useTranslation } from 'react-i18next';
 import {
-  number,
   object,
   string,
 } from 'yup';
@@ -22,6 +21,7 @@ import type { TableColumn } from '../../models/table';
 import { TableUtil } from '../../utils/TableUtil';
 import { TestIdUtil } from '../../utils/TestIdUtil';
 import { CrudPage } from '../CrudPage';
+import { NumberUtil } from '../../utils/NumberUtil';
 
 type FormFields = Omit<Concept, 'id' | 'concept_set_id' | 'concept_set' | 'props'>;
 
@@ -65,7 +65,7 @@ export const ConceptsAdminPage = () => {
     return object<FormFields>().shape({
       name: string().freeFormText().required().max(100),
       code: string().freeFormText().required().max(100),
-      rank: number().integer().required().transform((_val: unknown, orig: string | number) => orig === '' ? undefined : orig),
+      rank: NumberUtil.yup.required().min(0).integer(),
       description: string().freeFormText().max(1000),
     });
   }, []);

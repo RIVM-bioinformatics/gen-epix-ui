@@ -199,7 +199,7 @@ export const PageContainer = ({
           </Container>
         </Box>
         {hasFooterArea && (
-          <ApplicationFooter />
+          <ApplicationFooter fullWidth={fullWidth} />
         )}
       </Box>
     </>

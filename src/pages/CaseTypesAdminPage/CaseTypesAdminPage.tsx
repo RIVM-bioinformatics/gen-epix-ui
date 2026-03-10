@@ -4,7 +4,6 @@ import {
 } from 'react';
 import { useTranslation } from 'react-i18next';
 import {
-  number,
   object,
   string,
 } from 'yup';
@@ -27,6 +26,7 @@ import { TestIdUtil } from '../../utils/TestIdUtil';
 import type { CrudPageSubPage } from '../CrudPage';
 import { CrudPage } from '../CrudPage';
 import { AuthorizationManager } from '../../classes/managers/AuthorizationManager';
+import { NumberUtil } from '../../utils/NumberUtil';
 
 type FormFields = Pick<CaseType, 'name' | 'description' | 'etiological_agent_id' | 'disease_id' | 'create_max_n_cases' | 'delete_max_n_cases' | 'read_max_n_cases' | 'read_max_tree_size' | 'update_max_n_cases'>;
 
@@ -61,11 +61,11 @@ export const CaseTypesAdminPage = () => {
     return object<FormFields>().shape({
       name: string().extendedAlphaNumeric().required().max(100),
       description: string().freeFormText(),
-      create_max_n_cases: number().integer().required().transform((_val: unknown, orig: string | number) => orig === '' ? undefined : orig),
-      delete_max_n_cases: number().integer().required().transform((_val: unknown, orig: string | number) => orig === '' ? undefined : orig),
-      read_max_n_cases: number().integer().required().transform((_val: unknown, orig: string | number) => orig === '' ? undefined : orig),
-      read_max_tree_size: number().integer().required().transform((_val: unknown, orig: string | number) => orig === '' ? undefined : orig),
-      update_max_n_cases: number().integer().required().transform((_val: unknown, orig: string | number) => orig === '' ? undefined : orig),
+      create_max_n_cases: NumberUtil.yup.required().min(0),
+      delete_max_n_cases: NumberUtil.yup.required().min(0),
+      read_max_n_cases: NumberUtil.yup.required().min(0),
+      read_max_tree_size: NumberUtil.yup.required().min(0),
+      update_max_n_cases: NumberUtil.yup.required().min(0),
       etiological_agent_id: string().uuid4().nullable().test(function(value: string) {
         // eslint-disable-next-line react/no-this-in-sfc
         const { disease_id } = this.parent as FormFields;

@@ -5,7 +5,6 @@ import {
 import { useTranslation } from 'react-i18next';
 import {
   array,
-  number,
   object,
   string,
 } from 'yup';
@@ -31,6 +30,7 @@ import type { TableColumn } from '../../models/table';
 import { TableUtil } from '../../utils/TableUtil';
 import { TestIdUtil } from '../../utils/TestIdUtil';
 import { CrudPage } from '../CrudPage';
+import { NumberUtil } from '../../utils/NumberUtil';
 
 interface TableData extends CaseTypeSet {
   caseTypeIds?: string[];
@@ -83,7 +83,7 @@ export const CaseTypeSetsAdminPage = () => {
   const schema = useMemo(() => {
     return object<FormFields>().shape({
       name: string().extendedAlphaNumeric().required().max(100),
-      rank: number().integer().required().transform((_val: unknown, orig: string | number) => orig === '' ? undefined : orig),
+      rank: NumberUtil.yup.required().min(0).integer(),
       case_type_set_category_id: string().uuid4().required(),
       caseTypeIds: array(),
       description: string().freeFormText().required().max(1000),

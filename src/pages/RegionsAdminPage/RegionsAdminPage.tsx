@@ -4,7 +4,6 @@ import {
 } from 'react';
 import { useTranslation } from 'react-i18next';
 import {
-  number,
   object,
   string,
 } from 'yup';
@@ -22,6 +21,7 @@ import type { TableColumn } from '../../models/table';
 import { TableUtil } from '../../utils/TableUtil';
 import { TestIdUtil } from '../../utils/TestIdUtil';
 import { CrudPage } from '../CrudPage';
+import { NumberUtil } from '../..';
 
 type FormFields = Omit<Region, 'id' | 'region_set_id' | 'region_set'>;
 
@@ -64,10 +64,10 @@ export const RegionsAdminPage = () => {
     return object<FormFields>().shape({
       name: string().extendedAlphaNumeric().required().max(100),
       code: string().code().required().max(100),
-      centroid_lat: number().required().transform((_val: unknown, orig: string | number) => orig === '' ? undefined : orig),
-      centroid_lon: number().required().transform((_val: unknown, orig: string | number) => orig === '' ? undefined : orig),
-      center_lat: number().required().transform((_val: unknown, orig: string | number) => orig === '' ? undefined : orig),
-      center_lon: number().required().transform((_val: unknown, orig: string | number) => orig === '' ? undefined : orig),
+      centroid_lat: NumberUtil.yup.required(),
+      centroid_lon: NumberUtil.yup.required(),
+      center_lat: NumberUtil.yup.required(),
+      center_lon: NumberUtil.yup.required(),
     });
   }, []);
 
