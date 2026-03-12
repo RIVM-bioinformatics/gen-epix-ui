@@ -34,7 +34,6 @@ import { UserManagerUtil } from '../../../utils/UserManagerUtil';
 import { AuthenticationWrapper } from '../../ui/AuthenticationWrapper';
 import { AuthorizationWrapper } from '../../ui/AuthorizationWrapper';
 import { NotificationsStack } from '../../ui/Notifications';
-import { OutageWrapper } from '../../ui/OutageWrapper';
 import { Spinner } from '../../ui/Spinner';
 import { UserInactivityConfirmation } from '../../ui/UserInactivityConfirmation';
 import type { IdentityProviderWithAvailability } from '../../../models/auth';
@@ -42,6 +41,7 @@ import { ConfigManager } from '../../../classes/managers/ConfigManager';
 import { TestIdUtil } from '../../../utils/TestIdUtil';
 import { PageContainer } from '../../ui/PageContainer';
 import { useQueryMemo } from '../../../hooks/useQueryMemo';
+import { ApplicationBootstrap } from '../ApplicationBootstrap';
 
 
 export const RouterRoot = () => {
@@ -172,7 +172,7 @@ export const RouterRoot = () => {
       onSigninCallback={onSignin}
     >
       <AuthenticationWrapper>
-        <OutageWrapper>
+        <ApplicationBootstrap>
           <AuthorizationWrapper>
             <UserInactivityConfirmation />
             <NotificationsStack />
@@ -180,7 +180,7 @@ export const RouterRoot = () => {
               {location?.pathname === '/' ? <HomePage /> : <Outlet /> }
             </StrictMode>
           </AuthorizationWrapper>
-        </OutageWrapper>
+        </ApplicationBootstrap>
       </AuthenticationWrapper>
     </AuthProvider>
   );

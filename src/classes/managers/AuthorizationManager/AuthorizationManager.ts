@@ -1,6 +1,6 @@
-import {
-  type User,
-  type ApiPermission,
+import type {
+  ApiPermission,
+  User,
 } from '../../../api';
 import type { MyNonIndexRouteObject } from '../../../models/reactRouter';
 import { PageEventBusManager } from '../PageEventBusManager';
@@ -30,6 +30,7 @@ export class AuthorizationManager {
   public get apiPermissions(): ApiPermission[] {
     return this.__apiPermissions;
   }
+
 
   public static get instance(): AuthorizationManager {
     // Instances are stored on the window to prevent multiple instances of the same manager. HMR may load multiple instances of the same manager, but we only want one instance to be active at a time.

@@ -21,7 +21,7 @@ import type { TableColumn } from '../../models/table';
 import { TableUtil } from '../../utils/TableUtil';
 import { TestIdUtil } from '../../utils/TestIdUtil';
 import { CrudPage } from '../CrudPage';
-import { NumberUtil } from '../..';
+import { NumberUtil } from '../../utils/NumberUtil';
 
 type FormFields = Omit<Region, 'id' | 'region_set_id' | 'region_set'>;
 

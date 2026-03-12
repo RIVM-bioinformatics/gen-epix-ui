@@ -182,7 +182,7 @@ export interface Case {
     'content': { [key: string]: string | null; };
 }
 /**
- * A number of unique cases intended for upload.    PARENT CLASS DOCUMENTATION   BaseBatchForUpload: Base class for batches of ParentForUpload objects to be uploaded. A batch is intended as a single unit of work for an upload operation and as such to be processed atomically.  Additional validation: - All ParentForUpload objects must have unique IDs (if provided) - All ParentForUpload objects must have unique external identifiers    PARENT CLASS DOCUMENTATION   Model: PARENT CLASS DOCUMENTATION   BaseModel: !!! abstract \"Usage Documentation\"     [Models](../concepts/models.md)  A base class for creating Pydantic models.  Attributes:     __class_vars__: The names of the class variables defined on the model.     __private_attributes__: Metadata about the private attributes of the model.     __signature__: The synthesized `__init__` [`Signature`][inspect.Signature] of the model.      __pydantic_complete__: Whether model building is completed, or if there are still undefined fields.     __pydantic_core_schema__: The core schema of the model.     __pydantic_custom_init__: Whether the model has a custom `__init__` function.     __pydantic_decorators__: Metadata containing the decorators defined on the model.         This replaces `Model.__validators__` and `Model.__root_validators__` from Pydantic V1.     __pydantic_generic_metadata__: Metadata for generic models; contains data used for a similar purpose to         __args__, __origin__, __parameters__ in typing-module generics. May eventually be replaced by these.     __pydantic_parent_namespace__: Parent namespace of the model, used for automatic rebuilding of models.     __pydantic_post_init__: The name of the post-init method for the model, if defined.     __pydantic_root_model__: Whether the model is a [`RootModel`][pydantic.root_model.RootModel].     __pydantic_serializer__: The `pydantic-core` `SchemaSerializer` used to dump instances of the model.     __pydantic_validator__: The `pydantic-core` `SchemaValidator` used to validate instances of the model.      __pydantic_fields__: A dictionary of field names and their corresponding [`FieldInfo`][pydantic.fields.FieldInfo] objects.     __pydantic_computed_fields__: A dictionary of computed field names and their corresponding [`ComputedFieldInfo`][pydantic.fields.ComputedFieldInfo] objects.      __pydantic_extra__: A dictionary containing extra values, if [`extra`][pydantic.config.ConfigDict.extra]         is set to `\'allow\'`.     __pydantic_fields_set__: The names of fields explicitly set during instantiation.     __pydantic_private__: Values of private attributes set on the model instance.    PARENT CLASS DOCUMENTATION   Model: PARENT CLASS DOCUMENTATION   BaseModel: !!! abstract \"Usage Documentation\"     [Models](../concepts/models.md)  A base class for creating Pydantic models.  Attributes:     __class_vars__: The names of the class variables defined on the model.     __private_attributes__: Metadata about the private attributes of the model.     __signature__: The synthesized `__init__` [`Signature`][inspect.Signature] of the model.      __pydantic_complete__: Whether model building is completed, or if there are still undefined fields.     __pydantic_core_schema__: The core schema of the model.     __pydantic_custom_init__: Whether the model has a custom `__init__` function.     __pydantic_decorators__: Metadata containing the decorators defined on the model.         This replaces `Model.__validators__` and `Model.__root_validators__` from Pydantic V1.     __pydantic_generic_metadata__: Metadata for generic models; contains data used for a similar purpose to         __args__, __origin__, __parameters__ in typing-module generics. May eventually be replaced by these.     __pydantic_parent_namespace__: Parent namespace of the model, used for automatic rebuilding of models.     __pydantic_post_init__: The name of the post-init method for the model, if defined.     __pydantic_root_model__: Whether the model is a [`RootModel`][pydantic.root_model.RootModel].     __pydantic_serializer__: The `pydantic-core` `SchemaSerializer` used to dump instances of the model.     __pydantic_validator__: The `pydantic-core` `SchemaValidator` used to validate instances of the model.      __pydantic_fields__: A dictionary of field names and their corresponding [`FieldInfo`][pydantic.fields.FieldInfo] objects.     __pydantic_computed_fields__: A dictionary of computed field names and their corresponding [`ComputedFieldInfo`][pydantic.fields.ComputedFieldInfo] objects.      __pydantic_extra__: A dictionary containing extra values, if [`extra`][pydantic.config.ConfigDict.extra]         is set to `\'allow\'`.     __pydantic_fields_set__: The names of fields explicitly set during instantiation.     __pydantic_private__: Values of private attributes set on the model instance.    PARENT CLASS DOCUMENTATION   BaseModel: !!! abstract \"Usage Documentation\"     [Models](../concepts/models.md)  A base class for creating Pydantic models.  Attributes:     __class_vars__: The names of the class variables defined on the model.     __private_attributes__: Metadata about the private attributes of the model.     __signature__: The synthesized `__init__` [`Signature`][inspect.Signature] of the model.      __pydantic_complete__: Whether model building is completed, or if there are still undefined fields.     __pydantic_core_schema__: The core schema of the model.     __pydantic_custom_init__: Whether the model has a custom `__init__` function.     __pydantic_decorators__: Metadata containing the decorators defined on the model.         This replaces `Model.__validators__` and `Model.__root_validators__` from Pydantic V1.     __pydantic_generic_metadata__: Metadata for generic models; contains data used for a similar purpose to         __args__, __origin__, __parameters__ in typing-module generics. May eventually be replaced by these.     __pydantic_parent_namespace__: Parent namespace of the model, used for automatic rebuilding of models.     __pydantic_post_init__: The name of the post-init method for the model, if defined.     __pydantic_root_model__: Whether the model is a [`RootModel`][pydantic.root_model.RootModel].     __pydantic_serializer__: The `pydantic-core` `SchemaSerializer` used to dump instances of the model.     __pydantic_validator__: The `pydantic-core` `SchemaValidator` used to validate instances of the model.      __pydantic_fields__: A dictionary of field names and their corresponding [`FieldInfo`][pydantic.fields.FieldInfo] objects.     __pydantic_computed_fields__: A dictionary of computed field names and their corresponding [`ComputedFieldInfo`][pydantic.fields.ComputedFieldInfo] objects.      __pydantic_extra__: A dictionary containing extra values, if [`extra`][pydantic.config.ConfigDict.extra]         is set to `\'allow\'`.     __pydantic_fields_set__: The names of fields explicitly set during instantiation.     __pydantic_private__: Values of private attributes set on the model instance.
+ * A number of unique cases intended for upload.    PARENT CLASS DOCUMENTATION   BaseBatchForUpload: Base class for batches of ParentForUpload objects to be uploaded. A batch is intended as a single unit of work for an upload operation and as such to be processed atomically.  Additional validation: - All ParentForUpload objects must have unique IDs (if provided) - All ParentForUpload objects must have unique other identifiers    PARENT CLASS DOCUMENTATION   Model: Base class for all models in an application. Models are used to represent the state of the application and are typically persisted in a database. Models can also be used to represent the state of the application in memory, e.g. for caching or for passing data between services. Models can be immutable or mutable, depending on the use case.  Each model must have an associated Entity, which defines the metadata for the model. See the Entity class for more details. The Entity must be set in the subclass of Model. Analogously, a unique name for the model can be set in the subclass, which can be used for identification and logging purposes.  The model_entity and model_name class methods can be used to retrieve the Entity and name of the model, respectively. These methods have the same \"model_\" prefix as generic Pydantic models to avoid name conflicts with other.    PARENT CLASS DOCUMENTATION   BaseModel: !!! abstract \"Usage Documentation\"     [Models](../concepts/models.md)  A base class for creating Pydantic models.  Attributes:     __class_vars__: The names of the class variables defined on the model.     __private_attributes__: Metadata about the private attributes of the model.     __signature__: The synthesized `__init__` [`Signature`][inspect.Signature] of the model.      __pydantic_complete__: Whether model building is completed, or if there are still undefined fields.     __pydantic_core_schema__: The core schema of the model.     __pydantic_custom_init__: Whether the model has a custom `__init__` function.     __pydantic_decorators__: Metadata containing the decorators defined on the model.         This replaces `Model.__validators__` and `Model.__root_validators__` from Pydantic V1.     __pydantic_generic_metadata__: Metadata for generic models; contains data used for a similar purpose to         __args__, __origin__, __parameters__ in typing-module generics. May eventually be replaced by these.     __pydantic_parent_namespace__: Parent namespace of the model, used for automatic rebuilding of models.     __pydantic_post_init__: The name of the post-init method for the model, if defined.     __pydantic_root_model__: Whether the model is a [`RootModel`][pydantic.root_model.RootModel].     __pydantic_serializer__: The `pydantic-core` `SchemaSerializer` used to dump instances of the model.     __pydantic_validator__: The `pydantic-core` `SchemaValidator` used to validate instances of the model.      __pydantic_fields__: A dictionary of field names and their corresponding [`FieldInfo`][pydantic.fields.FieldInfo] objects.     __pydantic_computed_fields__: A dictionary of computed field names and their corresponding [`ComputedFieldInfo`][pydantic.fields.ComputedFieldInfo] objects.      __pydantic_extra__: A dictionary containing extra values, if [`extra`][pydantic.config.ConfigDict.extra]         is set to `\'allow\'`.     __pydantic_fields_set__: The names of fields explicitly set during instantiation.     __pydantic_private__: Values of private attributes set on the model instance.    PARENT CLASS DOCUMENTATION   Model: Base class for all models in an application. Models are used to represent the state of the application and are typically persisted in a database. Models can also be used to represent the state of the application in memory, e.g. for caching or for passing data between services. Models can be immutable or mutable, depending on the use case.  Each model must have an associated Entity, which defines the metadata for the model. See the Entity class for more details. The Entity must be set in the subclass of Model. Analogously, a unique name for the model can be set in the subclass, which can be used for identification and logging purposes.  The model_entity and model_name class methods can be used to retrieve the Entity and name of the model, respectively. These methods have the same \"model_\" prefix as generic Pydantic models to avoid name conflicts with other.    PARENT CLASS DOCUMENTATION   BaseModel: !!! abstract \"Usage Documentation\"     [Models](../concepts/models.md)  A base class for creating Pydantic models.  Attributes:     __class_vars__: The names of the class variables defined on the model.     __private_attributes__: Metadata about the private attributes of the model.     __signature__: The synthesized `__init__` [`Signature`][inspect.Signature] of the model.      __pydantic_complete__: Whether model building is completed, or if there are still undefined fields.     __pydantic_core_schema__: The core schema of the model.     __pydantic_custom_init__: Whether the model has a custom `__init__` function.     __pydantic_decorators__: Metadata containing the decorators defined on the model.         This replaces `Model.__validators__` and `Model.__root_validators__` from Pydantic V1.     __pydantic_generic_metadata__: Metadata for generic models; contains data used for a similar purpose to         __args__, __origin__, __parameters__ in typing-module generics. May eventually be replaced by these.     __pydantic_parent_namespace__: Parent namespace of the model, used for automatic rebuilding of models.     __pydantic_post_init__: The name of the post-init method for the model, if defined.     __pydantic_root_model__: Whether the model is a [`RootModel`][pydantic.root_model.RootModel].     __pydantic_serializer__: The `pydantic-core` `SchemaSerializer` used to dump instances of the model.     __pydantic_validator__: The `pydantic-core` `SchemaValidator` used to validate instances of the model.      __pydantic_fields__: A dictionary of field names and their corresponding [`FieldInfo`][pydantic.fields.FieldInfo] objects.     __pydantic_computed_fields__: A dictionary of computed field names and their corresponding [`ComputedFieldInfo`][pydantic.fields.ComputedFieldInfo] objects.      __pydantic_extra__: A dictionary containing extra values, if [`extra`][pydantic.config.ConfigDict.extra]         is set to `\'allow\'`.     __pydantic_fields_set__: The names of fields explicitly set during instantiation.     __pydantic_private__: Values of private attributes set on the model instance.    PARENT CLASS DOCUMENTATION   BaseModel: !!! abstract \"Usage Documentation\"     [Models](../concepts/models.md)  A base class for creating Pydantic models.  Attributes:     __class_vars__: The names of the class variables defined on the model.     __private_attributes__: Metadata about the private attributes of the model.     __signature__: The synthesized `__init__` [`Signature`][inspect.Signature] of the model.      __pydantic_complete__: Whether model building is completed, or if there are still undefined fields.     __pydantic_core_schema__: The core schema of the model.     __pydantic_custom_init__: Whether the model has a custom `__init__` function.     __pydantic_decorators__: Metadata containing the decorators defined on the model.         This replaces `Model.__validators__` and `Model.__root_validators__` from Pydantic V1.     __pydantic_generic_metadata__: Metadata for generic models; contains data used for a similar purpose to         __args__, __origin__, __parameters__ in typing-module generics. May eventually be replaced by these.     __pydantic_parent_namespace__: Parent namespace of the model, used for automatic rebuilding of models.     __pydantic_post_init__: The name of the post-init method for the model, if defined.     __pydantic_root_model__: Whether the model is a [`RootModel`][pydantic.root_model.RootModel].     __pydantic_serializer__: The `pydantic-core` `SchemaSerializer` used to dump instances of the model.     __pydantic_validator__: The `pydantic-core` `SchemaValidator` used to validate instances of the model.      __pydantic_fields__: A dictionary of field names and their corresponding [`FieldInfo`][pydantic.fields.FieldInfo] objects.     __pydantic_computed_fields__: A dictionary of computed field names and their corresponding [`ComputedFieldInfo`][pydantic.fields.ComputedFieldInfo] objects.      __pydantic_extra__: A dictionary containing extra values, if [`extra`][pydantic.config.ConfigDict.extra]         is set to `\'allow\'`.     __pydantic_fields_set__: The names of fields explicitly set during instantiation.     __pydantic_private__: Values of private attributes set on the model instance.
  * @export
  * @interface CaseBatchForUpload
  */
@@ -207,7 +207,7 @@ export interface CaseBatchForUpload {
     'cases': Array<CaseForUpload>;
 }
 /**
- * The result of uploading a batch of cases.    PARENT CLASS DOCUMENTATION   BaseBatchUploadResult: Base class for upload results corresponding to a complete batch of objects uploaded. The names of the fields in any child class must be exactly identical to those in the corresponding BaseBatchForUpload child class.    PARENT CLASS DOCUMENTATION   UploadResult: Represents the result of an upload operation for a particular object, including upload status and logs.  Additional validation: - If the status is successful (NOT_FAILED), there must be no error log items. - If the status is failed, there must be at least one error log item.    PARENT CLASS DOCUMENTATION   Model: PARENT CLASS DOCUMENTATION   BaseModel: !!! abstract \"Usage Documentation\"     [Models](../concepts/models.md)  A base class for creating Pydantic models.  Attributes:     __class_vars__: The names of the class variables defined on the model.     __private_attributes__: Metadata about the private attributes of the model.     __signature__: The synthesized `__init__` [`Signature`][inspect.Signature] of the model.      __pydantic_complete__: Whether model building is completed, or if there are still undefined fields.     __pydantic_core_schema__: The core schema of the model.     __pydantic_custom_init__: Whether the model has a custom `__init__` function.     __pydantic_decorators__: Metadata containing the decorators defined on the model.         This replaces `Model.__validators__` and `Model.__root_validators__` from Pydantic V1.     __pydantic_generic_metadata__: Metadata for generic models; contains data used for a similar purpose to         __args__, __origin__, __parameters__ in typing-module generics. May eventually be replaced by these.     __pydantic_parent_namespace__: Parent namespace of the model, used for automatic rebuilding of models.     __pydantic_post_init__: The name of the post-init method for the model, if defined.     __pydantic_root_model__: Whether the model is a [`RootModel`][pydantic.root_model.RootModel].     __pydantic_serializer__: The `pydantic-core` `SchemaSerializer` used to dump instances of the model.     __pydantic_validator__: The `pydantic-core` `SchemaValidator` used to validate instances of the model.      __pydantic_fields__: A dictionary of field names and their corresponding [`FieldInfo`][pydantic.fields.FieldInfo] objects.     __pydantic_computed_fields__: A dictionary of computed field names and their corresponding [`ComputedFieldInfo`][pydantic.fields.ComputedFieldInfo] objects.      __pydantic_extra__: A dictionary containing extra values, if [`extra`][pydantic.config.ConfigDict.extra]         is set to `\'allow\'`.     __pydantic_fields_set__: The names of fields explicitly set during instantiation.     __pydantic_private__: Values of private attributes set on the model instance.    PARENT CLASS DOCUMENTATION   UploadResult: Represents the result of an upload operation for a particular object, including upload status and logs.  Additional validation: - If the status is successful (NOT_FAILED), there must be no error log items. - If the status is failed, there must be at least one error log item.    PARENT CLASS DOCUMENTATION   Model: PARENT CLASS DOCUMENTATION   BaseModel: !!! abstract \"Usage Documentation\"     [Models](../concepts/models.md)  A base class for creating Pydantic models.  Attributes:     __class_vars__: The names of the class variables defined on the model.     __private_attributes__: Metadata about the private attributes of the model.     __signature__: The synthesized `__init__` [`Signature`][inspect.Signature] of the model.      __pydantic_complete__: Whether model building is completed, or if there are still undefined fields.     __pydantic_core_schema__: The core schema of the model.     __pydantic_custom_init__: Whether the model has a custom `__init__` function.     __pydantic_decorators__: Metadata containing the decorators defined on the model.         This replaces `Model.__validators__` and `Model.__root_validators__` from Pydantic V1.     __pydantic_generic_metadata__: Metadata for generic models; contains data used for a similar purpose to         __args__, __origin__, __parameters__ in typing-module generics. May eventually be replaced by these.     __pydantic_parent_namespace__: Parent namespace of the model, used for automatic rebuilding of models.     __pydantic_post_init__: The name of the post-init method for the model, if defined.     __pydantic_root_model__: Whether the model is a [`RootModel`][pydantic.root_model.RootModel].     __pydantic_serializer__: The `pydantic-core` `SchemaSerializer` used to dump instances of the model.     __pydantic_validator__: The `pydantic-core` `SchemaValidator` used to validate instances of the model.      __pydantic_fields__: A dictionary of field names and their corresponding [`FieldInfo`][pydantic.fields.FieldInfo] objects.     __pydantic_computed_fields__: A dictionary of computed field names and their corresponding [`ComputedFieldInfo`][pydantic.fields.ComputedFieldInfo] objects.      __pydantic_extra__: A dictionary containing extra values, if [`extra`][pydantic.config.ConfigDict.extra]         is set to `\'allow\'`.     __pydantic_fields_set__: The names of fields explicitly set during instantiation.     __pydantic_private__: Values of private attributes set on the model instance.    PARENT CLASS DOCUMENTATION   Model: PARENT CLASS DOCUMENTATION   BaseModel: !!! abstract \"Usage Documentation\"     [Models](../concepts/models.md)  A base class for creating Pydantic models.  Attributes:     __class_vars__: The names of the class variables defined on the model.     __private_attributes__: Metadata about the private attributes of the model.     __signature__: The synthesized `__init__` [`Signature`][inspect.Signature] of the model.      __pydantic_complete__: Whether model building is completed, or if there are still undefined fields.     __pydantic_core_schema__: The core schema of the model.     __pydantic_custom_init__: Whether the model has a custom `__init__` function.     __pydantic_decorators__: Metadata containing the decorators defined on the model.         This replaces `Model.__validators__` and `Model.__root_validators__` from Pydantic V1.     __pydantic_generic_metadata__: Metadata for generic models; contains data used for a similar purpose to         __args__, __origin__, __parameters__ in typing-module generics. May eventually be replaced by these.     __pydantic_parent_namespace__: Parent namespace of the model, used for automatic rebuilding of models.     __pydantic_post_init__: The name of the post-init method for the model, if defined.     __pydantic_root_model__: Whether the model is a [`RootModel`][pydantic.root_model.RootModel].     __pydantic_serializer__: The `pydantic-core` `SchemaSerializer` used to dump instances of the model.     __pydantic_validator__: The `pydantic-core` `SchemaValidator` used to validate instances of the model.      __pydantic_fields__: A dictionary of field names and their corresponding [`FieldInfo`][pydantic.fields.FieldInfo] objects.     __pydantic_computed_fields__: A dictionary of computed field names and their corresponding [`ComputedFieldInfo`][pydantic.fields.ComputedFieldInfo] objects.      __pydantic_extra__: A dictionary containing extra values, if [`extra`][pydantic.config.ConfigDict.extra]         is set to `\'allow\'`.     __pydantic_fields_set__: The names of fields explicitly set during instantiation.     __pydantic_private__: Values of private attributes set on the model instance.    PARENT CLASS DOCUMENTATION   BaseModel: !!! abstract \"Usage Documentation\"     [Models](../concepts/models.md)  A base class for creating Pydantic models.  Attributes:     __class_vars__: The names of the class variables defined on the model.     __private_attributes__: Metadata about the private attributes of the model.     __signature__: The synthesized `__init__` [`Signature`][inspect.Signature] of the model.      __pydantic_complete__: Whether model building is completed, or if there are still undefined fields.     __pydantic_core_schema__: The core schema of the model.     __pydantic_custom_init__: Whether the model has a custom `__init__` function.     __pydantic_decorators__: Metadata containing the decorators defined on the model.         This replaces `Model.__validators__` and `Model.__root_validators__` from Pydantic V1.     __pydantic_generic_metadata__: Metadata for generic models; contains data used for a similar purpose to         __args__, __origin__, __parameters__ in typing-module generics. May eventually be replaced by these.     __pydantic_parent_namespace__: Parent namespace of the model, used for automatic rebuilding of models.     __pydantic_post_init__: The name of the post-init method for the model, if defined.     __pydantic_root_model__: Whether the model is a [`RootModel`][pydantic.root_model.RootModel].     __pydantic_serializer__: The `pydantic-core` `SchemaSerializer` used to dump instances of the model.     __pydantic_validator__: The `pydantic-core` `SchemaValidator` used to validate instances of the model.      __pydantic_fields__: A dictionary of field names and their corresponding [`FieldInfo`][pydantic.fields.FieldInfo] objects.     __pydantic_computed_fields__: A dictionary of computed field names and their corresponding [`ComputedFieldInfo`][pydantic.fields.ComputedFieldInfo] objects.      __pydantic_extra__: A dictionary containing extra values, if [`extra`][pydantic.config.ConfigDict.extra]         is set to `\'allow\'`.     __pydantic_fields_set__: The names of fields explicitly set during instantiation.     __pydantic_private__: Values of private attributes set on the model instance.
+ * The result of uploading a batch of cases.    PARENT CLASS DOCUMENTATION   BaseBatchUploadResult: Base class for upload results corresponding to a complete batch of objects uploaded. The names of the fields in any child class must be exactly identical to those in the corresponding BaseBatchForUpload child class.    PARENT CLASS DOCUMENTATION   UploadResult: Represents the result of an upload operation for a particular object, including upload status and logs.  Additional validation: - If the status is successful (NOT_FAILED), there must be no error log items. - If the status is failed, there must be at least one error log item.    PARENT CLASS DOCUMENTATION   Model: Base class for all models in an application. Models are used to represent the state of the application and are typically persisted in a database. Models can also be used to represent the state of the application in memory, e.g. for caching or for passing data between services. Models can be immutable or mutable, depending on the use case.  Each model must have an associated Entity, which defines the metadata for the model. See the Entity class for more details. The Entity must be set in the subclass of Model. Analogously, a unique name for the model can be set in the subclass, which can be used for identification and logging purposes.  The model_entity and model_name class methods can be used to retrieve the Entity and name of the model, respectively. These methods have the same \"model_\" prefix as generic Pydantic models to avoid name conflicts with other.    PARENT CLASS DOCUMENTATION   BaseModel: !!! abstract \"Usage Documentation\"     [Models](../concepts/models.md)  A base class for creating Pydantic models.  Attributes:     __class_vars__: The names of the class variables defined on the model.     __private_attributes__: Metadata about the private attributes of the model.     __signature__: The synthesized `__init__` [`Signature`][inspect.Signature] of the model.      __pydantic_complete__: Whether model building is completed, or if there are still undefined fields.     __pydantic_core_schema__: The core schema of the model.     __pydantic_custom_init__: Whether the model has a custom `__init__` function.     __pydantic_decorators__: Metadata containing the decorators defined on the model.         This replaces `Model.__validators__` and `Model.__root_validators__` from Pydantic V1.     __pydantic_generic_metadata__: Metadata for generic models; contains data used for a similar purpose to         __args__, __origin__, __parameters__ in typing-module generics. May eventually be replaced by these.     __pydantic_parent_namespace__: Parent namespace of the model, used for automatic rebuilding of models.     __pydantic_post_init__: The name of the post-init method for the model, if defined.     __pydantic_root_model__: Whether the model is a [`RootModel`][pydantic.root_model.RootModel].     __pydantic_serializer__: The `pydantic-core` `SchemaSerializer` used to dump instances of the model.     __pydantic_validator__: The `pydantic-core` `SchemaValidator` used to validate instances of the model.      __pydantic_fields__: A dictionary of field names and their corresponding [`FieldInfo`][pydantic.fields.FieldInfo] objects.     __pydantic_computed_fields__: A dictionary of computed field names and their corresponding [`ComputedFieldInfo`][pydantic.fields.ComputedFieldInfo] objects.      __pydantic_extra__: A dictionary containing extra values, if [`extra`][pydantic.config.ConfigDict.extra]         is set to `\'allow\'`.     __pydantic_fields_set__: The names of fields explicitly set during instantiation.     __pydantic_private__: Values of private attributes set on the model instance.    PARENT CLASS DOCUMENTATION   UploadResult: Represents the result of an upload operation for a particular object, including upload status and logs.  Additional validation: - If the status is successful (NOT_FAILED), there must be no error log items. - If the status is failed, there must be at least one error log item.    PARENT CLASS DOCUMENTATION   Model: Base class for all models in an application. Models are used to represent the state of the application and are typically persisted in a database. Models can also be used to represent the state of the application in memory, e.g. for caching or for passing data between services. Models can be immutable or mutable, depending on the use case.  Each model must have an associated Entity, which defines the metadata for the model. See the Entity class for more details. The Entity must be set in the subclass of Model. Analogously, a unique name for the model can be set in the subclass, which can be used for identification and logging purposes.  The model_entity and model_name class methods can be used to retrieve the Entity and name of the model, respectively. These methods have the same \"model_\" prefix as generic Pydantic models to avoid name conflicts with other.    PARENT CLASS DOCUMENTATION   BaseModel: !!! abstract \"Usage Documentation\"     [Models](../concepts/models.md)  A base class for creating Pydantic models.  Attributes:     __class_vars__: The names of the class variables defined on the model.     __private_attributes__: Metadata about the private attributes of the model.     __signature__: The synthesized `__init__` [`Signature`][inspect.Signature] of the model.      __pydantic_complete__: Whether model building is completed, or if there are still undefined fields.     __pydantic_core_schema__: The core schema of the model.     __pydantic_custom_init__: Whether the model has a custom `__init__` function.     __pydantic_decorators__: Metadata containing the decorators defined on the model.         This replaces `Model.__validators__` and `Model.__root_validators__` from Pydantic V1.     __pydantic_generic_metadata__: Metadata for generic models; contains data used for a similar purpose to         __args__, __origin__, __parameters__ in typing-module generics. May eventually be replaced by these.     __pydantic_parent_namespace__: Parent namespace of the model, used for automatic rebuilding of models.     __pydantic_post_init__: The name of the post-init method for the model, if defined.     __pydantic_root_model__: Whether the model is a [`RootModel`][pydantic.root_model.RootModel].     __pydantic_serializer__: The `pydantic-core` `SchemaSerializer` used to dump instances of the model.     __pydantic_validator__: The `pydantic-core` `SchemaValidator` used to validate instances of the model.      __pydantic_fields__: A dictionary of field names and their corresponding [`FieldInfo`][pydantic.fields.FieldInfo] objects.     __pydantic_computed_fields__: A dictionary of computed field names and their corresponding [`ComputedFieldInfo`][pydantic.fields.ComputedFieldInfo] objects.      __pydantic_extra__: A dictionary containing extra values, if [`extra`][pydantic.config.ConfigDict.extra]         is set to `\'allow\'`.     __pydantic_fields_set__: The names of fields explicitly set during instantiation.     __pydantic_private__: Values of private attributes set on the model instance.    PARENT CLASS DOCUMENTATION   Model: Base class for all models in an application. Models are used to represent the state of the application and are typically persisted in a database. Models can also be used to represent the state of the application in memory, e.g. for caching or for passing data between services. Models can be immutable or mutable, depending on the use case.  Each model must have an associated Entity, which defines the metadata for the model. See the Entity class for more details. The Entity must be set in the subclass of Model. Analogously, a unique name for the model can be set in the subclass, which can be used for identification and logging purposes.  The model_entity and model_name class methods can be used to retrieve the Entity and name of the model, respectively. These methods have the same \"model_\" prefix as generic Pydantic models to avoid name conflicts with other.    PARENT CLASS DOCUMENTATION   BaseModel: !!! abstract \"Usage Documentation\"     [Models](../concepts/models.md)  A base class for creating Pydantic models.  Attributes:     __class_vars__: The names of the class variables defined on the model.     __private_attributes__: Metadata about the private attributes of the model.     __signature__: The synthesized `__init__` [`Signature`][inspect.Signature] of the model.      __pydantic_complete__: Whether model building is completed, or if there are still undefined fields.     __pydantic_core_schema__: The core schema of the model.     __pydantic_custom_init__: Whether the model has a custom `__init__` function.     __pydantic_decorators__: Metadata containing the decorators defined on the model.         This replaces `Model.__validators__` and `Model.__root_validators__` from Pydantic V1.     __pydantic_generic_metadata__: Metadata for generic models; contains data used for a similar purpose to         __args__, __origin__, __parameters__ in typing-module generics. May eventually be replaced by these.     __pydantic_parent_namespace__: Parent namespace of the model, used for automatic rebuilding of models.     __pydantic_post_init__: The name of the post-init method for the model, if defined.     __pydantic_root_model__: Whether the model is a [`RootModel`][pydantic.root_model.RootModel].     __pydantic_serializer__: The `pydantic-core` `SchemaSerializer` used to dump instances of the model.     __pydantic_validator__: The `pydantic-core` `SchemaValidator` used to validate instances of the model.      __pydantic_fields__: A dictionary of field names and their corresponding [`FieldInfo`][pydantic.fields.FieldInfo] objects.     __pydantic_computed_fields__: A dictionary of computed field names and their corresponding [`ComputedFieldInfo`][pydantic.fields.ComputedFieldInfo] objects.      __pydantic_extra__: A dictionary containing extra values, if [`extra`][pydantic.config.ConfigDict.extra]         is set to `\'allow\'`.     __pydantic_fields_set__: The names of fields explicitly set during instantiation.     __pydantic_private__: Values of private attributes set on the model instance.    PARENT CLASS DOCUMENTATION   BaseModel: !!! abstract \"Usage Documentation\"     [Models](../concepts/models.md)  A base class for creating Pydantic models.  Attributes:     __class_vars__: The names of the class variables defined on the model.     __private_attributes__: Metadata about the private attributes of the model.     __signature__: The synthesized `__init__` [`Signature`][inspect.Signature] of the model.      __pydantic_complete__: Whether model building is completed, or if there are still undefined fields.     __pydantic_core_schema__: The core schema of the model.     __pydantic_custom_init__: Whether the model has a custom `__init__` function.     __pydantic_decorators__: Metadata containing the decorators defined on the model.         This replaces `Model.__validators__` and `Model.__root_validators__` from Pydantic V1.     __pydantic_generic_metadata__: Metadata for generic models; contains data used for a similar purpose to         __args__, __origin__, __parameters__ in typing-module generics. May eventually be replaced by these.     __pydantic_parent_namespace__: Parent namespace of the model, used for automatic rebuilding of models.     __pydantic_post_init__: The name of the post-init method for the model, if defined.     __pydantic_root_model__: Whether the model is a [`RootModel`][pydantic.root_model.RootModel].     __pydantic_serializer__: The `pydantic-core` `SchemaSerializer` used to dump instances of the model.     __pydantic_validator__: The `pydantic-core` `SchemaValidator` used to validate instances of the model.      __pydantic_fields__: A dictionary of field names and their corresponding [`FieldInfo`][pydantic.fields.FieldInfo] objects.     __pydantic_computed_fields__: A dictionary of computed field names and their corresponding [`ComputedFieldInfo`][pydantic.fields.ComputedFieldInfo] objects.      __pydantic_extra__: A dictionary containing extra values, if [`extra`][pydantic.config.ConfigDict.extra]         is set to `\'allow\'`.     __pydantic_fields_set__: The names of fields explicitly set during instantiation.     __pydantic_private__: Values of private attributes set on the model instance.
  * @export
  * @interface CaseBatchUploadResult
  */
@@ -349,17 +349,17 @@ export interface CaseDataIssue {
 
 
 /**
- * A case intended for upload, together with any relevant associated data.    PARENT CLASS DOCUMENTATION   ParentForUpload: Represents a parent model for upload, where the term \"parent\" refers to a model that can have child models associated with it through a link. External identifiers can also be added here.  This class must be subclassed for specific parent models, adding the following fields: - A parent Parent|None field where the parent model that needs to be uploaded, if   any, will be put - For each child model type that can be associated with the parent, a \"children\"   list|None field that will contain the actual child models to be uploaded along with   the parent model. Metadata on the parent and child models, allowing introspection, must be provided through the class variables.  Additional validation: - NULL_ID in the id field is converted to None. - If both the ParentForUpload id and the contained Parent model id are provided,   they must match. - For each child model type, if the ParentForUpload id is provided, the parent ID   field in each child model must either be None/NULL_ID or match the ParentForUpload   id.    PARENT CLASS DOCUMENTATION   Model: PARENT CLASS DOCUMENTATION   BaseModel: !!! abstract \"Usage Documentation\"     [Models](../concepts/models.md)  A base class for creating Pydantic models.  Attributes:     __class_vars__: The names of the class variables defined on the model.     __private_attributes__: Metadata about the private attributes of the model.     __signature__: The synthesized `__init__` [`Signature`][inspect.Signature] of the model.      __pydantic_complete__: Whether model building is completed, or if there are still undefined fields.     __pydantic_core_schema__: The core schema of the model.     __pydantic_custom_init__: Whether the model has a custom `__init__` function.     __pydantic_decorators__: Metadata containing the decorators defined on the model.         This replaces `Model.__validators__` and `Model.__root_validators__` from Pydantic V1.     __pydantic_generic_metadata__: Metadata for generic models; contains data used for a similar purpose to         __args__, __origin__, __parameters__ in typing-module generics. May eventually be replaced by these.     __pydantic_parent_namespace__: Parent namespace of the model, used for automatic rebuilding of models.     __pydantic_post_init__: The name of the post-init method for the model, if defined.     __pydantic_root_model__: Whether the model is a [`RootModel`][pydantic.root_model.RootModel].     __pydantic_serializer__: The `pydantic-core` `SchemaSerializer` used to dump instances of the model.     __pydantic_validator__: The `pydantic-core` `SchemaValidator` used to validate instances of the model.      __pydantic_fields__: A dictionary of field names and their corresponding [`FieldInfo`][pydantic.fields.FieldInfo] objects.     __pydantic_computed_fields__: A dictionary of computed field names and their corresponding [`ComputedFieldInfo`][pydantic.fields.ComputedFieldInfo] objects.      __pydantic_extra__: A dictionary containing extra values, if [`extra`][pydantic.config.ConfigDict.extra]         is set to `\'allow\'`.     __pydantic_fields_set__: The names of fields explicitly set during instantiation.     __pydantic_private__: Values of private attributes set on the model instance.    ExternalIdentifiersMixin:  Mixin that adds external identifiers fields and validation. Assumes that the inheriting model also has an \'external_identifiers\' field.  Additional validation: - All external identifiers must have the same identifier type. - All external identifiers must have unique values.    PARENT CLASS DOCUMENTATION   Model: PARENT CLASS DOCUMENTATION   BaseModel: !!! abstract \"Usage Documentation\"     [Models](../concepts/models.md)  A base class for creating Pydantic models.  Attributes:     __class_vars__: The names of the class variables defined on the model.     __private_attributes__: Metadata about the private attributes of the model.     __signature__: The synthesized `__init__` [`Signature`][inspect.Signature] of the model.      __pydantic_complete__: Whether model building is completed, or if there are still undefined fields.     __pydantic_core_schema__: The core schema of the model.     __pydantic_custom_init__: Whether the model has a custom `__init__` function.     __pydantic_decorators__: Metadata containing the decorators defined on the model.         This replaces `Model.__validators__` and `Model.__root_validators__` from Pydantic V1.     __pydantic_generic_metadata__: Metadata for generic models; contains data used for a similar purpose to         __args__, __origin__, __parameters__ in typing-module generics. May eventually be replaced by these.     __pydantic_parent_namespace__: Parent namespace of the model, used for automatic rebuilding of models.     __pydantic_post_init__: The name of the post-init method for the model, if defined.     __pydantic_root_model__: Whether the model is a [`RootModel`][pydantic.root_model.RootModel].     __pydantic_serializer__: The `pydantic-core` `SchemaSerializer` used to dump instances of the model.     __pydantic_validator__: The `pydantic-core` `SchemaValidator` used to validate instances of the model.      __pydantic_fields__: A dictionary of field names and their corresponding [`FieldInfo`][pydantic.fields.FieldInfo] objects.     __pydantic_computed_fields__: A dictionary of computed field names and their corresponding [`ComputedFieldInfo`][pydantic.fields.ComputedFieldInfo] objects.      __pydantic_extra__: A dictionary containing extra values, if [`extra`][pydantic.config.ConfigDict.extra]         is set to `\'allow\'`.     __pydantic_fields_set__: The names of fields explicitly set during instantiation.     __pydantic_private__: Values of private attributes set on the model instance.    PARENT CLASS DOCUMENTATION   BaseModel: !!! abstract \"Usage Documentation\"     [Models](../concepts/models.md)  A base class for creating Pydantic models.  Attributes:     __class_vars__: The names of the class variables defined on the model.     __private_attributes__: Metadata about the private attributes of the model.     __signature__: The synthesized `__init__` [`Signature`][inspect.Signature] of the model.      __pydantic_complete__: Whether model building is completed, or if there are still undefined fields.     __pydantic_core_schema__: The core schema of the model.     __pydantic_custom_init__: Whether the model has a custom `__init__` function.     __pydantic_decorators__: Metadata containing the decorators defined on the model.         This replaces `Model.__validators__` and `Model.__root_validators__` from Pydantic V1.     __pydantic_generic_metadata__: Metadata for generic models; contains data used for a similar purpose to         __args__, __origin__, __parameters__ in typing-module generics. May eventually be replaced by these.     __pydantic_parent_namespace__: Parent namespace of the model, used for automatic rebuilding of models.     __pydantic_post_init__: The name of the post-init method for the model, if defined.     __pydantic_root_model__: Whether the model is a [`RootModel`][pydantic.root_model.RootModel].     __pydantic_serializer__: The `pydantic-core` `SchemaSerializer` used to dump instances of the model.     __pydantic_validator__: The `pydantic-core` `SchemaValidator` used to validate instances of the model.      __pydantic_fields__: A dictionary of field names and their corresponding [`FieldInfo`][pydantic.fields.FieldInfo] objects.     __pydantic_computed_fields__: A dictionary of computed field names and their corresponding [`ComputedFieldInfo`][pydantic.fields.ComputedFieldInfo] objects.      __pydantic_extra__: A dictionary containing extra values, if [`extra`][pydantic.config.ConfigDict.extra]         is set to `\'allow\'`.     __pydantic_fields_set__: The names of fields explicitly set during instantiation.     __pydantic_private__: Values of private attributes set on the model instance.    ExternalIdentifiersMixin:  Mixin that adds external identifiers fields and validation. Assumes that the inheriting model also has an \'external_identifiers\' field.  Additional validation: - All external identifiers must have the same identifier type. - All external identifiers must have unique values.
+ * A case intended for upload, together with any relevant associated data.    PARENT CLASS DOCUMENTATION   ParentForUpload: Represents a parent model for upload, where the term \"parent\" refers to a model that can have child models associated with it through a link. Other identifiers can also be added here, in the \"identifiers\" field.  This class must be subclassed for specific parent models, adding the following fields: - A parent Parent|None field where the parent model that needs to be uploaded, if   any, will be put - For each child model type that can be associated with the parent, a \"children\"   list|None field that will contain the actual child models to be uploaded along with   the parent model. Metadata on the parent and child models, allowing introspection, must be provided through the class variables.  Additional validation: - NULL_ID in the id field is converted to None. - If both the ParentForUpload id and the contained Parent model id are provided,   they must match. - For each child model type, if the ParentForUpload id is provided, the parent ID   field in each child model must either be None/NULL_ID or match the ParentForUpload   id.    PARENT CLASS DOCUMENTATION   Model: Base class for all models in an application. Models are used to represent the state of the application and are typically persisted in a database. Models can also be used to represent the state of the application in memory, e.g. for caching or for passing data between services. Models can be immutable or mutable, depending on the use case.  Each model must have an associated Entity, which defines the metadata for the model. See the Entity class for more details. The Entity must be set in the subclass of Model. Analogously, a unique name for the model can be set in the subclass, which can be used for identification and logging purposes.  The model_entity and model_name class methods can be used to retrieve the Entity and name of the model, respectively. These methods have the same \"model_\" prefix as generic Pydantic models to avoid name conflicts with other.    PARENT CLASS DOCUMENTATION   BaseModel: !!! abstract \"Usage Documentation\"     [Models](../concepts/models.md)  A base class for creating Pydantic models.  Attributes:     __class_vars__: The names of the class variables defined on the model.     __private_attributes__: Metadata about the private attributes of the model.     __signature__: The synthesized `__init__` [`Signature`][inspect.Signature] of the model.      __pydantic_complete__: Whether model building is completed, or if there are still undefined fields.     __pydantic_core_schema__: The core schema of the model.     __pydantic_custom_init__: Whether the model has a custom `__init__` function.     __pydantic_decorators__: Metadata containing the decorators defined on the model.         This replaces `Model.__validators__` and `Model.__root_validators__` from Pydantic V1.     __pydantic_generic_metadata__: Metadata for generic models; contains data used for a similar purpose to         __args__, __origin__, __parameters__ in typing-module generics. May eventually be replaced by these.     __pydantic_parent_namespace__: Parent namespace of the model, used for automatic rebuilding of models.     __pydantic_post_init__: The name of the post-init method for the model, if defined.     __pydantic_root_model__: Whether the model is a [`RootModel`][pydantic.root_model.RootModel].     __pydantic_serializer__: The `pydantic-core` `SchemaSerializer` used to dump instances of the model.     __pydantic_validator__: The `pydantic-core` `SchemaValidator` used to validate instances of the model.      __pydantic_fields__: A dictionary of field names and their corresponding [`FieldInfo`][pydantic.fields.FieldInfo] objects.     __pydantic_computed_fields__: A dictionary of computed field names and their corresponding [`ComputedFieldInfo`][pydantic.fields.ComputedFieldInfo] objects.      __pydantic_extra__: A dictionary containing extra values, if [`extra`][pydantic.config.ConfigDict.extra]         is set to `\'allow\'`.     __pydantic_fields_set__: The names of fields explicitly set during instantiation.     __pydantic_private__: Values of private attributes set on the model instance.    IdentifiersMixin:  Mixin that adds identifiers fields and validation. Assumes that the inheriting model also has an \'identifiers\' field.  Additional validation: - All identifiers must have the same identifier type. - All identifiers must have unique values.    PARENT CLASS DOCUMENTATION   Model: Base class for all models in an application. Models are used to represent the state of the application and are typically persisted in a database. Models can also be used to represent the state of the application in memory, e.g. for caching or for passing data between services. Models can be immutable or mutable, depending on the use case.  Each model must have an associated Entity, which defines the metadata for the model. See the Entity class for more details. The Entity must be set in the subclass of Model. Analogously, a unique name for the model can be set in the subclass, which can be used for identification and logging purposes.  The model_entity and model_name class methods can be used to retrieve the Entity and name of the model, respectively. These methods have the same \"model_\" prefix as generic Pydantic models to avoid name conflicts with other.    PARENT CLASS DOCUMENTATION   BaseModel: !!! abstract \"Usage Documentation\"     [Models](../concepts/models.md)  A base class for creating Pydantic models.  Attributes:     __class_vars__: The names of the class variables defined on the model.     __private_attributes__: Metadata about the private attributes of the model.     __signature__: The synthesized `__init__` [`Signature`][inspect.Signature] of the model.      __pydantic_complete__: Whether model building is completed, or if there are still undefined fields.     __pydantic_core_schema__: The core schema of the model.     __pydantic_custom_init__: Whether the model has a custom `__init__` function.     __pydantic_decorators__: Metadata containing the decorators defined on the model.         This replaces `Model.__validators__` and `Model.__root_validators__` from Pydantic V1.     __pydantic_generic_metadata__: Metadata for generic models; contains data used for a similar purpose to         __args__, __origin__, __parameters__ in typing-module generics. May eventually be replaced by these.     __pydantic_parent_namespace__: Parent namespace of the model, used for automatic rebuilding of models.     __pydantic_post_init__: The name of the post-init method for the model, if defined.     __pydantic_root_model__: Whether the model is a [`RootModel`][pydantic.root_model.RootModel].     __pydantic_serializer__: The `pydantic-core` `SchemaSerializer` used to dump instances of the model.     __pydantic_validator__: The `pydantic-core` `SchemaValidator` used to validate instances of the model.      __pydantic_fields__: A dictionary of field names and their corresponding [`FieldInfo`][pydantic.fields.FieldInfo] objects.     __pydantic_computed_fields__: A dictionary of computed field names and their corresponding [`ComputedFieldInfo`][pydantic.fields.ComputedFieldInfo] objects.      __pydantic_extra__: A dictionary containing extra values, if [`extra`][pydantic.config.ConfigDict.extra]         is set to `\'allow\'`.     __pydantic_fields_set__: The names of fields explicitly set during instantiation.     __pydantic_private__: Values of private attributes set on the model instance.    PARENT CLASS DOCUMENTATION   BaseModel: !!! abstract \"Usage Documentation\"     [Models](../concepts/models.md)  A base class for creating Pydantic models.  Attributes:     __class_vars__: The names of the class variables defined on the model.     __private_attributes__: Metadata about the private attributes of the model.     __signature__: The synthesized `__init__` [`Signature`][inspect.Signature] of the model.      __pydantic_complete__: Whether model building is completed, or if there are still undefined fields.     __pydantic_core_schema__: The core schema of the model.     __pydantic_custom_init__: Whether the model has a custom `__init__` function.     __pydantic_decorators__: Metadata containing the decorators defined on the model.         This replaces `Model.__validators__` and `Model.__root_validators__` from Pydantic V1.     __pydantic_generic_metadata__: Metadata for generic models; contains data used for a similar purpose to         __args__, __origin__, __parameters__ in typing-module generics. May eventually be replaced by these.     __pydantic_parent_namespace__: Parent namespace of the model, used for automatic rebuilding of models.     __pydantic_post_init__: The name of the post-init method for the model, if defined.     __pydantic_root_model__: Whether the model is a [`RootModel`][pydantic.root_model.RootModel].     __pydantic_serializer__: The `pydantic-core` `SchemaSerializer` used to dump instances of the model.     __pydantic_validator__: The `pydantic-core` `SchemaValidator` used to validate instances of the model.      __pydantic_fields__: A dictionary of field names and their corresponding [`FieldInfo`][pydantic.fields.FieldInfo] objects.     __pydantic_computed_fields__: A dictionary of computed field names and their corresponding [`ComputedFieldInfo`][pydantic.fields.ComputedFieldInfo] objects.      __pydantic_extra__: A dictionary containing extra values, if [`extra`][pydantic.config.ConfigDict.extra]         is set to `\'allow\'`.     __pydantic_fields_set__: The names of fields explicitly set during instantiation.     __pydantic_private__: Values of private attributes set on the model instance.    IdentifiersMixin:  Mixin that adds identifiers fields and validation. Assumes that the inheriting model also has an \'identifiers\' field.  Additional validation: - All identifiers must have the same identifier type. - All identifiers must have unique values.    IdentifiersMixin:  Mixin that adds identifiers fields and validation. Assumes that the inheriting model also has an \'identifiers\' field.  Additional validation: - All identifiers must have the same identifier type. - All identifiers must have unique values.
  * @export
  * @interface CaseForUpload
  */
 export interface CaseForUpload {
     /**
-     * External identifiers for the model, if any. Must be a unique values.
-     * @type {Array<ExternalIdentifierForUpload>}
+     * Identifiers for the model, if any. Must be a unique values.
+     * @type {Array<IdentifierForUpload>}
      * @memberof CaseForUpload
      */
-    'external_identifiers'?: Array<ExternalIdentifierForUpload> | null;
+    'identifiers'?: Array<IdentifierForUpload> | null;
     /**
      * The unique identifier for the Parent object. If NULL_ID is provided, it will be set to None. The id must match that of the contained Parent model, if provided, and be consistent with the parent ID in the child models, if provided. The contained Parent model may have a different ID field than \'id\', but this class uses \'id\' instead.
      * @type {string}
@@ -384,6 +384,49 @@ export interface CaseForUpload {
      * @memberof CaseForUpload
      */
     'seqs'?: Array<SeqForUpload> | null;
+}
+/**
+ * PARENT CLASS DOCUMENTATION   BaseIdentifier:  Base class for an identifier generated outside of the system by a particular identifier issuer for a particular entity, together with the system\'s own identifier. The combination of (identifier_issuer_id, external_id) must be unique.
+ * @export
+ * @interface CaseIdentifier
+ */
+export interface CaseIdentifier {
+    /**
+     * The ID of the identifier. Computed as the UUID of the first 16 bytes of the SHA-256 hash of the concatenated identifier_issuer_id bytes and the external_id encoded as UTF-8. PRIMARY KEY
+     * @type {string}
+     * @memberof CaseIdentifier
+     */
+    'id'?: string | null;
+    /**
+     * The UUID of the identifier issuer that issued the identifier
+     * @type {string}
+     * @memberof CaseIdentifier
+     */
+    'identifier_issuer_id': string;
+    /**
+     * 
+     * @type {IdentifierIssuer}
+     * @memberof CaseIdentifier
+     */
+    'identifier_issuer'?: IdentifierIssuer;
+    /**
+     * The identifier issued by the identifier issuer, converted to string if necessary. The identifier will be stripped of leading and trailing whitespace.
+     * @type {string}
+     * @memberof CaseIdentifier
+     */
+    'external_id': string;
+    /**
+     * The internal identifier.
+     * @type {string}
+     * @memberof CaseIdentifier
+     */
+    'internal_id': string;
+    /**
+     * 
+     * @type {Case}
+     * @memberof CaseIdentifier
+     */
+    'case'?: Case;
 }
 /**
  * 
@@ -829,7 +872,7 @@ export interface CaseSetStatus {
     'description': string | null;
 }
 /**
- * PARENT CLASS DOCUMENTATION   Model: PARENT CLASS DOCUMENTATION   BaseModel: !!! abstract \"Usage Documentation\"     [Models](../concepts/models.md)  A base class for creating Pydantic models.  Attributes:     __class_vars__: The names of the class variables defined on the model.     __private_attributes__: Metadata about the private attributes of the model.     __signature__: The synthesized `__init__` [`Signature`][inspect.Signature] of the model.      __pydantic_complete__: Whether model building is completed, or if there are still undefined fields.     __pydantic_core_schema__: The core schema of the model.     __pydantic_custom_init__: Whether the model has a custom `__init__` function.     __pydantic_decorators__: Metadata containing the decorators defined on the model.         This replaces `Model.__validators__` and `Model.__root_validators__` from Pydantic V1.     __pydantic_generic_metadata__: Metadata for generic models; contains data used for a similar purpose to         __args__, __origin__, __parameters__ in typing-module generics. May eventually be replaced by these.     __pydantic_parent_namespace__: Parent namespace of the model, used for automatic rebuilding of models.     __pydantic_post_init__: The name of the post-init method for the model, if defined.     __pydantic_root_model__: Whether the model is a [`RootModel`][pydantic.root_model.RootModel].     __pydantic_serializer__: The `pydantic-core` `SchemaSerializer` used to dump instances of the model.     __pydantic_validator__: The `pydantic-core` `SchemaValidator` used to validate instances of the model.      __pydantic_fields__: A dictionary of field names and their corresponding [`FieldInfo`][pydantic.fields.FieldInfo] objects.     __pydantic_computed_fields__: A dictionary of computed field names and their corresponding [`ComputedFieldInfo`][pydantic.fields.ComputedFieldInfo] objects.      __pydantic_extra__: A dictionary containing extra values, if [`extra`][pydantic.config.ConfigDict.extra]         is set to `\'allow\'`.     __pydantic_fields_set__: The names of fields explicitly set during instantiation.     __pydantic_private__: Values of private attributes set on the model instance.    PARENT CLASS DOCUMENTATION   BaseModel: !!! abstract \"Usage Documentation\"     [Models](../concepts/models.md)  A base class for creating Pydantic models.  Attributes:     __class_vars__: The names of the class variables defined on the model.     __private_attributes__: Metadata about the private attributes of the model.     __signature__: The synthesized `__init__` [`Signature`][inspect.Signature] of the model.      __pydantic_complete__: Whether model building is completed, or if there are still undefined fields.     __pydantic_core_schema__: The core schema of the model.     __pydantic_custom_init__: Whether the model has a custom `__init__` function.     __pydantic_decorators__: Metadata containing the decorators defined on the model.         This replaces `Model.__validators__` and `Model.__root_validators__` from Pydantic V1.     __pydantic_generic_metadata__: Metadata for generic models; contains data used for a similar purpose to         __args__, __origin__, __parameters__ in typing-module generics. May eventually be replaced by these.     __pydantic_parent_namespace__: Parent namespace of the model, used for automatic rebuilding of models.     __pydantic_post_init__: The name of the post-init method for the model, if defined.     __pydantic_root_model__: Whether the model is a [`RootModel`][pydantic.root_model.RootModel].     __pydantic_serializer__: The `pydantic-core` `SchemaSerializer` used to dump instances of the model.     __pydantic_validator__: The `pydantic-core` `SchemaValidator` used to validate instances of the model.      __pydantic_fields__: A dictionary of field names and their corresponding [`FieldInfo`][pydantic.fields.FieldInfo] objects.     __pydantic_computed_fields__: A dictionary of computed field names and their corresponding [`ComputedFieldInfo`][pydantic.fields.ComputedFieldInfo] objects.      __pydantic_extra__: A dictionary containing extra values, if [`extra`][pydantic.config.ConfigDict.extra]         is set to `\'allow\'`.     __pydantic_fields_set__: The names of fields explicitly set during instantiation.     __pydantic_private__: Values of private attributes set on the model instance.
+ * PARENT CLASS DOCUMENTATION   Model: Base class for all models in an application. Models are used to represent the state of the application and are typically persisted in a database. Models can also be used to represent the state of the application in memory, e.g. for caching or for passing data between services. Models can be immutable or mutable, depending on the use case.  Each model must have an associated Entity, which defines the metadata for the model. See the Entity class for more details. The Entity must be set in the subclass of Model. Analogously, a unique name for the model can be set in the subclass, which can be used for identification and logging purposes.  The model_entity and model_name class methods can be used to retrieve the Entity and name of the model, respectively. These methods have the same \"model_\" prefix as generic Pydantic models to avoid name conflicts with other.    PARENT CLASS DOCUMENTATION   BaseModel: !!! abstract \"Usage Documentation\"     [Models](../concepts/models.md)  A base class for creating Pydantic models.  Attributes:     __class_vars__: The names of the class variables defined on the model.     __private_attributes__: Metadata about the private attributes of the model.     __signature__: The synthesized `__init__` [`Signature`][inspect.Signature] of the model.      __pydantic_complete__: Whether model building is completed, or if there are still undefined fields.     __pydantic_core_schema__: The core schema of the model.     __pydantic_custom_init__: Whether the model has a custom `__init__` function.     __pydantic_decorators__: Metadata containing the decorators defined on the model.         This replaces `Model.__validators__` and `Model.__root_validators__` from Pydantic V1.     __pydantic_generic_metadata__: Metadata for generic models; contains data used for a similar purpose to         __args__, __origin__, __parameters__ in typing-module generics. May eventually be replaced by these.     __pydantic_parent_namespace__: Parent namespace of the model, used for automatic rebuilding of models.     __pydantic_post_init__: The name of the post-init method for the model, if defined.     __pydantic_root_model__: Whether the model is a [`RootModel`][pydantic.root_model.RootModel].     __pydantic_serializer__: The `pydantic-core` `SchemaSerializer` used to dump instances of the model.     __pydantic_validator__: The `pydantic-core` `SchemaValidator` used to validate instances of the model.      __pydantic_fields__: A dictionary of field names and their corresponding [`FieldInfo`][pydantic.fields.FieldInfo] objects.     __pydantic_computed_fields__: A dictionary of computed field names and their corresponding [`ComputedFieldInfo`][pydantic.fields.ComputedFieldInfo] objects.      __pydantic_extra__: A dictionary containing extra values, if [`extra`][pydantic.config.ConfigDict.extra]         is set to `\'allow\'`.     __pydantic_fields_set__: The names of fields explicitly set during instantiation.     __pydantic_private__: Values of private attributes set on the model instance.    PARENT CLASS DOCUMENTATION   BaseModel: !!! abstract \"Usage Documentation\"     [Models](../concepts/models.md)  A base class for creating Pydantic models.  Attributes:     __class_vars__: The names of the class variables defined on the model.     __private_attributes__: Metadata about the private attributes of the model.     __signature__: The synthesized `__init__` [`Signature`][inspect.Signature] of the model.      __pydantic_complete__: Whether model building is completed, or if there are still undefined fields.     __pydantic_core_schema__: The core schema of the model.     __pydantic_custom_init__: Whether the model has a custom `__init__` function.     __pydantic_decorators__: Metadata containing the decorators defined on the model.         This replaces `Model.__validators__` and `Model.__root_validators__` from Pydantic V1.     __pydantic_generic_metadata__: Metadata for generic models; contains data used for a similar purpose to         __args__, __origin__, __parameters__ in typing-module generics. May eventually be replaced by these.     __pydantic_parent_namespace__: Parent namespace of the model, used for automatic rebuilding of models.     __pydantic_post_init__: The name of the post-init method for the model, if defined.     __pydantic_root_model__: Whether the model is a [`RootModel`][pydantic.root_model.RootModel].     __pydantic_serializer__: The `pydantic-core` `SchemaSerializer` used to dump instances of the model.     __pydantic_validator__: The `pydantic-core` `SchemaValidator` used to validate instances of the model.      __pydantic_fields__: A dictionary of field names and their corresponding [`FieldInfo`][pydantic.fields.FieldInfo] objects.     __pydantic_computed_fields__: A dictionary of computed field names and their corresponding [`ComputedFieldInfo`][pydantic.fields.ComputedFieldInfo] objects.      __pydantic_extra__: A dictionary containing extra values, if [`extra`][pydantic.config.ConfigDict.extra]         is set to `\'allow\'`.     __pydantic_fields_set__: The names of fields explicitly set during instantiation.     __pydantic_private__: Values of private attributes set on the model instance.
  * @export
  * @interface CaseStats
  */
@@ -1200,7 +1243,7 @@ export interface CaseTypeShareAbac {
     'remove_case_set_from_data_collection_ids': Array<string>;
 }
 /**
- * The result of uploading a single case. The case content validation results as well as the resulting cases are included as well.    PARENT CLASS DOCUMENTATION   ParentUploadResult: Represents the upload result for a Parent model upload. This class must be subclassed analogous to the ParentForUpload model it corresponds to.    PARENT CLASS DOCUMENTATION   UploadResultWithExternalIdentifiers: Represents an upload result that also includes upload results for external identifiers, mirroring a for upload class that has external identifiers.    PARENT CLASS DOCUMENTATION   UploadResult: Represents the result of an upload operation for a particular object, including upload status and logs.  Additional validation: - If the status is successful (NOT_FAILED), there must be no error log items. - If the status is failed, there must be at least one error log item.    PARENT CLASS DOCUMENTATION   Model: PARENT CLASS DOCUMENTATION   BaseModel: !!! abstract \"Usage Documentation\"     [Models](../concepts/models.md)  A base class for creating Pydantic models.  Attributes:     __class_vars__: The names of the class variables defined on the model.     __private_attributes__: Metadata about the private attributes of the model.     __signature__: The synthesized `__init__` [`Signature`][inspect.Signature] of the model.      __pydantic_complete__: Whether model building is completed, or if there are still undefined fields.     __pydantic_core_schema__: The core schema of the model.     __pydantic_custom_init__: Whether the model has a custom `__init__` function.     __pydantic_decorators__: Metadata containing the decorators defined on the model.         This replaces `Model.__validators__` and `Model.__root_validators__` from Pydantic V1.     __pydantic_generic_metadata__: Metadata for generic models; contains data used for a similar purpose to         __args__, __origin__, __parameters__ in typing-module generics. May eventually be replaced by these.     __pydantic_parent_namespace__: Parent namespace of the model, used for automatic rebuilding of models.     __pydantic_post_init__: The name of the post-init method for the model, if defined.     __pydantic_root_model__: Whether the model is a [`RootModel`][pydantic.root_model.RootModel].     __pydantic_serializer__: The `pydantic-core` `SchemaSerializer` used to dump instances of the model.     __pydantic_validator__: The `pydantic-core` `SchemaValidator` used to validate instances of the model.      __pydantic_fields__: A dictionary of field names and their corresponding [`FieldInfo`][pydantic.fields.FieldInfo] objects.     __pydantic_computed_fields__: A dictionary of computed field names and their corresponding [`ComputedFieldInfo`][pydantic.fields.ComputedFieldInfo] objects.      __pydantic_extra__: A dictionary containing extra values, if [`extra`][pydantic.config.ConfigDict.extra]         is set to `\'allow\'`.     __pydantic_fields_set__: The names of fields explicitly set during instantiation.     __pydantic_private__: Values of private attributes set on the model instance.    PARENT CLASS DOCUMENTATION   UploadResultWithExternalIdentifiers: Represents an upload result that also includes upload results for external identifiers, mirroring a for upload class that has external identifiers.    PARENT CLASS DOCUMENTATION   UploadResult: Represents the result of an upload operation for a particular object, including upload status and logs.  Additional validation: - If the status is successful (NOT_FAILED), there must be no error log items. - If the status is failed, there must be at least one error log item.    PARENT CLASS DOCUMENTATION   Model: PARENT CLASS DOCUMENTATION   BaseModel: !!! abstract \"Usage Documentation\"     [Models](../concepts/models.md)  A base class for creating Pydantic models.  Attributes:     __class_vars__: The names of the class variables defined on the model.     __private_attributes__: Metadata about the private attributes of the model.     __signature__: The synthesized `__init__` [`Signature`][inspect.Signature] of the model.      __pydantic_complete__: Whether model building is completed, or if there are still undefined fields.     __pydantic_core_schema__: The core schema of the model.     __pydantic_custom_init__: Whether the model has a custom `__init__` function.     __pydantic_decorators__: Metadata containing the decorators defined on the model.         This replaces `Model.__validators__` and `Model.__root_validators__` from Pydantic V1.     __pydantic_generic_metadata__: Metadata for generic models; contains data used for a similar purpose to         __args__, __origin__, __parameters__ in typing-module generics. May eventually be replaced by these.     __pydantic_parent_namespace__: Parent namespace of the model, used for automatic rebuilding of models.     __pydantic_post_init__: The name of the post-init method for the model, if defined.     __pydantic_root_model__: Whether the model is a [`RootModel`][pydantic.root_model.RootModel].     __pydantic_serializer__: The `pydantic-core` `SchemaSerializer` used to dump instances of the model.     __pydantic_validator__: The `pydantic-core` `SchemaValidator` used to validate instances of the model.      __pydantic_fields__: A dictionary of field names and their corresponding [`FieldInfo`][pydantic.fields.FieldInfo] objects.     __pydantic_computed_fields__: A dictionary of computed field names and their corresponding [`ComputedFieldInfo`][pydantic.fields.ComputedFieldInfo] objects.      __pydantic_extra__: A dictionary containing extra values, if [`extra`][pydantic.config.ConfigDict.extra]         is set to `\'allow\'`.     __pydantic_fields_set__: The names of fields explicitly set during instantiation.     __pydantic_private__: Values of private attributes set on the model instance.    PARENT CLASS DOCUMENTATION   UploadResult: Represents the result of an upload operation for a particular object, including upload status and logs.  Additional validation: - If the status is successful (NOT_FAILED), there must be no error log items. - If the status is failed, there must be at least one error log item.    PARENT CLASS DOCUMENTATION   Model: PARENT CLASS DOCUMENTATION   BaseModel: !!! abstract \"Usage Documentation\"     [Models](../concepts/models.md)  A base class for creating Pydantic models.  Attributes:     __class_vars__: The names of the class variables defined on the model.     __private_attributes__: Metadata about the private attributes of the model.     __signature__: The synthesized `__init__` [`Signature`][inspect.Signature] of the model.      __pydantic_complete__: Whether model building is completed, or if there are still undefined fields.     __pydantic_core_schema__: The core schema of the model.     __pydantic_custom_init__: Whether the model has a custom `__init__` function.     __pydantic_decorators__: Metadata containing the decorators defined on the model.         This replaces `Model.__validators__` and `Model.__root_validators__` from Pydantic V1.     __pydantic_generic_metadata__: Metadata for generic models; contains data used for a similar purpose to         __args__, __origin__, __parameters__ in typing-module generics. May eventually be replaced by these.     __pydantic_parent_namespace__: Parent namespace of the model, used for automatic rebuilding of models.     __pydantic_post_init__: The name of the post-init method for the model, if defined.     __pydantic_root_model__: Whether the model is a [`RootModel`][pydantic.root_model.RootModel].     __pydantic_serializer__: The `pydantic-core` `SchemaSerializer` used to dump instances of the model.     __pydantic_validator__: The `pydantic-core` `SchemaValidator` used to validate instances of the model.      __pydantic_fields__: A dictionary of field names and their corresponding [`FieldInfo`][pydantic.fields.FieldInfo] objects.     __pydantic_computed_fields__: A dictionary of computed field names and their corresponding [`ComputedFieldInfo`][pydantic.fields.ComputedFieldInfo] objects.      __pydantic_extra__: A dictionary containing extra values, if [`extra`][pydantic.config.ConfigDict.extra]         is set to `\'allow\'`.     __pydantic_fields_set__: The names of fields explicitly set during instantiation.     __pydantic_private__: Values of private attributes set on the model instance.    PARENT CLASS DOCUMENTATION   Model: PARENT CLASS DOCUMENTATION   BaseModel: !!! abstract \"Usage Documentation\"     [Models](../concepts/models.md)  A base class for creating Pydantic models.  Attributes:     __class_vars__: The names of the class variables defined on the model.     __private_attributes__: Metadata about the private attributes of the model.     __signature__: The synthesized `__init__` [`Signature`][inspect.Signature] of the model.      __pydantic_complete__: Whether model building is completed, or if there are still undefined fields.     __pydantic_core_schema__: The core schema of the model.     __pydantic_custom_init__: Whether the model has a custom `__init__` function.     __pydantic_decorators__: Metadata containing the decorators defined on the model.         This replaces `Model.__validators__` and `Model.__root_validators__` from Pydantic V1.     __pydantic_generic_metadata__: Metadata for generic models; contains data used for a similar purpose to         __args__, __origin__, __parameters__ in typing-module generics. May eventually be replaced by these.     __pydantic_parent_namespace__: Parent namespace of the model, used for automatic rebuilding of models.     __pydantic_post_init__: The name of the post-init method for the model, if defined.     __pydantic_root_model__: Whether the model is a [`RootModel`][pydantic.root_model.RootModel].     __pydantic_serializer__: The `pydantic-core` `SchemaSerializer` used to dump instances of the model.     __pydantic_validator__: The `pydantic-core` `SchemaValidator` used to validate instances of the model.      __pydantic_fields__: A dictionary of field names and their corresponding [`FieldInfo`][pydantic.fields.FieldInfo] objects.     __pydantic_computed_fields__: A dictionary of computed field names and their corresponding [`ComputedFieldInfo`][pydantic.fields.ComputedFieldInfo] objects.      __pydantic_extra__: A dictionary containing extra values, if [`extra`][pydantic.config.ConfigDict.extra]         is set to `\'allow\'`.     __pydantic_fields_set__: The names of fields explicitly set during instantiation.     __pydantic_private__: Values of private attributes set on the model instance.    PARENT CLASS DOCUMENTATION   BaseModel: !!! abstract \"Usage Documentation\"     [Models](../concepts/models.md)  A base class for creating Pydantic models.  Attributes:     __class_vars__: The names of the class variables defined on the model.     __private_attributes__: Metadata about the private attributes of the model.     __signature__: The synthesized `__init__` [`Signature`][inspect.Signature] of the model.      __pydantic_complete__: Whether model building is completed, or if there are still undefined fields.     __pydantic_core_schema__: The core schema of the model.     __pydantic_custom_init__: Whether the model has a custom `__init__` function.     __pydantic_decorators__: Metadata containing the decorators defined on the model.         This replaces `Model.__validators__` and `Model.__root_validators__` from Pydantic V1.     __pydantic_generic_metadata__: Metadata for generic models; contains data used for a similar purpose to         __args__, __origin__, __parameters__ in typing-module generics. May eventually be replaced by these.     __pydantic_parent_namespace__: Parent namespace of the model, used for automatic rebuilding of models.     __pydantic_post_init__: The name of the post-init method for the model, if defined.     __pydantic_root_model__: Whether the model is a [`RootModel`][pydantic.root_model.RootModel].     __pydantic_serializer__: The `pydantic-core` `SchemaSerializer` used to dump instances of the model.     __pydantic_validator__: The `pydantic-core` `SchemaValidator` used to validate instances of the model.      __pydantic_fields__: A dictionary of field names and their corresponding [`FieldInfo`][pydantic.fields.FieldInfo] objects.     __pydantic_computed_fields__: A dictionary of computed field names and their corresponding [`ComputedFieldInfo`][pydantic.fields.ComputedFieldInfo] objects.      __pydantic_extra__: A dictionary containing extra values, if [`extra`][pydantic.config.ConfigDict.extra]         is set to `\'allow\'`.     __pydantic_fields_set__: The names of fields explicitly set during instantiation.     __pydantic_private__: Values of private attributes set on the model instance.
+ * The result of uploading a single case. The case content validation results as well as the resulting cases are included as well.    PARENT CLASS DOCUMENTATION   ParentUploadResult: Represents the upload result for a Parent model upload. This class must be subclassed analogous to the ParentForUpload model it corresponds to.    PARENT CLASS DOCUMENTATION   UploadResultWithIdentifiers: Represents an upload result that also includes upload results for identifiers, mirroring a for upload class that has identifiers.    PARENT CLASS DOCUMENTATION   UploadResult: Represents the result of an upload operation for a particular object, including upload status and logs.  Additional validation: - If the status is successful (NOT_FAILED), there must be no error log items. - If the status is failed, there must be at least one error log item.    PARENT CLASS DOCUMENTATION   Model: Base class for all models in an application. Models are used to represent the state of the application and are typically persisted in a database. Models can also be used to represent the state of the application in memory, e.g. for caching or for passing data between services. Models can be immutable or mutable, depending on the use case.  Each model must have an associated Entity, which defines the metadata for the model. See the Entity class for more details. The Entity must be set in the subclass of Model. Analogously, a unique name for the model can be set in the subclass, which can be used for identification and logging purposes.  The model_entity and model_name class methods can be used to retrieve the Entity and name of the model, respectively. These methods have the same \"model_\" prefix as generic Pydantic models to avoid name conflicts with other.    PARENT CLASS DOCUMENTATION   BaseModel: !!! abstract \"Usage Documentation\"     [Models](../concepts/models.md)  A base class for creating Pydantic models.  Attributes:     __class_vars__: The names of the class variables defined on the model.     __private_attributes__: Metadata about the private attributes of the model.     __signature__: The synthesized `__init__` [`Signature`][inspect.Signature] of the model.      __pydantic_complete__: Whether model building is completed, or if there are still undefined fields.     __pydantic_core_schema__: The core schema of the model.     __pydantic_custom_init__: Whether the model has a custom `__init__` function.     __pydantic_decorators__: Metadata containing the decorators defined on the model.         This replaces `Model.__validators__` and `Model.__root_validators__` from Pydantic V1.     __pydantic_generic_metadata__: Metadata for generic models; contains data used for a similar purpose to         __args__, __origin__, __parameters__ in typing-module generics. May eventually be replaced by these.     __pydantic_parent_namespace__: Parent namespace of the model, used for automatic rebuilding of models.     __pydantic_post_init__: The name of the post-init method for the model, if defined.     __pydantic_root_model__: Whether the model is a [`RootModel`][pydantic.root_model.RootModel].     __pydantic_serializer__: The `pydantic-core` `SchemaSerializer` used to dump instances of the model.     __pydantic_validator__: The `pydantic-core` `SchemaValidator` used to validate instances of the model.      __pydantic_fields__: A dictionary of field names and their corresponding [`FieldInfo`][pydantic.fields.FieldInfo] objects.     __pydantic_computed_fields__: A dictionary of computed field names and their corresponding [`ComputedFieldInfo`][pydantic.fields.ComputedFieldInfo] objects.      __pydantic_extra__: A dictionary containing extra values, if [`extra`][pydantic.config.ConfigDict.extra]         is set to `\'allow\'`.     __pydantic_fields_set__: The names of fields explicitly set during instantiation.     __pydantic_private__: Values of private attributes set on the model instance.    PARENT CLASS DOCUMENTATION   UploadResultWithIdentifiers: Represents an upload result that also includes upload results for identifiers, mirroring a for upload class that has identifiers.    PARENT CLASS DOCUMENTATION   UploadResult: Represents the result of an upload operation for a particular object, including upload status and logs.  Additional validation: - If the status is successful (NOT_FAILED), there must be no error log items. - If the status is failed, there must be at least one error log item.    PARENT CLASS DOCUMENTATION   Model: Base class for all models in an application. Models are used to represent the state of the application and are typically persisted in a database. Models can also be used to represent the state of the application in memory, e.g. for caching or for passing data between services. Models can be immutable or mutable, depending on the use case.  Each model must have an associated Entity, which defines the metadata for the model. See the Entity class for more details. The Entity must be set in the subclass of Model. Analogously, a unique name for the model can be set in the subclass, which can be used for identification and logging purposes.  The model_entity and model_name class methods can be used to retrieve the Entity and name of the model, respectively. These methods have the same \"model_\" prefix as generic Pydantic models to avoid name conflicts with other.    PARENT CLASS DOCUMENTATION   BaseModel: !!! abstract \"Usage Documentation\"     [Models](../concepts/models.md)  A base class for creating Pydantic models.  Attributes:     __class_vars__: The names of the class variables defined on the model.     __private_attributes__: Metadata about the private attributes of the model.     __signature__: The synthesized `__init__` [`Signature`][inspect.Signature] of the model.      __pydantic_complete__: Whether model building is completed, or if there are still undefined fields.     __pydantic_core_schema__: The core schema of the model.     __pydantic_custom_init__: Whether the model has a custom `__init__` function.     __pydantic_decorators__: Metadata containing the decorators defined on the model.         This replaces `Model.__validators__` and `Model.__root_validators__` from Pydantic V1.     __pydantic_generic_metadata__: Metadata for generic models; contains data used for a similar purpose to         __args__, __origin__, __parameters__ in typing-module generics. May eventually be replaced by these.     __pydantic_parent_namespace__: Parent namespace of the model, used for automatic rebuilding of models.     __pydantic_post_init__: The name of the post-init method for the model, if defined.     __pydantic_root_model__: Whether the model is a [`RootModel`][pydantic.root_model.RootModel].     __pydantic_serializer__: The `pydantic-core` `SchemaSerializer` used to dump instances of the model.     __pydantic_validator__: The `pydantic-core` `SchemaValidator` used to validate instances of the model.      __pydantic_fields__: A dictionary of field names and their corresponding [`FieldInfo`][pydantic.fields.FieldInfo] objects.     __pydantic_computed_fields__: A dictionary of computed field names and their corresponding [`ComputedFieldInfo`][pydantic.fields.ComputedFieldInfo] objects.      __pydantic_extra__: A dictionary containing extra values, if [`extra`][pydantic.config.ConfigDict.extra]         is set to `\'allow\'`.     __pydantic_fields_set__: The names of fields explicitly set during instantiation.     __pydantic_private__: Values of private attributes set on the model instance.    PARENT CLASS DOCUMENTATION   UploadResult: Represents the result of an upload operation for a particular object, including upload status and logs.  Additional validation: - If the status is successful (NOT_FAILED), there must be no error log items. - If the status is failed, there must be at least one error log item.    PARENT CLASS DOCUMENTATION   Model: Base class for all models in an application. Models are used to represent the state of the application and are typically persisted in a database. Models can also be used to represent the state of the application in memory, e.g. for caching or for passing data between services. Models can be immutable or mutable, depending on the use case.  Each model must have an associated Entity, which defines the metadata for the model. See the Entity class for more details. The Entity must be set in the subclass of Model. Analogously, a unique name for the model can be set in the subclass, which can be used for identification and logging purposes.  The model_entity and model_name class methods can be used to retrieve the Entity and name of the model, respectively. These methods have the same \"model_\" prefix as generic Pydantic models to avoid name conflicts with other.    PARENT CLASS DOCUMENTATION   BaseModel: !!! abstract \"Usage Documentation\"     [Models](../concepts/models.md)  A base class for creating Pydantic models.  Attributes:     __class_vars__: The names of the class variables defined on the model.     __private_attributes__: Metadata about the private attributes of the model.     __signature__: The synthesized `__init__` [`Signature`][inspect.Signature] of the model.      __pydantic_complete__: Whether model building is completed, or if there are still undefined fields.     __pydantic_core_schema__: The core schema of the model.     __pydantic_custom_init__: Whether the model has a custom `__init__` function.     __pydantic_decorators__: Metadata containing the decorators defined on the model.         This replaces `Model.__validators__` and `Model.__root_validators__` from Pydantic V1.     __pydantic_generic_metadata__: Metadata for generic models; contains data used for a similar purpose to         __args__, __origin__, __parameters__ in typing-module generics. May eventually be replaced by these.     __pydantic_parent_namespace__: Parent namespace of the model, used for automatic rebuilding of models.     __pydantic_post_init__: The name of the post-init method for the model, if defined.     __pydantic_root_model__: Whether the model is a [`RootModel`][pydantic.root_model.RootModel].     __pydantic_serializer__: The `pydantic-core` `SchemaSerializer` used to dump instances of the model.     __pydantic_validator__: The `pydantic-core` `SchemaValidator` used to validate instances of the model.      __pydantic_fields__: A dictionary of field names and their corresponding [`FieldInfo`][pydantic.fields.FieldInfo] objects.     __pydantic_computed_fields__: A dictionary of computed field names and their corresponding [`ComputedFieldInfo`][pydantic.fields.ComputedFieldInfo] objects.      __pydantic_extra__: A dictionary containing extra values, if [`extra`][pydantic.config.ConfigDict.extra]         is set to `\'allow\'`.     __pydantic_fields_set__: The names of fields explicitly set during instantiation.     __pydantic_private__: Values of private attributes set on the model instance.    PARENT CLASS DOCUMENTATION   Model: Base class for all models in an application. Models are used to represent the state of the application and are typically persisted in a database. Models can also be used to represent the state of the application in memory, e.g. for caching or for passing data between services. Models can be immutable or mutable, depending on the use case.  Each model must have an associated Entity, which defines the metadata for the model. See the Entity class for more details. The Entity must be set in the subclass of Model. Analogously, a unique name for the model can be set in the subclass, which can be used for identification and logging purposes.  The model_entity and model_name class methods can be used to retrieve the Entity and name of the model, respectively. These methods have the same \"model_\" prefix as generic Pydantic models to avoid name conflicts with other.    PARENT CLASS DOCUMENTATION   BaseModel: !!! abstract \"Usage Documentation\"     [Models](../concepts/models.md)  A base class for creating Pydantic models.  Attributes:     __class_vars__: The names of the class variables defined on the model.     __private_attributes__: Metadata about the private attributes of the model.     __signature__: The synthesized `__init__` [`Signature`][inspect.Signature] of the model.      __pydantic_complete__: Whether model building is completed, or if there are still undefined fields.     __pydantic_core_schema__: The core schema of the model.     __pydantic_custom_init__: Whether the model has a custom `__init__` function.     __pydantic_decorators__: Metadata containing the decorators defined on the model.         This replaces `Model.__validators__` and `Model.__root_validators__` from Pydantic V1.     __pydantic_generic_metadata__: Metadata for generic models; contains data used for a similar purpose to         __args__, __origin__, __parameters__ in typing-module generics. May eventually be replaced by these.     __pydantic_parent_namespace__: Parent namespace of the model, used for automatic rebuilding of models.     __pydantic_post_init__: The name of the post-init method for the model, if defined.     __pydantic_root_model__: Whether the model is a [`RootModel`][pydantic.root_model.RootModel].     __pydantic_serializer__: The `pydantic-core` `SchemaSerializer` used to dump instances of the model.     __pydantic_validator__: The `pydantic-core` `SchemaValidator` used to validate instances of the model.      __pydantic_fields__: A dictionary of field names and their corresponding [`FieldInfo`][pydantic.fields.FieldInfo] objects.     __pydantic_computed_fields__: A dictionary of computed field names and their corresponding [`ComputedFieldInfo`][pydantic.fields.ComputedFieldInfo] objects.      __pydantic_extra__: A dictionary containing extra values, if [`extra`][pydantic.config.ConfigDict.extra]         is set to `\'allow\'`.     __pydantic_fields_set__: The names of fields explicitly set during instantiation.     __pydantic_private__: Values of private attributes set on the model instance.    PARENT CLASS DOCUMENTATION   BaseModel: !!! abstract \"Usage Documentation\"     [Models](../concepts/models.md)  A base class for creating Pydantic models.  Attributes:     __class_vars__: The names of the class variables defined on the model.     __private_attributes__: Metadata about the private attributes of the model.     __signature__: The synthesized `__init__` [`Signature`][inspect.Signature] of the model.      __pydantic_complete__: Whether model building is completed, or if there are still undefined fields.     __pydantic_core_schema__: The core schema of the model.     __pydantic_custom_init__: Whether the model has a custom `__init__` function.     __pydantic_decorators__: Metadata containing the decorators defined on the model.         This replaces `Model.__validators__` and `Model.__root_validators__` from Pydantic V1.     __pydantic_generic_metadata__: Metadata for generic models; contains data used for a similar purpose to         __args__, __origin__, __parameters__ in typing-module generics. May eventually be replaced by these.     __pydantic_parent_namespace__: Parent namespace of the model, used for automatic rebuilding of models.     __pydantic_post_init__: The name of the post-init method for the model, if defined.     __pydantic_root_model__: Whether the model is a [`RootModel`][pydantic.root_model.RootModel].     __pydantic_serializer__: The `pydantic-core` `SchemaSerializer` used to dump instances of the model.     __pydantic_validator__: The `pydantic-core` `SchemaValidator` used to validate instances of the model.      __pydantic_fields__: A dictionary of field names and their corresponding [`FieldInfo`][pydantic.fields.FieldInfo] objects.     __pydantic_computed_fields__: A dictionary of computed field names and their corresponding [`ComputedFieldInfo`][pydantic.fields.ComputedFieldInfo] objects.      __pydantic_extra__: A dictionary containing extra values, if [`extra`][pydantic.config.ConfigDict.extra]         is set to `\'allow\'`.     __pydantic_fields_set__: The names of fields explicitly set during instantiation.     __pydantic_private__: Values of private attributes set on the model instance.
  * @export
  * @interface CaseUploadResult
  */
@@ -1230,11 +1273,11 @@ export interface CaseUploadResult {
      */
     'logs'?: Array<UploadLogItem>;
     /**
-     * The results of uploading the external identifiers associated with the case, if any were provided, in the same order as provided.
+     * The results of uploading the identifiers associated with the case, if any were provided, in the same order as provided.
      * @type {Array<UploadResult>}
      * @memberof CaseUploadResult
      */
-    'external_identifiers'?: Array<UploadResult> | null;
+    'identifiers'?: Array<UploadResult> | null;
     /**
      * The data issues found for the original case content.
      * @type {Array<CaseDataIssue>}
@@ -1514,95 +1557,95 @@ export type ColType = typeof ColType[keyof typeof ColType];
  */
 
 export const CommandName = {
-    TreeAlgorithmCrudCommand: 'TreeAlgorithmCrudCommand',
-    IdentifierIssuerCrudCommand: 'IdentifierIssuerCrudCommand',
-    UploadCasesCommand: 'UploadCasesCommand',
-    RetrieveCaseSetRightsCommand: 'RetrieveCaseSetRightsCommand',
-    EtiologicalAgentCrudCommand: 'EtiologicalAgentCrudCommand',
-    RegisterInvitedUserCommand: 'RegisterInvitedUserCommand',
-    UpdateUserCommand: 'UpdateUserCommand',
-    OrganizationIdentifierIssuerLinkUpdateAssociationCommand: 'OrganizationIdentifierIssuerLinkUpdateAssociationCommand',
-    RetrieveSubRolesCommand: 'RetrieveSubRolesCommand',
-    RetrieveCompleteCaseTypeCommand: 'RetrieveCompleteCaseTypeCommand',
-    CaseSetCategoryCrudCommand: 'CaseSetCategoryCrudCommand',
-    SiteCrudCommand: 'SiteCrudCommand',
-    TreeAlgorithmClassCrudCommand: 'TreeAlgorithmClassCrudCommand',
-    DataCollectionSetCrudCommand: 'DataCollectionSetCrudCommand',
-    CaseTypeCrudCommand: 'CaseTypeCrudCommand',
-    OrganizationShareCasePolicyCrudCommand: 'OrganizationShareCasePolicyCrudCommand',
-    ConceptSetCrudCommand: 'ConceptSetCrudCommand',
-    ColSetCrudCommand: 'ColSetCrudCommand',
-    UserCrudCommand: 'UserCrudCommand',
-    CreateFileForSeqCommand: 'CreateFileForSeqCommand',
-    UserShareCasePolicyCrudCommand: 'UserShareCasePolicyCrudCommand',
-    DataCollectionCrudCommand: 'DataCollectionCrudCommand',
-    CaseDataCollectionLinkCrudCommand: 'CaseDataCollectionLinkCrudCommand',
-    CaseTypeSetCrudCommand: 'CaseTypeSetCrudCommand',
-    RegionSetCrudCommand: 'RegionSetCrudCommand',
-    DiseaseEtiologicalAgentUpdateAssociationCommand: 'DiseaseEtiologicalAgentUpdateAssociationCommand',
-    OrganizationAdminPolicyCrudCommand: 'OrganizationAdminPolicyCrudCommand',
-    RetrieveAssemblyProtocolsCommand: 'RetrieveAssemblyProtocolsCommand',
-    EtiologyCrudCommand: 'EtiologyCrudCommand',
-    CaseTypeSetCaseTypeUpdateAssociationCommand: 'CaseTypeSetCaseTypeUpdateAssociationCommand',
-    RetrieveSimilarCasesCommand: 'RetrieveSimilarCasesCommand',
-    ConceptRelationCrudCommand: 'ConceptRelationCrudCommand',
+    CreateCaseSetCommand: 'CreateCaseSetCommand',
     SubjectCrudCommand: 'SubjectCrudCommand',
-    RetrievePhylogeneticTreeByCasesCommand: 'RetrievePhylogeneticTreeByCasesCommand',
-    CaseCrudCommand: 'CaseCrudCommand',
+    RegionSetCrudCommand: 'RegionSetCrudCommand',
+    RetrieveGeneticSequenceByIdCommand: 'RetrieveGeneticSequenceByIdCommand',
+    ColSetCrudCommand: 'ColSetCrudCommand',
+    CaseTypeSetCategoryCrudCommand: 'CaseTypeSetCategoryCrudCommand',
+    RetrieveLicensesCommand: 'RetrieveLicensesCommand',
+    RetrieveCompleteCaseTypeCommand: 'RetrieveCompleteCaseTypeCommand',
+    RetrieveAssemblyProtocolsCommand: 'RetrieveAssemblyProtocolsCommand',
+    DataCollectionSetDataCollectionUpdateAssociationCommand: 'DataCollectionSetDataCollectionUpdateAssociationCommand',
+    ConceptSetCrudCommand: 'ConceptSetCrudCommand',
+    OrganizationIdentifierIssuerLinkCrudCommand: 'OrganizationIdentifierIssuerLinkCrudCommand',
+    OrganizationAdminPolicyCrudCommand: 'OrganizationAdminPolicyCrudCommand',
+    InviteUserCommand: 'InviteUserCommand',
+    SubjectIdentifierCrudCommand: 'SubjectIdentifierCrudCommand',
+    GeneticDistanceProtocolCrudCommand: 'GeneticDistanceProtocolCrudCommand',
+    RegisterInvitedUserCommand: 'RegisterInvitedUserCommand',
+    RetrieveGeneticSequenceFastaByCaseCommand: 'RetrieveGeneticSequenceFastaByCaseCommand',
+    DiseaseEtiologicalAgentUpdateAssociationCommand: 'DiseaseEtiologicalAgentUpdateAssociationCommand',
+    ConceptRelationCrudCommand: 'ConceptRelationCrudCommand',
+    CaseTypeSetMemberCrudCommand: 'CaseTypeSetMemberCrudCommand',
+    CaseSetCategoryCrudCommand: 'CaseSetCategoryCrudCommand',
     ColCrudCommand: 'ColCrudCommand',
-    RegionRelationCrudCommand: 'RegionRelationCrudCommand',
+    CaseTypeSetCaseTypeUpdateAssociationCommand: 'CaseTypeSetCaseTypeUpdateAssociationCommand',
+    DataCollectionSetCrudCommand: 'DataCollectionSetCrudCommand',
+    OrganizationAccessCasePolicyCrudCommand: 'OrganizationAccessCasePolicyCrudCommand',
+    RetrieveContainingRegionCommand: 'RetrieveContainingRegionCommand',
+    ContactCrudCommand: 'ContactCrudCommand',
+    RegionSetShapeCrudCommand: 'RegionSetShapeCrudCommand',
+    DataCollectionSetMemberCrudCommand: 'DataCollectionSetMemberCrudCommand',
+    UserCrudCommand: 'UserCrudCommand',
     ColSetMemberCrudCommand: 'ColSetMemberCrudCommand',
+    GetIdentityProvidersCommand: 'GetIdentityProvidersCommand',
+    UserInvitationCrudCommand: 'UserInvitationCrudCommand',
+    RetrieveInviteUserConstraintsCommand: 'RetrieveInviteUserConstraintsCommand',
+    CreateFileForSeqCommand: 'CreateFileForSeqCommand',
+    RegionRelationCrudCommand: 'RegionRelationCrudCommand',
+    RetrieveCasesByIdCommand: 'RetrieveCasesByIdCommand',
+    RetrieveCasesByQueryCommand: 'RetrieveCasesByQueryCommand',
+    CaseSetDataCollectionLinkCrudCommand: 'CaseSetDataCollectionLinkCrudCommand',
+    CaseSetStatusCrudCommand: 'CaseSetStatusCrudCommand',
+    RetrieveCaseStatsCommand: 'RetrieveCaseStatsCommand',
+    RetrieveOutagesCommand: 'RetrieveOutagesCommand',
+    ColSetColUpdateAssociationCommand: 'ColSetColUpdateAssociationCommand',
     RetrieveCaseRightsCommand: 'RetrieveCaseRightsCommand',
     OutageCrudCommand: 'OutageCrudCommand',
-    RetrieveSequencingProtocolsCommand: 'RetrieveSequencingProtocolsCommand',
-    RetrieveContainingRegionCommand: 'RetrieveContainingRegionCommand',
-    ExternalIdentifierCrudCommand: 'ExternalIdentifierCrudCommand',
-    RetrieveInviteUserConstraintsCommand: 'RetrieveInviteUserConstraintsCommand',
-    UserAccessCasePolicyCrudCommand: 'UserAccessCasePolicyCrudCommand',
-    CaseTypeSetCategoryCrudCommand: 'CaseTypeSetCategoryCrudCommand',
-    DataCollectionSetDataCollectionUpdateAssociationCommand: 'DataCollectionSetDataCollectionUpdateAssociationCommand',
-    DimCrudCommand: 'DimCrudCommand',
-    InviteUserCommand: 'InviteUserCommand',
-    DiseaseCrudCommand: 'DiseaseCrudCommand',
-    GeneticDistanceProtocolCrudCommand: 'GeneticDistanceProtocolCrudCommand',
-    OrganizationAccessCasePolicyCrudCommand: 'OrganizationAccessCasePolicyCrudCommand',
-    OrganizationIdentifierIssuerLinkCrudCommand: 'OrganizationIdentifierIssuerLinkCrudCommand',
-    CaseSetCrudCommand: 'CaseSetCrudCommand',
-    OrganizationSetMemberCrudCommand: 'OrganizationSetMemberCrudCommand',
-    ConceptCrudCommand: 'ConceptCrudCommand',
-    CreateFileForReadSetCommand: 'CreateFileForReadSetCommand',
-    CaseSetDataCollectionLinkCrudCommand: 'CaseSetDataCollectionLinkCrudCommand',
-    RetrievePhylogeneticTreeBySequencesCommand: 'RetrievePhylogeneticTreeBySequencesCommand',
-    RefColCrudCommand: 'RefColCrudCommand',
-    CaseSetStatusCrudCommand: 'CaseSetStatusCrudCommand',
     OrganizationSetCrudCommand: 'OrganizationSetCrudCommand',
-    RetrieveOutagesCommand: 'RetrieveOutagesCommand',
-    CreateCaseSetCommand: 'CreateCaseSetCommand',
-    RetrieveLicensesCommand: 'RetrieveLicensesCommand',
-    OrganizationCrudCommand: 'OrganizationCrudCommand',
-    RetrieveOrganizationsUnderAdminCommand: 'RetrieveOrganizationsUnderAdminCommand',
-    RetrieveCasesByQueryCommand: 'RetrieveCasesByQueryCommand',
-    RefDimCrudCommand: 'RefDimCrudCommand',
-    RetrieveGeneticSequenceFastaByCaseCommand: 'RetrieveGeneticSequenceFastaByCaseCommand',
+    OrganizationShareCasePolicyCrudCommand: 'OrganizationShareCasePolicyCrudCommand',
+    CaseCrudCommand: 'CaseCrudCommand',
+    RefColCrudCommand: 'RefColCrudCommand',
+    CaseTypeCrudCommand: 'CaseTypeCrudCommand',
+    RetrievePhylogeneticTreeBySequencesCommand: 'RetrievePhylogeneticTreeBySequencesCommand',
     RetrieveOrganizationContactsCommand: 'RetrieveOrganizationContactsCommand',
-    RetrieveOrganizationAdminNameEmailsCommand: 'RetrieveOrganizationAdminNameEmailsCommand',
-    DataCollectionSetMemberCrudCommand: 'DataCollectionSetMemberCrudCommand',
-    CaseSetMemberCrudCommand: 'CaseSetMemberCrudCommand',
-    RegionCrudCommand: 'RegionCrudCommand',
-    RetrieveGeneticSequenceByIdCommand: 'RetrieveGeneticSequenceByIdCommand',
-    OrganizationSetOrganizationUpdateAssociationCommand: 'OrganizationSetOrganizationUpdateAssociationCommand',
-    UserInvitationCrudCommand: 'UserInvitationCrudCommand',
-    RegionSetShapeCrudCommand: 'RegionSetShapeCrudCommand',
-    UpdateUserOwnOrganizationCommand: 'UpdateUserOwnOrganizationCommand',
-    RetrieveCaseStatsCommand: 'RetrieveCaseStatsCommand',
-    ContactCrudCommand: 'ContactCrudCommand',
-    RetrieveCasesByIdCommand: 'RetrieveCasesByIdCommand',
+    EtiologicalAgentCrudCommand: 'EtiologicalAgentCrudCommand',
+    RetrieveSubRolesCommand: 'RetrieveSubRolesCommand',
+    CaseSetCrudCommand: 'CaseSetCrudCommand',
+    RetrieveCaseSetRightsCommand: 'RetrieveCaseSetRightsCommand',
+    RetrievePhylogeneticTreeByCasesCommand: 'RetrievePhylogeneticTreeByCasesCommand',
+    DiseaseCrudCommand: 'DiseaseCrudCommand',
+    OrganizationSetMemberCrudCommand: 'OrganizationSetMemberCrudCommand',
+    CaseTypeSetCrudCommand: 'CaseTypeSetCrudCommand',
+    UserAccessCasePolicyCrudCommand: 'UserAccessCasePolicyCrudCommand',
+    RefDimCrudCommand: 'RefDimCrudCommand',
+    TreeAlgorithmClassCrudCommand: 'TreeAlgorithmClassCrudCommand',
+    UploadCasesCommand: 'UploadCasesCommand',
+    OrganizationCrudCommand: 'OrganizationCrudCommand',
+    RetrieveGeneticSequenceFastaByIdCommand: 'RetrieveGeneticSequenceFastaByIdCommand',
     RetrieveOwnPermissionsCommand: 'RetrieveOwnPermissionsCommand',
-    GetIdentityProvidersCommand: 'GetIdentityProvidersCommand',
-    ColSetColUpdateAssociationCommand: 'ColSetColUpdateAssociationCommand',
-    CaseTypeSetMemberCrudCommand: 'CaseTypeSetMemberCrudCommand',
-    SubjectIdentifierCrudCommand: 'SubjectIdentifierCrudCommand',
-    RetrieveGeneticSequenceFastaByIdCommand: 'RetrieveGeneticSequenceFastaByIdCommand'
+    CaseSetMemberCrudCommand: 'CaseSetMemberCrudCommand',
+    UpdateUserCommand: 'UpdateUserCommand',
+    UpdateUserOwnOrganizationCommand: 'UpdateUserOwnOrganizationCommand',
+    RegionCrudCommand: 'RegionCrudCommand',
+    CaseDataCollectionLinkCrudCommand: 'CaseDataCollectionLinkCrudCommand',
+    CaseIdentifierCrudCommand: 'CaseIdentifierCrudCommand',
+    OrganizationSetOrganizationUpdateAssociationCommand: 'OrganizationSetOrganizationUpdateAssociationCommand',
+    TreeAlgorithmCrudCommand: 'TreeAlgorithmCrudCommand',
+    UserShareCasePolicyCrudCommand: 'UserShareCasePolicyCrudCommand',
+    SiteCrudCommand: 'SiteCrudCommand',
+    IdentifierIssuerCrudCommand: 'IdentifierIssuerCrudCommand',
+    DimCrudCommand: 'DimCrudCommand',
+    RetrieveSimilarCasesCommand: 'RetrieveSimilarCasesCommand',
+    RetrieveOrganizationAdminNameEmailsCommand: 'RetrieveOrganizationAdminNameEmailsCommand',
+    OrganizationIdentifierIssuerLinkUpdateAssociationCommand: 'OrganizationIdentifierIssuerLinkUpdateAssociationCommand',
+    ConceptCrudCommand: 'ConceptCrudCommand',
+    EtiologyCrudCommand: 'EtiologyCrudCommand',
+    RetrieveSequencingProtocolsCommand: 'RetrieveSequencingProtocolsCommand',
+    CreateFileForReadSetCommand: 'CreateFileForReadSetCommand',
+    RetrieveOrganizationsUnderAdminCommand: 'RetrieveOrganizationsUnderAdminCommand',
+    DataCollectionCrudCommand: 'DataCollectionCrudCommand'
 } as const;
 
 export type CommandName = typeof CommandName[keyof typeof CommandName];
@@ -2408,74 +2451,17 @@ export interface Etiology {
     'etiological_agent'?: EtiologicalAgent;
 }
 /**
- * An externally generated identifier of a particular type and its corresponding internal identifier. The externally generated identifier consists of the combination (identifier issuer, identifier)
+ * 
  * @export
- * @interface ExternalIdentifier
+ * @interface FeatureFlagsResponseBody
  */
-export interface ExternalIdentifier {
-    /**
-     * The ID of the external identifier. Computed as the UUID of the first 16 bytes of the SHA-256 hash of the concatenated identifier_issuer_id bytes and the external_id encoded as UTF-8. PRIMARY KEY
-     * @type {string}
-     * @memberof ExternalIdentifier
-     */
-    'id'?: string | null;
+export interface FeatureFlagsResponseBody {
     /**
      * 
-     * @type {IdentifierType}
-     * @memberof ExternalIdentifier
+     * @type {{ [key: string]: boolean; }}
+     * @memberof FeatureFlagsResponseBody
      */
-    'identifier_type': IdentifierType;
-    /**
-     * The UUID of the identifier issuer that issued the external identifier
-     * @type {string}
-     * @memberof ExternalIdentifier
-     */
-    'identifier_issuer_id': string;
-    /**
-     * 
-     * @type {IdentifierIssuer}
-     * @memberof ExternalIdentifier
-     */
-    'identifier_issuer'?: IdentifierIssuer;
-    /**
-     * The external identifier
-     * @type {string}
-     * @memberof ExternalIdentifier
-     */
-    'external_id': string;
-    /**
-     * The internal identifier. This identifier is not guaranteed to still exist, so operations using it should check this first.
-     * @type {string}
-     * @memberof ExternalIdentifier
-     */
-    'internal_id': string;
-}
-
-
-/**
- * An external identifier, defined as the combination of (identifier issuer, identifier), intended for an upload operation. The identifier issuer can be given either as its code or ID to facilitate the upload operation where applicable. The model is immutable (frozen) to allow its use in sets and as dictionary keys.
- * @export
- * @interface ExternalIdentifierForUpload
- */
-export interface ExternalIdentifierForUpload {
-    /**
-     * The UUID of the identifier issuer that issued the identifier. Must be present if the identifier_issuer_code is not present.
-     * @type {string}
-     * @memberof ExternalIdentifierForUpload
-     */
-    'identifier_issuer_id'?: string | null;
-    /**
-     * The code of the identifier issuer that issued the identifier. Must be present if the identifier_issuer_id is not present.
-     * @type {string}
-     * @memberof ExternalIdentifierForUpload
-     */
-    'identifier_issuer_code'?: string | null;
-    /**
-     * The external identifier
-     * @type {string}
-     * @memberof ExternalIdentifierForUpload
-     */
-    'external_id': string;
+    'feature_flags': { [key: string]: boolean; };
 }
 /**
  * 
@@ -2603,6 +2589,31 @@ export type HealthStatus = typeof HealthStatus[keyof typeof HealthStatus];
 
 
 /**
+ * An external identifier, defined as the combination of (identifier issuer, identifier), intended for an upload operation. The identifier issuer can be given either as its code or ID to facilitate the upload operation where applicable. The model is immutable (frozen) to allow its use in sets and as dictionary keys.
+ * @export
+ * @interface IdentifierForUpload
+ */
+export interface IdentifierForUpload {
+    /**
+     * The UUID of the identifier issuer that issued the identifier. Must be present if the identifier_issuer_code is not present.
+     * @type {string}
+     * @memberof IdentifierForUpload
+     */
+    'identifier_issuer_id'?: string | null;
+    /**
+     * The code of the identifier issuer that issued the identifier. Must be present if the identifier_issuer_id is not present.
+     * @type {string}
+     * @memberof IdentifierForUpload
+     */
+    'identifier_issuer_code'?: string | null;
+    /**
+     * The external identifier
+     * @type {string}
+     * @memberof IdentifierForUpload
+     */
+    'external_id': string;
+}
+/**
  * A system or process that issues identifiers. The combination (identifier_issuer, issued_identifier) is universally unique.
  * @export
  * @interface IdentifierIssuer
@@ -2633,24 +2644,6 @@ export interface IdentifierIssuer {
      */
     'description'?: string | null;
 }
-/**
- * 
- * @export
- * @ {number}
- */
-
-export const IdentifierType = {
-    NUMBER_1: 1,
-    NUMBER_2: 2,
-    NUMBER_3: 3,
-    NUMBER_4: 4,
-    NUMBER_5: 5,
-    NUMBER_6: 6
-} as const;
-
-export type IdentifierType = typeof IdentifierType[keyof typeof IdentifierType];
-
-
 /**
  * 
  * @export
@@ -3430,7 +3423,7 @@ export interface PhylogeneticTree {
 
 
 /**
- * A single read set to be uploaded and associated with both an existing case in casedb and a potentially existing sample in seqdb.  The sample can be identified in seqdb either by its internal ID (sample_id) or by an external identifier (external_sample_id). The ID of created read set is intended to be added to the corresponding case in casedb as the content of the given Col.
+ * A single read set to be uploaded and associated with both an existing case in casedb and a potentially existing sample in seqdb.  The sample can be identified in seqdb either by its internal ID (sample_id) or by another identifier (other_sample_identifier). The ID of created read set is intended to be added to the corresponding case in casedb as the content of the given Col.
  * @export
  * @interface ReadSetForUpload
  */
@@ -3454,17 +3447,17 @@ export interface ReadSetForUpload {
      */
     'col_id': string;
     /**
-     * The UUID of the sample in seqdb that the read set is associated with. If not available, the null ID is put. Must be provided if external_sample_id is not provided.
+     * The UUID of the sample in seqdb that the read set is associated with. If not available, the null ID is put. Must be provided if other_sample_identifier is not provided.
      * @type {string}
      * @memberof ReadSetForUpload
      */
     'sample_id'?: string;
     /**
      * 
-     * @type {ExternalIdentifierForUpload}
+     * @type {IdentifierForUpload}
      * @memberof ReadSetForUpload
      */
-    'external_sample_id'?: ExternalIdentifierForUpload;
+    'other_sample_identifier'?: IdentifierForUpload;
     /**
      * The UUID of the sequencing protocol, if available. If not available, the null ID is put. Must be present if sequencing_protocol_code is not present. The use of sequencing_protocol_id is preferred over sequencing_protocol_code since the latter may change.
      * @type {string}
@@ -4040,7 +4033,7 @@ export type SeqFileFormat = typeof SeqFileFormat[keyof typeof SeqFileFormat];
 
 
 /**
- * A single sequence to be uploaded and associated with both an existing case in casedb and a potentially existing sample in seqdb.  The sample can be identified in seqdb either by its internal ID (sample_id) or by an external identifier (external_sample_id). The ID of created sequence is intended to be added to the corresponding case in casedb as the content of the given Col.
+ * A single sequence to be uploaded and associated with both an existing case in casedb and a potentially existing sample in seqdb.  The sample can be identified in seqdb either by its internal ID (sample_id) or by another identifier (other_sample_identifier). The ID of created sequence is intended to be added to the corresponding case in casedb as the content of the given Col.
  * @export
  * @interface SeqForUpload
  */
@@ -4064,17 +4057,17 @@ export interface SeqForUpload {
      */
     'col_id': string;
     /**
-     * The UUID of the sample in seqdb that the sequence is associated with. If not available, the null ID is put. Must be provided if external_sample_id is not provided.
+     * The UUID of the sample in seqdb that the sequence is associated with. If not available, the null ID is put. Must be provided if other_sample_identifier is not provided.
      * @type {string}
      * @memberof SeqForUpload
      */
     'sample_id'?: string;
     /**
      * 
-     * @type {ExternalIdentifierForUpload}
+     * @type {IdentifierForUpload}
      * @memberof SeqForUpload
      */
-    'external_sample_id'?: ExternalIdentifierForUpload;
+    'other_sample_identifier'?: IdentifierForUpload;
     /**
      * The UUID of the assembly protocol, if available. If not available, the null ID is put. Must be present if assembly_protocol_code is not present. The use of assembly_protocol_id is preferred over assembly_protocol_code since the latter may change.
      * @type {string}
@@ -4187,11 +4180,11 @@ export interface EpiSubject {
      */
     'data_collection'?: DataCollection;
     /**
-     * A dictionary of external identifiers for the subject
+     * A dictionary of identifiers for the subject
      * @type {{ [key: string]: string; }}
      * @memberof EpiSubject
      */
-    'external_identifiers'?: { [key: string]: string; } | null;
+    'identifiers'?: { [key: string]: string; } | null;
     /**
      * A dictionary containing the content of the subject
      * @type {{ [key: string]: any; }}
@@ -5165,7 +5158,7 @@ export interface UploadLogItem {
 
 
 /**
- * Represents the result of an upload operation for a particular object, including upload status and logs.  Additional validation: - If the status is successful (NOT_FAILED), there must be no error log items. - If the status is failed, there must be at least one error log item.    PARENT CLASS DOCUMENTATION   Model: PARENT CLASS DOCUMENTATION   BaseModel: !!! abstract \"Usage Documentation\"     [Models](../concepts/models.md)  A base class for creating Pydantic models.  Attributes:     __class_vars__: The names of the class variables defined on the model.     __private_attributes__: Metadata about the private attributes of the model.     __signature__: The synthesized `__init__` [`Signature`][inspect.Signature] of the model.      __pydantic_complete__: Whether model building is completed, or if there are still undefined fields.     __pydantic_core_schema__: The core schema of the model.     __pydantic_custom_init__: Whether the model has a custom `__init__` function.     __pydantic_decorators__: Metadata containing the decorators defined on the model.         This replaces `Model.__validators__` and `Model.__root_validators__` from Pydantic V1.     __pydantic_generic_metadata__: Metadata for generic models; contains data used for a similar purpose to         __args__, __origin__, __parameters__ in typing-module generics. May eventually be replaced by these.     __pydantic_parent_namespace__: Parent namespace of the model, used for automatic rebuilding of models.     __pydantic_post_init__: The name of the post-init method for the model, if defined.     __pydantic_root_model__: Whether the model is a [`RootModel`][pydantic.root_model.RootModel].     __pydantic_serializer__: The `pydantic-core` `SchemaSerializer` used to dump instances of the model.     __pydantic_validator__: The `pydantic-core` `SchemaValidator` used to validate instances of the model.      __pydantic_fields__: A dictionary of field names and their corresponding [`FieldInfo`][pydantic.fields.FieldInfo] objects.     __pydantic_computed_fields__: A dictionary of computed field names and their corresponding [`ComputedFieldInfo`][pydantic.fields.ComputedFieldInfo] objects.      __pydantic_extra__: A dictionary containing extra values, if [`extra`][pydantic.config.ConfigDict.extra]         is set to `\'allow\'`.     __pydantic_fields_set__: The names of fields explicitly set during instantiation.     __pydantic_private__: Values of private attributes set on the model instance.    PARENT CLASS DOCUMENTATION   Model: PARENT CLASS DOCUMENTATION   BaseModel: !!! abstract \"Usage Documentation\"     [Models](../concepts/models.md)  A base class for creating Pydantic models.  Attributes:     __class_vars__: The names of the class variables defined on the model.     __private_attributes__: Metadata about the private attributes of the model.     __signature__: The synthesized `__init__` [`Signature`][inspect.Signature] of the model.      __pydantic_complete__: Whether model building is completed, or if there are still undefined fields.     __pydantic_core_schema__: The core schema of the model.     __pydantic_custom_init__: Whether the model has a custom `__init__` function.     __pydantic_decorators__: Metadata containing the decorators defined on the model.         This replaces `Model.__validators__` and `Model.__root_validators__` from Pydantic V1.     __pydantic_generic_metadata__: Metadata for generic models; contains data used for a similar purpose to         __args__, __origin__, __parameters__ in typing-module generics. May eventually be replaced by these.     __pydantic_parent_namespace__: Parent namespace of the model, used for automatic rebuilding of models.     __pydantic_post_init__: The name of the post-init method for the model, if defined.     __pydantic_root_model__: Whether the model is a [`RootModel`][pydantic.root_model.RootModel].     __pydantic_serializer__: The `pydantic-core` `SchemaSerializer` used to dump instances of the model.     __pydantic_validator__: The `pydantic-core` `SchemaValidator` used to validate instances of the model.      __pydantic_fields__: A dictionary of field names and their corresponding [`FieldInfo`][pydantic.fields.FieldInfo] objects.     __pydantic_computed_fields__: A dictionary of computed field names and their corresponding [`ComputedFieldInfo`][pydantic.fields.ComputedFieldInfo] objects.      __pydantic_extra__: A dictionary containing extra values, if [`extra`][pydantic.config.ConfigDict.extra]         is set to `\'allow\'`.     __pydantic_fields_set__: The names of fields explicitly set during instantiation.     __pydantic_private__: Values of private attributes set on the model instance.    PARENT CLASS DOCUMENTATION   BaseModel: !!! abstract \"Usage Documentation\"     [Models](../concepts/models.md)  A base class for creating Pydantic models.  Attributes:     __class_vars__: The names of the class variables defined on the model.     __private_attributes__: Metadata about the private attributes of the model.     __signature__: The synthesized `__init__` [`Signature`][inspect.Signature] of the model.      __pydantic_complete__: Whether model building is completed, or if there are still undefined fields.     __pydantic_core_schema__: The core schema of the model.     __pydantic_custom_init__: Whether the model has a custom `__init__` function.     __pydantic_decorators__: Metadata containing the decorators defined on the model.         This replaces `Model.__validators__` and `Model.__root_validators__` from Pydantic V1.     __pydantic_generic_metadata__: Metadata for generic models; contains data used for a similar purpose to         __args__, __origin__, __parameters__ in typing-module generics. May eventually be replaced by these.     __pydantic_parent_namespace__: Parent namespace of the model, used for automatic rebuilding of models.     __pydantic_post_init__: The name of the post-init method for the model, if defined.     __pydantic_root_model__: Whether the model is a [`RootModel`][pydantic.root_model.RootModel].     __pydantic_serializer__: The `pydantic-core` `SchemaSerializer` used to dump instances of the model.     __pydantic_validator__: The `pydantic-core` `SchemaValidator` used to validate instances of the model.      __pydantic_fields__: A dictionary of field names and their corresponding [`FieldInfo`][pydantic.fields.FieldInfo] objects.     __pydantic_computed_fields__: A dictionary of computed field names and their corresponding [`ComputedFieldInfo`][pydantic.fields.ComputedFieldInfo] objects.      __pydantic_extra__: A dictionary containing extra values, if [`extra`][pydantic.config.ConfigDict.extra]         is set to `\'allow\'`.     __pydantic_fields_set__: The names of fields explicitly set during instantiation.     __pydantic_private__: Values of private attributes set on the model instance.
+ * Represents the result of an upload operation for a particular object, including upload status and logs.  Additional validation: - If the status is successful (NOT_FAILED), there must be no error log items. - If the status is failed, there must be at least one error log item.    PARENT CLASS DOCUMENTATION   Model: Base class for all models in an application. Models are used to represent the state of the application and are typically persisted in a database. Models can also be used to represent the state of the application in memory, e.g. for caching or for passing data between services. Models can be immutable or mutable, depending on the use case.  Each model must have an associated Entity, which defines the metadata for the model. See the Entity class for more details. The Entity must be set in the subclass of Model. Analogously, a unique name for the model can be set in the subclass, which can be used for identification and logging purposes.  The model_entity and model_name class methods can be used to retrieve the Entity and name of the model, respectively. These methods have the same \"model_\" prefix as generic Pydantic models to avoid name conflicts with other.    PARENT CLASS DOCUMENTATION   BaseModel: !!! abstract \"Usage Documentation\"     [Models](../concepts/models.md)  A base class for creating Pydantic models.  Attributes:     __class_vars__: The names of the class variables defined on the model.     __private_attributes__: Metadata about the private attributes of the model.     __signature__: The synthesized `__init__` [`Signature`][inspect.Signature] of the model.      __pydantic_complete__: Whether model building is completed, or if there are still undefined fields.     __pydantic_core_schema__: The core schema of the model.     __pydantic_custom_init__: Whether the model has a custom `__init__` function.     __pydantic_decorators__: Metadata containing the decorators defined on the model.         This replaces `Model.__validators__` and `Model.__root_validators__` from Pydantic V1.     __pydantic_generic_metadata__: Metadata for generic models; contains data used for a similar purpose to         __args__, __origin__, __parameters__ in typing-module generics. May eventually be replaced by these.     __pydantic_parent_namespace__: Parent namespace of the model, used for automatic rebuilding of models.     __pydantic_post_init__: The name of the post-init method for the model, if defined.     __pydantic_root_model__: Whether the model is a [`RootModel`][pydantic.root_model.RootModel].     __pydantic_serializer__: The `pydantic-core` `SchemaSerializer` used to dump instances of the model.     __pydantic_validator__: The `pydantic-core` `SchemaValidator` used to validate instances of the model.      __pydantic_fields__: A dictionary of field names and their corresponding [`FieldInfo`][pydantic.fields.FieldInfo] objects.     __pydantic_computed_fields__: A dictionary of computed field names and their corresponding [`ComputedFieldInfo`][pydantic.fields.ComputedFieldInfo] objects.      __pydantic_extra__: A dictionary containing extra values, if [`extra`][pydantic.config.ConfigDict.extra]         is set to `\'allow\'`.     __pydantic_fields_set__: The names of fields explicitly set during instantiation.     __pydantic_private__: Values of private attributes set on the model instance.    PARENT CLASS DOCUMENTATION   Model: Base class for all models in an application. Models are used to represent the state of the application and are typically persisted in a database. Models can also be used to represent the state of the application in memory, e.g. for caching or for passing data between services. Models can be immutable or mutable, depending on the use case.  Each model must have an associated Entity, which defines the metadata for the model. See the Entity class for more details. The Entity must be set in the subclass of Model. Analogously, a unique name for the model can be set in the subclass, which can be used for identification and logging purposes.  The model_entity and model_name class methods can be used to retrieve the Entity and name of the model, respectively. These methods have the same \"model_\" prefix as generic Pydantic models to avoid name conflicts with other.    PARENT CLASS DOCUMENTATION   BaseModel: !!! abstract \"Usage Documentation\"     [Models](../concepts/models.md)  A base class for creating Pydantic models.  Attributes:     __class_vars__: The names of the class variables defined on the model.     __private_attributes__: Metadata about the private attributes of the model.     __signature__: The synthesized `__init__` [`Signature`][inspect.Signature] of the model.      __pydantic_complete__: Whether model building is completed, or if there are still undefined fields.     __pydantic_core_schema__: The core schema of the model.     __pydantic_custom_init__: Whether the model has a custom `__init__` function.     __pydantic_decorators__: Metadata containing the decorators defined on the model.         This replaces `Model.__validators__` and `Model.__root_validators__` from Pydantic V1.     __pydantic_generic_metadata__: Metadata for generic models; contains data used for a similar purpose to         __args__, __origin__, __parameters__ in typing-module generics. May eventually be replaced by these.     __pydantic_parent_namespace__: Parent namespace of the model, used for automatic rebuilding of models.     __pydantic_post_init__: The name of the post-init method for the model, if defined.     __pydantic_root_model__: Whether the model is a [`RootModel`][pydantic.root_model.RootModel].     __pydantic_serializer__: The `pydantic-core` `SchemaSerializer` used to dump instances of the model.     __pydantic_validator__: The `pydantic-core` `SchemaValidator` used to validate instances of the model.      __pydantic_fields__: A dictionary of field names and their corresponding [`FieldInfo`][pydantic.fields.FieldInfo] objects.     __pydantic_computed_fields__: A dictionary of computed field names and their corresponding [`ComputedFieldInfo`][pydantic.fields.ComputedFieldInfo] objects.      __pydantic_extra__: A dictionary containing extra values, if [`extra`][pydantic.config.ConfigDict.extra]         is set to `\'allow\'`.     __pydantic_fields_set__: The names of fields explicitly set during instantiation.     __pydantic_private__: Values of private attributes set on the model instance.    PARENT CLASS DOCUMENTATION   BaseModel: !!! abstract \"Usage Documentation\"     [Models](../concepts/models.md)  A base class for creating Pydantic models.  Attributes:     __class_vars__: The names of the class variables defined on the model.     __private_attributes__: Metadata about the private attributes of the model.     __signature__: The synthesized `__init__` [`Signature`][inspect.Signature] of the model.      __pydantic_complete__: Whether model building is completed, or if there are still undefined fields.     __pydantic_core_schema__: The core schema of the model.     __pydantic_custom_init__: Whether the model has a custom `__init__` function.     __pydantic_decorators__: Metadata containing the decorators defined on the model.         This replaces `Model.__validators__` and `Model.__root_validators__` from Pydantic V1.     __pydantic_generic_metadata__: Metadata for generic models; contains data used for a similar purpose to         __args__, __origin__, __parameters__ in typing-module generics. May eventually be replaced by these.     __pydantic_parent_namespace__: Parent namespace of the model, used for automatic rebuilding of models.     __pydantic_post_init__: The name of the post-init method for the model, if defined.     __pydantic_root_model__: Whether the model is a [`RootModel`][pydantic.root_model.RootModel].     __pydantic_serializer__: The `pydantic-core` `SchemaSerializer` used to dump instances of the model.     __pydantic_validator__: The `pydantic-core` `SchemaValidator` used to validate instances of the model.      __pydantic_fields__: A dictionary of field names and their corresponding [`FieldInfo`][pydantic.fields.FieldInfo] objects.     __pydantic_computed_fields__: A dictionary of computed field names and their corresponding [`ComputedFieldInfo`][pydantic.fields.ComputedFieldInfo] objects.      __pydantic_extra__: A dictionary containing extra values, if [`extra`][pydantic.config.ConfigDict.extra]         is set to `\'allow\'`.     __pydantic_fields_set__: The names of fields explicitly set during instantiation.     __pydantic_private__: Values of private attributes set on the model instance.
  * @export
  * @interface UploadResult
  */
@@ -9867,6 +9860,428 @@ const CaseApiAxiosParamCreator = function (configuration?: Configuration) {
             let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
             localVarRequestOptions.headers = {...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers};
             localVarRequestOptions.data = serializeDataIfNeeded(caseDataCollectionLink, localVarRequestOptions, configuration)
+
+            return {
+                url: toPathString(localVarUrlObj),
+                options: localVarRequestOptions,
+            };
+        },
+        /**
+         * Manage case identifiers that link cases to external systems or provide alternate lookup keys.
+         * @summary Case Identifiers  Delete All
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        caseIdentifiersDeleteAll: async (options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
+            const localVarPath = `/v1/case_identifiers`;
+            // use dummy base URL string because the URL constructor only accepts absolute URLs.
+            const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
+            let baseOptions;
+            if (configuration) {
+                baseOptions = configuration.baseOptions;
+            }
+
+            const localVarRequestOptions = { method: 'DELETE', ...baseOptions, ...options};
+            const localVarHeaderParameter = {} as any;
+            const localVarQueryParameter = {} as any;
+
+
+    
+            setSearchParams(localVarUrlObj, localVarQueryParameter);
+            let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
+            localVarRequestOptions.headers = {...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers};
+
+            return {
+                url: toPathString(localVarUrlObj),
+                options: localVarRequestOptions,
+            };
+        },
+        /**
+         * Manage case identifiers that link cases to external systems or provide alternate lookup keys.
+         * @summary Case Identifiers  Delete One
+         * @param {any} objectId 
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        caseIdentifiersDeleteOne: async (objectId: any, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
+            // verify required parameter 'objectId' is not null or undefined
+            assertParamExists('caseIdentifiersDeleteOne', 'objectId', objectId)
+            const localVarPath = `/v1/case_identifiers/{object_id}`
+                .replace(`{${"object_id"}}`, encodeURIComponent(String(objectId)));
+            // use dummy base URL string because the URL constructor only accepts absolute URLs.
+            const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
+            let baseOptions;
+            if (configuration) {
+                baseOptions = configuration.baseOptions;
+            }
+
+            const localVarRequestOptions = { method: 'DELETE', ...baseOptions, ...options};
+            const localVarHeaderParameter = {} as any;
+            const localVarQueryParameter = {} as any;
+
+
+    
+            setSearchParams(localVarUrlObj, localVarQueryParameter);
+            let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
+            localVarRequestOptions.headers = {...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers};
+
+            return {
+                url: toPathString(localVarUrlObj),
+                options: localVarRequestOptions,
+            };
+        },
+        /**
+         * Manage case identifiers that link cases to external systems or provide alternate lookup keys.
+         * @summary Case Identifiers  Delete Some
+         * @param {string} ids 
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        caseIdentifiersDeleteSome: async (ids: string, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
+            // verify required parameter 'ids' is not null or undefined
+            assertParamExists('caseIdentifiersDeleteSome', 'ids', ids)
+            const localVarPath = `/v1/case_identifiers/batch`;
+            // use dummy base URL string because the URL constructor only accepts absolute URLs.
+            const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
+            let baseOptions;
+            if (configuration) {
+                baseOptions = configuration.baseOptions;
+            }
+
+            const localVarRequestOptions = { method: 'DELETE', ...baseOptions, ...options};
+            const localVarHeaderParameter = {} as any;
+            const localVarQueryParameter = {} as any;
+
+            if (ids !== undefined) {
+                localVarQueryParameter['ids'] = ids;
+            }
+
+
+    
+            setSearchParams(localVarUrlObj, localVarQueryParameter);
+            let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
+            localVarRequestOptions.headers = {...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers};
+
+            return {
+                url: toPathString(localVarUrlObj),
+                options: localVarRequestOptions,
+            };
+        },
+        /**
+         * Manage case identifiers that link cases to external systems or provide alternate lookup keys.
+         * @summary Case Identifiers  Get All
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        caseIdentifiersGetAll: async (options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
+            const localVarPath = `/v1/case_identifiers`;
+            // use dummy base URL string because the URL constructor only accepts absolute URLs.
+            const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
+            let baseOptions;
+            if (configuration) {
+                baseOptions = configuration.baseOptions;
+            }
+
+            const localVarRequestOptions = { method: 'GET', ...baseOptions, ...options};
+            const localVarHeaderParameter = {} as any;
+            const localVarQueryParameter = {} as any;
+
+
+    
+            setSearchParams(localVarUrlObj, localVarQueryParameter);
+            let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
+            localVarRequestOptions.headers = {...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers};
+
+            return {
+                url: toPathString(localVarUrlObj),
+                options: localVarRequestOptions,
+            };
+        },
+        /**
+         * Manage case identifiers that link cases to external systems or provide alternate lookup keys.
+         * @summary Case Identifiers  Get One
+         * @param {string} objectId 
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        caseIdentifiersGetOne: async (objectId: string, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
+            // verify required parameter 'objectId' is not null or undefined
+            assertParamExists('caseIdentifiersGetOne', 'objectId', objectId)
+            const localVarPath = `/v1/case_identifiers/{object_id}`
+                .replace(`{${"object_id"}}`, encodeURIComponent(String(objectId)));
+            // use dummy base URL string because the URL constructor only accepts absolute URLs.
+            const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
+            let baseOptions;
+            if (configuration) {
+                baseOptions = configuration.baseOptions;
+            }
+
+            const localVarRequestOptions = { method: 'GET', ...baseOptions, ...options};
+            const localVarHeaderParameter = {} as any;
+            const localVarQueryParameter = {} as any;
+
+
+    
+            setSearchParams(localVarUrlObj, localVarQueryParameter);
+            let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
+            localVarRequestOptions.headers = {...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers};
+
+            return {
+                url: toPathString(localVarUrlObj),
+                options: localVarRequestOptions,
+            };
+        },
+        /**
+         * Manage case identifiers that link cases to external systems or provide alternate lookup keys.
+         * @summary Case Identifiers  Get Some
+         * @param {string} ids 
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        caseIdentifiersGetSome: async (ids: string, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
+            // verify required parameter 'ids' is not null or undefined
+            assertParamExists('caseIdentifiersGetSome', 'ids', ids)
+            const localVarPath = `/v1/case_identifiers/batch`;
+            // use dummy base URL string because the URL constructor only accepts absolute URLs.
+            const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
+            let baseOptions;
+            if (configuration) {
+                baseOptions = configuration.baseOptions;
+            }
+
+            const localVarRequestOptions = { method: 'GET', ...baseOptions, ...options};
+            const localVarHeaderParameter = {} as any;
+            const localVarQueryParameter = {} as any;
+
+            if (ids !== undefined) {
+                localVarQueryParameter['ids'] = ids;
+            }
+
+
+    
+            setSearchParams(localVarUrlObj, localVarQueryParameter);
+            let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
+            localVarRequestOptions.headers = {...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers};
+
+            return {
+                url: toPathString(localVarUrlObj),
+                options: localVarRequestOptions,
+            };
+        },
+        /**
+         * Manage case identifiers that link cases to external systems or provide alternate lookup keys.
+         * @summary Case Identifiers  Post One
+         * @param {CaseIdentifier} caseIdentifier 
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        caseIdentifiersPostOne: async (caseIdentifier: CaseIdentifier, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
+            // verify required parameter 'caseIdentifier' is not null or undefined
+            assertParamExists('caseIdentifiersPostOne', 'caseIdentifier', caseIdentifier)
+            const localVarPath = `/v1/case_identifiers`;
+            // use dummy base URL string because the URL constructor only accepts absolute URLs.
+            const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
+            let baseOptions;
+            if (configuration) {
+                baseOptions = configuration.baseOptions;
+            }
+
+            const localVarRequestOptions = { method: 'POST', ...baseOptions, ...options};
+            const localVarHeaderParameter = {} as any;
+            const localVarQueryParameter = {} as any;
+
+
+    
+            localVarHeaderParameter['Content-Type'] = 'application/json';
+
+            setSearchParams(localVarUrlObj, localVarQueryParameter);
+            let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
+            localVarRequestOptions.headers = {...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers};
+            localVarRequestOptions.data = serializeDataIfNeeded(caseIdentifier, localVarRequestOptions, configuration)
+
+            return {
+                url: toPathString(localVarUrlObj),
+                options: localVarRequestOptions,
+            };
+        },
+        /**
+         * Manage case identifiers that link cases to external systems or provide alternate lookup keys.
+         * @summary Case Identifiers  Post Query
+         * @param {EpiFilter} filter 
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        caseIdentifiersPostQuery: async (filter: EpiFilter, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
+            // verify required parameter 'filter' is not null or undefined
+            assertParamExists('caseIdentifiersPostQuery', 'filter', filter)
+            const localVarPath = `/v1/case_identifiers/query`;
+            // use dummy base URL string because the URL constructor only accepts absolute URLs.
+            const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
+            let baseOptions;
+            if (configuration) {
+                baseOptions = configuration.baseOptions;
+            }
+
+            const localVarRequestOptions = { method: 'POST', ...baseOptions, ...options};
+            const localVarHeaderParameter = {} as any;
+            const localVarQueryParameter = {} as any;
+
+
+    
+            localVarHeaderParameter['Content-Type'] = 'application/json';
+
+            setSearchParams(localVarUrlObj, localVarQueryParameter);
+            let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
+            localVarRequestOptions.headers = {...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers};
+            localVarRequestOptions.data = serializeDataIfNeeded(filter, localVarRequestOptions, configuration)
+
+            return {
+                url: toPathString(localVarUrlObj),
+                options: localVarRequestOptions,
+            };
+        },
+        /**
+         * Manage case identifiers that link cases to external systems or provide alternate lookup keys.
+         * @summary Case Identifiers  Post Query  Ids
+         * @param {EpiFilter} filter 
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        caseIdentifiersPostQueryIds: async (filter: EpiFilter, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
+            // verify required parameter 'filter' is not null or undefined
+            assertParamExists('caseIdentifiersPostQueryIds', 'filter', filter)
+            const localVarPath = `/v1/case_identifiers/query/ids`;
+            // use dummy base URL string because the URL constructor only accepts absolute URLs.
+            const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
+            let baseOptions;
+            if (configuration) {
+                baseOptions = configuration.baseOptions;
+            }
+
+            const localVarRequestOptions = { method: 'POST', ...baseOptions, ...options};
+            const localVarHeaderParameter = {} as any;
+            const localVarQueryParameter = {} as any;
+
+
+    
+            localVarHeaderParameter['Content-Type'] = 'application/json';
+
+            setSearchParams(localVarUrlObj, localVarQueryParameter);
+            let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
+            localVarRequestOptions.headers = {...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers};
+            localVarRequestOptions.data = serializeDataIfNeeded(filter, localVarRequestOptions, configuration)
+
+            return {
+                url: toPathString(localVarUrlObj),
+                options: localVarRequestOptions,
+            };
+        },
+        /**
+         * Manage case identifiers that link cases to external systems or provide alternate lookup keys.
+         * @summary Case Identifiers  Post Some
+         * @param {Array<CaseIdentifier>} caseIdentifier 
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        caseIdentifiersPostSome: async (caseIdentifier: Array<CaseIdentifier>, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
+            // verify required parameter 'caseIdentifier' is not null or undefined
+            assertParamExists('caseIdentifiersPostSome', 'caseIdentifier', caseIdentifier)
+            const localVarPath = `/v1/case_identifiers/batch`;
+            // use dummy base URL string because the URL constructor only accepts absolute URLs.
+            const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
+            let baseOptions;
+            if (configuration) {
+                baseOptions = configuration.baseOptions;
+            }
+
+            const localVarRequestOptions = { method: 'POST', ...baseOptions, ...options};
+            const localVarHeaderParameter = {} as any;
+            const localVarQueryParameter = {} as any;
+
+
+    
+            localVarHeaderParameter['Content-Type'] = 'application/json';
+
+            setSearchParams(localVarUrlObj, localVarQueryParameter);
+            let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
+            localVarRequestOptions.headers = {...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers};
+            localVarRequestOptions.data = serializeDataIfNeeded(caseIdentifier, localVarRequestOptions, configuration)
+
+            return {
+                url: toPathString(localVarUrlObj),
+                options: localVarRequestOptions,
+            };
+        },
+        /**
+         * Manage case identifiers that link cases to external systems or provide alternate lookup keys.
+         * @summary Case Identifiers  Put One
+         * @param {string} objectId 
+         * @param {CaseIdentifier} caseIdentifier 
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        caseIdentifiersPutOne: async (objectId: string, caseIdentifier: CaseIdentifier, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
+            // verify required parameter 'objectId' is not null or undefined
+            assertParamExists('caseIdentifiersPutOne', 'objectId', objectId)
+            // verify required parameter 'caseIdentifier' is not null or undefined
+            assertParamExists('caseIdentifiersPutOne', 'caseIdentifier', caseIdentifier)
+            const localVarPath = `/v1/case_identifiers/{object_id}`
+                .replace(`{${"object_id"}}`, encodeURIComponent(String(objectId)));
+            // use dummy base URL string because the URL constructor only accepts absolute URLs.
+            const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
+            let baseOptions;
+            if (configuration) {
+                baseOptions = configuration.baseOptions;
+            }
+
+            const localVarRequestOptions = { method: 'PUT', ...baseOptions, ...options};
+            const localVarHeaderParameter = {} as any;
+            const localVarQueryParameter = {} as any;
+
+
+    
+            localVarHeaderParameter['Content-Type'] = 'application/json';
+
+            setSearchParams(localVarUrlObj, localVarQueryParameter);
+            let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
+            localVarRequestOptions.headers = {...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers};
+            localVarRequestOptions.data = serializeDataIfNeeded(caseIdentifier, localVarRequestOptions, configuration)
+
+            return {
+                url: toPathString(localVarUrlObj),
+                options: localVarRequestOptions,
+            };
+        },
+        /**
+         * Manage case identifiers that link cases to external systems or provide alternate lookup keys.
+         * @summary Case Identifiers  Put Some
+         * @param {Array<CaseIdentifier>} caseIdentifier 
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        caseIdentifiersPutSome: async (caseIdentifier: Array<CaseIdentifier>, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
+            // verify required parameter 'caseIdentifier' is not null or undefined
+            assertParamExists('caseIdentifiersPutSome', 'caseIdentifier', caseIdentifier)
+            const localVarPath = `/v1/case_identifiers/batch`;
+            // use dummy base URL string because the URL constructor only accepts absolute URLs.
+            const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
+            let baseOptions;
+            if (configuration) {
+                baseOptions = configuration.baseOptions;
+            }
+
+            const localVarRequestOptions = { method: 'PUT', ...baseOptions, ...options};
+            const localVarHeaderParameter = {} as any;
+            const localVarQueryParameter = {} as any;
+
+
+    
+            localVarHeaderParameter['Content-Type'] = 'application/json';
+
+            setSearchParams(localVarUrlObj, localVarQueryParameter);
+            let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
+            localVarRequestOptions.headers = {...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers};
+            localVarRequestOptions.data = serializeDataIfNeeded(caseIdentifier, localVarRequestOptions, configuration)
 
             return {
                 url: toPathString(localVarUrlObj),
@@ -18781,6 +19196,161 @@ const CaseApiFp = function(configuration?: Configuration) {
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
         /**
+         * Manage case identifiers that link cases to external systems or provide alternate lookup keys.
+         * @summary Case Identifiers  Delete All
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        async caseIdentifiersDeleteAll(options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<any>> {
+            const localVarAxiosArgs = await localVarAxiosParamCreator.caseIdentifiersDeleteAll(options);
+            const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
+            const localVarOperationServerBasePath = operationServerMap['CaseApi.caseIdentifiersDeleteAll']?.[localVarOperationServerIndex]?.url;
+            return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
+        },
+        /**
+         * Manage case identifiers that link cases to external systems or provide alternate lookup keys.
+         * @summary Case Identifiers  Delete One
+         * @param {any} objectId 
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        async caseIdentifiersDeleteOne(objectId: any, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<string>> {
+            const localVarAxiosArgs = await localVarAxiosParamCreator.caseIdentifiersDeleteOne(objectId, options);
+            const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
+            const localVarOperationServerBasePath = operationServerMap['CaseApi.caseIdentifiersDeleteOne']?.[localVarOperationServerIndex]?.url;
+            return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
+        },
+        /**
+         * Manage case identifiers that link cases to external systems or provide alternate lookup keys.
+         * @summary Case Identifiers  Delete Some
+         * @param {string} ids 
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        async caseIdentifiersDeleteSome(ids: string, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<Array<string>>> {
+            const localVarAxiosArgs = await localVarAxiosParamCreator.caseIdentifiersDeleteSome(ids, options);
+            const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
+            const localVarOperationServerBasePath = operationServerMap['CaseApi.caseIdentifiersDeleteSome']?.[localVarOperationServerIndex]?.url;
+            return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
+        },
+        /**
+         * Manage case identifiers that link cases to external systems or provide alternate lookup keys.
+         * @summary Case Identifiers  Get All
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        async caseIdentifiersGetAll(options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<Array<CaseIdentifier>>> {
+            const localVarAxiosArgs = await localVarAxiosParamCreator.caseIdentifiersGetAll(options);
+            const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
+            const localVarOperationServerBasePath = operationServerMap['CaseApi.caseIdentifiersGetAll']?.[localVarOperationServerIndex]?.url;
+            return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
+        },
+        /**
+         * Manage case identifiers that link cases to external systems or provide alternate lookup keys.
+         * @summary Case Identifiers  Get One
+         * @param {string} objectId 
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        async caseIdentifiersGetOne(objectId: string, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<CaseIdentifier>> {
+            const localVarAxiosArgs = await localVarAxiosParamCreator.caseIdentifiersGetOne(objectId, options);
+            const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
+            const localVarOperationServerBasePath = operationServerMap['CaseApi.caseIdentifiersGetOne']?.[localVarOperationServerIndex]?.url;
+            return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
+        },
+        /**
+         * Manage case identifiers that link cases to external systems or provide alternate lookup keys.
+         * @summary Case Identifiers  Get Some
+         * @param {string} ids 
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        async caseIdentifiersGetSome(ids: string, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<Array<CaseIdentifier>>> {
+            const localVarAxiosArgs = await localVarAxiosParamCreator.caseIdentifiersGetSome(ids, options);
+            const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
+            const localVarOperationServerBasePath = operationServerMap['CaseApi.caseIdentifiersGetSome']?.[localVarOperationServerIndex]?.url;
+            return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
+        },
+        /**
+         * Manage case identifiers that link cases to external systems or provide alternate lookup keys.
+         * @summary Case Identifiers  Post One
+         * @param {CaseIdentifier} caseIdentifier 
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        async caseIdentifiersPostOne(caseIdentifier: CaseIdentifier, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<CaseIdentifier>> {
+            const localVarAxiosArgs = await localVarAxiosParamCreator.caseIdentifiersPostOne(caseIdentifier, options);
+            const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
+            const localVarOperationServerBasePath = operationServerMap['CaseApi.caseIdentifiersPostOne']?.[localVarOperationServerIndex]?.url;
+            return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
+        },
+        /**
+         * Manage case identifiers that link cases to external systems or provide alternate lookup keys.
+         * @summary Case Identifiers  Post Query
+         * @param {EpiFilter} filter 
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        async caseIdentifiersPostQuery(filter: EpiFilter, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<Array<CaseIdentifier>>> {
+            const localVarAxiosArgs = await localVarAxiosParamCreator.caseIdentifiersPostQuery(filter, options);
+            const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
+            const localVarOperationServerBasePath = operationServerMap['CaseApi.caseIdentifiersPostQuery']?.[localVarOperationServerIndex]?.url;
+            return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
+        },
+        /**
+         * Manage case identifiers that link cases to external systems or provide alternate lookup keys.
+         * @summary Case Identifiers  Post Query  Ids
+         * @param {EpiFilter} filter 
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        async caseIdentifiersPostQueryIds(filter: EpiFilter, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<Array<string>>> {
+            const localVarAxiosArgs = await localVarAxiosParamCreator.caseIdentifiersPostQueryIds(filter, options);
+            const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
+            const localVarOperationServerBasePath = operationServerMap['CaseApi.caseIdentifiersPostQueryIds']?.[localVarOperationServerIndex]?.url;
+            return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
+        },
+        /**
+         * Manage case identifiers that link cases to external systems or provide alternate lookup keys.
+         * @summary Case Identifiers  Post Some
+         * @param {Array<CaseIdentifier>} caseIdentifier 
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        async caseIdentifiersPostSome(caseIdentifier: Array<CaseIdentifier>, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<Array<CaseIdentifier>>> {
+            const localVarAxiosArgs = await localVarAxiosParamCreator.caseIdentifiersPostSome(caseIdentifier, options);
+            const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
+            const localVarOperationServerBasePath = operationServerMap['CaseApi.caseIdentifiersPostSome']?.[localVarOperationServerIndex]?.url;
+            return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
+        },
+        /**
+         * Manage case identifiers that link cases to external systems or provide alternate lookup keys.
+         * @summary Case Identifiers  Put One
+         * @param {string} objectId 
+         * @param {CaseIdentifier} caseIdentifier 
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        async caseIdentifiersPutOne(objectId: string, caseIdentifier: CaseIdentifier, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<CaseIdentifier>> {
+            const localVarAxiosArgs = await localVarAxiosParamCreator.caseIdentifiersPutOne(objectId, caseIdentifier, options);
+            const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
+            const localVarOperationServerBasePath = operationServerMap['CaseApi.caseIdentifiersPutOne']?.[localVarOperationServerIndex]?.url;
+            return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
+        },
+        /**
+         * Manage case identifiers that link cases to external systems or provide alternate lookup keys.
+         * @summary Case Identifiers  Put Some
+         * @param {Array<CaseIdentifier>} caseIdentifier 
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        async caseIdentifiersPutSome(caseIdentifier: Array<CaseIdentifier>, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<Array<CaseIdentifier>>> {
+            const localVarAxiosArgs = await localVarAxiosParamCreator.caseIdentifiersPutSome(caseIdentifier, options);
+            const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
+            const localVarOperationServerBasePath = operationServerMap['CaseApi.caseIdentifiersPutSome']?.[localVarOperationServerIndex]?.url;
+            return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
+        },
+        /**
          * Maintain the categories used to tag case sets (e.g., outbreak, surveillance, QA).
          * @summary Case Set Categories  Delete All
          * @param {*} [options] Override http request option.
@@ -22142,6 +22712,149 @@ export class CaseApi extends BaseAPI {
      */
     public caseDataCollectionLinksPutSome(caseDataCollectionLink: Array<CaseDataCollectionLink>, options?: RawAxiosRequestConfig) {
         return CaseApiFp(this.configuration).caseDataCollectionLinksPutSome(caseDataCollectionLink, options).then((request) => request(this.axios, this.configuration.baseUrl));
+    }
+
+    /**
+     * Manage case identifiers that link cases to external systems or provide alternate lookup keys.
+     * @summary Case Identifiers  Delete All
+     * @param {*} [options] Override http request option.
+     * @throws {RequiredError}
+     * @memberof CaseApi
+     */
+    public caseIdentifiersDeleteAll(options?: RawAxiosRequestConfig) {
+        return CaseApiFp(this.configuration).caseIdentifiersDeleteAll(options).then((request) => request(this.axios, this.configuration.baseUrl));
+    }
+
+    /**
+     * Manage case identifiers that link cases to external systems or provide alternate lookup keys.
+     * @summary Case Identifiers  Delete One
+     * @param {any} objectId 
+     * @param {*} [options] Override http request option.
+     * @throws {RequiredError}
+     * @memberof CaseApi
+     */
+    public caseIdentifiersDeleteOne(objectId: any, options?: RawAxiosRequestConfig) {
+        return CaseApiFp(this.configuration).caseIdentifiersDeleteOne(objectId, options).then((request) => request(this.axios, this.configuration.baseUrl));
+    }
+
+    /**
+     * Manage case identifiers that link cases to external systems or provide alternate lookup keys.
+     * @summary Case Identifiers  Delete Some
+     * @param {string} ids 
+     * @param {*} [options] Override http request option.
+     * @throws {RequiredError}
+     * @memberof CaseApi
+     */
+    public caseIdentifiersDeleteSome(ids: string, options?: RawAxiosRequestConfig) {
+        return CaseApiFp(this.configuration).caseIdentifiersDeleteSome(ids, options).then((request) => request(this.axios, this.configuration.baseUrl));
+    }
+
+    /**
+     * Manage case identifiers that link cases to external systems or provide alternate lookup keys.
+     * @summary Case Identifiers  Get All
+     * @param {*} [options] Override http request option.
+     * @throws {RequiredError}
+     * @memberof CaseApi
+     */
+    public caseIdentifiersGetAll(options?: RawAxiosRequestConfig) {
+        return CaseApiFp(this.configuration).caseIdentifiersGetAll(options).then((request) => request(this.axios, this.configuration.baseUrl));
+    }
+
+    /**
+     * Manage case identifiers that link cases to external systems or provide alternate lookup keys.
+     * @summary Case Identifiers  Get One
+     * @param {string} objectId 
+     * @param {*} [options] Override http request option.
+     * @throws {RequiredError}
+     * @memberof CaseApi
+     */
+    public caseIdentifiersGetOne(objectId: string, options?: RawAxiosRequestConfig) {
+        return CaseApiFp(this.configuration).caseIdentifiersGetOne(objectId, options).then((request) => request(this.axios, this.configuration.baseUrl));
+    }
+
+    /**
+     * Manage case identifiers that link cases to external systems or provide alternate lookup keys.
+     * @summary Case Identifiers  Get Some
+     * @param {string} ids 
+     * @param {*} [options] Override http request option.
+     * @throws {RequiredError}
+     * @memberof CaseApi
+     */
+    public caseIdentifiersGetSome(ids: string, options?: RawAxiosRequestConfig) {
+        return CaseApiFp(this.configuration).caseIdentifiersGetSome(ids, options).then((request) => request(this.axios, this.configuration.baseUrl));
+    }
+
+    /**
+     * Manage case identifiers that link cases to external systems or provide alternate lookup keys.
+     * @summary Case Identifiers  Post One
+     * @param {CaseIdentifier} caseIdentifier 
+     * @param {*} [options] Override http request option.
+     * @throws {RequiredError}
+     * @memberof CaseApi
+     */
+    public caseIdentifiersPostOne(caseIdentifier: CaseIdentifier, options?: RawAxiosRequestConfig) {
+        return CaseApiFp(this.configuration).caseIdentifiersPostOne(caseIdentifier, options).then((request) => request(this.axios, this.configuration.baseUrl));
+    }
+
+    /**
+     * Manage case identifiers that link cases to external systems or provide alternate lookup keys.
+     * @summary Case Identifiers  Post Query
+     * @param {EpiFilter} filter 
+     * @param {*} [options] Override http request option.
+     * @throws {RequiredError}
+     * @memberof CaseApi
+     */
+    public caseIdentifiersPostQuery(filter: EpiFilter, options?: RawAxiosRequestConfig) {
+        return CaseApiFp(this.configuration).caseIdentifiersPostQuery(filter, options).then((request) => request(this.axios, this.configuration.baseUrl));
+    }
+
+    /**
+     * Manage case identifiers that link cases to external systems or provide alternate lookup keys.
+     * @summary Case Identifiers  Post Query  Ids
+     * @param {EpiFilter} filter 
+     * @param {*} [options] Override http request option.
+     * @throws {RequiredError}
+     * @memberof CaseApi
+     */
+    public caseIdentifiersPostQueryIds(filter: EpiFilter, options?: RawAxiosRequestConfig) {
+        return CaseApiFp(this.configuration).caseIdentifiersPostQueryIds(filter, options).then((request) => request(this.axios, this.configuration.baseUrl));
+    }
+
+    /**
+     * Manage case identifiers that link cases to external systems or provide alternate lookup keys.
+     * @summary Case Identifiers  Post Some
+     * @param {Array<CaseIdentifier>} caseIdentifier 
+     * @param {*} [options] Override http request option.
+     * @throws {RequiredError}
+     * @memberof CaseApi
+     */
+    public caseIdentifiersPostSome(caseIdentifier: Array<CaseIdentifier>, options?: RawAxiosRequestConfig) {
+        return CaseApiFp(this.configuration).caseIdentifiersPostSome(caseIdentifier, options).then((request) => request(this.axios, this.configuration.baseUrl));
+    }
+
+    /**
+     * Manage case identifiers that link cases to external systems or provide alternate lookup keys.
+     * @summary Case Identifiers  Put One
+     * @param {string} objectId 
+     * @param {CaseIdentifier} caseIdentifier 
+     * @param {*} [options] Override http request option.
+     * @throws {RequiredError}
+     * @memberof CaseApi
+     */
+    public caseIdentifiersPutOne(objectId: string, caseIdentifier: CaseIdentifier, options?: RawAxiosRequestConfig) {
+        return CaseApiFp(this.configuration).caseIdentifiersPutOne(objectId, caseIdentifier, options).then((request) => request(this.axios, this.configuration.baseUrl));
+    }
+
+    /**
+     * Manage case identifiers that link cases to external systems or provide alternate lookup keys.
+     * @summary Case Identifiers  Put Some
+     * @param {Array<CaseIdentifier>} caseIdentifier 
+     * @param {*} [options] Override http request option.
+     * @throws {RequiredError}
+     * @memberof CaseApi
+     */
+    public caseIdentifiersPutSome(caseIdentifier: Array<CaseIdentifier>, options?: RawAxiosRequestConfig) {
+        return CaseApiFp(this.configuration).caseIdentifiersPutSome(caseIdentifier, options).then((request) => request(this.axios, this.configuration.baseUrl));
     }
 
     /**
@@ -34278,428 +34991,6 @@ const OrganizationApiAxiosParamCreator = function (configuration?: Configuration
         },
         /**
          * 
-         * @summary External Identifiers  Delete All
-         * @param {*} [options] Override http request option.
-         * @throws {RequiredError}
-         */
-        externalIdentifiersDeleteAll: async (options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
-            const localVarPath = `/v1/external_identifiers`;
-            // use dummy base URL string because the URL constructor only accepts absolute URLs.
-            const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
-            let baseOptions;
-            if (configuration) {
-                baseOptions = configuration.baseOptions;
-            }
-
-            const localVarRequestOptions = { method: 'DELETE', ...baseOptions, ...options};
-            const localVarHeaderParameter = {} as any;
-            const localVarQueryParameter = {} as any;
-
-
-    
-            setSearchParams(localVarUrlObj, localVarQueryParameter);
-            let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
-            localVarRequestOptions.headers = {...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers};
-
-            return {
-                url: toPathString(localVarUrlObj),
-                options: localVarRequestOptions,
-            };
-        },
-        /**
-         * 
-         * @summary External Identifiers  Delete One
-         * @param {any} objectId 
-         * @param {*} [options] Override http request option.
-         * @throws {RequiredError}
-         */
-        externalIdentifiersDeleteOne: async (objectId: any, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
-            // verify required parameter 'objectId' is not null or undefined
-            assertParamExists('externalIdentifiersDeleteOne', 'objectId', objectId)
-            const localVarPath = `/v1/external_identifiers/{object_id}`
-                .replace(`{${"object_id"}}`, encodeURIComponent(String(objectId)));
-            // use dummy base URL string because the URL constructor only accepts absolute URLs.
-            const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
-            let baseOptions;
-            if (configuration) {
-                baseOptions = configuration.baseOptions;
-            }
-
-            const localVarRequestOptions = { method: 'DELETE', ...baseOptions, ...options};
-            const localVarHeaderParameter = {} as any;
-            const localVarQueryParameter = {} as any;
-
-
-    
-            setSearchParams(localVarUrlObj, localVarQueryParameter);
-            let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
-            localVarRequestOptions.headers = {...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers};
-
-            return {
-                url: toPathString(localVarUrlObj),
-                options: localVarRequestOptions,
-            };
-        },
-        /**
-         * 
-         * @summary External Identifiers  Delete Some
-         * @param {string} ids 
-         * @param {*} [options] Override http request option.
-         * @throws {RequiredError}
-         */
-        externalIdentifiersDeleteSome: async (ids: string, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
-            // verify required parameter 'ids' is not null or undefined
-            assertParamExists('externalIdentifiersDeleteSome', 'ids', ids)
-            const localVarPath = `/v1/external_identifiers/batch`;
-            // use dummy base URL string because the URL constructor only accepts absolute URLs.
-            const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
-            let baseOptions;
-            if (configuration) {
-                baseOptions = configuration.baseOptions;
-            }
-
-            const localVarRequestOptions = { method: 'DELETE', ...baseOptions, ...options};
-            const localVarHeaderParameter = {} as any;
-            const localVarQueryParameter = {} as any;
-
-            if (ids !== undefined) {
-                localVarQueryParameter['ids'] = ids;
-            }
-
-
-    
-            setSearchParams(localVarUrlObj, localVarQueryParameter);
-            let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
-            localVarRequestOptions.headers = {...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers};
-
-            return {
-                url: toPathString(localVarUrlObj),
-                options: localVarRequestOptions,
-            };
-        },
-        /**
-         * 
-         * @summary External Identifiers  Get All
-         * @param {*} [options] Override http request option.
-         * @throws {RequiredError}
-         */
-        externalIdentifiersGetAll: async (options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
-            const localVarPath = `/v1/external_identifiers`;
-            // use dummy base URL string because the URL constructor only accepts absolute URLs.
-            const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
-            let baseOptions;
-            if (configuration) {
-                baseOptions = configuration.baseOptions;
-            }
-
-            const localVarRequestOptions = { method: 'GET', ...baseOptions, ...options};
-            const localVarHeaderParameter = {} as any;
-            const localVarQueryParameter = {} as any;
-
-
-    
-            setSearchParams(localVarUrlObj, localVarQueryParameter);
-            let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
-            localVarRequestOptions.headers = {...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers};
-
-            return {
-                url: toPathString(localVarUrlObj),
-                options: localVarRequestOptions,
-            };
-        },
-        /**
-         * 
-         * @summary External Identifiers  Get One
-         * @param {string} objectId 
-         * @param {*} [options] Override http request option.
-         * @throws {RequiredError}
-         */
-        externalIdentifiersGetOne: async (objectId: string, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
-            // verify required parameter 'objectId' is not null or undefined
-            assertParamExists('externalIdentifiersGetOne', 'objectId', objectId)
-            const localVarPath = `/v1/external_identifiers/{object_id}`
-                .replace(`{${"object_id"}}`, encodeURIComponent(String(objectId)));
-            // use dummy base URL string because the URL constructor only accepts absolute URLs.
-            const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
-            let baseOptions;
-            if (configuration) {
-                baseOptions = configuration.baseOptions;
-            }
-
-            const localVarRequestOptions = { method: 'GET', ...baseOptions, ...options};
-            const localVarHeaderParameter = {} as any;
-            const localVarQueryParameter = {} as any;
-
-
-    
-            setSearchParams(localVarUrlObj, localVarQueryParameter);
-            let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
-            localVarRequestOptions.headers = {...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers};
-
-            return {
-                url: toPathString(localVarUrlObj),
-                options: localVarRequestOptions,
-            };
-        },
-        /**
-         * 
-         * @summary External Identifiers  Get Some
-         * @param {string} ids 
-         * @param {*} [options] Override http request option.
-         * @throws {RequiredError}
-         */
-        externalIdentifiersGetSome: async (ids: string, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
-            // verify required parameter 'ids' is not null or undefined
-            assertParamExists('externalIdentifiersGetSome', 'ids', ids)
-            const localVarPath = `/v1/external_identifiers/batch`;
-            // use dummy base URL string because the URL constructor only accepts absolute URLs.
-            const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
-            let baseOptions;
-            if (configuration) {
-                baseOptions = configuration.baseOptions;
-            }
-
-            const localVarRequestOptions = { method: 'GET', ...baseOptions, ...options};
-            const localVarHeaderParameter = {} as any;
-            const localVarQueryParameter = {} as any;
-
-            if (ids !== undefined) {
-                localVarQueryParameter['ids'] = ids;
-            }
-
-
-    
-            setSearchParams(localVarUrlObj, localVarQueryParameter);
-            let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
-            localVarRequestOptions.headers = {...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers};
-
-            return {
-                url: toPathString(localVarUrlObj),
-                options: localVarRequestOptions,
-            };
-        },
-        /**
-         * 
-         * @summary External Identifiers  Post One
-         * @param {ExternalIdentifier} externalIdentifier 
-         * @param {*} [options] Override http request option.
-         * @throws {RequiredError}
-         */
-        externalIdentifiersPostOne: async (externalIdentifier: ExternalIdentifier, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
-            // verify required parameter 'externalIdentifier' is not null or undefined
-            assertParamExists('externalIdentifiersPostOne', 'externalIdentifier', externalIdentifier)
-            const localVarPath = `/v1/external_identifiers`;
-            // use dummy base URL string because the URL constructor only accepts absolute URLs.
-            const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
-            let baseOptions;
-            if (configuration) {
-                baseOptions = configuration.baseOptions;
-            }
-
-            const localVarRequestOptions = { method: 'POST', ...baseOptions, ...options};
-            const localVarHeaderParameter = {} as any;
-            const localVarQueryParameter = {} as any;
-
-
-    
-            localVarHeaderParameter['Content-Type'] = 'application/json';
-
-            setSearchParams(localVarUrlObj, localVarQueryParameter);
-            let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
-            localVarRequestOptions.headers = {...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers};
-            localVarRequestOptions.data = serializeDataIfNeeded(externalIdentifier, localVarRequestOptions, configuration)
-
-            return {
-                url: toPathString(localVarUrlObj),
-                options: localVarRequestOptions,
-            };
-        },
-        /**
-         * 
-         * @summary External Identifiers  Post Query
-         * @param {EpiFilter} filter 
-         * @param {*} [options] Override http request option.
-         * @throws {RequiredError}
-         */
-        externalIdentifiersPostQuery: async (filter: EpiFilter, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
-            // verify required parameter 'filter' is not null or undefined
-            assertParamExists('externalIdentifiersPostQuery', 'filter', filter)
-            const localVarPath = `/v1/external_identifiers/query`;
-            // use dummy base URL string because the URL constructor only accepts absolute URLs.
-            const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
-            let baseOptions;
-            if (configuration) {
-                baseOptions = configuration.baseOptions;
-            }
-
-            const localVarRequestOptions = { method: 'POST', ...baseOptions, ...options};
-            const localVarHeaderParameter = {} as any;
-            const localVarQueryParameter = {} as any;
-
-
-    
-            localVarHeaderParameter['Content-Type'] = 'application/json';
-
-            setSearchParams(localVarUrlObj, localVarQueryParameter);
-            let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
-            localVarRequestOptions.headers = {...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers};
-            localVarRequestOptions.data = serializeDataIfNeeded(filter, localVarRequestOptions, configuration)
-
-            return {
-                url: toPathString(localVarUrlObj),
-                options: localVarRequestOptions,
-            };
-        },
-        /**
-         * 
-         * @summary External Identifiers  Post Query  Ids
-         * @param {EpiFilter} filter 
-         * @param {*} [options] Override http request option.
-         * @throws {RequiredError}
-         */
-        externalIdentifiersPostQueryIds: async (filter: EpiFilter, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
-            // verify required parameter 'filter' is not null or undefined
-            assertParamExists('externalIdentifiersPostQueryIds', 'filter', filter)
-            const localVarPath = `/v1/external_identifiers/query/ids`;
-            // use dummy base URL string because the URL constructor only accepts absolute URLs.
-            const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
-            let baseOptions;
-            if (configuration) {
-                baseOptions = configuration.baseOptions;
-            }
-
-            const localVarRequestOptions = { method: 'POST', ...baseOptions, ...options};
-            const localVarHeaderParameter = {} as any;
-            const localVarQueryParameter = {} as any;
-
-
-    
-            localVarHeaderParameter['Content-Type'] = 'application/json';
-
-            setSearchParams(localVarUrlObj, localVarQueryParameter);
-            let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
-            localVarRequestOptions.headers = {...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers};
-            localVarRequestOptions.data = serializeDataIfNeeded(filter, localVarRequestOptions, configuration)
-
-            return {
-                url: toPathString(localVarUrlObj),
-                options: localVarRequestOptions,
-            };
-        },
-        /**
-         * 
-         * @summary External Identifiers  Post Some
-         * @param {Array<ExternalIdentifier>} externalIdentifier 
-         * @param {*} [options] Override http request option.
-         * @throws {RequiredError}
-         */
-        externalIdentifiersPostSome: async (externalIdentifier: Array<ExternalIdentifier>, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
-            // verify required parameter 'externalIdentifier' is not null or undefined
-            assertParamExists('externalIdentifiersPostSome', 'externalIdentifier', externalIdentifier)
-            const localVarPath = `/v1/external_identifiers/batch`;
-            // use dummy base URL string because the URL constructor only accepts absolute URLs.
-            const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
-            let baseOptions;
-            if (configuration) {
-                baseOptions = configuration.baseOptions;
-            }
-
-            const localVarRequestOptions = { method: 'POST', ...baseOptions, ...options};
-            const localVarHeaderParameter = {} as any;
-            const localVarQueryParameter = {} as any;
-
-
-    
-            localVarHeaderParameter['Content-Type'] = 'application/json';
-
-            setSearchParams(localVarUrlObj, localVarQueryParameter);
-            let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
-            localVarRequestOptions.headers = {...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers};
-            localVarRequestOptions.data = serializeDataIfNeeded(externalIdentifier, localVarRequestOptions, configuration)
-
-            return {
-                url: toPathString(localVarUrlObj),
-                options: localVarRequestOptions,
-            };
-        },
-        /**
-         * 
-         * @summary External Identifiers  Put One
-         * @param {string} objectId 
-         * @param {ExternalIdentifier} externalIdentifier 
-         * @param {*} [options] Override http request option.
-         * @throws {RequiredError}
-         */
-        externalIdentifiersPutOne: async (objectId: string, externalIdentifier: ExternalIdentifier, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
-            // verify required parameter 'objectId' is not null or undefined
-            assertParamExists('externalIdentifiersPutOne', 'objectId', objectId)
-            // verify required parameter 'externalIdentifier' is not null or undefined
-            assertParamExists('externalIdentifiersPutOne', 'externalIdentifier', externalIdentifier)
-            const localVarPath = `/v1/external_identifiers/{object_id}`
-                .replace(`{${"object_id"}}`, encodeURIComponent(String(objectId)));
-            // use dummy base URL string because the URL constructor only accepts absolute URLs.
-            const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
-            let baseOptions;
-            if (configuration) {
-                baseOptions = configuration.baseOptions;
-            }
-
-            const localVarRequestOptions = { method: 'PUT', ...baseOptions, ...options};
-            const localVarHeaderParameter = {} as any;
-            const localVarQueryParameter = {} as any;
-
-
-    
-            localVarHeaderParameter['Content-Type'] = 'application/json';
-
-            setSearchParams(localVarUrlObj, localVarQueryParameter);
-            let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
-            localVarRequestOptions.headers = {...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers};
-            localVarRequestOptions.data = serializeDataIfNeeded(externalIdentifier, localVarRequestOptions, configuration)
-
-            return {
-                url: toPathString(localVarUrlObj),
-                options: localVarRequestOptions,
-            };
-        },
-        /**
-         * 
-         * @summary External Identifiers  Put Some
-         * @param {Array<ExternalIdentifier>} externalIdentifier 
-         * @param {*} [options] Override http request option.
-         * @throws {RequiredError}
-         */
-        externalIdentifiersPutSome: async (externalIdentifier: Array<ExternalIdentifier>, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
-            // verify required parameter 'externalIdentifier' is not null or undefined
-            assertParamExists('externalIdentifiersPutSome', 'externalIdentifier', externalIdentifier)
-            const localVarPath = `/v1/external_identifiers/batch`;
-            // use dummy base URL string because the URL constructor only accepts absolute URLs.
-            const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
-            let baseOptions;
-            if (configuration) {
-                baseOptions = configuration.baseOptions;
-            }
-
-            const localVarRequestOptions = { method: 'PUT', ...baseOptions, ...options};
-            const localVarHeaderParameter = {} as any;
-            const localVarQueryParameter = {} as any;
-
-
-    
-            localVarHeaderParameter['Content-Type'] = 'application/json';
-
-            setSearchParams(localVarUrlObj, localVarQueryParameter);
-            let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
-            localVarRequestOptions.headers = {...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers};
-            localVarRequestOptions.data = serializeDataIfNeeded(externalIdentifier, localVarRequestOptions, configuration)
-
-            return {
-                url: toPathString(localVarUrlObj),
-                options: localVarRequestOptions,
-            };
-        },
-        /**
-         * 
          * @summary Identifier Issuers  Delete All
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
@@ -39072,161 +39363,6 @@ const OrganizationApiFp = function(configuration?: Configuration) {
         },
         /**
          * 
-         * @summary External Identifiers  Delete All
-         * @param {*} [options] Override http request option.
-         * @throws {RequiredError}
-         */
-        async externalIdentifiersDeleteAll(options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<any>> {
-            const localVarAxiosArgs = await localVarAxiosParamCreator.externalIdentifiersDeleteAll(options);
-            const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
-            const localVarOperationServerBasePath = operationServerMap['OrganizationApi.externalIdentifiersDeleteAll']?.[localVarOperationServerIndex]?.url;
-            return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
-        },
-        /**
-         * 
-         * @summary External Identifiers  Delete One
-         * @param {any} objectId 
-         * @param {*} [options] Override http request option.
-         * @throws {RequiredError}
-         */
-        async externalIdentifiersDeleteOne(objectId: any, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<string>> {
-            const localVarAxiosArgs = await localVarAxiosParamCreator.externalIdentifiersDeleteOne(objectId, options);
-            const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
-            const localVarOperationServerBasePath = operationServerMap['OrganizationApi.externalIdentifiersDeleteOne']?.[localVarOperationServerIndex]?.url;
-            return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
-        },
-        /**
-         * 
-         * @summary External Identifiers  Delete Some
-         * @param {string} ids 
-         * @param {*} [options] Override http request option.
-         * @throws {RequiredError}
-         */
-        async externalIdentifiersDeleteSome(ids: string, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<Array<string>>> {
-            const localVarAxiosArgs = await localVarAxiosParamCreator.externalIdentifiersDeleteSome(ids, options);
-            const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
-            const localVarOperationServerBasePath = operationServerMap['OrganizationApi.externalIdentifiersDeleteSome']?.[localVarOperationServerIndex]?.url;
-            return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
-        },
-        /**
-         * 
-         * @summary External Identifiers  Get All
-         * @param {*} [options] Override http request option.
-         * @throws {RequiredError}
-         */
-        async externalIdentifiersGetAll(options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<Array<ExternalIdentifier>>> {
-            const localVarAxiosArgs = await localVarAxiosParamCreator.externalIdentifiersGetAll(options);
-            const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
-            const localVarOperationServerBasePath = operationServerMap['OrganizationApi.externalIdentifiersGetAll']?.[localVarOperationServerIndex]?.url;
-            return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
-        },
-        /**
-         * 
-         * @summary External Identifiers  Get One
-         * @param {string} objectId 
-         * @param {*} [options] Override http request option.
-         * @throws {RequiredError}
-         */
-        async externalIdentifiersGetOne(objectId: string, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<ExternalIdentifier>> {
-            const localVarAxiosArgs = await localVarAxiosParamCreator.externalIdentifiersGetOne(objectId, options);
-            const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
-            const localVarOperationServerBasePath = operationServerMap['OrganizationApi.externalIdentifiersGetOne']?.[localVarOperationServerIndex]?.url;
-            return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
-        },
-        /**
-         * 
-         * @summary External Identifiers  Get Some
-         * @param {string} ids 
-         * @param {*} [options] Override http request option.
-         * @throws {RequiredError}
-         */
-        async externalIdentifiersGetSome(ids: string, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<Array<ExternalIdentifier>>> {
-            const localVarAxiosArgs = await localVarAxiosParamCreator.externalIdentifiersGetSome(ids, options);
-            const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
-            const localVarOperationServerBasePath = operationServerMap['OrganizationApi.externalIdentifiersGetSome']?.[localVarOperationServerIndex]?.url;
-            return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
-        },
-        /**
-         * 
-         * @summary External Identifiers  Post One
-         * @param {ExternalIdentifier} externalIdentifier 
-         * @param {*} [options] Override http request option.
-         * @throws {RequiredError}
-         */
-        async externalIdentifiersPostOne(externalIdentifier: ExternalIdentifier, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<ExternalIdentifier>> {
-            const localVarAxiosArgs = await localVarAxiosParamCreator.externalIdentifiersPostOne(externalIdentifier, options);
-            const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
-            const localVarOperationServerBasePath = operationServerMap['OrganizationApi.externalIdentifiersPostOne']?.[localVarOperationServerIndex]?.url;
-            return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
-        },
-        /**
-         * 
-         * @summary External Identifiers  Post Query
-         * @param {EpiFilter} filter 
-         * @param {*} [options] Override http request option.
-         * @throws {RequiredError}
-         */
-        async externalIdentifiersPostQuery(filter: EpiFilter, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<Array<ExternalIdentifier>>> {
-            const localVarAxiosArgs = await localVarAxiosParamCreator.externalIdentifiersPostQuery(filter, options);
-            const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
-            const localVarOperationServerBasePath = operationServerMap['OrganizationApi.externalIdentifiersPostQuery']?.[localVarOperationServerIndex]?.url;
-            return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
-        },
-        /**
-         * 
-         * @summary External Identifiers  Post Query  Ids
-         * @param {EpiFilter} filter 
-         * @param {*} [options] Override http request option.
-         * @throws {RequiredError}
-         */
-        async externalIdentifiersPostQueryIds(filter: EpiFilter, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<Array<string>>> {
-            const localVarAxiosArgs = await localVarAxiosParamCreator.externalIdentifiersPostQueryIds(filter, options);
-            const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
-            const localVarOperationServerBasePath = operationServerMap['OrganizationApi.externalIdentifiersPostQueryIds']?.[localVarOperationServerIndex]?.url;
-            return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
-        },
-        /**
-         * 
-         * @summary External Identifiers  Post Some
-         * @param {Array<ExternalIdentifier>} externalIdentifier 
-         * @param {*} [options] Override http request option.
-         * @throws {RequiredError}
-         */
-        async externalIdentifiersPostSome(externalIdentifier: Array<ExternalIdentifier>, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<Array<ExternalIdentifier>>> {
-            const localVarAxiosArgs = await localVarAxiosParamCreator.externalIdentifiersPostSome(externalIdentifier, options);
-            const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
-            const localVarOperationServerBasePath = operationServerMap['OrganizationApi.externalIdentifiersPostSome']?.[localVarOperationServerIndex]?.url;
-            return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
-        },
-        /**
-         * 
-         * @summary External Identifiers  Put One
-         * @param {string} objectId 
-         * @param {ExternalIdentifier} externalIdentifier 
-         * @param {*} [options] Override http request option.
-         * @throws {RequiredError}
-         */
-        async externalIdentifiersPutOne(objectId: string, externalIdentifier: ExternalIdentifier, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<ExternalIdentifier>> {
-            const localVarAxiosArgs = await localVarAxiosParamCreator.externalIdentifiersPutOne(objectId, externalIdentifier, options);
-            const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
-            const localVarOperationServerBasePath = operationServerMap['OrganizationApi.externalIdentifiersPutOne']?.[localVarOperationServerIndex]?.url;
-            return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
-        },
-        /**
-         * 
-         * @summary External Identifiers  Put Some
-         * @param {Array<ExternalIdentifier>} externalIdentifier 
-         * @param {*} [options] Override http request option.
-         * @throws {RequiredError}
-         */
-        async externalIdentifiersPutSome(externalIdentifier: Array<ExternalIdentifier>, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<Array<ExternalIdentifier>>> {
-            const localVarAxiosArgs = await localVarAxiosParamCreator.externalIdentifiersPutSome(externalIdentifier, options);
-            const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
-            const localVarOperationServerBasePath = operationServerMap['OrganizationApi.externalIdentifiersPutSome']?.[localVarOperationServerIndex]?.url;
-            return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
-        },
-        /**
-         * 
          * @summary Identifier Issuers  Delete All
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
@@ -41200,149 +41336,6 @@ export class OrganizationApi extends BaseAPI {
      */
     public dataCollectionsPutSome(dataCollection: Array<DataCollection>, options?: RawAxiosRequestConfig) {
         return OrganizationApiFp(this.configuration).dataCollectionsPutSome(dataCollection, options).then((request) => request(this.axios, this.configuration.baseUrl));
-    }
-
-    /**
-     * 
-     * @summary External Identifiers  Delete All
-     * @param {*} [options] Override http request option.
-     * @throws {RequiredError}
-     * @memberof OrganizationApi
-     */
-    public externalIdentifiersDeleteAll(options?: RawAxiosRequestConfig) {
-        return OrganizationApiFp(this.configuration).externalIdentifiersDeleteAll(options).then((request) => request(this.axios, this.configuration.baseUrl));
-    }
-
-    /**
-     * 
-     * @summary External Identifiers  Delete One
-     * @param {any} objectId 
-     * @param {*} [options] Override http request option.
-     * @throws {RequiredError}
-     * @memberof OrganizationApi
-     */
-    public externalIdentifiersDeleteOne(objectId: any, options?: RawAxiosRequestConfig) {
-        return OrganizationApiFp(this.configuration).externalIdentifiersDeleteOne(objectId, options).then((request) => request(this.axios, this.configuration.baseUrl));
-    }
-
-    /**
-     * 
-     * @summary External Identifiers  Delete Some
-     * @param {string} ids 
-     * @param {*} [options] Override http request option.
-     * @throws {RequiredError}
-     * @memberof OrganizationApi
-     */
-    public externalIdentifiersDeleteSome(ids: string, options?: RawAxiosRequestConfig) {
-        return OrganizationApiFp(this.configuration).externalIdentifiersDeleteSome(ids, options).then((request) => request(this.axios, this.configuration.baseUrl));
-    }
-
-    /**
-     * 
-     * @summary External Identifiers  Get All
-     * @param {*} [options] Override http request option.
-     * @throws {RequiredError}
-     * @memberof OrganizationApi
-     */
-    public externalIdentifiersGetAll(options?: RawAxiosRequestConfig) {
-        return OrganizationApiFp(this.configuration).externalIdentifiersGetAll(options).then((request) => request(this.axios, this.configuration.baseUrl));
-    }
-
-    /**
-     * 
-     * @summary External Identifiers  Get One
-     * @param {string} objectId 
-     * @param {*} [options] Override http request option.
-     * @throws {RequiredError}
-     * @memberof OrganizationApi
-     */
-    public externalIdentifiersGetOne(objectId: string, options?: RawAxiosRequestConfig) {
-        return OrganizationApiFp(this.configuration).externalIdentifiersGetOne(objectId, options).then((request) => request(this.axios, this.configuration.baseUrl));
-    }
-
-    /**
-     * 
-     * @summary External Identifiers  Get Some
-     * @param {string} ids 
-     * @param {*} [options] Override http request option.
-     * @throws {RequiredError}
-     * @memberof OrganizationApi
-     */
-    public externalIdentifiersGetSome(ids: string, options?: RawAxiosRequestConfig) {
-        return OrganizationApiFp(this.configuration).externalIdentifiersGetSome(ids, options).then((request) => request(this.axios, this.configuration.baseUrl));
-    }
-
-    /**
-     * 
-     * @summary External Identifiers  Post One
-     * @param {ExternalIdentifier} externalIdentifier 
-     * @param {*} [options] Override http request option.
-     * @throws {RequiredError}
-     * @memberof OrganizationApi
-     */
-    public externalIdentifiersPostOne(externalIdentifier: ExternalIdentifier, options?: RawAxiosRequestConfig) {
-        return OrganizationApiFp(this.configuration).externalIdentifiersPostOne(externalIdentifier, options).then((request) => request(this.axios, this.configuration.baseUrl));
-    }
-
-    /**
-     * 
-     * @summary External Identifiers  Post Query
-     * @param {EpiFilter} filter 
-     * @param {*} [options] Override http request option.
-     * @throws {RequiredError}
-     * @memberof OrganizationApi
-     */
-    public externalIdentifiersPostQuery(filter: EpiFilter, options?: RawAxiosRequestConfig) {
-        return OrganizationApiFp(this.configuration).externalIdentifiersPostQuery(filter, options).then((request) => request(this.axios, this.configuration.baseUrl));
-    }
-
-    /**
-     * 
-     * @summary External Identifiers  Post Query  Ids
-     * @param {EpiFilter} filter 
-     * @param {*} [options] Override http request option.
-     * @throws {RequiredError}
-     * @memberof OrganizationApi
-     */
-    public externalIdentifiersPostQueryIds(filter: EpiFilter, options?: RawAxiosRequestConfig) {
-        return OrganizationApiFp(this.configuration).externalIdentifiersPostQueryIds(filter, options).then((request) => request(this.axios, this.configuration.baseUrl));
-    }
-
-    /**
-     * 
-     * @summary External Identifiers  Post Some
-     * @param {Array<ExternalIdentifier>} externalIdentifier 
-     * @param {*} [options] Override http request option.
-     * @throws {RequiredError}
-     * @memberof OrganizationApi
-     */
-    public externalIdentifiersPostSome(externalIdentifier: Array<ExternalIdentifier>, options?: RawAxiosRequestConfig) {
-        return OrganizationApiFp(this.configuration).externalIdentifiersPostSome(externalIdentifier, options).then((request) => request(this.axios, this.configuration.baseUrl));
-    }
-
-    /**
-     * 
-     * @summary External Identifiers  Put One
-     * @param {string} objectId 
-     * @param {ExternalIdentifier} externalIdentifier 
-     * @param {*} [options] Override http request option.
-     * @throws {RequiredError}
-     * @memberof OrganizationApi
-     */
-    public externalIdentifiersPutOne(objectId: string, externalIdentifier: ExternalIdentifier, options?: RawAxiosRequestConfig) {
-        return OrganizationApiFp(this.configuration).externalIdentifiersPutOne(objectId, externalIdentifier, options).then((request) => request(this.axios, this.configuration.baseUrl));
-    }
-
-    /**
-     * 
-     * @summary External Identifiers  Put Some
-     * @param {Array<ExternalIdentifier>} externalIdentifier 
-     * @param {*} [options] Override http request option.
-     * @throws {RequiredError}
-     * @memberof OrganizationApi
-     */
-    public externalIdentifiersPutSome(externalIdentifier: Array<ExternalIdentifier>, options?: RawAxiosRequestConfig) {
-        return OrganizationApiFp(this.configuration).externalIdentifiersPutSome(externalIdentifier, options).then((request) => request(this.axios, this.configuration.baseUrl));
     }
 
     /**
@@ -44588,6 +44581,36 @@ const SystemApiAxiosParamCreator = function (configuration?: Configuration) {
             };
         },
         /**
+         * Returns the feature flags of the service.
+         * @summary Feature Flags
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        retrieveFeatureFlags: async (options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
+            const localVarPath = `/v1/retrieve/feature-flags`;
+            // use dummy base URL string because the URL constructor only accepts absolute URLs.
+            const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
+            let baseOptions;
+            if (configuration) {
+                baseOptions = configuration.baseOptions;
+            }
+
+            const localVarRequestOptions = { method: 'GET', ...baseOptions, ...options};
+            const localVarHeaderParameter = {} as any;
+            const localVarQueryParameter = {} as any;
+
+
+    
+            setSearchParams(localVarUrlObj, localVarQueryParameter);
+            let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
+            localVarRequestOptions.headers = {...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers};
+
+            return {
+                url: toPathString(localVarUrlObj),
+                options: localVarRequestOptions,
+            };
+        },
+        /**
          * 
          * @summary Licenses
          * @param {*} [options] Override http request option.
@@ -44838,6 +44861,18 @@ const SystemApiFp = function(configuration?: Configuration) {
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
         /**
+         * Returns the feature flags of the service.
+         * @summary Feature Flags
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        async retrieveFeatureFlags(options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<FeatureFlagsResponseBody>> {
+            const localVarAxiosArgs = await localVarAxiosParamCreator.retrieveFeatureFlags(options);
+            const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
+            const localVarOperationServerBasePath = operationServerMap['SystemApi.retrieveFeatureFlags']?.[localVarOperationServerIndex]?.url;
+            return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
+        },
+        /**
          * 
          * @summary Licenses
          * @param {*} [options] Override http request option.
@@ -45047,6 +45082,17 @@ export class SystemApi extends BaseAPI {
      */
     public outagesPutSome(outage: Array<Outage>, options?: RawAxiosRequestConfig) {
         return SystemApiFp(this.configuration).outagesPutSome(outage, options).then((request) => request(this.axios, this.configuration.baseUrl));
+    }
+
+    /**
+     * Returns the feature flags of the service.
+     * @summary Feature Flags
+     * @param {*} [options] Override http request option.
+     * @throws {RequiredError}
+     * @memberof SystemApi
+     */
+    public retrieveFeatureFlags(options?: RawAxiosRequestConfig) {
+        return SystemApiFp(this.configuration).retrieveFeatureFlags(options).then((request) => request(this.axios, this.configuration.baseUrl));
     }
 
     /**

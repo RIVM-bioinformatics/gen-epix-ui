@@ -20,6 +20,7 @@ import type { NotificationManager } from '../classes/managers/NotificationManage
 import type { PageEventBusManager } from '../classes/managers/PageEventBusManager';
 import type { QueryClientManager } from '../classes/managers/QueryClientManager';
 import type { UserSettingsManager } from '../classes/managers/UserSettingsManager';
+import type { FeatureFlagsManager } from '../classes/managers/FeatureFlagsManager';
 import type { I18nManager } from '../classes/managers/I18nManager';
 
 declare global {
@@ -47,6 +48,7 @@ declare global {
       queryClient?: QueryClientManager;
       userSettings?: UserSettingsManager;
       i18n?: I18nManager;
+      featureFlags?: FeatureFlagsManager;
     };
   }
 }

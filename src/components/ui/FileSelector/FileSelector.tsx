@@ -117,7 +117,7 @@ export const FileSelector = ({
         return oldDataTransfer;
       }
       if (!areFileTypesValid(fileList)) {
-        setErrorText(`Invalid file type. Accepted types: ${accept}`);
+        setErrorText(t('Invalid file type. Accepted types: {{accept}}', { accept }));
         return oldDataTransfer;
       }
 
@@ -127,7 +127,7 @@ export const FileSelector = ({
       const numNewFileNames = uniqueOldFileNames.size + (fileNamesToAppend.length - numDuplicates);
 
       if (numNewFileNames > numFilesAllowed) {
-        setErrorText(`Too many files selected. Maximum allowed: ${numFilesAllowed}`);
+        setErrorText(t('Too many files selected. Maximum allowed: {{numFilesAllowed}}', { numFilesAllowed }));
         return oldDataTransfer;
       }
 
@@ -145,7 +145,7 @@ export const FileSelector = ({
       return newDataTransfer;
 
     });
-  }, [accept, areFileTypesValid, numFilesAllowed, onDataTransferChange]);
+  }, [accept, areFileTypesValid, numFilesAllowed, onDataTransferChange, t]);
 
   const onDrop = useCallback((event: DragEvent<HTMLElement>) => {
     stopDefaults(event);

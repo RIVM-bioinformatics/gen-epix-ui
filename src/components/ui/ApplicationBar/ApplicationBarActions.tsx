@@ -20,6 +20,7 @@ import { ApplicationBarActionsInfoItem } from './ApplicationBarActionsInfotem';
 import { ApplicationBarActionsNotificationsItem } from './ApplicationBarActionsNotificationsItem';
 import { ApplicationBarActionsOutagesItem } from './ApplicationBarActionsOutagesItem';
 import { ApplicationBarActionsUserItem } from './ApplicationBarActionsUserItem';
+import { ApplicationBarActionsOrganizationSwitcherItem } from './ApplicationBarActionsOrganizationSwitcherItem';
 
 export type ApplicationBarActionsProps = {
   readonly fullWidth?: boolean;
@@ -94,6 +95,7 @@ export const ApplicationBarActions = ({ fullWidth }: ApplicationBarActionsProps)
         <ApplicationBarActionsOutagesItem />
         <ApplicationBarActionsNotificationsItem />
         <ApplicationBarActionsInfoItem />
+        <ApplicationBarActionsOrganizationSwitcherItem />
         <ApplicationBarActionsUserItem />
         {environmentMessage && (
           <Box

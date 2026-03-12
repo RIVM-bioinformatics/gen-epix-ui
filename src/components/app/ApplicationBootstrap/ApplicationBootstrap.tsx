@@ -13,26 +13,29 @@ import {
   Button,
 } from '@mui/material';
 
-import { ResponseHandler } from '../ResponseHandler';
-import { PageContainer } from '../PageContainer';
 import { SystemApi } from '../../../api';
 import { WindowManager } from '../../../classes/managers/WindowManager';
+import { useQueryMemo } from '../../../hooks/useQueryMemo';
 import { QUERY_KEY } from '../../../models/query';
 import { outagesStore } from '../../../stores/outagesStore';
 import { OutageUtil } from '../../../utils/OutageUtil';
 import { QueryUtil } from '../../../utils/QueryUtil';
 import { TestIdUtil } from '../../../utils/TestIdUtil';
-import { OutageList } from '../OutageList';
-import { useQueryMemo } from '../../../hooks/useQueryMemo';
+import { OutageList } from '../../ui/OutageList';
+import { PageContainer } from '../../ui/PageContainer';
+import { ResponseHandler } from '../../ui/ResponseHandler';
+import { useArray } from '../../../hooks/useArray';
+import { FeatureFlagsManager } from '../../../classes/managers/FeatureFlagsManager';
 
-export const OutageWrapper = ({ children }: PropsWithChildren): ReactNode => {
+
+export const ApplicationBootstrap = ({ children }: PropsWithChildren): ReactNode => {
   const { t } = useTranslation();
 
   const setCategorizedOutages = useStore(outagesStore, (state) => state.setCategorizedOutages);
   const [shouldContinue, setShouldContinue] = useState(false);
   const [buttonsEnabled, setButtonsEnabled] = useState(false);
 
-  const { isLoading: isOutagesPending, error: outagesError, data: outages } = useQueryMemo({
+  const outagesQuery = useQueryMemo({
     queryKey: QueryUtil.getGenericKey(QUERY_KEY.OUTAGES),
     queryFn: async ({ signal }) => (await SystemApi.instance.retrieveOutages({ signal })).data,
     gcTime: Infinity,
@@ -40,9 +43,11 @@ export const OutageWrapper = ({ children }: PropsWithChildren): ReactNode => {
     refetchInterval: 5 * 60 * 1000,
   });
 
+  const outagesLoadables = useArray([outagesQuery]);
+
   const categorizedOutages = useMemo(() => {
-    return OutageUtil.getCategorizedOutages(outages ?? []);
-  }, [outages]);
+    return OutageUtil.getCategorizedOutages(outagesQuery.data ?? []);
+  }, [outagesQuery.data]);
 
   const onContinuButtonClick = useCallback(() => {
     setShouldContinue(true);
@@ -66,11 +71,38 @@ export const OutageWrapper = ({ children }: PropsWithChildren): ReactNode => {
     };
   }, [categorizedOutages, setCategorizedOutages]);
 
-  if (!isOutagesPending && !outagesError && categorizedOutages.activeOutages?.length === 0) {
-    return children;
+  const shouldShowChildren = shouldContinue || (!outagesQuery.isLoading && !outagesQuery.error && categorizedOutages.activeOutages?.length === 0);
+  const shouldShowOutagePage = !shouldContinue && !outagesQuery.isLoading && !outagesQuery.error && categorizedOutages.activeOutages?.length > 0;
+
+  const featureFlagsQuery = useQueryMemo({
+    queryKey: QueryUtil.getGenericKey(QUERY_KEY.FEATURE_FLAGS),
+    queryFn: async ({ signal }) => (await SystemApi.instance.retrieveFeatureFlags({ signal })).data,
+    gcTime: Infinity,
+    staleTime: Infinity,
+    enabled: shouldShowChildren,
+  });
+
+  const featureFlagsLoadables = useArray([featureFlagsQuery]);
+
+  useEffect(() => {
+    if (featureFlagsQuery.data) {
+      FeatureFlagsManager.instance.featureFlags = featureFlagsQuery.data.feature_flags;
+    }
+  }, [featureFlagsQuery.data]);
+
+
+  if (shouldShowChildren) {
+    return (
+      <ResponseHandler
+        loadables={featureFlagsLoadables}
+        loadingMessage={t`Loading`}
+      >
+        {children}
+      </ResponseHandler>
+    );
   }
 
-  if (!shouldContinue && !isOutagesPending && !outagesError && categorizedOutages.activeOutages.length > 0) {
+  if (shouldShowOutagePage) {
     return (
       <PageContainer
         singleAction
@@ -108,10 +140,6 @@ export const OutageWrapper = ({ children }: PropsWithChildren): ReactNode => {
     );
   }
 
-  if (shouldContinue) {
-    return children;
-  }
-
   return (
     <PageContainer
       ignorePageEvent
@@ -120,8 +148,7 @@ export const OutageWrapper = ({ children }: PropsWithChildren): ReactNode => {
       title={t`Outages`}
     >
       <ResponseHandler
-        error={outagesError}
-        isLoading={isOutagesPending}
+        loadables={outagesLoadables}
         loadingMessage={t`Loading`}
       >
         {children}

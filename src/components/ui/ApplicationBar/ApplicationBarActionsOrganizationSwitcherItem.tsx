@@ -13,6 +13,7 @@ import { useTranslation } from 'react-i18next';
 
 import { OrganizationSwitcherDialog } from '../OrganizationSwitcherDialog';
 import type { OrganizationSwitcherDialogRefMethods } from '../OrganizationSwitcherDialog';
+import { FeatureFlagsManager } from '../../../classes/managers/FeatureFlagsManager';
 
 
 export const ApplicationBarActionsOrganizationSwitcherItem = () => {
@@ -25,6 +26,9 @@ export const ApplicationBarActionsOrganizationSwitcherItem = () => {
     organizationSwitcherDialogRef.current.open();
   }, []);
 
+  if (!FeatureFlagsManager.instance.featureFlags.update_own_organization) {
+    return null;
+  }
 
   return (
     <Fragment>
