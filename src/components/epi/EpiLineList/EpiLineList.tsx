@@ -430,6 +430,9 @@ export const EpiLineList = ({ linkedScrollSubject, onLink, caseSet }: EpiLineLis
   }, []);
 
   const onVerticalScrollPositionChange = useCallback((position: number) => {
+    if (isNaN(position)) {
+      return;
+    }
     linkedScrollSubject.next({
       position,
       origin: containerRef.current,

@@ -114,9 +114,9 @@ export const EpiTree = ({ linkedScrollSubject, ref }: EpiTreeProps) => {
   const [extraLeafInfoId, setExtraLeafInfoId] = useState<string>(null);
   const [treeConfiguration, setTreeConfiguration] = useState<TreeConfiguration>(epiDashboardStore.getState().epiTreeWidgetData.treeConfiguration);
   const [treeAssembly, setTreeAssembly] = useState<TreeAssembly>(null);
-  const [verticalScrollPosition, setVerticalScrollPosition] = useState<number>(epiDashboardStore.getState().epiTreeWidgetData.verticalScrollPosition);
-  const [horizontalScrollPosition, setHorizontalScrollPosition] = useState<number>(epiDashboardStore.getState().epiTreeWidgetData.horizontalScrollPosition);
-  const [zoomLevel, setZoomLevel] = useState<number>(epiDashboardStore.getState().epiTreeWidgetData.zoomLevel);
+  const [verticalScrollPosition, setVerticalScrollPosition] = useState<number>(!isNaN(epiDashboardStore.getState().epiTreeWidgetData.verticalScrollPosition) ? epiDashboardStore.getState().epiTreeWidgetData.verticalScrollPosition : 0);
+  const [horizontalScrollPosition, setHorizontalScrollPosition] = useState<number>(!isNaN(epiDashboardStore.getState().epiTreeWidgetData.horizontalScrollPosition) ? epiDashboardStore.getState().epiTreeWidgetData.horizontalScrollPosition : 0);
+  const [zoomLevel, setZoomLevel] = useState<number>(!isNaN(epiDashboardStore.getState().epiTreeWidgetData.zoomLevel) ? epiDashboardStore.getState().epiTreeWidgetData.zoomLevel : 1);
   const [devicePixelRatio, setDevicePixelRatio] = useState<number>(DevicePixelRatioManager.instance.data);
   const [isLinked, setIsLinked] = useState(true);
   const internalHighlightingSubject = useMemo(() => new Subject<Highlighting>({
@@ -215,8 +215,12 @@ export const EpiTree = ({ linkedScrollSubject, ref }: EpiTreeProps) => {
 
   useEffect(() => {
     const unsubscribe = canvasScrollSubject.subscribe((data) => {
-      setHorizontalScrollPosition(data.x);
-      setVerticalScrollPosition(data.y);
+      if (!isNaN(data.x)) {
+        setHorizontalScrollPosition(data.x);
+      }
+      if (!isNaN(data.y)) {
+        setVerticalScrollPosition(data.y);
+      }
     });
 
     return () => {
