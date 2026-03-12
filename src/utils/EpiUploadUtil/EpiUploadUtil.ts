@@ -626,7 +626,7 @@ export class EpiUploadUtil {
                   seqsForUpload.push({
                     col_id: colId,
                     case_id: caseId,
-                    external_sample_id: {
+                    other_sample_identifier: {
                       external_id: externalSampleId,
                       identifier_issuer_id: sampleIdentifierIssuerId,
                     },
@@ -641,7 +641,7 @@ export class EpiUploadUtil {
                   readSetsForUpload.push({
                     col_id: colId,
                     case_id: caseId,
-                    external_sample_id: {
+                    other_sample_identifier: {
                       external_id: externalSampleId,
                       identifier_issuer_id: sampleIdentifierIssuerId,
                     },
