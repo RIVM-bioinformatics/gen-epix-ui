@@ -21,7 +21,7 @@ export class NumberUtil {
 
 
   public static parse(value: string): number {
-    if (typeof value !== 'string') {
+    if (typeof value !== 'string' || value.trim() === '') {
       return NaN;
     }
 

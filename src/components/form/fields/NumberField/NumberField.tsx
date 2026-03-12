@@ -69,7 +69,11 @@ export const NumberField = <TFieldValues extends FieldValues, TName extends Path
     (event: ChangeEvent<HTMLInputElement>) => {
       const value = event.target.value;
       valueRef.current = value;
-      onChange(NumberUtil.parse(value));
+
+      const parsedValue = NumberUtil.parse(value);
+      const newValue = isNaN(parsedValue) ? '' : parsedValue;
+
+      onChange(newValue);
     }
   , []);
 
