@@ -46,7 +46,7 @@ export interface Config {
   };
   enablePageEvents: boolean;
   applicationName: string;
-  footer: FooterConfig;
+  createFooter: (t: TFunction<'translation', undefined>) => FooterConfig;
   nonce?: string;
   theme: Theme;
   // eslint-disable-next-line @typescript-eslint/naming-convention
