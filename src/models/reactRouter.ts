@@ -12,8 +12,8 @@ export type UseLoaderData<T> = {
 
 export type MyHandle = {
   root?: boolean;
-  titleKey: string;
-  subTitleKey?: string;
+  title: string;
+  subTitle?: string;
   icon?: ReactElement;
   hidden?: boolean;
   disabled?: boolean;

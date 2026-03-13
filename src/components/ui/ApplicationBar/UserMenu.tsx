@@ -131,7 +131,7 @@ export const UserMenu = ({ anchorElement, onClose }: UserMenuProps): ReactElemen
                     mr={1}
                     sx={{ display: 'inline-block' }}
                   >
-                    {t(role)}
+                    {role}
                   </Box>
                 ))}
               </>

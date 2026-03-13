@@ -14,7 +14,6 @@ import {
   useCallback,
   useMemo,
 } from 'react';
-import { useTranslation } from 'react-i18next';
 
 import { BreadcrumbManager } from '../../../classes/managers/BreadcrumbManager';
 import { RouterManager } from '../../../classes/managers/RouterManager';
@@ -28,15 +27,14 @@ type BreadcrumbProps = {
 };
 
 const Breadcrumb = ({ item, isLast }: BreadcrumbProps): ReactElement => {
-  const { t } = useTranslation();
   const breadcrumbsTitles = useSubscribable(BreadcrumbManager.instance);
 
   const title = useMemo(() => {
-    if (breadcrumbsTitles[item.handle.titleKey]) {
-      return breadcrumbsTitles[item.handle.titleKey];
+    if (breadcrumbsTitles[item.handle.title]) {
+      return breadcrumbsTitles[item.handle.title];
     }
-    return t(item.handle.titleKey);
-  }, [breadcrumbsTitles, item.handle.titleKey, t]);
+    return item.handle.title;
+  }, [breadcrumbsTitles, item.handle.title]);
 
   const onLinkClick = useCallback(async (event: MouseEvent) => {
     event.preventDefault();

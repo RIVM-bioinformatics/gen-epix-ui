@@ -1,14 +1,18 @@
 import { createBrowserRouter } from 'react-router-dom';
+import { t } from 'i18next';
 
-import { routes } from '../../../routes';
+import { createRoutes } from '../../../routes';
 import { WindowManager } from '../WindowManager';
+import type { MyNonIndexRouteObject } from '../../../models/reactRouter';
 
 
 export class RouterManager {
   public readonly router: ReturnType<typeof createBrowserRouter>;
+  public readonly routes: MyNonIndexRouteObject[];
 
   private constructor() {
-    this.router = createBrowserRouter(routes);
+    this.routes = createRoutes(t);
+    this.router = createBrowserRouter(this.routes);
   }
 
   public static get instance(): RouterManager {

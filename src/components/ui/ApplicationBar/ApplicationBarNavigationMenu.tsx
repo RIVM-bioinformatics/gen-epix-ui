@@ -15,9 +15,9 @@ import {
   useState,
 } from 'react';
 
-import { routes } from '../../../routes';
 import { AuthorizationManager } from '../../../classes/managers/AuthorizationManager';
 import type { MyNonIndexRouteObject } from '../../../models/reactRouter';
+import { RouterManager } from '../../../classes/managers/RouterManager';
 
 const NavLink = styled(BaseNavLink)(({ theme }) => ({
   color: theme.palette.secondary.contrastText,
@@ -40,7 +40,7 @@ export const ApplicationBarNavigationMenu = ({ fullWidth }: ApplicationBarNaviga
   const navId = useId();
 
   const menuItems = useMemo(() => {
-    const rootItem = routes.find(r => r.handle.root);
+    const rootItem = RouterManager.instance.routes.find(r => r.handle.root);
     return [rootItem, ...rootItem.children.filter(r => !r.handle.hidden)] as MyNonIndexRouteObject[];
   }, []);
 
@@ -140,14 +140,14 @@ export const ApplicationBarNavigationMenu = ({ fullWidth }: ApplicationBarNaviga
                 }}
               >
                 <NavLink
-                  aria-label={t(menuItem.handle.titleKey)}
+                  aria-label={menuItem.handle.title}
                   to={menuItem.path}
                   sx={{
                     padding: `0 ${theme.spacing(1)}`,
                   }}
                 >
                   {!!menuItem.handle.icon && menuItem.handle.icon}
-                  {!menuItem.handle.icon && t(menuItem.handle.titleKey)}
+                  {!menuItem.handle.icon && menuItem.handle.title}
                 </NavLink>
               </Box>
             );

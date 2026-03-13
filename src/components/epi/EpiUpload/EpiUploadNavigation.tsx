@@ -33,7 +33,7 @@ export const EpiUploadNavigation = ({ onProceedButtonClick: onProceedButtonClick
           variant={'outlined'}
           onClick={onGoBack}
         >
-          {t(backLabel ?? 'Go back')}
+          {backLabel ?? t`Go back`}
         </Button>
       )}
       {onProceedButtonClick && (
@@ -43,7 +43,7 @@ export const EpiUploadNavigation = ({ onProceedButtonClick: onProceedButtonClick
           disabled={proceedDisabled}
           onClick={onProceedButtonClick}
         >
-          {t(proceedLabel ?? 'Next')}
+          {proceedLabel ?? t`'Next`}
         </Button>
       )}
     </Box>

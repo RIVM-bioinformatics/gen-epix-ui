@@ -10,6 +10,7 @@ import {
   useState,
   useId,
   useEffect,
+  useMemo,
 } from 'react';
 import { useTranslation } from 'react-i18next';
 
@@ -47,6 +48,8 @@ export const ApplicationFooter = ({ fullWidth }: ApplicationFooterProps) => {
     setIsMenuOpen(x => !x);
   }, []);
 
+  const footer = useMemo(() => ConfigManager.instance.config.createFooter(t), [t]);
+
   return (
     <Box
       component={'footer'}
@@ -80,7 +83,7 @@ export const ApplicationFooter = ({ fullWidth }: ApplicationFooterProps) => {
             gridTemplateColumns: 'repeat(2, 1fr)',
           },
           [theme.breakpoints.up('md')]: {
-            gridTemplateColumns: `repeat(${ConfigManager.instance.config.footer.sections.length}, 1fr)`,
+            gridTemplateColumns: `repeat(${footer.sections.length}, 1fr)`,
           },
           paddingLeft: '0 !important',
           paddingRight: '0 !important',
@@ -95,7 +98,7 @@ export const ApplicationFooter = ({ fullWidth }: ApplicationFooterProps) => {
           },
         }}
       >
-        {ConfigManager.instance.config.footer.sections.map((section) => (
+        {footer.sections.map((section) => (
           <ApplicationFooterLinkSection
             key={section.header}
             header={section.header}
@@ -107,7 +110,7 @@ export const ApplicationFooter = ({ fullWidth }: ApplicationFooterProps) => {
                 marginBottom={0.5}
                 onClick={item.onClick}
               >
-                {t(item.label)}
+                {item.label}
               </ApplicationFooterLink>
             ))}
           </ApplicationFooterLinkSection>
