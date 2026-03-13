@@ -71,14 +71,15 @@ export const EpiUploadCaseResultTable = ({ tableStore, rowsWithGeneratedId, comp
   const getIssueTooltipMessages = useCallback((issues: CaseDataIssue[]) => {
     const messages: { message: string; key: string }[] = [];
     issues.forEach((issue) => {
-      const issueMessage = issue.message.replace(issue.original_value, '"{{originalValue}}"');
-      const translatedMessage = t(issueMessage, { originalValue: issue.original_value });
       const columnLabel = completeCaseType.cols[issue.col_id].label;
-      const message = t('{{columnLabel}}: {{issue}}', { columnLabel, issue: translatedMessage });
-      messages.push({ message, key: `${issue.col_id}-${issue.data_issue_type}-${issue.code}` });
+      const message = `${columnLabel}: ${issue.message}`;
+      messages.push({
+        key: `${issue.col_id}-${issue.data_issue_type}-${issue.code}`,
+        message,
+      });
     });
     return messages;
-  }, [completeCaseType.cols, t]);
+  }, [completeCaseType.cols]);
 
   const getIssueTooltipContent = useCallback((issues: CaseDataIssue[]) => {
     const messages = getIssueTooltipMessages(issues);

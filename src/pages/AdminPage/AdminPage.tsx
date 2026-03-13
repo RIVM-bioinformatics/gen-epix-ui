@@ -142,9 +142,9 @@ export const AdminPage = ({ routes }: AdminPageProps) => {
                     // eslint-disable-next-line react/jsx-no-bind
                     onClick={async () => onCardClick(item.path)}
                   >
-                    <CardHeader title={t(item.handle.titleKey)} />
+                    <CardHeader title={item.handle.title} />
                     <CardContent>
-                      {t(item.handle.subTitleKey)}
+                      {item.handle.subTitle}
                     </CardContent>
                   </CardActionArea>
                 </Card>

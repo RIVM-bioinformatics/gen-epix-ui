@@ -54,7 +54,7 @@ export const HomePageTrendCard = ({ header, value, diffPercentage, sinceLabel, c
             whiteSpace: 'nowrap',
           }}
         >
-          {t(header)}
+          {header}
         </Typography>
         <Typography
           {...TestIdUtil.createAttributes('HomePageTrendCard-value')}

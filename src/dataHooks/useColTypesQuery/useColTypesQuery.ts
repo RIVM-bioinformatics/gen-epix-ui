@@ -1,8 +1,6 @@
 import { useMemo } from 'react';
-import { useTranslation } from 'react-i18next';
 
 import { ColType } from '../../api';
-import { translateOptions } from '../../hooks/useTranslatedOptions';
 import type { UseOptions } from '../../models/dataHooks';
 import type { OptionBase } from '../../models/form';
 
@@ -42,13 +40,12 @@ export const colTypePresentationValues: Record<ColType, string> = {
 };
 
 export const useColTypeOptionsQuery = (): UseOptions<string> => {
-  const { t } = useTranslation();
   return useMemo(() => {
     const options: OptionBase<string>[] = Object.entries(colTypePresentationValues).map(([value, label]) => ({ value, label }));
     return {
       isLoading: false,
-      options: translateOptions(options, t),
+      options,
       error: null,
     } as UseOptions<string>;
-  }, [t]);
+  }, []);
 };

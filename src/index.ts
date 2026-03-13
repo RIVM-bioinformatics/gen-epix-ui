@@ -114,7 +114,6 @@ export * from './models/tree.ts';
 export * from './hooks/useUserCasePolicyNameFactory';
 export * from './hooks/useUpdateDocumentTitle';
 export * from './hooks/useUpdateBreadcrumb';
-export * from './hooks/useTranslatedOptions';
 export * from './hooks/useSubscribable';
 export * from './hooks/useScrollbarSize';
 export * from './hooks/useQueryMemo';
