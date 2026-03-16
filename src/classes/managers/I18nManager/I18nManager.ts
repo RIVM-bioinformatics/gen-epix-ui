@@ -3,16 +3,21 @@ import { initReactI18next } from 'react-i18next';
 
 import { WindowManager } from '../WindowManager';
 import { ConfigManager } from '../ConfigManager';
+import { EventBusAbstract } from '../../..';
 
 type Bundle = {
   translation: Record<string, string>;
 };
 
-export class I18nManager {
+type I18nEvent = {
+  onUserLanguageChange: string;
+};
+
+export class I18nManager extends EventBusAbstract<I18nEvent> {
   private isInitialized = false;
   private languageLoaded: Record<string, boolean> = {};
   private constructor() {
-    //
+    super();
   }
 
   public static get instance(): I18nManager {
@@ -60,11 +65,16 @@ export class I18nManager {
     doc.documentElement.setAttribute('lang', code);
   }
 
-  public async switchLanguage(code: string): Promise<void> {
+  public async switchLanguageConfig(code: string): Promise<void> {
     await ConfigManager.instance.config.i18n.setNewLanguageCode(code);
+    this.updateLangAttribute(code);
+  }
+
+  public async switchLanguage(code: string): Promise<void> {
+    await this.switchLanguageConfig(code);
+
     await this.loadResources(code);
     await i18next.changeLanguage(code);
-    this.updateLangAttribute(code);
   }
 
   private async loadResources(code: string): Promise<void> {

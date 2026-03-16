@@ -5,6 +5,7 @@ import {
   useState,
   type ReactNode,
   type PropsWithChildren,
+  useRef,
 } from 'react';
 import { useTranslation } from 'react-i18next';
 import { useStore } from 'zustand';
@@ -26,6 +27,10 @@ import { PageContainer } from '../../ui/PageContainer';
 import { ResponseHandler } from '../../ui/ResponseHandler';
 import { useArray } from '../../../hooks/useArray';
 import { FeatureFlagsManager } from '../../../classes/managers/FeatureFlagsManager';
+import { I18nManager } from '../../../classes/managers/I18nManager';
+import type { ConfirmationRefMethods } from '../../ui/Confirmation';
+import { Confirmation } from '../../ui/Confirmation';
+import { Spinner } from '../../ui/Spinner';
 
 
 export const ApplicationBootstrap = ({ children }: PropsWithChildren): ReactNode => {
@@ -34,6 +39,16 @@ export const ApplicationBootstrap = ({ children }: PropsWithChildren): ReactNode
   const setCategorizedOutages = useStore(outagesStore, (state) => state.setCategorizedOutages);
   const [shouldContinue, setShouldContinue] = useState(false);
   const [buttonsEnabled, setButtonsEnabled] = useState(false);
+  const confirmationRef = useRef<ConfirmationRefMethods>(null);
+  const newLanguageCode = useRef<string>(null);
+  const [isLanguageChanging, setIsLanguageChanging] = useState(false);
+
+  useEffect(() => {
+    I18nManager.instance.addEventListener('onUserLanguageChange', (code) => {
+      newLanguageCode.current = code;
+      confirmationRef.current?.open();
+    });
+  });
 
   const outagesQuery = useQueryMemo({
     queryKey: QueryUtil.getGenericKey(QUERY_KEY.OUTAGES),
@@ -55,6 +70,14 @@ export const ApplicationBootstrap = ({ children }: PropsWithChildren): ReactNode
 
   const onRetryButtonClick = useCallback(() => {
     WindowManager.instance.window.location.reload();
+  }, []);
+
+  const onLanguageChangeConfirm = useCallback(async () => {
+    if (newLanguageCode.current) {
+      setIsLanguageChanging(true);
+      await I18nManager.instance.switchLanguageConfig(newLanguageCode.current);
+      WindowManager.instance.window.location.reload();
+    }
   }, []);
 
   useEffect(() => {
@@ -107,6 +130,21 @@ export const ApplicationBootstrap = ({ children }: PropsWithChildren): ReactNode
     );
   }
 
+  if (isLanguageChanging) {
+    return (
+      <PageContainer
+        singleAction
+        testIdAttributes={TestIdUtil.createAttributes('LanguageChangingPage')}
+        title={t`Changing language`}
+      >
+        <Spinner
+          inline
+          label={t`Changing language...`}
+        />
+      </PageContainer>
+    );
+  }
+
 
   if (shouldShowChildren) {
     return (
@@ -115,6 +153,15 @@ export const ApplicationBootstrap = ({ children }: PropsWithChildren): ReactNode
         loadingMessage={t`Loading`}
       >
         {children}
+        <Confirmation
+          ref={confirmationRef}
+          body={t`Changing language will reload the application. Do you want to continue?`}
+          cancelLabel={t`Cancel`}
+          confirmLabel={t`Change language`}
+          maxWidth={'xs'}
+          title={t`Are you sure?`}
+          onConfirm={onLanguageChangeConfirm}
+        />
       </ResponseHandler>
     );
   }
