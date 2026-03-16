@@ -14,6 +14,7 @@ import {
 } from 'react';
 
 import type { CaseTypeRowValue } from '../../../models/epi';
+import { ConfigManager } from '../../../classes/managers/ConfigManager';
 
 export type EpiLegendaItemProps = {
   readonly color: string;
@@ -50,6 +51,7 @@ export const EpiLegendaItem = ({ rowValue, color, onItemClick, tooltip, tooltipP
   const canClick = onClick && !disabled;
 
   const innerContent = useMemo(() => {
+    const value = rowValue.isMissing ? ConfigManager.instance.config.epi.DATA_MISSING_CHARACTER : rowValue.short;
     return (
       <Box
         sx={{
@@ -76,11 +78,11 @@ export const EpiLegendaItem = ({ rowValue, color, onItemClick, tooltip, tooltipP
             whiteSpace: 'nowrap',
           }}
         >
-          {children || rowValue.short}
+          {children || value}
         </Box>
       </Box>
     );
-  }, [canClick, children, color, disabled, rowValue.short, theme]);
+  }, [canClick, children, color, disabled, rowValue.isMissing, rowValue.short, theme]);
 
   return (
     <Box
