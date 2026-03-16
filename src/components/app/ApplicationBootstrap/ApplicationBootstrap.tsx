@@ -90,6 +90,23 @@ export const ApplicationBootstrap = ({ children }: PropsWithChildren): ReactNode
     }
   }, [featureFlagsQuery.data]);
 
+  if (featureFlagsQuery.error) {
+    return (
+      <PageContainer
+        singleAction
+        testIdAttributes={TestIdUtil.createAttributes('FeatureFlagsErrorPage')}
+        title={t`Error`}
+      >
+        <ResponseHandler
+          loadables={featureFlagsLoadables}
+          loadingMessage={t`Loading`}
+        >
+          {children}
+        </ResponseHandler>
+      </PageContainer>
+    );
+  }
+
 
   if (shouldShowChildren) {
     return (

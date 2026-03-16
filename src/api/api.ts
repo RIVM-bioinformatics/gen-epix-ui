@@ -139,18 +139,6 @@ export interface Case {
      */
     'case_type'?: CaseType;
     /**
-     * The ID of the subject. FOREIGN KEY
-     * @type {string}
-     * @memberof Case
-     */
-    'subject_id'?: string | null;
-    /**
-     * 
-     * @type {EpiSubject}
-     * @memberof Case
-     */
-    'subject'?: EpiSubject;
-    /**
      * The ID of the data collection where the case was created. FOREIGN KEY
      * @type {string}
      * @memberof Case
@@ -1557,95 +1545,94 @@ export type ColType = typeof ColType[keyof typeof ColType];
  */
 
 export const CommandName = {
-    CreateCaseSetCommand: 'CreateCaseSetCommand',
-    SubjectCrudCommand: 'SubjectCrudCommand',
-    RegionSetCrudCommand: 'RegionSetCrudCommand',
-    RetrieveGeneticSequenceByIdCommand: 'RetrieveGeneticSequenceByIdCommand',
-    ColSetCrudCommand: 'ColSetCrudCommand',
-    CaseTypeSetCategoryCrudCommand: 'CaseTypeSetCategoryCrudCommand',
-    RetrieveLicensesCommand: 'RetrieveLicensesCommand',
-    RetrieveCompleteCaseTypeCommand: 'RetrieveCompleteCaseTypeCommand',
-    RetrieveAssemblyProtocolsCommand: 'RetrieveAssemblyProtocolsCommand',
-    DataCollectionSetDataCollectionUpdateAssociationCommand: 'DataCollectionSetDataCollectionUpdateAssociationCommand',
-    ConceptSetCrudCommand: 'ConceptSetCrudCommand',
-    OrganizationIdentifierIssuerLinkCrudCommand: 'OrganizationIdentifierIssuerLinkCrudCommand',
-    OrganizationAdminPolicyCrudCommand: 'OrganizationAdminPolicyCrudCommand',
-    InviteUserCommand: 'InviteUserCommand',
-    SubjectIdentifierCrudCommand: 'SubjectIdentifierCrudCommand',
-    GeneticDistanceProtocolCrudCommand: 'GeneticDistanceProtocolCrudCommand',
-    RegisterInvitedUserCommand: 'RegisterInvitedUserCommand',
-    RetrieveGeneticSequenceFastaByCaseCommand: 'RetrieveGeneticSequenceFastaByCaseCommand',
-    DiseaseEtiologicalAgentUpdateAssociationCommand: 'DiseaseEtiologicalAgentUpdateAssociationCommand',
-    ConceptRelationCrudCommand: 'ConceptRelationCrudCommand',
-    CaseTypeSetMemberCrudCommand: 'CaseTypeSetMemberCrudCommand',
-    CaseSetCategoryCrudCommand: 'CaseSetCategoryCrudCommand',
-    ColCrudCommand: 'ColCrudCommand',
-    CaseTypeSetCaseTypeUpdateAssociationCommand: 'CaseTypeSetCaseTypeUpdateAssociationCommand',
-    DataCollectionSetCrudCommand: 'DataCollectionSetCrudCommand',
-    OrganizationAccessCasePolicyCrudCommand: 'OrganizationAccessCasePolicyCrudCommand',
-    RetrieveContainingRegionCommand: 'RetrieveContainingRegionCommand',
-    ContactCrudCommand: 'ContactCrudCommand',
-    RegionSetShapeCrudCommand: 'RegionSetShapeCrudCommand',
-    DataCollectionSetMemberCrudCommand: 'DataCollectionSetMemberCrudCommand',
     UserCrudCommand: 'UserCrudCommand',
-    ColSetMemberCrudCommand: 'ColSetMemberCrudCommand',
-    GetIdentityProvidersCommand: 'GetIdentityProvidersCommand',
-    UserInvitationCrudCommand: 'UserInvitationCrudCommand',
-    RetrieveInviteUserConstraintsCommand: 'RetrieveInviteUserConstraintsCommand',
-    CreateFileForSeqCommand: 'CreateFileForSeqCommand',
-    RegionRelationCrudCommand: 'RegionRelationCrudCommand',
-    RetrieveCasesByIdCommand: 'RetrieveCasesByIdCommand',
-    RetrieveCasesByQueryCommand: 'RetrieveCasesByQueryCommand',
-    CaseSetDataCollectionLinkCrudCommand: 'CaseSetDataCollectionLinkCrudCommand',
-    CaseSetStatusCrudCommand: 'CaseSetStatusCrudCommand',
-    RetrieveCaseStatsCommand: 'RetrieveCaseStatsCommand',
-    RetrieveOutagesCommand: 'RetrieveOutagesCommand',
-    ColSetColUpdateAssociationCommand: 'ColSetColUpdateAssociationCommand',
-    RetrieveCaseRightsCommand: 'RetrieveCaseRightsCommand',
-    OutageCrudCommand: 'OutageCrudCommand',
-    OrganizationSetCrudCommand: 'OrganizationSetCrudCommand',
-    OrganizationShareCasePolicyCrudCommand: 'OrganizationShareCasePolicyCrudCommand',
-    CaseCrudCommand: 'CaseCrudCommand',
-    RefColCrudCommand: 'RefColCrudCommand',
-    CaseTypeCrudCommand: 'CaseTypeCrudCommand',
-    RetrievePhylogeneticTreeBySequencesCommand: 'RetrievePhylogeneticTreeBySequencesCommand',
-    RetrieveOrganizationContactsCommand: 'RetrieveOrganizationContactsCommand',
-    EtiologicalAgentCrudCommand: 'EtiologicalAgentCrudCommand',
-    RetrieveSubRolesCommand: 'RetrieveSubRolesCommand',
-    CaseSetCrudCommand: 'CaseSetCrudCommand',
-    RetrieveCaseSetRightsCommand: 'RetrieveCaseSetRightsCommand',
-    RetrievePhylogeneticTreeByCasesCommand: 'RetrievePhylogeneticTreeByCasesCommand',
-    DiseaseCrudCommand: 'DiseaseCrudCommand',
-    OrganizationSetMemberCrudCommand: 'OrganizationSetMemberCrudCommand',
-    CaseTypeSetCrudCommand: 'CaseTypeSetCrudCommand',
-    UserAccessCasePolicyCrudCommand: 'UserAccessCasePolicyCrudCommand',
-    RefDimCrudCommand: 'RefDimCrudCommand',
-    TreeAlgorithmClassCrudCommand: 'TreeAlgorithmClassCrudCommand',
-    UploadCasesCommand: 'UploadCasesCommand',
-    OrganizationCrudCommand: 'OrganizationCrudCommand',
-    RetrieveGeneticSequenceFastaByIdCommand: 'RetrieveGeneticSequenceFastaByIdCommand',
-    RetrieveOwnPermissionsCommand: 'RetrieveOwnPermissionsCommand',
-    CaseSetMemberCrudCommand: 'CaseSetMemberCrudCommand',
-    UpdateUserCommand: 'UpdateUserCommand',
-    UpdateUserOwnOrganizationCommand: 'UpdateUserOwnOrganizationCommand',
-    RegionCrudCommand: 'RegionCrudCommand',
-    CaseDataCollectionLinkCrudCommand: 'CaseDataCollectionLinkCrudCommand',
-    CaseIdentifierCrudCommand: 'CaseIdentifierCrudCommand',
-    OrganizationSetOrganizationUpdateAssociationCommand: 'OrganizationSetOrganizationUpdateAssociationCommand',
-    TreeAlgorithmCrudCommand: 'TreeAlgorithmCrudCommand',
-    UserShareCasePolicyCrudCommand: 'UserShareCasePolicyCrudCommand',
-    SiteCrudCommand: 'SiteCrudCommand',
-    IdentifierIssuerCrudCommand: 'IdentifierIssuerCrudCommand',
     DimCrudCommand: 'DimCrudCommand',
+    CaseTypeSetCrudCommand: 'CaseTypeSetCrudCommand',
+    RetrieveGeneticSequenceFastaByCaseCommand: 'RetrieveGeneticSequenceFastaByCaseCommand',
+    RefColCrudCommand: 'RefColCrudCommand',
+    RetrieveGeneticSequenceFastaByIdCommand: 'RetrieveGeneticSequenceFastaByIdCommand',
+    RegionSetCrudCommand: 'RegionSetCrudCommand',
+    ConceptCrudCommand: 'ConceptCrudCommand',
+    UserShareCasePolicyCrudCommand: 'UserShareCasePolicyCrudCommand',
+    RetrieveOrganizationContactsCommand: 'RetrieveOrganizationContactsCommand',
+    OrganizationIdentifierIssuerLinkUpdateAssociationCommand: 'OrganizationIdentifierIssuerLinkUpdateAssociationCommand',
+    RegionSetShapeCrudCommand: 'RegionSetShapeCrudCommand',
+    CaseSetCategoryCrudCommand: 'CaseSetCategoryCrudCommand',
+    DataCollectionSetDataCollectionUpdateAssociationCommand: 'DataCollectionSetDataCollectionUpdateAssociationCommand',
+    IdentifierIssuerCrudCommand: 'IdentifierIssuerCrudCommand',
+    EtiologicalAgentCrudCommand: 'EtiologicalAgentCrudCommand',
+    TreeAlgorithmCrudCommand: 'TreeAlgorithmCrudCommand',
+    RetrieveFeatureFlagsCommand: 'RetrieveFeatureFlagsCommand',
+    CreateFileForSeqCommand: 'CreateFileForSeqCommand',
+    OrganizationAccessCasePolicyCrudCommand: 'OrganizationAccessCasePolicyCrudCommand',
+    OrganizationShareCasePolicyCrudCommand: 'OrganizationShareCasePolicyCrudCommand',
+    RetrieveOwnPermissionsCommand: 'RetrieveOwnPermissionsCommand',
+    RetrieveCaseRightsCommand: 'RetrieveCaseRightsCommand',
+    OrganizationAdminPolicyCrudCommand: 'OrganizationAdminPolicyCrudCommand',
+    RetrieveContainingRegionCommand: 'RetrieveContainingRegionCommand',
+    ConceptSetCrudCommand: 'ConceptSetCrudCommand',
+    ContactCrudCommand: 'ContactCrudCommand',
+    ColSetCrudCommand: 'ColSetCrudCommand',
+    CaseDataCollectionLinkCrudCommand: 'CaseDataCollectionLinkCrudCommand',
+    OrganizationSetMemberCrudCommand: 'OrganizationSetMemberCrudCommand',
+    CaseCrudCommand: 'CaseCrudCommand',
+    RetrieveCaseSetRightsCommand: 'RetrieveCaseSetRightsCommand',
+    RetrieveCaseStatsCommand: 'RetrieveCaseStatsCommand',
+    RetrieveGeneticSequenceByIdCommand: 'RetrieveGeneticSequenceByIdCommand',
+    ConceptRelationCrudCommand: 'ConceptRelationCrudCommand',
+    ColSetColUpdateAssociationCommand: 'ColSetColUpdateAssociationCommand',
+    UpdateUserOwnOrganizationCommand: 'UpdateUserOwnOrganizationCommand',
+    DataCollectionSetMemberCrudCommand: 'DataCollectionSetMemberCrudCommand',
+    CaseTypeCrudCommand: 'CaseTypeCrudCommand',
+    RetrieveInviteUserConstraintsCommand: 'RetrieveInviteUserConstraintsCommand',
+    DataCollectionCrudCommand: 'DataCollectionCrudCommand',
+    RetrieveSubRolesCommand: 'RetrieveSubRolesCommand',
+    RetrievePhylogeneticTreeByCasesCommand: 'RetrievePhylogeneticTreeByCasesCommand',
+    CaseTypeSetCategoryCrudCommand: 'CaseTypeSetCategoryCrudCommand',
+    CaseSetStatusCrudCommand: 'CaseSetStatusCrudCommand',
+    GetIdentityProvidersCommand: 'GetIdentityProvidersCommand',
+    OrganizationCrudCommand: 'OrganizationCrudCommand',
+    DiseaseEtiologicalAgentUpdateAssociationCommand: 'DiseaseEtiologicalAgentUpdateAssociationCommand',
+    UserInvitationCrudCommand: 'UserInvitationCrudCommand',
+    RetrieveLicensesCommand: 'RetrieveLicensesCommand',
+    EtiologyCrudCommand: 'EtiologyCrudCommand',
+    RetrieveAssemblyProtocolsCommand: 'RetrieveAssemblyProtocolsCommand',
+    OrganizationIdentifierIssuerLinkCrudCommand: 'OrganizationIdentifierIssuerLinkCrudCommand',
+    TreeAlgorithmClassCrudCommand: 'TreeAlgorithmClassCrudCommand',
+    RegisterInvitedUserCommand: 'RegisterInvitedUserCommand',
+    DiseaseCrudCommand: 'DiseaseCrudCommand',
+    RefDimCrudCommand: 'RefDimCrudCommand',
+    CaseSetMemberCrudCommand: 'CaseSetMemberCrudCommand',
+    CaseTypeSetMemberCrudCommand: 'CaseTypeSetMemberCrudCommand',
+    RegionCrudCommand: 'RegionCrudCommand',
+    RegionRelationCrudCommand: 'RegionRelationCrudCommand',
+    CreateCaseSetCommand: 'CreateCaseSetCommand',
+    RetrievePhylogeneticTreeBySequencesCommand: 'RetrievePhylogeneticTreeBySequencesCommand',
+    CaseSetDataCollectionLinkCrudCommand: 'CaseSetDataCollectionLinkCrudCommand',
+    CaseTypeSetCaseTypeUpdateAssociationCommand: 'CaseTypeSetCaseTypeUpdateAssociationCommand',
+    RetrieveCasesByQueryCommand: 'RetrieveCasesByQueryCommand',
+    GeneticDistanceProtocolCrudCommand: 'GeneticDistanceProtocolCrudCommand',
+    SiteCrudCommand: 'SiteCrudCommand',
+    ColSetMemberCrudCommand: 'ColSetMemberCrudCommand',
+    RetrieveCasesByIdCommand: 'RetrieveCasesByIdCommand',
+    RetrieveOutagesCommand: 'RetrieveOutagesCommand',
+    RetrieveOrganizationsUnderAdminCommand: 'RetrieveOrganizationsUnderAdminCommand',
+    OutageCrudCommand: 'OutageCrudCommand',
+    DataCollectionSetCrudCommand: 'DataCollectionSetCrudCommand',
+    RetrieveSequencingProtocolsCommand: 'RetrieveSequencingProtocolsCommand',
+    OrganizationSetOrganizationUpdateAssociationCommand: 'OrganizationSetOrganizationUpdateAssociationCommand',
+    CreateFileForReadSetCommand: 'CreateFileForReadSetCommand',
     RetrieveSimilarCasesCommand: 'RetrieveSimilarCasesCommand',
     RetrieveOrganizationAdminNameEmailsCommand: 'RetrieveOrganizationAdminNameEmailsCommand',
-    OrganizationIdentifierIssuerLinkUpdateAssociationCommand: 'OrganizationIdentifierIssuerLinkUpdateAssociationCommand',
-    ConceptCrudCommand: 'ConceptCrudCommand',
-    EtiologyCrudCommand: 'EtiologyCrudCommand',
-    RetrieveSequencingProtocolsCommand: 'RetrieveSequencingProtocolsCommand',
-    CreateFileForReadSetCommand: 'CreateFileForReadSetCommand',
-    RetrieveOrganizationsUnderAdminCommand: 'RetrieveOrganizationsUnderAdminCommand',
-    DataCollectionCrudCommand: 'DataCollectionCrudCommand'
+    CaseIdentifierCrudCommand: 'CaseIdentifierCrudCommand',
+    UpdateUserCommand: 'UpdateUserCommand',
+    CaseSetCrudCommand: 'CaseSetCrudCommand',
+    UserAccessCasePolicyCrudCommand: 'UserAccessCasePolicyCrudCommand',
+    OrganizationSetCrudCommand: 'OrganizationSetCrudCommand',
+    ColCrudCommand: 'ColCrudCommand',
+    UploadCasesCommand: 'UploadCasesCommand',
+    RetrieveCompleteCaseTypeCommand: 'RetrieveCompleteCaseTypeCommand',
+    InviteUserCommand: 'InviteUserCommand'
 } as const;
 
 export type CommandName = typeof CommandName[keyof typeof CommandName];
@@ -1897,7 +1884,7 @@ export interface Concept {
      * @type {{ [key: string]: any; }}
      * @memberof Concept
      */
-    'props'?: { [key: string]: any; };
+    'props'?: { [key: string]: any; } | null;
 }
 /**
  * A relation between two concepts (analogous to RegionRelation).
@@ -2859,17 +2846,23 @@ export interface Organization {
      */
     'id'?: string | null;
     /**
+     * The code of the organization, UNIQUE
+     * @type {string}
+     * @memberof Organization
+     */
+    'code': string;
+    /**
      * The name of the organization, UNIQUE
      * @type {string}
      * @memberof Organization
      */
     'name': string;
     /**
-     * The legal entity code of the organization, UNIQUE
+     * The description of the organization.
      * @type {string}
      * @memberof Organization
      */
-    'legal_entity_code': string;
+    'description'?: string | null;
 }
 /**
  * Stores the access rights of an organization to a particular data collection. If an organization does not have a policy to a data collection, it has no access rights to that data collection.  The access rights are limited to the CaseTypes in the CaseTypeSet. If a CaseType is not in the CaseTypeSet, the organization has no access rights to that data collection for that CaseType.
@@ -4156,86 +4149,6 @@ export interface Site {
     'name': string;
 }
 /**
- * A person context bound to a particular data collection.
- * @export
- * @interface EpiSubject
- */
-export interface EpiSubject {
-    /**
-     * The unique identifier for the object.
-     * @type {string}
-     * @memberof EpiSubject
-     */
-    'id'?: string | null;
-    /**
-     * The ID of the data collection. FOREIGN KEY
-     * @type {string}
-     * @memberof EpiSubject
-     */
-    'data_collection_id': string;
-    /**
-     * 
-     * @type {DataCollection}
-     * @memberof EpiSubject
-     */
-    'data_collection'?: DataCollection;
-    /**
-     * A dictionary of identifiers for the subject
-     * @type {{ [key: string]: string; }}
-     * @memberof EpiSubject
-     */
-    'identifiers'?: { [key: string]: string; } | null;
-    /**
-     * A dictionary containing the content of the subject
-     * @type {{ [key: string]: any; }}
-     * @memberof EpiSubject
-     */
-    'content': { [key: string]: any; };
-}
-/**
- * A unique identifier for a subject, generated by a particular identifier issuer.
- * @export
- * @interface SubjectIdentifier
- */
-export interface SubjectIdentifier {
-    /**
-     * The unique identifier for the object.
-     * @type {string}
-     * @memberof SubjectIdentifier
-     */
-    'id'?: string | null;
-    /**
-     * The ID of the subject. FOREIGN KEY
-     * @type {string}
-     * @memberof SubjectIdentifier
-     */
-    'subject_id': string;
-    /**
-     * 
-     * @type {EpiSubject}
-     * @memberof SubjectIdentifier
-     */
-    'subject'?: EpiSubject;
-    /**
-     * The ID of the identifier issuer. FOREIGN KEY
-     * @type {string}
-     * @memberof SubjectIdentifier
-     */
-    'identifier_issuer_id': string;
-    /**
-     * 
-     * @type {IdentifierIssuer}
-     * @memberof SubjectIdentifier
-     */
-    'identifier_issuer'?: IdentifierIssuer;
-    /**
-     * The identifier
-     * @type {string}
-     * @memberof SubjectIdentifier
-     */
-    'identifier': string;
-}
-/**
  * See https://en.wikipedia.org/wiki/Hierarchical_clustering, https://en.wikipedia.org/wiki/Neighbor_joining,  https://en.wikipedia.org/wiki/Computational_phylogenetics,  https://en.wikipedia.org/wiki/Spanning_tree
  * @export
  * @interface TreeAlgorithm
@@ -5239,6 +5152,12 @@ export interface User {
      */
     'name'?: string | null;
     /**
+     * The description of the user.
+     * @type {string}
+     * @memberof User
+     */
+    'description'?: string | null;
+    /**
      * Whether the user is active or not. An inactive user cannot perform any actions that require authorization.
      * @type {boolean}
      * @memberof User
@@ -5409,6 +5328,12 @@ export interface UserInvitation {
      */
     'name'?: string | null;
     /**
+     * The description of the user.
+     * @type {string}
+     * @memberof UserInvitation
+     */
+    'description'?: string | null;
+    /**
      * The token of the invitation
      * @type {string}
      * @memberof UserInvitation
@@ -5488,6 +5413,12 @@ export interface UserInvitationRequestBody {
      * @memberof UserInvitationRequestBody
      */
     'key'?: string | null;
+    /**
+     * The description of the user.
+     * @type {string}
+     * @memberof UserInvitationRequestBody
+     */
+    'description'?: string | null;
     /**
      * The initial roles that the new user will have
      * @type {Array<string>}
@@ -14127,7 +14058,7 @@ const CaseApiAxiosParamCreator = function (configuration?: Configuration) {
             };
         },
         /**
-         * Manage cases (list/get/create/update/delete) with typed content tied to a CaseType, subject, and data collection.
+         * Manage cases (list/get/create/update/delete) with typed content tied to a CaseType and data collection.
          * @summary Cases  Delete All
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
@@ -14157,7 +14088,7 @@ const CaseApiAxiosParamCreator = function (configuration?: Configuration) {
             };
         },
         /**
-         * Manage cases (list/get/create/update/delete) with typed content tied to a CaseType, subject, and data collection.
+         * Manage cases (list/get/create/update/delete) with typed content tied to a CaseType and data collection.
          * @summary Cases  Delete One
          * @param {any} objectId 
          * @param {*} [options] Override http request option.
@@ -14191,7 +14122,7 @@ const CaseApiAxiosParamCreator = function (configuration?: Configuration) {
             };
         },
         /**
-         * Manage cases (list/get/create/update/delete) with typed content tied to a CaseType, subject, and data collection.
+         * Manage cases (list/get/create/update/delete) with typed content tied to a CaseType and data collection.
          * @summary Cases  Delete Some
          * @param {string} ids 
          * @param {*} [options] Override http request option.
@@ -14228,7 +14159,7 @@ const CaseApiAxiosParamCreator = function (configuration?: Configuration) {
             };
         },
         /**
-         * Manage cases (list/get/create/update/delete) with typed content tied to a CaseType, subject, and data collection.
+         * Manage cases (list/get/create/update/delete) with typed content tied to a CaseType and data collection.
          * @summary Cases  Get All
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
@@ -14258,7 +14189,7 @@ const CaseApiAxiosParamCreator = function (configuration?: Configuration) {
             };
         },
         /**
-         * Manage cases (list/get/create/update/delete) with typed content tied to a CaseType, subject, and data collection.
+         * Manage cases (list/get/create/update/delete) with typed content tied to a CaseType and data collection.
          * @summary Cases  Get One
          * @param {string} objectId 
          * @param {*} [options] Override http request option.
@@ -14292,7 +14223,7 @@ const CaseApiAxiosParamCreator = function (configuration?: Configuration) {
             };
         },
         /**
-         * Manage cases (list/get/create/update/delete) with typed content tied to a CaseType, subject, and data collection.
+         * Manage cases (list/get/create/update/delete) with typed content tied to a CaseType and data collection.
          * @summary Cases  Get Some
          * @param {string} ids 
          * @param {*} [options] Override http request option.
@@ -14329,7 +14260,7 @@ const CaseApiAxiosParamCreator = function (configuration?: Configuration) {
             };
         },
         /**
-         * Manage cases (list/get/create/update/delete) with typed content tied to a CaseType, subject, and data collection.
+         * Manage cases (list/get/create/update/delete) with typed content tied to a CaseType and data collection.
          * @summary Cases  Post One
          * @param {Case} _case 
          * @param {*} [options] Override http request option.
@@ -14365,7 +14296,7 @@ const CaseApiAxiosParamCreator = function (configuration?: Configuration) {
             };
         },
         /**
-         * Manage cases (list/get/create/update/delete) with typed content tied to a CaseType, subject, and data collection.
+         * Manage cases (list/get/create/update/delete) with typed content tied to a CaseType and data collection.
          * @summary Cases  Post Query
          * @param {EpiFilter} filter 
          * @param {*} [options] Override http request option.
@@ -14401,7 +14332,7 @@ const CaseApiAxiosParamCreator = function (configuration?: Configuration) {
             };
         },
         /**
-         * Manage cases (list/get/create/update/delete) with typed content tied to a CaseType, subject, and data collection.
+         * Manage cases (list/get/create/update/delete) with typed content tied to a CaseType and data collection.
          * @summary Cases  Post Query  Ids
          * @param {EpiFilter} filter 
          * @param {*} [options] Override http request option.
@@ -14437,7 +14368,7 @@ const CaseApiAxiosParamCreator = function (configuration?: Configuration) {
             };
         },
         /**
-         * Manage cases (list/get/create/update/delete) with typed content tied to a CaseType, subject, and data collection.
+         * Manage cases (list/get/create/update/delete) with typed content tied to a CaseType and data collection.
          * @summary Cases  Post Some
          * @param {Array<Case>} _case 
          * @param {*} [options] Override http request option.
@@ -14473,7 +14404,7 @@ const CaseApiAxiosParamCreator = function (configuration?: Configuration) {
             };
         },
         /**
-         * Manage cases (list/get/create/update/delete) with typed content tied to a CaseType, subject, and data collection.
+         * Manage cases (list/get/create/update/delete) with typed content tied to a CaseType and data collection.
          * @summary Cases  Put One
          * @param {string} objectId 
          * @param {Case} _case 
@@ -14513,7 +14444,7 @@ const CaseApiAxiosParamCreator = function (configuration?: Configuration) {
             };
         },
         /**
-         * Manage cases (list/get/create/update/delete) with typed content tied to a CaseType, subject, and data collection.
+         * Manage cases (list/get/create/update/delete) with typed content tied to a CaseType and data collection.
          * @summary Cases  Put Some
          * @param {Array<Case>} _case 
          * @param {*} [options] Override http request option.
@@ -20760,7 +20691,7 @@ const CaseApiFp = function(configuration?: Configuration) {
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
         /**
-         * Manage cases (list/get/create/update/delete) with typed content tied to a CaseType, subject, and data collection.
+         * Manage cases (list/get/create/update/delete) with typed content tied to a CaseType and data collection.
          * @summary Cases  Delete All
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
@@ -20772,7 +20703,7 @@ const CaseApiFp = function(configuration?: Configuration) {
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
         /**
-         * Manage cases (list/get/create/update/delete) with typed content tied to a CaseType, subject, and data collection.
+         * Manage cases (list/get/create/update/delete) with typed content tied to a CaseType and data collection.
          * @summary Cases  Delete One
          * @param {any} objectId 
          * @param {*} [options] Override http request option.
@@ -20785,7 +20716,7 @@ const CaseApiFp = function(configuration?: Configuration) {
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
         /**
-         * Manage cases (list/get/create/update/delete) with typed content tied to a CaseType, subject, and data collection.
+         * Manage cases (list/get/create/update/delete) with typed content tied to a CaseType and data collection.
          * @summary Cases  Delete Some
          * @param {string} ids 
          * @param {*} [options] Override http request option.
@@ -20798,7 +20729,7 @@ const CaseApiFp = function(configuration?: Configuration) {
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
         /**
-         * Manage cases (list/get/create/update/delete) with typed content tied to a CaseType, subject, and data collection.
+         * Manage cases (list/get/create/update/delete) with typed content tied to a CaseType and data collection.
          * @summary Cases  Get All
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
@@ -20810,7 +20741,7 @@ const CaseApiFp = function(configuration?: Configuration) {
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
         /**
-         * Manage cases (list/get/create/update/delete) with typed content tied to a CaseType, subject, and data collection.
+         * Manage cases (list/get/create/update/delete) with typed content tied to a CaseType and data collection.
          * @summary Cases  Get One
          * @param {string} objectId 
          * @param {*} [options] Override http request option.
@@ -20823,7 +20754,7 @@ const CaseApiFp = function(configuration?: Configuration) {
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
         /**
-         * Manage cases (list/get/create/update/delete) with typed content tied to a CaseType, subject, and data collection.
+         * Manage cases (list/get/create/update/delete) with typed content tied to a CaseType and data collection.
          * @summary Cases  Get Some
          * @param {string} ids 
          * @param {*} [options] Override http request option.
@@ -20836,7 +20767,7 @@ const CaseApiFp = function(configuration?: Configuration) {
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
         /**
-         * Manage cases (list/get/create/update/delete) with typed content tied to a CaseType, subject, and data collection.
+         * Manage cases (list/get/create/update/delete) with typed content tied to a CaseType and data collection.
          * @summary Cases  Post One
          * @param {Case} _case 
          * @param {*} [options] Override http request option.
@@ -20849,7 +20780,7 @@ const CaseApiFp = function(configuration?: Configuration) {
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
         /**
-         * Manage cases (list/get/create/update/delete) with typed content tied to a CaseType, subject, and data collection.
+         * Manage cases (list/get/create/update/delete) with typed content tied to a CaseType and data collection.
          * @summary Cases  Post Query
          * @param {EpiFilter} filter 
          * @param {*} [options] Override http request option.
@@ -20862,7 +20793,7 @@ const CaseApiFp = function(configuration?: Configuration) {
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
         /**
-         * Manage cases (list/get/create/update/delete) with typed content tied to a CaseType, subject, and data collection.
+         * Manage cases (list/get/create/update/delete) with typed content tied to a CaseType and data collection.
          * @summary Cases  Post Query  Ids
          * @param {EpiFilter} filter 
          * @param {*} [options] Override http request option.
@@ -20875,7 +20806,7 @@ const CaseApiFp = function(configuration?: Configuration) {
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
         /**
-         * Manage cases (list/get/create/update/delete) with typed content tied to a CaseType, subject, and data collection.
+         * Manage cases (list/get/create/update/delete) with typed content tied to a CaseType and data collection.
          * @summary Cases  Post Some
          * @param {Array<Case>} _case 
          * @param {*} [options] Override http request option.
@@ -20888,7 +20819,7 @@ const CaseApiFp = function(configuration?: Configuration) {
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
         /**
-         * Manage cases (list/get/create/update/delete) with typed content tied to a CaseType, subject, and data collection.
+         * Manage cases (list/get/create/update/delete) with typed content tied to a CaseType and data collection.
          * @summary Cases  Put One
          * @param {string} objectId 
          * @param {Case} _case 
@@ -20902,7 +20833,7 @@ const CaseApiFp = function(configuration?: Configuration) {
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
         /**
-         * Manage cases (list/get/create/update/delete) with typed content tied to a CaseType, subject, and data collection.
+         * Manage cases (list/get/create/update/delete) with typed content tied to a CaseType and data collection.
          * @summary Cases  Put Some
          * @param {Array<Case>} _case 
          * @param {*} [options] Override http request option.
@@ -24158,7 +24089,7 @@ export class CaseApi extends BaseAPI {
     }
 
     /**
-     * Manage cases (list/get/create/update/delete) with typed content tied to a CaseType, subject, and data collection.
+     * Manage cases (list/get/create/update/delete) with typed content tied to a CaseType and data collection.
      * @summary Cases  Delete All
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
@@ -24169,7 +24100,7 @@ export class CaseApi extends BaseAPI {
     }
 
     /**
-     * Manage cases (list/get/create/update/delete) with typed content tied to a CaseType, subject, and data collection.
+     * Manage cases (list/get/create/update/delete) with typed content tied to a CaseType and data collection.
      * @summary Cases  Delete One
      * @param {any} objectId 
      * @param {*} [options] Override http request option.
@@ -24181,7 +24112,7 @@ export class CaseApi extends BaseAPI {
     }
 
     /**
-     * Manage cases (list/get/create/update/delete) with typed content tied to a CaseType, subject, and data collection.
+     * Manage cases (list/get/create/update/delete) with typed content tied to a CaseType and data collection.
      * @summary Cases  Delete Some
      * @param {string} ids 
      * @param {*} [options] Override http request option.
@@ -24193,7 +24124,7 @@ export class CaseApi extends BaseAPI {
     }
 
     /**
-     * Manage cases (list/get/create/update/delete) with typed content tied to a CaseType, subject, and data collection.
+     * Manage cases (list/get/create/update/delete) with typed content tied to a CaseType and data collection.
      * @summary Cases  Get All
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
@@ -24204,7 +24135,7 @@ export class CaseApi extends BaseAPI {
     }
 
     /**
-     * Manage cases (list/get/create/update/delete) with typed content tied to a CaseType, subject, and data collection.
+     * Manage cases (list/get/create/update/delete) with typed content tied to a CaseType and data collection.
      * @summary Cases  Get One
      * @param {string} objectId 
      * @param {*} [options] Override http request option.
@@ -24216,7 +24147,7 @@ export class CaseApi extends BaseAPI {
     }
 
     /**
-     * Manage cases (list/get/create/update/delete) with typed content tied to a CaseType, subject, and data collection.
+     * Manage cases (list/get/create/update/delete) with typed content tied to a CaseType and data collection.
      * @summary Cases  Get Some
      * @param {string} ids 
      * @param {*} [options] Override http request option.
@@ -24228,7 +24159,7 @@ export class CaseApi extends BaseAPI {
     }
 
     /**
-     * Manage cases (list/get/create/update/delete) with typed content tied to a CaseType, subject, and data collection.
+     * Manage cases (list/get/create/update/delete) with typed content tied to a CaseType and data collection.
      * @summary Cases  Post One
      * @param {Case} _case 
      * @param {*} [options] Override http request option.
@@ -24240,7 +24171,7 @@ export class CaseApi extends BaseAPI {
     }
 
     /**
-     * Manage cases (list/get/create/update/delete) with typed content tied to a CaseType, subject, and data collection.
+     * Manage cases (list/get/create/update/delete) with typed content tied to a CaseType and data collection.
      * @summary Cases  Post Query
      * @param {EpiFilter} filter 
      * @param {*} [options] Override http request option.
@@ -24252,7 +24183,7 @@ export class CaseApi extends BaseAPI {
     }
 
     /**
-     * Manage cases (list/get/create/update/delete) with typed content tied to a CaseType, subject, and data collection.
+     * Manage cases (list/get/create/update/delete) with typed content tied to a CaseType and data collection.
      * @summary Cases  Post Query  Ids
      * @param {EpiFilter} filter 
      * @param {*} [options] Override http request option.
@@ -24264,7 +24195,7 @@ export class CaseApi extends BaseAPI {
     }
 
     /**
-     * Manage cases (list/get/create/update/delete) with typed content tied to a CaseType, subject, and data collection.
+     * Manage cases (list/get/create/update/delete) with typed content tied to a CaseType and data collection.
      * @summary Cases  Post Some
      * @param {Array<Case>} _case 
      * @param {*} [options] Override http request option.
@@ -24276,7 +24207,7 @@ export class CaseApi extends BaseAPI {
     }
 
     /**
-     * Manage cases (list/get/create/update/delete) with typed content tied to a CaseType, subject, and data collection.
+     * Manage cases (list/get/create/update/delete) with typed content tied to a CaseType and data collection.
      * @summary Cases  Put One
      * @param {string} objectId 
      * @param {Case} _case 
@@ -24289,7 +24220,7 @@ export class CaseApi extends BaseAPI {
     }
 
     /**
-     * Manage cases (list/get/create/update/delete) with typed content tied to a CaseType, subject, and data collection.
+     * Manage cases (list/get/create/update/delete) with typed content tied to a CaseType and data collection.
      * @summary Cases  Put Some
      * @param {Array<Case>} _case 
      * @param {*} [options] Override http request option.
@@ -42606,1487 +42537,6 @@ export class OrganizationApi extends BaseAPI {
 
 
 /**
- * SubjectApi - axios parameter creator
- * @export
- */
-const SubjectApiAxiosParamCreator = function (configuration?: Configuration) {
-    return {
-        /**
-         * 
-         * @summary EpiSubject Identifiers  Delete All
-         * @param {*} [options] Override http request option.
-         * @throws {RequiredError}
-         */
-        subjectIdentifiersDeleteAll: async (options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
-            const localVarPath = `/v1/subject_identifiers`;
-            // use dummy base URL string because the URL constructor only accepts absolute URLs.
-            const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
-            let baseOptions;
-            if (configuration) {
-                baseOptions = configuration.baseOptions;
-            }
-
-            const localVarRequestOptions = { method: 'DELETE', ...baseOptions, ...options};
-            const localVarHeaderParameter = {} as any;
-            const localVarQueryParameter = {} as any;
-
-
-    
-            setSearchParams(localVarUrlObj, localVarQueryParameter);
-            let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
-            localVarRequestOptions.headers = {...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers};
-
-            return {
-                url: toPathString(localVarUrlObj),
-                options: localVarRequestOptions,
-            };
-        },
-        /**
-         * 
-         * @summary EpiSubject Identifiers  Delete One
-         * @param {any} objectId 
-         * @param {*} [options] Override http request option.
-         * @throws {RequiredError}
-         */
-        subjectIdentifiersDeleteOne: async (objectId: any, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
-            // verify required parameter 'objectId' is not null or undefined
-            assertParamExists('subjectIdentifiersDeleteOne', 'objectId', objectId)
-            const localVarPath = `/v1/subject_identifiers/{object_id}`
-                .replace(`{${"object_id"}}`, encodeURIComponent(String(objectId)));
-            // use dummy base URL string because the URL constructor only accepts absolute URLs.
-            const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
-            let baseOptions;
-            if (configuration) {
-                baseOptions = configuration.baseOptions;
-            }
-
-            const localVarRequestOptions = { method: 'DELETE', ...baseOptions, ...options};
-            const localVarHeaderParameter = {} as any;
-            const localVarQueryParameter = {} as any;
-
-
-    
-            setSearchParams(localVarUrlObj, localVarQueryParameter);
-            let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
-            localVarRequestOptions.headers = {...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers};
-
-            return {
-                url: toPathString(localVarUrlObj),
-                options: localVarRequestOptions,
-            };
-        },
-        /**
-         * 
-         * @summary EpiSubject Identifiers  Delete Some
-         * @param {string} ids 
-         * @param {*} [options] Override http request option.
-         * @throws {RequiredError}
-         */
-        subjectIdentifiersDeleteSome: async (ids: string, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
-            // verify required parameter 'ids' is not null or undefined
-            assertParamExists('subjectIdentifiersDeleteSome', 'ids', ids)
-            const localVarPath = `/v1/subject_identifiers/batch`;
-            // use dummy base URL string because the URL constructor only accepts absolute URLs.
-            const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
-            let baseOptions;
-            if (configuration) {
-                baseOptions = configuration.baseOptions;
-            }
-
-            const localVarRequestOptions = { method: 'DELETE', ...baseOptions, ...options};
-            const localVarHeaderParameter = {} as any;
-            const localVarQueryParameter = {} as any;
-
-            if (ids !== undefined) {
-                localVarQueryParameter['ids'] = ids;
-            }
-
-
-    
-            setSearchParams(localVarUrlObj, localVarQueryParameter);
-            let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
-            localVarRequestOptions.headers = {...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers};
-
-            return {
-                url: toPathString(localVarUrlObj),
-                options: localVarRequestOptions,
-            };
-        },
-        /**
-         * 
-         * @summary EpiSubject Identifiers  Get All
-         * @param {*} [options] Override http request option.
-         * @throws {RequiredError}
-         */
-        subjectIdentifiersGetAll: async (options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
-            const localVarPath = `/v1/subject_identifiers`;
-            // use dummy base URL string because the URL constructor only accepts absolute URLs.
-            const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
-            let baseOptions;
-            if (configuration) {
-                baseOptions = configuration.baseOptions;
-            }
-
-            const localVarRequestOptions = { method: 'GET', ...baseOptions, ...options};
-            const localVarHeaderParameter = {} as any;
-            const localVarQueryParameter = {} as any;
-
-
-    
-            setSearchParams(localVarUrlObj, localVarQueryParameter);
-            let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
-            localVarRequestOptions.headers = {...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers};
-
-            return {
-                url: toPathString(localVarUrlObj),
-                options: localVarRequestOptions,
-            };
-        },
-        /**
-         * 
-         * @summary EpiSubject Identifiers  Get One
-         * @param {string} objectId 
-         * @param {*} [options] Override http request option.
-         * @throws {RequiredError}
-         */
-        subjectIdentifiersGetOne: async (objectId: string, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
-            // verify required parameter 'objectId' is not null or undefined
-            assertParamExists('subjectIdentifiersGetOne', 'objectId', objectId)
-            const localVarPath = `/v1/subject_identifiers/{object_id}`
-                .replace(`{${"object_id"}}`, encodeURIComponent(String(objectId)));
-            // use dummy base URL string because the URL constructor only accepts absolute URLs.
-            const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
-            let baseOptions;
-            if (configuration) {
-                baseOptions = configuration.baseOptions;
-            }
-
-            const localVarRequestOptions = { method: 'GET', ...baseOptions, ...options};
-            const localVarHeaderParameter = {} as any;
-            const localVarQueryParameter = {} as any;
-
-
-    
-            setSearchParams(localVarUrlObj, localVarQueryParameter);
-            let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
-            localVarRequestOptions.headers = {...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers};
-
-            return {
-                url: toPathString(localVarUrlObj),
-                options: localVarRequestOptions,
-            };
-        },
-        /**
-         * 
-         * @summary EpiSubject Identifiers  Get Some
-         * @param {string} ids 
-         * @param {*} [options] Override http request option.
-         * @throws {RequiredError}
-         */
-        subjectIdentifiersGetSome: async (ids: string, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
-            // verify required parameter 'ids' is not null or undefined
-            assertParamExists('subjectIdentifiersGetSome', 'ids', ids)
-            const localVarPath = `/v1/subject_identifiers/batch`;
-            // use dummy base URL string because the URL constructor only accepts absolute URLs.
-            const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
-            let baseOptions;
-            if (configuration) {
-                baseOptions = configuration.baseOptions;
-            }
-
-            const localVarRequestOptions = { method: 'GET', ...baseOptions, ...options};
-            const localVarHeaderParameter = {} as any;
-            const localVarQueryParameter = {} as any;
-
-            if (ids !== undefined) {
-                localVarQueryParameter['ids'] = ids;
-            }
-
-
-    
-            setSearchParams(localVarUrlObj, localVarQueryParameter);
-            let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
-            localVarRequestOptions.headers = {...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers};
-
-            return {
-                url: toPathString(localVarUrlObj),
-                options: localVarRequestOptions,
-            };
-        },
-        /**
-         * 
-         * @summary EpiSubject Identifiers  Post One
-         * @param {SubjectIdentifier} subjectIdentifier 
-         * @param {*} [options] Override http request option.
-         * @throws {RequiredError}
-         */
-        subjectIdentifiersPostOne: async (subjectIdentifier: SubjectIdentifier, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
-            // verify required parameter 'subjectIdentifier' is not null or undefined
-            assertParamExists('subjectIdentifiersPostOne', 'subjectIdentifier', subjectIdentifier)
-            const localVarPath = `/v1/subject_identifiers`;
-            // use dummy base URL string because the URL constructor only accepts absolute URLs.
-            const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
-            let baseOptions;
-            if (configuration) {
-                baseOptions = configuration.baseOptions;
-            }
-
-            const localVarRequestOptions = { method: 'POST', ...baseOptions, ...options};
-            const localVarHeaderParameter = {} as any;
-            const localVarQueryParameter = {} as any;
-
-
-    
-            localVarHeaderParameter['Content-Type'] = 'application/json';
-
-            setSearchParams(localVarUrlObj, localVarQueryParameter);
-            let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
-            localVarRequestOptions.headers = {...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers};
-            localVarRequestOptions.data = serializeDataIfNeeded(subjectIdentifier, localVarRequestOptions, configuration)
-
-            return {
-                url: toPathString(localVarUrlObj),
-                options: localVarRequestOptions,
-            };
-        },
-        /**
-         * 
-         * @summary EpiSubject Identifiers  Post Query
-         * @param {EpiFilter} filter 
-         * @param {*} [options] Override http request option.
-         * @throws {RequiredError}
-         */
-        subjectIdentifiersPostQuery: async (filter: EpiFilter, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
-            // verify required parameter 'filter' is not null or undefined
-            assertParamExists('subjectIdentifiersPostQuery', 'filter', filter)
-            const localVarPath = `/v1/subject_identifiers/query`;
-            // use dummy base URL string because the URL constructor only accepts absolute URLs.
-            const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
-            let baseOptions;
-            if (configuration) {
-                baseOptions = configuration.baseOptions;
-            }
-
-            const localVarRequestOptions = { method: 'POST', ...baseOptions, ...options};
-            const localVarHeaderParameter = {} as any;
-            const localVarQueryParameter = {} as any;
-
-
-    
-            localVarHeaderParameter['Content-Type'] = 'application/json';
-
-            setSearchParams(localVarUrlObj, localVarQueryParameter);
-            let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
-            localVarRequestOptions.headers = {...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers};
-            localVarRequestOptions.data = serializeDataIfNeeded(filter, localVarRequestOptions, configuration)
-
-            return {
-                url: toPathString(localVarUrlObj),
-                options: localVarRequestOptions,
-            };
-        },
-        /**
-         * 
-         * @summary EpiSubject Identifiers  Post Query  Ids
-         * @param {EpiFilter} filter 
-         * @param {*} [options] Override http request option.
-         * @throws {RequiredError}
-         */
-        subjectIdentifiersPostQueryIds: async (filter: EpiFilter, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
-            // verify required parameter 'filter' is not null or undefined
-            assertParamExists('subjectIdentifiersPostQueryIds', 'filter', filter)
-            const localVarPath = `/v1/subject_identifiers/query/ids`;
-            // use dummy base URL string because the URL constructor only accepts absolute URLs.
-            const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
-            let baseOptions;
-            if (configuration) {
-                baseOptions = configuration.baseOptions;
-            }
-
-            const localVarRequestOptions = { method: 'POST', ...baseOptions, ...options};
-            const localVarHeaderParameter = {} as any;
-            const localVarQueryParameter = {} as any;
-
-
-    
-            localVarHeaderParameter['Content-Type'] = 'application/json';
-
-            setSearchParams(localVarUrlObj, localVarQueryParameter);
-            let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
-            localVarRequestOptions.headers = {...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers};
-            localVarRequestOptions.data = serializeDataIfNeeded(filter, localVarRequestOptions, configuration)
-
-            return {
-                url: toPathString(localVarUrlObj),
-                options: localVarRequestOptions,
-            };
-        },
-        /**
-         * 
-         * @summary EpiSubject Identifiers  Post Some
-         * @param {Array<SubjectIdentifier>} subjectIdentifier 
-         * @param {*} [options] Override http request option.
-         * @throws {RequiredError}
-         */
-        subjectIdentifiersPostSome: async (subjectIdentifier: Array<SubjectIdentifier>, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
-            // verify required parameter 'subjectIdentifier' is not null or undefined
-            assertParamExists('subjectIdentifiersPostSome', 'subjectIdentifier', subjectIdentifier)
-            const localVarPath = `/v1/subject_identifiers/batch`;
-            // use dummy base URL string because the URL constructor only accepts absolute URLs.
-            const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
-            let baseOptions;
-            if (configuration) {
-                baseOptions = configuration.baseOptions;
-            }
-
-            const localVarRequestOptions = { method: 'POST', ...baseOptions, ...options};
-            const localVarHeaderParameter = {} as any;
-            const localVarQueryParameter = {} as any;
-
-
-    
-            localVarHeaderParameter['Content-Type'] = 'application/json';
-
-            setSearchParams(localVarUrlObj, localVarQueryParameter);
-            let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
-            localVarRequestOptions.headers = {...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers};
-            localVarRequestOptions.data = serializeDataIfNeeded(subjectIdentifier, localVarRequestOptions, configuration)
-
-            return {
-                url: toPathString(localVarUrlObj),
-                options: localVarRequestOptions,
-            };
-        },
-        /**
-         * 
-         * @summary EpiSubject Identifiers  Put One
-         * @param {string} objectId 
-         * @param {SubjectIdentifier} subjectIdentifier 
-         * @param {*} [options] Override http request option.
-         * @throws {RequiredError}
-         */
-        subjectIdentifiersPutOne: async (objectId: string, subjectIdentifier: SubjectIdentifier, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
-            // verify required parameter 'objectId' is not null or undefined
-            assertParamExists('subjectIdentifiersPutOne', 'objectId', objectId)
-            // verify required parameter 'subjectIdentifier' is not null or undefined
-            assertParamExists('subjectIdentifiersPutOne', 'subjectIdentifier', subjectIdentifier)
-            const localVarPath = `/v1/subject_identifiers/{object_id}`
-                .replace(`{${"object_id"}}`, encodeURIComponent(String(objectId)));
-            // use dummy base URL string because the URL constructor only accepts absolute URLs.
-            const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
-            let baseOptions;
-            if (configuration) {
-                baseOptions = configuration.baseOptions;
-            }
-
-            const localVarRequestOptions = { method: 'PUT', ...baseOptions, ...options};
-            const localVarHeaderParameter = {} as any;
-            const localVarQueryParameter = {} as any;
-
-
-    
-            localVarHeaderParameter['Content-Type'] = 'application/json';
-
-            setSearchParams(localVarUrlObj, localVarQueryParameter);
-            let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
-            localVarRequestOptions.headers = {...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers};
-            localVarRequestOptions.data = serializeDataIfNeeded(subjectIdentifier, localVarRequestOptions, configuration)
-
-            return {
-                url: toPathString(localVarUrlObj),
-                options: localVarRequestOptions,
-            };
-        },
-        /**
-         * 
-         * @summary EpiSubject Identifiers  Put Some
-         * @param {Array<SubjectIdentifier>} subjectIdentifier 
-         * @param {*} [options] Override http request option.
-         * @throws {RequiredError}
-         */
-        subjectIdentifiersPutSome: async (subjectIdentifier: Array<SubjectIdentifier>, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
-            // verify required parameter 'subjectIdentifier' is not null or undefined
-            assertParamExists('subjectIdentifiersPutSome', 'subjectIdentifier', subjectIdentifier)
-            const localVarPath = `/v1/subject_identifiers/batch`;
-            // use dummy base URL string because the URL constructor only accepts absolute URLs.
-            const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
-            let baseOptions;
-            if (configuration) {
-                baseOptions = configuration.baseOptions;
-            }
-
-            const localVarRequestOptions = { method: 'PUT', ...baseOptions, ...options};
-            const localVarHeaderParameter = {} as any;
-            const localVarQueryParameter = {} as any;
-
-
-    
-            localVarHeaderParameter['Content-Type'] = 'application/json';
-
-            setSearchParams(localVarUrlObj, localVarQueryParameter);
-            let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
-            localVarRequestOptions.headers = {...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers};
-            localVarRequestOptions.data = serializeDataIfNeeded(subjectIdentifier, localVarRequestOptions, configuration)
-
-            return {
-                url: toPathString(localVarUrlObj),
-                options: localVarRequestOptions,
-            };
-        },
-        /**
-         * 
-         * @summary Subjects  Delete All
-         * @param {*} [options] Override http request option.
-         * @throws {RequiredError}
-         */
-        subjectsDeleteAll: async (options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
-            const localVarPath = `/v1/subjects`;
-            // use dummy base URL string because the URL constructor only accepts absolute URLs.
-            const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
-            let baseOptions;
-            if (configuration) {
-                baseOptions = configuration.baseOptions;
-            }
-
-            const localVarRequestOptions = { method: 'DELETE', ...baseOptions, ...options};
-            const localVarHeaderParameter = {} as any;
-            const localVarQueryParameter = {} as any;
-
-
-    
-            setSearchParams(localVarUrlObj, localVarQueryParameter);
-            let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
-            localVarRequestOptions.headers = {...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers};
-
-            return {
-                url: toPathString(localVarUrlObj),
-                options: localVarRequestOptions,
-            };
-        },
-        /**
-         * 
-         * @summary Subjects  Delete One
-         * @param {any} objectId 
-         * @param {*} [options] Override http request option.
-         * @throws {RequiredError}
-         */
-        subjectsDeleteOne: async (objectId: any, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
-            // verify required parameter 'objectId' is not null or undefined
-            assertParamExists('subjectsDeleteOne', 'objectId', objectId)
-            const localVarPath = `/v1/subjects/{object_id}`
-                .replace(`{${"object_id"}}`, encodeURIComponent(String(objectId)));
-            // use dummy base URL string because the URL constructor only accepts absolute URLs.
-            const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
-            let baseOptions;
-            if (configuration) {
-                baseOptions = configuration.baseOptions;
-            }
-
-            const localVarRequestOptions = { method: 'DELETE', ...baseOptions, ...options};
-            const localVarHeaderParameter = {} as any;
-            const localVarQueryParameter = {} as any;
-
-
-    
-            setSearchParams(localVarUrlObj, localVarQueryParameter);
-            let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
-            localVarRequestOptions.headers = {...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers};
-
-            return {
-                url: toPathString(localVarUrlObj),
-                options: localVarRequestOptions,
-            };
-        },
-        /**
-         * 
-         * @summary Subjects  Delete Some
-         * @param {string} ids 
-         * @param {*} [options] Override http request option.
-         * @throws {RequiredError}
-         */
-        subjectsDeleteSome: async (ids: string, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
-            // verify required parameter 'ids' is not null or undefined
-            assertParamExists('subjectsDeleteSome', 'ids', ids)
-            const localVarPath = `/v1/subjects/batch`;
-            // use dummy base URL string because the URL constructor only accepts absolute URLs.
-            const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
-            let baseOptions;
-            if (configuration) {
-                baseOptions = configuration.baseOptions;
-            }
-
-            const localVarRequestOptions = { method: 'DELETE', ...baseOptions, ...options};
-            const localVarHeaderParameter = {} as any;
-            const localVarQueryParameter = {} as any;
-
-            if (ids !== undefined) {
-                localVarQueryParameter['ids'] = ids;
-            }
-
-
-    
-            setSearchParams(localVarUrlObj, localVarQueryParameter);
-            let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
-            localVarRequestOptions.headers = {...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers};
-
-            return {
-                url: toPathString(localVarUrlObj),
-                options: localVarRequestOptions,
-            };
-        },
-        /**
-         * 
-         * @summary Subjects  Get All
-         * @param {*} [options] Override http request option.
-         * @throws {RequiredError}
-         */
-        subjectsGetAll: async (options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
-            const localVarPath = `/v1/subjects`;
-            // use dummy base URL string because the URL constructor only accepts absolute URLs.
-            const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
-            let baseOptions;
-            if (configuration) {
-                baseOptions = configuration.baseOptions;
-            }
-
-            const localVarRequestOptions = { method: 'GET', ...baseOptions, ...options};
-            const localVarHeaderParameter = {} as any;
-            const localVarQueryParameter = {} as any;
-
-
-    
-            setSearchParams(localVarUrlObj, localVarQueryParameter);
-            let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
-            localVarRequestOptions.headers = {...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers};
-
-            return {
-                url: toPathString(localVarUrlObj),
-                options: localVarRequestOptions,
-            };
-        },
-        /**
-         * 
-         * @summary Subjects  Get One
-         * @param {string} objectId 
-         * @param {*} [options] Override http request option.
-         * @throws {RequiredError}
-         */
-        subjectsGetOne: async (objectId: string, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
-            // verify required parameter 'objectId' is not null or undefined
-            assertParamExists('subjectsGetOne', 'objectId', objectId)
-            const localVarPath = `/v1/subjects/{object_id}`
-                .replace(`{${"object_id"}}`, encodeURIComponent(String(objectId)));
-            // use dummy base URL string because the URL constructor only accepts absolute URLs.
-            const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
-            let baseOptions;
-            if (configuration) {
-                baseOptions = configuration.baseOptions;
-            }
-
-            const localVarRequestOptions = { method: 'GET', ...baseOptions, ...options};
-            const localVarHeaderParameter = {} as any;
-            const localVarQueryParameter = {} as any;
-
-
-    
-            setSearchParams(localVarUrlObj, localVarQueryParameter);
-            let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
-            localVarRequestOptions.headers = {...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers};
-
-            return {
-                url: toPathString(localVarUrlObj),
-                options: localVarRequestOptions,
-            };
-        },
-        /**
-         * 
-         * @summary Subjects  Get Some
-         * @param {string} ids 
-         * @param {*} [options] Override http request option.
-         * @throws {RequiredError}
-         */
-        subjectsGetSome: async (ids: string, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
-            // verify required parameter 'ids' is not null or undefined
-            assertParamExists('subjectsGetSome', 'ids', ids)
-            const localVarPath = `/v1/subjects/batch`;
-            // use dummy base URL string because the URL constructor only accepts absolute URLs.
-            const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
-            let baseOptions;
-            if (configuration) {
-                baseOptions = configuration.baseOptions;
-            }
-
-            const localVarRequestOptions = { method: 'GET', ...baseOptions, ...options};
-            const localVarHeaderParameter = {} as any;
-            const localVarQueryParameter = {} as any;
-
-            if (ids !== undefined) {
-                localVarQueryParameter['ids'] = ids;
-            }
-
-
-    
-            setSearchParams(localVarUrlObj, localVarQueryParameter);
-            let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
-            localVarRequestOptions.headers = {...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers};
-
-            return {
-                url: toPathString(localVarUrlObj),
-                options: localVarRequestOptions,
-            };
-        },
-        /**
-         * 
-         * @summary Subjects  Post One
-         * @param {EpiSubject} subject 
-         * @param {*} [options] Override http request option.
-         * @throws {RequiredError}
-         */
-        subjectsPostOne: async (subject: EpiSubject, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
-            // verify required parameter 'subject' is not null or undefined
-            assertParamExists('subjectsPostOne', 'subject', subject)
-            const localVarPath = `/v1/subjects`;
-            // use dummy base URL string because the URL constructor only accepts absolute URLs.
-            const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
-            let baseOptions;
-            if (configuration) {
-                baseOptions = configuration.baseOptions;
-            }
-
-            const localVarRequestOptions = { method: 'POST', ...baseOptions, ...options};
-            const localVarHeaderParameter = {} as any;
-            const localVarQueryParameter = {} as any;
-
-
-    
-            localVarHeaderParameter['Content-Type'] = 'application/json';
-
-            setSearchParams(localVarUrlObj, localVarQueryParameter);
-            let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
-            localVarRequestOptions.headers = {...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers};
-            localVarRequestOptions.data = serializeDataIfNeeded(subject, localVarRequestOptions, configuration)
-
-            return {
-                url: toPathString(localVarUrlObj),
-                options: localVarRequestOptions,
-            };
-        },
-        /**
-         * 
-         * @summary Subjects  Post Query
-         * @param {EpiFilter} filter 
-         * @param {*} [options] Override http request option.
-         * @throws {RequiredError}
-         */
-        subjectsPostQuery: async (filter: EpiFilter, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
-            // verify required parameter 'filter' is not null or undefined
-            assertParamExists('subjectsPostQuery', 'filter', filter)
-            const localVarPath = `/v1/subjects/query`;
-            // use dummy base URL string because the URL constructor only accepts absolute URLs.
-            const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
-            let baseOptions;
-            if (configuration) {
-                baseOptions = configuration.baseOptions;
-            }
-
-            const localVarRequestOptions = { method: 'POST', ...baseOptions, ...options};
-            const localVarHeaderParameter = {} as any;
-            const localVarQueryParameter = {} as any;
-
-
-    
-            localVarHeaderParameter['Content-Type'] = 'application/json';
-
-            setSearchParams(localVarUrlObj, localVarQueryParameter);
-            let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
-            localVarRequestOptions.headers = {...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers};
-            localVarRequestOptions.data = serializeDataIfNeeded(filter, localVarRequestOptions, configuration)
-
-            return {
-                url: toPathString(localVarUrlObj),
-                options: localVarRequestOptions,
-            };
-        },
-        /**
-         * 
-         * @summary Subjects  Post Query  Ids
-         * @param {EpiFilter} filter 
-         * @param {*} [options] Override http request option.
-         * @throws {RequiredError}
-         */
-        subjectsPostQueryIds: async (filter: EpiFilter, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
-            // verify required parameter 'filter' is not null or undefined
-            assertParamExists('subjectsPostQueryIds', 'filter', filter)
-            const localVarPath = `/v1/subjects/query/ids`;
-            // use dummy base URL string because the URL constructor only accepts absolute URLs.
-            const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
-            let baseOptions;
-            if (configuration) {
-                baseOptions = configuration.baseOptions;
-            }
-
-            const localVarRequestOptions = { method: 'POST', ...baseOptions, ...options};
-            const localVarHeaderParameter = {} as any;
-            const localVarQueryParameter = {} as any;
-
-
-    
-            localVarHeaderParameter['Content-Type'] = 'application/json';
-
-            setSearchParams(localVarUrlObj, localVarQueryParameter);
-            let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
-            localVarRequestOptions.headers = {...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers};
-            localVarRequestOptions.data = serializeDataIfNeeded(filter, localVarRequestOptions, configuration)
-
-            return {
-                url: toPathString(localVarUrlObj),
-                options: localVarRequestOptions,
-            };
-        },
-        /**
-         * 
-         * @summary Subjects  Post Some
-         * @param {Array<EpiSubject>} subject 
-         * @param {*} [options] Override http request option.
-         * @throws {RequiredError}
-         */
-        subjectsPostSome: async (subject: Array<EpiSubject>, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
-            // verify required parameter 'subject' is not null or undefined
-            assertParamExists('subjectsPostSome', 'subject', subject)
-            const localVarPath = `/v1/subjects/batch`;
-            // use dummy base URL string because the URL constructor only accepts absolute URLs.
-            const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
-            let baseOptions;
-            if (configuration) {
-                baseOptions = configuration.baseOptions;
-            }
-
-            const localVarRequestOptions = { method: 'POST', ...baseOptions, ...options};
-            const localVarHeaderParameter = {} as any;
-            const localVarQueryParameter = {} as any;
-
-
-    
-            localVarHeaderParameter['Content-Type'] = 'application/json';
-
-            setSearchParams(localVarUrlObj, localVarQueryParameter);
-            let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
-            localVarRequestOptions.headers = {...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers};
-            localVarRequestOptions.data = serializeDataIfNeeded(subject, localVarRequestOptions, configuration)
-
-            return {
-                url: toPathString(localVarUrlObj),
-                options: localVarRequestOptions,
-            };
-        },
-        /**
-         * 
-         * @summary Subjects  Put One
-         * @param {string} objectId 
-         * @param {EpiSubject} subject 
-         * @param {*} [options] Override http request option.
-         * @throws {RequiredError}
-         */
-        subjectsPutOne: async (objectId: string, subject: EpiSubject, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
-            // verify required parameter 'objectId' is not null or undefined
-            assertParamExists('subjectsPutOne', 'objectId', objectId)
-            // verify required parameter 'subject' is not null or undefined
-            assertParamExists('subjectsPutOne', 'subject', subject)
-            const localVarPath = `/v1/subjects/{object_id}`
-                .replace(`{${"object_id"}}`, encodeURIComponent(String(objectId)));
-            // use dummy base URL string because the URL constructor only accepts absolute URLs.
-            const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
-            let baseOptions;
-            if (configuration) {
-                baseOptions = configuration.baseOptions;
-            }
-
-            const localVarRequestOptions = { method: 'PUT', ...baseOptions, ...options};
-            const localVarHeaderParameter = {} as any;
-            const localVarQueryParameter = {} as any;
-
-
-    
-            localVarHeaderParameter['Content-Type'] = 'application/json';
-
-            setSearchParams(localVarUrlObj, localVarQueryParameter);
-            let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
-            localVarRequestOptions.headers = {...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers};
-            localVarRequestOptions.data = serializeDataIfNeeded(subject, localVarRequestOptions, configuration)
-
-            return {
-                url: toPathString(localVarUrlObj),
-                options: localVarRequestOptions,
-            };
-        },
-        /**
-         * 
-         * @summary Subjects  Put Some
-         * @param {Array<EpiSubject>} subject 
-         * @param {*} [options] Override http request option.
-         * @throws {RequiredError}
-         */
-        subjectsPutSome: async (subject: Array<EpiSubject>, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
-            // verify required parameter 'subject' is not null or undefined
-            assertParamExists('subjectsPutSome', 'subject', subject)
-            const localVarPath = `/v1/subjects/batch`;
-            // use dummy base URL string because the URL constructor only accepts absolute URLs.
-            const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
-            let baseOptions;
-            if (configuration) {
-                baseOptions = configuration.baseOptions;
-            }
-
-            const localVarRequestOptions = { method: 'PUT', ...baseOptions, ...options};
-            const localVarHeaderParameter = {} as any;
-            const localVarQueryParameter = {} as any;
-
-
-    
-            localVarHeaderParameter['Content-Type'] = 'application/json';
-
-            setSearchParams(localVarUrlObj, localVarQueryParameter);
-            let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
-            localVarRequestOptions.headers = {...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers};
-            localVarRequestOptions.data = serializeDataIfNeeded(subject, localVarRequestOptions, configuration)
-
-            return {
-                url: toPathString(localVarUrlObj),
-                options: localVarRequestOptions,
-            };
-        },
-    }
-};
-
-/**
- * SubjectApi - functional programming interface
- * @export
- */
-const SubjectApiFp = function(configuration?: Configuration) {
-    const localVarAxiosParamCreator = SubjectApiAxiosParamCreator(configuration)
-    return {
-        /**
-         * 
-         * @summary EpiSubject Identifiers  Delete All
-         * @param {*} [options] Override http request option.
-         * @throws {RequiredError}
-         */
-        async subjectIdentifiersDeleteAll(options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<any>> {
-            const localVarAxiosArgs = await localVarAxiosParamCreator.subjectIdentifiersDeleteAll(options);
-            const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
-            const localVarOperationServerBasePath = operationServerMap['SubjectApi.subjectIdentifiersDeleteAll']?.[localVarOperationServerIndex]?.url;
-            return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
-        },
-        /**
-         * 
-         * @summary EpiSubject Identifiers  Delete One
-         * @param {any} objectId 
-         * @param {*} [options] Override http request option.
-         * @throws {RequiredError}
-         */
-        async subjectIdentifiersDeleteOne(objectId: any, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<string>> {
-            const localVarAxiosArgs = await localVarAxiosParamCreator.subjectIdentifiersDeleteOne(objectId, options);
-            const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
-            const localVarOperationServerBasePath = operationServerMap['SubjectApi.subjectIdentifiersDeleteOne']?.[localVarOperationServerIndex]?.url;
-            return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
-        },
-        /**
-         * 
-         * @summary EpiSubject Identifiers  Delete Some
-         * @param {string} ids 
-         * @param {*} [options] Override http request option.
-         * @throws {RequiredError}
-         */
-        async subjectIdentifiersDeleteSome(ids: string, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<Array<string>>> {
-            const localVarAxiosArgs = await localVarAxiosParamCreator.subjectIdentifiersDeleteSome(ids, options);
-            const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
-            const localVarOperationServerBasePath = operationServerMap['SubjectApi.subjectIdentifiersDeleteSome']?.[localVarOperationServerIndex]?.url;
-            return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
-        },
-        /**
-         * 
-         * @summary EpiSubject Identifiers  Get All
-         * @param {*} [options] Override http request option.
-         * @throws {RequiredError}
-         */
-        async subjectIdentifiersGetAll(options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<Array<SubjectIdentifier>>> {
-            const localVarAxiosArgs = await localVarAxiosParamCreator.subjectIdentifiersGetAll(options);
-            const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
-            const localVarOperationServerBasePath = operationServerMap['SubjectApi.subjectIdentifiersGetAll']?.[localVarOperationServerIndex]?.url;
-            return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
-        },
-        /**
-         * 
-         * @summary EpiSubject Identifiers  Get One
-         * @param {string} objectId 
-         * @param {*} [options] Override http request option.
-         * @throws {RequiredError}
-         */
-        async subjectIdentifiersGetOne(objectId: string, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<SubjectIdentifier>> {
-            const localVarAxiosArgs = await localVarAxiosParamCreator.subjectIdentifiersGetOne(objectId, options);
-            const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
-            const localVarOperationServerBasePath = operationServerMap['SubjectApi.subjectIdentifiersGetOne']?.[localVarOperationServerIndex]?.url;
-            return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
-        },
-        /**
-         * 
-         * @summary EpiSubject Identifiers  Get Some
-         * @param {string} ids 
-         * @param {*} [options] Override http request option.
-         * @throws {RequiredError}
-         */
-        async subjectIdentifiersGetSome(ids: string, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<Array<SubjectIdentifier>>> {
-            const localVarAxiosArgs = await localVarAxiosParamCreator.subjectIdentifiersGetSome(ids, options);
-            const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
-            const localVarOperationServerBasePath = operationServerMap['SubjectApi.subjectIdentifiersGetSome']?.[localVarOperationServerIndex]?.url;
-            return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
-        },
-        /**
-         * 
-         * @summary EpiSubject Identifiers  Post One
-         * @param {SubjectIdentifier} subjectIdentifier 
-         * @param {*} [options] Override http request option.
-         * @throws {RequiredError}
-         */
-        async subjectIdentifiersPostOne(subjectIdentifier: SubjectIdentifier, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<SubjectIdentifier>> {
-            const localVarAxiosArgs = await localVarAxiosParamCreator.subjectIdentifiersPostOne(subjectIdentifier, options);
-            const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
-            const localVarOperationServerBasePath = operationServerMap['SubjectApi.subjectIdentifiersPostOne']?.[localVarOperationServerIndex]?.url;
-            return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
-        },
-        /**
-         * 
-         * @summary EpiSubject Identifiers  Post Query
-         * @param {EpiFilter} filter 
-         * @param {*} [options] Override http request option.
-         * @throws {RequiredError}
-         */
-        async subjectIdentifiersPostQuery(filter: EpiFilter, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<Array<SubjectIdentifier>>> {
-            const localVarAxiosArgs = await localVarAxiosParamCreator.subjectIdentifiersPostQuery(filter, options);
-            const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
-            const localVarOperationServerBasePath = operationServerMap['SubjectApi.subjectIdentifiersPostQuery']?.[localVarOperationServerIndex]?.url;
-            return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
-        },
-        /**
-         * 
-         * @summary EpiSubject Identifiers  Post Query  Ids
-         * @param {EpiFilter} filter 
-         * @param {*} [options] Override http request option.
-         * @throws {RequiredError}
-         */
-        async subjectIdentifiersPostQueryIds(filter: EpiFilter, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<Array<string>>> {
-            const localVarAxiosArgs = await localVarAxiosParamCreator.subjectIdentifiersPostQueryIds(filter, options);
-            const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
-            const localVarOperationServerBasePath = operationServerMap['SubjectApi.subjectIdentifiersPostQueryIds']?.[localVarOperationServerIndex]?.url;
-            return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
-        },
-        /**
-         * 
-         * @summary EpiSubject Identifiers  Post Some
-         * @param {Array<SubjectIdentifier>} subjectIdentifier 
-         * @param {*} [options] Override http request option.
-         * @throws {RequiredError}
-         */
-        async subjectIdentifiersPostSome(subjectIdentifier: Array<SubjectIdentifier>, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<Array<SubjectIdentifier>>> {
-            const localVarAxiosArgs = await localVarAxiosParamCreator.subjectIdentifiersPostSome(subjectIdentifier, options);
-            const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
-            const localVarOperationServerBasePath = operationServerMap['SubjectApi.subjectIdentifiersPostSome']?.[localVarOperationServerIndex]?.url;
-            return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
-        },
-        /**
-         * 
-         * @summary EpiSubject Identifiers  Put One
-         * @param {string} objectId 
-         * @param {SubjectIdentifier} subjectIdentifier 
-         * @param {*} [options] Override http request option.
-         * @throws {RequiredError}
-         */
-        async subjectIdentifiersPutOne(objectId: string, subjectIdentifier: SubjectIdentifier, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<SubjectIdentifier>> {
-            const localVarAxiosArgs = await localVarAxiosParamCreator.subjectIdentifiersPutOne(objectId, subjectIdentifier, options);
-            const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
-            const localVarOperationServerBasePath = operationServerMap['SubjectApi.subjectIdentifiersPutOne']?.[localVarOperationServerIndex]?.url;
-            return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
-        },
-        /**
-         * 
-         * @summary EpiSubject Identifiers  Put Some
-         * @param {Array<SubjectIdentifier>} subjectIdentifier 
-         * @param {*} [options] Override http request option.
-         * @throws {RequiredError}
-         */
-        async subjectIdentifiersPutSome(subjectIdentifier: Array<SubjectIdentifier>, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<Array<SubjectIdentifier>>> {
-            const localVarAxiosArgs = await localVarAxiosParamCreator.subjectIdentifiersPutSome(subjectIdentifier, options);
-            const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
-            const localVarOperationServerBasePath = operationServerMap['SubjectApi.subjectIdentifiersPutSome']?.[localVarOperationServerIndex]?.url;
-            return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
-        },
-        /**
-         * 
-         * @summary Subjects  Delete All
-         * @param {*} [options] Override http request option.
-         * @throws {RequiredError}
-         */
-        async subjectsDeleteAll(options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<any>> {
-            const localVarAxiosArgs = await localVarAxiosParamCreator.subjectsDeleteAll(options);
-            const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
-            const localVarOperationServerBasePath = operationServerMap['SubjectApi.subjectsDeleteAll']?.[localVarOperationServerIndex]?.url;
-            return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
-        },
-        /**
-         * 
-         * @summary Subjects  Delete One
-         * @param {any} objectId 
-         * @param {*} [options] Override http request option.
-         * @throws {RequiredError}
-         */
-        async subjectsDeleteOne(objectId: any, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<string>> {
-            const localVarAxiosArgs = await localVarAxiosParamCreator.subjectsDeleteOne(objectId, options);
-            const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
-            const localVarOperationServerBasePath = operationServerMap['SubjectApi.subjectsDeleteOne']?.[localVarOperationServerIndex]?.url;
-            return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
-        },
-        /**
-         * 
-         * @summary Subjects  Delete Some
-         * @param {string} ids 
-         * @param {*} [options] Override http request option.
-         * @throws {RequiredError}
-         */
-        async subjectsDeleteSome(ids: string, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<Array<string>>> {
-            const localVarAxiosArgs = await localVarAxiosParamCreator.subjectsDeleteSome(ids, options);
-            const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
-            const localVarOperationServerBasePath = operationServerMap['SubjectApi.subjectsDeleteSome']?.[localVarOperationServerIndex]?.url;
-            return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
-        },
-        /**
-         * 
-         * @summary Subjects  Get All
-         * @param {*} [options] Override http request option.
-         * @throws {RequiredError}
-         */
-        async subjectsGetAll(options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<Array<EpiSubject>>> {
-            const localVarAxiosArgs = await localVarAxiosParamCreator.subjectsGetAll(options);
-            const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
-            const localVarOperationServerBasePath = operationServerMap['SubjectApi.subjectsGetAll']?.[localVarOperationServerIndex]?.url;
-            return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
-        },
-        /**
-         * 
-         * @summary Subjects  Get One
-         * @param {string} objectId 
-         * @param {*} [options] Override http request option.
-         * @throws {RequiredError}
-         */
-        async subjectsGetOne(objectId: string, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<EpiSubject>> {
-            const localVarAxiosArgs = await localVarAxiosParamCreator.subjectsGetOne(objectId, options);
-            const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
-            const localVarOperationServerBasePath = operationServerMap['SubjectApi.subjectsGetOne']?.[localVarOperationServerIndex]?.url;
-            return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
-        },
-        /**
-         * 
-         * @summary Subjects  Get Some
-         * @param {string} ids 
-         * @param {*} [options] Override http request option.
-         * @throws {RequiredError}
-         */
-        async subjectsGetSome(ids: string, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<Array<EpiSubject>>> {
-            const localVarAxiosArgs = await localVarAxiosParamCreator.subjectsGetSome(ids, options);
-            const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
-            const localVarOperationServerBasePath = operationServerMap['SubjectApi.subjectsGetSome']?.[localVarOperationServerIndex]?.url;
-            return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
-        },
-        /**
-         * 
-         * @summary Subjects  Post One
-         * @param {EpiSubject} subject 
-         * @param {*} [options] Override http request option.
-         * @throws {RequiredError}
-         */
-        async subjectsPostOne(subject: EpiSubject, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<EpiSubject>> {
-            const localVarAxiosArgs = await localVarAxiosParamCreator.subjectsPostOne(subject, options);
-            const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
-            const localVarOperationServerBasePath = operationServerMap['SubjectApi.subjectsPostOne']?.[localVarOperationServerIndex]?.url;
-            return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
-        },
-        /**
-         * 
-         * @summary Subjects  Post Query
-         * @param {EpiFilter} filter 
-         * @param {*} [options] Override http request option.
-         * @throws {RequiredError}
-         */
-        async subjectsPostQuery(filter: EpiFilter, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<Array<EpiSubject>>> {
-            const localVarAxiosArgs = await localVarAxiosParamCreator.subjectsPostQuery(filter, options);
-            const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
-            const localVarOperationServerBasePath = operationServerMap['SubjectApi.subjectsPostQuery']?.[localVarOperationServerIndex]?.url;
-            return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
-        },
-        /**
-         * 
-         * @summary Subjects  Post Query  Ids
-         * @param {EpiFilter} filter 
-         * @param {*} [options] Override http request option.
-         * @throws {RequiredError}
-         */
-        async subjectsPostQueryIds(filter: EpiFilter, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<Array<string>>> {
-            const localVarAxiosArgs = await localVarAxiosParamCreator.subjectsPostQueryIds(filter, options);
-            const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
-            const localVarOperationServerBasePath = operationServerMap['SubjectApi.subjectsPostQueryIds']?.[localVarOperationServerIndex]?.url;
-            return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
-        },
-        /**
-         * 
-         * @summary Subjects  Post Some
-         * @param {Array<EpiSubject>} subject 
-         * @param {*} [options] Override http request option.
-         * @throws {RequiredError}
-         */
-        async subjectsPostSome(subject: Array<EpiSubject>, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<Array<EpiSubject>>> {
-            const localVarAxiosArgs = await localVarAxiosParamCreator.subjectsPostSome(subject, options);
-            const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
-            const localVarOperationServerBasePath = operationServerMap['SubjectApi.subjectsPostSome']?.[localVarOperationServerIndex]?.url;
-            return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
-        },
-        /**
-         * 
-         * @summary Subjects  Put One
-         * @param {string} objectId 
-         * @param {EpiSubject} subject 
-         * @param {*} [options] Override http request option.
-         * @throws {RequiredError}
-         */
-        async subjectsPutOne(objectId: string, subject: EpiSubject, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<EpiSubject>> {
-            const localVarAxiosArgs = await localVarAxiosParamCreator.subjectsPutOne(objectId, subject, options);
-            const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
-            const localVarOperationServerBasePath = operationServerMap['SubjectApi.subjectsPutOne']?.[localVarOperationServerIndex]?.url;
-            return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
-        },
-        /**
-         * 
-         * @summary Subjects  Put Some
-         * @param {Array<EpiSubject>} subject 
-         * @param {*} [options] Override http request option.
-         * @throws {RequiredError}
-         */
-        async subjectsPutSome(subject: Array<EpiSubject>, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<Array<EpiSubject>>> {
-            const localVarAxiosArgs = await localVarAxiosParamCreator.subjectsPutSome(subject, options);
-            const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
-            const localVarOperationServerBasePath = operationServerMap['SubjectApi.subjectsPutSome']?.[localVarOperationServerIndex]?.url;
-            return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
-        },
-    }
-};
-
-/**
- * SubjectApi - factory interface
- * @export
- */
-
-/**
- * SubjectApi - object-oriented interface
-
- * @export
- * @class SubjectApi
- * @extends {BaseAPI}
- */
-export class SubjectApi extends BaseAPI {
-  private static __instance: SubjectApi;
-  public static get instance(): SubjectApi {
-    SubjectApi.__instance = SubjectApi.__instance || new SubjectApi();
-    return SubjectApi.__instance;
-  }
-
-    /**
-     * 
-     * @summary EpiSubject Identifiers  Delete All
-     * @param {*} [options] Override http request option.
-     * @throws {RequiredError}
-     * @memberof SubjectApi
-     */
-    public subjectIdentifiersDeleteAll(options?: RawAxiosRequestConfig) {
-        return SubjectApiFp(this.configuration).subjectIdentifiersDeleteAll(options).then((request) => request(this.axios, this.configuration.baseUrl));
-    }
-
-    /**
-     * 
-     * @summary EpiSubject Identifiers  Delete One
-     * @param {any} objectId 
-     * @param {*} [options] Override http request option.
-     * @throws {RequiredError}
-     * @memberof SubjectApi
-     */
-    public subjectIdentifiersDeleteOne(objectId: any, options?: RawAxiosRequestConfig) {
-        return SubjectApiFp(this.configuration).subjectIdentifiersDeleteOne(objectId, options).then((request) => request(this.axios, this.configuration.baseUrl));
-    }
-
-    /**
-     * 
-     * @summary EpiSubject Identifiers  Delete Some
-     * @param {string} ids 
-     * @param {*} [options] Override http request option.
-     * @throws {RequiredError}
-     * @memberof SubjectApi
-     */
-    public subjectIdentifiersDeleteSome(ids: string, options?: RawAxiosRequestConfig) {
-        return SubjectApiFp(this.configuration).subjectIdentifiersDeleteSome(ids, options).then((request) => request(this.axios, this.configuration.baseUrl));
-    }
-
-    /**
-     * 
-     * @summary EpiSubject Identifiers  Get All
-     * @param {*} [options] Override http request option.
-     * @throws {RequiredError}
-     * @memberof SubjectApi
-     */
-    public subjectIdentifiersGetAll(options?: RawAxiosRequestConfig) {
-        return SubjectApiFp(this.configuration).subjectIdentifiersGetAll(options).then((request) => request(this.axios, this.configuration.baseUrl));
-    }
-
-    /**
-     * 
-     * @summary EpiSubject Identifiers  Get One
-     * @param {string} objectId 
-     * @param {*} [options] Override http request option.
-     * @throws {RequiredError}
-     * @memberof SubjectApi
-     */
-    public subjectIdentifiersGetOne(objectId: string, options?: RawAxiosRequestConfig) {
-        return SubjectApiFp(this.configuration).subjectIdentifiersGetOne(objectId, options).then((request) => request(this.axios, this.configuration.baseUrl));
-    }
-
-    /**
-     * 
-     * @summary EpiSubject Identifiers  Get Some
-     * @param {string} ids 
-     * @param {*} [options] Override http request option.
-     * @throws {RequiredError}
-     * @memberof SubjectApi
-     */
-    public subjectIdentifiersGetSome(ids: string, options?: RawAxiosRequestConfig) {
-        return SubjectApiFp(this.configuration).subjectIdentifiersGetSome(ids, options).then((request) => request(this.axios, this.configuration.baseUrl));
-    }
-
-    /**
-     * 
-     * @summary EpiSubject Identifiers  Post One
-     * @param {SubjectIdentifier} subjectIdentifier 
-     * @param {*} [options] Override http request option.
-     * @throws {RequiredError}
-     * @memberof SubjectApi
-     */
-    public subjectIdentifiersPostOne(subjectIdentifier: SubjectIdentifier, options?: RawAxiosRequestConfig) {
-        return SubjectApiFp(this.configuration).subjectIdentifiersPostOne(subjectIdentifier, options).then((request) => request(this.axios, this.configuration.baseUrl));
-    }
-
-    /**
-     * 
-     * @summary EpiSubject Identifiers  Post Query
-     * @param {EpiFilter} filter 
-     * @param {*} [options] Override http request option.
-     * @throws {RequiredError}
-     * @memberof SubjectApi
-     */
-    public subjectIdentifiersPostQuery(filter: EpiFilter, options?: RawAxiosRequestConfig) {
-        return SubjectApiFp(this.configuration).subjectIdentifiersPostQuery(filter, options).then((request) => request(this.axios, this.configuration.baseUrl));
-    }
-
-    /**
-     * 
-     * @summary EpiSubject Identifiers  Post Query  Ids
-     * @param {EpiFilter} filter 
-     * @param {*} [options] Override http request option.
-     * @throws {RequiredError}
-     * @memberof SubjectApi
-     */
-    public subjectIdentifiersPostQueryIds(filter: EpiFilter, options?: RawAxiosRequestConfig) {
-        return SubjectApiFp(this.configuration).subjectIdentifiersPostQueryIds(filter, options).then((request) => request(this.axios, this.configuration.baseUrl));
-    }
-
-    /**
-     * 
-     * @summary EpiSubject Identifiers  Post Some
-     * @param {Array<SubjectIdentifier>} subjectIdentifier 
-     * @param {*} [options] Override http request option.
-     * @throws {RequiredError}
-     * @memberof SubjectApi
-     */
-    public subjectIdentifiersPostSome(subjectIdentifier: Array<SubjectIdentifier>, options?: RawAxiosRequestConfig) {
-        return SubjectApiFp(this.configuration).subjectIdentifiersPostSome(subjectIdentifier, options).then((request) => request(this.axios, this.configuration.baseUrl));
-    }
-
-    /**
-     * 
-     * @summary EpiSubject Identifiers  Put One
-     * @param {string} objectId 
-     * @param {SubjectIdentifier} subjectIdentifier 
-     * @param {*} [options] Override http request option.
-     * @throws {RequiredError}
-     * @memberof SubjectApi
-     */
-    public subjectIdentifiersPutOne(objectId: string, subjectIdentifier: SubjectIdentifier, options?: RawAxiosRequestConfig) {
-        return SubjectApiFp(this.configuration).subjectIdentifiersPutOne(objectId, subjectIdentifier, options).then((request) => request(this.axios, this.configuration.baseUrl));
-    }
-
-    /**
-     * 
-     * @summary EpiSubject Identifiers  Put Some
-     * @param {Array<SubjectIdentifier>} subjectIdentifier 
-     * @param {*} [options] Override http request option.
-     * @throws {RequiredError}
-     * @memberof SubjectApi
-     */
-    public subjectIdentifiersPutSome(subjectIdentifier: Array<SubjectIdentifier>, options?: RawAxiosRequestConfig) {
-        return SubjectApiFp(this.configuration).subjectIdentifiersPutSome(subjectIdentifier, options).then((request) => request(this.axios, this.configuration.baseUrl));
-    }
-
-    /**
-     * 
-     * @summary Subjects  Delete All
-     * @param {*} [options] Override http request option.
-     * @throws {RequiredError}
-     * @memberof SubjectApi
-     */
-    public subjectsDeleteAll(options?: RawAxiosRequestConfig) {
-        return SubjectApiFp(this.configuration).subjectsDeleteAll(options).then((request) => request(this.axios, this.configuration.baseUrl));
-    }
-
-    /**
-     * 
-     * @summary Subjects  Delete One
-     * @param {any} objectId 
-     * @param {*} [options] Override http request option.
-     * @throws {RequiredError}
-     * @memberof SubjectApi
-     */
-    public subjectsDeleteOne(objectId: any, options?: RawAxiosRequestConfig) {
-        return SubjectApiFp(this.configuration).subjectsDeleteOne(objectId, options).then((request) => request(this.axios, this.configuration.baseUrl));
-    }
-
-    /**
-     * 
-     * @summary Subjects  Delete Some
-     * @param {string} ids 
-     * @param {*} [options] Override http request option.
-     * @throws {RequiredError}
-     * @memberof SubjectApi
-     */
-    public subjectsDeleteSome(ids: string, options?: RawAxiosRequestConfig) {
-        return SubjectApiFp(this.configuration).subjectsDeleteSome(ids, options).then((request) => request(this.axios, this.configuration.baseUrl));
-    }
-
-    /**
-     * 
-     * @summary Subjects  Get All
-     * @param {*} [options] Override http request option.
-     * @throws {RequiredError}
-     * @memberof SubjectApi
-     */
-    public subjectsGetAll(options?: RawAxiosRequestConfig) {
-        return SubjectApiFp(this.configuration).subjectsGetAll(options).then((request) => request(this.axios, this.configuration.baseUrl));
-    }
-
-    /**
-     * 
-     * @summary Subjects  Get One
-     * @param {string} objectId 
-     * @param {*} [options] Override http request option.
-     * @throws {RequiredError}
-     * @memberof SubjectApi
-     */
-    public subjectsGetOne(objectId: string, options?: RawAxiosRequestConfig) {
-        return SubjectApiFp(this.configuration).subjectsGetOne(objectId, options).then((request) => request(this.axios, this.configuration.baseUrl));
-    }
-
-    /**
-     * 
-     * @summary Subjects  Get Some
-     * @param {string} ids 
-     * @param {*} [options] Override http request option.
-     * @throws {RequiredError}
-     * @memberof SubjectApi
-     */
-    public subjectsGetSome(ids: string, options?: RawAxiosRequestConfig) {
-        return SubjectApiFp(this.configuration).subjectsGetSome(ids, options).then((request) => request(this.axios, this.configuration.baseUrl));
-    }
-
-    /**
-     * 
-     * @summary Subjects  Post One
-     * @param {EpiSubject} subject 
-     * @param {*} [options] Override http request option.
-     * @throws {RequiredError}
-     * @memberof SubjectApi
-     */
-    public subjectsPostOne(subject: EpiSubject, options?: RawAxiosRequestConfig) {
-        return SubjectApiFp(this.configuration).subjectsPostOne(subject, options).then((request) => request(this.axios, this.configuration.baseUrl));
-    }
-
-    /**
-     * 
-     * @summary Subjects  Post Query
-     * @param {EpiFilter} filter 
-     * @param {*} [options] Override http request option.
-     * @throws {RequiredError}
-     * @memberof SubjectApi
-     */
-    public subjectsPostQuery(filter: EpiFilter, options?: RawAxiosRequestConfig) {
-        return SubjectApiFp(this.configuration).subjectsPostQuery(filter, options).then((request) => request(this.axios, this.configuration.baseUrl));
-    }
-
-    /**
-     * 
-     * @summary Subjects  Post Query  Ids
-     * @param {EpiFilter} filter 
-     * @param {*} [options] Override http request option.
-     * @throws {RequiredError}
-     * @memberof SubjectApi
-     */
-    public subjectsPostQueryIds(filter: EpiFilter, options?: RawAxiosRequestConfig) {
-        return SubjectApiFp(this.configuration).subjectsPostQueryIds(filter, options).then((request) => request(this.axios, this.configuration.baseUrl));
-    }
-
-    /**
-     * 
-     * @summary Subjects  Post Some
-     * @param {Array<EpiSubject>} subject 
-     * @param {*} [options] Override http request option.
-     * @throws {RequiredError}
-     * @memberof SubjectApi
-     */
-    public subjectsPostSome(subject: Array<EpiSubject>, options?: RawAxiosRequestConfig) {
-        return SubjectApiFp(this.configuration).subjectsPostSome(subject, options).then((request) => request(this.axios, this.configuration.baseUrl));
-    }
-
-    /**
-     * 
-     * @summary Subjects  Put One
-     * @param {string} objectId 
-     * @param {EpiSubject} subject 
-     * @param {*} [options] Override http request option.
-     * @throws {RequiredError}
-     * @memberof SubjectApi
-     */
-    public subjectsPutOne(objectId: string, subject: EpiSubject, options?: RawAxiosRequestConfig) {
-        return SubjectApiFp(this.configuration).subjectsPutOne(objectId, subject, options).then((request) => request(this.axios, this.configuration.baseUrl));
-    }
-
-    /**
-     * 
-     * @summary Subjects  Put Some
-     * @param {Array<EpiSubject>} subject 
-     * @param {*} [options] Override http request option.
-     * @throws {RequiredError}
-     * @memberof SubjectApi
-     */
-    public subjectsPutSome(subject: Array<EpiSubject>, options?: RawAxiosRequestConfig) {
-        return SubjectApiFp(this.configuration).subjectsPutSome(subject, options).then((request) => request(this.axios, this.configuration.baseUrl));
-    }
-}
-
-
-
-/**
  * SystemApi - axios parameter creator
  * @export
  */
@@ -44581,13 +43031,13 @@ const SystemApiAxiosParamCreator = function (configuration?: Configuration) {
             };
         },
         /**
-         * Returns the feature flags of the service.
+         * Returns the feature flags of the application.
          * @summary Feature Flags
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
         retrieveFeatureFlags: async (options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
-            const localVarPath = `/v1/retrieve/feature-flags`;
+            const localVarPath = `/v1/retrieve/feature_flags`;
             // use dummy base URL string because the URL constructor only accepts absolute URLs.
             const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
             let baseOptions;
@@ -44861,7 +43311,7 @@ const SystemApiFp = function(configuration?: Configuration) {
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
         /**
-         * Returns the feature flags of the service.
+         * Returns the feature flags of the application.
          * @summary Feature Flags
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
@@ -45085,7 +43535,7 @@ export class SystemApi extends BaseAPI {
     }
 
     /**
-     * Returns the feature flags of the service.
+     * Returns the feature flags of the application.
      * @summary Feature Flags
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}

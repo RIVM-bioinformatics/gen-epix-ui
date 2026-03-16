@@ -34,7 +34,7 @@ import { useOrganizationIdentifierIssuerLinksQuery } from '../../dataHooks/useOr
 
 type TableData = Organization & { identifierIssuerIds: string[] };
 
-type FormFields = Pick<TableData, 'name' | 'legal_entity_code' | 'identifierIssuerIds'>;
+type FormFields = Pick<TableData, 'name' | 'code' | 'identifierIssuerIds'>;
 
 export const OrganizationsAdminPage = () => {
   const { t } = useTranslation();
@@ -79,7 +79,7 @@ export const OrganizationsAdminPage = () => {
   const schema = useMemo(() => {
     return object<FormFields>().shape({
       name: string().extendedAlphaNumeric().required().max(100),
-      legal_entity_code: string().extendedAlphaNumeric().required().max(100),
+      code: string().extendedAlphaNumeric().required().max(100),
       identifierIssuerIds: array().of(string().uuid4()).min(0).required(),
     });
   }, []);
@@ -93,8 +93,8 @@ export const OrganizationsAdminPage = () => {
       } as const satisfies FormFieldDefinition<FormFields>,
       {
         definition: FORM_FIELD_DEFINITION_TYPE.TEXTFIELD,
-        name: 'legal_entity_code',
-        label: t`Legal entity code`,
+        name: 'code',
+        label: t`Code`,
       } as const satisfies FormFieldDefinition<FormFields>,
       {
         definition: FORM_FIELD_DEFINITION_TYPE.TRANSFER_LIST,
@@ -109,7 +109,7 @@ export const OrganizationsAdminPage = () => {
   const tableColumns = useMemo((): TableColumn<TableData>[] => {
     return [
       TableUtil.createTextColumn<TableData>({ id: 'name', name: t`Name`, advancedSort: true }),
-      TableUtil.createTextColumn<TableData>({ id: 'legal_entity_code', name: t`Legal entity code` }),
+      TableUtil.createTextColumn<TableData>({ id: 'code', name: t`Code` }),
       {
         type: 'number',
         id: 'numIdentifierIssuers',
