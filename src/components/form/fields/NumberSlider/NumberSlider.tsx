@@ -15,6 +15,7 @@ import {
   InputAdornment,
   Box,
   Slider,
+  FormHelperText,
 } from '@mui/material';
 import ClearIcon from '@mui/icons-material/Clear';
 import type {
@@ -168,12 +169,6 @@ export const NumberSlider = <TFieldValues extends FieldValues, TName extends Pat
         data-trigger={triggerValue}
         disabled={disabled || loading}
         error={hasError}
-        helperText={(
-          <FormFieldHelperText
-            errorMessage={errorMessage}
-            warningMessage={warningMessage}
-          />
-        )}
         inputRef={inputRef}
         variant={'outlined'}
         label={label}
@@ -249,7 +244,7 @@ export const NumberSlider = <TFieldValues extends FieldValues, TName extends Pat
         {textField}
       </Box>
     );
-  }, [min, max, triggerValue, disabled, loading, hasError, errorMessage, warningMessage, label, placeholder, hasWarning, autocomplete, name, required, onMuiTextFieldBlur, onMuiTextFieldChange, shouldShowSlider, step, t, onMuiRangeSliderChange]);
+  }, [min, max, triggerValue, disabled, loading, hasError, label, placeholder, hasWarning, autocomplete, name, required, onMuiTextFieldBlur, onMuiTextFieldChange, shouldShowSlider, step, t, onMuiRangeSliderChange]);
 
   return (
     <FormControl
@@ -271,6 +266,12 @@ export const NumberSlider = <TFieldValues extends FieldValues, TName extends Pat
         render={renderController}
       />
       { !!loading && <FormFieldLoadingIndicator />}
+      <FormHelperText>
+        <FormFieldHelperText
+          errorMessage={errorMessage}
+          warningMessage={warningMessage}
+        />
+      </FormHelperText>
     </FormControl>
   );
 };
