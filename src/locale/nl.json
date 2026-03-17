@@ -1,6 +1,5 @@
 {
   "translation": {
-    "'Next": "'Volgende",
     "(last modified: {{lastModified}})": "(laatst gewijzigd: {{lastModified}})",
     "(size: {{size}})": "(grootte: {{size}})",
     "{{applicationName}} is currently unavailable. Please try again later.": "{{applicationName}} is momenteel niet beschikbaar. Probeer het later opnieuw.",
@@ -494,6 +493,7 @@
     "Name": "Naam",
     "New {{eventName}} event": "Nieuwe {{eventName}} event",
     "New number of cases: {{numberOfCases}}": "Nieuw aantal casussen: {{numberOfCases}}",
+    "Next": "Next ⚠",
     "No": "Nee",
     "no access": "geen toegang",
     "No additional rights assigned": "Geen aanvullende rechten toegewezen",

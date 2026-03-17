@@ -91,8 +91,15 @@ export const EpiFindSimilarCasesDialog = withDialog<EpiFindSimilarCasesDialogPro
 
   const schema = useMemo(() => object<FormFields>().shape({
     treeColId: string().required(),
-    maxDistance: NumberUtil.yup.required().min(0),
-  }), []);
+    maxDistance: NumberUtil.yup.required().min(0).when('treeColId', ([treeColId], s) => {
+      const currentTreeConfiguration = treeConfigurations.find(x => x.col.id === treeColId);
+      if (!currentTreeConfiguration) {
+        return s;
+      }
+      // FIXME: waiting for backend
+      return s.max(currentTreeConfiguration.geneticDistanceProtocol.seqdb_max_stored_distance || 30);
+    }),
+  }), [treeConfigurations]);
 
   const treeOptions = useMemo<AutoCompleteOption<string>[]>(() => {
     const cols = new Set<Col>();
@@ -108,7 +115,21 @@ export const EpiFindSimilarCasesDialog = withDialog<EpiFindSimilarCasesDialogPro
 
   }, [treeConfigurations]);
 
-  const formFieldDefinitions = useMemo<FormFieldDefinition<FormFields>[]>(() => [
+  const formMethods = useForm<FormFields>({
+    resolver: yupResolver(schema, undefined,{ raw: true }) as Resolver<FormFields>,
+    values: {
+      treeColId: treeConfiguration ? treeConfiguration.col.id : null,
+      maxDistance: 0,
+    },
+  });
+  const { handleSubmit, control } = formMethods;
+
+  const formValues = useWatch({ control });
+
+  const formFieldDefinitions = useMemo(() => {
+    const currentTreeConfiguration = treeConfigurations.find(x => x.col.id === formValues.treeColId);
+
+    return [
       {
         definition: FORM_FIELD_DEFINITION_TYPE.AUTOCOMPLETE,
         name: 'treeColId',
@@ -116,22 +137,17 @@ export const EpiFindSimilarCasesDialog = withDialog<EpiFindSimilarCasesDialogPro
         options: treeOptions,
       } as const satisfies FormFieldDefinition<FormFields>,
       {
-        definition: FORM_FIELD_DEFINITION_TYPE.NUMBER,
+        definition: FORM_FIELD_DEFINITION_TYPE.NUMBER_SLIDER,
         name: 'maxDistance',
         label: t`Max distance`,
+        min: 0,
+        // FIXME: waiting for backend
+        max: (currentTreeConfiguration?.geneticDistanceProtocol?.seqdb_max_stored_distance ?? 30) || 30,
+        step: 1,
+        showSlider: true,
       } as const satisfies FormFieldDefinition<FormFields>,
-  ] as const, [t, treeOptions]);
-
-  const formMethods = useForm<FormFields>({
-    resolver: yupResolver(schema, undefined,{ raw: true }) as Resolver<FormFields>,
-    values: {
-      treeColId: treeConfiguration ? treeConfiguration.col.id : null,
-      maxDistance: 5, // !FIXME
-    },
-  });
-  const { handleSubmit, control } = formMethods;
-
-  const formValues = useWatch({ control });
+    ];
+  }, [formValues.treeColId, t, treeConfigurations, treeOptions]);
 
   // Note: keeping track of dirty against submitted value, not the form dirty state.
   const isDirty = useMemo(() => {

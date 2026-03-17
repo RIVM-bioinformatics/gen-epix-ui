@@ -43,7 +43,7 @@ export const EpiUploadNavigation = ({ onProceedButtonClick: onProceedButtonClick
           disabled={proceedDisabled}
           onClick={onProceedButtonClick}
         >
-          {proceedLabel ?? t`'Next`}
+          {proceedLabel ?? t`Next`}
         </Button>
       )}
     </Box>

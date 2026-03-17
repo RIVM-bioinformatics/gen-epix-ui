@@ -1,6 +1,5 @@
 {
   "translation": {
-    "'Next": "'Next",
     "(last modified: {{lastModified}})": "(last modified: {{lastModified}})",
     "(size: {{size}})": "(size: {{size}})",
     "{{applicationName}} is currently unavailable. Please try again later.": "{{applicationName}} is currently unavailable. Please try again later.",
@@ -494,6 +493,7 @@
     "Name": "Name",
     "New {{eventName}} event": "New {{eventName}} event",
     "New number of cases: {{numberOfCases}}": "New number of cases: {{numberOfCases}}",
+    "Next": "Next",
     "No": "No",
     "no access": "no access",
     "No additional rights assigned": "No additional rights assigned",

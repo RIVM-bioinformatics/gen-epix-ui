@@ -20,7 +20,11 @@ export class NumberUtil {
   }
 
 
-  public static parse(value: string): number {
+  public static parse(value: string | number): number {
+    if (typeof value === 'number') {
+      return value;
+    }
+
     if (typeof value !== 'string' || value.trim() === '') {
       return NaN;
     }
