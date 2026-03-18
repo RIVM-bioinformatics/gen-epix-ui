@@ -146,11 +146,11 @@ export const LicensesDialog = withDialog<LicensesDialogProps, LicensesDialogOpen
       {!item && (
         <>
 
-          <LicenseInformation />
           <Box marginY={2}>
-            <Box marginY={2}>
-              <Divider />
-            </Box>
+            <LicenseInformation />
+          </Box>
+          <Divider />
+          <Box marginY={2}>
             <Typography>
               {t`This application uses the following open source libraries:`}
             </Typography>
