@@ -1,6 +1,5 @@
 {
   "translation": {
-    "'Next": "'Volgende",
     "(last modified: {{lastModified}})": "(laatst gewijzigd: {{lastModified}})",
     "(size: {{size}})": "(grootte: {{size}})",
     "{{applicationName}} is currently unavailable. Please try again later.": "{{applicationName}} is momenteel niet beschikbaar. Probeer het later opnieuw.",
@@ -471,6 +470,7 @@
     "Map: {{label}}": "Kaart: {{label}}",
     "Max datetime": "Maximum datum tijd",
     "Max distance": "Maximale afstand",
+    "Max distance must be an integer": "Maximale afstand moet een geheel getal zijn",
     "Max length: {{maxLength}}": "Max lengte: {{maxLength}}",
     "Max value": "Maximale waarde",
     "Maximum number of results exceeded": "Maximaal aantal resultaten overschreden",
@@ -494,6 +494,7 @@
     "Name": "Naam",
     "New {{eventName}} event": "Nieuwe {{eventName}} event",
     "New number of cases: {{numberOfCases}}": "Nieuw aantal casussen: {{numberOfCases}}",
+    "Next": "Volgende",
     "No": "Nee",
     "no access": "geen toegang",
     "No additional rights assigned": "Geen aanvullende rechten toegewezen",

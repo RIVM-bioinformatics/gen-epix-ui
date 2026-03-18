@@ -3,7 +3,7 @@ import { initReactI18next } from 'react-i18next';
 
 import { WindowManager } from '../WindowManager';
 import { ConfigManager } from '../ConfigManager';
-import { EventBusAbstract } from '../../..';
+import { EventBusAbstract } from '../../abstracts/EventBusAbstract';
 
 type Bundle = {
   translation: Record<string, string>;
