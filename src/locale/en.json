@@ -470,6 +470,7 @@
     "Map: {{label}}": "Map: {{label}}",
     "Max datetime": "Max datetime",
     "Max distance": "Max distance",
+    "Max distance must be an integer": "Max distance must be an integer",
     "Max length: {{maxLength}}": "Max length: {{maxLength}}",
     "Max value": "Max value",
     "Maximum number of results exceeded": "Maximum number of results exceeded",
