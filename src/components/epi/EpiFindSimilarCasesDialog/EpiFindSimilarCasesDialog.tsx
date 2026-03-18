@@ -299,7 +299,7 @@ export const EpiFindSimilarCasesDialog = withDialog<EpiFindSimilarCasesDialogPro
   );
 }, {
   testId: 'EpiFindSimilarCasesDialog',
-  maxWidth: 'lg',
+  maxWidth: 'md',
   fullWidth: true,
   defaultTitle: '',
 });

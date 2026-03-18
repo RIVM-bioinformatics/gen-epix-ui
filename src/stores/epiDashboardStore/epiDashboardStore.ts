@@ -302,7 +302,12 @@ export const createEpiDashboardStore = (kwArgs: CreateEpiDashboardStoreKwArgs) =
               const conceptSetConceptIds = EpiDataManager.instance.data.conceptsIdsBySetId[column.concept_set_id];
               if (conceptSetConceptIds) {
                 if (conceptSetConceptIds.length <= STRATIFICATION_COLORS.length) {
-                  conceptSetConceptIds.map(conceptId => EpiDataManager.instance.data.conceptsById[conceptId]).sort((a, b) => a.rank - b.rank).forEach((concept, index) => {
+                  conceptSetConceptIds.map(conceptId => EpiDataManager.instance.data.conceptsById[conceptId]).sort((a, b) => {
+                    if (column.col_type === ColType.ORDINAL && a.rank !== b.rank) {
+                      return a.rank - b.rank;
+                    }
+                    return a.code.localeCompare(b.code);
+                  }).forEach((concept, index) => {
                     const color = STRATIFICATION_COLORS[index];
                     const legendaItem: StratificationLegendaItem = {
                       caseIds: [],
@@ -344,18 +349,6 @@ export const createEpiDashboardStore = (kwArgs: CreateEpiDashboardStoreKwArgs) =
                 } else {
                   const rowValues = sortedData.map(row => CaseUtil.getRowValue(row.content, col, completeCaseType));
                   const uniqueRowValues = uniqBy(rowValues, (rowValue => rowValue.raw)).sort((a, b) => {
-                    if (column.col_type === ColType.ORDINAL) {
-                      if (a.isMissing && b.isMissing) {
-                        return 0;
-                      }
-                      if (a.isMissing) {
-                        return 1;
-                      }
-                      if (b.isMissing) {
-                        return -1;
-                      }
-                      return conceptSetConceptIds.indexOf(a.raw) - conceptSetConceptIds.indexOf(b.raw);
-                    }
                     return rowValueComperator(a, b);
                   });
 
