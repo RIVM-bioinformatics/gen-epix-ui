@@ -12,7 +12,6 @@ import type { DatePickerProps } from '../components/form/fields/DatePicker';
 import type { UploadButtonProps } from '../components/form/fields/UploadButton/UploadButton';
 import type { RadioGroupProps } from '../components/form/fields/RadioGroup';
 import type { NumberFieldProps } from '../components/form/fields/NumberField';
-import type { NumberSliderProps } from '../components/form/fields/NumberSlider';
 
 
 export interface OptionBase<TValue> {
@@ -43,14 +42,12 @@ export enum FORM_FIELD_DEFINITION_TYPE {
   HIDDEN = 'HIDDEN',
   DATE = 'DATE',
   RADIO_GROUP = 'RADIO_GROUP',
-  NUMBER_SLIDER = 'NUMBER_SLIDER',
 }
 
 export type FormFieldDefinitionAutocomplete<TFormFields extends FieldValues> = { definition: FORM_FIELD_DEFINITION_TYPE.AUTOCOMPLETE; multiple?: false } & AutocompleteProps<TFormFields, Path<TFormFields>, false>;
 export type FormFieldDefinitionAutocompleteMultiple<TFormFields extends FieldValues> = { definition: FORM_FIELD_DEFINITION_TYPE.AUTOCOMPLETE; multiple?: true } & AutocompleteProps<TFormFields, Path<TFormFields>, true>;
 export type FormFieldDefinitionTextField<TFormFields extends FieldValues> = { definition: FORM_FIELD_DEFINITION_TYPE.TEXTFIELD } & TextFieldProps<TFormFields, Path<TFormFields>>;
 export type FormFieldDefinitionNumber<TFormFields extends FieldValues> = { definition: FORM_FIELD_DEFINITION_TYPE.NUMBER } & NumberFieldProps<TFormFields, Path<TFormFields>>;
-export type FormFieldDefinitionNumberSlider<TFormFields extends FieldValues> = { definition: FORM_FIELD_DEFINITION_TYPE.NUMBER_SLIDER } & NumberSliderProps<TFormFields, Path<TFormFields>>;
 export type FormFieldDefinitionBoolean<TFormFields extends FieldValues> = { definition: FORM_FIELD_DEFINITION_TYPE.BOOLEAN } & Omit<SelectProps<TFormFields, Path<TFormFields>, false>, 'options'>;
 export type FormFieldDefinitionTransferList<TFormFields extends FieldValues> = { definition: FORM_FIELD_DEFINITION_TYPE.TRANSFER_LIST } & TransferListProps<TFormFields, Path<TFormFields>>;
 export type FormFieldDefinitionHidden<TFormFields extends FieldValues> = { definition: FORM_FIELD_DEFINITION_TYPE.HIDDEN } & TextFieldProps<TFormFields, Path<TFormFields>>;
@@ -74,5 +71,4 @@ export type FormFieldDefinition<TFormFields> =
   FormFieldDefinitionFile<TFormFields> |
   FormFieldDefinitionRadioGroup<TFormFields> |
   FormFieldDefinitionSelect<TFormFields> |
-  FormFieldDefinitionSelectMultiple<TFormFields> |
-  FormFieldDefinitionNumberSlider<TFormFields>;
+  FormFieldDefinitionSelectMultiple<TFormFields>;

@@ -4,6 +4,7 @@ import type {
 } from 'react';
 import {
   useCallback,
+  useMemo,
   useRef,
   useState,
 } from 'react';
@@ -12,6 +13,9 @@ import {
   FormControl,
   IconButton,
   InputAdornment,
+  Box,
+  Slider,
+  FormHelperText,
 } from '@mui/material';
 import ClearIcon from '@mui/icons-material/Clear';
 import type {
@@ -27,6 +31,7 @@ import {
 } from 'react-hook-form';
 import classnames from 'classnames';
 import isNumber from 'lodash/isNumber';
+import { useTranslation } from 'react-i18next';
 
 import { FormUtil } from '../../../../utils/FormUtil';
 import { TestIdUtil } from '../../../../utils/TestIdUtil';
@@ -44,7 +49,13 @@ export type NumberFieldProps<TFieldValues extends FieldValues, TName extends Pat
   readonly loading?: boolean;
   readonly placeholder?: string;
   readonly autocomplete?: string;
+  readonly step: number;
+  readonly min: number;
+  readonly max: number;
+  readonly showSlider?: boolean;
 };
+
+const MAX_NUMBER_OF_SLIDER_STEPS = 250;
 
 export const NumberField = <TFieldValues extends FieldValues, TName extends Path<TFieldValues> = Path<TFieldValues>>({
   disabled = false,
@@ -56,7 +67,12 @@ export const NumberField = <TFieldValues extends FieldValues, TName extends Path
   placeholder,
   warningMessage,
   autocomplete,
+  step,
+  min,
+  max,
+  showSlider = false,
 }: NumberFieldProps<TFieldValues, TName>): ReactElement => {
+  const { t } = useTranslation();
   const { control, formState: { errors } } = useFormContext<TFieldValues>();
   const errorMessage = FormUtil.getFieldErrorMessage(errors, name);
   const hasError = !!errorMessage;
@@ -65,10 +81,36 @@ export const NumberField = <TFieldValues extends FieldValues, TName extends Path
   const valueRef = useRef<string>('');
   const [triggerValue, setTriggerValue] = useState(0);
 
+  const shouldShowSlider = useMemo(() => {
+    if (!showSlider) {
+      return false;
+    }
+    if (!isFinite(min) || !isFinite(max) || !isFinite(step) || min >= max) {
+      return false;
+    }
+    if ((max - min) / step > MAX_NUMBER_OF_SLIDER_STEPS) {
+      return false;
+    }
+    return true;
+  }, [showSlider, min, max, step]);
+
   const onMuiTextFieldChange = useCallback((onChange: ControllerRenderProps<TFieldValues, TName>['onChange']) =>
     (event: ChangeEvent<HTMLInputElement>) => {
       const value = event.target.value;
       valueRef.current = value;
+
+      const parsedValue = NumberUtil.parse(value);
+      const newValue = isNaN(parsedValue) ? '' : parsedValue;
+
+      onChange(newValue);
+    }
+  , []);
+
+  const onMuiRangeSliderChange = useCallback((onChange: ControllerRenderProps<TFieldValues, TName>['onChange']) =>
+    (_event: unknown, sliderValue: number | number[]) => {
+      const value = String(Array.isArray(sliderValue) ? sliderValue[0] : sliderValue);
+
+      valueRef.current = String(value);
 
       const parsedValue = NumberUtil.parse(value);
       const newValue = isNaN(parsedValue) ? '' : parsedValue;
@@ -108,20 +150,25 @@ export const NumberField = <TFieldValues extends FieldValues, TName extends Path
     });
 
     const onResetButtonClick = () => {
+      inputRef.current.value = '';
       onChange('');
     };
 
-    return (
+    let sliderValue = NumberUtil.parse(valueRef.current) ?? (value ?? null) as number;
+    if (isNaN(sliderValue)) {
+      sliderValue = null;
+    } else if (sliderValue < min) {
+      sliderValue = min;
+    } else if (sliderValue > max) {
+      sliderValue = max;
+    }
+    const inputValue = valueRef.current ?? (value ?? '') as string;
+
+    const textField = (
       <MuiTextField
         data-trigger={triggerValue}
         disabled={disabled || loading}
         error={hasError}
-        helperText={(
-          <FormFieldHelperText
-            errorMessage={errorMessage}
-            warningMessage={warningMessage}
-          />
-        )}
         inputRef={inputRef}
         variant={'outlined'}
         label={label}
@@ -159,12 +206,45 @@ export const NumberField = <TFieldValues extends FieldValues, TName extends Path
             className: classnames({ 'Mui-warning': hasWarning }),
           },
         }}
-        value={isNumber(valueRef.current) ? valueRef.current : (value ?? '') as string}
+        value={inputValue}
         onBlur={onMuiTextFieldBlur(onBlur, onChange)}
         onChange={onMuiTextFieldChange(onChange)}
       />
     );
-  }, [triggerValue, disabled, loading, hasError, errorMessage, warningMessage, label, placeholder, hasWarning, autocomplete, name, required, onMuiTextFieldBlur, onMuiTextFieldChange]);
+
+    if (!shouldShowSlider) {
+      return textField;
+    }
+
+    return (
+      <Box
+        sx={{
+          display: 'grid',
+          gap: 2,
+          gridTemplateColumns: theme => `auto ${theme.spacing(24)}`,
+          alignItems: 'center',
+        }}
+      >
+        <Slider
+          marks
+          valueLabelDisplay={'auto'}
+          color={'primary'}
+          max={max}
+          min={min}
+          step={step}
+          slotProps={{
+            input: {
+              'aria-label': t`Value`,
+            },
+          }}
+          value={sliderValue}
+          onBlur={onBlur}
+          onChange={onMuiRangeSliderChange(onChange)}
+        />
+        {textField}
+      </Box>
+    );
+  }, [min, max, triggerValue, disabled, loading, hasError, label, placeholder, hasWarning, autocomplete, name, required, onMuiTextFieldBlur, onMuiTextFieldChange, shouldShowSlider, step, t, onMuiRangeSliderChange]);
 
   return (
     <FormControl
@@ -186,6 +266,12 @@ export const NumberField = <TFieldValues extends FieldValues, TName extends Path
         render={renderController}
       />
       { !!loading && <FormFieldLoadingIndicator />}
+      <FormHelperText>
+        <FormFieldHelperText
+          errorMessage={errorMessage}
+          warningMessage={warningMessage}
+        />
+      </FormHelperText>
     </FormControl>
   );
 };

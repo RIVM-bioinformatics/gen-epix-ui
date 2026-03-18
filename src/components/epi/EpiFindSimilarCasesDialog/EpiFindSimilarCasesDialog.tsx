@@ -140,7 +140,7 @@ export const EpiFindSimilarCasesDialog = withDialog<EpiFindSimilarCasesDialogPro
         options: treeOptions,
       } as const satisfies FormFieldDefinition<FormFields>,
       {
-        definition: FORM_FIELD_DEFINITION_TYPE.NUMBER_SLIDER,
+        definition: FORM_FIELD_DEFINITION_TYPE.NUMBER,
         name: 'maxDistance',
         label: t`Max distance`,
         min: 0,

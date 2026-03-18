@@ -222,7 +222,6 @@ export * from './components/form/fields/Switch';
 export * from './components/form/fields/Select';
 export * from './components/form/fields/RichTextEditor';
 export * from './components/form/fields/RadioGroup';
-export * from './components/form/fields/NumberSlider';
 export * from './components/form/fields/NumberRangeInput';
 export * from './components/form/fields/NumberField';
 export * from './components/form/fields/DateRangePicker';
