@@ -96,7 +96,7 @@ describe('NumberUtil', () => {
     it('should handle type safety', () => {
       expect(NumberUtil.parse(null)).toBeNaN();
       expect(NumberUtil.parse(undefined)).toBeNaN();
-      expect(NumberUtil.parse(123 as unknown as string)).toBeNaN();
+      expect(NumberUtil.parse(123)).toBe(123);
     });
 
     it('should handle precision edge cases', () => {
