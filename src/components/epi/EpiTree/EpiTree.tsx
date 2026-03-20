@@ -245,7 +245,7 @@ export const EpiTree = ({ linkedScrollSubject, ref }: EpiTreeProps) => {
       position: position / devicePixelRatio,
       origin: scrollContainerRef.current,
     });
-  }, ConfigManager.instance.config.epiTree.LINKED_SCROLL_DEBOUNCE_DELAY_MS);
+  }, ConfigManager.instance.config.epiTree.LINKED_SCROLL_DEBOUNCE_DELAY_MS, { leading: true, trailing: true });
 
   const updateScrollPosition = useCallback((positionX: number, positionY: number, internalZoomLevel: number) => {
     const { newPositionX, newPositionY } = EpiTreeUtil.getSanitizedScrollPosition({
