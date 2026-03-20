@@ -198,6 +198,7 @@ export const ForwardRefEpiDashboardLayoutRenderer: ForwardRefRenderFunction<Forw
               defaultSize={outerPanelSize}
               id={createOuterPanelId(outerOrientation, index)}
               minSize={outerOrientation === 'vertical' ? MIN_PANEL_HEIGHT : MIN_PANEL_WIDTH}
+              style={{ overflow: 'hidden' }}
             >
               {widgetPanels.length === 1 && panelMap[widgetPanels[0][1] as keyof typeof panelMap]}
               {widgetPanels.length > 1 && (
@@ -215,6 +216,7 @@ export const ForwardRefEpiDashboardLayoutRenderer: ForwardRefRenderFunction<Forw
                           defaultSize={widgetPanelSize}
                           id={createInnerPanelId(innerOrientation, index, innerIndex)}
                           minSize={innerOrientation === 'vertical' ? MIN_PANEL_HEIGHT : MIN_PANEL_WIDTH}
+                          style={{ overflow: 'hidden' }}
                         >
                           {panelMap[zone as keyof typeof panelMap]}
                         </Panel>
