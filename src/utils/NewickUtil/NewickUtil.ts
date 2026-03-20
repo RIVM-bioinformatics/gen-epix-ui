@@ -6,7 +6,7 @@ import type { TreeNode } from '../../models/tree';
 
 export class NewickUtil {
   public static parse(newick: string): TreeNode {
-    const ancestors = [];
+    const ancestors: Array<Partial<TreeNode>> = [];
     let tree: Partial<TreeNode> = {};
     const tokens = newick.split(/(;|\(|\)|,|:)/).map(x => x.trim()).filter(x => x);
     for (let i = 0; i < tokens.length; i++) {
@@ -30,28 +30,32 @@ export class NewickUtil {
               child.size = 1;
               child.maxBranchLength = new Decimal(child.branchLength ?? 0);
               child.subTreeLeaveNames = [child.name];
+              child.subTreeNames = child.subTreeNames ?? [];
             }
           });
-          tree.size = sum((tree?.children ?? []).map(child => child.size ?? 0));
-          tree.subTreeNames = (tree?.children ?? []).map(child => child.subTreeNames).flat().filter(n => n);
-          tree.subTreeLeaveNames = (tree?.children ?? []).map(child => child.subTreeLeaveNames).flat().filter(n => n);
+          tree.size = sum(tree.children.map(child => child.size));
+          tree.subTreeNames = tree.children.map(child => child.subTreeNames).flat().filter(n => n);
+          tree.subTreeLeaveNames = tree.children.map(child => child.subTreeLeaveNames).flat().filter(n => n);
+          tree.maxBranchLength = Decimal.max(...tree.children.map(child => child.maxBranchLength));
           break;
         case ':': // optional length next
+          break;
+        case ';': // end of tree, nothing to do
           break;
         default:
           if (x === ')' || x === '(' || x === ',') {
             tree.name = token;
           } else if (x === ':') {
             tree.branchLength = new Decimal(token);
-            tree.subTreeNames = (tree?.children ?? []).map(child => [child.name, ...child.subTreeNames]).flat().filter(n => n);
-            tree.subTreeLeaveNames = (tree?.children ?? []).map(child => child.subTreeLeaveNames).flat().filter(n => n);
-            tree.maxBranchLength = (tree.branchLength ?? new Decimal(0)).add(tree.children?.length ? Decimal.max(...tree.children.map(child => child.maxBranchLength ?? 0)) : 0);
+            tree.subTreeNames = (tree.children ?? []).map(child => [child.name, ...child.subTreeNames]).flat().filter(n => n);
+            tree.subTreeLeaveNames = (tree.children ?? []).map(child => child.subTreeLeaveNames).flat().filter(n => n);
+            tree.maxBranchLength = tree.branchLength.add(tree.children?.length ? Decimal.max(...tree.children.map(child => child.maxBranchLength)) : 0);
             tree.name = tree.name || `Generated-${StringUtil.createHash(tree.subTreeNames.join(','))}`;
           }
       }
     }
-    tree.branchLength = tree?.branchLength ?? new Decimal(0);
-    tree.maxBranchLength = tree?.children?.length ? Decimal.max(...(tree.children.map(child => child.maxBranchLength ?? 0))) : new Decimal(0);
+    tree.branchLength = tree.branchLength ?? new Decimal(0);
+    tree.maxBranchLength = tree.children?.length ? Decimal.max(...tree.children.map(child => child.maxBranchLength)) : new Decimal(0);
     tree.name = 'Root';
     return tree;
   }

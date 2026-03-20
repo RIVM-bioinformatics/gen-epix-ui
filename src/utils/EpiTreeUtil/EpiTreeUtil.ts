@@ -14,27 +14,13 @@ import type {
   TreeConfiguration,
 } from '../../models/epi';
 import type {
+  TreeAssembly,
   TreeNode,
   TreePathProperties,
 } from '../../models/tree';
 import { EpiDataManager } from '../../classes/managers/EpiDataManager';
 
 type SanitizeResult = { node: TreeNode; nodesToMove: TreeNode[] };
-
-type PathPropertiesMap = Map<Path2D, TreePathProperties>;
-
-export type TreeAssembly = {
-  verticalAncestorTreeLines: Array<{ nodeNames: string[]; shape: Path2D }>;
-  horizontalAncestorTreeLines: Array<{ nodeNames: string[]; shape: Path2D }>;
-  ancestorNodes: Array<{ nodeNames: string[]; shape: Path2D }>;
-  leafNodes: Array<{ nodeName: string; shape: Path2D }>;
-  leafTreeLines: Array<{ nodeName: string; shape: Path2D }>;
-  supportLines: Array<{ nodeName: string; fromX: number; toX: number; y: number }>;
-  distanceTexts: Array<{ nodeNames: string[]; x: number; y: number; text: string }>;
-  nodePathPropertiesMap: PathPropertiesMap;
-  horizontalLinePathPropertiesMap: PathPropertiesMap;
-  verticalLinePathPropertiesMap: PathPropertiesMap;
-};
 
 type TreeAssemblyContext = {
   rootNode: TreeNode;
@@ -50,9 +36,23 @@ type NodeAssemblyResult = {
 };
 
 // [number of lines to draw, genetic distance of single line, minGeneticScaleUnit]
-export type TickerMarkScale = [number, number, number];
+type TickerMarkScale = [number, number, number];
 
 export class EpiTreeUtil {
+  /**
+   * Calculates the vertical scroll position for a tree canvas based on the
+   * currently visible rows in a linked table/list view.
+   *
+   * The goal is to keep the visible portion of the tree centered on the same
+   * items that are currently visible in the linked view, accounting for zoom.
+   *
+   * @param kwArgs.treeCanvasHeight - Height of the visible tree canvas area in pixels.
+   * @param kwArgs.treeHeight - Total rendered height of the full tree in pixels.
+   * @param kwArgs.treeSize - Total number of leaf items (rows) in the tree.
+   * @param kwArgs.verticalScrollPosition - Current vertical scroll position of the linked view in pixels.
+   * @param kwArgs.zoomLevel - Current zoom level (>1 means zoomed out, items appear smaller).
+   * @returns The new vertical scroll position for the tree canvas, clamped to [0, treeHeight - treeCanvasHeight].
+   */
   public static getScrollPositionFromTreeVisibility(kwArgs: {
     treeCanvasHeight: number;
     treeHeight: number;
@@ -75,6 +75,16 @@ export class EpiTreeUtil {
   }
 
 
+  /**
+   * Sanitizes the tree by collapsing intermediate ancestor nodes that have a
+   * zero branch length, hoisting their children up to the parent level.
+   *
+   * This normalises Newick-parsed trees where polytomies or zero-distance
+   * internal nodes would otherwise produce visually redundant branching points.
+   *
+   * @param rootNode - The root of the tree to sanitize. Mutated in place.
+   * @returns The sanitized root node.
+   */
   public static sanitizeTree(rootNode: TreeNode): TreeNode {
     const sanitize = (node: TreeNode): SanitizeResult => {
       const results: SanitizeResult[] = [];
@@ -89,7 +99,7 @@ export class EpiTreeUtil {
       if (node.children?.length) {
         const nodesToMove: TreeNode[] = [];
         node.children.forEach(child => {
-          if ((node.branchLength?.toNumber() ?? 0) === 0 && (node.children?.length || (child.branchLength?.toNumber() ?? 0) === 0)) {
+          if ((node.branchLength?.toNumber() ?? 0) === 0) {
             nodesToMove.push(child);
           }
         });
@@ -104,6 +114,15 @@ export class EpiTreeUtil {
     return rootNode;
   }
 
+  /**
+   * Assigns a dot-notation address to every node in the tree, representing its
+   * position in the hierarchy (e.g. `"1.2.1"`). Zero-branch-length children are
+   * always placed at index `1`; other children are indexed starting at `1` or
+   * `2` depending on whether a zero-branch sibling is present.
+   *
+   * @param rootNode - The root of the tree to address.
+   * @returns A map from node name to its dot-notation address string.
+   */
   public static createTreeAddresses(rootNode: TreeNode): { [key: string]: string } {
     const treeAddresses: { [key: string]: string } = {};
     const traverse = (node: TreeNode, address: number[] = []): TreeNode => {
@@ -127,6 +146,20 @@ export class EpiTreeUtil {
     return treeAddresses;
   }
 
+  /**
+   * Finds and returns a new root node for re-rooting the tree.
+   *
+   * When `selector` is `'node'`, the node with the given name becomes the new root.
+   * When `selector` is `'parent'`, the parent of the node with the given name is returned.
+   *
+   * The returned node has its `branchLength` reset to `0` and its `maxBranchLength`
+   * adjusted by subtracting the original branch length, so the scale remains consistent.
+   *
+   * @param rootNode - The current root of the tree.
+   * @param nodeName - Name of the node to search for.
+   * @param selector - Whether to return the matching node itself (`'node'`) or its parent (`'parent'`).
+   * @returns A shallow copy of the new root with adjusted branch length properties.
+   */
   public static findNewTreeRoot(rootNode: TreeNode, nodeName: string, selector: 'node' | 'parent'): TreeNode {
     let newRoot: TreeNode;
     const findNewRoot = (node: TreeNode) => {
@@ -154,6 +187,16 @@ export class EpiTreeUtil {
     };
   }
 
+  /**
+   * Finds the smallest non-zero branch length among all leaf nodes in the tree.
+   *
+   * This value is used as the minimum scale unit when computing tick mark
+   * intervals, ensuring the scale never subdivides below a single measurable step.
+   *
+   * @param tree - The root node of the tree to inspect.
+   * @returns The minimum positive branch length found on any leaf, or `Infinity`
+   *   if the tree is empty or all leaves have zero/undefined branch lengths.
+   */
   public static getMinGeneticScaleUnit(tree: TreeNode): number {
     if (!tree) {
       return Infinity;
@@ -162,7 +205,7 @@ export class EpiTreeUtil {
     const traverse = (node: TreeNode) => {
       const branchLength = node.branchLength?.toNumber() ?? 0;
       if (!node.children?.length && branchLength && branchLength < min) {
-        min = node.branchLength?.toNumber() ?? 0;
+        min = branchLength;
       }
       node?.children?.forEach(child => traverse(child));
     };
@@ -171,13 +214,21 @@ export class EpiTreeUtil {
   }
 
   /**
-   * getTickMarkScale
+   * Determines the optimal tick mark scale for the genetic distance axis.
    *
-   * @param treeWidthMinusPadding width of the canvas in pixels
-   * @param geneticTreeWidth
-   * @param minGeneticScaleUnit
-   * @param zoomLevel
-   * @returns [number of lines to draw, genetic distance of single line, minGeneticScaleUnit]
+   * Selects the number of scale lines and the genetic distance represented by
+   * each interval by searching for the combination with the least leftover
+   * (i.e. the product of `numLines × increment` closest to `geneticTreeWidth`).
+   * Increments are drawn from `SCALE_INCREMENTS` scaled by an order-of-magnitude
+   * multiplier derived from `geneticTreeWidth`, and those smaller than
+   * `minGeneticScaleUnit` are skipped.
+   *
+   * @param params.treeWidthMinusPadding - Width of the drawable canvas area in pixels (excluding padding).
+   * @param params.geneticTreeWidth - Total genetic distance represented by the full tree width.
+   * @param params.minGeneticScaleUnit - The smallest meaningful genetic distance unit (see {@link getMinGeneticScaleUnit}).
+   * @param params.zoomLevel - Current zoom level; divides the effective pixel width.
+   * @returns A {@link TickerMarkScale} tuple: `[numberOfLines, geneticDistancePerLine, minGeneticScaleUnit]`.
+   *   Returns `[0, 0, 0]` when any required input is falsy.
    */
   public static getTickMarkScale(params: { treeWidthMinusPadding: number; geneticTreeWidth: Decimal; minGeneticScaleUnit: number; zoomLevel: number }): TickerMarkScale {
     const { treeWidthMinusPadding, geneticTreeWidth, minGeneticScaleUnit, zoomLevel } = params;
@@ -221,6 +272,19 @@ export class EpiTreeUtil {
     return [bestCombination[0].add(1).toNumber(), bestCombination[1].toNumber(), minGeneticScaleUnit];
   }
 
+  /**
+   * Traverses the tree and produces a {@link TreeAssembly} containing all
+   * pre-computed `Path2D` shapes and metadata needed to render the tree.
+   *
+   * Leaf nodes are assembled in DFS order (incrementing `leafIndex`), which
+   * determines their vertical position. Ancestor nodes are positioned vertically
+   * at the midpoint of their first and last child.
+   *
+   * @param rootNode - The root of the tree to assemble.
+   * @param treeCanvasWidth - Width of the tree canvas in pixels, used for support lines.
+   * @param pixelToGeneticDistanceRatio - Pixels per unit of genetic distance.
+   * @returns A fully populated {@link TreeAssembly} ready for rendering.
+   */
   public static assembleTree(rootNode: TreeNode, treeCanvasWidth: number, pixelToGeneticDistanceRatio: number): TreeAssembly {
     let leafIndex = 0;
     const treeAssembly: TreeAssembly = {
@@ -266,8 +330,21 @@ export class EpiTreeUtil {
     return treeAssembly;
   }
 
+  /**
+   * Assembles the visual elements for a single leaf node and appends them to
+   * the tree assembly.
+   *
+   * Produces: a horizontal branch line, an optional distance label, a dashed
+   * support line extending to the canvas edge, and a filled dot.
+   *
+   * @param treeAssemblyContext - Shared context holding the assembly target and canvas dimensions.
+   * @param node - The leaf tree node to assemble.
+   * @param distance - Accumulated genetic distance from the root to the start of this node's branch.
+   * @param leafIndex - Zero-based vertical index of this leaf, determining its Y position.
+   * @returns The pixel coordinates of the branch start and the node name, for use by the parent.
+   */
   private static assembleLeafNode(treeAssemblyContext: TreeAssemblyContext, node: TreeNode, distance = 0, leafIndex = 0): NodeAssemblyResult {
-    const leafX = (distance ?? 0) + (node.branchLength?.toNumber() ?? 0);
+    const leafX = distance + (node.branchLength?.toNumber() ?? 0);
     const leafXPxEnd = leafX * treeAssemblyContext.pixelToGeneticDistanceRatio + ConfigManager.instance.config.epiTree.TREE_PADDING;
     const leafYPx = ((leafIndex) * ConfigManager.instance.config.epiLineList.TABLE_ROW_HEIGHT) + (ConfigManager.instance.config.epiLineList.TABLE_ROW_HEIGHT / 2);
     const leafXPxDistance = (node.branchLength?.toNumber() ?? 0) * treeAssemblyContext.pixelToGeneticDistanceRatio;
@@ -309,6 +386,20 @@ export class EpiTreeUtil {
     };
   }
 
+  /**
+   * Assembles the visual elements for an ancestor (internal) node and appends
+   * them to the tree assembly.
+   *
+   * Produces: vertical connector lines from each child toward the ancestor's
+   * Y midpoint (split into two sorted groups above and below center to allow
+   * per-segment highlighting), a horizontal branch line, an optional distance
+   * label, and a filled dot when all children have positive branch lengths.
+   *
+   * @param treeAssemblyContext - Shared context holding the assembly target and canvas dimensions.
+   * @param node - The ancestor tree node to assemble.
+   * @param childRenderResults - Assembly results returned by all direct children.
+   * @returns The pixel coordinates of the branch start and aggregated case IDs, for use by the parent.
+   */
   private static assembleAncestorNode(treeAssemblyContext: TreeAssemblyContext, node: TreeNode, childRenderResults: NodeAssemblyResult[]): NodeAssemblyResult {
     const firstChild = first(childRenderResults);
     const lastChild = last(childRenderResults);
@@ -374,17 +465,57 @@ export class EpiTreeUtil {
     };
   }
 
+  /**
+   * Returns a formatted distance label string for a branch, or `null` if the
+   * label should be suppressed.
+   *
+   * A label is suppressed when:
+   * - The tree has no maximum branch length, or it is zero.
+   * - The branch length is zero or undefined.
+   * - The branch is shorter than `MINIMUM_DISTANCE_PERCENTAGE_TO_SHOW_LABEL`
+   *   percent of the maximum branch length in the tree.
+   *
+   * Precision is derived from the magnitude of `maxBranchLength` to avoid
+   * excessive decimal places for large values.
+   *
+   * @param treeAssemblyContext - Context containing the root node (for `maxBranchLength`).
+   * @param branchLength - The genetic distance of the branch to label.
+   * @returns A rounded numeric string, or `null` if the label should be hidden.
+   */
   private static getDistanceLabel(treeAssemblyContext: TreeAssemblyContext, branchLength: Decimal): string {
-    const labelPrecision = treeAssemblyContext.rootNode?.maxBranchLength ? Math.max(1, 4 - String(Math.round(treeAssemblyContext.rootNode.maxBranchLength.toNumber())).length) : null;
-    if (!treeAssemblyContext.rootNode.maxBranchLength || treeAssemblyContext.rootNode.maxBranchLength.toNumber() === 0 || !branchLength || (branchLength?.toNumber() ?? 0) === 0) {
+    const labelPrecision = treeAssemblyContext.rootNode.maxBranchLength ? Math.max(1, 4 - String(Math.round(treeAssemblyContext.rootNode.maxBranchLength.toNumber())).length) : null;
+    if (!treeAssemblyContext.rootNode.maxBranchLength || treeAssemblyContext.rootNode.maxBranchLength.toNumber() === 0 || !branchLength || branchLength.toNumber() === 0) {
       return null;
     }
     if (branchLength.div(treeAssemblyContext.rootNode.maxBranchLength).mul(100).lessThan(ConfigManager.instance.config.epiTree.MINIMUM_DISTANCE_PERCENTAGE_TO_SHOW_LABEL)) {
       return null;
     }
-    return String(round(branchLength?.toNumber() ?? 0, labelPrecision));
+    return String(round(branchLength.toNumber(), labelPrecision));
   }
 
+  /**
+   * Renders the pre-assembled tree shapes onto a canvas using the 2D context.
+   *
+   * Applies a transform for zoom and scroll, then draws in order:
+   * vertical ancestor lines → horizontal ancestor lines → (linked) support lines
+   * → (highlighted) distance labels → ancestor dots → leaf branch lines → leaf dots.
+   *
+   * When nodes are highlighted, non-highlighted shapes are dimmed via the
+   * theme's `dimFn`. Leaf dot colours come from the stratification's `caseIdColors`
+   * when available.
+   *
+   * @param params.canvas - The canvas element to draw onto.
+   * @param params.theme - MUI theme providing colours and font settings.
+   * @param params.treeAssembly - Pre-computed tree shapes from {@link assembleTree}.
+   * @param params.stratification - Colour mapping per case ID for leaf dots.
+   * @param params.zoomLevel - Current zoom level applied as a canvas transform.
+   * @param params.highlightedNodeNames - Node names to highlight; all others are dimmed.
+   * @param params.verticalScrollPosition - Vertical scroll offset in pixels.
+   * @param params.horizontalScrollPosition - Horizontal scroll offset in pixels.
+   * @param params.shouldShowDistances - Whether to render branch distance labels.
+   * @param params.devicePixelRatio - Screen DPR for crisp rendering on HiDPI displays.
+   * @param params.isLinked - Whether to draw the dashed support lines linking leaf nodes to the table.
+   */
   public static drawTree(params: {
     canvas: HTMLCanvasElement;
     theme: Theme;
@@ -462,6 +593,16 @@ export class EpiTreeUtil {
     });
   }
 
+  /**
+   * Returns the fill/stroke colour for a shape, dimming it when highlighted
+   * nodes are active and the shape is not among them.
+   *
+   * @param color - The full-brightness colour to use when highlighted or no highlight is active.
+   * @param dimFn - A function that returns a dimmed version of the colour.
+   * @param highlightedNodeNames - The currently highlighted node names.
+   * @param nodeNames - The node name(s) associated with the shape being drawn.
+   * @returns The resolved colour string.
+   */
   private static getFillStyle(color: string, dimFn: (color: string) => string, highlightedNodeNames: string[], nodeNames: string | string[]): string {
     if (highlightedNodeNames.length) {
       let isHighlighted = false;
@@ -478,6 +619,30 @@ export class EpiTreeUtil {
     return color;
   }
 
+  /**
+   * Fully redraws the tree canvas from scratch.
+   *
+   * Resets the canvas, resizes it to match its CSS layout size at the current
+   * DPR, then sequentially calls {@link drawBackground}, {@link drawGuides},
+   * and {@link drawTree}.
+   *
+   * @param params.canvas - The canvas element to draw onto.
+   * @param params.theme - MUI theme used for colours and fonts.
+   * @param params.treeAssembly - Pre-computed tree shapes from {@link assembleTree}.
+   * @param params.stratification - Colour mapping per case ID.
+   * @param params.zoomLevel - Current zoom level.
+   * @param params.isLinked - Whether to draw dashed support lines.
+   * @param params.highlightedNodeNames - Node names to highlight.
+   * @param params.verticalScrollPosition - Vertical scroll offset in pixels.
+   * @param params.horizontalScrollPosition - Horizontal scroll offset in pixels.
+   * @param params.treeCanvasWidth - Logical canvas width in pixels.
+   * @param params.treeCanvasHeight - Logical canvas height in pixels.
+   * @param params.pixelToGeneticDistanceRatio - Pixels per unit of genetic distance.
+   * @param params.tickerMarkScale - Scale tuple from {@link getTickMarkScale}.
+   * @param params.shouldShowDistances - Whether to render branch labels.
+   * @param params.devicePixelRatio - Screen DPR for HiDPI rendering.
+   * @param params.geneticTreeWidth - Total genetic width of the tree, used for guide lines.
+   */
   public static drawTreeCanvas(params: {
     canvas: HTMLCanvasElement;
     theme: Theme;
@@ -509,7 +674,16 @@ export class EpiTreeUtil {
     EpiTreeUtil.drawTree({ canvas, theme, treeAssembly, stratification, highlightedNodeNames, zoomLevel, isLinked, horizontalScrollPosition, verticalScrollPosition, shouldShowDistances, devicePixelRatio });
   }
 
-  public static drawBackground(params: { canvas: HTMLCanvasElement; theme: Theme; treeCanvasWidth: number; treeCanvasHeight: number; devicePixelRatio: number }): void {
+  /**
+   * Fills the tree canvas background with the theme's paper colour.
+   *
+   * @param params.canvas - The canvas element to draw onto.
+   * @param params.theme - MUI theme providing the background colour.
+   * @param params.treeCanvasWidth - Width of the area to fill in pixels.
+   * @param params.treeCanvasHeight - Height of the area to fill in pixels.
+   * @param params.devicePixelRatio - Screen DPR for HiDPI rendering.
+   */
+  private static drawBackground(params: { canvas: HTMLCanvasElement; theme: Theme; treeCanvasWidth: number; treeCanvasHeight: number; devicePixelRatio: number }): void {
     const { canvas, theme, treeCanvasWidth, treeCanvasHeight, devicePixelRatio } = params;
     EpiTreeUtil.draw(canvas, devicePixelRatio, (ctx) => {
       ctx.fillStyle = theme.palette.background.paper;
@@ -517,7 +691,22 @@ export class EpiTreeUtil {
     });
   }
 
-  public static forEachScaleLine(params: { tickerMarkScale: TickerMarkScale; geneticTreeWidth: Decimal; pixelToGeneticDistanceRatio: number; zoomLevel: number; devicePixelRatio: number; horizontalScrollPosition?: number; callback: (x: number, i: number, numberOfLines: number) => void }): void {
+  /**
+   * Iterates over each scale line position and invokes a callback with its
+   * canvas X coordinate.
+   *
+   * Computes the pixel offset for each tick so that the rightmost line aligns
+   * with the genetic tree width, accounting for the current scroll and zoom.
+   *
+   * @param params.tickerMarkScale - Scale tuple from {@link getTickMarkScale}.
+   * @param params.geneticTreeWidth - Total genetic width of the tree.
+   * @param params.pixelToGeneticDistanceRatio - Pixels per unit of genetic distance.
+   * @param params.zoomLevel - Current zoom level.
+   * @param params.devicePixelRatio - Screen DPR.
+   * @param params.horizontalScrollPosition - Current horizontal scroll offset in pixels (default 0).
+   * @param params.callback - Called for each line with `(x, index, numberOfLines)`.
+   */
+  private static forEachScaleLine(params: { tickerMarkScale: TickerMarkScale; geneticTreeWidth: Decimal; pixelToGeneticDistanceRatio: number; zoomLevel: number; devicePixelRatio: number; horizontalScrollPosition?: number; callback: (x: number, i: number, numberOfLines: number) => void }): void {
     const { tickerMarkScale, geneticTreeWidth, pixelToGeneticDistanceRatio, zoomLevel, devicePixelRatio, horizontalScrollPosition = 0, callback } = params;
 
     const numberOfLines = tickerMarkScale[0];
@@ -533,6 +722,19 @@ export class EpiTreeUtil {
     }
   }
 
+  /**
+   * Draws vertical dashed guide lines on the canvas at each tick mark position.
+   *
+   * @param params.canvas - The canvas element to draw onto.
+   * @param params.tickerMarkScale - Scale tuple from {@link getTickMarkScale}.
+   * @param params.geneticTreeWidth - Total genetic width of the tree.
+   * @param params.pixelToGeneticDistanceRatio - Pixels per unit of genetic distance.
+   * @param params.devicePixelRatio - Screen DPR.
+   * @param params.paddingTop - Top inset in pixels to leave blank (default 0).
+   * @param params.paddingBottom - Bottom inset in pixels to leave blank (default 0).
+   * @param params.zoomLevel - Current zoom level.
+   * @param params.horizontalScrollPosition - Current horizontal scroll offset in pixels.
+   */
   public static drawGuides(params: { canvas: HTMLCanvasElement; tickerMarkScale: TickerMarkScale; geneticTreeWidth: Decimal; pixelToGeneticDistanceRatio: number; devicePixelRatio: number; paddingTop?: number; paddingBottom?: number; zoomLevel: number; horizontalScrollPosition: number }): void {
     const { canvas, geneticTreeWidth, tickerMarkScale, pixelToGeneticDistanceRatio, zoomLevel, devicePixelRatio, paddingTop = 0, paddingBottom = 0, horizontalScrollPosition = 0 } = params;
 
@@ -559,6 +761,21 @@ export class EpiTreeUtil {
     });
   }
 
+  /**
+   * Draws the genetic distance scale labels onto the canvas header area.
+   *
+   * Labels are drawn in reverse order (right-to-left distance decreasing) so
+   * the leftmost label shows the largest genetic distance.
+   *
+   * @param params.canvas - The canvas element to draw onto.
+   * @param params.theme - MUI theme providing the font family.
+   * @param params.tickerMarkScale - Scale tuple from {@link getTickMarkScale}.
+   * @param params.geneticTreeWidth - Total genetic width of the tree.
+   * @param params.pixelToGeneticDistanceRatio - Pixels per unit of genetic distance.
+   * @param params.zoomLevel - Current zoom level.
+   * @param params.devicePixelRatio - Screen DPR.
+   * @param params.horizontalScrollPosition - Current horizontal scroll offset in pixels.
+   */
   public static drawScale(params: { canvas: HTMLCanvasElement; theme: Theme; tickerMarkScale: TickerMarkScale; geneticTreeWidth: Decimal; pixelToGeneticDistanceRatio: number; zoomLevel: number; devicePixelRatio: number; horizontalScrollPosition: number }): void {
     const { canvas, theme, tickerMarkScale, geneticTreeWidth, pixelToGeneticDistanceRatio, devicePixelRatio, zoomLevel, horizontalScrollPosition = 0 } = params;
     EpiTreeUtil.draw(canvas, devicePixelRatio, (ctx) => {
@@ -581,6 +798,15 @@ export class EpiTreeUtil {
     });
   }
 
+  /**
+   * Draws a thin horizontal divider line across the full canvas width.
+   *
+   * Used to visually separate the scale header from the tree body.
+   *
+   * @param params.canvas - The canvas element to draw onto.
+   * @param params.y - Vertical position of the divider in logical pixels.
+   * @param params.devicePixelRatio - Screen DPR for correct positioning.
+   */
   public static drawDivider(params: { canvas: HTMLCanvasElement; y: number; devicePixelRatio: number }): void {
     const { canvas, y, devicePixelRatio } = params;
 
@@ -594,6 +820,14 @@ export class EpiTreeUtil {
     });
   }
 
+  /**
+   * Helper that wraps a canvas drawing callback with a DPR-aware scale/translate
+   * transform, then restores the context to its pre-call state.
+   *
+   * @param canvas - The canvas element whose 2D context to use.
+   * @param devicePixelRatio - Screen DPR to scale up for HiDPI rendering.
+   * @param callback - Drawing operations to perform inside the transform.
+   */
   private static draw(canvas: HTMLCanvasElement, devicePixelRatio: number, callback: (ctx: CanvasRenderingContext2D) => void): void {
     const ctx = canvas.getContext('2d');
     ctx.scale(devicePixelRatio, devicePixelRatio);
@@ -603,6 +837,17 @@ export class EpiTreeUtil {
     ctx.scale(1 / devicePixelRatio, 1 / devicePixelRatio);
   }
 
+  /**
+   * Calculates the new scroll position after a zoom level change so that the
+   * point under the cursor stays in the same visual position.
+   *
+   * @param params.eventOffset - Pixel offset of the zoom event (e.g. mouse position) within the canvas.
+   * @param params.scrollPosition - Current scroll position before the zoom change.
+   * @param params.dimensionSize - Full logical size of the scrollable dimension in pixels.
+   * @param params.currentZoomLevel - The zoom level before the change.
+   * @param params.newZoomLevel - The zoom level after the change.
+   * @returns The adjusted scroll position that keeps the cursor-point visually stable.
+   */
   public static getNewScrollPositionForZoomLevel(params: { eventOffset: number; scrollPosition: number; dimensionSize: number; currentZoomLevel: number; newZoomLevel: number }): number {
     const { eventOffset, scrollPosition, dimensionSize, currentZoomLevel, newZoomLevel } = params;
 
@@ -612,6 +857,27 @@ export class EpiTreeUtil {
     return scrollPosition - (currentSizeTreePosition - newSizeTreePosition);
   }
 
+  /**
+   * Clamps X and Y scroll positions to their valid ranges for the current
+   * canvas dimensions, zoom level, and link state.
+   *
+   * When the tree is linked and at zoom level 1, y-scrolling is constrained
+   * tightly to the tree's pixel height. When unlinked or zoomed, the bounds
+   * include the full canvas extent to allow free panning.
+   *
+   * Also applies a device-pixel-ratio-dependent correction offset to prevent
+   * subtle over-scroll artefacts at non-integer DPR values (e.g. browser zoom).
+   *
+   * @param params.positionX - Requested horizontal scroll position.
+   * @param params.positionY - Requested vertical scroll position.
+   * @param params.treeCanvasWidth - Logical canvas width in pixels.
+   * @param params.treeCanvasHeight - Logical canvas height in pixels.
+   * @param params.treeHeight - Total rendered height of the full tree in pixels.
+   * @param params.devicePixelRatio - Current screen DPR.
+   * @param params.internalZoomLevel - Internal zoom level of the tree canvas.
+   * @param params.isLinked - Whether the tree is linked to the case list scroll position.
+   * @returns Clamped `{ newPositionX, newPositionY }` values.
+   */
   public static getSanitizedScrollPosition(params: { positionX: number; positionY: number; treeCanvasWidth: number; treeCanvasHeight: number; treeHeight: number; devicePixelRatio: number; internalZoomLevel: number; isLinked: boolean }): { newPositionX: number; newPositionY: number } {
     const { positionX, positionY, treeCanvasWidth, treeCanvasHeight, treeHeight, devicePixelRatio, internalZoomLevel, isLinked } = params;
     let positionYMax: number;
@@ -659,6 +925,20 @@ export class EpiTreeUtil {
     };
   }
 
+  /**
+   * Performs a hit-test against the tree assembly's path maps to find the
+   * tree node or line segment under the mouse cursor.
+   *
+   * Checks in priority order: node dots (via `isPointInPath`) → horizontal
+   * branch lines (with ±1 px vertical tolerance) → vertical connector lines
+   * (with ±1 px horizontal tolerance).
+   *
+   * @param params.canvas - The canvas element that received the mouse event.
+   * @param params.event - The mouse event providing cursor coordinates.
+   * @param params.treeAssembly - The assembly containing path maps to hit-test against.
+   * @param params.devicePixelRatio - Screen DPR for correct coordinate scaling.
+   * @returns The {@link TreePathProperties} of the hit shape, or `undefined` if nothing was hit.
+   */
   public static getPathPropertiesFromCanvas(params: { canvas: HTMLCanvasElement; event: MouseEvent; treeAssembly: TreeAssembly; devicePixelRatio: number }): TreePathProperties {
     const { canvas, event, treeAssembly, devicePixelRatio } = params;
 
@@ -667,7 +947,7 @@ export class EpiTreeUtil {
     const canvasX = (event.clientX - rect.left) * devicePixelRatio;
     const canvasY = (event.clientY - rect.top) * devicePixelRatio;
 
-    for (const path of treeAssembly?.nodePathPropertiesMap?.keys() ?? []) {
+    for (const path of treeAssembly.nodePathPropertiesMap.keys()) {
       if (ctx.isPointInPath(path, canvasX, canvasY)) {
         return treeAssembly.nodePathPropertiesMap.get(path);
       }
@@ -680,7 +960,7 @@ export class EpiTreeUtil {
       ((event.clientY + 1) - rect.top) * devicePixelRatio,
     ];
 
-    for (const path of treeAssembly?.horizontalLinePathPropertiesMap?.keys() ?? []) {
+    for (const path of treeAssembly.horizontalLinePathPropertiesMap.keys()) {
       for (const y of canvasYs) {
         if (ctx.isPointInStroke(path, canvasX, y)) {
           return treeAssembly.horizontalLinePathPropertiesMap.get(path);
@@ -694,7 +974,7 @@ export class EpiTreeUtil {
       canvasX,
       ((event.clientX + 1) - rect.left) * devicePixelRatio,
     ];
-    for (const path of treeAssembly?.verticalLinePathPropertiesMap?.keys() ?? []) {
+    for (const path of treeAssembly.verticalLinePathPropertiesMap.keys()) {
       for (const x of canvasXs) {
         if (ctx.isPointInStroke(path, x, canvasY)) {
           return treeAssembly.verticalLinePathPropertiesMap.get(path);
@@ -704,6 +984,17 @@ export class EpiTreeUtil {
   }
 
 
+  /**
+   * Derives all possible tree configurations for the given case type.
+   *
+   * Iterates over all columns of type `GENETIC_DISTANCE`, then for each column
+   * produces one {@link TreeConfiguration} per available tree algorithm.
+   * Algorithms are sorted by their canonical order from `EpiDataManager`.
+   *
+   * @param completeCaseType - The fully-loaded case type containing columns,
+   *   reference columns, genetic distance protocols, and tree algorithms.
+   * @returns An array of tree configurations, one per (column × algorithm) pair.
+   */
   public static getTreeConfigurations(completeCaseType: CompleteCaseType): TreeConfiguration[] {
     const treeConfigurations: TreeConfiguration[] = [];
 
@@ -716,9 +1007,6 @@ export class EpiTreeUtil {
 
     geneticDistanceCols.forEach(col => {
       const refCol = completeCaseType.ref_cols[col.ref_col_id];
-      if (refCol.col_type !== ColType.GENETIC_DISTANCE) {
-        return;
-      }
       const geneticDistanceProtocol = completeCaseType.genetic_distance_protocols[refCol.genetic_distance_protocol_id];
       const treeAlgorithms = [...col.tree_algorithm_codes].sort((a, b) => {
         return sortedTreeAlgorithmCodes.indexOf(a) - sortedTreeAlgorithmCodes.indexOf(b);
@@ -738,10 +1026,24 @@ export class EpiTreeUtil {
     return treeConfigurations;
   }
 
+  /**
+   * Produces a stable, unique string ID for a tree configuration by
+   * concatenating the IDs of its column, reference column, genetic distance
+   * protocol, and tree algorithm.
+   *
+   * @param treeConfiguration - The configuration to identify (without a pre-existing `computedId`).
+   * @returns A string of the form `"colId_refColId_protocolId_algorithmId"`.
+   */
   public static getTreeConfigurationId(treeConfiguration: Omit<TreeConfiguration, 'computedId'>): string {
     return `${treeConfiguration.col.id}_${treeConfiguration.refCol.id}_${treeConfiguration.geneticDistanceProtocol.id}_${treeConfiguration.treeAlgorithm.id}`;
   }
 
+  /**
+   * Returns a human-readable display label for a tree configuration.
+   *
+   * @param config - The tree configuration to label.
+   * @returns A string of the form `"<protocolName> - <algorithmName>"`.
+   */
   public static getTreeConfigurationLabel(config: TreeConfiguration): string {
     return `${config.geneticDistanceProtocol.name} - ${config.treeAlgorithm.name}`;
   }

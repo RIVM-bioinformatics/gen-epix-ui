@@ -52,19 +52,19 @@ import type {
 } from '../../../models/epi';
 import { EPI_ZONE } from '../../../models/epi';
 import type { MenuItemData } from '../../../models/nestedMenu';
-import type { TreePathProperties } from '../../../models/tree';
+import type {
+  TreeAssembly,
+  TreePathProperties,
+} from '../../../models/tree';
 import { EpiDashboardStoreContext } from '../../../stores/epiDashboardStore';
 import { userProfileStore } from '../../../stores/userProfileStore';
 import { SELECTION_FILTER_GROUP } from '../../../utils/CaseTypeUtil';
-import {
-  EpiTreeUtil,
-  type TreeAssembly,
-} from '../../../utils/EpiTreeUtil';
 import { QueryUtil } from '../../../utils/QueryUtil';
 import { Spinner } from '../../ui/Spinner';
 import { EpiWidget } from '../EpiWidget';
 import { DownloadUtil } from '../../../utils/DownloadUtil';
 import { useQueryMemo } from '../../../hooks/useQueryMemo';
+import { EpiTreeUtil } from '../../../utils/EpiTreeUtil';
 
 type ZoomInMenuItemConfig = {
   caseIds?: string[];
