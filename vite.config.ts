@@ -7,13 +7,13 @@ import {
 import { join } from 'path';
 
 import { playwright } from '@vitest/browser-playwright';
-import react from '@vitejs/plugin-react-swc';
+import react from '@vitejs/plugin-react';
 import svgr from 'vite-plugin-svgr';
 import dts from 'vite-plugin-dts';
 import { libInjectCss } from 'vite-plugin-lib-inject-css';
 import { defineConfig } from 'vitest/config';
-import { esmExternalRequirePlugin } from 'vite';
 import { viteStaticCopy } from 'vite-plugin-static-copy';
+import { esmExternalRequirePlugin } from 'vite';
 
 const createIndex = () => {
   const indexFilePath = join(__dirname, 'src', 'index.ts');
@@ -36,7 +36,7 @@ const createIndex = () => {
 // https://vitejs.dev/config/
 export default defineConfig({
   plugins: [
-    react({ tsDecorators: true }),
+    react(),
     svgr(),
     libInjectCss(),
     dts({
@@ -66,22 +66,23 @@ export default defineConfig({
   ],
   build: {
     rolldownOptions: {
-      external: (id) => [
-        '@emotion/cache',
-        '@emotion/react',
-        '@emotion/styled',
-        '@mui/icons-material',
-        '@mui/material',
-        '@mui/styled-engine',
-        '@mui/system',
-        '@mui/utils',
-        '@mui/x-date-pickers',
-        'i18next',
-        'react-dom',
-        'react-i18next',
-        'react',
-      ].some((pkg) => id === pkg || id.startsWith(`${pkg}/`)),
-      plugins: [esmExternalRequirePlugin()],
+      plugins: [
+        esmExternalRequirePlugin({
+          external: [
+            /^@emotion\/cache(\/.+)?$/,
+            /^@emotion\/react(\/.+)?$/,
+            /^@emotion\/styled(\/.+)?$/,
+            /^@mui\/icons-material(\/.+)?$/,
+            /^@mui\/material(\/.+)?$/,
+            /^@mui\/styled-engine(\/.+)?$/,
+            /^@mui\/system(\/.+)?$/,
+            /^@mui\/utils(\/.+)?$/,
+            /^@mui\/x-date-pickers(\/.+)?$/,
+            /^i18next(\/.+)?$/,
+            /^react(-dom|-i18next)?(\/.+)?$/,
+          ],
+        }),
+      ],
       treeshake: true,
     },
     copyPublicDir: false,
@@ -91,11 +92,6 @@ export default defineConfig({
       },
       entry: createIndex(),
       formats: ['es'],
-    },
-  },
-  optimizeDeps: {
-    esbuildOptions: {
-      tsconfig: 'tsconfig.json',
     },
   },
   test: {
@@ -131,7 +127,7 @@ export default defineConfig({
       },
       {
         plugins: [
-          react({ tsDecorators: true }),
+          react(),
         ],
         test: {
           include: [
