@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.14.3](https://github.com/RIVM-bioinformatics/gen-epix-ui/compare/v1.14.2...v1.14.3) (2026-03-23)
+
+
+### Bug Fixes
+
+* build with esmExternalRequirePlugin ([882192b](https://github.com/RIVM-bioinformatics/gen-epix-ui/commit/882192b401da993a3aa51d0a436128ec63fa60f3))
+
 ## [1.14.2](https://github.com/RIVM-bioinformatics/gen-epix-ui/compare/v1.14.1...v1.14.2) (2026-03-23)
 
 
