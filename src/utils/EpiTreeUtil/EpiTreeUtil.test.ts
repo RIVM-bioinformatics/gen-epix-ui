@@ -63,18 +63,6 @@ describe('EpiTreeUtil', () => {
   describe('getScrollPositionFromTreeVisibility', () => {
     const TABLE_ROW_HEIGHT = 30;
 
-    beforeAll(() => {
-      vi.spyOn(ConfigManager.instance, 'config', 'get').mockReturnValue({
-        epiLineList: {
-          TABLE_ROW_HEIGHT,
-        },
-      } as Config);
-    });
-
-    afterAll(() => {
-      vi.restoreAllMocks();
-    });
-
     it('returns 0 when scrolled to the top', () => {
       // 30 items total, canvas shows 10, no scroll
       expect(EpiTreeUtil.getScrollPositionFromTreeVisibility({
@@ -83,6 +71,7 @@ describe('EpiTreeUtil', () => {
         treeSize: 30,
         verticalScrollPosition: 0,
         zoomLevel: 1,
+        itemHeight: TABLE_ROW_HEIGHT,
       })).toBe(0);
     });
 
@@ -95,6 +84,7 @@ describe('EpiTreeUtil', () => {
         treeSize: 30,
         verticalScrollPosition: 300,
         zoomLevel: 1,
+        itemHeight: TABLE_ROW_HEIGHT,
       })).toBe(300);
     });
 
@@ -107,6 +97,7 @@ describe('EpiTreeUtil', () => {
         treeSize: 30,
         verticalScrollPosition: 900,
         zoomLevel: 1,
+        itemHeight: TABLE_ROW_HEIGHT,
       })).toBe(600);
     });
 
@@ -120,6 +111,7 @@ describe('EpiTreeUtil', () => {
         treeSize: 30,
         verticalScrollPosition: 0,
         zoomLevel: 2,
+        itemHeight: TABLE_ROW_HEIGHT,
       })).toBe(150);
     });
 
@@ -135,6 +127,7 @@ describe('EpiTreeUtil', () => {
         treeSize: 10,
         verticalScrollPosition: 0,
         zoomLevel: 1,
+        itemHeight: TABLE_ROW_HEIGHT,
       })).toBe(0);
     });
   });
@@ -715,9 +708,6 @@ describe('EpiTreeUtil', () => {
           ANCESTOR_DOT_RADIUS,
           MINIMUM_DISTANCE_PERCENTAGE_TO_SHOW_LABEL,
         },
-        epiLineList: {
-          TABLE_ROW_HEIGHT,
-        },
       } as Config);
     });
 
@@ -728,7 +718,7 @@ describe('EpiTreeUtil', () => {
     it('returns an assembly with empty arrays for a single leaf (no ancestors)', () => {
       // leaf a: distance=0, bl=2 → leafXPxEnd=210, leafYPx=15, leafXPxStart=10
       const tree = makeLeaf('a', 2);
-      const asm = EpiTreeUtil.assembleTree(tree, treeCanvasWidth, pixelToGeneticDistanceRatio);
+      const asm = EpiTreeUtil.assembleTree({ rootNode: tree, treeCanvasWidth, pixelToGeneticDistanceRatio, itemHeight: TABLE_ROW_HEIGHT });
 
       expect(asm.leafNodes).toHaveLength(1);
       expect(asm.leafNodes[0].nodeName).toBe('a');
@@ -744,14 +734,14 @@ describe('EpiTreeUtil', () => {
 
     it('produces correct support line coordinates for a single leaf', () => {
       // leafXPxEnd = (0+2)*100+10 = 210, leafYPx = 15
-      const asm = EpiTreeUtil.assembleTree(makeLeaf('a', 2), treeCanvasWidth, pixelToGeneticDistanceRatio);
+      const asm = EpiTreeUtil.assembleTree({ rootNode: makeLeaf('a', 2), treeCanvasWidth, pixelToGeneticDistanceRatio, itemHeight: TABLE_ROW_HEIGHT });
       expect(asm.supportLines).toEqual([{ nodeName: 'a', fromX: 210, toX: treeCanvasWidth, y: 15 }]);
     });
 
     it('produces one entry per leaf in leafNodes, leafTreeLines, and supportLines for a two-leaf tree', () => {
       // root(bl=0) → [a(bl=2), b(bl=3)]
       const tree = makeNode('root', 0, [makeLeaf('a', 2), makeLeaf('b', 3)]);
-      const asm = EpiTreeUtil.assembleTree(tree, treeCanvasWidth, pixelToGeneticDistanceRatio);
+      const asm = EpiTreeUtil.assembleTree({ rootNode: tree, treeCanvasWidth, pixelToGeneticDistanceRatio, itemHeight: TABLE_ROW_HEIGHT });
 
       expect(asm.leafNodes).toHaveLength(2);
       expect(asm.leafTreeLines).toHaveLength(2);
@@ -762,7 +752,7 @@ describe('EpiTreeUtil', () => {
       // root(bl=0) → [a(bl=2), b(bl=3)]
       // a at leafIndex=0: y=15; b at leafIndex=1: y=45
       const tree = makeNode('root', 0, [makeLeaf('a', 2), makeLeaf('b', 3)]);
-      const asm = EpiTreeUtil.assembleTree(tree, treeCanvasWidth, pixelToGeneticDistanceRatio);
+      const asm = EpiTreeUtil.assembleTree({ rootNode: tree, treeCanvasWidth, pixelToGeneticDistanceRatio, itemHeight: TABLE_ROW_HEIGHT });
 
       expect(asm.supportLines[0]).toEqual({ nodeName: 'a', fromX: 210, toX: treeCanvasWidth, y: 15 });
       expect(asm.supportLines[1]).toEqual({ nodeName: 'b', fromX: 310, toX: treeCanvasWidth, y: 45 });
@@ -770,7 +760,7 @@ describe('EpiTreeUtil', () => {
 
     it('produces one horizontalAncestorTreeLine and two verticalAncestorTreeLines for a two-leaf tree', () => {
       const tree = makeNode('root', 0, [makeLeaf('a', 2), makeLeaf('b', 3)]);
-      const asm = EpiTreeUtil.assembleTree(tree, treeCanvasWidth, pixelToGeneticDistanceRatio);
+      const asm = EpiTreeUtil.assembleTree({ rootNode: tree, treeCanvasWidth, pixelToGeneticDistanceRatio, itemHeight: TABLE_ROW_HEIGHT });
 
       expect(asm.horizontalAncestorTreeLines).toHaveLength(1);
       expect(asm.verticalAncestorTreeLines).toHaveLength(2);
@@ -779,7 +769,7 @@ describe('EpiTreeUtil', () => {
     it("includes all descendant leaf names in the ancestor's horizontalAncestorTreeLine nodeNames", () => {
       // root horizontal line nodeNames = ['root', 'a', 'b']
       const tree = makeNode('root', 0, [makeLeaf('a', 2), makeLeaf('b', 3)]);
-      const asm = EpiTreeUtil.assembleTree(tree, treeCanvasWidth, pixelToGeneticDistanceRatio);
+      const asm = EpiTreeUtil.assembleTree({ rootNode: tree, treeCanvasWidth, pixelToGeneticDistanceRatio, itemHeight: TABLE_ROW_HEIGHT });
 
       expect(asm.horizontalAncestorTreeLines[0].nodeNames).toEqual(['root', 'a', 'b']);
     });
@@ -787,7 +777,7 @@ describe('EpiTreeUtil', () => {
     it('adds an ancestor dot when all children have positive branch lengths', () => {
       // both a and b have bl > 0 → ancestor dot
       const tree = makeNode('root', 0, [makeLeaf('a', 2), makeLeaf('b', 3)]);
-      const asm = EpiTreeUtil.assembleTree(tree, treeCanvasWidth, pixelToGeneticDistanceRatio);
+      const asm = EpiTreeUtil.assembleTree({ rootNode: tree, treeCanvasWidth, pixelToGeneticDistanceRatio, itemHeight: TABLE_ROW_HEIGHT });
 
       expect(asm.ancestorNodes).toHaveLength(1);
       expect(asm.ancestorNodes[0].nodeNames).toContain('root');
@@ -796,7 +786,7 @@ describe('EpiTreeUtil', () => {
     it('does NOT add an ancestor dot when a child has zero branch length', () => {
       // leaf 'a' has bl=0 → root.children.every(bl > 0) is false → no dot
       const tree = makeNode('root', 0, [makeLeaf('a', 0), makeLeaf('b', 2)]);
-      const asm = EpiTreeUtil.assembleTree(tree, treeCanvasWidth, pixelToGeneticDistanceRatio);
+      const asm = EpiTreeUtil.assembleTree({ rootNode: tree, treeCanvasWidth, pixelToGeneticDistanceRatio, itemHeight: TABLE_ROW_HEIGHT });
 
       expect(asm.ancestorNodes).toHaveLength(0);
     });
@@ -806,7 +796,7 @@ describe('EpiTreeUtil', () => {
       // horizontalLinePathPropertiesMap: 2 leaf lines + 1 ancestor line = 3
       // verticalLinePathPropertiesMap: 2 vertical lines
       const tree = makeNode('root', 0, [makeLeaf('a', 2), makeLeaf('b', 3)]);
-      const asm = EpiTreeUtil.assembleTree(tree, treeCanvasWidth, pixelToGeneticDistanceRatio);
+      const asm = EpiTreeUtil.assembleTree({ rootNode: tree, treeCanvasWidth, pixelToGeneticDistanceRatio, itemHeight: TABLE_ROW_HEIGHT });
 
       expect(asm.nodePathPropertiesMap.size).toBe(3);
       expect(asm.horizontalLinePathPropertiesMap.size).toBe(3);
@@ -815,7 +805,7 @@ describe('EpiTreeUtil', () => {
 
     it('stores correct subTreeLeaveNames for a leaf in nodePathPropertiesMap', () => {
       const leafA = makeLeaf('a', 2);
-      const asm = EpiTreeUtil.assembleTree(leafA, treeCanvasWidth, pixelToGeneticDistanceRatio);
+      const asm = EpiTreeUtil.assembleTree({ rootNode: leafA, treeCanvasWidth, pixelToGeneticDistanceRatio, itemHeight: TABLE_ROW_HEIGHT });
 
       const values = [...asm.nodePathPropertiesMap.values()];
       expect(values[0].subTreeLeaveNames).toEqual(['a']);
@@ -825,7 +815,7 @@ describe('EpiTreeUtil', () => {
     it('stores correct subTreeLeaveNames for an ancestor in horizontalLinePathPropertiesMap', () => {
       // ancestor line subTreeLeaveNames = caseIds = ['a', 'b']
       const tree = makeNode('root', 0, [makeLeaf('a', 2), makeLeaf('b', 3)]);
-      const asm = EpiTreeUtil.assembleTree(tree, treeCanvasWidth, pixelToGeneticDistanceRatio);
+      const asm = EpiTreeUtil.assembleTree({ rootNode: tree, treeCanvasWidth, pixelToGeneticDistanceRatio, itemHeight: TABLE_ROW_HEIGHT });
 
       // The ancestor's horizontal line is the last entry (added after the two leaf lines)
       const mapValues = [...asm.horizontalLinePathPropertiesMap.values()];
@@ -840,7 +830,7 @@ describe('EpiTreeUtil', () => {
         makeNode('left', 1, [makeLeaf('a', 1), makeLeaf('b', 1)]),
         makeLeaf('c', 2),
       ]);
-      const asm = EpiTreeUtil.assembleTree(tree, treeCanvasWidth, pixelToGeneticDistanceRatio);
+      const asm = EpiTreeUtil.assembleTree({ rootNode: tree, treeCanvasWidth, pixelToGeneticDistanceRatio, itemHeight: TABLE_ROW_HEIGHT });
 
       expect(asm.leafNodes).toHaveLength(3);
       expect(asm.leafNodes.map(n => n.nodeName)).toEqual(['a', 'b', 'c']);
@@ -859,7 +849,7 @@ describe('EpiTreeUtil', () => {
         makeNode('left', 1, [makeLeaf('a', 1), makeLeaf('b', 1)]),
         makeLeaf('c', 2),
       ]);
-      const asm = EpiTreeUtil.assembleTree(tree, treeCanvasWidth, pixelToGeneticDistanceRatio);
+      const asm = EpiTreeUtil.assembleTree({ rootNode: tree, treeCanvasWidth, pixelToGeneticDistanceRatio, itemHeight: TABLE_ROW_HEIGHT });
 
       expect(asm.supportLines[0]).toEqual({ nodeName: 'a', fromX: 210, toX: treeCanvasWidth, y: 15 });
       expect(asm.supportLines[1]).toEqual({ nodeName: 'b', fromX: 210, toX: treeCanvasWidth, y: 45 });
@@ -872,7 +862,7 @@ describe('EpiTreeUtil', () => {
         makeNode('left', 1, [makeLeaf('a', 1), makeLeaf('b', 1)]),
         makeLeaf('c', 2),
       ]);
-      const asm = EpiTreeUtil.assembleTree(tree, treeCanvasWidth, pixelToGeneticDistanceRatio);
+      const asm = EpiTreeUtil.assembleTree({ rootNode: tree, treeCanvasWidth, pixelToGeneticDistanceRatio, itemHeight: TABLE_ROW_HEIGHT });
 
       const rootLine = asm.horizontalAncestorTreeLines.find(l => l.nodeNames[0] === 'root');
       expect(rootLine?.nodeNames).toEqual(['root', 'a', 'b', 'c']);
@@ -886,7 +876,7 @@ describe('EpiTreeUtil', () => {
         ...makeNode('root', 0, [makeLeaf('a', 5), makeLeaf('b', 10)]),
         maxBranchLength: new Decimal(10),
       };
-      const asm = EpiTreeUtil.assembleTree(rootNode, treeCanvasWidth, pixelToGeneticDistanceRatio);
+      const asm = EpiTreeUtil.assembleTree({ rootNode, treeCanvasWidth, pixelToGeneticDistanceRatio, itemHeight: TABLE_ROW_HEIGHT });
 
       expect(asm.distanceTexts).toHaveLength(2);
       expect(asm.distanceTexts[0].nodeNames).toEqual(['a']);
@@ -901,7 +891,7 @@ describe('EpiTreeUtil', () => {
         ...makeNode('root', 0, [makeLeaf('a', 4), makeLeaf('b', 10)]),
         maxBranchLength: new Decimal(100),
       };
-      const asm = EpiTreeUtil.assembleTree(rootNode, treeCanvasWidth, pixelToGeneticDistanceRatio);
+      const asm = EpiTreeUtil.assembleTree({ rootNode, treeCanvasWidth, pixelToGeneticDistanceRatio, itemHeight: TABLE_ROW_HEIGHT });
 
       expect(asm.distanceTexts).toHaveLength(1);
       expect(asm.distanceTexts[0].nodeNames).toEqual(['b']);
@@ -910,13 +900,13 @@ describe('EpiTreeUtil', () => {
     it('produces no distance texts when rootNode has no maxBranchLength', () => {
       // makeNode does not set maxBranchLength → all labels suppressed
       const tree = makeNode('root', 0, [makeLeaf('a', 5), makeLeaf('b', 10)]);
-      const asm = EpiTreeUtil.assembleTree(tree, treeCanvasWidth, pixelToGeneticDistanceRatio);
+      const asm = EpiTreeUtil.assembleTree({ rootNode: tree, treeCanvasWidth, pixelToGeneticDistanceRatio, itemHeight: TABLE_ROW_HEIGHT });
 
       expect(asm.distanceTexts).toHaveLength(0);
     });
 
     it('returns an empty assembly for a null rootNode without throwing', () => {
-      const asm = EpiTreeUtil.assembleTree(null as unknown as TreeNode, treeCanvasWidth, pixelToGeneticDistanceRatio);
+      const asm = EpiTreeUtil.assembleTree({ rootNode: null as unknown as TreeNode, treeCanvasWidth, pixelToGeneticDistanceRatio, itemHeight: TABLE_ROW_HEIGHT });
       expect(asm.leafNodes).toHaveLength(0);
       expect(asm.ancestorNodes).toHaveLength(0);
     });
@@ -924,7 +914,7 @@ describe('EpiTreeUtil', () => {
     it('handles a leaf node with undefined branchLength gracefully (uses ?? 0 fallback)', () => {
       // leaf without branchLength → branchLength?.toNumber() ?? 0 === 0
       const leafNoBL = { name: 'x', subTreeLeaveNames: ['x'], subTreeNames: [], size: 1 } as TreeNode;
-      const asm = EpiTreeUtil.assembleTree(leafNoBL, treeCanvasWidth, pixelToGeneticDistanceRatio);
+      const asm = EpiTreeUtil.assembleTree({ rootNode: leafNoBL, treeCanvasWidth, pixelToGeneticDistanceRatio, itemHeight: TABLE_ROW_HEIGHT });
       expect(asm.leafNodes).toHaveLength(1);
       // leafXPxEnd = (0 + 0)*100 + TREE_PADDING = 10
       expect(asm.supportLines[0]).toEqual({ nodeName: 'x', fromX: 10, toX: treeCanvasWidth, y: 15 });
@@ -934,7 +924,7 @@ describe('EpiTreeUtil', () => {
       // childNoBL has branchLength: undefined → every(bl > 0) uses ?? 0 → 0 > 0 = false → no dot
       const childNoBL = { name: 'a', subTreeLeaveNames: ['a'], subTreeNames: [], size: 1 } as TreeNode;
       const root = makeNode('root', 0, [childNoBL, makeLeaf('b', 0)]);
-      const asm = EpiTreeUtil.assembleTree(root, treeCanvasWidth, pixelToGeneticDistanceRatio);
+      const asm = EpiTreeUtil.assembleTree({ rootNode: root, treeCanvasWidth, pixelToGeneticDistanceRatio, itemHeight: TABLE_ROW_HEIGHT });
       expect(asm.leafNodes).toHaveLength(2);
       expect(asm.ancestorNodes).toHaveLength(0);
     });
@@ -950,7 +940,7 @@ describe('EpiTreeUtil', () => {
         size: 2,
         children: [makeLeaf('a', 1), makeLeaf('b', 1)],
       } as unknown as TreeNode;
-      const asm = EpiTreeUtil.assembleTree(ancestorNoBL, treeCanvasWidth, pixelToGeneticDistanceRatio);
+      const asm = EpiTreeUtil.assembleTree({ rootNode: ancestorNoBL, treeCanvasWidth, pixelToGeneticDistanceRatio, itemHeight: TABLE_ROW_HEIGHT });
       expect(asm.leafNodes).toHaveLength(2);
       expect(asm.ancestorNodes).toHaveLength(1); // both children have positive BL
     });
@@ -965,7 +955,7 @@ describe('EpiTreeUtil', () => {
         makeLeaf('c', 1),
         makeLeaf('d', 1),
       ]);
-      const asm = EpiTreeUtil.assembleTree(tree, treeCanvasWidth, pixelToGeneticDistanceRatio);
+      const asm = EpiTreeUtil.assembleTree({ rootNode: tree, treeCanvasWidth, pixelToGeneticDistanceRatio, itemHeight: TABLE_ROW_HEIGHT });
       // 4 vertical chunk paths: 2 for top group (each chunk ending at ancestorYPx) + 2 for bottom group
       expect(asm.verticalAncestorTreeLines.length).toBeGreaterThanOrEqual(4);
     });
@@ -977,7 +967,7 @@ describe('EpiTreeUtil', () => {
         ...makeNode('root', 0, [inner]),
         maxBranchLength: new Decimal(10),
       };
-      const asm = EpiTreeUtil.assembleTree(rootNode, treeCanvasWidth, pixelToGeneticDistanceRatio);
+      const asm = EpiTreeUtil.assembleTree({ rootNode, treeCanvasWidth, pixelToGeneticDistanceRatio, itemHeight: TABLE_ROW_HEIGHT });
       const ancestorText = asm.distanceTexts.find(t => t.nodeNames.includes('inner'));
       expect(ancestorText).toBeDefined();
     });

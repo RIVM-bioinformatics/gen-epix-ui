@@ -74,13 +74,14 @@ type ZoomInMenuItemConfig = {
 type EpiTreeProps = {
   readonly linkedScrollSubject: Subject<EpiLinkedScrollSubjectValue>;
   readonly ref: Ref<EpiTreeRef>;
+  readonly itemHeight: number;
 };
 
 export interface EpiTreeRef {
   link: () => void;
 }
 
-export const EpiTree = ({ linkedScrollSubject, ref }: EpiTreeProps) => {
+export const EpiTree = ({ linkedScrollSubject, ref, itemHeight }: EpiTreeProps) => {
   const theme = useTheme();
   const { t } = useTranslation();
   const scrollbarSize = useScrollbarSize();
@@ -205,7 +206,7 @@ export const EpiTree = ({ linkedScrollSubject, ref }: EpiTreeProps) => {
   const treeWidthMinusPadding = treeCanvasWidth - (2 * ConfigManager.instance.config.epiTree.TREE_PADDING);
   const pixelToGeneticDistanceRatio = tree?.maxBranchLength ? treeWidthMinusPadding / tree.maxBranchLength.toNumber() : null;
   // Note: There is some magic here, because of the position: sticky for the table header
-  const treeHeight = tree?.size ? (tree.size * ConfigManager.instance.config.epiLineList.TABLE_ROW_HEIGHT) + scrollbarSize : ConfigManager.instance.config.epiLineList.TABLE_ROW_HEIGHT;
+  const treeHeight = tree?.size ? (tree.size * itemHeight) + scrollbarSize : itemHeight;
 
   useEffect(() => {
     if (treeData) {
@@ -324,6 +325,7 @@ export const EpiTree = ({ linkedScrollSubject, ref }: EpiTreeProps) => {
         treeCanvasHeight,
         verticalScrollPosition,
         zoomLevel,
+        itemHeight,
       });
 
       await setSorting(null, null);
@@ -339,7 +341,7 @@ export const EpiTree = ({ linkedScrollSubject, ref }: EpiTreeProps) => {
     // eslint-disable-next-line @typescript-eslint/no-floating-promises
     perform();
 
-  }, [linkedScrollSubject, setSorting, tree?.size, treeCanvasHeight, treeHeight, verticalScrollPosition, updateScrollPosition, zoomLevel]);
+  }, [linkedScrollSubject, setSorting, tree?.size, treeCanvasHeight, treeHeight, verticalScrollPosition, updateScrollPosition, zoomLevel, itemHeight]);
 
   const onLinkButtonClick = useCallback(() => {
     linkLineListToTree();
@@ -401,8 +403,8 @@ export const EpiTree = ({ linkedScrollSubject, ref }: EpiTreeProps) => {
 
   // Setup canvas
   useEffect(() => {
-    setTreeAssembly(EpiTreeUtil.assembleTree(tree, treeCanvasWidth, pixelToGeneticDistanceRatio));
-  }, [pixelToGeneticDistanceRatio, tree, treeCanvasWidth]);
+    setTreeAssembly(EpiTreeUtil.assembleTree({ rootNode: tree, treeCanvasWidth, pixelToGeneticDistanceRatio, itemHeight }));
+  }, [pixelToGeneticDistanceRatio, tree, treeCanvasWidth, itemHeight]);
 
   useEffect(() => {
     if (!treeCanvas || !treeAssembly || !tree) {

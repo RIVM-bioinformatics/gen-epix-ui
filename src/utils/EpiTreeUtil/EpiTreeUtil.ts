@@ -27,6 +27,7 @@ type TreeAssemblyContext = {
   treeCanvasWidth: number;
   treeAssembly: TreeAssembly;
   pixelToGeneticDistanceRatio: number;
+  itemHeight: number;
 };
 
 type NodeAssemblyResult = {
@@ -59,10 +60,11 @@ export class EpiTreeUtil {
     treeSize: number;
     verticalScrollPosition: number;
     zoomLevel: number;
+    itemHeight: number;
   }): number {
-    const { treeCanvasHeight, treeHeight, verticalScrollPosition, zoomLevel, treeSize } = kwArgs;
+    const { treeCanvasHeight, treeHeight, verticalScrollPosition, zoomLevel, treeSize, itemHeight } = kwArgs;
 
-    const scaledItemHeight = ConfigManager.instance.config.epiLineList.TABLE_ROW_HEIGHT / zoomLevel;
+    const scaledItemHeight = itemHeight / zoomLevel;
     const scrolledByItems = Math.round(verticalScrollPosition / scaledItemHeight);
     const maxItemsInView = Math.round(treeCanvasHeight / scaledItemHeight);
 
@@ -70,7 +72,7 @@ export class EpiTreeUtil {
     const lastItemInView = Math.min(scrolledByItems + maxItemsInView, treeSize);
     const averageItemInView = (firstItemInView + lastItemInView) / 2;
 
-    const newScrollPosition = Math.max(0, Math.min(treeHeight - treeCanvasHeight, averageItemInView * ConfigManager.instance.config.epiLineList.TABLE_ROW_HEIGHT - treeCanvasHeight / 2));
+    const newScrollPosition = Math.max(0, Math.min(treeHeight - treeCanvasHeight, averageItemInView * itemHeight - treeCanvasHeight / 2));
     return newScrollPosition;
   }
 
@@ -280,12 +282,14 @@ export class EpiTreeUtil {
    * determines their vertical position. Ancestor nodes are positioned vertically
    * at the midpoint of their first and last child.
    *
-   * @param rootNode - The root of the tree to assemble.
-   * @param treeCanvasWidth - Width of the tree canvas in pixels, used for support lines.
-   * @param pixelToGeneticDistanceRatio - Pixels per unit of genetic distance.
+   * @param params.rootNode - The root of the tree to assemble.
+   * @param params.treeCanvasWidth - Width of the tree canvas in pixels, used for support lines.
+   * @param params.pixelToGeneticDistanceRatio - Pixels per unit of genetic distance.
+   * @param params.itemHeight - Height of each row/item in pixels.
    * @returns A fully populated {@link TreeAssembly} ready for rendering.
    */
-  public static assembleTree(rootNode: TreeNode, treeCanvasWidth: number, pixelToGeneticDistanceRatio: number): TreeAssembly {
+  public static assembleTree(params: { rootNode: TreeNode; treeCanvasWidth: number; pixelToGeneticDistanceRatio: number; itemHeight: number }): TreeAssembly {
+    const { rootNode, treeCanvasWidth, pixelToGeneticDistanceRatio, itemHeight } = params;
     let leafIndex = 0;
     const treeAssembly: TreeAssembly = {
       verticalAncestorTreeLines: [],
@@ -305,6 +309,7 @@ export class EpiTreeUtil {
       treeCanvasWidth,
       pixelToGeneticDistanceRatio,
       rootNode,
+      itemHeight,
     };
 
     const traverseTree = (node: TreeNode, distance = 0): NodeAssemblyResult => {
@@ -346,7 +351,7 @@ export class EpiTreeUtil {
   private static assembleLeafNode(treeAssemblyContext: TreeAssemblyContext, node: TreeNode, distance = 0, leafIndex = 0): NodeAssemblyResult {
     const leafX = distance + (node.branchLength?.toNumber() ?? 0);
     const leafXPxEnd = leafX * treeAssemblyContext.pixelToGeneticDistanceRatio + ConfigManager.instance.config.epiTree.TREE_PADDING;
-    const leafYPx = ((leafIndex) * ConfigManager.instance.config.epiLineList.TABLE_ROW_HEIGHT) + (ConfigManager.instance.config.epiLineList.TABLE_ROW_HEIGHT / 2);
+    const leafYPx = ((leafIndex) * treeAssemblyContext.itemHeight) + (treeAssemblyContext.itemHeight / 2);
     const leafXPxDistance = (node.branchLength?.toNumber() ?? 0) * treeAssemblyContext.pixelToGeneticDistanceRatio;
     const leafXPxStart = leafXPxEnd - leafXPxDistance;
     const label = EpiTreeUtil.getDistanceLabel(treeAssemblyContext, node.branchLength);
