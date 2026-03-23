@@ -30,7 +30,7 @@ import {
   UploadAction,
   ReadsFileFormat,
   SeqFileFormat,
-  UploadStatus,
+  EtlStatus,
 } from '../../api';
 import { CaseTypeUtil } from '../CaseTypeUtil';
 import { CaseUtil } from '../CaseUtil';
@@ -840,7 +840,7 @@ export class EpiUploadUtil {
       onProgress(0, t('Creating cases...'));
       const caseBatchUploadResult = await EpiUploadUtil.createCases(kwArgs);
 
-      if (caseBatchUploadResult.status === UploadStatus.FAILED) {
+      if (caseBatchUploadResult.status === EtlStatus.FAILED) {
         throw new UploadError(t('Failed to create cases during upload.'), caseBatchUploadResult);
       }
 
