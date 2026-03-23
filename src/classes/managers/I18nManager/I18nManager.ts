@@ -38,6 +38,7 @@ export class I18nManager extends EventBusAbstract<I18nEvent> {
     await i18next
       .use(initReactI18next)
       .init({
+        showSupportNotice: false,
         lng: defaultLanguageConfig.code,
         fallbackLng: defaultLanguageConfig.code,
         missingKeyHandler: (lng, ns, key) => {

@@ -12,7 +12,7 @@ import { NotificationUtil } from '../../utils/NotificationUtil';
 
 export type MutationContextCreate<TData> = { previousData?: TData[]; temporaryId?: string; notificationKey?: string };
 
-export type UseCreateMutationProps<TData, TVariables extends GenericData | GenericData[] = TData> = {
+export type UseCreateMutationProps<TData extends GenericData | GenericData[], TVariables = TData> = {
   readonly queryFn?: (item: TVariables) => Promise<TData>;
   readonly resourceQueryKey?: string[];
   readonly associationQueryKeys?: string[][];

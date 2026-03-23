@@ -11,7 +11,7 @@ export class SelectionFilter extends FilterAbstract<string[]> implements Filter<
   public initialFilterValue: string[] = [];
   public filterValue: string[] = [];
 
-  public matchRowValue(_rowValue: unknown, row: Case): boolean {
+  public matchRowValue(_rowValue: unknown, row?: Case): boolean {
     return !this.filterValue.length || this.filterValue.includes(row.id);
   }
 

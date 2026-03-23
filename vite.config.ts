@@ -51,12 +51,15 @@ export default {
             './src/@types/**/*.d.ts',
           ],
           dest: './',
+          rename: { stripBase: true },
+          transform: (content) => content.replace(/from '\.\.\/classes\/[^']+'/g, "from './index'"),
         },
         {
           src: [
             './src/locale',
           ],
-          dest: './',
+          dest: './locale',
+          rename: { stripBase: true },
         },
       ],
     }),

@@ -1,6 +1,7 @@
 import { useCallback } from 'react';
 import {
   set,
+  type FieldValues,
   type Path,
   type UseFormGetValues,
 } from 'react-hook-form';
@@ -9,7 +10,7 @@ import type {
   ValidationError,
 } from 'yup';
 
-const useIsFormFieldRequiredFromSchema = <TFormFields, TName extends Path<TFormFields>>(schema: ObjectSchema<TFormFields, TFormFields>, getFormValues: UseFormGetValues<TFormFields>): (fieldName: TName) => boolean => {
+const useIsFormFieldRequiredFromSchema = <TFormFields extends FieldValues, TName extends Path<TFormFields>>(schema: ObjectSchema<TFormFields, TFormFields>, getFormValues: UseFormGetValues<TFormFields>): (fieldName: TName) => boolean => {
   return useCallback((fieldName: TName) => {
     try {
       const values = structuredClone(getFormValues());

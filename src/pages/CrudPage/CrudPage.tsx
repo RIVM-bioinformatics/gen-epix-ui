@@ -19,7 +19,10 @@ import {
 } from 'react';
 import type { ObjectSchema } from 'yup';
 import isArray from 'lodash/isArray';
-import type { UseFormReturn } from 'react-hook-form';
+import type {
+  UseFormReturn,
+  FieldValues,
+} from 'react-hook-form';
 
 import type {
   CommandName,
@@ -75,7 +78,7 @@ export type CrudPageSubPage<TData extends GenericData> = {
 };
 
 export type CrudPageProps<
-  TFormFields,
+  TFormFields extends FieldValues,
   TData extends GenericData,
   TTableData extends TData = TData
 > = PropsWithTestIdAttributes<{
@@ -127,7 +130,7 @@ export type CrudPageProps<
 }>;
 
 export const CrudPage = <
-  TFormFields,
+  TFormFields extends FieldValues,
   TData extends GenericData,
   TTableData extends TData = TData
 >({

@@ -58,7 +58,7 @@ export type FormFieldDefinitionRadioGroup<TFormFields extends FieldValues> = { d
 export type FormFieldDefinitionSelect<TFormFields extends FieldValues> = { definition: FORM_FIELD_DEFINITION_TYPE.SELECT; multiple?: false } & SelectProps<TFormFields, Path<TFormFields>, false>;
 export type FormFieldDefinitionSelectMultiple<TFormFields extends FieldValues> = { definition: FORM_FIELD_DEFINITION_TYPE.SELECT; multiple?: true } & SelectProps<TFormFields, Path<TFormFields>, true>;
 
-export type FormFieldDefinition<TFormFields> =
+export type FormFieldDefinition<TFormFields extends FieldValues> =
   FormFieldDefinitionAutocomplete<TFormFields> |
   FormFieldDefinitionAutocompleteMultiple<TFormFields> |
   FormFieldDefinitionTextField<TFormFields> |

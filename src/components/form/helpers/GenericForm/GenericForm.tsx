@@ -9,6 +9,7 @@ import {
 } from 'react';
 import { useTranslation } from 'react-i18next';
 import type {
+  FieldValues,
   Path,
   UseFormReturn,
 } from 'react-hook-form';
@@ -32,7 +33,7 @@ import { UploadButton } from '../../fields/UploadButton/UploadButton';
 import { RadioGroup } from '../../fields/RadioGroup';
 import { useIsFormFieldRequiredFromSchema } from '../../../../hooks/useIsFormFieldRequiredFromSchema';
 
-export type GenericFormProps<TFormFields> = {
+export type GenericFormProps<TFormFields extends FieldValues> = {
   readonly formFieldDefinitions: FormFieldDefinition<TFormFields>[];
   readonly formId?: string;
   readonly onSubmit?: FormEventHandler<HTMLFormElement>;
@@ -44,7 +45,7 @@ export type GenericFormProps<TFormFields> = {
   readonly defaultFormValues?: Partial<TFormFields>;
 };
 
-export const GenericForm = <TFormFields,>({
+export const GenericForm = <TFormFields extends FieldValues,>({
   formFieldDefinitions,
   formId,
   onSubmit,
