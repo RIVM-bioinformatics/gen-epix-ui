@@ -141,6 +141,7 @@ export default {
           globals: true,
           browser: {
             enabled: true,
+            headless: !!process.env.CI,
             provider: playwright(),
             // https://vitest.dev/config/browser/playwright
             instances: [
