@@ -11,8 +11,8 @@ import react from '@vitejs/plugin-react-swc';
 import svgr from 'vite-plugin-svgr';
 import dts from 'vite-plugin-dts';
 import { libInjectCss } from 'vite-plugin-lib-inject-css';
-import type { UserConfig } from 'vite';
-import type { TestUserConfig as UserConfigVitest } from 'vitest/node';
+import { defineConfig } from 'vitest/config';
+import { esmExternalRequirePlugin } from 'vite';
 import { viteStaticCopy } from 'vite-plugin-static-copy';
 
 const createIndex = () => {
@@ -34,7 +34,7 @@ const createIndex = () => {
 };
 
 // https://vitejs.dev/config/
-export default {
+export default defineConfig({
   plugins: [
     react({ tsDecorators: true }),
     svgr(),
@@ -83,6 +83,7 @@ export default {
         'react-i18next',
         'react',
       ],
+      plugins: [esmExternalRequirePlugin()],
       treeshake: true,
     },
     copyPublicDir: false,
@@ -155,4 +156,4 @@ export default {
       },
     ],
   },
-} satisfies UserConfig & { test: UserConfigVitest };
+});
