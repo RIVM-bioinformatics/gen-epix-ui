@@ -1,5 +1,13 @@
 # Changelog
 
+## [1.14.2](https://github.com/RIVM-bioinformatics/gen-epix-ui/compare/v1.14.1...v1.14.2) (2026-03-23)
+
+
+### Bug Fixes
+
+* fix locale copying ([11c2ec8](https://github.com/RIVM-bioinformatics/gen-epix-ui/commit/11c2ec8cf4e58627b2ce3e1f958a2f0b15d0efb2))
+* fix typings in dist ([11c2ec8](https://github.com/RIVM-bioinformatics/gen-epix-ui/commit/11c2ec8cf4e58627b2ce3e1f958a2f0b15d0efb2))
+
 ## [1.14.1](https://github.com/RIVM-bioinformatics/gen-epix-ui/compare/v1.14.0...v1.14.1) (2026-03-23)
 
 
