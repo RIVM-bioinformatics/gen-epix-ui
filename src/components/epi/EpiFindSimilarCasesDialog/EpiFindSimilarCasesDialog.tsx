@@ -53,6 +53,7 @@ import type {
 import { CaseApi } from '../../../api';
 import { NumberUtil } from '../../../utils/NumberUtil';
 import { ResponseHandler } from '../../ui/ResponseHandler';
+import { ConfigManager } from '../../../classes/managers/ConfigManager';
 
 export interface EpiFindSimilarCasesDialogOpenProps {
   allRows: Case[];
@@ -96,11 +97,8 @@ export const EpiFindSimilarCasesDialog = withDialog<EpiFindSimilarCasesDialogPro
       if (!currentTreeConfiguration) {
         return s;
       }
-      // !FIXME: waiting for backend
-      // const sWithIntegerCheck = (currentTreeConfiguration.geneticDistanceProtocol.seqdb_is_integer_distance) ? s.integer().typeError(t`Max distance must be an integer`) : s;
       const sWithIntegerCheck = s.integer(t`Max distance must be an integer`);
-      // !FIXME: waiting for backend
-      return sWithIntegerCheck.max(currentTreeConfiguration.geneticDistanceProtocol.seqdb_max_stored_distance || 30);
+      return sWithIntegerCheck.max(currentTreeConfiguration.geneticDistanceProtocol.seqdb_max_stored_distance || ConfigManager.instance.config.epi.SEQDB_MAX_STORED_DISTANCE_FALLBACK);
     }),
   }), [t, treeConfigurations]);
 
@@ -144,8 +142,7 @@ export const EpiFindSimilarCasesDialog = withDialog<EpiFindSimilarCasesDialogPro
         name: 'maxDistance',
         label: t`Max distance`,
         min: 0,
-        // FIXME: waiting for backend
-        max: (currentTreeConfiguration?.geneticDistanceProtocol?.seqdb_max_stored_distance ?? 30) || 30,
+        max: currentTreeConfiguration?.geneticDistanceProtocol?.seqdb_max_stored_distance || ConfigManager.instance.config.epi.SEQDB_MAX_STORED_DISTANCE_FALLBACK,
         step: 1,
         showSlider: true,
       } as const satisfies FormFieldDefinition<FormFields>,
