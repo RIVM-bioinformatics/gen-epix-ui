@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.14.1](https://github.com/RIVM-bioinformatics/gen-epix-ui/compare/v1.14.0...v1.14.1) (2026-03-23)
+
+
+### Bug Fixes
+
+* fix typescript compiler config ([ec5cec8](https://github.com/RIVM-bioinformatics/gen-epix-ui/commit/ec5cec81f9fd712e08b2273cb99ce1d1a5bb7f42))
+
 ## [1.14.0](https://github.com/RIVM-bioinformatics/gen-epix-ui/compare/v1.13.0...v1.14.0) (2026-03-23)
 
 
