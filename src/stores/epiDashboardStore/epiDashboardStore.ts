@@ -303,7 +303,17 @@ export const createEpiDashboardStore = (kwArgs: CreateEpiDashboardStoreKwArgs) =
               if (conceptSetConceptIds) {
                 if (conceptSetConceptIds.length <= STRATIFICATION_COLORS.length) {
                   conceptSetConceptIds.map(conceptId => EpiDataManager.instance.data.conceptsById[conceptId]).sort((a, b) => {
-                    if (column.col_type === ColType.ORDINAL && a.rank !== b.rank) {
+                    if (([
+                      ColType.ORDINAL,
+                      ColType.INTERVAL,
+                      ColType.DECIMAL_0,
+                      ColType.DECIMAL_1,
+                      ColType.DECIMAL_2,
+                      ColType.DECIMAL_3,
+                      ColType.DECIMAL_4,
+                      ColType.DECIMAL_5,
+                      ColType.DECIMAL_6,
+                    ] as ColType[]).includes(column.col_type) && a.rank !== b.rank) {
                       return a.rank - b.rank;
                     }
                     return a.code.localeCompare(b.code);
