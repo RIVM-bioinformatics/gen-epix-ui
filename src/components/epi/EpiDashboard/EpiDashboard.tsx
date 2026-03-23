@@ -369,6 +369,7 @@ export const EpiDashboard = withEpiDashboardStore(({ caseSet }: EpiDashboardProp
                 <EpiTree
                   ref={epiTreeRef}
                   linkedScrollSubject={linkedScrollSubject}
+                  itemHeight={ConfigManager.instance.config.epiLineList.TABLE_ROW_HEIGHT}
                 />
               )}
             />

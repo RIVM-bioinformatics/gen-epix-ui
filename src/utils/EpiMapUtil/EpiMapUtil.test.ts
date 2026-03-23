@@ -1,10 +1,32 @@
+import {
+  describe,
+  it,
+  expect,
+  vi,
+  beforeAll,
+  afterAll,
+} from 'vitest';
+
 import { ConfigManager } from '../../classes/managers/ConfigManager';
+import type { Config } from '../../models/config';
 
 import type { RegionStatistics } from './EpiMapUtil';
 import { EpiMapUtil } from './EpiMapUtil';
 
 describe('EpiMapUtil', () => {
   describe('getPieChartRadius', () => {
+    beforeAll(() => {
+      vi.spyOn(ConfigManager.instance, 'config', 'get').mockReturnValue({
+        epiMap: {
+          MIN_PIE_CHART_RADIUS: 4,
+        },
+      } as Config);
+    });
+
+    afterAll(() => {
+      vi.restoreAllMocks();
+    });
+
     it('determines the pie chart radius', () => {
       const statisticsBase: RegionStatistics = {
         maxNumCases: 0,

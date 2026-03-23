@@ -6,6 +6,7 @@ import {
 } from 'fs';
 import { join } from 'path';
 
+import { playwright } from '@vitest/browser-playwright';
 import react from '@vitejs/plugin-react-swc';
 import svgr from 'vite-plugin-svgr';
 import dts from 'vite-plugin-dts';
@@ -96,10 +97,6 @@ export default {
     },
   },
   test: {
-    globals: true,
-    environment: 'jsdom',
-    setupFiles: ['./src/test/setup.ts'],
-    testTimeout: 5000,
     coverage: {
       provider: 'v8',
       reporter: ['text', 'json', 'html'],
@@ -117,5 +114,42 @@ export default {
         '**/tests/**',
       ],
     },
+    projects: [
+      {
+        test: {
+          include: [
+            'src/**/*.test.ts',
+          ],
+          name: 'unit',
+          environment: 'jsdom',
+          globals: true,
+          setupFiles: ['./src/test/setup-jsdom.ts'],
+          testTimeout: 5000,
+        },
+      },
+      {
+        plugins: [
+          react({ tsDecorators: true }),
+        ],
+        test: {
+          include: [
+            'src/test/integration/**/*.test.{ts,tsx}',
+          ],
+          name: 'browser',
+          setupFiles: ['./src/test/setup-browser.ts'],
+          testTimeout: 30000,
+          globals: true,
+          browser: {
+            enabled: true,
+            headless: !!process.env.CI,
+            provider: playwright(),
+            // https://vitest.dev/config/browser/playwright
+            instances: [
+              { browser: 'chromium' },
+            ],
+          },
+        },
+      },
+    ],
   },
 } satisfies UserConfig & { test: UserConfigVitest };

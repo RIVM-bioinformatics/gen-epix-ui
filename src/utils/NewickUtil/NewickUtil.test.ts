@@ -19,6 +19,7 @@ describe('NewickUtil', () => {
             name: 'A',
             size: 1,
             maxBranchLength: new Decimal(0),
+            subTreeNames: [],
             subTreeLeaveNames: [
               'A',
             ],
@@ -27,6 +28,7 @@ describe('NewickUtil', () => {
             name: 'B',
             size: 1,
             maxBranchLength: new Decimal(0),
+            subTreeNames: [],
             subTreeLeaveNames: [
               'B',
             ],
@@ -37,6 +39,7 @@ describe('NewickUtil', () => {
                 name: 'C',
                 size: 1,
                 maxBranchLength: new Decimal(0),
+                subTreeNames: [],
                 subTreeLeaveNames: [
                   'C',
                 ],
@@ -45,6 +48,7 @@ describe('NewickUtil', () => {
                 name: 'D',
                 size: 1,
                 maxBranchLength: new Decimal(0),
+                subTreeNames: [],
                 subTreeLeaveNames: [
                   'D',
                 ],
@@ -56,6 +60,7 @@ describe('NewickUtil', () => {
               'C',
               'D',
             ],
+            maxBranchLength: new Decimal(0),
           },
         ],
         size: 4,
@@ -153,6 +158,30 @@ describe('NewickUtil', () => {
       };
       const tree = NewickUtil.parse(newick);
       expect(tree).toEqual(expectedTree);
+    });
+
+    it('should handle a single leaf (no parentheses)', () => {
+      const newick = 'A;';
+      const expectedTree: Partial<TreeNode> = {
+        branchLength: new Decimal(0),
+        maxBranchLength: new Decimal(0),
+        name: 'Root',
+      };
+
+      const tree = NewickUtil.parse(newick);
+      expect(tree).toEqual(expectedTree);
+    });
+  });
+
+  describe('getSortedNames', () => {
+    it('should return the name for a leaf node', () => {
+      const leaf: TreeNode = { name: 'A' };
+      expect(NewickUtil.getSortedNames(leaf)).toEqual(['A']);
+    });
+
+    it('should return leaf names in depth-first order for a tree', () => {
+      const tree = NewickUtil.parse('(A,B,(C,D));');
+      expect(NewickUtil.getSortedNames(tree)).toEqual(['A', 'B', 'C', 'D']);
     });
   });
 });
