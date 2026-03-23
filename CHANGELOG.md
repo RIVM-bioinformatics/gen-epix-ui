@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.14.5](https://github.com/RIVM-bioinformatics/gen-epix-ui/compare/v1.14.4...v1.14.5) (2026-03-23)
+
+
+### Bug Fixes
+
+* fix build again ([d03aae9](https://github.com/RIVM-bioinformatics/gen-epix-ui/commit/d03aae9002e7628d74cf4c080f5a947c20c56b4a))
+
 ## [1.14.4](https://github.com/RIVM-bioinformatics/gen-epix-ui/compare/v1.14.3...v1.14.4) (2026-03-23)
 
 
