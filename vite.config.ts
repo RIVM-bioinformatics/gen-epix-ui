@@ -65,8 +65,8 @@ export default defineConfig({
     }),
   ],
   build: {
-    rollupOptions: {
-      external: [
+    rolldownOptions: {
+      external: (id) => [
         '@emotion/cache',
         '@emotion/react',
         '@emotion/styled',
@@ -77,12 +77,10 @@ export default defineConfig({
         '@mui/utils',
         '@mui/x-date-pickers',
         'i18next',
-        'i18next',
-        'react-dom',
         'react-dom',
         'react-i18next',
         'react',
-      ],
+      ].some((pkg) => id === pkg || id.startsWith(`${pkg}/`)),
       plugins: [esmExternalRequirePlugin()],
       treeshake: true,
     },
