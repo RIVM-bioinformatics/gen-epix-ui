@@ -1,5 +1,46 @@
 # Changelog
 
+## [1.14.0](https://github.com/RIVM-bioinformatics/gen-epix-ui/compare/v1.13.0...v1.14.0) (2026-03-23)
+
+
+### Features
+
+* add SEQDB_MAX_STORED_DISTANCE_FALLBACK to config and implementation ([9b1444a](https://github.com/RIVM-bioinformatics/gen-epix-ui/commit/9b1444a5072da0ff55d7fec4d6ff685962c17db1))
+* add tree tree tests and setup integration tests ([134be4a](https://github.com/RIVM-bioinformatics/gen-epix-ui/commit/134be4a9c78071b9f751e35c1f1570f5f1c74919))
+* consume invitation by bearer token and make key optional in user invitation ([08315be](https://github.com/RIVM-bioinformatics/gen-epix-ui/commit/08315be81548255d283f85c42217b24f09ccacec))
+* feature flags ([f1e2b11](https://github.com/RIVM-bioinformatics/gen-epix-ui/commit/f1e2b11e8d8c4c89d0560923af5e5964e833b247))
+* find similar cases ([#80](https://github.com/RIVM-bioinformatics/gen-epix-ui/issues/80)) ([69e97aa](https://github.com/RIVM-bioinformatics/gen-epix-ui/commit/69e97aac3d856550949f2db151d849b87ce4aa54))
+* improve statification colors and ordering ([54e2460](https://github.com/RIVM-bioinformatics/gen-epix-ui/commit/54e2460732a7167f7033bf9a20e2e1165796fcbc))
+* improve the way translations change ([a15a202](https://github.com/RIVM-bioinformatics/gen-epix-ui/commit/a15a20286cf124d1a0111d2fc379e67cdd94ed3a))
+* improve translations ([#82](https://github.com/RIVM-bioinformatics/gen-epix-ui/issues/82)) ([1c99b8b](https://github.com/RIVM-bioinformatics/gen-epix-ui/commit/1c99b8b428f8400a112f0a586ac9c11e005108bf))
+* number slider ([#83](https://github.com/RIVM-bioinformatics/gen-epix-ui/issues/83)) ([be01cd3](https://github.com/RIVM-bioinformatics/gen-epix-ui/commit/be01cd3689afa64f9b17bfdc5f044d5456f8da42))
+* rename col and dim ([#81](https://github.com/RIVM-bioinformatics/gen-epix-ui/issues/81)) ([63b7346](https://github.com/RIVM-bioinformatics/gen-epix-ui/commit/63b73461962be1fa999f89569ba527299d5c6141))
+* update to latest API ([119a89b](https://github.com/RIVM-bioinformatics/gen-epix-ui/commit/119a89b362cca6b301bd4b767967597c70841cbb))
+
+
+### Bug Fixes
+
+* apply number transformation in forms ([b293b08](https://github.com/RIVM-bioinformatics/gen-epix-ui/commit/b293b086bf4116daff52ed22b13ea91280a9703d))
+* change feature flags loading error handling ([119a89b](https://github.com/RIVM-bioinformatics/gen-epix-ui/commit/119a89b362cca6b301bd4b767967597c70841cbb))
+* crudpage context menu in table row missing fix ([6603da5](https://github.com/RIVM-bioinformatics/gen-epix-ui/commit/6603da56509f04b0ad9698e78f810e9529cddec2))
+* dependency cycle ([be01cd3](https://github.com/RIVM-bioinformatics/gen-epix-ui/commit/be01cd3689afa64f9b17bfdc5f044d5456f8da42))
+* fix accessibility of the table header dividers ([99e90e2](https://github.com/RIVM-bioinformatics/gen-epix-ui/commit/99e90e2dfc6d6f86486a7abb7440c10ff5f53bbe))
+* fix accessibility of the table header dividers ([8bdcaed](https://github.com/RIVM-bioinformatics/gen-epix-ui/commit/8bdcaed6b022ac1a8c81b3a4b7124b36fdd42daf))
+* fix action bar nav id to improve accessibility ([34aa3f9](https://github.com/RIVM-bioinformatics/gen-epix-ui/commit/34aa3f9d92c026953a5e6d63d8840f5907281c9b))
+* fix circular dependency through WidgetHeaderIconButton ([3c2949a](https://github.com/RIVM-bioinformatics/gen-epix-ui/commit/3c2949a9ab108e6bbf3a41850da634025ddbd46d))
+* fix duplicate identity providers not available message ([3748b6d](https://github.com/RIVM-bioinformatics/gen-epix-ui/commit/3748b6d42bf9c978f1bbcaf1b150d04cb101653d))
+* fix EpiContactDetailsDialog to use latest API ([9231e8a](https://github.com/RIVM-bioinformatics/gen-epix-ui/commit/9231e8a0cda365872eb1b4971ec5e141f23fa206))
+* fix guide lines and scale not rendering in tree ([bcac280](https://github.com/RIVM-bioinformatics/gen-epix-ui/commit/bcac280d7c54af97d8eb108214568ca68bfb887d))
+* fix line list rendering cycle ([4bc5450](https://github.com/RIVM-bioinformatics/gen-epix-ui/commit/4bc5450b4701570b02e539450958755a0a1c283c))
+* fix number field rendering ([a4b230d](https://github.com/RIVM-bioinformatics/gen-epix-ui/commit/a4b230d96cd6bac5cbb8dc352266a63af5f9d79c))
+* fix preventing dragging table column when not supposed to be dragged ([4231aab](https://github.com/RIVM-bioinformatics/gen-epix-ui/commit/4231aabee8e2ba0678d499e283865bc89fc74038))
+* fix table filter z-index ([c06773f](https://github.com/RIVM-bioinformatics/gen-epix-ui/commit/c06773f3609c6b43e2ada327d01e2991a16dfa35))
+* improve spinner accessibility ([5189b3a](https://github.com/RIVM-bioinformatics/gen-epix-ui/commit/5189b3ae7b5a90ec7cba25f0d421c66babd841b4))
+* license information spacing ([be01cd3](https://github.com/RIVM-bioinformatics/gen-epix-ui/commit/be01cd3689afa64f9b17bfdc5f044d5456f8da42))
+* move EpiCustomTabPanel to separate component ([f324b84](https://github.com/RIVM-bioinformatics/gen-epix-ui/commit/f324b8497456fc666a9445a4a21a18c7d7f2ae26))
+* response rejected handling when temporaryToken is active ([b293b08](https://github.com/RIVM-bioinformatics/gen-epix-ui/commit/b293b086bf4116daff52ed22b13ea91280a9703d))
+* show footer as full width ([b293b08](https://github.com/RIVM-bioinformatics/gen-epix-ui/commit/b293b086bf4116daff52ed22b13ea91280a9703d))
+
 ## [1.13.0](https://github.com/RIVM-bioinformatics/gen-epix-ui/compare/v1.12.0...v1.13.0) (2026-02-23)
 
 
