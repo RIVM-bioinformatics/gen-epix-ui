@@ -9,7 +9,7 @@
   },
   "dependencies": {
     "@mui/material": "7.3.9",
-    "@gen-epix/client-theme": "*"
+    "@gen-epix/client-theme": "workspace:*"
   },
   "devDependencies": {
     "vite": "8.0.2",

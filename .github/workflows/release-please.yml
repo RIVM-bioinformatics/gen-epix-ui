@@ -38,13 +38,10 @@ jobs:
           node-version: 24
 
       - name: Install dependencies
-        run: |
-          npm -v
-          npm install -g npm
-          npm ci
+        run: pnpm install --frozen-lockfile
 
       - name: Build and publish to NPM
-        run: npm run build-publish -w @gen-epix/ui
+        run: pnpm --filter @gen-epix/ui run build-publish
 
       - name: Zip dist directory
         run: zip -r gen-epix-ui.zip packages/ui/dist
@@ -66,10 +63,7 @@ jobs:
           node-version: 24
 
       - name: Install dependencies
-        run: |
-          npm -v
-          npm install -g npm
-          npm ci
+        run: pnpm install --frozen-lockfile
 
       - name: Build and publish to NPM
-        run: npm run build-publish -w @gen-epix/client-theme
+        run: pnpm --filter @gen-epix/client-theme run build-publish

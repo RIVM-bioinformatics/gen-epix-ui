@@ -11,7 +11,7 @@
     "src"
   ],
   "scripts": {
-    "build-publish": "npm publish --access=public"
+    "build-publish": "pnpm publish --access=public"
   },
   "dependencies": {
     "@mui/material": "7.3.9"

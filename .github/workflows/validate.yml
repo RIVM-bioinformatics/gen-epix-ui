@@ -22,15 +22,15 @@ jobs:
       - uses: ./.github/actions/setup-node-env
         with:
           node-version: 24
-      - run: npm ci
+      - run: pnpm install --frozen-lockfile
       - name: Cache Playwright browsers
         id: playwright-cache
         uses: actions/cache@v4
         with:
           path: ~/.cache/ms-playwright
-          key: playwright-${{ runner.os }}-${{ hashFiles('**/package-lock.json') }}
+          key: playwright-${{ runner.os }}-${{ hashFiles('**/pnpm-lock.yaml') }}
       - run: npx playwright install chromium
         if: steps.playwright-cache.outputs.cache-hit != 'true'
       - run: npx playwright install-deps chromium
         if: steps.playwright-cache.outputs.cache-hit != 'true'
-      - run: npm run validate
+      - run: pnpm run validate

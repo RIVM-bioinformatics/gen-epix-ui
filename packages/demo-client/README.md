@@ -6,7 +6,7 @@
 
 ### Prerequisites
 
-Make sure you have node and npm installed.
+Make sure you have node and pnpm installed.
 
 ### SSL installation
 
@@ -26,7 +26,7 @@ Two files have now been created in your home directory `key.pem` and `cert.pem`.
 
 This will install all dependencies, including @gen-epix/ui as the version specified in package.json.
 
-run `npm install`
+run `pnpm install`
 
 If you wish the switch to `Variation B`, simply follow it's instructions.
 
@@ -37,7 +37,7 @@ This will install all dependencies, including @gen-epix/ui symlinked in `node_mo
 checkout gen-epix-ui at `../gen-epix-ui`
 run `./installLinked.sh`
 
-Note: You will have to run this every time dependencies have changed in `package.json`. Don't use `npm install`, it will unlink `@gen-epix/ui`.
+Note: You will have to run this every time dependencies have changed in `package.json`. Don't use `pnpm install`, it will unlink `@gen-epix/ui`.
 
 If you wish the switch to `Variation A`, simply follow it's instructions.
 
@@ -57,11 +57,11 @@ Follow these steps:
 
 ### Running the OIDC mock server
 
-run `npm run start-oidc-mock-server`
+run `pnpm run oidc-mock`
 
 ### Running the Demo Client
 
-run `npm start`
+run `pnpm start`
 
 ## Funding
 
