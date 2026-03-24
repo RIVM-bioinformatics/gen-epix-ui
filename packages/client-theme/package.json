@@ -1,0 +1,18 @@
+{
+  "name": "@gen-epix/client-theme",
+  "version": "0.0.1",
+  "license": "EUPL-1.2",
+  "type": "module",
+  "types": "./src/@types/mui.d.ts",
+  "scripts": {},
+  "dependencies": {
+    "@mui/material": "7.3.9"
+  },
+  "devDependencies": {
+    "vite": "8.0.2",
+    "@types/node": "25.5.0"
+  },
+  "browserslist": [
+    "last 2 Chrome versions"
+  ]
+}
