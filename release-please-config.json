@@ -2,10 +2,15 @@
   "$schema": "https://raw.githubusercontent.com/googleapis/release-please/main/schemas/config.json",
   "release-type": "node",
   "pull-request-title-pattern": "build${scope}: release ${component} ${version}",
-  "include-component-in-tag": false,
+  "include-component-in-tag": true,
   "packages": {
-    ".": {
-      "package-name": "gen-epix-ui"
+    "packages/ui": {
+      "package-name": "@gen-epix/ui",
+      "component": "ui"
+    },
+    "packages/client-theme": {
+      "package-name": "@gen-epix/client-theme",
+      "component": "client-theme"
     }
   }
 }

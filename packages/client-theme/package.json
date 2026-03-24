@@ -2,9 +2,17 @@
   "name": "@gen-epix/client-theme",
   "version": "0.0.1",
   "license": "EUPL-1.2",
+  "publishConfig": {
+    "access": "public"
+  },
   "type": "module",
   "types": "./src/@types/mui.d.ts",
-  "scripts": {},
+  "files": [
+    "src"
+  ],
+  "scripts": {
+    "build-publish": "npm publish --access=public"
+  },
   "dependencies": {
     "@mui/material": "7.3.9"
   },
