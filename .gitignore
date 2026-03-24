@@ -3,3 +3,4 @@ node_modules
 openapitools.json
 *.bak
 coverage
+cert/*
