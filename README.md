@@ -41,10 +41,10 @@ Build the UI library:
 pnpm --filter @gen-epix/ui run build
 ```
 
-Validate (lint, type-check, tests) the UI library:
+Validate (lint, type-check, tests)
 
 ```sh
-pnpm --filter @gen-epix/ui run validate
+pnpm run validate
 ```
 
 ## Funding

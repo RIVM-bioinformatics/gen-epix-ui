@@ -11,6 +11,10 @@
     "src"
   ],
   "scripts": {
+    "validate": "pnpm run check-types",
+    "check-types": "tsc --noemit",
+    "lint": "eslint ./src --report-unused-disable-directives --max-warnings 0",
+    "lint-fix": "eslint ./src --report-unused-disable-directives --max-warnings 0 --fix",
     "build-publish": "pnpm publish --access=public"
   },
   "dependencies": {
