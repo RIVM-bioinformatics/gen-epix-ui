@@ -1,15 +1,25 @@
 {
   "translation": {
-    "Welcome to {{applicationName}}": "Welcome to {{applicationName}}",
-    "Start exploring the cases": "Start exploring the cases",
-    "Contact": "Contact",
-    "Information for the press": "Information for the press",
     "About": "About",
-    "Copyright": "Copyright",
     "Accessibility": "Accessibility",
-    "Languages": "Languages",
-    "English": "English",
+    "Aenean tellus leo, placerat ut erat sit amet, vestibulum ornare odio. Nullam blandit sapien ut iaculis euismod. Vestibulum aliquam est vel orci rutrum congue. Orci varius natoque penatibus et magnis dis parturient montes, nascetur ridiculus mus. Nam vitae tempor quam, quis posuere est. Fusce vehicula eu nisi eget sodales. Nulla ac consectetur tellus, et gravida risus. Aliquam at dui in justo tincidunt pretium at sed mi. Praesent vestibulum ultricies lectus, cursus dignissim metus placerat at. Mauris placerat ipsum a risus interdum, pellentesque malesuada dui accumsan. Maecenas purus lacus, lobortis et hendrerit et, pretium vel velit.": "Aenean tellus leo, placerat ut erat sit amet, vestibulum ornare odio. Nullam blandit sapien ut iaculis euismod. Vestibulum aliquam est vel orci rutrum congue. Orci varius natoque penatibus et magnis dis parturient montes, nascetur ridiculus mus. Nam vitae tempor quam, quis posuere est. Fusce vehicula eu nisi eget sodales. Nulla ac consectetur tellus, et gravida risus. Aliquam at dui in justo tincidunt pretium at sed mi. Praesent vestibulum ultricies lectus, cursus dignissim metus placerat at. Mauris placerat ipsum a risus interdum, pellentesque malesuada dui accumsan. Maecenas purus lacus, lobortis et hendrerit et, pretium vel velit.",
+    "Consent": "Consent",
+    "Contact": "Contact",
+    "Copyright": "Copyright",
     "Dutch": "Dutch",
-    "since last year": "since last year"
+    "English": "English",
+    "I consent": "I consent",
+    "Information for the press": "Information for the press",
+    "Không có ai muốn khổ đau cho chính mình, muốn tìm kiếm về nó và muốn có nó, bởi vì nó là sự đau khổ.": "Không có ai muốn khổ đau cho chính mình, muốn tìm kiếm về nó và muốn có nó, bởi vì nó là sự đau khổ.",
+    "Languages": "Languages",
+    "Logo": "Logo",
+    "Nikdo nemiluje bolest samu, nevyhledává ji, ani ji nechce získat, protože bolest.": "Nikdo nemiluje bolest samu, nevyhledává ji, ani ji nechce získat, protože bolest.",
+    "since last year": "since last year",
+    "Start exploring the cases": "Start exploring the cases",
+    "Welcome to {{applicationName}}": "Welcome to {{applicationName}}",
+    "Δεν υπάρχει κανείς που να αγαπάει τον ίδιο τον πόνο, να τον αναζητά και να θέλει να τον νιώθει, επειδή απλά είναι πόνος.": "Δεν υπάρχει κανείς που να αγαπάει τον ίδιο τον πόνο, να τον αναζητά και να θέλει να τον νιώθει, επειδή απλά είναι πόνος.",
+    "Няма човек, който обича болката сама по себе си, търси я и я желае, само защото е болка.": "Няма човек, който обича болката сама по себе си, търси я и я желае, само защото е болка.",
+    "ไม่มีผู้ใดที่สมัครรักใคร่ในความเจ็บปวด หรือเสาะแสวงหาและปรารถนาจะครอบครองความเจ็บปวด นั่นก็เป็นเพราะว่ามันเจ็บปวด.": "ไม่มีผู้ใดที่สมัครรักใคร่ในความเจ็บปวด หรือเสาะแสวงหาและปรารถนาจะครอบครองความเจ็บปวด นั่นก็เป็นเพราะว่ามันเจ็บปวด.",
+    "无人爱苦，亦无人寻之欲之，乃因其苦.": "无人爱苦，亦无人寻之欲之，乃因其苦."
   }
 }

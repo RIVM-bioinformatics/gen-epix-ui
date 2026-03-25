@@ -156,8 +156,7 @@
   "devDependencies": {
     "@gen-epix/eslint-config": "catalog:",
     "@gen-epix/generate-api": "0.0.20",
-    "@gen-epix/translation-util": "0.0.3",
-    "@gen-epix/typescript-config": "0.0.8",
+    "@gen-epix/translation-util": "catalog:",
     "@types/lodash": "4.17.24",
     "@types/node": "catalog:",
     "@types/react": "catalog:",

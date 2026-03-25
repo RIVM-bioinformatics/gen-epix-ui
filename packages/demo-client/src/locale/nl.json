@@ -1,20 +1,25 @@
 {
   "translation": {
-    "consentDialog.content": "<0><0><0>Voordat u verdergaat, moeten we u laten weten dat u toegang heeft tot een prototypeversie van ons platform.<br/>Dit prototype is uitsluitend ontworpen voor demonstratiedoeleinden en maakt gebruik van gegevens die, hoewel realistisch, volledig fictief zijn.</0></0><1>U erkent hierbij het volgende:</1><2><0>Prototype-aard: u begrijpt dat dit een prototypeversie van het platform is, uitsluitend bedoeld voor test- en feedbackdoeleinden.</0><1>Fictieve gegevens: de hier gepresenteerde gegevens zijn gemaakt om realistische scenario's te simuleren, maar zijn volledig fictief. Het gaat niet om persoonsgegevens en komt dus niet overeen met individuen in de echte wereld. Elke gelijkenis met echte personen of andere entiteiten uit het echte leven berust louter op toeval.</1><2>Geen representatie uit de echte wereld: de gegevens en resultaten die door dit platform worden gegenereerd, mogen niet worden gebruikt, geciteerd of weergegeven als reëel of feitelijk in een echte context, inclusief maar niet beperkt tot academisch, commercieel of openbaar discours.</2></2><3>Toestemming om door te gaan:</3><4>Door op 'IK GA AKKOORD' te klikken, erkent u dat u de prototypeaard van het platform en de fictieve status van de gegevens begrijpt. U stemt ermee in de gegevens niet als echt te gebruiken of in een realistisch scenario weer te geven.</4><5>Uw begrip en medewerking zijn cruciaal om ons te helpen een beter en nauwkeuriger platform te ontwikkelen voor toekomstige toepassingen in de echte wereld.</5><6>Bedankt voor uw deelname en voor uw waardevolle feedback.</6></0>",
-    "Welcome to {{applicationName}}": "Welkom bij {{applicationName}}",
-    "Whether you're a MML expert, GGD expert or a RIVM PH expert, LabSentiNL is designed to meet your data needs for sharing and exploring and will help you stay ahead in an ever-evolving landscape. On this website you can discover the latest events, have a look at interesting statistics or start exploring various case types.": "Of u nu een MML-expert, GGD-expert of RIVM PH-expert bent, LabSentiNL is ontworpen om aan uw gegevensbehoeften te voldoen voor delen en verkennen en zal u helpen voorop te blijven in een voortdurend evoluerend landschap. Op deze website kunt u de laatste gebeurtenissen ontdekken, interessante statistieken bekijken of beginnen met het verkennen van verschillende casustypen.",
-    "Start exploring the cases": "Begin met het verkennen van de casussen",
-    "Contact": "Contact",
-    "ids-bioinformatics@rivm.nl": "ids-bioinformatics@rivm.nl",
-    "Information for the press": "Informatie voor de pers",
     "About": "Over",
-    "Copyright": "Auteursrecht",
     "Accessibility": "Toegankelijkheid",
-    "Languages": "Talen",
-    "English": "Engels",
+    "Aenean tellus leo, placerat ut erat sit amet, vestibulum ornare odio. Nullam blandit sapien ut iaculis euismod. Vestibulum aliquam est vel orci rutrum congue. Orci varius natoque penatibus et magnis dis parturient montes, nascetur ridiculus mus. Nam vitae tempor quam, quis posuere est. Fusce vehicula eu nisi eget sodales. Nulla ac consectetur tellus, et gravida risus. Aliquam at dui in justo tincidunt pretium at sed mi. Praesent vestibulum ultricies lectus, cursus dignissim metus placerat at. Mauris placerat ipsum a risus interdum, pellentesque malesuada dui accumsan. Maecenas purus lacus, lobortis et hendrerit et, pretium vel velit.": "Aenean tellus leo, placerat ut erat sit amet, vestibulum ornare odio. Nullam blandit sapien ut iaculis euismod. Vestibulum aliquam est vel orci rutrum congue. Orci varius natoque penatibus et magnis dis parturient montes, nascetur ridiculus mus. Nam vitae tempor quam, quis posuere est. Fusce vehicula eu nisi eget sodales. Nulla ac consectetur tellus, et gravida risus. Aliquam at dui in justo tincidunt pretium at sed mi. Praesent vestibulum ultricies lectus, cursus dignissim metus placerat at. Mauris placerat ipsum a risus interdum, pellentesque malesuada dui accumsan. Maecenas purus lacus, lobortis et hendrerit et, pretium vel velit.",
+    "Consent": "Toestemming",
+    "Contact": "Contact",
+    "Copyright": "Auteursrecht",
     "Dutch": "Nederlands",
+    "English": "Engels",
+    "I consent": "Ik ga akkoord",
+    "Information for the press": "Informatie voor de pers",
+    "Không có ai muốn khổ đau cho chính mình, muốn tìm kiếm về nó và muốn có nó, bởi vì nó là sự đau khổ.": "Không có ai muốn khổ đau cho chính mình, muốn tìm kiếm về nó và muốn có nó, bởi vì nó là sự đau khổ.",
+    "Languages": "Talen",
+    "Logo": "Logo",
+    "Nikdo nemiluje bolest samu, nevyhledává ji, ani ji nechce získat, protože bolest.": "Nikdo nemiluje bolest samu, nevyhledává ji, ani ji nechce získat, protože bolest.",
     "since last year": "sinds vorig jaar",
-    "GEBRUIKSVOORWAARDEN": "GEBRUIKSVOORWAARDEN",
-    "Ik ga akkoord": "Ik ga akkoord"
+    "Start exploring the cases": "Begin met het verkennen van de casussen",
+    "Welcome to {{applicationName}}": "Welkom bij {{applicationName}}",
+    "Δεν υπάρχει κανείς που να αγαπάει τον ίδιο τον πόνο, να τον αναζητά και να θέλει να τον νιώθει, επειδή απλά είναι πόνος.": "Δεν υπάρχει κανείς που να αγαπάει τον ίδιο τον πόνο, να τον αναζητά και να θέλει να τον νιώθει, επειδή απλά είναι πόνος.",
+    "Няма човек, който обича болката сама по себе си, търси я и я желае, само защото е болка.": "Няма човек, който обича болката сама по себе си, търси я и я желае, само защото е болка.",
+    "ไม่มีผู้ใดที่สมัครรักใคร่ในความเจ็บปวด หรือเสาะแสวงหาและปรารถนาจะครอบครองความเจ็บปวด นั่นก็เป็นเพราะว่ามันเจ็บปวด.": "ไม่มีผู้ใดที่สมัครรักใคร่ในความเจ็บปวด หรือเสาะแสวงหาและปรารถนาจะครอบครองความเจ็บปวด นั่นก็เป็นเพราะว่ามันเจ็บปวด.",
+    "无人爱苦，亦无人寻之欲之，乃因其苦.": "无人爱苦，亦无人寻之欲之，乃因其苦."
   }
 }

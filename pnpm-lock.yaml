@@ -18,6 +18,9 @@ catalogs:
     '@gen-epix/eslint-config':
       specifier: 0.0.29
       version: 0.0.29
+    '@gen-epix/translation-util':
+      specifier: 0.0.4
+      version: 0.0.4
     '@mui/icons-material':
       specifier: 7.3.9
       version: 7.3.9
@@ -182,6 +185,9 @@ importers:
       '@gen-epix/tools-lib':
         specifier: 0.0.6
         version: 0.0.6
+      '@gen-epix/translation-util':
+        specifier: 'catalog:'
+        version: 0.0.4
       '@types/node':
         specifier: 'catalog:'
         version: 25.5.0
@@ -521,11 +527,8 @@ importers:
         specifier: 0.0.20
         version: 0.0.20(encoding@0.1.13)
       '@gen-epix/translation-util':
-        specifier: 0.0.3
-        version: 0.0.3
-      '@gen-epix/typescript-config':
-        specifier: 0.0.8
-        version: 0.0.8(typescript@5.9.2)
+        specifier: 'catalog:'
+        version: 0.0.4
       '@types/lodash':
         specifier: 4.17.24
         version: 4.17.24
@@ -956,14 +959,9 @@ packages:
   '@gen-epix/tools-lib@0.0.6':
     resolution: {integrity: sha512-fGhAzLdEyJaESSvS5RA+HhPkKGvZ6x1/24n62btyRv4dgSYbEA5dgHmHtIFiIix85jnc728+rQAq+JM02GYHvQ==}
 
-  '@gen-epix/translation-util@0.0.3':
-    resolution: {integrity: sha512-3w9Qvm4Xj6Uf2diIZEar4XaHOcoqtIks8v/+DXce1KvOQQeQSCC5gp+hYSPNQXve4qaUs2kuu4tWiyTmct4ijQ==}
+  '@gen-epix/translation-util@0.0.4':
+    resolution: {integrity: sha512-sgvKambwNhYOjak9QX208zyIhLXxZNu8/sv9oVxIGa/l0GGKaSb+8FMffsyQDM9OeOLjlPCI0MfgFdALkeVpxg==}
     hasBin: true
-
-  '@gen-epix/typescript-config@0.0.8':
-    resolution: {integrity: sha512-bZTTVGY4WbQBHXXnzo0gDdVmZB/q85xIEIsbmrij9y9frgwiMlnxZAzJdqbUv82DD6oo60OAbCRIU/di2uMFlg==}
-    peerDependencies:
-      typescript: 5.9.2
 
   '@hookform/resolvers@5.2.2':
     resolution: {integrity: sha512-A/IxlMLShx3KjV/HeTcTfaMxdwy690+L/ZADoeaTltLx+CVuzkeVIPuybK3jrRfw7YZnmdKsVVHAlEPIAEUNlA==}
@@ -7412,15 +7410,11 @@ snapshots:
     dependencies:
       findup-sync: 5.0.0
 
-  '@gen-epix/translation-util@0.0.3':
+  '@gen-epix/translation-util@0.0.4':
     dependencies:
       '@gen-epix/tools-lib': 0.0.6
       chalk: 5.6.2
       glob: 13.0.6
-      typescript: 5.9.2
-
-  '@gen-epix/typescript-config@0.0.8(typescript@5.9.2)':
-    dependencies:
       typescript: 5.9.2
 
   '@hookform/resolvers@5.2.2(react-hook-form@7.72.0(react@19.2.4))':

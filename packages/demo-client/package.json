@@ -6,7 +6,9 @@
   "scripts": {
     "start": "vite",
     "test-run": "vitest run --passWithNoTests",
-    "validate": "pnpm run lint && pnpm run check-types",
+    "test-missing-translations": "translation-util ./ --dry-run --fail-on-missing --fail-on-stale",
+    "add-missing-translations": "translation-util ./",
+    "validate": "pnpm run lint && pnpm run check-types && pnpm run test-missing-translations",
     "lint": "eslint ./src --report-unused-disable-directives --max-warnings 0",
     "lint-fix": "eslint ./src --report-unused-disable-directives --max-warnings 0 --fix",
     "check-types": "tsc --noemit",
@@ -33,6 +35,7 @@
   "devDependencies": {
     "@gen-epix/demo-theme": "workspace:*",
     "@gen-epix/eslint-config": "catalog:",
+    "@gen-epix/translation-util": "catalog:",
     "@gen-epix/generate-license-manifest": "0.0.6",
     "@gen-epix/oidc-mock-server": "0.0.8",
     "@gen-epix/tools-lib": "0.0.6",

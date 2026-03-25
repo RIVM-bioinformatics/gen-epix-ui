@@ -6,6 +6,7 @@ catalog:
   "@emotion/react": "11.14.0"
   "@emotion/styled": "11.14.1"
   "@gen-epix/eslint-config": "0.0.29"
+  "@gen-epix/translation-util": "0.0.4"
   "@mui/icons-material": "7.3.9"
   "@mui/material": "7.3.9"
   "@mui/styled-engine": "7.3.9"
