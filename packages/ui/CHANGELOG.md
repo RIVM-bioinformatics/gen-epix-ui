@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.15.0](https://github.com/RIVM-bioinformatics/gen-epix-ui/compare/ui-v1.14.5...ui-v1.15.0) (2026-03-25)
+
+
+### Features
+
+* create mono repo ([35a7e75](https://github.com/RIVM-bioinformatics/gen-epix-ui/commit/35a7e75f6b5569d4d3da622a50655e330f0a4f00))
+
 ## [1.14.5](https://github.com/RIVM-bioinformatics/gen-epix-ui/compare/v1.14.4...v1.14.5) (2026-03-23)
 
 
