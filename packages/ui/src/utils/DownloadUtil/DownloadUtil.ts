@@ -2,7 +2,7 @@ import { type TFunction } from 'i18next';
 import { format } from 'date-fns';
 import type { ECharts } from 'echarts';
 import writeXlsxFile from 'write-excel-file/browser';
-import { stringify } from 'csv-stringify/browser/esm/sync';
+import { stringify } from 'csv/browser/esm/sync';
 
 import {
   CaseApi,

@@ -8,12 +8,12 @@
     ".": "./src/theme.ts"
   },
   "dependencies": {
-    "@mui/material": "7.3.9",
+    "@mui/material": "catalog:",
     "@gen-epix/client-theme": "workspace:*"
   },
   "devDependencies": {
-    "vite": "8.0.2",
-    "@types/node": "25.5.0"
+    "@types/node": "catalog:",
+    "vite": "catalog:"
   },
   "browserslist": [
     "last 2 Chrome versions"
