@@ -167,6 +167,7 @@
     "@vitest/coverage-v8": "4.1.1",
     "eslint": "catalog:",
     "jsdom": "29.0.1",
+    "playwright": "catalog:",
     "typescript": "catalog:",
     "vite": "catalog:",
     "vite-plugin-dts": "4.5.4",

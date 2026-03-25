@@ -57,6 +57,9 @@ catalogs:
     i18next:
       specifier: 25.10.9
       version: 25.10.9
+    playwright:
+      specifier: 1.58.2
+      version: 1.58.2
     react:
       specifier: 19.2.4
       version: 19.2.4
@@ -550,6 +553,9 @@ importers:
       jsdom:
         specifier: 29.0.1
         version: 29.0.1
+      playwright:
+        specifier: 'catalog:'
+        version: 1.58.2
       typescript:
         specifier: 5.9.2
         version: 5.9.2
