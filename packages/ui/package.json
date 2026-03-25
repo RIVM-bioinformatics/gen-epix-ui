@@ -4,9 +4,6 @@
   "license": "EUPL-1.2",
   "publishConfig": {
     "access": "public",
-    "files": [
-      "dist"
-    ],
     "main": "./dist/index.js",
     "types": "./dist/index.d.ts",
     "exports": {
@@ -27,7 +24,7 @@
   "homepage": "https://github.com/RIVM-bioinformatics/gen-epix",
   "type": "module",
   "files": [
-    "src"
+    "dist"
   ],
   "main": "./src/index.ts",
   "types": "./src/index.ts",
