@@ -12,7 +12,14 @@
     "overrides": {
       "@openapitools/openapi-generator-cli>axios": "1.13.6",
       "typescript": "5.9.2"
-    }
+    },
+    "onlyBuiltDependencies": [
+      "@nestjs/core",
+      "@openapitools/openapi-generator-cli",
+      "@swc/core",
+      "nx",
+      "unrs-resolver"
+    ]
   },
   "devDependencies": {
     "concurrently": "9.2.1",

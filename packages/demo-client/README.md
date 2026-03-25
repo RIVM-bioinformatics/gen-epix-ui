@@ -20,27 +20,6 @@ Goto your home directory (`~`) and run:
 
 Two files have now been created in your home directory `key.pem` and `cert.pem`. Copy these two files to the cert directory of this project.
 
-### Client installation
-
-#### Variation A: Install with versioned @gen-epix/ui
-
-This will install all dependencies, including @gen-epix/ui as the version specified in package.json.
-
-run `pnpm install`
-
-If you wish the switch to `Variation B`, simply follow it's instructions.
-
-#### Variation B: Install with linked @gen-epix/ui
-
-This will install all dependencies, including @gen-epix/ui symlinked in `node_modules`.
-
-checkout gen-epix-ui at `../gen-epix-ui`
-run `./installLinked.sh`
-
-Note: You will have to run this every time dependencies have changed in `package.json`. Don't use `pnpm install`, it will unlink `@gen-epix/ui`.
-
-If you wish the switch to `Variation A`, simply follow it's instructions.
-
 ### OIDC Mock server installation (optional)
 
 Copy `oidc-mock-server.config.example.json` to `oidc-mock-server.config.json` and make changes in `oidc-mock-server.config.json`
