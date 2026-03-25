@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.15.2](https://github.com/RIVM-bioinformatics/gen-epix-ui/compare/ui-v1.15.1...ui-v1.15.2) (2026-03-25)
+
+
+### Bug Fixes
+
+* publish all files in the dist folder ([bdc4fa6](https://github.com/RIVM-bioinformatics/gen-epix-ui/commit/bdc4fa624ba9a599e41a3b3cf445eb9c02480e04))
+
 ## [1.15.1](https://github.com/RIVM-bioinformatics/gen-epix-ui/compare/ui-v1.15.0...ui-v1.15.1) (2026-03-25)
 
 
