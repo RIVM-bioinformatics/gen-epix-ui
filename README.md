@@ -12,38 +12,39 @@ The platform is currently at the beta release stage and as such not yet usable f
 
 ## About @gen-epix/ui
 
-The project exports a library of frontend components and an (almost) ready to use application. You will need to create your own project and include `@gen-epix/ui` as a dependency. Please refer to the [demo client project](https://github.com/RIVM-bioinformatics/gen-epix-ui-demo-client) to see a working example of this library.
+This repository is a pnpm monorepo containing the frontend packages for the Gen-EpiX platform. It is structured as follows:
 
-Basic example:
+| Package | Description |
+| --- | --- |
+| [`@gen-epix/ui`](packages/ui) | The main publishable React component library. Contains all UI components, data hooks, routing, forms, state management, and API client used by Gen-EpiX applications. Built with [Vite](https://vitejs.dev/), [MUI](https://mui.com/), [TanStack Query](https://tanstack.com/query), [React Hook Form](https://react-hook-form.com/), [TipTap](https://tiptap.dev/), and [Zustand](https://zustand-demo.pmnd.rs/). |
+| [`@gen-epix/client-theme`](packages/client-theme) | A publishable MUI theme type-extension package that provides shared theme augmentation typings for consumer applications. |
+| [`@gen-epix/demo-theme`](packages/demo-theme) | A local theme implementation used by the demo client, based on `@gen-epix/client-theme`. |
+| [`@gen-epix/demo-client`](packages/demo-client) | A Vite-based React application that serves as a development sandbox and demonstration environment for `@gen-epix/ui`. |
 
-```tsx
-import { createRoot } from 'react-dom/client';
+### Development
 
-import {
-  App,
-  ConfigManager,
-  I18nManager,
-  setup,
-} from '@gen-epix/ui';
+Install dependencies:
 
-ConfigManager.instance.config = {
-  // add your config
-}
+```sh
+pnpm install
+```
 
-// initialize the I18nManager
-I18nManager.instance.init()
-  .then(() => {
-    // call setup
-    setup();
+Start the demo client with the OIDC mock server:
 
-    // run the app
-    createRoot(document.getElementById('root')).render(
-      <App />,
-    );
-  })
-  .catch(() => {
-    alert('Failed to initialize the application');
-  });
+```sh
+pnpm start
+```
+
+Build the UI library:
+
+```sh
+pnpm --filter @gen-epix/ui run build
+```
+
+Validate (lint, type-check, tests)
+
+```sh
+pnpm run validate
 ```
 
 ## Funding

@@ -1,0 +1,11 @@
+licenses.json
+
+node_modules
+api.sanitized.json
+generated-api
+dist
+bin
+.env
+oidc-mock-server.config.json
+
+cert/*.pem

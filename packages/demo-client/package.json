@@ -1,0 +1,59 @@
+{
+  "name": "@gen-epix/demo-client",
+  "version": "0.0.1",
+  "license": "EUPL-1.2",
+  "type": "module",
+  "scripts": {
+    "start": "vite",
+    "test-run": "vitest run --passWithNoTests",
+    "test-missing-translations": "translation-util ./ --dry-run --fail-on-missing --fail-on-stale",
+    "add-missing-translations": "translation-util ./",
+    "validate": "pnpm run lint && pnpm run check-types && pnpm run test-missing-translations",
+    "lint": "eslint ./src --report-unused-disable-directives --max-warnings 0",
+    "lint-fix": "eslint ./src --report-unused-disable-directives --max-warnings 0 --fix",
+    "check-types": "tsc --noemit",
+    "oidc-server": "nodemon --watch ../../oidc-mock-server.config.json --exec oidc-mock-server"
+  },
+  "dependencies": {
+    "@emotion/cache": "catalog:",
+    "@emotion/react": "catalog:",
+    "@emotion/styled": "catalog:",
+    "@gen-epix/ui": "workspace:*",
+    "@mui/icons-material": "catalog:",
+    "@mui/material": "catalog:",
+    "@mui/styled-engine": "catalog:",
+    "@mui/system": "catalog:",
+    "@mui/utils": "catalog:",
+    "@mui/x-date-pickers": "catalog:",
+    "date-fns": "catalog:",
+    "i18next": "catalog:",
+    "react": "catalog:",
+    "react-dom": "catalog:",
+    "react-i18next": "catalog:",
+    "react-router-dom": "catalog:"
+  },
+  "devDependencies": {
+    "@gen-epix/demo-theme": "workspace:*",
+    "@gen-epix/eslint-config": "catalog:",
+    "@gen-epix/translation-util": "catalog:",
+    "@gen-epix/generate-license-manifest": "0.0.6",
+    "@gen-epix/oidc-mock-server": "0.0.8",
+    "@gen-epix/tools-lib": "0.0.6",
+    "@types/node": "catalog:",
+    "@types/react": "catalog:",
+    "@types/react-dom": "catalog:",
+    "@vitejs/plugin-react": "catalog:",
+    "eslint": "catalog:",
+    "husky": "^9.1.7",
+    "i18next-cli": "1.50.5",
+    "nodemon": "3.1.14",
+    "typescript": "catalog:",
+    "vite": "catalog:",
+    "vite-plugin-static-copy": "catalog:",
+    "vite-plugin-svgr": "catalog:",
+    "vitest": "catalog:"
+  },
+  "browserslist": [
+    "last 2 Chrome versions"
+  ]
+}

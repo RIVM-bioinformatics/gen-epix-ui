@@ -13,6 +13,11 @@ permissions:
 jobs:
   release-please:
     runs-on: ubuntu-latest
+    outputs:
+      ui-release-created: ${{ steps.release.outputs['packages/ui--release_created'] }}
+      ui-tag-name: ${{ steps.release.outputs['packages/ui--tag_name'] }}
+      client-theme-release-created: ${{ steps.release.outputs['packages/client-theme--release_created'] }}
+      client-theme-tag-name: ${{ steps.release.outputs['packages/client-theme--tag_name'] }}
     steps:
       - uses: googleapis/release-please-action@v4.2.0
         id: release
@@ -21,31 +26,54 @@ jobs:
           config-file: release-please-config.json
           manifest-file: .release-please-manifest.json
 
+  publish-ui:
+    needs: release-please
+    if: ${{ needs.release-please.outputs.ui-release-created == 'true' }}
+    runs-on: ubuntu-latest
+    steps:
       - uses: actions/checkout@v5
-        if: ${{ (steps.release.outputs.release_created == 'true') }}
 
       - uses: ./.github/actions/setup-node-env
         with:
           node-version: 24
-        if: ${{ (steps.release.outputs.release_created == 'true') }}
 
       - name: Install dependencies
-        run: |
-          npm -v
-          npm install -g npm
-          npm ci
-        if: ${{ (steps.release.outputs.release_created == 'true') }}
+        run: pnpm install --frozen-lockfile
+
+      - name: Create .npmrc
+        run: echo "//registry.npmjs.org/:_authToken=${NPM_TOKEN}" > .npmrc
+        env:
+          NPM_TOKEN: ${{ secrets.NPM_TOKEN }}
 
       - name: Build and publish to NPM
-        run: npm run build-publish
-        if: ${{ (steps.release.outputs.release_created == 'true') }}
+        run: pnpm --filter @gen-epix/ui run build-publish
 
       - name: Zip dist directory
-        run: zip -r gen-epix-ui.zip dist
-        if: ${{ (steps.release.outputs.release_created == 'true') }}
+        run: zip -r gen-epix-ui.zip packages/ui/dist
 
       - name: Upload release artifact to GitHub
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-        run: gh release upload ${{ steps.release.outputs.tag_name }} gen-epix-ui.zip
-        if: ${{ (steps.release.outputs.release_created == 'true') }}
+        run: gh release upload ${{ needs.release-please.outputs.ui-tag-name }} gen-epix-ui.zip
+
+  publish-client-theme:
+    needs: release-please
+    if: ${{ needs.release-please.outputs.client-theme-release-created == 'true' }}
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v5
+
+      - uses: ./.github/actions/setup-node-env
+        with:
+          node-version: 24
+
+      - name: Install dependencies
+        run: pnpm install --frozen-lockfile
+
+      - name: Create .npmrc
+        run: echo "//registry.npmjs.org/:_authToken=${NPM_TOKEN}" > .npmrc
+        env:
+          NPM_TOKEN: ${{ secrets.NPM_TOKEN }}
+
+      - name: Build and publish to NPM
+        run: pnpm --filter @gen-epix/client-theme run build-publish

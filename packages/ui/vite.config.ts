@@ -86,6 +86,7 @@ export default defineConfig({
       treeshake: true,
     },
     copyPublicDir: false,
+    sourcemap: true,
     lib: {
       fileName: () => {
         return 'index.js';

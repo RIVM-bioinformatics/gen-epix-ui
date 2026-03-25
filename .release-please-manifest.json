@@ -1,3 +1,4 @@
 {
-  ".": "1.14.5"
+  "packages/ui": "1.14.5",
+  "packages/client-theme": "0.0.1"
 }

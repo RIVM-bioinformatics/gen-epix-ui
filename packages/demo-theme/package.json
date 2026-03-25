@@ -1,0 +1,26 @@
+{
+  "name": "@gen-epix/demo-theme",
+  "version": "0.0.1",
+  "license": "EUPL-1.2",
+  "type": "module",
+  "scripts": {
+    "validate": "pnpm run check-types",
+    "check-types": "tsc --noemit",
+    "lint": "eslint ./src --report-unused-disable-directives --max-warnings 0",
+    "lint-fix": "eslint ./src --report-unused-disable-directives --max-warnings 0 --fix"
+  },
+  "exports": {
+    ".": "./src/theme.ts"
+  },
+  "dependencies": {
+    "@mui/material": "catalog:",
+    "@gen-epix/client-theme": "workspace:*"
+  },
+  "devDependencies": {
+    "@types/node": "catalog:",
+    "vite": "catalog:"
+  },
+  "browserslist": [
+    "last 2 Chrome versions"
+  ]
+}
