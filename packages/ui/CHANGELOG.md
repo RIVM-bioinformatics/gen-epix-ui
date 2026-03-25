@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.15.1](https://github.com/RIVM-bioinformatics/gen-epix-ui/compare/ui-v1.15.0...ui-v1.15.1) (2026-03-25)
+
+
+### Bug Fixes
+
+* fix publish config ([f3008a1](https://github.com/RIVM-bioinformatics/gen-epix-ui/commit/f3008a18641762c4c44631e4f9f8d32a9080d188))
+
 ## [1.15.0](https://github.com/RIVM-bioinformatics/gen-epix-ui/compare/ui-v1.14.5...ui-v1.15.0) (2026-03-25)
 
 
