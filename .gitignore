@@ -5,3 +5,4 @@ openapitools.json
 coverage
 cert/*
 oidc-mock-server.config.json
+.npmrc
