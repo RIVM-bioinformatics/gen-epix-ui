@@ -1,5 +1,17 @@
 # Changelog
 
+## [1.16.0](https://github.com/RIVM-bioinformatics/gen-epix-ui/compare/ui-v1.15.2...ui-v1.16.0) (2026-03-26)
+
+
+### Features
+
+* add description to user invitation- and user amdin page ([a52c67e](https://github.com/RIVM-bioinformatics/gen-epix-ui/commit/a52c67ee191e874cbb122dfac515265ac194e2f3))
+
+
+### Bug Fixes
+
+* update to latest api ([bea7964](https://github.com/RIVM-bioinformatics/gen-epix-ui/commit/bea79644b791c961d668a85dadcc883f6d72c330))
+
 ## [1.15.2](https://github.com/RIVM-bioinformatics/gen-epix-ui/compare/ui-v1.15.1...ui-v1.15.2) (2026-03-25)
 
 
