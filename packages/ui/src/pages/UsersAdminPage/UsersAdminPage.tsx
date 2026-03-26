@@ -39,7 +39,7 @@ import { AuthorizationManager } from '../../classes/managers/AuthorizationManage
 import { useArray } from '../../hooks/useArray';
 import { useInviteUserConstraintsQuery } from '../../dataHooks/useInviteUserConstraintsQuery';
 
-type FormFields = Pick<User, 'key' | 'email' | 'name' | 'is_active' | 'roles'>;
+type FormFields = Pick<User, 'key' | 'email' | 'name' | 'is_active' | 'roles' | 'description'>;
 
 export const UsersAdminPage = () => {
   const { t } = useTranslation();
@@ -111,6 +111,7 @@ export const UsersAdminPage = () => {
       name: string().nullable(),
       roles: array().required().min(1),
       is_active: boolean().required(),
+      description: string().max(255).nullable(),
     });
   }, []);
 
@@ -145,6 +146,11 @@ export const UsersAdminPage = () => {
         name: 'is_active',
         label: t`Is active`,
       } as const satisfies FormFieldDefinition<FormFields>,
+      {
+        definition: FORM_FIELD_DEFINITION_TYPE.TEXTFIELD,
+        name: 'description',
+        label: t`Description`,
+      } as const satisfies FormFieldDefinition<FormFields>,
     ] as const;
   }, [t, formRoleOptions, inviteUserConstraintsQuery.isLoading]);
 
@@ -154,6 +160,7 @@ export const UsersAdminPage = () => {
       TableUtil.createTextColumn<User>({ id: 'key', name: t`Key` }),
       TableUtil.createTextColumn<User>({ id: 'email', name: t`E-Mail` }),
       TableUtil.createTextColumn<User>({ id: 'name', name: t`Name`, advancedSort: true }),
+      TableUtil.createTextColumn<User>({ id: 'description', name: t`Description` }),
       TableUtil.createOptionsColumn<User>({ id: 'roles', name: t`Roles`, options: tableRoleOptions }),
       TableUtil.createBooleanColumn<User>({ id: 'is_active', name: t`Is active` }),
     ];

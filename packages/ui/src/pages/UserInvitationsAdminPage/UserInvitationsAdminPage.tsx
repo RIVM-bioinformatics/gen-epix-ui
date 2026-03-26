@@ -48,7 +48,7 @@ import {
   type UserInvitationConsumeDialogRefMethods,
 } from './UserInvitationConsumeDialog';
 
-type FormFields = Pick<UserInvitation, 'key' | 'organization_id' | 'roles'>;
+type FormFields = Pick<UserInvitation, 'key' | 'organization_id' | 'roles' | 'description'>;
 
 export const UserInvitationsAdminPage = () => {
   const { t } = useTranslation();
@@ -103,6 +103,7 @@ export const UserInvitationsAdminPage = () => {
       key: string().max(100).transform((value) => value === '' ? undefined : value as string),
       organization_id: string().uuid4().required().max(100),
       roles: array().min(1).required(),
+      description: string().max(255).nullable(),
     });
   }, []);
 
@@ -140,6 +141,11 @@ export const UserInvitationsAdminPage = () => {
         label: t`Roles`,
         options: roleOptions,
         loading: inviteUserConstraintsQuery.isLoading,
+      } as const satisfies FormFieldDefinition<FormFields>,
+      {
+        definition: FORM_FIELD_DEFINITION_TYPE.TEXTFIELD,
+        name: 'description',
+        label: t`Description`,
       } as const satisfies FormFieldDefinition<FormFields>,
     );
     return fields;
@@ -184,6 +190,7 @@ export const UserInvitationsAdminPage = () => {
       TableUtil.createOptionsColumn<UserInvitation>({ id: 'organization_id', name: t`Organization`, options: organizationOptions }),
       TableUtil.createOptionsColumn<UserInvitation>({ id: 'invited_by_user_id', name: t`Invited by user`, options: userOptionsQuery.options }),
       TableUtil.createOptionsColumn<UserInvitation>({ id: 'roles', name: t`Roles`, options: roleOptions }),
+      TableUtil.createTextColumn<UserInvitation>({ id: 'description', name: t`Description` }),
       TableUtil.createDateColumn<UserInvitation>({ id: 'expires_at', name: t`Expires` }),
     ];
   }, [t, organizationOptions, userOptionsQuery.options, roleOptions]);
