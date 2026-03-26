@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.16.2](https://github.com/RIVM-bioinformatics/gen-epix-ui/compare/ui-v1.16.1...ui-v1.16.2) (2026-03-26)
+
+
+### Bug Fixes
+
+* update repository url in client-theme ([1922c6b](https://github.com/RIVM-bioinformatics/gen-epix-ui/commit/1922c6bfd78960cb30e9b01faac20d9539337d18))
+
 ## [1.16.1](https://github.com/RIVM-bioinformatics/gen-epix-ui/compare/ui-v1.16.0...ui-v1.16.1) (2026-03-26)
 
 
