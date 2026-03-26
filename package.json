@@ -19,7 +19,9 @@
       "@nestjs/core",
       "@openapitools/openapi-generator-cli",
       "@swc/core",
+      "esbuild",
       "nx",
+      "playwright",
       "unrs-resolver"
     ]
   },

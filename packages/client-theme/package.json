@@ -18,13 +18,13 @@
     "build-publish": "pnpm publish --access=public"
   },
   "dependencies": {
-    "@mui/material": "catalog:"
+    "@mui/material": "7.3.9"
   },
   "devDependencies": {
-    "@types/node": "catalog:",
-    "eslint": "catalog:",
+    "@types/node": "25.5.0",
+    "eslint": "9.39.4",
     "typescript": "5.9.2",
-    "vite": "catalog:"
+    "vite": "8.0.3"
   },
   "browserslist": [
     "last 2 Chrome versions"
