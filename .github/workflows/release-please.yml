@@ -45,8 +45,11 @@ jobs:
         env:
           NPM_TOKEN: ${{ secrets.NPM_TOKEN }}
 
-      - name: Build and publish to NPM
-        run: pnpm --filter @gen-epix/ui run build-publish
+      - name: Build
+        run: pnpm --filter @gen-epix/ui run build
+
+      - name: Publish to NPM
+        run: pnpm --filter @gen-epix/ui publish --access=public --no-git-checks
 
       - name: Zip dist directory
         run: zip -r gen-epix-ui.zip packages/ui/dist
@@ -75,5 +78,5 @@ jobs:
         env:
           NPM_TOKEN: ${{ secrets.NPM_TOKEN }}
 
-      - name: Build and publish to NPM
-        run: pnpm --filter @gen-epix/client-theme run build-publish
+      - name: Publish to NPM
+        run: pnpm --filter @gen-epix/client-theme publish --access=public --no-git-checks
