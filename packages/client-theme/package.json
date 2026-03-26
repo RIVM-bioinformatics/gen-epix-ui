@@ -1,6 +1,6 @@
 {
   "name": "@gen-epix/client-theme",
-  "version": "0.0.2",
+  "version": "0.0.3",
   "license": "EUPL-1.2",
   "publishConfig": {
     "access": "public"

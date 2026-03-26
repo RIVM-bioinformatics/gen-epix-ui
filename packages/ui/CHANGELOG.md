@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.16.1](https://github.com/RIVM-bioinformatics/gen-epix-ui/compare/ui-v1.16.0...ui-v1.16.1) (2026-03-26)
+
+
+### Bug Fixes
+
+* remove pnpm catalog to facalitate file protocol ([82c6183](https://github.com/RIVM-bioinformatics/gen-epix-ui/commit/82c6183a6067471117f6c809b60e8b16dd5484ee))
+
 ## [1.16.0](https://github.com/RIVM-bioinformatics/gen-epix-ui/compare/ui-v1.15.2...ui-v1.16.0) (2026-03-26)
 
 
