@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.0.4](https://github.com/RIVM-bioinformatics/gen-epix-ui/compare/client-theme-v0.0.3...client-theme-v0.0.4) (2026-03-26)
+
+
+### Bug Fixes
+
+* update repository url in client-theme ([1922c6b](https://github.com/RIVM-bioinformatics/gen-epix-ui/commit/1922c6bfd78960cb30e9b01faac20d9539337d18))
+
 ## [0.0.3](https://github.com/RIVM-bioinformatics/gen-epix-ui/compare/client-theme-v0.0.2...client-theme-v0.0.3) (2026-03-26)
 
 
