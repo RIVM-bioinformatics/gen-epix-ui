@@ -5,6 +5,10 @@
   "publishConfig": {
     "access": "public"
   },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/RIVM-bioinformatics/gen-epix-ui.git"
+  },
   "type": "module",
   "types": "./src/@types/mui.d.ts",
   "files": [
