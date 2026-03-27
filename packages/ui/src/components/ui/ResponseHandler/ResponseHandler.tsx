@@ -8,6 +8,7 @@ import type { CircularProgressProps } from '@mui/material';
 import { Spinner } from '../Spinner';
 import { GenericErrorMessage } from '../GenericErrorMessage';
 import type { Loadable } from '../../../models/dataHooks';
+import { LoadableUtil } from '../../../utils/LoadableUtil';
 
 export type ResponseHandlerProps = PropsWithChildren<{
   readonly isLoading?: boolean;
@@ -48,8 +49,8 @@ export const ResponseHandler = ({
     return children;
   }
 
-  const error = userError || (loadablesArray?.find((loadable) => loadable.error))?.error;
-  const isLoading = userIsLoading || (loadablesArray?.some((loadable) => loadable.isLoading));
+  const error = userError || LoadableUtil.findFirstError(loadablesArray);
+  const isLoading = userIsLoading || LoadableUtil.isSomeLoading(loadablesArray);
 
   return (
     <>

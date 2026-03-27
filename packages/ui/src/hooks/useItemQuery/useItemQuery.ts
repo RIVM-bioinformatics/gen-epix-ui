@@ -74,9 +74,10 @@ export const useItemQuery = <T extends GenericData>({
       isLoading: itemFromCache ? false : useQueryResult.isLoading,
       isPending: itemFromCache ? false : useQueryResult.isPending,
       isFetching: itemFromCache ? false : useQueryResult.isFetching,
+      isEnabled: itemFromCache ? true : useQueryResult.isEnabled,
       error: itemFromCache ? false : useQueryResult.error,
     };
-  }, [itemFromCache, useQueryResult.data, useQueryResult.isLoading, useQueryResult.isPending, useQueryResult.isFetching, useQueryResult.error]);
+  }, [itemFromCache, useQueryResult.data, useQueryResult.isLoading, useQueryResult.isPending, useQueryResult.isFetching, useQueryResult.isEnabled, useQueryResult.error]);
 
   return result;
 };

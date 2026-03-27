@@ -14,5 +14,8 @@ export interface UseNameFactory<TValue> extends Loadable {
 
 export interface Loadable {
   isLoading: boolean;
+  isFetching: boolean;
+  isPending: boolean;
+  isEnabled: boolean;
   error: unknown;
 }

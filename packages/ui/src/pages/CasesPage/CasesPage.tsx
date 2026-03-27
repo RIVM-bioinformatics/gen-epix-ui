@@ -4,6 +4,7 @@ import {
   ListItemIcon,
   ListItemText,
   MenuItem,
+  Typography,
   useTheme,
 } from '@mui/material';
 import ArrowCircleRightIcon from '@mui/icons-material/ArrowCircleRight';
@@ -315,20 +316,37 @@ export const CasesPage = () => {
             error={error}
             isLoading={isLoading}
           >
-            <TableSidebarMenu />
-            <Box
-              sx={{
-                width: '100%',
-                height: '100%',
-                paddingLeft: theme.spacing(ConfigManager.instance.config.layout.SIDEBAR_MENU_WIDTH + 1),
-              }}
-            >
-              <Table
-                getRowName={getRowName}
-                onReadableIndexClick={onIndexCellClick}
-                onRowClick={onRowClick}
-              />
-            </Box>
+            {caseTypes?.length === 0 && (
+              <Box
+                sx={{
+                  display: 'flex',
+                  flexDirection: 'column',
+                  alignItems: 'center',
+                }}
+              >
+                <Typography variant={'h6'}>
+                  {t`No cases found`}
+                </Typography>
+              </Box>
+            )}
+            {caseTypes?.length > 0 && (
+              <>
+                <TableSidebarMenu />
+                <Box
+                  sx={{
+                    width: '100%',
+                    height: '100%',
+                    paddingLeft: theme.spacing(ConfigManager.instance.config.layout.SIDEBAR_MENU_WIDTH + 1),
+                  }}
+                >
+                  <Table
+                    getRowName={getRowName}
+                    onReadableIndexClick={onIndexCellClick}
+                    onRowClick={onRowClick}
+                  />
+                </Box>
+              </>
+            )}
           </ResponseHandler>
         </Box>
         <EpiCaseTypeInfoDialogWithLoader ref={epiCaseTypeInfoDialogWithLoaderRef} />

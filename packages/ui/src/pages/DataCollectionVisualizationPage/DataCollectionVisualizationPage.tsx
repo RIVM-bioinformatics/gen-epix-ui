@@ -20,6 +20,7 @@ import { useDataCollectionsQuery } from '../../dataHooks/useDataCollectionsQuery
 import { useOrganizationMapQuery } from '../../dataHooks/useOrganizationsQuery';
 import { useArray } from '../../hooks/useArray';
 import { TestIdUtil } from '../../utils/TestIdUtil';
+import { LoadableUtil } from '../../utils/LoadableUtil';
 
 
 echarts.use([TooltipComponent, LegendComponent, CanvasRenderer]);
@@ -69,7 +70,7 @@ const DataCollectionVisualizationPageInner = () => {
   }, []);
 
   const graph = useMemo<Graph>(() => {
-    if (loadables.some((loadable) => loadable.isLoading)) {
+    if (LoadableUtil.isSomeLoading(loadables)) {
       return {
         categories: [],
         links: [],

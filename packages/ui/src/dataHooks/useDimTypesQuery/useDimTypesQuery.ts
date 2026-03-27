@@ -19,6 +19,9 @@ export const useDimTypeOptionsQuery = (): UseOptions<string> => {
     const options: OptionBase<string>[] = Object.entries(dimTypePresentationValues).map(([value, label]) => ({ value, label }));
     return {
       isLoading: false,
+      isEnabled: true,
+      isFetching: false,
+      isPending: false,
       options,
       error: null as UseOptions<string>,
     };

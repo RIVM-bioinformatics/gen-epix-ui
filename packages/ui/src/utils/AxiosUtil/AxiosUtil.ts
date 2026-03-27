@@ -42,6 +42,6 @@ export class AxiosUtil {
   }
 
   public static isAxiosRequestErrorWithCode(error: unknown, status: number): error is AxiosError<unknown> {
-    return isAxiosError(error) && error.response?.status === status;
+    return isAxiosError(error) && error?.response?.status === status;
   }
 }

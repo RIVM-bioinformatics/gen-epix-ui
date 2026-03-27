@@ -36,6 +36,9 @@ export const useTreeAlgorithmCodeOptionsQuery = (): UseOptions<string> => {
     return {
       isLoading: false,
       options,
+      isEnabled: true,
+      isFetching: false,
+      isPending: false,
       error: null as UseOptions<string>,
     };
   }, []);

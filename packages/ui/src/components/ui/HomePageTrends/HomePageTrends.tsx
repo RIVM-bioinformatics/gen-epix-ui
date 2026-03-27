@@ -35,6 +35,7 @@ import { useArray } from '../../../hooks/useArray';
 import { AxiosUtil } from '../../../utils/AxiosUtil';
 import { withPermissions } from '../../../hoc/withPermissions';
 import { useQueryMemo } from '../../../hooks/useQueryMemo';
+import { LoadableUtil } from '../../../utils/LoadableUtil';
 
 import { HomePageTrendCard } from './HomePageTrendCard';
 
@@ -115,7 +116,7 @@ export const HomePageTrends = withPermissions(() => {
   const statistics = useMemo<Statistic[]>(() => {
     const s: Statistic[] = [];
 
-    if (loadables.some(loadable => loadable.isLoading) || loadables.some(loadable => loadable.error) || !caseTypeStatsQueryNow.data?.length || !caseTypeStatsQueryPast.data?.length) {
+    if (LoadableUtil.isSomeLoading(loadables) || LoadableUtil.hasSomeError(loadables) || !caseTypeStatsQueryNow.data?.length || !caseTypeStatsQueryPast.data?.length) {
       return s;
     }
 
@@ -192,7 +193,7 @@ export const HomePageTrends = withPermissions(() => {
     await RouterManager.instance.router.navigate('/trends');
   }, []);
 
-  if (loadables.some(loadable => loadable.error && AxiosUtil.isAxiosForbiddenError(loadable.error))) {
+  if (AxiosUtil.isAxiosForbiddenError(LoadableUtil.findFirstError(loadables))) {
     return null;
   }
 

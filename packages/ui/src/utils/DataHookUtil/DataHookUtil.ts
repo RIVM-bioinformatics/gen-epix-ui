@@ -7,6 +7,7 @@ import type {
   UseNameFactory,
 } from '../../models/dataHooks';
 import { StringUtil } from '../StringUtil';
+import { LoadableUtil } from '../LoadableUtil';
 
 export class DataHookUtil {
   private static isResponse<TValue>(response: unknown): response is UseQueryResult<TValue> {
@@ -16,7 +17,7 @@ export class DataHookUtil {
     if (typeof response !== 'object') {
       return false;
     }
-    if (!('isLoading' in response)) {
+    if (!('isLoading' in response) || !('isFetching' in response) || !('isPending' in response) || !('isEnabled' in response) || !('error' in response)) {
       return false;
     }
     return true;
@@ -27,26 +28,25 @@ export class DataHookUtil {
     getId: (item: TValue) => string,
     loadables: Loadable[] = [],
   ): UseMap<TValue> {
-    if (DataHookUtil.isResponse(response) && response.error) {
+    const loadablesAndResponse: Loadable[] = [...(DataHookUtil.isResponse(response) ? [response] : []), ...(Array.isArray(loadables) ? loadables : [])];
+
+    const isLoading = LoadableUtil.isSomeLoading(loadablesAndResponse);
+    const isFetching = LoadableUtil.isSomeFetching(loadablesAndResponse);
+    const isPending = LoadableUtil.isSomePending(loadablesAndResponse);
+    const isEnabled = LoadableUtil.isAllEnabled(loadablesAndResponse);
+    const error = LoadableUtil.findFirstError(loadablesAndResponse);
+
+    if (error) {
       return {
-        isLoading: false,
-        error: response.error,
-        map: new Map(),
-      };
-    }
-    if (loadables?.some(obj => obj.error)) {
-      return {
-        isLoading: false,
-        error: loadables.find(obj => obj.error).error,
+        isLoading,
+        error,
+        isEnabled,
+        isFetching,
+        isPending,
         map: new Map(),
       };
     }
 
-    const isLoadings = [DataHookUtil.isResponse(response) ? (response.isLoading || response.isPending || response.isFetching) : false];
-    if (loadables) {
-      isLoadings.push(...loadables.map(obj => obj.isLoading));
-    }
-    const isLoading = isLoadings.some(x => x);
     let map: Map<string, TValue> = new Map();
     if (!isLoading) {
       const items = DataHookUtil.isResponse(response) ? response.data : response;
@@ -55,6 +55,9 @@ export class DataHookUtil {
 
     return {
       isLoading,
+      isPending,
+      isFetching,
+      isEnabled,
       map,
       error: null,
     };
@@ -67,25 +70,25 @@ export class DataHookUtil {
     loadables?: Loadable[],
     sortComperator?: (a: string, b: string) => number,
   ): UseOptions<string> {
-    if (DataHookUtil.isResponse(response) && response.error) {
+    const loadablesAndResponse: Loadable[] = [...(DataHookUtil.isResponse(response) ? [response] : []), ...(Array.isArray(loadables) ? loadables : [])];
+
+    const isLoading = LoadableUtil.isSomeLoading(loadablesAndResponse);
+    const isFetching = LoadableUtil.isSomeFetching(loadablesAndResponse);
+    const isPending = LoadableUtil.isSomePending(loadablesAndResponse);
+    const isEnabled = LoadableUtil.isAllEnabled(loadablesAndResponse);
+    const error = LoadableUtil.findFirstError(loadablesAndResponse);
+
+    if (error) {
       return {
-        isLoading: false,
-        error: response.error,
-        options: [],
-      };
-    }
-    if (loadables?.some(obj => obj.error)) {
-      return {
-        isLoading: false,
-        error: loadables.find(obj => obj.error).error,
+        isLoading,
+        isPending,
+        isFetching,
+        isEnabled,
+        error,
         options: [],
       };
     }
 
-    const isLoading = [
-      DataHookUtil.isResponse(response) ? (response.isLoading || response.isPending) : false,
-      ...loadables?.map(obj => obj.isLoading) ?? [],
-    ].some(Boolean);
     const sort = sortComperator ?? StringUtil.sortComperator;
 
     let options: {
@@ -101,8 +104,11 @@ export class DataHookUtil {
 
     return {
       isLoading,
+      isPending,
+      isFetching,
+      isEnabled,
       options,
-      error: null,
+      error,
     };
   }
 
@@ -110,27 +116,30 @@ export class DataHookUtil {
     getName: (item: TValue) => string,
     loadables?: Loadable[],
   ): UseNameFactory<TValue> {
-    if (loadables?.some(obj => obj.error)) {
+    const isLoading = Array.isArray(loadables) ? LoadableUtil.isSomeLoading(loadables) : false;
+    const isFetching = Array.isArray(loadables) ? LoadableUtil.isSomeFetching(loadables) : false;
+    const isPending = Array.isArray(loadables) ? LoadableUtil.isSomePending(loadables) : false;
+    const isEnabled = Array.isArray(loadables) ? LoadableUtil.isAllEnabled(loadables) : false;
+    const error = Array.isArray(loadables) ? LoadableUtil.findFirstError(loadables) : null;
+
+    if (error) {
       return {
         isLoading: false,
-        error: loadables.find(obj => obj.error).error,
+        isEnabled: true,
+        isFetching: false,
+        isPending: false,
+        error,
         getName,
-      };
-    }
-
-    const isLoading = loadables ? loadables.some(obj => obj.isLoading) : false;
-    if (isLoading) {
-      return {
-        isLoading,
-        error: null,
-        getName: () => '',
       };
     }
 
     return {
       isLoading,
-      error: null,
-      getName,
+      isPending,
+      isFetching,
+      isEnabled,
+      error,
+      getName: isLoading ? () => '' : getName,
     };
 
   }

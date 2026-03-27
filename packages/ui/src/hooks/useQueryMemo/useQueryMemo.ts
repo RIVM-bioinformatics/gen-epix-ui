@@ -20,5 +20,7 @@ export const useQueryMemo = <TQueryFnData = unknown, TError = DefaultError, TDat
     error: query.error,
     isLoading: query.isLoading,
     isPending: query.isPending,
+    isFetching: query.isFetching,
+    isEnabled: query.isEnabled,
   })]);
 };

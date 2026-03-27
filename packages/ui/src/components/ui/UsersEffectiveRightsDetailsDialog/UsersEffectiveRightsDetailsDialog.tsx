@@ -42,6 +42,7 @@ import { useColSetMembersQuery } from '../../../dataHooks/useColSetMembersQuery'
 import { useCaseTypeSetMembersQuery } from '../../../dataHooks/useCaseTypeSetMembersQuery';
 import type { User } from '../../../api';
 import { EpiCustomTabPanel } from '../../epi/EpiCustomTabPanel';
+import { LoadableUtil } from '../../../utils/LoadableUtil';
 
 
 export type UsersEffectiveRightsDetailsType = 'caseTypeSets' | 'readColSets' | 'writeColSets';
@@ -131,12 +132,13 @@ export const UsersEffectiveRightsDetailsDialog = withDialog<UsersEffectiveRights
     onActionsChange(actions);
   }, [onActionsChange, onClose, t]);
 
+  const isLoading = LoadableUtil.isSomeLoading(loadables);
   return (
     <ResponseHandler
       inlineSpinner
       loadables={loadables}
     >
-      {!loadables.some(x => x.isLoading) && (
+      {!isLoading && (
         <Box sx={{ width: '100%' }}>
           <Box sx={{ borderBottom: 1, borderColor: 'divider' }}>
             <Tabs

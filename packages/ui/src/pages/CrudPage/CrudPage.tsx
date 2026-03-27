@@ -65,6 +65,7 @@ import { TableUtil } from '../../utils/TableUtil';
 import type { DialogAction } from '../../components/ui/Dialog';
 import type { FormFieldDefinition } from '../../models/form';
 import { useQueryMemo } from '../../hooks/useQueryMemo';
+import { LoadableUtil } from '../../utils/LoadableUtil';
 
 import type { CrudPageEditDialogRefMethods } from './CrudPageEditDialog';
 import { CrudPageEditDialog } from './CrudPageEditDialog';
@@ -196,7 +197,7 @@ export const CrudPage = <
 
   const isLoadablesLoading = useMemo(() => {
     if (isArray(loadables)) {
-      return loadables.some((loadable) => loadable.isLoading);
+      return LoadableUtil.isSomeLoading(loadables);
     }
     return false;
   }, [loadables]);

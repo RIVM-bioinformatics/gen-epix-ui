@@ -33,6 +33,7 @@ import { useOrganizationShareCasePoliciesQuery } from '../useOrganizationShareCa
 import { useUserAccessCasePoliciesQuery } from '../useUserAccessCasePoliciesQuery';
 import { useUserShareCasePoliciesQuery } from '../useUserShareCasePoliciesQuery';
 import type { UseMap } from '../../models/dataHooks';
+import { LoadableUtil } from '../../utils/LoadableUtil';
 
 export type UserEffectiveRightsQueryResult = {
   effectiveRights: UserEffectiveRight[];
@@ -105,7 +106,7 @@ export const useUserEffectiveRightsQuery = (userId: string): Partial<UseQueryRes
 
   const result = useMemo(() => {
     return {
-      loading: loadables.some(x => x.isLoading),
+      loading: LoadableUtil.isSomeLoading(loadables),
       error: (loadables.find(x => x.error)?.error ?? null) as Error,
       data: {
         effectiveRights,

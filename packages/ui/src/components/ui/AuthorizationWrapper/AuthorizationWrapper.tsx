@@ -20,6 +20,7 @@ import { QueryUtil } from '../../../utils/QueryUtil';
 import { TestIdUtil } from '../../../utils/TestIdUtil';
 import { useArray } from '../../../hooks/useArray';
 import { useQueryMemo } from '../../../hooks/useQueryMemo';
+import { LoadableUtil } from '../../../utils/LoadableUtil';
 
 export const AuthorizationWrapper = ({ children }: PropsWithChildren): ReactNode => {
   const { t } = useTranslation();
@@ -55,7 +56,7 @@ export const AuthorizationWrapper = ({ children }: PropsWithChildren): ReactNode
     AuthorizationManager.instance.apiPermissions = userPermissionsQuery.data;
   }
 
-  if (requiresUserProfile && (loadables.some((l) => l.isLoading) || loadables.some((l) => l.isError))) {
+  if (requiresUserProfile && (LoadableUtil.isSomeLoading(loadables) || LoadableUtil.hasSomeError(loadables))) {
     return (
       <PageContainer
         ignorePageEvent

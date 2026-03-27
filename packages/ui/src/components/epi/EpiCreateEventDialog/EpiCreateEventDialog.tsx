@@ -56,6 +56,7 @@ import type { DialogAction } from '../../ui/Dialog';
 import { ResponseHandler } from '../../ui/ResponseHandler';
 import { EpiCasesAlreadyInCaseSetWarning } from '../EpiCasesAlreadyInCaseSetWarning';
 import { useArray } from '../../../hooks/useArray';
+import { LoadableUtil } from '../../../utils/LoadableUtil';
 
 import { EpiCreateEventDialogSuccessNotificationMessage } from './EpiCreateEventDialogSuccessNotificationMessage';
 
@@ -252,7 +253,7 @@ export const EpiCreateEventDialog = withDialog<EpiCreateEventDialogProps, EpiCre
   ]);
 
 
-  const isLoading = loadables.some(x => x.isLoading);
+  const isLoading = LoadableUtil.isSomeLoading(loadables);
 
   const onSuccess = useCallback(async (item: CaseSet, variables: FormFields) => {
     if (variables.shouldApplySharingToCases) {

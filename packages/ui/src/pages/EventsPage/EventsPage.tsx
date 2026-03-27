@@ -10,6 +10,7 @@ import {
   ListItemIcon,
   ListItemText,
   MenuItem,
+  Typography,
   useTheme,
 } from '@mui/material';
 import ArrowCircleRightIcon from '@mui/icons-material/ArrowCircleRight';
@@ -55,6 +56,7 @@ import { TableUtil } from '../../utils/TableUtil';
 import { TestIdUtil } from '../../utils/TestIdUtil';
 import { DATE_FORMAT } from '../../data/date';
 import { useQueryMemo } from '../../hooks/useQueryMemo';
+import { LoadableUtil } from '../../utils/LoadableUtil';
 
 type Row = CaseSet & CaseStats;
 
@@ -176,7 +178,7 @@ export const EventsPage = () => {
   useInitializeTableStore({ store: tableStore, columns, rows: data, createFiltersFromColumns: true });
 
   const contentActions = useMemo(() => {
-    const isLoading = loadables.some(loadable => loadable.isLoading);
+    const isLoading = LoadableUtil.isSomeLoading(loadables);
     return (
       <Box
         sx={{
@@ -231,21 +233,37 @@ export const EventsPage = () => {
             isLoading={isCaseSetsLoading}
             loadables={loadables}
           >
-
-            <TableSidebarMenu />
-            <Box
-              sx={{
-                width: '100%',
-                height: '100%',
-                paddingLeft: theme.spacing(ConfigManager.instance.config.layout.SIDEBAR_MENU_WIDTH + 1),
-              }}
-            >
-              <Table
-                getRowName={getRowName}
-                onReadableIndexClick={onIndexCellClick}
-                onRowClick={onRowClick}
-              />
-            </Box>
+            {caseSets?.length === 0 && (
+              <Box
+                sx={{
+                  display: 'flex',
+                  flexDirection: 'column',
+                  alignItems: 'center',
+                }}
+              >
+                <Typography variant={'h6'}>
+                  {t`No events found`}
+                </Typography>
+              </Box>
+            )}
+            {caseSets?.length > 0 && (
+              <>
+                <Box
+                  sx={{
+                    width: '100%',
+                    height: '100%',
+                    paddingLeft: theme.spacing(ConfigManager.instance.config.layout.SIDEBAR_MENU_WIDTH + 1),
+                  }}
+                >
+                  <Table
+                    getRowName={getRowName}
+                    onReadableIndexClick={onIndexCellClick}
+                    onRowClick={onRowClick}
+                  />
+                </Box>
+                <TableSidebarMenu />
+              </>
+            )}
 
           </ResponseHandler>
           <EpiCaseSetInfoDialog
