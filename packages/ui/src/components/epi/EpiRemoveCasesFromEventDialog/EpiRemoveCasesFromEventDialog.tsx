@@ -58,7 +58,7 @@ export const EpiRemoveCasesFromEventDialog = withDialog<EpiRemoveCasesFromEventD
   const fetchData = useStore(epiDashboardStore, useShallow((state) => state.fetchData));
   const setSelectedIds = useStore(epiDashboardStore, useShallow((state) => state.setSelectedIds));
 
-  const isMaxExceeded = openProps.rows.length > completeCaseType.delete_max_n_cases;
+  const isMaxExceeded = openProps.rows.length > completeCaseType.props.delete_max_n_cases;
 
   const caseSetMembersFilter = useMemo<TypedUuidSetFilter>(() => ({
     invert: false,
@@ -152,7 +152,7 @@ export const EpiRemoveCasesFromEventDialog = withDialog<EpiRemoveCasesFromEventD
     >
       {isMaxExceeded ? (
         <Box>
-          {t('You can only remove up to {{maxCases}} cases at a time. Please refine your selection and try again.', { maxCases: completeCaseType.delete_max_n_cases })}
+          {t('You can only remove up to {{maxCases}} cases at a time. Please refine your selection and try again.', { maxCases: completeCaseType.props.delete_max_n_cases })}
         </Box>
       ) : (
         <Box>

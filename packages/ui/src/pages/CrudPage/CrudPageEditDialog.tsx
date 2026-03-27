@@ -45,6 +45,7 @@ export interface CrudPageEditDialogProps<TData extends GenericData, TFormFields 
   readonly getName: (item: TData | TFormFields) => string;
   readonly createItemDialogTitle?: string;
   readonly defaultNewItem?: Partial<TFormFields>;
+  readonly getFormValuesFromItem?: (item: TData) => Partial<TFormFields>;
   readonly schema: ObjectSchema<TFormFields, TFormFields>;
 }
 export type CrudPageEditDialogRefMethods<TData extends GenericData, TFormFields extends AnyObject> = WithDialogRefMethods<CrudPageEditDialogProps<TData, TFormFields>, CrudPageEditDialogOpenProps<TData>>;
@@ -63,6 +64,7 @@ export const CrudPageEditDialog = withDialog<CrudPageEditDialogProps<any, any>, 
     getName,
     createItemDialogTitle,
     defaultNewItem,
+    getFormValuesFromItem,
   }: CrudPageEditDialogProps<TData, TFormFields>,
 ): ReactElement => {
   const { t } = useTranslation();
@@ -94,16 +96,16 @@ export const CrudPageEditDialog = withDialog<CrudPageEditDialogProps<any, any>, 
   }, [onActionsChange, formId, t, resolvedFormFieldDefinitions, openProps]);
 
   const values = useMemo<TFormFields>(() => {
-    return { ...defaultNewItem, ...FormUtil.createFormValues(resolvedFormFieldDefinitions, { ...defaultNewItem, ...openProps.item }) };
-  }, [resolvedFormFieldDefinitions, openProps.item, defaultNewItem]);
+    return { ...defaultNewItem, ...FormUtil.createFormValues(resolvedFormFieldDefinitions, { ...defaultNewItem, ...(getFormValuesFromItem ? getFormValuesFromItem(openProps.item) : (openProps.item ?? {})) }) };
+  }, [defaultNewItem, resolvedFormFieldDefinitions, getFormValuesFromItem, openProps.item]);
 
   useEffect(() => {
     if (openProps.item) {
-      onTitleChange(`Edit item: ${getName({ ...defaultNewItem as TFormFields, ...openProps.item ?? {} })}`);
+      onTitleChange(`Edit item: ${getName({ ...defaultNewItem as TFormFields, ...(getFormValuesFromItem ? getFormValuesFromItem(openProps.item) : (openProps.item ?? {})) })}`);
     } else {
       onTitleChange(createItemDialogTitle ?? t`Create new item`);
     }
-  }, [getName, onTitleChange, openProps, t, createItemDialogTitle, defaultNewItem]);
+  }, [getName, onTitleChange, openProps, t, createItemDialogTitle, defaultNewItem, getFormValuesFromItem]);
 
 
   const formMethods = useForm<TFormFields>({

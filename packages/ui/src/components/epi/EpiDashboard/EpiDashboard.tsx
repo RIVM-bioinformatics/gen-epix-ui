@@ -323,7 +323,7 @@ export const EpiDashboard = withEpiDashboardStore(({ caseSet }: EpiDashboardProp
                 <AlertTitle>
                   {t`Maximum number of results exceeded`}
                 </AlertTitle>
-                {t('The maximum number of results for {{caseTypeName}} ({{maxResultsForCaseType}}) has been exceeded. Refine your filters to reduce the number of results.', { maxResultsForCaseType: completeCaseType.read_max_n_cases, caseTypeName: completeCaseType.name })}
+                {t('The maximum number of results for {{caseTypeName}} ({{maxResultsForCaseType}}) has been exceeded. Refine your filters to reduce the number of results.', { maxResultsForCaseType: completeCaseType.props.read_max_n_cases, caseTypeName: completeCaseType.name })}
               </Alert>
             </Box>
           )}

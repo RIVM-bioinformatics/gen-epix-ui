@@ -128,6 +128,7 @@ export type CrudPageProps<
   readonly onRowsChange?: (items: TData[]) => void;
   readonly editDialogExtraActionsFactory?: (item: TData) => DialogAction[];
   readonly getOptimisticUpdateIntermediateItem?: (variables: TFormFields, previousItem: TData) => TData;
+  readonly getFormValuesFromItem?: (item: TData) => Partial<TFormFields>;
 }>;
 
 export const CrudPage = <
@@ -179,6 +180,7 @@ export const CrudPage = <
   testIdAttributes,
   title,
   updateOne,
+  getFormValuesFromItem,
 }: CrudPageProps<TFormFields, TData, TTableData>) => {
   const { t } = useTranslation();
   const theme = useTheme();
@@ -633,6 +635,7 @@ export const CrudPage = <
           getName={getName}
           createItemDialogTitle={createItemDialogTitle}
           schema={schema}
+          getFormValuesFromItem={getFormValuesFromItem}
           onSave={onEditDialogSave}
           onChange={onFormChange}
         />

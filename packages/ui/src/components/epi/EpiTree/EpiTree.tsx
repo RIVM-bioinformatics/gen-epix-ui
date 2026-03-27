@@ -176,7 +176,7 @@ export const EpiTree = ({ linkedScrollSubject, ref, itemHeight }: EpiTreeProps) 
   }, [caseIds, resetTreeAddresses]);
 
   const hasEnoughSequencesToShowTree = useMemo(() => caseIds.length >= 2 && caseIds.every(x => !!x), [caseIds]);
-  const hasToManyResultsToShowTree = useMemo(() => caseIds.length > 0 && completeCaseType.read_max_tree_size > 0 && caseIds.length > completeCaseType.read_max_tree_size, [caseIds, completeCaseType.read_max_tree_size]);
+  const hasToManyResultsToShowTree = useMemo(() => caseIds.length > 0 && completeCaseType.props.read_max_tree_size > 0 && caseIds.length > completeCaseType.props.read_max_tree_size, [caseIds, completeCaseType.props.read_max_tree_size]);
 
   const retrievePhylogeneticTreeRequestBody = useMemo<RetrievePhylogeneticTreeRequestBody>(() => ({
     case_ids: caseIds,
@@ -815,7 +815,7 @@ export const EpiTree = ({ linkedScrollSubject, ref, itemHeight }: EpiTreeProps) 
                   <Box marginY={2}>
                     {t('The phylogenetic tree cannot be displayed because the number of cases ({{caseCount}}) exceeds the maximum allowed number of cases ({{maxSize}}) to display a phylogenetic tree. Refine your filters to reduce the number of results.', {
                       caseCount: caseIds.length,
-                      maxSize: completeCaseType.read_max_tree_size,
+                      maxSize: completeCaseType.props.read_max_tree_size,
                     })}
                   </Box>
                   <Button

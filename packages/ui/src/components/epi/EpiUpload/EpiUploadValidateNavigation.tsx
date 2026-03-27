@@ -21,7 +21,7 @@ export const EpiUploadValidateNavigation = ({ onGoBackButtonClick, onProceedButt
   const completeCaseType = useStore(uploadStore, (state) => state.completeCaseType);
   const selectedIds = useStore(tableStore, (state) => state.selectedIds);
 
-  const proceedDisabled = !selectedIds.length || selectedIds.length > completeCaseType.create_max_n_cases;
+  const proceedDisabled = !selectedIds.length || selectedIds.length > completeCaseType.props.create_max_n_cases;
 
   return (
     <EpiUploadNavigation

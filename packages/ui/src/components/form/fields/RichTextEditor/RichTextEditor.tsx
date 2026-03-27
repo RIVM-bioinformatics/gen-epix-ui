@@ -196,9 +196,13 @@ export const RichTextEditor = <TFieldValues extends FieldValues, TName extends P
               renderControls={() => (
                 <MenuControlsContainer>
                   <MenuDivider />
-                  <MenuSelectHeading />
+                  <FormControl>
+                    <MenuSelectHeading />
+                  </FormControl>
                   <MenuDivider />
-                  <MenuSelectFontSize />
+                  <FormControl>
+                    <MenuSelectFontSize />
+                  </FormControl>
                   <MenuDivider />
                   <MenuButtonBold />
                   <MenuButtonItalic />

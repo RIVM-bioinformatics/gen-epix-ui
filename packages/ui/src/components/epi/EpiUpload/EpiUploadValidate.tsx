@@ -107,14 +107,14 @@ export const EpiUploadValidateInner = () => {
         return;
       }
       selectedIdsRef.current = state.selectedIds;
-      const newExceedsMaxNumCases = state.selectedIds.length > completeCaseType.create_max_n_cases;
+      const newExceedsMaxNumCases = state.selectedIds.length > completeCaseType.props.create_max_n_cases;
       setExceedsMaxNumCases(newExceedsMaxNumCases);
     });
 
     return () => {
       unsubscribe();
     };
-  }, [completeCaseType.create_max_n_cases, tableStore]);
+  }, [completeCaseType.props.create_max_n_cases, tableStore]);
 
   useEffect(() => {
     const newSelectedIds = rowsWithGeneratedId.filter(validatedCase => {
@@ -152,7 +152,7 @@ export const EpiUploadValidateInner = () => {
               <Alert severity={'error'}>
                 <AlertTitle>
                   {t('You have exceeded the maximum number of {{maxCases}} cases for this case type. Please reduce the number of selected cases before proceeding.', {
-                    maxCases: completeCaseType.create_max_n_cases,
+                    maxCases: completeCaseType.props.create_max_n_cases,
                   })}
                 </AlertTitle>
               </Alert>
