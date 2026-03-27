@@ -45,55 +45,6 @@ export interface ApiPermission {
 
 
 /**
- * A protocol used for assembling sequencing reads into a sequence.  An assembly protocol is immutable: once created, it cannot be deleted and it should not be semantically updated. As such, assembly protocol IDs can safely be referenced in other models and outside of the application.    PARENT CLASS DOCUMENTATION   ProtocolMixin:  Mixin class to add protocol related fields to a model.
- * @export
- * @interface AssemblyProtocol
- */
-export interface AssemblyProtocol {
-    /**
-     * The code of the protocol
-     * @type {string}
-     * @memberof AssemblyProtocol
-     */
-    'code': string;
-    /**
-     * The name of the protocol
-     * @type {string}
-     * @memberof AssemblyProtocol
-     */
-    'name': string;
-    /**
-     * The version of the protocol
-     * @type {string}
-     * @memberof AssemblyProtocol
-     */
-    'version'?: string | null;
-    /**
-     * The description of the protocol
-     * @type {string}
-     * @memberof AssemblyProtocol
-     */
-    'description'?: string | null;
-    /**
-     * The properties of the protocol
-     * @type {{ [key: string]: string; }}
-     * @memberof AssemblyProtocol
-     */
-    'props'?: { [key: string]: string; };
-    /**
-     * The unique identifier for the object.
-     * @type {string}
-     * @memberof AssemblyProtocol
-     */
-    'id'?: string | null;
-    /**
-     * Whether the assembly has a, potentially optional, manual curation step.
-     * @type {boolean}
-     * @memberof AssemblyProtocol
-     */
-    'has_manual_curation'?: boolean;
-}
-/**
  * 
  * @export
  * @ {string}
@@ -612,6 +563,12 @@ export interface CaseSet {
      */
     'name': string;
     /**
+     * The code of a case set, UNIQUE
+     * @type {string}
+     * @memberof CaseSet
+     */
+    'code': string;
+    /**
      * The description of a case set
      * @type {string}
      * @memberof CaseSet
@@ -672,6 +629,12 @@ export interface CaseSetCategory {
      * @memberof CaseSetCategory
      */
     'description': string | null;
+    /**
+     * The rank of the CaseSetCategory, for (partial) ordering.
+     * @type {number}
+     * @memberof CaseSetCategory
+     */
+    'rank'?: number;
 }
 /**
  * 
@@ -858,6 +821,12 @@ export interface CaseSetStatus {
      * @memberof CaseSetStatus
      */
     'description': string | null;
+    /**
+     * The rank of the CaseSetStatus, for (partial) ordering.
+     * @type {number}
+     * @memberof CaseSetStatus
+     */
+    'rank'?: number;
 }
 /**
  * PARENT CLASS DOCUMENTATION   Model: Base class for all models in an application. Models are used to represent the state of the application and are typically persisted in a database. Models can also be used to represent the state of the application in memory, e.g. for caching or for passing data between services. Models can be immutable or mutable, depending on the use case.  Each model must have an associated Entity, which defines the metadata for the model. See the Entity class for more details. The Entity must be set in the subclass of Model. Analogously, a unique name for the model can be set in the subclass, which can be used for identification and logging purposes.  The model_entity and model_name class methods can be used to retrieve the Entity and name of the model, respectively. These methods have the same \"model_\" prefix as generic Pydantic models to avoid name conflicts with other.    PARENT CLASS DOCUMENTATION   BaseModel: !!! abstract \"Usage Documentation\"     [Models](../concepts/models.md)  A base class for creating Pydantic models.  Attributes:     __class_vars__: The names of the class variables defined on the model.     __private_attributes__: Metadata about the private attributes of the model.     __signature__: The synthesized `__init__` [`Signature`][inspect.Signature] of the model.      __pydantic_complete__: Whether model building is completed, or if there are still undefined fields.     __pydantic_core_schema__: The core schema of the model.     __pydantic_custom_init__: Whether the model has a custom `__init__` function.     __pydantic_decorators__: Metadata containing the decorators defined on the model.         This replaces `Model.__validators__` and `Model.__root_validators__` from Pydantic V1.     __pydantic_generic_metadata__: Metadata for generic models; contains data used for a similar purpose to         __args__, __origin__, __parameters__ in typing-module generics. May eventually be replaced by these.     __pydantic_parent_namespace__: Parent namespace of the model, used for automatic rebuilding of models.     __pydantic_post_init__: The name of the post-init method for the model, if defined.     __pydantic_root_model__: Whether the model is a [`RootModel`][pydantic.root_model.RootModel].     __pydantic_serializer__: The `pydantic-core` `SchemaSerializer` used to dump instances of the model.     __pydantic_validator__: The `pydantic-core` `SchemaValidator` used to validate instances of the model.      __pydantic_fields__: A dictionary of field names and their corresponding [`FieldInfo`][pydantic.fields.FieldInfo] objects.     __pydantic_computed_fields__: A dictionary of computed field names and their corresponding [`ComputedFieldInfo`][pydantic.fields.ComputedFieldInfo] objects.      __pydantic_extra__: A dictionary containing extra values, if [`extra`][pydantic.config.ConfigDict.extra]         is set to `\'allow\'`.     __pydantic_fields_set__: The names of fields explicitly set during instantiation.     __pydantic_private__: Values of private attributes set on the model instance.    PARENT CLASS DOCUMENTATION   BaseModel: !!! abstract \"Usage Documentation\"     [Models](../concepts/models.md)  A base class for creating Pydantic models.  Attributes:     __class_vars__: The names of the class variables defined on the model.     __private_attributes__: Metadata about the private attributes of the model.     __signature__: The synthesized `__init__` [`Signature`][inspect.Signature] of the model.      __pydantic_complete__: Whether model building is completed, or if there are still undefined fields.     __pydantic_core_schema__: The core schema of the model.     __pydantic_custom_init__: Whether the model has a custom `__init__` function.     __pydantic_decorators__: Metadata containing the decorators defined on the model.         This replaces `Model.__validators__` and `Model.__root_validators__` from Pydantic V1.     __pydantic_generic_metadata__: Metadata for generic models; contains data used for a similar purpose to         __args__, __origin__, __parameters__ in typing-module generics. May eventually be replaced by these.     __pydantic_parent_namespace__: Parent namespace of the model, used for automatic rebuilding of models.     __pydantic_post_init__: The name of the post-init method for the model, if defined.     __pydantic_root_model__: Whether the model is a [`RootModel`][pydantic.root_model.RootModel].     __pydantic_serializer__: The `pydantic-core` `SchemaSerializer` used to dump instances of the model.     __pydantic_validator__: The `pydantic-core` `SchemaValidator` used to validate instances of the model.      __pydantic_fields__: A dictionary of field names and their corresponding [`FieldInfo`][pydantic.fields.FieldInfo] objects.     __pydantic_computed_fields__: A dictionary of computed field names and their corresponding [`ComputedFieldInfo`][pydantic.fields.ComputedFieldInfo] objects.      __pydantic_extra__: A dictionary containing extra values, if [`extra`][pydantic.config.ConfigDict.extra]         is set to `\'allow\'`.     __pydantic_fields_set__: The names of fields explicitly set during instantiation.     __pydantic_private__: Values of private attributes set on the model instance.
@@ -1545,94 +1514,93 @@ export type ColType = typeof ColType[keyof typeof ColType];
  */
 
 export const CommandName = {
-    SiteCrudCommand: 'SiteCrudCommand',
-    RetrieveCompleteCaseTypeCommand: 'RetrieveCompleteCaseTypeCommand',
-    ColSetCrudCommand: 'ColSetCrudCommand',
+    OrganizationShareCasePolicyCrudCommand: 'OrganizationShareCasePolicyCrudCommand',
+    RetrieveOrganizationAdminNameEmailsCommand: 'RetrieveOrganizationAdminNameEmailsCommand',
+    RegionCrudCommand: 'RegionCrudCommand',
+    UserAccessCasePolicyCrudCommand: 'UserAccessCasePolicyCrudCommand',
+    RetrieveInviteUserConstraintsCommand: 'RetrieveInviteUserConstraintsCommand',
+    RetrieveSubRolesCommand: 'RetrieveSubRolesCommand',
     CaseDataCollectionLinkCrudCommand: 'CaseDataCollectionLinkCrudCommand',
-    RetrieveFeatureFlagsCommand: 'RetrieveFeatureFlagsCommand',
+    RegionSetShapeCrudCommand: 'RegionSetShapeCrudCommand',
     CreateCaseSetCommand: 'CreateCaseSetCommand',
-    CaseTypeSetCaseTypeUpdateAssociationCommand: 'CaseTypeSetCaseTypeUpdateAssociationCommand',
+    RetrieveFeatureFlagsCommand: 'RetrieveFeatureFlagsCommand',
+    CaseIdentifierCrudCommand: 'CaseIdentifierCrudCommand',
+    CreateFileForSeqCommand: 'CreateFileForSeqCommand',
+    RetrievePhylogeneticTreeByCasesCommand: 'RetrievePhylogeneticTreeByCasesCommand',
+    DataCollectionSetCrudCommand: 'DataCollectionSetCrudCommand',
+    RetrieveGeneticSequenceByIdCommand: 'RetrieveGeneticSequenceByIdCommand',
+    RegisterInvitedUserCommand: 'RegisterInvitedUserCommand',
+    CaseSetDataCollectionLinkCrudCommand: 'CaseSetDataCollectionLinkCrudCommand',
+    OrganizationSetCrudCommand: 'OrganizationSetCrudCommand',
     OrganizationAdminPolicyCrudCommand: 'OrganizationAdminPolicyCrudCommand',
     RetrieveGeneticSequenceFastaByIdCommand: 'RetrieveGeneticSequenceFastaByIdCommand',
-    RetrieveCasesByQueryCommand: 'RetrieveCasesByQueryCommand',
-    OrganizationSetCrudCommand: 'OrganizationSetCrudCommand',
-    OrganizationAccessCasePolicyCrudCommand: 'OrganizationAccessCasePolicyCrudCommand',
-    RetrieveOrganizationContactsCommand: 'RetrieveOrganizationContactsCommand',
-    RetrieveSubRolesCommand: 'RetrieveSubRolesCommand',
-    CaseSetStatusCrudCommand: 'CaseSetStatusCrudCommand',
-    RetrieveOwnPermissionsCommand: 'RetrieveOwnPermissionsCommand',
-    RetrieveOrganizationsUnderAdminCommand: 'RetrieveOrganizationsUnderAdminCommand',
-    InviteUserCommand: 'InviteUserCommand',
-    RetrieveCaseSetRightsCommand: 'RetrieveCaseSetRightsCommand',
-    CaseTypeSetMemberCrudCommand: 'CaseTypeSetMemberCrudCommand',
-    RefDimCrudCommand: 'RefDimCrudCommand',
-    DataCollectionSetDataCollectionUpdateAssociationCommand: 'DataCollectionSetDataCollectionUpdateAssociationCommand',
-    RefColCrudCommand: 'RefColCrudCommand',
-    RetrieveCaseRightsCommand: 'RetrieveCaseRightsCommand',
-    RetrieveOrganizationAdminNameEmailsCommand: 'RetrieveOrganizationAdminNameEmailsCommand',
-    RegionRelationCrudCommand: 'RegionRelationCrudCommand',
-    CaseCrudCommand: 'CaseCrudCommand',
-    CreateFileForSeqCommand: 'CreateFileForSeqCommand',
-    RetrieveContainingRegionCommand: 'RetrieveContainingRegionCommand',
-    CaseSetDataCollectionLinkCrudCommand: 'CaseSetDataCollectionLinkCrudCommand',
-    ConceptRelationCrudCommand: 'ConceptRelationCrudCommand',
-    ColSetMemberCrudCommand: 'ColSetMemberCrudCommand',
-    CaseTypeSetCrudCommand: 'CaseTypeSetCrudCommand',
-    UpdateUserOwnOrganizationCommand: 'UpdateUserOwnOrganizationCommand',
-    RetrieveCaseStatsCommand: 'RetrieveCaseStatsCommand',
-    UserCrudCommand: 'UserCrudCommand',
-    ConceptSetCrudCommand: 'ConceptSetCrudCommand',
-    OrganizationIdentifierIssuerLinkUpdateAssociationCommand: 'OrganizationIdentifierIssuerLinkUpdateAssociationCommand',
-    RegionSetCrudCommand: 'RegionSetCrudCommand',
-    RetrieveInviteUserConstraintsCommand: 'RetrieveInviteUserConstraintsCommand',
-    OrganizationSetMemberCrudCommand: 'OrganizationSetMemberCrudCommand',
-    CaseIdentifierCrudCommand: 'CaseIdentifierCrudCommand',
-    OrganizationShareCasePolicyCrudCommand: 'OrganizationShareCasePolicyCrudCommand',
-    DataCollectionSetCrudCommand: 'DataCollectionSetCrudCommand',
-    OrganizationCrudCommand: 'OrganizationCrudCommand',
-    CaseSetCrudCommand: 'CaseSetCrudCommand',
-    RegionSetShapeCrudCommand: 'RegionSetShapeCrudCommand',
-    CaseTypeCrudCommand: 'CaseTypeCrudCommand',
-    ContactCrudCommand: 'ContactCrudCommand',
     RetrieveOutagesCommand: 'RetrieveOutagesCommand',
-    RetrievePhylogeneticTreeBySequencesCommand: 'RetrievePhylogeneticTreeBySequencesCommand',
-    CaseSetCategoryCrudCommand: 'CaseSetCategoryCrudCommand',
-    TreeAlgorithmCrudCommand: 'TreeAlgorithmCrudCommand',
-    RetrieveSequencingProtocolsCommand: 'RetrieveSequencingProtocolsCommand',
-    RegionCrudCommand: 'RegionCrudCommand',
-    RetrievePhylogeneticTreeByCasesCommand: 'RetrievePhylogeneticTreeByCasesCommand',
-    EtiologicalAgentCrudCommand: 'EtiologicalAgentCrudCommand',
-    CreateFileForReadSetCommand: 'CreateFileForReadSetCommand',
-    UploadCasesCommand: 'UploadCasesCommand',
     DiseaseCrudCommand: 'DiseaseCrudCommand',
-    CaseTypeSetCategoryCrudCommand: 'CaseTypeSetCategoryCrudCommand',
-    RetrieveGeneticSequenceFastaByCaseCommand: 'RetrieveGeneticSequenceFastaByCaseCommand',
-    RetrieveSimilarCasesCommand: 'RetrieveSimilarCasesCommand',
-    ConceptCrudCommand: 'ConceptCrudCommand',
-    RetrieveAssemblyProtocolsCommand: 'RetrieveAssemblyProtocolsCommand',
-    RetrieveGeneticSequenceByIdCommand: 'RetrieveGeneticSequenceByIdCommand',
-    ColSetColUpdateAssociationCommand: 'ColSetColUpdateAssociationCommand',
-    TreeAlgorithmClassCrudCommand: 'TreeAlgorithmClassCrudCommand',
-    RetrieveCasesByIdCommand: 'RetrieveCasesByIdCommand',
-    EtiologyCrudCommand: 'EtiologyCrudCommand',
-    UserInvitationCrudCommand: 'UserInvitationCrudCommand',
-    UserAccessCasePolicyCrudCommand: 'UserAccessCasePolicyCrudCommand',
-    RetrieveLicensesCommand: 'RetrieveLicensesCommand',
-    OrganizationSetOrganizationUpdateAssociationCommand: 'OrganizationSetOrganizationUpdateAssociationCommand',
-    GetIdentityProvidersCommand: 'GetIdentityProvidersCommand',
-    IdentifierIssuerCrudCommand: 'IdentifierIssuerCrudCommand',
-    OutageCrudCommand: 'OutageCrudCommand',
+    ConceptRelationCrudCommand: 'ConceptRelationCrudCommand',
+    SiteCrudCommand: 'SiteCrudCommand',
     CaseSetMemberCrudCommand: 'CaseSetMemberCrudCommand',
-    GeneticDistanceProtocolCrudCommand: 'GeneticDistanceProtocolCrudCommand',
+    TreeAlgorithmCrudCommand: 'TreeAlgorithmCrudCommand',
+    OutageCrudCommand: 'OutageCrudCommand',
+    GetIdentityProvidersCommand: 'GetIdentityProvidersCommand',
+    CaseCrudCommand: 'CaseCrudCommand',
+    RetrieveCaseStatsCommand: 'RetrieveCaseStatsCommand',
+    RetrieveCasesByQueryCommand: 'RetrieveCasesByQueryCommand',
+    RetrieveContainingRegionCommand: 'RetrieveContainingRegionCommand',
     UpdateUserCommand: 'UpdateUserCommand',
-    ColCrudCommand: 'ColCrudCommand',
-    DataCollectionCrudCommand: 'DataCollectionCrudCommand',
+    RetrieveGeneticSequenceFastaByCaseCommand: 'RetrieveGeneticSequenceFastaByCaseCommand',
+    CaseTypeSetCaseTypeUpdateAssociationCommand: 'CaseTypeSetCaseTypeUpdateAssociationCommand',
+    DataCollectionSetDataCollectionUpdateAssociationCommand: 'DataCollectionSetDataCollectionUpdateAssociationCommand',
+    RegionRelationCrudCommand: 'RegionRelationCrudCommand',
     DimCrudCommand: 'DimCrudCommand',
+    RetrieveSimilarCasesCommand: 'RetrieveSimilarCasesCommand',
+    RetrieveOwnPermissionsCommand: 'RetrieveOwnPermissionsCommand',
+    CaseSetCrudCommand: 'CaseSetCrudCommand',
+    CreateFileForReadSetCommand: 'CreateFileForReadSetCommand',
+    OrganizationSetOrganizationUpdateAssociationCommand: 'OrganizationSetOrganizationUpdateAssociationCommand',
     DiseaseEtiologicalAgentUpdateAssociationCommand: 'DiseaseEtiologicalAgentUpdateAssociationCommand',
+    RetrieveCaseRightsCommand: 'RetrieveCaseRightsCommand',
+    RetrieveCompleteCaseTypeCommand: 'RetrieveCompleteCaseTypeCommand',
+    IdentifierIssuerCrudCommand: 'IdentifierIssuerCrudCommand',
+    OrganizationIdentifierIssuerLinkUpdateAssociationCommand: 'OrganizationIdentifierIssuerLinkUpdateAssociationCommand',
     UserShareCasePolicyCrudCommand: 'UserShareCasePolicyCrudCommand',
+    OrganizationSetMemberCrudCommand: 'OrganizationSetMemberCrudCommand',
+    InviteUserCommand: 'InviteUserCommand',
+    CaseTypeSetMemberCrudCommand: 'CaseTypeSetMemberCrudCommand',
+    GeneticDistanceProtocolCrudCommand: 'GeneticDistanceProtocolCrudCommand',
+    TreeAlgorithmClassCrudCommand: 'TreeAlgorithmClassCrudCommand',
+    RetrievePhylogeneticTreeBySequencesCommand: 'RetrievePhylogeneticTreeBySequencesCommand',
+    OrganizationAccessCasePolicyCrudCommand: 'OrganizationAccessCasePolicyCrudCommand',
+    RetrieveLicensesCommand: 'RetrieveLicensesCommand',
+    RefColCrudCommand: 'RefColCrudCommand',
+    RetrieveOrganizationContactsCommand: 'RetrieveOrganizationContactsCommand',
     DataCollectionSetMemberCrudCommand: 'DataCollectionSetMemberCrudCommand',
-    RegisterInvitedUserCommand: 'RegisterInvitedUserCommand',
-    OrganizationIdentifierIssuerLinkCrudCommand: 'OrganizationIdentifierIssuerLinkCrudCommand'
+    RetrieveCaseSetRightsCommand: 'RetrieveCaseSetRightsCommand',
+    CaseTypeSetCrudCommand: 'CaseTypeSetCrudCommand',
+    RetrieveCasesByIdCommand: 'RetrieveCasesByIdCommand',
+    CaseSetCategoryCrudCommand: 'CaseSetCategoryCrudCommand',
+    ConceptSetCrudCommand: 'ConceptSetCrudCommand',
+    DataCollectionCrudCommand: 'DataCollectionCrudCommand',
+    ColCrudCommand: 'ColCrudCommand',
+    OrganizationIdentifierIssuerLinkCrudCommand: 'OrganizationIdentifierIssuerLinkCrudCommand',
+    RetrieveOrganizationsUnderAdminCommand: 'RetrieveOrganizationsUnderAdminCommand',
+    OrganizationCrudCommand: 'OrganizationCrudCommand',
+    ColSetMemberCrudCommand: 'ColSetMemberCrudCommand',
+    RefDimCrudCommand: 'RefDimCrudCommand',
+    RegionSetCrudCommand: 'RegionSetCrudCommand',
+    CaseTypeSetCategoryCrudCommand: 'CaseTypeSetCategoryCrudCommand',
+    RetrieveProtocolsCommand: 'RetrieveProtocolsCommand',
+    CaseSetStatusCrudCommand: 'CaseSetStatusCrudCommand',
+    ConceptCrudCommand: 'ConceptCrudCommand',
+    UserInvitationCrudCommand: 'UserInvitationCrudCommand',
+    EtiologyCrudCommand: 'EtiologyCrudCommand',
+    UploadCasesCommand: 'UploadCasesCommand',
+    ColSetCrudCommand: 'ColSetCrudCommand',
+    UpdateUserOwnOrganizationCommand: 'UpdateUserOwnOrganizationCommand',
+    CaseTypeCrudCommand: 'CaseTypeCrudCommand',
+    UserCrudCommand: 'UserCrudCommand',
+    ColSetColUpdateAssociationCommand: 'ColSetColUpdateAssociationCommand',
+    EtiologicalAgentCrudCommand: 'EtiologicalAgentCrudCommand',
+    ContactCrudCommand: 'ContactCrudCommand'
 } as const;
 
 export type CommandName = typeof CommandName[keyof typeof CommandName];
@@ -1795,7 +1763,7 @@ export interface CompleteCaseType {
      */
     'ordered_col_ids_by_dim'?: { [key: string]: Array<string>; };
     /**
-     * The genetic distance protocols used by the CaseType
+     * Genetic distance protocols used by the CaseType
      * @type {{ [key: string]: GeneticDistanceProtocol; }}
      * @memberof CompleteCaseType
      */
@@ -1974,24 +1942,6 @@ export interface ConceptSet {
      * @memberof ConceptSet
      */
     'type': ConceptSetType;
-    /**
-     * The regular expression describing the concept set, in case of type REGULAR_EXPRESSION
-     * @type {string}
-     * @memberof ConceptSet
-     */
-    'regex'?: string | null;
-    /**
-     * The definition of the schema describing the concept set, in case of type CONTEXT_FREE_GRAMMAR_XXX
-     * @type {string}
-     * @memberof ConceptSet
-     */
-    'schema_definition'?: string | null;
-    /**
-     * The URI to the schema describing the concept set, in case of type CONTEXT_FREE_GRAMMAR_XXX
-     * @type {string}
-     * @memberof ConceptSet
-     */
-    'schema_uri'?: string | null;
     /**
      * The description of the concept set.
      * @type {string}
@@ -2551,10 +2501,10 @@ export interface GeneticDistanceProtocol {
     'seqdb_seq_distance_protocol_id': string;
     /**
      * 
-     * @type {SeqDistanceProtocolType}
+     * @type {SeqDistanceType}
      * @memberof GeneticDistanceProtocol
      */
-    'seqdb_seq_distance_protocol_type': SeqDistanceProtocolType;
+    'seqdb_seq_distance_type': SeqDistanceType;
     /**
      * The name of the protocol
      * @type {string}
@@ -3442,13 +3392,13 @@ export interface PhylogeneticTree {
      * @type {string}
      * @memberof PhylogeneticTree
      */
-    'genetic_distance_protocol_id'?: string | null;
+    'protocol_id'?: string | null;
     /**
      * 
      * @type {GeneticDistanceProtocol}
      * @memberof PhylogeneticTree
      */
-    'genetic_distance_protocol'?: GeneticDistanceProtocol;
+    'protocol'?: GeneticDistanceProtocol;
     /**
      * The list of unique identifiers of the leaves of the phylogenetic tree.
      * @type {Array<string>}
@@ -3468,6 +3418,144 @@ export interface PhylogeneticTree {
      */
     'newick_repr': string;
 }
+
+
+/**
+ * Represents an analytical method used to derive a result from source data. The class is conceptually polymorphic, with the protocol_type field determining which additional fields are required and which results it may be linked to. This design allows for a flexible and extensible representation of various analytical protocols while maintaining a single model for this type of reference data.  The Protocol model includes optional fields for linking to Git repositories and commits, so that the exact analytical logic can be traced.
+ * @export
+ * @interface Protocol
+ */
+export interface Protocol {
+    /**
+     * The unique identifier for the object.
+     * @type {string}
+     * @memberof Protocol
+     */
+    'id'?: string | null;
+    /**
+     * A unique code for the protocol, used for external reference.
+     * @type {string}
+     * @memberof Protocol
+     */
+    'code': string;
+    /**
+     * The name of the protocol.
+     * @type {string}
+     * @memberof Protocol
+     */
+    'name'?: string | null;
+    /**
+     * A detailed description of the protocol
+     * @type {string}
+     * @memberof Protocol
+     */
+    'description'?: string | null;
+    /**
+     * 
+     * @type {ProtocolType}
+     * @memberof Protocol
+     */
+    'protocol_type': ProtocolType;
+    /**
+     * URI of the Git repository containing the analytical logic for the protocol.
+     * @type {string}
+     * @memberof Protocol
+     */
+    'git_repository_uri'?: string | null;
+    /**
+     * The specific Git commit hash to ensure reproducibility of the protocol execution. Must be a 40-character hexadecimal string.
+     * @type {string}
+     * @memberof Protocol
+     */
+    'git_commit_hash'?: string | null;
+    /**
+     * An optional Git tag for easier reference to a specific version of the protocol.
+     * @type {string}
+     * @memberof Protocol
+     */
+    'git_commit_tag'?: string | null;
+    /**
+     * The UTC date and time from which the protocol is considered valid.
+     * @type {string}
+     * @memberof Protocol
+     */
+    'valid_start_datetime'?: string | null;
+    /**
+     * The UT C date and time until which the protocol is considered valid.
+     * @type {string}
+     * @memberof Protocol
+     */
+    'valid_end_datetime'?: string | null;
+    /**
+     * The reference sequence used. FOREIGN KEY. Optional for protocols of type ASSEMBLY, SEQ_CLASSIFICATION, SEQ_DISTANCE, SEQ_PROFILE.
+     * @type {string}
+     * @memberof Protocol
+     */
+    'ref_seq_id'?: string | null;
+    /**
+     * The sequence category set used. FOREIGN KEY. Required for protocols of type SEQ_CLASSIFICATION.
+     * @type {string}
+     * @memberof Protocol
+     */
+    'seq_category_set_id'?: string | null;
+    /**
+     * The locus set used. FOREIGN KEY. Optional for protocols of type PCR_MEASUREMENT, SEQ_CLASSIFICATION, SEQ_DISTANCE, SEQ_PROFILE.
+     * @type {string}
+     * @memberof Protocol
+     */
+    'locus_set_id'?: string | null;
+    /**
+     * 
+     * @type {SeqProfileType}
+     * @memberof Protocol
+     */
+    'seq_profile_type'?: SeqProfileType;
+    /**
+     * 
+     * @type {SeqDistanceType}
+     * @memberof Protocol
+     */
+    'seq_distance_type'?: SeqDistanceType;
+    /**
+     * Whether the sequence distances are integers. Required for protocols of type SEQ_DISTANCE.
+     * @type {boolean}
+     * @memberof Protocol
+     */
+    'is_integer_distance'?: boolean | null;
+    /**
+     * The maximum sequencedistance that is guaranteed to be stored. Required for protocols of type SEQ_DISTANCE.
+     * @type {number}
+     * @memberof Protocol
+     */
+    'max_stored_distance'?: number | null;
+    /**
+     * A dictionary of additional properties specific to the protocol. Must be JSON-serializable. Can also be passed as a JSON string.
+     * @type {{ [key: string]: any; }}
+     * @memberof Protocol
+     */
+    'props'?: { [key: string]: any; };
+}
+
+
+/**
+ * 
+ * @export
+ * @ {number}
+ */
+
+export const ProtocolType = {
+    NUMBER_1: 1,
+    NUMBER_2: 2,
+    NUMBER_3: 3,
+    NUMBER_4: 4,
+    NUMBER_5: 5,
+    NUMBER_6: 6,
+    NUMBER_7: 7,
+    NUMBER_8: 8,
+    NUMBER_9: 9
+} as const;
+
+export type ProtocolType = typeof ProtocolType[keyof typeof ProtocolType];
 
 
 /**
@@ -3507,17 +3595,17 @@ export interface ReadSetForUpload {
      */
     'other_sample_identifier'?: IdentifierForUpload;
     /**
-     * The UUID of the sequencing protocol, if available. If not available, the null ID is put. Must be present if sequencing_protocol_code is not present. The use of sequencing_protocol_id is preferred over sequencing_protocol_code since the latter may change.
+     * The UUID of the protocol, if available. If not available, the null ID is put. Must be present if protocol_code is not present. The use of protocol_id is preferred over protocol_code since the latter may change.
      * @type {string}
      * @memberof ReadSetForUpload
      */
-    'sequencing_protocol_id'?: string;
+    'protocol_id'?: string;
     /**
-     * The code of the sequencing protocol. Must be present if sequencing_protocol_id is not present. The use of sequencing_protocol_code is meant for situations where the sequencing_protocol_id is not known, but the code is and/or improves human interpretation.
+     * The code of the protocol. Must be present if protocol_id is not present. The use of protocol_code is meant for situations where the protocol_id is not known, but the code is and/or improves human interpretation.
      * @type {string}
      * @memberof ReadSetForUpload
      */
-    'sequencing_protocol_code'?: string | null;
+    'protocol_code'?: string | null;
 }
 /**
  * 
@@ -3628,6 +3716,24 @@ export interface RefCol {
      * @memberof RefCol
      */
     'description'?: string | null;
+    /**
+     * The regular expression describing the concept set, in case of type REGULAR_EXPRESSION
+     * @type {string}
+     * @memberof RefCol
+     */
+    'regex'?: string | null;
+    /**
+     * The definition of the schema describing the concept set, in case of type CONTEXT_FREE_GRAMMAR_XXX
+     * @type {string}
+     * @memberof RefCol
+     */
+    'schema_definition'?: string | null;
+    /**
+     * The URI to the schema describing the concept set, in case of type CONTEXT_FREE_GRAMMAR_XXX
+     * @type {string}
+     * @memberof RefCol
+     */
+    'schema_uri'?: string | null;
     /**
      * Additional properties of the column.
      * @type {{ [key: string]: any; }}
@@ -4053,18 +4159,18 @@ export interface RetrieveSimilarCasesRequestBody {
 /**
  * 
  * @export
- * @ {string}
+ * @ {number}
  */
 
-export const SeqDistanceProtocolType = {
-    ALLELE_HAMMING: 'ALLELE_HAMMING',
-    SNP_HAMMING: 'SNP_HAMMING',
-    MLVA_HAMMING: 'MLVA_HAMMING',
-    MLVA_EUCLIDEAN: 'MLVA_EUCLIDEAN',
-    KMER_EUCLIDEAN: 'KMER_EUCLIDEAN'
+export const SeqDistanceType = {
+    NUMBER_1: 1,
+    NUMBER_2: 2,
+    NUMBER_3: 3,
+    NUMBER_4: 4,
+    NUMBER_5: 5
 } as const;
 
-export type SeqDistanceProtocolType = typeof SeqDistanceProtocolType[keyof typeof SeqDistanceProtocolType];
+export type SeqDistanceType = typeof SeqDistanceType[keyof typeof SeqDistanceType];
 
 
 /**
@@ -4117,61 +4223,35 @@ export interface SeqForUpload {
      */
     'other_sample_identifier'?: IdentifierForUpload;
     /**
-     * The UUID of the assembly protocol, if available. If not available, the null ID is put. Must be present if assembly_protocol_code is not present. The use of assembly_protocol_id is preferred over assembly_protocol_code since the latter may change.
+     * The UUID of the protocol, if available. If not available, the null ID is put. Must be present if protocol_code is not present. The use of protocol_id is preferred over protocol_code since the latter may change.
      * @type {string}
      * @memberof SeqForUpload
      */
-    'assembly_protocol_id'?: string;
+    'protocol_id'?: string;
     /**
-     * The code of the assembly protocol. Must be present if assembly_protocol_id is not present. The use of assembly_protocol_code is meant for situations where the assembly_protocol_id is not known, but the code is and/or improves human interpretation.
+     * The code of the protocol. Must be present if protocol_id is not present. The use of protocol_code is meant for situations where the protocol_id is not known, but the code is and/or improves human interpretation.
      * @type {string}
      * @memberof SeqForUpload
      */
-    'assembly_protocol_code'?: string | null;
+    'protocol_code'?: string | null;
 }
 /**
- * The protocol used for sequencing a sample.    PARENT CLASS DOCUMENTATION   ProtocolMixin:  Mixin class to add protocol related fields to a model.
+ * 
  * @export
- * @interface SequencingProtocol
+ * @ {number}
  */
-export interface SequencingProtocol {
-    /**
-     * The code of the protocol
-     * @type {string}
-     * @memberof SequencingProtocol
-     */
-    'code': string;
-    /**
-     * The name of the protocol
-     * @type {string}
-     * @memberof SequencingProtocol
-     */
-    'name': string;
-    /**
-     * The version of the protocol
-     * @type {string}
-     * @memberof SequencingProtocol
-     */
-    'version'?: string | null;
-    /**
-     * The description of the protocol
-     * @type {string}
-     * @memberof SequencingProtocol
-     */
-    'description'?: string | null;
-    /**
-     * The properties of the protocol
-     * @type {{ [key: string]: string; }}
-     * @memberof SequencingProtocol
-     */
-    'props'?: { [key: string]: string; };
-    /**
-     * The unique identifier for the object.
-     * @type {string}
-     * @memberof SequencingProtocol
-     */
-    'id'?: string | null;
-}
+
+export const SeqProfileType = {
+    NUMBER_1: 1,
+    NUMBER_2: 2,
+    NUMBER_3: 3,
+    NUMBER_4: 4,
+    NUMBER_5: 5
+} as const;
+
+export type SeqProfileType = typeof SeqProfileType[keyof typeof SeqProfileType];
+
+
 /**
  * Represents a physical site of an organization.
  * @export
@@ -16385,7 +16465,7 @@ const CaseApiAxiosParamCreator = function (configuration?: Configuration) {
             };
         },
         /**
-         * Manage genetic distance protocols (e.g., TN93) available for sequence comparisons in phylogenetic analyses.
+         * Manage genetic distance protocols available for sequence comparisons in phylogenetic analyses.
          * @summary Genetic Distance Protocols  Delete All
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
@@ -16415,7 +16495,7 @@ const CaseApiAxiosParamCreator = function (configuration?: Configuration) {
             };
         },
         /**
-         * Manage genetic distance protocols (e.g., TN93) available for sequence comparisons in phylogenetic analyses.
+         * Manage genetic distance protocols available for sequence comparisons in phylogenetic analyses.
          * @summary Genetic Distance Protocols  Delete One
          * @param {any} objectId 
          * @param {*} [options] Override http request option.
@@ -16449,7 +16529,7 @@ const CaseApiAxiosParamCreator = function (configuration?: Configuration) {
             };
         },
         /**
-         * Manage genetic distance protocols (e.g., TN93) available for sequence comparisons in phylogenetic analyses.
+         * Manage genetic distance protocols available for sequence comparisons in phylogenetic analyses.
          * @summary Genetic Distance Protocols  Delete Some
          * @param {string} ids 
          * @param {*} [options] Override http request option.
@@ -16486,7 +16566,7 @@ const CaseApiAxiosParamCreator = function (configuration?: Configuration) {
             };
         },
         /**
-         * Manage genetic distance protocols (e.g., TN93) available for sequence comparisons in phylogenetic analyses.
+         * Manage genetic distance protocols available for sequence comparisons in phylogenetic analyses.
          * @summary Genetic Distance Protocols  Get All
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
@@ -16516,7 +16596,7 @@ const CaseApiAxiosParamCreator = function (configuration?: Configuration) {
             };
         },
         /**
-         * Manage genetic distance protocols (e.g., TN93) available for sequence comparisons in phylogenetic analyses.
+         * Manage genetic distance protocols available for sequence comparisons in phylogenetic analyses.
          * @summary Genetic Distance Protocols  Get One
          * @param {string} objectId 
          * @param {*} [options] Override http request option.
@@ -16550,7 +16630,7 @@ const CaseApiAxiosParamCreator = function (configuration?: Configuration) {
             };
         },
         /**
-         * Manage genetic distance protocols (e.g., TN93) available for sequence comparisons in phylogenetic analyses.
+         * Manage genetic distance protocols available for sequence comparisons in phylogenetic analyses.
          * @summary Genetic Distance Protocols  Get Some
          * @param {string} ids 
          * @param {*} [options] Override http request option.
@@ -16587,7 +16667,7 @@ const CaseApiAxiosParamCreator = function (configuration?: Configuration) {
             };
         },
         /**
-         * Manage genetic distance protocols (e.g., TN93) available for sequence comparisons in phylogenetic analyses.
+         * Manage genetic distance protocols available for sequence comparisons in phylogenetic analyses.
          * @summary Genetic Distance Protocols  Post One
          * @param {GeneticDistanceProtocol} geneticDistanceProtocol 
          * @param {*} [options] Override http request option.
@@ -16623,7 +16703,7 @@ const CaseApiAxiosParamCreator = function (configuration?: Configuration) {
             };
         },
         /**
-         * Manage genetic distance protocols (e.g., TN93) available for sequence comparisons in phylogenetic analyses.
+         * Manage genetic distance protocols available for sequence comparisons in phylogenetic analyses.
          * @summary Genetic Distance Protocols  Post Query
          * @param {EpiFilter} filter 
          * @param {*} [options] Override http request option.
@@ -16659,7 +16739,7 @@ const CaseApiAxiosParamCreator = function (configuration?: Configuration) {
             };
         },
         /**
-         * Manage genetic distance protocols (e.g., TN93) available for sequence comparisons in phylogenetic analyses.
+         * Manage genetic distance protocols available for sequence comparisons in phylogenetic analyses.
          * @summary Genetic Distance Protocols  Post Query  Ids
          * @param {EpiFilter} filter 
          * @param {*} [options] Override http request option.
@@ -16695,7 +16775,7 @@ const CaseApiAxiosParamCreator = function (configuration?: Configuration) {
             };
         },
         /**
-         * Manage genetic distance protocols (e.g., TN93) available for sequence comparisons in phylogenetic analyses.
+         * Manage genetic distance protocols available for sequence comparisons in phylogenetic analyses.
          * @summary Genetic Distance Protocols  Post Some
          * @param {Array<GeneticDistanceProtocol>} geneticDistanceProtocol 
          * @param {*} [options] Override http request option.
@@ -16731,7 +16811,7 @@ const CaseApiAxiosParamCreator = function (configuration?: Configuration) {
             };
         },
         /**
-         * Manage genetic distance protocols (e.g., TN93) available for sequence comparisons in phylogenetic analyses.
+         * Manage genetic distance protocols available for sequence comparisons in phylogenetic analyses.
          * @summary Genetic Distance Protocols  Put One
          * @param {string} objectId 
          * @param {GeneticDistanceProtocol} geneticDistanceProtocol 
@@ -16771,7 +16851,7 @@ const CaseApiAxiosParamCreator = function (configuration?: Configuration) {
             };
         },
         /**
-         * Manage genetic distance protocols (e.g., TN93) available for sequence comparisons in phylogenetic analyses.
+         * Manage genetic distance protocols available for sequence comparisons in phylogenetic analyses.
          * @summary Genetic Distance Protocols  Put Some
          * @param {Array<GeneticDistanceProtocol>} geneticDistanceProtocol 
          * @param {*} [options] Override http request option.
@@ -17681,7 +17761,7 @@ const CaseApiAxiosParamCreator = function (configuration?: Configuration) {
             };
         },
         /**
-         * Retrieve the assembly protocols registered in seqdb for downstream sequence processing and provenance.
+         * Retrieve the protocols registered in seqdb for downstream sequence processing and provenance.
          * @summary Retrieve Assembly Protocols
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
@@ -18005,7 +18085,7 @@ const CaseApiAxiosParamCreator = function (configuration?: Configuration) {
         retrievePhylogeneticTree: async (retrievePhylogeneticTreeRequestBody: RetrievePhylogeneticTreeRequestBody, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
             // verify required parameter 'retrievePhylogeneticTreeRequestBody' is not null or undefined
             assertParamExists('retrievePhylogeneticTree', 'retrievePhylogeneticTreeRequestBody', retrievePhylogeneticTreeRequestBody)
-            const localVarPath = `/v1/retrieve/phylogenetic_tree`;
+            const localVarPath = `/v1/calculate/phylogenetic_tree`;
             // use dummy base URL string because the URL constructor only accepts absolute URLs.
             const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
             let baseOptions;
@@ -18032,7 +18112,7 @@ const CaseApiAxiosParamCreator = function (configuration?: Configuration) {
             };
         },
         /**
-         * Retrieve the sequencing protocols registered in seqdb so clients can populate protocol pickers when uploading read sets.
+         * Retrieve the protocols registered in seqdb for downstream sequence processing and provenance.
          * @summary Retrieve Sequencing Protocols
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
@@ -21552,7 +21632,7 @@ const CaseApiFp = function(configuration?: Configuration) {
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
         /**
-         * Manage genetic distance protocols (e.g., TN93) available for sequence comparisons in phylogenetic analyses.
+         * Manage genetic distance protocols available for sequence comparisons in phylogenetic analyses.
          * @summary Genetic Distance Protocols  Delete All
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
@@ -21564,7 +21644,7 @@ const CaseApiFp = function(configuration?: Configuration) {
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
         /**
-         * Manage genetic distance protocols (e.g., TN93) available for sequence comparisons in phylogenetic analyses.
+         * Manage genetic distance protocols available for sequence comparisons in phylogenetic analyses.
          * @summary Genetic Distance Protocols  Delete One
          * @param {any} objectId 
          * @param {*} [options] Override http request option.
@@ -21577,7 +21657,7 @@ const CaseApiFp = function(configuration?: Configuration) {
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
         /**
-         * Manage genetic distance protocols (e.g., TN93) available for sequence comparisons in phylogenetic analyses.
+         * Manage genetic distance protocols available for sequence comparisons in phylogenetic analyses.
          * @summary Genetic Distance Protocols  Delete Some
          * @param {string} ids 
          * @param {*} [options] Override http request option.
@@ -21590,7 +21670,7 @@ const CaseApiFp = function(configuration?: Configuration) {
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
         /**
-         * Manage genetic distance protocols (e.g., TN93) available for sequence comparisons in phylogenetic analyses.
+         * Manage genetic distance protocols available for sequence comparisons in phylogenetic analyses.
          * @summary Genetic Distance Protocols  Get All
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
@@ -21602,7 +21682,7 @@ const CaseApiFp = function(configuration?: Configuration) {
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
         /**
-         * Manage genetic distance protocols (e.g., TN93) available for sequence comparisons in phylogenetic analyses.
+         * Manage genetic distance protocols available for sequence comparisons in phylogenetic analyses.
          * @summary Genetic Distance Protocols  Get One
          * @param {string} objectId 
          * @param {*} [options] Override http request option.
@@ -21615,7 +21695,7 @@ const CaseApiFp = function(configuration?: Configuration) {
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
         /**
-         * Manage genetic distance protocols (e.g., TN93) available for sequence comparisons in phylogenetic analyses.
+         * Manage genetic distance protocols available for sequence comparisons in phylogenetic analyses.
          * @summary Genetic Distance Protocols  Get Some
          * @param {string} ids 
          * @param {*} [options] Override http request option.
@@ -21628,7 +21708,7 @@ const CaseApiFp = function(configuration?: Configuration) {
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
         /**
-         * Manage genetic distance protocols (e.g., TN93) available for sequence comparisons in phylogenetic analyses.
+         * Manage genetic distance protocols available for sequence comparisons in phylogenetic analyses.
          * @summary Genetic Distance Protocols  Post One
          * @param {GeneticDistanceProtocol} geneticDistanceProtocol 
          * @param {*} [options] Override http request option.
@@ -21641,7 +21721,7 @@ const CaseApiFp = function(configuration?: Configuration) {
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
         /**
-         * Manage genetic distance protocols (e.g., TN93) available for sequence comparisons in phylogenetic analyses.
+         * Manage genetic distance protocols available for sequence comparisons in phylogenetic analyses.
          * @summary Genetic Distance Protocols  Post Query
          * @param {EpiFilter} filter 
          * @param {*} [options] Override http request option.
@@ -21654,7 +21734,7 @@ const CaseApiFp = function(configuration?: Configuration) {
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
         /**
-         * Manage genetic distance protocols (e.g., TN93) available for sequence comparisons in phylogenetic analyses.
+         * Manage genetic distance protocols available for sequence comparisons in phylogenetic analyses.
          * @summary Genetic Distance Protocols  Post Query  Ids
          * @param {EpiFilter} filter 
          * @param {*} [options] Override http request option.
@@ -21667,7 +21747,7 @@ const CaseApiFp = function(configuration?: Configuration) {
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
         /**
-         * Manage genetic distance protocols (e.g., TN93) available for sequence comparisons in phylogenetic analyses.
+         * Manage genetic distance protocols available for sequence comparisons in phylogenetic analyses.
          * @summary Genetic Distance Protocols  Post Some
          * @param {Array<GeneticDistanceProtocol>} geneticDistanceProtocol 
          * @param {*} [options] Override http request option.
@@ -21680,7 +21760,7 @@ const CaseApiFp = function(configuration?: Configuration) {
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
         /**
-         * Manage genetic distance protocols (e.g., TN93) available for sequence comparisons in phylogenetic analyses.
+         * Manage genetic distance protocols available for sequence comparisons in phylogenetic analyses.
          * @summary Genetic Distance Protocols  Put One
          * @param {string} objectId 
          * @param {GeneticDistanceProtocol} geneticDistanceProtocol 
@@ -21694,7 +21774,7 @@ const CaseApiFp = function(configuration?: Configuration) {
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
         /**
-         * Manage genetic distance protocols (e.g., TN93) available for sequence comparisons in phylogenetic analyses.
+         * Manage genetic distance protocols available for sequence comparisons in phylogenetic analyses.
          * @summary Genetic Distance Protocols  Put Some
          * @param {Array<GeneticDistanceProtocol>} geneticDistanceProtocol 
          * @param {*} [options] Override http request option.
@@ -22029,12 +22109,12 @@ const CaseApiFp = function(configuration?: Configuration) {
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
         /**
-         * Retrieve the assembly protocols registered in seqdb for downstream sequence processing and provenance.
+         * Retrieve the protocols registered in seqdb for downstream sequence processing and provenance.
          * @summary Retrieve Assembly Protocols
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        async retrieveAssemblyProtocols(options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<Array<AssemblyProtocol>>> {
+        async retrieveAssemblyProtocols(options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<Array<Protocol>>> {
             const localVarAxiosArgs = await localVarAxiosParamCreator.retrieveAssemblyProtocols(options);
             const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
             const localVarOperationServerBasePath = operationServerMap['CaseApi.retrieveAssemblyProtocols']?.[localVarOperationServerIndex]?.url;
@@ -22149,12 +22229,12 @@ const CaseApiFp = function(configuration?: Configuration) {
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
         /**
-         * Retrieve the sequencing protocols registered in seqdb so clients can populate protocol pickers when uploading read sets.
+         * Retrieve the protocols registered in seqdb for downstream sequence processing and provenance.
          * @summary Retrieve Sequencing Protocols
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        async retrieveSequencingProtocols(options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<Array<SequencingProtocol>>> {
+        async retrieveSequencingProtocols(options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<Array<Protocol>>> {
             const localVarAxiosArgs = await localVarAxiosParamCreator.retrieveSequencingProtocols(options);
             const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
             const localVarOperationServerBasePath = operationServerMap['CaseApi.retrieveSequencingProtocols']?.[localVarOperationServerIndex]?.url;
@@ -24885,7 +24965,7 @@ export class CaseApi extends BaseAPI {
     }
 
     /**
-     * Manage genetic distance protocols (e.g., TN93) available for sequence comparisons in phylogenetic analyses.
+     * Manage genetic distance protocols available for sequence comparisons in phylogenetic analyses.
      * @summary Genetic Distance Protocols  Delete All
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
@@ -24896,7 +24976,7 @@ export class CaseApi extends BaseAPI {
     }
 
     /**
-     * Manage genetic distance protocols (e.g., TN93) available for sequence comparisons in phylogenetic analyses.
+     * Manage genetic distance protocols available for sequence comparisons in phylogenetic analyses.
      * @summary Genetic Distance Protocols  Delete One
      * @param {any} objectId 
      * @param {*} [options] Override http request option.
@@ -24908,7 +24988,7 @@ export class CaseApi extends BaseAPI {
     }
 
     /**
-     * Manage genetic distance protocols (e.g., TN93) available for sequence comparisons in phylogenetic analyses.
+     * Manage genetic distance protocols available for sequence comparisons in phylogenetic analyses.
      * @summary Genetic Distance Protocols  Delete Some
      * @param {string} ids 
      * @param {*} [options] Override http request option.
@@ -24920,7 +25000,7 @@ export class CaseApi extends BaseAPI {
     }
 
     /**
-     * Manage genetic distance protocols (e.g., TN93) available for sequence comparisons in phylogenetic analyses.
+     * Manage genetic distance protocols available for sequence comparisons in phylogenetic analyses.
      * @summary Genetic Distance Protocols  Get All
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
@@ -24931,7 +25011,7 @@ export class CaseApi extends BaseAPI {
     }
 
     /**
-     * Manage genetic distance protocols (e.g., TN93) available for sequence comparisons in phylogenetic analyses.
+     * Manage genetic distance protocols available for sequence comparisons in phylogenetic analyses.
      * @summary Genetic Distance Protocols  Get One
      * @param {string} objectId 
      * @param {*} [options] Override http request option.
@@ -24943,7 +25023,7 @@ export class CaseApi extends BaseAPI {
     }
 
     /**
-     * Manage genetic distance protocols (e.g., TN93) available for sequence comparisons in phylogenetic analyses.
+     * Manage genetic distance protocols available for sequence comparisons in phylogenetic analyses.
      * @summary Genetic Distance Protocols  Get Some
      * @param {string} ids 
      * @param {*} [options] Override http request option.
@@ -24955,7 +25035,7 @@ export class CaseApi extends BaseAPI {
     }
 
     /**
-     * Manage genetic distance protocols (e.g., TN93) available for sequence comparisons in phylogenetic analyses.
+     * Manage genetic distance protocols available for sequence comparisons in phylogenetic analyses.
      * @summary Genetic Distance Protocols  Post One
      * @param {GeneticDistanceProtocol} geneticDistanceProtocol 
      * @param {*} [options] Override http request option.
@@ -24967,7 +25047,7 @@ export class CaseApi extends BaseAPI {
     }
 
     /**
-     * Manage genetic distance protocols (e.g., TN93) available for sequence comparisons in phylogenetic analyses.
+     * Manage genetic distance protocols available for sequence comparisons in phylogenetic analyses.
      * @summary Genetic Distance Protocols  Post Query
      * @param {EpiFilter} filter 
      * @param {*} [options] Override http request option.
@@ -24979,7 +25059,7 @@ export class CaseApi extends BaseAPI {
     }
 
     /**
-     * Manage genetic distance protocols (e.g., TN93) available for sequence comparisons in phylogenetic analyses.
+     * Manage genetic distance protocols available for sequence comparisons in phylogenetic analyses.
      * @summary Genetic Distance Protocols  Post Query  Ids
      * @param {EpiFilter} filter 
      * @param {*} [options] Override http request option.
@@ -24991,7 +25071,7 @@ export class CaseApi extends BaseAPI {
     }
 
     /**
-     * Manage genetic distance protocols (e.g., TN93) available for sequence comparisons in phylogenetic analyses.
+     * Manage genetic distance protocols available for sequence comparisons in phylogenetic analyses.
      * @summary Genetic Distance Protocols  Post Some
      * @param {Array<GeneticDistanceProtocol>} geneticDistanceProtocol 
      * @param {*} [options] Override http request option.
@@ -25003,7 +25083,7 @@ export class CaseApi extends BaseAPI {
     }
 
     /**
-     * Manage genetic distance protocols (e.g., TN93) available for sequence comparisons in phylogenetic analyses.
+     * Manage genetic distance protocols available for sequence comparisons in phylogenetic analyses.
      * @summary Genetic Distance Protocols  Put One
      * @param {string} objectId 
      * @param {GeneticDistanceProtocol} geneticDistanceProtocol 
@@ -25016,7 +25096,7 @@ export class CaseApi extends BaseAPI {
     }
 
     /**
-     * Manage genetic distance protocols (e.g., TN93) available for sequence comparisons in phylogenetic analyses.
+     * Manage genetic distance protocols available for sequence comparisons in phylogenetic analyses.
      * @summary Genetic Distance Protocols  Put Some
      * @param {Array<GeneticDistanceProtocol>} geneticDistanceProtocol 
      * @param {*} [options] Override http request option.
@@ -25325,7 +25405,7 @@ export class CaseApi extends BaseAPI {
     }
 
     /**
-     * Retrieve the assembly protocols registered in seqdb for downstream sequence processing and provenance.
+     * Retrieve the protocols registered in seqdb for downstream sequence processing and provenance.
      * @summary Retrieve Assembly Protocols
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
@@ -25436,7 +25516,7 @@ export class CaseApi extends BaseAPI {
     }
 
     /**
-     * Retrieve the sequencing protocols registered in seqdb so clients can populate protocol pickers when uploading read sets.
+     * Retrieve the protocols registered in seqdb for downstream sequence processing and provenance.
      * @summary Retrieve Sequencing Protocols
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}

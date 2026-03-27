@@ -1,7 +1,7 @@
 import { useMemo } from 'react';
 import { type UseQueryResult } from '@tanstack/react-query';
 
-import type { AssemblyProtocol } from '../../api';
+import type { Protocol } from '../../api';
 import { CaseApi } from '../../api';
 import type {
   UseMap,
@@ -12,7 +12,7 @@ import { DataHookUtil } from '../../utils/DataHookUtil';
 import { QueryUtil } from '../../utils/QueryUtil';
 import { useQueryMemo } from '../../hooks/useQueryMemo';
 
-export const useAssemblyProtocolsQuery = (): UseQueryResult<AssemblyProtocol[]> => {
+export const useAssemblyProtocolsQuery = (): UseQueryResult<Protocol[]> => {
   return useQueryMemo({
     queryKey: QueryUtil.getGenericKey(QUERY_KEY.ASSEMBLY_PROTOCOLS),
     queryFn: async ({ signal }) => {
@@ -22,11 +22,11 @@ export const useAssemblyProtocolsQuery = (): UseQueryResult<AssemblyProtocol[]> 
   });
 };
 
-export const useAssemblyProtocolMapQuery = (): UseMap<AssemblyProtocol> => {
+export const useAssemblyProtocolMapQuery = (): UseMap<Protocol> => {
   const response = useAssemblyProtocolsQuery();
 
   return useMemo(() => {
-    return DataHookUtil.createUseMapDataHook<AssemblyProtocol>(response, item => item.id);
+    return DataHookUtil.createUseMapDataHook<Protocol>(response, item => item.id);
   }, [response]);
 };
 
@@ -34,6 +34,6 @@ export const useAssemblyProtocolOptionsQuery = (): UseOptions<string> => {
   const response = useAssemblyProtocolsQuery();
 
   return useMemo(() => {
-    return DataHookUtil.createUseOptionsDataHook<AssemblyProtocol>(response, item => item.id, (item: AssemblyProtocol) => item.name);
+    return DataHookUtil.createUseOptionsDataHook<Protocol>(response, item => item.id, (item: Protocol) => item.name);
   }, [response]);
 };

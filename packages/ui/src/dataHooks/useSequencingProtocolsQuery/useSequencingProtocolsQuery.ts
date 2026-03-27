@@ -1,7 +1,7 @@
 import { useMemo } from 'react';
 import { type UseQueryResult } from '@tanstack/react-query';
 
-import type { SequencingProtocol } from '../../api';
+import type { Protocol } from '../../api';
 import { CaseApi } from '../../api';
 import type {
   UseMap,
@@ -12,7 +12,7 @@ import { DataHookUtil } from '../../utils/DataHookUtil';
 import { QueryUtil } from '../../utils/QueryUtil';
 import { useQueryMemo } from '../../hooks/useQueryMemo';
 
-export const useSequencingProtocolsQuery = (): UseQueryResult<SequencingProtocol[]> => {
+export const useSequencingProtocolsQuery = (): UseQueryResult<Protocol[]> => {
   return useQueryMemo({
     queryKey: QueryUtil.getGenericKey(QUERY_KEY.SEQUENCING_PROTOCOLS),
     queryFn: async ({ signal }) => {
@@ -22,11 +22,11 @@ export const useSequencingProtocolsQuery = (): UseQueryResult<SequencingProtocol
   });
 };
 
-export const useSequencingProtocolMapQuery = (): UseMap<SequencingProtocol> => {
+export const useSequencingProtocolMapQuery = (): UseMap<Protocol> => {
   const response = useSequencingProtocolsQuery();
 
   return useMemo(() => {
-    return DataHookUtil.createUseMapDataHook<SequencingProtocol>(response, item => item.id);
+    return DataHookUtil.createUseMapDataHook<Protocol>(response, item => item.id);
   }, [response]);
 };
 
@@ -34,6 +34,6 @@ export const useSequencingProtocolOptionsQuery = (): UseOptions<string> => {
   const response = useSequencingProtocolsQuery();
 
   return useMemo(() => {
-    return DataHookUtil.createUseOptionsDataHook<SequencingProtocol>(response, item => item.id, (item: SequencingProtocol) => item.name);
+    return DataHookUtil.createUseOptionsDataHook<Protocol>(response, item => item.id, (item: Protocol) => item.name);
   }, [response]);
 };

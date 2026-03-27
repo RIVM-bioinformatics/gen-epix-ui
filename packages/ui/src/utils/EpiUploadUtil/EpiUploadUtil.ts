@@ -630,7 +630,7 @@ export class EpiUploadUtil {
                       external_id: externalSampleId,
                       identifier_issuer_id: sampleIdentifierIssuerId,
                     },
-                    assembly_protocol_id: assemblyProtocolId,
+                    protocol_id: assemblyProtocolId,
                   } satisfies SeqForUpload);
                 }
               });
@@ -645,7 +645,7 @@ export class EpiUploadUtil {
                       external_id: externalSampleId,
                       identifier_issuer_id: sampleIdentifierIssuerId,
                     },
-                    sequencing_protocol_id: sequencingProtocolId,
+                    protocol_id: sequencingProtocolId,
                   } satisfies ReadSetForUpload);
                 }
               });

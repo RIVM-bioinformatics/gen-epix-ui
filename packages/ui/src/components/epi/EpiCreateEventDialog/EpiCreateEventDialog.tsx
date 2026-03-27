@@ -72,6 +72,7 @@ export type EpiCreateEventDialogRefMethods = WithDialogRefMethods<EpiCreateEvent
 
 type FormFields = {
   name: string;
+  code: string;
   description: string;
   shouldApplySharingToCases: boolean;
   case_type_id: string;
@@ -98,6 +99,7 @@ export const EpiCreateEventDialog = withDialog<EpiCreateEventDialogProps, EpiCre
 
   const schema = useMemo(() => object<FormFields>().shape({
     name: string().extendedAlphaNumeric().required().max(100),
+    code: string().code().required().max(100),
     description: string().freeFormText(),
     case_type_id: string().uuid4().required(),
     case_set_category_id: string().uuid4().required(),
@@ -111,6 +113,7 @@ export const EpiCreateEventDialog = withDialog<EpiCreateEventDialogProps, EpiCre
     resolver: yupResolver(schema) as Resolver<FormFields>,
     values: {
       name: openProps.completeCaseType ? t('New {{eventName}} event', { eventName: openProps.completeCaseType.name }) : '',
+      code: '',
       description: '',
       case_type_id: openProps.completeCaseType?.id ?? null,
       case_set_category_id: null,
@@ -224,6 +227,11 @@ export const EpiCreateEventDialog = withDialog<EpiCreateEventDialogProps, EpiCre
         label: t`Event name`,
       } as const satisfies FormFieldDefinition<FormFields>,
       {
+        definition: FORM_FIELD_DEFINITION_TYPE.TEXTFIELD,
+        name: 'code',
+        label: t`Event code`,
+      } as const satisfies FormFieldDefinition<FormFields>,
+      {
         definition: FORM_FIELD_DEFINITION_TYPE.RICH_TEXT,
         name: 'description',
         label: t`Description`,
@@ -286,6 +294,7 @@ export const EpiCreateEventDialog = withDialog<EpiCreateEventDialogProps, EpiCre
     queryFn: async (formData: FormFields): Promise<CaseSet> => {
       const caseSetResult = (await CaseApi.instance.createCaseSet({
         case_set: {
+          code: formData.code,
           case_set_category_id: formData.case_set_category_id,
           case_set_status_id: formData.case_set_status_id,
           description: formData.description,

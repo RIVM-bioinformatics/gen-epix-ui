@@ -41,7 +41,7 @@ import { useRefColsValidationRulesQuery } from '../../dataHooks/useRefColsValida
 import { DataUtil } from '../../utils/DataUtil';
 import { NumberUtil } from '../../utils/NumberUtil';
 
-type FormFields = Pick<RefCol, 'ref_dim_id' | 'code_suffix' | 'code' | 'rank' | 'label' | 'col_type' | 'concept_set_id' | 'region_set_id' | 'genetic_distance_protocol_id' | 'description'>;
+type FormFields = Omit<RefCol, 'id' | 'ref_dim' | 'concept_set' | 'region_set' | 'genetic_distance_protocol' | 'props'>;
 
 const CONCEPT_COL_TYPES: ColType[] = [ColType.NOMINAL, ColType.ORDINAL, ColType.INTERVAL];
 
@@ -109,6 +109,21 @@ export const RefColsAdminPage = () => {
         is: (col_type: ColType) => col_type === ColType.GENETIC_DISTANCE,
         then: () => string().uuid4().required(),
         otherwise: () => string().nullable().notRequired(),
+      }),
+      regex: string().when('col_type', {
+        is: (col_type: ColType) => col_type === ColType.REGULAR_LANGUAGE,
+        then: () => string().regex().max(500).required(),
+        otherwise: () => string().regex().max(500).nullable().notRequired(),
+      }),
+      schema_definition: string().when('col_type', {
+        is: (col_type: ColType) => ([ColType.CONTEXT_FREE_GRAMMAR_JSON, ColType.CONTEXT_FREE_GRAMMAR_XML] as ColType[]).includes(col_type),
+        then: () => string().freeFormText().max(10000).required(),
+        otherwise: () => string().nullable().notRequired(),
+      }),
+      schema_uri: string().when('col_type', {
+        is: (col_type: ColType) => ([ColType.CONTEXT_FREE_GRAMMAR_JSON, ColType.CONTEXT_FREE_GRAMMAR_XML] as ColType[]).includes(col_type),
+        then: () => string().url().max(1000).required(),
+        otherwise: () => string().url().max(1000).nullable().notRequired(),
       }),
     });
   }, []);
@@ -210,6 +225,23 @@ export const RefColsAdminPage = () => {
         name: 'rank',
         label: t`Rank`,
         type: 'number',
+      } as const satisfies FormFieldDefinition<FormFields>,
+      {
+        definition: FORM_FIELD_DEFINITION_TYPE.TEXTFIELD,
+        name: 'regex',
+        label: t`Regex`,
+      } as const satisfies FormFieldDefinition<FormFields>,
+      {
+        definition: FORM_FIELD_DEFINITION_TYPE.TEXTFIELD,
+        name: 'schema_uri',
+        label: t`Schema URI`,
+      } as const satisfies FormFieldDefinition<FormFields>,
+      {
+        definition: FORM_FIELD_DEFINITION_TYPE.TEXTFIELD,
+        name: 'schema_definition',
+        label: t`Schema definition`,
+        multiline: true,
+        rows: 10,
       } as const satisfies FormFieldDefinition<FormFields>,
     ] as const satisfies FormFieldDefinition<FormFields>[];
   }, [colTypeOptionsQuery.isLoading, conceptSetOptionsQuery.options, refDimId, refDimOptionsQuery.options, geneticDistanceProtocolOptionsQuery.options, getColTypeOptionsForDimId, regionSetOptionsQuery.options, t]);

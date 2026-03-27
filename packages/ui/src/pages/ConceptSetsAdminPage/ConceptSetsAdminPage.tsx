@@ -60,21 +60,6 @@ export const ConceptSetsAdminPage = () => {
       code: string().extendedAlphaNumeric().required().max(100),
       description: string().freeFormText().required().max(1000),
       type: mixed<ConceptSetType>().required().oneOf(Object.values(ConceptSetType)),
-      regex: string().when('type', {
-        is: (type: ConceptSetType) => type === ConceptSetType.REGULAR_LANGUAGE,
-        then: () => string().regex().max(500).required(),
-        otherwise: () => string().regex().max(500).nullable().notRequired(),
-      }),
-      schema_definition: string().when('type', {
-        is: (type: ConceptSetType) => ([ConceptSetType.CONTEXT_FREE_GRAMMAR_JSON, ConceptSetType.CONTEXT_FREE_GRAMMAR_XML] as ConceptSetType[]).includes(type),
-        then: () => string().freeFormText().max(10000).required(),
-        otherwise: () => string().nullable().notRequired(),
-      }),
-      schema_uri: string().when('type', {
-        is: (type: ConceptSetType) => ([ConceptSetType.CONTEXT_FREE_GRAMMAR_JSON, ConceptSetType.CONTEXT_FREE_GRAMMAR_XML] as ConceptSetType[]).includes(type),
-        then: () => string().url().max(1000).required(),
-        otherwise: () => string().url().max(1000).nullable().notRequired(),
-      }),
     });
   }, []);
 
@@ -101,23 +86,6 @@ export const ConceptSetsAdminPage = () => {
         label: t`Type`,
         options: conceptSetTypeOptionsQuery.options,
         loading: conceptSetTypeOptionsQuery.isLoading,
-      } as const satisfies FormFieldDefinition<FormFields>,
-      {
-        definition: FORM_FIELD_DEFINITION_TYPE.TEXTFIELD,
-        name: 'regex',
-        label: t`Regex`,
-      } as const satisfies FormFieldDefinition<FormFields>,
-      {
-        definition: FORM_FIELD_DEFINITION_TYPE.TEXTFIELD,
-        name: 'schema_uri',
-        label: t`Schema URI`,
-      } as const satisfies FormFieldDefinition<FormFields>,
-      {
-        definition: FORM_FIELD_DEFINITION_TYPE.TEXTFIELD,
-        name: 'schema_definition',
-        label: t`Schema definition`,
-        multiline: true,
-        rows: 10,
       } as const satisfies FormFieldDefinition<FormFields>,
     ] as const;
   }, [conceptSetTypeOptionsQuery.isLoading, conceptSetTypeOptionsQuery.options, t]);
