@@ -505,6 +505,8 @@ export const createEpiDashboardStore = (kwArgs: CreateEpiDashboardStoreKwArgs) =
               const parsedTree = NewickUtil.parse(phylogeneticTree.newick_repr);
               const sanitizedTree = EpiTreeUtil.sanitizeTree(parsedTree);
 
+              console.log({ sanitizedTree });
+
               // the tree determines the order of the line list
               const sortedIds = NewickUtil.getSortedNames(sanitizedTree);
 

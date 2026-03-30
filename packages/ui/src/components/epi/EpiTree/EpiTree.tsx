@@ -95,6 +95,7 @@ export const EpiTree = ({ linkedScrollSubject, ref, itemHeight }: EpiTreeProps) 
   const epiDashboardStore = useContext(EpiDashboardStoreContext);
   const setPhylogeneticTreeResponse = useStore(epiDashboardStore, (state) => state.setPhylogeneticTreeResponse);
   const baseData = useStore(epiDashboardStore, (state) => state.baseData);
+  const sortedData = useStore(epiDashboardStore, (state) => state.sortedData);
   const filteredCases = useStore(epiDashboardStore, (state) => state.filteredData[SELECTION_FILTER_GROUP]);
   const setSorting = useStore(epiDashboardStore, (state) => state.setSorting);
   const tree = useStore(epiDashboardStore, (state) => state.tree);
@@ -124,6 +125,10 @@ export const EpiTree = ({ linkedScrollSubject, ref, itemHeight }: EpiTreeProps) 
     caseIds: [],
     origin: null,
   }), []);
+
+  const sortedLeafNames = useMemo(() => {
+    return sortedData.map(c => c.id);
+  }, [sortedData]);
 
   const treeConfigurations = useMemo(() => EpiTreeUtil.getTreeConfigurations(completeCaseType), [completeCaseType]);
 
@@ -403,27 +408,45 @@ export const EpiTree = ({ linkedScrollSubject, ref, itemHeight }: EpiTreeProps) 
 
   // Setup canvas
   useEffect(() => {
-    setTreeAssembly(EpiTreeUtil.assembleTree({ rootNode: tree, treeCanvasWidth, pixelToGeneticDistanceRatio, itemHeight }));
-  }, [pixelToGeneticDistanceRatio, tree, treeCanvasWidth, itemHeight]);
+    setTreeAssembly(EpiTreeUtil.assembleTree({ rootNode: tree, treeCanvasWidth, pixelToGeneticDistanceRatio, itemHeight, externalLeafSorting: sortedLeafNames }));
+  }, [pixelToGeneticDistanceRatio, tree, treeCanvasWidth, itemHeight, sortedLeafNames]);
 
   useEffect(() => {
     if (!treeCanvas || !treeAssembly || !tree) {
       return;
     }
 
-    EpiTreeUtil.drawTreeCanvas({ canvas: treeCanvas, theme, geneticTreeWidth: tree?.maxBranchLength, treeAssembly, stratification, zoomLevel, isLinked, horizontalScrollPosition, verticalScrollPosition, treeCanvasWidth, treeCanvasHeight, pixelToGeneticDistanceRatio, tickerMarkScale, shouldShowDistances: isShowDistancesEnabled, devicePixelRatio });
+    EpiTreeUtil.drawTreeCanvas({ canvas: treeCanvas, theme, geneticTreeWidth: tree?.maxBranchLength, treeAssembly, stratification, zoomLevel, isLinked, horizontalScrollPosition, verticalScrollPosition, treeCanvasWidth, treeCanvasHeight, pixelToGeneticDistanceRatio, tickerMarkScale, shouldShowDistances: isShowDistancesEnabled, devicePixelRatio, externalScrollPosition: 0 });
     let animationFrameId: number;
-    const unsubscribe = internalHighlightingSubject.subscribe((highlighting) => {
+    let highlighting: Highlighting = internalHighlightingSubject.data;
+    let externalScrollPosition = linkedScrollSubject.data?.position ?? 0;
+
+    const render = () => {
+      console.log({ externalScrollPosition });
       cancelAnimationFrame(animationFrameId);
       animationFrameId = requestAnimationFrame(() => {
-        EpiTreeUtil.drawTreeCanvas({ canvas: treeCanvas, theme, geneticTreeWidth: tree?.maxBranchLength, treeAssembly, stratification, zoomLevel, isLinked, horizontalScrollPosition, verticalScrollPosition, treeCanvasWidth, treeCanvasHeight, pixelToGeneticDistanceRatio, tickerMarkScale, highlightedNodeNames: highlighting.caseIds, shouldShowDistances: isShowDistancesEnabled, devicePixelRatio });
+        EpiTreeUtil.drawTreeCanvas({ canvas: treeCanvas, theme, geneticTreeWidth: tree?.maxBranchLength, treeAssembly, stratification, zoomLevel, isLinked, horizontalScrollPosition, verticalScrollPosition, treeCanvasWidth, treeCanvasHeight, pixelToGeneticDistanceRatio, tickerMarkScale, highlightedNodeNames: highlighting?.caseIds, shouldShowDistances: isShowDistancesEnabled, devicePixelRatio, externalScrollPosition });
       });
+    };
+
+    const unsubscribeFromScrollSubject = linkedScrollSubject.subscribe((data) => {
+      if (data.origin === scrollContainerRef.current) {
+        return;
+      }
+      externalScrollPosition = data.position;
+      render();
+    });
+
+    const unsubscribeFromHighlighting = internalHighlightingSubject.subscribe((newHighlighting) => {
+      highlighting = newHighlighting;
+      render();
     });
     return () => {
-      unsubscribe();
+      unsubscribeFromHighlighting();
+      unsubscribeFromScrollSubject();
       cancelAnimationFrame(animationFrameId);
     };
-  }, [treeCanvasHeight, treeCanvas, internalHighlightingSubject, pixelToGeneticDistanceRatio, stratification, theme, tickerMarkScale, treeAssembly, treeCanvasWidth, horizontalScrollPosition, verticalScrollPosition, width, zoomLevel, isLinked, isShowDistancesEnabled, devicePixelRatio, tree?.maxBranchLength, tree]);
+  }, [treeCanvasHeight, treeCanvas, internalHighlightingSubject, pixelToGeneticDistanceRatio, stratification, theme, tickerMarkScale, treeAssembly, treeCanvasWidth, horizontalScrollPosition, verticalScrollPosition, width, zoomLevel, isLinked, isShowDistancesEnabled, devicePixelRatio, tree?.maxBranchLength, tree, linkedScrollSubject]);
 
   // Setup canvas event listeners (note: must be in a separate useEffect to prevent render loop)
   useEffect(() => {
