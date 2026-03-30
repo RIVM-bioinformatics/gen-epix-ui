@@ -88,7 +88,7 @@ export const CaseSetCategoryAdminPage = () => {
 
   return (
     <CrudPage<FormFields, CaseSetCategory>
-      createItemDialogTitle={t`Create new case set status`}
+      createItemDialogTitle={t`Create new case set category`}
       createOne={createOne}
       crudCommandType={CommandName.CaseSetCategoryCrudCommand}
       defaultSortByField={'rank'}
@@ -97,11 +97,11 @@ export const CaseSetCategoryAdminPage = () => {
       fetchAll={fetchAll}
       formFieldDefinitions={formFieldDefinitions}
       getName={getName}
-      resourceQueryKeyBase={QUERY_KEY.CASE_SET_STATUSES}
+      resourceQueryKeyBase={QUERY_KEY.CASE_SET_CATEGORIES}
       schema={schema}
       tableColumns={tableColumns}
       testIdAttributes={TestIdUtil.createAttributes('CaseSetCategoryAdminPage')}
-      title={t`Case set statuses`}
+      title={t`Case set categories`}
       updateOne={updateOne}
     />
   );
