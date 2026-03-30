@@ -20,8 +20,9 @@ import type { TableColumn } from '../../models/table';
 import { TableUtil } from '../../utils/TableUtil';
 import { TestIdUtil } from '../../utils/TestIdUtil';
 import { CrudPage } from '../CrudPage';
+import type { OmitWithMetaData } from '../../models/data';
 
-type FormFields = Pick<IdentifierIssuer, 'code' | 'description' | 'name'>;
+type FormFields = OmitWithMetaData<IdentifierIssuer>;
 
 export const IdentifierIssuersAdminPage = () => {
   const { t } = useTranslation();

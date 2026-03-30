@@ -32,8 +32,9 @@ import type { CrudPageSubPage } from '../CrudPage';
 import { CrudPage } from '../CrudPage';
 import { AuthorizationManager } from '../../classes/managers/AuthorizationManager';
 import { NumberUtil } from '../../utils/NumberUtil';
+import type { OmitWithMetaData } from '../../models/data';
 
-type FormFields = Pick<CaseType, 'name' | 'description' | 'etiological_agent_id' | 'disease_id'> & CaseTypeProps;
+type FormFields = OmitWithMetaData<CaseType, 'disease' | 'etiological_agent' | 'props'> & CaseTypeProps;
 
 export const CaseTypesAdminPage = () => {
   const { t } = useTranslation();

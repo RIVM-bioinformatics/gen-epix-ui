@@ -40,6 +40,7 @@ import { TableUtil } from '../../utils/TableUtil';
 import { TestIdUtil } from '../../utils/TestIdUtil';
 import { CrudPage } from '../CrudPage';
 import { useInviteUserConstraintsQuery } from '../../dataHooks/useInviteUserConstraintsQuery';
+import type { OmitWithMetaData } from '../../models/data';
 
 import { UserInvitationShareDialog } from './UserInvitationShareDialog';
 import type { UserInvitationShareDialogRefMethods } from './UserInvitationShareDialog';
@@ -48,7 +49,7 @@ import {
   type UserInvitationConsumeDialogRefMethods,
 } from './UserInvitationConsumeDialog';
 
-type FormFields = Pick<UserInvitation, 'key' | 'organization_id' | 'roles' | 'description'>;
+type FormFields = OmitWithMetaData<UserInvitation, 'organization' | 'token' | 'expires_at' | 'invited_by_user_id' | 'invited_by_user' | 'email' | 'name'>;
 
 export const UserInvitationsAdminPage = () => {
   const { t } = useTranslation();

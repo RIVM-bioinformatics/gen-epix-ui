@@ -22,8 +22,9 @@ import { TableUtil } from '../../utils/TableUtil';
 import { TestIdUtil } from '../../utils/TestIdUtil';
 import { CrudPage } from '../CrudPage';
 import { NumberUtil } from '../../utils/NumberUtil';
+import type { OmitWithMetaData } from '../../models/data';
 
-type FormFields = Omit<Concept, 'id' | 'concept_set_id' | 'concept_set' | 'props'>;
+type FormFields = OmitWithMetaData<Concept, 'concept_set_id' | 'concept_set' | 'props'>;
 
 export const ConceptsAdminPage = () => {
   const { conceptSetId } = useParams();

@@ -20,8 +20,10 @@ import { QUERY_KEY } from '../../models/query';
 import type { TableColumn } from '../../models/table';
 import { TableUtil } from '../../utils/TableUtil';
 import { TestIdUtil } from '../../utils/TestIdUtil';
+import { NumberUtil } from '../../utils/NumberUtil';
+import type { OmitWithMetaData } from '../../models/data';
 
-type FormFields = Pick<CaseSetStatus, 'name' | 'description'>;
+type FormFields = OmitWithMetaData<CaseSetStatus>;
 
 export const CaseSetStatusAdminPage = () => {
   const { t } = useTranslation();
@@ -50,6 +52,7 @@ export const CaseSetStatusAdminPage = () => {
     return object<FormFields>().shape({
       name: string().extendedAlphaNumeric().required().max(100),
       description: string().freeFormText().required().max(1000),
+      rank: NumberUtil.yup.required().min(0).integer(),
     });
   }, []);
 
@@ -67,12 +70,19 @@ export const CaseSetStatusAdminPage = () => {
         multiline: true,
         rows: 5,
       } as const satisfies FormFieldDefinition<FormFields>,
+      {
+        definition: FORM_FIELD_DEFINITION_TYPE.TEXTFIELD,
+        name: 'rank',
+        label: t`Rank`,
+        type: 'number',
+      } as const satisfies FormFieldDefinition<FormFields>,
     ] as const;
   }, [t]);
 
   const tableColumns = useMemo((): TableColumn<CaseSetStatus>[] => {
     return [
       TableUtil.createTextColumn<CaseSetStatus>({ id: 'name', name: t`Name` }),
+      TableUtil.createNumberColumn<CaseSetStatus>({ id: 'rank', name: t`Rank` }),
     ];
   }, [t]);
 

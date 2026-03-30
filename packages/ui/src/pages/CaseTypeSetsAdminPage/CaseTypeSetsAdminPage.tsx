@@ -31,12 +31,13 @@ import { TableUtil } from '../../utils/TableUtil';
 import { TestIdUtil } from '../../utils/TestIdUtil';
 import { CrudPage } from '../CrudPage';
 import { NumberUtil } from '../../utils/NumberUtil';
+import type { OmitWithMetaData } from '../../models/data';
 
 interface TableData extends CaseTypeSet {
   caseTypeIds?: string[];
 }
 
-type FormFields = Pick<TableData, 'name' | 'case_type_set_category_id' | 'caseTypeIds' | 'rank' | 'description'>;
+type FormFields = OmitWithMetaData<TableData, 'case_type_set_category'>;
 
 export const CaseTypeSetsAdminPage = () => {
   const { t } = useTranslation();

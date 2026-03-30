@@ -53,8 +53,11 @@ import { useRefColsValidationRulesQuery } from '../../dataHooks/useRefColsValida
 import { useRefDimMapQuery } from '../../dataHooks/useRefDimsQuery';
 import { DataUtil } from '../../utils/DataUtil';
 import { NumberUtil } from '../../utils/NumberUtil';
+import type { OmitWithMetaData } from '../../models/data';
 
-type FormFields = Pick<Col, 'case_type_id' | 'ref_col_id' | 'dim_id' | 'code' | 'rank' | 'label' | 'description' | 'min_value' | 'max_value' | 'min_datetime' | 'max_datetime' | 'min_length' | 'genetic_sequence_col_id' | 'tree_algorithm_codes' | 'pattern'>;
+type FormFields = OmitWithMetaData<Col, 'case_type' | 'dim' | 'ref_col' | 'props'>;
+
+const NCBI_TAXID_REGEX = /^NCBI:txid\d+/;
 
 export const ColsAdminPage = () => {
   const { t } = useTranslation();
@@ -180,6 +183,11 @@ export const ColsAdminPage = () => {
         then: () => array().min(1).required(),
         otherwise: () => array().nullable().notRequired(),
       }),
+      ncbi_taxid: string().when('ref_col_id', {
+        is: (ref_col_id: string) => refColMapQuery.map.get(ref_col_id)?.col_type === ColType.GENETIC_DISTANCE,
+        then: () => string().matches(NCBI_TAXID_REGEX).required(),
+        otherwise: () => string().notRequired(),
+      }),
       pattern: string().regex(),
     });
   }, [refColMapQuery.map]);
@@ -298,6 +306,11 @@ export const ColsAdminPage = () => {
         label: t`Tree algorithm codes`,
         options: treeAlgorithmCodesOptionsQuery.options,
         multiple: true,
+      } as const satisfies FormFieldDefinition<FormFields>,
+      {
+        definition: FORM_FIELD_DEFINITION_TYPE.TEXTFIELD,
+        name: 'ncbi_taxid',
+        label: t`NCBI TaxID`,
       } as const satisfies FormFieldDefinition<FormFields>,
       {
         definition: FORM_FIELD_DEFINITION_TYPE.TEXTFIELD,

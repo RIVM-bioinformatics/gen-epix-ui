@@ -21,8 +21,10 @@ import type { TableColumn } from '../../models/table';
 import { TableUtil } from '../../utils/TableUtil';
 import { TestIdUtil } from '../../utils/TestIdUtil';
 import { CrudPage } from '../CrudPage';
+import type { OmitWithMetaData } from '../../models/data';
 
-type FormFields = Pick<Contact, 'name' | 'email' | 'phone'>;
+// Note: site_id is given in the route params
+type FormFields = OmitWithMetaData<Contact, 'site' | 'site_id'>;
 
 export const OrganizationContactsAdminPage = () => {
   const { siteId } = useParams();

@@ -40,8 +40,9 @@ import { CrudPage } from '../CrudPage';
 import { useRefColsValidationRulesQuery } from '../../dataHooks/useRefColsValidationRulesQuery';
 import { DataUtil } from '../../utils/DataUtil';
 import { NumberUtil } from '../../utils/NumberUtil';
+import type { OmitWithMetaData } from '../../models/data';
 
-type FormFields = Omit<RefCol, 'id' | 'ref_dim' | 'concept_set' | 'region_set' | 'genetic_distance_protocol' | 'props'>;
+type FormFields = OmitWithMetaData<RefCol, 'ref_dim' | 'concept_set' | 'region_set' | 'genetic_distance_protocol' | 'props'>;
 
 const CONCEPT_COL_TYPES: ColType[] = [ColType.NOMINAL, ColType.ORDINAL, ColType.INTERVAL];
 

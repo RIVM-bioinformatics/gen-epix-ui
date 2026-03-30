@@ -4,6 +4,7 @@ import {
 } from 'react';
 import { useTranslation } from 'react-i18next';
 import {
+  mixed,
   object,
   string,
 } from 'yup';
@@ -11,6 +12,7 @@ import {
 import type { CaseTypeSetCategory } from '../../api';
 import {
   CaseApi,
+  CaseTypeSetCategoryPurpose,
   CommandName,
 } from '../../api';
 import type { FormFieldDefinition } from '../../models/form';
@@ -21,11 +23,18 @@ import { TableUtil } from '../../utils/TableUtil';
 import { TestIdUtil } from '../../utils/TestIdUtil';
 import { CrudPage } from '../CrudPage';
 import { NumberUtil } from '../../utils/NumberUtil';
+import { useCaseTypeSetCategoryPurposeOptionsQuery } from '../../dataHooks/useCaseTypeSetCategoryPurposeQuery';
+import { useArray } from '../../hooks/useArray';
+import type { OmitWithMetaData } from '../../models/data';
 
-type FormFields = Pick<CaseTypeSetCategory, 'name' | 'rank' | 'description'>;
+type FormFields = OmitWithMetaData<CaseTypeSetCategory>;
 
 export const CaseTypeSetCategoriesAdminPage = () => {
   const { t } = useTranslation();
+
+  const caseTypeSetCategoryPurposeOptionsQuery = useCaseTypeSetCategoryPurposeOptionsQuery();
+
+  const loadables = useArray([caseTypeSetCategoryPurposeOptionsQuery]);
 
   const fetchAll = useCallback(async (signal: AbortSignal) => {
     return (await CaseApi.instance.caseTypeSetCategoriesGetAll({ signal }))?.data;
@@ -52,6 +61,7 @@ export const CaseTypeSetCategoriesAdminPage = () => {
       name: string().extendedAlphaNumeric().required().max(100),
       rank: NumberUtil.yup.required().min(0).integer(),
       description: string().freeFormText().required().max(1000),
+      purpose: mixed<CaseTypeSetCategoryPurpose>().required().oneOf(Object.values(CaseTypeSetCategoryPurpose)),
     });
   }, []);
 
@@ -76,15 +86,23 @@ export const CaseTypeSetCategoriesAdminPage = () => {
         label: t`Rank`,
         type: 'number',
       } as const satisfies FormFieldDefinition<FormFields>,
+      {
+        definition: FORM_FIELD_DEFINITION_TYPE.AUTOCOMPLETE,
+        name: 'purpose',
+        label: t`Purpose`,
+        options: caseTypeSetCategoryPurposeOptionsQuery.options,
+        loading: caseTypeSetCategoryPurposeOptionsQuery.isLoading,
+      } as const satisfies FormFieldDefinition<FormFields>,
     ] as const;
-  }, [t]);
+  }, [caseTypeSetCategoryPurposeOptionsQuery.isLoading, caseTypeSetCategoryPurposeOptionsQuery.options, t]);
 
   const tableColumns = useMemo((): TableColumn<CaseTypeSetCategory>[] => {
     return [
       TableUtil.createTextColumn<CaseTypeSetCategory>({ id: 'name', name: t`Name` }),
       TableUtil.createNumberColumn<CaseTypeSetCategory>({ id: 'rank', name: t`Rank` }),
+      TableUtil.createOptionsColumn<CaseTypeSetCategory>({ id: 'purpose', name: t`Purpose`, options: caseTypeSetCategoryPurposeOptionsQuery.options }),
     ];
-  }, [t]);
+  }, [caseTypeSetCategoryPurposeOptionsQuery.options, t]);
 
   return (
     <CrudPage<FormFields, CaseTypeSetCategory>
@@ -98,6 +116,7 @@ export const CaseTypeSetCategoriesAdminPage = () => {
       formFieldDefinitions={formFieldDefinitions}
       getName={getName}
       resourceQueryKeyBase={QUERY_KEY.CASE_TYPE_SET_CATEGORIES}
+      loadables={loadables}
       schema={schema}
       tableColumns={tableColumns}
       testIdAttributes={TestIdUtil.createAttributes('CaseTypeSetCategoriesAdminPage')}

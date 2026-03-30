@@ -66,6 +66,24 @@ export type AuthProtocol = typeof AuthProtocol[keyof typeof AuthProtocol];
  */
 export interface Case {
     /**
+     * The UTC datetime when the object was created.
+     * @type {string}
+     * @memberof Case
+     */
+    'created_at'?: string | null;
+    /**
+     * The UTC datetime when the object was last modified.
+     * @type {string}
+     * @memberof Case
+     */
+    'modified_at'?: string | null;
+    /**
+     * The ID of the user who last modified the object.
+     * @type {string}
+     * @memberof Case
+     */
+    'modified_by'?: string | null;
+    /**
      * The unique identifier for the object.
      * @type {string}
      * @memberof Case
@@ -212,6 +230,24 @@ export type CaseClassification = typeof CaseClassification[keyof typeof CaseClas
  */
 export interface CaseDataCollectionLink {
     /**
+     * The UTC datetime when the object was created.
+     * @type {string}
+     * @memberof CaseDataCollectionLink
+     */
+    'created_at'?: string | null;
+    /**
+     * The UTC datetime when the object was last modified.
+     * @type {string}
+     * @memberof CaseDataCollectionLink
+     */
+    'modified_at'?: string | null;
+    /**
+     * The ID of the user who last modified the object.
+     * @type {string}
+     * @memberof CaseDataCollectionLink
+     */
+    'modified_by'?: string | null;
+    /**
      * The unique identifier for the object.
      * @type {string}
      * @memberof CaseDataCollectionLink
@@ -331,6 +367,24 @@ export interface CaseForUpload {
  */
 export interface CaseIdentifier {
     /**
+     * The UTC datetime when the object was created.
+     * @type {string}
+     * @memberof CaseIdentifier
+     */
+    'created_at'?: string | null;
+    /**
+     * The UTC datetime when the object was last modified.
+     * @type {string}
+     * @memberof CaseIdentifier
+     */
+    'modified_at'?: string | null;
+    /**
+     * The ID of the user who last modified the object.
+     * @type {string}
+     * @memberof CaseIdentifier
+     */
+    'modified_by'?: string | null;
+    /**
      * The ID of the identifier. Computed as the UUID of the first 16 bytes of the SHA-256 hash of the concatenated identifier_issuer_id bytes and the external_id encoded as UTF-8. PRIMARY KEY
      * @type {string}
      * @memberof CaseIdentifier
@@ -373,6 +427,24 @@ export interface CaseIdentifier {
  * @interface CaseQuery
  */
 export interface CaseQuery {
+    /**
+     * The UTC datetime when the object was created.
+     * @type {string}
+     * @memberof CaseQuery
+     */
+    'created_at'?: string | null;
+    /**
+     * The UTC datetime when the object was last modified.
+     * @type {string}
+     * @memberof CaseQuery
+     */
+    'modified_at'?: string | null;
+    /**
+     * The ID of the user who last modified the object.
+     * @type {string}
+     * @memberof CaseQuery
+     */
+    'modified_by'?: string | null;
     /**
      * The unique identifier for the object.
      * @type {string}
@@ -417,6 +489,24 @@ export interface CaseQuery {
  */
 export interface CaseQueryResult {
     /**
+     * The UTC datetime when the object was created.
+     * @type {string}
+     * @memberof CaseQueryResult
+     */
+    'created_at'?: string | null;
+    /**
+     * The UTC datetime when the object was last modified.
+     * @type {string}
+     * @memberof CaseQueryResult
+     */
+    'modified_at'?: string | null;
+    /**
+     * The ID of the user who last modified the object.
+     * @type {string}
+     * @memberof CaseQueryResult
+     */
+    'modified_by'?: string | null;
+    /**
      * The unique identifier for the object.
      * @type {string}
      * @memberof CaseQueryResult
@@ -447,6 +537,24 @@ export interface CaseQueryResult {
  * @interface CaseRights
  */
 export interface CaseRights {
+    /**
+     * The UTC datetime when the object was created.
+     * @type {string}
+     * @memberof CaseRights
+     */
+    'created_at'?: string | null;
+    /**
+     * The UTC datetime when the object was last modified.
+     * @type {string}
+     * @memberof CaseRights
+     */
+    'modified_at'?: string | null;
+    /**
+     * The ID of the user who last modified the object.
+     * @type {string}
+     * @memberof CaseRights
+     */
+    'modified_by'?: string | null;
     /**
      * The unique identifier for the object.
      * @type {string}
@@ -527,6 +635,24 @@ export interface CaseRights {
  */
 export interface CaseSet {
     /**
+     * The datetime of the case set creation
+     * @type {string}
+     * @memberof CaseSet
+     */
+    'created_at'?: string;
+    /**
+     * The UTC datetime when the object was last modified.
+     * @type {string}
+     * @memberof CaseSet
+     */
+    'modified_at'?: string | null;
+    /**
+     * The ID of the user who last modified the object.
+     * @type {string}
+     * @memberof CaseSet
+     */
+    'modified_by'?: string | null;
+    /**
      * The unique identifier for the object.
      * @type {string}
      * @memberof CaseSet
@@ -575,12 +701,6 @@ export interface CaseSet {
      */
     'description': string;
     /**
-     * The datetime of the case set creation
-     * @type {string}
-     * @memberof CaseSet
-     */
-    'created_at'?: string;
-    /**
      * The CaseSetCategory ID. FOREIGN KEY
      * @type {string}
      * @memberof CaseSet
@@ -612,6 +732,24 @@ export interface CaseSet {
  */
 export interface CaseSetCategory {
     /**
+     * The UTC datetime when the object was created.
+     * @type {string}
+     * @memberof CaseSetCategory
+     */
+    'created_at'?: string | null;
+    /**
+     * The UTC datetime when the object was last modified.
+     * @type {string}
+     * @memberof CaseSetCategory
+     */
+    'modified_at'?: string | null;
+    /**
+     * The ID of the user who last modified the object.
+     * @type {string}
+     * @memberof CaseSetCategory
+     */
+    'modified_by'?: string | null;
+    /**
      * The unique identifier for the object.
      * @type {string}
      * @memberof CaseSetCategory
@@ -642,6 +780,24 @@ export interface CaseSetCategory {
  * @interface CaseSetDataCollectionLink
  */
 export interface CaseSetDataCollectionLink {
+    /**
+     * The UTC datetime when the object was created.
+     * @type {string}
+     * @memberof CaseSetDataCollectionLink
+     */
+    'created_at'?: string | null;
+    /**
+     * The UTC datetime when the object was last modified.
+     * @type {string}
+     * @memberof CaseSetDataCollectionLink
+     */
+    'modified_at'?: string | null;
+    /**
+     * The ID of the user who last modified the object.
+     * @type {string}
+     * @memberof CaseSetDataCollectionLink
+     */
+    'modified_by'?: string | null;
     /**
      * The unique identifier for the object.
      * @type {string}
@@ -679,6 +835,24 @@ export interface CaseSetDataCollectionLink {
  * @interface CaseSetMember
  */
 export interface CaseSetMember {
+    /**
+     * The UTC datetime when the object was created.
+     * @type {string}
+     * @memberof CaseSetMember
+     */
+    'created_at'?: string | null;
+    /**
+     * The UTC datetime when the object was last modified.
+     * @type {string}
+     * @memberof CaseSetMember
+     */
+    'modified_at'?: string | null;
+    /**
+     * The ID of the user who last modified the object.
+     * @type {string}
+     * @memberof CaseSetMember
+     */
+    'modified_by'?: string | null;
     /**
      * The unique identifier for the object.
      * @type {string}
@@ -724,6 +898,24 @@ export interface CaseSetMember {
  * @interface CaseSetRights
  */
 export interface CaseSetRights {
+    /**
+     * The UTC datetime when the object was created.
+     * @type {string}
+     * @memberof CaseSetRights
+     */
+    'created_at'?: string | null;
+    /**
+     * The UTC datetime when the object was last modified.
+     * @type {string}
+     * @memberof CaseSetRights
+     */
+    'modified_at'?: string | null;
+    /**
+     * The ID of the user who last modified the object.
+     * @type {string}
+     * @memberof CaseSetRights
+     */
+    'modified_by'?: string | null;
     /**
      * The unique identifier for the object.
      * @type {string}
@@ -804,6 +996,24 @@ export interface CaseSetRights {
  */
 export interface CaseSetStatus {
     /**
+     * The UTC datetime when the object was created.
+     * @type {string}
+     * @memberof CaseSetStatus
+     */
+    'created_at'?: string | null;
+    /**
+     * The UTC datetime when the object was last modified.
+     * @type {string}
+     * @memberof CaseSetStatus
+     */
+    'modified_at'?: string | null;
+    /**
+     * The ID of the user who last modified the object.
+     * @type {string}
+     * @memberof CaseSetStatus
+     */
+    'modified_by'?: string | null;
+    /**
      * The unique identifier for the object.
      * @type {string}
      * @memberof CaseSetStatus
@@ -877,6 +1087,24 @@ export interface CaseStats {
  * @interface CaseType
  */
 export interface CaseType {
+    /**
+     * The UTC datetime when the object was created.
+     * @type {string}
+     * @memberof CaseType
+     */
+    'created_at'?: string | null;
+    /**
+     * The UTC datetime when the object was last modified.
+     * @type {string}
+     * @memberof CaseType
+     */
+    'modified_at'?: string | null;
+    /**
+     * The ID of the user who last modified the object.
+     * @type {string}
+     * @memberof CaseType
+     */
+    'modified_by'?: string | null;
     /**
      * The unique identifier for the object.
      * @type {string}
@@ -1043,6 +1271,24 @@ export interface CaseTypeProps {
  */
 export interface CaseTypeSet {
     /**
+     * The UTC datetime when the object was created.
+     * @type {string}
+     * @memberof CaseTypeSet
+     */
+    'created_at'?: string | null;
+    /**
+     * The UTC datetime when the object was last modified.
+     * @type {string}
+     * @memberof CaseTypeSet
+     */
+    'modified_at'?: string | null;
+    /**
+     * The ID of the user who last modified the object.
+     * @type {string}
+     * @memberof CaseTypeSet
+     */
+    'modified_by'?: string | null;
+    /**
      * The unique identifier for the object.
      * @type {string}
      * @memberof CaseTypeSet
@@ -1085,6 +1331,24 @@ export interface CaseTypeSet {
  * @interface CaseTypeSetCategory
  */
 export interface CaseTypeSetCategory {
+    /**
+     * The UTC datetime when the object was created.
+     * @type {string}
+     * @memberof CaseTypeSetCategory
+     */
+    'created_at'?: string | null;
+    /**
+     * The UTC datetime when the object was last modified.
+     * @type {string}
+     * @memberof CaseTypeSetCategory
+     */
+    'modified_at'?: string | null;
+    /**
+     * The ID of the user who last modified the object.
+     * @type {string}
+     * @memberof CaseTypeSetCategory
+     */
+    'modified_by'?: string | null;
     /**
      * The unique identifier for the object.
      * @type {string}
@@ -1138,6 +1402,24 @@ export type CaseTypeSetCategoryPurpose = typeof CaseTypeSetCategoryPurpose[keyof
  * @interface CaseTypeSetMember
  */
 export interface CaseTypeSetMember {
+    /**
+     * The UTC datetime when the object was created.
+     * @type {string}
+     * @memberof CaseTypeSetMember
+     */
+    'created_at'?: string | null;
+    /**
+     * The UTC datetime when the object was last modified.
+     * @type {string}
+     * @memberof CaseTypeSetMember
+     */
+    'modified_at'?: string | null;
+    /**
+     * The ID of the user who last modified the object.
+     * @type {string}
+     * @memberof CaseTypeSetMember
+     */
+    'modified_by'?: string | null;
     /**
      * The unique identifier for the object.
      * @type {string}
@@ -1282,6 +1564,24 @@ export interface CaseUploadResult {
  */
 export interface Col {
     /**
+     * The UTC datetime when the object was created.
+     * @type {string}
+     * @memberof Col
+     */
+    'created_at'?: string | null;
+    /**
+     * The UTC datetime when the object was last modified.
+     * @type {string}
+     * @memberof Col
+     */
+    'modified_at'?: string | null;
+    /**
+     * The ID of the user who last modified the object.
+     * @type {string}
+     * @memberof Col
+     */
+    'modified_by'?: string | null;
+    /**
      * The unique identifier for the object.
      * @type {string}
      * @memberof Col
@@ -1421,6 +1721,24 @@ export interface Col {
  */
 export interface ColSet {
     /**
+     * The UTC datetime when the object was created.
+     * @type {string}
+     * @memberof ColSet
+     */
+    'created_at'?: string | null;
+    /**
+     * The UTC datetime when the object was last modified.
+     * @type {string}
+     * @memberof ColSet
+     */
+    'modified_at'?: string | null;
+    /**
+     * The ID of the user who last modified the object.
+     * @type {string}
+     * @memberof ColSet
+     */
+    'modified_by'?: string | null;
+    /**
      * The unique identifier for the object.
      * @type {string}
      * @memberof ColSet
@@ -1445,6 +1763,24 @@ export interface ColSet {
  * @interface ColSetMember
  */
 export interface ColSetMember {
+    /**
+     * The UTC datetime when the object was created.
+     * @type {string}
+     * @memberof ColSetMember
+     */
+    'created_at'?: string | null;
+    /**
+     * The UTC datetime when the object was last modified.
+     * @type {string}
+     * @memberof ColSetMember
+     */
+    'modified_at'?: string | null;
+    /**
+     * The ID of the user who last modified the object.
+     * @type {string}
+     * @memberof ColSetMember
+     */
+    'modified_by'?: string | null;
     /**
      * The unique identifier for the object.
      * @type {string}
@@ -1527,93 +1863,93 @@ export type ColType = typeof ColType[keyof typeof ColType];
  */
 
 export const CommandName = {
-    RetrieveCaseSetRightsCommand: 'RetrieveCaseSetRightsCommand',
-    CreateCaseSetCommand: 'CreateCaseSetCommand',
-    RetrieveCasesByIdCommand: 'RetrieveCasesByIdCommand',
-    RetrieveCaseRightsCommand: 'RetrieveCaseRightsCommand',
-    RetrieveCasesByQueryCommand: 'RetrieveCasesByQueryCommand',
-    OrganizationShareCasePolicyCrudCommand: 'OrganizationShareCasePolicyCrudCommand',
-    SiteCrudCommand: 'SiteCrudCommand',
-    CaseCrudCommand: 'CaseCrudCommand',
-    RetrieveOrganizationContactsCommand: 'RetrieveOrganizationContactsCommand',
-    UserInvitationCrudCommand: 'UserInvitationCrudCommand',
-    UpdateUserCommand: 'UpdateUserCommand',
-    OutageCrudCommand: 'OutageCrudCommand',
-    DimCrudCommand: 'DimCrudCommand',
-    OrganizationCrudCommand: 'OrganizationCrudCommand',
-    RefColCrudCommand: 'RefColCrudCommand',
-    DataCollectionSetDataCollectionUpdateAssociationCommand: 'DataCollectionSetDataCollectionUpdateAssociationCommand',
+    RetrieveOrganizationsUnderAdminCommand: 'RetrieveOrganizationsUnderAdminCommand',
     RetrieveCaseStatsCommand: 'RetrieveCaseStatsCommand',
-    RetrieveInviteUserConstraintsCommand: 'RetrieveInviteUserConstraintsCommand',
-    OrganizationSetMemberCrudCommand: 'OrganizationSetMemberCrudCommand',
-    UpdateUserOwnOrganizationCommand: 'UpdateUserOwnOrganizationCommand',
-    CreateFileForSeqCommand: 'CreateFileForSeqCommand',
-    ColSetMemberCrudCommand: 'ColSetMemberCrudCommand',
-    RetrieveContainingRegionCommand: 'RetrieveContainingRegionCommand',
-    ConceptCrudCommand: 'ConceptCrudCommand',
-    OrganizationIdentifierIssuerLinkUpdateAssociationCommand: 'OrganizationIdentifierIssuerLinkUpdateAssociationCommand',
-    GetIdentityProvidersCommand: 'GetIdentityProvidersCommand',
-    GeneticDistanceProtocolCrudCommand: 'GeneticDistanceProtocolCrudCommand',
-    RefDimCrudCommand: 'RefDimCrudCommand',
-    DataCollectionCrudCommand: 'DataCollectionCrudCommand',
+    UserCrudCommand: 'UserCrudCommand',
+    RetrieveCasesByQueryCommand: 'RetrieveCasesByQueryCommand',
+    RetrieveGeneticSequenceFastaByIdCommand: 'RetrieveGeneticSequenceFastaByIdCommand',
     RetrievePhylogeneticTreeBySequencesCommand: 'RetrievePhylogeneticTreeBySequencesCommand',
-    RetrieveCompleteCaseTypeCommand: 'RetrieveCompleteCaseTypeCommand',
+    RetrieveSubRolesCommand: 'RetrieveSubRolesCommand',
+    EtiologyCrudCommand: 'EtiologyCrudCommand',
+    UploadCasesCommand: 'UploadCasesCommand',
+    ContactCrudCommand: 'ContactCrudCommand',
+    RetrieveFeatureFlagsCommand: 'RetrieveFeatureFlagsCommand',
+    DimCrudCommand: 'DimCrudCommand',
+    RegionSetShapeCrudCommand: 'RegionSetShapeCrudCommand',
     TreeAlgorithmClassCrudCommand: 'TreeAlgorithmClassCrudCommand',
-    RegionSetCrudCommand: 'RegionSetCrudCommand',
+    UserShareCasePolicyCrudCommand: 'UserShareCasePolicyCrudCommand',
+    SiteCrudCommand: 'SiteCrudCommand',
+    GetIdentityProvidersCommand: 'GetIdentityProvidersCommand',
+    OrganizationIdentifierIssuerLinkCrudCommand: 'OrganizationIdentifierIssuerLinkCrudCommand',
+    UserAccessCasePolicyCrudCommand: 'UserAccessCasePolicyCrudCommand',
     OrganizationAccessCasePolicyCrudCommand: 'OrganizationAccessCasePolicyCrudCommand',
     OrganizationAdminPolicyCrudCommand: 'OrganizationAdminPolicyCrudCommand',
-    OrganizationSetCrudCommand: 'OrganizationSetCrudCommand',
-    RetrieveGeneticSequenceFastaByIdCommand: 'RetrieveGeneticSequenceFastaByIdCommand',
-    CaseTypeCrudCommand: 'CaseTypeCrudCommand',
-    ColSetCrudCommand: 'ColSetCrudCommand',
-    DataCollectionSetMemberCrudCommand: 'DataCollectionSetMemberCrudCommand',
-    RegionSetShapeCrudCommand: 'RegionSetShapeCrudCommand',
-    RegionCrudCommand: 'RegionCrudCommand',
-    RetrieveOrganizationAdminNameEmailsCommand: 'RetrieveOrganizationAdminNameEmailsCommand',
-    CaseTypeSetCrudCommand: 'CaseTypeSetCrudCommand',
-    RetrievePhylogeneticTreeByCasesCommand: 'RetrievePhylogeneticTreeByCasesCommand',
-    RegionRelationCrudCommand: 'RegionRelationCrudCommand',
+    RetrieveContainingRegionCommand: 'RetrieveContainingRegionCommand',
     CaseSetStatusCrudCommand: 'CaseSetStatusCrudCommand',
-    TreeAlgorithmCrudCommand: 'TreeAlgorithmCrudCommand',
+    CaseTypeSetCaseTypeUpdateAssociationCommand: 'CaseTypeSetCaseTypeUpdateAssociationCommand',
     RetrieveSimilarCasesCommand: 'RetrieveSimilarCasesCommand',
-    RetrieveSubRolesCommand: 'RetrieveSubRolesCommand',
-    CaseIdentifierCrudCommand: 'CaseIdentifierCrudCommand',
-    InviteUserCommand: 'InviteUserCommand',
-    RetrieveGeneticSequenceFastaByCaseCommand: 'RetrieveGeneticSequenceFastaByCaseCommand',
-    RetrieveGeneticSequenceByIdCommand: 'RetrieveGeneticSequenceByIdCommand',
-    RetrieveProtocolsCommand: 'RetrieveProtocolsCommand',
-    RegisterInvitedUserCommand: 'RegisterInvitedUserCommand',
-    ColCrudCommand: 'ColCrudCommand',
-    CaseSetCategoryCrudCommand: 'CaseSetCategoryCrudCommand',
-    DataCollectionSetCrudCommand: 'DataCollectionSetCrudCommand',
-    ConceptRelationCrudCommand: 'ConceptRelationCrudCommand',
+    RetrieveCaseSetRightsCommand: 'RetrieveCaseSetRightsCommand',
+    CreateCaseSetCommand: 'CreateCaseSetCommand',
+    RetrieveOwnPermissionsCommand: 'RetrieveOwnPermissionsCommand',
+    EtiologicalAgentCrudCommand: 'EtiologicalAgentCrudCommand',
+    CreateFileForSeqCommand: 'CreateFileForSeqCommand',
+    IdentifierIssuerCrudCommand: 'IdentifierIssuerCrudCommand',
+    RegionSetCrudCommand: 'RegionSetCrudCommand',
     DiseaseEtiologicalAgentUpdateAssociationCommand: 'DiseaseEtiologicalAgentUpdateAssociationCommand',
-    UserAccessCasePolicyCrudCommand: 'UserAccessCasePolicyCrudCommand',
-    CaseSetDataCollectionLinkCrudCommand: 'CaseSetDataCollectionLinkCrudCommand',
-    CaseDataCollectionLinkCrudCommand: 'CaseDataCollectionLinkCrudCommand',
-    OrganizationSetOrganizationUpdateAssociationCommand: 'OrganizationSetOrganizationUpdateAssociationCommand',
+    ColSetMemberCrudCommand: 'ColSetMemberCrudCommand',
+    CaseCrudCommand: 'CaseCrudCommand',
+    ColSetCrudCommand: 'ColSetCrudCommand',
     DiseaseCrudCommand: 'DiseaseCrudCommand',
+    CaseTypeSetCategoryCrudCommand: 'CaseTypeSetCategoryCrudCommand',
+    RefDimCrudCommand: 'RefDimCrudCommand',
+    ConceptRelationCrudCommand: 'ConceptRelationCrudCommand',
     ColSetColUpdateAssociationCommand: 'ColSetColUpdateAssociationCommand',
     ConceptSetCrudCommand: 'ConceptSetCrudCommand',
-    RetrieveOutagesCommand: 'RetrieveOutagesCommand',
-    ContactCrudCommand: 'ContactCrudCommand',
-    EtiologyCrudCommand: 'EtiologyCrudCommand',
-    CaseTypeSetCategoryCrudCommand: 'CaseTypeSetCategoryCrudCommand',
-    CreateFileForReadSetCommand: 'CreateFileForReadSetCommand',
-    RetrieveFeatureFlagsCommand: 'RetrieveFeatureFlagsCommand',
-    EtiologicalAgentCrudCommand: 'EtiologicalAgentCrudCommand',
-    UserCrudCommand: 'UserCrudCommand',
+    DataCollectionSetDataCollectionUpdateAssociationCommand: 'DataCollectionSetDataCollectionUpdateAssociationCommand',
+    OutageCrudCommand: 'OutageCrudCommand',
     CaseSetCrudCommand: 'CaseSetCrudCommand',
-    OrganizationIdentifierIssuerLinkCrudCommand: 'OrganizationIdentifierIssuerLinkCrudCommand',
-    RetrieveOwnPermissionsCommand: 'RetrieveOwnPermissionsCommand',
-    UploadCasesCommand: 'UploadCasesCommand',
-    CaseTypeSetMemberCrudCommand: 'CaseTypeSetMemberCrudCommand',
+    RetrieveOutagesCommand: 'RetrieveOutagesCommand',
+    CaseSetMemberCrudCommand: 'CaseSetMemberCrudCommand',
+    RegisterInvitedUserCommand: 'RegisterInvitedUserCommand',
+    RegionRelationCrudCommand: 'RegionRelationCrudCommand',
+    ColCrudCommand: 'ColCrudCommand',
+    InviteUserCommand: 'InviteUserCommand',
+    OrganizationShareCasePolicyCrudCommand: 'OrganizationShareCasePolicyCrudCommand',
+    DataCollectionCrudCommand: 'DataCollectionCrudCommand',
+    OrganizationSetCrudCommand: 'OrganizationSetCrudCommand',
+    RetrieveOrganizationContactsCommand: 'RetrieveOrganizationContactsCommand',
+    RetrieveOrganizationAdminNameEmailsCommand: 'RetrieveOrganizationAdminNameEmailsCommand',
+    RetrieveCompleteCaseTypeCommand: 'RetrieveCompleteCaseTypeCommand',
+    CreateFileForReadSetCommand: 'CreateFileForReadSetCommand',
+    CaseSetDataCollectionLinkCrudCommand: 'CaseSetDataCollectionLinkCrudCommand',
+    TreeAlgorithmCrudCommand: 'TreeAlgorithmCrudCommand',
+    RetrieveCasesByIdCommand: 'RetrieveCasesByIdCommand',
+    RetrieveProtocolsCommand: 'RetrieveProtocolsCommand',
+    RegionCrudCommand: 'RegionCrudCommand',
+    OrganizationSetMemberCrudCommand: 'OrganizationSetMemberCrudCommand',
+    UserInvitationCrudCommand: 'UserInvitationCrudCommand',
     RetrieveLicensesCommand: 'RetrieveLicensesCommand',
-    CaseTypeSetCaseTypeUpdateAssociationCommand: 'CaseTypeSetCaseTypeUpdateAssociationCommand',
-    RetrieveOrganizationsUnderAdminCommand: 'RetrieveOrganizationsUnderAdminCommand',
-    IdentifierIssuerCrudCommand: 'IdentifierIssuerCrudCommand',
-    UserShareCasePolicyCrudCommand: 'UserShareCasePolicyCrudCommand',
-    CaseSetMemberCrudCommand: 'CaseSetMemberCrudCommand'
+    RetrievePhylogeneticTreeByCasesCommand: 'RetrievePhylogeneticTreeByCasesCommand',
+    RetrieveGeneticSequenceByIdCommand: 'RetrieveGeneticSequenceByIdCommand',
+    DataCollectionSetMemberCrudCommand: 'DataCollectionSetMemberCrudCommand',
+    CaseTypeSetCrudCommand: 'CaseTypeSetCrudCommand',
+    RetrieveGeneticSequenceFastaByCaseCommand: 'RetrieveGeneticSequenceFastaByCaseCommand',
+    DataCollectionSetCrudCommand: 'DataCollectionSetCrudCommand',
+    OrganizationIdentifierIssuerLinkUpdateAssociationCommand: 'OrganizationIdentifierIssuerLinkUpdateAssociationCommand',
+    CaseIdentifierCrudCommand: 'CaseIdentifierCrudCommand',
+    RetrieveInviteUserConstraintsCommand: 'RetrieveInviteUserConstraintsCommand',
+    CaseTypeSetMemberCrudCommand: 'CaseTypeSetMemberCrudCommand',
+    CaseSetCategoryCrudCommand: 'CaseSetCategoryCrudCommand',
+    UpdateUserOwnOrganizationCommand: 'UpdateUserOwnOrganizationCommand',
+    RetrieveCaseRightsCommand: 'RetrieveCaseRightsCommand',
+    UpdateUserCommand: 'UpdateUserCommand',
+    OrganizationCrudCommand: 'OrganizationCrudCommand',
+    CaseDataCollectionLinkCrudCommand: 'CaseDataCollectionLinkCrudCommand',
+    RefColCrudCommand: 'RefColCrudCommand',
+    ConceptCrudCommand: 'ConceptCrudCommand',
+    CaseTypeCrudCommand: 'CaseTypeCrudCommand',
+    GeneticDistanceProtocolCrudCommand: 'GeneticDistanceProtocolCrudCommand',
+    OrganizationSetOrganizationUpdateAssociationCommand: 'OrganizationSetOrganizationUpdateAssociationCommand'
 } as const;
 
 export type CommandName = typeof CommandName[keyof typeof CommandName];
@@ -1643,6 +1979,24 @@ export type ComparisonOperator = typeof ComparisonOperator[keyof typeof Comparis
  * @interface CompleteCaseType
  */
 export interface CompleteCaseType {
+    /**
+     * The UTC datetime when the object was created.
+     * @type {string}
+     * @memberof CompleteCaseType
+     */
+    'created_at'?: string | null;
+    /**
+     * The UTC datetime when the object was last modified.
+     * @type {string}
+     * @memberof CompleteCaseType
+     */
+    'modified_at'?: string | null;
+    /**
+     * The ID of the user who last modified the object.
+     * @type {string}
+     * @memberof CompleteCaseType
+     */
+    'modified_by'?: string | null;
     /**
      * The unique identifier for the object.
      * @type {string}
@@ -1795,6 +2149,24 @@ export interface CompleteCaseType {
  */
 export interface Concept {
     /**
+     * The UTC datetime when the object was created.
+     * @type {string}
+     * @memberof Concept
+     */
+    'created_at'?: string | null;
+    /**
+     * The UTC datetime when the object was last modified.
+     * @type {string}
+     * @memberof Concept
+     */
+    'modified_at'?: string | null;
+    /**
+     * The ID of the user who last modified the object.
+     * @type {string}
+     * @memberof Concept
+     */
+    'modified_by'?: string | null;
+    /**
      * The unique identifier for the object.
      * @type {string}
      * @memberof Concept
@@ -1849,6 +2221,24 @@ export interface Concept {
  * @interface ConceptRelation
  */
 export interface ConceptRelation {
+    /**
+     * The UTC datetime when the object was created.
+     * @type {string}
+     * @memberof ConceptRelation
+     */
+    'created_at'?: string | null;
+    /**
+     * The UTC datetime when the object was last modified.
+     * @type {string}
+     * @memberof ConceptRelation
+     */
+    'modified_at'?: string | null;
+    /**
+     * The ID of the user who last modified the object.
+     * @type {string}
+     * @memberof ConceptRelation
+     */
+    'modified_by'?: string | null;
     /**
      * The unique identifier for the object.
      * @type {string}
@@ -1908,6 +2298,24 @@ export type ConceptRelationType = typeof ConceptRelationType[keyof typeof Concep
  */
 export interface ConceptSet {
     /**
+     * The UTC datetime when the object was created.
+     * @type {string}
+     * @memberof ConceptSet
+     */
+    'created_at'?: string | null;
+    /**
+     * The UTC datetime when the object was last modified.
+     * @type {string}
+     * @memberof ConceptSet
+     */
+    'modified_at'?: string | null;
+    /**
+     * The ID of the user who last modified the object.
+     * @type {string}
+     * @memberof ConceptSet
+     */
+    'modified_by'?: string | null;
+    /**
      * The unique identifier for the object.
      * @type {string}
      * @memberof ConceptSet
@@ -1964,6 +2372,24 @@ export type ConceptSetType = typeof ConceptSetType[keyof typeof ConceptSetType];
  * @interface Contact
  */
 export interface Contact {
+    /**
+     * The UTC datetime when the object was created.
+     * @type {string}
+     * @memberof Contact
+     */
+    'created_at'?: string | null;
+    /**
+     * The UTC datetime when the object was last modified.
+     * @type {string}
+     * @memberof Contact
+     */
+    'modified_at'?: string | null;
+    /**
+     * The ID of the user who last modified the object.
+     * @type {string}
+     * @memberof Contact
+     */
+    'modified_by'?: string | null;
     /**
      * The unique identifier for the object.
      * @type {string}
@@ -2093,6 +2519,24 @@ export interface CreateFileForSeqRequestBody {
  */
 export interface DataCollection {
     /**
+     * The UTC datetime when the object was created.
+     * @type {string}
+     * @memberof DataCollection
+     */
+    'created_at'?: string | null;
+    /**
+     * The UTC datetime when the object was last modified.
+     * @type {string}
+     * @memberof DataCollection
+     */
+    'modified_at'?: string | null;
+    /**
+     * The ID of the user who last modified the object.
+     * @type {string}
+     * @memberof DataCollection
+     */
+    'modified_by'?: string | null;
+    /**
      * The unique identifier for the object.
      * @type {string}
      * @memberof DataCollection
@@ -2118,6 +2562,24 @@ export interface DataCollection {
  */
 export interface DataCollectionSet {
     /**
+     * The UTC datetime when the object was created.
+     * @type {string}
+     * @memberof DataCollectionSet
+     */
+    'created_at'?: string | null;
+    /**
+     * The UTC datetime when the object was last modified.
+     * @type {string}
+     * @memberof DataCollectionSet
+     */
+    'modified_at'?: string | null;
+    /**
+     * The ID of the user who last modified the object.
+     * @type {string}
+     * @memberof DataCollectionSet
+     */
+    'modified_by'?: string | null;
+    /**
      * The unique identifier for the object.
      * @type {string}
      * @memberof DataCollectionSet
@@ -2142,6 +2604,24 @@ export interface DataCollectionSet {
  * @interface DataCollectionSetMember
  */
 export interface DataCollectionSetMember {
+    /**
+     * The UTC datetime when the object was created.
+     * @type {string}
+     * @memberof DataCollectionSetMember
+     */
+    'created_at'?: string | null;
+    /**
+     * The UTC datetime when the object was last modified.
+     * @type {string}
+     * @memberof DataCollectionSetMember
+     */
+    'modified_at'?: string | null;
+    /**
+     * The ID of the user who last modified the object.
+     * @type {string}
+     * @memberof DataCollectionSetMember
+     */
+    'modified_by'?: string | null;
     /**
      * The unique identifier for the object.
      * @type {string}
@@ -2203,6 +2683,24 @@ export type Detail = string | { [key: string]: any; };
  * @interface Dim
  */
 export interface Dim {
+    /**
+     * The UTC datetime when the object was created.
+     * @type {string}
+     * @memberof Dim
+     */
+    'created_at'?: string | null;
+    /**
+     * The UTC datetime when the object was last modified.
+     * @type {string}
+     * @memberof Dim
+     */
+    'modified_at'?: string | null;
+    /**
+     * The ID of the user who last modified the object.
+     * @type {string}
+     * @memberof Dim
+     */
+    'modified_by'?: string | null;
     /**
      * The unique identifier for the object.
      * @type {string}
@@ -2296,6 +2794,24 @@ export type DimType = typeof DimType[keyof typeof DimType];
  */
 export interface Disease {
     /**
+     * The UTC datetime when the object was created.
+     * @type {string}
+     * @memberof Disease
+     */
+    'created_at'?: string | null;
+    /**
+     * The UTC datetime when the object was last modified.
+     * @type {string}
+     * @memberof Disease
+     */
+    'modified_at'?: string | null;
+    /**
+     * The ID of the user who last modified the object.
+     * @type {string}
+     * @memberof Disease
+     */
+    'modified_by'?: string | null;
+    /**
      * The unique identifier for the object.
      * @type {string}
      * @memberof Disease
@@ -2321,6 +2837,24 @@ export interface Disease {
  */
 export interface EtiologicalAgent {
     /**
+     * The UTC datetime when the object was created.
+     * @type {string}
+     * @memberof EtiologicalAgent
+     */
+    'created_at'?: string | null;
+    /**
+     * The UTC datetime when the object was last modified.
+     * @type {string}
+     * @memberof EtiologicalAgent
+     */
+    'modified_at'?: string | null;
+    /**
+     * The ID of the user who last modified the object.
+     * @type {string}
+     * @memberof EtiologicalAgent
+     */
+    'modified_by'?: string | null;
+    /**
      * The unique identifier for the object.
      * @type {string}
      * @memberof EtiologicalAgent
@@ -2345,6 +2879,24 @@ export interface EtiologicalAgent {
  * @interface Etiology
  */
 export interface Etiology {
+    /**
+     * The UTC datetime when the object was created.
+     * @type {string}
+     * @memberof Etiology
+     */
+    'created_at'?: string | null;
+    /**
+     * The UTC datetime when the object was last modified.
+     * @type {string}
+     * @memberof Etiology
+     */
+    'modified_at'?: string | null;
+    /**
+     * The ID of the user who last modified the object.
+     * @type {string}
+     * @memberof Etiology
+     */
+    'modified_by'?: string | null;
     /**
      * The unique identifier for the object.
      * @type {string}
@@ -2477,6 +3029,24 @@ export type FiltersInner = TypedCompositeFilter | TypedDateRangeFilter | TypedDa
  */
 export interface GeneticDistanceProtocol {
     /**
+     * The UTC datetime when the object was created.
+     * @type {string}
+     * @memberof GeneticDistanceProtocol
+     */
+    'created_at'?: string | null;
+    /**
+     * The UTC datetime when the object was last modified.
+     * @type {string}
+     * @memberof GeneticDistanceProtocol
+     */
+    'modified_at'?: string | null;
+    /**
+     * The ID of the user who last modified the object.
+     * @type {string}
+     * @memberof GeneticDistanceProtocol
+     */
+    'modified_by'?: string | null;
+    /**
      * The unique identifier for the object.
      * @type {string}
      * @memberof GeneticDistanceProtocol
@@ -2600,6 +3170,24 @@ export interface IdentifierForUpload {
  * @interface IdentifierIssuer
  */
 export interface IdentifierIssuer {
+    /**
+     * The UTC datetime when the object was created.
+     * @type {string}
+     * @memberof IdentifierIssuer
+     */
+    'created_at'?: string | null;
+    /**
+     * The UTC datetime when the object was last modified.
+     * @type {string}
+     * @memberof IdentifierIssuer
+     */
+    'modified_at'?: string | null;
+    /**
+     * The ID of the user who last modified the object.
+     * @type {string}
+     * @memberof IdentifierIssuer
+     */
+    'modified_by'?: string | null;
     /**
      * The unique identifier for the object.
      * @type {string}
@@ -2834,6 +3422,24 @@ export type OAuthFlow = typeof OAuthFlow[keyof typeof OAuthFlow];
  */
 export interface Organization {
     /**
+     * The UTC datetime when the object was created.
+     * @type {string}
+     * @memberof Organization
+     */
+    'created_at'?: string | null;
+    /**
+     * The UTC datetime when the object was last modified.
+     * @type {string}
+     * @memberof Organization
+     */
+    'modified_at'?: string | null;
+    /**
+     * The ID of the user who last modified the object.
+     * @type {string}
+     * @memberof Organization
+     */
+    'modified_by'?: string | null;
+    /**
      * The unique identifier for the object.
      * @type {string}
      * @memberof Organization
@@ -2864,6 +3470,24 @@ export interface Organization {
  * @interface OrganizationAccessCasePolicy
  */
 export interface OrganizationAccessCasePolicy {
+    /**
+     * The UTC datetime when the object was created.
+     * @type {string}
+     * @memberof OrganizationAccessCasePolicy
+     */
+    'created_at'?: string | null;
+    /**
+     * The UTC datetime when the object was last modified.
+     * @type {string}
+     * @memberof OrganizationAccessCasePolicy
+     */
+    'modified_at'?: string | null;
+    /**
+     * The ID of the user who last modified the object.
+     * @type {string}
+     * @memberof OrganizationAccessCasePolicy
+     */
+    'modified_by'?: string | null;
     /**
      * The unique identifier for the object.
      * @type {string}
@@ -2986,6 +3610,24 @@ export interface OrganizationAccessCasePolicy {
  */
 export interface OrganizationAdminPolicy {
     /**
+     * The UTC datetime when the object was created.
+     * @type {string}
+     * @memberof OrganizationAdminPolicy
+     */
+    'created_at'?: string | null;
+    /**
+     * The UTC datetime when the object was last modified.
+     * @type {string}
+     * @memberof OrganizationAdminPolicy
+     */
+    'modified_at'?: string | null;
+    /**
+     * The ID of the user who last modified the object.
+     * @type {string}
+     * @memberof OrganizationAdminPolicy
+     */
+    'modified_by'?: string | null;
+    /**
      * The unique identifier for the object.
      * @type {string}
      * @memberof OrganizationAdminPolicy
@@ -3054,6 +3696,24 @@ export interface OrganizationContacts {
  */
 export interface OrganizationIdentifierIssuerLink {
     /**
+     * The UTC datetime when the object was created.
+     * @type {string}
+     * @memberof OrganizationIdentifierIssuerLink
+     */
+    'created_at'?: string | null;
+    /**
+     * The UTC datetime when the object was last modified.
+     * @type {string}
+     * @memberof OrganizationIdentifierIssuerLink
+     */
+    'modified_at'?: string | null;
+    /**
+     * The ID of the user who last modified the object.
+     * @type {string}
+     * @memberof OrganizationIdentifierIssuerLink
+     */
+    'modified_by'?: string | null;
+    /**
      * The unique identifier for the object.
      * @type {string}
      * @memberof OrganizationIdentifierIssuerLink
@@ -3091,6 +3751,24 @@ export interface OrganizationIdentifierIssuerLink {
  */
 export interface OrganizationSet {
     /**
+     * The UTC datetime when the object was created.
+     * @type {string}
+     * @memberof OrganizationSet
+     */
+    'created_at'?: string | null;
+    /**
+     * The UTC datetime when the object was last modified.
+     * @type {string}
+     * @memberof OrganizationSet
+     */
+    'modified_at'?: string | null;
+    /**
+     * The ID of the user who last modified the object.
+     * @type {string}
+     * @memberof OrganizationSet
+     */
+    'modified_by'?: string | null;
+    /**
      * The unique identifier for the object.
      * @type {string}
      * @memberof OrganizationSet
@@ -3115,6 +3793,24 @@ export interface OrganizationSet {
  * @interface OrganizationSetMember
  */
 export interface OrganizationSetMember {
+    /**
+     * The UTC datetime when the object was created.
+     * @type {string}
+     * @memberof OrganizationSetMember
+     */
+    'created_at'?: string | null;
+    /**
+     * The UTC datetime when the object was last modified.
+     * @type {string}
+     * @memberof OrganizationSetMember
+     */
+    'modified_at'?: string | null;
+    /**
+     * The ID of the user who last modified the object.
+     * @type {string}
+     * @memberof OrganizationSetMember
+     */
+    'modified_by'?: string | null;
     /**
      * The unique identifier for the object.
      * @type {string}
@@ -3152,6 +3848,24 @@ export interface OrganizationSetMember {
  * @interface OrganizationShareCasePolicy
  */
 export interface OrganizationShareCasePolicy {
+    /**
+     * The UTC datetime when the object was created.
+     * @type {string}
+     * @memberof OrganizationShareCasePolicy
+     */
+    'created_at'?: string | null;
+    /**
+     * The UTC datetime when the object was last modified.
+     * @type {string}
+     * @memberof OrganizationShareCasePolicy
+     */
+    'modified_at'?: string | null;
+    /**
+     * The ID of the user who last modified the object.
+     * @type {string}
+     * @memberof OrganizationShareCasePolicy
+     */
+    'modified_by'?: string | null;
     /**
      * The unique identifier for the object.
      * @type {string}
@@ -3244,6 +3958,24 @@ export interface OrganizationShareCasePolicy {
  */
 export interface Outage {
     /**
+     * The UTC datetime when the object was created.
+     * @type {string}
+     * @memberof Outage
+     */
+    'created_at'?: string | null;
+    /**
+     * The UTC datetime when the object was last modified.
+     * @type {string}
+     * @memberof Outage
+     */
+    'modified_at'?: string | null;
+    /**
+     * The ID of the user who last modified the object.
+     * @type {string}
+     * @memberof Outage
+     */
+    'modified_by'?: string | null;
+    /**
      * The unique identifier for the object.
      * @type {string}
      * @memberof Outage
@@ -3299,6 +4031,24 @@ export interface Outage {
  */
 export interface PackageMetadata {
     /**
+     * The UTC datetime when the object was created.
+     * @type {string}
+     * @memberof PackageMetadata
+     */
+    'created_at'?: string | null;
+    /**
+     * The UTC datetime when the object was last modified.
+     * @type {string}
+     * @memberof PackageMetadata
+     */
+    'modified_at'?: string | null;
+    /**
+     * The ID of the user who last modified the object.
+     * @type {string}
+     * @memberof PackageMetadata
+     */
+    'modified_by'?: string | null;
+    /**
      * The unique identifier for the object.
      * @type {string}
      * @memberof PackageMetadata
@@ -3352,6 +4102,24 @@ export type PermissionType = typeof PermissionType[keyof typeof PermissionType];
  * @interface PhylogeneticTree
  */
 export interface PhylogeneticTree {
+    /**
+     * The UTC datetime when the object was created.
+     * @type {string}
+     * @memberof PhylogeneticTree
+     */
+    'created_at'?: string | null;
+    /**
+     * The UTC datetime when the object was last modified.
+     * @type {string}
+     * @memberof PhylogeneticTree
+     */
+    'modified_at'?: string | null;
+    /**
+     * The ID of the user who last modified the object.
+     * @type {string}
+     * @memberof PhylogeneticTree
+     */
+    'modified_by'?: string | null;
     /**
      * The unique identifier for the object.
      * @type {string}
@@ -3415,6 +4183,24 @@ export interface PhylogeneticTree {
  * @interface Protocol
  */
 export interface Protocol {
+    /**
+     * The UTC datetime when the object was created.
+     * @type {string}
+     * @memberof Protocol
+     */
+    'created_at'?: string | null;
+    /**
+     * The UTC datetime when the object was last modified.
+     * @type {string}
+     * @memberof Protocol
+     */
+    'modified_at'?: string | null;
+    /**
+     * The ID of the user who last modified the object.
+     * @type {string}
+     * @memberof Protocol
+     */
+    'modified_by'?: string | null;
     /**
      * The unique identifier for the object.
      * @type {string}
@@ -3554,6 +4340,24 @@ export type ProtocolType = typeof ProtocolType[keyof typeof ProtocolType];
  */
 export interface ReadSetForUpload {
     /**
+     * The UTC datetime when the object was created.
+     * @type {string}
+     * @memberof ReadSetForUpload
+     */
+    'created_at'?: string | null;
+    /**
+     * The UTC datetime when the object was last modified.
+     * @type {string}
+     * @memberof ReadSetForUpload
+     */
+    'modified_at'?: string | null;
+    /**
+     * The ID of the user who last modified the object.
+     * @type {string}
+     * @memberof ReadSetForUpload
+     */
+    'modified_by'?: string | null;
+    /**
      * The unique identifier for the object.
      * @type {string}
      * @memberof ReadSetForUpload
@@ -3615,6 +4419,24 @@ export type ReadsFileFormat = typeof ReadsFileFormat[keyof typeof ReadsFileForma
  * @interface RefCol
  */
 export interface RefCol {
+    /**
+     * The UTC datetime when the object was created.
+     * @type {string}
+     * @memberof RefCol
+     */
+    'created_at'?: string | null;
+    /**
+     * The UTC datetime when the object was last modified.
+     * @type {string}
+     * @memberof RefCol
+     */
+    'modified_at'?: string | null;
+    /**
+     * The ID of the user who last modified the object.
+     * @type {string}
+     * @memberof RefCol
+     */
+    'modified_by'?: string | null;
     /**
      * The unique identifier for the object.
      * @type {string}
@@ -3752,6 +4574,24 @@ export interface RefColValidationRulesResponseBody {
  */
 export interface RefDim {
     /**
+     * The UTC datetime when the object was created.
+     * @type {string}
+     * @memberof RefDim
+     */
+    'created_at'?: string | null;
+    /**
+     * The UTC datetime when the object was last modified.
+     * @type {string}
+     * @memberof RefDim
+     */
+    'modified_at'?: string | null;
+    /**
+     * The ID of the user who last modified the object.
+     * @type {string}
+     * @memberof RefDim
+     */
+    'modified_by'?: string | null;
+    /**
      * The unique identifier for the object.
      * @type {string}
      * @memberof RefDim
@@ -3808,6 +4648,24 @@ export interface RefDim {
  * @interface Region
  */
 export interface Region {
+    /**
+     * The UTC datetime when the object was created.
+     * @type {string}
+     * @memberof Region
+     */
+    'created_at'?: string | null;
+    /**
+     * The UTC datetime when the object was last modified.
+     * @type {string}
+     * @memberof Region
+     */
+    'modified_at'?: string | null;
+    /**
+     * The ID of the user who last modified the object.
+     * @type {string}
+     * @memberof Region
+     */
+    'modified_by'?: string | null;
     /**
      * The unique identifier for the object.
      * @type {string}
@@ -3870,6 +4728,24 @@ export interface Region {
  */
 export interface RegionRelation {
     /**
+     * The UTC datetime when the object was created.
+     * @type {string}
+     * @memberof RegionRelation
+     */
+    'created_at'?: string | null;
+    /**
+     * The UTC datetime when the object was last modified.
+     * @type {string}
+     * @memberof RegionRelation
+     */
+    'modified_at'?: string | null;
+    /**
+     * The ID of the user who last modified the object.
+     * @type {string}
+     * @memberof RegionRelation
+     */
+    'modified_by'?: string | null;
+    /**
      * The unique identifier for the object.
      * @type {string}
      * @memberof RegionRelation
@@ -3931,6 +4807,24 @@ export type RegionRelationType = typeof RegionRelationType[keyof typeof RegionRe
  */
 export interface RegionSet {
     /**
+     * The UTC datetime when the object was created.
+     * @type {string}
+     * @memberof RegionSet
+     */
+    'created_at'?: string | null;
+    /**
+     * The UTC datetime when the object was last modified.
+     * @type {string}
+     * @memberof RegionSet
+     */
+    'modified_at'?: string | null;
+    /**
+     * The ID of the user who last modified the object.
+     * @type {string}
+     * @memberof RegionSet
+     */
+    'modified_by'?: string | null;
+    /**
      * The unique identifier for the object.
      * @type {string}
      * @memberof RegionSet
@@ -3967,6 +4861,24 @@ export interface RegionSet {
  * @interface RegionSetShape
  */
 export interface RegionSetShape {
+    /**
+     * The UTC datetime when the object was created.
+     * @type {string}
+     * @memberof RegionSetShape
+     */
+    'created_at'?: string | null;
+    /**
+     * The UTC datetime when the object was last modified.
+     * @type {string}
+     * @memberof RegionSetShape
+     */
+    'modified_at'?: string | null;
+    /**
+     * The ID of the user who last modified the object.
+     * @type {string}
+     * @memberof RegionSetShape
+     */
+    'modified_by'?: string | null;
     /**
      * The unique identifier for the object.
      * @type {string}
@@ -4182,6 +5094,24 @@ export type SeqFileFormat = typeof SeqFileFormat[keyof typeof SeqFileFormat];
  */
 export interface SeqForUpload {
     /**
+     * The UTC datetime when the object was created.
+     * @type {string}
+     * @memberof SeqForUpload
+     */
+    'created_at'?: string | null;
+    /**
+     * The UTC datetime when the object was last modified.
+     * @type {string}
+     * @memberof SeqForUpload
+     */
+    'modified_at'?: string | null;
+    /**
+     * The ID of the user who last modified the object.
+     * @type {string}
+     * @memberof SeqForUpload
+     */
+    'modified_by'?: string | null;
+    /**
      * The unique identifier for the object.
      * @type {string}
      * @memberof SeqForUpload
@@ -4248,6 +5178,24 @@ export type SeqProfileType = typeof SeqProfileType[keyof typeof SeqProfileType];
  */
 export interface Site {
     /**
+     * The UTC datetime when the object was created.
+     * @type {string}
+     * @memberof Site
+     */
+    'created_at'?: string | null;
+    /**
+     * The UTC datetime when the object was last modified.
+     * @type {string}
+     * @memberof Site
+     */
+    'modified_at'?: string | null;
+    /**
+     * The ID of the user who last modified the object.
+     * @type {string}
+     * @memberof Site
+     */
+    'modified_by'?: string | null;
+    /**
      * The unique identifier for the object.
      * @type {string}
      * @memberof Site
@@ -4278,6 +5226,24 @@ export interface Site {
  * @interface TreeAlgorithm
  */
 export interface TreeAlgorithm {
+    /**
+     * The UTC datetime when the object was created.
+     * @type {string}
+     * @memberof TreeAlgorithm
+     */
+    'created_at'?: string | null;
+    /**
+     * The UTC datetime when the object was last modified.
+     * @type {string}
+     * @memberof TreeAlgorithm
+     */
+    'modified_at'?: string | null;
+    /**
+     * The ID of the user who last modified the object.
+     * @type {string}
+     * @memberof TreeAlgorithm
+     */
+    'modified_by'?: string | null;
     /**
      * The unique identifier for the object.
      * @type {string}
@@ -4341,6 +5307,24 @@ export interface TreeAlgorithm {
  * @interface TreeAlgorithmClass
  */
 export interface TreeAlgorithmClass {
+    /**
+     * The UTC datetime when the object was created.
+     * @type {string}
+     * @memberof TreeAlgorithmClass
+     */
+    'created_at'?: string | null;
+    /**
+     * The UTC datetime when the object was last modified.
+     * @type {string}
+     * @memberof TreeAlgorithmClass
+     */
+    'modified_at'?: string | null;
+    /**
+     * The ID of the user who last modified the object.
+     * @type {string}
+     * @memberof TreeAlgorithmClass
+     */
+    'modified_by'?: string | null;
     /**
      * The unique identifier for the object.
      * @type {string}
@@ -5201,6 +6185,24 @@ export interface UploadResult {
  */
 export interface User {
     /**
+     * The UTC datetime when the object was created.
+     * @type {string}
+     * @memberof User
+     */
+    'created_at'?: string | null;
+    /**
+     * The UTC datetime when the object was last modified.
+     * @type {string}
+     * @memberof User
+     */
+    'modified_at'?: string | null;
+    /**
+     * The ID of the user who last modified the object.
+     * @type {string}
+     * @memberof User
+     */
+    'modified_by'?: string | null;
+    /**
      * The ID of the user
      * @type {string}
      * @memberof User
@@ -5261,6 +6263,24 @@ export interface User {
  * @interface UserAccessCasePolicy
  */
 export interface UserAccessCasePolicy {
+    /**
+     * The UTC datetime when the object was created.
+     * @type {string}
+     * @memberof UserAccessCasePolicy
+     */
+    'created_at'?: string | null;
+    /**
+     * The UTC datetime when the object was last modified.
+     * @type {string}
+     * @memberof UserAccessCasePolicy
+     */
+    'modified_at'?: string | null;
+    /**
+     * The ID of the user who last modified the object.
+     * @type {string}
+     * @memberof UserAccessCasePolicy
+     */
+    'modified_by'?: string | null;
     /**
      * The unique identifier for the object.
      * @type {string}
@@ -5377,6 +6397,24 @@ export interface UserAccessCasePolicy {
  */
 export interface UserInvitation {
     /**
+     * The UTC datetime when the object was created.
+     * @type {string}
+     * @memberof UserInvitation
+     */
+    'created_at'?: string | null;
+    /**
+     * The UTC datetime when the object was last modified.
+     * @type {string}
+     * @memberof UserInvitation
+     */
+    'modified_at'?: string | null;
+    /**
+     * The ID of the user who last modified the object.
+     * @type {string}
+     * @memberof UserInvitation
+     */
+    'modified_by'?: string | null;
+    /**
      * The unique identifier for the object.
      * @type {string}
      * @memberof UserInvitation
@@ -5455,6 +6493,24 @@ export interface UserInvitation {
  * @interface UserInvitationConstraints
  */
 export interface UserInvitationConstraints {
+    /**
+     * The UTC datetime when the object was created.
+     * @type {string}
+     * @memberof UserInvitationConstraints
+     */
+    'created_at'?: string | null;
+    /**
+     * The UTC datetime when the object was last modified.
+     * @type {string}
+     * @memberof UserInvitationConstraints
+     */
+    'modified_at'?: string | null;
+    /**
+     * The ID of the user who last modified the object.
+     * @type {string}
+     * @memberof UserInvitationConstraints
+     */
+    'modified_by'?: string | null;
     /**
      * The unique identifier for the object.
      * @type {string}
@@ -5536,6 +6592,24 @@ export interface UserNameEmail {
  * @interface UserShareCasePolicy
  */
 export interface UserShareCasePolicy {
+    /**
+     * The UTC datetime when the object was created.
+     * @type {string}
+     * @memberof UserShareCasePolicy
+     */
+    'created_at'?: string | null;
+    /**
+     * The UTC datetime when the object was last modified.
+     * @type {string}
+     * @memberof UserShareCasePolicy
+     */
+    'modified_at'?: string | null;
+    /**
+     * The ID of the user who last modified the object.
+     * @type {string}
+     * @memberof UserShareCasePolicy
+     */
+    'modified_by'?: string | null;
     /**
      * The unique identifier for the object.
      * @type {string}

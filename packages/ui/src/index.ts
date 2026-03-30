@@ -169,6 +169,7 @@ export * from './dataHooks/useCaseTypesQuery';
 export * from './dataHooks/useCaseTypeStatsQuery';
 export * from './dataHooks/useCaseTypeSetsQuery';
 export * from './dataHooks/useCaseTypeSetMembersQuery';
+export * from './dataHooks/useCaseTypeSetCategoryPurposeQuery';
 export * from './dataHooks/useCaseTypeSetCategoriesQuery';
 export * from './dataHooks/useCaseSetsQuery';
 export * from './dataHooks/useCaseSetStatusesQuery';

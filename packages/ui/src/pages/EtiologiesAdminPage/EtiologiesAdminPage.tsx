@@ -23,8 +23,9 @@ import type { TableColumn } from '../../models/table';
 import { TableUtil } from '../../utils/TableUtil';
 import { TestIdUtil } from '../../utils/TestIdUtil';
 import { CrudPage } from '../CrudPage';
+import type { OmitWithMetaData } from '../../models/data';
 
-type FormFields = Pick<Etiology, 'disease_id' | 'etiological_agent_id'>;
+type FormFields = OmitWithMetaData<Etiology, 'disease' | 'etiological_agent'>;
 
 export const EtiologiesAdminPage = () => {
   const { t } = useTranslation();

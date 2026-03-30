@@ -27,10 +27,11 @@ import { QUERY_KEY } from '../../models/query';
 import type { TableColumn } from '../../models/table';
 import { TableUtil } from '../../utils/TableUtil';
 import { TestIdUtil } from '../../utils/TestIdUtil';
+import type { OmitWithMetaData } from '../../models/data';
 
 type TableData = DataCollectionSet & { dataCollectionIds: string[] };
 
-type FormFields = Pick<TableData, 'name' | 'description' | 'dataCollectionIds'>;
+type FormFields = OmitWithMetaData<TableData>;
 
 export const DataCollectionSetsAdminPage = () => {
   const { t } = useTranslation();

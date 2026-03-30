@@ -63,7 +63,7 @@ type Row = {
   name: string;
   hasCases: boolean;
   [key: string]: string[] | string | number | boolean;
-} & Pick<CaseStats, 'n_cases' | 'n_own_cases' | 'first_case_date' | 'last_case_date'>;
+} & Omit<CaseStats, 'case_type_id'>;
 
 const getCaseTypeSetCategoryRowId = (id: string) => `caseTypeSetCategory-${id}`;
 

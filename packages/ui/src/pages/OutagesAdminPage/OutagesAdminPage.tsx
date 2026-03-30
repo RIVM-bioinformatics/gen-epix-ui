@@ -27,8 +27,9 @@ import { TableUtil } from '../../utils/TableUtil';
 import { TestIdUtil } from '../../utils/TestIdUtil';
 import { CrudPage } from '../CrudPage';
 import { DATE_FORMAT } from '../../data/date';
+import type { OmitWithMetaData } from '../../models/data';
 
-type FormFields = Pick<Outage, 'description' | 'active_from' | 'active_to' | 'visible_from' | 'visible_to' | 'is_active' | 'is_visible'>;
+type FormFields = OmitWithMetaData<Outage>;
 
 export const OutagesAdminPage = () => {
   const { t } = useTranslation();

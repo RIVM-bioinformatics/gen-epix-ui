@@ -32,8 +32,9 @@ import { CrudPage } from '../CrudPage';
 import { useRefDimOptionsQuery } from '../../dataHooks/useRefDimsQuery';
 import { AuthorizationManager } from '../../classes/managers/AuthorizationManager';
 import { NumberUtil } from '../../utils/NumberUtil';
+import type { OmitWithMetaData } from '../../models/data';
 
-type FormFields = Pick<Dim, 'case_type_id' | 'ref_dim_id' | 'occurrence' | 'code' | 'label' | 'description' | 'rank' | 'is_case_date_dim'>;
+type FormFields = OmitWithMetaData<Dim, 'case_type' | 'ref_dim'>;
 
 export const DimsAdminPage = () => {
   const { caseTypeId } = useParams();

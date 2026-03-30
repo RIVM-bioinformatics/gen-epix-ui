@@ -20,8 +20,9 @@ import { QUERY_KEY } from '../../models/query';
 import type { TableColumn } from '../../models/table';
 import { TableUtil } from '../../utils/TableUtil';
 import { TestIdUtil } from '../../utils/TestIdUtil';
+import type { OmitWithMetaData } from '../../models/data';
 
-type FormFields = Pick<DataCollection, 'name' | 'description'>;
+type FormFields = OmitWithMetaData<DataCollection>;
 
 export const DataCollectionsAdminPage = () => {
   const { t } = useTranslation();

@@ -31,10 +31,11 @@ import { AuthorizationManager } from '../../classes/managers/AuthorizationManage
 import { useIdentifierIssuerOptionsQuery } from '../../dataHooks/useIdentifierIssuerQuery';
 import { useArray } from '../../hooks/useArray';
 import { useOrganizationIdentifierIssuerLinksQuery } from '../../dataHooks/useOrganizationIdentifierIssuerLinksQuery';
+import type { OmitWithMetaData } from '../../models/data';
 
 type TableData = Organization & { identifierIssuerIds: string[] };
 
-type FormFields = Pick<TableData, 'name' | 'code' | 'identifierIssuerIds'>;
+type FormFields = OmitWithMetaData<TableData>;
 
 export const OrganizationsAdminPage = () => {
   const { t } = useTranslation();
@@ -81,6 +82,7 @@ export const OrganizationsAdminPage = () => {
       name: string().extendedAlphaNumeric().required().max(100),
       code: string().extendedAlphaNumeric().required().max(100),
       identifierIssuerIds: array().of(string().uuid4()).min(0).required(),
+      description: string().freeFormText().required().max(1000),
     });
   }, []);
 
@@ -90,6 +92,13 @@ export const OrganizationsAdminPage = () => {
         definition: FORM_FIELD_DEFINITION_TYPE.TEXTFIELD,
         name: 'name',
         label: t`Name`,
+      } as const satisfies FormFieldDefinition<FormFields>,
+      {
+        definition: FORM_FIELD_DEFINITION_TYPE.TEXTFIELD,
+        name: 'description',
+        label: t`Description`,
+        multiline: true,
+        rows: 5,
       } as const satisfies FormFieldDefinition<FormFields>,
       {
         definition: FORM_FIELD_DEFINITION_TYPE.TEXTFIELD,

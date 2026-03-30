@@ -26,9 +26,10 @@ import type { CrudPageSubPage } from '../CrudPage';
 import { CrudPage } from '../CrudPage';
 import { useConceptSetTypeOptionsQuery } from '../../dataHooks/useConceptSetTypeQuery';
 import { AuthorizationManager } from '../../classes/managers/AuthorizationManager';
+import type { OmitWithMetaData } from '../../models/data';
 
 
-type FormFields = Omit<ConceptSet, 'id'>;
+type FormFields = OmitWithMetaData<ConceptSet>;
 
 export const ConceptSetsAdminPage = () => {
   const conceptSetTypeOptionsQuery = useConceptSetTypeOptionsQuery();

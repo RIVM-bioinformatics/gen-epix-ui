@@ -22,8 +22,10 @@ import { TableUtil } from '../../utils/TableUtil';
 import { TestIdUtil } from '../../utils/TestIdUtil';
 import { CrudPage } from '../CrudPage';
 import { NumberUtil } from '../../utils/NumberUtil';
+import type { OmitWithMetaData } from '../../models/data';
 
-type FormFields = Omit<Region, 'id' | 'region_set_id' | 'region_set'>;
+// Note: region_set_id is given in the route params
+type FormFields = OmitWithMetaData<Region, 'region_set_id' | 'region_set'>;
 
 export const RegionsAdminPage = () => {
   const { regionSetId } = useParams();

@@ -44,6 +44,9 @@ export const useColTypeOptionsQuery = (): UseOptions<string> => {
     const options: OptionBase<string>[] = Object.entries(colTypePresentationValues).map(([value, label]) => ({ value, label }));
     return {
       isLoading: false,
+      isEnabled: true,
+      isFetching: false,
+      isPending: false,
       options,
       error: null,
     } as UseOptions<string>;

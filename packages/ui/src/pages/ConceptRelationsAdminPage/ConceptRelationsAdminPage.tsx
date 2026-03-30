@@ -29,9 +29,10 @@ import {
 } from '../../dataHooks/useConceptQuery';
 import { useArray } from '../../hooks/useArray';
 import { useConceptRelationTypeOptionsQuery } from '../../dataHooks/useConceptRelationTypeQuery';
+import type { OmitWithMetaData } from '../../models/data';
 
 
-type FormFields = Omit<ConceptRelation, 'id' | 'from_concept' | 'to_concept'>;
+type FormFields = OmitWithMetaData<ConceptRelation, 'id' | 'from_concept' | 'to_concept'>;
 
 export const ConceptRelationsAdminPage = () => {
   const { t } = useTranslation();

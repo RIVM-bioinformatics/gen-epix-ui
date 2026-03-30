@@ -24,8 +24,9 @@ import { TestIdUtil } from '../../utils/TestIdUtil';
 import type { CrudPageSubPage } from '../CrudPage';
 import { CrudPage } from '../CrudPage';
 import { AuthorizationManager } from '../../classes/managers/AuthorizationManager';
+import type { OmitWithMetaData } from '../../models/data';
 
-type FormFields = Omit<Site, 'id' | 'organization_id' | 'organization'>;
+type FormFields = OmitWithMetaData<Site, 'organization_id' | 'organization'>;
 
 export const OrganizationSitesAdminPage = () => {
   const { organizationId } = useParams();

@@ -27,8 +27,9 @@ import type { CrudPageSubPage } from '../CrudPage';
 import { CrudPage } from '../CrudPage';
 import { AuthorizationManager } from '../../classes/managers/AuthorizationManager';
 import { NumberUtil } from '../../utils/NumberUtil';
+import type { OmitWithMetaData } from '../../models/data';
 
-type FormFields = Pick<RefDim, 'dim_type' | 'code' | 'label' | 'description' | 'rank' | 'col_code_prefix'>;
+type FormFields = OmitWithMetaData<RefDim, 'props'>;
 
 export const RefDimsAdminPage = () => {
   const { t } = useTranslation();
