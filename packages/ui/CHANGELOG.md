@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.18.0](https://github.com/RIVM-bioinformatics/gen-epix-ui/compare/ui-v1.17.0...ui-v1.18.0) (2026-03-30)
+
+
+### Features
+
+* add case set cateogry admin page ([abfb369](https://github.com/RIVM-bioinformatics/gen-epix-ui/commit/abfb3691a6a3989d5603eb10ea21496163e2f505))
+
 ## [1.17.0](https://github.com/RIVM-bioinformatics/gen-epix-ui/compare/ui-v1.16.2...ui-v1.17.0) (2026-03-30)
 
 
