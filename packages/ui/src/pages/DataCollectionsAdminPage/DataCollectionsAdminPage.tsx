@@ -88,7 +88,7 @@ export const DataCollectionsAdminPage = () => {
       schema={schema}
       tableColumns={tableColumns}
       testIdAttributes={TestIdUtil.createAttributes('DataCollectionsAdminPage')}
-      title={`Data collections`}
+      title={t`Data collections`}
       updateOne={updateOne}
     />
   );

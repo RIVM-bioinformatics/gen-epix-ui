@@ -26,6 +26,7 @@ import {
   useFormContext,
 } from 'react-hook-form';
 import classnames from 'classnames';
+import { useTranslation } from 'react-i18next';
 
 import { FormUtil } from '../../../../utils/FormUtil';
 import { TestIdUtil } from '../../../../utils/TestIdUtil';
@@ -61,6 +62,7 @@ export const TextField = <TFieldValues extends FieldValues, TName extends Path<T
   warningMessage,
   autocomplete,
 }: TextFieldProps<TFieldValues, TName>): ReactElement => {
+  const { t } = useTranslation();
   const { control, formState: { errors } } = useFormContext<TFieldValues>();
   const errorMessage = FormUtil.getFieldErrorMessage(errors, name);
   const hasError = !!errorMessage;
@@ -124,7 +126,7 @@ export const TextField = <TFieldValues extends FieldValues, TName extends Path<T
                     },
                   }}
                   tabIndex={-1}
-                  aria-label={`Clear text field`}
+                  aria-label={t`Clear text field`}
                   // eslint-disable-next-line react/jsx-no-bind
                   onClick={onResetButtonClick}
                 >
@@ -143,7 +145,7 @@ export const TextField = <TFieldValues extends FieldValues, TName extends Path<T
         onChange={onMuiTextFieldChange(onChange)}
       />
     );
-  }, [disabled, loading, hasError, errorMessage, warningMessage, label, multiline, placeholder, rows, hasWarning, autocomplete, name, type, required, onMuiTextFieldChange]);
+  }, [disabled, loading, hasError, errorMessage, warningMessage, label, multiline, placeholder, rows, hasWarning, autocomplete, name, type, t, required, onMuiTextFieldChange]);
 
   return (
     <FormControl

@@ -215,7 +215,6 @@ export const ColsAdminPage = () => {
   }, [getDimOptionsForCaseTypeId, getRefColOptionsForDimId, getGeneticSequenceColOptionsForCaseTypeId]);
 
   const formFieldDefinitions = useCallback((item: Col, values: FormFields): FormFieldDefinition<FormFields>[] => {
-    console.log('formFieldDefinitions', { item, values }); // --- IGNORE ---
     const normalizedDimId = values?.dim_id ?? item?.dim_id ?? null;
     const caseTypeIdFromDimId = dimMapQuery.map.get(normalizedDimId)?.case_type_id ?? null;
     const normalizedCaseTypeIdWithValues = values?.case_type_id ?? normalizedCaseTypeId ?? caseTypeIdFromDimId;
@@ -270,6 +269,10 @@ export const ColsAdminPage = () => {
         definition: FORM_FIELD_DEFINITION_TYPE.NUMBER,
         name: 'min_value',
         label: t`Min value`,
+        showSlider: true,
+        min: 0,
+        max: 100,
+        step: 1,
       } as const satisfies FormFieldDefinition<FormFields>,
       {
         definition: FORM_FIELD_DEFINITION_TYPE.NUMBER,
