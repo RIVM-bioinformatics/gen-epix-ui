@@ -38,8 +38,10 @@ import { EpiUserRightsDialog } from '../../components/epi/EpiUserRightsDialog';
 import { AuthorizationManager } from '../../classes/managers/AuthorizationManager';
 import { useArray } from '../../hooks/useArray';
 import { useInviteUserConstraintsQuery } from '../../dataHooks/useInviteUserConstraintsQuery';
+import type { OmitWithMetaData } from '../../models/data';
+import { SchemaUtil } from '../../utils/SchemaUtil';
 
-type FormFields = Pick<User, 'key' | 'email' | 'name' | 'is_active' | 'roles' | 'description'>;
+type FormFields = OmitWithMetaData<User, 'organization' | 'organization_id'>;
 
 export const UsersAdminPage = () => {
   const { t } = useTranslation();
@@ -111,7 +113,7 @@ export const UsersAdminPage = () => {
       name: string().nullable(),
       roles: array().required().min(1),
       is_active: boolean().required(),
-      description: string().max(255).nullable(),
+      description: SchemaUtil.description,
     });
   }, []);
 

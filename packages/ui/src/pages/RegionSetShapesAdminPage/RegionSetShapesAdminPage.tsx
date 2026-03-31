@@ -24,8 +24,10 @@ import type { TableColumn } from '../../models/table';
 import { TableUtil } from '../../utils/TableUtil';
 import { TestIdUtil } from '../../utils/TestIdUtil';
 import { CrudPage } from '../CrudPage';
+import type { OmitWithMetaData } from '../../models/data';
 
-type FormFields = Omit<RegionSetShape, 'id' | 'region_set_id' | 'region_set'>;
+// Note: region_set_id is given in the route params
+type FormFields = OmitWithMetaData<RegionSetShape, 'region_set' | 'region_set_id'>;
 
 export const RegionSetShapesAdminPage = () => {
   const { regionSetId } = useParams();
@@ -68,7 +70,6 @@ export const RegionSetShapesAdminPage = () => {
 
   const schema = useMemo(() => {
     return object<FormFields>().shape({
-      region_set_id: string().uuid4().required(),
       scale: number().required().positive().transform((_val: unknown, orig: string | number) => orig === '' ? undefined : orig),
       geo_json: string().freeFormText(),
     });

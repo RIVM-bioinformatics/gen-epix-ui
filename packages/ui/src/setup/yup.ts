@@ -63,11 +63,6 @@ export const setupYup = () => {
 
   const customValidations: CustomValidation[] = [
     {
-      name: 'code',
-      assertCallback: (value: string) => ValidationUtil.validate('CODE', value),
-      message: () => t`Only digits, letters (without diacritics) and '.' are allowed.`,
-    },
-    {
       name: 'strictAlpha',
       assertCallback: (value: string) => ValidationUtil.validate('STRICT_ALPHA', value),
       message: () => t`Only letters (without diacritics) are allowed.`,
@@ -86,11 +81,6 @@ export const setupYup = () => {
       name: 'alphaNumeric',
       assertCallback: (value: string) => ValidationUtil.validate('ALPHA_NUMERIC', value),
       message: () => t`Only digits and letters (including diacritics) are allowed.`,
-    },
-    {
-      name: 'extendedAlpha',
-      assertCallback: (value: string) => ValidationUtil.validate('EXTENDED_ALPHA', value),
-      message: () => t`Only letters (including diacritics) and punctuation marks are allowed.`,
     },
     {
       name: 'extendedAlphaNumeric',

@@ -6,7 +6,6 @@ import { useTranslation } from 'react-i18next';
 import {
   boolean,
   object,
-  string,
 } from 'yup';
 
 import type { RegionSet } from '../../api';
@@ -24,9 +23,10 @@ import { TestIdUtil } from '../../utils/TestIdUtil';
 import type { CrudPageSubPage } from '../CrudPage';
 import { CrudPage } from '../CrudPage';
 import { AuthorizationManager } from '../../classes/managers/AuthorizationManager';
-import { NumberUtil } from '../../utils/NumberUtil';
+import type { OmitWithMetaData } from '../../models/data';
+import { SchemaUtil } from '../../utils/SchemaUtil';
 
-type FormFields = Pick<RegionSet, 'name' | 'code' | 'region_code_as_label' | 'resolution'>;
+type FormFields = OmitWithMetaData<RegionSet>;
 
 export const RegionSetsAdminPage = () => {
   const { t } = useTranslation();
@@ -53,9 +53,9 @@ export const RegionSetsAdminPage = () => {
 
   const schema = useMemo(() => {
     return object<FormFields>().shape({
-      code: string().code().required().max(100),
-      name: string().extendedAlphaNumeric().required().max(100),
-      resolution: NumberUtil.yup.integer().positive().max(10000).required(),
+      code: SchemaUtil.code,
+      name: SchemaUtil.name,
+      resolution: SchemaUtil.number.integer().positive().max(10000).required(),
       region_code_as_label: boolean().required(),
     });
   }, []);

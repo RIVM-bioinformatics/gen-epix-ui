@@ -3,10 +3,7 @@ import {
   useMemo,
 } from 'react';
 import { useTranslation } from 'react-i18next';
-import {
-  object,
-  string,
-} from 'yup';
+import { object } from 'yup';
 
 import { CrudPage } from '../CrudPage';
 import type { DataCollection } from '../../api';
@@ -20,8 +17,10 @@ import { QUERY_KEY } from '../../models/query';
 import type { TableColumn } from '../../models/table';
 import { TableUtil } from '../../utils/TableUtil';
 import { TestIdUtil } from '../../utils/TestIdUtil';
+import type { OmitWithMetaData } from '../../models/data';
+import { SchemaUtil } from '../../utils/SchemaUtil';
 
-type FormFields = Pick<DataCollection, 'name' | 'description'>;
+type FormFields = OmitWithMetaData<DataCollection>;
 
 export const DataCollectionsAdminPage = () => {
   const { t } = useTranslation();
@@ -48,8 +47,8 @@ export const DataCollectionsAdminPage = () => {
 
   const schema = useMemo(() => {
     return object<FormFields>().shape({
-      name: string().extendedAlphaNumeric().required().max(100),
-      description: string().freeFormText().required().max(1000),
+      name: SchemaUtil.name,
+      description: SchemaUtil.description,
     });
   }, []);
 
@@ -89,7 +88,7 @@ export const DataCollectionsAdminPage = () => {
       schema={schema}
       tableColumns={tableColumns}
       testIdAttributes={TestIdUtil.createAttributes('DataCollectionsAdminPage')}
-      title={`Data collections`}
+      title={t`Data collections`}
       updateOne={updateOne}
     />
   );

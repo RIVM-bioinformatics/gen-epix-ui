@@ -27,10 +27,12 @@ import { QUERY_KEY } from '../../models/query';
 import type { TableColumn } from '../../models/table';
 import { TableUtil } from '../../utils/TableUtil';
 import { TestIdUtil } from '../../utils/TestIdUtil';
+import type { OmitWithMetaData } from '../../models/data';
+import { SchemaUtil } from '../../utils/SchemaUtil';
 
 type TableData = DataCollectionSet & { dataCollectionIds: string[] };
 
-type FormFields = Pick<TableData, 'name' | 'description' | 'dataCollectionIds'>;
+type FormFields = OmitWithMetaData<TableData>;
 
 export const DataCollectionSetsAdminPage = () => {
   const { t } = useTranslation();
@@ -75,8 +77,8 @@ export const DataCollectionSetsAdminPage = () => {
 
   const schema = useMemo(() => {
     return object<FormFields>().shape({
-      name: string().extendedAlphaNumeric().required().max(100),
-      description: string().freeFormText().required().max(1000),
+      name: SchemaUtil.name,
+      description: SchemaUtil.description,
       dataCollectionIds: array().of(string().uuid4()).min(1).required(),
     });
   }, []);

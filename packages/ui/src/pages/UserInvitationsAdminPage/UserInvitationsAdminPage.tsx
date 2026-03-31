@@ -40,6 +40,8 @@ import { TableUtil } from '../../utils/TableUtil';
 import { TestIdUtil } from '../../utils/TestIdUtil';
 import { CrudPage } from '../CrudPage';
 import { useInviteUserConstraintsQuery } from '../../dataHooks/useInviteUserConstraintsQuery';
+import type { OmitWithMetaData } from '../../models/data';
+import { SchemaUtil } from '../../utils/SchemaUtil';
 
 import { UserInvitationShareDialog } from './UserInvitationShareDialog';
 import type { UserInvitationShareDialogRefMethods } from './UserInvitationShareDialog';
@@ -48,7 +50,7 @@ import {
   type UserInvitationConsumeDialogRefMethods,
 } from './UserInvitationConsumeDialog';
 
-type FormFields = Pick<UserInvitation, 'key' | 'organization_id' | 'roles' | 'description'>;
+type FormFields = OmitWithMetaData<UserInvitation, 'organization' | 'token' | 'expires_at' | 'invited_by_user_id' | 'invited_by_user' | 'email' | 'name'>;
 
 export const UserInvitationsAdminPage = () => {
   const { t } = useTranslation();
@@ -103,7 +105,7 @@ export const UserInvitationsAdminPage = () => {
       key: string().max(100).transform((value) => value === '' ? undefined : value as string),
       organization_id: string().uuid4().required().max(100),
       roles: array().min(1).required(),
-      description: string().max(255).nullable(),
+      description: SchemaUtil.description,
     });
   }, []);
 

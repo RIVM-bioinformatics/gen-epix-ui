@@ -51,9 +51,9 @@ import type {
   Col,
 } from '../../../api';
 import { CaseApi } from '../../../api';
-import { NumberUtil } from '../../../utils/NumberUtil';
 import { ResponseHandler } from '../../ui/ResponseHandler';
 import { ConfigManager } from '../../../classes/managers/ConfigManager';
+import { SchemaUtil } from '../../../utils/SchemaUtil';
 
 export interface EpiFindSimilarCasesDialogOpenProps {
   allRows: Case[];
@@ -92,7 +92,7 @@ export const EpiFindSimilarCasesDialog = withDialog<EpiFindSimilarCasesDialogPro
 
   const schema = useMemo(() => object<FormFields>().shape({
     treeColId: string().required(),
-    maxDistance: NumberUtil.yup.required().min(0).when('treeColId', ([treeColId], s) => {
+    maxDistance: SchemaUtil.number.required().positive().when('treeColId', ([treeColId], s) => {
       const currentTreeConfiguration = treeConfigurations.find(x => x.col.id === treeColId);
       if (!currentTreeConfiguration) {
         return s;

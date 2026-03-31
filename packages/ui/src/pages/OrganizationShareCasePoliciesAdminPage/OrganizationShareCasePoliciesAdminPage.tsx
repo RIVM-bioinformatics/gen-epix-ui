@@ -27,19 +27,9 @@ import type { TableColumn } from '../../models/table';
 import { TableUtil } from '../../utils/TableUtil';
 import { TestIdUtil } from '../../utils/TestIdUtil';
 import { CrudPage } from '../CrudPage';
+import type { OmitWithMetaData } from '../../models/data';
 
-type FormFields = Pick<
-  OrganizationShareCasePolicy,
-  'organization_id' |
-  'data_collection_id' |
-  'case_type_set_id' |
-  'from_data_collection_id' |
-  'add_case' |
-  'remove_case' |
-  'add_case_set' |
-  'remove_case_set' |
-  'is_active'
->;
+type FormFields = OmitWithMetaData<OrganizationShareCasePolicy, 'data_collection' | 'organization' | 'case_type_set' | 'from_data_collection'>;
 
 export const OrganizationShareCasePoliciesAdminPage = () => {
   const { t } = useTranslation();

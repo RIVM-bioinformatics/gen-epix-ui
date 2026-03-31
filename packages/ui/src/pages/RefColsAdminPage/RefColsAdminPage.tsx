@@ -39,9 +39,10 @@ import { TestIdUtil } from '../../utils/TestIdUtil';
 import { CrudPage } from '../CrudPage';
 import { useRefColsValidationRulesQuery } from '../../dataHooks/useRefColsValidationRulesQuery';
 import { DataUtil } from '../../utils/DataUtil';
-import { NumberUtil } from '../../utils/NumberUtil';
+import type { OmitWithMetaData } from '../../models/data';
+import { SchemaUtil } from '../../utils/SchemaUtil';
 
-type FormFields = Omit<RefCol, 'id' | 'ref_dim' | 'concept_set' | 'region_set' | 'genetic_distance_protocol' | 'props'>;
+type FormFields = OmitWithMetaData<RefCol, 'ref_dim' | 'concept_set' | 'region_set' | 'genetic_distance_protocol' | 'props'>;
 
 const CONCEPT_COL_TYPES: ColType[] = [ColType.NOMINAL, ColType.ORDINAL, ColType.INTERVAL];
 
@@ -88,13 +89,13 @@ export const RefColsAdminPage = () => {
 
   const schema = useMemo(() => {
     return object<FormFields>().shape({
-      label: string().extendedAlphaNumeric().required().max(100),
-      code: string().code().required().max(100),
+      label: SchemaUtil.label,
+      code: SchemaUtil.code,
       code_suffix: string().alphaNumeric().required().max(100),
-      rank: NumberUtil.yup.required().min(0).integer(),
+      rank: SchemaUtil.rank,
       ref_dim_id: string().uuid4().required().max(100),
       col_type: mixed<ColType>().required().oneOf(Object.values(ColType)),
-      description: string().freeFormText().required().max(100),
+      description: SchemaUtil.description,
       concept_set_id: string().when('col_type', {
         is: (colType: ColType) => CONCEPT_COL_TYPES.includes(colType),
         then: () => string().uuid4().required(),

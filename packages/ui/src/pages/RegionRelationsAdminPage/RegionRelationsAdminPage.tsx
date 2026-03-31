@@ -28,9 +28,10 @@ import {
   useRegionOptionsQuery,
 } from '../../dataHooks/useRegionQuery';
 import { useRegionRelationTypeOptionsQuery } from '../../dataHooks/useRegionRelationTypeQuery';
+import type { OmitWithMetaData } from '../../models/data';
 
 
-type FormFields = Omit<RegionRelation, 'id' | 'from_region' | 'to_region'>;
+type FormFields = OmitWithMetaData<RegionRelation, 'from_region' | 'to_region'>;
 
 export const RegionRelationsAdminPage = () => {
   const { t } = useTranslation();

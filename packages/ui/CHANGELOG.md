@@ -1,5 +1,34 @@
 # Changelog
 
+## [1.18.1](https://github.com/RIVM-bioinformatics/gen-epix-ui/compare/ui-v1.18.0...ui-v1.18.1) (2026-03-30)
+
+
+### Bug Fixes
+
+* add case set cateogry admin page (typos) ([1f95583](https://github.com/RIVM-bioinformatics/gen-epix-ui/commit/1f955832a61e52e73d09858d97da2e9d6b040ce8))
+
+## [1.18.0](https://github.com/RIVM-bioinformatics/gen-epix-ui/compare/ui-v1.17.0...ui-v1.18.0) (2026-03-30)
+
+
+### Features
+
+* add case set cateogry admin page ([abfb369](https://github.com/RIVM-bioinformatics/gen-epix-ui/commit/abfb3691a6a3989d5603eb10ea21496163e2f505))
+
+## [1.17.0](https://github.com/RIVM-bioinformatics/gen-epix-ui/compare/ui-v1.16.2...ui-v1.17.0) (2026-03-30)
+
+
+### Features
+
+* update to latest API ([b2f8f4e](https://github.com/RIVM-bioinformatics/gen-epix-ui/commit/b2f8f4e4dbd35c5a3f7182f790f6af2e37fe4cbf))
+* update to latest API ([65dd3e2](https://github.com/RIVM-bioinformatics/gen-epix-ui/commit/65dd3e20653dc528fc315f93bdabd63e4deced05))
+* update to latest backend API ([a03853d](https://github.com/RIVM-bioinformatics/gen-epix-ui/commit/a03853df3157f5eae83c66bc21393b4ebd9b2930))
+
+
+### Bug Fixes
+
+* fix empty cases and empty events page, create LoadableUtil to handle loadables better ([e3c5780](https://github.com/RIVM-bioinformatics/gen-epix-ui/commit/e3c578001ee105f3db05b012c4a1d5a96c6e76f0))
+* use Omit instead of Pick where possible ([b2f8f4e](https://github.com/RIVM-bioinformatics/gen-epix-ui/commit/b2f8f4e4dbd35c5a3f7182f790f6af2e37fe4cbf))
+
 ## [1.16.2](https://github.com/RIVM-bioinformatics/gen-epix-ui/compare/ui-v1.16.1...ui-v1.16.2) (2026-03-26)
 
 

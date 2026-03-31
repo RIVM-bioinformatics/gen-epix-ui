@@ -40,7 +40,6 @@ export const EpiCaseContent = ({ epiCase, ...boxProps }: EpiCaseContentProps) =>
   const cols = useMemo(() => CaseTypeUtil.getCols(completeCaseType), [completeCaseType]);
 
   const onOrganizationLinkClick = useCallback((organizationId: string, organizationName: string) => {
-    console.log('onOrganizationLinkClick', organizationId, organizationName);
     epiContactDetailsDialogRef.current.open({
       organizationId,
       organizationName,

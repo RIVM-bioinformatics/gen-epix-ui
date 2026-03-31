@@ -27,22 +27,9 @@ import type { TableColumn } from '../../models/table';
 import { TableUtil } from '../../utils/TableUtil';
 import { TestIdUtil } from '../../utils/TestIdUtil';
 import { CrudPage } from '../CrudPage';
+import type { OmitWithMetaData } from '../../models/data';
 
-type FormFields = Pick<
-  UserAccessCasePolicy,
-  'user_id' |
-  'data_collection_id' |
-  'case_type_set_id' |
-  'read_col_set_id' |
-  'write_col_set_id' |
-  'add_case' |
-  'remove_case' |
-  'add_case_set' |
-  'remove_case_set' |
-  'read_case_set' |
-  'write_case_set' |
-  'is_active'
->;
+type FormFields = OmitWithMetaData<UserAccessCasePolicy, 'data_collection' | 'user' | 'read_col_set' | 'write_col_set' | 'case_type_set'>;
 
 export const UserAccessCasePoliciesAdminPage = () => {
   const { t } = useTranslation();

@@ -6,7 +6,6 @@ import { useTranslation } from 'react-i18next';
 import {
   mixed,
   object,
-  string,
 } from 'yup';
 
 import type { ConceptSet } from '../../api';
@@ -26,9 +25,11 @@ import type { CrudPageSubPage } from '../CrudPage';
 import { CrudPage } from '../CrudPage';
 import { useConceptSetTypeOptionsQuery } from '../../dataHooks/useConceptSetTypeQuery';
 import { AuthorizationManager } from '../../classes/managers/AuthorizationManager';
+import type { OmitWithMetaData } from '../../models/data';
+import { SchemaUtil } from '../../utils/SchemaUtil';
 
 
-type FormFields = Omit<ConceptSet, 'id'>;
+type FormFields = OmitWithMetaData<ConceptSet>;
 
 export const ConceptSetsAdminPage = () => {
   const conceptSetTypeOptionsQuery = useConceptSetTypeOptionsQuery();
@@ -56,9 +57,9 @@ export const ConceptSetsAdminPage = () => {
 
   const schema = useMemo(() => {
     return object<FormFields>().shape({
-      name: string().extendedAlphaNumeric().required().max(100),
-      code: string().extendedAlphaNumeric().required().max(100),
-      description: string().freeFormText().required().max(1000),
+      name: SchemaUtil.name,
+      code: SchemaUtil.code,
+      description: SchemaUtil.description,
       type: mixed<ConceptSetType>().required().oneOf(Object.values(ConceptSetType)),
     });
   }, []);

@@ -43,6 +43,7 @@ import { UsersAdminPage } from '../pages/UsersAdminPage';
 import { UserEffectiveRightsAdminPage } from '../pages/UserEffectiveRightsAdminPage';
 import { UserEffectiveRightsTesterAdminPage } from '../pages/UserEffectiveRightsTesterAdminPage';
 import { UserShareCasePoliciesAdminPage } from '../pages/UserShareCasePoliciesAdminPage';
+import { CaseSetCategoryAdminPage } from '../pages/CaseSetCategoryAdminPage';
 
 export const createAdminRoutes = (t: TFunction<'translation', undefined>): MyNonIndexRouteObject[] => [
   // USERS_AND_ORGANIZATIONS
@@ -504,6 +505,20 @@ export const createAdminRoutes = (t: TFunction<'translation', undefined>): MyNon
       subTitle: t`Manage case set statuses`,
       requiredPermissions: [
         { command_name: CommandName.CaseSetStatusCrudCommand, permission_type: PermissionType.READ },
+      ],
+      requiresUserProfile: true,
+      category: ADMIN_PAGE_CATEGORY.REFERENCE_DATA,
+    },
+  },
+  {
+    path: '/management/case-set-categories',
+    Component: () => <CaseSetCategoryAdminPage />,
+    errorElement: <RouterErrorPage />,
+    handle: {
+      title: t`Case set categories`,
+      subTitle: t`Manage case set categories`,
+      requiredPermissions: [
+        { command_name: CommandName.CaseSetCategoryCrudCommand, permission_type: PermissionType.READ },
       ],
       requiresUserProfile: true,
       category: ADMIN_PAGE_CATEGORY.REFERENCE_DATA,

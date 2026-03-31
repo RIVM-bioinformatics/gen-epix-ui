@@ -20,8 +20,10 @@ import type { TableColumn } from '../../models/table';
 import { TableUtil } from '../../utils/TableUtil';
 import { TestIdUtil } from '../../utils/TestIdUtil';
 import { CrudPage } from '../CrudPage';
+import type { OmitWithMetaData } from '../../models/data';
+import { SchemaUtil } from '../../utils/SchemaUtil';
 
-type FormFields = Omit<Disease, 'id'>;
+type FormFields = OmitWithMetaData<Disease>;
 
 export const DiseasesAdminPage = () => {
   const { t } = useTranslation();
@@ -48,7 +50,7 @@ export const DiseasesAdminPage = () => {
 
   const schema = useMemo(() => {
     return object<FormFields>().shape({
-      name: string().extendedAlphaNumeric().required().max(100),
+      name: SchemaUtil.name,
       icd_code: string().alphaNumeric().nullable().max(100),
     });
   }, []);

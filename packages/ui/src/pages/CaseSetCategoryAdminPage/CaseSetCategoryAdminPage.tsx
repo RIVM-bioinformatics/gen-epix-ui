@@ -6,7 +6,7 @@ import { useTranslation } from 'react-i18next';
 import { object } from 'yup';
 
 import { CrudPage } from '../CrudPage';
-import type { CaseSetStatus } from '../../api';
+import type { CaseSetCategory } from '../../api';
 import {
   CaseApi,
   CommandName,
@@ -20,20 +20,20 @@ import { TestIdUtil } from '../../utils/TestIdUtil';
 import type { OmitWithMetaData } from '../../models/data';
 import { SchemaUtil } from '../../utils/SchemaUtil';
 
-type FormFields = OmitWithMetaData<CaseSetStatus>;
+type FormFields = OmitWithMetaData<CaseSetCategory>;
 
-export const CaseSetStatusAdminPage = () => {
+export const CaseSetCategoryAdminPage = () => {
   const { t } = useTranslation();
 
   const fetchAll = useCallback(async (signal: AbortSignal) => {
     return (await CaseApi.instance.caseSetStatusesGetAll({ signal }))?.data;
   }, []);
 
-  const deleteOne = useCallback(async (item: CaseSetStatus) => {
+  const deleteOne = useCallback(async (item: CaseSetCategory) => {
     return await CaseApi.instance.caseSetStatusesDeleteOne(item.id);
   }, []);
 
-  const updateOne = useCallback(async (variables: FormFields, item: CaseSetStatus) => {
+  const updateOne = useCallback(async (variables: FormFields, item: CaseSetCategory) => {
     return (await CaseApi.instance.caseSetStatusesPutOne(item.id, { id: item.id, ...variables })).data;
   }, []);
 
@@ -76,29 +76,29 @@ export const CaseSetStatusAdminPage = () => {
     ] as const;
   }, [t]);
 
-  const tableColumns = useMemo((): TableColumn<CaseSetStatus>[] => {
+  const tableColumns = useMemo((): TableColumn<CaseSetCategory>[] => {
     return [
-      TableUtil.createTextColumn<CaseSetStatus>({ id: 'name', name: t`Name` }),
-      TableUtil.createNumberColumn<CaseSetStatus>({ id: 'rank', name: t`Rank` }),
+      TableUtil.createTextColumn<CaseSetCategory>({ id: 'name', name: t`Name` }),
+      TableUtil.createNumberColumn<CaseSetCategory>({ id: 'rank', name: t`Rank` }),
     ];
   }, [t]);
 
   return (
-    <CrudPage<FormFields, CaseSetStatus>
-      createItemDialogTitle={t`Create new case set status`}
+    <CrudPage<FormFields, CaseSetCategory>
+      createItemDialogTitle={t`Create new case set category`}
       createOne={createOne}
-      crudCommandType={CommandName.CaseSetStatusCrudCommand}
+      crudCommandType={CommandName.CaseSetCategoryCrudCommand}
       defaultSortByField={'rank'}
       defaultSortDirection={'asc'}
       deleteOne={deleteOne}
       fetchAll={fetchAll}
       formFieldDefinitions={formFieldDefinitions}
       getName={getName}
-      resourceQueryKeyBase={QUERY_KEY.CASE_SET_STATUSES}
+      resourceQueryKeyBase={QUERY_KEY.CASE_SET_CATEGORIES}
       schema={schema}
       tableColumns={tableColumns}
-      testIdAttributes={TestIdUtil.createAttributes('CaseSetStatusAdminPage')}
-      title={t`Case set statuses`}
+      testIdAttributes={TestIdUtil.createAttributes('CaseSetCategoryAdminPage')}
+      title={t`Case set categories`}
       updateOne={updateOne}
     />
   );

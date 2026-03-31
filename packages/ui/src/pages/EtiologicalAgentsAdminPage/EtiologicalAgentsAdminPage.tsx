@@ -20,8 +20,10 @@ import type { TableColumn } from '../../models/table';
 import { TableUtil } from '../../utils/TableUtil';
 import { TestIdUtil } from '../../utils/TestIdUtil';
 import { CrudPage } from '../CrudPage';
+import type { OmitWithMetaData } from '../../models/data';
+import { SchemaUtil } from '../../utils/SchemaUtil';
 
-type FormFields = Pick<EtiologicalAgent, 'name' | 'type'>;
+type FormFields = OmitWithMetaData<EtiologicalAgent>;
 
 export const EtiologicalAgentsAdminPage = () => {
   const { t } = useTranslation();
@@ -48,7 +50,7 @@ export const EtiologicalAgentsAdminPage = () => {
 
   const schema = useMemo(() => {
     return object<FormFields>().shape({
-      name: string().extendedAlphaNumeric().required().max(100),
+      name: SchemaUtil.name,
       type: string().extendedAlphaNumeric().required().max(100),
     });
   }, []);
