@@ -34,6 +34,9 @@ export class FormUtil {
         case FORM_FIELD_DEFINITION_TYPE.BOOLEAN:
           itemValues[formFieldDefinition.name] = item?.[formFieldDefinition.name as unknown as keyof typeof item] ?? '';
           break;
+        case FORM_FIELD_DEFINITION_TYPE.NUMBER:
+          itemValues[formFieldDefinition.name] = item?.[formFieldDefinition.name as unknown as keyof typeof item] ?? null;
+          break;
         case FORM_FIELD_DEFINITION_TYPE.TRANSFER_LIST:
           itemValues[formFieldDefinition.name] = item?.[formFieldDefinition.name as unknown as keyof typeof item] ?? [] as TFormFields[keyof TFormFields];
           break;
@@ -59,5 +62,4 @@ export class FormUtil {
     });
     return itemValues as unknown as TFormFields;
   }
-
 }

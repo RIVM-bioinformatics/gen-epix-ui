@@ -6,9 +6,7 @@ import { useTranslation } from 'react-i18next';
 import {
   boolean,
   object,
-  string,
 } from 'yup';
-import { isValid } from 'date-fns';
 
 import type {
   Outage,
@@ -28,6 +26,7 @@ import { TestIdUtil } from '../../utils/TestIdUtil';
 import { CrudPage } from '../CrudPage';
 import { DATE_FORMAT } from '../../data/date';
 import type { OmitWithMetaData } from '../../models/data';
+import { SchemaUtil } from '../../utils/SchemaUtil';
 
 type FormFields = OmitWithMetaData<Outage>;
 
@@ -56,11 +55,11 @@ export const OutagesAdminPage = () => {
 
   const schema = useMemo(() => {
     return object<FormFields>().shape({
-      description: string().freeFormText().required().max(100),
-      active_from: string().transform((_val: unknown, orig: Date) => isValid(orig) ? orig.toISOString() : undefined),
-      active_to: string().transform((_val: unknown, orig: Date) => isValid(orig) ? orig.toISOString() : undefined),
-      visible_from: string().transform((_val: unknown, orig: Date) => isValid(orig) ? orig.toISOString() : undefined),
-      visible_to: string().transform((_val: unknown, orig: Date) => isValid(orig) ? orig.toISOString() : undefined),
+      description: SchemaUtil.description.required(),
+      active_from: SchemaUtil.isoString,
+      active_to: SchemaUtil.isoString,
+      visible_from: SchemaUtil.isoString,
+      visible_to: SchemaUtil.isoString,
       is_active: boolean(),
       is_visible: boolean(),
     });

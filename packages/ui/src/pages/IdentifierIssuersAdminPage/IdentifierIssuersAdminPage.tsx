@@ -3,10 +3,7 @@ import {
   useMemo,
 } from 'react';
 import { useTranslation } from 'react-i18next';
-import {
-  object,
-  string,
-} from 'yup';
+import { object } from 'yup';
 
 import type { IdentifierIssuer } from '../../api';
 import {
@@ -21,6 +18,7 @@ import { TableUtil } from '../../utils/TableUtil';
 import { TestIdUtil } from '../../utils/TestIdUtil';
 import { CrudPage } from '../CrudPage';
 import type { OmitWithMetaData } from '../../models/data';
+import { SchemaUtil } from '../../utils/SchemaUtil';
 
 type FormFields = OmitWithMetaData<IdentifierIssuer>;
 
@@ -50,9 +48,9 @@ export const IdentifierIssuersAdminPage = () => {
 
   const schema = useMemo(() => {
     return object<FormFields>().shape({
-      name: string().extendedAlphaNumeric().required().max(100),
-      code: string().code().required().max(100),
-      description: string().freeFormText().required().max(100),
+      name: SchemaUtil.name,
+      code: SchemaUtil.code,
+      description: SchemaUtil.description,
     });
   }, []);
 

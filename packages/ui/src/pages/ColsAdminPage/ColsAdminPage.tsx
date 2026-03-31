@@ -6,11 +6,9 @@ import {
 import { useTranslation } from 'react-i18next';
 import {
   array,
-  number,
   object,
   string,
 } from 'yup';
-import { isValid } from 'date-fns';
 import { useParams } from 'react-router-dom';
 import type { UseFormReturn } from 'react-hook-form';
 
@@ -52,8 +50,8 @@ import {
 import { useRefColsValidationRulesQuery } from '../../dataHooks/useRefColsValidationRulesQuery';
 import { useRefDimMapQuery } from '../../dataHooks/useRefDimsQuery';
 import { DataUtil } from '../../utils/DataUtil';
-import { NumberUtil } from '../../utils/NumberUtil';
 import type { OmitWithMetaData } from '../../models/data';
+import { SchemaUtil } from '../../utils/SchemaUtil';
 
 type FormFields = OmitWithMetaData<Col, 'case_type' | 'dim' | 'ref_col' | 'props'>;
 
@@ -160,19 +158,19 @@ export const ColsAdminPage = () => {
 
   const schema = useMemo(() => {
     return object<FormFields>().shape({
-      label: string().extendedAlphaNumeric().required().max(100),
-      code: string().code().required().max(100),
-      rank: NumberUtil.yup.required().min(0).integer(),
+      label: SchemaUtil.label,
+      code: SchemaUtil.code,
+      rank: SchemaUtil.rank,
       ref_col_id: string().uuid4().required().max(100),
       dim_id: string().uuid4().required().max(100),
       case_type_id: string().uuid4().required().max(100),
-      description: string().freeFormText().required().max(100),
-      min_value: number().integer().positive().max(10000).optional().transform((_val: unknown, orig: string | number) => orig === '' ? undefined : orig),
-      max_value: number().integer().positive().max(10000).optional().transform((_val: unknown, orig: string | number) => orig === '' ? undefined : orig),
-      min_datetime: string().transform((_val: unknown, orig: Date) => isValid(orig) ? orig.toISOString() : undefined),
-      max_datetime: string().transform((_val: unknown, orig: Date) => isValid(orig) ? orig.toISOString() : undefined),
-      min_length: number().integer().positive().max(10000).optional().transform((_val: unknown, orig: string | number) => orig === '' ? undefined : orig),
-      max_length: number().integer().positive().max(10000).optional().transform((_val: unknown, orig: string | number) => orig === '' ? undefined : orig),
+      description: SchemaUtil.description,
+      min_value: SchemaUtil.number.positive().max(10000),
+      max_value: SchemaUtil.number.positive().max(10000),
+      min_datetime: SchemaUtil.isoString.optional(),
+      max_datetime: SchemaUtil.isoString.optional(),
+      min_length: SchemaUtil.number.integer().positive().max(10000),
+      max_length: SchemaUtil.number.integer().positive().max(10000),
       genetic_sequence_col_id: string().when('ref_col_id', {
         is: (ref_col_id: string) => refColMapQuery.map.get(ref_col_id)?.col_type === ColType.GENETIC_DISTANCE,
         then: () => string().uuid4().required(),
@@ -253,28 +251,29 @@ export const ColsAdminPage = () => {
         label: t`Code`,
       } as const satisfies FormFieldDefinition<FormFields>,
       {
+        definition: FORM_FIELD_DEFINITION_TYPE.NUMBER,
+        name: 'rank',
+        label: t`Rank`,
+      } as const satisfies FormFieldDefinition<FormFields>,
+      {
         definition: FORM_FIELD_DEFINITION_TYPE.TEXTFIELD,
         name: 'label',
         label: t`Label`,
       } as const satisfies FormFieldDefinition<FormFields>,
       {
-        definition: FORM_FIELD_DEFINITION_TYPE.TEXTFIELD,
+        definition: FORM_FIELD_DEFINITION_TYPE.RICH_TEXT,
         name: 'description',
         label: t`Description`,
-        multiline: true,
-        rows: 5,
       } as const satisfies FormFieldDefinition<FormFields>,
       {
-        definition: FORM_FIELD_DEFINITION_TYPE.TEXTFIELD,
+        definition: FORM_FIELD_DEFINITION_TYPE.NUMBER,
         name: 'min_value',
         label: t`Min value`,
-        type: 'number',
       } as const satisfies FormFieldDefinition<FormFields>,
       {
-        definition: FORM_FIELD_DEFINITION_TYPE.TEXTFIELD,
+        definition: FORM_FIELD_DEFINITION_TYPE.NUMBER,
         name: 'max_value',
         label: t`Max value`,
-        type: 'number',
       } as const satisfies FormFieldDefinition<FormFields>,
       {
         definition: FORM_FIELD_DEFINITION_TYPE.DATE,
@@ -289,10 +288,14 @@ export const ColsAdminPage = () => {
         dateFormat: DATE_FORMAT.DATE_TIME,
       } as const satisfies FormFieldDefinition<FormFields>,
       {
-        definition: FORM_FIELD_DEFINITION_TYPE.TEXTFIELD,
+        definition: FORM_FIELD_DEFINITION_TYPE.NUMBER,
         name: 'min_length',
         label: t`Min length`,
-        type: 'number',
+      } as const satisfies FormFieldDefinition<FormFields>,
+      {
+        definition: FORM_FIELD_DEFINITION_TYPE.NUMBER,
+        name: 'max_length',
+        label: t`Max length`,
       } as const satisfies FormFieldDefinition<FormFields>,
       {
         definition: FORM_FIELD_DEFINITION_TYPE.SELECT,
@@ -311,12 +314,6 @@ export const ColsAdminPage = () => {
         definition: FORM_FIELD_DEFINITION_TYPE.TEXTFIELD,
         name: 'ncbi_taxid',
         label: t`NCBI TaxID`,
-      } as const satisfies FormFieldDefinition<FormFields>,
-      {
-        definition: FORM_FIELD_DEFINITION_TYPE.TEXTFIELD,
-        name: 'rank',
-        label: t`Rank`,
-        type: 'number',
       } as const satisfies FormFieldDefinition<FormFields>,
       {
         definition: FORM_FIELD_DEFINITION_TYPE.TEXTFIELD,

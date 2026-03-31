@@ -57,6 +57,7 @@ import { ResponseHandler } from '../../ui/ResponseHandler';
 import { EpiCasesAlreadyInCaseSetWarning } from '../EpiCasesAlreadyInCaseSetWarning';
 import { useArray } from '../../../hooks/useArray';
 import { LoadableUtil } from '../../../utils/LoadableUtil';
+import { SchemaUtil } from '../../../utils/SchemaUtil';
 
 import { EpiCreateEventDialogSuccessNotificationMessage } from './EpiCreateEventDialogSuccessNotificationMessage';
 
@@ -98,9 +99,9 @@ export const EpiCreateEventDialog = withDialog<EpiCreateEventDialogProps, EpiCre
   const formId = useId();
 
   const schema = useMemo(() => object<FormFields>().shape({
-    name: string().extendedAlphaNumeric().required().max(100),
-    code: string().code().required().max(100),
-    description: string().freeFormText(),
+    name: SchemaUtil.name,
+    code: SchemaUtil.code,
+    description: SchemaUtil.description,
     case_type_id: string().uuid4().required(),
     case_set_category_id: string().uuid4().required(),
     case_set_status_id: string().uuid4().required(),

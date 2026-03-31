@@ -30,8 +30,8 @@ import type { TableColumn } from '../../models/table';
 import { TableUtil } from '../../utils/TableUtil';
 import { TestIdUtil } from '../../utils/TestIdUtil';
 import { CrudPage } from '../CrudPage';
-import { NumberUtil } from '../../utils/NumberUtil';
 import type { OmitWithMetaData } from '../../models/data';
+import { SchemaUtil } from '../../utils/SchemaUtil';
 
 interface TableData extends CaseTypeSet {
   caseTypeIds?: string[];
@@ -83,11 +83,11 @@ export const CaseTypeSetsAdminPage = () => {
 
   const schema = useMemo(() => {
     return object<FormFields>().shape({
-      name: string().extendedAlphaNumeric().required().max(100),
-      rank: NumberUtil.yup.required().min(0).integer(),
+      name: SchemaUtil.name,
+      rank: SchemaUtil.rank,
       case_type_set_category_id: string().uuid4().required(),
       caseTypeIds: array(),
-      description: string().freeFormText().required().max(1000),
+      description: SchemaUtil.description,
     });
   }, []);
 

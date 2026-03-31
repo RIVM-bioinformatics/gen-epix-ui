@@ -8,7 +8,6 @@ declare module 'yup' {
     strictAlphaNumeric(): StringSchema;
     alpha(): StringSchema;
     alphaNumeric(): StringSchema;
-    extendedAlpha(): StringSchema;
     extendedAlphaNumeric(): StringSchema;
     freeFormText(): StringSchema;
     email(): StringSchema;
