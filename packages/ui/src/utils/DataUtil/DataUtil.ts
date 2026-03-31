@@ -77,7 +77,7 @@ export class DataUtil {
   }
 
   public static getCaseSetName(caseSet: CaseSet): string {
-    return `${caseSet.name} (${format(caseSet.created_at, DATE_FORMAT.DATE)})`;
+    return `${caseSet.name} (${format(caseSet.case_set_date, DATE_FORMAT.DATE)})`;
   }
 
   public static deepRemoveEmptyStrings<T>(obj: T): T {
