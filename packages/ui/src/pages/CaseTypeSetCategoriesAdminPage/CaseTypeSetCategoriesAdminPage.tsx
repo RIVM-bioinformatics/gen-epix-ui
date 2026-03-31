@@ -58,7 +58,7 @@ export const CaseTypeSetCategoriesAdminPage = () => {
   const schema = useMemo(() => {
     return object<FormFields>().shape({
       name: SchemaUtil.name,
-      rank: SchemaUtil.number.required().min(0).integer(),
+      rank: SchemaUtil.rank,
       description: SchemaUtil.description,
       purpose: mixed<CaseTypeSetCategoryPurpose>().required().oneOf(Object.values(CaseTypeSetCategoryPurpose)),
     });

@@ -10,11 +10,15 @@ export class SchemaUtil {
   }
 
   public static get code() {
-    return string().freeFormText().required().max(100);
+    return string().extendedAlphaNumeric().required().max(100);
+  }
+
+  public static get label() {
+    return string().extendedAlphaNumeric().required().max(100);
   }
 
   public static get name() {
-    return string().required().freeFormText().max(100);
+    return string().extendedAlphaNumeric().required().max(100);
   }
 
   public static get description() {

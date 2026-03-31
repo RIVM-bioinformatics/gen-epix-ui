@@ -59,9 +59,9 @@ export const RefDimsAdminPage = () => {
     return object<FormFields>().shape({
       dim_type: mixed<DimType>().required().oneOf(Object.values(DimType)),
       code: SchemaUtil.code,
-      label: string().extendedAlphaNumeric().required().max(100),
+      label: SchemaUtil.label,
       description: SchemaUtil.description,
-      rank: SchemaUtil.number.required().min(0).integer(),
+      rank: SchemaUtil.rank,
       col_code_prefix: string().alphaNumeric().required().max(100),
     });
   }, []);

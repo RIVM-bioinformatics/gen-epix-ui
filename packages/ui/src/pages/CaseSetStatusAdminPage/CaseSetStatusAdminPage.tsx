@@ -49,7 +49,7 @@ export const CaseSetStatusAdminPage = () => {
     return object<FormFields>().shape({
       name: SchemaUtil.name,
       description: SchemaUtil.description,
-      rank: SchemaUtil.number.required().min(0).integer(),
+      rank: SchemaUtil.rank,
     });
   }, []);
 

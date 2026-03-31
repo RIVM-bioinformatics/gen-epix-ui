@@ -99,7 +99,7 @@ export class RequiredError extends Error {
 interface ServerMap {
   [key: string]: {
     url: string,
-    description: SchemaUtil.description,
+    description: string,
   }[];
 }
 

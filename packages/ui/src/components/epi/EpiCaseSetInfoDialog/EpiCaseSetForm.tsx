@@ -36,7 +36,7 @@ export type EpiCaseSetFormProps = {
   readonly onIsSavingChange: (isSaving: boolean) => void;
 };
 
-type FormFields = OmitWithMetaData<CaseSet, 'case_type' | 'created_in_data_collection' | 'created_in_data_collection_id' | 'case_set_category' | 'case_set_status'>;
+type FormFields = OmitWithMetaData<CaseSet, 'case_type' | 'created_in_data_collection' | 'created_in_data_collection_id' | 'case_set_category' | 'case_set_status' | 'case_set_date'>;
 
 export const EpiCaseSetForm = ({ caseSet, formId, onFinish, onIsSavingChange }: EpiCaseSetFormProps) => {
   const caseTypeOptionsQuery = useCaseTypeOptionsQuery();

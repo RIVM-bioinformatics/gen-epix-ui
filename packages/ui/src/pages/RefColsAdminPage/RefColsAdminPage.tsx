@@ -89,10 +89,10 @@ export const RefColsAdminPage = () => {
 
   const schema = useMemo(() => {
     return object<FormFields>().shape({
-      label: string().extendedAlphaNumeric().required().max(100),
+      label: SchemaUtil.label,
       code: SchemaUtil.code,
       code_suffix: string().alphaNumeric().required().max(100),
-      rank: SchemaUtil.number.required().min(0).integer(),
+      rank: SchemaUtil.rank,
       ref_dim_id: string().uuid4().required().max(100),
       col_type: mixed<ColType>().required().oneOf(Object.values(ColType)),
       description: SchemaUtil.description,

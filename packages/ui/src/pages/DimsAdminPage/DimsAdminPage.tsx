@@ -74,9 +74,9 @@ export const DimsAdminPage = () => {
 
   const schema = useMemo(() => {
     return object<FormFields>().shape({
-      label: string().extendedAlphaNumeric().required().max(100),
+      label: SchemaUtil.label,
       code: SchemaUtil.code,
-      rank: SchemaUtil.number.required().min(0).integer(),
+      rank: SchemaUtil.rank,
       occurrence: SchemaUtil.number.required().min(0).integer().positive(),
       ref_dim_id: string().uuid4().required().max(100),
       case_type_id: string().uuid4().required().max(100),

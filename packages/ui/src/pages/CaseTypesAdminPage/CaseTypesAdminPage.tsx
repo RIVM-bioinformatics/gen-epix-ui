@@ -184,7 +184,7 @@ export const CaseTypesAdminPage = () => {
         comparatorFactory: TableUtil.createNumberCellRowComperator,
         textAlign: 'right',
         isInitiallyVisible: true,
-        valueGetter: (params) => params.row.props.read_max_n_cases,
+        valueGetter: (params) => params.row.props?.read_max_n_cases,
       },
       {
         id: 'create_max_n_cases',
@@ -194,7 +194,7 @@ export const CaseTypesAdminPage = () => {
         comparatorFactory: TableUtil.createNumberCellRowComperator,
         textAlign: 'right',
         isInitiallyVisible: true,
-        valueGetter: (params) => params.row.props.create_max_n_cases,
+        valueGetter: (params) => params.row.props?.create_max_n_cases,
       },
       {
         id: 'update_max_n_cases',
@@ -204,7 +204,7 @@ export const CaseTypesAdminPage = () => {
         comparatorFactory: TableUtil.createNumberCellRowComperator,
         textAlign: 'right',
         isInitiallyVisible: true,
-        valueGetter: (params) => params.row.props.update_max_n_cases,
+        valueGetter: (params) => params.row.props?.update_max_n_cases,
       },
       {
         id: 'delete_max_n_cases',
@@ -214,7 +214,7 @@ export const CaseTypesAdminPage = () => {
         comparatorFactory: TableUtil.createNumberCellRowComperator,
         textAlign: 'right',
         isInitiallyVisible: true,
-        valueGetter: (params) => params.row.props.delete_max_n_cases,
+        valueGetter: (params) => params.row.props?.delete_max_n_cases,
       },
       {
         id: 'read_max_tree_size',
@@ -224,7 +224,7 @@ export const CaseTypesAdminPage = () => {
         comparatorFactory: TableUtil.createNumberCellRowComperator,
         textAlign: 'right',
         isInitiallyVisible: true,
-        valueGetter: (params) => params.row.props.read_max_tree_size,
+        valueGetter: (params) => params.row.props?.read_max_tree_size,
       },
     ];
   }, [etiologicalAgentOptionsQuery.options, diseaseOptionsQuery.options, t]);
@@ -253,11 +253,28 @@ export const CaseTypesAdminPage = () => {
       description: item.description,
       disease_id: item.disease_id,
       etiological_agent_id: item.etiological_agent_id,
-      create_max_n_cases: item.props.create_max_n_cases,
-      delete_max_n_cases: item.props.delete_max_n_cases,
-      read_max_n_cases: item.props.read_max_n_cases,
-      read_max_tree_size: item.props.read_max_tree_size,
-      update_max_n_cases: item.props.update_max_n_cases,
+      create_max_n_cases: item.props?.create_max_n_cases,
+      delete_max_n_cases: item.props?.delete_max_n_cases,
+      read_max_n_cases: item.props?.read_max_n_cases,
+      read_max_tree_size: item.props?.read_max_tree_size,
+      update_max_n_cases: item.props?.update_max_n_cases,
+    };
+  }, []);
+
+  const getIntermediateItem = useCallback((variables: FormFields, currentItem: CaseType): CaseType => {
+    return {
+      ...currentItem,
+      name: variables.name,
+      description: variables.description,
+      disease_id: variables.disease_id,
+      etiological_agent_id: variables.etiological_agent_id,
+      props: {
+        create_max_n_cases: variables.create_max_n_cases,
+        delete_max_n_cases: variables.delete_max_n_cases,
+        read_max_n_cases: variables.read_max_n_cases,
+        read_max_tree_size: variables.read_max_tree_size,
+        update_max_n_cases: variables.update_max_n_cases,
+      },
     };
   }, []);
 
@@ -266,6 +283,7 @@ export const CaseTypesAdminPage = () => {
       getFormValuesFromItem={getFormValuesFromItem}
       createOne={createOne}
       subPages={subPages}
+      getOptimisticUpdateIntermediateItem={getIntermediateItem}
       crudCommandType={CommandName.CaseTypeCrudCommand}
       createItemDialogTitle={t`Create new case type`}
       defaultSortByField={'name'}

@@ -63,7 +63,7 @@ export const ConceptsAdminPage = () => {
     return object<FormFields>().shape({
       name: SchemaUtil.name,
       code: SchemaUtil.code,
-      rank: SchemaUtil.number.required().min(0).integer(),
+      rank: SchemaUtil.rank,
       description: SchemaUtil.description,
     });
   }, []);
