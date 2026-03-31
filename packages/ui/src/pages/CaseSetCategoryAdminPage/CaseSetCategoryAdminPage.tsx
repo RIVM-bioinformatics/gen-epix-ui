@@ -3,10 +3,7 @@ import {
   useMemo,
 } from 'react';
 import { useTranslation } from 'react-i18next';
-import {
-  object,
-  string,
-} from 'yup';
+import { object } from 'yup';
 
 import { CrudPage } from '../CrudPage';
 import type { CaseSetCategory } from '../../api';
@@ -20,8 +17,8 @@ import { QUERY_KEY } from '../../models/query';
 import type { TableColumn } from '../../models/table';
 import { TableUtil } from '../../utils/TableUtil';
 import { TestIdUtil } from '../../utils/TestIdUtil';
-import { NumberUtil } from '../../utils/NumberUtil';
 import type { OmitWithMetaData } from '../../models/data';
+import { SchemaUtil } from '../../utils/SchemaUtil';
 
 type FormFields = OmitWithMetaData<CaseSetCategory>;
 
@@ -50,9 +47,9 @@ export const CaseSetCategoryAdminPage = () => {
 
   const schema = useMemo(() => {
     return object<FormFields>().shape({
-      name: string().extendedAlphaNumeric().required().max(100),
-      description: string().freeFormText().required().max(1000),
-      rank: NumberUtil.yup.required().min(0).integer(),
+      name: SchemaUtil.name,
+      description: SchemaUtil.description,
+      rank: SchemaUtil.rank,
     });
   }, []);
 

@@ -26,8 +26,8 @@ import { TestIdUtil } from '../../utils/TestIdUtil';
 import type { CrudPageSubPage } from '../CrudPage';
 import { CrudPage } from '../CrudPage';
 import { AuthorizationManager } from '../../classes/managers/AuthorizationManager';
-import { NumberUtil } from '../../utils/NumberUtil';
 import type { OmitWithMetaData } from '../../models/data';
+import { SchemaUtil } from '../../utils/SchemaUtil';
 
 type FormFields = OmitWithMetaData<RefDim, 'props'>;
 
@@ -58,10 +58,10 @@ export const RefDimsAdminPage = () => {
   const schema = useMemo(() => {
     return object<FormFields>().shape({
       dim_type: mixed<DimType>().required().oneOf(Object.values(DimType)),
-      code: string().code().required().max(100),
-      label: string().extendedAlphaNumeric().required().max(100),
-      description: string().freeFormText().required().max(100),
-      rank: NumberUtil.yup.required().min(0).integer(),
+      code: SchemaUtil.code,
+      label: SchemaUtil.label,
+      description: SchemaUtil.description,
+      rank: SchemaUtil.rank,
       col_code_prefix: string().alphaNumeric().required().max(100),
     });
   }, []);

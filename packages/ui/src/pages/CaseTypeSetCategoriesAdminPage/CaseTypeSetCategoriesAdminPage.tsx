@@ -6,7 +6,6 @@ import { useTranslation } from 'react-i18next';
 import {
   mixed,
   object,
-  string,
 } from 'yup';
 
 import type { CaseTypeSetCategory } from '../../api';
@@ -22,10 +21,10 @@ import type { TableColumn } from '../../models/table';
 import { TableUtil } from '../../utils/TableUtil';
 import { TestIdUtil } from '../../utils/TestIdUtil';
 import { CrudPage } from '../CrudPage';
-import { NumberUtil } from '../../utils/NumberUtil';
 import { useCaseTypeSetCategoryPurposeOptionsQuery } from '../../dataHooks/useCaseTypeSetCategoryPurposeQuery';
 import { useArray } from '../../hooks/useArray';
 import type { OmitWithMetaData } from '../../models/data';
+import { SchemaUtil } from '../../utils/SchemaUtil';
 
 type FormFields = OmitWithMetaData<CaseTypeSetCategory>;
 
@@ -58,9 +57,9 @@ export const CaseTypeSetCategoriesAdminPage = () => {
 
   const schema = useMemo(() => {
     return object<FormFields>().shape({
-      name: string().extendedAlphaNumeric().required().max(100),
-      rank: NumberUtil.yup.required().min(0).integer(),
-      description: string().freeFormText().required().max(1000),
+      name: SchemaUtil.name,
+      rank: SchemaUtil.rank,
+      description: SchemaUtil.description,
       purpose: mixed<CaseTypeSetCategoryPurpose>().required().oneOf(Object.values(CaseTypeSetCategoryPurpose)),
     });
   }, []);

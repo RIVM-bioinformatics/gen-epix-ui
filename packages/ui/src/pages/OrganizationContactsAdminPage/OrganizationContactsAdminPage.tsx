@@ -22,6 +22,7 @@ import { TableUtil } from '../../utils/TableUtil';
 import { TestIdUtil } from '../../utils/TestIdUtil';
 import { CrudPage } from '../CrudPage';
 import type { OmitWithMetaData } from '../../models/data';
+import { SchemaUtil } from '../../utils/SchemaUtil';
 
 // Note: site_id is given in the route params
 type FormFields = OmitWithMetaData<Contact, 'site' | 'site_id'>;
@@ -63,7 +64,7 @@ export const OrganizationContactsAdminPage = () => {
 
   const schema = useMemo(() => {
     return object<FormFields>().shape({
-      name: string().extendedAlphaNumeric().required().max(100),
+      name: SchemaUtil.name,
       email: string().email().max(256),
       phone: string().extendedAlphaNumeric().max(100),
     });

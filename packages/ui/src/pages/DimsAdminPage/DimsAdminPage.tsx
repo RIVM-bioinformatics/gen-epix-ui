@@ -31,8 +31,8 @@ import type { CrudPageSubPage } from '../CrudPage';
 import { CrudPage } from '../CrudPage';
 import { useRefDimOptionsQuery } from '../../dataHooks/useRefDimsQuery';
 import { AuthorizationManager } from '../../classes/managers/AuthorizationManager';
-import { NumberUtil } from '../../utils/NumberUtil';
 import type { OmitWithMetaData } from '../../models/data';
+import { SchemaUtil } from '../../utils/SchemaUtil';
 
 type FormFields = OmitWithMetaData<Dim, 'case_type' | 'ref_dim'>;
 
@@ -74,13 +74,13 @@ export const DimsAdminPage = () => {
 
   const schema = useMemo(() => {
     return object<FormFields>().shape({
-      label: string().extendedAlphaNumeric().required().max(100),
-      code: string().code().required().max(100),
-      rank: NumberUtil.yup.required().min(0).integer(),
-      occurrence: NumberUtil.yup.required().min(0).integer().positive(),
+      label: SchemaUtil.label,
+      code: SchemaUtil.code,
+      rank: SchemaUtil.rank,
+      occurrence: SchemaUtil.number.required().min(0).integer().positive(),
       ref_dim_id: string().uuid4().required().max(100),
       case_type_id: string().uuid4().required().max(100),
-      description: string().freeFormText().required().max(100),
+      description: SchemaUtil.description,
       is_case_date_dim: boolean().required(),
     });
   }, []);

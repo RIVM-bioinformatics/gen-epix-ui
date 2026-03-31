@@ -31,6 +31,7 @@ import { TableUtil } from '../../utils/TableUtil';
 import { TestIdUtil } from '../../utils/TestIdUtil';
 import { CrudPage } from '../CrudPage';
 import type { OmitWithMetaData } from '../../models/data';
+import { SchemaUtil } from '../../utils/SchemaUtil';
 
 type TableData = ColSet & { colIds: string[] };
 
@@ -81,8 +82,8 @@ export const ColSetsAdminPage = () => {
 
   const schema = useMemo(() => {
     return object<FormFields>().shape({
-      name: string().extendedAlphaNumeric().required().max(100),
-      description: string().freeFormText().nullable(),
+      name: SchemaUtil.name,
+      description: SchemaUtil.description,
       colIds: array().of(string().uuid4()).min(1).required(),
     });
   }, []);

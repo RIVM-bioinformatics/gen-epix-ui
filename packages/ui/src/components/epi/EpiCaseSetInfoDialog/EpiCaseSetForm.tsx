@@ -27,6 +27,7 @@ import { QueryUtil } from '../../../utils/QueryUtil';
 import { GenericForm } from '../../form/helpers/GenericForm';
 import { Spinner } from '../../ui/Spinner';
 import type { OmitWithMetaData } from '../../../models/data';
+import { SchemaUtil } from '../../../utils/SchemaUtil';
 
 export type EpiCaseSetFormProps = {
   readonly caseSet: CaseSet;
@@ -35,7 +36,7 @@ export type EpiCaseSetFormProps = {
   readonly onIsSavingChange: (isSaving: boolean) => void;
 };
 
-type FormFields = OmitWithMetaData<CaseSet, 'case_type' | 'created_in_data_collection' | 'created_in_data_collection_id' | 'case_set_category' | 'case_set_status'>;
+type FormFields = OmitWithMetaData<CaseSet, 'case_type' | 'created_in_data_collection' | 'created_in_data_collection_id' | 'case_set_category' | 'case_set_status' | 'case_set_date'>;
 
 export const EpiCaseSetForm = ({ caseSet, formId, onFinish, onIsSavingChange }: EpiCaseSetFormProps) => {
   const caseTypeOptionsQuery = useCaseTypeOptionsQuery();
@@ -43,9 +44,9 @@ export const EpiCaseSetForm = ({ caseSet, formId, onFinish, onIsSavingChange }: 
   const caseSetStatusOptionsQuery = useCaseSetStatusOptionsQuery();
 
   const schema = useMemo(() => object<FormFields>().shape({
-    name: string().extendedAlphaNumeric().required().max(100),
-    code: string().code().required().max(100),
-    description: string().freeFormText(),
+    name: SchemaUtil.name,
+    code: SchemaUtil.code,
+    description: SchemaUtil.description,
     case_type_id: string().uuid4().required(),
     case_set_category_id: string().uuid4().required(),
     case_set_status_id: string().uuid4().required(),
