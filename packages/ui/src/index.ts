@@ -91,6 +91,7 @@ export * from './pages/CaseTypesAdminPage';
 export * from './pages/CaseTypeSetsAdminPage';
 export * from './pages/CaseTypeSetCategoriesAdminPage';
 export * from './pages/CaseSetStatusAdminPage';
+export * from './pages/CaseSetCategoryAdminPage';
 export * from './pages/AdminPage';
 export * from './pages/AcceptInvitationPage';
 export * from './models/admin.ts';
