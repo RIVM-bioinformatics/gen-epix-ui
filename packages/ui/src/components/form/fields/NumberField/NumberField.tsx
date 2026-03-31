@@ -49,9 +49,9 @@ export type NumberFieldProps<TFieldValues extends FieldValues, TName extends Pat
   readonly loading?: boolean;
   readonly placeholder?: string;
   readonly autocomplete?: string;
-  readonly step: number;
-  readonly min: number;
-  readonly max: number;
+  readonly step?: number;
+  readonly min?: number;
+  readonly max?: number;
   readonly showSlider?: boolean;
 };
 
@@ -78,7 +78,7 @@ export const NumberField = <TFieldValues extends FieldValues, TName extends Path
   const hasError = !!errorMessage;
   const hasWarning = !!warningMessage && !hasError;
   const inputRef = useRef<HTMLInputElement>(null);
-  const valueRef = useRef<string>('');
+  const valueRef = useRef<string>(undefined);
   const [triggerValue, setTriggerValue] = useState(0);
 
   const shouldShowSlider = useMemo(() => {
@@ -162,6 +162,7 @@ export const NumberField = <TFieldValues extends FieldValues, TName extends Path
     } else if (sliderValue > max) {
       sliderValue = max;
     }
+
     const inputValue = valueRef.current ?? (value ?? '') as string;
 
     const textField = (

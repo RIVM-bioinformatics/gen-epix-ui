@@ -3,10 +3,7 @@ import {
   useMemo,
 } from 'react';
 import { useTranslation } from 'react-i18next';
-import {
-  object,
-  string,
-} from 'yup';
+import { object } from 'yup';
 import { useParams } from 'react-router-dom';
 
 import type { Region } from '../../api';
@@ -21,8 +18,8 @@ import type { TableColumn } from '../../models/table';
 import { TableUtil } from '../../utils/TableUtil';
 import { TestIdUtil } from '../../utils/TestIdUtil';
 import { CrudPage } from '../CrudPage';
-import { NumberUtil } from '../../utils/NumberUtil';
 import type { OmitWithMetaData } from '../../models/data';
+import { SchemaUtil } from '../../utils/SchemaUtil';
 
 // Note: region_set_id is given in the route params
 type FormFields = OmitWithMetaData<Region, 'region_set_id' | 'region_set'>;
@@ -64,12 +61,12 @@ export const RegionsAdminPage = () => {
 
   const schema = useMemo(() => {
     return object<FormFields>().shape({
-      name: string().extendedAlphaNumeric().required().max(100),
-      code: string().code().required().max(100),
-      centroid_lat: NumberUtil.yup.required(),
-      centroid_lon: NumberUtil.yup.required(),
-      center_lat: NumberUtil.yup.required(),
-      center_lon: NumberUtil.yup.required(),
+      name: SchemaUtil.name,
+      code: SchemaUtil.code,
+      centroid_lat: SchemaUtil.number.required(),
+      centroid_lon: SchemaUtil.number.required(),
+      center_lat: SchemaUtil.number.required(),
+      center_lon: SchemaUtil.number.required(),
     });
   }, []);
 

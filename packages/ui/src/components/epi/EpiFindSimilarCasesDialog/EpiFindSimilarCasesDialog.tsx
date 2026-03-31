@@ -51,9 +51,9 @@ import type {
   Col,
 } from '../../../api';
 import { CaseApi } from '../../../api';
-import { NumberUtil } from '../../../utils/NumberUtil';
 import { ResponseHandler } from '../../ui/ResponseHandler';
 import { ConfigManager } from '../../../classes/managers/ConfigManager';
+import { SchemaUtil } from '../../../utils/SchemaUtil';
 
 export interface EpiFindSimilarCasesDialogOpenProps {
   allRows: Case[];
@@ -71,6 +71,7 @@ export type EpiFindSimilarCasesDialogRefMethods = WithDialogRefMethods<EpiFindSi
 type FormFields = {
   treeColId: string;
   maxDistance: number;
+  foo: number;
 };
 
 export const EpiFindSimilarCasesDialog = withDialog<EpiFindSimilarCasesDialogProps, EpiFindSimilarCasesDialogOpenProps>((
@@ -92,7 +93,8 @@ export const EpiFindSimilarCasesDialog = withDialog<EpiFindSimilarCasesDialogPro
 
   const schema = useMemo(() => object<FormFields>().shape({
     treeColId: string().required(),
-    maxDistance: NumberUtil.yup.required().min(0).when('treeColId', ([treeColId], s) => {
+    foo: SchemaUtil.number.required(),
+    maxDistance: SchemaUtil.number.required().positive().when('treeColId', ([treeColId], s) => {
       const currentTreeConfiguration = treeConfigurations.find(x => x.col.id === treeColId);
       if (!currentTreeConfiguration) {
         return s;
@@ -121,6 +123,7 @@ export const EpiFindSimilarCasesDialog = withDialog<EpiFindSimilarCasesDialogPro
     values: {
       treeColId: treeConfiguration ? treeConfiguration.col.id : null,
       maxDistance: 0,
+      foo: 10,
     },
   });
   const { handleSubmit, control } = formMethods;
@@ -145,6 +148,12 @@ export const EpiFindSimilarCasesDialog = withDialog<EpiFindSimilarCasesDialogPro
         max: currentTreeConfiguration?.geneticDistanceProtocol?.seqdb_max_stored_distance || ConfigManager.instance.config.epi.SEQDB_MAX_STORED_DISTANCE_FALLBACK,
         step: 1,
         showSlider: true,
+      } as const satisfies FormFieldDefinition<FormFields>,
+      {
+        definition: FORM_FIELD_DEFINITION_TYPE.NUMBER,
+        name: 'foo',
+        label: t`Foo`,
+        showSlider: false,
       } as const satisfies FormFieldDefinition<FormFields>,
     ];
   }, [formValues.treeColId, t, treeConfigurations, treeOptions]);

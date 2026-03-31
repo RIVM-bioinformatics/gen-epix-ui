@@ -3,10 +3,7 @@ import {
   useMemo,
 } from 'react';
 import { useTranslation } from 'react-i18next';
-import {
-  object,
-  string,
-} from 'yup';
+import { object } from 'yup';
 import { useParams } from 'react-router-dom';
 
 import type { Site } from '../../api';
@@ -25,6 +22,7 @@ import type { CrudPageSubPage } from '../CrudPage';
 import { CrudPage } from '../CrudPage';
 import { AuthorizationManager } from '../../classes/managers/AuthorizationManager';
 import type { OmitWithMetaData } from '../../models/data';
+import { SchemaUtil } from '../../utils/SchemaUtil';
 
 type FormFields = OmitWithMetaData<Site, 'organization_id' | 'organization'>;
 
@@ -65,7 +63,7 @@ export const OrganizationSitesAdminPage = () => {
 
   const schema = useMemo(() => {
     return object<FormFields>().shape({
-      name: string().extendedAlphaNumeric().required().max(100),
+      name: SchemaUtil.name,
     });
   }, []);
 

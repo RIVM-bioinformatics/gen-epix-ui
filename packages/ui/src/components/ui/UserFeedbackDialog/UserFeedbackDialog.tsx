@@ -32,6 +32,7 @@ import type { FormFieldDefinition } from '../../../models/form';
 import { FORM_FIELD_DEFINITION_TYPE } from '../../../models/form';
 import { GenericForm } from '../../form/helpers/GenericForm';
 import { AuthorizationManager } from '../../../classes/managers/AuthorizationManager';
+import { SchemaUtil } from '../../../utils/SchemaUtil';
 
 export interface UserFeedbackDialogOpenProps {
   //
@@ -61,7 +62,7 @@ export const UserFeedbackDialog = withDialog<UserFeedbackDialogProps, UserFeedba
   const schema = useMemo(() => object<FormFields>().shape({
     message: string().freeFormText().required().max(5000),
     email: string().email().required().max(200),
-    name: string().extendedAlpha().required().max(200),
+    name: SchemaUtil.name,
   }), []);
 
   const formMethods = useForm<FormFields>({

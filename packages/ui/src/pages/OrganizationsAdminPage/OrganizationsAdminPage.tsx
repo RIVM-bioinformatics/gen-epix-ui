@@ -32,6 +32,7 @@ import { useIdentifierIssuerOptionsQuery } from '../../dataHooks/useIdentifierIs
 import { useArray } from '../../hooks/useArray';
 import { useOrganizationIdentifierIssuerLinksQuery } from '../../dataHooks/useOrganizationIdentifierIssuerLinksQuery';
 import type { OmitWithMetaData } from '../../models/data';
+import { SchemaUtil } from '../../utils/SchemaUtil';
 
 type TableData = Organization & { identifierIssuerIds: string[] };
 
@@ -79,10 +80,10 @@ export const OrganizationsAdminPage = () => {
 
   const schema = useMemo(() => {
     return object<FormFields>().shape({
-      name: string().extendedAlphaNumeric().required().max(100),
-      code: string().extendedAlphaNumeric().required().max(100),
+      name: SchemaUtil.name,
+      code: SchemaUtil.code,
       identifierIssuerIds: array().of(string().uuid4()).min(0).required(),
-      description: string().freeFormText().required().max(1000),
+      description: SchemaUtil.description,
     });
   }, []);
 

@@ -3,10 +3,7 @@ import {
   useMemo,
 } from 'react';
 import { useTranslation } from 'react-i18next';
-import {
-  object,
-  string,
-} from 'yup';
+import { object } from 'yup';
 import { useParams } from 'react-router-dom';
 
 import type { Concept } from '../../api';
@@ -21,8 +18,8 @@ import type { TableColumn } from '../../models/table';
 import { TableUtil } from '../../utils/TableUtil';
 import { TestIdUtil } from '../../utils/TestIdUtil';
 import { CrudPage } from '../CrudPage';
-import { NumberUtil } from '../../utils/NumberUtil';
 import type { OmitWithMetaData } from '../../models/data';
+import { SchemaUtil } from '../../utils/SchemaUtil';
 
 type FormFields = OmitWithMetaData<Concept, 'concept_set_id' | 'concept_set' | 'props'>;
 
@@ -64,10 +61,10 @@ export const ConceptsAdminPage = () => {
 
   const schema = useMemo(() => {
     return object<FormFields>().shape({
-      name: string().freeFormText().required().max(100),
-      code: string().freeFormText().required().max(100),
-      rank: NumberUtil.yup.required().min(0).integer(),
-      description: string().freeFormText().max(1000),
+      name: SchemaUtil.name,
+      code: SchemaUtil.code,
+      rank: SchemaUtil.number.required().min(0).integer(),
+      description: SchemaUtil.description,
     });
   }, []);
 

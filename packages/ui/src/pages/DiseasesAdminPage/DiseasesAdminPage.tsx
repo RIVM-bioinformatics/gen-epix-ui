@@ -21,6 +21,7 @@ import { TableUtil } from '../../utils/TableUtil';
 import { TestIdUtil } from '../../utils/TestIdUtil';
 import { CrudPage } from '../CrudPage';
 import type { OmitWithMetaData } from '../../models/data';
+import { SchemaUtil } from '../../utils/SchemaUtil';
 
 type FormFields = OmitWithMetaData<Disease>;
 
@@ -49,7 +50,7 @@ export const DiseasesAdminPage = () => {
 
   const schema = useMemo(() => {
     return object<FormFields>().shape({
-      name: string().extendedAlphaNumeric().required().max(100),
+      name: SchemaUtil.name,
       icd_code: string().alphaNumeric().nullable().max(100),
     });
   }, []);

@@ -124,7 +124,7 @@ export const CrudPageEditDialog = withDialog<CrudPageEditDialogProps<any, any>, 
     }
     setResolvedFormFieldDefinitions(formFieldDefinitions(openProps.item, formValues));
   }, 500, {
-    leading: false,
+    leading: true,
     trailing: true,
   });
 
