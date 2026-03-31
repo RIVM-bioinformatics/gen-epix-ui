@@ -71,7 +71,6 @@ export type EpiFindSimilarCasesDialogRefMethods = WithDialogRefMethods<EpiFindSi
 type FormFields = {
   treeColId: string;
   maxDistance: number;
-  foo: number;
 };
 
 export const EpiFindSimilarCasesDialog = withDialog<EpiFindSimilarCasesDialogProps, EpiFindSimilarCasesDialogOpenProps>((
@@ -93,7 +92,6 @@ export const EpiFindSimilarCasesDialog = withDialog<EpiFindSimilarCasesDialogPro
 
   const schema = useMemo(() => object<FormFields>().shape({
     treeColId: string().required(),
-    foo: SchemaUtil.number.required(),
     maxDistance: SchemaUtil.number.required().positive().when('treeColId', ([treeColId], s) => {
       const currentTreeConfiguration = treeConfigurations.find(x => x.col.id === treeColId);
       if (!currentTreeConfiguration) {
@@ -123,7 +121,6 @@ export const EpiFindSimilarCasesDialog = withDialog<EpiFindSimilarCasesDialogPro
     values: {
       treeColId: treeConfiguration ? treeConfiguration.col.id : null,
       maxDistance: 0,
-      foo: 10,
     },
   });
   const { handleSubmit, control } = formMethods;
@@ -148,12 +145,6 @@ export const EpiFindSimilarCasesDialog = withDialog<EpiFindSimilarCasesDialogPro
         max: currentTreeConfiguration?.geneticDistanceProtocol?.seqdb_max_stored_distance || ConfigManager.instance.config.epi.SEQDB_MAX_STORED_DISTANCE_FALLBACK,
         step: 1,
         showSlider: true,
-      } as const satisfies FormFieldDefinition<FormFields>,
-      {
-        definition: FORM_FIELD_DEFINITION_TYPE.NUMBER,
-        name: 'foo',
-        label: t`Foo`,
-        showSlider: false,
       } as const satisfies FormFieldDefinition<FormFields>,
     ];
   }, [formValues.treeColId, t, treeConfigurations, treeOptions]);

@@ -4,22 +4,9 @@ import {
   string,
 } from 'yup';
 
-import { NumberUtil } from '../NumberUtil';
-
 export class SchemaUtil {
   public static get number() {
-    return number().transform((_val: unknown, orig: string | number) => {
-      if (orig === '' || orig === null || orig === undefined) {
-        return undefined;
-      }
-      if (typeof orig === 'number') {
-        return orig;
-      }
-      if (typeof orig === 'string') {
-        const parsed = NumberUtil.parse(orig);
-        return isNaN(parsed) ? undefined : parsed;
-      }
-    });
+    return number().nullable();
   }
 
   public static get code() {

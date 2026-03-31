@@ -269,10 +269,6 @@ export const ColsAdminPage = () => {
         definition: FORM_FIELD_DEFINITION_TYPE.NUMBER,
         name: 'min_value',
         label: t`Min value`,
-        showSlider: true,
-        min: 0,
-        max: 100,
-        step: 1,
       } as const satisfies FormFieldDefinition<FormFields>,
       {
         definition: FORM_FIELD_DEFINITION_TYPE.NUMBER,

@@ -72,10 +72,13 @@ export const NumberField = <TFieldValues extends FieldValues, TName extends Path
   const [internalValue, setInternalValue] = useState<number>(null);
   const [externalValue, setExternalValue] = useState<number>(null);
   const formControlRef = useRef<HTMLDivElement>(null);
+  const [hasInputValue, setHasInputValue] = useState(false);
 
   const updateInputValue = useCallback((value: number) => {
     if (inputRef.current) {
-      inputRef.current.value = (value ?? '').toString().replace('.', ',');
+      const inputValue = (value ?? '').toString().replace('.', ',');
+      inputRef.current.value = inputValue;
+      setHasInputValue(!!inputValue);
     }
   }, []);
 
@@ -222,12 +225,13 @@ export const NumberField = <TFieldValues extends FieldValues, TName extends Path
         inputLabel: {
           required: required && !disabled,
           className: classnames({ 'Mui-warning': hasWarning }),
+          shrink: hasInputValue,
         },
       }}
-      defaultValue={internalValue}
+      defaultValue={internalValue ?? ''}
       onBlur={onMuiTextFieldBlur}
     />
-  ), [autocomplete, disabled, hasError, hasWarning, internalValue, label, loading, name, onMuiTextFieldBlur, onResetButtonClick, placeholder, required, t]);
+  ), [autocomplete, disabled, hasError, hasInputValue, hasWarning, internalValue, label, loading, name, onMuiTextFieldBlur, onResetButtonClick, placeholder, required, t]);
 
   return (
     <FormControl
