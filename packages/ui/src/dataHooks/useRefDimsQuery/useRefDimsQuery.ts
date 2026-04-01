@@ -11,6 +11,7 @@ import { QUERY_KEY } from '../../models/query';
 import { DataHookUtil } from '../../utils/DataHookUtil';
 import { QueryUtil } from '../../utils/QueryUtil';
 import { useQueryMemo } from '../../hooks/useQueryMemo';
+import { DataUtil } from '../../utils/DataUtil';
 
 export const useRefDimsQuery = (): UseQueryResult<RefDim[]> => {
   return useQueryMemo({
@@ -34,6 +35,6 @@ export const useRefDimOptionsQuery = (): UseOptions<string> => {
   const dimsQuery = useRefDimsQuery();
 
   return useMemo(() => {
-    return DataHookUtil.createUseOptionsDataHook<RefDim>(dimsQuery, item => item.id, item => item.label);
+    return DataHookUtil.createUseOptionsDataHook<RefDim>(dimsQuery, item => item.id, item => item.label, [], DataUtil.rankSortComperatorFactory('label'));
   }, [dimsQuery]);
 };

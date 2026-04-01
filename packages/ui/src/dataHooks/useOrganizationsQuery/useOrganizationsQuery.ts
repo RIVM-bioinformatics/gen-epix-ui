@@ -35,6 +35,6 @@ export const useOrganizationOptionsQuery = (): UseOptions<string> => {
   const organizationsQuery = useOrganizationsQuery();
 
   return useMemo(() => {
-    return DataHookUtil.createUseOptionsDataHook<Organization>(organizationsQuery, item => item.id, item => item.name, [], StringUtil.advancedSortComperator);
+    return DataHookUtil.createUseOptionsDataHook<Organization>(organizationsQuery, item => item.id, item => item.name, [], (a, b) => StringUtil.advancedSortComperator(a.name, b.name));
   }, [organizationsQuery]);
 };

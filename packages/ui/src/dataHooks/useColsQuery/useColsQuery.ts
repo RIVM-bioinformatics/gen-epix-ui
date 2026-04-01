@@ -14,6 +14,7 @@ import { QueryUtil } from '../../utils/QueryUtil';
 import { useCaseTypeMapQuery } from '../useCaseTypesQuery';
 import { useQueryMemo } from '../../hooks/useQueryMemo';
 import { useDimMapQuery } from '../useDimsQuery';
+import { DataUtil } from '../../utils/DataUtil';
 
 export const useColsQuery = (): UseQueryResult<Col[]> => {
   return useQueryMemo({
@@ -55,6 +56,6 @@ export const useColOptionsQuery = (): UseOptions<string> => {
   const colNameFactory = useColNameFactory();
 
   return useMemo(() => {
-    return DataHookUtil.createUseOptionsDataHook<Col>(response, item => item.id, colNameFactory.getName, [colNameFactory]);
+    return DataHookUtil.createUseOptionsDataHook<Col>(response, item => item.id, colNameFactory.getName, [colNameFactory], DataUtil.rankSortComperatorFactory(colNameFactory.getName));
   }, [colNameFactory, response]);
 };

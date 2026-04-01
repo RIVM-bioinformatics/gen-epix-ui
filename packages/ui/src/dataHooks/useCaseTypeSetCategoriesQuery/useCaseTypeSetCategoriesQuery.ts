@@ -11,15 +11,14 @@ import { QUERY_KEY } from '../../models/query';
 import { DataHookUtil } from '../../utils/DataHookUtil';
 import { QueryUtil } from '../../utils/QueryUtil';
 import { useQueryMemo } from '../../hooks/useQueryMemo';
+import { DataUtil } from '../../utils/DataUtil';
 
 export const useCaseTypeSetCategoriesQuery = (): UseQueryResult<CaseTypeSetCategory[]> => {
   return useQueryMemo({
     queryKey: QueryUtil.getGenericKey(QUERY_KEY.CASE_TYPE_SET_CATEGORIES),
     queryFn: async ({ signal }) => {
       const response = await CaseApi.instance.caseTypeSetCategoriesGetAll({ signal });
-      const items = response.data;
-      items.sort((a, b) => a.rank - b.rank);
-      return items;
+      return response.data;
     },
   });
 };
@@ -36,6 +35,6 @@ export const useCaseTypeSetCategoryOptionsQuery = (): UseOptions<string> => {
   const response = useCaseTypeSetCategoriesQuery();
 
   return useMemo(() => {
-    return DataHookUtil.createUseOptionsDataHook<CaseTypeSetCategory>(response, item => item.id, item => item.name);
+    return DataHookUtil.createUseOptionsDataHook<CaseTypeSetCategory>(response, item => item.id, item => item.name, [], DataUtil.rankSortComperatorFactory('name'));
   }, [response]);
 };
