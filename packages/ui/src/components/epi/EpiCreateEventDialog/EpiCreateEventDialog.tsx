@@ -101,7 +101,7 @@ export const EpiCreateEventDialog = withDialog<EpiCreateEventDialogProps, EpiCre
   const schema = useMemo(() => object<FormFields>().shape({
     name: SchemaUtil.name,
     code: SchemaUtil.code,
-    description: SchemaUtil.description,
+    description: SchemaUtil.description.required(),
     case_type_id: string().uuid4().required(),
     case_set_category_id: string().uuid4().required(),
     case_set_status_id: string().uuid4().required(),
