@@ -97,7 +97,7 @@ export const EpiCaseSetContent = ({ caseSet, ...boxProps }: EpiCaseSetContentPro
                 {t`Created at`}
               </TableCell>
               <TableCell>
-                {caseSet.created_at ? format(caseSet.created_at, DATE_FORMAT.DATE_TIME) : t`Unknown`}
+                {caseSet.case_set_date ? format(caseSet.case_set_date, DATE_FORMAT.DATE_TIME) : t`Unknown`}
               </TableCell>
             </TableRow>
           </TableBody>

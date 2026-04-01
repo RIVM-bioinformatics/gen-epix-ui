@@ -65,7 +65,7 @@ export const HomePageTrends = withPermissions(() => {
     type: 'DATETIME_RANGE',
     upper_bound: ConfigManager.instance.config.trends.homePage.getSinceDate(),
     upper_bound_censor: '<=',
-    key: 'created_at',
+    key: 'case_set_date',
   } satisfies EpiFilter), []);
 
   const caseTypeStatsQueryNow = useQueryMemo({

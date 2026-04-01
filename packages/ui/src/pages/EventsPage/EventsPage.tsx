@@ -168,7 +168,7 @@ export const EventsPage = () => {
 
   const tableStore = useMemo(() => createTableStore<Row>({
     navigatorFunction: RouterManager.instance.router.navigate,
-    defaultSortByField: 'created_at',
+    defaultSortByField: 'case_set_date',
     defaultSortDirection: 'desc',
     idSelectorCallback: (row) => row.id,
     storageNamePostFix: 'caseSets',
