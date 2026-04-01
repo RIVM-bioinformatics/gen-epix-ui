@@ -13,6 +13,7 @@ import { DataHookUtil } from '../../utils/DataHookUtil';
 import { QueryUtil } from '../../utils/QueryUtil';
 import { useQueryMemo } from '../../hooks/useQueryMemo';
 import { useConceptSetMapQuery } from '../useConceptSetsQuery';
+import { DataUtil } from '../../utils/DataUtil';
 
 export const useConceptQuery = (): UseQueryResult<Concept[]> => {
   return useQueryMemo({
@@ -47,6 +48,6 @@ export const useConceptOptionsQuery = (): UseOptions<string> => {
   const conceptNameFactory = useConceptNameFactory();
 
   return useMemo(() => {
-    return DataHookUtil.createUseOptionsDataHook<Concept>(conceptQuery, item => item.id, conceptNameFactory.getName, [conceptNameFactory]);
+    return DataHookUtil.createUseOptionsDataHook<Concept>(conceptQuery, item => item.id, conceptNameFactory.getName, [conceptNameFactory], DataUtil.rankSortComperatorFactory(conceptNameFactory.getName));
   }, [conceptNameFactory, conceptQuery]);
 };

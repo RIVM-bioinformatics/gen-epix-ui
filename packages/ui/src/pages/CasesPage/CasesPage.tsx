@@ -57,6 +57,7 @@ import { DATE_FORMAT } from '../../data/date';
 import { CaseTypeUtil } from '../../utils/CaseTypeUtil';
 import { DownloadUtil } from '../../utils/DownloadUtil';
 import { useQueryMemo } from '../../hooks/useQueryMemo';
+import { DataUtil } from '../../utils/DataUtil';
 
 type Row = {
   id: string;
@@ -186,7 +187,7 @@ export const CasesPage = () => {
     const options: { [key: string]: OptionBase<string>[] } = {};
 
     caseTypeSetCategoriesQuery.data?.forEach(category => {
-      options[category.id] = caseTypeSets?.filter(set => set.case_type_set_category_id === category.id).sort((a, b) => a.rank - b.rank).map<OptionBase<string>>(set => ({ value: set.id, label: set.name }));
+      options[category.id] = caseTypeSets?.filter(set => set.case_type_set_category_id === category.id).sort(DataUtil.rankSortComperatorFactory('name')).map<OptionBase<string>>(set => ({ value: set.id, label: set.name }));
     });
     return options;
   }, [caseTypeSetCategoriesQuery, caseTypeSets]);

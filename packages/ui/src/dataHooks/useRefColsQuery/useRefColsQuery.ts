@@ -11,6 +11,7 @@ import { QUERY_KEY } from '../../models/query';
 import { DataHookUtil } from '../../utils/DataHookUtil';
 import { QueryUtil } from '../../utils/QueryUtil';
 import { useQueryMemo } from '../../hooks/useQueryMemo';
+import { DataUtil } from '../../utils/DataUtil';
 
 export const useRefColsQuery = (): UseQueryResult<RefCol[]> => {
   return useQueryMemo({
@@ -34,6 +35,6 @@ export const useRefColOptionsQuery = (): UseOptions<string> => {
   const colsQuery = useRefColsQuery();
 
   return useMemo(() => {
-    return DataHookUtil.createUseOptionsDataHook<RefCol>(colsQuery, item => item.id, item => item.label);
+    return DataHookUtil.createUseOptionsDataHook<RefCol>(colsQuery, item => item.id, item => item.label, [], DataUtil.rankSortComperatorFactory('label'));
   }, [colsQuery]);
 };

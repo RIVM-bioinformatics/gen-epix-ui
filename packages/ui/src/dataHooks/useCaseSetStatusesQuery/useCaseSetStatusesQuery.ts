@@ -11,6 +11,7 @@ import { QUERY_KEY } from '../../models/query';
 import { DataHookUtil } from '../../utils/DataHookUtil';
 import { QueryUtil } from '../../utils/QueryUtil';
 import { useQueryMemo } from '../../hooks/useQueryMemo';
+import { DataUtil } from '../../utils/DataUtil';
 
 export const useCaseSetStatusesQuery = (): UseQueryResult<CaseSetStatus[]> => {
   return useQueryMemo({
@@ -34,6 +35,6 @@ export const useCaseSetStatusOptionsQuery = (): UseOptions<string> => {
   const response = useCaseSetStatusesQuery();
 
   return useMemo(() => {
-    return DataHookUtil.createUseOptionsDataHook<CaseSetStatus>(response, item => item.id, (item: CaseSetStatus) => item.name);
+    return DataHookUtil.createUseOptionsDataHook<CaseSetStatus>(response, item => item.id, (item: CaseSetStatus) => item.name, [], DataUtil.rankSortComperatorFactory('name'));
   }, [response]);
 };

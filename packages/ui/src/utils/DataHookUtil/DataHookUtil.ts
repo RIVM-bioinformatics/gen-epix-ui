@@ -63,12 +63,12 @@ export class DataHookUtil {
     };
   }
 
-  public static createUseOptionsDataHook<TValue>(
-    response: UseQueryResult<TValue[]> | TValue[],
-    getId: (item: TValue) => string,
-    createLabel: (item: TValue) => string,
+  public static createUseOptionsDataHook<TItem>(
+    response: UseQueryResult<TItem[]> | TItem[],
+    getId: (item: TItem) => string,
+    createLabel: (item: TItem) => string,
     loadables?: Loadable[],
-    sortComperator?: (a: string, b: string) => number,
+    sortComperator?: (a: TItem, b: TItem) => number,
   ): UseOptions<string> {
     const loadablesAndResponse: Loadable[] = [...(DataHookUtil.isResponse(response) ? [response] : []), ...(Array.isArray(loadables) ? loadables : [])];
 
@@ -89,7 +89,7 @@ export class DataHookUtil {
       };
     }
 
-    const sort = sortComperator ?? StringUtil.sortComperator;
+    const sort = sortComperator ?? ((a: TItem, b: TItem) => StringUtil.sortComperator(createLabel(a), createLabel(b)));
 
     let options: {
       value: string;
@@ -97,9 +97,7 @@ export class DataHookUtil {
     }[] = [];
     if (!isLoading) {
       const items = DataHookUtil.isResponse(response) ? response.data : response;
-      options = items?.map(item => ({ value: getId(item), label: createLabel(item) })).sort((a, b) => {
-        return sort(a.label, b.label);
-      }) ?? [];
+      options = items?.sort(sort).map(item => ({ value: getId(item), label: createLabel(item) })) ?? [];
     }
 
     return {
