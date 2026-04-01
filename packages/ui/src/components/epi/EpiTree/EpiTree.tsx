@@ -116,8 +116,6 @@ export const EpiTree = ({ linkedScrollSubject, ref, itemHeight }: EpiTreeProps) 
   const [extraLeafInfoId, setExtraLeafInfoId] = useState<string>(null);
   const [treeConfiguration, setTreeConfiguration] = useState<TreeConfiguration>(epiDashboardStore.getState().epiTreeWidgetData.treeConfiguration);
   const [treeAssembly, setTreeAssembly] = useState<TreeAssembly>(null);
-  const [verticalScrollPosition, setVerticalScrollPosition] = useState<number>(!isNaN(epiDashboardStore.getState().epiTreeWidgetData.verticalScrollPosition) ? epiDashboardStore.getState().epiTreeWidgetData.verticalScrollPosition : 0);
-  const [horizontalScrollPosition, setHorizontalScrollPosition] = useState<number>(!isNaN(epiDashboardStore.getState().epiTreeWidgetData.horizontalScrollPosition) ? epiDashboardStore.getState().epiTreeWidgetData.horizontalScrollPosition : 0);
   const [zoomLevel, setZoomLevel] = useState<number>(!isNaN(epiDashboardStore.getState().epiTreeWidgetData.zoomLevel) ? epiDashboardStore.getState().epiTreeWidgetData.zoomLevel : 1);
   const [devicePixelRatio, setDevicePixelRatio] = useState<number>(DevicePixelRatioManager.instance.data);
   const [isLinked, setIsLinked] = useState(true);
@@ -125,6 +123,11 @@ export const EpiTree = ({ linkedScrollSubject, ref, itemHeight }: EpiTreeProps) 
     caseIds: [],
     origin: null,
   }), []);
+
+  const scrollPositionSubject = useMemo(() => new Subject<{ horizontal: number; vertical: number }>({
+    horizontal: !isNaN(epiDashboardStore.getState().epiTreeWidgetData.horizontalScrollPosition) ? epiDashboardStore.getState().epiTreeWidgetData.horizontalScrollPosition : 0,
+    vertical: !isNaN(epiDashboardStore.getState().epiTreeWidgetData.verticalScrollPosition) ? epiDashboardStore.getState().epiTreeWidgetData.verticalScrollPosition : 0,
+  }), [epiDashboardStore]);
 
   const sortedLeafNames = useMemo(() => {
     return sortedData.map(c => c.id);
@@ -221,18 +224,16 @@ export const EpiTree = ({ linkedScrollSubject, ref, itemHeight }: EpiTreeProps) 
 
   useEffect(() => {
     const unsubscribe = canvasScrollSubject.subscribe((data) => {
-      if (!isNaN(data.x)) {
-        setHorizontalScrollPosition(data.x);
-      }
-      if (!isNaN(data.y)) {
-        setVerticalScrollPosition(data.y);
-      }
+      scrollPositionSubject.next({
+        horizontal: !isNaN(data.x) ? data.x : scrollPositionSubject.data.horizontal,
+        vertical: !isNaN(data.y) ? data.y : scrollPositionSubject.data.vertical,
+      });
     });
 
     return () => {
       unsubscribe();
     };
-  }, [canvasScrollSubject]);
+  }, [canvasScrollSubject, scrollPositionSubject]);
 
   useEffect(() => {
     if (!treeConfigurations?.length) {
@@ -298,14 +299,14 @@ export const EpiTree = ({ linkedScrollSubject, ref, itemHeight }: EpiTreeProps) 
   const updateEpiTreeWidgetDataDebounced = useDebouncedCallback(() => {
     updateEpiTreeWidgetData({
       zoomLevel,
-      verticalScrollPosition,
-      horizontalScrollPosition,
+      verticalScrollPosition: scrollPositionSubject.data.vertical,
+      horizontalScrollPosition: scrollPositionSubject.data.horizontal,
     });
   }, 500);
 
   useEffect(() => {
     updateEpiTreeWidgetDataDebounced();
-  }, [updateEpiTreeWidgetData, zoomLevel, verticalScrollPosition, horizontalScrollPosition, updateEpiTreeWidgetDataDebounced]);
+  }, [updateEpiTreeWidgetData, zoomLevel, scrollPositionSubject, updateEpiTreeWidgetDataDebounced]);
 
   const tickerMarkScale = useMemo(() => {
     return EpiTreeUtil.getTickMarkScale({
@@ -328,7 +329,7 @@ export const EpiTree = ({ linkedScrollSubject, ref, itemHeight }: EpiTreeProps) 
         treeHeight,
         treeSize: tree?.size,
         treeCanvasHeight,
-        verticalScrollPosition,
+        verticalScrollPosition: scrollPositionSubject.data.vertical,
         zoomLevel,
         itemHeight,
       });
@@ -346,7 +347,7 @@ export const EpiTree = ({ linkedScrollSubject, ref, itemHeight }: EpiTreeProps) 
     // eslint-disable-next-line @typescript-eslint/no-floating-promises
     perform();
 
-  }, [linkedScrollSubject, setSorting, tree?.size, treeCanvasHeight, treeHeight, verticalScrollPosition, updateScrollPosition, zoomLevel, itemHeight]);
+  }, [linkedScrollSubject, setSorting, tree?.size, treeCanvasHeight, treeHeight, scrollPositionSubject, updateScrollPosition, zoomLevel, itemHeight]);
 
   const onLinkButtonClick = useCallback(() => {
     linkLineListToTree();
@@ -416,10 +417,11 @@ export const EpiTree = ({ linkedScrollSubject, ref, itemHeight }: EpiTreeProps) 
       return;
     }
 
-    EpiTreeUtil.drawTreeCanvas({ canvas: treeCanvas, theme, geneticTreeWidth: tree?.maxBranchLength, treeAssembly, stratification, zoomLevel, isLinked, horizontalScrollPosition, verticalScrollPosition, treeCanvasWidth, treeCanvasHeight, pixelToGeneticDistanceRatio, tickerMarkScale, shouldShowDistances: isShowDistancesEnabled, devicePixelRatio, externalScrollPosition: 0 });
     let animationFrameId: number;
     let highlighting: Highlighting = internalHighlightingSubject.data;
     let externalScrollPosition = linkedScrollSubject.data?.position ?? 0;
+    let horizontalScrollPosition = scrollPositionSubject.data.horizontal;
+    let verticalScrollPosition = scrollPositionSubject.data.vertical;
 
     const render = () => {
       console.log({ externalScrollPosition });
@@ -429,7 +431,7 @@ export const EpiTree = ({ linkedScrollSubject, ref, itemHeight }: EpiTreeProps) 
       });
     };
 
-    const unsubscribeFromScrollSubject = linkedScrollSubject.subscribe((data) => {
+    const unsubscribeFromLinkedScrollSubject = linkedScrollSubject.subscribe((data) => {
       if (data.origin === scrollContainerRef.current) {
         return;
       }
@@ -437,16 +439,26 @@ export const EpiTree = ({ linkedScrollSubject, ref, itemHeight }: EpiTreeProps) 
       render();
     });
 
-    const unsubscribeFromHighlighting = internalHighlightingSubject.subscribe((newHighlighting) => {
-      highlighting = newHighlighting;
+    const unsubscribeFromHighlighting = internalHighlightingSubject.subscribe((data) => {
+      highlighting = data;
       render();
     });
+
+    const unsubscribeFromScrollPositionSubject = scrollPositionSubject.subscribe((data) => {
+      horizontalScrollPosition = data.horizontal;
+      verticalScrollPosition = data.vertical;
+      render();
+    });
+
+    render();
+
     return () => {
       unsubscribeFromHighlighting();
-      unsubscribeFromScrollSubject();
+      unsubscribeFromLinkedScrollSubject();
+      unsubscribeFromScrollPositionSubject();
       cancelAnimationFrame(animationFrameId);
     };
-  }, [treeCanvasHeight, treeCanvas, internalHighlightingSubject, pixelToGeneticDistanceRatio, stratification, theme, tickerMarkScale, treeAssembly, treeCanvasWidth, horizontalScrollPosition, verticalScrollPosition, width, zoomLevel, isLinked, isShowDistancesEnabled, devicePixelRatio, tree?.maxBranchLength, tree, linkedScrollSubject]);
+  }, [treeCanvasHeight, treeCanvas, internalHighlightingSubject, pixelToGeneticDistanceRatio, stratification, theme, tickerMarkScale, treeAssembly, treeCanvasWidth, scrollPositionSubject, width, zoomLevel, isLinked, isShowDistancesEnabled, devicePixelRatio, tree?.maxBranchLength, tree, linkedScrollSubject]);
 
   // Setup canvas event listeners (note: must be in a separate useEffect to prevent render loop)
   useEffect(() => {
@@ -628,22 +640,44 @@ export const EpiTree = ({ linkedScrollSubject, ref, itemHeight }: EpiTreeProps) 
     if (!headerCanvas || !tree) {
       return;
     }
-    const canvas = headerCanvas;
-    const ctx = canvas.getContext('2d');
-    canvas.width = canvas.clientWidth * devicePixelRatio;
-    canvas.height = canvas.clientHeight * devicePixelRatio;
 
-    EpiTreeUtil.drawGuides({ canvas, geneticTreeWidth: tree?.maxBranchLength, tickerMarkScale, pixelToGeneticDistanceRatio, horizontalScrollPosition, paddingTop: ConfigManager.instance.config.epiTree.HEADER_HEIGHT * 0.7, paddingBottom: 0, zoomLevel, devicePixelRatio });
-    EpiTreeUtil.drawGuides({ canvas, geneticTreeWidth: tree?.maxBranchLength, tickerMarkScale, pixelToGeneticDistanceRatio, horizontalScrollPosition, paddingTop: 0, paddingBottom: ConfigManager.instance.config.epiTree.HEADER_HEIGHT * 0.7, zoomLevel, devicePixelRatio });
-    EpiTreeUtil.drawScale({ canvas, theme, tickerMarkScale, geneticTreeWidth: tree?.maxBranchLength, pixelToGeneticDistanceRatio, zoomLevel, devicePixelRatio, horizontalScrollPosition });
+    let horizontalScrollPosition = scrollPositionSubject.data.horizontal;
+    let animationFrameId: number;
 
-    // Draw horizontal top divider
-    EpiTreeUtil.drawDivider({ canvas, y: 0, devicePixelRatio });
-    // Draw horizontal bottom divider
-    EpiTreeUtil.drawDivider({ canvas, y: ConfigManager.instance.config.epiTree.HEADER_HEIGHT - 1, devicePixelRatio });
 
-    ctx.translate(-0.5, -0.5);
-  }, [headerCanvas, pixelToGeneticDistanceRatio, theme, tickerMarkScale, zoomLevel, devicePixelRatio, horizontalScrollPosition, tree?.maxBranchLength, tree]);
+    const render = () => {
+      animationFrameId = requestAnimationFrame(() => {
+        cancelAnimationFrame(animationFrameId);
+        const canvas = headerCanvas;
+        const ctx = canvas.getContext('2d');
+        canvas.height = canvas.clientHeight * devicePixelRatio;
+        canvas.width = canvas.clientWidth * devicePixelRatio;
+        EpiTreeUtil.drawGuides({ canvas, geneticTreeWidth: tree?.maxBranchLength, tickerMarkScale, pixelToGeneticDistanceRatio, horizontalScrollPosition, paddingTop: ConfigManager.instance.config.epiTree.HEADER_HEIGHT * 0.7, paddingBottom: 0, zoomLevel, devicePixelRatio });
+        EpiTreeUtil.drawGuides({ canvas, geneticTreeWidth: tree?.maxBranchLength, tickerMarkScale, pixelToGeneticDistanceRatio, horizontalScrollPosition, paddingTop: 0, paddingBottom: ConfigManager.instance.config.epiTree.HEADER_HEIGHT * 0.7, zoomLevel, devicePixelRatio });
+        EpiTreeUtil.drawScale({ canvas, theme, tickerMarkScale, geneticTreeWidth: tree?.maxBranchLength, pixelToGeneticDistanceRatio, zoomLevel, devicePixelRatio, horizontalScrollPosition });
+
+        // Draw horizontal top divider
+        EpiTreeUtil.drawDivider({ canvas, y: 0, devicePixelRatio });
+        // Draw horizontal bottom divider
+        EpiTreeUtil.drawDivider({ canvas, y: ConfigManager.instance.config.epiTree.HEADER_HEIGHT - 1, devicePixelRatio });
+
+        ctx.translate(-0.5, -0.5);
+      });
+    };
+    const unsubscribeFromScrollPositionSubject = scrollPositionSubject.subscribe((data, previousData) => {
+      if (data.horizontal === previousData.horizontal) {
+        return;
+      }
+      horizontalScrollPosition = data.horizontal;
+      render();
+    });
+
+    render();
+    return () => {
+      unsubscribeFromScrollPositionSubject();
+      cancelAnimationFrame(animationFrameId);
+    };
+  }, [headerCanvas, pixelToGeneticDistanceRatio, theme, tickerMarkScale, zoomLevel, devicePixelRatio, scrollPositionSubject, tree?.maxBranchLength, tree]);
 
   const onShowDetailsSelectionMenuItemClick = useCallback((onMenuClose: () => void) => {
     EpiEventBusManager.instance.emit('openCaseInfoDialog', {
