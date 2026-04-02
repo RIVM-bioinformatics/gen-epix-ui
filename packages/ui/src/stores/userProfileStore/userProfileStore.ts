@@ -13,6 +13,7 @@ export type EpiDashboardGeneralSettings = {
 
 export type EpiDashboardTreeSettings = {
   isShowDistancesEnabled: boolean;
+  isShowSupportLinesWhenUnlinkedEnabled?: boolean;
 };
 
 export interface UserProfileStoreState {
@@ -46,6 +47,7 @@ export const createUserProfileStoreInitialState: () => UserProfileStoreState = (
   },
   epiDashboardTreeSettings: {
     isShowDistancesEnabled: true,
+    isShowSupportLinesWhenUnlinkedEnabled: true,
   },
 });
 
@@ -92,6 +94,7 @@ export const userProfileStore = createStore<UserProfileStore>()(
           set({
             epiDashboardTreeSettings: {
               isShowDistancesEnabled: true,
+              isShowSupportLinesWhenUnlinkedEnabled: true,
             },
           });
         },
@@ -106,7 +109,7 @@ export const userProfileStore = createStore<UserProfileStore>()(
         epiDashboardGeneralSettings: state.epiDashboardGeneralSettings,
         epiDashboardTreeSettings: state.epiDashboardTreeSettings,
       }),
-      version: 1,
+      version: 2,
     },
   ),
 );

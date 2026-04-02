@@ -112,6 +112,7 @@ export const EpiTreeWidget = ({ linkedScrollSubject, lineListRangeSubject, ref, 
   const newick = useStore(epiDashboardStore, (state) => state.newick);
   const resetTreeAddresses = useStore(epiDashboardStore, (state) => state.resetTreeAddresses);
   const isShowDistancesEnabled = useStore(userProfileStore, (state) => state.epiDashboardTreeSettings.isShowDistancesEnabled);
+  const isShowSupportLinesWhenUnlinkedEnabled = useStore(userProfileStore, (state) => state.epiDashboardTreeSettings.isShowSupportLinesWhenUnlinkedEnabled);
   const [epiContextMenuConfig, setEpiContextMenuConfig] = useState<EpiContextMenuConfigWithPosition | null>(null);
   const [zoomInMenuItemConfig, setZoomInMenuItemConfig] = useState<ZoomInMenuItemConfig>(null);
   const [extraLeafInfoId, setExtraLeafInfoId] = useState<string>(null);
@@ -173,9 +174,23 @@ export const EpiTreeWidget = ({ linkedScrollSubject, lineListRangeSubject, ref, 
   }, [highlightingManager, internalHighlightingSubject]);
 
   useEffect(() => {
-    if (isLinked && zoomLevelSubject.data !== 1) {
-      setIsLinked(false);
-    }
+    let zoomLevel = zoomLevelSubject.data;
+
+    const updateIsLinked = () => {
+      if (isLinked && zoomLevel !== 1) {
+        setIsLinked(false);
+      }
+    };
+
+    const unsubscribeFromZoomLevelSubject = zoomLevelSubject.subscribe((data) => {
+      zoomLevel = data;
+      updateIsLinked();
+    });
+    updateIsLinked();
+
+    return () => {
+      unsubscribeFromZoomLevelSubject();
+    };
   }, [isLinked, zoomLevelSubject]);
 
   const caseIds = useMemo(() => filteredCases.map(c => c.id).sort(), [filteredCases]);
@@ -450,7 +465,28 @@ export const EpiTreeWidget = ({ linkedScrollSubject, lineListRangeSubject, ref, 
     const render = () => {
       cancelAnimationFrame(animationFrameId);
       animationFrameId = requestAnimationFrame(() => {
-        EpiTreeUtil.drawTreeCanvas({ canvas: treeCanvas, theme, geneticTreeWidth: tree?.maxBranchLength, treeAssembly, stratification, zoomLevel, isLinked, horizontalScrollPosition, verticalScrollPosition, treeCanvasWidth, treeCanvasHeight, headerHeight, pixelToGeneticDistanceRatio, tickerMarkScale, highlightedNodeNames: highlighting?.caseIds, shouldShowDistances: isShowDistancesEnabled, devicePixelRatio, externalScrollPosition, externalRange, itemHeight });
+        EpiTreeUtil.drawTreeCanvas({
+          canvas: treeCanvas,
+          theme,
+          geneticTreeWidth: tree?.maxBranchLength,
+          treeAssembly,
+          stratification,
+          zoomLevel,
+          isLinked,
+          horizontalScrollPosition,
+          verticalScrollPosition,
+          treeCanvasWidth,
+          treeCanvasHeight,
+          headerHeight,
+          pixelToGeneticDistanceRatio,
+          tickerMarkScale,
+          highlightedNodeNames: highlighting?.caseIds,
+          shouldShowDistances: isShowDistancesEnabled,
+          shouldShowSupportLinesWhenUnlinked: isShowSupportLinesWhenUnlinkedEnabled,
+          devicePixelRatio,
+          externalScrollPosition,
+          externalRange,
+          itemHeight });
       });
     };
 
@@ -494,7 +530,7 @@ export const EpiTreeWidget = ({ linkedScrollSubject, lineListRangeSubject, ref, 
       unsubscribeFromLineListRangeSubject();
       cancelAnimationFrame(animationFrameId);
     };
-  }, [headerHeight, treeCanvasHeight, treeCanvas, internalHighlightingSubject, pixelToGeneticDistanceRatio, stratification, theme, getTickerMarkScale, treeAssembly, treeCanvasWidth, scrollPositionSubject, width, zoomLevelSubject, isLinked, isShowDistancesEnabled, devicePixelRatio, tree?.maxBranchLength, tree, linkedScrollSubject, lineListRangeSubject, itemHeight]);
+  }, [headerHeight, treeCanvasHeight, treeCanvas, internalHighlightingSubject, pixelToGeneticDistanceRatio, stratification, theme, getTickerMarkScale, treeAssembly, treeCanvasWidth, scrollPositionSubject, width, zoomLevelSubject, isLinked, isShowDistancesEnabled, devicePixelRatio, tree?.maxBranchLength, tree, linkedScrollSubject, lineListRangeSubject, itemHeight, isShowSupportLinesWhenUnlinkedEnabled]);
 
   // Setup canvas event listeners (note: must be in a separate useEffect to prevent render loop)
   useEffect(() => {

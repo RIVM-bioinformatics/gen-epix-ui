@@ -1603,6 +1603,7 @@ describe('EpiTreeUtil', () => {
         pixelToGeneticDistanceRatio: 100,
         tickerMarkScale: [0, 0, 0],
         shouldShowDistances: false,
+        shouldShowSupportLinesWhenUnlinked: false,
         devicePixelRatio: 1,
         geneticTreeWidth: new Decimal(0),
         externalRange: { startIndex: 0, endIndex: 0 },
@@ -1637,6 +1638,7 @@ describe('EpiTreeUtil', () => {
         pixelToGeneticDistanceRatio: 100,
         tickerMarkScale: [0, 0, 0],
         shouldShowDistances: false,
+        shouldShowSupportLinesWhenUnlinked: false,
         devicePixelRatio: 2,
         geneticTreeWidth: new Decimal(0),
         externalRange: { startIndex: 0, endIndex: 0 },
@@ -1672,6 +1674,7 @@ describe('EpiTreeUtil', () => {
         pixelToGeneticDistanceRatio: 100,
         tickerMarkScale: [0, 0, 0],
         shouldShowDistances: false,
+        shouldShowSupportLinesWhenUnlinked: false,
         devicePixelRatio: 1,
         geneticTreeWidth: new Decimal(0),
         externalRange: { startIndex: 0, endIndex: 0 },
@@ -1706,6 +1709,7 @@ describe('EpiTreeUtil', () => {
         pixelToGeneticDistanceRatio: 100,
         tickerMarkScale: [0, 0, 0],
         shouldShowDistances: false,
+        shouldShowSupportLinesWhenUnlinked: false,
         devicePixelRatio: 1,
         geneticTreeWidth: new Decimal(0),
         externalRange: { startIndex: 0, endIndex: 0 },
@@ -2170,14 +2174,12 @@ describe('EpiTreeUtil', () => {
         verticalScrollPosition: 100,
         horizontalScrollPosition: 50,
         shouldShowDistances: false,
+        shouldShowSupportLinesWhenUnlinked: false,
         devicePixelRatio: 2,
         isLinked: false,
         externalRange: { startIndex: 0, endIndex: 0 },
         itemHeight: 30,
       });
-      // (1/zoomLevel)*devicePixelRatio = (1/2)*2 = 1
-      // -horizontalScrollPosition + 0.5 = -50 + 0.5 = -49.5
-      // -verticalScrollPosition + 0.5 = -100 + 0.5 = -99.5
       expect(ctx.setTransform).toHaveBeenCalledWith(1, 0, 0, 1, -49.5, -99.5);
     });
 
@@ -2193,6 +2195,7 @@ describe('EpiTreeUtil', () => {
         verticalScrollPosition: 100,
         horizontalScrollPosition: 50,
         shouldShowDistances: false,
+        shouldShowSupportLinesWhenUnlinked: false,
         devicePixelRatio: 2,
         isLinked: false,
         headerHeight: 40,
@@ -2221,6 +2224,7 @@ describe('EpiTreeUtil', () => {
         verticalScrollPosition: 0,
         horizontalScrollPosition: 0,
         shouldShowDistances: false,
+        shouldShowSupportLinesWhenUnlinked: false,
         devicePixelRatio: 2,
         isLinked: false,
         headerHeight: 40,
@@ -2246,6 +2250,7 @@ describe('EpiTreeUtil', () => {
         verticalScrollPosition: 0,
         horizontalScrollPosition: 0,
         shouldShowDistances: false,
+        shouldShowSupportLinesWhenUnlinked: false,
         devicePixelRatio: 1,
         isLinked: false,
         externalRange: { startIndex: 0, endIndex: 0 },
@@ -2275,6 +2280,7 @@ describe('EpiTreeUtil', () => {
         verticalScrollPosition: 0,
         horizontalScrollPosition: 0,
         shouldShowDistances: false,
+        shouldShowSupportLinesWhenUnlinked: false,
         devicePixelRatio: 1,
         isLinked: false,
         externalRange: { startIndex: 0, endIndex: 0 },
@@ -2301,6 +2307,7 @@ describe('EpiTreeUtil', () => {
         verticalScrollPosition: 0,
         horizontalScrollPosition: 0,
         shouldShowDistances: false,
+        shouldShowSupportLinesWhenUnlinked: false,
         devicePixelRatio: 1,
         isLinked: false,
         externalRange: { startIndex: 0, endIndex: 0 },
@@ -2328,6 +2335,7 @@ describe('EpiTreeUtil', () => {
         verticalScrollPosition: 0,
         horizontalScrollPosition: 0,
         shouldShowDistances: false,
+        shouldShowSupportLinesWhenUnlinked: false,
         devicePixelRatio: 1,
         isLinked: false,
         externalRange: { startIndex: 0, endIndex: 0 },
@@ -2354,6 +2362,7 @@ describe('EpiTreeUtil', () => {
         verticalScrollPosition: 0,
         horizontalScrollPosition: 0,
         shouldShowDistances: false,
+        shouldShowSupportLinesWhenUnlinked: false,
         devicePixelRatio: 1,
         isLinked: false,
         externalRange: { startIndex: 0, endIndex: 0 },
@@ -2377,6 +2386,7 @@ describe('EpiTreeUtil', () => {
         verticalScrollPosition: 0,
         horizontalScrollPosition: 0,
         shouldShowDistances: false,
+        shouldShowSupportLinesWhenUnlinked: false,
         devicePixelRatio: 1,
         isLinked: false,
         externalRange: { startIndex: 0, endIndex: 0 },
@@ -2385,7 +2395,7 @@ describe('EpiTreeUtil', () => {
       expect(ctx.fill).toHaveBeenCalledWith(shapeA);
     });
 
-    it('draws short-dashed support lines when isLinked is false', () => {
+    it('does not draw support lines when externalRange is null', () => {
       const { ctx } = makeTrackedCtx();
       const assembly = makeAssembly();
       assembly.supportLines = [{ nodeName: 'a', fromX: 100, toX: 800, fromY: 15, toY: 15 }];
@@ -2399,15 +2409,88 @@ describe('EpiTreeUtil', () => {
         verticalScrollPosition: 0,
         horizontalScrollPosition: 0,
         shouldShowDistances: false,
+        shouldShowSupportLinesWhenUnlinked: true,
+        devicePixelRatio: 1,
+        isLinked: true,
+        externalRange: null,
+        itemHeight: 30,
+      });
+      expect(ctx.moveTo).not.toHaveBeenCalled();
+      expect(ctx.lineTo).not.toHaveBeenCalled();
+    });
+
+    it('draws support lines when isLinked is false and shouldShowSupportLinesWhenUnlinked is true', () => {
+      const { ctx } = makeTrackedCtx();
+      const assembly = makeAssembly();
+      assembly.supportLines = [{ nodeName: 'a', fromX: 100, toX: 800, fromY: 15, toY: 15 }];
+      EpiTreeUtil.drawTree({
+        canvas: makeCanvas(ctx),
+        theme: makeTheme(makeDimFn()),
+        treeAssembly: assembly,
+        stratification: null,
+        zoomLevel: 1,
+        highlightedNodeNames: [],
+        verticalScrollPosition: 0,
+        horizontalScrollPosition: 0,
+        shouldShowDistances: false,
+        shouldShowSupportLinesWhenUnlinked: true,
         devicePixelRatio: 1,
         isLinked: false,
         externalRange: { startIndex: 0, endIndex: 0 },
         itemHeight: 30,
       });
-      expect(ctx.setLineDash).toHaveBeenCalledWith([2, 2]);
       expect(ctx.setLineDash).toHaveBeenCalledWith([]);
       expect(ctx.moveTo).toHaveBeenCalledWith(100, 15);
       expect(ctx.lineTo).toHaveBeenCalledWith(800, 15);
+    });
+
+    it('draws support line for highlighted node when isLinked is false and shouldShowSupportLinesWhenUnlinked is false', () => {
+      const { ctx } = makeTrackedCtx();
+      const assembly = makeAssembly();
+      assembly.supportLines = [{ nodeName: 'a', fromX: 100, toX: 800, fromY: 15, toY: 15 }];
+      EpiTreeUtil.drawTree({
+        canvas: makeCanvas(ctx),
+        theme: makeTheme(makeDimFn()),
+        treeAssembly: assembly,
+        stratification: null,
+        zoomLevel: 1,
+        highlightedNodeNames: ['a'],
+        verticalScrollPosition: 0,
+        horizontalScrollPosition: 0,
+        shouldShowDistances: false,
+        shouldShowSupportLinesWhenUnlinked: false,
+        devicePixelRatio: 1,
+        isLinked: false,
+        externalRange: { startIndex: 0, endIndex: 0 },
+        itemHeight: 30,
+      });
+      expect(ctx.moveTo).toHaveBeenCalledWith(100, 15);
+      expect(ctx.lineTo).toHaveBeenCalledWith(800, 15);
+    });
+
+    it('does not draw support lines when isLinked is false and shouldShowSupportLinesWhenUnlinked is false', () => {
+      const { ctx } = makeTrackedCtx();
+      const assembly = makeAssembly();
+      assembly.supportLines = [{ nodeName: 'a', fromX: 100, toX: 800, fromY: 15, toY: 15 }];
+      EpiTreeUtil.drawTree({
+        canvas: makeCanvas(ctx),
+        theme: makeTheme(makeDimFn()),
+        treeAssembly: assembly,
+        stratification: null,
+        zoomLevel: 1,
+        highlightedNodeNames: [],
+        verticalScrollPosition: 0,
+        horizontalScrollPosition: 0,
+        shouldShowDistances: false,
+        shouldShowSupportLinesWhenUnlinked: false,
+        devicePixelRatio: 1,
+        isLinked: false,
+        externalRange: { startIndex: 0, endIndex: 0 },
+        itemHeight: 30,
+      });
+      expect(ctx.setLineDash).not.toHaveBeenCalled();
+      expect(ctx.moveTo).not.toHaveBeenCalled();
+      expect(ctx.lineTo).not.toHaveBeenCalled();
     });
 
     it('draws dashed support lines when isLinked is true', () => {
@@ -2427,6 +2510,7 @@ describe('EpiTreeUtil', () => {
         verticalScrollPosition: 0,
         horizontalScrollPosition: 0,
         shouldShowDistances: false,
+        shouldShowSupportLinesWhenUnlinked: false,
         devicePixelRatio: 1,
         isLinked: true,
         externalRange: { startIndex: 0, endIndex: 0 },
@@ -2454,6 +2538,7 @@ describe('EpiTreeUtil', () => {
         verticalScrollPosition: 0,
         horizontalScrollPosition: 40,
         shouldShowDistances: false,
+        shouldShowSupportLinesWhenUnlinked: false,
         devicePixelRatio: 2,
         isLinked: true,
         externalRange: { startIndex: 0, endIndex: 0 },
@@ -2477,6 +2562,7 @@ describe('EpiTreeUtil', () => {
         verticalScrollPosition: 0,
         horizontalScrollPosition: 40,
         shouldShowDistances: false,
+        shouldShowSupportLinesWhenUnlinked: false,
         devicePixelRatio: 2,
         isLinked: true,
         externalScrollPosition: 10,
@@ -2503,6 +2589,7 @@ describe('EpiTreeUtil', () => {
         verticalScrollPosition: 0,
         horizontalScrollPosition: 0,
         shouldShowDistances: false,
+        shouldShowSupportLinesWhenUnlinked: true,
         devicePixelRatio: 1,
         isLinked: false,
         itemHeight: 30,
@@ -2527,6 +2614,7 @@ describe('EpiTreeUtil', () => {
         verticalScrollPosition: 0,
         horizontalScrollPosition: 0,
         shouldShowDistances: false,
+        shouldShowSupportLinesWhenUnlinked: true,
         devicePixelRatio: 1,
         isLinked: false,
         itemHeight: 30,
@@ -2550,6 +2638,7 @@ describe('EpiTreeUtil', () => {
         verticalScrollPosition: 0,
         horizontalScrollPosition: 0,
         shouldShowDistances: false,
+        shouldShowSupportLinesWhenUnlinked: true,
         devicePixelRatio: 1,
         isLinked: false,
         itemHeight: 30,
@@ -2572,6 +2661,7 @@ describe('EpiTreeUtil', () => {
         verticalScrollPosition: 0,
         horizontalScrollPosition: 0,
         shouldShowDistances: false,
+        shouldShowSupportLinesWhenUnlinked: false,
         devicePixelRatio: 1,
         isLinked: false,
         externalRange: { startIndex: 0, endIndex: 0 },
@@ -2597,6 +2687,7 @@ describe('EpiTreeUtil', () => {
         verticalScrollPosition: 0,
         horizontalScrollPosition: 0,
         shouldShowDistances: true,
+        shouldShowSupportLinesWhenUnlinked: false,
         devicePixelRatio: 1,
         isLinked: false,
         externalRange: { startIndex: 0, endIndex: 0 },
@@ -2622,6 +2713,7 @@ describe('EpiTreeUtil', () => {
         verticalScrollPosition: 0,
         horizontalScrollPosition: 0,
         shouldShowDistances: false,
+        shouldShowSupportLinesWhenUnlinked: false,
         devicePixelRatio: 1,
         isLinked: false,
         externalRange: { startIndex: 0, endIndex: 0 },
@@ -2654,6 +2746,7 @@ describe('EpiTreeUtil', () => {
         verticalScrollPosition: 0,
         horizontalScrollPosition: 0,
         shouldShowDistances: false,
+        shouldShowSupportLinesWhenUnlinked: false,
         devicePixelRatio: 1,
         isLinked: false,
         externalRange: { startIndex: 0, endIndex: 0 },
@@ -2684,6 +2777,7 @@ describe('EpiTreeUtil', () => {
         verticalScrollPosition: 0,
         horizontalScrollPosition: 0,
         shouldShowDistances: false,
+        shouldShowSupportLinesWhenUnlinked: false,
         devicePixelRatio: 1,
         isLinked: false,
         externalRange: { startIndex: 0, endIndex: 0 },
@@ -2709,6 +2803,7 @@ describe('EpiTreeUtil', () => {
         verticalScrollPosition: 0,
         horizontalScrollPosition: 0,
         shouldShowDistances: false,
+        shouldShowSupportLinesWhenUnlinked: false,
         devicePixelRatio: 1,
         isLinked: false,
         externalRange: { startIndex: 0, endIndex: 0 },
@@ -2738,6 +2833,7 @@ describe('EpiTreeUtil', () => {
         verticalScrollPosition: 0,
         horizontalScrollPosition: 0,
         shouldShowDistances: false,
+        shouldShowSupportLinesWhenUnlinked: false,
         devicePixelRatio: 1,
         isLinked: false,
         externalRange: { startIndex: 0, endIndex: 0 },

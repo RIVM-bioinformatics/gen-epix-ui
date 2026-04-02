@@ -86,6 +86,12 @@ export const EpiLineListWidget = ({ linkedScrollSubject, lineListRangeSubject, o
   const setTableColumns = useStore(epiDashboardStore, (state) => state.setColumns);
   const isDataLoading = useStore(epiDashboardStore, (state) => state.isDataLoading);
 
+  useEffect(() => {
+    return () => {
+      lineListRangeSubject.next(undefined);
+    };
+  }, [lineListRangeSubject]);
+
   const onIndexCellClick = useCallback((row: Case) => {
     EpiEventBusManager.instance.emit('openCaseInfoDialog', {
       caseId: row.id,

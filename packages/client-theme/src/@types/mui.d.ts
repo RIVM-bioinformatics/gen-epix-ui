@@ -6,6 +6,8 @@ interface GenEpixTheme {
       font: string;
       fontVariationSettings?: string;
       color: string;
+      supportLineColorLinked: string;
+      supportLineColorUnlinked: string;
       dimFn: (color: string) => string;
     };
     lineList: {

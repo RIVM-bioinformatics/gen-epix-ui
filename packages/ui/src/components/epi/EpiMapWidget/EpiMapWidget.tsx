@@ -69,7 +69,7 @@ echarts.use([GeoComponent, TooltipComponent, LegendComponent, CanvasRenderer, Pi
 type GeoJSON = { features: unknown[] };
 
 type GenEpixPieSeriesOptionEventData = {
-  lspData?: {
+  genEpixData?: {
     caseIds: string[];
     regionId: string;
   };
@@ -232,7 +232,7 @@ export const EpiMapWidget = () => {
         data.push({
           name: 'num-cases',
           value: regionData.numCases,
-          lspData: {
+          genEpixData: {
             caseIds,
             regionId,
           },
@@ -251,7 +251,7 @@ export const EpiMapWidget = () => {
           data.push({
             name: legendaItem.rowValue.full,
             value: numCases,
-            lspData: {
+            genEpixData: {
               caseIds,
               regionId,
             },
@@ -337,7 +337,7 @@ export const EpiMapWidget = () => {
       mouseover: (event: unknown) => {
         try {
           highlightingManager.highlight({
-            caseIds: (event as GenEpixEchartsEvent).data.lspData.caseIds,
+            caseIds: (event as GenEpixEchartsEvent).data.genEpixData.caseIds,
             origin: EPI_ZONE.MAP,
           });
         } catch (_error) {
@@ -352,8 +352,8 @@ export const EpiMapWidget = () => {
       },
       mouseup: (event: unknown) => {
         const mouseEvent = (event as GenEpixEchartsEvent)?.event?.event;
-        const eventCaseIds = (event as GenEpixEchartsEvent).data.lspData.caseIds;
-        const region = regions.find(r => r.id === (event as GenEpixEchartsEvent).data.lspData.regionId);
+        const eventCaseIds = (event as GenEpixEchartsEvent).data.genEpixData.caseIds;
+        const region = regions.find(r => r.id === (event as GenEpixEchartsEvent).data.genEpixData.regionId);
         setEpiContextMenuConfig({
           caseIds: eventCaseIds,
           position: {
@@ -373,7 +373,7 @@ export const EpiMapWidget = () => {
       const foundDataIndexes: number[] = [];
       series.forEach((serie, serieIndex) => {
         serie.data.forEach((dataArray, dataIndex) => {
-          const caseIds = (dataArray as GenEpixPieSeriesOptionEventData).lspData.caseIds;
+          const caseIds = (dataArray as GenEpixPieSeriesOptionEventData).genEpixData.caseIds;
           if (intersection(caseIds, highlighting.caseIds).length) {
             if (!foundSerieIndexes.includes(serieIndex)) {
               foundSerieIndexes.push(serieIndex);
