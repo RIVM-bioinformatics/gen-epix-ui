@@ -71,17 +71,17 @@ type ZoomInMenuItemConfig = {
   rootId?: string;
 };
 
-type EpiTreeProps = {
+type EpiTreeWidgetProps = {
   readonly linkedScrollSubject: Subject<EpiLinkedScrollSubjectValue>;
-  readonly ref: Ref<EpiTreeRef>;
+  readonly ref: Ref<EpiTreeWidgetRef>;
   readonly itemHeight: number;
 };
 
-export interface EpiTreeRef {
+export interface EpiTreeWidgetRef {
   link: () => void;
 }
 
-export const EpiTree = ({ linkedScrollSubject, ref, itemHeight }: EpiTreeProps) => {
+export const EpiTreeWidget = ({ linkedScrollSubject, ref, itemHeight }: EpiTreeWidgetProps) => {
   const theme = useTheme();
   const { t } = useTranslation();
   const scrollbarSize = useScrollbarSize();

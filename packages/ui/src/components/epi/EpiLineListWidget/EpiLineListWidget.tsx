@@ -54,18 +54,18 @@ import {
   type TableRef,
 } from '../../ui/Table';
 
-import { EpiLineListTitle } from './EpiLineListTitle';
-import { EpiLineListPrimaryMenu } from './EpiLineListPrimaryMenu';
-import { EpiLineListSecondaryMenu } from './EpiLineListSecondaryMenu';
-import { useEpiLineListEmitDownloadOptions } from './useEpiLineListEmitDownloadOptions';
+import { EpiLineListWidgetTitle } from './EpiLineListWidgetTitle';
+import { EpiLineListWidgetPrimaryMenu } from './EpiLineListWidgetPrimaryMenu';
+import { EpiLineListWidgetSecondaryMenu } from './EpiLineListWidgetSecondaryMenu';
+import { useEpiLineListWidgetEmitDownloadOptions } from './useEpiLineListWidgetEmitDownloadOptions';
 
-export type EpiLineListProps = {
+export type EpiLineListWidgetProps = {
   readonly linkedScrollSubject: Subject<EpiLinkedScrollSubjectValue>;
   readonly onLink: () => void;
   readonly caseSet?: CaseSet;
 };
 
-export const EpiLineList = ({ linkedScrollSubject, onLink, caseSet }: EpiLineListProps) => {
+export const EpiLineListWidget = ({ linkedScrollSubject, onLink, caseSet }: EpiLineListWidgetProps) => {
   const containerRef = useRef<HTMLDivElement>(null);
   const { t } = useTranslation();
   const theme = useTheme();
@@ -404,7 +404,7 @@ export const EpiLineList = ({ linkedScrollSubject, onLink, caseSet }: EpiLineLis
     };
   }, [highlightingManager, rowHighlightingSubject]);
 
-  useEpiLineListEmitDownloadOptions();
+  useEpiLineListWidgetEmitDownloadOptions();
 
   const updateVisibleIndexDebounced = useDebouncedCallback((index: number) => {
     updateEpiListWidgetData({
@@ -459,9 +459,9 @@ export const EpiLineList = ({ linkedScrollSubject, onLink, caseSet }: EpiLineLis
   return (
     <EpiWidget
       isLoading={isDataLoading}
-      primaryMenu={<EpiLineListPrimaryMenu caseSet={caseSet} />}
-      secondaryMenu={<EpiLineListSecondaryMenu onLink={onLink} />}
-      title={<EpiLineListTitle />}
+      primaryMenu={<EpiLineListWidgetPrimaryMenu caseSet={caseSet} />}
+      secondaryMenu={<EpiLineListWidgetSecondaryMenu onLink={onLink} />}
+      title={<EpiLineListWidgetTitle />}
       zone={EPI_ZONE.LINE_LIST}
     >
       <Box

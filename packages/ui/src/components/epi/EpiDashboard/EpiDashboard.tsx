@@ -71,12 +71,12 @@ import {
   TableFiltersSidebarItemIcon,
   TableFiltersSidebarItem,
 } from '../../ui/Table';
-import { EpiCurve } from '../EpiCurve';
-import { EpiLineList } from '../EpiLineList';
-import { EpiMap } from '../EpiMap';
+import { EpiCurveWidget } from '../EpiCurveWidget';
+import { EpiLineListWidget } from '../EpiLineListWidget';
+import { EpiMapWidget } from '../EpiMapWidget';
 import { EpiStratification } from '../EpiStratification';
-import type { EpiTreeRef } from '../EpiTree';
-import { EpiTree } from '../EpiTree';
+import type { EpiTreeWidgetRef } from '../EpiTreeWidget';
+import { EpiTreeWidget } from '../EpiTreeWidget';
 import { EpiWidgetUnavailable } from '../EpiWidgetUnavailable';
 import {
   EpiFindSimilarCasesDialog,
@@ -122,7 +122,7 @@ export const EpiDashboard = withEpiDashboardStore(({ caseSet }: EpiDashboardProp
   const [isFilterSidebarOpen, setIsFilterSidebarOpen] = useState(false);
   const [isSettingsSidebarOpen, setIsSettingsSidebarOpen] = useState(false);
   const [isDownloadSidebarOpen, setIsDownloadSidebarOpen] = useState(false);
-  const epiTreeRef = useRef<EpiTreeRef>(null);
+  const epiTreeRef = useRef<EpiTreeWidgetRef>(null);
   const linkedScrollSubject = useMemo(() => {
     return new Subject<EpiLinkedScrollSubjectValue>();
   }, []);
@@ -343,11 +343,11 @@ export const EpiDashboard = withEpiDashboardStore(({ caseSet }: EpiDashboardProp
                     />
                   )}
                 >
-                  <EpiCurve />
+                  <EpiCurveWidget />
                 </ErrorBoundary>
               )}
               lineListWidget={(
-                <EpiLineList
+                <EpiLineListWidget
                   caseSet={caseSet}
                   linkedScrollSubject={linkedScrollSubject}
                   onLink={onEpiListLink}
@@ -362,11 +362,11 @@ export const EpiDashboard = withEpiDashboardStore(({ caseSet }: EpiDashboardProp
                     />
                   )}
                 >
-                  <EpiMap />
+                  <EpiMapWidget />
                 </ErrorBoundary>
               )}
               phylogeneticTreeWidget={(
-                <EpiTree
+                <EpiTreeWidget
                   ref={epiTreeRef}
                   linkedScrollSubject={linkedScrollSubject}
                   itemHeight={ConfigManager.instance.config.epiLineList.TABLE_ROW_HEIGHT}

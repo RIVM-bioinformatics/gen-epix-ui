@@ -66,14 +66,14 @@ import { EpiLineListUtil } from '../../../utils/EpiLineListUtil';
 
 echarts.use([TooltipComponent, GridComponent, DataZoomComponent, BarChart, CanvasRenderer]);
 
-type LspEchartsEvent = {
+type GenEpixEchartsEvent = {
   data: [unknown, unknown, string];
   event: {
     event: MouseEvent;
   };
 };
 
-export const EpiCurve = () => {
+export const EpiCurveWidget = () => {
   const { t } = useTranslation();
   const [epiContextMenuConfig, setEpiContextMenuConfig] = useState<EpiContextMenuConfigWithPosition | null>(null);
   const [hasRenderedOnce, setHasRenderedOnce] = useState(false);
@@ -264,7 +264,7 @@ export const EpiCurve = () => {
       } : undefined,
       mouseover: (event: unknown) => {
         highlightingManager.highlight({
-          caseIds: JSON.parse((event as LspEchartsEvent).data[2]) as string[],
+          caseIds: JSON.parse((event as GenEpixEchartsEvent).data[2]) as string[],
           origin: EPI_ZONE.EPI_CURVE,
         });
       },
@@ -277,7 +277,7 @@ export const EpiCurve = () => {
       mouseup: (event: unknown) => {
         setFocussedDate((event as { name: string }).name);
         const mouseEvent = (event as { event: { event: MouseEvent } })?.event?.event;
-        const caseIds = JSON.parse((event as LspEchartsEvent).data[2]) as string[];
+        const caseIds = JSON.parse((event as GenEpixEchartsEvent).data[2]) as string[];
         setEpiContextMenuConfig({
           caseIds,
           position: {
