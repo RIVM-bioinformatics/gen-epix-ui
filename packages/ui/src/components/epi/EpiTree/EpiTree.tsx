@@ -89,7 +89,6 @@ export const EpiTree = ({ linkedScrollSubject, ref, itemHeight }: EpiTreeProps) 
   const containerRef = useRef<HTMLDivElement>(null);
   const { dimensions: { width, height } } = useDimensions(containerRef);
   const [treeCanvas, setTreeCanvas] = useState<HTMLCanvasElement>();
-  const [headerCanvas, setHeaderCanvas] = useState<HTMLCanvasElement>();
   const highlightingManager = useMemo(() => EpiHighlightingManager.instance, []);
   const canvasScrollSubject = useMemo<Subject<{ x: number; y: number }>>(() => new Subject({ x: 0, y: 0 }), []);
   const epiDashboardStore = useContext(EpiDashboardStoreContext);
@@ -208,12 +207,13 @@ export const EpiTree = ({ linkedScrollSubject, ref, itemHeight }: EpiTreeProps) 
   const isTreeUnavailable = hasToManyResultsToShowTree || !isCaseDataLoading && ((!isLoading && !!treeError) || !hasEnoughSequencesToShowTree || tree?.maxBranchLength?.toNumber() === 0 || tree?.size === 0 || !treeConfiguration || (!isLoading && tree === null));
   const shouldShowTree = !hasToManyResultsToShowTree && !!treeConfiguration && !isCaseDataLoading && !treeError && !isTreeLoading && width > 0 && tree?.size > 0 && hasEnoughSequencesToShowTree;
 
+  const headerHeight = ConfigManager.instance.config.epiTree.HEADER_HEIGHT;
   const treeCanvasWidth = width;
-  const treeCanvasHeight = height - ConfigManager.instance.config.epiTree.HEADER_HEIGHT;
+  const treeCanvasHeight = Math.max(0, height - headerHeight);
+  const combinedCanvasHeight = Math.max(0, height);
 
   const treeWidthMinusPadding = treeCanvasWidth - (2 * ConfigManager.instance.config.epiTree.TREE_PADDING);
   const pixelToGeneticDistanceRatio = tree?.maxBranchLength ? treeWidthMinusPadding / tree.maxBranchLength.toNumber() : null;
-  // Note: There is some magic here, because of the position: sticky for the table header
   const treeHeight = tree?.size ? (tree.size * itemHeight) + scrollbarSize : itemHeight;
 
   useEffect(() => {
@@ -313,15 +313,15 @@ export const EpiTree = ({ linkedScrollSubject, ref, itemHeight }: EpiTreeProps) 
     updateEpiTreeWidgetDataDebounced();
   }, [updateEpiTreeWidgetData, zoomLevelSubject, scrollPositionSubject, updateEpiTreeWidgetDataDebounced]);
 
-  const tickerMarkScale = useMemo(() => {
+  const getTickerMarkScale = useCallback((zoomLevel: number) => {
     return EpiTreeUtil.getTickMarkScale({
       treeWidthMinusPadding,
       geneticTreeWidth: tree?.maxBranchLength,
       minGeneticScaleUnit: Math.min(EpiTreeUtil.getMinGeneticScaleUnit(tree), treeConfiguration?.geneticDistanceProtocol?.min_scale_unit ?? Infinity),
       // minGeneticScaleUnit: treeConfiguration?.geneticDistanceProtocol?.min_scale_unit,
-      zoomLevel: zoomLevelSubject.data,
+      zoomLevel,
     });
-  }, [treeWidthMinusPadding, tree, treeConfiguration?.geneticDistanceProtocol?.min_scale_unit, zoomLevelSubject]);
+  }, [treeWidthMinusPadding, tree, treeConfiguration?.geneticDistanceProtocol?.min_scale_unit]);
 
   const onEpiContextMenuClose = useCallback(() => {
     setEpiContextMenuConfig(null);
@@ -438,6 +438,7 @@ export const EpiTree = ({ linkedScrollSubject, ref, itemHeight }: EpiTreeProps) 
 
     let animationFrameId: number;
     let zoomLevel: number = zoomLevelSubject.data;
+    let tickerMarkScale = getTickerMarkScale(zoomLevel);
     let highlighting: Highlighting = internalHighlightingSubject.data;
     let externalScrollPosition = linkedScrollSubject.data?.position ?? 0;
     let horizontalScrollPosition = scrollPositionSubject.data.horizontal;
@@ -446,7 +447,7 @@ export const EpiTree = ({ linkedScrollSubject, ref, itemHeight }: EpiTreeProps) 
     const render = () => {
       cancelAnimationFrame(animationFrameId);
       animationFrameId = requestAnimationFrame(() => {
-        EpiTreeUtil.drawTreeCanvas({ canvas: treeCanvas, theme, geneticTreeWidth: tree?.maxBranchLength, treeAssembly, stratification, zoomLevel, isLinked, horizontalScrollPosition, verticalScrollPosition, treeCanvasWidth, treeCanvasHeight, pixelToGeneticDistanceRatio, tickerMarkScale, highlightedNodeNames: highlighting?.caseIds, shouldShowDistances: isShowDistancesEnabled, devicePixelRatio, externalScrollPosition });
+        EpiTreeUtil.drawTreeCanvas({ canvas: treeCanvas, theme, geneticTreeWidth: tree?.maxBranchLength, treeAssembly, stratification, zoomLevel, isLinked, horizontalScrollPosition, verticalScrollPosition, treeCanvasWidth, treeCanvasHeight, headerHeight, pixelToGeneticDistanceRatio, tickerMarkScale, highlightedNodeNames: highlighting?.caseIds, shouldShowDistances: isShowDistancesEnabled, devicePixelRatio, externalScrollPosition });
       });
     };
 
@@ -471,6 +472,7 @@ export const EpiTree = ({ linkedScrollSubject, ref, itemHeight }: EpiTreeProps) 
 
     const unsubscribeFromZoomLevelSubject = zoomLevelSubject.subscribe((data) => {
       zoomLevel = data;
+      tickerMarkScale = getTickerMarkScale(data);
       render();
     });
 
@@ -483,7 +485,7 @@ export const EpiTree = ({ linkedScrollSubject, ref, itemHeight }: EpiTreeProps) 
       unsubscribeFromZoomLevelSubject();
       cancelAnimationFrame(animationFrameId);
     };
-  }, [treeCanvasHeight, treeCanvas, internalHighlightingSubject, pixelToGeneticDistanceRatio, stratification, theme, tickerMarkScale, treeAssembly, treeCanvasWidth, scrollPositionSubject, width, zoomLevelSubject, isLinked, isShowDistancesEnabled, devicePixelRatio, tree?.maxBranchLength, tree, linkedScrollSubject]);
+  }, [headerHeight, treeCanvasHeight, treeCanvas, internalHighlightingSubject, pixelToGeneticDistanceRatio, stratification, theme, getTickerMarkScale, treeAssembly, treeCanvasWidth, scrollPositionSubject, width, zoomLevelSubject, isLinked, isShowDistancesEnabled, devicePixelRatio, tree?.maxBranchLength, tree, linkedScrollSubject]);
 
   // Setup canvas event listeners (note: must be in a separate useEffect to prevent render loop)
   useEffect(() => {
@@ -501,7 +503,23 @@ export const EpiTree = ({ linkedScrollSubject, ref, itemHeight }: EpiTreeProps) 
     };
     let followMouse = false;
 
+    const clearHighlighting = () => {
+      if (internalHighlightingSubject.data?.caseIds?.length) {
+        internalHighlightingSubject.next({
+          caseIds: [],
+          origin: EPI_ZONE.TREE,
+        });
+      }
+    };
+
+    const isEventInHeader = (event: MouseEvent | WheelEvent) => event.offsetY < headerHeight;
+
     const onMouseDown = (event: MouseEvent) => {
+      if (isEventInHeader(event)) {
+        treeCanvas.style.cursor = 'default';
+        return;
+      }
+
       // store the current mouse position (to be used on mouse move for scrolling)
       pos = {
         x: event.clientX,
@@ -513,6 +531,13 @@ export const EpiTree = ({ linkedScrollSubject, ref, itemHeight }: EpiTreeProps) 
     };
 
     const onMouseMove = (event: MouseEvent) => {
+      if (isEventInHeader(event)) {
+        followMouse = false;
+        treeCanvas.style.cursor = 'default';
+        clearHighlighting();
+        return;
+      }
+
       if (followMouse) {
         treeCanvas.style.cursor = 'move';
 
@@ -541,19 +566,17 @@ export const EpiTree = ({ linkedScrollSubject, ref, itemHeight }: EpiTreeProps) 
         });
       } else {
         treeCanvas.style.cursor = 'default';
-        // remove highlighting (only there is highlighting to prevent a render loop)
-        if (internalHighlightingSubject.data?.caseIds?.length) {
-          internalHighlightingSubject.next({
-            caseIds: [],
-            origin: EPI_ZONE.TREE,
-          });
-        }
+        clearHighlighting();
       }
     };
 
     const onMouseUp = (event: MouseEvent) => {
       // stop following the mouse for scrolling
       followMouse = false;
+
+      if (isEventInHeader(event)) {
+        return;
+      }
 
       // Handle the click when the user clicked a path in the canvas
       const pathProperties = getPathPropertiesFromCanvas(treeCanvas, event);
@@ -591,6 +614,10 @@ export const EpiTree = ({ linkedScrollSubject, ref, itemHeight }: EpiTreeProps) 
     const onMouseWheel = (event: WheelEvent) => {
       event.preventDefault();
 
+      if (isEventInHeader(event)) {
+        return;
+      }
+
       if (event.shiftKey) {
         updateScrollPosition({ positionX: canvasScrollSubject.data.x + (event.deltaX || event.deltaY), positionY: canvasScrollSubject.data.y, internalZoomLevel: zoomLevel });
         return;
@@ -604,9 +631,10 @@ export const EpiTree = ({ linkedScrollSubject, ref, itemHeight }: EpiTreeProps) 
 
       const zoomSpeed = Math.min(MAX_ZOOM_SPEED, Math.max(MIN_ZOOM_SPEED, treeHeight / treeCanvasHeight * 0.2));
       const newZoomLevel = Math.min(MAX_ZOOM_LEVEL, Math.max(MIN_ZOOM_LEVEL, zoomLevel + (event.deltaY > 0 ? zoomSpeed : -zoomSpeed)));
+      const treeBodyOffsetY = event.offsetY - headerHeight;
 
       const newScrollPositionY = EpiTreeUtil.getNewScrollPositionForZoomLevel({
-        eventOffset: event.offsetY,
+        eventOffset: treeBodyOffsetY,
         scrollPosition: canvasScrollSubject.data.y,
         dimensionSize: treeHeight,
         currentZoomLevel: zoomLevel,
@@ -631,10 +659,7 @@ export const EpiTree = ({ linkedScrollSubject, ref, itemHeight }: EpiTreeProps) 
       followMouse = false;
 
       // reset highlighting (because mouse move event may not have triggered it correctly)
-      internalHighlightingSubject.next({
-        caseIds: [],
-        origin: EPI_ZONE.TREE,
-      });
+      clearHighlighting();
     };
 
     const unsubscribeFromZoomLevelSubject = zoomLevelSubject.subscribe((data) => {
@@ -655,57 +680,7 @@ export const EpiTree = ({ linkedScrollSubject, ref, itemHeight }: EpiTreeProps) 
       treeCanvas.removeEventListener('wheel', onMouseWheel);
       unsubscribeFromZoomLevelSubject();
     };
-  }, [treeCanvasHeight, treeCanvas, getPathPropertiesFromCanvas, internalHighlightingSubject, updateScrollPosition, scrollContainerRef, treeHeight, zoomLevelSubject, canvasScrollSubject, treeCanvasWidth, linkedScrollSubject]);
-
-  // Setup header canvas
-  useEffect(() => {
-    if (!headerCanvas || !tree) {
-      return;
-    }
-
-    let horizontalScrollPosition = scrollPositionSubject.data.horizontal;
-    let animationFrameId: number;
-    let zoomLevel = zoomLevelSubject.data;
-
-    const render = () => {
-      animationFrameId = requestAnimationFrame(() => {
-        cancelAnimationFrame(animationFrameId);
-        const canvas = headerCanvas;
-        const ctx = canvas.getContext('2d');
-        canvas.height = canvas.clientHeight * devicePixelRatio;
-        canvas.width = canvas.clientWidth * devicePixelRatio;
-        EpiTreeUtil.drawGuides({ canvas, geneticTreeWidth: tree?.maxBranchLength, tickerMarkScale, pixelToGeneticDistanceRatio, horizontalScrollPosition, paddingTop: ConfigManager.instance.config.epiTree.HEADER_HEIGHT * 0.7, paddingBottom: 0, zoomLevel, devicePixelRatio });
-        EpiTreeUtil.drawGuides({ canvas, geneticTreeWidth: tree?.maxBranchLength, tickerMarkScale, pixelToGeneticDistanceRatio, horizontalScrollPosition, paddingTop: 0, paddingBottom: ConfigManager.instance.config.epiTree.HEADER_HEIGHT * 0.7, zoomLevel, devicePixelRatio });
-        EpiTreeUtil.drawScale({ canvas, theme, tickerMarkScale, geneticTreeWidth: tree?.maxBranchLength, pixelToGeneticDistanceRatio, zoomLevel, devicePixelRatio, horizontalScrollPosition });
-
-        // Draw horizontal top divider
-        EpiTreeUtil.drawDivider({ canvas, y: 0, devicePixelRatio });
-        // Draw horizontal bottom divider
-        EpiTreeUtil.drawDivider({ canvas, y: ConfigManager.instance.config.epiTree.HEADER_HEIGHT - 1, devicePixelRatio });
-
-        ctx.translate(-0.5, -0.5);
-      });
-    };
-    const unsubscribeFromScrollPositionSubject = scrollPositionSubject.subscribe((data, previousData) => {
-      if (data.horizontal === previousData.horizontal) {
-        return;
-      }
-      horizontalScrollPosition = data.horizontal;
-      render();
-    });
-
-    const unsubscribeFromZoomLevelSubject = zoomLevelSubject.subscribe((data) => {
-      zoomLevel = data;
-      render();
-    });
-
-    render();
-    return () => {
-      unsubscribeFromScrollPositionSubject();
-      unsubscribeFromZoomLevelSubject();
-      cancelAnimationFrame(animationFrameId);
-    };
-  }, [headerCanvas, pixelToGeneticDistanceRatio, theme, tickerMarkScale, zoomLevelSubject, devicePixelRatio, scrollPositionSubject, tree?.maxBranchLength, tree]);
+  }, [headerHeight, treeCanvasHeight, treeCanvas, getPathPropertiesFromCanvas, internalHighlightingSubject, updateScrollPosition, scrollContainerRef, treeHeight, zoomLevelSubject, canvasScrollSubject, treeCanvasWidth, linkedScrollSubject]);
 
   const onShowDetailsSelectionMenuItemClick = useCallback((onMenuClose: () => void) => {
     EpiEventBusManager.instance.emit('openCaseInfoDialog', {
@@ -938,35 +913,11 @@ export const EpiTree = ({ linkedScrollSubject, ref, itemHeight }: EpiTreeProps) 
             takingLongerTimeoutMs={ConfigManager.instance.config.epiTree.TAKING_LONGER_TIMEOUT_MS}
           />
         )}
-        {!isTreeUnavailable && shouldShowTree && (
-          <Box
-            sx={{
-              height: ConfigManager.instance.config.epiTree.HEADER_HEIGHT,
-              position: 'absolute',
-              background: theme.palette.background.paper,
-              width: treeCanvasWidth,
-              top: 0,
-              zIndex: 1,
-            }}
-          >
-            <Box
-              ref={setHeaderCanvas}
-              aria-hidden
-              component={'canvas'}
-              role={'figure'}
-              sx={{
-                width: treeCanvasWidth,
-                height: ConfigManager.instance.config.epiTree.HEADER_HEIGHT,
-              }}
-            />
-          </Box>
-        )}
         <Box
           ref={scrollContainerRef}
           sx={{
-            paddingTop: `${ConfigManager.instance.config.epiTree.HEADER_HEIGHT}px`,
             position: 'absolute',
-            height,
+            height: combinedCanvasHeight,
             width,
             overflowY: 'hidden',
           }}
@@ -979,7 +930,7 @@ export const EpiTree = ({ linkedScrollSubject, ref, itemHeight }: EpiTreeProps) 
               role={'figure'}
               sx={{
                 width: treeCanvasWidth,
-                height: treeCanvasHeight,
+                height: combinedCanvasHeight,
               }}
             />
           )}

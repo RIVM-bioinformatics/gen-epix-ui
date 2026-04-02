@@ -536,10 +536,12 @@ export class EpiTreeUtil {
     shouldShowDistances: boolean;
     devicePixelRatio: number;
     isLinked: boolean;
-    externalScrollPosition: number;
+    externalScrollPosition?: number;
+    headerHeight?: number;
   }): void {
-    const { canvas, theme, treeAssembly, stratification, zoomLevel, verticalScrollPosition, horizontalScrollPosition, shouldShowDistances, devicePixelRatio, isLinked, externalScrollPosition, highlightedNodeNames = [] } = params;
+    const { canvas, theme, treeAssembly, stratification, zoomLevel, verticalScrollPosition, horizontalScrollPosition, shouldShowDistances, devicePixelRatio, isLinked, externalScrollPosition = 0, highlightedNodeNames = [], headerHeight = 0 } = params;
     const ctx = canvas.getContext('2d');
+    const bodyStartY = headerHeight * devicePixelRatio;
     const setRegularTransform = () => {
       ctx.setTransform(
         (1 / zoomLevel) * devicePixelRatio, // The scale factor(X direction)
@@ -547,7 +549,7 @@ export class EpiTreeUtil {
         0, // The skew factor (Y-axis)
         (1 / zoomLevel) * devicePixelRatio, // The scale factor(Y direction)
         -horizontalScrollPosition + 0.5, // The translation (X direction)
-        -verticalScrollPosition + 0.5, // The translation (Y direction)
+        -verticalScrollPosition + (headerHeight * devicePixelRatio) + 0.5, // The translation (Y direction)
       );
     };
     const setTransFormForSupportLine = () => {
@@ -557,70 +559,82 @@ export class EpiTreeUtil {
         0, // The skew factor (Y-axis)
         devicePixelRatio, // The scale factor(Y direction)
         -horizontalScrollPosition + 0.5, // The translation (X direction)
-        0.5, // The translation (Y direction)
+        (headerHeight * devicePixelRatio) + 0.5, // The translation (Y direction)
       );
     };
-    setRegularTransform();
-
-    ctx.fillStyle = 'black';
-    ctx.strokeStyle = 'black';
-    ctx.textAlign = 'center';
-    ctx.font = theme['gen-epix'].tree.font;
-    ctx.lineWidth = 1;
-
-    treeAssembly.verticalAncestorTreeLines.forEach(({ shape, nodeNames }) => {
-      ctx.strokeStyle = EpiTreeUtil.getFillStyle(theme['gen-epix'].tree.color, theme['gen-epix'].tree.dimFn, highlightedNodeNames, nodeNames);
-      ctx.stroke(shape);
-    });
-    treeAssembly.horizontalAncestorTreeLines.forEach(({ shape, nodeNames }) => {
-      ctx.strokeStyle = EpiTreeUtil.getFillStyle(theme['gen-epix'].tree.color, theme['gen-epix'].tree.dimFn, highlightedNodeNames, nodeNames);
-      ctx.stroke(shape);
-    });
-
-    treeAssembly.supportLines.forEach(({ nodeName, fromX, toX, fromY, toY }) => {
-      if (isLinked) {
-        ctx.setLineDash([1, 4]);
-      } else {
-        ctx.setLineDash([2, 2]);
-      }
-      ctx.beginPath();
-      ctx.strokeStyle = EpiTreeUtil.getFillStyle(theme['gen-epix'].tree.color, theme['gen-epix'].tree.dimFn, highlightedNodeNames, nodeName);
-      // if (isLinked) {
-      // } else {
-      //   ctx.strokeStyle = EpiTreeUtil.getFillStyle(ConfigManager.instance.config.epiTree.REGULAR_FILL_COLOR_SUPPORT_LINE, theme['gen-epix'].tree.dimFn, highlightedNodeNames, nodeName);
-      // }
-      ctx.moveTo(fromX, fromY);
-      setTransFormForSupportLine();
-      ctx.lineTo(toX + (horizontalScrollPosition / devicePixelRatio), toY - externalScrollPosition);
+    const drawTreeElements = () => {
       setRegularTransform();
-      ctx.stroke();
-      ctx.setLineDash([]);
-    });
 
-    if (shouldShowDistances) {
-      treeAssembly.distanceTexts.forEach(({ x, y, text, nodeNames }) => {
-        const isHighlighted = highlightedNodeNames.length && intersection(nodeNames, highlightedNodeNames).length > 0;
-        if (isHighlighted) {
-          ctx.fillStyle = theme['gen-epix'].tree.color;
-          ctx.fillText(text, x, y);
-        }
+      ctx.fillStyle = 'black';
+      ctx.strokeStyle = 'black';
+      ctx.textAlign = 'center';
+      ctx.font = theme['gen-epix'].tree.font;
+      ctx.lineWidth = 1;
+
+      treeAssembly.verticalAncestorTreeLines.forEach(({ shape, nodeNames }) => {
+        ctx.strokeStyle = EpiTreeUtil.getFillStyle(theme['gen-epix'].tree.color, theme['gen-epix'].tree.dimFn, highlightedNodeNames, nodeNames);
+        ctx.stroke(shape);
       });
+      treeAssembly.horizontalAncestorTreeLines.forEach(({ shape, nodeNames }) => {
+        ctx.strokeStyle = EpiTreeUtil.getFillStyle(theme['gen-epix'].tree.color, theme['gen-epix'].tree.dimFn, highlightedNodeNames, nodeNames);
+        ctx.stroke(shape);
+      });
+
+      treeAssembly.supportLines.forEach(({ nodeName, fromX, toX, fromY, toY }) => {
+        if (isLinked) {
+          ctx.setLineDash([1, 4]);
+        } else {
+          ctx.setLineDash([2, 2]);
+        }
+        ctx.beginPath();
+        ctx.strokeStyle = EpiTreeUtil.getFillStyle(theme['gen-epix'].tree.color, theme['gen-epix'].tree.dimFn, highlightedNodeNames, nodeName);
+        ctx.moveTo(fromX, fromY);
+        setTransFormForSupportLine();
+        ctx.lineTo(toX + (horizontalScrollPosition / devicePixelRatio), toY - externalScrollPosition);
+        setRegularTransform();
+        ctx.stroke();
+        ctx.setLineDash([]);
+      });
+
+      if (shouldShowDistances) {
+        treeAssembly.distanceTexts.forEach(({ x, y, text, nodeNames }) => {
+          const isHighlighted = highlightedNodeNames.length && intersection(nodeNames, highlightedNodeNames).length > 0;
+          if (isHighlighted) {
+            ctx.fillStyle = theme['gen-epix'].tree.color;
+            ctx.fillText(text, x, y);
+          }
+        });
+      }
+
+      treeAssembly.ancestorNodes.forEach(({ shape, nodeNames }) => {
+        ctx.fillStyle = EpiTreeUtil.getFillStyle(theme['gen-epix'].tree.color, theme['gen-epix'].tree.dimFn, highlightedNodeNames, nodeNames);
+        ctx.fill(shape);
+      });
+
+      treeAssembly.leafTreeLines.forEach(({ shape, nodeName }) => {
+        ctx.strokeStyle = EpiTreeUtil.getFillStyle(theme['gen-epix'].tree.color, theme['gen-epix'].tree.dimFn, highlightedNodeNames, nodeName);
+        ctx.stroke(shape);
+      });
+
+      treeAssembly.leafNodes.forEach(({ shape, nodeName }) => {
+        ctx.fillStyle = EpiTreeUtil.getFillStyle(stratification?.caseIdColors?.[nodeName] ?? theme['gen-epix'].tree.color, theme['gen-epix'].tree.dimFn, highlightedNodeNames, nodeName);
+        ctx.fill(shape);
+      });
+    };
+
+    if (headerHeight > 0) {
+      ctx.save();
+      ctx.setTransform(1, 0, 0, 1, 0, 0);
+      ctx.beginPath();
+      ctx.rect(0, bodyStartY, canvas.width, Math.max(0, canvas.height - bodyStartY));
+      ctx.clip();
+      drawTreeElements();
+      ctx.restore();
+      setRegularTransform();
+      return;
     }
 
-    treeAssembly.ancestorNodes.forEach(({ shape, nodeNames }) => {
-      ctx.fillStyle = EpiTreeUtil.getFillStyle(theme['gen-epix'].tree.color, theme['gen-epix'].tree.dimFn, highlightedNodeNames, nodeNames);
-      ctx.fill(shape);
-    });
-
-    treeAssembly.leafTreeLines.forEach(({ shape, nodeName }) => {
-      ctx.strokeStyle = EpiTreeUtil.getFillStyle(theme['gen-epix'].tree.color, theme['gen-epix'].tree.dimFn, highlightedNodeNames, nodeName);
-      ctx.stroke(shape);
-    });
-
-    treeAssembly.leafNodes.forEach(({ shape, nodeName }) => {
-      ctx.fillStyle = EpiTreeUtil.getFillStyle(stratification?.caseIdColors?.[nodeName] ?? theme['gen-epix'].tree.color, theme['gen-epix'].tree.dimFn, highlightedNodeNames, nodeName);
-      ctx.fill(shape);
-    });
+    drawTreeElements();
   }
 
   /**
@@ -685,14 +699,15 @@ export class EpiTreeUtil {
     horizontalScrollPosition: number;
     treeCanvasWidth: number;
     treeCanvasHeight: number;
+    headerHeight?: number;
     pixelToGeneticDistanceRatio: number;
     tickerMarkScale: TickerMarkScale;
     shouldShowDistances: boolean;
     devicePixelRatio: number;
     geneticTreeWidth: Decimal;
-    externalScrollPosition: number;
+    externalScrollPosition?: number;
   }): void {
-    const { devicePixelRatio, geneticTreeWidth, canvas, theme, treeAssembly, stratification, zoomLevel, isLinked, highlightedNodeNames, horizontalScrollPosition, verticalScrollPosition, treeCanvasWidth, treeCanvasHeight, tickerMarkScale, pixelToGeneticDistanceRatio, shouldShowDistances, externalScrollPosition } = params;
+    const { devicePixelRatio, geneticTreeWidth, canvas, theme, treeAssembly, stratification, zoomLevel, isLinked, highlightedNodeNames, horizontalScrollPosition, verticalScrollPosition, treeCanvasWidth, treeCanvasHeight, headerHeight = 0, tickerMarkScale, pixelToGeneticDistanceRatio, shouldShowDistances, externalScrollPosition = 0 } = params;
     const ctx = canvas.getContext('2d');
     ctx.reset();
     canvas.width = canvas.clientWidth * devicePixelRatio;
@@ -700,9 +715,18 @@ export class EpiTreeUtil {
     ctx.imageSmoothingEnabled = zoomLevel > 1;
     ctx.imageSmoothingQuality = 'high';
 
-    EpiTreeUtil.drawBackground({ canvas, theme, treeCanvasWidth, treeCanvasHeight, devicePixelRatio });
-    EpiTreeUtil.drawGuides({ canvas, geneticTreeWidth, tickerMarkScale, pixelToGeneticDistanceRatio, devicePixelRatio, horizontalScrollPosition, zoomLevel });
-    EpiTreeUtil.drawTree({ canvas, theme, treeAssembly, stratification, highlightedNodeNames, zoomLevel, isLinked, horizontalScrollPosition, verticalScrollPosition, shouldShowDistances, devicePixelRatio, externalScrollPosition });
+    EpiTreeUtil.drawBackground({ canvas, theme, treeCanvasWidth, treeCanvasHeight: treeCanvasHeight + headerHeight, devicePixelRatio });
+    EpiTreeUtil.drawGuides({ canvas, geneticTreeWidth, tickerMarkScale, pixelToGeneticDistanceRatio, devicePixelRatio, horizontalScrollPosition, zoomLevel, startY: headerHeight, endY: headerHeight + treeCanvasHeight });
+
+    if (headerHeight > 0) {
+      EpiTreeUtil.drawGuides({ canvas, geneticTreeWidth, tickerMarkScale, pixelToGeneticDistanceRatio, devicePixelRatio, horizontalScrollPosition, zoomLevel, startY: headerHeight * 0.7, endY: headerHeight });
+      EpiTreeUtil.drawGuides({ canvas, geneticTreeWidth, tickerMarkScale, pixelToGeneticDistanceRatio, devicePixelRatio, horizontalScrollPosition, zoomLevel, startY: 0, endY: headerHeight * 0.3 });
+      EpiTreeUtil.drawScale({ canvas, theme, tickerMarkScale, geneticTreeWidth, pixelToGeneticDistanceRatio, zoomLevel, devicePixelRatio, horizontalScrollPosition });
+      EpiTreeUtil.drawDivider({ canvas, y: 0, devicePixelRatio });
+      EpiTreeUtil.drawDivider({ canvas, y: headerHeight - 1, devicePixelRatio });
+    }
+
+    EpiTreeUtil.drawTree({ canvas, theme, treeAssembly, stratification, highlightedNodeNames, zoomLevel, isLinked, horizontalScrollPosition, verticalScrollPosition, shouldShowDistances, devicePixelRatio, externalScrollPosition, headerHeight });
   }
 
   /**
@@ -766,8 +790,9 @@ export class EpiTreeUtil {
    * @param params.zoomLevel - Current zoom level.
    * @param params.horizontalScrollPosition - Current horizontal scroll offset in pixels.
    */
-  public static drawGuides(params: { canvas: HTMLCanvasElement; tickerMarkScale: TickerMarkScale; geneticTreeWidth: Decimal; pixelToGeneticDistanceRatio: number; devicePixelRatio: number; paddingTop?: number; paddingBottom?: number; zoomLevel: number; horizontalScrollPosition: number }): void {
-    const { canvas, geneticTreeWidth, tickerMarkScale, pixelToGeneticDistanceRatio, zoomLevel, devicePixelRatio, paddingTop = 0, paddingBottom = 0, horizontalScrollPosition = 0 } = params;
+  public static drawGuides(params: { canvas: HTMLCanvasElement; tickerMarkScale: TickerMarkScale; geneticTreeWidth: Decimal; pixelToGeneticDistanceRatio: number; devicePixelRatio: number; paddingTop?: number; paddingBottom?: number; startY?: number; endY?: number; zoomLevel: number; horizontalScrollPosition: number }): void {
+    const { canvas, geneticTreeWidth, tickerMarkScale, pixelToGeneticDistanceRatio, zoomLevel, devicePixelRatio, paddingTop = 0, paddingBottom = 0, startY, endY, horizontalScrollPosition = 0 } = params;
+    const canvasHeight = canvas.clientHeight || canvas.height / devicePixelRatio;
 
     EpiTreeUtil.draw(canvas, devicePixelRatio, (ctx) => {
       ctx.strokeStyle = ConfigManager.instance.config.epiTree.REGULAR_FILL_COLOR_SUPPORT_LINE;
@@ -782,8 +807,8 @@ export class EpiTreeUtil {
         callback: (x) => {
           // Draw the guide lines
           ctx.beginPath();
-          ctx.moveTo(x, paddingTop);
-          ctx.lineTo(x, canvas.height - paddingBottom);
+          ctx.moveTo(x, startY ?? paddingTop);
+          ctx.lineTo(x, endY ?? (canvasHeight - paddingBottom));
           ctx.stroke();
           ctx.closePath();
         },
@@ -810,6 +835,7 @@ export class EpiTreeUtil {
   public static drawScale(params: { canvas: HTMLCanvasElement; theme: Theme; tickerMarkScale: TickerMarkScale; geneticTreeWidth: Decimal; pixelToGeneticDistanceRatio: number; zoomLevel: number; devicePixelRatio: number; horizontalScrollPosition: number }): void {
     const { canvas, theme, tickerMarkScale, geneticTreeWidth, pixelToGeneticDistanceRatio, devicePixelRatio, zoomLevel, horizontalScrollPosition = 0 } = params;
     EpiTreeUtil.draw(canvas, devicePixelRatio, (ctx) => {
+      ctx.fillStyle = theme.palette.text.primary;
       EpiTreeUtil.forEachScaleLine({
         tickerMarkScale,
         geneticTreeWidth,
