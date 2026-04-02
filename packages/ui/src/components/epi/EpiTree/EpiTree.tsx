@@ -116,7 +116,6 @@ export const EpiTree = ({ linkedScrollSubject, ref, itemHeight }: EpiTreeProps) 
   const [extraLeafInfoId, setExtraLeafInfoId] = useState<string>(null);
   const [treeConfiguration, setTreeConfiguration] = useState<TreeConfiguration>(epiDashboardStore.getState().epiTreeWidgetData.treeConfiguration);
   const [treeAssembly, setTreeAssembly] = useState<TreeAssembly>(null);
-  const [zoomLevel, setZoomLevel] = useState<number>(!isNaN(epiDashboardStore.getState().epiTreeWidgetData.zoomLevel) ? epiDashboardStore.getState().epiTreeWidgetData.zoomLevel : 1);
   const [devicePixelRatio, setDevicePixelRatio] = useState<number>(DevicePixelRatioManager.instance.data);
   const [isLinked, setIsLinked] = useState(true);
   const internalHighlightingSubject = useMemo(() => new Subject<Highlighting>({
@@ -124,6 +123,7 @@ export const EpiTree = ({ linkedScrollSubject, ref, itemHeight }: EpiTreeProps) 
     origin: null,
   }), []);
 
+  const zoomLevelSubject = useMemo(() => new Subject<number>(!isNaN(epiDashboardStore.getState().epiTreeWidgetData.zoomLevel) ? epiDashboardStore.getState().epiTreeWidgetData.zoomLevel : 1), [epiDashboardStore]);
   const scrollPositionSubject = useMemo(() => new Subject<{ horizontal: number; vertical: number }>({
     horizontal: !isNaN(epiDashboardStore.getState().epiTreeWidgetData.horizontalScrollPosition) ? epiDashboardStore.getState().epiTreeWidgetData.horizontalScrollPosition : 0,
     vertical: !isNaN(epiDashboardStore.getState().epiTreeWidgetData.verticalScrollPosition) ? epiDashboardStore.getState().epiTreeWidgetData.verticalScrollPosition : 0,
@@ -172,10 +172,10 @@ export const EpiTree = ({ linkedScrollSubject, ref, itemHeight }: EpiTreeProps) 
   }, [highlightingManager, internalHighlightingSubject]);
 
   useEffect(() => {
-    if (isLinked && zoomLevel !== 1) {
+    if (isLinked && zoomLevelSubject.data !== 1) {
       setIsLinked(false);
     }
-  }, [isLinked, zoomLevel]);
+  }, [isLinked, zoomLevelSubject]);
 
   const caseIds = useMemo(() => filteredCases.map(c => c.id).sort(), [filteredCases]);
 
@@ -254,7 +254,12 @@ export const EpiTree = ({ linkedScrollSubject, ref, itemHeight }: EpiTreeProps) 
     });
   }, ConfigManager.instance.config.epiTree.LINKED_SCROLL_DEBOUNCE_DELAY_MS, { leading: true, trailing: true });
 
-  const updateScrollPosition = useCallback((positionX: number, positionY: number, internalZoomLevel: number) => {
+  const updateScrollPosition = useCallback((params: { positionX: number; positionY: number; internalZoomLevel: number }) => {
+    const { positionX, positionY, internalZoomLevel } = params;
+    if (internalZoomLevel === 0) {
+      throw new Error('internalZoomLevel cannot be 0');
+    }
+
     const { newPositionX, newPositionY } = EpiTreeUtil.getSanitizedScrollPosition({
       devicePixelRatio,
       internalZoomLevel,
@@ -279,10 +284,10 @@ export const EpiTree = ({ linkedScrollSubject, ref, itemHeight }: EpiTreeProps) 
   useEffect(() => {
     if (sortByField && isLinked) {
       setIsLinked(false);
-      setZoomLevel(ConfigManager.instance.config.epiTree.INITIAL_UNLINKED_ZOOM_LEVEL);
-      updateScrollPosition(0, 0, 0);
+      zoomLevelSubject.next(ConfigManager.instance.config.epiTree.INITIAL_UNLINKED_ZOOM_LEVEL);
+      updateScrollPosition({ positionX: 0, positionY: 0, internalZoomLevel: ConfigManager.instance.config.epiTree.INITIAL_UNLINKED_ZOOM_LEVEL });
     }
-  }, [isLinked, sortByField, updateScrollPosition]);
+  }, [isLinked, sortByField, updateScrollPosition, zoomLevelSubject]);
 
   const devicePixelRatioManagerCallback = useCallback((newDevicePixelRation: number, previousDevicePixelRatio: number) => {
     canvasScrollSubject.next({
@@ -298,7 +303,7 @@ export const EpiTree = ({ linkedScrollSubject, ref, itemHeight }: EpiTreeProps) 
 
   const updateEpiTreeWidgetDataDebounced = useDebouncedCallback(() => {
     updateEpiTreeWidgetData({
-      zoomLevel,
+      zoomLevel: zoomLevelSubject.data,
       verticalScrollPosition: scrollPositionSubject.data.vertical,
       horizontalScrollPosition: scrollPositionSubject.data.horizontal,
     });
@@ -306,7 +311,7 @@ export const EpiTree = ({ linkedScrollSubject, ref, itemHeight }: EpiTreeProps) 
 
   useEffect(() => {
     updateEpiTreeWidgetDataDebounced();
-  }, [updateEpiTreeWidgetData, zoomLevel, scrollPositionSubject, updateEpiTreeWidgetDataDebounced]);
+  }, [updateEpiTreeWidgetData, zoomLevelSubject, scrollPositionSubject, updateEpiTreeWidgetDataDebounced]);
 
   const tickerMarkScale = useMemo(() => {
     return EpiTreeUtil.getTickMarkScale({
@@ -314,9 +319,9 @@ export const EpiTree = ({ linkedScrollSubject, ref, itemHeight }: EpiTreeProps) 
       geneticTreeWidth: tree?.maxBranchLength,
       minGeneticScaleUnit: Math.min(EpiTreeUtil.getMinGeneticScaleUnit(tree), treeConfiguration?.geneticDistanceProtocol?.min_scale_unit ?? Infinity),
       // minGeneticScaleUnit: treeConfiguration?.geneticDistanceProtocol?.min_scale_unit,
-      zoomLevel,
+      zoomLevel: zoomLevelSubject.data,
     });
-  }, [treeWidthMinusPadding, tree, treeConfiguration?.geneticDistanceProtocol?.min_scale_unit, zoomLevel]);
+  }, [treeWidthMinusPadding, tree, treeConfiguration?.geneticDistanceProtocol?.min_scale_unit, zoomLevelSubject]);
 
   const onEpiContextMenuClose = useCallback(() => {
     setEpiContextMenuConfig(null);
@@ -330,14 +335,14 @@ export const EpiTree = ({ linkedScrollSubject, ref, itemHeight }: EpiTreeProps) 
         treeSize: tree?.size,
         treeCanvasHeight,
         verticalScrollPosition: scrollPositionSubject.data.vertical,
-        zoomLevel,
+        zoomLevel: zoomLevelSubject.data,
         itemHeight,
       });
 
       await setSorting(null, null);
-      setZoomLevel(1);
+      zoomLevelSubject.next(1);
       setIsLinked(true);
-      updateScrollPosition(0, newScrollPosition, 1);
+      updateScrollPosition({ positionX: 0, positionY: newScrollPosition, internalZoomLevel: 1 });
       linkedScrollSubject.next({
         position: newScrollPosition,
         origin: scrollContainerRef.current,
@@ -347,7 +352,7 @@ export const EpiTree = ({ linkedScrollSubject, ref, itemHeight }: EpiTreeProps) 
     // eslint-disable-next-line @typescript-eslint/no-floating-promises
     perform();
 
-  }, [linkedScrollSubject, setSorting, tree?.size, treeCanvasHeight, treeHeight, scrollPositionSubject, updateScrollPosition, zoomLevel, itemHeight]);
+  }, [linkedScrollSubject, setSorting, tree?.size, treeCanvasHeight, treeHeight, scrollPositionSubject, updateScrollPosition, zoomLevelSubject, itemHeight]);
 
   const onLinkButtonClick = useCallback(() => {
     linkLineListToTree();
@@ -359,10 +364,10 @@ export const EpiTree = ({ linkedScrollSubject, ref, itemHeight }: EpiTreeProps) 
   }, []);
 
   const resetZoomLevelAndScrollPosition = useCallback(() => {
-    setZoomLevel(1);
+    zoomLevelSubject.next(1);
     setIsLinked(true);
-    updateScrollPosition(0, 0, 1);
-  }, [updateScrollPosition]);
+    updateScrollPosition({ positionX: 0, positionY: 0, internalZoomLevel: 1 });
+  }, [updateScrollPosition, zoomLevelSubject]);
 
   const onAddTreeFilterMenuItemClick = useCallback(async (onMenuClose: () => void) => {
     await addTreeFilter(zoomInMenuItemConfig.rootId);
@@ -390,22 +395,36 @@ export const EpiTree = ({ linkedScrollSubject, ref, itemHeight }: EpiTreeProps) 
   }, [treeAssembly, devicePixelRatio]);
 
   useEffect(() => {
-    const unsubscribe = linkedScrollSubject.subscribe((data) => {
-      if (data.origin === scrollContainerRef.current) {
+    let linkedScrollData: EpiLinkedScrollSubjectValue = linkedScrollSubject.data;
+    let zoomLevel = zoomLevelSubject.data;
+
+    const update = () => {
+      if (!linkedScrollData || linkedScrollData.origin === scrollContainerRef.current) {
         return;
       }
       if (isLinked && zoomLevel === 1) {
         canvasScrollSubject.next({
           x: canvasScrollSubject.data.x * devicePixelRatio,
-          y: data.position * devicePixelRatio,
+          y: linkedScrollData.position * devicePixelRatio,
         });
       }
+    };
+
+    const unsubscribeFromLinkedScrollSubject = linkedScrollSubject.subscribe((data) => {
+      linkedScrollData = data;
+      update();
+    });
+
+    const unsubscribeFromZoomLevelSubject = zoomLevelSubject.subscribe((data) => {
+      zoomLevel = data;
+      update();
     });
 
     return () => {
-      unsubscribe();
+      unsubscribeFromLinkedScrollSubject();
+      unsubscribeFromZoomLevelSubject();
     };
-  }, [linkedScrollSubject, canvasScrollSubject, updateScrollPosition, devicePixelRatio, isLinked, zoomLevel]);
+  }, [linkedScrollSubject, canvasScrollSubject, updateScrollPosition, devicePixelRatio, isLinked, zoomLevelSubject]);
 
   // Setup canvas
   useEffect(() => {
@@ -418,13 +437,13 @@ export const EpiTree = ({ linkedScrollSubject, ref, itemHeight }: EpiTreeProps) 
     }
 
     let animationFrameId: number;
+    let zoomLevel: number = zoomLevelSubject.data;
     let highlighting: Highlighting = internalHighlightingSubject.data;
     let externalScrollPosition = linkedScrollSubject.data?.position ?? 0;
     let horizontalScrollPosition = scrollPositionSubject.data.horizontal;
     let verticalScrollPosition = scrollPositionSubject.data.vertical;
 
     const render = () => {
-      console.log({ externalScrollPosition });
       cancelAnimationFrame(animationFrameId);
       animationFrameId = requestAnimationFrame(() => {
         EpiTreeUtil.drawTreeCanvas({ canvas: treeCanvas, theme, geneticTreeWidth: tree?.maxBranchLength, treeAssembly, stratification, zoomLevel, isLinked, horizontalScrollPosition, verticalScrollPosition, treeCanvasWidth, treeCanvasHeight, pixelToGeneticDistanceRatio, tickerMarkScale, highlightedNodeNames: highlighting?.caseIds, shouldShowDistances: isShowDistancesEnabled, devicePixelRatio, externalScrollPosition });
@@ -450,21 +469,29 @@ export const EpiTree = ({ linkedScrollSubject, ref, itemHeight }: EpiTreeProps) 
       render();
     });
 
+    const unsubscribeFromZoomLevelSubject = zoomLevelSubject.subscribe((data) => {
+      zoomLevel = data;
+      render();
+    });
+
     render();
 
     return () => {
       unsubscribeFromHighlighting();
       unsubscribeFromLinkedScrollSubject();
       unsubscribeFromScrollPositionSubject();
+      unsubscribeFromZoomLevelSubject();
       cancelAnimationFrame(animationFrameId);
     };
-  }, [treeCanvasHeight, treeCanvas, internalHighlightingSubject, pixelToGeneticDistanceRatio, stratification, theme, tickerMarkScale, treeAssembly, treeCanvasWidth, scrollPositionSubject, width, zoomLevel, isLinked, isShowDistancesEnabled, devicePixelRatio, tree?.maxBranchLength, tree, linkedScrollSubject]);
+  }, [treeCanvasHeight, treeCanvas, internalHighlightingSubject, pixelToGeneticDistanceRatio, stratification, theme, tickerMarkScale, treeAssembly, treeCanvasWidth, scrollPositionSubject, width, zoomLevelSubject, isLinked, isShowDistancesEnabled, devicePixelRatio, tree?.maxBranchLength, tree, linkedScrollSubject]);
 
   // Setup canvas event listeners (note: must be in a separate useEffect to prevent render loop)
   useEffect(() => {
     if (!treeCanvas) {
       return;
     }
+
+    let zoomLevel = zoomLevelSubject.data;
 
     let pos = {
       x: 0,
@@ -501,8 +528,7 @@ export const EpiTree = ({ linkedScrollSubject, ref, itemHeight }: EpiTreeProps) 
         if (zoomLevel === 1 && Math.abs(deltaX) < ConfigManager.instance.config.epiTree.PANNING_THRESHOLD && pos.currentX === 0) {
           sanitizedScrollPositionX = 0;
         }
-
-        updateScrollPosition(sanitizedScrollPositionX, scrollPositionY, zoomLevel);
+        updateScrollPosition({ positionX: sanitizedScrollPositionX, positionY: scrollPositionY, internalZoomLevel: zoomLevel });
         return;
       }
 
@@ -566,11 +592,11 @@ export const EpiTree = ({ linkedScrollSubject, ref, itemHeight }: EpiTreeProps) 
       event.preventDefault();
 
       if (event.shiftKey) {
-        updateScrollPosition(canvasScrollSubject.data.x + (event.deltaX || event.deltaY), canvasScrollSubject.data.y, zoomLevel);
+        updateScrollPosition({ positionX: canvasScrollSubject.data.x + (event.deltaX || event.deltaY), positionY: canvasScrollSubject.data.y, internalZoomLevel: zoomLevel });
         return;
       }
       if (event.metaKey || event.ctrlKey) {
-        updateScrollPosition(canvasScrollSubject.data.x, canvasScrollSubject.data.y + (event.deltaX || event.deltaY), zoomLevel);
+        updateScrollPosition({ positionX: canvasScrollSubject.data.x, positionY: canvasScrollSubject.data.y + (event.deltaX || event.deltaY), internalZoomLevel: zoomLevel });
         return;
       }
 
@@ -593,18 +619,11 @@ export const EpiTree = ({ linkedScrollSubject, ref, itemHeight }: EpiTreeProps) 
         currentZoomLevel: zoomLevel,
         newZoomLevel,
       });
-
-      setZoomLevel(newZoomLevel);
+      zoomLevelSubject.next(newZoomLevel);
       if (newZoomLevel !== 1) {
-        updateScrollPosition(newScrollPositionX, newScrollPositionY, newZoomLevel);
+        updateScrollPosition({ positionX: newScrollPositionX, positionY: newScrollPositionY, internalZoomLevel: newZoomLevel });
       } else {
-        updateScrollPosition(newScrollPositionX, linkedScrollSubject.data?.position ?? 0, 1);
-      }
-
-      if (newZoomLevel > MIN_ZOOM_LEVEL && newZoomLevel < MAX_ZOOM_LEVEL) {
-        // Disconnect the event listener and allow a render cycle to complete
-        // But only when zoomLevel is not at it's boundaries, otherwise the event listener will not be reconnected
-        treeCanvas.removeEventListener('wheel', onMouseWheel);
+        updateScrollPosition({ positionX: newScrollPositionX, positionY: linkedScrollSubject.data?.position ?? 0, internalZoomLevel: 1 });
       }
     };
 
@@ -618,6 +637,10 @@ export const EpiTree = ({ linkedScrollSubject, ref, itemHeight }: EpiTreeProps) 
       });
     };
 
+    const unsubscribeFromZoomLevelSubject = zoomLevelSubject.subscribe((data) => {
+      zoomLevel = data;
+    });
+
     treeCanvas.addEventListener('mousemove', onMouseMove);
     treeCanvas.addEventListener('mousedown', onMouseDown);
     treeCanvas.addEventListener('mouseup', onMouseUp);
@@ -630,10 +653,9 @@ export const EpiTree = ({ linkedScrollSubject, ref, itemHeight }: EpiTreeProps) 
       treeCanvas.removeEventListener('mouseup', onMouseUp);
       treeCanvas.removeEventListener('mouseout', onMouseOut);
       treeCanvas.removeEventListener('wheel', onMouseWheel);
+      unsubscribeFromZoomLevelSubject();
     };
-  // note: we don't want to re-run this effect when the treeSubject.data changes; it would disconnect the event handles and prevent the user from interacting with the tree
-  // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [treeCanvasHeight, treeCanvas, getPathPropertiesFromCanvas, internalHighlightingSubject, updateScrollPosition, scrollContainerRef, treeHeight, zoomLevel]);
+  }, [treeCanvasHeight, treeCanvas, getPathPropertiesFromCanvas, internalHighlightingSubject, updateScrollPosition, scrollContainerRef, treeHeight, zoomLevelSubject, canvasScrollSubject, treeCanvasWidth, linkedScrollSubject]);
 
   // Setup header canvas
   useEffect(() => {
@@ -643,7 +665,7 @@ export const EpiTree = ({ linkedScrollSubject, ref, itemHeight }: EpiTreeProps) 
 
     let horizontalScrollPosition = scrollPositionSubject.data.horizontal;
     let animationFrameId: number;
-
+    let zoomLevel = zoomLevelSubject.data;
 
     const render = () => {
       animationFrameId = requestAnimationFrame(() => {
@@ -672,12 +694,18 @@ export const EpiTree = ({ linkedScrollSubject, ref, itemHeight }: EpiTreeProps) 
       render();
     });
 
+    const unsubscribeFromZoomLevelSubject = zoomLevelSubject.subscribe((data) => {
+      zoomLevel = data;
+      render();
+    });
+
     render();
     return () => {
       unsubscribeFromScrollPositionSubject();
+      unsubscribeFromZoomLevelSubject();
       cancelAnimationFrame(animationFrameId);
     };
-  }, [headerCanvas, pixelToGeneticDistanceRatio, theme, tickerMarkScale, zoomLevel, devicePixelRatio, scrollPositionSubject, tree?.maxBranchLength, tree]);
+  }, [headerCanvas, pixelToGeneticDistanceRatio, theme, tickerMarkScale, zoomLevelSubject, devicePixelRatio, scrollPositionSubject, tree?.maxBranchLength, tree]);
 
   const onShowDetailsSelectionMenuItemClick = useCallback((onMenuClose: () => void) => {
     EpiEventBusManager.instance.emit('openCaseInfoDialog', {
@@ -837,9 +865,13 @@ export const EpiTree = ({ linkedScrollSubject, ref, itemHeight }: EpiTreeProps) 
   const link = useCallback(() => {
     // Link the tree to the current scroll position of the Line List
     setIsLinked(true);
-    setZoomLevel(1);
-    updateScrollPosition(0, linkedScrollSubject.data?.position ?? 0, 1);
-  }, [linkedScrollSubject.data?.position, updateScrollPosition]);
+    zoomLevelSubject.next(1);
+    updateScrollPosition({
+      positionX: 0,
+      positionY: linkedScrollSubject.data?.position ?? 0,
+      internalZoomLevel: 1,
+    });
+  }, [linkedScrollSubject.data?.position, updateScrollPosition, zoomLevelSubject]);
 
   useImperativeHandle(ref, () => ({
     link,
