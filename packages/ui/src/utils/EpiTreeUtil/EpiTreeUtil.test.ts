@@ -1605,6 +1605,8 @@ describe('EpiTreeUtil', () => {
         shouldShowDistances: false,
         devicePixelRatio: 1,
         geneticTreeWidth: new Decimal(0),
+        externalRange: { startIndex: 0, endIndex: 0 },
+        itemHeight: 30,
       });
 
       expect(ctx.reset).toHaveBeenCalled();
@@ -1637,6 +1639,8 @@ describe('EpiTreeUtil', () => {
         shouldShowDistances: false,
         devicePixelRatio: 2,
         geneticTreeWidth: new Decimal(0),
+        externalRange: { startIndex: 0, endIndex: 0 },
+        itemHeight: 30,
       });
 
       expect(canvas.width).toBe(400);  // 200 * 2
@@ -1670,6 +1674,8 @@ describe('EpiTreeUtil', () => {
         shouldShowDistances: false,
         devicePixelRatio: 1,
         geneticTreeWidth: new Decimal(0),
+        externalRange: { startIndex: 0, endIndex: 0 },
+        itemHeight: 30,
       });
 
       expect(ctx.imageSmoothingEnabled).toBe(false);
@@ -1702,6 +1708,8 @@ describe('EpiTreeUtil', () => {
         shouldShowDistances: false,
         devicePixelRatio: 1,
         geneticTreeWidth: new Decimal(0),
+        externalRange: { startIndex: 0, endIndex: 0 },
+        itemHeight: 30,
       });
 
       expect(ctx.imageSmoothingEnabled).toBe(true);
@@ -2164,6 +2172,8 @@ describe('EpiTreeUtil', () => {
         shouldShowDistances: false,
         devicePixelRatio: 2,
         isLinked: false,
+        externalRange: { startIndex: 0, endIndex: 0 },
+        itemHeight: 30,
       });
       // (1/zoomLevel)*devicePixelRatio = (1/2)*2 = 1
       // -horizontalScrollPosition + 0.5 = -50 + 0.5 = -49.5
@@ -2186,6 +2196,8 @@ describe('EpiTreeUtil', () => {
         devicePixelRatio: 2,
         isLinked: false,
         headerHeight: 40,
+        externalRange: { startIndex: 0, endIndex: 0 },
+        itemHeight: 30,
       });
 
       expect(ctx.setTransform).toHaveBeenCalledWith(1, 0, 0, 1, -49.5, -19.5);
@@ -2212,6 +2224,8 @@ describe('EpiTreeUtil', () => {
         devicePixelRatio: 2,
         isLinked: false,
         headerHeight: 40,
+        externalRange: { startIndex: 0, endIndex: 0 },
+        itemHeight: 30,
       });
 
       expect(ctx.save).toHaveBeenCalled();
@@ -2234,6 +2248,8 @@ describe('EpiTreeUtil', () => {
         shouldShowDistances: false,
         devicePixelRatio: 1,
         isLinked: false,
+        externalRange: { startIndex: 0, endIndex: 0 },
+        itemHeight: 30,
       });
       expect(ctx.font).toBe('12px monospace');
       expect(ctx.lineWidth).toBe(1);
@@ -2261,6 +2277,8 @@ describe('EpiTreeUtil', () => {
         shouldShowDistances: false,
         devicePixelRatio: 1,
         isLinked: false,
+        externalRange: { startIndex: 0, endIndex: 0 },
+        itemHeight: 30,
       });
       expect(ctx.stroke).toHaveBeenCalledWith(shape1);
       expect(ctx.stroke).toHaveBeenCalledWith(shape2);
@@ -2285,6 +2303,8 @@ describe('EpiTreeUtil', () => {
         shouldShowDistances: false,
         devicePixelRatio: 1,
         isLinked: false,
+        externalRange: { startIndex: 0, endIndex: 0 },
+        itemHeight: 30,
       });
       expect(ctx.stroke).toHaveBeenCalledWith(shape1);
     });
@@ -2310,6 +2330,8 @@ describe('EpiTreeUtil', () => {
         shouldShowDistances: false,
         devicePixelRatio: 1,
         isLinked: false,
+        externalRange: { startIndex: 0, endIndex: 0 },
+        itemHeight: 30,
       });
       expect(ctx.stroke).toHaveBeenCalledWith(shapeA);
       expect(ctx.stroke).toHaveBeenCalledWith(shapeB);
@@ -2334,6 +2356,8 @@ describe('EpiTreeUtil', () => {
         shouldShowDistances: false,
         devicePixelRatio: 1,
         isLinked: false,
+        externalRange: { startIndex: 0, endIndex: 0 },
+        itemHeight: 30,
       });
       expect(ctx.fill).toHaveBeenCalledWith(shape1);
     });
@@ -2355,6 +2379,8 @@ describe('EpiTreeUtil', () => {
         shouldShowDistances: false,
         devicePixelRatio: 1,
         isLinked: false,
+        externalRange: { startIndex: 0, endIndex: 0 },
+        itemHeight: 30,
       });
       expect(ctx.fill).toHaveBeenCalledWith(shapeA);
     });
@@ -2375,6 +2401,8 @@ describe('EpiTreeUtil', () => {
         shouldShowDistances: false,
         devicePixelRatio: 1,
         isLinked: false,
+        externalRange: { startIndex: 0, endIndex: 0 },
+        itemHeight: 30,
       });
       expect(ctx.setLineDash).toHaveBeenCalledWith([2, 2]);
       expect(ctx.setLineDash).toHaveBeenCalledWith([]);
@@ -2401,6 +2429,8 @@ describe('EpiTreeUtil', () => {
         shouldShowDistances: false,
         devicePixelRatio: 1,
         isLinked: true,
+        externalRange: { startIndex: 0, endIndex: 0 },
+        itemHeight: 30,
       });
       expect(ctx.setLineDash).toHaveBeenCalledWith([1, 4]);
       expect(ctx.setLineDash).toHaveBeenCalledWith([]);
@@ -2426,6 +2456,8 @@ describe('EpiTreeUtil', () => {
         shouldShowDistances: false,
         devicePixelRatio: 2,
         isLinked: true,
+        externalRange: { startIndex: 0, endIndex: 0 },
+        itemHeight: 30,
       });
       expect(ctx.moveTo).toHaveBeenCalledWith(100, 15);
       expect(ctx.lineTo).toHaveBeenCalledWith(820, 15);
@@ -2448,9 +2480,82 @@ describe('EpiTreeUtil', () => {
         devicePixelRatio: 2,
         isLinked: true,
         externalScrollPosition: 10,
+        externalRange: { startIndex: 0, endIndex: 0 },
+        itemHeight: 30,
       });
       expect(ctx.moveTo).toHaveBeenCalledWith(100, 15);
       expect(ctx.lineTo).toHaveBeenCalledWith(820, 35);
+    });
+
+    it('skips a support line when the leaf is out of the viewport and out of external range', () => {
+      const { ctx } = makeTrackedCtx();
+      const assembly = makeAssembly();
+      // fromY=1500 is far below the canvas body (height 300), so not visible
+      // toY=1500 → externalSortingIndex=50 (itemHeight=30), outside range [0,9]
+      assembly.supportLines = [{ nodeName: 'a', fromX: 100, toX: 800, fromY: 1500, toY: 1500 }];
+      EpiTreeUtil.drawTree({
+        canvas: makeCanvas(ctx),
+        theme: makeTheme(makeDimFn()),
+        treeAssembly: assembly,
+        stratification: null,
+        zoomLevel: 1,
+        highlightedNodeNames: [],
+        verticalScrollPosition: 0,
+        horizontalScrollPosition: 0,
+        shouldShowDistances: false,
+        devicePixelRatio: 1,
+        isLinked: false,
+        itemHeight: 30,
+        externalRange: { startIndex: 0, endIndex: 9 },
+      });
+      expect(ctx.moveTo).not.toHaveBeenCalled();
+      expect(ctx.stroke).not.toHaveBeenCalled();
+    });
+
+    it('draws a support line when the leaf is visible in the viewport even if out of external range', () => {
+      const { ctx } = makeTrackedCtx();
+      const assembly = makeAssembly();
+      // fromY=15 is visible (canvas height 300), toY=1500 → externalSortingIndex=50 outside range [0,9]
+      assembly.supportLines = [{ nodeName: 'a', fromX: 100, toX: 800, fromY: 15, toY: 1500 }];
+      EpiTreeUtil.drawTree({
+        canvas: makeCanvas(ctx),
+        theme: makeTheme(makeDimFn()),
+        treeAssembly: assembly,
+        stratification: null,
+        zoomLevel: 1,
+        highlightedNodeNames: [],
+        verticalScrollPosition: 0,
+        horizontalScrollPosition: 0,
+        shouldShowDistances: false,
+        devicePixelRatio: 1,
+        isLinked: false,
+        itemHeight: 30,
+        externalRange: { startIndex: 0, endIndex: 9 },
+      });
+      expect(ctx.moveTo).toHaveBeenCalledWith(100, 15);
+    });
+
+    it('draws a support line when the end position is within the external range even if leaf is out of viewport', () => {
+      const { ctx } = makeTrackedCtx();
+      const assembly = makeAssembly();
+      // fromY=1500 is outside viewport (canvas height 300), toY=45 → externalSortingIndex=1 (itemHeight=30), inside range [0,9]
+      assembly.supportLines = [{ nodeName: 'a', fromX: 100, toX: 800, fromY: 1500, toY: 45 }];
+      EpiTreeUtil.drawTree({
+        canvas: makeCanvas(ctx),
+        theme: makeTheme(makeDimFn()),
+        treeAssembly: assembly,
+        stratification: null,
+        zoomLevel: 1,
+        highlightedNodeNames: [],
+        verticalScrollPosition: 0,
+        horizontalScrollPosition: 0,
+        shouldShowDistances: false,
+        devicePixelRatio: 1,
+        isLinked: false,
+        itemHeight: 30,
+        externalRange: { startIndex: 0, endIndex: 9 },
+      });
+      expect(ctx.moveTo).toHaveBeenCalledWith(100, 1500);
     });
 
     it('does not call fillText when shouldShowDistances is false', () => {
@@ -2469,6 +2574,8 @@ describe('EpiTreeUtil', () => {
         shouldShowDistances: false,
         devicePixelRatio: 1,
         isLinked: false,
+        externalRange: { startIndex: 0, endIndex: 0 },
+        itemHeight: 30,
       });
       expect(ctx.fillText).not.toHaveBeenCalled();
     });
@@ -2492,6 +2599,8 @@ describe('EpiTreeUtil', () => {
         shouldShowDistances: true,
         devicePixelRatio: 1,
         isLinked: false,
+        externalRange: { startIndex: 0, endIndex: 0 },
+        itemHeight: 30,
       });
       expect(ctx.fillText).toHaveBeenCalledTimes(1);
       expect(ctx.fillText).toHaveBeenCalledWith('label-a', 100, 20);
@@ -2515,6 +2624,8 @@ describe('EpiTreeUtil', () => {
         shouldShowDistances: false,
         devicePixelRatio: 1,
         isLinked: false,
+        externalRange: { startIndex: 0, endIndex: 0 },
+        itemHeight: 30,
       });
       expect(dimFn).not.toHaveBeenCalled();
       expect(drawCalls.every(c => c.color === TREE_COLOR)).toBe(true);
@@ -2545,6 +2656,8 @@ describe('EpiTreeUtil', () => {
         shouldShowDistances: false,
         devicePixelRatio: 1,
         isLinked: false,
+        externalRange: { startIndex: 0, endIndex: 0 },
+        itemHeight: 30,
       });
       // 'b' leaf tree line + 'b' leaf node = 2 dimmed draw calls
       const dimmedCalls = drawCalls.filter(c => c.color === DIM_COLOR);
@@ -2573,6 +2686,8 @@ describe('EpiTreeUtil', () => {
         shouldShowDistances: false,
         devicePixelRatio: 1,
         isLinked: false,
+        externalRange: { startIndex: 0, endIndex: 0 },
+        itemHeight: 30,
       });
       const fillCall = drawCalls.find(c => c.type === 'fill');
       expect(fillCall?.color).toBe('#ff0000');
@@ -2596,6 +2711,8 @@ describe('EpiTreeUtil', () => {
         shouldShowDistances: false,
         devicePixelRatio: 1,
         isLinked: false,
+        externalRange: { startIndex: 0, endIndex: 0 },
+        itemHeight: 30,
       });
       const fillCall = drawCalls.find(c => c.type === 'fill');
       expect(fillCall?.color).toBe(TREE_COLOR);
@@ -2623,6 +2740,8 @@ describe('EpiTreeUtil', () => {
         shouldShowDistances: false,
         devicePixelRatio: 1,
         isLinked: false,
+        externalRange: { startIndex: 0, endIndex: 0 },
+        itemHeight: 30,
       });
       const dimmedCalls = drawCalls.filter(c => c.color === DIM_COLOR);
       expect(dimmedCalls.length).toBeGreaterThanOrEqual(1);

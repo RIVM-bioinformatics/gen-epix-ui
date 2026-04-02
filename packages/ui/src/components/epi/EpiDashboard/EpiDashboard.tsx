@@ -57,7 +57,10 @@ import { ConfigManager } from '../../../classes/managers/ConfigManager';
 import { EpiEventBusManager } from '../../../classes/managers/EpiEventBusManager';
 import { KeyboardShortcutManager } from '../../../classes/managers/KeyboardShortcutManager';
 import { Subject } from '../../../classes/Subject';
-import type { EpiLinkedScrollSubjectValue } from '../../../models/epi';
+import type {
+  EpiLineListRangeSubjectValue,
+  EpiLinkedScrollSubjectValue,
+} from '../../../models/epi';
 import { EPI_ZONE } from '../../../models/epi';
 import { EpiDashboardStoreContext } from '../../../stores/epiDashboardStore';
 import { userProfileStore } from '../../../stores/userProfileStore';
@@ -125,6 +128,9 @@ export const EpiDashboard = withEpiDashboardStore(({ caseSet }: EpiDashboardProp
   const epiTreeRef = useRef<EpiTreeWidgetRef>(null);
   const linkedScrollSubject = useMemo(() => {
     return new Subject<EpiLinkedScrollSubjectValue>();
+  }, []);
+  const lineListRangeSubject = useMemo(() => {
+    return new Subject<EpiLineListRangeSubjectValue>();
   }, []);
   const epiDashboardStore = useContext(EpiDashboardStoreContext);
   const fetchData = useStore(epiDashboardStore, useShallow((state) => state.fetchData));
@@ -350,6 +356,7 @@ export const EpiDashboard = withEpiDashboardStore(({ caseSet }: EpiDashboardProp
                 <EpiLineListWidget
                   caseSet={caseSet}
                   linkedScrollSubject={linkedScrollSubject}
+                  lineListRangeSubject={lineListRangeSubject}
                   onLink={onEpiListLink}
                 />
               )}
@@ -370,6 +377,7 @@ export const EpiDashboard = withEpiDashboardStore(({ caseSet }: EpiDashboardProp
                   ref={epiTreeRef}
                   linkedScrollSubject={linkedScrollSubject}
                   itemHeight={ConfigManager.instance.config.epiLineList.TABLE_ROW_HEIGHT}
+                  lineListRangeSubject={lineListRangeSubject}
                 />
               )}
             />

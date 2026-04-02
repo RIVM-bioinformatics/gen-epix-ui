@@ -101,6 +101,11 @@ export type EpiLinkedScrollSubjectValue = {
   origin: HTMLElement;
 };
 
+export type EpiLineListRangeSubjectValue = {
+  startIndex: number;
+  endIndex: number;
+};
+
 export type EpiData = {
   organizations: Organization[];
   organizationsById: { [id: string]: Organization };

@@ -537,9 +537,11 @@ export class EpiTreeUtil {
     devicePixelRatio: number;
     isLinked: boolean;
     externalScrollPosition?: number;
+    externalRange: { startIndex: number; endIndex: number };
     headerHeight?: number;
+    itemHeight: number;
   }): void {
-    const { canvas, theme, treeAssembly, stratification, zoomLevel, verticalScrollPosition, horizontalScrollPosition, shouldShowDistances, devicePixelRatio, isLinked, externalScrollPosition = 0, highlightedNodeNames = [], headerHeight = 0 } = params;
+    const { canvas, theme, treeAssembly, stratification, zoomLevel, verticalScrollPosition, horizontalScrollPosition, shouldShowDistances, devicePixelRatio, isLinked, externalScrollPosition = 0, highlightedNodeNames = [], headerHeight = 0, externalRange, itemHeight } = params;
     const ctx = canvas.getContext('2d');
     const bodyStartY = headerHeight * devicePixelRatio;
     const setRegularTransform = () => {
@@ -581,6 +583,21 @@ export class EpiTreeUtil {
       });
 
       treeAssembly.supportLines.forEach(({ nodeName, fromX, toX, fromY, toY }) => {
+        // a) leaf node is visible in the tree canvas viewport
+        const canvasBodyHeight = canvas.height - bodyStartY;
+        const leafScreenY = (fromY / zoomLevel) * devicePixelRatio - verticalScrollPosition;
+        const isLeafVisible = leafScreenY >= 0 && leafScreenY <= canvasBodyHeight;
+
+        // b) end position is within the external range
+        const externalSortingIndex = itemHeight > 0 ? Math.floor(toY / itemHeight) : -1;
+        const isEndInExternalRange = externalRange !== null && externalRange !== undefined &&
+          externalSortingIndex >= externalRange.startIndex &&
+          externalSortingIndex <= externalRange.endIndex;
+
+        if (!isLeafVisible && !isEndInExternalRange) {
+          return;
+        }
+
         if (isLinked) {
           ctx.setLineDash([1, 4]);
         } else {
@@ -706,8 +723,10 @@ export class EpiTreeUtil {
     devicePixelRatio: number;
     geneticTreeWidth: Decimal;
     externalScrollPosition?: number;
+    externalRange: { startIndex: number; endIndex: number };
+    itemHeight: number;
   }): void {
-    const { devicePixelRatio, geneticTreeWidth, canvas, theme, treeAssembly, stratification, zoomLevel, isLinked, highlightedNodeNames, horizontalScrollPosition, verticalScrollPosition, treeCanvasWidth, treeCanvasHeight, headerHeight = 0, tickerMarkScale, pixelToGeneticDistanceRatio, shouldShowDistances, externalScrollPosition = 0 } = params;
+    const { devicePixelRatio, geneticTreeWidth, canvas, theme, treeAssembly, stratification, zoomLevel, isLinked, highlightedNodeNames, horizontalScrollPosition, verticalScrollPosition, treeCanvasWidth, treeCanvasHeight, headerHeight = 0, tickerMarkScale, pixelToGeneticDistanceRatio, shouldShowDistances, externalScrollPosition = 0, externalRange, itemHeight } = params;
     const ctx = canvas.getContext('2d');
     ctx.reset();
     canvas.width = canvas.clientWidth * devicePixelRatio;
@@ -726,7 +745,7 @@ export class EpiTreeUtil {
       EpiTreeUtil.drawDivider({ canvas, y: headerHeight - 1, devicePixelRatio });
     }
 
-    EpiTreeUtil.drawTree({ canvas, theme, treeAssembly, stratification, highlightedNodeNames, zoomLevel, isLinked, horizontalScrollPosition, verticalScrollPosition, shouldShowDistances, devicePixelRatio, externalScrollPosition, headerHeight });
+    EpiTreeUtil.drawTree({ canvas, theme, treeAssembly, stratification, highlightedNodeNames, zoomLevel, isLinked, horizontalScrollPosition, verticalScrollPosition, shouldShowDistances, devicePixelRatio, externalScrollPosition, headerHeight, externalRange, itemHeight });
   }
 
   /**

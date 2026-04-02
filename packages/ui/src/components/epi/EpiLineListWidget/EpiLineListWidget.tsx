@@ -33,7 +33,10 @@ import { EpiEventBusManager } from '../../../classes/managers/EpiEventBusManager
 import { EpiLineListCaseSetMembersManager } from '../../../classes/managers/EpiLineListCaseSetMembersManager';
 import { EpiHighlightingManager } from '../../../classes/managers/EpiHighlightingManager';
 import { Subject } from '../../../classes/Subject';
-import type { EpiLinkedScrollSubjectValue } from '../../../models/epi';
+import type {
+  EpiLineListRangeSubjectValue,
+  EpiLinkedScrollSubjectValue,
+} from '../../../models/epi';
 import {
   EPI_ZONE,
   STRATIFICATION_MODE,
@@ -61,11 +64,12 @@ import { useEpiLineListWidgetEmitDownloadOptions } from './useEpiLineListWidgetE
 
 export type EpiLineListWidgetProps = {
   readonly linkedScrollSubject: Subject<EpiLinkedScrollSubjectValue>;
+  readonly lineListRangeSubject: Subject<EpiLineListRangeSubjectValue>;
   readonly onLink: () => void;
   readonly caseSet?: CaseSet;
 };
 
-export const EpiLineListWidget = ({ linkedScrollSubject, onLink, caseSet }: EpiLineListWidgetProps) => {
+export const EpiLineListWidget = ({ linkedScrollSubject, lineListRangeSubject, onLink, caseSet }: EpiLineListWidgetProps) => {
   const containerRef = useRef<HTMLDivElement>(null);
   const { t } = useTranslation();
   const theme = useTheme();
@@ -423,6 +427,11 @@ export const EpiLineListWidget = ({ linkedScrollSubject, onLink, caseSet }: EpiL
     leading: false,
   });
 
+  const onRangeChanged = useCallback((range: ListRange) => {
+    lineListRangeSubject.next(range);
+    void onRangeChangedDebounced(range);
+  }, [lineListRangeSubject, onRangeChangedDebounced]);
+
   useEffect(() => {
     return () => {
       EpiLineListCaseSetMembersManager.instance.cleanStaleQueue();
@@ -479,7 +488,7 @@ export const EpiLineListWidget = ({ linkedScrollSubject, onLink, caseSet }: EpiL
           initialVisibleItemIndex={epiDashboardStore.getState().epiListWidgetData.visibleItemItemIndex}
           rowHeight={3}
           rowHighlightingSubject={rowHighlightingSubject}
-          onRangeChanged={onRangeChangedDebounced}
+          onRangeChanged={onRangeChanged}
           onReadableIndexClick={onIndexCellClick}
           onRowMouseEnter={onRowMouseEnter}
           onRowMouseLeave={onRowMouseLeave}

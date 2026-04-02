@@ -49,6 +49,7 @@ import type {
   EpiLinkedScrollSubjectValue,
   TreeConfiguration,
   Highlighting,
+  EpiLineListRangeSubjectValue,
 } from '../../../models/epi';
 import { EPI_ZONE } from '../../../models/epi';
 import type { MenuItemData } from '../../../models/nestedMenu';
@@ -73,6 +74,7 @@ type ZoomInMenuItemConfig = {
 
 type EpiTreeWidgetProps = {
   readonly linkedScrollSubject: Subject<EpiLinkedScrollSubjectValue>;
+  readonly lineListRangeSubject: Subject<EpiLineListRangeSubjectValue>;
   readonly ref: Ref<EpiTreeWidgetRef>;
   readonly itemHeight: number;
 };
@@ -81,7 +83,7 @@ export interface EpiTreeWidgetRef {
   link: () => void;
 }
 
-export const EpiTreeWidget = ({ linkedScrollSubject, ref, itemHeight }: EpiTreeWidgetProps) => {
+export const EpiTreeWidget = ({ linkedScrollSubject, lineListRangeSubject, ref, itemHeight }: EpiTreeWidgetProps) => {
   const theme = useTheme();
   const { t } = useTranslation();
   const scrollbarSize = useScrollbarSize();
@@ -443,13 +445,19 @@ export const EpiTreeWidget = ({ linkedScrollSubject, ref, itemHeight }: EpiTreeW
     let externalScrollPosition = linkedScrollSubject.data?.position ?? 0;
     let horizontalScrollPosition = scrollPositionSubject.data.horizontal;
     let verticalScrollPosition = scrollPositionSubject.data.vertical;
+    let externalRange = lineListRangeSubject.data;
 
     const render = () => {
       cancelAnimationFrame(animationFrameId);
       animationFrameId = requestAnimationFrame(() => {
-        EpiTreeUtil.drawTreeCanvas({ canvas: treeCanvas, theme, geneticTreeWidth: tree?.maxBranchLength, treeAssembly, stratification, zoomLevel, isLinked, horizontalScrollPosition, verticalScrollPosition, treeCanvasWidth, treeCanvasHeight, headerHeight, pixelToGeneticDistanceRatio, tickerMarkScale, highlightedNodeNames: highlighting?.caseIds, shouldShowDistances: isShowDistancesEnabled, devicePixelRatio, externalScrollPosition });
+        EpiTreeUtil.drawTreeCanvas({ canvas: treeCanvas, theme, geneticTreeWidth: tree?.maxBranchLength, treeAssembly, stratification, zoomLevel, isLinked, horizontalScrollPosition, verticalScrollPosition, treeCanvasWidth, treeCanvasHeight, headerHeight, pixelToGeneticDistanceRatio, tickerMarkScale, highlightedNodeNames: highlighting?.caseIds, shouldShowDistances: isShowDistancesEnabled, devicePixelRatio, externalScrollPosition, externalRange, itemHeight });
       });
     };
+
+    const unsubscribeFromLineListRangeSubject = lineListRangeSubject.subscribe((data) => {
+      externalRange = data;
+      render();
+    });
 
     const unsubscribeFromLinkedScrollSubject = linkedScrollSubject.subscribe((data) => {
       if (data.origin === scrollContainerRef.current) {
@@ -483,9 +491,10 @@ export const EpiTreeWidget = ({ linkedScrollSubject, ref, itemHeight }: EpiTreeW
       unsubscribeFromLinkedScrollSubject();
       unsubscribeFromScrollPositionSubject();
       unsubscribeFromZoomLevelSubject();
+      unsubscribeFromLineListRangeSubject();
       cancelAnimationFrame(animationFrameId);
     };
-  }, [headerHeight, treeCanvasHeight, treeCanvas, internalHighlightingSubject, pixelToGeneticDistanceRatio, stratification, theme, getTickerMarkScale, treeAssembly, treeCanvasWidth, scrollPositionSubject, width, zoomLevelSubject, isLinked, isShowDistancesEnabled, devicePixelRatio, tree?.maxBranchLength, tree, linkedScrollSubject]);
+  }, [headerHeight, treeCanvasHeight, treeCanvas, internalHighlightingSubject, pixelToGeneticDistanceRatio, stratification, theme, getTickerMarkScale, treeAssembly, treeCanvasWidth, scrollPositionSubject, width, zoomLevelSubject, isLinked, isShowDistancesEnabled, devicePixelRatio, tree?.maxBranchLength, tree, linkedScrollSubject, lineListRangeSubject, itemHeight]);
 
   // Setup canvas event listeners (note: must be in a separate useEffect to prevent render loop)
   useEffect(() => {
