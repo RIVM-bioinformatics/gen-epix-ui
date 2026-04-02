@@ -50,7 +50,11 @@ import type {
   TreeConfiguration,
   Highlighting,
 } from '../../../models/epi';
-import { EPI_ZONE } from '../../../models/epi';
+import {
+  EPI_ZONE,
+  STRATIFICATION_MODE,
+} from '../../../models/epi';
+import type { E2ETreeContract } from '../../../models/e2e';
 import type { MenuItemData } from '../../../models/nestedMenu';
 import type {
   TreeAssembly,
@@ -64,6 +68,7 @@ import { Spinner } from '../../ui/Spinner';
 import { EpiWidget } from '../EpiWidget';
 import { DownloadUtil } from '../../../utils/DownloadUtil';
 import { useQueryMemo } from '../../../hooks/useQueryMemo';
+import { E2EHookUtil } from '../../../utils/E2EHookUtil/E2EHookUtil';
 import { EpiTreeUtil } from '../../../utils/EpiTreeUtil';
 
 type ZoomInMenuItemConfig = {
@@ -120,10 +125,12 @@ export const EpiTree = ({ linkedScrollSubject, ref, itemHeight }: EpiTreeProps) 
   const [zoomLevel, setZoomLevel] = useState<number>(!isNaN(epiDashboardStore.getState().epiTreeWidgetData.zoomLevel) ? epiDashboardStore.getState().epiTreeWidgetData.zoomLevel : 1);
   const [devicePixelRatio, setDevicePixelRatio] = useState<number>(DevicePixelRatioManager.instance.data);
   const [isLinked, setIsLinked] = useState(true);
+  const renderRevisionRef = useRef(0);
   const internalHighlightingSubject = useMemo(() => new Subject<Highlighting>({
     caseIds: [],
     origin: null,
   }), []);
+  const isTreeE2EHookEnabled = useMemo(() => E2EHookUtil.isTreeE2EHookEnabled(), []);
 
   const treeConfigurations = useMemo(() => EpiTreeUtil.getTreeConfigurations(completeCaseType), [completeCaseType]);
 
@@ -199,6 +206,74 @@ export const EpiTree = ({ linkedScrollSubject, ref, itemHeight }: EpiTreeProps) 
   const isLoading = !!treeConfiguration && (isCaseDataLoading || (hasEnoughSequencesToShowTree && isTreeLoading));
   const isTreeUnavailable = hasToManyResultsToShowTree || !isCaseDataLoading && ((!isLoading && !!treeError) || !hasEnoughSequencesToShowTree || tree?.maxBranchLength?.toNumber() === 0 || tree?.size === 0 || !treeConfiguration || (!isLoading && tree === null));
   const shouldShowTree = !hasToManyResultsToShowTree && !!treeConfiguration && !isCaseDataLoading && !treeError && !isTreeLoading && width > 0 && tree?.size > 0 && hasEnoughSequencesToShowTree;
+  const getTreeContractStatus = useCallback((): E2ETreeContract['status'] => {
+    if (isLoading) {
+      return 'loading';
+    }
+    if (treeError) {
+      return 'error';
+    }
+    if (shouldShowTree && treeCanvas && treeAssembly && tree) {
+      return 'ready';
+    }
+    if (isTreeUnavailable) {
+      return 'unavailable';
+    }
+    return 'loading';
+  }, [isLoading, isTreeUnavailable, shouldShowTree, treeAssembly, treeCanvas, tree, treeError]);
+  const getStratificationLabel = useCallback((): string | null => {
+    if (!stratification) {
+      return null;
+    }
+    if (stratification.mode === STRATIFICATION_MODE.SELECTION) {
+      return 'Selected rows';
+    }
+    return stratification.col?.label ?? null;
+  }, [stratification]);
+  const buildTreeContract = useCallback((status = getTreeContractStatus()): E2ETreeContract => {
+    const highlightCount = internalHighlightingSubject.data?.caseIds?.length ?? 0;
+    return {
+      version: 1,
+      status,
+      renderRevision: renderRevisionRef.current,
+      canvas: {
+        width: treeCanvas?.clientWidth ?? 0,
+        height: treeCanvas?.clientHeight ?? 0,
+      },
+      tree: {
+        size: tree?.size ?? 0,
+        leafCount: treeAssembly?.leafNodes.length ?? 0,
+        ancestorCount: treeAssembly?.ancestorNodes.length ?? 0,
+        supportLineCount: treeAssembly?.supportLines.length ?? 0,
+        configurationLabel: treeConfiguration ? EpiTreeUtil.getTreeConfigurationLabel(treeConfiguration) : null,
+        stratificationLabel: getStratificationLabel(),
+        legendItemCount: stratification?.legendaItems?.length ?? 0,
+      },
+      viewport: {
+        zoomLevel,
+        isLinked,
+        scrollX: horizontalScrollPosition,
+        scrollY: verticalScrollPosition,
+      },
+      interaction: {
+        hasHighlight: highlightCount > 0,
+        highlightCount,
+      },
+    };
+  }, [getStratificationLabel, getTreeContractStatus, horizontalScrollPosition, internalHighlightingSubject, isLinked, stratification, tree, treeAssembly, treeCanvas, treeConfiguration, verticalScrollPosition, zoomLevel]);
+  const publishTreeContract = useCallback((status = getTreeContractStatus()) => {
+    if (!isTreeE2EHookEnabled) {
+      return;
+    }
+    E2EHookUtil.setTreeContract(buildTreeContract(status));
+  }, [buildTreeContract, getTreeContractStatus, isTreeE2EHookEnabled]);
+  const bumpRenderRevisionAndPublish = useCallback((status: E2ETreeContract['status'] = 'ready') => {
+    if (!isTreeE2EHookEnabled) {
+      return;
+    }
+    renderRevisionRef.current++;
+    E2EHookUtil.setTreeContract(buildTreeContract(status));
+  }, [buildTreeContract, isTreeE2EHookEnabled]);
 
   const treeCanvasWidth = width;
   const treeCanvasHeight = height - ConfigManager.instance.config.epiTree.HEADER_HEIGHT;
@@ -213,6 +288,27 @@ export const EpiTree = ({ linkedScrollSubject, ref, itemHeight }: EpiTreeProps) 
       setPhylogeneticTreeResponse(treeData);
     }
   }, [treeData, setPhylogeneticTreeResponse]);
+
+  useEffect(() => {
+    if (!isTreeE2EHookEnabled) {
+      return;
+    }
+
+    const status = getTreeContractStatus();
+    if (status !== 'ready') {
+      publishTreeContract(status);
+    }
+  }, [getTreeContractStatus, isTreeE2EHookEnabled, publishTreeContract]);
+
+  useEffect(() => {
+    if (!isTreeE2EHookEnabled) {
+      return;
+    }
+
+    return () => {
+      E2EHookUtil.clearTreeContract();
+    };
+  }, [isTreeE2EHookEnabled]);
 
   useEffect(() => {
     const unsubscribe = canvasScrollSubject.subscribe((data) => {
@@ -412,18 +508,20 @@ export const EpiTree = ({ linkedScrollSubject, ref, itemHeight }: EpiTreeProps) 
     }
 
     EpiTreeUtil.drawTreeCanvas({ canvas: treeCanvas, theme, geneticTreeWidth: tree?.maxBranchLength, treeAssembly, stratification, zoomLevel, isLinked, horizontalScrollPosition, verticalScrollPosition, treeCanvasWidth, treeCanvasHeight, pixelToGeneticDistanceRatio, tickerMarkScale, shouldShowDistances: isShowDistancesEnabled, devicePixelRatio });
+    bumpRenderRevisionAndPublish();
     let animationFrameId: number;
     const unsubscribe = internalHighlightingSubject.subscribe((highlighting) => {
       cancelAnimationFrame(animationFrameId);
       animationFrameId = requestAnimationFrame(() => {
         EpiTreeUtil.drawTreeCanvas({ canvas: treeCanvas, theme, geneticTreeWidth: tree?.maxBranchLength, treeAssembly, stratification, zoomLevel, isLinked, horizontalScrollPosition, verticalScrollPosition, treeCanvasWidth, treeCanvasHeight, pixelToGeneticDistanceRatio, tickerMarkScale, highlightedNodeNames: highlighting.caseIds, shouldShowDistances: isShowDistancesEnabled, devicePixelRatio });
+        bumpRenderRevisionAndPublish();
       });
     });
     return () => {
       unsubscribe();
       cancelAnimationFrame(animationFrameId);
     };
-  }, [treeCanvasHeight, treeCanvas, internalHighlightingSubject, pixelToGeneticDistanceRatio, stratification, theme, tickerMarkScale, treeAssembly, treeCanvasWidth, horizontalScrollPosition, verticalScrollPosition, width, zoomLevel, isLinked, isShowDistancesEnabled, devicePixelRatio, tree?.maxBranchLength, tree]);
+  }, [bumpRenderRevisionAndPublish, treeCanvasHeight, treeCanvas, internalHighlightingSubject, pixelToGeneticDistanceRatio, stratification, theme, tickerMarkScale, treeAssembly, treeCanvasWidth, horizontalScrollPosition, verticalScrollPosition, width, zoomLevel, isLinked, isShowDistancesEnabled, devicePixelRatio, tree?.maxBranchLength, tree]);
 
   // Setup canvas event listeners (note: must be in a separate useEffect to prevent render loop)
   useEffect(() => {
