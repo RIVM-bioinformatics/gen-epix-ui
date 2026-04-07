@@ -1,5 +1,16 @@
 # Changelog
 
+## [1.21.2](https://github.com/RIVM-bioinformatics/gen-epix-ui/compare/ui-v1.21.1...ui-v1.21.2) (2026-04-07)
+
+
+### Bug Fixes
+
+* fix cache invalidation after submitting case set form ([632f0ed](https://github.com/RIVM-bioinformatics/gen-epix-ui/commit/632f0ede726ab4d7a8a744e2dc530d91523f6648))
+* fix dialog title translation ([542adbd](https://github.com/RIVM-bioinformatics/gen-epix-ui/commit/542adbd617a31b009f9799610826e776ce646354))
+* load map aspectScale from shape ([dc71fad](https://github.com/RIVM-bioinformatics/gen-epix-ui/commit/dc71fad028b88780166221844ea8f1a0506c7eb9))
+* move query client retry and retry delay to config ([6e1cb49](https://github.com/RIVM-bioinformatics/gen-epix-ui/commit/6e1cb49e8167688a714c9ffac91d7005ff7c41c9))
+* remove empty strings from content during upload ([f3e7ae0](https://github.com/RIVM-bioinformatics/gen-epix-ui/commit/f3e7ae05052a50f70110a5f390347293ffc48b67))
+
 ## [1.21.1](https://github.com/RIVM-bioinformatics/gen-epix-ui/compare/ui-v1.21.0...ui-v1.21.1) (2026-04-07)
 
 
