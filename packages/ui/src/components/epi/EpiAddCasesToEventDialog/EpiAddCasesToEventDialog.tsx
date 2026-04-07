@@ -97,11 +97,12 @@ export const EpiAddCasesToEventDialog = withDialog<EpiAddCasesToEventDialogProps
 
   const filteredCaseSetOptions = useMemo(() => (caseSetOptionsQuery.options ?? []).filter(option => {
     const caseSet = caseSetsMapQuery.map.get(option.value);
-    if (similarCaseIdsInRows.length === 0 && caseSet?.id === openProps.currentCaseSet.id) {
+
+    if (caseSet.case_type_id !== completeCaseType.id) {
       return false;
     }
 
-    if (caseSet.case_type_id !== completeCaseType.id) {
+    if (similarCaseIdsInRows.length === 0 && caseSet?.id === openProps.currentCaseSet?.id) {
       return false;
     }
 
@@ -109,19 +110,19 @@ export const EpiAddCasesToEventDialog = withDialog<EpiAddCasesToEventDialogProps
   }).map(option => {
     return {
       ...option,
-      label: option.value === openProps.currentCaseSet.id ? t('{{eventName}} (currently shown event)', { eventName: option.label }) : option.label,
+      label: option.value === openProps.currentCaseSet?.id ? t('{{eventName}} (currently shown event)', { eventName: option.label }) : option.label,
     };
-  }), [caseSetOptionsQuery.options, caseSetsMapQuery.map, completeCaseType.id, openProps.currentCaseSet.id, similarCaseIdsInRows.length, t]);
+  }), [caseSetOptionsQuery.options, caseSetsMapQuery.map, completeCaseType.id, openProps.currentCaseSet?.id, similarCaseIdsInRows.length, t]);
 
   const initialSetSetId = useMemo(() => {
     if (filteredCaseSetOptions.length === 1) {
       return filteredCaseSetOptions[0].value;
     }
-    if (similarCaseIdsInRows.length > 0) {
-      return openProps.currentCaseSet.id;
+    if (similarCaseIdsInRows.length > 0 && openProps.currentCaseSet?.id) {
+      return openProps.currentCaseSet?.id;
     }
     return null;
-  }, [filteredCaseSetOptions, openProps.currentCaseSet.id, similarCaseIdsInRows.length]);
+  }, [filteredCaseSetOptions, openProps.currentCaseSet?.id, similarCaseIdsInRows.length]);
 
   const formMethods = useForm<FormFields>({
     values: {
