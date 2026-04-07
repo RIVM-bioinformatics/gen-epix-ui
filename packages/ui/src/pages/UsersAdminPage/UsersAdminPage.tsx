@@ -68,16 +68,26 @@ export const UsersAdminPage = () => {
       label: role,
     }));
     setTableRoleOptions(_tableRoleOptions);
+    let _formRoleOptions: OptionBase<string>[];
     if (AuthorizationManager.instance.doesUserHavePermission([
       { command_name: CommandName.RetrieveInviteUserConstraintsCommand, permission_type: PermissionType.EXECUTE },
     ])) {
-      setFormRoleOptions(inviteUserConstraintsQuery?.data ? inviteUserConstraintsQuery.data.roles.map(role => ({
+      _formRoleOptions = inviteUserConstraintsQuery?.data ? inviteUserConstraintsQuery.data.roles.map(role => ({
         value: role,
         label: role,
-      })) : _tableRoleOptions);
+      })) : _tableRoleOptions;
     } else {
-      setFormRoleOptions(_tableRoleOptions);
+      _formRoleOptions = _tableRoleOptions;
     }
+    // The users own roles may not be included in the options from the invite user constraints endpoint (if they don't have permission to view that endpoint),
+    // so we need to add those to the options as well, but disable them since the user doesn't have permission to assign those roles to other users.
+    const extraRolesFromUser = AuthorizationManager.instance.user.roles.filter(role => !_formRoleOptions.some(option => option.value === role));
+    _formRoleOptions.push(...extraRolesFromUser.map(role => ({
+      value: role,
+      label: role,
+      disabled: true,
+    })));
+    setFormRoleOptions(_formRoleOptions);
   }, [inviteUserConstraintsQuery.data]);
 
   const fetchAll = useCallback(async (signal: AbortSignal) => {
