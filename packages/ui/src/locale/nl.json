@@ -151,7 +151,7 @@
     "Click the logout button to logout": "Klik op de uitlog knop om uit te loggen",
     "Close": "Sluiten",
     "Close dialog": "Dialoog sluiten",
-    "Close dialog with title {{title}}": "Dialoog met titel {{title}} sluiten",
+    "Close dialog with title: {{title}}": "Dialoog sluiten met titel: {{title}}",
     "Close download": "Download sluiten",
     "Close filters": "Filters sluiten",
     "Close notifications drawer": "Meldingenpaneel sluiten",

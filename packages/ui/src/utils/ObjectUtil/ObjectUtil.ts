@@ -25,4 +25,23 @@ export class ObjectUtil {
     });
     return final;
   }
+
+  public static deepRemoveEmptyStrings<T>(inputObject: T): T {
+    const clonedObject = JSON.parse(JSON.stringify(inputObject)) as T;
+
+    if (typeof clonedObject === 'string') {
+      return (clonedObject === '' ? null : clonedObject) as unknown as T;
+    }
+    if (Array.isArray(clonedObject)) {
+      return clonedObject.map(item => ObjectUtil.deepRemoveEmptyStrings<T>(item as unknown as T)) as unknown as T;
+    }
+    if (typeof clonedObject === 'object' && clonedObject !== null) {
+      const newObj: { [key: string]: unknown } = {};
+      Object.entries(clonedObject).forEach(([key, value]) => {
+        newObj[key] = ObjectUtil.deepRemoveEmptyStrings(value);
+      });
+      return newObj as T;
+    }
+    return clonedObject;
+  }
 }

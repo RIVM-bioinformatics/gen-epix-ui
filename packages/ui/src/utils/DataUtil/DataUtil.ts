@@ -80,22 +80,6 @@ export class DataUtil {
     return `${caseSet.name} (${format(caseSet.case_set_date, DATE_FORMAT.DATE)})`;
   }
 
-  public static deepRemoveEmptyStrings<T>(obj: T): T {
-    if (typeof obj === 'string') {
-      return (obj === '' ? null : obj) as unknown as T;
-    }
-    if (Array.isArray(obj)) {
-      return obj.map(item => DataUtil.deepRemoveEmptyStrings<T>(item as unknown as T)) as unknown as T;
-    }
-    if (typeof obj === 'object' && obj !== null) {
-      const newObj: { [key: string]: unknown } = {};
-      Object.entries(obj).forEach(([key, value]) => {
-        newObj[key] = DataUtil.deepRemoveEmptyStrings(value);
-      });
-      return newObj as T;
-    }
-    return obj;
-  }
 
   public static rankSortComperatorFactory<TSecondarySorKey extends keyof TItem, TItem extends { rank?: number }>(secondarySortKeyOrFn?: TSecondarySorKey | ((item: TItem) => string)) {
     return (a: TItem, b: TItem): number => {

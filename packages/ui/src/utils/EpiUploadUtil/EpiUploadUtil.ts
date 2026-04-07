@@ -58,6 +58,7 @@ import type {
 import { FileUtil } from '../FileUtil';
 import { UploadError } from '../../classes/errors';
 import { ValidationUtil } from '../ValidationUtil';
+import { ObjectUtil } from '../ObjectUtil';
 
 export class EpiUploadUtil {
   public static readonly caseIdColumnAliases = ['_case_id', 'case id', 'case_id', 'caseid', 'case.id'];
@@ -581,7 +582,7 @@ export class EpiUploadUtil {
       const caseForCreateUpdate: CaseForUpload = {
         id: caseIdColumn !== undefined ? row[caseIdColumn] : undefined,
         case: {
-          content,
+          content: ObjectUtil.deepRemoveEmptyStrings(content),
           case_type_id: caseTypeId,
           created_in_data_collection_id: createdInDataCollectionId,
         },
@@ -672,7 +673,7 @@ export class EpiUploadUtil {
               id: caseId,
               case_type_id: caseTypeId,
               created_in_data_collection_id: createdInDataCollectionId,
-              content: vc.validated_content,
+              content: ObjectUtil.deepRemoveEmptyStrings(vc.validated_content),
             },
             read_sets: readSetsForUpload,
             seqs: seqsForUpload,

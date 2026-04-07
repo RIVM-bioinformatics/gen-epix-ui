@@ -8,7 +8,7 @@ import type { GenericData } from '../../models/data';
 import { QueryUtil } from '../../utils/QueryUtil';
 import { StringUtil } from '../../utils/StringUtil';
 import { NotificationUtil } from '../../utils/NotificationUtil';
-import { DataUtil } from '../../utils/DataUtil';
+import { ObjectUtil } from '../../utils/ObjectUtil';
 
 
 export type MutationContextCreate<TData> = { previousData?: TData[]; temporaryId?: string; notificationKey?: string };
@@ -38,7 +38,7 @@ export const useCreateMutation = <TData extends GenericData | GenericData[], TVa
 
   const createMutation = useMutation<TData, Error, TVariables, MutationContextCreate<TData>>({
     mutationFn: async (item) => {
-      return queryFn(DataUtil.deepRemoveEmptyStrings(item));
+      return queryFn(ObjectUtil.deepRemoveEmptyStrings(item));
     },
     onMutate: async (variables) => {
       const notificationKey = NotificationManager.instance.showNotification({

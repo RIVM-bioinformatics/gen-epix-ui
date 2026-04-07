@@ -2,15 +2,33 @@ import {
   describe,
   it,
   expect,
+  vi,
+  beforeAll,
+  afterAll,
 } from 'vitest';
 
 
+import { ConfigManager } from '../../classes/managers/ConfigManager';
 import { QueryClientManager } from '../../classes/managers/QueryClientManager';
+import type { Config } from '../../models/config';
 import { QUERY_KEY } from '../../models/query';
 
 import { QueryUtil } from './QueryUtil';
 
 describe('QueryUtil', () => {
+  beforeAll(() => {
+    vi.spyOn(ConfigManager.instance, 'config', 'get').mockReturnValue({
+      queryClient: {
+        retry: () => false,
+        retryDelay: () => 0,
+      },
+    } as unknown as Config);
+  });
+
+  afterAll(() => {
+    vi.restoreAllMocks();
+  });
+
   describe('getQueryKeyDependencies', () => {
     it('should return a collection of keys', () => {
       expect(QueryUtil.getQueryKeyDependencies([QUERY_KEY.CASES])).toEqual([

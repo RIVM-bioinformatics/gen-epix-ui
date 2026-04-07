@@ -11,7 +11,7 @@ import { QueryClientManager } from '../../classes/managers/QueryClientManager';
 import type { GenericData } from '../../models/data';
 import { QueryUtil } from '../../utils/QueryUtil';
 import { NotificationUtil } from '../../utils/NotificationUtil';
-import { DataUtil } from '../../utils/DataUtil';
+import { ObjectUtil } from '../../utils/ObjectUtil';
 
 export type MutationContextEdit<TData> = { previousData?: TData[]; notificationKey?: string; item?: TData };
 
@@ -50,7 +50,7 @@ export const useEditMutation = <TData extends GenericData | GenericData[], TVari
   }, []);
 
   const mutationFn = useCallback(async (variables: TVariables) => {
-    return queryFn(DataUtil.deepRemoveEmptyStrings(variables), previousItem.current);
+    return queryFn(ObjectUtil.deepRemoveEmptyStrings(variables), previousItem.current);
   }, [previousItem, queryFn]);
 
   const editMutation = useMutation<TData, Error, TVariables, MutationContextEdit<TData>>({
