@@ -1,4 +1,8 @@
-import readXlsxFile, { readSheetNames } from 'read-excel-file/browser';
+import readXlsxFile, { readSheet } from 'read-excel-file/browser';
+import type {
+  CellValue,
+  SheetData,
+} from 'read-excel-file/browser';
 import { parse } from 'csv/browser/esm/sync';
 import type {
   ObjectSchema,
@@ -60,6 +64,20 @@ export class EpiUploadUtil {
   public static readonly caseDateColumnAliases = ['_case_date', 'case date', 'case_date', 'casedate', 'case.date'];
   public static readonly colAliases = ['_case_type', 'case type', 'case_type', 'casetype', 'case.type'];
 
+  private static mapExcelCellToString(cell: CellValue | null): string {
+    if (cell instanceof Date) {
+      return format(cell, DATE_FORMAT.DATE);
+    }
+    if (cell === null || cell === undefined) {
+      return '';
+    }
+    return cell.toString();
+  }
+
+  private static mapExcelSheetData(sheetData: SheetData): string[][] {
+    return sheetData.map(row => row.map(cell => EpiUploadUtil.mapExcelCellToString(cell)));
+  }
+
   public static isXlsxFile(fileName: string): boolean {
     return fileName?.toLowerCase()?.endsWith('.xlsx');
   }
@@ -74,7 +92,10 @@ export class EpiUploadUtil {
     const fileName = file.name.toLowerCase();
 
     if (EpiUploadUtil.isXlsxFile(fileName)) {
-      return (await readSheetNames(file)).map(name => ({ label: name, value: name }));
+      return (await readXlsxFile(file, { trim: true })).map(({ sheet: sheetName }) => ({
+        label: sheetName,
+        value: sheetName,
+      }));
     }
     return [];
   }
@@ -118,16 +139,10 @@ export class EpiUploadUtil {
       });
     } else if (EpiUploadUtil.isXlsxFile(fileName)) {
       // Parse Excel file
-      const excelData = await readXlsxFile(file, {
-        sheet,
-        trim: true,
-      });
-      result = excelData.map(row => row.map(cell => {
-        if (cell instanceof Date) {
-          return format(cell, DATE_FORMAT.DATE);
-        }
-        return cell?.toString() ?? undefined;
-      }));
+      const excelData = sheet
+        ? await readSheet(file, sheet, { trim: true })
+        : await readSheet(file, { trim: true });
+      result = EpiUploadUtil.mapExcelSheetData(excelData);
     } else {
       throw new Error('Unsupported file format. Please select a CSV or Excel file.');
     }
