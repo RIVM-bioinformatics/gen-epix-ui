@@ -140,7 +140,7 @@ export default defineConfig({
         ],
         test: {
           include: [
-            'src/test/integration/**/*.test.{ts,tsx}',
+            'src/**/*.test.tsx',
           ],
           name: 'browser',
           setupFiles: ['./src/test/setup-browser.ts'],
