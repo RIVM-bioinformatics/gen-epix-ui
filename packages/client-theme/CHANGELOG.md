@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.2.0](https://github.com/RIVM-bioinformatics/gen-epix-ui/compare/client-theme-v0.1.0...client-theme-v0.2.0) (2026-04-07)
+
+
+### Features
+
+* update dependencies to latest ([f1d09c6](https://github.com/RIVM-bioinformatics/gen-epix-ui/commit/f1d09c64bfdd6272285fb3360512ca9a6c78fad1))
+
 ## [0.1.0](https://github.com/RIVM-bioinformatics/gen-epix-ui/compare/client-theme-v0.0.4...client-theme-v0.1.0) (2026-04-07)
 
 

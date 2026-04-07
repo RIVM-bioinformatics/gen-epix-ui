@@ -1,5 +1,19 @@
 # Changelog
 
+## [1.20.0](https://github.com/RIVM-bioinformatics/gen-epix-ui/compare/ui-v1.19.0...ui-v1.20.0) (2026-04-07)
+
+
+### Features
+
+* update dependencies to latest ([f1d09c6](https://github.com/RIVM-bioinformatics/gen-epix-ui/commit/f1d09c64bfdd6272285fb3360512ca9a6c78fad1))
+
+
+### Bug Fixes
+
+* fix add cases to existing event when current case set is not given ([ae0d9e5](https://github.com/RIVM-bioinformatics/gen-epix-ui/commit/ae0d9e536a4ec49046284b171778b5471536ead7))
+* fix TableUtil.getColumnIdsWithData include columns that has data for SOME rows instead of EVERY row ([197886c](https://github.com/RIVM-bioinformatics/gen-epix-ui/commit/197886c3db53883df95075a21750c35c9b31d334))
+* when removing case from case set it should only be removed from given case set, not all case sets ([201c85d](https://github.com/RIVM-bioinformatics/gen-epix-ui/commit/201c85d881c30ea44a00c26b664fa568718cc792))
+
 ## [1.19.0](https://github.com/RIVM-bioinformatics/gen-epix-ui/compare/ui-v1.18.1...ui-v1.19.0) (2026-04-07)
 
 
