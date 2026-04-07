@@ -13,8 +13,8 @@ import { useShallow } from 'zustand/shallow';
 import type {
   Case,
   CaseSet,
-  TypedUuidSetFilter,
   CaseSetMember,
+  TypedCompositeFilter,
 } from '../../../api';
 import { CaseApi } from '../../../api';
 import type {
@@ -60,12 +60,24 @@ export const EpiRemoveCasesFromEventDialog = withDialog<EpiRemoveCasesFromEventD
 
   const isMaxExceeded = openProps.rows.length > completeCaseType.props.delete_max_n_cases;
 
-  const caseSetMembersFilter = useMemo<TypedUuidSetFilter>(() => ({
-    invert: false,
-    key: 'case_id',
-    type: 'UUID_SET',
-    members: openProps.rows.map(row => row.id),
-  }), [openProps.rows]);
+  const caseSetMembersFilter = useMemo<TypedCompositeFilter>(() => ({
+    type: 'COMPOSITE',
+    operator: 'AND',
+    filters: [
+      {
+        invert: false,
+        key: 'case_id',
+        type: 'UUID_SET',
+        members: openProps.rows.map(row => row.id),
+      },
+      {
+        invert: false,
+        key: 'case_set_id',
+        type: 'UUID_SET',
+        members: [openProps.caseSet.id],
+      },
+    ],
+  }), [openProps.caseSet.id, openProps.rows]);
 
   const { isLoading: isCaseSetMembersLoading, error: caseSetMembersError, data: caseSetMembers } = useQueryMemo({
     queryKey: QueryUtil.getGenericKey(QUERY_KEY.CASE_SET_MEMBERS, caseSetMembersFilter),
