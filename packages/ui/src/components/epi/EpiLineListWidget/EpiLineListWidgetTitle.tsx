@@ -6,7 +6,7 @@ import { Typography } from '@mui/material';
 
 import { EpiDashboardStoreContext } from '../../../stores/epiDashboardStore';
 
-export const EpiLineListTitle = () => {
+export const EpiLineListWidgetTitle = () => {
   const epiDashboardStore = useContext(EpiDashboardStoreContext);
   const { t } = useTranslation();
   const sortedData = useStore(epiDashboardStore, useShallow((state) => state.sortedData));

@@ -13,7 +13,7 @@ import { EpiDashboardStoreContext } from '../../../stores/epiDashboardStore';
 import { DownloadUtil } from '../../../utils/DownloadUtil';
 import { EpiLineListUtil } from '../../../utils/EpiLineListUtil';
 
-export const useEpiLineListEmitDownloadOptions = () => {
+export const useEpiLineListWidgetEmitDownloadOptions = () => {
   const { t } = useTranslation();
   const epiDashboardStore = useContext(EpiDashboardStoreContext);
   const sortedData = useStore(epiDashboardStore, useShallow((state) => state.sortedData));

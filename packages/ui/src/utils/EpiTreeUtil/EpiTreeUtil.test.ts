@@ -59,6 +59,33 @@ const makeNode = (name: string, branchLength: number, children: TreeNode[]): Tre
   size: children.reduce((s, c) => s + (c.size ?? 1), 0),
 });
 
+const getExternalLeafSorting = (rootNode: TreeNode): string[] => {
+  if (!rootNode) {
+    return [];
+  }
+
+  if (!rootNode.children?.length) {
+    return [rootNode.name];
+  }
+
+  return rootNode.children.flatMap(child => getExternalLeafSorting(child));
+};
+
+const assembleTreeForTest = (params: {
+  rootNode: TreeNode;
+  treeCanvasWidth: number;
+  pixelToGeneticDistanceRatio: number;
+  itemHeight: number;
+  externalLeafSorting?: string[];
+}): TreeAssembly => {
+  const { externalLeafSorting, ...rest } = params;
+
+  return EpiTreeUtil.assembleTree({
+    ...rest,
+    externalLeafSorting: externalLeafSorting ?? getExternalLeafSorting(params.rootNode),
+  });
+};
+
 describe('EpiTreeUtil', () => {
   describe('getScrollPositionFromTreeVisibility', () => {
     const TABLE_ROW_HEIGHT = 30;
@@ -718,7 +745,7 @@ describe('EpiTreeUtil', () => {
     it('returns an assembly with empty arrays for a single leaf (no ancestors)', () => {
       // leaf a: distance=0, bl=2 → leafXPxEnd=210, leafYPx=15, leafXPxStart=10
       const tree = makeLeaf('a', 2);
-      const asm = EpiTreeUtil.assembleTree({ rootNode: tree, treeCanvasWidth, pixelToGeneticDistanceRatio, itemHeight: TABLE_ROW_HEIGHT });
+      const asm = assembleTreeForTest({ rootNode: tree, treeCanvasWidth, pixelToGeneticDistanceRatio, itemHeight: TABLE_ROW_HEIGHT });
 
       expect(asm.leafNodes).toHaveLength(1);
       expect(asm.leafNodes[0].nodeName).toBe('a');
@@ -734,14 +761,14 @@ describe('EpiTreeUtil', () => {
 
     it('produces correct support line coordinates for a single leaf', () => {
       // leafXPxEnd = (0+2)*100+10 = 210, leafYPx = 15
-      const asm = EpiTreeUtil.assembleTree({ rootNode: makeLeaf('a', 2), treeCanvasWidth, pixelToGeneticDistanceRatio, itemHeight: TABLE_ROW_HEIGHT });
-      expect(asm.supportLines).toEqual([{ nodeName: 'a', fromX: 210, toX: treeCanvasWidth, y: 15 }]);
+      const asm = assembleTreeForTest({ rootNode: makeLeaf('a', 2), treeCanvasWidth, pixelToGeneticDistanceRatio, itemHeight: TABLE_ROW_HEIGHT });
+      expect(asm.supportLines).toEqual([{ nodeName: 'a', fromX: 210, toX: treeCanvasWidth, fromY: 15, toY: 15 }]);
     });
 
     it('produces one entry per leaf in leafNodes, leafTreeLines, and supportLines for a two-leaf tree', () => {
       // root(bl=0) → [a(bl=2), b(bl=3)]
       const tree = makeNode('root', 0, [makeLeaf('a', 2), makeLeaf('b', 3)]);
-      const asm = EpiTreeUtil.assembleTree({ rootNode: tree, treeCanvasWidth, pixelToGeneticDistanceRatio, itemHeight: TABLE_ROW_HEIGHT });
+      const asm = assembleTreeForTest({ rootNode: tree, treeCanvasWidth, pixelToGeneticDistanceRatio, itemHeight: TABLE_ROW_HEIGHT });
 
       expect(asm.leafNodes).toHaveLength(2);
       expect(asm.leafTreeLines).toHaveLength(2);
@@ -752,15 +779,29 @@ describe('EpiTreeUtil', () => {
       // root(bl=0) → [a(bl=2), b(bl=3)]
       // a at leafIndex=0: y=15; b at leafIndex=1: y=45
       const tree = makeNode('root', 0, [makeLeaf('a', 2), makeLeaf('b', 3)]);
-      const asm = EpiTreeUtil.assembleTree({ rootNode: tree, treeCanvasWidth, pixelToGeneticDistanceRatio, itemHeight: TABLE_ROW_HEIGHT });
+      const asm = assembleTreeForTest({ rootNode: tree, treeCanvasWidth, pixelToGeneticDistanceRatio, itemHeight: TABLE_ROW_HEIGHT });
 
-      expect(asm.supportLines[0]).toEqual({ nodeName: 'a', fromX: 210, toX: treeCanvasWidth, y: 15 });
-      expect(asm.supportLines[1]).toEqual({ nodeName: 'b', fromX: 310, toX: treeCanvasWidth, y: 45 });
+      expect(asm.supportLines[0]).toEqual({ nodeName: 'a', fromX: 210, toX: treeCanvasWidth, fromY: 15, toY: 15 });
+      expect(asm.supportLines[1]).toEqual({ nodeName: 'b', fromX: 310, toX: treeCanvasWidth, fromY: 45, toY: 45 });
+    });
+
+    it('uses external leaf sorting to set support line target positions', () => {
+      const tree = makeNode('root', 0, [makeLeaf('a', 2), makeLeaf('b', 3)]);
+      const asm = assembleTreeForTest({
+        rootNode: tree,
+        treeCanvasWidth,
+        pixelToGeneticDistanceRatio,
+        itemHeight: TABLE_ROW_HEIGHT,
+        externalLeafSorting: ['b', 'a'],
+      });
+
+      expect(asm.supportLines[0]).toEqual({ nodeName: 'a', fromX: 210, toX: treeCanvasWidth, fromY: 15, toY: 45 });
+      expect(asm.supportLines[1]).toEqual({ nodeName: 'b', fromX: 310, toX: treeCanvasWidth, fromY: 45, toY: 15 });
     });
 
     it('produces one horizontalAncestorTreeLine and two verticalAncestorTreeLines for a two-leaf tree', () => {
       const tree = makeNode('root', 0, [makeLeaf('a', 2), makeLeaf('b', 3)]);
-      const asm = EpiTreeUtil.assembleTree({ rootNode: tree, treeCanvasWidth, pixelToGeneticDistanceRatio, itemHeight: TABLE_ROW_HEIGHT });
+      const asm = assembleTreeForTest({ rootNode: tree, treeCanvasWidth, pixelToGeneticDistanceRatio, itemHeight: TABLE_ROW_HEIGHT });
 
       expect(asm.horizontalAncestorTreeLines).toHaveLength(1);
       expect(asm.verticalAncestorTreeLines).toHaveLength(2);
@@ -769,7 +810,7 @@ describe('EpiTreeUtil', () => {
     it("includes all descendant leaf names in the ancestor's horizontalAncestorTreeLine nodeNames", () => {
       // root horizontal line nodeNames = ['root', 'a', 'b']
       const tree = makeNode('root', 0, [makeLeaf('a', 2), makeLeaf('b', 3)]);
-      const asm = EpiTreeUtil.assembleTree({ rootNode: tree, treeCanvasWidth, pixelToGeneticDistanceRatio, itemHeight: TABLE_ROW_HEIGHT });
+      const asm = assembleTreeForTest({ rootNode: tree, treeCanvasWidth, pixelToGeneticDistanceRatio, itemHeight: TABLE_ROW_HEIGHT });
 
       expect(asm.horizontalAncestorTreeLines[0].nodeNames).toEqual(['root', 'a', 'b']);
     });
@@ -777,7 +818,7 @@ describe('EpiTreeUtil', () => {
     it('adds an ancestor dot when all children have positive branch lengths', () => {
       // both a and b have bl > 0 → ancestor dot
       const tree = makeNode('root', 0, [makeLeaf('a', 2), makeLeaf('b', 3)]);
-      const asm = EpiTreeUtil.assembleTree({ rootNode: tree, treeCanvasWidth, pixelToGeneticDistanceRatio, itemHeight: TABLE_ROW_HEIGHT });
+      const asm = assembleTreeForTest({ rootNode: tree, treeCanvasWidth, pixelToGeneticDistanceRatio, itemHeight: TABLE_ROW_HEIGHT });
 
       expect(asm.ancestorNodes).toHaveLength(1);
       expect(asm.ancestorNodes[0].nodeNames).toContain('root');
@@ -786,7 +827,7 @@ describe('EpiTreeUtil', () => {
     it('does NOT add an ancestor dot when a child has zero branch length', () => {
       // leaf 'a' has bl=0 → root.children.every(bl > 0) is false → no dot
       const tree = makeNode('root', 0, [makeLeaf('a', 0), makeLeaf('b', 2)]);
-      const asm = EpiTreeUtil.assembleTree({ rootNode: tree, treeCanvasWidth, pixelToGeneticDistanceRatio, itemHeight: TABLE_ROW_HEIGHT });
+      const asm = assembleTreeForTest({ rootNode: tree, treeCanvasWidth, pixelToGeneticDistanceRatio, itemHeight: TABLE_ROW_HEIGHT });
 
       expect(asm.ancestorNodes).toHaveLength(0);
     });
@@ -796,7 +837,7 @@ describe('EpiTreeUtil', () => {
       // horizontalLinePathPropertiesMap: 2 leaf lines + 1 ancestor line = 3
       // verticalLinePathPropertiesMap: 2 vertical lines
       const tree = makeNode('root', 0, [makeLeaf('a', 2), makeLeaf('b', 3)]);
-      const asm = EpiTreeUtil.assembleTree({ rootNode: tree, treeCanvasWidth, pixelToGeneticDistanceRatio, itemHeight: TABLE_ROW_HEIGHT });
+      const asm = assembleTreeForTest({ rootNode: tree, treeCanvasWidth, pixelToGeneticDistanceRatio, itemHeight: TABLE_ROW_HEIGHT });
 
       expect(asm.nodePathPropertiesMap.size).toBe(3);
       expect(asm.horizontalLinePathPropertiesMap.size).toBe(3);
@@ -805,7 +846,7 @@ describe('EpiTreeUtil', () => {
 
     it('stores correct subTreeLeaveNames for a leaf in nodePathPropertiesMap', () => {
       const leafA = makeLeaf('a', 2);
-      const asm = EpiTreeUtil.assembleTree({ rootNode: leafA, treeCanvasWidth, pixelToGeneticDistanceRatio, itemHeight: TABLE_ROW_HEIGHT });
+      const asm = assembleTreeForTest({ rootNode: leafA, treeCanvasWidth, pixelToGeneticDistanceRatio, itemHeight: TABLE_ROW_HEIGHT });
 
       const values = [...asm.nodePathPropertiesMap.values()];
       expect(values[0].subTreeLeaveNames).toEqual(['a']);
@@ -815,7 +856,7 @@ describe('EpiTreeUtil', () => {
     it('stores correct subTreeLeaveNames for an ancestor in horizontalLinePathPropertiesMap', () => {
       // ancestor line subTreeLeaveNames = caseIds = ['a', 'b']
       const tree = makeNode('root', 0, [makeLeaf('a', 2), makeLeaf('b', 3)]);
-      const asm = EpiTreeUtil.assembleTree({ rootNode: tree, treeCanvasWidth, pixelToGeneticDistanceRatio, itemHeight: TABLE_ROW_HEIGHT });
+      const asm = assembleTreeForTest({ rootNode: tree, treeCanvasWidth, pixelToGeneticDistanceRatio, itemHeight: TABLE_ROW_HEIGHT });
 
       // The ancestor's horizontal line is the last entry (added after the two leaf lines)
       const mapValues = [...asm.horizontalLinePathPropertiesMap.values()];
@@ -830,7 +871,7 @@ describe('EpiTreeUtil', () => {
         makeNode('left', 1, [makeLeaf('a', 1), makeLeaf('b', 1)]),
         makeLeaf('c', 2),
       ]);
-      const asm = EpiTreeUtil.assembleTree({ rootNode: tree, treeCanvasWidth, pixelToGeneticDistanceRatio, itemHeight: TABLE_ROW_HEIGHT });
+      const asm = assembleTreeForTest({ rootNode: tree, treeCanvasWidth, pixelToGeneticDistanceRatio, itemHeight: TABLE_ROW_HEIGHT });
 
       expect(asm.leafNodes).toHaveLength(3);
       expect(asm.leafNodes.map(n => n.nodeName)).toEqual(['a', 'b', 'c']);
@@ -849,11 +890,11 @@ describe('EpiTreeUtil', () => {
         makeNode('left', 1, [makeLeaf('a', 1), makeLeaf('b', 1)]),
         makeLeaf('c', 2),
       ]);
-      const asm = EpiTreeUtil.assembleTree({ rootNode: tree, treeCanvasWidth, pixelToGeneticDistanceRatio, itemHeight: TABLE_ROW_HEIGHT });
+      const asm = assembleTreeForTest({ rootNode: tree, treeCanvasWidth, pixelToGeneticDistanceRatio, itemHeight: TABLE_ROW_HEIGHT });
 
-      expect(asm.supportLines[0]).toEqual({ nodeName: 'a', fromX: 210, toX: treeCanvasWidth, y: 15 });
-      expect(asm.supportLines[1]).toEqual({ nodeName: 'b', fromX: 210, toX: treeCanvasWidth, y: 45 });
-      expect(asm.supportLines[2]).toEqual({ nodeName: 'c', fromX: 210, toX: treeCanvasWidth, y: 75 });
+      expect(asm.supportLines[0]).toEqual({ nodeName: 'a', fromX: 210, toX: treeCanvasWidth, fromY: 15, toY: 15 });
+      expect(asm.supportLines[1]).toEqual({ nodeName: 'b', fromX: 210, toX: treeCanvasWidth, fromY: 45, toY: 45 });
+      expect(asm.supportLines[2]).toEqual({ nodeName: 'c', fromX: 210, toX: treeCanvasWidth, fromY: 75, toY: 75 });
     });
 
     it('ancestor horizontal line in a three-leaf tree includes all descendant leaf names', () => {
@@ -862,7 +903,7 @@ describe('EpiTreeUtil', () => {
         makeNode('left', 1, [makeLeaf('a', 1), makeLeaf('b', 1)]),
         makeLeaf('c', 2),
       ]);
-      const asm = EpiTreeUtil.assembleTree({ rootNode: tree, treeCanvasWidth, pixelToGeneticDistanceRatio, itemHeight: TABLE_ROW_HEIGHT });
+      const asm = assembleTreeForTest({ rootNode: tree, treeCanvasWidth, pixelToGeneticDistanceRatio, itemHeight: TABLE_ROW_HEIGHT });
 
       const rootLine = asm.horizontalAncestorTreeLines.find(l => l.nodeNames[0] === 'root');
       expect(rootLine?.nodeNames).toEqual(['root', 'a', 'b', 'c']);
@@ -876,7 +917,7 @@ describe('EpiTreeUtil', () => {
         ...makeNode('root', 0, [makeLeaf('a', 5), makeLeaf('b', 10)]),
         maxBranchLength: new Decimal(10),
       };
-      const asm = EpiTreeUtil.assembleTree({ rootNode, treeCanvasWidth, pixelToGeneticDistanceRatio, itemHeight: TABLE_ROW_HEIGHT });
+      const asm = assembleTreeForTest({ rootNode, treeCanvasWidth, pixelToGeneticDistanceRatio, itemHeight: TABLE_ROW_HEIGHT });
 
       expect(asm.distanceTexts).toHaveLength(2);
       expect(asm.distanceTexts[0].nodeNames).toEqual(['a']);
@@ -891,7 +932,7 @@ describe('EpiTreeUtil', () => {
         ...makeNode('root', 0, [makeLeaf('a', 4), makeLeaf('b', 10)]),
         maxBranchLength: new Decimal(100),
       };
-      const asm = EpiTreeUtil.assembleTree({ rootNode, treeCanvasWidth, pixelToGeneticDistanceRatio, itemHeight: TABLE_ROW_HEIGHT });
+      const asm = assembleTreeForTest({ rootNode, treeCanvasWidth, pixelToGeneticDistanceRatio, itemHeight: TABLE_ROW_HEIGHT });
 
       expect(asm.distanceTexts).toHaveLength(1);
       expect(asm.distanceTexts[0].nodeNames).toEqual(['b']);
@@ -900,13 +941,13 @@ describe('EpiTreeUtil', () => {
     it('produces no distance texts when rootNode has no maxBranchLength', () => {
       // makeNode does not set maxBranchLength → all labels suppressed
       const tree = makeNode('root', 0, [makeLeaf('a', 5), makeLeaf('b', 10)]);
-      const asm = EpiTreeUtil.assembleTree({ rootNode: tree, treeCanvasWidth, pixelToGeneticDistanceRatio, itemHeight: TABLE_ROW_HEIGHT });
+      const asm = assembleTreeForTest({ rootNode: tree, treeCanvasWidth, pixelToGeneticDistanceRatio, itemHeight: TABLE_ROW_HEIGHT });
 
       expect(asm.distanceTexts).toHaveLength(0);
     });
 
     it('returns an empty assembly for a null rootNode without throwing', () => {
-      const asm = EpiTreeUtil.assembleTree({ rootNode: null as unknown as TreeNode, treeCanvasWidth, pixelToGeneticDistanceRatio, itemHeight: TABLE_ROW_HEIGHT });
+      const asm = assembleTreeForTest({ rootNode: null as unknown as TreeNode, treeCanvasWidth, pixelToGeneticDistanceRatio, itemHeight: TABLE_ROW_HEIGHT });
       expect(asm.leafNodes).toHaveLength(0);
       expect(asm.ancestorNodes).toHaveLength(0);
     });
@@ -914,17 +955,17 @@ describe('EpiTreeUtil', () => {
     it('handles a leaf node with undefined branchLength gracefully (uses ?? 0 fallback)', () => {
       // leaf without branchLength → branchLength?.toNumber() ?? 0 === 0
       const leafNoBL = { name: 'x', subTreeLeaveNames: ['x'], subTreeNames: [], size: 1 } as TreeNode;
-      const asm = EpiTreeUtil.assembleTree({ rootNode: leafNoBL, treeCanvasWidth, pixelToGeneticDistanceRatio, itemHeight: TABLE_ROW_HEIGHT });
+      const asm = assembleTreeForTest({ rootNode: leafNoBL, treeCanvasWidth, pixelToGeneticDistanceRatio, itemHeight: TABLE_ROW_HEIGHT });
       expect(asm.leafNodes).toHaveLength(1);
       // leafXPxEnd = (0 + 0)*100 + TREE_PADDING = 10
-      expect(asm.supportLines[0]).toEqual({ nodeName: 'x', fromX: 10, toX: treeCanvasWidth, y: 15 });
+      expect(asm.supportLines[0]).toEqual({ nodeName: 'x', fromX: 10, toX: treeCanvasWidth, fromY: 15, toY: 15 });
     });
 
     it('handles a child with undefined branchLength via ?? 0 fallback in the every() check', () => {
       // childNoBL has branchLength: undefined → every(bl > 0) uses ?? 0 → 0 > 0 = false → no dot
       const childNoBL = { name: 'a', subTreeLeaveNames: ['a'], subTreeNames: [], size: 1 } as TreeNode;
       const root = makeNode('root', 0, [childNoBL, makeLeaf('b', 0)]);
-      const asm = EpiTreeUtil.assembleTree({ rootNode: root, treeCanvasWidth, pixelToGeneticDistanceRatio, itemHeight: TABLE_ROW_HEIGHT });
+      const asm = assembleTreeForTest({ rootNode: root, treeCanvasWidth, pixelToGeneticDistanceRatio, itemHeight: TABLE_ROW_HEIGHT });
       expect(asm.leafNodes).toHaveLength(2);
       expect(asm.ancestorNodes).toHaveLength(0);
     });
@@ -940,7 +981,7 @@ describe('EpiTreeUtil', () => {
         size: 2,
         children: [makeLeaf('a', 1), makeLeaf('b', 1)],
       } as unknown as TreeNode;
-      const asm = EpiTreeUtil.assembleTree({ rootNode: ancestorNoBL, treeCanvasWidth, pixelToGeneticDistanceRatio, itemHeight: TABLE_ROW_HEIGHT });
+      const asm = assembleTreeForTest({ rootNode: ancestorNoBL, treeCanvasWidth, pixelToGeneticDistanceRatio, itemHeight: TABLE_ROW_HEIGHT });
       expect(asm.leafNodes).toHaveLength(2);
       expect(asm.ancestorNodes).toHaveLength(1); // both children have positive BL
     });
@@ -955,7 +996,7 @@ describe('EpiTreeUtil', () => {
         makeLeaf('c', 1),
         makeLeaf('d', 1),
       ]);
-      const asm = EpiTreeUtil.assembleTree({ rootNode: tree, treeCanvasWidth, pixelToGeneticDistanceRatio, itemHeight: TABLE_ROW_HEIGHT });
+      const asm = assembleTreeForTest({ rootNode: tree, treeCanvasWidth, pixelToGeneticDistanceRatio, itemHeight: TABLE_ROW_HEIGHT });
       // 4 vertical chunk paths: 2 for top group (each chunk ending at ancestorYPx) + 2 for bottom group
       expect(asm.verticalAncestorTreeLines.length).toBeGreaterThanOrEqual(4);
     });
@@ -967,7 +1008,7 @@ describe('EpiTreeUtil', () => {
         ...makeNode('root', 0, [inner]),
         maxBranchLength: new Decimal(10),
       };
-      const asm = EpiTreeUtil.assembleTree({ rootNode, treeCanvasWidth, pixelToGeneticDistanceRatio, itemHeight: TABLE_ROW_HEIGHT });
+      const asm = assembleTreeForTest({ rootNode, treeCanvasWidth, pixelToGeneticDistanceRatio, itemHeight: TABLE_ROW_HEIGHT });
       const ancestorText = asm.distanceTexts.find(t => t.nodeNames.includes('inner'));
       expect(ancestorText).toBeDefined();
     });
@@ -1334,6 +1375,30 @@ describe('EpiTreeUtil', () => {
       expect(ctx.moveTo).toHaveBeenNthCalledWith(1, 10, 0);
       expect(ctx.lineTo).toHaveBeenNthCalledWith(1, 10, 300);
     });
+
+    it('uses explicit startY and endY boundaries when provided', () => {
+      const ctx = makeGuidesCtx();
+      const canvas = {
+        getContext: vi.fn().mockReturnValue(ctx),
+        width: 800,
+        height: 300,
+      } as unknown as HTMLCanvasElement;
+
+      EpiTreeUtil.drawGuides({
+        canvas,
+        tickerMarkScale: [3, 5, 1],
+        geneticTreeWidth: new Decimal(10),
+        pixelToGeneticDistanceRatio: 100,
+        devicePixelRatio: 1,
+        zoomLevel: 1,
+        horizontalScrollPosition: 0,
+        startY: 40,
+        endY: 140,
+      });
+
+      expect(ctx.moveTo).toHaveBeenNthCalledWith(1, 10, 40);
+      expect(ctx.lineTo).toHaveBeenNthCalledWith(1, 10, 140);
+    });
   });
 
   describe('drawScale', () => {
@@ -1361,10 +1426,12 @@ describe('EpiTreeUtil', () => {
       fillText: vi.fn(),
       textAlign: 'left',
       font: '',
+      fillStyle: '',
     });
 
     const makeScaleTheme = () => ({
       typography: { fontFamily: 'Arial' },
+      palette: { text: { primary: '#111111' } },
     } as unknown as Theme);
 
     it('calls fillText once per tick mark', () => {
@@ -1415,6 +1482,28 @@ describe('EpiTreeUtil', () => {
       expect(ctx.fillText).toHaveBeenNthCalledWith(1, '10', 10, 24.4);
       expect(ctx.fillText).toHaveBeenNthCalledWith(2, '5', 510, 24.4);
       expect(ctx.fillText).toHaveBeenNthCalledWith(3, '0', 1010, 24.4);
+    });
+
+    it('sets an explicit text fill color before drawing scale labels', () => {
+      const ctx = makeScaleCtx();
+      const canvas = {
+        getContext: vi.fn().mockReturnValue(ctx),
+        width: 800,
+        height: 60,
+      } as unknown as HTMLCanvasElement;
+
+      EpiTreeUtil.drawScale({
+        canvas,
+        theme: makeScaleTheme(),
+        tickerMarkScale: [1, 5, 1],
+        geneticTreeWidth: new Decimal(5),
+        pixelToGeneticDistanceRatio: 100,
+        devicePixelRatio: 1,
+        zoomLevel: 1,
+        horizontalScrollPosition: 0,
+      });
+
+      expect(ctx.fillStyle).toBe('#111111');
     });
   });
 
@@ -1514,8 +1603,11 @@ describe('EpiTreeUtil', () => {
         pixelToGeneticDistanceRatio: 100,
         tickerMarkScale: [0, 0, 0],
         shouldShowDistances: false,
+        shouldShowSupportLinesWhenUnlinked: false,
         devicePixelRatio: 1,
         geneticTreeWidth: new Decimal(0),
+        externalRange: { startIndex: 0, endIndex: 0 },
+        itemHeight: 30,
       });
 
       expect(ctx.reset).toHaveBeenCalled();
@@ -1546,8 +1638,11 @@ describe('EpiTreeUtil', () => {
         pixelToGeneticDistanceRatio: 100,
         tickerMarkScale: [0, 0, 0],
         shouldShowDistances: false,
+        shouldShowSupportLinesWhenUnlinked: false,
         devicePixelRatio: 2,
         geneticTreeWidth: new Decimal(0),
+        externalRange: { startIndex: 0, endIndex: 0 },
+        itemHeight: 30,
       });
 
       expect(canvas.width).toBe(400);  // 200 * 2
@@ -1579,8 +1674,11 @@ describe('EpiTreeUtil', () => {
         pixelToGeneticDistanceRatio: 100,
         tickerMarkScale: [0, 0, 0],
         shouldShowDistances: false,
+        shouldShowSupportLinesWhenUnlinked: false,
         devicePixelRatio: 1,
         geneticTreeWidth: new Decimal(0),
+        externalRange: { startIndex: 0, endIndex: 0 },
+        itemHeight: 30,
       });
 
       expect(ctx.imageSmoothingEnabled).toBe(false);
@@ -1611,8 +1709,11 @@ describe('EpiTreeUtil', () => {
         pixelToGeneticDistanceRatio: 100,
         tickerMarkScale: [0, 0, 0],
         shouldShowDistances: false,
+        shouldShowSupportLinesWhenUnlinked: false,
         devicePixelRatio: 1,
         geneticTreeWidth: new Decimal(0),
+        externalRange: { startIndex: 0, endIndex: 0 },
+        itemHeight: 30,
       });
 
       expect(ctx.imageSmoothingEnabled).toBe(true);
@@ -1989,6 +2090,10 @@ describe('EpiTreeUtil', () => {
       const drawCalls: CtxDrawCall[] = [];
 
       const mockCtx = {
+        save: vi.fn(),
+        restore: vi.fn(),
+        clip: vi.fn(),
+        rect: vi.fn(),
         setTransform: vi.fn(),
         textAlign: 'left',
         font: '',
@@ -2040,7 +2145,7 @@ describe('EpiTreeUtil', () => {
     } as unknown as Theme);
 
     const makeCanvas = (ctx: ReturnType<typeof makeTrackedCtx>['ctx']): HTMLCanvasElement =>
-      ({ getContext: vi.fn().mockReturnValue(ctx) } as unknown as HTMLCanvasElement);
+      ({ width: 400, height: 300, getContext: vi.fn().mockReturnValue(ctx) } as unknown as HTMLCanvasElement);
 
     const makeAssembly = (): TreeAssembly => ({
       verticalAncestorTreeLines: [],
@@ -2069,13 +2174,68 @@ describe('EpiTreeUtil', () => {
         verticalScrollPosition: 100,
         horizontalScrollPosition: 50,
         shouldShowDistances: false,
+        shouldShowSupportLinesWhenUnlinked: false,
         devicePixelRatio: 2,
         isLinked: false,
+        externalRange: { startIndex: 0, endIndex: 0 },
+        itemHeight: 30,
       });
-      // (1/zoomLevel)*devicePixelRatio = (1/2)*2 = 1
-      // -horizontalScrollPosition + 0.5 = -50 + 0.5 = -49.5
-      // -verticalScrollPosition + 0.5 = -100 + 0.5 = -99.5
       expect(ctx.setTransform).toHaveBeenCalledWith(1, 0, 0, 1, -49.5, -99.5);
+    });
+
+    it('offsets the vertical transform by the header height when provided', () => {
+      const { ctx } = makeTrackedCtx();
+      EpiTreeUtil.drawTree({
+        canvas: makeCanvas(ctx),
+        theme: makeTheme(makeDimFn()),
+        treeAssembly: makeAssembly(),
+        stratification: null,
+        zoomLevel: 2,
+        highlightedNodeNames: [],
+        verticalScrollPosition: 100,
+        horizontalScrollPosition: 50,
+        shouldShowDistances: false,
+        shouldShowSupportLinesWhenUnlinked: false,
+        devicePixelRatio: 2,
+        isLinked: false,
+        headerHeight: 40,
+        externalRange: { startIndex: 0, endIndex: 0 },
+        itemHeight: 30,
+      });
+
+      expect(ctx.setTransform).toHaveBeenCalledWith(1, 0, 0, 1, -49.5, -19.5);
+    });
+
+    it('clips tree drawing below the header when headerHeight is provided', () => {
+      const { ctx } = makeTrackedCtx();
+      const canvas = {
+        width: 400,
+        height: 300,
+        getContext: vi.fn().mockReturnValue(ctx),
+      } as unknown as HTMLCanvasElement;
+
+      EpiTreeUtil.drawTree({
+        canvas,
+        theme: makeTheme(makeDimFn()),
+        treeAssembly: makeAssembly(),
+        stratification: null,
+        zoomLevel: 1,
+        highlightedNodeNames: [],
+        verticalScrollPosition: 0,
+        horizontalScrollPosition: 0,
+        shouldShowDistances: false,
+        shouldShowSupportLinesWhenUnlinked: false,
+        devicePixelRatio: 2,
+        isLinked: false,
+        headerHeight: 40,
+        externalRange: { startIndex: 0, endIndex: 0 },
+        itemHeight: 30,
+      });
+
+      expect(ctx.save).toHaveBeenCalled();
+      expect(ctx.rect).toHaveBeenCalledWith(0, 80, 400, 220);
+      expect(ctx.clip).toHaveBeenCalled();
+      expect(ctx.restore).toHaveBeenCalled();
     });
 
     it('sets initial canvas context properties after drawing', () => {
@@ -2090,8 +2250,11 @@ describe('EpiTreeUtil', () => {
         verticalScrollPosition: 0,
         horizontalScrollPosition: 0,
         shouldShowDistances: false,
+        shouldShowSupportLinesWhenUnlinked: false,
         devicePixelRatio: 1,
         isLinked: false,
+        externalRange: { startIndex: 0, endIndex: 0 },
+        itemHeight: 30,
       });
       expect(ctx.font).toBe('12px monospace');
       expect(ctx.lineWidth).toBe(1);
@@ -2117,8 +2280,11 @@ describe('EpiTreeUtil', () => {
         verticalScrollPosition: 0,
         horizontalScrollPosition: 0,
         shouldShowDistances: false,
+        shouldShowSupportLinesWhenUnlinked: false,
         devicePixelRatio: 1,
         isLinked: false,
+        externalRange: { startIndex: 0, endIndex: 0 },
+        itemHeight: 30,
       });
       expect(ctx.stroke).toHaveBeenCalledWith(shape1);
       expect(ctx.stroke).toHaveBeenCalledWith(shape2);
@@ -2141,8 +2307,11 @@ describe('EpiTreeUtil', () => {
         verticalScrollPosition: 0,
         horizontalScrollPosition: 0,
         shouldShowDistances: false,
+        shouldShowSupportLinesWhenUnlinked: false,
         devicePixelRatio: 1,
         isLinked: false,
+        externalRange: { startIndex: 0, endIndex: 0 },
+        itemHeight: 30,
       });
       expect(ctx.stroke).toHaveBeenCalledWith(shape1);
     });
@@ -2166,8 +2335,11 @@ describe('EpiTreeUtil', () => {
         verticalScrollPosition: 0,
         horizontalScrollPosition: 0,
         shouldShowDistances: false,
+        shouldShowSupportLinesWhenUnlinked: false,
         devicePixelRatio: 1,
         isLinked: false,
+        externalRange: { startIndex: 0, endIndex: 0 },
+        itemHeight: 30,
       });
       expect(ctx.stroke).toHaveBeenCalledWith(shapeA);
       expect(ctx.stroke).toHaveBeenCalledWith(shapeB);
@@ -2190,8 +2362,11 @@ describe('EpiTreeUtil', () => {
         verticalScrollPosition: 0,
         horizontalScrollPosition: 0,
         shouldShowDistances: false,
+        shouldShowSupportLinesWhenUnlinked: false,
         devicePixelRatio: 1,
         isLinked: false,
+        externalRange: { startIndex: 0, endIndex: 0 },
+        itemHeight: 30,
       });
       expect(ctx.fill).toHaveBeenCalledWith(shape1);
     });
@@ -2211,16 +2386,19 @@ describe('EpiTreeUtil', () => {
         verticalScrollPosition: 0,
         horizontalScrollPosition: 0,
         shouldShowDistances: false,
+        shouldShowSupportLinesWhenUnlinked: false,
         devicePixelRatio: 1,
         isLinked: false,
+        externalRange: { startIndex: 0, endIndex: 0 },
+        itemHeight: 30,
       });
       expect(ctx.fill).toHaveBeenCalledWith(shapeA);
     });
 
-    it('does not draw support lines when isLinked is false', () => {
+    it('does not draw support lines when externalRange is null', () => {
       const { ctx } = makeTrackedCtx();
       const assembly = makeAssembly();
-      assembly.supportLines = [{ nodeName: 'a', fromX: 100, toX: 800, y: 15 }];
+      assembly.supportLines = [{ nodeName: 'a', fromX: 100, toX: 800, fromY: 15, toY: 15 }];
       EpiTreeUtil.drawTree({
         canvas: makeCanvas(ctx),
         theme: makeTheme(makeDimFn()),
@@ -2231,8 +2409,84 @@ describe('EpiTreeUtil', () => {
         verticalScrollPosition: 0,
         horizontalScrollPosition: 0,
         shouldShowDistances: false,
+        shouldShowSupportLinesWhenUnlinked: true,
+        devicePixelRatio: 1,
+        isLinked: true,
+        externalRange: null,
+        itemHeight: 30,
+      });
+      expect(ctx.moveTo).not.toHaveBeenCalled();
+      expect(ctx.lineTo).not.toHaveBeenCalled();
+    });
+
+    it('draws support lines when isLinked is false and shouldShowSupportLinesWhenUnlinked is true', () => {
+      const { ctx } = makeTrackedCtx();
+      const assembly = makeAssembly();
+      assembly.supportLines = [{ nodeName: 'a', fromX: 100, toX: 800, fromY: 15, toY: 15 }];
+      EpiTreeUtil.drawTree({
+        canvas: makeCanvas(ctx),
+        theme: makeTheme(makeDimFn()),
+        treeAssembly: assembly,
+        stratification: null,
+        zoomLevel: 1,
+        highlightedNodeNames: [],
+        verticalScrollPosition: 0,
+        horizontalScrollPosition: 0,
+        shouldShowDistances: false,
+        shouldShowSupportLinesWhenUnlinked: true,
         devicePixelRatio: 1,
         isLinked: false,
+        externalRange: { startIndex: 0, endIndex: 0 },
+        itemHeight: 30,
+      });
+      expect(ctx.setLineDash).toHaveBeenCalledWith([]);
+      expect(ctx.moveTo).toHaveBeenCalledWith(100, 15);
+      expect(ctx.lineTo).toHaveBeenCalledWith(800, 15);
+    });
+
+    it('draws support line for highlighted node when isLinked is false and shouldShowSupportLinesWhenUnlinked is false', () => {
+      const { ctx } = makeTrackedCtx();
+      const assembly = makeAssembly();
+      assembly.supportLines = [{ nodeName: 'a', fromX: 100, toX: 800, fromY: 15, toY: 15 }];
+      EpiTreeUtil.drawTree({
+        canvas: makeCanvas(ctx),
+        theme: makeTheme(makeDimFn()),
+        treeAssembly: assembly,
+        stratification: null,
+        zoomLevel: 1,
+        highlightedNodeNames: ['a'],
+        verticalScrollPosition: 0,
+        horizontalScrollPosition: 0,
+        shouldShowDistances: false,
+        shouldShowSupportLinesWhenUnlinked: false,
+        devicePixelRatio: 1,
+        isLinked: false,
+        externalRange: { startIndex: 0, endIndex: 0 },
+        itemHeight: 30,
+      });
+      expect(ctx.moveTo).toHaveBeenCalledWith(100, 15);
+      expect(ctx.lineTo).toHaveBeenCalledWith(800, 15);
+    });
+
+    it('does not draw support lines when isLinked is false and shouldShowSupportLinesWhenUnlinked is false', () => {
+      const { ctx } = makeTrackedCtx();
+      const assembly = makeAssembly();
+      assembly.supportLines = [{ nodeName: 'a', fromX: 100, toX: 800, fromY: 15, toY: 15 }];
+      EpiTreeUtil.drawTree({
+        canvas: makeCanvas(ctx),
+        theme: makeTheme(makeDimFn()),
+        treeAssembly: assembly,
+        stratification: null,
+        zoomLevel: 1,
+        highlightedNodeNames: [],
+        verticalScrollPosition: 0,
+        horizontalScrollPosition: 0,
+        shouldShowDistances: false,
+        shouldShowSupportLinesWhenUnlinked: false,
+        devicePixelRatio: 1,
+        isLinked: false,
+        externalRange: { startIndex: 0, endIndex: 0 },
+        itemHeight: 30,
       });
       expect(ctx.setLineDash).not.toHaveBeenCalled();
       expect(ctx.moveTo).not.toHaveBeenCalled();
@@ -2243,8 +2497,8 @@ describe('EpiTreeUtil', () => {
       const { ctx } = makeTrackedCtx();
       const assembly = makeAssembly();
       assembly.supportLines = [
-        { nodeName: 'a', fromX: 100, toX: 800, y: 15 },
-        { nodeName: 'b', fromX: 200, toX: 800, y: 45 },
+        { nodeName: 'a', fromX: 100, toX: 800, fromY: 15, toY: 15 },
+        { nodeName: 'b', fromX: 200, toX: 800, fromY: 45, toY: 45 },
       ];
       EpiTreeUtil.drawTree({
         canvas: makeCanvas(ctx),
@@ -2256,8 +2510,11 @@ describe('EpiTreeUtil', () => {
         verticalScrollPosition: 0,
         horizontalScrollPosition: 0,
         shouldShowDistances: false,
+        shouldShowSupportLinesWhenUnlinked: false,
         devicePixelRatio: 1,
         isLinked: true,
+        externalRange: { startIndex: 0, endIndex: 0 },
+        itemHeight: 30,
       });
       expect(ctx.setLineDash).toHaveBeenCalledWith([1, 4]);
       expect(ctx.setLineDash).toHaveBeenCalledWith([]);
@@ -2270,7 +2527,7 @@ describe('EpiTreeUtil', () => {
       const { ctx } = makeTrackedCtx();
       const assembly = makeAssembly();
       // toX=800, horizontalScrollPosition=40, devicePixelRatio=2 → lineTo(820, 15)
-      assembly.supportLines = [{ nodeName: 'a', fromX: 100, toX: 800, y: 15 }];
+      assembly.supportLines = [{ nodeName: 'a', fromX: 100, toX: 800, fromY: 15, toY: 15 }];
       EpiTreeUtil.drawTree({
         canvas: makeCanvas(ctx),
         theme: makeTheme(makeDimFn()),
@@ -2281,11 +2538,113 @@ describe('EpiTreeUtil', () => {
         verticalScrollPosition: 0,
         horizontalScrollPosition: 40,
         shouldShowDistances: false,
+        shouldShowSupportLinesWhenUnlinked: false,
         devicePixelRatio: 2,
         isLinked: true,
+        externalRange: { startIndex: 0, endIndex: 0 },
+        itemHeight: 30,
       });
       expect(ctx.moveTo).toHaveBeenCalledWith(100, 15);
       expect(ctx.lineTo).toHaveBeenCalledWith(820, 15);
+    });
+
+    it('offsets support line target Y by externalScrollPosition', () => {
+      const { ctx } = makeTrackedCtx();
+      const assembly = makeAssembly();
+      assembly.supportLines = [{ nodeName: 'a', fromX: 100, toX: 800, fromY: 15, toY: 45 }];
+      EpiTreeUtil.drawTree({
+        canvas: makeCanvas(ctx),
+        theme: makeTheme(makeDimFn()),
+        treeAssembly: assembly,
+        stratification: null,
+        zoomLevel: 1,
+        highlightedNodeNames: [],
+        verticalScrollPosition: 0,
+        horizontalScrollPosition: 40,
+        shouldShowDistances: false,
+        shouldShowSupportLinesWhenUnlinked: false,
+        devicePixelRatio: 2,
+        isLinked: true,
+        externalScrollPosition: 10,
+        externalRange: { startIndex: 0, endIndex: 0 },
+        itemHeight: 30,
+      });
+      expect(ctx.moveTo).toHaveBeenCalledWith(100, 15);
+      expect(ctx.lineTo).toHaveBeenCalledWith(820, 35);
+    });
+
+    it('skips a support line when the leaf is out of the viewport and out of external range', () => {
+      const { ctx } = makeTrackedCtx();
+      const assembly = makeAssembly();
+      // fromY=1500 is far below the canvas body (height 300), so not visible
+      // toY=1500 → externalSortingIndex=50 (itemHeight=30), outside range [0,9]
+      assembly.supportLines = [{ nodeName: 'a', fromX: 100, toX: 800, fromY: 1500, toY: 1500 }];
+      EpiTreeUtil.drawTree({
+        canvas: makeCanvas(ctx),
+        theme: makeTheme(makeDimFn()),
+        treeAssembly: assembly,
+        stratification: null,
+        zoomLevel: 1,
+        highlightedNodeNames: [],
+        verticalScrollPosition: 0,
+        horizontalScrollPosition: 0,
+        shouldShowDistances: false,
+        shouldShowSupportLinesWhenUnlinked: true,
+        devicePixelRatio: 1,
+        isLinked: false,
+        itemHeight: 30,
+        externalRange: { startIndex: 0, endIndex: 9 },
+      });
+      expect(ctx.moveTo).not.toHaveBeenCalled();
+      expect(ctx.stroke).not.toHaveBeenCalled();
+    });
+
+    it('draws a support line when the leaf is visible in the viewport even if out of external range', () => {
+      const { ctx } = makeTrackedCtx();
+      const assembly = makeAssembly();
+      // fromY=15 is visible (canvas height 300), toY=1500 → externalSortingIndex=50 outside range [0,9]
+      assembly.supportLines = [{ nodeName: 'a', fromX: 100, toX: 800, fromY: 15, toY: 1500 }];
+      EpiTreeUtil.drawTree({
+        canvas: makeCanvas(ctx),
+        theme: makeTheme(makeDimFn()),
+        treeAssembly: assembly,
+        stratification: null,
+        zoomLevel: 1,
+        highlightedNodeNames: [],
+        verticalScrollPosition: 0,
+        horizontalScrollPosition: 0,
+        shouldShowDistances: false,
+        shouldShowSupportLinesWhenUnlinked: true,
+        devicePixelRatio: 1,
+        isLinked: false,
+        itemHeight: 30,
+        externalRange: { startIndex: 0, endIndex: 9 },
+      });
+      expect(ctx.moveTo).toHaveBeenCalledWith(100, 15);
+    });
+
+    it('draws a support line when the end position is within the external range even if leaf is out of viewport', () => {
+      const { ctx } = makeTrackedCtx();
+      const assembly = makeAssembly();
+      // fromY=1500 is outside viewport (canvas height 300), toY=45 → externalSortingIndex=1 (itemHeight=30), inside range [0,9]
+      assembly.supportLines = [{ nodeName: 'a', fromX: 100, toX: 800, fromY: 1500, toY: 45 }];
+      EpiTreeUtil.drawTree({
+        canvas: makeCanvas(ctx),
+        theme: makeTheme(makeDimFn()),
+        treeAssembly: assembly,
+        stratification: null,
+        zoomLevel: 1,
+        highlightedNodeNames: [],
+        verticalScrollPosition: 0,
+        horizontalScrollPosition: 0,
+        shouldShowDistances: false,
+        shouldShowSupportLinesWhenUnlinked: true,
+        devicePixelRatio: 1,
+        isLinked: false,
+        itemHeight: 30,
+        externalRange: { startIndex: 0, endIndex: 9 },
+      });
+      expect(ctx.moveTo).toHaveBeenCalledWith(100, 1500);
     });
 
     it('does not call fillText when shouldShowDistances is false', () => {
@@ -2302,8 +2661,11 @@ describe('EpiTreeUtil', () => {
         verticalScrollPosition: 0,
         horizontalScrollPosition: 0,
         shouldShowDistances: false,
+        shouldShowSupportLinesWhenUnlinked: false,
         devicePixelRatio: 1,
         isLinked: false,
+        externalRange: { startIndex: 0, endIndex: 0 },
+        itemHeight: 30,
       });
       expect(ctx.fillText).not.toHaveBeenCalled();
     });
@@ -2325,8 +2687,11 @@ describe('EpiTreeUtil', () => {
         verticalScrollPosition: 0,
         horizontalScrollPosition: 0,
         shouldShowDistances: true,
+        shouldShowSupportLinesWhenUnlinked: false,
         devicePixelRatio: 1,
         isLinked: false,
+        externalRange: { startIndex: 0, endIndex: 0 },
+        itemHeight: 30,
       });
       expect(ctx.fillText).toHaveBeenCalledTimes(1);
       expect(ctx.fillText).toHaveBeenCalledWith('label-a', 100, 20);
@@ -2348,8 +2713,11 @@ describe('EpiTreeUtil', () => {
         verticalScrollPosition: 0,
         horizontalScrollPosition: 0,
         shouldShowDistances: false,
+        shouldShowSupportLinesWhenUnlinked: false,
         devicePixelRatio: 1,
         isLinked: false,
+        externalRange: { startIndex: 0, endIndex: 0 },
+        itemHeight: 30,
       });
       expect(dimFn).not.toHaveBeenCalled();
       expect(drawCalls.every(c => c.color === TREE_COLOR)).toBe(true);
@@ -2378,8 +2746,11 @@ describe('EpiTreeUtil', () => {
         verticalScrollPosition: 0,
         horizontalScrollPosition: 0,
         shouldShowDistances: false,
+        shouldShowSupportLinesWhenUnlinked: false,
         devicePixelRatio: 1,
         isLinked: false,
+        externalRange: { startIndex: 0, endIndex: 0 },
+        itemHeight: 30,
       });
       // 'b' leaf tree line + 'b' leaf node = 2 dimmed draw calls
       const dimmedCalls = drawCalls.filter(c => c.color === DIM_COLOR);
@@ -2406,8 +2777,11 @@ describe('EpiTreeUtil', () => {
         verticalScrollPosition: 0,
         horizontalScrollPosition: 0,
         shouldShowDistances: false,
+        shouldShowSupportLinesWhenUnlinked: false,
         devicePixelRatio: 1,
         isLinked: false,
+        externalRange: { startIndex: 0, endIndex: 0 },
+        itemHeight: 30,
       });
       const fillCall = drawCalls.find(c => c.type === 'fill');
       expect(fillCall?.color).toBe('#ff0000');
@@ -2429,8 +2803,11 @@ describe('EpiTreeUtil', () => {
         verticalScrollPosition: 0,
         horizontalScrollPosition: 0,
         shouldShowDistances: false,
+        shouldShowSupportLinesWhenUnlinked: false,
         devicePixelRatio: 1,
         isLinked: false,
+        externalRange: { startIndex: 0, endIndex: 0 },
+        itemHeight: 30,
       });
       const fillCall = drawCalls.find(c => c.type === 'fill');
       expect(fillCall?.color).toBe(TREE_COLOR);
@@ -2456,8 +2833,11 @@ describe('EpiTreeUtil', () => {
         verticalScrollPosition: 0,
         horizontalScrollPosition: 0,
         shouldShowDistances: false,
+        shouldShowSupportLinesWhenUnlinked: false,
         devicePixelRatio: 1,
         isLinked: false,
+        externalRange: { startIndex: 0, endIndex: 0 },
+        itemHeight: 30,
       });
       const dimmedCalls = drawCalls.filter(c => c.color === DIM_COLOR);
       expect(dimmedCalls.length).toBeGreaterThanOrEqual(1);

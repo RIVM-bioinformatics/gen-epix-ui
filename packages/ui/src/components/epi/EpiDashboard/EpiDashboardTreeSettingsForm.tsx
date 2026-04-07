@@ -65,6 +65,10 @@ export const EpiDashboardTreeSettingsForm = ({ onReset }: EpiDashboardTreeSettin
               label={t`Show distances`}
               name={'isShowDistancesEnabled'}
             />
+            <Switch<EpiDashboardTreeSettings>
+              label={t`Show support lines when unlinked`}
+              name={'isShowSupportLinesWhenUnlinkedEnabled'}
+            />
           </FormGroup>
         </Box>
       </form>

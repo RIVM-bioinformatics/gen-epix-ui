@@ -13,13 +13,13 @@ import type { MenuItemData } from '../../../models/nestedMenu';
 import { EpiDashboardStoreContext } from '../../../stores/epiDashboardStore';
 import { EpiWidgetMenu } from '../EpiWidgetMenu';
 
-export type EpiLineListSecondaryMenuProps = {
+export type EpiLineListWidgetSecondaryMenuProps = {
   readonly onLink: () => void;
 };
 
-export const EpiLineListSecondaryMenu = ({
+export const EpiLineListWidgetSecondaryMenu = ({
   onLink,
-}: EpiLineListSecondaryMenuProps) => {
+}: EpiLineListWidgetSecondaryMenuProps) => {
   const theme = useTheme();
   const epiDashboardStore = useContext(EpiDashboardStoreContext);
   const { t } = useTranslation();

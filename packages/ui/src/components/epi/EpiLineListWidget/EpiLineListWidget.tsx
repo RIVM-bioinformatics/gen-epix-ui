@@ -33,7 +33,10 @@ import { EpiEventBusManager } from '../../../classes/managers/EpiEventBusManager
 import { EpiLineListCaseSetMembersManager } from '../../../classes/managers/EpiLineListCaseSetMembersManager';
 import { EpiHighlightingManager } from '../../../classes/managers/EpiHighlightingManager';
 import { Subject } from '../../../classes/Subject';
-import type { EpiLinkedScrollSubjectValue } from '../../../models/epi';
+import type {
+  EpiLineListRangeSubjectValue,
+  EpiLinkedScrollSubjectValue,
+} from '../../../models/epi';
 import {
   EPI_ZONE,
   STRATIFICATION_MODE,
@@ -54,18 +57,19 @@ import {
   type TableRef,
 } from '../../ui/Table';
 
-import { EpiLineListTitle } from './EpiLineListTitle';
-import { EpiLineListPrimaryMenu } from './EpiLineListPrimaryMenu';
-import { EpiLineListSecondaryMenu } from './EpiLineListSecondaryMenu';
-import { useEpiLineListEmitDownloadOptions } from './useEpiLineListEmitDownloadOptions';
+import { EpiLineListWidgetTitle } from './EpiLineListWidgetTitle';
+import { EpiLineListWidgetPrimaryMenu } from './EpiLineListWidgetPrimaryMenu';
+import { EpiLineListWidgetSecondaryMenu } from './EpiLineListWidgetSecondaryMenu';
+import { useEpiLineListWidgetEmitDownloadOptions } from './useEpiLineListWidgetEmitDownloadOptions';
 
-export type EpiLineListProps = {
+export type EpiLineListWidgetProps = {
   readonly linkedScrollSubject: Subject<EpiLinkedScrollSubjectValue>;
+  readonly lineListRangeSubject: Subject<EpiLineListRangeSubjectValue>;
   readonly onLink: () => void;
   readonly caseSet?: CaseSet;
 };
 
-export const EpiLineList = ({ linkedScrollSubject, onLink, caseSet }: EpiLineListProps) => {
+export const EpiLineListWidget = ({ linkedScrollSubject, lineListRangeSubject, onLink, caseSet }: EpiLineListWidgetProps) => {
   const containerRef = useRef<HTMLDivElement>(null);
   const { t } = useTranslation();
   const theme = useTheme();
@@ -81,6 +85,12 @@ export const EpiLineList = ({ linkedScrollSubject, onLink, caseSet }: EpiLineLis
   const treeAddresses = useStore(epiDashboardStore, (state) => state.treeAddresses);
   const setTableColumns = useStore(epiDashboardStore, (state) => state.setColumns);
   const isDataLoading = useStore(epiDashboardStore, (state) => state.isDataLoading);
+
+  useEffect(() => {
+    return () => {
+      lineListRangeSubject.next(undefined);
+    };
+  }, [lineListRangeSubject]);
 
   const onIndexCellClick = useCallback((row: Case) => {
     EpiEventBusManager.instance.emit('openCaseInfoDialog', {
@@ -404,7 +414,7 @@ export const EpiLineList = ({ linkedScrollSubject, onLink, caseSet }: EpiLineLis
     };
   }, [highlightingManager, rowHighlightingSubject]);
 
-  useEpiLineListEmitDownloadOptions();
+  useEpiLineListWidgetEmitDownloadOptions();
 
   const updateVisibleIndexDebounced = useDebouncedCallback((index: number) => {
     updateEpiListWidgetData({
@@ -422,6 +432,11 @@ export const EpiLineList = ({ linkedScrollSubject, onLink, caseSet }: EpiLineLis
     trailing: true,
     leading: false,
   });
+
+  const onRangeChanged = useCallback((range: ListRange) => {
+    lineListRangeSubject.next(range);
+    void onRangeChangedDebounced(range);
+  }, [lineListRangeSubject, onRangeChangedDebounced]);
 
   useEffect(() => {
     return () => {
@@ -459,9 +474,9 @@ export const EpiLineList = ({ linkedScrollSubject, onLink, caseSet }: EpiLineLis
   return (
     <EpiWidget
       isLoading={isDataLoading}
-      primaryMenu={<EpiLineListPrimaryMenu caseSet={caseSet} />}
-      secondaryMenu={<EpiLineListSecondaryMenu onLink={onLink} />}
-      title={<EpiLineListTitle />}
+      primaryMenu={<EpiLineListWidgetPrimaryMenu caseSet={caseSet} />}
+      secondaryMenu={<EpiLineListWidgetSecondaryMenu onLink={onLink} />}
+      title={<EpiLineListWidgetTitle />}
       zone={EPI_ZONE.LINE_LIST}
     >
       <Box
@@ -479,7 +494,7 @@ export const EpiLineList = ({ linkedScrollSubject, onLink, caseSet }: EpiLineLis
           initialVisibleItemIndex={epiDashboardStore.getState().epiListWidgetData.visibleItemItemIndex}
           rowHeight={3}
           rowHighlightingSubject={rowHighlightingSubject}
-          onRangeChanged={onRangeChangedDebounced}
+          onRangeChanged={onRangeChanged}
           onReadableIndexClick={onIndexCellClick}
           onRowMouseEnter={onRowMouseEnter}
           onRowMouseLeave={onRowMouseLeave}

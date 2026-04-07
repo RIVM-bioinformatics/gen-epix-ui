@@ -68,21 +68,21 @@ echarts.use([GeoComponent, TooltipComponent, LegendComponent, CanvasRenderer, Pi
 
 type GeoJSON = { features: unknown[] };
 
-type LspPieSeriesOptionEventData = {
-  lspData?: {
+type GenEpixPieSeriesOptionEventData = {
+  genEpixData?: {
     caseIds: string[];
     regionId: string;
   };
 };
-type LspPieSeriesOptionData = Array<UnwrapArray<PieSeriesOption['data']> & LspPieSeriesOptionEventData>;
-type LspEchartsEvent = {
-  data: LspPieSeriesOptionEventData;
+type GenEpixPieSeriesOptionData = Array<UnwrapArray<PieSeriesOption['data']> & GenEpixPieSeriesOptionEventData>;
+type GenEpixEchartsEvent = {
+  data: GenEpixPieSeriesOptionEventData;
   event: {
     event: MouseEvent;
   };
 };
 
-export const EpiMap = () => {
+export const EpiMapWidget = () => {
   const { t } = useTranslation();
   const [col, setCol] = useState<Col>(null);
   const [epiContextMenuConfig, setEpiContextMenuConfig] = useState<EpiContextMenuConfigWithPosition | null>(null);
@@ -222,7 +222,7 @@ export const EpiMap = () => {
     };
 
     Object.entries(statisticsPerRegion).forEach(([regionId, regionData]) => {
-      const data: LspPieSeriesOptionData = [];
+      const data: GenEpixPieSeriesOptionData = [];
 
       if (!stratification) {
         const caseIds = regionData.rows.map(row => row.id);
@@ -232,7 +232,7 @@ export const EpiMap = () => {
         data.push({
           name: 'num-cases',
           value: regionData.numCases,
-          lspData: {
+          genEpixData: {
             caseIds,
             regionId,
           },
@@ -251,7 +251,7 @@ export const EpiMap = () => {
           data.push({
             name: legendaItem.rowValue.full,
             value: numCases,
-            lspData: {
+            genEpixData: {
               caseIds,
               regionId,
             },
@@ -337,7 +337,7 @@ export const EpiMap = () => {
       mouseover: (event: unknown) => {
         try {
           highlightingManager.highlight({
-            caseIds: (event as LspEchartsEvent).data.lspData.caseIds,
+            caseIds: (event as GenEpixEchartsEvent).data.genEpixData.caseIds,
             origin: EPI_ZONE.MAP,
           });
         } catch (_error) {
@@ -351,9 +351,9 @@ export const EpiMap = () => {
         });
       },
       mouseup: (event: unknown) => {
-        const mouseEvent = (event as LspEchartsEvent)?.event?.event;
-        const eventCaseIds = (event as LspEchartsEvent).data.lspData.caseIds;
-        const region = regions.find(r => r.id === (event as LspEchartsEvent).data.lspData.regionId);
+        const mouseEvent = (event as GenEpixEchartsEvent)?.event?.event;
+        const eventCaseIds = (event as GenEpixEchartsEvent).data.genEpixData.caseIds;
+        const region = regions.find(r => r.id === (event as GenEpixEchartsEvent).data.genEpixData.regionId);
         setEpiContextMenuConfig({
           caseIds: eventCaseIds,
           position: {
@@ -373,7 +373,7 @@ export const EpiMap = () => {
       const foundDataIndexes: number[] = [];
       series.forEach((serie, serieIndex) => {
         serie.data.forEach((dataArray, dataIndex) => {
-          const caseIds = (dataArray as LspPieSeriesOptionEventData).lspData.caseIds;
+          const caseIds = (dataArray as GenEpixPieSeriesOptionEventData).genEpixData.caseIds;
           if (intersection(caseIds, highlighting.caseIds).length) {
             if (!foundSerieIndexes.includes(serieIndex)) {
               foundSerieIndexes.push(serieIndex);

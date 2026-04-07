@@ -25,14 +25,14 @@ import { CaseUtil } from '../../../utils/CaseUtil';
 import { EpiWidgetMenu } from '../EpiWidgetMenu';
 import { SelectionFilter } from '../../../classes/filters/SelectionFilter';
 
-export type EpiLineListPrimaryMenuProps = {
+export type EpiLineListWidgetPrimaryMenuProps = {
   readonly caseSet?: CaseSet;
 };
 
 
-export const EpiLineListPrimaryMenu = ({
+export const EpiLineListWidgetPrimaryMenu = ({
   caseSet,
-}: EpiLineListPrimaryMenuProps) => {
+}: EpiLineListWidgetPrimaryMenuProps) => {
   const epiDashboardStore = useContext(EpiDashboardStoreContext);
   const { t } = useTranslation();
   const selectedIds = useStore(epiDashboardStore, useShallow((state) => state.selectedIds));

@@ -57,7 +57,10 @@ import { ConfigManager } from '../../../classes/managers/ConfigManager';
 import { EpiEventBusManager } from '../../../classes/managers/EpiEventBusManager';
 import { KeyboardShortcutManager } from '../../../classes/managers/KeyboardShortcutManager';
 import { Subject } from '../../../classes/Subject';
-import type { EpiLinkedScrollSubjectValue } from '../../../models/epi';
+import type {
+  EpiLineListRangeSubjectValue,
+  EpiLinkedScrollSubjectValue,
+} from '../../../models/epi';
 import { EPI_ZONE } from '../../../models/epi';
 import { EpiDashboardStoreContext } from '../../../stores/epiDashboardStore';
 import { userProfileStore } from '../../../stores/userProfileStore';
@@ -71,12 +74,12 @@ import {
   TableFiltersSidebarItemIcon,
   TableFiltersSidebarItem,
 } from '../../ui/Table';
-import { EpiCurve } from '../EpiCurve';
-import { EpiLineList } from '../EpiLineList';
-import { EpiMap } from '../EpiMap';
+import { EpiCurveWidget } from '../EpiCurveWidget';
+import { EpiLineListWidget } from '../EpiLineListWidget';
+import { EpiMapWidget } from '../EpiMapWidget';
 import { EpiStratification } from '../EpiStratification';
-import type { EpiTreeRef } from '../EpiTree';
-import { EpiTree } from '../EpiTree';
+import type { EpiTreeWidgetRef } from '../EpiTreeWidget';
+import { EpiTreeWidget } from '../EpiTreeWidget';
 import { EpiWidgetUnavailable } from '../EpiWidgetUnavailable';
 import {
   EpiFindSimilarCasesDialog,
@@ -122,9 +125,12 @@ export const EpiDashboard = withEpiDashboardStore(({ caseSet }: EpiDashboardProp
   const [isFilterSidebarOpen, setIsFilterSidebarOpen] = useState(false);
   const [isSettingsSidebarOpen, setIsSettingsSidebarOpen] = useState(false);
   const [isDownloadSidebarOpen, setIsDownloadSidebarOpen] = useState(false);
-  const epiTreeRef = useRef<EpiTreeRef>(null);
+  const epiTreeRef = useRef<EpiTreeWidgetRef>(null);
   const linkedScrollSubject = useMemo(() => {
     return new Subject<EpiLinkedScrollSubjectValue>();
+  }, []);
+  const lineListRangeSubject = useMemo(() => {
+    return new Subject<EpiLineListRangeSubjectValue>();
   }, []);
   const epiDashboardStore = useContext(EpiDashboardStoreContext);
   const fetchData = useStore(epiDashboardStore, useShallow((state) => state.fetchData));
@@ -343,13 +349,14 @@ export const EpiDashboard = withEpiDashboardStore(({ caseSet }: EpiDashboardProp
                     />
                   )}
                 >
-                  <EpiCurve />
+                  <EpiCurveWidget />
                 </ErrorBoundary>
               )}
               lineListWidget={(
-                <EpiLineList
+                <EpiLineListWidget
                   caseSet={caseSet}
                   linkedScrollSubject={linkedScrollSubject}
+                  lineListRangeSubject={lineListRangeSubject}
                   onLink={onEpiListLink}
                 />
               )}
@@ -362,14 +369,15 @@ export const EpiDashboard = withEpiDashboardStore(({ caseSet }: EpiDashboardProp
                     />
                   )}
                 >
-                  <EpiMap />
+                  <EpiMapWidget />
                 </ErrorBoundary>
               )}
               phylogeneticTreeWidget={(
-                <EpiTree
+                <EpiTreeWidget
                   ref={epiTreeRef}
                   linkedScrollSubject={linkedScrollSubject}
                   itemHeight={ConfigManager.instance.config.epiLineList.TABLE_ROW_HEIGHT}
+                  lineListRangeSubject={lineListRangeSubject}
                 />
               )}
             />

@@ -168,6 +168,8 @@ export const createTheme = (paletteMode: PaletteMode): Theme => {
       tree: {
         font: 'bold 0.7rem "Noto Sans Mono"',
         color: '#000',
+        supportLineColorLinked: '#000',
+        supportLineColorUnlinked: lighten('#000', 0.75),
         dimFn: (color: string) => lighten(color, 0.8),
       },
       lineList: {
