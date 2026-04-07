@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.1.0](https://github.com/RIVM-bioinformatics/gen-epix-ui/compare/client-theme-v0.0.4...client-theme-v0.1.0) (2026-04-07)
+
+
+### Features
+
+* snap tree leafs to line list ([#105](https://github.com/RIVM-bioinformatics/gen-epix-ui/issues/105)) ([f9b2631](https://github.com/RIVM-bioinformatics/gen-epix-ui/commit/f9b26313687334f2bff0e0638b5f844034cade38))
+
 ## [0.0.4](https://github.com/RIVM-bioinformatics/gen-epix-ui/compare/client-theme-v0.0.3...client-theme-v0.0.4) (2026-03-26)
 
 

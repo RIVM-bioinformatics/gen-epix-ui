@@ -1,5 +1,23 @@
 # Changelog
 
+## [1.19.0](https://github.com/RIVM-bioinformatics/gen-epix-ui/compare/ui-v1.18.1...ui-v1.19.0) (2026-04-07)
+
+
+### Features
+
+* EventsPage show case_set_date ([a407110](https://github.com/RIVM-bioinformatics/gen-epix-ui/commit/a4071103f05d22d8373aac6c5b6fa0ef2ec8d8d7))
+* snap tree leafs to line list ([#105](https://github.com/RIVM-bioinformatics/gen-epix-ui/issues/105)) ([f9b2631](https://github.com/RIVM-bioinformatics/gen-epix-ui/commit/f9b26313687334f2bff0e0638b5f844034cade38))
+
+
+### Bug Fixes
+
+* CaseTypeAdminPage should use intermediate update item ([fd152fd](https://github.com/RIVM-bioinformatics/gen-epix-ui/commit/fd152fd9b251a5a49fba79e0c74191f7cafaabb1))
+* fix NumberField - emit only numbers ([fd152fd](https://github.com/RIVM-bioinformatics/gen-epix-ui/commit/fd152fd9b251a5a49fba79e0c74191f7cafaabb1))
+* fix sorting of options, use rank where available. ([434340c](https://github.com/RIVM-bioinformatics/gen-epix-ui/commit/434340cd868fe0f228be354e586e0974a5eb176d))
+* make description mandatory during event creation ([1a9caa7](https://github.com/RIVM-bioinformatics/gen-epix-ui/commit/1a9caa730a5927155342c5ca39b33e61c418f066))
+* re-use of schema definitions for common fields ([fd152fd](https://github.com/RIVM-bioinformatics/gen-epix-ui/commit/fd152fd9b251a5a49fba79e0c74191f7cafaabb1))
+* use case_set_date instead of created_at ([db27b6c](https://github.com/RIVM-bioinformatics/gen-epix-ui/commit/db27b6cb8b1776e9b8fd459864f9f9dd73369c5e))
+
 ## [1.18.1](https://github.com/RIVM-bioinformatics/gen-epix-ui/compare/ui-v1.18.0...ui-v1.18.1) (2026-03-30)
 
 
