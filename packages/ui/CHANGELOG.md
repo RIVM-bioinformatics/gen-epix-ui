@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.21.0](https://github.com/RIVM-bioinformatics/gen-epix-ui/compare/ui-v1.20.0...ui-v1.21.0) (2026-04-07)
+
+
+### Features
+
+* update dependencies to latest ([75b0519](https://github.com/RIVM-bioinformatics/gen-epix-ui/commit/75b05190489c40eecdc3d9b3016137be273da07c))
+
 ## [1.20.0](https://github.com/RIVM-bioinformatics/gen-epix-ui/compare/ui-v1.19.0...ui-v1.20.0) (2026-04-07)
 
 
