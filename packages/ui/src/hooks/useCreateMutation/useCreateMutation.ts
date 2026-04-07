@@ -20,8 +20,8 @@ export type UseCreateMutationProps<TData extends GenericData | GenericData[], TV
   readonly getProgressNotificationMessage: (data: TVariables) => string | ReactElement;
   readonly getErrorNotificationMessage: (data: TVariables, error: unknown) => string | ReactElement;
   readonly getSuccessNotificationMessage: (data: TData, context: MutationContextCreate<TData>) => string | ReactElement;
-  readonly onSuccess?: (item: TData, variables: TVariables, context: MutationContextCreate<TData>) => Promise<void>;
-  readonly onError?: (error: unknown, variables: TVariables, context: MutationContextCreate<TData>) => Promise<void>;
+  readonly onSuccess?: (item: TData, variables: TVariables, context: MutationContextCreate<TData>) => Promise<void> | void;
+  readonly onError?: (error: unknown, variables: TVariables, context: MutationContextCreate<TData>) => Promise<void> | void;
 };
 
 export const useCreateMutation = <TData extends GenericData | GenericData[], TVariables = TData>({

@@ -53,11 +53,9 @@ export const EpiCaseSetForm = ({ caseSet, formId, onFinish, onIsSavingChange }: 
   }), []);
 
 
-  const onSuccess = useCallback(async () => {
-    // FIXME: this should be fixed in useEditMutation
-    await QueryUtil.invalidateQueryKeys([QueryUtil.getGenericKey(QUERY_KEY.CASE_SETS, caseSet.id)]);
+  const onSuccess = useCallback(() => {
     onFinish();
-  }, [caseSet.id, onFinish]);
+  }, [onFinish]);
 
   // eslint-disable-next-line @typescript-eslint/require-await
   const onError = useCallback(async () => {

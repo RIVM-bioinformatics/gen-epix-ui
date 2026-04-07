@@ -22,8 +22,8 @@ export type UseEditMutationProps<TData, TVariables = TData> = {
   readonly getProgressNotificationMessage: (data: TData, variables: TVariables) => string | ReactElement;
   readonly getErrorNotificationMessage: (data: TData, variables: TVariables, error: unknown) => string | ReactElement;
   readonly getSuccessNotificationMessage: (data: TData, context: MutationContextEdit<TData>) => string | ReactElement;
-  readonly onSuccess?: (item: TData, variables: TVariables, context: MutationContextEdit<TData>) => Promise<void>;
-  readonly onError?: (error: unknown, variables: TVariables, context: MutationContextEdit<TData>) => Promise<void>;
+  readonly onSuccess?: (item: TData, variables: TVariables, context: MutationContextEdit<TData>) => Promise<void> | void;
+  readonly onError?: (error: unknown, variables: TVariables, context: MutationContextEdit<TData>) => Promise<void> | void;
   // Optional function to get an intermediate item to be set in the query cache before the mutation is completed.
   // This is useful for optimistic updates where you want to show a temporary state before the mutation is confirmed.
   // The function receives the variables and the previous item, and should return the intermediate item.

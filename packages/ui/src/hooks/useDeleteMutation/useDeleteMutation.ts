@@ -18,8 +18,8 @@ export type UseDeleteMutationProps<TData> = {
   readonly getProgressNotificationMessage: (data: TData) => string | ReactElement;
   readonly getErrorNotificationMessage?: (data: TData, error: unknown) => string | ReactElement;
   readonly getSuccessNotificationMessage?: (data: TData, context: MutationContextDelete<TData>) => string | ReactElement;
-  readonly onSuccess?: (item: TData, context: MutationContextDelete<TData>) => Promise<void>;
-  readonly onError?: (error: unknown, item: TData, context: MutationContextDelete<TData>) => Promise<void>;
+  readonly onSuccess?: (item: TData, context: MutationContextDelete<TData>) => Promise<void> | void;
+  readonly onError?: (error: unknown, item: TData, context: MutationContextDelete<TData>) => Promise<void> | void;
 };
 
 export const useDeleteMutation = <TData extends GenericData | GenericData[]>({
