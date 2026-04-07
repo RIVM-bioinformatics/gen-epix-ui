@@ -4,9 +4,8 @@ import {
   QueryClient,
 } from '@tanstack/react-query';
 
-import { AxiosUtil } from '../../../utils/AxiosUtil';
 import { WindowManager } from '../WindowManager';
-
+import { ConfigManager } from '../ConfigManager';
 
 export class QueryClientManager {
   public readonly queryCache: QueryCache;
@@ -21,16 +20,8 @@ export class QueryClientManager {
         queries: {
           staleTime: Infinity,
           gcTime: Infinity,
-          // !FIXME: move to config
-          retry: (import.meta.env.DEV)
-            ? () => false
-            : (failureCount: number, error: unknown) => {
-              if (AxiosUtil.isAxiosInternalServerError(error) || AxiosUtil.isAxiosTimeoutError(error)) {
-                return failureCount < 3;
-              }
-              return false;
-            },
-          retryDelay: attempt => Math.min(attempt > 1 ? 2 ** attempt * 3000 : 3000, 30 * 1000),
+          retry: ConfigManager.instance.config.queryClient.retry,
+          retryDelay: ConfigManager.instance.config.queryClient.retryDelay,
         },
       },
       queryCache,

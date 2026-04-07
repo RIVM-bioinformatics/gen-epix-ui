@@ -39,6 +39,10 @@ export type I18nConfig = {
 };
 
 export interface Config {
+  queryClient: {
+    retry: (failureCount: number, error: unknown) => boolean;
+    retryDelay: (attempt: number) => number;
+  };
   i18n: {
     getCurrentLanguageCode: () => Promise<string>;
     setNewLanguageCode: (code: string) => Promise<void>;

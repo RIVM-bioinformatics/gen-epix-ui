@@ -8,6 +8,7 @@ import {
   EPI_ZONE,
   ColType,
   I18nManager,
+  AxiosUtil,
 } from '@gen-epix/ui';
 import type {
   Config,
@@ -44,6 +45,17 @@ export class ConfigUtil {
 
     const PANEL_ZONES = [EPI_ZONE.EPI_CURVE, EPI_ZONE.LINE_LIST, EPI_ZONE.MAP, EPI_ZONE.TREE];
     const config: Config = {
+      queryClient: {
+        retry: (import.meta.env.DEV)
+          ? () => false
+          : (failureCount: number, error: unknown) => {
+            if (AxiosUtil.isAxiosInternalServerError(error) || AxiosUtil.isAxiosTimeoutError(error)) {
+              return failureCount < 3;
+            }
+            return false;
+          },
+        retryDelay: attempt => Math.min(attempt > 1 ? 2 ** attempt * 3000 : 3000, 30 * 1000),
+      },
       i18n: {
         setNewLanguageCode,
         getCurrentLanguageCode,
