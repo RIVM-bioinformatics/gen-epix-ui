@@ -143,7 +143,7 @@ export const Dialog = ({
             <IconButton
               {...TestIdUtil.createAttributes(`${testId}-closeButton`)}
               title={t`Close`}
-              aria-label={t('Close dialog with title {{title}}', { title })}
+              aria-label={title ? t('Close dialog with title: {{title}}', { title }) : t`Close dialog`}
               sx={{
                 color: 'grey.500',
               }}
