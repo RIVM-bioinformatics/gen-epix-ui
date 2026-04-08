@@ -294,13 +294,12 @@ export const EpiMapWidget = () => {
     }
 
     echarts.registerMap(regionSetShape.id, regionSetShape.geo_json);
-    // !FIXME
-    // const aspectScale = Number.isFinite(regionSetShape.scale) && regionSetShape.scale > 0 ? regionSetShape.scale : 1;
+    const aspectScale = EpiMapUtil.getGeoJsonAspectScale(regionSetShape.geo_json);
 
     return {
       geo: {
         map: regionSetShape.id,
-        aspectScale: 0.68,
+        aspectScale,
         scaleLimit: {
           max: 5,
           min: 1,

@@ -14,6 +14,47 @@ import type { RegionStatistics } from './EpiMapUtil';
 import { EpiMapUtil } from './EpiMapUtil';
 
 describe('EpiMapUtil', () => {
+  describe('getGeoJsonAspectScale', () => {
+    it('determines the aspect scale from geojson bounds', () => {
+      const geoJson = JSON.stringify({
+        bbox: [3, 50, 8, 54],
+        features: [],
+        type: 'FeatureCollection',
+      });
+
+      expect(EpiMapUtil.getGeoJsonAspectScale(geoJson)).toBeCloseTo(Math.cos(52 * Math.PI / 180));
+    });
+
+    it('determines the aspect scale from geometry coordinates when bbox is missing', () => {
+      const geoJson = JSON.stringify({
+        features: [
+          {
+            geometry: {
+              coordinates: [
+                [
+                  [4, 51],
+                  [6, 51],
+                  [6, 53],
+                  [4, 53],
+                  [4, 51],
+                ],
+              ],
+              type: 'Polygon',
+            },
+            type: 'Feature',
+          },
+        ],
+        type: 'FeatureCollection',
+      });
+
+      expect(EpiMapUtil.getGeoJsonAspectScale(geoJson)).toBeCloseTo(Math.cos(52 * Math.PI / 180));
+    });
+
+    it('falls back to 1 when geojson can not be parsed', () => {
+      expect(EpiMapUtil.getGeoJsonAspectScale('not-json')).toBe(1);
+    });
+  });
+
   describe('getPieChartRadius', () => {
     beforeAll(() => {
       vi.spyOn(ConfigManager.instance, 'config', 'get').mockReturnValue({
