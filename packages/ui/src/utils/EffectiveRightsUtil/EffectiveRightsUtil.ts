@@ -20,7 +20,77 @@ type AssembleUserEffectiveRightsKwArgs = {
   colSetMembers: ColSetMember[];
 };
 
+type GetOrganizationPolicyGroupsKwArgs = Pick<AssembleUserEffectiveRightsKwArgs, 'organizationAccessCasePolicies' | 'organizationShareCasePolicies'>;
+
+export type OrganizationPolicyGroup = {
+  organization_id: string;
+  data_collection_id: string;
+  access_case_policies: OrganizationAccessCasePolicy[];
+  share_case_policies: OrganizationShareCasePolicy[];
+};
+
 export class EffectiveRightsUtil {
+  public static getMatchingOrganizationShareCasePolicies(params: {
+    organizationId: string;
+    dataCollectionId: string;
+    organizationShareCasePolicies: OrganizationShareCasePolicy[];
+  }): OrganizationShareCasePolicy[] {
+    const {
+      organizationId,
+      dataCollectionId,
+      organizationShareCasePolicies,
+    } = params;
+
+    if (!organizationShareCasePolicies) {
+      return [];
+    }
+
+    return organizationShareCasePolicies.filter(policy => policy.is_active && policy.organization_id === organizationId && policy.data_collection_id === dataCollectionId);
+  }
+
+  public static getOrganizationPolicyGroups({
+    organizationAccessCasePolicies,
+    organizationShareCasePolicies,
+  }: GetOrganizationPolicyGroupsKwArgs): OrganizationPolicyGroup[] {
+    if (!organizationAccessCasePolicies || !organizationShareCasePolicies) {
+      return [];
+    }
+
+    const sharePoliciesByKey = new Map<string, OrganizationShareCasePolicy[]>();
+
+    organizationShareCasePolicies
+      .filter(policy => policy.is_active)
+      .forEach(policy => {
+        const key = EffectiveRightsUtil.getOrganizationDataCollectionKey(policy.organization_id, policy.data_collection_id);
+        const matchingPolicies = sharePoliciesByKey.get(key) ?? [];
+        matchingPolicies.push(policy);
+        sharePoliciesByKey.set(key, matchingPolicies);
+      });
+
+    const groups = new Map<string, OrganizationPolicyGroup>();
+
+    organizationAccessCasePolicies
+      .filter(policy => policy.is_active)
+      .forEach(policy => {
+        const key = EffectiveRightsUtil.getOrganizationDataCollectionKey(policy.organization_id, policy.data_collection_id);
+        const existingGroup = groups.get(key);
+
+        if (existingGroup) {
+          existingGroup.access_case_policies.push(policy);
+          return;
+        }
+
+        groups.set(key, {
+          organization_id: policy.organization_id,
+          data_collection_id: policy.data_collection_id,
+          access_case_policies: [policy],
+          share_case_policies: sharePoliciesByKey.get(key) ?? [],
+        });
+      });
+
+    return Array.from(groups.values());
+  }
+
   public static assembleUserEffectiveRights({
     user,
     organizationAccessCasePolicies,
@@ -52,7 +122,11 @@ export class EffectiveRightsUtil {
 
     return organizationAccessCasePolicies.map(organizationPolicy => {
       const userPolicy = userAccessCasePolicies.find(p => p.data_collection_id === organizationPolicy.data_collection_id);
-      const organizationSharePolicy = organizationShareCasePolicies.filter(p => p.data_collection_id === organizationPolicy.data_collection_id);
+      const organizationSharePolicy = EffectiveRightsUtil.getMatchingOrganizationShareCasePolicies({
+        organizationId: organizationPolicy.organization_id,
+        dataCollectionId: organizationPolicy.data_collection_id,
+        organizationShareCasePolicies,
+      });
       const userSharePolicy = userShareCasePolicies.filter(p => p.data_collection_id === organizationPolicy.data_collection_id);
 
       const effectiveShareCaseRights: UserEffectiveRight['effective_share_case_rights'] = [];
@@ -138,5 +212,9 @@ export class EffectiveRightsUtil {
         effective_share_case_rights: effectiveShareCaseRights,
       } satisfies UserEffectiveRight;
     }).filter((policy => !!policy));
+  }
+
+  private static getOrganizationDataCollectionKey(organizationId: string, dataCollectionId: string) {
+    return `${organizationId}::${dataCollectionId}`;
   }
 }

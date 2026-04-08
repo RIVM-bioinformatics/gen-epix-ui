@@ -44,6 +44,7 @@ import { UserEffectiveRightsAdminPage } from '../pages/UserEffectiveRightsAdminP
 import { UserEffectiveRightsTesterAdminPage } from '../pages/UserEffectiveRightsTesterAdminPage';
 import { UserShareCasePoliciesAdminPage } from '../pages/UserShareCasePoliciesAdminPage';
 import { CaseSetCategoryAdminPage } from '../pages/CaseSetCategoryAdminPage';
+import { DataCollectionVisualizationPage } from '../pages/DataCollectionVisualizationPage';
 
 export const createAdminRoutes = (t: TFunction<'translation', undefined>): MyNonIndexRouteObject[] => [
   // USERS_AND_ORGANIZATIONS
@@ -801,16 +802,16 @@ export const createAdminRoutes = (t: TFunction<'translation', undefined>): MyNon
   },
 
 
-  // {
-  //   path: '/management/data-collection-visualization-page',
-  //   Component: () => <DataCollectionVisualizationPage />,
-  //   errorElement: <RouterErrorPage />,
-  //   handle: {
-  //     title: t`Data collection visualization`,
-  //     subTitle: t`View data collection visualization`,
-  //     requiredPermissions: [],
-  //     requiresUserProfile: true,
-  //     category: ADMIN_PAGE_CATEGORY.HELPERS,
-  //   },
-  // },
+  {
+    path: '/management/data-collection-visualization-page',
+    Component: () => <DataCollectionVisualizationPage />,
+    errorElement: <RouterErrorPage />,
+    handle: {
+      title: t`Data collection visualization`,
+      subTitle: t`View data collection visualization`,
+      requiredPermissions: [],
+      requiresUserProfile: true,
+      category: ADMIN_PAGE_CATEGORY.HELPERS,
+    },
+  },
 ];
