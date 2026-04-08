@@ -73,11 +73,11 @@ export const Dialog = ({
   dialogContentRef,
 }: PropsWithChildren<DialogProps>): ReactElement => {
   const { t } = useTranslation();
-  const onMuiDialogClose = useCallback((_event: unknown, reason: 'backdropClick' | 'escapeKeyDown') => {
-    if (reason === 'backdropClick' && disableBackdropClick) {
+  const onMuiDialogClose = useCallback<NonNullable<MuiDialogProps['onClose']>>((_event, reason) => {
+    if (disableBackdropClick && (reason === 'backdropClick' || reason === 'escapeKeyDown')) {
       return;
     }
-    onClose();
+    onClose?.();
   }, [disableBackdropClick, onClose]);
 
   const onGetClipboardValue = useCallback(() => {
@@ -88,7 +88,6 @@ export const Dialog = ({
     <MuiDialog
       {...TestIdUtil.createAttributes(testId, { title })}
       open
-      disableEscapeKeyDown={disableBackdropClick}
       fullScreen={fullScreen}
       fullWidth={fullWidth}
       maxWidth={maxWidth}

@@ -133,9 +133,10 @@ export const DatePicker = <TFieldValues extends FieldValues, TName extends Path<
                 onBlur,
                 error: hasError,
                 variant: 'outlined',
-                // eslint-disable-next-line @typescript-eslint/naming-convention
-                InputLabelProps: {
-                  required,
+                slotProps: {
+                  inputLabel: {
+                    required,
+                  },
                 },
               },
             }}

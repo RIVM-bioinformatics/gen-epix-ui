@@ -54,24 +54,25 @@ export const SidebarItem = ({ open, onClose, children, width, title, closeIconTo
 
   return (
     <Drawer
-      ModalProps={{
-        ...TestIdUtil.createAttributes('SidebarItem', testIdAttributes),
-        sx: {
-          top,
-          height,
-        },
-        // eslint-disable-next-line @typescript-eslint/naming-convention
-        BackdropProps: {
+      slotProps={{
+        root: {
+          ...TestIdUtil.createAttributes('SidebarItem', testIdAttributes),
           sx: {
             top,
             height,
           },
         },
-      }}
-      PaperProps={{
-        sx: {
-          top,
-          height,
+        backdrop: {
+          sx: {
+            top,
+            height,
+          },
+        },
+        paper: {
+          sx: {
+            top,
+            height,
+          },
         },
       }}
       anchor={'left'}

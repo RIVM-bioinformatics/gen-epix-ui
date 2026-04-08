@@ -79,7 +79,11 @@ export const Switch = <TFieldValues extends FieldValues, TName extends Path<TFie
             <MuiSwitch
               checked={!!value}
               color={'primary'}
-              inputRef={inputRef}
+              slotProps={{
+                input: {
+                  ref: inputRef,
+                },
+              }}
             />
           )}
           disabled={disabled}

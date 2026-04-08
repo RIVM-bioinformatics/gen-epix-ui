@@ -280,7 +280,6 @@ export const DateRangePicker = <TFieldValues extends FieldValues, TName extends 
             <MuiDatePicker
               disableFuture
               disabled={disabled || loading}
-              enableAccessibleFieldDOMStructure={false}
               inputRef={fromInputRef}
               label={t`From`}
               loading={loading}
@@ -292,10 +291,11 @@ export const DateRangePicker = <TFieldValues extends FieldValues, TName extends 
                   className: classNames({ 'Mui-warning': hasWarning }),
                   onBlur: onFromBlur,
                   error: hasError,
-                  // eslint-disable-next-line @typescript-eslint/naming-convention
-                  InputLabelProps: {
-                    ...TestIdUtil.createAttributes('DateRangePicker-from-input'),
-                    required,
+                  slotProps: {
+                    inputLabel: {
+                      ...TestIdUtil.createAttributes('DateRangePicker-from-input'),
+                      required,
+                    },
                   },
                 },
               }}
@@ -308,7 +308,6 @@ export const DateRangePicker = <TFieldValues extends FieldValues, TName extends 
             <MuiDatePicker
               disableFuture
               disabled={disabled || loading}
-              enableAccessibleFieldDOMStructure={false}
               inputRef={toInputRef}
               label={t`To`}
               loading={loading}
@@ -320,10 +319,11 @@ export const DateRangePicker = <TFieldValues extends FieldValues, TName extends 
                   className: classNames({ 'Mui-warning': hasWarning }),
                   onBlur: onToBlur,
                   error: hasError,
-                  // eslint-disable-next-line @typescript-eslint/naming-convention
-                  InputLabelProps: {
-                    ...TestIdUtil.createAttributes('DateRangePicker-to-input'),
-                    required,
+                  slotProps: {
+                    inputLabel: {
+                      ...TestIdUtil.createAttributes('DateRangePicker-to-input'),
+                      required,
+                    },
                   },
                 },
               }}

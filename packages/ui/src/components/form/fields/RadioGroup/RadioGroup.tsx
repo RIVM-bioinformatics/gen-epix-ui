@@ -88,7 +88,15 @@ export const RadioGroup = <TFieldValues extends FieldValues, TName extends Path<
             <FormControlLabel
               {...TestIdUtil.createAttributes('RadioGroup-option', { code: option.value.toString(), description: option.label })}
               key={option.value.toString()}
-              control={<Radio inputRef={index === 0 ? inputRef : undefined} />}
+              control={(
+                <Radio
+                  slotProps={{
+                    input: {
+                      ref: index === 0 ? inputRef : undefined,
+                    },
+                  }}
+                />
+              )}
               disabled={disabled}
               label={option.label}
               value={option.value}

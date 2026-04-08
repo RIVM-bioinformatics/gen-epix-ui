@@ -19,7 +19,6 @@ import {
   Checkbox,
   ListItemText,
   Button,
-  Grid,
   Box,
   FormLabel,
   useTheme,
@@ -242,11 +241,13 @@ export const TransferList = <TFieldValues extends FieldValues, TName extends Pat
             {customList(left)}
           </Box>
           <Box sx={{ height }}>
-            <Grid
-              container
-              alignItems={'center'}
-              direction={'column'}
-              sx={{ height }}
+            <Box
+              sx={{
+                display: 'flex',
+                flexDirection: 'column',
+                alignItems: 'center',
+                height,
+              }}
             >
 
               <Button
@@ -315,7 +316,7 @@ export const TransferList = <TFieldValues extends FieldValues, TName extends Pat
               >
                 {t`Clear`}
               </Button>
-            </Grid>
+            </Box>
           </Box>
           <Box>
             {customList(right)}

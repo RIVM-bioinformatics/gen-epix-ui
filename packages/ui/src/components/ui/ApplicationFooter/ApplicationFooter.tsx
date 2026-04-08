@@ -107,7 +107,7 @@ export const ApplicationFooter = ({ fullWidth }: ApplicationFooterProps) => {
               <ApplicationFooterLink
                 key={item.label}
                 href={item.href}
-                marginBottom={0.5}
+                sx={{ mb: 0.5 }}
                 onClick={item.onClick}
               >
                 {item.label}
