@@ -199,7 +199,11 @@ export const HomePageTrends = withPermissions(() => {
 
   return (
     <Box>
-      <Box marginBottom={1}>
+      <Box
+        sx={{
+          marginBottom: 1,
+        }}
+      >
         <Box
           sx={{
             display: 'flex',
@@ -268,7 +272,11 @@ export const HomePageTrends = withPermissions(() => {
         )}
       >
         {statistics.length === 0 && (
-          <Box marginY={2}>
+          <Box
+            sx={{
+              marginY: 2,
+            }}
+          >
             <Typography>
               {t`No trends available.`}
             </Typography>

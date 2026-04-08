@@ -59,7 +59,11 @@ export const EpiDashboardTreeSettingsForm = ({ onReset }: EpiDashboardTreeSettin
         autoComplete={'off'}
         onSubmit={noop}
       >
-        <Box marginY={1}>
+        <Box
+          sx={{
+            marginY: 1,
+          }}
+        >
           <FormGroup>
             <Switch<EpiDashboardTreeSettings>
               label={t`Show distances`}
@@ -78,7 +82,11 @@ export const EpiDashboardTreeSettingsForm = ({ onReset }: EpiDashboardTreeSettin
           justifyContent: 'flex-end',
         }}
       >
-        <Box marginX={1}>
+        <Box
+          sx={{
+            marginX: 1,
+          }}
+        >
           <Button
             color={'primary'}
             startIcon={<RestartAltIcon />}

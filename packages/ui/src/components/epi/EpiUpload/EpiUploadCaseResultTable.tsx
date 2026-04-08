@@ -8,7 +8,7 @@ import {
   Box,
   useTheme,
 } from '@mui/material';
-import ErrorOutlineIcon from '@mui/icons-material/ErrorOutline';
+import ErrorOutlinedIcon from '@mui/icons-material/ErrorOutlined';
 import AddIcon from '@mui/icons-material/Add';
 import { useTranslation } from 'react-i18next';
 
@@ -121,7 +121,7 @@ export const EpiUploadCaseResultTable = ({ tableStore, rowsWithGeneratedId, comp
         title={t('Indicates if there are any issues with the case')}
         aria-hidden={false}
       >
-        <ErrorOutlineIcon
+        <ErrorOutlinedIcon
           fontSize={'small'}
         />
       </Tooltip>
@@ -138,7 +138,7 @@ export const EpiUploadCaseResultTable = ({ tableStore, rowsWithGeneratedId, comp
           aria-label={getIssueTooltipLabel(errorIssues)}
           aria-hidden={false}
         >
-          <ErrorOutlineIcon
+          <ErrorOutlinedIcon
             fontSize={'small'}
             sx={{
               color: theme.palette.error.main,
@@ -241,7 +241,7 @@ export const EpiUploadCaseResultTable = ({ tableStore, rowsWithGeneratedId, comp
             arrow
             title={getIssueTooltipContent(issues)}
           >
-            <ErrorOutlineIcon
+            <ErrorOutlinedIcon
               fontSize={'small'}
               sx={{
                 color: iconColor,

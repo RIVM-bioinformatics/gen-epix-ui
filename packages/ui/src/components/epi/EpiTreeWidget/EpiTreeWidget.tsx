@@ -512,7 +512,11 @@ export const EpiTreeWidget = ({ linkedScrollSubject, lineListRangeSubject, ref, 
                   <AlertTitle>
                     {t`Too many cases to display the phylogenetic tree`}
                   </AlertTitle>
-                  <Box marginY={2}>
+                  <Box
+                    sx={{
+                      marginY: 2,
+                    }}
+                  >
                     {t('The phylogenetic tree cannot be displayed because the number of cases ({{caseCount}}) exceeds the maximum allowed number of cases ({{maxSize}}) to display a phylogenetic tree. Refine your filters to reduce the number of results.', {
                       caseCount: caseIds.length,
                       maxSize: completeCaseType.props.read_max_tree_size,

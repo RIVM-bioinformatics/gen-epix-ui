@@ -148,7 +148,11 @@ export const EpiUploadValidateInner = () => {
           takingLongerTimeoutMs={10000}
         >
           {exceedsMaxNumCases && (
-            <Box marginY={2}>
+            <Box
+              sx={{
+                marginY: 2,
+              }}
+            >
               <Alert severity={'error'}>
                 <AlertTitle>
                   {t('You have exceeded the maximum number of {{maxCases}} cases for this case type. Please reduce the number of selected cases before proceeding.', {

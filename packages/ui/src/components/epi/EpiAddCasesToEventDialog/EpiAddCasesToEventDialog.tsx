@@ -262,7 +262,11 @@ export const EpiAddCasesToEventDialog = withDialog<EpiAddCasesToEventDialogProps
           onSubmit={noop}
         >
           <Box>
-            <Box marginY={1}>
+            <Box
+              sx={{
+                marginY: 1,
+              }}
+            >
               <Autocomplete
                 label={t`Select event`}
                 name={'caseSetId'}
@@ -270,7 +274,11 @@ export const EpiAddCasesToEventDialog = withDialog<EpiAddCasesToEventDialogProps
                 warningMessage={filteredCaseSetOptions?.length === 0 ? t`No events of the same case type available` : undefined}
               />
             </Box>
-            <Box marginY={1}>
+            <Box
+              sx={{
+                marginY: 1,
+              }}
+            >
               <Select
                 disabled={caseSetDataCollectionLinks?.length === 0}
                 label={t`Should the selected cases be given the same access rights as the selected event?`}
@@ -282,7 +290,11 @@ export const EpiAddCasesToEventDialog = withDialog<EpiAddCasesToEventDialogProps
             </Box>
           </Box>
           {caseSetId && (
-            <Box marginY={2}>
+            <Box
+              sx={{
+                marginY: 2,
+              }}
+            >
               <ResponseHandler
                 inlineSpinner
                 shouldHideActionButtons
@@ -290,7 +302,11 @@ export const EpiAddCasesToEventDialog = withDialog<EpiAddCasesToEventDialogProps
                 isLoading={isCaseSetMembersLoading}
               >
                 {caseSetDataCollections?.length > 0 && (
-                  <Box marginY={2}>
+                  <Box
+                    sx={{
+                      marginY: 2,
+                    }}
+                  >
                     <Alert severity={'info'}>
                       <AlertTitle>
                         {t('The selected event is shared in the following data collection(s):')}
@@ -304,7 +320,11 @@ export const EpiAddCasesToEventDialog = withDialog<EpiAddCasesToEventDialogProps
                   </Box>
                 )}
                 {caseIdsToAdd.length > 0 && (
-                  <Box marginY={2}>
+                  <Box
+                    sx={{
+                      marginY: 2,
+                    }}
+                  >
                     <Alert severity={'info'}>
                       <AlertTitle>
                         {t('{{numCasesToAdd}} selected case(s) will be added to selected the event.', { numCasesToAdd: caseIdsToAdd.length })}
@@ -318,7 +338,11 @@ export const EpiAddCasesToEventDialog = withDialog<EpiAddCasesToEventDialogProps
                   </Box>
                 )}
                 {caseIdsToAdd.length === 0 && (
-                  <Box marginY={2}>
+                  <Box
+                    sx={{
+                      marginY: 2,
+                    }}
+                  >
                     <Alert severity={'error'}>
                       <AlertTitle>
                         {t('All selected case(s) are already part of the selected event.')}
@@ -327,7 +351,11 @@ export const EpiAddCasesToEventDialog = withDialog<EpiAddCasesToEventDialogProps
                   </Box>
                 )}
                 {caseIdsToAdd.length > 0 && (
-                  <Box marginY={2}>
+                  <Box
+                    sx={{
+                      marginY: 2,
+                    }}
+                  >
                     <EpiCasesAlreadyInCaseSetWarning
                       cases={openProps.rows.filter(row => caseIdsToAdd.includes(row.id))}
                     />

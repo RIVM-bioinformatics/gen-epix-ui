@@ -163,7 +163,9 @@ export const GenericForm = <TFormFields extends FieldValues,>({
         return (
           <Box
             key={formFieldDefinition.name}
-            marginY={1}
+            sx={{
+              marginY: 1,
+            }}
           >
             {renderFormFieldDefinition(formFieldDefinition)}
           </Box>

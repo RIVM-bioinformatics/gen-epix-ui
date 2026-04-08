@@ -83,8 +83,8 @@ export const NotificationsDrawer = ({ onDrawerClose, open }: NotificationsDrawer
         {notifications.length === 0 && (
           <Box>
             <Box
-              marginBottom={2}
               sx={{
+                marginBottom: 2,
                 display: 'flex',
                 justifyContent: 'center',
               }}
@@ -126,8 +126,9 @@ export const NotificationsDrawer = ({ onDrawerClose, open }: NotificationsDrawer
               </Button>
             </Box>
             <Box
-              marginBottom={2}
-              marginTop={2}
+              sx={{
+                marginY: 2,
+              }}
             >
               <Divider />
             </Box>

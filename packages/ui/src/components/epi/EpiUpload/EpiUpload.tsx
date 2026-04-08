@@ -72,7 +72,9 @@ export const EpiUpload = () => {
         <Stepper
           steps={steps}
           activeStep={String(activeStep)}
-          marginY={2}
+          sx={{
+            marginY: 2,
+          }}
         />
       </Container>
       <Box

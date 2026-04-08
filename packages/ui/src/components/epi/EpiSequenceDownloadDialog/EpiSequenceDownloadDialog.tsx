@@ -104,7 +104,11 @@ export const EpiSequenceDownloadDialog = withDialog<EpiSequenceDownloadDialogPro
 
   return (
     <Box>
-      <Box marginBottom={3}>
+      <Box
+        sx={{
+          marginBottom: 3,
+        }}
+      >
         <FormProvider {...formMethods}>
           <form
             autoComplete={'off'}
@@ -123,8 +127,8 @@ export const EpiSequenceDownloadDialog = withDialog<EpiSequenceDownloadDialogPro
       </Box>
       {geneticSequenceColId && (
         <Box
-          marginBottom={1}
           sx={{
+            marginBottom: 1,
             display: 'flex',
             justifyContent: 'flex-end',
             gap: 1,

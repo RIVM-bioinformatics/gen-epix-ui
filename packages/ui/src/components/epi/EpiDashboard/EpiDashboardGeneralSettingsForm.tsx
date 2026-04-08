@@ -58,7 +58,11 @@ export const EpiDashboardGeneralSettingsForm = ({ onReset }: EpiDashboardGeneral
         autoComplete={'off'}
         onSubmit={noop}
       >
-        <Box marginY={1}>
+        <Box
+          sx={{
+            marginY: 1,
+          }}
+        >
           <FormGroup>
             <Switch<EpiDashboardGeneralSettings>
               label={t`Enable highlighting across widgets`}
@@ -73,7 +77,11 @@ export const EpiDashboardGeneralSettingsForm = ({ onReset }: EpiDashboardGeneral
           justifyContent: 'flex-end',
         }}
       >
-        <Box marginX={1}>
+        <Box
+          sx={{
+            marginX: 1,
+          }}
+        >
           <Button
             color={'primary'}
             startIcon={<RestartAltIcon />}

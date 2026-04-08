@@ -80,13 +80,17 @@ export const HomePageTrendCard = ({ header, value, diffPercentage, sinceLabel, c
         </CardActions>
       )}
       <Box
-        padding={1}
         sx={{
+          padding: 1,
           background: theme.palette.grey['100'],
           justifyContent: 'flex-end',
         }}
       >
-        <Box marginX={1}>
+        <Box
+          sx={{
+            marginX: 1,
+          }}
+        >
           {diffPercentage === 0 && (
             <Typography>
               <Box

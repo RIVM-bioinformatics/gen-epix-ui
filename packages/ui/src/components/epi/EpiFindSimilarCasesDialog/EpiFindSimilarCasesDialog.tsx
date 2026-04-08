@@ -242,7 +242,11 @@ export const EpiFindSimilarCasesDialog = withDialog<EpiFindSimilarCasesDialogPro
 
   return (
     <Box>
-      <Box marginBottom={2}>
+      <Box
+        sx={{
+          marginBottom: 2,
+        }}
+      >
         <Typography>
           {t('Select a tree and maximum distance to find similar cases for the {{count}} selected cases.', { count: openProps.selectedRows.length })}
         </Typography>
@@ -260,7 +264,11 @@ export const EpiFindSimilarCasesDialog = withDialog<EpiFindSimilarCasesDialogPro
       >
         {query.data && !isDirty && (
           <>
-            <Box marginY={2}>
+            <Box
+              sx={{
+                marginY: 2,
+              }}
+            >
               <Alert
                 severity={query.data.length > 0 ? 'success' : 'warning'}
               >
@@ -270,7 +278,11 @@ export const EpiFindSimilarCasesDialog = withDialog<EpiFindSimilarCasesDialogPro
               </Alert>
             </Box>
             {similarCaseIdsNotInView.length !== query.data.length && (
-              <Box marginY={2}>
+              <Box
+                sx={{
+                  marginY: 2,
+                }}
+              >
                 <Alert
                   severity={'info'}
                 >

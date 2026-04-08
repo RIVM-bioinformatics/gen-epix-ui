@@ -362,7 +362,7 @@ export const createTheme = (paletteMode: PaletteMode): Theme => {
       },
       MuiDivider: {
         styleOverrides: {
-          light: {
+          root: {
             backgroundColor: '#c9defc',
           },
         },

@@ -22,13 +22,13 @@
     "build-publish": "pnpm publish --access=public"
   },
   "dependencies": {
-    "@mui/material": "7.3.9"
+    "@mui/material": "9.0.0"
   },
   "devDependencies": {
     "@types/node": "25.5.2",
     "eslint": "9.39.4",
     "typescript": "5.9.2",
-    "vite": "8.0.5"
+    "vite": "8.0.7"
   },
   "browserslist": [
     "last 2 Chrome versions"

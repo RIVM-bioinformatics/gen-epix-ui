@@ -287,7 +287,11 @@ export const EpiUploadSelectSequenceFiles = () => {
         }}
       >
         {!canUpload && (
-          <Box marginBottom={2}>
+          <Box
+            sx={{
+              marginBottom: 2,
+            }}
+          >
             <Alert severity={'error'}>
               <AlertTitle>
                 {cantUploadMessage.title}
@@ -302,7 +306,9 @@ export const EpiUploadSelectSequenceFiles = () => {
           }}
         >
           <Box
-            maxWidth={theme.spacing(128)}
+            sx={{
+              maxWidth: theme.spacing(128),
+            }}
           >
             <GenericForm<FormFields>
               formFieldDefinitions={formFieldDefinitions}
@@ -314,7 +320,11 @@ export const EpiUploadSelectSequenceFiles = () => {
             />
           </Box>
           {!canUploadSequences && (
-            <Box marginY={1}>
+            <Box
+              sx={{
+                marginY: 1,
+              }}
+            >
               <Alert severity={'info'}>
                 <AlertTitle>
                   {t('Uploading of sequences has been disabled.')}
@@ -326,7 +336,11 @@ export const EpiUploadSelectSequenceFiles = () => {
             </Box>
           )}
           {!canUploadReads && (
-            <Box marginY={1}>
+            <Box
+              sx={{
+                marginY: 1,
+              }}
+            >
               <Alert severity={'info'}>
                 <AlertTitle>
                   {t('Uploading of read files has been disabled.')}

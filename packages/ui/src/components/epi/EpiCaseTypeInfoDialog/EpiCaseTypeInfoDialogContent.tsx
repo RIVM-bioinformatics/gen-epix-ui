@@ -103,7 +103,11 @@ export const EpiCaseTypeInfoDialogContent = ({ onTitleChange, onPermalinkChange 
             },
           }}
         >
-          <Box marginBottom={1}>
+          <Box
+            sx={{
+              marginBottom: 1,
+            }}
+          >
             <RichTextEditorContent source={completeCaseType?.description || t`No description available`} />
           </Box>
           <EpiCaseTypeInfoData
@@ -114,10 +118,16 @@ export const EpiCaseTypeInfoDialogContent = ({ onTitleChange, onPermalinkChange 
             name={getEtiologicalAgentName(completeCaseType.etiological_agent_id)}
             title={t`Etiological agent`}
           />
-          <Box marginY={3}>
+          <Box
+            sx={{
+              marginY: 3,
+            }}
+          >
             <Typography
               component={'h4'}
-              marginY={1}
+              sx={{
+                marginY: 1,
+              }}
               variant={'h4'}
             >
               {t`Variables by dimension`}
@@ -126,11 +136,17 @@ export const EpiCaseTypeInfoDialogContent = ({ onTitleChange, onPermalinkChange 
               completeCaseType={completeCaseType}
             />
           </Box>
-          <Box marginY={3}>
+          <Box
+            sx={{
+              marginY: 3,
+            }}
+          >
             <Typography
               component={'h4'}
-              marginY={1}
               variant={'h4'}
+              sx={{
+                marginY: 1,
+              }}
             >
               {t`Trees`}
             </Typography>
@@ -138,10 +154,16 @@ export const EpiCaseTypeInfoDialogContent = ({ onTitleChange, onPermalinkChange 
               completeCaseType={completeCaseType}
             />
           </Box>
-          <Box marginY={3}>
+          <Box
+            sx={{
+              marginY: 3,
+            }}
+          >
             <Typography
               component={'h4'}
-              marginY={1}
+              sx={{
+                marginY: 1,
+              }}
               variant={'h4'}
             >
               {t`Regions`}
@@ -150,10 +172,16 @@ export const EpiCaseTypeInfoDialogContent = ({ onTitleChange, onPermalinkChange 
               completeCaseType={completeCaseType}
             />
           </Box>
-          <Box marginY={3}>
+          <Box
+            sx={{
+              marginY: 3,
+            }}
+          >
             <Typography
               component={'h4'}
-              marginY={1}
+              sx={{
+                marginY: 1,
+              }}
               variant={'h4'}
             >
               {t`Access rights`}

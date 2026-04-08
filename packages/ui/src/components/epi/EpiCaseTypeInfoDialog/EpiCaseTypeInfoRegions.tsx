@@ -48,10 +48,12 @@ export const EpiCaseTypeInfoRegions = ({ completeCaseType }: EpiCaseTypeInfoRegi
             </AccordionSummary>
             <AccordionDetails>
               <Stack
-                columnGap={1}
-                direction={'row'}
-                flexWrap={'wrap'}
-                rowGap={1}
+                sx={{
+                  columnGap: 1,
+                  flexWrap: 'wrap',
+                  rowGap: 1,
+                  direction: 'row',
+                }}
               >
                 <Table size={'small'}>
                   <TableHead>

@@ -139,8 +139,8 @@ export const RouterRoot = () => {
         testIdAttributes={TestIdUtil.createAttributes('ErrorPage')}
       >
         <Box
-          marginY={2}
           sx={{
+            marginY: 2,
             textAlign: 'center',
           }}
         >

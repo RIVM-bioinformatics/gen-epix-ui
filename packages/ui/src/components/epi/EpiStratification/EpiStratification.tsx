@@ -213,7 +213,9 @@ export const EpiStratification = () => {
       {stratification?.legendaItems.map(legendaItem => (
         <Box
           key={legendaItem.rowValue.raw ?? '-'}
-          marginX={1}
+          sx={{
+            marginX: 1,
+          }}
         >
           <EpiLegendaItem
             tooltip

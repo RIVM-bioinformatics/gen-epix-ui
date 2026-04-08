@@ -211,7 +211,11 @@ export const UserEffectiveRightsTesterAdminPage = () => {
           loadables={loadables}
         >
           <Container maxWidth={'md'}>
-            <Box marginY={2}>
+            <Box
+              sx={{
+                marginY: 2,
+              }}
+            >
               <Typography
                 component={'h2'}
                 variant={'h4'}
@@ -233,12 +237,20 @@ export const UserEffectiveRightsTesterAdminPage = () => {
               onSubmit={handleSubmit(noop)}
             />
             {result !== null && typeof result === 'object' && (
-              <Box marginY={2}>
+              <Box
+                sx={{
+                  marginY: 2,
+                }}
+              >
                 <Typography variant={'h6'}>
                   {t('Effective rights result:')}
                 </Typography>
                 {!formValues.fromDataCollectionId && result.has_share_case_rights && (
-                  <Box marginY={2}>
+                  <Box
+                    sx={{
+                      marginY: 2,
+                    }}
+                  >
                     <Typography
                       sx={{
                         fontStyle: 'italic',

@@ -177,7 +177,11 @@ export const OrganizationSwitcherDialog = withDialog<OrganizationSwitcherDialogP
             autoComplete={'off'}
             onSubmit={handleSubmit(onFormSubmit)}
           >
-            <Box marginBottom={2}>
+            <Box
+              sx={{
+                marginBottom: 2,
+              }}
+            >
               <Typography component={'p'}>
                 {t`For demo purposes, it is possible to switch your organization. Choose your organization from the list below and click 'Change'.`}
               </Typography>

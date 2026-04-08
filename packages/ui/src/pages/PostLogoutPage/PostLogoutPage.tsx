@@ -29,7 +29,9 @@ export const PostLogoutPage = () => {
         }}
       >
         <Typography
-          marginBottom={2}
+          sx={{
+            marginBottom: 2,
+          }}
         >
           {t`You have been logged out. You may close this window or log in again.`}
         </Typography>

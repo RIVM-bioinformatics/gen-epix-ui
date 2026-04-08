@@ -340,14 +340,20 @@ export const EpiCaseSetInfoDialog = withDialog<EpiCaseSetInfoDialogProps, EpiCas
             <>
               <EpiCaseSetContent
                 caseSet={caseSet}
-                marginBottom={2}
+                sx={{
+                  marginBottom: 2,
+                }}
               />
               <EpiCaseSetSharingInfo
-                marginBottom={2}
+                sx={{
+                  marginBottom: 2,
+                }}
               />
               <EpiCaseSetDescription
                 caseSet={caseSet}
-                marginBottom={2}
+                sx={{
+                  marginBottom: 2,
+                }}
               />
             </>
           )}

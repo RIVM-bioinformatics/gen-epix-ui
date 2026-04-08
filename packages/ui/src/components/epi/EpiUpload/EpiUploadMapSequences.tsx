@@ -155,8 +155,8 @@ export const EpiUploadMapSequences = () => {
           alignItems: 'center',
           justifyContent: 'center',
           flexDirection: 'column',
+          height: '100%',
         }}
-        height={'100%'}
       >
         {createDropDown({
           dropDownValue,
@@ -199,8 +199,8 @@ export const EpiUploadMapSequences = () => {
           justifyContent: 'center',
           flexDirection: 'row',
           gap: 1,
+          height: '100%',
         }}
-        height={'100%'}
       >
         {createDropDown({
           dropDownValue: dropDownValueFwd,
@@ -311,7 +311,7 @@ export const EpiUploadMapSequences = () => {
         gridTemplateRows: 'max-content auto max-content',
       }}
     >
-      <Box paddingBottom={1}>
+      <Box sx={{ paddingBottom: 1 }}>
         <Alert severity={'info'}>
           <AlertTitle id={alertTitleId} />
           <Box id={alertContentId} />

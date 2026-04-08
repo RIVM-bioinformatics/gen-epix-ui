@@ -104,14 +104,14 @@ export const GenericErrorMessage = ({ error, shouldHideActionButtons }: GenericE
 
   return (
     <Box>
-      <Box paddingY={1}>
+      <Box sx={{ padding: 1 }}>
         <Typography
           variant={'h1'}
         >
           {title}
         </Typography>
       </Box>
-      <Box paddingY={1}>
+      <Box sx={{ padding: 1 }}>
         <Typography
           variant={'body2'}
         >
@@ -119,7 +119,7 @@ export const GenericErrorMessage = ({ error, shouldHideActionButtons }: GenericE
         </Typography>
       </Box>
       {shouldShowStackTrace && (
-        <Box paddingY={1}>
+        <Box sx={{ padding: 1 }}>
           <Typography variant={'h6'}>
             {t`Details for our technicians`}
           </Typography>
@@ -135,10 +135,10 @@ export const GenericErrorMessage = ({ error, shouldHideActionButtons }: GenericE
       )}
       {!shouldHideActionButtons && (
         <Box
-          paddingY={1}
           sx={{
             display: 'flex',
             gap: 1,
+            padding: 1,
           }}
         >
           <Button

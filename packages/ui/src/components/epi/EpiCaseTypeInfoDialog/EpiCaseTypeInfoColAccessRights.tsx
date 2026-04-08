@@ -68,7 +68,11 @@ export const EpiCaseTypeInfoColAccessRights = ({ colId }: EpiCaseTypeInfoColAcce
 
   return (
     <Box>
-      <Box marginBottom={1}>
+      <Box
+        sx={{
+          marginBottom: 1,
+        }}
+      >
         <Box>
           {t('Effective rights: {{effectiveRightLabel}}', { effectiveRightLabel })}
         </Box>

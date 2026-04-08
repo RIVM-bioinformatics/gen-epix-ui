@@ -124,8 +124,10 @@ export const EpiRemoveFindSimilarCasesResultDialog = withDialog<EpiRemoveFindSim
         index: '',
         content: (
           <Box
-            marginTop={1}
-            marginBottom={2}
+            sx={{
+              marginBottom: 2,
+              marginTop: 1,
+            }}
           >
             <Button
               variant={'outlined'}
@@ -168,8 +170,10 @@ export const EpiRemoveFindSimilarCasesResultDialog = withDialog<EpiRemoveFindSim
               </Box>
             </Box>
             <Box
-              marginTop={1}
-              marginBottom={2}
+              sx={{
+                marginTop: 1,
+                marginBottom: 2,
+              }}
             >
               <Button
                 disabled={index !== intermediateFindSimilarCasesResults.length - 1}

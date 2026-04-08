@@ -146,7 +146,11 @@ export const UserFeedbackDialog = withDialog<UserFeedbackDialogProps, UserFeedba
 
   return (
     <Box>
-      <Box marginBottom={2}>
+      <Box
+        sx={{
+          marginBottom: 2,
+        }}
+      >
         <Typography component={'p'}>
           {t('Please help make {{applicationName}} better by sharing your feedback with us. You may use this form as many times as you like.', { applicationName: ConfigManager.instance.config.applicationName })}
         </Typography>

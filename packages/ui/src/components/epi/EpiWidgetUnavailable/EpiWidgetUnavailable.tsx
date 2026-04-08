@@ -30,13 +30,25 @@ export const EpiWidgetUnavailable = ({ widgetName, epiZone }: EpiWidgetUnavailab
   }, [epiDashboardLayoutUserConfig, epiZone, setEpiDashboardLayoutUserConfig]);
 
   return (
-    <Box marginY={1}>
-      <Box marginY={1}>
+    <Box
+      sx={{
+        marginY: 1,
+      }}
+    >
+      <Box
+        sx={{
+          marginY: 1,
+        }}
+      >
         <Typography>
           {t('The {{widgetName}} cannot be shown.', { widgetName })}
         </Typography>
       </Box>
-      <Box marginY={1}>
+      <Box
+        sx={{
+          marginY: 1,
+        }}
+      >
         <Button
           color={'primary'}
           size={'small'}

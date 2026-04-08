@@ -76,8 +76,8 @@ export const EpiWidget = ({ title, children, primaryMenu, secondaryMenu, warning
         >
           <Typography
             component={'h2'}
-            fontWeight={'bold'}
             sx={{
+              fontWeight: 'bold',
               display: 'inline-block',
               maxWidth: '100%',
               lineHeight: theme.spacing(3),

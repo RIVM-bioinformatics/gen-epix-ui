@@ -92,8 +92,10 @@ export const AuthenticationWrapper = ({ children }: PropsWithChildren) => {
     () => (
       <>
         <Box
-          marginY={2}
-          sx={{ textAlign: 'center' }}
+          sx={{
+            marginY: 2,
+            textAlign: 'center',
+          }}
         >
           <Button
             color={'primary'}
@@ -105,8 +107,10 @@ export const AuthenticationWrapper = ({ children }: PropsWithChildren) => {
           </Button>
         </Box>
         <Box
-          marginY={2}
-          sx={{ textAlign: 'center' }}
+          sx={{
+            marginY: 2,
+            textAlign: 'center',
+          }}
         >
           <Button
             color={'primary'}
@@ -182,8 +186,10 @@ export const AuthenticationWrapper = ({ children }: PropsWithChildren) => {
         title={t`Login`}
       >
         <Box
-          marginY={2}
-          sx={{ textAlign: 'center' }}
+          sx={{
+            marginY: 2,
+            textAlign: 'center',
+          }}
         >
           <Typography component={'p'}>
             {t`You need to login to access this application.`}

@@ -118,7 +118,11 @@ export const SidebarItem = ({ open, onClose, children, width, title, closeIconTo
               </IconButton>
             </Tooltip>
           </Box>
-          <Box paddingX={1}>
+          <Box
+            sx={{
+              paddingX: 1,
+            }}
+          >
             <Box
               sx={{
                 position: 'absolute',

@@ -173,7 +173,11 @@ export const UsersEffectiveRightsDetailsDialog = withDialog<UsersEffectiveRights
             value={activeTab}
           >
             { !userEffectiveRight.categorized_case_type_ids.length && !userEffectiveRight.uncategorized_case_type_ids.length && (
-              <Box marginY={2}>
+              <Box
+                sx={{
+                  marginY: 2,
+                }}
+              >
                 {t`No case types assigned`}
               </Box>
             )}
@@ -189,7 +193,11 @@ export const UsersEffectiveRightsDetailsDialog = withDialog<UsersEffectiveRights
                   });
                   return (
                     <Box key={caseTypeSetId}>
-                      <Box marginY={1}>
+                      <Box
+                        sx={{
+                          marginY: 1,
+                        }}
+                      >
                         <Link
                           tabIndex={0}
                           href={'#'}
@@ -215,7 +223,11 @@ export const UsersEffectiveRightsDetailsDialog = withDialog<UsersEffectiveRights
               </Box>
             )}
             { userEffectiveRight.uncategorized_case_type_ids.length > 0 && (
-              <Box marginY={1}>
+              <Box
+                sx={{
+                  marginY: 1,
+                }}
+              >
                 <Link
                   tabIndex={0}
                   href={'#'}
@@ -246,7 +258,11 @@ export const UsersEffectiveRightsDetailsDialog = withDialog<UsersEffectiveRights
             value={activeTab}
           >
             { !userEffectiveRight.categorized_read_col_ids.length && !userEffectiveRight.uncategorized_read_col_ids.length && (
-              <Box marginY={2}>
+              <Box
+                sx={{
+                  marginY: 2,
+                }}
+              >
                 {t`No read columns assigned`}
               </Box>
             )}
@@ -264,7 +280,11 @@ export const UsersEffectiveRightsDetailsDialog = withDialog<UsersEffectiveRights
                   });
                   return (
                     <Box key={colSetId}>
-                      <Box marginY={1}>
+                      <Box
+                        sx={{
+                          marginY: 1,
+                        }}
+                      >
                         <Link
                           tabIndex={0}
                           href={'#'}
@@ -290,7 +310,11 @@ export const UsersEffectiveRightsDetailsDialog = withDialog<UsersEffectiveRights
               </Box>
             )}
             { userEffectiveRight.uncategorized_read_col_ids.length > 0 && (
-              <Box marginY={1}>
+              <Box
+                sx={{
+                  marginY: 1,
+                }}
+              >
                 <Typography variant={'h5'}>
                   {t`Uncategorized read columns sets`}
                 </Typography>
@@ -326,7 +350,11 @@ export const UsersEffectiveRightsDetailsDialog = withDialog<UsersEffectiveRights
             value={activeTab}
           >
             { !userEffectiveRight.categorized_write_col_ids.length && !userEffectiveRight.uncategorized_write_col_ids.length && (
-              <Box marginY={2}>
+              <Box
+                sx={{
+                  marginY: 2,
+                }}
+              >
                 {t`No write columns assigned`}
               </Box>
             )}
@@ -344,7 +372,11 @@ export const UsersEffectiveRightsDetailsDialog = withDialog<UsersEffectiveRights
                   });
                   return (
                     <Box key={colSetId}>
-                      <Box marginY={1}>
+                      <Box
+                        sx={{
+                          marginY: 1,
+                        }}
+                      >
                         <Link
                           tabIndex={0}
                           href={'#'}
@@ -370,7 +402,11 @@ export const UsersEffectiveRightsDetailsDialog = withDialog<UsersEffectiveRights
               </Box>
             )}
             { userEffectiveRight.uncategorized_write_col_ids.length > 0 && (
-              <Box marginY={1}>
+              <Box
+                sx={{
+                  marginY: 1,
+                }}
+              >
                 <Link
                   tabIndex={0}
                   href={'#'}
@@ -454,16 +490,26 @@ export const UsersEffectiveRightsDetailsDialog = withDialog<UsersEffectiveRights
             index={4}
             value={activeTab}
           >
-            <Box marginY={2}>
+            <Box
+              sx={{
+                marginY: 2,
+              }}
+            >
               { !userEffectiveRight.effective_share_case_rights.length && (
-                <Box marginY={2}>
+                <Box
+                  sx={{
+                    marginY: 2,
+                  }}
+                >
                   {t`No additional rights assigned`}
                 </Box>
               )}
               {userEffectiveRight.effective_share_case_rights.map((right) => (
                 <Box
                   key={right.from_data_collection_id}
-                  marginY={2}
+                  sx={{
+                    marginY: 2,
+                  }}
                 >
                   <Box>
                     <Typography variant={'h5'}>
@@ -474,7 +520,11 @@ export const UsersEffectiveRightsDetailsDialog = withDialog<UsersEffectiveRights
                   </Box>
                   <Box>
                     {right.categorized_case_type_ids.length === 0 && right.uncategorized_case_type_ids.length === 0 && (
-                      <Box marginY={2}>
+                      <Box
+                        sx={{
+                          marginY: 2,
+                        }}
+                      >
                         {t`No case types assigned`}
                       </Box>
                     )}
@@ -488,7 +538,11 @@ export const UsersEffectiveRightsDetailsDialog = withDialog<UsersEffectiveRights
                       });
                       return (
                         <Box key={caseTypeSetId}>
-                          <Box marginY={1}>
+                          <Box
+                            sx={{
+                              marginY: 1,
+                            }}
+                          >
                             <Link
                               tabIndex={0}
                               href={'#'}
@@ -512,7 +566,11 @@ export const UsersEffectiveRightsDetailsDialog = withDialog<UsersEffectiveRights
                       );
                     })}
                     {right.uncategorized_case_type_ids.length > 0 && (
-                      <Box marginY={2}>
+                      <Box
+                        sx={{
+                          marginY: 2,
+                        }}
+                      >
                         <Link
                           tabIndex={0}
                           href={'#'}

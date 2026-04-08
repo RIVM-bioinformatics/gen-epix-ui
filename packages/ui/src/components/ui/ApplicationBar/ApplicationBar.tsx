@@ -48,7 +48,11 @@ export const ApplicationBar = ({
           }}
         >
           {singleAction && (
-            <Box marginX={theme.spacing(2)}>
+            <Box
+              sx={{
+                marginX: 2,
+              }}
+            >
               <Typography
                 component={'h1'}
                 sx={{

@@ -55,7 +55,11 @@ export const EpiCaseTypeInfoTrees = ({ completeCaseType }: EpiCaseTypeInfoTreesP
               <EpiTreeDescription
                 treeConfiguration={treeConfiguration}
               />
-              <Box marginY={1}>
+              <Box
+                sx={{
+                  marginY: 1,
+                }}
+              >
                 <strong style={{ fontSize: '1rem' }}>
                   {t`Access rights`}
                 </strong>

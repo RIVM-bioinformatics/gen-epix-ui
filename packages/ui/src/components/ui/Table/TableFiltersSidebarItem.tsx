@@ -113,7 +113,7 @@ const TableFiltersSidebarItemContentFilterDimension = <TRowData,>({ filterDimens
   return (
     <Box
       key={filterDimension.id}
-      marginBottom={2}
+      sx={{ mb: 2 }}
     >
       {shouldShowDimensionTitle && (
         <Box
@@ -160,7 +160,7 @@ const TableFiltersSidebarItemContentFilterDimension = <TRowData,>({ filterDimens
       {filteredDimensionFilters.map((filter) => (
         <Box
           key={filter.id}
-          marginY={1}
+          sx={{ my: 1 }}
         >
           <TableFilter filter={filter} />
         </Box>
@@ -255,7 +255,7 @@ export const TableFiltersSidebarItemContent = <TRowData,>({ onClose }: TableFilt
             {/* Active filters */}
             <Box>
               {isDirty && hasActiveFilter && !hasActiveFormFilters && (
-                <Box marginY={1}>
+                <Box sx={{ my: 1 }}>
                   {t`All filters have been removed, but have not yet been applied.`}
                 </Box>
               )}
@@ -304,11 +304,11 @@ export const TableFiltersSidebarItemContent = <TRowData,>({ onClose }: TableFilt
               </Box>
               {(hasActiveFilter || isDirty) && (
                 <Box
-                  marginY={1}
                   sx={{
                     display: 'flex',
                     justifyContent: 'flex-end',
                     gap: 1,
+                    my: 1,
                     marginRight: 1,
                   }}
                 >
@@ -358,10 +358,10 @@ export const TableFiltersSidebarItemContent = <TRowData,>({ onClose }: TableFilt
                   {filteredFilters.map((filter) => (
                     <Box
                       key={filter.id}
-                      marginY={2}
+                      sx={{ my: 2 }}
                     >
                       <Box
-                        marginY={1}
+                        sx={{ my: 1 }}
                       >
                         <TableFilter filter={filter} />
                       </Box>

@@ -54,15 +54,21 @@ export const Spinner = ({ label, inline, color = 'primary', takingLongerLabel, t
       role={'status'}
       aria-busy={'true'}
     >
-      <Box margin={1}>
+      <Box
+        sx={{
+          margin: 1,
+        }}
+      >
         <CircularProgress
           color={color}
           size={size ?? ConfigManager.instance.config.spinner.DEFAULT_CIRCULAR_PROGRESS_SIZE}
         />
       </Box>
       <Box
-        margin={1}
-        sx={!label ? visuallyHidden : undefined}
+        sx={{
+          ...(!label ? visuallyHidden : undefined),
+          margin: 1,
+        }}
       >
         <Typography
           aria-live={'polite'}
@@ -71,7 +77,11 @@ export const Spinner = ({ label, inline, color = 'primary', takingLongerLabel, t
         </Typography>
       </Box>
       {isTakingLonger && (
-        <Box margin={1}>
+        <Box
+          sx={{
+            margin: 1,
+          }}
+        >
           <Typography
             aria-live={'polite'}
           >

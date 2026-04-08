@@ -83,8 +83,10 @@ export const ChooseIdentityProviderPage = ({
     >
       {availableIdentityProviders.length === 0 && (
         <Box
-          marginBottom={4}
-          marginTop={1}
+          sx={{
+            marginBottom: 4,
+            marginTop: 1,
+          }}
         >
           <Alert severity={'error'}>
             <AlertTitle>
@@ -99,8 +101,10 @@ export const ChooseIdentityProviderPage = ({
       {availableIdentityProviders.length > 0 && availableIdentityProviders.length !==
         identityProvidersWithAvailability.length && (
         <Box
-          marginBottom={4}
-          marginTop={1}
+          sx={{
+            marginBottom: 4,
+            marginTop: 1,
+          }}
         >
           <Alert severity={'info'}>
             <AlertTitle>
@@ -112,14 +116,20 @@ export const ChooseIdentityProviderPage = ({
       )}
       <Box sx={{ textAlign: 'center' }}>
         <Typography
-          marginBottom={2}
+          sx={{
+            marginBottom: 2,
+          }}
           variant={'h1'}
         >
           {t('Welcome to {{applicationName}}', {
             applicationName: ConfigManager.instance.config.applicationName,
           })}
         </Typography>
-        <Typography marginBottom={2}>
+        <Typography
+          sx={{
+            marginBottom: 2,
+          }}
+        >
           {t`Please login with one of the following identity providers:`}
         </Typography>
         {identityProvidersWithAvailability.map(
@@ -136,7 +146,9 @@ export const ChooseIdentityProviderPage = ({
             return (
               <Box
                 key={identityProviderWithAvailability.provider.name}
-                marginY={2}
+                sx={{
+                  marginY: 2,
+                }}
               >
                 {identityProviderWithAvailability.isAvailable && button}
                 {!identityProviderWithAvailability.isAvailable && (

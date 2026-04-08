@@ -57,12 +57,20 @@ export const AcceptInvitationPage = () => {
       >
         {!data && (
           <>
-            <Box marginY={2}>
+            <Box
+              sx={{
+                marginY: 2,
+              }}
+            >
               <Typography>
                 {t('You have been invited to join {{applicationName}}.', { applicationName: ConfigManager.instance.config.applicationName })}
               </Typography>
             </Box>
-            <Box marginY={2}>
+            <Box
+              sx={{
+                marginY: 2,
+              }}
+            >
               <Button
                 color={'primary'}
                 type={'submit'}
@@ -80,7 +88,11 @@ export const AcceptInvitationPage = () => {
                 {t('You have been successfully registered to {{applicationName}}.', { applicationName: ConfigManager.instance.config.applicationName })}
               </Typography>
             </Box>
-            <Box marginY={2}>
+            <Box
+              sx={{
+                marginY: 2,
+              }}
+            >
               <Button
                 color={'primary'}
                 onClick={onGoToHomePageButtonClick}

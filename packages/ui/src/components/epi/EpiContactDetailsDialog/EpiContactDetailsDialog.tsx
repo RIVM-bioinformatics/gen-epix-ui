@@ -75,7 +75,9 @@ export const EpiContactDetailsDialog = withDialog<EpiContactDetailsDialogProps, 
           return (
             <Box
               key={site.id}
-              marginBottom={2}
+              sx={{
+                marginBottom: 2,
+              }}
             >
               <Typography
                 variant={'h5'}

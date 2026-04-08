@@ -139,18 +139,30 @@ export const LicensesDialog = withDialog<LicensesDialogProps, LicensesDialogOpen
       isLoading={isLoading}
     >
       {item && (
-        <Box marginY={2}>
+        <Box
+          sx={{
+            marginY: 2,
+          }}
+        >
           {item.license}
         </Box>
       )}
       {!item && (
         <>
 
-          <Box marginY={2}>
+          <Box
+            sx={{
+              marginY: 2,
+            }}
+          >
             <LicenseInformation />
           </Box>
           <Divider />
-          <Box marginY={2}>
+          <Box
+            sx={{
+              marginY: 2,
+            }}
+          >
             <Typography>
               {t`This application uses the following open source libraries:`}
             </Typography>

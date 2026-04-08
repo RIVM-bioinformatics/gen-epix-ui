@@ -26,7 +26,7 @@ export const ApplicationFooterLinkSection = ({ header, children }: ApplicationFo
 
   return (
     <Box
-      padding={2}
+      sx={{ padding: 2 }}
     >
       <Typography
         component={'h2'}

@@ -87,7 +87,11 @@ export const UserInvitationShareDialog = withDialog<UserInvitationShareDialogPro
           {t('The invitation for {{email}} will expire on {{expiryDate}}.', { email: openProps.item.key, expiryDate })}
         </Typography>
       </Box>
-      <Box marginY={1}>
+      <Box
+        sx={{
+          marginY: 1,
+        }}
+      >
         {t('Invitation link: {{invitationLink}}', { email: openProps.item.key, invitationLink })}
       </Box>
     </Box>

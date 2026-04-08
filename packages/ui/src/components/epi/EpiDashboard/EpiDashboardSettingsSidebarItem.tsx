@@ -50,13 +50,19 @@ const EpiDashboardSettingsSidebarItemContent = ({ onReset }: EpiDashboardSetting
       {items.map(({ label, component }, index) => (
         <Box
           key={label}
-          marginTop={index !== 0 ? 2 : 0}
-          paddingTop={index !== items.length - 1 ? 1 : 0}
+          sx={{
+            paddingTop: index !== items.length - 1 ? 1 : 0,
+            marginTop: index !== 0 ? 2 : 0,
+          }}
         >
           <Typography variant={'h5'}>
             {label}
           </Typography>
-          <Box marginBottom={2}>
+          <Box
+            sx={{
+              marginBottom: 2,
+            }}
+          >
             {component}
           </Box>
           <Divider

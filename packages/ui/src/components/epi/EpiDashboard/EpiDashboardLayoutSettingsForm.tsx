@@ -108,7 +108,11 @@ export const EpiDashboardLayoutSettingsForm = ({ onReset }: EpiDashboardLayoutSe
         autoComplete={'off'}
         onSubmit={noop}
       >
-        <Box marginY={1}>
+        <Box
+          sx={{
+            marginY: 1,
+          }}
+        >
           <FormGroup>
             {layoutFormElements.map(layoutFormElement => (
               <Switch
@@ -120,13 +124,21 @@ export const EpiDashboardLayoutSettingsForm = ({ onReset }: EpiDashboardLayoutSe
             ))}
           </FormGroup>
         </Box>
-        <Box marginY={1}>
+        <Box
+          sx={{
+            marginY: 1,
+          }}
+        >
           <Typography variant={'h6'}>
             {t`Arrangement`}
           </Typography>
         </Box>
         {arrangementOptions.length > 0 && (
-          <Box marginY={1}>
+          <Box
+            sx={{
+              marginY: 1,
+            }}
+          >
             <FormGroup>
               <ToggleButtonGroup
                 required
@@ -144,7 +156,11 @@ export const EpiDashboardLayoutSettingsForm = ({ onReset }: EpiDashboardLayoutSe
           justifyContent: 'flex-end',
         }}
       >
-        <Box marginX={1}>
+        <Box
+          sx={{
+            marginX: 1,
+          }}
+        >
           <Button
             color={'primary'}
             startIcon={<RestartAltIcon />}

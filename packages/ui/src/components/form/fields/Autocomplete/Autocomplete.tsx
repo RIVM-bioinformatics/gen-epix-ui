@@ -1,8 +1,8 @@
 import type {
-  ChangeEvent,
   HTMLAttributes,
   ReactElement,
   ReactNode,
+  SyntheticEvent,
 } from 'react';
 import {
   useCallback,
@@ -25,7 +25,7 @@ import type {
   FilterOptionsState,
   AutocompleteValue,
   AutocompleteRenderOptionState,
-  AutocompleteRenderGetTagProps,
+  AutocompleteRenderValueGetItemProps,
 } from '@mui/material';
 import type {
   UseControllerReturn,
@@ -48,6 +48,7 @@ import { FormFieldLoadingIndicator } from '../../helpers/FormFieldLoadingIndicat
 
 
 type Value = string | number;
+type MultipleRenderValueItemProps = ReturnType<AutocompleteRenderValueGetItemProps<true>>;
 
 export type AutocompleteProps<TFieldValues extends FieldValues, TName extends Path<TFieldValues>, TMultiple extends boolean> = {
   readonly disabled?: boolean;
@@ -141,8 +142,8 @@ export const Autocomplete = <TFieldValues extends FieldValues, TName extends Pat
     );
   }, [getOptionLabel]);
 
-  const onInputValueChange = useCallback((event: ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
-    setInputValue(event.target.value);
+  const onMuiAutocompleteInputChange = useCallback((_event: SyntheticEvent, value: string) => {
+    setInputValue(value);
   }, []);
 
   const renderInput = useCallback((params: AutocompleteRenderInputParams) => {
@@ -155,49 +156,57 @@ export const Autocomplete = <TFieldValues extends FieldValues, TName extends Pat
 
     return (
       <TextField
-        {...params}
         error={hasError}
+        fullWidth={params.fullWidth}
         helperText={helperText}
+        id={params.id}
         inputRef={inputRef}
         variant={'outlined'}
         label={label}
+        size={params.size}
         slotProps={{
           formHelperText: { className: classnames({ 'Mui-warning': hasWarning }) },
           inputLabel: {
+            ...params.slotProps.inputLabel,
             required: required && !disabled,
             className: classnames({ 'Mui-warning': hasWarning }),
           },
           input: {
-            ...params.InputProps,
-            className: classnames(params?.InputProps?.className, {
+            ...params.slotProps.input,
+            className: classnames(params.slotProps.input.className, {
               'Mui-warning': hasWarning,
             }),
           },
+          htmlInput: {
+            ...params.slotProps.htmlInput,
+          },
         }}
-        onChange={multiple ? onInputValueChange : undefined}
       />
     );
-  }, [disabled, errorMessage, hasError, hasWarning, label, multiple, onInputValueChange, required, warningMessage]);
+  }, [disabled, errorMessage, hasError, hasWarning, label, required, warningMessage]);
 
-  const renderTags = useCallback((values: TFieldValues[TName][], getTagProps: AutocompleteRenderGetTagProps) => {
+  const renderValue = useCallback((values: AutocompleteValue<TFieldValues[TName], TMultiple, false, false>, getItemProps: AutocompleteRenderValueGetItemProps<TMultiple>) => {
+    const selectedValues = (Array.isArray(values) ? values : [values]) as Value[];
+
     return (
       <Stack
         direction={'row'}
-        flexWrap={'wrap'}
-        spacing={1}
+        sx={{
+          flexWrap: 'wrap',
+          gap: 1,
+        }}
       >
-        {values.map((value, index) => {
-          const props = getTagProps({ index });
+        {selectedValues.map((value: Value, index: number) => {
+          const props = getItemProps({ index }) as MultipleRenderValueItemProps;
           const option = mappedOptions.get(value);
-          if (option?.disabled) {
-            delete props.onDelete;
-          }
+
           return (
             <Chip
               {...props}
-              key={value}
+              key={String(value)}
               label={getOptionLabel(value)}
               size={'small'}
+              onDelete={option?.disabled ? undefined : props.onDelete}
             />
           );
         })}
@@ -206,7 +215,7 @@ export const Autocomplete = <TFieldValues extends FieldValues, TName extends Pat
   }, [getOptionLabel, mappedOptions]);
 
   const onMuiAutocompleteChange = useCallback((onChange: ControllerRenderProps<TFieldValues, TName>['onChange']) =>
-    (_event: ChangeEvent<unknown>, value: AutocompleteValue<TFieldValues[TName], TMultiple, false, false>) => {
+    (_event: SyntheticEvent, value: AutocompleteValue<TFieldValues[TName], TMultiple, false, false>) => {
       if (onChangeProp) {
         onChangeProp(value as TFieldValues[TName]);
       }
@@ -245,13 +254,14 @@ export const Autocomplete = <TFieldValues extends FieldValues, TName extends Pat
         options={optionValues as TFieldValues[TName]}
         renderInput={renderInput}
         renderOption={multiple ? renderOption : undefined}
-        renderTags={multiple ? renderTags : undefined}
+        renderValue={multiple ? renderValue : undefined}
         value={value}
+        onInputChange={multiple ? onMuiAutocompleteInputChange : undefined}
         onBlur={onBlur}
         onChange={onMuiAutocompleteChange(onChange)}
       />
     );
-  }, [required, multiple, disabled, loading, filterOptions, getIsOptionDisabled, getOptionLabel, groupValues, groupBy, inputValue, getIsOptionEqualToValue, t, onMuiAutocompleteChange, optionValues, renderInput, renderOption, renderTags]);
+  }, [required, multiple, disabled, loading, filterOptions, getIsOptionDisabled, getOptionLabel, groupValues, groupBy, inputValue, getIsOptionEqualToValue, t, onMuiAutocompleteChange, onMuiAutocompleteInputChange, optionValues, renderInput, renderOption, renderValue]);
 
   return (
     <FormControl

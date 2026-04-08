@@ -27,7 +27,11 @@ export const EpiTreeDescription = ({
         },
       }}
     >
-      <Box marginY={1}>
+      <Box
+        sx={{
+          marginY: 1,
+        }}
+      >
         <strong style={{ fontSize: '1rem' }}>
           {t`Genetic distance protocol`}
         </strong>
@@ -46,7 +50,11 @@ export const EpiTreeDescription = ({
           </dd>
         </dl>
       </Box>
-      <Box marginY={1}>
+      <Box
+        sx={{
+          marginY: 1,
+        }}
+      >
         <strong style={{ fontSize: '1rem' }}>
           {t`Tree algorithm`}
         </strong>

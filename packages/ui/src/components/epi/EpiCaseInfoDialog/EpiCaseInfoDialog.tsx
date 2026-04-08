@@ -325,20 +325,28 @@ export const EpiCaseInfoDialog = withDialog<EpiCaseInfoDialogProps, EpiCaseInfoD
         <CaseAbacContextProvider caseAbac={caseAbacContextValue}>
           <EpiReadOnlyCaseContent
             epiCase={epiCase}
-            marginBottom={2}
+            sx={{
+              marginBottom: 2,
+            }}
           />
           {!isEditingCaseContent && !isEditingDataCollections && (
             <>
               <EpiCaseSharingInfo
-                marginBottom={2}
+                sx={{
+                  marginBottom: 2,
+                }}
               />
               <EpiCaseCaseSetInfo
                 epiCase={epiCase}
-                marginBottom={2}
+                sx={{
+                  marginBottom: 2,
+                }}
               />
               <EpiCaseContent
                 epiCase={epiCase}
-                marginBottom={2}
+                sx={{
+                  marginBottom: 2,
+                }}
               />
             </>
           )}

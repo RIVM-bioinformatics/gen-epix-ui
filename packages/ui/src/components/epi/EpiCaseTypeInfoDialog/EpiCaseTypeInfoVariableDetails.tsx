@@ -34,7 +34,9 @@ export const EpiCaseTypeInfoVariableDetails = ({ dim, completeCaseType }: EpiCas
     <>
       <Typography
         component={'p'}
-        marginBottom={2}
+        sx={{
+          marginBottom: 2,
+        }}
       >
         {dim.description}
       </Typography>
@@ -121,10 +123,12 @@ export const EpiCaseTypeInfoVariableDetails = ({ dim, completeCaseType }: EpiCas
                       }}
                     >
                       <Stack
-                        columnGap={1}
-                        direction={'row'}
-                        flexWrap={'wrap'}
-                        rowGap={1}
+                        sx={{
+                          columnGap: 1,
+                          direction: 'row',
+                          flexWrap: 'wrap',
+                          rowGap: 1,
+                        }}
                       >
                         {EpiDataManager.instance.data.conceptsBySetId[refCol.concept_set_id].map(concept => (
                           <Chip

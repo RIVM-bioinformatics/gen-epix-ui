@@ -6,7 +6,9 @@ import {
 export const ConsentDialogContent = () => {
   return (
     <Box>
-      <Box marginBottom={1}>
+      <Box         sx={{
+          marginBottom: 1,
+        }}>
         <Typography component={'p'}>
           {'Pellentesque habitant morbi tristique senectus et netus et malesuada fames ac turpis egestas.'}
           <br />

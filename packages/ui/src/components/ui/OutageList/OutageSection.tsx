@@ -16,8 +16,16 @@ type OutageSectionProps = {
 };
 export const OutageSection = ({ outages, severity, title, itemTitle }: OutageSectionProps) => {
   return (
-    <Box marginBottom={2}>
-      <Box marginBottom={1}>
+    <Box
+      sx={{
+        marginBottom: 2,
+      }}
+    >
+      <Box
+        sx={{
+          marginBottom: 1,
+        }}
+      >
         <Typography component={'p'}>
           {title}
         </Typography>
@@ -25,7 +33,9 @@ export const OutageSection = ({ outages, severity, title, itemTitle }: OutageSec
       {outages.map((outage) => (
         <Box
           key={outage.id}
-          marginBottom={1}
+          sx={{
+            marginBottom: 1,
+          }}
         >
           <OutageItem
             outage={outage}

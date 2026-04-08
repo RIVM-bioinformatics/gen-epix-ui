@@ -128,8 +128,10 @@ export const UserMenu = ({ anchorElement, onClose }: UserMenuProps): ReactElemen
                   <Box
                     key={role}
                     component={'span'}
-                    mr={1}
-                    sx={{ display: 'inline-block' }}
+                    sx={{
+                      marginRight: 1,
+                      display: 'inline-block',
+                    }}
                   >
                     {role}
                   </Box>

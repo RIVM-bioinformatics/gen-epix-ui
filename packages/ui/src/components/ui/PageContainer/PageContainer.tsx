@@ -173,7 +173,11 @@ export const PageContainer = ({
               </Box>
             )}
             {singleAction && (
-              <Box marginY={1}>
+              <Box
+                sx={{
+                  marginY: 1,
+                }}
+              >
                 <Box
                   component={'a'}
                   tabIndex={-1}

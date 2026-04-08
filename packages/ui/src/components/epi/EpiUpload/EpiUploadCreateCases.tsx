@@ -138,9 +138,9 @@ export const EpiUploadCreateCases = () => {
           </Alert>
         </Box>
         <Box
-          marginTop={2}
-          marginBottom={1}
           sx={{
+            marginTop: 2,
+            marginBottom: 1,
             display: 'flex',
             gap: 2,
             justifyContent: 'flex-end',
@@ -164,7 +164,11 @@ export const EpiUploadCreateCases = () => {
   } else if (isUploadStarted) {
     content = (
       <Box>
-        <Box marginBottom={4}>
+        <Box
+          sx={{
+            marginBottom: 4,
+          }}
+        >
           <Alert severity={'info'}>
             <AlertTitle>
               {t('Uploading cases and files.')}
@@ -173,8 +177,10 @@ export const EpiUploadCreateCases = () => {
           </Alert>
         </Box>
         <Box
-          marginTop={4}
-          marginBottom={2}
+          sx={{
+            marginTop: 4,
+            marginBottom: 2,
+          }}
         >
           <LinearProgressWithLabel value={progress} />
         </Box>
@@ -191,7 +197,11 @@ export const EpiUploadCreateCases = () => {
     content = (
       <Box>
         <Box>
-          <Box marginY={2}>
+          <Box
+            sx={{
+              marginY: 2,
+            }}
+          >
             <Alert severity={'info'}>
               <AlertTitle>
                 {t('{{numCases}} cases are ready to be uploaded.', { numCases: validatedCases.length })}
@@ -199,7 +209,11 @@ export const EpiUploadCreateCases = () => {
             </Alert>
           </Box>
           {sequenceFileStats.mappedSequenceFiles.length > 0 && (
-            <Box marginY={2}>
+            <Box
+              sx={{
+                marginY: 2,
+              }}
+            >
               <Alert severity={'info'}>
                 <AlertTitle>
                   {t('{{numSequenceFiles}} genome files are ready to be uploaded.', { numSequenceFiles: sequenceFileStats.mappedSequenceFiles.length })}
@@ -208,7 +222,11 @@ export const EpiUploadCreateCases = () => {
             </Box>
           )}
           {sequenceFileStats.mappedReadsFiles.length > 0 && (
-            <Box marginY={2}>
+            <Box
+              sx={{
+                marginY: 2,
+              }}
+            >
               <Alert severity={'info'}>
                 <AlertTitle>
                   {t('{{numReadsFiles}} reads files are ready to be uploaded.', { numReadsFiles: sequenceFileStats.mappedReadsFiles.length })}
@@ -217,7 +235,11 @@ export const EpiUploadCreateCases = () => {
             </Box>
           )}
           {(rawData.length - 1) - validatedCases.length > 0 && (
-            <Box marginY={2}>
+            <Box
+              sx={{
+                marginY: 2,
+              }}
+            >
               <Alert severity={'warning'}>
                 <AlertTitle>
                   {t('{{numCases}} cases were not selected and will not be uploaded.', { numCases: (rawData.length - 1) - validatedCases.length })}
@@ -226,7 +248,11 @@ export const EpiUploadCreateCases = () => {
             </Box>
           )}
           {sequenceFileStats.unmappedSequenceFiles.length > 0 && (
-            <Box marginY={2}>
+            <Box
+              sx={{
+                marginY: 2,
+              }}
+            >
               <Alert severity={'warning'}>
                 <AlertTitle>
                   {t('{{unmappedSequenceFiles}} unmapped genome files will not be uploaded.', { unmappedSequenceFiles: sequenceFileStats.unmappedSequenceFiles.length })}
@@ -235,7 +261,11 @@ export const EpiUploadCreateCases = () => {
             </Box>
           )}
           {sequenceFileStats.unmappedReadsFiles.length > 0 && (
-            <Box marginY={2}>
+            <Box
+              sx={{
+                marginY: 2,
+              }}
+            >
               <Alert severity={'warning'}>
                 <AlertTitle>
                   {t('{{unmappedReadsFiles}} unmapped reads files will not be uploaded.', { unmappedReadsFiles: sequenceFileStats.unmappedReadsFiles.length })}

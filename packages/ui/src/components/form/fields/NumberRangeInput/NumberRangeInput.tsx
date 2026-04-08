@@ -228,8 +228,10 @@ export const NumberRangeInput = <TFieldValues extends FieldValues, TName extends
                 )}
               </FormLabel>
               <Box
-                marginTop={4}
-                marginX={3}
+                sx={{
+                  marginTop: 4,
+                  marginX: 3,
+                }}
               >
                 {shouldShowSlider && (
                   <Slider

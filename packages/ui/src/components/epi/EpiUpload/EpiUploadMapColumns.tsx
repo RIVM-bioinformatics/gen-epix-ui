@@ -129,7 +129,11 @@ export const EpiUploadMapColumns = () => {
           <Box>
             {element}
           </Box>
-          <Box marginTop={1}>
+          <Box
+            sx={{
+              marginTop: 1,
+            }}
+          >
             <Select
               label={t('{{columnLabel}}: Identifier issuer', { columnLabel: definition.label })}
               name={fieldValue}
