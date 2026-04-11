@@ -34,7 +34,7 @@ import { AuthorizationManager } from '../../classes/managers/AuthorizationManage
 import type { OmitWithMetaData } from '../../models/data';
 import { SchemaUtil } from '../../utils/SchemaUtil';
 
-type FormFields = OmitWithMetaData<CaseType, 'disease' | 'etiological_agent' | 'props'> & CaseTypeProps;
+type FormFields = CaseTypeProps & OmitWithMetaData<CaseType, 'disease' | 'etiological_agent' | 'props'>;
 
 export const CaseTypesAdminPage = () => {
   const { t } = useTranslation();
@@ -78,37 +78,33 @@ export const CaseTypesAdminPage = () => {
 
   const schema = useMemo(() => {
     return object<FormFields>().shape({
-      name: SchemaUtil.name,
-      description: SchemaUtil.description,
       create_max_n_cases: SchemaUtil.number.min(0),
       delete_max_n_cases: SchemaUtil.number.min(0),
-      read_max_n_cases: SchemaUtil.number.min(0),
-      read_max_tree_size: SchemaUtil.number.min(0),
-      update_max_n_cases: SchemaUtil.number.min(0),
-      etiological_agent_id: string().uuid4().nullable().test(function(value: string) {
-        // eslint-disable-next-line react/no-this-in-sfc
-        const { disease_id } = this.parent as FormFields;
-        if (value !== null || !!disease_id) {
-          return true;
-        }
-        // eslint-disable-next-line react/no-this-in-sfc
-        return this.createError({
-          message: t`Etiological agent is required when no disease is selected`,
-          path: 'etiological_agent_id',
-        });
-      }),
+      description: SchemaUtil.description,
       disease_id: string().uuid4().nullable().test(function(value: string) {
-        // eslint-disable-next-line react/no-this-in-sfc
         const { etiological_agent_id } = this.parent as FormFields;
         if (value !== null || !!etiological_agent_id) {
           return true;
         }
-        // eslint-disable-next-line react/no-this-in-sfc
         return this.createError({
           message: t`Disease is required when no etiological agent is selected`,
           path: 'disease_id',
         });
       }),
+      etiological_agent_id: string().uuid4().nullable().test(function(value: string) {
+        const { disease_id } = this.parent as FormFields;
+        if (value !== null || !!disease_id) {
+          return true;
+        }
+        return this.createError({
+          message: t`Etiological agent is required when no disease is selected`,
+          path: 'etiological_agent_id',
+        });
+      }),
+      name: SchemaUtil.name,
+      read_max_n_cases: SchemaUtil.number.min(0),
+      read_max_tree_size: SchemaUtil.number.min(0),
+      update_max_n_cases: SchemaUtil.number.min(0),
     });
   }, [t]);
 
@@ -116,56 +112,56 @@ export const CaseTypesAdminPage = () => {
     return [
       {
         definition: FORM_FIELD_DEFINITION_TYPE.TEXTFIELD,
-        name: 'name',
         label: t`Name`,
+        name: 'name',
       } as const satisfies FormFieldDefinition<FormFields>,
       {
         definition: FORM_FIELD_DEFINITION_TYPE.AUTOCOMPLETE,
-        name: 'disease_id',
         label: t`Disease`,
-        options: diseaseOptionsQuery.options,
         loading: diseaseOptionsQuery.isLoading,
+        name: 'disease_id',
+        options: diseaseOptionsQuery.options,
       } as const satisfies FormFieldDefinition<FormFields>,
       {
         definition: FORM_FIELD_DEFINITION_TYPE.AUTOCOMPLETE,
-        name: 'etiological_agent_id',
         label: t`Etiological agent`,
-        options: etiologicalAgentOptionsQuery.options,
         loading: etiologicalAgentOptionsQuery.isLoading,
+        name: 'etiological_agent_id',
+        options: etiologicalAgentOptionsQuery.options,
       } as const satisfies FormFieldDefinition<FormFields>,
       {
         definition: FORM_FIELD_DEFINITION_TYPE.RICH_TEXT,
-        name: 'description',
         label: t`Description`,
+        name: 'description',
       } as const satisfies FormFieldDefinition<FormFields>,
       {
         definition: FORM_FIELD_DEFINITION_TYPE.TEXTFIELD,
-        name: 'read_max_n_cases',
         label: t`Read max number of cases`,
+        name: 'read_max_n_cases',
         type: 'number',
       } as const satisfies FormFieldDefinition<FormFields>,
       {
         definition: FORM_FIELD_DEFINITION_TYPE.TEXTFIELD,
-        name: 'create_max_n_cases',
         label: t`Create max number of cases`,
+        name: 'create_max_n_cases',
         type: 'number',
       } as const satisfies FormFieldDefinition<FormFields>,
       {
         definition: FORM_FIELD_DEFINITION_TYPE.TEXTFIELD,
-        name: 'update_max_n_cases',
         label: t`Update max number of cases`,
+        name: 'update_max_n_cases',
         type: 'number',
       } as const satisfies FormFieldDefinition<FormFields>,
       {
         definition: FORM_FIELD_DEFINITION_TYPE.TEXTFIELD,
-        name: 'delete_max_n_cases',
         label: t`Delete max number of cases`,
+        name: 'delete_max_n_cases',
         type: 'number',
       } as const satisfies FormFieldDefinition<FormFields>,
       {
         definition: FORM_FIELD_DEFINITION_TYPE.TEXTFIELD,
-        name: 'read_max_tree_size',
         label: t`Read max tree size`,
+        name: 'read_max_tree_size',
         type: 'number',
       } as const satisfies FormFieldDefinition<FormFields>,
     ] as const;
@@ -177,54 +173,54 @@ export const CaseTypesAdminPage = () => {
       TableUtil.createOptionsColumn<CaseType>({ id: 'disease_id', name: t`Disease`, options: diseaseOptionsQuery.options }),
       TableUtil.createOptionsColumn<CaseType>({ id: 'etiological_agent_id', name: t`Etiological agent`, options: etiologicalAgentOptionsQuery.options }),
       {
-        id: 'read_max_n_cases',
+        comparatorFactory: TableUtil.createNumberCellRowComperator,
         headerName: t`Read max number of cases`,
-        widthFlex: 1,
-        type: 'number',
-        comparatorFactory: TableUtil.createNumberCellRowComperator,
-        textAlign: 'right',
+        id: 'read_max_n_cases',
         isInitiallyVisible: true,
+        textAlign: 'right',
+        type: 'number',
         valueGetter: (params) => params.row.props?.read_max_n_cases,
+        widthFlex: 1,
       },
       {
-        id: 'create_max_n_cases',
+        comparatorFactory: TableUtil.createNumberCellRowComperator,
         headerName: t`Create max number of cases`,
-        widthFlex: 1,
-        type: 'number',
-        comparatorFactory: TableUtil.createNumberCellRowComperator,
-        textAlign: 'right',
+        id: 'create_max_n_cases',
         isInitiallyVisible: true,
+        textAlign: 'right',
+        type: 'number',
         valueGetter: (params) => params.row.props?.create_max_n_cases,
+        widthFlex: 1,
       },
       {
-        id: 'update_max_n_cases',
+        comparatorFactory: TableUtil.createNumberCellRowComperator,
         headerName: t`Update max number of cases`,
-        widthFlex: 1,
-        type: 'number',
-        comparatorFactory: TableUtil.createNumberCellRowComperator,
-        textAlign: 'right',
+        id: 'update_max_n_cases',
         isInitiallyVisible: true,
+        textAlign: 'right',
+        type: 'number',
         valueGetter: (params) => params.row.props?.update_max_n_cases,
+        widthFlex: 1,
       },
       {
-        id: 'delete_max_n_cases',
+        comparatorFactory: TableUtil.createNumberCellRowComperator,
         headerName: t`Delete max number of cases`,
-        widthFlex: 1,
-        type: 'number',
-        comparatorFactory: TableUtil.createNumberCellRowComperator,
-        textAlign: 'right',
+        id: 'delete_max_n_cases',
         isInitiallyVisible: true,
+        textAlign: 'right',
+        type: 'number',
         valueGetter: (params) => params.row.props?.delete_max_n_cases,
+        widthFlex: 1,
       },
       {
-        id: 'read_max_tree_size',
-        headerName: t`Read max tree size`,
-        widthFlex: 1,
-        type: 'number',
         comparatorFactory: TableUtil.createNumberCellRowComperator,
-        textAlign: 'right',
+        headerName: t`Read max tree size`,
+        id: 'read_max_tree_size',
         isInitiallyVisible: true,
+        textAlign: 'right',
+        type: 'number',
         valueGetter: (params) => params.row.props?.read_max_tree_size,
+        widthFlex: 1,
       },
     ];
   }, [etiologicalAgentOptionsQuery.options, diseaseOptionsQuery.options, t]);
@@ -238,8 +234,8 @@ export const CaseTypesAdminPage = () => {
 
     return [
       {
-        label: t`Manage dimensions`,
         getPathName: (item: CaseType) => `/management/case-types/${item.id}/dimensions`,
+        label: t`Manage dimensions`,
       } satisfies CrudPageSubPage<CaseType>,
     ];
   }, [t]);
@@ -249,12 +245,12 @@ export const CaseTypesAdminPage = () => {
       return {};
     }
     return {
-      name: item.name,
+      create_max_n_cases: item.props?.create_max_n_cases,
+      delete_max_n_cases: item.props?.delete_max_n_cases,
       description: item.description,
       disease_id: item.disease_id,
       etiological_agent_id: item.etiological_agent_id,
-      create_max_n_cases: item.props?.create_max_n_cases,
-      delete_max_n_cases: item.props?.delete_max_n_cases,
+      name: item.name,
       read_max_n_cases: item.props?.read_max_n_cases,
       read_max_tree_size: item.props?.read_max_tree_size,
       update_max_n_cases: item.props?.update_max_n_cases,
@@ -264,10 +260,10 @@ export const CaseTypesAdminPage = () => {
   const getIntermediateItem = useCallback((variables: FormFields, currentItem: CaseType): CaseType => {
     return {
       ...currentItem,
-      name: variables.name,
       description: variables.description,
       disease_id: variables.disease_id,
       etiological_agent_id: variables.etiological_agent_id,
+      name: variables.name,
       props: {
         create_max_n_cases: variables.create_max_n_cases,
         delete_max_n_cases: variables.delete_max_n_cases,
@@ -280,21 +276,21 @@ export const CaseTypesAdminPage = () => {
 
   return (
     <CrudPage<FormFields, CaseType>
-      getFormValuesFromItem={getFormValuesFromItem}
-      createOne={createOne}
-      subPages={subPages}
-      getOptimisticUpdateIntermediateItem={getIntermediateItem}
-      crudCommandType={CommandName.CaseTypeCrudCommand}
       createItemDialogTitle={t`Create new case type`}
+      createOne={createOne}
+      crudCommandType={CommandName.CaseTypeCrudCommand}
       defaultSortByField={'name'}
       defaultSortDirection={'asc'}
       deleteOne={deleteOne}
       fetchAll={fetchAll}
       formFieldDefinitions={formFieldDefinitions}
+      getFormValuesFromItem={getFormValuesFromItem}
       getName={getName}
+      getOptimisticUpdateIntermediateItem={getIntermediateItem}
       loadables={loadables}
       resourceQueryKeyBase={QUERY_KEY.CASE_TYPES}
       schema={schema}
+      subPages={subPages}
       tableColumns={tableColumns}
       testIdAttributes={TestIdUtil.createAttributes('CaseTypesAdminPage')}
       title={t`Case types`}

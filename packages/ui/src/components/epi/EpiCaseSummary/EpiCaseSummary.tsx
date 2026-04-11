@@ -1,7 +1,7 @@
 import {
   Fragment,
+  use,
   useCallback,
-  useContext,
   useMemo,
 } from 'react';
 import { useStore } from 'zustand';
@@ -27,7 +27,7 @@ export type EpiCaseSummaryProps = {
 
 export const EpiCaseSummary = ({ epiCase }: EpiCaseSummaryProps) => {
   const { t } = useTranslation();
-  const epiDashboardStore = useContext(EpiDashboardStoreContext);
+  const epiDashboardStore = use(EpiDashboardStoreContext);
   const tableStore = useTableStoreContext<Case>();
   const completeCaseType = useStore(epiDashboardStore, (state) => state.completeCaseType);
   const numVisibleAttributesInSummary = useStore(epiDashboardStore, (state) => state.numVisibleAttributesInSummary);
@@ -63,24 +63,24 @@ export const EpiCaseSummary = ({ epiCase }: EpiCaseSummaryProps) => {
       <Box
         component={'dl'}
         sx={{
-          clear: 'both',
-          margin: 0,
-          '& dt': {
-            fontWeight: 'bold',
-            display: 'inline-block',
-            float: 'left',
-            clear: 'left',
-            margin: 0,
-            '&:after': {
-              content: '":"',
-            },
-          },
           '& dd': {
             display: 'inline-block',
             float: 'left',
             margin: 0,
             marginLeft: 0.5,
           },
+          '& dt': {
+            '&:after': {
+              content: '":"',
+            },
+            clear: 'left',
+            display: 'inline-block',
+            float: 'left',
+            fontWeight: 'bold',
+            margin: 0,
+          },
+          clear: 'both',
+          margin: 0,
         }}
       >
         {visibleAttributes.map(tableColumn => {
@@ -115,8 +115,8 @@ export const EpiCaseSummary = ({ epiCase }: EpiCaseSummaryProps) => {
             aria-label={t`Show one less attribute`}
             color={'primary'}
             disabled={numVisibleAttributesInSummary <= 1}
-            size={'small'}
             onClick={onRemoveAttributeClick}
+            size={'small'}
           >
             <RemoveIcon fontSize={'inherit'} />
           </IconButton>
@@ -129,8 +129,8 @@ export const EpiCaseSummary = ({ epiCase }: EpiCaseSummaryProps) => {
             aria-label={t`Show one more attribute`}
             color={'primary'}
             disabled={numVisibleAttributesInSummary >= visibleCaseTypeTableColumns.length - 1}
-            size={'small'}
             onClick={onAddAttributeClick}
+            size={'small'}
           >
             <AddIcon fontSize={'inherit'} />
           </IconButton>

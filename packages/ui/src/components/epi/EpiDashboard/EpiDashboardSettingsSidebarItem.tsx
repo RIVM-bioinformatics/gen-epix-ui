@@ -15,9 +15,9 @@ import { EpiDashboardGeneralSettingsForm } from './EpiDashboardGeneralSettingsFo
 import { EpiDashboardLayoutSettingsForm } from './EpiDashboardLayoutSettingsForm';
 import { EpiDashboardTreeSettingsForm } from './EpiDashboardTreeSettingsForm';
 
-export type EpiDashboardSettingsSidebarItemProps = SidebarItemSharedProps & {
+export type EpiDashboardSettingsSidebarItemProps = {
   readonly onReset: () => void;
-};
+} & SidebarItemSharedProps;
 type EpiDashboardSettingsSidebarItemContentProps = Pick<EpiDashboardSettingsSidebarItemProps, 'onReset'>;
 
 export const EpiDashboardSettingsSidebarItemIcon = SettingsIcon;
@@ -28,16 +28,16 @@ const EpiDashboardSettingsSidebarItemContent = ({ onReset }: EpiDashboardSetting
 
   const items = useMemo(() => [
     {
-      label: t`General`,
       component: <EpiDashboardGeneralSettingsForm onReset={onReset} />,
+      label: t`General`,
     },
     {
-      label: t`Phylogenetic tree`,
       component: <EpiDashboardTreeSettingsForm onReset={onReset} />,
+      label: t`Phylogenetic tree`,
     },
     {
-      label: t`Dashboard layout`,
       component: <EpiDashboardLayoutSettingsForm onReset={onReset} />,
+      label: t`Dashboard layout`,
     },
   ], [onReset, t]);
 
@@ -47,12 +47,12 @@ const EpiDashboardSettingsSidebarItemContent = ({ onReset }: EpiDashboardSetting
         width: theme.spacing(59),
       }}
     >
-      {items.map(({ label, component }, index) => (
+      {items.map(({ component, label }, index) => (
         <Box
           key={label}
           sx={{
-            paddingTop: index !== items.length - 1 ? 1 : 0,
             marginTop: index !== 0 ? 2 : 0,
+            paddingTop: index !== items.length - 1 ? 1 : 0,
           }}
         >
           <Typography variant={'h5'}>
@@ -80,18 +80,19 @@ const EpiDashboardSettingsSidebarItemContent = ({ onReset }: EpiDashboardSetting
   );
 };
 
-export const EpiDashboardSettingsSidebarItem = ({ open, onClose, onReset }: EpiDashboardSettingsSidebarItemProps) => {
+// eslint-disable-next-line @eslint-react/kit/no-multi-comp
+export const EpiDashboardSettingsSidebarItem = ({ onClose, onReset, open }: EpiDashboardSettingsSidebarItemProps) => {
   const { t } = useTranslation();
 
   return (
     <SidebarItem
       closeIcon={<EpiDashboardSettingsSidebarItemIcon />}
       closeIconTooltipText={t`Close settings`}
+      onClose={onClose}
       open={open}
+      testIdAttributes={{ name: 'EpiDashboardSettingsSidebarItem' }}
       title={t`Settings`}
       width={60}
-      testIdAttributes={{ name: 'EpiDashboardSettingsSidebarItem' }}
-      onClose={onClose}
     >
       {open && <EpiDashboardSettingsSidebarItemContent onReset={onReset} />}
     </SidebarItem>

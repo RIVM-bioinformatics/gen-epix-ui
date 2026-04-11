@@ -34,7 +34,7 @@ const EpiDashboardDownloadSidebarItemContent = () => {
   const [downloadConfigs, setDownloadConfigs] = useState<DownloadConfig[]>([]);
 
   useEffect(() => {
-    EpiEventBusManager.instance.addEventListener('onDownloadOptionsChanged', (payload) => {
+    const onDownloadOptionsChanged = (payload: DownloadConfig) => {
       if (!payload?.zone) {
         return;
       }
@@ -49,8 +49,13 @@ const EpiDashboardDownloadSidebarItemContent = () => {
           return ConfigManager.instance.config.epi.DOWNLOAD_SECTION_ORDER.indexOf(a.zone) - ConfigManager.instance.config.epi.DOWNLOAD_SECTION_ORDER.indexOf(b.zone);
         });
       });
-    });
+    };
+    EpiEventBusManager.instance.addEventListener('onDownloadOptionsChanged', onDownloadOptionsChanged);
     EpiEventBusManager.instance.emit('onDownloadOptionsRequested');
+
+    return () => {
+      EpiEventBusManager.instance.removeEventListener('onDownloadOptionsChanged', onDownloadOptionsChanged);
+    };
   }, []);
 
   const renderDownloadItem = useCallback((item: DownloadConfigItem, forceDisabled?: boolean) => {
@@ -65,10 +70,10 @@ const EpiDashboardDownloadSidebarItemContent = () => {
           </Typography>
         ) : (
           <Link
-            tabIndex={0}
             component={'button'}
-            // eslint-disable-next-line react/jsx-no-bind
+            // eslint-disable-next-line @eslint-react/kit/jsx-no-bind
             onClick={() => item.callback()}
+            tabIndex={0}
           >
             {item.label}
           </Link>
@@ -98,8 +103,8 @@ const EpiDashboardDownloadSidebarItemContent = () => {
         <Box
           key={config.zone}
           sx={{
-            padding: theme.spacing(1),
             borderBottom: `1px solid ${theme.palette.divider}`,
+            padding: theme.spacing(1),
           }}
         >
           <Box>
@@ -135,18 +140,19 @@ const EpiDashboardDownloadSidebarItemContent = () => {
   );
 };
 
-export const EpiDashboardDownloadSidebarItem = ({ open, onClose }: EpiDashboardDownloadSidebarItemProps) => {
+// eslint-disable-next-line @eslint-react/kit/no-multi-comp
+export const EpiDashboardDownloadSidebarItem = ({ onClose, open }: EpiDashboardDownloadSidebarItemProps) => {
   const { t } = useTranslation();
 
   return (
     <SidebarItem
       closeIcon={<EpiDashboardDownloadSidebarItemIcon />}
       closeIconTooltipText={t`Close download`}
+      onClose={onClose}
       open={open}
+      testIdAttributes={{ name: 'EpiDashboardDownloadSidebarItem' }}
       title={t`Download`}
       width={60}
-      testIdAttributes={{ name: 'EpiDashboardDownloadSidebarItem' }}
-      onClose={onClose}
     >
       {open && <EpiDashboardDownloadSidebarItemContent />}
     </SidebarItem>

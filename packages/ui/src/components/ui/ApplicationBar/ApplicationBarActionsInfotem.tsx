@@ -3,7 +3,6 @@ import {
   IconButton,
   useTheme,
 } from '@mui/material';
-import { Fragment } from 'react/jsx-runtime';
 import CodeIcon from '@mui/icons-material/Code';
 import {
   useCallback,
@@ -15,7 +14,7 @@ import { useTranslation } from 'react-i18next';
 import { InfoMenu } from './InfoMenu';
 
 export const ApplicationBarActionsInfoItem = () => {
-  const [infoMenuAnchorElement, setInfoMenuAnchorElement] = useState<null | HTMLElement>(null);
+  const [infoMenuAnchorElement, setInfoMenuAnchorElement] = useState<HTMLElement | null>(null);
   const { t } = useTranslation();
   const theme = useTheme();
 
@@ -28,11 +27,11 @@ export const ApplicationBarActionsInfoItem = () => {
   }, []);
 
   return (
-    <Fragment>
+    <>
       <IconButton
         color={'inherit'}
-        title={'Code information'}
         onClick={onInfoMenuIconClick}
+        title={'Code information'}
       >
         <CodeIcon color={'inherit'} />
         <Box
@@ -40,8 +39,8 @@ export const ApplicationBarActionsInfoItem = () => {
             fontSize: '1.3rem',
             marginLeft: theme.spacing(1),
             [theme.breakpoints.up('md')]: {
-              visibility: 'hidden',
               position: 'absolute',
+              visibility: 'hidden',
             },
           }}
         >
@@ -55,6 +54,6 @@ export const ApplicationBarActionsInfoItem = () => {
         />
       )}
 
-    </Fragment>
+    </>
   );
 };

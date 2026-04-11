@@ -8,19 +8,19 @@ import {
 } from 'react';
 import {
   FormControl,
+  FormHelperText,
   ToggleButtonGroup as MuiToggleButtonGroup,
   ToggleButton,
-  FormHelperText,
 } from '@mui/material';
 import {
   Controller,
   useFormContext,
 } from 'react-hook-form';
 import type {
-  UseControllerReturn,
+  ControllerRenderProps,
   FieldValues,
   Path,
-  ControllerRenderProps,
+  UseControllerReturn,
 } from 'react-hook-form';
 
 import type { ToggleButtonOption } from '../../../../models/form';
@@ -32,19 +32,19 @@ export type ToggleButtonProps<TFieldValues extends FieldValues, TName extends Pa
   readonly disabled?: boolean;
   readonly name: TName;
   readonly onChange?: (value: string) => void;
-  readonly required?: boolean;
-  readonly warningMessage?: string | boolean;
-  readonly row?: boolean;
   readonly options: ToggleButtonOption[];
+  readonly required?: boolean;
+  readonly row?: boolean;
+  readonly warningMessage?: boolean | string;
 };
 
 export const ToggleButtonGroup = <TFieldValues extends FieldValues, TName extends Path<TFieldValues> = Path<TFieldValues>>({
   disabled,
   name,
-  options,
-  warningMessage,
-  required,
   onChange: onChangeProp,
+  options,
+  required,
+  warningMessage,
 }: ToggleButtonProps<TFieldValues, TName>): ReactElement => {
   const { control, formState: { errors } } = useFormContext<TFieldValues>();
   const errorMessage = FormUtil.getFieldErrorMessage(errors, name);
@@ -64,7 +64,7 @@ export const ToggleButtonGroup = <TFieldValues extends FieldValues, TName extend
     }
   , [onChangeProp, required]);
 
-  const renderController = useCallback(({ field: { onChange, onBlur, value, ref } }: UseControllerReturn<TFieldValues, TName>) => {
+  const renderController = useCallback(({ field: { onBlur, onChange, ref, value } }: UseControllerReturn<TFieldValues, TName>) => {
     ref({
       focus: () => {
         inputRef?.current?.focus();
@@ -72,17 +72,17 @@ export const ToggleButtonGroup = <TFieldValues extends FieldValues, TName extend
     });
     return (
       <MuiToggleButtonGroup
-        exclusive
         color={'primary'}
-        value={value as string}
+        exclusive
         onBlur={onBlur}
         onChange={onMuiToggleButtonChange(onChange)}
+        value={value as string}
       >
         { options.map((option) => {
           return (
             <ToggleButton
-              {...TestIdUtil.createAttributes('ToggleButton-option', { code: option.value.toString(), description: option.label })}
               key={option.value.toString()}
+              {...TestIdUtil.createAttributes('ToggleButton-option', { code: option.value.toString(), description: option.label })}
               disabled={disabled}
               value={option.value}
             >
@@ -108,8 +108,8 @@ export const ToggleButtonGroup = <TFieldValues extends FieldValues, TName extend
       />
       <FormHelperText sx={{ ml: 0 }}>
         <FormFieldHelperText
-          noIndent
           errorMessage={errorMessage}
+          noIndent
           warningMessage={warningMessage}
         />
       </FormHelperText>

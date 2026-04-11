@@ -19,11 +19,11 @@ export const EpiTreeDescription = ({
   return (
     <Box
       sx={{
-        '& dl': {
-          margin: 0,
-        },
         '& dd': {
           marginLeft: theme.spacing(2),
+        },
+        '& dl': {
+          margin: 0,
         },
       }}
     >

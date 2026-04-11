@@ -6,8 +6,8 @@ import {
   useTheme,
 } from '@mui/material';
 import {
-  type ReactNode,
   type ReactElement,
+  type ReactNode,
   useEffect,
 } from 'react';
 import { useTranslation } from 'react-i18next';
@@ -22,27 +22,27 @@ import { ApplicationFooter } from '../ApplicationFooter/ApplicationFooter';
 
 export type PageContainerProps = PropsWithTestIdAttributes<{
   readonly children: ReactNode;
-  readonly title: string;
-  readonly showBreadcrumbs?: boolean;
-  readonly fullWidth?: boolean;
-  readonly fullHeight?: boolean;
-  readonly singleAction?: boolean;
-  readonly contentHeader?: string | ReactElement;
   readonly contentActions?: ReactElement;
+  readonly contentHeader?: ReactElement | string;
+  readonly fullHeight?: boolean;
+  readonly fullWidth?: boolean;
   readonly ignorePageEvent?: boolean;
+  readonly showBreadcrumbs?: boolean;
+  readonly singleAction?: boolean;
+  readonly title: string;
 }>;
 
 export const PageContainer = ({
   children,
-  title,
-  testIdAttributes,
-  showBreadcrumbs,
-  fullWidth,
-  fullHeight,
-  singleAction,
-  contentHeader,
   contentActions,
+  contentHeader,
+  fullHeight,
+  fullWidth,
   ignorePageEvent,
+  showBreadcrumbs,
+  singleAction,
+  testIdAttributes,
+  title,
 }: PageContainerProps): ReactElement => {
   useUpdateDocumentTitle(title);
   const theme = useTheme();
@@ -60,8 +60,8 @@ export const PageContainer = ({
 
     if (ConfigManager.instance.config.enablePageEvents) {
       PageEventBusManager.instance.emit('changePage', {
-        pageName: testIdAttributes['data-testid'],
         location: WindowManager.instance.window.location,
+        pageName: testIdAttributes['data-testid'],
       });
     }
   }, [ignorePageEvent, testIdAttributes]);
@@ -71,35 +71,35 @@ export const PageContainer = ({
       <Box
         component={'nav'}
         sx={{
+          background: theme.palette.background.default,
           marginTop: '-1px',
           position: 'absolute',
-          background: theme.palette.background.default,
           top: 0,
           zIndex: theme.zIndex.appBar + 10,
         }}
       >
         <Link
           component={'a'}
+          href={'#main-content'}
           sx={{
-            position: 'absolute',
-            top: 0,
-            left: 0,
-            width: '1px',
-            height: '1px',
-            overflow: 'hidden',
-            whiteSpace: 'nowrap',
-            border: 0,
-
             '&:focus, &:active': {
-              position: 'static',
-              width: 'auto',
+              clip: 'auto',
               height: 'auto',
               overflow: 'visible',
-              clip: 'auto',
+              position: 'static',
               whiteSpace: 'normal',
+              width: 'auto',
             },
+            border: 0,
+            height: '1px',
+            left: 0,
+            overflow: 'hidden',
+            position: 'absolute',
+            top: 0,
+            whiteSpace: 'nowrap',
+
+            width: '1px',
           }}
-          href={'#main-content'}
         >
           {t`Skip to main content`}
         </Link>
@@ -108,9 +108,9 @@ export const PageContainer = ({
         data-page-container
         {...testIdAttributes}
         sx={{
-          height: '100%',
           display: 'grid',
           gridTemplateRows: `max-content auto ${hasFooterArea ? 'max-content' : ''}`,
+          height: '100%',
         }}
       >
         <ApplicationHeader
@@ -121,9 +121,9 @@ export const PageContainer = ({
         <Box
           id={ConfigManager.instance.config.layout.MAIN_CONTENT_ID}
           sx={{
-            height: '100%',
             display: 'grid',
             gridTemplateRows: `${showBreadcrumbs ? 'max-content' : ''} auto`,
+            height: '100%',
           }}
         >
           {showBreadcrumbs && (
@@ -140,20 +140,20 @@ export const PageContainer = ({
           <Container
             maxWidth={fullWidth ? false : 'xl'}
             sx={{
-              position: 'relative',
-              paddingLeft: `${theme.spacing(fullWidth ? 1 : 2)} !important`,
-              paddingRight: `${theme.spacing(fullWidth ? 1 : 2)} !important`,
-              height: '100%',
               display: 'grid',
               gridTemplateRows: `${hasContentHeaderArea ? 'max-content' : ''} auto`,
+              height: '100%',
+              paddingLeft: `${theme.spacing(fullWidth ? 1 : 2)} !important`,
+              paddingRight: `${theme.spacing(fullWidth ? 1 : 2)} !important`,
+              position: 'relative',
             }}
           >
             {hasContentHeaderArea && (
               <Box
                 sx={{
                   display: 'flex',
-                  justifyContent: 'space-between',
                   flexDirection: 'row',
+                  justifyContent: 'space-between',
                   marginBottom: theme.spacing(1),
                 }}
               >
@@ -180,10 +180,10 @@ export const PageContainer = ({
               >
                 <Box
                   component={'a'}
-                  tabIndex={-1}
-                  id={'main-content'}
                   href={'#main-content'}
+                  id={'main-content'}
                   style={{ display: 'none' }}
+                  tabIndex={-1}
                 />
                 {children}
               </Box>
@@ -192,10 +192,10 @@ export const PageContainer = ({
               <>
                 <Box
                   component={'a'}
-                  tabIndex={-1}
-                  id={'main-content'}
                   href={'#main-content'}
+                  id={'main-content'}
                   style={{ display: 'none' }}
+                  tabIndex={-1}
                 />
                 {children}
               </>

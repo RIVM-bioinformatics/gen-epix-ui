@@ -30,10 +30,10 @@ import { EpiCreateEventDialog } from '../../components/epi/EpiCreateEventDialog'
 import { PageContainer } from '../../components/ui/PageContainer';
 import { ResponseHandler } from '../../components/ui/ResponseHandler';
 import {
-  TableMenu,
-  TableCaption,
-  TableSidebarMenu,
   Table,
+  TableCaption,
+  TableMenu,
+  TableSidebarMenu,
 } from '../../components/ui/Table';
 import { useCaseSetCategoryOptionsQuery } from '../../dataHooks/useCaseSetCategoriesQuery';
 import { useCaseSetStatsMapQuery } from '../../dataHooks/useCaseSetStatsQuery';
@@ -43,8 +43,8 @@ import { useInitializeTableStore } from '../../hooks/useInitializeTableStore';
 import { useArray } from '../../hooks/useArray';
 import { QUERY_KEY } from '../../models/query';
 import type {
-  TableRowParams,
   TableColumn,
+  TableRowParams,
 } from '../../models/table';
 import {
   createTableStore,
@@ -69,12 +69,12 @@ export const EventsPage = () => {
   const epiCaseSetInfoDialogRef = useRef<EpiCaseSetInfoDialogRefMethods>(null);
   const epiCreateEventDialogRef = useRef<EpiCreateEventDialogRefMethods>(null);
 
-  const { isLoading: isCaseSetsLoading, error: caseSetsError, data: caseSets } = useQueryMemo({
-    queryKey: QueryUtil.getGenericKey(QUERY_KEY.CASE_SETS),
+  const { data: caseSets, error: caseSetsError, isLoading: isCaseSetsLoading } = useQueryMemo({
     queryFn: async ({ signal }) => {
       const response = await CaseApi.instance.caseSetsGetAll({ signal });
       return response.data;
     },
+    queryKey: QueryUtil.getGenericKey(QUERY_KEY.CASE_SETS),
   });
   const caseSetStatsMapQuery = useCaseSetStatsMapQuery(caseSets ? caseSets.map(cs => cs.id) : null);
   const loadables = useArray([caseTypeOptionsQuery, caseSetCategoryOptionsQuery, caseSetStatusOptionsQuery, caseSetStatsMapQuery]);
@@ -119,23 +119,22 @@ export const EventsPage = () => {
       TableUtil.createReadableIndexColumn({
         getAriaLabel: (params: TableRowParams<Row>) => t('Open event information for {{name}}', { name: params.row.name }),
       }),
-      TableUtil.createOptionsColumn({ id: 'case_type_id', name: t`Case type`, options: caseTypeOptionsQuery.options, flex: 1.5, shouldFilterOptions: true }),
-      TableUtil.createTextColumn({ id: 'name', name: t`Name`, flex: 1.5 }),
-      TableUtil.createOptionsColumn({ id: 'case_set_category_id', name: t`Category`, options: caseSetCategoryOptionsQuery.options, flex: 0.4 }),
-      TableUtil.createOptionsColumn({ id: 'case_set_status_id', name: t`Status`, options: caseSetStatusOptionsQuery.options, flex: 0.4 }),
-      TableUtil.createDateColumn({ id: 'first_case_date', name: t`First case date`, dateFormat: DATE_FORMAT.DATE }),
-      TableUtil.createDateColumn({ id: 'last_case_date', name: t`Last case date`, dateFormat: DATE_FORMAT.DATE }),
-      TableUtil.createDateColumn({ id: 'case_set_date', name: t`Created on`, dateFormat: DATE_FORMAT.DATE }),
-      TableUtil.createNumberColumn({ id: 'n_cases', name: t`Cases`, flex: 0.35 }),
-      TableUtil.createNumberColumn({ id: 'n_own_cases', name: t`Own cases`, flex: 0.35 }),
+      TableUtil.createOptionsColumn({ flex: 1.5, id: 'case_type_id', name: t`Case type`, options: caseTypeOptionsQuery.options, shouldFilterOptions: true }),
+      TableUtil.createTextColumn({ flex: 1.5, id: 'name', name: t`Name` }),
+      TableUtil.createOptionsColumn({ flex: 0.4, id: 'case_set_category_id', name: t`Category`, options: caseSetCategoryOptionsQuery.options }),
+      TableUtil.createOptionsColumn({ flex: 0.4, id: 'case_set_status_id', name: t`Status`, options: caseSetStatusOptionsQuery.options }),
+      TableUtil.createDateColumn({ dateFormat: DATE_FORMAT.DATE, id: 'first_case_date', name: t`First case date` }),
+      TableUtil.createDateColumn({ dateFormat: DATE_FORMAT.DATE, id: 'last_case_date', name: t`Last case date` }),
+      TableUtil.createDateColumn({ dateFormat: DATE_FORMAT.DATE, id: 'case_set_date', name: t`Created on` }),
+      TableUtil.createNumberColumn({ flex: 0.35, id: 'n_cases', name: t`Cases` }),
+      TableUtil.createNumberColumn({ flex: 0.35, id: 'n_own_cases', name: t`Own cases` }),
       TableUtil.createActionsColumn({
-        t,
         getActions: (params) => {
           return [
             (
               <MenuItem
                 key={'actions1'}
-                // eslint-disable-next-line react/jsx-no-bind
+                // eslint-disable-next-line @eslint-react/kit/jsx-no-bind
                 onClick={async () => onRowClick(params)}
               >
                 <ListItemIcon>
@@ -149,7 +148,7 @@ export const EventsPage = () => {
             (
               <MenuItem
                 key={'actions2'}
-                // eslint-disable-next-line react/jsx-no-bind
+                // eslint-disable-next-line @eslint-react/kit/jsx-no-bind
                 onClick={() => showEventInformation(params.row)}
               >
                 <ListItemIcon>
@@ -162,28 +161,29 @@ export const EventsPage = () => {
             ),
           ];
         },
+        t,
       }),
     ];
   }, [caseSetCategoryOptionsQuery.options, caseSetStatusOptionsQuery.options, caseTypeOptionsQuery.options, onRowClick, showEventInformation, t]);
 
   const tableStore = useMemo(() => createTableStore<Row>({
-    navigatorFunction: RouterManager.instance.router.navigate,
     defaultSortByField: 'case_set_date',
     defaultSortDirection: 'desc',
     idSelectorCallback: (row) => row.id,
+    navigatorFunction: RouterManager.instance.router.navigate,
     storageNamePostFix: 'caseSets',
     storageVersion: 3,
   }), []);
 
-  useInitializeTableStore({ store: tableStore, columns, rows: data, createFiltersFromColumns: true });
+  useInitializeTableStore({ columns, createFiltersFromColumns: true, rows: data, store: tableStore });
 
   const contentActions = useMemo(() => {
     const isLoading = LoadableUtil.isSomeLoading(loadables);
     return (
       <Box
         sx={{
-          display: 'flex',
           alignItems: 'center',
+          display: 'flex',
           gap: theme.spacing(1),
         }}
       >
@@ -192,9 +192,9 @@ export const EventsPage = () => {
           color={'secondary'}
           disabled={isLoading}
           loading={isLoading}
+          onClick={onCreateItemButtonClick}
           size={'small'}
           variant={'contained'}
-          onClick={onCreateItemButtonClick}
         >
           {t`Create event`}
         </Button>
@@ -209,8 +209,6 @@ export const EventsPage = () => {
   return (
     <TableStoreContextProvider store={tableStore}>
       <PageContainer
-        fullWidth
-        showBreadcrumbs
         contentActions={contentActions}
         contentHeader={(
           <TableCaption
@@ -219,13 +217,15 @@ export const EventsPage = () => {
             variant={'h2'}
           />
         )}
+        fullWidth
+        showBreadcrumbs
         testIdAttributes={TestIdUtil.createAttributes('EventsPage')}
         title={t`Events`}
       >
         <Box
           sx={{
-            position: 'relative',
             height: '100%',
+            position: 'relative',
           }}
         >
           <ResponseHandler
@@ -236,9 +236,9 @@ export const EventsPage = () => {
             {caseSets?.length === 0 && (
               <Box
                 sx={{
+                  alignItems: 'center',
                   display: 'flex',
                   flexDirection: 'column',
-                  alignItems: 'center',
                 }}
               >
                 <Typography variant={'h6'}>
@@ -250,9 +250,9 @@ export const EventsPage = () => {
               <>
                 <Box
                   sx={{
-                    width: '100%',
                     height: '100%',
                     paddingLeft: theme.spacing(ConfigManager.instance.config.layout.SIDEBAR_MENU_WIDTH + 1),
+                    width: '100%',
                   }}
                 >
                   <Table

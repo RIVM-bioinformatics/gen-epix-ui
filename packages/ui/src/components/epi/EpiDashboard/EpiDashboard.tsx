@@ -1,16 +1,16 @@
 import {
-  useTheme,
-  Box,
   Alert,
   AlertTitle,
+  Box,
+  useTheme,
 } from '@mui/material';
 import {
-  useRef,
-  useState,
-  useMemo,
+  use,
   useCallback,
   useEffect,
-  useContext,
+  useMemo,
+  useRef,
+  useState,
 } from 'react';
 import { ErrorBoundary } from 'react-error-boundary';
 import { useTranslation } from 'react-i18next';
@@ -71,8 +71,8 @@ import {
   SidebarMenuItem,
 } from '../../ui/Sidebar';
 import {
-  TableFiltersSidebarItemIcon,
   TableFiltersSidebarItem,
+  TableFiltersSidebarItemIcon,
 } from '../../ui/Table';
 import { EpiCurveWidget } from '../EpiCurveWidget';
 import { EpiLineListWidget } from '../EpiLineListWidget';
@@ -91,8 +91,8 @@ import {
 } from '../EpiRemoveFindSimilarCasesResultDialog/EpiRemoveFindSimilarCasesResultDialog';
 
 import {
-  EpiDashboardSettingsSidebarItemIcon,
   EpiDashboardSettingsSidebarItem,
+  EpiDashboardSettingsSidebarItemIcon,
 } from './EpiDashboardSettingsSidebarItem';
 import { EpiDashboardLayoutRenderer } from './EpiDashboardLayoutRenderer';
 import type { ForwardRefEpiDashboardLayoutRendererRefMethods } from './EpiDashboardLayoutRenderer';
@@ -132,7 +132,7 @@ export const EpiDashboard = withEpiDashboardStore(({ caseSet }: EpiDashboardProp
   const lineListRangeSubject = useMemo(() => {
     return new Subject<EpiLineListRangeSubjectValue>();
   }, []);
-  const epiDashboardStore = useContext(EpiDashboardStoreContext);
+  const epiDashboardStore = use(EpiDashboardStoreContext);
   const fetchData = useStore(epiDashboardStore, useShallow((state) => state.fetchData));
   const dataError = useStore(epiDashboardStore, (state) => state.dataError);
   const completeCaseType = useStore(epiDashboardStore, (state) => state.completeCaseType);
@@ -150,19 +150,30 @@ export const EpiDashboard = withEpiDashboardStore(({ caseSet }: EpiDashboardProp
   useEffect(() => {
     const eventBus = EpiEventBusManager.instance;
     const removers = [
+      // eslint-disable-next-line @eslint-react/web-api-no-leaked-event-listener
       eventBus.addEventListener('onEventCreated', () => {
         // eslint-disable-next-line @typescript-eslint/no-floating-promises
         fetchData();
       }),
+      // eslint-disable-next-line @eslint-react/web-api-no-leaked-event-listener
       eventBus.addEventListener('openAddCasesToEventDialog', (...args) => epiAddCasesToEventDialogRef.current?.open(...args)),
+      // eslint-disable-next-line @eslint-react/web-api-no-leaked-event-listener
       eventBus.addEventListener('openCaseInfoDialog', (...args) => epiCaseInfoDialogRef.current?.open(...args)),
+      // eslint-disable-next-line @eslint-react/web-api-no-leaked-event-listener
       eventBus.addEventListener('openContactDetailsDialog', (...args) => epiContactDetailsDialogRef.current?.open(...args)),
+      // eslint-disable-next-line @eslint-react/web-api-no-leaked-event-listener
       eventBus.addEventListener('openCreateEventDialog', (...args) => epiCreateEventDialogRef.current?.open(...args)),
+      // eslint-disable-next-line @eslint-react/web-api-no-leaked-event-listener
       eventBus.addEventListener('openFindSimilarCasesDialog', (...args) => epiFindSimilarCasesDialogRef.current?.open(...args)),
+      // eslint-disable-next-line @eslint-react/web-api-no-leaked-event-listener
       eventBus.addEventListener('openRemoveFindSimilarCasesResultDialog', (...args) => epiRemoveFindSimilarCasesResultDialogRef.current?.open(...args)),
+      // eslint-disable-next-line @eslint-react/web-api-no-leaked-event-listener
       eventBus.addEventListener('openRemoveCasesFromEventDialog', (...args) => epiRemoveCasesFromEventDialogRef.current?.open(...args)),
+      // eslint-disable-next-line @eslint-react/web-api-no-leaked-event-listener
       eventBus.addEventListener('openSequenceDownloadDialog', (...args) => epiSequenceDownloadDialogRef.current?.open(...args)),
+      // eslint-disable-next-line @eslint-react/web-api-no-leaked-event-listener
       eventBus.addEventListener('openBulkEditCaseDialog', (...args) => epiBulkEditCaseDialogRef.current?.open(...args)),
+      // eslint-disable-next-line @eslint-react/web-api-no-leaked-event-listener
       eventBus.addEventListener('openFiltersMenu', () => setIsFilterSidebarOpen(true)),
     ];
     return () => {
@@ -172,15 +183,15 @@ export const EpiDashboard = withEpiDashboardStore(({ caseSet }: EpiDashboardProp
 
   useEffect(() => {
     const removers = [
-      KeyboardShortcutManager.instance.registerShortcut({ key: 'f', modifier: null, callback: () => {
+      KeyboardShortcutManager.instance.registerShortcut({ callback: () => {
         setIsFilterSidebarOpen(x => !x);
-      } }),
-      KeyboardShortcutManager.instance.registerShortcut({ key: 's', modifier: null, callback: () => {
+      }, key: 'f', modifier: null }),
+      KeyboardShortcutManager.instance.registerShortcut({ callback: () => {
         setIsSettingsSidebarOpen(x => !x);
-      } }),
-      KeyboardShortcutManager.instance.registerShortcut({ key: 'i', modifier: null, callback: () => {
+      }, key: 's', modifier: null }),
+      KeyboardShortcutManager.instance.registerShortcut({ callback: () => {
         epiCaseTypeInfoDialogRef.current.open();
-      } }),
+      }, key: 'i', modifier: null }),
     ];
     return () => {
       removers.forEach(callbackfn => callbackfn());
@@ -239,8 +250,8 @@ export const EpiDashboard = withEpiDashboardStore(({ caseSet }: EpiDashboardProp
       ref={containerRef}
       sx={{
         height: '100%',
-        width: '100%',
         position: 'relative',
+        width: '100%',
       }}
     >
       <ResponseHandler
@@ -251,50 +262,50 @@ export const EpiDashboard = withEpiDashboardStore(({ caseSet }: EpiDashboardProp
         {/* Sidebar */}
         <SidebarMenu>
           <SidebarMenuItem
-            first
             badgeColor={'secondary'}
             badgeContent={activeFiltersCount}
+            first
             icon={<TableFiltersSidebarItemIcon />}
+            onClick={onEpiDashboardOpenFilterSidebarButtonClick}
             testIdAttributes={{ name: 'filters' }}
             title={t`Open filters`}
-            onClick={onEpiDashboardOpenFilterSidebarButtonClick}
           />
           <SidebarMenuItem
             badgeColor={numHiddenLayoutZones === numLayoutZones ? 'error' : 'secondary'}
             badgeContent={numHiddenLayoutZones === numLayoutZones ? '!' : numHiddenLayoutZones}
             icon={<EpiDashboardSettingsSidebarItemIcon />}
+            onClick={onEpiDashboardLayoutSelectorSidebarButtonClick}
             testIdAttributes={{ name: 'dashboard' }}
             title={t('Change dashboard layout (hidden zones: {{numHiddenLayoutZones}})', { numHiddenLayoutZones })}
-            onClick={onEpiDashboardLayoutSelectorSidebarButtonClick}
           />
           <SidebarMenuItem
             icon={<InfoIcon />}
+            onClick={onEpiDashboardOpenInfoSidebarButtonClick}
             testIdAttributes={{ name: 'case' }}
             title={t`Show case type information`}
-            onClick={onEpiDashboardOpenInfoSidebarButtonClick}
           />
           {caseSet && (
             <SidebarMenuItem
               icon={<CollectionIcon />}
+              onClick={onEpiDashboardOpenCaseSetDescriptionButtonClick}
               testIdAttributes={{ name: 'event' }}
               title={t`Show event information`}
-              onClick={onEpiDashboardOpenCaseSetDescriptionButtonClick}
             />
           )}
           <SidebarMenuItem
             icon={<EpiDashboardDownloadSidebarItemIcon />}
+            onClick={onEpiDashboardOpenDownloadButtonClick}
             testIdAttributes={{ name: 'download' }}
             title={t`Download`}
-            onClick={onEpiDashboardOpenDownloadButtonClick}
           />
           <TableFiltersSidebarItem
-            open={isFilterSidebarOpen}
             onClose={onEpiDashboardFilterSidebarClose}
+            open={isFilterSidebarOpen}
           />
           <EpiDashboardSettingsSidebarItem
-            open={isSettingsSidebarOpen}
             onClose={onEpiDashboardSettingsSidebarClose}
             onReset={onEpiDashboardLayoutSelectorSidebarReset}
+            open={isSettingsSidebarOpen}
           />
           <EpiCaseTypeInfoDialog
             ref={epiCaseTypeInfoDialogRef}
@@ -303,33 +314,33 @@ export const EpiDashboard = withEpiDashboardStore(({ caseSet }: EpiDashboardProp
             <EpiCaseSetInfoDialog ref={epiCaseSetInfoDialogRef} />
           )}
           <EpiDashboardDownloadSidebarItem
-            open={isDownloadSidebarOpen}
             onClose={onEpiDashboardDownloadSidebarClose}
+            open={isDownloadSidebarOpen}
           />
         </SidebarMenu>
         {/* Content */}
         <Box
           sx={{
-            width: '100%',
-            height: '100%',
             display: 'grid',
             gridTemplateRows: `${shouldShowMaxResultsExceededAlert ? 'max-content ' : ''}max-content auto`,
+            height: '100%',
             paddingLeft: theme.spacing(ConfigManager.instance.config.layout.SIDEBAR_MENU_WIDTH + 1),
+            width: '100%',
           }}
         >
           {shouldShowMaxResultsExceededAlert && (
             <Box>
               <Alert
+                onClose={onMaxResultsExceededButtonClose}
                 severity={'warning'}
                 sx={{
                   width: '100%',
                 }}
-                onClose={onMaxResultsExceededButtonClose}
               >
                 <AlertTitle>
                   {t`Maximum number of results exceeded`}
                 </AlertTitle>
-                {t('The maximum number of results for {{caseTypeName}} ({{maxResultsForCaseType}}) has been exceeded. Refine your filters to reduce the number of results.', { maxResultsForCaseType: completeCaseType.props.read_max_n_cases, caseTypeName: completeCaseType.name })}
+                {t('The maximum number of results for {{caseTypeName}} ({{maxResultsForCaseType}}) has been exceeded. Refine your filters to reduce the number of results.', { caseTypeName: completeCaseType.name, maxResultsForCaseType: completeCaseType.props.read_max_n_cases })}
               </Alert>
             </Box>
           )}
@@ -338,7 +349,6 @@ export const EpiDashboard = withEpiDashboardStore(({ caseSet }: EpiDashboardProp
           </Box>
           <Box>
             <EpiDashboardLayoutRenderer
-              ref={epiDashboardLayoutRendererRef}
               disabled={isFilterSidebarOpen || isSettingsSidebarOpen}
               epiCurveWidget={(
                 <ErrorBoundary
@@ -355,8 +365,8 @@ export const EpiDashboard = withEpiDashboardStore(({ caseSet }: EpiDashboardProp
               lineListWidget={(
                 <EpiLineListWidget
                   caseSet={caseSet}
-                  linkedScrollSubject={linkedScrollSubject}
                   lineListRangeSubject={lineListRangeSubject}
+                  linkedScrollSubject={linkedScrollSubject}
                   onLink={onEpiListLink}
                 />
               )}
@@ -374,12 +384,13 @@ export const EpiDashboard = withEpiDashboardStore(({ caseSet }: EpiDashboardProp
               )}
               phylogeneticTreeWidget={(
                 <EpiTreeWidget
-                  ref={epiTreeRef}
-                  linkedScrollSubject={linkedScrollSubject}
                   itemHeight={ConfigManager.instance.config.epiLineList.TABLE_ROW_HEIGHT}
                   lineListRangeSubject={lineListRangeSubject}
+                  linkedScrollSubject={linkedScrollSubject}
+                  ref={epiTreeRef}
                 />
               )}
+              ref={epiDashboardLayoutRendererRef}
             />
           </Box>
         </Box>

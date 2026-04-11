@@ -1,1 +1,2 @@
-export * from './PanelResizeHandle';
+export * from './PanelSeparatorHorizontal';
+export * from './PanelSeparatorVertical';

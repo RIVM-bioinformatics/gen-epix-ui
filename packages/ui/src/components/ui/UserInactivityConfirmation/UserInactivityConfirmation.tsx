@@ -13,7 +13,7 @@ import { InactivityManager } from '../../../classes/managers/InactivityManager';
 
 export const UserInactivityConfirmation = () => {
   const { t } = useTranslation();
-  const confirmation = useRef<ConfirmationRefMethods>(null);
+  const confirmationRef = useRef<ConfirmationRefMethods>(null);
   const [idleState, setIdleState] = useState<InactivityState>(InactivityManager.instance.data);
 
 
@@ -21,9 +21,9 @@ export const UserInactivityConfirmation = () => {
     const unsubscribe = InactivityManager.instance.subscribe((data) => {
       if (data.isIdle) {
         setIdleState(data);
-        confirmation.current?.open();
+        confirmationRef.current?.open();
       } else {
-        confirmation.current?.close();
+        confirmationRef.current?.close();
       }
     });
     return () => {
@@ -42,7 +42,6 @@ export const UserInactivityConfirmation = () => {
 
   return (
     <Confirmation
-      ref={confirmation}
       body={t('Because you were inactive for the last {{formattedTimeInactive}}, you will be automatically logged out in {{formattedTimeUntilLogout}}.', {
         formattedTimeInactive: idleState.readableIdleDiff,
         formattedTimeUntilLogout: idleState.readableNotificationDiff,
@@ -50,10 +49,11 @@ export const UserInactivityConfirmation = () => {
       cancelLabel={'Logout'}
       confirmLabel={t`Stay logged in`}
       maxWidth={'xs'}
-      title={t`Your session is about to expire`}
       onCancel={onCancel}
       onClose={onClose}
       onConfirm={onClose}
+      ref={confirmationRef}
+      title={t`Your session is about to expire`}
     />
   );
 };

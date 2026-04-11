@@ -1,10 +1,13 @@
 import {
   Alert,
-  CircularProgress,
   AlertTitle,
   Box,
+  CircularProgress,
 } from '@mui/material';
-import { useCallback } from 'react';
+import {
+  useCallback,
+  useMemo,
+} from 'react';
 import { useTranslation } from 'react-i18next';
 
 import { TestIdUtil } from '../../../utils/TestIdUtil';
@@ -12,26 +15,27 @@ import { TimeUtil } from '../../../utils/TimeUtil';
 import type { Notification } from '../../../models/notification';
 
 export type NotificationItemProps = {
-  readonly notification: Notification;
-  readonly showTimestamp?: boolean;
-  readonly onClose: (key: string) => void;
   readonly allowClose: boolean;
+  readonly notification: Notification;
+  readonly onClose: (key: string) => void;
+  readonly showTimestamp?: boolean;
 };
 
-export const NotificationItem = ({ notification, showTimestamp, onClose, allowClose }: NotificationItemProps) => {
+export const NotificationItem = ({ allowClose, notification, onClose, showTimestamp }: NotificationItemProps) => {
   const { t } = useTranslation();
 
   const onCloseButtonClick = useCallback(() => {
     onClose(notification.key);
   }, [notification.key, onClose]);
 
-  const now = new Date().getTime();
+  const now = useMemo(() => new Date().getTime(), []);
 
   return (
     <Alert
       {...TestIdUtil.createAttributes('NotificationItem', { key: notification.key })}
       closeText={t`Clear notification`}
       icon={notification.isLoading ? <CircularProgress size={16} /> : undefined}
+      onClose={allowClose ? onCloseButtonClick : undefined}
       severity={notification.isLoading ? 'info' : notification.severity}
       slotProps={{
         message: {
@@ -41,11 +45,10 @@ export const NotificationItem = ({ notification, showTimestamp, onClose, allowCl
         },
       }}
       sx={{
+        backgroundColor: 'background.paper',
         boxShadow: 1,
         marginBottom: 1,
-        backgroundColor: 'background.paper',
       }}
-      onClose={allowClose ? onCloseButtonClick : undefined}
     >
       <AlertTitle
         sx={{

@@ -13,8 +13,8 @@ import {
 import isNumber from 'lodash/isNumber';
 
 import type {
-  Dim,
   CompleteCaseType,
+  Dim,
 } from '../../../api';
 import { ColType } from '../../../api';
 import { EpiDataManager } from '../../../classes/managers/EpiDataManager';
@@ -22,11 +22,11 @@ import { EpiDataManager } from '../../../classes/managers/EpiDataManager';
 import { EpiCaseTypeInfoColAccessRights } from './EpiCaseTypeInfoColAccessRights';
 
 export type EpiCaseTypeInfoVariableDetailsProps = {
-  readonly dim: Dim;
   readonly completeCaseType: CompleteCaseType;
+  readonly dim: Dim;
 };
 
-export const EpiCaseTypeInfoVariableDetails = ({ dim, completeCaseType }: EpiCaseTypeInfoVariableDetailsProps) => {
+export const EpiCaseTypeInfoVariableDetails = ({ completeCaseType, dim }: EpiCaseTypeInfoVariableDetailsProps) => {
   const { t } = useTranslation();
   const cols = completeCaseType.ordered_col_ids_by_dim[dim.id].map(x => completeCaseType.cols[x]);
 
@@ -72,16 +72,16 @@ export const EpiCaseTypeInfoVariableDetails = ({ dim, completeCaseType }: EpiCas
             const refCol = completeCaseType.ref_cols[col.ref_col_id];
             return (
               <TableRow key={col.id}>
-                <TableCell sx={{ width: '15%', verticalAlign: 'top' }}>
+                <TableCell sx={{ verticalAlign: 'top', width: '15%' }}>
                   {col.code}
                 </TableCell>
-                <TableCell sx={{ width: '30%', verticalAlign: 'top' }}>
+                <TableCell sx={{ verticalAlign: 'top', width: '30%' }}>
                   {refCol.description}
                 </TableCell>
-                <TableCell sx={{ width: '15%', verticalAlign: 'top' }}>
+                <TableCell sx={{ verticalAlign: 'top', width: '15%' }}>
                   {refCol.col_type}
                 </TableCell>
-                <TableCell sx={{ width: '20%', verticalAlign: 'top' }}>
+                <TableCell sx={{ verticalAlign: 'top', width: '20%' }}>
                   {([
                     ColType.DECIMAL_0,
                     ColType.DECIMAL_1,
@@ -92,7 +92,7 @@ export const EpiCaseTypeInfoVariableDetails = ({ dim, completeCaseType }: EpiCas
                     ColType.DECIMAL_6,
                   ] as ColType[]).includes(refCol.col_type) && (isNumber(col.min_value) || isNumber(col.max_value)) && (
                     <>
-                      {t('min: {{min}}; max: {{max}}', { min: col.min_value, max: col.max_value })}
+                      {t('min: {{min}}; max: {{max}}', { max: col.max_value, min: col.min_value })}
                     </>
                   )}
                   {([
@@ -140,7 +140,7 @@ export const EpiCaseTypeInfoVariableDetails = ({ dim, completeCaseType }: EpiCas
                     </Box>
                   )}
                 </TableCell>
-                <TableCell sx={{ width: '20%', verticalAlign: 'top' }}>
+                <TableCell sx={{ verticalAlign: 'top', width: '20%' }}>
                   <EpiCaseTypeInfoColAccessRights
                     colId={col.id}
                   />

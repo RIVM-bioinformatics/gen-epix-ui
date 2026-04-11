@@ -1,8 +1,7 @@
 import {
-  useMemo,
   type PropsWithChildren,
+  useMemo,
 } from 'react';
-
 
 import { AbacUtil } from '../../utils/AbacUtil';
 
@@ -16,7 +15,7 @@ export type CaseTypeAbacContextProviderProps = PropsWithChildren<{
 export const CaseTypeAbacContextProvider = (
   props: CaseTypeAbacContextProviderProps,
 ) => {
-  const { children, caseTypeAbac } = props;
+  const { caseTypeAbac, children } = props;
 
   const sanitizedCaseAbac = useMemo<CaseTypeAbacContext>(() => {
     const caseTypeAccessAbacs = Object.values(caseTypeAbac.caseTypeAccessAbacDict).filter(x => !!caseTypeAbac.userDataCollectionsMap.get(x.data_collection_id)).sort((a, b) => {
@@ -33,8 +32,8 @@ export const CaseTypeAbacContextProvider = (
   }, [caseTypeAbac]);
 
   return (
-    <EpiCaseTypeAbacContext.Provider value={sanitizedCaseAbac}>
+    <EpiCaseTypeAbacContext value={sanitizedCaseAbac}>
       {children}
-    </EpiCaseTypeAbacContext.Provider>
+    </EpiCaseTypeAbacContext>
   );
 };

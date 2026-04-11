@@ -14,8 +14,8 @@ import { ApplicationBarNavigationMenu } from './ApplicationBarNavigationMenu';
 import { ApplicationBarActions } from './ApplicationBarActions';
 
 export type ApplicationBarProps = {
-  readonly fullWidth?: boolean;
   readonly fullHeight?: boolean;
+  readonly fullWidth?: boolean;
   readonly singleAction?: boolean;
 };
 
@@ -28,11 +28,11 @@ export const ApplicationBar = ({
   return (
     <AppBar
       {...TestIdUtil.createAttributes('ApplicationBar')}
-      square
       position={'static'}
+      square
       sx={{
-        boxShadow: 'none',
         background: theme['gen-epix'].navbar.background,
+        boxShadow: 'none',
       }}
     >
       <Container
@@ -43,8 +43,8 @@ export const ApplicationBar = ({
           disableGutters
           sx={{
             height: 48,
-            minHeight: '48px !important',
             justifyContent: singleAction ? 'center' : 'space-between',
+            minHeight: '48px !important',
           }}
         >
           {singleAction && (

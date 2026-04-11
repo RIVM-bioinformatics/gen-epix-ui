@@ -8,22 +8,22 @@ import {
   useRef,
 } from 'react';
 import {
-  FormControl,
-  FormLabel,
-  FormHelperText,
-  Button,
-  styled,
   Box,
+  Button,
+  FormControl,
+  FormHelperText,
+  FormLabel,
+  styled,
 } from '@mui/material';
 import {
   Controller,
   useFormContext,
 } from 'react-hook-form';
 import type {
-  UseControllerReturn,
+  ControllerRenderProps,
   FieldValues,
   Path,
-  ControllerRenderProps,
+  UseControllerReturn,
 } from 'react-hook-form';
 import CloudUploadIcon from '@mui/icons-material/CloudUpload';
 import { useTranslation } from 'react-i18next';
@@ -34,38 +34,38 @@ import { FormFieldHelperText } from '../../helpers/FormFieldHelperText';
 import { WindowManager } from '../../../../classes/managers/WindowManager';
 
 export type UploadButtonProps<TFieldValues extends FieldValues, TName extends Path<TFieldValues> = Path<TFieldValues>> = {
+  readonly accept: string;
   readonly disabled?: boolean;
   readonly label: string;
+  readonly loading?: boolean; // NOT implemented
+  readonly multiple?: boolean;
   readonly name: TName;
   readonly onChange?: (value: FileList) => void;
   readonly required?: boolean;
-  readonly warningMessage?: string | boolean;
-  readonly multiple?: boolean;
-  readonly accept: string;
-  readonly loading?: boolean; // NOT implemented
+  readonly warningMessage?: boolean | string;
 };
 
 const VisuallyHiddenInput = styled('input')({
+  bottom: 0,
   clip: 'rect(0 0 0 0)',
   clipPath: 'inset(50%)',
   height: 1,
+  left: 0,
   overflow: 'hidden',
   position: 'absolute',
-  bottom: 0,
-  left: 0,
   whiteSpace: 'nowrap',
   width: 1,
 });
 
 export const UploadButton = <TFieldValues extends FieldValues, TName extends Path<TFieldValues> = Path<TFieldValues>>({
+  accept,
   disabled,
   label,
+  multiple = false,
   name,
+  onChange: onChangeProp,
   required,
   warningMessage,
-  multiple = false,
-  accept,
-  onChange: onChangeProp,
 }: UploadButtonProps<TFieldValues, TName>): ReactElement => {
   const { t } = useTranslation();
   const id = useId();
@@ -85,7 +85,7 @@ export const UploadButton = <TFieldValues extends FieldValues, TName extends Pat
     }
   , [onChangeProp]);
 
-  const renderController = useCallback(({ field: { onChange, onBlur, value, ref } }: UseControllerReturn<TFieldValues, TName>) => {
+  const renderController = useCallback(({ field: { onBlur, onChange, ref, value } }: UseControllerReturn<TFieldValues, TName>) => {
     ref({
       focus: () => {
         buttonRef?.current?.focus();
@@ -99,22 +99,22 @@ export const UploadButton = <TFieldValues extends FieldValues, TName extends Pat
       <>
         <Button
           component={'label'}
-          size={'large'}
           // ref={buttonRef}
           disabled={disabled}
-          role={undefined}
-          variant={'outlined'}
-          tabIndex={-1}
-          startIcon={<CloudUploadIcon />}
           onBlur={onBlur}
+          role={undefined}
+          size={'large'}
+          startIcon={<CloudUploadIcon />}
+          tabIndex={-1}
+          variant={'outlined'}
         >
           {multiple ? t('Upload files ({{accept}})', { accept: accept.split(',').join(', ') }) : t('Upload file ({{accept}})', { accept: accept.split(',').join(', ') })}
           <VisuallyHiddenInput
-            id={inputId}
             accept={accept}
+            id={inputId}
             multiple={multiple}
-            type={'file'}
             onChange={onInputChange(onChange)}
+            type={'file'}
           />
         </Button>
         {value && (
@@ -147,8 +147,8 @@ export const UploadButton = <TFieldValues extends FieldValues, TName extends Pat
       />
       <FormHelperText sx={{ ml: 0 }}>
         <FormFieldHelperText
-          noIndent
           errorMessage={errorMessage}
+          noIndent
           warningMessage={warningMessage}
         />
       </FormHelperText>

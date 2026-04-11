@@ -11,59 +11,34 @@ import { NotificationUtil } from '../../utils/NotificationUtil';
 import { ObjectUtil } from '../../utils/ObjectUtil';
 
 
-export type MutationContextCreate<TData> = { previousData?: TData[]; temporaryId?: string; notificationKey?: string };
+export type MutationContextCreate<TData> = { notificationKey?: string; previousData?: TData[]; temporaryId?: string };
 
 export type UseCreateMutationProps<TData extends GenericData | GenericData[], TVariables = TData> = {
+  readonly associationQueryKeys?: string[][];
+  readonly getErrorNotificationMessage: (data: TVariables, error: unknown) => ReactElement | string;
+  readonly getProgressNotificationMessage: (data: TVariables) => ReactElement | string;
+  readonly getSuccessNotificationMessage: (data: TData, context: MutationContextCreate<TData>) => ReactElement | string;
+  readonly onError?: (error: unknown, variables: TVariables, context: MutationContextCreate<TData>) => Promise<void> | void;
+  readonly onSuccess?: (item: TData, variables: TVariables, context: MutationContextCreate<TData>) => Promise<void> | void;
   readonly queryFn?: (item: TVariables) => Promise<TData>;
   readonly resourceQueryKey?: string[];
-  readonly associationQueryKeys?: string[][];
-  readonly getProgressNotificationMessage: (data: TVariables) => string | ReactElement;
-  readonly getErrorNotificationMessage: (data: TVariables, error: unknown) => string | ReactElement;
-  readonly getSuccessNotificationMessage: (data: TData, context: MutationContextCreate<TData>) => string | ReactElement;
-  readonly onSuccess?: (item: TData, variables: TVariables, context: MutationContextCreate<TData>) => Promise<void> | void;
-  readonly onError?: (error: unknown, variables: TVariables, context: MutationContextCreate<TData>) => Promise<void> | void;
 };
 
 export const useCreateMutation = <TData extends GenericData | GenericData[], TVariables = TData>({
+  associationQueryKeys,
+  getErrorNotificationMessage,
+  getProgressNotificationMessage,
+  getSuccessNotificationMessage,
+  onError,
+  onSuccess,
   queryFn,
   resourceQueryKey,
-  getErrorNotificationMessage,
-  getSuccessNotificationMessage,
-  getProgressNotificationMessage,
-  associationQueryKeys,
-  onSuccess,
-  onError,
 }: UseCreateMutationProps<TData, TVariables>) => {
   const queryClient = QueryClientManager.instance.queryClient;
 
   const createMutation = useMutation<TData, Error, TVariables, MutationContextCreate<TData>>({
     mutationFn: async (item) => {
       return queryFn(ObjectUtil.deepRemoveEmptyStrings(item));
-    },
-    onMutate: async (variables) => {
-      const notificationKey = NotificationManager.instance.showNotification({
-        message: getProgressNotificationMessage(variables),
-        severity: 'info',
-        isLoading: true,
-      });
-      if (resourceQueryKey) {
-        await queryClient.cancelQueries({ queryKey: resourceQueryKey });
-        const previousData = queryClient.getQueryData<TData[]>(resourceQueryKey);
-        if (Array.isArray(previousData)) {
-          const temporaryId = StringUtil.createUuid();
-          queryClient.setQueryData<TData[]>(resourceQueryKey, (oldItems: TData[]) => {
-            return [
-              {
-                ...variables,
-                id: temporaryId,
-              },
-              ...oldItems,
-            ] as TData[];
-          });
-          return { previousData, temporaryId, notificationKey };
-        }
-      }
-      return { notificationKey };
     },
     onError: async (error, variables, context) => {
       if (resourceQueryKey) {
@@ -79,6 +54,31 @@ export const useCreateMutation = <TData extends GenericData | GenericData[], TVa
         await onError(error, variables, context);
       }
       NotificationManager.instance.fulfillNotification(context.notificationKey, NotificationUtil.wrapErrorNotificationMessage(getErrorNotificationMessage(variables, error), error), 'error');
+    },
+    onMutate: async (variables) => {
+      const notificationKey = NotificationManager.instance.showNotification({
+        isLoading: true,
+        message: getProgressNotificationMessage(variables),
+        severity: 'info',
+      });
+      if (resourceQueryKey) {
+        await queryClient.cancelQueries({ queryKey: resourceQueryKey });
+        const previousData = queryClient.getQueryData<TData[]>(resourceQueryKey);
+        if (Array.isArray(previousData)) {
+          const temporaryId = StringUtil.createUuid();
+          queryClient.setQueryData<TData[]>(resourceQueryKey, (oldItems: TData[]) => {
+            return [
+              {
+                ...variables,
+                id: temporaryId,
+              },
+              ...oldItems,
+            ] as TData[];
+          });
+          return { notificationKey, previousData, temporaryId };
+        }
+      }
+      return { notificationKey };
     },
     onSuccess: async (item, variables, context) => {
       if (resourceQueryKey && Array.isArray(context?.previousData) && !Array.isArray(item)) {
@@ -100,5 +100,5 @@ export const useCreateMutation = <TData extends GenericData | GenericData[], TVa
   // Note: must be done in useMemo to avoid render loops (useMutation returns a new object every time)
   const mutate = useMemo(() => createMutation.mutate, [createMutation.mutate]);
   const isMutating = useMemo(() => createMutation.isPending, [createMutation.isPending]);
-  return useMemo(() => ({ mutate, isMutating }), [isMutating, mutate]);
+  return useMemo(() => ({ isMutating, mutate }), [isMutating, mutate]);
 };

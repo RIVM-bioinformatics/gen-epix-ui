@@ -26,26 +26,26 @@ export const EpiWidgetMenu = ({
         if (menuItemsData.items) {
           return (
             <NestedDropdown
-              key={menuItemsData.label}
               ButtonProps={{
-                variant: 'text',
-                size: 'small',
                 color: 'primary',
                 disabled: menuItemsData.disabled,
+                size: 'small',
+                variant: 'text',
               }}
-              MenuProps={{ elevation: 3 }}
+              key={menuItemsData.label}
               menuItemsData={menuItemsData}
+              MenuProps={{ elevation: 3 }}
             />
           );
         }
         return (
           <WidgetHeaderIconButton
-            key={menuItemsData.label}
             disabled={menuItemsData.disabled}
-            size={'small'}
+            key={menuItemsData.label}
             label={menuItemsData.label}
-            // eslint-disable-next-line react/jsx-no-bind
+            // eslint-disable-next-line @eslint-react/kit/jsx-no-bind
             onClick={() => menuItemsData.callback()}
+            size={'small'}
           >
             {menuItemsData.leftIcon || menuItemsData.rightIcon}
           </WidgetHeaderIconButton>

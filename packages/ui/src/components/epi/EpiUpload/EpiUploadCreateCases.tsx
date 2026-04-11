@@ -1,8 +1,8 @@
 import { useTranslation } from 'react-i18next';
 import type { ReactNode } from 'react';
 import {
+  use,
   useCallback,
-  useContext,
   useEffect,
   useMemo,
   useState,
@@ -31,7 +31,7 @@ import { EpiUploadNavigation } from './EpiUploadNavigation';
 export const EpiUploadCreateCases = () => {
   const { t } = useTranslation();
 
-  const store = useContext(EpiUploadStoreContext);
+  const store = use(EpiUploadStoreContext);
   const reset = useStore(store, (state) => state.reset);
   const goToPreviousStep = useStore(store, (state) => state.goToPreviousStep);
   const sequenceMapping = useStore(store, (state) => state.sequenceMapping);
@@ -66,28 +66,28 @@ export const EpiUploadCreateCases = () => {
     InactivityManager.instance.pause();
 
     EpiUploadUtil.createCasesAndUploadFiles({
-      mappedColumns: store.getState().mappedColumns,
-      completeCaseType: store.getState().completeCaseType,
-      sampleIdColId: store.getState().sampleIdColId,
-      caseTypeId: store.getState().caseTypeId,
-      createdInDataCollectionId: store.getState().createdInDataCollectionId,
-      sequencingProtocolId: store.getState().sequencingProtocolId,
       assemblyProtocolId: store.getState().assemblyProtocolId,
-      sequenceFilesDataTransfer,
-      sequenceMapping,
-      signal,
-      validatedCases,
-      validatedCasesWithGeneratedId,
-      onProgress: (percentage: number, message: string) => {
-        setProgress(percentage);
-        setProgressMessage(message);
-      },
+      caseTypeId: store.getState().caseTypeId,
+      completeCaseType: store.getState().completeCaseType,
+      createdInDataCollectionId: store.getState().createdInDataCollectionId,
+      mappedColumns: store.getState().mappedColumns,
       onComplete: () => {
         setIsUploadCompleted(true);
       },
       onError: (e: Error) => {
         setError(e);
       },
+      onProgress: (percentage: number, message: string) => {
+        setProgress(percentage);
+        setProgressMessage(message);
+      },
+      sampleIdColId: store.getState().sampleIdColId,
+      sequenceFilesDataTransfer,
+      sequenceMapping,
+      sequencingProtocolId: store.getState().sequencingProtocolId,
+      signal,
+      validatedCases,
+      validatedCasesWithGeneratedId,
     }).catch((e) => {
       if (!signal.aborted) {
         setError(e);
@@ -105,6 +105,10 @@ export const EpiUploadCreateCases = () => {
   const onStartUploadButtonClick = useCallback(() => {
     setIsUploadStarted(true);
   }, []);
+
+  const onGoBackButtonClick = useCallback(() => {
+    goToPreviousStep();
+  }, [goToPreviousStep]);
 
   const onGotoCasesButtonClick = useCallback(async () => {
     const link = CaseTypeUtil.createCaseTypeLink(completeCaseType);
@@ -139,22 +143,22 @@ export const EpiUploadCreateCases = () => {
         </Box>
         <Box
           sx={{
-            marginTop: 2,
-            marginBottom: 1,
             display: 'flex',
             gap: 2,
             justifyContent: 'flex-end',
+            marginBottom: 1,
+            marginTop: 2,
           }}
         >
           <Button
-            variant={'outlined'}
             onClick={onStartOverButtonClick}
+            variant={'outlined'}
           >
             {t('Upload more cases')}
           </Button>
           <Button
-            variant={'contained'}
             onClick={onGotoCasesButtonClick}
+            variant={'contained'}
           >
             {t('View uploaded cases')}
           </Button>
@@ -178,8 +182,8 @@ export const EpiUploadCreateCases = () => {
         </Box>
         <Box
           sx={{
-            marginTop: 4,
             marginBottom: 2,
+            marginTop: 4,
           }}
         >
           <LinearProgressWithLabel value={progress} />
@@ -275,9 +279,9 @@ export const EpiUploadCreateCases = () => {
           )}
         </Box>
         <EpiUploadNavigation
-          proceedLabel={'Start upload'}
-          onGoBackButtonClick={goToPreviousStep}
+          onGoBackButtonClick={onGoBackButtonClick}
           onProceedButtonClick={onStartUploadButtonClick}
+          proceedLabel={'Start upload'}
         />
       </Box>
     );

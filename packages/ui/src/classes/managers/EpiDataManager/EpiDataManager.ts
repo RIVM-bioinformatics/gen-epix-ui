@@ -1,11 +1,11 @@
 import type {
   CompleteCaseType,
-  TreeAlgorithm,
-  RegionSet,
-  Region,
-  ConceptSet,
   Concept,
+  ConceptSet,
   Organization,
+  Region,
+  RegionSet,
+  TreeAlgorithm,
 } from '../../../api';
 import {
   CaseApi,
@@ -21,10 +21,6 @@ import { QueryClientManager } from '../QueryClientManager';
 import { WindowManager } from '../WindowManager';
 
 export class EpiDataManager {
-  private constructor() {
-    //
-  }
-
   public static get instance(): EpiDataManager {
     // Instances are stored on the window to prevent multiple instances of the same manager. HMR may load multiple instances of the same manager, but we only want one instance to be active at a time.
 
@@ -33,86 +29,34 @@ export class EpiDataManager {
   }
 
   public readonly data: EpiData = {
+    conceptsById: {},
+    conceptsBySetId: {},
+    conceptSets: {},
+    conceptsIdsBySetId: {},
     organizations: [],
     organizationsById: {},
-    conceptSets: {},
-    conceptsBySetId: {},
-    conceptsIdsBySetId: {},
-    conceptsById: {},
-    regionSets: {},
-    regionsByRegionSetId: {},
     regionsById: {},
+    regionsByRegionSetId: {},
+    regionSets: {},
+    treeAlgorithms: [],
     userDataCollections: [],
     userDataCollectionsById: {},
-    treeAlgorithms: [],
   };
 
-  public async loadTreeAlgorithms(completeCaseType: CompleteCaseType, signal: AbortSignal): Promise<void> {
-    if (!completeCaseType.tree_algorithms) {
-      return;
-    }
-    const { queryClient } = QueryClientManager.instance;
-    const queryKey = QueryUtil.getGenericKey(QUERY_KEY.TREE_ALGORITHMS);
-
-    const currentTreeAlgorithms = QueryUtil.getValidQueryData<TreeAlgorithm[]>(queryKey);
-    if (currentTreeAlgorithms) {
-      return;
-    }
-    const treeAlgorithms = (await CaseApi.instance.treeAlgorithmsGetAll({ signal })).data.sort((a, b) => {
-      if (a.rank === b.rank) {
-        return a.name.localeCompare(b.name);
-      }
-      return a.rank - b.rank;
-    });
-    queryClient.setQueryData(queryKey, treeAlgorithms);
-    this.data.treeAlgorithms = treeAlgorithms;
+  private constructor() {
+    //
   }
 
-  public async loadMissingRegions(completeCaseType: CompleteCaseType, signal: AbortSignal): Promise<void> {
-    const queryClient = QueryClientManager.instance.queryClient;
-
-    const regionSetIds = this.getMissingRegionSetIds(completeCaseType);
-    if (!regionSetIds.length) {
-      return;
-    }
-
-    const currentRegionSets = QueryUtil.getValidQueryData<RegionSet[]>(QueryUtil.getGenericKey(QUERY_KEY.REGION_SETS_LAZY)) ?? [];
-    const currentRegions = QueryUtil.getValidQueryData<Region[]>(QueryUtil.getGenericKey(QUERY_KEY.REGIONS_LAZY)) ?? [];
-
-    const regionSetsResult = (await GeoApi.instance.regionSetsPostQuery({
-      invert: false,
-      key: 'id',
-      type: 'UUID_SET',
-      members: regionSetIds,
-    }, { signal })).data;
-    const regionSets = [...regionSetsResult, ...currentRegionSets];
-    queryClient.setQueryData(QueryUtil.getGenericKey(QUERY_KEY.REGION_SETS_LAZY), regionSets);
-
-    const regionsResult = (await GeoApi.instance.regionsPostQuery({
-      invert: false,
-      key: 'region_set_id',
-      type: 'UUID_SET',
-      members: regionSetIds,
-    }, { signal })).data;
-    const regions = [...regionsResult, ...currentRegions];
-    queryClient.setQueryData(QueryUtil.getGenericKey(QUERY_KEY.REGIONS_LAZY), regions);
-
-    // Rebuild the cache
-    this.data.regionSets = {};
-    this.data.regionsByRegionSetId = {};
-    this.data.regionsById = {};
-
-    regionSets.forEach(regionSet => {
-      this.data.regionSets[regionSet.id] = regionSet;
-    });
-
-    regions.forEach(region => {
-      if (!this.data.regionsByRegionSetId[region.region_set_id]) {
-        this.data.regionsByRegionSetId[region.region_set_id] = [];
+  public getRegionSetIds(completeCaseType: CompleteCaseType): string[] {
+    const regionSetIds: string[] = [];
+    const cols = CaseTypeUtil.getCols(completeCaseType);
+    cols.forEach(col => {
+      const refCol = completeCaseType.ref_cols[col.ref_col_id];
+      if (refCol.region_set_id && !regionSetIds.includes(refCol.region_set_id)) {
+        regionSetIds.push(refCol.region_set_id);
       }
-      this.data.regionsByRegionSetId[region.region_set_id].push(region);
-      this.data.regionsById[region.id] = region;
     });
+    return regionSetIds;
   }
 
   public async loadConcepts(signal: AbortSignal): Promise<void> {
@@ -156,6 +100,53 @@ export class EpiDataManager {
     });
   }
 
+  public async loadMissingRegions(completeCaseType: CompleteCaseType, signal: AbortSignal): Promise<void> {
+    const queryClient = QueryClientManager.instance.queryClient;
+
+    const regionSetIds = this.getMissingRegionSetIds(completeCaseType);
+    if (!regionSetIds.length) {
+      return;
+    }
+
+    const currentRegionSets = QueryUtil.getValidQueryData<RegionSet[]>(QueryUtil.getGenericKey(QUERY_KEY.REGION_SETS_LAZY)) ?? [];
+    const currentRegions = QueryUtil.getValidQueryData<Region[]>(QueryUtil.getGenericKey(QUERY_KEY.REGIONS_LAZY)) ?? [];
+
+    const regionSetsResult = (await GeoApi.instance.regionSetsPostQuery({
+      invert: false,
+      key: 'id',
+      members: regionSetIds,
+      type: 'UUID_SET',
+    }, { signal })).data;
+    const regionSets = [...regionSetsResult, ...currentRegionSets];
+    queryClient.setQueryData(QueryUtil.getGenericKey(QUERY_KEY.REGION_SETS_LAZY), regionSets);
+
+    const regionsResult = (await GeoApi.instance.regionsPostQuery({
+      invert: false,
+      key: 'region_set_id',
+      members: regionSetIds,
+      type: 'UUID_SET',
+    }, { signal })).data;
+    const regions = [...regionsResult, ...currentRegions];
+    queryClient.setQueryData(QueryUtil.getGenericKey(QUERY_KEY.REGIONS_LAZY), regions);
+
+    // Rebuild the cache
+    this.data.regionSets = {};
+    this.data.regionsByRegionSetId = {};
+    this.data.regionsById = {};
+
+    regionSets.forEach(regionSet => {
+      this.data.regionSets[regionSet.id] = regionSet;
+    });
+
+    regions.forEach(region => {
+      if (!this.data.regionsByRegionSetId[region.region_set_id]) {
+        this.data.regionsByRegionSetId[region.region_set_id] = [];
+      }
+      this.data.regionsByRegionSetId[region.region_set_id].push(region);
+      this.data.regionsById[region.id] = region;
+    });
+  }
+
   public async loadOrganizations(signal: AbortSignal): Promise<void> {
     const queryClient = QueryClientManager.instance.queryClient;
 
@@ -175,16 +166,25 @@ export class EpiDataManager {
     });
   }
 
-  public getRegionSetIds(completeCaseType: CompleteCaseType): string[] {
-    const regionSetIds: string[] = [];
-    const cols = CaseTypeUtil.getCols(completeCaseType);
-    cols.forEach(col => {
-      const refCol = completeCaseType.ref_cols[col.ref_col_id];
-      if (refCol.region_set_id && !regionSetIds.includes(refCol.region_set_id)) {
-        regionSetIds.push(refCol.region_set_id);
+  public async loadTreeAlgorithms(completeCaseType: CompleteCaseType, signal: AbortSignal): Promise<void> {
+    if (!completeCaseType.tree_algorithms) {
+      return;
+    }
+    const { queryClient } = QueryClientManager.instance;
+    const queryKey = QueryUtil.getGenericKey(QUERY_KEY.TREE_ALGORITHMS);
+
+    const currentTreeAlgorithms = QueryUtil.getValidQueryData<TreeAlgorithm[]>(queryKey);
+    if (currentTreeAlgorithms) {
+      return;
+    }
+    const treeAlgorithms = (await CaseApi.instance.treeAlgorithmsGetAll({ signal })).data.sort((a, b) => {
+      if (a.rank === b.rank) {
+        return a.name.localeCompare(b.name);
       }
+      return a.rank - b.rank;
     });
-    return regionSetIds;
+    queryClient.setQueryData(queryKey, treeAlgorithms);
+    this.data.treeAlgorithms = treeAlgorithms;
   }
 
   private getMissingRegionSetIds(completeCaseType: CompleteCaseType): string[] {

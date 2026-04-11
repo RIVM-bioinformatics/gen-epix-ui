@@ -5,8 +5,8 @@ import { AuthorizationManager } from '../../classes/managers/AuthorizationManage
 import type { ApiPermission } from '../../api';
 
 export interface WithPermissionsOptions {
-  readonly requiredPermissions: ApiPermission[];
   readonly fallback?: ComponentType | null;
+  readonly requiredPermissions: ApiPermission[];
 }
 
 export const withPermissions = <TProps extends object>(

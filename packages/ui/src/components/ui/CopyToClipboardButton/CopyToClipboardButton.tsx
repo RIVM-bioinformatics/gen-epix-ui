@@ -13,17 +13,17 @@ import type { ReactElement } from 'react';
 import { useState } from 'react';
 
 export type CopyToClipboardButtonProps = {
-  readonly clipboardValue?: string;
-  readonly onGetClipboardValue?: () => string;
+  readonly baseIcon?: ReactElement;
+  readonly buttonProps?: ButtonOwnProps;
   readonly buttonText?: string;
   readonly buttonVariant?: ButtonOwnProps['variant'];
+  readonly clipboardValue?: string;
   readonly iconOnly?: boolean;
-  readonly buttonProps?: ButtonOwnProps;
+  readonly onGetClipboardValue?: () => string;
   readonly tooltipSuccessText?: string;
-  readonly baseIcon?: ReactElement;
 };
 
-export const CopyToClipboardButton = ({ clipboardValue, onGetClipboardValue, buttonText, buttonVariant, iconOnly, buttonProps, tooltipSuccessText, baseIcon }: CopyToClipboardButtonProps) => {
+export const CopyToClipboardButton = ({ baseIcon, buttonProps, buttonText, buttonVariant, clipboardValue, iconOnly, onGetClipboardValue, tooltipSuccessText }: CopyToClipboardButtonProps) => {
   const { t } = useTranslation();
   const [copyToClipBoardButtonColor, setCopyToClipBoardButtonColor] = useState<ButtonOwnProps['color']>('primary');
   const [copyToClipBoardIcon, setCopyToClipBoardIcon] = useState<ReactElement>(baseIcon ?? <ContentCopyIcon />);
@@ -71,8 +71,8 @@ export const CopyToClipboardButton = ({ clipboardValue, onGetClipboardValue, but
         <IconButton
           {...buttonProps}
           color={copyToClipBoardButtonColor}
-          size={'small'}
           onClick={onCopyToClipboardButtonClick}
+          size={'small'}
         >
           {copyToClipBoardIcon}
         </IconButton>
@@ -84,9 +84,9 @@ export const CopyToClipboardButton = ({ clipboardValue, onGetClipboardValue, but
     <Button
       {...buttonProps}
       color={copyToClipBoardButtonColor}
+      onClick={onCopyToClipboardButtonClick}
       startIcon={copyToClipBoardIcon}
       variant={buttonVariant ?? 'contained'}
-      onClick={onCopyToClipboardButtonClick}
     >
       {buttonText ?? t`Copy to clipboard`}
     </Button>

@@ -15,9 +15,10 @@ export type ApplicationFooterLinkSectionProps = PropsWithChildren<{
   readonly header: string;
 }>;
 
-export const ApplicationFooterLinkSection = ({ header, children }: ApplicationFooterLinkSectionProps) => {
+export const ApplicationFooterLinkSection = ({ children, header }: ApplicationFooterLinkSectionProps) => {
   const theme = useTheme();
 
+  // eslint-disable-next-line @eslint-react/no-children-for-each
   Children.forEach(children, (child) => {
     if ((child as ReactElement)?.type !== ApplicationFooterLink) {
       throw Error('ApplicationFooterLinkSection only accepts ApplicationFooterLink as children');
@@ -31,11 +32,11 @@ export const ApplicationFooterLinkSection = ({ header, children }: ApplicationFo
       <Typography
         component={'h2'}
         sx={{
-          color: theme['gen-epix'].footer.color,
           borderBottom: `1px solid ${theme['gen-epix'].footer.sectionBorderColor}`,
+          color: theme['gen-epix'].footer.color,
+          fontWeight: 500,
           marginBottom: theme.spacing(1),
           paddingBottom: theme.spacing(1),
-          fontWeight: 500,
         }}
         variant={'h4'}
       >
@@ -45,8 +46,8 @@ export const ApplicationFooterLinkSection = ({ header, children }: ApplicationFo
         component={'ul'}
         sx={{
           listStyle: 'none',
-          padding: 0,
           margin: 0,
+          padding: 0,
         }}
       >
         {children}

@@ -6,24 +6,24 @@ import {
   useRef,
 } from 'react';
 import {
-  Select as MuiSelect,
+  Checkbox,
   FormControl,
   FormHelperText,
-  MenuItem,
+  IconButton,
+  InputAdornment,
   InputLabel,
   ListItemText,
-  Checkbox,
+  MenuItem,
+  Select as MuiSelect,
   OutlinedInput,
-  InputAdornment,
-  IconButton,
 } from '@mui/material';
 import type { SelectChangeEvent } from '@mui/material';
 import ClearIcon from '@mui/icons-material/Clear';
 import type {
-  UseControllerReturn,
-  FieldValues,
   ControllerRenderProps,
+  FieldValues,
   Path,
+  UseControllerReturn,
 } from 'react-hook-form';
 import {
   Controller,
@@ -38,30 +38,30 @@ import { TestIdUtil } from '../../../../utils/TestIdUtil';
 import { FormFieldHelperText } from '../../helpers/FormFieldHelperText';
 import { FormFieldLoadingIndicator } from '../../helpers/FormFieldLoadingIndicator';
 
-type Value = string | number | boolean;
-
 export type SelectProps<TFieldValues extends FieldValues, TName extends Path<TFieldValues>, TMultiple extends boolean> = {
   readonly disabled?: boolean;
   readonly label: string;
+  readonly loading?: boolean;
+  readonly multiple?: TMultiple;
   readonly name: TName;
   readonly onChange?: (value: string) => void;
-  readonly required?: boolean;
-  readonly warningMessage?: string | boolean;
   readonly options: SelectOption[];
-  readonly multiple?: TMultiple;
-  readonly loading?: boolean;
+  readonly required?: boolean;
+  readonly warningMessage?: boolean | string;
 };
+
+type Value = boolean | number | string;
 
 export const Select = <TFieldValues extends FieldValues, TName extends Path<TFieldValues> = Path<TFieldValues>, TMultiple extends boolean = false>({
   disabled = false,
   label,
   loading = false,
+  multiple,
   name,
   onChange: onChangeProp,
   options,
   required = false,
   warningMessage,
-  multiple,
 }: SelectProps<TFieldValues, TName, TMultiple>): ReactElement => {
   const { t } = useTranslation();
   const { control, formState: { errors } } = useFormContext<TFieldValues>();
@@ -98,7 +98,7 @@ export const Select = <TFieldValues extends FieldValues, TName extends Path<TFie
     }
   , [onChangeProp]);
 
-  const renderController = useCallback(({ field: { onChange, onBlur, value, ref } }: UseControllerReturn<TFieldValues, TName>) => {
+  const renderController = useCallback(({ field: { onBlur, onChange, ref, value } }: UseControllerReturn<TFieldValues, TName>) => {
     ref({
       focus: () => {
         inputRef?.current?.focus();
@@ -111,20 +111,19 @@ export const Select = <TFieldValues extends FieldValues, TName extends Path<TFie
     return (
       <>
         <InputLabel
-          error={hasError}
           className={classnames({ 'Mui-warning': hasWarning })}
-          required={required && !disabled}
+          error={hasError}
           htmlFor={id}
           id={labelId}
+          required={required && !disabled}
         >
           {label}
         </InputLabel>
         <MuiSelect<TFieldValues[TName]>
-          error={hasError}
           disabled={disabled || loading}
+          error={hasError}
           input={(
             <OutlinedInput
-              label={label}
               endAdornment={disabled ? undefined : (
                 <InputAdornment
                   position={'start'}
@@ -135,45 +134,46 @@ export const Select = <TFieldValues extends FieldValues, TName extends Path<TFie
                 >
                   <IconButton
                     {...TestIdUtil.createAttributes('TextField-reset')}
+                    aria-label={t`Clear selection`}
+                    // eslint-disable-next-line @eslint-react/kit/jsx-no-bind
+                    onClick={onResetButtonClick}
                     sx={{
                       '& svg': {
                         fontSize: '16px',
                       },
                     }}
                     tabIndex={-1}
-                    aria-label={t`Clear selection`}
-                    // eslint-disable-next-line react/jsx-no-bind
-                    onClick={onResetButtonClick}
                   >
                     <ClearIcon />
                   </IconButton>
                 </InputAdornment>
               )}
+              label={label}
             />
           )}
           inputProps={{
-            required: required && !disabled,
-            id,
-            'aria-labelledby': labelId,
             'aria-describedby': helperTextId,
             'aria-label': label,
-            ref: inputRef,
+            'aria-labelledby': labelId,
             className: classnames({
               'Mui-warning': hasWarning,
             }),
+            id,
+            ref: inputRef,
+            required: required && !disabled,
           }}
           multiple={multiple}
+          onBlur={onBlur}
+          onChange={onMuiSelectChange(onChange)}
           renderValue={renderValue}
           required={required}
           value={value ?? (multiple ? [] : '') as TFieldValues[TName]}
-          onBlur={onBlur}
-          onChange={onMuiSelectChange(onChange)}
         >
           { options.map((option) => {
             return (
               <MenuItem
-                key={option.value.toString()}
                 disabled={getIsOptionDisabled(option.value)}
+                key={option.value.toString()}
                 value={option.value as string}
               >
 
@@ -189,12 +189,12 @@ export const Select = <TFieldValues extends FieldValues, TName extends Path<TFie
         </MuiSelect>
         <FormHelperText
           className={classnames({ 'Mui-warning': hasWarning })}
-          sx={{ ml: 0 }}
           id={helperTextId}
+          sx={{ ml: 0 }}
         >
           <FormFieldHelperText
-            noIndent
             errorMessage={errorMessage}
+            noIndent
             warningMessage={warningMessage}
           />
         </FormHelperText>

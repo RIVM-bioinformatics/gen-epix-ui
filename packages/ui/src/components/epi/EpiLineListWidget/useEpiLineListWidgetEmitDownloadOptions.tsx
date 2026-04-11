@@ -1,6 +1,6 @@
 import {
+  use,
   useCallback,
-  useContext,
   useEffect,
 } from 'react';
 import { useTranslation } from 'react-i18next';
@@ -15,7 +15,7 @@ import { EpiLineListUtil } from '../../../utils/EpiLineListUtil';
 
 export const useEpiLineListWidgetEmitDownloadOptions = () => {
   const { t } = useTranslation();
-  const epiDashboardStore = useContext(EpiDashboardStoreContext);
+  const epiDashboardStore = use(EpiDashboardStoreContext);
   const sortedData = useStore(epiDashboardStore, useShallow((state) => state.sortedData));
   const completeCaseType = useStore(epiDashboardStore, useShallow((state) => state.completeCaseType));
 
@@ -26,56 +26,56 @@ export const useEpiLineListWidgetEmitDownloadOptions = () => {
   useEffect(() => {
     const emitDownloadOptions = (selectedIds: string[]) => {
       EpiEventBusManager.instance.emit('onDownloadOptionsChanged', {
-        zone: EPI_ZONE.LINE_LIST,
-        zoneLabel: t`Line list`,
         items: [
           {
-            label: t`All rows`,
+            disabled: !sortedData?.length,
             items: [
               {
-                label: t`Download as Excel`,
                 callback: async () => DownloadUtil.downloadAsExcel(sortedData, getVisibleColumnIds(), completeCaseType, t),
+                label: t`Download as Excel`,
               },
               {
-                label: t`Download as CSV`,
                 callback: () => DownloadUtil.downloadAsCsv(sortedData, getVisibleColumnIds(), completeCaseType, t),
+                label: t`Download as CSV`,
               },
               {
-                label: t`Download sequences`,
                 callback: () => EpiEventBusManager.instance.emit('openSequenceDownloadDialog', { cases: sortedData }),
+                label: t`Download sequences`,
               },
               {
-                label: t`Download allele profiles`,
-                disabled: true,
                 callback: () => null,
+                disabled: true,
+                label: t`Download allele profiles`,
               },
             ],
-            disabled: !sortedData?.length,
+            label: t`All rows`,
           },
           {
-            label: t`Selected rows`,
+            disabled: selectedIds.length === 0,
             items: [
               {
-                label: t`Download as Excel`,
                 callback: async () => DownloadUtil.downloadAsExcel(EpiLineListUtil.getSelectedRows(sortedData, selectedIds), getVisibleColumnIds(), completeCaseType, t),
+                label: t`Download as Excel`,
               },
               {
-                label: t`Download as CSV`,
                 callback: () => DownloadUtil.downloadAsCsv(EpiLineListUtil.getSelectedRows(sortedData, selectedIds), getVisibleColumnIds(), completeCaseType, t),
+                label: t`Download as CSV`,
               },
               {
-                label: t`Download sequences`,
                 callback: () => EpiEventBusManager.instance.emit('openSequenceDownloadDialog', { cases: sortedData.filter(c => selectedIds.includes(c.id)) }),
+                label: t`Download sequences`,
               },
               {
-                label: t`Download allele profiles`,
-                disabled: true,
                 callback: () => null,
+                disabled: true,
+                label: t`Download allele profiles`,
               },
             ],
-            disabled: selectedIds.length === 0,
+            label: t`Selected rows`,
           },
         ],
+        zone: EPI_ZONE.LINE_LIST,
+        zoneLabel: t`Line list`,
       });
     };
     emitDownloadOptions(epiDashboardStore.getState().selectedIds);
@@ -85,17 +85,17 @@ export const useEpiLineListWidgetEmitDownloadOptions = () => {
       }
     });
 
-
-    const removeEventListener = EpiEventBusManager.instance.addEventListener('onDownloadOptionsRequested', () => {
+    const onDownloadOptionsRequested = () => {
       emitDownloadOptions(epiDashboardStore.getState().selectedIds);
-    });
+    };
+    EpiEventBusManager.instance.addEventListener('onDownloadOptionsRequested', onDownloadOptionsRequested);
     return () => {
       EpiEventBusManager.instance.emit('onDownloadOptionsChanged', {
-        zone: EPI_ZONE.LINE_LIST,
         items: null,
+        zone: EPI_ZONE.LINE_LIST,
         zoneLabel: t`Line list`,
       });
-      removeEventListener();
+      EpiEventBusManager.instance.removeEventListener('onDownloadOptionsRequested', onDownloadOptionsRequested);
       unsubscribe();
     };
   }, [completeCaseType, epiDashboardStore, getVisibleColumnIds, sortedData, t]);

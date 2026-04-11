@@ -6,20 +6,20 @@ import type { EpiCaseHasCaseSet } from '../../../models/epi';
 import { QUERY_KEY } from '../../../models/query';
 import { QueryUtil } from '../../../utils/QueryUtil';
 
-type QueueItem = { caseId: string; promise: Promise<boolean>; resolve: (result: boolean) => void; reject: () => void; isFetching: boolean };
+type QueueItem = { caseId: string; isFetching: boolean; promise: Promise<boolean>; reject: () => void; resolve: (result: boolean) => void };
 
 export class EpiLineListCaseSetMembersManager {
-  private readonly queuedCases: { [caseId: string]: QueueItem } = {};
-
-  private constructor() {
-    //
-  }
-
   public static get instance(): EpiLineListCaseSetMembersManager {
     // Instances are stored on the window to prevent multiple instances of the same manager. HMR may load multiple instances of the same manager, but we only want one instance to be active at a time.
 
     WindowManager.instance.window.managers.epiLineListCaseSetMembers = WindowManager.instance.window.managers.epiLineListCaseSetMembers || new EpiLineListCaseSetMembersManager();
     return WindowManager.instance.window.managers.epiLineListCaseSetMembers;
+  }
+
+  private readonly queuedCases: { [caseId: string]: QueueItem } = {};
+
+  private constructor() {
+    //
   }
 
   public cleanStaleQueue(): void {
@@ -59,8 +59,8 @@ export class EpiLineListCaseSetMembersManager {
       const caseSetMembersResult = (await CaseApi.instance.caseSetMembersPostQuery({
         invert: false,
         key: 'case_id',
-        type: 'UUID_SET',
         members: caseIdsToFetch,
+        type: 'UUID_SET',
       })).data;
 
       caseSetMembersResult.forEach((caseSetMember: CaseSetMember) => {
@@ -96,10 +96,6 @@ export class EpiLineListCaseSetMembersManager {
     return this.queuedCases[caseId].promise;
   }
 
-  private getItemFromCache(caseId: string): boolean {
-    return QueryUtil.getValidQueryData<EpiCaseHasCaseSet>([QUERY_KEY.XXX_CASE_ID_HAS_CASE_SET])?.[caseId];
-  }
-
   private createQueueItem(caseId: string): QueueItem {
     let resolve: (result: boolean) => void;
     let reject: () => void;
@@ -109,10 +105,14 @@ export class EpiLineListCaseSetMembersManager {
     });
     return {
       caseId,
-      promise,
-      resolve,
-      reject,
       isFetching: false,
+      promise,
+      reject,
+      resolve,
     };
+  }
+
+  private getItemFromCache(caseId: string): boolean {
+    return QueryUtil.getValidQueryData<EpiCaseHasCaseSet>([QUERY_KEY.XXX_CASE_ID_HAS_CASE_SET])?.[caseId];
   }
 }

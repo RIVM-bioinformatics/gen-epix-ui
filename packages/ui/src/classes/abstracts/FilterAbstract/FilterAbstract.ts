@@ -6,21 +6,21 @@ export enum FILTER_MODE {
 export const DEFAULT_FILTER_GROUP = 'DEFAULT';
 
 export interface FilterAbstractKwArgs {
-  id: string;
-  label: string;
+  filterDimensionId?: string;
   filterMode: FILTER_MODE;
   filterPriority: string;
-  filterDimensionId?: string;
+  id: string;
+  label: string;
 }
 
 export abstract class FilterAbstract<TFilterValue> {
-  public initialFilterValue: TFilterValue;
-  public filterValue: TFilterValue;
-  public label: string;
-  public id: string;
+  public filterDimensionId: string;
   public filterMode: FILTER_MODE;
   public filterPriority: string;
-  public filterDimensionId: string;
+  public filterValue: TFilterValue;
+  public id: string;
+  public initialFilterValue: TFilterValue;
+  public label: string;
 
   public constructor(kwArgs: FilterAbstractKwArgs) {
     this.id = kwArgs.id;
@@ -30,15 +30,6 @@ export abstract class FilterAbstract<TFilterValue> {
     this.filterDimensionId = kwArgs.filterDimensionId ?? null;
   }
 
-  public setFilterValue(value: unknown): void {
-    this.filterValue = value as TFilterValue;
-  }
-
-  public isInitialFilterValue(value?: unknown): boolean {
-    const usedValue = value !== undefined ? value : this.filterValue;
-    return JSON.stringify(usedValue) === JSON.stringify(this.initialFilterValue);
-  }
-
   public fromURLSearchParameterValue(searchParameterValue: string): TFilterValue {
     try {
       return JSON.parse(searchParameterValue) as TFilterValue;
@@ -46,6 +37,15 @@ export abstract class FilterAbstract<TFilterValue> {
       console.error('Error parsing search parameter value:', error);
       return null;
     }
+  }
+
+  public isInitialFilterValue(value?: unknown): boolean {
+    const usedValue = value !== undefined ? value : this.filterValue;
+    return JSON.stringify(usedValue) === JSON.stringify(this.initialFilterValue);
+  }
+
+  public setFilterValue(value: unknown): void {
+    this.filterValue = value as TFilterValue;
   }
 
   public toURLSearchParameterValue(): string {

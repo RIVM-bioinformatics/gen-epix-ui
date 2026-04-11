@@ -12,11 +12,11 @@ import type { EPI_ZONE } from '../../../models/epi';
 import { userProfileStore } from '../../../stores/userProfileStore';
 
 export type EpiWidgetUnavailableProps = {
-  readonly widgetName: string;
   readonly epiZone: EPI_ZONE;
+  readonly widgetName: string;
 };
 
-export const EpiWidgetUnavailable = ({ widgetName, epiZone }: EpiWidgetUnavailableProps) => {
+export const EpiWidgetUnavailable = ({ epiZone, widgetName }: EpiWidgetUnavailableProps) => {
   const { t } = useTranslation();
   const epiDashboardLayoutUserConfig = useStore(userProfileStore, (state) => state.epiDashboardLayoutUserConfig);
   const setEpiDashboardLayoutUserConfig = useStore(userProfileStore, (state) => state.setEpiDashboardLayoutUserConfig);
@@ -51,9 +51,9 @@ export const EpiWidgetUnavailable = ({ widgetName, epiZone }: EpiWidgetUnavailab
       >
         <Button
           color={'primary'}
+          onClick={onDisableButtonClick}
           size={'small'}
           variant={'outlined'}
-          onClick={onDisableButtonClick}
         >
           {t('Hide {{widgetName}}', { widgetName })}
         </Button>

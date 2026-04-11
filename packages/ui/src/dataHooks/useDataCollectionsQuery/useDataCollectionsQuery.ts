@@ -14,11 +14,11 @@ import { useQueryMemo } from '../../hooks/useQueryMemo';
 
 export const useDataCollectionsQuery = (dataCollectionIds?: string[]): UseQueryResult<DataCollection[]> => {
   return useQueryMemo({
-    queryKey: QueryUtil.getGenericKey(QUERY_KEY.DATA_COLLECTIONS),
     queryFn: async ({ signal }) => {
       const response = await OrganizationApi.instance.dataCollectionsGetAll({ signal });
       return response.data;
     },
+    queryKey: QueryUtil.getGenericKey(QUERY_KEY.DATA_COLLECTIONS),
     select: (items) => {
       if (dataCollectionIds) {
         return items.filter(item => dataCollectionIds.includes(item.id));

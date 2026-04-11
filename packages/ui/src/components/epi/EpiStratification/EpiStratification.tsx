@@ -9,8 +9,8 @@ import type {
   ReactElement,
 } from 'react';
 import {
+  use,
   useCallback,
-  useContext,
   useMemo,
   useState,
 } from 'react';
@@ -29,8 +29,8 @@ import { ConfigManager } from '../../../classes/managers/ConfigManager';
 import { EpiHighlightingManager } from '../../../classes/managers/EpiHighlightingManager';
 import type { StratificationLegendaItem } from '../../../models/epi';
 import {
-  STRATIFICATION_MODE,
   EPI_ZONE,
+  STRATIFICATION_MODE,
 } from '../../../models/epi';
 import type { MenuItemData } from '../../../models/nestedMenu';
 import { EpiDashboardStoreContext } from '../../../stores/epiDashboardStore';
@@ -38,7 +38,7 @@ import { NestedDropdown } from '../../ui/NestedMenu';
 
 export const EpiStratification = () => {
   const { t } = useTranslation();
-  const epiDashboardStore = useContext(EpiDashboardStoreContext);
+  const epiDashboardStore = use(EpiDashboardStoreContext);
   const highlightingManager = useMemo(() => EpiHighlightingManager.instance, []);
 
   const stratification = useStore(epiDashboardStore, (state) => state.stratification);
@@ -68,33 +68,33 @@ export const EpiStratification = () => {
 
 
     return produce<MenuItemData>({
-      label,
-      tooltip: t('Grouping allows you to group cases by a selected field. Grouping will be disabled when the maximum unique values of the selected field exceeds {{max_stratification_unique_values}}.', { max_stratification_unique_values: ConfigManager.instance.config.epi.STRATIFICATION_COLORS.length }),
       disabled: stratifyableColumns.length === 0,
       items: [{
-        label: 'None',
+        active: !stratification,
         callback: () => {
           stratify(null);
         },
-        active: !stratification,
         divider: true,
+        label: 'None',
       },
       {
-        label: 'Selected rows',
+        active: stratification?.mode === STRATIFICATION_MODE.SELECTION,
         callback: () => {
           stratify(stratification?.mode === STRATIFICATION_MODE.SELECTION ? null : STRATIFICATION_MODE.SELECTION);
         },
-        active: stratification?.mode === STRATIFICATION_MODE.SELECTION,
         divider: true,
+        label: 'Selected rows',
       }],
+      label,
+      tooltip: t('Grouping allows you to group cases by a selected field. Grouping will be disabled when the maximum unique values of the selected field exceeds {{max_stratification_unique_values}}.', { max_stratification_unique_values: ConfigManager.instance.config.epi.STRATIFICATION_COLORS.length }),
     }, draft => {
       stratifyableColumns
         .forEach(stratifyableCol => {
           draft.items.push({
-            label: stratifyableCol.col.label,
-            callback: () => onStratifyMenuItemClick(stratifyableCol.col),
             active: stratification?.col?.id === stratifyableCol.col.id,
+            callback: () => onStratifyMenuItemClick(stratifyableCol.col),
             disabled: !stratifyableCol.enabled,
+            label: stratifyableCol.col.label,
           });
         });
       return draft;
@@ -128,8 +128,8 @@ export const EpiStratification = () => {
     setFocussedLegendaItem(legendaItem);
     setEpiContextMenuConfig({
       anchorElement: event.currentTarget,
-      parseIdsFromAnchorElement,
       mouseEvent: event.nativeEvent,
+      parseIdsFromAnchorElement,
     });
   }, [parseIdsFromAnchorElement]);
 
@@ -170,7 +170,7 @@ export const EpiStratification = () => {
     return (
       <MenuItem
         divider
-        // eslint-disable-next-line react/jsx-no-bind
+        // eslint-disable-next-line @eslint-react/kit/jsx-no-bind
         onClick={async () => onShowOnlySelectedLegendaItemMenuItemClick(onMenuClose)}
       >
         <ListItemIcon>
@@ -192,22 +192,22 @@ export const EpiStratification = () => {
     >
       <Box>
         <NestedDropdown
-          showTopLevelTooltip
           ButtonProps={{
-            variant: 'text',
-            size: 'small',
             color: 'inherit',
+            size: 'small',
             sx: {
-              margin: 0,
-              padding: 0,
-              background: 'none !important',
               '& span': {
                 margin: 0,
               },
+              background: 'none !important',
+              margin: 0,
+              padding: 0,
               textTransform: 'none',
             },
+            variant: 'text',
           }}
           menuItemsData={stratificationMenu}
+          showTopLevelTooltip
         />
       </Box>
       {stratification?.legendaItems.map(legendaItem => (
@@ -218,18 +218,18 @@ export const EpiStratification = () => {
           }}
         >
           <EpiLegendaItem
-            tooltip
             color={legendaItem.color}
-            rowValue={legendaItem.rowValue}
-            tooltipProps={{
-              placement: 'top',
-              arrow: true,
-            }}
             disabled={legendaItem.caseIds.length === 0}
-            // eslint-disable-next-line react/jsx-no-bind
+
             onItemClick={stratification.mode === STRATIFICATION_MODE.FIELD ? (event) => onLegendaItemClick(event, legendaItem) : undefined}
             onMouseLeave={onLegendaItemMouseLeave}
             onMouseOver={onLegendaItemMouseOver}
+            rowValue={legendaItem.rowValue}
+            tooltip
+            tooltipProps={{
+              arrow: true,
+              placement: 'top',
+            }}
           />
         </Box>
       ))}

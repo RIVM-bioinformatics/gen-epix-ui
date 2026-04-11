@@ -1,16 +1,16 @@
 import {
-  useTheme,
   Box,
   Container,
   IconButton,
+  useTheme,
 } from '@mui/material';
 import MenuIcon from '@mui/icons-material/Menu';
 import {
   useCallback,
-  useState,
-  useId,
   useEffect,
+  useId,
   useMemo,
+  useState,
 } from 'react';
 import { useTranslation } from 'react-i18next';
 
@@ -55,22 +55,22 @@ export const ApplicationFooter = ({ fullWidth }: ApplicationFooterProps) => {
       component={'footer'}
       sx={{
         background: theme['gen-epix'].footer.background,
+        position: 'relative',
         [theme.breakpoints.up('md')]: {
           paddingBottom: theme.spacing(1),
         },
-        position: 'relative',
       }}
     >
       <IconButton
-        aria-label={t`Toggle footer menu`}
         aria-controls={navId}
+        aria-label={t`Toggle footer menu`}
+        onClick={onMenuButtonClick}
         sx={{
           color: theme.palette.primary.contrastText,
           [theme.breakpoints.up('md')]: {
             display: 'none',
           },
         }}
-        onClick={onMenuButtonClick}
       >
         <MenuIcon />
       </IconButton>
@@ -79,36 +79,36 @@ export const ApplicationFooter = ({ fullWidth }: ApplicationFooterProps) => {
         sx={{
           display: 'grid',
           gridTemplateColumns: 'repeat(1, 1fr)',
-          [theme.breakpoints.up('sm')]: {
-            gridTemplateColumns: 'repeat(2, 1fr)',
+          paddingLeft: '0 !important',
+          paddingRight: '0 !important',
+          [theme.breakpoints.down('md')]: {
+            background: theme['gen-epix'].footer.background,
+            bottom: theme.spacing(5),
+            display: isMenuOpen ? 'block' : 'none',
+            left: 0,
+            position: 'absolute',
+            width: '100%',
+            zIndex: theme.zIndex.appBar - 1,
           },
           [theme.breakpoints.up('md')]: {
             gridTemplateColumns: `repeat(${footer.sections.length}, 1fr)`,
           },
-          paddingLeft: '0 !important',
-          paddingRight: '0 !important',
-          [theme.breakpoints.down('md')]: {
-            display: isMenuOpen ? 'block' : 'none',
-            position: 'absolute',
-            background: theme['gen-epix'].footer.background,
-            bottom: theme.spacing(5),
-            left: 0,
-            width: '100%',
-            zIndex: theme.zIndex.appBar - 1,
+          [theme.breakpoints.up('sm')]: {
+            gridTemplateColumns: 'repeat(2, 1fr)',
           },
         }}
       >
         {footer.sections.map((section) => (
           <ApplicationFooterLinkSection
-            key={section.header}
             header={section.header}
+            key={section.header}
           >
             {section.items.map((item) => (
               <ApplicationFooterLink
-                key={item.label}
                 href={item.href}
-                sx={{ mb: 0.5 }}
+                key={item.label}
                 onClick={item.onClick}
+                sx={{ mb: 0.5 }}
               >
                 {item.label}
               </ApplicationFooterLink>

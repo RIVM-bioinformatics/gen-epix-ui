@@ -1,9 +1,9 @@
 import type { BoxProps } from '@mui/material';
 import {
   Box,
-  useTheme,
   StepIcon,
   Typography,
+  useTheme,
 } from '@mui/material';
 import type { ReactNode } from 'react';
 import { useCallback } from 'react';
@@ -16,23 +16,23 @@ import { TestIdUtil } from '../../../utils/TestIdUtil';
 import { STEPPER_DIRECTION } from './stepperModel';
 
 export type Step = {
+  content?: ReactNode;
+  index?: string;
   key: string;
   label: string;
   optional?: boolean;
-  content?: ReactNode;
-  index?: string;
 };
 
 export type StepperProps = {
-  readonly steps: Step[];
   readonly activeStep: string;
   readonly direction?: STEPPER_DIRECTION;
   readonly hideCompletedIndicator?: boolean;
+  readonly steps: Step[];
 } & BoxProps;
 
 // NOTE: This Stepper component is an alternative for the MUI Stepper component, because it is more accessibility friendly
 
-export const Stepper = ({ steps, activeStep, direction = STEPPER_DIRECTION.HORIZONTAL, hideCompletedIndicator = false, ...boxProps }: StepperProps) => {
+export const Stepper = ({ activeStep, direction = STEPPER_DIRECTION.HORIZONTAL, hideCompletedIndicator = false, steps, ...boxProps }: StepperProps) => {
   const theme = useTheme();
   const { t } = useTranslation();
 
@@ -52,79 +52,79 @@ export const Stepper = ({ steps, activeStep, direction = STEPPER_DIRECTION.HORIZ
 
   const isActiveStep = useCallback((key: string) => {
     return key === activeStep;
-  } , [activeStep]);
+  }, [activeStep]);
 
   return (
     <Box
       {...TestIdUtil.createAttributes('Stepper', { 'active-step': activeStep })}
       {...omit(boxProps, ['sx'])}
+      role={'presentation'}
       sx={{
         position: 'relative',
         ...boxProps.sx,
       }}
-      role={'presentation'}
     >
       <Box
+        component={'ol'}
         sx={direction === STEPPER_DIRECTION.HORIZONTAL ? {
+          alignItems: 'center',
+          bottom: 0,
           display: 'flex',
           flexDirection: 'row',
-          alignItems: 'center',
-          justifyContent: 'space-between',
           gap: 1,
-          position: 'absolute',
-          top: 0,
+          justifyContent: 'space-between',
           left: 0,
-          right: 0,
-          bottom: 0,
           margin: 0,
           padding: 0,
+          position: 'absolute',
+          right: 0,
+          top: 0,
         } : {
+          alignItems: 'flex-start',
           display: 'flex',
           flexDirection: 'column',
-          alignItems: 'flex-start',
-          justifyContent: 'space-between',
           gap: 1,
-          position: 'relative',
-          padding: 0,
+          justifyContent: 'space-between',
           margin: 0,
+          padding: 0,
+          position: 'relative',
         }}
-        component={'ol'}
       >
         {steps.map((step, index) => (
           <Box
-            key={step.key}
+            aria-current={isActiveStep(step.key) ? 'step' : undefined}
             component={'li'}
+            key={step.key}
             sx={{
+              alignItems: direction === STEPPER_DIRECTION.HORIZONTAL ? 'center' : 'flex-start',
               background: theme.palette.background.default,
-              paddingLeft: direction === STEPPER_DIRECTION.VERTICAL || isFirstStep(step.key) ? 0 : 2,
-              paddingRight: direction === STEPPER_DIRECTION.VERTICAL || isLastStep(step.key) ? 0 : 2,
               display: 'flex',
               flexDirection: 'row',
-              alignItems: direction === STEPPER_DIRECTION.HORIZONTAL ? 'center' : 'flex-start',
               gap: 1,
-              zIndex: 2,
+              paddingLeft: direction === STEPPER_DIRECTION.VERTICAL || isFirstStep(step.key) ? 0 : 2,
+              paddingRight: direction === STEPPER_DIRECTION.VERTICAL || isLastStep(step.key) ? 0 : 2,
               position: 'relative',
+              zIndex: 2,
             }}
-            aria-current={isActiveStep(step.key) ? 'step' : undefined}
           >
             <Box>
               <StepIcon
-                completed={hideCompletedIndicator ? false : isCompletedStep(step.key)}
                 active={isActiveStep(step.key)}
-                icon={step.index ?? index + 1}
                 aria-hidden={'true'}
+                completed={hideCompletedIndicator ? false : isCompletedStep(step.key)}
+                icon={step.index ?? index + 1}
               />
             </Box>
             {direction === STEPPER_DIRECTION.VERTICAL && (
               <Box
                 role={'presentation'}
                 sx={{
-                  width: '1px',
-                  height: '100%',
-                  position: 'absolute',
                   background: isLastStep(step.key) ? theme.palette.background.default : theme.palette.divider,
+                  height: '100%',
                   marginLeft: theme.spacing(1.5),
+                  position: 'absolute',
                   top: theme.spacing(1.5),
+                  width: '1px',
                   zIndex: -1,
                 }}
               />
@@ -132,16 +132,16 @@ export const Stepper = ({ steps, activeStep, direction = STEPPER_DIRECTION.HORIZ
             <Box>
               {isActiveStep(step.key) && (
                 <Typography
-                  sx={visuallyHidden}
                   component={'span'}
+                  sx={visuallyHidden}
                 >
                   {t`Current: `}
                 </Typography>
               )}
               {isCompletedStep(step.key) && (
                 <Typography
-                  sx={visuallyHidden}
                   component={'span'}
+                  sx={visuallyHidden}
                 >
                   {t`Completed: `}
                 </Typography>
@@ -156,12 +156,12 @@ export const Stepper = ({ steps, activeStep, direction = STEPPER_DIRECTION.HORIZ
               </Typography>
               {step.optional && (
                 <Typography
-                  variant={'caption'}
                   color={'text.secondary'}
                   component={'span'}
                   sx={{
                     display: 'block',
                   }}
+                  variant={'caption'}
                 >
                   {t`Optional`}
                 </Typography>

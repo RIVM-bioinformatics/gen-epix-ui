@@ -16,11 +16,11 @@ import { TestIdUtil } from '../../utils/TestIdUtil';
 
 export const CasesDetailPage = () => {
   const { t } = useTranslation();
-  const { slug, caseTypeId } = useParams();
+  const { caseTypeId, slug } = useParams();
 
   const updateBreadcrumb = useUpdateBreadcrumb('Case type');
 
-  const { isLoading, error, data: caseType } = useItemQuery({
+  const { data: caseType, error, isLoading } = useItemQuery({
     baseQueryKey: QUERY_KEY.CASE_TYPES,
     itemId: caseTypeId,
     useQueryOptions: {

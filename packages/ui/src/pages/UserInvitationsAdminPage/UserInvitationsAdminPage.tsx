@@ -10,31 +10,31 @@ import {
   string,
 } from 'yup';
 import {
-  MenuItem,
-  ListItemText,
   ListItemIcon,
+  ListItemText,
+  MenuItem,
 } from '@mui/material';
 import MailIcon from '@mui/icons-material/Mail';
 import PasswordIcon from '@mui/icons-material/Password';
 
 import type { UserInvitation } from '../../api';
 import {
-  OrganizationApi,
   CommandName,
+  OrganizationApi,
 } from '../../api';
 import { useOrganizationAdminPolicyMapQuery } from '../../dataHooks/useOrganizationAdminPoliciesQuery';
 import { useOrganizationOptionsQuery } from '../../dataHooks/useOrganizationsQuery';
 import { useUserOptionsQuery } from '../../dataHooks/useUsersQuery';
 import { useArray } from '../../hooks/useArray';
 import type {
-  OptionBase,
   FormFieldDefinition,
+  OptionBase,
 } from '../../models/form';
 import { FORM_FIELD_DEFINITION_TYPE } from '../../models/form';
 import { QUERY_KEY } from '../../models/query';
 import type {
-  TableRowParams,
   TableColumn,
+  TableRowParams,
 } from '../../models/table';
 import { TableUtil } from '../../utils/TableUtil';
 import { TestIdUtil } from '../../utils/TestIdUtil';
@@ -50,7 +50,7 @@ import {
   type UserInvitationConsumeDialogRefMethods,
 } from './UserInvitationConsumeDialog';
 
-type FormFields = OmitWithMetaData<UserInvitation, 'organization' | 'token' | 'expires_at' | 'invited_by_user_id' | 'invited_by_user' | 'email' | 'name'>;
+type FormFields = OmitWithMetaData<UserInvitation, 'email' | 'expires_at' | 'invited_by_user_id' | 'invited_by_user' | 'name' | 'organization' | 'token'>;
 
 export const UserInvitationsAdminPage = () => {
   const { t } = useTranslation();
@@ -72,8 +72,8 @@ export const UserInvitationsAdminPage = () => {
       return [];
     }
     return inviteUserConstraintsQuery.data.roles.map(role => ({
-      value: role,
       label: `ROLE_${role}`,
+      value: role,
     }));
   }, [inviteUserConstraintsQuery.data]);
 
@@ -102,10 +102,10 @@ export const UserInvitationsAdminPage = () => {
 
   const schema = useMemo(() => {
     return object<FormFields>().shape({
+      description: SchemaUtil.description,
       key: string().max(100).transform((value) => value === '' ? undefined : value as string),
       organization_id: string().uuid4().required().max(100),
       roles: array().min(1).required(),
-      description: SchemaUtil.description,
     });
   }, []);
 
@@ -125,29 +125,29 @@ export const UserInvitationsAdminPage = () => {
     fields.push(
       {
         definition: FORM_FIELD_DEFINITION_TYPE.TEXTFIELD,
-        name: 'key',
         label: t`Key`,
+        name: 'key',
         warningMessage: t`If known, fill in the user's key. This is typically the user's email address, but can be any string depending on the Identity Provider. Filling in a key makes the invitation more secure. If left empty, the invitation can be consumed by anyone with the invite link.`,
       } as const satisfies FormFieldDefinition<FormFields>,
       {
         definition: FORM_FIELD_DEFINITION_TYPE.AUTOCOMPLETE,
-        name: 'organization_id',
         label: t`Organization`,
-        options: organizationOptions,
         loading: organizationOptionsQuery.isLoading,
+        name: 'organization_id',
+        options: organizationOptions,
       } as const satisfies FormFieldDefinition<FormFields>,
       {
         definition: FORM_FIELD_DEFINITION_TYPE.AUTOCOMPLETE,
+        label: t`Roles`,
+        loading: inviteUserConstraintsQuery.isLoading,
         multiple: true,
         name: 'roles',
-        label: t`Roles`,
         options: roleOptions,
-        loading: inviteUserConstraintsQuery.isLoading,
       } as const satisfies FormFieldDefinition<FormFields>,
       {
         definition: FORM_FIELD_DEFINITION_TYPE.TEXTFIELD,
-        name: 'description',
         label: t`Description`,
+        name: 'description',
       } as const satisfies FormFieldDefinition<FormFields>,
     );
     return fields;
@@ -158,7 +158,7 @@ export const UserInvitationsAdminPage = () => {
       (
         <MenuItem
           key={'custom-action-1'}
-          // eslint-disable-next-line react/jsx-no-bind
+          // eslint-disable-next-line @eslint-react/kit/jsx-no-bind
           onClick={() => userInvitationShareDialogRef.current.open({ item: params.row })}
         >
           <ListItemIcon>
@@ -172,7 +172,7 @@ export const UserInvitationsAdminPage = () => {
       (
         <MenuItem
           key={'custom-action-2'}
-          // eslint-disable-next-line react/jsx-no-bind
+          // eslint-disable-next-line @eslint-react/kit/jsx-no-bind
           onClick={() => userInvitationConsumeDialogRef.current.open({ item: params.row })}
         >
           <ListItemIcon>
@@ -200,8 +200,8 @@ export const UserInvitationsAdminPage = () => {
   return (
     <>
       <CrudPage<FormFields, UserInvitation>
-        createItemDialogTitle={t`Create new user invitation`}
         createItemButtonText={t`Invite user`}
+        createItemDialogTitle={t`Create new user invitation`}
         createOne={createOne}
         crudCommandType={CommandName.UserInvitationCrudCommand}
         customOnRowClick={customOnRowClick}
@@ -213,12 +213,12 @@ export const UserInvitationsAdminPage = () => {
         formFieldDefinitions={formFieldDefinitions}
         getName={getName}
         loadables={loadables}
+        onCreateSuccess={onCreateSuccess}
         resourceQueryKeyBase={QUERY_KEY.USER_INVITATIONS}
         schema={schema}
         tableColumns={tableColumns}
         testIdAttributes={TestIdUtil.createAttributes('UserInvitationsAdminPage')}
         title={t`User invitations`}
-        onCreateSuccess={onCreateSuccess}
       />
       <UserInvitationShareDialog ref={userInvitationShareDialogRef} />
       <UserInvitationConsumeDialog ref={userInvitationConsumeDialogRef} />

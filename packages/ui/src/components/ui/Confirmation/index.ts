@@ -1,2 +1,2 @@
-export * from './ConfirmationRender';
 export * from './Confirmation';
+export * from './ConfirmationRender';

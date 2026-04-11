@@ -20,12 +20,12 @@ export type EpiCompletCaseTypeLoaderProps = PropsWithChildren<{
   readonly onCompleteCaseTypeLoaded?: (completeCaseType: CompleteCaseType) => void;
 }>;
 
-export const EpiCompletCaseTypeLoader = ({ caseTypeId, onCompleteCaseTypeLoaded, children }: EpiCompletCaseTypeLoaderProps) => {
+export const EpiCompletCaseTypeLoader = ({ caseTypeId, children, onCompleteCaseTypeLoaded }: EpiCompletCaseTypeLoaderProps) => {
   const { t } = useTranslation();
   const [isSideEffectLoading, setIsSideEffectLoading] = useState(true);
   const [sideEffectError, setSideEffectError] = useState<Error>();
 
-  const { isLoading: isCompleteCaseTypeLoading, error: completeCaseTypeError, data: completeCaseType } = useItemQuery({
+  const { data: completeCaseType, error: completeCaseTypeError, isLoading: isCompleteCaseTypeLoading } = useItemQuery({
     baseQueryKey: QUERY_KEY.COMPLETE_CASE_TYPES,
     itemId: caseTypeId,
     useQueryOptions: {
@@ -71,8 +71,8 @@ export const EpiCompletCaseTypeLoader = ({ caseTypeId, onCompleteCaseTypeLoaded,
     <Box
       sx={{
         height: '100%',
-        width: '100%',
         position: 'relative',
+        width: '100%',
       }}
     >
       <ResponseHandler

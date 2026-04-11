@@ -22,72 +22,51 @@ import { RouterRoot } from '../components/app/RouterRoot';
 
 import { createAdminRoutes } from './adminRoutes';
 
-
 export const createRoutes = (t: TFunction<'translation', undefined>): MyNonIndexRouteObject[] => {
   const adminRoutes = createAdminRoutes(t);
+
   return [
     {
-      path: '/post-logout',
-      Component: () => <PostLogoutPage />,
+      Component: PostLogoutPage,
       errorElement: <RouterErrorPage />,
       handle: {
-        title: t`Post Logout`,
         hidden: true,
         requiredPermissions: [],
         requiresUserProfile: false,
+        title: t`Post Logout`,
       },
+      path: '/post-logout',
     },
     {
-      path: '/',
-      Component: () => <RouterRoot />,
-      errorElement: <RouterErrorPage />,
-      handle: {
-        root: true,
-        title: t`Home`,
-        icon: <HomeIcon />,
-        requiredPermissions: [],
-        requiresUserProfile: true,
-      },
       children: [
         {
-          path: '/accept-invitation/:token',
-          Component: () => <AcceptInvitationPage />,
+          Component: AcceptInvitationPage,
           errorElement: <RouterErrorPage />,
           handle: {
+            hidden: true,
+            requiredPermissions: [],
+            requiresUserProfile: false,
             title: t`Accept Invitation`,
+          },
+          path: '/accept-invitation/:token',
+        },
+        {
+          Component: PostLoginPage,
+          errorElement: <RouterErrorPage />,
+          handle: {
             hidden: true,
             requiredPermissions: [],
             requiresUserProfile: false,
-          },
-        },
-        {
-          path: '/post-login',
-          Component: () => <PostLoginPage />,
-          errorElement: <RouterErrorPage />,
-          handle: {
             title: t`Post Login`,
-            hidden: true,
-            requiredPermissions: [],
-            requiresUserProfile: false,
           },
+          path: '/post-login',
         },
         {
-          path: '/cases',
-          errorElement: <RouterErrorPage />,
-          handle: {
-            title: t`Cases`,
-            hidden: false,
-            requiredPermissions: [],
-            requiresUserProfile: true,
-          },
           children: [
             {
-              index: true,
-              path: '/cases',
-              Component: () => <CasesPage />,
+              Component: CasesPage,
               errorElement: <RouterErrorPage />,
               handle: {
-                title: t`Cases`,
                 hidden: false,
                 requiredPermissions: [
                   { command_name: CommandName.CaseTypeSetCategoryCrudCommand, permission_type: PermissionType.READ },
@@ -96,14 +75,15 @@ export const createRoutes = (t: TFunction<'translation', undefined>): MyNonIndex
                   { command_name: CommandName.RetrieveCaseStatsCommand, permission_type: PermissionType.EXECUTE },
                 ],
                 requiresUserProfile: true,
+                title: t`Cases`,
               },
+              index: true,
+              path: '/cases',
             },
             {
-              path: '/cases/:slug/:caseTypeId',
-              Component: () => <CasesDetailPage />,
+              Component: CasesDetailPage,
               errorElement: <RouterErrorPage />,
               handle: {
-                title: t`Case type`,
                 hidden: false,
                 requiredPermissions: [
                   { command_name: CommandName.CaseTypeCrudCommand, permission_type: PermissionType.READ },
@@ -115,26 +95,26 @@ export const createRoutes = (t: TFunction<'translation', undefined>): MyNonIndex
                   { command_name: CommandName.RetrievePhylogeneticTreeByCasesCommand, permission_type: PermissionType.EXECUTE },
                 ],
                 requiresUserProfile: true,
+                title: t`Case type`,
               },
+              path: '/cases/:slug/:caseTypeId',
             },
           ],
-        },
-        {
-          path: '/events',
           errorElement: <RouterErrorPage />,
           handle: {
-            title: t`Events`,
             hidden: false,
             requiredPermissions: [],
             requiresUserProfile: true,
+            title: t`Cases`,
           },
+          path: '/cases',
+        },
+        {
           children: [
             {
-              index: true,
-              Component: () => <EventsPage />,
+              Component: EventsPage,
               errorElement: <RouterErrorPage />,
               handle: {
-                title: t`Events`,
                 hidden: false,
                 requiredPermissions: [
                   { command_name: CommandName.CaseTypeSetCategoryCrudCommand, permission_type: PermissionType.READ },
@@ -147,14 +127,14 @@ export const createRoutes = (t: TFunction<'translation', undefined>): MyNonIndex
                   { command_name: CommandName.RetrieveCaseStatsCommand, permission_type: PermissionType.EXECUTE },
                 ],
                 requiresUserProfile: true,
+                title: t`Events`,
               },
+              index: true,
             },
             {
-              path: '/events/:slug/:caseSetId',
-              Component: () => <EventsDetailPage />,
+              Component: EventsDetailPage,
               errorElement: <RouterErrorPage />,
               handle: {
-                title: t`Event`,
                 hidden: false,
                 requiredPermissions: [
                   { command_name: CommandName.CaseSetCrudCommand, permission_type: PermissionType.READ },
@@ -168,27 +148,35 @@ export const createRoutes = (t: TFunction<'translation', undefined>): MyNonIndex
                   { command_name: CommandName.RetrievePhylogeneticTreeByCasesCommand, permission_type: PermissionType.EXECUTE },
                 ],
                 requiresUserProfile: true,
+                title: t`Event`,
               },
+              path: '/events/:slug/:caseSetId',
             },
           ],
-        },
-        {
-          path: '/trends',
-          Component: () => <TrendsPage />,
           errorElement: <RouterErrorPage />,
           handle: {
-            title: t`Trends`,
+            hidden: false,
+            requiredPermissions: [],
+            requiresUserProfile: true,
+            title: t`Events`,
+          },
+          path: '/events',
+        },
+        {
+          Component: TrendsPage,
+          errorElement: <RouterErrorPage />,
+          handle: {
             disabled: true,
             requiredPermissions: [],
             requiresUserProfile: true,
+            title: t`Trends`,
           },
+          path: '/trends',
         },
         {
-          path: '/upload',
-          Component: () => <UploadPage />,
+          Component: UploadPage,
           errorElement: <RouterErrorPage />,
           handle: {
-            title: t`Upload`,
             requiredPermissions: [
               { command_name: CommandName.CaseTypeCrudCommand, permission_type: PermissionType.READ },
               { command_name: CommandName.DataCollectionCrudCommand, permission_type: PermissionType.READ },
@@ -199,35 +187,48 @@ export const createRoutes = (t: TFunction<'translation', undefined>): MyNonIndex
               { command_name: CommandName.UploadCasesCommand, permission_type: PermissionType.EXECUTE },
             ],
             requiresUserProfile: true,
+            title: t`Upload`,
           },
+          path: '/upload',
         },
         {
-          path: '/management',
-          errorElement: <RouterErrorPage />,
-          handle: {
-            title: t`Management`,
-            disabled: false,
-            requiredPermissions: [],
-            requiresUserProfile: true,
-            requirePermissionForChildRoute: true,
-          },
           children: [
             {
-              path: '/management',
-              index: true,
+              // eslint-disable-next-line @eslint-react/component-hook-factories
               Component: () => <AdminPage routes={adminRoutes} />,
               errorElement: <RouterErrorPage />,
               handle: {
-                title: t`Management`,
                 disabled: false,
                 requiredPermissions: [],
                 requiresUserProfile: true,
+                title: t`Management`,
               },
+              index: true,
+              path: '/management',
             },
             ...adminRoutes,
           ],
+          errorElement: <RouterErrorPage />,
+          handle: {
+            disabled: false,
+            requiredPermissions: [],
+            requirePermissionForChildRoute: true,
+            requiresUserProfile: true,
+            title: t`Management`,
+          },
+          path: '/management',
         },
       ],
+      Component: RouterRoot,
+      errorElement: <RouterErrorPage />,
+      handle: {
+        icon: <HomeIcon />,
+        requiredPermissions: [],
+        requiresUserProfile: true,
+        root: true,
+        title: t`Home`,
+      },
+      path: '/',
     },
 
   ];

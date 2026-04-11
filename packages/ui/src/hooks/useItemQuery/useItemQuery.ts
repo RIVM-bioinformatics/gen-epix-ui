@@ -4,8 +4,8 @@ import {
   useState,
 } from 'react';
 import type {
-  UseQueryOptions,
   QueryCacheNotifyEvent,
+  UseQueryOptions,
 } from '@tanstack/react-query';
 
 import { QueryClientManager } from '../../classes/managers/QueryClientManager';
@@ -32,8 +32,8 @@ export const useItemQuery = <T extends GenericData>({
 
   const useQueryResult = useQueryMemo({
     ...useQueryOptions,
-    queryKey: QueryUtil.getGenericKey(baseQueryKey, itemId),
     enabled: !itemFromCache && useQueryOptions.enabled,
+    queryKey: QueryUtil.getGenericKey(baseQueryKey, itemId),
   });
 
   useEffect(() => {
@@ -71,11 +71,11 @@ export const useItemQuery = <T extends GenericData>({
   const result = useMemo(() => {
     return {
       data: itemFromCache || useQueryResult.data,
+      error: itemFromCache ? false : useQueryResult.error,
+      isEnabled: itemFromCache ? true : useQueryResult.isEnabled,
+      isFetching: itemFromCache ? false : useQueryResult.isFetching,
       isLoading: itemFromCache ? false : useQueryResult.isLoading,
       isPending: itemFromCache ? false : useQueryResult.isPending,
-      isFetching: itemFromCache ? false : useQueryResult.isFetching,
-      isEnabled: itemFromCache ? true : useQueryResult.isEnabled,
-      error: itemFromCache ? false : useQueryResult.error,
     };
   }, [itemFromCache, useQueryResult.data, useQueryResult.isLoading, useQueryResult.isPending, useQueryResult.isFetching, useQueryResult.isEnabled, useQueryResult.error]);
 

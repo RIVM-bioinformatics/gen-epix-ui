@@ -4,14 +4,14 @@ import {
   useLocation,
 } from 'react-router-dom';
 import {
-  Card,
-  CardContent,
-  Typography,
   Box,
-  useTheme,
-  CardHeader,
+  Card,
   CardActionArea,
+  CardContent,
+  CardHeader,
   Divider,
+  Typography,
+  useTheme,
 } from '@mui/material';
 import {
   useCallback,
@@ -26,39 +26,38 @@ import type { MyNonIndexRouteObject } from '../../models/reactRouter';
 import { TestIdUtil } from '../../utils/TestIdUtil';
 
 
-type Category = {
-  name: string;
-  label: string;
-  items: MyNonIndexRouteObject[];
-};
-
 export type AdminPageProps = {
   readonly routes: MyNonIndexRouteObject[];
+};
+
+type Category = {
+  items: MyNonIndexRouteObject[];
+  label: string;
+  name: string;
 };
 
 export const AdminPage = ({ routes }: AdminPageProps) => {
   const { t } = useTranslation();
   const location = useLocation();
   const theme = useTheme();
-  const authorizationManager = useMemo(() => AuthorizationManager.instance, []);
 
   const menuItems = useMemo(() => {
     const items = routes
       .map(r => r.children?.length ? r.children.find(child => child.index) as MyNonIndexRouteObject : r)
       .filter(r => {
-        const hasPermission = authorizationManager.doesUserHavePermission(r.handle.requiredPermissions);
+        const hasPermission = AuthorizationManager.instance.doesUserHavePermission(r.handle.requiredPermissions);
         return !r.handle?.hidden && hasPermission;
       });
     return items;
-  }, [authorizationManager, routes]);
+  }, [routes]);
 
   const categoryToLabelMap = useMemo<Record<ADMIN_PAGE_CATEGORY, string>>(() => {
     return {
       [ADMIN_PAGE_CATEGORY.ACCESS_RIGHTS]: t`Access rights`,
+      [ADMIN_PAGE_CATEGORY.HELPERS]: t`Helpers`,
       [ADMIN_PAGE_CATEGORY.REFERENCE_DATA]: t`Reference data`,
       [ADMIN_PAGE_CATEGORY.SYSTEM]: t`System`,
       [ADMIN_PAGE_CATEGORY.USERS_AND_ORGANIZATIONS]: t`Users and organizations`,
-      [ADMIN_PAGE_CATEGORY.HELPERS]: t`Helpers`,
     };
   }, [t]);
 
@@ -72,9 +71,9 @@ export const AdminPage = ({ routes }: AdminPageProps) => {
       ADMIN_PAGE_CATEGORY.HELPERS,
     ].map(category => {
       return {
-        name: category,
-        label: categoryToLabelMap[category],
         items: menuItems.filter(r => r.handle.category as ADMIN_PAGE_CATEGORY === category),
+        label: categoryToLabelMap[category],
+        name: category,
       };
     }).filter(c => c.items.length);
   }, [categoryToLabelMap, menuItems]);
@@ -100,8 +99,8 @@ export const AdminPage = ({ routes }: AdminPageProps) => {
           <Box
             key={category.name}
             sx={{
-              marginTop: 1,
               marginBottom: 3,
+              marginTop: 1,
             }}
           >
             <Typography
@@ -116,13 +115,13 @@ export const AdminPage = ({ routes }: AdminPageProps) => {
             <Box
               sx={{
                 display: 'grid',
-                gridTemplateColumns: 'repeat(1, 1fr)',
                 gap: theme.spacing(1),
-                [theme.breakpoints.up('md')]: {
-                  gridTemplateColumns: 'repeat(2, 1fr)',
-                },
+                gridTemplateColumns: 'repeat(1, 1fr)',
                 [theme.breakpoints.up('lg')]: {
                   gridTemplateColumns: 'repeat(3, 1fr)',
+                },
+                [theme.breakpoints.up('md')]: {
+                  gridTemplateColumns: 'repeat(2, 1fr)',
                 },
                 [theme.breakpoints.up('xl')]: {
                   gridTemplateColumns: 'repeat(4, 1fr)',
@@ -139,7 +138,7 @@ export const AdminPage = ({ routes }: AdminPageProps) => {
                   }}
                 >
                   <CardActionArea
-                    // eslint-disable-next-line react/jsx-no-bind
+                    // eslint-disable-next-line @eslint-react/kit/jsx-no-bind
                     onClick={async () => onCardClick(item.path)}
                   >
                     <CardHeader title={item.handle.title} />
@@ -152,8 +151,8 @@ export const AdminPage = ({ routes }: AdminPageProps) => {
             </Box>
             <Divider
               sx={{
-                marginTop: 2,
                 marginBottom: 2,
+                marginTop: 2,
               }}
             />
           </Box>

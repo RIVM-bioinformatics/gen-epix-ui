@@ -11,9 +11,9 @@ import {
 
 import type { ConceptRelation } from '../../api';
 import {
-  OntologyApi,
   CommandName,
   ConceptRelationType,
+  OntologyApi,
 } from '../../api';
 import type { FormFieldDefinition } from '../../models/form';
 import { FORM_FIELD_DEFINITION_TYPE } from '../../models/form';
@@ -32,7 +32,7 @@ import { useConceptRelationTypeOptionsQuery } from '../../dataHooks/useConceptRe
 import type { OmitWithMetaData } from '../../models/data';
 
 
-type FormFields = OmitWithMetaData<ConceptRelation, 'id' | 'from_concept' | 'to_concept'>;
+type FormFields = OmitWithMetaData<ConceptRelation, 'from_concept' | 'id' | 'to_concept'>;
 
 export const ConceptRelationsAdminPage = () => {
   const { t } = useTranslation();
@@ -72,8 +72,8 @@ export const ConceptRelationsAdminPage = () => {
   const schema = useMemo(() => {
     return object<FormFields>().shape({
       from_concept_id: string().uuid4().required(),
-      to_concept_id: string().uuid4().required(),
       relation: mixed<ConceptRelationType>().required().oneOf(Object.values(ConceptRelationType)),
+      to_concept_id: string().uuid4().required(),
     });
   }, []);
 
@@ -81,24 +81,24 @@ export const ConceptRelationsAdminPage = () => {
     return [
       {
         definition: FORM_FIELD_DEFINITION_TYPE.AUTOCOMPLETE,
-        name: 'from_concept_id',
         label: t`From Concept`,
-        options: conceptOptionsQuery.options,
         loading: conceptOptionsQuery.isLoading,
+        name: 'from_concept_id',
+        options: conceptOptionsQuery.options,
       } as const satisfies FormFieldDefinition<FormFields>,
       {
         definition: FORM_FIELD_DEFINITION_TYPE.AUTOCOMPLETE,
-        name: 'to_concept_id',
         label: t`To Concept`,
-        options: conceptOptionsQuery.options,
         loading: conceptOptionsQuery.isLoading,
+        name: 'to_concept_id',
+        options: conceptOptionsQuery.options,
       } as const satisfies FormFieldDefinition<FormFields>,
       {
         definition: FORM_FIELD_DEFINITION_TYPE.AUTOCOMPLETE,
-        name: 'relation',
         label: t`Relation`,
-        options: conceptRelationTypeOptionsQuery.options,
         loading: conceptRelationTypeOptionsQuery.isLoading,
+        name: 'relation',
+        options: conceptRelationTypeOptionsQuery.options,
       } as const satisfies FormFieldDefinition<FormFields>,
     ] as const;
   }, [conceptOptionsQuery.isLoading, conceptOptionsQuery.options, conceptRelationTypeOptionsQuery.isLoading, conceptRelationTypeOptionsQuery.options, t]);
@@ -114,16 +114,16 @@ export const ConceptRelationsAdminPage = () => {
 
   return (
     <CrudPage<FormFields, ConceptRelation>
+      createItemDialogTitle={t`Create new concept relation`}
       createOne={createOne}
       crudCommandType={CommandName.ConceptRelationCrudCommand}
-      createItemDialogTitle={t`Create new concept relation`}
       defaultSortByField={'from_concept_id'}
-      loadables={loadables}
       defaultSortDirection={'asc'}
       deleteOne={deleteOne}
       fetchAll={fetchAll}
       formFieldDefinitions={formFieldDefinitions}
       getName={getName}
+      loadables={loadables}
       resourceQueryKeyBase={QUERY_KEY.CONCEPT_RELATIONS}
       schema={schema}
       tableColumns={tableColumns}

@@ -9,13 +9,13 @@ import {
 } from 'yup';
 
 import type {
-  Outage,
   ApiPermission,
+  Outage,
 } from '../../api';
 import {
-  SystemApi,
   CommandName,
   PermissionType,
+  SystemApi,
 } from '../../api';
 import type { FormFieldDefinition } from '../../models/form';
 import { FORM_FIELD_DEFINITION_TYPE } from '../../models/form';
@@ -55,13 +55,13 @@ export const OutagesAdminPage = () => {
 
   const schema = useMemo(() => {
     return object<FormFields>().shape({
-      description: SchemaUtil.description.required(),
       active_from: SchemaUtil.isoString,
       active_to: SchemaUtil.isoString,
-      visible_from: SchemaUtil.isoString,
-      visible_to: SchemaUtil.isoString,
+      description: SchemaUtil.description.required(),
       is_active: boolean(),
       is_visible: boolean(),
+      visible_from: SchemaUtil.isoString,
+      visible_to: SchemaUtil.isoString,
     });
   }, []);
 
@@ -69,54 +69,54 @@ export const OutagesAdminPage = () => {
     return [
       {
         definition: FORM_FIELD_DEFINITION_TYPE.TEXTFIELD,
-        name: 'description',
         label: t`Description`,
         multiline: true,
+        name: 'description',
         rows: 5,
       } as const satisfies FormFieldDefinition<FormFields>,
       {
+        dateFormat: DATE_FORMAT.DATE_TIME,
         definition: FORM_FIELD_DEFINITION_TYPE.DATE,
-        name: 'active_from',
         label: t`Active from`,
-        dateFormat: DATE_FORMAT.DATE_TIME,
+        name: 'active_from',
       } as const satisfies FormFieldDefinition<FormFields>,
       {
+        dateFormat: DATE_FORMAT.DATE_TIME,
         definition: FORM_FIELD_DEFINITION_TYPE.DATE,
-        name: 'active_to',
         label: t`Active to`,
-        dateFormat: DATE_FORMAT.DATE_TIME,
+        name: 'active_to',
       } as const satisfies FormFieldDefinition<FormFields>,
       {
+        dateFormat: DATE_FORMAT.DATE_TIME,
         definition: FORM_FIELD_DEFINITION_TYPE.DATE,
-        name: 'visible_from',
         label: t`Visible from`,
-        dateFormat: DATE_FORMAT.DATE_TIME,
+        name: 'visible_from',
       } as const satisfies FormFieldDefinition<FormFields>,
       {
+        dateFormat: DATE_FORMAT.DATE_TIME,
         definition: FORM_FIELD_DEFINITION_TYPE.DATE,
-        name: 'visible_to',
         label: t`Visible to`,
-        dateFormat: DATE_FORMAT.DATE_TIME,
+        name: 'visible_to',
       } as const satisfies FormFieldDefinition<FormFields>,
       {
         definition: FORM_FIELD_DEFINITION_TYPE.BOOLEAN,
-        name: 'is_active',
         label: t`Is active`,
+        name: 'is_active',
       } as const satisfies FormFieldDefinition<FormFields>,
       {
         definition: FORM_FIELD_DEFINITION_TYPE.BOOLEAN,
-        name: 'is_visible',
         label: t`Is visible`,
+        name: 'is_visible',
       } as const satisfies FormFieldDefinition<FormFields>,
     ] as const;
   }, [t]);
 
   const tableColumns = useMemo((): TableColumn<Outage>[] => {
     return [
-      TableUtil.createDateColumn<Outage>({ id: 'active_from', name: t`Active from`, dateFormat: DATE_FORMAT.DATE_TIME }),
-      TableUtil.createDateColumn<Outage>({ id: 'active_to', name: t`Active to`, dateFormat: DATE_FORMAT.DATE_TIME }),
-      TableUtil.createDateColumn<Outage>({ id: 'visible_from', name: t`Visible from`, dateFormat: DATE_FORMAT.DATE_TIME }),
-      TableUtil.createDateColumn<Outage>({ id: 'visible_to', name: t`Visible to`, dateFormat: DATE_FORMAT.DATE_TIME }),
+      TableUtil.createDateColumn<Outage>({ dateFormat: DATE_FORMAT.DATE_TIME, id: 'active_from', name: t`Active from` }),
+      TableUtil.createDateColumn<Outage>({ dateFormat: DATE_FORMAT.DATE_TIME, id: 'active_to', name: t`Active to` }),
+      TableUtil.createDateColumn<Outage>({ dateFormat: DATE_FORMAT.DATE_TIME, id: 'visible_from', name: t`Visible from` }),
+      TableUtil.createDateColumn<Outage>({ dateFormat: DATE_FORMAT.DATE_TIME, id: 'visible_to', name: t`Visible to` }),
       TableUtil.createBooleanColumn<Outage>({ id: 'is_active', name: t`Is active` }),
       TableUtil.createBooleanColumn<Outage>({ id: 'is_visible', name: t`Is visible` }),
     ];
@@ -135,9 +135,9 @@ export const OutagesAdminPage = () => {
 
   return (
     <CrudPage<FormFields, Outage>
+      createItemDialogTitle={t`Create new outage`}
       createOne={createOne}
       crudCommandType={CommandName.OutageCrudCommand}
-      createItemDialogTitle={t`Create new outage`}
       defaultSortByField={'active_from'}
       defaultSortDirection={'asc'}
       deleteOne={deleteOne}

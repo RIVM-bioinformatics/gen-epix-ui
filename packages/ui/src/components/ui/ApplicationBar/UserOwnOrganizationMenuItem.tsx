@@ -1,6 +1,6 @@
 import {
-  ListItemText,
   ListItem,
+  ListItemText,
 } from '@mui/material';
 import { useTranslation } from 'react-i18next';
 import { useMemo } from 'react';

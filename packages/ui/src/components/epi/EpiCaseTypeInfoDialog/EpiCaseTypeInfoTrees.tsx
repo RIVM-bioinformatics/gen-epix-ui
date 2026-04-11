@@ -1,7 +1,7 @@
 import {
   Accordion,
-  AccordionSummary,
   AccordionDetails,
+  AccordionSummary,
   Box,
   useTheme,
 } from '@mui/material';
@@ -44,11 +44,11 @@ export const EpiCaseTypeInfoTrees = ({ completeCaseType }: EpiCaseTypeInfoTreesP
           <AccordionDetails>
             <Box
               sx={{
-                '& dl': {
-                  margin: 0,
-                },
                 '& dd': {
                   marginLeft: theme.spacing(2),
+                },
+                '& dl': {
+                  margin: 0,
                 },
               }}
             >

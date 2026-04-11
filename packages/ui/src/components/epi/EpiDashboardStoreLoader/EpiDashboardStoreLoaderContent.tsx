@@ -1,14 +1,14 @@
 import type { PropsWithChildren } from 'react';
 import {
-  useMemo,
   useEffect,
+  useMemo,
 } from 'react';
 import { useStore } from 'zustand';
 import { useShallow } from 'zustand/shallow';
 
 import type {
-  CompleteCaseType,
   CaseSet,
+  CompleteCaseType,
 } from '../../../api';
 import type { TableColumnDimension } from '../../../models/table';
 import {
@@ -20,16 +20,16 @@ import { StringUtil } from '../../../utils/StringUtil';
 import { CaseTypeUtil } from '../../../utils/CaseTypeUtil';
 
 type EpiDashboardStoreLoaderContentProps = PropsWithChildren<{
-  readonly completeCaseType: CompleteCaseType;
   readonly caseSet: CaseSet;
+  readonly completeCaseType: CompleteCaseType;
 }>;
 
-export const EpiDashboardStoreLoaderContent = ({ completeCaseType, caseSet, children }: EpiDashboardStoreLoaderContentProps) => {
+export const EpiDashboardStoreLoaderContent = ({ caseSet, children, completeCaseType }: EpiDashboardStoreLoaderContentProps) => {
   const epiDashBoardStore = useMemo(() => {
     const store = createEpiDashboardStore({
-      idSelectorCallback: (row) => row.id,
       caseSetId: caseSet?.id,
       completeCaseType,
+      idSelectorCallback: (row) => row.id,
       storageNamePostFix: `epiDashboardStoreLoader-${StringUtil.createSlug(completeCaseType.name)}-${StringUtil.createHash(completeCaseType.id)}`,
       storageVersion: 1,
     });
@@ -40,9 +40,9 @@ export const EpiDashboardStoreLoaderContent = ({ completeCaseType, caseSet, chil
     const items: TableColumnDimension[] = [];
     completeCaseType.ordered_dim_ids.map(x => completeCaseType.dims[x]).forEach((dim) => {
       const item: TableColumnDimension = {
-        label: CaseTypeUtil.getDimLabel(completeCaseType, dim.id),
-        id: dim.id,
         columnIds: completeCaseType.ordered_col_ids_by_dim[dim.id],
+        id: dim.id,
+        label: CaseTypeUtil.getDimLabel(completeCaseType, dim.id),
       };
       items.push(item);
     });
@@ -65,9 +65,9 @@ export const EpiDashboardStoreLoaderContent = ({ completeCaseType, caseSet, chil
 
   return (
     <TableStoreContextProvider store={epiDashBoardStore}>
-      <EpiDashboardStoreContext.Provider value={epiDashBoardStore}>
+      <EpiDashboardStoreContext value={epiDashBoardStore}>
         {children}
-      </EpiDashboardStoreContext.Provider>
+      </EpiDashboardStoreContext>
     </TableStoreContextProvider>
   );
 };

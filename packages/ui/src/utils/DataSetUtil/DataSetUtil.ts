@@ -1,20 +1,8 @@
 import intersection from 'lodash/intersection';
 
 export class DataSetUtil {
-  public static getMappedSetMembers<T>(kwArgs: { items: T[]; setProperty: keyof T & string; memberProperty: keyof T & string }): Map<string, string[]> {
-    const { items, setProperty, memberProperty } = kwArgs;
-    const mappedSets = new Map<string, string[]>();
-    items.forEach(member => {
-      if (!mappedSets.has(member[setProperty] as string)) {
-        mappedSets.set(member[setProperty] as string, []);
-      }
-      mappedSets.get(member[setProperty] as string)?.push(member[memberProperty] as string);
-    });
-    return mappedSets;
-  }
-
-  public static getCategorizedSetMembers(kwArgs: { mappedSetMembers: Map<string, string[]>; parentSetId: string; parentMemberIds: string[]; childMemberIds: string[] }): { setIds: string[]; categorizedMemberIds: string[]; uncategorizedMemberIds: string[] } {
-    const { mappedSetMembers, parentSetId, parentMemberIds, childMemberIds } = kwArgs;
+  public static getCategorizedSetMembers(kwArgs: { childMemberIds: string[]; mappedSetMembers: Map<string, string[]>; parentMemberIds: string[]; parentSetId: string }): { categorizedMemberIds: string[]; setIds: string[]; uncategorizedMemberIds: string[] } {
+    const { childMemberIds, mappedSetMembers, parentMemberIds, parentSetId } = kwArgs;
     const intersectedMemberIds = intersection(parentMemberIds, childMemberIds);
     let uncategorizedMemberIds: string[] = [];
     const categorizedMemberIds: string[] = [];
@@ -61,10 +49,22 @@ export class DataSetUtil {
     }
 
     return {
+      categorizedMemberIds,
       setIds: sanitizedSetIds,
       uncategorizedMemberIds,
-      categorizedMemberIds,
     };
 
+  }
+
+  public static getMappedSetMembers<T>(kwArgs: { items: T[]; memberProperty: keyof T & string; setProperty: keyof T & string }): Map<string, string[]> {
+    const { items, memberProperty, setProperty } = kwArgs;
+    const mappedSets = new Map<string, string[]>();
+    items.forEach(member => {
+      if (!mappedSets.has(member[setProperty] as string)) {
+        mappedSets.set(member[setProperty] as string, []);
+      }
+      mappedSets.get(member[setProperty] as string)?.push(member[memberProperty] as string);
+    });
+    return mappedSets;
   }
 }

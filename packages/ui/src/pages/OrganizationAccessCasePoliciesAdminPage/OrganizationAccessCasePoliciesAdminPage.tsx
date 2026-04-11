@@ -29,7 +29,7 @@ import { TestIdUtil } from '../../utils/TestIdUtil';
 import { CrudPage } from '../CrudPage';
 import type { OmitWithMetaData } from '../../models/data';
 
-type FormFields = OmitWithMetaData<OrganizationAccessCasePolicy, 'data_collection' | 'organization' | 'read_col_set' | 'write_col_set' | 'case_type_set'>;
+type FormFields = OmitWithMetaData<OrganizationAccessCasePolicy, 'case_type_set' | 'data_collection' | 'organization' | 'read_col_set' | 'write_col_set'>;
 
 export const OrganizationAccessCasePoliciesAdminPage = () => {
   const { t } = useTranslation();
@@ -64,19 +64,19 @@ export const OrganizationAccessCasePoliciesAdminPage = () => {
 
   const schema = useMemo(() => {
     return object<FormFields>().shape({
-      organization_id: string().uuid4().required().max(100),
-      data_collection_id: string().uuid4().required().max(100),
-      case_type_set_id: string().uuid4().required().max(100),
-      read_col_set_id: string().uuid4().required().max(100),
-      write_col_set_id: string().uuid4().nullable().notRequired().max(100),
       add_case: boolean().required(),
-      remove_case: boolean().required(),
       add_case_set: boolean().required(),
-      remove_case_set: boolean().required(),
-      read_case_set: boolean().required(),
-      write_case_set: boolean().required(),
-      is_private: boolean().required(),
+      case_type_set_id: string().uuid4().required().max(100),
+      data_collection_id: string().uuid4().required().max(100),
       is_active: boolean().required(),
+      is_private: boolean().required(),
+      organization_id: string().uuid4().required().max(100),
+      read_case_set: boolean().required(),
+      read_col_set_id: string().uuid4().required().max(100),
+      remove_case: boolean().required(),
+      remove_case_set: boolean().required(),
+      write_case_set: boolean().required(),
+      write_col_set_id: string().uuid4().nullable().notRequired().max(100),
     });
   }, []);
 
@@ -84,78 +84,78 @@ export const OrganizationAccessCasePoliciesAdminPage = () => {
     return [
       {
         definition: FORM_FIELD_DEFINITION_TYPE.AUTOCOMPLETE,
-        name: 'organization_id',
         label: t`Organization`,
-        options: organizationOptionsQuery.options,
         loading: organizationOptionsQuery.isLoading,
+        name: 'organization_id',
+        options: organizationOptionsQuery.options,
       } as const satisfies FormFieldDefinition<FormFields>,
       {
         definition: FORM_FIELD_DEFINITION_TYPE.AUTOCOMPLETE,
-        name: 'data_collection_id',
         label: t`Data collection`,
-        options: dataCollectionOptionsQuery.options,
         loading: dataCollectionOptionsQuery.isLoading,
+        name: 'data_collection_id',
+        options: dataCollectionOptionsQuery.options,
       } as const satisfies FormFieldDefinition<FormFields>,
       {
         definition: FORM_FIELD_DEFINITION_TYPE.AUTOCOMPLETE,
-        name: 'case_type_set_id',
         label: t`Case type set`,
-        options: caseTypeSetOptionsQuery.options,
         loading: caseTypeSetOptionsQuery.isLoading,
+        name: 'case_type_set_id',
+        options: caseTypeSetOptionsQuery.options,
       } as const satisfies FormFieldDefinition<FormFields>,
       {
         definition: FORM_FIELD_DEFINITION_TYPE.AUTOCOMPLETE,
-        name: 'read_col_set_id',
         label: t`Read column set`,
-        options: colSetOptionsQuery.options,
         loading: colSetOptionsQuery.isLoading,
+        name: 'read_col_set_id',
+        options: colSetOptionsQuery.options,
       } as const satisfies FormFieldDefinition<FormFields>,
       {
         definition: FORM_FIELD_DEFINITION_TYPE.AUTOCOMPLETE,
-        name: 'write_col_set_id',
         label: t`Write column set`,
-        options: colSetOptionsQuery.options,
         loading: colSetOptionsQuery.isLoading,
+        name: 'write_col_set_id',
+        options: colSetOptionsQuery.options,
       } as const satisfies FormFieldDefinition<FormFields>,
       {
         definition: FORM_FIELD_DEFINITION_TYPE.BOOLEAN,
-        name: 'add_case',
         label: t`Add case`,
+        name: 'add_case',
       } as const satisfies FormFieldDefinition<FormFields>,
       {
         definition: FORM_FIELD_DEFINITION_TYPE.BOOLEAN,
-        name: 'remove_case',
         label: t`Remove case`,
+        name: 'remove_case',
       } as const satisfies FormFieldDefinition<FormFields>,
       {
         definition: FORM_FIELD_DEFINITION_TYPE.BOOLEAN,
-        name: 'add_case_set',
         label: t`Add case set`,
+        name: 'add_case_set',
       } as const satisfies FormFieldDefinition<FormFields>,
       {
         definition: FORM_FIELD_DEFINITION_TYPE.BOOLEAN,
-        name: 'remove_case_set',
         label: t`Remove case set`,
+        name: 'remove_case_set',
       } as const satisfies FormFieldDefinition<FormFields>,
       {
         definition: FORM_FIELD_DEFINITION_TYPE.BOOLEAN,
-        name: 'read_case_set',
         label: t`Read case set`,
+        name: 'read_case_set',
       } as const satisfies FormFieldDefinition<FormFields>,
       {
         definition: FORM_FIELD_DEFINITION_TYPE.BOOLEAN,
-        name: 'write_case_set',
         label: t`Write case set`,
+        name: 'write_case_set',
       } as const satisfies FormFieldDefinition<FormFields>,
       {
         definition: FORM_FIELD_DEFINITION_TYPE.BOOLEAN,
-        name: 'is_private',
         label: t`Is private`,
+        name: 'is_private',
       } as const satisfies FormFieldDefinition<FormFields>,
       {
         definition: FORM_FIELD_DEFINITION_TYPE.BOOLEAN,
-        name: 'is_active',
         label: t`Is active`,
+        name: 'is_active',
       } as const satisfies FormFieldDefinition<FormFields>,
     ] as const;
   }, [colSetOptionsQuery.isLoading, colSetOptionsQuery.options, caseTypeSetOptionsQuery.isLoading, caseTypeSetOptionsQuery.options, dataCollectionOptionsQuery.isLoading, dataCollectionOptionsQuery.options, organizationOptionsQuery.isLoading, organizationOptionsQuery.options, t]);
@@ -182,9 +182,9 @@ export const OrganizationAccessCasePoliciesAdminPage = () => {
 
   return (
     <CrudPage<FormFields, OrganizationAccessCasePolicy>
+      createItemDialogTitle={t`Create new organization access case policy`}
       createOne={createOne}
       crudCommandType={CommandName.OrganizationAccessCasePolicyCrudCommand}
-      createItemDialogTitle={t`Create new organization access case policy`}
       defaultSortByField={'organization_id'}
       defaultSortDirection={'asc'}
       deleteOne={deleteOne}

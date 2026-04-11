@@ -14,11 +14,11 @@ import { useQueryMemo } from '../../hooks/useQueryMemo';
 
 export const useAssemblyProtocolsQuery = (): UseQueryResult<Protocol[]> => {
   return useQueryMemo({
-    queryKey: QueryUtil.getGenericKey(QUERY_KEY.ASSEMBLY_PROTOCOLS),
     queryFn: async ({ signal }) => {
       const response = await CaseApi.instance.retrieveAssemblyProtocols({ signal });
       return response.data;
     },
+    queryKey: QueryUtil.getGenericKey(QUERY_KEY.ASSEMBLY_PROTOCOLS),
   });
 };
 

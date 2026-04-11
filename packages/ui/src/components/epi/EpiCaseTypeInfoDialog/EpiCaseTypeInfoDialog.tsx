@@ -1,8 +1,8 @@
 import type { ReactElement } from 'react';
 
 import type {
-  WithDialogRenderProps,
   WithDialogRefMethods,
+  WithDialogRenderProps,
 } from '../../../hoc/withDialog';
 import { withDialog } from '../../../hoc/withDialog';
 
@@ -21,8 +21,8 @@ export type EpiCaseTypeInfoDialogRefMethods = WithDialogRefMethods<EpiCaseTypeIn
 
 export const EpiCaseTypeInfoDialog = withDialog<EpiCaseTypeInfoDialogProps, EpiCaseTypeInfoDialogOpenProps>((
   {
-    onTitleChange,
     onPermalinkChange,
+    onTitleChange,
   }: EpiCaseTypeInfoDialogProps,
 ): ReactElement => {
   return (
@@ -32,8 +32,8 @@ export const EpiCaseTypeInfoDialog = withDialog<EpiCaseTypeInfoDialogProps, EpiC
     />
   );
 }, {
-  testId: 'EpiCaseTypeInfoDialog',
-  titleVariant: 'h2',
   fullWidth: true,
   maxWidth: 'xl',
+  testId: 'EpiCaseTypeInfoDialog',
+  titleVariant: 'h2',
 });

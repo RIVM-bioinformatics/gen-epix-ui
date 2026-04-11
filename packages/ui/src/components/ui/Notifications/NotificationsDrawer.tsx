@@ -1,17 +1,16 @@
 import {
-  Drawer,
   Box,
-  useTheme,
-  Typography,
-  IconButton,
   Button,
   Divider,
+  Drawer,
+  IconButton,
+  Typography,
+  useTheme,
 } from '@mui/material';
 import CloseIcon from '@mui/icons-material/Close';
 import NotificationsIcon from '@mui/icons-material/Notifications';
 import { useCallback } from 'react';
 import { useTranslation } from 'react-i18next';
-
 
 import { NotificationManager } from '../../../classes/managers/NotificationManager';
 import { useSubscribable } from '../../../hooks/useSubscribable';
@@ -40,23 +39,23 @@ export const NotificationsDrawer = ({ onDrawerClose, open }: NotificationsDrawer
   return (
     <Drawer
       anchor={'right'}
-      open={open}
       onClose={onDrawerClose}
+      open={open}
     >
       <Box
         sx={{
           padding: theme.spacing(2),
-          width: '520px',
           [theme.breakpoints.up('xl')]: {
             width: '620px',
           },
+          width: '520px',
         }}
       >
         <Box
           sx={{
+            alignItems: 'center',
             display: 'flex',
             justifyContent: 'space-between',
-            alignItems: 'center',
             marginBottom: 2,
           }}
         >
@@ -72,10 +71,10 @@ export const NotificationsDrawer = ({ onDrawerClose, open }: NotificationsDrawer
           >
             <CloseIcon
               sx={{
-                color: theme.palette.text.secondary,
                 '&:hover': {
                   color: theme.palette.text.primary,
                 },
+                color: theme.palette.text.secondary,
               }}
             />
           </IconButton>
@@ -84,15 +83,15 @@ export const NotificationsDrawer = ({ onDrawerClose, open }: NotificationsDrawer
           <Box>
             <Box
               sx={{
-                marginBottom: 2,
                 display: 'flex',
                 justifyContent: 'center',
+                marginBottom: 2,
               }}
             >
               <NotificationsIcon
                 sx={{
-                  fontSize: 100,
                   color: theme.palette.text.disabled,
+                  fontSize: 100,
                 }}
               />
             </Box>
@@ -117,10 +116,10 @@ export const NotificationsDrawer = ({ onDrawerClose, open }: NotificationsDrawer
               }}
             >
               <Button
-                color={'primary'}
-                variant={'outlined'}
                 aria-label={t`Clear all notifications`}
+                color={'primary'}
                 onClick={onClearAllButtonClick}
+                variant={'outlined'}
               >
                 {t`Clear all notifications`}
               </Button>
@@ -139,17 +138,17 @@ export const NotificationsDrawer = ({ onDrawerClose, open }: NotificationsDrawer
             >
               <Box
                 sx={{
-                  overflowY: 'auto',
                   maxHeight: '100%',
+                  overflowY: 'auto',
                 }}
               >
                 {notifications.map(notification => (
                   <NotificationItem
-                    key={notification.key}
-                    showTimestamp
                     allowClose={!notification.isLoading}
+                    key={notification.key}
                     notification={notification}
                     onClose={onNotificationItemClose}
+                    showTimestamp
                   />
                 ))}
               </Box>

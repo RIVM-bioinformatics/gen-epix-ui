@@ -1,8 +1,8 @@
 import type { ReactElement } from 'react';
 import { useCallback } from 'react';
 import {
-  Snackbar,
   Box,
+  Snackbar,
 } from '@mui/material';
 
 import { NotificationManager } from '../../../classes/managers/NotificationManager';
@@ -25,14 +25,14 @@ export const NotificationsStack = (): ReactElement => {
       {visibleNotifications.length > 0 && (
         <Snackbar
           {...TestIdUtil.createAttributes('NotificationsStack')}
-          open
           anchorOrigin={{ horizontal: 'right', vertical: 'top' }}
+          open
         >
           <Box>
             {visibleNotifications.map(notification => (
               <NotificationItem
-                key={notification.key}
                 allowClose
+                key={notification.key}
                 notification={notification}
                 onClose={onNotificationItemClose}
               />

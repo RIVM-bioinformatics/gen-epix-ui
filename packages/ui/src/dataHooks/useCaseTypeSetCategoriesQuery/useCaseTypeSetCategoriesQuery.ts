@@ -15,11 +15,11 @@ import { DataUtil } from '../../utils/DataUtil';
 
 export const useCaseTypeSetCategoriesQuery = (): UseQueryResult<CaseTypeSetCategory[]> => {
   return useQueryMemo({
-    queryKey: QueryUtil.getGenericKey(QUERY_KEY.CASE_TYPE_SET_CATEGORIES),
     queryFn: async ({ signal }) => {
       const response = await CaseApi.instance.caseTypeSetCategoriesGetAll({ signal });
       return response.data;
     },
+    queryKey: QueryUtil.getGenericKey(QUERY_KEY.CASE_TYPE_SET_CATEGORIES),
   });
 };
 

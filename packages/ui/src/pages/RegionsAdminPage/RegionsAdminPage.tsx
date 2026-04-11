@@ -8,8 +8,8 @@ import { useParams } from 'react-router-dom';
 
 import type { Region } from '../../api';
 import {
-  GeoApi,
   CommandName,
+  GeoApi,
 } from '../../api';
 import type { FormFieldDefinition } from '../../models/form';
 import { FORM_FIELD_DEFINITION_TYPE } from '../../models/form';
@@ -61,12 +61,12 @@ export const RegionsAdminPage = () => {
 
   const schema = useMemo(() => {
     return object<FormFields>().shape({
-      name: SchemaUtil.name,
-      code: SchemaUtil.code,
-      centroid_lat: SchemaUtil.number.required(),
-      centroid_lon: SchemaUtil.number.required(),
       center_lat: SchemaUtil.number.required(),
       center_lon: SchemaUtil.number.required(),
+      centroid_lat: SchemaUtil.number.required(),
+      centroid_lon: SchemaUtil.number.required(),
+      code: SchemaUtil.code,
+      name: SchemaUtil.name,
     });
   }, []);
 
@@ -75,36 +75,36 @@ export const RegionsAdminPage = () => {
     return [
       {
         definition: FORM_FIELD_DEFINITION_TYPE.TEXTFIELD,
-        name: 'name',
         label: t`Name`,
+        name: 'name',
       } as const satisfies FormFieldDefinition<FormFields>,
       {
         definition: FORM_FIELD_DEFINITION_TYPE.TEXTFIELD,
-        name: 'code',
         label: t`Code`,
+        name: 'code',
       } as const satisfies FormFieldDefinition<FormFields>,
       {
         definition: FORM_FIELD_DEFINITION_TYPE.TEXTFIELD,
-        name: 'centroid_lat',
         label: t`Centroid latitude`,
+        name: 'centroid_lat',
         type: 'number',
       } as const satisfies FormFieldDefinition<FormFields>,
       {
         definition: FORM_FIELD_DEFINITION_TYPE.TEXTFIELD,
-        name: 'centroid_lon',
         label: t`Centroid longitude`,
+        name: 'centroid_lon',
         type: 'number',
       } as const satisfies FormFieldDefinition<FormFields>,
       {
         definition: FORM_FIELD_DEFINITION_TYPE.TEXTFIELD,
-        name: 'center_lat',
         label: t`Center latitude`,
+        name: 'center_lat',
         type: 'number',
       } as const satisfies FormFieldDefinition<FormFields>,
       {
         definition: FORM_FIELD_DEFINITION_TYPE.TEXTFIELD,
-        name: 'center_lon',
         label: t`Center longitude`,
+        name: 'center_lon',
         type: 'number',
       } as const satisfies FormFieldDefinition<FormFields>,
     ] as const;
@@ -127,17 +127,17 @@ export const RegionsAdminPage = () => {
 
   return (
     <CrudPage<FormFields, Region>
+      createItemDialogTitle={t`Create new region`}
       createOne={createOne}
       crudCommandType={CommandName.RegionCrudCommand}
-      createItemDialogTitle={t`Create new region`}
       defaultSortByField={'name'}
-      fetchAllSelect={fetchAllSelect}
       defaultSortDirection={'asc'}
       deleteOne={deleteOne}
       fetchAll={fetchAll}
+      fetchAllSelect={fetchAllSelect}
       formFieldDefinitions={formFieldDefinitions}
-      getOptimisticUpdateIntermediateItem={getOptimisticUpdateIntermediateItem}
       getName={getName}
+      getOptimisticUpdateIntermediateItem={getOptimisticUpdateIntermediateItem}
       resourceQueryKeyBase={QUERY_KEY.REGIONS}
       schema={schema}
       tableColumns={tableColumns}

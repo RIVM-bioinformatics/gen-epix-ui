@@ -15,8 +15,8 @@ import type {
   Organization,
 } from '../../api';
 import {
-  OrganizationApi,
   CommandName,
+  OrganizationApi,
   PermissionType,
 } from '../../api';
 import type { FormFieldDefinition } from '../../models/form';
@@ -34,9 +34,9 @@ import { useOrganizationIdentifierIssuerLinksQuery } from '../../dataHooks/useOr
 import type { OmitWithMetaData } from '../../models/data';
 import { SchemaUtil } from '../../utils/SchemaUtil';
 
-type TableData = Organization & { identifierIssuerIds: string[] };
-
 type FormFields = OmitWithMetaData<TableData>;
+
+type TableData = { identifierIssuerIds: string[] } & Organization;
 
 export const OrganizationsAdminPage = () => {
   const { t } = useTranslation();
@@ -80,10 +80,10 @@ export const OrganizationsAdminPage = () => {
 
   const schema = useMemo(() => {
     return object<FormFields>().shape({
-      name: SchemaUtil.name,
       code: SchemaUtil.code,
-      identifierIssuerIds: array().of(string().uuid4()).min(0).required(),
       description: SchemaUtil.description,
+      identifierIssuerIds: array().of(string().uuid4()).min(0).required(),
+      name: SchemaUtil.name,
     });
   }, []);
 
@@ -91,44 +91,44 @@ export const OrganizationsAdminPage = () => {
     return [
       {
         definition: FORM_FIELD_DEFINITION_TYPE.TEXTFIELD,
-        name: 'name',
         label: t`Name`,
+        name: 'name',
       } as const satisfies FormFieldDefinition<FormFields>,
       {
         definition: FORM_FIELD_DEFINITION_TYPE.TEXTFIELD,
-        name: 'description',
         label: t`Description`,
         multiline: true,
+        name: 'description',
         rows: 5,
       } as const satisfies FormFieldDefinition<FormFields>,
       {
         definition: FORM_FIELD_DEFINITION_TYPE.TEXTFIELD,
-        name: 'code',
         label: t`Code`,
+        name: 'code',
       } as const satisfies FormFieldDefinition<FormFields>,
       {
         definition: FORM_FIELD_DEFINITION_TYPE.TRANSFER_LIST,
-        name: 'identifierIssuerIds',
         label: t`Identifier issuers`,
-        options: identifierIssuerOptionsQuery.options,
         loading: identifierIssuerOptionsQuery.isLoading,
+        name: 'identifierIssuerIds',
+        options: identifierIssuerOptionsQuery.options,
       } as const satisfies FormFieldDefinition<FormFields>,
     ] as const;
   }, [identifierIssuerOptionsQuery.isLoading, identifierIssuerOptionsQuery.options, t]);
 
   const tableColumns = useMemo((): TableColumn<TableData>[] => {
     return [
-      TableUtil.createTextColumn<TableData>({ id: 'name', name: t`Name`, advancedSort: true }),
+      TableUtil.createTextColumn<TableData>({ advancedSort: true, id: 'name', name: t`Name` }),
       TableUtil.createTextColumn<TableData>({ id: 'code', name: t`Code` }),
       {
-        type: 'number',
-        id: 'numIdentifierIssuers',
-        textAlign: 'right',
-        valueGetter: (item) => item.row.identifierIssuerIds.length,
         displayValueGetter: (item) => `${item.row.identifierIssuerIds.length} / ${identifierIssuerOptionsQuery.options.length}`,
         headerName: t`Identifier issuer count`,
-        widthFlex: 0.5,
+        id: 'numIdentifierIssuers',
         isInitiallyVisible: true,
+        textAlign: 'right',
+        type: 'number',
+        valueGetter: (item) => item.row.identifierIssuerIds.length,
+        widthFlex: 0.5,
       },
     ];
   }, [identifierIssuerOptionsQuery.options.length, t]);
@@ -142,8 +142,8 @@ export const OrganizationsAdminPage = () => {
 
     return [
       {
-        label: t`Manage sites`,
         getPathName: (item: Organization) => `/management/organizations/${item.id}/sites`,
+        label: t`Manage sites`,
       } satisfies CrudPageSubPage<Organization>,
     ];
   }, [t]);
@@ -173,22 +173,22 @@ export const OrganizationsAdminPage = () => {
     <CrudPage<FormFields, Organization, TableData>
       associationQueryKeys={associationQueryKeys}
       convertToTableData={convertToTableData}
-      createOne={createOne}
-      loadables={loadables}
-      crudCommandType={CommandName.OrganizationCrudCommand}
       createItemDialogTitle={t`Create new organization`}
-      extraCreateOnePermissions={extraPermissions}
-      extraDeleteOnePermissions={extraPermissions}
-      extraUpdateOnePermissions={extraPermissions}
+      createOne={createOne}
+      crudCommandType={CommandName.OrganizationCrudCommand}
       defaultSortByField={'name'}
       defaultSortDirection={'asc'}
       deleteOne={deleteOne}
-      subPages={subPages}
+      extraCreateOnePermissions={extraPermissions}
+      extraDeleteOnePermissions={extraPermissions}
+      extraUpdateOnePermissions={extraPermissions}
       fetchAll={fetchAll}
       formFieldDefinitions={formFieldDefinitions}
       getName={getName}
+      loadables={loadables}
       resourceQueryKeyBase={QUERY_KEY.ORGANIZATIONS}
       schema={schema}
+      subPages={subPages}
       tableColumns={tableColumns}
       testIdAttributes={TestIdUtil.createAttributes('OrganizationsAdminPage')}
       title={t`Organizations`}

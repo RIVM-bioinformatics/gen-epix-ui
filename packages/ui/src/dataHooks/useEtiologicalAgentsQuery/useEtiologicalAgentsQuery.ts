@@ -14,11 +14,11 @@ import { useQueryMemo } from '../../hooks/useQueryMemo';
 
 export const useEtiologicalAgentsQuery = (): UseQueryResult<EtiologicalAgent[]> => {
   return useQueryMemo({
-    queryKey: QueryUtil.getGenericKey(QUERY_KEY.ETIOLOGICAL_AGENTS),
     queryFn: async ({ signal }) => {
       const response = await OntologyApi.instance.etiologicalAgentsGetAll({ signal });
       return response.data;
     },
+    queryKey: QueryUtil.getGenericKey(QUERY_KEY.ETIOLOGICAL_AGENTS),
   });
 };
 

@@ -6,8 +6,8 @@ import {
 import DownloadIcon from '@mui/icons-material/Download';
 import type { ReactElement } from 'react';
 import {
+  use,
   useCallback,
-  useContext,
   useEffect,
   useMemo,
   useState,
@@ -18,13 +18,12 @@ import {
   FormProvider,
   useForm,
 } from 'react-hook-form';
-import noop from 'lodash/noop';
 
 import type { Case } from '../../../api';
 import { ColType } from '../../../api';
 import type {
-  WithDialogRenderProps,
   WithDialogRefMethods,
+  WithDialogRenderProps,
 } from '../../../hoc/withDialog';
 import { withDialog } from '../../../hoc/withDialog';
 import type { AutoCompleteOption } from '../../../models/form';
@@ -51,13 +50,13 @@ type FormFields = {
 
 export const EpiSequenceDownloadDialog = withDialog<EpiSequenceDownloadDialogProps, EpiSequenceDownloadDialogOpenProps>((
   {
-    openProps,
-    onTitleChange,
     onClose,
+    onTitleChange,
+    openProps,
   }: EpiSequenceDownloadDialogProps,
 ): ReactElement => {
   const { t } = useTranslation();
-  const epiDashboardStore = useContext(EpiDashboardStoreContext);
+  const epiDashboardStore = use(EpiDashboardStoreContext);
   const completeCaseType = useStore(epiDashboardStore, useShallow((state) => state.completeCaseType));
 
   const geneticSequenceColOptions = useMemo<AutoCompleteOption<string>[]>(() => {
@@ -68,8 +67,8 @@ export const EpiSequenceDownloadDialog = withDialog<EpiSequenceDownloadDialogPro
         const refCol = completeCaseType.ref_cols[col.ref_col_id];
         if (refCol?.col_type === ColType.GENETIC_SEQUENCE) {
           options.push({
-            value: col.id,
             label: col.label,
+            value: col.id,
           });
         }
       });
@@ -85,14 +84,18 @@ export const EpiSequenceDownloadDialog = withDialog<EpiSequenceDownloadDialogPro
     },
   });
 
+  const onSubmit = useCallback(() => {
+    // noop, as the download is triggered by a button outside of the form
+  }, []);
+
   const onDownloadFastaButtonClick = useCallback(() => {
     DownloadUtil.downloadAsMultiPartForm({
       action: `${ConfigManager.instance.config.getAPIBaseUrl()}/v1/retrieve/genetic_sequence/fasta`,
       data: {
-        case_type_id: completeCaseType.id,
         case_ids: openProps.cases.map(c => c.id),
-        genetic_sequence_col_id: geneticSequenceColId,
+        case_type_id: completeCaseType.id,
         file_name: `${StringUtil.createSlug(completeCaseType.name)}-${StringUtil.createSlug(geneticSequenceColOptions.find(x => x.value === geneticSequenceColId)?.label)}-sequences.fasta`,
+        genetic_sequence_col_id: geneticSequenceColId,
       },
     });
     onClose();
@@ -112,15 +115,15 @@ export const EpiSequenceDownloadDialog = withDialog<EpiSequenceDownloadDialogPro
         <FormProvider {...formMethods}>
           <form
             autoComplete={'off'}
-            onSubmit={noop}
+            onSubmit={onSubmit}
           >
             <Autocomplete
               disabled={geneticSequenceColOptions.length < 2}
               label={t`Genetic sequence column`}
-              options={geneticSequenceColOptions}
               name={'geneticSequenceColId'}
-              // eslint-disable-next-line react/jsx-no-bind
+              // eslint-disable-next-line @eslint-react/kit/jsx-no-bind
               onChange={(value: string) => setGeneticSequenceColId(value)}
+              options={geneticSequenceColOptions}
             />
           </form>
         </FormProvider>
@@ -128,17 +131,17 @@ export const EpiSequenceDownloadDialog = withDialog<EpiSequenceDownloadDialogPro
       {geneticSequenceColId && (
         <Box
           sx={{
-            marginBottom: 1,
             display: 'flex',
-            justifyContent: 'flex-end',
             gap: 1,
+            justifyContent: 'flex-end',
+            marginBottom: 1,
           }}
         >
           <Box>
             <Button
-              startIcon={<DownloadIcon />}
               color={'primary'}
               onClick={onDownloadFastaButtonClick}
+              startIcon={<DownloadIcon />}
             >
               {t`Download FASTA`}
             </Button>
@@ -148,8 +151,8 @@ export const EpiSequenceDownloadDialog = withDialog<EpiSequenceDownloadDialogPro
     </Box>
   );
 }, {
-  testId: 'EpiSequenceDownloadDialog',
-  maxWidth: 'lg',
-  fullWidth: true,
   defaultTitle: '',
+  fullWidth: true,
+  maxWidth: 'lg',
+  testId: 'EpiSequenceDownloadDialog',
 });

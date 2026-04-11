@@ -21,8 +21,8 @@ export const caseTypesQueryFn = async ({ signal }: { signal: AbortSignal }): Pro
 
 export const useCaseTypesQuery = (): UseQueryResult<CaseType[]> => {
   return useQueryMemo({
-    queryKey: QueryUtil.getGenericKey(QUERY_KEY.CASE_TYPES),
     queryFn: caseTypesQueryFn,
+    queryKey: QueryUtil.getGenericKey(QUERY_KEY.CASE_TYPES),
   });
 };
 

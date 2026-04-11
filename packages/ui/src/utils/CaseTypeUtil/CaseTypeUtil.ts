@@ -3,15 +3,15 @@ import uniq from 'lodash/uniq';
 import { StringUtil } from '../StringUtil';
 import type {
   CaseType,
-  CompleteCaseType,
-  RefDim,
-  RefCol,
   Col,
+  CompleteCaseType,
   Dim,
+  RefCol,
+  RefDim,
 } from '../../api';
 import {
-  DimType,
   ColType,
+  DimType,
 } from '../../api';
 import { WindowManager } from '../../classes/managers/WindowManager';
 
@@ -26,104 +26,6 @@ export class CaseTypeUtil {
     }
     return path;
   }
-
-  public static getInitialVisibleColIds(completeCaseType: CompleteCaseType): string[] {
-    const visibleColumnIds: string[] = [];
-
-    completeCaseType.ordered_dim_ids.map(x => completeCaseType.dims[x]).forEach((dim) => {
-      const refDims = completeCaseType.ref_dims[dim.ref_dim_id];
-
-      const cols = completeCaseType.ordered_col_ids_by_dim[dim.id].map(id => completeCaseType.cols[id]);
-      const refCols = cols.map(col => completeCaseType.ref_cols[col.ref_col_id]);
-
-      if (refDims.dim_type === DimType.GEO) {
-        visibleColumnIds.push(CaseTypeUtil.getPreferredGEOCol(cols).id);
-      } else if (refDims.dim_type === DimType.TIME || refDims.dim_type === DimType.NUMBER || CaseTypeUtil.isGeneticDistanceDim(refDims, refCols)) {
-        visibleColumnIds.push(CaseTypeUtil.getPreferredColInDimHavingHighestRank(cols, completeCaseType).id);
-      } else {
-        visibleColumnIds.push(...cols.filter(cc => {
-          const refCol = completeCaseType.ref_cols[cc.ref_col_id];
-          const hiddenColTypes: ColType[] = [ColType.GENETIC_READS, ColType.GENETIC_SEQUENCE];
-          return !hiddenColTypes.includes(refCol.col_type);
-        }).map(c => c.id));
-      }
-    });
-
-    return visibleColumnIds;
-  }
-
-  public static getDimLabel(completeCaseType: CompleteCaseType, dimId: string): string {
-    const dim = completeCaseType.dims[dimId];
-    return dim.code;
-  }
-
-  public static isGeneticDistanceDim(refDim: RefDim, refCols: RefCol[]): boolean {
-    return refDim.dim_type === DimType.OTHER && refCols.find(refCol => refCol.col_type === ColType.GENETIC_DISTANCE) !== undefined;
-  }
-
-  public static getPreferredGEOCol(cols: Col[]): Col {
-    return cols[Math.min(cols.length - 1, Math.floor((cols.length - 1) / 2))];
-  }
-
-  public static getPreferredColInDimHavingHighestRank(cols: Col[], completeCaseType: CompleteCaseType): Col {
-    return cols.find(col => completeCaseType.ref_cols[col.ref_col_id].rank === 1) ?? cols?.[0];
-  }
-
-  public static getDims(completeCaseType: CompleteCaseType, dimTypes?: DimType[]): Dim[] {
-    const dims = Object.values(completeCaseType.ordered_dim_ids).map(x => completeCaseType.dims[x]);
-    if (!dimTypes?.length) {
-      return dims;
-    }
-    return dims.filter(dim => {
-      const refDim = completeCaseType.ref_dims[dim.ref_dim_id];
-      return dimTypes.includes(refDim.dim_type);
-    });
-  }
-
-  public static getCols(completeCaseType: CompleteCaseType, dimId?: string): Col[] {
-    if (!dimId) {
-      return Object.values(completeCaseType.cols);
-    }
-    return completeCaseType.ordered_col_ids_by_dim[dimId].map(id => completeCaseType.cols[id]);
-  }
-
-
-  /**
-   * Get columns by their column type.
-   * @param completeCaseType The complete case type object.
-   * @param colType The column type to filter by.
-   * @returns An array of columns matching the specified column type.
-   */
-  public static getColsByType(completeCaseType: CompleteCaseType, colType: ColType[]): Col[] {
-    return Object.values(completeCaseType.cols).filter(col => {
-      const refCol = completeCaseType.ref_cols[col.ref_col_id];
-      return colType.includes(refCol?.col_type);
-    });
-  }
-
-
-  /**
-   * Find a unique column by its column ID or column ID.
-   * @param completeCaseType The complete case type object.
-   * @param id The ID of the column or column.
-   * @returns The unique column if found, otherwise null.
-   */
-  public static findUniqueColByColIdRefOrColId(completeCaseType: CompleteCaseType, id: string): Col {
-    const colId = Object.values(completeCaseType.cols).find(col => col.ref_col_id === id);
-    if (colId) {
-      return colId;
-    }
-    const colIds = Object.values(completeCaseType.ref_cols).filter(ref_col => ref_col.id === id);
-    if (colIds.length !== 1) {
-      return null;
-    }
-    const cols = Object.values(completeCaseType.cols).filter(col => col.ref_col_id === colIds[0].id);
-    if (cols.length !== 1) {
-      return null;
-    }
-    return cols[0];
-  }
-
 
   /**
    * Find paired FWD/REV columns in the same dimension.
@@ -152,6 +54,100 @@ export class CaseTypeUtil {
     return pairs;
   }
 
+  /**
+   * Find a unique column by its column ID or column ID.
+   * @param completeCaseType The complete case type object.
+   * @param id The ID of the column or column.
+   * @returns The unique column if found, otherwise null.
+   */
+  public static findUniqueColByColIdRefOrColId(completeCaseType: CompleteCaseType, id: string): Col {
+    const colId = Object.values(completeCaseType.cols).find(col => col.ref_col_id === id);
+    if (colId) {
+      return colId;
+    }
+    const colIds = Object.values(completeCaseType.ref_cols).filter(ref_col => ref_col.id === id);
+    if (colIds.length !== 1) {
+      return null;
+    }
+    const cols = Object.values(completeCaseType.cols).filter(col => col.ref_col_id === colIds[0].id);
+    if (cols.length !== 1) {
+      return null;
+    }
+    return cols[0];
+  }
+
+  public static getCols(completeCaseType: CompleteCaseType, dimId?: string): Col[] {
+    if (!dimId) {
+      return Object.values(completeCaseType.cols);
+    }
+    return completeCaseType.ordered_col_ids_by_dim[dimId].map(id => completeCaseType.cols[id]);
+  }
+
+  /**
+   * Get columns by their column type.
+   * @param completeCaseType The complete case type object.
+   * @param colType The column type to filter by.
+   * @returns An array of columns matching the specified column type.
+   */
+  public static getColsByType(completeCaseType: CompleteCaseType, colType: ColType[]): Col[] {
+    return Object.values(completeCaseType.cols).filter(col => {
+      const refCol = completeCaseType.ref_cols[col.ref_col_id];
+      return colType.includes(refCol?.col_type);
+    });
+  }
+
+  public static getDimLabel(completeCaseType: CompleteCaseType, dimId: string): string {
+    const dim = completeCaseType.dims[dimId];
+    return dim.code;
+  }
+
+  public static getDims(completeCaseType: CompleteCaseType, dimTypes?: DimType[]): Dim[] {
+    const dims = Object.values(completeCaseType.ordered_dim_ids).map(x => completeCaseType.dims[x]);
+    if (!dimTypes?.length) {
+      return dims;
+    }
+    return dims.filter(dim => {
+      const refDim = completeCaseType.ref_dims[dim.ref_dim_id];
+      return dimTypes.includes(refDim.dim_type);
+    });
+  }
+
+  public static getInitialVisibleColIds(completeCaseType: CompleteCaseType): string[] {
+    const visibleColumnIds: string[] = [];
+
+    completeCaseType.ordered_dim_ids.map(x => completeCaseType.dims[x]).forEach((dim) => {
+      const refDims = completeCaseType.ref_dims[dim.ref_dim_id];
+
+      const cols = completeCaseType.ordered_col_ids_by_dim[dim.id].map(id => completeCaseType.cols[id]);
+      const refCols = cols.map(col => completeCaseType.ref_cols[col.ref_col_id]);
+
+      if (refDims.dim_type === DimType.GEO) {
+        visibleColumnIds.push(CaseTypeUtil.getPreferredGEOCol(cols).id);
+      } else if (refDims.dim_type === DimType.TIME || refDims.dim_type === DimType.NUMBER || CaseTypeUtil.isGeneticDistanceDim(refDims, refCols)) {
+        visibleColumnIds.push(CaseTypeUtil.getPreferredColInDimHavingHighestRank(cols, completeCaseType).id);
+      } else {
+        visibleColumnIds.push(...cols.filter(cc => {
+          const refCol = completeCaseType.ref_cols[cc.ref_col_id];
+          const hiddenColTypes: ColType[] = [ColType.GENETIC_READS, ColType.GENETIC_SEQUENCE];
+          return !hiddenColTypes.includes(refCol.col_type);
+        }).map(c => c.id));
+      }
+    });
+
+    return visibleColumnIds;
+  }
+
+
+  public static getPreferredColInDimHavingHighestRank(cols: Col[], completeCaseType: CompleteCaseType): Col {
+    return cols.find(col => completeCaseType.ref_cols[col.ref_col_id].rank === 1) ?? cols?.[0];
+  }
+
+
+  public static getPreferredGEOCol(cols: Col[]): Col {
+    return cols[Math.min(cols.length - 1, Math.floor((cols.length - 1) / 2))];
+  }
+
+
   public static getWritableColIds(completeCaseType: CompleteCaseType): string[] {
     const writableColIds: string[] = [];
     Object.values(completeCaseType.case_type_access_abacs).forEach((abac) => {
@@ -173,6 +169,10 @@ export class CaseTypeUtil {
       }
       return true;
     });
+  }
+
+  public static isGeneticDistanceDim(refDim: RefDim, refCols: RefCol[]): boolean {
+    return refDim.dim_type === DimType.OTHER && refCols.find(refCol => refCol.col_type === ColType.GENETIC_DISTANCE) !== undefined;
   }
 
 }

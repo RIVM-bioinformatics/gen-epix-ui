@@ -31,8 +31,8 @@ import { GenericForm } from '../../form/helpers/GenericForm';
 import { Spinner } from '../../ui/Spinner';
 
 export type EpiCaseSetSharingFormProps = {
-  readonly caseTypeId: string;
   readonly caseSet: CaseSet;
+  readonly caseTypeId: string;
   readonly formId: string;
   readonly onFinish: () => void;
   readonly onIsSavingChange: (isSaving: boolean) => void;
@@ -43,7 +43,7 @@ type FormFields = {
   shouldApplySharingToCases?: boolean;
 };
 
-export const EpiCaseSetSharingForm = ({ caseTypeId, formId, caseSet, onFinish, onIsSavingChange, ...boxProps }: EpiCaseSetSharingFormProps) => {
+export const EpiCaseSetSharingForm = ({ caseSet, caseTypeId, formId, onFinish, onIsSavingChange, ...boxProps }: EpiCaseSetSharingFormProps) => {
   const { t } = useTranslation();
   const [isSaving, setIsSaving] = useState(false);
 
@@ -60,9 +60,9 @@ export const EpiCaseSetSharingForm = ({ caseTypeId, formId, caseSet, onFinish, o
       onIsSavingChange(true);
       const queryKeys = QueryUtil.getQueryKeyDependencies([QUERY_KEY.CASE_SET_DATA_COLLECTION_LINKS], true);
       const notificationKey = NotificationManager.instance.showNotification({
+        isLoading: true,
         message: t('Saving case set data collections'),
         severity: 'info',
-        isLoading: true,
       });
       try {
         await QueryUtil.cancelQueries(queryKeys);
@@ -86,8 +86,8 @@ export const EpiCaseSetSharingForm = ({ caseTypeId, formId, caseSet, onFinish, o
         await QueryUtil.invalidateQueryKeys(queryKeys);
         if (shouldApplySharingToCases) {
           await CaseUtil.applyDataCollectionLinks({
-            caseSetId: caseSet.id,
             caseSetDataCollectionIds: dataCollectionIds,
+            caseSetId: caseSet.id,
             caseTypeId,
           });
         }
@@ -104,15 +104,15 @@ export const EpiCaseSetSharingForm = ({ caseTypeId, formId, caseSet, onFinish, o
   const formFieldDefinitions = useMemo<FormFieldDefinition<FormFields>[]>(() => [
     {
       definition: FORM_FIELD_DEFINITION_TYPE.AUTOCOMPLETE,
-      name: 'dataCollectionIds',
       label: t`Data collections`,
-      options: caseAbacContext?.itemDataCollectionOptions?.[0] ?? [],
       multiple: true,
+      name: 'dataCollectionIds',
+      options: caseAbacContext?.itemDataCollectionOptions?.[0] ?? [],
     } as const satisfies FormFieldDefinition<FormFields>,
     {
       definition: FORM_FIELD_DEFINITION_TYPE.BOOLEAN,
-      name: 'shouldApplySharingToCases',
       label: t`Should the same sharing be applied to the cases in the event?`,
+      name: 'shouldApplySharingToCases',
     } as const satisfies FormFieldDefinition<FormFields>,
   ] as const, [caseAbacContext?.itemDataCollectionOptions, t]);
 
@@ -147,8 +147,8 @@ export const EpiCaseSetSharingForm = ({ caseTypeId, formId, caseSet, onFinish, o
         formFieldDefinitions={formFieldDefinitions}
         formId={formId}
         formMethods={formMethods}
-        schema={schema}
         onSubmit={handleSubmit(onFormSubmit)}
+        schema={schema}
       />
     </Box>
   );

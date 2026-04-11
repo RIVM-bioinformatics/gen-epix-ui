@@ -41,7 +41,7 @@ export class MenuDataUtil {
       return false;
     }
 
-    if (item.checked !== undefined && !['true', 'false', 'mixed'].includes(item.checked as string)) {
+    if (item.checked !== undefined && !['false', 'mixed', 'true'].includes(item.checked as string)) {
       return false;
     }
 

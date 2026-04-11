@@ -4,7 +4,7 @@ import {
   useTheme,
 } from '@mui/material';
 import {
-  useContext,
+  use,
   useCallback,
   useEffect,
   useMemo,
@@ -33,9 +33,9 @@ import { EpiCaseTypeInfoRegions } from './EpiCaseTypeInfoRegions';
 import { EpiCaseTypeInfoData } from './EpiCaseTypeInfoData';
 import { EpiCaseTypeInfoAccessRights } from './EpiCaseTypeInfoAccessRights';
 
-export type EpiCaseTypeInfoDialogContentProps = Pick<WithDialogRenderProps, 'onTitleChange' | 'onPermalinkChange'>;
+export type EpiCaseTypeInfoDialogContentProps = Pick<WithDialogRenderProps, 'onPermalinkChange' | 'onTitleChange'>;
 
-export const EpiCaseTypeInfoDialogContent = ({ onTitleChange, onPermalinkChange }: EpiCaseTypeInfoDialogContentProps) => {
+export const EpiCaseTypeInfoDialogContent = ({ onPermalinkChange, onTitleChange }: EpiCaseTypeInfoDialogContentProps) => {
   const { t } = useTranslation();
   const theme = useTheme();
   const diseasesMapQuery = useDiseasesMapQuery();
@@ -44,7 +44,7 @@ export const EpiCaseTypeInfoDialogContent = ({ onTitleChange, onPermalinkChange 
   const dataCollectionsQuery = useDataCollectionsQuery();
   const loadables = useArray([dataCollectionsMapQuery, dataCollectionsQuery, diseasesMapQuery, etiologicalAgentsMapQuery]);
 
-  const epiDashboardStore = useContext(EpiDashboardStoreContext);
+  const epiDashboardStore = use(EpiDashboardStoreContext);
   const completeCaseType = useStore(epiDashboardStore, (state) => state.completeCaseType);
 
   const getDiseaseName = useCallback((id: string) => {
@@ -78,28 +78,28 @@ export const EpiCaseTypeInfoDialogContent = ({ onTitleChange, onPermalinkChange 
 
   const caseTypeAbacContextValue = useMemo<CaseTypeAbacContext>(() => {
     return {
+      caseTypeAccessAbacDict: completeCaseType.case_type_access_abacs,
       userDataCollections: dataCollectionsQuery.data,
       userDataCollectionsMap: dataCollectionsMapQuery.map,
-      caseTypeAccessAbacDict: completeCaseType.case_type_access_abacs,
     };
   }, [completeCaseType.case_type_access_abacs, dataCollectionsMapQuery.map, dataCollectionsQuery.data]);
 
   return (
     <ResponseHandler
-      shouldHideActionButtons
       loadables={loadables}
+      shouldHideActionButtons
     >
       <CaseTypeAbacContextProvider caseTypeAbac={caseTypeAbacContextValue}>
         <Box
           sx={{
+            '& dd': {
+              marginLeft: theme.spacing(1),
+            },
             '& dl': {
               margin: 0,
             },
             '& dt': {
               fontWeight: 'bold',
-            },
-            '& dd': {
-              marginLeft: theme.spacing(1),
             },
           }}
         >
@@ -143,10 +143,10 @@ export const EpiCaseTypeInfoDialogContent = ({ onTitleChange, onPermalinkChange 
           >
             <Typography
               component={'h4'}
-              variant={'h4'}
               sx={{
                 marginY: 1,
               }}
+              variant={'h4'}
             >
               {t`Trees`}
             </Typography>

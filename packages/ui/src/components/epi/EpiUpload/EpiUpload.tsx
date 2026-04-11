@@ -1,7 +1,7 @@
 import Box from '@mui/material/Box';
 import { useTranslation } from 'react-i18next';
 import {
-  useContext,
+  use,
   useMemo,
 } from 'react';
 import {
@@ -29,17 +29,17 @@ export const EpiUpload = () => {
   const { t } = useTranslation();
   const theme = useTheme();
 
-  const store = useContext(EpiUploadStoreContext);
+  const store = use(EpiUploadStoreContext);
   const activeStep = useStore(store, (state) => state.activeStep);
 
   const stepLabels = useMemo<Record<EPI_UPLOAD_STEP, string>>(() => {
     return {
-      [EPI_UPLOAD_STEP.SELECT_FILE]: t`Select file`,
-      [EPI_UPLOAD_STEP.MAP_COLUMNS]: t`Map columns`,
-      [EPI_UPLOAD_STEP.VALIDATE]: t`Validate`,
-      [EPI_UPLOAD_STEP.SELECT_SEQUENCE_FILES]: t`Select sequence files`,
-      [EPI_UPLOAD_STEP.MAP_SEQUENCES]: t`Map sequences`,
       [EPI_UPLOAD_STEP.CREATE_CASES]: t`Upload`,
+      [EPI_UPLOAD_STEP.MAP_COLUMNS]: t`Map columns`,
+      [EPI_UPLOAD_STEP.MAP_SEQUENCES]: t`Map sequences`,
+      [EPI_UPLOAD_STEP.SELECT_FILE]: t`Select file`,
+      [EPI_UPLOAD_STEP.SELECT_SEQUENCE_FILES]: t`Select sequence files`,
+      [EPI_UPLOAD_STEP.VALIDATE]: t`Validate`,
     };
   }, [t]);
 
@@ -61,17 +61,17 @@ export const EpiUpload = () => {
   return (
     <Box
       sx={{
-        width: '100%',
-        height: '100%',
-        position: 'relative',
         display: 'grid',
         gridTemplateRows: 'max-content auto',
+        height: '100%',
+        position: 'relative',
+        width: '100%',
       }}
     >
       <Container>
         <Stepper
-          steps={steps}
           activeStep={String(activeStep)}
+          steps={steps}
           sx={{
             marginY: 2,
           }}
@@ -79,9 +79,9 @@ export const EpiUpload = () => {
       </Container>
       <Box
         sx={{
-          marginTop: 2,
-          marginBottom: 2,
           height: `calc(100% - ${theme.spacing(4)})`,
+          marginBottom: 2,
+          marginTop: 2,
           position: 'relative',
         }}
       >

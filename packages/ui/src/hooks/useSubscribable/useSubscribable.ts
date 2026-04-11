@@ -6,12 +6,12 @@ import {
 import type { SubscribableAbstract } from '../../classes/abstracts/SubscribableAbstract';
 
 type UseSubscribableKwArgs<TSubjectData> = {
-  readonly select?: (data: TSubjectData) => TSubjectData;
   readonly callback?: (data: TSubjectData, prevData: TSubjectData) => void;
+  readonly select?: (data: TSubjectData) => TSubjectData;
 };
 
 export const useSubscribable = <TSubjectData>(subscribable: SubscribableAbstract<TSubjectData>, kwArgs: UseSubscribableKwArgs<TSubjectData> = {}) => {
-  const { select, callback } = kwArgs;
+  const { callback, select } = kwArgs;
 
   const [data, setData] = useState<TSubjectData>(subscribable.data);
   useEffect(() => {

@@ -6,9 +6,9 @@ import { IconMenuItem } from './IconMenuItem';
 import { NestedMenuItem } from './NestedMenuItem';
 
 export interface NestedMenuItemsFromObjectProps {
-  menuItemsData: MenuItemData[];
-  isOpen: boolean;
   handleClose: () => void;
+  isOpen: boolean;
+  menuItemsData: MenuItemData[];
 }
 
 /**
@@ -16,26 +16,26 @@ export interface NestedMenuItemsFromObjectProps {
  * Every menu item should have a uid provided
  */
 export const nestedMenuItemsFromObject = ({
-  menuItemsData: items,
-  isOpen,
   handleClose,
+  isOpen,
+  menuItemsData: items,
 }: NestedMenuItemsFromObjectProps) => {
   return items.map((item) => {
-    const { leftIcon, rightIcon, label, tooltip, items: menuItemsData, callback, sx, disabled, active, divider, autoCloseDisabled, checked } = item;
+    const { active, autoCloseDisabled, callback, checked, disabled, divider, items: menuItemsData, label, leftIcon, rightIcon, sx, tooltip } = item;
     if (!disabled && menuItemsData && menuItemsData.length > 0) {
       return (
         <Tooltip
-          key={label}
           arrow
+          key={label}
           placement={'right'}
           title={undefined}
         >
           <NestedMenuItem
-            key={label}
-            checked={checked}
             active={active}
             callback={callback}
+            checked={checked}
             disabled={disabled}
+            key={label}
             label={label}
             leftIcon={leftIcon}
             parentMenuOpen={isOpen}
@@ -55,20 +55,13 @@ export const nestedMenuItemsFromObject = ({
 
     const iconMenuItem = (
       <IconMenuItem
-        key={label}
         checked={checked}
         disabled={disabled}
         divider={divider}
+        key={label}
         label={label}
-        rightIcon={rightIcon}
-        sx={{
-          ...(sx || {}),
-          '& p': {
-            fontWeight: active ? 700 : undefined,
-          },
-        }}
         leftIcon={leftIcon}
-        // eslint-disable-next-line react/jsx-no-bind
+        // eslint-disable-next-line @eslint-react/kit/jsx-no-bind
         onClick={() => {
           if (!autoCloseDisabled) {
             handleClose();
@@ -76,6 +69,13 @@ export const nestedMenuItemsFromObject = ({
           if (callback) {
             callback();
           }
+        }}
+        rightIcon={rightIcon}
+        sx={{
+          ...(sx || {}),
+          '& p': {
+            fontWeight: active ? 700 : undefined,
+          },
         }}
       />
     );
@@ -86,8 +86,8 @@ export const nestedMenuItemsFromObject = ({
     // No children elements, return MenuItem
     return (
       <Tooltip
-        key={label}
         arrow
+        key={label}
         placement={'right'}
         title={tooltip ?? label}
       >

@@ -16,8 +16,8 @@ import type { EChartsReactProps } from 'echarts-for-react';
 import EChartsReact from 'echarts-for-react';
 import type { ReactElement } from 'react';
 import {
+  use,
   useCallback,
-  useContext,
   useEffect,
   useMemo,
   useRef,
@@ -80,7 +80,7 @@ export const EpiCurveWidget = () => {
   const highlightingManager = useMemo(() => EpiHighlightingManager.instance, []);
   const chartRef = useRef<EChartsReact>(null);
 
-  const epiDashboardStore = useContext(EpiDashboardStoreContext);
+  const epiDashboardStore = use(EpiDashboardStoreContext);
   const stratification = useStore(epiDashboardStore, (state) => state.stratification);
   const isDataLoading = useStore(epiDashboardStore, (state) => state.isDataLoading);
   const sortedData = useStore(epiDashboardStore, (state) => state.sortedData);
@@ -111,10 +111,10 @@ export const EpiCurveWidget = () => {
     }
 
     const menu: MenuItemData = {
-      label,
-      tooltip: col ? completeCaseType.ref_cols[col.ref_col_id].description : undefined,
       disabled: !timeDims.length,
       items: [],
+      label,
+      tooltip: col ? completeCaseType.ref_cols[col.ref_col_id].description : undefined,
     };
 
     completeCaseType.ordered_dim_ids.map(x => completeCaseType.dims[x]).filter(dim => {
@@ -126,13 +126,13 @@ export const EpiCurveWidget = () => {
       }
       completeCaseType.ordered_col_ids_by_dim[dim.id].map(id => completeCaseType.cols[id]).forEach((c) => {
         menu.items.push({
-          label: c.label,
-          tooltip: c.description,
           active: c.id === c?.id,
           callback: () => {
             updateEpiCurveWidgetData({ columnId: c.id });
             setCol(c);
           },
+          label: c.label,
+          tooltip: c.description,
         });
       });
     });
@@ -186,21 +186,21 @@ export const EpiCurveWidget = () => {
     return EpiCurveUtil.getXAxisIntervals(completeCaseType.ref_cols[col.ref_col_id].col_type, items);
   }, [col, completeCaseType.ref_cols, items]);
 
-  const serieData = useMemo<{ series: BarSeriesOption[]; max: number }>(() => {
+  const serieData = useMemo<{ max: number; series: BarSeriesOption[] }>(() => {
     if (!items) {
       return {
-        series: null,
         max: null,
+        series: null,
       };
     }
 
     let max = 0;
     const barSerieOptionsBase: BarSeriesOption = {
-      type: 'bar',
       emphasis: {
         focus: 'self',
       },
       stack: 'total',
+      type: 'bar',
     };
     const barSeries: BarSeriesOption[] = [];
     if (!stratification) {
@@ -249,12 +249,12 @@ export const EpiCurveWidget = () => {
     });
 
     return {
-      series: barSeries,
       max,
+      series: barSeries,
     };
   }, [stratification, xAxisIntervals, items, getXAxisLabel]);
 
-  const events = useMemo<EChartsReactProps['onEvents']>(() => {
+  const onEvents = useMemo<EChartsReactProps['onEvents']>(() => {
     return {
       finished: !hasRenderedOnce ? () => {
         const dom = chartRef?.current?.getEchartsInstance()?.getDom();
@@ -262,15 +262,15 @@ export const EpiCurveWidget = () => {
         dom?.setAttribute('role', 'img');
         setHasRenderedOnce(true);
       } : undefined,
-      mouseover: (event: unknown) => {
-        highlightingManager.highlight({
-          caseIds: JSON.parse((event as GenEpixEchartsEvent).data[2]) as string[],
-          origin: EPI_ZONE.EPI_CURVE,
-        });
-      },
       mouseout: () => {
         highlightingManager.highlight({
           caseIds: [],
+          origin: EPI_ZONE.EPI_CURVE,
+        });
+      },
+      mouseover: (event: unknown) => {
+        highlightingManager.highlight({
+          caseIds: JSON.parse((event as GenEpixEchartsEvent).data[2]) as string[],
           origin: EPI_ZONE.EPI_CURVE,
         });
       },
@@ -280,11 +280,11 @@ export const EpiCurveWidget = () => {
         const caseIds = JSON.parse((event as GenEpixEchartsEvent).data[2]) as string[];
         setEpiContextMenuConfig({
           caseIds,
+          mouseEvent,
           position: {
             left: (event as { event: { event: MouseEvent } }).event.event.clientX,
             top: (event as { event: { event: MouseEvent } }).event.event.clientY,
           },
-          mouseEvent,
         });
       },
 
@@ -315,9 +315,9 @@ export const EpiCurveWidget = () => {
       }
       if (highlighting.caseIds.length) {
         instance.dispatchAction({
-          type: 'highlight',
-          seriesIndex: foundSerieIndexes,
           dataIndex: foundDataIndexes,
+          seriesIndex: foundSerieIndexes,
+          type: 'highlight',
         });
       } else {
         instance.dispatchAction({
@@ -333,45 +333,45 @@ export const EpiCurveWidget = () => {
 
   const getOptions = useCallback(() => {
     return {
+      color: ConfigManager.instance.config.epi.STRATIFICATION_COLORS,
       grid: {
         bottom: 64,
         left: 48,
         right: 8,
         top: 16,
       },
+      series: serieData.series,
       tooltip: {
-        show: true,
-        triggerOn: 'mousemove',
-        trigger: 'item',
         formatter: (params) => {
-          const typedParams = params as { name: string; value: number[]; seriesName: string };
+          const typedParams = params as { name: string; seriesName: string; value: number[] };
 
           if (stratification) {
             return `${typedParams.name} - ${typedParams.seriesName} (n=${typedParams.value[1]})`;
           }
           return `${typedParams.name} (n=${typedParams.value[1]})`;
         },
+        show: true,
+        trigger: 'item',
+        triggerOn: 'mousemove',
       },
       xAxis: {
-        type: 'category',
-        data: xAxisIntervals.map(x => getXAxisLabel(x)),
-        axisTick: {
-          show: true,
-          alignWithLabel: true,
-        },
         axisLabel: {
-          rotate: 45,
           height: 100,
+          rotate: 45,
         },
+        axisTick: {
+          alignWithLabel: true,
+          show: true,
+        },
+        data: xAxisIntervals.map(x => getXAxisLabel(x)),
+        type: 'category',
       },
       yAxis: {
-        type: 'value',
-        minInterval: 1,
-        min: 0,
         max: serieData.max,
+        min: 0,
+        minInterval: 1,
+        type: 'value',
       },
-      series: serieData.series,
-      color: ConfigManager.instance.config.epi.STRATIFICATION_COLORS,
     } satisfies EChartsOption;
   }, [serieData, xAxisIntervals, getXAxisLabel, stratification]);
 
@@ -429,7 +429,7 @@ export const EpiCurveWidget = () => {
     return (
       <MenuItem
         divider
-        // eslint-disable-next-line react/jsx-no-bind
+        // eslint-disable-next-line @eslint-react/kit/jsx-no-bind
         onClick={async () => await onShowOnlySelectedDateMenuItemClick(onMenuClose)}
       >
         <ListItemIcon>
@@ -450,31 +450,30 @@ export const EpiCurveWidget = () => {
   useEffect(() => {
     const emitDownloadOptions = () => {
       EpiEventBusManager.instance.emit('onDownloadOptionsChanged', {
-        zone: EPI_ZONE.EPI_CURVE,
         disabled: !shouldShowEpiCurve,
-        zoneLabel: t`Epi curve`,
         items: [
           {
-            label: t`Save as PNG`,
             callback: () => DownloadUtil.downloadEchartsImage(t`Epi curve`, chartRef.current.getEchartsInstance(), 'png', completeCaseType, t),
+            label: t`Save as PNG`,
           },
           {
-            label: t`Save as JPEG`,
             callback: () => DownloadUtil.downloadEchartsImage(t`Epi curve`, chartRef.current.getEchartsInstance(), 'jpeg', completeCaseType, t),
+            label: t`Save as JPEG`,
           },
         ],
+        zone: EPI_ZONE.EPI_CURVE,
+        zoneLabel: t`Epi curve`,
       });
     };
     emitDownloadOptions();
-    const remove = EpiEventBusManager.instance.addEventListener('onDownloadOptionsRequested', emitDownloadOptions);
-
+    EpiEventBusManager.instance.addEventListener('onDownloadOptionsRequested', emitDownloadOptions);
     return () => {
       EpiEventBusManager.instance.emit('onDownloadOptionsChanged', {
+        items: null,
         zone: EPI_ZONE.EPI_CURVE,
         zoneLabel: t`Epi curve`,
-        items: null,
       });
-      remove();
+      EpiEventBusManager.instance.removeEventListener('onDownloadOptionsRequested', emitDownloadOptions);
     };
   }, [completeCaseType, shouldShowEpiCurve, t]);
 
@@ -501,16 +500,16 @@ export const EpiCurveWidget = () => {
         >
           {items?.length > 0 && (
             <EChartsReact
-              ref={chartRef}
-              notMerge
               echarts={echarts}
+              notMerge
+              onEvents={onEvents}
               option={getOptions()}
+              ref={chartRef}
               style={{
-                width: '100%',
                 height: '100%',
                 position: 'absolute',
+                width: '100%',
               }}
-              onEvents={events}
             />
           )}
           <EpiContextMenu

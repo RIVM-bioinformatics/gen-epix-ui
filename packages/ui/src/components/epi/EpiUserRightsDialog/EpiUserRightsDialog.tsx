@@ -15,8 +15,8 @@ import {
 } from 'react';
 
 import type {
-  WithDialogRenderProps,
   WithDialogRefMethods,
+  WithDialogRenderProps,
 } from '../../../hoc/withDialog';
 import { withDialog } from '../../../hoc/withDialog';
 import type { User } from '../../../api';
@@ -56,8 +56,8 @@ export const EpiUserRightsDialog = withDialog<EpiUserRightsDialogProps, EpiUserR
 
   const a11yProps = useCallback((index: number) => {
     return {
-      id: `simple-tab-${index}`,
       'aria-controls': `simple-tabpanel-${index}`,
+      id: `simple-tab-${index}`,
     };
   }, []);
 
@@ -66,8 +66,8 @@ export const EpiUserRightsDialog = withDialog<EpiUserRightsDialogProps, EpiUserR
       <Box sx={{ borderBottom: 1, borderColor: 'divider' }}>
         <Tabs
           aria-label={'basic tabs example'}
-          value={activeTab}
           onChange={onTabsChange}
+          value={activeTab}
         >
           <Tab
             label={t`Case access`}
@@ -94,8 +94,8 @@ export const EpiUserRightsDialog = withDialog<EpiUserRightsDialogProps, EpiUserR
     </Box>
   );
 }, {
-  testId: 'EpiUserRightsDialog',
-  maxWidth: 'xl',
-  fullWidth: true,
   defaultTitle: '',
+  fullWidth: true,
+  maxWidth: 'xl',
+  testId: 'EpiUserRightsDialog',
 });

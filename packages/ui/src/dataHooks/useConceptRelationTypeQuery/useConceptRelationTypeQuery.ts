@@ -11,11 +11,11 @@ export const conceptRelationTypePresentationValues: Partial<Record<ConceptRelati
 
 export const useConceptRelationTypeOptionsQuery = (): UseOptions<string> => {
   return useMemo(() => {
-    const options: OptionBase<string>[] = Object.entries(conceptRelationTypePresentationValues).map(([value, label]) => ({ value, label }));
+    const options: OptionBase<string>[] = Object.entries(conceptRelationTypePresentationValues).map(([value, label]) => ({ label, value }));
     return {
+      error: null,
       isLoading: false,
       options,
-      error: null,
     } as UseOptions<string>;
   }, []);
 };

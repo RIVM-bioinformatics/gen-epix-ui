@@ -11,8 +11,8 @@ export type BooleanFilterFieldProps = {
 };
 export const BooleanFilterField = ({ filter }: BooleanFilterFieldProps) => {
   const options = useMemo<SelectOption<boolean>[]>(() => [
-    { value: true, label: 'Yes' },
-    { value: false, label: 'No' },
+    { label: 'Yes', value: true },
+    { label: 'No', value: false },
   ], []);
   return (
     <Box>

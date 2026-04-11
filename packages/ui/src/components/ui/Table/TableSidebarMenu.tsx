@@ -40,19 +40,19 @@ export const TableSidebarMenu = <TRowData, >({ extraSidebarMenuItems }: TableSid
     <>
       <SidebarMenu>
         <SidebarMenuItem
-          first
           badgeColor={'secondary'}
           badgeContent={activeFiltersCount}
+          first
           icon={<TableFiltersSidebarItemIcon />}
+          onClick={onEpiDashboardOpenFilterSidebarButtonClick}
           testIdAttributes={{ name: 'filters' }}
           title={t`Open filters`}
-          onClick={onEpiDashboardOpenFilterSidebarButtonClick}
         />
         {extraSidebarMenuItems}
       </SidebarMenu>
       <TableFiltersSidebarItem
-        open={isTableFiltersSidebarItemOpen}
         onClose={onEpiDashboardFilterSidebarClose}
+        open={isTableFiltersSidebarItemOpen}
       />
     </>
   );

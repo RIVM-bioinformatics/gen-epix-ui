@@ -1,7 +1,7 @@
 import type { AlertProps } from '@mui/material';
 import {
-  Typography,
   Box,
+  Typography,
 } from '@mui/material';
 
 import type { Outage } from '../../../api';
@@ -9,12 +9,12 @@ import type { Outage } from '../../../api';
 import { OutageItem } from './OutageItem';
 
 type OutageSectionProps = {
+  readonly itemTitle: string;
   readonly outages: Outage[];
   readonly severity: AlertProps['severity'];
   readonly title: string;
-  readonly itemTitle: string;
 };
-export const OutageSection = ({ outages, severity, title, itemTitle }: OutageSectionProps) => {
+export const OutageSection = ({ itemTitle, outages, severity, title }: OutageSectionProps) => {
   return (
     <Box
       sx={{

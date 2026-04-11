@@ -20,10 +20,6 @@ export abstract class EventBusAbstract<T extends {}> {
     };
   }
 
-  public emit<TEventName extends keyof T>(eventName: TEventName, payload?: T[TEventName]): void {
-    this.listeners[eventName]?.forEach((callback) => callback(payload));
-  }
-
   public destroy(): void {
     // clean up all listeners
     Object.keys(this.listeners).forEach((eventName) => {
@@ -33,5 +29,22 @@ export abstract class EventBusAbstract<T extends {}> {
         // ignore
       }
     });
+  }
+
+  public emit<TEventName extends keyof T>(eventName: TEventName, payload?: T[TEventName]): void {
+    this.listeners[eventName]?.forEach((callback) => callback(payload));
+  }
+
+  public removeEventListener<TEventName extends keyof T>(eventName: TEventName, callback: (payload: T[TEventName]) => void): void {
+    const listeners = this.listeners[eventName];
+    if (!listeners) {
+      return;
+    }
+    for (const [id, listener] of listeners.entries()) {
+      if (listener === callback) {
+        listeners.delete(id);
+        break;
+      }
+    }
   }
 }

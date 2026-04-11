@@ -40,8 +40,8 @@ export const EpiReadOnlyCaseContent = ({ epiCase, ...boxProps }: EpiReadOnlyCase
       )}
       <ResponseHandler
         inlineSpinner
-        shouldHideActionButtons
         loadables={loadables}
+        shouldHideActionButtons
       >
         {epiCase && (
           <Table size={'small'}>

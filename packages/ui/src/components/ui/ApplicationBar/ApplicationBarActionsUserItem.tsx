@@ -3,7 +3,6 @@ import {
   IconButton,
   useTheme,
 } from '@mui/material';
-import { Fragment } from 'react/jsx-runtime';
 import AccountCircleIcon from '@mui/icons-material/AccountCircle';
 import {
   useCallback,
@@ -17,7 +16,7 @@ import { UserMenu } from './UserMenu';
 export const ApplicationBarActionsUserItem = () => {
   const { t } = useTranslation();
   const theme = useTheme();
-  const [accountMenuAnchorElement, setAccountMenuAnchorElement] = useState<null | HTMLElement>(null);
+  const [accountMenuAnchorElement, setAccountMenuAnchorElement] = useState<HTMLElement | null>(null);
 
   const onAccountMenuIconClick = useCallback((event: MouseEvent<HTMLElement>): void => {
     setAccountMenuAnchorElement(event.currentTarget);
@@ -28,11 +27,11 @@ export const ApplicationBarActionsUserItem = () => {
   }, []);
 
   return (
-    <Fragment>
+    <>
       <IconButton
         color={'inherit'}
-        title={'Account'}
         onClick={onAccountMenuIconClick}
+        title={'Account'}
       >
         <AccountCircleIcon color={'inherit'} />
         <Box
@@ -40,8 +39,8 @@ export const ApplicationBarActionsUserItem = () => {
             fontSize: '1.3rem',
             marginLeft: theme.spacing(1),
             [theme.breakpoints.up('md')]: {
-              visibility: 'hidden',
               position: 'absolute',
+              visibility: 'hidden',
             },
           }}
         >
@@ -55,6 +54,6 @@ export const ApplicationBarActionsUserItem = () => {
         />
       )}
 
-    </Fragment>
+    </>
   );
 };

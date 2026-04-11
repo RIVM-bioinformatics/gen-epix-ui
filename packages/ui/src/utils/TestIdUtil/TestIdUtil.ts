@@ -1,5 +1,5 @@
 export class TestIdUtil {
-  public static createAttributes(name: string, props: Record<string, string | number> = {}): Record<string, string> {
+  public static createAttributes(name: string, props: Record<string, number | string> = {}): Record<string, string> {
     const attribute: Record<string, string> = {
       'data-testid': name,
     };

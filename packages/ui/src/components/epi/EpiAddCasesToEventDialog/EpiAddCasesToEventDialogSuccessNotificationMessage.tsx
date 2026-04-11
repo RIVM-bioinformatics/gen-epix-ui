@@ -23,7 +23,7 @@ export const EpiAddCasesToEventDialogSuccessNotificationMessage = ({ caseSet, nu
   return (
     <Box>
       <Box>
-        {t('Successfully added {{numAddedCases}} case(s) to event: {{name}}', { numAddedCases, name: caseSet.name })}
+        {t('Successfully added {{numAddedCases}} case(s) to event: {{name}}', { name: caseSet.name, numAddedCases })}
       </Box>
       <Box
         sx={{

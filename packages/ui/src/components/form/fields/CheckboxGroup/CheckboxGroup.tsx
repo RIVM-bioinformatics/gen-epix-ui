@@ -9,12 +9,12 @@ import {
 } from 'react';
 import {
   FormControl,
-  FormLabel,
-  Checkbox as MuiCheckbox,
   FormControlLabel,
-  FormHelperText,
   FormGroup,
+  FormHelperText,
+  FormLabel,
   IconButton,
+  Checkbox as MuiCheckbox,
 } from '@mui/material';
 import ClearIcon from '@mui/icons-material/Clear';
 import {
@@ -22,10 +22,10 @@ import {
   useFormContext,
 } from 'react-hook-form';
 import type {
-  UseControllerReturn,
+  ControllerRenderProps,
   FieldValues,
   Path,
-  ControllerRenderProps,
+  UseControllerReturn,
 } from 'react-hook-form';
 import { useTranslation } from 'react-i18next';
 
@@ -36,30 +36,30 @@ import { FormFieldHelperText } from '../../helpers/FormFieldHelperText';
 import { FormFieldLoadingIndicator } from '../../helpers/FormFieldLoadingIndicator';
 
 
-type CheckBoxGroupValue = Array<string | number>;
-
 export type CheckboxGroupProps<TFieldValues extends FieldValues, TName extends Path<TFieldValues> = Path<TFieldValues>> = {
   readonly disabled?: boolean;
   readonly label: string;
+  readonly loading?: boolean;
   readonly name: TName;
   readonly onChange?: (value: CheckBoxGroupValue) => void;
-  readonly required?: boolean;
-  readonly warningMessage?: string | boolean;
-  readonly row?: boolean;
   readonly options: CheckboxOption[];
-  readonly loading?: boolean;
+  readonly required?: boolean;
+  readonly row?: boolean;
+  readonly warningMessage?: boolean | string;
 };
+
+type CheckBoxGroupValue = Array<number | string>;
 
 export const CheckboxGroup = <TFieldValues extends FieldValues, TName extends Path<TFieldValues> = Path<TFieldValues>>({
   disabled,
   label,
+  loading,
   name,
+  onChange: onChangeProp,
   options,
   required,
   row,
-  loading,
   warningMessage,
-  onChange: onChangeProp,
 }: CheckboxGroupProps<TFieldValues, TName>): ReactElement => {
   const { t } = useTranslation();
   const id = useId();
@@ -69,7 +69,7 @@ export const CheckboxGroup = <TFieldValues extends FieldValues, TName extends Pa
   const inputRef = useRef<HTMLInputElement>(null);
   const hasError = !!errorMessage;
 
-  const onMuiCheckboxChange = useCallback((onChange: ControllerRenderProps<TFieldValues, TName>['onChange'], itemValue: string | number, currentValue: CheckBoxGroupValue) =>
+  const onMuiCheckboxChange = useCallback((onChange: ControllerRenderProps<TFieldValues, TName>['onChange'], itemValue: number | string, currentValue: CheckBoxGroupValue) =>
     (_event: ChangeEvent<unknown>, checked: boolean) => {
       const newValue = currentValue.filter(x => x !== itemValue);
       if (checked) {
@@ -83,7 +83,7 @@ export const CheckboxGroup = <TFieldValues extends FieldValues, TName extends Pa
     }
   , [onChangeProp]);
 
-  const renderController = useCallback(({ field: { onChange, onBlur, value, ref } }: UseControllerReturn<TFieldValues, TName>) => {
+  const renderController = useCallback(({ field: { onBlur, onChange, ref, value } }: UseControllerReturn<TFieldValues, TName>) => {
     ref({
       focus: () => {
         inputRef?.current?.focus();
@@ -100,11 +100,11 @@ export const CheckboxGroup = <TFieldValues extends FieldValues, TName extends Pa
         {...TestIdUtil.createAttributes('CheckboxGroup', { label, name: name as string })}
         fullWidth
         sx={{
-          'legend button': {
-            display: 'none',
-          },
           '&:hover legend button, &:focus-within legend button': {
             display: 'initial',
+          },
+          'legend button': {
+            display: 'none',
           },
         }}
       >
@@ -119,17 +119,17 @@ export const CheckboxGroup = <TFieldValues extends FieldValues, TName extends Pa
           {!disabled && (
             <IconButton
               {...TestIdUtil.createAttributes('DateRangePicker-reset')}
+              aria-label={t`Clear checkbox selection`}
+              // eslint-disable-next-line @eslint-react/kit/jsx-no-bind
+              onClick={onResetButtonClick}
               sx={{
-                position: 'absolute',
-                top: '-10px',
                 '& svg': {
                   fontSize: '16px',
                 },
+                position: 'absolute',
+                top: '-10px',
               }}
               tabIndex={-1}
-              aria-label={t`Clear checkbox selection`}
-              // eslint-disable-next-line react/jsx-no-bind
-              onClick={onResetButtonClick}
             >
               <ClearIcon />
             </IconButton>
@@ -138,21 +138,21 @@ export const CheckboxGroup = <TFieldValues extends FieldValues, TName extends Pa
         { !loading && (
           <FormGroup
             aria-labelledby={id}
-            row={row}
             onBlur={onBlur}
+            row={row}
           >
             { options.map((option, index) => {
               return (
                 <FormControlLabel
-                  {...TestIdUtil.createAttributes('CheckboxGroup-option', { value: option.value.toString(), label: option.label })}
                   key={option.value.toString()}
+                  {...TestIdUtil.createAttributes('CheckboxGroup-option', { label: option.label, value: option.value.toString() })}
                   checked={(value as CheckBoxGroupValue)?.includes(option.value)}
                   control={(
                     <MuiCheckbox
                       slotProps={{
                         input: {
-                          ref: index === 0 ? inputRef : undefined,
                           name: `${name}-${option.value.toString()}`,
+                          ref: index === 0 ? inputRef : undefined,
                         },
                       }}
                       sx={{
@@ -171,8 +171,8 @@ export const CheckboxGroup = <TFieldValues extends FieldValues, TName extends Pa
         { !!loading && <FormFieldLoadingIndicator inline />}
         <FormHelperText sx={{ ml: 0 }}>
           <FormFieldHelperText
-            noIndent
             errorMessage={errorMessage}
+            noIndent
             warningMessage={warningMessage}
           />
         </FormHelperText>

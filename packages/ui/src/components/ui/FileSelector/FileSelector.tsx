@@ -1,9 +1,9 @@
 import {
-  Typography,
   Box,
   Chip,
-  Stack,
   IconButton,
+  Stack,
+  Typography,
 } from '@mui/material';
 import DeleteIcon from '@mui/icons-material/Delete';
 import InsertDriveFileIcon from '@mui/icons-material/InsertDriveFile';
@@ -29,16 +29,16 @@ import { DATE_FORMAT } from '../../../data/date';
 
 export type FileSelectorProps = {
   readonly accept: string;
-  readonly onDataTransferChange: (dataTransfer: DataTransfer) => void;
-  readonly numFilesAllowed?: number;
   readonly initialDataTransfer?: DataTransfer;
+  readonly numFilesAllowed?: number;
+  readonly onDataTransferChange: (dataTransfer: DataTransfer) => void;
 };
 
 export const FileSelector = ({
   accept,
-  onDataTransferChange,
-  numFilesAllowed = 1,
   initialDataTransfer: initialDataTransferProp,
+  numFilesAllowed = 1,
+  onDataTransferChange,
 }: FileSelectorProps) => {
   const { t } = useTranslation();
   const hoverLabel = numFilesAllowed === 1
@@ -177,65 +177,65 @@ export const FileSelector = ({
   return (
     <>
       <Box
-        ref={inputRef}
         accept={accept}
         component={'input'}
         id={inputId}
         multiple={numFilesAllowed > 1}
+        onChange={onFileInputChange}
+        ref={inputRef}
         sx={{
           display: 'none',
         }}
         type={'file'}
-        onChange={onFileInputChange}
       />
       <Box
         sx={{
-          height: '100%',
           display: 'grid',
           gridTemplateRows: 'auto fit-content(50%)',
+          height: '100%',
         }}
       >
         <Box
           component={'label'}
           htmlFor={inputId}
-          sx={{
-            width: '100%',
-            height: '100%',
-            position: 'relative',
-            cursor: 'pointer',
-            textAlign: 'center',
-            display: 'flex',
-            '& p, & svg': {
-              opacity: isDragOver ? 1 : 0.4,
-            },
-            '&:hover *': {
-              opacity: 1,
-            },
-          }}
-          tabIndex={0}
-          onKeyDown={onLabelKeyDown}
           onDragEnter={onLabelDragEnter}
           onDragLeave={onLabelDragLeave}
           onDragOver={onLabelDragOver}
           onDrop={onDrop}
+          onKeyDown={onLabelKeyDown}
+          sx={{
+            '&:hover *': {
+              opacity: 1,
+            },
+            '& p, & svg': {
+              opacity: isDragOver ? 1 : 0.4,
+            },
+            cursor: 'pointer',
+            display: 'flex',
+            height: '100%',
+            position: 'relative',
+            textAlign: 'center',
+            width: '100%',
+          }}
+          tabIndex={0}
         >
           <Box
             sx={{
-              width: '100%',
               height: '100%',
-              position: 'relative',
               pointerEvents: 'none',
+              position: 'relative',
+              width: '100%',
             }}
           >
             <Box
               sx={{
-                width: '100%',
-                height: '100%',
-                display: 'flex',
-                justifyContent: 'center',
-                flexDirection: 'column',
                 alignItems: 'center',
+                display: 'flex',
+                flexDirection: 'column',
+                height: '100%',
+                justifyContent: 'center',
                 position: 'absolute',
+                width: '100%',
               }}
             >
               <CloudUploadIcon
@@ -270,14 +270,14 @@ export const FileSelector = ({
               <>
                 <Box
                   sx={{
+                    alignItems: 'center',
+                    backgroundColor: (theme) => theme.palette.background.paper,
+                    display: 'flex',
+                    gap: 1,
+                    paddingY: 1,
                     position: 'sticky',
                     top: 0,
-                    paddingY: 1,
-                    backgroundColor: (theme) => theme.palette.background.paper,
                     zIndex: (theme) => theme.zIndex.tooltip - 1,
-                    display: 'flex',
-                    alignItems: 'center',
-                    gap: 1,
                   }}
                 >
                   <Typography
@@ -287,8 +287,8 @@ export const FileSelector = ({
                   </Typography>
                   <IconButton
                     aria-label={t('Clear all selected files')}
-                    size={'small'}
                     onClick={onClearAllButtonClick}
+                    size={'small'}
                   >
                     <DeleteIcon fontSize={'small'} />
                   </IconButton>
@@ -301,13 +301,23 @@ export const FileSelector = ({
                 >
                   {Array.from(dataTransfer.files).map(file => (
                     <Chip
-                      key={`${file.name}-${file.size}-${file.lastModified}`}
+                      deleteIcon={(
+                        <DeleteIcon
+                          aria-hidden={false}
+                          aria-label={t('Clear {{fileName}}', { fileName: file.name })}
+                          focusable
+                          // eslint-disable-next-line @eslint-react/kit/jsx-no-bind
+                          onKeyDown={(event) => {
+                            if (event.key === 'Enter' || event.key === ' ') {
+                              event.preventDefault();
+                              removeFile(file.name);
+                            }
+                          }}
+                          tabIndex={0}
+                        />
+                      )}
                       icon={<InsertDriveFileIcon />}
-                      sx={{
-                        margin: 0.25,
-                      }}
-                      tabIndex={-1}
-                      variant={'outlined'}
+                      key={`${file.name}-${file.size}-${file.lastModified}`}
                       label={
                         (
                           <>
@@ -326,25 +336,15 @@ export const FileSelector = ({
                           </>
                         )
                       }
-                      deleteIcon={(
-                        <DeleteIcon
-                          focusable
-                          aria-hidden={false}
-                          aria-label={t('Clear {{fileName}}', { fileName: file.name })}
-                          tabIndex={0}
-                          // eslint-disable-next-line react/jsx-no-bind
-                          onKeyDown={(event) => {
-                            if (event.key === 'Enter' || event.key === ' ') {
-                              event.preventDefault();
-                              removeFile(file.name);
-                            }
-                          }}
-                        />
-                      )}
-                      // eslint-disable-next-line react/jsx-no-bind
+                      // eslint-disable-next-line @eslint-react/kit/jsx-no-bind
                       onDelete={() => {
                         removeFile(file.name);
                       }}
+                      sx={{
+                        margin: 0.25,
+                      }}
+                      tabIndex={-1}
+                      variant={'outlined'}
                     />
                   ))}
                 </Stack>

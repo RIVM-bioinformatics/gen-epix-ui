@@ -1,8 +1,8 @@
 import {
-  Typography,
-  Button,
   Box,
+  Button,
   Skeleton,
+  Typography,
   useTheme,
 } from '@mui/material';
 import {
@@ -39,16 +39,16 @@ import { LoadableUtil } from '../../../utils/LoadableUtil';
 
 import { HomePageTrendCard } from './HomePageTrendCard';
 
-type Statistic = {
-  header: string;
-  value: number;
+type CaseStatsWithDiff = {
   diffPercentage: number;
+} & CaseStats;
+
+type Statistic = {
   callback?: () => void;
   callbackLabel?: string;
-};
-
-type CaseStatsWithDiff = CaseStats & {
   diffPercentage: number;
+  header: string;
+  value: number;
 };
 
 export const HomePageTrends = withPermissions(() => {
@@ -62,18 +62,18 @@ export const HomePageTrends = withPermissions(() => {
   } satisfies TypedDatetimeRangeFilter), []);
 
   const caseSetQueryFilter = useMemo<EpiFilter>(() => ({
+    key: 'case_set_date',
     type: 'DATETIME_RANGE',
     upper_bound: ConfigManager.instance.config.trends.homePage.getSinceDate(),
     upper_bound_censor: '<=',
-    key: 'case_set_date',
   } satisfies EpiFilter), []);
 
   const caseTypeStatsQueryNow = useQueryMemo({
-    queryKey: QueryUtil.getGenericKey(QUERY_KEY.CASE_TYPE_STATS),
     queryFn: async ({ signal }) => {
       const response = await CaseApi.instance.retrieveCaseTypeStats({}, { signal });
       return response.data;
     },
+    queryKey: QueryUtil.getGenericKey(QUERY_KEY.CASE_TYPE_STATS),
   });
 
   const retrieveTypeCaseStatsRequestBody = useMemo<RetrieveCaseTypeStatsRequestBody>(() => {
@@ -81,28 +81,28 @@ export const HomePageTrends = withPermissions(() => {
       return undefined;
     }
     return {
-      datetime_range_filter: dateTimeRangeFilter,
       case_type_ids: caseTypeStatsQueryNow.data?.filter(stat => stat.n_cases > 0).map(stat => stat.case_type_id),
+      datetime_range_filter: dateTimeRangeFilter,
     };
   }, [dateTimeRangeFilter, caseTypeStatsQueryNow.data]);
 
   const caseTypeStatsQueryPast = useQueryMemo({
-    queryKey: QueryUtil.getGenericKey(QUERY_KEY.CASE_TYPE_STATS, retrieveTypeCaseStatsRequestBody ?? {}),
+    enabled: !!retrieveTypeCaseStatsRequestBody,
     queryFn: async ({ signal }) => {
       const response = await CaseApi.instance.retrieveCaseTypeStats(retrieveTypeCaseStatsRequestBody ?? {}, { signal });
       return response.data;
     },
-    enabled: !!retrieveTypeCaseStatsRequestBody,
+    queryKey: QueryUtil.getGenericKey(QUERY_KEY.CASE_TYPE_STATS, retrieveTypeCaseStatsRequestBody ?? {}),
   });
   const caseSetsNowQuery = useCaseSetsQuery();
   const caseTypeMapQuery = useCaseTypeMapQuery();
 
   const { data: caseSetsThenData, ...caseSetsThenQuery } = useQueryMemo({
-    queryKey: QueryUtil.getGenericKey(QUERY_KEY.CASE_SETS, caseSetQueryFilter),
     queryFn: async ({ signal }) => {
       const response = await CaseApi.instance.caseSetsPostQuery(caseSetQueryFilter, { signal });
       return response.data;
     },
+    queryKey: QueryUtil.getGenericKey(QUERY_KEY.CASE_SETS, caseSetQueryFilter),
   });
 
   const loadables = useArray([
@@ -125,13 +125,13 @@ export const HomePageTrends = withPermissions(() => {
 
     s.push(
       {
-        header: 'Cases',
-        value: nowTotalCases,
-        diffPercentage: round((nowTotalCases - thenTotalCases) / (thenTotalCases || 1) * 100, 2),
-        callbackLabel: t`View all cases`,
         callback: async () => {
           await RouterManager.instance.router.navigate('/cases');
         },
+        callbackLabel: t`View all cases`,
+        diffPercentage: round((nowTotalCases - thenTotalCases) / (thenTotalCases || 1) * 100, 2),
+        header: 'Cases',
+        value: nowTotalCases,
       },
     );
 
@@ -139,13 +139,13 @@ export const HomePageTrends = withPermissions(() => {
     const numberOfCaseSetsThen = caseSetsThenData.length;
     s.push(
       {
-        header: 'Events',
-        value: numberOfCaseSetsNow,
-        diffPercentage: round((numberOfCaseSetsNow - numberOfCaseSetsThen) / (numberOfCaseSetsThen || 1) * 100, 2),
-        callbackLabel: t`View all events`,
         callback: async () => {
           await RouterManager.instance.router.navigate('/events');
         },
+        callbackLabel: t`View all events`,
+        diffPercentage: round((numberOfCaseSetsNow - numberOfCaseSetsThen) / (numberOfCaseSetsThen || 1) * 100, 2),
+        header: 'Events',
+        value: numberOfCaseSetsNow,
       },
     );
 
@@ -173,13 +173,13 @@ export const HomePageTrends = withPermissions(() => {
         if (caseTypeName) {
           s.push(
             {
-              header: t('{{caseTypeName}} cases', { number: i + 1, caseTypeName }),
-              value: sortedStats[i].n_cases,
-              diffPercentage: sortedStats[i].diffPercentage,
-              callbackLabel: t`View cases`,
               callback: async () => {
                 await RouterManager.instance.router.navigate(CaseTypeUtil.createCaseTypeLink(caseType));
               },
+              callbackLabel: t`View cases`,
+              diffPercentage: sortedStats[i].diffPercentage,
+              header: t('{{caseTypeName}} cases', { caseTypeName, number: i + 1 }),
+              value: sortedStats[i].n_cases,
             },
           );
         }
@@ -206,8 +206,8 @@ export const HomePageTrends = withPermissions(() => {
       >
         <Box
           sx={{
-            display: 'flex',
             alignItems: 'center',
+            display: 'flex',
             justifyContent: 'space-between',
           }}
         >
@@ -220,10 +220,10 @@ export const HomePageTrends = withPermissions(() => {
           </Box>
           <Box>
             <Button
-              disabled
               color={'primary'}
-              variant={'outlined'}
+              disabled
               onClick={onViewMoreTrendsButtonClick}
+              variant={'outlined'}
             >
               {t`View more trends`}
             </Button>
@@ -232,32 +232,31 @@ export const HomePageTrends = withPermissions(() => {
       </Box>
       <ResponseHandler
         inlineSpinner
-        shouldHideActionButtons
         loadables={loadables}
         loadingContent={(
           <Box
             sx={{
               display: 'grid',
+              gap: 2,
               gridTemplateColumns: 'repeat(1, 1fr)',
-              [theme.breakpoints.up('sm')]: {
-                gridTemplateColumns: 'repeat(2, 1fr)',
-              },
+              marginBottom: 2,
               [theme.breakpoints.up('md')]: {
                 gridTemplateColumns: 'repeat(4, 1fr)',
               },
-              gap: 2,
-              marginBottom: 2,
+              [theme.breakpoints.up('sm')]: {
+                gridTemplateColumns: 'repeat(2, 1fr)',
+              },
             }}
           >
             {[...Array<string>(8)].map((_, index) => (
               <Box
-                // eslint-disable-next-line react/no-array-index-key
+                // eslint-disable-next-line @eslint-react/no-array-index-key
                 key={index}
                 sx={{
-                  display: 'flex',
                   alignItems: 'center',
-                  justifyContent: 'center',
+                  display: 'flex',
                   height: 165.75,
+                  justifyContent: 'center',
                 }}
               >
                 <Skeleton
@@ -270,6 +269,7 @@ export const HomePageTrends = withPermissions(() => {
             ))}
           </Box>
         )}
+        shouldHideActionButtons
       >
         {statistics.length === 0 && (
           <Box
@@ -286,24 +286,24 @@ export const HomePageTrends = withPermissions(() => {
           <Box
             sx={{
               display: 'grid',
+              gap: 2,
               gridTemplateColumns: 'repeat(1, 1fr)',
-              [theme.breakpoints.up('sm')]: {
-                gridTemplateColumns: 'repeat(2, 1fr)',
-              },
+              marginBottom: 2,
               [theme.breakpoints.up('md')]: {
                 gridTemplateColumns: 'repeat(4, 1fr)',
               },
-              gap: 2,
-              marginBottom: 2,
+              [theme.breakpoints.up('sm')]: {
+                gridTemplateColumns: 'repeat(2, 1fr)',
+              },
             }}
           >
             {statistics.map(statistic => (
               <HomePageTrendCard
-                key={statistic.header}
                 callback={statistic.callback}
                 callbackLabel={statistic.callbackLabel}
                 diffPercentage={statistic.diffPercentage}
                 header={statistic.header}
+                key={statistic.header}
                 sinceLabel={ConfigManager.instance.config.trends.homePage.getSinceLabel(t)}
                 value={statistic.value}
               />

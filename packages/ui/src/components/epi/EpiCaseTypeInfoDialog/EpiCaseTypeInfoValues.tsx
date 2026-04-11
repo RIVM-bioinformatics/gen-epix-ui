@@ -1,7 +1,7 @@
 import {
   Accordion,
-  AccordionSummary,
   AccordionDetails,
+  AccordionSummary,
 } from '@mui/material';
 import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
 
@@ -49,8 +49,8 @@ export const EpiCaseTypeInfoValues = ({ completeCaseType }: EpiCaseTypeInfoValue
             </AccordionSummary>
             <AccordionDetails>
               <EpiCaseTypeInfoVariableDetails
-                dim={dim}
                 completeCaseType={completeCaseType}
+                dim={dim}
               />
             </AccordionDetails>
           </Accordion>

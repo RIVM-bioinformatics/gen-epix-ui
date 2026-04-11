@@ -5,13 +5,13 @@ import {
   useRef,
 } from 'react';
 import {
-  Popover,
+  Box,
   List,
   ListItem,
-  Box,
-  ListItemText,
   ListItemButton,
   ListItemIcon,
+  ListItemText,
+  Popover,
 } from '@mui/material';
 import LogoutIcon from '@mui/icons-material/Logout';
 import KeyIcon from '@mui/icons-material/Key';
@@ -35,13 +35,13 @@ import { UserOrganizationAdminMenuItem } from './UserOrganizationAdminMenuItem';
 import { UserOwnOrganizationMenuItem } from './UserOwnOrganizationMenuItem';
 
 type UserMenuProps = {
-  readonly onClose: () => void;
   readonly anchorElement: HTMLElement;
+  readonly onClose: () => void;
 };
 
 export const UserMenu = ({ anchorElement, onClose }: UserMenuProps): ReactElement => {
   const auth = useAuth();
-  const logoutConfirmation = useRef<ConfirmationRefMethods>(null);
+  const logoutConfirmationRef = useRef<ConfirmationRefMethods>(null);
   const popoverId = useMemo(() => StringUtil.createUuid(), []);
   const isUserMenuOpen = !!anchorElement;
   const { t } = useTranslation();
@@ -53,14 +53,14 @@ export const UserMenu = ({ anchorElement, onClose }: UserMenuProps): ReactElemen
   }, []);
 
   const onLogoutButtonClick = useCallback(() => {
-    logoutConfirmation.current.open();
+    logoutConfirmationRef.current.open();
   }, []);
 
   const onLogoutConfirmationConfirm = useCallback(() => {
     LogManager.instance.log([{
-      topic: 'USER_LOGOUT',
-      level: LogLevel.TRACE,
       detail: auth.user,
+      level: LogLevel.TRACE,
+      topic: 'USER_LOGOUT',
     }]);
     LogManager.instance.flushLog();
     // eslint-disable-next-line @typescript-eslint/no-floating-promises
@@ -80,22 +80,22 @@ export const UserMenu = ({ anchorElement, onClose }: UserMenuProps): ReactElemen
       {...TestIdUtil.createAttributes('UserMenu')}
       anchorEl={anchorElement}
       anchorOrigin={{
-        vertical: 'bottom',
         horizontal: 'right',
+        vertical: 'bottom',
       }}
       id={isUserMenuOpen ? popoverId : undefined}
+      onClose={onClose}
       open={isUserMenuOpen}
       transformOrigin={{
-        vertical: 'top',
         horizontal: 'right',
+        vertical: 'top',
       }}
-      onClose={onClose}
     >
       <List
         sx={{
-          width: '100%',
-          minWidth: 200,
           maxWidth: 300,
+          minWidth: 200,
+          width: '100%',
         }}
       >
         <ListItem
@@ -126,11 +126,11 @@ export const UserMenu = ({ anchorElement, onClose }: UserMenuProps): ReactElemen
               <>
                 {userRoles?.map((role) => (
                   <Box
-                    key={role}
                     component={'span'}
+                    key={role}
                     sx={{
-                      marginRight: 1,
                       display: 'inline-block',
+                      marginRight: 1,
                     }}
                   >
                     {role}
@@ -148,8 +148,8 @@ export const UserMenu = ({ anchorElement, onClose }: UserMenuProps): ReactElemen
           />
         </ListItem>
         <ListItem
-          divider
           alignItems={'center'}
+          divider
           sx={{ justifyContent: 'center' }}
         >
           <ListItemButton
@@ -196,12 +196,12 @@ export const UserMenu = ({ anchorElement, onClose }: UserMenuProps): ReactElemen
             />
           </ListItemButton>
           <Confirmation
-            ref={logoutConfirmation}
             body={t`Click the logout button to logout`}
             cancelLabel={t`Cancel`}
             confirmLabel={t`Logout`}
-            title={t`Are you sure you want to logout?`}
             onConfirm={onLogoutConfirmationConfirm}
+            ref={logoutConfirmationRef}
+            title={t`Are you sure you want to logout?`}
           />
         </ListItem>
       </List>

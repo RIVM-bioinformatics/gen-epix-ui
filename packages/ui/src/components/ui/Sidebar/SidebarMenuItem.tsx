@@ -1,9 +1,9 @@
 import type { BadgeOwnProps } from '@mui/material';
 import {
-  Tooltip,
-  IconButton,
-  useTheme,
   Badge,
+  IconButton,
+  Tooltip,
+  useTheme,
 } from '@mui/material';
 import type { ReactElement } from 'react';
 
@@ -12,22 +12,22 @@ import { TestIdUtil } from '../../../utils/TestIdUtil';
 
 
 export type SidebarMenuItemProps = PropsWithTestIdAttributes<{
-  readonly title: string;
-  readonly onClick: () => void;
-  readonly icon: ReactElement;
-  readonly badgeContent?: string | number;
   readonly badgeColor?: BadgeOwnProps['color'];
+  readonly badgeContent?: number | string;
   readonly first?: boolean;
+  readonly icon: ReactElement;
+  readonly onClick: () => void;
+  readonly title: string;
 }>;
 
 export const SidebarMenuItem = ({
-  title,
-  onClick,
-  icon,
+  badgeColor = 'secondary',
   badgeContent,
   first,
-  badgeColor = 'secondary',
+  icon,
+  onClick,
   testIdAttributes,
+  title,
 }: SidebarMenuItemProps) => {
   const theme = useTheme();
 
@@ -41,12 +41,12 @@ export const SidebarMenuItem = ({
         {...TestIdUtil.createAttributes('SidebarMenuItem', testIdAttributes)}
         aria-label={title}
         color={'primary'}
-        sx={{
-          padding: 0,
-          marginTop: theme.spacing(first ? 0 : 2),
-          marginLeft: theme.spacing(-1),
-        }}
         onClick={onClick}
+        sx={{
+          marginLeft: theme.spacing(-1),
+          marginTop: theme.spacing(first ? 0 : 2),
+          padding: 0,
+        }}
       >
         <Badge
           badgeContent={badgeContent ?? 0}

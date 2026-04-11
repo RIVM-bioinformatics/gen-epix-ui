@@ -1,7 +1,7 @@
 import {
   describe,
-  it,
   expect,
+  it,
   vi,
 } from 'vitest';
 
@@ -16,13 +16,13 @@ describe('UserManagerUtil', () => {
       const mockWindow = {
         location: { href: 'https://example.com/somepath?someQuery=123' },
       } as unknown as Window;
-      vi.spyOn(WindowManager.instance, 'window', 'get').mockReturnValue(mockWindow as unknown as Window & typeof globalThis);
+      vi.spyOn(WindowManager.instance, 'window', 'get').mockReturnValue(mockWindow as unknown as typeof globalThis & Window);
 
       const oidcConfiguration: Partial<IdentityProvider> = {
-        issuer: 'https://test-issuer.com',
-        discovery_url: 'https://test-issuer.com/.well-known/openid-configuration',
         client_id: 'client-id-123',
         client_secret: 'client-secret-abc',
+        discovery_url: 'https://test-issuer.com/.well-known/openid-configuration',
+        issuer: 'https://test-issuer.com',
         scope: 'openid profile',
       };
 

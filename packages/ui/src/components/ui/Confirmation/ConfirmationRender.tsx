@@ -8,30 +8,30 @@ import { useTranslation } from 'react-i18next';
 
 import type { DialogAction } from '../Dialog/Dialog';
 import type {
-  WithDialogRenderProps,
   WithDialogRefMethods,
+  WithDialogRenderProps,
 } from '../../../hoc/withDialog';
 import { TestIdUtil } from '../../../utils/TestIdUtil';
 
 export interface ConfirmationProps<TOpenProps = never> extends WithDialogRenderProps<TOpenProps> {
-  readonly confirmLabel: string;
-  readonly cancelLabel?: string;
   readonly body?: string;
-  readonly onConfirm: (openProps: TOpenProps) => void;
+  readonly cancelLabel?: string;
+  readonly confirmLabel: string;
   readonly onCancel?: (openProps: TOpenProps) => void;
+  readonly onConfirm: (openProps: TOpenProps) => void;
 }
 
 export type ConfirmationRefMethods<TOpenProps = never> = WithDialogRefMethods<ConfirmationProps, TOpenProps>;
 
 export const ConfirmationRender = <TOpenProps,>(
   {
-    confirmLabel,
-    cancelLabel,
     body,
-    onConfirm,
+    cancelLabel,
+    confirmLabel,
+    onActionsChange,
     onCancel,
     onClose,
-    onActionsChange,
+    onConfirm,
     openProps,
   }: ConfirmationProps<TOpenProps>,
 ): ReactElement => {
@@ -54,18 +54,18 @@ export const ConfirmationRender = <TOpenProps,>(
       actions.push({
         ...TestIdUtil.createAttributes('Confirmation-cancelButton'),
         color: 'primary',
-        variant: 'outlined',
-        onClick: onCancelButtonClick,
         label: cancelLabel ?? t`Cancel`,
+        onClick: onCancelButtonClick,
+        variant: 'outlined',
       });
     }
     actions.push({
       ...TestIdUtil.createAttributes('Confirmation-confirmButton'),
-      color: 'secondary',
       autoFocus: true,
+      color: 'secondary',
+      label: confirmLabel ?? t`OK`,
       onClick: onConfirmButtonClick,
       variant: 'contained',
-      label: confirmLabel ?? t`OK`,
     });
     onActionsChange(actions);
   }, [cancelLabel, onCancelButtonClick, confirmLabel, onConfirmButtonClick, onActionsChange, onCancel, t]);

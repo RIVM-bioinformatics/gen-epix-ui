@@ -3,22 +3,22 @@ import { createStore } from 'zustand';
 import type { Outage } from '../../api';
 import type { CategorizedOutages } from '../../models/outage';
 
-export interface OutagesStoreState {
-  visibleOutages: Outage[];
-  activeOutages: Outage[];
-  soonActiveOutages: Outage[];
-}
+export type OutagesStore = OutagesStoreActions & OutagesStoreState;
 
 export interface OutagesStoreActions {
   setCategorizedOutages: (categorizedOutages: CategorizedOutages) => void;
 }
 
-export type OutagesStore = OutagesStoreState & OutagesStoreActions;
+export interface OutagesStoreState {
+  activeOutages: Outage[];
+  soonActiveOutages: Outage[];
+  visibleOutages: Outage[];
+}
 
 const createOutagesStoreDefaultState: () => OutagesStoreState = () => ({
-  visibleOutages: [],
   activeOutages: [],
   soonActiveOutages: [],
+  visibleOutages: [],
 });
 
 export const outagesStore = createStore<OutagesStore>()((set) => {

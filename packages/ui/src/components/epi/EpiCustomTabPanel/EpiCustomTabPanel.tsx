@@ -7,7 +7,7 @@ export type EpiCustomTabPanelProps = PropsWithChildren<{
 }>;
 
 export const EpiCustomTabPanel = (props: EpiCustomTabPanelProps) => {
-  const { children, value, index, ...other } = props;
+  const { children, index, value, ...other } = props;
 
   return (
     <div

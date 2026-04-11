@@ -23,8 +23,8 @@ import { NavigationHistoryManager } from '../../../classes/managers/NavigationHi
 import { NotificationManager } from '../../../classes/managers/NotificationManager';
 import { UserSettingsManager } from '../../../classes/managers/UserSettingsManager';
 import type {
-  WithDialogRenderProps,
   WithDialogRefMethods,
+  WithDialogRenderProps,
 } from '../../../hoc/withDialog';
 import { withDialog } from '../../../hoc/withDialog';
 import { TestIdUtil } from '../../../utils/TestIdUtil';
@@ -45,31 +45,31 @@ export interface UserFeedbackDialogProps extends WithDialogRenderProps<UserFeedb
 export type UserFeedbackDialogRefMethods = WithDialogRefMethods<UserFeedbackDialogProps, UserFeedbackDialogOpenProps>;
 
 type FormFields = {
-  message: string;
   email: string;
+  message: string;
   name: string;
 };
 
 export const UserFeedbackDialog = withDialog<UserFeedbackDialogProps, UserFeedbackDialogOpenProps>((
   {
-    onTitleChange,
     onActionsChange,
     onClose,
+    onTitleChange,
   }: UserFeedbackDialogProps,
 ): ReactElement => {
   const { t } = useTranslation();
 
   const schema = useMemo(() => object<FormFields>().shape({
-    message: string().freeFormText().required().max(5000),
     email: string().email().required().max(200),
+    message: string().freeFormText().required().max(5000),
     name: SchemaUtil.name,
   }), []);
 
   const formMethods = useForm<FormFields>({
     resolver: yupResolver(schema) as Resolver<FormFields>,
     values: {
-      message: '',
       email: AuthorizationManager.instance.user?.email ?? AuthorizationManager.instance.user?.key ?? '',
+      message: '',
       name: AuthorizationManager.instance.user?.name ?? '',
     },
   });
@@ -82,19 +82,19 @@ export const UserFeedbackDialog = withDialog<UserFeedbackDialogProps, UserFeedba
   const formFieldDefinitions = useMemo<FormFieldDefinition<FormFields>[]>(() => [
       {
         definition: FORM_FIELD_DEFINITION_TYPE.TEXTFIELD,
-        name: 'name',
         label: t`Name`,
+        name: 'name',
       } as const satisfies FormFieldDefinition<FormFields>,
       {
         definition: FORM_FIELD_DEFINITION_TYPE.TEXTFIELD,
-        name: 'email',
         label: t`Email`,
+        name: 'email',
       } as const satisfies FormFieldDefinition<FormFields>,
       {
         definition: FORM_FIELD_DEFINITION_TYPE.TEXTFIELD,
-        name: 'message',
         label: t`Your message`,
         multiline: true,
+        name: 'message',
         rows: 15,
       } as const satisfies FormFieldDefinition<FormFields>,
   ] as const, [t]);
@@ -106,12 +106,12 @@ export const UserFeedbackDialog = withDialog<UserFeedbackDialogProps, UserFeedba
   const onFormSubmit = useCallback((formValues: FormFields): void => {
     const navigationHistory = NavigationHistoryManager.instance.navigationHistory;
     LogManager.instance.log([{
-      level: 'INFO',
-      topic: 'USER_FEEDBACK',
       detail: {
         ...formValues,
         navigationHistory: navigationHistory.slice(navigationHistory.length - 50).reverse(),
       },
+      level: 'INFO',
+      topic: 'USER_FEEDBACK',
     }]);
     LogManager.instance.flushLog();
     NotificationManager.instance.showNotification({
@@ -126,19 +126,19 @@ export const UserFeedbackDialog = withDialog<UserFeedbackDialogProps, UserFeedba
       [
         {
           ...TestIdUtil.createAttributes('UserFeedbackDialog-close'),
-          color: 'primary',
           autoFocus: true,
+          color: 'primary',
+          label: t`Cancel`,
           onClick: onClose,
           variant: 'outlined',
-          label: t`Cancel`,
         },
         {
           ...TestIdUtil.createAttributes('UserFeedbackDialog-send'),
-          color: 'secondary',
           autoFocus: true,
+          color: 'secondary',
+          label: t`Send`,
           onClick: handleSubmit(onFormSubmit),
           variant: 'contained',
-          label: t`Send`,
         },
       ],
     );
@@ -158,16 +158,16 @@ export const UserFeedbackDialog = withDialog<UserFeedbackDialogProps, UserFeedba
       <GenericForm<FormFields>
         formFieldDefinitions={formFieldDefinitions}
         formMethods={formMethods}
-        schema={schema}
         onSubmit={handleSubmit(onFormSubmit)}
+        schema={schema}
       />
     </Box>
   );
 }, {
-  testId: 'UserFeedbackDialog',
-  maxWidth: 'md',
-  fullWidth: true,
   defaultTitle: '',
-  noCloseButton: false,
   disableBackdropClick: false,
+  fullWidth: true,
+  maxWidth: 'md',
+  noCloseButton: false,
+  testId: 'UserFeedbackDialog',
 });

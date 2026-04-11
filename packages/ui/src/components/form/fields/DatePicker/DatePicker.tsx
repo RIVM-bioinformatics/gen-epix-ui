@@ -9,19 +9,19 @@ import {
   FormHelperText,
 } from '@mui/material';
 import type {
-  FieldValues,
   ControllerRenderProps,
-  UseControllerReturn,
-  PathValue,
+  FieldValues,
   Path,
+  PathValue,
+  UseControllerReturn,
 } from 'react-hook-form';
 import {
   Controller,
   useFormContext,
 } from 'react-hook-form';
 import type {
-  DateTimePickerProps as MuiDateTimePickerProps,
   DatePickerProps as MuiDatePickerProps,
+  DateTimePickerProps as MuiDateTimePickerProps,
 } from '@mui/x-date-pickers';
 import {
   LocalizationProvider,
@@ -44,25 +44,25 @@ import { DATE_FORMAT } from '../../../../data/date';
 
 
 export type DatePickerProps<TFieldValues extends FieldValues, TName extends Path<TFieldValues> = Path<TFieldValues>> = {
+  readonly dateFormat?: typeof DATE_FORMAT[keyof typeof DATE_FORMAT];
   readonly disabled?: boolean;
   readonly label: string;
+  readonly loading?: boolean;
   readonly name: TName;
   readonly onChange?: (value: Date) => void;
   readonly required?: boolean;
-  readonly warningMessage?: string | boolean;
-  readonly loading?: boolean;
-  readonly dateFormat?: typeof DATE_FORMAT[keyof typeof DATE_FORMAT];
+  readonly warningMessage?: boolean | string;
 };
 
 export const DatePicker = <TFieldValues extends FieldValues, TName extends Path<TFieldValues> = Path<TFieldValues>>({
+  dateFormat = DATE_FORMAT.DATE,
   disabled = false,
   label,
+  loading = false,
   name,
   onChange: onChangeProp,
-  loading = false,
   required = false,
   warningMessage,
-  dateFormat = DATE_FORMAT.DATE,
 }: DatePickerProps<TFieldValues, TName>): ReactElement => {
   const { control, formState: { errors } } = useFormContext<TFieldValues>();
   const errorMessage = FormUtil.getFieldErrorMessage(errors, name);
@@ -91,13 +91,13 @@ export const DatePicker = <TFieldValues extends FieldValues, TName extends Path<
 
   const views = useMemo<MuiDateTimePickerProps['views']>(() => {
     switch (dateFormat) {
-      case DATE_FORMAT.DATE_TIME:
       case DATE_FORMAT.DATE:
+      case DATE_FORMAT.DATE_TIME:
         return undefined;
-      case DATE_FORMAT.YEAR_MONTH:
-        return ['year', 'month'];
       case DATE_FORMAT.YEAR:
         return ['year'];
+      case DATE_FORMAT.YEAR_MONTH:
+        return ['year', 'month'];
       default:
         throw new Error(`Unsupported date format: ${dateFormat}`);
     }
@@ -105,7 +105,7 @@ export const DatePicker = <TFieldValues extends FieldValues, TName extends Path<
 
   const MuiComponent = dateFormat === DATE_FORMAT.DATE_TIME ? MuiDateTimePicker : MuiDatePicker;
 
-  const renderController = useCallback(({ field: { onChange, onBlur, value, ref } }: UseControllerReturn<TFieldValues, TName>) => {
+  const renderController = useCallback(({ field: { onBlur, onChange, ref, value } }: UseControllerReturn<TFieldValues, TName>) => {
     ref({
       focus: () => {
         inputRef?.current?.focus();
@@ -126,30 +126,30 @@ export const DatePicker = <TFieldValues extends FieldValues, TName extends Path<
             inputRef={inputRef}
             label={label}
             loading={loading}
+            onChange={onMuiDatePickerChange(onChange)}
             openTo={dateFormat === DATE_FORMAT.DATE_TIME ? undefined : 'year'}
             slotProps={{
               textField: {
                 className: classNames({ 'Mui-warning': hasWarning }),
-                onBlur,
                 error: hasError,
-                variant: 'outlined',
+                onBlur,
                 slotProps: {
                   inputLabel: {
                     required,
                   },
                 },
+                variant: 'outlined',
               },
             }}
             value={value}
             views={views as MuiDatePickerProps['views']}
-            onChange={onMuiDatePickerChange(onChange)}
           />
         </LocalizationProvider>
         { !!loading && <FormFieldLoadingIndicator /> }
         <FormHelperText sx={{ ml: 0 }}>
           <FormFieldHelperText
-            noIndent
             errorMessage={errorMessage}
+            noIndent
             warningMessage={warningMessage}
           />
         </FormHelperText>

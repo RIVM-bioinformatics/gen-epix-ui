@@ -1,11 +1,10 @@
 import type {
-  ForwardRefRenderFunction,
   ReactElement,
+  Ref,
 } from 'react';
 import {
   Fragment,
-  forwardRef,
-  useContext,
+  use,
   useImperativeHandle,
   useMemo,
 } from 'react';
@@ -32,16 +31,17 @@ import { userProfileStore } from '../../../stores/userProfileStore';
 import { DashboardUtil } from '../../../utils/DashboardUtil';
 import { StringUtil } from '../../../utils/StringUtil';
 import {
-  PanelSeparatorVertical,
   PanelSeparatorHorizontal,
+  PanelSeparatorVertical,
 } from '../../ui/PanelSeparator';
 
 export type EpiDashboardLayoutRendererProps = {
-  readonly lineListWidget: ReactElement;
-  readonly phylogeneticTreeWidget: ReactElement;
-  readonly mapWidget: ReactElement;
-  readonly epiCurveWidget: ReactElement;
   readonly disabled?: boolean;
+  readonly epiCurveWidget: ReactElement;
+  readonly lineListWidget: ReactElement;
+  readonly mapWidget: ReactElement;
+  readonly phylogeneticTreeWidget: ReactElement;
+  readonly ref?: Ref<ForwardRefEpiDashboardLayoutRendererRefMethods>;
 };
 
 const panelStorageFactory = (panelNamePrefix: string): LayoutStorage => ({
@@ -78,15 +78,16 @@ const getIndexFromId = (id: string): number => {
   return match ? parseInt(match[1], 10) : -1;
 };
 
-export const ForwardRefEpiDashboardLayoutRenderer: ForwardRefRenderFunction<ForwardRefEpiDashboardLayoutRendererRefMethods, EpiDashboardLayoutRendererProps> = ({
-  lineListWidget,
-  phylogeneticTreeWidget,
-  mapWidget,
-  epiCurveWidget,
+export const EpiDashboardLayoutRenderer = ({
   disabled,
-}, forwardedRef) => {
+  epiCurveWidget,
+  lineListWidget,
+  mapWidget,
+  phylogeneticTreeWidget,
+  ref,
+}: EpiDashboardLayoutRendererProps) => {
   const { t } = useTranslation();
-  const epiDashboardStore = useContext(EpiDashboardStoreContext);
+  const epiDashboardStore = use(EpiDashboardStoreContext);
   const dashboardLayoutUserConfig = useStore(userProfileStore, (state) => state.epiDashboardLayoutUserConfig);
   const expandedZone = useStore(epiDashboardStore, (state) => state.expandedZone);
   const layout = DashboardUtil.getDashboardLayout(dashboardLayoutUserConfig);
@@ -117,7 +118,7 @@ export const ForwardRefEpiDashboardLayoutRenderer: ForwardRefRenderFunction<Forw
 
   const { MIN_PANEL_HEIGHT, MIN_PANEL_WIDTH } = ConfigManager.instance.config.epiDashboard;
 
-  useImperativeHandle(forwardedRef, () => ({
+  useImperativeHandle(ref, () => ({
     reset: () => {
       try {
         if (groupRefOuter.current) {
@@ -161,9 +162,9 @@ export const ForwardRefEpiDashboardLayoutRenderer: ForwardRefRenderFunction<Forw
     return (
       <Box
         sx={{
+          alignContent: 'center',
           display: 'flex',
           justifyContent: 'center',
-          alignContent: 'center',
         }}
       >
         <Alert severity={'info'}>
@@ -181,15 +182,15 @@ export const ForwardRefEpiDashboardLayoutRenderer: ForwardRefRenderFunction<Forw
 
   return (
     <Group
+      defaultLayout={defaultLayoutOuter}
       groupRef={groupRefOuter}
+      id={createOuterGroupId(outerOrientation)}
+      onLayoutChanged={onLayoutChangedOuter}
       orientation={outerOrientation}
       style={{
-        width: '100%',
         height: '100%',
+        width: '100%',
       }}
-      id={createOuterGroupId(outerOrientation)}
-      defaultLayout={defaultLayoutOuter}
-      onLayoutChanged={onLayoutChangedOuter}
     >
       {panels.map(([outerPanelSize, ...widgetPanels], index) => {
         return (
@@ -203,11 +204,11 @@ export const ForwardRefEpiDashboardLayoutRenderer: ForwardRefRenderFunction<Forw
               {widgetPanels.length === 1 && panelMap[widgetPanels[0][1] as keyof typeof panelMap]}
               {widgetPanels.length > 1 && (
                 <Group
-                  groupRef={index === 0 ? groupRefInner0 : groupRefInner1}
-                  orientation={innerOrientation}
-                  id={createInnerGroupId(innerOrientation, index)}
                   defaultLayout={index === 0 ? defaultLayoutInner0 : defaultLayoutInner1}
+                  groupRef={index === 0 ? groupRefInner0 : groupRefInner1}
+                  id={createInnerGroupId(innerOrientation, index)}
                   onLayoutChanged={index === 0 ? onLayoutChangedInner0 : onLayoutChangedInner1}
+                  orientation={innerOrientation}
                 >
                   {widgetPanels.map(([widgetPanelSize, zone], innerIndex) => {
                     return (
@@ -244,5 +245,3 @@ export const ForwardRefEpiDashboardLayoutRenderer: ForwardRefRenderFunction<Forw
     </Group>
   );
 };
-
-export const EpiDashboardLayoutRenderer = forwardRef(ForwardRefEpiDashboardLayoutRenderer);

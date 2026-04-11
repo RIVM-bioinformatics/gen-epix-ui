@@ -2,30 +2,30 @@ import '@mui/material';
 
 interface GenEpixTheme {
   'gen-epix': {
-    tree: {
-      font: string;
-      fontVariationSettings?: string;
+    footer: {
+      background: string;
       color: string;
-      supportLineColorLinked: string;
-      supportLineColorUnlinked: string;
-      dimFn: (color: string) => string;
+      sectionBorderColor: string;
     };
     lineList: {
       font: string;
       fontVariationSettings?: string;
     };
     navbar: {
-      background: string;
       activeBackground: string;
       activeColor: string;
+      background: string;
+      environmentMessageColor: string;
       primaryColor: string;
       secondaryColor: string;
-      environmentMessageColor: string;
     };
-    footer: {
-      background: string;
+    tree: {
       color: string;
-      sectionBorderColor: string;
+      dimFn: (color: string) => string;
+      font: string;
+      fontVariationSettings?: string;
+      supportLineColorLinked: string;
+      supportLineColorUnlinked: string;
     };
   };
 }

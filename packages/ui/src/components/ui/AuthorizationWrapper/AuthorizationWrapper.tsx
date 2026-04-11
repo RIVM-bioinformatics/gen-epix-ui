@@ -1,11 +1,11 @@
 import {
-  useMemo,
-  type ReactNode,
   type PropsWithChildren,
+  type ReactNode,
+  useMemo,
 } from 'react';
 import {
-  useMatches,
   type UIMatch,
+  useMatches,
 } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
 import last from 'lodash/last';
@@ -29,18 +29,18 @@ export const AuthorizationWrapper = ({ children }: PropsWithChildren): ReactNode
   const requiresUserProfile = useMemo(() => last(matches).handle.requiresUserProfile, [matches]);
 
   const userQuery = useQueryMemo({
-    queryKey: QueryUtil.getGenericKey(QUERY_KEY.USER_ME),
-    queryFn: async ({ signal }) => (await OrganizationApi.instance.userMeGetOne({ signal })).data,
-    gcTime: Infinity,
-    staleTime: Infinity,
     enabled: requiresUserProfile,
+    gcTime: Infinity,
+    queryFn: async ({ signal }) => (await OrganizationApi.instance.userMeGetOne({ signal })).data,
+    queryKey: QueryUtil.getGenericKey(QUERY_KEY.USER_ME),
+    staleTime: Infinity,
   });
   const userPermissionsQuery = useQueryMemo({
-    queryKey: QueryUtil.getGenericKey(QUERY_KEY.USER_PERMISSIONS),
-    queryFn: async ({ signal }) => (await OrganizationApi.instance.userMeRetrievePermissions({ signal })).data,
-    gcTime: Infinity,
-    staleTime: Infinity,
     enabled: requiresUserProfile,
+    gcTime: Infinity,
+    queryFn: async ({ signal }) => (await OrganizationApi.instance.userMeRetrievePermissions({ signal })).data,
+    queryKey: QueryUtil.getGenericKey(QUERY_KEY.USER_PERMISSIONS),
+    staleTime: Infinity,
   });
 
   const loadables = useArray([

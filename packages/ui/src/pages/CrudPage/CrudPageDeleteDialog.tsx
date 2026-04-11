@@ -9,8 +9,8 @@ import { Box } from '@mui/material';
 
 import type { DialogAction } from '../../components/ui/Dialog';
 import type {
-  WithDialogRenderProps,
   WithDialogRefMethods,
+  WithDialogRenderProps,
 } from '../../hoc/withDialog';
 import { withDialog } from '../../hoc/withDialog';
 import type { GenericData } from '../../models/data';
@@ -21,22 +21,22 @@ export interface CrudPageDeleteDialogOpenProps<TData extends GenericData> {
   readonly item: TData;
 }
 export interface CrudPageDeleteDialogProps<TData extends GenericData> extends WithDialogRenderProps<CrudPageDeleteDialogOpenProps<TData>> {
-  readonly onConfirm: (item: TData) => void;
-  readonly getName: (item: TData) => string;
   readonly createItemDialogTitle?: string;
+  readonly getName: (item: TData) => string;
+  readonly onConfirm: (item: TData) => void;
 }
 export type CrudPageDeleteDialogRefMethods<TData extends GenericData> = WithDialogRefMethods<CrudPageDeleteDialogProps<TData>, CrudPageDeleteDialogOpenProps<TData>>;
 
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
 export const CrudPageDeleteDialog = withDialog<CrudPageDeleteDialogProps<any>, CrudPageDeleteDialogOpenProps<any>>(<TData extends GenericData>(
   {
-    onConfirm,
-    onClose,
-    openProps,
-    onTitleChange,
-    onActionsChange,
-    getName,
     createItemDialogTitle,
+    getName,
+    onActionsChange,
+    onClose,
+    onConfirm,
+    onTitleChange,
+    openProps,
   }: CrudPageDeleteDialogProps<TData>,
 ): ReactElement => {
   const { t } = useTranslation();
@@ -50,19 +50,19 @@ export const CrudPageDeleteDialog = withDialog<CrudPageDeleteDialogProps<any>, C
     const actions: DialogAction[] = [];
     actions.push({
       ...TestIdUtil.createAttributes('CrudPageDeleteDialog-closeButton'),
-      color: 'primary',
       autoFocus: true,
-      variant: 'outlined',
-      onClick: onClose,
+      color: 'primary',
       label: t`Cancel`,
+      onClick: onClose,
+      variant: 'outlined',
     });
     actions.push({
       ...TestIdUtil.createAttributes('CrudPageDeleteDialog-confirmButton'),
       color: 'secondary',
-      variant: 'contained',
-      onClick: onConfirmButtonClick,
       label: t`Confirm`,
+      onClick: onConfirmButtonClick,
       startIcon: <SaveIcon />,
+      variant: 'contained',
     });
 
     onActionsChange(actions);
@@ -78,8 +78,8 @@ export const CrudPageDeleteDialog = withDialog<CrudPageDeleteDialogProps<any>, C
     </Box>
   );
 }, {
-  testId: 'CrudPageDeleteDialog',
-  maxWidth: 'lg',
-  fullWidth: true,
   defaultTitle: '',
+  fullWidth: true,
+  maxWidth: 'lg',
+  testId: 'CrudPageDeleteDialog',
 });

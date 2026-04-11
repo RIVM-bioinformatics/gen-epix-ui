@@ -1,7 +1,7 @@
 import type { ReactElement } from 'react';
 import {
+  use,
   useCallback,
-  useContext,
   useEffect,
   useId,
   useMemo,
@@ -48,7 +48,7 @@ export const EpiUploadMapColumns = () => {
   const colMap = useColMapQuery();
   const identifierIssuerOptionsQuery = useIdentifierIssuerOwnOrganizationOptionsQuery();
 
-  const store = useContext(EpiUploadStoreContext);
+  const store = use(EpiUploadStoreContext);
   const completeCaseType = useStore(store, (state) => state.completeCaseType);
   const rawData = useStore(store, (state) => state.rawData);
   const fileName = useStore(store, (state) => state.fileName);
@@ -73,12 +73,12 @@ export const EpiUploadMapColumns = () => {
   }, [rawData, store, identifierIssuerOptionsQuery.options]);
 
   const formMethods = useForm<EpiUploadMappedColumnsFormFields>({
+    defaultValues: { ...defaultValues },
     resolver: yupResolver(schema) as unknown as Resolver<EpiUploadMappedColumnsFormFields>,
     values: { ...defaultValues },
-    defaultValues: { ...defaultValues },
   });
 
-  const { handleSubmit, control, clearErrors } = formMethods;
+  const { clearErrors, control, handleSubmit } = formMethods;
   const columnMappingFormValues = useWatch({ control });
 
   const formFieldDefinitions = useMemo<FormFieldDefinition<EpiUploadMappedColumnsFormFields>[]>(() => {
@@ -136,9 +136,9 @@ export const EpiUploadMapColumns = () => {
           >
             <Select
               label={t('{{columnLabel}}: Identifier issuer', { columnLabel: definition.label })}
+              loading={identifierIssuerOptionsQuery.isLoading}
               name={fieldValue}
               options={identifierIssuerOptionsQuery.options}
-              loading={identifierIssuerOptionsQuery.isLoading}
             />
           </Box>
         </>
@@ -167,9 +167,9 @@ export const EpiUploadMapColumns = () => {
       >
         <TableHead
           sx={{
+            backgroundColor: (theme) => theme.palette.background.paper,
             position: 'sticky',
             top: 0,
-            backgroundColor: (theme) => theme.palette.background.paper,
             zIndex: (theme) => theme.zIndex.appBar - 1,
           }}
         >
@@ -196,6 +196,10 @@ export const EpiUploadMapColumns = () => {
     await handleSubmit(onFormSubmit)();
   }, [handleSubmit, onFormSubmit]);
 
+  const onGoBackButtonClick = useCallback(() => {
+    goToPreviousStep();
+  }, [goToPreviousStep]);
+
   return (
     <ResponseHandler loadables={loadables}>
       <Box
@@ -214,12 +218,12 @@ export const EpiUploadMapColumns = () => {
           <Alert severity={unMappedColumns.length === 0 ? 'info' : 'warning'}>
             <AlertTitle>
               {unMappedColumns.length === 0 ?
-                t('All columns in {{fileName}} have been mapped to known columns in {{applicationName}}', { fileName, applicationName: ConfigManager.instance.config.applicationName })
-                : t('{{numUnmappedColumns}} column(s) in {{fileName}} are not mapped', { numUnmappedColumns: unMappedColumns.length, fileName })}
+                t('All columns in {{fileName}} have been mapped to known columns in {{applicationName}}', { applicationName: ConfigManager.instance.config.applicationName, fileName })
+                : t('{{numUnmappedColumns}} column(s) in {{fileName}} are not mapped', { fileName, numUnmappedColumns: unMappedColumns.length })}
             </AlertTitle>
             {unMappedColumns.map((unmappedColumn) => (
               <Box key={unmappedColumn.originalIndex}>
-                {t('The column "{{columnName}}" (column {{columnIndex}}) has not been mapped.', { columnName: unmappedColumn.originalLabel, columnIndex: unmappedColumn.originalIndex + 1 })}
+                {t('The column "{{columnName}}" (column {{columnIndex}}) has not been mapped.', { columnIndex: unmappedColumn.originalIndex + 1, columnName: unmappedColumn.originalLabel })}
               </Box>
             ))}
             {unMappedColumns.length === 0 && t('You can proceed to the next step.')}
@@ -233,11 +237,11 @@ export const EpiUploadMapColumns = () => {
         >
           <Box
             sx={{
-              position: 'absolute',
-              top: 0,
-              left: 0,
-              right: 0,
               bottom: 0,
+              left: 0,
+              position: 'absolute',
+              right: 0,
+              top: 0,
             }}
           >
             <Container>
@@ -245,17 +249,17 @@ export const EpiUploadMapColumns = () => {
                 formFieldDefinitions={formFieldDefinitions}
                 formId={columnMappingFormId}
                 formMethods={formMethods}
-                renderField={renderField}
-                wrapForm={wrapForm}
-                schema={schema}
                 onSubmit={handleSubmit(onFormSubmit)}
+                renderField={renderField}
+                schema={schema}
+                wrapForm={wrapForm}
               />
             </Container>
           </Box>
         </Box>
         <Box>
           <EpiUploadNavigation
-            onGoBackButtonClick={goToPreviousStep}
+            onGoBackButtonClick={onGoBackButtonClick}
             onProceedButtonClick={onProceedButtonClick}
           />
         </Box>

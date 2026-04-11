@@ -37,8 +37,8 @@ export const EpiCaseSetContent = ({ caseSet, ...boxProps }: EpiCaseSetContentPro
       </Typography>
       <ResponseHandler
         inlineSpinner
-        shouldHideActionButtons
         loadables={loadables}
+        shouldHideActionButtons
       >
         <Table size={'small'}>
           <TableHead>

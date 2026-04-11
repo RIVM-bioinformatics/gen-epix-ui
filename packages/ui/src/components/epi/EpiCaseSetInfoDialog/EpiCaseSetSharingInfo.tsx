@@ -1,8 +1,8 @@
 import { useTranslation } from 'react-i18next';
 import {
   Box,
-  Typography,
   type BoxProps,
+  Typography,
 } from '@mui/material';
 
 import { EpiDataCollectionAccessInfo } from '../EpiDataCollectionAccessInfo';

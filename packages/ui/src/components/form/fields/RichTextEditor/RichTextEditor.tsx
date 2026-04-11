@@ -5,14 +5,14 @@ import {
   useRef,
 } from 'react';
 import {
+  Alert,
+  AlertTitle,
   FormControl,
-  IconButton,
   FormGroup,
   FormHelperText,
   FormLabel,
+  IconButton,
   useTheme,
-  Alert,
-  AlertTitle,
 } from '@mui/material';
 import ClearIcon from '@mui/icons-material/Clear';
 import type { RichTextEditorRef } from 'mui-tiptap';
@@ -49,9 +49,9 @@ import {
 } from 'mui-tiptap';
 import type {
   FieldValues,
-  UseControllerReturn,
-  PathValue,
   Path,
+  PathValue,
+  UseControllerReturn,
 } from 'react-hook-form';
 import {
   Controller,
@@ -69,20 +69,20 @@ import { useRichTextEditorExtensions } from './useRichTextEditorExtensions';
 export type RichTextEditorProps<TFieldValues extends FieldValues, TName extends Path<TFieldValues> = Path<TFieldValues>> = {
   readonly disabled?: boolean;
   readonly label: string;
+  readonly loading?: boolean;
   readonly name: TName;
   readonly onChange?: (value: string) => void;
   readonly required?: boolean;
-  readonly warningMessage?: string | boolean;
-  readonly loading?: boolean;
+  readonly warningMessage?: boolean | string;
 };
 
 export const RichTextEditor = <TFieldValues extends FieldValues, TName extends Path<TFieldValues> = Path<TFieldValues>>({
-  label,
-  name,
   disabled,
+  label,
+  loading,
+  name,
   onChange: onChangeProp,
   required,
-  loading,
   warningMessage,
 }: RichTextEditorProps<TFieldValues, TName>): ReactElement => {
   const { t } = useTranslation();
@@ -96,7 +96,7 @@ export const RichTextEditor = <TFieldValues extends FieldValues, TName extends P
   const hasError = !!errorMessage;
   const rteRef = useRef<RichTextEditorRef>(null);
 
-  const renderController = useCallback(({ field: { onChange, onBlur, value, ref } }: UseControllerReturn<TFieldValues, TName>) => {
+  const renderController = useCallback(({ field: { onBlur, onChange, ref, value } }: UseControllerReturn<TFieldValues, TName>) => {
     rteRef.current?.editor.on('blur', () => onBlur());
     rteRef.current?.editor.on('update', () => {
       const newValue = rteRef.current?.editor.getHTML();
@@ -125,11 +125,11 @@ export const RichTextEditor = <TFieldValues extends FieldValues, TName extends P
         {...TestIdUtil.createAttributes('CheckboxGroup', { label, name: name as string })}
         fullWidth
         sx={{
-          'legend button': {
-            display: 'none',
-          },
           '&:hover legend button, &:focus-within legend button': {
             display: 'initial',
+          },
+          'legend button': {
+            display: 'none',
           },
         }}
       >
@@ -155,17 +155,17 @@ export const RichTextEditor = <TFieldValues extends FieldValues, TName extends P
           {!disabled && (
             <IconButton
               {...TestIdUtil.createAttributes('DateRangePicker-reset')}
+              aria-label={t`Clear rich text editor content`}
+              // eslint-disable-next-line @eslint-react/kit/jsx-no-bind
+              onClick={onResetButtonClick}
               sx={{
-                position: 'absolute',
-                top: '-10px',
                 '& svg': {
                   fontSize: '16px',
                 },
+                position: 'absolute',
+                top: '-10px',
               }}
               tabIndex={-1}
-              aria-label={t`Clear rich text editor content`}
-              // eslint-disable-next-line react/jsx-no-bind
-              onClick={onResetButtonClick}
             >
               <ClearIcon />
             </IconButton>
@@ -177,22 +177,11 @@ export const RichTextEditor = <TFieldValues extends FieldValues, TName extends P
             onBlur={onBlur}
           >
             <RichTextEditorComponent
-              ref={rteRef}
-              RichTextFieldProps={{
-                // The "outlined" variant is the default (shown here only as
-                // example), but can be changed to "standard" to remove the outlined
-                // field border from the editor
-                variant: 'outlined',
-              }}
               content={value}
-              extensions={extensions}
               editable={!disabled}
-              sx={{
-                '& .ProseMirror': {
-                  whiteSpace: 'pre-wrap',
-                },
-              }}
-              // eslint-disable-next-line react/jsx-no-bind
+              extensions={extensions}
+              ref={rteRef}
+              // eslint-disable-next-line @eslint-react/kit/jsx-no-bind
               renderControls={() => (
                 <MenuControlsContainer>
                   <MenuDivider />
@@ -214,27 +203,27 @@ export const RichTextEditor = <TFieldValues extends FieldValues, TName extends P
                   <MenuButtonTextColor
                     defaultTextColor={theme.palette.text.primary}
                     swatchColors={[
-                      { value: '#000000', label: 'Black' },
-                      { value: '#ffffff', label: 'White' },
-                      { value: '#888888', label: 'Grey' },
-                      { value: '#ff0000', label: 'Red' },
-                      { value: '#ff9900', label: 'Orange' },
-                      { value: '#ffff00', label: 'Yellow' },
-                      { value: '#00d000', label: 'Green' },
-                      { value: '#0000ff', label: 'Blue' },
+                      { label: 'Black', value: '#000000' },
+                      { label: 'White', value: '#ffffff' },
+                      { label: 'Grey', value: '#888888' },
+                      { label: 'Red', value: '#ff0000' },
+                      { label: 'Orange', value: '#ff9900' },
+                      { label: 'Yellow', value: '#ffff00' },
+                      { label: 'Green', value: '#00d000' },
+                      { label: 'Blue', value: '#0000ff' },
                     ]}
                   />
                   <MenuButtonHighlightColor
                     swatchColors={[
-                      { value: '#595959', label: 'Dark grey' },
-                      { value: '#dddddd', label: 'Light grey' },
-                      { value: '#ffa6a6', label: 'Light red' },
-                      { value: '#ffd699', label: 'Light orange' },
+                      { label: 'Dark grey', value: '#595959' },
+                      { label: 'Light grey', value: '#dddddd' },
+                      { label: 'Light red', value: '#ffa6a6' },
+                      { label: 'Light orange', value: '#ffd699' },
                       // Plain yellow matches the browser default `mark` like when using Cmd+Shift+H
-                      { value: '#ffff00', label: 'Yellow' },
-                      { value: '#99cc99', label: 'Light green' },
-                      { value: '#90c6ff', label: 'Light blue' },
-                      { value: '#8085e9', label: 'Light purple' },
+                      { label: 'Yellow', value: '#ffff00' },
+                      { label: 'Light green', value: '#99cc99' },
+                      { label: 'Light blue', value: '#90c6ff' },
+                      { label: 'Light purple', value: '#8085e9' },
                     ]}
                   />
                   <MenuDivider />
@@ -263,36 +252,47 @@ export const RichTextEditor = <TFieldValues extends FieldValues, TName extends P
                   <MenuButtonRedo />
                 </MenuControlsContainer>
               )}
+              RichTextFieldProps={{
+                // The "outlined" variant is the default (shown here only as
+                // example), but can be changed to "standard" to remove the outlined
+                // field border from the editor
+                variant: 'outlined',
+              }}
+              sx={{
+                '& .ProseMirror': {
+                  whiteSpace: 'pre-wrap',
+                },
+              }}
             >
               {() => (
                 <>
                   <LinkBubbleMenu
                     labels={{
-                      viewLinkEditButtonLabel: t`Edit link`,
-                      viewLinkRemoveButtonLabel: t`Remove link`,
                       editLinkAddTitle: t`Add new link`,
-                      editLinkEditTitle: t`Update this link`,
                       editLinkCancelButtonLabel: t`Cancel changes`,
-                      editLinkTextInputLabel: t`Text content`,
+                      editLinkEditTitle: t`Update this link`,
                       editLinkHrefInputLabel: t`URL`,
                       editLinkSaveButtonLabel: t`Save changes`,
+                      editLinkTextInputLabel: t`Text content`,
+                      viewLinkEditButtonLabel: t`Edit link`,
+                      viewLinkRemoveButtonLabel: t`Remove link`,
                     }}
 
                   />
                   <TableBubbleMenu
                     labels={{
-                      insertColumnBefore: t`Insert column before`,
-                      insertColumnAfter: t`Insert column after`,
                       deleteColumn: t`Delete column`,
+                      deleteRow: t`Delete row`,
+                      deleteTable: t`Delete table`,
+                      insertColumnAfter: t`Insert column after`,
+                      insertColumnBefore: t`Insert column before`,
                       insertRowAbove: t`Insert row above`,
                       insertRowBelow: t`Insert row below`,
-                      deleteRow: t`Delete row`,
                       mergeCells: t`Merge cells`,
                       splitCell: t`Split cell`,
-                      toggleHeaderRow: t`Toggle header row`,
-                      toggleHeaderColumn: t`Toggle header column`,
                       toggleHeaderCell: t`Toggle header cell`,
-                      deleteTable: t`Delete table`,
+                      toggleHeaderColumn: t`Toggle header column`,
+                      toggleHeaderRow: t`Toggle header row`,
                     }}
                   />
                 </>
@@ -303,8 +303,8 @@ export const RichTextEditor = <TFieldValues extends FieldValues, TName extends P
         { !!loading && <FormFieldLoadingIndicator inline />}
         <FormHelperText sx={{ ml: 0 }}>
           <FormFieldHelperText
-            noIndent
             errorMessage={errorMessage}
+            noIndent
             warningMessage={warningMessage}
           />
         </FormHelperText>

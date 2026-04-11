@@ -6,8 +6,8 @@ import {
 } from '@mui/material';
 import type { ReactElement } from 'react';
 import {
+  use,
   useCallback,
-  useContext,
   useEffect,
   useId,
   useMemo,
@@ -22,7 +22,6 @@ import {
 import { yupResolver } from '@hookform/resolvers/yup';
 import type { Resolver } from 'react-hook-form';
 import { useForm } from 'react-hook-form';
-import noop from 'lodash/noop';
 
 import { FileSelector } from '../../ui/FileSelector';
 import { EpiUploadUtil } from '../../../utils/EpiUploadUtil';
@@ -42,16 +41,16 @@ import { EpiUploadNavigation } from './EpiUploadNavigation';
 
 
 type FormFields = {
-  sequencingProtocolId: string;
   assemblyProtocolId: string;
   sampleIdColId: string;
+  sequencingProtocolId: string;
 };
 
 export const EpiUploadSelectSequenceFiles = () => {
   const { t } = useTranslation();
   const theme = useTheme();
 
-  const store = useContext(EpiUploadStoreContext);
+  const store = use(EpiUploadStoreContext);
   const completeCaseType = useStore(store, (state) => state.completeCaseType);
   const mappedColumns = useStore(store, (state) => state.mappedColumns);
   const validatedCases = useStore(store, (state) => state.validatedCases);
@@ -60,7 +59,7 @@ export const EpiUploadSelectSequenceFiles = () => {
   const setSequenceFilesDataTransfer = useStore(store, (state) => state.setSequenceFilesDataTransfer);
   const sampleIdColId = useStore(store, (state) => state.sampleIdColId);
   const initialDataTransfer = useStore(store, (state) => state.sequenceFilesDataTransfer);
-  const dataTransfer = useRef(initialDataTransfer);
+  const dataTransferRef = useRef(initialDataTransfer);
 
   const formId = useId();
 
@@ -80,37 +79,34 @@ export const EpiUploadSelectSequenceFiles = () => {
   }, [mappedColumns]);
 
   const schema = useMemo(() => object<FormFields>().shape({
-    // eslint-disable-next-line react-hooks/refs
-    sequencingProtocolId: string().when({
-      is: () => Array.from(dataTransfer.current?.files ?? []).filter(f => EpiUploadUtil.isReadsFile(f.name)).length > 0,
-      then: () => string().uuid4().required(),
-      otherwise: () => string().nullable().notRequired(),
-    }),
-    // eslint-disable-next-line react-hooks/refs
     assemblyProtocolId: string().when({
-      is: () => Array.from(dataTransfer.current?.files ?? []).filter(f => EpiUploadUtil.isGenomeFile(f.name)).length > 0,
-      then: () => string().uuid4().required(),
+      is: () => Array.from(dataTransferRef.current?.files ?? []).filter(f => EpiUploadUtil.isGenomeFile(f.name)).length > 0,
       otherwise: () => string().nullable().notRequired(),
+      then: () => string().uuid4().required(),
     }),
-    // eslint-disable-next-line react-hooks/refs
     sampleIdColId: string().when({
-      is: () => Array.from(dataTransfer.current?.files ?? []).length > 0,
-      then: () => string().uuid4().required(),
+      is: () => Array.from(dataTransferRef.current?.files ?? []).length > 0,
       otherwise: () => string().nullable().notRequired(),
+      then: () => string().uuid4().required(),
+    }),
+    sequencingProtocolId: string().when({
+      is: () => Array.from(dataTransferRef.current?.files ?? []).filter(f => EpiUploadUtil.isReadsFile(f.name)).length > 0,
+      otherwise: () => string().nullable().notRequired(),
+      then: () => string().uuid4().required(),
     }),
   }), []);
 
   const defaultFormValues = useMemo<FormFields>(() => {
     return {
-      sequencingProtocolId: store.getState().sequencingProtocolId ?? null,
       assemblyProtocolId: store.getState().assemblyProtocolId ?? null,
       sampleIdColId: store.getState().sampleIdColId ?? null,
+      sequencingProtocolId: store.getState().sequencingProtocolId ?? null,
     };
   }, [store]);
 
   const formMethods = useForm<FormFields>({
-    resolver: yupResolver(schema) as unknown as Resolver<FormFields>,
     defaultValues: defaultFormValues,
+    resolver: yupResolver(schema) as unknown as Resolver<FormFields>,
     values: defaultFormValues,
   });
   const { handleSubmit, setValue } = formMethods;
@@ -149,26 +145,26 @@ export const EpiUploadSelectSequenceFiles = () => {
     return [
         {
           definition: FORM_FIELD_DEFINITION_TYPE.SELECT,
-          name: 'assemblyProtocolId',
           label: t`Genome files: assembly protocol`,
-          options: assemblyProtocolOptionsQuery.options,
           loading: assemblyProtocolOptionsQuery.isLoading,
+          name: 'assemblyProtocolId',
           onChange: onAssemblyProtocolChange,
+          options: assemblyProtocolOptionsQuery.options,
         } as const satisfies FormFieldDefinition<FormFields>,
         {
           definition: FORM_FIELD_DEFINITION_TYPE.SELECT,
-          name: 'sequencingProtocolId',
           label: t`Reads files: sequencing protocol`,
-          options: sequencingProtocolOptionsQuery.options,
           loading: sequencingProtocolOptionsQuery.isLoading,
+          name: 'sequencingProtocolId',
           onChange: onSequencingProtocolChange,
+          options: sequencingProtocolOptionsQuery.options,
         } as const satisfies FormFieldDefinition<FormFields>,
         {
           definition: FORM_FIELD_DEFINITION_TYPE.SELECT,
-          name: 'sampleIdColId',
           label: t`Sample ID column`,
-          options: sampleIdColIdOptions,
+          name: 'sampleIdColId',
           onChange: onSampleIdColIdChange,
+          options: sampleIdColIdOptions,
         } as const satisfies FormFieldDefinition<FormFields>,
     ];
   }, [assemblyProtocolOptionsQuery.isLoading, assemblyProtocolOptionsQuery.options, onAssemblyProtocolChange, onSampleIdColIdChange, onSequencingProtocolChange, sampleIdColIdOptions, sequencingProtocolOptionsQuery.isLoading, sequencingProtocolOptionsQuery.options, t]);
@@ -217,18 +213,22 @@ export const EpiUploadSelectSequenceFiles = () => {
   }, [canUploadReads, canUploadSequences]);
 
   const onProceedButtonClick = useCallback(async () => {
-    setSequenceFilesDataTransfer(canUpload ? dataTransfer.current : new DataTransfer());
+    setSequenceFilesDataTransfer(canUpload ? dataTransferRef.current : new DataTransfer());
     await handleSubmit(async () => {
       await goToNextStep();
     })();
   }, [canUpload, goToNextStep, handleSubmit, setSequenceFilesDataTransfer]);
 
+  const onGoBackButtonClick = useCallback(() => {
+    goToPreviousStep();
+  }, [goToPreviousStep]);
+
   const onDataTransferChange = useCallback((dt: DataTransfer) => {
-    dataTransfer.current = dt;
+    dataTransferRef.current = dt;
 
     // Note: setState in a timeout to avoid React state update during rendering warning
     setTimeout(() => {
-      setSequenceFilesDataTransfer(dataTransfer.current);
+      setSequenceFilesDataTransfer(dataTransferRef.current);
     });
   }, [setSequenceFilesDataTransfer]);
 
@@ -246,33 +246,37 @@ export const EpiUploadSelectSequenceFiles = () => {
     );
   }, [theme]);
 
-  const cantUploadMessage = useMemo<{ title: string; message: string }>(() => {
+  const cantUploadMessage = useMemo<{ message: string; title: string }>(() => {
     if (!hasWritableSampleIdColumn) {
       return {
-        title: t('Uploading of files is disabled.'),
         message: t`No columns have been mapped as writable sample ID column with selected identifier issuer provider.`,
+        title: t('Uploading of files is disabled.'),
       };
     }
     if (!hasRowContentForSampleIdColId) {
       return {
-        title: t('Uploading of files is disabled.'),
         message: t`No rows have a sample ID filled for the selected sample ID column.`,
+        title: t('Uploading of files is disabled.'),
       };
     }
     if (!canUploadReads) {
       return {
-        title: t('Uploading of read files is disabled.'),
         message: t`The selected case type does not support uploading read files.`,
+        title: t('Uploading of read files is disabled.'),
       };
     }
     if (!canUploadSequences) {
       return {
-        title: t('Uploading of sequence files is disabled.'),
         message: t`The selected case type does not support uploading sequence files.`,
+        title: t('Uploading of sequence files is disabled.'),
       };
     }
     return null;
   }, [canUploadReads, canUploadSequences, hasRowContentForSampleIdColId, hasWritableSampleIdColumn, t]);
+
+  const onSubmit = useCallback(() => {
+    // noop, as we handle form submission manually in onProceedButtonClick
+  }, []);
 
   return (
     <ResponseHandler
@@ -280,9 +284,9 @@ export const EpiUploadSelectSequenceFiles = () => {
     >
       <Box
         sx={{
-          height: '100%',
           display: 'grid',
           gridTemplateRows: `${canUpload ? '' : 'max-content '}max-content auto max-content`,
+          height: '100%',
           position: 'relative',
         }}
       >
@@ -314,9 +318,9 @@ export const EpiUploadSelectSequenceFiles = () => {
               formFieldDefinitions={formFieldDefinitions}
               formId={formId}
               formMethods={formMethods}
-              wrapForm={wrapForm}
+              onSubmit={onSubmit}
               schema={schema}
-              onSubmit={noop}
+              wrapForm={wrapForm}
             />
           </Box>
           {!canUploadSequences && (
@@ -360,18 +364,18 @@ export const EpiUploadSelectSequenceFiles = () => {
 
           <Box
             sx={{
-              position: 'absolute',
-              top: 0,
-              left: 0,
-              right: 0,
               bottom: 0,
               height: '100%',
+              left: 0,
+              position: 'absolute',
+              right: 0,
+              top: 0,
             }}
           >
             {canUpload && (
               <FileSelector
-                initialDataTransfer={initialDataTransfer}
                 accept={accept}
+                initialDataTransfer={initialDataTransfer}
                 numFilesAllowed={Infinity}
                 onDataTransferChange={onDataTransferChange}
               />
@@ -379,9 +383,9 @@ export const EpiUploadSelectSequenceFiles = () => {
           </Box>
         </Box>
         <EpiUploadNavigation
-          proceedLabel={!canUpload ? t`Proceed` : undefined}
-          onGoBackButtonClick={goToPreviousStep}
+          onGoBackButtonClick={onGoBackButtonClick}
           onProceedButtonClick={onProceedButtonClick}
+          proceedLabel={!canUpload ? t`Proceed` : undefined}
         />
       </Box>
     </ResponseHandler>

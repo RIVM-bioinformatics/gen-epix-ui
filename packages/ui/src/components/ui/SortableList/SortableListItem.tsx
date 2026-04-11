@@ -27,8 +27,8 @@ export const SortableListItem = ({ children, id, sx }: SortableListItemProps) =>
     attributes,
     isDragging,
     listeners,
-    setNodeRef,
     setActivatorNodeRef,
+    setNodeRef,
     transform,
     transition,
   } = useSortable({ id });
@@ -50,19 +50,19 @@ export const SortableListItem = ({ children, id, sx }: SortableListItemProps) =>
     <SortableListItemContextProvider value={context}>
       <Box
         {...TestIdUtil.createAttributes('SortableListItem', { id })}
-        ref={setNodeRef}
         component={'li'}
+        ref={setNodeRef}
         style={style}
         sx={{
           ...(sx ?? {}),
-          display: 'flex',
-          justifyContent: 'space-between',
-          backgroundColor: theme.palette.background.paper,
-          flexGrow: 1,
           alignItems: 'center',
-          boxShadow: 1,
+          backgroundColor: theme.palette.background.paper,
           borderRadius: `${theme.shape.borderRadius}px`,
+          boxShadow: 1,
           boxSizing: 'border-box',
+          display: 'flex',
+          flexGrow: 1,
+          justifyContent: 'space-between',
           listStyle: 'none',
         }}
       >

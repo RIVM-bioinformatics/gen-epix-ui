@@ -1,21 +1,21 @@
 import { createStore } from 'zustand';
 import {
-  persist,
   createJSONStorage,
+  persist,
 } from 'zustand/middleware';
 
 import type { IdentityProvider } from '../../api';
 
 
-export interface OidcStoreState {
-  configuration: IdentityProvider;
-}
+export type OidcStore = OidcStoreActions & OidcStoreState;
 
 export interface OidcStoreActions {
   setConfiguration: (configuration: IdentityProvider) => void;
 }
 
-export type OidcStore = OidcStoreState & OidcStoreActions;
+export interface OidcStoreState {
+  configuration: IdentityProvider;
+}
 
 export const createOidcStoreInitialState: () => OidcStoreState = () => ({
   configuration: undefined,
@@ -33,10 +33,10 @@ export const oidcStore = createStore<OidcStore>()(
     },
     {
       name: 'GENEPIX-OIDC-Configuration',
-      storage: createJSONStorage(() => sessionStorage),
       partialize: (state) => ({
         configuration: state.configuration,
       }),
+      storage: createJSONStorage(() => sessionStorage),
       version: 1,
     },
   ),

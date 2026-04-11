@@ -1,7 +1,7 @@
 export const tableHeaderCellClassNames = {
-  root: 'GENEPIX-TableHeaderCell',
-  content: 'GENEPIX-TableHeaderCell-content',
   columnDivider: 'GENEPIX-TableHeaderCell-columnDivider',
-  sortLabelIcon: 'GENEPIX-TableHeaderCell-sortLabelIcon',
+  content: 'GENEPIX-TableHeaderCell-content',
   filterLabelIcon: 'GENEPIX-TableHeaderCell-filterLabelIcon',
+  root: 'GENEPIX-TableHeaderCell',
+  sortLabelIcon: 'GENEPIX-TableHeaderCell-sortLabelIcon',
 };

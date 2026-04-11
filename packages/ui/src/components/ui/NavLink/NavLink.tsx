@@ -8,22 +8,22 @@ import {
 } from 'react-router-dom';
 
 export interface NavLinkProps extends ReactRouterDomNavLinkProps {
-  readonly children: ReactNode;
   readonly activeAsText?: boolean;
+  readonly children: ReactNode;
 }
 
 const StyledNavLink = styled(ReactRouterDomNavLink)(({ theme }) => ({
-  color: theme.palette.primary.main,
-  textDecoration: 'none',
   '&:hover': {
     textDecoration: 'underline',
   },
   '&.active': {
     color: theme.palette.secondary.main,
   },
+  color: theme.palette.primary.main,
+  textDecoration: 'none',
 }));
 
-export const NavLink = ({ children, activeAsText, ...props }: NavLinkProps) => {
+export const NavLink = ({ activeAsText, children, ...props }: NavLinkProps) => {
   const match = useMatch({
     path: resolvePath(props.to).pathname,
   });

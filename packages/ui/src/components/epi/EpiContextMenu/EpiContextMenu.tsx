@@ -1,9 +1,9 @@
 import type { PopoverPosition } from '@mui/material';
 import {
-  Menu,
-  MenuItem,
   ListItemIcon,
   ListItemText,
+  Menu,
+  MenuItem,
 } from '@mui/material';
 import PlaylistAddCheckIcon from '@mui/icons-material/PlaylistAddCheck';
 import PlaylistAddIcon from '@mui/icons-material/PlaylistAdd';
@@ -11,8 +11,8 @@ import PlaylistRemoveIcon from '@mui/icons-material/PlaylistRemove';
 import PlaylistPlayIcon from '@mui/icons-material/PlaylistPlay';
 import type { ReactElement } from 'react';
 import {
+  use,
   useCallback,
-  useContext,
   useEffect,
   useMemo,
 } from 'react';
@@ -24,27 +24,27 @@ import { CaseSelectionUtil } from '../../../utils/CaseSelectionUtil';
 
 export type EpiContextMenuConfigWithAnchor = {
   anchorElement?: Element;
-  parseIdsFromAnchorElement?: (element: Element) => string[];
   mouseEvent?: MouseEvent;
+  parseIdsFromAnchorElement?: (element: Element) => string[];
 };
 
 export type EpiContextMenuConfigWithPosition = {
-  position?: PopoverPosition;
   caseIds?: string[];
   mouseEvent?: MouseEvent;
+  position?: PopoverPosition;
+};
+
+export type EpiContextMenuProps = {
+  readonly config: EpiContextMenuConfig;
+  readonly getExtraItems?: (onMenuClose?: () => void) => ReactElement;
+  readonly onMenuClose: () => void;
 };
 
 type EpiContextMenuConfig = EpiContextMenuConfigWithAnchor & EpiContextMenuConfigWithPosition;
 
-export type EpiContextMenuProps = {
-  readonly onMenuClose: () => void;
-  readonly config: EpiContextMenuConfig;
-  readonly getExtraItems?: (onMenuClose?: () => void) => ReactElement;
-};
-
-export const EpiContextMenu = ({ config, onMenuClose, getExtraItems }: EpiContextMenuProps) => {
+export const EpiContextMenu = ({ config, getExtraItems, onMenuClose }: EpiContextMenuProps) => {
   const { t } = useTranslation();
-  const epiDashboardStore = useContext(EpiDashboardStoreContext);
+  const epiDashboardStore = use(EpiDashboardStoreContext);
   const selectedIds = useStore(epiDashboardStore, (state) => state.selectedIds);
   const setSelectedIds = useStore(epiDashboardStore, (state) => state.setSelectedIds);
 
@@ -103,8 +103,8 @@ export const EpiContextMenu = ({ config, onMenuClose, getExtraItems }: EpiContex
       anchorEl={config?.anchorElement}
       anchorPosition={config?.position}
       anchorReference={config?.anchorElement ? 'anchorEl' : 'anchorPosition'}
-      open={!!config}
       onClose={onMenuClose}
+      open={!!config}
     >
       {extraItems}
       <MenuItem

@@ -7,8 +7,8 @@ import {
   useTheme,
 } from '@mui/material';
 import {
+  use,
   useCallback,
-  useContext,
   useEffect,
   useId,
   useMemo,
@@ -40,7 +40,7 @@ export const EpiUploadMapSequences = () => {
   const { t } = useTranslation();
   const theme = useTheme();
 
-  const store = useContext(EpiUploadStoreContext);
+  const store = use(EpiUploadStoreContext);
   const goToNextStep = useStore(store, (state) => state.goToNextStep);
   const goToPreviousStep = useStore(store, (state) => state.goToPreviousStep);
   const completeCaseType = useStore(store, (state) => state.completeCaseType);
@@ -57,12 +57,16 @@ export const EpiUploadMapSequences = () => {
   const alertTitleId = useId();
   const alertContentId = useId();
 
-  const epiUploadSequenceMapping = useRef(store.getState().sequenceMapping);
+  const epiUploadSequenceMappingRef = useRef(store.getState().sequenceMapping);
 
   const onProceedButtonClick = useCallback(async () => {
-    setSequenceMapping(epiUploadSequenceMapping.current);
+    setSequenceMapping(epiUploadSequenceMappingRef.current);
     await goToNextStep();
   }, [setSequenceMapping, goToNextStep]);
+
+  const onGoBackButtonClick = useCallback(() => {
+    goToPreviousStep();
+  }, [goToPreviousStep]);
 
   const updateAlert = useCallback(() => {
     // Note: This is done via DOM manipulation to prevent excessive re-renders of the entire table
@@ -73,10 +77,10 @@ export const EpiUploadMapSequences = () => {
       return;
     }
     const {
-      numberOfFilesToMap,
       mappedFiles,
+      numberOfFilesToMap,
       unmappedFileNames,
-    } = EpiUploadUtil.getSequenceMappingStats(epiUploadSequenceMapping.current, sequenceFilesDataTransfer);
+    } = EpiUploadUtil.getSequenceMappingStats(epiUploadSequenceMappingRef.current, sequenceFilesDataTransfer);
 
     alertTitleElement.innerHTML = numberOfFilesToMap === mappedFiles.length ? t('All {{numberOfFilesToMap}} files are mapped', { numberOfFilesToMap }) : t('{{mappedFilesLength}} of {{numberOfFilesToMap}} files mapped', { mappedFilesLength: mappedFiles.length, numberOfFilesToMap });
     alertContentElement.innerHTML = numberOfFilesToMap === mappedFiles.length ? '' : t('Unmapped files: {{unmappedFileNames}}', { unmappedFileNames: unmappedFileNames.join(', ') });
@@ -105,32 +109,32 @@ export const EpiUploadMapSequences = () => {
     return Array.from(sequenceFilesDataTransfer.files).map((file) => file.name).filter(name => name.endsWith('.fastq') || name.endsWith('.fq') || name.endsWith('.fq.gz') || name.endsWith('.fastaq.gz'));
   }, [sequenceFilesDataTransfer.files]);
 
-  const createDropDown = useCallback((kwArgs: { dropDownValue: string; dropDownOptions: string[]; label: string; onChange: (newValue: string) => void }) => {
-    const { dropDownValue, dropDownOptions, label, onChange } = kwArgs;
+  const createDropDown = useCallback((kwArgs: { dropDownOptions: string[]; dropDownValue: string; label: string; onChange: (newValue: string) => void }) => {
+    const { dropDownOptions, dropDownValue, label, onChange } = kwArgs;
 
     return (
       <Autocomplete
         freeSolo
         fullWidth
+        // eslint-disable-next-line @eslint-react/kit/jsx-no-bind
+        onChange={(_, newValue) => {
+          onChange(newValue);
+          setSequenceMapping(epiUploadSequenceMappingRef.current);
+          updateAlert();
+        }}
+        options={dropDownOptions}
+        // eslint-disable-next-line @eslint-react/kit/jsx-no-bind
+        renderInput={(params) => (
+          <TextField
+            {...params}
+            label={label}
+            size={'small'}
+          />
+        )}
         sx={{
           lineHeight: 'initial',
         }}
         value={dropDownValue}
-        options={dropDownOptions}
-        // eslint-disable-next-line react/jsx-no-bind
-        renderInput={(params) => (
-          <TextField
-            {...params}
-            size={'small'}
-            label={label}
-          />
-        )}
-        // eslint-disable-next-line react/jsx-no-bind
-        onChange={(_, newValue) => {
-          onChange(newValue);
-          setSequenceMapping(epiUploadSequenceMapping.current);
-          updateAlert();
-        }}
       />
     );
   }, [setSequenceMapping, updateAlert]);
@@ -139,28 +143,28 @@ export const EpiUploadMapSequences = () => {
     const col = completeCaseType.cols[tableRowParams.id];
 
     const id = tableRowParams.row.generatedId;
-    const dropDownValue = epiUploadSequenceMapping.current?.[tableRowParams.row.generatedId]?.sequenceFileNames[col.id] || '';
+    const dropDownValue = epiUploadSequenceMappingRef.current?.[tableRowParams.row.generatedId]?.sequenceFileNames[col.id] || '';
     const onChange = (newValue: string) => {
       if (!newValue) {
-        delete epiUploadSequenceMapping.current?.[id]?.sequenceFileNames[col.id];
+        delete epiUploadSequenceMappingRef.current?.[id]?.sequenceFileNames[col.id];
       } else {
-        epiUploadSequenceMapping.current[id].sequenceFileNames[col.id] = newValue;
+        epiUploadSequenceMappingRef.current[id].sequenceFileNames[col.id] = newValue;
       }
     };
 
     return (
       <Box
         sx={{
-          display: 'flex',
           alignItems: 'center',
-          justifyContent: 'center',
+          display: 'flex',
           flexDirection: 'column',
           height: '100%',
+          justifyContent: 'center',
         }}
       >
         {createDropDown({
-          dropDownValue,
           dropDownOptions: sequenceDropDownOptions,
+          dropDownValue,
           label: col.label,
           onChange,
         })}
@@ -174,43 +178,43 @@ export const EpiUploadMapSequences = () => {
     const isSequenceColumn = completeCaseTypeColStats.sequenceColumns.includes(col);
 
     const id = tableRowParams.row.generatedId;
-    const dropDownValueFwd = epiUploadSequenceMapping.current?.[tableRowParams.row.generatedId]?.readsFileNames?.[col.id]?.fwd || '';
-    const dropDownValueRev = epiUploadSequenceMapping.current?.[tableRowParams.row.generatedId]?.readsFileNames?.[col.id]?.rev || '';
+    const dropDownValueFwd = epiUploadSequenceMappingRef.current?.[tableRowParams.row.generatedId]?.readsFileNames?.[col.id]?.fwd || '';
+    const dropDownValueRev = epiUploadSequenceMappingRef.current?.[tableRowParams.row.generatedId]?.readsFileNames?.[col.id]?.rev || '';
     const onChangeFwd = (newValue: string) => {
       if (!newValue) {
-        delete epiUploadSequenceMapping.current?.[id]?.readsFileNames?.[col.id]?.fwd;
+        delete epiUploadSequenceMappingRef.current?.[id]?.readsFileNames?.[col.id]?.fwd;
       } else {
-        epiUploadSequenceMapping.current[id].readsFileNames[col.id].fwd = newValue;
+        epiUploadSequenceMappingRef.current[id].readsFileNames[col.id].fwd = newValue;
       }
     };
     const onChangeRev = (newValue: string) => {
       if (!newValue) {
-        delete epiUploadSequenceMapping.current?.[id]?.readsFileNames?.[col.id]?.rev;
+        delete epiUploadSequenceMappingRef.current?.[id]?.readsFileNames?.[col.id]?.rev;
       } else {
-        epiUploadSequenceMapping.current[id].readsFileNames[col.id].rev = newValue;
+        epiUploadSequenceMappingRef.current[id].readsFileNames[col.id].rev = newValue;
       }
     };
 
     return (
       <Box
         sx={{
-          display: 'flex',
           alignItems: 'center',
-          justifyContent: 'center',
+          display: 'flex',
           flexDirection: 'row',
           gap: 1,
           height: '100%',
+          justifyContent: 'center',
         }}
       >
         {createDropDown({
-          dropDownValue: dropDownValueFwd,
           dropDownOptions: isSequenceColumn ? sequenceDropDownOptions : readsDropDownOptions,
+          dropDownValue: dropDownValueFwd,
           label: `${col.label} FWD`,
           onChange: onChangeFwd,
         })}
         {createDropDown({
-          dropDownValue: dropDownValueRev,
           dropDownOptions: isSequenceColumn ? sequenceDropDownOptions : readsDropDownOptions,
+          dropDownValue: dropDownValueRev,
           label: `${col.label} REV`,
           onChange: onChangeRev,
         })}
@@ -234,41 +238,41 @@ export const EpiUploadMapSequences = () => {
     const sampleIdCol = completeCaseTypeColStats.sampleIdColumns.find(x => x.id === sampleIdColId);
     if (sampleIdCol && caseHasColumnContent(validatedCasesWithGeneratedId, sampleIdCol)) {
       tableCols.push({
-        type: 'text',
-        isInitiallyVisible: true,
+        headerName: sampleIdCol.label,
         hideInFilter: true,
         id: sampleIdCol.id,
-        headerName: sampleIdCol.label,
-        widthPx: 300,
+        isInitiallyVisible: true,
+        type: 'text',
         valueGetter: (params) => CaseUtil.getRowValue(params.row.validated_content, sampleIdCol, completeCaseType).short,
+        widthPx: 300,
       });
     }
 
     completeCaseTypeColStats.sequenceColumns.forEach((col) => {
       tableCols.push({
-        type: 'text',
-        isInitiallyVisible: true,
+        cellTitleGetter: () => null,
+        headerName: col.label,
         hideInFilter: true,
         id: col.id,
-        headerName: col.label,
-        widthPx: 400,
+        isInitiallyVisible: true,
         renderCell: renderSequenceCell,
+        type: 'text',
         valueGetter: (params) => CaseUtil.getRowValue(params.row.validated_content, col, completeCaseType).short,
-        cellTitleGetter: () => null,
+        widthPx: 400,
       });
     });
 
     completeCaseTypeColStats.readsColumns.forEach((col) => {
       tableCols.push({
-        type: 'text',
-        isInitiallyVisible: true,
+        cellTitleGetter: () => null,
+        headerName: col.label,
         hideInFilter: true,
         id: col.id,
-        headerName: col.label,
-        widthPx: 800,
+        isInitiallyVisible: true,
         renderCell: renderReadsCell,
+        type: 'text',
         valueGetter: (params) => CaseUtil.getRowValue(params.row.validated_content, col, completeCaseType).short,
-        cellTitleGetter: () => null,
+        widthPx: 800,
       });
     });
 
@@ -287,13 +291,13 @@ export const EpiUploadMapSequences = () => {
       const col = completeCaseType.cols[colId];
       if (col) {
         tableCols.push({
-          type: 'text',
-          isInitiallyVisible: true,
+          headerName: col.code,
           hideInFilter: true,
           id: col.id,
-          headerName: col.code,
-          widthPx: 250,
+          isInitiallyVisible: true,
+          type: 'text',
           valueGetter: (params) => CaseUtil.getRowValue(params.row.validated_content, col, completeCaseType).short,
+          widthPx: 250,
         } satisfies TableColumn<CaseUploadResultWithGeneratedId>);
       }
     });
@@ -301,14 +305,14 @@ export const EpiUploadMapSequences = () => {
     return tableCols;
   }, [caseHasColumnContent, completeCaseType, completeCaseTypeColStats.readsColumns, completeCaseTypeColStats.sampleIdColumns, completeCaseTypeColStats.sequenceColumns, renderReadsCell, renderSequenceCell, sampleIdColId, validatedCases, validatedCasesWithGeneratedId]);
 
-  useInitializeTableStore<CaseUploadResultWithGeneratedId>({ store: tableStore, columns: tableColumns, rows: validatedCasesWithGeneratedId, createFiltersFromColumns: true });
+  useInitializeTableStore<CaseUploadResultWithGeneratedId>({ columns: tableColumns, createFiltersFromColumns: true, rows: validatedCasesWithGeneratedId, store: tableStore });
 
   return (
     <Box
       sx={{
-        height: '100%',
         display: 'grid',
         gridTemplateRows: 'max-content auto max-content',
+        height: '100%',
       }}
     >
       <Box sx={{ paddingBottom: 1 }}>
@@ -323,7 +327,7 @@ export const EpiUploadMapSequences = () => {
           rowHeight={7}
         />
         <EpiUploadNavigation
-          onGoBackButtonClick={goToPreviousStep}
+          onGoBackButtonClick={onGoBackButtonClick}
           onProceedButtonClick={onProceedButtonClick}
         />
       </TableStoreContextProvider>

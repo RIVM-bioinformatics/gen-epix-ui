@@ -25,9 +25,7 @@ import type { I18nManager } from '../classes/managers/I18nManager';
 
 declare global {
   interface Window {
-    userManager: UserManager;
     managers: {
-      route?: RouterManager;
       authentication?: AuthenticationManager;
       authorization?: AuthorizationManager;
       backendVersion?: BackendVersionManager;
@@ -37,8 +35,10 @@ declare global {
       emotionCache?: EmotionCacheManager;
       epiData?: EpiDataManager;
       epiEventBus?: EpiEventBusManager;
-      epiLineListCaseSetMembers?: EpiLineListCaseSetMembersManager;
       epiHighlighting?: EpiHighlightingManager;
+      epiLineListCaseSetMembers?: EpiLineListCaseSetMembersManager;
+      featureFlags?: FeatureFlagsManager;
+      i18n?: I18nManager;
       inactivity?: InactivityManager;
       keyboardShortcut?: KeyboardShortcutManager;
       log?: LogManager;
@@ -46,9 +46,9 @@ declare global {
       notification?: NotificationManager;
       pageEventBus?: PageEventBusManager;
       queryClient?: QueryClientManager;
+      route?: RouterManager;
       userSettings?: UserSettingsManager;
-      i18n?: I18nManager;
-      featureFlags?: FeatureFlagsManager;
     };
+    userManager: UserManager;
   }
 }

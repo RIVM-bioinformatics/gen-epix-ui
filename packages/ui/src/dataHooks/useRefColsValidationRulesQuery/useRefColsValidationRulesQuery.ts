@@ -8,10 +8,10 @@ import { useQueryMemo } from '../../hooks/useQueryMemo';
 
 export const useRefColsValidationRulesQuery = (): UseQueryResult<RefColValidationRulesResponseBody> => {
   return useQueryMemo({
-    queryKey: QueryUtil.getGenericKey(QUERY_KEY.REF_COLS_VALIDATION_RULES),
     queryFn: async ({ signal }) => {
       const response = await CaseApi.instance.refColsValidationRules({ signal });
       return response.data;
     },
+    queryKey: QueryUtil.getGenericKey(QUERY_KEY.REF_COLS_VALIDATION_RULES),
   });
 };

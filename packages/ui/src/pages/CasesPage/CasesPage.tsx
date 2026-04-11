@@ -32,10 +32,10 @@ import { EpiCaseTypeInfoDialogWithLoader } from '../../components/epi/EpiCaseTyp
 import { PageContainer } from '../../components/ui/PageContainer';
 import { ResponseHandler } from '../../components/ui/ResponseHandler';
 import {
-  TableMenu,
-  TableCaption,
-  TableSidebarMenu,
   Table,
+  TableCaption,
+  TableMenu,
+  TableSidebarMenu,
 } from '../../components/ui/Table';
 import { useCaseTypeSetCategoriesQuery } from '../../dataHooks/useCaseTypeSetCategoriesQuery';
 import { useCaseTypeStatsQuery } from '../../dataHooks/useCaseTypeStatsQuery';
@@ -43,8 +43,8 @@ import { useInitializeTableStore } from '../../hooks/useInitializeTableStore';
 import type { OptionBase } from '../../models/form';
 import { QUERY_KEY } from '../../models/query';
 import type {
-  TableRowParams,
   TableColumn,
+  TableRowParams,
 } from '../../models/table';
 import {
   createTableStore,
@@ -60,10 +60,10 @@ import { useQueryMemo } from '../../hooks/useQueryMemo';
 import { DataUtil } from '../../utils/DataUtil';
 
 type Row = {
+  [key: string]: boolean | number | string | string[];
+  hasCases: boolean;
   id: string;
   name: string;
-  hasCases: boolean;
-  [key: string]: string[] | string | number | boolean;
 } & Omit<CaseStats, 'case_type_id'>;
 
 const getCaseTypeSetCategoryRowId = (id: string) => `caseTypeSetCategory-${id}`;
@@ -75,12 +75,12 @@ export const CasesPage = () => {
   const caseTypeStatsQuery = useCaseTypeStatsQuery();
   const caseTypeSetCategoriesQuery = useCaseTypeSetCategoriesQuery();
 
-  const { isLoading: isCaseTypesLoading, error: caseTypesError, data: caseTypes } = useQueryMemo({
-    queryKey: QueryUtil.getGenericKey(QUERY_KEY.CASE_TYPES),
+  const { data: caseTypes, error: caseTypesError, isLoading: isCaseTypesLoading } = useQueryMemo({
     queryFn: async ({ signal }) => {
       const response = await CaseApi.instance.caseTypesGetAll({ signal });
       return response.data;
     },
+    queryKey: QueryUtil.getGenericKey(QUERY_KEY.CASE_TYPES),
   });
 
   const caseTypeStatsMap = useMemo(() => {
@@ -88,20 +88,20 @@ export const CasesPage = () => {
   }, [caseTypeStatsQuery]);
 
 
-  const { isLoading: isCaseTypeSetsLoading, error: caseTypeSetsError, data: caseTypeSets } = useQueryMemo({
-    queryKey: QueryUtil.getGenericKey(QUERY_KEY.CASE_TYPE_SETS),
+  const { data: caseTypeSets, error: caseTypeSetsError, isLoading: isCaseTypeSetsLoading } = useQueryMemo({
     queryFn: async ({ signal }) => {
       const response = await CaseApi.instance.caseTypeSetsGetAll({ signal });
       return response.data;
     },
+    queryKey: QueryUtil.getGenericKey(QUERY_KEY.CASE_TYPE_SETS),
   });
 
-  const { isLoading: isCaseTypeSetMembersLoading, error: caseTypeSetMembersError, data: caseTypeSetMembers } = useQueryMemo({
-    queryKey: QueryUtil.getGenericKey(QUERY_KEY.CASE_TYPE_SET_MEMBERS),
+  const { data: caseTypeSetMembers, error: caseTypeSetMembersError, isLoading: isCaseTypeSetMembersLoading } = useQueryMemo({
     queryFn: async ({ signal }) => {
       const response = await CaseApi.instance.caseTypeSetMembersGetAll({ signal });
       return response.data;
     },
+    queryKey: QueryUtil.getGenericKey(QUERY_KEY.CASE_TYPE_SET_MEMBERS),
   });
 
   const isLoading = isCaseTypesLoading || isCaseTypeSetsLoading || isCaseTypeSetMembersLoading || caseTypeSetCategoriesQuery.isLoading || caseTypeStatsQuery.isLoading;
@@ -160,13 +160,13 @@ export const CasesPage = () => {
 
     const rows = caseTypes.map<Row>(caseType => {
       const row: Row = {
-        id: caseType.id,
-        name: caseType.name,
+        first_case_date: caseTypeStatsMap.get(caseType.id)?.first_case_date,
         hasCases: caseTypeStatsMap.get(caseType.id)?.n_cases > 0,
+        id: caseType.id,
+        last_case_date: caseTypeStatsMap.get(caseType.id)?.last_case_date,
         n_cases: caseTypeStatsMap.get(caseType.id)?.n_cases ?? 0,
         n_own_cases: caseTypeStatsMap.get(caseType.id)?.n_own_cases ?? 0,
-        first_case_date: caseTypeStatsMap.get(caseType.id)?.first_case_date,
-        last_case_date: caseTypeStatsMap.get(caseType.id)?.last_case_date,
+        name: caseType.name,
       };
       caseTypeSetCategoriesQuery.data.forEach((caseTypeSetCategorie) => {
         row[getCaseTypeSetCategoryRowId(caseTypeSetCategorie.id)] = [];
@@ -187,7 +187,7 @@ export const CasesPage = () => {
     const options: { [key: string]: OptionBase<string>[] } = {};
 
     caseTypeSetCategoriesQuery.data?.forEach(category => {
-      options[category.id] = caseTypeSets?.filter(set => set.case_type_set_category_id === category.id).sort(DataUtil.rankSortComperatorFactory('name')).map<OptionBase<string>>(set => ({ value: set.id, label: set.name }));
+      options[category.id] = caseTypeSets?.filter(set => set.case_type_set_category_id === category.id).sort(DataUtil.rankSortComperatorFactory('name')).map<OptionBase<string>>(set => ({ label: set.name, value: set.id }));
     });
     return options;
   }, [caseTypeSetCategoriesQuery, caseTypeSets]);
@@ -202,35 +202,34 @@ export const CasesPage = () => {
         getAriaLabel: (params: TableRowParams<Row>) => t('Open case type information for {{name}}', { name: params.row.name }),
       }),
       TableUtil.createTextColumn({
-        name: t('Name'),
-        id: 'name',
         flex: 1.5,
+        id: 'name',
+        name: t('Name'),
       }),
       ...caseTypeSetCategoriesQuery.data.filter(c => c.purpose === CaseTypeSetCategoryPurpose.CONTENT).map<TableColumn<Row>>((caseTypeSetCategory: CaseTypeSetCategory) => {
         return {
-          id: getCaseTypeSetCategoryRowId(caseTypeSetCategory.id),
-          type: 'options',
-          headerName: caseTypeSetCategory.name,
-          maxNumOptionsExpanded: Infinity,
-          widthFlex: 1,
-          options: caseTypeSetCategoryOptions[caseTypeSetCategory.id] ?? [],
           comparatorFactory: TableUtil.createOptionsCellRowComperator,
+          headerName: caseTypeSetCategory.name,
+          id: getCaseTypeSetCategoryRowId(caseTypeSetCategory.id),
           isInitiallyVisible: true,
+          maxNumOptionsExpanded: Infinity,
+          options: caseTypeSetCategoryOptions[caseTypeSetCategory.id] ?? [],
+          type: 'options',
+          widthFlex: 1,
         };
       }),
-      TableUtil.createNumberColumn({ name: t('Cases'), id: 'n_cases', flex: 0.5 }),
-      TableUtil.createNumberColumn({ name: t('Own cases'), id: 'n_own_cases', flex: 0.5 }),
-      TableUtil.createDateColumn({ name: t('First case date'), id: 'first_case_date', flex: 0.5, dateFormat: DATE_FORMAT.DATE }),
-      TableUtil.createDateColumn({ name: t('Last case date'), id: 'last_case_date', flex: 0.5, dateFormat: DATE_FORMAT.DATE }),
+      TableUtil.createNumberColumn({ flex: 0.5, id: 'n_cases', name: t('Cases') }),
+      TableUtil.createNumberColumn({ flex: 0.5, id: 'n_own_cases', name: t('Own cases') }),
+      TableUtil.createDateColumn({ dateFormat: DATE_FORMAT.DATE, flex: 0.5, id: 'first_case_date', name: t('First case date') }),
+      TableUtil.createDateColumn({ dateFormat: DATE_FORMAT.DATE, flex: 0.5, id: 'last_case_date', name: t('Last case date') }),
       TableUtil.createActionsColumn({
-        t,
         getActions: (params) => {
           return [
             (
               <MenuItem
-                key={'actions1'}
                 disabled={!params.row.hasCases}
-                // eslint-disable-next-line react/jsx-no-bind
+                key={'actions1'}
+                // eslint-disable-next-line @eslint-react/kit/jsx-no-bind
                 onClick={async () => onShowItemClick(params)}
               >
                 <ListItemIcon>
@@ -244,7 +243,7 @@ export const CasesPage = () => {
             (
               <MenuItem
                 key={'actions2'}
-                // eslint-disable-next-line react/jsx-no-bind
+                // eslint-disable-next-line @eslint-react/kit/jsx-no-bind
                 onClick={() => onShowCaseTypeInformationClick(params)}
               >
                 <ListItemIcon>
@@ -258,7 +257,7 @@ export const CasesPage = () => {
             (
               <MenuItem
                 key={'actions3'}
-                // eslint-disable-next-line react/jsx-no-bind
+                // eslint-disable-next-line @eslint-react/kit/jsx-no-bind
                 onClick={async () => onDownloadExcelTemplateButtonClick(params)}
               >
                 <ListItemIcon>
@@ -271,21 +270,22 @@ export const CasesPage = () => {
             ),
           ];
         },
+        t,
       }),
     ] satisfies TableColumn<Row>[];
   }, [caseTypeSetCategoriesQuery.data, caseTypeSetCategoryOptions, error, isLoading, onDownloadExcelTemplateButtonClick, onShowCaseTypeInformationClick, onShowItemClick, t]);
 
   const tableStore = useMemo(() => createTableStore<Row>({
-    navigatorFunction: RouterManager.instance.router.navigate,
     defaultSortByField: 'name',
     defaultSortDirection: 'asc',
-    isRowEnabledCallback: (row) => row.n_cases > 0,
     idSelectorCallback: (row) => row.id,
+    isRowEnabledCallback: (row) => row.n_cases > 0,
+    navigatorFunction: RouterManager.instance.router.navigate,
     storageNamePostFix: 'cases',
     storageVersion: 1,
   }), []);
 
-  useInitializeTableStore({ store: tableStore, columns, rows: data, createFiltersFromColumns: true });
+  useInitializeTableStore({ columns, createFiltersFromColumns: true, rows: data, store: tableStore });
 
   const getRowName = useCallback((row: Row) => {
     return row.name;
@@ -294,8 +294,6 @@ export const CasesPage = () => {
   return (
     <TableStoreContextProvider store={tableStore}>
       <PageContainer
-        fullWidth
-        showBreadcrumbs
         contentActions={(<TableMenu />)}
         contentHeader={(
           <TableCaption
@@ -304,13 +302,15 @@ export const CasesPage = () => {
             variant={'h2'}
           />
         )}
+        fullWidth
+        showBreadcrumbs
         testIdAttributes={TestIdUtil.createAttributes('CasesPage')}
         title={t`Cases`}
       >
         <Box
           sx={{
-            position: 'relative',
             height: '100%',
+            position: 'relative',
           }}
         >
           <ResponseHandler
@@ -320,9 +320,9 @@ export const CasesPage = () => {
             {caseTypes?.length === 0 && (
               <Box
                 sx={{
+                  alignItems: 'center',
                   display: 'flex',
                   flexDirection: 'column',
-                  alignItems: 'center',
                 }}
               >
                 <Typography variant={'h6'}>
@@ -335,9 +335,9 @@ export const CasesPage = () => {
                 <TableSidebarMenu />
                 <Box
                   sx={{
-                    width: '100%',
                     height: '100%',
                     paddingLeft: theme.spacing(ConfigManager.instance.config.layout.SIDEBAR_MENU_WIDTH + 1),
+                    width: '100%',
                   }}
                 >
                   <Table

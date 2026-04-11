@@ -15,7 +15,6 @@ import {
   useEffect,
 } from 'react';
 import { useStore } from 'zustand';
-import noop from 'lodash/noop';
 import { useShallow } from 'zustand/shallow';
 
 import type { EpiDashboardGeneralSettings } from '../../../stores/userProfileStore';
@@ -52,11 +51,15 @@ export const EpiDashboardGeneralSettingsForm = ({ onReset }: EpiDashboardGeneral
     setEpiDashboardGeneralSettings(formValues as EpiDashboardGeneralSettings);
   }, [formValues, setEpiDashboardGeneralSettings]);
 
+  const onSubmit = useCallback(() => {
+    // noop, as the form only contains switches that update the state on change
+  }, []);
+
   return (
     <FormProvider {...formMethods}>
       <form
         autoComplete={'off'}
-        onSubmit={noop}
+        onSubmit={onSubmit}
       >
         <Box
           sx={{
@@ -84,9 +87,9 @@ export const EpiDashboardGeneralSettingsForm = ({ onReset }: EpiDashboardGeneral
         >
           <Button
             color={'primary'}
+            onClick={onResetButtonClick}
             startIcon={<RestartAltIcon />}
             variant={'outlined'}
-            onClick={onResetButtonClick}
           >
             {t`Reset general settings`}
           </Button>

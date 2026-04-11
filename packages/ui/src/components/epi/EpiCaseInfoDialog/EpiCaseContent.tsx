@@ -10,8 +10,8 @@ import {
   Typography,
 } from '@mui/material';
 import {
+  use,
   useCallback,
-  useContext,
   useMemo,
   useRef,
 } from 'react';
@@ -34,7 +34,7 @@ export type EpiCaseContentProps = {
 export const EpiCaseContent = ({ epiCase, ...boxProps }: EpiCaseContentProps) => {
   const { t } = useTranslation();
   const epiContactDetailsDialogRef = useRef<EpiContactDetailsDialogRefMethods>(null);
-  const epiDashboardStore = useContext(EpiDashboardStoreContext);
+  const epiDashboardStore = use(EpiDashboardStoreContext);
   const completeCaseType = useStore(epiDashboardStore, (state) => state.completeCaseType);
 
   const cols = useMemo(() => CaseTypeUtil.getCols(completeCaseType), [completeCaseType]);
@@ -96,13 +96,13 @@ export const EpiCaseContent = ({ epiCase, ...boxProps }: EpiCaseContentProps) =>
                   >
                     {refCol.col_type === ColType.ORGANIZATION && !columnValue.isMissing && (
                       <Link
-                        sx={{
-                          cursor: 'pointer',
-                        }}
                         color={'primary'}
-                        // eslint-disable-next-line react/jsx-no-bind
+                        // eslint-disable-next-line @eslint-react/kit/jsx-no-bind
                         onClick={() => {
                           onOrganizationLinkClick(epiCase.content[col.id], columnValue.long);
+                        }}
+                        sx={{
+                          cursor: 'pointer',
                         }}
                       >
                         {columnValue.long}

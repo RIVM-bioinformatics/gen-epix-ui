@@ -62,10 +62,10 @@ export const ChooseIdentityProviderPage = ({
   const refreshButton = useMemo(
     () => (
       <Button
-        variant={'outlined'}
         color={'inherit'}
-        sx={{ marginTop: 2 }}
         onClick={onRefreshButtonClick}
+        sx={{ marginTop: 2 }}
+        variant={'outlined'}
       >
         {t('Refresh')}
       </Button>

@@ -16,14 +16,12 @@ const FORM_ELEMENT_TAG_NAMES = [
 ];
 
 type KeyboardShortcutConfig = {
+  callback: () => void;
   key: string;
   modifier?: string;
-  callback: () => void;
 };
 
 export class KeyboardShortcutManager {
-  private readonly configs: KeyboardShortcutConfig[] = [];
-
   public static get instance(): KeyboardShortcutManager {
     // Instances are stored on the window to prevent multiple instances of the same manager. HMR may load multiple instances of the same manager, but we only want one instance to be active at a time.
 
@@ -31,13 +29,35 @@ export class KeyboardShortcutManager {
     return WindowManager.instance.window.managers.keyboardShortcut;
   }
 
+  private readonly configs: KeyboardShortcutConfig[] = [];
+
   private constructor() {
     window.addEventListener('keydown', this.handleKeyDown.bind(this));
   }
 
+  private static shouldIgnoreShortcut(): boolean {
+    let activeElement = document.activeElement as HTMLElement;
+    while (activeElement) {
+      if (FORM_ELEMENT_TAG_NAMES.includes(activeElement.tagName.toLowerCase())) {
+        return true; // ignore all shortcuts when typing in form elements
+      }
+      activeElement = activeElement.parentElement;
+    }
+    return false;
+  }
+
+  public registerShortcut({ callback, key, modifier }: KeyboardShortcutConfig): () => void {
+    const config: KeyboardShortcutConfig = { callback, key, modifier };
+    this.configs.push(config);
+
+    return () => {
+      this.configs.splice(this.configs.indexOf(config), 1);
+    };
+  }
+
   private handleKeyDown(event: KeyboardEvent): void {
     for (const config of this.configs) {
-      const { key, modifier, callback } = config;
+      const { callback, key, modifier } = config;
       if (event.key !== key) {
         continue;
       }
@@ -54,25 +74,5 @@ export class KeyboardShortcutManager {
       callback();
       return; // only one callback per shortcut
     }
-  }
-
-  private static shouldIgnoreShortcut(): boolean {
-    let activeElement = document.activeElement as HTMLElement;
-    while (activeElement) {
-      if (FORM_ELEMENT_TAG_NAMES.includes(activeElement.tagName.toLowerCase())) {
-        return true; // ignore all shortcuts when typing in form elements
-      }
-      activeElement = activeElement.parentElement;
-    }
-    return false;
-  }
-
-  public registerShortcut({ key, modifier, callback }: KeyboardShortcutConfig): () => void {
-    const config: KeyboardShortcutConfig = { key, modifier, callback };
-    this.configs.push(config);
-
-    return () => {
-      this.configs.splice(this.configs.indexOf(config), 1);
-    };
   }
 }

@@ -11,27 +11,27 @@ import {
   useState,
 } from 'react';
 import {
-  Autocomplete as MuiAutocomplete,
-  TextField,
-  FormControl,
   Checkbox,
   Chip,
+  FormControl,
+  Autocomplete as MuiAutocomplete,
   Stack,
+  TextField,
 } from '@mui/material';
 import CheckBoxOutlineBlankIcon from '@mui/icons-material/CheckBoxOutlineBlank';
 import CheckBoxIcon from '@mui/icons-material/CheckBox';
 import type {
   AutocompleteRenderInputParams,
-  FilterOptionsState,
-  AutocompleteValue,
   AutocompleteRenderOptionState,
   AutocompleteRenderValueGetItemProps,
+  AutocompleteValue,
+  FilterOptionsState,
 } from '@mui/material';
 import type {
-  UseControllerReturn,
-  FieldValues,
   ControllerRenderProps,
+  FieldValues,
   Path,
+  UseControllerReturn,
 } from 'react-hook-form';
 import {
   Controller,
@@ -47,35 +47,35 @@ import { FormFieldHelperText } from '../../helpers/FormFieldHelperText';
 import { FormFieldLoadingIndicator } from '../../helpers/FormFieldLoadingIndicator';
 
 
-type Value = string | number;
-type MultipleRenderValueItemProps = ReturnType<AutocompleteRenderValueGetItemProps<true>>;
-
 export type AutocompleteProps<TFieldValues extends FieldValues, TName extends Path<TFieldValues>, TMultiple extends boolean> = {
   readonly disabled?: boolean;
+  readonly groupValues?: boolean;
   readonly label: string;
+  readonly loading?: boolean;
+  readonly multiple?: TMultiple;
   readonly name: TName;
   readonly onChange?: (value: AutocompleteValue<TFieldValues[TName], TMultiple, false, false>) => void;
-  readonly required?: boolean;
-  readonly warningMessage?: string | boolean;
-  readonly groupValues?: boolean;
   readonly options: AutoCompleteOption[];
-  readonly multiple?: TMultiple;
+  readonly required?: boolean;
   readonly shouldSortOptions?: boolean;
-  readonly loading?: boolean;
+  readonly warningMessage?: boolean | string;
 };
+type MultipleRenderValueItemProps = ReturnType<AutocompleteRenderValueGetItemProps<true>>;
+
+type Value = number | string;
 
 export const Autocomplete = <TFieldValues extends FieldValues, TName extends Path<TFieldValues> = Path<TFieldValues>, TMultiple extends boolean = false>({
   disabled = false,
   groupValues = false,
   label,
   loading = false,
+  multiple,
   name,
   onChange: onChangeProp,
   options,
   required = false,
-  warningMessage,
-  multiple,
   shouldSortOptions,
+  warningMessage,
 }: AutocompleteProps<TFieldValues, TName, TMultiple>): ReactElement => {
   const { t } = useTranslation();
   const { control, formState: { errors } } = useFormContext<TFieldValues>();
@@ -101,8 +101,8 @@ export const Autocomplete = <TFieldValues extends FieldValues, TName extends Pat
       mapped.set(option.value, option);
     });
     return {
-      optionValues: values,
       mappedOptions: mapped,
+      optionValues: values,
     };
   }, [sortedOptions]);
 
@@ -115,21 +115,21 @@ export const Autocomplete = <TFieldValues extends FieldValues, TName extends Pat
     return (
       // eslint-disable-next-line jsx-a11y/click-events-have-key-events, jsx-a11y/no-noninteractive-element-interactions
       <li
-        key={option}
         aria-disabled={props['aria-disabled']}
         aria-selected={props['aria-selected']}
         className={props.className}
         data-option-index={(props as { 'data-option-index': string })['data-option-index']}
         id={props.id}
-        role={props.role}
-        style={{
-          padding: 0,
-          margin: 0,
-        }}
-        tabIndex={props.tabIndex}
+        key={option}
         onClick={props.onClick}
         onMouseMove={props.onMouseMove}
         onTouchStart={props.onTouchStart}
+        role={props.role}
+        style={{
+          margin: 0,
+          padding: 0,
+        }}
+        tabIndex={props.tabIndex}
       >
         <Checkbox
           checked={state.selected}
@@ -161,15 +161,12 @@ export const Autocomplete = <TFieldValues extends FieldValues, TName extends Pat
         helperText={helperText}
         id={params.id}
         inputRef={inputRef}
-        variant={'outlined'}
         label={label}
         size={params.size}
         slotProps={{
           formHelperText: { className: classnames({ 'Mui-warning': hasWarning }) },
-          inputLabel: {
-            ...params.slotProps.inputLabel,
-            required: required && !disabled,
-            className: classnames({ 'Mui-warning': hasWarning }),
+          htmlInput: {
+            ...params.slotProps.htmlInput,
           },
           input: {
             ...params.slotProps.input,
@@ -177,10 +174,13 @@ export const Autocomplete = <TFieldValues extends FieldValues, TName extends Pat
               'Mui-warning': hasWarning,
             }),
           },
-          htmlInput: {
-            ...params.slotProps.htmlInput,
+          inputLabel: {
+            ...params.slotProps.inputLabel,
+            className: classnames({ 'Mui-warning': hasWarning }),
+            required: required && !disabled,
           },
         }}
+        variant={'outlined'}
       />
     );
   }, [disabled, errorMessage, hasError, hasWarning, label, required, warningMessage]);
@@ -202,11 +202,11 @@ export const Autocomplete = <TFieldValues extends FieldValues, TName extends Pat
 
           return (
             <Chip
-              {...props}
               key={String(value)}
+              {...props}
               label={getOptionLabel(value)}
-              size={'small'}
               onDelete={option?.disabled ? undefined : props.onDelete}
+              size={'small'}
             />
           );
         })}
@@ -230,7 +230,7 @@ export const Autocomplete = <TFieldValues extends FieldValues, TName extends Pat
     return sortedOptions.map((option) => option.value) as TFieldValues[TName][];
   }, [sortedOptions]);
 
-  const renderController = useCallback(({ field: { onChange, onBlur, value, ref } }: UseControllerReturn<TFieldValues, TName>) => {
+  const renderController = useCallback(({ field: { onBlur, onChange, ref, value } }: UseControllerReturn<TFieldValues, TName>) => {
     ref({
       focus: () => {
         inputRef?.current?.focus();
@@ -251,14 +251,14 @@ export const Autocomplete = <TFieldValues extends FieldValues, TName extends Pat
         isOptionEqualToValue={getIsOptionEqualToValue}
         multiple={multiple}
         noOptionsText={t`No results`}
+        onBlur={onBlur}
+        onChange={onMuiAutocompleteChange(onChange)}
+        onInputChange={multiple ? onMuiAutocompleteInputChange : undefined}
         options={optionValues as TFieldValues[TName]}
         renderInput={renderInput}
         renderOption={multiple ? renderOption : undefined}
         renderValue={multiple ? renderValue : undefined}
         value={value}
-        onInputChange={multiple ? onMuiAutocompleteInputChange : undefined}
-        onBlur={onBlur}
-        onChange={onMuiAutocompleteChange(onChange)}
       />
     );
   }, [required, multiple, disabled, loading, filterOptions, getIsOptionDisabled, getOptionLabel, groupValues, groupBy, inputValue, getIsOptionEqualToValue, t, onMuiAutocompleteChange, onMuiAutocompleteInputChange, optionValues, renderInput, renderOption, renderValue]);

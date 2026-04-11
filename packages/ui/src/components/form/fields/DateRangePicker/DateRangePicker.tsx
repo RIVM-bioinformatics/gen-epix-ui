@@ -16,9 +16,9 @@ import {
 import ClearIcon from '@mui/icons-material/Clear';
 import type {
   FieldValues,
-  UseControllerReturn,
-  PathValue,
   Path,
+  PathValue,
+  UseControllerReturn,
 } from 'react-hook-form';
 import {
   Controller,
@@ -30,8 +30,8 @@ import {
   DatePicker as MuiDatePicker,
 } from '@mui/x-date-pickers';
 import type {
-  DateTimePickerProps as MuiDateTimePickerProps,
   DatePickerProps as MuiDatePickerProps,
+  DateTimePickerProps as MuiDateTimePickerProps,
 } from '@mui/x-date-pickers';
 import { AdapterDateFns } from '@mui/x-date-pickers/AdapterDateFns';
 import classNames from 'classnames';
@@ -59,29 +59,29 @@ import { DATE_FORMAT } from '../../../../data/date';
 
 
 export type DateRangePickerProps<TFieldValues extends FieldValues, TName extends Path<TFieldValues> = Path<TFieldValues>> = {
+  readonly dateFormat: typeof DATE_FORMAT[keyof typeof DATE_FORMAT];
   readonly disabled?: boolean;
   readonly label: string;
+  readonly loading?: boolean;
+  readonly maxDate?: Date;
+  readonly minDate?: Date;
   readonly name: TName;
   readonly onChange?: (value: [Date, Date]) => void;
   readonly required?: boolean;
-  readonly warningMessage?: string | boolean;
-  readonly loading?: boolean;
-  readonly minDate?: Date;
-  readonly maxDate?: Date;
-  readonly dateFormat: typeof DATE_FORMAT[keyof typeof DATE_FORMAT];
+  readonly warningMessage?: boolean | string;
 };
 
 export const DateRangePicker = <TFieldValues extends FieldValues, TName extends Path<TFieldValues> = Path<TFieldValues>>({
+  dateFormat = DATE_FORMAT.DATE,
   disabled = false,
   label,
+  loading = false,
+  maxDate,
+  minDate,
   name,
   onChange: onChangeProp,
-  loading = false,
   required = false,
   warningMessage,
-  minDate,
-  maxDate,
-  dateFormat = DATE_FORMAT.DATE,
 }: DateRangePickerProps<TFieldValues, TName>): ReactElement => {
   const { control, formState: { errors } } = useFormContext<TFieldValues>();
   const errorMessage = FormUtil.getFieldErrorMessage(errors, name);
@@ -103,10 +103,10 @@ export const DateRangePicker = <TFieldValues extends FieldValues, TName extends 
       case DATE_FORMAT.DATE:
       case DATE_FORMAT.DATE_TIME:
         return undefined;
-      case DATE_FORMAT.YEAR_MONTH:
-        return ['year', 'month'];
       case DATE_FORMAT.YEAR:
         return ['year'];
+      case DATE_FORMAT.YEAR_MONTH:
+        return ['year', 'month'];
       default:
         throw new Error(`Unsupported date format: ${dateFormat}`);
     }
@@ -116,20 +116,20 @@ export const DateRangePicker = <TFieldValues extends FieldValues, TName extends 
     const sanitizedValue: [Date, Date] = [null, null];
     switch (dateFormat) {
       case DATE_FORMAT.DATE:
-        sanitizedValue[0] = value[0] ? set(value[0], { hours: 0, minutes: 0, seconds: 0, milliseconds: 0 }) : null;
-        sanitizedValue[1] = value[1] ? set(value[1], { hours: 23, minutes: 59, seconds: 59, milliseconds: 999 }) : null;
+        sanitizedValue[0] = value[0] ? set(value[0], { hours: 0, milliseconds: 0, minutes: 0, seconds: 0 }) : null;
+        sanitizedValue[1] = value[1] ? set(value[1], { hours: 23, milliseconds: 999, minutes: 59, seconds: 59 }) : null;
         break;
       case DATE_FORMAT.DATE_TIME:
-        sanitizedValue[0] = value[0] ? set(value[0], { seconds: 0, milliseconds: 0 }) : null;
-        sanitizedValue[1] = value[1] ? set(value[1], { seconds: 59, milliseconds: 999 }) : null;
-        break;
-      case DATE_FORMAT.YEAR_MONTH:
-        sanitizedValue[0] = value[0] ? set(value[0], { date: 1, hours: 0, minutes: 0, seconds: 0, milliseconds: 0 }) : null;
-        sanitizedValue[1] = value[1] ? set(lastDayOfMonth(value[1]), { hours: 23, minutes: 59, seconds: 59, milliseconds: 999 }) : null;
+        sanitizedValue[0] = value[0] ? set(value[0], { milliseconds: 0, seconds: 0 }) : null;
+        sanitizedValue[1] = value[1] ? set(value[1], { milliseconds: 999, seconds: 59 }) : null;
         break;
       case DATE_FORMAT.YEAR:
-        sanitizedValue[0] = value[0] ? set(value[0], { month: 0, date: 1, hours: 0, minutes: 0, seconds: 0, milliseconds: 0 }) : null;
-        sanitizedValue[1] = value[1] ? set(value[1], { month: 11, date: 31, hours: 23, minutes: 59, seconds: 59, milliseconds: 999 }) : null;
+        sanitizedValue[0] = value[0] ? set(value[0], { date: 1, hours: 0, milliseconds: 0, minutes: 0, month: 0, seconds: 0 }) : null;
+        sanitizedValue[1] = value[1] ? set(value[1], { date: 31, hours: 23, milliseconds: 999, minutes: 59, month: 11, seconds: 59 }) : null;
+        break;
+      case DATE_FORMAT.YEAR_MONTH:
+        sanitizedValue[0] = value[0] ? set(value[0], { date: 1, hours: 0, milliseconds: 0, minutes: 0, seconds: 0 }) : null;
+        sanitizedValue[1] = value[1] ? set(lastDayOfMonth(value[1]), { hours: 23, milliseconds: 999, minutes: 59, seconds: 59 }) : null;
         break;
       default:
         throw new Error(`Unsupported date format: ${dateFormat}`);
@@ -169,7 +169,7 @@ export const DateRangePicker = <TFieldValues extends FieldValues, TName extends 
     }
   }, [onChangeProp, outerValue, sanitizeValue]);
 
-  const renderController = useCallback(({ field: { onChange, onBlur, value, ref } }: UseControllerReturn<TFieldValues, TName>) => {
+  const renderController = useCallback(({ field: { onBlur, onChange, ref, value } }: UseControllerReturn<TFieldValues, TName>) => {
     ref({
       focus: () => {
         fromInputRef?.current?.focus();
@@ -232,11 +232,11 @@ export const DateRangePicker = <TFieldValues extends FieldValues, TName extends 
         {...TestIdUtil.createAttributes('DateRangePicker', { label, name: name as string })}
         fullWidth
         sx={{
-          'legend button': {
-            display: 'none',
-          },
           '&:hover legend button, &:focus-within legend button': {
             display: 'initial',
+          },
+          'legend button': {
+            display: 'none',
           },
         }}
       >
@@ -250,17 +250,17 @@ export const DateRangePicker = <TFieldValues extends FieldValues, TName extends 
           {!disabled && (
             <IconButton
               {...TestIdUtil.createAttributes('DateRangePicker-reset')}
+              aria-label={t`Clear date range`}
+              // eslint-disable-next-line @eslint-react/kit/jsx-no-bind
+              onClick={onResetButtonClick}
               sx={{
-                position: 'absolute',
-                top: '-10px',
                 '& svg': {
                   fontSize: '16px',
                 },
+                position: 'absolute',
+                top: '-10px',
               }}
               tabIndex={-1}
-              aria-label={t`Clear date range`}
-              // eslint-disable-next-line react/jsx-no-bind
-              onClick={onResetButtonClick}
             >
               <ClearIcon />
             </IconButton>
@@ -273,73 +273,73 @@ export const DateRangePicker = <TFieldValues extends FieldValues, TName extends 
           <Box
             sx={{
               display: 'grid',
-              gridTemplateColumns: '1fr 1fr',
               gap: theme.spacing(1),
+              gridTemplateColumns: '1fr 1fr',
             }}
           >
             <MuiDatePicker
-              disableFuture
               disabled={disabled || loading}
+              disableFuture
               inputRef={fromInputRef}
               label={t`From`}
               loading={loading}
               maxDate={toValue ? new Date(Math.min.apply(null, [maxDate, toValue] as unknown as number[])) : maxDate}
+              minDate={minDate}
+              // eslint-disable-next-line @eslint-react/kit/jsx-no-bind
+              onChange={onFromValueChange}
               referenceDate={defaultFromDate}
               slotProps={{
                 textField: {
-                  variant: 'outlined',
                   className: classNames({ 'Mui-warning': hasWarning }),
-                  onBlur: onFromBlur,
                   error: hasError,
+                  onBlur: onFromBlur,
                   slotProps: {
                     inputLabel: {
                       ...TestIdUtil.createAttributes('DateRangePicker-from-input'),
                       required,
                     },
                   },
+                  variant: 'outlined',
                 },
               }}
               value={fromValue ?? null}
               views={views as MuiDatePickerProps['views']}
-              minDate={minDate}
-              // eslint-disable-next-line react/jsx-no-bind
-              onChange={onFromValueChange}
             />
             <MuiDatePicker
-              disableFuture
               disabled={disabled || loading}
+              disableFuture
               inputRef={toInputRef}
               label={t`To`}
               loading={loading}
               maxDate={maxDate}
+              minDate={fromValue ? new Date(Math.max.apply(null, [minDate, fromValue] as unknown as number[])) : minDate}
+              // eslint-disable-next-line @eslint-react/kit/jsx-no-bind
+              onChange={onToValueChange}
               referenceDate={maxDate}
               slotProps={{
                 textField: {
-                  variant: 'outlined',
                   className: classNames({ 'Mui-warning': hasWarning }),
-                  onBlur: onToBlur,
                   error: hasError,
+                  onBlur: onToBlur,
                   slotProps: {
                     inputLabel: {
                       ...TestIdUtil.createAttributes('DateRangePicker-to-input'),
                       required,
                     },
                   },
+                  variant: 'outlined',
                 },
               }}
               value={toValue ?? null}
               views={views as MuiDatePickerProps['views']}
-              minDate={fromValue ? new Date(Math.max.apply(null, [minDate, fromValue] as unknown as number[])) : minDate}
-              // eslint-disable-next-line react/jsx-no-bind
-              onChange={onToValueChange}
             />
           </Box>
         </LocalizationProvider>
         { !!loading && <FormFieldLoadingIndicator />}
         <FormHelperText sx={{ ml: 0 }}>
           <FormFieldHelperText
-            noIndent
             errorMessage={errorMessage}
+            noIndent
             warningMessage={warningMessage}
           />
         </FormHelperText>

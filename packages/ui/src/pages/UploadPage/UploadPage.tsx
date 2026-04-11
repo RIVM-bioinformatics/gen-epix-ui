@@ -25,16 +25,16 @@ export const UploadPage = () => {
 
   return (
     <PageContainer
-      showBreadcrumbs
+      contentHeader={t`Upload`}
       fullHeight
       fullWidth
-      contentHeader={t`Upload`}
+      showBreadcrumbs
       testIdAttributes={TestIdUtil.createAttributes('UploadPage')}
       title={t`Upload`}
     >
-      <EpiUploadStoreContext.Provider value={epiUploadStore}>
+      <EpiUploadStoreContext value={epiUploadStore}>
         <EpiUpload />
-      </EpiUploadStoreContext.Provider>
+      </EpiUploadStoreContext>
     </PageContainer>
   );
 };

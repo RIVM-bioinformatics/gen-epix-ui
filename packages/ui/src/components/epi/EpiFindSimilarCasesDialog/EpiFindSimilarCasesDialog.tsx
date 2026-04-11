@@ -1,11 +1,11 @@
 import {
+  type ReactElement,
+  use,
   useCallback,
-  useContext,
   useEffect,
   useId,
   useMemo,
   useState,
-  type ReactElement,
 } from 'react';
 import { useTranslation } from 'react-i18next';
 import {
@@ -28,9 +28,9 @@ import { useStore } from 'zustand';
 import { produce } from 'immer';
 
 import {
-  type WithDialogRenderProps,
-  type WithDialogRefMethods,
   withDialog,
+  type WithDialogRefMethods,
+  type WithDialogRenderProps,
 } from '../../../hoc/withDialog';
 import { TestIdUtil } from '../../../utils/TestIdUtil';
 import type { DialogAction } from '../../ui/Dialog';
@@ -40,15 +40,15 @@ import { useQueryMemo } from '../../../hooks/useQueryMemo';
 import { QUERY_KEY } from '../../../models/query';
 import { QueryUtil } from '../../../utils/QueryUtil';
 import type {
-  FormFieldDefinition,
   AutoCompleteOption,
+  FormFieldDefinition,
 } from '../../../models/form';
 import { FORM_FIELD_DEFINITION_TYPE } from '../../../models/form';
 import { GenericForm } from '../../form/helpers/GenericForm';
 import type {
   Case,
-  CompleteCaseType,
   Col,
+  CompleteCaseType,
 } from '../../../api';
 import { CaseApi } from '../../../api';
 import { ResponseHandler } from '../../ui/ResponseHandler';
@@ -57,8 +57,8 @@ import { SchemaUtil } from '../../../utils/SchemaUtil';
 
 export interface EpiFindSimilarCasesDialogOpenProps {
   allRows: Case[];
-  selectedRows: Case[];
   completeCaseType: CompleteCaseType;
+  selectedRows: Case[];
 }
 
 export interface EpiFindSimilarCasesDialogProps extends WithDialogRenderProps<EpiFindSimilarCasesDialogOpenProps> {
@@ -69,21 +69,21 @@ export type EpiFindSimilarCasesDialogRefMethods = WithDialogRefMethods<EpiFindSi
 
 
 type FormFields = {
-  treeColId: string;
   maxDistance: number;
+  treeColId: string;
 };
 
 export const EpiFindSimilarCasesDialog = withDialog<EpiFindSimilarCasesDialogProps, EpiFindSimilarCasesDialogOpenProps>((
   {
-    openProps,
     onActionsChange,
-    onTitleChange,
     onClose,
+    onTitleChange,
+    openProps,
   }: EpiFindSimilarCasesDialogProps,
 ): ReactElement => {
   const { t } = useTranslation();
   const formId = useId();
-  const epiDashboardStore = useContext(EpiDashboardStoreContext);
+  const epiDashboardStore = use(EpiDashboardStoreContext);
   const treeConfiguration = epiDashboardStore.getState().epiTreeWidgetData.treeConfiguration;
   const setFindSimilarCasesResults = useStore(epiDashboardStore, (state) => state.setFindSimilarCasesResults);
   const findSimilarCasesResults = useStore(epiDashboardStore, (state) => state.findSimilarCasesResults);
@@ -91,7 +91,6 @@ export const EpiFindSimilarCasesDialog = withDialog<EpiFindSimilarCasesDialogPro
   const [formData, setFormData] = useState<FormFields>(null);
 
   const schema = useMemo(() => object<FormFields>().shape({
-    treeColId: string().required(),
     maxDistance: SchemaUtil.number.required().positive().when('treeColId', ([treeColId], s) => {
       const currentTreeConfiguration = treeConfigurations.find(x => x.col.id === treeColId);
       if (!currentTreeConfiguration) {
@@ -100,6 +99,7 @@ export const EpiFindSimilarCasesDialog = withDialog<EpiFindSimilarCasesDialogPro
       const sWithIntegerCheck = s.integer(t`Max distance must be an integer`);
       return sWithIntegerCheck.max(currentTreeConfiguration.geneticDistanceProtocol.seqdb_max_stored_distance || ConfigManager.instance.config.epi.SEQDB_MAX_STORED_DISTANCE_FALLBACK);
     }),
+    treeColId: string().required(),
   }), [t, treeConfigurations]);
 
   const treeOptions = useMemo<AutoCompleteOption<string>[]>(() => {
@@ -117,13 +117,13 @@ export const EpiFindSimilarCasesDialog = withDialog<EpiFindSimilarCasesDialogPro
   }, [treeConfigurations]);
 
   const formMethods = useForm<FormFields>({
-    resolver: yupResolver(schema, undefined,{ raw: true }) as Resolver<FormFields>,
+    resolver: yupResolver(schema, undefined, { raw: true }) as Resolver<FormFields>,
     values: {
-      treeColId: treeConfiguration ? treeConfiguration.col.id : null,
       maxDistance: 0,
+      treeColId: treeConfiguration ? treeConfiguration.col.id : null,
     },
   });
-  const { handleSubmit, control } = formMethods;
+  const { control, handleSubmit } = formMethods;
 
   const formValues = useWatch({ control });
 
@@ -133,18 +133,18 @@ export const EpiFindSimilarCasesDialog = withDialog<EpiFindSimilarCasesDialogPro
     return [
       {
         definition: FORM_FIELD_DEFINITION_TYPE.AUTOCOMPLETE,
-        name: 'treeColId',
         label: t`Tree`,
+        name: 'treeColId',
         options: treeOptions,
       } as const satisfies FormFieldDefinition<FormFields>,
       {
         definition: FORM_FIELD_DEFINITION_TYPE.NUMBER,
-        name: 'maxDistance',
         label: t`Max distance`,
-        min: 0,
         max: currentTreeConfiguration?.geneticDistanceProtocol?.seqdb_max_stored_distance || ConfigManager.instance.config.epi.SEQDB_MAX_STORED_DISTANCE_FALLBACK,
-        step: 1,
+        min: 0,
+        name: 'maxDistance',
         showSlider: true,
+        step: 1,
       } as const satisfies FormFieldDefinition<FormFields>,
     ];
   }, [formValues.treeColId, t, treeConfigurations, treeOptions]);
@@ -166,7 +166,7 @@ export const EpiFindSimilarCasesDialog = withDialog<EpiFindSimilarCasesDialogPro
   }, []);
 
   const query = useQueryMemo({
-    queryKey: [QueryUtil.getGenericKey(QUERY_KEY.SIMILAR_CASES), JSON.stringify({ formData, rowIds: openProps.selectedRows.map(row => row.id) })],
+    enabled: !!formData,
     queryFn: async ({ signal }) => {
       const response = await CaseApi.instance.retrieveSimilarCases({
         case_ids: openProps.selectedRows.map(x => x.id),
@@ -176,7 +176,7 @@ export const EpiFindSimilarCasesDialog = withDialog<EpiFindSimilarCasesDialogPro
       }, { signal });
       return response.data;
     },
-    enabled: !!formData,
+    queryKey: [QueryUtil.getGenericKey(QUERY_KEY.SIMILAR_CASES), JSON.stringify({ formData, rowIds: openProps.selectedRows.map(row => row.id) })],
   });
 
   const similarCaseIdsNotInView = useMemo(() => {
@@ -195,15 +195,15 @@ export const EpiFindSimilarCasesDialog = withDialog<EpiFindSimilarCasesDialogPro
     return query.data.filter(x => allRowIds.includes(x));
   }, [query.data, openProps.allRows]);
 
-  const onAddToLineListButtonClick = useCallback(() => {
-    // eslint-disable-next-line @typescript-eslint/no-floating-promises
-    setFindSimilarCasesResults(produce(findSimilarCasesResults, draft => {
+  const onAddToLineListButtonClick = useCallback(async () => {
+
+    await setFindSimilarCasesResults(produce(findSimilarCasesResults, draft => {
       draft.push({
-        key: findSimilarCasesResults.length.toString(),
-        similarCaseIds: similarCaseIdsNotInView,
-        distance: formData?.maxDistance,
         colId: formData?.treeColId,
+        distance: formData?.maxDistance,
+        key: findSimilarCasesResults.length.toString(),
         originalCaseIds: openProps.allRows.map(x => x.id),
+        similarCaseIds: similarCaseIdsNotInView,
       });
       return draft;
     }));
@@ -216,25 +216,25 @@ export const EpiFindSimilarCasesDialog = withDialog<EpiFindSimilarCasesDialogPro
     actions.push({
       ...TestIdUtil.createAttributes('EpiFindSimilarCasesDialog-closeButton'),
       color: 'primary',
-      variant: 'outlined',
       label: t`Close`,
       onClick: onClose,
+      variant: 'outlined',
     });
     actions.push({
       ...TestIdUtil.createAttributes('EpiFindSimilarCasesDialog-findSimilarCasesButton'),
       color: 'secondary',
-      variant: 'contained',
       form: formId,
-      type: 'submit',
       label: t`Search`,
+      type: 'submit',
+      variant: 'contained',
     });
     if (similarCaseIdsNotInView.length > 0 && !isDirty) {
       actions.push({
         ...TestIdUtil.createAttributes('EpiFindSimilarCasesDialog-addSimilarCasesButton'),
         color: 'secondary',
-        variant: 'contained',
         label: t('Add {{count}} similar cases to line list', { count: similarCaseIdsNotInView.length }),
         onClick: onAddToLineListButtonClick,
+        variant: 'contained',
       });
     }
     onActionsChange(actions);
@@ -255,8 +255,8 @@ export const EpiFindSimilarCasesDialog = withDialog<EpiFindSimilarCasesDialogPro
         formFieldDefinitions={formFieldDefinitions}
         formId={formId}
         formMethods={formMethods}
-        schema={schema}
         onSubmit={handleSubmit(onFormSubmit)}
+        schema={schema}
       />
       <ResponseHandler
         inlineSpinner
@@ -307,8 +307,8 @@ export const EpiFindSimilarCasesDialog = withDialog<EpiFindSimilarCasesDialogPro
     </Box>
   );
 }, {
-  testId: 'EpiFindSimilarCasesDialog',
-  maxWidth: 'md',
-  fullWidth: true,
   defaultTitle: '',
+  fullWidth: true,
+  maxWidth: 'md',
+  testId: 'EpiFindSimilarCasesDialog',
 });

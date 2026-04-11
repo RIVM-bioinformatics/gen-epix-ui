@@ -10,15 +10,15 @@ import {
 import { WindowManager } from '../../classes/managers/WindowManager';
 
 
+type Dimensions = { height: number; width: number };
+
 type Result = {
   dimensions: Dimensions;
   isResizing: boolean;
 };
 
-type Dimensions = { width: number; height: number };
-
 export const useDimensions = (ref: RefObject<HTMLElement>, onResizeCallback?: () => void) => {
-  const timeoutHandle = useRef<number>(null);
+  const timeoutHandleRef = useRef<ReturnType<typeof WindowManager.instance.window.setTimeout>>(null);
   const [isResizing, setIsResizing] = useState(false);
   const dimensionsRef = useRef<Dimensions>(null);
 
@@ -31,8 +31,8 @@ export const useDimensions = (ref: RefObject<HTMLElement>, onResizeCallback?: ()
 
     const observer = new ResizeObserver((mutations) => {
       const dimensions: Dimensions = {
-        width: mutations?.[0].contentRect.width,
         height: mutations?.[0].contentRect.height,
+        width: mutations?.[0].contentRect.width,
       };
 
       if (dimensionsRef.current?.width === dimensions.width && dimensionsRef.current?.height === dimensions.height) {
@@ -44,10 +44,10 @@ export const useDimensions = (ref: RefObject<HTMLElement>, onResizeCallback?: ()
       if (!isResizing) {
         setIsResizing(true);
       }
-      if (timeoutHandle.current) {
-        clearTimeout(timeoutHandle.current);
+      if (timeoutHandleRef.current) {
+        clearTimeout(timeoutHandleRef.current);
       }
-      timeoutHandle.current = WindowManager.instance.window.setTimeout(() => {
+      timeoutHandleRef.current = WindowManager.instance.window.setTimeout(() => {
         setIsResizing(false);
         if (onResizeCallback) {
           onResizeCallback();
@@ -71,8 +71,8 @@ export const useDimensions = (ref: RefObject<HTMLElement>, onResizeCallback?: ()
     () => {
       return JSON.stringify({
         dimensions: {
-          width: dimensionsRef?.current?.width ?? 0,
           height: dimensionsRef?.current?.height ?? 0,
+          width: dimensionsRef?.current?.width ?? 0,
         },
         isResizing,
       });

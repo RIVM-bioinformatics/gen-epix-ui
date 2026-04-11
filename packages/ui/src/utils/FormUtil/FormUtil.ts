@@ -1,11 +1,11 @@
 import type {
-  FieldValues,
-  FieldErrorsImpl,
   DeepRequired,
+  FieldErrorsImpl,
+  FieldValues,
 } from 'react-hook-form';
 import {
-  parseISO,
   isValid,
+  parseISO,
 } from 'date-fns';
 import type { TFunction } from 'i18next';
 
@@ -13,15 +13,10 @@ import type { FormFieldDefinition } from '../../models/form';
 import { FORM_FIELD_DEFINITION_TYPE } from '../../models/form';
 
 export class FormUtil {
-  public static getFieldErrorMessage<TFormFields extends FieldValues>(fieldErrors: Partial<FieldErrorsImpl<DeepRequired<TFormFields>>>, fieldName: string): string {
-    const fieldError = fieldErrors?.[fieldName];
-    return fieldError?.message as string || null;
-  }
-
   public static createBooleanOptions(t: TFunction<'translation', undefined>): { label: string; value: boolean }[] {
     return [
-      { value: true, label: t`Yes` }, // t`Yes`
-      { value: false, label: t`No` }, // t`No`
+      { label: t`Yes`, value: true }, // t`Yes`
+      { label: t`No`, value: false }, // t`No`
     ];
   }
 
@@ -29,17 +24,6 @@ export class FormUtil {
     const itemValues: { [key: string]: unknown } = {};
     formFieldDefinitions.forEach(formFieldDefinition => {
       switch (formFieldDefinition.definition) {
-        case FORM_FIELD_DEFINITION_TYPE.TEXTFIELD:
-        case FORM_FIELD_DEFINITION_TYPE.RICH_TEXT:
-        case FORM_FIELD_DEFINITION_TYPE.BOOLEAN:
-          itemValues[formFieldDefinition.name] = item?.[formFieldDefinition.name as unknown as keyof typeof item] ?? '';
-          break;
-        case FORM_FIELD_DEFINITION_TYPE.NUMBER:
-          itemValues[formFieldDefinition.name] = item?.[formFieldDefinition.name as unknown as keyof typeof item] ?? null;
-          break;
-        case FORM_FIELD_DEFINITION_TYPE.TRANSFER_LIST:
-          itemValues[formFieldDefinition.name] = item?.[formFieldDefinition.name as unknown as keyof typeof item] ?? [] as TFormFields[keyof TFormFields];
-          break;
         case FORM_FIELD_DEFINITION_TYPE.AUTOCOMPLETE:
         case FORM_FIELD_DEFINITION_TYPE.SELECT:
           if (formFieldDefinition.multiple) {
@@ -47,6 +31,11 @@ export class FormUtil {
           } else {
             itemValues[formFieldDefinition.name] = item?.[formFieldDefinition.name as unknown as keyof typeof item] ?? null;
           }
+          break;
+        case FORM_FIELD_DEFINITION_TYPE.BOOLEAN:
+        case FORM_FIELD_DEFINITION_TYPE.RICH_TEXT:
+        case FORM_FIELD_DEFINITION_TYPE.TEXTFIELD:
+          itemValues[formFieldDefinition.name] = item?.[formFieldDefinition.name as unknown as keyof typeof item] ?? '';
           break;
         case FORM_FIELD_DEFINITION_TYPE.DATE:
           try {
@@ -56,10 +45,21 @@ export class FormUtil {
             itemValues[formFieldDefinition.name] = null;
           }
           break;
+        case FORM_FIELD_DEFINITION_TYPE.NUMBER:
+          itemValues[formFieldDefinition.name] = item?.[formFieldDefinition.name as unknown as keyof typeof item] ?? null;
+          break;
+        case FORM_FIELD_DEFINITION_TYPE.TRANSFER_LIST:
+          itemValues[formFieldDefinition.name] = item?.[formFieldDefinition.name as unknown as keyof typeof item] ?? [] as TFormFields[keyof TFormFields];
+          break;
         default:
           break;
       }
     });
     return itemValues as unknown as TFormFields;
+  }
+
+  public static getFieldErrorMessage<TFormFields extends FieldValues>(fieldErrors: Partial<FieldErrorsImpl<DeepRequired<TFormFields>>>, fieldName: string): string {
+    const fieldError = fieldErrors?.[fieldName];
+    return fieldError?.message as string || null;
   }
 }

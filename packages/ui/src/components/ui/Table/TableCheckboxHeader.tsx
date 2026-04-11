@@ -3,8 +3,8 @@ import { Checkbox } from '@mui/material';
 import { useTranslation } from 'react-i18next';
 import uniq from 'lodash/uniq';
 import {
-  useCallback,
   type ChangeEvent,
+  useCallback,
 } from 'react';
 import { useStore } from 'zustand';
 import { useShallow } from 'zustand/shallow';
@@ -55,18 +55,18 @@ export const TableCheckboxHeader = <TRowData, >({ tableColumnParams }: TableChec
   return (
     <Checkbox
       checked={isSomeChecked}
+      checkedIcon={isAllChecked ? undefined : <IndeterminateCheckBoxIcon />}
+      name={'select-all'}
+      onChange={onChange}
       slotProps={{
         input: {
           'aria-label': t`Select all`,
         },
       }}
-      checkedIcon={isAllChecked ? undefined : <IndeterminateCheckBoxIcon />}
-      name={'select-all'}
       sx={{
-        padding: 0,
         marginTop: '-2px',
+        padding: 0,
       }}
-      onChange={onChange}
     />
   );
 };

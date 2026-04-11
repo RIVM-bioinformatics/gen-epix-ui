@@ -15,7 +15,6 @@ import {
   useEffect,
 } from 'react';
 import { useStore } from 'zustand';
-import noop from 'lodash/noop';
 import { useShallow } from 'zustand/shallow';
 
 import type { EpiDashboardTreeSettings } from '../../../stores/userProfileStore';
@@ -53,11 +52,15 @@ export const EpiDashboardTreeSettingsForm = ({ onReset }: EpiDashboardTreeSettin
     setEpiDashboardTreeSettings(formValues as EpiDashboardTreeSettings);
   }, [formValues, setEpiDashboardTreeSettings]);
 
+  const onSubmit = useCallback(() => {
+    // No submit action needed since changes are applied immediately
+  }, []);
+
   return (
     <FormProvider {...formMethods}>
       <form
         autoComplete={'off'}
-        onSubmit={noop}
+        onSubmit={onSubmit}
       >
         <Box
           sx={{
@@ -89,9 +92,9 @@ export const EpiDashboardTreeSettingsForm = ({ onReset }: EpiDashboardTreeSettin
         >
           <Button
             color={'primary'}
+            onClick={onResetButtonClick}
             startIcon={<RestartAltIcon />}
             variant={'outlined'}
-            onClick={onResetButtonClick}
           >
             {t`Reset tree settings`}
           </Button>

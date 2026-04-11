@@ -11,51 +11,51 @@ import type { EPI_ZONE } from '../../../models/epi';
 import { EventBusAbstract } from '../../abstracts/EventBusAbstract';
 import { WindowManager } from '../WindowManager';
 
-export type DownloadConfigItem = {
-  label: string;
-  callback: () => void;
+export type DownloadConfig = {
   disabled?: boolean;
+  items: DownloadConfigItems[];
+  zone: EPI_ZONE;
+  zoneLabel: string;
 };
 
-export type DownloadConfigSection = {
-  label: string;
-  items: DownloadConfigItem[];
+export type DownloadConfigItem = {
+  callback: () => void;
   disabled?: boolean;
+  label: string;
 };
 
 export type DownloadConfigItems = DownloadConfigItem | DownloadConfigSection;
 
-export type DownloadConfig = {
-  zone: EPI_ZONE;
+export type DownloadConfigSection = {
   disabled?: boolean;
-  items: DownloadConfigItems[];
-  zoneLabel: string;
+  items: DownloadConfigItem[];
+  label: string;
 };
 
 type EpiEvent = {
-  openContactDetailsDialog: EpiContactDetailsDialogOpenProps;
-  openSequenceDownloadDialog: EpiSequenceDownloadDialogOpenProps;
-  openCaseInfoDialog: EpiCaseInfoDialogOpenProps;
-  openCreateEventDialog: EpiCreateEventDialogOpenProps;
-  openFindSimilarCasesDialog: EpiFindSimilarCasesDialogOpenProps;
-  openRemoveCasesFromEventDialog: EpiRemoveCasesFromEventDialogOpenProps;
+  onDownloadOptionsChanged: DownloadConfig;
+  onDownloadOptionsRequested: void;
+  onEventCreated: void;
   openAddCasesToEventDialog: EpiAddCasesToEventDialogOpenProps;
   openBulkEditCaseDialog: EpiBulkEditCaseDialogOpenProps;
-  openRemoveFindSimilarCasesResultDialog: EpiRemoveFindSimilarCasesResultDialogOpenProps;
+  openCaseInfoDialog: EpiCaseInfoDialogOpenProps;
+  openContactDetailsDialog: EpiContactDetailsDialogOpenProps;
+  openCreateEventDialog: EpiCreateEventDialogOpenProps;
   openFiltersMenu: void;
-  onEventCreated: void;
-  onDownloadOptionsRequested: void;
-  onDownloadOptionsChanged: DownloadConfig;
+  openFindSimilarCasesDialog: EpiFindSimilarCasesDialogOpenProps;
+  openRemoveCasesFromEventDialog: EpiRemoveCasesFromEventDialogOpenProps;
+  openRemoveFindSimilarCasesResultDialog: EpiRemoveFindSimilarCasesResultDialogOpenProps;
+  openSequenceDownloadDialog: EpiSequenceDownloadDialogOpenProps;
 };
 
 export class EpiEventBusManager extends EventBusAbstract<EpiEvent> {
-  private constructor() {
-    super();
-  }
-
   public static get instance(): EpiEventBusManager {
     WindowManager.instance.window.managers.epiEventBus = WindowManager.instance.window.managers.epiEventBus || new EpiEventBusManager();
     return WindowManager.instance.window.managers.epiEventBus;
+  }
+
+  private constructor() {
+    super();
   }
 
 }

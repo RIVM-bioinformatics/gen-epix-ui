@@ -14,11 +14,11 @@ import { useQueryMemo } from '../../hooks/useQueryMemo';
 
 export const useSequencingProtocolsQuery = (): UseQueryResult<Protocol[]> => {
   return useQueryMemo({
-    queryKey: QueryUtil.getGenericKey(QUERY_KEY.SEQUENCING_PROTOCOLS),
     queryFn: async ({ signal }) => {
       const response = await CaseApi.instance.retrieveSequencingProtocols({ signal });
       return response.data;
     },
+    queryKey: QueryUtil.getGenericKey(QUERY_KEY.SEQUENCING_PROTOCOLS),
   });
 };
 

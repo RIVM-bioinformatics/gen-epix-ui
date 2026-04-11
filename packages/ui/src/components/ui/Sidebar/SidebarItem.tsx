@@ -7,29 +7,29 @@ import {
   useTheme,
 } from '@mui/material';
 import {
-  useEffect,
-  useState,
   type PropsWithChildren,
   type ReactElement,
+  useEffect,
+  useState,
 } from 'react';
 
 import { ConfigManager } from '../../../classes/managers/ConfigManager';
 import type { PropsWithTestIdAttributes } from '../../../models/testId';
 import { TestIdUtil } from '../../../utils/TestIdUtil';
 
-export type SidebarItemSharedProps = {
-  readonly open: boolean;
-  readonly onClose: () => void;
-};
-
 export type SidebarItemProps = PropsWithTestIdAttributes<PropsWithChildren<{
-  readonly width: number;
-  readonly title: string;
-  readonly closeIconTooltipText: string;
   readonly closeIcon: ReactElement;
+  readonly closeIconTooltipText: string;
+  readonly title: string;
+  readonly width: number;
 } & SidebarItemSharedProps>>;
 
-export const SidebarItem = ({ open, onClose, children, width, title, closeIconTooltipText, closeIcon, testIdAttributes }: SidebarItemProps) => {
+export type SidebarItemSharedProps = {
+  readonly onClose: () => void;
+  readonly open: boolean;
+};
+
+export const SidebarItem = ({ children, closeIcon, closeIconTooltipText, onClose, open, testIdAttributes, title, width }: SidebarItemProps) => {
   const theme = useTheme();
   const [mainContentDOMRect, setMainContentDOMRect] = useState<DOMRect>(null);
 
@@ -50,34 +50,34 @@ export const SidebarItem = ({ open, onClose, children, width, title, closeIconTo
     };
   }, []);
 
-  const { top, height } = mainContentDOMRect ?? {};
+  const { height, top } = mainContentDOMRect ?? {};
 
   return (
     <Drawer
+      anchor={'left'}
+      onClose={onClose}
+      open={open}
       slotProps={{
-        root: {
-          ...TestIdUtil.createAttributes('SidebarItem', testIdAttributes),
-          sx: {
-            top,
-            height,
-          },
-        },
         backdrop: {
           sx: {
-            top,
             height,
+            top,
           },
         },
         paper: {
           sx: {
-            top,
             height,
+            top,
+          },
+        },
+        root: {
+          ...TestIdUtil.createAttributes('SidebarItem', testIdAttributes),
+          sx: {
+            height,
+            top,
           },
         },
       }}
-      anchor={'left'}
-      open={open}
-      onClose={onClose}
     >
       {!open && (
         <Box
@@ -90,13 +90,13 @@ export const SidebarItem = ({ open, onClose, children, width, title, closeIconTo
         <>
           <Box
             sx={{
-              display: 'flex',
-              justifyContent: 'space-between',
               alignItems: 'center',
-              height: theme.spacing(6),
-              width: theme.spacing(width),
-              maxWidth: '100vw',
               background: theme.palette.grey[100],
+              display: 'flex',
+              height: theme.spacing(6),
+              justifyContent: 'space-between',
+              maxWidth: '100vw',
+              width: theme.spacing(width),
             }}
           >
             <Typography
@@ -126,9 +126,9 @@ export const SidebarItem = ({ open, onClose, children, width, title, closeIconTo
           >
             <Box
               sx={{
+                height: `calc(100% - ${theme.spacing(6)})`,
                 position: 'absolute',
                 top: theme.spacing(6),
-                height: `calc(100% - ${theme.spacing(6)})`,
                 width: theme.spacing(width - 1),
               }}
             >

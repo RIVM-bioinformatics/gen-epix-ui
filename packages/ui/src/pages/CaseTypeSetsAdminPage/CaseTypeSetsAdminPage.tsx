@@ -11,8 +11,8 @@ import {
 import omit from 'lodash/omit';
 
 import type {
-  CaseTypeSet,
   ApiPermission,
+  CaseTypeSet,
 } from '../../api';
 import {
   CaseApi,
@@ -33,11 +33,11 @@ import { CrudPage } from '../CrudPage';
 import type { OmitWithMetaData } from '../../models/data';
 import { SchemaUtil } from '../../utils/SchemaUtil';
 
+type FormFields = OmitWithMetaData<TableData, 'case_type_set_category'>;
+
 interface TableData extends CaseTypeSet {
   caseTypeIds?: string[];
 }
-
-type FormFields = OmitWithMetaData<TableData, 'case_type_set_category'>;
 
 export const CaseTypeSetsAdminPage = () => {
   const { t } = useTranslation();
@@ -83,11 +83,11 @@ export const CaseTypeSetsAdminPage = () => {
 
   const schema = useMemo(() => {
     return object<FormFields>().shape({
-      name: SchemaUtil.name,
-      rank: SchemaUtil.rank,
       case_type_set_category_id: string().uuid4().required(),
       caseTypeIds: array(),
       description: SchemaUtil.description,
+      name: SchemaUtil.name,
+      rank: SchemaUtil.rank,
     });
   }, []);
 
@@ -95,34 +95,34 @@ export const CaseTypeSetsAdminPage = () => {
     return [
       {
         definition: FORM_FIELD_DEFINITION_TYPE.AUTOCOMPLETE,
-        name: 'case_type_set_category_id',
         label: t`Category`,
-        options: caseTypeSetCategoryOptionsQuery.options,
         loading: caseTypeSetCategoryOptionsQuery.isLoading,
+        name: 'case_type_set_category_id',
+        options: caseTypeSetCategoryOptionsQuery.options,
       } as const satisfies FormFieldDefinition<FormFields>,
       {
         definition: FORM_FIELD_DEFINITION_TYPE.TEXTFIELD,
-        name: 'name',
         label: t`Name`,
+        name: 'name',
       } as const satisfies FormFieldDefinition<FormFields>,
       {
         definition: FORM_FIELD_DEFINITION_TYPE.TEXTFIELD,
-        name: 'rank',
         label: t`Rank`,
+        name: 'rank',
       } as const satisfies FormFieldDefinition<FormFields>,
       {
         definition: FORM_FIELD_DEFINITION_TYPE.TEXTFIELD,
-        name: 'description',
         label: t`Description`,
         multiline: true,
+        name: 'description',
         rows: 5,
       } as const satisfies FormFieldDefinition<FormFields>,
       {
         definition: FORM_FIELD_DEFINITION_TYPE.TRANSFER_LIST,
-        name: 'caseTypeIds',
         label: t`Case types`,
-        options: caseTypeOptionsQuery.options,
         loading: caseTypeOptionsQuery.isLoading,
+        name: 'caseTypeIds',
+        options: caseTypeOptionsQuery.options,
       } as const satisfies FormFieldDefinition<FormFields>,
     ] as const;
   }, [caseTypeOptionsQuery.isLoading, caseTypeOptionsQuery.options, caseTypeSetCategoryOptionsQuery.isLoading, caseTypeSetCategoryOptionsQuery.options, t]);
@@ -133,14 +133,14 @@ export const CaseTypeSetsAdminPage = () => {
       TableUtil.createTextColumn<TableData>({ id: 'name', name: t`Name` }),
       TableUtil.createNumberColumn<TableData>({ id: 'rank', name: t`Rank` }),
       {
-        id: 'caseTypeCount',
-        type: 'number',
-        headerName: t`Case type count`,
-        valueGetter: (item) => item.row.caseTypeIds.length,
         displayValueGetter: (item) => `${item.row.caseTypeIds.length} / ${caseTypeOptionsQuery.options.length}`,
-        widthFlex: 0.5,
-        textAlign: 'right',
+        headerName: t`Case type count`,
+        id: 'caseTypeCount',
         isInitiallyVisible: true,
+        textAlign: 'right',
+        type: 'number',
+        valueGetter: (item) => item.row.caseTypeIds.length,
+        widthFlex: 0.5,
       },
     ];
   }, [caseTypeOptionsQuery.options.length, caseTypeSetCategoryOptionsQuery.options, t]);
@@ -177,9 +177,9 @@ export const CaseTypeSetsAdminPage = () => {
     <CrudPage<FormFields, CaseTypeSet, TableData>
       associationQueryKeys={associationQueryKeys}
       convertToTableData={convertToTableData}
+      createItemDialogTitle={t`Create new case type set`}
       createOne={createOne}
       crudCommandType={CommandName.CaseTypeSetCrudCommand}
-      createItemDialogTitle={t`Create new case type set`}
       defaultSortByField={'name'}
       defaultSortDirection={'asc'}
       deleteOne={deleteOne}

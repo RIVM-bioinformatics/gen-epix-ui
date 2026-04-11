@@ -73,9 +73,9 @@ export class OutageUtil {
     });
 
     return {
-      visibleOutages,
       activeOutages,
       soonActiveOutages,
+      visibleOutages,
     };
   }
 }

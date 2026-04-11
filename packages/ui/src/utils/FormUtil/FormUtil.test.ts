@@ -1,11 +1,11 @@
 import {
   describe,
-  it,
   expect,
+  it,
 } from 'vitest';
 import type {
-  FieldErrorsImpl,
   DeepRequired,
+  FieldErrorsImpl,
 } from 'react-hook-form';
 
 import { FormUtil } from './FormUtil';

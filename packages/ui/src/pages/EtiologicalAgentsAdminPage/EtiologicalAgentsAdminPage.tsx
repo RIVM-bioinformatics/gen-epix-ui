@@ -10,8 +10,8 @@ import {
 
 import type { EtiologicalAgent } from '../../api';
 import {
-  OntologyApi,
   CommandName,
+  OntologyApi,
 } from '../../api';
 import type { FormFieldDefinition } from '../../models/form';
 import { FORM_FIELD_DEFINITION_TYPE } from '../../models/form';
@@ -59,13 +59,13 @@ export const EtiologicalAgentsAdminPage = () => {
     return [
       {
         definition: FORM_FIELD_DEFINITION_TYPE.TEXTFIELD,
-        name: 'name',
         label: t`Name`,
+        name: 'name',
       } as const satisfies FormFieldDefinition<FormFields>,
       {
         definition: FORM_FIELD_DEFINITION_TYPE.TEXTFIELD,
-        name: 'type',
         label: t`Type`,
+        name: 'type',
       } as const satisfies FormFieldDefinition<FormFields>,
     ] as const;
   }, [t]);
@@ -78,9 +78,9 @@ export const EtiologicalAgentsAdminPage = () => {
 
   return (
     <CrudPage<FormFields, EtiologicalAgent>
+      createItemDialogTitle={t`Create new etiological agent`}
       createOne={createOne}
       crudCommandType={CommandName.EtiologicalAgentCrudCommand}
-      createItemDialogTitle={t`Create new etiological agent`}
       defaultSortByField={'name'}
       defaultSortDirection={'asc'}
       deleteOne={deleteOne}

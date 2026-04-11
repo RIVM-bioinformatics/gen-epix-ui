@@ -11,14 +11,14 @@ export const caseTypeSetCategoryPurposePresentationValues: Record<CaseTypeSetCat
 
 export const useCaseTypeSetCategoryPurposeOptionsQuery = (): UseOptions<string> => {
   return useMemo(() => {
-    const options: OptionBase<string>[] = Object.entries(caseTypeSetCategoryPurposePresentationValues).map(([value, label]) => ({ value, label }));
+    const options: OptionBase<string>[] = Object.entries(caseTypeSetCategoryPurposePresentationValues).map(([value, label]) => ({ label, value }));
     return {
-      isLoading: false,
+      error: null,
       isEnabled: true,
       isFetching: false,
+      isLoading: false,
       isPending: false,
       options,
-      error: null,
     } as UseOptions<string>;
   }, []);
 };

@@ -8,7 +8,6 @@ import { useQueryMemo } from '../../hooks/useQueryMemo';
 
 export const useCaseRightsQuery = (caseIds: string[], caseTypeId: string): UseQueryResult<CaseRights[]> => {
   return useQueryMemo({
-    queryKey: QueryUtil.getGenericKey(QUERY_KEY.CASE_RIGHTS, caseIds),
     queryFn: async ({ signal }) => {
       const response = await CaseApi.instance.retrieveCaseRights({
         case_ids: caseIds,
@@ -16,6 +15,7 @@ export const useCaseRightsQuery = (caseIds: string[], caseTypeId: string): UseQu
       }, { signal });
       return response.data;
     },
+    queryKey: QueryUtil.getGenericKey(QUERY_KEY.CASE_RIGHTS, caseIds),
   });
 
 };

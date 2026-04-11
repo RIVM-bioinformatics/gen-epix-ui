@@ -1,6 +1,6 @@
 import {
+  use,
   useCallback,
-  useContext,
   useEffect,
   useId,
   useMemo,
@@ -56,7 +56,7 @@ const EpiUploadSelectFile = () => {
   const colsQuery = useColsQuery();
   const formId = useId();
 
-  const store = useContext(EpiUploadStoreContext);
+  const store = use(EpiUploadStoreContext);
 
   const caseTypeId = useStore(store, (state) => state.caseTypeId);
   const fileList = useStore(store, (state) => state.fileList);
@@ -83,13 +83,13 @@ const EpiUploadSelectFile = () => {
   }), [t]);
 
   const formMethods = useForm<FormFields>({
-    resolver: yupResolver(schema) as unknown as Resolver<FormFields>,
     defaultValues: {
       caseTypeId: null,
       createdInDataCollectionId: null,
       fileList: null,
       sheet: null,
     },
+    resolver: yupResolver(schema) as unknown as Resolver<FormFields>,
     values: {
       caseTypeId: store.getState().caseTypeId ?? null,
       createdInDataCollectionId: store.getState().createdInDataCollectionId ?? null,
@@ -97,7 +97,7 @@ const EpiUploadSelectFile = () => {
       sheet: store.getState().sheet ?? null,
     },
   });
-  const { handleSubmit, setValue, setError } = formMethods;
+  const { handleSubmit, setError, setValue } = formMethods;
 
   useEffect(() => {
     if (Array.isArray(colsQuery?.data)) {
@@ -111,14 +111,14 @@ const EpiUploadSelectFile = () => {
     }
   }, [dataCollectionOptionsQuery?.options, setDataCollectionOptions]);
 
-  const { isLoading: isCompleteCaseTypeLoading, error: completeCaseTypeError, data: completeCaseType } = useItemQuery({
+  const { data: completeCaseType, error: completeCaseTypeError, isLoading: isCompleteCaseTypeLoading } = useItemQuery({
     baseQueryKey: QUERY_KEY.COMPLETE_CASE_TYPES,
     itemId: caseTypeId,
     useQueryOptions: {
+      enabled: !!caseTypeId,
       queryFn: async ({ signal }) => {
         return (await CaseApi.instance.completeCaseTypesGetOne(caseTypeId, { signal })).data;
       },
-      enabled: !!caseTypeId,
     },
   });
 
@@ -147,10 +147,10 @@ const EpiUploadSelectFile = () => {
   const formFieldDefinitions = useMemo<FormFieldDefinition<FormFields>[]>(() => {
     const fields: FormFieldDefinition<FormFields>[] = [
         {
-          definition: FORM_FIELD_DEFINITION_TYPE.FILE,
-          name: 'fileList',
-          label: t`File`,
           accept: '.csv,.tsv,.txt,.xlsx',
+          definition: FORM_FIELD_DEFINITION_TYPE.FILE,
+          label: t`File`,
+          name: 'fileList',
           onChange: onFileListChange,
         } as const satisfies FormFieldDefinition<FormFields>,
     ];
@@ -158,31 +158,31 @@ const EpiUploadSelectFile = () => {
     if (EpiUploadUtil.isXlsxFile(fileName)) {
       fields.push({
         definition: FORM_FIELD_DEFINITION_TYPE.SELECT,
-        name: 'sheet',
         label: t`Sheet`,
-        options: sheetOptions,
+        name: 'sheet',
         onChange: onSheetChange,
+        options: sheetOptions,
       } as const satisfies FormFieldDefinition<FormFields>);
     }
 
     fields.push(...[
         {
           definition: FORM_FIELD_DEFINITION_TYPE.AUTOCOMPLETE,
-          name: 'caseTypeId',
-          label: t`Case type`,
-          options: caseTypeOptionsQuery.options,
-          loading: caseTypeOptionsQuery.isLoading,
           disabled: !fileList,
+          label: t`Case type`,
+          loading: caseTypeOptionsQuery.isLoading,
+          name: 'caseTypeId',
           onChange: onCaseTypeIdChange,
+          options: caseTypeOptionsQuery.options,
         } as const satisfies FormFieldDefinition<FormFields>,
         {
           definition: FORM_FIELD_DEFINITION_TYPE.SELECT,
-          name: 'createdInDataCollectionId',
-          label: t`Create in data collection`,
-          options: createdInDataCollectionOptions,
-          loading: dataCollectionOptionsQuery.isLoading || isCompleteCaseTypeLoading,
           disabled: !fileList || !caseTypeId,
+          label: t`Create in data collection`,
+          loading: dataCollectionOptionsQuery.isLoading || isCompleteCaseTypeLoading,
+          name: 'createdInDataCollectionId',
           onChange: onCreatedInDataCollectionIdChange,
+          options: createdInDataCollectionOptions,
         } as const satisfies FormFieldDefinition<FormFields>,
     ] as const);
 
@@ -191,7 +191,7 @@ const EpiUploadSelectFile = () => {
 
   useEffect(() => {
     if (fileParsingError) {
-      setError('fileList', { type: 'manual', message: fileParsingError });
+      setError('fileList', { message: fileParsingError, type: 'manual' });
     } else {
       setError('fileList', undefined);
     }
@@ -228,8 +228,8 @@ const EpiUploadSelectFile = () => {
   return (
 
     <ResponseHandler
-      inlineSpinner
       error={completeCaseTypeError}
+      inlineSpinner
       loadables={loadables}
     >
       <Container maxWidth={'lg'}>
@@ -268,8 +268,8 @@ const EpiUploadSelectFile = () => {
               formFieldDefinitions={formFieldDefinitions}
               formId={formId}
               formMethods={formMethods}
-              schema={schema}
               onSubmit={handleSubmit(onFormSubmit)}
+              schema={schema}
             />
             <EpiUploadNavigation
               onProceedButtonClick={onProceedButtonClick}

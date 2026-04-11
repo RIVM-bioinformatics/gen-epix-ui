@@ -11,9 +11,9 @@ import {
 import omit from 'lodash/omit';
 
 import type {
+  ApiPermission,
   ColSet,
   ColSetMember,
-  ApiPermission,
 } from '../../api';
 import {
   CaseApi,
@@ -33,9 +33,9 @@ import { CrudPage } from '../CrudPage';
 import type { OmitWithMetaData } from '../../models/data';
 import { SchemaUtil } from '../../utils/SchemaUtil';
 
-type TableData = ColSet & { colIds: string[] };
-
 type FormFields = OmitWithMetaData<TableData>;
+
+type TableData = { colIds: string[] } & ColSet;
 
 export const ColSetsAdminPage = () => {
   const { t } = useTranslation();
@@ -82,9 +82,9 @@ export const ColSetsAdminPage = () => {
 
   const schema = useMemo(() => {
     return object<FormFields>().shape({
-      name: SchemaUtil.name,
-      description: SchemaUtil.description,
       colIds: array().of(string().uuid4()).min(1).required(),
+      description: SchemaUtil.description,
+      name: SchemaUtil.name,
     });
   }, []);
 
@@ -92,22 +92,22 @@ export const ColSetsAdminPage = () => {
     return [
       {
         definition: FORM_FIELD_DEFINITION_TYPE.TEXTFIELD,
-        name: 'name',
         label: t`Name`,
+        name: 'name',
       } as const satisfies FormFieldDefinition<FormFields>,
       {
         definition: FORM_FIELD_DEFINITION_TYPE.TEXTFIELD,
-        name: 'description',
         label: t`Description`,
         multiline: true,
+        name: 'description',
         rows: 5,
       } as const satisfies FormFieldDefinition<FormFields>,
       {
         definition: FORM_FIELD_DEFINITION_TYPE.TRANSFER_LIST,
-        name: 'colIds',
         label: t`Columns`,
-        options: colOptionsQuery.options,
         loading: colOptionsQuery.isLoading,
+        name: 'colIds',
+        options: colOptionsQuery.options,
       } as const satisfies FormFieldDefinition<FormFields>,
     ] as const;
   }, [colOptionsQuery.isLoading, colOptionsQuery.options, t]);
@@ -116,14 +116,14 @@ export const ColSetsAdminPage = () => {
     return [
       TableUtil.createTextColumn<TableData>({ id: 'name', name: t`Name` }),
       {
-        type: 'number',
-        id: 'numCols',
-        textAlign: 'right',
-        valueGetter: (item) => item.row.colIds.length,
         displayValueGetter: (item) => `${item.row.colIds.length} / ${colOptionsQuery.options.length}`,
         headerName: t`Column count`,
-        widthFlex: 0.5,
+        id: 'numCols',
         isInitiallyVisible: true,
+        textAlign: 'right',
+        type: 'number',
+        valueGetter: (item) => item.row.colIds.length,
+        widthFlex: 0.5,
       },
     ];
   }, [colOptionsQuery.options.length, t]);

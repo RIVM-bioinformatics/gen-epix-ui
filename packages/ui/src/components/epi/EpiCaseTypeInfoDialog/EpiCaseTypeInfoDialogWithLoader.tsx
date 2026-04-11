@@ -2,8 +2,8 @@ import type { ReactElement } from 'react';
 
 import { EpiDashboardStoreLoader } from '../EpiDashboardStoreLoader';
 import type {
-  WithDialogRenderProps,
   WithDialogRefMethods,
+  WithDialogRenderProps,
 } from '../../../hoc/withDialog';
 import { withDialog } from '../../../hoc/withDialog';
 
@@ -21,8 +21,8 @@ export type EpiCaseTypeInfoDialogWithLoaderRefMethods = WithDialogRefMethods<Epi
 
 export const EpiCaseTypeInfoDialogWithLoader = withDialog<EpiCaseTypeInfoDialogWithLoaderProps, EpiCaseTypeInfoDialogWithLoaderOpenProps>((
   {
-    onTitleChange,
     onPermalinkChange,
+    onTitleChange,
     openProps,
   }: EpiCaseTypeInfoDialogWithLoaderProps,
 ): ReactElement => {
@@ -35,8 +35,8 @@ export const EpiCaseTypeInfoDialogWithLoader = withDialog<EpiCaseTypeInfoDialogW
     </EpiDashboardStoreLoader>
   );
 }, {
-  testId: 'EpiCaseTypeInfoDialogWithLoader',
-  titleVariant: 'h2',
   fullWidth: true,
   maxWidth: 'xl',
+  testId: 'EpiCaseTypeInfoDialogWithLoader',
+  titleVariant: 'h2',
 });

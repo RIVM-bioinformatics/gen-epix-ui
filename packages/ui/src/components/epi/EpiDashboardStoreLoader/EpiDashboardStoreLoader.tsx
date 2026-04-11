@@ -1,6 +1,7 @@
 import {
-  useState,
   type PropsWithChildren,
+  useCallback,
+  useState,
 } from 'react';
 
 import type {
@@ -16,12 +17,16 @@ export type EpiDashboardStoreLoaderProps = PropsWithChildren<{
   readonly caseTypeId: string;
 }>;
 
-export const EpiDashboardStoreLoader = ({ caseTypeId, caseSet, children }: EpiDashboardStoreLoaderProps) => {
+export const EpiDashboardStoreLoader = ({ caseSet, caseTypeId, children }: EpiDashboardStoreLoaderProps) => {
   const [completeCaseType, setCompleteCaseType] = useState<CompleteCaseType>(null);
+  const onCompleteCaseTypeLoaded = useCallback((c: CompleteCaseType) => {
+    setCompleteCaseType(c);
+  }, []);
+
   return (
     <EpiCompletCaseTypeLoader
       caseTypeId={caseTypeId}
-      onCompleteCaseTypeLoaded={setCompleteCaseType}
+      onCompleteCaseTypeLoaded={onCompleteCaseTypeLoaded}
     >
       <EpiDashboardStoreLoaderContent
         caseSet={caseSet}

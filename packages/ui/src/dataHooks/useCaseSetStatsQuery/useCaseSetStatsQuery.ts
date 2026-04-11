@@ -11,14 +11,14 @@ import { useQueryMemo } from '../../hooks/useQueryMemo';
 
 export const useCaseSetStatsQuery = (caseSetIds: string[]): UseQueryResult<CaseStats[]> => {
   return useQueryMemo({
-    queryKey: QueryUtil.getGenericKey(QUERY_KEY.CASE_SET_STATS, caseSetIds),
+    enabled: !!caseSetIds?.length,
     queryFn: async ({ signal }) => {
       const response = await CaseApi.instance.retrieveCaseSetStats({
         case_set_ids: caseSetIds,
       }, { signal });
       return response.data;
     },
-    enabled: !!caseSetIds?.length,
+    queryKey: QueryUtil.getGenericKey(QUERY_KEY.CASE_SET_STATS, caseSetIds),
   });
 };
 

@@ -49,7 +49,7 @@ export const TableHeaderFilter = <TRowData,>({ filter, onFilterChange }: TableHe
     values: initialValues,
   });
 
-  const { handleSubmit, formState: { isDirty } } = formMethods;
+  const { formState: { isDirty }, handleSubmit } = formMethods;
 
   const onFormSubmit = useCallback(async (formFields: FilterValues) => {
 
@@ -69,10 +69,10 @@ export const TableHeaderFilter = <TRowData,>({ filter, onFilterChange }: TableHe
         autoComplete={'off'}
         component={'form'}
         id={'Filters'}
+        onSubmit={handleSubmit(onFormSubmit)}
         sx={{
           minWidth: '400px',
         }}
-        onSubmit={handleSubmit(onFormSubmit)}
       >
         <TableFilter filter={filter} />
         <Box
@@ -84,8 +84,8 @@ export const TableHeaderFilter = <TRowData,>({ filter, onFilterChange }: TableHe
         >
           <Button
             disabled={filter.isInitialFilterValue()}
-            variant={'outlined'}
             onClick={onResetButtonClick}
+            variant={'outlined'}
           >
             {t`Remove filter`}
           </Button>

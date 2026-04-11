@@ -1,6 +1,6 @@
 import {
+  use,
   useCallback,
-  useContext,
   useMemo,
   useState,
 } from 'react';
@@ -12,8 +12,8 @@ import type { Resolver } from 'react-hook-form';
 import { useForm } from 'react-hook-form';
 import {
   Box,
-  Typography,
   type BoxProps,
+  Typography,
 } from '@mui/material';
 
 import type { Case } from '../../../api';
@@ -38,7 +38,7 @@ export type EpiCaseFormProps = {
 
 export const EpiCaseForm = ({ epiCase, formId, onFinish, onIsSavingChange, ...boxProps }: EpiCaseFormProps) => {
   const organizationsQuery = useOrganizationsQuery();
-  const epiDashboardStore = useContext(EpiDashboardStoreContext);
+  const epiDashboardStore = use(EpiDashboardStoreContext);
   const completeCaseType = useStore(epiDashboardStore, (state) => state.completeCaseType);
   const schema = useMemo(() => CaseUtil.createYupSchema(completeCaseType), [completeCaseType]);
   const formFieldDefinitions = useMemo(() => CaseUtil.createFormFieldDefinitions(completeCaseType, organizationsQuery), [completeCaseType, organizationsQuery]);
@@ -51,9 +51,9 @@ export const EpiCaseForm = ({ epiCase, formId, onFinish, onIsSavingChange, ...bo
     const perform = async () => {
       const queryKeys = QueryUtil.getQueryKeyDependencies([QUERY_KEY.CASES], true);
       const notificationKey = NotificationManager.instance.showNotification({
+        isLoading: true,
         message: t('Saving case data'),
         severity: 'info',
-        isLoading: true,
       });
       try {
         await QueryUtil.cancelQueries(queryKeys);
@@ -101,8 +101,8 @@ export const EpiCaseForm = ({ epiCase, formId, onFinish, onIsSavingChange, ...bo
             formFieldDefinitions={formFieldDefinitions}
             formId={formId}
             formMethods={formMethods}
-            schema={schema}
             onSubmit={handleSubmit(onFormSubmit)}
+            schema={schema}
           />
         )}
       </Box>

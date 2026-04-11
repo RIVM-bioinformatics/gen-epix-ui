@@ -1,6 +1,6 @@
 import {
-  Typography,
   Box,
+  Typography,
 } from '@mui/material';
 import { useTranslation } from 'react-i18next';
 
@@ -9,11 +9,11 @@ import type { Outage } from '../../../api';
 import { OutageSection } from './OutageSection';
 
 export type OutageListProps = {
-  readonly visibleOutages: Outage[];
   readonly activeOutages: Outage[];
   readonly soonActiveOutages: Outage[];
+  readonly visibleOutages: Outage[];
 };
-export const OutageList = ({ visibleOutages, activeOutages, soonActiveOutages }: OutageListProps) => {
+export const OutageList = ({ activeOutages, soonActiveOutages, visibleOutages }: OutageListProps) => {
   const { t } = useTranslation();
 
   return (

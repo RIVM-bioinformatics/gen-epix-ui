@@ -15,8 +15,8 @@ import type {
   DataCollectionSetMember,
 } from '../../api';
 import {
-  OrganizationApi,
   CommandName,
+  OrganizationApi,
 } from '../../api';
 import { useDataCollectionOptionsQuery } from '../../dataHooks/useDataCollectionsQuery';
 import { useDataCollectionSetMembersQuery } from '../../dataHooks/useDataCollectionSetMembersQuery';
@@ -30,9 +30,9 @@ import { TestIdUtil } from '../../utils/TestIdUtil';
 import type { OmitWithMetaData } from '../../models/data';
 import { SchemaUtil } from '../../utils/SchemaUtil';
 
-type TableData = DataCollectionSet & { dataCollectionIds: string[] };
-
 type FormFields = OmitWithMetaData<TableData>;
+
+type TableData = { dataCollectionIds: string[] } & DataCollectionSet;
 
 export const DataCollectionSetsAdminPage = () => {
   const { t } = useTranslation();
@@ -77,9 +77,9 @@ export const DataCollectionSetsAdminPage = () => {
 
   const schema = useMemo(() => {
     return object<FormFields>().shape({
-      name: SchemaUtil.name,
-      description: SchemaUtil.description,
       dataCollectionIds: array().of(string().uuid4()).min(1).required(),
+      description: SchemaUtil.description,
+      name: SchemaUtil.name,
     });
   }, []);
 
@@ -87,36 +87,36 @@ export const DataCollectionSetsAdminPage = () => {
     return [
       {
         definition: FORM_FIELD_DEFINITION_TYPE.TEXTFIELD,
-        name: 'name',
         label: t`Name`,
+        name: 'name',
       } as const satisfies FormFieldDefinition<FormFields>,
       {
         definition: FORM_FIELD_DEFINITION_TYPE.RICH_TEXT,
-        name: 'description',
         label: t`Description`,
+        name: 'description',
       } as const satisfies FormFieldDefinition<FormFields>,
       {
         definition: FORM_FIELD_DEFINITION_TYPE.TRANSFER_LIST,
-        name: 'dataCollectionIds',
         label: t`Columns`,
-        options: dataCollectionOptionsQuery.options,
         loading: dataCollectionOptionsQuery.isLoading,
+        name: 'dataCollectionIds',
+        options: dataCollectionOptionsQuery.options,
       } as const satisfies FormFieldDefinition<FormFields>,
     ] as const;
   }, [dataCollectionOptionsQuery.isLoading, dataCollectionOptionsQuery.options, t]);
 
   const tableColumns = useMemo((): TableColumn<TableData>[] => {
     return [
-      TableUtil.createTextColumn<TableData>({ id: 'name', name: t`Name`, advancedSort: true }),
+      TableUtil.createTextColumn<TableData>({ advancedSort: true, id: 'name', name: t`Name` }),
       {
-        type: 'number',
-        id: 'numDataCollections',
-        textAlign: 'right',
-        valueGetter: (item) => item.row.dataCollectionIds.length,
         displayValueGetter: (item) => `${item.row.dataCollectionIds.length} / ${dataCollectionOptionsQuery.options.length}`,
         headerName: t`Data collections`,
-        widthFlex: 0.5,
+        id: 'numDataCollections',
         isInitiallyVisible: true,
+        textAlign: 'right',
+        type: 'number',
+        valueGetter: (item) => item.row.dataCollectionIds.length,
+        widthFlex: 0.5,
       },
     ];
   }, [dataCollectionOptionsQuery.options.length, t]);
@@ -137,9 +137,9 @@ export const DataCollectionSetsAdminPage = () => {
   return (
     <CrudPage<FormFields, DataCollectionSet, TableData>
       convertToTableData={convertToTableData}
+      createItemDialogTitle={t`Create new data collection set`}
       createOne={createOne}
       crudCommandType={CommandName.DataCollectionSetCrudCommand}
-      createItemDialogTitle={t`Create new data collection set`}
       defaultSortByField={'name'}
       defaultSortDirection={'asc'}
       deleteOne={deleteOne}

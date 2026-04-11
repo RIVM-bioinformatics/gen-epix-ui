@@ -30,8 +30,8 @@ import { WindowManager } from '../../../classes/managers/WindowManager';
 import { useOrganizationOptionsQuery } from '../../../dataHooks/useOrganizationsQuery';
 import { useArray } from '../../../hooks/useArray';
 import type {
-  WithDialogRenderProps,
   WithDialogRefMethods,
+  WithDialogRenderProps,
 } from '../../../hoc/withDialog';
 import { withDialog } from '../../../hoc/withDialog';
 import { TestIdUtil } from '../../../utils/TestIdUtil';
@@ -53,9 +53,9 @@ type FormFields = {
 
 export const OrganizationSwitcherDialog = withDialog<OrganizationSwitcherDialogProps, OrganizationSwitcherDialogOpenProps>((
   {
-    onTitleChange,
     onActionsChange,
     onClose,
+    onTitleChange,
   }: OrganizationSwitcherDialogProps,
 ): ReactElement => {
   const { t } = useTranslation();
@@ -90,9 +90,9 @@ export const OrganizationSwitcherDialog = withDialog<OrganizationSwitcherDialogP
     }
     const perform = async () => {
       const notificationKey = NotificationManager.instance.showNotification({
+        isLoading: true,
         message: t`Changing organization...`,
         severity: 'info',
-        isLoading: true,
       });
       try {
         setIsChanging(true);
@@ -125,11 +125,11 @@ export const OrganizationSwitcherDialog = withDialog<OrganizationSwitcherDialogP
       onActionsChange([
         {
           ...TestIdUtil.createAttributes('OrganizationSwitcherDialog-refresh'),
-          color: 'primary',
           autoFocus: true,
+          color: 'primary',
+          label: t`Refresh page`,
           onClick: onRefreshPageClick,
           variant: 'outlined',
-          label: t`Refresh page`,
         },
       ]);
       return;
@@ -139,21 +139,21 @@ export const OrganizationSwitcherDialog = withDialog<OrganizationSwitcherDialogP
       [
         {
           ...TestIdUtil.createAttributes('OrganizationSwitcherDialog-close'),
-          color: 'primary',
           autoFocus: true,
-          onClick: onClose,
-          variant: 'outlined',
+          color: 'primary',
           disabled: isChanging,
           label: t`Cancel`,
+          onClick: onClose,
+          variant: 'outlined',
         },
         {
           ...TestIdUtil.createAttributes('OrganizationSwitcherDialog-submit'),
-          color: 'secondary',
           autoFocus: true,
-          onClick: handleSubmit(onFormSubmit),
-          variant: 'contained',
+          color: 'secondary',
           disabled: isChanging,
           label: t`Change`,
+          onClick: handleSubmit(onFormSubmit),
+          variant: 'contained',
         },
       ],
     );
@@ -199,10 +199,10 @@ export const OrganizationSwitcherDialog = withDialog<OrganizationSwitcherDialogP
     </ResponseHandler>
   );
 }, {
-  testId: 'OrganizationSwitcherDialog',
-  maxWidth: 'md',
-  fullWidth: true,
   defaultTitle: '',
-  noCloseButton: true,
   disableBackdropClick: true,
+  fullWidth: true,
+  maxWidth: 'md',
+  noCloseButton: true,
+  testId: 'OrganizationSwitcherDialog',
 });

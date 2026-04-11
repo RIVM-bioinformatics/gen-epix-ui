@@ -5,6 +5,13 @@ import { StringUtil } from '../StringUtil';
 import type { TreeNode } from '../../models/tree';
 
 export class NewickUtil {
+  public static getSortedNames(node: TreeNode): string[] {
+    return [
+      ...(node.children ?? []).map(child => NewickUtil.getSortedNames(child)).flat(),
+      ...(!node.children ? [node.name] : []),
+    ];
+  }
+
   public static parse(newick: string): TreeNode {
     const ancestors: Array<Partial<TreeNode>> = [];
     let tree: Partial<TreeNode> = {};
@@ -14,13 +21,17 @@ export class NewickUtil {
       const subtree: Partial<TreeNode> = {};
       const x = tokens[i - 1];
       switch (token) {
+        case ',': // another branch
+          ancestors[ancestors.length - 1].children.push(subtree);
+          tree = subtree;
+          break;
+        case ';': // end of tree, nothing to do
+          break;
+        case ':': // optional length next
+          break;
         case '(': // new children
           tree.children = [subtree];
           ancestors.push(tree);
-          tree = subtree;
-          break;
-        case ',': // another branch
-          ancestors[ancestors.length - 1].children.push(subtree);
           tree = subtree;
           break;
         case ')': // optional name next
@@ -38,10 +49,6 @@ export class NewickUtil {
           tree.subTreeLeaveNames = tree.children.map(child => child.subTreeLeaveNames).flat().filter(n => n);
           tree.maxBranchLength = Decimal.max(...tree.children.map(child => child.maxBranchLength));
           break;
-        case ':': // optional length next
-          break;
-        case ';': // end of tree, nothing to do
-          break;
         default:
           if (x === ')' || x === '(' || x === ',') {
             tree.name = token;
@@ -58,12 +65,5 @@ export class NewickUtil {
     tree.maxBranchLength = tree.children?.length ? Decimal.max(...tree.children.map(child => child.maxBranchLength)) : new Decimal(0);
     tree.name = 'Root';
     return tree;
-  }
-
-  public static getSortedNames(node: TreeNode): string[] {
-    return [
-      ...(node.children ?? []).map(child => NewickUtil.getSortedNames(child)).flat(),
-      ...(!node.children ? [node.name] : []),
-    ];
   }
 }

@@ -1,6 +1,6 @@
 import {
+  use,
   useCallback,
-  useContext,
   useEffect,
   useMemo,
   useRef,
@@ -40,7 +40,7 @@ import { EpiUploadValidateNavigation } from './EpiUploadValidateNavigation';
 export const EpiUploadValidateInner = () => {
   const { t } = useTranslation();
 
-  const store = useContext(EpiUploadStoreContext);
+  const store = use(EpiUploadStoreContext);
   const goToNextStep = useStore(store, (state) => state.goToNextStep);
   const goToPreviousStep = useStore(store, (state) => state.goToPreviousStep);
   const mappedColumns = useStore(store, (state) => state.mappedColumns);
@@ -54,29 +54,29 @@ export const EpiUploadValidateInner = () => {
 
   const casesForVerification = useMemo<CaseForUpload[]>(() => {
     return EpiUploadUtil.getCasesForVerification({
-      rawData,
-      mappedColumns,
       caseTypeId,
       createdInDataCollectionId,
+      mappedColumns,
+      rawData,
     });
   }, [caseTypeId, createdInDataCollectionId, mappedColumns, rawData]);
 
   const caseUploadValidationResultQuery = useQueryMemo({
-    queryKey: validateCasesQueryKey,
+    enabled: mappedColumns.length > 0 && casesForVerification.length > 0,
+    gcTime: Infinity,
     queryFn: async ({ signal }) => {
       const response = await CaseApi.instance.uploadCases({
-        case_type_id: caseTypeId,
-        created_in_data_collection_id: createdInDataCollectionId,
-        verify_only: true,
-        on_exists: UploadAction.UPDATE,
         case_batch: {
           cases: casesForVerification,
         },
+        case_type_id: caseTypeId,
+        created_in_data_collection_id: createdInDataCollectionId,
+        on_exists: UploadAction.UPDATE,
+        verify_only: true,
       }, { signal });
       return response.data;
     },
-    enabled: mappedColumns.length > 0 && casesForVerification.length > 0,
-    gcTime: Infinity,
+    queryKey: validateCasesQueryKey,
     staleTime: Infinity,
   });
 
@@ -129,15 +129,18 @@ export const EpiUploadValidateInner = () => {
     await goToNextStep();
   }, [goToNextStep, rowsWithGeneratedId, selectedIdsRef, setValidatedCases]);
 
+  const onGoBackButtonClick = useCallback(() => {
+    goToPreviousStep();
+  }, [goToPreviousStep]);
 
   return (
     <Box
       sx={{
-        width: '100%',
-        height: '100%',
-        position: 'relative',
         display: 'grid',
         gridTemplateRows: `${exceedsMaxNumCases ? 'max-content' : ''} max-content auto max-content`,
+        height: '100%',
+        position: 'relative',
+        width: '100%',
       }}
     >
       <TableStoreContextProvider store={tableStore}>
@@ -164,14 +167,14 @@ export const EpiUploadValidateInner = () => {
           )}
           <EpiUploadCaseResultTable
             completeCaseType={completeCaseType}
-            rowsWithGeneratedId={rowsWithGeneratedId}
-            validatedCases={caseUploadValidationResultQuery?.data?.cases || []}
-            rawData={rawData}
             mappedColumns={mappedColumns}
+            rawData={rawData}
+            rowsWithGeneratedId={rowsWithGeneratedId}
             tableStore={tableStore}
+            validatedCases={caseUploadValidationResultQuery?.data?.cases || []}
           />
           <EpiUploadValidateNavigation
-            onGoBackButtonClick={goToPreviousStep}
+            onGoBackButtonClick={onGoBackButtonClick}
             onProceedButtonClick={onProceedButtonClick}
           />
         </ResponseHandler>
@@ -180,8 +183,9 @@ export const EpiUploadValidateInner = () => {
   );
 };
 
+// eslint-disable-next-line @eslint-react/kit/no-multi-comp
 export const EpiUploadValidate = () => {
-  const store = useContext(EpiUploadStoreContext);
+  const store = use(EpiUploadStoreContext);
   const completeCaseType = useStore(store, (state) => state.completeCaseType);
 
   const [isCompleteCaseTypeLoaded, setIsCompleteCaseTypeLoaded] = useState<boolean>(false);

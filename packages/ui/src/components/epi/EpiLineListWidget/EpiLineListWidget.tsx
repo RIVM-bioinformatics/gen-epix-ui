@@ -7,8 +7,8 @@ import {
 } from '@mui/material';
 import type { ReactElement } from 'react';
 import {
+  use,
   useCallback,
-  useContext,
   useEffect,
   useMemo,
   useRef,
@@ -23,8 +23,8 @@ import CollectionIcon from '../../../assets/icons/CollectionIcon.svg?react';
 import { EpiWidget } from '../EpiWidget';
 import { EpiLegendaItem } from '../EpiLegendaItem';
 import type {
-  CaseSet,
   Case,
+  CaseSet,
   Col,
 } from '../../../api';
 import { ColType } from '../../../api';
@@ -42,10 +42,10 @@ import {
   STRATIFICATION_MODE,
 } from '../../../models/epi';
 import type {
-  TableColumn,
-  TableRowParams,
   GetTableCellRowComparatorProps,
+  TableColumn,
   TableColumnCaseType,
+  TableRowParams,
 } from '../../../models/table';
 import { EpiDashboardStoreContext } from '../../../stores/epiDashboardStore';
 import { CaseTypeUtil } from '../../../utils/CaseTypeUtil';
@@ -63,13 +63,13 @@ import { EpiLineListWidgetSecondaryMenu } from './EpiLineListWidgetSecondaryMenu
 import { useEpiLineListWidgetEmitDownloadOptions } from './useEpiLineListWidgetEmitDownloadOptions';
 
 export type EpiLineListWidgetProps = {
-  readonly linkedScrollSubject: Subject<EpiLinkedScrollSubjectValue>;
-  readonly lineListRangeSubject: Subject<EpiLineListRangeSubjectValue>;
-  readonly onLink: () => void;
   readonly caseSet?: CaseSet;
+  readonly lineListRangeSubject: Subject<EpiLineListRangeSubjectValue>;
+  readonly linkedScrollSubject: Subject<EpiLinkedScrollSubjectValue>;
+  readonly onLink: () => void;
 };
 
-export const EpiLineListWidget = ({ linkedScrollSubject, lineListRangeSubject, onLink, caseSet }: EpiLineListWidgetProps) => {
+export const EpiLineListWidget = ({ caseSet, lineListRangeSubject, linkedScrollSubject, onLink }: EpiLineListWidgetProps) => {
   const containerRef = useRef<HTMLDivElement>(null);
   const { t } = useTranslation();
   const theme = useTheme();
@@ -77,7 +77,7 @@ export const EpiLineListWidget = ({ linkedScrollSubject, lineListRangeSubject, o
   const rowHighlightingSubject = useMemo(() => new Subject<string[]>([]), []);
   const tableRef = useRef<TableRef>(null);
 
-  const epiDashboardStore = useContext(EpiDashboardStoreContext);
+  const epiDashboardStore = use(EpiDashboardStoreContext);
   const completeCaseType = useStore(epiDashboardStore, (state) => state.completeCaseType);
   const sortedData = useStore(epiDashboardStore, (state) => state.sortedData);
   const stratification = useStore(epiDashboardStore, (state) => state.stratification?.mode === STRATIFICATION_MODE.FIELD ? state.stratification : null);
@@ -131,14 +131,14 @@ export const EpiLineListWidget = ({ linkedScrollSubject, lineListRangeSubject, o
     }
     const link = (
       <Link
-        component={'button'}
-        sx={{
-          cursor: 'pointer',
-        }}
         color={'primary'}
-        // eslint-disable-next-line react/jsx-no-bind
+        component={'button'}
+        // eslint-disable-next-line @eslint-react/kit/jsx-no-bind
         onClick={() => {
           onOrganizationCellClick(row.content[id], rowValue.long);
+        }}
+        sx={{
+          cursor: 'pointer',
         }}
       >
         {rowValue.short}
@@ -159,22 +159,22 @@ export const EpiLineListWidget = ({ linkedScrollSubject, lineListRangeSubject, o
 
   const onGeneticSequenceCellClick = useCallback((id: string, row: Case) => {
     EpiEventBusManager.instance.emit('openSequenceDownloadDialog', {
-      geneticSequenceColId: id,
       cases: [row],
+      geneticSequenceColId: id,
     });
   }, []);
 
   const renderGeneticSequenceCell = useCallback(({ id, row }: TableRowParams<Case>) => {
     return (
       <Link
-        component={'button'}
-        sx={{
-          cursor: 'pointer',
-        }}
         color={'primary'}
-        // eslint-disable-next-line react/jsx-no-bind
+        component={'button'}
+        // eslint-disable-next-line @eslint-react/kit/jsx-no-bind
         onClick={() => {
           onGeneticSequenceCellClick(id, row);
+        }}
+        sx={{
+          cursor: 'pointer',
         }}
       >
         {row.content[id]}
@@ -185,19 +185,19 @@ export const EpiLineListWidget = ({ linkedScrollSubject, lineListRangeSubject, o
   const renderEventsHeader = useCallback(() => {
     return (
       <Tooltip
+        aria-hidden={false}
         arrow
         title={t('Indicates if case is in an event')}
-        aria-hidden={false}
       >
         <CollectionIcon
+          fontSize={'small'}
           style={{
             color: theme.palette.primary.main,
-            position: 'absolute',
-            width: 20,
             height: 20,
             marginLeft: theme.spacing(-0.5),
+            position: 'absolute',
+            width: 20,
           }}
-          fontSize={'small'}
         />
       </Tooltip>
     );
@@ -224,8 +224,8 @@ export const EpiLineListWidget = ({ linkedScrollSubject, lineListRangeSubject, o
         <CircularProgress
           size={16}
           sx={{
-            position: 'absolute',
             marginTop: '4px',
+            position: 'absolute',
           }}
         />
       </Box>
@@ -248,19 +248,19 @@ export const EpiLineListWidget = ({ linkedScrollSubject, lineListRangeSubject, o
   const renderSimilarHeader = useCallback(() => {
     return (
       <Tooltip
+        aria-hidden={false}
         arrow
         title={t('Indicates if the case has been identified as similar to another case based on the selected tree algorithm and distance threshold')}
-        aria-hidden={false}
       >
         <TroubleshootIcon
+          fontSize={'small'}
           style={{
             color: theme.palette.primary.main,
-            position: 'absolute',
-            width: 20,
             height: 20,
             marginLeft: theme.spacing(-0.5),
+            position: 'absolute',
+            width: 20,
           }}
-          fontSize={'small'}
         />
       </Tooltip>
     );
@@ -293,26 +293,26 @@ export const EpiLineListWidget = ({ linkedScrollSubject, lineListRangeSubject, o
       }),
       TableUtil.createSelectableColumn(),
       {
-        type: 'text',
-        renderCell: renderEventsCell,
+        frozen: true,
+        id: 'events',
         isInitiallyVisible: true,
         isStatic: true,
-        frozen: true,
-        resizable: false,
-        id: 'events',
+        renderCell: renderEventsCell,
         renderHeader: renderEventsHeader,
+        resizable: false,
+        type: 'text',
         widthPx: 24,
       },
       {
-        type: 'text',
-        renderCell: renderSimilarCell,
+        frozen: true,
         headerTooltipContent: t`Is similar case?`,
+        id: 'similar',
         isInitiallyVisible: true,
         isStatic: true,
-        frozen: true,
-        resizable: false,
-        id: 'similar',
+        renderCell: renderSimilarCell,
         renderHeader: renderSimilarHeader,
+        resizable: false,
+        type: 'text',
         widthPx: 24,
       },
     ];
@@ -329,33 +329,33 @@ export const EpiLineListWidget = ({ linkedScrollSubject, lineListRangeSubject, o
       completeCaseType.ordered_col_ids_by_dim[dim.id].map(id => completeCaseType.cols[id]).forEach(col => {
         const refCol = completeCaseType.ref_cols[col.ref_col_id];
         const baseCaseTypeTableColumn: Partial<TableColumn<Case>> = {
-          isInitiallyVisible: initialVisibleColumnIds.includes(col.id),
-          id: col.id,
-          headerTooltipContent: refCol.description,
           headerName: col.label,
+          headerTooltipContent: refCol.description,
+          id: col.id,
+          isInitiallyVisible: initialVisibleColumnIds.includes(col.id),
         };
         if (refCol.col_type === ColType.GENETIC_DISTANCE) {
           caseTypeTableColumns.push({
             ...baseCaseTypeTableColumn,
-            type: 'caseType',
-            widthPx: 200,
-            valueGetter: (params) => {
-              const value = treeAddresses[col.id]?.addresses[params.row.id] ? `${treeAddresses[col.id].algorithmCode} ${treeAddresses[col.id].addresses[params.row.id]}` : undefined;
-              return {
-                raw: value,
-                short: value ?? DATA_MISSING_CHARACTER,
-                full: value ?? DATA_MISSING_CHARACTER,
-                long: value ?? DATA_MISSING_CHARACTER,
-                isMissing: !value,
-              };
-            },
             comparatorFactory: ({ direction }: GetTableCellRowComparatorProps<TableColumnCaseType<Case>>) => (a: Case, b: Case) => {
               const sortValue = StringUtil.advancedSortComperator(treeAddresses[col.id]?.addresses?.[a.id], treeAddresses[col.id]?.addresses?.[b.id]);
               return direction === 'asc' ? sortValue : -sortValue;
             },
+            type: 'caseType',
+            valueGetter: (params) => {
+              const value = treeAddresses[col.id]?.addresses[params.row.id] ? `${treeAddresses[col.id].algorithmCode} ${treeAddresses[col.id].addresses[params.row.id]}` : undefined;
+              return {
+                full: value ?? DATA_MISSING_CHARACTER,
+                isMissing: !value,
+                long: value ?? DATA_MISSING_CHARACTER,
+                raw: value,
+                short: value ?? DATA_MISSING_CHARACTER,
+              };
+            },
+            widthPx: 200,
           } as TableColumn<Case>);
         } else {
-          let cellRenderer: (params: TableRowParams<Case>) => string | ReactElement;
+          let cellRenderer: (params: TableRowParams<Case>) => ReactElement | string;
           if (refCol.col_type === ColType.ORGANIZATION) {
             cellRenderer = renderOrganizationCell;
           } else if (refCol.col_type === ColType.GENETIC_SEQUENCE) {
@@ -366,13 +366,13 @@ export const EpiLineListWidget = ({ linkedScrollSubject, lineListRangeSubject, o
 
           caseTypeTableColumns.push({
             ...baseCaseTypeTableColumn,
-            widthPx: getColumnWidth(col, col.label),
-            type: 'caseType',
-            renderCell: cellRenderer,
             col,
-            completeCaseType,
             comparatorFactory: TableUtil.createCaseTypeCellRowComperator,
+            completeCaseType,
+            renderCell: cellRenderer,
             textAlign: ([ColType.DECIMAL_0, ColType.DECIMAL_1, ColType.DECIMAL_2, ColType.DECIMAL_3, ColType.DECIMAL_4, ColType.DECIMAL_4, ColType.DECIMAL_5, ColType.DECIMAL_6] as ColType[]).includes(refCol.col_type) ? 'right' : 'left',
+            type: 'caseType',
+            widthPx: getColumnWidth(col, col.label),
           } as TableColumn<Case>);
         }
       });
@@ -429,8 +429,8 @@ export const EpiLineListWidget = ({ linkedScrollSubject, lineListRangeSubject, o
   const onRangeChangedDebounced = useDebouncedCallback(async (range: ListRange) => {
     await EpiLineListCaseSetMembersManager.instance.loadRange(sortedData.slice(range.startIndex, Math.min(range.endIndex + 1, sortedData.length)).map(row => row.id));
   }, ConfigManager.instance.config.epiLineList.CASE_SET_MEMBERS_FETCH_DEBOUNCE_DELAY_MS, {
-    trailing: true,
     leading: false,
+    trailing: true,
   });
 
   const onRangeChanged = useCallback((range: ListRange) => {
@@ -449,8 +449,8 @@ export const EpiLineListWidget = ({ linkedScrollSubject, lineListRangeSubject, o
       return;
     }
     linkedScrollSubject.next({
-      position,
       origin: containerRef.current,
+      position,
     });
   }, [linkedScrollSubject]);
 
@@ -482,24 +482,24 @@ export const EpiLineListWidget = ({ linkedScrollSubject, lineListRangeSubject, o
       <Box
         ref={containerRef}
         sx={{
-          width: '100%',
           height: '100%',
+          width: '100%',
         }}
       >
         <Table
-          ref={tableRef}
-          forceHorizontalOverflow
           font={theme['gen-epix'].lineList.font}
+          forceHorizontalOverflow
           getRowName={getRowName}
           initialVisibleItemIndex={epiDashboardStore.getState().epiListWidgetData.visibleItemItemIndex}
-          rowHeight={3}
-          rowHighlightingSubject={rowHighlightingSubject}
           onRangeChanged={onRangeChanged}
           onReadableIndexClick={onIndexCellClick}
           onRowMouseEnter={onRowMouseEnter}
           onRowMouseLeave={onRowMouseLeave}
           onVerticalScrollPositionChange={onVerticalScrollPositionChange}
           onVisibleItemIndexChange={onTableVisibleItemIndexChange}
+          ref={tableRef}
+          rowHeight={3}
+          rowHighlightingSubject={rowHighlightingSubject}
         />
       </Box>
     </EpiWidget>

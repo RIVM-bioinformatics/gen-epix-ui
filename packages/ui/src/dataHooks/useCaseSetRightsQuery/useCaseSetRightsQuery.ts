@@ -8,10 +8,10 @@ import { useQueryMemo } from '../../hooks/useQueryMemo';
 
 export const useCaseSetRightsQuery = (caseSetIds: string[]): UseQueryResult<CaseSetRights[]> => {
   return useQueryMemo({
-    queryKey: QueryUtil.getGenericKey(QUERY_KEY.CASE_SET_RIGHTS, caseSetIds),
     queryFn: async ({ signal }) => {
       const response = await CaseApi.instance.retrieveCaseSetRights(caseSetIds, { signal });
       return response.data;
     },
+    queryKey: QueryUtil.getGenericKey(QUERY_KEY.CASE_SET_RIGHTS, caseSetIds),
   });
 };

@@ -20,13 +20,13 @@ import type { MyNonIndexRouteObject } from '../../../models/reactRouter';
 import { RouterManager } from '../../../classes/managers/RouterManager';
 
 const NavLink = styled(BaseNavLink)(({ theme }) => ({
-  color: theme.palette.secondary.contrastText,
-  display: 'inline-block',
-  textDecoration: 'none',
-  fontSize: '1.3rem',
   '&:hover': {
     textDecoration: 'underline',
   },
+  color: theme.palette.secondary.contrastText,
+  display: 'inline-block',
+  fontSize: '1.3rem',
+  textDecoration: 'none',
 }));
 
 export type ApplicationBarNavigationMenuProps = {
@@ -71,15 +71,15 @@ export const ApplicationBarNavigationMenu = ({ fullWidth }: ApplicationBarNaviga
       }}
     >
       <IconButton
-        aria-label={t`Toggle navigation menu`}
         aria-controls={navId}
+        aria-label={t`Toggle navigation menu`}
+        onClick={onMenuButtonClick}
         sx={{
           color: theme['gen-epix'].navbar.primaryColor,
           [theme.breakpoints.up('md')]: {
             display: 'none',
           },
         }}
-        onClick={onMenuButtonClick}
       >
         <MenuIcon />
       </IconButton>
@@ -89,23 +89,23 @@ export const ApplicationBarNavigationMenu = ({ fullWidth }: ApplicationBarNaviga
         sx={{
           flexGrow: 1,
           [theme.breakpoints.down('md')]: {
-            display: isMenuOpen ? 'block' : 'none',
-            position: 'absolute',
             background: theme['gen-epix'].navbar.background,
-            top: 48,
+            display: isMenuOpen ? 'block' : 'none',
             left: 0,
-            width: '100%',
             paddingBottom: 4,
+            position: 'absolute',
+            top: 48,
+            width: '100%',
           },
         }}
       >
         <Box
           component={'ul'}
           sx={{
-            padding: 0,
-            margin: 0,
             display: 'flex',
+            margin: 0,
             marginLeft: fullWidth ? 0 : 2,
+            padding: 0,
             [theme.breakpoints.down('md')]: {
               display: 'block',
               margin: 0,
@@ -115,36 +115,36 @@ export const ApplicationBarNavigationMenu = ({ fullWidth }: ApplicationBarNaviga
           {menuItems.filter(menuItem => !menuItem.handle.disabled && authorizationManager.doesUserHavePermissionForRoute(menuItem)).map(menuItem => {
             return (
               <Box
-                key={menuItem.path}
                 component={'li'}
+                key={menuItem.path}
                 sx={{
-                  display: 'flex',
-                  alignItems: 'center',
-                  listStyle: 'none',
-                  padding: `0 ${theme.spacing(1)}`,
-                  fontWeight: 800,
-                  height: 48,
-                  color: theme['gen-epix'].navbar.primaryColor,
                   '&:has(.active)': {
-                    background: theme['gen-epix'].navbar.activeBackground,
-                    a: {
-                      color: theme['gen-epix'].navbar.activeColor,
-                    },
                     '& svg': {
                       color: theme['gen-epix'].navbar.activeColor,
                     },
+                    a: {
+                      color: theme['gen-epix'].navbar.activeColor,
+                    },
+                    background: theme['gen-epix'].navbar.activeBackground,
                   },
                   '& svg': {
                     marginTop: '6px',
                   },
+                  alignItems: 'center',
+                  color: theme['gen-epix'].navbar.primaryColor,
+                  display: 'flex',
+                  fontWeight: 800,
+                  height: 48,
+                  listStyle: 'none',
+                  padding: `0 ${theme.spacing(1)}`,
                 }}
               >
                 <NavLink
                   aria-label={menuItem.handle.title}
-                  to={menuItem.path}
                   sx={{
                     padding: `0 ${theme.spacing(1)}`,
                   }}
+                  to={menuItem.path}
                 >
                   {!!menuItem.handle.icon && menuItem.handle.icon}
                   {!menuItem.handle.icon && menuItem.handle.title}

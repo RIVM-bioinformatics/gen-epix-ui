@@ -63,10 +63,10 @@ export const UseColumnsMenu = <TRowData,>({ hasCellData }: UseColumnsMenuProps<T
 
   const onHideColumnsWithoutDataClick = useCallback(() => {
     emitTableEvent('columnVisibilityChange', TableUtil.getColumnIdsWithData({
-      visibleColumnIds,
-      tableColumns,
-      sortedData,
       hasCellData,
+      sortedData,
+      tableColumns,
+      visibleColumnIds,
     }));
 
   }, [emitTableEvent, hasCellData, sortedData, tableColumns, visibleColumnIds]);
@@ -74,34 +74,34 @@ export const UseColumnsMenu = <TRowData,>({ hasCellData }: UseColumnsMenuProps<T
   const menuItemData: MenuItemData = useMemo(() => {
     const items: MenuItemData[] = [
       {
-        label: t`Change order / visibility`,
         callback: () => onColumnsEditorMenuItemClick(),
         divider: true,
+        label: t`Change order / visibility`,
       },
       {
-        label: t`Reset`,
-        callback: () => emitTableEvent('reset'),
         autoCloseDisabled: true,
+        callback: () => emitTableEvent('reset'),
+        label: t`Reset`,
       },
       {
-        label: t`Show all`,
+        autoCloseDisabled: true,
         callback: () => {
           emitTableEvent('columnVisibilityChange', [...tableColumns.map(c => c.id)]);
         },
-        autoCloseDisabled: true,
+        label: t`Show all`,
       },
       {
-        label: t`Hide all`,
+        autoCloseDisabled: true,
         callback: () => {
           emitTableEvent('columnVisibilityChange', [...tableColumns.filter(c => c.isStatic).map(c => c.id)]);
         },
-        autoCloseDisabled: true,
+        label: t`Hide all`,
       },
       {
-        label: t`Hide columns without data`,
+        autoCloseDisabled: true,
         callback: () => onHideColumnsWithoutDataClick(),
         divider: true,
-        autoCloseDisabled: true,
+        label: t`Hide columns without data`,
       },
     ];
 
@@ -111,22 +111,22 @@ export const UseColumnsMenu = <TRowData,>({ hasCellData }: UseColumnsMenuProps<T
         const areSomeVisible = columnDimension.columnIds.some(columnId => visibleColumnIds.includes(columnId));
         items.push({
           autoCloseDisabled: true,
-          label: columnDimension.label,
           callback: () => toggleDimension(columnDimension.columnIds),
-          // eslint-disable-next-line no-nested-ternary
-          rightIcon: areAllVisible ? <CheckBoxOutlinedIcon /> : areSomeVisible ? <IndeterminateCheckBoxIcon /> : <CheckBoxOutlineBlankOutlinedIcon />,
           // eslint-disable-next-line no-nested-ternary
           checked: areAllVisible ? 'true' : areSomeVisible ? 'mixed' : 'false',
           items: columnDimension.columnIds.map((columnId) => {
             const checked = visibleColumnIds.includes(columnId);
             return {
               autoCloseDisabled: true,
-              label: tableColumns.find(c => c.id === columnId)?.headerName ?? '',
               callback: () => toggleItem(columnId),
-              rightIcon: checked ? <CheckBoxOutlinedIcon /> : <CheckBoxOutlineBlankOutlinedIcon />,
               checked: checked ? 'true' : 'false',
+              label: tableColumns.find(c => c.id === columnId)?.headerName ?? '',
+              rightIcon: checked ? <CheckBoxOutlinedIcon /> : <CheckBoxOutlineBlankOutlinedIcon />,
             };
           }),
+          label: columnDimension.label,
+          // eslint-disable-next-line no-nested-ternary
+          rightIcon: areAllVisible ? <CheckBoxOutlinedIcon /> : areSomeVisible ? <IndeterminateCheckBoxIcon /> : <CheckBoxOutlineBlankOutlinedIcon />,
         });
       });
     } else {
@@ -134,17 +134,17 @@ export const UseColumnsMenu = <TRowData,>({ hasCellData }: UseColumnsMenuProps<T
         const checked = visibleColumnIds.includes(column.id);
         items.push({
           autoCloseDisabled: true,
-          label: column.headerName,
           callback: () => toggleItem(column.id),
-          rightIcon: checked ? <CheckBoxOutlinedIcon /> : <CheckBoxOutlineBlankOutlinedIcon />,
           checked: checked ? 'true' : 'false',
+          label: column.headerName,
+          rightIcon: checked ? <CheckBoxOutlinedIcon /> : <CheckBoxOutlineBlankOutlinedIcon />,
         });
       });
     }
 
     return {
-      label: t`Columns`,
       items,
+      label: t`Columns`,
     };
   }, [t, columnDimensions, onColumnsEditorMenuItemClick, emitTableEvent, tableColumns, onHideColumnsWithoutDataClick, visibleColumnIds, toggleDimension, toggleItem]);
 

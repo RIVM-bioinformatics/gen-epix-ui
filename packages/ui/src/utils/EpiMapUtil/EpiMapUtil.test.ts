@@ -1,10 +1,10 @@
 import {
-  describe,
-  it,
-  expect,
-  vi,
-  beforeAll,
   afterAll,
+  beforeAll,
+  describe,
+  expect,
+  it,
+  vi,
 } from 'vitest';
 
 import { ConfigManager } from '../../classes/managers/ConfigManager';
@@ -78,13 +78,13 @@ describe('EpiMapUtil', () => {
 
       const testCases: Array<[[number, number, RegionStatistics], number]> = [
         // test where minNumCases === maxNumCases (result should be maxArea)
-        [[1, 1487, { ...statisticsBase, minNumCases: 1, maxNumCases: 1 }], 21.76],
+        [[1, 1487, { ...statisticsBase, maxNumCases: 1, minNumCases: 1 }], 21.76],
         // test where numCases === minNumCases (result should be minArea)
-        [[1, 1487, { ...statisticsBase, minNumCases: 1, maxNumCases: 9 }], ConfigManager.instance.config.epiMap.MIN_PIE_CHART_RADIUS],
+        [[1, 1487, { ...statisticsBase, maxNumCases: 9, minNumCases: 1 }], ConfigManager.instance.config.epiMap.MIN_PIE_CHART_RADIUS],
         // test where numCases === maxNumCases (result should be maxArea
-        [[9, 1487, { ...statisticsBase, minNumCases: 1, maxNumCases: 9 }], 21.76],
+        [[9, 1487, { ...statisticsBase, maxNumCases: 9, minNumCases: 1 }], 21.76],
         // test where numCases is some where in between minNumCases and maxNumCases (area should be proportional)
-        [[6, 1487, { ...statisticsBase, minNumCases: 1, maxNumCases: 9 }], 17.37],
+        [[6, 1487, { ...statisticsBase, maxNumCases: 9, minNumCases: 1 }], 17.37],
       ];
 
       testCases.forEach(([input, expectedOutput]) => {

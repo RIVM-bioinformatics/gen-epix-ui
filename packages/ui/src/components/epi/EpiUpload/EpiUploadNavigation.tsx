@@ -6,42 +6,42 @@ import {
 import { useTranslation } from 'react-i18next';
 
 export type EpiUploadNavigationProps = {
-  readonly onProceedButtonClick?: () => void;
-  readonly onGoBackButtonClick?: () => void;
-  readonly containerProps?: ContainerOwnProps;
-  readonly proceedLabel?: string;
   readonly backLabel?: string;
+  readonly containerProps?: ContainerOwnProps;
+  readonly onGoBackButtonClick?: () => void;
+  readonly onProceedButtonClick?: () => void;
   readonly proceedDisabled?: boolean;
+  readonly proceedLabel?: string;
 };
 
-export const EpiUploadNavigation = ({ onProceedButtonClick: onProceedButtonClick, onGoBackButtonClick: onGoBack, proceedLabel, backLabel, proceedDisabled }: EpiUploadNavigationProps) => {
+export const EpiUploadNavigation = ({ backLabel, onGoBackButtonClick: onGoBack, onProceedButtonClick: onProceedButtonClick, proceedDisabled, proceedLabel }: EpiUploadNavigationProps) => {
   const { t } = useTranslation();
 
   return (
     <Box
       sx={{
-        marginTop: 1,
-        paddingTop: 1,
+        borderTop: (theme) => `1px solid ${theme.palette.divider}`,
         display: 'flex',
         gap: 2,
         justifyContent: 'flex-end',
-        borderTop: (theme) => `1px solid ${theme.palette.divider}`,
+        marginTop: 1,
+        paddingTop: 1,
       }}
     >
       {onGoBack && (
         <Button
-          variant={'outlined'}
           onClick={onGoBack}
+          variant={'outlined'}
         >
           {backLabel ?? t`Go back`}
         </Button>
       )}
       {onProceedButtonClick && (
         <Button
-          variant={'contained'}
           color={'secondary'}
           disabled={proceedDisabled}
           onClick={onProceedButtonClick}
+          variant={'contained'}
         >
           {proceedLabel ?? t`Next`}
         </Button>

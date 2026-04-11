@@ -5,7 +5,6 @@ import {
 } from '@mui/material';
 import { useTranslation } from 'react-i18next';
 import { useCallback } from 'react';
-
 import {
   ConfigManager,
   RouterManager,

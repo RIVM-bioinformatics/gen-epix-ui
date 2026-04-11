@@ -1,7 +1,7 @@
 import {
   describe,
-  it,
   expect,
+  it,
 } from 'vitest';
 import Decimal from 'decimal.js';
 
@@ -14,66 +14,66 @@ describe('NewickUtil', () => {
     it('should parse a simple Newick string', () => {
       const newick = '(A,B,(C,D));';
       const expectedTree: Partial<TreeNode> = {
+        branchLength: new Decimal(0),
         children: [
           {
+            maxBranchLength: new Decimal(0),
             name: 'A',
             size: 1,
-            maxBranchLength: new Decimal(0),
-            subTreeNames: [],
             subTreeLeaveNames: [
               'A',
             ],
+            subTreeNames: [],
           },
           {
+            maxBranchLength: new Decimal(0),
             name: 'B',
             size: 1,
-            maxBranchLength: new Decimal(0),
-            subTreeNames: [],
             subTreeLeaveNames: [
               'B',
             ],
+            subTreeNames: [],
           },
           {
             children: [
               {
+                maxBranchLength: new Decimal(0),
                 name: 'C',
                 size: 1,
-                maxBranchLength: new Decimal(0),
-                subTreeNames: [],
                 subTreeLeaveNames: [
                   'C',
                 ],
+                subTreeNames: [],
               },
               {
+                maxBranchLength: new Decimal(0),
                 name: 'D',
                 size: 1,
-                maxBranchLength: new Decimal(0),
-                subTreeNames: [],
                 subTreeLeaveNames: [
                   'D',
                 ],
+                subTreeNames: [],
               },
             ],
+            maxBranchLength: new Decimal(0),
             size: 2,
-            subTreeNames: [],
             subTreeLeaveNames: [
               'C',
               'D',
             ],
-            maxBranchLength: new Decimal(0),
+            subTreeNames: [],
           },
         ],
+        maxBranchLength: new Decimal(0),
+        name: 'Root',
         size: 4,
-        subTreeNames: [],
         subTreeLeaveNames: [
           'A',
           'B',
           'C',
           'D',
         ],
-        name: 'Root',
-        branchLength: new Decimal(0),
-        maxBranchLength: new Decimal(0),
+        subTreeNames: [],
       };
 
       const tree = NewickUtil.parse(newick);
@@ -83,78 +83,78 @@ describe('NewickUtil', () => {
     it('should handle branch lengths', () => {
       const newick = '(A:0.1,B:0.2,(C:0.3,D:0.4):0.5);';
       const expectedTree: Partial<TreeNode> = {
+        branchLength: new Decimal('0'),
         children: [
           {
-            name: 'A',
             branchLength: new Decimal('0.1'),
-            subTreeNames: [],
+            maxBranchLength: new Decimal('0.1'),
+            name: 'A',
+            size: 1,
             subTreeLeaveNames: [
               'A',
             ],
-            maxBranchLength: new Decimal('0.1'),
-            size: 1,
+            subTreeNames: [],
           },
           {
-            name: 'B',
             branchLength: new Decimal('0.2'),
-            subTreeNames: [],
+            maxBranchLength: new Decimal('0.2'),
+            name: 'B',
+            size: 1,
             subTreeLeaveNames: [
               'B',
             ],
-            maxBranchLength: new Decimal('0.2'),
-            size: 1,
+            subTreeNames: [],
           },
           {
+            branchLength: new Decimal('0.5'),
             children: [
               {
-                name: 'C',
                 branchLength: new Decimal('0.3'),
-                subTreeNames: [],
+                maxBranchLength: new Decimal('0.3'),
+                name: 'C',
+                size: 1,
                 subTreeLeaveNames: [
                   'C',
                 ],
-                maxBranchLength: new Decimal('0.3'),
-                size: 1,
+                subTreeNames: [],
               },
               {
-                name: 'D',
                 branchLength: new Decimal('0.4'),
-                subTreeNames: [],
+                maxBranchLength: new Decimal('0.4'),
+                name: 'D',
+                size: 1,
                 subTreeLeaveNames: [
                   'D',
                 ],
-                maxBranchLength: new Decimal('0.4'),
-                size: 1,
+                subTreeNames: [],
               },
             ],
+            maxBranchLength: new Decimal('0.9'),
+            name: 'Generated-7225787341756924',
             size: 2,
+            subTreeLeaveNames: [
+              'C',
+              'D',
+            ],
             subTreeNames: [
               'C',
               'D',
             ],
-            subTreeLeaveNames: [
-              'C',
-              'D',
-            ],
-            branchLength: new Decimal('0.5'),
-            maxBranchLength: new Decimal('0.9'),
-            name: 'Generated-7225787341756924',
           },
         ],
+        maxBranchLength: new Decimal('0.9'),
+        name: 'Root',
         size: 4,
-        subTreeNames: [
-          'C',
-          'D',
-        ],
         subTreeLeaveNames: [
           'A',
           'B',
           'C',
           'D',
         ],
-        name: 'Root',
-        branchLength: new Decimal('0'),
-        maxBranchLength: new Decimal('0.9'),
+        subTreeNames: [
+          'C',
+          'D',
+        ],
       };
       const tree = NewickUtil.parse(newick);
       expect(tree).toEqual(expectedTree);

@@ -1,6 +1,6 @@
 import {
+  use,
   useCallback,
-  useContext,
   useMemo,
 } from 'react';
 import { useTranslation } from 'react-i18next';
@@ -21,7 +21,7 @@ export const EpiLineListWidgetSecondaryMenu = ({
   onLink,
 }: EpiLineListWidgetSecondaryMenuProps) => {
   const theme = useTheme();
-  const epiDashboardStore = useContext(EpiDashboardStoreContext);
+  const epiDashboardStore = use(EpiDashboardStoreContext);
   const { t } = useTranslation();
   const isTreeLinked = useStore(epiDashboardStore, useShallow((state) => state.epiTreeWidgetData.zoomLevel === 1));
   const setSorting = useStore(epiDashboardStore, useShallow((state) => state.setSorting));
@@ -38,6 +38,7 @@ export const EpiLineListWidgetSecondaryMenu = ({
   const menu = useMemo<MenuItemData[]>(() => {
     return [
       {
+        callback: onLinkButtonClick,
         disabled: isTreeLinked,
         label: t`Link and snap the Tree to the Line list (resets tree zoom level and Line List sorting)`,
         leftIcon: (
@@ -47,7 +48,6 @@ export const EpiLineListWidgetSecondaryMenu = ({
             }}
           />
         ),
-        callback: onLinkButtonClick,
       },
     ];
   }, [isTreeLinked, onLinkButtonClick, t, theme.palette.error.main]);

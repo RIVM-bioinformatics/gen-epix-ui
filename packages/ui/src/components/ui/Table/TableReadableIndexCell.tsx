@@ -1,7 +1,7 @@
 import { Button } from '@mui/material';
 import {
-  useCallback,
   type MouseEvent as ReactMouseEvent,
+  useCallback,
 } from 'react';
 
 import type {
@@ -12,17 +12,17 @@ import { ConfigManager } from '../../../classes/managers/ConfigManager';
 import { PageEventBusManager } from '../../../classes/managers/PageEventBusManager';
 
 export type TableReadableIndexCellProps<TRowData> = {
-  readonly tableColumn: TableColumnReadableIndex<TRowData>;
   readonly cell: TableRowParams<TRowData>;
-  readonly onReadableIndexClick: (row: TRowData) => void;
   readonly getRowName?: (row: TRowData) => string;
+  readonly onReadableIndexClick: (row: TRowData) => void;
+  readonly tableColumn: TableColumnReadableIndex<TRowData>;
 };
 
 export const TableReadableIndexCell = <TRowData, >({
-  tableColumn,
   cell,
-  onReadableIndexClick,
   getRowName,
+  onReadableIndexClick,
+  tableColumn,
 }: TableReadableIndexCellProps<TRowData>) => {
   const onClick = useCallback((event: ReactMouseEvent) => {
     if (onReadableIndexClick) {
@@ -47,17 +47,17 @@ export const TableReadableIndexCell = <TRowData, >({
 
   return (
     <Button
-      variant={'text'}
-      size={'small'}
       aria-label={tableColumn.getAriaLabel(cell)}
       color={'primary'}
+      onClick={onClick}
+      size={'small'}
       sx={{
-        width: '100%',
         height: '100%',
         minWidth: 'unset',
         padding: 0,
+        width: '100%',
       }}
-      onClick={onClick}
+      variant={'text'}
     >
       {cell.rowIndex + 1}
     </Button>

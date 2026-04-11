@@ -1,7 +1,7 @@
 import {
-  useCallback,
-  type MouseEvent as ReactMouseEvent,
   type ChangeEvent,
+  type MouseEvent as ReactMouseEvent,
+  useCallback,
 } from 'react';
 import { Checkbox } from '@mui/material';
 import { useStore } from 'zustand';
@@ -47,19 +47,19 @@ export const TableCheckboxCell = <TRowData, >({
   return (
     <Checkbox
       checked={selectedIds.includes(id)}
+      disabled={tableColumn.isDisabled ? tableColumn.isDisabled(cell) : false}
       name={idSelectorCallback(cell.row)}
+      onChange={onChange}
+      onClick={onClick}
       slotProps={{
         input: {
           'aria-label': t`Select row`,
         },
       }}
       sx={{
-        padding: 0,
         marginTop: '-2px',
+        padding: 0,
       }}
-      disabled={tableColumn.isDisabled ? tableColumn.isDisabled(cell) : false}
-      onClick={onClick}
-      onChange={onChange}
     />
   );
 };

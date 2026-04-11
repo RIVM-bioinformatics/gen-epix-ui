@@ -9,21 +9,21 @@ import type {
 import { ConfigManager } from '../../classes/managers/ConfigManager';
 
 export type RegionStatistics = {
-  statisticsPerRegion: Record<string, { rows: Case[]; region: Region; numCases: number }>;
-  minNumCases: number;
   maxNumCases: number;
+  minNumCases: number;
   numCases: number;
+  statisticsPerRegion: Record<string, { numCases: number; region: Region; rows: Case[] }>;
 };
 
 type GeoJsonBounds = [number, number, number, number];
+type GeoJsonFeature = {
+  bbox?: number[];
+  geometry?: GeoJsonGeometry | null;
+};
 type GeoJsonGeometry = {
   bbox?: number[];
   coordinates?: unknown;
   geometries?: GeoJsonGeometry[];
-};
-type GeoJsonFeature = {
-  bbox?: number[];
-  geometry?: GeoJsonGeometry | null;
 };
 type GeoJsonObject = {
   bbox?: number[];
@@ -34,49 +34,19 @@ type GeoJsonObject = {
 };
 
 export class EpiMapUtil {
-  public static getRegionStatistics(cases: Case[], columnId: string, regions: Region[]): RegionStatistics {
-    if (!cases.length || !columnId || !regions?.length) {
-      return {
-        maxNumCases: 0,
-        minNumCases: 0,
-        numCases: 0,
-        statisticsPerRegion: {},
-      };
+  public static getGeoJsonAspectScale(geoJson: string) {
+    const bounds = EpiMapUtil.getGeoJsonBounds(geoJson);
+    if (!bounds) {
+      return 1;
     }
 
-    let numCases = 0;
-    const statisticsPerRegion: Record<string, {
-      rows: Case[];
-      region: Region;
-      numCases: number;
-    }> = {};
-    cases.forEach(row => {
-      const regionId = row.content[columnId];
-      if (!regionId) {
-        return;
-      }
-      if (!statisticsPerRegion[regionId]) {
-        statisticsPerRegion[regionId] = {
-          rows: [],
-          region: regions.find(region => region.id === regionId),
-          numCases: 0,
-        };
-      }
-      statisticsPerRegion[regionId].rows.push(row);
-      // when count is null, 1 should be assumed
-      statisticsPerRegion[regionId].numCases += (row.count ?? 1);
-      // when count is null, 1 should be assumed
-      numCases += (row.count ?? 1);
-    });
-    const maxNumCases = max(Object.values(statisticsPerRegion).map(region => region.numCases));
-    const minNumCases = min(Object.values(statisticsPerRegion).map(region => region.numCases));
+    const centerLatitude = (bounds[1] + bounds[3]) / 2;
+    if (!Number.isFinite(centerLatitude) || Math.abs(centerLatitude) > 90) {
+      return 1;
+    }
 
-    return {
-      statisticsPerRegion,
-      minNumCases,
-      maxNumCases,
-      numCases,
-    };
+    const aspectScale = Math.cos(centerLatitude * Math.PI / 180);
+    return Number.isFinite(aspectScale) && aspectScale > 0 ? aspectScale : 1;
   }
 
   public static getPieChartRadius(numCases: number, maxPieChartArea: number, statistics: RegionStatistics) {
@@ -96,43 +66,75 @@ export class EpiMapUtil {
     return Math.max(MIN_PIE_CHART_RADIUS, radius);
   }
 
-  public static getGeoJsonAspectScale(geoJson: string) {
-    const bounds = EpiMapUtil.getGeoJsonBounds(geoJson);
-    if (!bounds) {
-      return 1;
+  public static getRegionStatistics(cases: Case[], columnId: string, regions: Region[]): RegionStatistics {
+    if (!cases.length || !columnId || !regions?.length) {
+      return {
+        maxNumCases: 0,
+        minNumCases: 0,
+        numCases: 0,
+        statisticsPerRegion: {},
+      };
     }
 
-    const centerLatitude = (bounds[1] + bounds[3]) / 2;
-    if (!Number.isFinite(centerLatitude) || Math.abs(centerLatitude) > 90) {
-      return 1;
-    }
+    let numCases = 0;
+    const statisticsPerRegion: Record<string, {
+      numCases: number;
+      region: Region;
+      rows: Case[];
+    }> = {};
+    cases.forEach(row => {
+      const regionId = row.content[columnId];
+      if (!regionId) {
+        return;
+      }
+      if (!statisticsPerRegion[regionId]) {
+        statisticsPerRegion[regionId] = {
+          numCases: 0,
+          region: regions.find(region => region.id === regionId),
+          rows: [],
+        };
+      }
+      statisticsPerRegion[regionId].rows.push(row);
+      // when count is null, 1 should be assumed
+      statisticsPerRegion[regionId].numCases += (row.count ?? 1);
+      // when count is null, 1 should be assumed
+      numCases += (row.count ?? 1);
+    });
+    const maxNumCases = max(Object.values(statisticsPerRegion).map(region => region.numCases));
+    const minNumCases = min(Object.values(statisticsPerRegion).map(region => region.numCases));
 
-    const aspectScale = Math.cos(centerLatitude * Math.PI / 180);
-    return Number.isFinite(aspectScale) && aspectScale > 0 ? aspectScale : 1;
+    return {
+      maxNumCases,
+      minNumCases,
+      numCases,
+      statisticsPerRegion,
+    };
   }
 
-  private static getGeoJsonBounds(geoJson: string): GeoJsonBounds | null {
-    try {
-      const parsedGeoJson = JSON.parse(geoJson) as GeoJsonObject;
-      return EpiMapUtil.getGeoJsonObjectBounds(parsedGeoJson);
-    } catch {
-      return null;
-    }
+  private static createEmptyBounds(): GeoJsonBounds {
+    return [Infinity, Infinity, -Infinity, -Infinity];
   }
 
-  private static getGeoJsonObjectBounds(geoJson: GeoJsonObject): GeoJsonBounds | null {
-    const bboxBounds = EpiMapUtil.normalizeBounds(geoJson.bbox);
-    if (bboxBounds) {
-      return bboxBounds;
+  private static expandBoundsFromCoordinates(bounds: GeoJsonBounds, coordinates: unknown) {
+    if (!Array.isArray(coordinates) || !coordinates.length) {
+      return;
     }
 
-    const bounds = EpiMapUtil.createEmptyBounds();
-    EpiMapUtil.expandBoundsFromCoordinates(bounds, geoJson.coordinates);
-    geoJson.features?.forEach(feature => EpiMapUtil.expandBoundsFromFeature(bounds, feature));
-    geoJson.geometries?.forEach(geometry => EpiMapUtil.expandBoundsFromGeometry(bounds, geometry));
-    EpiMapUtil.expandBoundsFromGeometry(bounds, geoJson.geometry);
+    if (typeof coordinates[0] === 'number' && typeof coordinates[1] === 'number') {
+      const [longitude, latitude] = coordinates as [number, number];
 
-    return EpiMapUtil.hasBounds(bounds) ? bounds : null;
+      if (!Number.isFinite(longitude) || !Number.isFinite(latitude)) {
+        return;
+      }
+
+      bounds[0] = Math.min(bounds[0], longitude);
+      bounds[1] = Math.min(bounds[1], latitude);
+      bounds[2] = Math.max(bounds[2], longitude);
+      bounds[3] = Math.max(bounds[3], latitude);
+      return;
+    }
+
+    coordinates.forEach(childCoordinates => EpiMapUtil.expandBoundsFromCoordinates(bounds, childCoordinates));
   }
 
   private static expandBoundsFromFeature(bounds: GeoJsonBounds, feature?: GeoJsonFeature | null) {
@@ -164,30 +166,28 @@ export class EpiMapUtil {
     geometry.geometries?.forEach(childGeometry => EpiMapUtil.expandBoundsFromGeometry(bounds, childGeometry));
   }
 
-  private static expandBoundsFromCoordinates(bounds: GeoJsonBounds, coordinates: unknown) {
-    if (!Array.isArray(coordinates) || !coordinates.length) {
-      return;
+  private static getGeoJsonBounds(geoJson: string): GeoJsonBounds | null {
+    try {
+      const parsedGeoJson = JSON.parse(geoJson) as GeoJsonObject;
+      return EpiMapUtil.getGeoJsonObjectBounds(parsedGeoJson);
+    } catch {
+      return null;
     }
-
-    if (typeof coordinates[0] === 'number' && typeof coordinates[1] === 'number') {
-      const [longitude, latitude] = coordinates as [number, number];
-
-      if (!Number.isFinite(longitude) || !Number.isFinite(latitude)) {
-        return;
-      }
-
-      bounds[0] = Math.min(bounds[0], longitude);
-      bounds[1] = Math.min(bounds[1], latitude);
-      bounds[2] = Math.max(bounds[2], longitude);
-      bounds[3] = Math.max(bounds[3], latitude);
-      return;
-    }
-
-    coordinates.forEach(childCoordinates => EpiMapUtil.expandBoundsFromCoordinates(bounds, childCoordinates));
   }
 
-  private static createEmptyBounds(): GeoJsonBounds {
-    return [Infinity, Infinity, -Infinity, -Infinity];
+  private static getGeoJsonObjectBounds(geoJson: GeoJsonObject): GeoJsonBounds | null {
+    const bboxBounds = EpiMapUtil.normalizeBounds(geoJson.bbox);
+    if (bboxBounds) {
+      return bboxBounds;
+    }
+
+    const bounds = EpiMapUtil.createEmptyBounds();
+    EpiMapUtil.expandBoundsFromCoordinates(bounds, geoJson.coordinates);
+    geoJson.features?.forEach(feature => EpiMapUtil.expandBoundsFromFeature(bounds, feature));
+    geoJson.geometries?.forEach(geometry => EpiMapUtil.expandBoundsFromGeometry(bounds, geometry));
+    EpiMapUtil.expandBoundsFromGeometry(bounds, geoJson.geometry);
+
+    return EpiMapUtil.hasBounds(bounds) ? bounds : null;
   }
 
   private static hasBounds(bounds: GeoJsonBounds) {
