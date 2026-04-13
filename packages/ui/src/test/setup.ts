@@ -1,5 +1,8 @@
 import { setup } from '../setup/setup';
 
+global.TextEncoder = TextEncoder;
+global.TextDecoder = TextDecoder;
+
 export const setupTestEnvironment = () => {
   setup();
 

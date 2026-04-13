@@ -305,4 +305,3 @@ export * from './classes/abstracts/FilterAbstract';
 export * from './classes/abstracts/EventBusAbstract';
 export * from './classes/TableEventBus';
 export * from './classes/Subject';
-export * from './api';

@@ -47,8 +47,7 @@
     "test-run": "vitest run --passWithNoTests --coverage",
     "lint": "eslint ./src --report-unused-disable-directives --max-warnings 0",
     "lint-fix": "eslint ./src --report-unused-disable-directives --max-warnings 0 --fix",
-    "check-types": "tsc --noemit",
-    "test:browser": "vitest --config=vitest.browser.config.ts"
+    "check-types": "tsc --noemit"
   },
   "peerDependencies": {
     "@emotion/cache": "^11.14.0",
@@ -169,7 +168,6 @@
     "@types/react": "19.2.14",
     "@types/react-dom": "19.2.3",
     "@vitejs/plugin-react": "6.0.1",
-    "@vitest/browser-playwright": "4.1.4",
     "@vitest/coverage-v8": "4.1.4",
     "eslint": "10.2.0",
     "jsdom": "29.0.2",

@@ -6,7 +6,6 @@ import {
 } from 'fs';
 import { join } from 'path';
 
-import { playwright } from '@vitest/browser-playwright';
 import react from '@vitejs/plugin-react';
 import svgr from 'vite-plugin-svgr';
 import dts from 'vite-plugin-dts';
@@ -130,31 +129,8 @@ export default defineConfig({
             'src/**/*.test.ts',
           ],
           name: 'unit',
-          setupFiles: ['./src/test/setup-jsdom.ts'],
+          setupFiles: ['./src/test/setup.ts'],
           testTimeout: 5000,
-        },
-      },
-      {
-        plugins: [
-          react(),
-        ],
-        test: {
-          browser: {
-            enabled: true,
-            headless: !!process.env.CI,
-            // https://vitest.dev/config/browser/playwright
-            instances: [
-              { browser: 'chromium' },
-            ],
-            provider: playwright(),
-          },
-          globals: true,
-          include: [
-            'src/**/*.test.tsx',
-          ],
-          name: 'browser',
-          setupFiles: ['./src/test/setup-browser.ts'],
-          testTimeout: 30000,
         },
       },
     ],
