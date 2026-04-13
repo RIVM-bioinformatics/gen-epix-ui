@@ -1,9 +1,9 @@
 import {
   Box,
   Divider,
+  styled,
   Tooltip,
   Typography,
-  styled,
   useTheme,
 } from '@mui/material';
 import ZoomOutMapIcon from '@mui/icons-material/ZoomOutMap';
@@ -15,10 +15,10 @@ import type {
   ReactNode,
 } from 'react';
 import {
-  useContext,
+  isValidElement,
+  use,
   useCallback,
   useMemo,
-  isValidElement,
 } from 'react';
 
 import type { EPI_ZONE } from '../../../models/epi';
@@ -36,25 +36,25 @@ import { WidgetHeaderIconButton } from '../EpiWidgetHeaderIconButton';
 
 
 export type WidgetProps = PropsWithChildren<{
-  readonly title: string | MenuItemData | ReactNode;
-  readonly primaryMenu?: MenuItemData[] | ReactNode;
-  readonly secondaryMenu?: MenuItemData[] | ReactNode;
-  readonly warningMessage?: string;
-  readonly zone: EPI_ZONE;
   readonly expandDisabled?: boolean;
   readonly isLoading?: boolean;
+  readonly primaryMenu?: MenuItemData[] | ReactNode;
+  readonly secondaryMenu?: MenuItemData[] | ReactNode;
+  readonly title: MenuItemData | ReactNode | string;
+  readonly warningMessage?: string;
+  readonly zone: EPI_ZONE;
 }>;
 
 const StyledDivider = styled(Divider)(({ theme }) => ({
-  marginTop: theme.spacing(0.5),
   marginBottom: theme.spacing(0.5),
+  marginTop: theme.spacing(0.5),
 }));
 
-export const EpiWidget = ({ title, children, primaryMenu, secondaryMenu, warningMessage, zone, expandDisabled, isLoading }: WidgetProps) => {
+export const EpiWidget = ({ children, expandDisabled, isLoading, primaryMenu, secondaryMenu, title, warningMessage, zone }: WidgetProps) => {
   const theme = useTheme();
   const { t } = useTranslation();
 
-  const epiDashboardStore = useContext(EpiDashboardStoreContext);
+  const epiDashboardStore = use(EpiDashboardStoreContext);
   const expandZone = useStore(epiDashboardStore, (state) => state.expandZone);
   const expandedZone = useStore(epiDashboardStore, (state) => state.expandedZone);
   const enabledLayoutZoneCount = useStore(userProfileStore, (state) => DashboardUtil.getEnabledZones(state.epiDashboardLayoutUserConfig).length);
@@ -76,14 +76,14 @@ export const EpiWidget = ({ title, children, primaryMenu, secondaryMenu, warning
         >
           <Typography
             component={'h2'}
-            fontWeight={'bold'}
             sx={{
               display: 'inline-block',
-              maxWidth: '100%',
+              fontWeight: 'bold',
               lineHeight: theme.spacing(3),
-              whiteSpace: 'nowrap',
-              textOverflow: 'ellipsis',
+              maxWidth: '100%',
               overflow: 'hidden',
+              textOverflow: 'ellipsis',
+              whiteSpace: 'nowrap',
             }}
             variant={'body1'}
           >
@@ -98,22 +98,22 @@ export const EpiWidget = ({ title, children, primaryMenu, secondaryMenu, warning
     if (MenuDataUtil.isMenuItemData(title)) {
       return (
         <NestedDropdown
-          showTopLevelTooltip
           ButtonProps={{
-            variant: 'text',
-            size: 'small',
             color: 'inherit',
+            size: 'small',
             sx: {
-              margin: 0,
-              padding: 0,
-              background: 'none !important',
               '& span': {
                 margin: 0,
               },
+              background: 'none !important',
+              margin: 0,
+              padding: 0,
               textTransform: 'none',
             },
+            variant: 'text',
           }}
           menuItemsData={title}
+          showTopLevelTooltip
         />
       );
     }
@@ -129,10 +129,10 @@ export const EpiWidget = ({ title, children, primaryMenu, secondaryMenu, warning
     >
       <Box
         sx={{
-          position: 'absolute',
           height: theme.spacing(3),
-          maxWidth: '100%',
           left: 0,
+          maxWidth: '100%',
+          position: 'absolute',
         }}
       >
         {titleInnerElement}
@@ -151,8 +151,8 @@ export const EpiWidget = ({ title, children, primaryMenu, secondaryMenu, warning
       {/* Widget header bar */}
       <Box
         sx={{
-          height: theme.spacing(3),
           display: 'flex',
+          height: theme.spacing(3),
           justifyContent: 'space-between',
         }}
       >
@@ -166,48 +166,48 @@ export const EpiWidget = ({ title, children, primaryMenu, secondaryMenu, warning
           {/* primary menu */}
           <Box
             sx={{
-              justifySelf: 'right',
               display: 'flex',
               height: `calc(${theme.spacing(3)} - 1px)`,
+              justifySelf: 'right',
               marginTop: '1px',
             }}
           >
             {primaryMenu && <EpiWidgetMenu menu={primaryMenu} />}
             {primaryMenu && (
               <StyledDivider
+                aria-hidden={'true'}
                 flexItem
                 orientation={'vertical'}
                 variant={'middle'}
-                aria-hidden={'true'}
               />
             )}
           </Box>
           {/* secondary menu */}
           <Box
             sx={{
-              justifySelf: 'right',
               display: 'flex',
               height: `calc(${theme.spacing(3)} - 1px)`,
+              justifySelf: 'right',
               marginTop: '1px',
             }}
           >
             {secondaryMenu && <EpiWidgetMenu menu={secondaryMenu} />}
             {secondaryMenu && (
               <StyledDivider
+                aria-hidden={'true'}
                 flexItem
                 orientation={'vertical'}
                 variant={'middle'}
-                aria-hidden={'true'}
               />
             )}
             {enabledLayoutZoneCount > 1 && (
               <WidgetHeaderIconButton
                 disabled={expandDisabled}
                 label={isExpanded ? t`Collapse` : t`Expand`}
+                onClick={onExpandButtonClick}
                 sx={{
                   marginRight: theme.spacing(-1),
                 }}
-                onClick={onExpandButtonClick}
               >
                 {isExpanded && (
                   <ZoomInMapIcon />

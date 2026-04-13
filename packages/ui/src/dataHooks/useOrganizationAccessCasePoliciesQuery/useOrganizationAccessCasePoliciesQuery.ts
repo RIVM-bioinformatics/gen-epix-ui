@@ -10,11 +10,11 @@ import { useQueryMemo } from '../../hooks/useQueryMemo';
 
 export const useOrganizationAccessCasePoliciesQuery = (select?: (data: OrganizationAccessCasePolicy[]) => OrganizationAccessCasePolicy[]): UseQueryResult<OrganizationAccessCasePolicy[]> => {
   return useQueryMemo({
-    queryKey: QueryUtil.getGenericKey(QUERY_KEY.ORGANIZATION_ACCESS_CASE_POLICIES),
     queryFn: async ({ signal }) => {
       const response = await AbacApi.instance.organizationAccessCasePoliciesGetAll({ signal });
       return response.data;
     },
+    queryKey: QueryUtil.getGenericKey(QUERY_KEY.ORGANIZATION_ACCESS_CASE_POLICIES),
     select: select ? (data) => select(data) : undefined,
   });
 };

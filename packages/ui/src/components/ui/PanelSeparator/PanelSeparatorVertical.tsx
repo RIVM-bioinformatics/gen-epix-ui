@@ -9,34 +9,6 @@ import { Separator } from 'react-resizable-panels';
 
 const StyledSeparator = styled(Separator)(() => ({}));
 
-export const PanelSeparatorHorizontal = (props: SeparatorProps) => {
-  const theme = useTheme();
-  const { t } = useTranslation();
-  return (
-    <StyledSeparator
-      {...props}
-      aria-label={t('Horizontal separator')}
-      sx={{
-        height: '11px',
-        '&:hover > div': {
-          background: theme.palette.primary.main,
-          margin: '4px 0',
-          height: '3px',
-        },
-      }}
-    >
-      <Box
-        sx={{
-          background: theme.palette.divider,
-          width: '100%',
-          margin: '5px 0',
-          height: '1px',
-        }}
-      />
-    </StyledSeparator>
-  );
-};
-
 export const PanelSeparatorVertical = (props: SeparatorProps) => {
   const theme = useTheme();
   const { t } = useTranslation();
@@ -46,12 +18,12 @@ export const PanelSeparatorVertical = (props: SeparatorProps) => {
       {...props}
       aria-label={t('Vertical separator')}
       sx={{
-        width: '11px',
         '&:hover > div': {
           background: theme.palette.primary.main,
           margin: '0 4px ',
           width: '3px',
         },
+        width: '11px',
       }}
     >
       <Box

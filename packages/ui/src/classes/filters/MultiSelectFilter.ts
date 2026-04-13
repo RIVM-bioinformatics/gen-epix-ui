@@ -9,24 +9,24 @@ import { FilterAbstract } from '../abstracts/FilterAbstract';
 import type { Filter } from '../../models/filter';
 
 export interface MultiSelectFilterKwArgs extends FilterAbstractKwArgs {
-  options: AutoCompleteOption[];
   maxNumOptionsExpanded?: number;
+  options: AutoCompleteOption[];
 }
 
 export class MultiSelectFilter extends FilterAbstract<string[]> implements Filter<string[], string> {
+  public filterValue: string[] = [];
+  public initialFilterValue: string[] = [];
+  public maxNumOptionsExpanded = 5;
   public options: AutoCompleteOption[];
   private readonly optionsMap: Map<string, string> = new Map<string, string>();
-  public initialFilterValue: string[] = [];
-  public filterValue: string[] = [];
-  public maxNumOptionsExpanded = 5;
 
   public constructor(kwArgs: MultiSelectFilterKwArgs) {
     super({
-      id: kwArgs.id,
-      label: kwArgs.label,
+      filterDimensionId: kwArgs.filterDimensionId,
       filterMode: kwArgs.filterMode,
       filterPriority: kwArgs.filterPriority,
-      filterDimensionId: kwArgs.filterDimensionId,
+      id: kwArgs.id,
+      label: kwArgs.label,
     });
     this.options = kwArgs.options;
     if (isNumber(kwArgs.maxNumOptionsExpanded)) {
@@ -35,6 +35,11 @@ export class MultiSelectFilter extends FilterAbstract<string[]> implements Filte
     kwArgs.options.forEach(option => {
       this.optionsMap.set(option.value as string, option.label);
     });
+  }
+
+  public getPresentationValue(value?: unknown): string {
+    const usedValues = value as string[] ?? this.filterValue;
+    return usedValues.map(v => this.optionsMap.get(v)).join(', ');
   }
 
   public matchRowValue(rowValue: string): boolean {
@@ -51,20 +56,15 @@ export class MultiSelectFilter extends FilterAbstract<string[]> implements Filte
     return (this.filterValue).includes(rowValue);
   }
 
-  public getPresentationValue(value?: unknown): string {
-    const usedValues = value as string[] ?? this.filterValue;
-    return usedValues.map(v => this.optionsMap.get(v)).join(', ');
-  }
-
   public toBackendFilter(): TypedStringSetFilter {
     if (this.isInitialFilterValue()) {
       return;
     }
 
     return {
-      type: 'STRING_SET',
       key: this.id,
       members: this.filterValue,
+      type: 'STRING_SET',
     };
   }
 }

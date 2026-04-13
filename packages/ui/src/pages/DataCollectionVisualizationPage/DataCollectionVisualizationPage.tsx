@@ -14,10 +14,10 @@ import { CanvasRenderer } from 'echarts/renderers';
 import { TooltipComponent } from 'echarts/components';
 import { GraphChart } from 'echarts/charts';
 import {
-  useCallback,
-  useMemo,
   type MouseEvent as ReactMouseEvent,
   type SyntheticEvent,
+  useCallback,
+  useMemo,
   useState,
 } from 'react';
 import type {
@@ -41,29 +41,6 @@ import { TestIdUtil } from '../../utils/TestIdUtil';
 
 echarts.use([TooltipComponent, CanvasRenderer, GraphChart]);
 
-type Node = {
-  accessLinkCount: number;
-  category: number;
-  id: string;
-  itemStyle: {
-    borderColor: string;
-    borderWidth: number;
-    color: string;
-  };
-  label: NonNullable<GraphSeriesOption['label']>;
-  name: string;
-  nodeType: 'organization' | 'dataCollection';
-  shareInCount: number;
-  shareOutCount: number;
-  symbol: 'circle' | 'roundRect';
-  symbolSize: number;
-  value: number;
-  x: number;
-  y: number;
-};
-
-type AccessRightsSummary = Pick<OrganizationAccessCasePolicy, 'add_case' | 'remove_case' | 'add_case_set' | 'remove_case_set' | 'read_case_set' | 'write_case_set' | 'is_private'>;
-
 type AccessLink = {
   accessPolicyCount: number;
   accessRights: AccessRightsSummary;
@@ -78,6 +55,58 @@ type AccessLink = {
   value: number;
 };
 
+type AccessRightsSummary = Pick<OrganizationAccessCasePolicy, 'add_case_set' | 'add_case' | 'is_private' | 'read_case_set' | 'remove_case_set' | 'remove_case' | 'write_case_set'>;
+
+type Category = {
+  name: string;
+};
+
+type Graph = {
+  categories: Category[];
+  links: Link[];
+  nodes: Node[];
+  totalAccessLinks: number;
+  totalDataCollections: number;
+  totalOrganizations: number;
+  totalShareLinks: number;
+  zoom: number;
+};
+
+type GraphTooltipParams = {
+  data: Link | Node;
+  dataType?: 'edge' | 'node';
+};
+
+type Link = AccessLink | ShareLink;
+
+type Node = {
+  accessLinkCount: number;
+  category: number;
+  id: string;
+  itemStyle: {
+    borderColor: string;
+    borderWidth: number;
+    color: string;
+  };
+  label: NonNullable<GraphSeriesOption['label']>;
+  name: string;
+  nodeType: 'dataCollection' | 'organization';
+  shareInCount: number;
+  shareOutCount: number;
+  symbol: 'circle' | 'roundRect';
+  symbolSize: number;
+  value: number;
+  x: number;
+  y: number;
+};
+
+type SelectionOption = {
+  label: string;
+  value: string;
+};
+
+type SelectionType = 'dataCollection' | 'organization';
+
 type ShareLink = {
   lineStyle: NonNullable<GraphSeriesOption['lineStyle']>;
   linkType: 'share';
@@ -90,44 +119,15 @@ type ShareLink = {
   value: number;
 };
 
-type Link = AccessLink | ShareLink;
-
-type Category = {
-  name: string;
-};
-
-type Graph = {
-  categories: Category[];
-  links: Link[];
-  nodes: Node[];
-  zoom: number;
-  totalAccessLinks: number;
-  totalDataCollections: number;
-  totalOrganizations: number;
-  totalShareLinks: number;
-};
-
-type GraphTooltipParams = {
-  dataType?: 'edge' | 'node';
-  data: Link | Node;
-};
-
-type SelectionType = 'organization' | 'dataCollection';
-
-type SelectionOption = {
-  label: string;
-  value: string;
-};
-
 const EMPTY_GRAPH: Graph = {
   categories: [],
   links: [],
   nodes: [],
-  zoom: 1,
   totalAccessLinks: 0,
   totalDataCollections: 0,
   totalOrganizations: 0,
   totalShareLinks: 0,
+  zoom: 1,
 };
 
 const GRAPH_LAYOUT = {
@@ -146,7 +146,7 @@ const GRAPH_LAYOUT = {
   viewportVerticalPadding: 24,
 } as const;
 
-const DataCollectionVisualizationPageInner = () => {
+export const DataCollectionVisualizationPage = () => {
   const { t } = useTranslation();
   const theme = useTheme();
   const [selectionType, setSelectionType] = useState<SelectionType>('organization');
@@ -192,7 +192,7 @@ const DataCollectionVisualizationPageInner = () => {
   const selectionLabel = selectionType === 'organization' ? t`Organization` : t`Data collection`;
   const hasSelection = !!selectedEntityId;
 
-  const onSelectionTypeChange = useCallback((_event: ReactMouseEvent<HTMLElement>, nextSelectionType: SelectionType | null) => {
+  const onSelectionTypeChange = useCallback((_event: ReactMouseEvent<HTMLElement>, nextSelectionType: null | SelectionType) => {
     if (!nextSelectionType || nextSelectionType === selectionType) {
       return;
     }
@@ -209,7 +209,7 @@ const DataCollectionVisualizationPageInner = () => {
     return option.value === value.value;
   }, []);
 
-  const onSelectionChange = useCallback((_event: SyntheticEvent, nextOption: SelectionOption | null) => {
+  const onSelectionChange = useCallback((_event: SyntheticEvent, nextOption: null | SelectionOption) => {
     setSelectedEntityId(nextOption?.value ?? null);
   }, []);
 
@@ -217,8 +217,8 @@ const DataCollectionVisualizationPageInner = () => {
     return (
       <TextField
         {...params}
-        required
         label={selectionLabel}
+        required
         size={'small'}
       />
     );
@@ -609,6 +609,39 @@ const DataCollectionVisualizationPageInner = () => {
 
   const getOptions = useCallback(() => {
     return {
+      animation: false,
+      series: [
+        {
+          bottom: GRAPH_LAYOUT.viewportVerticalPadding,
+          categories: graph.categories,
+          center: ['50%', '50%'],
+          data: graph.nodes,
+          edgeSymbol: ['none', 'arrow'],
+          edgeSymbolSize: 8,
+          emphasis: {
+            focus: 'adjacency',
+            lineStyle: {
+              width: 3,
+            },
+          },
+          layout: 'none',
+          left: GRAPH_LAYOUT.viewportHorizontalPadding,
+          lineStyle: {
+            opacity: 0.45,
+          },
+          links: graph.links,
+          right: GRAPH_LAYOUT.viewportHorizontalPadding,
+          roam: true,
+          roamTrigger: 'global',
+          scaleLimit: {
+            max: 4,
+            min: 0.1,
+          },
+          top: GRAPH_LAYOUT.viewportVerticalPadding,
+          type: 'graph',
+          zoom: graph.zoom,
+        } satisfies GraphSeriesOption,
+      ],
       tooltip: {
         formatter: (params: unknown) => {
           const typedParams = params as GraphTooltipParams;
@@ -652,187 +685,8 @@ const DataCollectionVisualizationPageInner = () => {
           ].join('<br/>');
         },
       },
-      animation: false,
-      series: [
-        {
-          type: 'graph',
-          layout: 'none',
-          data: graph.nodes,
-          links: graph.links,
-          categories: graph.categories,
-          center: ['50%', '50%'],
-          edgeSymbol: ['none', 'arrow'],
-          edgeSymbolSize: 8,
-          left: GRAPH_LAYOUT.viewportHorizontalPadding,
-          top: GRAPH_LAYOUT.viewportVerticalPadding,
-          right: GRAPH_LAYOUT.viewportHorizontalPadding,
-          bottom: GRAPH_LAYOUT.viewportVerticalPadding,
-          roam: true,
-          roamTrigger: 'global',
-          scaleLimit: {
-            min: 0.1,
-            max: 4,
-          },
-          zoom: graph.zoom,
-          lineStyle: {
-            opacity: 0.45,
-          },
-          emphasis: {
-            focus: 'adjacency',
-            lineStyle: {
-              width: 3,
-            },
-          },
-        } satisfies GraphSeriesOption,
-      ],
     } satisfies EChartsOption;
   }, [formatAccessRights, formatList, graph.categories, graph.links, graph.nodes, graph.zoom, t]);
-
-  return (
-    <Box
-      sx={{
-        display: 'grid',
-        gap: 2,
-        gridTemplateRows: 'auto minmax(0, 1fr)',
-        height: '100%',
-        minHeight: 0,
-        overflow: 'hidden',
-      }}
-    >
-      <ResponseHandler
-        loadables={loadables}
-      >
-        <Box
-          sx={{
-            display: 'grid',
-            gap: 2,
-            px: 2,
-            py: 2,
-            borderRadius: 2,
-          }}
-        >
-          <Box
-            sx={{
-              display: 'grid',
-              gap: 2,
-              alignItems: 'end',
-              gridTemplateColumns: {
-                xs: '1fr',
-                md: 'max-content minmax(320px, 520px)',
-              },
-            }}
-          >
-            <Box
-              sx={{
-                display: 'grid',
-                gap: 0.75,
-              }}
-            >
-              <Typography
-                variant={'overline'}
-                color={'text.secondary'}
-              >
-                {t`Type`}
-              </Typography>
-              <ToggleButtonGroup
-                exclusive
-                size={'small'}
-                value={selectionType}
-                onChange={onSelectionTypeChange}
-              >
-                <ToggleButton value={'organization'}>
-                  {t`Organization`}
-                </ToggleButton>
-                <ToggleButton value={'dataCollection'}>
-                  {t`Data collection`}
-                </ToggleButton>
-              </ToggleButtonGroup>
-            </Box>
-            <Autocomplete
-              disablePortal
-              options={selectionOptions}
-              value={selectedOption}
-              getOptionLabel={getSelectionOptionLabel}
-              isOptionEqualToValue={isSelectionOptionEqualToValue}
-              noOptionsText={t`No results`}
-              renderInput={renderSelectionInput}
-              onChange={onSelectionChange}
-            />
-          </Box>
-          {hasSelection ? (
-            <Box
-              sx={{
-                display: 'flex',
-                flexWrap: 'wrap',
-                gap: 2,
-                color: 'text.secondary',
-              }}
-            >
-              <Box component={'span'}>
-                {t('Organizations: {{count}}', { count: graph.totalOrganizations })}
-              </Box>
-              <Box component={'span'}>
-                {t('Data collections: {{count}}', { count: graph.totalDataCollections })}
-              </Box>
-              <Box component={'span'}>
-                {t('Access links: {{count}}', { count: graph.totalAccessLinks })}
-              </Box>
-              <Box component={'span'}>
-                {t('Share routes: {{count}}', { count: graph.totalShareLinks })}
-              </Box>
-              <Box component={'span'}>
-                {t`Solid links show organization access policies. Dashed links show sharing routes between data collections.`}
-              </Box>
-            </Box>
-          ) : (
-            <Typography color={'text.secondary'}>
-              {t`Select an organization or data collection to show the visualization.`}
-            </Typography>
-          )}
-        </Box>
-        <Box
-          sx={{
-            height: '100%',
-            minHeight: 0,
-            minWidth: 0,
-            borderRadius: 2,
-            overflow: 'hidden',
-          }}
-        >
-          {hasSelection && graph.nodes.length > 0 ? (
-            <EChartsReact
-              notMerge
-              echarts={echarts}
-              option={getOptions()}
-              style={{
-                width: '100%',
-                height: '100%',
-              }}
-            />
-          ) : (
-            <Box
-              sx={{
-                display: 'grid',
-                placeItems: 'center',
-                height: '100%',
-                color: 'text.secondary',
-                px: 3,
-                textAlign: 'center',
-              }}
-            >
-              {hasSelection
-                ? t`No active organization access or share policies are available to visualize.`
-                : t`Select an organization or data collection to show the visualization.`}
-            </Box>
-          )}
-        </Box>
-      </ResponseHandler>
-    </Box>
-  );
-};
-
-export const DataCollectionVisualizationPage = () => {
-  const { t } = useTranslation();
 
   return (
     <PageContainer
@@ -842,7 +696,145 @@ export const DataCollectionVisualizationPage = () => {
       testIdAttributes={TestIdUtil.createAttributes('DataCollectionVisualizationPage')}
       title={t`Data collection visualization`}
     >
-      <DataCollectionVisualizationPageInner />
+      <Box
+        sx={{
+          display: 'grid',
+          gap: 2,
+          gridTemplateRows: 'auto minmax(0, 1fr)',
+          height: '100%',
+          minHeight: 0,
+          overflow: 'hidden',
+        }}
+      >
+        <ResponseHandler
+          loadables={loadables}
+        >
+          <Box
+            sx={{
+              borderRadius: 2,
+              display: 'grid',
+              gap: 2,
+              px: 2,
+              py: 2,
+            }}
+          >
+            <Box
+              sx={{
+                alignItems: 'end',
+                display: 'grid',
+                gap: 2,
+                gridTemplateColumns: {
+                  md: 'max-content minmax(320px, 520px)',
+                  xs: '1fr',
+                },
+              }}
+            >
+              <Box
+                sx={{
+                  display: 'grid',
+                  gap: 0.75,
+                }}
+              >
+                <Typography
+                  color={'text.secondary'}
+                  variant={'overline'}
+                >
+                  {t`Type`}
+                </Typography>
+                <ToggleButtonGroup
+                  exclusive
+                  onChange={onSelectionTypeChange}
+                  size={'small'}
+                  value={selectionType}
+                >
+                  <ToggleButton value={'organization'}>
+                    {t`Organization`}
+                  </ToggleButton>
+                  <ToggleButton value={'dataCollection'}>
+                    {t`Data collection`}
+                  </ToggleButton>
+                </ToggleButtonGroup>
+              </Box>
+              <Autocomplete
+                disablePortal
+                getOptionLabel={getSelectionOptionLabel}
+                isOptionEqualToValue={isSelectionOptionEqualToValue}
+                noOptionsText={t`No results`}
+                onChange={onSelectionChange}
+                options={selectionOptions}
+                renderInput={renderSelectionInput}
+                value={selectedOption}
+              />
+            </Box>
+            {hasSelection ? (
+              <Box
+                sx={{
+                  color: 'text.secondary',
+                  display: 'flex',
+                  flexWrap: 'wrap',
+                  gap: 2,
+                }}
+              >
+                <Box component={'span'}>
+                  {t('Organizations: {{count}}', { count: graph.totalOrganizations })}
+                </Box>
+                <Box component={'span'}>
+                  {t('Data collections: {{count}}', { count: graph.totalDataCollections })}
+                </Box>
+                <Box component={'span'}>
+                  {t('Access links: {{count}}', { count: graph.totalAccessLinks })}
+                </Box>
+                <Box component={'span'}>
+                  {t('Share routes: {{count}}', { count: graph.totalShareLinks })}
+                </Box>
+                <Box component={'span'}>
+                  {t`Solid links show organization access policies. Dashed links show sharing routes between data collections.`}
+                </Box>
+              </Box>
+            ) : (
+              <Typography color={'text.secondary'}>
+                {t`Select an organization or data collection to show the visualization.`}
+              </Typography>
+            )}
+          </Box>
+          <Box
+            sx={{
+              borderRadius: 2,
+              height: '100%',
+              minHeight: 0,
+              minWidth: 0,
+              overflow: 'hidden',
+            }}
+          >
+            {hasSelection && graph.nodes.length > 0 ? (
+              <EChartsReact
+                echarts={echarts}
+                notMerge
+                option={getOptions()}
+                style={{
+                  height: '100%',
+                  width: '100%',
+                }}
+              />
+            ) : (
+              <Box
+                sx={{
+                  color: 'text.secondary',
+                  display: 'grid',
+                  height: '100%',
+                  placeItems: 'center',
+                  px: 3,
+                  textAlign: 'center',
+                }}
+              >
+                {hasSelection
+                  ? t`No active organization access or share policies are available to visualize.`
+                  : t`Select an organization or data collection to show the visualization.`}
+              </Box>
+            )}
+          </Box>
+        </ResponseHandler>
+      </Box>
     </PageContainer>
   );
 };

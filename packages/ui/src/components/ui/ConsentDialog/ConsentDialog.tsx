@@ -4,8 +4,8 @@ import { useEffect } from 'react';
 
 import { ConfigManager } from '../../../classes/managers/ConfigManager';
 import type {
-  WithDialogRenderProps,
   WithDialogRefMethods,
+  WithDialogRenderProps,
 } from '../../../hoc/withDialog';
 import { withDialog } from '../../../hoc/withDialog';
 import { TestIdUtil } from '../../../utils/TestIdUtil';
@@ -22,9 +22,9 @@ export type ConsentDialogRefMethods = WithDialogRefMethods<ConsentDialogProps, C
 
 export const ConsentDialog = withDialog<ConsentDialogProps, ConsentDialogOpenProps>((
   {
-    onTitleChange,
     onActionsChange,
     onConsent,
+    onTitleChange,
   }: ConsentDialogProps,
 ): ReactElement => {
   const { t } = useTranslation();
@@ -37,21 +37,21 @@ export const ConsentDialog = withDialog<ConsentDialogProps, ConsentDialogOpenPro
     onActionsChange([
       {
         ...TestIdUtil.createAttributes('ConsentDialog-agree'),
-        color: 'secondary',
         autoFocus: true,
+        color: 'secondary',
+        label: ConfigManager.instance.config.consentDialog.getButtonLabel(t),
         onClick: onConsent,
         variant: 'contained',
-        label: ConfigManager.instance.config.consentDialog.getButtonLabel(t),
       },
     ]);
   }, [onActionsChange, onConsent, t]);
 
   return ConfigManager.instance.config.consentDialog.Content();
 }, {
-  testId: 'ConsentDialog',
-  maxWidth: 'md',
-  fullWidth: true,
   defaultTitle: '',
-  noCloseButton: true,
   disableBackdropClick: true,
+  fullWidth: true,
+  maxWidth: 'md',
+  noCloseButton: true,
+  testId: 'ConsentDialog',
 });

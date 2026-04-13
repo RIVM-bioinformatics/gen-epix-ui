@@ -1,4 +1,7 @@
-import i18next from 'i18next';
+import i18next, {
+  changeLanguage,
+  use,
+} from 'i18next';
 import { initReactI18next } from 'react-i18next';
 
 import { WindowManager } from '../WindowManager';
@@ -14,17 +17,17 @@ type I18nEvent = {
 };
 
 export class I18nManager extends EventBusAbstract<I18nEvent> {
-  private isInitialized = false;
-  private languageLoaded: Record<string, boolean> = {};
-  private constructor() {
-    super();
-  }
-
   public static get instance(): I18nManager {
     // Instances are stored on the window to prevent multiple instances of the same manager. HMR may load multiple instances of the same manager, but we only want one instance to be active at a time.
 
     WindowManager.instance.window.managers.i18n = WindowManager.instance.window.managers.i18n || new I18nManager();
     return WindowManager.instance.window.managers.i18n;
+  }
+  private isInitialized = false;
+  private languageLoaded: Record<string, boolean> = {};
+
+  private constructor() {
+    super();
   }
 
   public async init(): Promise<void> {
@@ -35,19 +38,19 @@ export class I18nManager extends EventBusAbstract<I18nEvent> {
     const currentLanguageCode = await ConfigManager.instance.config.i18n.getCurrentLanguageCode();
     const defaultLanguageConfig = ConfigManager.instance.config.i18n.languages.find(x => x.code === currentLanguageCode);
 
-    await i18next
-      .use(initReactI18next)
+    // eslint-disable-next-line @eslint-react/rules-of-hooks
+    await use(initReactI18next)
       .init({
-        lng: defaultLanguageConfig.code,
         fallbackLng: defaultLanguageConfig.code,
-        missingKeyHandler: (lng, ns, key) => {
-          console.warn(`Missing translation for key: "${key}" in language: "${lng.join(', ')}" and namespace: "${ns}"`);
+        interpolation: {
+          escapeValue: false, // react already safes from xss => https://www.i18next.com/translation-function/interpolation#unescape
         },
+        lng: defaultLanguageConfig.code,
         missingInterpolationHandler: (text, value, options) => {
           console.warn(`Missing interpolation for key: "${text}" with value: "${JSON.stringify(value)}" and options: "${JSON.stringify(options)}"`);
         },
-        interpolation: {
-          escapeValue: false, // react already safes from xss => https://www.i18next.com/translation-function/interpolation#unescape
+        missingKeyHandler: (lng, ns, key) => {
+          console.warn(`Missing translation for key: "${key}" in language: "${lng.join(', ')}" and namespace: "${ns}"`);
         },
       });
 
@@ -56,25 +59,16 @@ export class I18nManager extends EventBusAbstract<I18nEvent> {
     this.isInitialized = true;
   }
 
-  private updateLangAttribute(code: string): void {
-    const doc = WindowManager.instance.document;
-    if (!doc) {
-      console.warn('Document is not available, cannot set lang attribute');
-      return;
-    }
-    doc.documentElement.setAttribute('lang', code);
+  public async switchLanguage(code: string): Promise<void> {
+    await this.switchLanguageConfig(code);
+
+    await this.loadResources(code);
+    await changeLanguage(code);
   }
 
   public async switchLanguageConfig(code: string): Promise<void> {
     await ConfigManager.instance.config.i18n.setNewLanguageCode(code);
     this.updateLangAttribute(code);
-  }
-
-  public async switchLanguage(code: string): Promise<void> {
-    await this.switchLanguageConfig(code);
-
-    await this.loadResources(code);
-    await i18next.changeLanguage(code);
   }
 
   private async loadResources(code: string): Promise<void> {
@@ -100,5 +94,14 @@ export class I18nManager extends EventBusAbstract<I18nEvent> {
       );
     }));
     this.languageLoaded[code] = true;
+  }
+
+  private updateLangAttribute(code: string): void {
+    const doc = WindowManager.instance.document;
+    if (!doc) {
+      console.warn('Document is not available, cannot set lang attribute');
+      return;
+    }
+    doc.documentElement.setAttribute('lang', code);
   }
 }

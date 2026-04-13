@@ -7,41 +7,34 @@ import { TestIdUtil } from '../../utils/TestIdUtil';
 import { HomePageTrends } from '../../components/ui/HomePageTrends';
 
 
-const HomeContent = () => {
-  const { HomePageIntroduction } = ConfigManager.instance.config;
-
-  return (
-    <Box
-      sx={{
-        display: 'grid',
-        gap: 2,
-        gridTemplateRows: 'auto max-content',
-        height: '100%',
-      }}
-    >
-      <Box
-        sx={{
-          display: 'grid',
-          gap: 2,
-          gridTemplateColumns: '1fr 1fr',
-        }}
-      >
-        <HomePageIntroduction />
-      </Box>
-      <HomePageTrends />
-    </Box>
-  );
-};
-
 export const HomePage = () => {
   const { t } = useTranslation();
+  const { HomePageIntroduction } = ConfigManager.instance.config;
 
   return (
     <PageContainer
       testIdAttributes={TestIdUtil.createAttributes('HomePage')}
       title={t`Home`}
     >
-      <HomeContent />
+      <Box
+        sx={{
+          display: 'grid',
+          gap: 2,
+          gridTemplateRows: 'auto max-content',
+          height: '100%',
+        }}
+      >
+        <Box
+          sx={{
+            display: 'grid',
+            gap: 2,
+            gridTemplateColumns: '1fr 1fr',
+          }}
+        >
+          <HomePageIntroduction />
+        </Box>
+        <HomePageTrends />
+      </Box>
     </PageContainer>
   );
 };

@@ -28,29 +28,29 @@ const FlexBox = styled(Box)({
 });
 
 type IconMenuItemProps = {
-  // eslint-disable-next-line @typescript-eslint/naming-convention
-  readonly MenuItemProps?: MenuItemProps;
+  readonly checked?: 'false' | 'mixed' | 'true';
   readonly className?: string;
   readonly disabled?: boolean;
+  readonly divider?: boolean;
   readonly label?: string;
   readonly leftIcon?: ReactNode;
+  // eslint-disable-next-line @typescript-eslint/naming-convention
+  readonly MenuItemProps?: MenuItemProps;
   readonly onClick?: (event: MouseEvent<HTMLElement>) => void;
   readonly ref?: RefObject<HTMLLIElement>;
   readonly rightIcon?: ReactNode;
   readonly sx?: SxProps;
-  readonly divider?: boolean;
-  readonly checked?: 'true' | 'false' | 'mixed';
 };
 
-export const IconMenuItem = ({ MenuItemProps, className, label, leftIcon, rightIcon, checked, ref, ...props }: IconMenuItemProps) => {
+export const IconMenuItem = ({ checked, className, label, leftIcon, MenuItemProps, ref, rightIcon, ...props }: IconMenuItemProps) => {
   return (
     <StyledMenuItem
       {...MenuItemProps}
-      ref={ref}
       className={className}
+      ref={ref}
       {...props}
-      role={checked ? 'menuitemcheckbox' : 'menuitem'}
       aria-checked={checked}
+      role={checked ? 'menuitemcheckbox' : 'menuitem'}
     >
       <FlexBox>
         {leftIcon}

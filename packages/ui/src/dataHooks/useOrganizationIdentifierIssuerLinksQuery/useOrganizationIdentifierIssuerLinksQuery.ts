@@ -9,10 +9,10 @@ import { useQueryMemo } from '../../hooks/useQueryMemo';
 
 export const useOrganizationIdentifierIssuerLinksQuery = (): UseQueryResult<OrganizationIdentifierIssuerLink[]> => {
   return useQueryMemo({
-    queryKey: QueryUtil.getGenericKey(QUERY_KEY.IDENTIFIER_ISSUER_LINKS),
     queryFn: async ({ signal }) => {
       const response = await OrganizationApi.instance.organizationIdentifierIssuerLinksGetAll({ signal });
       return response.data;
     },
+    queryKey: QueryUtil.getGenericKey(QUERY_KEY.IDENTIFIER_ISSUER_LINKS),
   });
 };

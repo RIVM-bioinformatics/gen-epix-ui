@@ -8,8 +8,8 @@ import { object } from 'yup';
 import { CrudPage } from '../CrudPage';
 import type { DataCollection } from '../../api';
 import {
-  OrganizationApi,
   CommandName,
+  OrganizationApi,
 } from '../../api';
 import type { FormFieldDefinition } from '../../models/form';
 import { FORM_FIELD_DEFINITION_TYPE } from '../../models/form';
@@ -47,8 +47,8 @@ export const DataCollectionsAdminPage = () => {
 
   const schema = useMemo(() => {
     return object<FormFields>().shape({
-      name: SchemaUtil.name,
       description: SchemaUtil.description,
+      name: SchemaUtil.name,
     });
   }, []);
 
@@ -56,13 +56,13 @@ export const DataCollectionsAdminPage = () => {
     return [
       {
         definition: FORM_FIELD_DEFINITION_TYPE.TEXTFIELD,
-        name: 'name',
         label: t`Name`,
+        name: 'name',
       } as const satisfies FormFieldDefinition<FormFields>,
       {
         definition: FORM_FIELD_DEFINITION_TYPE.RICH_TEXT,
-        name: 'description',
         label: t`Description`,
+        name: 'description',
       } as const satisfies FormFieldDefinition<FormFields>,
     ] as const;
   }, [t]);
@@ -75,9 +75,9 @@ export const DataCollectionsAdminPage = () => {
 
   return (
     <CrudPage<FormFields, DataCollection>
+      createItemDialogTitle={t`Create new data collection`}
       createOne={createOne}
       crudCommandType={CommandName.DataCollectionCrudCommand}
-      createItemDialogTitle={t`Create new data collection`}
       defaultSortByField={'name'}
       defaultSortDirection={'asc'}
       deleteOne={deleteOne}

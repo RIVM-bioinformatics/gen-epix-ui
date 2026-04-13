@@ -21,8 +21,8 @@ import {
   type UserInvitation,
 } from '../../api';
 import type {
-  WithDialogRenderProps,
   WithDialogRefMethods,
+  WithDialogRenderProps,
 } from '../../hoc/withDialog';
 import { withDialog } from '../../hoc/withDialog';
 import { TestIdUtil } from '../../utils/TestIdUtil';
@@ -50,10 +50,10 @@ type FormFields = {
 
 export const UserInvitationConsumeDialog = withDialog<UserInvitationConsumeDialogProps, UserInvitationConsumeDialogOpenProps>((
   {
-    onTitleChange,
-    openProps,
     onActionsChange,
     onClose,
+    onTitleChange,
+    openProps,
   }: UserInvitationConsumeDialogProps,
 ): ReactElement => {
   const { t } = useTranslation();
@@ -67,15 +67,15 @@ export const UserInvitationConsumeDialog = withDialog<UserInvitationConsumeDialo
   const formFieldDefinitions = useMemo<FormFieldDefinition<FormFields>[]>(() => [
       {
         definition: FORM_FIELD_DEFINITION_TYPE.TEXTFIELD,
-        name: 'bearerToken',
         label: t`Bearer Token`,
-        rows: 10,
         multiline: true,
+        name: 'bearerToken',
+        rows: 10,
       } as const satisfies FormFieldDefinition<FormFields>,
   ] as const, [t]);
 
   const formMethods = useForm<FormFields>({
-    resolver: yupResolver(schema, undefined,{ raw: true }) as Resolver<FormFields>,
+    resolver: yupResolver(schema, undefined, { raw: true }) as Resolver<FormFields>,
     values: {
       bearerToken: '',
     },
@@ -110,11 +110,11 @@ export const UserInvitationConsumeDialog = withDialog<UserInvitationConsumeDialo
       {
         ...TestIdUtil.createAttributes('UserInvitationConsumeDialog-agree'),
         color: 'primary',
-        variant: 'contained',
-        type: 'submit',
+        disabled: !!error,
         form: formId,
         label: t('Submit'),
-        disabled: !!error,
+        type: 'submit',
+        variant: 'contained',
       },
     ]);
   }, [onActionsChange, t, formId, error]);
@@ -122,22 +122,22 @@ export const UserInvitationConsumeDialog = withDialog<UserInvitationConsumeDialo
   return (
     <Box>
       <ResponseHandler
-        shouldHideActionButtons
         error={error}
+        shouldHideActionButtons
       >
         <GenericForm<FormFields>
           formFieldDefinitions={formFieldDefinitions}
           formId={formId}
           formMethods={formMethods}
-          schema={schema}
           onSubmit={handleSubmit(onFormSubmit)}
+          schema={schema}
         />
       </ResponseHandler>
     </Box>
   );
 }, {
-  testId: 'UserInvitationConsumeDialog',
-  maxWidth: 'md',
-  fullWidth: true,
   defaultTitle: '',
+  fullWidth: true,
+  maxWidth: 'md',
+  testId: 'UserInvitationConsumeDialog',
 });

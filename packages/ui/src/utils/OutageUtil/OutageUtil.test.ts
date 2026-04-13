@@ -1,11 +1,11 @@
 import {
-  describe,
-  it,
-  expect,
-  vi,
-  beforeAll,
   afterAll,
   afterEach,
+  beforeAll,
+  describe,
+  expect,
+  it,
+  vi,
 } from 'vitest';
 
 import { ConfigManager } from '../../classes/managers/ConfigManager';
@@ -48,17 +48,17 @@ describe('OutageUtil', () => {
           is_visible: false,
         },
         {
+          active_from: '2020-04-01T00:00:00Z',
           id: '3',
           is_active: false,
           is_visible: false,
-          active_from: '2020-04-01T00:00:00Z',
         },
         {
+          active_from: '2020-04-01T00:00:00Z',
+          active_to: '2020-05-02T00:00:00Z',
           id: '4',
           is_active: false,
           is_visible: false,
-          active_from: '2020-04-01T00:00:00Z',
-          active_to: '2020-05-02T00:00:00Z',
         },
 
         // Test visible
@@ -83,14 +83,14 @@ describe('OutageUtil', () => {
 
         // Test soon active
         {
+          active_from: '2020-06-01T11:00:00Z',
           id: '8',
           is_active: false,
           is_visible: false,
-          active_from: '2020-06-01T11:00:00Z',
         },
       ];
 
-      const { visibleOutages, activeOutages, soonActiveOutages } = OutageUtil.getCategorizedOutages(outages);
+      const { activeOutages, soonActiveOutages, visibleOutages } = OutageUtil.getCategorizedOutages(outages);
 
       // Assertions
       expect(visibleOutages).toHaveLength(2);

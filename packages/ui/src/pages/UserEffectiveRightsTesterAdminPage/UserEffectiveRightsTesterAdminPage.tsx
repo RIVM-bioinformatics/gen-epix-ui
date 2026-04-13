@@ -52,14 +52,14 @@ type FormFields = {
 
 type Result = {
   add_case: boolean;
-  remove_case: boolean;
   add_case_set: boolean;
-  remove_case_set: boolean;
-  read_col_ids: string[];
-  write_col_ids: string[];
-  read_case_set: boolean;
-  write_case_set: boolean;
   has_share_case_rights?: boolean;
+  read_case_set: boolean;
+  read_col_ids: string[];
+  remove_case: boolean;
+  remove_case_set: boolean;
+  write_case_set: boolean;
+  write_col_ids: string[];
 };
 
 export const UserEffectiveRightsTesterAdminPage = () => {
@@ -112,13 +112,13 @@ export const UserEffectiveRightsTesterAdminPage = () => {
     const { data: colSetMembers } = colSetMembersQuery;
 
     return EffectiveRightsUtil.assembleUserEffectiveRights({
-      user: userQuery.data,
-      organizationAccessCasePolicies,
-      organizationShareCasePolicies,
-      userAccessCasePolicies,
-      userShareCasePolicies,
       caseTypeSetMembers,
       colSetMembers,
+      organizationAccessCasePolicies,
+      organizationShareCasePolicies,
+      user: userQuery.data,
+      userAccessCasePolicies,
+      userShareCasePolicies,
     });
 
   }, [colSetMembersQuery, caseTypeSetMembersQuery, organizationAccessCasePoliciesQuery, organizationShareCasePoliciesQuery, userAccessCasePoliciesQuery, userQuery.data, userShareCasePoliciesQuery]);
@@ -137,7 +137,7 @@ export const UserEffectiveRightsTesterAdminPage = () => {
       fromDataCollectionId: null,
     },
   });
-  const { handleSubmit, control } = formMethods;
+  const { control, handleSubmit } = formMethods;
   const formValues = useWatch({ control });
 
   const result = useMemo<Result>(() => {
@@ -154,14 +154,14 @@ export const UserEffectiveRightsTesterAdminPage = () => {
 
     return {
       add_case: effectiveRight?.add_case || shareCaseRight?.add_case,
-      remove_case: effectiveRight?.remove_case || shareCaseRight?.remove_case,
       add_case_set: effectiveRight?.add_case_set || shareCaseRight?.add_case_set,
-      remove_case_set: effectiveRight?.remove_case_set || shareCaseRight?.remove_case_set,
-      read_case_set: effectiveRight?.read_case_set,
-      write_case_set: effectiveRight?.write_case_set,
-      read_col_ids: effectiveRight?.categorized_read_col_ids,
-      write_col_ids: effectiveRight?.categorized_write_col_ids,
       has_share_case_rights: effectiveRight?.effective_share_case_rights.length > 0,
+      read_case_set: effectiveRight?.read_case_set,
+      read_col_ids: effectiveRight?.categorized_read_col_ids,
+      remove_case: effectiveRight?.remove_case || shareCaseRight?.remove_case,
+      remove_case_set: effectiveRight?.remove_case_set || shareCaseRight?.remove_case_set,
+      write_case_set: effectiveRight?.write_case_set,
+      write_col_ids: effectiveRight?.categorized_write_col_ids,
     } satisfies Result;
   }, [effectiveRights, formValues.caseTypeId, formValues.dataCollectionId, formValues.fromDataCollectionId]);
 
@@ -169,25 +169,25 @@ export const UserEffectiveRightsTesterAdminPage = () => {
     return [
       {
         definition: FORM_FIELD_DEFINITION_TYPE.AUTOCOMPLETE,
-        name: 'caseTypeId',
         label: t`Case type`,
-        options: caseTypeOptionsQuery.options,
         loading: caseTypeOptionsQuery.isLoading,
+        name: 'caseTypeId',
+        options: caseTypeOptionsQuery.options,
       } as const satisfies FormFieldDefinition<FormFields>,
       {
         definition: FORM_FIELD_DEFINITION_TYPE.AUTOCOMPLETE,
-        name: 'dataCollectionId',
         label: t`Data collection`,
-        options: dataCollectionOptionsQuery.options,
         loading: dataCollectionOptionsQuery.isLoading,
+        name: 'dataCollectionId',
+        options: dataCollectionOptionsQuery.options,
       } as const satisfies FormFieldDefinition<FormFields>,
       {
         definition: FORM_FIELD_DEFINITION_TYPE.AUTOCOMPLETE,
-        name: 'fromDataCollectionId',
-        label: t`From data collection`,
-        options: dataCollectionOptionsQuery.options,
-        loading: dataCollectionOptionsQuery.isLoading,
         disabled: !result?.has_share_case_rights,
+        label: t`From data collection`,
+        loading: dataCollectionOptionsQuery.isLoading,
+        name: 'fromDataCollectionId',
+        options: dataCollectionOptionsQuery.options,
       } as const satisfies FormFieldDefinition<FormFields>,
     ] as const;
   }, [caseTypeOptionsQuery.isLoading, caseTypeOptionsQuery.options, dataCollectionOptionsQuery.isLoading, dataCollectionOptionsQuery.options, result?.has_share_case_rights, t]);
@@ -202,8 +202,8 @@ export const UserEffectiveRightsTesterAdminPage = () => {
     >
       <Box
         sx={{
-          position: 'relative',
           height: '100%',
+          position: 'relative',
         }}
       >
         <ResponseHandler
@@ -211,7 +211,11 @@ export const UserEffectiveRightsTesterAdminPage = () => {
           loadables={loadables}
         >
           <Container maxWidth={'md'}>
-            <Box marginY={2}>
+            <Box
+              sx={{
+                marginY: 2,
+              }}
+            >
               <Typography
                 component={'h2'}
                 variant={'h4'}
@@ -229,16 +233,24 @@ export const UserEffectiveRightsTesterAdminPage = () => {
               formFieldDefinitions={formFieldDefinitions}
               formId={formId}
               formMethods={formMethods}
-              schema={schema}
               onSubmit={handleSubmit(noop)}
+              schema={schema}
             />
             {result !== null && typeof result === 'object' && (
-              <Box marginY={2}>
+              <Box
+                sx={{
+                  marginY: 2,
+                }}
+              >
                 <Typography variant={'h6'}>
                   {t('Effective rights result:')}
                 </Typography>
                 {!formValues.fromDataCollectionId && result.has_share_case_rights && (
-                  <Box marginY={2}>
+                  <Box
+                    sx={{
+                      marginY: 2,
+                    }}
+                  >
                     <Typography
                       sx={{
                         fontStyle: 'italic',

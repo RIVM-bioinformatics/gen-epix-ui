@@ -17,18 +17,18 @@ import type { CaseTypeRowValue } from '../../../models/epi';
 import { ConfigManager } from '../../../classes/managers/ConfigManager';
 
 export type EpiLegendaItemProps = {
+  readonly children?: ReactNode;
   readonly color: string;
-  readonly rowValue: CaseTypeRowValue;
+  readonly disabled?: boolean;
   readonly onItemClick?: (event: MouseEvent<HTMLDivElement>) => void;
-  readonly onMouseOver?: (color: string) => void;
   readonly onMouseLeave?: (color: string) => void;
+  readonly onMouseOver?: (color: string) => void;
+  readonly rowValue: CaseTypeRowValue;
   readonly tooltip?: boolean;
   readonly tooltipProps?: Partial<TooltipProps>;
-  readonly disabled?: boolean;
-  readonly children?: ReactNode;
 };
 
-export const EpiLegendaItem = ({ rowValue, color, onItemClick, tooltip, tooltipProps, onMouseOver: onMouseOverCallback, onMouseLeave: onMouseLeaveCallback, disabled, children }: EpiLegendaItemProps) => {
+export const EpiLegendaItem = ({ children, color, disabled, onItemClick, onMouseLeave: onMouseLeaveCallback, onMouseOver: onMouseOverCallback, rowValue, tooltip, tooltipProps }: EpiLegendaItemProps) => {
   const theme = useTheme();
   const onClick = useCallback((event: MouseEvent<HTMLDivElement>) => {
     if (onItemClick) {
@@ -55,20 +55,20 @@ export const EpiLegendaItem = ({ rowValue, color, onItemClick, tooltip, tooltipP
     return (
       <Box
         sx={{
-          display: 'flex',
           alignItems: 'center',
           cursor: canClick ? 'pointer' : 'initial',
+          display: 'flex',
           opacity: disabled ? 0.3 : 1,
         }}
       >
         <Box
           sx={{
-            width: theme.spacing(2),
-            height: theme.spacing(2),
-            minWidth: theme.spacing(2),
-            minHeight: theme.spacing(2),
             background: color,
+            height: theme.spacing(2),
             marginRight: theme.spacing(1),
+            minHeight: theme.spacing(2),
+            minWidth: theme.spacing(2),
+            width: theme.spacing(2),
           }}
         />
         <Box

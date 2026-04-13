@@ -9,21 +9,21 @@ import {
 } from 'react';
 import {
   FormControl,
+  FormControlLabel,
+  FormHelperText,
   FormLabel,
   RadioGroup as MuiRadioGroup,
-  FormControlLabel,
   Radio,
-  FormHelperText,
 } from '@mui/material';
 import {
   Controller,
   useFormContext,
 } from 'react-hook-form';
 import type {
-  UseControllerReturn,
+  ControllerRenderProps,
   FieldValues,
   Path,
-  ControllerRenderProps,
+  UseControllerReturn,
 } from 'react-hook-form';
 
 import type { RadioButtonOption } from '../../../../models/form';
@@ -34,24 +34,24 @@ import { FormFieldHelperText } from '../../helpers/FormFieldHelperText';
 export type RadioGroupProps<TFieldValues extends FieldValues, TName extends Path<TFieldValues> = Path<TFieldValues>> = {
   readonly disabled?: boolean;
   readonly label: string;
+  readonly loading?: boolean; // NOT USED YET
   readonly name: TName;
   readonly onChange?: (value: string) => void;
-  readonly required?: boolean;
-  readonly warningMessage?: string | boolean;
-  readonly row?: boolean;
   readonly options: RadioButtonOption[];
-  readonly loading?: boolean; // NOT USED YET
+  readonly required?: boolean;
+  readonly row?: boolean;
+  readonly warningMessage?: boolean | string;
 };
 
 export const RadioGroup = <TFieldValues extends FieldValues, TName extends Path<TFieldValues> = Path<TFieldValues>>({
   disabled,
   label,
   name,
+  onChange: onChangeProp,
   options,
   required,
   row,
   warningMessage,
-  onChange: onChangeProp,
 }: RadioGroupProps<TFieldValues, TName>): ReactElement => {
   const id = useId();
   const { control, formState: { errors } } = useFormContext<TFieldValues>();
@@ -69,7 +69,7 @@ export const RadioGroup = <TFieldValues extends FieldValues, TName extends Path<
     }
   , [onChangeProp]);
 
-  const renderController = useCallback(({ field: { onChange, onBlur, value, ref } }: UseControllerReturn<TFieldValues, TName>) => {
+  const renderController = useCallback(({ field: { onBlur, onChange, ref, value } }: UseControllerReturn<TFieldValues, TName>) => {
     ref({
       focus: () => {
         inputRef?.current?.focus();
@@ -78,17 +78,25 @@ export const RadioGroup = <TFieldValues extends FieldValues, TName extends Path<
     return (
       <MuiRadioGroup
         aria-labelledby={id}
-        row={row}
-        value={value as string}
         onBlur={onBlur}
         onChange={onMuiRadioGroupChange(onChange)}
+        row={row}
+        value={value as string}
       >
         { options.map((option, index) => {
           return (
             <FormControlLabel
-              {...TestIdUtil.createAttributes('RadioGroup-option', { code: option.value.toString(), description: option.label })}
               key={option.value.toString()}
-              control={<Radio inputRef={index === 0 ? inputRef : undefined} />}
+              {...TestIdUtil.createAttributes('RadioGroup-option', { code: option.value.toString(), description: option.label })}
+              control={(
+                <Radio
+                  slotProps={{
+                    input: {
+                      ref: index === 0 ? inputRef : undefined,
+                    },
+                  }}
+                />
+              )}
               disabled={disabled}
               label={option.label}
               value={option.value}
@@ -120,8 +128,8 @@ export const RadioGroup = <TFieldValues extends FieldValues, TName extends Path<
       />
       <FormHelperText sx={{ ml: 0 }}>
         <FormFieldHelperText
-          noIndent
           errorMessage={errorMessage}
+          noIndent
           warningMessage={warningMessage}
         />
       </FormHelperText>

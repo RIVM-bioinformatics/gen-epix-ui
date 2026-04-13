@@ -29,7 +29,7 @@ import { TestIdUtil } from '../../utils/TestIdUtil';
 import { CrudPage } from '../CrudPage';
 import type { OmitWithMetaData } from '../../models/data';
 
-type FormFields = OmitWithMetaData<UserAccessCasePolicy, 'data_collection' | 'user' | 'read_col_set' | 'write_col_set' | 'case_type_set'>;
+type FormFields = OmitWithMetaData<UserAccessCasePolicy, 'case_type_set' | 'data_collection' | 'read_col_set' | 'user' | 'write_col_set'>;
 
 export const UserAccessCasePoliciesAdminPage = () => {
   const { t } = useTranslation();
@@ -64,18 +64,18 @@ export const UserAccessCasePoliciesAdminPage = () => {
 
   const schema = useMemo(() => {
     return object<FormFields>().shape({
-      user_id: string().uuid4().required().max(100),
-      data_collection_id: string().uuid4().required().max(100),
-      case_type_set_id: string().uuid4().required().max(100),
-      read_col_set_id: string().uuid4().required().max(100),
-      write_col_set_id: string().uuid4().nullable().notRequired().max(100),
       add_case: boolean().required(),
-      remove_case: boolean().required(),
       add_case_set: boolean().required(),
-      remove_case_set: boolean().required(),
-      read_case_set: boolean().required(),
-      write_case_set: boolean().required(),
+      case_type_set_id: string().uuid4().required().max(100),
+      data_collection_id: string().uuid4().required().max(100),
       is_active: boolean().required(),
+      read_case_set: boolean().required(),
+      read_col_set_id: string().uuid4().required().max(100),
+      remove_case: boolean().required(),
+      remove_case_set: boolean().required(),
+      user_id: string().uuid4().required().max(100),
+      write_case_set: boolean().required(),
+      write_col_set_id: string().uuid4().nullable().notRequired().max(100),
     });
   }, []);
 
@@ -83,73 +83,73 @@ export const UserAccessCasePoliciesAdminPage = () => {
     return [
       {
         definition: FORM_FIELD_DEFINITION_TYPE.AUTOCOMPLETE,
-        name: 'user_id',
         label: t`User`,
-        options: userOptionsQuery.options,
         loading: userOptionsQuery.isLoading,
+        name: 'user_id',
+        options: userOptionsQuery.options,
       } as const satisfies FormFieldDefinition<FormFields>,
       {
         definition: FORM_FIELD_DEFINITION_TYPE.AUTOCOMPLETE,
-        name: 'data_collection_id',
         label: t`Data collection`,
-        options: dataCollectionOptionsQuery.options,
         loading: dataCollectionOptionsQuery.isLoading,
+        name: 'data_collection_id',
+        options: dataCollectionOptionsQuery.options,
       } as const satisfies FormFieldDefinition<FormFields>,
       {
         definition: FORM_FIELD_DEFINITION_TYPE.AUTOCOMPLETE,
-        name: 'case_type_set_id',
         label: t`Case type set`,
-        options: caseTypeSetOptions.options,
         loading: caseTypeSetOptions.isLoading,
+        name: 'case_type_set_id',
+        options: caseTypeSetOptions.options,
       } as const satisfies FormFieldDefinition<FormFields>,
       {
         definition: FORM_FIELD_DEFINITION_TYPE.AUTOCOMPLETE,
-        name: 'read_col_set_id',
         label: t`Read column set`,
-        options: colSetOptionsQuery.options,
         loading: colSetOptionsQuery.isLoading,
+        name: 'read_col_set_id',
+        options: colSetOptionsQuery.options,
       } as const satisfies FormFieldDefinition<FormFields>,
       {
         definition: FORM_FIELD_DEFINITION_TYPE.AUTOCOMPLETE,
-        name: 'write_col_set_id',
         label: t`Write column set`,
-        options: colSetOptionsQuery.options,
         loading: colSetOptionsQuery.isLoading,
+        name: 'write_col_set_id',
+        options: colSetOptionsQuery.options,
       } as const satisfies FormFieldDefinition<FormFields>,
       {
         definition: FORM_FIELD_DEFINITION_TYPE.BOOLEAN,
-        name: 'add_case',
         label: t`Add case`,
+        name: 'add_case',
       } as const satisfies FormFieldDefinition<FormFields>,
       {
         definition: FORM_FIELD_DEFINITION_TYPE.BOOLEAN,
-        name: 'remove_case',
         label: t`Remove case`,
+        name: 'remove_case',
       } as const satisfies FormFieldDefinition<FormFields>,
       {
         definition: FORM_FIELD_DEFINITION_TYPE.BOOLEAN,
-        name: 'add_case_set',
         label: t`Add case set`,
+        name: 'add_case_set',
       } as const satisfies FormFieldDefinition<FormFields>,
       {
         definition: FORM_FIELD_DEFINITION_TYPE.BOOLEAN,
-        name: 'remove_case_set',
         label: t`Remove case set`,
+        name: 'remove_case_set',
       } as const satisfies FormFieldDefinition<FormFields>,
       {
         definition: FORM_FIELD_DEFINITION_TYPE.BOOLEAN,
-        name: 'read_case_set',
         label: t`Read case set`,
+        name: 'read_case_set',
       } as const satisfies FormFieldDefinition<FormFields>,
       {
         definition: FORM_FIELD_DEFINITION_TYPE.BOOLEAN,
-        name: 'write_case_set',
         label: t`Write case set`,
+        name: 'write_case_set',
       } as const satisfies FormFieldDefinition<FormFields>,
       {
         definition: FORM_FIELD_DEFINITION_TYPE.BOOLEAN,
-        name: 'is_active',
         label: t`Is active`,
+        name: 'is_active',
       } as const satisfies FormFieldDefinition<FormFields>,
     ] as const;
   }, [colSetOptionsQuery.isLoading, colSetOptionsQuery.options, caseTypeSetOptions.isLoading, caseTypeSetOptions.options, dataCollectionOptionsQuery.isLoading, dataCollectionOptionsQuery.options, userOptionsQuery.isLoading, userOptionsQuery.options, t]);
@@ -175,9 +175,9 @@ export const UserAccessCasePoliciesAdminPage = () => {
 
   return (
     <CrudPage<FormFields, UserAccessCasePolicy>
+      createItemDialogTitle={t`Create new user access case policy`}
       createOne={createOne}
       crudCommandType={CommandName.UserAccessCasePolicyCrudCommand}
-      createItemDialogTitle={t`Create new user access case policy`}
       defaultSortByField={'user_id'}
       defaultSortDirection={'asc'}
       deleteOne={deleteOne}

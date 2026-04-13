@@ -2,12 +2,12 @@ import { useMemo } from 'react';
 import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
 import {
   Accordion,
-  AccordionSummary,
   AccordionDetails,
-  TableHead,
+  AccordionSummary,
   Table,
   TableBody,
   TableCell,
+  TableHead,
   TableRow,
 } from '@mui/material';
 import { t } from 'i18next';
@@ -47,13 +47,13 @@ export const EpiCaseTypeInfoAccessRights = ({ completeCaseType }: EpiCaseTypeInf
               <Table size={'small'}>
                 <TableHead>
                   <TableRow>
-                    <TableCell sx={{ width: '20%', verticalAlign: 'top' }}>
+                    <TableCell sx={{ verticalAlign: 'top', width: '20%' }}>
                       {t`Column`}
                     </TableCell>
-                    <TableCell sx={{ width: '20%', verticalAlign: 'top' }}>
+                    <TableCell sx={{ verticalAlign: 'top', width: '20%' }}>
                       {t`Read`}
                     </TableCell>
-                    <TableCell sx={{ width: '20%', verticalAlign: 'top' }}>
+                    <TableCell sx={{ verticalAlign: 'top', width: '20%' }}>
                       {t`Write`}
                     </TableCell>
                     <TableCell sx={{ width: '40%' }} />
@@ -63,16 +63,16 @@ export const EpiCaseTypeInfoAccessRights = ({ completeCaseType }: EpiCaseTypeInf
                   {cols.map(col => {
                     return (
                       <TableRow key={col.id}>
-                        <TableCell sx={{ width: '20%', verticalAlign: 'top' }}>
+                        <TableCell sx={{ verticalAlign: 'top', width: '20%' }}>
                           {col.label}
                         </TableCell>
                         <TableCell
-                          sx={{ width: '20%', verticalAlign: 'top' }}
+                          sx={{ verticalAlign: 'top', width: '20%' }}
                         >
                           { caseTypeAccessAbac.read_col_ids.includes(col.id) ? t`Yes` : t`No`}
                         </TableCell>
                         <TableCell
-                          sx={{ width: '20%', verticalAlign: 'top' }}
+                          sx={{ verticalAlign: 'top', width: '20%' }}
                         >
                           { caseTypeAccessAbac.write_col_ids.includes(col.id) ? t`Yes` : t`No`}
                         </TableCell>

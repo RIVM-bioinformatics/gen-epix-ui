@@ -34,7 +34,7 @@ export const EpiCaseTypeInfoRegions = ({ completeCaseType }: EpiCaseTypeInfoRegi
         return (
           <Accordion
             key={regionSetId}
-            slotProps={{ transition: { unmountOnExit: true, timeout: regions.length > 15 ? 0 : undefined } }}
+            slotProps={{ transition: { timeout: regions.length > 15 ? 0 : undefined, unmountOnExit: true } }}
           >
             <AccordionSummary
               aria-controls={`panel-${regionSetId}-content`}
@@ -48,18 +48,20 @@ export const EpiCaseTypeInfoRegions = ({ completeCaseType }: EpiCaseTypeInfoRegi
             </AccordionSummary>
             <AccordionDetails>
               <Stack
-                columnGap={1}
-                direction={'row'}
-                flexWrap={'wrap'}
-                rowGap={1}
+                sx={{
+                  columnGap: 1,
+                  direction: 'row',
+                  flexWrap: 'wrap',
+                  rowGap: 1,
+                }}
               >
                 <Table size={'small'}>
                   <TableHead>
                     <TableRow>
-                      <TableCell sx={{ width: '20%', verticalAlign: 'top' }}>
+                      <TableCell sx={{ verticalAlign: 'top', width: '20%' }}>
                         {t`Code`}
                       </TableCell>
-                      <TableCell sx={{ width: '80%', verticalAlign: 'top' }}>
+                      <TableCell sx={{ verticalAlign: 'top', width: '80%' }}>
                         {t`Name`}
                       </TableCell>
                     </TableRow>
@@ -67,10 +69,10 @@ export const EpiCaseTypeInfoRegions = ({ completeCaseType }: EpiCaseTypeInfoRegi
                   <TableBody>
                     {sortedRegions.map(region => (
                       <TableRow key={region.id}>
-                        <TableCell sx={{ width: '20%', verticalAlign: 'top' }}>
+                        <TableCell sx={{ verticalAlign: 'top', width: '20%' }}>
                           {region.code}
                         </TableCell>
-                        <TableCell sx={{ width: '80%', verticalAlign: 'top' }}>
+                        <TableCell sx={{ verticalAlign: 'top', width: '80%' }}>
                           {region.name}
                         </TableCell>
                       </TableRow>

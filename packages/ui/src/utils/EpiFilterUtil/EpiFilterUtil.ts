@@ -1,7 +1,7 @@
 import {
-  subYears,
-  parseISO,
   parse,
+  parseISO,
+  subYears,
 } from 'date-fns';
 import { t } from 'i18next';
 
@@ -11,17 +11,17 @@ import {
   TREE_FILTER_GROUP,
 } from '../CaseTypeUtil';
 import type {
-  CompleteCaseType,
   Col,
+  CompleteCaseType,
   RefCol,
 } from '../../api';
 import {
-  DimType,
   ColType,
+  DimType,
 } from '../../api';
 import {
-  FILTER_MODE,
   DEFAULT_FILTER_GROUP,
+  FILTER_MODE,
 } from '../../classes/abstracts/FilterAbstract';
 import { DateFilter } from '../../classes/filters/DateFilter';
 import { GeoFilter } from '../../classes/filters/GeoFilter';
@@ -39,7 +39,32 @@ import { DATE_FORMAT } from '../../data/date';
 import { EpiDataManager } from '../../classes/managers/EpiDataManager';
 
 export class EpiFilterUtil {
-  private static readonly colTypeBlackList = new Set<ColType>([ColType.GENETIC_DISTANCE, ColType.GENETIC_SEQUENCE, ColType.GENETIC_READS]);
+  private static readonly colTypeBlackList = new Set<ColType>([ColType.GENETIC_DISTANCE, ColType.GENETIC_READS, ColType.GENETIC_SEQUENCE]);
+
+  public static createCategoricalFilter(col: Col, dimId: string, completeCaseType: CompleteCaseType): MultiSelectFilter | TextFilter {
+    const refCol = completeCaseType.ref_cols[col.ref_col_id];
+    if ((refCol.col_type === ColType.NOMINAL || refCol.col_type === ColType.ORDINAL || refCol.col_type === ColType.INTERVAL) && EpiDataManager.instance.data.conceptsBySetId[refCol.concept_set_id]) {
+      const options = EpiDataManager.instance.data.conceptsBySetId[refCol.concept_set_id].map<AutoCompleteOption>(concept => ({
+        label: `${concept.code} (${concept.name})`,
+        value: concept.id,
+      }));
+      return new MultiSelectFilter({
+        filterDimensionId: dimId,
+        filterMode: FILTER_MODE.BACKEND,
+        filterPriority: DEFAULT_FILTER_GROUP,
+        id: col.id,
+        label: col.label,
+        options,
+      });
+    }
+    return new TextFilter({
+      filterDimensionId: dimId,
+      filterMode: FILTER_MODE.BACKEND,
+      filterPriority: DEFAULT_FILTER_GROUP,
+      id: col.id,
+      label: col.label,
+    });
+  }
 
   public static createFilterDimensions(completeCaseType: CompleteCaseType): FilterDimension[] {
     const filterDimensions: FilterDimension[] = [];
@@ -57,11 +82,11 @@ export class EpiFilterUtil {
         return;
       }
 
-      const filterDimension: Omit<FilterDimension, 'preferredFilterId' | 'allowMultipleVisibleFilters' | 'allowOnlyPreferredFilter'> = {
+      const filterDimension: Omit<FilterDimension, 'allowMultipleVisibleFilters' | 'allowOnlyPreferredFilter' | 'preferredFilterId'> = {
+        description: completeCaseType.ref_dims[dim.ref_dim_id].description,
+        filterIds: colIds,
         id: dimId,
         label: dim.label,
-        filterIds: colIds,
-        description: completeCaseType.ref_dims[dim.ref_dim_id].description,
       };
       const cols = colIds.map(id => completeCaseType.cols[id]);
       if (!cols.length) {
@@ -87,9 +112,9 @@ export class EpiFilterUtil {
 
       filterDimensions.push({
         ...filterDimension,
-        preferredFilterId,
         allowMultipleVisibleFilters,
         allowOnlyPreferredFilter,
+        preferredFilterId,
       });
     });
     return filterDimensions;
@@ -98,16 +123,16 @@ export class EpiFilterUtil {
   public static createFilters(completeCaseType: CompleteCaseType): Filters {
     const filters: Filters = [];
     filters.push(new SelectionFilter({
-      id: 'selected',
-      label: t`Selected rows`,
       filterMode: FILTER_MODE.FRONTEND,
       filterPriority: SELECTION_FILTER_GROUP,
+      id: 'selected',
+      label: t`Selected rows`,
     }));
     filters.push(new TreeFilter({
-      id: 'sequence_id',
-      label: t`Tree`,
       filterMode: FILTER_MODE.FRONTEND,
       filterPriority: TREE_FILTER_GROUP,
+      id: 'sequence_id',
+      label: t`Tree`,
     }));
 
     completeCaseType.ordered_dim_ids.forEach((dimId) => {
@@ -125,31 +150,31 @@ export class EpiFilterUtil {
           const todayMinus20Years = subYears(today, 20);
           filters.push(
             new DateFilter({
-              id: col.id,
-              label: col.label,
+              backendFilterType: refCol.col_type === ColType.TIME_DAY ? 'DATE_RANGE' : 'PARTIAL_DATE_RANGE',
+              dateParser: EpiFilterUtil.getDateParser(refCol),
+              filterDimensionId: dimId,
               filterMode: FILTER_MODE.BACKEND,
               filterPriority: DEFAULT_FILTER_GROUP,
-              filterDimensionId: dimId,
-              dateParser: EpiFilterUtil.getDateParser(refCol),
-              minDate: todayMinus20Years,
+              id: col.id,
+              label: col.label,
               maxDate: new Date(),
-              backendFilterType: refCol.col_type === ColType.TIME_DAY ? 'DATE_RANGE' : 'PARTIAL_DATE_RANGE',
+              minDate: todayMinus20Years,
             }),
           );
         } else if (refDim.dim_type === DimType.GEO) {
           const regionSet = EpiDataManager.instance.data.regionSets[refCol.region_set_id];
           const options = (EpiDataManager.instance.data.regionsByRegionSetId[refCol.region_set_id]?.map<AutoCompleteOption>(region => {
             return {
-              value: region.id,
               label: regionSet.region_code_as_label ? region.code : region.name,
+              value: region.id,
             };
           }) ?? []).sort((a, b) => a.label.localeCompare(b.label));
           filters.push(new GeoFilter({
-            id: col.id,
-            label: col.label,
+            filterDimensionId: dimId,
             filterMode: FILTER_MODE.BACKEND,
             filterPriority: DEFAULT_FILTER_GROUP,
-            filterDimensionId: dimId,
+            id: col.id,
+            label: col.label,
             options,
           }));
         } else if (refDim.dim_type === DimType.TEXT) {
@@ -157,13 +182,13 @@ export class EpiFilterUtil {
         } else if (refDim.dim_type === DimType.NUMBER) {
           if (([ColType.DECIMAL_0, ColType.DECIMAL_1, ColType.DECIMAL_2, ColType.DECIMAL_3, ColType.DECIMAL_4, ColType.DECIMAL_5, ColType.DECIMAL_6] as ColType[]).includes(refCol.col_type)) {
             filters.push(new NumberRangeFilter({
-              id: col.id,
-              label: col.label,
+              filterDimensionId: dimId,
               filterMode: FILTER_MODE.BACKEND,
               filterPriority: DEFAULT_FILTER_GROUP,
-              filterDimensionId: dimId,
-              min: col.min_value ?? -Infinity,
+              id: col.id,
+              label: col.label,
               max: col.max_value ?? Infinity,
+              min: col.min_value ?? -Infinity,
             }));
           } else {
             filters.push(EpiFilterUtil.createCategoricalFilter(col, dimId, completeCaseType));
@@ -172,55 +197,30 @@ export class EpiFilterUtil {
           // organizations are already sorted
           const options = EpiDataManager.instance.data.organizations.map<AutoCompleteOption>(organization => {
             return {
-              value: organization.id,
               label: organization.name,
+              value: organization.id,
             };
           });
           filters.push(new MultiSelectFilter({
-            id: col.id,
-            label: col.label,
+            filterDimensionId: dimId,
             filterMode: FILTER_MODE.BACKEND,
             filterPriority: DEFAULT_FILTER_GROUP,
-            filterDimensionId: dimId,
+            id: col.id,
+            label: col.label,
             options,
           }));
         } else {
           filters.push(new TextFilter({
-            id: col.id,
-            label: col.label,
+            filterDimensionId: dimId,
             filterMode: FILTER_MODE.BACKEND,
             filterPriority: DEFAULT_FILTER_GROUP,
-            filterDimensionId: dimId,
+            id: col.id,
+            label: col.label,
           }));
         }
       });
     });
     return filters;
-  }
-
-  public static createCategoricalFilter(col: Col, dimId: string, completeCaseType: CompleteCaseType): MultiSelectFilter | TextFilter {
-    const refCol = completeCaseType.ref_cols[col.ref_col_id];
-    if ((refCol.col_type === ColType.NOMINAL || refCol.col_type === ColType.ORDINAL || refCol.col_type === ColType.INTERVAL) && EpiDataManager.instance.data.conceptsBySetId[refCol.concept_set_id]) {
-      const options = EpiDataManager.instance.data.conceptsBySetId[refCol.concept_set_id].map<AutoCompleteOption>(concept => ({
-        value: concept.id,
-        label: `${concept.code} (${concept.name})`,
-      }));
-      return new MultiSelectFilter({
-        id: col.id,
-        label: col.label,
-        filterMode: FILTER_MODE.BACKEND,
-        filterPriority: DEFAULT_FILTER_GROUP,
-        filterDimensionId: dimId,
-        options,
-      });
-    }
-    return new TextFilter({
-      id: col.id,
-      label: col.label,
-      filterMode: FILTER_MODE.BACKEND,
-      filterPriority: DEFAULT_FILTER_GROUP,
-      filterDimensionId: dimId,
-    });
   }
 
   public static getDateParser(refCol: RefCol): (date: string) => Date {

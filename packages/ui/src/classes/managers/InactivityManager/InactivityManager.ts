@@ -10,25 +10,32 @@ import { TimeUtil } from '../../../utils/TimeUtil';
 import { WindowManager } from '../WindowManager';
 
 export type InactivityState = {
-  isIdle: boolean;
   idleDiff: number;
+  isIdle: boolean;
   notificationDiff: number;
   readableIdleDiff: string;
   readableNotificationDiff: string;
 };
 
 export class InactivityManager extends SubscribableAbstract<InactivityState> {
-  private idleSince: number = Date.now();
+  public static get instance(): InactivityManager {
+    // Instances are stored on the window to prevent multiple instances of the same manager. HMR may load multiple instances of the same manager, but we only want one instance to be active at a time.
+
+    WindowManager.instance.window.managers.inactivity = WindowManager.instance.window.managers.inactivity || new InactivityManager();
+    return WindowManager.instance.window.managers.inactivity;
+  }
   private idleDiff: number = 0;
-  private notificationDiff: number = 0;
+  private idleSince: number = Date.now();
   private isIdle: boolean = false;
   private isPaused: boolean = false;
+  private notificationDiff: number = 0;
+
   private readonly onActivityDebounced: () => void;
 
   private constructor() {
     super(new Subject<InactivityState>({
-      isIdle: false,
       idleDiff: 0,
+      isIdle: false,
       notificationDiff: 0,
       readableIdleDiff: '',
       readableNotificationDiff: '',
@@ -63,18 +70,20 @@ export class InactivityManager extends SubscribableAbstract<InactivityState> {
     }, 500);
   }
 
-  private onActivity(): void {
-    if (this.isIdle) {
-      return;
-    }
-    this.idleSince = Date.now();
+  public logout(): void {
+    LogManager.instance.log([{
+      detail: AuthenticationManager.instance.authContextProps.user,
+      level: LogLevel.TRACE,
+      topic: 'USER_LOGOUT_BY_INACTIVITY',
+    }]);
+    LogManager.instance.flushLog();
+    // eslint-disable-next-line @typescript-eslint/no-floating-promises
+    AuthenticationManager.instance.authContextProps.signoutRedirect();
   }
 
-  public static get instance(): InactivityManager {
-    // Instances are stored on the window to prevent multiple instances of the same manager. HMR may load multiple instances of the same manager, but we only want one instance to be active at a time.
-
-    WindowManager.instance.window.managers.inactivity = WindowManager.instance.window.managers.inactivity || new InactivityManager();
-    return WindowManager.instance.window.managers.inactivity;
+  public pause(): void {
+    this.isPaused = true;
+    this.reset();
   }
 
   public reset(): void {
@@ -85,11 +94,6 @@ export class InactivityManager extends SubscribableAbstract<InactivityState> {
     this.doNext();
   }
 
-  public pause(): void {
-    this.isPaused = true;
-    this.reset();
-  }
-
   public resume(): void {
     this.isPaused = false;
     this.reset();
@@ -97,23 +101,19 @@ export class InactivityManager extends SubscribableAbstract<InactivityState> {
 
   private doNext(): void {
     this.next({
-      isIdle: this.isIdle,
       idleDiff: this.idleDiff,
+      isIdle: this.isIdle,
       notificationDiff: this.notificationDiff,
       readableIdleDiff: TimeUtil.getReadableTimeRemaining(this.idleDiff),
       readableNotificationDiff: TimeUtil.getReadableTimeRemaining(this.notificationDiff),
     });
   }
 
-  public logout(): void {
-    LogManager.instance.log([{
-      topic: 'USER_LOGOUT_BY_INACTIVITY',
-      level: LogLevel.TRACE,
-      detail: AuthenticationManager.instance.authContextProps.user,
-    }]);
-    LogManager.instance.flushLog();
-    // eslint-disable-next-line @typescript-eslint/no-floating-promises
-    AuthenticationManager.instance.authContextProps.signoutRedirect();
+  private onActivity(): void {
+    if (this.isIdle) {
+      return;
+    }
+    this.idleSince = Date.now();
   }
 
 }

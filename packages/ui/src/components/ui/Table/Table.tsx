@@ -3,8 +3,8 @@ import {
   type Theme,
 } from '@mui/material';
 import {
-  Box,
   alpha,
+  Box,
   darken,
   lighten,
   useTheme,
@@ -14,14 +14,14 @@ import noop from 'lodash/noop';
 import omit from 'lodash/omit';
 import sumBy from 'lodash/sumBy';
 import type {
-  MouseEvent as ReactMouseEvent,
-  KeyboardEvent as ReactKeyboardEvent,
-  Ref,
   CSSProperties,
+  KeyboardEvent as ReactKeyboardEvent,
+  MouseEvent as ReactMouseEvent,
+  Ref,
 } from 'react';
 import {
-  Fragment,
   forwardRef,
+  Fragment,
   useCallback,
   useEffect,
   useImperativeHandle,
@@ -49,13 +49,13 @@ import { PageEventBusManager } from '../../../classes/managers/PageEventBusManag
 import { WindowManager } from '../../../classes/managers/WindowManager';
 import { useScrollbarSize } from '../../../hooks/useScrollbarSize';
 import type {
-  TableRowParams,
-  TableColumnSettings,
   TableColumn,
-  TableDragEvent,
+  TableColumnParams,
   TableColumnReadableIndex,
   TableColumnSelectable,
-  TableColumnParams,
+  TableColumnSettings,
+  TableDragEvent,
+  TableRowParams,
 } from '../../../models/table';
 import { useTableStoreContext } from '../../../stores/tableStore';
 import { TableUtil } from '../../../utils/TableUtil';
@@ -80,24 +80,24 @@ import { tableHeaderCellClassNames } from './classNames';
 
 
 export type TableProps<TRowData> = {
-  readonly onRowClick?: (row: TableRowParams<TRowData>) => void;
-  readonly sx?: SxProps<Theme>;
-  readonly rowHeight?: number;
+  readonly font?: string;
+  readonly forceHorizontalOverflow?: boolean;
+  readonly getRowName?: (row: TRowData) => string;
   readonly headerHeight?: number;
+  readonly initialVisibleItemIndex?: number;
+  readonly onRangeChanged?: (range: ListRange) => void;
   readonly onReadableIndexClick?: (row: TRowData) => void;
+  readonly onRowClick?: (row: TableRowParams<TRowData>) => void;
   readonly onRowMouseEnter?: (row?: TRowData) => void;
   readonly onRowMouseLeave?: (row?: TRowData) => void;
-  readonly rowHighlightingSubject?: Subject<string[]>;
-  readonly forceHorizontalOverflow?: boolean;
-  readonly font?: string;
-  readonly initialVisibleItemIndex?: number;
-  readonly onVisibleItemIndexChange?: (index: number) => void;
   readonly onVerticalScrollPositionChange?: (position: number) => void;
-  readonly ref?: Ref<TableRef>;
+  readonly onVisibleItemIndexChange?: (index: number) => void;
   readonly overscanMain?: number;
   readonly overscanReverse?: number;
-  readonly onRangeChanged?: (range: ListRange) => void;
-  readonly getRowName?: (row: TRowData) => string;
+  readonly ref?: Ref<TableRef>;
+  readonly rowHeight?: number;
+  readonly rowHighlightingSubject?: Subject<string[]>;
+  readonly sx?: SxProps<Theme>;
 };
 
 export interface TableRef {
@@ -105,24 +105,24 @@ export interface TableRef {
 }
 
 export const Table = <TRowData,>({
-  onRowClick,
-  sx,
-  rowHeight = 4,
+  font,
+  forceHorizontalOverflow,
+  getRowName,
   headerHeight = 4,
+  initialVisibleItemIndex,
+  onRangeChanged = noop,
   onReadableIndexClick,
+  onRowClick,
   onRowMouseEnter = noop,
   onRowMouseLeave = noop,
-  rowHighlightingSubject,
-  forceHorizontalOverflow,
-  initialVisibleItemIndex,
-  onVisibleItemIndexChange,
   onVerticalScrollPositionChange,
-  font,
-  ref,
+  onVisibleItemIndexChange,
   overscanMain,
   overscanReverse,
-  onRangeChanged = noop,
-  getRowName,
+  ref,
+  rowHeight = 4,
+  rowHighlightingSubject,
+  sx,
 }: TableProps<TRowData>) => {
   const theme = useTheme();
   const { t } = useTranslation();
@@ -141,19 +141,19 @@ export const Table = <TRowData,>({
   const isRowEnabledCallback = useStore(tableStore, useShallow((state) => state.isRowEnabledCallback));
   const addTableEventListener = useStore(tableStore, useShallow((state) => state.addEventListener));
   const columnDimensions = useStore(tableStore, useShallow((state) => state.columnDimensions));
-  const tableColumnSettings = useRef<TableColumnSettings[]>(null);
-  const eventListenersCleaner = useRef<() => void>(noop);
+  const tableColumnSettingsRef = useRef<TableColumnSettings[]>(null);
+  const eventListenersCleanerRef = useRef<() => void>(noop);
   const [isInitialized, setIsInitialized] = useState(false);
   const borderColor = useMemo(() => lighten(alpha(theme.palette.divider, 1), 0.1), [theme.palette.divider]);
   const headerBorderColor = useMemo(() => darken(alpha(theme.palette.divider, 1), 0.15), [theme.palette.divider]);
   const scrollbarSize = useScrollbarSize();
   const tableRef = useRef<TableVirtuosoHandle>(null);
   const tableWidthRef = useRef<number>(0);
-  const tableRange = useRef<ListRange>(null);
+  const tableRangeRef = useRef<ListRange>(null);
   const [container, setContainer] = useState<HTMLDivElement>();
   const tableColumnsEditorDialogRef = useRef<TableColumnsEditorDialogRefMethods>(null);
 
-  const dragConfig = useRef<{ clonedElement: HTMLDivElement; scrollPosition: number; elementOffsetX: number }>(null);
+  const dragConfigRef = useRef<{ clonedElement: HTMLDivElement; elementOffsetX: number; scrollPosition: number }>(null);
 
   // If applying filters or sorting and the results in the table don't change, we need to re-render the table manually to reflect the changes in filters / sorting in the headers.
   // re-render the table when the filters change
@@ -180,11 +180,11 @@ export const Table = <TRowData,>({
   }, [getRowName, onRowClick]);
 
   const getVisibleTableSettingsColumns = useCallback(() => {
-    return tableColumnSettings?.current?.filter(c => c.isVisible);
+    return tableColumnSettingsRef?.current?.filter(c => c.isVisible);
   }, []);
 
   const updateTableWidth = useCallback(() => {
-    if (!tableColumnSettings?.current?.length || !container) {
+    if (!tableColumnSettingsRef?.current?.length || !container) {
       return;
     }
     const tableWidth = sumBy(getVisibleTableSettingsColumns(), tableSettingsColumn => tableSettingsColumn.calculatedWidth);
@@ -203,11 +203,11 @@ export const Table = <TRowData,>({
   const renderReadableIndexCell = useCallback((tableColumn: TableColumnReadableIndex<TRowData>, cell: TableRowParams<TRowData>) => {
     return (
       <TableReadableIndexCell
-        key={cell.id}
-        tableColumn={tableColumn}
         cell={cell}
         getRowName={getRowName}
+        key={cell.id}
         onReadableIndexClick={onReadableIndexClick}
+        tableColumn={tableColumn}
       />
     );
   }, [getRowName, onReadableIndexClick]);
@@ -225,8 +225,8 @@ export const Table = <TRowData,>({
 
     return (
       <TableCheckboxCell
-        key={id}
         cell={cell}
+        key={id}
         tableColumn={tableColumn}
       />
     );
@@ -242,7 +242,7 @@ export const Table = <TRowData,>({
       scrollbarSize,
       sortedData,
       tableColumns,
-      tableColumnSettings.current,
+      tableColumnSettingsRef.current,
       getVisibleTableSettingsColumns(),
     );
 
@@ -262,7 +262,7 @@ export const Table = <TRowData,>({
       return;
     }
 
-    tableColumnSettings.current = tableStore.getState().columnSettings;
+    tableColumnSettingsRef.current = tableStore.getState().columnSettings;
     updateColumnSizes();
     updateTableWidth();
     setIsInitialized(true);
@@ -271,7 +271,7 @@ export const Table = <TRowData,>({
   const getScrollerElement = useCallback(() => container?.querySelector('[data-virtuoso-scroller=true]'), [container]);
 
   const saveColumnSettingsToStore = useCallback(() => {
-    setColumnSettingsInStore(tableColumnSettings.current);
+    setColumnSettingsInStore(tableColumnSettingsRef.current);
   }, [setColumnSettingsInStore]);
 
   const saveColumnSettingsToStoreDebounced = useDebouncedCallback(() => {
@@ -292,7 +292,7 @@ export const Table = <TRowData,>({
     }
     event.preventDefault();
 
-    const columnSettings = tableColumnSettings.current.find(c => c.id === tableColumn.id);
+    const columnSettings = tableColumnSettingsRef.current.find(c => c.id === tableColumn.id);
     const currentWidth = columnSettings.calculatedWidth;
     const newWidth = event.key === 'ArrowLeft' ? Math.max(50, currentWidth - 10) : currentWidth + 10;
     updateColumnSize(columnSettings, newWidth);
@@ -301,7 +301,7 @@ export const Table = <TRowData,>({
   const onColumnDividerMouseDown = useCallback((event: ReactMouseEvent<HTMLDivElement>, tableColumn: TableColumn<TRowData>) => {
     event.preventDefault();
 
-    const columnSettings = tableColumnSettings.current.find(c => c.id === tableColumn.id);
+    const columnSettings = tableColumnSettingsRef.current.find(c => c.id === tableColumn.id);
 
     const staringX = event.clientX;
     const startingCellWidth = columnSettings?.calculatedWidth;
@@ -320,14 +320,14 @@ export const Table = <TRowData,>({
       updateColumnSize(columnSettings, newWidth);
     };
     const mouseUpListener = (_mouseUpEvent: MouseEvent) => {
-      eventListenersCleaner.current();
-      eventListenersCleaner.current = noop;
+      eventListenersCleanerRef.current();
+      eventListenersCleanerRef.current = noop;
     };
 
     // create the document listeners only when the mouse is down
     document.addEventListener('mousemove', mouseMoveListener);
     document.addEventListener('mouseup', mouseUpListener);
-    eventListenersCleaner.current = () => {
+    eventListenersCleanerRef.current = () => {
       document.removeEventListener('mousemove', mouseMoveListener);
       document.removeEventListener('mouseup', mouseUpListener);
     };
@@ -335,14 +335,14 @@ export const Table = <TRowData,>({
 
   useEffect(() => {
     return () => {
-      eventListenersCleaner.current();
+      eventListenersCleanerRef.current();
     };
   }, []);
 
-  const moveColumn = useCallback((elementTableColumn: TableColumn<TRowData>, direction: 1 | -1): boolean => {
+  const moveColumn = useCallback((elementTableColumn: TableColumn<TRowData>, direction: -1 | 1): boolean => {
     return TableUtil.handleMoveColumn(
       columnDimensions,
-      tableColumnSettings.current,
+      tableColumnSettingsRef.current,
       tableColumns,
       elementTableColumn,
       direction,
@@ -352,7 +352,7 @@ export const Table = <TRowData,>({
   const updateColumnOrderInDOM = useCallback(() => {
     container.querySelectorAll('[data-column-index]').forEach(cell => {
       const id = cell.getAttribute('data-id');
-      (cell as HTMLDivElement).style.order = tableColumnSettings.current.findIndex(c => c.id === id).toString();
+      (cell as HTMLDivElement).style.order = tableColumnSettingsRef.current.findIndex(c => c.id === id).toString();
     });
   }, [container]);
 
@@ -377,8 +377,8 @@ export const Table = <TRowData,>({
     const widths = visibleTableSettingsColumns.map(c => c.calculatedWidth);
 
     return {
-      visibleTableSettingsColumns,
       elementIndex,
+      visibleTableSettingsColumns,
       widths,
     };
   }, [getVisibleTableSettingsColumns]);
@@ -398,7 +398,7 @@ export const Table = <TRowData,>({
    * @param tableColumn - The column being dragged.
    */
   const onTableHeaderCellDrag = useCallback((event: TableDragEvent, tableColumn: TableColumn<TRowData>) => {
-    let columnBoundaries = calculateColumnBoundaries(tableColumn);
+    const columnBoundaries = calculateColumnBoundaries(tableColumn);
 
     if (event.type === 'start') {
       // Prevent a horizontal scroll on the entire page when dragging the column
@@ -411,12 +411,12 @@ export const Table = <TRowData,>({
       event.target.style.setProperty('opacity', '0.3');
 
       // Create a clone of the original element to drag around and store the properties
-      dragConfig.current = {
+      dragConfigRef.current = {
         clonedElement: (event.target).cloneNode(true) as HTMLDivElement,
-        scrollPosition: getScrollerElement().scrollLeft,
         elementOffsetX: columnBoundaries.widths.slice(0, columnBoundaries.elementIndex).reduce((acc, width) => acc + width, 0) - 15,
+        scrollPosition: getScrollerElement().scrollLeft,
       };
-      dragConfig.current.clonedElement.style.cssText = `
+      dragConfigRef.current.clonedElement.style.cssText = `
         font-weight: bold;
         position: absolute;
         top: ${event.target.getBoundingClientRect().top}px;
@@ -426,28 +426,28 @@ export const Table = <TRowData,>({
         filter: blur(0.5px);
         box-shadow: 1px 2px 3px 0px rgba(0,0,0,0.5);
       `;
-      WindowManager.instance.body.appendChild(dragConfig.current.clonedElement);
+      WindowManager.instance.body.appendChild(dragConfigRef.current.clonedElement);
     }
     if (event.type === 'end') {
       // Restore the original behaviors and styles
       WindowManager.instance.body.style.removeProperty('overflow');
       container?.style.setProperty('--selection-background', 'highlight');
       WindowManager.instance.document.getSelection().empty();
-      dragConfig.current.clonedElement.remove();
+      dragConfigRef.current.clonedElement.remove();
       event.target.style.setProperty('opacity', '1');
     }
     if (event.type === 'move') {
       // Move the cloned element to follow the mouse cursor
-      dragConfig.current.clonedElement.style.setProperty('left', `${event.clientX - event.elementOffsetX}px`);
-      dragConfig.current.clonedElement.style.setProperty('top', `${event.clientY}px`);
+      dragConfigRef.current.clonedElement.style.setProperty('left', `${event.clientX - event.elementOffsetX}px`);
+      dragConfigRef.current.clonedElement.style.setProperty('top', `${event.clientY}px`);
 
       // Check if we need to swap the column with the left or right column
-      const relativeMousePosition = dragConfig.current.elementOffsetX + event.deltaX + event.elementOffsetX + (getScrollerElement().scrollLeft - dragConfig.current.scrollPosition);
+      const relativeMousePosition = dragConfigRef.current.elementOffsetX + event.deltaX + event.elementOffsetX + (getScrollerElement().scrollLeft - dragConfigRef.current.scrollPosition);
       const leftBoundary = columnBoundaries.widths.slice(0, columnBoundaries.elementIndex - 1).reduce((acc, width) => acc + width, 0) + Math.min(16, columnBoundaries.widths?.[columnBoundaries.elementIndex - 1] ?? Infinity);
       const rightBoundary = columnBoundaries.widths.slice(0, columnBoundaries.elementIndex + 1).reduce((acc, width) => acc + width, 0) + Math.min(16, columnBoundaries.widths?.[columnBoundaries.elementIndex + 1] ?? Infinity);
       if ((relativeMousePosition < leftBoundary && moveColumn(tableColumn, -1)) || (relativeMousePosition > rightBoundary && moveColumn(tableColumn, 1))) {
         updateColumnOrderInDOM();
-        columnBoundaries = calculateColumnBoundaries(tableColumn);
+        calculateColumnBoundaries(tableColumn);
       }
     }
   }, [calculateColumnBoundaries, container?.style, getScrollerElement, moveColumn, theme.zIndex.modal, updateColumnOrderInDOM]);
@@ -458,15 +458,15 @@ export const Table = <TRowData,>({
         aria-rowindex={1}
         role={'row'}
         sx={{
-          background: theme.palette.background.paper,
-          display: 'flex',
-          height: theme.spacing(headerHeight),
-          fontWeight: 'bold',
-          borderBottom: `1px solid ${headerBorderColor}`,
-          zIndex: 3,
           [`&:hover .${tableHeaderCellClassNames.columnDivider}`]: {
             opacity: 1,
           },
+          background: theme.palette.background.paper,
+          borderBottom: `1px solid ${headerBorderColor}`,
+          display: 'flex',
+          fontWeight: 'bold',
+          height: theme.spacing(headerHeight),
+          zIndex: 3,
         }}
       >
         {getVisibleTableSettingsColumns().map((tableSettingsColumn, tableSettingsColumnIndex) => {
@@ -476,18 +476,18 @@ export const Table = <TRowData,>({
           }
           return (
             <TableHeaderCell<TRowData>
-              key={tableSettingsColumn.id}
               column={tableColumn.type === 'selectable' ? { ...tableColumn, renderHeaderContent: renderCheckboxHeaderContent } : tableColumn}
               columnIndex={tableSettingsColumnIndex}
               dividerColor={headerBorderColor}
               height={theme.spacing(headerHeight)}
-              order={tableColumnSettings.current.findIndex(c => c.id === tableSettingsColumn.id)}
+              key={tableSettingsColumn.id}
+              onColumnDividerKeyDown={onColumnDividerKeyDown}
+              onColumnDividerMouseDown={onColumnDividerMouseDown}
+              onCustomDrag={onTableHeaderCellDrag}
+              order={tableColumnSettingsRef.current.findIndex(c => c.id === tableSettingsColumn.id)}
               role={'columnheader'}
               width={tableSettingsColumn.calculatedWidth}
               xOffset={tableSettingsColumn.offsetX}
-              onColumnDividerMouseDown={onColumnDividerMouseDown}
-              onColumnDividerKeyDown={onColumnDividerKeyDown}
-              onCustomDrag={onTableHeaderCellDrag}
             />
           );
         })}
@@ -523,17 +523,17 @@ export const Table = <TRowData,>({
           }
 
           const baseProps: Partial<TableCellProps<TRowData>> = {
-            onClick: onTableRowClick,
             columnIndex,
+            enabled: isRowEnabledCallback ? isRowEnabledCallback(row) : true,
+            height: theme.spacing(rowHeight),
+            onClick: onTableRowClick,
+            order: tableColumnSettingsRef.current.findIndex(c => c.id === column.id),
             row,
             rowIndex: index,
-            width: tableColumnSettings.current.find(c => c.id === column.id).calculatedWidth,
-            height: theme.spacing(rowHeight),
-            enabled: isRowEnabledCallback ? isRowEnabledCallback(row) : true,
-            xOffset: tableColumnSettings.current.find(c => c.id === column.id).offsetX,
-            title,
             sx: tableColumn.sx,
-            order: tableColumnSettings.current.findIndex(c => c.id === column.id),
+            title,
+            width: tableColumnSettingsRef.current.find(c => c.id === column.id).calculatedWidth,
+            xOffset: tableColumnSettingsRef.current.find(c => c.id === column.id).offsetX,
           };
 
           if (tableColumn.type === 'actions') {
@@ -548,14 +548,14 @@ export const Table = <TRowData,>({
 
           return (
             <TableCell
-              {...baseProps as TableCellProps<TRowData>}
               key={column.id}
+              {...baseProps as TableCellProps<TRowData>}
               column={tableColumn}
             >
               {!!tableColumn.renderCell && (
                 // React is losing it's mind here, so we need to wrap the renderCell in a Fragment to prevent complaints about keys
                 <Fragment key={tableColumn.id}>
-                  {tableColumn.renderCell({ id: column.id, row, rowIndex: index, columnIndex, column: tableColumn })}
+                  {tableColumn.renderCell({ column: tableColumn, columnIndex, id: column.id, row, rowIndex: index })}
                 </Fragment>
               )}
               {!tableColumn.renderCell && !!tableColumn.displayValueGetter && (
@@ -623,17 +623,17 @@ export const Table = <TRowData,>({
 
     const listeners = [
       addTableEventListener('reset', () => {
-        tableColumnSettings.current = TableUtil.createInitialColumnSettings(tableColumns);
+        tableColumnSettingsRef.current = TableUtil.createInitialColumnSettings(tableColumns);
         updateTable();
       }),
       addTableEventListener('columnVisibilityChange', (columnIds: string[]) => {
-        tableColumnSettings.current.forEach(column => {
+        tableColumnSettingsRef.current.forEach(column => {
           column.isVisible = columnIds.includes(column.id);
         });
         updateTable();
       }),
       addTableEventListener('columnOrderChange', (columnIds: string[]) => {
-        tableColumnSettings.current.sort((a, b) => {
+        tableColumnSettingsRef.current.sort((a, b) => {
           return columnIds.indexOf(a.id) - columnIds.indexOf(b.id);
         });
         updateTable();
@@ -681,13 +681,13 @@ export const Table = <TRowData,>({
   }));
 
   const onVirtuosoRangeChanged = useCallback((range: ListRange) => {
-    tableRange.current = range;
+    tableRangeRef.current = range;
     onRangeChanged(range);
   }, [onRangeChanged]);
 
   useEffect(() => {
-    if (tableRange.current) {
-      onRangeChanged(tableRange.current);
+    if (tableRangeRef.current) {
+      onRangeChanged(tableRangeRef.current);
     }
   }, [onRangeChanged, sortedData]);
 
@@ -696,64 +696,49 @@ export const Table = <TRowData,>({
       ref={setContainer}
       style={{ '--selection-background': 'highlight' } as CSSProperties}
       sx={{
-        height: '100%',
-        width: '100%',
-        position: 'relative',
         '*::selection': {
           backgroundColor: 'var(--selection-background) !important',
         },
+        height: '100%',
+        position: 'relative',
+        width: '100%',
         ...sx,
       }}
     >
       {isInitialized && (
         <TableVirtuoso
           {...TestIdUtil.createAttributes('Table')}
-          ref={tableRef}
           components={{
-          // eslint-disable-next-line @typescript-eslint/naming-convention, react/no-unstable-nested-components
-            TableRow: forwardRef((props: ItemProps<TRowData>, tableRowRef) => {
-              const isRowEnabled = isRowEnabledCallback ? isRowEnabledCallback(props.item) : true;
-              return (
-                <Box
-                  ref={tableRowRef}
-                  role={'row'}
-                  sx={{
-                    height: theme.spacing(rowHeight),
-                    display: 'flex',
-                    cursor: isRowEnabled && onRowClick ? 'pointer' : undefined,
-                    color: isRowEnabled ? undefined : 'text.disabled',
-                    borderBottom: `1px solid ${borderColor}`,
-                    '&:hover, &.highlighted': {
-                      backgroundColor: theme.palette.grey[100],
-                      '& [role=cell]': {
-                        backgroundColor: theme.palette.grey[100],
-                      },
-                    },
-                  }}
-                  data-id={idSelectorCallback(props.item)}
-                  // eslint-disable-next-line react/jsx-no-bind
-                  onMouseEnter={() => onRowMouseEnterCallback(props.item)}
-                  // eslint-disable-next-line react/jsx-no-bind
-                  onMouseLeave={() => onRowMouseLeaveCallback(props.item)}
-                  {...omit(props, 'item')}
-                />
-              );
-            }),
-            // eslint-disable-next-line @typescript-eslint/naming-convention, react/no-unstable-nested-components, react-hooks/refs
+            // eslint-disable-next-line @eslint-react/no-forward-ref, @typescript-eslint/naming-convention, @eslint-react/kit/no-multi-comp
+            EmptyPlaceholder: forwardRef((props: { readonly context?: unknown }, emptyPlaceHolderRef) => (
+              <Box
+                {...props}
+                ref={emptyPlaceHolderRef}
+              />
+            )),
+            // eslint-disable-next-line @eslint-react/no-forward-ref, @typescript-eslint/naming-convention, @eslint-react/kit/no-multi-comp
+            FillerRow: forwardRef((props: FillerRowProps, fillerRowRef) => (
+              <Box
+                {...props}
+                ref={fillerRowRef}
+              />
+            )),
+            // eslint-disable-next-line @eslint-react/no-forward-ref, @typescript-eslint/naming-convention, @eslint-react/kit/no-multi-comp
             Table: forwardRef((props: VirtuosoTableProps, tableElementRef) => (
               <Box
                 {...props}
-                ref={tableElementRef}
                 data-row-count={sortedData.length}
+                ref={tableElementRef}
                 role={'table'}
                 sx={{
-                  width: tableWidthRef.current,
                   minWidth: '100%',
                   position: 'relative',
+                  // eslint-disable-next-line @eslint-react/refs
+                  width: tableWidthRef.current,
                 }}
               />
             )),
-            // eslint-disable-next-line @typescript-eslint/naming-convention, react/no-unstable-nested-components
+            // eslint-disable-next-line @eslint-react/no-forward-ref, @typescript-eslint/naming-convention, @eslint-react/kit/no-multi-comp
             TableBody: forwardRef((props: TableBodyProps, tableBodyRef) => (
               <Box
                 {...props}
@@ -763,27 +748,42 @@ export const Table = <TRowData,>({
                 }}
               />
             )),
-            // eslint-disable-next-line @typescript-eslint/naming-convention, react/no-unstable-nested-components
+            // eslint-disable-next-line @eslint-react/no-forward-ref, @typescript-eslint/naming-convention, @eslint-react/kit/no-multi-comp
             TableHead: forwardRef((props: { readonly context?: unknown }, tableHeadRef) => (
               <Box
                 {...props}
                 ref={tableHeadRef}
               />
             )),
-            // eslint-disable-next-line @typescript-eslint/naming-convention, react/no-unstable-nested-components
-            EmptyPlaceholder: forwardRef((props: { readonly context?: unknown }, emptyPlaceHolderRef) => (
-              <Box
-                {...props}
-                ref={emptyPlaceHolderRef}
-              />
-            )),
-            // eslint-disable-next-line @typescript-eslint/naming-convention, react/no-unstable-nested-components
-            FillerRow: forwardRef((props: FillerRowProps, fillerRowRef) => (
-              <Box
-                {...props}
-                ref={fillerRowRef}
-              />
-            )),
+            // eslint-disable-next-line @eslint-react/no-forward-ref, @typescript-eslint/naming-convention, @eslint-react/kit/no-multi-comp
+            TableRow: forwardRef((props: ItemProps<TRowData>, tableRowRef) => {
+              const isRowEnabled = isRowEnabledCallback ? isRowEnabledCallback(props.item) : true;
+              return (
+                <Box
+                  data-id={idSelectorCallback(props.item)}
+                  // eslint-disable-next-line @eslint-react/kit/jsx-no-bind
+                  onMouseEnter={() => onRowMouseEnterCallback(props.item)}
+                  // eslint-disable-next-line @eslint-react/kit/jsx-no-bind
+                  onMouseLeave={() => onRowMouseLeaveCallback(props.item)}
+                  ref={tableRowRef}
+                  role={'row'}
+                  sx={{
+                    '&:hover, &.highlighted': {
+                      '& [role=cell]': {
+                        backgroundColor: theme.palette.grey[100],
+                      },
+                      backgroundColor: theme.palette.grey[100],
+                    },
+                    borderBottom: `1px solid ${borderColor}`,
+                    color: isRowEnabled ? undefined : 'text.disabled',
+                    cursor: isRowEnabled && onRowClick ? 'pointer' : undefined,
+                    display: 'flex',
+                    height: theme.spacing(rowHeight),
+                  }}
+                  {...omit(props, 'item')}
+                />
+              );
+            }),
           }}
           data={sortedData}
           fixedHeaderContent={renderFixedHeaderContent}
@@ -791,17 +791,18 @@ export const Table = <TRowData,>({
           initialTopMostItemIndex={initialVisibleItemIndex ?? 0}
           itemContent={renderItemContent}
           itemSize={handleItemSize}
+          onScroll={onTableScroll}
           overscan={{
             main: overscanMain ?? DEFAULT_OVERSCAN_MAIN,
             reverse: overscanReverse ?? DEFAULT_OVERSCAN_REVERSE,
           }}
           rangeChanged={onVirtuosoRangeChanged}
+          ref={tableRef}
           style={{
             height: '100%',
             overflowX: forceHorizontalOverflow ? 'scroll' : 'auto',
           }}
           totalCount={sortedData.length}
-          onScroll={onTableScroll}
         />
       )}
       <TableColumnsEditorDialog

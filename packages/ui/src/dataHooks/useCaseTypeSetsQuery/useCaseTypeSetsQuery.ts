@@ -16,11 +16,11 @@ import { useQueryMemo } from '../../hooks/useQueryMemo';
 
 export const useCaseTypeSetsQuery = (): UseQueryResult<CaseTypeSet[]> => {
   return useQueryMemo({
-    queryKey: QueryUtil.getGenericKey(QUERY_KEY.CASE_TYPE_SETS),
     queryFn: async ({ signal }) => {
       const response = await CaseApi.instance.caseTypeSetsGetAll({ signal });
       return response.data;
     },
+    queryKey: QueryUtil.getGenericKey(QUERY_KEY.CASE_TYPE_SETS),
   });
 };
 

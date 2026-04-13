@@ -15,8 +15,8 @@ import { useTranslation } from 'react-i18next';
 import { EpiCaseSummary } from '../EpiCaseSummary';
 import type {
   Case,
-  TypedUuidSetFilter,
   CaseSet,
+  TypedUuidSetFilter,
 } from '../../../api';
 import {
   CaseApi,
@@ -43,16 +43,16 @@ export const EpiCasesAlreadyInCaseSetWarning = ({ cases }: EpiCasesAlreadyInCase
     return {
       invert: false,
       key: 'case_id',
-      type: 'UUID_SET',
       members: cases?.map(row => row.id) ?? [],
+      type: 'UUID_SET',
     };
   }, [cases]);
-  const { isLoading: isCaseSetMembersLoading, error: caseSetMembersError, data: caseSetMembers } = useQueryMemo({
-    queryKey: QueryUtil.getGenericKey(QUERY_KEY.CASE_SET_MEMBERS, caseSetMembersFilter),
+  const { data: caseSetMembers, error: caseSetMembersError, isLoading: isCaseSetMembersLoading } = useQueryMemo({
     queryFn: async ({ signal }) => {
       const response = await CaseApi.instance.caseSetMembersPostQuery(caseSetMembersFilter, { signal });
       return response.data;
     },
+    queryKey: QueryUtil.getGenericKey(QUERY_KEY.CASE_SET_MEMBERS, caseSetMembersFilter),
   });
 
   // Load all case sets for the given case set members
@@ -60,17 +60,17 @@ export const EpiCasesAlreadyInCaseSetWarning = ({ cases }: EpiCasesAlreadyInCase
     return {
       invert: false,
       key: 'id',
-      type: 'UUID_SET',
       members: uniq((caseSetMembers ?? []).map(x => x.case_set_id)) ?? [],
+      type: 'UUID_SET',
     };
   }, [caseSetMembers]);
-  const { isLoading: isCaseSetsLoading, error: caseSetsError, data: caseSets } = useQueryMemo({
-    queryKey: QueryUtil.getGenericKey(QUERY_KEY.CASE_SETS, existingCaseSetsFilter),
+  const { data: caseSets, error: caseSetsError, isLoading: isCaseSetsLoading } = useQueryMemo({
+    enabled: existingCaseSetsFilter.members.length > 0,
     queryFn: async ({ signal }) => {
       const response = await CaseApi.instance.caseSetsPostQuery(existingCaseSetsFilter, { signal });
       return response.data;
     },
-    enabled: existingCaseSetsFilter.members.length > 0,
+    queryKey: QueryUtil.getGenericKey(QUERY_KEY.CASE_SETS, existingCaseSetsFilter),
   });
 
   const caseSetsByCase = useMemo(() => {
@@ -85,9 +85,9 @@ export const EpiCasesAlreadyInCaseSetWarning = ({ cases }: EpiCasesAlreadyInCase
       if (!caseItem || !caseSetItem) {
         LogManager.instance.log([
           {
+            detail: member,
             level: LogLevel.DEBUG,
             topic: 'MISSING_CASE_OR_CASE_SET',
-            detail: member,
           },
         ]);
         return;
@@ -102,9 +102,9 @@ export const EpiCasesAlreadyInCaseSetWarning = ({ cases }: EpiCasesAlreadyInCase
 
   return (
     <ResponseHandler
-      shouldHideActionButtons
       error={caseSetMembersError || caseSetsError}
       isLoading={isCaseSetMembersLoading || isCaseSetsLoading}
+      shouldHideActionButtons
     >
       {caseSetsByCase.size > 0 && (
         <Alert
@@ -154,8 +154,8 @@ export const EpiCasesAlreadyInCaseSetWarning = ({ cases }: EpiCasesAlreadyInCase
                   <TableRow key={caseItem.id}>
                     <TableCell
                       sx={{
-                        width: '50%',
                         verticalAlign: 'top',
+                        width: '50%',
                       }}
                     >
                       <EpiCaseSummary
@@ -164,17 +164,17 @@ export const EpiCasesAlreadyInCaseSetWarning = ({ cases }: EpiCasesAlreadyInCase
                     </TableCell>
                     <TableCell
                       sx={{
-                        width: '50%',
-                        verticalAlign: 'top',
                         '& :nth-of-type(2)': {
                           marginTop: theme.spacing(1),
                         },
+                        verticalAlign: 'top',
+                        width: '50%',
                       }}
                     >
                       {caseItemCaseSets.sort((a, b) => a.name.localeCompare(b.name)).map(caseItemCaseSet => (
                         <EpiCasesAlreadyInCaseSetWarningCaseSetLink
-                          key={caseItemCaseSet.id}
                           caseSet={caseItemCaseSet}
+                          key={caseItemCaseSet.id}
                         />
                       ))}
                     </TableCell>

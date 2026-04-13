@@ -8,15 +8,15 @@ import {
 } from 'react';
 import {
   FormControl,
-  FormHelperText,
   FormControlLabel,
+  FormHelperText,
   Switch as MuiSwitch,
 } from '@mui/material';
 import type {
-  UseControllerReturn,
-  FieldValues,
   ControllerRenderProps,
+  FieldValues,
   Path,
+  UseControllerReturn,
 } from 'react-hook-form';
 import {
   Controller,
@@ -32,11 +32,11 @@ import { FormFieldLoadingIndicator } from '../../helpers/FormFieldLoadingIndicat
 export type SwitchPropsProps<TFieldValues extends FieldValues, TName extends Path<TFieldValues>> = {
   readonly disabled?: boolean;
   readonly label: string;
+  readonly loading?: boolean;
   readonly name: TName;
   readonly onChange?: (value: boolean) => void;
   readonly required?: boolean;
-  readonly warningMessage?: string | boolean;
-  readonly loading?: boolean;
+  readonly warningMessage?: boolean | string;
 };
 
 export const Switch = <TFieldValues extends FieldValues, TName extends Path<TFieldValues> = Path<TFieldValues>>({
@@ -63,7 +63,7 @@ export const Switch = <TFieldValues extends FieldValues, TName extends Path<TFie
     }
   , [onChangeProp]);
 
-  const renderController = useCallback(({ field: { onChange, onBlur, value, ref } }: UseControllerReturn<TFieldValues, TName>) => {
+  const renderController = useCallback(({ field: { onBlur, onChange, ref, value } }: UseControllerReturn<TFieldValues, TName>) => {
     ref({
       focus: () => {
         inputRef?.current?.focus();
@@ -79,7 +79,11 @@ export const Switch = <TFieldValues extends FieldValues, TName extends Path<TFie
             <MuiSwitch
               checked={!!value}
               color={'primary'}
-              inputRef={inputRef}
+              slotProps={{
+                input: {
+                  ref: inputRef,
+                },
+              }}
             />
           )}
           disabled={disabled}
@@ -92,8 +96,8 @@ export const Switch = <TFieldValues extends FieldValues, TName extends Path<TFie
           sx={{ ml: 0 }}
         >
           <FormFieldHelperText
-            noIndent
             errorMessage={errorMessage}
+            noIndent
             warningMessage={warningMessage}
           />
         </FormHelperText>

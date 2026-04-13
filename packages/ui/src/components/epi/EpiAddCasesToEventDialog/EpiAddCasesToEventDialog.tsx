@@ -4,12 +4,12 @@ import {
   Box,
 } from '@mui/material';
 import {
+  type ReactElement,
+  use,
   useCallback,
-  useContext,
   useEffect,
   useId,
   useMemo,
-  type ReactElement,
 } from 'react';
 import { useTranslation } from 'react-i18next';
 import { useStore } from 'zustand';
@@ -18,7 +18,6 @@ import {
   useForm,
   useWatch,
 } from 'react-hook-form';
-import noop from 'lodash/noop';
 import { useShallow } from 'zustand/shallow';
 
 import {
@@ -30,8 +29,8 @@ import { EpiCasesAlreadyInCaseSetWarning } from '../EpiCasesAlreadyInCaseSetWarn
 import type {
   Case,
   CaseSet,
-  TypedUuidSetFilter,
   CaseSetMember,
+  TypedUuidSetFilter,
 } from '../../../api';
 import { CaseApi } from '../../../api';
 import { useDataCollectionsMapQuery } from '../../../dataHooks/useDataCollectionsQuery';
@@ -58,8 +57,8 @@ import { EpiAddCasesToEventDialogSuccessNotificationMessage } from './EpiAddCase
 
 
 export interface EpiAddCasesToEventDialogOpenProps {
-  rows: Case[];
   currentCaseSet: CaseSet;
+  rows: Case[];
 }
 
 export interface EpiAddCasesToEventDialogProps extends WithDialogRenderProps<EpiAddCasesToEventDialogOpenProps> {
@@ -75,10 +74,10 @@ type FormFields = {
 
 export const EpiAddCasesToEventDialog = withDialog<EpiAddCasesToEventDialogProps, EpiAddCasesToEventDialogOpenProps>((
   {
-    openProps,
     onActionsChange,
-    onTitleChange,
     onClose,
+    onTitleChange,
+    openProps,
   }: EpiAddCasesToEventDialogProps,
 ): ReactElement => {
   const { t } = useTranslation();
@@ -86,7 +85,7 @@ export const EpiAddCasesToEventDialog = withDialog<EpiAddCasesToEventDialogProps
   const dataCollectionsMapQuery = useDataCollectionsMapQuery();
   const caseSetOptionsQuery = useCaseSetOptionsQuery();
   const caseSetsMapQuery = useCaseSetsMapQuery();
-  const epiDashboardStore = useContext(EpiDashboardStoreContext);
+  const epiDashboardStore = use(EpiDashboardStoreContext);
   const fetchData = useStore(epiDashboardStore, (state) => state.fetchData);
   const completeCaseType = useStore(epiDashboardStore, (state) => state.completeCaseType);
   const similarCaseIds = useStore(epiDashboardStore, useShallow((state) => state.findSimilarCasesResults?.flatMap(result => result.similarCaseIds) ?? []));
@@ -137,31 +136,31 @@ export const EpiAddCasesToEventDialog = withDialog<EpiAddCasesToEventDialogProps
   const caseSetMembersFilter = useMemo<TypedUuidSetFilter>(() => ({
     invert: false,
     key: 'case_set_id',
-    type: 'UUID_SET',
     members: [caseSetId],
+    type: 'UUID_SET',
   }), [caseSetId]);
-  const { isLoading: isCaseSetMembersLoading, error: caseSetMembersError, data: caseSetMembers } = useQueryMemo({
-    queryKey: QueryUtil.getGenericKey(QUERY_KEY.CASE_SET_MEMBERS, caseSetMembersFilter),
+  const { data: caseSetMembers, error: caseSetMembersError, isLoading: isCaseSetMembersLoading } = useQueryMemo({
+    enabled: !!caseSetId,
     queryFn: async ({ signal }) => {
       const response = await CaseApi.instance.caseSetMembersPostQuery(caseSetMembersFilter, { signal });
       return response.data;
     },
-    enabled: !!caseSetId,
+    queryKey: QueryUtil.getGenericKey(QUERY_KEY.CASE_SET_MEMBERS, caseSetMembersFilter),
   });
 
   const caseSetDataCollectionLinksFilter = useMemo<TypedUuidSetFilter>(() => ({
     invert: false,
     key: 'case_set_id',
-    type: 'UUID_SET',
     members: [caseSetId],
+    type: 'UUID_SET',
   }), [caseSetId]);
-  const { isLoading: isCaseSetDataCollectionLinksLoading, error: caseSetDataCollectionLinksError, data: caseSetDataCollectionLinks } = useQueryMemo({
-    queryKey: QueryUtil.getGenericKey(QUERY_KEY.CASE_SET_DATA_COLLECTION_LINKS, caseSetDataCollectionLinksFilter),
+  const { data: caseSetDataCollectionLinks, error: caseSetDataCollectionLinksError, isLoading: isCaseSetDataCollectionLinksLoading } = useQueryMemo({
+    enabled: !!caseSetId,
     queryFn: async ({ signal }) => {
       const response = await CaseApi.instance.caseSetDataCollectionLinksPostQuery(caseSetDataCollectionLinksFilter, { signal });
       return response.data;
     },
-    enabled: !!caseSetId,
+    queryKey: QueryUtil.getGenericKey(QUERY_KEY.CASE_SET_DATA_COLLECTION_LINKS, caseSetDataCollectionLinksFilter),
   });
 
   const caseSetDataCollections = useMemo(() => {
@@ -175,9 +174,9 @@ export const EpiAddCasesToEventDialog = withDialog<EpiAddCasesToEventDialogProps
   const onSuccess = useCallback(async () => {
     if (shouldApplySharingToCases) {
       await CaseUtil.applyDataCollectionLinks({
-        caseSetId,
         caseIds: openProps.rows ? openProps.rows.map(row => row.id) : undefined,
         caseSetDataCollectionIds: caseSetDataCollectionLinks?.map(link => link.data_collection_id),
+        caseSetId,
         caseTypeId: completeCaseType.id,
       });
     }
@@ -190,14 +189,9 @@ export const EpiAddCasesToEventDialog = withDialog<EpiAddCasesToEventDialogProps
     onClose();
   }, [fetchData, onClose]);
 
-  const { mutate: mutateItems, isMutating: isMutatingItems } = useEditMutation<CaseSetMember[]>({
+  const { isMutating: isMutatingItems, mutate: mutateItems } = useEditMutation<CaseSetMember[]>({
     associationQueryKeys: QueryUtil.getQueryKeyDependencies([QUERY_KEY.CASE_SET_MEMBERS], true),
-    queryFn: async (items: CaseSetMember[]) => {
-      await CaseApi.instance.caseSetMembersPostSome(items);
-      return items;
-    },
-    onSuccess,
-    onError,
+    getErrorNotificationMessage: () => t('Failed add case(s) to {{caseSetName}}', { caseSetName: caseSetsMapQuery.map.get(caseSetId).name }),
     getProgressNotificationMessage: () => t('Adding case(s) to {{caseSetName}}', { caseSetName: caseSetsMapQuery.map.get(caseSetId).name }),
     getSuccessNotificationMessage: () => (
       <EpiAddCasesToEventDialogSuccessNotificationMessage
@@ -205,13 +199,18 @@ export const EpiAddCasesToEventDialog = withDialog<EpiAddCasesToEventDialogProps
         numAddedCases={caseIdsToAdd.length}
       />
     ),
-    getErrorNotificationMessage: () => t('Failed add case(s) to {{caseSetName}}', { caseSetName: caseSetsMapQuery.map.get(caseSetId).name }),
+    onError,
+    onSuccess,
+    queryFn: async (items: CaseSetMember[]) => {
+      await CaseApi.instance.caseSetMembersPostSome(items);
+      return items;
+    },
   });
 
   const onConfirmButtonClick = useCallback((() => {
     mutateItems(caseIdsToAdd.map(caseId => ({
-      case_set_id: caseSetId,
       case_id: caseId,
+      case_set_id: caseSetId,
     } satisfies CaseSetMember)));
   }), [caseIdsToAdd, caseSetId, mutateItems]);
 
@@ -222,7 +221,7 @@ export const EpiAddCasesToEventDialog = withDialog<EpiAddCasesToEventDialogProps
   useEffect(() => {
     const caseSet = caseSetId ? caseSetsMapQuery.map.get(caseSetId) : null;
     if (caseSet) {
-      onTitleChange(t('Add {{numCases}} selected case(s) to {{eventName}}', { numCases: openProps.rows.length, eventName: DataUtil.getCaseSetName(caseSet) }));
+      onTitleChange(t('Add {{numCases}} selected case(s) to {{eventName}}', { eventName: DataUtil.getCaseSetName(caseSet), numCases: openProps.rows.length }));
       return;
     }
     onTitleChange(t('Add {{numCases}} selected case(s) to an existing event', { numCases: openProps.rows.length }));
@@ -233,15 +232,15 @@ export const EpiAddCasesToEventDialog = withDialog<EpiAddCasesToEventDialogProps
     actions.push(
       {
         ...TestIdUtil.createAttributes('EpiAddCasesToEventDialog-confirmButton'),
-        color: 'secondary',
         autoFocus: true,
-        variant: 'contained',
-        onClick: onConfirmButtonClick,
+        color: 'secondary',
         disabled: (caseSetId && isCaseSetMembersLoading) || !caseSetId || isMutatingItems || caseIdsToAdd.length < 1,
-        loading: (caseSetId && isCaseSetMembersLoading) || isMutatingItems || isCaseSetDataCollectionLinksLoading,
-        label: t`Confirm`,
         form: formId,
+        label: t`Confirm`,
+        loading: (caseSetId && isCaseSetMembersLoading) || isMutatingItems || isCaseSetDataCollectionLinksLoading,
+        onClick: onConfirmButtonClick,
         type: 'submit',
+        variant: 'contained',
       },
     );
     onActionsChange(actions);
@@ -251,6 +250,10 @@ export const EpiAddCasesToEventDialog = withDialog<EpiAddCasesToEventDialogProps
 
   const booleanOptions = useMemo(() => FormUtil.createBooleanOptions(t), [t]);
 
+  const onSubmit = useCallback(() => {
+    // noop, as the mutation is triggered by a button outside of the form
+  }, []);
+
   return (
     <ResponseHandler
       isLoading={isMutatingItems}
@@ -259,10 +262,14 @@ export const EpiAddCasesToEventDialog = withDialog<EpiAddCasesToEventDialogProps
       <FormProvider {...formMethods}>
         <form
           autoComplete={'off'}
-          onSubmit={noop}
+          onSubmit={onSubmit}
         >
           <Box>
-            <Box marginY={1}>
+            <Box
+              sx={{
+                marginY: 1,
+              }}
+            >
               <Autocomplete
                 label={t`Select event`}
                 name={'caseSetId'}
@@ -270,7 +277,11 @@ export const EpiAddCasesToEventDialog = withDialog<EpiAddCasesToEventDialogProps
                 warningMessage={filteredCaseSetOptions?.length === 0 ? t`No events of the same case type available` : undefined}
               />
             </Box>
-            <Box marginY={1}>
+            <Box
+              sx={{
+                marginY: 1,
+              }}
+            >
               <Select
                 disabled={caseSetDataCollectionLinks?.length === 0}
                 label={t`Should the selected cases be given the same access rights as the selected event?`}
@@ -282,15 +293,23 @@ export const EpiAddCasesToEventDialog = withDialog<EpiAddCasesToEventDialogProps
             </Box>
           </Box>
           {caseSetId && (
-            <Box marginY={2}>
+            <Box
+              sx={{
+                marginY: 2,
+              }}
+            >
               <ResponseHandler
-                inlineSpinner
-                shouldHideActionButtons
                 error={caseSetMembersError || caseSetDataCollectionLinksError}
+                inlineSpinner
                 isLoading={isCaseSetMembersLoading}
+                shouldHideActionButtons
               >
                 {caseSetDataCollections?.length > 0 && (
-                  <Box marginY={2}>
+                  <Box
+                    sx={{
+                      marginY: 2,
+                    }}
+                  >
                     <Alert severity={'info'}>
                       <AlertTitle>
                         {t('The selected event is shared in the following data collection(s):')}
@@ -304,7 +323,11 @@ export const EpiAddCasesToEventDialog = withDialog<EpiAddCasesToEventDialogProps
                   </Box>
                 )}
                 {caseIdsToAdd.length > 0 && (
-                  <Box marginY={2}>
+                  <Box
+                    sx={{
+                      marginY: 2,
+                    }}
+                  >
                     <Alert severity={'info'}>
                       <AlertTitle>
                         {t('{{numCasesToAdd}} selected case(s) will be added to selected the event.', { numCasesToAdd: caseIdsToAdd.length })}
@@ -318,7 +341,11 @@ export const EpiAddCasesToEventDialog = withDialog<EpiAddCasesToEventDialogProps
                   </Box>
                 )}
                 {caseIdsToAdd.length === 0 && (
-                  <Box marginY={2}>
+                  <Box
+                    sx={{
+                      marginY: 2,
+                    }}
+                  >
                     <Alert severity={'error'}>
                       <AlertTitle>
                         {t('All selected case(s) are already part of the selected event.')}
@@ -327,7 +354,11 @@ export const EpiAddCasesToEventDialog = withDialog<EpiAddCasesToEventDialogProps
                   </Box>
                 )}
                 {caseIdsToAdd.length > 0 && (
-                  <Box marginY={2}>
+                  <Box
+                    sx={{
+                      marginY: 2,
+                    }}
+                  >
                     <EpiCasesAlreadyInCaseSetWarning
                       cases={openProps.rows.filter(row => caseIdsToAdd.includes(row.id))}
                     />
@@ -341,8 +372,8 @@ export const EpiAddCasesToEventDialog = withDialog<EpiAddCasesToEventDialogProps
     </ResponseHandler>
   );
 }, {
-  testId: 'EpiAddCasesToEventDialog',
-  maxWidth: 'md',
-  fullWidth: true,
   defaultTitle: '',
+  fullWidth: true,
+  maxWidth: 'md',
+  testId: 'EpiAddCasesToEventDialog',
 });

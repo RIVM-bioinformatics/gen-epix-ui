@@ -7,11 +7,18 @@ import { PageEventBusManager } from '../PageEventBusManager';
 import { WindowManager } from '../WindowManager';
 
 export class AuthorizationManager {
-  private __user: User;
-  private __apiPermissions: ApiPermission[] = [];
+  public static get instance(): AuthorizationManager {
+    // Instances are stored on the window to prevent multiple instances of the same manager. HMR may load multiple instances of the same manager, but we only want one instance to be active at a time.
 
-  private constructor() {
-    //
+    WindowManager.instance.window.managers.authorization = WindowManager.instance.window.managers.authorization || new AuthorizationManager();
+    return WindowManager.instance.window.managers.authorization;
+  }
+  public set apiPermissions(permissions: ApiPermission[]) {
+    this.__apiPermissions = permissions;
+  }
+
+  public get apiPermissions(): ApiPermission[] {
+    return this.__apiPermissions;
   }
 
   public set user(user: User) {
@@ -23,20 +30,27 @@ export class AuthorizationManager {
     return this.__user;
   }
 
-  public set apiPermissions(permissions: ApiPermission[]) {
-    this.__apiPermissions = permissions;
+  private __apiPermissions: ApiPermission[] = [];
+
+  private __user: User;
+
+
+  private constructor() {
+    //
   }
 
-  public get apiPermissions(): ApiPermission[] {
-    return this.__apiPermissions;
-  }
-
-
-  public static get instance(): AuthorizationManager {
-    // Instances are stored on the window to prevent multiple instances of the same manager. HMR may load multiple instances of the same manager, but we only want one instance to be active at a time.
-
-    WindowManager.instance.window.managers.authorization = WindowManager.instance.window.managers.authorization || new AuthorizationManager();
-    return WindowManager.instance.window.managers.authorization;
+  public doesUserHavePermission(permissions: ApiPermission[]): boolean {
+    if (!permissions?.length) {
+      return true;
+    }
+    if (!this.apiPermissions?.length) {
+      return false;
+    }
+    return permissions.every(permission => {
+      return !!(this.apiPermissions).find(({ command_name, permission_type }) => {
+        return command_name === permission.command_name && permission_type === permission.permission_type;
+      });
+    });
   }
 
   public doesUserHavePermissionForRoute(route: MyNonIndexRouteObject): boolean {
@@ -52,19 +66,5 @@ export class AuthorizationManager {
       return true;
     }
     return false;
-  }
-
-  public doesUserHavePermission(permissions: ApiPermission[]): boolean {
-    if (!permissions?.length) {
-      return true;
-    }
-    if (!this.apiPermissions?.length) {
-      return false;
-    }
-    return permissions.every(permission => {
-      return !!(this.apiPermissions).find(({ command_name, permission_type }) => {
-        return command_name === permission.command_name && permission_type === permission.permission_type;
-      });
-    });
   }
 }

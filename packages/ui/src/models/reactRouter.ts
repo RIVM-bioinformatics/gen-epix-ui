@@ -6,31 +6,31 @@ import type {
 
 import type { ApiPermission } from '../api';
 
+export type MyHandle = {
+  category?: string;
+  disabled?: boolean;
+  hidden?: boolean;
+  icon?: ReactElement;
+  requiredPermissions: ApiPermission[];
+  requirePermissionForChildRoute?: boolean;
+  requiresUserProfile: boolean;
+  root?: boolean;
+  subTitle?: string;
+  title: string;
+};
+
+export type MyIndexRouteObject = {
+  handle?: MyHandle;
+} & Omit<IndexRouteObject, 'handle'>;
+
+export type MyNonIndexRouteObject = {
+  children?: Array<MyIndexRouteObject | MyNonIndexRouteObject>;
+  handle?: MyHandle;
+} & Omit<
+  NonIndexRouteObject,
+  'children' | 'handle'
+>;
+
 export type UseLoaderData<T> = {
   data: T;
-};
-
-export type MyHandle = {
-  root?: boolean;
-  title: string;
-  subTitle?: string;
-  icon?: ReactElement;
-  hidden?: boolean;
-  disabled?: boolean;
-  requiredPermissions: ApiPermission[];
-  requiresUserProfile: boolean;
-  requirePermissionForChildRoute?: boolean;
-  category?: string;
-};
-
-export type MyIndexRouteObject = Omit<IndexRouteObject, 'handle'> & {
-  handle?: MyHandle;
-};
-
-export type MyNonIndexRouteObject = Omit<
-  NonIndexRouteObject,
-  'handle' | 'children'
-> & {
-  handle?: MyHandle;
-  children?: Array<MyNonIndexRouteObject | MyIndexRouteObject>;
 };

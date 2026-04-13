@@ -8,18 +8,18 @@ import {
   useRef,
 } from 'react';
 import {
-  TextField as MuiTextField,
   FormControl,
   IconButton,
   InputAdornment,
+  TextField as MuiTextField,
 } from '@mui/material';
 import ClearIcon from '@mui/icons-material/Clear';
 import type {
-  FieldValues,
   ControllerRenderProps,
-  UseControllerReturn,
-  PathValue,
+  FieldValues,
   Path,
+  PathValue,
+  UseControllerReturn,
 } from 'react-hook-form';
 import {
   Controller,
@@ -34,33 +34,33 @@ import { FormFieldHelperText } from '../../helpers/FormFieldHelperText';
 import { FormFieldLoadingIndicator } from '../../helpers/FormFieldLoadingIndicator';
 
 export type TextFieldProps<TFieldValues extends FieldValues, TName extends Path<TFieldValues> = Path<TFieldValues>> = {
+  readonly autocomplete?: string;
   readonly disabled?: boolean;
   readonly label: string;
+  readonly loading?: boolean;
+  readonly multiline?: boolean;
   readonly name: TName;
   readonly onChange?: (value: string) => void;
+  readonly placeholder?: string;
   readonly required?: boolean;
-  readonly warningMessage?: string | boolean;
-  readonly multiline?: boolean;
   readonly rows?: number;
   readonly type?: InputHTMLAttributes<unknown>['type'];
-  readonly loading?: boolean;
-  readonly placeholder?: string;
-  readonly autocomplete?: string;
+  readonly warningMessage?: boolean | string;
 };
 
 export const TextField = <TFieldValues extends FieldValues, TName extends Path<TFieldValues> = Path<TFieldValues>>({
+  autocomplete,
   disabled = false,
   label,
-  rows = 3,
+  loading = false,
   multiline = false,
   name,
   onChange: onChangeProp,
-  loading = false,
-  required = false,
   placeholder,
+  required = false,
+  rows = 3,
   type = 'text',
   warningMessage,
-  autocomplete,
 }: TextFieldProps<TFieldValues, TName>): ReactElement => {
   const { t } = useTranslation();
   const { control, formState: { errors } } = useFormContext<TFieldValues>();
@@ -79,7 +79,7 @@ export const TextField = <TFieldValues extends FieldValues, TName extends Path<T
     }
   , [onChangeProp]);
 
-  const renderController = useCallback(({ field: { onChange, onBlur, value, ref } }: UseControllerReturn<TFieldValues, TName>) => {
+  const renderController = useCallback(({ field: { onBlur, onChange, ref, value } }: UseControllerReturn<TFieldValues, TName>) => {
     ref({
       focus: () => {
         inputRef?.current?.focus();
@@ -101,9 +101,10 @@ export const TextField = <TFieldValues extends FieldValues, TName extends Path<T
           />
         )}
         inputRef={inputRef}
-        variant={'outlined'}
         label={label}
         multiline={multiline}
+        onBlur={onBlur}
+        onChange={onMuiTextFieldChange(onChange)}
         placeholder={placeholder}
         rows={rows}
         slotProps={{
@@ -111,38 +112,37 @@ export const TextField = <TFieldValues extends FieldValues, TName extends Path<T
             className: classnames({ 'Mui-warning': hasWarning }),
           },
           input: {
-            inputProps: {
-              autoComplete: autocomplete ?? name,
-              type,
-            },
             className: classnames({ 'Mui-warning': hasWarning }),
             endAdornment: disabled ? undefined : (
               <InputAdornment position={'end'}>
                 <IconButton
                   {...TestIdUtil.createAttributes('TextField-reset')}
+                  aria-label={t`Clear text field`}
+                  // eslint-disable-next-line @eslint-react/kit/jsx-no-bind
+                  onClick={onResetButtonClick}
                   sx={{
                     '& svg': {
                       fontSize: '16px',
                     },
                   }}
                   tabIndex={-1}
-                  aria-label={t`Clear text field`}
-                  // eslint-disable-next-line react/jsx-no-bind
-                  onClick={onResetButtonClick}
                 >
                   <ClearIcon />
                 </IconButton>
               </InputAdornment>
             ),
+            inputProps: {
+              autoComplete: autocomplete ?? name,
+              type,
+            },
           },
           inputLabel: {
-            required: required && !disabled,
             className: classnames({ 'Mui-warning': hasWarning }),
+            required: required && !disabled,
           },
         }}
         value={value ?? '' as string}
-        onBlur={onBlur}
-        onChange={onMuiTextFieldChange(onChange)}
+        variant={'outlined'}
       />
     );
   }, [disabled, loading, hasError, errorMessage, warningMessage, label, multiline, placeholder, rows, hasWarning, autocomplete, name, type, t, required, onMuiTextFieldChange]);
@@ -152,11 +152,11 @@ export const TextField = <TFieldValues extends FieldValues, TName extends Path<T
       {...TestIdUtil.createAttributes('TextField', { label, name: name as string })}
       fullWidth
       sx={{
-        button: {
-          display: 'none',
-        },
         '&:hover button, &:focus-within button': {
           display: 'initial',
+        },
+        button: {
+          display: 'none',
         },
       }}
     >

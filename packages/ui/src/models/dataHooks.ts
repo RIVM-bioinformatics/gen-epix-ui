@@ -1,7 +1,11 @@
 import type { OptionBase } from './form';
 
-export interface UseOptions<TValue> extends Loadable {
-  options: OptionBase<TValue>[];
+export interface Loadable {
+  error: unknown;
+  isEnabled: boolean;
+  isFetching: boolean;
+  isLoading: boolean;
+  isPending: boolean;
 }
 
 export interface UseMap<TValue> extends Loadable {
@@ -12,10 +16,6 @@ export interface UseNameFactory<TValue> extends Loadable {
   getName: (item: TValue) => string;
 }
 
-export interface Loadable {
-  isLoading: boolean;
-  isFetching: boolean;
-  isPending: boolean;
-  isEnabled: boolean;
-  error: unknown;
+export interface UseOptions<TValue> extends Loadable {
+  options: OptionBase<TValue>[];
 }

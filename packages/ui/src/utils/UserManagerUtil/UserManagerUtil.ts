@@ -1,7 +1,7 @@
 import {
-  WebStorageStateStore,
   type UserManager,
   type UserManagerSettings,
+  WebStorageStateStore,
 } from 'oidc-client-ts';
 
 import type { IdentityProvider } from '../../api';
@@ -21,19 +21,19 @@ export class UserManagerUtil {
 
     return {
       authority: oidcConfiguration.issuer,
-      metadataUrl: oidcConfiguration.discovery_url,
+      automaticSilentRenew: true,
       client_id: oidcConfiguration.client_id,
       client_secret: oidcConfiguration.client_secret,
-      redirect_uri,
-      response_type: 'code',
+      metadataUrl: oidcConfiguration.discovery_url,
       post_logout_redirect_uri,
-      scope: oidcConfiguration.scope,
+      redirect_uri,
       refreshTokenAllowedScope: '',
-      validateSubOnSilentRenew: true,
-      automaticSilentRenew: true,
+      response_type: 'code',
+      scope: oidcConfiguration.scope,
       userStore: new WebStorageStateStore({
         store: sessionStorage,
       }),
+      validateSubOnSilentRenew: true,
     };
   }
 }

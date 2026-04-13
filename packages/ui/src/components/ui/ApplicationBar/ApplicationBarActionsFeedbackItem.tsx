@@ -1,8 +1,8 @@
 import {
-  Tooltip,
-  IconButton,
-  useTheme,
   Box,
+  IconButton,
+  Tooltip,
+  useTheme,
 } from '@mui/material';
 import {
   useCallback,
@@ -11,15 +11,14 @@ import {
   useState,
 } from 'react';
 import { useTranslation } from 'react-i18next';
-import { Fragment } from 'react/jsx-runtime';
 import ChatIcon from '@mui/icons-material/Chat';
 
+import { UserSettingsManager } from '../../../classes/managers/UserSettingsManager';
 import {
   UserFeedbackDialog,
   type UserFeedbackDialogRefMethods,
 } from '../UserFeedbackDialog';
 import { ConfigManager } from '../../../classes/managers/ConfigManager';
-import { UserSettingsManager } from '../../../classes/managers/UserSettingsManager';
 
 const NOW = new Date().getTime();
 
@@ -51,17 +50,14 @@ export const ApplicationBarActionsFeedbackItem = () => {
   }, []);
 
   return (
-    <Fragment>
+    <>
       <Tooltip
         arrow
         color={'secondary'}
+        onMouseEnter={onTooltipMouseEnter}
+        open={isFeedbackTooltipOpen}
+        placement={'left'}
         slotProps={{
-          tooltip: {
-            sx: {
-              backgroundColor: theme.palette.secondary.main,
-              marginRight: `${theme.spacing(0.5)} !important`,
-            },
-          },
           arrow: {
             sx: {
               color: theme.palette.secondary.main,
@@ -70,11 +66,14 @@ export const ApplicationBarActionsFeedbackItem = () => {
           popper: {
             disablePortal: true,
           },
+          tooltip: {
+            sx: {
+              backgroundColor: theme.palette.secondary.main,
+              marginRight: `${theme.spacing(0.5)} !important`,
+            },
+          },
         }}
-        open={isFeedbackTooltipOpen}
-        placement={'left'}
         title={t`Would you like to share your feedback?`}
-        onMouseEnter={onTooltipMouseEnter}
       >
         <IconButton
           aria-label={t`Feedback`}
@@ -87,8 +86,8 @@ export const ApplicationBarActionsFeedbackItem = () => {
               fontSize: '1.3rem',
               marginLeft: theme.spacing(1),
               [theme.breakpoints.up('md')]: {
-                visibility: 'hidden',
                 position: 'absolute',
+                visibility: 'hidden',
               },
             }}
           >
@@ -97,6 +96,6 @@ export const ApplicationBarActionsFeedbackItem = () => {
         </IconButton>
       </Tooltip>
       <UserFeedbackDialog ref={userFeedbackDialogRef} />
-    </Fragment>
+    </>
   );
 };

@@ -1,6 +1,6 @@
 import {
-  useMemo,
   type PropsWithChildren,
+  useMemo,
 } from 'react';
 
 import type { CaseAbacContext } from './CaseAbacContext';
@@ -13,7 +13,7 @@ export type CaseAbacContextProviderProps = PropsWithChildren<{
 export const CaseAbacContextProvider = (
   props: CaseAbacContextProviderProps,
 ) => {
-  const { children, caseAbac } = props;
+  const { caseAbac, children } = props;
 
   const sanitizedCaseAbac = useMemo<CaseAbacContext>(() => {
     const itemDataCollections = caseAbac.rights.map(right => {
@@ -55,15 +55,15 @@ export const CaseAbacContextProvider = (
 
     return {
       ...caseAbac,
+      itemDataCollectionOptions,
       itemDataCollections,
       itemSharedInDataCollections,
-      itemDataCollectionOptions,
     } satisfies CaseAbacContext;
   }, [caseAbac]);
 
   return (
-    <EpiCaseAbacContext.Provider value={sanitizedCaseAbac}>
+    <EpiCaseAbacContext value={sanitizedCaseAbac}>
       {children}
-    </EpiCaseAbacContext.Provider>
+    </EpiCaseAbacContext>
   );
 };

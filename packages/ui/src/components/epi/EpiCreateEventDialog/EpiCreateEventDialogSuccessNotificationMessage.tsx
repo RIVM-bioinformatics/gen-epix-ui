@@ -17,7 +17,11 @@ export const EpiCreateEventDialogSuccessNotificationMessage = ({ caseSet, isCrea
         {isCreating && t('Successfully created event: {{name}}', { name: caseSet.name })}
         {!isCreating && t('Successfully edited event: {{name}}', { name: caseSet.name })}
       </Box>
-      <Box marginY={2}>
+      <Box
+        sx={{
+          marginY: 2,
+        }}
+      >
         <NavLink
           activeAsText
           to={CaseSetUtil.createCaseSetLink(caseSet)}

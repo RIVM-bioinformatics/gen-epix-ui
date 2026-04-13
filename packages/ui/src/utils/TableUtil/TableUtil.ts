@@ -1,6 +1,6 @@
 import {
-  parseISO,
   format as dateFnsFormat,
+  parseISO,
 } from 'date-fns';
 import min from 'lodash/min';
 import max from 'lodash/max';
@@ -13,8 +13,8 @@ import { CaseUtil } from '../CaseUtil';
 import type { Case } from '../../api';
 import { ColType } from '../../api';
 import {
-  FILTER_MODE,
   DEFAULT_FILTER_GROUP,
+  FILTER_MODE,
 } from '../../classes/abstracts/FilterAbstract';
 import { BooleanFilter } from '../../classes/filters/BooleanFilter';
 import { DateFilter } from '../../classes/filters/DateFilter';
@@ -25,22 +25,22 @@ import type { CaseTypeRowValue } from '../../models/epi';
 import type { Filters } from '../../models/filter';
 import type { OptionBase } from '../../models/form';
 import type {
-  TableColumn,
+  GetTableCellRowComparatorProps,
   GetTableCellValueProps,
-  TableColumnText,
+  HasCellDataFn,
+  TableColumn,
+  TableColumnActions,
   TableColumnBoolean,
   TableColumnCaseType,
+  TableColumnDate,
+  TableColumnDimension,
   TableColumnNumber,
   TableColumnOptions,
-  TableColumnDate,
-  GetTableCellRowComparatorProps,
-  TableColumnSettings,
-  TableColumnSelectable,
   TableColumnReadableIndex,
+  TableColumnSelectable,
+  TableColumnSettings,
+  TableColumnText,
   TableRowParams,
-  TableColumnActions,
-  TableColumnDimension,
-  HasCellDataFn,
 } from '../../models/table';
 import { FIXED_COLUMN_ID } from '../../models/table';
 import { DATE_FORMAT } from '../../data/date';
@@ -48,176 +48,29 @@ import { StringUtil } from '../StringUtil';
 import { EpiDataManager } from '../../classes/managers/EpiDataManager';
 
 export class TableUtil {
-  public static createFiltersFromColumns<TData>(columns: TableColumn<TData>[], baseRows: TData[]): Filters {
-    if (!columns?.length || !baseRows?.length) {
-      return [];
+  public static areColumnSettingsValid<TData>(tableColumns: TableColumn<TData>[], columnSettings: TableColumnSettings[]): boolean {
+    if (!columnSettings?.length) {
+      return false;
     }
 
-    const filters: Filters = [];
-    columns.forEach(column => {
-      if (column.hideInFilter) {
-        return;
-      }
-      if (column.type === 'text') {
-        filters.push(new TextFilter({
-          id: column.id,
-          label: column.filterLabel ?? column.headerName,
-          filterMode: FILTER_MODE.FRONTEND,
-          filterPriority: DEFAULT_FILTER_GROUP,
-        }));
-      } else if (column.type === 'boolean') {
-        filters.push(new BooleanFilter({
-          id: column.id,
-          label: column.filterLabel ?? column.headerName,
-          filterMode: FILTER_MODE.FRONTEND,
-          filterPriority: DEFAULT_FILTER_GROUP,
-        }));
-      } else if (column.type === 'number') {
-        const values = baseRows.map(row => (row as { [key: string]: number })[column.id]);
-        filters.push(new NumberRangeFilter({
-          id: column.id,
-          label: column.filterLabel ?? column.headerName,
-          filterMode: FILTER_MODE.FRONTEND,
-          filterPriority: DEFAULT_FILTER_GROUP,
-          min: min(values),
-          max: max(values),
-        }));
-      } else if (column.type === 'options') {
-        let options: OptionBase<string>[];
+    const tableColumnsIds = tableColumns?.map(c => c.id);
+    const columnSettingsIds = columnSettings?.map(c => c.id);
 
-        if (column.shouldFilterOptions) {
-          const possibleOptions = baseRows.map((row, index) => {
-            const rowValue = column.valueGetter ? column.valueGetter({ id: column.id, row, rowIndex: index }) : row[column.id as keyof TData];
-            if (!Array.isArray(rowValue)) {
-              return [rowValue] as string[];
-            }
-            return rowValue;
-          }).flat();
-          options = column.options.filter(o => possibleOptions.includes(o.value));
-        } else {
-          options = column.options;
-        }
-
-        filters.push(new MultiSelectFilter({
-          id: column.id,
-          label: column.filterLabel ?? column.headerName,
-          filterMode: FILTER_MODE.FRONTEND,
-          filterPriority: DEFAULT_FILTER_GROUP,
-          options,
-          maxNumOptionsExpanded: column.maxNumOptionsExpanded,
-        }));
-      } else if (column.type === 'date') {
-        const values = baseRows.map(row => (row as { [key: string]: string })[column.id]).filter(x => !!x).map(x => parseISO(x));
-        const minDate = new Date(Math.min.apply(null, values as unknown as number[]));
-        const maxDate = new Date(Math.max.apply(null, values as unknown as number[]));
-        return filters.push(new DateFilter({
-          id: column.id,
-          label: column.filterLabel ?? column.headerName,
-          filterMode: FILTER_MODE.FRONTEND,
-          filterPriority: DEFAULT_FILTER_GROUP,
-          dateParser: parseISO,
-          minDate,
-          maxDate,
-          dateFormat: column.dateFormat ?? DATE_FORMAT.DATE,
-        }));
-      }
-    });
-
-    const searchParams = new URL(document.location.href).searchParams;
-    filters.forEach((filter) => {
-      const value = searchParams.get(filter.id) as unknown;
-      if (!value) {
-        return;
-      }
-      filter.setFilterValue(filter.fromURLSearchParameterValue(value as string));
-    });
-
-    return filters;
+    return tableColumnsIds.length === columnSettingsIds.length && difference(tableColumnsIds, columnSettingsIds).length === 0;
   }
 
   // Cell value getters
 
-  public static getTableTextCellValue<TRowData>({ row, column, rowIndex }: GetTableCellValueProps<TRowData, TableColumnText<TRowData>>): string {
-    if (column.valueGetter) {
-      return column.valueGetter({ row, id: column.id, rowIndex });
-    }
-    return row[column.id as keyof TRowData] as string;
-  }
-
-  public static getTableBooleanCellValue<TRowData>({ row, column, rowIndex }: GetTableCellValueProps<TRowData, TableColumnBoolean<TRowData>>): boolean {
-    if (column.valueGetter) {
-      return column.valueGetter({ row, id: column.id, rowIndex });
-    }
-    return (row[column.id as keyof TRowData] as boolean);
-  }
-
-  public static getTableCaseTypeCellValue<TRowData>({ row, column, rowIndex }: GetTableCellValueProps<TRowData, TableColumnCaseType<TRowData>>): CaseTypeRowValue {
-    if (column.valueGetter) {
-      return column.valueGetter({ row, id: column.id, rowIndex });
-    }
-    return CaseUtil.getRowValue((row as Case).content, column.col, column.completeCaseType);
-  }
-
-  public static getTableNumberCellValue<TRowData>({ row, column, rowIndex }: GetTableCellValueProps<TRowData, TableColumnNumber<TRowData>>): number {
-    if (column.valueGetter) {
-      return column.valueGetter({ row, id: column.id, rowIndex });
-    }
-    return row[column.id as keyof TRowData] as number;
-  }
-
-  public static getTableOptionsCellValue<TRowData>({ row, column, rowIndex }: GetTableCellValueProps<TRowData, TableColumnOptions<TRowData>>): string | string[] {
-    if (column.valueGetter) {
-      return column.valueGetter({ row, id: column.id, rowIndex });
-    }
-    const values = row[column.id as keyof TRowData] as string | string[];
-    if (Array.isArray(values)) {
-      return values.map(value => column.options.find(o => o.value === value)?.label ?? '');
-    }
-    return column.options.find(o => o.value === values)?.label ?? '';
-  }
-
-  public static getTableDateCellValue<TRowData>({ row, column, rowIndex }: GetTableCellValueProps<TRowData, TableColumnDate<TRowData>>): string {
-    if (column.valueGetter) {
-      return column.valueGetter({ row, id: column.id, rowIndex });
-    }
-    const value = row[column.id as keyof TRowData] as string;
-    if (!value) {
-      return '';
-    }
-    return dateFnsFormat(value, column.dateFormat);
-  }
-
-  public static getTableBooleanCellDisplayValue<TRowData>({ row, column, rowIndex, t }: GetTableCellValueProps<TRowData, TableColumnBoolean<TRowData>>): string {
-    const value = TableUtil.getTableBooleanCellValue({ row, column, rowIndex });
-    return value ? t('Yes') : t('No');
-  }
-
-  public static getTableOptionsCellDisplayValue<TRowData>({ row, column, rowIndex }: GetTableCellValueProps<TRowData, TableColumnOptions<TRowData>>): string {
-    const value = TableUtil.getTableOptionsCellValue({ row, column, rowIndex });
-    return Array.isArray(value) ? value.join(', ') : value;
-  }
-
-  public static getTableCaseTypeCellDisplayValue<TRowData>({ row, column, rowIndex }: GetTableCellValueProps<TRowData, TableColumnCaseType<TRowData>>): string {
-    const value = TableUtil.getTableCaseTypeCellValue({ row, column, rowIndex });
-    return value.short;
-  }
-
-  // Cell row comparators
-  public static createTextCellRowComperator<TRowData>({ column, direction }: GetTableCellRowComparatorProps<TableColumnText<TRowData>>): (a: TRowData, b: TRowData) => number {
-    return (a: TRowData, b: TRowData) => {
-      const aValue = TableUtil.getTableTextCellValue({ column, row: a, rowIndex: 0 });
-      const bValue = TableUtil.getTableTextCellValue({ column, row: b, rowIndex: 0 });
-      const result = (aValue ?? '').localeCompare(bValue ?? '');
-      return direction === 'asc' ? result : -result;
-    };
-  }
-
-  public static createTextCellRowAdvancedComperator<TRowData>({ column, direction }: GetTableCellRowComparatorProps<TableColumnText<TRowData>>): (a: TRowData, b: TRowData) => number {
-    return (a: TRowData, b: TRowData) => {
-      const aValue = TableUtil.getTableTextCellValue({ column, row: a, rowIndex: 0 });
-      const bValue = TableUtil.getTableTextCellValue({ column, row: b, rowIndex: 0 });
-      const result = StringUtil.advancedSortComperator(aValue ?? '', bValue ?? '');
-      return direction === 'asc' ? result : -result;
+  public static createActionsColumn<TData>(kwArgs: { getActions: (params: TableRowParams<TData>) => ReactElement[]; t: TFunction<'translation', undefined> }): TableColumnActions<TData> {
+    return {
+      getActions: kwArgs.getActions,
+      headerName: kwArgs.t`Actions`,
+      id: FIXED_COLUMN_ID.ACTIONS,
+      isInitiallyVisible: true,
+      isStatic: true,
+      resizable: false,
+      type: 'actions',
+      widthPx: 48,
     };
   }
 
@@ -228,6 +81,18 @@ export class TableUtil {
 
 
       return direction === 'asc' ? aValue - bValue : bValue - aValue;
+    };
+  }
+
+  public static createBooleanColumn<TData>(kwArgs: { filterLabel?: string; flex?: number; id?: keyof TData; name: string }): TableColumnBoolean<TData> {
+    return {
+      comparatorFactory: TableUtil.createBooleanCellRowComperator,
+      filterLabel: kwArgs.filterLabel,
+      headerName: kwArgs.name,
+      id: kwArgs.id as string,
+      isInitiallyVisible: true,
+      type: 'boolean',
+      widthFlex: kwArgs.flex ?? 0.25,
     };
   }
 
@@ -262,26 +127,6 @@ export class TableUtil {
     };
   }
 
-  public static createNumberCellRowComperator<TRowData>({ column, direction }: GetTableCellRowComparatorProps<TableColumnNumber<TRowData>>): (a: TRowData, b: TRowData) => number {
-    return (a: TRowData, b: TRowData) => {
-      const aValue = TableUtil.getTableNumberCellValue({ column, row: a, rowIndex: 0 });
-      const bValue = TableUtil.getTableNumberCellValue({ column, row: b, rowIndex: 0 });
-      return direction === 'asc' ? aValue - bValue : bValue - aValue;
-    };
-  }
-
-  public static createOptionsCellRowComperator<TRowData>({ column, direction }: GetTableCellRowComparatorProps<TableColumnOptions<TRowData>>): (a: TRowData, b: TRowData) => number {
-    return (a: TRowData, b: TRowData) => {
-      const aValue = TableUtil.getTableOptionsCellValue({ column, row: a, rowIndex: 0 });
-      const bValue = TableUtil.getTableOptionsCellValue({ column, row: b, rowIndex: 0 });
-
-      const stringifiedAValue = (Array.isArray(aValue) ? aValue.join(', ') : aValue) ?? '';
-      const stringifiedBValue = (Array.isArray(bValue) ? bValue.join(', ') : bValue) ?? '';
-
-      return direction === 'asc' ? stringifiedAValue.localeCompare(stringifiedBValue) : stringifiedBValue.localeCompare(stringifiedAValue);
-    };
-  }
-
   public static createDateCellRowComperator<TRowData>({ column, direction }: GetTableCellRowComparatorProps<TableColumnDate<TRowData>>): (a: TRowData, b: TRowData) => number {
     return (a: TRowData, b: TRowData) => {
       const aValue = a[column.id as keyof TRowData] as string;
@@ -303,135 +148,314 @@ export class TableUtil {
     };
   }
 
+  public static createDateColumn<TData>(kwArgs: { dateFormat?: typeof DATE_FORMAT[keyof typeof DATE_FORMAT]; filterLabel?: string; flex?: number; id?: keyof TData; name: string }): TableColumnDate<TData> {
+    return {
+      comparatorFactory: TableUtil.createDateCellRowComperator,
+      dateFormat: kwArgs.dateFormat ?? DATE_FORMAT.DATE,
+      filterLabel: kwArgs.filterLabel,
+      headerName: kwArgs.name,
+      id: kwArgs.id as string,
+      isInitiallyVisible: true,
+      type: 'date',
+      widthFlex: kwArgs.flex ?? 0.5,
+    };
+  }
+
+  public static createFiltersFromColumns<TData>(columns: TableColumn<TData>[], baseRows: TData[]): Filters {
+    if (!columns?.length || !baseRows?.length) {
+      return [];
+    }
+
+    const filters: Filters = [];
+    columns.forEach(column => {
+      if (column.hideInFilter) {
+        return;
+      }
+      if (column.type === 'text') {
+        filters.push(new TextFilter({
+          filterMode: FILTER_MODE.FRONTEND,
+          filterPriority: DEFAULT_FILTER_GROUP,
+          id: column.id,
+          label: column.filterLabel ?? column.headerName,
+        }));
+      } else if (column.type === 'boolean') {
+        filters.push(new BooleanFilter({
+          filterMode: FILTER_MODE.FRONTEND,
+          filterPriority: DEFAULT_FILTER_GROUP,
+          id: column.id,
+          label: column.filterLabel ?? column.headerName,
+        }));
+      } else if (column.type === 'number') {
+        const values = baseRows.map(row => (row as { [key: string]: number })[column.id]);
+        filters.push(new NumberRangeFilter({
+          filterMode: FILTER_MODE.FRONTEND,
+          filterPriority: DEFAULT_FILTER_GROUP,
+          id: column.id,
+          label: column.filterLabel ?? column.headerName,
+          max: max(values),
+          min: min(values),
+        }));
+      } else if (column.type === 'options') {
+        let options: OptionBase<string>[];
+
+        if (column.shouldFilterOptions) {
+          const possibleOptions = baseRows.map((row, index) => {
+            const rowValue = column.valueGetter ? column.valueGetter({ id: column.id, row, rowIndex: index }) : row[column.id as keyof TData];
+            if (!Array.isArray(rowValue)) {
+              return [rowValue] as string[];
+            }
+            return rowValue;
+          }).flat();
+          options = column.options.filter(o => possibleOptions.includes(o.value));
+        } else {
+          options = column.options;
+        }
+
+        filters.push(new MultiSelectFilter({
+          filterMode: FILTER_MODE.FRONTEND,
+          filterPriority: DEFAULT_FILTER_GROUP,
+          id: column.id,
+          label: column.filterLabel ?? column.headerName,
+          maxNumOptionsExpanded: column.maxNumOptionsExpanded,
+          options,
+        }));
+      } else if (column.type === 'date') {
+        const values = baseRows.map(row => (row as { [key: string]: string })[column.id]).filter(x => !!x).map(x => parseISO(x));
+        const minDate = new Date(Math.min.apply(null, values as unknown as number[]));
+        const maxDate = new Date(Math.max.apply(null, values as unknown as number[]));
+        return filters.push(new DateFilter({
+          dateFormat: column.dateFormat ?? DATE_FORMAT.DATE,
+          dateParser: parseISO,
+          filterMode: FILTER_MODE.FRONTEND,
+          filterPriority: DEFAULT_FILTER_GROUP,
+          id: column.id,
+          label: column.filterLabel ?? column.headerName,
+          maxDate,
+          minDate,
+        }));
+      }
+    });
+
+    const searchParams = new URL(document.location.href).searchParams;
+    filters.forEach((filter) => {
+      const value = searchParams.get(filter.id) as unknown;
+      if (!value) {
+        return;
+      }
+      filter.setFilterValue(filter.fromURLSearchParameterValue(value as string));
+    });
+
+    return filters;
+  }
+
   public static createInitialColumnSettings<TData>(tableColumns: TableColumn<TData>[]): TableColumnSettings[] {
     return tableColumns.map<TableColumnSettings>(column => ({
       id: column.id,
       isVisible: column.isInitiallyVisible,
+      label: column.headerName,
+      widthFlex: column.widthFlex,
       widthPx: column.widthPx,
       widthPxFn: column.widthPxFn,
-      widthFlex: column.widthFlex,
-      label: column.headerName,
     }));
   }
 
-  // Column creation helpers
-  public static createTextColumn<TData>(kwArgs: { id?: keyof TData; name: string; filterLabel?: string; flex?: number; advancedSort?: boolean }): TableColumnText<TData> {
-    return {
-      id: kwArgs.id as string,
-      headerName: kwArgs.name,
-      type: 'text',
-      widthFlex: kwArgs.flex ?? 1,
-      filterLabel: kwArgs.filterLabel,
-      comparatorFactory: kwArgs.advancedSort ? TableUtil.createTextCellRowAdvancedComperator : TableUtil.createTextCellRowComperator,
-      isInitiallyVisible: true,
+  public static createNumberCellRowComperator<TRowData>({ column, direction }: GetTableCellRowComparatorProps<TableColumnNumber<TRowData>>): (a: TRowData, b: TRowData) => number {
+    return (a: TRowData, b: TRowData) => {
+      const aValue = TableUtil.getTableNumberCellValue({ column, row: a, rowIndex: 0 });
+      const bValue = TableUtil.getTableNumberCellValue({ column, row: b, rowIndex: 0 });
+      return direction === 'asc' ? aValue - bValue : bValue - aValue;
     };
   }
 
-  public static createBooleanColumn<TData>(kwArgs: { id?: keyof TData; name: string; filterLabel?: string; flex?: number }): TableColumnBoolean<TData> {
+  public static createNumberColumn<TData>(kwArgs: { filterLabel?: string; flex?: number; id?: keyof TData; name: string }): TableColumnNumber<TData> {
     return {
-      id: kwArgs.id as string,
-      headerName: kwArgs.name,
-      type: 'boolean',
-      widthFlex: kwArgs.flex ?? 0.25,
-      filterLabel: kwArgs.filterLabel,
-      comparatorFactory: TableUtil.createBooleanCellRowComperator,
-      isInitiallyVisible: true,
-    };
-  }
-
-  public static createNumberColumn<TData>(kwArgs: { id?: keyof TData; name: string; filterLabel?: string; flex?: number }): TableColumnNumber<TData> {
-    return {
-      id: kwArgs.id as string,
-      headerName: kwArgs.name,
-      widthFlex: kwArgs.flex ?? 1,
-      type: 'number',
-      filterLabel: kwArgs.filterLabel,
       comparatorFactory: TableUtil.createNumberCellRowComperator,
-      textAlign: 'right',
+      filterLabel: kwArgs.filterLabel,
+      headerName: kwArgs.name,
+      id: kwArgs.id as string,
       isInitiallyVisible: true,
+      textAlign: 'right',
+      type: 'number',
+      widthFlex: kwArgs.flex ?? 1,
     };
   }
 
-  public static createSelectableColumn<TData>(kwArgs: { isDisabled?: (params: TableRowParams<TData>) => boolean } = {}): TableColumnSelectable<TData> {
+  public static createOptionsCellRowComperator<TRowData>({ column, direction }: GetTableCellRowComparatorProps<TableColumnOptions<TRowData>>): (a: TRowData, b: TRowData) => number {
+    return (a: TRowData, b: TRowData) => {
+      const aValue = TableUtil.getTableOptionsCellValue({ column, row: a, rowIndex: 0 });
+      const bValue = TableUtil.getTableOptionsCellValue({ column, row: b, rowIndex: 0 });
+
+      const stringifiedAValue = (Array.isArray(aValue) ? aValue.join(', ') : aValue) ?? '';
+      const stringifiedBValue = (Array.isArray(bValue) ? bValue.join(', ') : bValue) ?? '';
+
+      return direction === 'asc' ? stringifiedAValue.localeCompare(stringifiedBValue) : stringifiedBValue.localeCompare(stringifiedAValue);
+    };
+  }
+
+  public static createOptionsColumn<TData>(kwArgs: { filterLabel?: string; flex?: number; id?: keyof TData; maxNumOptionsExpanded?: number; name: string; options: OptionBase<string>[]; shouldFilterOptions?: boolean }): TableColumnOptions<TData> {
     return {
-      id: FIXED_COLUMN_ID.ROW_SELECT,
-      type: 'selectable',
+      comparatorFactory: TableUtil.createOptionsCellRowComperator,
+      filterLabel: kwArgs.filterLabel,
+      headerName: kwArgs.name,
+      id: kwArgs.id as string,
       isInitiallyVisible: true,
-      isStatic: true,
-      frozen: true,
-      resizable: false,
-      disableEllipsis: true,
-      widthPx: 38,
-      isDisabled: kwArgs.isDisabled,
+      maxNumOptionsExpanded: kwArgs.maxNumOptionsExpanded ?? 5,
+      options: kwArgs.options,
+      shouldFilterOptions: kwArgs.shouldFilterOptions,
+      type: 'options',
+      widthFlex: kwArgs.flex ?? 1,
     };
   }
 
   public static createReadableIndexColumn<TData>(kwArgs: { getAriaLabel?: (params: TableRowParams<TData>) => string } = {}): TableColumnReadableIndex<TData> {
     return {
-      id: FIXED_COLUMN_ID.READABLE_INDEX,
-      type: 'readableIndex',
-      isInitiallyVisible: true,
-      headerName: '',
-      isStatic: true,
-      frozen: true,
-      resizable: false,
       disableEllipsis: true,
-      widthPxFn: (dataLength) => (dataLength.toString().length * 10) + 16,
+      frozen: true,
       getAriaLabel: kwArgs.getAriaLabel ?? (() => null),
-      textAlign: 'right',
-    };
-  }
-
-  public static createDateColumn<TData>(kwArgs: { id?: keyof TData; name: string; filterLabel?: string; flex?: number; dateFormat?: typeof DATE_FORMAT[keyof typeof DATE_FORMAT] }): TableColumnDate<TData> {
-    return {
-      id: kwArgs.id as string,
-      headerName: kwArgs.name,
-      type: 'date',
-      widthFlex: kwArgs.flex ?? 0.5,
-      dateFormat: kwArgs.dateFormat ?? DATE_FORMAT.DATE,
-      filterLabel: kwArgs.filterLabel,
-      comparatorFactory: TableUtil.createDateCellRowComperator,
+      headerName: '',
+      id: FIXED_COLUMN_ID.READABLE_INDEX,
       isInitiallyVisible: true,
-    };
-  }
-
-  public static createOptionsColumn<TData>(kwArgs: { id?: keyof TData; name: string; options: OptionBase<string>[]; filterLabel?: string; flex?: number; shouldFilterOptions?: boolean; maxNumOptionsExpanded?: number }): TableColumnOptions<TData> {
-    return {
-      id: kwArgs.id as string,
-      headerName: kwArgs.name,
-      type: 'options',
-      widthFlex: kwArgs.flex ?? 1,
-      options: kwArgs.options,
-      shouldFilterOptions: kwArgs.shouldFilterOptions,
-      maxNumOptionsExpanded: kwArgs.maxNumOptionsExpanded ?? 5,
-      filterLabel: kwArgs.filterLabel,
-      comparatorFactory: TableUtil.createOptionsCellRowComperator,
-      isInitiallyVisible: true,
-    };
-  }
-
-  public static createActionsColumn<TData>(kwArgs: { t: TFunction<'translation', undefined>; getActions: (params: TableRowParams<TData>) => ReactElement[] }): TableColumnActions<TData> {
-    return {
-      id: FIXED_COLUMN_ID.ACTIONS,
-      headerName: kwArgs.t`Actions`,
-      type: 'actions',
-      getActions: kwArgs.getActions,
-      resizable: false,
       isStatic: true,
-      isInitiallyVisible: true,
-      widthPx: 48,
+      resizable: false,
+      textAlign: 'right',
+      type: 'readableIndex',
+      widthPxFn: (dataLength) => (dataLength.toString().length * 10) + 16,
     };
   }
 
-  public static areColumnSettingsValid<TData>(tableColumns: TableColumn<TData>[], columnSettings: TableColumnSettings[]): boolean {
-    if (!columnSettings?.length) {
-      return false;
+  public static createSelectableColumn<TData>(kwArgs: { isDisabled?: (params: TableRowParams<TData>) => boolean } = {}): TableColumnSelectable<TData> {
+    return {
+      disableEllipsis: true,
+      frozen: true,
+      id: FIXED_COLUMN_ID.ROW_SELECT,
+      isDisabled: kwArgs.isDisabled,
+      isInitiallyVisible: true,
+      isStatic: true,
+      resizable: false,
+      type: 'selectable',
+      widthPx: 38,
+    };
+  }
+
+  public static createTextCellRowAdvancedComperator<TRowData>({ column, direction }: GetTableCellRowComparatorProps<TableColumnText<TRowData>>): (a: TRowData, b: TRowData) => number {
+    return (a: TRowData, b: TRowData) => {
+      const aValue = TableUtil.getTableTextCellValue({ column, row: a, rowIndex: 0 });
+      const bValue = TableUtil.getTableTextCellValue({ column, row: b, rowIndex: 0 });
+      const result = StringUtil.advancedSortComperator(aValue ?? '', bValue ?? '');
+      return direction === 'asc' ? result : -result;
+    };
+  }
+
+  // Cell row comparators
+  public static createTextCellRowComperator<TRowData>({ column, direction }: GetTableCellRowComparatorProps<TableColumnText<TRowData>>): (a: TRowData, b: TRowData) => number {
+    return (a: TRowData, b: TRowData) => {
+      const aValue = TableUtil.getTableTextCellValue({ column, row: a, rowIndex: 0 });
+      const bValue = TableUtil.getTableTextCellValue({ column, row: b, rowIndex: 0 });
+      const result = (aValue ?? '').localeCompare(bValue ?? '');
+      return direction === 'asc' ? result : -result;
+    };
+  }
+
+  // Column creation helpers
+  public static createTextColumn<TData>(kwArgs: { advancedSort?: boolean; filterLabel?: string; flex?: number; id?: keyof TData; name: string }): TableColumnText<TData> {
+    return {
+      comparatorFactory: kwArgs.advancedSort ? TableUtil.createTextCellRowAdvancedComperator : TableUtil.createTextCellRowComperator,
+      filterLabel: kwArgs.filterLabel,
+      headerName: kwArgs.name,
+      id: kwArgs.id as string,
+      isInitiallyVisible: true,
+      type: 'text',
+      widthFlex: kwArgs.flex ?? 1,
+    };
+  }
+
+  public static getColumnIdsWithData<TRowData>(params: { hasCellData: HasCellDataFn<TRowData>; sortedData: TRowData[]; tableColumns: TableColumn<TRowData>[]; visibleColumnIds: string[] }): string[] {
+    const { hasCellData, sortedData, tableColumns, visibleColumnIds } = params;
+    const columns = visibleColumnIds.map(id => tableColumns.find(c => c.id === id));
+    let newVisibleColumnIds: string[];
+    if (hasCellData) {
+      newVisibleColumnIds = columns.filter(column => {
+        if (column.isStatic) {
+          return true;
+        }
+        return sortedData.some((row, rowIndex) => hasCellData(row, column, rowIndex));
+      }).map(c => c.id);
+    } else {
+      newVisibleColumnIds = columns.filter(column => {
+        if (column.isStatic) {
+          return true;
+        }
+        return sortedData.some((row, rowIndex) => {
+          if (column.valueGetter) {
+            return column.valueGetter({
+              id: column.id,
+              row,
+              rowIndex,
+            });
+          }
+          return row[column.id as keyof TRowData] !== undefined;
+        });
+      }).map(c => c.id);
     }
+    return newVisibleColumnIds;
+  }
 
-    const tableColumnsIds = tableColumns?.map(c => c.id);
-    const columnSettingsIds = columnSettings?.map(c => c.id);
+  public static getTableBooleanCellDisplayValue<TRowData>({ column, row, rowIndex, t }: GetTableCellValueProps<TRowData, TableColumnBoolean<TRowData>>): string {
+    const value = TableUtil.getTableBooleanCellValue({ column, row, rowIndex });
+    return value ? t('Yes') : t('No');
+  }
 
-    return tableColumnsIds.length === columnSettingsIds.length && difference(tableColumnsIds, columnSettingsIds).length === 0;
+  public static getTableBooleanCellValue<TRowData>({ column, row, rowIndex }: GetTableCellValueProps<TRowData, TableColumnBoolean<TRowData>>): boolean {
+    if (column.valueGetter) {
+      return column.valueGetter({ id: column.id, row, rowIndex });
+    }
+    return (row[column.id as keyof TRowData] as boolean);
+  }
+
+  public static getTableCaseTypeCellDisplayValue<TRowData>({ column, row, rowIndex }: GetTableCellValueProps<TRowData, TableColumnCaseType<TRowData>>): string {
+    const value = TableUtil.getTableCaseTypeCellValue({ column, row, rowIndex });
+    return value.short;
+  }
+
+  public static getTableCaseTypeCellValue<TRowData>({ column, row, rowIndex }: GetTableCellValueProps<TRowData, TableColumnCaseType<TRowData>>): CaseTypeRowValue {
+    if (column.valueGetter) {
+      return column.valueGetter({ id: column.id, row, rowIndex });
+    }
+    return CaseUtil.getRowValue((row as Case).content, column.col, column.completeCaseType);
+  }
+
+  public static getTableDateCellValue<TRowData>({ column, row, rowIndex }: GetTableCellValueProps<TRowData, TableColumnDate<TRowData>>): string {
+    if (column.valueGetter) {
+      return column.valueGetter({ id: column.id, row, rowIndex });
+    }
+    const value = row[column.id as keyof TRowData] as string;
+    if (!value) {
+      return '';
+    }
+    return dateFnsFormat(value, column.dateFormat);
+  }
+
+  public static getTableNumberCellValue<TRowData>({ column, row, rowIndex }: GetTableCellValueProps<TRowData, TableColumnNumber<TRowData>>): number {
+    if (column.valueGetter) {
+      return column.valueGetter({ id: column.id, row, rowIndex });
+    }
+    return row[column.id as keyof TRowData] as number;
+  }
+
+  public static getTableOptionsCellDisplayValue<TRowData>({ column, row, rowIndex }: GetTableCellValueProps<TRowData, TableColumnOptions<TRowData>>): string {
+    const value = TableUtil.getTableOptionsCellValue({ column, row, rowIndex });
+    return Array.isArray(value) ? value.join(', ') : value;
+  }
+
+  public static getTableOptionsCellValue<TRowData>({ column, row, rowIndex }: GetTableCellValueProps<TRowData, TableColumnOptions<TRowData>>): string | string[] {
+    if (column.valueGetter) {
+      return column.valueGetter({ id: column.id, row, rowIndex });
+    }
+    const values = row[column.id as keyof TRowData] as string | string[];
+    if (Array.isArray(values)) {
+      return values.map(value => column.options.find(o => o.value === value)?.label ?? '');
+    }
+    return column.options.find(o => o.value === values)?.label ?? '';
   }
 
   public static getTableSettingsMap<TRowData>(
@@ -484,35 +508,11 @@ export class TableUtil {
     return new Map(tableColumnSettings.map(c => [c.id, c]));
   }
 
-  public static getColumnIdsWithData<TRowData>(params: { visibleColumnIds: string[]; tableColumns: TableColumn<TRowData>[]; sortedData: TRowData[]; hasCellData: HasCellDataFn<TRowData> }): string[] {
-    const { visibleColumnIds, tableColumns, sortedData, hasCellData } = params;
-    const columns = visibleColumnIds.map(id => tableColumns.find(c => c.id === id));
-    let newVisibleColumnIds: string[];
-    if (hasCellData) {
-      newVisibleColumnIds = columns.filter(column => {
-        if (column.isStatic) {
-          return true;
-        }
-        return sortedData.some((row, rowIndex) => hasCellData(row, column, rowIndex));
-      }).map(c => c.id);
-    } else {
-      newVisibleColumnIds = columns.filter(column => {
-        if (column.isStatic) {
-          return true;
-        }
-        return sortedData.some((row, rowIndex) => {
-          if (column.valueGetter) {
-            return column.valueGetter({
-              id: column.id,
-              row,
-              rowIndex,
-            });
-          }
-          return row[column.id as keyof TRowData] !== undefined;
-        });
-      }).map(c => c.id);
+  public static getTableTextCellValue<TRowData>({ column, row, rowIndex }: GetTableCellValueProps<TRowData, TableColumnText<TRowData>>): string {
+    if (column.valueGetter) {
+      return column.valueGetter({ id: column.id, row, rowIndex });
     }
-    return newVisibleColumnIds;
+    return row[column.id as keyof TRowData] as string;
   }
 
   public static handleMoveColumn<TRowData>(
@@ -520,7 +520,7 @@ export class TableUtil {
     tableColumnSettings: TableColumnSettings[], // Will be mutated
     tableColumns: TableColumn<TRowData>[],
     elementTableColumn: TableColumn<TRowData>,
-    direction: 1 | -1,
+    direction: -1 | 1,
   ): boolean {
     if (!elementTableColumn || elementTableColumn.frozen || elementTableColumn.isStatic) {
       return false;
@@ -576,7 +576,7 @@ export class TableUtil {
     swappingElementSettingsColumn: TableColumnSettings,
     elementIndex: number,
     swappingElementIndex: number,
-    direction: 1 | -1,
+    direction: -1 | 1,
   ): boolean {
 
     const elementDimension = columnDimensions?.find(columnDimension => columnDimension.columnIds.includes(elementSettingsColumn.id));

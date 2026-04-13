@@ -4,7 +4,7 @@ import {
   useTheme,
 } from '@mui/material';
 import {
-  useContext,
+  use,
   useCallback,
   useEffect,
   useMemo,
@@ -33,9 +33,9 @@ import { EpiCaseTypeInfoRegions } from './EpiCaseTypeInfoRegions';
 import { EpiCaseTypeInfoData } from './EpiCaseTypeInfoData';
 import { EpiCaseTypeInfoAccessRights } from './EpiCaseTypeInfoAccessRights';
 
-export type EpiCaseTypeInfoDialogContentProps = Pick<WithDialogRenderProps, 'onTitleChange' | 'onPermalinkChange'>;
+export type EpiCaseTypeInfoDialogContentProps = Pick<WithDialogRenderProps, 'onPermalinkChange' | 'onTitleChange'>;
 
-export const EpiCaseTypeInfoDialogContent = ({ onTitleChange, onPermalinkChange }: EpiCaseTypeInfoDialogContentProps) => {
+export const EpiCaseTypeInfoDialogContent = ({ onPermalinkChange, onTitleChange }: EpiCaseTypeInfoDialogContentProps) => {
   const { t } = useTranslation();
   const theme = useTheme();
   const diseasesMapQuery = useDiseasesMapQuery();
@@ -44,7 +44,7 @@ export const EpiCaseTypeInfoDialogContent = ({ onTitleChange, onPermalinkChange 
   const dataCollectionsQuery = useDataCollectionsQuery();
   const loadables = useArray([dataCollectionsMapQuery, dataCollectionsQuery, diseasesMapQuery, etiologicalAgentsMapQuery]);
 
-  const epiDashboardStore = useContext(EpiDashboardStoreContext);
+  const epiDashboardStore = use(EpiDashboardStoreContext);
   const completeCaseType = useStore(epiDashboardStore, (state) => state.completeCaseType);
 
   const getDiseaseName = useCallback((id: string) => {
@@ -78,32 +78,36 @@ export const EpiCaseTypeInfoDialogContent = ({ onTitleChange, onPermalinkChange 
 
   const caseTypeAbacContextValue = useMemo<CaseTypeAbacContext>(() => {
     return {
+      caseTypeAccessAbacDict: completeCaseType.case_type_access_abacs,
       userDataCollections: dataCollectionsQuery.data,
       userDataCollectionsMap: dataCollectionsMapQuery.map,
-      caseTypeAccessAbacDict: completeCaseType.case_type_access_abacs,
     };
   }, [completeCaseType.case_type_access_abacs, dataCollectionsMapQuery.map, dataCollectionsQuery.data]);
 
   return (
     <ResponseHandler
-      shouldHideActionButtons
       loadables={loadables}
+      shouldHideActionButtons
     >
       <CaseTypeAbacContextProvider caseTypeAbac={caseTypeAbacContextValue}>
         <Box
           sx={{
+            '& dd': {
+              marginLeft: theme.spacing(1),
+            },
             '& dl': {
               margin: 0,
             },
             '& dt': {
               fontWeight: 'bold',
             },
-            '& dd': {
-              marginLeft: theme.spacing(1),
-            },
           }}
         >
-          <Box marginBottom={1}>
+          <Box
+            sx={{
+              marginBottom: 1,
+            }}
+          >
             <RichTextEditorContent source={completeCaseType?.description || t`No description available`} />
           </Box>
           <EpiCaseTypeInfoData
@@ -114,10 +118,16 @@ export const EpiCaseTypeInfoDialogContent = ({ onTitleChange, onPermalinkChange 
             name={getEtiologicalAgentName(completeCaseType.etiological_agent_id)}
             title={t`Etiological agent`}
           />
-          <Box marginY={3}>
+          <Box
+            sx={{
+              marginY: 3,
+            }}
+          >
             <Typography
               component={'h4'}
-              marginY={1}
+              sx={{
+                marginY: 1,
+              }}
               variant={'h4'}
             >
               {t`Variables by dimension`}
@@ -126,10 +136,16 @@ export const EpiCaseTypeInfoDialogContent = ({ onTitleChange, onPermalinkChange 
               completeCaseType={completeCaseType}
             />
           </Box>
-          <Box marginY={3}>
+          <Box
+            sx={{
+              marginY: 3,
+            }}
+          >
             <Typography
               component={'h4'}
-              marginY={1}
+              sx={{
+                marginY: 1,
+              }}
               variant={'h4'}
             >
               {t`Trees`}
@@ -138,10 +154,16 @@ export const EpiCaseTypeInfoDialogContent = ({ onTitleChange, onPermalinkChange 
               completeCaseType={completeCaseType}
             />
           </Box>
-          <Box marginY={3}>
+          <Box
+            sx={{
+              marginY: 3,
+            }}
+          >
             <Typography
               component={'h4'}
-              marginY={1}
+              sx={{
+                marginY: 1,
+              }}
               variant={'h4'}
             >
               {t`Regions`}
@@ -150,10 +172,16 @@ export const EpiCaseTypeInfoDialogContent = ({ onTitleChange, onPermalinkChange 
               completeCaseType={completeCaseType}
             />
           </Box>
-          <Box marginY={3}>
+          <Box
+            sx={{
+              marginY: 3,
+            }}
+          >
             <Typography
               component={'h4'}
-              marginY={1}
+              sx={{
+                marginY: 1,
+              }}
               variant={'h4'}
             >
               {t`Access rights`}

@@ -12,8 +12,8 @@ export const SortableListItemContextProvider = (
 ) => {
   const { children, value } = props;
   return (
-    <SortableListItemContext.Provider value={value}>
+    <SortableListItemContext value={value}>
       {children}
-    </SortableListItemContext.Provider>
+    </SortableListItemContext>
   );
 };

@@ -1,6 +1,6 @@
 import {
-  useTheme,
   Box,
+  useTheme,
 } from '@mui/material';
 import type { PropsWithChildren } from 'react';
 
@@ -16,15 +16,15 @@ export const SidebarMenu = ({ children }: SidebarMenuProps) => {
     <Box
       {...TestIdUtil.createAttributes('SidebarMenu')}
       sx={{
-        position: 'absolute',
-        left: 0,
-        top: 0,
-        bottom: 0,
-        zIndex: 2,
-        width: theme.spacing(ConfigManager.instance.config.layout.SIDEBAR_MENU_WIDTH),
         borderRight: '1px solid #C8DDFB',
+        bottom: 0,
         display: 'flex',
         flexDirection: 'column',
+        left: 0,
+        position: 'absolute',
+        top: 0,
+        width: theme.spacing(ConfigManager.instance.config.layout.SIDEBAR_MENU_WIDTH),
+        zIndex: 2,
       }}
     >
       {children}

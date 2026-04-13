@@ -47,8 +47,8 @@ export const CaseSetCategoryAdminPage = () => {
 
   const schema = useMemo(() => {
     return object<FormFields>().shape({
-      name: SchemaUtil.name,
       description: SchemaUtil.description,
+      name: SchemaUtil.name,
       rank: SchemaUtil.rank,
     });
   }, []);
@@ -57,20 +57,20 @@ export const CaseSetCategoryAdminPage = () => {
     return [
       {
         definition: FORM_FIELD_DEFINITION_TYPE.TEXTFIELD,
-        name: 'name',
         label: t`Name`,
+        name: 'name',
       } as const satisfies FormFieldDefinition<FormFields>,
       {
         definition: FORM_FIELD_DEFINITION_TYPE.TEXTFIELD,
-        name: 'description',
         label: t`Description`,
         multiline: true,
+        name: 'description',
         rows: 5,
       } as const satisfies FormFieldDefinition<FormFields>,
       {
         definition: FORM_FIELD_DEFINITION_TYPE.TEXTFIELD,
-        name: 'rank',
         label: t`Rank`,
+        name: 'rank',
         type: 'number',
       } as const satisfies FormFieldDefinition<FormFields>,
     ] as const;

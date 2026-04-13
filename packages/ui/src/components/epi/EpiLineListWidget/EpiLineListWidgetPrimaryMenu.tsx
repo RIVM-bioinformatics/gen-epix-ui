@@ -1,6 +1,6 @@
 import {
+  use,
   useCallback,
-  useContext,
   useMemo,
 } from 'react';
 import { useTranslation } from 'react-i18next';
@@ -33,7 +33,7 @@ export type EpiLineListWidgetPrimaryMenuProps = {
 export const EpiLineListWidgetPrimaryMenu = ({
   caseSet,
 }: EpiLineListWidgetPrimaryMenuProps) => {
-  const epiDashboardStore = useContext(EpiDashboardStoreContext);
+  const epiDashboardStore = use(EpiDashboardStoreContext);
   const { t } = useTranslation();
   const selectedIds = useStore(epiDashboardStore, useShallow((state) => state.selectedIds));
   const sortedData = useStore(epiDashboardStore, useShallow((state) => state.sortedData));
@@ -46,8 +46,8 @@ export const EpiLineListWidgetPrimaryMenu = ({
   const hasCellData = useCallback((row: Case, tableColumn: TableColumn<Case>, rowIndex: number) => {
     if (tableColumn.type === 'caseType' && tableColumn.valueGetter) {
       return !tableColumn.valueGetter({
-        row,
         id: tableColumn.id,
+        row,
         rowIndex,
       }).isMissing;
     }
@@ -87,51 +87,51 @@ export const EpiLineListWidgetPrimaryMenu = ({
     // const shouldShowBulkEditCaseMenuItem = true;
 
     const actionsColumnMenuItem: MenuItemData = {
-      label: t`Actions`,
       items: [
         {
-          label: t`Create filter from selected cases`,
-          disabled: !selectedIds?.length || similarCaseIds.length > 0,
           callback: createFilterFromSelectedRowCaseIds,
+          disabled: !selectedIds?.length || similarCaseIds.length > 0,
           divider: true,
+          label: t`Create filter from selected cases`,
         },
         {
-          label: t`Find similar cases`,
-          disabled: hasSelectionFilter,
           callback: () => EpiEventBusManager.instance.emit('openFindSimilarCasesDialog', {
+            allRows: sortedData,
+            completeCaseType,
             selectedRows: sortedData,
-            allRows: sortedData,
-            completeCaseType,
           }),
+          disabled: hasSelectionFilter,
+          label: t`Find similar cases`,
         },
         {
-          label: t`Find similar cases (based on selected cases)`,
-          disabled: !selectedIds?.length || hasSelectionFilter,
           callback: () => EpiEventBusManager.instance.emit('openFindSimilarCasesDialog', {
-            selectedRows,
             allRows: sortedData,
             completeCaseType,
+            selectedRows,
           }),
+          disabled: !selectedIds?.length || hasSelectionFilter,
+          label: t`Find similar cases (based on selected cases)`,
         },
         {
-          label: t`Remove similar cases from results`,
-          disabled: !findSimilarCasesResults?.length,
           callback: () => EpiEventBusManager.instance.emit('openRemoveFindSimilarCasesResultDialog', {
             completeCaseType,
           }),
+          disabled: !findSimilarCasesResults?.length,
+          label: t`Remove similar cases from results`,
         },
       ],
+      label: t`Actions`,
     };
 
     if (shouldShowCreateEventMenuItem) {
       actionsColumnMenuItem.items.push(
         {
-          label: t`Create new event with selected cases`,
-          disabled: !selectedIds?.length,
           callback: () => EpiEventBusManager.instance.emit('openCreateEventDialog', {
-            rows: selectedRows,
             completeCaseType,
+            rows: selectedRows,
           }),
+          disabled: !selectedIds?.length,
+          label: t`Create new event with selected cases`,
         },
       );
     }
@@ -139,12 +139,12 @@ export const EpiLineListWidgetPrimaryMenu = ({
     if (shouldShowAddToEventMenuItem) {
       actionsColumnMenuItem.items.push(
         {
+          callback: () => EpiEventBusManager.instance.emit('openAddCasesToEventDialog', {
+            currentCaseSet: caseSet,
+            rows: selectedRows,
+          }),
           disabled: !selectedIds?.length,
           label: t`Add selected cases to an existing event`,
-          callback: () => EpiEventBusManager.instance.emit('openAddCasesToEventDialog', {
-            rows: selectedRows,
-            currentCaseSet: caseSet,
-          }),
         },
       );
     }
@@ -152,12 +152,12 @@ export const EpiLineListWidgetPrimaryMenu = ({
     if (shouldShowRemoveFromEventMenuItem) {
       actionsColumnMenuItem.items.push(
         {
+          callback: () => EpiEventBusManager.instance.emit('openRemoveCasesFromEventDialog', {
+            caseSet,
+            rows: selectedRowsWithoutSimilarCases,
+          }),
           disabled: !selectedRowsWithoutSimilarCases.length,
           label: t`Remove selected cases from this event`,
-          callback: () => EpiEventBusManager.instance.emit('openRemoveCasesFromEventDialog', {
-            rows: selectedRowsWithoutSimilarCases,
-            caseSet,
-          }),
         },
       );
     }

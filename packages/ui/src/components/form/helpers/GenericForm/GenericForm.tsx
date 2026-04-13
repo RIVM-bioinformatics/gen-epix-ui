@@ -3,9 +3,9 @@ import type {
   ReactElement,
 } from 'react';
 import {
-  useMemo,
-  useCallback,
   Fragment,
+  useCallback,
+  useMemo,
 } from 'react';
 import { useTranslation } from 'react-i18next';
 import type {
@@ -34,26 +34,26 @@ import { RadioGroup } from '../../fields/RadioGroup';
 import { useIsFormFieldRequiredFromSchema } from '../../../../hooks/useIsFormFieldRequiredFromSchema';
 
 export type GenericFormProps<TFormFields extends FieldValues> = {
+  readonly defaultFormValues?: Partial<TFormFields>;
+  readonly disableAll?: boolean;
   readonly formFieldDefinitions: FormFieldDefinition<TFormFields>[];
   readonly formId?: string;
-  readonly onSubmit?: FormEventHandler<HTMLFormElement>;
   readonly formMethods: UseFormReturn<TFormFields>;
+  readonly onSubmit?: FormEventHandler<HTMLFormElement>;
   readonly renderField?: (definition: FormFieldDefinition<TFormFields>, element: ReactElement) => ReactElement;
-  readonly wrapForm?: (children: ReactElement) => ReactElement;
-  readonly disableAll?: boolean;
   readonly schema: ObjectSchema<TFormFields, TFormFields>;
-  readonly defaultFormValues?: Partial<TFormFields>;
+  readonly wrapForm?: (children: ReactElement) => ReactElement;
 };
 
 export const GenericForm = <TFormFields extends FieldValues,>({
+  disableAll,
   formFieldDefinitions,
   formId,
-  onSubmit,
   formMethods,
+  onSubmit,
   renderField,
-  wrapForm,
-  disableAll,
   schema,
+  wrapForm,
 }: GenericFormProps<TFormFields>) => {
   const { t } = useTranslation();
 
@@ -67,81 +67,81 @@ export const GenericForm = <TFormFields extends FieldValues,>({
         return (
           <Autocomplete
             {...formFieldDefinition as AutocompleteProps<TFormFields, Path<TFormFields>, false>}
-            required={isFormFieldRequired(formFieldDefinition.name)}
             disabled={formFieldDefinition.disabled || disableAll}
-          />
-        );
-      case FORM_FIELD_DEFINITION_TYPE.SELECT:
-        return (
-          <Select
-            {...formFieldDefinition as SelectProps<TFormFields, Path<TFormFields>, false>}
             required={isFormFieldRequired(formFieldDefinition.name)}
-            disabled={formFieldDefinition.disabled || disableAll}
-          />
-        );
-      case FORM_FIELD_DEFINITION_TYPE.TRANSFER_LIST:
-        return (
-          <TransferList
-            {...formFieldDefinition}
-            required={isFormFieldRequired(formFieldDefinition.name)}
-            disabled={formFieldDefinition.disabled || disableAll}
           />
         );
       case FORM_FIELD_DEFINITION_TYPE.BOOLEAN:
         return (
           <Select
             {...formFieldDefinition}
-            required={isFormFieldRequired(formFieldDefinition.name)}
             disabled={formFieldDefinition.disabled || disableAll}
             options={booleanOptions}
+            required={isFormFieldRequired(formFieldDefinition.name)}
           />
         );
       case FORM_FIELD_DEFINITION_TYPE.DATE:
         return (
           <DatePicker
             {...formFieldDefinition}
-            required={isFormFieldRequired(formFieldDefinition.name)}
             disabled={formFieldDefinition.disabled || disableAll}
-          />
-        );
-      case FORM_FIELD_DEFINITION_TYPE.RICH_TEXT:
-        return (
-          <RichTextEditor
-            {...formFieldDefinition}
             required={isFormFieldRequired(formFieldDefinition.name)}
-            disabled={formFieldDefinition.disabled || disableAll}
           />
         );
       case FORM_FIELD_DEFINITION_TYPE.FILE:
         return (
           <UploadButton
             {...formFieldDefinition}
-            required={isFormFieldRequired(formFieldDefinition.name)}
             disabled={formFieldDefinition.disabled || disableAll}
-          />
-        );
-      case FORM_FIELD_DEFINITION_TYPE.RADIO_GROUP:
-        return (
-          <RadioGroup
-            {...formFieldDefinition}
             required={isFormFieldRequired(formFieldDefinition.name)}
-            disabled={formFieldDefinition.disabled || disableAll}
-          />
-        );
-      case FORM_FIELD_DEFINITION_TYPE.TEXTFIELD:
-        return (
-          <TextField
-            {...formFieldDefinition}
-            required={isFormFieldRequired(formFieldDefinition.name)}
-            disabled={formFieldDefinition.disabled || disableAll}
           />
         );
       case FORM_FIELD_DEFINITION_TYPE.NUMBER:
         return (
           <NumberField
             {...formFieldDefinition}
-            required={isFormFieldRequired(formFieldDefinition.name)}
             disabled={formFieldDefinition.disabled || disableAll}
+            required={isFormFieldRequired(formFieldDefinition.name)}
+          />
+        );
+      case FORM_FIELD_DEFINITION_TYPE.RADIO_GROUP:
+        return (
+          <RadioGroup
+            {...formFieldDefinition}
+            disabled={formFieldDefinition.disabled || disableAll}
+            required={isFormFieldRequired(formFieldDefinition.name)}
+          />
+        );
+      case FORM_FIELD_DEFINITION_TYPE.RICH_TEXT:
+        return (
+          <RichTextEditor
+            {...formFieldDefinition}
+            disabled={formFieldDefinition.disabled || disableAll}
+            required={isFormFieldRequired(formFieldDefinition.name)}
+          />
+        );
+      case FORM_FIELD_DEFINITION_TYPE.SELECT:
+        return (
+          <Select
+            {...formFieldDefinition as SelectProps<TFormFields, Path<TFormFields>, false>}
+            disabled={formFieldDefinition.disabled || disableAll}
+            required={isFormFieldRequired(formFieldDefinition.name)}
+          />
+        );
+      case FORM_FIELD_DEFINITION_TYPE.TEXTFIELD:
+        return (
+          <TextField
+            {...formFieldDefinition}
+            disabled={formFieldDefinition.disabled || disableAll}
+            required={isFormFieldRequired(formFieldDefinition.name)}
+          />
+        );
+      case FORM_FIELD_DEFINITION_TYPE.TRANSFER_LIST:
+        return (
+          <TransferList
+            {...formFieldDefinition}
+            disabled={formFieldDefinition.disabled || disableAll}
+            required={isFormFieldRequired(formFieldDefinition.name)}
           />
         );
       default:
@@ -163,7 +163,9 @@ export const GenericForm = <TFormFields extends FieldValues,>({
         return (
           <Box
             key={formFieldDefinition.name}
-            marginY={1}
+            sx={{
+              marginY: 1,
+            }}
           >
             {renderFormFieldDefinition(formFieldDefinition)}
           </Box>
@@ -175,8 +177,8 @@ export const GenericForm = <TFormFields extends FieldValues,>({
   return (
     <FormProvider {...formMethods}>
       <Box
-        component={'form'}
         autoComplete={'off'}
+        component={'form'}
         id={formId}
         onSubmit={onSubmit}
       >

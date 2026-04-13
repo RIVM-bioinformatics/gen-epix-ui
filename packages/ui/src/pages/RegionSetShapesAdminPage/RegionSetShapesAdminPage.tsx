@@ -12,8 +12,8 @@ import { useParams } from 'react-router-dom';
 
 import type { RegionSetShape } from '../../api';
 import {
-  GeoApi,
   CommandName,
+  GeoApi,
 } from '../../api';
 import { useRegionSetsMapQuery } from '../../dataHooks/useRegionSetsQuery';
 import { useArray } from '../../hooks/useArray';
@@ -27,7 +27,7 @@ import { CrudPage } from '../CrudPage';
 import type { OmitWithMetaData } from '../../models/data';
 
 // Note: region_set_id is given in the route params
-type FormFields = OmitWithMetaData<RegionSetShape, 'region_set' | 'region_set_id'>;
+type FormFields = OmitWithMetaData<RegionSetShape, 'region_set_id' | 'region_set'>;
 
 export const RegionSetShapesAdminPage = () => {
   const { regionSetId } = useParams();
@@ -70,8 +70,8 @@ export const RegionSetShapesAdminPage = () => {
 
   const schema = useMemo(() => {
     return object<FormFields>().shape({
-      scale: number().required().positive().transform((_val: unknown, orig: string | number) => orig === '' ? undefined : orig),
       geo_json: string().freeFormText(),
+      scale: number().required().positive().transform((_val: unknown, orig: number | string) => orig === '' ? undefined : orig),
     });
   }, []);
 
@@ -79,16 +79,16 @@ export const RegionSetShapesAdminPage = () => {
     return [
       {
         definition: FORM_FIELD_DEFINITION_TYPE.TEXTFIELD,
-        name: 'scale',
         label: t`Scale`,
+        name: 'scale',
         type: 'number',
       } as const satisfies FormFieldDefinition<FormFields>,
       {
         definition: FORM_FIELD_DEFINITION_TYPE.TEXTFIELD,
-        name: 'geo_json',
         label: t`Scale`,
-        rows: 20,
         multiline: true,
+        name: 'geo_json',
+        rows: 20,
       } as const satisfies FormFieldDefinition<FormFields>,
     ] as const;
   }, [t]);
@@ -110,17 +110,17 @@ export const RegionSetShapesAdminPage = () => {
 
   return (
     <CrudPage<FormFields, RegionSetShape>
+      createItemDialogTitle={t`Create new region set shape`}
       createOne={createOne}
       crudCommandType={CommandName.RegionSetShapeCrudCommand}
-      createItemDialogTitle={t`Create new region set shape`}
       defaultSortByField={'scale'}
       defaultSortDirection={'asc'}
       deleteOne={deleteOne}
-      getOptimisticUpdateIntermediateItem={getOptimisticUpdateIntermediateItem}
       fetchAll={fetchAll}
       fetchAllSelect={fetchAllSelect}
       formFieldDefinitions={formFieldDefinitions}
       getName={getName}
+      getOptimisticUpdateIntermediateItem={getOptimisticUpdateIntermediateItem}
       loadables={loadables}
       resourceQueryKeyBase={QUERY_KEY.REGION_SET_SHAPES}
       schema={schema}

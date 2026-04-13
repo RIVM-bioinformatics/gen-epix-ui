@@ -15,7 +15,34 @@ import type { OptionBase } from '../../models/form';
 import { DATE_FORMAT } from '../../data/date';
 
 export class DataUtil {
-  public static getGeneticSequenceColOptionsForCaseTypeId(kwArgs: { caseTypeId: string; refColMap: Map<string, RefCol>; colMap: Map<string, Col>; colOptions: OptionBase<string>[] }): OptionBase<string>[] {
+  public static getCaseSetName(caseSet: CaseSet): string {
+    return `${caseSet.name} (${format(caseSet.case_set_date, DATE_FORMAT.DATE)})`;
+  }
+
+
+  public static getColTypeOptionsForRefDimId(kwArgs: { colsValidationRules: RefColValidationRulesResponseBody['valid_col_types_by_dim_type']; colTypeOptions: OptionBase<string>[]; refDimId: string; refDimMap: Map<string, RefDim> }): OptionBase<string>[] {
+    const refDim = kwArgs.refDimMap.get(kwArgs.refDimId);
+    if (!refDim) {
+      return [];
+    }
+    return kwArgs.colTypeOptions.filter((option) => {
+      const colType = option.value as ColType;
+      return kwArgs.colsValidationRules[refDim.dim_type].includes(colType);
+    });
+  }
+
+  public static getDimOptionsForCaseTypeId(kwArgs: { caseTypeId: string; dimMap: Map<string, Dim>; dimOptions: OptionBase<string>[] }): OptionBase<string>[] {
+    if (!kwArgs.caseTypeId) {
+      return [];
+    }
+
+    return kwArgs.dimOptions.filter((option) => {
+      const dim = kwArgs.dimMap.get(option.value);
+      return dim?.case_type_id === kwArgs.caseTypeId;
+    });
+  }
+
+  public static getGeneticSequenceColOptionsForCaseTypeId(kwArgs: { caseTypeId: string; colMap: Map<string, Col>; colOptions: OptionBase<string>[]; refColMap: Map<string, RefCol> }): OptionBase<string>[] {
     if (!kwArgs.caseTypeId) {
       return [];
     }
@@ -30,18 +57,7 @@ export class DataUtil {
   }
 
 
-  public static getDimOptionsForCaseTypeId(kwArgs: { caseTypeId: string; dimOptions: OptionBase<string>[]; dimMap: Map<string, Dim> }): OptionBase<string>[] {
-    if (!kwArgs.caseTypeId) {
-      return [];
-    }
-
-    return kwArgs.dimOptions.filter((option) => {
-      const dim = kwArgs.dimMap.get(option.value);
-      return dim?.case_type_id === kwArgs.caseTypeId;
-    });
-  }
-
-  public static getRefColOptionsForDimId(kwArgs: { dimId: string; dimMap: Map<string, Dim>; refDimMap: Map<string, RefDim>; refColOptions: OptionBase<string>[]; refColMap: Map<string, RefCol>; colsValidationRules: RefColValidationRulesResponseBody['valid_col_types_by_dim_type'] }): OptionBase<string>[] {
+  public static getRefColOptionsForDimId(kwArgs: { colsValidationRules: RefColValidationRulesResponseBody['valid_col_types_by_dim_type']; dimId: string; dimMap: Map<string, Dim>; refColMap: Map<string, RefCol>; refColOptions: OptionBase<string>[]; refDimMap: Map<string, RefDim> }): OptionBase<string>[] {
     const dim = kwArgs.dimMap.get(kwArgs.dimId);
     if (!dim) {
       return [];
@@ -57,18 +73,6 @@ export class DataUtil {
     });
   }
 
-  public static getColTypeOptionsForRefDimId(kwArgs: { refDimId: string; refDimMap: Map<string, RefDim>; colTypeOptions: OptionBase<string>[]; colsValidationRules: RefColValidationRulesResponseBody['valid_col_types_by_dim_type'] }): OptionBase<string>[] {
-    const refDim = kwArgs.refDimMap.get(kwArgs.refDimId);
-    if (!refDim) {
-      return [];
-    }
-    return kwArgs.colTypeOptions.filter((option) => {
-      const colType = option.value as ColType;
-      return kwArgs.colsValidationRules[refDim.dim_type].includes(colType);
-    });
-  }
-
-
   public static getUserDisplayValue(user: User, t: TFunction<'translation', undefined>): string {
     if (!user) {
       return t`Unknown user`;
@@ -76,12 +80,8 @@ export class DataUtil {
     return `${user.name} (${user.key})`;
   }
 
-  public static getCaseSetName(caseSet: CaseSet): string {
-    return `${caseSet.name} (${format(caseSet.case_set_date, DATE_FORMAT.DATE)})`;
-  }
 
-
-  public static rankSortComperatorFactory<TSecondarySorKey extends keyof TItem, TItem extends { rank?: number }>(secondarySortKeyOrFn?: TSecondarySorKey | ((item: TItem) => string)) {
+  public static rankSortComperatorFactory<TSecondarySorKey extends keyof TItem, TItem extends { rank?: number }>(secondarySortKeyOrFn?: ((item: TItem) => string) | TSecondarySorKey) {
     return (a: TItem, b: TItem): number => {
       const rankComparison = (a.rank ?? 0) - (b.rank ?? 0);
       if (rankComparison !== 0 || !secondarySortKeyOrFn) {

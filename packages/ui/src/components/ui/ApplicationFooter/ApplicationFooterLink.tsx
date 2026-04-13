@@ -6,12 +6,12 @@ import {
 } from '@mui/material';
 import type { PropsWithChildren } from 'react';
 
-export type ApplicationFooterLinkProps = PropsWithChildren<{
+export type ApplicationFooterLinkProps = BoxProps<'li'> & PropsWithChildren<{
   readonly href?: string;
   readonly onClick?: () => void;
-}> & BoxProps<'li'>;
+}>;
 
-export const ApplicationFooterLink = ({ href, onClick, children, ...boxProps }: ApplicationFooterLinkProps) => {
+export const ApplicationFooterLink = ({ children, href, onClick, ...boxProps }: ApplicationFooterLinkProps) => {
   const theme = useTheme();
 
   return (
@@ -22,12 +22,12 @@ export const ApplicationFooterLink = ({ href, onClick, children, ...boxProps }: 
       {href && (
         <Link
           href={href}
+          onClick={onClick}
           rel={'noreferrer'}
           sx={{
             color: theme['gen-epix'].footer.color,
           }}
           target={'_blank'}
-          onClick={onClick}
         >
           {children}
         </Link>
@@ -35,10 +35,10 @@ export const ApplicationFooterLink = ({ href, onClick, children, ...boxProps }: 
       {!href && (
         <Link
           component={'button'}
+          onClick={onClick}
           sx={{
             color: theme['gen-epix'].footer.color,
           }}
-          onClick={onClick}
         >
           {children}
         </Link>

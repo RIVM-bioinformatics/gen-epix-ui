@@ -17,19 +17,73 @@ import { CaseTypeUtil } from '../CaseTypeUtil';
 import { EpiFilterUtil } from '../EpiFilterUtil';
 import type {
   Case,
-  CompleteCaseType,
   Col,
+  CompleteCaseType,
 } from '../../api';
 import { ColType } from '../../api';
 import { DATE_FORMAT } from '../../data/date';
 
 interface Item {
   date: Date;
-  value: number;
   row: Case;
+  value: number;
 }
 
 export class EpiCurveUtil {
+  public static getItemsWithinInterval(items: Item[], intervals: Date[], index: number): Item[] {
+    return items.filter(item => {
+      const nextInterval = intervals[index + 1];
+      const itemDate = item.date;
+      return isEqual(itemDate, intervals[index]) || (isAfter(itemDate, intervals[index]) && (!nextInterval || isBefore(itemDate, nextInterval)));
+    });
+  }
+
+  /**
+   * Finds the initial column (resolution) for the given dimensionId in the given lineList
+   * @param completeCaseType
+   * @param lineList
+   * @param cols
+   * @returns
+   */
+  public static getPreferredTimeColumn(completeCaseType: CompleteCaseType, cases: Case[], cols: Col[]): Col {
+    const items = EpiCurveUtil.getSortedItems(completeCaseType, cases, cols);
+
+    if (!items?.length) {
+      return cols?.[0] ?? null;
+    }
+
+    const duration: Duration = {
+      years: 0,
+      ...intervalToDuration({
+        end: items[items.length - 1].date,
+        start: items[0].date,
+      }),
+    };
+
+    const dayCol = cols.find(col => completeCaseType.ref_cols[col.ref_col_id].col_type === ColType.TIME_DAY);
+    if (dayCol && (duration.years ?? 0) === 0 && duration.months <= 3) {
+      return dayCol;
+    }
+    const weekCol = cols.find(col => completeCaseType.ref_cols[col.ref_col_id].col_type === ColType.TIME_WEEK);
+    if (weekCol && (duration.years ?? 0) <= 1) {
+      return weekCol;
+    }
+    const monthCol = cols.find(col => completeCaseType.ref_cols[col.ref_col_id].col_type === ColType.TIME_MONTH);
+    if (monthCol && (duration.years ?? 0) <= 2) {
+      return monthCol;
+    }
+    const quarterCol = cols.find(col => completeCaseType.ref_cols[col.ref_col_id].col_type === ColType.TIME_QUARTER);
+    if (quarterCol && (duration.years ?? 0) <= 5) {
+      return quarterCol;
+    }
+    const yearCol = cols.find(col => completeCaseType.ref_cols[col.ref_col_id].col_type === ColType.TIME_QUARTER);
+    if (yearCol) {
+      return yearCol;
+    }
+
+    return CaseTypeUtil.getPreferredColInDimHavingHighestRank(cols, completeCaseType);
+  }
+
   /**
    * Gets rows sorted by time
    * @param completeCaseType
@@ -63,9 +117,9 @@ export class EpiCurveUtil {
 
       return {
         date: dates[0] ?? null,
+        row,
         // when count is null, 1 should be assumed
         value: row.count ?? 1,
-        row,
       };
     }).filter(item => !!item.date);
 
@@ -83,69 +137,6 @@ export class EpiCurveUtil {
     });
   }
 
-  /**
-   * Finds the initial column (resolution) for the given dimensionId in the given lineList
-   * @param completeCaseType
-   * @param lineList
-   * @param cols
-   * @returns
-   */
-  public static getPreferredTimeColumn(completeCaseType: CompleteCaseType, cases: Case[], cols: Col[]): Col {
-    const items = EpiCurveUtil.getSortedItems(completeCaseType, cases, cols);
-
-    if (!items?.length) {
-      return cols?.[0] ?? null;
-    }
-
-    const duration: Duration = {
-      years: 0,
-      ...intervalToDuration({
-        start: items[0].date,
-        end: items[items.length - 1].date,
-      }),
-    };
-
-    const dayCol = cols.find(col => completeCaseType.ref_cols[col.ref_col_id].col_type === ColType.TIME_DAY);
-    if (dayCol && (duration.years ?? 0) === 0 && duration.months <= 3) {
-      return dayCol;
-    }
-    const weekCol = cols.find(col => completeCaseType.ref_cols[col.ref_col_id].col_type === ColType.TIME_WEEK);
-    if (weekCol && (duration.years ?? 0) <= 1) {
-      return weekCol;
-    }
-    const monthCol = cols.find(col => completeCaseType.ref_cols[col.ref_col_id].col_type === ColType.TIME_MONTH);
-    if (monthCol && (duration.years ?? 0) <= 2) {
-      return monthCol;
-    }
-    const quarterCol = cols.find(col => completeCaseType.ref_cols[col.ref_col_id].col_type === ColType.TIME_QUARTER);
-    if (quarterCol && (duration.years ?? 0) <= 5) {
-      return quarterCol;
-    }
-    const yearCol = cols.find(col => completeCaseType.ref_cols[col.ref_col_id].col_type === ColType.TIME_QUARTER);
-    if (yearCol) {
-      return yearCol;
-    }
-
-    return CaseTypeUtil.getPreferredColInDimHavingHighestRank(cols, completeCaseType);
-  }
-
-  public static getXAxisLabel(colType: ColType, value: Date): string {
-    switch (colType) {
-      case ColType.TIME_DAY:
-        return format(value, DATE_FORMAT.DATE);
-      case ColType.TIME_WEEK:
-        return format(value, DATE_FORMAT.YEAR_WEEK, { useAdditionalWeekYearTokens: true });
-      case ColType.TIME_MONTH:
-        return format(value, DATE_FORMAT.YEAR_MONTH);
-      case ColType.TIME_QUARTER:
-        return format(value, DATE_FORMAT.YEAR_QUARTER);
-      case ColType.TIME_YEAR:
-        return format(value, DATE_FORMAT.YEAR);
-      default:
-        throw Error(`unknown col_type ${colType}`);
-    }
-  }
-
   public static getXAxisIntervals(colType: ColType, items: Item[]): Date[] {
     if (items.length === 0) {
       return [];
@@ -156,25 +147,34 @@ export class EpiCurveUtil {
 
     switch (colType) {
       case ColType.TIME_DAY:
-        return eachDayOfInterval({ start, end });
-      case ColType.TIME_WEEK:
-        return eachWeekOfInterval({ start, end });
+        return eachDayOfInterval({ end, start });
       case ColType.TIME_MONTH:
-        return eachMonthOfInterval({ start, end });
+        return eachMonthOfInterval({ end, start });
       case ColType.TIME_QUARTER:
-        return eachQuarterOfInterval({ start, end });
+        return eachQuarterOfInterval({ end, start });
+      case ColType.TIME_WEEK:
+        return eachWeekOfInterval({ end, start });
       case ColType.TIME_YEAR:
-        return eachYearOfInterval({ start, end });
+        return eachYearOfInterval({ end, start });
       default:
         throw Error(`unknown col_type ${colType}`);
     }
   }
 
-  public static getItemsWithinInterval(items: Item[], intervals: Date[], index: number): Item[] {
-    return items.filter(item => {
-      const nextInterval = intervals[index + 1];
-      const itemDate = item.date;
-      return isEqual(itemDate, intervals[index]) || (isAfter(itemDate, intervals[index]) && (!nextInterval || isBefore(itemDate, nextInterval)));
-    });
+  public static getXAxisLabel(colType: ColType, value: Date): string {
+    switch (colType) {
+      case ColType.TIME_DAY:
+        return format(value, DATE_FORMAT.DATE);
+      case ColType.TIME_MONTH:
+        return format(value, DATE_FORMAT.YEAR_MONTH);
+      case ColType.TIME_QUARTER:
+        return format(value, DATE_FORMAT.YEAR_QUARTER);
+      case ColType.TIME_WEEK:
+        return format(value, DATE_FORMAT.YEAR_WEEK, { useAdditionalWeekYearTokens: true });
+      case ColType.TIME_YEAR:
+        return format(value, DATE_FORMAT.YEAR);
+      default:
+        throw Error(`unknown col_type ${colType}`);
+    }
   }
 }

@@ -6,9 +6,9 @@ import { TableCaption } from './TableCaption';
 
 
 export type TableHeaderProps = {
+  readonly header?: string;
   readonly headerComponent?: TypographyProps['component'];
   readonly headerVariant?: TypographyProps['variant'];
-  readonly header?: string;
   readonly showTableMenu?: boolean;
 };
 
@@ -16,9 +16,9 @@ export const TableHeader = ({ header, headerComponent = 'h3', headerVariant = 'h
   return (
     <Box
       sx={{
+        alignItems: 'center',
         display: 'flex',
         justifyContent: header ? 'space-between' : 'flex-end',
-        alignItems: 'center',
       }}
     >
       {header && (

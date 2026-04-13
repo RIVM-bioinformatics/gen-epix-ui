@@ -4,11 +4,11 @@ import {
 } from 'react';
 import type { StoreApi } from 'zustand';
 import {
-  Tooltip,
   Box,
+  Tooltip,
   useTheme,
 } from '@mui/material';
-import ErrorOutlineIcon from '@mui/icons-material/ErrorOutline';
+import ErrorOutlinedIcon from '@mui/icons-material/ErrorOutlined';
 import AddIcon from '@mui/icons-material/Add';
 import { useTranslation } from 'react-i18next';
 
@@ -24,8 +24,8 @@ import type {
   EpiUploadMappedColumn,
 } from '../../../models/epi';
 import type {
-  TableRowParams,
   TableColumn,
+  TableRowParams,
 } from '../../../models/table';
 import type { TableStore } from '../../../stores/tableStore';
 import { CaseUtil } from '../../../utils/CaseUtil';
@@ -38,14 +38,14 @@ import {
 
 export type EpiUploadCaseResultTableProps = {
   readonly completeCaseType: CompleteCaseType;
-  readonly rowsWithGeneratedId?: CaseUploadResultWithGeneratedId[];
-  readonly validatedCases?: CaseUploadResult[];
-  readonly rawData?: string[][];
   readonly mappedColumns: EpiUploadMappedColumn[];
+  readonly rawData?: string[][];
+  readonly rowsWithGeneratedId?: CaseUploadResultWithGeneratedId[];
   readonly tableStore: StoreApi<TableStore<CaseUploadResultWithGeneratedId>>;
+  readonly validatedCases?: CaseUploadResult[];
 };
 
-export const EpiUploadCaseResultTable = ({ tableStore, rowsWithGeneratedId, completeCaseType, validatedCases, rawData, mappedColumns }: EpiUploadCaseResultTableProps) => {
+export const EpiUploadCaseResultTable = ({ completeCaseType, mappedColumns, rawData, rowsWithGeneratedId, tableStore, validatedCases }: EpiUploadCaseResultTableProps) => {
   const theme = useTheme();
   const { t } = useTranslation();
 
@@ -69,7 +69,7 @@ export const EpiUploadCaseResultTable = ({ tableStore, rowsWithGeneratedId, comp
   ], []);
 
   const getIssueTooltipMessages = useCallback((issues: CaseDataIssue[]) => {
-    const messages: { message: string; key: string }[] = [];
+    const messages: { key: string; message: string }[] = [];
     issues.forEach((issue) => {
       const columnLabel = completeCaseType.cols[issue.col_id].label;
       const message = `${columnLabel}: ${issue.message}`;
@@ -85,7 +85,7 @@ export const EpiUploadCaseResultTable = ({ tableStore, rowsWithGeneratedId, comp
     const messages = getIssueTooltipMessages(issues);
     return (
       <>
-        {messages.map(({ message, key }, index) => (
+        {messages.map(({ key, message }, index) => (
           <Box
             key={key}
             sx={{ marginTop: index > 0 ? 1 : 0 }}
@@ -117,11 +117,11 @@ export const EpiUploadCaseResultTable = ({ tableStore, rowsWithGeneratedId, comp
   const renderHasIssueHeader = useCallback(() => {
     return (
       <Tooltip
+        aria-hidden={false}
         arrow
         title={t('Indicates if there are any issues with the case')}
-        aria-hidden={false}
       >
-        <ErrorOutlineIcon
+        <ErrorOutlinedIcon
           fontSize={'small'}
         />
       </Tooltip>
@@ -133,12 +133,12 @@ export const EpiUploadCaseResultTable = ({ tableStore, rowsWithGeneratedId, comp
     if (errorIssues.length > 0) {
       return (
         <Tooltip
+          aria-hidden={false}
+          aria-label={getIssueTooltipLabel(errorIssues)}
           arrow
           title={getIssueTooltipContent(errorIssues)}
-          aria-label={getIssueTooltipLabel(errorIssues)}
-          aria-hidden={false}
         >
-          <ErrorOutlineIcon
+          <ErrorOutlinedIcon
             fontSize={'small'}
             sx={{
               color: theme.palette.error.main,
@@ -153,9 +153,9 @@ export const EpiUploadCaseResultTable = ({ tableStore, rowsWithGeneratedId, comp
   const renderIsNewHeader = useCallback(() => {
     return (
       <Tooltip
+        aria-hidden={false}
         arrow
         title={t('Indicates if case is new (will be created)')}
-        aria-hidden={false}
       >
         <AddIcon
           fontSize={'small'}
@@ -171,8 +171,8 @@ export const EpiUploadCaseResultTable = ({ tableStore, rowsWithGeneratedId, comp
         aria-label={t`This case does not have an ID and will be created`}
         fontSize={'small'}
         sx={{
-          position: 'absolute',
           marginTop: '5px',
+          position: 'absolute',
         }}
       />
     );
@@ -223,30 +223,30 @@ export const EpiUploadCaseResultTable = ({ tableStore, rowsWithGeneratedId, comp
     return (
       <Box
         sx={{
-          display: 'flex',
           alignItems: 'center',
+          display: 'flex',
         }}
       >
         <Box
           sx={{
-            width: theme.spacing(2),
             height: theme.spacing(2),
-            minWidth: theme.spacing(2),
-            minHeight: theme.spacing(2),
             marginRight: theme.spacing(1),
+            minHeight: theme.spacing(2),
+            minWidth: theme.spacing(2),
             position: 'relative',
+            width: theme.spacing(2),
           }}
         >
           <Tooltip
             arrow
             title={getIssueTooltipContent(issues)}
           >
-            <ErrorOutlineIcon
+            <ErrorOutlinedIcon
               fontSize={'small'}
               sx={{
                 color: iconColor,
-                position: 'absolute',
                 marginTop: '-2px',
+                position: 'absolute',
               }}
             />
           </Tooltip>
@@ -276,34 +276,34 @@ export const EpiUploadCaseResultTable = ({ tableStore, rowsWithGeneratedId, comp
       },
     }));
     tableCols.push({
+      disableEllipsis: true,
+      frozen: true,
+      headerName: '',
+      hideInFilter: true,
       id: 'gen-epix-ui-issue',
-      type: 'text',
       isInitiallyVisible: true,
       isStatic: true,
-      frozen: true,
-      resizable: false,
-      disableEllipsis: true,
-      widthPx: 38,
-      valueGetter: () => '',
       renderCell: renderHasIssueCell,
       renderHeader: renderHasIssueHeader,
-      hideInFilter: true,
-      headerName: '',
+      resizable: false,
+      type: 'text',
+      valueGetter: () => '',
+      widthPx: 38,
     });
     tableCols.push({
+      disableEllipsis: true,
+      frozen: true,
+      headerName: '',
+      hideInFilter: true,
       id: 'gen-epix-ui-id',
-      type: 'text',
       isInitiallyVisible: true,
       isStatic: true,
-      frozen: true,
-      resizable: false,
-      disableEllipsis: true,
-      widthPx: 38,
-      valueGetter: () => '',
       renderCell: renderIsNewCell,
       renderHeader: renderIsNewHeader,
-      hideInFilter: true,
-      headerName: '',
+      resizable: false,
+      type: 'text',
+      valueGetter: () => '',
+      widthPx: 38,
     });
 
     const uniqueColIds: Set<string> = new Set();
@@ -323,36 +323,36 @@ export const EpiUploadCaseResultTable = ({ tableStore, rowsWithGeneratedId, comp
 
       if (col) {
         tableCols.push({
-          type: 'text',
-          isInitiallyVisible,
-          hideInFilter: true,
-          id: col.id,
-          headerName: col.code,
-          widthPx: 250,
-          renderCell,
           cellTitleGetter: (params) => {
             const issue = params.row.data_issues.find((i) => i.col_id === col.id);
             if (!issue) {
               const originalValue = rawData.slice(1)[params.rowIndex][mappedColumns.find(mc => mc.col?.id === col.id)?.originalIndex || -1];
               return t('{{value}} (original value: "{{originalValue}}")', {
-                value: CaseUtil.getRowValue(params.row.validated_content, col, completeCaseType).short,
                 originalValue,
+                value: CaseUtil.getRowValue(params.row.validated_content, col, completeCaseType).short,
               });
             }
             return '';
           },
+          headerName: col.code,
+          hideInFilter: true,
+          id: col.id,
+          isInitiallyVisible,
+          renderCell,
+          type: 'text',
           valueGetter: (params) => CaseUtil.getRowValue(params.row.validated_content, col, completeCaseType).short,
+          widthPx: 250,
         } satisfies TableColumn<CaseUploadResultWithGeneratedId>);
       }
     });
 
     if (validatedCases.some(vc => vc.id)) {
       tableCols.push({
-        type: 'text',
-        isInitiallyVisible: true,
+        headerName: t('case_id'),
         hideInFilter: true,
         id: 'case_id',
-        headerName: t('case_id'),
+        isInitiallyVisible: true,
+        type: 'text',
         valueGetter: (params) => params.row.id || '',
         widthPx: 250,
       } satisfies TableColumn<CaseUploadResultWithGeneratedId>);
@@ -361,7 +361,7 @@ export const EpiUploadCaseResultTable = ({ tableStore, rowsWithGeneratedId, comp
     return tableCols;
   }, [validatedCases, renderHasIssueCell, renderHasIssueHeader, renderIsNewCell, renderIsNewHeader, completeCaseType, errorIssueTypes, renderCell, rawData, mappedColumns, t]);
 
-  useInitializeTableStore<CaseUploadResultWithGeneratedId>({ store: tableStore, columns: tableColumns, rows: rowsWithGeneratedId, createFiltersFromColumns: true });
+  useInitializeTableStore<CaseUploadResultWithGeneratedId>({ columns: tableColumns, createFiltersFromColumns: true, rows: rowsWithGeneratedId, store: tableStore });
 
   return (
     <>

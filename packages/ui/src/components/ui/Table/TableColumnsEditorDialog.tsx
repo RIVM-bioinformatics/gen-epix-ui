@@ -14,8 +14,8 @@ import type { UniqueIdentifier } from '@dnd-kit/core';
 import { TestIdUtil } from '../../../utils/TestIdUtil';
 import { withDialog } from '../../../hoc/withDialog';
 import type {
-  WithDialogRenderProps,
   WithDialogRefMethods,
+  WithDialogRenderProps,
 } from '../../../hoc/withDialog';
 import type {
   HasCellDataFn,
@@ -40,15 +40,15 @@ export type TableColumnsEditorDialogRefMethods = WithDialogRefMethods<TableColum
 
 type Item = {
   id: UniqueIdentifier;
-  label: string;
   isSelected: boolean;
+  label: string;
 };
 
 export const TableColumnsEditorDialog = withDialog<TableColumnsEditorDialogProps, TableColumnsEditorDialogOpenProps>((
   {
-    onTitleChange,
     onActionsChange,
     onClose,
+    onTitleChange,
     openProps: { hasCellData },
   }: TableColumnsEditorDialogProps,
 ): ReactElement => {
@@ -76,8 +76,8 @@ export const TableColumnsEditorDialog = withDialog<TableColumnsEditorDialogProps
       if (column && !column.isStatic && !column.frozen) {
         newItems.push({
           id: column.id,
-          label: column.headerName,
           isSelected: columnSetting.isVisible,
+          label: column.headerName,
         });
       }
     });
@@ -110,10 +110,10 @@ export const TableColumnsEditorDialog = withDialog<TableColumnsEditorDialogProps
 
   const filterColumnsWithPredicate = useCallback((predicate: (item: Item) => boolean) => {
     const newVisibleColumnIds = TableUtil.getColumnIdsWithData({
-      visibleColumnIds: items.filter(predicate).map(c => c.id.toString()),
-      tableColumns,
-      sortedData,
       hasCellData,
+      sortedData,
+      tableColumns,
+      visibleColumnIds: items.filter(predicate).map(c => c.id.toString()),
     });
     setItems((prevItems) => {
       return prevItems.map((item) => ({
@@ -155,59 +155,59 @@ export const TableColumnsEditorDialog = withDialog<TableColumnsEditorDialogProps
       [
         {
           ...TestIdUtil.createAttributes('TableColumnOrderDialog-enable-all'),
-          color: 'secondary',
           autoFocus: true,
+          color: 'secondary',
+          label: t`Enable all`,
           onClick: onEnableAllButtonClick,
           variant: 'outlined',
-          label: t`Enable all`,
         },
         {
           ...TestIdUtil.createAttributes('TableColumnOrderDialog-enable-all-with-data'),
-          color: 'secondary',
           autoFocus: true,
+          color: 'secondary',
+          label: t`Enable all with data`,
           onClick: onEnableOnlyColumnsWithDataClick,
           variant: 'outlined',
-          label: t`Enable all with data`,
         },
         {
           ...TestIdUtil.createAttributes('TableColumnOrderDialog-disable-all'),
-          color: 'secondary',
           autoFocus: true,
+          color: 'secondary',
+          label: t`Disable all`,
           onClick: onDisableAllButtonClick,
           variant: 'outlined',
-          label: t`Disable all`,
         },
         {
           ...TestIdUtil.createAttributes('TableColumnOrderDialog-disable-all-without-data'),
-          color: 'secondary',
           autoFocus: true,
+          color: 'secondary',
+          label: t`Disable all without data`,
           onClick: onDisableColumnsWithoutDataClick,
           variant: 'outlined',
-          label: t`Disable all without data`,
         },
         {
           ...TestIdUtil.createAttributes('TableColumnOrderDialog-reset'),
-          color: 'secondary',
           autoFocus: true,
+          color: 'secondary',
+          label: t`Reset to default`,
           onClick: onResetButtonClick,
           variant: 'outlined',
-          label: t`Reset to default`,
         },
         {
           ...TestIdUtil.createAttributes('TableColumnOrderDialog-close'),
-          color: 'primary',
           autoFocus: true,
+          color: 'primary',
+          label: t`Close`,
           onClick: onClose,
           variant: 'outlined',
-          label: t`Close`,
         },
         {
           ...TestIdUtil.createAttributes('TableColumnOrderDialog-save'),
-          color: 'secondary',
           autoFocus: true,
+          color: 'secondary',
+          label: t`Apply`,
           onClick: onSaveButtonClick,
           variant: 'contained',
-          label: t`Apply`,
         },
       ],
     );
@@ -226,16 +226,16 @@ export const TableColumnsEditorDialog = withDialog<TableColumnsEditorDialogProps
     >
       <SortableList<Item>
         items={items}
-        renderItemContent={renderItemContent}
         onChange={onSortableListChange}
+        renderItemContent={renderItemContent}
       />
     </Box>
   );
 }, {
-  testId: 'TableColumnOrderDialog',
-  maxWidth: 'md',
-  fullWidth: true,
   defaultTitle: '',
-  noCloseButton: false,
   disableBackdropClick: false,
+  fullWidth: true,
+  maxWidth: 'md',
+  noCloseButton: false,
+  testId: 'TableColumnOrderDialog',
 });

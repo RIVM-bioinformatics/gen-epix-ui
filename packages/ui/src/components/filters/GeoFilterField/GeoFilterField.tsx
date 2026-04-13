@@ -20,11 +20,11 @@ export const GeoFilterField = ({ filter }: GeoFilterFieldProps) => {
       )}
       {filter.options.length > 5 && (
         <Autocomplete
-          multiple
-          shouldSortOptions
           label={filter.label}
+          multiple
           name={filter.id}
           options={filter.options}
+          shouldSortOptions
         />
       )}
     </Box>

@@ -4,8 +4,8 @@ import {
 } from '@mui/material';
 
 export const LoadingIndicator = styled(LinearProgress)(() => ({
-  position: 'absolute',
   left: 0,
+  position: 'absolute',
   right: 0,
   zIndex: 1,
 })) as typeof LinearProgress;

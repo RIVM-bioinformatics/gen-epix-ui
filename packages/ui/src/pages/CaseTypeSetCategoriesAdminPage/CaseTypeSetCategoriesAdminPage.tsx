@@ -57,10 +57,10 @@ export const CaseTypeSetCategoriesAdminPage = () => {
 
   const schema = useMemo(() => {
     return object<FormFields>().shape({
-      name: SchemaUtil.name,
-      rank: SchemaUtil.rank,
       description: SchemaUtil.description,
+      name: SchemaUtil.name,
       purpose: mixed<CaseTypeSetCategoryPurpose>().required().oneOf(Object.values(CaseTypeSetCategoryPurpose)),
+      rank: SchemaUtil.rank,
     });
   }, []);
 
@@ -69,28 +69,28 @@ export const CaseTypeSetCategoriesAdminPage = () => {
     return [
       {
         definition: FORM_FIELD_DEFINITION_TYPE.TEXTFIELD,
-        name: 'name',
         label: t`Name`,
+        name: 'name',
       } as const satisfies FormFieldDefinition<FormFields>,
       {
         definition: FORM_FIELD_DEFINITION_TYPE.TEXTFIELD,
-        name: 'description',
         label: t`Description`,
         multiline: true,
+        name: 'description',
         rows: 5,
       } as const satisfies FormFieldDefinition<FormFields>,
       {
         definition: FORM_FIELD_DEFINITION_TYPE.TEXTFIELD,
-        name: 'rank',
         label: t`Rank`,
+        name: 'rank',
         type: 'number',
       } as const satisfies FormFieldDefinition<FormFields>,
       {
         definition: FORM_FIELD_DEFINITION_TYPE.AUTOCOMPLETE,
-        name: 'purpose',
         label: t`Purpose`,
-        options: caseTypeSetCategoryPurposeOptionsQuery.options,
         loading: caseTypeSetCategoryPurposeOptionsQuery.isLoading,
+        name: 'purpose',
+        options: caseTypeSetCategoryPurposeOptionsQuery.options,
       } as const satisfies FormFieldDefinition<FormFields>,
     ] as const;
   }, [caseTypeSetCategoryPurposeOptionsQuery.isLoading, caseTypeSetCategoryPurposeOptionsQuery.options, t]);
@@ -105,17 +105,17 @@ export const CaseTypeSetCategoriesAdminPage = () => {
 
   return (
     <CrudPage<FormFields, CaseTypeSetCategory>
+      createItemDialogTitle={t`Create new case type set category`}
       createOne={createOne}
       crudCommandType={CommandName.CaseTypeSetCategoryCrudCommand}
-      createItemDialogTitle={t`Create new case type set category`}
       defaultSortByField={'name'}
       defaultSortDirection={'asc'}
       deleteOne={deleteOne}
       fetchAll={fetchAll}
       formFieldDefinitions={formFieldDefinitions}
       getName={getName}
-      resourceQueryKeyBase={QUERY_KEY.CASE_TYPE_SET_CATEGORIES}
       loadables={loadables}
+      resourceQueryKeyBase={QUERY_KEY.CASE_TYPE_SET_CATEGORIES}
       schema={schema}
       tableColumns={tableColumns}
       testIdAttributes={TestIdUtil.createAttributes('CaseTypeSetCategoriesAdminPage')}

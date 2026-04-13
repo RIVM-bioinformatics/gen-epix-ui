@@ -29,7 +29,7 @@ import { TestIdUtil } from '../../utils/TestIdUtil';
 import { CrudPage } from '../CrudPage';
 import type { OmitWithMetaData } from '../../models/data';
 
-type FormFields = OmitWithMetaData<OrganizationShareCasePolicy, 'data_collection' | 'organization' | 'case_type_set' | 'from_data_collection'>;
+type FormFields = OmitWithMetaData<OrganizationShareCasePolicy, 'case_type_set' | 'data_collection' | 'from_data_collection' | 'organization'>;
 
 export const OrganizationShareCasePoliciesAdminPage = () => {
   const { t } = useTranslation();
@@ -64,15 +64,15 @@ export const OrganizationShareCasePoliciesAdminPage = () => {
 
   const schema = useMemo(() => {
     return object<FormFields>().shape({
-      organization_id: string().uuid4().required().max(100),
+      add_case: boolean().required(),
+      add_case_set: boolean().required(),
+      case_type_set_id: string().uuid4().required().max(100),
       data_collection_id: string().uuid4().required().max(100),
       from_data_collection_id: string().uuid4().required().max(100),
-      case_type_set_id: string().uuid4().required().max(100),
-      add_case: boolean().required(),
-      remove_case: boolean().required(),
-      add_case_set: boolean().required(),
-      remove_case_set: boolean().required(),
       is_active: boolean().required(),
+      organization_id: string().uuid4().required().max(100),
+      remove_case: boolean().required(),
+      remove_case_set: boolean().required(),
     });
   }, []);
 
@@ -80,56 +80,56 @@ export const OrganizationShareCasePoliciesAdminPage = () => {
     return [
       {
         definition: FORM_FIELD_DEFINITION_TYPE.AUTOCOMPLETE,
-        name: 'organization_id',
         label: t`Organization`,
-        options: organizationOptionsQuery.options,
         loading: organizationOptionsQuery.isLoading,
+        name: 'organization_id',
+        options: organizationOptionsQuery.options,
       } as const satisfies FormFieldDefinition<FormFields>,
       {
         definition: FORM_FIELD_DEFINITION_TYPE.AUTOCOMPLETE,
-        name: 'data_collection_id',
         label: t`Data collection`,
-        options: dataCollectionOptionsQuery.options,
         loading: dataCollectionOptionsQuery.isLoading,
+        name: 'data_collection_id',
+        options: dataCollectionOptionsQuery.options,
       } as const satisfies FormFieldDefinition<FormFields>,
       {
         definition: FORM_FIELD_DEFINITION_TYPE.AUTOCOMPLETE,
-        name: 'from_data_collection_id',
         label: t`From data collection`,
-        options: dataCollectionOptionsQuery.options,
         loading: dataCollectionOptionsQuery.isLoading,
+        name: 'from_data_collection_id',
+        options: dataCollectionOptionsQuery.options,
       } as const satisfies FormFieldDefinition<FormFields>,
       {
         definition: FORM_FIELD_DEFINITION_TYPE.AUTOCOMPLETE,
-        name: 'case_type_set_id',
         label: t`Case type set`,
-        options: caseTypeSetOptions.options,
         loading: caseTypeSetOptions.isLoading,
+        name: 'case_type_set_id',
+        options: caseTypeSetOptions.options,
       } as const satisfies FormFieldDefinition<FormFields>,
       {
         definition: FORM_FIELD_DEFINITION_TYPE.BOOLEAN,
-        name: 'add_case',
         label: t`Add case`,
+        name: 'add_case',
       } as const satisfies FormFieldDefinition<FormFields>,
       {
         definition: FORM_FIELD_DEFINITION_TYPE.BOOLEAN,
-        name: 'remove_case',
         label: t`Remove case`,
+        name: 'remove_case',
       } as const satisfies FormFieldDefinition<FormFields>,
       {
         definition: FORM_FIELD_DEFINITION_TYPE.BOOLEAN,
-        name: 'add_case_set',
         label: t`Add case set`,
+        name: 'add_case_set',
       } as const satisfies FormFieldDefinition<FormFields>,
       {
         definition: FORM_FIELD_DEFINITION_TYPE.BOOLEAN,
-        name: 'remove_case_set',
         label: t`Remove case set`,
+        name: 'remove_case_set',
       } as const satisfies FormFieldDefinition<FormFields>,
       {
         definition: FORM_FIELD_DEFINITION_TYPE.BOOLEAN,
-        name: 'is_active',
         label: t`Is active`,
+        name: 'is_active',
       } as const satisfies FormFieldDefinition<FormFields>,
     ] as const;
   }, [caseTypeSetOptions.isLoading, caseTypeSetOptions.options, dataCollectionOptionsQuery.isLoading, dataCollectionOptionsQuery.options, organizationOptionsQuery.isLoading, organizationOptionsQuery.options, t]);
@@ -152,9 +152,9 @@ export const OrganizationShareCasePoliciesAdminPage = () => {
 
   return (
     <CrudPage<FormFields, OrganizationShareCasePolicy>
+      createItemDialogTitle={t`Create new organization share case policy`}
       createOne={createOne}
       crudCommandType={CommandName.OrganizationShareCasePolicyCrudCommand}
-      createItemDialogTitle={t`Create new organization share case policy`}
       defaultSortByField={'organization_id'}
       defaultSortDirection={'asc'}
       deleteOne={deleteOne}

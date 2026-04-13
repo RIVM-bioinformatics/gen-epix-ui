@@ -1,7 +1,7 @@
 import {
   describe,
-  it,
   expect,
+  it,
 } from 'vitest';
 
 import { NumberUtil } from './NumberUtil';

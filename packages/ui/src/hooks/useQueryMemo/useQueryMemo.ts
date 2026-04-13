@@ -14,13 +14,13 @@ export const useQueryMemo = <TQueryFnData = unknown, TError = DefaultError, TDat
 
   return useMemo(() => {
     return query;
-    // eslint-disable-next-line react-hooks/exhaustive-deps
+    // eslint-disable-next-line @eslint-react/exhaustive-deps
   }, [JSON.stringify({
     data: query.data,
     error: query.error,
+    isEnabled: query.isEnabled,
+    isFetching: query.isFetching,
     isLoading: query.isLoading,
     isPending: query.isPending,
-    isFetching: query.isFetching,
-    isEnabled: query.isEnabled,
   })]);
 };

@@ -1,7 +1,7 @@
 import {
   describe,
-  it,
   expect,
+  it,
 } from 'vitest';
 
 import { ObjectUtil } from './ObjectUtil';

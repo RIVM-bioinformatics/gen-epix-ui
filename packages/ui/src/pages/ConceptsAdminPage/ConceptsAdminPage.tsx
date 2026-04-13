@@ -8,8 +8,8 @@ import { useParams } from 'react-router-dom';
 
 import type { Concept } from '../../api';
 import {
-  OntologyApi,
   CommandName,
+  OntologyApi,
 } from '../../api';
 import type { FormFieldDefinition } from '../../models/form';
 import { FORM_FIELD_DEFINITION_TYPE } from '../../models/form';
@@ -42,8 +42,8 @@ export const ConceptsAdminPage = () => {
   const updateOne = useCallback(async (variables: FormFields, item: Concept) => {
     const updatedItem = (await OntologyApi.instance.conceptsPutOne(item.id, {
       ...variables,
-      id: item.id,
       concept_set_id: conceptSetId,
+      id: item.id,
     })).data;
     return updatedItem;
   }, [conceptSetId]);
@@ -61,10 +61,10 @@ export const ConceptsAdminPage = () => {
 
   const schema = useMemo(() => {
     return object<FormFields>().shape({
-      name: SchemaUtil.name,
       code: SchemaUtil.code,
-      rank: SchemaUtil.rank,
       description: SchemaUtil.description,
+      name: SchemaUtil.name,
+      rank: SchemaUtil.rank,
     });
   }, []);
 
@@ -72,33 +72,33 @@ export const ConceptsAdminPage = () => {
     return [
       {
         definition: FORM_FIELD_DEFINITION_TYPE.TEXTFIELD,
-        name: 'rank',
         label: t`Rank`,
+        name: 'rank',
         type: 'number',
       } as const satisfies FormFieldDefinition<FormFields>,
       {
         definition: FORM_FIELD_DEFINITION_TYPE.TEXTFIELD,
-        name: 'name',
         label: t`Name`,
+        name: 'name',
       } as const satisfies FormFieldDefinition<FormFields>,
       {
         definition: FORM_FIELD_DEFINITION_TYPE.TEXTFIELD,
-        name: 'code',
         label: t`Code`,
+        name: 'code',
       } as const satisfies FormFieldDefinition<FormFields>,
       {
         definition: FORM_FIELD_DEFINITION_TYPE.TEXTFIELD,
-        name: 'description',
         label: t`Description`,
-        rows: 4,
         multiline: true,
+        name: 'description',
+        rows: 4,
       } as const satisfies FormFieldDefinition<FormFields>,
     ] as const;
   }, [t]);
 
   const tableColumns = useMemo((): TableColumn<Concept>[] => {
     return [
-      TableUtil.createNumberColumn<Concept>({ id: 'rank', name: t`Rank`, flex: 0.25 }),
+      TableUtil.createNumberColumn<Concept>({ flex: 0.25, id: 'rank', name: t`Rank` }),
       TableUtil.createTextColumn<Concept>({ id: 'name', name: t`Name` }),
       TableUtil.createTextColumn<Concept>({ id: 'code', name: t`Code` }),
     ];
@@ -106,22 +106,22 @@ export const ConceptsAdminPage = () => {
 
   const getOptimisticUpdateIntermediateItem = useCallback((variables: FormFields, previousItem: Concept): Concept => {
     return {
-      id: previousItem.id,
       concept_set_id: previousItem.concept_set_id,
+      id: previousItem.id,
       ...variables,
     };
   }, []);
 
   return (
     <CrudPage<FormFields, Concept>
+      createItemDialogTitle={t`Create new concept`}
       createOne={createOne}
       crudCommandType={CommandName.ConceptCrudCommand}
-      createItemDialogTitle={t`Create new concept`}
       defaultSortByField={'rank'}
       defaultSortDirection={'asc'}
-      fetchAllSelect={fetchAllSelect}
       deleteOne={deleteOne}
       fetchAll={fetchAll}
+      fetchAllSelect={fetchAllSelect}
       formFieldDefinitions={formFieldDefinitions}
       getName={getName}
       getOptimisticUpdateIntermediateItem={getOptimisticUpdateIntermediateItem}

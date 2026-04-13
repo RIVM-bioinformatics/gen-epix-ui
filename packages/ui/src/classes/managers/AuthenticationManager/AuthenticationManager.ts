@@ -14,19 +14,31 @@ import { oidcStore } from '../../../stores/oidcStore';
 export const createdAtMetaDataKey = Symbol('createdAt');
 
 export class AuthenticationManager extends SubscribableAbstract<IdentityProvider> {
-  public authContextProps: AuthContextProps;
   public static autoLoginSkew = 500;
-  public temporaryToken: string;
-
   public static get instance(): AuthenticationManager {
     // Instances are stored on the window to prevent multiple instances of the same manager. HMR may load multiple instances of the same manager, but we only want one instance to be active at a time.
 
     WindowManager.instance.window.managers.authentication = WindowManager.instance.window.managers.authentication || new AuthenticationManager();
     return WindowManager.instance.window.managers.authentication;
   }
+  public authContextProps: AuthContextProps;
+
+  public temporaryToken: string;
 
   private constructor() {
     super(new Subject(oidcStore.getState().configuration));
+  }
+
+  public static clearStaleState(): void {
+    Object.keys(sessionStorage).forEach((key) => {
+      if (key.startsWith('oidc')) {
+        sessionStorage.removeItem(key);
+      }
+    });
+  }
+
+  public getUserManagerSettingsCreatedAt(): number {
+    return Reflect.getMetadata(createdAtMetaDataKey, this.data) as number;
   }
 
   public next(oidcConfiguration: IdentityProvider) {
@@ -37,10 +49,6 @@ export class AuthenticationManager extends SubscribableAbstract<IdentityProvider
       oidcStore.getState().setConfiguration(undefined);
     }
     super.next(oidcConfiguration);
-  }
-
-  public getUserManagerSettingsCreatedAt(): number {
-    return Reflect.getMetadata(createdAtMetaDataKey, this.data) as number;
   }
 
   public onRequest(request: InternalAxiosRequestConfig): InternalAxiosRequestConfig {
@@ -82,13 +90,5 @@ export class AuthenticationManager extends SubscribableAbstract<IdentityProvider
       // eslint-disable-next-line @typescript-eslint/no-floating-promises
       perform();
     }
-  }
-
-  public static clearStaleState(): void {
-    Object.keys(sessionStorage).forEach((key) => {
-      if (key.startsWith('oidc')) {
-        sessionStorage.removeItem(key);
-      }
-    });
   }
 }

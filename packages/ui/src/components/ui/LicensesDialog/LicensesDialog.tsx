@@ -29,15 +29,15 @@ import axios from 'axios';
 import { ConfigManager } from '../../../classes/managers/ConfigManager';
 import { WindowManager } from '../../../classes/managers/WindowManager';
 import type {
-  WithDialogRenderProps,
   WithDialogRefMethods,
+  WithDialogRenderProps,
 } from '../../../hoc/withDialog';
 import { withDialog } from '../../../hoc/withDialog';
 import { TestIdUtil } from '../../../utils/TestIdUtil';
 import { ResponseHandler } from '../ResponseHandler';
 import {
-  SystemApi,
   type PackageMetadata,
+  SystemApi,
 } from '../../../api';
 import { QUERY_KEY } from '../../../models/query';
 import { QueryUtil } from '../../../utils/QueryUtil';
@@ -57,10 +57,10 @@ export type LicensesDialogRefMethods = WithDialogRefMethods<LicensesDialogProps,
 
 export const LicensesDialog = withDialog<LicensesDialogProps, LicensesDialogOpenProps>((
   {
-    onTitleChange,
+    dialogContentRef,
     onActionsChange,
     onClose,
-    dialogContentRef,
+    onTitleChange,
   }: LicensesDialogProps,
 ): ReactElement => {
   const { t } = useTranslation();
@@ -68,21 +68,21 @@ export const LicensesDialog = withDialog<LicensesDialogProps, LicensesDialogOpen
 
   const { LicenseInformation } = ConfigManager.instance.config;
 
-  const { isLoading: isFrontendLicensesLoading, error: frontendLicensesError, data: frontendLicenses } = useQueryMemo({
-    queryKey: ['LICENSES.JSON'],
+  const { data: frontendLicenses, error: frontendLicensesError, isLoading: isFrontendLicensesLoading } = useQueryMemo({
     queryFn: async ({ signal }) => {
       return (await axios.get('/licenses.json', {
         signal,
       })).data as PackageMetadata[];
     },
+    queryKey: ['LICENSES.JSON'],
   });
 
-  const { isLoading: isBackendLicensesLoading, error: backendLicensesError, data: backendLicenses } = useQueryMemo({
-    queryKey: QueryUtil.getGenericKey(QUERY_KEY.LICENSES),
+  const { data: backendLicenses, error: backendLicensesError, isLoading: isBackendLicensesLoading } = useQueryMemo({
     queryFn: async ({ signal }) => {
       const response = await SystemApi.instance.retrieveLicenses({ signal });
       return response.data;
     },
+    queryKey: QueryUtil.getGenericKey(QUERY_KEY.LICENSES),
   });
 
   const isLoading = isFrontendLicensesLoading || isBackendLicensesLoading;
@@ -111,11 +111,11 @@ export const LicensesDialog = withDialog<LicensesDialogProps, LicensesDialogOpen
       onActionsChange([
         {
           ...TestIdUtil.createAttributes('LicensesDialog-close'),
-          color: 'primary',
           autoFocus: true,
+          color: 'primary',
+          label: t`Go back`,
           onClick: () => setItem(null),
           variant: 'contained',
-          label: t`Go back`,
         },
       ]);
     } else {
@@ -134,40 +134,52 @@ export const LicensesDialog = withDialog<LicensesDialogProps, LicensesDialogOpen
 
   return (
     <ResponseHandler
-      inlineSpinner
       error={frontendLicensesError || backendLicensesError}
+      inlineSpinner
       isLoading={isLoading}
     >
       {item && (
-        <Box marginY={2}>
+        <Box
+          sx={{
+            marginY: 2,
+          }}
+        >
           {item.license}
         </Box>
       )}
       {!item && (
         <>
 
-          <Box marginY={2}>
+          <Box
+            sx={{
+              marginY: 2,
+            }}
+          >
             <LicenseInformation />
           </Box>
           <Divider />
-          <Box marginY={2}>
+          <Box
+            sx={{
+              marginY: 2,
+            }}
+          >
             <Typography>
               {t`This application uses the following open source libraries:`}
             </Typography>
             <List dense>
               {mergedLicenses?.map(entry => {
-                let license: string | ReactNode;
+                let license: ReactNode | string;
 
                 if (!entry.license) {
                   license = t`license: Unknown license`;
                 } else if (entry.license.length > 100) {
                   license = (
                     <Button
+                      color={'secondary'}
+                      // eslint-disable-next-line @eslint-react/kit/jsx-no-bind
+                      onClick={() => onItemLicenseClick(entry)}
                       size={'small'}
                       variant={'text'}
-                      color={'secondary'}
-                      // eslint-disable-next-line react/jsx-no-bind
-                      onClick={() => onItemLicenseClick(entry)}
                     >
                       {t('Show license')}
                     </Button>
@@ -183,7 +195,7 @@ export const LicensesDialog = withDialog<LicensesDialogProps, LicensesDialogOpen
                         <IconButton
                           aria-label={t`Open project homepage in new tab`}
                           edge={'end'}
-                          // eslint-disable-next-line react/jsx-no-bind
+                          // eslint-disable-next-line @eslint-react/kit/jsx-no-bind
                           onClick={() => onItemURLClick(entry.homepage)}
                         >
                           <OpenInNewIcon />
@@ -222,10 +234,10 @@ export const LicensesDialog = withDialog<LicensesDialogProps, LicensesDialogOpen
     </ResponseHandler>
   );
 }, {
-  testId: 'LicensesDialog',
-  maxWidth: 'md',
-  fullWidth: true,
   defaultTitle: '',
-  noCloseButton: false,
   disableBackdropClick: false,
+  fullWidth: true,
+  maxWidth: 'md',
+  noCloseButton: false,
+  testId: 'LicensesDialog',
 });

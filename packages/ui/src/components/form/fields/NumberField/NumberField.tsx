@@ -7,13 +7,13 @@ import {
   useState,
 } from 'react';
 import {
-  TextField as MuiTextField,
+  Box,
   FormControl,
+  FormHelperText,
   IconButton,
   InputAdornment,
-  Box,
+  TextField as MuiTextField,
   Slider,
-  FormHelperText,
 } from '@mui/material';
 import ClearIcon from '@mui/icons-material/Clear';
 import type {
@@ -31,37 +31,37 @@ import { FormFieldHelperText } from '../../helpers/FormFieldHelperText';
 import { FormFieldLoadingIndicator } from '../../helpers/FormFieldLoadingIndicator';
 
 export type NumberFieldProps<TFieldValues extends FieldValues, TName extends Path<TFieldValues> = Path<TFieldValues>> = {
+  readonly autocomplete?: string;
   readonly disabled?: boolean;
   readonly label: string;
+  readonly loading?: boolean;
+  readonly max?: number;
+  readonly min?: number;
   readonly name: TName;
   readonly onChange?: (value: number) => void;
-  readonly required?: boolean;
-  readonly warningMessage?: string | boolean;
-  readonly loading?: boolean;
   readonly placeholder?: string;
-  readonly autocomplete?: string;
-  readonly step?: number;
-  readonly min?: number;
-  readonly max?: number;
+  readonly required?: boolean;
   readonly showSlider?: boolean;
+  readonly step?: number;
+  readonly warningMessage?: boolean | string;
 };
 
 const MAX_NUMBER_OF_SLIDER_STEPS = 250;
 
 export const NumberField = <TFieldValues extends FieldValues, TName extends Path<TFieldValues> = Path<TFieldValues>>({
+  autocomplete,
   disabled = false,
   label,
+  loading = false,
+  max,
+  min,
   name,
   onChange: onChangeProp,
-  loading = false,
-  required = false,
   placeholder,
-  warningMessage,
-  autocomplete,
-  step,
-  min,
-  max,
+  required = false,
   showSlider = false,
+  step,
+  warningMessage,
 }: NumberFieldProps<TFieldValues, TName>): ReactElement => {
   const { t } = useTranslation();
   const { formState: { errors }, register, subscribe } = useFormContext<TFieldValues>();
@@ -84,11 +84,7 @@ export const NumberField = <TFieldValues extends FieldValues, TName extends Path
 
   useEffect(() => {
     const unsubscribe = subscribe({
-      formState: {
-        values: true,
-      },
-      name,
-      callback: ({ values, name: changedName }) => {
+      callback: ({ name: changedName, values }) => {
         if (changedName !== name) {
           return;
         }
@@ -96,6 +92,10 @@ export const NumberField = <TFieldValues extends FieldValues, TName extends Path
         setExternalValue(values[name]);
         updateInputValue(values[name]);
       },
+      formState: {
+        values: true,
+      },
+      name,
     });
     return () => {
       unsubscribe();
@@ -131,8 +131,8 @@ export const NumberField = <TFieldValues extends FieldValues, TName extends Path
     if (newValue !== externalValue) {
       await registration.onChange({
         target: {
-          value: newValue,
           name,
+          value: newValue,
         },
       });
       if (onChangeProp) {
@@ -152,8 +152,8 @@ export const NumberField = <TFieldValues extends FieldValues, TName extends Path
     await emitValue(parsedValue);
     await registration.onBlur({
       target: {
-        value: parsedValue,
         name,
+        value: parsedValue,
       },
       type: 'blur',
     });
@@ -165,8 +165,8 @@ export const NumberField = <TFieldValues extends FieldValues, TName extends Path
     await emitValue(parsedValue);
     await registration.onBlur({
       target: {
-        value: parsedValue,
         name,
+        value: parsedValue,
       },
       type: 'blur',
     });
@@ -189,61 +189,61 @@ export const NumberField = <TFieldValues extends FieldValues, TName extends Path
 
   const textField = useMemo(() => (
     <MuiTextField
+      defaultValue={internalValue ?? ''}
       disabled={disabled || loading}
       error={hasError}
       inputRef={inputRef}
-      variant={'outlined'}
       label={label}
+      onBlur={onMuiTextFieldBlur}
       placeholder={placeholder}
       slotProps={{
         formHelperText: {
           className: classnames({ 'Mui-warning': hasWarning }),
         },
         input: {
-          inputProps: {
-            autoComplete: autocomplete ?? name,
-          },
           className: classnames({ 'Mui-warning': hasWarning }),
           endAdornment: disabled ? undefined : (
             <InputAdornment position={'end'}>
               <IconButton
                 {...TestIdUtil.createAttributes('TextField-reset')}
+                aria-label={t`Clear text field`}
+                onClick={onResetButtonClick}
                 sx={{
                   '& svg': {
                     fontSize: '16px',
                   },
                 }}
                 tabIndex={-1}
-                aria-label={t`Clear text field`}
-                onClick={onResetButtonClick}
               >
                 <ClearIcon />
               </IconButton>
             </InputAdornment>
           ),
+          inputProps: {
+            autoComplete: autocomplete ?? name,
+          },
         },
         inputLabel: {
-          required: required && !disabled,
           className: classnames({ 'Mui-warning': hasWarning }),
+          required: required && !disabled,
           shrink: hasInputValue,
         },
       }}
-      defaultValue={internalValue ?? ''}
-      onBlur={onMuiTextFieldBlur}
+      variant={'outlined'}
     />
   ), [autocomplete, disabled, hasError, hasInputValue, hasWarning, internalValue, label, loading, name, onMuiTextFieldBlur, onResetButtonClick, placeholder, required, t]);
 
   return (
     <FormControl
       {...TestIdUtil.createAttributes('NumberField', { label, name: name as string })}
-      ref={formControlRef}
       fullWidth
+      ref={formControlRef}
       sx={{
-        button: {
-          display: 'none',
-        },
         '&:hover button, &:focus-within button': {
           display: 'initial',
+        },
+        button: {
+          display: 'none',
         },
       }}
     >
@@ -251,28 +251,28 @@ export const NumberField = <TFieldValues extends FieldValues, TName extends Path
       {shouldShowSlider && (
         <Box
           sx={{
+            alignItems: 'center',
             display: 'grid',
             gap: 2,
             gridTemplateColumns: theme => `${theme.spacing(24)} auto`,
-            alignItems: 'center',
           }}
         >
           {textField}
           <Slider
-            marks
-            valueLabelDisplay={'auto'}
             color={'primary'}
+            marks
             max={max}
             min={min}
-            step={step}
+            onBlur={onMuiSliderBlur}
+            onChange={onMuiRangeSliderChange}
             slotProps={{
               input: {
                 'aria-label': t`Value`,
               },
             }}
+            step={step}
             value={sliderValue}
-            onBlur={onMuiSliderBlur}
-            onChange={onMuiRangeSliderChange}
+            valueLabelDisplay={'auto'}
           />
         </Box>
       )}

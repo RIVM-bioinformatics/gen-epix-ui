@@ -1,10 +1,10 @@
 import { Box } from '@mui/material';
 import {
+  type ReactElement,
+  use,
   useCallback,
-  useContext,
   useEffect,
   useMemo,
-  type ReactElement,
 } from 'react';
 import { useTranslation } from 'react-i18next';
 import { useStore } from 'zustand';
@@ -18,8 +18,8 @@ import type {
 } from '../../../api';
 import { CaseApi } from '../../../api';
 import type {
-  WithDialogRenderProps,
   WithDialogRefMethods,
+  WithDialogRenderProps,
 } from '../../../hoc/withDialog';
 import { withDialog } from '../../../hoc/withDialog';
 import { useDeleteMutation } from '../../../hooks/useDeleteMutation';
@@ -33,8 +33,8 @@ import { Spinner } from '../../ui/Spinner';
 import { useQueryMemo } from '../../../hooks/useQueryMemo';
 
 export interface EpiRemoveCasesFromEventDialogOpenProps {
-  rows: Case[];
   caseSet: CaseSet;
+  rows: Case[];
 }
 
 export interface EpiRemoveCasesFromEventDialogProps extends WithDialogRenderProps<EpiRemoveCasesFromEventDialogOpenProps> {
@@ -45,15 +45,15 @@ export type EpiRemoveCasesFromEventDialogRefMethods = WithDialogRefMethods<EpiRe
 
 export const EpiRemoveCasesFromEventDialog = withDialog<EpiRemoveCasesFromEventDialogProps, EpiRemoveCasesFromEventDialogOpenProps>((
   {
-    openProps,
     onActionsChange,
-    onTitleChange,
     onClose,
+    onTitleChange,
+    openProps,
   }: EpiRemoveCasesFromEventDialogProps,
 ): ReactElement => {
   const { t } = useTranslation();
 
-  const epiDashboardStore = useContext(EpiDashboardStoreContext);
+  const epiDashboardStore = use(EpiDashboardStoreContext);
   const completeCaseType = useStore(epiDashboardStore, useShallow((state) => state.completeCaseType));
   const fetchData = useStore(epiDashboardStore, useShallow((state) => state.fetchData));
   const setSelectedIds = useStore(epiDashboardStore, useShallow((state) => state.setSelectedIds));
@@ -61,30 +61,30 @@ export const EpiRemoveCasesFromEventDialog = withDialog<EpiRemoveCasesFromEventD
   const isMaxExceeded = openProps.rows.length > completeCaseType.props.delete_max_n_cases;
 
   const caseSetMembersFilter = useMemo<TypedCompositeFilter>(() => ({
-    type: 'COMPOSITE',
-    operator: 'AND',
     filters: [
       {
         invert: false,
         key: 'case_id',
-        type: 'UUID_SET',
         members: openProps.rows.map(row => row.id),
+        type: 'UUID_SET',
       },
       {
         invert: false,
         key: 'case_set_id',
-        type: 'UUID_SET',
         members: [openProps.caseSet.id],
+        type: 'UUID_SET',
       },
     ],
+    operator: 'AND',
+    type: 'COMPOSITE',
   }), [openProps.caseSet.id, openProps.rows]);
 
-  const { isLoading: isCaseSetMembersLoading, error: caseSetMembersError, data: caseSetMembers } = useQueryMemo({
-    queryKey: QueryUtil.getGenericKey(QUERY_KEY.CASE_SET_MEMBERS, caseSetMembersFilter),
+  const { data: caseSetMembers, error: caseSetMembersError, isLoading: isCaseSetMembersLoading } = useQueryMemo({
     queryFn: async ({ signal }) => {
       const response = await CaseApi.instance.caseSetMembersPostQuery(caseSetMembersFilter, { signal });
       return response.data;
     },
+    queryKey: QueryUtil.getGenericKey(QUERY_KEY.CASE_SET_MEMBERS, caseSetMembersFilter),
   });
 
   const onSuccess = useCallback(async () => {
@@ -98,16 +98,16 @@ export const EpiRemoveCasesFromEventDialog = withDialog<EpiRemoveCasesFromEventD
     onClose();
   }, [fetchData, onClose]);
 
-  const { mutate, isMutating } = useDeleteMutation<CaseSetMember[]>({
+  const { isMutating, mutate } = useDeleteMutation<CaseSetMember[]>({
     associationQueryKeys: QueryUtil.getQueryKeyDependencies([QUERY_KEY.CASE_SET_MEMBERS], true),
+    getErrorNotificationMessage: () => t('Could not remove all cases from {{eventName}}.', { eventName: openProps.caseSet.name }),
+    getProgressNotificationMessage: (items) => t('Removing {{numCases}} case(s) from {{eventName}}...', { eventName: openProps.caseSet.name, numCases: items.length }),
+    getSuccessNotificationMessage: (items) => t('Successfully removed {{numCases}} case(s) from {{eventName}}.', { eventName: openProps.caseSet.name, numCases: items.length }),
+    onError,
+    onSuccess,
     queryFn: async (items: CaseSetMember[]) => {
       await CaseApi.instance.caseSetMembersDeleteSome(items.map(item => item.id).join(','));
     },
-    getProgressNotificationMessage: (items) => t('Removing {{numCases}} case(s) from {{eventName}}...', { numCases: items.length, eventName: openProps.caseSet.name }),
-    getSuccessNotificationMessage: (items) => t('Successfully removed {{numCases}} case(s) from {{eventName}}.', { numCases: items.length, eventName: openProps.caseSet.name }),
-    getErrorNotificationMessage: () => t('Could not remove all cases from {{eventName}}.', { eventName: openProps.caseSet.name }),
-    onSuccess,
-    onError,
   });
 
   const onConfirmButtonClick = useCallback((() => {
@@ -128,24 +128,24 @@ export const EpiRemoveCasesFromEventDialog = withDialog<EpiRemoveCasesFromEventD
     actions.push(
       {
         ...TestIdUtil.createAttributes('EpiRemoveCasesFromEventDialog-closeButton'),
-        color: 'primary',
         autoFocus: true,
-        variant: 'outlined',
-        onClick: onCancelButtonClick,
+        color: 'primary',
         disabled: isMutating,
         label: t`Close`,
+        onClick: onCancelButtonClick,
+        variant: 'outlined',
       },
     );
     if (!isMaxExceeded) {
       actions.push(
         {
           ...TestIdUtil.createAttributes('EpiRemoveCasesFromEventDialog-confirmButton'),
-          color: 'secondary',
           autoFocus: true,
-          variant: 'contained',
-          onClick: onConfirmButtonClick,
+          color: 'secondary',
           disabled: isMutating,
           label: t`Confirm`,
+          onClick: onConfirmButtonClick,
+          variant: 'contained',
         },
       );
     }
@@ -158,9 +158,9 @@ export const EpiRemoveCasesFromEventDialog = withDialog<EpiRemoveCasesFromEventD
 
   return (
     <ResponseHandler
-      shouldHideActionButtons
       error={caseSetMembersError}
       isLoading={isCaseSetMembersLoading}
+      shouldHideActionButtons
     >
       {isMaxExceeded ? (
         <Box>
@@ -168,14 +168,14 @@ export const EpiRemoveCasesFromEventDialog = withDialog<EpiRemoveCasesFromEventD
         </Box>
       ) : (
         <Box>
-          {t('Are you sure you want to remove {{numCases}} selected cases from {{eventName}}?', { numCases: openProps.rows.length, eventName: openProps.caseSet.name })}
+          {t('Are you sure you want to remove {{numCases}} selected cases from {{eventName}}?', { eventName: openProps.caseSet.name, numCases: openProps.rows.length })}
         </Box>
       )}
     </ResponseHandler>
   );
 }, {
-  testId: 'EpiRemoveCasesFromEventDialog',
-  maxWidth: 'md',
-  fullWidth: true,
   defaultTitle: '',
+  fullWidth: true,
+  maxWidth: 'md',
+  testId: 'EpiRemoveCasesFromEventDialog',
 });

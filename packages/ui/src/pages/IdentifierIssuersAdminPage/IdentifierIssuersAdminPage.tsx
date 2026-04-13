@@ -48,9 +48,9 @@ export const IdentifierIssuersAdminPage = () => {
 
   const schema = useMemo(() => {
     return object<FormFields>().shape({
-      name: SchemaUtil.name,
       code: SchemaUtil.code,
       description: SchemaUtil.description,
+      name: SchemaUtil.name,
     });
   }, []);
 
@@ -58,20 +58,20 @@ export const IdentifierIssuersAdminPage = () => {
     return [
       {
         definition: FORM_FIELD_DEFINITION_TYPE.TEXTFIELD,
-        name: 'name',
         label: t`Name`,
+        name: 'name',
       } as const satisfies FormFieldDefinition<FormFields>,
       {
         definition: FORM_FIELD_DEFINITION_TYPE.TEXTFIELD,
-        name: 'description',
         label: t`Description`,
         multiline: true,
+        name: 'description',
         rows: 5,
       } as const satisfies FormFieldDefinition<FormFields>,
       {
         definition: FORM_FIELD_DEFINITION_TYPE.TEXTFIELD,
-        name: 'code',
         label: t`Code`,
+        name: 'code',
       } as const satisfies FormFieldDefinition<FormFields>,
     ] as const;
   }, [t]);
@@ -85,9 +85,9 @@ export const IdentifierIssuersAdminPage = () => {
 
   return (
     <CrudPage<FormFields, IdentifierIssuer>
+      createItemDialogTitle={t`Create new identifier issuer`}
       createOne={createOne}
       crudCommandType={CommandName.IdentifierIssuerCrudCommand}
-      createItemDialogTitle={t`Create new identifier issuer`}
       defaultSortByField={'code'}
       defaultSortDirection={'asc'}
       deleteOne={deleteOne}

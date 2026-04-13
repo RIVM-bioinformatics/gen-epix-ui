@@ -2,8 +2,8 @@ import type { AlertProps } from '@mui/material';
 import {
   Alert,
   AlertTitle,
-  Typography,
   Box,
+  Typography,
 } from '@mui/material';
 import { useTranslation } from 'react-i18next';
 import { format } from 'date-fns';

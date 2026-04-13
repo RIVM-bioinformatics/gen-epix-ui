@@ -4,7 +4,7 @@ import type { ReactElement } from 'react';
 import { AxiosUtil } from '../AxiosUtil';
 
 export class NotificationUtil {
-  public static wrapErrorNotificationMessage(message: string | ReactElement, error: unknown): string | ReactElement {
+  public static wrapErrorNotificationMessage(message: ReactElement | string, error: unknown): ReactElement | string {
     if (AxiosUtil.isAxiosForbiddenError(error)) {
       message = t('{{message}} - You do not have permission to perform this action.', { message });
     }

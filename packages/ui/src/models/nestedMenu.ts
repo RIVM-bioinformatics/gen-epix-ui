@@ -5,17 +5,17 @@ import type {
 } from 'react';
 
 export interface MenuItemData {
-  uid?: string;
-  label?: string;
-  tooltip?: string | ReactElement;
-  leftIcon?: ReactNode;
-  rightIcon?: ReactNode;
+  active?: boolean;
+  autoCloseDisabled?: boolean;
   callback?: () => void;
-  items?: MenuItemData[];
+  checked?: 'false' | 'mixed' | 'true';
   disabled?: boolean;
   divider?: boolean;
-  autoCloseDisabled?: boolean;
+  items?: MenuItemData[];
+  label?: string;
+  leftIcon?: ReactNode;
+  rightIcon?: ReactNode;
   sx?: SxProps;
-  active?: boolean;
-  checked?: 'true' | 'false' | 'mixed';
+  tooltip?: ReactElement | string;
+  uid?: string;
 }

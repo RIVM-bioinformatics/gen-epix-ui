@@ -4,12 +4,12 @@ import {
   Typography,
 } from '@mui/material';
 import {
-  useCallback,
   type PropsWithChildren,
-  useRef,
-  useState,
+  useCallback,
   useEffect,
   useMemo,
+  useRef,
+  useState,
 } from 'react';
 import { useTranslation } from 'react-i18next';
 import { useAuth } from 'react-oidc-context';
@@ -52,8 +52,8 @@ export const AuthenticationWrapper = ({ children }: PropsWithChildren) => {
   const onConsentDialogConsent = useCallback(() => {
     LogManager.instance.log([
       {
-        topic: 'CONSENT',
         level: LogLevel.INFO,
+        topic: 'CONSENT',
       },
     ]);
     setHasGivenConsent(true);
@@ -88,30 +88,36 @@ export const AuthenticationWrapper = ({ children }: PropsWithChildren) => {
     AuthenticationManager.instance.next(undefined);
   }, []);
 
+  const now = useMemo(() => new Date().getTime(), []);
+
   const loginElement = useMemo(
     () => (
       <>
         <Box
-          marginY={2}
-          sx={{ textAlign: 'center' }}
+          sx={{
+            marginY: 2,
+            textAlign: 'center',
+          }}
         >
           <Button
             color={'primary'}
-            variant={'contained'}
             data-name={oidcConfiguration.name}
             onClick={onLoginButtonClick}
+            variant={'contained'}
           >
             {oidcConfiguration.label}
           </Button>
         </Box>
         <Box
-          marginY={2}
-          sx={{ textAlign: 'center' }}
+          sx={{
+            marginY: 2,
+            textAlign: 'center',
+          }}
         >
           <Button
             color={'primary'}
-            variant={'outlined'}
             onClick={onChangeLoginProviderButtonClick}
+            variant={'outlined'}
           >
             {t`Choose a different identity provider`}
           </Button>
@@ -155,8 +161,8 @@ export const AuthenticationWrapper = ({ children }: PropsWithChildren) => {
         title={t`Login`}
       >
         <Typography
-          sx={{ textAlign: 'center' }}
           component={'p'}
+          sx={{ textAlign: 'center' }}
         >
           {t`We could not log you in, or your session has expired.`}
         </Typography>
@@ -168,7 +174,7 @@ export const AuthenticationWrapper = ({ children }: PropsWithChildren) => {
   if (!auth.isAuthenticated) {
     if (
       AuthenticationManager.instance.getUserManagerSettingsCreatedAt() &&
-      new Date().getTime() -
+      now -
         AuthenticationManager.instance.getUserManagerSettingsCreatedAt() <
         AuthenticationManager.autoLoginSkew
     ) {
@@ -182,8 +188,10 @@ export const AuthenticationWrapper = ({ children }: PropsWithChildren) => {
         title={t`Login`}
       >
         <Box
-          marginY={2}
-          sx={{ textAlign: 'center' }}
+          sx={{
+            marginY: 2,
+            textAlign: 'center',
+          }}
         >
           <Typography component={'p'}>
             {t`You need to login to access this application.`}
@@ -199,8 +207,8 @@ export const AuthenticationWrapper = ({ children }: PropsWithChildren) => {
       {children}
       {ConfigManager.instance.config.consentDialog.getShouldShow() && (
         <ConsentDialog
-          ref={consentDialogRef}
           onConsent={onConsentDialogConsent}
+          ref={consentDialogRef}
         />
       )}
     </>

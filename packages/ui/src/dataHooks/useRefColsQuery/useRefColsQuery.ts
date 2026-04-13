@@ -15,11 +15,11 @@ import { DataUtil } from '../../utils/DataUtil';
 
 export const useRefColsQuery = (): UseQueryResult<RefCol[]> => {
   return useQueryMemo({
-    queryKey: QueryUtil.getGenericKey(QUERY_KEY.REF_COLS),
     queryFn: async ({ signal }) => {
       const response = await CaseApi.instance.refColsGetAll({ signal });
       return response.data;
     },
+    queryKey: QueryUtil.getGenericKey(QUERY_KEY.REF_COLS),
   });
 };
 

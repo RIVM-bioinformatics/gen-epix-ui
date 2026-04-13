@@ -69,22 +69,22 @@ export const OrganizationAdminPoliciesAdminPage = () => {
     return [
       {
         definition: FORM_FIELD_DEFINITION_TYPE.AUTOCOMPLETE,
-        name: 'organization_id',
         label: t`Organization`,
-        options: organizationOptionsQuery.options,
         loading: organizationOptionsQuery.isLoading,
+        name: 'organization_id',
+        options: organizationOptionsQuery.options,
       } as const satisfies FormFieldDefinition<FormFields>,
       {
         definition: FORM_FIELD_DEFINITION_TYPE.AUTOCOMPLETE,
-        name: 'user_id',
         label: t`User`,
-        options: userOptionsQuery.options,
         loading: userOptionsQuery.isLoading,
+        name: 'user_id',
+        options: userOptionsQuery.options,
       } as const satisfies FormFieldDefinition<FormFields>,
       {
         definition: FORM_FIELD_DEFINITION_TYPE.BOOLEAN,
-        name: 'is_active',
         label: t`Active`,
+        name: 'is_active',
       } as const satisfies FormFieldDefinition<FormFields>,
     ] as const;
   }, [organizationOptionsQuery.isLoading, organizationOptionsQuery.options, t, userOptionsQuery.isLoading, userOptionsQuery.options]);
@@ -99,9 +99,9 @@ export const OrganizationAdminPoliciesAdminPage = () => {
 
   return (
     <CrudPage<FormFields, OrganizationAdminPolicy>
+      createItemDialogTitle={t`Create new organization admin policy`}
       createOne={createOne}
       crudCommandType={CommandName.OrganizationAdminPolicyCrudCommand}
-      createItemDialogTitle={t`Create new organization admin policy`}
       defaultSortByField={'organization_id'}
       defaultSortDirection={'asc'}
       deleteOne={deleteOne}

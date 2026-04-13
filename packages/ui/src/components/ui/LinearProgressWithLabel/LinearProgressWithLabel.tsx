@@ -11,8 +11,8 @@ export type LinearProgressWithLabelProps = {
 
 export const LinearProgressWithLabel = (props: LinearProgressWithLabelProps) => {
   return (
-    <Box sx={{ display: 'flex', alignItems: 'center' }}>
-      <Box sx={{ width: '100%', mr: 1 }}>
+    <Box sx={{ alignItems: 'center', display: 'flex' }}>
+      <Box sx={{ mr: 1, width: '100%' }}>
         <LinearProgress
           variant={'determinate'}
           {...props}
@@ -20,8 +20,8 @@ export const LinearProgressWithLabel = (props: LinearProgressWithLabelProps) => 
       </Box>
       <Box sx={{ minWidth: 35 }}>
         <Typography
-          variant={'body2'}
           sx={{ color: 'text.secondary' }}
+          variant={'body2'}
         >
           {`${Math.round(props.value)}%`}
         </Typography>

@@ -10,9 +10,9 @@ import {
 
 import type { ConceptSet } from '../../api';
 import {
-  OntologyApi,
   CommandName,
   ConceptSetType,
+  OntologyApi,
   PermissionType,
 } from '../../api';
 import type { FormFieldDefinition } from '../../models/form';
@@ -57,9 +57,9 @@ export const ConceptSetsAdminPage = () => {
 
   const schema = useMemo(() => {
     return object<FormFields>().shape({
-      name: SchemaUtil.name,
       code: SchemaUtil.code,
       description: SchemaUtil.description,
+      name: SchemaUtil.name,
       type: mixed<ConceptSetType>().required().oneOf(Object.values(ConceptSetType)),
     });
   }, []);
@@ -68,25 +68,25 @@ export const ConceptSetsAdminPage = () => {
     return [
       {
         definition: FORM_FIELD_DEFINITION_TYPE.TEXTFIELD,
-        name: 'name',
         label: t`Name`,
+        name: 'name',
       } as const satisfies FormFieldDefinition<FormFields>,
       {
         definition: FORM_FIELD_DEFINITION_TYPE.TEXTFIELD,
-        name: 'code',
         label: t`Code`,
+        name: 'code',
       } as const satisfies FormFieldDefinition<FormFields>,
       {
         definition: FORM_FIELD_DEFINITION_TYPE.TEXTFIELD,
-        name: 'description',
         label: t`Description`,
+        name: 'description',
       } as const satisfies FormFieldDefinition<FormFields>,
       {
         definition: FORM_FIELD_DEFINITION_TYPE.AUTOCOMPLETE,
-        name: 'type',
         label: t`Type`,
-        options: conceptSetTypeOptionsQuery.options,
         loading: conceptSetTypeOptionsQuery.isLoading,
+        name: 'type',
+        options: conceptSetTypeOptionsQuery.options,
       } as const satisfies FormFieldDefinition<FormFields>,
     ] as const;
   }, [conceptSetTypeOptionsQuery.isLoading, conceptSetTypeOptionsQuery.options, t]);
@@ -107,26 +107,26 @@ export const ConceptSetsAdminPage = () => {
 
     return [
       {
-        label: t`Manage concepts`,
         getPathName: (item: ConceptSet) => `/management/concept-sets/${item.id}/concepts`,
+        label: t`Manage concepts`,
       } satisfies CrudPageSubPage<ConceptSet>,
     ];
   }, [t]);
 
   return (
     <CrudPage<FormFields, ConceptSet>
+      createItemDialogTitle={t`Create new concept set`}
       createOne={createOne}
       crudCommandType={CommandName.ConceptSetCrudCommand}
-      createItemDialogTitle={t`Create new concept set`}
       defaultSortByField={'name'}
       defaultSortDirection={'asc'}
       deleteOne={deleteOne}
       fetchAll={fetchAll}
       formFieldDefinitions={formFieldDefinitions}
-      subPages={subPages}
       getName={getName}
       resourceQueryKeyBase={QUERY_KEY.CONCEPT_SETS}
       schema={schema}
+      subPages={subPages}
       tableColumns={tableColumns}
       testIdAttributes={TestIdUtil.createAttributes('ConceptSetsAdminPage')}
       title={t`Concepts`}

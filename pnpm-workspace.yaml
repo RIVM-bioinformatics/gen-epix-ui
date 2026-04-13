@@ -2,7 +2,7 @@ packages:
   - packages/*
 
 overrides:
-  '@openapitools/openapi-generator-cli>axios': 1.13.6
+  '@openapitools/openapi-generator-cli>axios': 1.15.0
   typescript: 5.9.2
 
 onlyBuiltDependencies:

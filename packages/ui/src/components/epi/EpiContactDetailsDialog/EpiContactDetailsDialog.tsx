@@ -14,8 +14,8 @@ import {
 
 import { OrganizationApi } from '../../../api';
 import type {
-  WithDialogRenderProps,
   WithDialogRefMethods,
+  WithDialogRenderProps,
 } from '../../../hoc/withDialog';
 import { withDialog } from '../../../hoc/withDialog';
 import { useQueryMemo } from '../../../hooks/useQueryMemo';
@@ -46,13 +46,13 @@ export const EpiContactDetailsDialog = withDialog<EpiContactDetailsDialogProps, 
   }, [openProps.organizationId]);
 
   const organizationContactsQuery = useQueryMemo({
-    queryKey,
     queryFn: async ({ signal }) => {
       const response = await OrganizationApi.instance.retrieveOrganizationContacts({
         organization_id: openProps.organizationId,
       }, { signal });
       return response.data;
     },
+    queryKey,
   });
 
   useEffect(() => {
@@ -75,7 +75,9 @@ export const EpiContactDetailsDialog = withDialog<EpiContactDetailsDialogProps, 
           return (
             <Box
               key={site.id}
-              marginBottom={2}
+              sx={{
+                marginBottom: 2,
+              }}
             >
               <Typography
                 variant={'h5'}
@@ -93,15 +95,15 @@ export const EpiContactDetailsDialog = withDialog<EpiContactDetailsDialogProps, 
                 <Box
                   sx={{
                     display: 'grid',
-                    gridTemplateColumns: '1fr 1fr',
                     gap: 2,
+                    gridTemplateColumns: '1fr 1fr',
                   }}
                 >
                   {siteContacts.map(contact => (
                     <Card
+                      elevation={2}
                       key={contact.id}
                       square
-                      elevation={2}
                     >
                       <CardContent>
                         <Typography
@@ -144,8 +146,8 @@ export const EpiContactDetailsDialog = withDialog<EpiContactDetailsDialogProps, 
     </Box>
   );
 }, {
-  testId: 'EpiContactDetailsDialog',
-  maxWidth: 'md',
-  fullWidth: true,
   defaultTitle: '',
+  fullWidth: true,
+  maxWidth: 'md',
+  testId: 'EpiContactDetailsDialog',
 });

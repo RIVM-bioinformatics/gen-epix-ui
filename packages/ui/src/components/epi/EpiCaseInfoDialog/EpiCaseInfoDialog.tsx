@@ -4,14 +4,14 @@ import ShareIcon from '@mui/icons-material/Share';
 import DeleteIcon from '@mui/icons-material/Delete';
 import ArrowLeftIcon from '@mui/icons-material/ArrowLeft';
 import {
+  type ReactElement,
+  use,
   useCallback,
-  useContext,
   useEffect,
   useId,
   useMemo,
   useRef,
   useState,
-  type ReactElement,
 } from 'react';
 import { useTranslation } from 'react-i18next';
 import { useStore } from 'zustand';
@@ -31,9 +31,9 @@ import type {
 import { CaseApi } from '../../../api';
 import { useCaseRightsQuery } from '../../../dataHooks/useCaseRightsQuery';
 import {
-  useDataCollectionsQuery,
-  useDataCollectionsMapQuery,
   useDataCollectionOptionsQuery,
+  useDataCollectionsMapQuery,
+  useDataCollectionsQuery,
 } from '../../../dataHooks/useDataCollectionsQuery';
 import { useDeleteMutation } from '../../../hooks/useDeleteMutation';
 import { useItemQuery } from '../../../hooks/useItemQuery';
@@ -70,10 +70,10 @@ export type EpiCaseInfoDialogRefMethods = WithDialogRefMethods<EpiCaseInfoDialog
 
 export const EpiCaseInfoDialog = withDialog<EpiCaseInfoDialogProps, EpiCaseInfoDialogOpenProps>((
   {
-    openProps,
     onActionsChange,
-    onTitleChange,
     onClose,
+    onTitleChange,
+    openProps,
   }: EpiCaseInfoDialogProps,
 ): ReactElement => {
   const { t } = useTranslation();
@@ -83,14 +83,14 @@ export const EpiCaseInfoDialog = withDialog<EpiCaseInfoDialogProps, EpiCaseInfoD
   const dataCollectionsMapQuery = useDataCollectionsMapQuery();
   const dataCollectionOptionsQuery = useDataCollectionOptionsQuery();
 
-  const epiDashboardStore = useContext(EpiDashboardStoreContext);
+  const epiDashboardStore = use(EpiDashboardStoreContext);
   const fetchData = useStore(epiDashboardStore, useShallow((state) => state.fetchData));
   const [isEditingCaseContent, setIsEditingCaseContent] = useState(false);
   const [isEditingDataCollections, setIsEditingDataCollections] = useState(false);
   const [isEpiCaseFormSaving, setIsEpiCaseFormSaving] = useState(false);
   const [isEpiCaseDataCollectionFormSaving, setIsEpiCaseDataCollectionFormSaving] = useState(false);
   const [isRefreshingData, setIsRefreshingData] = useState(false);
-  const deleteConfirmation = useRef<ConfirmationRefMethods>(null);
+  const deleteConfirmationRef = useRef<ConfirmationRefMethods>(null);
   const valuesFormId = useId();
   const dataCollectionsFormId = useId();
   const loadables = useArray([caseRightsQuery, dataCollectionsQuery, dataCollectionsMapQuery, dataCollectionOptionsQuery]);
@@ -105,44 +105,44 @@ export const EpiCaseInfoDialog = withDialog<EpiCaseInfoDialogProps, EpiCaseInfoD
     onClose();
   }, [onClose]);
 
-  const { mutate: deleteMutate, isMutating: isDeleteMutating } = useDeleteMutation<Case>({
-    resourceQueryKey: QueryUtil.getGenericKey(QUERY_KEY.CASES),
+  const { isMutating: isDeleteMutating, mutate: deleteMutate } = useDeleteMutation<Case>({
     associationQueryKeys: QueryUtil.getQueryKeyDependencies([QUERY_KEY.CASES], true),
+    getErrorNotificationMessage: (data) => t('Unable to remove case: {{id}}.', { name: data.id }),
+    getProgressNotificationMessage: (data) => t('Deleting case: {{id}}...', { name: data.id }),
+    getSuccessNotificationMessage: (data) => t('Case: {{id}}, has been removed.', { name: data.id }),
+    onError: onDeleteError,
+    onSuccess: onDeleteSuccess,
     queryFn: async (item: Case) => {
       return await CaseApi.instance.casesDeleteOne(item.id);
     },
-    getProgressNotificationMessage: (data) => t('Deleting case: {{id}}...', { name: data.id }),
-    getSuccessNotificationMessage: (data) => t('Case: {{id}}, has been removed.', { name: data.id }),
-    getErrorNotificationMessage: (data) => t('Unable to remove case: {{id}}.', { name: data.id }),
-    onSuccess: onDeleteSuccess,
-    onError: onDeleteError,
+    resourceQueryKey: QueryUtil.getGenericKey(QUERY_KEY.CASES),
   });
 
-  const { isLoading: epiCaseIsLoading, error: epiCaseError, data: epiCase } = useItemQuery<Case>({
+  const { data: epiCase, error: epiCaseError, isLoading: epiCaseIsLoading } = useItemQuery<Case>({
     baseQueryKey: QUERY_KEY.CASES_LAZY,
     itemId: openProps.caseId,
     useQueryOptions: {
+      enabled: !isDeleteMutating,
       queryFn: async ({ signal }) => {
         const response = await CaseApi.instance.casesGetOne(openProps.caseId, { signal });
         return response.data;
       },
-      enabled: !isDeleteMutating,
     },
   });
 
   const caseDataCollectionLinksFilter = useMemo<TypedUuidSetFilter>(() => ({
     invert: false,
     key: 'case_id',
-    type: 'UUID_SET',
     members: [epiCase?.id],
+    type: 'UUID_SET',
   }), [epiCase?.id]);
-  const { isLoading: isCaseDataCollectionLinksLoading, error: caseDataCollectionLinksError, data: caseDataCollectionLinks } = useQueryMemo({
-    queryKey: QueryUtil.getGenericKey(QUERY_KEY.CASE_DATA_COLLECTION_LINKS, caseDataCollectionLinksFilter),
+  const { data: caseDataCollectionLinks, error: caseDataCollectionLinksError, isLoading: isCaseDataCollectionLinksLoading } = useQueryMemo({
+    enabled: !!epiCase,
     queryFn: async ({ signal }) => {
       const response = await CaseApi.instance.caseDataCollectionLinksPostQuery(caseDataCollectionLinksFilter, { signal });
       return response.data;
     },
-    enabled: !!epiCase,
+    queryKey: QueryUtil.getGenericKey(QUERY_KEY.CASE_DATA_COLLECTION_LINKS, caseDataCollectionLinksFilter),
   });
 
 
@@ -195,7 +195,7 @@ export const EpiCaseInfoDialog = withDialog<EpiCaseInfoDialogProps, EpiCaseInfoD
   }, []);
 
   const onDeleteEventButtonClick = useCallback(() => {
-    deleteConfirmation.current.open();
+    deleteConfirmationRef.current.open();
   }, []);
 
   const onDeleteConfirmationConfirm = useCallback(() => {
@@ -221,11 +221,11 @@ export const EpiCaseInfoDialog = withDialog<EpiCaseInfoDialogProps, EpiCaseInfoD
       actions.push({
         ...TestIdUtil.createAttributes('EpiCaseInfoDialog-goBackButton'),
         color: 'primary',
-        variant: 'outlined',
+        disabled: isSaving,
         label: t`Go back`,
         onClick: onGoBackButtonClick,
         startIcon: <ArrowLeftIcon />,
-        disabled: isSaving,
+        variant: 'outlined',
       });
     }
 
@@ -234,12 +234,12 @@ export const EpiCaseInfoDialog = withDialog<EpiCaseInfoDialogProps, EpiCaseInfoD
         {
           ...TestIdUtil.createAttributes('EpiCaseInfoDialog-saveButton'),
           color: 'secondary',
-          variant: 'contained',
+          disabled: isSaving,
           form: valuesFormId,
-          type: 'submit',
           label: t`Save`,
           startIcon: <SaveIcon />,
-          disabled: isSaving,
+          type: 'submit',
+          variant: 'contained',
         },
       );
     } else if (isEditingDataCollections) {
@@ -247,12 +247,12 @@ export const EpiCaseInfoDialog = withDialog<EpiCaseInfoDialogProps, EpiCaseInfoD
         {
           ...TestIdUtil.createAttributes('EpiCaseInfoDialog-saveButton'),
           color: 'secondary',
-          variant: 'contained',
+          disabled: isSaving,
           form: dataCollectionsFormId,
-          type: 'submit',
           label: t`Save`,
           startIcon: <SaveIcon />,
-          disabled: isSaving,
+          type: 'submit',
+          variant: 'contained',
         },
       );
     } else {
@@ -260,33 +260,33 @@ export const EpiCaseInfoDialog = withDialog<EpiCaseInfoDialogProps, EpiCaseInfoD
         {
           ...TestIdUtil.createAttributes('EpiCaseSetInfoDialog-deleteButton'),
           color: 'primary',
-          variant: 'outlined',
-          onClick: onDeleteEventButtonClick,
-          label: t`Delete`,
-          startIcon: <DeleteIcon />,
           disabled: !canDelete(),
+          label: t`Delete`,
+          onClick: onDeleteEventButtonClick,
+          startIcon: <DeleteIcon />,
+          variant: 'outlined',
         },
       );
       actions.push(
         {
           ...TestIdUtil.createAttributes('EpiCaseInfoDialog-editDataCollectionsButton'),
           color: 'primary',
-          variant: 'outlined',
-          onClick: onShareButtonClick,
-          label: t`Share`,
-          startIcon: <ShareIcon />,
           disabled: !canShare,
+          label: t`Share`,
+          onClick: onShareButtonClick,
+          startIcon: <ShareIcon />,
+          variant: 'outlined',
         },
       );
       actions.push(
         {
           ...TestIdUtil.createAttributes('EpiCaseInfoDialog-editCaseContentButton'),
           color: 'primary',
-          variant: 'outlined',
-          onClick: onEditButtonClick,
-          label: t`Edit`,
-          startIcon: <EditIcon />,
           disabled: !canEdit,
+          label: t`Edit`,
+          onClick: onEditButtonClick,
+          startIcon: <EditIcon />,
+          variant: 'outlined',
         },
       );
     }
@@ -295,12 +295,12 @@ export const EpiCaseInfoDialog = withDialog<EpiCaseInfoDialogProps, EpiCaseInfoD
 
   const caseAbacContextValue = useMemo<CaseAbacContext>(() => {
     return {
-      userDataCollections: dataCollectionsQuery.data,
-      userDataCollectionsMap: dataCollectionsMapQuery.map,
-      userDataCollectionOptions: dataCollectionOptionsQuery.options,
+      createdInDataCollection: epiCase ? dataCollectionsMapQuery.map.get(epiCase.created_in_data_collection_id) : undefined,
       itemDataCollectionLinks: [caseDataCollectionLinks],
       rights: caseRightsQuery.data,
-      createdInDataCollection: epiCase ? dataCollectionsMapQuery.map.get(epiCase.created_in_data_collection_id) : undefined,
+      userDataCollectionOptions: dataCollectionOptionsQuery.options,
+      userDataCollections: dataCollectionsQuery.data,
+      userDataCollectionsMap: dataCollectionsMapQuery.map,
     };
   }, [dataCollectionsQuery.data, dataCollectionsMapQuery.map, dataCollectionOptionsQuery.options, caseDataCollectionLinks, caseRightsQuery.data, epiCase]);
 
@@ -316,29 +316,37 @@ export const EpiCaseInfoDialog = withDialog<EpiCaseInfoDialogProps, EpiCaseInfoD
   return (
     <>
       <ResponseHandler
-        inlineSpinner
-        shouldHideActionButtons
         error={epiCaseError || caseDataCollectionLinksError}
+        inlineSpinner
         isLoading={epiCaseIsLoading || isCaseDataCollectionLinksLoading}
         loadables={loadables}
+        shouldHideActionButtons
       >
         <CaseAbacContextProvider caseAbac={caseAbacContextValue}>
           <EpiReadOnlyCaseContent
             epiCase={epiCase}
-            marginBottom={2}
+            sx={{
+              marginBottom: 2,
+            }}
           />
           {!isEditingCaseContent && !isEditingDataCollections && (
             <>
               <EpiCaseSharingInfo
-                marginBottom={2}
+                sx={{
+                  marginBottom: 2,
+                }}
               />
               <EpiCaseCaseSetInfo
                 epiCase={epiCase}
-                marginBottom={2}
+                sx={{
+                  marginBottom: 2,
+                }}
               />
               <EpiCaseContent
                 epiCase={epiCase}
-                marginBottom={2}
+                sx={{
+                  marginBottom: 2,
+                }}
               />
             </>
           )}
@@ -361,17 +369,17 @@ export const EpiCaseInfoDialog = withDialog<EpiCaseInfoDialogProps, EpiCaseInfoD
         </CaseAbacContextProvider>
       </ResponseHandler>
       <Confirmation
-        ref={deleteConfirmation}
         body={t`Are you sure you want to delete the case?`}
         cancelLabel={t`Cancel`}
         confirmLabel={t`Delete`}
-        title={t`Delete case?`}
         onConfirm={onDeleteConfirmationConfirm}
+        ref={deleteConfirmationRef}
+        title={t`Delete case?`}
       />
     </>
   );
 }, {
-  testId: 'EpiCaseInfoDialog',
-  maxWidth: 'lg',
   fullWidth: true,
+  maxWidth: 'lg',
+  testId: 'EpiCaseInfoDialog',
 });

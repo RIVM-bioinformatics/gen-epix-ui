@@ -1,9 +1,9 @@
 import { useTranslation } from 'react-i18next';
 import { useParams } from 'react-router-dom';
 import {
+  Box,
   Button,
   Typography,
-  Box,
 } from '@mui/material';
 import {
   useCallback,
@@ -24,13 +24,13 @@ export const AcceptInvitationPage = () => {
   const [shouldRegister, setShouldRegister] = useState(false);
 
   const { data, error, isLoading } = useQueryMemo({
-    queryKey: QueryUtil.getUserRegistrationsKey(token),
+    enabled: shouldRegister,
+    gcTime: 0,
     queryFn: async ({ signal }) => {
       const response = await OrganizationApi.instance.userRegistrationsPostOne(token, { signal });
       return response.data;
     },
-    enabled: shouldRegister,
-    gcTime: 0,
+    queryKey: QueryUtil.getUserRegistrationsKey(token),
     staleTime: 0,
   });
 
@@ -57,16 +57,24 @@ export const AcceptInvitationPage = () => {
       >
         {!data && (
           <>
-            <Box marginY={2}>
+            <Box
+              sx={{
+                marginY: 2,
+              }}
+            >
               <Typography>
                 {t('You have been invited to join {{applicationName}}.', { applicationName: ConfigManager.instance.config.applicationName })}
               </Typography>
             </Box>
-            <Box marginY={2}>
+            <Box
+              sx={{
+                marginY: 2,
+              }}
+            >
               <Button
                 color={'primary'}
-                type={'submit'}
                 onClick={onCompleteRegistrationButtonClick}
+                type={'submit'}
               >
                 {t`Complete registration`}
               </Button>
@@ -80,7 +88,11 @@ export const AcceptInvitationPage = () => {
                 {t('You have been successfully registered to {{applicationName}}.', { applicationName: ConfigManager.instance.config.applicationName })}
               </Typography>
             </Box>
-            <Box marginY={2}>
+            <Box
+              sx={{
+                marginY: 2,
+              }}
+            >
               <Button
                 color={'primary'}
                 onClick={onGoToHomePageButtonClick}

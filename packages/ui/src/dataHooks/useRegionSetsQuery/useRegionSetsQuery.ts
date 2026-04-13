@@ -4,8 +4,8 @@ import { useMemo } from 'react';
 import type { RegionSet } from '../../api';
 import { GeoApi } from '../../api';
 import type {
-  UseOptions,
   UseMap,
+  UseOptions,
 } from '../../models/dataHooks';
 import { QUERY_KEY } from '../../models/query';
 import { DataHookUtil } from '../../utils/DataHookUtil';
@@ -14,11 +14,11 @@ import { useQueryMemo } from '../../hooks/useQueryMemo';
 
 export const useRegionSetsQuery = (): UseQueryResult<RegionSet[]> => {
   return useQueryMemo({
-    queryKey: QueryUtil.getGenericKey(QUERY_KEY.REGION_SETS),
     queryFn: async ({ signal }) => {
       const response = await GeoApi.instance.regionSetsGetAll({ signal });
       return response.data;
     },
+    queryKey: QueryUtil.getGenericKey(QUERY_KEY.REGION_SETS),
   });
 };
 

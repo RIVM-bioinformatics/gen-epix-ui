@@ -1,8 +1,8 @@
 type Subscription<TData> = (data: TData, previousData?: TData) => void;
 
 export class Subject<TData> {
-  private subscriptions: Subscription<TData>[] = [];
   public data: TData;
+  private subscriptions: Subscription<TData>[] = [];
 
   public constructor(initialData?: TData) {
     this.data = initialData;

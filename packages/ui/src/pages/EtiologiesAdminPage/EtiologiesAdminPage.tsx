@@ -10,8 +10,8 @@ import {
 
 import type { Etiology } from '../../api';
 import {
-  OntologyApi,
   CommandName,
+  OntologyApi,
 } from '../../api';
 import { useDiseaseOptionsQuery } from '../../dataHooks/useDiseasesQuery';
 import { useEtiologicalAgentOptionsQuery } from '../../dataHooks/useEtiologicalAgentsQuery';
@@ -66,17 +66,17 @@ export const EtiologiesAdminPage = () => {
     return [
       {
         definition: FORM_FIELD_DEFINITION_TYPE.AUTOCOMPLETE,
-        name: 'disease_id',
         label: t`Disease`,
-        options: diseaseOptionsQuery.options,
         loading: diseaseOptionsQuery.isLoading,
+        name: 'disease_id',
+        options: diseaseOptionsQuery.options,
       } as const satisfies FormFieldDefinition<FormFields>,
       {
         definition: FORM_FIELD_DEFINITION_TYPE.AUTOCOMPLETE,
-        name: 'etiological_agent_id',
         label: t`Etiological agent`,
-        options: etiologicalAgentOptionsQuery.options,
         loading: etiologicalAgentOptionsQuery.isLoading,
+        name: 'etiological_agent_id',
+        options: etiologicalAgentOptionsQuery.options,
       } as const satisfies FormFieldDefinition<FormFields>,
     ] as const;
   }, [etiologicalAgentOptionsQuery.isLoading, etiologicalAgentOptionsQuery.options, diseaseOptionsQuery.isLoading, diseaseOptionsQuery.options, t]);
@@ -90,9 +90,9 @@ export const EtiologiesAdminPage = () => {
 
   return (
     <CrudPage<FormFields, Etiology>
+      createItemDialogTitle={t`Create new etiology`}
       createOne={createOne}
       crudCommandType={CommandName.EtiologyCrudCommand}
-      createItemDialogTitle={t`Create new etiology`}
       defaultSortByField={'disease_id'}
       defaultSortDirection={'asc'}
       deleteOne={deleteOne}

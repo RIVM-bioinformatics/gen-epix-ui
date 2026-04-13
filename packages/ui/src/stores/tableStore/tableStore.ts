@@ -19,8 +19,8 @@ import { WindowManager } from '../../classes/managers/WindowManager';
 import type { TableEvent } from '../../classes/TableEventBus';
 import { TableEventBus } from '../../classes/TableEventBus';
 import type {
-  Filters,
   FilterDimension,
+  Filters,
   FilterValues,
 } from '../../models/filter';
 import type { UnwrapArray } from '../../models/generic';
@@ -34,16 +34,65 @@ import { ObjectUtil } from '../../utils/ObjectUtil';
 import { TableUtil } from '../../utils/TableUtil';
 
 
-type Get<TData> = () => TableStore<TData>;
-type Set<TData> = (partial: TableStore<TData> | Partial<TableStore<TData>> | ((state: TableStore<TData>) => TableStore<TData> | Partial<TableStore<TData>>), replace?: false) => void;
+export interface CreateTableStoreInitialStateKwArgs<TData> {
+  defaultSortByField?: string;
+  defaultSortDirection?: TableSortDirection;
+  idSelectorCallback: (row: TData) => string;
+  isRowEnabledCallback?: (row: TData) => boolean;
+  navigatorFunction?: NavigateFunction;
+}
+export type CreateTableStoreKwArgs<TData> = {
+  storageNamePostFix?: string;
+  storageVersion?: number;
+} & CreateTableStoreInitialStateKwArgs<TData>;
+
+export type TableStore<TData> = TableStoreActions<TData> & TableStoreState<TData>;
+
+export interface TableStoreActions<TData> {
+  addEventListener: <TEventName extends keyof TableEvent>(eventName: TEventName, callback: (payload: TableEvent[TEventName]) => void) => () => void;
+  destroy: () => void;
+  emitEvent: <TEventName extends keyof TableEvent>(eventName: TEventName, payload?: TableEvent[TEventName]) => void;
+  fetchData: () => Promise<void>;
+
+  initialize: (globalAbortSignal: AbortSignal) => Promise<void>;
+  reloadFilterData: (fistFilterPriorityToFilterFrom?: string) => void;
+  reloadFilterPriorityData: (filterPriority: string, data: TData[]) => TData[];
+  reloadSelectedIds: () => void;
+  reloadSortedData: () => void;
+  resetFilters: () => Promise<void>;
+
+  selectId: (id: string) => void;
+  setBaseData: (items: TData[]) => void;
+
+  setColumnDimensions: (columnDimensions: TableColumnDimension[]) => void;
+  setColumns: (columns: TableColumn<TData>[]) => void;
+  setColumnSettings: (columnSettings: TableColumnSettings[]) => void;
+
+  setFilters: (filters: Filters, filterDimensions: FilterDimension[], frontendFilterPriorities: string[]) => void;
+  setFilterValue: (id: string, value: unknown) => Promise<void>;
+
+  setFilterValues: (filterValues: FilterValues) => Promise<void>;
+  setNavigateFunction: (navigateFunction: NavigateFunction) => void;
+
+  setSelectedIds: (selectedIds: string[]) => void;
+  setSortedIds: (sortedIds: string[]) => void;
+  setSorting(id: string, direction: TableSortDirection): Promise<void>;
+  setVisibleFilterWithinDimension: (filterDimensionId: string, filterId: string) => void;
+  setVisibleFilterWithinDimensions: (visibleFilters: { [key: string]: string }) => void;
+  unselectId: (id: string) => void;
+  // private
+  updateUrl: (searchParams: URLSearchParams) => Promise<void>;
+}
 
 export interface TableStoreState<TData> {
   backendFilters: Filters;
   baseData: TData[];
-  columns: TableColumn<TData>[];
   columnDimensions: TableColumnDimension[];
+  columns: TableColumn<TData>[];
   columnSettings: TableColumnSettings[];
   dataError: Error;
+  defaultSortByField: string;
+  defaultSortDirection: TableSortDirection;
   eventBus: TableEventBus;
   fetchAbortController: AbortController;
   filterDimensions: FilterDimension[];
@@ -60,67 +109,18 @@ export interface TableStoreState<TData> {
   navigateFunction: NavigateFunction;
   selectedIds: string[];
   sortByField: string;
-  defaultSortByField: string;
   sortDirection: TableSortDirection;
-  defaultSortDirection: TableSortDirection;
   sortedData: TData[];
   sortedIds: string[];
   visibleFilterWithinDimensions: { [key: string]: string };
 }
 
-export interface TableStoreActions<TData> {
-  setColumns: (columns: TableColumn<TData>[]) => void;
-  setColumnDimensions: (columnDimensions: TableColumnDimension[]) => void;
-  setColumnSettings: (columnSettings: TableColumnSettings[]) => void;
-  setBaseData: (items: TData[]) => void;
+type Get<TData> = () => TableStore<TData>;
 
-  setFilters: (filters: Filters, filterDimensions: FilterDimension[], frontendFilterPriorities: string[]) => void;
-  resetFilters: () => Promise<void>;
-  setFilterValue: (id: string, value: unknown) => Promise<void>;
-  setFilterValues: (filterValues: FilterValues) => Promise<void>;
-  setVisibleFilterWithinDimensions: (visibleFilters: { [key: string]: string }) => void;
-  setVisibleFilterWithinDimension: (filterDimensionId: string, filterId: string) => void;
-
-  setSorting(id: string, direction: TableSortDirection): Promise<void>;
-  setSortedIds: (sortedIds: string[]) => void;
-
-  setSelectedIds: (selectedIds: string[]) => void;
-  selectId: (id: string) => void;
-  unselectId: (id: string) => void;
-
-  setNavigateFunction: (navigateFunction: NavigateFunction) => void;
-  initialize: (globalAbortSignal: AbortSignal) => Promise<void>;
-
-  addEventListener: <TEventName extends keyof TableEvent>(eventName: TEventName, callback: (payload: TableEvent[TEventName]) => void) => () => void;
-  emitEvent: <TEventName extends keyof TableEvent>(eventName: TEventName, payload?: TableEvent[TEventName]) => void;
-
-  // private
-  updateUrl: (searchParams: URLSearchParams) => Promise<void>;
-  reloadFilterData: (fistFilterPriorityToFilterFrom?: string) => void;
-  reloadFilterPriorityData: (filterPriority: string, data: TData[]) => TData[];
-  reloadSortedData: () => void;
-  reloadSelectedIds: () => void;
-  fetchData: () => Promise<void>;
-  destroy: () => void;
-}
-
-export type TableStore<TData> = TableStoreState<TData> & TableStoreActions<TData>;
-
-export interface CreateTableStoreInitialStateKwArgs<TData> {
-  navigatorFunction?: NavigateFunction;
-  defaultSortByField?: string;
-  defaultSortDirection?: TableSortDirection;
-  isRowEnabledCallback?: (row: TData) => boolean;
-  idSelectorCallback: (row: TData) => string;
-}
-
-export type CreateTableStoreKwArgs<TData> = CreateTableStoreInitialStateKwArgs<TData> & {
-  storageNamePostFix?: string;
-  storageVersion?: number;
-};
+type Set<TData> = (partial: ((state: TableStore<TData>) => Partial<TableStore<TData>> | TableStore<TData>) | Partial<TableStore<TData>> | TableStore<TData>, replace?: false) => void;
 
 export const createTableStoreInitialState = <TData>(kwArgs: CreateTableStoreInitialStateKwArgs<TData>): TableStoreState<TData> => {
-  const { navigatorFunction, defaultSortDirection, defaultSortByField, idSelectorCallback, isRowEnabledCallback } = kwArgs;
+  const { defaultSortByField, defaultSortDirection, idSelectorCallback, isRowEnabledCallback, navigatorFunction } = kwArgs;
   const url = new URL(document.location.href);
   const searchParams = url.searchParams;
 
@@ -139,10 +139,12 @@ export const createTableStoreInitialState = <TData>(kwArgs: CreateTableStoreInit
   return {
     backendFilters: [],
     baseData: [],
-    columns: [],
     columnDimensions: null,
+    columns: [],
     columnSettings: [],
     dataError: null,
+    defaultSortByField,
+    defaultSortDirection,
     eventBus: new TableEventBus(),
     fetchAbortController: null,
     filterDimensions: [],
@@ -160,8 +162,6 @@ export const createTableStoreInitialState = <TData>(kwArgs: CreateTableStoreInit
     selectedIds: [],
     sortByField,
     sortDirection,
-    defaultSortByField,
-    defaultSortDirection,
     sortedData: [],
     sortedIds: null,
     visibleFilterWithinDimensions: {},
@@ -183,58 +183,33 @@ export const updateSearchParams = (key: string, value: string, givenSearchParams
 export const createTableStorePersistConfiguration = <TData, TStore extends TableStore<TData>>(storageNamePostFix: string, version: number, partialize?: (state: Partial<TStore>) => Partial<TStore>): PersistOptions<TStore> => {
   return {
     name: `GENEPIX-TableStore-${storageNamePostFix}`,
-    storage: createJSONStorage(() => localStorage),
     partialize: (state) => ({
       columnSettings: state.columnSettings,
       sortByField: state.sortByField,
       sortDirection: state.sortDirection,
       ...partialize?.(state),
     } as TStore),
+    storage: createJSONStorage(() => localStorage),
     version,
   } satisfies PersistOptions<TStore>;
 };
 
 export const createTableStoreActions = <TData>(kwArgs: {
-  set: Set<TData>;
   get: Get<TData>;
+  set: Set<TData>;
 }): TableStoreActions<TData> => {
-  const { set, get } = kwArgs;
+  const { get, set } = kwArgs;
   return {
-    setFilters: (filters: Filters, filterDimensions: FilterDimension[], frontendFilterPriorities: string[]) => {
-      const { navigateFunction } = get();
-      set({ filters, filterDimensions });
-      set({ backendFilters: filters.filter(filter => filter.filterMode === FILTER_MODE.BACKEND) });
-      set({
-        frontendFilters: Object.fromEntries(frontendFilterPriorities.map(filterPriority => [filterPriority, filters.filter(filter => filter.filterPriority === filterPriority)])),
-      });
-      if (navigateFunction) {
-        const searchParams = new URLSearchParams(WindowManager.instance.window.document.location.search);
-        filters.forEach(filter => {
-          const searchParamStringValue = searchParams.get(filter.id);
-          if (!searchParamStringValue) {
-            return;
-          }
-          filter.setFilterValue(filter.fromURLSearchParameterValue(searchParamStringValue));
-        });
-      }
+    addEventListener: (eventName, callback) => {
+      return get().eventBus.addEventListener(eventName, callback);
     },
-    setVisibleFilterWithinDimensions: (visibleFilterWithinDimensions) => {
-      set({ visibleFilterWithinDimensions });
+    destroy: () => {
+      const { emitEvent, eventBus } = get();
+      eventBus.destroy();
+      emitEvent('destroy');
     },
-    setVisibleFilterWithinDimension: (filterDimensionId: string, filterId: string) => {
-      const { visibleFilterWithinDimensions } = get();
-
-      set({
-        visibleFilterWithinDimensions: {
-          ...visibleFilterWithinDimensions,
-          [filterDimensionId]: filterId,
-        },
-      });
-    },
-    setBaseData: (items: TData[]) => {
-      const { reloadFilterData } = get();
-      set({ baseData: items });
-      reloadFilterData();
+    emitEvent: (eventName, payload) => {
+      get().eventBus.emit(eventName, payload);
     },
     // eslint-disable-next-line @typescript-eslint/require-await
     fetchData: async () => {
@@ -245,7 +220,7 @@ export const createTableStoreActions = <TData>(kwArgs: {
       if (globalAbortSignal) {
         set({ globalAbortSignal });
       }
-      const { destroy, sortByField, sortDirection, updateUrl, fetchData, columns, columnSettings, setColumnSettings } = get();
+      const { columns, columnSettings, destroy, fetchData, setColumnSettings, sortByField, sortDirection, updateUrl } = get();
 
       if (!TableUtil.areColumnSettingsValid(columns, columnSettings)) {
         setColumnSettings(TableUtil.createInitialColumnSettings(columns));
@@ -261,13 +236,8 @@ export const createTableStoreActions = <TData>(kwArgs: {
       await fetchData();
       set({ isInitialized: true });
     },
-    destroy: () => {
-      const { emitEvent, eventBus } = get();
-      eventBus.destroy();
-      emitEvent('destroy');
-    },
     reloadFilterData: (givenFistFilterPriorityToFilterFrom?: string) => {
-      const { frontendFilterPriorities, reloadFilterPriorityData, reloadSortedData, baseData, filteredData: previousFilteredData } = get();
+      const { baseData, filteredData: previousFilteredData, frontendFilterPriorities, reloadFilterPriorityData, reloadSortedData } = get();
       const firstFilterPriorityToFilterFrom = givenFistFilterPriorityToFilterFrom || first(frontendFilterPriorities);
       const filteredData = Object.fromEntries(frontendFilterPriorities.map(frontendFilterPriority => [frontendFilterPriority, []] as [string, TData[]]));
       let data = baseData;
@@ -289,7 +259,7 @@ export const createTableStoreActions = <TData>(kwArgs: {
       reloadSortedData();
     },
     reloadFilterPriorityData: (filterPriority: string, data: TData[]): TData[] => {
-      const { frontendFilters, columns } = get();
+      const { columns, frontendFilters } = get();
       const filters = frontendFilters[filterPriority];
 
       const columnMap = keyBy(columns, 'id');
@@ -307,8 +277,12 @@ export const createTableStoreActions = <TData>(kwArgs: {
 
       return items;
     },
+    reloadSelectedIds: () => {
+      const { idSelectorCallback, selectedIds, setSelectedIds, sortedData } = get();
+      setSelectedIds(intersection(selectedIds, sortedData.map(item => idSelectorCallback(item))));
+    },
     reloadSortedData: () => {
-      const { frontendFilterPriorities, filteredData, columns, sortByField, sortDirection, sortedIds, idSelectorCallback, defaultSortByField, defaultSortDirection } = get();
+      const { columns, defaultSortByField, defaultSortDirection, filteredData, frontendFilterPriorities, idSelectorCallback, sortByField, sortDirection, sortedIds } = get();
 
       const preSortedData: TData[] = filteredData[last(frontendFilterPriorities)];
       let sanitizedSortByField = sortByField;
@@ -338,7 +312,7 @@ export const createTableStoreActions = <TData>(kwArgs: {
         }
 
         // Note: as never because the type of column can be of different types
-        const comparator = column.comparatorFactory?.({ column: column as never, direction: sortDirection });
+        const comparator = column.comparatorFactory?.({ column: column as never, direction: sanitizedSortDirection });
         const sortedData = preSortedData.toSorted((a, b) => {
           if (column.comparatorFactory) {
             return comparator(a, b);
@@ -362,34 +336,6 @@ export const createTableStoreActions = <TData>(kwArgs: {
         set({ sortedData });
       }
     },
-    selectId: (id: string) => {
-      const { selectedIds, setSelectedIds } = get();
-      if (!selectedIds.includes(id)) {
-        setSelectedIds([...selectedIds, id]);
-      }
-    },
-    unselectId: (id: string) => {
-      const { selectedIds, setSelectedIds } = get();
-      if (selectedIds.includes(id)) {
-        setSelectedIds(selectedIds.filter(x => x !== id));
-      }
-    },
-    setSelectedIds: (selectedIds: string[]) => {
-      set({ selectedIds });
-    },
-    reloadSelectedIds: () => {
-      const { selectedIds, sortedData, idSelectorCallback, setSelectedIds } = get();
-      setSelectedIds(intersection(selectedIds, sortedData.map(item => idSelectorCallback(item))));
-    },
-    setColumns: (columns: TableColumn<TData>[]) => {
-      set({ columns });
-    },
-    setColumnDimensions: (columnDimensions: TableColumnDimension[]) => {
-      set({ columnDimensions });
-    },
-    setColumnSettings: (columnSettings: TableColumnSettings[]) => {
-      set({ columnSettings });
-    },
     resetFilters: async () => {
       const { setFilterValues } = get();
       const filterValues: FilterValues = {};
@@ -398,8 +344,46 @@ export const createTableStoreActions = <TData>(kwArgs: {
       });
       await setFilterValues(filterValues);
     },
+    selectId: (id: string) => {
+      const { selectedIds, setSelectedIds } = get();
+      if (!selectedIds.includes(id)) {
+        setSelectedIds([...selectedIds, id]);
+      }
+    },
+    setBaseData: (items: TData[]) => {
+      const { reloadFilterData } = get();
+      set({ baseData: items });
+      reloadFilterData();
+    },
+    setColumnDimensions: (columnDimensions: TableColumnDimension[]) => {
+      set({ columnDimensions });
+    },
+    setColumns: (columns: TableColumn<TData>[]) => {
+      set({ columns });
+    },
+    setColumnSettings: (columnSettings: TableColumnSettings[]) => {
+      set({ columnSettings });
+    },
+    setFilters: (filters: Filters, filterDimensions: FilterDimension[], frontendFilterPriorities: string[]) => {
+      const { navigateFunction } = get();
+      set({ filterDimensions, filters });
+      set({ backendFilters: filters.filter(filter => filter.filterMode === FILTER_MODE.BACKEND) });
+      set({
+        frontendFilters: Object.fromEntries(frontendFilterPriorities.map(filterPriority => [filterPriority, filters.filter(filter => filter.filterPriority === filterPriority)])),
+      });
+      if (navigateFunction) {
+        const searchParams = new URLSearchParams(WindowManager.instance.window.document.location.search);
+        filters.forEach(filter => {
+          const searchParamStringValue = searchParams.get(filter.id);
+          if (!searchParamStringValue) {
+            return;
+          }
+          filter.setFilterValue(filter.fromURLSearchParameterValue(searchParamStringValue));
+        });
+      }
+    },
     setFilterValue: async (id: string, value: unknown) => {
-      const { filters, setFilterValues, setVisibleFilterWithinDimension, filterDimensions } = get();
+      const { filterDimensions, filters, setFilterValues, setVisibleFilterWithinDimension } = get();
       const filterValues: FilterValues = {};
       let foundFilter: UnwrapArray<Filters>;
       filters.forEach(filter => {
@@ -422,7 +406,7 @@ export const createTableStoreActions = <TData>(kwArgs: {
       await setFilterValues(filterValues);
     },
     setFilterValues: async (filterValues: FilterValues) => {
-      const { filters, updateUrl, fetchData, navigateFunction, frontendFilterPriorities, reloadFilterData } = get();
+      const { fetchData, filters, frontendFilterPriorities, navigateFunction, reloadFilterData, updateUrl } = get();
 
       const backendFilterValues: FilterValues = {};
       const frontendFilterValues: { [key: string]: FilterValues } = {};
@@ -492,15 +476,37 @@ export const createTableStoreActions = <TData>(kwArgs: {
     setNavigateFunction: (navigateFunction: NavigateFunction) => {
       set({ navigateFunction });
     },
+    setSelectedIds: (selectedIds: string[]) => {
+      set({ selectedIds });
+    },
+    setSortedIds: (sortedIds: string[]) => {
+      set({ sortedIds });
+    },
     setSorting: async (sortByField: string, sortDirection: TableSortDirection) => {
-      const { updateUrl, reloadSortedData } = get();
+      const { reloadSortedData, updateUrl } = get();
       await updateUrl(updateSearchParams('sortByField', sortByField));
       await updateUrl(updateSearchParams('sortDirection', sortDirection));
       set({ sortByField, sortDirection });
       reloadSortedData();
     },
-    setSortedIds: (sortedIds: string[]) => {
-      set({ sortedIds });
+    setVisibleFilterWithinDimension: (filterDimensionId: string, filterId: string) => {
+      const { visibleFilterWithinDimensions } = get();
+
+      set({
+        visibleFilterWithinDimensions: {
+          ...visibleFilterWithinDimensions,
+          [filterDimensionId]: filterId,
+        },
+      });
+    },
+    setVisibleFilterWithinDimensions: (visibleFilterWithinDimensions) => {
+      set({ visibleFilterWithinDimensions });
+    },
+    unselectId: (id: string) => {
+      const { selectedIds, setSelectedIds } = get();
+      if (selectedIds.includes(id)) {
+        setSelectedIds(selectedIds.filter(x => x !== id));
+      }
     },
     updateUrl: async (searchParams: URLSearchParams) => {
       const { navigateFunction } = get();
@@ -508,12 +514,6 @@ export const createTableStoreActions = <TData>(kwArgs: {
         return;
       }
       await navigateFunction(`${location.pathname}?${searchParams.toString()}`, { replace: true });
-    },
-    addEventListener: (eventName, callback) => {
-      return get().eventBus.addEventListener(eventName, callback);
-    },
-    emitEvent: (eventName, payload) => {
-      get().eventBus.emit(eventName, payload);
     },
   };
 };
@@ -527,7 +527,7 @@ export const createTableStore = <TData>(kwArgs: CreateTableStoreKwArgs<TData>) =
       (set, get) => {
         return {
           ...initialState,
-          ...createTableStoreActions<TData>({ set, get }),
+          ...createTableStoreActions<TData>({ get, set }),
         };
       },
     );
@@ -538,7 +538,7 @@ export const createTableStore = <TData>(kwArgs: CreateTableStoreKwArgs<TData>) =
       (set, get) => {
         return {
           ...initialState,
-          ...createTableStoreActions<TData>({ set, get }),
+          ...createTableStoreActions<TData>({ get, set }),
         };
       },
       createTableStorePersistConfiguration<TData, TableStore<TData>>(storageNamePostFix, storageVersion),

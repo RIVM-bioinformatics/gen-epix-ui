@@ -1,6 +1,6 @@
 import {
-  useTheme,
   Box,
+  useTheme,
 } from '@mui/material';
 import { RichTextReadOnly } from 'mui-tiptap';
 
@@ -20,8 +20,8 @@ export const RichTextEditorContent = ({ source }: RichTextEditorContentProps) =>
     <Box
       sx={{
         '& *': {
-          fontSize: '1rem',
           fontFamily: theme.typography.fontFamily,
+          fontSize: '1rem',
         },
       }}
     >

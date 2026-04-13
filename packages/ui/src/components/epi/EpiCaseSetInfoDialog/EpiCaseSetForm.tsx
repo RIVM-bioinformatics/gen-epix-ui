@@ -36,7 +36,7 @@ export type EpiCaseSetFormProps = {
   readonly onIsSavingChange: (isSaving: boolean) => void;
 };
 
-type FormFields = OmitWithMetaData<CaseSet, 'case_type' | 'created_in_data_collection' | 'created_in_data_collection_id' | 'case_set_category' | 'case_set_status' | 'case_set_date'>;
+type FormFields = OmitWithMetaData<CaseSet, 'case_set_category' | 'case_set_date' | 'case_set_status' | 'case_type' | 'created_in_data_collection_id' | 'created_in_data_collection'>;
 
 export const EpiCaseSetForm = ({ caseSet, formId, onFinish, onIsSavingChange }: EpiCaseSetFormProps) => {
   const caseTypeOptionsQuery = useCaseTypeOptionsQuery();
@@ -44,12 +44,12 @@ export const EpiCaseSetForm = ({ caseSet, formId, onFinish, onIsSavingChange }: 
   const caseSetStatusOptionsQuery = useCaseSetStatusOptionsQuery();
 
   const schema = useMemo(() => object<FormFields>().shape({
-    name: SchemaUtil.name,
-    code: SchemaUtil.code,
-    description: SchemaUtil.description,
-    case_type_id: string().uuid4().required(),
     case_set_category_id: string().uuid4().required(),
     case_set_status_id: string().uuid4().required(),
+    case_type_id: string().uuid4().required(),
+    code: SchemaUtil.code,
+    description: SchemaUtil.description,
+    name: SchemaUtil.name,
   }), []);
 
 
@@ -66,57 +66,56 @@ export const EpiCaseSetForm = ({ caseSet, formId, onFinish, onIsSavingChange }: 
     return [
       {
         definition: FORM_FIELD_DEFINITION_TYPE.AUTOCOMPLETE,
-        name: 'case_type_id',
-        label: t`Case type`,
-        options: caseTypeOptionsQuery.options,
-        loading: caseTypeOptionsQuery.isLoading,
         disabled: !!caseSet,
+        label: t`Case type`,
+        loading: caseTypeOptionsQuery.isLoading,
+        name: 'case_type_id',
+        options: caseTypeOptionsQuery.options,
       } as const satisfies FormFieldDefinition<FormFields>,
       {
         definition: FORM_FIELD_DEFINITION_TYPE.TEXTFIELD,
-        name: 'name',
         label: t`Event name`,
+        name: 'name',
       } as const satisfies FormFieldDefinition<FormFields>,
       {
         definition: FORM_FIELD_DEFINITION_TYPE.TEXTFIELD,
-        name: 'code',
         label: t`Code`,
+        name: 'code',
       } as const satisfies FormFieldDefinition<FormFields>,
       {
         definition: FORM_FIELD_DEFINITION_TYPE.RICH_TEXT,
-        name: 'description',
         label: t`Description`,
+        name: 'description',
       } as const satisfies FormFieldDefinition<FormFields>,
       {
         definition: FORM_FIELD_DEFINITION_TYPE.AUTOCOMPLETE,
-        name: 'case_set_category_id',
         label: t`Category`,
-        options: caseSetCategoryOptionsQuery.options,
         loading: caseSetCategoryOptionsQuery.isLoading,
+        name: 'case_set_category_id',
+        options: caseSetCategoryOptionsQuery.options,
       } as const satisfies FormFieldDefinition<FormFields>,
       {
         definition: FORM_FIELD_DEFINITION_TYPE.AUTOCOMPLETE,
-        name: 'case_set_status_id',
         label: t`Status`,
-        options: caseSetStatusOptionsQuery.options,
         loading: caseSetStatusOptionsQuery.isLoading,
+        name: 'case_set_status_id',
+        options: caseSetStatusOptionsQuery.options,
       } as const satisfies FormFieldDefinition<FormFields>,
     ] as const;
   }, [caseSet, caseSetCategoryOptionsQuery.isLoading, caseSetCategoryOptionsQuery.options, caseSetStatusOptionsQuery.isLoading, caseSetStatusOptionsQuery.options, caseTypeOptionsQuery.isLoading, caseTypeOptionsQuery.options]);
 
-  const { mutate: mutateEdit, isMutating: isEditing, setPreviousItem } = useEditMutation<CaseSet, FormFields>({
-    resourceQueryKey: QueryUtil.getGenericKey(QUERY_KEY.CASE_SETS),
-    onSuccess,
+  const { isMutating: isEditing, mutate: mutateEdit, setPreviousItem } = useEditMutation<CaseSet, FormFields>({
+    getErrorNotificationMessage: (data) => t('Failed to edit event: {{name}}', { name: data.name }),
+    getIntermediateItem: (variables: FormFields, previousItem: CaseSet) => ({ ...previousItem, ...variables }),
+    getProgressNotificationMessage: (data) => t('Saving event: {{name}}', { name: data.name }),
+    getSuccessNotificationMessage: (item) => <EpiCreateEventDialogSuccessNotificationMessage caseSet={item} />,
     onError,
+    onSuccess,
     queryFn: async (formData: FormFields, item: CaseSet): Promise<CaseSet> => {
       const result = await CaseApi.instance.caseSetsPutOne(item.id, { ...item, ...formData });
       return result.data;
     },
-    getProgressNotificationMessage: (data) => t('Saving event: {{name}}', { name: data.name }),
-    getErrorNotificationMessage: (data) => t('Failed to edit event: {{name}}', { name: data.name }),
-    // eslint-disable-next-line react/no-unstable-nested-components
-    getSuccessNotificationMessage: (item) => <EpiCreateEventDialogSuccessNotificationMessage caseSet={item} />,
-    getIntermediateItem: (variables: FormFields, previousItem: CaseSet) => ({ ...previousItem, ...variables }),
+    resourceQueryKey: QueryUtil.getGenericKey(QUERY_KEY.CASE_SETS),
   });
 
   useEffect(() => {
@@ -150,8 +149,8 @@ export const EpiCaseSetForm = ({ caseSet, formId, onFinish, onIsSavingChange }: 
       formFieldDefinitions={formFieldDefinitions}
       formId={formId}
       formMethods={formMethods}
-      schema={schema}
       onSubmit={handleSubmit(onFormSubmit)}
+      schema={schema}
     />
   );
 };

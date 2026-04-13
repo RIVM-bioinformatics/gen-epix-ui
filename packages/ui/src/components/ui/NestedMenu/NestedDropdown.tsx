@@ -25,17 +25,17 @@ import type { MenuItemData } from '../../../models/nestedMenu';
 import { nestedMenuItemsFromObject } from './nestedMenuItemsFromObject';
 
 interface NestedDropdownProps {
-  readonly children?: ReactNode;
-  readonly menuItemsData?: MenuItemData;
-  readonly onClick?: (e: MouseEvent<HTMLButtonElement>) => void;
   // eslint-disable-next-line @typescript-eslint/naming-convention
   readonly ButtonProps?: Partial<ButtonProps>;
+  readonly children?: ReactNode;
   // eslint-disable-next-line @typescript-eslint/naming-convention
   readonly ContainerProps?: Partial<BoxProps>;
+  readonly menuItemsData?: MenuItemData;
   // eslint-disable-next-line @typescript-eslint/naming-convention
   readonly MenuProps?: Partial<MenuProps>;
-  readonly showTopLevelTooltip?: boolean;
+  readonly onClick?: (e: MouseEvent<HTMLButtonElement>) => void;
   readonly ref?: Ref<HTMLDivElement>;
+  readonly showTopLevelTooltip?: boolean;
 }
 
 export const NestedDropdown = ({ ref, ...props }: NestedDropdownProps) => {
@@ -44,7 +44,7 @@ export const NestedDropdown = ({ ref, ...props }: NestedDropdownProps) => {
   const { t } = useTranslation();
   const theme = useTheme();
 
-  const { menuItemsData: data, onClick, ButtonProps, ContainerProps, MenuProps, showTopLevelTooltip, ...rest } = props;
+  const { ButtonProps, ContainerProps, menuItemsData: data, MenuProps, onClick, showTopLevelTooltip, ...rest } = props;
 
   const onButtonClick = useCallback((event: MouseEvent<HTMLButtonElement>) => {
     setAnchorEl(event.currentTarget);
@@ -70,25 +70,25 @@ export const NestedDropdown = ({ ref, ...props }: NestedDropdownProps) => {
       endIcon={<ExpandMoreIcon />}
       onClick={onButtonClick}
       {...ButtonProps}
+      aria-expanded={open ? 'true' : 'false'}
       sx={{
         ...(ButtonProps.sx ?? {}),
-        whiteSpace: 'nowrap',
-        textOverflow: 'ellipsis',
-        overflow: 'hidden',
-        display: 'inline-block',
-        width: '100%',
-        height: '24px',
-        lineHeight: '16px',
-        position: 'relative',
-        paddingRight: '24px',
         '& .MuiButton-endIcon': {
           display: 'inline-block',
           position: 'absolute',
           right: '8px',
           top: '2px',
         },
+        display: 'inline-block',
+        height: '24px',
+        lineHeight: '16px',
+        overflow: 'hidden',
+        paddingRight: '24px',
+        position: 'relative',
+        textOverflow: 'ellipsis',
+        whiteSpace: 'nowrap',
+        width: '100%',
       }}
-      aria-expanded={open ? 'true' : 'false'}
     >
       {data?.label ?? t`Menu`}
     </Button>
@@ -107,6 +107,7 @@ export const NestedDropdown = ({ ref, ...props }: NestedDropdownProps) => {
       {(!ButtonProps.disabled && showTopLevelTooltip) && (
         <Tooltip
           arrow
+          placement={'right'}
           slotProps={{
             tooltip: {
               sx: {
@@ -114,7 +115,6 @@ export const NestedDropdown = ({ ref, ...props }: NestedDropdownProps) => {
               },
             },
           }}
-          placement={'right'}
           title={data?.tooltip ?? data?.label ?? t`Menu`}
         >
           {buttonElement}
@@ -122,8 +122,8 @@ export const NestedDropdown = ({ ref, ...props }: NestedDropdownProps) => {
       )}
       <Menu
         anchorEl={anchorEl}
-        open={open}
         onClose={onMenuClose}
+        open={open}
         {...MenuProps}
       >
         {menuItems}

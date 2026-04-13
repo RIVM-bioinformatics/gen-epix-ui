@@ -14,19 +14,19 @@ import { AuthorizationManager } from '../../classes/managers/AuthorizationManage
 
 export const useInviteUserConstraintsQuery = (): UseQueryResult<UserInvitationConstraints> => {
   return useQueryMemo({
-    queryKey: QueryUtil.getGenericKey(QUERY_KEY.INVITE_USER_CONSTRAINTS),
     queryFn: async ({ signal }) => {
       if (!AuthorizationManager.instance.doesUserHavePermission([
         { command_name: CommandName.RetrieveInviteUserConstraintsCommand, permission_type: PermissionType.EXECUTE },
       ])) {
         return {
-          roles: [],
           organization_ids: [],
+          roles: [],
         };
       }
 
       const response = await OrganizationApi.instance.inviteUserConstraints({ signal });
       return response.data;
     },
+    queryKey: QueryUtil.getGenericKey(QUERY_KEY.INVITE_USER_CONSTRAINTS),
   });
 };

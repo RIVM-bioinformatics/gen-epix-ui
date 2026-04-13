@@ -20,8 +20,8 @@ export type EpiCaseTypeInfoColAccessRightsProps = {
 type DataCollectionAccess = {
   readonly dataCollectionId: string;
   readonly dataCollectionName: string;
-  readonly hasWriteAccess: boolean;
   readonly hasReadAccess: boolean;
+  readonly hasWriteAccess: boolean;
 };
 
 const MAX_ITEMS = 5;
@@ -45,8 +45,8 @@ export const EpiCaseTypeInfoColAccessRights = ({ colId }: EpiCaseTypeInfoColAcce
         x.push({
           dataCollectionId: dataCollection.id,
           dataCollectionName: dataCollection.name,
-          hasWriteAccess,
           hasReadAccess,
+          hasWriteAccess,
         });
       }
     });
@@ -68,7 +68,11 @@ export const EpiCaseTypeInfoColAccessRights = ({ colId }: EpiCaseTypeInfoColAcce
 
   return (
     <Box>
-      <Box marginBottom={1}>
+      <Box
+        sx={{
+          marginBottom: 1,
+        }}
+      >
         <Box>
           {t('Effective rights: {{effectiveRightLabel}}', { effectiveRightLabel })}
         </Box>
@@ -105,9 +109,9 @@ export const EpiCaseTypeInfoColAccessRights = ({ colId }: EpiCaseTypeInfoColAcce
         })}
         {dataCollectionAccesses.length > MAX_ITEMS && !shouldShowMore && (
           <Button
+            onClick={onShowMoreButtonClick}
             size={'small'}
             variant={'text'}
-            onClick={onShowMoreButtonClick}
           >
             {t('Show more')}
           </Button>

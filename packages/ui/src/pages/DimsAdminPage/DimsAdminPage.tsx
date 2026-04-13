@@ -74,14 +74,14 @@ export const DimsAdminPage = () => {
 
   const schema = useMemo(() => {
     return object<FormFields>().shape({
-      label: SchemaUtil.label,
-      code: SchemaUtil.code,
-      rank: SchemaUtil.rank,
-      occurrence: SchemaUtil.number.required().min(0).integer().positive(),
-      ref_dim_id: string().uuid4().required().max(100),
       case_type_id: string().uuid4().required().max(100),
+      code: SchemaUtil.code,
       description: SchemaUtil.description,
       is_case_date_dim: boolean().required(),
+      label: SchemaUtil.label,
+      occurrence: SchemaUtil.number.required().min(0).integer().positive(),
+      rank: SchemaUtil.rank,
+      ref_dim_id: string().uuid4().required().max(100),
     });
   }, []);
 
@@ -89,43 +89,43 @@ export const DimsAdminPage = () => {
     return [
       {
         definition: FORM_FIELD_DEFINITION_TYPE.AUTOCOMPLETE,
-        name: 'case_type_id',
         label: t`Case type`,
+        name: 'case_type_id',
         options: caseTypeOptionsQuery.options,
       } as const satisfies FormFieldDefinition<FormFields>,
       {
         definition: FORM_FIELD_DEFINITION_TYPE.AUTOCOMPLETE,
-        name: 'ref_dim_id',
         label: t`Reference dimension`,
+        name: 'ref_dim_id',
         options: refDimOptionsQuery.options,
       } as const satisfies FormFieldDefinition<FormFields>,
       {
         definition: FORM_FIELD_DEFINITION_TYPE.TEXTFIELD,
-        name: 'code',
         label: t`Code`,
+        name: 'code',
       } as const satisfies FormFieldDefinition<FormFields>,
       {
         definition: FORM_FIELD_DEFINITION_TYPE.TEXTFIELD,
-        name: 'label',
         label: t`Label`,
+        name: 'label',
       } as const satisfies FormFieldDefinition<FormFields>,
       {
         definition: FORM_FIELD_DEFINITION_TYPE.TEXTFIELD,
-        name: 'description',
         label: t`Description`,
         multiline: true,
+        name: 'description',
         rows: 5,
       } as const satisfies FormFieldDefinition<FormFields>,
       {
         definition: FORM_FIELD_DEFINITION_TYPE.TEXTFIELD,
-        name: 'occurrence',
         label: t`Occurrence`,
+        name: 'occurrence',
         type: 'number',
       } as const satisfies FormFieldDefinition<FormFields>,
       {
         definition: FORM_FIELD_DEFINITION_TYPE.TEXTFIELD,
-        name: 'rank',
         label: t`Rank`,
+        name: 'rank',
         type: 'number',
       } as const satisfies FormFieldDefinition<FormFields>,
     ] as const satisfies FormFieldDefinition<FormFields>[];
@@ -165,8 +165,8 @@ export const DimsAdminPage = () => {
 
     return [
       {
-        label: t`Manage columns`,
         getPathName: (item: Dim) => caseTypeId ? `/management/case-types/${caseTypeId}/dimensions/${item.id}/columns` : `/management/dimensions/${item.id}/columns`,
+        label: t`Manage columns`,
       } satisfies CrudPageSubPage<Dim>,
     ];
   }, [caseTypeId, t]);
@@ -184,23 +184,23 @@ export const DimsAdminPage = () => {
 
   return (
     <CrudPage<FormFields, Dim>
-      createOne={createOne}
-      defaultNewItem={defaultNewItem}
-      fetchAllSelect={fetchAllSelect}
-      subPages={subPages}
-      crudCommandType={CommandName.DimCrudCommand}
       createItemDialogTitle={t`Create new dimensions`}
+      createOne={createOne}
+      crudCommandType={CommandName.DimCrudCommand}
+      defaultNewItem={defaultNewItem}
       defaultSortByField={caseTypeId ? 'rank' : 'case_type_id'}
       defaultSortDirection={'asc'}
-      tableStoreStorageNamePostFix={caseTypeId ? `CaseType` : undefined}
       deleteOne={deleteOne}
       fetchAll={fetchAll}
+      fetchAllSelect={fetchAllSelect}
       formFieldDefinitions={formFieldDefinitions}
       getName={getName}
       loadables={loadables}
       resourceQueryKeyBase={QUERY_KEY.DIMS}
       schema={schema}
+      subPages={subPages}
       tableColumns={tableColumns}
+      tableStoreStorageNamePostFix={caseTypeId ? `CaseType` : undefined}
       testIdAttributes={TestIdUtil.createAttributes('DimsAdminPage')}
       title={title}
       updateOne={updateOne}

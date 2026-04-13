@@ -1,6 +1,6 @@
 import {
-  Typography,
   Box,
+  Typography,
 } from '@mui/material';
 import { t } from 'i18next';
 
@@ -11,7 +11,11 @@ export type EpiCaseTypeInfoDataProps = {
 
 export const EpiCaseTypeInfoData = ({ name, title }: EpiCaseTypeInfoDataProps) => {
   return (
-    <Box marginY={2}>
+    <Box
+      sx={{
+        marginY: 2,
+      }}
+    >
       <Typography
         component={'h4'}
         variant={'h4'}

@@ -1,9 +1,9 @@
 import {
+  type ChangeEvent as ReactChangeEvent,
   type ReactNode,
   useCallback,
   useMemo,
   useState,
-  type ChangeEvent as ReactChangeEvent,
 } from 'react';
 import {
   DndContext,
@@ -19,8 +19,8 @@ import type {
   UniqueIdentifier,
 } from '@dnd-kit/core';
 import {
-  SortableContext,
   arrayMove,
+  SortableContext,
   sortableKeyboardCoordinates,
 } from '@dnd-kit/sortable';
 import {
@@ -41,8 +41,8 @@ import { SortableListItemDragHandle } from './SortableListItemDragHandle';
 
 interface BaseItem {
   id: UniqueIdentifier;
-  label: string;
   isSelected: boolean;
+  label: string;
 }
 
 interface Props<T extends BaseItem> {
@@ -105,33 +105,33 @@ export const SortableList = <T extends BaseItem>({
   const renderItem = useCallback((item: T) => {
     return (
       <SortableListItem
-        key={item.id}
         id={item.id}
+        key={item.id}
         sx={{
-          backgroundColor: theme.palette.background.paper,
           '&:hover': {
             backgroundColor: theme.palette.action.hover,
           },
+          backgroundColor: theme.palette.background.paper,
         }}
       >
         <FormControlLabel
-          label={renderItemContent(item)}
-          sx={{
-            flexGrow: 1,
-            paddingLeft: theme.spacing(1),
-          }}
           control={(
             <Checkbox
               checked={item.isSelected}
+              onChange={onCheckBoxChange}
               size={'small'}
               slotProps={{
                 input: {
                   ...{ 'data-id': (item.id as string) },
                 },
               }}
-              onChange={onCheckBoxChange}
             />
           )}
+          label={renderItemContent(item)}
+          sx={{
+            flexGrow: 1,
+            paddingLeft: theme.spacing(1),
+          }}
         />
         <SortableListItemDragHandle
           name={t('Drag handle for {{label}}', { label: item.label })}
@@ -142,10 +142,10 @@ export const SortableList = <T extends BaseItem>({
 
   return (
     <DndContext
-      sensors={sensors}
       onDragCancel={onDragCancel}
       onDragEnd={onDragEnd}
       onDragStart={onDragStart}
+      sensors={sensors}
     >
       <SortableContext items={items}>
         <FormGroup>
@@ -156,8 +156,8 @@ export const SortableList = <T extends BaseItem>({
               display: 'flex',
               flexDirection: 'column',
               gap: theme.spacing(0.5),
-              padding: 0,
               listStyle: 'none',
+              padding: 0,
             }}
           >
             {items.map((item) => renderItem(item))}

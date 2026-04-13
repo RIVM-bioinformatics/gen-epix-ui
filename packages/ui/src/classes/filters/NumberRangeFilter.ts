@@ -7,23 +7,23 @@ import type { FilterAbstractKwArgs } from '../abstracts/FilterAbstract';
 import { FilterAbstract } from '../abstracts/FilterAbstract';
 
 export interface NumberRangeFilterKwArgs extends FilterAbstractKwArgs {
-  min: number;
   max: number;
+  min: number;
 }
 
 export class NumberRangeFilter extends FilterAbstract<[number, number]> implements Filter<[number, number], number> {
-  public min: number;
-  public max: number;
-  public initialFilterValue: [number, number] = [null, null];
   public filterValue: [number, number] = [null, null];
+  public initialFilterValue: [number, number] = [null, null];
+  public max: number;
+  public min: number;
 
   public constructor(kwArgs: NumberRangeFilterKwArgs) {
     super({
-      id: kwArgs.id,
-      label: kwArgs.label,
+      filterDimensionId: kwArgs.filterDimensionId,
       filterMode: kwArgs.filterMode,
       filterPriority: kwArgs.filterPriority,
-      filterDimensionId: kwArgs.filterDimensionId,
+      id: kwArgs.id,
+      label: kwArgs.label,
     });
     this.min = kwArgs.min;
     this.max = kwArgs.max;
@@ -71,11 +71,11 @@ export class NumberRangeFilter extends FilterAbstract<[number, number]> implemen
     }
 
     return {
-      type: 'NUMBER_RANGE',
       key: this.id,
       lower_bound: this.filterValue[0] ?? undefined,
-      upper_bound: this.filterValue[1] ?? undefined,
       lower_bound_censor: isFinite(this.filterValue[0]) ? ComparisonOperator.Greater_Than_Or_Equal_To : undefined,
+      type: 'NUMBER_RANGE',
+      upper_bound: this.filterValue[1] ?? undefined,
       upper_bound_censor,
     };
   }

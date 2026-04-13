@@ -6,8 +6,8 @@ import type { ReactElement } from 'react';
 import type { TFunction } from 'i18next';
 
 import type {
-  CompleteCaseType,
   Col,
+  CompleteCaseType,
 } from '../api';
 import type { DATE_FORMAT } from '../data/date';
 
@@ -15,121 +15,9 @@ import type { CaseTypeRowValue } from './epi';
 import type { OptionBase } from './form';
 
 export enum FIXED_COLUMN_ID {
-  ROW_SELECT = 'ROW_SELECT',
-  READABLE_INDEX = 'READABLE_INDEX',
   ACTIONS = 'ACTIONS',
-}
-
-export interface TableColumnParams<TRowData> {
-  columnIndex: number;
-  column: TableColumn<TRowData>;
-}
-
-export interface TableRowParams<TRowData> {
-  id: string;
-  row: TRowData;
-  rowIndex: number;
-}
-
-export type TableRowAndColumnParams<TRowData> = TableRowParams<TRowData> & TableColumnParams<TRowData>;
-
-interface TableColumnBase<TRowData, TValue> {
-  cellTitleGetter?: (params: TableRowParams<TRowData>) => string;
-  filterLabel?: string;
-  frozen?: boolean;
-  headerName?: string;
-  headerTooltipContent?: string;
-  hideInFilter?: boolean;
-  id?: string;
-  isInitiallyVisible: boolean;
-  renderCell?: (params: TableRowAndColumnParams<TRowData>) => ReactElement;
-  renderHeaderContent?: (params: TableColumnParams<TRowData>) => ReactElement;
-  renderHeader?: (params: TableColumnParams<TRowData>) => ReactElement;
-  resizable?: boolean;
-  sx?: SxProps<Theme>;
-  textAlign?: 'left' | 'right';
-  isStatic?: boolean;
-  valueGetter?: (params: TableRowParams<TRowData>) => TValue;
-  displayValueGetter?: (params: TableRowParams<TRowData>) => string;
-  widthFlex?: number;
-  widthPx?: number;
-  widthPxFn?: (dataLength: number) => number;
-  disableEllipsis?: boolean;
-}
-
-export interface TableColumnText<TRowData> extends TableColumnBase<TRowData, string> {
-  type: 'text';
-  comparatorFactory?: (params: GetTableCellRowComparatorProps<TableColumnText<TRowData>>) => (a: TRowData, b: TRowData) => number;
-}
-
-export interface TableColumnReadableIndex<TRowData> extends TableColumnBase<TRowData, never> {
-  type: 'readableIndex';
-  id: FIXED_COLUMN_ID.READABLE_INDEX;
-  comparatorFactory?: never;
-  isStatic: true;
-  frozen: true;
-  resizable: false;
-  disableEllipsis: true;
-  getAriaLabel: (params: TableRowParams<TRowData>) => string;
-}
-
-export interface TableColumnSelectable<TRowData> extends TableColumnBase<TRowData, never> {
-  type: 'selectable';
-  id: FIXED_COLUMN_ID.ROW_SELECT;
-  comparatorFactory?: never;
-  isStatic: true;
-  frozen: true;
-  resizable: false;
-  disableEllipsis: true;
-  isDisabled?: (params: TableRowParams<TRowData>) => boolean;
-}
-
-export interface TableColumnBoolean<TRowData> extends TableColumnBase<TRowData, boolean> {
-  type: 'boolean';
-  comparatorFactory?: (params: GetTableCellRowComparatorProps<TableColumnBoolean<TRowData>>) => (a: TRowData, b: TRowData) => number;
-}
-
-export interface TableColumnNumber<TRowData> extends TableColumnBase<TRowData, number> {
-  type: 'number';
-  comparatorFactory?: (params: GetTableCellRowComparatorProps<TableColumnNumber<TRowData>>) => (a: TRowData, b: TRowData) => number;
-}
-
-export interface TableColumnDate<TRowData> extends TableColumnBase<TRowData, string> {
-  type: 'date';
-  dateFormat: typeof DATE_FORMAT[keyof typeof DATE_FORMAT];
-  comparatorFactory?: (params: GetTableCellRowComparatorProps<TableColumnDate<TRowData>>) => (a: TRowData, b: TRowData) => number;
-}
-
-export interface TableColumnOptions<TRowData> extends TableColumnBase<TRowData, string | string[]> {
-  type: 'options';
-  options: OptionBase<string>[];
-  maxNumOptionsExpanded?: number;
-  shouldFilterOptions?: boolean;
-  comparatorFactory?: (params: GetTableCellRowComparatorProps<TableColumnOptions<TRowData>>) => (a: TRowData, b: TRowData) => number;
-}
-
-export interface TableColumnActions<TRowData> extends TableColumnBase<TRowData, string> {
-  id: FIXED_COLUMN_ID.ACTIONS;
-  type: 'actions';
-  getActions: (params: TableRowParams<TRowData>) => ReactElement[];
-  comparatorFactory?: (params: GetTableCellRowComparatorProps<TableColumnActions<TRowData>>) => (a: TRowData, b: TRowData) => number;
-  isInitiallyVisible: true;
-  resizable: false;
-  isStatic: true;
-}
-
-export interface TableColumnCaseType<TRowData> extends TableColumnBase<TRowData, CaseTypeRowValue> {
-  type: 'caseType';
-  completeCaseType: CompleteCaseType;
-  col: Col;
-  comparatorFactory?: (params: GetTableCellRowComparatorProps<TableColumnCaseType<TRowData>>) => (a: TRowData, b: TRowData) => number;
-}
-
-export interface GetTableCellValueProps<TRowData, TColumn> {
-  readonly row: TRowData;
-  readonly column: TColumn;
-  readonly rowIndex: number;
-  readonly t?: TFunction<'translation', undefined>;
+  READABLE_INDEX = 'READABLE_INDEX',
+  ROW_SELECT = 'ROW_SELECT',
 }
 
 export interface GetTableCellRowComparatorProps<TColumn> {
@@ -137,55 +25,167 @@ export interface GetTableCellRowComparatorProps<TColumn> {
   readonly direction: TableSortDirection;
 }
 
+export interface GetTableCellValueProps<TRowData, TColumn> {
+  readonly column: TColumn;
+  readonly row: TRowData;
+  readonly rowIndex: number;
+  readonly t?: TFunction<'translation', undefined>;
+}
+
+export type HasCellDataFn<TRowData> = (row: TRowData, column: TableColumn<TRowData>, rowIndex: number) => boolean;
+
 export type TableCellRowComparatorArgument<TRowData> = {
   row: TRowData;
   rowIndex: number;
 };
 
 export type TableColumn<TRowData> =
-  TableColumnText<TRowData> |
-  TableColumnBoolean<TRowData> |
-  TableColumnNumber<TRowData> |
-  TableColumnDate<TRowData> |
-  TableColumnOptions<TRowData> |
   TableColumnActions<TRowData> |
+  TableColumnBoolean<TRowData> |
+  TableColumnCaseType<TRowData> |
+  TableColumnDate<TRowData> |
+  TableColumnNumber<TRowData> |
+  TableColumnOptions<TRowData> |
   TableColumnReadableIndex<TRowData> |
   TableColumnSelectable<TRowData> |
-  TableColumnCaseType<TRowData>;
+  TableColumnText<TRowData>;
 
-export type TableSortDirection = 'asc' | 'desc';
+export interface TableColumnActions<TRowData> extends TableColumnBase<TRowData, string> {
+  comparatorFactory?: (params: GetTableCellRowComparatorProps<TableColumnActions<TRowData>>) => (a: TRowData, b: TRowData) => number;
+  getActions: (params: TableRowParams<TRowData>) => ReactElement[];
+  id: FIXED_COLUMN_ID.ACTIONS;
+  isInitiallyVisible: true;
+  isStatic: true;
+  resizable: false;
+  type: 'actions';
+}
 
+export interface TableColumnBoolean<TRowData> extends TableColumnBase<TRowData, boolean> {
+  comparatorFactory?: (params: GetTableCellRowComparatorProps<TableColumnBoolean<TRowData>>) => (a: TRowData, b: TRowData) => number;
+  type: 'boolean';
+}
+
+export interface TableColumnCaseType<TRowData> extends TableColumnBase<TRowData, CaseTypeRowValue> {
+  col: Col;
+  comparatorFactory?: (params: GetTableCellRowComparatorProps<TableColumnCaseType<TRowData>>) => (a: TRowData, b: TRowData) => number;
+  completeCaseType: CompleteCaseType;
+  type: 'caseType';
+}
+
+export interface TableColumnDate<TRowData> extends TableColumnBase<TRowData, string> {
+  comparatorFactory?: (params: GetTableCellRowComparatorProps<TableColumnDate<TRowData>>) => (a: TRowData, b: TRowData) => number;
+  dateFormat: typeof DATE_FORMAT[keyof typeof DATE_FORMAT];
+  type: 'date';
+}
+
+export type TableColumnDimension = {
+  columnIds: string[];
+  id: string;
+  label: string;
+};
+
+export interface TableColumnNumber<TRowData> extends TableColumnBase<TRowData, number> {
+  comparatorFactory?: (params: GetTableCellRowComparatorProps<TableColumnNumber<TRowData>>) => (a: TRowData, b: TRowData) => number;
+  type: 'number';
+}
+
+export interface TableColumnOptions<TRowData> extends TableColumnBase<TRowData, string | string[]> {
+  comparatorFactory?: (params: GetTableCellRowComparatorProps<TableColumnOptions<TRowData>>) => (a: TRowData, b: TRowData) => number;
+  maxNumOptionsExpanded?: number;
+  options: OptionBase<string>[];
+  shouldFilterOptions?: boolean;
+  type: 'options';
+}
+
+export interface TableColumnParams<TRowData> {
+  column: TableColumn<TRowData>;
+  columnIndex: number;
+}
+
+export interface TableColumnReadableIndex<TRowData> extends TableColumnBase<TRowData, never> {
+  comparatorFactory?: never;
+  disableEllipsis: true;
+  frozen: true;
+  getAriaLabel: (params: TableRowParams<TRowData>) => string;
+  id: FIXED_COLUMN_ID.READABLE_INDEX;
+  isStatic: true;
+  resizable: false;
+  type: 'readableIndex';
+}
+
+export interface TableColumnSelectable<TRowData> extends TableColumnBase<TRowData, never> {
+  comparatorFactory?: never;
+  disableEllipsis: true;
+  frozen: true;
+  id: FIXED_COLUMN_ID.ROW_SELECT;
+  isDisabled?: (params: TableRowParams<TRowData>) => boolean;
+  isStatic: true;
+  resizable: false;
+  type: 'selectable';
+}
 
 export type TableColumnSettings = {
-  id: string;
-  widthPx: number;
-  widthFlex: number;
-  offsetX?: number;
   calculatedWidth?: number;
   hasResized?: boolean;
+  id: string;
   isVisible: boolean;
+  offsetX?: number;
+  widthFlex: number;
+  widthPx: number;
 };
+
+export interface TableColumnText<TRowData> extends TableColumnBase<TRowData, string> {
+  comparatorFactory?: (params: GetTableCellRowComparatorProps<TableColumnText<TRowData>>) => (a: TRowData, b: TRowData) => number;
+  type: 'text';
+}
+
+export type TableDragEvent = {
+  clientX: number;
+  clientY: number;
+  deltaX: number;
+  deltaY: number;
+  elementOffsetX: number;
+  elementWidth: number;
+  target: HTMLDivElement;
+  type: 'end' | 'move' | 'start';
+};
+
+
+export type TableRowAndColumnParams<TRowData> = TableColumnParams<TRowData> & TableRowParams<TRowData>;
+
+export interface TableRowParams<TRowData> {
+  id: string;
+  row: TRowData;
+  rowIndex: number;
+}
 
 export type TableSettings = {
   availableColumnIds: string[];
   columns: TableColumnSettings[];
 };
 
-export type TableColumnDimension = {
-  id: string;
-  label: string;
-  columnIds: string[];
-};
+export type TableSortDirection = 'asc' | 'desc';
 
-export type HasCellDataFn<TRowData> = (row: TRowData, column: TableColumn<TRowData>, rowIndex: number) => boolean;
-
-export type TableDragEvent = {
-  deltaX: number;
-  deltaY: number;
-  clientX: number;
-  clientY: number;
-  elementOffsetX: number;
-  elementWidth: number;
-  type: 'start' | 'move' | 'end';
-  target: HTMLDivElement;
-};
+interface TableColumnBase<TRowData, TValue> {
+  cellTitleGetter?: (params: TableRowParams<TRowData>) => string;
+  disableEllipsis?: boolean;
+  displayValueGetter?: (params: TableRowParams<TRowData>) => string;
+  filterLabel?: string;
+  frozen?: boolean;
+  headerName?: string;
+  headerTooltipContent?: string;
+  hideInFilter?: boolean;
+  id?: string;
+  isInitiallyVisible: boolean;
+  isStatic?: boolean;
+  renderCell?: (params: TableRowAndColumnParams<TRowData>) => ReactElement;
+  renderHeader?: (params: TableColumnParams<TRowData>) => ReactElement;
+  renderHeaderContent?: (params: TableColumnParams<TRowData>) => ReactElement;
+  resizable?: boolean;
+  sx?: SxProps<Theme>;
+  textAlign?: 'left' | 'right';
+  valueGetter?: (params: TableRowParams<TRowData>) => TValue;
+  widthFlex?: number;
+  widthPx?: number;
+  widthPxFn?: (dataLength: number) => number;
+}

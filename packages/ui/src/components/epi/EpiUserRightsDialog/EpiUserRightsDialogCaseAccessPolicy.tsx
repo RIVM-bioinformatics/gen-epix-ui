@@ -7,8 +7,8 @@ import { useTranslation } from 'react-i18next';
 import { Box } from '@mui/material';
 
 import type {
-  User,
   OrganizationAccessCasePolicy,
+  User,
   UserAccessCasePolicy,
 } from '../../../api';
 import { ResponseHandler } from '../../ui/ResponseHandler';
@@ -39,11 +39,11 @@ export type EpiUserRightsDialogCaseAccessPolicyProps = {
   readonly user: User;
 };
 
-type AccessCasePolity = Omit<OrganizationAccessCasePolicy & UserAccessCasePolicy, 'id' | 'user_id' | 'is_active' | 'case_type_set_id'> & {
+type AccessCasePolity = {
   readonly case_type_set_ids: string[];
-  readonly write_col_ids: string[];
   readonly read_col_ids?: string[];
-};
+  readonly write_col_ids: string[];
+} & Omit<OrganizationAccessCasePolicy & UserAccessCasePolicy, 'case_type_set_id' | 'id' | 'is_active' | 'user_id'>;
 
 export const EpiUserRightsDialogCaseAccessPolicy = ({ user }: EpiUserRightsDialogCaseAccessPolicyProps) => {
   const { t } = useTranslation();
@@ -110,18 +110,18 @@ export const EpiUserRightsDialogCaseAccessPolicy = ({ user }: EpiUserRightsDialo
       return {
         add_case: organizationPolicy.add_case && userPolicy.add_case,
         add_case_set: organizationPolicy.add_case_set && userPolicy.add_case_set,
+        case_type_set_ids,
         data_collection_id: organizationPolicy.data_collection_id,
         is_private: organizationPolicy.is_private,
         organization_id: organizationPolicy.organization_id,
         read_case_set: organizationPolicy.read_case_set && userPolicy.read_case_set,
+        read_col_ids,
+        read_col_set_id: organizationPolicy.read_col_set_id,
         remove_case: organizationPolicy.remove_case && userPolicy.remove_case,
         remove_case_set: organizationPolicy.remove_case_set && userPolicy.remove_case_set,
         write_case_set: organizationPolicy.write_case_set && userPolicy.write_case_set,
-        write_col_set_id: organizationPolicy.write_col_set_id,
-        read_col_set_id: organizationPolicy.read_col_set_id,
-        case_type_set_ids,
         write_col_ids,
-        read_col_ids,
+        write_col_set_id: organizationPolicy.write_col_set_id,
       } satisfies AccessCasePolity;
     }).filter((policy => !!policy));
 
@@ -136,7 +136,7 @@ export const EpiUserRightsDialogCaseAccessPolicy = ({ user }: EpiUserRightsDialo
     return dataCollectionMapQuery.map.get(row.data_collection_id)?.name ?? row.data_collection_id;
   }, [dataCollectionMapQuery.map]);
 
-  useInitializeTableStore({ store: tableStore, columns: tableColumns, rows: effectiveAccessCasePolicies });
+  useInitializeTableStore({ columns: tableColumns, rows: effectiveAccessCasePolicies, store: tableStore });
 
   return (
     <ResponseHandler

@@ -5,8 +5,8 @@ import { useStore } from 'zustand';
 
 import { OutageList } from '../OutageList/OutageList';
 import type {
-  WithDialogRenderProps,
   WithDialogRefMethods,
+  WithDialogRenderProps,
 } from '../../../hoc/withDialog';
 import { withDialog } from '../../../hoc/withDialog';
 import { outagesStore } from '../../../stores/outagesStore';
@@ -25,9 +25,9 @@ export type OutagesDialogRefMethods = WithDialogRefMethods<OutagesDialogProps, O
 
 export const OutagesDialog = withDialog<OutagesDialogProps, OutagesDialogOpenProps>((
   {
-    onTitleChange,
     onActionsChange,
     onClose,
+    onTitleChange,
   }: OutagesDialogProps,
 ): ReactElement => {
   const { t } = useTranslation();
@@ -44,11 +44,11 @@ export const OutagesDialog = withDialog<OutagesDialogProps, OutagesDialogOpenPro
       [
         {
           ...TestIdUtil.createAttributes('OutagesDialog-close'),
-          color: 'secondary',
           autoFocus: true,
+          color: 'secondary',
+          label: t`Close`,
           onClick: onClose,
           variant: 'contained',
-          label: t`Close`,
         },
       ],
     );
@@ -62,10 +62,10 @@ export const OutagesDialog = withDialog<OutagesDialogProps, OutagesDialogOpenPro
     />
   );
 }, {
-  testId: 'OutagesDialog',
-  maxWidth: 'md',
-  fullWidth: true,
   defaultTitle: '',
-  noCloseButton: false,
   disableBackdropClick: false,
+  fullWidth: true,
+  maxWidth: 'md',
+  noCloseButton: false,
+  testId: 'OutagesDialog',
 });

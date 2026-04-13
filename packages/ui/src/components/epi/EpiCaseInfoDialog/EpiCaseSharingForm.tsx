@@ -15,8 +15,8 @@ import { useForm } from 'react-hook-form';
 import difference from 'lodash/difference';
 import {
   Box,
-  Typography,
   type BoxProps,
+  Typography,
 } from '@mui/material';
 
 import { useCaseAbacContext } from '../../../context/caseAbac';
@@ -42,7 +42,7 @@ type FormFields = {
   dataCollectionIds?: string[];
 };
 
-export const EpiCaseSharingForm = ({ formId, epiCase, onFinish, onIsSavingChange, ...boxProps }: EpiCaseSharingFormProps) => {
+export const EpiCaseSharingForm = ({ epiCase, formId, onFinish, onIsSavingChange, ...boxProps }: EpiCaseSharingFormProps) => {
   const { t } = useTranslation();
   const [isSaving, setIsSaving] = useState(false);
   const caseAbacContext = useCaseAbacContext();
@@ -54,10 +54,10 @@ export const EpiCaseSharingForm = ({ formId, epiCase, onFinish, onIsSavingChange
   const formFieldDefinitions = useMemo<FormFieldDefinition<FormFields>[]>(() => [
     {
       definition: FORM_FIELD_DEFINITION_TYPE.AUTOCOMPLETE,
-      name: 'dataCollectionIds',
       label: t`Data collections`,
-      options: caseAbacContext?.itemDataCollectionOptions?.[0] ?? [],
       multiple: true,
+      name: 'dataCollectionIds',
+      options: caseAbacContext?.itemDataCollectionOptions?.[0] ?? [],
     } as const satisfies FormFieldDefinition<FormFields>,
   ] as const, [t, caseAbacContext?.itemDataCollectionOptions]);
 
@@ -81,8 +81,8 @@ export const EpiCaseSharingForm = ({ formId, epiCase, onFinish, onIsSavingChange
       onIsSavingChange(true);
       const queryKeys = QueryUtil.getQueryKeyDependencies([QUERY_KEY.CASE_DATA_COLLECTION_LINKS], true);
       const notificationKey = NotificationManager.instance.showNotification({
-        message: t('Saving case data collections'),
         isLoading: true,
+        message: t('Saving case data collections'),
         severity: 'info',
       });
       try {
@@ -132,8 +132,8 @@ export const EpiCaseSharingForm = ({ formId, epiCase, onFinish, onIsSavingChange
         formFieldDefinitions={formFieldDefinitions}
         formId={formId}
         formMethods={formMethods}
-        schema={schema}
         onSubmit={handleSubmit(onFormSubmit)}
+        schema={schema}
       />
     </Box>
   );

@@ -12,16 +12,16 @@ import { AuthorizationManager } from '../../classes/managers/AuthorizationManage
 
 export const useIdentifierIssuerOwnOrganizationQuery = (): UseQueryResult<IdentifierIssuer[]> => {
   return useQueryMemo({
-    queryKey: QueryUtil.getGenericKey(QUERY_KEY.IDENTIFIER_ISSUERS_OWN_ORGANIZATION),
     queryFn: async ({ signal }) => {
       const links = (await OrganizationApi.instance.organizationIdentifierIssuerLinksPostQuery({
-        type: 'EQUALS_UUID',
         key: 'organization_id',
+        type: 'EQUALS_UUID',
         value: AuthorizationManager.instance.user.organization_id,
       }, { signal })).data;
       const response = await OrganizationApi.instance.identifierIssuersGetSome(links.map(x => x.identifier_issuer_id).join(','), { signal });
       return response.data;
     },
+    queryKey: QueryUtil.getGenericKey(QUERY_KEY.IDENTIFIER_ISSUERS_OWN_ORGANIZATION),
   });
 };
 

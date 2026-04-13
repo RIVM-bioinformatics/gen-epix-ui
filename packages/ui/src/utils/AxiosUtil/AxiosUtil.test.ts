@@ -1,7 +1,7 @@
 import {
   describe,
-  it,
   expect,
+  it,
 } from 'vitest';
 import type { AxiosError } from 'axios';
 import { CanceledError } from 'axios';
@@ -11,11 +11,11 @@ import { AxiosUtil } from './AxiosUtil';
 
 describe('AxiosUtil', () => {
   const createAxiosError = (status: number): DeepPartial<AxiosError> => ({
-    isAxiosError: true,
-    response: { status },
     config: {},
-    name: '',
+    isAxiosError: true,
     message: '',
+    name: '',
+    response: { status },
     toJSON: () => ({}),
   });
 

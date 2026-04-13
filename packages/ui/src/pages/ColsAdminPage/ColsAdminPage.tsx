@@ -53,7 +53,7 @@ import { DataUtil } from '../../utils/DataUtil';
 import type { OmitWithMetaData } from '../../models/data';
 import { SchemaUtil } from '../../utils/SchemaUtil';
 
-type FormFields = OmitWithMetaData<Col, 'case_type' | 'dim' | 'ref_col' | 'props'>;
+type FormFields = OmitWithMetaData<Col, 'case_type' | 'dim' | 'props' | 'ref_col'>;
 
 const NCBI_TAXID_REGEX = /^NCBI:txid\d+/;
 
@@ -72,9 +72,9 @@ export const ColsAdminPage = () => {
   const dimOptionsQuery = useDimOptionsQuery();
   const colsValidationRulesQuery = useRefColsValidationRulesQuery();
   const loadables = useArray([refDimMapQuery, refColMapQuery, colsValidationRulesQuery, dimOptionsQuery, dimMapQuery, caseTypeMapQuery, caseTypeOptionsQuery, refColOptionsQuery, treeAlgorithmCodesOptionsQuery, colOptionsQuery]);
-  const dimOptionsByCaseTypeIdCache = useRef(new Map<string, OptionBase<string>[]>());
-  const refColOptionsByDimIdCache = useRef(new Map<string, OptionBase<string>[]>());
-  const geneticSequenceColOptionsByCaseTypeIdCache = useRef(new Map<string, OptionBase<string>[]>());
+  const dimOptionsByCaseTypeIdCacheRef = useRef(new Map<string, OptionBase<string>[]>());
+  const refColOptionsByDimIdCacheRef = useRef(new Map<string, OptionBase<string>[]>());
+  const geneticSequenceColOptionsByCaseTypeIdCacheRef = useRef(new Map<string, OptionBase<string>[]>());
 
   const normalizedCaseTypeId = useMemo(() => {
     if (dimId) {
@@ -114,79 +114,79 @@ export const ColsAdminPage = () => {
   }, []);
 
   const getDimOptionsForCaseTypeId = useCallback((id: string): OptionBase<string>[] => {
-    if (dimOptionsByCaseTypeIdCache.current.has(id)) {
-      return dimOptionsByCaseTypeIdCache.current.get(id);
+    if (dimOptionsByCaseTypeIdCacheRef.current.has(id)) {
+      return dimOptionsByCaseTypeIdCacheRef.current.get(id);
     }
     const options = DataUtil.getDimOptionsForCaseTypeId({
       caseTypeId: id,
-      dimOptions: dimOptionsQuery.options,
       dimMap: dimMapQuery.map,
+      dimOptions: dimOptionsQuery.options,
     });
-    dimOptionsByCaseTypeIdCache.current.set(id, options);
+    dimOptionsByCaseTypeIdCacheRef.current.set(id, options);
     return options;
   }, [dimMapQuery.map, dimOptionsQuery.options]);
 
   const getRefColOptionsForDimId = useCallback((id: string): OptionBase<string>[] => {
-    if (refColOptionsByDimIdCache.current.has(id)) {
-      return refColOptionsByDimIdCache.current.get(id);
+    if (refColOptionsByDimIdCacheRef.current.has(id)) {
+      return refColOptionsByDimIdCacheRef.current.get(id);
     }
     const options = DataUtil.getRefColOptionsForDimId({
+      colsValidationRules: colsValidationRulesQuery.data?.valid_col_types_by_dim_type ?? {},
       dimId: id,
       dimMap: dimMapQuery.map,
-      refDimMap: refDimMapQuery.map,
-      refColOptions: refColOptionsQuery.options,
       refColMap: refColMapQuery.map,
-      colsValidationRules: colsValidationRulesQuery.data?.valid_col_types_by_dim_type ?? {},
+      refColOptions: refColOptionsQuery.options,
+      refDimMap: refDimMapQuery.map,
     });
-    refColOptionsByDimIdCache.current.set(id, options);
+    refColOptionsByDimIdCacheRef.current.set(id, options);
     return options;
   }, [dimMapQuery.map, refColMapQuery.map, refColOptionsQuery.options, colsValidationRulesQuery.data?.valid_col_types_by_dim_type, refDimMapQuery.map]);
 
   const getGeneticSequenceColOptionsForCaseTypeId = useCallback((id: string): OptionBase<string>[] => {
-    if (geneticSequenceColOptionsByCaseTypeIdCache.current.has(id)) {
-      return geneticSequenceColOptionsByCaseTypeIdCache.current.get(id);
+    if (geneticSequenceColOptionsByCaseTypeIdCacheRef.current.has(id)) {
+      return geneticSequenceColOptionsByCaseTypeIdCacheRef.current.get(id);
     }
     const options = DataUtil.getGeneticSequenceColOptionsForCaseTypeId({
       caseTypeId: id,
-      refColMap: refColMapQuery.map,
       colMap: colMapQuery.map,
       colOptions: colOptionsQuery.options,
+      refColMap: refColMapQuery.map,
     });
-    geneticSequenceColOptionsByCaseTypeIdCache.current.set(id, options);
+    geneticSequenceColOptionsByCaseTypeIdCacheRef.current.set(id, options);
     return options;
   }, [refColMapQuery.map, colMapQuery.map, colOptionsQuery.options]);
 
   const schema = useMemo(() => {
     return object<FormFields>().shape({
-      label: SchemaUtil.label,
-      code: SchemaUtil.code,
-      rank: SchemaUtil.rank,
-      ref_col_id: string().uuid4().required().max(100),
-      dim_id: string().uuid4().required().max(100),
       case_type_id: string().uuid4().required().max(100),
+      code: SchemaUtil.code,
       description: SchemaUtil.description,
-      min_value: SchemaUtil.number.positive().max(10000),
-      max_value: SchemaUtil.number.positive().max(10000),
-      min_datetime: SchemaUtil.isoString.optional(),
-      max_datetime: SchemaUtil.isoString.optional(),
-      min_length: SchemaUtil.number.integer().positive().max(10000),
-      max_length: SchemaUtil.number.integer().positive().max(10000),
+      dim_id: string().uuid4().required().max(100),
       genetic_sequence_col_id: string().when('ref_col_id', {
         is: (ref_col_id: string) => refColMapQuery.map.get(ref_col_id)?.col_type === ColType.GENETIC_DISTANCE,
-        then: () => string().uuid4().required(),
         otherwise: () => string().nullable().notRequired(),
+        then: () => string().uuid4().required(),
       }),
-      tree_algorithm_codes: array().when('ref_col_id', {
-        is: (ref_col_id: string) => refColMapQuery.map.get(ref_col_id)?.col_type === ColType.GENETIC_DISTANCE,
-        then: () => array().min(1).required(),
-        otherwise: () => array().nullable().notRequired(),
-      }),
+      label: SchemaUtil.label,
+      max_datetime: SchemaUtil.isoString.optional(),
+      max_length: SchemaUtil.number.integer().positive().max(10000),
+      max_value: SchemaUtil.number.positive().max(10000),
+      min_datetime: SchemaUtil.isoString.optional(),
+      min_length: SchemaUtil.number.integer().positive().max(10000),
+      min_value: SchemaUtil.number.positive().max(10000),
       ncbi_taxid: string().when('ref_col_id', {
         is: (ref_col_id: string) => refColMapQuery.map.get(ref_col_id)?.col_type === ColType.GENETIC_DISTANCE,
-        then: () => string().matches(NCBI_TAXID_REGEX).required(),
         otherwise: () => string().notRequired(),
+        then: () => string().matches(NCBI_TAXID_REGEX).required(),
       }),
       pattern: string().regex(),
+      rank: SchemaUtil.rank,
+      ref_col_id: string().uuid4().required().max(100),
+      tree_algorithm_codes: array().when('ref_col_id', {
+        is: (ref_col_id: string) => refColMapQuery.map.get(ref_col_id)?.col_type === ColType.GENETIC_DISTANCE,
+        otherwise: () => array().nullable().notRequired(),
+        then: () => array().min(1).required(),
+      }),
     });
   }, [refColMapQuery.map]);
 
@@ -226,99 +226,99 @@ export const ColsAdminPage = () => {
     return [
       {
         definition: FORM_FIELD_DEFINITION_TYPE.AUTOCOMPLETE,
-        name: 'case_type_id',
+        disabled: !!item,
         label: t`Case type`,
+        name: 'case_type_id',
         options: caseTypeOptionsQuery.options,
-        disabled: !!item,
       } as const satisfies FormFieldDefinition<FormFields>,
       {
         definition: FORM_FIELD_DEFINITION_TYPE.AUTOCOMPLETE,
-        name: 'dim_id',
+        disabled: !!item,
         label: t`Dimension`,
+        name: 'dim_id',
         options: dimOptions,
-        disabled: !!item,
       } as const satisfies FormFieldDefinition<FormFields>,
       {
         definition: FORM_FIELD_DEFINITION_TYPE.AUTOCOMPLETE,
-        name: 'ref_col_id',
-        label: t`Reference column`,
-        options: refColOptions,
         disabled: !!item,
+        label: t`Reference column`,
+        name: 'ref_col_id',
+        options: refColOptions,
       } as const satisfies FormFieldDefinition<FormFields>,
       {
         definition: FORM_FIELD_DEFINITION_TYPE.TEXTFIELD,
-        name: 'code',
         label: t`Code`,
+        name: 'code',
       } as const satisfies FormFieldDefinition<FormFields>,
       {
         definition: FORM_FIELD_DEFINITION_TYPE.NUMBER,
-        name: 'rank',
         label: t`Rank`,
+        name: 'rank',
       } as const satisfies FormFieldDefinition<FormFields>,
       {
         definition: FORM_FIELD_DEFINITION_TYPE.TEXTFIELD,
-        name: 'label',
         label: t`Label`,
+        name: 'label',
       } as const satisfies FormFieldDefinition<FormFields>,
       {
         definition: FORM_FIELD_DEFINITION_TYPE.RICH_TEXT,
-        name: 'description',
         label: t`Description`,
+        name: 'description',
       } as const satisfies FormFieldDefinition<FormFields>,
       {
         definition: FORM_FIELD_DEFINITION_TYPE.NUMBER,
-        name: 'min_value',
         label: t`Min value`,
+        name: 'min_value',
       } as const satisfies FormFieldDefinition<FormFields>,
       {
         definition: FORM_FIELD_DEFINITION_TYPE.NUMBER,
-        name: 'max_value',
         label: t`Max value`,
+        name: 'max_value',
       } as const satisfies FormFieldDefinition<FormFields>,
       {
+        dateFormat: DATE_FORMAT.DATE_TIME,
         definition: FORM_FIELD_DEFINITION_TYPE.DATE,
-        name: 'min_datetime',
         label: t`Min datetime`,
-        dateFormat: DATE_FORMAT.DATE_TIME,
+        name: 'min_datetime',
       } as const satisfies FormFieldDefinition<FormFields>,
       {
+        dateFormat: DATE_FORMAT.DATE_TIME,
         definition: FORM_FIELD_DEFINITION_TYPE.DATE,
-        name: 'max_datetime',
         label: t`Max datetime`,
-        dateFormat: DATE_FORMAT.DATE_TIME,
+        name: 'max_datetime',
       } as const satisfies FormFieldDefinition<FormFields>,
       {
         definition: FORM_FIELD_DEFINITION_TYPE.NUMBER,
-        name: 'min_length',
         label: t`Min length`,
+        name: 'min_length',
       } as const satisfies FormFieldDefinition<FormFields>,
       {
         definition: FORM_FIELD_DEFINITION_TYPE.NUMBER,
-        name: 'max_length',
         label: t`Max length`,
+        name: 'max_length',
       } as const satisfies FormFieldDefinition<FormFields>,
       {
         definition: FORM_FIELD_DEFINITION_TYPE.SELECT,
-        name: 'genetic_sequence_col_id',
         label: t`Genetic sequence column`,
+        name: 'genetic_sequence_col_id',
         options: geneticSequenceColOptions,
       } as const satisfies FormFieldDefinition<FormFields>,
       {
         definition: FORM_FIELD_DEFINITION_TYPE.SELECT,
-        name: 'tree_algorithm_codes',
         label: t`Tree algorithm codes`,
-        options: treeAlgorithmCodesOptionsQuery.options,
         multiple: true,
+        name: 'tree_algorithm_codes',
+        options: treeAlgorithmCodesOptionsQuery.options,
       } as const satisfies FormFieldDefinition<FormFields>,
       {
         definition: FORM_FIELD_DEFINITION_TYPE.TEXTFIELD,
-        name: 'ncbi_taxid',
         label: t`NCBI TaxID`,
+        name: 'ncbi_taxid',
       } as const satisfies FormFieldDefinition<FormFields>,
       {
         definition: FORM_FIELD_DEFINITION_TYPE.TEXTFIELD,
-        name: 'pattern',
         label: t`Pattern`,
+        name: 'pattern',
         type: 'text',
       } as const satisfies FormFieldDefinition<FormFields>,
     ] as const satisfies FormFieldDefinition<FormFields>[];
@@ -343,17 +343,17 @@ export const ColsAdminPage = () => {
 
   const getOptimisticUpdateIntermediateItem = useCallback((variables: FormFields, previousItem: Col): Col => {
     return {
-      id: previousItem.id,
       case_type_id: previousItem.case_type_id,
       dim_id: previousItem.dim_id,
+      id: previousItem.id,
       ...variables,
     };
   }, []);
 
   const defaultNewItem = useMemo<Partial<FormFields>>(() => {
     return {
-      dim_id: dimId ?? null,
       case_type_id: normalizedCaseTypeId,
+      dim_id: dimId ?? null,
     };
   }, [dimId, normalizedCaseTypeId]);
 
@@ -397,6 +397,7 @@ export const ColsAdminPage = () => {
       getName={getName}
       getOptimisticUpdateIntermediateItem={getOptimisticUpdateIntermediateItem}
       loadables={loadables}
+      onFormChange={onFormChange}
       resourceQueryKeyBase={QUERY_KEY.COLS}
       schema={schema}
       tableColumns={tableColumns}
@@ -404,7 +405,6 @@ export const ColsAdminPage = () => {
       testIdAttributes={TestIdUtil.createAttributes('ColsAdminPage')}
       title={title}
       updateOne={updateOne}
-      onFormChange={onFormChange}
     />
   );
 };

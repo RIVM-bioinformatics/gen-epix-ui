@@ -11,14 +11,14 @@ import type {
   SyntheticEvent,
 } from 'react';
 import {
-  useState,
   useCallback,
   useEffect,
+  useState,
 } from 'react';
 
 import type {
-  WithDialogRenderProps,
   WithDialogRefMethods,
+  WithDialogRenderProps,
 } from '../../../hoc/withDialog';
 import { withDialog } from '../../../hoc/withDialog';
 import { TestIdUtil } from '../../../utils/TestIdUtil';
@@ -45,13 +45,13 @@ import { EpiCustomTabPanel } from '../../epi/EpiCustomTabPanel';
 import { LoadableUtil } from '../../../utils/LoadableUtil';
 
 
-export type UsersEffectiveRightsDetailsType = 'caseTypeSets' | 'readColSets' | 'writeColSets';
-
 export interface UsersEffectiveRightsDetailsDialogOpenProps {
-  userEffectiveRight: UserEffectiveRight;
   type: 'caseTypeSets' | 'readColSets' | 'writeColSets';
   user: User;
+  userEffectiveRight: UserEffectiveRight;
 }
+
+export type UsersEffectiveRightsDetailsType = 'caseTypeSets' | 'readColSets' | 'writeColSets';
 
 const usersEffectiveRightsDetailsTypeOrder = ['caseTypeSets', 'readColSets', 'writeColSets'] as const;
 
@@ -63,17 +63,17 @@ export type UsersEffectiveRightsDetailsDialogRefMethods = WithDialogRefMethods<U
 
 const a11yProps = (index: number) => {
   return {
-    id: `simple-tab-${index}`,
     'aria-controls': `simple-tabpanel-${index}`,
+    id: `simple-tab-${index}`,
   };
 };
 
 export const UsersEffectiveRightsDetailsDialog = withDialog<UsersEffectiveRightsDetailsDialogProps, UsersEffectiveRightsDetailsDialogOpenProps>((
   {
-    onTitleChange,
     onActionsChange,
     onClose,
-    openProps: { userEffectiveRight, type, user },
+    onTitleChange,
+    openProps: { type, user, userEffectiveRight },
   }: UsersEffectiveRightsDetailsDialogProps,
 ): ReactElement => {
 
@@ -103,7 +103,7 @@ export const UsersEffectiveRightsDetailsDialog = withDialog<UsersEffectiveRights
     colSetMembersQuery,
   ]);
 
-  const handleTabChange = useCallback((_event: SyntheticEvent, newValue: number) => {
+  const onTabChange = useCallback((_event: SyntheticEvent, newValue: number) => {
     setActiveTab(newValue);
   }, []);
 
@@ -117,7 +117,7 @@ export const UsersEffectiveRightsDetailsDialog = withDialog<UsersEffectiveRights
   }, []);
 
   useEffect(() => {
-    onTitleChange(t('{{userName}} effective rights details for {{dataCollectionName}}', { userName: DataUtil.getUserDisplayValue(user, t), dataCollectionName: dataCollectionsMapQuery.map.get(userEffectiveRight.data_collection_id)?.name ?? userEffectiveRight.data_collection_id }));
+    onTitleChange(t('{{userName}} effective rights details for {{dataCollectionName}}', { dataCollectionName: dataCollectionsMapQuery.map.get(userEffectiveRight.data_collection_id)?.name ?? userEffectiveRight.data_collection_id, userName: DataUtil.getUserDisplayValue(user, t) }));
   }, [dataCollectionsMapQuery.map, onTitleChange, t, user, userEffectiveRight.data_collection_id]);
 
   useEffect(() => {
@@ -125,9 +125,9 @@ export const UsersEffectiveRightsDetailsDialog = withDialog<UsersEffectiveRights
     actions.push({
       ...TestIdUtil.createAttributes('UsersEffectiveRightsDetailsDialog-closeButton'),
       color: 'secondary',
-      variant: 'contained',
       label: t`Close`,
       onClick: onClose,
+      variant: 'contained',
     });
     onActionsChange(actions);
   }, [onActionsChange, onClose, t]);
@@ -143,8 +143,8 @@ export const UsersEffectiveRightsDetailsDialog = withDialog<UsersEffectiveRights
           <Box sx={{ borderBottom: 1, borderColor: 'divider' }}>
             <Tabs
               aria-label={'basic tabs example'}
+              onChange={onTabChange}
               value={activeTab}
-              onChange={handleTabChange}
             >
               <Tab
                 label={'Case types'}
@@ -173,7 +173,11 @@ export const UsersEffectiveRightsDetailsDialog = withDialog<UsersEffectiveRights
             value={activeTab}
           >
             { !userEffectiveRight.categorized_case_type_ids.length && !userEffectiveRight.uncategorized_case_type_ids.length && (
-              <Box marginY={2}>
+              <Box
+                sx={{
+                  marginY: 2,
+                }}
+              >
                 {t`No case types assigned`}
               </Box>
             )}
@@ -189,12 +193,16 @@ export const UsersEffectiveRightsDetailsDialog = withDialog<UsersEffectiveRights
                   });
                   return (
                     <Box key={caseTypeSetId}>
-                      <Box marginY={1}>
+                      <Box
+                        sx={{
+                          marginY: 1,
+                        }}
+                      >
                         <Link
-                          tabIndex={0}
                           href={'#'}
-                          // eslint-disable-next-line react/jsx-no-bind
+                          // eslint-disable-next-line @eslint-react/kit/jsx-no-bind
                           onClick={() => onToggleSectionLinkClick(`case-type-sets-${caseTypeSetId}`)}
+                          tabIndex={0}
                         >
                           {caseTypeSetNameFactory.getName(caseTypeSet) ?? caseTypeSetId}
                         </Link>
@@ -215,12 +223,16 @@ export const UsersEffectiveRightsDetailsDialog = withDialog<UsersEffectiveRights
               </Box>
             )}
             { userEffectiveRight.uncategorized_case_type_ids.length > 0 && (
-              <Box marginY={1}>
+              <Box
+                sx={{
+                  marginY: 1,
+                }}
+              >
                 <Link
-                  tabIndex={0}
                   href={'#'}
-                  // eslint-disable-next-line react/jsx-no-bind
+                  // eslint-disable-next-line @eslint-react/kit/jsx-no-bind
                   onClick={() => onToggleSectionLinkClick(`uncategorized-case-type-sets`)}
+                  tabIndex={0}
                 >
                   {t`Uncategorized case types`}
                 </Link>
@@ -246,7 +258,11 @@ export const UsersEffectiveRightsDetailsDialog = withDialog<UsersEffectiveRights
             value={activeTab}
           >
             { !userEffectiveRight.categorized_read_col_ids.length && !userEffectiveRight.uncategorized_read_col_ids.length && (
-              <Box marginY={2}>
+              <Box
+                sx={{
+                  marginY: 2,
+                }}
+              >
                 {t`No read columns assigned`}
               </Box>
             )}
@@ -264,12 +280,16 @@ export const UsersEffectiveRightsDetailsDialog = withDialog<UsersEffectiveRights
                   });
                   return (
                     <Box key={colSetId}>
-                      <Box marginY={1}>
+                      <Box
+                        sx={{
+                          marginY: 1,
+                        }}
+                      >
                         <Link
-                          tabIndex={0}
                           href={'#'}
-                          // eslint-disable-next-line react/jsx-no-bind
+                          // eslint-disable-next-line @eslint-react/kit/jsx-no-bind
                           onClick={() => onToggleSectionLinkClick(`read-col-sets-${colSetId}`)}
+                          tabIndex={0}
                         >
                           {colSet?.name ?? colSetId}
                         </Link>
@@ -290,15 +310,19 @@ export const UsersEffectiveRightsDetailsDialog = withDialog<UsersEffectiveRights
               </Box>
             )}
             { userEffectiveRight.uncategorized_read_col_ids.length > 0 && (
-              <Box marginY={1}>
+              <Box
+                sx={{
+                  marginY: 1,
+                }}
+              >
                 <Typography variant={'h5'}>
                   {t`Uncategorized read columns sets`}
                 </Typography>
                 <Link
-                  tabIndex={0}
                   href={'#'}
-                  // eslint-disable-next-line react/jsx-no-bind
+                  // eslint-disable-next-line @eslint-react/kit/jsx-no-bind
                   onClick={() => onToggleSectionLinkClick(`uncategorized-read-col-sets`)}
+                  tabIndex={0}
                 >
                   {t`Uncategorized read columns sets`}
                 </Link>
@@ -326,7 +350,11 @@ export const UsersEffectiveRightsDetailsDialog = withDialog<UsersEffectiveRights
             value={activeTab}
           >
             { !userEffectiveRight.categorized_write_col_ids.length && !userEffectiveRight.uncategorized_write_col_ids.length && (
-              <Box marginY={2}>
+              <Box
+                sx={{
+                  marginY: 2,
+                }}
+              >
                 {t`No write columns assigned`}
               </Box>
             )}
@@ -344,12 +372,16 @@ export const UsersEffectiveRightsDetailsDialog = withDialog<UsersEffectiveRights
                   });
                   return (
                     <Box key={colSetId}>
-                      <Box marginY={1}>
+                      <Box
+                        sx={{
+                          marginY: 1,
+                        }}
+                      >
                         <Link
-                          tabIndex={0}
                           href={'#'}
-                          // eslint-disable-next-line react/jsx-no-bind
+                          // eslint-disable-next-line @eslint-react/kit/jsx-no-bind
                           onClick={() => onToggleSectionLinkClick(`write-col-sets-${colSetId}`)}
+                          tabIndex={0}
                         >
                           {colSet?.name ?? colSetId}
                         </Link>
@@ -370,12 +402,16 @@ export const UsersEffectiveRightsDetailsDialog = withDialog<UsersEffectiveRights
               </Box>
             )}
             { userEffectiveRight.uncategorized_write_col_ids.length > 0 && (
-              <Box marginY={1}>
+              <Box
+                sx={{
+                  marginY: 1,
+                }}
+              >
                 <Link
-                  tabIndex={0}
                   href={'#'}
-                  // eslint-disable-next-line react/jsx-no-bind
+                  // eslint-disable-next-line @eslint-react/kit/jsx-no-bind
                   onClick={() => onToggleSectionLinkClick(`uncategorized-write-col-sets`)}
+                  tabIndex={0}
                 >
                   {t`Uncategorized write columns sets`}
                 </Link>
@@ -404,7 +440,7 @@ export const UsersEffectiveRightsDetailsDialog = withDialog<UsersEffectiveRights
           >
             <Box
               component={'dl'}
-              sx={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 2 }}
+              sx={{ display: 'grid', gap: 2, gridTemplateColumns: '1fr 1fr' }}
             >
               <dt>
                 {t`Add case`}
@@ -454,16 +490,26 @@ export const UsersEffectiveRightsDetailsDialog = withDialog<UsersEffectiveRights
             index={4}
             value={activeTab}
           >
-            <Box marginY={2}>
+            <Box
+              sx={{
+                marginY: 2,
+              }}
+            >
               { !userEffectiveRight.effective_share_case_rights.length && (
-                <Box marginY={2}>
+                <Box
+                  sx={{
+                    marginY: 2,
+                  }}
+                >
                   {t`No additional rights assigned`}
                 </Box>
               )}
               {userEffectiveRight.effective_share_case_rights.map((right) => (
                 <Box
                   key={right.from_data_collection_id}
-                  marginY={2}
+                  sx={{
+                    marginY: 2,
+                  }}
                 >
                   <Box>
                     <Typography variant={'h5'}>
@@ -474,7 +520,11 @@ export const UsersEffectiveRightsDetailsDialog = withDialog<UsersEffectiveRights
                   </Box>
                   <Box>
                     {right.categorized_case_type_ids.length === 0 && right.uncategorized_case_type_ids.length === 0 && (
-                      <Box marginY={2}>
+                      <Box
+                        sx={{
+                          marginY: 2,
+                        }}
+                      >
                         {t`No case types assigned`}
                       </Box>
                     )}
@@ -488,12 +538,16 @@ export const UsersEffectiveRightsDetailsDialog = withDialog<UsersEffectiveRights
                       });
                       return (
                         <Box key={caseTypeSetId}>
-                          <Box marginY={1}>
+                          <Box
+                            sx={{
+                              marginY: 1,
+                            }}
+                          >
                             <Link
-                              tabIndex={0}
                               href={'#'}
-                              // eslint-disable-next-line react/jsx-no-bind
+                              // eslint-disable-next-line @eslint-react/kit/jsx-no-bind
                               onClick={() => onToggleSectionLinkClick(`${right.from_data_collection_id}-${caseTypeSetId}`)}
+                              tabIndex={0}
                             >
                               {caseTypeSetNameFactory.getName(caseTypeSet) ?? caseTypeSetId}
                             </Link>
@@ -512,12 +566,16 @@ export const UsersEffectiveRightsDetailsDialog = withDialog<UsersEffectiveRights
                       );
                     })}
                     {right.uncategorized_case_type_ids.length > 0 && (
-                      <Box marginY={2}>
+                      <Box
+                        sx={{
+                          marginY: 2,
+                        }}
+                      >
                         <Link
-                          tabIndex={0}
                           href={'#'}
-                          // eslint-disable-next-line react/jsx-no-bind
+                          // eslint-disable-next-line @eslint-react/kit/jsx-no-bind
                           onClick={() => onToggleSectionLinkClick(`${right.from_data_collection_id}-uncategorized`)}
+                          tabIndex={0}
                         >
                           {t`Uncategorized case types`}
                         </Link>
@@ -540,7 +598,7 @@ export const UsersEffectiveRightsDetailsDialog = withDialog<UsersEffectiveRights
                   </Box>
                   <Box
                     component={'dl'}
-                    sx={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 0 }}
+                    sx={{ display: 'grid', gap: 0, gridTemplateColumns: '1fr 1fr' }}
                   >
                     <dt>
                       {t`Add case`}
@@ -577,10 +635,10 @@ export const UsersEffectiveRightsDetailsDialog = withDialog<UsersEffectiveRights
     </ResponseHandler>
   );
 }, {
-  testId: 'UsersEffectiveRightsDetailsDialog',
-  maxWidth: 'lg',
-  fullWidth: true,
   defaultTitle: '',
-  noCloseButton: false,
   disableBackdropClick: false,
+  fullWidth: true,
+  maxWidth: 'lg',
+  noCloseButton: false,
+  testId: 'UsersEffectiveRightsDetailsDialog',
 });

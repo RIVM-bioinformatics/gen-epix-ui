@@ -1,6 +1,6 @@
 import {
-  useStore,
   type StoreApi,
+  useStore,
 } from 'zustand';
 import { useEffect } from 'react';
 
@@ -10,13 +10,13 @@ import type { TableStore } from '../../stores/tableStore';
 import { TableUtil } from '../../utils/TableUtil';
 
 export type UseInitializeTableStoreKWArgs<TData> = {
-  readonly store: StoreApi<TableStore<TData>>;
   readonly columns: TableColumn<TData>[];
-  readonly rows: TData[];
   readonly createFiltersFromColumns?: boolean;
+  readonly rows: TData[];
+  readonly store: StoreApi<TableStore<TData>>;
 };
 
-export const useInitializeTableStore = <TData>({ store, columns, rows, createFiltersFromColumns }: UseInitializeTableStoreKWArgs<TData>) => {
+export const useInitializeTableStore = <TData>({ columns, createFiltersFromColumns, rows, store }: UseInitializeTableStoreKWArgs<TData>) => {
   const setColumns = useStore(store, (state) => state.setColumns);
   const setBaseData = useStore(store, (state) => state.setBaseData);
   const setFilters = useStore(store, (state) => state.setFilters);

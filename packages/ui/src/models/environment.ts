@@ -1,10 +1,10 @@
 export type EnvironmentSettings = {
-  VITE_RELEASED_VERSION: string;
   API_BASE_URL: string;
-  ENVIRONMENT_MESSAGE: string;
   BASE_URL: string;
-  MODE: string;
   DEV: boolean;
+  ENVIRONMENT_MESSAGE: string;
+  MODE: string;
   PROD: boolean;
   SSR: boolean;
+  VITE_RELEASED_VERSION: string;
 };

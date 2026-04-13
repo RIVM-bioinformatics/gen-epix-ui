@@ -8,11 +8,11 @@ import { useQueryMemo } from '../../hooks/useQueryMemo';
 
 export const useUserShareCasePoliciesQuery = (select?: (data: UserShareCasePolicy[]) => UserShareCasePolicy[]): UseQueryResult<UserShareCasePolicy[]> => {
   return useQueryMemo({
-    queryKey: QueryUtil.getGenericKey(QUERY_KEY.USER_SHARE_CASE_POLICIES),
     queryFn: async ({ signal }) => {
       const response = await AbacApi.instance.userShareCasePoliciesGetAll({ signal });
       return response.data;
     },
+    queryKey: QueryUtil.getGenericKey(QUERY_KEY.USER_SHARE_CASE_POLICIES),
     select: select ? (data) => select(data) : undefined,
   });
 };

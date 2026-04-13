@@ -1,12 +1,12 @@
 import {
-  Card,
-  CardContent,
-  Typography,
   Box,
-  darken,
-  useTheme,
   Button,
+  Card,
   CardActions,
+  CardContent,
+  darken,
+  Typography,
+  useTheme,
 } from '@mui/material';
 import { t } from 'i18next';
 import { useCallback } from 'react';
@@ -14,15 +14,15 @@ import { useCallback } from 'react';
 import { TestIdUtil } from '../../../utils/TestIdUtil';
 
 export type HomagePageTrendCardProps = {
-  readonly header: string;
-  readonly value: number;
-  readonly diffPercentage: number;
-  readonly sinceLabel: string;
   readonly callback?: () => void;
   readonly callbackLabel?: string;
+  readonly diffPercentage: number;
+  readonly header: string;
+  readonly sinceLabel: string;
+  readonly value: number;
 };
 
-export const HomePageTrendCard = ({ header, value, diffPercentage, sinceLabel, callback, callbackLabel }: HomagePageTrendCardProps) => {
+export const HomePageTrendCard = ({ callback, callbackLabel, diffPercentage, header, sinceLabel, value }: HomagePageTrendCardProps) => {
   const theme = useTheme();
 
   const onCallbackButtonClick = useCallback(() => {
@@ -47,10 +47,10 @@ export const HomePageTrendCard = ({ header, value, diffPercentage, sinceLabel, c
         <Typography
           component={'h3'}
           sx={{
-            fontSize: '1rem',
-            textOverflow: 'ellipsis',
-            overflow: 'hidden',
             display: 'block',
+            fontSize: '1rem',
+            overflow: 'hidden',
+            textOverflow: 'ellipsis',
             whiteSpace: 'nowrap',
           }}
         >
@@ -71,22 +71,26 @@ export const HomePageTrendCard = ({ header, value, diffPercentage, sinceLabel, c
         >
           <Button
             {...TestIdUtil.createAttributes('HomePageTrendCard-button')}
+            onClick={onCallbackButtonClick}
             size={'small'}
             variant={'outlined'}
-            onClick={onCallbackButtonClick}
           >
             {callbackLabel}
           </Button>
         </CardActions>
       )}
       <Box
-        padding={1}
         sx={{
           background: theme.palette.grey['100'],
           justifyContent: 'flex-end',
+          padding: 1,
         }}
       >
-        <Box marginX={1}>
+        <Box
+          sx={{
+            marginX: 1,
+          }}
+        >
           {diffPercentage === 0 && (
             <Typography>
               <Box

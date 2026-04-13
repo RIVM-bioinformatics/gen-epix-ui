@@ -16,8 +16,8 @@ import { ConfigManager } from '../../classes/managers/ConfigManager';
 import { WindowManager } from '../../classes/managers/WindowManager';
 import { CopyToClipboardButton } from '../../components/ui/CopyToClipboardButton';
 import type {
-  WithDialogRenderProps,
   WithDialogRefMethods,
+  WithDialogRenderProps,
 } from '../../hoc/withDialog';
 import { withDialog } from '../../hoc/withDialog';
 import { TestIdUtil } from '../../utils/TestIdUtil';
@@ -34,9 +34,9 @@ export type UserInvitationShareDialogRefMethods = WithDialogRefMethods<UserInvit
 
 export const UserInvitationShareDialog = withDialog<UserInvitationShareDialogProps, UserInvitationShareDialogOpenProps>((
   {
+    onActionsChange,
     onTitleChange,
     openProps,
-    onActionsChange,
   }: UserInvitationShareDialogProps,
 ): ReactElement => {
   const { t } = useTranslation();
@@ -58,7 +58,7 @@ export const UserInvitationShareDialog = withDialog<UserInvitationShareDialogPro
   }, [openProps.item.token]);
 
   const shareInvitationHref = useMemo(() => {
-    return `mailto:?subject=${t('Invitation to join {{applicationName}}', { applicationName: ConfigManager.instance.config.applicationName })}&body=${t('Use the following link to accept the invitation: {{invitationLink}}. This link will expire: {{expiryDate}}.', { invitationLink, expiryDate })}&to=${openProps.item.key}`;
+    return `mailto:?subject=${t('Invitation to join {{applicationName}}', { applicationName: ConfigManager.instance.config.applicationName })}&body=${t('Use the following link to accept the invitation: {{invitationLink}}. This link will expire: {{expiryDate}}.', { expiryDate, invitationLink })}&to=${openProps.item.key}`;
   }, [expiryDate, invitationLink, openProps.item.key, t]);
 
 
@@ -66,16 +66,16 @@ export const UserInvitationShareDialog = withDialog<UserInvitationShareDialogPro
     onActionsChange([
       {
         ...TestIdUtil.createAttributes('UserInvitationShareDialog-agree'),
-        href: shareInvitationHref,
         color: 'primary',
-        variant: 'contained',
-        startIcon: <EmailIcon />,
+        href: shareInvitationHref,
         label: t('Email invitation link'),
+        startIcon: <EmailIcon />,
+        variant: 'contained',
       },
       <CopyToClipboardButton
-        key={'copyToClipboard'}
         buttonText={t('Copy invitation link to clipboard')}
         clipboardValue={invitationLink}
+        key={'copyToClipboard'}
       />,
     ]);
   }, [onActionsChange, shareInvitationHref, t, invitationLink]);
@@ -87,14 +87,18 @@ export const UserInvitationShareDialog = withDialog<UserInvitationShareDialogPro
           {t('The invitation for {{email}} will expire on {{expiryDate}}.', { email: openProps.item.key, expiryDate })}
         </Typography>
       </Box>
-      <Box marginY={1}>
+      <Box
+        sx={{
+          marginY: 1,
+        }}
+      >
         {t('Invitation link: {{invitationLink}}', { email: openProps.item.key, invitationLink })}
       </Box>
     </Box>
   );
 }, {
-  testId: 'UserInvitationShareDialog',
-  maxWidth: 'md',
-  fullWidth: true,
   defaultTitle: '',
+  fullWidth: true,
+  maxWidth: 'md',
+  testId: 'UserInvitationShareDialog',
 });

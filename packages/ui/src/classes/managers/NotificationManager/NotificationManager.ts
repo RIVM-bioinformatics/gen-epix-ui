@@ -6,8 +6,6 @@ import { WindowManager } from '../WindowManager';
 import type { Notification } from '../../../models/notification';
 
 export class NotificationManager extends SubscribableAbstract<Notification[]> {
-  private readonly notificationTimeouts: Record<string, ReturnType<typeof setTimeout>>;
-
   public static get instance(): NotificationManager {
     // Instances are stored on the window to prevent multiple instances of the same manager. HMR may load multiple instances of the same manager, but we only want one instance to be active at a time.
 
@@ -15,16 +13,19 @@ export class NotificationManager extends SubscribableAbstract<Notification[]> {
     return WindowManager.instance.window.managers.notification;
   }
 
+  private readonly notificationTimeouts: Record<string, ReturnType<typeof setTimeout>>;
+
   private constructor() {
     super(new Subject<Notification[]>([]));
     this.notificationTimeouts = {};
   }
 
-  public hideAllNotifications(): void {
-    this.subject.next(this.subject.data.map(x => ({
-      ...x,
-      visible: false,
-    })));
+  public clearNotification(key: string): void {
+    this.subject.next(this.subject.data.filter(x => x.key !== key));
+    if (this.notificationTimeouts[key]) {
+      clearTimeout(this.notificationTimeouts[key]);
+      delete this.notificationTimeouts[key];
+    }
   }
 
   public clearNotifications(): void {
@@ -35,12 +36,25 @@ export class NotificationManager extends SubscribableAbstract<Notification[]> {
     });
   }
 
-  public clearNotification(key: string): void {
-    this.subject.next(this.subject.data.filter(x => x.key !== key));
-    if (this.notificationTimeouts[key]) {
-      clearTimeout(this.notificationTimeouts[key]);
-      delete this.notificationTimeouts[key];
-    }
+  public fulfillNotification(key: string, message: Notification['message'], severity: Notification['severity']): void {
+    this.subject.next(this.subject.data.map(x => {
+      if (x.key === key) {
+        return {
+          ...x,
+          isLoading: false,
+          message,
+          severity,
+        };
+      }
+      return x;
+    }));
+  }
+
+  public hideAllNotifications(): void {
+    this.subject.next(this.subject.data.map(x => ({
+      ...x,
+      visible: false,
+    })));
   }
 
   public hideNotification(key: string): void {
@@ -57,31 +71,17 @@ export class NotificationManager extends SubscribableAbstract<Notification[]> {
     delete this.notificationTimeouts[key];
   }
 
-  public fulfillNotification(key: string, message: Notification['message'], severity: Notification['severity']): void {
-    this.subject.next(this.subject.data.map(x => {
-      if (x.key === key) {
-        return {
-          ...x,
-          message,
-          severity,
-          isLoading: false,
-        };
-      }
-      return x;
-    }));
-  }
-
-  public showNotification(notification: Omit<Notification, 'key' | 'visible' | 'timestamp'>): string {
+  public showNotification(notification: Omit<Notification, 'key' | 'timestamp' | 'visible'>): string {
     const key = StringUtil.createUuid();
     const autoHideAfterMs = notification.autoHideAfterMs ?? ConfigManager.instance.config.notifications.autoHideAfterMs;
 
     this.subject.next([
       {
         ...notification,
-        key,
         autoHideAfterMs,
-        visible: true,
+        key,
         timestamp: new Date().getTime(),
+        visible: true,
       },
       ...this.subject.data,
     ]);

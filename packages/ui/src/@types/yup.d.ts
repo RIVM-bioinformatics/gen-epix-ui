@@ -3,20 +3,9 @@ import type { StringSchema } from 'yup';
 
 declare module 'yup' {
   interface StringSchema {
-    code(): StringSchema;
-    strictAlpha(): StringSchema;
-    strictAlphaNumeric(): StringSchema;
     alpha(): StringSchema;
     alphaNumeric(): StringSchema;
-    extendedAlphaNumeric(): StringSchema;
-    freeFormText(): StringSchema;
-    email(): StringSchema;
-    uuid4(): StringSchema;
-    latLong(): StringSchema;
-    timeWeek(): StringSchema;
-    timeQuarter(): StringSchema;
-    timeMonth(): StringSchema;
-    timeYear(): StringSchema;
+    code(): StringSchema;
     decimal0(): StringSchema;
     decimal1(): StringSchema;
     decimal2(): StringSchema;
@@ -24,7 +13,18 @@ declare module 'yup' {
     decimal4(): StringSchema;
     decimal5(): StringSchema;
     decimal6(): StringSchema;
-    url(): StringSchema;
+    email(): StringSchema;
+    extendedAlphaNumeric(): StringSchema;
+    freeFormText(): StringSchema;
+    latLong(): StringSchema;
     regex(): StringSchema;
+    strictAlpha(): StringSchema;
+    strictAlphaNumeric(): StringSchema;
+    timeMonth(): StringSchema;
+    timeQuarter(): StringSchema;
+    timeWeek(): StringSchema;
+    timeYear(): StringSchema;
+    url(): StringSchema;
+    uuid4(): StringSchema;
   }
 }

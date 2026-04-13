@@ -8,10 +8,10 @@ import { useQueryMemo } from '../../hooks/useQueryMemo';
 
 export const useColSetMembersQuery = (): UseQueryResult<ColSetMember[]> => {
   return useQueryMemo({
-    queryKey: QueryUtil.getGenericKey(QUERY_KEY.COL_SET_MEMBERS),
     queryFn: async ({ signal }) => {
       const response = await CaseApi.instance.colSetMembersGetAll({ signal });
       return response.data;
     },
+    queryKey: QueryUtil.getGenericKey(QUERY_KEY.COL_SET_MEMBERS),
   });
 };

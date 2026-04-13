@@ -17,11 +17,11 @@ import { DataUtil } from '../../utils/DataUtil';
 
 export const useConceptQuery = (): UseQueryResult<Concept[]> => {
   return useQueryMemo({
-    queryKey: QueryUtil.getGenericKey(QUERY_KEY.CONCEPTS),
     queryFn: async ({ signal }) => {
       const response = await OntologyApi.instance.conceptsGetAll({ signal });
       return response.data;
     },
+    queryKey: QueryUtil.getGenericKey(QUERY_KEY.CONCEPTS),
   });
 };
 

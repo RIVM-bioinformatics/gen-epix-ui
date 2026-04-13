@@ -20,8 +20,8 @@ export const MultiSelectFilterField = ({ filter }: MultiSelectFilterFieldProps) 
       )}
       {filter.options.length > filter.maxNumOptionsExpanded && (
         <Autocomplete
-          multiple
           label={filter.label}
+          multiple
           name={filter.id}
           options={filter.options}
         />

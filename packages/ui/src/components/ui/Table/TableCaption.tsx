@@ -8,11 +8,11 @@ import { useTableStoreContext } from '../../../stores/tableStore';
 
 export type TableCaptionProps = {
   readonly caption: string;
-  readonly variant: TypographyProps['variant'];
   readonly component?: TypographyProps['component'];
+  readonly variant: TypographyProps['variant'];
 };
 
-export const TableCaption = <TRowData,>({ caption, variant = 'h2', component = 'h2' }: TableCaptionProps) => {
+export const TableCaption = <TRowData,>({ caption, component = 'h2', variant = 'h2' }: TableCaptionProps) => {
   const { t } = useTranslation();
   const tableStore = useTableStoreContext<TRowData>();
   const baseDataLength = useStore(tableStore, (state) => state.baseData.length);
@@ -25,8 +25,8 @@ export const TableCaption = <TRowData,>({ caption, variant = 'h2', component = '
     >
       <>
         {sortedDataLength === 0 && (caption ?? t('Items'))}
-        {sortedDataLength > 0 && sortedDataLength === baseDataLength && t('{{items}} ({{count}})', { items: caption ?? t('Items'), count: sortedDataLength, totalCount: baseDataLength })}
-        {sortedDataLength > 0 && sortedDataLength !== baseDataLength && t('{{items}} ({{count}} of {{totalCount}})', { items: caption ?? t('Items'), count: sortedDataLength, totalCount: baseDataLength })}
+        {sortedDataLength > 0 && sortedDataLength === baseDataLength && t('{{items}} ({{count}})', { count: sortedDataLength, items: caption ?? t('Items'), totalCount: baseDataLength })}
+        {sortedDataLength > 0 && sortedDataLength !== baseDataLength && t('{{items}} ({{count}} of {{totalCount}})', { count: sortedDataLength, items: caption ?? t('Items'), totalCount: baseDataLength })}
       </>
     </Typography>
   );

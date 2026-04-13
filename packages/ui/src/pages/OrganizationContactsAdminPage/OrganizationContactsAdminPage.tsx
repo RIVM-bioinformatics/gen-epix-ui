@@ -11,8 +11,8 @@ import { useParams } from 'react-router-dom';
 
 import type { Contact } from '../../api';
 import {
-  OrganizationApi,
   CommandName,
+  OrganizationApi,
 } from '../../api';
 import type { FormFieldDefinition } from '../../models/form';
 import { FORM_FIELD_DEFINITION_TYPE } from '../../models/form';
@@ -25,7 +25,7 @@ import type { OmitWithMetaData } from '../../models/data';
 import { SchemaUtil } from '../../utils/SchemaUtil';
 
 // Note: site_id is given in the route params
-type FormFields = OmitWithMetaData<Contact, 'site' | 'site_id'>;
+type FormFields = OmitWithMetaData<Contact, 'site_id' | 'site'>;
 
 export const OrganizationContactsAdminPage = () => {
   const { siteId } = useParams();
@@ -64,8 +64,8 @@ export const OrganizationContactsAdminPage = () => {
 
   const schema = useMemo(() => {
     return object<FormFields>().shape({
-      name: SchemaUtil.name,
       email: string().email().max(256),
+      name: SchemaUtil.name,
       phone: string().extendedAlphaNumeric().max(100),
     });
   }, []);
@@ -82,25 +82,25 @@ export const OrganizationContactsAdminPage = () => {
     return [
       {
         definition: FORM_FIELD_DEFINITION_TYPE.TEXTFIELD,
-        name: 'name',
         label: t`Name`,
+        name: 'name',
       } as const satisfies FormFieldDefinition<FormFields>,
       {
         definition: FORM_FIELD_DEFINITION_TYPE.TEXTFIELD,
-        name: 'email',
         label: t`Email`,
+        name: 'email',
       } as const satisfies FormFieldDefinition<FormFields>,
       {
         definition: FORM_FIELD_DEFINITION_TYPE.TEXTFIELD,
-        name: 'phone',
         label: t`Phone`,
+        name: 'phone',
       } as const satisfies FormFieldDefinition<FormFields>,
     ] as const;
   }, [t]);
 
   const tableColumns = useMemo((): TableColumn<Contact>[] => {
     return [
-      TableUtil.createTextColumn<Contact>({ id: 'name', name: t`Name`, advancedSort: true }),
+      TableUtil.createTextColumn<Contact>({ advancedSort: true, id: 'name', name: t`Name` }),
       TableUtil.createTextColumn<Contact>({ id: 'email', name: t`Email` }),
       TableUtil.createTextColumn<Contact>({ id: 'phone', name: t`Phone` }),
     ];
@@ -108,9 +108,9 @@ export const OrganizationContactsAdminPage = () => {
 
   return (
     <CrudPage<FormFields, Contact>
+      createItemDialogTitle={t`Create new contact`}
       createOne={createOne}
       crudCommandType={CommandName.ContactCrudCommand}
-      createItemDialogTitle={t`Create new contact`}
       defaultSortByField={'name'}
       defaultSortDirection={'asc'}
       deleteOne={deleteOne}

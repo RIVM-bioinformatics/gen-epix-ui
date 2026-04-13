@@ -16,14 +16,14 @@ export const dimTypePresentationValues: Record<DimType, string> = {
 
 export const useDimTypeOptionsQuery = (): UseOptions<string> => {
   return useMemo(() => {
-    const options: OptionBase<string>[] = Object.entries(dimTypePresentationValues).map(([value, label]) => ({ value, label }));
+    const options: OptionBase<string>[] = Object.entries(dimTypePresentationValues).map(([value, label]) => ({ label, value }));
     return {
-      isLoading: false,
+      error: null as UseOptions<string>,
       isEnabled: true,
       isFetching: false,
+      isLoading: false,
       isPending: false,
       options,
-      error: null as UseOptions<string>,
     };
   }, []);
 };

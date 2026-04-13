@@ -49,33 +49,34 @@ export const RouterRoot = () => {
 
   const oidcConfiguration = useSubscribable(AuthenticationManager.instance);
 
-  const { isLoading: isIdentityProvidersLoading, error: identityProvidersError, data: identityProvidersWithAvailability } = useQueryMemo<IdentityProviderWithAvailability[], Error, IdentityProviderWithAvailability[]>({
-    queryKey: QueryUtil.getGenericKey(QUERY_KEY.IDENTITY_PROVIDERS),
+  const { data: identityProvidersWithAvailability, error: identityProvidersError, isLoading: isIdentityProvidersLoading } = useQueryMemo<IdentityProviderWithAvailability[], Error, IdentityProviderWithAvailability[]>({
+    gcTime: Infinity,
     queryFn: async ({ signal }) => {
       const providers = (await AuthApi.instance.identityProvidersGetAll({ signal })).data;
       const providersWithAvailability: IdentityProviderWithAvailability[] = [];
       for (const provider of providers) {
-        let isAvailable = false;
         try {
           await axios.get(provider.discovery_url, {
             signal,
             timeout: 3000,
           });
-          isAvailable = true;
+          providersWithAvailability.push({
+            isAvailable: true,
+            provider,
+          });
         } catch {
           if (oidcConfiguration?.name === provider.name) {
             AuthenticationManager.instance.next(undefined);
           }
-          isAvailable = false;
+          providersWithAvailability.push({
+            isAvailable: false,
+            provider,
+          });
         }
-        providersWithAvailability.push({
-          provider,
-          isAvailable,
-        });
       }
       return providersWithAvailability;
     },
-    gcTime: Infinity,
+    queryKey: QueryUtil.getGenericKey(QUERY_KEY.IDENTITY_PROVIDERS),
     staleTime: Infinity,
   });
 
@@ -83,21 +84,14 @@ export const RouterRoot = () => {
     return identityProvidersWithAvailability?.filter(x => x.isAvailable) ?? [];
   }, [identityProvidersWithAvailability]);
 
-  const onSignin = useCallback(() => {
-    LogManager.instance.log([{
-      topic: 'USER_LOGIN',
-      level: LogLevel.INFO,
-    }]);
-  }, []);
-
   useEffect(() => {
     NavigationHistoryManager.instance.navigationHistory.push(location.pathname);
     LogManager.instance.log([{
-      topic: 'USER_NAVIGATION',
-      level: LogLevel.INFO,
       detail: {
         pathname: location.pathname,
       },
+      level: LogLevel.INFO,
+      topic: 'USER_NAVIGATION',
     }]);
   }, [location.pathname]);
 
@@ -106,10 +100,6 @@ export const RouterRoot = () => {
       AuthenticationManager.instance.next(identityProvidersWithAvailability[0].provider);
     }
   }, [availableIdentityProviders.length, identityProvidersWithAvailability]);
-
-  const onTryAgainButtonClick = useCallback(() => {
-    window.location.reload();
-  }, []);
 
   const userManager = useMemo<UserManager>(() => {
     if (!oidcConfiguration || !availableIdentityProviders?.length) {
@@ -126,21 +116,31 @@ export const RouterRoot = () => {
     return window.userManager;
   }, [availableIdentityProviders?.length, identityProvidersWithAvailability, oidcConfiguration]);
 
+  const onSignin = useCallback(() => {
+    LogManager.instance.log([{
+      level: LogLevel.INFO,
+      topic: 'USER_LOGIN',
+    }]);
+  }, []);
+
+  const onTryAgainButtonClick = useCallback(() => {
+    window.location.reload();
+  }, []);
+
   if (isIdentityProvidersLoading) {
     return <Spinner />;
   }
-
 
   if (identityProvidersError) {
     return (
       <PageContainer
         singleAction
-        title={'Error'}
         testIdAttributes={TestIdUtil.createAttributes('ErrorPage')}
+        title={'Error'}
       >
         <Box
-          marginY={2}
           sx={{
+            marginY: 2,
             textAlign: 'center',
           }}
         >
@@ -149,8 +149,8 @@ export const RouterRoot = () => {
           </Typography>
           <Box sx={{ marginTop: 2 }}>
             <Button
-              variant={'outlined'}
               onClick={onTryAgainButtonClick}
+              variant={'outlined'}
             >
               {t`Try again`}
             </Button>
@@ -168,8 +168,8 @@ export const RouterRoot = () => {
 
   return (
     <AuthProvider
-      userManager={userManager}
       onSigninCallback={onSignin}
+      userManager={userManager}
     >
       <AuthenticationWrapper>
         <ApplicationBootstrap>

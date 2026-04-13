@@ -20,13 +20,13 @@ import {
 import type { ObjectSchema } from 'yup';
 import isArray from 'lodash/isArray';
 import type {
-  UseFormReturn,
   FieldValues,
+  UseFormReturn,
 } from 'react-hook-form';
 
 import type {
-  CommandName,
   ApiPermission,
+  CommandName,
 } from '../../api';
 import { PermissionType } from '../../api';
 import { AuthorizationManager } from '../../classes/managers/AuthorizationManager';
@@ -35,10 +35,10 @@ import { RouterManager } from '../../classes/managers/RouterManager';
 import { PageContainer } from '../../components/ui/PageContainer';
 import { ResponseHandler } from '../../components/ui/ResponseHandler';
 import {
-  TableHeader,
-  TableCaption,
-  TableSidebarMenu,
   Table,
+  TableCaption,
+  TableHeader,
+  TableSidebarMenu,
 } from '../../components/ui/Table';
 import type { MutationContextCreate } from '../../hooks/useCreateMutation';
 import { useCreateMutation } from '../../hooks/useCreateMutation';
@@ -51,9 +51,9 @@ import type { GenericData } from '../../models/data';
 import type { Loadable } from '../../models/dataHooks';
 import type { QUERY_KEY } from '../../models/query';
 import type {
+  TableColumn,
   TableRowParams,
   TableSortDirection,
-  TableColumn,
 } from '../../models/table';
 import type { PropsWithTestIdAttributes } from '../../models/testId';
 import {
@@ -72,64 +72,64 @@ import { CrudPageEditDialog } from './CrudPageEditDialog';
 import type { CrudPageDeleteDialogRefMethods } from './CrudPageDeleteDialog';
 import { CrudPageDeleteDialog } from './CrudPageDeleteDialog';
 
-export type CrudPageSubPage<TData extends GenericData> = {
-  getPathName: (item: TData) => string;
-  label: string;
-  icon?: ReactElement;
-};
-
 export type CrudPageProps<
   TFormFields extends FieldValues,
   TData extends GenericData,
   TTableData extends TData = TData
 > = PropsWithTestIdAttributes<{
+  readonly associationQueryKeys?: string[][];
+  readonly canEditItem?: (item: TData) => boolean;
+  readonly contentActions?: ReactElement;
   readonly contentHeader?: string;
+  readonly convertToTableData?: (items: TData[]) => TTableData[];
   readonly createItemButtonText?: string;
   readonly createItemDialogTitle?: string;
   readonly createOne?: (item: TFormFields) => Promise<TData>;
-  readonly canEditItem?: (item: TData) => boolean;
-  readonly subPages?: CrudPageSubPage<TData>[];
-  readonly defaultNewItem?: Partial<TFormFields>;
   readonly crudCommandType?: CommandName;
   readonly customOnRowClick?: (params: TableRowParams<TData>) => void;
+  readonly defaultNewItem?: Partial<TFormFields>;
   readonly defaultSortByField: keyof TTableData;
   readonly defaultSortDirection: TableSortDirection;
   readonly deleteOne?: (item: TData) => Promise<unknown>;
+  readonly editDialogExtraActionsFactory?: (item: TData) => DialogAction[];
   readonly extraActionsFactory?: (params: TableRowParams<TData>) => ReactElement[];
   readonly extraCreateOnePermissions?: ApiPermission[];
   readonly extraDeleteOnePermissions?: ApiPermission[];
   readonly extraUpdateOnePermissions?: ApiPermission[];
   readonly fetchAll: (signal: AbortSignal) => Promise<TData[]>;
   readonly fetchAllSelect?: (data: TData[]) => TData[];
-  readonly formFieldDefinitions: FormFieldDefinition<TFormFields>[] | ((values: TFormFields, item: TData) => FormFieldDefinition<TFormFields>[]);
+  readonly formFieldDefinitions: ((values: TFormFields, item: TData) => FormFieldDefinition<TFormFields>[]) | FormFieldDefinition<TFormFields>[];
+  readonly getFormValuesFromItem?: (item: TData) => Partial<TFormFields>;
   readonly getName: (item: TData | TFormFields) => string;
+  readonly getOptimisticUpdateIntermediateItem?: (variables: TFormFields, previousItem: TData) => TData;
   readonly loadables?: Loadable[];
+  readonly onCreateError?: (error: unknown, variables: TFormFields, context: MutationContextCreate<TData>) => Promise<void> | void;
+  readonly onCreateSuccess?: (item: TData, variables: TFormFields, context: MutationContextCreate<TData>) => Promise<void> | void;
+  readonly onDeleteError?: (error: unknown, item: TData, context: MutationContextDelete<TData>) => Promise<void> | void;
+  readonly onDeleteSuccess?: (item: TData, context: MutationContextDelete<TData>) => Promise<void> | void;
+  readonly onEditError?: (error: unknown, variables: TFormFields, context: MutationContextEdit<TData>) => Promise<void> | void;
+  readonly onEditSuccess?: (item: TData, variables: TFormFields, context: MutationContextEdit<TData>) => Promise<void> | void;
+  readonly onFormChange?: (item: TData, formValues: TFormFields, formMethods: UseFormReturn<TFormFields>) => void;
+  readonly onRowsChange?: (items: TData[]) => void;
   readonly onShowItem?: (params: TableRowParams<TTableData>) => void;
-  readonly resourceQueryKeyBase: QUERY_KEY;
-  readonly tableStoreStorageVersion?: number;
-  readonly tableStoreStorageNamePostFix?: string;
-  readonly associationQueryKeys?: string[][];
   readonly readOnly?: boolean;
+  readonly resourceQueryKeyBase: QUERY_KEY;
   readonly schema?: ObjectSchema<TFormFields, TFormFields>;
   readonly showBreadcrumbs?: boolean;
   readonly showIdColumn?: boolean;
+  readonly subPages?: CrudPageSubPage<TData>[];
   readonly tableColumns: TableColumn<TTableData>[];
-  readonly contentActions?: ReactElement;
+  readonly tableStoreStorageNamePostFix?: string;
+  readonly tableStoreStorageVersion?: number;
   readonly title: string | string[];
   readonly updateOne?: (variables: TFormFields, data: TData) => Promise<TData>;
-  readonly convertToTableData?: (items: TData[]) => TTableData[];
-  readonly onFormChange?: (item: TData, formValues: TFormFields, formMethods: UseFormReturn<TFormFields>) => void;
-  readonly onEditSuccess?: (item: TData, variables: TFormFields, context: MutationContextEdit<TData>) => Promise<void> | void;
-  readonly onEditError?: (error: unknown, variables: TFormFields, context: MutationContextEdit<TData>) => Promise<void> | void;
-  readonly onCreateSuccess?: (item: TData, variables: TFormFields, context: MutationContextCreate<TData>) => Promise<void> | void;
-  readonly onCreateError?: (error: unknown, variables: TFormFields, context: MutationContextCreate<TData>) => Promise<void> | void;
-  readonly onDeleteSuccess?: (item: TData, context: MutationContextDelete<TData>) => Promise<void> | void;
-  readonly onDeleteError?: (error: unknown, item: TData, context: MutationContextDelete<TData>) => Promise<void> | void;
-  readonly onRowsChange?: (items: TData[]) => void;
-  readonly editDialogExtraActionsFactory?: (item: TData) => DialogAction[];
-  readonly getOptimisticUpdateIntermediateItem?: (variables: TFormFields, previousItem: TData) => TData;
-  readonly getFormValuesFromItem?: (item: TData) => Partial<TFormFields>;
 }>;
+
+export type CrudPageSubPage<TData extends GenericData> = {
+  getPathName: (item: TData) => string;
+  icon?: ReactElement;
+  label: string;
+};
 
 export const CrudPage = <
   TFormFields extends FieldValues,
@@ -150,7 +150,6 @@ export const CrudPage = <
   defaultSortByField,
   defaultSortDirection,
   deleteOne,
-  subPages,
   editDialogExtraActionsFactory,
   extraActionsFactory,
   extraCreateOnePermissions,
@@ -159,6 +158,7 @@ export const CrudPage = <
   fetchAll,
   fetchAllSelect,
   formFieldDefinitions,
+  getFormValuesFromItem,
   getName,
   getOptimisticUpdateIntermediateItem,
   loadables,
@@ -174,13 +174,13 @@ export const CrudPage = <
   resourceQueryKeyBase,
   schema,
   showIdColumn = false,
+  subPages,
   tableColumns,
   tableStoreStorageNamePostFix,
   tableStoreStorageVersion,
   testIdAttributes,
   title,
   updateOne,
-  getFormValuesFromItem,
 }: CrudPageProps<TFormFields, TData, TTableData>) => {
   const { t } = useTranslation();
   const theme = useTheme();
@@ -189,10 +189,10 @@ export const CrudPage = <
   const authorizationManager = useMemo(() => AuthorizationManager.instance, []);
   const resourceQueryKey = useMemo(() => [resourceQueryKeyBase], [resourceQueryKeyBase]);
   const tableStore = useMemo(() => createTableStore<TTableData>({
-    navigatorFunction: RouterManager.instance.router.navigate,
-    idSelectorCallback: (item) => item.id,
     defaultSortByField: defaultSortByField as string,
     defaultSortDirection,
+    idSelectorCallback: (item) => item.id,
+    navigatorFunction: RouterManager.instance.router.navigate,
     storageNamePostFix: tableStoreStorageNamePostFix ? `CRUDPage-${resourceQueryKeyBase}-${tableStoreStorageNamePostFix}` : `CRUDPage-${resourceQueryKeyBase}`,
     storageVersion: tableStoreStorageVersion ?? 1,
   }), [defaultSortByField, defaultSortDirection, resourceQueryKeyBase, tableStoreStorageNamePostFix, tableStoreStorageVersion]);
@@ -204,11 +204,11 @@ export const CrudPage = <
     return false;
   }, [loadables]);
 
-  const { isLoading: isRowsLoading, error: rowsError, data: rows } = useQueryMemo({
-    queryKey: resourceQueryKey,
-    queryFn: async ({ signal }) => fetchAll(signal),
-    select: fetchAllSelect,
+  const { data: rows, error: rowsError, isLoading: isRowsLoading } = useQueryMemo({
     enabled: !isLoadablesLoading,
+    queryFn: async ({ signal }) => fetchAll(signal),
+    queryKey: resourceQueryKey,
+    select: fetchAllSelect,
   });
 
   useEffect(() => {
@@ -278,12 +278,12 @@ export const CrudPage = <
     }
     subPages?.forEach(subPage => {
       actions.push({
-        label: subPage.label,
         color: 'primary',
-        variant: 'outlined',
+        label: subPage.label,
         onClick: async () => await RouterManager.instance.router.navigate({
           pathname: subPage.getPathName(item),
         }),
+        variant: 'outlined',
       });
     });
 
@@ -292,9 +292,9 @@ export const CrudPage = <
 
   const editItem = useCallback((item: TTableData) => {
     editDialogRef.current.open({
+      canSave: userCanEdit && (!item || canEditItem ? canEditItem(item) : true),
       extraActionsFactory: normalizedEditDialogExtraActionsFactory,
       item,
-      canSave: userCanEdit && (!item || canEditItem ? canEditItem(item) : true),
     });
   }, [canEditItem, normalizedEditDialogExtraActionsFactory, userCanEdit]);
 
@@ -363,37 +363,37 @@ export const CrudPage = <
   }, [associationQueryKeys, resourceQueryKeyBase]);
 
   const { mutate: mutateEdit, setPreviousItem: mutateEditSetPreviousItem } = useEditMutation<TData, TFormFields>({
-    queryFn: updateOne,
-    resourceQueryKey,
     associationQueryKeys: calculatedAssociationQueryKeys,
     getErrorNotificationMessage: getEditErrorNotificationMessage,
-    getSuccessNotificationMessage: getEditSuccessNotificationMessage,
-    getProgressNotificationMessage: getEditProgressNotificationMessage,
-    onSuccess: onEditSuccess,
-    onError: onEditError,
     getIntermediateItem: getOptimisticUpdateIntermediateItem,
+    getProgressNotificationMessage: getEditProgressNotificationMessage,
+    getSuccessNotificationMessage: getEditSuccessNotificationMessage,
+    onError: onEditError,
+    onSuccess: onEditSuccess,
+    queryFn: updateOne,
+    resourceQueryKey,
   });
 
-  const { mutate: mutateCreate, isMutating: isCreating } = useCreateMutation<TData, TFormFields>({
-    queryFn: createOne,
-    resourceQueryKey,
+  const { isMutating: isCreating, mutate: mutateCreate } = useCreateMutation<TData, TFormFields>({
     associationQueryKeys: calculatedAssociationQueryKeys,
     getErrorNotificationMessage: getCreateErrorNotificationMessage,
-    getSuccessNotificationMessage: getCreateSuccessNotificationMessage,
     getProgressNotificationMessage: getCreateProgressNotificationMessage,
-    onSuccess: onCreateSuccess,
+    getSuccessNotificationMessage: getCreateSuccessNotificationMessage,
     onError: onCreateError,
+    onSuccess: onCreateSuccess,
+    queryFn: createOne,
+    resourceQueryKey,
   });
 
   const { mutate: mutateDelete } = useDeleteMutation<TData>({
-    queryFn: deleteOne,
-    resourceQueryKey,
     associationQueryKeys: calculatedAssociationQueryKeys,
     getErrorNotificationMessage: getDeleteErrorNotificationMessage,
-    getSuccessNotificationMessage: getDeleteSuccessNotificationMessage,
     getProgressNotificationMessage: getDeleteProgressNotificationMessage,
-    onSuccess: onDeleteSuccess,
+    getSuccessNotificationMessage: getDeleteSuccessNotificationMessage,
     onError: onDeleteError,
+    onSuccess: onDeleteSuccess,
+    queryFn: deleteOne,
+    resourceQueryKey,
   });
 
   const onEditDialogSave = useCallback((formValues: TFormFields, item: TData) => {
@@ -434,7 +434,7 @@ export const CrudPage = <
       actions.push((
         <MenuItem
           key={subPage.label}
-          // eslint-disable-next-line react/jsx-no-bind
+          // eslint-disable-next-line @eslint-react/kit/jsx-no-bind
           onClick={async () => await RouterManager.instance.router.navigate({
             pathname: subPage.getPathName(params.row),
           })}
@@ -461,23 +461,22 @@ export const CrudPage = <
       internalColumns.push({
         headerName: t`Id`,
         id: 'id',
+        isInitiallyVisible: true,
         type: 'text',
         widthPx: 300,
-        isInitiallyVisible: true,
       });
     }
     internalColumns.push(...tableColumns);
 
     internalColumns.push(
       TableUtil.createActionsColumn({
-        t,
         getActions: (params) => {
           const actions: ReactElement[] = [];
           if (onShowItem) {
             actions.push(
               <MenuItem
                 key={'actions1'}
-                // eslint-disable-next-line react/jsx-no-bind
+                // eslint-disable-next-line @eslint-react/kit/jsx-no-bind
                 onClick={() => onShowItem(params)}
               >
                 <ListItemIcon>
@@ -492,7 +491,7 @@ export const CrudPage = <
           actions.push(
             <MenuItem
               key={'actions2'}
-              // eslint-disable-next-line react/jsx-no-bind
+              // eslint-disable-next-line @eslint-react/kit/jsx-no-bind
               onClick={() => onEditIconClick(params)}
             >
               <ListItemIcon>
@@ -507,7 +506,7 @@ export const CrudPage = <
             actions.push(
               <MenuItem
                 key={'actions3'}
-                // eslint-disable-next-line react/jsx-no-bind
+                // eslint-disable-next-line @eslint-react/kit/jsx-no-bind
                 onClick={() => deleteConfirmationRef.current.open({
                   item: params.row,
                 })}
@@ -527,6 +526,7 @@ export const CrudPage = <
           }
           return actions;
         },
+        t,
       }),
     );
     return internalColumns;
@@ -539,7 +539,7 @@ export const CrudPage = <
     return convertToTableData(rows);
   }, [convertToTableData, rows]);
 
-  useInitializeTableStore<TTableData>({ store: tableStore, columns, rows: tableRows, createFiltersFromColumns: true });
+  useInitializeTableStore<TTableData>({ columns, createFiltersFromColumns: true, rows: tableRows, store: tableStore });
 
   const onCreateItemButtonClick = useCallback(() => {
     editDialogRef.current.open({
@@ -556,8 +556,8 @@ export const CrudPage = <
     return (
       <Box
         sx={{
-          display: 'flex',
           alignItems: 'center',
+          display: 'flex',
           gap: theme.spacing(1),
         }}
       >
@@ -567,9 +567,9 @@ export const CrudPage = <
             color={'secondary'}
             disabled={isLoading || isCreating}
             loading={isLoading || isCreating}
+            onClick={onCreateItemButtonClick}
             size={'small'}
             variant={'contained'}
-            onClick={onCreateItemButtonClick}
           >
             {createItemButtonText ?? t`Create item`}
           </Button>
@@ -590,8 +590,6 @@ export const CrudPage = <
   return (
     <TableStoreContextProvider store={tableStore}>
       <PageContainer
-        fullWidth
-        showBreadcrumbs
         contentActions={customContentActions}
         contentHeader={(
           <TableCaption
@@ -600,13 +598,15 @@ export const CrudPage = <
             variant={'h2'}
           />
         )}
+        fullWidth
+        showBreadcrumbs
         testIdAttributes={testIdAttributes}
         title={normalizedTitle}
       >
         <Box
           sx={{
-            position: 'relative',
             height: '100%',
+            position: 'relative',
           }}
         >
           <ResponseHandler
@@ -616,9 +616,9 @@ export const CrudPage = <
             <TableSidebarMenu />
             <Box
               sx={{
-                width: '100%',
                 height: '100%',
                 paddingLeft: theme.spacing(ConfigManager.instance.config.layout.SIDEBAR_MENU_WIDTH + 1),
+                width: '100%',
               }}
             >
               <Table
@@ -629,20 +629,20 @@ export const CrudPage = <
           </ResponseHandler>
         </Box>
         <CrudPageEditDialog
-          ref={editDialogRef}
+          createItemDialogTitle={createItemDialogTitle}
           defaultNewItem={defaultNewItem}
           formFieldDefinitions={formFieldDefinitions}
-          getName={getName}
-          createItemDialogTitle={createItemDialogTitle}
-          schema={schema}
           getFormValuesFromItem={getFormValuesFromItem}
-          onSave={onEditDialogSave}
+          getName={getName}
           onChange={onFormChange}
+          onSave={onEditDialogSave}
+          ref={editDialogRef}
+          schema={schema}
         />
         <CrudPageDeleteDialog
-          ref={deleteConfirmationRef}
           getName={getName}
           onConfirm={onDeleteConfirmationConfirm}
+          ref={deleteConfirmationRef}
         />
       </PageContainer>
     </TableStoreContextProvider>

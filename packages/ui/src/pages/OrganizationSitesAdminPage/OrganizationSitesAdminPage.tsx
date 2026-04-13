@@ -8,8 +8,8 @@ import { useParams } from 'react-router-dom';
 
 import type { Site } from '../../api';
 import {
-  OrganizationApi,
   CommandName,
+  OrganizationApi,
   PermissionType,
 } from '../../api';
 import type { FormFieldDefinition } from '../../models/form';
@@ -71,15 +71,15 @@ export const OrganizationSitesAdminPage = () => {
     return [
       {
         definition: FORM_FIELD_DEFINITION_TYPE.TEXTFIELD,
-        name: 'name',
         label: t`Name`,
+        name: 'name',
       } as const satisfies FormFieldDefinition<FormFields>,
     ] as const;
   }, [t]);
 
   const tableColumns = useMemo((): TableColumn<Site>[] => {
     return [
-      TableUtil.createTextColumn<Site>({ id: 'name', name: t`Name`, advancedSort: true }),
+      TableUtil.createTextColumn<Site>({ advancedSort: true, id: 'name', name: t`Name` }),
     ];
   }, [t]);
 
@@ -100,21 +100,20 @@ export const OrganizationSitesAdminPage = () => {
 
     return [
       {
-        label: t`Manage contacts`,
         getPathName: (item: Site) => `/management/organizations/${item.organization_id}/sites/${item.id}/contacts`,
+        label: t`Manage contacts`,
       } satisfies CrudPageSubPage<Site>,
     ];
   }, [t]);
 
   return (
     <CrudPage<FormFields, Site>
+      createItemDialogTitle={t`Create new site`}
       createOne={createOne}
       crudCommandType={CommandName.SiteCrudCommand}
-      createItemDialogTitle={t`Create new site`}
       defaultSortByField={'name'}
       defaultSortDirection={'asc'}
       deleteOne={deleteOne}
-      subPages={subPages}
       fetchAll={fetchAll}
       fetchAllSelect={fetchAllSelect}
       formFieldDefinitions={formFieldDefinitions}
@@ -122,6 +121,7 @@ export const OrganizationSitesAdminPage = () => {
       getOptimisticUpdateIntermediateItem={getOptimisticUpdateIntermediateItem}
       resourceQueryKeyBase={QUERY_KEY.SITES}
       schema={schema}
+      subPages={subPages}
       tableColumns={tableColumns}
       testIdAttributes={TestIdUtil.createAttributes('OrganizationSitesAdminPage')}
       title={t`Organization Sites`}

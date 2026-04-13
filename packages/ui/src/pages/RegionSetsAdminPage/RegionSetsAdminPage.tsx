@@ -10,8 +10,8 @@ import {
 
 import type { RegionSet } from '../../api';
 import {
-  GeoApi,
   CommandName,
+  GeoApi,
   PermissionType,
 } from '../../api';
 import type { FormFieldDefinition } from '../../models/form';
@@ -55,8 +55,8 @@ export const RegionSetsAdminPage = () => {
     return object<FormFields>().shape({
       code: SchemaUtil.code,
       name: SchemaUtil.name,
-      resolution: SchemaUtil.number.integer().positive().max(10000).required(),
       region_code_as_label: boolean().required(),
+      resolution: SchemaUtil.number.integer().positive().max(10000).required(),
     });
   }, []);
 
@@ -64,24 +64,24 @@ export const RegionSetsAdminPage = () => {
     return [
       {
         definition: FORM_FIELD_DEFINITION_TYPE.TEXTFIELD,
-        name: 'name',
         label: t`Name`,
+        name: 'name',
       } as const satisfies FormFieldDefinition<FormFields>,
       {
         definition: FORM_FIELD_DEFINITION_TYPE.TEXTFIELD,
-        name: 'code',
         label: t`Code`,
+        name: 'code',
       } as const satisfies FormFieldDefinition<FormFields>,
       {
         definition: FORM_FIELD_DEFINITION_TYPE.TEXTFIELD,
-        name: 'resolution',
         label: t`Resolution`,
+        name: 'resolution',
         type: 'number',
       } as const satisfies FormFieldDefinition<FormFields>,
       {
         definition: FORM_FIELD_DEFINITION_TYPE.BOOLEAN,
-        name: 'region_code_as_label',
         label: t`Region code as label`,
+        name: 'region_code_as_label',
       } as const satisfies FormFieldDefinition<FormFields>,
     ] as const;
   }, [t]);
@@ -104,8 +104,8 @@ export const RegionSetsAdminPage = () => {
     ])) {
       pages.push(
         {
-          label: t`Manage regions`,
           getPathName: (item: RegionSet) => `/management/region-sets/${item.id}/regions`,
+          label: t`Manage regions`,
         } satisfies CrudPageSubPage<RegionSet>,
       );
     }
@@ -115,8 +115,8 @@ export const RegionSetsAdminPage = () => {
     ])) {
       pages.push(
         {
-          label: t`Manage shapes`,
           getPathName: (item: RegionSet) => `/management/region-sets/${item.id}/shapes`,
+          label: t`Manage shapes`,
         } satisfies CrudPageSubPage<RegionSet>,
       );
     }
@@ -126,18 +126,18 @@ export const RegionSetsAdminPage = () => {
 
   return (
     <CrudPage<FormFields, RegionSet>
+      createItemDialogTitle={t`Create new region set`}
       createOne={createOne}
       crudCommandType={CommandName.RegionSetCrudCommand}
-      createItemDialogTitle={t`Create new region set`}
       defaultSortByField={'name'}
       defaultSortDirection={'asc'}
       deleteOne={deleteOne}
       fetchAll={fetchAll}
-      subPages={subPages}
       formFieldDefinitions={formFieldDefinitions}
       getName={getName}
       resourceQueryKeyBase={QUERY_KEY.REGION_SETS}
       schema={schema}
+      subPages={subPages}
       tableColumns={tableColumns}
       testIdAttributes={TestIdUtil.createAttributes('RegionSetsAdminPage')}
       title={t`Region sets`}

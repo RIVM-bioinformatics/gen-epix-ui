@@ -1,12 +1,11 @@
 import {
-  describe,
-  it,
-  expect,
-  vi,
-  beforeAll,
   afterAll,
+  beforeAll,
+  describe,
+  expect,
+  it,
+  vi,
 } from 'vitest';
-
 
 import { ConfigManager } from '../../classes/managers/ConfigManager';
 import { QueryClientManager } from '../../classes/managers/QueryClientManager';

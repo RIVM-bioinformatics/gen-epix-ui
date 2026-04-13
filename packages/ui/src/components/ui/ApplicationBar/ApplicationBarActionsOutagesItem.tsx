@@ -9,7 +9,6 @@ import {
   useMemo,
   useRef,
 } from 'react';
-import { Fragment } from 'react/jsx-runtime';
 import ConstructionIcon from '@mui/icons-material/Construction';
 import { useTranslation } from 'react-i18next';
 import { useStore } from 'zustand';
@@ -42,17 +41,17 @@ export const ApplicationBarActionsOutagesItem = () => {
 
 
   return (
-    <Fragment>
+    <>
       <IconButton
         aria-label={t`Outages`}
         color={'inherit'}
-        title={t`Outages`}
         onClick={onMenuIconClick}
+        title={t`Outages`}
       >
         <Badge
           badgeContent={badgeContent}
           color={'secondary'}
-          sx={{ '& .MuiBadge-badge': { fontSize: 9, height: 15, minWidth: 15, border: '1px solid white' } }}
+          sx={{ '& .MuiBadge-badge': { border: '1px solid white', fontSize: 9, height: 15, minWidth: 15 } }}
         >
           <ConstructionIcon color={'inherit'} />
         </Badge>
@@ -61,8 +60,8 @@ export const ApplicationBarActionsOutagesItem = () => {
             fontSize: '1.3rem',
             marginLeft: theme.spacing(1),
             [theme.breakpoints.up('md')]: {
-              visibility: 'hidden',
               position: 'absolute',
+              visibility: 'hidden',
             },
           }}
         >
@@ -70,6 +69,6 @@ export const ApplicationBarActionsOutagesItem = () => {
         </Box>
       </IconButton>
       <OutagesDialog ref={outagesDialogRef} />
-    </Fragment>
+    </>
   );
 };

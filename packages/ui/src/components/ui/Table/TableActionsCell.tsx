@@ -10,7 +10,6 @@ import {
   useState,
 } from 'react';
 import { useTranslation } from 'react-i18next';
-import noop from 'lodash/noop';
 
 import type { TableColumnActions } from '../../../models/table';
 
@@ -37,40 +36,44 @@ export const TableActionsCell = <TRowData,>(props: TableActionsCellProps<TRowDat
   }, []);
 
   const actions = useMemo(() => {
-    return props.column.getActions({ row: props.row, id: props.column.id, rowIndex: props.rowIndex });
+    return props.column.getActions({ id: props.column.id, row: props.row, rowIndex: props.rowIndex });
   }, [props.column, props.row, props.rowIndex]);
+
+  const onTableCellClick = useCallback(() => {
+    // Prevent the TableCell's onClick from being triggered when clicking the action button
+  }, []);
 
   return (
     <TableCell
       key={props.column.id}
       {...props}
-      onClick={noop}
+      onClick={onTableCellClick}
     >
       {actions.length > 0 && (
         <>
           <IconButton
             aria-label={t`Row actions`}
+            onClick={onIconButtonClick}
             sx={{
-              position: 'absolute',
-              marginTop: '-2px',
               '& svg': {
                 fontSize: 18,
               },
+              marginTop: '-2px',
+              position: 'absolute',
             }}
-            onClick={onIconButtonClick}
           >
             <MoreVertIcon />
           </IconButton>
           <Menu
             anchorEl={anchorElement}
             id={'basic-menu'}
+            onClose={onMenuClose}
             open={open}
             slotProps={{
               list: {
                 'aria-labelledby': 'basic-button',
               },
             }}
-            onClose={onMenuClose}
           >
             {actions}
           </Menu>

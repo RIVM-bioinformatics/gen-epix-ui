@@ -6,17 +6,15 @@ export class CaseSelectionUtil {
     return Array.from(new Set(caseIds));
   }
 
-  public static removeComponentCaseIdsFromSelection(componentCaseIds: string[], selectedIds: string[]): string[] {
-    return selectedIds.filter(caseId => !componentCaseIds.includes(caseId));
-  }
-
-  public static refineSelectionWithComponentCaseIds(componentCaseIds: string[], selectedIds: string[]): string[] {
-    return componentCaseIds.filter(caseId => selectedIds.includes(caseId));
-  }
-
   public static canAddToSelection(componentCaseIds: string[], selectedIds: string[]): boolean {
     const intersectedCaseIds = intersection(componentCaseIds, selectedIds);
     return intersectedCaseIds.length !== componentCaseIds.length;
+  }
+
+  public static canRefineSelection(componentCaseIds: string[], selectedIds: string[]): boolean {
+    const intersectedCaseIds = intersection(componentCaseIds, selectedIds);
+    const negationResult = intersectedCaseIds.length === 0 || (intersectedCaseIds.length === componentCaseIds.length && intersectedCaseIds.length === selectedIds.length);
+    return !negationResult;
   }
 
   public static canRemoveFromSelection(componentCaseIds: string[], selectedIds: string[]): boolean {
@@ -24,9 +22,11 @@ export class CaseSelectionUtil {
     return intersectedCaseIds.length > 0;
   }
 
-  public static canRefineSelection(componentCaseIds: string[], selectedIds: string[]): boolean {
-    const intersectedCaseIds = intersection(componentCaseIds, selectedIds);
-    const negationResult = intersectedCaseIds.length === 0 || (intersectedCaseIds.length === componentCaseIds.length && intersectedCaseIds.length === selectedIds.length);
-    return !negationResult;
+  public static refineSelectionWithComponentCaseIds(componentCaseIds: string[], selectedIds: string[]): string[] {
+    return componentCaseIds.filter(caseId => selectedIds.includes(caseId));
+  }
+
+  public static removeComponentCaseIdsFromSelection(componentCaseIds: string[], selectedIds: string[]): string[] {
+    return selectedIds.filter(caseId => !componentCaseIds.includes(caseId));
   }
 }

@@ -1,13 +1,13 @@
 import {
-  useEffect,
   type ReactElement,
+  useEffect,
 } from 'react';
 import { useTranslation } from 'react-i18next';
 
 import {
-  type WithDialogRenderProps,
-  type WithDialogRefMethods,
   withDialog,
+  type WithDialogRefMethods,
+  type WithDialogRenderProps,
 } from '../../../hoc/withDialog';
 import type { Case } from '../../../api';
 import { TestIdUtil } from '../../../utils/TestIdUtil';
@@ -25,10 +25,10 @@ export type EpiBulkEditCaseDialogRefMethods = WithDialogRefMethods<EpiBulkEditCa
 
 export const EpiBulkEditCaseDialog = withDialog<EpiBulkEditCaseDialogProps, EpiBulkEditCaseDialogOpenProps>((
   {
-    openProps,
     onActionsChange,
-    onTitleChange,
     onClose,
+    onTitleChange,
+    openProps,
   }: EpiBulkEditCaseDialogProps,
 ): ReactElement => {
   const { t } = useTranslation();
@@ -43,9 +43,9 @@ export const EpiBulkEditCaseDialog = withDialog<EpiBulkEditCaseDialogProps, EpiB
     actions.push({
       ...TestIdUtil.createAttributes('EpiCaseInfoDialog-closeButton'),
       color: 'secondary',
-      variant: 'contained',
       label: t`Close`,
       onClick: onClose,
+      variant: 'contained',
     });
     onActionsChange(actions);
   }, [onActionsChange, onClose, t]);
@@ -54,8 +54,8 @@ export const EpiBulkEditCaseDialog = withDialog<EpiBulkEditCaseDialogProps, EpiB
     <div />
   );
 }, {
-  testId: 'EpiBulkEditCaseDialog',
-  maxWidth: 'lg',
-  fullWidth: true,
   defaultTitle: '',
+  fullWidth: true,
+  maxWidth: 'lg',
+  testId: 'EpiBulkEditCaseDialog',
 });

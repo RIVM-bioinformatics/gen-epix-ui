@@ -5,10 +5,10 @@ import {
   useTheme,
 } from '@mui/material';
 import {
-  useMemo,
-  useCallback,
-  useRef,
   type MouseEvent as ReactMouseEvent,
+  useCallback,
+  useMemo,
+  useRef,
 } from 'react';
 import { useParams } from 'react-router-dom';
 
@@ -24,8 +24,8 @@ import {
 import { useColSetMembersQuery } from '../../dataHooks/useColSetMembersQuery';
 import { useCaseTypeSetMembersQuery } from '../../dataHooks/useCaseTypeSetMembersQuery';
 import {
-  useDataCollectionsMapQuery,
   useDataCollectionOptionsQuery,
+  useDataCollectionsMapQuery,
 } from '../../dataHooks/useDataCollectionsQuery';
 import { useOrganizationAccessCasePoliciesQuery } from '../../dataHooks/useOrganizationAccessCasePoliciesQuery';
 import { useOrganizationShareCasePoliciesQuery } from '../../dataHooks/useOrganizationShareCasePoliciesQuery';
@@ -69,7 +69,7 @@ export const UserEffectiveRightsAdminPage = () => {
 
   const { userId } = useParams();
 
-  const { isLoading: isUserLoading, error: userError, data: user } = useItemQuery<User>({
+  const { data: user, error: userError, isLoading: isUserLoading } = useItemQuery<User>({
     baseQueryKey: QUERY_KEY.USERS,
     itemId: userId,
     useQueryOptions: {
@@ -107,10 +107,10 @@ export const UserEffectiveRightsAdminPage = () => {
   ]);
 
   const tableStore = useMemo(() => createTableStore<UserEffectiveRight>({
-    navigatorFunction: RouterManager.instance.router.navigate,
     defaultSortByField: 'data_collection_id',
     defaultSortDirection: 'asc',
     idSelectorCallback: (entry) => entry.data_collection_id,
+    navigatorFunction: RouterManager.instance.router.navigate,
     storageNamePostFix: 'UsersEffectiveRightsAdminPage-Table',
     storageVersion: 1,
   }), []);
@@ -124,36 +124,36 @@ export const UserEffectiveRightsAdminPage = () => {
     const { data: colSetMembers } = colSetMembersQuery;
 
     return EffectiveRightsUtil.assembleUserEffectiveRights({
-      user,
-      organizationAccessCasePolicies,
-      organizationShareCasePolicies,
-      userAccessCasePolicies,
-      userShareCasePolicies,
       caseTypeSetMembers,
       colSetMembers,
+      organizationAccessCasePolicies,
+      organizationShareCasePolicies,
+      user,
+      userAccessCasePolicies,
+      userShareCasePolicies,
     });
 
   }, [colSetMembersQuery, caseTypeSetMembersQuery, organizationAccessCasePoliciesQuery, organizationShareCasePoliciesQuery, user, userAccessCasePoliciesQuery, userShareCasePoliciesQuery]);
 
-  const renderSetCell = useCallback((params: { userEffectiveRight: UserEffectiveRight; setIds: string[]; uncategorizedMemberIds: string[]; getName: (memberId: string) => string; type: UsersEffectiveRightsDetailsDialogOpenProps['type'] }) => {
-    const { userEffectiveRight, setIds, uncategorizedMemberIds, getName, type } = params;
+  const renderSetCell = useCallback((params: { getName: (memberId: string) => string; setIds: string[]; type: UsersEffectiveRightsDetailsDialogOpenProps['type']; uncategorizedMemberIds: string[]; userEffectiveRight: UserEffectiveRight }) => {
+    const { getName, setIds, type, uncategorizedMemberIds, userEffectiveRight } = params;
     const onLinkClick = (event: ReactMouseEvent) => {
       event.preventDefault();
       event.stopPropagation();
       usersEffectiveRightsDetailsDialogRef.current.open({
-        userEffectiveRight,
         type,
         user,
+        userEffectiveRight,
       });
     };
 
     if (uncategorizedMemberIds.length > 0) {
       return (
         <Link
-          tabIndex={0}
           href={'#'}
-          // eslint-disable-next-line react/jsx-no-bind
+          // eslint-disable-next-line @eslint-react/kit/jsx-no-bind
           onClick={onLinkClick}
+          tabIndex={0}
         >
           {t`View all`}
         </Link>
@@ -162,10 +162,10 @@ export const UserEffectiveRightsAdminPage = () => {
     if (setIds.length > 2) {
       return (
         <Link
-          tabIndex={0}
           href={'#'}
-          // eslint-disable-next-line react/jsx-no-bind
+          // eslint-disable-next-line @eslint-react/kit/jsx-no-bind
           onClick={onLinkClick}
+          tabIndex={0}
         >
           {t('View {{numSets}} sets', { numSets: setIds.length })}
         </Link>
@@ -176,9 +176,9 @@ export const UserEffectiveRightsAdminPage = () => {
       <>
         {setIds.map(setId => (
           <Link
-            key={setId}
             href={'#'}
-            // eslint-disable-next-line react/jsx-no-bind
+            key={setId}
+
             onClick={onLinkClick}
           >
             {getName(setId) ?? setId}
@@ -190,31 +190,31 @@ export const UserEffectiveRightsAdminPage = () => {
 
   const renderCaseTypeSetsCell = useCallback(({ row }: TableRowParams<UserEffectiveRight>) => {
     return renderSetCell({
-      setIds: row.case_type_set_ids,
-      uncategorizedMemberIds: row.uncategorized_case_type_ids,
       getName: (caseTypeId: string) => caseTypeSetNameFactory.getName(caseTypeSetsMapQuery.map.get(caseTypeId)),
-      userEffectiveRight: row,
+      setIds: row.case_type_set_ids,
       type: 'caseTypeSets',
+      uncategorizedMemberIds: row.uncategorized_case_type_ids,
+      userEffectiveRight: row,
     });
   }, [caseTypeSetNameFactory, caseTypeSetsMapQuery.map, renderSetCell]);
 
   const renderReadCaseSetsCell = useCallback(({ row }: TableRowParams<UserEffectiveRight>) => {
     return renderSetCell({
-      setIds: row.read_col_set_ids,
-      uncategorizedMemberIds: row.uncategorized_read_col_ids,
       getName: (colId: string) => colSetMapQuery.map.get(colId).name,
-      userEffectiveRight: row,
+      setIds: row.read_col_set_ids,
       type: 'readColSets',
+      uncategorizedMemberIds: row.uncategorized_read_col_ids,
+      userEffectiveRight: row,
     });
   }, [colSetMapQuery.map, renderSetCell]);
 
   const renderWriteCaseSetsCell = useCallback(({ row }: TableRowParams<UserEffectiveRight>) => {
     return renderSetCell({
-      setIds: row.write_col_set_ids,
-      uncategorizedMemberIds: row.uncategorized_write_col_ids,
       getName: (colId: string) => colSetMapQuery.map.get(colId)?.name,
-      userEffectiveRight: row,
+      setIds: row.write_col_set_ids,
       type: 'writeColSets',
+      uncategorizedMemberIds: row.uncategorized_write_col_ids,
+      userEffectiveRight: row,
     });
   }, [colSetMapQuery.map, renderSetCell]);
 
@@ -223,31 +223,31 @@ export const UserEffectiveRightsAdminPage = () => {
       TableUtil.createReadableIndexColumn(),
       TableUtil.createOptionsColumn({ id: 'data_collection_id', name: t`Data collection`, options: dataCollectionOptionsQuery.options }),
       {
-        type: 'text',
-        id: 'case_type_set_ids',
         headerName: t`Case type sets`,
+        hideInFilter: true,
+        id: 'case_type_set_ids',
         isInitiallyVisible: true,
         renderCell: renderCaseTypeSetsCell,
+        type: 'text',
         widthFlex: 1,
-        hideInFilter: true,
       },
       {
-        type: 'text',
-        id: 'read_col_set_ids',
         headerName: t`Read column sets`,
+        hideInFilter: true,
+        id: 'read_col_set_ids',
         isInitiallyVisible: true,
         renderCell: renderReadCaseSetsCell,
+        type: 'text',
         widthFlex: 1,
-        hideInFilter: true,
       },
       {
-        type: 'text',
-        id: 'write_col_set_ids',
         headerName: t`Write column sets`,
+        hideInFilter: true,
+        id: 'write_col_set_ids',
         isInitiallyVisible: true,
         renderCell: renderWriteCaseSetsCell,
+        type: 'text',
         widthFlex: 1,
-        hideInFilter: true,
       },
 
       TableUtil.createBooleanColumn<UserEffectiveRight>({ id: 'add_case', name: t`Add case` }),
@@ -257,12 +257,12 @@ export const UserEffectiveRightsAdminPage = () => {
       TableUtil.createBooleanColumn<UserEffectiveRight>({ id: 'read_case_set', name: t`Read case set` }),
       TableUtil.createBooleanColumn<UserEffectiveRight>({ id: 'write_case_set', name: t`Write case set` }),
       {
-        type: 'boolean',
-        id: 'has_additional_rights',
         headerName: t`Addition al rights`,
-        widthFlex: 0.25,
+        id: 'has_additional_rights',
         isInitiallyVisible: true,
+        type: 'boolean',
         valueGetter: (params) => params.row.effective_share_case_rights.length > 0,
+        widthFlex: 0.25,
       },
     ];
   }, [dataCollectionOptionsQuery.options, renderCaseTypeSetsCell, renderReadCaseSetsCell, renderWriteCaseSetsCell, t]);
@@ -273,19 +273,17 @@ export const UserEffectiveRightsAdminPage = () => {
 
   const onRowClick = useCallback((params: TableRowParams<UserEffectiveRight>) => {
     usersEffectiveRightsDetailsDialogRef.current.open({
-      userEffectiveRight: params.row,
       type: 'caseTypeSets',
       user,
+      userEffectiveRight: params.row,
     });
   }, [user]);
 
-  useInitializeTableStore({ store: tableStore, columns: tableColumns, rows: effectiveRights, createFiltersFromColumns: true });
+  useInitializeTableStore({ columns: tableColumns, createFiltersFromColumns: true, rows: effectiveRights, store: tableStore });
 
   return (
     <TableStoreContextProvider store={tableStore}>
       <PageContainer
-        fullWidth
-        showBreadcrumbs
         contentActions={(<TableMenu />)}
         contentHeader={(
           <TableCaption
@@ -294,27 +292,29 @@ export const UserEffectiveRightsAdminPage = () => {
             variant={'h2'}
           />
         )}
+        fullWidth
+        showBreadcrumbs
         testIdAttributes={TestIdUtil.createAttributes('UsersEffectiveRightsAdminPage')}
         title={t`Users effective rights`}
       >
         <Box
           sx={{
-            position: 'relative',
             height: '100%',
+            position: 'relative',
           }}
         >
           <ResponseHandler
-            inlineSpinner
             error={userError}
+            inlineSpinner
             isLoading={isUserLoading}
             loadables={loadables}
           >
             <TableSidebarMenu />
             <Box
               sx={{
-                width: '100%',
                 height: '100%',
                 paddingLeft: theme.spacing(ConfigManager.instance.config.layout.SIDEBAR_MENU_WIDTH + 1),
+                width: '100%',
               }}
             >
               <Table

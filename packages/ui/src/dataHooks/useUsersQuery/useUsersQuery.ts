@@ -16,11 +16,11 @@ import { DataUtil } from '../../utils/DataUtil';
 
 export const useUsersQuery = (): UseQueryResult<User[]> => {
   return useQueryMemo({
-    queryKey: QueryUtil.getGenericKey(QUERY_KEY.USERS),
     queryFn: async ({ signal }) => {
       const response = await OrganizationApi.instance.usersGetAll({ signal });
       return response.data;
     },
+    queryKey: QueryUtil.getGenericKey(QUERY_KEY.USERS),
   });
 };
 
@@ -38,6 +38,5 @@ export const useUserOptionsQuery = (): UseOptions<string> => {
 
   return useMemo(() => {
     return DataHookUtil.createUseOptionsDataHook<User>(usersQuery, item => item.id, item => DataUtil.getUserDisplayValue(item, t));
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [usersQuery]);
+  }, [t, usersQuery]);
 };

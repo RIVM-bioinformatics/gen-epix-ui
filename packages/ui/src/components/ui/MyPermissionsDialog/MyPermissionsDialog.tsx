@@ -1,8 +1,8 @@
 import { useTranslation } from 'react-i18next';
 import {
+  type ReactElement,
   useEffect,
   useMemo,
-  type ReactElement,
 } from 'react';
 import {
   Box,
@@ -14,8 +14,8 @@ import {
 } from '@mui/material';
 
 import type {
-  WithDialogRenderProps,
   WithDialogRefMethods,
+  WithDialogRenderProps,
 } from '../../../hoc/withDialog';
 import { withDialog } from '../../../hoc/withDialog';
 import { AuthorizationManager } from '../../../classes/managers/AuthorizationManager';
@@ -45,16 +45,16 @@ export const MyPermissionsDialog = withDialog<MyPermissionsDialogProps, MyPermis
 
   const permissionTypeTranslationMap = useMemo<Record<PermissionType, string>>(() => ({
     [PermissionType.CREATE]: t`Create`,
-    [PermissionType.READ]: t`Read`,
-    [PermissionType.UPDATE]: t`Update`,
     [PermissionType.DELETE]: t`Delete`,
     [PermissionType.EXECUTE]: t`Execute`,
+    [PermissionType.READ]: t`Read`,
+    [PermissionType.UPDATE]: t`Update`,
   }), [t]);
 
   const readablePermissions = useMemo(() => {
     return AuthorizationManager.instance.apiPermissions.sort((a, b) => a.command_name.localeCompare(b.command_name)).map(permission => ({
-      key: `${permission.command_name}-${permission.permission_type}`,
       command_name: permission.command_name,
+      key: `${permission.command_name}-${permission.permission_type}`,
       permission_type: permissionTypeTranslationMap[permission.permission_type],
     }));
   }, [permissionTypeTranslationMap]);
@@ -88,8 +88,8 @@ export const MyPermissionsDialog = withDialog<MyPermissionsDialogProps, MyPermis
     </Box>
   );
 }, {
-  testId: 'MyPermissionsDialog',
-  maxWidth: 'md',
-  fullWidth: true,
   defaultTitle: 'My Permissions',
+  fullWidth: true,
+  maxWidth: 'md',
+  testId: 'MyPermissionsDialog',
 });

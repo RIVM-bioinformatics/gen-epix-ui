@@ -1,11 +1,11 @@
 import {
+  type ReactElement,
+  use,
   useCallback,
-  useContext,
   useEffect,
   useId,
   useMemo,
   useState,
-  type ReactElement,
 } from 'react';
 import { useTranslation } from 'react-i18next';
 import {
@@ -17,9 +17,9 @@ import { useStore } from 'zustand';
 import { produce } from 'immer';
 
 import {
-  type WithDialogRenderProps,
-  type WithDialogRefMethods,
   withDialog,
+  type WithDialogRefMethods,
+  type WithDialogRenderProps,
 } from '../../../hoc/withDialog';
 import { TestIdUtil } from '../../../utils/TestIdUtil';
 import type { DialogAction } from '../../ui/Dialog';
@@ -44,15 +44,15 @@ export type EpiRemoveFindSimilarCasesResultDialogRefMethods = WithDialogRefMetho
 
 export const EpiRemoveFindSimilarCasesResultDialog = withDialog<EpiRemoveFindSimilarCasesResultDialogProps, EpiRemoveFindSimilarCasesResultDialogOpenProps>((
   {
-    openProps,
     onActionsChange,
-    onTitleChange,
     onClose,
+    onTitleChange,
+    openProps,
   }: EpiRemoveFindSimilarCasesResultDialogProps,
 ): ReactElement => {
   const { t } = useTranslation();
   const formId = useId();
-  const epiDashboardStore = useContext(EpiDashboardStoreContext);
+  const epiDashboardStore = use(EpiDashboardStoreContext);
   const setFindSimilarCasesResults = useStore(epiDashboardStore, (state) => state.setFindSimilarCasesResults);
   const treeConfigurations = useMemo(() => EpiTreeUtil.getTreeConfigurations(openProps.completeCaseType), [openProps.completeCaseType]);
   const findSimilarCasesResults = useStore(epiDashboardStore, (state) => state.findSimilarCasesResults);
@@ -82,26 +82,26 @@ export const EpiRemoveFindSimilarCasesResultDialog = withDialog<EpiRemoveFindSim
     actions.push({
       ...TestIdUtil.createAttributes('EpiRemoveFindSimilarCasesResultDialog-closeButton'),
       color: 'primary',
-      variant: 'outlined',
       label: t`Close`,
       onClick: onClose,
+      variant: 'outlined',
     });
     if (findSimilarCasesResults.length !== intermediateFindSimilarCasesResults.length) {
       actions.push({
         ...TestIdUtil.createAttributes('EpiRemoveFindSimilarCasesResultDialog-undoButton'),
         color: 'secondary',
-        variant: 'outlined',
         label: t`Undo`,
         onClick: onUndoButtonClick,
+        variant: 'outlined',
       });
     }
     if (findSimilarCasesResults.length !== intermediateFindSimilarCasesResults.length) {
       actions.push({
         ...TestIdUtil.createAttributes('EpiRemoveFindSimilarCasesResultDialog-applyButton'),
         color: 'secondary',
-        variant: 'contained',
         label: t`Apply and close`,
         onClick: onApplyIntermediateResultsButtonClick,
+        variant: 'contained',
       });
     }
     onActionsChange(actions);
@@ -117,32 +117,29 @@ export const EpiRemoveFindSimilarCasesResultDialog = withDialog<EpiRemoveFindSim
   const steps = useMemo((): Step[] => {
     return [
       {
-        key: 'start',
-        label: t('Result without similar cases ({{numberOfCases}} cases)', {
-          numberOfCases: findSimilarCasesResults?.[0]?.originalCaseIds.length || 0,
-        }),
-        index: '',
         content: (
           <Box
-            marginTop={1}
-            marginBottom={2}
+            sx={{
+              marginBottom: 2,
+              marginTop: 1,
+            }}
           >
             <Button
-              variant={'outlined'}
               color={'primary'}
               onClick={onRemoveAllAndCloseButtonClick}
+              variant={'outlined'}
             >
               {t('Remove all similar cases from result')}
             </Button>
           </Box>
         ),
+        index: '',
+        key: 'start',
+        label: t('Result without similar cases ({{numberOfCases}} cases)', {
+          numberOfCases: findSimilarCasesResults?.[0]?.originalCaseIds.length || 0,
+        }),
       },
       ...intermediateFindSimilarCasesResults.map((item, index) => ({
-        key: item.key,
-        label: t('Searched {{numberOfInputCases}} cases for similar cases.', {
-          numberOfInputCases: item.originalCaseIds.length,
-        }),
-        index: (index + 1).toString(),
         content: (
           <Box>
             <Box component={'ul'}>
@@ -168,21 +165,28 @@ export const EpiRemoveFindSimilarCasesResultDialog = withDialog<EpiRemoveFindSim
               </Box>
             </Box>
             <Box
-              marginTop={1}
-              marginBottom={2}
+              sx={{
+                marginBottom: 2,
+                marginTop: 1,
+              }}
             >
               <Button
-                disabled={index !== intermediateFindSimilarCasesResults.length - 1}
-                variant={'outlined'}
                 color={'primary'}
-                // eslint-disable-next-line react/jsx-no-bind
+                disabled={index !== intermediateFindSimilarCasesResults.length - 1}
+                // eslint-disable-next-line @eslint-react/kit/jsx-no-bind
                 onClick={() => onRemoveCasesButtonClick(index)}
+                variant={'outlined'}
               >
                 {t('Remove')}
               </Button>
             </Box>
           </Box>
         ),
+        index: (index + 1).toString(),
+        key: item.key,
+        label: t('Searched {{numberOfInputCases}} cases for similar cases.', {
+          numberOfInputCases: item.originalCaseIds.length,
+        }),
       }))];
   }, [findSimilarCasesResults, intermediateFindSimilarCasesResults, onRemoveAllAndCloseButtonClick, onRemoveCasesButtonClick, t, treeConfigurations]);
 
@@ -199,18 +203,18 @@ export const EpiRemoveFindSimilarCasesResultDialog = withDialog<EpiRemoveFindSim
       )}
       {steps.length > 0 && (
         <Stepper
-          hideCompletedIndicator
-          steps={steps}
           activeStep={steps[steps.length - 1].key}
           direction={STEPPER_DIRECTION.VERTICAL}
+          hideCompletedIndicator
+          steps={steps}
         />
       )}
     </Box>
   );
 
 }, {
-  testId: 'EpiRemoveFindSimilarCasesResultDialog',
-  maxWidth: 'lg',
-  fullWidth: true,
   defaultTitle: '',
+  fullWidth: true,
+  maxWidth: 'lg',
+  testId: 'EpiRemoveFindSimilarCasesResultDialog',
 });

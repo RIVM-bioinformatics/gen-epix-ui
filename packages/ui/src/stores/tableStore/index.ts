@@ -1,4 +1,4 @@
 export * from './tableStore';
-export * from './useTableStoreContext';
-export * from './TableStoreContextProvider';
 export * from './TableStoreContext';
+export * from './TableStoreContextProvider';
+export * from './useTableStoreContext';

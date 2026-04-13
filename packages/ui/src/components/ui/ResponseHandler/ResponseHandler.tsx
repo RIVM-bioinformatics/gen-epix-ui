@@ -1,7 +1,7 @@
 import {
-  useMemo,
   type PropsWithChildren,
   type ReactNode,
+  useMemo,
 } from 'react';
 import type { CircularProgressProps } from '@mui/material';
 
@@ -11,29 +11,29 @@ import type { Loadable } from '../../../models/dataHooks';
 import { LoadableUtil } from '../../../utils/LoadableUtil';
 
 export type ResponseHandlerProps = PropsWithChildren<{
-  readonly isLoading?: boolean;
-  readonly error?: unknown;
   readonly enabled?: boolean;
-  readonly loadingMessage?: string;
-  readonly loadables?: Loadable[] | Loadable;
-  readonly shouldHideActionButtons?: boolean;
+  readonly error?: unknown;
   readonly inlineSpinner?: boolean;
-  readonly spinnerSize?: CircularProgressProps['size'];
+  readonly isLoading?: boolean;
+  readonly loadables?: Loadable | Loadable[];
   readonly loadingContent?: ReactNode;
+  readonly loadingMessage?: string;
+  readonly shouldHideActionButtons?: boolean;
+  readonly spinnerSize?: CircularProgressProps['size'];
   readonly takingLongerTimeoutMs?: number;
 }>;
 
 export const ResponseHandler = ({
   children,
-  isLoading: userIsLoading,
-  error: userError,
   enabled,
-  loadingMessage,
-  loadables,
-  shouldHideActionButtons,
+  error: userError,
   inlineSpinner,
-  spinnerSize,
+  isLoading: userIsLoading,
+  loadables,
   loadingContent,
+  loadingMessage,
+  shouldHideActionButtons,
+  spinnerSize,
   takingLongerTimeoutMs,
 }: ResponseHandlerProps): ReactNode => {
   const loadablesArray = useMemo(() => {

@@ -10,4 +10,4 @@ export interface GenericData {
   id?: string;
 }
 
-export type OmitWithMetaData<T, K extends keyof T = never> = Omit<T, 'id' | 'created_at' | 'updated_at' | 'modified_at' | 'modified_by' | K>;
+export type OmitWithMetaData<T, K extends keyof T = never> = Omit<T, 'created_at' | 'id' | 'modified_at' | 'modified_by' | 'updated_at' | K>;

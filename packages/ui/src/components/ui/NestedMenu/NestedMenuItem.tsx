@@ -49,26 +49,26 @@ const leftOrigins: Origins = {
   },
 };
 
-export type NestedMenuItemProps = Omit<MenuItemProps, 'button'> & {
-  readonly parentMenuOpen: boolean;
-  readonly component?: ElementType;
-  readonly label?: string;
-  readonly checked?: 'true' | 'false' | 'mixed';
-  readonly rightIcon?: ReactNode;
-  readonly leftIcon?: ReactNode;
+export type NestedMenuItemProps = {
+  readonly active?: boolean;
+  readonly button?: true;
+  readonly callback?: () => void;
+  readonly checked?: 'false' | 'mixed' | 'true';
   readonly children?: ReactNode;
   readonly className?: string;
-  readonly tabIndex?: number;
-  readonly disabled?: boolean;
-  readonly callback?: () => void;
+  readonly component?: ElementType;
   // eslint-disable-next-line @typescript-eslint/naming-convention
   readonly ContainerProps?: HTMLAttributes<HTMLElement>;
+  readonly disabled?: boolean;
+  readonly label?: string;
+  readonly leftIcon?: ReactNode;
   // eslint-disable-next-line @typescript-eslint/naming-convention
   readonly MenuProps?: Partial<Omit<MenuProps, 'children'>>;
-  readonly button?: true;
-  readonly active?: boolean;
+  readonly parentMenuOpen: boolean;
   readonly ref?: Ref<HTMLLIElement>;
-};
+  readonly rightIcon?: ReactNode;
+  readonly tabIndex?: number;
+} & Omit<MenuItemProps, 'button'>;
 
 export const NestedMenuItem = ({ ref, ...props }: NestedMenuItemProps) => {
   const menuItemRef = useRef<HTMLLIElement>(null);
@@ -79,16 +79,16 @@ export const NestedMenuItem = ({ ref, ...props }: NestedMenuItemProps) => {
 
   const {
     callback,
-    parentMenuOpen,
-    label,
-    rightIcon = <ChevronRightIcon />,
-    leftIcon = null,
+    checked,
     children,
     className,
-    tabIndex: tabIndexProp,
     ContainerProps = {},
+    label,
+    leftIcon = null,
     MenuProps,
-    checked,
+    parentMenuOpen,
+    rightIcon = <ChevronRightIcon />,
+    tabIndex: tabIndexProp,
     ...MenuItemProps
   } = props;
 
@@ -184,7 +184,7 @@ export const NestedMenuItem = ({ ref, ...props }: NestedMenuItemProps) => {
   const menuRef = useCallback((node: HTMLElement) => {
     if (node !== null) {
       const subMenuWidth = menuContainerRef?.current?.clientWidth;
-      const { x, width } = menuItemRef.current.getBoundingClientRect();
+      const { width, x } = menuItemRef.current.getBoundingClientRect();
       const bodyWidth = document.body.clientWidth;
 
       setOrigins(x + width + subMenuWidth > bodyWidth ? leftOrigins : rightOrigins);
@@ -200,41 +200,42 @@ export const NestedMenuItem = ({ ref, ...props }: NestedMenuItemProps) => {
   return (
     <Box
       {...ContainerProps}
-      ref={containerRef}
-      tabIndex={tabIndex}
       onBlur={onBlur}
       onFocus={onFocus}
       onKeyDown={onKeyDown}
       onMouseEnter={onMouseEnter}
       onMouseLeave={onMouseLeave}
+      ref={containerRef}
+      tabIndex={tabIndex}
     >
 
       <IconMenuItem
-        ref={menuItemRef}
-        MenuItemProps={MenuItemProps}
+        checked={checked}
         className={className}
         label={label}
         leftIcon={leftIcon}
-        rightIcon={rightIcon}
-        checked={checked}
+        MenuItemProps={MenuItemProps}
         onClick={onIconMenuItemClick}
+        ref={menuItemRef}
+        rightIcon={rightIcon}
       />
       <Menu
-        ref={menuRef}
-        disableAutoFocus
-        disableEnforceFocus
         // from capturing events for clicks and hovers
+        // eslint-disable-next-line @eslint-react/refs
         anchorEl={menuItemRef.current}
         anchorOrigin={origins.anchor}
         // eslint-disable-next-line jsx-a11y/no-autofocus
         autoFocus={false}
+        disableAutoFocus
+        disableEnforceFocus
+        onClose={onMenuClose}
         open={open}
+        ref={menuRef}
         // Set pointer events to 'none' to prevent the invisible Popover div
         sx={{
           pointerEvents: 'none',
         }}
         transformOrigin={origins.transform}
-        onClose={onMenuClose}
         {...MenuProps}
       >
         <Box

@@ -18,8 +18,8 @@ import type {
   Ref,
 } from 'react';
 import {
+  use,
   useCallback,
-  useContext,
   useEffect,
   useImperativeHandle,
   useMemo,
@@ -65,30 +65,30 @@ import type {
 } from '../../ui/PhylogeneticTreeComponent';
 import { PhylogeneticTreeComponent } from '../../ui/PhylogeneticTreeComponent';
 
+export interface EpiTreeWidgetRef {
+  link: () => void;
+}
+
+type EpiTreeWidgetProps = {
+  readonly itemHeight: number;
+  readonly lineListRangeSubject: Subject<EpiLineListRangeSubjectValue>;
+  readonly linkedScrollSubject: Subject<EpiLinkedScrollSubjectValue>;
+  readonly ref: Ref<EpiTreeWidgetRef>;
+};
+
 type ZoomInMenuItemConfig = {
   caseIds?: string[];
   rootId?: string;
 };
 
-type EpiTreeWidgetProps = {
-  readonly linkedScrollSubject: Subject<EpiLinkedScrollSubjectValue>;
-  readonly lineListRangeSubject: Subject<EpiLineListRangeSubjectValue>;
-  readonly ref: Ref<EpiTreeWidgetRef>;
-  readonly itemHeight: number;
-};
-
-export interface EpiTreeWidgetRef {
-  link: () => void;
-}
-
-export const EpiTreeWidget = ({ linkedScrollSubject, lineListRangeSubject, ref, itemHeight }: EpiTreeWidgetProps) => {
+export const EpiTreeWidget = ({ itemHeight, lineListRangeSubject, linkedScrollSubject, ref }: EpiTreeWidgetProps) => {
   const theme = useTheme();
   const { t } = useTranslation();
   const [treeCanvas, setTreeCanvas] = useState<HTMLCanvasElement>();
   const [isTreeLinked, setIsTreeLinked] = useState(true);
   const treeRef = useRef<PhylogeneticTreeComponentRef>(null);
   const highlightingManager = useMemo(() => EpiHighlightingManager.instance, []);
-  const epiDashboardStore = useContext(EpiDashboardStoreContext);
+  const epiDashboardStore = use(EpiDashboardStoreContext);
   const setPhylogeneticTreeResponse = useStore(epiDashboardStore, (state) => state.setPhylogeneticTreeResponse);
   const baseData = useStore(epiDashboardStore, (state) => state.baseData);
   const sortedData = useStore(epiDashboardStore, (state) => state.sortedData);
@@ -117,9 +117,9 @@ export const EpiTreeWidget = ({ linkedScrollSubject, lineListRangeSubject, ref, 
     origin: null,
   }), []);
   const initialTreeViewState = useMemo<PhylogeneticTreeComponentViewState>(() => ({
-    zoomLevel: !isNaN(epiDashboardStore.getState().epiTreeWidgetData.zoomLevel) ? epiDashboardStore.getState().epiTreeWidgetData.zoomLevel : 1,
     horizontalScrollPosition: !isNaN(epiDashboardStore.getState().epiTreeWidgetData.horizontalScrollPosition) ? epiDashboardStore.getState().epiTreeWidgetData.horizontalScrollPosition : 0,
     verticalScrollPosition: !isNaN(epiDashboardStore.getState().epiTreeWidgetData.verticalScrollPosition) ? epiDashboardStore.getState().epiTreeWidgetData.verticalScrollPosition : 0,
+    zoomLevel: !isNaN(epiDashboardStore.getState().epiTreeWidgetData.zoomLevel) ? epiDashboardStore.getState().epiTreeWidgetData.zoomLevel : 1,
   }), [epiDashboardStore]);
 
   const sortedLeafNames = useMemo(() => {
@@ -138,8 +138,8 @@ export const EpiTreeWidget = ({ linkedScrollSubject, lineListRangeSubject, ref, 
     const treeAlgorithm = treeConfiguration.treeAlgorithm?.name || t('unknown algorithm');
 
     return t('Figure of a phylogenetic tree belonging to {{label}}. Generated using {{geneticDistanceProtocol}} and {{treeAlgorithm}}.', {
-      label,
       geneticDistanceProtocol,
+      label,
       treeAlgorithm,
     });
   }, [treeConfiguration, t]);
@@ -175,18 +175,18 @@ export const EpiTreeWidget = ({ linkedScrollSubject, lineListRangeSubject, ref, 
 
   const retrievePhylogeneticTreeRequestBody = useMemo<RetrievePhylogeneticTreeRequestBody>(() => ({
     case_ids: caseIds,
+    case_type_id: completeCaseType.id,
     genetic_distance_col_id: treeConfiguration?.col.id,
     tree_algorithm_code: treeConfiguration?.treeAlgorithm.code,
-    case_type_id: completeCaseType.id,
   }), [caseIds, completeCaseType.id, treeConfiguration?.col.id, treeConfiguration?.treeAlgorithm.code]);
 
-  const { isLoading: isTreeLoading, error: treeError, data: treeData } = useQueryMemo({
-    queryKey: QueryUtil.getRetrievePhylogeneticTreeKey(retrievePhylogeneticTreeRequestBody),
+  const { data: treeData, error: treeError, isLoading: isTreeLoading } = useQueryMemo({
+    enabled: hasEnoughSequencesToShowTree && !!treeConfiguration && !hasToManyResultsToShowTree,
     queryFn: async ({ signal }) => {
       const response = await CaseApi.instance.retrievePhylogeneticTree(retrievePhylogeneticTreeRequestBody, { signal });
       return response.data;
     },
-    enabled: hasEnoughSequencesToShowTree && !!treeConfiguration && !hasToManyResultsToShowTree,
+    queryKey: QueryUtil.getRetrievePhylogeneticTreeKey(retrievePhylogeneticTreeRequestBody),
     retry: false,
     staleTime: Infinity,
   });
@@ -229,9 +229,9 @@ export const EpiTreeWidget = ({ linkedScrollSubject, lineListRangeSubject, ref, 
 
   const updateEpiTreeWidgetDataDebounced = useDebouncedCallback((viewState: PhylogeneticTreeComponentViewState) => {
     updateEpiTreeWidgetData({
-      zoomLevel: viewState.zoomLevel,
-      verticalScrollPosition: viewState.verticalScrollPosition,
       horizontalScrollPosition: viewState.horizontalScrollPosition,
+      verticalScrollPosition: viewState.verticalScrollPosition,
+      zoomLevel: viewState.zoomLevel,
     });
   }, 500);
 
@@ -295,12 +295,12 @@ export const EpiTreeWidget = ({ linkedScrollSubject, lineListRangeSubject, ref, 
     if (pathProperties?.treeNode) {
       const { treeNode } = pathProperties;
       setEpiContextMenuConfig({
+        caseIds: treeNode.subTreeLeaveNames ? treeNode.subTreeLeaveNames : [treeNode.name],
+        mouseEvent,
         position: {
           left: mouseEvent.clientX,
           top: mouseEvent.clientY,
         },
-        caseIds: treeNode.subTreeLeaveNames ? treeNode.subTreeLeaveNames : [treeNode.name],
-        mouseEvent,
       });
       if (treeNode.subTreeNames.length && treeNode.name && treeNode.maxBranchLength.toNumber()) {
         setZoomInMenuItemConfig({
@@ -316,12 +316,12 @@ export const EpiTreeWidget = ({ linkedScrollSubject, lineListRangeSubject, ref, 
 
     if (pathProperties?.subTreeLeaveNames?.length) {
       setEpiContextMenuConfig({
+        caseIds: pathProperties.subTreeLeaveNames,
+        mouseEvent,
         position: {
           left: mouseEvent.clientX,
           top: mouseEvent.clientY,
         },
-        caseIds: pathProperties.subTreeLeaveNames,
-        mouseEvent,
       });
     }
   }, []);
@@ -339,7 +339,7 @@ export const EpiTreeWidget = ({ linkedScrollSubject, lineListRangeSubject, ref, 
       return (
         <MenuItem
           divider
-          // eslint-disable-next-line react/jsx-no-bind
+          // eslint-disable-next-line @eslint-react/kit/jsx-no-bind
           onClick={async () => onAddTreeFilterMenuItemClick(onMenuClose)}
         >
           <ListItemIcon>
@@ -355,7 +355,7 @@ export const EpiTreeWidget = ({ linkedScrollSubject, lineListRangeSubject, ref, 
       return (
         <MenuItem
           divider
-          // eslint-disable-next-line react/jsx-no-bind
+          // eslint-disable-next-line @eslint-react/kit/jsx-no-bind
           onClick={() => onShowDetailsSelectionMenuItemClick(onMenuClose)}
         >
           <ListItemIcon>
@@ -375,17 +375,9 @@ export const EpiTreeWidget = ({ linkedScrollSubject, lineListRangeSubject, ref, 
     }
 
     const menu: MenuItemData = {
-      label: treeConfiguration ? t('Tree: {{algorithm}}', { algorithm: EpiTreeUtil.getTreeConfigurationLabel(treeConfiguration) }) : t`Tree`,
-      tooltip: treeConfiguration
-        ? (
-          <EpiTreeDescription
-            treeConfiguration={treeConfiguration}
-          />
-        )
-        : undefined,
       disabled: !treeConfiguration,
       items: treeConfigurations?.map<MenuItemData>(config => ({
-        label: EpiTreeUtil.getTreeConfigurationLabel(config),
+        active: !!treeConfiguration && treeConfiguration.computedId === config.computedId,
         callback: () => {
           const perform = async () => {
             await removeTreeFilter();
@@ -397,13 +389,21 @@ export const EpiTreeWidget = ({ linkedScrollSubject, lineListRangeSubject, ref, 
           // eslint-disable-next-line @typescript-eslint/no-floating-promises
           perform();
         },
-        active: !!treeConfiguration && treeConfiguration.computedId === config.computedId,
+        label: EpiTreeUtil.getTreeConfigurationLabel(config),
         tooltip: (
           <EpiTreeDescription
             treeConfiguration={config}
           />
         ),
       })) ?? [],
+      label: treeConfiguration ? t('Tree: {{algorithm}}', { algorithm: EpiTreeUtil.getTreeConfigurationLabel(treeConfiguration) }) : t`Tree`,
+      tooltip: treeConfiguration
+        ? (
+          <EpiTreeDescription
+            treeConfiguration={treeConfiguration}
+          />
+        )
+        : undefined,
     };
 
     return menu;
@@ -412,18 +412,19 @@ export const EpiTreeWidget = ({ linkedScrollSubject, lineListRangeSubject, ref, 
   const primaryMenu = useMemo<MenuItemData[]>(() => {
     return [
       {
+        callback: onTreeFilterStepOutButtonClick,
         disabled: !hasActiveTreeFilter,
         label: t`Change tree filter to nearest ancestor`,
         leftIcon: <ArrowUpwardIcon />,
-        callback: onTreeFilterStepOutButtonClick,
       },
       {
+        callback: onRemoveTreeFilterButtonClick,
         disabled: !hasActiveTreeFilter,
         label: t`Remove tree filter`,
         leftIcon: <ClearIcon />,
-        callback: onRemoveTreeFilterButtonClick,
       },
       {
+        callback: onLinkButtonClick,
         label: t`Link and snap the Line List to the Tree (resets tree zoom level and Line List sorting)`,
         leftIcon: (
           <LinkIcon
@@ -432,7 +433,6 @@ export const EpiTreeWidget = ({ linkedScrollSubject, lineListRangeSubject, ref, 
             }}
           />
         ),
-        callback: onLinkButtonClick,
       },
     ];
   }, [hasActiveTreeFilter, isTreeLinked, onLinkButtonClick, onRemoveTreeFilterButtonClick, onTreeFilterStepOutButtonClick, t, theme.palette.error.main]);
@@ -441,42 +441,42 @@ export const EpiTreeWidget = ({ linkedScrollSubject, lineListRangeSubject, ref, 
     const emitDownloadOptions = () => {
       const baseName = t('Phylogenetic Tree - {{geneticDistanceProtocol}} - {{treeAlgorithm}}',
         {
-          treeAlgorithm: treeConfiguration?.treeAlgorithm.name ?? '',
           geneticDistanceProtocol: treeConfiguration?.geneticDistanceProtocol.name ?? '',
+          treeAlgorithm: treeConfiguration?.treeAlgorithm.name ?? '',
         });
 
       EpiEventBusManager.instance.emit('onDownloadOptionsChanged', {
-        zone: EPI_ZONE.TREE,
         disabled: isTreeUnavailable,
-        zoneLabel: t`Phylogenetic Tree`,
         items: [
           {
-            label: t`Save as Newick`,
             callback: () => DownloadUtil.downloadNewick(baseName, newick, completeCaseType, t),
+            label: t`Save as Newick`,
           },
           {
-            label: t`Save as JPEG`,
             callback: () => DownloadUtil.downloadCanvasImage(baseName, treeCanvas, 'jpeg', completeCaseType, t),
+            label: t`Save as JPEG`,
           },
           {
-            label: t`Save as PNG`,
             callback: () => DownloadUtil.downloadCanvasImage(baseName, treeCanvas, 'png', completeCaseType, t),
+            label: t`Save as PNG`,
           },
         ],
+        zone: EPI_ZONE.TREE,
+        zoneLabel: t`Phylogenetic Tree`,
       });
     };
 
 
     emitDownloadOptions();
-    const remove = EpiEventBusManager.instance.addEventListener('onDownloadOptionsRequested', emitDownloadOptions);
+    EpiEventBusManager.instance.addEventListener('onDownloadOptionsRequested', emitDownloadOptions);
 
     return () => {
       EpiEventBusManager.instance.emit('onDownloadOptionsChanged', {
-        zone: EPI_ZONE.TREE,
         items: null,
+        zone: EPI_ZONE.TREE,
         zoneLabel: t`Tree`,
       });
-      remove();
+      EpiEventBusManager.instance.removeEventListener('onDownloadOptionsRequested', emitDownloadOptions);
     };
   }, [completeCaseType, isTreeLinked, isTreeUnavailable, newick, t, treeCanvas, treeConfiguration?.geneticDistanceProtocol.name, treeConfiguration?.treeAlgorithm.name]);
 
@@ -484,6 +484,10 @@ export const EpiTreeWidget = ({ linkedScrollSubject, lineListRangeSubject, ref, 
   const link = useCallback(() => {
     treeRef.current?.link();
   }, []);
+
+  const onLinkStateChange = useCallback((linked: boolean) => {
+    setIsTreeLinked(linked);
+  }, [setIsTreeLinked]);
 
   useImperativeHandle(ref, () => ({
     link,
@@ -498,10 +502,10 @@ export const EpiTreeWidget = ({ linkedScrollSubject, lineListRangeSubject, ref, 
     >
       <Box
         sx={{
-          position: 'relative',
           height: '100%',
-          width: '100%',
           overflow: 'clip',
+          position: 'relative',
+          width: '100%',
         }}
       >
         {isTreeUnavailable && (
@@ -512,7 +516,11 @@ export const EpiTreeWidget = ({ linkedScrollSubject, lineListRangeSubject, ref, 
                   <AlertTitle>
                     {t`Too many cases to display the phylogenetic tree`}
                   </AlertTitle>
-                  <Box marginY={2}>
+                  <Box
+                    sx={{
+                      marginY: 2,
+                    }}
+                  >
                     {t('The phylogenetic tree cannot be displayed because the number of cases ({{caseCount}}) exceeds the maximum allowed number of cases ({{maxSize}}) to display a phylogenetic tree. Refine your filters to reduce the number of results.', {
                       caseCount: caseIds.length,
                       maxSize: completeCaseType.props.read_max_tree_size,
@@ -520,8 +528,8 @@ export const EpiTreeWidget = ({ linkedScrollSubject, lineListRangeSubject, ref, 
                   </Box>
                   <Button
                     color={'inherit'}
-                    variant={'outlined'}
                     onClick={onOpenFiltersButtonClick}
+                    variant={'outlined'}
                   >
                     {t`Refine filters`}
                   </Button>
@@ -551,7 +559,6 @@ export const EpiTreeWidget = ({ linkedScrollSubject, lineListRangeSubject, ref, 
         )}
         {!isTreeUnavailable && shouldShowTree && (
           <PhylogeneticTreeComponent
-            ref={treeRef}
             ariaLabel={treeCanvasAriaLabel}
             externalScrollSubject={linkedScrollSubject}
             externalVisibleRangeSubject={lineListRangeSubject}
@@ -559,14 +566,15 @@ export const EpiTreeWidget = ({ linkedScrollSubject, lineListRangeSubject, ref, 
             initialViewState={initialTreeViewState}
             itemHeight={itemHeight}
             leafOrder={sortedLeafNames}
+            onCanvasChange={onTreeCanvasChange}
+            onLinkStateChange={onLinkStateChange}
+            onPathClick={onTreePathClick}
+            onViewStateChange={onTreeViewStateChange}
+            ref={treeRef}
             shouldShowDistances={isShowDistancesEnabled}
             shouldShowSupportLinesWhenUnlinked={isShowSupportLinesWhenUnlinkedEnabled}
             stratification={stratification}
             tree={tree}
-            onCanvasChange={onTreeCanvasChange}
-            onLinkStateChange={setIsTreeLinked}
-            onPathClick={onTreePathClick}
-            onViewStateChange={onTreeViewStateChange}
           />
         )}
       </Box>

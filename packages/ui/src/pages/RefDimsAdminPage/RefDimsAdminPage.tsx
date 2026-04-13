@@ -12,8 +12,8 @@ import {
 import type { RefDim } from '../../api';
 import {
   CaseApi,
-  DimType,
   CommandName,
+  DimType,
   PermissionType,
 } from '../../api';
 import { useDimTypeOptionsQuery } from '../../dataHooks/useDimTypesQuery';
@@ -57,12 +57,12 @@ export const RefDimsAdminPage = () => {
 
   const schema = useMemo(() => {
     return object<FormFields>().shape({
-      dim_type: mixed<DimType>().required().oneOf(Object.values(DimType)),
       code: SchemaUtil.code,
-      label: SchemaUtil.label,
-      description: SchemaUtil.description,
-      rank: SchemaUtil.rank,
       col_code_prefix: string().alphaNumeric().required().max(100),
+      description: SchemaUtil.description,
+      dim_type: mixed<DimType>().required().oneOf(Object.values(DimType)),
+      label: SchemaUtil.label,
+      rank: SchemaUtil.rank,
     });
   }, []);
 
@@ -70,37 +70,37 @@ export const RefDimsAdminPage = () => {
     return [
       {
         definition: FORM_FIELD_DEFINITION_TYPE.AUTOCOMPLETE,
-        name: 'dim_type',
-        label: t`Dimension type`,
-        options: dimTypeOptionsQuery.options,
         disabled: !!item,
+        label: t`Dimension type`,
+        name: 'dim_type',
+        options: dimTypeOptionsQuery.options,
       } as const satisfies FormFieldDefinition<FormFields>,
       {
         definition: FORM_FIELD_DEFINITION_TYPE.TEXTFIELD,
-        name: 'label',
         label: t`Label`,
+        name: 'label',
       } as const satisfies FormFieldDefinition<FormFields>,
       {
         definition: FORM_FIELD_DEFINITION_TYPE.TEXTFIELD,
-        name: 'description',
         label: t`Description`,
         multiline: true,
+        name: 'description',
         rows: 5,
       } as const satisfies FormFieldDefinition<FormFields>,
       {
         definition: FORM_FIELD_DEFINITION_TYPE.TEXTFIELD,
-        name: 'code',
         label: t`Code`,
+        name: 'code',
       } as const satisfies FormFieldDefinition<FormFields>,
       {
         definition: FORM_FIELD_DEFINITION_TYPE.TEXTFIELD,
-        name: 'col_code_prefix',
         label: t`Column code prefix`,
+        name: 'col_code_prefix',
       } as const satisfies FormFieldDefinition<FormFields>,
       {
         definition: FORM_FIELD_DEFINITION_TYPE.TEXTFIELD,
-        name: 'rank',
         label: t`Rank`,
+        name: 'rank',
         type: 'number',
       } as const satisfies FormFieldDefinition<FormFields>,
     ] as const;
@@ -124,26 +124,26 @@ export const RefDimsAdminPage = () => {
 
     return [
       {
-        label: t`Manage reference columns`,
         getPathName: (item: RefDim) => `/management/reference-dimensions/${item.id}/reference-columns`,
+        label: t`Manage reference columns`,
       } satisfies CrudPageSubPage<RefDim>,
     ];
   }, [t]);
 
   return (
     <CrudPage<FormFields, RefDim>
+      createItemDialogTitle={t`Create new reference dimension`}
       createOne={createOne}
       crudCommandType={CommandName.RefDimCrudCommand}
-      createItemDialogTitle={t`Create new reference dimension`}
       defaultSortByField={'code'}
       defaultSortDirection={'asc'}
-      subPages={subPages}
       deleteOne={deleteOne}
       fetchAll={fetchAll}
       formFieldDefinitions={formFieldDefinitions}
       getName={getName}
       resourceQueryKeyBase={QUERY_KEY.REF_DIMS}
       schema={schema}
+      subPages={subPages}
       tableColumns={tableColumns}
       testIdAttributes={TestIdUtil.createAttributes('RefDimsAdminPage')}
       title={t`Dimensions`}

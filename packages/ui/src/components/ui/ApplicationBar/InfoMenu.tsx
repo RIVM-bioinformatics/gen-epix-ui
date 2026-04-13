@@ -5,12 +5,12 @@ import {
   useRef,
 } from 'react';
 import {
-  Popover,
   List,
   ListItem,
-  ListItemText,
   ListItemButton,
   ListItemIcon,
+  ListItemText,
+  Popover,
 } from '@mui/material';
 import CopyrightIcon from '@mui/icons-material/Copyright';
 import { useTranslation } from 'react-i18next';
@@ -23,8 +23,8 @@ import { StringUtil } from '../../../utils/StringUtil';
 import { TestIdUtil } from '../../../utils/TestIdUtil';
 
 type InfoMenuProps = {
-  readonly onClose: () => void;
   readonly anchorElement: HTMLElement;
+  readonly onClose: () => void;
 };
 
 export const InfoMenu = ({ anchorElement, onClose }: InfoMenuProps): ReactElement => {
@@ -41,22 +41,22 @@ export const InfoMenu = ({ anchorElement, onClose }: InfoMenuProps): ReactElemen
       {...TestIdUtil.createAttributes('InfoMenu')}
       anchorEl={anchorElement}
       anchorOrigin={{
-        vertical: 'bottom',
         horizontal: 'right',
+        vertical: 'bottom',
       }}
       id={isInfoMenuOpen ? popoverId : undefined}
+      onClose={onClose}
       open={isInfoMenuOpen}
       transformOrigin={{
-        vertical: 'top',
         horizontal: 'right',
+        vertical: 'top',
       }}
-      onClose={onClose}
     >
       <List
         sx={{
-          width: '100%',
-          minWidth: 200,
           maxWidth: 300,
+          minWidth: 200,
+          width: '100%',
         }}
       >
         <ListItem

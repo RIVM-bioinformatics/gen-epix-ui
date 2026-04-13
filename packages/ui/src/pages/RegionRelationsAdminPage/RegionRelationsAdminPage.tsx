@@ -12,8 +12,8 @@ import {
 import type { RegionRelation } from '../../api';
 import {
   CommandName,
-  RegionRelationType,
   GeoApi,
+  RegionRelationType,
 } from '../../api';
 import type { FormFieldDefinition } from '../../models/form';
 import { FORM_FIELD_DEFINITION_TYPE } from '../../models/form';
@@ -70,8 +70,8 @@ export const RegionRelationsAdminPage = () => {
   const schema = useMemo(() => {
     return object<FormFields>().shape({
       from_region_id: string().uuid4().required(),
-      to_region_id: string().uuid4().required(),
       relation: mixed<RegionRelationType>().required().oneOf(Object.values(RegionRelationType)),
+      to_region_id: string().uuid4().required(),
     });
   }, []);
 
@@ -79,24 +79,24 @@ export const RegionRelationsAdminPage = () => {
     return [
       {
         definition: FORM_FIELD_DEFINITION_TYPE.AUTOCOMPLETE,
-        name: 'from_region_id',
         label: t`From Region`,
-        options: regionOptionsQuery.options,
         loading: regionOptionsQuery.isLoading,
+        name: 'from_region_id',
+        options: regionOptionsQuery.options,
       } as const satisfies FormFieldDefinition<FormFields>,
       {
         definition: FORM_FIELD_DEFINITION_TYPE.AUTOCOMPLETE,
-        name: 'to_region_id',
         label: t`To Region`,
-        options: regionOptionsQuery.options,
         loading: regionOptionsQuery.isLoading,
+        name: 'to_region_id',
+        options: regionOptionsQuery.options,
       } as const satisfies FormFieldDefinition<FormFields>,
       {
         definition: FORM_FIELD_DEFINITION_TYPE.AUTOCOMPLETE,
-        name: 'relation',
         label: t`Relation`,
-        options: regionRelationTypeOptionsQuery.options,
         loading: regionRelationTypeOptionsQuery.isLoading,
+        name: 'relation',
+        options: regionRelationTypeOptionsQuery.options,
       } as const satisfies FormFieldDefinition<FormFields>,
     ] as const;
   }, [regionOptionsQuery.isLoading, regionOptionsQuery.options, regionRelationTypeOptionsQuery.isLoading, regionRelationTypeOptionsQuery.options, t]);
@@ -112,16 +112,16 @@ export const RegionRelationsAdminPage = () => {
 
   return (
     <CrudPage<FormFields, RegionRelation>
+      createItemDialogTitle={t`Create new region relation`}
       createOne={createOne}
       crudCommandType={CommandName.RegionRelationCrudCommand}
-      createItemDialogTitle={t`Create new region relation`}
       defaultSortByField={'from_region_id'}
-      loadables={loadables}
       defaultSortDirection={'asc'}
       deleteOne={deleteOne}
       fetchAll={fetchAll}
       formFieldDefinitions={formFieldDefinitions}
       getName={getName}
+      loadables={loadables}
       resourceQueryKeyBase={QUERY_KEY.REGION_RELATIONS}
       schema={schema}
       tableColumns={tableColumns}

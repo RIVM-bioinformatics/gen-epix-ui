@@ -3,8 +3,8 @@ import type {
   Theme,
 } from '@mui/material';
 import {
-  FormHelperText,
   Box,
+  FormHelperText,
   useTheme,
 } from '@mui/material';
 import ErrorIcon from '@mui/icons-material/Error';
@@ -15,19 +15,19 @@ import { TestIdUtil } from '../../../../utils/TestIdUtil';
 
 export type FormFieldHelperTextProps = {
   readonly errorMessage?: string;
-  readonly warningMessage?: string | boolean;
   readonly noIndent?: boolean;
+  readonly warningMessage?: boolean | string;
 };
 
 const iconStyle: SxProps<Theme> = {
-  width: '13px',
   height: '13px',
-  top: '3px',
-  position: 'relative',
   marginRight: '1px',
+  position: 'relative',
+  top: '3px',
+  width: '13px',
 };
 
-export const FormFieldHelperText = ({ errorMessage, warningMessage, noIndent }: FormFieldHelperTextProps): ReactElement => {
+export const FormFieldHelperText = ({ errorMessage, noIndent, warningMessage }: FormFieldHelperTextProps): ReactElement => {
   const testIdAttributes = TestIdUtil.createAttributes('FormFieldHelperText');
   const theme = useTheme();
 
@@ -35,9 +35,9 @@ export const FormFieldHelperText = ({ errorMessage, warningMessage, noIndent }: 
     return (
       <FormHelperText
         {...testIdAttributes}
+        component={'span'}
         error
         role={'alert'}
-        component={'span'}
         sx={{
           marginLeft: noIndent ? 0 : theme.spacing(-2),
           position: 'relative',
@@ -52,8 +52,8 @@ export const FormFieldHelperText = ({ errorMessage, warningMessage, noIndent }: 
       <Box
         {...testIdAttributes}
         className={'Mui-warning'}
-        role={'alert'}
         component={'span'}
+        role={'alert'}
         sx={{
           marginLeft: noIndent ? 0 : theme.spacing(-2),
           position: 'relative',

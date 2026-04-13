@@ -15,11 +15,11 @@ import { DataUtil } from '../../utils/DataUtil';
 
 export const useRefDimsQuery = (): UseQueryResult<RefDim[]> => {
   return useQueryMemo({
-    queryKey: QueryUtil.getGenericKey(QUERY_KEY.REF_DIMS),
     queryFn: async ({ signal }) => {
       const response = await CaseApi.instance.refDimsGetAll({ signal });
       return response.data;
     },
+    queryKey: QueryUtil.getGenericKey(QUERY_KEY.REF_DIMS),
   });
 };
 

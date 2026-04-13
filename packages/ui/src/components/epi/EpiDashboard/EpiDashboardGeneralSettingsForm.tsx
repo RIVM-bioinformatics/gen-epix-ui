@@ -15,7 +15,6 @@ import {
   useEffect,
 } from 'react';
 import { useStore } from 'zustand';
-import noop from 'lodash/noop';
 import { useShallow } from 'zustand/shallow';
 
 import type { EpiDashboardGeneralSettings } from '../../../stores/userProfileStore';
@@ -52,13 +51,21 @@ export const EpiDashboardGeneralSettingsForm = ({ onReset }: EpiDashboardGeneral
     setEpiDashboardGeneralSettings(formValues as EpiDashboardGeneralSettings);
   }, [formValues, setEpiDashboardGeneralSettings]);
 
+  const onSubmit = useCallback(() => {
+    // noop, as the form only contains switches that update the state on change
+  }, []);
+
   return (
     <FormProvider {...formMethods}>
       <form
         autoComplete={'off'}
-        onSubmit={noop}
+        onSubmit={onSubmit}
       >
-        <Box marginY={1}>
+        <Box
+          sx={{
+            marginY: 1,
+          }}
+        >
           <FormGroup>
             <Switch<EpiDashboardGeneralSettings>
               label={t`Enable highlighting across widgets`}
@@ -73,12 +80,16 @@ export const EpiDashboardGeneralSettingsForm = ({ onReset }: EpiDashboardGeneral
           justifyContent: 'flex-end',
         }}
       >
-        <Box marginX={1}>
+        <Box
+          sx={{
+            marginX: 1,
+          }}
+        >
           <Button
             color={'primary'}
+            onClick={onResetButtonClick}
             startIcon={<RestartAltIcon />}
             variant={'outlined'}
-            onClick={onResetButtonClick}
           >
             {t`Reset general settings`}
           </Button>

@@ -4,7 +4,7 @@ import {
 } from 'react';
 
 export type TableCellAsyncContentProps = {
-  readonly content: string | Promise<string>;
+  readonly content: Promise<string> | string;
 };
 
 export const TableCellAsyncContent = ({ content }: TableCellAsyncContentProps) => {

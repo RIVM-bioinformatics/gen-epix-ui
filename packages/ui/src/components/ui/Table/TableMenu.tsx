@@ -14,13 +14,13 @@ export const TableMenu = ({ ContainerProps }: TableMenuProps) => {
   return (
     <NestedDropdown
       ButtonProps={{
-        variant: 'text',
-        size: 'small',
         color: 'primary',
+        size: 'small',
+        variant: 'text',
       }}
       ContainerProps={ContainerProps}
-      MenuProps={{ elevation: 3 }}
       menuItemsData={columnsMenu}
+      MenuProps={{ elevation: 3 }}
     />
   );
 };

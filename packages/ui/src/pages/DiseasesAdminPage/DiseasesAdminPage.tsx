@@ -10,8 +10,8 @@ import {
 
 import type { Disease } from '../../api';
 import {
-  OntologyApi,
   CommandName,
+  OntologyApi,
 } from '../../api';
 import type { FormFieldDefinition } from '../../models/form';
 import { FORM_FIELD_DEFINITION_TYPE } from '../../models/form';
@@ -50,8 +50,8 @@ export const DiseasesAdminPage = () => {
 
   const schema = useMemo(() => {
     return object<FormFields>().shape({
-      name: SchemaUtil.name,
       icd_code: string().alphaNumeric().nullable().max(100),
+      name: SchemaUtil.name,
     });
   }, []);
 
@@ -59,13 +59,13 @@ export const DiseasesAdminPage = () => {
     return [
       {
         definition: FORM_FIELD_DEFINITION_TYPE.TEXTFIELD,
-        name: 'name',
         label: t`Name`,
+        name: 'name',
       } as const satisfies FormFieldDefinition<FormFields>,
       {
         definition: FORM_FIELD_DEFINITION_TYPE.TEXTFIELD,
-        name: 'icd_code',
         label: t`ICD Code`,
+        name: 'icd_code',
       } as const satisfies FormFieldDefinition<FormFields>,
     ] as const;
   }, [t]);
@@ -79,9 +79,9 @@ export const DiseasesAdminPage = () => {
 
   return (
     <CrudPage<FormFields, Disease>
+      createItemDialogTitle={t`Create new disease`}
       createOne={createOne}
       crudCommandType={CommandName.DiseaseCrudCommand}
-      createItemDialogTitle={t`Create new disease`}
       defaultSortByField={'name'}
       defaultSortDirection={'asc'}
       deleteOne={deleteOne}

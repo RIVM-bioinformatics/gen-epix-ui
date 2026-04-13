@@ -11,23 +11,28 @@ export interface GeoFilterKwArgs extends FilterAbstractKwArgs {
 }
 
 export class GeoFilter extends FilterAbstract<string[]> implements Filter<string[], string> {
+  public filterValue: string[] = [];
+  public initialFilterValue: string[] = [];
   public options: AutoCompleteOption[];
   private readonly optionsMap: Map<string, string> = new Map<string, string>();
-  public initialFilterValue: string[] = [];
-  public filterValue: string[] = [];
 
   public constructor(kwArgs: GeoFilterKwArgs) {
     super({
-      id: kwArgs.id,
-      label: kwArgs.label,
+      filterDimensionId: kwArgs.filterDimensionId,
       filterMode: kwArgs.filterMode,
       filterPriority: kwArgs.filterPriority,
-      filterDimensionId: kwArgs.filterDimensionId,
+      id: kwArgs.id,
+      label: kwArgs.label,
     });
     this.options = kwArgs.options;
     kwArgs.options.forEach(option => {
       this.optionsMap.set(option.value as string, option.label);
     });
+  }
+
+  public getPresentationValue(value?: unknown): string {
+    const usedValues = value as string[] ?? this.filterValue;
+    return usedValues.map(v => this.optionsMap.get(v)).join(', ');
   }
 
   public matchRowValue(rowValue: string): boolean {
@@ -41,20 +46,15 @@ export class GeoFilter extends FilterAbstract<string[]> implements Filter<string
     return (this.filterValue).includes(rowValue);
   }
 
-  public getPresentationValue(value?: unknown): string {
-    const usedValues = value as string[] ?? this.filterValue;
-    return usedValues.map(v => this.optionsMap.get(v)).join(', ');
-  }
-
   public toBackendFilter(): TypedStringSetFilter {
     if (this.isInitialFilterValue()) {
       return;
     }
 
     return {
-      type: 'STRING_SET',
       key: this.id,
       members: this.filterValue,
+      type: 'STRING_SET',
     };
   }
 }

@@ -7,7 +7,6 @@ import {
   useCallback,
   useRef,
 } from 'react';
-import { Fragment } from 'react/jsx-runtime';
 import ChangeCircleIcon from '@mui/icons-material/ChangeCircle';
 import { useTranslation } from 'react-i18next';
 
@@ -31,12 +30,12 @@ export const ApplicationBarActionsOrganizationSwitcherItem = () => {
   }
 
   return (
-    <Fragment>
+    <>
       <IconButton
         aria-label={t`Change organization`}
         color={'inherit'}
-        title={t`Change organization`}
         onClick={onMenuIconClick}
+        title={t`Change organization`}
       >
         <ChangeCircleIcon color={'inherit'} />
         <Box
@@ -44,8 +43,8 @@ export const ApplicationBarActionsOrganizationSwitcherItem = () => {
             fontSize: '1.3rem',
             marginLeft: theme.spacing(1),
             [theme.breakpoints.up('md')]: {
-              visibility: 'hidden',
               position: 'absolute',
+              visibility: 'hidden',
             },
           }}
         >
@@ -53,6 +52,6 @@ export const ApplicationBarActionsOrganizationSwitcherItem = () => {
         </Box>
       </IconButton>
       <OrganizationSwitcherDialog ref={organizationSwitcherDialogRef} />
-    </Fragment>
+    </>
   );
 };

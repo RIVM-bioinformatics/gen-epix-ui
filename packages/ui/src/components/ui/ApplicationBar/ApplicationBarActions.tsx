@@ -56,21 +56,21 @@ export const ApplicationBarActions = ({ fullWidth }: ApplicationBarActionsProps)
     <Box
       {...TestIdUtil.createAttributes('ApplicationBarActions')}
       sx={{
-        display: 'flex',
         alignItems: 'center',
+        display: 'flex',
         paddingRight: 1,
       }}
     >
       <IconButton
-        aria-label={t`Toggle menu`}
         aria-controls={navId}
+        aria-label={t`Toggle menu`}
+        onClick={onMenuButtonClick}
         sx={{
           color: theme['gen-epix'].navbar.primaryColor,
           [theme.breakpoints.up('md')]: {
             display: 'none',
           },
         }}
-        onClick={onMenuButtonClick}
       >
         <MoreVertIcon />
       </IconButton>
@@ -79,14 +79,14 @@ export const ApplicationBarActions = ({ fullWidth }: ApplicationBarActionsProps)
         sx={{
           display: 'flex',
           [theme.breakpoints.down('md')]: {
-            display: isMenuOpen ? 'flex' : 'none',
-            position: 'absolute',
             alignItems: 'start',
-            flexDirection: 'column',
             background: theme['gen-epix'].navbar.background,
-            top: theme.spacing(6),
-            right: 0,
+            display: isMenuOpen ? 'flex' : 'none',
+            flexDirection: 'column',
             left: 0,
+            position: 'absolute',
+            right: 0,
+            top: theme.spacing(6),
             zIndex: theme.zIndex.appBar - 1,
           },
         }}
@@ -102,17 +102,17 @@ export const ApplicationBarActions = ({ fullWidth }: ApplicationBarActionsProps)
             {...TestIdUtil.createAttributes('ApplicationBarActions-EnvironmentMessage')}
             aria-hidden={'true'}
             sx={{
-              padding: `0 ${theme.spacing(1)} !important`,
-              marginRight: fullWidth ? 0 : 1,
-              fontWeight: 700,
-              textTransform: 'uppercase',
-              color: theme['gen-epix'].navbar.environmentMessageColor,
-              [theme.breakpoints.down('md')]: {
-                visibility: 'hidden',
-                position: 'absolute',
-              },
-              display: 'flex',
               alignItems: 'center',
+              color: theme['gen-epix'].navbar.environmentMessageColor,
+              display: 'flex',
+              fontWeight: 700,
+              marginRight: fullWidth ? 0 : 1,
+              padding: `0 ${theme.spacing(1)} !important`,
+              textTransform: 'uppercase',
+              [theme.breakpoints.down('md')]: {
+                position: 'absolute',
+                visibility: 'hidden',
+              },
             }}
           >
             {t('{{environmentMessage}}', { environmentMessage })}

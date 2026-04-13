@@ -1,11 +1,11 @@
 import {
+  type PropsWithChildren,
+  type ReactNode,
   useCallback,
   useEffect,
   useMemo,
-  useState,
-  type ReactNode,
-  type PropsWithChildren,
   useRef,
+  useState,
 } from 'react';
 import { useTranslation } from 'react-i18next';
 import { useStore } from 'zustand';
@@ -40,22 +40,26 @@ export const ApplicationBootstrap = ({ children }: PropsWithChildren): ReactNode
   const [shouldContinue, setShouldContinue] = useState(false);
   const [buttonsEnabled, setButtonsEnabled] = useState(false);
   const confirmationRef = useRef<ConfirmationRefMethods>(null);
-  const newLanguageCode = useRef<string>(null);
+  const newLanguageCodeRef = useRef<string>(null);
   const [isLanguageChanging, setIsLanguageChanging] = useState(false);
 
   useEffect(() => {
-    I18nManager.instance.addEventListener('onUserLanguageChange', (code) => {
-      newLanguageCode.current = code;
+    const callback = (code: string) => {
+      newLanguageCodeRef.current = code;
       confirmationRef.current?.open();
-    });
-  });
+    };
+    I18nManager.instance.addEventListener('onUserLanguageChange', callback);
+    return () => {
+      I18nManager.instance.removeEventListener('onUserLanguageChange', callback);
+    };
+  }, []);
 
   const outagesQuery = useQueryMemo({
-    queryKey: QueryUtil.getGenericKey(QUERY_KEY.OUTAGES),
-    queryFn: async ({ signal }) => (await SystemApi.instance.retrieveOutages({ signal })).data,
     gcTime: Infinity,
-    staleTime: Infinity,
+    queryFn: async ({ signal }) => (await SystemApi.instance.retrieveOutages({ signal })).data,
+    queryKey: QueryUtil.getGenericKey(QUERY_KEY.OUTAGES),
     refetchInterval: 5 * 60 * 1000,
+    staleTime: Infinity,
   });
 
   const outagesLoadables = useArray([outagesQuery]);
@@ -64,18 +68,18 @@ export const ApplicationBootstrap = ({ children }: PropsWithChildren): ReactNode
     return OutageUtil.getCategorizedOutages(outagesQuery.data ?? []);
   }, [outagesQuery.data]);
 
-  const onContinuButtonClick = useCallback(() => {
-    setShouldContinue(true);
-  }, []);
-
   const onRetryButtonClick = useCallback(() => {
     WindowManager.instance.window.location.reload();
   }, []);
 
+  const onContinuButtonClick = useCallback(() => {
+    setShouldContinue(true);
+  }, []);
+
   const onLanguageChangeConfirm = useCallback(async () => {
-    if (newLanguageCode.current) {
+    if (newLanguageCodeRef.current) {
       setIsLanguageChanging(true);
-      await I18nManager.instance.switchLanguageConfig(newLanguageCode.current);
+      await I18nManager.instance.switchLanguageConfig(newLanguageCodeRef.current);
       WindowManager.instance.window.location.reload();
     }
   }, []);
@@ -98,11 +102,11 @@ export const ApplicationBootstrap = ({ children }: PropsWithChildren): ReactNode
   const shouldShowOutagePage = !shouldContinue && !outagesQuery.isLoading && !outagesQuery.error && categorizedOutages.activeOutages?.length > 0;
 
   const featureFlagsQuery = useQueryMemo({
-    queryKey: QueryUtil.getGenericKey(QUERY_KEY.FEATURE_FLAGS),
-    queryFn: async ({ signal }) => (await SystemApi.instance.retrieveFeatureFlags({ signal })).data,
-    gcTime: Infinity,
-    staleTime: Infinity,
     enabled: shouldShowChildren,
+    gcTime: Infinity,
+    queryFn: async ({ signal }) => (await SystemApi.instance.retrieveFeatureFlags({ signal })).data,
+    queryKey: QueryUtil.getGenericKey(QUERY_KEY.FEATURE_FLAGS),
+    staleTime: Infinity,
   });
 
   const featureFlagsLoadables = useArray([featureFlagsQuery]);
@@ -154,13 +158,13 @@ export const ApplicationBootstrap = ({ children }: PropsWithChildren): ReactNode
       >
         {children}
         <Confirmation
-          ref={confirmationRef}
           body={t`Changing language will reload the application. Do you want to continue?`}
           cancelLabel={t`Cancel`}
           confirmLabel={t`Change language`}
           maxWidth={'xs'}
-          title={t`Are you sure?`}
           onConfirm={onLanguageChangeConfirm}
+          ref={confirmationRef}
+          title={t`Are you sure?`}
         />
       </ResponseHandler>
     );
@@ -181,21 +185,21 @@ export const ApplicationBootstrap = ({ children }: PropsWithChildren): ReactNode
         <Box
           sx={{
             display: 'flex',
-            justifyContent: 'flex-end',
             gap: 1,
+            justifyContent: 'flex-end',
           }}
         >
           <Button
             disabled={!buttonsEnabled}
-            variant={'outlined'}
             onClick={onContinuButtonClick}
+            variant={'outlined'}
           >
             {t`Continue anyway`}
           </Button>
           <Button
             disabled={!buttonsEnabled}
-            variant={'contained'}
             onClick={onRetryButtonClick}
+            variant={'contained'}
           >
             {t`Retry`}
           </Button>

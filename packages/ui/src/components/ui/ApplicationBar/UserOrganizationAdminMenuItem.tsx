@@ -1,7 +1,7 @@
 import {
-  ListItemText,
-  ListItem,
   Link,
+  ListItem,
+  ListItemText,
 } from '@mui/material';
 import { useTranslation } from 'react-i18next';
 
@@ -18,10 +18,10 @@ import { useQueryMemo } from '../../../hooks/useQueryMemo';
 export const UserOrganizationAdminMenuItem = withPermissions(() => {
   const { t } = useTranslation();
 
-  const { isLoading: isOrganizationAdminNameEmailsLoading, error: organizationAdminNameEmailsError, data: organizationAdminNameEmails } = useQueryMemo({
-    queryKey: QueryUtil.getGenericKey(QUERY_KEY.ORGANIZATION_ADMIN_NAME_EMAILS),
-    queryFn: async ({ signal }) => (await AbacApi.instance.retrieveOrganizationAdminNameEmails({ signal })).data,
+  const { data: organizationAdminNameEmails, error: organizationAdminNameEmailsError, isLoading: isOrganizationAdminNameEmailsLoading } = useQueryMemo({
     gcTime: 0,
+    queryFn: async ({ signal }) => (await AbacApi.instance.retrieveOrganizationAdminNameEmails({ signal })).data,
+    queryKey: QueryUtil.getGenericKey(QUERY_KEY.ORGANIZATION_ADMIN_NAME_EMAILS),
     staleTime: 0,
   });
 
@@ -41,8 +41,8 @@ export const UserOrganizationAdminMenuItem = withPermissions(() => {
             {organizationAdminNameEmailsError && t`Error`}
             {organizationAdminNameEmails?.map(admin => (
               <Link
-                key={admin.id}
                 href={`mailto:${admin.email}`}
+                key={admin.id}
                 sx={{
                   display: 'table',
                 }}

@@ -9,8 +9,8 @@ import {
 import SaveIcon from '@mui/icons-material/Save';
 import { useTranslation } from 'react-i18next';
 import type {
-  ObjectSchema,
   AnyObject,
+  ObjectSchema,
 } from 'yup';
 import { yupResolver } from '@hookform/resolvers/yup';
 import type {
@@ -23,8 +23,8 @@ import { useDebouncedCallback } from 'use-debounce';
 import { GenericForm } from '../../components/form/helpers/GenericForm';
 import type { DialogAction } from '../../components/ui/Dialog';
 import type {
-  WithDialogRenderProps,
   WithDialogRefMethods,
+  WithDialogRenderProps,
 } from '../../hoc/withDialog';
 import { withDialog } from '../../hoc/withDialog';
 import type { GenericData } from '../../models/data';
@@ -34,18 +34,18 @@ import type { FormFieldDefinition } from '../../models/form';
 
 
 export interface CrudPageEditDialogOpenProps<TData extends GenericData> {
-  readonly item?: TData;
-  readonly extraActionsFactory?: (item: TData) => DialogAction[];
   readonly canSave: boolean;
+  readonly extraActionsFactory?: (item: TData) => DialogAction[];
+  readonly item?: TData;
 }
 export interface CrudPageEditDialogProps<TData extends GenericData, TFormFields extends AnyObject> extends WithDialogRenderProps<CrudPageEditDialogOpenProps<TData>> {
-  readonly onSave: (formValues: TFormFields, item: TData) => void;
-  readonly onChange?: (item: TData, formValues: TFormFields, formMethods: UseFormReturn<TFormFields>) => void;
-  readonly formFieldDefinitions: FormFieldDefinition<TFormFields>[] | ((item: TData, values?: TFormFields) => FormFieldDefinition<TFormFields>[]);
-  readonly getName: (item: TData | TFormFields) => string;
   readonly createItemDialogTitle?: string;
   readonly defaultNewItem?: Partial<TFormFields>;
+  readonly formFieldDefinitions: ((item: TData, values?: TFormFields) => FormFieldDefinition<TFormFields>[]) | FormFieldDefinition<TFormFields>[];
   readonly getFormValuesFromItem?: (item: TData) => Partial<TFormFields>;
+  readonly getName: (item: TData | TFormFields) => string;
+  readonly onChange?: (item: TData, formValues: TFormFields, formMethods: UseFormReturn<TFormFields>) => void;
+  readonly onSave: (formValues: TFormFields, item: TData) => void;
   readonly schema: ObjectSchema<TFormFields, TFormFields>;
 }
 export type CrudPageEditDialogRefMethods<TData extends GenericData, TFormFields extends AnyObject> = WithDialogRefMethods<CrudPageEditDialogProps<TData, TFormFields>, CrudPageEditDialogOpenProps<TData>>;
@@ -53,18 +53,18 @@ export type CrudPageEditDialogRefMethods<TData extends GenericData, TFormFields 
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
 export const CrudPageEditDialog = withDialog<CrudPageEditDialogProps<any, any>, CrudPageEditDialogOpenProps<any>>(<TData extends GenericData, TFormFields extends AnyObject>(
   {
-    onSave,
-    onClose,
-    onChange,
-    openProps,
-    onTitleChange,
-    onActionsChange,
-    formFieldDefinitions,
-    schema,
-    getName,
     createItemDialogTitle,
     defaultNewItem,
+    formFieldDefinitions,
     getFormValuesFromItem,
+    getName,
+    onActionsChange,
+    onChange,
+    onClose,
+    onSave,
+    onTitleChange,
+    openProps,
+    schema,
   }: CrudPageEditDialogProps<TData, TFormFields>,
 ): ReactElement => {
   const { t } = useTranslation();
@@ -83,14 +83,14 @@ export const CrudPageEditDialog = withDialog<CrudPageEditDialogProps<any, any>, 
     }
     actions.push({
       ...TestIdUtil.createAttributes('CrudPageEditDialog-saveButton'),
-      color: 'secondary',
       autoFocus: true,
-      variant: 'contained',
+      color: 'secondary',
+      disabled: !openProps.canSave || resolvedFormFieldDefinitions.some(def => def.loading),
       form: formId,
-      type: 'submit',
       label: t`Save`,
       startIcon: <SaveIcon />,
-      disabled: !openProps.canSave || resolvedFormFieldDefinitions.some(def => def.loading),
+      type: 'submit',
+      variant: 'contained',
     });
     onActionsChange(actions);
   }, [onActionsChange, formId, t, resolvedFormFieldDefinitions, openProps]);
@@ -112,7 +112,7 @@ export const CrudPageEditDialog = withDialog<CrudPageEditDialogProps<any, any>, 
     resolver: yupResolver(schema) as Resolver<TFormFields>,
     values,
   });
-  const { handleSubmit, formState, subscribe } = formMethods;
+  const { formState, handleSubmit, subscribe } = formMethods;
 
   const debouncedHandleValuesChange = useDebouncedCallback((formValues: TFormFields) => {
     if (onChange) {
@@ -130,11 +130,11 @@ export const CrudPageEditDialog = withDialog<CrudPageEditDialogProps<any, any>, 
 
   useEffect(() => {
     const unsubscribe = subscribe({
-      formState: {
-        values: true,
-      },
       callback: ({ values: formValues }) => {
         debouncedHandleValuesChange(formValues);
+      },
+      formState: {
+        values: true,
       },
     });
     return () => unsubscribe();
@@ -151,17 +151,17 @@ export const CrudPageEditDialog = withDialog<CrudPageEditDialogProps<any, any>, 
 
   return (
     <GenericForm<TFormFields>
-      schema={schema}
       disableAll={!openProps.canSave}
       formFieldDefinitions={resolvedFormFieldDefinitions}
       formId={formId}
       formMethods={formMethods}
       onSubmit={openProps.canSave ? handleSubmit(onFormSubmit) : undefined}
+      schema={schema}
     />
   );
 }, {
-  testId: 'CrudPageEditDialog',
-  maxWidth: 'lg',
-  fullWidth: true,
   defaultTitle: '',
+  fullWidth: true,
+  maxWidth: 'lg',
+  testId: 'CrudPageEditDialog',
 });

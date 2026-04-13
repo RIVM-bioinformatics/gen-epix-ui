@@ -1,9 +1,9 @@
 import {
+  type ReactElement,
   useCallback,
   useEffect,
   useId,
   useMemo,
-  type ReactElement,
 } from 'react';
 import SaveIcon from '@mui/icons-material/Save';
 import { useTranslation } from 'react-i18next';
@@ -26,8 +26,8 @@ import {
 
 import type {
   Case,
-  CompleteCaseType,
   CaseSet,
+  CompleteCaseType,
 } from '../../../api';
 import { CaseApi } from '../../../api';
 import { EpiEventBusManager } from '../../../classes/managers/EpiEventBusManager';
@@ -36,8 +36,8 @@ import { useCaseSetStatusOptionsQuery } from '../../../dataHooks/useCaseSetStatu
 import { useCaseTypeOptionsQuery } from '../../../dataHooks/useCaseTypesQuery';
 import { useDataCollectionOptionsQuery } from '../../../dataHooks/useDataCollectionsQuery';
 import type {
-  WithDialogRenderProps,
   WithDialogRefMethods,
+  WithDialogRenderProps,
 } from '../../../hoc/withDialog';
 import { withDialog } from '../../../hoc/withDialog';
 import { useCreateMutation } from '../../../hooks/useCreateMutation';
@@ -62,8 +62,8 @@ import { SchemaUtil } from '../../../utils/SchemaUtil';
 import { EpiCreateEventDialogSuccessNotificationMessage } from './EpiCreateEventDialogSuccessNotificationMessage';
 
 export interface EpiCreateEventDialogOpenProps {
-  readonly rows?: Case[];
   readonly completeCaseType?: CompleteCaseType;
+  readonly rows?: Case[];
 }
 
 export interface EpiCreateEventDialogProps extends WithDialogRenderProps<EpiCreateEventDialogOpenProps> {
@@ -72,22 +72,22 @@ export interface EpiCreateEventDialogProps extends WithDialogRenderProps<EpiCrea
 export type EpiCreateEventDialogRefMethods = WithDialogRefMethods<EpiCreateEventDialogProps, EpiCreateEventDialogOpenProps>;
 
 type FormFields = {
-  name: string;
-  code: string;
-  description: string;
-  shouldApplySharingToCases: boolean;
-  case_type_id: string;
   case_set_category_id: string;
   case_set_status_id: string;
+  case_type_id: string;
+  code: string;
   create_in_data_collection_id: string;
+  description: string;
+  name: string;
   share_in_data_collection_ids: string[];
+  shouldApplySharingToCases: boolean;
 };
 
 export const EpiCreateEventDialog = withDialog<EpiCreateEventDialogProps, EpiCreateEventDialogOpenProps>((
   {
+    onActionsChange,
     onClose,
     onTitleChange,
-    onActionsChange,
     openProps,
   }: EpiCreateEventDialogProps,
 ): ReactElement => {
@@ -99,13 +99,13 @@ export const EpiCreateEventDialog = withDialog<EpiCreateEventDialogProps, EpiCre
   const formId = useId();
 
   const schema = useMemo(() => object<FormFields>().shape({
-    name: SchemaUtil.name,
-    code: SchemaUtil.code,
-    description: SchemaUtil.description.required(),
-    case_type_id: string().uuid4().required(),
     case_set_category_id: string().uuid4().required(),
     case_set_status_id: string().uuid4().required(),
+    case_type_id: string().uuid4().required(),
+    code: SchemaUtil.code,
     create_in_data_collection_id: string().uuid4().required(),
+    description: SchemaUtil.description.required(),
+    name: SchemaUtil.name,
     share_in_data_collection_ids: array().of(string().uuid4()),
     shouldApplySharingToCases: boolean().required(),
   }), []);
@@ -113,31 +113,31 @@ export const EpiCreateEventDialog = withDialog<EpiCreateEventDialogProps, EpiCre
   const formMethods = useForm<FormFields>({
     resolver: yupResolver(schema) as Resolver<FormFields>,
     values: {
-      name: openProps.completeCaseType ? t('New {{eventName}} event', { eventName: openProps.completeCaseType.name }) : '',
-      code: '',
-      description: '',
-      case_type_id: openProps.completeCaseType?.id ?? null,
       case_set_category_id: null,
       case_set_status_id: null,
+      case_type_id: openProps.completeCaseType?.id ?? null,
+      code: '',
       create_in_data_collection_id: null,
+      description: '',
+      name: openProps.completeCaseType ? t('New {{eventName}} event', { eventName: openProps.completeCaseType.name }) : '',
       share_in_data_collection_ids: [],
       shouldApplySharingToCases: true,
     },
   });
-  const { handleSubmit, setValue, control } = formMethods;
+  const { control, handleSubmit, setValue } = formMethods;
 
   const { case_type_id: userSelectedCaseTypeId, create_in_data_collection_id: createdInDataCollectionId, share_in_data_collection_ids: sharedInDataCollectionIds } = useWatch({ control });
 
   const sanitizedCompleteCaseTypeId = openProps.completeCaseType?.id ?? userSelectedCaseTypeId;
 
-  const { isLoading: isCompleteCaseTypeLoading, error: completeCaseTypeError, data: loadedCompleteCaseType } = useItemQuery({
+  const { data: loadedCompleteCaseType, error: completeCaseTypeError, isLoading: isCompleteCaseTypeLoading } = useItemQuery({
     baseQueryKey: QUERY_KEY.COMPLETE_CASE_TYPES,
     itemId: sanitizedCompleteCaseTypeId,
     useQueryOptions: {
+      enabled: !openProps.completeCaseType && !!sanitizedCompleteCaseTypeId,
       queryFn: async ({ signal }) => {
         return (await CaseApi.instance.completeCaseTypesGetOne(sanitizedCompleteCaseTypeId, { signal })).data;
       },
-      enabled: !openProps.completeCaseType && !!sanitizedCompleteCaseTypeId,
     },
   });
 
@@ -194,62 +194,62 @@ export const EpiCreateEventDialog = withDialog<EpiCreateEventDialogProps, EpiCre
     return [
       {
         definition: FORM_FIELD_DEFINITION_TYPE.AUTOCOMPLETE,
-        name: 'case_type_id',
-        label: t`Case type`,
-        options: caseTypeOptionsQuery.options,
-        loading: caseTypeOptionsQuery.isLoading,
         disabled: !!openProps.completeCaseType,
+        label: t`Case type`,
+        loading: caseTypeOptionsQuery.isLoading,
+        name: 'case_type_id',
+        options: caseTypeOptionsQuery.options,
       } as const satisfies FormFieldDefinition<FormFields>,
       {
         definition: FORM_FIELD_DEFINITION_TYPE.AUTOCOMPLETE,
-        name: 'create_in_data_collection_id',
         label: t`Create in data collection`,
-        options: createInDataCollectionOptions,
         loading: dataCollectionOptionsQuery.isLoading || isCompleteCaseTypeLoading,
+        name: 'create_in_data_collection_id',
+        options: createInDataCollectionOptions,
       } as const satisfies FormFieldDefinition<FormFields>,
       {
         definition: FORM_FIELD_DEFINITION_TYPE.AUTOCOMPLETE,
-        name: 'share_in_data_collection_ids',
         label: t`Share in data collections`,
-        options: shareInDataCollectionOptions,
         loading: dataCollectionOptionsQuery.isLoading || isCompleteCaseTypeLoading,
         multiple: true,
+        name: 'share_in_data_collection_ids',
+        options: shareInDataCollectionOptions,
       } as const satisfies FormFieldDefinition<FormFields>,
       {
         definition: FORM_FIELD_DEFINITION_TYPE.BOOLEAN,
-        name: 'shouldApplySharingToCases',
+        disabled: sharedInDataCollectionIds.length === 0 || !openProps.rows?.length,
         label: t`Should the same sharing be applied to the cases in the event?`,
         loading: dataCollectionOptionsQuery.isLoading || isCompleteCaseTypeLoading,
-        disabled: sharedInDataCollectionIds.length === 0 || !openProps.rows?.length,
+        name: 'shouldApplySharingToCases',
       } as const satisfies FormFieldDefinition<FormFields>,
       {
         definition: FORM_FIELD_DEFINITION_TYPE.TEXTFIELD,
-        name: 'name',
         label: t`Event name`,
+        name: 'name',
       } as const satisfies FormFieldDefinition<FormFields>,
       {
         definition: FORM_FIELD_DEFINITION_TYPE.TEXTFIELD,
-        name: 'code',
         label: t`Event code`,
+        name: 'code',
       } as const satisfies FormFieldDefinition<FormFields>,
       {
         definition: FORM_FIELD_DEFINITION_TYPE.RICH_TEXT,
-        name: 'description',
         label: t`Description`,
+        name: 'description',
       } as const satisfies FormFieldDefinition<FormFields>,
       {
         definition: FORM_FIELD_DEFINITION_TYPE.AUTOCOMPLETE,
-        name: 'case_set_category_id',
         label: t`Category`,
-        options: caseSetCategoryOptionsQuery.options,
         loading: caseSetCategoryOptionsQuery.isLoading,
+        name: 'case_set_category_id',
+        options: caseSetCategoryOptionsQuery.options,
       } as const satisfies FormFieldDefinition<FormFields>,
       {
         definition: FORM_FIELD_DEFINITION_TYPE.AUTOCOMPLETE,
-        name: 'case_set_status_id',
         label: t`Status`,
-        options: caseSetStatusOptionsQuery.options,
         loading: caseSetStatusOptionsQuery.isLoading,
+        name: 'case_set_status_id',
+        options: caseSetStatusOptionsQuery.options,
       } as const satisfies FormFieldDefinition<FormFields>,
     ] as const;
   }, [caseSetCategoryOptionsQuery.isLoading, caseSetCategoryOptionsQuery.options, caseSetStatusOptionsQuery.isLoading, caseSetStatusOptionsQuery.options, caseTypeOptionsQuery.isLoading, caseTypeOptionsQuery.options, createInDataCollectionOptions, dataCollectionOptionsQuery.isLoading, isCompleteCaseTypeLoading, openProps.completeCaseType, openProps.rows?.length, shareInDataCollectionOptions, sharedInDataCollectionIds.length, t]);
@@ -267,9 +267,9 @@ export const EpiCreateEventDialog = withDialog<EpiCreateEventDialogProps, EpiCre
   const onSuccess = useCallback(async (item: CaseSet, variables: FormFields) => {
     if (variables.shouldApplySharingToCases) {
       await CaseUtil.applyDataCollectionLinks({
-        caseSetId: item.id,
         caseIds: openProps.rows ? openProps.rows.map(row => row.id) : undefined,
         caseSetDataCollectionIds: variables.share_in_data_collection_ids,
+        caseSetId: item.id,
         caseTypeId: completeCaseType.id,
       });
     }
@@ -283,40 +283,40 @@ export const EpiCreateEventDialog = withDialog<EpiCreateEventDialogProps, EpiCre
     onClose();
   }, [onClose]);
 
-  const { mutate: mutateCreate, isMutating: isCreating } = useCreateMutation<CaseSet, FormFields>({
-    resourceQueryKey: QueryUtil.getGenericKey(QUERY_KEY.CASE_SETS),
+  const { isMutating: isCreating, mutate: mutateCreate } = useCreateMutation<CaseSet, FormFields>({
     associationQueryKeys: [
       ...QueryUtil.getQueryKeyDependencies([QUERY_KEY.CASE_SETS]),
       ...QueryUtil.getQueryKeyDependencies([QUERY_KEY.CASE_SET_MEMBERS], true),
       ...QueryUtil.getQueryKeyDependencies([QUERY_KEY.DATA_COLLECTION_SET_MEMBERS], true),
     ],
-    onSuccess,
+    getErrorNotificationMessage: (item, _error) => t('Failed to create event: {{name}}', { name: item.name }),
+    getProgressNotificationMessage: (variables) => t('Creating event: {{name}}...', { name: variables.name }),
+    getSuccessNotificationMessage: (item) => (
+      <EpiCreateEventDialogSuccessNotificationMessage
+        caseSet={item}
+        isCreating
+      />
+    ),
     onError,
+    onSuccess,
     queryFn: async (formData: FormFields): Promise<CaseSet> => {
       const caseSetResult = (await CaseApi.instance.createCaseSet({
+        case_ids: openProps.rows?.map(row => row.id) ?? [],
         case_set: {
-          code: formData.code,
           case_set_category_id: formData.case_set_category_id,
           case_set_status_id: formData.case_set_status_id,
+          case_type_id: formData.case_type_id,
+          code: formData.code,
+          created_in_data_collection_id: formData.create_in_data_collection_id,
           description: formData.description,
           name: formData.name,
-          case_type_id: formData.case_type_id,
-          created_in_data_collection_id: formData.create_in_data_collection_id,
         },
         data_collection_ids: formData.share_in_data_collection_ids,
-        case_ids: openProps.rows?.map(row => row.id) ?? [],
       })).data;
 
       return caseSetResult;
     },
-    getProgressNotificationMessage: (variables) => t('Creating event: {{name}}...', { name: variables.name }),
-    getErrorNotificationMessage: (item, _error) => t('Failed to create event: {{name}}', { name: item.name }),
-    getSuccessNotificationMessage: (item) => (
-      <EpiCreateEventDialogSuccessNotificationMessage
-        isCreating
-        caseSet={item}
-      />
-    ),
+    resourceQueryKey: QueryUtil.getGenericKey(QUERY_KEY.CASE_SETS),
   });
 
   const isFormDisabled = useMemo(() => {
@@ -328,15 +328,15 @@ export const EpiCreateEventDialog = withDialog<EpiCreateEventDialogProps, EpiCre
     if (isLoading || !isFormDisabled) {
       actions.push({
         ...TestIdUtil.createAttributes('EpiCreateEventDialog-saveButton'),
-        color: 'secondary',
         autoFocus: true,
-        variant: 'contained',
-        form: formId,
-        type: 'submit',
-        label: t`Save`,
-        startIcon: <SaveIcon />,
-        loading: isLoading,
+        color: 'secondary',
         disabled: isLoading || isCreating,
+        form: formId,
+        label: t`Save`,
+        loading: isLoading,
+        startIcon: <SaveIcon />,
+        type: 'submit',
+        variant: 'contained',
       });
     }
     onActionsChange(actions);
@@ -347,23 +347,21 @@ export const EpiCreateEventDialog = withDialog<EpiCreateEventDialogProps, EpiCre
   }, [mutateCreate]);
 
   useEffect(() => {
-    let title = '';
     if (openProps.completeCaseType) {
       if (openProps.rows?.length) {
-        title = t('Create new event from {{numCases}} selected {{caseTypeName}} cases', { numCases: openProps.rows.length, caseTypeName: openProps.completeCaseType.name });
+        onTitleChange(t('Create new event from {{numCases}} selected {{caseTypeName}} cases', { caseTypeName: openProps.completeCaseType.name, numCases: openProps.rows.length }));
       } else {
-        title = t('Create event');
+        onTitleChange(t('Create event'));
       }
     } else {
-      title = t('Create event');
+      onTitleChange(t('Create event'));
     }
-    onTitleChange(title);
   }, [onTitleChange, openProps, t]);
 
   return (
     <ResponseHandler
-      inlineSpinner
       error={completeCaseTypeError}
+      inlineSpinner
       isLoading={isCreating}
       loadables={loadables}
     >
@@ -375,12 +373,12 @@ export const EpiCreateEventDialog = withDialog<EpiCreateEventDialogProps, EpiCre
         </Box>
       ) : (
         <GenericForm<FormFields>
+          disableAll={isFormDisabled}
           formFieldDefinitions={formFieldDefinitions}
           formId={formId}
           formMethods={formMethods}
-          disableAll={isFormDisabled}
-          schema={schema}
           onSubmit={handleSubmit(onFormSubmit)}
+          schema={schema}
         />
       )}
       {openProps.rows?.length > 0 && (
@@ -391,7 +389,7 @@ export const EpiCreateEventDialog = withDialog<EpiCreateEventDialogProps, EpiCre
     </ResponseHandler>
   );
 }, {
-  testId: 'EpiCreateEventDialog',
-  maxWidth: 'lg',
   fullWidth: true,
+  maxWidth: 'lg',
+  testId: 'EpiCreateEventDialog',
 });

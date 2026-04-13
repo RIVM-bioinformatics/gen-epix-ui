@@ -4,20 +4,20 @@ import type {
 } from '@mui/material';
 import {
   Box,
-  Dialog as MuiDialog,
-  DialogActions as MuiDialogActions,
+  Button,
   DialogContent,
   DialogTitle,
   IconButton,
-  Button,
+  Dialog as MuiDialog,
+  DialogActions as MuiDialogActions,
 } from '@mui/material';
 import CloseIcon from '@mui/icons-material/Close';
 import LinkIcon from '@mui/icons-material/Link';
 import isObject from 'lodash/isObject';
 import type {
+  PropsWithChildren,
   ReactElement,
   RefObject,
-  PropsWithChildren,
 } from 'react';
 import { useCallback } from 'react';
 import { useTranslation } from 'react-i18next';
@@ -25,29 +25,29 @@ import { useTranslation } from 'react-i18next';
 import { CopyToClipboardButton } from '../CopyToClipboardButton';
 import { TestIdUtil } from '../../../utils/TestIdUtil';
 
-export type DialogActionButton = Omit<Parameters<typeof Button>[0], 'children'> & {
-  label: string;
-};
-
 export type DialogAction = DialogActionButton | ReactElement;
 
+export type DialogActionButton = {
+  label: string;
+} & Omit<Parameters<typeof Button>[0], 'children'>;
+
 export type DialogProps = {
-  readonly onClose?: () => void;
-  readonly component?: (props: { onDialogTitleChange?: (title: string) => void }) => ReactElement;
-  readonly title?: string;
-  readonly titleVariant?: TypographyVariant;
-  readonly permalink?: string;
   readonly actionButtons?: () => ReactElement;
   readonly actions?: DialogAction[];
-  readonly testId: string;
-  readonly maxWidth?: MuiDialogProps['maxWidth'];
-  readonly fullWidth?: boolean;
-  readonly fullScreen?: boolean;
-  readonly noCloseButton?: boolean;
-  readonly disableBackdropClick?: boolean;
-  readonly noTitle?: boolean;
-  readonly noPadding?: boolean;
+  readonly component?: (props: { onDialogTitleChange?: (title: string) => void }) => ReactElement;
   readonly dialogContentRef?: RefObject<HTMLDivElement>;
+  readonly disableBackdropClick?: boolean;
+  readonly fullScreen?: boolean;
+  readonly fullWidth?: boolean;
+  readonly maxWidth?: MuiDialogProps['maxWidth'];
+  readonly noCloseButton?: boolean;
+  readonly noPadding?: boolean;
+  readonly noTitle?: boolean;
+  readonly onClose?: () => void;
+  readonly permalink?: string;
+  readonly testId: string;
+  readonly title?: string;
+  readonly titleVariant?: TypographyVariant;
 };
 
 const isDialogActionButton = (action: DialogAction): action is DialogActionButton => {
@@ -55,29 +55,29 @@ const isDialogActionButton = (action: DialogAction): action is DialogActionButto
 };
 
 export const Dialog = ({
-  onClose,
-  title,
-  children,
   actionButtons: ActionButtons,
   actions,
-  testId,
-  titleVariant = 'h5',
-  permalink,
-  maxWidth = false,
-  fullWidth = false,
-  noCloseButton = false,
+  children,
+  dialogContentRef,
   disableBackdropClick = false,
   fullScreen = false,
-  noTitle = false,
+  fullWidth = false,
+  maxWidth = false,
+  noCloseButton = false,
   noPadding = false,
-  dialogContentRef,
+  noTitle = false,
+  onClose,
+  permalink,
+  testId,
+  title,
+  titleVariant = 'h5',
 }: PropsWithChildren<DialogProps>): ReactElement => {
   const { t } = useTranslation();
-  const onMuiDialogClose = useCallback((_event: unknown, reason: 'backdropClick' | 'escapeKeyDown') => {
-    if (reason === 'backdropClick' && disableBackdropClick) {
+  const onMuiDialogClose = useCallback<NonNullable<MuiDialogProps['onClose']>>((_event, reason) => {
+    if (disableBackdropClick && (reason === 'backdropClick' || reason === 'escapeKeyDown')) {
       return;
     }
-    onClose();
+    onClose?.();
   }, [disableBackdropClick, onClose]);
 
   const onGetClipboardValue = useCallback(() => {
@@ -87,17 +87,16 @@ export const Dialog = ({
   return (
     <MuiDialog
       {...TestIdUtil.createAttributes(testId, { title })}
-      open
-      disableEscapeKeyDown={disableBackdropClick}
       fullScreen={fullScreen}
       fullWidth={fullWidth}
       maxWidth={maxWidth}
+      onClose={onMuiDialogClose}
+      open
       sx={{
         '& .MuiDialogContent-root, & .MuiCardContent-root:last-child': {
           padding: noPadding ? '0' : undefined,
         },
       }}
-      onClose={onMuiDialogClose}
     >
       {!noTitle && (
         <Box
@@ -123,17 +122,17 @@ export const Dialog = ({
                 }}
               >
                 <CopyToClipboardButton
-                  iconOnly
                   baseIcon={<LinkIcon />}
                   buttonProps={{
                     sx: {
-                      width: 20,
-                      height: 20,
                       '& svg': {
                         fontSize: 20,
                       },
+                      height: 20,
+                      width: 20,
                     },
                   }}
+                  iconOnly
                   onGetClipboardValue={onGetClipboardValue}
                 />
               </Box>
@@ -142,12 +141,12 @@ export const Dialog = ({
           {!noCloseButton && (
             <IconButton
               {...TestIdUtil.createAttributes(`${testId}-closeButton`)}
-              title={t`Close`}
               aria-label={title ? t('Close dialog with title: {{title}}', { title }) : t`Close dialog`}
+              onClick={onClose}
               sx={{
                 color: 'grey.500',
               }}
-              onClick={onClose}
+              title={t`Close`}
             >
               <CloseIcon />
             </IconButton>
@@ -157,8 +156,8 @@ export const Dialog = ({
       {!!children && (
         <DialogContent
           {...TestIdUtil.createAttributes(`${testId}-content`)}
-          ref={dialogContentRef}
           dividers={!!ActionButtons}
+          ref={dialogContentRef}
           sx={{
             paddingTop: fullScreen ? 0 : undefined,
           }}

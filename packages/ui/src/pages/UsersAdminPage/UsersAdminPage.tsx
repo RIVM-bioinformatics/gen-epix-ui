@@ -41,7 +41,7 @@ import { useInviteUserConstraintsQuery } from '../../dataHooks/useInviteUserCons
 import type { OmitWithMetaData } from '../../models/data';
 import { SchemaUtil } from '../../utils/SchemaUtil';
 
-type FormFields = OmitWithMetaData<User, 'organization' | 'organization_id'>;
+type FormFields = OmitWithMetaData<User, 'organization_id' | 'organization'>;
 
 export const UsersAdminPage = () => {
   const { t } = useTranslation();
@@ -64,8 +64,8 @@ export const UsersAdminPage = () => {
       user.roles.forEach((role) => roles.add(role));
     });
     const _tableRoleOptions = Array.from(roles).map((role) => ({
-      value: role,
       label: role,
+      value: role,
     }));
     setTableRoleOptions(_tableRoleOptions);
     let _formRoleOptions: OptionBase<string>[];
@@ -73,8 +73,8 @@ export const UsersAdminPage = () => {
       { command_name: CommandName.RetrieveInviteUserConstraintsCommand, permission_type: PermissionType.EXECUTE },
     ])) {
       _formRoleOptions = inviteUserConstraintsQuery?.data ? inviteUserConstraintsQuery.data.roles.map(role => ({
-        value: role,
         label: role,
+        value: role,
       })) : _tableRoleOptions;
     } else {
       _formRoleOptions = _tableRoleOptions;
@@ -83,9 +83,9 @@ export const UsersAdminPage = () => {
     // so we need to add those to the options as well, but disable them since the user doesn't have permission to assign those roles to other users.
     const extraRolesFromUser = AuthorizationManager.instance.user.roles.filter(role => !_formRoleOptions.some(option => option.value === role));
     _formRoleOptions.push(...extraRolesFromUser.map(role => ({
-      value: role,
-      label: role,
       disabled: true,
+      label: role,
+      value: role,
     })));
     setFormRoleOptions(_formRoleOptions);
   }, [inviteUserConstraintsQuery.data]);
@@ -118,12 +118,12 @@ export const UsersAdminPage = () => {
 
   const schema = useMemo(() => {
     return object<FormFields>().shape({
-      key: string().optional(),
+      description: SchemaUtil.description,
       email: string().email().nullable(),
+      is_active: boolean().required(),
+      key: string().optional(),
       name: string().nullable(),
       roles: array().required().min(1),
-      is_active: boolean().required(),
-      description: SchemaUtil.description,
     });
   }, []);
 
@@ -131,37 +131,37 @@ export const UsersAdminPage = () => {
     return [
       {
         definition: FORM_FIELD_DEFINITION_TYPE.TEXTFIELD,
-        name: 'key',
-        label: t`Key`,
         disabled: true,
+        label: t`Key`,
+        name: 'key',
       } as const satisfies FormFieldDefinition<FormFields>,
       {
         definition: FORM_FIELD_DEFINITION_TYPE.TEXTFIELD,
-        name: 'email',
         label: t`Email`,
+        name: 'email',
       } as const satisfies FormFieldDefinition<FormFields>,
       {
         definition: FORM_FIELD_DEFINITION_TYPE.TEXTFIELD,
-        name: 'name',
         label: t`Name`,
+        name: 'name',
       } as const satisfies FormFieldDefinition<FormFields>,
       {
         definition: FORM_FIELD_DEFINITION_TYPE.AUTOCOMPLETE,
-        name: 'roles',
         label: t`Roles`,
-        options: formRoleOptions,
-        multiple: true,
         loading: inviteUserConstraintsQuery.isLoading,
+        multiple: true,
+        name: 'roles',
+        options: formRoleOptions,
       } as const satisfies FormFieldDefinition<FormFields>,
       {
         definition: FORM_FIELD_DEFINITION_TYPE.BOOLEAN,
-        name: 'is_active',
         label: t`Is active`,
+        name: 'is_active',
       } as const satisfies FormFieldDefinition<FormFields>,
       {
         definition: FORM_FIELD_DEFINITION_TYPE.TEXTFIELD,
-        name: 'description',
         label: t`Description`,
+        name: 'description',
       } as const satisfies FormFieldDefinition<FormFields>,
     ] as const;
   }, [t, formRoleOptions, inviteUserConstraintsQuery.isLoading]);
@@ -171,7 +171,7 @@ export const UsersAdminPage = () => {
       TableUtil.createOptionsColumn<User>({ id: 'organization_id', name: t`Organization`, options: organizationOptionsQuery.options }),
       TableUtil.createTextColumn<User>({ id: 'key', name: t`Key` }),
       TableUtil.createTextColumn<User>({ id: 'email', name: t`E-Mail` }),
-      TableUtil.createTextColumn<User>({ id: 'name', name: t`Name`, advancedSort: true }),
+      TableUtil.createTextColumn<User>({ advancedSort: true, id: 'name', name: t`Name` }),
       TableUtil.createTextColumn<User>({ id: 'description', name: t`Description` }),
       TableUtil.createOptionsColumn<User>({ id: 'roles', name: t`Roles`, options: tableRoleOptions }),
       TableUtil.createBooleanColumn<User>({ id: 'is_active', name: t`Is active` }),
@@ -180,12 +180,12 @@ export const UsersAdminPage = () => {
 
   const getOptimisticUpdateIntermediateItem = useCallback((variables: FormFields, previousItem: User): User => {
     return {
+      email: previousItem.email,
       id: previousItem.id,
       is_active: previousItem.is_active,
-      organization_id: previousItem.organization_id,
-      name: previousItem.name,
       key: previousItem.email,
-      email: previousItem.email,
+      name: previousItem.name,
+      organization_id: previousItem.organization_id,
       ...variables,
     };
   }, []);
@@ -210,12 +210,12 @@ export const UsersAdminPage = () => {
     }
     return [
       {
-        label: t`Test effective rights`,
         getPathName: (item: User) => `/management/users/${item.id}/effective-rights-tester`,
+        label: t`Test effective rights`,
       } satisfies CrudPageSubPage<User>,
       {
-        label: t`View effective rights`,
         getPathName: (item: User) => `/management/users/${item.id}/effective-rights`,
+        label: t`View effective rights`,
       } satisfies CrudPageSubPage<User>,
     ];
 
@@ -232,26 +232,26 @@ export const UsersAdminPage = () => {
   return (
     <>
       <CrudPage<FormFields, User>
-        loadables={loadables}
         canEditItem={canEditItem}
-        subPages={subPages}
-        extraUpdateOnePermissions={extraUpdateOnePermissions}
-        extraDeleteOnePermissions={extraDeleteOnePermissions}
         createItemDialogTitle={t`Create new user`}
         defaultSortByField={'name'}
         defaultSortDirection={'asc'}
         deleteOne={deleteOne}
+        extraDeleteOnePermissions={extraDeleteOnePermissions}
+        extraUpdateOnePermissions={extraUpdateOnePermissions}
         fetchAll={fetchAll}
         formFieldDefinitions={formFieldDefinitions}
         getName={getName}
         getOptimisticUpdateIntermediateItem={getOptimisticUpdateIntermediateItem}
+        loadables={loadables}
+        onRowsChange={onRowsChange}
         resourceQueryKeyBase={QUERY_KEY.USERS}
         schema={schema}
+        subPages={subPages}
         tableColumns={tableColumns}
         testIdAttributes={TestIdUtil.createAttributes('UsersAdminPage')}
         title={t`Users`}
         updateOne={updateOne}
-        onRowsChange={onRowsChange}
       />
       <EpiUserRightsDialog ref={epiUserRightsDialogRef} />
     </>

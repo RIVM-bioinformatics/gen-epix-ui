@@ -3,36 +3,36 @@ import { ConfigManager } from '../ConfigManager';
 import type { User } from '../../../api';
 import { EventBusAbstract } from '../../abstracts/EventBusAbstract';
 
-type Page = {
-  pageName: string;
-  location: Location;
+type EpiEvent = {
+  changePage: Page;
+  changeUser: User;
+  click: {
+    context?: string;
+    label: string;
+    page?: Page;
+    type: 'button' | 'link' | 'table-row-index' | 'table-row';
+  };
+  error: Error;
 };
 
-type EpiEvent = {
-  error: Error;
-  changeUser: User;
-  changePage: Page;
-  click: {
-    label: string;
-    context?: string;
-    page?: Page;
-    type: 'button' | 'link' | 'table-row' | 'table-row-index';
-  };
+type Page = {
+  location: Location;
+  pageName: string;
 };
 
 export class PageEventBusManager extends EventBusAbstract<EpiEvent> {
-  private lastPageEventPayload: string = null;
-
-  private constructor() {
-    super();
-    this.setupClickEventListener();
-  }
-
   public static get instance(): PageEventBusManager {
     // Instances are stored on the window to prevent multiple instances of the same manager. HMR may load multiple instances of the same manager, but we only want one instance to be active at a time.
 
     WindowManager.instance.window.managers.pageEventBus = WindowManager.instance.window.managers.pageEventBus || new PageEventBusManager();
     return WindowManager.instance.window.managers.pageEventBus;
+  }
+
+  private lastPageEventPayload: string = null;
+
+  private constructor() {
+    super();
+    this.setupClickEventListener();
   }
 
   public emit<TEventName extends keyof EpiEvent>(eventName: TEventName, payload?: EpiEvent[TEventName]): void {
@@ -51,6 +51,13 @@ export class PageEventBusManager extends EventBusAbstract<EpiEvent> {
   }
 
 
+  public getPage(): Page {
+    return {
+      location: WindowManager.instance.window.location,
+      pageName: document.querySelector('[data-page-container]')?.getAttribute('data-testid'),
+    };
+  }
+
   private setupClickEventListener(): void {
     if (!ConfigManager.instance.config.enablePageEvents) {
       return;
@@ -67,24 +74,24 @@ export class PageEventBusManager extends EventBusAbstract<EpiEvent> {
         const buttonTitle = closestElement.getAttribute('aria-label') ?? closestElement.getAttribute('title');
         if (buttonTitle) {
           this.emit('click', {
-            label: buttonTitle,
             context,
+            label: buttonTitle,
             type: closestButton ? 'button' : 'link',
           });
         } else {
           const childTextNode = this.traverseDom(closestElement, (el) => el.nodeType === Node.TEXT_NODE);
           if (childTextNode?.nodeValue) {
             this.emit('click', {
-              label: childTextNode?.nodeValue,
               context,
+              label: childTextNode?.nodeValue,
               type: closestButton ? 'button' : 'link',
             });
           } else {
             const nodeWithText = this.traverseDom(closestElement, (el) => !!el.innerText);
             if (nodeWithText?.innerText) {
               this.emit('click', {
-                label: nodeWithText?.innerText.split('\n')[0],
                 context,
+                label: nodeWithText?.innerText.split('\n')[0],
                 type: closestButton ? 'button' : 'link',
               });
             }
@@ -105,12 +112,5 @@ export class PageEventBusManager extends EventBusAbstract<EpiEvent> {
       }
     }
     return null;
-  }
-
-  public getPage(): Page {
-    return {
-      pageName: document.querySelector('[data-page-container]')?.getAttribute('data-testid'),
-      location: WindowManager.instance.window.location,
-    };
   }
 }

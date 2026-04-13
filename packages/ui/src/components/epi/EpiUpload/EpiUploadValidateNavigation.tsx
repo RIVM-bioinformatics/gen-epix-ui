@@ -1,6 +1,6 @@
 import { useTranslation } from 'react-i18next';
 import { useStore } from 'zustand';
-import { useContext } from 'react';
+import { use } from 'react';
 
 import type { CaseUploadResultWithGeneratedId } from '../../../models/epi';
 import { useTableStoreContext } from '../../../stores/tableStore';
@@ -16,7 +16,7 @@ export type EpiUploadValidateNavigationProps = {
 export const EpiUploadValidateNavigation = ({ onGoBackButtonClick, onProceedButtonClick }: EpiUploadValidateNavigationProps) => {
   const { t } = useTranslation();
   const tableStore = useTableStoreContext<CaseUploadResultWithGeneratedId>();
-  const uploadStore = useContext(EpiUploadStoreContext);
+  const uploadStore = use(EpiUploadStoreContext);
 
   const completeCaseType = useStore(uploadStore, (state) => state.completeCaseType);
   const selectedIds = useStore(tableStore, (state) => state.selectedIds);
@@ -25,10 +25,10 @@ export const EpiUploadValidateNavigation = ({ onGoBackButtonClick, onProceedButt
 
   return (
     <EpiUploadNavigation
-      proceedLabel={t`Continue`}
-      proceedDisabled={proceedDisabled}
       onGoBackButtonClick={onGoBackButtonClick}
       onProceedButtonClick={onProceedButtonClick}
+      proceedDisabled={proceedDisabled}
+      proceedLabel={t`Continue`}
     />
   );
 };
