@@ -105,6 +105,9 @@ export const UploadButton = <TFieldValues extends FieldValues, TName extends Pat
           role={undefined}
           size={'large'}
           startIcon={<CloudUploadIcon />}
+          sx={{
+            height: theme => theme.spacing(7),
+          }}
           tabIndex={-1}
           variant={'outlined'}
         >
