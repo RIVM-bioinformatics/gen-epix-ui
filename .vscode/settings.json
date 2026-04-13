@@ -1,9 +1,4 @@
 {
-  "eslint.workingDirectories": [
-    {
-      "pattern": "./packages/*"
-    }
-  ],
   "js/ts.tsdk.path": "node_modules/typescript/lib",
   "eslint.useFlatConfig": true,
   "cSpell.words": [
