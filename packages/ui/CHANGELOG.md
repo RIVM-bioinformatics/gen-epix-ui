@@ -1,5 +1,19 @@
 # Changelog
 
+## [1.23.0](https://github.com/RIVM-bioinformatics/gen-epix-ui/compare/ui-v1.22.0...ui-v1.23.0) (2026-04-13)
+
+
+### Features
+
+* add integration test framework and add PhylogeneticTreeComponent canvas test ([6433db2](https://github.com/RIVM-bioinformatics/gen-epix-ui/commit/6433db2f9c49dde84d7309cb31fc0a9f6dfe83d2))
+* split packages ([#112](https://github.com/RIVM-bioinformatics/gen-epix-ui/issues/112)) ([0d9657f](https://github.com/RIVM-bioinformatics/gen-epix-ui/commit/0d9657fe238c0ce46ca33f43040ce1f81dec0298))
+
+
+### Bug Fixes
+
+* fix upload button height ([0384ea9](https://github.com/RIVM-bioinformatics/gen-epix-ui/commit/0384ea9d679693349762ba4d8c1cef7d54fc1009))
+* remove demo-config ([3d4113b](https://github.com/RIVM-bioinformatics/gen-epix-ui/commit/3d4113ba50b66bf22d6aaa17f321df55d0cded7e))
+
 ## [1.22.0](https://github.com/RIVM-bioinformatics/gen-epix-ui/compare/ui-v1.21.2...ui-v1.22.0) (2026-04-13)
 
 
