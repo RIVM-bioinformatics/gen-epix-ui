@@ -21,6 +21,62 @@ importers:
         specifier: 6.0.2
         version: 6.0.2
 
+  packages/api-casedb:
+    dependencies:
+      axios:
+        specifier: 1.15.0
+        version: 1.15.0
+    devDependencies:
+      '@gen-epix/eslint-config':
+        specifier: 0.2.0
+        version: 0.2.0(eslint@10.2.0)(typescript@6.0.2)(vitest@4.1.4)
+      '@gen-epix/generate-api':
+        specifier: 0.1.1
+        version: 0.1.1(@openapitools/openapi-generator-cli@2.31.1(encoding@0.1.13))
+      '@openapitools/openapi-generator-cli':
+        specifier: 2.31.1
+        version: 2.31.1(encoding@0.1.13)
+      '@types/node':
+        specifier: 25.6.0
+        version: 25.6.0
+      eslint:
+        specifier: 10.2.0
+        version: 10.2.0
+      typescript:
+        specifier: 6.0.2
+        version: 6.0.2
+      vite:
+        specifier: 8.0.8
+        version: 8.0.8(@types/node@25.6.0)(yaml@2.8.3)
+      vite-plugin-dts:
+        specifier: 4.5.4
+        version: 4.5.4(@types/node@25.6.0)(typescript@6.0.2)(vite@8.0.8(@types/node@25.6.0)(yaml@2.8.3))
+      vite-plugin-static-copy:
+        specifier: 4.0.1
+        version: 4.0.1(vite@8.0.8(@types/node@25.6.0)(yaml@2.8.3))
+
+  packages/client-config:
+    dependencies:
+      '@mui/material':
+        specifier: 9.0.0
+        version: 9.0.0(@emotion/react@11.14.0(@types/react@19.2.14)(react@19.2.5))(@emotion/styled@11.14.1(@emotion/react@11.14.0(@types/react@19.2.14)(react@19.2.5))(@types/react@19.2.14)(react@19.2.5))(@types/react@19.2.14)(react-dom@19.2.5(react@19.2.5))(react@19.2.5)
+    devDependencies:
+      '@gen-epix/eslint-config':
+        specifier: 0.2.0
+        version: 0.2.0(eslint@10.2.0)(typescript@6.0.2)(vitest@4.1.4)
+      '@types/node':
+        specifier: 25.6.0
+        version: 25.6.0
+      eslint:
+        specifier: 10.2.0
+        version: 10.2.0
+      typescript:
+        specifier: 6.0.2
+        version: 6.0.2
+      vite:
+        specifier: 8.0.8
+        version: 8.0.8(@types/node@25.6.0)(yaml@2.8.3)
+
   packages/client-theme:
     dependencies:
       '@mui/material':
@@ -459,15 +515,9 @@ importers:
       '@gen-epix/eslint-config':
         specifier: 0.2.0
         version: 0.2.0(eslint@10.2.0)(typescript@6.0.2)(vitest@4.1.4)
-      '@gen-epix/generate-api':
-        specifier: 0.1.1
-        version: 0.1.1(@openapitools/openapi-generator-cli@2.31.1(encoding@0.1.13))
       '@gen-epix/translation-util':
         specifier: 0.1.1
         version: 0.1.1
-      '@openapitools/openapi-generator-cli':
-        specifier: 2.31.1
-        version: 2.31.1(encoding@0.1.13)
       '@types/lodash':
         specifier: 4.17.24
         version: 4.17.24
@@ -2746,6 +2796,7 @@ packages:
   basic-ftp@5.2.0:
     resolution: {integrity: sha512-VoMINM2rqJwJgfdHq6RiUudKt2BV+FY5ZFezP/ypmwayk68+NzzAQy4XXLlqsGD4MCzq3DrmNFD/uUmBJuGoXw==}
     engines: {node: '>=10.0.0'}
+    deprecated: Security vulnerability fixed in 5.2.1, please upgrade
 
   before-after-hook@2.2.3:
     resolution: {integrity: sha512-NzUnlZexiaH/46WDhANlyR2bXRopNg4F/zuSA3OpZnllCUgRaOF2znDioDWrmbNVsuZk6l9pMquQB38cfBZwkQ==}
@@ -7093,8 +7144,8 @@ snapshots:
       '@typescript-eslint/utils': 8.58.1(eslint@10.2.0)(typescript@6.0.2)
       '@vitest/eslint-plugin': 1.6.15(@typescript-eslint/eslint-plugin@8.58.1(@typescript-eslint/parser@8.58.1(eslint@10.2.0)(typescript@6.0.2))(eslint@10.2.0)(typescript@6.0.2))(eslint@10.2.0)(typescript@6.0.2)(vitest@4.1.4)
       eslint: 10.2.0
-      eslint-import-resolver-typescript: 4.4.4(eslint-plugin-import@2.32.0(@typescript-eslint/parser@8.58.1(eslint@10.2.0)(typescript@6.0.2))(eslint@10.2.0))(eslint@10.2.0)
-      eslint-plugin-import: 2.32.0(@typescript-eslint/parser@8.58.1(eslint@10.2.0)(typescript@6.0.2))(eslint-import-resolver-typescript@4.4.4(eslint-plugin-import@2.32.0(@typescript-eslint/parser@8.58.1(eslint@10.2.0)(typescript@6.0.2))(eslint@10.2.0))(eslint@10.2.0))(eslint@10.2.0)
+      eslint-import-resolver-typescript: 4.4.4(eslint-plugin-import@2.32.0)(eslint@10.2.0)
+      eslint-plugin-import: 2.32.0(@typescript-eslint/parser@8.58.1(eslint@10.2.0)(typescript@6.0.2))(eslint-import-resolver-typescript@4.4.4)(eslint@10.2.0)
       eslint-plugin-import-newlines: 2.0.0(eslint@10.2.0)
       eslint-plugin-jsx-a11y: 6.10.2(eslint@10.2.0)
       eslint-plugin-n: 17.24.0(eslint@10.2.0)(typescript@6.0.2)
@@ -7610,7 +7661,7 @@ snapshots:
 
   '@npmcli/fs@5.0.0':
     dependencies:
-      semver: 7.7.2
+      semver: 7.7.4
 
   '@npmcli/git@6.0.3':
     dependencies:
@@ -7628,7 +7679,7 @@ snapshots:
       '@gar/promise-retry': 1.0.3
       '@npmcli/promise-spawn': 9.0.1
       ini: 6.0.0
-      lru-cache: 11.3.2
+      lru-cache: 11.3.3
       npm-pick-manifest: 11.0.3
       proc-log: 6.1.0
       semver: 7.7.2
@@ -9727,7 +9778,7 @@ snapshots:
     transitivePeerDependencies:
       - supports-color
 
-  eslint-import-resolver-typescript@4.4.4(eslint-plugin-import@2.32.0(@typescript-eslint/parser@8.58.1(eslint@10.2.0)(typescript@6.0.2))(eslint@10.2.0))(eslint@10.2.0):
+  eslint-import-resolver-typescript@4.4.4(eslint-plugin-import@2.32.0)(eslint@10.2.0):
     dependencies:
       debug: 4.4.3(supports-color@5.5.0)
       eslint: 10.2.0
@@ -9738,18 +9789,18 @@ snapshots:
       tinyglobby: 0.2.16
       unrs-resolver: 1.11.1
     optionalDependencies:
-      eslint-plugin-import: 2.32.0(@typescript-eslint/parser@8.58.1(eslint@10.2.0)(typescript@6.0.2))(eslint-import-resolver-typescript@4.4.4(eslint-plugin-import@2.32.0(@typescript-eslint/parser@8.58.1(eslint@10.2.0)(typescript@6.0.2))(eslint@10.2.0))(eslint@10.2.0))(eslint@10.2.0)
+      eslint-plugin-import: 2.32.0(@typescript-eslint/parser@8.58.1(eslint@10.2.0)(typescript@6.0.2))(eslint-import-resolver-typescript@4.4.4)(eslint@10.2.0)
     transitivePeerDependencies:
       - supports-color
 
-  eslint-module-utils@2.12.1(@typescript-eslint/parser@8.58.1(eslint@10.2.0)(typescript@6.0.2))(eslint-import-resolver-node@0.3.10)(eslint-import-resolver-typescript@4.4.4(eslint-plugin-import@2.32.0(@typescript-eslint/parser@8.58.1(eslint@10.2.0)(typescript@6.0.2))(eslint@10.2.0))(eslint@10.2.0))(eslint@10.2.0):
+  eslint-module-utils@2.12.1(@typescript-eslint/parser@8.58.1(eslint@10.2.0)(typescript@6.0.2))(eslint-import-resolver-node@0.3.10)(eslint-import-resolver-typescript@4.4.4)(eslint@10.2.0):
     dependencies:
       debug: 3.2.7
     optionalDependencies:
       '@typescript-eslint/parser': 8.58.1(eslint@10.2.0)(typescript@6.0.2)
       eslint: 10.2.0
       eslint-import-resolver-node: 0.3.10
-      eslint-import-resolver-typescript: 4.4.4(eslint-plugin-import@2.32.0(@typescript-eslint/parser@8.58.1(eslint@10.2.0)(typescript@6.0.2))(eslint@10.2.0))(eslint@10.2.0)
+      eslint-import-resolver-typescript: 4.4.4(eslint-plugin-import@2.32.0)(eslint@10.2.0)
     transitivePeerDependencies:
       - supports-color
 
@@ -9764,7 +9815,7 @@ snapshots:
     dependencies:
       eslint: 10.2.0
 
-  eslint-plugin-import@2.32.0(@typescript-eslint/parser@8.58.1(eslint@10.2.0)(typescript@6.0.2))(eslint-import-resolver-typescript@4.4.4(eslint-plugin-import@2.32.0(@typescript-eslint/parser@8.58.1(eslint@10.2.0)(typescript@6.0.2))(eslint@10.2.0))(eslint@10.2.0))(eslint@10.2.0):
+  eslint-plugin-import@2.32.0(@typescript-eslint/parser@8.58.1(eslint@10.2.0)(typescript@6.0.2))(eslint-import-resolver-typescript@4.4.4)(eslint@10.2.0):
     dependencies:
       '@rtsao/scc': 1.1.0
       array-includes: 3.1.9
@@ -9775,7 +9826,7 @@ snapshots:
       doctrine: 2.1.0
       eslint: 10.2.0
       eslint-import-resolver-node: 0.3.10
-      eslint-module-utils: 2.12.1(@typescript-eslint/parser@8.58.1(eslint@10.2.0)(typescript@6.0.2))(eslint-import-resolver-node@0.3.10)(eslint-import-resolver-typescript@4.4.4(eslint-plugin-import@2.32.0(@typescript-eslint/parser@8.58.1(eslint@10.2.0)(typescript@6.0.2))(eslint@10.2.0))(eslint@10.2.0))(eslint@10.2.0)
+      eslint-module-utils: 2.12.1(@typescript-eslint/parser@8.58.1(eslint@10.2.0)(typescript@6.0.2))(eslint-import-resolver-node@0.3.10)(eslint-import-resolver-typescript@4.4.4)(eslint@10.2.0)
       hasown: 2.0.2
       is-core-module: 2.16.1
       is-glob: 4.0.3
@@ -10460,7 +10511,7 @@ snapshots:
 
   hosted-git-info@9.0.2:
     dependencies:
-      lru-cache: 11.3.2
+      lru-cache: 11.3.3
 
   html-encoding-sniffer@6.0.0:
     dependencies:
@@ -11096,7 +11147,7 @@ snapshots:
 
   log-symbols@4.1.0:
     dependencies:
-      chalk: 4.1.0
+      chalk: 4.1.2
       is-unicode-supported: 0.1.0
 
   loose-envify@1.4.0:
@@ -11653,7 +11704,7 @@ snapshots:
   ora@5.3.0:
     dependencies:
       bl: 4.1.0
-      chalk: 4.1.0
+      chalk: 4.1.2
       cli-cursor: 3.1.0
       cli-spinners: 2.6.1
       is-interactive: 1.0.0
