@@ -1,5 +1,20 @@
 # Changelog
 
+## [1.22.0](https://github.com/RIVM-bioinformatics/gen-epix-ui/compare/ui-v1.21.2...ui-v1.22.0) (2026-04-13)
+
+
+### Features
+
+* update data collection visualization page ([73816ee](https://github.com/RIVM-bioinformatics/gen-epix-ui/commit/73816ee204092a989b783b19aaef75b2307bb81f))
+* upgrade (9.x) mui and eslint (10.x) ([d8de2cd](https://github.com/RIVM-bioinformatics/gen-epix-ui/commit/d8de2cd4a5fa9b3bbb95629ea5c10d552884ff38))
+
+
+### Bug Fixes
+
+* fix map aspect scale calculation ([fc4b6b2](https://github.com/RIVM-bioinformatics/gen-epix-ui/commit/fc4b6b269122e7ead79e1c13464650d08fd76b78))
+* show users own role list of roles in users admin page form ([a3e2bd1](https://github.com/RIVM-bioinformatics/gen-epix-ui/commit/a3e2bd1b71cd7816aa2c579d1151f2b54e24a124))
+* use hardcoded scale for map widget (to be fixed later) ([7126151](https://github.com/RIVM-bioinformatics/gen-epix-ui/commit/7126151298f14c345eae8c0c08769dee15295f86))
+
 ## [1.21.2](https://github.com/RIVM-bioinformatics/gen-epix-ui/compare/ui-v1.21.1...ui-v1.21.2) (2026-04-07)
 
 

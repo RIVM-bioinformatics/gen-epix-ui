@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.3.0](https://github.com/RIVM-bioinformatics/gen-epix-ui/compare/client-theme-v0.2.0...client-theme-v0.3.0) (2026-04-13)
+
+
+### Features
+
+* upgrade (9.x) mui and eslint (10.x) ([d8de2cd](https://github.com/RIVM-bioinformatics/gen-epix-ui/commit/d8de2cd4a5fa9b3bbb95629ea5c10d552884ff38))
+
 ## [0.2.0](https://github.com/RIVM-bioinformatics/gen-epix-ui/compare/client-theme-v0.1.0...client-theme-v0.2.0) (2026-04-07)
 
 
