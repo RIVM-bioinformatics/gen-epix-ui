@@ -15,11 +15,11 @@ import {
 import { yupResolver } from '@hookform/resolvers/yup';
 import type { Resolver } from 'react-hook-form';
 import { useForm } from 'react-hook-form';
-
 import {
   OrganizationApi,
   type UserInvitation,
-} from '../../api';
+} from '@gen-epix/api-casedb';
+
 import type {
   WithDialogRefMethods,
   WithDialogRenderProps,

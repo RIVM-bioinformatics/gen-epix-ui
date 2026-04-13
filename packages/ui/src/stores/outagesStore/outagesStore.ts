@@ -1,6 +1,6 @@
 import { createStore } from 'zustand';
+import type { Outage } from '@gen-epix/api-casedb';
 
-import type { Outage } from '../../api';
 import type { CategorizedOutages } from '../../models/outage';
 
 export type OutagesStore = OutagesStoreActions & OutagesStoreState;

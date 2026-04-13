@@ -12,15 +12,15 @@ import {
   isEqual,
   isValid,
 } from 'date-fns';
-
-import { CaseTypeUtil } from '../CaseTypeUtil';
-import { EpiFilterUtil } from '../EpiFilterUtil';
 import type {
   Case,
   Col,
   CompleteCaseType,
-} from '../../api';
-import { ColType } from '../../api';
+} from '@gen-epix/api-casedb';
+import { ColType } from '@gen-epix/api-casedb';
+
+import { CaseTypeUtil } from '../CaseTypeUtil';
+import { EpiFilterUtil } from '../EpiFilterUtil';
 import { DATE_FORMAT } from '../../data/date';
 
 interface Item {

@@ -11,10 +11,10 @@ import {
   object,
   string,
 } from 'yup';
+import type { CaseSet } from '@gen-epix/api-casedb';
+import { CaseApi } from '@gen-epix/api-casedb';
 
 import { EpiCreateEventDialogSuccessNotificationMessage } from '../EpiCreateEventDialog/EpiCreateEventDialogSuccessNotificationMessage';
-import type { CaseSet } from '../../../api';
-import { CaseApi } from '../../../api';
 import { useCaseSetCategoryOptionsQuery } from '../../../dataHooks/useCaseSetCategoriesQuery';
 import { useCaseSetStatusOptionsQuery } from '../../../dataHooks/useCaseSetStatusesQuery';
 import { useCaseTypeOptionsQuery } from '../../../dataHooks/useCaseTypesQuery';

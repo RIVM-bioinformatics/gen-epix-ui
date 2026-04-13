@@ -12,6 +12,10 @@
     "packages/client-theme": {
       "package-name": "@gen-epix/client-theme",
       "component": "client-theme"
+    },
+    "packages/api-casedb": {
+      "package-name": "@gen-epix/api-casedb",
+      "component": "api-casedb"
     }
   }
 }

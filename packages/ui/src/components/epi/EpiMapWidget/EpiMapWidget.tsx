@@ -32,21 +32,21 @@ import { useTranslation } from 'react-i18next';
 import intersection from 'lodash/intersection';
 import round from 'lodash/round';
 import { useStore } from 'zustand';
-
-import { EpiWidget } from '../EpiWidget';
-import type { EpiContextMenuConfigWithPosition } from '../EpiContextMenu';
-import { EpiContextMenu } from '../EpiContextMenu';
-import { EpiWidgetUnavailable } from '../EpiWidgetUnavailable';
 import type {
   Col,
   Region,
   RegionSetShape,
   TypedUuidSetFilter,
-} from '../../../api';
+} from '@gen-epix/api-casedb';
 import {
   DimType,
   GeoApi,
-} from '../../../api';
+} from '@gen-epix/api-casedb';
+
+import { EpiWidget } from '../EpiWidget';
+import type { EpiContextMenuConfigWithPosition } from '../EpiContextMenu';
+import { EpiContextMenu } from '../EpiContextMenu';
+import { EpiWidgetUnavailable } from '../EpiWidgetUnavailable';
 import { ConfigManager } from '../../../classes/managers/ConfigManager';
 import { EpiHighlightingManager } from '../../../classes/managers/EpiHighlightingManager';
 import { useDimensions } from '../../../hooks/useDimensions';

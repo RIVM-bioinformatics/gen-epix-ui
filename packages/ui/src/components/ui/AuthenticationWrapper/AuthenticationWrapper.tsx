@@ -13,12 +13,12 @@ import {
 } from 'react';
 import { useTranslation } from 'react-i18next';
 import { useAuth } from 'react-oidc-context';
+import { LogLevel } from '@gen-epix/api-casedb';
 
 import { PageContainer } from '../PageContainer';
 import type { ConsentDialogRefMethods } from '../ConsentDialog';
 import { ConsentDialog } from '../ConsentDialog';
 import { Spinner } from '../Spinner';
-import { LogLevel } from '../../../api';
 import { AuthenticationManager } from '../../../classes/managers/AuthenticationManager';
 import { ConfigManager } from '../../../classes/managers/ConfigManager';
 import { LogManager } from '../../../classes/managers/LogManager';

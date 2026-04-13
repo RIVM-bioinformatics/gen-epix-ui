@@ -10,8 +10,8 @@ import {
 } from '@mui/material';
 import { useTranslation } from 'react-i18next';
 import { format } from 'date-fns';
+import type { CaseSet } from '@gen-epix/api-casedb';
 
-import type { CaseSet } from '../../../api';
 import { useCaseSetCategoryMapQuery } from '../../../dataHooks/useCaseSetCategoriesQuery';
 import { useCaseSetStatusMapQuery } from '../../../dataHooks/useCaseSetStatusesQuery';
 import { useCaseTypeMapQuery } from '../../../dataHooks/useCaseTypesQuery';

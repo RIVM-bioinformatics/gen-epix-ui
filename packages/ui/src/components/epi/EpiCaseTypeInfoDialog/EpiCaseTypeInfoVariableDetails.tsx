@@ -11,12 +11,12 @@ import {
   Typography,
 } from '@mui/material';
 import isNumber from 'lodash/isNumber';
-
 import type {
   CompleteCaseType,
   Dim,
-} from '../../../api';
-import { ColType } from '../../../api';
+} from '@gen-epix/api-casedb';
+import { ColType } from '@gen-epix/api-casedb';
+
 import { EpiDataManager } from '../../../classes/managers/EpiDataManager';
 
 import { EpiCaseTypeInfoColAccessRights } from './EpiCaseTypeInfoColAccessRights';

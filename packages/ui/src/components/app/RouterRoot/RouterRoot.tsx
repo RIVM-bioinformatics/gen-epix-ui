@@ -17,11 +17,11 @@ import {
   Typography,
 } from '@mui/material';
 import { t } from 'i18next';
-
 import {
   AuthApi,
   LogLevel,
-} from '../../../api';
+} from '@gen-epix/api-casedb';
+
 import { AuthenticationManager } from '../../../classes/managers/AuthenticationManager';
 import { LogManager } from '../../../classes/managers/LogManager';
 import { NavigationHistoryManager } from '../../../classes/managers/NavigationHistoryManager';

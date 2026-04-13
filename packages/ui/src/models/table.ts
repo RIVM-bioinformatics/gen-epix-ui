@@ -4,11 +4,11 @@ import type {
 } from '@mui/material';
 import type { ReactElement } from 'react';
 import type { TFunction } from 'i18next';
-
 import type {
   Col,
   CompleteCaseType,
-} from '../api';
+} from '@gen-epix/api-casedb';
+
 import type { DATE_FORMAT } from '../data/date';
 
 import type { CaseTypeRowValue } from './epi';

@@ -1,7 +1,7 @@
 import type { UseQueryResult } from '@tanstack/react-query';
+import type { OrganizationShareCasePolicy } from '@gen-epix/api-casedb';
+import { AbacApi } from '@gen-epix/api-casedb';
 
-import type { OrganizationShareCasePolicy } from '../../api';
-import { AbacApi } from '../../api';
 import { QUERY_KEY } from '../../models/query';
 import { QueryUtil } from '../../utils/QueryUtil';
 import { useQueryMemo } from '../../hooks/useQueryMemo';

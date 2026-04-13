@@ -4,12 +4,12 @@ import {
 } from 'react';
 import { useTranslation } from 'react-i18next';
 import { object } from 'yup';
-
-import type { IdentifierIssuer } from '../../api';
+import type { IdentifierIssuer } from '@gen-epix/api-casedb';
 import {
   CommandName,
   OrganizationApi,
-} from '../../api';
+} from '@gen-epix/api-casedb';
+
 import type { FormFieldDefinition } from '../../models/form';
 import { FORM_FIELD_DEFINITION_TYPE } from '../../models/form';
 import { QUERY_KEY } from '../../models/query';

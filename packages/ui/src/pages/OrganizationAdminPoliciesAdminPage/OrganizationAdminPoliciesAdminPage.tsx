@@ -8,12 +8,12 @@ import {
   object,
   string,
 } from 'yup';
-
-import type { OrganizationAdminPolicy } from '../../api';
+import type { OrganizationAdminPolicy } from '@gen-epix/api-casedb';
 import {
   AbacApi,
   CommandName,
-} from '../../api';
+} from '@gen-epix/api-casedb';
+
 import { useOrganizationAdminPolicyNameFactory } from '../../dataHooks/useOrganizationAdminPoliciesQuery';
 import { useOrganizationOptionsQuery } from '../../dataHooks/useOrganizationsQuery';
 import { useUserOptionsQuery } from '../../dataHooks/useUsersQuery';

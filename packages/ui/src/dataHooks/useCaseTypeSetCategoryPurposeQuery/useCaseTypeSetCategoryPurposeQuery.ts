@@ -1,6 +1,6 @@
 import { useMemo } from 'react';
+import { CaseTypeSetCategoryPurpose } from '@gen-epix/api-casedb';
 
-import { CaseTypeSetCategoryPurpose } from '../../api';
 import type { UseOptions } from '../../models/dataHooks';
 import type { OptionBase } from '../../models/form';
 

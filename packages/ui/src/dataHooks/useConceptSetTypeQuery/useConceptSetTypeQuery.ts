@@ -1,8 +1,8 @@
 import { useMemo } from 'react';
+import { ConceptSetType } from '@gen-epix/api-casedb';
 
 import type { UseOptions } from '../../models/dataHooks';
 import type { OptionBase } from '../../models/form';
-import { ConceptSetType } from '../../api';
 
 
 export const conceptSetTypePresentationValues: Partial<Record<ConceptSetType, string>> = {

@@ -1,6 +1,6 @@
 import type { TFunction } from 'i18next';
+import type { FiltersInner } from '@gen-epix/api-casedb';
 
-import type { FiltersInner } from '../../api';
 import { FilterAbstract } from '../abstracts/FilterAbstract';
 import type { Filter } from '../../models/filter';
 

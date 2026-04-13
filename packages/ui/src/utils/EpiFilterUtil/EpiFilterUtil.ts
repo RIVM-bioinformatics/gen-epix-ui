@@ -4,21 +4,21 @@ import {
   subYears,
 } from 'date-fns';
 import { t } from 'i18next';
+import type {
+  Col,
+  CompleteCaseType,
+  RefCol,
+} from '@gen-epix/api-casedb';
+import {
+  ColType,
+  DimType,
+} from '@gen-epix/api-casedb';
 
 import {
   CaseTypeUtil,
   SELECTION_FILTER_GROUP,
   TREE_FILTER_GROUP,
 } from '../CaseTypeUtil';
-import type {
-  Col,
-  CompleteCaseType,
-  RefCol,
-} from '../../api';
-import {
-  ColType,
-  DimType,
-} from '../../api';
 import {
   DEFAULT_FILTER_GROUP,
   FILTER_MODE,

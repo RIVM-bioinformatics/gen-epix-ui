@@ -1,11 +1,11 @@
 import { createStore } from 'zustand';
 import { t } from 'i18next';
-
 import type {
   CaseUploadResult,
   Col,
   CompleteCaseType,
-} from '../../api';
+} from '@gen-epix/api-casedb';
+
 import { QueryUtil } from '../../utils/QueryUtil';
 import { StringUtil } from '../../utils/StringUtil';
 import { EpiUploadUtil } from '../../utils/EpiUploadUtil';

@@ -25,8 +25,8 @@ import type {
   GraphSeriesOption,
 } from 'echarts';
 import type { AutocompleteRenderInputParams } from '@mui/material/Autocomplete';
+import type { OrganizationAccessCasePolicy } from '@gen-epix/api-casedb';
 
-import type { OrganizationAccessCasePolicy } from '../../api';
 import { PageContainer } from '../../components/ui/PageContainer';
 import { ResponseHandler } from '../../components/ui/ResponseHandler';
 import { useDataCollectionsMapQuery } from '../../dataHooks/useDataCollectionsQuery';

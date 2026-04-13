@@ -13,17 +13,17 @@ import {
   useState,
 } from 'react';
 import { useTranslation } from 'react-i18next';
+import type {
+  CaseSet,
+  TypedUuidSetFilter,
+} from '@gen-epix/api-casedb';
+import { CaseApi } from '@gen-epix/api-casedb';
 
 import {
   withDialog,
   type WithDialogRefMethods,
   type WithDialogRenderProps,
 } from '../../../hoc/withDialog';
-import type {
-  CaseSet,
-  TypedUuidSetFilter,
-} from '../../../api';
-import { CaseApi } from '../../../api';
 import { RouterManager } from '../../../classes/managers/RouterManager';
 import type { CaseAbacContext } from '../../../context/caseAbac';
 import { CaseAbacContextProvider } from '../../../context/caseAbac';

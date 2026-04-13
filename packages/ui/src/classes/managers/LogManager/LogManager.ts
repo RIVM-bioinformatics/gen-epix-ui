@@ -3,15 +3,15 @@ import {
   type InternalAxiosRequestConfig,
   isAxiosError,
 } from 'axios';
+import {
+  type LogItem,
+  LogLevel,
+} from '@gen-epix/api-casedb';
+import { SystemApi } from '@gen-epix/api-casedb';
 
 import { AuthenticationManager } from '../AuthenticationManager';
 import { ConfigManager } from '../ConfigManager';
 import { WindowManager } from '../WindowManager';
-import {
-  type LogItem,
-  LogLevel,
-} from '../../../api';
-import { SystemApi } from '../../../api';
 import { StringUtil } from '../../../utils/StringUtil';
 import { AxiosUtil } from '../../../utils/AxiosUtil';
 

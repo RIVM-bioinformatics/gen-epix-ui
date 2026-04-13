@@ -3,8 +3,7 @@ import {
   Box,
   Typography,
 } from '@mui/material';
-
-import type { Outage } from '../../../api';
+import type { Outage } from '@gen-epix/api-casedb';
 
 import { OutageItem } from './OutageItem';
 

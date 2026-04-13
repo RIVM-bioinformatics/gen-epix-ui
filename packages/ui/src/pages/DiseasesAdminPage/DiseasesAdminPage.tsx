@@ -7,12 +7,12 @@ import {
   object,
   string,
 } from 'yup';
-
-import type { Disease } from '../../api';
+import type { Disease } from '@gen-epix/api-casedb';
 import {
   CommandName,
   OntologyApi,
-} from '../../api';
+} from '@gen-epix/api-casedb';
+
 import type { FormFieldDefinition } from '../../models/form';
 import { FORM_FIELD_DEFINITION_TYPE } from '../../models/form';
 import { QUERY_KEY } from '../../models/query';

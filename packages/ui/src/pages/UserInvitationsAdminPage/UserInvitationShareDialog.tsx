@@ -10,8 +10,8 @@ import {
   useMemo,
 } from 'react';
 import { format } from 'date-fns';
+import type { UserInvitation } from '@gen-epix/api-casedb';
 
-import type { UserInvitation } from '../../api';
 import { ConfigManager } from '../../classes/managers/ConfigManager';
 import { WindowManager } from '../../classes/managers/WindowManager';
 import { CopyToClipboardButton } from '../../components/ui/CopyToClipboardButton';

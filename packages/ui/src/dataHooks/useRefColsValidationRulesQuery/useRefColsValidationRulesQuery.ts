@@ -1,7 +1,7 @@
 import type { UseQueryResult } from '@tanstack/react-query';
+import type { RefColValidationRulesResponseBody } from '@gen-epix/api-casedb';
+import { CaseApi } from '@gen-epix/api-casedb';
 
-import type { RefColValidationRulesResponseBody } from '../../api';
-import { CaseApi } from '../../api';
 import { QUERY_KEY } from '../../models/query';
 import { QueryUtil } from '../../utils/QueryUtil';
 import { useQueryMemo } from '../../hooks/useQueryMemo';

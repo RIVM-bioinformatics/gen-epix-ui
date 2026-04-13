@@ -15,9 +15,9 @@ import {
   type BoxProps,
   Typography,
 } from '@mui/material';
+import type { Case } from '@gen-epix/api-casedb';
+import { CaseApi } from '@gen-epix/api-casedb';
 
-import type { Case } from '../../../api';
-import { CaseApi } from '../../../api';
 import { NotificationManager } from '../../../classes/managers/NotificationManager';
 import { useOrganizationsQuery } from '../../../dataHooks/useOrganizationsQuery';
 import { QUERY_KEY } from '../../../models/query';

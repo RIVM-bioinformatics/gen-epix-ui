@@ -16,6 +16,11 @@ import {
 import { useTranslation } from 'react-i18next';
 import { useStore } from 'zustand';
 import { useShallow } from 'zustand/shallow';
+import type {
+  Case,
+  TypedUuidSetFilter,
+} from '@gen-epix/api-casedb';
+import { CaseApi } from '@gen-epix/api-casedb';
 
 import {
   withDialog,
@@ -24,11 +29,6 @@ import {
 } from '../../../hoc/withDialog';
 import type { CaseAbacContext } from '../../../context/caseAbac/CaseAbacContext';
 import { CaseAbacContextProvider } from '../../../context/caseAbac';
-import type {
-  Case,
-  TypedUuidSetFilter,
-} from '../../../api';
-import { CaseApi } from '../../../api';
 import { useCaseRightsQuery } from '../../../dataHooks/useCaseRightsQuery';
 import {
   useDataCollectionOptionsQuery,

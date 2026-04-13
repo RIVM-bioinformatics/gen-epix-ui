@@ -1,8 +1,8 @@
 import { useMemo } from 'react';
 import { type UseQueryResult } from '@tanstack/react-query';
+import type { CaseStats } from '@gen-epix/api-casedb';
+import { CaseApi } from '@gen-epix/api-casedb';
 
-import type { CaseStats } from '../../api';
-import { CaseApi } from '../../api';
 import type { UseMap } from '../../models/dataHooks';
 import { QUERY_KEY } from '../../models/query';
 import { DataHookUtil } from '../../utils/DataHookUtil';

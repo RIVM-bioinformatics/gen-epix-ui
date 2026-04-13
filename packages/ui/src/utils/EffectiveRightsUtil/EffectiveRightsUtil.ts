@@ -6,7 +6,8 @@ import type {
   User,
   UserAccessCasePolicy,
   UserShareCasePolicy,
-} from '../../api';
+} from '@gen-epix/api-casedb';
+
 import type { UserEffectiveRight } from '../../models/caseAccess';
 import { DataSetUtil } from '../DataSetUtil';
 

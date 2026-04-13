@@ -1,6 +1,5 @@
 import sumBy from 'lodash/sumBy';
-
-import type { Case } from '../../api';
+import type { Case } from '@gen-epix/api-casedb';
 
 
 export class EpiLineListUtil {

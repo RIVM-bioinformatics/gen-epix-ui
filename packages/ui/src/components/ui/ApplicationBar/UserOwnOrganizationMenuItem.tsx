@@ -4,11 +4,11 @@ import {
 } from '@mui/material';
 import { useTranslation } from 'react-i18next';
 import { useMemo } from 'react';
-
 import {
   CommandName,
   PermissionType,
-} from '../../../api';
+} from '@gen-epix/api-casedb';
+
 import { withPermissions } from '../../../hoc/withPermissions';
 import { AuthorizationManager } from '../../../classes/managers/AuthorizationManager';
 import { useOrganizationMapQuery } from '../../../dataHooks/useOrganizationsQuery';

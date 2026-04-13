@@ -1,4 +1,4 @@
-import type { CaseBatchUploadResult } from '../../api';
+import type { CaseBatchUploadResult } from '@gen-epix/api-casedb';
 
 export class UploadError extends Error {
   public caseBatchUploadResult: CaseBatchUploadResult;

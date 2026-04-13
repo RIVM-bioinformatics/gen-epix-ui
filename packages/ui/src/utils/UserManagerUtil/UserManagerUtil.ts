@@ -3,8 +3,8 @@ import {
   type UserManagerSettings,
   WebStorageStateStore,
 } from 'oidc-client-ts';
+import type { IdentityProvider } from '@gen-epix/api-casedb';
 
-import type { IdentityProvider } from '../../api';
 import { WindowManager } from '../../classes/managers/WindowManager';
 
 export class UserManagerUtil {

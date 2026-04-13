@@ -8,10 +8,6 @@ import {
 import type { UseQueryResult } from '@tanstack/react-query';
 import difference from 'lodash/difference';
 import intersection from 'lodash/intersection';
-
-import { CaseTypeUtil } from '../CaseTypeUtil';
-import { AbacUtil } from '../AbacUtil';
-import { QueryUtil } from '../QueryUtil';
 import type {
   Case,
   CaseDataCollectionLink,
@@ -19,11 +15,15 @@ import type {
   CompleteCaseType,
   Organization,
   RefCol,
-} from '../../api';
+} from '@gen-epix/api-casedb';
 import {
   CaseApi,
   ColType,
-} from '../../api';
+} from '@gen-epix/api-casedb';
+
+import { CaseTypeUtil } from '../CaseTypeUtil';
+import { AbacUtil } from '../AbacUtil';
+import { QueryUtil } from '../QueryUtil';
 import { ConfigManager } from '../../classes/managers/ConfigManager';
 import { NotificationManager } from '../../classes/managers/NotificationManager';
 import type { CaseTypeRowValue } from '../../models/epi';

@@ -25,6 +25,10 @@ import {
 import FolderIcon from '@mui/icons-material/Folder';
 import OpenInNewIcon from '@mui/icons-material/OpenInNew';
 import axios from 'axios';
+import {
+  type PackageMetadata,
+  SystemApi,
+} from '@gen-epix/api-casedb';
 
 import { ConfigManager } from '../../../classes/managers/ConfigManager';
 import { WindowManager } from '../../../classes/managers/WindowManager';
@@ -35,10 +39,6 @@ import type {
 import { withDialog } from '../../../hoc/withDialog';
 import { TestIdUtil } from '../../../utils/TestIdUtil';
 import { ResponseHandler } from '../ResponseHandler';
-import {
-  type PackageMetadata,
-  SystemApi,
-} from '../../../api';
 import { QUERY_KEY } from '../../../models/query';
 import { QueryUtil } from '../../../utils/QueryUtil';
 import { useQueryMemo } from '../../../hooks/useQueryMemo';

@@ -29,9 +29,9 @@ import {
 import { useTranslation } from 'react-i18next';
 import { useStore } from 'zustand';
 import { useDebouncedCallback } from 'use-debounce';
+import type { RetrievePhylogeneticTreeRequestBody } from '@gen-epix/api-casedb';
+import { CaseApi } from '@gen-epix/api-casedb';
 
-import type { RetrievePhylogeneticTreeRequestBody } from '../../../api';
-import { CaseApi } from '../../../api';
 import { TreeFilter } from '../../../classes/filters/TreeFilter';
 import { ConfigManager } from '../../../classes/managers/ConfigManager';
 import { EpiEventBusManager } from '../../../classes/managers/EpiEventBusManager';

@@ -23,12 +23,12 @@ import type {
   FieldValues,
   UseFormReturn,
 } from 'react-hook-form';
-
 import type {
   ApiPermission,
   CommandName,
-} from '../../api';
-import { PermissionType } from '../../api';
+} from '@gen-epix/api-casedb';
+import { PermissionType } from '@gen-epix/api-casedb';
+
 import { AuthorizationManager } from '../../classes/managers/AuthorizationManager';
 import { ConfigManager } from '../../classes/managers/ConfigManager';
 import { RouterManager } from '../../classes/managers/RouterManager';

@@ -1,7 +1,7 @@
 import { type UseQueryResult } from '@tanstack/react-query';
+import type { OrganizationIdentifierIssuerLink } from '@gen-epix/api-casedb';
+import { OrganizationApi } from '@gen-epix/api-casedb';
 
-import type { OrganizationIdentifierIssuerLink } from '../../api';
-import { OrganizationApi } from '../../api';
 import { QUERY_KEY } from '../../models/query';
 import { QueryUtil } from '../../utils/QueryUtil';
 import { useQueryMemo } from '../../hooks/useQueryMemo';

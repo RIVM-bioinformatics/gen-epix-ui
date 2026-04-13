@@ -1,11 +1,11 @@
 import 'reflect-metadata';
 import type { InternalAxiosRequestConfig } from 'axios';
 import type { AuthContextProps } from 'react-oidc-context';
+import type { IdentityProvider } from '@gen-epix/api-casedb';
 
 import { AuthorizationManager } from '../AuthorizationManager';
 import { WindowManager } from '../WindowManager';
 import { Subject } from '../../Subject';
-import type { IdentityProvider } from '../../../api';
 import { AxiosUtil } from '../../../utils/AxiosUtil';
 import { SubscribableAbstract } from '../../abstracts/SubscribableAbstract';
 import type { AuthState } from '../../../models/auth';

@@ -4,8 +4,8 @@ import {
   it,
   vi,
 } from 'vitest';
+import type { IdentityProvider } from '@gen-epix/api-casedb';
 
-import type { IdentityProvider } from '../../api';
 import { WindowManager } from '../../classes/managers/WindowManager';
 
 import { UserManagerUtil } from './UserManagerUtil';

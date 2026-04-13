@@ -45,9 +45,9 @@ import {
   startOfQuarter,
   startOfYear,
 } from 'date-fns';
+import type { Col } from '@gen-epix/api-casedb';
+import { DimType } from '@gen-epix/api-casedb';
 
-import type { Col } from '../../../api';
-import { DimType } from '../../../api';
 import { ConfigManager } from '../../../classes/managers/ConfigManager';
 import { EpiHighlightingManager } from '../../../classes/managers/EpiHighlightingManager';
 import { EPI_ZONE } from '../../../models/epi';

@@ -4,8 +4,8 @@ import {
   useEffect,
   useMemo,
 } from 'react';
+import { CaseApi } from '@gen-epix/api-casedb';
 
-import { CaseApi } from '../../api';
 import { EpiDashboard } from '../../components/epi/EpiDashboard';
 import { PageContainer } from '../../components/ui/PageContainer';
 import { ResponseHandler } from '../../components/ui/ResponseHandler';

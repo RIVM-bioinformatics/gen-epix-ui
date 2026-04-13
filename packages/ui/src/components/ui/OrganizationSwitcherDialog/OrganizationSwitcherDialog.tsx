@@ -21,9 +21,9 @@ import {
   object,
   string,
 } from 'yup';
+import { OrganizationApi } from '@gen-epix/api-casedb';
 
 import { ResponseHandler } from '../ResponseHandler';
-import { OrganizationApi } from '../../../api';
 import { AuthorizationManager } from '../../../classes/managers/AuthorizationManager';
 import { NotificationManager } from '../../../classes/managers/NotificationManager';
 import { WindowManager } from '../../../classes/managers/WindowManager';

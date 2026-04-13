@@ -4,10 +4,10 @@ import intersection from 'lodash/intersection';
 import last from 'lodash/last';
 import round from 'lodash/round';
 import { type Theme } from '@mui/material';
+import type { CompleteCaseType } from '@gen-epix/api-casedb';
+import { ColType } from '@gen-epix/api-casedb';
 
 import { NumberUtil } from '../NumberUtil';
-import type { CompleteCaseType } from '../../api';
-import { ColType } from '../../api';
 import { ConfigManager } from '../../classes/managers/ConfigManager';
 import type {
   Stratification,

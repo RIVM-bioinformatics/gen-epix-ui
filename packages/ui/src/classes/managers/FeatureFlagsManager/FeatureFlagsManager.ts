@@ -1,4 +1,5 @@
-import type { FeatureFlagsResponseBody } from '../../../api';
+import type { FeatureFlagsResponseBody } from '@gen-epix/api-casedb';
+
 import { WindowManager } from '../WindowManager';
 
 export class FeatureFlagsManager {

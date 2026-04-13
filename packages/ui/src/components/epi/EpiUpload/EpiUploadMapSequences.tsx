@@ -16,6 +16,7 @@ import {
 } from 'react';
 import { useTranslation } from 'react-i18next';
 import { useStore } from 'zustand';
+import { type Col } from '@gen-epix/api-casedb';
 
 import {
   createTableStore,
@@ -30,7 +31,6 @@ import { TableUtil } from '../../../utils/TableUtil';
 import { EpiUploadUtil } from '../../../utils/EpiUploadUtil';
 import { Table } from '../../ui/Table';
 import { CaseUtil } from '../../../utils/CaseUtil';
-import { type Col } from '../../../api';
 import { EpiUploadStoreContext } from '../../../stores/epiUploadStore';
 import type { CaseUploadResultWithGeneratedId } from '../../../models/epi';
 

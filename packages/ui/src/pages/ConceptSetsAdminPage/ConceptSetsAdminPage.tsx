@@ -7,14 +7,14 @@ import {
   mixed,
   object,
 } from 'yup';
-
-import type { ConceptSet } from '../../api';
+import type { ConceptSet } from '@gen-epix/api-casedb';
 import {
   CommandName,
   ConceptSetType,
   OntologyApi,
   PermissionType,
-} from '../../api';
+} from '@gen-epix/api-casedb';
+
 import type { FormFieldDefinition } from '../../models/form';
 import { FORM_FIELD_DEFINITION_TYPE } from '../../models/form';
 import { QUERY_KEY } from '../../models/query';

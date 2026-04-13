@@ -14,8 +14,8 @@ import {
 import AddIcon from '@mui/icons-material/Add';
 import RemoveIcon from '@mui/icons-material/Remove';
 import { useTranslation } from 'react-i18next';
+import type { Case } from '@gen-epix/api-casedb';
 
-import type { Case } from '../../../api';
 import type { TableColumnCaseType } from '../../../models/table';
 import { EpiDashboardStoreContext } from '../../../stores/epiDashboardStore';
 import { useTableStoreContext } from '../../../stores/tableStore';

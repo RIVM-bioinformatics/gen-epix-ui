@@ -9,8 +9,8 @@ import {
   useCallback,
   useState,
 } from 'react';
+import { OrganizationApi } from '@gen-epix/api-casedb';
 
-import { OrganizationApi } from '../../api';
 import { ConfigManager } from '../../classes/managers/ConfigManager';
 import { WindowManager } from '../../classes/managers/WindowManager';
 import { PageContainer } from '../../components/ui/PageContainer';

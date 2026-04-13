@@ -7,12 +7,12 @@ import {
   object,
   string,
 } from 'yup';
-
-import type { Etiology } from '../../api';
+import type { Etiology } from '@gen-epix/api-casedb';
 import {
   CommandName,
   OntologyApi,
-} from '../../api';
+} from '@gen-epix/api-casedb';
+
 import { useDiseaseOptionsQuery } from '../../dataHooks/useDiseasesQuery';
 import { useEtiologicalAgentOptionsQuery } from '../../dataHooks/useEtiologicalAgentsQuery';
 import { useArray } from '../../hooks/useArray';

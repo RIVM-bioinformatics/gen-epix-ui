@@ -34,9 +34,9 @@
   "scripts": {
     "build": "vite build",
     "build-publish": "pnpm build && pnpm publish --access=public",
-    "generate-api": "generate-api ./src/api"
+    "generate-api": "generate-api ./src"
   },
-  "dependencies": {
+  "peerDependencies": {
     "axios": "1.15.0"
   },
   "devDependencies": {

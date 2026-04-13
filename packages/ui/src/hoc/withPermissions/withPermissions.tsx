@@ -1,8 +1,8 @@
 import { useMemo } from 'react';
 import type { ComponentType } from 'react';
+import type { ApiPermission } from '@gen-epix/api-casedb';
 
 import { AuthorizationManager } from '../../classes/managers/AuthorizationManager';
-import type { ApiPermission } from '../../api';
 
 export interface WithPermissionsOptions {
   readonly fallback?: ComponentType | null;

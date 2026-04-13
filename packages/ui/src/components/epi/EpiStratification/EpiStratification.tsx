@@ -20,11 +20,11 @@ import isArray from 'lodash/isArray';
 import { produce } from 'immer';
 import FilterAltIcon from '@mui/icons-material/FilterAlt';
 import { useStoreWithEqualityFn } from 'zustand/traditional';
+import type { Col } from '@gen-epix/api-casedb';
 
 import type { EpiContextMenuConfigWithAnchor } from '../EpiContextMenu';
 import { EpiContextMenu } from '../EpiContextMenu';
 import { EpiLegendaItem } from '../EpiLegendaItem';
-import type { Col } from '../../../api';
 import { ConfigManager } from '../../../classes/managers/ConfigManager';
 import { EpiHighlightingManager } from '../../../classes/managers/EpiHighlightingManager';
 import type { StratificationLegendaItem } from '../../../models/epi';

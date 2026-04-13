@@ -1,4 +1,5 @@
-import type { TypedRegexFilter } from '../../api';
+import type { TypedRegexFilter } from '@gen-epix/api-casedb';
+
 import type { Filter } from '../../models/filter';
 import { FilterAbstract } from '../abstracts/FilterAbstract';
 

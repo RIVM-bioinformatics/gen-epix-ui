@@ -1,8 +1,8 @@
 import type { UseQueryResult } from '@tanstack/react-query';
 import { useMemo } from 'react';
+import type { DataCollection } from '@gen-epix/api-casedb';
+import { OrganizationApi } from '@gen-epix/api-casedb';
 
-import type { DataCollection } from '../../api';
-import { OrganizationApi } from '../../api';
 import type {
   UseMap,
   UseOptions,

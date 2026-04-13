@@ -3,8 +3,7 @@ import type {
   IndexRouteObject,
   NonIndexRouteObject,
 } from 'react-router';
-
-import type { ApiPermission } from '../api';
+import type { ApiPermission } from '@gen-epix/api-casedb';
 
 export type MyHandle = {
   category?: string;

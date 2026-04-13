@@ -1,5 +1,6 @@
+import type { CaseSet } from '@gen-epix/api-casedb';
+
 import { StringUtil } from '../StringUtil';
-import type { CaseSet } from '../../api';
 import { WindowManager } from '../../classes/managers/WindowManager';
 
 export class CaseSetUtil {

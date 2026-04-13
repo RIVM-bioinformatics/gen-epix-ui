@@ -6,13 +6,14 @@ import type {
   Region,
   RegionSet,
   TreeAlgorithm,
-} from '../../../api';
+} from '@gen-epix/api-casedb';
 import {
   CaseApi,
   GeoApi,
   OntologyApi,
   OrganizationApi,
-} from '../../../api';
+} from '@gen-epix/api-casedb';
+
 import type { EpiData } from '../../../models/epi';
 import { QUERY_KEY } from '../../../models/query';
 import { CaseTypeUtil } from '../../../utils/CaseTypeUtil';

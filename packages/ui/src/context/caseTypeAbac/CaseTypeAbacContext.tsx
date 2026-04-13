@@ -1,9 +1,8 @@
 import { createContext } from 'react';
-
 import type {
   CaseTypeAccessAbac,
   DataCollection,
-} from '../../api';
+} from '@gen-epix/api-casedb';
 
 export type CaseTypeAbacContext = {
   caseTypeAccessAbacDict: { [key: string]: CaseTypeAccessAbac };

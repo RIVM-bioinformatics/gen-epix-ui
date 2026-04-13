@@ -1,10 +1,10 @@
 import { type UseQueryResult } from '@tanstack/react-query';
-
 import type {
   CaseStats,
   RetrieveCaseTypeStatsRequestBody,
-} from '../../api';
-import { CaseApi } from '../../api';
+} from '@gen-epix/api-casedb';
+import { CaseApi } from '@gen-epix/api-casedb';
+
 import { QUERY_KEY } from '../../models/query';
 import { QueryUtil } from '../../utils/QueryUtil';
 import { useQueryMemo } from '../../hooks/useQueryMemo';

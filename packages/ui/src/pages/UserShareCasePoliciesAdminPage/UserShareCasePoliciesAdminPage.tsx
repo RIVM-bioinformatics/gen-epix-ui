@@ -8,12 +8,12 @@ import {
   object,
   string,
 } from 'yup';
-
-import type { UserShareCasePolicy } from '../../api';
+import type { UserShareCasePolicy } from '@gen-epix/api-casedb';
 import {
   AbacApi,
   CommandName,
-} from '../../api';
+} from '@gen-epix/api-casedb';
+
 import { useColSetsQuery } from '../../dataHooks/useColSetsQuery';
 import { useCaseTypeSetOptionsQuery } from '../../dataHooks/useCaseTypeSetsQuery';
 import { useDataCollectionOptionsQuery } from '../../dataHooks/useDataCollectionsQuery';

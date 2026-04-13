@@ -11,13 +11,13 @@ import {
 import ErrorOutlinedIcon from '@mui/icons-material/ErrorOutlined';
 import AddIcon from '@mui/icons-material/Add';
 import { useTranslation } from 'react-i18next';
-
 import type {
   CaseDataIssue,
   CaseUploadResult,
   CompleteCaseType,
-} from '../../../api';
-import { DataIssueType } from '../../../api';
+} from '@gen-epix/api-casedb';
+import { DataIssueType } from '@gen-epix/api-casedb';
+
 import { useInitializeTableStore } from '../../../hooks/useInitializeTableStore';
 import type {
   CaseUploadResultWithGeneratedId,

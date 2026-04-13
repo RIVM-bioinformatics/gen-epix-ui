@@ -8,10 +8,10 @@ import type { ReactElement } from 'react';
 import type { TFunction } from 'i18next';
 import difference from 'lodash/difference';
 import sumBy from 'lodash/sumBy';
+import type { Case } from '@gen-epix/api-casedb';
+import { ColType } from '@gen-epix/api-casedb';
 
 import { CaseUtil } from '../CaseUtil';
-import type { Case } from '../../api';
-import { ColType } from '../../api';
 import {
   DEFAULT_FILTER_GROUP,
   FILTER_MODE,

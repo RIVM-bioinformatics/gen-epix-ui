@@ -1,11 +1,11 @@
 import type { UseQueryResult } from '@tanstack/react-query';
-
-import type { UserInvitationConstraints } from '../../api';
+import type { UserInvitationConstraints } from '@gen-epix/api-casedb';
 import {
   CommandName,
   OrganizationApi,
   PermissionType,
-} from '../../api';
+} from '@gen-epix/api-casedb';
+
 import { QUERY_KEY } from '../../models/query';
 import { QueryUtil } from '../../utils/QueryUtil';
 import { useQueryMemo } from '../../hooks/useQueryMemo';

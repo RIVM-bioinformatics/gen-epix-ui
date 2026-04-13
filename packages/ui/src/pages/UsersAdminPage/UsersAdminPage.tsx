@@ -11,16 +11,16 @@ import {
   object,
   string,
 } from 'yup';
-
 import type {
   ApiPermission,
   User,
-} from '../../api';
+} from '@gen-epix/api-casedb';
 import {
   CommandName,
   OrganizationApi,
   PermissionType,
-} from '../../api';
+} from '@gen-epix/api-casedb';
+
 import { useOrganizationOptionsQuery } from '../../dataHooks/useOrganizationsQuery';
 import type {
   FormFieldDefinition,

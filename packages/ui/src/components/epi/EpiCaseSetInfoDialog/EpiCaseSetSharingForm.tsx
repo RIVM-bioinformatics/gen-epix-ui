@@ -16,9 +16,9 @@ import { useForm } from 'react-hook-form';
 import difference from 'lodash/difference';
 import type { BoxProps } from '@mui/material';
 import { Box } from '@mui/material';
+import type { CaseSet } from '@gen-epix/api-casedb';
+import { CaseApi } from '@gen-epix/api-casedb';
 
-import type { CaseSet } from '../../../api';
-import { CaseApi } from '../../../api';
 import { NotificationManager } from '../../../classes/managers/NotificationManager';
 import { useCaseAbacContext } from '../../../context/caseAbac';
 import type { FormFieldDefinition } from '../../../models/form';

@@ -1,6 +1,6 @@
 import isArray from 'lodash/isArray';
+import type { TypedStringSetFilter } from '@gen-epix/api-casedb';
 
-import type { TypedStringSetFilter } from '../../api';
 import type { Filter } from '../../models/filter';
 import type { FilterAbstractKwArgs } from '../abstracts/FilterAbstract';
 import { FilterAbstract } from '../abstracts/FilterAbstract';

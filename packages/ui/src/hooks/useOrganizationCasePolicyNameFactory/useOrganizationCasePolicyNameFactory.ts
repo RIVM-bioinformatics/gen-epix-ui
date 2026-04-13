@@ -1,9 +1,9 @@
 import { useMemo } from 'react';
-
 import type {
   OrganizationAccessCasePolicy,
   OrganizationShareCasePolicy,
-} from '../../api';
+} from '@gen-epix/api-casedb';
+
 import { useCaseTypeSetsMapQuery } from '../../dataHooks/useCaseTypeSetsQuery';
 import { useDataCollectionsMapQuery } from '../../dataHooks/useDataCollectionsQuery';
 import { useOrganizationMapQuery } from '../../dataHooks/useOrganizationsQuery';

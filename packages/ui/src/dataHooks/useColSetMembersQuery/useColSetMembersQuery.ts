@@ -1,7 +1,7 @@
 import type { UseQueryResult } from '@tanstack/react-query';
+import type { ColSetMember } from '@gen-epix/api-casedb';
+import { CaseApi } from '@gen-epix/api-casedb';
 
-import type { ColSetMember } from '../../api';
-import { CaseApi } from '../../api';
 import { QUERY_KEY } from '../../models/query';
 import { QueryUtil } from '../../utils/QueryUtil';
 import { useQueryMemo } from '../../hooks/useQueryMemo';

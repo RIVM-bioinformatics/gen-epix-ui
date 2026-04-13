@@ -1,6 +1,6 @@
 import throttle from 'lodash/throttle';
+import { LogLevel } from '@gen-epix/api-casedb';
 
-import { LogLevel } from '../../../api';
 import { SubscribableAbstract } from '../../abstracts/SubscribableAbstract';
 import { Subject } from '../../Subject';
 import { AuthenticationManager } from '../AuthenticationManager';

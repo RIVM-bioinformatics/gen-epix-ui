@@ -1,10 +1,10 @@
 import { useMemo } from 'react';
 import { useTranslation } from 'react-i18next';
-
 import type {
   UserAccessCasePolicy,
   UserShareCasePolicy,
-} from '../../api';
+} from '@gen-epix/api-casedb';
+
 import { useCaseTypeSetsMapQuery } from '../../dataHooks/useCaseTypeSetsQuery';
 import { useDataCollectionsMapQuery } from '../../dataHooks/useDataCollectionsQuery';
 import { useUsersMapQuery } from '../../dataHooks/useUsersQuery';

@@ -17,6 +17,7 @@ import { useTranslation } from 'react-i18next';
 import { useStore } from 'zustand';
 import { useShallow } from 'zustand/shallow';
 import InfoIcon from '@mui/icons-material/Info';
+import type { CaseSet } from '@gen-epix/api-casedb';
 
 import CollectionIcon from '../../../assets/icons/CollectionIcon.svg?react';
 import type { EpiCaseSetInfoDialogRefMethods } from '../EpiCaseSetInfoDialog';
@@ -52,7 +53,6 @@ import {
   EpiSequenceDownloadDialog,
   type EpiSequenceDownloadDialogRefMethods,
 } from '../EpiSequenceDownloadDialog';
-import type { CaseSet } from '../../../api';
 import { ConfigManager } from '../../../classes/managers/ConfigManager';
 import { EpiEventBusManager } from '../../../classes/managers/EpiEventBusManager';
 import { KeyboardShortcutManager } from '../../../classes/managers/KeyboardShortcutManager';

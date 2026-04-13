@@ -1,8 +1,8 @@
 import type { UseQueryResult } from '@tanstack/react-query';
 import { useMemo } from 'react';
+import type { Disease } from '@gen-epix/api-casedb';
+import { OntologyApi } from '@gen-epix/api-casedb';
 
-import type { Disease } from '../../api';
-import { OntologyApi } from '../../api';
 import type {
   UseMap,
   UseOptions,

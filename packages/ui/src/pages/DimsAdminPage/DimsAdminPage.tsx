@@ -9,13 +9,13 @@ import {
   string,
 } from 'yup';
 import { useParams } from 'react-router-dom';
-
-import type { Dim } from '../../api';
+import type { Dim } from '@gen-epix/api-casedb';
 import {
   CaseApi,
   CommandName,
   PermissionType,
-} from '../../api';
+} from '@gen-epix/api-casedb';
+
 import {
   useCaseTypeMapQuery,
   useCaseTypeOptionsQuery,

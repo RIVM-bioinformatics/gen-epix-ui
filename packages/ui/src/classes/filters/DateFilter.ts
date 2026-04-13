@@ -6,11 +6,11 @@ import {
   isEqual,
   isValid,
 } from 'date-fns';
-
 import type {
   TypedDateRangeFilter,
   TypedPartialDateRangeFilter,
-} from '../../api';
+} from '@gen-epix/api-casedb';
+
 import type { FilterAbstractKwArgs } from '../abstracts/FilterAbstract';
 import { FilterAbstract } from '../abstracts/FilterAbstract';
 import type { Filter } from '../../models/filter';

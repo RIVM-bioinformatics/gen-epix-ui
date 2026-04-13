@@ -55,28 +55,6 @@ importers:
         specifier: 4.0.1
         version: 4.0.1(vite@8.0.8(@types/node@25.6.0)(yaml@2.8.3))
 
-  packages/client-config:
-    dependencies:
-      '@mui/material':
-        specifier: 9.0.0
-        version: 9.0.0(@emotion/react@11.14.0(@types/react@19.2.14)(react@19.2.5))(@emotion/styled@11.14.1(@emotion/react@11.14.0(@types/react@19.2.14)(react@19.2.5))(@types/react@19.2.14)(react@19.2.5))(@types/react@19.2.14)(react-dom@19.2.5(react@19.2.5))(react@19.2.5)
-    devDependencies:
-      '@gen-epix/eslint-config':
-        specifier: 0.2.0
-        version: 0.2.0(eslint@10.2.0)(typescript@6.0.2)(vitest@4.1.4)
-      '@types/node':
-        specifier: 25.6.0
-        version: 25.6.0
-      eslint:
-        specifier: 10.2.0
-        version: 10.2.0
-      typescript:
-        specifier: 6.0.2
-        version: 6.0.2
-      vite:
-        specifier: 8.0.8
-        version: 8.0.8(@types/node@25.6.0)(yaml@2.8.3)
-
   packages/client-theme:
     dependencies:
       '@mui/material':
@@ -110,6 +88,9 @@ importers:
       '@emotion/styled':
         specifier: 11.14.1
         version: 11.14.1(@emotion/react@11.14.0(@types/react@19.2.14)(react@19.2.5))(@types/react@19.2.14)(react@19.2.5)
+      '@gen-epix/api-casedb':
+        specifier: workspace:*
+        version: link:../api-casedb
       '@gen-epix/client-theme':
         specifier: workspace:*
         version: link:../client-theme
@@ -256,6 +237,9 @@ importers:
       '@emotion/styled':
         specifier: 11.14.1
         version: 11.14.1(@emotion/react@11.14.0(@types/react@19.2.14)(react@19.2.5))(@types/react@19.2.14)(react@19.2.5)
+      '@gen-epix/api-casedb':
+        specifier: workspace:*
+        version: link:../api-casedb
       '@gen-epix/client-theme':
         specifier: workspace:*
         version: link:../client-theme

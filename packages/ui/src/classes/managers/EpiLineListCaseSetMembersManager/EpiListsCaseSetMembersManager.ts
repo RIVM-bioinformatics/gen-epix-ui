@@ -1,7 +1,8 @@
+import type { CaseSetMember } from '@gen-epix/api-casedb';
+import { CaseApi } from '@gen-epix/api-casedb';
+
 import { QueryClientManager } from '../QueryClientManager';
 import { WindowManager } from '../WindowManager';
-import type { CaseSetMember } from '../../../api';
-import { CaseApi } from '../../../api';
 import type { EpiCaseHasCaseSet } from '../../../models/epi';
 import { QUERY_KEY } from '../../../models/query';
 import { QueryUtil } from '../../../utils/QueryUtil';

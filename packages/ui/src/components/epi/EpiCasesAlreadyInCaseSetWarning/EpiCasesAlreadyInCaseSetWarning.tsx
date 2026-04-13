@@ -11,17 +11,17 @@ import {
 import uniq from 'lodash/uniq';
 import { useMemo } from 'react';
 import { useTranslation } from 'react-i18next';
-
-import { EpiCaseSummary } from '../EpiCaseSummary';
 import type {
   Case,
   CaseSet,
   TypedUuidSetFilter,
-} from '../../../api';
+} from '@gen-epix/api-casedb';
 import {
   CaseApi,
   LogLevel,
-} from '../../../api';
+} from '@gen-epix/api-casedb';
+
+import { EpiCaseSummary } from '../EpiCaseSummary';
 import { LogManager } from '../../../classes/managers/LogManager';
 import { QUERY_KEY } from '../../../models/query';
 import { QueryUtil } from '../../../utils/QueryUtil';

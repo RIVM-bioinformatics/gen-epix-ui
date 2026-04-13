@@ -6,15 +6,15 @@ import {
 import { useTranslation } from 'react-i18next';
 import { useStore } from 'zustand';
 import { useShallow } from 'zustand/shallow';
-
 import type {
   Case,
   CaseSet,
-} from '../../../api';
+} from '@gen-epix/api-casedb';
 import {
   CommandName,
   PermissionType,
-} from '../../../api';
+} from '@gen-epix/api-casedb';
+
 import { AuthorizationManager } from '../../../classes/managers/AuthorizationManager';
 import { EpiEventBusManager } from '../../../classes/managers/EpiEventBusManager';
 import type { MenuItemData } from '../../../models/nestedMenu';

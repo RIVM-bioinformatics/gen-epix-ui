@@ -8,16 +8,16 @@ import {
   object,
   string,
 } from 'yup';
-
-import { CrudPage } from '../CrudPage';
 import type {
   DataCollectionSet,
   DataCollectionSetMember,
-} from '../../api';
+} from '@gen-epix/api-casedb';
 import {
   CommandName,
   OrganizationApi,
-} from '../../api';
+} from '@gen-epix/api-casedb';
+
+import { CrudPage } from '../CrudPage';
 import { useDataCollectionOptionsQuery } from '../../dataHooks/useDataCollectionsQuery';
 import { useDataCollectionSetMembersQuery } from '../../dataHooks/useDataCollectionSetMembersQuery';
 import { useArray } from '../../hooks/useArray';

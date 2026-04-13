@@ -4,8 +4,8 @@ import {
   Link,
 } from '@mui/material';
 import { useCallback } from 'react';
+import type { CaseSet } from '@gen-epix/api-casedb';
 
-import type { CaseSet } from '../../../api';
 import { RouterManager } from '../../../classes/managers/RouterManager';
 import { CaseSetUtil } from '../../../utils/CaseSetUtil';
 

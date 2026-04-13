@@ -2,15 +2,14 @@ import {
   defineConfig,
   esmExternalRequirePlugin,
 } from 'vite';
-
-import dts from './dts-plugin';
+import dts from 'vite-plugin-dts';
 
 // https://vitejs.dev/config/
 export default defineConfig({
   build: {
     copyPublicDir: false,
     lib: {
-      entry: './src/api/index.ts',
+      entry: './src/index.ts',
       fileName: () => {
         return 'index.js';
       },

@@ -30,8 +30,6 @@
   },
   "include": [
     "src/**/*",
-    "dts-plugin.d.ts",
-    "dts-plugin.js",
     "eslint.config.js",
     "vite.config.ts"
   ]

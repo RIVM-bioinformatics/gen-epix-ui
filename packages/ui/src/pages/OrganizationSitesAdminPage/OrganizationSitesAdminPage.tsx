@@ -5,13 +5,13 @@ import {
 import { useTranslation } from 'react-i18next';
 import { object } from 'yup';
 import { useParams } from 'react-router-dom';
-
-import type { Site } from '../../api';
+import type { Site } from '@gen-epix/api-casedb';
 import {
   CommandName,
   OrganizationApi,
   PermissionType,
-} from '../../api';
+} from '@gen-epix/api-casedb';
+
 import type { FormFieldDefinition } from '../../models/form';
 import { FORM_FIELD_DEFINITION_TYPE } from '../../models/form';
 import { QUERY_KEY } from '../../models/query';

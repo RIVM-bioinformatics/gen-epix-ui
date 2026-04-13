@@ -9,12 +9,12 @@ import {
   string,
 } from 'yup';
 import { useParams } from 'react-router-dom';
-
-import type { RegionSetShape } from '../../api';
+import type { RegionSetShape } from '@gen-epix/api-casedb';
 import {
   CommandName,
   GeoApi,
-} from '../../api';
+} from '@gen-epix/api-casedb';
+
 import { useRegionSetsMapQuery } from '../../dataHooks/useRegionSetsQuery';
 import { useArray } from '../../hooks/useArray';
 import type { FormFieldDefinition } from '../../models/form';

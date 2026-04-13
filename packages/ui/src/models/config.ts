@@ -4,8 +4,7 @@ import type {
   Theme,
 } from '@mui/material';
 import type { TFunction } from 'i18next';
-
-import type { ColType } from '../api';
+import type { ColType } from '@gen-epix/api-casedb';
 
 import type {
   EPI_ZONE,

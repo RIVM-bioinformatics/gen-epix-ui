@@ -5,12 +5,12 @@ import {
 import intersection from 'lodash/intersection';
 import { useTranslation } from 'react-i18next';
 import { Box } from '@mui/material';
-
 import type {
   OrganizationAccessCasePolicy,
   User,
   UserAccessCasePolicy,
-} from '../../../api';
+} from '@gen-epix/api-casedb';
+
 import { ResponseHandler } from '../../ui/ResponseHandler';
 import { useOrganizationAccessCasePoliciesQuery } from '../../../dataHooks/useOrganizationAccessCasePoliciesQuery';
 import { useUserAccessCasePoliciesQuery } from '../../../dataHooks/useUserAccessCasePoliciesQuery';

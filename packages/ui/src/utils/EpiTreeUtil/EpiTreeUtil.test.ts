@@ -5,9 +5,9 @@ import {
   vi,
 } from 'vitest';
 import type { Theme } from '@mui/material/styles';
+import { ColType } from '@gen-epix/api-casedb';
+import type { TreeAlgorithm } from '@gen-epix/api-casedb';
 
-import { ColType } from '../../api';
-import type { TreeAlgorithm } from '../../api';
 import { ConfigManager } from '../../classes/managers/ConfigManager';
 import { EpiDataManager } from '../../classes/managers/EpiDataManager';
 import type { ArgumentTypes } from '../../models/generic';

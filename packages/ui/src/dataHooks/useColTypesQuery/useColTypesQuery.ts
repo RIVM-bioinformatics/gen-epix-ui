@@ -1,6 +1,6 @@
 import { useMemo } from 'react';
+import { ColType } from '@gen-epix/api-casedb';
 
-import { ColType } from '../../api';
 import type { UseOptions } from '../../models/dataHooks';
 import type { OptionBase } from '../../models/form';
 

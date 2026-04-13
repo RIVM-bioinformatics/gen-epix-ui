@@ -11,13 +11,13 @@ import {
 } from 'yup';
 import { useParams } from 'react-router-dom';
 import type { UseFormReturn } from 'react-hook-form';
-
-import type { Col } from '../../api';
+import type { Col } from '@gen-epix/api-casedb';
 import {
   CaseApi,
   ColType,
   CommandName,
-} from '../../api';
+} from '@gen-epix/api-casedb';
+
 import {
   useColMapQuery,
   useColOptionsQuery,

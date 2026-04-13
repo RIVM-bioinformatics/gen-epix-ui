@@ -1,6 +1,5 @@
 import { useMemo } from 'react';
 import type { UseQueryResult } from '@tanstack/react-query';
-
 import type {
   CaseTypeSetMember,
   ColSet,
@@ -10,8 +9,9 @@ import type {
   User,
   UserAccessCasePolicy,
   UserShareCasePolicy,
-} from '../../api';
-import { OrganizationApi } from '../../api';
+} from '@gen-epix/api-casedb';
+import { OrganizationApi } from '@gen-epix/api-casedb';
+
 import { useArray } from '../../hooks/useArray';
 import { useItemQuery } from '../../hooks/useItemQuery';
 import type { UserEffectiveRight } from '../../models/caseAccess';

@@ -15,6 +15,7 @@ import {
   useEffect,
   useState,
 } from 'react';
+import type { User } from '@gen-epix/api-casedb';
 
 import type {
   WithDialogRefMethods,
@@ -40,7 +41,6 @@ import {
 } from '../../../dataHooks/useColsQuery';
 import { useColSetMembersQuery } from '../../../dataHooks/useColSetMembersQuery';
 import { useCaseTypeSetMembersQuery } from '../../../dataHooks/useCaseTypeSetMembersQuery';
-import type { User } from '../../../api';
 import { EpiCustomTabPanel } from '../../epi/EpiCustomTabPanel';
 import { LoadableUtil } from '../../../utils/LoadableUtil';
 

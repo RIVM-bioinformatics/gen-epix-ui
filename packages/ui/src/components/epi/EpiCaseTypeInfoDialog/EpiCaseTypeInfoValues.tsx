@@ -4,9 +4,9 @@ import {
   AccordionSummary,
 } from '@mui/material';
 import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
+import type { CompleteCaseType } from '@gen-epix/api-casedb';
+import { DimType } from '@gen-epix/api-casedb';
 
-import type { CompleteCaseType } from '../../../api';
-import { DimType } from '../../../api';
 import { CaseTypeUtil } from '../../../utils/CaseTypeUtil';
 
 import { EpiCaseTypeInfoVariableDetails } from './EpiCaseTypeInfoVariableDetails';
