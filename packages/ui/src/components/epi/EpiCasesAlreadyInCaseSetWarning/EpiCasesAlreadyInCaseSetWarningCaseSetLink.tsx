@@ -4,8 +4,8 @@ import {
   useRef,
 } from 'react';
 import { t } from 'i18next';
+import type { CaseSet } from '@gen-epix/api-casedb';
 
-import type { CaseSet } from '../../../api';
 import { RouterManager } from '../../../classes/managers/RouterManager';
 import { useCaseSetCategoryMapQuery } from '../../../dataHooks/useCaseSetCategoriesQuery';
 import { useCaseSetStatusMapQuery } from '../../../dataHooks/useCaseSetStatusesQuery';

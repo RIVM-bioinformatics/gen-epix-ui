@@ -6,6 +6,19 @@ import uniqBy from 'lodash/uniqBy';
 import uniq from 'lodash/uniq';
 import last from 'lodash/last';
 import { persist } from 'zustand/middleware';
+import type {
+  Case,
+  CaseQuery,
+  CaseQueryResult,
+  Col,
+  CompleteCaseType,
+  PhylogeneticTree,
+  TypedCompositeFilter,
+} from '@gen-epix/api-casedb';
+import {
+  CaseApi,
+  ColType,
+} from '@gen-epix/api-casedb';
 
 import type {
   CreateTableStoreInitialStateKwArgs,
@@ -18,19 +31,6 @@ import {
   createTableStoreInitialState,
   createTableStorePersistConfiguration,
 } from '../tableStore';
-import type {
-  Case,
-  CaseQuery,
-  CaseQueryResult,
-  Col,
-  CompleteCaseType,
-  PhylogeneticTree,
-  TypedCompositeFilter,
-} from '../../api';
-import {
-  CaseApi,
-  ColType,
-} from '../../api';
 import { FILTER_MODE } from '../../classes/abstracts/FilterAbstract';
 import { SelectionFilter } from '../../classes/filters/SelectionFilter';
 import { TreeFilter } from '../../classes/filters/TreeFilter';

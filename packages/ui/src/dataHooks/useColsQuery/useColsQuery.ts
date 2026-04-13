@@ -1,8 +1,8 @@
 import type { UseQueryResult } from '@tanstack/react-query';
 import { useMemo } from 'react';
+import type { Col } from '@gen-epix/api-casedb';
+import { CaseApi } from '@gen-epix/api-casedb';
 
-import type { Col } from '../../api';
-import { CaseApi } from '../../api';
 import type {
   UseMap,
   UseNameFactory,

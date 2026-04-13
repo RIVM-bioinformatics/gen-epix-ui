@@ -3,13 +3,13 @@ import {
   useEffect,
 } from 'react';
 import { useTranslation } from 'react-i18next';
+import type { Case } from '@gen-epix/api-casedb';
 
 import {
   withDialog,
   type WithDialogRefMethods,
   type WithDialogRenderProps,
 } from '../../../hoc/withDialog';
-import type { Case } from '../../../api';
 import { TestIdUtil } from '../../../utils/TestIdUtil';
 import type { DialogAction } from '../../ui/Dialog';
 

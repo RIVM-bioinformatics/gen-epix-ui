@@ -15,16 +15,16 @@ import {
   useMemo,
   useRef,
 } from 'react';
-
 import type {
   CaseStats,
   CaseTypeSet,
   CaseTypeSetCategory,
-} from '../../api';
+} from '@gen-epix/api-casedb';
 import {
   CaseApi,
   CaseTypeSetCategoryPurpose,
-} from '../../api';
+} from '@gen-epix/api-casedb';
+
 import { ConfigManager } from '../../classes/managers/ConfigManager';
 import { RouterManager } from '../../classes/managers/RouterManager';
 import type { EpiCaseTypeInfoDialogWithLoaderRefMethods } from '../../components/epi/EpiCaseTypeInfoDialog';

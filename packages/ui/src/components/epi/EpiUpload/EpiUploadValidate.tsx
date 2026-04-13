@@ -15,15 +15,15 @@ import {
 import omit from 'lodash/omit';
 import { useTranslation } from 'react-i18next';
 import { useShallow } from 'zustand/shallow';
-
-import { EpiUploadStoreContext } from '../../../stores/epiUploadStore';
-import { EpiCompletCaseTypeLoader } from '../EpiCompletCaseTypeLoader';
-import type { CaseForUpload } from '../../../api';
+import type { CaseForUpload } from '@gen-epix/api-casedb';
 import {
   CaseApi,
   DataIssueType,
   UploadAction,
-} from '../../../api';
+} from '@gen-epix/api-casedb';
+
+import { EpiUploadStoreContext } from '../../../stores/epiUploadStore';
+import { EpiCompletCaseTypeLoader } from '../EpiCompletCaseTypeLoader';
 import { useArray } from '../../../hooks/useArray';
 import { useQueryMemo } from '../../../hooks/useQueryMemo';
 import type { CaseUploadResultWithGeneratedId } from '../../../models/epi';

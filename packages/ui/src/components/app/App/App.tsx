@@ -6,8 +6,8 @@ import {
 import { QueryClientProvider } from '@tanstack/react-query';
 import { ErrorBoundary } from 'react-error-boundary';
 import { RouterProvider } from 'react-router-dom';
+import { BaseAPI } from '@gen-epix/api-casedb';
 
-import { BaseAPI } from '../../../api';
 import { AuthenticationManager } from '../../../classes/managers/AuthenticationManager';
 import { BackendVersionManager } from '../../../classes/managers/BackendVersionManager';
 import { ConfigManager } from '../../../classes/managers/ConfigManager';

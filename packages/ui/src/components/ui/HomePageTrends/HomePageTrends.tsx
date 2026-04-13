@@ -11,18 +11,18 @@ import {
 } from 'react';
 import { useTranslation } from 'react-i18next';
 import round from 'lodash/round';
-
 import type {
   CaseStats,
   EpiFilter,
   RetrieveCaseTypeStatsRequestBody,
   TypedDatetimeRangeFilter,
-} from '../../../api';
+} from '@gen-epix/api-casedb';
 import {
   CaseApi,
   CommandName,
   PermissionType,
-} from '../../../api';
+} from '@gen-epix/api-casedb';
+
 import { ConfigManager } from '../../../classes/managers/ConfigManager';
 import { RouterManager } from '../../../classes/managers/RouterManager';
 import { useCaseSetsQuery } from '../../../dataHooks/useCaseSetsQuery';

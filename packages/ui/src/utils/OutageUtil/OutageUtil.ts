@@ -1,6 +1,6 @@
 import { addHours } from 'date-fns';
+import type { Outage } from '@gen-epix/api-casedb';
 
-import type { Outage } from '../../api';
 import { ConfigManager } from '../../classes/managers/ConfigManager';
 import type { CategorizedOutages } from '../../models/outage';
 

@@ -4,8 +4,8 @@ import {
   Typography,
 } from '@mui/material';
 import { useTranslation } from 'react-i18next';
+import type { CaseSet } from '@gen-epix/api-casedb';
 
-import type { CaseSet } from '../../../api';
 import { RichTextEditorContent } from '../../form/fields/RichTextEditor';
 
 export type EpiCaseSetDescriptionProps = {

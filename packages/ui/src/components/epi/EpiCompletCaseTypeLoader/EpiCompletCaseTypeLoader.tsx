@@ -5,9 +5,9 @@ import {
   useState,
 } from 'react';
 import { useTranslation } from 'react-i18next';
+import type { CompleteCaseType } from '@gen-epix/api-casedb';
+import { CaseApi } from '@gen-epix/api-casedb';
 
-import type { CompleteCaseType } from '../../../api';
-import { CaseApi } from '../../../api';
 import { useItemQuery } from '../../../hooks/useItemQuery';
 import { QUERY_KEY } from '../../../models/query';
 import { AxiosUtil } from '../../../utils/AxiosUtil';

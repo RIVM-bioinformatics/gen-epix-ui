@@ -3,11 +3,11 @@ import {
   useCallback,
   useState,
 } from 'react';
-
 import type {
   CaseSet,
   CompleteCaseType,
-} from '../../../api';
+} from '@gen-epix/api-casedb';
+
 import { EpiCompletCaseTypeLoader } from '../EpiCompletCaseTypeLoader';
 
 import { EpiDashboardStoreLoaderContent } from './EpiDashboardStoreLoaderContent';

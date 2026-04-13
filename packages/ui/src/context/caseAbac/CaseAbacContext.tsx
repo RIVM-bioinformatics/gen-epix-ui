@@ -1,12 +1,12 @@
 import { createContext } from 'react';
-
 import type {
   CaseDataCollectionLink,
   CaseRights,
   CaseSetDataCollectionLink,
   CaseSetRights,
   DataCollection,
-} from '../../api';
+} from '@gen-epix/api-casedb';
+
 import type { OptionBase } from '../../models/form';
 
 export type CaseAbacContext = {

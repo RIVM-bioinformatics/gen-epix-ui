@@ -1,9 +1,9 @@
 import type { TFunction } from 'i18next';
-
 import type {
   Case,
   FiltersInner,
-} from '../api';
+} from '@gen-epix/api-casedb';
+
 import type { BooleanFilter } from '../classes/filters/BooleanFilter';
 import type { DateFilter } from '../classes/filters/DateFilter';
 import type { GeoFilter } from '../classes/filters/GeoFilter';

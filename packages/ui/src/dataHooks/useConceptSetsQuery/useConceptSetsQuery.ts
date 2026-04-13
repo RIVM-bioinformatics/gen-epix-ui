@@ -1,8 +1,8 @@
 import type { UseQueryResult } from '@tanstack/react-query';
 import { useMemo } from 'react';
+import type { ConceptSet } from '@gen-epix/api-casedb';
+import { OntologyApi } from '@gen-epix/api-casedb';
 
-import type { ConceptSet } from '../../api';
-import { OntologyApi } from '../../api';
 import type {
   UseMap,
   UseOptions,

@@ -9,14 +9,14 @@ import {
 import { useTranslation } from 'react-i18next';
 import { useStore } from 'zustand';
 import { useShallow } from 'zustand/shallow';
-
 import type {
   Case,
   CaseSet,
   CaseSetMember,
   TypedCompositeFilter,
-} from '../../../api';
-import { CaseApi } from '../../../api';
+} from '@gen-epix/api-casedb';
+import { CaseApi } from '@gen-epix/api-casedb';
+
 import type {
   WithDialogRefMethods,
   WithDialogRenderProps,

@@ -2,7 +2,7 @@ import type {
   OrganizationAccessCasePolicy,
   UserAccessCasePolicy,
   UserShareCasePolicy,
-} from '../api';
+} from '@gen-epix/api-casedb';
 
 export type UserEffectiveRight = {
   readonly categorized_read_col_ids: string[];

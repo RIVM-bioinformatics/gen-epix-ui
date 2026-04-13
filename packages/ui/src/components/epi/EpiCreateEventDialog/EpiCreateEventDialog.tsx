@@ -23,13 +23,13 @@ import {
   Alert,
   Box,
 } from '@mui/material';
-
 import type {
   Case,
   CaseSet,
   CompleteCaseType,
-} from '../../../api';
-import { CaseApi } from '../../../api';
+} from '@gen-epix/api-casedb';
+import { CaseApi } from '@gen-epix/api-casedb';
+
 import { EpiEventBusManager } from '../../../classes/managers/EpiEventBusManager';
 import { useCaseSetCategoryOptionsQuery } from '../../../dataHooks/useCaseSetCategoriesQuery';
 import { useCaseSetStatusOptionsQuery } from '../../../dataHooks/useCaseSetStatusesQuery';

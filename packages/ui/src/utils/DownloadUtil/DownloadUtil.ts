@@ -3,14 +3,14 @@ import { format } from 'date-fns';
 import type { ECharts } from 'echarts';
 import writeXlsxFile from 'write-excel-file/browser';
 import { stringify } from 'csv/browser/esm/sync';
-
 import {
   type Case,
   CaseApi,
   type Col,
   type CompleteCaseType,
   LogLevel,
-} from '../../api';
+} from '@gen-epix/api-casedb';
+
 import { ConfigManager } from '../../classes/managers/ConfigManager';
 import { DATE_FORMAT } from '../../data/date';
 import { StringUtil } from '../StringUtil';

@@ -1,9 +1,9 @@
 import { t } from 'i18next';
-
 import type {
   Case,
   FiltersInner,
-} from '../../api';
+} from '@gen-epix/api-casedb';
+
 import { FilterAbstract } from '../abstracts/FilterAbstract';
 import type { Filter } from '../../models/filter';
 

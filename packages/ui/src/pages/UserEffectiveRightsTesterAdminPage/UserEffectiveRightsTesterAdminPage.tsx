@@ -20,6 +20,8 @@ import {
   string,
 } from 'yup';
 import noop from 'lodash/noop';
+import type { User } from '@gen-epix/api-casedb';
+import { OrganizationApi } from '@gen-epix/api-casedb';
 
 import { TestIdUtil } from '../../utils/TestIdUtil';
 import { PageContainer } from '../../components/ui/PageContainer';
@@ -32,8 +34,6 @@ import { useOrganizationShareCasePoliciesQuery } from '../../dataHooks/useOrgani
 import { useUserAccessCasePoliciesQuery } from '../../dataHooks/useUserAccessCasePoliciesQuery';
 import { useUserShareCasePoliciesQuery } from '../../dataHooks/useUserShareCasePoliciesQuery';
 import { useArray } from '../../hooks/useArray';
-import type { User } from '../../api';
-import { OrganizationApi } from '../../api';
 import { useItemQuery } from '../../hooks/useItemQuery';
 import { QUERY_KEY } from '../../models/query';
 import type { UserEffectiveRight } from '../../models/caseAccess';

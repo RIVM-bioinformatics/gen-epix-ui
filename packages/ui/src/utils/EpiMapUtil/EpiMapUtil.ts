@@ -1,11 +1,11 @@
 import max from 'lodash/max';
 import min from 'lodash/min';
 import round from 'lodash/round';
-
 import type {
   Case,
   Region,
-} from '../../api';
+} from '@gen-epix/api-casedb';
+
 import { ConfigManager } from '../../classes/managers/ConfigManager';
 
 export type RegionStatistics = {

@@ -8,13 +8,13 @@ import {
   object,
   string,
 } from 'yup';
-
-import type { ConceptRelation } from '../../api';
+import type { ConceptRelation } from '@gen-epix/api-casedb';
 import {
   CommandName,
   ConceptRelationType,
   OntologyApi,
-} from '../../api';
+} from '@gen-epix/api-casedb';
+
 import type { FormFieldDefinition } from '../../models/form';
 import { FORM_FIELD_DEFINITION_TYPE } from '../../models/form';
 import { QUERY_KEY } from '../../models/query';

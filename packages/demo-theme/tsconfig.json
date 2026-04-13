@@ -31,7 +31,6 @@
   },
   "include": [
     "src/**/*",
-    "eslint.config.js",
     "vite.config.ts"
   ]
 }

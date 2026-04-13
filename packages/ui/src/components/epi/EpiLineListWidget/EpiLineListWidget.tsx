@@ -18,16 +18,16 @@ import { useStore } from 'zustand';
 import { useDebouncedCallback } from 'use-debounce';
 import type { ListRange } from 'react-virtuoso';
 import TroubleshootIcon from '@mui/icons-material/Troubleshoot';
-
-import CollectionIcon from '../../../assets/icons/CollectionIcon.svg?react';
-import { EpiWidget } from '../EpiWidget';
-import { EpiLegendaItem } from '../EpiLegendaItem';
 import type {
   Case,
   CaseSet,
   Col,
-} from '../../../api';
-import { ColType } from '../../../api';
+} from '@gen-epix/api-casedb';
+import { ColType } from '@gen-epix/api-casedb';
+
+import CollectionIcon from '../../../assets/icons/CollectionIcon.svg?react';
+import { EpiWidget } from '../EpiWidget';
+import { EpiLegendaItem } from '../EpiLegendaItem';
 import { ConfigManager } from '../../../classes/managers/ConfigManager';
 import { EpiEventBusManager } from '../../../classes/managers/EpiEventBusManager';
 import { EpiLineListCaseSetMembersManager } from '../../../classes/managers/EpiLineListCaseSetMembersManager';

@@ -8,12 +8,12 @@ import {
   string,
 } from 'yup';
 import { useParams } from 'react-router-dom';
-
-import type { Contact } from '../../api';
+import type { Contact } from '@gen-epix/api-casedb';
 import {
   CommandName,
   OrganizationApi,
-} from '../../api';
+} from '@gen-epix/api-casedb';
+
 import type { FormFieldDefinition } from '../../models/form';
 import { FORM_FIELD_DEFINITION_TYPE } from '../../models/form';
 import { QUERY_KEY } from '../../models/query';

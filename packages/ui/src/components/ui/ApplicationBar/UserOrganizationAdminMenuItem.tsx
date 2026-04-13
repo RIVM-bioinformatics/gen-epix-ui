@@ -4,12 +4,12 @@ import {
   ListItemText,
 } from '@mui/material';
 import { useTranslation } from 'react-i18next';
-
 import {
   AbacApi,
   CommandName,
   PermissionType,
-} from '../../../api';
+} from '@gen-epix/api-casedb';
+
 import { QUERY_KEY } from '../../../models/query';
 import { QueryUtil } from '../../../utils/QueryUtil';
 import { withPermissions } from '../../../hoc/withPermissions';

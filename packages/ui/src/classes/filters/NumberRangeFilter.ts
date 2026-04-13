@@ -1,7 +1,7 @@
 import isFinite from 'lodash/isFinite';
+import type { TypedNumberRangeFilter } from '@gen-epix/api-casedb';
+import { ComparisonOperator } from '@gen-epix/api-casedb';
 
-import type { TypedNumberRangeFilter } from '../../api';
-import { ComparisonOperator } from '../../api';
 import type { Filter } from '../../models/filter';
 import type { FilterAbstractKwArgs } from '../abstracts/FilterAbstract';
 import { FilterAbstract } from '../abstracts/FilterAbstract';

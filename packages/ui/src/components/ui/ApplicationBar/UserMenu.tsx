@@ -17,12 +17,12 @@ import LogoutIcon from '@mui/icons-material/Logout';
 import KeyIcon from '@mui/icons-material/Key';
 import { useTranslation } from 'react-i18next';
 import { useAuth } from 'react-oidc-context';
+import { LogLevel } from '@gen-epix/api-casedb';
 
 import {
   Confirmation,
   type ConfirmationRefMethods,
 } from '../Confirmation';
-import { LogLevel } from '../../../api';
 import { AuthorizationManager } from '../../../classes/managers/AuthorizationManager';
 import { LogManager } from '../../../classes/managers/LogManager';
 import { DataUtil } from '../../../utils/DataUtil';

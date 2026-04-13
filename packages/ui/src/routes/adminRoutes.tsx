@@ -1,10 +1,10 @@
 /* eslint-disable @typescript-eslint/naming-convention */
 import type { TFunction } from 'i18next';
-
 import {
   CommandName,
   PermissionType,
-} from '../api';
+} from '@gen-epix/api-casedb';
+
 import { ADMIN_PAGE_CATEGORY } from '../models/admin';
 import type { MyNonIndexRouteObject } from '../models/reactRouter';
 import { CaseSetStatusAdminPage } from '../pages/CaseSetStatusAdminPage';

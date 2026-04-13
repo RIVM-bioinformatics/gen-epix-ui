@@ -9,17 +9,17 @@ import {
   string,
 } from 'yup';
 import omit from 'lodash/omit';
-
 import type {
   ApiPermission,
   ColSet,
   ColSetMember,
-} from '../../api';
+} from '@gen-epix/api-casedb';
 import {
   CaseApi,
   CommandName,
   PermissionType,
-} from '../../api';
+} from '@gen-epix/api-casedb';
+
 import { useColOptionsQuery } from '../../dataHooks/useColsQuery';
 import { useColSetMembersQuery } from '../../dataHooks/useColSetMembersQuery';
 import { useArray } from '../../hooks/useArray';

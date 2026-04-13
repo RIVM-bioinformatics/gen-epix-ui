@@ -1,6 +1,7 @@
+import type { User } from '@gen-epix/api-casedb';
+
 import { WindowManager } from '../WindowManager';
 import { ConfigManager } from '../ConfigManager';
-import type { User } from '../../../api';
 import { EventBusAbstract } from '../../abstracts/EventBusAbstract';
 
 type EpiEvent = {

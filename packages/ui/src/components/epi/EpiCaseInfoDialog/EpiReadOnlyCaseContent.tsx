@@ -10,8 +10,8 @@ import {
 } from '@mui/material';
 import { useTranslation } from 'react-i18next';
 import { format } from 'date-fns';
+import type { Case } from '@gen-epix/api-casedb';
 
-import type { Case } from '../../../api';
 import { useDataCollectionsMapQuery } from '../../../dataHooks/useDataCollectionsQuery';
 import { GenericErrorMessage } from '../../ui/GenericErrorMessage';
 import { ResponseHandler } from '../../ui/ResponseHandler';

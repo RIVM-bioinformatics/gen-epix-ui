@@ -13,8 +13,8 @@ import {
   Box,
   Button,
 } from '@mui/material';
+import { SystemApi } from '@gen-epix/api-casedb';
 
-import { SystemApi } from '../../../api';
 import { WindowManager } from '../../../classes/managers/WindowManager';
 import { useQueryMemo } from '../../../hooks/useQueryMemo';
 import { QUERY_KEY } from '../../../models/query';

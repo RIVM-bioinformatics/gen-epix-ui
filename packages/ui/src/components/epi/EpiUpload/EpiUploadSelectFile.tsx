@@ -21,8 +21,8 @@ import {
   Typography,
 } from '@mui/material';
 import { useStore } from 'zustand';
+import { CaseApi } from '@gen-epix/api-casedb';
 
-import { CaseApi } from '../../../api';
 import {
   useCaseTypeOptionsQuery,
   useCaseTypesQuery,

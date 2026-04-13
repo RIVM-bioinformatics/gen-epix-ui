@@ -7,13 +7,13 @@ import {
   mixed,
   object,
 } from 'yup';
-
-import type { CaseTypeSetCategory } from '../../api';
+import type { CaseTypeSetCategory } from '@gen-epix/api-casedb';
 import {
   CaseApi,
   CaseTypeSetCategoryPurpose,
   CommandName,
-} from '../../api';
+} from '@gen-epix/api-casedb';
+
 import type { FormFieldDefinition } from '../../models/form';
 import { FORM_FIELD_DEFINITION_TYPE } from '../../models/form';
 import { QUERY_KEY } from '../../models/query';

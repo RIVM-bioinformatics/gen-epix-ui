@@ -1,8 +1,8 @@
 import type { UseQueryResult } from '@tanstack/react-query';
 import { useMemo } from 'react';
+import type { RegionSet } from '@gen-epix/api-casedb';
+import { GeoApi } from '@gen-epix/api-casedb';
 
-import type { RegionSet } from '../../api';
-import { GeoApi } from '../../api';
 import type {
   UseMap,
   UseOptions,

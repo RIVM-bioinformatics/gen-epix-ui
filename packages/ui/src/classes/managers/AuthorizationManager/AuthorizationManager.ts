@@ -1,7 +1,8 @@
 import type {
   ApiPermission,
   User,
-} from '../../../api';
+} from '@gen-epix/api-casedb';
+
 import type { MyNonIndexRouteObject } from '../../../models/reactRouter';
 import { PageEventBusManager } from '../PageEventBusManager';
 import { WindowManager } from '../WindowManager';

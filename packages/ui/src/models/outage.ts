@@ -1,4 +1,4 @@
-import type { Outage } from '../api';
+import type { Outage } from '@gen-epix/api-casedb';
 
 export type CategorizedOutages = {
   activeOutages: Outage[];

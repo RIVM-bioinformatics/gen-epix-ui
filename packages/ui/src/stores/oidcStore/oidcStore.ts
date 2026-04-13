@@ -3,8 +3,7 @@ import {
   createJSONStorage,
   persist,
 } from 'zustand/middleware';
-
-import type { IdentityProvider } from '../../api';
+import type { IdentityProvider } from '@gen-epix/api-casedb';
 
 
 export type OidcStore = OidcStoreActions & OidcStoreState;

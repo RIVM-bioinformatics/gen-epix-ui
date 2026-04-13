@@ -11,8 +11,8 @@ import {
 } from 'react';
 import { isRouteErrorResponse } from 'react-router-dom';
 import { isAxiosError } from 'axios';
+import { LogLevel } from '@gen-epix/api-casedb';
 
-import { LogLevel } from '../../../api';
 import { AxiosUtil } from '../../../utils/AxiosUtil';
 import { AuthenticationManager } from '../../../classes/managers/AuthenticationManager';
 import { ConfigManager } from '../../../classes/managers/ConfigManager';

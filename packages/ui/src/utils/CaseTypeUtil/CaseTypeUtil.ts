@@ -1,6 +1,4 @@
 import uniq from 'lodash/uniq';
-
-import { StringUtil } from '../StringUtil';
 import type {
   CaseType,
   Col,
@@ -8,11 +6,13 @@ import type {
   Dim,
   RefCol,
   RefDim,
-} from '../../api';
+} from '@gen-epix/api-casedb';
 import {
   ColType,
   DimType,
-} from '../../api';
+} from '@gen-epix/api-casedb';
+
+import { StringUtil } from '../StringUtil';
 import { WindowManager } from '../../classes/managers/WindowManager';
 
 export const SELECTION_FILTER_GROUP = 'selection';

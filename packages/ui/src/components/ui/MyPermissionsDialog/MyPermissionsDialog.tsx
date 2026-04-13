@@ -12,6 +12,7 @@ import {
   TableHead,
   TableRow,
 } from '@mui/material';
+import { PermissionType } from '@gen-epix/api-casedb';
 
 import type {
   WithDialogRefMethods,
@@ -19,7 +20,6 @@ import type {
 } from '../../../hoc/withDialog';
 import { withDialog } from '../../../hoc/withDialog';
 import { AuthorizationManager } from '../../../classes/managers/AuthorizationManager';
-import { PermissionType } from '../../../api';
 
 
 export interface MyPermissionsDialogOpenProps {

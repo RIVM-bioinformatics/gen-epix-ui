@@ -18,10 +18,10 @@ import {
   type BoxProps,
   Typography,
 } from '@mui/material';
+import type { Case } from '@gen-epix/api-casedb';
+import { CaseApi } from '@gen-epix/api-casedb';
 
 import { useCaseAbacContext } from '../../../context/caseAbac';
-import type { Case } from '../../../api';
-import { CaseApi } from '../../../api';
 import { NotificationManager } from '../../../classes/managers/NotificationManager';
 import type { FormFieldDefinition } from '../../../models/form';
 import { FORM_FIELD_DEFINITION_TYPE } from '../../../models/form';

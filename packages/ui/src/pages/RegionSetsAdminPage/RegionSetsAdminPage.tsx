@@ -7,13 +7,13 @@ import {
   boolean,
   object,
 } from 'yup';
-
-import type { RegionSet } from '../../api';
+import type { RegionSet } from '@gen-epix/api-casedb';
 import {
   CommandName,
   GeoApi,
   PermissionType,
-} from '../../api';
+} from '@gen-epix/api-casedb';
+
 import type { FormFieldDefinition } from '../../models/form';
 import { FORM_FIELD_DEFINITION_TYPE } from '../../models/form';
 import { QUERY_KEY } from '../../models/query';

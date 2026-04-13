@@ -9,16 +9,16 @@ import {
   string,
 } from 'yup';
 import omit from 'lodash/omit';
-
 import type {
   ApiPermission,
   CaseTypeSet,
-} from '../../api';
+} from '@gen-epix/api-casedb';
 import {
   CaseApi,
   CommandName,
   PermissionType,
-} from '../../api';
+} from '@gen-epix/api-casedb';
+
 import { useCaseTypeOptionsQuery } from '../../dataHooks/useCaseTypesQuery';
 import { useCaseTypeSetCategoryOptionsQuery } from '../../dataHooks/useCaseTypeSetCategoriesQuery';
 import { useCaseTypeSetMembersQuery } from '../../dataHooks/useCaseTypeSetMembersQuery';

@@ -18,9 +18,9 @@ import {
   FormProvider,
   useForm,
 } from 'react-hook-form';
+import type { Case } from '@gen-epix/api-casedb';
+import { ColType } from '@gen-epix/api-casedb';
 
-import type { Case } from '../../../api';
-import { ColType } from '../../../api';
 import type {
   WithDialogRefMethods,
   WithDialogRenderProps,

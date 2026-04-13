@@ -8,14 +8,14 @@ import {
   object,
   string,
 } from 'yup';
-
-import type { RefDim } from '../../api';
+import type { RefDim } from '@gen-epix/api-casedb';
 import {
   CaseApi,
   CommandName,
   DimType,
   PermissionType,
-} from '../../api';
+} from '@gen-epix/api-casedb';
+
 import { useDimTypeOptionsQuery } from '../../dataHooks/useDimTypesQuery';
 import type { FormFieldDefinition } from '../../models/form';
 import { FORM_FIELD_DEFINITION_TYPE } from '../../models/form';

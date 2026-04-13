@@ -19,6 +19,13 @@ import {
   useWatch,
 } from 'react-hook-form';
 import { useShallow } from 'zustand/shallow';
+import type {
+  Case,
+  CaseSet,
+  CaseSetMember,
+  TypedUuidSetFilter,
+} from '@gen-epix/api-casedb';
+import { CaseApi } from '@gen-epix/api-casedb';
 
 import {
   withDialog,
@@ -26,13 +33,6 @@ import {
   type WithDialogRenderProps,
 } from '../../../hoc/withDialog';
 import { EpiCasesAlreadyInCaseSetWarning } from '../EpiCasesAlreadyInCaseSetWarning';
-import type {
-  Case,
-  CaseSet,
-  CaseSetMember,
-  TypedUuidSetFilter,
-} from '../../../api';
-import { CaseApi } from '../../../api';
 import { useDataCollectionsMapQuery } from '../../../dataHooks/useDataCollectionsQuery';
 import { useEditMutation } from '../../../hooks/useEditMutation';
 import { QUERY_KEY } from '../../../models/query';

@@ -9,12 +9,12 @@ import {
   Typography,
 } from '@mui/material';
 import { useTranslation } from 'react-i18next';
-
 import type {
   Case,
   TypedUuidSetFilter,
-} from '../../../api';
-import { CaseApi } from '../../../api';
+} from '@gen-epix/api-casedb';
+import { CaseApi } from '@gen-epix/api-casedb';
+
 import { useCaseSetCategoryMapQuery } from '../../../dataHooks/useCaseSetCategoriesQuery';
 import { useCaseSetStatusMapQuery } from '../../../dataHooks/useCaseSetStatusesQuery';
 import { QUERY_KEY } from '../../../models/query';

@@ -1,6 +1,5 @@
 import type { Path } from 'react-router-dom';
-
-import type { IdentityProvider } from '../api';
+import type { IdentityProvider } from '@gen-epix/api-casedb';
 
 export type AuthState = {
   lastRedirectTimestamp?: number;

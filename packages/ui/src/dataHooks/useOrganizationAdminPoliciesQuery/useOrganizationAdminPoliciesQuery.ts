@@ -1,9 +1,9 @@
 import type { UseQueryResult } from '@tanstack/react-query';
 import { useMemo } from 'react';
 import { useTranslation } from 'react-i18next';
+import type { OrganizationAdminPolicy } from '@gen-epix/api-casedb';
+import { AbacApi } from '@gen-epix/api-casedb';
 
-import type { OrganizationAdminPolicy } from '../../api';
-import { AbacApi } from '../../api';
 import type {
   UseMap,
   UseNameFactory,

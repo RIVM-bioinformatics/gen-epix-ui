@@ -11,6 +11,8 @@ import {
   useRef,
 } from 'react';
 import { useParams } from 'react-router-dom';
+import type { User } from '@gen-epix/api-casedb';
+import { OrganizationApi } from '@gen-epix/api-casedb';
 
 import { TestIdUtil } from '../../utils/TestIdUtil';
 import { PageContainer } from '../../components/ui/PageContainer';
@@ -42,8 +44,6 @@ import {
   TableStoreContextProvider,
 } from '../../stores/tableStore';
 import { TableUtil } from '../../utils/TableUtil';
-import type { User } from '../../api';
-import { OrganizationApi } from '../../api';
 import { useItemQuery } from '../../hooks/useItemQuery';
 import { QUERY_KEY } from '../../models/query';
 import {

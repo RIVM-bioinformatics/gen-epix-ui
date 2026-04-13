@@ -1,11 +1,11 @@
 import uniq from 'lodash/uniq';
 import remove from 'lodash/remove';
 import uniqBy from 'lodash/uniqBy';
-
 import type {
   CaseQuery,
   RetrievePhylogeneticTreeRequestBody,
-} from '../../api';
+} from '@gen-epix/api-casedb';
+
 import { QueryClientManager } from '../../classes/managers/QueryClientManager';
 import type { GenericData } from '../../models/data';
 import { QUERY_KEY } from '../../models/query';

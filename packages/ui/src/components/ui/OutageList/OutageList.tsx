@@ -3,8 +3,7 @@ import {
   Typography,
 } from '@mui/material';
 import { useTranslation } from 'react-i18next';
-
-import type { Outage } from '../../../api';
+import type { Outage } from '@gen-epix/api-casedb';
 
 import { OutageSection } from './OutageSection';
 

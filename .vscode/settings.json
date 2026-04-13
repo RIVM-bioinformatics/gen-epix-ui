@@ -1,4 +1,7 @@
 {
-  "typescript.tsdk": "node_modules/typescript/lib",
-  "eslint.useFlatConfig": true
+  "js/ts.tsdk.path": "node_modules/typescript/lib",
+  "eslint.useFlatConfig": true,
+  "cSpell.words": [
+    "casedb"
+  ]
 }

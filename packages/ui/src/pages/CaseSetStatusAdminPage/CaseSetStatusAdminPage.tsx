@@ -4,13 +4,13 @@ import {
 } from 'react';
 import { useTranslation } from 'react-i18next';
 import { object } from 'yup';
-
-import { CrudPage } from '../CrudPage';
-import type { CaseSetStatus } from '../../api';
+import type { CaseSetStatus } from '@gen-epix/api-casedb';
 import {
   CaseApi,
   CommandName,
-} from '../../api';
+} from '@gen-epix/api-casedb';
+
+import { CrudPage } from '../CrudPage';
 import type { FormFieldDefinition } from '../../models/form';
 import { FORM_FIELD_DEFINITION_TYPE } from '../../models/form';
 import { QUERY_KEY } from '../../models/query';

@@ -11,8 +11,8 @@ import {
   TableRow,
 } from '@mui/material';
 import { t } from 'i18next';
+import type { CompleteCaseType } from '@gen-epix/api-casedb';
 
-import type { CompleteCaseType } from '../../../api';
 import { useCaseTypeAbacContext } from '../../../context/caseTypeAbac';
 import { CaseTypeUtil } from '../../../utils/CaseTypeUtil';
 

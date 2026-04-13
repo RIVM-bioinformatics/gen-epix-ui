@@ -9,10 +9,10 @@ import {
 } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
 import last from 'lodash/last';
+import { OrganizationApi } from '@gen-epix/api-casedb';
 
 import { ResponseHandler } from '../ResponseHandler';
 import { PageContainer } from '../PageContainer';
-import { OrganizationApi } from '../../../api';
 import { AuthorizationManager } from '../../../classes/managers/AuthorizationManager';
 import { QUERY_KEY } from '../../../models/query';
 import type { MyNonIndexRouteObject } from '../../../models/reactRouter';

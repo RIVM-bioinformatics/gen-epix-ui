@@ -17,7 +17,6 @@ import { t } from 'i18next';
 import difference from 'lodash/difference';
 import uniq from 'lodash/uniq';
 import { format } from 'date-fns';
-
 import type {
   CaseBatchUploadResult,
   CaseForUpload,
@@ -27,7 +26,7 @@ import type {
   CompleteCaseType,
   ReadSetForUpload,
   SeqForUpload,
-} from '../../api';
+} from '@gen-epix/api-casedb';
 import {
   CaseApi,
   ColType,
@@ -35,7 +34,8 @@ import {
   ReadsFileFormat,
   SeqFileFormat,
   UploadAction,
-} from '../../api';
+} from '@gen-epix/api-casedb';
+
 import { CaseTypeUtil } from '../CaseTypeUtil';
 import { CaseUtil } from '../CaseUtil';
 import { DATE_FORMAT } from '../../data/date';

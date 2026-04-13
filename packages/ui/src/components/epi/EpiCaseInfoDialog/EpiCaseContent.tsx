@@ -17,11 +17,11 @@ import {
 } from 'react';
 import { useTranslation } from 'react-i18next';
 import { useStore } from 'zustand';
+import type { Case } from '@gen-epix/api-casedb';
+import { ColType } from '@gen-epix/api-casedb';
 
 import type { EpiContactDetailsDialogRefMethods } from '../EpiContactDetailsDialog';
 import { EpiContactDetailsDialog } from '../EpiContactDetailsDialog';
-import type { Case } from '../../../api';
-import { ColType } from '../../../api';
 import { EpiDashboardStoreContext } from '../../../stores/epiDashboardStore';
 import { CaseTypeUtil } from '../../../utils/CaseTypeUtil';
 import { CaseUtil } from '../../../utils/CaseUtil';

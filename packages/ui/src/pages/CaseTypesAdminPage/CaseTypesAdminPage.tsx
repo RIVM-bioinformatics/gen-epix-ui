@@ -9,16 +9,16 @@ import {
 } from 'yup';
 import omit from 'lodash/omit';
 import pick from 'lodash/pick';
-
 import type {
   CaseType,
   CaseTypeProps,
-} from '../../api';
+} from '@gen-epix/api-casedb';
 import {
   CaseApi,
   CommandName,
   PermissionType,
-} from '../../api';
+} from '@gen-epix/api-casedb';
+
 import { useDiseaseOptionsQuery } from '../../dataHooks/useDiseasesQuery';
 import { useEtiologicalAgentOptionsQuery } from '../../dataHooks/useEtiologicalAgentsQuery';
 import { useArray } from '../../hooks/useArray';

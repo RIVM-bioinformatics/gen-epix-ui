@@ -11,8 +11,8 @@ import {
   useEffect,
   useMemo,
 } from 'react';
+import { OrganizationApi } from '@gen-epix/api-casedb';
 
-import { OrganizationApi } from '../../../api';
 import type {
   WithDialogRefMethods,
   WithDialogRenderProps,

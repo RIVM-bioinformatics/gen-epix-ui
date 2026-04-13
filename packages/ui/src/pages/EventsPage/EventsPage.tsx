@@ -14,13 +14,13 @@ import {
   useTheme,
 } from '@mui/material';
 import ArrowCircleRightIcon from '@mui/icons-material/ArrowCircleRight';
-
-import CollectionIcon from '../../assets/icons/CollectionIcon.svg?react';
 import type {
   CaseSet,
   CaseStats,
-} from '../../api';
-import { CaseApi } from '../../api';
+} from '@gen-epix/api-casedb';
+import { CaseApi } from '@gen-epix/api-casedb';
+
+import CollectionIcon from '../../assets/icons/CollectionIcon.svg?react';
 import { ConfigManager } from '../../classes/managers/ConfigManager';
 import { RouterManager } from '../../classes/managers/RouterManager';
 import type { EpiCaseSetInfoDialogRefMethods } from '../../components/epi/EpiCaseSetInfoDialog';

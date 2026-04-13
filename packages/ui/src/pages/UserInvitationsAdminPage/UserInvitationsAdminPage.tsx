@@ -16,12 +16,12 @@ import {
 } from '@mui/material';
 import MailIcon from '@mui/icons-material/Mail';
 import PasswordIcon from '@mui/icons-material/Password';
-
-import type { UserInvitation } from '../../api';
+import type { UserInvitation } from '@gen-epix/api-casedb';
 import {
   CommandName,
   OrganizationApi,
-} from '../../api';
+} from '@gen-epix/api-casedb';
+
 import { useOrganizationAdminPolicyMapQuery } from '../../dataHooks/useOrganizationAdminPoliciesQuery';
 import { useOrganizationOptionsQuery } from '../../dataHooks/useOrganizationsQuery';
 import { useUserOptionsQuery } from '../../dataHooks/useUsersQuery';

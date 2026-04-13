@@ -5,11 +5,11 @@ import {
 } from 'react';
 import { useStore } from 'zustand';
 import { useShallow } from 'zustand/shallow';
-
 import type {
   CaseSet,
   CompleteCaseType,
-} from '../../../api';
+} from '@gen-epix/api-casedb';
+
 import type { TableColumnDimension } from '../../../models/table';
 import {
   createEpiDashboardStore,

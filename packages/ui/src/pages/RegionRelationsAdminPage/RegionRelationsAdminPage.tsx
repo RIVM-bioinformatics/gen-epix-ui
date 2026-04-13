@@ -8,13 +8,13 @@ import {
   object,
   string,
 } from 'yup';
-
-import type { RegionRelation } from '../../api';
+import type { RegionRelation } from '@gen-epix/api-casedb';
 import {
   CommandName,
   GeoApi,
   RegionRelationType,
-} from '../../api';
+} from '@gen-epix/api-casedb';
+
 import type { FormFieldDefinition } from '../../models/form';
 import { FORM_FIELD_DEFINITION_TYPE } from '../../models/form';
 import { QUERY_KEY } from '../../models/query';

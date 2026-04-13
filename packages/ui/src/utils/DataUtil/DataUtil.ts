@@ -1,6 +1,5 @@
 import type { TFunction } from 'i18next';
 import { format } from 'date-fns';
-
 import type {
   CaseSet,
   Col,
@@ -9,8 +8,9 @@ import type {
   RefColValidationRulesResponseBody,
   RefDim,
   User,
-} from '../../api';
-import { ColType } from '../../api';
+} from '@gen-epix/api-casedb';
+import { ColType } from '@gen-epix/api-casedb';
+
 import type { OptionBase } from '../../models/form';
 import { DATE_FORMAT } from '../../data/date';
 

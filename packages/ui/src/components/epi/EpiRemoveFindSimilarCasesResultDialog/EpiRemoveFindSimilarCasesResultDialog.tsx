@@ -15,6 +15,7 @@ import {
 } from '@mui/material';
 import { useStore } from 'zustand';
 import { produce } from 'immer';
+import type { CompleteCaseType } from '@gen-epix/api-casedb';
 
 import {
   withDialog,
@@ -25,7 +26,6 @@ import { TestIdUtil } from '../../../utils/TestIdUtil';
 import type { DialogAction } from '../../ui/Dialog';
 import { EpiTreeUtil } from '../../../utils/EpiTreeUtil';
 import { EpiDashboardStoreContext } from '../../../stores/epiDashboardStore';
-import type { CompleteCaseType } from '../../../api';
 import type { Step } from '../../ui/Stepper';
 import {
   Stepper,

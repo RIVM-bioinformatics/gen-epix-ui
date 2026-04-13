@@ -9,16 +9,16 @@ import {
   string,
 } from 'yup';
 import omit from 'lodash/omit';
-
 import type {
   ApiPermission,
   Organization,
-} from '../../api';
+} from '@gen-epix/api-casedb';
 import {
   CommandName,
   OrganizationApi,
   PermissionType,
-} from '../../api';
+} from '@gen-epix/api-casedb';
+
 import type { FormFieldDefinition } from '../../models/form';
 import { FORM_FIELD_DEFINITION_TYPE } from '../../models/form';
 import { QUERY_KEY } from '../../models/query';

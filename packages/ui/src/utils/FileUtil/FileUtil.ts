@@ -1,4 +1,4 @@
-import { FileCompression } from '../../api';
+import { FileCompression } from '@gen-epix/api-casedb';
 
 export class FileUtil {
   public static getFileCompressionFromFileName(fileName: string): FileCompression {

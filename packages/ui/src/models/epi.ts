@@ -11,7 +11,7 @@ import type {
   Region,
   RegionSet,
   TreeAlgorithm,
-} from '../api';
+} from '@gen-epix/api-casedb';
 
 export enum EPI_UPLOAD_STEP {
   SELECT_FILE = 0,

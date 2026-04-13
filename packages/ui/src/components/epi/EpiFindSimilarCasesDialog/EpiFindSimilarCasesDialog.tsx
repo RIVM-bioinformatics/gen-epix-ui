@@ -26,6 +26,12 @@ import {
 } from '@mui/material';
 import { useStore } from 'zustand';
 import { produce } from 'immer';
+import type {
+  Case,
+  Col,
+  CompleteCaseType,
+} from '@gen-epix/api-casedb';
+import { CaseApi } from '@gen-epix/api-casedb';
 
 import {
   withDialog,
@@ -45,12 +51,6 @@ import type {
 } from '../../../models/form';
 import { FORM_FIELD_DEFINITION_TYPE } from '../../../models/form';
 import { GenericForm } from '../../form/helpers/GenericForm';
-import type {
-  Case,
-  Col,
-  CompleteCaseType,
-} from '../../../api';
-import { CaseApi } from '../../../api';
 import { ResponseHandler } from '../../ui/ResponseHandler';
 import { ConfigManager } from '../../../classes/managers/ConfigManager';
 import { SchemaUtil } from '../../../utils/SchemaUtil';

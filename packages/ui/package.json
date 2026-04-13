@@ -2,6 +2,18 @@
   "name": "@gen-epix/ui",
   "version": "1.22.0",
   "license": "EUPL-1.2",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/RIVM-bioinformatics/gen-epix-ui.git"
+  },
+  "author": "RIVM-bioinformatics <ids-bioinformatics@rivm.nl>",
+  "homepage": "https://github.com/RIVM-bioinformatics/gen-epix",
+  "type": "module",
+  "main": "./src/index.ts",
+  "types": "./src/index.ts",
+  "files": [
+    "dist"
+  ],
   "publishConfig": {
     "access": "public",
     "main": "./dist/index.js",
@@ -16,18 +28,6 @@
       }
     }
   },
-  "repository": {
-    "type": "git",
-    "url": "git+https://github.com/RIVM-bioinformatics/gen-epix-ui.git"
-  },
-  "author": "RIVM-bioinformatics <ids-bioinformatics@rivm.nl>",
-  "homepage": "https://github.com/RIVM-bioinformatics/gen-epix",
-  "type": "module",
-  "files": [
-    "dist"
-  ],
-  "main": "./src/index.ts",
-  "types": "./src/index.ts",
   "exports": {
     ".": {
       "types": "./src/index.ts",
@@ -48,13 +48,13 @@
     "lint": "eslint ./src --report-unused-disable-directives --max-warnings 0",
     "lint-fix": "eslint ./src --report-unused-disable-directives --max-warnings 0 --fix",
     "check-types": "tsc --noemit",
-    "generate-api": "generate-api ./src/api",
     "test:browser": "vitest --config=vitest.browser.config.ts"
   },
   "peerDependencies": {
     "@emotion/cache": "^11.14.0",
     "@emotion/react": "^11.14.0",
     "@emotion/styled": "^11.14.1",
+    "@gen-epix/api-casedb": "workspace:*",
     "@mui/icons-material": "^9.0.0",
     "@mui/material": "^9.0.0",
     "@mui/styled-engine": "^9.0.0",
@@ -163,9 +163,7 @@
   },
   "devDependencies": {
     "@gen-epix/eslint-config": "0.2.0",
-    "@gen-epix/generate-api": "0.1.1",
     "@gen-epix/translation-util": "0.1.1",
-    "@openapitools/openapi-generator-cli": "2.31.1",
     "@types/lodash": "4.17.24",
     "@types/node": "25.6.0",
     "@types/react": "19.2.14",
