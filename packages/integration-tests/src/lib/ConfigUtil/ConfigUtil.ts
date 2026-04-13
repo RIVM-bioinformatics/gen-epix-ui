@@ -5,7 +5,6 @@ import {
 import {
   AxiosUtil,
   EPI_ZONE,
-  I18nManager,
   WindowManager,
 } from '@gen-epix/ui';
 import type {
@@ -15,33 +14,23 @@ import type {
 import { createTheme } from '@gen-epix/demo-theme';
 import { ColType } from '@gen-epix/api-casedb';
 
-
 const ApplicationHeader = (): ReturnType<Config['ApplicationHeader']> => null;
 const ConsentDialogContent = (): ReturnType<Config['consentDialog']['Content']> => null;
 const HomePageIntroduction = (): ReturnType<Config['HomePageIntroduction']> => null;
 const LicenseInformation = (): ReturnType<Config['LicenseInformation']> => null;
 
-
-const LOCAL_STORAGE_KEY_PREFERRED_LANGUAGE = 'GenEpix-preferred-language';
+let languageCode: string = 'en';
 
 export class ConfigUtil {
   public static createConfig(): Config {
-    const onEnglishClick = () => {
-      I18nManager.instance.emit('onUserLanguageChange', 'en');
-    };
-
-    const onDutchClick = () => {
-      I18nManager.instance.emit('onUserLanguageChange', 'nl');
-    };
-
-    const setNewLanguageCode = async (code: string) => {
-      return Promise.resolve(WindowManager.instance.window.localStorage.setItem(LOCAL_STORAGE_KEY_PREFERRED_LANGUAGE, code));
+    const setNewLanguageCode = async (_code: string) => {
+      languageCode = _code;
+      return Promise.resolve();
     };
 
     const getCurrentLanguageCode = async () => {
-      return Promise.resolve(WindowManager.instance.window.localStorage.getItem(LOCAL_STORAGE_KEY_PREFERRED_LANGUAGE) ?? window.navigator.language.split('-')[0] ?? 'en');
+      return Promise.resolve(languageCode);
     };
-
 
     const PANEL_ZONES = [EPI_ZONE.EPI_CURVE, EPI_ZONE.LINE_LIST, EPI_ZONE.MAP, EPI_ZONE.TREE];
     const config: Config = {
@@ -51,48 +40,36 @@ export class ConfigUtil {
       consentDialog: {
         // eslint-disable-next-line @typescript-eslint/naming-convention
         Content: ConsentDialogContent,
-        getButtonLabel: (t) => t`I consent`,
+        getButtonLabel: () => 'I consent',
         getShouldShow: () => !import.meta.env.DEV,
-        getTitle: (t) => t`Consent`,
+        getTitle: () => 'Consent',
       },
-      createFooter: (t) => ({
+      createFooter: () => ({
         sections: [
           {
-            header: t`Contact`,
+            header: 'Contact',
             items: [
               {
                 href: 'mailto:ids-bioinformatics@rivm.nl',
                 label: 'ids-bioinformatics@rivm.nl',
               },
+            ],
+          },
+          {
+            header: 'About',
+            items: [
               {
                 href: 'https://github.com/RIVM-bioinformatics/gen-epix',
-                label: t`Information for the press`,
+                label: 'Copyright',
               },
             ],
           },
           {
-            header: t`About`,
+            header: 'Languages',
             items: [
               {
-                href: 'https://github.com/RIVM-bioinformatics/gen-epix',
-                label: t`Copyright`,
-              },
-              {
-                href: 'https://github.com/RIVM-bioinformatics/gen-epix',
-                label: t`Accessibility`,
-              },
-            ],
-          },
-          {
-            header: t`Languages`,
-            items: [
-              {
-                label: t`English`,
-                onClick: onEnglishClick,
-              },
-              {
-                label: t`Dutch`,
-                onClick: onDutchClick,
+                label: 'English',
+                onClick: () => null,
               },
             ],
           },
@@ -454,7 +431,7 @@ export class ConfigUtil {
       trends: {
         homePage: {
           getSinceDate: () => format(subDays(new Date().toISOString(), 365), 'yyyy-MM-dd'),
-          getSinceLabel: (t) => t`since last year`,
+          getSinceLabel: () => 'since last year',
         },
       },
       userFeedback: {

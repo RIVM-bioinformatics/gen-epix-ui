@@ -94,9 +94,6 @@ importers:
       '@gen-epix/client-theme':
         specifier: workspace:*
         version: link:../client-theme
-      '@gen-epix/demo-config':
-        specifier: workspace:*
-        version: link:../demo-config
       '@gen-epix/demo-theme':
         specifier: workspace:*
         version: link:../demo-theme
@@ -121,6 +118,9 @@ importers:
       '@mui/x-date-pickers':
         specifier: 9.0.0
         version: 9.0.0(@emotion/react@11.14.0(@types/react@19.2.14)(react@19.2.5))(@emotion/styled@11.14.1(@emotion/react@11.14.0(@types/react@19.2.14)(react@19.2.5))(@types/react@19.2.14)(react@19.2.5))(@mui/material@9.0.0(@emotion/react@11.14.0(@types/react@19.2.14)(react@19.2.5))(@emotion/styled@11.14.1(@emotion/react@11.14.0(@types/react@19.2.14)(react@19.2.5))(@types/react@19.2.14)(react@19.2.5))(@types/react@19.2.14)(react-dom@19.2.5(react@19.2.5))(react@19.2.5))(@mui/system@9.0.0(@emotion/react@11.14.0(@types/react@19.2.14)(react@19.2.5))(@emotion/styled@11.14.1(@emotion/react@11.14.0(@types/react@19.2.14)(react@19.2.5))(@types/react@19.2.14)(react@19.2.5))(@types/react@19.2.14)(react@19.2.5))(@types/react@19.2.14)(date-fns@4.1.0)(react-dom@19.2.5(react@19.2.5))(react@19.2.5)
+      date-fns:
+        specifier: 4.1.0
+        version: 4.1.0
       i18next:
         specifier: 26.0.4
         version: 26.0.4(typescript@6.0.2)
@@ -189,49 +189,6 @@ importers:
         specifier: 4.1.4
         version: 4.1.4(@types/node@25.6.0)(@vitest/browser-playwright@4.1.4)(@vitest/coverage-v8@4.1.4)(jsdom@29.0.2)(vite@8.0.8(@types/node@25.6.0)(yaml@2.8.3))
 
-  packages/demo-config:
-    dependencies:
-      '@gen-epix/api-casedb':
-        specifier: workspace:*
-        version: link:../api-casedb
-      '@gen-epix/client-theme':
-        specifier: workspace:*
-        version: link:../client-theme
-      '@gen-epix/demo-theme':
-        specifier: workspace:*
-        version: link:../demo-theme
-      '@gen-epix/ui':
-        specifier: workspace:*
-        version: link:../ui
-      '@mui/material':
-        specifier: 9.0.0
-        version: 9.0.0(@emotion/react@11.14.0(@types/react@19.2.14)(react@19.2.5))(@emotion/styled@11.14.1(@emotion/react@11.14.0(@types/react@19.2.14)(react@19.2.5))(@types/react@19.2.14)(react@19.2.5))(@types/react@19.2.14)(react-dom@19.2.5(react@19.2.5))(react@19.2.5)
-      date-fns:
-        specifier: 4.1.0
-        version: 4.1.0
-      react:
-        specifier: 19.2.5
-        version: 19.2.5
-    devDependencies:
-      '@gen-epix/eslint-config':
-        specifier: 0.2.0
-        version: 0.2.0(eslint@10.2.0)(typescript@6.0.2)(vitest@4.1.4)
-      '@types/node':
-        specifier: 25.6.0
-        version: 25.6.0
-      eslint:
-        specifier: 10.2.0
-        version: 10.2.0
-      typescript:
-        specifier: 6.0.2
-        version: 6.0.2
-      vite:
-        specifier: 8.0.8
-        version: 8.0.8(@types/node@25.6.0)(yaml@2.8.3)
-      vite-plugin-svgr:
-        specifier: 5.2.0
-        version: 5.2.0(typescript@6.0.2)(vite@8.0.8(@types/node@25.6.0)(yaml@2.8.3))
-
   packages/demo-theme:
     dependencies:
       '@gen-epix/client-theme':
@@ -259,15 +216,21 @@ importers:
 
   packages/integration-tests:
     dependencies:
+      '@gen-epix/api-casedb':
+        specifier: workspace:*
+        version: link:../api-casedb
       '@gen-epix/client-theme':
         specifier: workspace:*
         version: link:../client-theme
-      '@gen-epix/demo-config':
+      '@gen-epix/demo-theme':
         specifier: workspace:*
-        version: link:../demo-config
+        version: link:../demo-theme
       '@gen-epix/ui':
         specifier: workspace:*
         version: link:../ui
+      date-fns:
+        specifier: 4.1.0
+        version: 4.1.0
     devDependencies:
       '@emotion/react':
         specifier: 11.14.0

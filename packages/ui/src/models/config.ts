@@ -80,7 +80,7 @@ export interface Config {
   // eslint-disable-next-line @typescript-eslint/naming-convention
   HomePageIntroduction: () => ReactElement;
   i18n: {
-    getCurrentLanguageCode: () => Promise<string>;
+    getCurrentLanguageCode: () => Promise<string> | string;
     languages: I18nConfig[];
     setNewLanguageCode: (code: string) => Promise<void>;
   };

@@ -18,8 +18,10 @@
     "check-types": "tsc --noemit"
   },
   "dependencies": {
+    "date-fns": "4.1.0",
+    "@gen-epix/demo-theme": "workspace:*",
     "@gen-epix/client-theme": "workspace:*",
-    "@gen-epix/demo-config": "workspace:*",
+    "@gen-epix/api-casedb": "workspace:*",
     "@gen-epix/ui": "workspace:*"
   },
   "devDependencies": {

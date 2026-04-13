@@ -11,7 +11,8 @@ import {
   EmotionCacheManager,
   QueryClientManager,
 } from '@gen-epix/ui';
-import { ConfigUtil } from '@gen-epix/demo-config';
+
+import { ConfigUtil } from './ConfigUtil';
 
 ConfigManager.instance.config = ConfigUtil.createConfig();
 

@@ -15,13 +15,13 @@
     "oidc-server": "nodemon --watch ../../oidc-mock-server.config.json --exec oidc-mock-server"
   },
   "dependencies": {
+    "date-fns": "4.1.0",
     "@emotion/cache": "11.14.0",
     "@emotion/react": "11.14.0",
     "@emotion/styled": "11.14.1",
     "@gen-epix/api-casedb": "workspace:*",
     "@gen-epix/client-theme": "workspace:*",
     "@gen-epix/demo-theme": "workspace:*",
-    "@gen-epix/demo-config": "workspace:*",
     "@gen-epix/ui": "workspace:*",
     "@mui/icons-material": "9.0.0",
     "@mui/material": "9.0.0",
