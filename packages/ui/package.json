@@ -83,7 +83,7 @@
     "@mui/system": "9.0.0",
     "@mui/utils": "9.0.0",
     "@mui/x-date-pickers": "9.0.0",
-    "@tanstack/react-query": "5.97.0",
+    "@tanstack/react-query": "5.99.0",
     "@tiptap/core": "3.22.3",
     "@tiptap/extension-blockquote": "3.22.3",
     "@tiptap/extension-bold": "3.22.3",
@@ -146,7 +146,7 @@
     "react-hook-form": "7.72.1",
     "react-i18next": "17.0.2",
     "react-oidc-context": "3.3.1",
-    "react-resizable-panels": "4.9.0",
+    "react-resizable-panels": "4.10.0",
     "react-router": "7.14.0",
     "react-router-dom": "7.14.0",
     "react-virtuoso": "4.18.4",
@@ -162,7 +162,7 @@
     "zustand": "5.0.12"
   },
   "devDependencies": {
-    "@gen-epix/eslint-config": "link:../../../gen-epix-ui-tools/packages/eslint-config",
+    "@gen-epix/eslint-config": "0.2.0",
     "@gen-epix/generate-api": "0.1.1",
     "@gen-epix/translation-util": "0.1.1",
     "@openapitools/openapi-generator-cli": "2.31.1",

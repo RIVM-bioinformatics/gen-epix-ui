@@ -35,7 +35,7 @@
     "react-router-dom": "7.14.0"
   },
   "devDependencies": {
-    "@gen-epix/eslint-config": "link:../../../gen-epix-ui-tools/packages/eslint-config",
+    "@gen-epix/eslint-config": "0.2.0",
     "@gen-epix/generate-license-manifest": "0.1.1",
     "@gen-epix/oidc-mock-server": "0.1.1",
     "@gen-epix/tools-lib": "0.1.1",
