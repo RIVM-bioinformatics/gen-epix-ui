@@ -25,10 +25,6 @@ eslintConfig
     config.languageOptions.parserOptions.tsconfigRootDir = import.meta.dirname;
   });
 
-// Ignore the api directory as it is auto generated
-/** @type {import('@typescript-eslint/utils/ts-eslint').FlatConfig.ConfigArray} */
-eslintConfig.find(c => c.files && c.files.includes('**/*.ts')).ignores.push('**/api/**');
-
 // Example of adding a custom rule
 // /** @type {import('@typescript-eslint/utils/ts-eslint').FlatConfig.ConfigArray} */
 // const rules = eslintConfig.find(c => c.files && c.files.includes('**/*.ts')).rules;
