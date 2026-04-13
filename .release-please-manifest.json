@@ -1,5 +1,5 @@
 {
-  "packages/ui": "1.22.0",
-  "packages/client-theme": "0.3.0",
-  "packages/api-casedb": "0.0.0"
+  "packages/ui": "1.23.0",
+  "packages/client-theme": "0.4.0",
+  "packages/api-casedb": "1.0.4"
 }

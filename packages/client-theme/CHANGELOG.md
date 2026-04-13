@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.4.0](https://github.com/RIVM-bioinformatics/gen-epix-ui/compare/client-theme-v0.3.0...client-theme-v0.4.0) (2026-04-13)
+
+
+### Features
+
+* split packages ([#112](https://github.com/RIVM-bioinformatics/gen-epix-ui/issues/112)) ([0d9657f](https://github.com/RIVM-bioinformatics/gen-epix-ui/commit/0d9657fe238c0ce46ca33f43040ce1f81dec0298))
+
 ## [0.3.0](https://github.com/RIVM-bioinformatics/gen-epix-ui/compare/client-theme-v0.2.0...client-theme-v0.3.0) (2026-04-13)
 
 
