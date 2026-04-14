@@ -2,17 +2,14 @@ import {
   format,
   subDays,
 } from 'date-fns';
-import {
-  AxiosUtil,
-  EPI_ZONE,
-  WindowManager,
-} from '@gen-epix/ui';
-import type {
-  Config,
-  EpiDashboardLayoutConfig,
-} from '@gen-epix/ui';
-import { createTheme } from '@gen-epix/demo-theme';
 import { ColType } from '@gen-epix/api-casedb';
+
+import { WindowManager } from '../../classes/managers/WindowManager';
+import type { Config } from '../../models/config';
+import type { EpiDashboardLayoutConfig } from '../../models/epi';
+import { EPI_ZONE } from '../../models/epi';
+import { AxiosUtil } from '../AxiosUtil';
+import { createDemoTheme } from '../../theme/demoTheme';
 
 const ApplicationHeader = (): ReturnType<Config['ApplicationHeader']> => null;
 const ConsentDialogContent = (): ReturnType<Config['consentDialog']['Content']> => null;
@@ -22,7 +19,7 @@ const LicenseInformation = (): ReturnType<Config['LicenseInformation']> => null;
 let languageCode: string = 'en';
 
 export class ConfigUtil {
-  public static createConfig(): Config {
+  public static createDemoConfig(): Config {
     const setNewLanguageCode = async (_code: string) => {
       languageCode = _code;
       return Promise.resolve();
@@ -427,7 +424,7 @@ export class ConfigUtil {
         DEFAULT_OVERSCAN_MAIN: 10,
         DEFAULT_OVERSCAN_REVERSE: 10,
       },
-      theme: createTheme('light'),
+      theme: createDemoTheme('light'),
       trends: {
         homePage: {
           getSinceDate: () => format(subDays(new Date().toISOString(), 365), 'yyyy-MM-dd'),

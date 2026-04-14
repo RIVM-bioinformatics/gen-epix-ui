@@ -4,6 +4,7 @@ import {
 } from 'date-fns';
 import {
   AxiosUtil,
+  createDemoTheme,
   EPI_ZONE,
   I18nManager,
   WindowManager,
@@ -12,14 +13,12 @@ import type {
   Config,
   EpiDashboardLayoutConfig,
 } from '@gen-epix/ui';
-import { createTheme } from '@gen-epix/demo-theme';
 import { ColType } from '@gen-epix/api-casedb';
 
-
-const ApplicationHeader = (): ReturnType<Config['ApplicationHeader']> => null;
-const ConsentDialogContent = (): ReturnType<Config['consentDialog']['Content']> => null;
-const HomePageIntroduction = (): ReturnType<Config['HomePageIntroduction']> => null;
-const LicenseInformation = (): ReturnType<Config['LicenseInformation']> => null;
+import { ApplicationHeader } from '../../components/ApplicationHeader';
+import { ConsentDialogContent } from '../../components/ConsentDialogContent';
+import { HomePageIntroduction } from '../../components/HomePageIntroduction';
+import { LicenseInformation } from '../../components/LicenseInformation';
 
 
 const LOCAL_STORAGE_KEY_PREFERRED_LANGUAGE = 'GenEpix-preferred-language';
@@ -450,7 +449,7 @@ export class ConfigUtil {
         DEFAULT_OVERSCAN_MAIN: 10,
         DEFAULT_OVERSCAN_REVERSE: 10,
       },
-      theme: createTheme('light'),
+      theme: createDemoTheme('light'),
       trends: {
         homePage: {
           getSinceDate: () => format(subDays(new Date().toISOString(), 365), 'yyyy-MM-dd'),

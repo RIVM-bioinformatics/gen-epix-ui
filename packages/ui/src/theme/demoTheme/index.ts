@@ -12,7 +12,7 @@ import {
 import robotoFlexWoff2 from './fonts/RobotoFlex.woff2';
 import notoSansMonoWoff2 from './fonts/NotoSansMono.woff2';
 
-export const createTheme = (paletteMode: PaletteMode): Theme => {
+export const createDemoTheme = (paletteMode: PaletteMode): Theme => {
   const MuiCssBaselineStyleOverrides = `
     *:focus-visible, .Mui-focusVisible {
       outline: 2px dotted #000 !important;
