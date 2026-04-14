@@ -719,8 +719,10 @@ export const Table = <TRowData,>({
             // eslint-disable-next-line @eslint-react/no-forward-ref, @typescript-eslint/naming-convention, @eslint-react/kit/no-multi-comp
             FillerRow: forwardRef((props: FillerRowProps, fillerRowRef) => (
               <Box
-                {...props}
                 ref={fillerRowRef}
+                style={{
+                  height: props.height,
+                }}
               />
             )),
             // eslint-disable-next-line @eslint-react/no-forward-ref, @typescript-eslint/naming-convention, @eslint-react/kit/no-multi-comp
