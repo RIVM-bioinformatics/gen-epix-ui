@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.1.0](https://github.com/RIVM-bioinformatics/gen-epix-ui/compare/api-casedb-v1.0.4...api-casedb-v1.1.0) (2026-04-14)
+
+
+### Features
+
+* refactor packages ([#114](https://github.com/RIVM-bioinformatics/gen-epix-ui/issues/114)) ([644d330](https://github.com/RIVM-bioinformatics/gen-epix-ui/commit/644d330b9b5071221851acf27c7eff6260d9c197))
+
 ## 1.0.4 (2026-04-13)
 
 

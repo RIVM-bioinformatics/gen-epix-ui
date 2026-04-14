@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.24.0](https://github.com/RIVM-bioinformatics/gen-epix-ui/compare/ui-v1.23.0...ui-v1.24.0) (2026-04-14)
+
+
+### Features
+
+* refactor packages ([#114](https://github.com/RIVM-bioinformatics/gen-epix-ui/issues/114)) ([644d330](https://github.com/RIVM-bioinformatics/gen-epix-ui/commit/644d330b9b5071221851acf27c7eff6260d9c197))
+
 ## [1.23.0](https://github.com/RIVM-bioinformatics/gen-epix-ui/compare/ui-v1.22.0...ui-v1.23.0) (2026-04-13)
 
 
