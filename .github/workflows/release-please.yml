@@ -16,8 +16,6 @@ jobs:
     outputs:
       ui-release-created: ${{ steps.release.outputs['packages/ui--release_created'] }}
       ui-tag-name: ${{ steps.release.outputs['packages/ui--tag_name'] }}
-      client-theme-release-created: ${{ steps.release.outputs['packages/client-theme--release_created'] }}
-      client-theme-tag-name: ${{ steps.release.outputs['packages/client-theme--tag_name'] }}
       api-casedb-release-created: ${{ steps.release.outputs['packages/api-casedb--release_created'] }}
       api-casedb-tag-name: ${{ steps.release.outputs['packages/api-casedb--tag_name'] }}
     steps:
@@ -60,36 +58,6 @@ jobs:
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: gh release upload ${{ needs.release-please.outputs.ui-tag-name }} gen-epix-ui.zip
-
-  publish-client-theme:
-    needs: release-please
-    if: ${{ needs.release-please.outputs.client-theme-release-created == 'true' }}
-    runs-on: ubuntu-latest
-    steps:
-      - uses: actions/checkout@v5
-
-      - uses: ./.github/actions/setup-node-env
-        with:
-          node-version: 24
-
-      - name: Install dependencies
-        run: pnpm install --frozen-lockfile
-
-      - name: Create .npmrc
-        run: echo "//registry.npmjs.org/:_authToken=${NPM_TOKEN}" > .npmrc
-        env:
-          NPM_TOKEN: ${{ secrets.NPM_TOKEN }}
-
-      - name: Publish to NPM
-        run: pnpm --filter @gen-epix/client-theme publish --access=public --no-git-checks
-
-      - name: Zip src directory
-        run: zip -r gen-epix-client-theme.zip packages/client-theme/src
-
-      - name: Upload release artifact to GitHub
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-        run: gh release upload ${{ needs.release-please.outputs.client-theme-tag-name }} gen-epix-client-theme.zip
 
   publish-api-casedb:
     needs: release-please

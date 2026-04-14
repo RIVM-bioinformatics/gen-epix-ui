@@ -74,7 +74,6 @@
     "@emotion/cache": "11.14.0",
     "@emotion/react": "11.14.0",
     "@emotion/styled": "11.14.1",
-    "@gen-epix/client-theme": "workspace:*",
     "@hookform/resolvers": "5.2.2",
     "@mui/icons-material": "9.0.0",
     "@mui/material": "9.0.0",
@@ -146,9 +145,9 @@
     "react-i18next": "17.0.2",
     "react-oidc-context": "3.3.1",
     "react-resizable-panels": "4.10.0",
-    "react-router": "7.14.0",
-    "react-router-dom": "7.14.0",
-    "react-virtuoso": "4.18.4",
+    "react-router": "7.14.1",
+    "react-router-dom": "7.14.1",
+    "react-virtuoso": "4.18.5",
     "read-excel-file": "8.0.3",
     "reflect-metadata": "0.2.2",
     "rehype-sanitize": "6.0.0",
@@ -161,13 +160,14 @@
     "zustand": "5.0.12"
   },
   "devDependencies": {
-    "@gen-epix/eslint-config": "0.2.0",
+    "@gen-epix/eslint-config": "0.2.1",
     "@gen-epix/translation-util": "0.1.1",
     "@types/lodash": "4.17.24",
     "@types/node": "25.6.0",
     "@types/react": "19.2.14",
     "@types/react-dom": "19.2.3",
     "@vitejs/plugin-react": "6.0.1",
+    "@vitest/browser-playwright": "4.1.4",
     "@vitest/coverage-v8": "4.1.4",
     "eslint": "10.2.0",
     "jsdom": "29.0.2",
@@ -179,7 +179,7 @@
     "vite-plugin-static-copy": "4.0.1",
     "vite-plugin-svgr": "5.2.0",
     "vitest": "4.1.4",
-    "vitest-browser-react": "^2.2.0"
+    "vitest-browser-react": "2.2.0"
   },
   "browserslist": [
     "last 2 Chrome versions"

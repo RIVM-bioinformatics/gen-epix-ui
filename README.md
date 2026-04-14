@@ -18,8 +18,6 @@ This repository is a pnpm monorepo containing the frontend packages for the Gen-
 | --- | --- |
 | [`@gen-epix/ui`](packages/ui) | The main publishable React component library. Contains UI components, data hooks, routing, forms, and state management used by Gen-EpiX applications. Built with [Vite](https://vitejs.dev/), [MUI](https://mui.com/), [TanStack Query](https://tanstack.com/query), [React Hook Form](https://react-hook-form.com/), [TipTap](https://tiptap.dev/), and [Zustand](https://zustand-demo.pmnd.rs/). |
 | [`@gen-epix/api-casedb`](packages/api-casedb) | A publishable TypeScript API client generated from the Gen-EpiX Case DB OpenAPI schema. Exports typed API classes, models, and shared request utilities used by `@gen-epix/ui` and other consumers. |
-| [`@gen-epix/client-theme`](packages/client-theme) | A publishable MUI theme type-extension package that provides shared theme augmentation typings for consumer applications. |
-| [`@gen-epix/demo-theme`](packages/demo-theme) | A local theme implementation used by the demo client, based on `@gen-epix/client-theme`. |
 | [`@gen-epix/demo-client`](packages/demo-client) | A Vite-based React application that serves as a development sandbox and demonstration environment for `@gen-epix/ui` and `@gen-epix/api-casedb`. |
 
 ### Development

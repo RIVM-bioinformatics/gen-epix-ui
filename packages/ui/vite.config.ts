@@ -13,6 +13,7 @@ import { libInjectCss } from 'vite-plugin-lib-inject-css';
 import { defineConfig } from 'vitest/config';
 import { viteStaticCopy } from 'vite-plugin-static-copy';
 import { esmExternalRequirePlugin } from 'vite';
+import { playwright } from '@vitest/browser-playwright';
 
 export const createIndex = () => {
   const indexFilePath = join(__dirname, 'src', 'index.ts');
@@ -129,8 +130,35 @@ export default defineConfig({
             'src/**/*.test.ts',
           ],
           name: 'unit',
-          setupFiles: ['./src/test/setup.ts'],
+          setupFiles: ['./src/test/setup/setup-jsdom.ts'],
           testTimeout: 5000,
+        },
+      },
+      {
+        plugins: [
+          react(),
+        ],
+        test: {
+          browser: {
+            enabled: true,
+            headless: !!process.env.CI,
+            // https://vitest.dev/config/browser/playwright
+            instances: [
+              { browser: 'chromium' },
+            ],
+            provider: playwright(),
+            viewport: {
+              height: 1080,
+              width: 1920,
+            },
+          },
+          globals: true,
+          include: [
+            'src/**/*.test.tsx',
+          ],
+          name: 'browser',
+          setupFiles: ['./src/test/setup/setup-browser.ts'],
+          testTimeout: 30000,
         },
       },
     ],

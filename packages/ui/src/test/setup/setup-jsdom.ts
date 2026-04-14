@@ -1,4 +1,4 @@
-import { setup } from '../setup/setup';
+import { setup } from '../../setup/setup';
 
 global.TextEncoder = TextEncoder;
 global.TextDecoder = TextDecoder;
