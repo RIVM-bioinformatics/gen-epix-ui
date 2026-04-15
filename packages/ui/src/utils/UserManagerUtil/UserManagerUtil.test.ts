@@ -4,7 +4,7 @@ import {
   it,
   vi,
 } from 'vitest';
-import type { IdentityProvider } from '@gen-epix/api-casedb';
+import type { CaseDbIdentityProvider } from '@gen-epix/api-casedb';
 
 import { WindowManager } from '../../classes/managers/WindowManager';
 
@@ -18,7 +18,7 @@ describe('UserManagerUtil', () => {
       } as unknown as Window;
       vi.spyOn(WindowManager.instance, 'window', 'get').mockReturnValue(mockWindow as unknown as typeof globalThis & Window);
 
-      const oidcConfiguration: Partial<IdentityProvider> = {
+      const oidcConfiguration: Partial<CaseDbIdentityProvider> = {
         client_id: 'client-id-123',
         client_secret: 'client-secret-abc',
         discovery_url: 'https://test-issuer.com/.well-known/openid-configuration',
@@ -26,7 +26,7 @@ describe('UserManagerUtil', () => {
         scope: 'openid profile',
       };
 
-      const settings = UserManagerUtil.getSettings(oidcConfiguration as IdentityProvider);
+      const settings = UserManagerUtil.getSettings(oidcConfiguration as CaseDbIdentityProvider);
       expect(settings.authority).toBe(oidcConfiguration.issuer);
       expect(settings.metadataUrl).toBe(oidcConfiguration.discovery_url);
       expect(settings.client_id).toBe(oidcConfiguration.client_id);

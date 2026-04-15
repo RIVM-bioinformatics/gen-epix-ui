@@ -27,11 +27,11 @@ import {
 import { useStore } from 'zustand';
 import { produce } from 'immer';
 import type {
-  Case,
-  Col,
-  CompleteCaseType,
+  CaseDbCase,
+  CaseDbCol,
+  CaseDbCompleteCaseType,
 } from '@gen-epix/api-casedb';
-import { CaseApi } from '@gen-epix/api-casedb';
+import { CaseDbCaseApi } from '@gen-epix/api-casedb';
 
 import {
   withDialog,
@@ -56,9 +56,9 @@ import { ConfigManager } from '../../../classes/managers/ConfigManager';
 import { SchemaUtil } from '../../../utils/SchemaUtil';
 
 export interface EpiFindSimilarCasesDialogOpenProps {
-  allRows: Case[];
-  completeCaseType: CompleteCaseType;
-  selectedRows: Case[];
+  allRows: CaseDbCase[];
+  completeCaseType: CaseDbCompleteCaseType;
+  selectedRows: CaseDbCase[];
 }
 
 export interface EpiFindSimilarCasesDialogProps extends WithDialogRenderProps<EpiFindSimilarCasesDialogOpenProps> {
@@ -103,7 +103,7 @@ export const EpiFindSimilarCasesDialog = withDialog<EpiFindSimilarCasesDialogPro
   }), [t, treeConfigurations]);
 
   const treeOptions = useMemo<AutoCompleteOption<string>[]>(() => {
-    const cols = new Set<Col>();
+    const cols = new Set<CaseDbCol>();
     treeConfigurations.forEach(x => {
       cols.add(x.col);
     });
@@ -168,7 +168,7 @@ export const EpiFindSimilarCasesDialog = withDialog<EpiFindSimilarCasesDialogPro
   const query = useQueryMemo({
     enabled: !!formData,
     queryFn: async ({ signal }) => {
-      const response = await CaseApi.instance.retrieveSimilarCases({
+      const response = await CaseDbCaseApi.instance.retrieveSimilarCases({
         case_ids: openProps.selectedRows.map(x => x.id),
         case_type_id: openProps.completeCaseType.id,
         genetic_distance_col_id: formData?.treeColId,

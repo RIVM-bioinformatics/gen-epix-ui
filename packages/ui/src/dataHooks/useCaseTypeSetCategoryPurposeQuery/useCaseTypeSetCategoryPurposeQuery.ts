@@ -1,12 +1,12 @@
 import { useMemo } from 'react';
-import { CaseTypeSetCategoryPurpose } from '@gen-epix/api-casedb';
+import { CaseDbCaseTypeSetCategoryPurpose } from '@gen-epix/api-casedb';
 
 import type { UseOptions } from '../../models/dataHooks';
 import type { OptionBase } from '../../models/form';
 
-export const caseTypeSetCategoryPurposePresentationValues: Record<CaseTypeSetCategoryPurpose, string> = {
-  [CaseTypeSetCategoryPurpose.CONTENT]: 'CONTENT',
-  [CaseTypeSetCategoryPurpose.SECURITY]: 'SECURITY',
+export const caseTypeSetCategoryPurposePresentationValues: Record<CaseDbCaseTypeSetCategoryPurpose, string> = {
+  [CaseDbCaseTypeSetCategoryPurpose.CONTENT]: 'CONTENT',
+  [CaseDbCaseTypeSetCategoryPurpose.SECURITY]: 'SECURITY',
 };
 
 export const useCaseTypeSetCategoryPurposeOptionsQuery = (): UseOptions<string> => {

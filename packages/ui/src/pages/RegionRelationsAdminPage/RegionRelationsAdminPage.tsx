@@ -8,11 +8,11 @@ import {
   object,
   string,
 } from 'yup';
-import type { RegionRelation } from '@gen-epix/api-casedb';
+import type { CaseDbRegionRelation } from '@gen-epix/api-casedb';
 import {
-  CommandName,
-  GeoApi,
-  RegionRelationType,
+  CaseDbCommandName,
+  CaseDbGeoApi,
+  CaseDbRegionRelationType,
 } from '@gen-epix/api-casedb';
 
 import type { FormFieldDefinition } from '../../models/form';
@@ -31,7 +31,7 @@ import { useRegionRelationTypeOptionsQuery } from '../../dataHooks/useRegionRela
 import type { OmitWithMetaData } from '../../models/data';
 
 
-type FormFields = OmitWithMetaData<RegionRelation, 'from_region' | 'to_region'>;
+type FormFields = OmitWithMetaData<CaseDbRegionRelation, 'from_region' | 'to_region'>;
 
 export const RegionRelationsAdminPage = () => {
   const { t } = useTranslation();
@@ -43,22 +43,22 @@ export const RegionRelationsAdminPage = () => {
   const loadables = useArray([regionOptionsQuery, regionMapQuery, regionRelationTypeOptionsQuery]);
 
   const fetchAll = useCallback(async (signal: AbortSignal) => {
-    return (await GeoApi.instance.regionRelationsGetAll({ signal }))?.data;
+    return (await CaseDbGeoApi.instance.regionRelationsGetAll({ signal }))?.data;
   }, []);
 
-  const deleteOne = useCallback(async (item: RegionRelation) => {
-    return await GeoApi.instance.regionRelationsDeleteOne(item.id);
+  const deleteOne = useCallback(async (item: CaseDbRegionRelation) => {
+    return await CaseDbGeoApi.instance.regionRelationsDeleteOne(item.id);
   }, []);
 
-  const updateOne = useCallback(async (variables: FormFields, item: RegionRelation) => {
-    return (await GeoApi.instance.regionRelationsPutOne(item.id, { id: item.id, ...variables })).data;
+  const updateOne = useCallback(async (variables: FormFields, item: CaseDbRegionRelation) => {
+    return (await CaseDbGeoApi.instance.regionRelationsPutOne(item.id, { id: item.id, ...variables })).data;
   }, []);
 
   const createOne = useCallback(async (variables: FormFields) => {
-    return (await GeoApi.instance.regionRelationsPostOne(variables)).data;
+    return (await CaseDbGeoApi.instance.regionRelationsPostOne(variables)).data;
   }, []);
 
-  const getName = useCallback((item: RegionRelation) => {
+  const getName = useCallback((item: CaseDbRegionRelation) => {
     const fromRegion = regionMapQuery.map.get(item.from_region_id);
     const toRegion = regionMapQuery.map.get(item.to_region_id);
     if (fromRegion && toRegion) {
@@ -70,7 +70,7 @@ export const RegionRelationsAdminPage = () => {
   const schema = useMemo(() => {
     return object<FormFields>().shape({
       from_region_id: string().uuid4().required(),
-      relation: mixed<RegionRelationType>().required().oneOf(Object.values(RegionRelationType)),
+      relation: mixed<CaseDbRegionRelationType>().required().oneOf(Object.values(CaseDbRegionRelationType)),
       to_region_id: string().uuid4().required(),
     });
   }, []);
@@ -101,20 +101,20 @@ export const RegionRelationsAdminPage = () => {
     ] as const;
   }, [regionOptionsQuery.isLoading, regionOptionsQuery.options, regionRelationTypeOptionsQuery.isLoading, regionRelationTypeOptionsQuery.options, t]);
 
-  const tableColumns = useMemo((): TableColumn<RegionRelation>[] => {
+  const tableColumns = useMemo((): TableColumn<CaseDbRegionRelation>[] => {
     return [
-      TableUtil.createOptionsColumn<RegionRelation>({ id: 'from_region_id', name: t`From Region`, options: regionOptionsQuery.options }),
-      TableUtil.createOptionsColumn<RegionRelation>({ id: 'to_region_id', name: t`To Region`, options: regionOptionsQuery.options }),
-      TableUtil.createOptionsColumn<RegionRelation>({ id: 'relation', name: t`Relation`, options: regionRelationTypeOptionsQuery.options }),
+      TableUtil.createOptionsColumn<CaseDbRegionRelation>({ id: 'from_region_id', name: t`From Region`, options: regionOptionsQuery.options }),
+      TableUtil.createOptionsColumn<CaseDbRegionRelation>({ id: 'to_region_id', name: t`To Region`, options: regionOptionsQuery.options }),
+      TableUtil.createOptionsColumn<CaseDbRegionRelation>({ id: 'relation', name: t`Relation`, options: regionRelationTypeOptionsQuery.options }),
     ];
   }, [regionOptionsQuery.options, regionRelationTypeOptionsQuery.options, t]);
 
 
   return (
-    <CrudPage<FormFields, RegionRelation>
+    <CrudPage<FormFields, CaseDbRegionRelation>
       createItemDialogTitle={t`Create new region relation`}
       createOne={createOne}
-      crudCommandType={CommandName.RegionRelationCrudCommand}
+      crudCommandType={CaseDbCommandName.RegionRelationCrudCommand}
       defaultSortByField={'from_region_id'}
       defaultSortDirection={'asc'}
       deleteOne={deleteOne}

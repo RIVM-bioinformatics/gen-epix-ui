@@ -7,7 +7,7 @@
   "scripts": {
     "start": "concurrently \"pnpm --filter @gen-epix/demo-client run oidc-server\" \"pnpm --filter @gen-epix/demo-client run start\"",
     "clean": "lerna clean && rm -fr node_modules",
-    "generate-api": "pnpm --filter @gen-epix/api-casedb run generate-api",
+    "generate-api": "pnpm --filter @gen-epix/api-casedbp run generate-api",
     "validate": "lerna run validate",
     "lint-fix": "lerna run lint-fix"
   },

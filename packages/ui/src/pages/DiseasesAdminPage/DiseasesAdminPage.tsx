@@ -7,10 +7,10 @@ import {
   object,
   string,
 } from 'yup';
-import type { Disease } from '@gen-epix/api-casedb';
+import type { CaseDbDisease } from '@gen-epix/api-casedb';
 import {
-  CommandName,
-  OntologyApi,
+  CaseDbCommandName,
+  CaseDbOntologyApi,
 } from '@gen-epix/api-casedb';
 
 import type { FormFieldDefinition } from '../../models/form';
@@ -23,28 +23,28 @@ import { CrudPage } from '../CrudPage';
 import type { OmitWithMetaData } from '../../models/data';
 import { SchemaUtil } from '../../utils/SchemaUtil';
 
-type FormFields = OmitWithMetaData<Disease>;
+type FormFields = OmitWithMetaData<CaseDbDisease>;
 
 export const DiseasesAdminPage = () => {
   const { t } = useTranslation();
 
   const fetchAll = useCallback(async (signal: AbortSignal) => {
-    return (await OntologyApi.instance.diseasesGetAll({ signal }))?.data;
+    return (await CaseDbOntologyApi.instance.diseasesGetAll({ signal }))?.data;
   }, []);
 
-  const deleteOne = useCallback(async (item: Disease) => {
-    return await OntologyApi.instance.diseasesDeleteOne(item.id);
+  const deleteOne = useCallback(async (item: CaseDbDisease) => {
+    return await CaseDbOntologyApi.instance.diseasesDeleteOne(item.id);
   }, []);
 
-  const updateOne = useCallback(async (variables: FormFields, item: Disease) => {
-    return (await OntologyApi.instance.diseasesPutOne(item.id, { id: item.id, ...variables })).data;
+  const updateOne = useCallback(async (variables: FormFields, item: CaseDbDisease) => {
+    return (await CaseDbOntologyApi.instance.diseasesPutOne(item.id, { id: item.id, ...variables })).data;
   }, []);
 
   const createOne = useCallback(async (variables: FormFields) => {
-    return (await OntologyApi.instance.diseasesPostOne(variables)).data;
+    return (await CaseDbOntologyApi.instance.diseasesPostOne(variables)).data;
   }, []);
 
-  const getName = useCallback((item: Disease) => {
+  const getName = useCallback((item: CaseDbDisease) => {
     return item.name;
   }, []);
 
@@ -70,18 +70,18 @@ export const DiseasesAdminPage = () => {
     ] as const;
   }, [t]);
 
-  const tableColumns = useMemo((): TableColumn<Disease>[] => {
+  const tableColumns = useMemo((): TableColumn<CaseDbDisease>[] => {
     return [
-      TableUtil.createTextColumn<Disease>({ id: 'name', name: t`Name` }),
-      TableUtil.createTextColumn<Disease>({ id: 'icd_code', name: t`ICD Code` }),
+      TableUtil.createTextColumn<CaseDbDisease>({ id: 'name', name: t`Name` }),
+      TableUtil.createTextColumn<CaseDbDisease>({ id: 'icd_code', name: t`ICD Code` }),
     ];
   }, [t]);
 
   return (
-    <CrudPage<FormFields, Disease>
+    <CrudPage<FormFields, CaseDbDisease>
       createItemDialogTitle={t`Create new disease`}
       createOne={createOne}
-      crudCommandType={CommandName.DiseaseCrudCommand}
+      crudCommandType={CaseDbCommandName.DiseaseCrudCommand}
       defaultSortByField={'name'}
       defaultSortDirection={'asc'}
       deleteOne={deleteOne}

@@ -2,7 +2,7 @@ import {
   format,
   subDays,
 } from 'date-fns';
-import { ColType } from '@gen-epix/api-casedb';
+import { CaseDbColType } from '@gen-epix/api-casedb';
 
 import { WindowManager } from '../../classes/managers/WindowManager';
 import type { Config } from '../../models/config';
@@ -76,11 +76,11 @@ export class ConfigUtil {
       enablePageEvents: true,
       epi: {
         ALLOWED_COL_TYPES_FOR_STRATIFICATION: [
-          ColType.NOMINAL,
-          ColType.TEXT,
-          ColType.ORDINAL,
-          ColType.GEO_REGION,
-          ColType.ORGANIZATION,
+          CaseDbColType.NOMINAL,
+          CaseDbColType.TEXT,
+          CaseDbColType.ORDINAL,
+          CaseDbColType.GEO_REGION,
+          CaseDbColType.ORGANIZATION,
         ],
         DATA_MISSING_CHARACTER: '·',
         DOWNLOAD_SECTION_ORDER: [EPI_ZONE.LINE_LIST, EPI_ZONE.TREE, EPI_ZONE.EPI_CURVE, EPI_ZONE.MAP],

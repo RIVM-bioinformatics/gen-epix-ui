@@ -34,7 +34,7 @@
   "scripts": {
     "build": "vite build",
     "build-publish": "pnpm build && pnpm publish --access=public",
-    "generate-api": "generate-api ./src"
+    "generate-api": "generate-api CASEDB ./src"
   },
   "peerDependencies": {
     "axios": "1.15.0"

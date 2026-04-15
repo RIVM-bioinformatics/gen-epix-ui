@@ -1,17 +1,17 @@
 import { useMemo } from 'react';
-import { ConceptSetType } from '@gen-epix/api-casedb';
+import { CaseDbConceptSetType } from '@gen-epix/api-casedb';
 
 import type { UseOptions } from '../../models/dataHooks';
 import type { OptionBase } from '../../models/form';
 
 
-export const conceptSetTypePresentationValues: Partial<Record<ConceptSetType, string>> = {
-  [ConceptSetType.CONTEXT_FREE_GRAMMAR_JSON]: 'CONTEXT_FREE_GRAMMAR_JSON',
-  [ConceptSetType.CONTEXT_FREE_GRAMMAR_XML]: 'CONTEXT_FREE_GRAMMAR_XML',
-  [ConceptSetType.INTERVAL]: 'INTERVAL',
-  [ConceptSetType.NOMINAL]: 'NOMINAL',
-  [ConceptSetType.ORDINAL]: 'ORDINAL',
-  [ConceptSetType.REGULAR_LANGUAGE]: 'REGULAR_LANGUAGE',
+export const conceptSetTypePresentationValues: Partial<Record<CaseDbConceptSetType, string>> = {
+  [CaseDbConceptSetType.CONTEXT_FREE_GRAMMAR_JSON]: 'CONTEXT_FREE_GRAMMAR_JSON',
+  [CaseDbConceptSetType.CONTEXT_FREE_GRAMMAR_XML]: 'CONTEXT_FREE_GRAMMAR_XML',
+  [CaseDbConceptSetType.INTERVAL]: 'INTERVAL',
+  [CaseDbConceptSetType.NOMINAL]: 'NOMINAL',
+  [CaseDbConceptSetType.ORDINAL]: 'ORDINAL',
+  [CaseDbConceptSetType.REGULAR_LANGUAGE]: 'REGULAR_LANGUAGE',
 
 };
 

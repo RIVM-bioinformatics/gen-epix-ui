@@ -1,9 +1,9 @@
 import { createStore } from 'zustand';
 import { t } from 'i18next';
 import type {
-  CaseUploadResult,
-  Col,
-  CompleteCaseType,
+  CaseDbCaseUploadResult,
+  CaseDbCol,
+  CaseDbCompleteCaseType,
 } from '@gen-epix/api-casedb';
 
 import { QueryUtil } from '../../utils/QueryUtil';
@@ -42,8 +42,8 @@ export interface EpiUploadStoreActions {
   invalidateCaseValidationQuery: () => Promise<void>;
   reset: () => Promise<void>;
   setCaseTypeId: (caseTypeId: string) => void;
-  setCols: (cols: Col[]) => void;
-  setCompleteCaseType: (completeCaseType: CompleteCaseType) => void;
+  setCols: (cols: CaseDbCol[]) => void;
+  setCompleteCaseType: (completeCaseType: CaseDbCompleteCaseType) => void;
   setCreatedInDataCollectionId: (createdInDataCollectionId: string) => void;
   setDataCollectionOptions: (options: OptionBase<string>[]) => void;
   setFileList: (fileList: FileList) => Promise<void>;
@@ -54,15 +54,15 @@ export interface EpiUploadStoreActions {
   setSequenceMapping: (sequenceMapping: EpiUploadSequenceMapping) => void;
   setSheet: (sheet: string) => Promise<void>;
   setSheetOptions: (sheetOptions: AutoCompleteOption<string>[]) => Promise<void>;
-  setValidatedCases: (validatedCases: CaseUploadResult[]) => void;
+  setValidatedCases: (validatedCases: CaseDbCaseUploadResult[]) => void;
 }
 
 export interface EpiUploadStoreState {
   activeStep: EPI_UPLOAD_STEP;
   assemblyProtocolId: string;
   caseTypeId: string;
-  cols: Col[];
-  completeCaseType: CompleteCaseType;
+  cols: CaseDbCol[];
+  completeCaseType: CaseDbCompleteCaseType;
   createdInDataCollectionId: string;
   createdInDataCollectionOptions: AutoCompleteOption<string>[];
   dataCollectionOptions: OptionBase<string>[];
@@ -82,7 +82,7 @@ export interface EpiUploadStoreState {
   shouldResetColumnMapping: boolean;
   shouldResetSequenceMapping: boolean;
   validateCasesQueryKey: string[];
-  validatedCases: CaseUploadResult[];
+  validatedCases: CaseDbCaseUploadResult[];
   validatedCasesWithGeneratedId: CaseUploadResultWithGeneratedId[];
 }
 
@@ -209,11 +209,11 @@ export const createEpiUploadStore = () => {
         set({ caseTypeId });
       },
 
-      setCols: (cols: Col[]) => {
+      setCols: (cols: CaseDbCol[]) => {
         set({ cols });
       },
 
-      setCompleteCaseType: async (completeCaseType: CompleteCaseType) => {
+      setCompleteCaseType: async (completeCaseType: CaseDbCompleteCaseType) => {
         const { completeCaseType: oldCompleteCaseType, createdInDataCollectionId, dataCollectionOptions, invalidateCaseValidationQuery } = get();
         set({ completeCaseType });
         if (completeCaseType && completeCaseType.id !== oldCompleteCaseType?.id) {
@@ -338,7 +338,7 @@ export const createEpiUploadStore = () => {
         }
       },
 
-      setValidatedCases: (validatedCases: CaseUploadResult[]) => {
+      setValidatedCases: (validatedCases: CaseDbCaseUploadResult[]) => {
         set({
           validatedCases, validatedCasesWithGeneratedId: (validatedCases || []).map((vc, index) => ({
             ...vc,

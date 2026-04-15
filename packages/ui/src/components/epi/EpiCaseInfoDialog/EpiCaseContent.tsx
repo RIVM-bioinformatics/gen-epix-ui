@@ -17,8 +17,8 @@ import {
 } from 'react';
 import { useTranslation } from 'react-i18next';
 import { useStore } from 'zustand';
-import type { Case } from '@gen-epix/api-casedb';
-import { ColType } from '@gen-epix/api-casedb';
+import type { CaseDbCase } from '@gen-epix/api-casedb';
+import { CaseDbColType } from '@gen-epix/api-casedb';
 
 import type { EpiContactDetailsDialogRefMethods } from '../EpiContactDetailsDialog';
 import { EpiContactDetailsDialog } from '../EpiContactDetailsDialog';
@@ -28,7 +28,7 @@ import { CaseUtil } from '../../../utils/CaseUtil';
 import { GenericErrorMessage } from '../../ui/GenericErrorMessage';
 
 export type EpiCaseContentProps = {
-  readonly epiCase: Case;
+  readonly epiCase: CaseDbCase;
 } & BoxProps;
 
 export const EpiCaseContent = ({ epiCase, ...boxProps }: EpiCaseContentProps) => {
@@ -94,7 +94,7 @@ export const EpiCaseContent = ({ epiCase, ...boxProps }: EpiCaseContentProps) =>
                       width: 'calc(100% / 3 * 2)',
                     }}
                   >
-                    {refCol.col_type === ColType.ORGANIZATION && !columnValue.isMissing && (
+                    {refCol.col_type === CaseDbColType.ORGANIZATION && !columnValue.isMissing && (
                       <Link
                         color={'primary'}
                         // eslint-disable-next-line @eslint-react/kit/jsx-no-bind
@@ -108,7 +108,7 @@ export const EpiCaseContent = ({ epiCase, ...boxProps }: EpiCaseContentProps) =>
                         {columnValue.long}
                       </Link>
                     )}
-                    {refCol.col_type !== ColType.ORGANIZATION && (
+                    {refCol.col_type !== CaseDbColType.ORGANIZATION && (
                       <>
                         {columnValue.long}
                       </>

@@ -21,7 +21,7 @@ import {
   object,
   string,
 } from 'yup';
-import { OrganizationApi } from '@gen-epix/api-casedb';
+import { CaseDbOrganizationApi } from '@gen-epix/api-casedb';
 
 import { ResponseHandler } from '../ResponseHandler';
 import { AuthorizationManager } from '../../../classes/managers/AuthorizationManager';
@@ -96,7 +96,7 @@ export const OrganizationSwitcherDialog = withDialog<OrganizationSwitcherDialogP
       });
       try {
         setIsChanging(true);
-        await OrganizationApi.instance.updateUserOwnOrganization({
+        await CaseDbOrganizationApi.instance.updateUserOwnOrganization({
           organization_id: formValues.organization_id,
         }, {});
         setNewOrganizationId(formValues.organization_id);

@@ -1,7 +1,7 @@
 import 'reflect-metadata';
 import type { InternalAxiosRequestConfig } from 'axios';
 import type { AuthContextProps } from 'react-oidc-context';
-import type { IdentityProvider } from '@gen-epix/api-casedb';
+import type { CaseDbIdentityProvider } from '@gen-epix/api-casedb';
 
 import { AuthorizationManager } from '../AuthorizationManager';
 import { WindowManager } from '../WindowManager';
@@ -13,7 +13,7 @@ import { oidcStore } from '../../../stores/oidcStore';
 
 export const createdAtMetaDataKey = Symbol('createdAt');
 
-export class AuthenticationManager extends SubscribableAbstract<IdentityProvider> {
+export class AuthenticationManager extends SubscribableAbstract<CaseDbIdentityProvider> {
   public static autoLoginSkew = 500;
   public static get instance(): AuthenticationManager {
     // Instances are stored on the window to prevent multiple instances of the same manager. HMR may load multiple instances of the same manager, but we only want one instance to be active at a time.
@@ -41,7 +41,7 @@ export class AuthenticationManager extends SubscribableAbstract<IdentityProvider
     return Reflect.getMetadata(createdAtMetaDataKey, this.data) as number;
   }
 
-  public next(oidcConfiguration: IdentityProvider) {
+  public next(oidcConfiguration: CaseDbIdentityProvider) {
     if (oidcConfiguration) {
       Reflect.defineMetadata(createdAtMetaDataKey, new Date().getTime(), oidcConfiguration);
       oidcStore.getState().setConfiguration(oidcConfiguration);

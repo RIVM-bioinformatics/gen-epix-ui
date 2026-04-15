@@ -1,7 +1,7 @@
 import { useMemo } from 'react';
 import { type UseQueryResult } from '@tanstack/react-query';
-import type { Protocol } from '@gen-epix/api-casedb';
-import { CaseApi } from '@gen-epix/api-casedb';
+import type { CaseDbProtocol } from '@gen-epix/api-casedb';
+import { CaseDbCaseApi } from '@gen-epix/api-casedb';
 
 import type {
   UseMap,
@@ -12,21 +12,21 @@ import { DataHookUtil } from '../../utils/DataHookUtil';
 import { QueryUtil } from '../../utils/QueryUtil';
 import { useQueryMemo } from '../../hooks/useQueryMemo';
 
-export const useAssemblyProtocolsQuery = (): UseQueryResult<Protocol[]> => {
+export const useAssemblyProtocolsQuery = (): UseQueryResult<CaseDbProtocol[]> => {
   return useQueryMemo({
     queryFn: async ({ signal }) => {
-      const response = await CaseApi.instance.retrieveAssemblyProtocols({ signal });
+      const response = await CaseDbCaseApi.instance.retrieveAssemblyProtocols({ signal });
       return response.data;
     },
     queryKey: QueryUtil.getGenericKey(QUERY_KEY.ASSEMBLY_PROTOCOLS),
   });
 };
 
-export const useAssemblyProtocolMapQuery = (): UseMap<Protocol> => {
+export const useAssemblyProtocolMapQuery = (): UseMap<CaseDbProtocol> => {
   const response = useAssemblyProtocolsQuery();
 
   return useMemo(() => {
-    return DataHookUtil.createUseMapDataHook<Protocol>(response, item => item.id);
+    return DataHookUtil.createUseMapDataHook<CaseDbProtocol>(response, item => item.id);
   }, [response]);
 };
 
@@ -34,6 +34,6 @@ export const useAssemblyProtocolOptionsQuery = (): UseOptions<string> => {
   const response = useAssemblyProtocolsQuery();
 
   return useMemo(() => {
-    return DataHookUtil.createUseOptionsDataHook<Protocol>(response, item => item.id, (item: Protocol) => item.name);
+    return DataHookUtil.createUseOptionsDataHook<CaseDbProtocol>(response, item => item.id, (item: CaseDbProtocol) => item.name);
   }, [response]);
 };

@@ -20,8 +20,8 @@ import {
   string,
 } from 'yup';
 import noop from 'lodash/noop';
-import type { User } from '@gen-epix/api-casedb';
-import { OrganizationApi } from '@gen-epix/api-casedb';
+import type { CaseDbUser } from '@gen-epix/api-casedb';
+import { CaseDbOrganizationApi } from '@gen-epix/api-casedb';
 
 import { TestIdUtil } from '../../utils/TestIdUtil';
 import { PageContainer } from '../../components/ui/PageContainer';
@@ -68,12 +68,12 @@ export const UserEffectiveRightsTesterAdminPage = () => {
 
   const { userId } = useParams();
 
-  const userQuery = useItemQuery<User>({
+  const userQuery = useItemQuery<CaseDbUser>({
     baseQueryKey: QUERY_KEY.USERS,
     itemId: userId,
     useQueryOptions: {
       queryFn: async ({ signal }) => {
-        const response = await OrganizationApi.instance.usersGetOne(userId, { signal });
+        const response = await CaseDbOrganizationApi.instance.usersGetOne(userId, { signal });
         return response.data;
       },
     },

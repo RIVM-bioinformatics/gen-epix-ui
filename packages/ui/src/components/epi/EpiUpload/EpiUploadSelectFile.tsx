@@ -21,7 +21,7 @@ import {
   Typography,
 } from '@mui/material';
 import { useStore } from 'zustand';
-import { CaseApi } from '@gen-epix/api-casedb';
+import { CaseDbCaseApi } from '@gen-epix/api-casedb';
 
 import {
   useCaseTypeOptionsQuery,
@@ -117,7 +117,7 @@ const EpiUploadSelectFile = () => {
     useQueryOptions: {
       enabled: !!caseTypeId,
       queryFn: async ({ signal }) => {
-        return (await CaseApi.instance.completeCaseTypesGetOne(caseTypeId, { signal })).data;
+        return (await CaseDbCaseApi.instance.completeCaseTypesGetOne(caseTypeId, { signal })).data;
       },
     },
   });

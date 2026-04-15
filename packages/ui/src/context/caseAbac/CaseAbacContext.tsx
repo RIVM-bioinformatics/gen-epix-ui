@@ -1,24 +1,24 @@
 import { createContext } from 'react';
 import type {
-  CaseDataCollectionLink,
-  CaseRights,
-  CaseSetDataCollectionLink,
-  CaseSetRights,
-  DataCollection,
+  CaseDbCaseDataCollectionLink,
+  CaseDbCaseRights,
+  CaseDbCaseSetDataCollectionLink,
+  CaseDbCaseSetRights,
+  CaseDbDataCollection,
 } from '@gen-epix/api-casedb';
 
 import type { OptionBase } from '../../models/form';
 
 export type CaseAbacContext = {
-  createdInDataCollection?: DataCollection;
-  itemDataCollectionLinks: Array<Array<CaseDataCollectionLink | CaseSetDataCollectionLink>>;
+  createdInDataCollection?: CaseDbDataCollection;
+  itemDataCollectionLinks: Array<Array<CaseDbCaseDataCollectionLink | CaseDbCaseSetDataCollectionLink>>;
   itemDataCollectionOptions?: Array<OptionBase<string>[]>;
-  itemDataCollections?: Array<DataCollection[]>;
-  itemSharedInDataCollections?: Array<DataCollection[]>;
-  rights: Array<CaseRights | CaseSetRights>;
+  itemDataCollections?: Array<CaseDbDataCollection[]>;
+  itemSharedInDataCollections?: Array<CaseDbDataCollection[]>;
+  rights: Array<CaseDbCaseRights | CaseDbCaseSetRights>;
   userDataCollectionOptions: OptionBase<string>[];
-  userDataCollections: DataCollection[];
-  userDataCollectionsMap: Map<string, DataCollection>;
+  userDataCollections: CaseDbDataCollection[];
+  userDataCollectionsMap: Map<string, CaseDbDataCollection>;
 };
 
 export const EpiCaseAbacContext = createContext<CaseAbacContext>(null);

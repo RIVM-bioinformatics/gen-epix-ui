@@ -6,9 +6,9 @@ import intersection from 'lodash/intersection';
 import { useTranslation } from 'react-i18next';
 import { Box } from '@mui/material';
 import type {
-  OrganizationAccessCasePolicy,
-  User,
-  UserAccessCasePolicy,
+  CaseDbOrganizationAccessCasePolicy,
+  CaseDbUser,
+  CaseDbUserAccessCasePolicy,
 } from '@gen-epix/api-casedb';
 
 import { ResponseHandler } from '../../ui/ResponseHandler';
@@ -36,14 +36,14 @@ import {
 } from '../../ui/Table';
 
 export type EpiUserRightsDialogCaseAccessPolicyProps = {
-  readonly user: User;
+  readonly user: CaseDbUser;
 };
 
 type AccessCasePolity = {
   readonly case_type_set_ids: string[];
   readonly read_col_ids?: string[];
   readonly write_col_ids: string[];
-} & Omit<OrganizationAccessCasePolicy & UserAccessCasePolicy, 'case_type_set_id' | 'id' | 'is_active' | 'user_id'>;
+} & Omit<CaseDbOrganizationAccessCasePolicy & CaseDbUserAccessCasePolicy, 'case_type_set_id' | 'id' | 'is_active' | 'user_id'>;
 
 export const EpiUserRightsDialogCaseAccessPolicy = ({ user }: EpiUserRightsDialogCaseAccessPolicyProps) => {
   const { t } = useTranslation();

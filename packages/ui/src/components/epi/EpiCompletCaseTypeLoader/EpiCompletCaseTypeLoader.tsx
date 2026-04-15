@@ -5,8 +5,8 @@ import {
   useState,
 } from 'react';
 import { useTranslation } from 'react-i18next';
-import type { CompleteCaseType } from '@gen-epix/api-casedb';
-import { CaseApi } from '@gen-epix/api-casedb';
+import type { CaseDbCompleteCaseType } from '@gen-epix/api-casedb';
+import { CaseDbCaseApi } from '@gen-epix/api-casedb';
 
 import { useItemQuery } from '../../../hooks/useItemQuery';
 import { QUERY_KEY } from '../../../models/query';
@@ -17,7 +17,7 @@ import { EpiDataManager } from '../../../classes/managers/EpiDataManager';
 
 export type EpiCompletCaseTypeLoaderProps = PropsWithChildren<{
   readonly caseTypeId: string;
-  readonly onCompleteCaseTypeLoaded?: (completeCaseType: CompleteCaseType) => void;
+  readonly onCompleteCaseTypeLoaded?: (completeCaseType: CaseDbCompleteCaseType) => void;
 }>;
 
 export const EpiCompletCaseTypeLoader = ({ caseTypeId, children, onCompleteCaseTypeLoaded }: EpiCompletCaseTypeLoaderProps) => {
@@ -30,7 +30,7 @@ export const EpiCompletCaseTypeLoader = ({ caseTypeId, children, onCompleteCaseT
     itemId: caseTypeId,
     useQueryOptions: {
       queryFn: async ({ signal }) => {
-        return (await CaseApi.instance.completeCaseTypesGetOne(caseTypeId, { signal })).data;
+        return (await CaseDbCaseApi.instance.completeCaseTypesGetOne(caseTypeId, { signal })).data;
       },
     },
   });

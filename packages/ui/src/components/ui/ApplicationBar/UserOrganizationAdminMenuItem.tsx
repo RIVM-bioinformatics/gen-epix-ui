@@ -5,9 +5,9 @@ import {
 } from '@mui/material';
 import { useTranslation } from 'react-i18next';
 import {
-  AbacApi,
-  CommandName,
-  PermissionType,
+  CaseDbAbacApi,
+  CaseDbCommandName,
+  CaseDbPermissionType,
 } from '@gen-epix/api-casedb';
 
 import { QUERY_KEY } from '../../../models/query';
@@ -20,7 +20,7 @@ export const UserOrganizationAdminMenuItem = withPermissions(() => {
 
   const { data: organizationAdminNameEmails, error: organizationAdminNameEmailsError, isLoading: isOrganizationAdminNameEmailsLoading } = useQueryMemo({
     gcTime: 0,
-    queryFn: async ({ signal }) => (await AbacApi.instance.retrieveOrganizationAdminNameEmails({ signal })).data,
+    queryFn: async ({ signal }) => (await CaseDbAbacApi.instance.retrieveOrganizationAdminNameEmails({ signal })).data,
     queryKey: QueryUtil.getGenericKey(QUERY_KEY.ORGANIZATION_ADMIN_NAME_EMAILS),
     staleTime: 0,
   });
@@ -64,6 +64,6 @@ export const UserOrganizationAdminMenuItem = withPermissions(() => {
   );
 }, {
   requiredPermissions: [
-    { command_name: CommandName.RetrieveOrganizationAdminNameEmailsCommand, permission_type: PermissionType.EXECUTE },
+    { command_name: CaseDbCommandName.RetrieveOrganizationAdminNameEmailsCommand, permission_type: CaseDbPermissionType.EXECUTE },
   ],
 });

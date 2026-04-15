@@ -11,13 +11,13 @@ import {
   TableRow,
 } from '@mui/material';
 import { t } from 'i18next';
-import type { CompleteCaseType } from '@gen-epix/api-casedb';
+import type { CaseDbCompleteCaseType } from '@gen-epix/api-casedb';
 
 import { useCaseTypeAbacContext } from '../../../context/caseTypeAbac';
 import { CaseTypeUtil } from '../../../utils/CaseTypeUtil';
 
 export type EpiCaseTypeInfoAccessRightsProps = {
-  readonly completeCaseType: CompleteCaseType;
+  readonly completeCaseType: CaseDbCompleteCaseType;
 };
 
 export const EpiCaseTypeInfoAccessRights = ({ completeCaseType }: EpiCaseTypeInfoAccessRightsProps) => {

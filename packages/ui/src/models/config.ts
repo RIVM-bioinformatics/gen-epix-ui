@@ -4,7 +4,7 @@ import type {
   Theme,
 } from '@mui/material';
 import type { TFunction } from 'i18next';
-import type { ColType } from '@gen-epix/api-casedb';
+import type { CaseDbColType } from '@gen-epix/api-casedb';
 
 import type {
   EPI_ZONE,
@@ -32,7 +32,7 @@ export interface Config {
   defaultRequestTimeout: number;
   enablePageEvents: boolean;
   epi: {
-    ALLOWED_COL_TYPES_FOR_STRATIFICATION: ColType[];
+    ALLOWED_COL_TYPES_FOR_STRATIFICATION: CaseDbColType[];
     DATA_MISSING_CHARACTER: string;
     DOWNLOAD_SECTION_ORDER: EPI_ZONE[];
     INITIAL_NUM_VISIBLE_ATTRIBUTES_IN_CASE_SUMMARY: number;

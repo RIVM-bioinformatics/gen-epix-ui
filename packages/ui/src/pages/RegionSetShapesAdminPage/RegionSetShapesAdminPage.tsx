@@ -9,10 +9,10 @@ import {
   string,
 } from 'yup';
 import { useParams } from 'react-router-dom';
-import type { RegionSetShape } from '@gen-epix/api-casedb';
+import type { CaseDbRegionSetShape } from '@gen-epix/api-casedb';
 import {
-  CommandName,
-  GeoApi,
+  CaseDbCommandName,
+  CaseDbGeoApi,
 } from '@gen-epix/api-casedb';
 
 import { useRegionSetsMapQuery } from '../../dataHooks/useRegionSetsQuery';
@@ -27,7 +27,7 @@ import { CrudPage } from '../CrudPage';
 import type { OmitWithMetaData } from '../../models/data';
 
 // Note: region_set_id is given in the route params
-type FormFields = OmitWithMetaData<RegionSetShape, 'region_set_id' | 'region_set'>;
+type FormFields = OmitWithMetaData<CaseDbRegionSetShape, 'region_set_id' | 'region_set'>;
 
 export const RegionSetShapesAdminPage = () => {
   const { regionSetId } = useParams();
@@ -37,19 +37,19 @@ export const RegionSetShapesAdminPage = () => {
   const loadables = useArray([regionSetsMapQuery]);
 
   const fetchAll = useCallback(async (signal: AbortSignal) => {
-    return (await GeoApi.instance.regionSetShapesGetAll({ signal }))?.data;
+    return (await CaseDbGeoApi.instance.regionSetShapesGetAll({ signal }))?.data;
   }, []);
 
-  const fetchAllSelect = useCallback((regionSetShapes: RegionSetShape[]) => {
+  const fetchAllSelect = useCallback((regionSetShapes: CaseDbRegionSetShape[]) => {
     return regionSetShapes.filter((regionSetShape) => regionSetShape.region_set_id === regionSetId);
   }, [regionSetId]);
 
-  const deleteOne = useCallback(async (item: RegionSetShape) => {
-    return await GeoApi.instance.regionSetShapesDeleteOne(item.id);
+  const deleteOne = useCallback(async (item: CaseDbRegionSetShape) => {
+    return await CaseDbGeoApi.instance.regionSetShapesDeleteOne(item.id);
   }, []);
 
-  const updateOne = useCallback(async (variables: FormFields, item: RegionSetShape) => {
-    return (await GeoApi.instance.regionSetShapesPutOne(item.id, {
+  const updateOne = useCallback(async (variables: FormFields, item: CaseDbRegionSetShape) => {
+    return (await CaseDbGeoApi.instance.regionSetShapesPutOne(item.id, {
       ...variables,
       id: item.id,
       region_set_id: regionSetId,
@@ -57,7 +57,7 @@ export const RegionSetShapesAdminPage = () => {
   }, [regionSetId]);
 
   const createOne = useCallback(async (variables: FormFields) => {
-    return (await GeoApi.instance.regionSetShapesPostOne({
+    return (await CaseDbGeoApi.instance.regionSetShapesPostOne({
       ...variables,
       region_set_id: regionSetId,
     })).data;
@@ -93,14 +93,14 @@ export const RegionSetShapesAdminPage = () => {
     ] as const;
   }, [t]);
 
-  const tableColumns = useMemo((): TableColumn<RegionSetShape>[] => {
+  const tableColumns = useMemo((): TableColumn<CaseDbRegionSetShape>[] => {
     return [
-      TableUtil.createNumberColumn<RegionSetShape>({ id: 'scale', name: t`Scale` }),
-      TableUtil.createBooleanColumn<RegionSetShape>({ id: 'geo_json', name: t`GEO JSON` }),
+      TableUtil.createNumberColumn<CaseDbRegionSetShape>({ id: 'scale', name: t`Scale` }),
+      TableUtil.createBooleanColumn<CaseDbRegionSetShape>({ id: 'geo_json', name: t`GEO JSON` }),
     ];
   }, [t]);
 
-  const getOptimisticUpdateIntermediateItem = useCallback((variables: FormFields, previousItem: RegionSetShape): RegionSetShape => {
+  const getOptimisticUpdateIntermediateItem = useCallback((variables: FormFields, previousItem: CaseDbRegionSetShape): CaseDbRegionSetShape => {
     return {
       id: previousItem.id,
       region_set_id: previousItem.region_set_id,
@@ -109,10 +109,10 @@ export const RegionSetShapesAdminPage = () => {
   }, []);
 
   return (
-    <CrudPage<FormFields, RegionSetShape>
+    <CrudPage<FormFields, CaseDbRegionSetShape>
       createItemDialogTitle={t`Create new region set shape`}
       createOne={createOne}
-      crudCommandType={CommandName.RegionSetShapeCrudCommand}
+      crudCommandType={CaseDbCommandName.RegionSetShapeCrudCommand}
       defaultSortByField={'scale'}
       defaultSortDirection={'asc'}
       deleteOne={deleteOne}

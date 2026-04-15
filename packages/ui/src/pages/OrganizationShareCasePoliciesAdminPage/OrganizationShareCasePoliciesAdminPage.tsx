@@ -8,10 +8,10 @@ import {
   object,
   string,
 } from 'yup';
-import type { OrganizationShareCasePolicy } from '@gen-epix/api-casedb';
+import type { CaseDbOrganizationShareCasePolicy } from '@gen-epix/api-casedb';
 import {
-  AbacApi,
-  CommandName,
+  CaseDbAbacApi,
+  CaseDbCommandName,
 } from '@gen-epix/api-casedb';
 
 import { useColSetOptionsQuery } from '../../dataHooks/useColSetsQuery';
@@ -29,7 +29,7 @@ import { TestIdUtil } from '../../utils/TestIdUtil';
 import { CrudPage } from '../CrudPage';
 import type { OmitWithMetaData } from '../../models/data';
 
-type FormFields = OmitWithMetaData<OrganizationShareCasePolicy, 'case_type_set' | 'data_collection' | 'from_data_collection' | 'organization'>;
+type FormFields = OmitWithMetaData<CaseDbOrganizationShareCasePolicy, 'case_type_set' | 'data_collection' | 'from_data_collection' | 'organization'>;
 
 export const OrganizationShareCasePoliciesAdminPage = () => {
   const { t } = useTranslation();
@@ -43,22 +43,22 @@ export const OrganizationShareCasePoliciesAdminPage = () => {
   const loadables = useArray([nameFactory, organizationOptionsQuery, dataCollectionOptionsQuery, colSetOptionsQuery, caseTypeSetOptions]);
 
   const fetchAll = useCallback(async (signal: AbortSignal) => {
-    return (await AbacApi.instance.organizationShareCasePoliciesGetAll({ signal }))?.data;
+    return (await CaseDbAbacApi.instance.organizationShareCasePoliciesGetAll({ signal }))?.data;
   }, []);
 
-  const deleteOne = useCallback(async (item: OrganizationShareCasePolicy) => {
-    return await AbacApi.instance.organizationShareCasePoliciesDeleteOne(item.id);
+  const deleteOne = useCallback(async (item: CaseDbOrganizationShareCasePolicy) => {
+    return await CaseDbAbacApi.instance.organizationShareCasePoliciesDeleteOne(item.id);
   }, []);
 
-  const updateOne = useCallback(async (variables: FormFields, item: OrganizationShareCasePolicy) => {
-    return (await AbacApi.instance.organizationShareCasePoliciesPutOne(item.id, { id: item.id, ...variables })).data;
+  const updateOne = useCallback(async (variables: FormFields, item: CaseDbOrganizationShareCasePolicy) => {
+    return (await CaseDbAbacApi.instance.organizationShareCasePoliciesPutOne(item.id, { id: item.id, ...variables })).data;
   }, []);
 
   const createOne = useCallback(async (variables: FormFields) => {
-    return (await AbacApi.instance.organizationShareCasePoliciesPostOne(variables)).data;
+    return (await CaseDbAbacApi.instance.organizationShareCasePoliciesPostOne(variables)).data;
   }, []);
 
-  const getName = useCallback((item: OrganizationShareCasePolicy) => {
+  const getName = useCallback((item: CaseDbOrganizationShareCasePolicy) => {
     return nameFactory.getName(item);
   }, [nameFactory]);
 
@@ -134,27 +134,27 @@ export const OrganizationShareCasePoliciesAdminPage = () => {
     ] as const;
   }, [caseTypeSetOptions.isLoading, caseTypeSetOptions.options, dataCollectionOptionsQuery.isLoading, dataCollectionOptionsQuery.options, organizationOptionsQuery.isLoading, organizationOptionsQuery.options, t]);
 
-  const tableColumns = useMemo((): TableColumn<OrganizationShareCasePolicy>[] => {
+  const tableColumns = useMemo((): TableColumn<CaseDbOrganizationShareCasePolicy>[] => {
     return [
-      TableUtil.createOptionsColumn<OrganizationShareCasePolicy>({ id: 'organization_id', name: t`Organization`, options: organizationOptionsQuery.options }),
-      TableUtil.createOptionsColumn<OrganizationShareCasePolicy>({ id: 'data_collection_id', name: t`Data collection`, options: dataCollectionOptionsQuery.options }),
-      TableUtil.createOptionsColumn<OrganizationShareCasePolicy>({ id: 'from_data_collection_id', name: t`From collection`, options: dataCollectionOptionsQuery.options }),
-      TableUtil.createOptionsColumn<OrganizationShareCasePolicy>({ id: 'case_type_set_id', name: t`Case type set`, options: caseTypeSetOptions.options }),
+      TableUtil.createOptionsColumn<CaseDbOrganizationShareCasePolicy>({ id: 'organization_id', name: t`Organization`, options: organizationOptionsQuery.options }),
+      TableUtil.createOptionsColumn<CaseDbOrganizationShareCasePolicy>({ id: 'data_collection_id', name: t`Data collection`, options: dataCollectionOptionsQuery.options }),
+      TableUtil.createOptionsColumn<CaseDbOrganizationShareCasePolicy>({ id: 'from_data_collection_id', name: t`From collection`, options: dataCollectionOptionsQuery.options }),
+      TableUtil.createOptionsColumn<CaseDbOrganizationShareCasePolicy>({ id: 'case_type_set_id', name: t`Case type set`, options: caseTypeSetOptions.options }),
 
-      TableUtil.createBooleanColumn<OrganizationShareCasePolicy>({ id: 'add_case', name: t`Add case` }),
-      TableUtil.createBooleanColumn<OrganizationShareCasePolicy>({ id: 'remove_case', name: t`Remove case` }),
-      TableUtil.createBooleanColumn<OrganizationShareCasePolicy>({ id: 'add_case_set', name: t`Add case set` }),
-      TableUtil.createBooleanColumn<OrganizationShareCasePolicy>({ id: 'remove_case_set', name: t`Remove case set` }),
+      TableUtil.createBooleanColumn<CaseDbOrganizationShareCasePolicy>({ id: 'add_case', name: t`Add case` }),
+      TableUtil.createBooleanColumn<CaseDbOrganizationShareCasePolicy>({ id: 'remove_case', name: t`Remove case` }),
+      TableUtil.createBooleanColumn<CaseDbOrganizationShareCasePolicy>({ id: 'add_case_set', name: t`Add case set` }),
+      TableUtil.createBooleanColumn<CaseDbOrganizationShareCasePolicy>({ id: 'remove_case_set', name: t`Remove case set` }),
 
-      TableUtil.createBooleanColumn<OrganizationShareCasePolicy>({ id: 'is_active', name: t`Active` }),
+      TableUtil.createBooleanColumn<CaseDbOrganizationShareCasePolicy>({ id: 'is_active', name: t`Active` }),
     ];
   }, [caseTypeSetOptions.options, dataCollectionOptionsQuery.options, organizationOptionsQuery.options, t]);
 
   return (
-    <CrudPage<FormFields, OrganizationShareCasePolicy>
+    <CrudPage<FormFields, CaseDbOrganizationShareCasePolicy>
       createItemDialogTitle={t`Create new organization share case policy`}
       createOne={createOne}
-      crudCommandType={CommandName.OrganizationShareCasePolicyCrudCommand}
+      crudCommandType={CaseDbCommandName.OrganizationShareCasePolicyCrudCommand}
       defaultSortByField={'organization_id'}
       defaultSortDirection={'asc'}
       deleteOne={deleteOne}

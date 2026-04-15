@@ -8,8 +8,8 @@ import type { ReactElement } from 'react';
 import type { TFunction } from 'i18next';
 import difference from 'lodash/difference';
 import sumBy from 'lodash/sumBy';
-import type { Case } from '@gen-epix/api-casedb';
-import { ColType } from '@gen-epix/api-casedb';
+import type { CaseDbCase } from '@gen-epix/api-casedb';
+import { CaseDbColType } from '@gen-epix/api-casedb';
 
 import { CaseUtil } from '../CaseUtil';
 import {
@@ -114,12 +114,12 @@ export class TableUtil {
         return -1;
       }
 
-      if (refCol.col_type === ColType.ORDINAL) {
+      if (refCol.col_type === CaseDbColType.ORDINAL) {
         const conceptSetConceptIds = EpiDataManager.instance.data.conceptsIdsBySetId[refCol.concept_set_id];
         return (conceptSetConceptIds.indexOf(aValue.raw) - conceptSetConceptIds.indexOf(bValue.raw)) * directionMultiplier;
       }
 
-      if (([ColType.DECIMAL_0, ColType.DECIMAL_1, ColType.DECIMAL_2, ColType.DECIMAL_3, ColType.DECIMAL_4, ColType.DECIMAL_4, ColType.DECIMAL_5, ColType.DECIMAL_6] as ColType[]).includes(refCol.col_type)) {
+      if (([CaseDbColType.DECIMAL_0, CaseDbColType.DECIMAL_1, CaseDbColType.DECIMAL_2, CaseDbColType.DECIMAL_3, CaseDbColType.DECIMAL_4, CaseDbColType.DECIMAL_4, CaseDbColType.DECIMAL_5, CaseDbColType.DECIMAL_6] as CaseDbColType[]).includes(refCol.col_type)) {
         return (+aValue.raw - +bValue.raw) * directionMultiplier;
       }
 
@@ -421,7 +421,7 @@ export class TableUtil {
     if (column.valueGetter) {
       return column.valueGetter({ id: column.id, row, rowIndex });
     }
-    return CaseUtil.getRowValue((row as Case).content, column.col, column.completeCaseType);
+    return CaseUtil.getRowValue((row as CaseDbCase).content, column.col, column.completeCaseType);
   }
 
   public static getTableDateCellValue<TRowData>({ column, row, rowIndex }: GetTableCellValueProps<TRowData, TableColumnDate<TRowData>>): string {

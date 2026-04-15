@@ -1,15 +1,15 @@
 import uniq from 'lodash/uniq';
 import type {
-  CaseType,
-  Col,
-  CompleteCaseType,
-  Dim,
-  RefCol,
-  RefDim,
+  CaseDbCaseType,
+  CaseDbCol,
+  CaseDbCompleteCaseType,
+  CaseDbDim,
+  CaseDbRefCol,
+  CaseDbRefDim,
 } from '@gen-epix/api-casedb';
 import {
-  ColType,
-  DimType,
+  CaseDbColType,
+  CaseDbDimType,
 } from '@gen-epix/api-casedb';
 
 import { StringUtil } from '../StringUtil';
@@ -19,7 +19,7 @@ export const SELECTION_FILTER_GROUP = 'selection';
 export const TREE_FILTER_GROUP = 'tree';
 
 export class CaseTypeUtil {
-  public static createCaseTypeLink(caseType: CaseType | CompleteCaseType, full?: boolean): string {
+  public static createCaseTypeLink(caseType: CaseDbCaseType | CaseDbCompleteCaseType, full?: boolean): string {
     const path = `/cases/${StringUtil.createSlug(caseType.name)}/${caseType.id}`;
     if (full) {
       return `${WindowManager.instance.window.location.origin}${path}`;
@@ -32,8 +32,8 @@ export class CaseTypeUtil {
    * @param completeCaseType The complete case type object.
    * @returns An array of paired FWD/REV columns.
    */
-  public static findPairedReadsCols(completeCaseType: CompleteCaseType): { fwd: Col; rev: Col }[] {
-    const pairs: { fwd: Col; rev: Col }[] = [];
+  public static findPairedReadsCols(completeCaseType: CaseDbCompleteCaseType): { fwd: CaseDbCol; rev: CaseDbCol }[] {
+    const pairs: { fwd: CaseDbCol; rev: CaseDbCol }[] = [];
 
     completeCaseType.ordered_dim_ids.forEach(dimId => {
       const cols = completeCaseType.ordered_col_ids_by_dim[dimId].map(x => completeCaseType.cols[x]);
@@ -42,7 +42,7 @@ export class CaseTypeUtil {
       }
       const readsColumns = cols.filter(col => {
         const refCol = completeCaseType.ref_cols[col.ref_col_id];
-        return refCol?.col_type === ColType.GENETIC_READS;
+        return refCol?.col_type === CaseDbColType.GENETIC_READS;
       });
 
       if (readsColumns.length === 2) {
@@ -60,7 +60,7 @@ export class CaseTypeUtil {
    * @param id The ID of the column or column.
    * @returns The unique column if found, otherwise null.
    */
-  public static findUniqueColByColIdRefOrColId(completeCaseType: CompleteCaseType, id: string): Col {
+  public static findUniqueColByColIdRefOrColId(completeCaseType: CaseDbCompleteCaseType, id: string): CaseDbCol {
     const colId = Object.values(completeCaseType.cols).find(col => col.ref_col_id === id);
     if (colId) {
       return colId;
@@ -76,7 +76,7 @@ export class CaseTypeUtil {
     return cols[0];
   }
 
-  public static getCols(completeCaseType: CompleteCaseType, dimId?: string): Col[] {
+  public static getCols(completeCaseType: CaseDbCompleteCaseType, dimId?: string): CaseDbCol[] {
     if (!dimId) {
       return Object.values(completeCaseType.cols);
     }
@@ -89,19 +89,19 @@ export class CaseTypeUtil {
    * @param colType The column type to filter by.
    * @returns An array of columns matching the specified column type.
    */
-  public static getColsByType(completeCaseType: CompleteCaseType, colType: ColType[]): Col[] {
+  public static getColsByType(completeCaseType: CaseDbCompleteCaseType, colType: CaseDbColType[]): CaseDbCol[] {
     return Object.values(completeCaseType.cols).filter(col => {
       const refCol = completeCaseType.ref_cols[col.ref_col_id];
       return colType.includes(refCol?.col_type);
     });
   }
 
-  public static getDimLabel(completeCaseType: CompleteCaseType, dimId: string): string {
+  public static getDimLabel(completeCaseType: CaseDbCompleteCaseType, dimId: string): string {
     const dim = completeCaseType.dims[dimId];
     return dim.code;
   }
 
-  public static getDims(completeCaseType: CompleteCaseType, dimTypes?: DimType[]): Dim[] {
+  public static getDims(completeCaseType: CaseDbCompleteCaseType, dimTypes?: CaseDbDimType[]): CaseDbDim[] {
     const dims = Object.values(completeCaseType.ordered_dim_ids).map(x => completeCaseType.dims[x]);
     if (!dimTypes?.length) {
       return dims;
@@ -112,7 +112,7 @@ export class CaseTypeUtil {
     });
   }
 
-  public static getInitialVisibleColIds(completeCaseType: CompleteCaseType): string[] {
+  public static getInitialVisibleColIds(completeCaseType: CaseDbCompleteCaseType): string[] {
     const visibleColumnIds: string[] = [];
 
     completeCaseType.ordered_dim_ids.map(x => completeCaseType.dims[x]).forEach((dim) => {
@@ -121,14 +121,14 @@ export class CaseTypeUtil {
       const cols = completeCaseType.ordered_col_ids_by_dim[dim.id].map(id => completeCaseType.cols[id]);
       const refCols = cols.map(col => completeCaseType.ref_cols[col.ref_col_id]);
 
-      if (refDims.dim_type === DimType.GEO) {
+      if (refDims.dim_type === CaseDbDimType.GEO) {
         visibleColumnIds.push(CaseTypeUtil.getPreferredGEOCol(cols).id);
-      } else if (refDims.dim_type === DimType.TIME || refDims.dim_type === DimType.NUMBER || CaseTypeUtil.isGeneticDistanceDim(refDims, refCols)) {
+      } else if (refDims.dim_type === CaseDbDimType.TIME || refDims.dim_type === CaseDbDimType.NUMBER || CaseTypeUtil.isGeneticDistanceDim(refDims, refCols)) {
         visibleColumnIds.push(CaseTypeUtil.getPreferredColInDimHavingHighestRank(cols, completeCaseType).id);
       } else {
         visibleColumnIds.push(...cols.filter(cc => {
           const refCol = completeCaseType.ref_cols[cc.ref_col_id];
-          const hiddenColTypes: ColType[] = [ColType.GENETIC_READS, ColType.GENETIC_SEQUENCE];
+          const hiddenColTypes: CaseDbColType[] = [CaseDbColType.GENETIC_READS, CaseDbColType.GENETIC_SEQUENCE];
           return !hiddenColTypes.includes(refCol.col_type);
         }).map(c => c.id));
       }
@@ -138,17 +138,17 @@ export class CaseTypeUtil {
   }
 
 
-  public static getPreferredColInDimHavingHighestRank(cols: Col[], completeCaseType: CompleteCaseType): Col {
+  public static getPreferredColInDimHavingHighestRank(cols: CaseDbCol[], completeCaseType: CaseDbCompleteCaseType): CaseDbCol {
     return cols.find(col => completeCaseType.ref_cols[col.ref_col_id].rank === 1) ?? cols?.[0];
   }
 
 
-  public static getPreferredGEOCol(cols: Col[]): Col {
+  public static getPreferredGEOCol(cols: CaseDbCol[]): CaseDbCol {
     return cols[Math.min(cols.length - 1, Math.floor((cols.length - 1) / 2))];
   }
 
 
-  public static getWritableColIds(completeCaseType: CompleteCaseType): string[] {
+  public static getWritableColIds(completeCaseType: CaseDbCompleteCaseType): string[] {
     const writableColIds: string[] = [];
     Object.values(completeCaseType.case_type_access_abacs).forEach((abac) => {
       writableColIds.push(...abac.write_col_ids);
@@ -156,7 +156,7 @@ export class CaseTypeUtil {
     return uniq(writableColIds);
   }
 
-  public static getWritableImportExportColIds(completeCaseType: CompleteCaseType): string[] {
+  public static getWritableImportExportColIds(completeCaseType: CaseDbCompleteCaseType): string[] {
     const writableColIds = CaseTypeUtil.getWritableColIds(completeCaseType);
     return Object.keys(completeCaseType.cols).filter(colId => {
       if (!writableColIds.includes(colId)) {
@@ -164,15 +164,15 @@ export class CaseTypeUtil {
       }
       const col = completeCaseType.cols[colId];
       const refCol = completeCaseType.ref_cols[col.ref_col_id];
-      if (([ColType.GENETIC_DISTANCE, ColType.GENETIC_PROFILE, ColType.GENETIC_READS, ColType.GENETIC_SEQUENCE] as ColType[]).includes(refCol.col_type)) {
+      if (([CaseDbColType.GENETIC_DISTANCE, CaseDbColType.GENETIC_PROFILE, CaseDbColType.GENETIC_READS, CaseDbColType.GENETIC_SEQUENCE] as CaseDbColType[]).includes(refCol.col_type)) {
         return false;
       }
       return true;
     });
   }
 
-  public static isGeneticDistanceDim(refDim: RefDim, refCols: RefCol[]): boolean {
-    return refDim.dim_type === DimType.OTHER && refCols.find(refCol => refCol.col_type === ColType.GENETIC_DISTANCE) !== undefined;
+  public static isGeneticDistanceDim(refDim: CaseDbRefDim, refCols: CaseDbRefCol[]): boolean {
+    return refDim.dim_type === CaseDbDimType.OTHER && refCols.find(refCol => refCol.col_type === CaseDbColType.GENETIC_DISTANCE) !== undefined;
   }
 
 }

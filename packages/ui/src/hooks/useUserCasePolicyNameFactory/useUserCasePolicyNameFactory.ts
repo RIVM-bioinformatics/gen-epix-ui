@@ -1,8 +1,8 @@
 import { useMemo } from 'react';
 import { useTranslation } from 'react-i18next';
 import type {
-  UserAccessCasePolicy,
-  UserShareCasePolicy,
+  CaseDbUserAccessCasePolicy,
+  CaseDbUserShareCasePolicy,
 } from '@gen-epix/api-casedb';
 
 import { useCaseTypeSetsMapQuery } from '../../dataHooks/useCaseTypeSetsQuery';
@@ -12,7 +12,7 @@ import type { UseNameFactory } from '../../models/dataHooks';
 import { DataHookUtil } from '../../utils/DataHookUtil';
 import { DataUtil } from '../../utils/DataUtil';
 
-export const useUserCasePolicyNameFactory = (): UseNameFactory<UserAccessCasePolicy | UserShareCasePolicy> => {
+export const useUserCasePolicyNameFactory = (): UseNameFactory<CaseDbUserAccessCasePolicy | CaseDbUserShareCasePolicy> => {
   const { t } = useTranslation();
 
   const usersMapQuery = useUsersMapQuery();
@@ -20,7 +20,7 @@ export const useUserCasePolicyNameFactory = (): UseNameFactory<UserAccessCasePol
   const caseTypeSetsMapQuery = useCaseTypeSetsMapQuery();
 
   return useMemo(() => {
-    const getName = (item: UserAccessCasePolicy | UserShareCasePolicy) => {
+    const getName = (item: CaseDbUserAccessCasePolicy | CaseDbUserShareCasePolicy) => {
 
       const user = usersMapQuery.map.get(item.user_id);
       const dataCollection = dataCollectionsMapQuery.map.get(item.data_collection_id)?.name ?? item.data_collection_id;

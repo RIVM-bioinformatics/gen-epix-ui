@@ -18,8 +18,8 @@ import {
   type BoxProps,
   Typography,
 } from '@mui/material';
-import type { Case } from '@gen-epix/api-casedb';
-import { CaseApi } from '@gen-epix/api-casedb';
+import type { CaseDbCase } from '@gen-epix/api-casedb';
+import { CaseDbCaseApi } from '@gen-epix/api-casedb';
 
 import { useCaseAbacContext } from '../../../context/caseAbac';
 import { NotificationManager } from '../../../classes/managers/NotificationManager';
@@ -32,7 +32,7 @@ import { GenericForm } from '../../form/helpers/GenericForm';
 import { Spinner } from '../../ui/Spinner';
 
 export type EpiCaseSharingFormProps = {
-  readonly epiCase: Case;
+  readonly epiCase: CaseDbCase;
   readonly formId: string;
   readonly onFinish: () => void;
   readonly onIsSavingChange: (isSaving: boolean) => void;
@@ -92,13 +92,13 @@ export const EpiCaseSharingForm = ({ epiCase, formId, onFinish, onIsSavingChange
         const dataCollectionIdsToRemove = difference(rights.shared_in_data_collection_ids, dataCollectionIds);
 
         if (dataCollectionIdsToAdd.length > 0) {
-          await CaseApi.instance.caseDataCollectionLinksPostSome(dataCollectionIdsToAdd.map(data_collection_id => ({
+          await CaseDbCaseApi.instance.caseDataCollectionLinksPostSome(dataCollectionIdsToAdd.map(data_collection_id => ({
             case_id: epiCase.id,
             data_collection_id,
           })));
         }
         if (dataCollectionIdsToRemove.length > 0) {
-          await CaseApi.instance.caseDataCollectionLinksDeleteSome(caseAbacContext.itemDataCollectionLinks[0]?.filter(x => dataCollectionIdsToRemove.includes(x.data_collection_id)).map(x => x.id).join(','));
+          await CaseDbCaseApi.instance.caseDataCollectionLinksDeleteSome(caseAbacContext.itemDataCollectionLinks[0]?.filter(x => dataCollectionIdsToRemove.includes(x.data_collection_id)).map(x => x.id).join(','));
         }
         NotificationManager.instance.fulfillNotification(notificationKey, t('Successfully saved case data collections.'), 'success');
       } catch (_error) {

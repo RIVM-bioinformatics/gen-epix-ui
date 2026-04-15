@@ -1,8 +1,8 @@
-import type { CaseTypeAccessAbac } from '@gen-epix/api-casedb';
+import type { CaseDbCaseTypeAccessAbac } from '@gen-epix/api-casedb';
 
 export class AbacUtil {
   public static createEffectieveColumnAccessRights(
-    caseTypeAccessAbacs: CaseTypeAccessAbac[],
+    caseTypeAccessAbacs: CaseDbCaseTypeAccessAbac[],
   ): Map<string, { read: boolean; write: boolean }> {
     const effectiveColumnAccessRights = new Map<string, { read: boolean; write: boolean }>();
     caseTypeAccessAbacs.forEach((caseTypeAccessAbac) => {

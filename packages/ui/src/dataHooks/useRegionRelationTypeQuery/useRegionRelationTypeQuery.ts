@@ -1,15 +1,15 @@
 import { useMemo } from 'react';
-import { RegionRelationType } from '@gen-epix/api-casedb';
+import { CaseDbRegionRelationType } from '@gen-epix/api-casedb';
 
 import type { UseOptions } from '../../models/dataHooks';
 import type { OptionBase } from '../../models/form';
 
 
-export const regionRelationTypePresentationValues: Partial<Record<RegionRelationType, string>> = {
-  [RegionRelationType.CONTAINS]: 'CONTAINS',
-  [RegionRelationType.IS_ADJACENT_TO]: 'IS_ADJACENT_TO',
-  [RegionRelationType.IS_SEPARATE_FROM]: 'IS_SEPARATE_FROM',
-  [RegionRelationType.OVERLAPS_WITH]: 'OVERLAPS_WITH',
+export const regionRelationTypePresentationValues: Partial<Record<CaseDbRegionRelationType, string>> = {
+  [CaseDbRegionRelationType.CONTAINS]: 'CONTAINS',
+  [CaseDbRegionRelationType.IS_ADJACENT_TO]: 'IS_ADJACENT_TO',
+  [CaseDbRegionRelationType.IS_SEPARATE_FROM]: 'IS_SEPARATE_FROM',
+  [CaseDbRegionRelationType.OVERLAPS_WITH]: 'OVERLAPS_WITH',
 };
 
 export const useRegionRelationTypeOptionsQuery = (): UseOptions<string> => {

@@ -1,7 +1,7 @@
 import type { TFunction } from 'i18next';
 import type {
-  Case,
-  FiltersInner,
+  CaseDbCase,
+  CaseDbFiltersInner,
 } from '@gen-epix/api-casedb';
 
 import type { BooleanFilter } from '../classes/filters/BooleanFilter';
@@ -19,9 +19,9 @@ export interface Filter<TFilterValue, TRowValue> {
   initialFilterValue: TFilterValue;
   isInitialFilterValue: (value?: TFilterValue) => boolean;
   label: string;
-  matchRowValue: (rowValue: TRowValue, row?: Case) => boolean;
+  matchRowValue: (rowValue: TRowValue, row?: CaseDbCase) => boolean;
   setFilterValue: (value: TFilterValue) => void;
-  toBackendFilter: () => FiltersInner;
+  toBackendFilter: () => CaseDbFiltersInner;
 }
 
 export type FilterDimension = {

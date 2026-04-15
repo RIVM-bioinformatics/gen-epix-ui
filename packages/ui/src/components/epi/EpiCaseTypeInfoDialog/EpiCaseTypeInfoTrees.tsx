@@ -8,7 +8,7 @@ import {
 import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
 import { useMemo } from 'react';
 import { useTranslation } from 'react-i18next';
-import type { CompleteCaseType } from '@gen-epix/api-casedb';
+import type { CaseDbCompleteCaseType } from '@gen-epix/api-casedb';
 
 import { EpiTreeDescription } from '../EpiTreeDescription';
 import { EpiTreeUtil } from '../../../utils/EpiTreeUtil';
@@ -17,7 +17,7 @@ import { EpiCaseTypeInfoColAccessRights } from './EpiCaseTypeInfoColAccessRights
 
 
 export type EpiCaseTypeInfoTreesProps = {
-  readonly completeCaseType: CompleteCaseType;
+  readonly completeCaseType: CaseDbCompleteCaseType;
 };
 export const EpiCaseTypeInfoTrees = ({ completeCaseType }: EpiCaseTypeInfoTreesProps) => {
   const treeConfigurations = useMemo(() => EpiTreeUtil.getTreeConfigurations(completeCaseType), [completeCaseType]);

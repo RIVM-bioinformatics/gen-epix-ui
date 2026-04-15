@@ -1,7 +1,7 @@
 import { useMemo } from 'react';
 import { type UseQueryResult } from '@tanstack/react-query';
-import type { CaseSetCategory } from '@gen-epix/api-casedb';
-import { CaseApi } from '@gen-epix/api-casedb';
+import type { CaseDbCaseSetCategory } from '@gen-epix/api-casedb';
+import { CaseDbCaseApi } from '@gen-epix/api-casedb';
 
 import type {
   UseMap,
@@ -13,21 +13,21 @@ import { QueryUtil } from '../../utils/QueryUtil';
 import { useQueryMemo } from '../../hooks/useQueryMemo';
 import { DataUtil } from '../../utils/DataUtil';
 
-export const useCaseSetCategoriesQuery = (): UseQueryResult<CaseSetCategory[]> => {
+export const useCaseSetCategoriesQuery = (): UseQueryResult<CaseDbCaseSetCategory[]> => {
   return useQueryMemo({
     queryFn: async ({ signal }) => {
-      const response = await CaseApi.instance.caseSetCategoriesGetAll({ signal });
+      const response = await CaseDbCaseApi.instance.caseSetCategoriesGetAll({ signal });
       return response.data;
     },
     queryKey: QueryUtil.getGenericKey(QUERY_KEY.CASE_SET_CATEGORIES),
   });
 };
 
-export const useCaseSetCategoryMapQuery = (): UseMap<CaseSetCategory> => {
+export const useCaseSetCategoryMapQuery = (): UseMap<CaseDbCaseSetCategory> => {
   const response = useCaseSetCategoriesQuery();
 
   return useMemo(() => {
-    return DataHookUtil.createUseMapDataHook<CaseSetCategory>(response, item => item.id);
+    return DataHookUtil.createUseMapDataHook<CaseDbCaseSetCategory>(response, item => item.id);
   }, [response]);
 };
 
@@ -35,6 +35,6 @@ export const useCaseSetCategoryOptionsQuery = (): UseOptions<string> => {
   const response = useCaseSetCategoriesQuery();
 
   return useMemo(() => {
-    return DataHookUtil.createUseOptionsDataHook<CaseSetCategory>(response, item => item.id, (item: CaseSetCategory) => item.name, [], DataUtil.rankSortComperatorFactory('name'));
+    return DataHookUtil.createUseOptionsDataHook<CaseDbCaseSetCategory>(response, item => item.id, (item: CaseDbCaseSetCategory) => item.name, [], DataUtil.rankSortComperatorFactory('name'));
   }, [response]);
 };

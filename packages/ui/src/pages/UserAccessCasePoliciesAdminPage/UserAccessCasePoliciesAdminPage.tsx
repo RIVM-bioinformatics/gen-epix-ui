@@ -8,10 +8,10 @@ import {
   object,
   string,
 } from 'yup';
-import type { UserAccessCasePolicy } from '@gen-epix/api-casedb';
+import type { CaseDbUserAccessCasePolicy } from '@gen-epix/api-casedb';
 import {
-  AbacApi,
-  CommandName,
+  CaseDbAbacApi,
+  CaseDbCommandName,
 } from '@gen-epix/api-casedb';
 
 import { useColSetOptionsQuery } from '../../dataHooks/useColSetsQuery';
@@ -29,7 +29,7 @@ import { TestIdUtil } from '../../utils/TestIdUtil';
 import { CrudPage } from '../CrudPage';
 import type { OmitWithMetaData } from '../../models/data';
 
-type FormFields = OmitWithMetaData<UserAccessCasePolicy, 'case_type_set' | 'data_collection' | 'read_col_set' | 'user' | 'write_col_set'>;
+type FormFields = OmitWithMetaData<CaseDbUserAccessCasePolicy, 'case_type_set' | 'data_collection' | 'read_col_set' | 'user' | 'write_col_set'>;
 
 export const UserAccessCasePoliciesAdminPage = () => {
   const { t } = useTranslation();
@@ -43,22 +43,22 @@ export const UserAccessCasePoliciesAdminPage = () => {
   const loadables = useArray([nameFactory, userOptionsQuery, dataCollectionOptionsQuery, colSetOptionsQuery, caseTypeSetOptions]);
 
   const fetchAll = useCallback(async (signal: AbortSignal) => {
-    return (await AbacApi.instance.userAccessCasePoliciesGetAll({ signal }))?.data;
+    return (await CaseDbAbacApi.instance.userAccessCasePoliciesGetAll({ signal }))?.data;
   }, []);
 
-  const deleteOne = useCallback(async (item: UserAccessCasePolicy) => {
-    return await AbacApi.instance.userAccessCasePoliciesDeleteOne(item.id);
+  const deleteOne = useCallback(async (item: CaseDbUserAccessCasePolicy) => {
+    return await CaseDbAbacApi.instance.userAccessCasePoliciesDeleteOne(item.id);
   }, []);
 
-  const updateOne = useCallback(async (variables: FormFields, item: UserAccessCasePolicy) => {
-    return (await AbacApi.instance.userAccessCasePoliciesPutOne(item.id, { id: item.id, ...variables })).data;
+  const updateOne = useCallback(async (variables: FormFields, item: CaseDbUserAccessCasePolicy) => {
+    return (await CaseDbAbacApi.instance.userAccessCasePoliciesPutOne(item.id, { id: item.id, ...variables })).data;
   }, []);
 
   const createOne = useCallback(async (variables: FormFields) => {
-    return (await AbacApi.instance.userAccessCasePoliciesPostOne(variables)).data;
+    return (await CaseDbAbacApi.instance.userAccessCasePoliciesPostOne(variables)).data;
   }, []);
 
-  const getName = useCallback((item: UserAccessCasePolicy) => {
+  const getName = useCallback((item: CaseDbUserAccessCasePolicy) => {
     return nameFactory.getName(item);
   }, [nameFactory]);
 
@@ -154,30 +154,30 @@ export const UserAccessCasePoliciesAdminPage = () => {
     ] as const;
   }, [colSetOptionsQuery.isLoading, colSetOptionsQuery.options, caseTypeSetOptions.isLoading, caseTypeSetOptions.options, dataCollectionOptionsQuery.isLoading, dataCollectionOptionsQuery.options, userOptionsQuery.isLoading, userOptionsQuery.options, t]);
 
-  const tableColumns = useMemo((): TableColumn<UserAccessCasePolicy>[] => {
+  const tableColumns = useMemo((): TableColumn<CaseDbUserAccessCasePolicy>[] => {
     return [
-      TableUtil.createOptionsColumn<UserAccessCasePolicy>({ id: 'user_id', name: t`User`, options: userOptionsQuery.options }),
-      TableUtil.createOptionsColumn<UserAccessCasePolicy>({ id: 'data_collection_id', name: t`Data collection`, options: dataCollectionOptionsQuery.options }),
-      TableUtil.createOptionsColumn<UserAccessCasePolicy>({ id: 'case_type_set_id', name: t`Case type set`, options: caseTypeSetOptions.options }),
-      TableUtil.createOptionsColumn<UserAccessCasePolicy>({ id: 'read_col_set_id', name: t`Read column set`, options: colSetOptionsQuery.options }),
-      TableUtil.createOptionsColumn<UserAccessCasePolicy>({ id: 'write_col_set_id', name: t`Write column set`, options: colSetOptionsQuery.options }),
+      TableUtil.createOptionsColumn<CaseDbUserAccessCasePolicy>({ id: 'user_id', name: t`User`, options: userOptionsQuery.options }),
+      TableUtil.createOptionsColumn<CaseDbUserAccessCasePolicy>({ id: 'data_collection_id', name: t`Data collection`, options: dataCollectionOptionsQuery.options }),
+      TableUtil.createOptionsColumn<CaseDbUserAccessCasePolicy>({ id: 'case_type_set_id', name: t`Case type set`, options: caseTypeSetOptions.options }),
+      TableUtil.createOptionsColumn<CaseDbUserAccessCasePolicy>({ id: 'read_col_set_id', name: t`Read column set`, options: colSetOptionsQuery.options }),
+      TableUtil.createOptionsColumn<CaseDbUserAccessCasePolicy>({ id: 'write_col_set_id', name: t`Write column set`, options: colSetOptionsQuery.options }),
 
-      TableUtil.createBooleanColumn<UserAccessCasePolicy>({ id: 'add_case', name: t`Add case` }),
-      TableUtil.createBooleanColumn<UserAccessCasePolicy>({ id: 'remove_case', name: t`Remove case` }),
-      TableUtil.createBooleanColumn<UserAccessCasePolicy>({ id: 'add_case_set', name: t`Add case set` }),
-      TableUtil.createBooleanColumn<UserAccessCasePolicy>({ id: 'remove_case_set', name: t`Remove case set` }),
-      TableUtil.createBooleanColumn<UserAccessCasePolicy>({ id: 'read_case_set', name: t`Read case set` }),
-      TableUtil.createBooleanColumn<UserAccessCasePolicy>({ id: 'write_case_set', name: t`Write case set` }),
+      TableUtil.createBooleanColumn<CaseDbUserAccessCasePolicy>({ id: 'add_case', name: t`Add case` }),
+      TableUtil.createBooleanColumn<CaseDbUserAccessCasePolicy>({ id: 'remove_case', name: t`Remove case` }),
+      TableUtil.createBooleanColumn<CaseDbUserAccessCasePolicy>({ id: 'add_case_set', name: t`Add case set` }),
+      TableUtil.createBooleanColumn<CaseDbUserAccessCasePolicy>({ id: 'remove_case_set', name: t`Remove case set` }),
+      TableUtil.createBooleanColumn<CaseDbUserAccessCasePolicy>({ id: 'read_case_set', name: t`Read case set` }),
+      TableUtil.createBooleanColumn<CaseDbUserAccessCasePolicy>({ id: 'write_case_set', name: t`Write case set` }),
 
-      TableUtil.createBooleanColumn<UserAccessCasePolicy>({ id: 'is_active', name: t`Active` }),
+      TableUtil.createBooleanColumn<CaseDbUserAccessCasePolicy>({ id: 'is_active', name: t`Active` }),
     ];
   }, [colSetOptionsQuery.options, caseTypeSetOptions.options, dataCollectionOptionsQuery.options, userOptionsQuery.options, t]);
 
   return (
-    <CrudPage<FormFields, UserAccessCasePolicy>
+    <CrudPage<FormFields, CaseDbUserAccessCasePolicy>
       createItemDialogTitle={t`Create new user access case policy`}
       createOne={createOne}
-      crudCommandType={CommandName.UserAccessCasePolicyCrudCommand}
+      crudCommandType={CaseDbCommandName.UserAccessCasePolicyCrudCommand}
       defaultSortByField={'user_id'}
       defaultSortDirection={'asc'}
       deleteOne={deleteOne}

@@ -1,15 +1,15 @@
 import { createContext } from 'react';
 import type {
-  CaseTypeAccessAbac,
-  DataCollection,
+  CaseDbCaseTypeAccessAbac,
+  CaseDbDataCollection,
 } from '@gen-epix/api-casedb';
 
 export type CaseTypeAbacContext = {
-  caseTypeAccessAbacDict: { [key: string]: CaseTypeAccessAbac };
-  caseTypeAccessAbacs?: CaseTypeAccessAbac[];
+  caseTypeAccessAbacDict: { [key: string]: CaseDbCaseTypeAccessAbac };
+  caseTypeAccessAbacs?: CaseDbCaseTypeAccessAbac[];
   effectiveColumnAccessRights?: Map<string, { read: boolean; write: boolean }>;
-  userDataCollections: DataCollection[];
-  userDataCollectionsMap: Map<string, DataCollection>;
+  userDataCollections: CaseDbDataCollection[];
+  userDataCollectionsMap: Map<string, CaseDbDataCollection>;
 };
 
 export const EpiCaseTypeAbacContext = createContext<CaseTypeAbacContext>(null);

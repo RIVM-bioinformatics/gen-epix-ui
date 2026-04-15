@@ -7,10 +7,10 @@ import {
   object,
   string,
 } from 'yup';
-import type { EtiologicalAgent } from '@gen-epix/api-casedb';
+import type { CaseDbEtiologicalAgent } from '@gen-epix/api-casedb';
 import {
-  CommandName,
-  OntologyApi,
+  CaseDbCommandName,
+  CaseDbOntologyApi,
 } from '@gen-epix/api-casedb';
 
 import type { FormFieldDefinition } from '../../models/form';
@@ -23,28 +23,28 @@ import { CrudPage } from '../CrudPage';
 import type { OmitWithMetaData } from '../../models/data';
 import { SchemaUtil } from '../../utils/SchemaUtil';
 
-type FormFields = OmitWithMetaData<EtiologicalAgent>;
+type FormFields = OmitWithMetaData<CaseDbEtiologicalAgent>;
 
 export const EtiologicalAgentsAdminPage = () => {
   const { t } = useTranslation();
 
   const fetchAll = useCallback(async (signal: AbortSignal) => {
-    return (await OntologyApi.instance.etiologicalAgentsGetAll({ signal }))?.data;
+    return (await CaseDbOntologyApi.instance.etiologicalAgentsGetAll({ signal }))?.data;
   }, []);
 
-  const deleteOne = useCallback(async (item: EtiologicalAgent) => {
-    return await OntologyApi.instance.etiologicalAgentsDeleteOne(item.id);
+  const deleteOne = useCallback(async (item: CaseDbEtiologicalAgent) => {
+    return await CaseDbOntologyApi.instance.etiologicalAgentsDeleteOne(item.id);
   }, []);
 
-  const updateOne = useCallback(async (variables: FormFields, item: EtiologicalAgent) => {
-    return (await OntologyApi.instance.etiologicalAgentsPutOne(item.id, { id: item.id, ...variables })).data;
+  const updateOne = useCallback(async (variables: FormFields, item: CaseDbEtiologicalAgent) => {
+    return (await CaseDbOntologyApi.instance.etiologicalAgentsPutOne(item.id, { id: item.id, ...variables })).data;
   }, []);
 
   const createOne = useCallback(async (variables: FormFields) => {
-    return (await OntologyApi.instance.etiologicalAgentsPostOne(variables)).data;
+    return (await CaseDbOntologyApi.instance.etiologicalAgentsPostOne(variables)).data;
   }, []);
 
-  const getName = useCallback((variables: EtiologicalAgent) => {
+  const getName = useCallback((variables: CaseDbEtiologicalAgent) => {
     return variables.name;
   }, []);
 
@@ -70,17 +70,17 @@ export const EtiologicalAgentsAdminPage = () => {
     ] as const;
   }, [t]);
 
-  const tableColumns = useMemo((): TableColumn<EtiologicalAgent>[] => {
+  const tableColumns = useMemo((): TableColumn<CaseDbEtiologicalAgent>[] => {
     return [
-      TableUtil.createTextColumn<EtiologicalAgent>({ id: 'name', name: t`Name` }),
+      TableUtil.createTextColumn<CaseDbEtiologicalAgent>({ id: 'name', name: t`Name` }),
     ];
   }, [t]);
 
   return (
-    <CrudPage<FormFields, EtiologicalAgent>
+    <CrudPage<FormFields, CaseDbEtiologicalAgent>
       createItemDialogTitle={t`Create new etiological agent`}
       createOne={createOne}
-      crudCommandType={CommandName.EtiologicalAgentCrudCommand}
+      crudCommandType={CaseDbCommandName.EtiologicalAgentCrudCommand}
       defaultSortByField={'name'}
       defaultSortDirection={'asc'}
       deleteOne={deleteOne}

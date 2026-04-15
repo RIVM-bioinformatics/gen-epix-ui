@@ -10,7 +10,7 @@ import {
 } from '@mui/material';
 import { useTranslation } from 'react-i18next';
 import { format } from 'date-fns';
-import type { Case } from '@gen-epix/api-casedb';
+import type { CaseDbCase } from '@gen-epix/api-casedb';
 
 import { useDataCollectionsMapQuery } from '../../../dataHooks/useDataCollectionsQuery';
 import { GenericErrorMessage } from '../../ui/GenericErrorMessage';
@@ -19,7 +19,7 @@ import { DATE_FORMAT } from '../../../data/date';
 import { useArray } from '../../../hooks/useArray';
 
 export type EpiReadOnlyCaseContentProps = {
-  readonly epiCase: Case;
+  readonly epiCase: CaseDbCase;
 } & BoxProps;
 
 export const EpiReadOnlyCaseContent = ({ epiCase, ...boxProps }: EpiReadOnlyCaseContentProps) => {

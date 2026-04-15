@@ -20,7 +20,7 @@ import isArray from 'lodash/isArray';
 import { produce } from 'immer';
 import FilterAltIcon from '@mui/icons-material/FilterAlt';
 import { useStoreWithEqualityFn } from 'zustand/traditional';
-import type { Col } from '@gen-epix/api-casedb';
+import type { CaseDbCol } from '@gen-epix/api-casedb';
 
 import type { EpiContextMenuConfigWithAnchor } from '../EpiContextMenu';
 import { EpiContextMenu } from '../EpiContextMenu';
@@ -48,7 +48,7 @@ export const EpiStratification = () => {
   const stratifyableColumns = useStore(epiDashboardStore, (state) => state.stratifyableColumns);
   const [focussedLegendaItem, setFocussedLegendaItem] = useState<StratificationLegendaItem>(null);
 
-  const onStratifyMenuItemClick = useCallback((col: Col) => {
+  const onStratifyMenuItemClick = useCallback((col: CaseDbCol) => {
     if (col.id === stratification?.col?.id) {
       stratify(null);
       return;

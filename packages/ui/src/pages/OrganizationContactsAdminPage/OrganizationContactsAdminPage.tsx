@@ -8,10 +8,10 @@ import {
   string,
 } from 'yup';
 import { useParams } from 'react-router-dom';
-import type { Contact } from '@gen-epix/api-casedb';
+import type { CaseDbContact } from '@gen-epix/api-casedb';
 import {
-  CommandName,
-  OrganizationApi,
+  CaseDbCommandName,
+  CaseDbOrganizationApi,
 } from '@gen-epix/api-casedb';
 
 import type { FormFieldDefinition } from '../../models/form';
@@ -25,22 +25,22 @@ import type { OmitWithMetaData } from '../../models/data';
 import { SchemaUtil } from '../../utils/SchemaUtil';
 
 // Note: site_id is given in the route params
-type FormFields = OmitWithMetaData<Contact, 'site_id' | 'site'>;
+type FormFields = OmitWithMetaData<CaseDbContact, 'site_id' | 'site'>;
 
 export const OrganizationContactsAdminPage = () => {
   const { siteId } = useParams();
   const { t } = useTranslation();
 
   const fetchAll = useCallback(async (signal: AbortSignal) => {
-    return (await OrganizationApi.instance.contactsGetAll({ signal })).data;
+    return (await CaseDbOrganizationApi.instance.contactsGetAll({ signal })).data;
   }, []);
 
-  const fetchAllSelect = useCallback((contacts: Contact[]) => {
+  const fetchAllSelect = useCallback((contacts: CaseDbContact[]) => {
     return contacts.filter((contact) => contact.site_id === siteId);
   }, [siteId]);
 
-  const updateOne = useCallback(async (variables: FormFields, item: Contact) => {
-    return (await OrganizationApi.instance.contactsPutOne(item.id, {
+  const updateOne = useCallback(async (variables: FormFields, item: CaseDbContact) => {
+    return (await CaseDbOrganizationApi.instance.contactsPutOne(item.id, {
       id: item.id,
       site_id: siteId,
       ...variables,
@@ -48,14 +48,14 @@ export const OrganizationContactsAdminPage = () => {
   }, [siteId]);
 
   const createOne = useCallback(async (variables: FormFields) => {
-    return (await OrganizationApi.instance.contactsPostOne({
+    return (await CaseDbOrganizationApi.instance.contactsPostOne({
       site_id: siteId,
       ...variables,
     })).data;
   }, [siteId]);
 
-  const deleteOne = useCallback(async (item: Contact) => {
-    return await OrganizationApi.instance.contactsDeleteOne(item.id);
+  const deleteOne = useCallback(async (item: CaseDbContact) => {
+    return await CaseDbOrganizationApi.instance.contactsDeleteOne(item.id);
   }, []);
 
   const getName = useCallback((item: FormFields) => {
@@ -70,7 +70,7 @@ export const OrganizationContactsAdminPage = () => {
     });
   }, []);
 
-  const getOptimisticUpdateIntermediateItem = useCallback((variables: FormFields, previousItem: Contact): Contact => {
+  const getOptimisticUpdateIntermediateItem = useCallback((variables: FormFields, previousItem: CaseDbContact): CaseDbContact => {
     return {
       id: previousItem.id,
       site_id: previousItem.site_id,
@@ -98,19 +98,19 @@ export const OrganizationContactsAdminPage = () => {
     ] as const;
   }, [t]);
 
-  const tableColumns = useMemo((): TableColumn<Contact>[] => {
+  const tableColumns = useMemo((): TableColumn<CaseDbContact>[] => {
     return [
-      TableUtil.createTextColumn<Contact>({ advancedSort: true, id: 'name', name: t`Name` }),
-      TableUtil.createTextColumn<Contact>({ id: 'email', name: t`Email` }),
-      TableUtil.createTextColumn<Contact>({ id: 'phone', name: t`Phone` }),
+      TableUtil.createTextColumn<CaseDbContact>({ advancedSort: true, id: 'name', name: t`Name` }),
+      TableUtil.createTextColumn<CaseDbContact>({ id: 'email', name: t`Email` }),
+      TableUtil.createTextColumn<CaseDbContact>({ id: 'phone', name: t`Phone` }),
     ];
   }, [t]);
 
   return (
-    <CrudPage<FormFields, Contact>
+    <CrudPage<FormFields, CaseDbContact>
       createItemDialogTitle={t`Create new contact`}
       createOne={createOne}
-      crudCommandType={CommandName.ContactCrudCommand}
+      crudCommandType={CaseDbCommandName.ContactCrudCommand}
       defaultSortByField={'name'}
       defaultSortDirection={'asc'}
       deleteOne={deleteOne}

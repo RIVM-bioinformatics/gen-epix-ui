@@ -1,7 +1,7 @@
 import type { UseQueryResult } from '@tanstack/react-query';
 import { useMemo } from 'react';
-import type { CaseType } from '@gen-epix/api-casedb';
-import { CaseApi } from '@gen-epix/api-casedb';
+import type { CaseDbCaseType } from '@gen-epix/api-casedb';
+import { CaseDbCaseApi } from '@gen-epix/api-casedb';
 
 import type {
   UseMap,
@@ -12,25 +12,25 @@ import { DataHookUtil } from '../../utils/DataHookUtil';
 import { QueryUtil } from '../../utils/QueryUtil';
 import { useQueryMemo } from '../../hooks/useQueryMemo';
 
-export const caseTypesQueryFn = async ({ signal }: { signal: AbortSignal }): Promise<CaseType[]> => {
-  const response = await CaseApi.instance.caseTypesGetAll({ signal });
+export const caseTypesQueryFn = async ({ signal }: { signal: AbortSignal }): Promise<CaseDbCaseType[]> => {
+  const response = await CaseDbCaseApi.instance.caseTypesGetAll({ signal });
   const items = response.data;
   items.sort((a, b) => a.name.localeCompare(b.name));
   return items;
 };
 
-export const useCaseTypesQuery = (): UseQueryResult<CaseType[]> => {
+export const useCaseTypesQuery = (): UseQueryResult<CaseDbCaseType[]> => {
   return useQueryMemo({
     queryFn: caseTypesQueryFn,
     queryKey: QueryUtil.getGenericKey(QUERY_KEY.CASE_TYPES),
   });
 };
 
-export const useCaseTypeMapQuery = (): UseMap<CaseType> => {
+export const useCaseTypeMapQuery = (): UseMap<CaseDbCaseType> => {
   const response = useCaseTypesQuery();
 
   return useMemo(() => {
-    return DataHookUtil.createUseMapDataHook<CaseType>(response, item => item.id);
+    return DataHookUtil.createUseMapDataHook<CaseDbCaseType>(response, item => item.id);
   }, [response]);
 };
 
@@ -38,6 +38,6 @@ export const useCaseTypeOptionsQuery = (): UseOptions<string> => {
   const response = useCaseTypesQuery();
 
   return useMemo(() => {
-    return DataHookUtil.createUseOptionsDataHook<CaseType>(response, item => item.id, item => item.name);
+    return DataHookUtil.createUseOptionsDataHook<CaseDbCaseType>(response, item => item.id, item => item.name);
   }, [response]);
 };

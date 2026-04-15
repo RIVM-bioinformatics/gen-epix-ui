@@ -12,13 +12,13 @@ import uniq from 'lodash/uniq';
 import { useMemo } from 'react';
 import { useTranslation } from 'react-i18next';
 import type {
-  Case,
-  CaseSet,
-  TypedUuidSetFilter,
+  CaseDbCase,
+  CaseDbCaseSet,
+  CaseDbTypedUuidSetFilter,
 } from '@gen-epix/api-casedb';
 import {
-  CaseApi,
-  LogLevel,
+  CaseDbCaseApi,
+  CaseDbLogLevel,
 } from '@gen-epix/api-casedb';
 
 import { EpiCaseSummary } from '../EpiCaseSummary';
@@ -31,7 +31,7 @@ import { useQueryMemo } from '../../../hooks/useQueryMemo';
 import { EpiCasesAlreadyInCaseSetWarningCaseSetLink } from './EpiCasesAlreadyInCaseSetWarningCaseSetLink';
 
 export type EpiCasesAlreadyInCaseSetWarningProps = {
-  readonly cases: Case[];
+  readonly cases: CaseDbCase[];
 };
 
 export const EpiCasesAlreadyInCaseSetWarning = ({ cases }: EpiCasesAlreadyInCaseSetWarningProps) => {
@@ -39,7 +39,7 @@ export const EpiCasesAlreadyInCaseSetWarning = ({ cases }: EpiCasesAlreadyInCase
   const theme = useTheme();
 
   // Load all case set members for the given cases
-  const caseSetMembersFilter = useMemo<TypedUuidSetFilter>(() => {
+  const caseSetMembersFilter = useMemo<CaseDbTypedUuidSetFilter>(() => {
     return {
       invert: false,
       key: 'case_id',
@@ -49,14 +49,14 @@ export const EpiCasesAlreadyInCaseSetWarning = ({ cases }: EpiCasesAlreadyInCase
   }, [cases]);
   const { data: caseSetMembers, error: caseSetMembersError, isLoading: isCaseSetMembersLoading } = useQueryMemo({
     queryFn: async ({ signal }) => {
-      const response = await CaseApi.instance.caseSetMembersPostQuery(caseSetMembersFilter, { signal });
+      const response = await CaseDbCaseApi.instance.caseSetMembersPostQuery(caseSetMembersFilter, { signal });
       return response.data;
     },
     queryKey: QueryUtil.getGenericKey(QUERY_KEY.CASE_SET_MEMBERS, caseSetMembersFilter),
   });
 
   // Load all case sets for the given case set members
-  const existingCaseSetsFilter = useMemo<TypedUuidSetFilter>(() => {
+  const existingCaseSetsFilter = useMemo<CaseDbTypedUuidSetFilter>(() => {
     return {
       invert: false,
       key: 'id',
@@ -67,14 +67,14 @@ export const EpiCasesAlreadyInCaseSetWarning = ({ cases }: EpiCasesAlreadyInCase
   const { data: caseSets, error: caseSetsError, isLoading: isCaseSetsLoading } = useQueryMemo({
     enabled: existingCaseSetsFilter.members.length > 0,
     queryFn: async ({ signal }) => {
-      const response = await CaseApi.instance.caseSetsPostQuery(existingCaseSetsFilter, { signal });
+      const response = await CaseDbCaseApi.instance.caseSetsPostQuery(existingCaseSetsFilter, { signal });
       return response.data;
     },
     queryKey: QueryUtil.getGenericKey(QUERY_KEY.CASE_SETS, existingCaseSetsFilter),
   });
 
   const caseSetsByCase = useMemo(() => {
-    const map = new Map<Case, CaseSet[]>();
+    const map = new Map<CaseDbCase, CaseDbCaseSet[]>();
     if (!caseSets || !caseSetMembers) {
       return map;
     }
@@ -86,7 +86,7 @@ export const EpiCasesAlreadyInCaseSetWarning = ({ cases }: EpiCasesAlreadyInCase
         LogManager.instance.log([
           {
             detail: member,
-            level: LogLevel.DEBUG,
+            level: CaseDbLogLevel.DEBUG,
             topic: 'MISSING_CASE_OR_CASE_SET',
           },
         ]);

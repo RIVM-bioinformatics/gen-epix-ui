@@ -1,12 +1,12 @@
-import { FileCompression } from '@gen-epix/api-casedb';
+import { CaseDbFileCompression } from '@gen-epix/api-casedb';
 
 export class FileUtil {
-  public static getFileCompressionFromFileName(fileName: string): FileCompression {
+  public static getFileCompressionFromFileName(fileName: string): CaseDbFileCompression {
     const lowerFileName = fileName.toLowerCase();
     if (lowerFileName.endsWith('.gz') || lowerFileName.endsWith('.gzip')) {
-      return FileCompression.GZIP;
+      return CaseDbFileCompression.GZIP;
     }
-    return FileCompression.NONE;
+    return CaseDbFileCompression.NONE;
   }
 
   public static getReadableFileSize(sizeInBytes: number): string {

@@ -20,12 +20,12 @@ import {
 } from 'react-hook-form';
 import { useShallow } from 'zustand/shallow';
 import type {
-  Case,
-  CaseSet,
-  CaseSetMember,
-  TypedUuidSetFilter,
+  CaseDbCase,
+  CaseDbCaseSet,
+  CaseDbCaseSetMember,
+  CaseDbTypedUuidSetFilter,
 } from '@gen-epix/api-casedb';
-import { CaseApi } from '@gen-epix/api-casedb';
+import { CaseDbCaseApi } from '@gen-epix/api-casedb';
 
 import {
   withDialog,
@@ -57,8 +57,8 @@ import { EpiAddCasesToEventDialogSuccessNotificationMessage } from './EpiAddCase
 
 
 export interface EpiAddCasesToEventDialogOpenProps {
-  currentCaseSet: CaseSet;
-  rows: Case[];
+  currentCaseSet: CaseDbCaseSet;
+  rows: CaseDbCase[];
 }
 
 export interface EpiAddCasesToEventDialogProps extends WithDialogRenderProps<EpiAddCasesToEventDialogOpenProps> {
@@ -133,7 +133,7 @@ export const EpiAddCasesToEventDialog = withDialog<EpiAddCasesToEventDialogProps
   const { control } = formMethods;
   const { caseSetId, shouldApplySharingToCases } = useWatch({ control });
 
-  const caseSetMembersFilter = useMemo<TypedUuidSetFilter>(() => ({
+  const caseSetMembersFilter = useMemo<CaseDbTypedUuidSetFilter>(() => ({
     invert: false,
     key: 'case_set_id',
     members: [caseSetId],
@@ -142,13 +142,13 @@ export const EpiAddCasesToEventDialog = withDialog<EpiAddCasesToEventDialogProps
   const { data: caseSetMembers, error: caseSetMembersError, isLoading: isCaseSetMembersLoading } = useQueryMemo({
     enabled: !!caseSetId,
     queryFn: async ({ signal }) => {
-      const response = await CaseApi.instance.caseSetMembersPostQuery(caseSetMembersFilter, { signal });
+      const response = await CaseDbCaseApi.instance.caseSetMembersPostQuery(caseSetMembersFilter, { signal });
       return response.data;
     },
     queryKey: QueryUtil.getGenericKey(QUERY_KEY.CASE_SET_MEMBERS, caseSetMembersFilter),
   });
 
-  const caseSetDataCollectionLinksFilter = useMemo<TypedUuidSetFilter>(() => ({
+  const caseSetDataCollectionLinksFilter = useMemo<CaseDbTypedUuidSetFilter>(() => ({
     invert: false,
     key: 'case_set_id',
     members: [caseSetId],
@@ -157,7 +157,7 @@ export const EpiAddCasesToEventDialog = withDialog<EpiAddCasesToEventDialogProps
   const { data: caseSetDataCollectionLinks, error: caseSetDataCollectionLinksError, isLoading: isCaseSetDataCollectionLinksLoading } = useQueryMemo({
     enabled: !!caseSetId,
     queryFn: async ({ signal }) => {
-      const response = await CaseApi.instance.caseSetDataCollectionLinksPostQuery(caseSetDataCollectionLinksFilter, { signal });
+      const response = await CaseDbCaseApi.instance.caseSetDataCollectionLinksPostQuery(caseSetDataCollectionLinksFilter, { signal });
       return response.data;
     },
     queryKey: QueryUtil.getGenericKey(QUERY_KEY.CASE_SET_DATA_COLLECTION_LINKS, caseSetDataCollectionLinksFilter),
@@ -189,7 +189,7 @@ export const EpiAddCasesToEventDialog = withDialog<EpiAddCasesToEventDialogProps
     onClose();
   }, [fetchData, onClose]);
 
-  const { isMutating: isMutatingItems, mutate: mutateItems } = useEditMutation<CaseSetMember[]>({
+  const { isMutating: isMutatingItems, mutate: mutateItems } = useEditMutation<CaseDbCaseSetMember[]>({
     associationQueryKeys: QueryUtil.getQueryKeyDependencies([QUERY_KEY.CASE_SET_MEMBERS], true),
     getErrorNotificationMessage: () => t('Failed add case(s) to {{caseSetName}}', { caseSetName: caseSetsMapQuery.map.get(caseSetId).name }),
     getProgressNotificationMessage: () => t('Adding case(s) to {{caseSetName}}', { caseSetName: caseSetsMapQuery.map.get(caseSetId).name }),
@@ -201,8 +201,8 @@ export const EpiAddCasesToEventDialog = withDialog<EpiAddCasesToEventDialogProps
     ),
     onError,
     onSuccess,
-    queryFn: async (items: CaseSetMember[]) => {
-      await CaseApi.instance.caseSetMembersPostSome(items);
+    queryFn: async (items: CaseDbCaseSetMember[]) => {
+      await CaseDbCaseApi.instance.caseSetMembersPostSome(items);
       return items;
     },
   });
@@ -211,7 +211,7 @@ export const EpiAddCasesToEventDialog = withDialog<EpiAddCasesToEventDialogProps
     mutateItems(caseIdsToAdd.map(caseId => ({
       case_id: caseId,
       case_set_id: caseSetId,
-    } satisfies CaseSetMember)));
+    } satisfies CaseDbCaseSetMember)));
   }), [caseIdsToAdd, caseSetId, mutateItems]);
 
   const onCancelButtonClick = useCallback((() => {

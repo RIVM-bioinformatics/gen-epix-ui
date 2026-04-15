@@ -16,8 +16,8 @@ import { yupResolver } from '@hookform/resolvers/yup';
 import type { Resolver } from 'react-hook-form';
 import { useForm } from 'react-hook-form';
 import {
-  OrganizationApi,
-  type UserInvitation,
+  CaseDbOrganizationApi,
+  type CaseDbUserInvitation,
 } from '@gen-epix/api-casedb';
 
 import type {
@@ -36,7 +36,7 @@ import { QUERY_KEY } from '../../models/query';
 import { NotificationManager } from '../../classes/managers/NotificationManager';
 
 export interface UserInvitationConsumeDialogOpenProps {
-  item: UserInvitation;
+  item: CaseDbUserInvitation;
 }
 
 export interface UserInvitationConsumeDialogProps extends WithDialogRenderProps<UserInvitationConsumeDialogOpenProps> {
@@ -85,7 +85,7 @@ export const UserInvitationConsumeDialog = withDialog<UserInvitationConsumeDialo
   const onFormSubmit = useCallback(async (data: FormFields) => {
     try {
       AuthenticationManager.instance.temporaryToken = data.bearerToken;
-      await OrganizationApi.instance.userRegistrationsPostOne(openProps.item.token);
+      await CaseDbOrganizationApi.instance.userRegistrationsPostOne(openProps.item.token);
       NotificationManager.instance.showNotification({
         message: t`Invitation has been consumed by bearer token`,
         severity: 'success',

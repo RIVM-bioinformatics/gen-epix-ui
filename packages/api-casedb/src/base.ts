@@ -15,11 +15,15 @@
 import { Configuration } from './configuration';
 // Some imports not used depending on template conditions
 // @ts-ignore
-import type { AxiosPromise, AxiosInstance, RawAxiosRequestConfig, InternalAxiosRequestConfig, AxiosResponse } from 'axios';
+import type { AxiosInstance, AxiosRequestConfig, AxiosResponse, InternalAxiosRequestConfig } from 'axios';
 import globalAxios from 'axios';
 
 export const BASE_PATH = "";
 
+/**
+ *
+ * @export
+ */
 export const COLLECTION_FORMATS = {
     csv: ",",
     ssv: " ",
@@ -27,12 +31,22 @@ export const COLLECTION_FORMATS = {
     pipes: "|",
 };
 
+/**
+ *
+ * @export
+ * @interface RequestArgs
+ */
 export interface RequestArgs {
     url: string;
-    options: RawAxiosRequestConfig;
+    options: AxiosRequestConfig;
 }
 
-export class BaseAPI {
+/**
+ *
+ * @export
+ * @class BaseAPI
+ */
+export class CaseDbBaseAPI {
     public static defaultRequestTimeout: number;
     public static baseUrl: string;
     public static onRequest: Array<(request: InternalAxiosRequestConfig) => InternalAxiosRequestConfig<unknown>> = [];
@@ -45,23 +59,23 @@ export class BaseAPI {
     public constructor() {
       this.axios = globalAxios.create();
       this.axios.interceptors.request.use(request => {
-        if (BaseAPI.onRequest?.length) {
-          return BaseAPI.onRequest.reduce((prev, curr) => {
+        if (CaseDbBaseAPI.onRequest?.length) {
+          return CaseDbBaseAPI.onRequest.reduce((prev, curr) => {
             return curr(prev);
           }, request);
         }
         return request;
       });
       this.axios.interceptors.response.use(response => {
-        if (BaseAPI.onResponseFulfilled?.length) {
-          BaseAPI.onResponseFulfilled.reduce((prev, curr) => {
+        if (CaseDbBaseAPI.onResponseFulfilled?.length) {
+          CaseDbBaseAPI.onResponseFulfilled.reduce((prev, curr) => {
             return curr(prev);
           }, response)
         }
         return response;
       }, (err: unknown) => {
-        if (BaseAPI.onResponseRejected?.length) {
-          BaseAPI.onResponseRejected.forEach(cb => cb(err));
+        if (CaseDbBaseAPI.onResponseRejected?.length) {
+          CaseDbBaseAPI.onResponseRejected.forEach(cb => cb(err));
         }
         return err;
       });
@@ -69,19 +83,15 @@ export class BaseAPI {
 };
 
 
+/**
+ *
+ * @export
+ * @class RequiredError
+ * @extends {Error}
+ */
 export class RequiredError extends Error {
     constructor(public field: string, msg?: string) {
         super(msg);
         this.name = "RequiredError"
     }
-}
-
-interface ServerMap {
-    [key: string]: {
-        url: string,
-        description: string,
-    }[];
-}
-
-export const operationServerMap: ServerMap = {
 }

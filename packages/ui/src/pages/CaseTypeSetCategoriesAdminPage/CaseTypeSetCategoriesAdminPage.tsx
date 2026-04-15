@@ -7,11 +7,11 @@ import {
   mixed,
   object,
 } from 'yup';
-import type { CaseTypeSetCategory } from '@gen-epix/api-casedb';
+import type { CaseDbCaseTypeSetCategory } from '@gen-epix/api-casedb';
 import {
-  CaseApi,
-  CaseTypeSetCategoryPurpose,
-  CommandName,
+  CaseDbCaseApi,
+  CaseDbCaseTypeSetCategoryPurpose,
+  CaseDbCommandName,
 } from '@gen-epix/api-casedb';
 
 import type { FormFieldDefinition } from '../../models/form';
@@ -26,7 +26,7 @@ import { useArray } from '../../hooks/useArray';
 import type { OmitWithMetaData } from '../../models/data';
 import { SchemaUtil } from '../../utils/SchemaUtil';
 
-type FormFields = OmitWithMetaData<CaseTypeSetCategory>;
+type FormFields = OmitWithMetaData<CaseDbCaseTypeSetCategory>;
 
 export const CaseTypeSetCategoriesAdminPage = () => {
   const { t } = useTranslation();
@@ -36,22 +36,22 @@ export const CaseTypeSetCategoriesAdminPage = () => {
   const loadables = useArray([caseTypeSetCategoryPurposeOptionsQuery]);
 
   const fetchAll = useCallback(async (signal: AbortSignal) => {
-    return (await CaseApi.instance.caseTypeSetCategoriesGetAll({ signal }))?.data;
+    return (await CaseDbCaseApi.instance.caseTypeSetCategoriesGetAll({ signal }))?.data;
   }, []);
 
-  const deleteOne = useCallback(async (item: CaseTypeSetCategory) => {
-    return await CaseApi.instance.caseTypeSetCategoriesDeleteOne(item.id);
+  const deleteOne = useCallback(async (item: CaseDbCaseTypeSetCategory) => {
+    return await CaseDbCaseApi.instance.caseTypeSetCategoriesDeleteOne(item.id);
   }, []);
 
-  const updateOne = useCallback(async (variables: FormFields, item: CaseTypeSetCategory) => {
-    return (await CaseApi.instance.caseTypeSetCategoriesPutOne(item.id, { id: item.id, ...variables })).data;
+  const updateOne = useCallback(async (variables: FormFields, item: CaseDbCaseTypeSetCategory) => {
+    return (await CaseDbCaseApi.instance.caseTypeSetCategoriesPutOne(item.id, { id: item.id, ...variables })).data;
   }, []);
 
   const createOne = useCallback(async (variables: FormFields) => {
-    return (await CaseApi.instance.caseTypeSetCategoriesPostOne(variables)).data;
+    return (await CaseDbCaseApi.instance.caseTypeSetCategoriesPostOne(variables)).data;
   }, []);
 
-  const getName = useCallback((item: CaseTypeSetCategory) => {
+  const getName = useCallback((item: CaseDbCaseTypeSetCategory) => {
     return item.name;
   }, []);
 
@@ -59,7 +59,7 @@ export const CaseTypeSetCategoriesAdminPage = () => {
     return object<FormFields>().shape({
       description: SchemaUtil.description,
       name: SchemaUtil.name,
-      purpose: mixed<CaseTypeSetCategoryPurpose>().required().oneOf(Object.values(CaseTypeSetCategoryPurpose)),
+      purpose: mixed<CaseDbCaseTypeSetCategoryPurpose>().required().oneOf(Object.values(CaseDbCaseTypeSetCategoryPurpose)),
       rank: SchemaUtil.rank,
     });
   }, []);
@@ -95,19 +95,19 @@ export const CaseTypeSetCategoriesAdminPage = () => {
     ] as const;
   }, [caseTypeSetCategoryPurposeOptionsQuery.isLoading, caseTypeSetCategoryPurposeOptionsQuery.options, t]);
 
-  const tableColumns = useMemo((): TableColumn<CaseTypeSetCategory>[] => {
+  const tableColumns = useMemo((): TableColumn<CaseDbCaseTypeSetCategory>[] => {
     return [
-      TableUtil.createTextColumn<CaseTypeSetCategory>({ id: 'name', name: t`Name` }),
-      TableUtil.createNumberColumn<CaseTypeSetCategory>({ id: 'rank', name: t`Rank` }),
-      TableUtil.createOptionsColumn<CaseTypeSetCategory>({ id: 'purpose', name: t`Purpose`, options: caseTypeSetCategoryPurposeOptionsQuery.options }),
+      TableUtil.createTextColumn<CaseDbCaseTypeSetCategory>({ id: 'name', name: t`Name` }),
+      TableUtil.createNumberColumn<CaseDbCaseTypeSetCategory>({ id: 'rank', name: t`Rank` }),
+      TableUtil.createOptionsColumn<CaseDbCaseTypeSetCategory>({ id: 'purpose', name: t`Purpose`, options: caseTypeSetCategoryPurposeOptionsQuery.options }),
     ];
   }, [caseTypeSetCategoryPurposeOptionsQuery.options, t]);
 
   return (
-    <CrudPage<FormFields, CaseTypeSetCategory>
+    <CrudPage<FormFields, CaseDbCaseTypeSetCategory>
       createItemDialogTitle={t`Create new case type set category`}
       createOne={createOne}
-      crudCommandType={CommandName.CaseTypeSetCategoryCrudCommand}
+      crudCommandType={CaseDbCommandName.CaseTypeSetCategoryCrudCommand}
       defaultSortByField={'name'}
       defaultSortDirection={'asc'}
       deleteOne={deleteOne}

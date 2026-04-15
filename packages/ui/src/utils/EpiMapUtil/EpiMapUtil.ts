@@ -2,8 +2,8 @@ import max from 'lodash/max';
 import min from 'lodash/min';
 import round from 'lodash/round';
 import type {
-  Case,
-  Region,
+  CaseDbCase,
+  CaseDbRegion,
 } from '@gen-epix/api-casedb';
 
 import { ConfigManager } from '../../classes/managers/ConfigManager';
@@ -12,7 +12,7 @@ export type RegionStatistics = {
   maxNumCases: number;
   minNumCases: number;
   numCases: number;
-  statisticsPerRegion: Record<string, { numCases: number; region: Region; rows: Case[] }>;
+  statisticsPerRegion: Record<string, { numCases: number; region: CaseDbRegion; rows: CaseDbCase[] }>;
 };
 
 type GeoJsonBounds = [number, number, number, number];
@@ -66,7 +66,7 @@ export class EpiMapUtil {
     return Math.max(MIN_PIE_CHART_RADIUS, radius);
   }
 
-  public static getRegionStatistics(cases: Case[], columnId: string, regions: Region[]): RegionStatistics {
+  public static getRegionStatistics(cases: CaseDbCase[], columnId: string, regions: CaseDbRegion[]): RegionStatistics {
     if (!cases.length || !columnId || !regions?.length) {
       return {
         maxNumCases: 0,
@@ -79,8 +79,8 @@ export class EpiMapUtil {
     let numCases = 0;
     const statisticsPerRegion: Record<string, {
       numCases: number;
-      region: Region;
-      rows: Case[];
+      region: CaseDbRegion;
+      rows: CaseDbCase[];
     }> = {};
     cases.forEach(row => {
       const regionId = row.content[columnId];

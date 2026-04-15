@@ -11,8 +11,8 @@ import {
   useRef,
 } from 'react';
 import { useParams } from 'react-router-dom';
-import type { User } from '@gen-epix/api-casedb';
-import { OrganizationApi } from '@gen-epix/api-casedb';
+import type { CaseDbUser } from '@gen-epix/api-casedb';
+import { CaseDbOrganizationApi } from '@gen-epix/api-casedb';
 
 import { TestIdUtil } from '../../utils/TestIdUtil';
 import { PageContainer } from '../../components/ui/PageContainer';
@@ -69,12 +69,12 @@ export const UserEffectiveRightsAdminPage = () => {
 
   const { userId } = useParams();
 
-  const { data: user, error: userError, isLoading: isUserLoading } = useItemQuery<User>({
+  const { data: user, error: userError, isLoading: isUserLoading } = useItemQuery<CaseDbUser>({
     baseQueryKey: QUERY_KEY.USERS,
     itemId: userId,
     useQueryOptions: {
       queryFn: async ({ signal }) => {
-        const response = await OrganizationApi.instance.usersGetOne(userId, { signal });
+        const response = await CaseDbOrganizationApi.instance.usersGetOne(userId, { signal });
         return response.data;
       },
     },

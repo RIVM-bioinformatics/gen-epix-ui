@@ -1,31 +1,31 @@
 import type {
-  CaseTypeSetMember,
-  ColSetMember,
-  OrganizationAccessCasePolicy,
-  OrganizationShareCasePolicy,
-  User,
-  UserAccessCasePolicy,
-  UserShareCasePolicy,
+  CaseDbCaseTypeSetMember,
+  CaseDbColSetMember,
+  CaseDbOrganizationAccessCasePolicy,
+  CaseDbOrganizationShareCasePolicy,
+  CaseDbUser,
+  CaseDbUserAccessCasePolicy,
+  CaseDbUserShareCasePolicy,
 } from '@gen-epix/api-casedb';
 
 import type { UserEffectiveRight } from '../../models/caseAccess';
 import { DataSetUtil } from '../DataSetUtil';
 
 export type OrganizationPolicyGroup = {
-  access_case_policies: OrganizationAccessCasePolicy[];
+  access_case_policies: CaseDbOrganizationAccessCasePolicy[];
   data_collection_id: string;
   organization_id: string;
-  share_case_policies: OrganizationShareCasePolicy[];
+  share_case_policies: CaseDbOrganizationShareCasePolicy[];
 };
 
 type AssembleUserEffectiveRightsKwArgs = {
-  caseTypeSetMembers: CaseTypeSetMember[];
-  colSetMembers: ColSetMember[];
-  organizationAccessCasePolicies: OrganizationAccessCasePolicy[];
-  organizationShareCasePolicies: OrganizationShareCasePolicy[];
-  user: User;
-  userAccessCasePolicies: UserAccessCasePolicy[];
-  userShareCasePolicies: UserShareCasePolicy[];
+  caseTypeSetMembers: CaseDbCaseTypeSetMember[];
+  colSetMembers: CaseDbColSetMember[];
+  organizationAccessCasePolicies: CaseDbOrganizationAccessCasePolicy[];
+  organizationShareCasePolicies: CaseDbOrganizationShareCasePolicy[];
+  user: CaseDbUser;
+  userAccessCasePolicies: CaseDbUserAccessCasePolicy[];
+  userShareCasePolicies: CaseDbUserShareCasePolicy[];
 };
 
 type GetOrganizationPolicyGroupsKwArgs = Pick<AssembleUserEffectiveRightsKwArgs, 'organizationAccessCasePolicies' | 'organizationShareCasePolicies'>;
@@ -157,8 +157,8 @@ export class EffectiveRightsUtil {
   public static getMatchingOrganizationShareCasePolicies(params: {
     dataCollectionId: string;
     organizationId: string;
-    organizationShareCasePolicies: OrganizationShareCasePolicy[];
-  }): OrganizationShareCasePolicy[] {
+    organizationShareCasePolicies: CaseDbOrganizationShareCasePolicy[];
+  }): CaseDbOrganizationShareCasePolicy[] {
     const {
       dataCollectionId,
       organizationId,
@@ -180,7 +180,7 @@ export class EffectiveRightsUtil {
       return [];
     }
 
-    const sharePoliciesByKey = new Map<string, OrganizationShareCasePolicy[]>();
+    const sharePoliciesByKey = new Map<string, CaseDbOrganizationShareCasePolicy[]>();
 
     organizationShareCasePolicies
       .filter(policy => policy.is_active)

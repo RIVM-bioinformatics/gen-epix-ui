@@ -13,12 +13,8 @@ import {
 } from 'react';
 import { useTranslation } from 'react-i18next';
 import { useAuth } from 'react-oidc-context';
-import { LogLevel } from '@gen-epix/api-casedb';
+import { CaseDbLogLevel } from '@gen-epix/api-casedb';
 
-import { PageContainer } from '../PageContainer';
-import type { ConsentDialogRefMethods } from '../ConsentDialog';
-import { ConsentDialog } from '../ConsentDialog';
-import { Spinner } from '../Spinner';
 import { AuthenticationManager } from '../../../classes/managers/AuthenticationManager';
 import { ConfigManager } from '../../../classes/managers/ConfigManager';
 import { LogManager } from '../../../classes/managers/LogManager';
@@ -26,6 +22,10 @@ import { WindowManager } from '../../../classes/managers/WindowManager';
 import { useSubscribable } from '../../../hooks/useSubscribable';
 import { TestIdUtil } from '../../../utils/TestIdUtil';
 import type { AuthState } from '../../../models/auth';
+import type { ConsentDialogRefMethods } from '../../ui/ConsentDialog';
+import { ConsentDialog } from '../../ui/ConsentDialog';
+import { PageContainer } from '../../ui/PageContainer';
+import { Spinner } from '../../ui/Spinner';
 
 export const AuthenticationWrapper = ({ children }: PropsWithChildren) => {
   const { t } = useTranslation();
@@ -52,7 +52,7 @@ export const AuthenticationWrapper = ({ children }: PropsWithChildren) => {
   const onConsentDialogConsent = useCallback(() => {
     LogManager.instance.log([
       {
-        level: LogLevel.INFO,
+        level: CaseDbLogLevel.INFO,
         topic: 'CONSENT',
       },
     ]);
@@ -147,7 +147,7 @@ export const AuthenticationWrapper = ({ children }: PropsWithChildren) => {
         detail: {
           error: auth.error,
         },
-        level: LogLevel.ERROR,
+        level: CaseDbLogLevel.ERROR,
         topic: 'Authentication Error',
       },
     ]);

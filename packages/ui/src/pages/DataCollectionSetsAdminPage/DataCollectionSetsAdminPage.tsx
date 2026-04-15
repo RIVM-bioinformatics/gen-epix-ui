@@ -9,12 +9,12 @@ import {
   string,
 } from 'yup';
 import type {
-  DataCollectionSet,
-  DataCollectionSetMember,
+  CaseDbDataCollectionSet,
+  CaseDbDataCollectionSetMember,
 } from '@gen-epix/api-casedb';
 import {
-  CommandName,
-  OrganizationApi,
+  CaseDbCommandName,
+  CaseDbOrganizationApi,
 } from '@gen-epix/api-casedb';
 
 import { CrudPage } from '../CrudPage';
@@ -32,7 +32,7 @@ import { SchemaUtil } from '../../utils/SchemaUtil';
 
 type FormFields = OmitWithMetaData<TableData>;
 
-type TableData = { dataCollectionIds: string[] } & DataCollectionSet;
+type TableData = { dataCollectionIds: string[] } & CaseDbDataCollectionSet;
 
 export const DataCollectionSetsAdminPage = () => {
   const { t } = useTranslation();
@@ -43,27 +43,27 @@ export const DataCollectionSetsAdminPage = () => {
   const loadables = useArray([dataCollectionSetMembersQuery, dataCollectionOptionsQuery]);
 
   const fetchAll = useCallback(async (signal: AbortSignal) => {
-    return (await OrganizationApi.instance.dataCollectionSetsGetAll({ signal }))?.data;
+    return (await CaseDbOrganizationApi.instance.dataCollectionSetsGetAll({ signal }))?.data;
   }, []);
 
-  const deleteOne = useCallback(async (item: DataCollectionSet) => {
-    return await OrganizationApi.instance.dataCollectionSetsDeleteOne(item.id);
+  const deleteOne = useCallback(async (item: CaseDbDataCollectionSet) => {
+    return await CaseDbOrganizationApi.instance.dataCollectionSetsDeleteOne(item.id);
   }, []);
 
-  const updateOne = useCallback(async (variables: FormFields, item: DataCollectionSet) => {
-    await OrganizationApi.instance.dataCollectionSetsPutDataCollections(item.id, {
-      data_collection_set_members: variables.dataCollectionIds.map<DataCollectionSetMember>(data_collection_id => ({
+  const updateOne = useCallback(async (variables: FormFields, item: CaseDbDataCollectionSet) => {
+    await CaseDbOrganizationApi.instance.dataCollectionSetsPutDataCollections(item.id, {
+      data_collection_set_members: variables.dataCollectionIds.map<CaseDbDataCollectionSetMember>(data_collection_id => ({
         data_collection_id,
         data_collection_set_id: item.id,
       })),
     });
-    return (await OrganizationApi.instance.dataCollectionSetsPutOne(item.id, { id: item.id, ...variables })).data;
+    return (await CaseDbOrganizationApi.instance.dataCollectionSetsPutOne(item.id, { id: item.id, ...variables })).data;
   }, []);
 
   const createOne = useCallback(async (variables: FormFields) => {
-    const resultItem = (await OrganizationApi.instance.dataCollectionSetsPostOne(variables)).data;
-    await OrganizationApi.instance.dataCollectionSetsPutDataCollections(resultItem.id, {
-      data_collection_set_members: variables.dataCollectionIds.map<DataCollectionSetMember>(data_collection_id => ({
+    const resultItem = (await CaseDbOrganizationApi.instance.dataCollectionSetsPostOne(variables)).data;
+    await CaseDbOrganizationApi.instance.dataCollectionSetsPutDataCollections(resultItem.id, {
+      data_collection_set_members: variables.dataCollectionIds.map<CaseDbDataCollectionSetMember>(data_collection_id => ({
         data_collection_id,
         data_collection_set_id: resultItem.id,
       })),
@@ -71,7 +71,7 @@ export const DataCollectionSetsAdminPage = () => {
     return resultItem;
   }, []);
 
-  const getName = useCallback((item: DataCollectionSet) => {
+  const getName = useCallback((item: CaseDbDataCollectionSet) => {
     return item.name;
   }, []);
 
@@ -121,7 +121,7 @@ export const DataCollectionSetsAdminPage = () => {
     ];
   }, [dataCollectionOptionsQuery.options.length, t]);
 
-  const convertToTableData = useCallback((items: DataCollectionSet[]) => {
+  const convertToTableData = useCallback((items: CaseDbDataCollectionSet[]) => {
     if (!items || !dataCollectionSetMembersQuery.data) {
       return [];
     }
@@ -135,11 +135,11 @@ export const DataCollectionSetsAdminPage = () => {
   }, [dataCollectionSetMembersQuery.data]);
 
   return (
-    <CrudPage<FormFields, DataCollectionSet, TableData>
+    <CrudPage<FormFields, CaseDbDataCollectionSet, TableData>
       convertToTableData={convertToTableData}
       createItemDialogTitle={t`Create new data collection set`}
       createOne={createOne}
-      crudCommandType={CommandName.DataCollectionSetCrudCommand}
+      crudCommandType={CaseDbCommandName.DataCollectionSetCrudCommand}
       defaultSortByField={'name'}
       defaultSortDirection={'asc'}
       deleteOne={deleteOne}

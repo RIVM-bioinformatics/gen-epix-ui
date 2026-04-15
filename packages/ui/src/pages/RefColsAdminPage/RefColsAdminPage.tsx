@@ -11,11 +11,11 @@ import {
 } from 'yup';
 import { useParams } from 'react-router-dom';
 import type { UseFormReturn } from 'react-hook-form';
-import type { RefCol } from '@gen-epix/api-casedb';
+import type { CaseDbRefCol } from '@gen-epix/api-casedb';
 import {
-  CaseApi,
-  ColType,
-  CommandName,
+  CaseDbCaseApi,
+  CaseDbColType,
+  CaseDbCommandName,
 } from '@gen-epix/api-casedb';
 
 import { useColTypeOptionsQuery } from '../../dataHooks/useColTypesQuery';
@@ -42,9 +42,9 @@ import { DataUtil } from '../../utils/DataUtil';
 import type { OmitWithMetaData } from '../../models/data';
 import { SchemaUtil } from '../../utils/SchemaUtil';
 
-type FormFields = OmitWithMetaData<RefCol, 'concept_set' | 'genetic_distance_protocol' | 'props' | 'ref_dim' | 'region_set'>;
+type FormFields = OmitWithMetaData<CaseDbRefCol, 'concept_set' | 'genetic_distance_protocol' | 'props' | 'ref_dim' | 'region_set'>;
 
-const CONCEPT_COL_TYPES: ColType[] = [ColType.NOMINAL, ColType.ORDINAL, ColType.INTERVAL];
+const CONCEPT_COL_TYPES: CaseDbColType[] = [CaseDbColType.NOMINAL, CaseDbColType.ORDINAL, CaseDbColType.INTERVAL];
 
 export const RefColsAdminPage = () => {
   const { refDimId } = useParams();
@@ -61,29 +61,29 @@ export const RefColsAdminPage = () => {
   const loadables = useArray([refDimMapQuery, refDimOptionsQuery, colTypeOptionsQuery, conceptSetOptionsQuery, regionSetOptionsQuery, geneticDistanceProtocolOptionsQuery, colsValidationRulesQuery]);
 
   const fetchAll = useCallback(async (signal: AbortSignal) => {
-    return (await CaseApi.instance.refColsGetAll({ signal }))?.data;
+    return (await CaseDbCaseApi.instance.refColsGetAll({ signal }))?.data;
   }, []);
 
-  const fetchAllSelect = useCallback((refCols: RefCol[]) => {
+  const fetchAllSelect = useCallback((refCols: CaseDbRefCol[]) => {
     if (refDimId) {
       return refCols.filter((refCol) => refCol.ref_dim_id === refDimId);
     }
     return refCols;
   }, [refDimId]);
 
-  const deleteOne = useCallback(async (item: RefCol) => {
-    return await CaseApi.instance.refColsDeleteOne(item.id);
+  const deleteOne = useCallback(async (item: CaseDbRefCol) => {
+    return await CaseDbCaseApi.instance.refColsDeleteOne(item.id);
   }, []);
 
-  const updateOne = useCallback(async (variables: FormFields, item: RefCol) => {
-    return (await CaseApi.instance.refColsPutOne(item.id, { id: item.id, ...variables })).data;
+  const updateOne = useCallback(async (variables: FormFields, item: CaseDbRefCol) => {
+    return (await CaseDbCaseApi.instance.refColsPutOne(item.id, { id: item.id, ...variables })).data;
   }, []);
 
   const createOne = useCallback(async (variables: FormFields) => {
-    return (await CaseApi.instance.refColsPostOne(variables)).data;
+    return (await CaseDbCaseApi.instance.refColsPostOne(variables)).data;
   }, []);
 
-  const getName = useCallback((item: RefCol) => {
+  const getName = useCallback((item: CaseDbRefCol) => {
     return item.label;
   }, []);
 
@@ -91,15 +91,15 @@ export const RefColsAdminPage = () => {
     return object<FormFields>().shape({
       code: SchemaUtil.code,
       code_suffix: string().alphaNumeric().required().max(100),
-      col_type: mixed<ColType>().required().oneOf(Object.values(ColType)),
+      col_type: mixed<CaseDbColType>().required().oneOf(Object.values(CaseDbColType)),
       concept_set_id: string().when('col_type', {
-        is: (colType: ColType) => CONCEPT_COL_TYPES.includes(colType),
+        is: (colType: CaseDbColType) => CONCEPT_COL_TYPES.includes(colType),
         otherwise: () => string().nullable().notRequired(),
         then: () => string().uuid4().required(),
       }),
       description: SchemaUtil.description,
       genetic_distance_protocol_id: string().when('col_type', {
-        is: (col_type: ColType) => col_type === ColType.GENETIC_DISTANCE,
+        is: (col_type: CaseDbColType) => col_type === CaseDbColType.GENETIC_DISTANCE,
         otherwise: () => string().nullable().notRequired(),
         then: () => string().uuid4().required(),
       }),
@@ -107,22 +107,22 @@ export const RefColsAdminPage = () => {
       rank: SchemaUtil.rank,
       ref_dim_id: string().uuid4().required().max(100),
       regex: string().when('col_type', {
-        is: (col_type: ColType) => col_type === ColType.REGULAR_LANGUAGE,
+        is: (col_type: CaseDbColType) => col_type === CaseDbColType.REGULAR_LANGUAGE,
         otherwise: () => string().regex().max(500).nullable().notRequired(),
         then: () => string().regex().max(500).required(),
       }),
       region_set_id: string().when('col_type', {
-        is: (col_type: ColType) => col_type === ColType.GEO_REGION,
+        is: (col_type: CaseDbColType) => col_type === CaseDbColType.GEO_REGION,
         otherwise: () => string().nullable().notRequired(),
         then: () => string().uuid4().required(),
       }),
       schema_definition: string().when('col_type', {
-        is: (col_type: ColType) => ([ColType.CONTEXT_FREE_GRAMMAR_JSON, ColType.CONTEXT_FREE_GRAMMAR_XML] as ColType[]).includes(col_type),
+        is: (col_type: CaseDbColType) => ([CaseDbColType.CONTEXT_FREE_GRAMMAR_JSON, CaseDbColType.CONTEXT_FREE_GRAMMAR_XML] as CaseDbColType[]).includes(col_type),
         otherwise: () => string().nullable().notRequired(),
         then: () => string().freeFormText().max(10000).required(),
       }),
       schema_uri: string().when('col_type', {
-        is: (col_type: ColType) => ([ColType.CONTEXT_FREE_GRAMMAR_JSON, ColType.CONTEXT_FREE_GRAMMAR_XML] as ColType[]).includes(col_type),
+        is: (col_type: CaseDbColType) => ([CaseDbColType.CONTEXT_FREE_GRAMMAR_JSON, CaseDbColType.CONTEXT_FREE_GRAMMAR_XML] as CaseDbColType[]).includes(col_type),
         otherwise: () => string().url().max(1000).nullable().notRequired(),
         then: () => string().url().max(1000).required(),
       }),
@@ -143,26 +143,26 @@ export const RefColsAdminPage = () => {
     return options;
   }, [colTypeOptionsQuery.options, colsValidationRulesQuery.data?.valid_col_types_by_dim_type, refDimMapQuery.map]);
 
-  const onFormChange = useCallback((_item: RefCol, values: FormFields, formMethods: UseFormReturn<FormFields>) => {
+  const onFormChange = useCallback((_item: CaseDbRefCol, values: FormFields, formMethods: UseFormReturn<FormFields>) => {
     if (values.col_type && values.concept_set_id && !CONCEPT_COL_TYPES.includes(values.col_type)) {
       formMethods.setValue('concept_set_id', null);
     }
-    if (values.col_type && values.region_set_id && values.col_type !== ColType.GEO_REGION) {
+    if (values.col_type && values.region_set_id && values.col_type !== CaseDbColType.GEO_REGION) {
       formMethods.setValue('region_set_id', null);
     }
-    if (values.col_type && values.genetic_distance_protocol_id && values.col_type !== ColType.GENETIC_DISTANCE) {
+    if (values.col_type && values.genetic_distance_protocol_id && values.col_type !== CaseDbColType.GENETIC_DISTANCE) {
       formMethods.setValue('genetic_distance_protocol_id', null);
     }
     if (values.col_type && values.ref_dim_id) {
       const validColOptions = getColTypeOptionsForDimId(values.ref_dim_id);
       if (!validColOptions.find(option => option.value === values.col_type)) {
-        formMethods.setValue('col_type', validColOptions.length === 1 ? validColOptions[0].value as ColType : null);
+        formMethods.setValue('col_type', validColOptions.length === 1 ? validColOptions[0].value as CaseDbColType : null);
       }
     }
   }, [getColTypeOptionsForDimId]);
 
 
-  const formFieldDefinitions = useCallback((item: RefCol, values: FormFields): FormFieldDefinition<FormFields>[] => {
+  const formFieldDefinitions = useCallback((item: CaseDbRefCol, values: FormFields): FormFieldDefinition<FormFields>[] => {
     const normalizedRefDimId = values?.ref_dim_id ?? item?.ref_dim_id ?? refDimId ?? null;
 
     return [
@@ -247,26 +247,26 @@ export const RefColsAdminPage = () => {
     ] as const satisfies FormFieldDefinition<FormFields>[];
   }, [colTypeOptionsQuery.isLoading, conceptSetOptionsQuery.options, refDimId, refDimOptionsQuery.options, geneticDistanceProtocolOptionsQuery.options, getColTypeOptionsForDimId, regionSetOptionsQuery.options, t]);
 
-  const tableColumns = useMemo((): TableColumn<RefCol>[] => {
-    const columns: TableColumn<RefCol>[] = [];
+  const tableColumns = useMemo((): TableColumn<CaseDbRefCol>[] => {
+    const columns: TableColumn<CaseDbRefCol>[] = [];
 
     if (!refDimId) {
       columns.push(
-        TableUtil.createOptionsColumn<RefCol>({ id: 'ref_dim_id', name: t`Reference dimension`, options: refDimOptionsQuery.options }),
+        TableUtil.createOptionsColumn<CaseDbRefCol>({ id: 'ref_dim_id', name: t`Reference dimension`, options: refDimOptionsQuery.options }),
       );
     }
 
     columns.push(
-      TableUtil.createTextColumn<RefCol>({ id: 'code', name: t`Code` }),
-      TableUtil.createOptionsColumn<RefCol>({ id: 'col_type', name: t`Column type`, options: colTypeOptionsQuery.options }),
-      TableUtil.createTextColumn<RefCol>({ id: 'label', name: t`Label` }),
-      TableUtil.createNumberColumn<RefCol>({ id: 'rank', name: t`Rank` }),
+      TableUtil.createTextColumn<CaseDbRefCol>({ id: 'code', name: t`Code` }),
+      TableUtil.createOptionsColumn<CaseDbRefCol>({ id: 'col_type', name: t`Column type`, options: colTypeOptionsQuery.options }),
+      TableUtil.createTextColumn<CaseDbRefCol>({ id: 'label', name: t`Label` }),
+      TableUtil.createNumberColumn<CaseDbRefCol>({ id: 'rank', name: t`Rank` }),
     );
 
     return columns;
   }, [colTypeOptionsQuery.options, refDimId, refDimOptionsQuery.options, t]);
 
-  const getOptimisticUpdateIntermediateItem = useCallback((variables: FormFields, previousItem: RefCol): RefCol => {
+  const getOptimisticUpdateIntermediateItem = useCallback((variables: FormFields, previousItem: CaseDbRefCol): CaseDbRefCol => {
     return {
       id: previousItem.id,
       ref_dim_id: previousItem.ref_dim_id,
@@ -292,10 +292,10 @@ export const RefColsAdminPage = () => {
   }, [refDimId, refDimMapQuery.map, t]);
 
   return (
-    <CrudPage<FormFields, RefCol>
+    <CrudPage<FormFields, CaseDbRefCol>
       createItemDialogTitle={t`Create new reference column`}
       createOne={createOne}
-      crudCommandType={CommandName.RefColCrudCommand}
+      crudCommandType={CaseDbCommandName.RefColCrudCommand}
       defaultNewItem={defaultNewItem}
       defaultSortByField={refDimId ? 'rank' : 'ref_dim_id'}
       defaultSortDirection={'asc'}

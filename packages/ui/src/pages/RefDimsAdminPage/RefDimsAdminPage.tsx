@@ -8,12 +8,12 @@ import {
   object,
   string,
 } from 'yup';
-import type { RefDim } from '@gen-epix/api-casedb';
+import type { CaseDbRefDim } from '@gen-epix/api-casedb';
 import {
-  CaseApi,
-  CommandName,
-  DimType,
-  PermissionType,
+  CaseDbCaseApi,
+  CaseDbCommandName,
+  CaseDbDimType,
+  CaseDbPermissionType,
 } from '@gen-epix/api-casedb';
 
 import { useDimTypeOptionsQuery } from '../../dataHooks/useDimTypesQuery';
@@ -29,29 +29,29 @@ import { AuthorizationManager } from '../../classes/managers/AuthorizationManage
 import type { OmitWithMetaData } from '../../models/data';
 import { SchemaUtil } from '../../utils/SchemaUtil';
 
-type FormFields = OmitWithMetaData<RefDim, 'props'>;
+type FormFields = OmitWithMetaData<CaseDbRefDim, 'props'>;
 
 export const RefDimsAdminPage = () => {
   const { t } = useTranslation();
   const dimTypeOptionsQuery = useDimTypeOptionsQuery();
 
   const fetchAll = useCallback(async (signal: AbortSignal) => {
-    return (await CaseApi.instance.refDimsGetAll({ signal }))?.data;
+    return (await CaseDbCaseApi.instance.refDimsGetAll({ signal }))?.data;
   }, []);
 
-  const deleteOne = useCallback(async (item: RefDim) => {
-    return await CaseApi.instance.refDimsDeleteOne(item.id);
+  const deleteOne = useCallback(async (item: CaseDbRefDim) => {
+    return await CaseDbCaseApi.instance.refDimsDeleteOne(item.id);
   }, []);
 
-  const updateOne = useCallback(async (variables: FormFields, item: RefDim) => {
-    return (await CaseApi.instance.refDimsPutOne(item.id, { id: item.id, ...variables })).data;
+  const updateOne = useCallback(async (variables: FormFields, item: CaseDbRefDim) => {
+    return (await CaseDbCaseApi.instance.refDimsPutOne(item.id, { id: item.id, ...variables })).data;
   }, []);
 
   const createOne = useCallback(async (variables: FormFields) => {
-    return (await CaseApi.instance.refDimsPostOne(variables)).data;
+    return (await CaseDbCaseApi.instance.refDimsPostOne(variables)).data;
   }, []);
 
-  const getName = useCallback((item: RefDim) => {
+  const getName = useCallback((item: CaseDbRefDim) => {
     return item.label;
   }, []);
 
@@ -60,13 +60,13 @@ export const RefDimsAdminPage = () => {
       code: SchemaUtil.code,
       col_code_prefix: string().alphaNumeric().required().max(100),
       description: SchemaUtil.description,
-      dim_type: mixed<DimType>().required().oneOf(Object.values(DimType)),
+      dim_type: mixed<CaseDbDimType>().required().oneOf(Object.values(CaseDbDimType)),
       label: SchemaUtil.label,
       rank: SchemaUtil.rank,
     });
   }, []);
 
-  const formFieldDefinitions = useCallback((item: RefDim): FormFieldDefinition<FormFields>[] => {
+  const formFieldDefinitions = useCallback((item: CaseDbRefDim): FormFieldDefinition<FormFields>[] => {
     return [
       {
         definition: FORM_FIELD_DEFINITION_TYPE.AUTOCOMPLETE,
@@ -106,35 +106,35 @@ export const RefDimsAdminPage = () => {
     ] as const;
   }, [dimTypeOptionsQuery.options, t]);
 
-  const tableColumns = useMemo((): TableColumn<RefDim>[] => {
+  const tableColumns = useMemo((): TableColumn<CaseDbRefDim>[] => {
     return [
-      TableUtil.createTextColumn<RefDim>({ id: 'code', name: t`Code` }),
-      TableUtil.createOptionsColumn<RefDim>({ id: 'dim_type', name: t`Dimension type`, options: dimTypeOptionsQuery.options }),
-      TableUtil.createTextColumn<RefDim>({ id: 'label', name: t`Label` }),
-      TableUtil.createNumberColumn<RefDim>({ id: 'rank', name: t`Rank` }),
+      TableUtil.createTextColumn<CaseDbRefDim>({ id: 'code', name: t`Code` }),
+      TableUtil.createOptionsColumn<CaseDbRefDim>({ id: 'dim_type', name: t`Dimension type`, options: dimTypeOptionsQuery.options }),
+      TableUtil.createTextColumn<CaseDbRefDim>({ id: 'label', name: t`Label` }),
+      TableUtil.createNumberColumn<CaseDbRefDim>({ id: 'rank', name: t`Rank` }),
     ];
   }, [dimTypeOptionsQuery.options, t]);
 
-  const subPages = useMemo<CrudPageSubPage<RefDim>[]>(() => {
+  const subPages = useMemo<CrudPageSubPage<CaseDbRefDim>[]>(() => {
     if (!AuthorizationManager.instance.doesUserHavePermission([
-      { command_name: CommandName.RefColCrudCommand, permission_type: PermissionType.READ },
+      { command_name: CaseDbCommandName.RefColCrudCommand, permission_type: CaseDbPermissionType.READ },
     ])) {
       return [];
     }
 
     return [
       {
-        getPathName: (item: RefDim) => `/management/reference-dimensions/${item.id}/reference-columns`,
+        getPathName: (item: CaseDbRefDim) => `/management/reference-dimensions/${item.id}/reference-columns`,
         label: t`Manage reference columns`,
-      } satisfies CrudPageSubPage<RefDim>,
+      } satisfies CrudPageSubPage<CaseDbRefDim>,
     ];
   }, [t]);
 
   return (
-    <CrudPage<FormFields, RefDim>
+    <CrudPage<FormFields, CaseDbRefDim>
       createItemDialogTitle={t`Create new reference dimension`}
       createOne={createOne}
-      crudCommandType={CommandName.RefDimCrudCommand}
+      crudCommandType={CaseDbCommandName.RefDimCrudCommand}
       defaultSortByField={'code'}
       defaultSortDirection={'asc'}
       deleteOne={deleteOne}

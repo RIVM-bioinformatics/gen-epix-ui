@@ -4,12 +4,12 @@ import {
   Typography,
 } from '@mui/material';
 import { useTranslation } from 'react-i18next';
-import type { CaseSet } from '@gen-epix/api-casedb';
+import type { CaseDbCaseSet } from '@gen-epix/api-casedb';
 
 import { RichTextEditorContent } from '../../form/fields/RichTextEditor';
 
 export type EpiCaseSetDescriptionProps = {
-  readonly caseSet: CaseSet;
+  readonly caseSet: CaseDbCaseSet;
 } & BoxProps;
 export const EpiCaseSetDescription = ({ caseSet, ...boxProps }: EpiCaseSetDescriptionProps) => {
   const { t } = useTranslation();

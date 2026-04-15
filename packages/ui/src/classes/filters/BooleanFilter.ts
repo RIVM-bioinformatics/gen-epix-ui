@@ -1,5 +1,5 @@
 import type { TFunction } from 'i18next';
-import type { FiltersInner } from '@gen-epix/api-casedb';
+import type { CaseDbFiltersInner } from '@gen-epix/api-casedb';
 
 import { FilterAbstract } from '../abstracts/FilterAbstract';
 import type { Filter } from '../../models/filter';
@@ -25,7 +25,7 @@ export class BooleanFilter extends FilterAbstract<boolean> implements Filter<boo
     return rowValue === this.filterValue;
   }
 
-  public toBackendFilter(): FiltersInner {
+  public toBackendFilter(): CaseDbFiltersInner {
     throw new Error('Not implemented');
   }
 }

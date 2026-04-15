@@ -1,7 +1,7 @@
 import type { UseQueryResult } from '@tanstack/react-query';
 import { useMemo } from 'react';
-import type { Dim } from '@gen-epix/api-casedb';
-import { CaseApi } from '@gen-epix/api-casedb';
+import type { CaseDbDim } from '@gen-epix/api-casedb';
+import { CaseDbCaseApi } from '@gen-epix/api-casedb';
 
 import type {
   UseMap,
@@ -15,29 +15,29 @@ import { useQueryMemo } from '../../hooks/useQueryMemo';
 import { useCaseTypeMapQuery } from '../useCaseTypesQuery';
 import { DataUtil } from '../../utils/DataUtil';
 
-export const useDimsQuery = (): UseQueryResult<Dim[]> => {
+export const useDimsQuery = (): UseQueryResult<CaseDbDim[]> => {
   return useQueryMemo({
     queryFn: async ({ signal }) => {
-      const response = await CaseApi.instance.dimsGetAll({ signal });
+      const response = await CaseDbCaseApi.instance.dimsGetAll({ signal });
       return response.data;
     },
     queryKey: QueryUtil.getGenericKey(QUERY_KEY.DIMS),
   });
 };
 
-export const useDimMapQuery = (): UseMap<Dim> => {
+export const useDimMapQuery = (): UseMap<CaseDbDim> => {
   const response = useDimsQuery();
 
   return useMemo(() => {
-    return DataHookUtil.createUseMapDataHook<Dim>(response, item => item.id);
+    return DataHookUtil.createUseMapDataHook<CaseDbDim>(response, item => item.id);
   }, [response]);
 };
 
-export const useDimNameFactory = (): UseNameFactory<Dim> => {
+export const useDimNameFactory = (): UseNameFactory<CaseDbDim> => {
   const caseTypeMapQuery = useCaseTypeMapQuery();
 
   return useMemo(() => {
-    const getName = (item: Dim) => {
+    const getName = (item: CaseDbDim) => {
       const caseTypeName = caseTypeMapQuery.map.get(item.case_type_id)?.name ?? item.case_type_id;
       return `${caseTypeName} → ${item.label}`;
     };
@@ -51,6 +51,6 @@ export const useDimOptionsQuery = (): UseOptions<string> => {
   const dimNameFactory = useDimNameFactory();
 
   return useMemo(() => {
-    return DataHookUtil.createUseOptionsDataHook<Dim>(response, item => item.id, dimNameFactory.getName, [dimNameFactory], DataUtil.rankSortComperatorFactory(dimNameFactory.getName));
+    return DataHookUtil.createUseOptionsDataHook<CaseDbDim>(response, item => item.id, dimNameFactory.getName, [dimNameFactory], DataUtil.rankSortComperatorFactory(dimNameFactory.getName));
   }, [dimNameFactory, response]);
 };

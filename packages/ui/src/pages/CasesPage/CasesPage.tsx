@@ -16,13 +16,13 @@ import {
   useRef,
 } from 'react';
 import type {
-  CaseStats,
-  CaseTypeSet,
-  CaseTypeSetCategory,
+  CaseDbCaseStats,
+  CaseDbCaseTypeSet,
+  CaseDbCaseTypeSetCategory,
 } from '@gen-epix/api-casedb';
 import {
-  CaseApi,
-  CaseTypeSetCategoryPurpose,
+  CaseDbCaseApi,
+  CaseDbCaseTypeSetCategoryPurpose,
 } from '@gen-epix/api-casedb';
 
 import { ConfigManager } from '../../classes/managers/ConfigManager';
@@ -64,7 +64,7 @@ type Row = {
   hasCases: boolean;
   id: string;
   name: string;
-} & Omit<CaseStats, 'case_type_id'>;
+} & Omit<CaseDbCaseStats, 'case_type_id'>;
 
 const getCaseTypeSetCategoryRowId = (id: string) => `caseTypeSetCategory-${id}`;
 
@@ -77,20 +77,20 @@ export const CasesPage = () => {
 
   const { data: caseTypes, error: caseTypesError, isLoading: isCaseTypesLoading } = useQueryMemo({
     queryFn: async ({ signal }) => {
-      const response = await CaseApi.instance.caseTypesGetAll({ signal });
+      const response = await CaseDbCaseApi.instance.caseTypesGetAll({ signal });
       return response.data;
     },
     queryKey: QueryUtil.getGenericKey(QUERY_KEY.CASE_TYPES),
   });
 
   const caseTypeStatsMap = useMemo(() => {
-    return new Map<string, CaseStats>(caseTypeStatsQuery.data?.map(stat => [stat.case_type_id, stat]));
+    return new Map<string, CaseDbCaseStats>(caseTypeStatsQuery.data?.map(stat => [stat.case_type_id, stat]));
   }, [caseTypeStatsQuery]);
 
 
   const { data: caseTypeSets, error: caseTypeSetsError, isLoading: isCaseTypeSetsLoading } = useQueryMemo({
     queryFn: async ({ signal }) => {
-      const response = await CaseApi.instance.caseTypeSetsGetAll({ signal });
+      const response = await CaseDbCaseApi.instance.caseTypeSetsGetAll({ signal });
       return response.data;
     },
     queryKey: QueryUtil.getGenericKey(QUERY_KEY.CASE_TYPE_SETS),
@@ -98,7 +98,7 @@ export const CasesPage = () => {
 
   const { data: caseTypeSetMembers, error: caseTypeSetMembersError, isLoading: isCaseTypeSetMembersLoading } = useQueryMemo({
     queryFn: async ({ signal }) => {
-      const response = await CaseApi.instance.caseTypeSetMembersGetAll({ signal });
+      const response = await CaseDbCaseApi.instance.caseTypeSetMembersGetAll({ signal });
       return response.data;
     },
     queryKey: QueryUtil.getGenericKey(QUERY_KEY.CASE_TYPE_SET_MEMBERS),
@@ -140,7 +140,7 @@ export const CasesPage = () => {
       return;
     }
 
-    const caseTypeSetCache = new Map<string, CaseTypeSet>();
+    const caseTypeSetCache = new Map<string, CaseDbCaseTypeSet>();
     caseTypeSets.forEach(caseTypeSet => {
       caseTypeSetCache.set(caseTypeSet.id, caseTypeSet);
     });
@@ -206,7 +206,7 @@ export const CasesPage = () => {
         id: 'name',
         name: t('Name'),
       }),
-      ...caseTypeSetCategoriesQuery.data.filter(c => c.purpose === CaseTypeSetCategoryPurpose.CONTENT).map<TableColumn<Row>>((caseTypeSetCategory: CaseTypeSetCategory) => {
+      ...caseTypeSetCategoriesQuery.data.filter(c => c.purpose === CaseDbCaseTypeSetCategoryPurpose.CONTENT).map<TableColumn<Row>>((caseTypeSetCategory: CaseDbCaseTypeSetCategory) => {
         return {
           comparatorFactory: TableUtil.createOptionsCellRowComperator,
           headerName: caseTypeSetCategory.name,

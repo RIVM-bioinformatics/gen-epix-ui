@@ -52,7 +52,7 @@ export interface TableStoreActions<TData> {
   addEventListener: <TEventName extends keyof TableEvent>(eventName: TEventName, callback: (payload: TableEvent[TEventName]) => void) => () => void;
   destroy: () => void;
   emitEvent: <TEventName extends keyof TableEvent>(eventName: TEventName, payload?: TableEvent[TEventName]) => void;
-  fetchData: () => Promise<void>;
+  fetchData: () => Promise<void> | void;
 
   initialize: (globalAbortSignal: AbortSignal) => Promise<void>;
   reloadFilterData: (fistFilterPriorityToFilterFrom?: string) => void;
@@ -211,8 +211,7 @@ export const createTableStoreActions = <TData>(kwArgs: {
     emitEvent: (eventName, payload) => {
       get().eventBus.emit(eventName, payload);
     },
-    // eslint-disable-next-line @typescript-eslint/require-await
-    fetchData: async () => {
+    fetchData: () => {
       const { reloadFilterData } = get();
       reloadFilterData();
     },

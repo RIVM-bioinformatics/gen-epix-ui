@@ -7,17 +7,17 @@ import uniq from 'lodash/uniq';
 import last from 'lodash/last';
 import { persist } from 'zustand/middleware';
 import type {
-  Case,
-  CaseQuery,
-  CaseQueryResult,
-  Col,
-  CompleteCaseType,
-  PhylogeneticTree,
-  TypedCompositeFilter,
+  CaseDbCase,
+  CaseDbCaseQuery,
+  CaseDbCaseQueryResult,
+  CaseDbCol,
+  CaseDbCompleteCaseType,
+  CaseDbPhylogeneticTree,
+  CaseDbTypedCompositeFilter,
 } from '@gen-epix/api-casedb';
 import {
-  CaseApi,
-  ColType,
+  CaseDbCaseApi,
+  CaseDbColType,
 } from '@gen-epix/api-casedb';
 
 import type {
@@ -67,26 +67,26 @@ import { ObjectUtil } from '../../utils/ObjectUtil';
 import { QueryUtil } from '../../utils/QueryUtil';
 import { EpiDataManager } from '../../classes/managers/EpiDataManager';
 
-export interface CreateEpiDashboardStoreInitialStateKwArgs extends CreateTableStoreInitialStateKwArgs<Case> {
+export interface CreateEpiDashboardStoreInitialStateKwArgs extends CreateTableStoreInitialStateKwArgs<CaseDbCase> {
   caseSetId: string;
-  completeCaseType: CompleteCaseType;
+  completeCaseType: CaseDbCompleteCaseType;
 }
 
 export type CreateEpiDashboardStoreKwArgs = {
   caseSetId: string;
-  completeCaseType: CompleteCaseType;
-} & CreateTableStoreKwArgs<Case>;
+  completeCaseType: CaseDbCompleteCaseType;
+} & CreateTableStoreKwArgs<CaseDbCase>;
 
 export type EpiDashboardStore = EpiDashboardStoreActions & EpiDashboardStoreState;
 interface EpiCurveWidgetData extends WidgetData {
   columnId: string;
   dimensionId: string;
 }
-interface EpiDashboardStoreActions extends TableStoreActions<Case> {
+interface EpiDashboardStoreActions extends TableStoreActions<CaseDbCase> {
   addTreeFilter: (nodeId: string) => Promise<void>;
   destroy: () => void;
   expandZone: (zone: EPI_ZONE) => void;
-  mutateCachedCase: (caseId: string, item: Case) => void;
+  mutateCachedCase: (caseId: string, item: CaseDbCase) => void;
   // Private
   reloadStratification: () => void;
   reloadStratifyableColumns: () => void;
@@ -95,8 +95,8 @@ interface EpiDashboardStoreActions extends TableStoreActions<Case> {
   resetTreeAddresses: () => void;
   setFindSimilarCasesResults: (findSimilarCasesResults: FindSimilarCasesResult[]) => Promise<void>;
   setNumVisibleAttributesInSummary: (numVisibleAttributesInSummary: number) => void;
-  setPhylogeneticTreeResponse: (phylogeneticTree: PhylogeneticTree) => void;
-  stratify: (mode: STRATIFICATION_MODE, col?: Col) => void;
+  setPhylogeneticTreeResponse: (phylogeneticTree: CaseDbPhylogeneticTree) => void;
+  stratify: (mode: STRATIFICATION_MODE, col?: CaseDbCol) => void;
   treeFilterStepOut: () => Promise<void>;
   updateEpiCurveWidgetData: (data: Partial<EpiCurveWidgetData>) => void;
 
@@ -104,9 +104,9 @@ interface EpiDashboardStoreActions extends TableStoreActions<Case> {
   updateEpiMapWidgetData: (data: Partial<EpiMapWidgetData>) => void;
   updateEpiTreeWidgetData: (data: Partial<EpiTreeWidgetData>) => void;
 }
-interface EpiDashboardStoreState extends TableStoreState<Case> {
+interface EpiDashboardStoreState extends TableStoreState<CaseDbCase> {
   caseSetId: string;
-  completeCaseType: CompleteCaseType;
+  completeCaseType: CaseDbCompleteCaseType;
   epiCurveWidgetData: EpiCurveWidgetData;
   epiListWidgetData: EpiListWidgetData;
   epiMapWidgetData: EpiMapWidgetData;
@@ -146,7 +146,7 @@ interface EpiTreeWidgetData extends WidgetData {
 }
 
 interface StratifiableColumn {
-  col: Col;
+  col: CaseDbCol;
   enabled: boolean;
 }
 
@@ -183,7 +183,7 @@ const createEpiDashboardStoreInitialState = (kwArgs: CreateEpiDashboardStoreInit
   const { caseSetId, completeCaseType, ...createTableStoreInitialStateKwArgs } = kwArgs;
 
   return {
-    ...createTableStoreInitialState<Case>(createTableStoreInitialStateKwArgs),
+    ...createTableStoreInitialState<CaseDbCase>(createTableStoreInitialStateKwArgs),
     caseSetId,
     completeCaseType,
     epiCurveWidgetData: {
@@ -231,7 +231,7 @@ export const createEpiDashboardStore = (kwArgs: CreateEpiDashboardStoreKwArgs) =
           completeCaseType,
           ...createTableStoreKwArgs,
         });
-        const tableStoreActions = createTableStoreActions<Case>({
+        const tableStoreActions = createTableStoreActions<CaseDbCase>({
           get,
           set,
         });
@@ -276,7 +276,7 @@ export const createEpiDashboardStore = (kwArgs: CreateEpiDashboardStoreKwArgs) =
               .filter(filter => filter.filterMode === FILTER_MODE.BACKEND && !filter.isInitialFilterValue())
               .map(activeFilter => activeFilter.toBackendFilter())
               .filter(x => !!x);
-            const compositeFilter: TypedCompositeFilter = activeFilters.length
+            const compositeFilter: CaseDbTypedCompositeFilter = activeFilters.length
               ? {
                 filters: activeFilters,
                 operator: 'AND',
@@ -284,7 +284,7 @@ export const createEpiDashboardStore = (kwArgs: CreateEpiDashboardStoreKwArgs) =
               }
               : undefined;
 
-            const caseQuery: CaseQuery = {
+            const caseQuery: CaseDbCaseQuery = {
               case_set_ids: caseSetId ? [caseSetId] : undefined,
               case_type_id: completeCaseType.id,
               filter: compositeFilter,
@@ -292,9 +292,9 @@ export const createEpiDashboardStore = (kwArgs: CreateEpiDashboardStoreKwArgs) =
             const retrieveCaseIdsByQueryQueryKey = QueryUtil.getRetrieveCaseIdsByQueryKey(completeCaseType.id, caseQuery);
 
             try {
-              let currentCaseIdsByQueryResponse = QueryUtil.getValidQueryData<CaseQueryResult>(retrieveCaseIdsByQueryQueryKey);
+              let currentCaseIdsByQueryResponse = QueryUtil.getValidQueryData<CaseDbCaseQueryResult>(retrieveCaseIdsByQueryQueryKey);
               if (!currentCaseIdsByQueryResponse) {
-                const retrieveCaseIdsByQueryResponse = (await CaseApi.instance.retrieveCaseIdsByQuery(caseQuery, { signal: fetchAbortController.signal })).data;
+                const retrieveCaseIdsByQueryResponse = (await CaseDbCaseApi.instance.retrieveCaseIdsByQuery(caseQuery, { signal: fetchAbortController.signal })).data;
                 currentCaseIdsByQueryResponse = retrieveCaseIdsByQueryResponse;
                 queryClient.setQueryData(retrieveCaseIdsByQueryQueryKey, currentCaseIdsByQueryResponse);
               }
@@ -303,18 +303,18 @@ export const createEpiDashboardStore = (kwArgs: CreateEpiDashboardStoreKwArgs) =
               //        It's possible the user added similar cases to the current case_set after. Then the case will be included in the query AND the similar case result. So we need to make sure to only include unique case ids.
               const caseIds = uniq([...currentCaseIdsByQueryResponse.case_ids, ...similarCaseIds]);
 
-              const currentCases = QueryUtil.getValidQueryData<Case[]>(QueryUtil.getGenericKey(QUERY_KEY.CASES_LAZY));
+              const currentCases = QueryUtil.getValidQueryData<CaseDbCase[]>(QueryUtil.getGenericKey(QUERY_KEY.CASES_LAZY));
               const currentCaseIds = (currentCases ?? []).map(x => x.id);
               const missingCaseIds = difference(caseIds, currentCaseIds);
               if (missingCaseIds.length) {
-                const missingCasesResult = (await CaseApi.instance.retrieveCasesByIds({
+                const missingCasesResult = (await CaseDbCaseApi.instance.retrieveCasesByIds({
                   case_ids: missingCaseIds,
                   case_type_id: completeCaseType.id,
                 }, { signal: fetchAbortController.signal })).data;
                 queryClient.setQueryData(QueryUtil.getGenericKey(QUERY_KEY.CASES_LAZY), [...currentCases ?? [], ...missingCasesResult]);
               }
 
-              const casesMap = new Map((QueryUtil.getValidQueryData<Case[]>(QueryUtil.getGenericKey(QUERY_KEY.CASES_LAZY)) ?? []).map(x => [x.id, x]));
+              const casesMap = new Map((QueryUtil.getValidQueryData<CaseDbCase[]>(QueryUtil.getGenericKey(QUERY_KEY.CASES_LAZY)) ?? []).map(x => [x.id, x]));
               casesMap.forEach((item) => {
                 queryClient.setQueryData(QueryUtil.getGenericKey(QUERY_KEY.CASES_LAZY, item.id), item);
               });
@@ -330,9 +330,9 @@ export const createEpiDashboardStore = (kwArgs: CreateEpiDashboardStoreKwArgs) =
               globalAbortSignal.removeEventListener('abort', globalAbortSignalListener);
             }
           },
-          mutateCachedCase: (caseId: string, item: Case) => {
+          mutateCachedCase: (caseId: string, item: CaseDbCase) => {
             const queryClient = QueryClientManager.instance.queryClient;
-            const currentCases = QueryUtil.getValidQueryData<Case[]>(QueryUtil.getGenericKey(QUERY_KEY.CASES_LAZY));
+            const currentCases = QueryUtil.getValidQueryData<CaseDbCase[]>(QueryUtil.getGenericKey(QUERY_KEY.CASES_LAZY));
             queryClient.setQueryData(QueryUtil.getGenericKey(QUERY_KEY.CASES_LAZY), currentCases.map(c => c.id === caseId ? item : c));
           },
           reloadFilterData: () => {
@@ -342,11 +342,11 @@ export const createEpiDashboardStore = (kwArgs: CreateEpiDashboardStoreKwArgs) =
             reloadStratification();
           },
           // Private
-          reloadFilterPriorityData: (filterPriority: string, data: Case[]): Case[] => {
+          reloadFilterPriorityData: (filterPriority: string, data: CaseDbCase[]): CaseDbCase[] => {
             const { filters, reloadTree } = get();
             if (filterPriority === SELECTION_FILTER_GROUP) {
               const selectionFilter = filters.find(filter => filter instanceof SelectionFilter);
-              let filteredCases: Case[];
+              let filteredCases: CaseDbCase[];
               if (!selectionFilter.isInitialFilterValue()) {
                 const caseIdsInSelection = selectionFilter.filterValue;
                 filteredCases = data.filter(c => caseIdsInSelection.includes(c.id));
@@ -359,7 +359,7 @@ export const createEpiDashboardStore = (kwArgs: CreateEpiDashboardStoreKwArgs) =
               const treeFilter = filters.find(filter => filter instanceof TreeFilter);
               reloadTree();
               const { tree } = get();
-              let filteredCases: Case[];
+              let filteredCases: CaseDbCase[];
               if (!treeFilter.isInitialFilterValue()) {
                 const { subTreeLeaveNames } = tree;
                 filteredCases = data.filter(c => subTreeLeaveNames.includes(c.id));
@@ -556,16 +556,16 @@ export const createEpiDashboardStore = (kwArgs: CreateEpiDashboardStoreKwArgs) =
                 if (conceptSetConceptIds.length <= STRATIFICATION_COLORS.length) {
                   conceptSetConceptIds.map(conceptId => EpiDataManager.instance.data.conceptsById[conceptId]).sort((a, b) => {
                     if (([
-                      ColType.ORDINAL,
-                      ColType.INTERVAL,
-                      ColType.DECIMAL_0,
-                      ColType.DECIMAL_1,
-                      ColType.DECIMAL_2,
-                      ColType.DECIMAL_3,
-                      ColType.DECIMAL_4,
-                      ColType.DECIMAL_5,
-                      ColType.DECIMAL_6,
-                    ] as ColType[]).includes(column.col_type) && a.rank !== b.rank) {
+                      CaseDbColType.ORDINAL,
+                      CaseDbColType.INTERVAL,
+                      CaseDbColType.DECIMAL_0,
+                      CaseDbColType.DECIMAL_1,
+                      CaseDbColType.DECIMAL_2,
+                      CaseDbColType.DECIMAL_3,
+                      CaseDbColType.DECIMAL_4,
+                      CaseDbColType.DECIMAL_5,
+                      CaseDbColType.DECIMAL_6,
+                    ] as CaseDbColType[]).includes(column.col_type) && a.rank !== b.rank) {
                       return a.rank - b.rank;
                     }
                     return a.code.localeCompare(b.code);
@@ -734,7 +734,7 @@ export const createEpiDashboardStore = (kwArgs: CreateEpiDashboardStoreKwArgs) =
           },
         };
       },
-      createTableStorePersistConfiguration<Case, EpiDashboardStore>(kwArgs.storageNamePostFix, kwArgs.storageVersion, (state) => {
+      createTableStorePersistConfiguration<CaseDbCase, EpiDashboardStore>(kwArgs.storageNamePostFix, kwArgs.storageVersion, (state) => {
         return {
           epiTreeWidgetData: {
             ...createEpiTreeWidgetDataInitialState(),

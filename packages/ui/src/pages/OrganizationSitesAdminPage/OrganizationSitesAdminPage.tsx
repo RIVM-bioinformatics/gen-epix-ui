@@ -5,11 +5,11 @@ import {
 import { useTranslation } from 'react-i18next';
 import { object } from 'yup';
 import { useParams } from 'react-router-dom';
-import type { Site } from '@gen-epix/api-casedb';
+import type { CaseDbSite } from '@gen-epix/api-casedb';
 import {
-  CommandName,
-  OrganizationApi,
-  PermissionType,
+  CaseDbCommandName,
+  CaseDbOrganizationApi,
+  CaseDbPermissionType,
 } from '@gen-epix/api-casedb';
 
 import type { FormFieldDefinition } from '../../models/form';
@@ -24,22 +24,22 @@ import { AuthorizationManager } from '../../classes/managers/AuthorizationManage
 import type { OmitWithMetaData } from '../../models/data';
 import { SchemaUtil } from '../../utils/SchemaUtil';
 
-type FormFields = OmitWithMetaData<Site, 'organization_id' | 'organization'>;
+type FormFields = OmitWithMetaData<CaseDbSite, 'organization_id' | 'organization'>;
 
 export const OrganizationSitesAdminPage = () => {
   const { organizationId } = useParams();
   const { t } = useTranslation();
 
   const fetchAll = useCallback(async (signal: AbortSignal) => {
-    return (await OrganizationApi.instance.sitesGetAll({ signal })).data;
+    return (await CaseDbOrganizationApi.instance.sitesGetAll({ signal })).data;
   }, []);
 
-  const fetchAllSelect = useCallback((sites: Site[]) => {
+  const fetchAllSelect = useCallback((sites: CaseDbSite[]) => {
     return sites.filter((site) => site.organization_id === organizationId);
   }, [organizationId]);
 
-  const updateOne = useCallback(async (variables: FormFields, item: Site) => {
-    return (await OrganizationApi.instance.sitesPutOne(item.id, {
+  const updateOne = useCallback(async (variables: FormFields, item: CaseDbSite) => {
+    return (await CaseDbOrganizationApi.instance.sitesPutOne(item.id, {
       id: item.id,
       name: variables.name,
       organization_id: organizationId,
@@ -47,14 +47,14 @@ export const OrganizationSitesAdminPage = () => {
   }, [organizationId]);
 
   const createOne = useCallback(async (variables: FormFields) => {
-    return (await OrganizationApi.instance.sitesPostOne({
+    return (await CaseDbOrganizationApi.instance.sitesPostOne({
       name: variables.name,
       organization_id: organizationId,
     })).data;
   }, [organizationId]);
 
-  const deleteOne = useCallback(async (item: Site) => {
-    return await OrganizationApi.instance.sitesDeleteOne(item.id);
+  const deleteOne = useCallback(async (item: CaseDbSite) => {
+    return await CaseDbOrganizationApi.instance.sitesDeleteOne(item.id);
   }, []);
 
   const getName = useCallback((item: FormFields) => {
@@ -77,13 +77,13 @@ export const OrganizationSitesAdminPage = () => {
     ] as const;
   }, [t]);
 
-  const tableColumns = useMemo((): TableColumn<Site>[] => {
+  const tableColumns = useMemo((): TableColumn<CaseDbSite>[] => {
     return [
-      TableUtil.createTextColumn<Site>({ advancedSort: true, id: 'name', name: t`Name` }),
+      TableUtil.createTextColumn<CaseDbSite>({ advancedSort: true, id: 'name', name: t`Name` }),
     ];
   }, [t]);
 
-  const getOptimisticUpdateIntermediateItem = useCallback((variables: FormFields, previousItem: Site): Site => {
+  const getOptimisticUpdateIntermediateItem = useCallback((variables: FormFields, previousItem: CaseDbSite): CaseDbSite => {
     return {
       id: previousItem.id,
       organization_id: previousItem.organization_id,
@@ -91,26 +91,26 @@ export const OrganizationSitesAdminPage = () => {
     };
   }, []);
 
-  const subPages = useMemo<CrudPageSubPage<Site>[]>(() => {
+  const subPages = useMemo<CrudPageSubPage<CaseDbSite>[]>(() => {
     if (!AuthorizationManager.instance.doesUserHavePermission([
-      { command_name: CommandName.ContactCrudCommand, permission_type: PermissionType.READ },
+      { command_name: CaseDbCommandName.ContactCrudCommand, permission_type: CaseDbPermissionType.READ },
     ])) {
       return [];
     }
 
     return [
       {
-        getPathName: (item: Site) => `/management/organizations/${item.organization_id}/sites/${item.id}/contacts`,
+        getPathName: (item: CaseDbSite) => `/management/organizations/${item.organization_id}/sites/${item.id}/contacts`,
         label: t`Manage contacts`,
-      } satisfies CrudPageSubPage<Site>,
+      } satisfies CrudPageSubPage<CaseDbSite>,
     ];
   }, [t]);
 
   return (
-    <CrudPage<FormFields, Site>
+    <CrudPage<FormFields, CaseDbSite>
       createItemDialogTitle={t`Create new site`}
       createOne={createOne}
-      crudCommandType={CommandName.SiteCrudCommand}
+      crudCommandType={CaseDbCommandName.SiteCrudCommand}
       defaultSortByField={'name'}
       defaultSortDirection={'asc'}
       deleteOne={deleteOne}

@@ -19,11 +19,11 @@ import { useDebouncedCallback } from 'use-debounce';
 import type { ListRange } from 'react-virtuoso';
 import TroubleshootIcon from '@mui/icons-material/Troubleshoot';
 import type {
-  Case,
-  CaseSet,
-  Col,
+  CaseDbCase,
+  CaseDbCaseSet,
+  CaseDbCol,
 } from '@gen-epix/api-casedb';
-import { ColType } from '@gen-epix/api-casedb';
+import { CaseDbColType } from '@gen-epix/api-casedb';
 
 import CollectionIcon from '../../../assets/icons/CollectionIcon.svg?react';
 import { EpiWidget } from '../EpiWidget';
@@ -63,7 +63,7 @@ import { EpiLineListWidgetSecondaryMenu } from './EpiLineListWidgetSecondaryMenu
 import { useEpiLineListWidgetEmitDownloadOptions } from './useEpiLineListWidgetEmitDownloadOptions';
 
 export type EpiLineListWidgetProps = {
-  readonly caseSet?: CaseSet;
+  readonly caseSet?: CaseDbCaseSet;
   readonly lineListRangeSubject: Subject<EpiLineListRangeSubjectValue>;
   readonly linkedScrollSubject: Subject<EpiLinkedScrollSubjectValue>;
   readonly onLink: () => void;
@@ -92,14 +92,14 @@ export const EpiLineListWidget = ({ caseSet, lineListRangeSubject, linkedScrollS
     };
   }, [lineListRangeSubject]);
 
-  const onIndexCellClick = useCallback((row: Case) => {
+  const onIndexCellClick = useCallback((row: CaseDbCase) => {
     EpiEventBusManager.instance.emit('openCaseInfoDialog', {
       caseId: row.id,
       caseTypeId: completeCaseType.id,
     });
   }, [completeCaseType.id]);
 
-  const getColumnWidth = useCallback((col: Col, label: string) => {
+  const getColumnWidth = useCallback((col: CaseDbCol, label: string) => {
     let maxTextLength = label?.length * 0.8;
     sortedData.forEach(row => {
       const value = CaseUtil.getRowValue(row.content, col, completeCaseType).short;
@@ -124,7 +124,7 @@ export const EpiLineListWidget = ({ caseSet, lineListRangeSubject, linkedScrollS
     });
   }, []);
 
-  const renderOrganizationCell = useCallback(({ id, row }: TableRowParams<Case>) => {
+  const renderOrganizationCell = useCallback(({ id, row }: TableRowParams<CaseDbCase>) => {
     const rowValue = CaseUtil.getRowValue(row.content, completeCaseType.cols[id], completeCaseType);
     if (rowValue.isMissing) {
       return rowValue.short;
@@ -157,14 +157,14 @@ export const EpiLineListWidget = ({ caseSet, lineListRangeSubject, linkedScrollS
     return link;
   }, [completeCaseType, onOrganizationCellClick, stratification?.caseIdColors, stratification?.col?.id]);
 
-  const onGeneticSequenceCellClick = useCallback((id: string, row: Case) => {
+  const onGeneticSequenceCellClick = useCallback((id: string, row: CaseDbCase) => {
     EpiEventBusManager.instance.emit('openSequenceDownloadDialog', {
       cases: [row],
       geneticSequenceColId: id,
     });
   }, []);
 
-  const renderGeneticSequenceCell = useCallback(({ id, row }: TableRowParams<Case>) => {
+  const renderGeneticSequenceCell = useCallback(({ id, row }: TableRowParams<CaseDbCase>) => {
     return (
       <Link
         color={'primary'}
@@ -203,7 +203,7 @@ export const EpiLineListWidget = ({ caseSet, lineListRangeSubject, linkedScrollS
     );
   }, [t, theme]);
 
-  const renderEventsCell = useCallback(({ row }: TableRowParams<Case>) => {
+  const renderEventsCell = useCallback(({ row }: TableRowParams<CaseDbCase>) => {
     let queryResult;
     const rowId = `row_${row.id}`;
 
@@ -232,7 +232,7 @@ export const EpiLineListWidget = ({ caseSet, lineListRangeSubject, linkedScrollS
     );
   }, []);
 
-  const renderSimilarCell = useCallback(({ row }: TableRowParams<Case>) => {
+  const renderSimilarCell = useCallback(({ row }: TableRowParams<CaseDbCase>) => {
     const similarCaseIds = epiDashboardStore.getState().findSimilarCasesResults.reduce<string[]>((acc, result) => [...acc, ...result.similarCaseIds], []);
     if (similarCaseIds.includes(row.id)) {
       return (
@@ -267,7 +267,7 @@ export const EpiLineListWidget = ({ caseSet, lineListRangeSubject, linkedScrollS
   }, [t, theme]);
 
 
-  const renderCell = useCallback(({ id, row }: TableRowParams<Case>) => {
+  const renderCell = useCallback(({ id, row }: TableRowParams<CaseDbCase>) => {
     const rowValue = CaseUtil.getRowValue(row.content, completeCaseType.cols[id], completeCaseType);
 
     if (id === stratification?.col?.id) {
@@ -286,10 +286,10 @@ export const EpiLineListWidget = ({ caseSet, lineListRangeSubject, linkedScrollS
     );
   }, [completeCaseType, stratification?.caseIdColors, stratification?.col?.id]);
 
-  const staticTableColumns = useMemo<TableColumn<Case>[]>(() => {
+  const staticTableColumns = useMemo<TableColumn<CaseDbCase>[]>(() => {
     return [
       TableUtil.createReadableIndexColumn({
-        getAriaLabel: (params: TableRowParams<Case>) => t('Show case information for {{index}}', { index: params.rowIndex + 1 }),
+        getAriaLabel: (params: TableRowParams<CaseDbCase>) => t('Show case information for {{index}}', { index: params.rowIndex + 1 }),
       }),
       TableUtil.createSelectableColumn(),
       {
@@ -318,26 +318,26 @@ export const EpiLineListWidget = ({ caseSet, lineListRangeSubject, linkedScrollS
     ];
   }, [renderEventsCell, renderSimilarCell, renderEventsHeader, renderSimilarHeader, t]);
 
-  const tableColumns = useMemo<TableColumn<Case>[]>(() => {
+  const tableColumns = useMemo<TableColumn<CaseDbCase>[]>(() => {
     const { DATA_MISSING_CHARACTER } = ConfigManager.instance.config.epi;
 
     const initialVisibleColumnIds = CaseTypeUtil.getInitialVisibleColIds(completeCaseType);
-    const caseTypeTableColumns: TableColumn<Case>[] = [];
+    const caseTypeTableColumns: TableColumn<CaseDbCase>[] = [];
 
 
     completeCaseType.ordered_dim_ids.map(x => completeCaseType.dims[x]).forEach((dim) => {
       completeCaseType.ordered_col_ids_by_dim[dim.id].map(id => completeCaseType.cols[id]).forEach(col => {
         const refCol = completeCaseType.ref_cols[col.ref_col_id];
-        const baseCaseTypeTableColumn: Partial<TableColumn<Case>> = {
+        const baseCaseTypeTableColumn: Partial<TableColumn<CaseDbCase>> = {
           headerName: col.label,
           headerTooltipContent: refCol.description,
           id: col.id,
           isInitiallyVisible: initialVisibleColumnIds.includes(col.id),
         };
-        if (refCol.col_type === ColType.GENETIC_DISTANCE) {
+        if (refCol.col_type === CaseDbColType.GENETIC_DISTANCE) {
           caseTypeTableColumns.push({
             ...baseCaseTypeTableColumn,
-            comparatorFactory: ({ direction }: GetTableCellRowComparatorProps<TableColumnCaseType<Case>>) => (a: Case, b: Case) => {
+            comparatorFactory: ({ direction }: GetTableCellRowComparatorProps<TableColumnCaseType<CaseDbCase>>) => (a: CaseDbCase, b: CaseDbCase) => {
               const sortValue = StringUtil.advancedSortComperator(treeAddresses[col.id]?.addresses?.[a.id], treeAddresses[col.id]?.addresses?.[b.id]);
               return direction === 'asc' ? sortValue : -sortValue;
             },
@@ -353,12 +353,12 @@ export const EpiLineListWidget = ({ caseSet, lineListRangeSubject, linkedScrollS
               };
             },
             widthPx: 200,
-          } as TableColumn<Case>);
+          } as TableColumn<CaseDbCase>);
         } else {
-          let cellRenderer: (params: TableRowParams<Case>) => ReactElement | string;
-          if (refCol.col_type === ColType.ORGANIZATION) {
+          let cellRenderer: (params: TableRowParams<CaseDbCase>) => ReactElement | string;
+          if (refCol.col_type === CaseDbColType.ORGANIZATION) {
             cellRenderer = renderOrganizationCell;
-          } else if (refCol.col_type === ColType.GENETIC_SEQUENCE) {
+          } else if (refCol.col_type === CaseDbColType.GENETIC_SEQUENCE) {
             cellRenderer = renderGeneticSequenceCell;
           } else {
             cellRenderer = renderCell;
@@ -370,10 +370,10 @@ export const EpiLineListWidget = ({ caseSet, lineListRangeSubject, linkedScrollS
             comparatorFactory: TableUtil.createCaseTypeCellRowComperator,
             completeCaseType,
             renderCell: cellRenderer,
-            textAlign: ([ColType.DECIMAL_0, ColType.DECIMAL_1, ColType.DECIMAL_2, ColType.DECIMAL_3, ColType.DECIMAL_4, ColType.DECIMAL_4, ColType.DECIMAL_5, ColType.DECIMAL_6] as ColType[]).includes(refCol.col_type) ? 'right' : 'left',
+            textAlign: ([CaseDbColType.DECIMAL_0, CaseDbColType.DECIMAL_1, CaseDbColType.DECIMAL_2, CaseDbColType.DECIMAL_3, CaseDbColType.DECIMAL_4, CaseDbColType.DECIMAL_4, CaseDbColType.DECIMAL_5, CaseDbColType.DECIMAL_6] as CaseDbColType[]).includes(refCol.col_type) ? 'right' : 'left',
             type: 'caseType',
             widthPx: getColumnWidth(col, col.label),
-          } as TableColumn<Case>);
+          } as TableColumn<CaseDbCase>);
         }
       });
     });
@@ -384,7 +384,7 @@ export const EpiLineListWidget = ({ caseSet, lineListRangeSubject, linkedScrollS
     ];
   }, [completeCaseType, staticTableColumns, treeAddresses, getColumnWidth, renderOrganizationCell, renderGeneticSequenceCell, renderCell]);
 
-  const onRowMouseEnter = useCallback((row: Case) => {
+  const onRowMouseEnter = useCallback((row: CaseDbCase) => {
     highlightingManager.highlight({
       caseIds: [row.id],
       origin: EPI_ZONE.LINE_LIST,
@@ -467,7 +467,7 @@ export const EpiLineListWidget = ({ caseSet, lineListRangeSubject, linkedScrollS
     };
   }, [linkedScrollSubject]);
 
-  const getRowName = useCallback((row: Case): string => {
+  const getRowName = useCallback((row: CaseDbCase): string => {
     return row.id;
   }, []);
 

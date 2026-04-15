@@ -11,11 +11,11 @@ import {
 } from 'yup';
 import { useParams } from 'react-router-dom';
 import type { UseFormReturn } from 'react-hook-form';
-import type { Col } from '@gen-epix/api-casedb';
+import type { CaseDbCol } from '@gen-epix/api-casedb';
 import {
-  CaseApi,
-  ColType,
-  CommandName,
+  CaseDbCaseApi,
+  CaseDbColType,
+  CaseDbCommandName,
 } from '@gen-epix/api-casedb';
 
 import {
@@ -53,7 +53,7 @@ import { DataUtil } from '../../utils/DataUtil';
 import type { OmitWithMetaData } from '../../models/data';
 import { SchemaUtil } from '../../utils/SchemaUtil';
 
-type FormFields = OmitWithMetaData<Col, 'case_type' | 'dim' | 'props' | 'ref_col'>;
+type FormFields = OmitWithMetaData<CaseDbCol, 'case_type' | 'dim' | 'props' | 'ref_col'>;
 
 const NCBI_TAXID_REGEX = /^NCBI:txid\d+/;
 
@@ -87,29 +87,29 @@ export const ColsAdminPage = () => {
   }, [dimId, dimMapQuery.map, caseTypeId]);
 
   const fetchAll = useCallback(async (signal: AbortSignal) => {
-    return (await CaseApi.instance.colsGetAll({ signal }))?.data;
+    return (await CaseDbCaseApi.instance.colsGetAll({ signal }))?.data;
   }, []);
 
-  const fetchAllSelect = useCallback((cols: Col[]) => {
+  const fetchAllSelect = useCallback((cols: CaseDbCol[]) => {
     if (dimId) {
       return cols.filter((col) => col.dim_id === dimId);
     }
     return cols;
   }, [dimId]);
 
-  const deleteOne = useCallback(async (item: Col) => {
-    return await CaseApi.instance.colsDeleteOne(item.id);
+  const deleteOne = useCallback(async (item: CaseDbCol) => {
+    return await CaseDbCaseApi.instance.colsDeleteOne(item.id);
   }, []);
 
-  const updateOne = useCallback(async (variables: FormFields, item: Col) => {
-    return (await CaseApi.instance.colsPutOne(item.id, { id: item.id, ...variables })).data;
+  const updateOne = useCallback(async (variables: FormFields, item: CaseDbCol) => {
+    return (await CaseDbCaseApi.instance.colsPutOne(item.id, { id: item.id, ...variables })).data;
   }, []);
 
   const createOne = useCallback(async (variables: FormFields) => {
-    return (await CaseApi.instance.colsPostOne(variables)).data;
+    return (await CaseDbCaseApi.instance.colsPostOne(variables)).data;
   }, []);
 
-  const getName = useCallback((item: Col) => {
+  const getName = useCallback((item: CaseDbCol) => {
     return item.label;
   }, []);
 
@@ -163,7 +163,7 @@ export const ColsAdminPage = () => {
       description: SchemaUtil.description,
       dim_id: string().uuid4().required().max(100),
       genetic_sequence_col_id: string().when('ref_col_id', {
-        is: (ref_col_id: string) => refColMapQuery.map.get(ref_col_id)?.col_type === ColType.GENETIC_DISTANCE,
+        is: (ref_col_id: string) => refColMapQuery.map.get(ref_col_id)?.col_type === CaseDbColType.GENETIC_DISTANCE,
         otherwise: () => string().nullable().notRequired(),
         then: () => string().uuid4().required(),
       }),
@@ -175,7 +175,7 @@ export const ColsAdminPage = () => {
       min_length: SchemaUtil.number.integer().positive().max(10000),
       min_value: SchemaUtil.number.positive().max(10000),
       ncbi_taxid: string().when('ref_col_id', {
-        is: (ref_col_id: string) => refColMapQuery.map.get(ref_col_id)?.col_type === ColType.GENETIC_DISTANCE,
+        is: (ref_col_id: string) => refColMapQuery.map.get(ref_col_id)?.col_type === CaseDbColType.GENETIC_DISTANCE,
         otherwise: () => string().notRequired(),
         then: () => string().matches(NCBI_TAXID_REGEX).required(),
       }),
@@ -183,14 +183,14 @@ export const ColsAdminPage = () => {
       rank: SchemaUtil.rank,
       ref_col_id: string().uuid4().required().max(100),
       tree_algorithm_codes: array().when('ref_col_id', {
-        is: (ref_col_id: string) => refColMapQuery.map.get(ref_col_id)?.col_type === ColType.GENETIC_DISTANCE,
+        is: (ref_col_id: string) => refColMapQuery.map.get(ref_col_id)?.col_type === CaseDbColType.GENETIC_DISTANCE,
         otherwise: () => array().nullable().notRequired(),
         then: () => array().min(1).required(),
       }),
     });
   }, [refColMapQuery.map]);
 
-  const onFormChange = useCallback((_item: Col, values: FormFields, formMethods: UseFormReturn<FormFields>) => {
+  const onFormChange = useCallback((_item: CaseDbCol, values: FormFields, formMethods: UseFormReturn<FormFields>) => {
     if (values.case_type_id && values.dim_id) {
       const validDimOptions = getDimOptionsForCaseTypeId(values.case_type_id);
       if (!validDimOptions.find(option => option.value === values.dim_id)) {
@@ -214,7 +214,7 @@ export const ColsAdminPage = () => {
     }
   }, [getDimOptionsForCaseTypeId, getRefColOptionsForDimId, getGeneticSequenceColOptionsForCaseTypeId]);
 
-  const formFieldDefinitions = useCallback((item: Col, values: FormFields): FormFieldDefinition<FormFields>[] => {
+  const formFieldDefinitions = useCallback((item: CaseDbCol, values: FormFields): FormFieldDefinition<FormFields>[] => {
     const normalizedDimId = values?.dim_id ?? item?.dim_id ?? null;
     const caseTypeIdFromDimId = dimMapQuery.map.get(normalizedDimId)?.case_type_id ?? null;
     const normalizedCaseTypeIdWithValues = values?.case_type_id ?? normalizedCaseTypeId ?? caseTypeIdFromDimId;
@@ -324,24 +324,24 @@ export const ColsAdminPage = () => {
     ] as const satisfies FormFieldDefinition<FormFields>[];
   }, [dimMapQuery.map, caseTypeOptionsQuery.options, getDimOptionsForCaseTypeId, getRefColOptionsForDimId, getGeneticSequenceColOptionsForCaseTypeId, normalizedCaseTypeId, t, treeAlgorithmCodesOptionsQuery.options]);
 
-  const tableColumns = useMemo((): TableColumn<Col>[] => {
-    const columns: TableColumn<Col>[] = [];
+  const tableColumns = useMemo((): TableColumn<CaseDbCol>[] => {
+    const columns: TableColumn<CaseDbCol>[] = [];
     if (!caseTypeId) {
-      columns.push(TableUtil.createOptionsColumn<Col>({ id: 'case_type_id', name: t`Case type`, options: caseTypeOptionsQuery.options }));
+      columns.push(TableUtil.createOptionsColumn<CaseDbCol>({ id: 'case_type_id', name: t`Case type`, options: caseTypeOptionsQuery.options }));
     }
     if (!dimId) {
-      columns.push(TableUtil.createOptionsColumn<Col>({ id: 'dim_id', name: t`Dimension`, options: dimOptionsQuery.options }));
+      columns.push(TableUtil.createOptionsColumn<CaseDbCol>({ id: 'dim_id', name: t`Dimension`, options: dimOptionsQuery.options }));
     }
 
     columns.push(
-      TableUtil.createOptionsColumn<Col>({ id: 'ref_col_id', name: t`Column`, options: refColOptionsQuery.options }),
-      TableUtil.createTextColumn<Col>({ id: 'code', name: t`Code` }),
-      TableUtil.createNumberColumn<Col>({ id: 'rank', name: t`Rank` }),
+      TableUtil.createOptionsColumn<CaseDbCol>({ id: 'ref_col_id', name: t`Column`, options: refColOptionsQuery.options }),
+      TableUtil.createTextColumn<CaseDbCol>({ id: 'code', name: t`Code` }),
+      TableUtil.createNumberColumn<CaseDbCol>({ id: 'rank', name: t`Rank` }),
     );
     return columns;
   }, [dimId, dimOptionsQuery.options, caseTypeId, caseTypeOptionsQuery.options, refColOptionsQuery.options, t]);
 
-  const getOptimisticUpdateIntermediateItem = useCallback((variables: FormFields, previousItem: Col): Col => {
+  const getOptimisticUpdateIntermediateItem = useCallback((variables: FormFields, previousItem: CaseDbCol): CaseDbCol => {
     return {
       case_type_id: previousItem.case_type_id,
       dim_id: previousItem.dim_id,
@@ -383,10 +383,10 @@ export const ColsAdminPage = () => {
   }, [dimId, caseTypeId]);
 
   return (
-    <CrudPage<FormFields, Col>
+    <CrudPage<FormFields, CaseDbCol>
       createItemDialogTitle={t`Create new column`}
       createOne={createOne}
-      crudCommandType={CommandName.ColCrudCommand}
+      crudCommandType={CaseDbCommandName.ColCrudCommand}
       defaultNewItem={defaultNewItem}
       defaultSortByField={(dimId ?? caseTypeId) ? 'rank' : 'case_type_id'}
       defaultSortDirection={'asc'}

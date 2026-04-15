@@ -1,15 +1,15 @@
 import type { UseQueryResult } from '@tanstack/react-query';
-import type { UserAccessCasePolicy } from '@gen-epix/api-casedb';
-import { AbacApi } from '@gen-epix/api-casedb';
+import type { CaseDbUserAccessCasePolicy } from '@gen-epix/api-casedb';
+import { CaseDbAbacApi } from '@gen-epix/api-casedb';
 
 import { QUERY_KEY } from '../../models/query';
 import { QueryUtil } from '../../utils/QueryUtil';
 import { useQueryMemo } from '../../hooks/useQueryMemo';
 
-export const useUserAccessCasePoliciesQuery = (select?: (data: UserAccessCasePolicy[]) => UserAccessCasePolicy[]): UseQueryResult<UserAccessCasePolicy[]> => {
+export const useUserAccessCasePoliciesQuery = (select?: (data: CaseDbUserAccessCasePolicy[]) => CaseDbUserAccessCasePolicy[]): UseQueryResult<CaseDbUserAccessCasePolicy[]> => {
   return useQueryMemo({
     queryFn: async ({ signal }) => {
-      const response = await AbacApi.instance.userAccessCasePoliciesGetAll({ signal });
+      const response = await CaseDbAbacApi.instance.userAccessCasePoliciesGetAll({ signal });
       return response.data;
     },
     queryKey: QueryUtil.getGenericKey(QUERY_KEY.USER_ACCESS_CASE_POLICIES),

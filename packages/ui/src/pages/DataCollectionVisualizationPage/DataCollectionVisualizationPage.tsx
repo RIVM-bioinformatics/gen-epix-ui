@@ -25,7 +25,7 @@ import type {
   GraphSeriesOption,
 } from 'echarts';
 import type { AutocompleteRenderInputParams } from '@mui/material/Autocomplete';
-import type { OrganizationAccessCasePolicy } from '@gen-epix/api-casedb';
+import type { CaseDbOrganizationAccessCasePolicy } from '@gen-epix/api-casedb';
 
 import { PageContainer } from '../../components/ui/PageContainer';
 import { ResponseHandler } from '../../components/ui/ResponseHandler';
@@ -55,7 +55,7 @@ type AccessLink = {
   value: number;
 };
 
-type AccessRightsSummary = Pick<OrganizationAccessCasePolicy, 'add_case_set' | 'add_case' | 'is_private' | 'read_case_set' | 'remove_case_set' | 'remove_case' | 'write_case_set'>;
+type AccessRightsSummary = Pick<CaseDbOrganizationAccessCasePolicy, 'add_case_set' | 'add_case' | 'is_private' | 'read_case_set' | 'remove_case_set' | 'remove_case' | 'write_case_set'>;
 
 type Category = {
   name: string;

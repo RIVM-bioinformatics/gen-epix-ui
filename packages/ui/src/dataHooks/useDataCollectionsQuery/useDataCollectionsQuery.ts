@@ -1,7 +1,7 @@
 import type { UseQueryResult } from '@tanstack/react-query';
 import { useMemo } from 'react';
-import type { DataCollection } from '@gen-epix/api-casedb';
-import { OrganizationApi } from '@gen-epix/api-casedb';
+import type { CaseDbDataCollection } from '@gen-epix/api-casedb';
+import { CaseDbOrganizationApi } from '@gen-epix/api-casedb';
 
 import type {
   UseMap,
@@ -12,10 +12,10 @@ import { DataHookUtil } from '../../utils/DataHookUtil';
 import { QueryUtil } from '../../utils/QueryUtil';
 import { useQueryMemo } from '../../hooks/useQueryMemo';
 
-export const useDataCollectionsQuery = (dataCollectionIds?: string[]): UseQueryResult<DataCollection[]> => {
+export const useDataCollectionsQuery = (dataCollectionIds?: string[]): UseQueryResult<CaseDbDataCollection[]> => {
   return useQueryMemo({
     queryFn: async ({ signal }) => {
-      const response = await OrganizationApi.instance.dataCollectionsGetAll({ signal });
+      const response = await CaseDbOrganizationApi.instance.dataCollectionsGetAll({ signal });
       return response.data;
     },
     queryKey: QueryUtil.getGenericKey(QUERY_KEY.DATA_COLLECTIONS),
@@ -28,11 +28,11 @@ export const useDataCollectionsQuery = (dataCollectionIds?: string[]): UseQueryR
   });
 };
 
-export const useDataCollectionsMapQuery = (dataCollectionIds?: string[]): UseMap<DataCollection> => {
+export const useDataCollectionsMapQuery = (dataCollectionIds?: string[]): UseMap<CaseDbDataCollection> => {
   const dataCollectionsQuery = useDataCollectionsQuery(dataCollectionIds);
 
   return useMemo(() => {
-    return DataHookUtil.createUseMapDataHook<DataCollection>(dataCollectionsQuery, item => item.id);
+    return DataHookUtil.createUseMapDataHook<CaseDbDataCollection>(dataCollectionsQuery, item => item.id);
   }, [dataCollectionsQuery]);
 };
 
@@ -40,6 +40,6 @@ export const useDataCollectionOptionsQuery = (dataCollectionIds?: string[]): Use
   const dataCollectionsQuery = useDataCollectionsQuery(dataCollectionIds);
 
   return useMemo(() => {
-    return DataHookUtil.createUseOptionsDataHook<DataCollection>(dataCollectionsQuery, item => item.id, item => item.name);
+    return DataHookUtil.createUseOptionsDataHook<CaseDbDataCollection>(dataCollectionsQuery, item => item.id, item => item.name);
   }, [dataCollectionsQuery]);
 };

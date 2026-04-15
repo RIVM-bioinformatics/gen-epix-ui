@@ -1,7 +1,7 @@
 import { useMemo } from 'react';
 import type {
-  OrganizationAccessCasePolicy,
-  OrganizationShareCasePolicy,
+  CaseDbOrganizationAccessCasePolicy,
+  CaseDbOrganizationShareCasePolicy,
 } from '@gen-epix/api-casedb';
 
 import { useCaseTypeSetsMapQuery } from '../../dataHooks/useCaseTypeSetsQuery';
@@ -10,13 +10,13 @@ import { useOrganizationMapQuery } from '../../dataHooks/useOrganizationsQuery';
 import type { UseNameFactory } from '../../models/dataHooks';
 import { DataHookUtil } from '../../utils/DataHookUtil';
 
-export const useOrganizationCasePolicyNameFactory = (): UseNameFactory<OrganizationAccessCasePolicy | OrganizationShareCasePolicy> => {
+export const useOrganizationCasePolicyNameFactory = (): UseNameFactory<CaseDbOrganizationAccessCasePolicy | CaseDbOrganizationShareCasePolicy> => {
   const organizationMapQuery = useOrganizationMapQuery();
   const dataCollectionsMapQuery = useDataCollectionsMapQuery();
   const caseTypeSetsMapQuery = useCaseTypeSetsMapQuery();
 
   return useMemo(() => {
-    const getName = (item: OrganizationAccessCasePolicy | OrganizationShareCasePolicy) => {
+    const getName = (item: CaseDbOrganizationAccessCasePolicy | CaseDbOrganizationShareCasePolicy) => {
 
       const organization = organizationMapQuery.map.get(item.organization_id);
       const dataCollection = dataCollectionsMapQuery.map.get(item.data_collection_id)?.name ?? item.data_collection_id;

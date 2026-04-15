@@ -1,7 +1,7 @@
 import { useMemo } from 'react';
 import { type UseQueryResult } from '@tanstack/react-query';
-import type { IdentifierIssuer } from '@gen-epix/api-casedb';
-import { OrganizationApi } from '@gen-epix/api-casedb';
+import type { CaseDbIdentifierIssuer } from '@gen-epix/api-casedb';
+import { CaseDbOrganizationApi } from '@gen-epix/api-casedb';
 
 import type { UseOptions } from '../../models/dataHooks';
 import { QUERY_KEY } from '../../models/query';
@@ -10,15 +10,15 @@ import { QueryUtil } from '../../utils/QueryUtil';
 import { useQueryMemo } from '../../hooks/useQueryMemo';
 import { AuthorizationManager } from '../../classes/managers/AuthorizationManager';
 
-export const useIdentifierIssuerOwnOrganizationQuery = (): UseQueryResult<IdentifierIssuer[]> => {
+export const useIdentifierIssuerOwnOrganizationQuery = (): UseQueryResult<CaseDbIdentifierIssuer[]> => {
   return useQueryMemo({
     queryFn: async ({ signal }) => {
-      const links = (await OrganizationApi.instance.organizationIdentifierIssuerLinksPostQuery({
+      const links = (await CaseDbOrganizationApi.instance.organizationIdentifierIssuerLinksPostQuery({
         key: 'organization_id',
         type: 'EQUALS_UUID',
         value: AuthorizationManager.instance.user.organization_id,
       }, { signal })).data;
-      const response = await OrganizationApi.instance.identifierIssuersGetSome(links.map(x => x.identifier_issuer_id).join(','), { signal });
+      const response = await CaseDbOrganizationApi.instance.identifierIssuersGetSome(links.map(x => x.identifier_issuer_id).join(','), { signal });
       return response.data;
     },
     queryKey: QueryUtil.getGenericKey(QUERY_KEY.IDENTIFIER_ISSUERS_OWN_ORGANIZATION),
@@ -29,6 +29,6 @@ export const useIdentifierIssuerOwnOrganizationOptionsQuery = (): UseOptions<str
   const response = useIdentifierIssuerOwnOrganizationQuery();
 
   return useMemo(() => {
-    return DataHookUtil.createUseOptionsDataHook<IdentifierIssuer>(response, item => item.id, (item: IdentifierIssuer) => item.name);
+    return DataHookUtil.createUseOptionsDataHook<CaseDbIdentifierIssuer>(response, item => item.id, (item: CaseDbIdentifierIssuer) => item.name);
   }, [response]);
 };

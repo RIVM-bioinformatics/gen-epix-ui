@@ -13,7 +13,7 @@ import {
   useEffect,
   useState,
 } from 'react';
-import type { User } from '@gen-epix/api-casedb';
+import type { CaseDbUser } from '@gen-epix/api-casedb';
 
 import type {
   WithDialogRefMethods,
@@ -25,7 +25,7 @@ import { EpiCustomTabPanel } from '../EpiCustomTabPanel/EpiCustomTabPanel';
 import { EpiUserRightsDialogCaseAccessPolicy } from './EpiUserRightsDialogCaseAccessPolicy';
 
 export interface EpiUserRightsDialogOpenProps {
-  user: User;
+  user: CaseDbUser;
 }
 
 export interface EpiUserRightsDialogProps extends WithDialogRenderProps<EpiUserRightsDialogOpenProps> {
