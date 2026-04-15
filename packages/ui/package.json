@@ -160,7 +160,7 @@
     "zustand": "5.0.12"
   },
   "devDependencies": {
-    "@gen-epix/eslint-config": "0.2.1",
+    "@gen-epix/eslint-config": "0.2.3",
     "@gen-epix/translation-util": "0.1.1",
     "@types/lodash": "4.17.24",
     "@types/node": "25.6.0",
