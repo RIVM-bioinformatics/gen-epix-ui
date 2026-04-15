@@ -53,6 +53,10 @@ export const RouterRoot = () => {
     gcTime: Infinity,
     queryFn: async ({ signal }) => {
       const providers = (await CaseDbAuthApi.instance.identityProvidersGetAll({ signal })).data;
+      if (!Array.isArray(providers)) {
+        throw new Error('Invalid response for identity providers. Backend is most likely misconfigured.');
+      }
+
       const providersWithAvailability: IdentityProviderWithAvailability[] = [];
       for (const provider of providers) {
         try {

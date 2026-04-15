@@ -16,6 +16,7 @@ import { QueryClientManager } from '../../../classes/managers/QueryClientManager
 import { RouterManager } from '../../../classes/managers/RouterManager';
 import { ErrorPage } from '../../../pages/ErrorPage';
 import { EmotionCacheManager } from '../../../classes/managers/EmotionCacheManager';
+import { APP } from '../../../models/app';
 
 export const App = () => {
   const { config } = ConfigManager.instance;
@@ -25,7 +26,7 @@ export const App = () => {
     document.querySelector('link[rel="icon"]')?.setAttribute('href', touchIconUrl);
   }
 
-  CaseDbBaseAPI.baseUrl = config.getAPIBaseUrl();
+  CaseDbBaseAPI.baseUrl = config.getAPIBaseUrl(APP.CASEDB);
   CaseDbBaseAPI.defaultRequestTimeout = config.defaultRequestTimeout;
   CaseDbBaseAPI.onRequest = [
     AuthenticationManager.instance.onRequest.bind(AuthenticationManager.instance),

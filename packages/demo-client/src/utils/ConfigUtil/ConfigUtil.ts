@@ -10,6 +10,7 @@ import {
   WindowManager,
 } from '@gen-epix/ui';
 import type {
+  APP,
   Config,
   EpiDashboardLayoutConfig,
 } from '@gen-epix/ui';
@@ -362,14 +363,14 @@ export class ConfigUtil {
         TAKING_LONGER_TIMEOUT_MS: 10000,
         TREE_PADDING: 20,
       },
-      getAPIBaseUrl: () => {
+      getAPIBaseUrl: (app: APP) => {
         const { location: { href } } = WindowManager.instance.window.document;
         const { hostname } = new URL(href);
         switch (hostname) {
           case '127.0.0.1':
-            return 'https://127.0.0.1:5010';
+            return `https://127.0.0.1:5010/proxy/${app}`;
           case 'localhost':
-            return 'https://localhost:5010';
+            return `https://localhost:5010/proxy/${app}`;
           default:
             return '';
         }

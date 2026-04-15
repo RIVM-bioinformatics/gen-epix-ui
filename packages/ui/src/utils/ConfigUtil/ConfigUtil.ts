@@ -4,7 +4,6 @@ import {
 } from 'date-fns';
 import { CaseDbColType } from '@gen-epix/api-casedb';
 
-import { WindowManager } from '../../classes/managers/WindowManager';
 import type { Config } from '../../models/config';
 import type { EpiDashboardLayoutConfig } from '../../models/epi';
 import { EPI_ZONE } from '../../models/epi';
@@ -338,29 +337,10 @@ export class ConfigUtil {
         TREE_PADDING: 20,
       },
       getAPIBaseUrl: () => {
-        const { location: { href } } = WindowManager.instance.window.document;
-        const { hostname } = new URL(href);
-        switch (hostname) {
-          case '127.0.0.1':
-            return 'https://127.0.0.1:5010';
-          case 'localhost':
-            return 'https://localhost:5010';
-          default:
-            return '';
-        }
+        return 'development';
       },
       getEnvironmentMessage: (_t) => {
-        const { location: { href } } = WindowManager.instance.window.document;
-        const { hostname } = new URL(href);
-        let environment: string;
-        switch (hostname) {
-          case '127.0.0.1':
-          case 'localhost':
-          default:
-            environment = 'localhost';
-            break;
-        }
-        return environment;
+        return 'development';
       },
       // eslint-disable-next-line @typescript-eslint/ban-ts-comment
       // @ts-ignore

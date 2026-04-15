@@ -3,6 +3,10 @@
 import * as child from 'child_process';
 import { resolve } from 'path';
 import { readFileSync } from 'fs';
+import type {
+  IncomingMessage,
+  ServerResponse,
+} from 'http';
 
 import react from '@vitejs/plugin-react';
 import { viteStaticCopy } from 'vite-plugin-static-copy';
@@ -12,7 +16,6 @@ import {
   normalizePath,
 } from 'vite';
 import { defineConfig } from 'vitest/config';
-
 import { findGitRootPath } from '@gen-epix/tools-lib';
 
 import packageJson from './package.json';
@@ -30,11 +33,15 @@ const proxyThrottleConfig: { [key: string]: number } = {
 
 const gitRootPath = findGitRootPath();
 
+const getProxiedApiPath = (path: string | undefined): string => {
+  return path?.replace(/^\/proxy\/[^/]+/, '') ?? '';
+};
+
 
 const proxyResponseCodeConfig: {
   [key: string]: {
     code: number;
-    method: 'GET' | 'POST' | 'PUT' | 'DELETE';
+    method: 'DELETE' | 'GET' | 'POST' | 'PUT';
   };
 } = {
   // '/v1/outages/0191fb18-7ef9-e584-1666-28d37e8e4079': {
@@ -43,13 +50,51 @@ const proxyResponseCodeConfig: {
   // },
 };
 
+const createAppProxyConfig = (target: string) => {
+  return {
+    bypass: async (req: IncomingMessage, res: ServerResponse) => {
+      const proxiedApiPath = getProxiedApiPath(req.url);
+      const throttle = proxyThrottleConfig[proxiedApiPath];
+      const responseConfig = proxyResponseCodeConfig[proxiedApiPath];
+
+      if (throttle) {
+        await new Promise((r) => setTimeout(r, throttle));
+      }
+      if (responseConfig?.method === req.method) {
+        res.statusCode = responseConfig.code;
+        res.end();
+        return false;
+      }
+    },
+    changeOrigin: true,
+    rewrite: (path: string) => getProxiedApiPath(path),
+    secure: false,
+    target,
+  };
+};
+
 // https://vitejs.dev/config/
 export default defineConfig({
+  build: {
+    rollupOptions: {
+      input: {
+        app: resolve(__dirname, 'index.html'),
+      },
+    },
+  },
   define: {
     // eslint-disable-next-line @typescript-eslint/naming-convention
     __COMMIT_HASH__: JSON.stringify(commitHash.trim()),
     // eslint-disable-next-line @typescript-eslint/naming-convention
     __PACKAGE_JSON_VERSION__: JSON.stringify((packageJson.version as unknown as string).trim()),
+  },
+  html: {
+    cspNonce: '**CSP_NONCE**',
+  },
+  optimizeDeps: {
+    rolldownOptions: {
+      plugins: [esmExternalRequirePlugin()],
+    },
   },
   plugins: [
     react(),
@@ -57,25 +102,22 @@ export default defineConfig({
     viteStaticCopy({
       targets: [
         {
+          dest: './locale',
+          rename: { stripBase: true },
           src: [
             './src/locale',
           ],
-          dest: './locale',
-          rename: { stripBase: true },
         },
         {
+          dest: './locale/gen-epix-ui',
+          rename: (fileName, fileExtension) => `../../../${fileName}.${fileExtension}`,
           src: [
             normalizePath(resolve(gitRootPath, 'packages', 'ui', 'src', 'locale', '*.json')),
           ],
-          dest: './locale/gen-epix-ui',
-          rename: (fileName, fileExtension) => `../../../${fileName}.${fileExtension}`,
         },
       ],
     }),
   ],
-  html: {
-    cspNonce: '**CSP_NONCE**',
-  },
   resolve: {
     // All peer dependencies of @gen-epix/ui should be deduplicated to the local node_modules version
     // This is to prevent issues with multiple versions of the same package (replaces explicit path aliases
@@ -96,50 +138,23 @@ export default defineConfig({
       'react',
     ],
   },
-  build: {
-    rollupOptions: {
-      input: {
-        app: resolve(__dirname, 'index.html'),
-      },
+  server: {
+    https: {
+      cert: readFileSync(resolve(gitRootPath, 'cert', 'cert.pem')),
+      key: readFileSync(resolve(gitRootPath, 'cert', 'key.pem')),
     },
-  },
-  optimizeDeps: {
-    rolldownOptions: {
-      plugins: [esmExternalRequirePlugin()],
+    open: true,
+    port: 5010,
+    proxy: {
+      '^\\/proxy\\/(?:CASEDB|casedb)\\/v[\\d\\.]+\\/.*': createAppProxyConfig('https://0.0.0.0:8000'),
+      '^\\/proxy\\/(?:OMOPDB|omopdb)\\/v[\\d\\.]+\\/.*': createAppProxyConfig('https://0.0.0.0:8001'),
+      '^\\/proxy\\/(?:SEQDB|seqdb)\\/v[\\d\\.]+\\/.*': createAppProxyConfig('https://0.0.0.0:8002'),
     },
   },
   test: {
-    globals: true,
     environment: 'jsdom',
+    globals: true,
     setupFiles: ['./src/test/setup.ts'],
     testTimeout: 5000,
-  },
-  server: {
-    open: true,
-    port: 5010,
-    https: process.env.NODE_ENV === 'development' && {
-      key: readFileSync(resolve(gitRootPath, 'cert', 'key.pem')),
-      cert: readFileSync(resolve(gitRootPath, 'cert', 'cert.pem')),
-    },
-    proxy: {
-      '^\\/v[\\d\\.]+\\/.*': {
-        target: 'https://0.0.0.0:8000',
-        changeOrigin: true,
-        secure: false,
-        bypass: async (req, res) => {
-          const throttle = proxyThrottleConfig[req.url];
-          const responseConfig = proxyResponseCodeConfig[req.url];
-
-          if (throttle) {
-            await new Promise((r) => setTimeout(r, throttle));
-          }
-          if (responseConfig?.method === req.method) {
-            res.statusCode = responseConfig.code;
-            res.end();
-            return false;
-          }
-        },
-      },
-    },
   },
 });

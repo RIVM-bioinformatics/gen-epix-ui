@@ -10,6 +10,7 @@ import type {
   EPI_ZONE,
   EpiDashboardLayoutConfig,
 } from './epi';
+import type { APP } from './app';
 
 export type ApplicationHeaderProps = {
   readonly fullHeight?: boolean;
@@ -73,7 +74,7 @@ export interface Config {
     TAKING_LONGER_TIMEOUT_MS: number;
     TREE_PADDING: number;
   };
-  getAPIBaseUrl: () => string;
+  getAPIBaseUrl: (app: APP) => string;
   getEnvironmentMessage: (t: TFunction<'translation', undefined>) => string;
   getSoftwareVersion: () => string;
   getTouchIconUrl: () => string;
