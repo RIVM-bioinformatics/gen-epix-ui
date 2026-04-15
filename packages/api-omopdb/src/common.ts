@@ -1,8 +1,8 @@
 /* eslint-disable */
 // @ts-nocheck
 /**
- * Gen-EpiX seqdb
- * The seqdb app manages genomic sequencing data.
+ * Gen-EpiX omopdb
+ * The omopdb app manages clinical and epidemiological data of persons or subjects of non-human origin.
  *
  * The version of the OpenAPI document: 8.0.0
  * Contact: ids-bioinformatics@rivm.nl
@@ -17,7 +17,7 @@ import type { Configuration } from "./configuration";
 import type { RequestArgs } from "./base";
 import type { AxiosInstance, AxiosResponse, AxiosRequestConfig } from 'axios';
 import { isAxiosError } from 'axios';
-import { SeqDbBaseAPI, RequiredError } from "./base";
+import { OmopDbBaseAPI, RequiredError } from "./base";
 
 /**
  *
@@ -149,8 +149,8 @@ export const createRequestFunction = function (axiosArgs: RequestArgs, globalAxi
   const axiosRequestArgs: AxiosRequestConfig = {
     ...axiosArgs.options,
     url: axiosArgs.url,
-    timeout: SeqDbBaseAPI.defaultRequestTimeout,
-    baseURL: SeqDbBaseAPI.baseUrl,
+    timeout: OmopDbBaseAPI.defaultRequestTimeout,
+    baseURL: OmopDbBaseAPI.baseUrl,
     headers: {
       ...(axiosArgs.options.headers || {}),
     },

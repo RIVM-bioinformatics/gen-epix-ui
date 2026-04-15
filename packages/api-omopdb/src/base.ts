@@ -1,7 +1,7 @@
 /* eslint-disable */
 /**
- * Gen-EpiX seqdb
- * The seqdb app manages genomic sequencing data.
+ * Gen-EpiX omopdb
+ * The omopdb app manages clinical and epidemiological data of persons or subjects of non-human origin.
  *
  * The version of the OpenAPI document: 8.0.0
  * Contact: ids-bioinformatics@rivm.nl
@@ -46,7 +46,7 @@ export interface RequestArgs {
  * @export
  * @class BaseAPI
  */
-export class SeqDbBaseAPI {
+export class OmopDbBaseAPI {
     public static defaultRequestTimeout: number;
     public static baseUrl: string;
     public static onRequest: Array<(request: InternalAxiosRequestConfig) => InternalAxiosRequestConfig<unknown>> = [];
@@ -59,23 +59,23 @@ export class SeqDbBaseAPI {
     public constructor() {
       this.axios = globalAxios.create();
       this.axios.interceptors.request.use(request => {
-        if (SeqDbBaseAPI.onRequest?.length) {
-          return SeqDbBaseAPI.onRequest.reduce((prev, curr) => {
+        if (OmopDbBaseAPI.onRequest?.length) {
+          return OmopDbBaseAPI.onRequest.reduce((prev, curr) => {
             return curr(prev);
           }, request);
         }
         return request;
       });
       this.axios.interceptors.response.use(response => {
-        if (SeqDbBaseAPI.onResponseFulfilled?.length) {
-          SeqDbBaseAPI.onResponseFulfilled.reduce((prev, curr) => {
+        if (OmopDbBaseAPI.onResponseFulfilled?.length) {
+          OmopDbBaseAPI.onResponseFulfilled.reduce((prev, curr) => {
             return curr(prev);
           }, response)
         }
         return response;
       }, (err: unknown) => {
-        if (SeqDbBaseAPI.onResponseRejected?.length) {
-          SeqDbBaseAPI.onResponseRejected.forEach(cb => cb(err));
+        if (OmopDbBaseAPI.onResponseRejected?.length) {
+          OmopDbBaseAPI.onResponseRejected.forEach(cb => cb(err));
         }
         return err;
       });

@@ -1,8 +1,8 @@
 /* tslint:disable */
 /* eslint-disable */
 /**
- * Gen-EpiX seqdb
- * The seqdb app manages genomic sequencing data.
+ * Gen-EpiX omopdb
+ * The omopdb app manages clinical and epidemiological data of persons or subjects of non-human origin.
  *
  * The version of the OpenAPI document: 8.0.0
  * Contact: ids-bioinformatics@rivm.nl
