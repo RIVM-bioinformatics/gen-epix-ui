@@ -12,6 +12,14 @@
     "packages/api-casedb": {
       "package-name": "@gen-epix/api-casedb",
       "component": "api-casedb"
+    },
+    "packages/api-seqdb": {
+      "package-name": "@gen-epix/api-seqdb",
+      "component": "api-seqdb"
+    },
+    "packages/api-omopdb": {
+      "package-name": "@gen-epix/api-omopdb",
+      "component": "api-omopdb"
     }
   }
 }
