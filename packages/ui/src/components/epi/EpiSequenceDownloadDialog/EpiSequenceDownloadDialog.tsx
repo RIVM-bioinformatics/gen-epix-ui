@@ -32,6 +32,7 @@ import { DownloadUtil } from '../../../utils/DownloadUtil';
 import { Autocomplete } from '../../form/fields/Autocomplete';
 import { StringUtil } from '../../../utils/StringUtil';
 import { ConfigManager } from '../../../classes/managers/ConfigManager';
+import { APP } from '../../../models/app';
 
 export interface EpiSequenceDownloadDialogOpenProps {
   cases: CaseDbCase[];
@@ -90,7 +91,7 @@ export const EpiSequenceDownloadDialog = withDialog<EpiSequenceDownloadDialogPro
 
   const onDownloadFastaButtonClick = useCallback(() => {
     DownloadUtil.downloadAsMultiPartForm({
-      action: `${ConfigManager.instance.config.getAPIBaseUrl()}/v1/retrieve/genetic_sequence/fasta`,
+      action: `${ConfigManager.instance.config.getAPIBaseUrl(APP.CASEDB)}/v1/retrieve/genetic_sequence/fasta`,
       data: {
         case_ids: openProps.cases.map(c => c.id),
         case_type_id: completeCaseType.id,
