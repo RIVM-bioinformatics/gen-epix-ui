@@ -25,12 +25,12 @@
     "@mui/styled-engine": "9.0.0",
     "@mui/system": "9.0.0",
     "@mui/utils": "9.0.0",
-    "@mui/x-date-pickers": "9.0.0",
+    "@mui/x-date-pickers": "9.0.2",
     "date-fns": "4.1.0",
-    "i18next": "26.0.4",
+    "i18next": "26.0.5",
     "react": "19.2.5",
     "react-dom": "19.2.5",
-    "react-i18next": "17.0.2",
+    "react-i18next": "17.0.3",
     "react-router-dom": "7.14.1"
   },
   "devDependencies": {
