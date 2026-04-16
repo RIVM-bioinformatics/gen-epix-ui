@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.2.0](https://github.com/RIVM-bioinformatics/gen-epix-ui/compare/api-casedb-v1.1.0...api-casedb-v1.2.0) (2026-04-16)
+
+
+### Features
+
+* add multi backend support ([#117](https://github.com/RIVM-bioinformatics/gen-epix-ui/issues/117)) ([56736ca](https://github.com/RIVM-bioinformatics/gen-epix-ui/commit/56736ca6431c8d0cd60947a786de5c576517e34a))
+
 ## [1.1.0](https://github.com/RIVM-bioinformatics/gen-epix-ui/compare/api-casedb-v1.0.4...api-casedb-v1.1.0) (2026-04-14)
 
 
