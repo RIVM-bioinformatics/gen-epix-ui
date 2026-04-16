@@ -16,7 +16,7 @@ import {
 } from 'react';
 import { useTranslation } from 'react-i18next';
 import { useStore } from 'zustand';
-import { type Col } from '@gen-epix/api-casedb';
+import { type CaseDbCol } from '@gen-epix/api-casedb';
 
 import {
   createTableStore,
@@ -94,7 +94,7 @@ export const EpiUploadMapSequences = () => {
     idSelectorCallback: (row) => row.generatedId,
   }), []);
 
-  const caseHasColumnContent = useCallback((rows: CaseUploadResultWithGeneratedId[], col: Col): boolean => {
+  const caseHasColumnContent = useCallback((rows: CaseUploadResultWithGeneratedId[], col: CaseDbCol): boolean => {
     return rows.some((row) => {
       const value = CaseUtil.getRowValue(row.validated_content, col, completeCaseType);
       return value && !value?.isMissing;

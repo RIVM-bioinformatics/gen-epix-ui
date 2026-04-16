@@ -24,10 +24,10 @@ import type {
   UseFormReturn,
 } from 'react-hook-form';
 import type {
-  ApiPermission,
-  CommandName,
+  CaseDbApiPermission,
+  CaseDbCommandName,
 } from '@gen-epix/api-casedb';
-import { PermissionType } from '@gen-epix/api-casedb';
+import { CaseDbPermissionType } from '@gen-epix/api-casedb';
 
 import { AuthorizationManager } from '../../classes/managers/AuthorizationManager';
 import { ConfigManager } from '../../classes/managers/ConfigManager';
@@ -85,7 +85,7 @@ export type CrudPageProps<
   readonly createItemButtonText?: string;
   readonly createItemDialogTitle?: string;
   readonly createOne?: (item: TFormFields) => Promise<TData>;
-  readonly crudCommandType?: CommandName;
+  readonly crudCommandType?: CaseDbCommandName;
   readonly customOnRowClick?: (params: TableRowParams<TData>) => void;
   readonly defaultNewItem?: Partial<TFormFields>;
   readonly defaultSortByField: keyof TTableData;
@@ -93,9 +93,9 @@ export type CrudPageProps<
   readonly deleteOne?: (item: TData) => Promise<unknown>;
   readonly editDialogExtraActionsFactory?: (item: TData) => DialogAction[];
   readonly extraActionsFactory?: (params: TableRowParams<TData>) => ReactElement[];
-  readonly extraCreateOnePermissions?: ApiPermission[];
-  readonly extraDeleteOnePermissions?: ApiPermission[];
-  readonly extraUpdateOnePermissions?: ApiPermission[];
+  readonly extraCreateOnePermissions?: CaseDbApiPermission[];
+  readonly extraDeleteOnePermissions?: CaseDbApiPermission[];
+  readonly extraUpdateOnePermissions?: CaseDbApiPermission[];
   readonly fetchAll: (signal: AbortSignal) => Promise<TData[]>;
   readonly fetchAllSelect?: (data: TData[]) => TData[];
   readonly formFieldDefinitions: ((values: TFormFields, item: TData) => FormFieldDefinition<TFormFields>[]) | FormFieldDefinition<TFormFields>[];
@@ -240,7 +240,7 @@ export const CrudPage = <
     }
     return authorizationManager.doesUserHavePermission(
       [
-        ...(crudCommandType ? [{ command_name: crudCommandType, permission_type: PermissionType.UPDATE }] : []),
+        ...(crudCommandType ? [{ command_name: crudCommandType, permission_type: CaseDbPermissionType.UPDATE }] : []),
         ...(extraUpdateOnePermissions ?? []),
       ],
     );
@@ -252,7 +252,7 @@ export const CrudPage = <
     }
     return authorizationManager.doesUserHavePermission(
       [
-        ...(crudCommandType ? [{ command_name: crudCommandType, permission_type: PermissionType.DELETE }] : []),
+        ...(crudCommandType ? [{ command_name: crudCommandType, permission_type: CaseDbPermissionType.DELETE }] : []),
         ...(extraDeleteOnePermissions ?? []),
       ],
     );
@@ -264,7 +264,7 @@ export const CrudPage = <
     }
     return authorizationManager.doesUserHavePermission(
       [
-        ...(crudCommandType ? [{ command_name: crudCommandType, permission_type: PermissionType.CREATE }] : []),
+        ...(crudCommandType ? [{ command_name: crudCommandType, permission_type: CaseDbPermissionType.CREATE }] : []),
         ...(extraCreateOnePermissions ?? []),
       ],
     );

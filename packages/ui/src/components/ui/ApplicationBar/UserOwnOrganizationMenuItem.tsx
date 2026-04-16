@@ -5,8 +5,8 @@ import {
 import { useTranslation } from 'react-i18next';
 import { useMemo } from 'react';
 import {
-  CommandName,
-  PermissionType,
+  CaseDbCommandName,
+  CaseDbPermissionType,
 } from '@gen-epix/api-casedb';
 
 import { withPermissions } from '../../../hoc/withPermissions';
@@ -49,6 +49,6 @@ export const UserOwnOrganizationMenuItem = withPermissions(() => {
   );
 }, {
   requiredPermissions: [
-    { command_name: CommandName.RetrieveOrganizationAdminNameEmailsCommand, permission_type: PermissionType.EXECUTE },
+    { command_name: CaseDbCommandName.RetrieveOrganizationAdminNameEmailsCommand, permission_type: CaseDbPermissionType.EXECUTE },
   ],
 });

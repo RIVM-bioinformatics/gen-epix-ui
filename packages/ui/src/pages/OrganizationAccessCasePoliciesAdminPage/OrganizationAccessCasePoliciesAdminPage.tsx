@@ -8,10 +8,10 @@ import {
   object,
   string,
 } from 'yup';
-import type { OrganizationAccessCasePolicy } from '@gen-epix/api-casedb';
+import type { CaseDbOrganizationAccessCasePolicy } from '@gen-epix/api-casedb';
 import {
-  AbacApi,
-  CommandName,
+  CaseDbAbacApi,
+  CaseDbCommandName,
 } from '@gen-epix/api-casedb';
 
 import { useColSetOptionsQuery } from '../../dataHooks/useColSetsQuery';
@@ -29,7 +29,7 @@ import { TestIdUtil } from '../../utils/TestIdUtil';
 import { CrudPage } from '../CrudPage';
 import type { OmitWithMetaData } from '../../models/data';
 
-type FormFields = OmitWithMetaData<OrganizationAccessCasePolicy, 'case_type_set' | 'data_collection' | 'organization' | 'read_col_set' | 'write_col_set'>;
+type FormFields = OmitWithMetaData<CaseDbOrganizationAccessCasePolicy, 'case_type_set' | 'data_collection' | 'organization' | 'read_col_set' | 'write_col_set'>;
 
 export const OrganizationAccessCasePoliciesAdminPage = () => {
   const { t } = useTranslation();
@@ -43,22 +43,22 @@ export const OrganizationAccessCasePoliciesAdminPage = () => {
   const loadables = useArray([nameFactory, organizationOptionsQuery, dataCollectionOptionsQuery, colSetOptionsQuery, caseTypeSetOptionsQuery]);
 
   const fetchAll = useCallback(async (signal: AbortSignal) => {
-    return (await AbacApi.instance.organizationAccessCasePoliciesGetAll({ signal }))?.data;
+    return (await CaseDbAbacApi.instance.organizationAccessCasePoliciesGetAll({ signal }))?.data;
   }, []);
 
-  const deleteOne = useCallback(async (item: OrganizationAccessCasePolicy) => {
-    return await AbacApi.instance.organizationAccessCasePoliciesDeleteOne(item.id);
+  const deleteOne = useCallback(async (item: CaseDbOrganizationAccessCasePolicy) => {
+    return await CaseDbAbacApi.instance.organizationAccessCasePoliciesDeleteOne(item.id);
   }, []);
 
-  const updateOne = useCallback(async (variables: FormFields, item: OrganizationAccessCasePolicy) => {
-    return (await AbacApi.instance.organizationAccessCasePoliciesPutOne(item.id, { id: item.id, ...variables })).data;
+  const updateOne = useCallback(async (variables: FormFields, item: CaseDbOrganizationAccessCasePolicy) => {
+    return (await CaseDbAbacApi.instance.organizationAccessCasePoliciesPutOne(item.id, { id: item.id, ...variables })).data;
   }, []);
 
   const createOne = useCallback(async (variables: FormFields) => {
-    return (await AbacApi.instance.organizationAccessCasePoliciesPostOne(variables)).data;
+    return (await CaseDbAbacApi.instance.organizationAccessCasePoliciesPostOne(variables)).data;
   }, []);
 
-  const getName = useCallback((item: OrganizationAccessCasePolicy) => {
+  const getName = useCallback((item: CaseDbOrganizationAccessCasePolicy) => {
     return nameFactory.getName(item);
   }, [nameFactory]);
 
@@ -160,31 +160,31 @@ export const OrganizationAccessCasePoliciesAdminPage = () => {
     ] as const;
   }, [colSetOptionsQuery.isLoading, colSetOptionsQuery.options, caseTypeSetOptionsQuery.isLoading, caseTypeSetOptionsQuery.options, dataCollectionOptionsQuery.isLoading, dataCollectionOptionsQuery.options, organizationOptionsQuery.isLoading, organizationOptionsQuery.options, t]);
 
-  const tableColumns = useMemo((): TableColumn<OrganizationAccessCasePolicy>[] => {
+  const tableColumns = useMemo((): TableColumn<CaseDbOrganizationAccessCasePolicy>[] => {
     return [
-      TableUtil.createOptionsColumn<OrganizationAccessCasePolicy>({ id: 'organization_id', name: t`Organization`, options: organizationOptionsQuery.options }),
-      TableUtil.createOptionsColumn<OrganizationAccessCasePolicy>({ id: 'data_collection_id', name: t`Data collection`, options: dataCollectionOptionsQuery.options }),
-      TableUtil.createOptionsColumn<OrganizationAccessCasePolicy>({ id: 'case_type_set_id', name: t`Case type set`, options: caseTypeSetOptionsQuery.options }),
-      TableUtil.createOptionsColumn<OrganizationAccessCasePolicy>({ id: 'read_col_set_id', name: t`Read column set`, options: colSetOptionsQuery.options }),
-      TableUtil.createOptionsColumn<OrganizationAccessCasePolicy>({ id: 'write_col_set_id', name: t`Write column set`, options: colSetOptionsQuery.options }),
+      TableUtil.createOptionsColumn<CaseDbOrganizationAccessCasePolicy>({ id: 'organization_id', name: t`Organization`, options: organizationOptionsQuery.options }),
+      TableUtil.createOptionsColumn<CaseDbOrganizationAccessCasePolicy>({ id: 'data_collection_id', name: t`Data collection`, options: dataCollectionOptionsQuery.options }),
+      TableUtil.createOptionsColumn<CaseDbOrganizationAccessCasePolicy>({ id: 'case_type_set_id', name: t`Case type set`, options: caseTypeSetOptionsQuery.options }),
+      TableUtil.createOptionsColumn<CaseDbOrganizationAccessCasePolicy>({ id: 'read_col_set_id', name: t`Read column set`, options: colSetOptionsQuery.options }),
+      TableUtil.createOptionsColumn<CaseDbOrganizationAccessCasePolicy>({ id: 'write_col_set_id', name: t`Write column set`, options: colSetOptionsQuery.options }),
 
-      TableUtil.createBooleanColumn<OrganizationAccessCasePolicy>({ id: 'add_case', name: t`Add case` }),
-      TableUtil.createBooleanColumn<OrganizationAccessCasePolicy>({ id: 'remove_case', name: t`Remove case` }),
-      TableUtil.createBooleanColumn<OrganizationAccessCasePolicy>({ id: 'add_case_set', name: t`Add case set` }),
-      TableUtil.createBooleanColumn<OrganizationAccessCasePolicy>({ id: 'remove_case_set', name: t`Remove case set` }),
-      TableUtil.createBooleanColumn<OrganizationAccessCasePolicy>({ id: 'read_case_set', name: t`Read case set` }),
-      TableUtil.createBooleanColumn<OrganizationAccessCasePolicy>({ id: 'write_case_set', name: t`Write case set` }),
+      TableUtil.createBooleanColumn<CaseDbOrganizationAccessCasePolicy>({ id: 'add_case', name: t`Add case` }),
+      TableUtil.createBooleanColumn<CaseDbOrganizationAccessCasePolicy>({ id: 'remove_case', name: t`Remove case` }),
+      TableUtil.createBooleanColumn<CaseDbOrganizationAccessCasePolicy>({ id: 'add_case_set', name: t`Add case set` }),
+      TableUtil.createBooleanColumn<CaseDbOrganizationAccessCasePolicy>({ id: 'remove_case_set', name: t`Remove case set` }),
+      TableUtil.createBooleanColumn<CaseDbOrganizationAccessCasePolicy>({ id: 'read_case_set', name: t`Read case set` }),
+      TableUtil.createBooleanColumn<CaseDbOrganizationAccessCasePolicy>({ id: 'write_case_set', name: t`Write case set` }),
 
-      TableUtil.createBooleanColumn<OrganizationAccessCasePolicy>({ id: 'is_private', name: t`Private` }),
-      TableUtil.createBooleanColumn<OrganizationAccessCasePolicy>({ id: 'is_active', name: t`Active` }),
+      TableUtil.createBooleanColumn<CaseDbOrganizationAccessCasePolicy>({ id: 'is_private', name: t`Private` }),
+      TableUtil.createBooleanColumn<CaseDbOrganizationAccessCasePolicy>({ id: 'is_active', name: t`Active` }),
     ];
   }, [colSetOptionsQuery.options, caseTypeSetOptionsQuery.options, dataCollectionOptionsQuery.options, organizationOptionsQuery.options, t]);
 
   return (
-    <CrudPage<FormFields, OrganizationAccessCasePolicy>
+    <CrudPage<FormFields, CaseDbOrganizationAccessCasePolicy>
       createItemDialogTitle={t`Create new organization access case policy`}
       createOne={createOne}
-      crudCommandType={CommandName.OrganizationAccessCasePolicyCrudCommand}
+      crudCommandType={CaseDbCommandName.OrganizationAccessCasePolicyCrudCommand}
       defaultSortByField={'organization_id'}
       defaultSortDirection={'asc'}
       deleteOne={deleteOne}

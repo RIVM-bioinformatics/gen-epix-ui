@@ -9,10 +9,8 @@ import {
 } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
 import last from 'lodash/last';
-import { OrganizationApi } from '@gen-epix/api-casedb';
+import { CaseDbOrganizationApi } from '@gen-epix/api-casedb';
 
-import { ResponseHandler } from '../ResponseHandler';
-import { PageContainer } from '../PageContainer';
 import { AuthorizationManager } from '../../../classes/managers/AuthorizationManager';
 import { QUERY_KEY } from '../../../models/query';
 import type { MyNonIndexRouteObject } from '../../../models/reactRouter';
@@ -21,6 +19,8 @@ import { TestIdUtil } from '../../../utils/TestIdUtil';
 import { useArray } from '../../../hooks/useArray';
 import { useQueryMemo } from '../../../hooks/useQueryMemo';
 import { LoadableUtil } from '../../../utils/LoadableUtil';
+import { PageContainer } from '../../ui/PageContainer';
+import { ResponseHandler } from '../../ui/ResponseHandler';
 
 export const AuthorizationWrapper = ({ children }: PropsWithChildren): ReactNode => {
   const { t } = useTranslation();
@@ -31,14 +31,14 @@ export const AuthorizationWrapper = ({ children }: PropsWithChildren): ReactNode
   const userQuery = useQueryMemo({
     enabled: requiresUserProfile,
     gcTime: Infinity,
-    queryFn: async ({ signal }) => (await OrganizationApi.instance.userMeGetOne({ signal })).data,
+    queryFn: async ({ signal }) => (await CaseDbOrganizationApi.instance.userMeGetOne({ signal })).data,
     queryKey: QueryUtil.getGenericKey(QUERY_KEY.USER_ME),
     staleTime: Infinity,
   });
   const userPermissionsQuery = useQueryMemo({
     enabled: requiresUserProfile,
     gcTime: Infinity,
-    queryFn: async ({ signal }) => (await OrganizationApi.instance.userMeRetrievePermissions({ signal })).data,
+    queryFn: async ({ signal }) => (await CaseDbOrganizationApi.instance.userMeRetrievePermissions({ signal })).data,
     queryKey: QueryUtil.getGenericKey(QUERY_KEY.USER_PERMISSIONS),
     staleTime: Infinity,
   });

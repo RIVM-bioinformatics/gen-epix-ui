@@ -4,7 +4,7 @@ import {
   useEffect,
   useMemo,
 } from 'react';
-import { CaseApi } from '@gen-epix/api-casedb';
+import { CaseDbCaseApi } from '@gen-epix/api-casedb';
 
 import { EpiDashboard } from '../../components/epi/EpiDashboard';
 import { PageContainer } from '../../components/ui/PageContainer';
@@ -24,7 +24,7 @@ export const CasesDetailPage = () => {
     baseQueryKey: QUERY_KEY.CASE_TYPES,
     itemId: caseTypeId,
     useQueryOptions: {
-      queryFn: async ({ signal }) => (await CaseApi.instance.caseTypesGetOne(caseTypeId, { signal })).data,
+      queryFn: async ({ signal }) => (await CaseDbCaseApi.instance.caseTypesGetOne(caseTypeId, { signal })).data,
     },
   });
 

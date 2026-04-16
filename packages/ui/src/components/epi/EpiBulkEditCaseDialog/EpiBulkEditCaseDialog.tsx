@@ -3,7 +3,7 @@ import {
   useEffect,
 } from 'react';
 import { useTranslation } from 'react-i18next';
-import type { Case } from '@gen-epix/api-casedb';
+import type { CaseDbCase } from '@gen-epix/api-casedb';
 
 import {
   withDialog,
@@ -14,7 +14,7 @@ import { TestIdUtil } from '../../../utils/TestIdUtil';
 import type { DialogAction } from '../../ui/Dialog';
 
 export interface EpiBulkEditCaseDialogOpenProps {
-  rows: Case[];
+  rows: CaseDbCase[];
 }
 
 export interface EpiBulkEditCaseDialogProps extends WithDialogRenderProps<EpiBulkEditCaseDialogOpenProps> {

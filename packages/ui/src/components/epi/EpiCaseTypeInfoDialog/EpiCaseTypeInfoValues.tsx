@@ -4,15 +4,15 @@ import {
   AccordionSummary,
 } from '@mui/material';
 import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
-import type { CompleteCaseType } from '@gen-epix/api-casedb';
-import { DimType } from '@gen-epix/api-casedb';
+import type { CaseDbCompleteCaseType } from '@gen-epix/api-casedb';
+import { CaseDbDimType } from '@gen-epix/api-casedb';
 
 import { CaseTypeUtil } from '../../../utils/CaseTypeUtil';
 
 import { EpiCaseTypeInfoVariableDetails } from './EpiCaseTypeInfoVariableDetails';
 
 export type EpiCaseTypeInfoValuesProps = {
-  readonly completeCaseType: CompleteCaseType;
+  readonly completeCaseType: CaseDbCompleteCaseType;
 };
 
 export const EpiCaseTypeInfoValues = ({ completeCaseType }: EpiCaseTypeInfoValuesProps) => {
@@ -21,7 +21,7 @@ export const EpiCaseTypeInfoValues = ({ completeCaseType }: EpiCaseTypeInfoValue
       {completeCaseType.ordered_dim_ids.map(x => completeCaseType.dims[x]).filter(dim => {
         // Filter out dimensions that only include genetic distance columns
         const refDim = completeCaseType.ref_dims[dim.ref_dim_id];
-        if (refDim.dim_type !== DimType.OTHER) {
+        if (refDim.dim_type !== CaseDbDimType.OTHER) {
           return true;
         }
         const cols = CaseTypeUtil.getCols(completeCaseType, dim.id);

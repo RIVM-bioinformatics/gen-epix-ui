@@ -12,15 +12,15 @@ import {
 import { useTranslation } from 'react-i18next';
 import round from 'lodash/round';
 import type {
-  CaseStats,
-  EpiFilter,
-  RetrieveCaseTypeStatsRequestBody,
-  TypedDatetimeRangeFilter,
+  CaseDbCaseStats,
+  CaseDbEpiFilter,
+  CaseDbRetrieveCaseTypeStatsRequestBody,
+  CaseDbTypedDatetimeRangeFilter,
 } from '@gen-epix/api-casedb';
 import {
-  CaseApi,
-  CommandName,
-  PermissionType,
+  CaseDbCaseApi,
+  CaseDbCommandName,
+  CaseDbPermissionType,
 } from '@gen-epix/api-casedb';
 
 import { ConfigManager } from '../../../classes/managers/ConfigManager';
@@ -41,7 +41,7 @@ import { HomePageTrendCard } from './HomePageTrendCard';
 
 type CaseStatsWithDiff = {
   diffPercentage: number;
-} & CaseStats;
+} & CaseDbCaseStats;
 
 type Statistic = {
   callback?: () => void;
@@ -55,28 +55,28 @@ export const HomePageTrends = withPermissions(() => {
   const theme = useTheme();
   const { t } = useTranslation();
 
-  const dateTimeRangeFilter = useMemo<TypedDatetimeRangeFilter>(() => ({
+  const dateTimeRangeFilter = useMemo<CaseDbTypedDatetimeRangeFilter>(() => ({
     type: 'DATETIME_RANGE',
     upper_bound: ConfigManager.instance.config.trends.homePage.getSinceDate(),
     upper_bound_censor: '<=',
-  } satisfies TypedDatetimeRangeFilter), []);
+  } satisfies CaseDbTypedDatetimeRangeFilter), []);
 
-  const caseSetQueryFilter = useMemo<EpiFilter>(() => ({
+  const caseSetQueryFilter = useMemo<CaseDbEpiFilter>(() => ({
     key: 'case_set_date',
     type: 'DATETIME_RANGE',
     upper_bound: ConfigManager.instance.config.trends.homePage.getSinceDate(),
     upper_bound_censor: '<=',
-  } satisfies EpiFilter), []);
+  } satisfies CaseDbEpiFilter), []);
 
   const caseTypeStatsQueryNow = useQueryMemo({
     queryFn: async ({ signal }) => {
-      const response = await CaseApi.instance.retrieveCaseTypeStats({}, { signal });
+      const response = await CaseDbCaseApi.instance.retrieveCaseTypeStats({}, { signal });
       return response.data;
     },
     queryKey: QueryUtil.getGenericKey(QUERY_KEY.CASE_TYPE_STATS),
   });
 
-  const retrieveTypeCaseStatsRequestBody = useMemo<RetrieveCaseTypeStatsRequestBody>(() => {
+  const retrieveTypeCaseStatsRequestBody = useMemo<CaseDbRetrieveCaseTypeStatsRequestBody>(() => {
     if (!caseTypeStatsQueryNow.data) {
       return undefined;
     }
@@ -89,7 +89,7 @@ export const HomePageTrends = withPermissions(() => {
   const caseTypeStatsQueryPast = useQueryMemo({
     enabled: !!retrieveTypeCaseStatsRequestBody,
     queryFn: async ({ signal }) => {
-      const response = await CaseApi.instance.retrieveCaseTypeStats(retrieveTypeCaseStatsRequestBody ?? {}, { signal });
+      const response = await CaseDbCaseApi.instance.retrieveCaseTypeStats(retrieveTypeCaseStatsRequestBody ?? {}, { signal });
       return response.data;
     },
     queryKey: QueryUtil.getGenericKey(QUERY_KEY.CASE_TYPE_STATS, retrieveTypeCaseStatsRequestBody ?? {}),
@@ -99,7 +99,7 @@ export const HomePageTrends = withPermissions(() => {
 
   const { data: caseSetsThenData, ...caseSetsThenQuery } = useQueryMemo({
     queryFn: async ({ signal }) => {
-      const response = await CaseApi.instance.caseSetsPostQuery(caseSetQueryFilter, { signal });
+      const response = await CaseDbCaseApi.instance.caseSetsPostQuery(caseSetQueryFilter, { signal });
       return response.data;
     },
     queryKey: QueryUtil.getGenericKey(QUERY_KEY.CASE_SETS, caseSetQueryFilter),
@@ -149,7 +149,7 @@ export const HomePageTrends = withPermissions(() => {
       },
     );
 
-    const caseStatsThenByCaseTypeId = new Map<string, CaseStats>(caseTypeStatsQueryPast.data?.map(stat => [stat.case_type_id, stat]));
+    const caseStatsThenByCaseTypeId = new Map<string, CaseDbCaseStats>(caseTypeStatsQueryPast.data?.map(stat => [stat.case_type_id, stat]));
     const sortedStats = caseTypeStatsQueryNow?.data?.map<CaseStatsWithDiff>(stat => {
       const nowNCases = stat.n_cases;
       const thenNCases = caseStatsThenByCaseTypeId.get(stat.case_type_id)?.n_cases ?? 0;
@@ -315,7 +315,7 @@ export const HomePageTrends = withPermissions(() => {
   );
 }, {
   requiredPermissions: [
-    { command_name: CommandName.RetrieveCaseStatsCommand, permission_type: PermissionType.EXECUTE },
-    { command_name: CommandName.CaseSetCrudCommand, permission_type: PermissionType.READ },
-    { command_name: CommandName.CaseTypeCrudCommand, permission_type: PermissionType.READ },
+    { command_name: CaseDbCommandName.RetrieveCaseStatsCommand, permission_type: CaseDbPermissionType.EXECUTE },
+    { command_name: CaseDbCommandName.CaseSetCrudCommand, permission_type: CaseDbPermissionType.READ },
+    { command_name: CaseDbCommandName.CaseTypeCrudCommand, permission_type: CaseDbPermissionType.READ },
   ] });

@@ -12,13 +12,13 @@ import {
   string,
 } from 'yup';
 import type {
-  ApiPermission,
-  User,
+  CaseDbApiPermission,
+  CaseDbUser,
 } from '@gen-epix/api-casedb';
 import {
-  CommandName,
-  OrganizationApi,
-  PermissionType,
+  CaseDbCommandName,
+  CaseDbOrganizationApi,
+  CaseDbPermissionType,
 } from '@gen-epix/api-casedb';
 
 import { useOrganizationOptionsQuery } from '../../dataHooks/useOrganizationsQuery';
@@ -41,7 +41,7 @@ import { useInviteUserConstraintsQuery } from '../../dataHooks/useInviteUserCons
 import type { OmitWithMetaData } from '../../models/data';
 import { SchemaUtil } from '../../utils/SchemaUtil';
 
-type FormFields = OmitWithMetaData<User, 'organization_id' | 'organization'>;
+type FormFields = OmitWithMetaData<CaseDbUser, 'organization_id' | 'organization'>;
 
 export const UsersAdminPage = () => {
   const { t } = useTranslation();
@@ -56,7 +56,7 @@ export const UsersAdminPage = () => {
     inviteUserConstraintsQuery,
   ]);
 
-  const onRowsChange = useCallback((items: User[]) => {
+  const onRowsChange = useCallback((items: CaseDbUser[]) => {
     // Because roles are a string array (instead of an enum or similar), we need to dynamically determine the options for the roles column in the table and in the form.
     // The options for the form are determined by the invite user constraints endpoint, but if the user doesn't have access to that endpoint, we fall back to using the roles that are currently in use by users in the system.
     const roles = new Set<string>();
@@ -70,7 +70,7 @@ export const UsersAdminPage = () => {
     setTableRoleOptions(_tableRoleOptions);
     let _formRoleOptions: OptionBase<string>[];
     if (AuthorizationManager.instance.doesUserHavePermission([
-      { command_name: CommandName.RetrieveInviteUserConstraintsCommand, permission_type: PermissionType.EXECUTE },
+      { command_name: CaseDbCommandName.RetrieveInviteUserConstraintsCommand, permission_type: CaseDbPermissionType.EXECUTE },
     ])) {
       _formRoleOptions = inviteUserConstraintsQuery?.data ? inviteUserConstraintsQuery.data.roles.map(role => ({
         label: role,
@@ -91,28 +91,28 @@ export const UsersAdminPage = () => {
   }, [inviteUserConstraintsQuery.data]);
 
   const fetchAll = useCallback(async (signal: AbortSignal) => {
-    const users = (await OrganizationApi.instance.usersGetAll({ signal }))?.data;
+    const users = (await CaseDbOrganizationApi.instance.usersGetAll({ signal }))?.data;
 
     return users;
   }, []);
 
-  const updateOne = useCallback(async (variables: FormFields, item: User) => {
-    return (await OrganizationApi.instance.updateUser(item.id, {
+  const updateOne = useCallback(async (variables: FormFields, item: CaseDbUser) => {
+    return (await CaseDbOrganizationApi.instance.updateUser(item.id, {
       is_active: variables.is_active,
       organization_id: item.organization_id,
       roles: variables.roles,
     })).data;
   }, []);
 
-  const deleteOne = useCallback(async (item: User) => {
-    return await OrganizationApi.instance.usersDeleteOne(item.id);
+  const deleteOne = useCallback(async (item: CaseDbUser) => {
+    return await CaseDbOrganizationApi.instance.usersDeleteOne(item.id);
   }, []);
 
   const getName = useCallback((item: FormFields) => {
     return item.email;
   }, []);
 
-  const canEditItem = useCallback((item: User) => {
+  const canEditItem = useCallback((item: CaseDbUser) => {
     return AuthorizationManager.instance.user.email !== item.email;
   }, []);
 
@@ -166,19 +166,19 @@ export const UsersAdminPage = () => {
     ] as const;
   }, [t, formRoleOptions, inviteUserConstraintsQuery.isLoading]);
 
-  const tableColumns = useMemo((): TableColumn<User>[] => {
+  const tableColumns = useMemo((): TableColumn<CaseDbUser>[] => {
     return [
-      TableUtil.createOptionsColumn<User>({ id: 'organization_id', name: t`Organization`, options: organizationOptionsQuery.options }),
-      TableUtil.createTextColumn<User>({ id: 'key', name: t`Key` }),
-      TableUtil.createTextColumn<User>({ id: 'email', name: t`E-Mail` }),
-      TableUtil.createTextColumn<User>({ advancedSort: true, id: 'name', name: t`Name` }),
-      TableUtil.createTextColumn<User>({ id: 'description', name: t`Description` }),
-      TableUtil.createOptionsColumn<User>({ id: 'roles', name: t`Roles`, options: tableRoleOptions }),
-      TableUtil.createBooleanColumn<User>({ id: 'is_active', name: t`Is active` }),
+      TableUtil.createOptionsColumn<CaseDbUser>({ id: 'organization_id', name: t`Organization`, options: organizationOptionsQuery.options }),
+      TableUtil.createTextColumn<CaseDbUser>({ id: 'key', name: t`Key` }),
+      TableUtil.createTextColumn<CaseDbUser>({ id: 'email', name: t`E-Mail` }),
+      TableUtil.createTextColumn<CaseDbUser>({ advancedSort: true, id: 'name', name: t`Name` }),
+      TableUtil.createTextColumn<CaseDbUser>({ id: 'description', name: t`Description` }),
+      TableUtil.createOptionsColumn<CaseDbUser>({ id: 'roles', name: t`Roles`, options: tableRoleOptions }),
+      TableUtil.createBooleanColumn<CaseDbUser>({ id: 'is_active', name: t`Is active` }),
     ];
   }, [organizationOptionsQuery.options, tableRoleOptions, t]);
 
-  const getOptimisticUpdateIntermediateItem = useCallback((variables: FormFields, previousItem: User): User => {
+  const getOptimisticUpdateIntermediateItem = useCallback((variables: FormFields, previousItem: CaseDbUser): CaseDbUser => {
     return {
       email: previousItem.email,
       id: previousItem.id,
@@ -190,19 +190,19 @@ export const UsersAdminPage = () => {
     };
   }, []);
 
-  const subPages = useMemo<CrudPageSubPage<User>[]>(() => {
+  const subPages = useMemo<CrudPageSubPage<CaseDbUser>[]>(() => {
     const doesUserHavePermissionToViewEffectiveRights = AuthorizationManager.instance.doesUserHavePermission([
-      { command_name: CommandName.ColSetMemberCrudCommand, permission_type: PermissionType.READ },
-      { command_name: CommandName.CaseTypeSetCrudCommand, permission_type: PermissionType.READ },
-      { command_name: CommandName.ColSetCrudCommand, permission_type: PermissionType.READ },
-      { command_name: CommandName.CaseTypeSetMemberCrudCommand, permission_type: PermissionType.READ },
-      { command_name: CommandName.CaseTypeSetCategoryCrudCommand, permission_type: PermissionType.READ },
-      { command_name: CommandName.DataCollectionCrudCommand, permission_type: PermissionType.READ },
-      { command_name: CommandName.OrganizationAccessCasePolicyCrudCommand, permission_type: PermissionType.READ },
-      { command_name: CommandName.OrganizationShareCasePolicyCrudCommand, permission_type: PermissionType.READ },
-      { command_name: CommandName.UserAccessCasePolicyCrudCommand, permission_type: PermissionType.READ },
-      { command_name: CommandName.UserShareCasePolicyCrudCommand, permission_type: PermissionType.READ },
-      { command_name: CommandName.ColCrudCommand, permission_type: PermissionType.READ },
+      { command_name: CaseDbCommandName.ColSetMemberCrudCommand, permission_type: CaseDbPermissionType.READ },
+      { command_name: CaseDbCommandName.CaseTypeSetCrudCommand, permission_type: CaseDbPermissionType.READ },
+      { command_name: CaseDbCommandName.ColSetCrudCommand, permission_type: CaseDbPermissionType.READ },
+      { command_name: CaseDbCommandName.CaseTypeSetMemberCrudCommand, permission_type: CaseDbPermissionType.READ },
+      { command_name: CaseDbCommandName.CaseTypeSetCategoryCrudCommand, permission_type: CaseDbPermissionType.READ },
+      { command_name: CaseDbCommandName.DataCollectionCrudCommand, permission_type: CaseDbPermissionType.READ },
+      { command_name: CaseDbCommandName.OrganizationAccessCasePolicyCrudCommand, permission_type: CaseDbPermissionType.READ },
+      { command_name: CaseDbCommandName.OrganizationShareCasePolicyCrudCommand, permission_type: CaseDbPermissionType.READ },
+      { command_name: CaseDbCommandName.UserAccessCasePolicyCrudCommand, permission_type: CaseDbPermissionType.READ },
+      { command_name: CaseDbCommandName.UserShareCasePolicyCrudCommand, permission_type: CaseDbPermissionType.READ },
+      { command_name: CaseDbCommandName.ColCrudCommand, permission_type: CaseDbPermissionType.READ },
     ]);
 
     if (!doesUserHavePermissionToViewEffectiveRights) {
@@ -210,28 +210,28 @@ export const UsersAdminPage = () => {
     }
     return [
       {
-        getPathName: (item: User) => `/management/users/${item.id}/effective-rights-tester`,
+        getPathName: (item: CaseDbUser) => `/management/users/${item.id}/effective-rights-tester`,
         label: t`Test effective rights`,
-      } satisfies CrudPageSubPage<User>,
+      } satisfies CrudPageSubPage<CaseDbUser>,
       {
-        getPathName: (item: User) => `/management/users/${item.id}/effective-rights`,
+        getPathName: (item: CaseDbUser) => `/management/users/${item.id}/effective-rights`,
         label: t`View effective rights`,
-      } satisfies CrudPageSubPage<User>,
+      } satisfies CrudPageSubPage<CaseDbUser>,
     ];
 
   }, [t]);
 
 
-  const extraUpdateOnePermissions = useMemo<ApiPermission[]>(() => [
-    { command_name: CommandName.UpdateUserCommand, permission_type: PermissionType.EXECUTE },
+  const extraUpdateOnePermissions = useMemo<CaseDbApiPermission[]>(() => [
+    { command_name: CaseDbCommandName.UpdateUserCommand, permission_type: CaseDbPermissionType.EXECUTE },
   ], []);
-  const extraDeleteOnePermissions = useMemo<ApiPermission[]>(() => [
-    { command_name: CommandName.UserCrudCommand, permission_type: PermissionType.DELETE },
+  const extraDeleteOnePermissions = useMemo<CaseDbApiPermission[]>(() => [
+    { command_name: CaseDbCommandName.UserCrudCommand, permission_type: CaseDbPermissionType.DELETE },
   ], []);
 
   return (
     <>
-      <CrudPage<FormFields, User>
+      <CrudPage<FormFields, CaseDbUser>
         canEditItem={canEditItem}
         createItemDialogTitle={t`Create new user`}
         defaultSortByField={'name'}

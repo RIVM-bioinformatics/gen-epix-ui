@@ -7,8 +7,8 @@ import {
   isValid,
 } from 'date-fns';
 import type {
-  TypedDateRangeFilter,
-  TypedPartialDateRangeFilter,
+  CaseDbTypedDateRangeFilter,
+  CaseDbTypedPartialDateRangeFilter,
 } from '@gen-epix/api-casedb';
 
 import type { FilterAbstractKwArgs } from '../abstracts/FilterAbstract';
@@ -112,7 +112,7 @@ export class DateFilter extends FilterAbstract<[Date, Date]> implements Filter<[
     }
   }
 
-  public toBackendFilter(): TypedDateRangeFilter | TypedPartialDateRangeFilter {
+  public toBackendFilter(): CaseDbTypedDateRangeFilter | CaseDbTypedPartialDateRangeFilter {
     if (this.isInitialFilterValue()) {
       return;
     }

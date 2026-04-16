@@ -1,16 +1,16 @@
 import type {
-  CaseUploadResult,
-  Col,
-  ColType,
-  Concept,
-  ConceptSet,
-  DataCollection,
-  GeneticDistanceProtocol,
-  Organization,
-  RefCol,
-  Region,
-  RegionSet,
-  TreeAlgorithm,
+  CaseDbCaseUploadResult,
+  CaseDbCol,
+  CaseDbColType,
+  CaseDbConcept,
+  CaseDbConceptSet,
+  CaseDbDataCollection,
+  CaseDbGeneticDistanceProtocol,
+  CaseDbOrganization,
+  CaseDbRefCol,
+  CaseDbRegion,
+  CaseDbRegionSet,
+  CaseDbTreeAlgorithm,
 } from '@gen-epix/api-casedb';
 
 export enum EPI_UPLOAD_STEP {
@@ -56,7 +56,7 @@ export type CaseTypeRowValue = {
   short: string;
 };
 
-export type CaseUploadResultWithGeneratedId = { generatedId: string } & CaseUploadResult;
+export type CaseUploadResultWithGeneratedId = { generatedId: string } & CaseDbCaseUploadResult;
 
 export type EpiCaseHasCaseSet = { [caseId: string]: boolean };
 
@@ -76,18 +76,18 @@ export type EpiDashboardLayoutUserConfig = {
   };
 };
 export type EpiData = {
-  conceptsById: { [id: string]: Concept };
-  conceptsBySetId: { [id: string]: Concept[] };
-  conceptSets: { [id: string]: ConceptSet };
+  conceptsById: { [id: string]: CaseDbConcept };
+  conceptsBySetId: { [id: string]: CaseDbConcept[] };
+  conceptSets: { [id: string]: CaseDbConceptSet };
   conceptsIdsBySetId: { [id: string]: string[] };
-  organizations: Organization[];
-  organizationsById: { [id: string]: Organization };
-  regionsById: { [id: string]: Region };
-  regionsByRegionSetId: { [id: string]: Region[] };
-  regionSets: { [id: string]: RegionSet };
-  treeAlgorithms: TreeAlgorithm[];
-  userDataCollections: DataCollection[];
-  userDataCollectionsById: { [id: string]: DataCollection };
+  organizations: CaseDbOrganization[];
+  organizationsById: { [id: string]: CaseDbOrganization };
+  regionsById: { [id: string]: CaseDbRegion };
+  regionsByRegionSetId: { [id: string]: CaseDbRegion[] };
+  regionSets: { [id: string]: CaseDbRegionSet };
+  treeAlgorithms: CaseDbTreeAlgorithm[];
+  userDataCollections: CaseDbDataCollection[];
+  userDataCollectionsById: { [id: string]: CaseDbDataCollection };
 };
 
 export type EpiLineListRangeSubjectValue = {
@@ -101,22 +101,22 @@ export type EpiLinkedScrollSubjectValue = {
 };
 
 export type EpiUploadCompleteColStats = {
-  readsColumns: Col[];
-  sampleIdColumns: Col[];
-  sequenceColumns: Col[];
-  writableColumns: Col[];
+  readsColumns: CaseDbCol[];
+  sampleIdColumns: CaseDbCol[];
+  sequenceColumns: CaseDbCol[];
+  writableColumns: CaseDbCol[];
 };
 
 /**
  * File assignment result for genetic file uploads
  */
 export interface EpiUploadFileColumnAssignment {
-  col: Col; // null if no suitable column found
+  col: CaseDbCol; // null if no suitable column found
   file: File;
 }
 
 export type EpiUploadMappedColumn = {
-  col: Col;
+  col: CaseDbCol;
   isCaseIdColumn?: boolean;
   isCol?: boolean;
   isSampleIdColumn?: boolean;
@@ -164,7 +164,7 @@ export type Highlighting = {
 
 export type Stratification = {
   caseIdColors: { [key: string]: string };
-  col?: Col;
+  col?: CaseDbCol;
   legendaItems?: StratificationLegendaItem[];
   legendaItemsByColor?: { [key: string]: StratificationLegendaItem };
   legendaItemsByValue?: { [key: string]: StratificationLegendaItem };
@@ -174,17 +174,17 @@ export type Stratification = {
 export type StratificationLegendaItem = {
   caseIds: string[];
   color: string;
-  columnType?: ColType;
+  columnType?: CaseDbColType;
   rowValue: CaseTypeRowValue;
 };
 
 
 export type TreeConfiguration = {
-  col: Col;
+  col: CaseDbCol;
   computedId: string;
-  geneticDistanceProtocol: GeneticDistanceProtocol;
-  refCol: RefCol;
-  treeAlgorithm: TreeAlgorithm;
+  geneticDistanceProtocol: CaseDbGeneticDistanceProtocol;
+  refCol: CaseDbRefCol;
+  treeAlgorithm: CaseDbTreeAlgorithm;
 };
 
 export type TreeFocus = {

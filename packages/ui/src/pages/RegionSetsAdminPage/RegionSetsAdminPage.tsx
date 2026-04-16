@@ -7,11 +7,11 @@ import {
   boolean,
   object,
 } from 'yup';
-import type { RegionSet } from '@gen-epix/api-casedb';
+import type { CaseDbRegionSet } from '@gen-epix/api-casedb';
 import {
-  CommandName,
-  GeoApi,
-  PermissionType,
+  CaseDbCommandName,
+  CaseDbGeoApi,
+  CaseDbPermissionType,
 } from '@gen-epix/api-casedb';
 
 import type { FormFieldDefinition } from '../../models/form';
@@ -26,28 +26,28 @@ import { AuthorizationManager } from '../../classes/managers/AuthorizationManage
 import type { OmitWithMetaData } from '../../models/data';
 import { SchemaUtil } from '../../utils/SchemaUtil';
 
-type FormFields = OmitWithMetaData<RegionSet>;
+type FormFields = OmitWithMetaData<CaseDbRegionSet>;
 
 export const RegionSetsAdminPage = () => {
   const { t } = useTranslation();
 
   const fetchAll = useCallback(async (signal: AbortSignal) => {
-    return (await GeoApi.instance.regionSetsGetAll({ signal }))?.data;
+    return (await CaseDbGeoApi.instance.regionSetsGetAll({ signal }))?.data;
   }, []);
 
-  const deleteOne = useCallback(async (item: RegionSet) => {
-    return await GeoApi.instance.regionSetsDeleteOne(item.id);
+  const deleteOne = useCallback(async (item: CaseDbRegionSet) => {
+    return await CaseDbGeoApi.instance.regionSetsDeleteOne(item.id);
   }, []);
 
-  const updateOne = useCallback(async (variables: FormFields, item: RegionSet) => {
-    return (await GeoApi.instance.regionSetsPutOne(item.id, { id: item.id, ...variables })).data;
+  const updateOne = useCallback(async (variables: FormFields, item: CaseDbRegionSet) => {
+    return (await CaseDbGeoApi.instance.regionSetsPutOne(item.id, { id: item.id, ...variables })).data;
   }, []);
 
   const createOne = useCallback(async (variables: FormFields) => {
-    return (await GeoApi.instance.regionSetsPostOne(variables)).data;
+    return (await CaseDbGeoApi.instance.regionSetsPostOne(variables)).data;
   }, []);
 
-  const getName = useCallback((item: RegionSet) => {
+  const getName = useCallback((item: CaseDbRegionSet) => {
     return item.name;
   }, []);
 
@@ -86,38 +86,38 @@ export const RegionSetsAdminPage = () => {
     ] as const;
   }, [t]);
 
-  const tableColumns = useMemo((): TableColumn<RegionSet>[] => {
+  const tableColumns = useMemo((): TableColumn<CaseDbRegionSet>[] => {
     return [
-      TableUtil.createTextColumn<RegionSet>({ id: 'name', name: t`Name` }),
-      TableUtil.createTextColumn<RegionSet>({ id: 'code', name: t`Code` }),
-      TableUtil.createNumberColumn<RegionSet>({ id: 'resolution', name: t`Resolution` }),
-      TableUtil.createBooleanColumn<RegionSet>({ id: 'region_code_as_label', name: t`Region code as label` }),
+      TableUtil.createTextColumn<CaseDbRegionSet>({ id: 'name', name: t`Name` }),
+      TableUtil.createTextColumn<CaseDbRegionSet>({ id: 'code', name: t`Code` }),
+      TableUtil.createNumberColumn<CaseDbRegionSet>({ id: 'resolution', name: t`Resolution` }),
+      TableUtil.createBooleanColumn<CaseDbRegionSet>({ id: 'region_code_as_label', name: t`Region code as label` }),
     ];
   }, [t]);
 
 
-  const subPages = useMemo<CrudPageSubPage<RegionSet>[]>(() => {
-    const pages: CrudPageSubPage<RegionSet>[] = [];
+  const subPages = useMemo<CrudPageSubPage<CaseDbRegionSet>[]>(() => {
+    const pages: CrudPageSubPage<CaseDbRegionSet>[] = [];
 
     if (AuthorizationManager.instance.doesUserHavePermission([
-      { command_name: CommandName.RegionCrudCommand, permission_type: PermissionType.READ },
+      { command_name: CaseDbCommandName.RegionCrudCommand, permission_type: CaseDbPermissionType.READ },
     ])) {
       pages.push(
         {
-          getPathName: (item: RegionSet) => `/management/region-sets/${item.id}/regions`,
+          getPathName: (item: CaseDbRegionSet) => `/management/region-sets/${item.id}/regions`,
           label: t`Manage regions`,
-        } satisfies CrudPageSubPage<RegionSet>,
+        } satisfies CrudPageSubPage<CaseDbRegionSet>,
       );
     }
 
     if (AuthorizationManager.instance.doesUserHavePermission([
-      { command_name: CommandName.RegionSetShapeCrudCommand, permission_type: PermissionType.READ },
+      { command_name: CaseDbCommandName.RegionSetShapeCrudCommand, permission_type: CaseDbPermissionType.READ },
     ])) {
       pages.push(
         {
-          getPathName: (item: RegionSet) => `/management/region-sets/${item.id}/shapes`,
+          getPathName: (item: CaseDbRegionSet) => `/management/region-sets/${item.id}/shapes`,
           label: t`Manage shapes`,
-        } satisfies CrudPageSubPage<RegionSet>,
+        } satisfies CrudPageSubPage<CaseDbRegionSet>,
       );
     }
     return pages;
@@ -125,10 +125,10 @@ export const RegionSetsAdminPage = () => {
 
 
   return (
-    <CrudPage<FormFields, RegionSet>
+    <CrudPage<FormFields, CaseDbRegionSet>
       createItemDialogTitle={t`Create new region set`}
       createOne={createOne}
-      crudCommandType={CommandName.RegionSetCrudCommand}
+      crudCommandType={CaseDbCommandName.RegionSetCrudCommand}
       defaultSortByField={'name'}
       defaultSortDirection={'asc'}
       deleteOne={deleteOne}

@@ -1,12 +1,12 @@
 import { useMemo } from 'react';
 import type { ComponentType } from 'react';
-import type { ApiPermission } from '@gen-epix/api-casedb';
+import type { CaseDbApiPermission } from '@gen-epix/api-casedb';
 
 import { AuthorizationManager } from '../../classes/managers/AuthorizationManager';
 
 export interface WithPermissionsOptions {
   readonly fallback?: ComponentType | null;
-  readonly requiredPermissions: ApiPermission[];
+  readonly requiredPermissions: CaseDbApiPermission[];
 }
 
 export const withPermissions = <TProps extends object>(

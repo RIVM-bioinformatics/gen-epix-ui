@@ -5,8 +5,8 @@ import {
   vi,
 } from 'vitest';
 import type { Theme } from '@mui/material/styles';
-import { ColType } from '@gen-epix/api-casedb';
-import type { TreeAlgorithm } from '@gen-epix/api-casedb';
+import { CaseDbColType } from '@gen-epix/api-casedb';
+import type { CaseDbTreeAlgorithm } from '@gen-epix/api-casedb';
 
 import { ConfigManager } from '../../classes/managers/ConfigManager';
 import { EpiDataManager } from '../../classes/managers/EpiDataManager';
@@ -1966,10 +1966,10 @@ describe('EpiTreeUtil', () => {
   });
 
   describe('getTreeConfigurations', () => {
-    let savedTreeAlgorithms: TreeAlgorithm[];
+    let savedTreeAlgorithms: CaseDbTreeAlgorithm[];
 
-    const mockAlgo1: TreeAlgorithm = {
-      code: 'NJ' as TreeAlgorithm['code'],
+    const mockAlgo1: CaseDbTreeAlgorithm = {
+      code: 'NJ' as CaseDbTreeAlgorithm['code'],
       id: 'algo-nj',
       is_ultrametric: false,
       name: 'Neighbour Joining',
@@ -1977,8 +1977,8 @@ describe('EpiTreeUtil', () => {
       tree_algorithm_class_id: 'class1',
     };
 
-    const mockAlgo2: TreeAlgorithm = {
-      code: 'UPGMA' as TreeAlgorithm['code'],
+    const mockAlgo2: CaseDbTreeAlgorithm = {
+      code: 'UPGMA' as CaseDbTreeAlgorithm['code'],
       id: 'algo-upgma',
       is_ultrametric: true,
       name: 'UPGMA',
@@ -2015,7 +2015,7 @@ describe('EpiTreeUtil', () => {
           gdp1: { id: 'gdp1', name: 'Protocol 1' },
         },
         ref_cols: {
-          rc1: { col_type: ColType.GENETIC_DISTANCE, genetic_distance_protocol_id: 'gdp1', id: 'rc1' },
+          rc1: { col_type: CaseDbColType.GENETIC_DISTANCE, genetic_distance_protocol_id: 'gdp1', id: 'rc1' },
         },
         tree_algorithms: {
           NJ: mockAlgo1,
@@ -2040,7 +2040,7 @@ describe('EpiTreeUtil', () => {
           gdp1: { id: 'gdp1', name: 'Protocol 1' },
         },
         ref_cols: {
-          rc1: { col_type: ColType.GENETIC_DISTANCE, genetic_distance_protocol_id: 'gdp1', id: 'rc1' },
+          rc1: { col_type: CaseDbColType.GENETIC_DISTANCE, genetic_distance_protocol_id: 'gdp1', id: 'rc1' },
         },
         tree_algorithms: {
           NJ: mockAlgo1,
@@ -2063,7 +2063,7 @@ describe('EpiTreeUtil', () => {
           gdp1: { id: 'gdp1', name: 'Protocol 1' },
         },
         ref_cols: {
-          rc1: { col_type: ColType.GENETIC_DISTANCE, genetic_distance_protocol_id: 'gdp1', id: 'rc1' },
+          rc1: { col_type: CaseDbColType.GENETIC_DISTANCE, genetic_distance_protocol_id: 'gdp1', id: 'rc1' },
         },
         tree_algorithms: {
           NJ: mockAlgo1,

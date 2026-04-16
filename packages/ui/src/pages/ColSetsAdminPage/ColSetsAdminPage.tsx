@@ -10,14 +10,14 @@ import {
 } from 'yup';
 import omit from 'lodash/omit';
 import type {
-  ApiPermission,
-  ColSet,
-  ColSetMember,
+  CaseDbApiPermission,
+  CaseDbColSet,
+  CaseDbColSetMember,
 } from '@gen-epix/api-casedb';
 import {
-  CaseApi,
-  CommandName,
-  PermissionType,
+  CaseDbCaseApi,
+  CaseDbCommandName,
+  CaseDbPermissionType,
 } from '@gen-epix/api-casedb';
 
 import { useColOptionsQuery } from '../../dataHooks/useColsQuery';
@@ -35,7 +35,7 @@ import { SchemaUtil } from '../../utils/SchemaUtil';
 
 type FormFields = OmitWithMetaData<TableData>;
 
-type TableData = { colIds: string[] } & ColSet;
+type TableData = { colIds: string[] } & CaseDbColSet;
 
 export const ColSetsAdminPage = () => {
   const { t } = useTranslation();
@@ -46,28 +46,28 @@ export const ColSetsAdminPage = () => {
   const loadables = useArray([colOptionsQuery, colSetMembersQuery]);
 
   const fetchAll = useCallback(async (signal: AbortSignal) => {
-    return (await CaseApi.instance.colSetsGetAll({ signal }))?.data;
+    return (await CaseDbCaseApi.instance.colSetsGetAll({ signal }))?.data;
   }, []);
 
-  const deleteOne = useCallback(async (item: ColSet) => {
-    return await CaseApi.instance.colSetsDeleteOne(item.id);
+  const deleteOne = useCallback(async (item: CaseDbColSet) => {
+    return await CaseDbCaseApi.instance.colSetsDeleteOne(item.id);
   }, []);
 
-  const updateOne = useCallback(async (variables: FormFields, item: ColSet) => {
-    await CaseApi.instance.colSetsPutCols(item.id, {
-      col_set_members: variables.colIds.map<ColSetMember>(col_id => ({
+  const updateOne = useCallback(async (variables: FormFields, item: CaseDbColSet) => {
+    await CaseDbCaseApi.instance.colSetsPutCols(item.id, {
+      col_set_members: variables.colIds.map<CaseDbColSetMember>(col_id => ({
         col_id,
         col_set_id: item.id,
       })),
     });
 
-    return (await CaseApi.instance.colSetsPutOne(item.id, omit({ id: item.id, ...variables }, ['colIds']))).data;
+    return (await CaseDbCaseApi.instance.colSetsPutOne(item.id, omit({ id: item.id, ...variables }, ['colIds']))).data;
   }, []);
 
   const createOne = useCallback(async (variables: FormFields) => {
-    const resultItem = (await CaseApi.instance.colSetsPostOne(omit(variables, ['colIds']))).data;
-    await CaseApi.instance.colSetsPutCols(resultItem.id, {
-      col_set_members: variables.colIds.map<ColSetMember>(col_id => ({
+    const resultItem = (await CaseDbCaseApi.instance.colSetsPostOne(omit(variables, ['colIds']))).data;
+    await CaseDbCaseApi.instance.colSetsPutCols(resultItem.id, {
+      col_set_members: variables.colIds.map<CaseDbColSetMember>(col_id => ({
         col_id,
         col_set_id: resultItem.id,
       })),
@@ -76,7 +76,7 @@ export const ColSetsAdminPage = () => {
     return resultItem;
   }, []);
 
-  const getName = useCallback((item: ColSet) => {
+  const getName = useCallback((item: CaseDbColSet) => {
     return item.name;
   }, []);
 
@@ -128,11 +128,11 @@ export const ColSetsAdminPage = () => {
     ];
   }, [colOptionsQuery.options.length, t]);
 
-  const extraPermissions = useMemo<ApiPermission[]>(() => [
-    { command_name: CommandName.ColSetColUpdateAssociationCommand, permission_type: PermissionType.EXECUTE },
+  const extraPermissions = useMemo<CaseDbApiPermission[]>(() => [
+    { command_name: CaseDbCommandName.ColSetColUpdateAssociationCommand, permission_type: CaseDbPermissionType.EXECUTE },
   ], []);
 
-  const convertToTableData = useCallback((items: ColSet[]) => {
+  const convertToTableData = useCallback((items: CaseDbColSet[]) => {
     if (!items || !colSetMembersQuery.data) {
       return [];
     }
@@ -150,12 +150,12 @@ export const ColSetsAdminPage = () => {
   ], []);
 
   return (
-    <CrudPage<FormFields, ColSet, TableData>
+    <CrudPage<FormFields, CaseDbColSet, TableData>
       associationQueryKeys={associationQueryKeys}
       convertToTableData={convertToTableData}
       createItemDialogTitle={t`Create new column set`}
       createOne={createOne}
-      crudCommandType={CommandName.ColSetCrudCommand}
+      crudCommandType={CaseDbCommandName.ColSetCrudCommand}
       defaultSortByField={'name'}
       defaultSortDirection={'asc'}
       deleteOne={deleteOne}

@@ -7,10 +7,10 @@ import {
   object,
   string,
 } from 'yup';
-import type { Etiology } from '@gen-epix/api-casedb';
+import type { CaseDbEtiology } from '@gen-epix/api-casedb';
 import {
-  CommandName,
-  OntologyApi,
+  CaseDbCommandName,
+  CaseDbOntologyApi,
 } from '@gen-epix/api-casedb';
 
 import { useDiseaseOptionsQuery } from '../../dataHooks/useDiseasesQuery';
@@ -25,7 +25,7 @@ import { TestIdUtil } from '../../utils/TestIdUtil';
 import { CrudPage } from '../CrudPage';
 import type { OmitWithMetaData } from '../../models/data';
 
-type FormFields = OmitWithMetaData<Etiology, 'disease' | 'etiological_agent'>;
+type FormFields = OmitWithMetaData<CaseDbEtiology, 'disease' | 'etiological_agent'>;
 
 export const EtiologiesAdminPage = () => {
   const { t } = useTranslation();
@@ -35,22 +35,22 @@ export const EtiologiesAdminPage = () => {
   const loadables = useArray([diseaseOptionsQuery, etiologicalAgentOptionsQuery]);
 
   const fetchAll = useCallback(async (signal: AbortSignal) => {
-    return (await OntologyApi.instance.etiologiesGetAll({ signal }))?.data;
+    return (await CaseDbOntologyApi.instance.etiologiesGetAll({ signal }))?.data;
   }, []);
 
-  const deleteOne = useCallback(async (item: Etiology) => {
-    return await OntologyApi.instance.etiologiesDeleteOne(item.id);
+  const deleteOne = useCallback(async (item: CaseDbEtiology) => {
+    return await CaseDbOntologyApi.instance.etiologiesDeleteOne(item.id);
   }, []);
 
-  const updateOne = useCallback(async (variables: FormFields, item: Etiology) => {
-    return (await OntologyApi.instance.etiologiesPutOne(item.id, { id: item.id, ...variables })).data;
+  const updateOne = useCallback(async (variables: FormFields, item: CaseDbEtiology) => {
+    return (await CaseDbOntologyApi.instance.etiologiesPutOne(item.id, { id: item.id, ...variables })).data;
   }, []);
 
   const createOne = useCallback(async (variables: FormFields) => {
-    return (await OntologyApi.instance.etiologiesPostOne(variables)).data;
+    return (await CaseDbOntologyApi.instance.etiologiesPostOne(variables)).data;
   }, []);
 
-  const getName = useCallback((item: Etiology) => {
+  const getName = useCallback((item: CaseDbEtiology) => {
     return item.id;
   }, []);
 
@@ -81,18 +81,18 @@ export const EtiologiesAdminPage = () => {
     ] as const;
   }, [etiologicalAgentOptionsQuery.isLoading, etiologicalAgentOptionsQuery.options, diseaseOptionsQuery.isLoading, diseaseOptionsQuery.options, t]);
 
-  const tableColumns = useMemo((): TableColumn<Etiology>[] => {
+  const tableColumns = useMemo((): TableColumn<CaseDbEtiology>[] => {
     return [
-      TableUtil.createOptionsColumn<Etiology>({ id: 'disease_id', name: t`Disease`, options: diseaseOptionsQuery.options }),
-      TableUtil.createOptionsColumn<Etiology>({ id: 'etiological_agent_id', name: t`Etiological agent`, options: etiologicalAgentOptionsQuery.options }),
+      TableUtil.createOptionsColumn<CaseDbEtiology>({ id: 'disease_id', name: t`Disease`, options: diseaseOptionsQuery.options }),
+      TableUtil.createOptionsColumn<CaseDbEtiology>({ id: 'etiological_agent_id', name: t`Etiological agent`, options: etiologicalAgentOptionsQuery.options }),
     ];
   }, [etiologicalAgentOptionsQuery.options, diseaseOptionsQuery.options, t]);
 
   return (
-    <CrudPage<FormFields, Etiology>
+    <CrudPage<FormFields, CaseDbEtiology>
       createItemDialogTitle={t`Create new etiology`}
       createOne={createOne}
-      crudCommandType={CommandName.EtiologyCrudCommand}
+      crudCommandType={CaseDbCommandName.EtiologyCrudCommand}
       defaultSortByField={'disease_id'}
       defaultSortDirection={'asc'}
       deleteOne={deleteOne}

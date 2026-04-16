@@ -17,7 +17,7 @@ import LogoutIcon from '@mui/icons-material/Logout';
 import KeyIcon from '@mui/icons-material/Key';
 import { useTranslation } from 'react-i18next';
 import { useAuth } from 'react-oidc-context';
-import { LogLevel } from '@gen-epix/api-casedb';
+import { CaseDbLogLevel } from '@gen-epix/api-casedb';
 
 import {
   Confirmation,
@@ -59,7 +59,7 @@ export const UserMenu = ({ anchorElement, onClose }: UserMenuProps): ReactElemen
   const onLogoutConfirmationConfirm = useCallback(() => {
     LogManager.instance.log([{
       detail: auth.user,
-      level: LogLevel.TRACE,
+      level: CaseDbLogLevel.TRACE,
       topic: 'USER_LOGOUT',
     }]);
     LogManager.instance.flushLog();

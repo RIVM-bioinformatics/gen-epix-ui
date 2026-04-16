@@ -45,8 +45,8 @@ import {
   startOfQuarter,
   startOfYear,
 } from 'date-fns';
-import type { Col } from '@gen-epix/api-casedb';
-import { DimType } from '@gen-epix/api-casedb';
+import type { CaseDbCol } from '@gen-epix/api-casedb';
+import { CaseDbDimType } from '@gen-epix/api-casedb';
 
 import { ConfigManager } from '../../../classes/managers/ConfigManager';
 import { EpiHighlightingManager } from '../../../classes/managers/EpiHighlightingManager';
@@ -89,9 +89,9 @@ export const EpiCurveWidget = () => {
   const epiCurveWidgetData = useStore(epiDashboardStore, (state) => state.epiCurveWidgetData);
   const setFilterValue = useStore(epiDashboardStore, (state) => state.setFilterValue);
   const filterDimensions = useStore(epiDashboardStore, (state) => state.filterDimensions);
-  const timeDims = useMemo(() => CaseTypeUtil.getDims(completeCaseType, [DimType.TIME]), [completeCaseType]);
+  const timeDims = useMemo(() => CaseTypeUtil.getDims(completeCaseType, [CaseDbDimType.TIME]), [completeCaseType]);
   const [focussedDate, setFocussedDate] = useState<string>(null);
-  const [col, setCol] = useState<Col>(null);
+  const [col, setCol] = useState<CaseDbCol>(null);
 
   const onEpiContextMenuClose = useCallback(() => {
     setEpiContextMenuConfig(null);
@@ -119,7 +119,7 @@ export const EpiCurveWidget = () => {
 
     completeCaseType.ordered_dim_ids.map(x => completeCaseType.dims[x]).filter(dim => {
       const refDim = completeCaseType.ref_dims[dim.ref_dim_id];
-      return refDim.dim_type === DimType.TIME;
+      return refDim.dim_type === CaseDbDimType.TIME;
     }).forEach((dim) => {
       if (menu.items.length) {
         menu.items.at(-1).divider = true;

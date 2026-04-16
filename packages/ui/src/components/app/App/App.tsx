@@ -6,7 +6,7 @@ import {
 import { QueryClientProvider } from '@tanstack/react-query';
 import { ErrorBoundary } from 'react-error-boundary';
 import { RouterProvider } from 'react-router-dom';
-import { BaseAPI } from '@gen-epix/api-casedb';
+import { CaseDbBaseAPI } from '@gen-epix/api-casedb';
 
 import { AuthenticationManager } from '../../../classes/managers/AuthenticationManager';
 import { BackendVersionManager } from '../../../classes/managers/BackendVersionManager';
@@ -16,6 +16,7 @@ import { QueryClientManager } from '../../../classes/managers/QueryClientManager
 import { RouterManager } from '../../../classes/managers/RouterManager';
 import { ErrorPage } from '../../../pages/ErrorPage';
 import { EmotionCacheManager } from '../../../classes/managers/EmotionCacheManager';
+import { APP } from '../../../models/app';
 
 export const App = () => {
   const { config } = ConfigManager.instance;
@@ -25,17 +26,17 @@ export const App = () => {
     document.querySelector('link[rel="icon"]')?.setAttribute('href', touchIconUrl);
   }
 
-  BaseAPI.baseUrl = config.getAPIBaseUrl();
-  BaseAPI.defaultRequestTimeout = config.defaultRequestTimeout;
-  BaseAPI.onRequest = [
+  CaseDbBaseAPI.baseUrl = config.getAPIBaseUrl(APP.CASEDB);
+  CaseDbBaseAPI.defaultRequestTimeout = config.defaultRequestTimeout;
+  CaseDbBaseAPI.onRequest = [
     AuthenticationManager.instance.onRequest.bind(AuthenticationManager.instance),
     LogManager.instance.onRequest.bind(LogManager.instance),
   ];
-  BaseAPI.onResponseFulfilled = [
+  CaseDbBaseAPI.onResponseFulfilled = [
     LogManager.instance.onResponseFulfilled.bind(LogManager.instance),
     BackendVersionManager.instance.onResponseFulfilled.bind(BackendVersionManager.instance),
   ];
-  BaseAPI.onResponseRejected = [
+  CaseDbBaseAPI.onResponseRejected = [
     LogManager.instance.onResponseRejected.bind(LogManager.instance),
     AuthenticationManager.instance.onResponseRejected.bind(AuthenticationManager.instance),
   ];

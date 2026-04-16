@@ -5,8 +5,8 @@ import type {
 import type { ReactElement } from 'react';
 import type { TFunction } from 'i18next';
 import type {
-  Col,
-  CompleteCaseType,
+  CaseDbCol,
+  CaseDbCompleteCaseType,
 } from '@gen-epix/api-casedb';
 
 import type { DATE_FORMAT } from '../data/date';
@@ -66,9 +66,9 @@ export interface TableColumnBoolean<TRowData> extends TableColumnBase<TRowData, 
 }
 
 export interface TableColumnCaseType<TRowData> extends TableColumnBase<TRowData, CaseTypeRowValue> {
-  col: Col;
+  col: CaseDbCol;
   comparatorFactory?: (params: GetTableCellRowComparatorProps<TableColumnCaseType<TRowData>>) => (a: TRowData, b: TRowData) => number;
-  completeCaseType: CompleteCaseType;
+  completeCaseType: CaseDbCompleteCaseType;
   type: 'caseType';
 }
 

@@ -10,7 +10,7 @@ import {
 } from '@mui/material';
 import { useTranslation } from 'react-i18next';
 import { format } from 'date-fns';
-import type { CaseSet } from '@gen-epix/api-casedb';
+import type { CaseDbCaseSet } from '@gen-epix/api-casedb';
 
 import { useCaseSetCategoryMapQuery } from '../../../dataHooks/useCaseSetCategoriesQuery';
 import { useCaseSetStatusMapQuery } from '../../../dataHooks/useCaseSetStatusesQuery';
@@ -20,7 +20,7 @@ import { DATE_FORMAT } from '../../../data/date';
 import { useArray } from '../../../hooks/useArray';
 
 export type EpiCaseSetContentProps = {
-  readonly caseSet: CaseSet;
+  readonly caseSet: CaseDbCaseSet;
 } & BoxProps;
 
 export const EpiCaseSetContent = ({ caseSet, ...boxProps }: EpiCaseSetContentProps) => {

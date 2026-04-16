@@ -4,10 +4,10 @@ import {
 } from 'react';
 import { useTranslation } from 'react-i18next';
 import { object } from 'yup';
-import type { CaseSetStatus } from '@gen-epix/api-casedb';
+import type { CaseDbCaseSetStatus } from '@gen-epix/api-casedb';
 import {
-  CaseApi,
-  CommandName,
+  CaseDbCaseApi,
+  CaseDbCommandName,
 } from '@gen-epix/api-casedb';
 
 import { CrudPage } from '../CrudPage';
@@ -20,25 +20,25 @@ import { TestIdUtil } from '../../utils/TestIdUtil';
 import type { OmitWithMetaData } from '../../models/data';
 import { SchemaUtil } from '../../utils/SchemaUtil';
 
-type FormFields = OmitWithMetaData<CaseSetStatus>;
+type FormFields = OmitWithMetaData<CaseDbCaseSetStatus>;
 
 export const CaseSetStatusAdminPage = () => {
   const { t } = useTranslation();
 
   const fetchAll = useCallback(async (signal: AbortSignal) => {
-    return (await CaseApi.instance.caseSetStatusesGetAll({ signal }))?.data;
+    return (await CaseDbCaseApi.instance.caseSetStatusesGetAll({ signal }))?.data;
   }, []);
 
-  const deleteOne = useCallback(async (item: CaseSetStatus) => {
-    return await CaseApi.instance.caseSetStatusesDeleteOne(item.id);
+  const deleteOne = useCallback(async (item: CaseDbCaseSetStatus) => {
+    return await CaseDbCaseApi.instance.caseSetStatusesDeleteOne(item.id);
   }, []);
 
-  const updateOne = useCallback(async (variables: FormFields, item: CaseSetStatus) => {
-    return (await CaseApi.instance.caseSetStatusesPutOne(item.id, { id: item.id, ...variables })).data;
+  const updateOne = useCallback(async (variables: FormFields, item: CaseDbCaseSetStatus) => {
+    return (await CaseDbCaseApi.instance.caseSetStatusesPutOne(item.id, { id: item.id, ...variables })).data;
   }, []);
 
   const createOne = useCallback(async (variables: FormFields) => {
-    return (await CaseApi.instance.caseSetStatusesPostOne(variables)).data;
+    return (await CaseDbCaseApi.instance.caseSetStatusesPostOne(variables)).data;
   }, []);
 
   const getName = useCallback((item: FormFields) => {
@@ -76,18 +76,18 @@ export const CaseSetStatusAdminPage = () => {
     ] as const;
   }, [t]);
 
-  const tableColumns = useMemo((): TableColumn<CaseSetStatus>[] => {
+  const tableColumns = useMemo((): TableColumn<CaseDbCaseSetStatus>[] => {
     return [
-      TableUtil.createTextColumn<CaseSetStatus>({ id: 'name', name: t`Name` }),
-      TableUtil.createNumberColumn<CaseSetStatus>({ id: 'rank', name: t`Rank` }),
+      TableUtil.createTextColumn<CaseDbCaseSetStatus>({ id: 'name', name: t`Name` }),
+      TableUtil.createNumberColumn<CaseDbCaseSetStatus>({ id: 'rank', name: t`Rank` }),
     ];
   }, [t]);
 
   return (
-    <CrudPage<FormFields, CaseSetStatus>
+    <CrudPage<FormFields, CaseDbCaseSetStatus>
       createItemDialogTitle={t`Create new case set status`}
       createOne={createOne}
-      crudCommandType={CommandName.CaseSetStatusCrudCommand}
+      crudCommandType={CaseDbCommandName.CaseSetStatusCrudCommand}
       defaultSortByField={'rank'}
       defaultSortDirection={'asc'}
       deleteOne={deleteOne}

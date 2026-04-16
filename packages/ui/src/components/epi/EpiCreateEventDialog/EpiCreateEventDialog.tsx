@@ -24,11 +24,11 @@ import {
   Box,
 } from '@mui/material';
 import type {
-  Case,
-  CaseSet,
-  CompleteCaseType,
+  CaseDbCase,
+  CaseDbCaseSet,
+  CaseDbCompleteCaseType,
 } from '@gen-epix/api-casedb';
-import { CaseApi } from '@gen-epix/api-casedb';
+import { CaseDbCaseApi } from '@gen-epix/api-casedb';
 
 import { EpiEventBusManager } from '../../../classes/managers/EpiEventBusManager';
 import { useCaseSetCategoryOptionsQuery } from '../../../dataHooks/useCaseSetCategoriesQuery';
@@ -62,8 +62,8 @@ import { SchemaUtil } from '../../../utils/SchemaUtil';
 import { EpiCreateEventDialogSuccessNotificationMessage } from './EpiCreateEventDialogSuccessNotificationMessage';
 
 export interface EpiCreateEventDialogOpenProps {
-  readonly completeCaseType?: CompleteCaseType;
-  readonly rows?: Case[];
+  readonly completeCaseType?: CaseDbCompleteCaseType;
+  readonly rows?: CaseDbCase[];
 }
 
 export interface EpiCreateEventDialogProps extends WithDialogRenderProps<EpiCreateEventDialogOpenProps> {
@@ -136,7 +136,7 @@ export const EpiCreateEventDialog = withDialog<EpiCreateEventDialogProps, EpiCre
     useQueryOptions: {
       enabled: !openProps.completeCaseType && !!sanitizedCompleteCaseTypeId,
       queryFn: async ({ signal }) => {
-        return (await CaseApi.instance.completeCaseTypesGetOne(sanitizedCompleteCaseTypeId, { signal })).data;
+        return (await CaseDbCaseApi.instance.completeCaseTypesGetOne(sanitizedCompleteCaseTypeId, { signal })).data;
       },
     },
   });
@@ -264,7 +264,7 @@ export const EpiCreateEventDialog = withDialog<EpiCreateEventDialogProps, EpiCre
 
   const isLoading = LoadableUtil.isSomeLoading(loadables);
 
-  const onSuccess = useCallback(async (item: CaseSet, variables: FormFields) => {
+  const onSuccess = useCallback(async (item: CaseDbCaseSet, variables: FormFields) => {
     if (variables.shouldApplySharingToCases) {
       await CaseUtil.applyDataCollectionLinks({
         caseIds: openProps.rows ? openProps.rows.map(row => row.id) : undefined,
@@ -277,13 +277,12 @@ export const EpiCreateEventDialog = withDialog<EpiCreateEventDialogProps, EpiCre
     onClose();
   }, [completeCaseType?.id, onClose, openProps.rows]);
 
-  // eslint-disable-next-line @typescript-eslint/require-await
-  const onError = useCallback(async () => {
+  const onError = useCallback(() => {
     EpiEventBusManager.instance.emit('onEventCreated');
     onClose();
   }, [onClose]);
 
-  const { isMutating: isCreating, mutate: mutateCreate } = useCreateMutation<CaseSet, FormFields>({
+  const { isMutating: isCreating, mutate: mutateCreate } = useCreateMutation<CaseDbCaseSet, FormFields>({
     associationQueryKeys: [
       ...QueryUtil.getQueryKeyDependencies([QUERY_KEY.CASE_SETS]),
       ...QueryUtil.getQueryKeyDependencies([QUERY_KEY.CASE_SET_MEMBERS], true),
@@ -299,8 +298,8 @@ export const EpiCreateEventDialog = withDialog<EpiCreateEventDialogProps, EpiCre
     ),
     onError,
     onSuccess,
-    queryFn: async (formData: FormFields): Promise<CaseSet> => {
-      const caseSetResult = (await CaseApi.instance.createCaseSet({
+    queryFn: async (formData: FormFields): Promise<CaseDbCaseSet> => {
+      const caseSetResult = (await CaseDbCaseApi.instance.createCaseSet({
         case_ids: openProps.rows?.map(row => row.id) ?? [],
         case_set: {
           case_set_category_id: formData.case_set_category_id,

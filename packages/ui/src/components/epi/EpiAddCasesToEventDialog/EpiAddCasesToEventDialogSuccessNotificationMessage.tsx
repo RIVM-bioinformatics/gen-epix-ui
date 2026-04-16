@@ -4,13 +4,13 @@ import {
   Link,
 } from '@mui/material';
 import { useCallback } from 'react';
-import type { CaseSet } from '@gen-epix/api-casedb';
+import type { CaseDbCaseSet } from '@gen-epix/api-casedb';
 
 import { RouterManager } from '../../../classes/managers/RouterManager';
 import { CaseSetUtil } from '../../../utils/CaseSetUtil';
 
 export type EpiAddCasesToEventDialogSuccessNotificationMessageProps = {
-  readonly caseSet: CaseSet;
+  readonly caseSet: CaseDbCaseSet;
   readonly numAddedCases: number;
 };
 

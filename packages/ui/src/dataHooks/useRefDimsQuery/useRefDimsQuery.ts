@@ -1,7 +1,7 @@
 import type { UseQueryResult } from '@tanstack/react-query';
 import { useMemo } from 'react';
-import type { RefDim } from '@gen-epix/api-casedb';
-import { CaseApi } from '@gen-epix/api-casedb';
+import type { CaseDbRefDim } from '@gen-epix/api-casedb';
+import { CaseDbCaseApi } from '@gen-epix/api-casedb';
 
 import type {
   UseMap,
@@ -13,21 +13,21 @@ import { QueryUtil } from '../../utils/QueryUtil';
 import { useQueryMemo } from '../../hooks/useQueryMemo';
 import { DataUtil } from '../../utils/DataUtil';
 
-export const useRefDimsQuery = (): UseQueryResult<RefDim[]> => {
+export const useRefDimsQuery = (): UseQueryResult<CaseDbRefDim[]> => {
   return useQueryMemo({
     queryFn: async ({ signal }) => {
-      const response = await CaseApi.instance.refDimsGetAll({ signal });
+      const response = await CaseDbCaseApi.instance.refDimsGetAll({ signal });
       return response.data;
     },
     queryKey: QueryUtil.getGenericKey(QUERY_KEY.REF_DIMS),
   });
 };
 
-export const useRefDimMapQuery = (): UseMap<RefDim> => {
+export const useRefDimMapQuery = (): UseMap<CaseDbRefDim> => {
   const response = useRefDimsQuery();
 
   return useMemo(() => {
-    return DataHookUtil.createUseMapDataHook<RefDim>(response, item => item.id);
+    return DataHookUtil.createUseMapDataHook<CaseDbRefDim>(response, item => item.id);
   }, [response]);
 };
 
@@ -35,6 +35,6 @@ export const useRefDimOptionsQuery = (): UseOptions<string> => {
   const dimsQuery = useRefDimsQuery();
 
   return useMemo(() => {
-    return DataHookUtil.createUseOptionsDataHook<RefDim>(dimsQuery, item => item.id, item => item.label, [], DataUtil.rankSortComperatorFactory('label'));
+    return DataHookUtil.createUseOptionsDataHook<CaseDbRefDim>(dimsQuery, item => item.id, item => item.label, [], DataUtil.rankSortComperatorFactory('label'));
   }, [dimsQuery]);
 };

@@ -1,6 +1,6 @@
 import type {
-  ApiPermission,
-  User,
+  CaseDbApiPermission,
+  CaseDbUser,
 } from '@gen-epix/api-casedb';
 
 import type { MyNonIndexRouteObject } from '../../../models/reactRouter';
@@ -14,33 +14,33 @@ export class AuthorizationManager {
     WindowManager.instance.window.managers.authorization = WindowManager.instance.window.managers.authorization || new AuthorizationManager();
     return WindowManager.instance.window.managers.authorization;
   }
-  public set apiPermissions(permissions: ApiPermission[]) {
+  public set apiPermissions(permissions: CaseDbApiPermission[]) {
     this.__apiPermissions = permissions;
   }
 
-  public get apiPermissions(): ApiPermission[] {
+  public get apiPermissions(): CaseDbApiPermission[] {
     return this.__apiPermissions;
   }
 
-  public set user(user: User) {
+  public set user(user: CaseDbUser) {
     PageEventBusManager.instance.emit('changeUser', user);
     this.__user = user;
   }
 
-  public get user(): User {
+  public get user(): CaseDbUser {
     return this.__user;
   }
 
-  private __apiPermissions: ApiPermission[] = [];
+  private __apiPermissions: CaseDbApiPermission[] = [];
 
-  private __user: User;
+  private __user: CaseDbUser;
 
 
   private constructor() {
     //
   }
 
-  public doesUserHavePermission(permissions: ApiPermission[]): boolean {
+  public doesUserHavePermission(permissions: CaseDbApiPermission[]): boolean {
     if (!permissions?.length) {
       return true;
     }

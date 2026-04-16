@@ -12,7 +12,7 @@ import {
   TableHead,
   TableRow,
 } from '@mui/material';
-import { PermissionType } from '@gen-epix/api-casedb';
+import { CaseDbPermissionType } from '@gen-epix/api-casedb';
 
 import type {
   WithDialogRefMethods,
@@ -43,12 +43,12 @@ export const MyPermissionsDialog = withDialog<MyPermissionsDialogProps, MyPermis
     onTitleChange(t`My Permissions`);
   }, [onTitleChange, t]);
 
-  const permissionTypeTranslationMap = useMemo<Record<PermissionType, string>>(() => ({
-    [PermissionType.CREATE]: t`Create`,
-    [PermissionType.DELETE]: t`Delete`,
-    [PermissionType.EXECUTE]: t`Execute`,
-    [PermissionType.READ]: t`Read`,
-    [PermissionType.UPDATE]: t`Update`,
+  const permissionTypeTranslationMap = useMemo<Record<CaseDbPermissionType, string>>(() => ({
+    [CaseDbPermissionType.CREATE]: t`Create`,
+    [CaseDbPermissionType.DELETE]: t`Delete`,
+    [CaseDbPermissionType.EXECUTE]: t`Execute`,
+    [CaseDbPermissionType.READ]: t`Read`,
+    [CaseDbPermissionType.UPDATE]: t`Update`,
   }), [t]);
 
   const readablePermissions = useMemo(() => {

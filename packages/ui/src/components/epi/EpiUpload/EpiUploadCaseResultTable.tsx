@@ -12,11 +12,11 @@ import ErrorOutlinedIcon from '@mui/icons-material/ErrorOutlined';
 import AddIcon from '@mui/icons-material/Add';
 import { useTranslation } from 'react-i18next';
 import type {
-  CaseDataIssue,
-  CaseUploadResult,
-  CompleteCaseType,
+  CaseDbCaseDataIssue,
+  CaseDbCaseUploadResult,
+  CaseDbCompleteCaseType,
 } from '@gen-epix/api-casedb';
-import { DataIssueType } from '@gen-epix/api-casedb';
+import { CaseDbDataIssueType } from '@gen-epix/api-casedb';
 
 import { useInitializeTableStore } from '../../../hooks/useInitializeTableStore';
 import type {
@@ -37,38 +37,38 @@ import {
 
 
 export type EpiUploadCaseResultTableProps = {
-  readonly completeCaseType: CompleteCaseType;
+  readonly completeCaseType: CaseDbCompleteCaseType;
   readonly mappedColumns: EpiUploadMappedColumn[];
   readonly rawData?: string[][];
   readonly rowsWithGeneratedId?: CaseUploadResultWithGeneratedId[];
   readonly tableStore: StoreApi<TableStore<CaseUploadResultWithGeneratedId>>;
-  readonly validatedCases?: CaseUploadResult[];
+  readonly validatedCases?: CaseDbCaseUploadResult[];
 };
 
 export const EpiUploadCaseResultTable = ({ completeCaseType, mappedColumns, rawData, rowsWithGeneratedId, tableStore, validatedCases }: EpiUploadCaseResultTableProps) => {
   const theme = useTheme();
   const { t } = useTranslation();
 
-  const dataRulePriority: DataIssueType[] = useMemo(() => [
-    DataIssueType.UNAUTHORIZED,
-    DataIssueType.INVALID,
-    DataIssueType.CONFLICT,
-    DataIssueType.MISSING,
-    DataIssueType.DERIVED,
-    DataIssueType.TRANSFORMED,
+  const dataRulePriority: CaseDbDataIssueType[] = useMemo(() => [
+    CaseDbDataIssueType.UNAUTHORIZED,
+    CaseDbDataIssueType.INVALID,
+    CaseDbDataIssueType.CONFLICT,
+    CaseDbDataIssueType.MISSING,
+    CaseDbDataIssueType.DERIVED,
+    CaseDbDataIssueType.TRANSFORMED,
   ], []);
 
-  const errorIssueTypes: DataIssueType[] = useMemo(() => [
-    DataIssueType.UNAUTHORIZED,
-    DataIssueType.INVALID,
+  const errorIssueTypes: CaseDbDataIssueType[] = useMemo(() => [
+    CaseDbDataIssueType.UNAUTHORIZED,
+    CaseDbDataIssueType.INVALID,
   ], []);
 
-  const warningIssueTypes: DataIssueType[] = useMemo(() => [
-    DataIssueType.MISSING,
-    DataIssueType.CONFLICT,
+  const warningIssueTypes: CaseDbDataIssueType[] = useMemo(() => [
+    CaseDbDataIssueType.MISSING,
+    CaseDbDataIssueType.CONFLICT,
   ], []);
 
-  const getIssueTooltipMessages = useCallback((issues: CaseDataIssue[]) => {
+  const getIssueTooltipMessages = useCallback((issues: CaseDbCaseDataIssue[]) => {
     const messages: { key: string; message: string }[] = [];
     issues.forEach((issue) => {
       const columnLabel = completeCaseType.cols[issue.col_id].label;
@@ -81,7 +81,7 @@ export const EpiUploadCaseResultTable = ({ completeCaseType, mappedColumns, rawD
     return messages;
   }, [completeCaseType.cols]);
 
-  const getIssueTooltipContent = useCallback((issues: CaseDataIssue[]) => {
+  const getIssueTooltipContent = useCallback((issues: CaseDbCaseDataIssue[]) => {
     const messages = getIssueTooltipMessages(issues);
     return (
       <>
@@ -97,17 +97,17 @@ export const EpiUploadCaseResultTable = ({ completeCaseType, mappedColumns, rawD
     );
   }, [getIssueTooltipMessages]);
 
-  const getIssueTooltipLabel = useCallback((issues: CaseDataIssue[]) => {
+  const getIssueTooltipLabel = useCallback((issues: CaseDbCaseDataIssue[]) => {
     const messages = getIssueTooltipMessages(issues);
     return messages.map(m => m.message).join(', ');
   }, [getIssueTooltipMessages]);
 
-  const getFilteredIssueTypes = useCallback((id: string, issues: CaseDataIssue[], value: string) => {
+  const getFilteredIssueTypes = useCallback((id: string, issues: CaseDbCaseDataIssue[], value: string) => {
     return issues.filter((issue) => {
       if (issue.col_id !== id) {
         return false;
       }
-      if (issue.data_issue_type === DataIssueType.TRANSFORMED && issue.original_value === value) {
+      if (issue.data_issue_type === CaseDbDataIssueType.TRANSFORMED && issue.original_value === value) {
         return false;
       }
       return true;
@@ -129,7 +129,7 @@ export const EpiUploadCaseResultTable = ({ completeCaseType, mappedColumns, rawD
   }, [t]);
 
   const renderHasIssueCell = useCallback(({ row }: TableRowParams<CaseUploadResultWithGeneratedId>) => {
-    const errorIssues = row.data_issues.filter(i => i.data_issue_type === DataIssueType.INVALID || i.data_issue_type === DataIssueType.UNAUTHORIZED);
+    const errorIssues = row.data_issues.filter(i => i.data_issue_type === CaseDbDataIssueType.INVALID || i.data_issue_type === CaseDbDataIssueType.UNAUTHORIZED);
     if (errorIssues.length > 0) {
       return (
         <Tooltip
@@ -319,7 +319,7 @@ export const EpiUploadCaseResultTable = ({ completeCaseType, mappedColumns, rawD
       const col = completeCaseType.cols[colId];
 
       const issuesForCol = validatedCases.flatMap(vc => vc.data_issues.filter((i) => i.col_id === col.id));
-      const isInitiallyVisible = issuesForCol.length === 0 || issuesForCol.some(i => i.data_issue_type !== DataIssueType.DERIVED);
+      const isInitiallyVisible = issuesForCol.length === 0 || issuesForCol.some(i => i.data_issue_type !== CaseDbDataIssueType.DERIVED);
 
       if (col) {
         tableCols.push({

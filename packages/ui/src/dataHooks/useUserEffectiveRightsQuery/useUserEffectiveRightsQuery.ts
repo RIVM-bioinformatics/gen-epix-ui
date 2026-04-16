@@ -1,16 +1,16 @@
 import { useMemo } from 'react';
 import type { UseQueryResult } from '@tanstack/react-query';
 import type {
-  CaseTypeSetMember,
-  ColSet,
-  ColSetMember,
-  OrganizationAccessCasePolicy,
-  OrganizationShareCasePolicy,
-  User,
-  UserAccessCasePolicy,
-  UserShareCasePolicy,
+  CaseDbCaseTypeSetMember,
+  CaseDbColSet,
+  CaseDbColSetMember,
+  CaseDbOrganizationAccessCasePolicy,
+  CaseDbOrganizationShareCasePolicy,
+  CaseDbUser,
+  CaseDbUserAccessCasePolicy,
+  CaseDbUserShareCasePolicy,
 } from '@gen-epix/api-casedb';
-import { OrganizationApi } from '@gen-epix/api-casedb';
+import { CaseDbOrganizationApi } from '@gen-epix/api-casedb';
 
 import { useArray } from '../../hooks/useArray';
 import { useItemQuery } from '../../hooks/useItemQuery';
@@ -36,25 +36,25 @@ import type { UseMap } from '../../models/dataHooks';
 import { LoadableUtil } from '../../utils/LoadableUtil';
 
 export type UserEffectiveRightsQueryResult = {
-  caseTypeSetMembers: CaseTypeSetMember[];
-  colSetMembers: ColSetMember[];
-  colSetsMap: UseMap<ColSet>['map'];
+  caseTypeSetMembers: CaseDbCaseTypeSetMember[];
+  colSetMembers: CaseDbColSetMember[];
+  colSetsMap: UseMap<CaseDbColSet>['map'];
   effectiveRights: UserEffectiveRight[];
-  organizationAccessCasePolicies: OrganizationAccessCasePolicy[];
-  organizationShareCasePolicies: OrganizationShareCasePolicy[];
-  user: User;
-  userAccessCasePolicies: UserAccessCasePolicy[];
-  userShareCasePolicies: UserShareCasePolicy[];
+  organizationAccessCasePolicies: CaseDbOrganizationAccessCasePolicy[];
+  organizationShareCasePolicies: CaseDbOrganizationShareCasePolicy[];
+  user: CaseDbUser;
+  userAccessCasePolicies: CaseDbUserAccessCasePolicy[];
+  userShareCasePolicies: CaseDbUserShareCasePolicy[];
 };
 
 
 export const useUserEffectiveRightsQuery = (userId: string): Partial<UseQueryResult<UserEffectiveRightsQueryResult>> => {
-  const userQuery = useItemQuery<User>({
+  const userQuery = useItemQuery<CaseDbUser>({
     baseQueryKey: QUERY_KEY.USERS,
     itemId: userId,
     useQueryOptions: {
       queryFn: async ({ signal }) => {
-        const response = await OrganizationApi.instance.usersGetOne(userId, { signal });
+        const response = await CaseDbOrganizationApi.instance.usersGetOne(userId, { signal });
         return response.data;
       },
     },

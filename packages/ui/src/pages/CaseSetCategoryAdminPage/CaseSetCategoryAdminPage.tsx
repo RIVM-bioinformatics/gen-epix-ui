@@ -4,10 +4,10 @@ import {
 } from 'react';
 import { useTranslation } from 'react-i18next';
 import { object } from 'yup';
-import type { CaseSetCategory } from '@gen-epix/api-casedb';
+import type { CaseDbCaseSetCategory } from '@gen-epix/api-casedb';
 import {
-  CaseApi,
-  CommandName,
+  CaseDbCaseApi,
+  CaseDbCommandName,
 } from '@gen-epix/api-casedb';
 
 import { CrudPage } from '../CrudPage';
@@ -20,25 +20,25 @@ import { TestIdUtil } from '../../utils/TestIdUtil';
 import type { OmitWithMetaData } from '../../models/data';
 import { SchemaUtil } from '../../utils/SchemaUtil';
 
-type FormFields = OmitWithMetaData<CaseSetCategory>;
+type FormFields = OmitWithMetaData<CaseDbCaseSetCategory>;
 
 export const CaseSetCategoryAdminPage = () => {
   const { t } = useTranslation();
 
   const fetchAll = useCallback(async (signal: AbortSignal) => {
-    return (await CaseApi.instance.caseSetStatusesGetAll({ signal }))?.data;
+    return (await CaseDbCaseApi.instance.caseSetStatusesGetAll({ signal }))?.data;
   }, []);
 
-  const deleteOne = useCallback(async (item: CaseSetCategory) => {
-    return await CaseApi.instance.caseSetStatusesDeleteOne(item.id);
+  const deleteOne = useCallback(async (item: CaseDbCaseSetCategory) => {
+    return await CaseDbCaseApi.instance.caseSetStatusesDeleteOne(item.id);
   }, []);
 
-  const updateOne = useCallback(async (variables: FormFields, item: CaseSetCategory) => {
-    return (await CaseApi.instance.caseSetStatusesPutOne(item.id, { id: item.id, ...variables })).data;
+  const updateOne = useCallback(async (variables: FormFields, item: CaseDbCaseSetCategory) => {
+    return (await CaseDbCaseApi.instance.caseSetStatusesPutOne(item.id, { id: item.id, ...variables })).data;
   }, []);
 
   const createOne = useCallback(async (variables: FormFields) => {
-    return (await CaseApi.instance.caseSetStatusesPostOne(variables)).data;
+    return (await CaseDbCaseApi.instance.caseSetStatusesPostOne(variables)).data;
   }, []);
 
   const getName = useCallback((item: FormFields) => {
@@ -76,18 +76,18 @@ export const CaseSetCategoryAdminPage = () => {
     ] as const;
   }, [t]);
 
-  const tableColumns = useMemo((): TableColumn<CaseSetCategory>[] => {
+  const tableColumns = useMemo((): TableColumn<CaseDbCaseSetCategory>[] => {
     return [
-      TableUtil.createTextColumn<CaseSetCategory>({ id: 'name', name: t`Name` }),
-      TableUtil.createNumberColumn<CaseSetCategory>({ id: 'rank', name: t`Rank` }),
+      TableUtil.createTextColumn<CaseDbCaseSetCategory>({ id: 'name', name: t`Name` }),
+      TableUtil.createNumberColumn<CaseDbCaseSetCategory>({ id: 'rank', name: t`Rank` }),
     ];
   }, [t]);
 
   return (
-    <CrudPage<FormFields, CaseSetCategory>
+    <CrudPage<FormFields, CaseDbCaseSetCategory>
       createItemDialogTitle={t`Create new case set category`}
       createOne={createOne}
-      crudCommandType={CommandName.CaseSetCategoryCrudCommand}
+      crudCommandType={CaseDbCommandName.CaseSetCategoryCrudCommand}
       defaultSortByField={'rank'}
       defaultSortDirection={'asc'}
       deleteOne={deleteOne}

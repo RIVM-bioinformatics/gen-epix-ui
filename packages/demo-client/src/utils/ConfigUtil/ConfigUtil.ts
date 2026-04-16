@@ -10,10 +10,11 @@ import {
   WindowManager,
 } from '@gen-epix/ui';
 import type {
+  APP,
   Config,
   EpiDashboardLayoutConfig,
 } from '@gen-epix/ui';
-import { ColType } from '@gen-epix/api-casedb';
+import { CaseDbColType } from '@gen-epix/api-casedb';
 
 import { ApplicationHeader } from '../../components/ApplicationHeader';
 import { ConsentDialogContent } from '../../components/ConsentDialogContent';
@@ -101,11 +102,11 @@ export class ConfigUtil {
       enablePageEvents: true,
       epi: {
         ALLOWED_COL_TYPES_FOR_STRATIFICATION: [
-          ColType.NOMINAL,
-          ColType.TEXT,
-          ColType.ORDINAL,
-          ColType.GEO_REGION,
-          ColType.ORGANIZATION,
+          CaseDbColType.NOMINAL,
+          CaseDbColType.TEXT,
+          CaseDbColType.ORDINAL,
+          CaseDbColType.GEO_REGION,
+          CaseDbColType.ORGANIZATION,
         ],
         DATA_MISSING_CHARACTER: '·',
         DOWNLOAD_SECTION_ORDER: [EPI_ZONE.LINE_LIST, EPI_ZONE.TREE, EPI_ZONE.EPI_CURVE, EPI_ZONE.MAP],
@@ -362,14 +363,14 @@ export class ConfigUtil {
         TAKING_LONGER_TIMEOUT_MS: 10000,
         TREE_PADDING: 20,
       },
-      getAPIBaseUrl: () => {
+      getAPIBaseUrl: (app: APP) => {
         const { location: { href } } = WindowManager.instance.window.document;
         const { hostname } = new URL(href);
         switch (hostname) {
           case '127.0.0.1':
-            return 'https://127.0.0.1:5010';
+            return `https://127.0.0.1:5010/proxy/${app}`;
           case 'localhost':
-            return 'https://localhost:5010';
+            return `https://localhost:5010/proxy/${app}`;
           default:
             return '';
         }

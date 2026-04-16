@@ -33,14 +33,14 @@ import intersection from 'lodash/intersection';
 import round from 'lodash/round';
 import { useStore } from 'zustand';
 import type {
-  Col,
-  Region,
-  RegionSetShape,
-  TypedUuidSetFilter,
+  CaseDbCol,
+  CaseDbRegion,
+  CaseDbRegionSetShape,
+  CaseDbTypedUuidSetFilter,
 } from '@gen-epix/api-casedb';
 import {
-  DimType,
-  GeoApi,
+  CaseDbDimType,
+  CaseDbGeoApi,
 } from '@gen-epix/api-casedb';
 
 import { EpiWidget } from '../EpiWidget';
@@ -84,7 +84,7 @@ type GeoJSON = { features: unknown[] };
 
 export const EpiMapWidget = () => {
   const { t } = useTranslation();
-  const [col, setCol] = useState<Col>(null);
+  const [col, setCol] = useState<CaseDbCol>(null);
   const [epiContextMenuConfig, setEpiContextMenuConfig] = useState<EpiContextMenuConfigWithPosition | null>(null);
   const [hasRenderedOnce, setHasRenderedOnce] = useState(false);
   const containerRef = useRef<HTMLDivElement>(null);
@@ -101,9 +101,9 @@ export const EpiMapWidget = () => {
   const setFilterValue = useStore(epiDashboardStore, (state) => state.setFilterValue);
   const completeCaseType = useStore(epiDashboardStore, (state) => state.completeCaseType);
 
-  const [focussedRegion, setFocussedRegion] = useState<Region>();
-  const geoDims = useMemo(() => CaseTypeUtil.getDims(completeCaseType, [DimType.GEO]), [completeCaseType]);
-  const regionSetShapesFilter = useMemo<TypedUuidSetFilter>(() => {
+  const [focussedRegion, setFocussedRegion] = useState<CaseDbRegion>();
+  const geoDims = useMemo(() => CaseTypeUtil.getDims(completeCaseType, [CaseDbDimType.GEO]), [completeCaseType]);
+  const regionSetShapesFilter = useMemo<CaseDbTypedUuidSetFilter>(() => {
     return {
       invert: false,
       key: 'region_set_id',
@@ -114,7 +114,7 @@ export const EpiMapWidget = () => {
 
   const { data: regionSetShapes, error: regionSetShapesError, isLoading: isRegionSetShapesLoading } = useQueryMemo({
     queryFn: async ({ signal }) => {
-      return (await GeoApi.instance.regionSetShapesPostQuery(regionSetShapesFilter, { signal })).data;
+      return (await CaseDbGeoApi.instance.regionSetShapesPostQuery(regionSetShapesFilter, { signal })).data;
     },
     queryKey: QueryUtil.getGenericKey(QUERY_KEY.REGION_SET_SHAPES, regionSetShapesFilter),
     retry: false,
@@ -128,7 +128,7 @@ export const EpiMapWidget = () => {
     if (!geoDims.length) {
       throw Error('Epi map can not be shown');
     }
-    let preferredCol: Col;
+    let preferredCol: CaseDbCol;
     if (epiMapWidgetData.columnId) {
       preferredCol = CaseTypeUtil.getCols(completeCaseType).find(c => c.id === epiMapWidgetData.columnId);
     } else {
@@ -157,7 +157,7 @@ export const EpiMapWidget = () => {
   const isLoading = isRegionSetShapesLoading || isDataLoading;
   const error = regionSetShapesError;
 
-  const regionSetShape = useMemo<RegionSetShape>(() => {
+  const regionSetShape = useMemo<CaseDbRegionSetShape>(() => {
     if (!col || !regionSetShapes) {
       return null;
     }
@@ -416,7 +416,7 @@ export const EpiMapWidget = () => {
 
     completeCaseType.ordered_dim_ids.map(x => completeCaseType.dims[x]).filter(dim => {
       const refDim = completeCaseType.ref_dims[dim.ref_dim_id];
-      return refDim.dim_type === DimType.GEO;
+      return refDim.dim_type === CaseDbDimType.GEO;
     }).forEach((dim) => {
       if (menu.items.length) {
         menu.items.at(-1).divider = true;

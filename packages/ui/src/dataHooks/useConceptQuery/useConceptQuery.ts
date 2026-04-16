@@ -1,7 +1,7 @@
 import type { UseQueryResult } from '@tanstack/react-query';
 import { useMemo } from 'react';
-import type { Concept } from '@gen-epix/api-casedb';
-import { OntologyApi } from '@gen-epix/api-casedb';
+import type { CaseDbConcept } from '@gen-epix/api-casedb';
+import { CaseDbOntologyApi } from '@gen-epix/api-casedb';
 
 import type {
   UseMap,
@@ -15,28 +15,28 @@ import { useQueryMemo } from '../../hooks/useQueryMemo';
 import { useConceptSetMapQuery } from '../useConceptSetsQuery';
 import { DataUtil } from '../../utils/DataUtil';
 
-export const useConceptQuery = (): UseQueryResult<Concept[]> => {
+export const useConceptQuery = (): UseQueryResult<CaseDbConcept[]> => {
   return useQueryMemo({
     queryFn: async ({ signal }) => {
-      const response = await OntologyApi.instance.conceptsGetAll({ signal });
+      const response = await CaseDbOntologyApi.instance.conceptsGetAll({ signal });
       return response.data;
     },
     queryKey: QueryUtil.getGenericKey(QUERY_KEY.CONCEPTS),
   });
 };
 
-export const useConceptMapQuery = (): UseMap<Concept> => {
+export const useConceptMapQuery = (): UseMap<CaseDbConcept> => {
   const response = useConceptQuery();
   return useMemo(() => {
-    return DataHookUtil.createUseMapDataHook<Concept>(response, item => item.id);
+    return DataHookUtil.createUseMapDataHook<CaseDbConcept>(response, item => item.id);
   }, [response]);
 };
 
-export const useConceptNameFactory = (): UseNameFactory<Concept> => {
+export const useConceptNameFactory = (): UseNameFactory<CaseDbConcept> => {
   const conceptSetMapQuery = useConceptSetMapQuery();
 
   return useMemo(() => {
-    const getName = (item: Concept) => {
+    const getName = (item: CaseDbConcept) => {
       return `${conceptSetMapQuery.map.get(item.concept_set_id)?.name ?? item.concept_set_id} → ${item.name}`;
     };
     return DataHookUtil.createUseNameFactoryHook(getName, [conceptSetMapQuery]);
@@ -48,6 +48,6 @@ export const useConceptOptionsQuery = (): UseOptions<string> => {
   const conceptNameFactory = useConceptNameFactory();
 
   return useMemo(() => {
-    return DataHookUtil.createUseOptionsDataHook<Concept>(conceptQuery, item => item.id, conceptNameFactory.getName, [conceptNameFactory], DataUtil.rankSortComperatorFactory(conceptNameFactory.getName));
+    return DataHookUtil.createUseOptionsDataHook<CaseDbConcept>(conceptQuery, item => item.id, conceptNameFactory.getName, [conceptNameFactory], DataUtil.rankSortComperatorFactory(conceptNameFactory.getName));
   }, [conceptNameFactory, conceptQuery]);
 };

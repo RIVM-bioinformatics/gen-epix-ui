@@ -15,7 +15,7 @@ import {
   useEffect,
   useState,
 } from 'react';
-import type { User } from '@gen-epix/api-casedb';
+import type { CaseDbUser } from '@gen-epix/api-casedb';
 
 import type {
   WithDialogRefMethods,
@@ -47,7 +47,7 @@ import { LoadableUtil } from '../../../utils/LoadableUtil';
 
 export interface UsersEffectiveRightsDetailsDialogOpenProps {
   type: 'caseTypeSets' | 'readColSets' | 'writeColSets';
-  user: User;
+  user: CaseDbUser;
   userEffectiveRight: UserEffectiveRight;
 }
 

@@ -10,13 +10,13 @@ import {
 import omit from 'lodash/omit';
 import pick from 'lodash/pick';
 import type {
-  CaseType,
-  CaseTypeProps,
+  CaseDbCaseType,
+  CaseDbCaseTypeProps,
 } from '@gen-epix/api-casedb';
 import {
-  CaseApi,
-  CommandName,
-  PermissionType,
+  CaseDbCaseApi,
+  CaseDbCommandName,
+  CaseDbPermissionType,
 } from '@gen-epix/api-casedb';
 
 import { useDiseaseOptionsQuery } from '../../dataHooks/useDiseasesQuery';
@@ -34,7 +34,7 @@ import { AuthorizationManager } from '../../classes/managers/AuthorizationManage
 import type { OmitWithMetaData } from '../../models/data';
 import { SchemaUtil } from '../../utils/SchemaUtil';
 
-type FormFields = CaseTypeProps & OmitWithMetaData<CaseType, 'disease' | 'etiological_agent' | 'props'>;
+type FormFields = CaseDbCaseTypeProps & OmitWithMetaData<CaseDbCaseType, 'disease' | 'etiological_agent' | 'props'>;
 
 export const CaseTypesAdminPage = () => {
   const { t } = useTranslation();
@@ -44,7 +44,7 @@ export const CaseTypesAdminPage = () => {
   const loadables = useArray([diseaseOptionsQuery, etiologicalAgentOptionsQuery]);
 
   const getCaseTypeFromVariables = useCallback((variables: FormFields, id?: string) => {
-    const itemForUpdate: CaseType = {
+    const itemForUpdate: CaseDbCaseType = {
       ...omit(variables, ['create_max_n_cases', 'delete_max_n_cases', 'read_max_n_cases', 'read_max_tree_size', 'update_max_n_cases']),
       props: {
         ...pick(variables, ['create_max_n_cases', 'delete_max_n_cases', 'read_max_n_cases', 'read_max_tree_size', 'update_max_n_cases']),
@@ -57,22 +57,22 @@ export const CaseTypesAdminPage = () => {
   }, []);
 
   const fetchAll = useCallback(async (signal: AbortSignal) => {
-    return (await CaseApi.instance.caseTypesGetAll({ signal }))?.data;
+    return (await CaseDbCaseApi.instance.caseTypesGetAll({ signal }))?.data;
   }, []);
 
-  const deleteOne = useCallback(async (item: CaseType) => {
-    return await CaseApi.instance.caseTypesDeleteOne(item.id);
+  const deleteOne = useCallback(async (item: CaseDbCaseType) => {
+    return await CaseDbCaseApi.instance.caseTypesDeleteOne(item.id);
   }, []);
 
-  const updateOne = useCallback(async (variables: FormFields, item: CaseType) => {
-    return (await CaseApi.instance.caseTypesPutOne(item.id, getCaseTypeFromVariables(variables, item.id))).data;
+  const updateOne = useCallback(async (variables: FormFields, item: CaseDbCaseType) => {
+    return (await CaseDbCaseApi.instance.caseTypesPutOne(item.id, getCaseTypeFromVariables(variables, item.id))).data;
   }, [getCaseTypeFromVariables]);
 
   const createOne = useCallback(async (variables: FormFields) => {
-    return (await CaseApi.instance.caseTypesPostOne(getCaseTypeFromVariables(variables))).data;
+    return (await CaseDbCaseApi.instance.caseTypesPostOne(getCaseTypeFromVariables(variables))).data;
   }, [getCaseTypeFromVariables]);
 
-  const getName = useCallback((item: CaseType) => {
+  const getName = useCallback((item: CaseDbCaseType) => {
     return item.name;
   }, []);
 
@@ -167,11 +167,11 @@ export const CaseTypesAdminPage = () => {
     ] as const;
   }, [etiologicalAgentOptionsQuery.isLoading, etiologicalAgentOptionsQuery.options, diseaseOptionsQuery, t]);
 
-  const tableColumns = useMemo((): TableColumn<CaseType>[] => {
+  const tableColumns = useMemo((): TableColumn<CaseDbCaseType>[] => {
     return [
-      TableUtil.createTextColumn<CaseType>({ id: 'name', name: t`Name` }),
-      TableUtil.createOptionsColumn<CaseType>({ id: 'disease_id', name: t`Disease`, options: diseaseOptionsQuery.options }),
-      TableUtil.createOptionsColumn<CaseType>({ id: 'etiological_agent_id', name: t`Etiological agent`, options: etiologicalAgentOptionsQuery.options }),
+      TableUtil.createTextColumn<CaseDbCaseType>({ id: 'name', name: t`Name` }),
+      TableUtil.createOptionsColumn<CaseDbCaseType>({ id: 'disease_id', name: t`Disease`, options: diseaseOptionsQuery.options }),
+      TableUtil.createOptionsColumn<CaseDbCaseType>({ id: 'etiological_agent_id', name: t`Etiological agent`, options: etiologicalAgentOptionsQuery.options }),
       {
         comparatorFactory: TableUtil.createNumberCellRowComperator,
         headerName: t`Read max number of cases`,
@@ -225,22 +225,22 @@ export const CaseTypesAdminPage = () => {
     ];
   }, [etiologicalAgentOptionsQuery.options, diseaseOptionsQuery.options, t]);
 
-  const subPages = useMemo<CrudPageSubPage<CaseType>[]>(() => {
+  const subPages = useMemo<CrudPageSubPage<CaseDbCaseType>[]>(() => {
     if (!AuthorizationManager.instance.doesUserHavePermission([
-      { command_name: CommandName.DimCrudCommand, permission_type: PermissionType.READ },
+      { command_name: CaseDbCommandName.DimCrudCommand, permission_type: CaseDbPermissionType.READ },
     ])) {
       return [];
     }
 
     return [
       {
-        getPathName: (item: CaseType) => `/management/case-types/${item.id}/dimensions`,
+        getPathName: (item: CaseDbCaseType) => `/management/case-types/${item.id}/dimensions`,
         label: t`Manage dimensions`,
-      } satisfies CrudPageSubPage<CaseType>,
+      } satisfies CrudPageSubPage<CaseDbCaseType>,
     ];
   }, [t]);
 
-  const getFormValuesFromItem = useCallback((item: CaseType): Partial<FormFields> => {
+  const getFormValuesFromItem = useCallback((item: CaseDbCaseType): Partial<FormFields> => {
     if (!item) {
       return {};
     }
@@ -257,7 +257,7 @@ export const CaseTypesAdminPage = () => {
     };
   }, []);
 
-  const getIntermediateItem = useCallback((variables: FormFields, currentItem: CaseType): CaseType => {
+  const getIntermediateItem = useCallback((variables: FormFields, currentItem: CaseDbCaseType): CaseDbCaseType => {
     return {
       ...currentItem,
       description: variables.description,
@@ -275,10 +275,10 @@ export const CaseTypesAdminPage = () => {
   }, []);
 
   return (
-    <CrudPage<FormFields, CaseType>
+    <CrudPage<FormFields, CaseDbCaseType>
       createItemDialogTitle={t`Create new case type`}
       createOne={createOne}
-      crudCommandType={CommandName.CaseTypeCrudCommand}
+      crudCommandType={CaseDbCommandName.CaseTypeCrudCommand}
       defaultSortByField={'name'}
       defaultSortDirection={'asc'}
       deleteOne={deleteOne}

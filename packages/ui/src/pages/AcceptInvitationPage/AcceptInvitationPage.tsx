@@ -9,7 +9,7 @@ import {
   useCallback,
   useState,
 } from 'react';
-import { OrganizationApi } from '@gen-epix/api-casedb';
+import { CaseDbOrganizationApi } from '@gen-epix/api-casedb';
 
 import { ConfigManager } from '../../classes/managers/ConfigManager';
 import { WindowManager } from '../../classes/managers/WindowManager';
@@ -27,7 +27,7 @@ export const AcceptInvitationPage = () => {
     enabled: shouldRegister,
     gcTime: 0,
     queryFn: async ({ signal }) => {
-      const response = await OrganizationApi.instance.userRegistrationsPostOne(token, { signal });
+      const response = await CaseDbOrganizationApi.instance.userRegistrationsPostOne(token, { signal });
       return response.data;
     },
     queryKey: QueryUtil.getUserRegistrationsKey(token),

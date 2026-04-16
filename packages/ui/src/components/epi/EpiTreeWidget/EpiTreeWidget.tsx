@@ -29,8 +29,8 @@ import {
 import { useTranslation } from 'react-i18next';
 import { useStore } from 'zustand';
 import { useDebouncedCallback } from 'use-debounce';
-import type { RetrievePhylogeneticTreeRequestBody } from '@gen-epix/api-casedb';
-import { CaseApi } from '@gen-epix/api-casedb';
+import type { CaseDbRetrievePhylogeneticTreeRequestBody } from '@gen-epix/api-casedb';
+import { CaseDbCaseApi } from '@gen-epix/api-casedb';
 
 import { TreeFilter } from '../../../classes/filters/TreeFilter';
 import { ConfigManager } from '../../../classes/managers/ConfigManager';
@@ -173,7 +173,7 @@ export const EpiTreeWidget = ({ itemHeight, lineListRangeSubject, linkedScrollSu
   const hasEnoughSequencesToShowTree = useMemo(() => caseIds.length >= 2 && caseIds.every(x => !!x), [caseIds]);
   const hasToManyResultsToShowTree = useMemo(() => caseIds.length > 0 && completeCaseType.props.read_max_tree_size > 0 && caseIds.length > completeCaseType.props.read_max_tree_size, [caseIds, completeCaseType.props.read_max_tree_size]);
 
-  const retrievePhylogeneticTreeRequestBody = useMemo<RetrievePhylogeneticTreeRequestBody>(() => ({
+  const retrievePhylogeneticTreeRequestBody = useMemo<CaseDbRetrievePhylogeneticTreeRequestBody>(() => ({
     case_ids: caseIds,
     case_type_id: completeCaseType.id,
     genetic_distance_col_id: treeConfiguration?.col.id,
@@ -183,7 +183,7 @@ export const EpiTreeWidget = ({ itemHeight, lineListRangeSubject, linkedScrollSu
   const { data: treeData, error: treeError, isLoading: isTreeLoading } = useQueryMemo({
     enabled: hasEnoughSequencesToShowTree && !!treeConfiguration && !hasToManyResultsToShowTree,
     queryFn: async ({ signal }) => {
-      const response = await CaseApi.instance.retrievePhylogeneticTree(retrievePhylogeneticTreeRequestBody, { signal });
+      const response = await CaseDbCaseApi.instance.retrievePhylogeneticTree(retrievePhylogeneticTreeRequestBody, { signal });
       return response.data;
     },
     queryKey: QueryUtil.getRetrievePhylogeneticTreeKey(retrievePhylogeneticTreeRequestBody),

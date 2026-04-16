@@ -15,8 +15,8 @@ import {
   type BoxProps,
   Typography,
 } from '@mui/material';
-import type { Case } from '@gen-epix/api-casedb';
-import { CaseApi } from '@gen-epix/api-casedb';
+import type { CaseDbCase } from '@gen-epix/api-casedb';
+import { CaseDbCaseApi } from '@gen-epix/api-casedb';
 
 import { NotificationManager } from '../../../classes/managers/NotificationManager';
 import { useOrganizationsQuery } from '../../../dataHooks/useOrganizationsQuery';
@@ -30,7 +30,7 @@ import { GenericForm } from '../../form/helpers/GenericForm';
 import { Spinner } from '../../ui/Spinner';
 
 export type EpiCaseFormProps = {
-  readonly epiCase: Case;
+  readonly epiCase: CaseDbCase;
   readonly formId: string;
   readonly onFinish: () => void;
   readonly onIsSavingChange: (isSaving: boolean) => void;
@@ -45,7 +45,7 @@ export const EpiCaseForm = ({ epiCase, formId, onFinish, onIsSavingChange, ...bo
   const mutateCachedCase = useStore(epiDashboardStore, useShallow((state) => state.mutateCachedCase));
   const [isSaving, setIsSaving] = useState(false);
 
-  const onFormSubmit = useCallback((content: Case['content']) => {
+  const onFormSubmit = useCallback((content: CaseDbCase['content']) => {
     setIsSaving(true);
     onIsSavingChange(true);
     const perform = async () => {
@@ -61,7 +61,7 @@ export const EpiCaseForm = ({ epiCase, formId, onFinish, onIsSavingChange, ...bo
           ...epiCase,
           content: ObjectUtil.mergeWithUndefined(epiCase.content, content),
         };
-        await CaseApi.instance.casesPutOne(item.id, item);
+        await CaseDbCaseApi.instance.casesPutOne(item.id, item);
         mutateCachedCase(item.id, item);
         NotificationManager.instance.fulfillNotification(notificationKey, t('Successfully saved case data.'), 'success');
       } catch (_error) {
@@ -77,9 +77,9 @@ export const EpiCaseForm = ({ epiCase, formId, onFinish, onIsSavingChange, ...bo
     perform();
   }, [epiCase, mutateCachedCase, onFinish, onIsSavingChange]);
 
-  const values = useMemo<Case['content']>(() => FormUtil.createFormValues(formFieldDefinitions, epiCase.content), [formFieldDefinitions, epiCase.content]);
-  const formMethods = useForm<Case['content']>({
-    resolver: yupResolver(schema) as unknown as Resolver<Case['content']>,
+  const values = useMemo<CaseDbCase['content']>(() => FormUtil.createFormValues(formFieldDefinitions, epiCase.content), [formFieldDefinitions, epiCase.content]);
+  const formMethods = useForm<CaseDbCase['content']>({
+    resolver: yupResolver(schema) as unknown as Resolver<CaseDbCase['content']>,
     values,
   });
   const { handleSubmit } = formMethods;
@@ -97,7 +97,7 @@ export const EpiCaseForm = ({ epiCase, formId, onFinish, onIsSavingChange, ...bo
           />
         )}
         {!isSaving && (
-          <GenericForm<Case['content']>
+          <GenericForm<CaseDbCase['content']>
             formFieldDefinitions={formFieldDefinitions}
             formId={formId}
             formMethods={formMethods}

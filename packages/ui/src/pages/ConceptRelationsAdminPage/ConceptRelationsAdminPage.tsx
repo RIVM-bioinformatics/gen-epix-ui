@@ -8,11 +8,11 @@ import {
   object,
   string,
 } from 'yup';
-import type { ConceptRelation } from '@gen-epix/api-casedb';
+import type { CaseDbConceptRelation } from '@gen-epix/api-casedb';
 import {
-  CommandName,
-  ConceptRelationType,
-  OntologyApi,
+  CaseDbCommandName,
+  CaseDbConceptRelationType,
+  CaseDbOntologyApi,
 } from '@gen-epix/api-casedb';
 
 import type { FormFieldDefinition } from '../../models/form';
@@ -32,7 +32,7 @@ import { useConceptRelationTypeOptionsQuery } from '../../dataHooks/useConceptRe
 import type { OmitWithMetaData } from '../../models/data';
 
 
-type FormFields = OmitWithMetaData<ConceptRelation, 'from_concept' | 'id' | 'to_concept'>;
+type FormFields = OmitWithMetaData<CaseDbConceptRelation, 'from_concept' | 'id' | 'to_concept'>;
 
 export const ConceptRelationsAdminPage = () => {
   const { t } = useTranslation();
@@ -45,22 +45,22 @@ export const ConceptRelationsAdminPage = () => {
   const loadables = useArray([conceptOptionsQuery, conceptMapQuery, conceptRelationTypeOptionsQuery, nameFactory]);
 
   const fetchAll = useCallback(async (signal: AbortSignal) => {
-    return (await OntologyApi.instance.conceptRelationsGetAll({ signal }))?.data;
+    return (await CaseDbOntologyApi.instance.conceptRelationsGetAll({ signal }))?.data;
   }, []);
 
-  const deleteOne = useCallback(async (item: ConceptRelation) => {
-    return await OntologyApi.instance.conceptRelationsDeleteOne(item.id);
+  const deleteOne = useCallback(async (item: CaseDbConceptRelation) => {
+    return await CaseDbOntologyApi.instance.conceptRelationsDeleteOne(item.id);
   }, []);
 
-  const updateOne = useCallback(async (variables: FormFields, item: ConceptRelation) => {
-    return (await OntologyApi.instance.conceptRelationsPutOne(item.id, { id: item.id, ...variables })).data;
+  const updateOne = useCallback(async (variables: FormFields, item: CaseDbConceptRelation) => {
+    return (await CaseDbOntologyApi.instance.conceptRelationsPutOne(item.id, { id: item.id, ...variables })).data;
   }, []);
 
   const createOne = useCallback(async (variables: FormFields) => {
-    return (await OntologyApi.instance.conceptRelationsPostOne(variables)).data;
+    return (await CaseDbOntologyApi.instance.conceptRelationsPostOne(variables)).data;
   }, []);
 
-  const getName = useCallback((item: ConceptRelation) => {
+  const getName = useCallback((item: CaseDbConceptRelation) => {
     const fromConcept = conceptMapQuery.map.get(item.from_concept_id);
     const toConcept = conceptMapQuery.map.get(item.to_concept_id);
     if (fromConcept && toConcept) {
@@ -72,7 +72,7 @@ export const ConceptRelationsAdminPage = () => {
   const schema = useMemo(() => {
     return object<FormFields>().shape({
       from_concept_id: string().uuid4().required(),
-      relation: mixed<ConceptRelationType>().required().oneOf(Object.values(ConceptRelationType)),
+      relation: mixed<CaseDbConceptRelationType>().required().oneOf(Object.values(CaseDbConceptRelationType)),
       to_concept_id: string().uuid4().required(),
     });
   }, []);
@@ -103,20 +103,20 @@ export const ConceptRelationsAdminPage = () => {
     ] as const;
   }, [conceptOptionsQuery.isLoading, conceptOptionsQuery.options, conceptRelationTypeOptionsQuery.isLoading, conceptRelationTypeOptionsQuery.options, t]);
 
-  const tableColumns = useMemo((): TableColumn<ConceptRelation>[] => {
+  const tableColumns = useMemo((): TableColumn<CaseDbConceptRelation>[] => {
     return [
-      TableUtil.createOptionsColumn<ConceptRelation>({ id: 'from_concept_id', name: t`From Concept`, options: conceptOptionsQuery.options }),
-      TableUtil.createOptionsColumn<ConceptRelation>({ id: 'to_concept_id', name: t`To Concept`, options: conceptOptionsQuery.options }),
-      TableUtil.createOptionsColumn<ConceptRelation>({ id: 'relation', name: t`Relation`, options: conceptRelationTypeOptionsQuery.options }),
+      TableUtil.createOptionsColumn<CaseDbConceptRelation>({ id: 'from_concept_id', name: t`From Concept`, options: conceptOptionsQuery.options }),
+      TableUtil.createOptionsColumn<CaseDbConceptRelation>({ id: 'to_concept_id', name: t`To Concept`, options: conceptOptionsQuery.options }),
+      TableUtil.createOptionsColumn<CaseDbConceptRelation>({ id: 'relation', name: t`Relation`, options: conceptRelationTypeOptionsQuery.options }),
     ];
   }, [conceptOptionsQuery.options, conceptRelationTypeOptionsQuery.options, t]);
 
 
   return (
-    <CrudPage<FormFields, ConceptRelation>
+    <CrudPage<FormFields, CaseDbConceptRelation>
       createItemDialogTitle={t`Create new concept relation`}
       createOne={createOne}
-      crudCommandType={CommandName.ConceptRelationCrudCommand}
+      crudCommandType={CaseDbCommandName.ConceptRelationCrudCommand}
       defaultSortByField={'from_concept_id'}
       defaultSortDirection={'asc'}
       deleteOne={deleteOne}

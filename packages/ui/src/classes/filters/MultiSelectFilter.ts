@@ -1,7 +1,7 @@
 import intersection from 'lodash/intersection';
 import isArray from 'lodash/isArray';
 import isNumber from 'lodash/isNumber';
-import type { TypedStringSetFilter } from '@gen-epix/api-casedb';
+import type { CaseDbTypedStringSetFilter } from '@gen-epix/api-casedb';
 
 import type { AutoCompleteOption } from '../../models/form';
 import type { FilterAbstractKwArgs } from '../abstracts/FilterAbstract';
@@ -56,7 +56,7 @@ export class MultiSelectFilter extends FilterAbstract<string[]> implements Filte
     return (this.filterValue).includes(rowValue);
   }
 
-  public toBackendFilter(): TypedStringSetFilter {
+  public toBackendFilter(): CaseDbTypedStringSetFilter {
     if (this.isInitialFilterValue()) {
       return;
     }

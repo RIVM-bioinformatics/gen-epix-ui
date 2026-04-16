@@ -11,7 +11,7 @@ import {
 } from 'react';
 import { isRouteErrorResponse } from 'react-router-dom';
 import { isAxiosError } from 'axios';
-import { LogLevel } from '@gen-epix/api-casedb';
+import { CaseDbLogLevel } from '@gen-epix/api-casedb';
 
 import { AxiosUtil } from '../../../utils/AxiosUtil';
 import { AuthenticationManager } from '../../../classes/managers/AuthenticationManager';
@@ -38,7 +38,7 @@ export const GenericErrorMessage = ({ error, shouldHideActionButtons }: GenericE
         error,
         stack: (error as Error)?.stack,
       },
-      level: isAxiosError(error) ? LogLevel.DEBUG : LogLevel.ERROR,
+      level: isAxiosError(error) ? CaseDbLogLevel.DEBUG : CaseDbLogLevel.ERROR,
       topic: (error as Error)?.message ? `Error: ${(error as Error)?.message}` : 'Error',
     }]);
     LogManager.instance.flushLog();

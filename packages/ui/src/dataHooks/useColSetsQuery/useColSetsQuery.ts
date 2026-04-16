@@ -1,7 +1,7 @@
 import type { UseQueryResult } from '@tanstack/react-query';
 import { useMemo } from 'react';
-import type { ColSet } from '@gen-epix/api-casedb';
-import { CaseApi } from '@gen-epix/api-casedb';
+import type { CaseDbColSet } from '@gen-epix/api-casedb';
+import { CaseDbCaseApi } from '@gen-epix/api-casedb';
 
 import type {
   UseMap,
@@ -12,21 +12,21 @@ import { DataHookUtil } from '../../utils/DataHookUtil';
 import { QueryUtil } from '../../utils/QueryUtil';
 import { useQueryMemo } from '../../hooks/useQueryMemo';
 
-export const useColSetsQuery = (): UseQueryResult<ColSet[]> => {
+export const useColSetsQuery = (): UseQueryResult<CaseDbColSet[]> => {
   return useQueryMemo({
     queryFn: async ({ signal }) => {
-      const response = await CaseApi.instance.colSetsGetAll({ signal });
+      const response = await CaseDbCaseApi.instance.colSetsGetAll({ signal });
       return response.data;
     },
     queryKey: QueryUtil.getGenericKey(QUERY_KEY.COL_SETS),
   });
 };
 
-export const useColSetMapQuery = (): UseMap<ColSet> => {
+export const useColSetMapQuery = (): UseMap<CaseDbColSet> => {
   const response = useColSetsQuery();
 
   return useMemo(() => {
-    return DataHookUtil.createUseMapDataHook<ColSet>(response, item => item.id);
+    return DataHookUtil.createUseMapDataHook<CaseDbColSet>(response, item => item.id);
   }, [response]);
 };
 
@@ -34,6 +34,6 @@ export const useColSetOptionsQuery = (): UseOptions<string> => {
   const response = useColSetsQuery();
 
   return useMemo(() => {
-    return DataHookUtil.createUseOptionsDataHook<ColSet>(response, item => item.id, item => item.name);
+    return DataHookUtil.createUseOptionsDataHook<CaseDbColSet>(response, item => item.id, item => item.name);
   }, [response]);
 };

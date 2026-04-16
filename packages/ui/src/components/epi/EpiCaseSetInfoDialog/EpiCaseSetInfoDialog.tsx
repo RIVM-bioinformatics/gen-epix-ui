@@ -14,10 +14,10 @@ import {
 } from 'react';
 import { useTranslation } from 'react-i18next';
 import type {
-  CaseSet,
-  TypedUuidSetFilter,
+  CaseDbCaseSet,
+  CaseDbTypedUuidSetFilter,
 } from '@gen-epix/api-casedb';
-import { CaseApi } from '@gen-epix/api-casedb';
+import { CaseDbCaseApi } from '@gen-epix/api-casedb';
 
 import {
   withDialog,
@@ -92,42 +92,40 @@ export const EpiCaseSetInfoDialog = withDialog<EpiCaseSetInfoDialogProps, EpiCas
   const loadables = useArray([caseSetRightsQuery, dataCollectionsQuery, dataCollectionsMapQuery, dataCollectionOptionsQuery]);
 
 
-  // eslint-disable-next-line @typescript-eslint/require-await
-  const onDeleteSuccess = useCallback(async () => {
+  const onDeleteSuccess = useCallback(() => {
     onClose();
   }, [onClose]);
 
-  // eslint-disable-next-line @typescript-eslint/require-await
-  const onDeleteError = useCallback(async () => {
+  const onDeleteError = useCallback(() => {
     onClose();
   }, [onClose]);
 
-  const { isMutating: isDeleteMutating, mutate: deleteMutate } = useDeleteMutation<CaseSet>({
+  const { isMutating: isDeleteMutating, mutate: deleteMutate } = useDeleteMutation<CaseDbCaseSet>({
     associationQueryKeys: QueryUtil.getQueryKeyDependencies([QUERY_KEY.CASE_SETS], true),
     getErrorNotificationMessage: (data) => t('Unable to remove event: {{name}}.', { name: data.name }),
     getProgressNotificationMessage: (data) => t('Deleting event: {{name}}...', { name: data.name }),
     getSuccessNotificationMessage: (data) => t('Event: {{name}}, has been removed.', { name: data.name }),
     onError: onDeleteError,
     onSuccess: onDeleteSuccess,
-    queryFn: async (item: CaseSet) => {
-      return await CaseApi.instance.caseSetsDeleteOne(item.id);
+    queryFn: async (item: CaseDbCaseSet) => {
+      return await CaseDbCaseApi.instance.caseSetsDeleteOne(item.id);
     },
     resourceQueryKey: QueryUtil.getGenericKey(QUERY_KEY.CASE_SETS),
   });
 
-  const { data: caseSet, error: caseSetError, isLoading: isCaseSetLoading } = useItemQuery<CaseSet>({
+  const { data: caseSet, error: caseSetError, isLoading: isCaseSetLoading } = useItemQuery<CaseDbCaseSet>({
     baseQueryKey: QUERY_KEY.CASE_SETS,
     itemId: openProps.caseSetId,
     useQueryOptions: {
       enabled: !isDeleteMutating,
       queryFn: async ({ signal }) => {
-        const response = await CaseApi.instance.caseSetsGetOne(openProps.caseSetId, { signal });
+        const response = await CaseDbCaseApi.instance.caseSetsGetOne(openProps.caseSetId, { signal });
         return response.data;
       },
     },
   });
 
-  const caseSetDataCollectionLinksFilter = useMemo<TypedUuidSetFilter>(() => ({
+  const caseSetDataCollectionLinksFilter = useMemo<CaseDbTypedUuidSetFilter>(() => ({
     invert: false,
     key: 'case_set_id',
     members: [caseSet?.id],
@@ -136,7 +134,7 @@ export const EpiCaseSetInfoDialog = withDialog<EpiCaseSetInfoDialogProps, EpiCas
   const { data: caseSetDataCollectionLinks, error: caseSetDataCollectionLinksError, isLoading: isSetCaseDataCollectionLinksLoading } = useQueryMemo({
     enabled: !!caseSet && !isDeleteMutating,
     queryFn: async ({ signal }) => {
-      const response = await CaseApi.instance.caseSetDataCollectionLinksPostQuery(caseSetDataCollectionLinksFilter, { signal });
+      const response = await CaseDbCaseApi.instance.caseSetDataCollectionLinksPostQuery(caseSetDataCollectionLinksFilter, { signal });
       return response.data;
     },
     queryKey: QueryUtil.getGenericKey(QUERY_KEY.CASE_SET_DATA_COLLECTION_LINKS, caseSetDataCollectionLinksFilter),

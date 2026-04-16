@@ -4,10 +4,10 @@ import {
 } from 'react';
 import { useTranslation } from 'react-i18next';
 import { object } from 'yup';
-import type { DataCollection } from '@gen-epix/api-casedb';
+import type { CaseDbDataCollection } from '@gen-epix/api-casedb';
 import {
-  CommandName,
-  OrganizationApi,
+  CaseDbCommandName,
+  CaseDbOrganizationApi,
 } from '@gen-epix/api-casedb';
 
 import { CrudPage } from '../CrudPage';
@@ -20,25 +20,25 @@ import { TestIdUtil } from '../../utils/TestIdUtil';
 import type { OmitWithMetaData } from '../../models/data';
 import { SchemaUtil } from '../../utils/SchemaUtil';
 
-type FormFields = OmitWithMetaData<DataCollection>;
+type FormFields = OmitWithMetaData<CaseDbDataCollection>;
 
 export const DataCollectionsAdminPage = () => {
   const { t } = useTranslation();
 
   const fetchAll = useCallback(async (signal: AbortSignal) => {
-    return (await OrganizationApi.instance.dataCollectionsGetAll({ signal }))?.data;
+    return (await CaseDbOrganizationApi.instance.dataCollectionsGetAll({ signal }))?.data;
   }, []);
 
-  const deleteOne = useCallback(async (item: DataCollection) => {
-    return await OrganizationApi.instance.dataCollectionsDeleteOne(item.id);
+  const deleteOne = useCallback(async (item: CaseDbDataCollection) => {
+    return await CaseDbOrganizationApi.instance.dataCollectionsDeleteOne(item.id);
   }, []);
 
-  const updateOne = useCallback(async (variables: FormFields, item: DataCollection) => {
-    return (await OrganizationApi.instance.dataCollectionsPutOne(item.id, { id: item.id, ...variables })).data;
+  const updateOne = useCallback(async (variables: FormFields, item: CaseDbDataCollection) => {
+    return (await CaseDbOrganizationApi.instance.dataCollectionsPutOne(item.id, { id: item.id, ...variables })).data;
   }, []);
 
   const createOne = useCallback(async (variables: FormFields) => {
-    return (await OrganizationApi.instance.dataCollectionsPostOne(variables)).data;
+    return (await CaseDbOrganizationApi.instance.dataCollectionsPostOne(variables)).data;
   }, []);
 
   const getName = useCallback((item: FormFields) => {
@@ -67,17 +67,17 @@ export const DataCollectionsAdminPage = () => {
     ] as const;
   }, [t]);
 
-  const tableColumns = useMemo((): TableColumn<DataCollection>[] => {
+  const tableColumns = useMemo((): TableColumn<CaseDbDataCollection>[] => {
     return [
-      TableUtil.createTextColumn<DataCollection>({ id: 'name', name: t`Name` }),
+      TableUtil.createTextColumn<CaseDbDataCollection>({ id: 'name', name: t`Name` }),
     ];
   }, [t]);
 
   return (
-    <CrudPage<FormFields, DataCollection>
+    <CrudPage<FormFields, CaseDbDataCollection>
       createItemDialogTitle={t`Create new data collection`}
       createOne={createOne}
-      crudCommandType={CommandName.DataCollectionCrudCommand}
+      crudCommandType={CaseDbCommandName.DataCollectionCrudCommand}
       defaultSortByField={'name'}
       defaultSortDirection={'asc'}
       deleteOne={deleteOne}

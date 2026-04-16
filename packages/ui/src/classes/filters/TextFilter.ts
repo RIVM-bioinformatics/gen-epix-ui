@@ -1,4 +1,4 @@
-import type { TypedRegexFilter } from '@gen-epix/api-casedb';
+import type { CaseDbTypedRegexFilter } from '@gen-epix/api-casedb';
 
 import type { Filter } from '../../models/filter';
 import { FilterAbstract } from '../abstracts/FilterAbstract';
@@ -23,7 +23,7 @@ export class TextFilter extends FilterAbstract<string> implements Filter<string,
     return String(rowValue).toLocaleLowerCase().includes(String(this.filterValue).toLocaleLowerCase());
   }
 
-  public toBackendFilter(): TypedRegexFilter {
+  public toBackendFilter(): CaseDbTypedRegexFilter {
     if (this.isInitialFilterValue()) {
       return;
     }

@@ -11,8 +11,8 @@ import {
   object,
   string,
 } from 'yup';
-import type { CaseSet } from '@gen-epix/api-casedb';
-import { CaseApi } from '@gen-epix/api-casedb';
+import type { CaseDbCaseSet } from '@gen-epix/api-casedb';
+import { CaseDbCaseApi } from '@gen-epix/api-casedb';
 
 import { EpiCreateEventDialogSuccessNotificationMessage } from '../EpiCreateEventDialog/EpiCreateEventDialogSuccessNotificationMessage';
 import { useCaseSetCategoryOptionsQuery } from '../../../dataHooks/useCaseSetCategoriesQuery';
@@ -30,13 +30,13 @@ import type { OmitWithMetaData } from '../../../models/data';
 import { SchemaUtil } from '../../../utils/SchemaUtil';
 
 export type EpiCaseSetFormProps = {
-  readonly caseSet: CaseSet;
+  readonly caseSet: CaseDbCaseSet;
   readonly formId: string;
   readonly onFinish: () => void;
   readonly onIsSavingChange: (isSaving: boolean) => void;
 };
 
-type FormFields = OmitWithMetaData<CaseSet, 'case_set_category' | 'case_set_date' | 'case_set_status' | 'case_type' | 'created_in_data_collection_id' | 'created_in_data_collection'>;
+type FormFields = OmitWithMetaData<CaseDbCaseSet, 'case_set_category' | 'case_set_date' | 'case_set_status' | 'case_type' | 'created_in_data_collection_id' | 'created_in_data_collection'>;
 
 export const EpiCaseSetForm = ({ caseSet, formId, onFinish, onIsSavingChange }: EpiCaseSetFormProps) => {
   const caseTypeOptionsQuery = useCaseTypeOptionsQuery();
@@ -57,8 +57,7 @@ export const EpiCaseSetForm = ({ caseSet, formId, onFinish, onIsSavingChange }: 
     onFinish();
   }, [onFinish]);
 
-  // eslint-disable-next-line @typescript-eslint/require-await
-  const onError = useCallback(async () => {
+  const onError = useCallback(() => {
     onFinish();
   }, [onFinish]);
 
@@ -104,15 +103,15 @@ export const EpiCaseSetForm = ({ caseSet, formId, onFinish, onIsSavingChange }: 
     ] as const;
   }, [caseSet, caseSetCategoryOptionsQuery.isLoading, caseSetCategoryOptionsQuery.options, caseSetStatusOptionsQuery.isLoading, caseSetStatusOptionsQuery.options, caseTypeOptionsQuery.isLoading, caseTypeOptionsQuery.options]);
 
-  const { isMutating: isEditing, mutate: mutateEdit, setPreviousItem } = useEditMutation<CaseSet, FormFields>({
+  const { isMutating: isEditing, mutate: mutateEdit, setPreviousItem } = useEditMutation<CaseDbCaseSet, FormFields>({
     getErrorNotificationMessage: (data) => t('Failed to edit event: {{name}}', { name: data.name }),
-    getIntermediateItem: (variables: FormFields, previousItem: CaseSet) => ({ ...previousItem, ...variables }),
+    getIntermediateItem: (variables: FormFields, previousItem: CaseDbCaseSet) => ({ ...previousItem, ...variables }),
     getProgressNotificationMessage: (data) => t('Saving event: {{name}}', { name: data.name }),
     getSuccessNotificationMessage: (item) => <EpiCreateEventDialogSuccessNotificationMessage caseSet={item} />,
     onError,
     onSuccess,
-    queryFn: async (formData: FormFields, item: CaseSet): Promise<CaseSet> => {
-      const result = await CaseApi.instance.caseSetsPutOne(item.id, { ...item, ...formData });
+    queryFn: async (formData: FormFields, item: CaseDbCaseSet): Promise<CaseDbCaseSet> => {
+      const result = await CaseDbCaseApi.instance.caseSetsPutOne(item.id, { ...item, ...formData });
       return result.data;
     },
     resourceQueryKey: QueryUtil.getGenericKey(QUERY_KEY.CASE_SETS),
@@ -127,7 +126,7 @@ export const EpiCaseSetForm = ({ caseSet, formId, onFinish, onIsSavingChange }: 
     mutateEdit(formData);
   }, [caseSet, mutateEdit, setPreviousItem]);
 
-  const values = useMemo(() => FormUtil.createFormValues<FormFields, CaseSet>(formFieldDefinitions, caseSet), [formFieldDefinitions, caseSet]);
+  const values = useMemo(() => FormUtil.createFormValues<FormFields, CaseDbCaseSet>(formFieldDefinitions, caseSet), [formFieldDefinitions, caseSet]);
 
   const formMethods = useForm<FormFields>({
     resolver: yupResolver(schema) as unknown as Resolver<FormFields>,

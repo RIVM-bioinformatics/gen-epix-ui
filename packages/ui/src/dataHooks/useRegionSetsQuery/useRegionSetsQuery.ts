@@ -1,7 +1,7 @@
 import type { UseQueryResult } from '@tanstack/react-query';
 import { useMemo } from 'react';
-import type { RegionSet } from '@gen-epix/api-casedb';
-import { GeoApi } from '@gen-epix/api-casedb';
+import type { CaseDbRegionSet } from '@gen-epix/api-casedb';
+import { CaseDbGeoApi } from '@gen-epix/api-casedb';
 
 import type {
   UseMap,
@@ -12,10 +12,10 @@ import { DataHookUtil } from '../../utils/DataHookUtil';
 import { QueryUtil } from '../../utils/QueryUtil';
 import { useQueryMemo } from '../../hooks/useQueryMemo';
 
-export const useRegionSetsQuery = (): UseQueryResult<RegionSet[]> => {
+export const useRegionSetsQuery = (): UseQueryResult<CaseDbRegionSet[]> => {
   return useQueryMemo({
     queryFn: async ({ signal }) => {
-      const response = await GeoApi.instance.regionSetsGetAll({ signal });
+      const response = await CaseDbGeoApi.instance.regionSetsGetAll({ signal });
       return response.data;
     },
     queryKey: QueryUtil.getGenericKey(QUERY_KEY.REGION_SETS),
@@ -26,14 +26,14 @@ export const useRegionSetOptionsQuery = (): UseOptions<string> => {
   const regionSetsQuery = useRegionSetsQuery();
 
   return useMemo(() => {
-    return DataHookUtil.createUseOptionsDataHook<RegionSet>(regionSetsQuery, item => item.id, item => item.name);
+    return DataHookUtil.createUseOptionsDataHook<CaseDbRegionSet>(regionSetsQuery, item => item.id, item => item.name);
   }, [regionSetsQuery]);
 };
 
-export const useRegionSetsMapQuery = (): UseMap<RegionSet> => {
+export const useRegionSetsMapQuery = (): UseMap<CaseDbRegionSet> => {
   const regionSetsQuery = useRegionSetsQuery();
 
   return useMemo(() => {
-    return DataHookUtil.createUseMapDataHook<RegionSet>(regionSetsQuery, item => item.id);
+    return DataHookUtil.createUseMapDataHook<CaseDbRegionSet>(regionSetsQuery, item => item.id);
   }, [regionSetsQuery]);
 };

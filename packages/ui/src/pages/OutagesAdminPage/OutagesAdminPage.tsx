@@ -8,13 +8,13 @@ import {
   object,
 } from 'yup';
 import type {
-  ApiPermission,
-  Outage,
+  CaseDbApiPermission,
+  CaseDbOutage,
 } from '@gen-epix/api-casedb';
 import {
-  CommandName,
-  PermissionType,
-  SystemApi,
+  CaseDbCommandName,
+  CaseDbPermissionType,
+  CaseDbSystemApi,
 } from '@gen-epix/api-casedb';
 
 import type { FormFieldDefinition } from '../../models/form';
@@ -28,28 +28,28 @@ import { DATE_FORMAT } from '../../data/date';
 import type { OmitWithMetaData } from '../../models/data';
 import { SchemaUtil } from '../../utils/SchemaUtil';
 
-type FormFields = OmitWithMetaData<Outage>;
+type FormFields = OmitWithMetaData<CaseDbOutage>;
 
 export const OutagesAdminPage = () => {
   const { t } = useTranslation();
 
   const fetchAll = useCallback(async (signal: AbortSignal) => {
-    return (await SystemApi.instance.outagesGetAll({ signal }))?.data;
+    return (await CaseDbSystemApi.instance.outagesGetAll({ signal }))?.data;
   }, []);
 
-  const deleteOne = useCallback(async (item: Outage) => {
-    return await SystemApi.instance.outagesDeleteOne(item.id);
+  const deleteOne = useCallback(async (item: CaseDbOutage) => {
+    return await CaseDbSystemApi.instance.outagesDeleteOne(item.id);
   }, []);
 
-  const updateOne = useCallback(async (variables: FormFields, item: Outage) => {
-    return (await SystemApi.instance.outagesPutOne(item.id, { id: item.id, ...variables })).data;
+  const updateOne = useCallback(async (variables: FormFields, item: CaseDbOutage) => {
+    return (await CaseDbSystemApi.instance.outagesPutOne(item.id, { id: item.id, ...variables })).data;
   }, []);
 
   const createOne = useCallback(async (variables: FormFields) => {
-    return (await SystemApi.instance.outagesPostOne(variables)).data;
+    return (await CaseDbSystemApi.instance.outagesPostOne(variables)).data;
   }, []);
 
-  const getName = useCallback((item: Outage) => {
+  const getName = useCallback((item: CaseDbOutage) => {
     return item.description;
   }, []);
 
@@ -111,33 +111,33 @@ export const OutagesAdminPage = () => {
     ] as const;
   }, [t]);
 
-  const tableColumns = useMemo((): TableColumn<Outage>[] => {
+  const tableColumns = useMemo((): TableColumn<CaseDbOutage>[] => {
     return [
-      TableUtil.createDateColumn<Outage>({ dateFormat: DATE_FORMAT.DATE_TIME, id: 'active_from', name: t`Active from` }),
-      TableUtil.createDateColumn<Outage>({ dateFormat: DATE_FORMAT.DATE_TIME, id: 'active_to', name: t`Active to` }),
-      TableUtil.createDateColumn<Outage>({ dateFormat: DATE_FORMAT.DATE_TIME, id: 'visible_from', name: t`Visible from` }),
-      TableUtil.createDateColumn<Outage>({ dateFormat: DATE_FORMAT.DATE_TIME, id: 'visible_to', name: t`Visible to` }),
-      TableUtil.createBooleanColumn<Outage>({ id: 'is_active', name: t`Is active` }),
-      TableUtil.createBooleanColumn<Outage>({ id: 'is_visible', name: t`Is visible` }),
+      TableUtil.createDateColumn<CaseDbOutage>({ dateFormat: DATE_FORMAT.DATE_TIME, id: 'active_from', name: t`Active from` }),
+      TableUtil.createDateColumn<CaseDbOutage>({ dateFormat: DATE_FORMAT.DATE_TIME, id: 'active_to', name: t`Active to` }),
+      TableUtil.createDateColumn<CaseDbOutage>({ dateFormat: DATE_FORMAT.DATE_TIME, id: 'visible_from', name: t`Visible from` }),
+      TableUtil.createDateColumn<CaseDbOutage>({ dateFormat: DATE_FORMAT.DATE_TIME, id: 'visible_to', name: t`Visible to` }),
+      TableUtil.createBooleanColumn<CaseDbOutage>({ id: 'is_active', name: t`Is active` }),
+      TableUtil.createBooleanColumn<CaseDbOutage>({ id: 'is_visible', name: t`Is visible` }),
     ];
   }, [t]);
 
 
-  const extraCreateOnePermissions = useMemo<ApiPermission[]>(() => [
-    { command_name: CommandName.OutageCrudCommand, permission_type: PermissionType.CREATE },
+  const extraCreateOnePermissions = useMemo<CaseDbApiPermission[]>(() => [
+    { command_name: CaseDbCommandName.OutageCrudCommand, permission_type: CaseDbPermissionType.CREATE },
   ], []);
-  const extraDeleteOnePermissions = useMemo<ApiPermission[]>(() => [
-    { command_name: CommandName.OutageCrudCommand, permission_type: PermissionType.DELETE },
+  const extraDeleteOnePermissions = useMemo<CaseDbApiPermission[]>(() => [
+    { command_name: CaseDbCommandName.OutageCrudCommand, permission_type: CaseDbPermissionType.DELETE },
   ], []);
-  const extraUpdateOnePermissions = useMemo<ApiPermission[]>(() => [
-    { command_name: CommandName.OutageCrudCommand, permission_type: PermissionType.UPDATE },
+  const extraUpdateOnePermissions = useMemo<CaseDbApiPermission[]>(() => [
+    { command_name: CaseDbCommandName.OutageCrudCommand, permission_type: CaseDbPermissionType.UPDATE },
   ], []);
 
   return (
-    <CrudPage<FormFields, Outage>
+    <CrudPage<FormFields, CaseDbOutage>
       createItemDialogTitle={t`Create new outage`}
       createOne={createOne}
-      crudCommandType={CommandName.OutageCrudCommand}
+      crudCommandType={CaseDbCommandName.OutageCrudCommand}
       defaultSortByField={'active_from'}
       defaultSortDirection={'asc'}
       deleteOne={deleteOne}

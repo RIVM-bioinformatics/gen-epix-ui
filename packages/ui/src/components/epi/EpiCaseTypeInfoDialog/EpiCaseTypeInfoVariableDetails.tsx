@@ -12,18 +12,18 @@ import {
 } from '@mui/material';
 import isNumber from 'lodash/isNumber';
 import type {
-  CompleteCaseType,
-  Dim,
+  CaseDbCompleteCaseType,
+  CaseDbDim,
 } from '@gen-epix/api-casedb';
-import { ColType } from '@gen-epix/api-casedb';
+import { CaseDbColType } from '@gen-epix/api-casedb';
 
 import { EpiDataManager } from '../../../classes/managers/EpiDataManager';
 
 import { EpiCaseTypeInfoColAccessRights } from './EpiCaseTypeInfoColAccessRights';
 
 export type EpiCaseTypeInfoVariableDetailsProps = {
-  readonly completeCaseType: CompleteCaseType;
-  readonly dim: Dim;
+  readonly completeCaseType: CaseDbCompleteCaseType;
+  readonly dim: CaseDbDim;
 };
 
 export const EpiCaseTypeInfoVariableDetails = ({ completeCaseType, dim }: EpiCaseTypeInfoVariableDetailsProps) => {
@@ -67,7 +67,7 @@ export const EpiCaseTypeInfoVariableDetails = ({ completeCaseType, dim }: EpiCas
           {cols.filter(col => {
             // filter out columns that are of type GENETIC_DISTANCE
             const refCol = completeCaseType.ref_cols[col.ref_col_id];
-            return refCol.col_type !== ColType.GENETIC_DISTANCE;
+            return refCol.col_type !== CaseDbColType.GENETIC_DISTANCE;
           }).map(col => {
             const refCol = completeCaseType.ref_cols[col.ref_col_id];
             return (
@@ -83,40 +83,40 @@ export const EpiCaseTypeInfoVariableDetails = ({ completeCaseType, dim }: EpiCas
                 </TableCell>
                 <TableCell sx={{ verticalAlign: 'top', width: '20%' }}>
                   {([
-                    ColType.DECIMAL_0,
-                    ColType.DECIMAL_1,
-                    ColType.DECIMAL_2,
-                    ColType.DECIMAL_3,
-                    ColType.DECIMAL_4,
-                    ColType.DECIMAL_5,
-                    ColType.DECIMAL_6,
-                  ] as ColType[]).includes(refCol.col_type) && (isNumber(col.min_value) || isNumber(col.max_value)) && (
+                    CaseDbColType.DECIMAL_0,
+                    CaseDbColType.DECIMAL_1,
+                    CaseDbColType.DECIMAL_2,
+                    CaseDbColType.DECIMAL_3,
+                    CaseDbColType.DECIMAL_4,
+                    CaseDbColType.DECIMAL_5,
+                    CaseDbColType.DECIMAL_6,
+                  ] as CaseDbColType[]).includes(refCol.col_type) && (isNumber(col.min_value) || isNumber(col.max_value)) && (
                     <>
                       {t('min: {{min}}; max: {{max}}', { max: col.max_value, min: col.min_value })}
                     </>
                   )}
                   {([
-                    ColType.TIME_DAY,
-                    ColType.TIME_MONTH,
-                    ColType.TIME_QUARTER,
-                    ColType.TIME_WEEK,
-                    ColType.TIME_YEAR,
-                  ] as ColType[]).includes(refCol.col_type) && (col.min_datetime || col.max_datetime) && (
+                    CaseDbColType.TIME_DAY,
+                    CaseDbColType.TIME_MONTH,
+                    CaseDbColType.TIME_QUARTER,
+                    CaseDbColType.TIME_WEEK,
+                    CaseDbColType.TIME_YEAR,
+                  ] as CaseDbColType[]).includes(refCol.col_type) && (col.min_datetime || col.max_datetime) && (
                     <>
                       {t('from: {{from}}; to: {{to}}', { from: col.min_datetime ?? '-', to: col.max_datetime ?? '-' })}
                     </>
                   )}
-                  {refCol.col_type === ColType.TEXT && col.max_length && (
+                  {refCol.col_type === CaseDbColType.TEXT && col.max_length && (
                     <>
                       {t('Max length: {{maxLength}}', { maxLength: col.max_length })}
                     </>
                   )}
-                  {refCol.col_type === ColType.GEO_REGION && refCol.region_set_id && (
+                  {refCol.col_type === CaseDbColType.GEO_REGION && refCol.region_set_id && (
                     <>
                       {EpiDataManager.instance.data.regionSets[refCol.region_set_id].name}
                     </>
                   )}
-                  {([ColType.NOMINAL, ColType.ORDINAL] as ColType[]).includes(refCol.col_type) && refCol.concept_set_id && EpiDataManager.instance.data.conceptsBySetId[refCol.concept_set_id] && (
+                  {([CaseDbColType.NOMINAL, CaseDbColType.ORDINAL] as CaseDbColType[]).includes(refCol.col_type) && refCol.concept_set_id && EpiDataManager.instance.data.conceptsBySetId[refCol.concept_set_id] && (
                     <Box
                       sx={{
                         maxWidth: '100%',

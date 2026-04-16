@@ -1,7 +1,7 @@
 import type { UseQueryResult } from '@tanstack/react-query';
 import { useMemo } from 'react';
-import type { Region } from '@gen-epix/api-casedb';
-import { GeoApi } from '@gen-epix/api-casedb';
+import type { CaseDbRegion } from '@gen-epix/api-casedb';
+import { CaseDbGeoApi } from '@gen-epix/api-casedb';
 
 import type {
   UseMap,
@@ -14,28 +14,28 @@ import { QueryUtil } from '../../utils/QueryUtil';
 import { useQueryMemo } from '../../hooks/useQueryMemo';
 import { useRegionSetsMapQuery } from '../useRegionSetsQuery';
 
-export const useRegionQuery = (): UseQueryResult<Region[]> => {
+export const useRegionQuery = (): UseQueryResult<CaseDbRegion[]> => {
   return useQueryMemo({
     queryFn: async ({ signal }) => {
-      const response = await GeoApi.instance.regionsGetAll({ signal });
+      const response = await CaseDbGeoApi.instance.regionsGetAll({ signal });
       return response.data;
     },
     queryKey: QueryUtil.getGenericKey(QUERY_KEY.REGIONS),
   });
 };
 
-export const useRegionMapQuery = (): UseMap<Region> => {
+export const useRegionMapQuery = (): UseMap<CaseDbRegion> => {
   const response = useRegionQuery();
   return useMemo(() => {
-    return DataHookUtil.createUseMapDataHook<Region>(response, item => item.id);
+    return DataHookUtil.createUseMapDataHook<CaseDbRegion>(response, item => item.id);
   }, [response]);
 };
 
-export const useRegionNameFactory = (): UseNameFactory<Region> => {
+export const useRegionNameFactory = (): UseNameFactory<CaseDbRegion> => {
   const regionSetsMapQuery = useRegionSetsMapQuery();
 
   return useMemo(() => {
-    const getName = (item: Region) => {
+    const getName = (item: CaseDbRegion) => {
       return `${regionSetsMapQuery.map.get(item.region_set_id)?.name ?? item.region_set_id} → ${item.name}`;
     };
     return DataHookUtil.createUseNameFactoryHook(getName, [regionSetsMapQuery]);
@@ -47,6 +47,6 @@ export const useRegionOptionsQuery = (): UseOptions<string> => {
   const regionMapQuery = useRegionNameFactory();
 
   return useMemo(() => {
-    return DataHookUtil.createUseOptionsDataHook<Region>(regionQuery, item => item.id, regionMapQuery.getName, [regionMapQuery]);
+    return DataHookUtil.createUseOptionsDataHook<CaseDbRegion>(regionQuery, item => item.id, regionMapQuery.getName, [regionMapQuery]);
   }, [regionMapQuery, regionQuery]);
 };

@@ -13,7 +13,7 @@ import {
   Box,
   Button,
 } from '@mui/material';
-import { SystemApi } from '@gen-epix/api-casedb';
+import { CaseDbSystemApi } from '@gen-epix/api-casedb';
 
 import { WindowManager } from '../../../classes/managers/WindowManager';
 import { useQueryMemo } from '../../../hooks/useQueryMemo';
@@ -56,7 +56,7 @@ export const ApplicationBootstrap = ({ children }: PropsWithChildren): ReactNode
 
   const outagesQuery = useQueryMemo({
     gcTime: Infinity,
-    queryFn: async ({ signal }) => (await SystemApi.instance.retrieveOutages({ signal })).data,
+    queryFn: async ({ signal }) => (await CaseDbSystemApi.instance.retrieveOutages({ signal })).data,
     queryKey: QueryUtil.getGenericKey(QUERY_KEY.OUTAGES),
     refetchInterval: 5 * 60 * 1000,
     staleTime: Infinity,
@@ -104,7 +104,7 @@ export const ApplicationBootstrap = ({ children }: PropsWithChildren): ReactNode
   const featureFlagsQuery = useQueryMemo({
     enabled: shouldShowChildren,
     gcTime: Infinity,
-    queryFn: async ({ signal }) => (await SystemApi.instance.retrieveFeatureFlags({ signal })).data,
+    queryFn: async ({ signal }) => (await CaseDbSystemApi.instance.retrieveFeatureFlags({ signal })).data,
     queryKey: QueryUtil.getGenericKey(QUERY_KEY.FEATURE_FLAGS),
     staleTime: Infinity,
   });

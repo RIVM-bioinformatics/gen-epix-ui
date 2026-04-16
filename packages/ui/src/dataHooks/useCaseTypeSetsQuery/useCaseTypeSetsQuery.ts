@@ -1,7 +1,7 @@
 import type { UseQueryResult } from '@tanstack/react-query';
 import { useMemo } from 'react';
-import type { CaseTypeSet } from '@gen-epix/api-casedb';
-import { CaseApi } from '@gen-epix/api-casedb';
+import type { CaseDbCaseTypeSet } from '@gen-epix/api-casedb';
+import { CaseDbCaseApi } from '@gen-epix/api-casedb';
 
 import type {
   UseMap,
@@ -14,29 +14,29 @@ import { QueryUtil } from '../../utils/QueryUtil';
 import { useCaseTypeSetCategoryMapQuery } from '../useCaseTypeSetCategoriesQuery';
 import { useQueryMemo } from '../../hooks/useQueryMemo';
 
-export const useCaseTypeSetsQuery = (): UseQueryResult<CaseTypeSet[]> => {
+export const useCaseTypeSetsQuery = (): UseQueryResult<CaseDbCaseTypeSet[]> => {
   return useQueryMemo({
     queryFn: async ({ signal }) => {
-      const response = await CaseApi.instance.caseTypeSetsGetAll({ signal });
+      const response = await CaseDbCaseApi.instance.caseTypeSetsGetAll({ signal });
       return response.data;
     },
     queryKey: QueryUtil.getGenericKey(QUERY_KEY.CASE_TYPE_SETS),
   });
 };
 
-export const useCaseTypeSetsMapQuery = (): UseMap<CaseTypeSet> => {
+export const useCaseTypeSetsMapQuery = (): UseMap<CaseDbCaseTypeSet> => {
   const caseTypeSetsQuery = useCaseTypeSetsQuery();
 
   return useMemo(() => {
-    return DataHookUtil.createUseMapDataHook<CaseTypeSet>(caseTypeSetsQuery, item => item.id);
+    return DataHookUtil.createUseMapDataHook<CaseDbCaseTypeSet>(caseTypeSetsQuery, item => item.id);
   }, [caseTypeSetsQuery]);
 };
 
-export const useCaseTypeSetNameFactory = (): UseNameFactory<CaseTypeSet> => {
+export const useCaseTypeSetNameFactory = (): UseNameFactory<CaseDbCaseTypeSet> => {
   const caseTypeSetCategoryMapQuery = useCaseTypeSetCategoryMapQuery();
 
   return useMemo(() => {
-    const getName = (item: CaseTypeSet) => {
+    const getName = (item: CaseDbCaseTypeSet) => {
       return `${caseTypeSetCategoryMapQuery.map.get(item.case_type_set_category_id)?.name ?? ''} | ${item.name}`;
     };
     return DataHookUtil.createUseNameFactoryHook(getName, [caseTypeSetCategoryMapQuery]);
@@ -48,7 +48,7 @@ export const useCaseTypeSetOptionsQuery = (): UseOptions<string> => {
   const caseTypeSetNameFactory = useCaseTypeSetNameFactory();
 
   return useMemo(() => {
-    return DataHookUtil.createUseOptionsDataHook<CaseTypeSet>(
+    return DataHookUtil.createUseOptionsDataHook<CaseDbCaseTypeSet>(
       caseTypeSetsQuery,
       item => item.id,
       caseTypeSetNameFactory.getName,

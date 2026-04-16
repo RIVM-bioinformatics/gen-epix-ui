@@ -5,13 +5,13 @@ import {
 } from 'date-fns';
 import { t } from 'i18next';
 import type {
-  Col,
-  CompleteCaseType,
-  RefCol,
+  CaseDbCol,
+  CaseDbCompleteCaseType,
+  CaseDbRefCol,
 } from '@gen-epix/api-casedb';
 import {
-  ColType,
-  DimType,
+  CaseDbColType,
+  CaseDbDimType,
 } from '@gen-epix/api-casedb';
 
 import {
@@ -39,11 +39,11 @@ import { DATE_FORMAT } from '../../data/date';
 import { EpiDataManager } from '../../classes/managers/EpiDataManager';
 
 export class EpiFilterUtil {
-  private static readonly colTypeBlackList = new Set<ColType>([ColType.GENETIC_DISTANCE, ColType.GENETIC_READS, ColType.GENETIC_SEQUENCE]);
+  private static readonly colTypeBlackList = new Set<CaseDbColType>([CaseDbColType.GENETIC_DISTANCE, CaseDbColType.GENETIC_READS, CaseDbColType.GENETIC_SEQUENCE]);
 
-  public static createCategoricalFilter(col: Col, dimId: string, completeCaseType: CompleteCaseType): MultiSelectFilter | TextFilter {
+  public static createCategoricalFilter(col: CaseDbCol, dimId: string, completeCaseType: CaseDbCompleteCaseType): MultiSelectFilter | TextFilter {
     const refCol = completeCaseType.ref_cols[col.ref_col_id];
-    if ((refCol.col_type === ColType.NOMINAL || refCol.col_type === ColType.ORDINAL || refCol.col_type === ColType.INTERVAL) && EpiDataManager.instance.data.conceptsBySetId[refCol.concept_set_id]) {
+    if ((refCol.col_type === CaseDbColType.NOMINAL || refCol.col_type === CaseDbColType.ORDINAL || refCol.col_type === CaseDbColType.INTERVAL) && EpiDataManager.instance.data.conceptsBySetId[refCol.concept_set_id]) {
       const options = EpiDataManager.instance.data.conceptsBySetId[refCol.concept_set_id].map<AutoCompleteOption>(concept => ({
         label: `${concept.code} (${concept.name})`,
         value: concept.id,
@@ -66,7 +66,7 @@ export class EpiFilterUtil {
     });
   }
 
-  public static createFilterDimensions(completeCaseType: CompleteCaseType): FilterDimension[] {
+  public static createFilterDimensions(completeCaseType: CaseDbCompleteCaseType): FilterDimension[] {
     const filterDimensions: FilterDimension[] = [];
 
     completeCaseType.ordered_dim_ids.forEach(dimId => {
@@ -97,17 +97,17 @@ export class EpiFilterUtil {
       let allowMultipleVisibleFilters = false;
       let allowOnlyPreferredFilter = false;
 
-      if (refDim.dim_type === DimType.TIME) {
+      if (refDim.dim_type === CaseDbDimType.TIME) {
         const preferredCol = CaseTypeUtil.getPreferredColInDimHavingHighestRank(cols, completeCaseType);
         preferredFilterId = preferredCol.id;
         allowOnlyPreferredFilter = true;
-      } else if (refDim.dim_type === DimType.GEO) {
+      } else if (refDim.dim_type === CaseDbDimType.GEO) {
         const preferredCol = CaseTypeUtil.getPreferredGEOCol(cols);
         preferredFilterId = preferredCol.id;
       } else {
         const preferredCol = CaseTypeUtil.getPreferredColInDimHavingHighestRank(cols, completeCaseType);
         preferredFilterId = preferredCol.id;
-        allowMultipleVisibleFilters = refDim.dim_type !== DimType.NUMBER;
+        allowMultipleVisibleFilters = refDim.dim_type !== CaseDbDimType.NUMBER;
       }
 
       filterDimensions.push({
@@ -120,7 +120,7 @@ export class EpiFilterUtil {
     return filterDimensions;
   }
 
-  public static createFilters(completeCaseType: CompleteCaseType): Filters {
+  public static createFilters(completeCaseType: CaseDbCompleteCaseType): Filters {
     const filters: Filters = [];
     filters.push(new SelectionFilter({
       filterMode: FILTER_MODE.FRONTEND,
@@ -145,12 +145,12 @@ export class EpiFilterUtil {
           return;
         }
 
-        if (refDim.dim_type === DimType.TIME) {
+        if (refDim.dim_type === CaseDbDimType.TIME) {
           const today = new Date();
           const todayMinus20Years = subYears(today, 20);
           filters.push(
             new DateFilter({
-              backendFilterType: refCol.col_type === ColType.TIME_DAY ? 'DATE_RANGE' : 'PARTIAL_DATE_RANGE',
+              backendFilterType: refCol.col_type === CaseDbColType.TIME_DAY ? 'DATE_RANGE' : 'PARTIAL_DATE_RANGE',
               dateParser: EpiFilterUtil.getDateParser(refCol),
               filterDimensionId: dimId,
               filterMode: FILTER_MODE.BACKEND,
@@ -161,7 +161,7 @@ export class EpiFilterUtil {
               minDate: todayMinus20Years,
             }),
           );
-        } else if (refDim.dim_type === DimType.GEO) {
+        } else if (refDim.dim_type === CaseDbDimType.GEO) {
           const regionSet = EpiDataManager.instance.data.regionSets[refCol.region_set_id];
           const options = (EpiDataManager.instance.data.regionsByRegionSetId[refCol.region_set_id]?.map<AutoCompleteOption>(region => {
             return {
@@ -177,10 +177,10 @@ export class EpiFilterUtil {
             label: col.label,
             options,
           }));
-        } else if (refDim.dim_type === DimType.TEXT) {
+        } else if (refDim.dim_type === CaseDbDimType.TEXT) {
           filters.push(EpiFilterUtil.createCategoricalFilter(col, dimId, completeCaseType));
-        } else if (refDim.dim_type === DimType.NUMBER) {
-          if (([ColType.DECIMAL_0, ColType.DECIMAL_1, ColType.DECIMAL_2, ColType.DECIMAL_3, ColType.DECIMAL_4, ColType.DECIMAL_5, ColType.DECIMAL_6] as ColType[]).includes(refCol.col_type)) {
+        } else if (refDim.dim_type === CaseDbDimType.NUMBER) {
+          if (([CaseDbColType.DECIMAL_0, CaseDbColType.DECIMAL_1, CaseDbColType.DECIMAL_2, CaseDbColType.DECIMAL_3, CaseDbColType.DECIMAL_4, CaseDbColType.DECIMAL_5, CaseDbColType.DECIMAL_6] as CaseDbColType[]).includes(refCol.col_type)) {
             filters.push(new NumberRangeFilter({
               filterDimensionId: dimId,
               filterMode: FILTER_MODE.BACKEND,
@@ -193,7 +193,7 @@ export class EpiFilterUtil {
           } else {
             filters.push(EpiFilterUtil.createCategoricalFilter(col, dimId, completeCaseType));
           }
-        } else if (refDim.dim_type === DimType.ORGANIZATION) {
+        } else if (refDim.dim_type === CaseDbDimType.ORGANIZATION) {
           // organizations are already sorted
           const options = EpiDataManager.instance.data.organizations.map<AutoCompleteOption>(organization => {
             return {
@@ -223,8 +223,8 @@ export class EpiFilterUtil {
     return filters;
   }
 
-  public static getDateParser(refCol: RefCol): (date: string) => Date {
-    if (refCol.col_type === ColType.TIME_QUARTER) {
+  public static getDateParser(refCol: CaseDbRefCol): (date: string) => Date {
+    if (refCol.col_type === CaseDbColType.TIME_QUARTER) {
       return (date: string) => parse(date, DATE_FORMAT.YEAR_QUARTER, new Date());
     }
     return (date: string) => parseISO(date);

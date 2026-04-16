@@ -1,7 +1,7 @@
 import { t } from 'i18next';
 import type {
-  Case,
-  FiltersInner,
+  CaseDbCase,
+  CaseDbFiltersInner,
 } from '@gen-epix/api-casedb';
 
 import { FilterAbstract } from '../abstracts/FilterAbstract';
@@ -15,11 +15,11 @@ export class SelectionFilter extends FilterAbstract<string[]> implements Filter<
     return t('{{numCases}} case(s)', { numCases: this.filterValue.length });
   }
 
-  public matchRowValue(_rowValue: unknown, row?: Case): boolean {
+  public matchRowValue(_rowValue: unknown, row?: CaseDbCase): boolean {
     return !this.filterValue.length || this.filterValue.includes(row.id);
   }
 
-  public toBackendFilter(): FiltersInner {
+  public toBackendFilter(): CaseDbFiltersInner {
     return undefined;
   }
 }

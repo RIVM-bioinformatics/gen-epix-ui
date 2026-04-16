@@ -1,7 +1,7 @@
 import type { UseQueryResult } from '@tanstack/react-query';
 import { useMemo } from 'react';
-import type { RefCol } from '@gen-epix/api-casedb';
-import { CaseApi } from '@gen-epix/api-casedb';
+import type { CaseDbRefCol } from '@gen-epix/api-casedb';
+import { CaseDbCaseApi } from '@gen-epix/api-casedb';
 
 import type {
   UseMap,
@@ -13,21 +13,21 @@ import { QueryUtil } from '../../utils/QueryUtil';
 import { useQueryMemo } from '../../hooks/useQueryMemo';
 import { DataUtil } from '../../utils/DataUtil';
 
-export const useRefColsQuery = (): UseQueryResult<RefCol[]> => {
+export const useRefColsQuery = (): UseQueryResult<CaseDbRefCol[]> => {
   return useQueryMemo({
     queryFn: async ({ signal }) => {
-      const response = await CaseApi.instance.refColsGetAll({ signal });
+      const response = await CaseDbCaseApi.instance.refColsGetAll({ signal });
       return response.data;
     },
     queryKey: QueryUtil.getGenericKey(QUERY_KEY.REF_COLS),
   });
 };
 
-export const useRefColMapQuery = (): UseMap<RefCol> => {
+export const useRefColMapQuery = (): UseMap<CaseDbRefCol> => {
   const response = useRefColsQuery();
 
   return useMemo(() => {
-    return DataHookUtil.createUseMapDataHook<RefCol>(response, item => item.id);
+    return DataHookUtil.createUseMapDataHook<CaseDbRefCol>(response, item => item.id);
   }, [response]);
 };
 
@@ -35,6 +35,6 @@ export const useRefColOptionsQuery = (): UseOptions<string> => {
   const colsQuery = useRefColsQuery();
 
   return useMemo(() => {
-    return DataHookUtil.createUseOptionsDataHook<RefCol>(colsQuery, item => item.id, item => item.label, [], DataUtil.rankSortComperatorFactory('label'));
+    return DataHookUtil.createUseOptionsDataHook<CaseDbRefCol>(colsQuery, item => item.id, item => item.label, [], DataUtil.rankSortComperatorFactory('label'));
   }, [colsQuery]);
 };

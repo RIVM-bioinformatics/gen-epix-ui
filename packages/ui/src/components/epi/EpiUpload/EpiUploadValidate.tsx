@@ -15,11 +15,11 @@ import {
 import omit from 'lodash/omit';
 import { useTranslation } from 'react-i18next';
 import { useShallow } from 'zustand/shallow';
-import type { CaseForUpload } from '@gen-epix/api-casedb';
+import type { CaseDbCaseForUpload } from '@gen-epix/api-casedb';
 import {
-  CaseApi,
-  DataIssueType,
-  UploadAction,
+  CaseDbCaseApi,
+  CaseDbDataIssueType,
+  CaseDbUploadAction,
 } from '@gen-epix/api-casedb';
 
 import { EpiUploadStoreContext } from '../../../stores/epiUploadStore';
@@ -52,7 +52,7 @@ export const EpiUploadValidateInner = () => {
   const validateCasesQueryKey = useStore(store, (state) => state.validateCasesQueryKey);
   const [exceedsMaxNumCases, setExceedsMaxNumCases] = useState(false);
 
-  const casesForVerification = useMemo<CaseForUpload[]>(() => {
+  const casesForVerification = useMemo<CaseDbCaseForUpload[]>(() => {
     return EpiUploadUtil.getCasesForVerification({
       caseTypeId,
       createdInDataCollectionId,
@@ -65,13 +65,13 @@ export const EpiUploadValidateInner = () => {
     enabled: mappedColumns.length > 0 && casesForVerification.length > 0,
     gcTime: Infinity,
     queryFn: async ({ signal }) => {
-      const response = await CaseApi.instance.uploadCases({
+      const response = await CaseDbCaseApi.instance.uploadCases({
         case_batch: {
           cases: casesForVerification,
         },
         case_type_id: caseTypeId,
         created_in_data_collection_id: createdInDataCollectionId,
-        on_exists: UploadAction.UPDATE,
+        on_exists: CaseDbUploadAction.UPDATE,
         verify_only: true,
       }, { signal });
       return response.data;
@@ -118,7 +118,7 @@ export const EpiUploadValidateInner = () => {
 
   useEffect(() => {
     const newSelectedIds = rowsWithGeneratedId.filter(validatedCase => {
-      return !validatedCase.data_issues.some(issue => issue.data_issue_type === DataIssueType.INVALID || issue.data_issue_type === DataIssueType.UNAUTHORIZED);
+      return !validatedCase.data_issues.some(issue => issue.data_issue_type === CaseDbDataIssueType.INVALID || issue.data_issue_type === CaseDbDataIssueType.UNAUTHORIZED);
     }).map(vc => vc.generatedId);
     setSelectedIds(newSelectedIds);
   }, [rowsWithGeneratedId, setSelectedIds]);

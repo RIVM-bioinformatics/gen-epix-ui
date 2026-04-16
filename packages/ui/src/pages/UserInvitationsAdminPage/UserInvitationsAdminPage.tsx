@@ -16,10 +16,10 @@ import {
 } from '@mui/material';
 import MailIcon from '@mui/icons-material/Mail';
 import PasswordIcon from '@mui/icons-material/Password';
-import type { UserInvitation } from '@gen-epix/api-casedb';
+import type { CaseDbUserInvitation } from '@gen-epix/api-casedb';
 import {
-  CommandName,
-  OrganizationApi,
+  CaseDbCommandName,
+  CaseDbOrganizationApi,
 } from '@gen-epix/api-casedb';
 
 import { useOrganizationAdminPolicyMapQuery } from '../../dataHooks/useOrganizationAdminPoliciesQuery';
@@ -50,7 +50,7 @@ import {
   type UserInvitationConsumeDialogRefMethods,
 } from './UserInvitationConsumeDialog';
 
-type FormFields = OmitWithMetaData<UserInvitation, 'email' | 'expires_at' | 'invited_by_user_id' | 'invited_by_user' | 'name' | 'organization' | 'token'>;
+type FormFields = OmitWithMetaData<CaseDbUserInvitation, 'email' | 'expires_at' | 'invited_by_user_id' | 'invited_by_user' | 'name' | 'organization' | 'token'>;
 
 export const UserInvitationsAdminPage = () => {
   const { t } = useTranslation();
@@ -83,15 +83,15 @@ export const UserInvitationsAdminPage = () => {
   const userInvitationConsumeDialogRef = useRef<UserInvitationConsumeDialogRefMethods>(null);
 
   const fetchAll = useCallback(async (signal: AbortSignal) => {
-    return (await OrganizationApi.instance.userInvitationsGetAll({ signal }))?.data;
+    return (await CaseDbOrganizationApi.instance.userInvitationsGetAll({ signal }))?.data;
   }, []);
 
-  const deleteOne = useCallback(async (item: UserInvitation) => {
-    return await OrganizationApi.instance.userInvitationsDeleteOne(item.id);
+  const deleteOne = useCallback(async (item: CaseDbUserInvitation) => {
+    return await CaseDbOrganizationApi.instance.userInvitationsDeleteOne(item.id);
   }, []);
 
   const createOne = useCallback(async (variables: FormFields) => {
-    return (await OrganizationApi.instance.inviteUser({
+    return (await CaseDbOrganizationApi.instance.inviteUser({
       ...variables,
     })).data;
   }, []);
@@ -109,12 +109,11 @@ export const UserInvitationsAdminPage = () => {
     });
   }, []);
 
-  // eslint-disable-next-line @typescript-eslint/require-await
-  const onCreateSuccess = useCallback(async (item: UserInvitation) => {
+  const onCreateSuccess = useCallback((item: CaseDbUserInvitation) => {
     userInvitationShareDialogRef.current.open({ item });
   }, []);
 
-  const customOnRowClick = useCallback((params: TableRowParams<UserInvitation>) => {
+  const customOnRowClick = useCallback((params: TableRowParams<CaseDbUserInvitation>) => {
     userInvitationShareDialogRef.current.open({ item: params.row });
   }, []);
 
@@ -153,7 +152,7 @@ export const UserInvitationsAdminPage = () => {
     return fields;
   }, [t, organizationOptions, organizationOptionsQuery.isLoading, roleOptions, inviteUserConstraintsQuery.isLoading]);
 
-  const extraActionsFactory = useCallback((params: TableRowParams<UserInvitation>) => {
+  const extraActionsFactory = useCallback((params: TableRowParams<CaseDbUserInvitation>) => {
     return [
       (
         <MenuItem
@@ -186,24 +185,24 @@ export const UserInvitationsAdminPage = () => {
     ];
   }, [t]);
 
-  const tableColumns = useMemo((): TableColumn<UserInvitation>[] => {
+  const tableColumns = useMemo((): TableColumn<CaseDbUserInvitation>[] => {
     return [
-      TableUtil.createTextColumn<UserInvitation>({ id: 'key', name: t`Key` }),
-      TableUtil.createOptionsColumn<UserInvitation>({ id: 'organization_id', name: t`Organization`, options: organizationOptions }),
-      TableUtil.createOptionsColumn<UserInvitation>({ id: 'invited_by_user_id', name: t`Invited by user`, options: userOptionsQuery.options }),
-      TableUtil.createOptionsColumn<UserInvitation>({ id: 'roles', name: t`Roles`, options: roleOptions }),
-      TableUtil.createTextColumn<UserInvitation>({ id: 'description', name: t`Description` }),
-      TableUtil.createDateColumn<UserInvitation>({ id: 'expires_at', name: t`Expires` }),
+      TableUtil.createTextColumn<CaseDbUserInvitation>({ id: 'key', name: t`Key` }),
+      TableUtil.createOptionsColumn<CaseDbUserInvitation>({ id: 'organization_id', name: t`Organization`, options: organizationOptions }),
+      TableUtil.createOptionsColumn<CaseDbUserInvitation>({ id: 'invited_by_user_id', name: t`Invited by user`, options: userOptionsQuery.options }),
+      TableUtil.createOptionsColumn<CaseDbUserInvitation>({ id: 'roles', name: t`Roles`, options: roleOptions }),
+      TableUtil.createTextColumn<CaseDbUserInvitation>({ id: 'description', name: t`Description` }),
+      TableUtil.createDateColumn<CaseDbUserInvitation>({ id: 'expires_at', name: t`Expires` }),
     ];
   }, [t, organizationOptions, userOptionsQuery.options, roleOptions]);
 
   return (
     <>
-      <CrudPage<FormFields, UserInvitation>
+      <CrudPage<FormFields, CaseDbUserInvitation>
         createItemButtonText={t`Invite user`}
         createItemDialogTitle={t`Create new user invitation`}
         createOne={createOne}
-        crudCommandType={CommandName.UserInvitationCrudCommand}
+        crudCommandType={CaseDbCommandName.UserInvitationCrudCommand}
         customOnRowClick={customOnRowClick}
         defaultSortByField={'key'}
         defaultSortDirection={'asc'}

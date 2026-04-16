@@ -1,5 +1,5 @@
-import type { CaseSetMember } from '@gen-epix/api-casedb';
-import { CaseApi } from '@gen-epix/api-casedb';
+import type { CaseDbCaseSetMember } from '@gen-epix/api-casedb';
+import { CaseDbCaseApi } from '@gen-epix/api-casedb';
 
 import { QueryClientManager } from '../QueryClientManager';
 import { WindowManager } from '../WindowManager';
@@ -57,14 +57,14 @@ export class EpiLineListCaseSetMembersManager {
     try {
       const queryClient = QueryClientManager.instance.queryClient;
       const newCache = { ...cache };
-      const caseSetMembersResult = (await CaseApi.instance.caseSetMembersPostQuery({
+      const caseSetMembersResult = (await CaseDbCaseApi.instance.caseSetMembersPostQuery({
         invert: false,
         key: 'case_id',
         members: caseIdsToFetch,
         type: 'UUID_SET',
       })).data;
 
-      caseSetMembersResult.forEach((caseSetMember: CaseSetMember) => {
+      caseSetMembersResult.forEach((caseSetMember: CaseDbCaseSetMember) => {
         newCache[caseSetMember.case_id] = true;
       });
       caseIdsToFetch.forEach(caseId => {

@@ -4,8 +4,8 @@ import intersection from 'lodash/intersection';
 import last from 'lodash/last';
 import round from 'lodash/round';
 import { type Theme } from '@mui/material';
-import type { CompleteCaseType } from '@gen-epix/api-casedb';
-import { ColType } from '@gen-epix/api-casedb';
+import type { CaseDbCompleteCaseType } from '@gen-epix/api-casedb';
+import { CaseDbColType } from '@gen-epix/api-casedb';
 
 import { NumberUtil } from '../NumberUtil';
 import { ConfigManager } from '../../classes/managers/ConfigManager';
@@ -811,12 +811,12 @@ export class EpiTreeUtil {
    *   reference columns, genetic distance protocols, and tree algorithms.
    * @returns An array of tree configurations, one per (column × algorithm) pair.
    */
-  public static getTreeConfigurations(completeCaseType: CompleteCaseType): TreeConfiguration[] {
+  public static getTreeConfigurations(completeCaseType: CaseDbCompleteCaseType): TreeConfiguration[] {
     const treeConfigurations: TreeConfiguration[] = [];
 
     const geneticDistanceCols = Object.values(completeCaseType.cols).filter(col => {
       const refCol = completeCaseType.ref_cols[col.ref_col_id];
-      return refCol.col_type === ColType.GENETIC_DISTANCE;
+      return refCol.col_type === CaseDbColType.GENETIC_DISTANCE;
     });
 
     const sortedTreeAlgorithmCodes = EpiDataManager.instance.data.treeAlgorithms.map(x => x.code);

@@ -2,9 +2,8 @@ import {
   format,
   subDays,
 } from 'date-fns';
-import { ColType } from '@gen-epix/api-casedb';
+import { CaseDbColType } from '@gen-epix/api-casedb';
 
-import { WindowManager } from '../../classes/managers/WindowManager';
 import type { Config } from '../../models/config';
 import type { EpiDashboardLayoutConfig } from '../../models/epi';
 import { EPI_ZONE } from '../../models/epi';
@@ -76,11 +75,11 @@ export class ConfigUtil {
       enablePageEvents: true,
       epi: {
         ALLOWED_COL_TYPES_FOR_STRATIFICATION: [
-          ColType.NOMINAL,
-          ColType.TEXT,
-          ColType.ORDINAL,
-          ColType.GEO_REGION,
-          ColType.ORGANIZATION,
+          CaseDbColType.NOMINAL,
+          CaseDbColType.TEXT,
+          CaseDbColType.ORDINAL,
+          CaseDbColType.GEO_REGION,
+          CaseDbColType.ORGANIZATION,
         ],
         DATA_MISSING_CHARACTER: '·',
         DOWNLOAD_SECTION_ORDER: [EPI_ZONE.LINE_LIST, EPI_ZONE.TREE, EPI_ZONE.EPI_CURVE, EPI_ZONE.MAP],
@@ -338,29 +337,10 @@ export class ConfigUtil {
         TREE_PADDING: 20,
       },
       getAPIBaseUrl: () => {
-        const { location: { href } } = WindowManager.instance.window.document;
-        const { hostname } = new URL(href);
-        switch (hostname) {
-          case '127.0.0.1':
-            return 'https://127.0.0.1:5010';
-          case 'localhost':
-            return 'https://localhost:5010';
-          default:
-            return '';
-        }
+        return 'development';
       },
       getEnvironmentMessage: (_t) => {
-        const { location: { href } } = WindowManager.instance.window.document;
-        const { hostname } = new URL(href);
-        let environment: string;
-        switch (hostname) {
-          case '127.0.0.1':
-          case 'localhost':
-          default:
-            environment = 'localhost';
-            break;
-        }
-        return environment;
+        return 'development';
       },
       // eslint-disable-next-line @typescript-eslint/ban-ts-comment
       // @ts-ignore

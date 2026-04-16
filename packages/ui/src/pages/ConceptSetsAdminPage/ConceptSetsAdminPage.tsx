@@ -7,12 +7,12 @@ import {
   mixed,
   object,
 } from 'yup';
-import type { ConceptSet } from '@gen-epix/api-casedb';
+import type { CaseDbConceptSet } from '@gen-epix/api-casedb';
 import {
-  CommandName,
-  ConceptSetType,
-  OntologyApi,
-  PermissionType,
+  CaseDbCommandName,
+  CaseDbConceptSetType,
+  CaseDbOntologyApi,
+  CaseDbPermissionType,
 } from '@gen-epix/api-casedb';
 
 import type { FormFieldDefinition } from '../../models/form';
@@ -29,29 +29,29 @@ import type { OmitWithMetaData } from '../../models/data';
 import { SchemaUtil } from '../../utils/SchemaUtil';
 
 
-type FormFields = OmitWithMetaData<ConceptSet>;
+type FormFields = OmitWithMetaData<CaseDbConceptSet>;
 
 export const ConceptSetsAdminPage = () => {
   const conceptSetTypeOptionsQuery = useConceptSetTypeOptionsQuery();
   const { t } = useTranslation();
 
   const fetchAll = useCallback(async (signal: AbortSignal) => {
-    return (await OntologyApi.instance.conceptSetsGetAll({ signal }))?.data;
+    return (await CaseDbOntologyApi.instance.conceptSetsGetAll({ signal }))?.data;
   }, []);
 
-  const deleteOne = useCallback(async (item: ConceptSet) => {
-    return await OntologyApi.instance.conceptSetsDeleteOne(item.id);
+  const deleteOne = useCallback(async (item: CaseDbConceptSet) => {
+    return await CaseDbOntologyApi.instance.conceptSetsDeleteOne(item.id);
   }, []);
 
-  const updateOne = useCallback(async (variables: FormFields, item: ConceptSet) => {
-    return (await OntologyApi.instance.conceptSetsPutOne(item.id, { id: item.id, ...variables })).data;
+  const updateOne = useCallback(async (variables: FormFields, item: CaseDbConceptSet) => {
+    return (await CaseDbOntologyApi.instance.conceptSetsPutOne(item.id, { id: item.id, ...variables })).data;
   }, []);
 
   const createOne = useCallback(async (variables: FormFields) => {
-    return (await OntologyApi.instance.conceptSetsPostOne(variables)).data;
+    return (await CaseDbOntologyApi.instance.conceptSetsPostOne(variables)).data;
   }, []);
 
-  const getName = useCallback((item: ConceptSet) => {
+  const getName = useCallback((item: CaseDbConceptSet) => {
     return item.name;
   }, []);
 
@@ -60,7 +60,7 @@ export const ConceptSetsAdminPage = () => {
       code: SchemaUtil.code,
       description: SchemaUtil.description,
       name: SchemaUtil.name,
-      type: mixed<ConceptSetType>().required().oneOf(Object.values(ConceptSetType)),
+      type: mixed<CaseDbConceptSetType>().required().oneOf(Object.values(CaseDbConceptSetType)),
     });
   }, []);
 
@@ -91,33 +91,33 @@ export const ConceptSetsAdminPage = () => {
     ] as const;
   }, [conceptSetTypeOptionsQuery.isLoading, conceptSetTypeOptionsQuery.options, t]);
 
-  const tableColumns = useMemo((): TableColumn<ConceptSet>[] => {
+  const tableColumns = useMemo((): TableColumn<CaseDbConceptSet>[] => {
     return [
-      TableUtil.createTextColumn<ConceptSet>({ id: 'name', name: t`Name` }),
-      TableUtil.createOptionsColumn<ConceptSet>({ id: 'type', name: t`Type`, options: conceptSetTypeOptionsQuery.options }),
+      TableUtil.createTextColumn<CaseDbConceptSet>({ id: 'name', name: t`Name` }),
+      TableUtil.createOptionsColumn<CaseDbConceptSet>({ id: 'type', name: t`Type`, options: conceptSetTypeOptionsQuery.options }),
     ];
   }, [conceptSetTypeOptionsQuery.options, t]);
 
-  const subPages = useMemo<CrudPageSubPage<ConceptSet>[]>(() => {
+  const subPages = useMemo<CrudPageSubPage<CaseDbConceptSet>[]>(() => {
     if (!AuthorizationManager.instance.doesUserHavePermission([
-      { command_name: CommandName.ConceptCrudCommand, permission_type: PermissionType.READ },
+      { command_name: CaseDbCommandName.ConceptCrudCommand, permission_type: CaseDbPermissionType.READ },
     ])) {
       return [];
     }
 
     return [
       {
-        getPathName: (item: ConceptSet) => `/management/concept-sets/${item.id}/concepts`,
+        getPathName: (item: CaseDbConceptSet) => `/management/concept-sets/${item.id}/concepts`,
         label: t`Manage concepts`,
-      } satisfies CrudPageSubPage<ConceptSet>,
+      } satisfies CrudPageSubPage<CaseDbConceptSet>,
     ];
   }, [t]);
 
   return (
-    <CrudPage<FormFields, ConceptSet>
+    <CrudPage<FormFields, CaseDbConceptSet>
       createItemDialogTitle={t`Create new concept set`}
       createOne={createOne}
-      crudCommandType={CommandName.ConceptSetCrudCommand}
+      crudCommandType={CaseDbCommandName.ConceptSetCrudCommand}
       defaultSortByField={'name'}
       defaultSortDirection={'asc'}
       deleteOne={deleteOne}

@@ -5,10 +5,10 @@ import {
 import { useTranslation } from 'react-i18next';
 import { object } from 'yup';
 import { useParams } from 'react-router-dom';
-import type { Region } from '@gen-epix/api-casedb';
+import type { CaseDbRegion } from '@gen-epix/api-casedb';
 import {
-  CommandName,
-  GeoApi,
+  CaseDbCommandName,
+  CaseDbGeoApi,
 } from '@gen-epix/api-casedb';
 
 import type { FormFieldDefinition } from '../../models/form';
@@ -22,26 +22,26 @@ import type { OmitWithMetaData } from '../../models/data';
 import { SchemaUtil } from '../../utils/SchemaUtil';
 
 // Note: region_set_id is given in the route params
-type FormFields = OmitWithMetaData<Region, 'region_set_id' | 'region_set'>;
+type FormFields = OmitWithMetaData<CaseDbRegion, 'region_set_id' | 'region_set'>;
 
 export const RegionsAdminPage = () => {
   const { regionSetId } = useParams();
   const { t } = useTranslation();
 
   const fetchAll = useCallback(async (signal: AbortSignal) => {
-    return (await GeoApi.instance.regionsGetAll({ signal }))?.data;
+    return (await CaseDbGeoApi.instance.regionsGetAll({ signal }))?.data;
   }, []);
 
-  const fetchAllSelect = useCallback((regions: Region[]) => {
+  const fetchAllSelect = useCallback((regions: CaseDbRegion[]) => {
     return regions.filter((region) => region.region_set_id === regionSetId);
   }, [regionSetId]);
 
-  const deleteOne = useCallback(async (item: Region) => {
-    return await GeoApi.instance.regionsDeleteOne(item.id);
+  const deleteOne = useCallback(async (item: CaseDbRegion) => {
+    return await CaseDbGeoApi.instance.regionsDeleteOne(item.id);
   }, []);
 
-  const updateOne = useCallback(async (variables: FormFields, item: Region) => {
-    return (await GeoApi.instance.regionsPutOne(item.id, {
+  const updateOne = useCallback(async (variables: FormFields, item: CaseDbRegion) => {
+    return (await CaseDbGeoApi.instance.regionsPutOne(item.id, {
       ...variables,
       id: item.id,
       region_set_id: regionSetId,
@@ -49,7 +49,7 @@ export const RegionsAdminPage = () => {
   }, [regionSetId]);
 
   const createOne = useCallback(async (variables: FormFields) => {
-    return (await GeoApi.instance.regionsPostOne({
+    return (await CaseDbGeoApi.instance.regionsPostOne({
       ...variables,
       region_set_id: regionSetId,
     })).data;
@@ -110,14 +110,14 @@ export const RegionsAdminPage = () => {
     ] as const;
   }, [t]);
 
-  const tableColumns = useMemo((): TableColumn<Region>[] => {
+  const tableColumns = useMemo((): TableColumn<CaseDbRegion>[] => {
     return [
-      TableUtil.createTextColumn<Region>({ id: 'name', name: t`Name` }),
-      TableUtil.createTextColumn<Region>({ id: 'code', name: t`Code` }),
+      TableUtil.createTextColumn<CaseDbRegion>({ id: 'name', name: t`Name` }),
+      TableUtil.createTextColumn<CaseDbRegion>({ id: 'code', name: t`Code` }),
     ];
   }, [t]);
 
-  const getOptimisticUpdateIntermediateItem = useCallback((variables: FormFields, previousItem: Region): Region => {
+  const getOptimisticUpdateIntermediateItem = useCallback((variables: FormFields, previousItem: CaseDbRegion): CaseDbRegion => {
     return {
       id: previousItem.id,
       region_set_id: previousItem.region_set_id,
@@ -126,10 +126,10 @@ export const RegionsAdminPage = () => {
   }, []);
 
   return (
-    <CrudPage<FormFields, Region>
+    <CrudPage<FormFields, CaseDbRegion>
       createItemDialogTitle={t`Create new region`}
       createOne={createOne}
-      crudCommandType={CommandName.RegionCrudCommand}
+      crudCommandType={CaseDbCommandName.RegionCrudCommand}
       defaultSortByField={'name'}
       defaultSortDirection={'asc'}
       deleteOne={deleteOne}

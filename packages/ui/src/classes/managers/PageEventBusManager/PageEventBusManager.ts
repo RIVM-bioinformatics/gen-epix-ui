@@ -1,4 +1,4 @@
-import type { User } from '@gen-epix/api-casedb';
+import type { CaseDbUser } from '@gen-epix/api-casedb';
 
 import { WindowManager } from '../WindowManager';
 import { ConfigManager } from '../ConfigManager';
@@ -6,7 +6,7 @@ import { EventBusAbstract } from '../../abstracts/EventBusAbstract';
 
 type EpiEvent = {
   changePage: Page;
-  changeUser: User;
+  changeUser: CaseDbUser;
   click: {
     context?: string;
     label: string;

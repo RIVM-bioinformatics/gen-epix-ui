@@ -18,8 +18,8 @@ import {
 } from '@mui/material';
 import { t } from 'i18next';
 import {
-  AuthApi,
-  LogLevel,
+  CaseDbAuthApi,
+  CaseDbLogLevel,
 } from '@gen-epix/api-casedb';
 
 import { AuthenticationManager } from '../../../classes/managers/AuthenticationManager';
@@ -31,8 +31,6 @@ import { ChooseIdentityProviderPage } from '../../../pages/ChooseIdentityProvide
 import { HomePage } from '../../../pages/HomePage';
 import { QueryUtil } from '../../../utils/QueryUtil';
 import { UserManagerUtil } from '../../../utils/UserManagerUtil';
-import { AuthenticationWrapper } from '../../ui/AuthenticationWrapper';
-import { AuthorizationWrapper } from '../../ui/AuthorizationWrapper';
 import { NotificationsStack } from '../../ui/Notifications';
 import { Spinner } from '../../ui/Spinner';
 import { UserInactivityConfirmation } from '../../ui/UserInactivityConfirmation';
@@ -42,6 +40,8 @@ import { TestIdUtil } from '../../../utils/TestIdUtil';
 import { PageContainer } from '../../ui/PageContainer';
 import { useQueryMemo } from '../../../hooks/useQueryMemo';
 import { ApplicationBootstrap } from '../ApplicationBootstrap';
+import { AuthenticationWrapper } from '../AuthenticationWrapper';
+import { AuthorizationWrapper } from '../AuthorizationWrapper';
 
 
 export const RouterRoot = () => {
@@ -52,7 +52,11 @@ export const RouterRoot = () => {
   const { data: identityProvidersWithAvailability, error: identityProvidersError, isLoading: isIdentityProvidersLoading } = useQueryMemo<IdentityProviderWithAvailability[], Error, IdentityProviderWithAvailability[]>({
     gcTime: Infinity,
     queryFn: async ({ signal }) => {
-      const providers = (await AuthApi.instance.identityProvidersGetAll({ signal })).data;
+      const providers = (await CaseDbAuthApi.instance.identityProvidersGetAll({ signal })).data;
+      if (!Array.isArray(providers)) {
+        throw new Error('Invalid response for identity providers. Backend is most likely misconfigured.');
+      }
+
       const providersWithAvailability: IdentityProviderWithAvailability[] = [];
       for (const provider of providers) {
         try {
@@ -64,7 +68,8 @@ export const RouterRoot = () => {
             isAvailable: true,
             provider,
           });
-        } catch {
+        } catch (error: unknown) {
+          console.log(`Identity provider ${provider.name} is not available`, error);
           if (oidcConfiguration?.name === provider.name) {
             AuthenticationManager.instance.next(undefined);
           }
@@ -90,7 +95,7 @@ export const RouterRoot = () => {
       detail: {
         pathname: location.pathname,
       },
-      level: LogLevel.INFO,
+      level: CaseDbLogLevel.INFO,
       topic: 'USER_NAVIGATION',
     }]);
   }, [location.pathname]);
@@ -118,7 +123,7 @@ export const RouterRoot = () => {
 
   const onSignin = useCallback(() => {
     LogManager.instance.log([{
-      level: LogLevel.INFO,
+      level: CaseDbLogLevel.INFO,
       topic: 'USER_LOGIN',
     }]);
   }, []);

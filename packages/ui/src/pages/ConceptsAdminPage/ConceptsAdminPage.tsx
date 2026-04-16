@@ -5,10 +5,10 @@ import {
 import { useTranslation } from 'react-i18next';
 import { object } from 'yup';
 import { useParams } from 'react-router-dom';
-import type { Concept } from '@gen-epix/api-casedb';
+import type { CaseDbConcept } from '@gen-epix/api-casedb';
 import {
-  CommandName,
-  OntologyApi,
+  CaseDbCommandName,
+  CaseDbOntologyApi,
 } from '@gen-epix/api-casedb';
 
 import type { FormFieldDefinition } from '../../models/form';
@@ -21,26 +21,26 @@ import { CrudPage } from '../CrudPage';
 import type { OmitWithMetaData } from '../../models/data';
 import { SchemaUtil } from '../../utils/SchemaUtil';
 
-type FormFields = OmitWithMetaData<Concept, 'concept_set_id' | 'concept_set' | 'props'>;
+type FormFields = OmitWithMetaData<CaseDbConcept, 'concept_set_id' | 'concept_set' | 'props'>;
 
 export const ConceptsAdminPage = () => {
   const { conceptSetId } = useParams();
   const { t } = useTranslation();
 
   const fetchAll = useCallback(async (signal: AbortSignal) => {
-    return (await OntologyApi.instance.conceptsGetAll({ signal }))?.data;
+    return (await CaseDbOntologyApi.instance.conceptsGetAll({ signal }))?.data;
   }, []);
 
-  const fetchAllSelect = useCallback((concepts: Concept[]) => {
+  const fetchAllSelect = useCallback((concepts: CaseDbConcept[]) => {
     return concepts.filter((concept) => concept.concept_set_id === conceptSetId);
   }, [conceptSetId]);
 
-  const deleteOne = useCallback(async (item: Concept) => {
-    return await OntologyApi.instance.conceptsDeleteOne(item.id);
+  const deleteOne = useCallback(async (item: CaseDbConcept) => {
+    return await CaseDbOntologyApi.instance.conceptsDeleteOne(item.id);
   }, []);
 
-  const updateOne = useCallback(async (variables: FormFields, item: Concept) => {
-    const updatedItem = (await OntologyApi.instance.conceptsPutOne(item.id, {
+  const updateOne = useCallback(async (variables: FormFields, item: CaseDbConcept) => {
+    const updatedItem = (await CaseDbOntologyApi.instance.conceptsPutOne(item.id, {
       ...variables,
       concept_set_id: conceptSetId,
       id: item.id,
@@ -49,7 +49,7 @@ export const ConceptsAdminPage = () => {
   }, [conceptSetId]);
 
   const createOne = useCallback(async (variables: FormFields) => {
-    return (await OntologyApi.instance.conceptsPostOne({
+    return (await CaseDbOntologyApi.instance.conceptsPostOne({
       ...variables,
       concept_set_id: conceptSetId,
     })).data;
@@ -96,15 +96,15 @@ export const ConceptsAdminPage = () => {
     ] as const;
   }, [t]);
 
-  const tableColumns = useMemo((): TableColumn<Concept>[] => {
+  const tableColumns = useMemo((): TableColumn<CaseDbConcept>[] => {
     return [
-      TableUtil.createNumberColumn<Concept>({ flex: 0.25, id: 'rank', name: t`Rank` }),
-      TableUtil.createTextColumn<Concept>({ id: 'name', name: t`Name` }),
-      TableUtil.createTextColumn<Concept>({ id: 'code', name: t`Code` }),
+      TableUtil.createNumberColumn<CaseDbConcept>({ flex: 0.25, id: 'rank', name: t`Rank` }),
+      TableUtil.createTextColumn<CaseDbConcept>({ id: 'name', name: t`Name` }),
+      TableUtil.createTextColumn<CaseDbConcept>({ id: 'code', name: t`Code` }),
     ];
   }, [t]);
 
-  const getOptimisticUpdateIntermediateItem = useCallback((variables: FormFields, previousItem: Concept): Concept => {
+  const getOptimisticUpdateIntermediateItem = useCallback((variables: FormFields, previousItem: CaseDbConcept): CaseDbConcept => {
     return {
       concept_set_id: previousItem.concept_set_id,
       id: previousItem.id,
@@ -113,10 +113,10 @@ export const ConceptsAdminPage = () => {
   }, []);
 
   return (
-    <CrudPage<FormFields, Concept>
+    <CrudPage<FormFields, CaseDbConcept>
       createItemDialogTitle={t`Create new concept`}
       createOne={createOne}
-      crudCommandType={CommandName.ConceptCrudCommand}
+      crudCommandType={CaseDbCommandName.ConceptCrudCommand}
       defaultSortByField={'rank'}
       defaultSortDirection={'asc'}
       deleteOne={deleteOne}

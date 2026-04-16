@@ -4,7 +4,7 @@ import {
   useRef,
 } from 'react';
 import { t } from 'i18next';
-import type { CaseSet } from '@gen-epix/api-casedb';
+import type { CaseDbCaseSet } from '@gen-epix/api-casedb';
 
 import { RouterManager } from '../../../classes/managers/RouterManager';
 import { useCaseSetCategoryMapQuery } from '../../../dataHooks/useCaseSetCategoriesQuery';
@@ -16,7 +16,7 @@ import { ResponseHandler } from '../../ui/ResponseHandler';
 import { useArray } from '../../../hooks/useArray';
 
 export type EpiCasesAlreadyInCaseSetWarningCaseSetLinkProps = {
-  readonly caseSet: CaseSet;
+  readonly caseSet: CaseDbCaseSet;
 };
 
 export const EpiCasesAlreadyInCaseSetWarningCaseSetLink = ({ caseSet }: EpiCasesAlreadyInCaseSetWarningCaseSetLinkProps) => {

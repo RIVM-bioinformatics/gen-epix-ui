@@ -1,11 +1,11 @@
 import { addHours } from 'date-fns';
-import type { Outage } from '@gen-epix/api-casedb';
+import type { CaseDbOutage } from '@gen-epix/api-casedb';
 
 import { ConfigManager } from '../../classes/managers/ConfigManager';
 import type { CategorizedOutages } from '../../models/outage';
 
 export class OutageUtil {
-  public static getCategorizedOutages(outages: Outage[]): CategorizedOutages {
+  public static getCategorizedOutages(outages: CaseDbOutage[]): CategorizedOutages {
 
     const activeOutages = outages.filter((outage) => {
       if (outage.is_active) {

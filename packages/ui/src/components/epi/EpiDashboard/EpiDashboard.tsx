@@ -17,7 +17,7 @@ import { useTranslation } from 'react-i18next';
 import { useStore } from 'zustand';
 import { useShallow } from 'zustand/shallow';
 import InfoIcon from '@mui/icons-material/Info';
-import type { CaseSet } from '@gen-epix/api-casedb';
+import type { CaseDbCaseSet } from '@gen-epix/api-casedb';
 
 import CollectionIcon from '../../../assets/icons/CollectionIcon.svg?react';
 import type { EpiCaseSetInfoDialogRefMethods } from '../EpiCaseSetInfoDialog';
@@ -102,7 +102,7 @@ import {
 } from './EpiDashboardDownloadSidebarItem';
 
 type EpiDashboardProps = {
-  readonly caseSet?: CaseSet;
+  readonly caseSet?: CaseDbCaseSet;
   readonly caseTypeId: string;
 };
 

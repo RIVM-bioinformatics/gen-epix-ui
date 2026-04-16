@@ -8,10 +8,10 @@ import {
   object,
   string,
 } from 'yup';
-import type { UserShareCasePolicy } from '@gen-epix/api-casedb';
+import type { CaseDbUserShareCasePolicy } from '@gen-epix/api-casedb';
 import {
-  AbacApi,
-  CommandName,
+  CaseDbAbacApi,
+  CaseDbCommandName,
 } from '@gen-epix/api-casedb';
 
 import { useColSetsQuery } from '../../dataHooks/useColSetsQuery';
@@ -29,7 +29,7 @@ import { TestIdUtil } from '../../utils/TestIdUtil';
 import { CrudPage } from '../CrudPage';
 import type { OmitWithMetaData } from '../../models/data';
 
-type FormFields = OmitWithMetaData<UserShareCasePolicy, 'case_type_set' | 'data_collection' | 'from_data_collection' | 'user'>;
+type FormFields = OmitWithMetaData<CaseDbUserShareCasePolicy, 'case_type_set' | 'data_collection' | 'from_data_collection' | 'user'>;
 
 export const UserShareCasePoliciesAdminPage = () => {
   const { t } = useTranslation();
@@ -43,22 +43,22 @@ export const UserShareCasePoliciesAdminPage = () => {
   const loadables = useArray([userOptionsQuery, dataCollectionOptionsQuery, colSetOptionsQuery, caseTypeSetOptionsQuery]);
 
   const fetchAll = useCallback(async (signal: AbortSignal) => {
-    return (await AbacApi.instance.userShareCasePoliciesGetAll({ signal }))?.data;
+    return (await CaseDbAbacApi.instance.userShareCasePoliciesGetAll({ signal }))?.data;
   }, []);
 
-  const deleteOne = useCallback(async (item: UserShareCasePolicy) => {
-    return await AbacApi.instance.userShareCasePoliciesDeleteOne(item.id);
+  const deleteOne = useCallback(async (item: CaseDbUserShareCasePolicy) => {
+    return await CaseDbAbacApi.instance.userShareCasePoliciesDeleteOne(item.id);
   }, []);
 
-  const updateOne = useCallback(async (variables: FormFields, item: UserShareCasePolicy) => {
-    return (await AbacApi.instance.userShareCasePoliciesPutOne(item.id, { id: item.id, ...variables })).data;
+  const updateOne = useCallback(async (variables: FormFields, item: CaseDbUserShareCasePolicy) => {
+    return (await CaseDbAbacApi.instance.userShareCasePoliciesPutOne(item.id, { id: item.id, ...variables })).data;
   }, []);
 
   const createOne = useCallback(async (variables: FormFields) => {
-    return (await AbacApi.instance.userShareCasePoliciesPostOne(variables)).data;
+    return (await CaseDbAbacApi.instance.userShareCasePoliciesPostOne(variables)).data;
   }, []);
 
-  const getName = useCallback((item: UserShareCasePolicy) => {
+  const getName = useCallback((item: CaseDbUserShareCasePolicy) => {
     return nameFactory.getName(item);
   }, [nameFactory]);
 
@@ -134,27 +134,27 @@ export const UserShareCasePoliciesAdminPage = () => {
     ] as const;
   }, [caseTypeSetOptionsQuery.isLoading, caseTypeSetOptionsQuery.options, dataCollectionOptionsQuery.isLoading, dataCollectionOptionsQuery.options, userOptionsQuery.isLoading, userOptionsQuery.options, t]);
 
-  const tableColumns = useMemo((): TableColumn<UserShareCasePolicy>[] => {
+  const tableColumns = useMemo((): TableColumn<CaseDbUserShareCasePolicy>[] => {
     return [
-      TableUtil.createOptionsColumn<UserShareCasePolicy>({ id: 'user_id', name: t`User`, options: userOptionsQuery.options }),
-      TableUtil.createOptionsColumn<UserShareCasePolicy>({ id: 'data_collection_id', name: t`Data collection`, options: dataCollectionOptionsQuery.options }),
-      TableUtil.createOptionsColumn<UserShareCasePolicy>({ id: 'from_data_collection_id', name: t`From collection`, options: dataCollectionOptionsQuery.options }),
-      TableUtil.createOptionsColumn<UserShareCasePolicy>({ id: 'case_type_set_id', name: t`Case type set`, options: caseTypeSetOptionsQuery.options }),
+      TableUtil.createOptionsColumn<CaseDbUserShareCasePolicy>({ id: 'user_id', name: t`User`, options: userOptionsQuery.options }),
+      TableUtil.createOptionsColumn<CaseDbUserShareCasePolicy>({ id: 'data_collection_id', name: t`Data collection`, options: dataCollectionOptionsQuery.options }),
+      TableUtil.createOptionsColumn<CaseDbUserShareCasePolicy>({ id: 'from_data_collection_id', name: t`From collection`, options: dataCollectionOptionsQuery.options }),
+      TableUtil.createOptionsColumn<CaseDbUserShareCasePolicy>({ id: 'case_type_set_id', name: t`Case type set`, options: caseTypeSetOptionsQuery.options }),
 
-      TableUtil.createBooleanColumn<UserShareCasePolicy>({ id: 'add_case', name: t`Add case` }),
-      TableUtil.createBooleanColumn<UserShareCasePolicy>({ id: 'remove_case', name: t`Remove case` }),
-      TableUtil.createBooleanColumn<UserShareCasePolicy>({ id: 'add_case_set', name: t`Add case set` }),
-      TableUtil.createBooleanColumn<UserShareCasePolicy>({ id: 'remove_case_set', name: t`Remove case set` }),
+      TableUtil.createBooleanColumn<CaseDbUserShareCasePolicy>({ id: 'add_case', name: t`Add case` }),
+      TableUtil.createBooleanColumn<CaseDbUserShareCasePolicy>({ id: 'remove_case', name: t`Remove case` }),
+      TableUtil.createBooleanColumn<CaseDbUserShareCasePolicy>({ id: 'add_case_set', name: t`Add case set` }),
+      TableUtil.createBooleanColumn<CaseDbUserShareCasePolicy>({ id: 'remove_case_set', name: t`Remove case set` }),
 
-      TableUtil.createBooleanColumn<UserShareCasePolicy>({ id: 'is_active', name: t`Active` }),
+      TableUtil.createBooleanColumn<CaseDbUserShareCasePolicy>({ id: 'is_active', name: t`Active` }),
     ];
   }, [caseTypeSetOptionsQuery.options, dataCollectionOptionsQuery.options, userOptionsQuery.options, t]);
 
   return (
-    <CrudPage<FormFields, UserShareCasePolicy>
+    <CrudPage<FormFields, CaseDbUserShareCasePolicy>
       createItemDialogTitle={t`Create new user share case policy`}
       createOne={createOne}
-      crudCommandType={CommandName.UserShareCasePolicyCrudCommand}
+      crudCommandType={CaseDbCommandName.UserShareCasePolicyCrudCommand}
       defaultSortByField={'user_id'}
       defaultSortDirection={'asc'}
       deleteOne={deleteOne}

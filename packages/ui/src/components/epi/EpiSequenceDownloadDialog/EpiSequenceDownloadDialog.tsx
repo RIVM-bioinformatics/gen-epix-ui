@@ -18,8 +18,8 @@ import {
   FormProvider,
   useForm,
 } from 'react-hook-form';
-import type { Case } from '@gen-epix/api-casedb';
-import { ColType } from '@gen-epix/api-casedb';
+import type { CaseDbCase } from '@gen-epix/api-casedb';
+import { CaseDbColType } from '@gen-epix/api-casedb';
 
 import type {
   WithDialogRefMethods,
@@ -32,9 +32,10 @@ import { DownloadUtil } from '../../../utils/DownloadUtil';
 import { Autocomplete } from '../../form/fields/Autocomplete';
 import { StringUtil } from '../../../utils/StringUtil';
 import { ConfigManager } from '../../../classes/managers/ConfigManager';
+import { APP } from '../../../models/app';
 
 export interface EpiSequenceDownloadDialogOpenProps {
-  cases: Case[];
+  cases: CaseDbCase[];
   geneticSequenceColId?: string;
 }
 
@@ -65,7 +66,7 @@ export const EpiSequenceDownloadDialog = withDialog<EpiSequenceDownloadDialogPro
     completeCaseType.ordered_dim_ids.map(x => completeCaseType.dims[x]).forEach((dim) => {
       completeCaseType.ordered_col_ids_by_dim[dim.id].map(id => completeCaseType.cols[id]).forEach(col => {
         const refCol = completeCaseType.ref_cols[col.ref_col_id];
-        if (refCol?.col_type === ColType.GENETIC_SEQUENCE) {
+        if (refCol?.col_type === CaseDbColType.GENETIC_SEQUENCE) {
           options.push({
             label: col.label,
             value: col.id,
@@ -90,7 +91,7 @@ export const EpiSequenceDownloadDialog = withDialog<EpiSequenceDownloadDialogPro
 
   const onDownloadFastaButtonClick = useCallback(() => {
     DownloadUtil.downloadAsMultiPartForm({
-      action: `${ConfigManager.instance.config.getAPIBaseUrl()}/v1/retrieve/genetic_sequence/fasta`,
+      action: `${ConfigManager.instance.config.getAPIBaseUrl(APP.CASEDB)}/v1/retrieve/genetic_sequence/fasta`,
       data: {
         case_ids: openProps.cases.map(c => c.id),
         case_type_id: completeCaseType.id,

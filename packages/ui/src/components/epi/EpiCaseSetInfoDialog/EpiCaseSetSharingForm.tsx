@@ -16,8 +16,8 @@ import { useForm } from 'react-hook-form';
 import difference from 'lodash/difference';
 import type { BoxProps } from '@mui/material';
 import { Box } from '@mui/material';
-import type { CaseSet } from '@gen-epix/api-casedb';
-import { CaseApi } from '@gen-epix/api-casedb';
+import type { CaseDbCaseSet } from '@gen-epix/api-casedb';
+import { CaseDbCaseApi } from '@gen-epix/api-casedb';
 
 import { NotificationManager } from '../../../classes/managers/NotificationManager';
 import { useCaseAbacContext } from '../../../context/caseAbac';
@@ -31,7 +31,7 @@ import { GenericForm } from '../../form/helpers/GenericForm';
 import { Spinner } from '../../ui/Spinner';
 
 export type EpiCaseSetSharingFormProps = {
-  readonly caseSet: CaseSet;
+  readonly caseSet: CaseDbCaseSet;
   readonly caseTypeId: string;
   readonly formId: string;
   readonly onFinish: () => void;
@@ -71,13 +71,13 @@ export const EpiCaseSetSharingForm = ({ caseSet, caseTypeId, formId, onFinish, o
         const dataCollectionIdsToRemove = difference(rights.shared_in_data_collection_ids, dataCollectionIds);
 
         if (dataCollectionIdsToAdd.length > 0) {
-          await CaseApi.instance.caseSetDataCollectionLinksPostSome(dataCollectionIdsToAdd.map(data_collection_id => ({
+          await CaseDbCaseApi.instance.caseSetDataCollectionLinksPostSome(dataCollectionIdsToAdd.map(data_collection_id => ({
             case_set_id: caseSet.id,
             data_collection_id,
           })));
         }
         if (dataCollectionIdsToRemove.length > 0) {
-          await CaseApi.instance.caseSetDataCollectionLinksDeleteSome(caseAbacContext.itemDataCollectionLinks[0]?.filter(x => dataCollectionIdsToRemove.includes(x.data_collection_id)).map(x => x.id).join(','));
+          await CaseDbCaseApi.instance.caseSetDataCollectionLinksDeleteSome(caseAbacContext.itemDataCollectionLinks[0]?.filter(x => dataCollectionIdsToRemove.includes(x.data_collection_id)).map(x => x.id).join(','));
         }
         NotificationManager.instance.fulfillNotification(notificationKey, t('Successfully saved case set data collections.'), 'success');
       } catch (_error) {

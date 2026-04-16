@@ -1,5 +1,5 @@
 import throttle from 'lodash/throttle';
-import { LogLevel } from '@gen-epix/api-casedb';
+import { CaseDbLogLevel } from '@gen-epix/api-casedb';
 
 import { SubscribableAbstract } from '../../abstracts/SubscribableAbstract';
 import { Subject } from '../../Subject';
@@ -73,7 +73,7 @@ export class InactivityManager extends SubscribableAbstract<InactivityState> {
   public logout(): void {
     LogManager.instance.log([{
       detail: AuthenticationManager.instance.authContextProps.user,
-      level: LogLevel.TRACE,
+      level: CaseDbLogLevel.TRACE,
       topic: 'USER_LOGOUT_BY_INACTIVITY',
     }]);
     LogManager.instance.flushLog();

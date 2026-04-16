@@ -1,8 +1,8 @@
 /* eslint-disable @typescript-eslint/naming-convention */
 import type { TFunction } from 'i18next';
 import {
-  CommandName,
-  PermissionType,
+  CaseDbCommandName,
+  CaseDbPermissionType,
 } from '@gen-epix/api-casedb';
 
 import { ADMIN_PAGE_CATEGORY } from '../models/admin';
@@ -57,7 +57,7 @@ export const createAdminRoutes = (t: TFunction<'translation', undefined>): MyNon
         handle: {
           category: ADMIN_PAGE_CATEGORY.USERS_AND_ORGANIZATIONS,
           requiredPermissions: [
-            { command_name: CommandName.OrganizationCrudCommand, permission_type: PermissionType.READ },
+            { command_name: CaseDbCommandName.OrganizationCrudCommand, permission_type: CaseDbPermissionType.READ },
           ],
           requiresUserProfile: true,
           subTitle: t`Manage your organizations`,
@@ -73,7 +73,7 @@ export const createAdminRoutes = (t: TFunction<'translation', undefined>): MyNon
             errorElement: <RouterErrorPage />,
             handle: {
               requiredPermissions: [
-                { command_name: CommandName.SiteCrudCommand, permission_type: PermissionType.READ },
+                { command_name: CaseDbCommandName.SiteCrudCommand, permission_type: CaseDbPermissionType.READ },
               ],
               requiresUserProfile: true,
               title: t`Organization sites`,
@@ -86,7 +86,7 @@ export const createAdminRoutes = (t: TFunction<'translation', undefined>): MyNon
             errorElement: <RouterErrorPage />,
             handle: {
               requiredPermissions: [
-                { command_name: CommandName.SiteCrudCommand, permission_type: PermissionType.READ },
+                { command_name: CaseDbCommandName.SiteCrudCommand, permission_type: CaseDbPermissionType.READ },
               ],
               requiresUserProfile: true,
               title: t`Site contacts`,
@@ -121,8 +121,8 @@ export const createAdminRoutes = (t: TFunction<'translation', undefined>): MyNon
         handle: {
           category: ADMIN_PAGE_CATEGORY.USERS_AND_ORGANIZATIONS,
           requiredPermissions: [
-            { command_name: CommandName.UserCrudCommand, permission_type: PermissionType.READ },
-            { command_name: CommandName.OrganizationCrudCommand, permission_type: PermissionType.READ },
+            { command_name: CaseDbCommandName.UserCrudCommand, permission_type: CaseDbPermissionType.READ },
+            { command_name: CaseDbCommandName.OrganizationCrudCommand, permission_type: CaseDbPermissionType.READ },
           ],
           requiresUserProfile: true,
           subTitle: t`Manage users`,
@@ -136,17 +136,17 @@ export const createAdminRoutes = (t: TFunction<'translation', undefined>): MyNon
         errorElement: <RouterErrorPage />,
         handle: {
           requiredPermissions: [
-            { command_name: CommandName.ColSetMemberCrudCommand, permission_type: PermissionType.READ },
-            { command_name: CommandName.CaseTypeSetCrudCommand, permission_type: PermissionType.READ },
-            { command_name: CommandName.ColSetCrudCommand, permission_type: PermissionType.READ },
-            { command_name: CommandName.CaseTypeSetMemberCrudCommand, permission_type: PermissionType.READ },
-            { command_name: CommandName.CaseTypeSetCategoryCrudCommand, permission_type: PermissionType.READ },
-            { command_name: CommandName.DataCollectionCrudCommand, permission_type: PermissionType.READ },
-            { command_name: CommandName.OrganizationAccessCasePolicyCrudCommand, permission_type: PermissionType.READ },
-            { command_name: CommandName.OrganizationShareCasePolicyCrudCommand, permission_type: PermissionType.READ },
-            { command_name: CommandName.UserAccessCasePolicyCrudCommand, permission_type: PermissionType.READ },
-            { command_name: CommandName.UserShareCasePolicyCrudCommand, permission_type: PermissionType.READ },
-            { command_name: CommandName.ColCrudCommand, permission_type: PermissionType.READ },
+            { command_name: CaseDbCommandName.ColSetMemberCrudCommand, permission_type: CaseDbPermissionType.READ },
+            { command_name: CaseDbCommandName.CaseTypeSetCrudCommand, permission_type: CaseDbPermissionType.READ },
+            { command_name: CaseDbCommandName.ColSetCrudCommand, permission_type: CaseDbPermissionType.READ },
+            { command_name: CaseDbCommandName.CaseTypeSetMemberCrudCommand, permission_type: CaseDbPermissionType.READ },
+            { command_name: CaseDbCommandName.CaseTypeSetCategoryCrudCommand, permission_type: CaseDbPermissionType.READ },
+            { command_name: CaseDbCommandName.DataCollectionCrudCommand, permission_type: CaseDbPermissionType.READ },
+            { command_name: CaseDbCommandName.OrganizationAccessCasePolicyCrudCommand, permission_type: CaseDbPermissionType.READ },
+            { command_name: CaseDbCommandName.OrganizationShareCasePolicyCrudCommand, permission_type: CaseDbPermissionType.READ },
+            { command_name: CaseDbCommandName.UserAccessCasePolicyCrudCommand, permission_type: CaseDbPermissionType.READ },
+            { command_name: CaseDbCommandName.UserShareCasePolicyCrudCommand, permission_type: CaseDbPermissionType.READ },
+            { command_name: CaseDbCommandName.ColCrudCommand, permission_type: CaseDbPermissionType.READ },
           ],
           requiresUserProfile: true,
           title: t`Effective rights`,
@@ -158,17 +158,17 @@ export const createAdminRoutes = (t: TFunction<'translation', undefined>): MyNon
         errorElement: <RouterErrorPage />,
         handle: {
           requiredPermissions: [
-            { command_name: CommandName.ColSetMemberCrudCommand, permission_type: PermissionType.READ },
-            { command_name: CommandName.CaseTypeSetCrudCommand, permission_type: PermissionType.READ },
-            { command_name: CommandName.ColSetCrudCommand, permission_type: PermissionType.READ },
-            { command_name: CommandName.CaseTypeSetMemberCrudCommand, permission_type: PermissionType.READ },
-            { command_name: CommandName.CaseTypeSetCategoryCrudCommand, permission_type: PermissionType.READ },
-            { command_name: CommandName.DataCollectionCrudCommand, permission_type: PermissionType.READ },
-            { command_name: CommandName.OrganizationAccessCasePolicyCrudCommand, permission_type: PermissionType.READ },
-            { command_name: CommandName.OrganizationShareCasePolicyCrudCommand, permission_type: PermissionType.READ },
-            { command_name: CommandName.UserAccessCasePolicyCrudCommand, permission_type: PermissionType.READ },
-            { command_name: CommandName.UserShareCasePolicyCrudCommand, permission_type: PermissionType.READ },
-            { command_name: CommandName.ColCrudCommand, permission_type: PermissionType.READ },
+            { command_name: CaseDbCommandName.ColSetMemberCrudCommand, permission_type: CaseDbPermissionType.READ },
+            { command_name: CaseDbCommandName.CaseTypeSetCrudCommand, permission_type: CaseDbPermissionType.READ },
+            { command_name: CaseDbCommandName.ColSetCrudCommand, permission_type: CaseDbPermissionType.READ },
+            { command_name: CaseDbCommandName.CaseTypeSetMemberCrudCommand, permission_type: CaseDbPermissionType.READ },
+            { command_name: CaseDbCommandName.CaseTypeSetCategoryCrudCommand, permission_type: CaseDbPermissionType.READ },
+            { command_name: CaseDbCommandName.DataCollectionCrudCommand, permission_type: CaseDbPermissionType.READ },
+            { command_name: CaseDbCommandName.OrganizationAccessCasePolicyCrudCommand, permission_type: CaseDbPermissionType.READ },
+            { command_name: CaseDbCommandName.OrganizationShareCasePolicyCrudCommand, permission_type: CaseDbPermissionType.READ },
+            { command_name: CaseDbCommandName.UserAccessCasePolicyCrudCommand, permission_type: CaseDbPermissionType.READ },
+            { command_name: CaseDbCommandName.UserShareCasePolicyCrudCommand, permission_type: CaseDbPermissionType.READ },
+            { command_name: CaseDbCommandName.ColCrudCommand, permission_type: CaseDbPermissionType.READ },
           ],
           requiresUserProfile: true,
           title: t`Effective rights test`,
@@ -191,8 +191,8 @@ export const createAdminRoutes = (t: TFunction<'translation', undefined>): MyNon
     handle: {
       category: ADMIN_PAGE_CATEGORY.USERS_AND_ORGANIZATIONS,
       requiredPermissions: [
-        { command_name: CommandName.UserInvitationCrudCommand, permission_type: PermissionType.READ },
-        { command_name: CommandName.OrganizationCrudCommand, permission_type: PermissionType.READ },
+        { command_name: CaseDbCommandName.UserInvitationCrudCommand, permission_type: CaseDbPermissionType.READ },
+        { command_name: CaseDbCommandName.OrganizationCrudCommand, permission_type: CaseDbPermissionType.READ },
       ],
       requiresUserProfile: true,
       subTitle: t`Invite users to your organization`,
@@ -206,9 +206,9 @@ export const createAdminRoutes = (t: TFunction<'translation', undefined>): MyNon
     handle: {
       category: ADMIN_PAGE_CATEGORY.USERS_AND_ORGANIZATIONS,
       requiredPermissions: [
-        { command_name: CommandName.OrganizationAdminPolicyCrudCommand, permission_type: PermissionType.READ },
-        { command_name: CommandName.UserCrudCommand, permission_type: PermissionType.READ },
-        { command_name: CommandName.OrganizationCrudCommand, permission_type: PermissionType.READ },
+        { command_name: CaseDbCommandName.OrganizationAdminPolicyCrudCommand, permission_type: CaseDbPermissionType.READ },
+        { command_name: CaseDbCommandName.UserCrudCommand, permission_type: CaseDbPermissionType.READ },
+        { command_name: CaseDbCommandName.OrganizationCrudCommand, permission_type: CaseDbPermissionType.READ },
       ],
       requiresUserProfile: true,
       subTitle: t`Manage organization admin policies`,
@@ -222,7 +222,7 @@ export const createAdminRoutes = (t: TFunction<'translation', undefined>): MyNon
     handle: {
       category: ADMIN_PAGE_CATEGORY.USERS_AND_ORGANIZATIONS,
       requiredPermissions: [
-        { command_name: CommandName.IdentifierIssuerCrudCommand, permission_type: PermissionType.READ },
+        { command_name: CaseDbCommandName.IdentifierIssuerCrudCommand, permission_type: CaseDbPermissionType.READ },
       ],
       requiresUserProfile: true,
       subTitle: t`Manage identifier issuers`,
@@ -239,7 +239,7 @@ export const createAdminRoutes = (t: TFunction<'translation', undefined>): MyNon
     handle: {
       category: ADMIN_PAGE_CATEGORY.ACCESS_RIGHTS,
       requiredPermissions: [
-        { command_name: CommandName.DataCollectionCrudCommand, permission_type: PermissionType.READ },
+        { command_name: CaseDbCommandName.DataCollectionCrudCommand, permission_type: CaseDbPermissionType.READ },
       ],
       requiresUserProfile: true,
       subTitle: t`Manage data collections`,
@@ -253,9 +253,9 @@ export const createAdminRoutes = (t: TFunction<'translation', undefined>): MyNon
     handle: {
       category: ADMIN_PAGE_CATEGORY.ACCESS_RIGHTS,
       requiredPermissions: [
-        { command_name: CommandName.DataCollectionSetCrudCommand, permission_type: PermissionType.READ },
-        { command_name: CommandName.DataCollectionCrudCommand, permission_type: PermissionType.READ },
-        { command_name: CommandName.DataCollectionSetMemberCrudCommand, permission_type: PermissionType.READ },
+        { command_name: CaseDbCommandName.DataCollectionSetCrudCommand, permission_type: CaseDbPermissionType.READ },
+        { command_name: CaseDbCommandName.DataCollectionCrudCommand, permission_type: CaseDbPermissionType.READ },
+        { command_name: CaseDbCommandName.DataCollectionSetMemberCrudCommand, permission_type: CaseDbPermissionType.READ },
       ],
       requiresUserProfile: true,
       subTitle: t`Manage data collection sets`,
@@ -269,10 +269,10 @@ export const createAdminRoutes = (t: TFunction<'translation', undefined>): MyNon
     handle: {
       category: ADMIN_PAGE_CATEGORY.ACCESS_RIGHTS,
       requiredPermissions: [
-        { command_name: CommandName.ColSetCrudCommand, permission_type: PermissionType.READ },
-        { command_name: CommandName.ColSetMemberCrudCommand, permission_type: PermissionType.READ },
-        { command_name: CommandName.ColCrudCommand, permission_type: PermissionType.READ },
-        { command_name: CommandName.RefColCrudCommand, permission_type: PermissionType.READ },
+        { command_name: CaseDbCommandName.ColSetCrudCommand, permission_type: CaseDbPermissionType.READ },
+        { command_name: CaseDbCommandName.ColSetMemberCrudCommand, permission_type: CaseDbPermissionType.READ },
+        { command_name: CaseDbCommandName.ColCrudCommand, permission_type: CaseDbPermissionType.READ },
+        { command_name: CaseDbCommandName.RefColCrudCommand, permission_type: CaseDbPermissionType.READ },
       ],
       requiresUserProfile: true,
       subTitle: t`Manage column sets`,
@@ -286,11 +286,11 @@ export const createAdminRoutes = (t: TFunction<'translation', undefined>): MyNon
     handle: {
       category: ADMIN_PAGE_CATEGORY.ACCESS_RIGHTS,
       requiredPermissions: [
-        { command_name: CommandName.OrganizationAccessCasePolicyCrudCommand, permission_type: PermissionType.READ },
-        { command_name: CommandName.OrganizationCrudCommand, permission_type: PermissionType.READ },
-        { command_name: CommandName.DataCollectionCrudCommand, permission_type: PermissionType.READ },
-        { command_name: CommandName.ColSetCrudCommand, permission_type: PermissionType.READ },
-        { command_name: CommandName.CaseTypeSetCrudCommand, permission_type: PermissionType.READ },
+        { command_name: CaseDbCommandName.OrganizationAccessCasePolicyCrudCommand, permission_type: CaseDbPermissionType.READ },
+        { command_name: CaseDbCommandName.OrganizationCrudCommand, permission_type: CaseDbPermissionType.READ },
+        { command_name: CaseDbCommandName.DataCollectionCrudCommand, permission_type: CaseDbPermissionType.READ },
+        { command_name: CaseDbCommandName.ColSetCrudCommand, permission_type: CaseDbPermissionType.READ },
+        { command_name: CaseDbCommandName.CaseTypeSetCrudCommand, permission_type: CaseDbPermissionType.READ },
       ],
       requiresUserProfile: true,
       subTitle: t`Manage organization access case policies`,
@@ -304,9 +304,9 @@ export const createAdminRoutes = (t: TFunction<'translation', undefined>): MyNon
     handle: {
       category: ADMIN_PAGE_CATEGORY.ACCESS_RIGHTS,
       requiredPermissions: [
-        { command_name: CommandName.OrganizationShareCasePolicyCrudCommand, permission_type: PermissionType.READ },
-        { command_name: CommandName.OrganizationCrudCommand, permission_type: PermissionType.READ },
-        { command_name: CommandName.DataCollectionCrudCommand, permission_type: PermissionType.READ },
+        { command_name: CaseDbCommandName.OrganizationShareCasePolicyCrudCommand, permission_type: CaseDbPermissionType.READ },
+        { command_name: CaseDbCommandName.OrganizationCrudCommand, permission_type: CaseDbPermissionType.READ },
+        { command_name: CaseDbCommandName.DataCollectionCrudCommand, permission_type: CaseDbPermissionType.READ },
       ],
       requiresUserProfile: true,
       subTitle: t`Manage organization share case policies`,
@@ -320,11 +320,11 @@ export const createAdminRoutes = (t: TFunction<'translation', undefined>): MyNon
     handle: {
       category: ADMIN_PAGE_CATEGORY.ACCESS_RIGHTS,
       requiredPermissions: [
-        { command_name: CommandName.UserAccessCasePolicyCrudCommand, permission_type: PermissionType.READ },
-        { command_name: CommandName.UserCrudCommand, permission_type: PermissionType.READ },
-        { command_name: CommandName.DataCollectionCrudCommand, permission_type: PermissionType.READ },
-        { command_name: CommandName.ColSetCrudCommand, permission_type: PermissionType.READ },
-        { command_name: CommandName.CaseTypeSetCrudCommand, permission_type: PermissionType.READ },
+        { command_name: CaseDbCommandName.UserAccessCasePolicyCrudCommand, permission_type: CaseDbPermissionType.READ },
+        { command_name: CaseDbCommandName.UserCrudCommand, permission_type: CaseDbPermissionType.READ },
+        { command_name: CaseDbCommandName.DataCollectionCrudCommand, permission_type: CaseDbPermissionType.READ },
+        { command_name: CaseDbCommandName.ColSetCrudCommand, permission_type: CaseDbPermissionType.READ },
+        { command_name: CaseDbCommandName.CaseTypeSetCrudCommand, permission_type: CaseDbPermissionType.READ },
       ],
       requiresUserProfile: true,
       subTitle: t`Manage user access case policies`,
@@ -338,10 +338,10 @@ export const createAdminRoutes = (t: TFunction<'translation', undefined>): MyNon
     handle: {
       category: ADMIN_PAGE_CATEGORY.ACCESS_RIGHTS,
       requiredPermissions: [
-        { command_name: CommandName.UserAccessCasePolicyCrudCommand, permission_type: PermissionType.READ },
-        { command_name: CommandName.UserCrudCommand, permission_type: PermissionType.READ },
-        { command_name: CommandName.DataCollectionCrudCommand, permission_type: PermissionType.READ },
-        { command_name: CommandName.CaseTypeSetCrudCommand, permission_type: PermissionType.READ },
+        { command_name: CaseDbCommandName.UserAccessCasePolicyCrudCommand, permission_type: CaseDbPermissionType.READ },
+        { command_name: CaseDbCommandName.UserCrudCommand, permission_type: CaseDbPermissionType.READ },
+        { command_name: CaseDbCommandName.DataCollectionCrudCommand, permission_type: CaseDbPermissionType.READ },
+        { command_name: CaseDbCommandName.CaseTypeSetCrudCommand, permission_type: CaseDbPermissionType.READ },
       ],
       requiresUserProfile: true,
       subTitle: t`Manage user share case policies`,
@@ -360,7 +360,7 @@ export const createAdminRoutes = (t: TFunction<'translation', undefined>): MyNon
         handle: {
           category: ADMIN_PAGE_CATEGORY.REFERENCE_DATA,
           requiredPermissions: [
-            { command_name: CommandName.RefDimCrudCommand, permission_type: PermissionType.READ },
+            { command_name: CaseDbCommandName.RefDimCrudCommand, permission_type: CaseDbPermissionType.READ },
           ],
           requiresUserProfile: true,
           subTitle: t`Manage reference dimensions`,
@@ -375,11 +375,11 @@ export const createAdminRoutes = (t: TFunction<'translation', undefined>): MyNon
         handle: {
           category: ADMIN_PAGE_CATEGORY.REFERENCE_DATA,
           requiredPermissions: [
-            { command_name: CommandName.RefColCrudCommand, permission_type: PermissionType.READ },
-            { command_name: CommandName.RefDimCrudCommand, permission_type: PermissionType.READ },
-            { command_name: CommandName.ConceptSetCrudCommand, permission_type: PermissionType.READ },
-            { command_name: CommandName.RegionSetCrudCommand, permission_type: PermissionType.READ },
-            { command_name: CommandName.GeneticDistanceProtocolCrudCommand, permission_type: PermissionType.READ },
+            { command_name: CaseDbCommandName.RefColCrudCommand, permission_type: CaseDbPermissionType.READ },
+            { command_name: CaseDbCommandName.RefDimCrudCommand, permission_type: CaseDbPermissionType.READ },
+            { command_name: CaseDbCommandName.ConceptSetCrudCommand, permission_type: CaseDbPermissionType.READ },
+            { command_name: CaseDbCommandName.RegionSetCrudCommand, permission_type: CaseDbPermissionType.READ },
+            { command_name: CaseDbCommandName.GeneticDistanceProtocolCrudCommand, permission_type: CaseDbPermissionType.READ },
           ],
           requiresUserProfile: true,
           subTitle: t`Manage reference columns`,
@@ -405,7 +405,7 @@ export const createAdminRoutes = (t: TFunction<'translation', undefined>): MyNon
         handle: {
           category: ADMIN_PAGE_CATEGORY.REFERENCE_DATA,
           requiredPermissions: [
-            { command_name: CommandName.ConceptSetCrudCommand, permission_type: PermissionType.READ },
+            { command_name: CaseDbCommandName.ConceptSetCrudCommand, permission_type: CaseDbPermissionType.READ },
           ],
           requiresUserProfile: true,
           subTitle: t`Manage concept sets`,
@@ -420,7 +420,7 @@ export const createAdminRoutes = (t: TFunction<'translation', undefined>): MyNon
         handle: {
           category: ADMIN_PAGE_CATEGORY.REFERENCE_DATA,
           requiredPermissions: [
-            { command_name: CommandName.ConceptCrudCommand, permission_type: PermissionType.READ },
+            { command_name: CaseDbCommandName.ConceptCrudCommand, permission_type: CaseDbPermissionType.READ },
           ],
           requiresUserProfile: true,
           subTitle: t`Manage concepts`,
@@ -444,8 +444,8 @@ export const createAdminRoutes = (t: TFunction<'translation', undefined>): MyNon
     handle: {
       category: ADMIN_PAGE_CATEGORY.REFERENCE_DATA,
       requiredPermissions: [
-        { command_name: CommandName.ConceptRelationCrudCommand, permission_type: PermissionType.READ },
-        { command_name: CommandName.ConceptCrudCommand, permission_type: PermissionType.READ },
+        { command_name: CaseDbCommandName.ConceptRelationCrudCommand, permission_type: CaseDbPermissionType.READ },
+        { command_name: CaseDbCommandName.ConceptCrudCommand, permission_type: CaseDbPermissionType.READ },
       ],
       requiresUserProfile: true,
       subTitle: t`Manage concept relations`,
@@ -459,7 +459,7 @@ export const createAdminRoutes = (t: TFunction<'translation', undefined>): MyNon
     handle: {
       category: ADMIN_PAGE_CATEGORY.REFERENCE_DATA,
       requiredPermissions: [
-        { command_name: CommandName.DiseaseCrudCommand, permission_type: PermissionType.READ },
+        { command_name: CaseDbCommandName.DiseaseCrudCommand, permission_type: CaseDbPermissionType.READ },
       ],
       requiresUserProfile: true,
       subTitle: t`Manage diseases`,
@@ -473,7 +473,7 @@ export const createAdminRoutes = (t: TFunction<'translation', undefined>): MyNon
     handle: {
       category: ADMIN_PAGE_CATEGORY.REFERENCE_DATA,
       requiredPermissions: [
-        { command_name: CommandName.EtiologicalAgentCrudCommand, permission_type: PermissionType.READ },
+        { command_name: CaseDbCommandName.EtiologicalAgentCrudCommand, permission_type: CaseDbPermissionType.READ },
       ],
       requiresUserProfile: true,
       subTitle: t`Manage etiological agents`,
@@ -487,9 +487,9 @@ export const createAdminRoutes = (t: TFunction<'translation', undefined>): MyNon
     handle: {
       category: ADMIN_PAGE_CATEGORY.REFERENCE_DATA,
       requiredPermissions: [
-        { command_name: CommandName.EtiologyCrudCommand, permission_type: PermissionType.READ },
-        { command_name: CommandName.DiseaseCrudCommand, permission_type: PermissionType.READ },
-        { command_name: CommandName.EtiologicalAgentCrudCommand, permission_type: PermissionType.READ },
+        { command_name: CaseDbCommandName.EtiologyCrudCommand, permission_type: CaseDbPermissionType.READ },
+        { command_name: CaseDbCommandName.DiseaseCrudCommand, permission_type: CaseDbPermissionType.READ },
+        { command_name: CaseDbCommandName.EtiologicalAgentCrudCommand, permission_type: CaseDbPermissionType.READ },
       ],
       requiresUserProfile: true,
       subTitle: t`Manage etiologies`,
@@ -503,7 +503,7 @@ export const createAdminRoutes = (t: TFunction<'translation', undefined>): MyNon
     handle: {
       category: ADMIN_PAGE_CATEGORY.REFERENCE_DATA,
       requiredPermissions: [
-        { command_name: CommandName.CaseSetStatusCrudCommand, permission_type: PermissionType.READ },
+        { command_name: CaseDbCommandName.CaseSetStatusCrudCommand, permission_type: CaseDbPermissionType.READ },
       ],
       requiresUserProfile: true,
       subTitle: t`Manage case set statuses`,
@@ -517,7 +517,7 @@ export const createAdminRoutes = (t: TFunction<'translation', undefined>): MyNon
     handle: {
       category: ADMIN_PAGE_CATEGORY.REFERENCE_DATA,
       requiredPermissions: [
-        { command_name: CommandName.CaseSetCategoryCrudCommand, permission_type: PermissionType.READ },
+        { command_name: CaseDbCommandName.CaseSetCategoryCrudCommand, permission_type: CaseDbPermissionType.READ },
       ],
       requiresUserProfile: true,
       subTitle: t`Manage case set categories`,
@@ -533,9 +533,9 @@ export const createAdminRoutes = (t: TFunction<'translation', undefined>): MyNon
         handle: {
           category: ADMIN_PAGE_CATEGORY.REFERENCE_DATA,
           requiredPermissions: [
-            { command_name: CommandName.CaseTypeCrudCommand, permission_type: PermissionType.READ },
-            { command_name: CommandName.DiseaseCrudCommand, permission_type: PermissionType.READ },
-            { command_name: CommandName.EtiologicalAgentCrudCommand, permission_type: PermissionType.READ },
+            { command_name: CaseDbCommandName.CaseTypeCrudCommand, permission_type: CaseDbPermissionType.READ },
+            { command_name: CaseDbCommandName.DiseaseCrudCommand, permission_type: CaseDbPermissionType.READ },
+            { command_name: CaseDbCommandName.EtiologicalAgentCrudCommand, permission_type: CaseDbPermissionType.READ },
           ],
           requiresUserProfile: true,
           subTitle: t`Manage case types`,
@@ -552,9 +552,9 @@ export const createAdminRoutes = (t: TFunction<'translation', undefined>): MyNon
             handle: {
               category: ADMIN_PAGE_CATEGORY.REFERENCE_DATA,
               requiredPermissions: [
-                { command_name: CommandName.DimCrudCommand, permission_type: PermissionType.READ },
-                { command_name: CommandName.CaseTypeCrudCommand, permission_type: PermissionType.READ },
-                { command_name: CommandName.RefDimCrudCommand, permission_type: PermissionType.READ },
+                { command_name: CaseDbCommandName.DimCrudCommand, permission_type: CaseDbPermissionType.READ },
+                { command_name: CaseDbCommandName.CaseTypeCrudCommand, permission_type: CaseDbPermissionType.READ },
+                { command_name: CaseDbCommandName.RefDimCrudCommand, permission_type: CaseDbPermissionType.READ },
               ],
               requiresUserProfile: true,
               subTitle: t`Manage dimensions`,
@@ -569,10 +569,10 @@ export const createAdminRoutes = (t: TFunction<'translation', undefined>): MyNon
             handle: {
               category: ADMIN_PAGE_CATEGORY.REFERENCE_DATA,
               requiredPermissions: [
-                { command_name: CommandName.ColCrudCommand, permission_type: PermissionType.READ },
-                { command_name: CommandName.RefColCrudCommand, permission_type: PermissionType.READ },
-                { command_name: CommandName.TreeAlgorithmCrudCommand, permission_type: PermissionType.READ },
-                { command_name: CommandName.CaseTypeCrudCommand, permission_type: PermissionType.READ },
+                { command_name: CaseDbCommandName.ColCrudCommand, permission_type: CaseDbPermissionType.READ },
+                { command_name: CaseDbCommandName.RefColCrudCommand, permission_type: CaseDbPermissionType.READ },
+                { command_name: CaseDbCommandName.TreeAlgorithmCrudCommand, permission_type: CaseDbPermissionType.READ },
+                { command_name: CaseDbCommandName.CaseTypeCrudCommand, permission_type: CaseDbPermissionType.READ },
               ],
               requiresUserProfile: true,
               subTitle: t`Manage columns`,
@@ -606,10 +606,10 @@ export const createAdminRoutes = (t: TFunction<'translation', undefined>): MyNon
     handle: {
       category: ADMIN_PAGE_CATEGORY.REFERENCE_DATA,
       requiredPermissions: [
-        { command_name: CommandName.CaseTypeSetMemberCrudCommand, permission_type: PermissionType.READ },
-        { command_name: CommandName.CaseTypeSetCategoryCrudCommand, permission_type: PermissionType.READ },
-        { command_name: CommandName.CaseTypeSetCrudCommand, permission_type: PermissionType.READ },
-        { command_name: CommandName.CaseTypeCrudCommand, permission_type: PermissionType.READ },
+        { command_name: CaseDbCommandName.CaseTypeSetMemberCrudCommand, permission_type: CaseDbPermissionType.READ },
+        { command_name: CaseDbCommandName.CaseTypeSetCategoryCrudCommand, permission_type: CaseDbPermissionType.READ },
+        { command_name: CaseDbCommandName.CaseTypeSetCrudCommand, permission_type: CaseDbPermissionType.READ },
+        { command_name: CaseDbCommandName.CaseTypeCrudCommand, permission_type: CaseDbPermissionType.READ },
       ],
       requiresUserProfile: true,
       subTitle: t`Manage case types sets`,
@@ -623,7 +623,7 @@ export const createAdminRoutes = (t: TFunction<'translation', undefined>): MyNon
     handle: {
       category: ADMIN_PAGE_CATEGORY.REFERENCE_DATA,
       requiredPermissions: [
-        { command_name: CommandName.CaseTypeSetCategoryCrudCommand, permission_type: PermissionType.READ },
+        { command_name: CaseDbCommandName.CaseTypeSetCategoryCrudCommand, permission_type: CaseDbPermissionType.READ },
       ],
       requiresUserProfile: true,
       subTitle: t`Manage case types set categories`,
@@ -640,7 +640,7 @@ export const createAdminRoutes = (t: TFunction<'translation', undefined>): MyNon
         handle: {
           category: ADMIN_PAGE_CATEGORY.REFERENCE_DATA,
           requiredPermissions: [
-            { command_name: CommandName.RegionSetCrudCommand, permission_type: PermissionType.READ },
+            { command_name: CaseDbCommandName.RegionSetCrudCommand, permission_type: CaseDbPermissionType.READ },
           ],
           requiresUserProfile: true,
           subTitle: t`Manage region sets`,
@@ -655,8 +655,8 @@ export const createAdminRoutes = (t: TFunction<'translation', undefined>): MyNon
         handle: {
           category: ADMIN_PAGE_CATEGORY.REFERENCE_DATA,
           requiredPermissions: [
-            { command_name: CommandName.RegionCrudCommand, permission_type: PermissionType.READ },
-            { command_name: CommandName.RegionSetCrudCommand, permission_type: PermissionType.READ },
+            { command_name: CaseDbCommandName.RegionCrudCommand, permission_type: CaseDbPermissionType.READ },
+            { command_name: CaseDbCommandName.RegionSetCrudCommand, permission_type: CaseDbPermissionType.READ },
           ],
           requiresUserProfile: true,
           subTitle: t`Manage regions`,
@@ -670,7 +670,7 @@ export const createAdminRoutes = (t: TFunction<'translation', undefined>): MyNon
         handle: {
           category: ADMIN_PAGE_CATEGORY.REFERENCE_DATA,
           requiredPermissions: [
-            { command_name: CommandName.RegionSetShapeCrudCommand, permission_type: PermissionType.READ },
+            { command_name: CaseDbCommandName.RegionSetShapeCrudCommand, permission_type: CaseDbPermissionType.READ },
           ],
           requiresUserProfile: true,
           subTitle: t`Manage region set shapes`,
@@ -694,8 +694,8 @@ export const createAdminRoutes = (t: TFunction<'translation', undefined>): MyNon
     handle: {
       category: ADMIN_PAGE_CATEGORY.REFERENCE_DATA,
       requiredPermissions: [
-        { command_name: CommandName.RegionRelationCrudCommand, permission_type: PermissionType.READ },
-        { command_name: CommandName.RegionCrudCommand, permission_type: PermissionType.READ },
+        { command_name: CaseDbCommandName.RegionRelationCrudCommand, permission_type: CaseDbPermissionType.READ },
+        { command_name: CaseDbCommandName.RegionCrudCommand, permission_type: CaseDbPermissionType.READ },
       ],
       requiresUserProfile: true,
       subTitle: t`Manage region relations`,
@@ -725,11 +725,11 @@ export const createAdminRoutes = (t: TFunction<'translation', undefined>): MyNon
     handle: {
       category: ADMIN_PAGE_CATEGORY.HELPERS,
       requiredPermissions: [
-        { command_name: CommandName.RefColCrudCommand, permission_type: PermissionType.READ },
-        { command_name: CommandName.RefDimCrudCommand, permission_type: PermissionType.READ },
-        { command_name: CommandName.ConceptSetCrudCommand, permission_type: PermissionType.READ },
-        { command_name: CommandName.RegionSetCrudCommand, permission_type: PermissionType.READ },
-        { command_name: CommandName.GeneticDistanceProtocolCrudCommand, permission_type: PermissionType.READ },
+        { command_name: CaseDbCommandName.RefColCrudCommand, permission_type: CaseDbPermissionType.READ },
+        { command_name: CaseDbCommandName.RefDimCrudCommand, permission_type: CaseDbPermissionType.READ },
+        { command_name: CaseDbCommandName.ConceptSetCrudCommand, permission_type: CaseDbPermissionType.READ },
+        { command_name: CaseDbCommandName.RegionSetCrudCommand, permission_type: CaseDbPermissionType.READ },
+        { command_name: CaseDbCommandName.GeneticDistanceProtocolCrudCommand, permission_type: CaseDbPermissionType.READ },
       ],
       requiresUserProfile: true,
       subTitle: t`View all reference columns`,
@@ -745,9 +745,9 @@ export const createAdminRoutes = (t: TFunction<'translation', undefined>): MyNon
         handle: {
           category: ADMIN_PAGE_CATEGORY.HELPERS,
           requiredPermissions: [
-            { command_name: CommandName.DimCrudCommand, permission_type: PermissionType.READ },
-            { command_name: CommandName.CaseTypeCrudCommand, permission_type: PermissionType.READ },
-            { command_name: CommandName.RefDimCrudCommand, permission_type: PermissionType.READ },
+            { command_name: CaseDbCommandName.DimCrudCommand, permission_type: CaseDbPermissionType.READ },
+            { command_name: CaseDbCommandName.CaseTypeCrudCommand, permission_type: CaseDbPermissionType.READ },
+            { command_name: CaseDbCommandName.RefDimCrudCommand, permission_type: CaseDbPermissionType.READ },
           ],
           requiresUserProfile: true,
           subTitle: t`View all dimensions`,
@@ -762,10 +762,10 @@ export const createAdminRoutes = (t: TFunction<'translation', undefined>): MyNon
         handle: {
           category: ADMIN_PAGE_CATEGORY.HELPERS,
           requiredPermissions: [
-            { command_name: CommandName.ColCrudCommand, permission_type: PermissionType.READ },
-            { command_name: CommandName.RefColCrudCommand, permission_type: PermissionType.READ },
-            { command_name: CommandName.TreeAlgorithmCrudCommand, permission_type: PermissionType.READ },
-            { command_name: CommandName.CaseTypeCrudCommand, permission_type: PermissionType.READ },
+            { command_name: CaseDbCommandName.ColCrudCommand, permission_type: CaseDbPermissionType.READ },
+            { command_name: CaseDbCommandName.RefColCrudCommand, permission_type: CaseDbPermissionType.READ },
+            { command_name: CaseDbCommandName.TreeAlgorithmCrudCommand, permission_type: CaseDbPermissionType.READ },
+            { command_name: CaseDbCommandName.CaseTypeCrudCommand, permission_type: CaseDbPermissionType.READ },
           ],
           requiresUserProfile: true,
           subTitle: t`Manage columns`,
@@ -789,10 +789,10 @@ export const createAdminRoutes = (t: TFunction<'translation', undefined>): MyNon
     handle: {
       category: ADMIN_PAGE_CATEGORY.HELPERS,
       requiredPermissions: [
-        { command_name: CommandName.ColCrudCommand, permission_type: PermissionType.READ },
-        { command_name: CommandName.RefColCrudCommand, permission_type: PermissionType.READ },
-        { command_name: CommandName.TreeAlgorithmCrudCommand, permission_type: PermissionType.READ },
-        { command_name: CommandName.CaseTypeCrudCommand, permission_type: PermissionType.READ },
+        { command_name: CaseDbCommandName.ColCrudCommand, permission_type: CaseDbPermissionType.READ },
+        { command_name: CaseDbCommandName.RefColCrudCommand, permission_type: CaseDbPermissionType.READ },
+        { command_name: CaseDbCommandName.TreeAlgorithmCrudCommand, permission_type: CaseDbPermissionType.READ },
+        { command_name: CaseDbCommandName.CaseTypeCrudCommand, permission_type: CaseDbPermissionType.READ },
       ],
       requiresUserProfile: true,
       subTitle: t`View all columns`,

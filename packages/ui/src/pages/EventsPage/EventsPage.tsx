@@ -15,10 +15,10 @@ import {
 } from '@mui/material';
 import ArrowCircleRightIcon from '@mui/icons-material/ArrowCircleRight';
 import type {
-  CaseSet,
-  CaseStats,
+  CaseDbCaseSet,
+  CaseDbCaseStats,
 } from '@gen-epix/api-casedb';
-import { CaseApi } from '@gen-epix/api-casedb';
+import { CaseDbCaseApi } from '@gen-epix/api-casedb';
 
 import CollectionIcon from '../../assets/icons/CollectionIcon.svg?react';
 import { ConfigManager } from '../../classes/managers/ConfigManager';
@@ -58,7 +58,7 @@ import { DATE_FORMAT } from '../../data/date';
 import { useQueryMemo } from '../../hooks/useQueryMemo';
 import { LoadableUtil } from '../../utils/LoadableUtil';
 
-type Row = CaseSet & CaseStats;
+type Row = CaseDbCaseSet & CaseDbCaseStats;
 
 export const EventsPage = () => {
   const { t } = useTranslation();
@@ -71,7 +71,7 @@ export const EventsPage = () => {
 
   const { data: caseSets, error: caseSetsError, isLoading: isCaseSetsLoading } = useQueryMemo({
     queryFn: async ({ signal }) => {
-      const response = await CaseApi.instance.caseSetsGetAll({ signal });
+      const response = await CaseDbCaseApi.instance.caseSetsGetAll({ signal });
       return response.data;
     },
     queryKey: QueryUtil.getGenericKey(QUERY_KEY.CASE_SETS),
@@ -79,11 +79,11 @@ export const EventsPage = () => {
   const caseSetStatsMapQuery = useCaseSetStatsMapQuery(caseSets ? caseSets.map(cs => cs.id) : null);
   const loadables = useArray([caseTypeOptionsQuery, caseSetCategoryOptionsQuery, caseSetStatusOptionsQuery, caseSetStatsMapQuery]);
 
-  const navigateToEvent = useCallback(async (row: CaseSet) => {
+  const navigateToEvent = useCallback(async (row: CaseDbCaseSet) => {
     await RouterManager.instance.router.navigate(CaseSetUtil.createCaseSetLink(row));
   }, []);
 
-  const showEventInformation = useCallback((row: CaseSet) => {
+  const showEventInformation = useCallback((row: CaseDbCaseSet) => {
     epiCaseSetInfoDialogRef.current?.open({
       caseSetId: row.id,
       caseTypeId: row.case_type_id,
@@ -94,7 +94,7 @@ export const EventsPage = () => {
     await navigateToEvent(tableRowParams.row);
   }, [navigateToEvent]);
 
-  const onIndexCellClick = useCallback((row: CaseSet) => {
+  const onIndexCellClick = useCallback((row: CaseDbCaseSet) => {
     showEventInformation(row);
   }, [showEventInformation]);
 

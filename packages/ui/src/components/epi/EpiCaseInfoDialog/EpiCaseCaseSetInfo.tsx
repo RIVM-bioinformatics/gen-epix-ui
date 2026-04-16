@@ -10,10 +10,10 @@ import {
 } from '@mui/material';
 import { useTranslation } from 'react-i18next';
 import type {
-  Case,
-  TypedUuidSetFilter,
+  CaseDbCase,
+  CaseDbTypedUuidSetFilter,
 } from '@gen-epix/api-casedb';
-import { CaseApi } from '@gen-epix/api-casedb';
+import { CaseDbCaseApi } from '@gen-epix/api-casedb';
 
 import { useCaseSetCategoryMapQuery } from '../../../dataHooks/useCaseSetCategoriesQuery';
 import { useCaseSetStatusMapQuery } from '../../../dataHooks/useCaseSetStatusesQuery';
@@ -26,7 +26,7 @@ import { useArray } from '../../../hooks/useArray';
 import { useQueryMemo } from '../../../hooks/useQueryMemo';
 
 export type EpiCaseCaseSetInfoProps = {
-  readonly epiCase: Case;
+  readonly epiCase: CaseDbCase;
 } & BoxProps;
 
 export const EpiCaseCaseSetInfo = ({ epiCase, ...boxProps }: EpiCaseCaseSetInfoProps) => {
@@ -34,7 +34,7 @@ export const EpiCaseCaseSetInfo = ({ epiCase, ...boxProps }: EpiCaseCaseSetInfoP
   const caseSetStatusMapQuery = useCaseSetStatusMapQuery();
 
   const { t } = useTranslation();
-  const caseSetMembersFilter: TypedUuidSetFilter = {
+  const caseSetMembersFilter: CaseDbTypedUuidSetFilter = {
     invert: false,
     key: 'case_id',
     members: [epiCase.id],
@@ -42,13 +42,13 @@ export const EpiCaseCaseSetInfo = ({ epiCase, ...boxProps }: EpiCaseCaseSetInfoP
   };
   const { data: caseSetMembers, error: caseSetMembersError, isLoading: isCaseSetMembersLoading } = useQueryMemo({
     queryFn: async ({ signal }) => {
-      const response = await CaseApi.instance.caseSetMembersPostQuery(caseSetMembersFilter, { signal });
+      const response = await CaseDbCaseApi.instance.caseSetMembersPostQuery(caseSetMembersFilter, { signal });
       return response.data;
     },
     queryKey: QueryUtil.getGenericKey(QUERY_KEY.CASE_SET_MEMBERS, caseSetMembersFilter),
   });
 
-  const caseSetsFilter: TypedUuidSetFilter = {
+  const caseSetsFilter: CaseDbTypedUuidSetFilter = {
     invert: false,
     key: 'id',
     members: caseSetMembers?.map((caseSetMember) => caseSetMember.case_set_id) ?? [],
@@ -57,7 +57,7 @@ export const EpiCaseCaseSetInfo = ({ epiCase, ...boxProps }: EpiCaseCaseSetInfoP
   const { data: caseSets, error: caseSetsError, isLoading: isCaseSetsLoading } = useQueryMemo({
     enabled: caseSetsFilter.members.length > 0,
     queryFn: async ({ signal }) => {
-      const response = await CaseApi.instance.caseSetsPostQuery(caseSetsFilter, { signal });
+      const response = await CaseDbCaseApi.instance.caseSetsPostQuery(caseSetsFilter, { signal });
       return response.data;
     },
     queryKey: QueryUtil.getGenericKey(QUERY_KEY.CASE_SETS, caseSetsFilter),

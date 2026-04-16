@@ -1,7 +1,7 @@
 import { type UseQueryResult } from '@tanstack/react-query';
 import { useMemo } from 'react';
-import type { EtiologicalAgent } from '@gen-epix/api-casedb';
-import { OntologyApi } from '@gen-epix/api-casedb';
+import type { CaseDbEtiologicalAgent } from '@gen-epix/api-casedb';
+import { CaseDbOntologyApi } from '@gen-epix/api-casedb';
 
 import type {
   UseMap,
@@ -12,21 +12,21 @@ import { DataHookUtil } from '../../utils/DataHookUtil';
 import { QueryUtil } from '../../utils/QueryUtil';
 import { useQueryMemo } from '../../hooks/useQueryMemo';
 
-export const useEtiologicalAgentsQuery = (): UseQueryResult<EtiologicalAgent[]> => {
+export const useEtiologicalAgentsQuery = (): UseQueryResult<CaseDbEtiologicalAgent[]> => {
   return useQueryMemo({
     queryFn: async ({ signal }) => {
-      const response = await OntologyApi.instance.etiologicalAgentsGetAll({ signal });
+      const response = await CaseDbOntologyApi.instance.etiologicalAgentsGetAll({ signal });
       return response.data;
     },
     queryKey: QueryUtil.getGenericKey(QUERY_KEY.ETIOLOGICAL_AGENTS),
   });
 };
 
-export const useEtiologicalAgentsMapQuery = (): UseMap<EtiologicalAgent> => {
+export const useEtiologicalAgentsMapQuery = (): UseMap<CaseDbEtiologicalAgent> => {
   const etiologicalAgentsQuery = useEtiologicalAgentsQuery();
 
   return useMemo(() => {
-    return DataHookUtil.createUseMapDataHook<EtiologicalAgent>(etiologicalAgentsQuery, item => item.id);
+    return DataHookUtil.createUseMapDataHook<CaseDbEtiologicalAgent>(etiologicalAgentsQuery, item => item.id);
   }, [etiologicalAgentsQuery]);
 };
 
@@ -34,6 +34,6 @@ export const useEtiologicalAgentOptionsQuery = (): UseOptions<string> => {
   const etiologicalAgentsQuery = useEtiologicalAgentsQuery();
 
   return useMemo(() => {
-    return DataHookUtil.createUseOptionsDataHook<EtiologicalAgent>(etiologicalAgentsQuery, item => item.id, item => item.name);
+    return DataHookUtil.createUseOptionsDataHook<CaseDbEtiologicalAgent>(etiologicalAgentsQuery, item => item.id, item => item.name);
   }, [etiologicalAgentsQuery]);
 };

@@ -7,12 +7,12 @@ import {
 } from '@mui/material';
 import { useTranslation } from 'react-i18next';
 import { format } from 'date-fns';
-import type { Outage } from '@gen-epix/api-casedb';
+import type { CaseDbOutage } from '@gen-epix/api-casedb';
 
 import { DATE_FORMAT } from '../../../data/date';
 
 type OutageItemProps = {
-  readonly outage: Outage;
+  readonly outage: CaseDbOutage;
   readonly severity: AlertProps['severity'];
   readonly title: string;
 };

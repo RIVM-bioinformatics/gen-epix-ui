@@ -2,8 +2,8 @@ import uniq from 'lodash/uniq';
 import remove from 'lodash/remove';
 import uniqBy from 'lodash/uniqBy';
 import type {
-  CaseQuery,
-  RetrievePhylogeneticTreeRequestBody,
+  CaseDbCaseQuery,
+  CaseDbRetrievePhylogeneticTreeRequestBody,
 } from '@gen-epix/api-casedb';
 
 import { QueryClientManager } from '../../classes/managers/QueryClientManager';
@@ -48,12 +48,12 @@ export class QueryUtil {
     return QueryUtil.getUniqueQueryKeys(keys);
   }
 
-  public static getRetrieveCaseIdsByQueryKey(completeCaseTypeId: string, caseQuery: CaseQuery) {
+  public static getRetrieveCaseIdsByQueryKey(completeCaseTypeId: string, caseQuery: CaseDbCaseQuery) {
     const key: string[] = [QUERY_KEY.CASE_IDS_BY_QUERY, completeCaseTypeId, JSON.stringify(caseQuery)];
     return key;
   }
 
-  public static getRetrievePhylogeneticTreeKey(requestBody: RetrievePhylogeneticTreeRequestBody) {
+  public static getRetrievePhylogeneticTreeKey(requestBody: CaseDbRetrievePhylogeneticTreeRequestBody) {
     const key: string[] = [QUERY_KEY.PHYLOGENETIC_TREE, JSON.stringify(requestBody)];
     return key;
   }

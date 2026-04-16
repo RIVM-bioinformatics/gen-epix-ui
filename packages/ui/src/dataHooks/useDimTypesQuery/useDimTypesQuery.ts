@@ -1,17 +1,17 @@
 import { useMemo } from 'react';
-import { DimType } from '@gen-epix/api-casedb';
+import { CaseDbDimType } from '@gen-epix/api-casedb';
 
 import type { UseOptions } from '../../models/dataHooks';
 import type { OptionBase } from '../../models/form';
 
-export const dimTypePresentationValues: Record<DimType, string> = {
-  [DimType.GEO]: 'GEO',
-  [DimType.IDENTIFIER]: 'IDENTIFIER',
-  [DimType.NUMBER]: 'NUMBER',
-  [DimType.ORGANIZATION]: 'ORGANIZATION',
-  [DimType.OTHER]: 'OTHER',
-  [DimType.TEXT]: 'TEXT',
-  [DimType.TIME]: 'TIME',
+export const dimTypePresentationValues: Record<CaseDbDimType, string> = {
+  [CaseDbDimType.GEO]: 'GEO',
+  [CaseDbDimType.IDENTIFIER]: 'IDENTIFIER',
+  [CaseDbDimType.NUMBER]: 'NUMBER',
+  [CaseDbDimType.ORGANIZATION]: 'ORGANIZATION',
+  [CaseDbDimType.OTHER]: 'OTHER',
+  [CaseDbDimType.TEXT]: 'TEXT',
+  [CaseDbDimType.TIME]: 'TIME',
 };
 
 export const useDimTypeOptionsQuery = (): UseOptions<string> => {

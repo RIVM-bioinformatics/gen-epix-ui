@@ -10,13 +10,13 @@ import {
 } from 'yup';
 import omit from 'lodash/omit';
 import type {
-  ApiPermission,
-  CaseTypeSet,
+  CaseDbApiPermission,
+  CaseDbCaseTypeSet,
 } from '@gen-epix/api-casedb';
 import {
-  CaseApi,
-  CommandName,
-  PermissionType,
+  CaseDbCaseApi,
+  CaseDbCommandName,
+  CaseDbPermissionType,
 } from '@gen-epix/api-casedb';
 
 import { useCaseTypeOptionsQuery } from '../../dataHooks/useCaseTypesQuery';
@@ -35,7 +35,7 @@ import { SchemaUtil } from '../../utils/SchemaUtil';
 
 type FormFields = OmitWithMetaData<TableData, 'case_type_set_category'>;
 
-interface TableData extends CaseTypeSet {
+interface TableData extends CaseDbCaseTypeSet {
   caseTypeIds?: string[];
 }
 
@@ -47,28 +47,28 @@ export const CaseTypeSetsAdminPage = () => {
 
   const loadables = useArray([caseTypeOptionsQuery, caseTypeSetCategoryOptionsQuery]);
 
-  const fetchAll = useCallback(async (signal: AbortSignal): Promise<CaseTypeSet[]> => {
-    const caseTypesSets = (await CaseApi.instance.caseTypeSetsGetAll({ signal }))?.data;
+  const fetchAll = useCallback(async (signal: AbortSignal): Promise<CaseDbCaseTypeSet[]> => {
+    const caseTypesSets = (await CaseDbCaseApi.instance.caseTypeSetsGetAll({ signal }))?.data;
     return caseTypesSets;
   }, []);
 
-  const deleteOne = useCallback(async (item: CaseTypeSet) => {
-    return await CaseApi.instance.caseTypeSetsDeleteOne(item.id);
+  const deleteOne = useCallback(async (item: CaseDbCaseTypeSet) => {
+    return await CaseDbCaseApi.instance.caseTypeSetsDeleteOne(item.id);
   }, []);
 
-  const updateOne = useCallback(async (variables: FormFields, item: CaseTypeSet) => {
-    await CaseApi.instance.caseTypeSetsPutCaseTypes(item.id, {
+  const updateOne = useCallback(async (variables: FormFields, item: CaseDbCaseTypeSet) => {
+    await CaseDbCaseApi.instance.caseTypeSetsPutCaseTypes(item.id, {
       case_type_set_members: variables.caseTypeIds.map(case_type_id => ({
         case_type_id,
         case_type_set_id: item.id,
       })),
     });
-    return (await CaseApi.instance.caseTypeSetsPutOne(item.id, omit({ id: item.id, ...variables }, ['caseTypeIds']))).data;
+    return (await CaseDbCaseApi.instance.caseTypeSetsPutOne(item.id, omit({ id: item.id, ...variables }, ['caseTypeIds']))).data;
   }, []);
 
   const createOne = useCallback(async (variables: FormFields) => {
-    const resultItem = (await CaseApi.instance.caseTypeSetsPostOne(omit(variables, ['caseTypeIds']))).data;
-    await CaseApi.instance.caseTypeSetsPutCaseTypes(resultItem.id, {
+    const resultItem = (await CaseDbCaseApi.instance.caseTypeSetsPostOne(omit(variables, ['caseTypeIds']))).data;
+    await CaseDbCaseApi.instance.caseTypeSetsPutCaseTypes(resultItem.id, {
       case_type_set_members: variables.caseTypeIds.map(case_type_id => ({
         case_type_id,
         case_type_set_id: resultItem.id,
@@ -77,7 +77,7 @@ export const CaseTypeSetsAdminPage = () => {
     return resultItem;
   }, []);
 
-  const getName = useCallback((item: CaseTypeSet) => {
+  const getName = useCallback((item: CaseDbCaseTypeSet) => {
     return item.name;
   }, []);
 
@@ -145,18 +145,18 @@ export const CaseTypeSetsAdminPage = () => {
     ];
   }, [caseTypeOptionsQuery.options.length, caseTypeSetCategoryOptionsQuery.options, t]);
 
-  const extraCreateOnePermissions = useMemo<ApiPermission[]>(() => [
-    { command_name: CommandName.CaseTypeSetCaseTypeUpdateAssociationCommand, permission_type: PermissionType.EXECUTE },
+  const extraCreateOnePermissions = useMemo<CaseDbApiPermission[]>(() => [
+    { command_name: CaseDbCommandName.CaseTypeSetCaseTypeUpdateAssociationCommand, permission_type: CaseDbPermissionType.EXECUTE },
   ], []);
-  const extraDeleteOnePermissions = useMemo<ApiPermission[]>(() => [
-    { command_name: CommandName.CaseTypeSetCaseTypeUpdateAssociationCommand, permission_type: PermissionType.EXECUTE },
+  const extraDeleteOnePermissions = useMemo<CaseDbApiPermission[]>(() => [
+    { command_name: CaseDbCommandName.CaseTypeSetCaseTypeUpdateAssociationCommand, permission_type: CaseDbPermissionType.EXECUTE },
   ], []);
-  const extraUpdateOnePermissions = useMemo<ApiPermission[]>(() => [
-    { command_name: CommandName.CaseTypeSetCaseTypeUpdateAssociationCommand, permission_type: PermissionType.EXECUTE },
+  const extraUpdateOnePermissions = useMemo<CaseDbApiPermission[]>(() => [
+    { command_name: CaseDbCommandName.CaseTypeSetCaseTypeUpdateAssociationCommand, permission_type: CaseDbPermissionType.EXECUTE },
   ], []);
 
 
-  const convertToTableData = useCallback((items: CaseTypeSet[]) => {
+  const convertToTableData = useCallback((items: CaseDbCaseTypeSet[]) => {
     if (!items || !caseTypeSetMembersQuery.data) {
       return [];
     }
@@ -174,12 +174,12 @@ export const CaseTypeSetsAdminPage = () => {
   ], []);
 
   return (
-    <CrudPage<FormFields, CaseTypeSet, TableData>
+    <CrudPage<FormFields, CaseDbCaseTypeSet, TableData>
       associationQueryKeys={associationQueryKeys}
       convertToTableData={convertToTableData}
       createItemDialogTitle={t`Create new case type set`}
       createOne={createOne}
-      crudCommandType={CommandName.CaseTypeSetCrudCommand}
+      crudCommandType={CaseDbCommandName.CaseTypeSetCrudCommand}
       defaultSortByField={'name'}
       defaultSortDirection={'asc'}
       deleteOne={deleteOne}

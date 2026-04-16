@@ -1,5 +1,5 @@
 import type { Path } from 'react-router-dom';
-import type { IdentityProvider } from '@gen-epix/api-casedb';
+import type { CaseDbIdentityProvider } from '@gen-epix/api-casedb';
 
 export type AuthState = {
   lastRedirectTimestamp?: number;
@@ -9,5 +9,5 @@ export type AuthState = {
 
 export type IdentityProviderWithAvailability = {
   isAvailable: boolean;
-  provider: IdentityProvider;
+  provider: CaseDbIdentityProvider;
 };

@@ -15,7 +15,7 @@ import {
 } from '@mui/material';
 import { useStore } from 'zustand';
 import { produce } from 'immer';
-import type { CompleteCaseType } from '@gen-epix/api-casedb';
+import type { CaseDbCompleteCaseType } from '@gen-epix/api-casedb';
 
 import {
   withDialog,
@@ -33,7 +33,7 @@ import {
 } from '../../ui/Stepper';
 
 export interface EpiRemoveFindSimilarCasesResultDialogOpenProps {
-  completeCaseType: CompleteCaseType;
+  completeCaseType: CaseDbCompleteCaseType;
 }
 
 export interface EpiRemoveFindSimilarCasesResultDialogProps extends WithDialogRenderProps<EpiRemoveFindSimilarCasesResultDialogOpenProps> {

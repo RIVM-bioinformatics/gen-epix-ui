@@ -1,5 +1,5 @@
 import isArray from 'lodash/isArray';
-import type { TypedStringSetFilter } from '@gen-epix/api-casedb';
+import type { CaseDbTypedStringSetFilter } from '@gen-epix/api-casedb';
 
 import type { Filter } from '../../models/filter';
 import type { FilterAbstractKwArgs } from '../abstracts/FilterAbstract';
@@ -46,7 +46,7 @@ export class GeoFilter extends FilterAbstract<string[]> implements Filter<string
     return (this.filterValue).includes(rowValue);
   }
 
-  public toBackendFilter(): TypedStringSetFilter {
+  public toBackendFilter(): CaseDbTypedStringSetFilter {
     if (this.isInitialFilterValue()) {
       return;
     }

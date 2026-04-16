@@ -6,8 +6,8 @@ import {
 import { useStore } from 'zustand';
 import { useShallow } from 'zustand/shallow';
 import type {
-  CaseSet,
-  CompleteCaseType,
+  CaseDbCaseSet,
+  CaseDbCompleteCaseType,
 } from '@gen-epix/api-casedb';
 
 import type { TableColumnDimension } from '../../../models/table';
@@ -20,8 +20,8 @@ import { StringUtil } from '../../../utils/StringUtil';
 import { CaseTypeUtil } from '../../../utils/CaseTypeUtil';
 
 type EpiDashboardStoreLoaderContentProps = PropsWithChildren<{
-  readonly caseSet: CaseSet;
-  readonly completeCaseType: CompleteCaseType;
+  readonly caseSet: CaseDbCaseSet;
+  readonly completeCaseType: CaseDbCompleteCaseType;
 }>;
 
 export const EpiDashboardStoreLoaderContent = ({ caseSet, children, completeCaseType }: EpiDashboardStoreLoaderContentProps) => {

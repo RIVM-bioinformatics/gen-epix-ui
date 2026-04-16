@@ -12,12 +12,12 @@ import {
 import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
 import { useTranslation } from 'react-i18next';
 import uniq from 'lodash/uniq';
-import type { CompleteCaseType } from '@gen-epix/api-casedb';
+import type { CaseDbCompleteCaseType } from '@gen-epix/api-casedb';
 
 import { EpiDataManager } from '../../../classes/managers/EpiDataManager';
 
 export type EpiCaseTypeInfoRegionsProps = {
-  readonly completeCaseType: CompleteCaseType;
+  readonly completeCaseType: CaseDbCompleteCaseType;
 };
 
 export const EpiCaseTypeInfoRegions = ({ completeCaseType }: EpiCaseTypeInfoRegionsProps) => {
