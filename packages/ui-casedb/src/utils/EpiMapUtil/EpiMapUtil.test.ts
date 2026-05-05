@@ -7,8 +7,8 @@ import {
   vi,
 } from 'vitest';
 
-import { ConfigManager } from '../../classes/managers/ConfigManager';
-import type { Config } from '../../models/config';
+import { ConfigManager } from '../../../../ui/src/classes/managers/ConfigManager';
+import type { Config } from '../../../../ui/src/models/config';
 
 import type { RegionStatistics } from './EpiMapUtil';
 import { EpiMapUtil } from './EpiMapUtil';

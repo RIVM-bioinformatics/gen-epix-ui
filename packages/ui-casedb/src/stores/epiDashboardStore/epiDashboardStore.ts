@@ -25,19 +25,19 @@ import type {
   CreateTableStoreKwArgs,
   TableStoreActions,
   TableStoreState,
-} from '../tableStore';
+} from '../../../../ui/src/stores/tableStore';
 import {
   createTableStoreActions,
   createTableStoreInitialState,
   createTableStorePersistConfiguration,
-} from '../tableStore';
-import { FILTER_MODE } from '../../classes/abstracts/FilterAbstract';
-import { SelectionFilter } from '../../classes/filters/SelectionFilter';
-import { TreeFilter } from '../../classes/filters/TreeFilter';
-import { ConfigManager } from '../../classes/managers/ConfigManager';
+} from '../../../../ui/src/stores/tableStore';
+import { FILTER_MODE } from '../../../../ui/src/classes/abstracts/FilterAbstract';
+import { SelectionFilter } from '../../../../ui/src/classes/filters/SelectionFilter';
+import { TreeFilter } from '../../../../ui/src/classes/filters/TreeFilter';
+import { ConfigManager } from '../../../../ui/src/classes/managers/ConfigManager';
 import { EpiHighlightingManager } from '../../classes/managers/EpiHighlightingManager';
-import { NotificationManager } from '../../classes/managers/NotificationManager';
-import { QueryClientManager } from '../../classes/managers/QueryClientManager';
+import { NotificationManager } from '../../../../ui/src/classes/managers/NotificationManager';
+import { QueryClientManager } from '../../../../ui/src/classes/managers/QueryClientManager';
 import type {
   CaseTypeRowValue,
   EPI_ZONE,
@@ -45,15 +45,15 @@ import type {
   Stratification,
   StratificationLegendaItem,
   TreeConfiguration,
-} from '../../../../ui-casedb/src/models/epi';
+} from '../../models/epi';
 import {
   STRATIFICATION_MODE,
   STRATIFICATION_SELECTED,
-} from '../../../../ui-casedb/src/models/epi';
-import type { FilterValues } from '../../models/filter';
-import { QUERY_KEY } from '../../models/query';
-import type { TreeNode } from '../../models/tree';
-import { AxiosUtil } from '../../utils/AxiosUtil';
+} from '../../models/epi';
+import type { FilterValues } from '../../../../ui/src/models/filter';
+import { QUERY_KEY } from '../../../../ui/src/models/query';
+import type { TreeNode } from '../../../../ui/src/models/tree';
+import { AxiosUtil } from '../../../../ui/src/utils/AxiosUtil';
 import {
   CaseTypeUtil,
   SELECTION_FILTER_GROUP,
@@ -61,10 +61,10 @@ import {
 } from '../../utils/CaseTypeUtil';
 import { CaseUtil } from '../../utils/CaseUtil';
 import { EpiFilterUtil } from '../../utils/EpiFilterUtil';
-import { NewickUtil } from '../../utils/NewickUtil';
+import { NewickUtil } from '../../../../ui/src/utils/NewickUtil';
 import { EpiTreeUtil } from '../../utils/EpiTreeUtil';
-import { ObjectUtil } from '../../utils/ObjectUtil';
-import { QueryUtil } from '../../utils/QueryUtil';
+import { ObjectUtil } from '../../../../ui/src/utils/ObjectUtil';
+import { QueryUtil } from '../../../../ui/src/utils/QueryUtil';
 import { EpiDataManager } from '../../classes/managers/EpiDataManager';
 
 export interface CreateEpiDashboardStoreInitialStateKwArgs extends CreateTableStoreInitialStateKwArgs<CaseDbCase> {

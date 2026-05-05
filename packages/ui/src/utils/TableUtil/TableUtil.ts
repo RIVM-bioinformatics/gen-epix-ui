@@ -11,7 +11,7 @@ import sumBy from 'lodash/sumBy';
 import type { CaseDbCase } from '@gen-epix/api-casedb';
 import { CaseDbColType } from '@gen-epix/api-casedb';
 
-import { CaseUtil } from '../CaseUtil';
+import { CaseUtil } from '../../../../ui-casedb/src/utils/CaseUtil';
 import {
   DEFAULT_FILTER_GROUP,
   FILTER_MODE,

@@ -12,8 +12,8 @@ import {
   CaseDbDimType,
 } from '@gen-epix/api-casedb';
 
-import { StringUtil } from '../StringUtil';
-import { WindowManager } from '../../classes/managers/WindowManager';
+import { StringUtil } from '../../../../ui/src/utils/StringUtil';
+import { WindowManager } from '../../../../ui/src/classes/managers/WindowManager';
 
 export const SELECTION_FILTER_GROUP = 'selection';
 export const TREE_FILTER_GROUP = 'tree';

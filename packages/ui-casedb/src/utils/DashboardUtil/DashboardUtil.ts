@@ -1,12 +1,13 @@
 import intersection from 'lodash/intersection';
+import { ConfigManager } from '@gen-epix/ui';
 
-import { ConfigManager } from '../../classes/managers/ConfigManager';
 import type {
   EpiDashboardLayout,
   EpiDashboardLayoutConfig,
   EpiDashboardLayoutUserConfig,
-} from '../../../../ui-casedb/src/models/epi';
-import { EPI_ZONE } from '../../../../ui-casedb/src/models/epi';
+} from '../../models/epi';
+import { EPI_ZONE } from '../../models/epi';
+import type { CaseDbConfig } from '../../models/config';
 
 
 export class DashboardUtil {
@@ -32,7 +33,7 @@ export class DashboardUtil {
 
   public static getDashboardLayoutConfig(userConfig: EpiDashboardLayoutUserConfig): EpiDashboardLayoutConfig {
     const enabledZones = DashboardUtil.getEnabledZones(userConfig);
-    return ConfigManager.getInstance().config.epiDashboard.LAYOUTS.find(epiDashboardLayout => epiDashboardLayout.zones.length === enabledZones.length && intersection(enabledZones, epiDashboardLayout.zones).length === enabledZones.length);
+    return ConfigManager.getInstance<CaseDbConfig>().config.epiDashboard.LAYOUTS.find(epiDashboardLayout => epiDashboardLayout.zones.length === enabledZones.length && intersection(enabledZones, epiDashboardLayout.zones).length === enabledZones.length);
   }
 
   public static getEnabledZones(userConfig: EpiDashboardLayoutUserConfig): EPI_ZONE[] {

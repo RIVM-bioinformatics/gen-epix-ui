@@ -33,7 +33,7 @@ import {
   useCaseTypeSetsMapQuery,
 } from '../../../dataHooks/useCaseTypeSetsQuery';
 import { useDataCollectionsMapQuery } from '../../../dataHooks/useDataCollectionsQuery';
-import { DataUtil } from '../../../utils/DataUtil';
+import { DataUtil } from '../../../../../ui-casedb/src/utils/DataUtil';
 import { useColSetMapQuery } from '../../../dataHooks/useColSetsQuery';
 import {
   useColMapQuery,

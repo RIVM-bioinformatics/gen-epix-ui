@@ -11,8 +11,8 @@ import type {
 } from '@gen-epix/api-casedb';
 import { CaseDbColType } from '@gen-epix/api-casedb';
 
-import type { OptionBase } from '../../models/form';
-import { DATE_FORMAT } from '../../data/date';
+import type { OptionBase } from '../../../../ui/src/models/form';
+import { DATE_FORMAT } from '../../../../ui/src/data/date';
 
 export class DataUtil {
   public static getCaseSetName(caseSet: CaseDbCaseSet): string {

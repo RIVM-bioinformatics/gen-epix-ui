@@ -31,7 +31,7 @@ import type {
   TreeNode,
   TreePathProperties,
 } from '../../../models/tree';
-import { EpiTreeUtil } from '../../../utils/EpiTreeUtil';
+import { EpiTreeUtil } from '../../../../../ui-casedb/src/utils/EpiTreeUtil';
 
 // NOTE: this component has the Component suffix in order to prevent a name collision with the PhylogeneticTree model in the api package.
 

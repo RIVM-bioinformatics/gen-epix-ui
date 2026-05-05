@@ -7,17 +7,17 @@ import { type Theme } from '@mui/material';
 import type { CaseDbCompleteCaseType } from '@gen-epix/api-casedb';
 import { CaseDbColType } from '@gen-epix/api-casedb';
 
-import { NumberUtil } from '../NumberUtil';
-import { ConfigManager } from '../../classes/managers/ConfigManager';
+import { NumberUtil } from '../../../../ui/src/utils/NumberUtil';
+import { ConfigManager } from '../../../../ui/src/classes/managers/ConfigManager';
 import type {
   Stratification,
   TreeConfiguration,
-} from '../../../../ui-casedb/src/models/epi';
+} from '../../models/epi';
 import type {
   TreeAssembly,
   TreeNode,
   TreePathProperties,
-} from '../../models/tree';
+} from '../../../../ui/src/models/tree';
 import { EpiDataManager } from '../../classes/managers/EpiDataManager';
 
 type NodeAssemblyResult = {

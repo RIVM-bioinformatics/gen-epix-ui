@@ -6,7 +6,7 @@ import type {
   CaseDbRegion,
 } from '@gen-epix/api-casedb';
 
-import { ConfigManager } from '../../classes/managers/ConfigManager';
+import { ConfigManager } from '../../../../ui/src/classes/managers/ConfigManager';
 
 export type RegionStatistics = {
   maxNumCases: number;

@@ -8,20 +8,20 @@ import type { Theme } from '@mui/material/styles';
 import { CaseDbColType } from '@gen-epix/api-casedb';
 import type { CaseDbTreeAlgorithm } from '@gen-epix/api-casedb';
 
-import { ConfigManager } from '../../classes/managers/ConfigManager';
+import { ConfigManager } from '../../../../ui/src/classes/managers/ConfigManager';
 import { EpiDataManager } from '../../classes/managers/EpiDataManager';
-import type { ArgumentTypes } from '../../models/generic';
-import type { Config } from '../../models/config';
-import { STRATIFICATION_MODE } from '../../../../ui-casedb/src/models/epi';
+import type { ArgumentTypes } from '../../../../ui/src/models/generic';
+import type { Config } from '../../../../ui/src/models/config';
+import { STRATIFICATION_MODE } from '../../models/epi';
 import type {
   Stratification,
   TreeConfiguration,
-} from '../../../../ui-casedb/src/models/epi';
+} from '../../models/epi';
 import type {
   TreeAssembly,
   TreeNode,
   TreePathProperties,
-} from '../../models/tree';
+} from '../../../../ui/src/models/tree';
 
 import { EpiTreeUtil } from './EpiTreeUtil';
 

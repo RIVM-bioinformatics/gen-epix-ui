@@ -25,7 +25,7 @@ import {
 } from '../Confirmation';
 import { AuthorizationManager } from '../../../classes/managers/AuthorizationManager';
 import { LogManager } from '../../../classes/managers/LogManager';
-import { DataUtil } from '../../../utils/DataUtil';
+import { DataUtil } from '../../../../../ui-casedb/src/utils/DataUtil';
 import { StringUtil } from '../../../utils/StringUtil';
 import { TestIdUtil } from '../../../utils/TestIdUtil';
 import type { MyPermissionsDialogRefMethods } from '../MyPermissionsDialog';

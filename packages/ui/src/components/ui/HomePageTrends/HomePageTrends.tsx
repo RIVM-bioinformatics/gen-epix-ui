@@ -28,7 +28,7 @@ import { RouterManager } from '../../../classes/managers/RouterManager';
 import { useCaseSetsQuery } from '../../../dataHooks/useCaseSetsQuery';
 import { useCaseTypeMapQuery } from '../../../dataHooks/useCaseTypesQuery';
 import { QUERY_KEY } from '../../../models/query';
-import { CaseTypeUtil } from '../../../utils/CaseTypeUtil';
+import { CaseTypeUtil } from '../../../../../ui-casedb/src/utils/CaseTypeUtil';
 import { QueryUtil } from '../../../utils/QueryUtil';
 import { ResponseHandler } from '../ResponseHandler';
 import { useArray } from '../../../hooks/useArray';

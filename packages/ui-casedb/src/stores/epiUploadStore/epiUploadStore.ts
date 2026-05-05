@@ -6,21 +6,21 @@ import type {
   CaseDbCompleteCaseType,
 } from '@gen-epix/api-casedb';
 
-import { QueryUtil } from '../../utils/QueryUtil';
-import { StringUtil } from '../../utils/StringUtil';
+import { QueryUtil } from '../../../../ui/src/utils/QueryUtil';
+import { StringUtil } from '../../../../ui/src/utils/StringUtil';
 import { EpiUploadUtil } from '../../utils/EpiUploadUtil';
-import { QUERY_KEY } from '../../models/query';
+import { QUERY_KEY } from '../../../../ui/src/models/query';
 import type {
   AutoCompleteOption,
   OptionBase,
-} from '../../models/form';
-import { NotificationManager } from '../../classes/managers/NotificationManager';
+} from '../../../../ui/src/models/form';
+import { NotificationManager } from '../../../../ui/src/classes/managers/NotificationManager';
 import type {
   CaseUploadResultWithGeneratedId,
   EpiUploadMappedColumn,
   EpiUploadSequenceMapping,
-} from '../../../../ui-casedb/src/models/epi';
-import { EPI_UPLOAD_STEP } from '../../../../ui-casedb/src/models/epi';
+} from '../../models/epi';
+import { EPI_UPLOAD_STEP } from '../../models/epi';
 
 export const STEP_ORDER = [
   EPI_UPLOAD_STEP.SELECT_FILE,

@@ -22,20 +22,20 @@ import {
 import {
   DEFAULT_FILTER_GROUP,
   FILTER_MODE,
-} from '../../classes/abstracts/FilterAbstract';
-import { DateFilter } from '../../classes/filters/DateFilter';
-import { GeoFilter } from '../../classes/filters/GeoFilter';
-import { MultiSelectFilter } from '../../classes/filters/MultiSelectFilter';
-import { NumberRangeFilter } from '../../classes/filters/NumberRangeFilter';
-import { SelectionFilter } from '../../classes/filters/SelectionFilter';
-import { TextFilter } from '../../classes/filters/TextFilter';
-import { TreeFilter } from '../../classes/filters/TreeFilter';
+} from '../../../../ui/src/classes/abstracts/FilterAbstract';
+import { DateFilter } from '../../../../ui/src/classes/filters/DateFilter';
+import { GeoFilter } from '../../../../ui/src/classes/filters/GeoFilter';
+import { MultiSelectFilter } from '../../../../ui/src/classes/filters/MultiSelectFilter';
+import { NumberRangeFilter } from '../../../../ui/src/classes/filters/NumberRangeFilter';
+import { SelectionFilter } from '../../../../ui/src/classes/filters/SelectionFilter';
+import { TextFilter } from '../../../../ui/src/classes/filters/TextFilter';
+import { TreeFilter } from '../../../../ui/src/classes/filters/TreeFilter';
 import type {
   FilterDimension,
   Filters,
-} from '../../models/filter';
-import type { AutoCompleteOption } from '../../models/form';
-import { DATE_FORMAT } from '../../data/date';
+} from '../../../../ui/src/models/filter';
+import type { AutoCompleteOption } from '../../../../ui/src/models/form';
+import { DATE_FORMAT } from '../../../../ui/src/data/date';
 import { EpiDataManager } from '../../classes/managers/EpiDataManager';
 
 export class EpiFilterUtil {

@@ -31,5 +31,22 @@
   "include": [
     "src/**/*",
     "vite.config.ts",
+    "../ui-casedb/src/utils/AbacUtil",
+    "../ui-casedb/src/utils/EpiUploadUtil",
+    "../ui-casedb/src/utils/EpiTreeUtil",
+    "../ui-casedb/src/utils/EpiMapUtil",
+    "../ui-casedb/src/utils/EpiLineListUtil",
+    "../ui-casedb/src/utils/EpiFilterUtil",
+    "../ui-casedb/src/utils/EpiCurveUtil",
+    "../ui-casedb/src/utils/EffectiveRightsUtil",
+    "../ui-casedb/src/utils/CaseSelectionUtil",
+    "../ui-casedb/src/utils/CaseSetUtil",
+    "../ui-casedb/src/utils/CaseTypeUtil",
+    "../ui-casedb/src/utils/CaseUtil",
+    "../ui-casedb/src/utils/DashboardUtil",
+    "../ui-casedb/src/utils/DataUtil",
+    "../ui-casedb/src/utils/DataSetUtil",
+    "../ui-casedb/src/stores/epiDashboardStore",
+    "../ui-casedb/src/stores/epiUploadStore",
   ]
 }

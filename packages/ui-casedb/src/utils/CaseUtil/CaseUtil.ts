@@ -23,13 +23,13 @@ import {
 
 import { CaseTypeUtil } from '../CaseTypeUtil';
 import { AbacUtil } from '../AbacUtil';
-import { QueryUtil } from '../QueryUtil';
-import { ConfigManager } from '../../classes/managers/ConfigManager';
-import { NotificationManager } from '../../classes/managers/NotificationManager';
-import type { CaseTypeRowValue } from '../../../../ui-casedb/src/models/epi';
-import type { FormFieldDefinition } from '../../models/form';
-import { FORM_FIELD_DEFINITION_TYPE } from '../../models/form';
-import { QUERY_KEY } from '../../models/query';
+import { QueryUtil } from '../../../../ui/src/utils/QueryUtil';
+import { ConfigManager } from '../../../../ui/src/classes/managers/ConfigManager';
+import { NotificationManager } from '../../../../ui/src/classes/managers/NotificationManager';
+import type { CaseTypeRowValue } from '../../models/epi';
+import type { FormFieldDefinition } from '../../../../ui/src/models/form';
+import { FORM_FIELD_DEFINITION_TYPE } from '../../../../ui/src/models/form';
+import { QUERY_KEY } from '../../../../ui/src/models/query';
 import { EpiDataManager } from '../../classes/managers/EpiDataManager';
 
 export class CaseUtil {

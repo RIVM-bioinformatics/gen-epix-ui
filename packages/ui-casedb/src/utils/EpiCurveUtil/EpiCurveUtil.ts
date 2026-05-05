@@ -21,7 +21,7 @@ import { CaseDbColType } from '@gen-epix/api-casedb';
 
 import { CaseTypeUtil } from '../CaseTypeUtil';
 import { EpiFilterUtil } from '../EpiFilterUtil';
-import { DATE_FORMAT } from '../../data/date';
+import { DATE_FORMAT } from '../../../../ui/src/data/date';
 
 interface Item {
   date: Date;
