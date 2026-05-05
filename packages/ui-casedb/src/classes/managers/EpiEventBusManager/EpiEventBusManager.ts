@@ -7,9 +7,9 @@ import type { EpiFindSimilarCasesDialogOpenProps } from '../../../components/epi
 import type { EpiRemoveCasesFromEventDialogOpenProps } from '../../../components/epi/EpiRemoveCasesFromEventDialog';
 import type { EpiRemoveFindSimilarCasesResultDialogOpenProps } from '../../../components/epi/EpiRemoveFindSimilarCasesResultDialog/EpiRemoveFindSimilarCasesResultDialog';
 import type { EpiSequenceDownloadDialogOpenProps } from '../../../components/epi/EpiSequenceDownloadDialog';
+import { HmrUtil } from '../../../../../ui/src/utils/HmrUtil';
 import type { EPI_ZONE } from '../../../../../ui-casedb/src/models/epi';
 import { EventBusAbstract } from '../../abstracts/EventBusAbstract';
-import { WindowManager } from '../WindowManager';
 
 export type DownloadConfig = {
   disabled?: boolean;
@@ -50,9 +50,11 @@ type EpiEvent = {
 
 export class EpiEventBusManager extends EventBusAbstract<EpiEvent> {
   public static get instance(): EpiEventBusManager {
-    WindowManager.instance.window.managers.epiEventBus = WindowManager.instance.window.managers.epiEventBus || new EpiEventBusManager();
-    return WindowManager.instance.window.managers.epiEventBus;
+    EpiEventBusManager.__instance = HmrUtil.getHmrSingleton('epiEventBusManager', EpiEventBusManager.__instance, () => new EpiEventBusManager());
+    return EpiEventBusManager.__instance;
   }
+
+  private static __instance: EpiEventBusManager;
 
   private constructor() {
     super();

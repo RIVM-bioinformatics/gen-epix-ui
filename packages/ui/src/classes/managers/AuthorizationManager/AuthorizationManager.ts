@@ -4,16 +4,17 @@ import type {
 } from '@gen-epix/api-commondb';
 
 import type { MyNonIndexRouteObject } from '../../../models/reactRouter';
+import { HmrUtil } from '../../../utils/HmrUtil';
 import { PageEventBusManager } from '../PageEventBusManager';
-import { WindowManager } from '../WindowManager';
 
 export class AuthorizationManager {
   public static get instance(): AuthorizationManager {
-    // Instances are stored on the window to prevent multiple instances of the same manager. HMR may load multiple instances of the same manager, but we only want one instance to be active at a time.
-
-    WindowManager.instance.window.managers.authorization = WindowManager.instance.window.managers.authorization || new AuthorizationManager();
-    return WindowManager.instance.window.managers.authorization;
+    AuthorizationManager.__instance = HmrUtil.getHmrSingleton('authorizationManager', AuthorizationManager.__instance, () => new AuthorizationManager());
+    return AuthorizationManager.__instance;
   }
+
+  private static __instance: AuthorizationManager;
+
   public set apiPermissions(permissions: CommonDbApiPermission[]) {
     this.__apiPermissions = permissions;
   }

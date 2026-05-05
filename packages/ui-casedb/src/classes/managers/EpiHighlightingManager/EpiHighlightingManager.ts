@@ -1,14 +1,16 @@
 import type { Highlighting } from '../../../../../ui-casedb/src/models/epi';
+import { HmrUtil } from '../../../../../ui/src/utils/HmrUtil';
 import { userProfileStore } from '../../../stores/userProfileStore';
 import { SubscribableAbstract } from '../../abstracts/SubscribableAbstract';
 import { Subject } from '../../Subject';
-import { WindowManager } from '../WindowManager';
 
 export class EpiHighlightingManager extends SubscribableAbstract<Highlighting> {
   public static get instance(): EpiHighlightingManager {
-    WindowManager.instance.window.managers.epiHighlighting = WindowManager.instance.window.managers.epiHighlighting || new EpiHighlightingManager();
-    return WindowManager.instance.window.managers.epiHighlighting;
+    EpiHighlightingManager.__instance = HmrUtil.getHmrSingleton('epiHighlightingManager', EpiHighlightingManager.__instance, () => new EpiHighlightingManager());
+    return EpiHighlightingManager.__instance;
   }
+
+  private static __instance: EpiHighlightingManager;
 
   protected constructor() {
     super(new Subject({

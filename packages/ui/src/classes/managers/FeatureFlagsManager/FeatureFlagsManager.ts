@@ -1,14 +1,14 @@
 import type { CommonDbFeatureFlagsResponseBody } from '@gen-epix/api-commondb';
 
-import { WindowManager } from '../WindowManager';
+import { HmrUtil } from '../../../utils/HmrUtil';
 
 export class FeatureFlagsManager {
   public static get instance(): FeatureFlagsManager {
-    // Instances are stored on the window to prevent multiple instances of the same manager. HMR may load multiple instances of the same manager, but we only want one instance to be active at a time.
-
-    WindowManager.instance.window.managers.featureFlags = WindowManager.instance.window.managers.featureFlags || new FeatureFlagsManager();
-    return WindowManager.instance.window.managers.featureFlags;
+    FeatureFlagsManager.__instance = HmrUtil.getHmrSingleton('featureFlagsManager', FeatureFlagsManager.__instance, () => new FeatureFlagsManager());
+    return FeatureFlagsManager.__instance;
   }
+
+  private static __instance: FeatureFlagsManager;
 
 
   public get featureFlags(): CommonDbFeatureFlagsResponseBody['feature_flags'] {

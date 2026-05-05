@@ -8,9 +8,9 @@ import {
   CommonDbLogLevel,
 } from '@gen-epix/api-commondb';
 
+import { HmrUtil } from '../../../utils/HmrUtil';
 import { AuthenticationManager } from '../AuthenticationManager';
 import { ConfigManager } from '../ConfigManager';
-import { WindowManager } from '../WindowManager';
 import { StringUtil } from '../../../utils/StringUtil';
 import { AxiosUtil } from '../../../utils/AxiosUtil';
 
@@ -23,11 +23,12 @@ type LogManagerItem = {
 
 export class LogManager {
   public static get instance(): LogManager {
-    // Instances are stored on the window to prevent multiple instances of the same manager. HMR may load multiple instances of the same manager, but we only want one instance to be active at a time.
-
-    WindowManager.instance.window.managers.log = WindowManager.instance.window.managers.log || new LogManager();
-    return WindowManager.instance.window.managers.log;
+    LogManager.__instance = HmrUtil.getHmrSingleton('logManager', LogManager.__instance, () => new LogManager());
+    return LogManager.__instance;
   }
+
+  private static __instance: LogManager;
+
   protected readonly requestMap: Map<string, number>;
 
   private logItems: CommonDbLogItem[] = [];

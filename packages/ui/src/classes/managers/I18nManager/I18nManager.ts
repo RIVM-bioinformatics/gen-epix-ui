@@ -4,9 +4,10 @@ import i18next, {
 } from 'i18next';
 import { initReactI18next } from 'react-i18next';
 
-import { WindowManager } from '../WindowManager';
 import { ConfigManager } from '../ConfigManager';
 import { EventBusAbstract } from '../../abstracts/EventBusAbstract';
+import { HmrUtil } from '../../../utils/HmrUtil';
+import { WindowManager } from '../WindowManager';
 
 type Bundle = {
   translation: Record<string, string>;
@@ -18,11 +19,12 @@ type I18nEvent = {
 
 export class I18nManager extends EventBusAbstract<I18nEvent> {
   public static get instance(): I18nManager {
-    // Instances are stored on the window to prevent multiple instances of the same manager. HMR may load multiple instances of the same manager, but we only want one instance to be active at a time.
-
-    WindowManager.instance.window.managers.i18n = WindowManager.instance.window.managers.i18n || new I18nManager();
-    return WindowManager.instance.window.managers.i18n;
+    I18nManager.__instance = HmrUtil.getHmrSingleton('i18nManager', I18nManager.__instance, () => new I18nManager());
+    return I18nManager.__instance;
   }
+
+  private static __instance: I18nManager;
+
   private isInitialized = false;
   private languageLoaded: Record<string, boolean> = {};
 

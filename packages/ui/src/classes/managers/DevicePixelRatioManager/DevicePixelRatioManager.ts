@@ -1,14 +1,15 @@
 import { SubscribableAbstract } from '../../abstracts/SubscribableAbstract';
 import { Subject } from '../../Subject';
+import { HmrUtil } from '../../../utils/HmrUtil';
 import { WindowManager } from '../WindowManager';
 
 export class DevicePixelRatioManager extends SubscribableAbstract<number> {
   public static get instance(): DevicePixelRatioManager {
-    // Instances are stored on the window to prevent multiple instances of the same manager. HMR may load multiple instances of the same manager, but we only want one instance to be active at a time.
-
-    WindowManager.instance.window.managers.devicePixelRatio = WindowManager.instance.window.managers.devicePixelRatio || new DevicePixelRatioManager();
-    return WindowManager.instance.window.managers.devicePixelRatio;
+    DevicePixelRatioManager.__instance = HmrUtil.getHmrSingleton('devicePixelRatioManager', DevicePixelRatioManager.__instance, () => new DevicePixelRatioManager());
+    return DevicePixelRatioManager.__instance;
   }
+
+  private static __instance: DevicePixelRatioManager;
 
   private constructor() {
     super(new Subject(WindowManager.instance.window.devicePixelRatio));

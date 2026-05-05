@@ -1,8 +1,8 @@
 import type { CaseDbCaseSetMember } from '@gen-epix/api-casedb';
 import { CaseDbCaseApi } from '@gen-epix/api-casedb';
 
+import { HmrUtil } from '../../../../../ui/src/utils/HmrUtil';
 import { QueryClientManager } from '../QueryClientManager';
-import { WindowManager } from '../WindowManager';
 import type { EpiCaseHasCaseSet } from '../../../../../ui-casedb/src/models/epi';
 import { QUERY_KEY } from '../../../models/query';
 import { QueryUtil } from '../../../utils/QueryUtil';
@@ -11,11 +11,11 @@ type QueueItem = { caseId: string; isFetching: boolean; promise: Promise<boolean
 
 export class EpiLineListCaseSetMembersManager {
   public static get instance(): EpiLineListCaseSetMembersManager {
-    // Instances are stored on the window to prevent multiple instances of the same manager. HMR may load multiple instances of the same manager, but we only want one instance to be active at a time.
-
-    WindowManager.instance.window.managers.epiLineListCaseSetMembers = WindowManager.instance.window.managers.epiLineListCaseSetMembers || new EpiLineListCaseSetMembersManager();
-    return WindowManager.instance.window.managers.epiLineListCaseSetMembers;
+    EpiLineListCaseSetMembersManager.__instance = HmrUtil.getHmrSingleton('epiLineListCaseSetMembersManager', EpiLineListCaseSetMembersManager.__instance, () => new EpiLineListCaseSetMembersManager());
+    return EpiLineListCaseSetMembersManager.__instance;
   }
+
+  private static __instance: EpiLineListCaseSetMembersManager;
 
   private readonly queuedCases: { [caseId: string]: QueueItem } = {};
 

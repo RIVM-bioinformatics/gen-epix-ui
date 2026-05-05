@@ -15,19 +15,19 @@ import {
 } from '@gen-epix/api-casedb';
 
 import type { EpiData } from '../../../../../ui-casedb/src/models/epi';
+import { HmrUtil } from '../../../../../ui/src/utils/HmrUtil';
 import { QUERY_KEY } from '../../../models/query';
 import { CaseTypeUtil } from '../../../utils/CaseTypeUtil';
 import { QueryUtil } from '../../../utils/QueryUtil';
 import { QueryClientManager } from '../QueryClientManager';
-import { WindowManager } from '../WindowManager';
 
 export class EpiDataManager {
   public static get instance(): EpiDataManager {
-    // Instances are stored on the window to prevent multiple instances of the same manager. HMR may load multiple instances of the same manager, but we only want one instance to be active at a time.
-
-    WindowManager.instance.window.managers.epiData = WindowManager.instance.window.managers.epiData || new EpiDataManager();
-    return WindowManager.instance.window.managers.epiData;
+    EpiDataManager.__instance = HmrUtil.getHmrSingleton('epiDataManager', EpiDataManager.__instance, () => new EpiDataManager());
+    return EpiDataManager.__instance;
   }
+
+  private static __instance: EpiDataManager;
 
   public readonly data: EpiData = {
     conceptsById: {},

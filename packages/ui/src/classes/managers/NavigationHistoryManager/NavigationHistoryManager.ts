@@ -1,12 +1,12 @@
-import { WindowManager } from '../WindowManager';
+import { HmrUtil } from '../../../utils/HmrUtil';
 
 export class NavigationHistoryManager {
   public static get instance(): NavigationHistoryManager {
-    // Instances are stored on the window to prevent multiple instances of the same manager. HMR may load multiple instances of the same manager, but we only want one instance to be active at a time.
-
-    WindowManager.instance.window.managers.navigationHistory = WindowManager.instance.window.managers.navigationHistory || new NavigationHistoryManager();
-    return WindowManager.instance.window.managers.navigationHistory;
+    NavigationHistoryManager.__instance = HmrUtil.getHmrSingleton('navigationHistoryManager', NavigationHistoryManager.__instance, () => new NavigationHistoryManager());
+    return NavigationHistoryManager.__instance;
   }
+
+  private static __instance: NavigationHistoryManager;
 
   public readonly navigationHistory: string[] = [];
 

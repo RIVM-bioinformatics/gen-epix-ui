@@ -3,11 +3,11 @@ import { CommonDbLogLevel } from '@gen-epix/api-commondb';
 
 import { SubscribableAbstract } from '../../abstracts/SubscribableAbstract';
 import { Subject } from '../../Subject';
+import { HmrUtil } from '../../../utils/HmrUtil';
 import { AuthenticationManager } from '../AuthenticationManager';
 import { ConfigManager } from '../ConfigManager';
 import { LogManager } from '../LogManager';
 import { TimeUtil } from '../../../utils/TimeUtil';
-import { WindowManager } from '../WindowManager';
 
 export type InactivityState = {
   idleDiff: number;
@@ -19,11 +19,12 @@ export type InactivityState = {
 
 export class InactivityManager extends SubscribableAbstract<InactivityState> {
   public static get instance(): InactivityManager {
-    // Instances are stored on the window to prevent multiple instances of the same manager. HMR may load multiple instances of the same manager, but we only want one instance to be active at a time.
-
-    WindowManager.instance.window.managers.inactivity = WindowManager.instance.window.managers.inactivity || new InactivityManager();
-    return WindowManager.instance.window.managers.inactivity;
+    InactivityManager.__instance = HmrUtil.getHmrSingleton('inactivityManager', InactivityManager.__instance, () => new InactivityManager());
+    return InactivityManager.__instance;
   }
+
+  private static __instance: InactivityManager;
+
   private idleDiff: number = 0;
   private idleSince: number = Date.now();
   private isIdle: boolean = false;

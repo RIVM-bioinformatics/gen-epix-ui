@@ -1,8 +1,9 @@
 import type { CommonDbUser } from '@gen-epix/api-commondb';
 
-import { WindowManager } from '../WindowManager';
 import { ConfigManager } from '../ConfigManager';
 import { EventBusAbstract } from '../../abstracts/EventBusAbstract';
+import { HmrUtil } from '../../../utils/HmrUtil';
+import { WindowManager } from '../WindowManager';
 
 type EpiEvent = {
   changePage: Page;
@@ -23,11 +24,11 @@ type Page = {
 
 export class PageEventBusManager extends EventBusAbstract<EpiEvent> {
   public static get instance(): PageEventBusManager {
-    // Instances are stored on the window to prevent multiple instances of the same manager. HMR may load multiple instances of the same manager, but we only want one instance to be active at a time.
-
-    WindowManager.instance.window.managers.pageEventBus = WindowManager.instance.window.managers.pageEventBus || new PageEventBusManager();
-    return WindowManager.instance.window.managers.pageEventBus;
+    PageEventBusManager.__instance = HmrUtil.getHmrSingleton('pageEventBusManager', PageEventBusManager.__instance, () => new PageEventBusManager());
+    return PageEventBusManager.__instance;
   }
+
+  private static __instance: PageEventBusManager;
 
   private lastPageEventPayload: string = null;
 

@@ -1,7 +1,9 @@
 import type { ConfigBase } from '../../../models/config';
-import { WindowManager } from '../WindowManager';
+import { HmrUtil } from '../../../utils/HmrUtil';
 
 export class ConfigManager<TConfig extends ConfigBase = ConfigBase> {
+  private static __instance: ConfigManager;
+
   public set config(config: TConfig) {
     if (this.__config) {
       throw new Error('Config already set');
@@ -24,9 +26,8 @@ export class ConfigManager<TConfig extends ConfigBase = ConfigBase> {
   }
 
   public static getInstance<TConfig extends ConfigBase = ConfigBase>(): ConfigManager<TConfig> {
-    // Instances are stored on the window to prevent multiple instances of the same manager. HMR may load multiple instances of the same manager, but we only want one instance to be active at a time.
+    ConfigManager.__instance = HmrUtil.getHmrSingleton('configManager', ConfigManager.__instance, () => new ConfigManager<TConfig>());
 
-    WindowManager.instance.window.managers.config = WindowManager.instance.window.managers.config || new ConfigManager<TConfig>();
-    return WindowManager.instance.window.managers.config as ConfigManager<TConfig>;
+    return ConfigManager.__instance as ConfigManager<TConfig>;
   }
 }
