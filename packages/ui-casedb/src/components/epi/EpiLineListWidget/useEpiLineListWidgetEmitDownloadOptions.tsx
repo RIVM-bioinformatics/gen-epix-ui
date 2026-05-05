@@ -10,7 +10,7 @@ import { useShallow } from 'zustand/shallow';
 import { EpiEventBusManager } from '../../../classes/managers/EpiEventBusManager';
 import { EPI_ZONE } from '../../../../../ui-casedb/src/models/epi';
 import { EpiDashboardStoreContext } from '../../../stores/epiDashboardStore';
-import { DownloadUtil } from '../../../utils/DownloadUtil';
+import { CaseDbDownloadUtil } from '../../../utils/CaseDbDownloadUtil';
 import { EpiLineListUtil } from '../../../utils/EpiLineListUtil';
 
 export const useEpiLineListWidgetEmitDownloadOptions = () => {
@@ -31,11 +31,11 @@ export const useEpiLineListWidgetEmitDownloadOptions = () => {
             disabled: !sortedData?.length,
             items: [
               {
-                callback: async () => DownloadUtil.downloadAsExcel(sortedData, getVisibleColumnIds(), completeCaseType, t),
+                callback: async () => CaseDbDownloadUtil.downloadAsExcel(sortedData, getVisibleColumnIds(), completeCaseType, t),
                 label: t`Download as Excel`,
               },
               {
-                callback: () => DownloadUtil.downloadAsCsv(sortedData, getVisibleColumnIds(), completeCaseType, t),
+                callback: () => CaseDbDownloadUtil.downloadAsCsv(sortedData, getVisibleColumnIds(), completeCaseType, t),
                 label: t`Download as CSV`,
               },
               {
@@ -54,11 +54,11 @@ export const useEpiLineListWidgetEmitDownloadOptions = () => {
             disabled: selectedIds.length === 0,
             items: [
               {
-                callback: async () => DownloadUtil.downloadAsExcel(EpiLineListUtil.getSelectedRows(sortedData, selectedIds), getVisibleColumnIds(), completeCaseType, t),
+                callback: async () => CaseDbDownloadUtil.downloadAsExcel(EpiLineListUtil.getSelectedRows(sortedData, selectedIds), getVisibleColumnIds(), completeCaseType, t),
                 label: t`Download as Excel`,
               },
               {
-                callback: () => DownloadUtil.downloadAsCsv(EpiLineListUtil.getSelectedRows(sortedData, selectedIds), getVisibleColumnIds(), completeCaseType, t),
+                callback: () => CaseDbDownloadUtil.downloadAsCsv(EpiLineListUtil.getSelectedRows(sortedData, selectedIds), getVisibleColumnIds(), completeCaseType, t),
                 label: t`Download as CSV`,
               },
               {

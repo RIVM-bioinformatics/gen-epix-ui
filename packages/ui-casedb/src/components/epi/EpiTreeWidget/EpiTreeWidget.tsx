@@ -52,7 +52,7 @@ import { EPI_ZONE } from '../../../../../ui-casedb/src/models/epi';
 import { EpiDashboardStoreContext } from '../../../stores/epiDashboardStore';
 import { userProfileStore } from '../../../stores/userProfileStore';
 import { SELECTION_FILTER_GROUP } from '../../../utils/CaseTypeUtil';
-import { DownloadUtil } from '../../../utils/DownloadUtil';
+import { CaseDbDownloadUtil } from '../../../utils/CaseDbDownloadUtil';
 import { EpiTreeUtil } from '../../../utils/EpiTreeUtil';
 import type { EpiContextMenuConfigWithPosition } from '../EpiContextMenu';
 import { EpiContextMenu } from '../EpiContextMenu';
@@ -451,15 +451,15 @@ export const EpiTreeWidget = ({ itemHeight, lineListRangeSubject, linkedScrollSu
         disabled: isTreeUnavailable,
         items: [
           {
-            callback: () => DownloadUtil.downloadNewick(baseName, newick, completeCaseType, t),
+            callback: () => CaseDbDownloadUtil.downloadNewick(baseName, newick, completeCaseType, t),
             label: t`Save as Newick`,
           },
           {
-            callback: () => DownloadUtil.downloadCanvasImage(baseName, treeCanvas, 'jpeg', completeCaseType, t),
+            callback: () => CaseDbDownloadUtil.downloadCanvasImage(baseName, treeCanvas, 'jpeg', completeCaseType, t),
             label: t`Save as JPEG`,
           },
           {
-            callback: () => DownloadUtil.downloadCanvasImage(baseName, treeCanvas, 'png', completeCaseType, t),
+            callback: () => CaseDbDownloadUtil.downloadCanvasImage(baseName, treeCanvas, 'png', completeCaseType, t),
             label: t`Save as PNG`,
           },
         ],

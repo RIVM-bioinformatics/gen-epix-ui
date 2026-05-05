@@ -15,7 +15,7 @@ import {
 } from '@gen-epix/ui';
 
 import { useConceptSetMapQuery } from '../useConceptSetsQuery';
-import { DataUtil } from '../../utils/DataUtil';
+import { CaseDbDataUtil } from '../../utils/CaseDbDataUtil';
 
 export const useConceptQuery = (): UseQueryResult<CaseDbConcept[]> => {
   return useQueryMemo({
@@ -50,6 +50,6 @@ export const useConceptOptionsQuery = (): UseOptions<string> => {
   const conceptNameFactory = useConceptNameFactory();
 
   return useMemo(() => {
-    return DataHookUtil.createUseOptionsDataHook<CaseDbConcept>(conceptQuery, item => item.id, conceptNameFactory.getName, [conceptNameFactory], DataUtil.rankSortComperatorFactory(conceptNameFactory.getName));
+    return DataHookUtil.createUseOptionsDataHook<CaseDbConcept>(conceptQuery, item => item.id, conceptNameFactory.getName, [conceptNameFactory], CaseDbDataUtil.rankSortComperatorFactory(conceptNameFactory.getName));
   }, [conceptNameFactory, conceptQuery]);
 };

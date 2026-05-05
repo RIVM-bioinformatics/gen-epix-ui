@@ -33,7 +33,7 @@ import {
   useCaseTypeSetsMapQuery,
 } from '../../../dataHooks/useCaseTypeSetsQuery';
 import { useDataCollectionsMapQuery } from '../../../dataHooks/useDataCollectionsQuery';
-import { DataUtil } from '../../../utils/DataUtil';
+import { CaseDbDataUtil } from '../../../utils/CaseDbDataUtil';
 import { useColSetMapQuery } from '../../../dataHooks/useColSetsQuery';
 import {
   useColMapQuery,
@@ -117,7 +117,7 @@ export const UsersEffectiveRightsDetailsDialog = withDialog<UsersEffectiveRights
   }, []);
 
   useEffect(() => {
-    onTitleChange(t('{{userName}} effective rights details for {{dataCollectionName}}', { dataCollectionName: dataCollectionsMapQuery.map.get(userEffectiveRight.data_collection_id)?.name ?? userEffectiveRight.data_collection_id, userName: DataUtil.getUserDisplayValue(user, t) }));
+    onTitleChange(t('{{userName}} effective rights details for {{dataCollectionName}}', { dataCollectionName: dataCollectionsMapQuery.map.get(userEffectiveRight.data_collection_id)?.name ?? userEffectiveRight.data_collection_id, userName: CaseDbDataUtil.getUserDisplayValue(user, t) }));
   }, [dataCollectionsMapQuery.map, onTitleChange, t, user, userEffectiveRight.data_collection_id]);
 
   useEffect(() => {

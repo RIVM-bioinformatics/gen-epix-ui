@@ -1,7 +1,9 @@
+import type { EpiContactDetailsDialogOpenProps } from '@gen-epix/ui';
+import { EventBusAbstract } from '@gen-epix/ui';
+
 import type { EpiAddCasesToEventDialogOpenProps } from '../../../components/epi/EpiAddCasesToEventDialog';
 import type { EpiBulkEditCaseDialogOpenProps } from '../../../components/epi/EpiBulkEditCaseDialog';
 import type { EpiCaseInfoDialogOpenProps } from '../../../components/epi/EpiCaseInfoDialog';
-import type { EpiContactDetailsDialogOpenProps } from '../../../components/epi/EpiContactDetailsDialog';
 import type { EpiCreateEventDialogOpenProps } from '../../../components/epi/EpiCreateEventDialog';
 import type { EpiFindSimilarCasesDialogOpenProps } from '../../../components/epi/EpiFindSimilarCasesDialog';
 import type { EpiRemoveCasesFromEventDialogOpenProps } from '../../../components/epi/EpiRemoveCasesFromEventDialog';
@@ -9,7 +11,6 @@ import type { EpiRemoveFindSimilarCasesResultDialogOpenProps } from '../../../co
 import type { EpiSequenceDownloadDialogOpenProps } from '../../../components/epi/EpiSequenceDownloadDialog';
 import { HmrUtil } from '../../../../../ui/src/utils/HmrUtil';
 import type { EPI_ZONE } from '../../../../../ui-casedb/src/models/epi';
-import { EventBusAbstract } from '../../abstracts/EventBusAbstract';
 
 export type DownloadConfig = {
   disabled?: boolean;

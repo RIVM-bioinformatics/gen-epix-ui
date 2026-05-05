@@ -11,7 +11,7 @@ import {
   CaseDbLogLevel,
 } from '@gen-epix/api-casedb';
 import {
-  DownloadUtil as CommonDownloadUtil,
+  CommonDownloadUtil,
   ConfigManager,
   DATE_FORMAT,
   LogManager,
@@ -25,25 +25,25 @@ import {
 import { CaseTypeUtil } from '../CaseTypeUtil';
 import { CaseUtil } from '../CaseUtil';
 
-export class DownloadUtil {
+export class CaseDbDownloadUtil {
   public static downloadAsCsv(cases: CaseDbCase[], colIds: string[], completeCaseType: CaseDbCompleteCaseType, t: TFunction<'translation', undefined>): void {
     const data = [
-      DownloadUtil.getColumnHeadersForExport(colIds, completeCaseType),
-      ...DownloadUtil.getRowsForExport(cases, colIds, completeCaseType),
+      CaseDbDownloadUtil.getColumnHeadersForExport(colIds, completeCaseType),
+      ...CaseDbDownloadUtil.getRowsForExport(cases, colIds, completeCaseType),
     ];
     const csv = stringify(data, {
       defaultEncoding: 'utf-8',
     });
-    const fileName = `${DownloadUtil.getExportFileName(t`Line list`, completeCaseType, t)}.csv`;
+    const fileName = `${CaseDbDownloadUtil.getExportFileName(t`Line list`, completeCaseType, t)}.csv`;
     CommonDownloadUtil.createDownloadUrl(`data:text/csv;base64,${btoa(csv)}`, fileName);
   }
 
   public static async downloadAsExcel(cases: CaseDbCase[], colIds: string[], completeCaseType: CaseDbCompleteCaseType, t: TFunction<'translation', undefined>): Promise<void> {
     // Prepare headers
-    const headers = DownloadUtil.getColumnHeadersForExport(colIds, completeCaseType);
+    const headers = CaseDbDownloadUtil.getColumnHeadersForExport(colIds, completeCaseType);
 
     // Prepare data rows
-    const rows = DownloadUtil.getRowsForExport(cases, colIds, completeCaseType);
+    const rows = CaseDbDownloadUtil.getRowsForExport(cases, colIds, completeCaseType);
 
     // Convert data to the format expected by write-excel-file (SheetData)
     // Each row is an array of Cell objects
@@ -54,7 +54,7 @@ export class DownloadUtil {
       ...rows.map(row => row.map(cell => ({ type: String, value: cell }))),
     ];
 
-    const fileName = `${DownloadUtil.getExportFileName(t`Line list`, completeCaseType, t)}.xlsx`;
+    const fileName = `${CaseDbDownloadUtil.getExportFileName(t`Line list`, completeCaseType, t)}.xlsx`;
 
     // Generate Excel file as a Blob and download it
     const blob = await writeXlsxFile(data, {
@@ -70,7 +70,7 @@ export class DownloadUtil {
 
   public static downloadCanvasImage(baseName: string, canvas: HTMLCanvasElement, type: 'jpeg' | 'png', completeCaseType: CaseDbCompleteCaseType, t: TFunction<'translation', undefined>): void {
     const dataUrl = canvas.toDataURL(type === 'jpeg' ? 'image/jpeg' : 'image/png');
-    const fileName = `${DownloadUtil.getExportFileName(baseName, completeCaseType, t)}.${type}`;
+    const fileName = `${CaseDbDownloadUtil.getExportFileName(baseName, completeCaseType, t)}.${type}`;
     CommonDownloadUtil.createDownloadUrl(dataUrl, fileName);
   }
 
@@ -80,7 +80,7 @@ export class DownloadUtil {
       pixelRatio: 2,
       type,
     });
-    const fileName = `${DownloadUtil.getExportFileName(baseName, completeCaseType, t)}.${type.toLowerCase()}`;
+    const fileName = `${CaseDbDownloadUtil.getExportFileName(baseName, completeCaseType, t)}.${type.toLowerCase()}`;
     CommonDownloadUtil.createDownloadUrl(url, fileName);
   }
 
@@ -94,7 +94,7 @@ export class DownloadUtil {
         queryKey: QueryManager.getInstance().getGenericKey(QUERY_KEY.COMPLETE_CASE_TYPES, caseTypeId),
       });
 
-      const headers = DownloadUtil.getColumnHeadersForImport(
+      const headers = CaseDbDownloadUtil.getColumnHeadersForImport(
         CaseTypeUtil.getWritableImportExportColIds(completeCaseType)
           .sort((a, b) => completeCaseType.ordered_col_ids.indexOf(a) - completeCaseType.ordered_col_ids.indexOf(b))
         , completeCaseType,
@@ -102,7 +102,7 @@ export class DownloadUtil {
       const data = [
         headers.map(header => ({ type: String, value: header })),
       ];
-      const fileName = `${DownloadUtil.getTemplateFileName(completeCaseType)}.xlsx`;
+      const fileName = `${CaseDbDownloadUtil.getTemplateFileName(completeCaseType)}.xlsx`;
 
       // Generate Excel file as a Blob and download it
       const blob = await writeXlsxFile(data, {
@@ -132,7 +132,7 @@ export class DownloadUtil {
   }
 
   public static downloadNewick(baseName: string, newick: string, completeCaseType: CaseDbCompleteCaseType, t: TFunction<'translation', undefined>): void {
-    const fileName = `${DownloadUtil.getExportFileName(baseName, completeCaseType, t)}.txt`;
+    const fileName = `${CaseDbDownloadUtil.getExportFileName(baseName, completeCaseType, t)}.txt`;
     CommonDownloadUtil.createDownloadUrl(`data:text/x-nh;base64,${btoa(newick)}`, fileName);
   }
 
@@ -162,7 +162,7 @@ export class DownloadUtil {
       '_case_id',
       '_case_type',
       '_case_date',
-      ...DownloadUtil.getColsForImportExport(colIds, completeCaseType).map(col => col.label),
+      ...CaseDbDownloadUtil.getColsForImportExport(colIds, completeCaseType).map(col => col.label),
     ];
   }
 
@@ -170,12 +170,12 @@ export class DownloadUtil {
     return [
       '_case_id',
       '_case_date',
-      ...DownloadUtil.getColsForImportExport(colIds, completeCaseType).map(col => col.label),
+      ...CaseDbDownloadUtil.getColsForImportExport(colIds, completeCaseType).map(col => col.label),
     ];
   }
 
   private static getRowsForExport(cases: CaseDbCase[], colIds: string[], completeCaseType: CaseDbCompleteCaseType): string[][] {
-    const cols = DownloadUtil.getColsForImportExport(colIds, completeCaseType);
+    const cols = CaseDbDownloadUtil.getColsForImportExport(colIds, completeCaseType);
     return cases.map(row => [
       row.id,
       completeCaseType.name,

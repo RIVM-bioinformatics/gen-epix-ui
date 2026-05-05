@@ -1,6 +1,6 @@
 import { AuthenticationManager } from '../../classes/managers/AuthenticationManager';
 
-export class DownloadUtil {
+export class CommonDownloadUtil {
   public static arrayBufferToBase64(buffer: ArrayBuffer) {
     let binary = '';
     const bytes = new Uint8Array(buffer);

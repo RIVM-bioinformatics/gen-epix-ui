@@ -1,11 +1,11 @@
 import type { ReactElement } from 'react';
-
-import { EpiDashboardStoreLoader } from '../EpiDashboardStoreLoader';
 import type {
   WithDialogRefMethods,
   WithDialogRenderProps,
-} from '../../../hoc/withDialog';
-import { withDialog } from '../../../hoc/withDialog';
+} from '@gen-epix/ui';
+import { withDialog } from '@gen-epix/ui';
+
+import { EpiDashboardStoreLoader } from '../EpiDashboardStoreLoader';
 
 import { EpiCaseTypeInfoDialogContent } from './EpiCaseTypeInfoDialogContent';
 

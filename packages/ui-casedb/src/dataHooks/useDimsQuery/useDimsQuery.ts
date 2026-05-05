@@ -2,7 +2,7 @@ import type { UseQueryResult } from '@tanstack/react-query';
 import { useMemo } from 'react';
 import type { CaseDbDim } from '@gen-epix/api-casedb';
 import { CaseDbCaseApi } from '@gen-epix/api-casedb';
-import { useQueryMemo, QueryManager, QUERY_KEY, UseMap, DataHookUtil, UseNameFactory, UseOptions, DataUtil } from '@gen-epix/ui';
+import { useQueryMemo, QueryManager, QUERY_KEY, UseMap, DataHookUtil, UseNameFactory, UseOptions, CommonDataUtil } from '@gen-epix/ui';
 import { useCaseTypeMapQuery } from '../useCaseTypesQuery';
 
 
@@ -42,6 +42,6 @@ export const useDimOptionsQuery = (): UseOptions<string> => {
   const dimNameFactory = useDimNameFactory();
 
   return useMemo(() => {
-    return DataHookUtil.createUseOptionsDataHook<CaseDbDim>(response, item => item.id, dimNameFactory.getName, [dimNameFactory], DataUtil.rankSortComperatorFactory(dimNameFactory.getName));
+    return DataHookUtil.createUseOptionsDataHook<CaseDbDim>(response, item => item.id, dimNameFactory.getName, [dimNameFactory], CommonDataUtil.rankSortComperatorFactory(dimNameFactory.getName));
   }, [dimNameFactory, response]);
 };

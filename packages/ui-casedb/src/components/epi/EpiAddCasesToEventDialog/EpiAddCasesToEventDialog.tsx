@@ -28,14 +28,34 @@ import type {
   CaseDbTypedUuidSetFilter,
 } from '@gen-epix/api-casedb';
 import { CaseDbCaseApi } from '@gen-epix/api-casedb';
+import type {
+  DialogAction,
+  WithDialogRefMethods,
+  WithDialogRenderProps,
+} from '@gen-epix/ui';
+import {
+  FormUtil,
+  QUERY_KEY,
+  QueryManager,
+  ResponseHandler,
+  TestIdUtil,
+  useArray,
+  useEditMutation,
+  useQueryMemo,
+  withDialog,
+} from '@gen-epix/ui';
 
-import { EpiAddCasesToEventDialogSuccessNotificationMessage } from './EpiAddCasesToEventDialogSuccessNotificationMessage';
-import { WithDialogRenderProps, WithDialogRefMethods, withDialog, useQueryMemo, QueryManager, QUERY_KEY, useEditMutation, DataUtil, DialogAction, TestIdUtil, useArray, FormUtil, ResponseHandler } from '@gen-epix/ui';
-import { useCaseSetOptionsQuery, useCaseSetsMapQuery } from '../../../dataHooks/useCaseSetsQuery';
+import {
+  useCaseSetOptionsQuery,
+  useCaseSetsMapQuery,
+} from '../../../dataHooks/useCaseSetsQuery';
 import { useDataCollectionsMapQuery } from '../../../dataHooks/useDataCollectionsQuery';
 import { EpiDashboardStoreContext } from '../../../stores/epiDashboardStore';
 import { CaseUtil } from '../../../utils/CaseUtil';
 import { EpiCasesAlreadyInCaseSetWarning } from '../EpiCasesAlreadyInCaseSetWarning';
+import { CaseDbDataUtil } from '../../..';
+
+import { EpiAddCasesToEventDialogSuccessNotificationMessage } from './EpiAddCasesToEventDialogSuccessNotificationMessage';
 
 
 export interface EpiAddCasesToEventDialogOpenProps {
@@ -203,7 +223,7 @@ export const EpiAddCasesToEventDialog = withDialog<EpiAddCasesToEventDialogProps
   useEffect(() => {
     const caseSet = caseSetId ? caseSetsMapQuery.map.get(caseSetId) : null;
     if (caseSet) {
-      onTitleChange(t('Add {{numCases}} selected case(s) to {{eventName}}', { eventName: DataUtil.getCaseSetName(caseSet), numCases: openProps.rows.length }));
+      onTitleChange(t('Add {{numCases}} selected case(s) to {{eventName}}', { eventName: CaseDbDataUtil.getCaseSetName(caseSet), numCases: openProps.rows.length }));
       return;
     }
     onTitleChange(t('Add {{numCases}} selected case(s) to an existing event', { numCases: openProps.rows.length }));

@@ -42,7 +42,18 @@ import {
   CaseDbDimType,
   CaseDbGeoApi,
 } from '@gen-epix/api-casedb';
-import { UnwrapArray, useDimensions, useQueryMemo, QueryManager, QUERY_KEY, ConfigManager, MenuItemData, DownloadUtil } from '@gen-epix/ui';
+import type {
+  MenuItemData,
+  UnwrapArray,
+} from '@gen-epix/ui';
+import {
+  ConfigManager,
+  QUERY_KEY,
+  QueryManager,
+  useDimensions,
+  useQueryMemo,
+} from '@gen-epix/ui';
+
 import { EpiDataManager } from '../../../classes/managers/EpiDataManager';
 import { EpiEventBusManager } from '../../../classes/managers/EpiEventBusManager';
 import { EpiHighlightingManager } from '../../../classes/managers/EpiHighlightingManager';
@@ -51,9 +62,12 @@ import { EpiDashboardStoreContext } from '../../../stores/epiDashboardStore';
 import { CaseTypeUtil } from '../../../utils/CaseTypeUtil';
 import { EpiLineListUtil } from '../../../utils/EpiLineListUtil';
 import { EpiMapUtil } from '../../../utils/EpiMapUtil';
-import { EpiContextMenuConfigWithPosition, EpiContextMenu } from '../EpiContextMenu';
+import type { EpiContextMenuConfigWithPosition } from '../EpiContextMenu';
+import { EpiContextMenu } from '../EpiContextMenu';
 import { EpiWidget } from '../EpiWidget';
 import { EpiWidgetUnavailable } from '../EpiWidgetUnavailable';
+import { CaseDbDownloadUtil } from '../../../utils/CaseDbDownloadUtil';
+import type { CaseDbConfig } from '../../../models/config';
 
 
 echarts.use([GeoComponent, TooltipComponent, LegendComponent, CanvasRenderer, PieChart]);
@@ -289,7 +303,7 @@ export const EpiMapWidget = () => {
     const aspectScale = EpiMapUtil.getGeoJsonAspectScale(regionSetShape.geo_json);
 
     return {
-      color: ConfigManager.getInstance().config.epi.STRATIFICATION_COLORS,
+      color: ConfigManager.getInstance<CaseDbConfig>().config.epi.STRATIFICATION_COLORS,
       geo: {
         aspectScale,
         emphasis: {
@@ -465,11 +479,11 @@ export const EpiMapWidget = () => {
         disabled: !shouldShowMap,
         items: [
           {
-            callback: () => DownloadUtil.downloadEchartsImage(t`Incidence map`, chartRef.current.getEchartsInstance(), 'png', completeCaseType, t),
+            callback: () => CaseDbDownloadUtil.downloadEchartsImage(t`Incidence map`, chartRef.current.getEchartsInstance(), 'png', completeCaseType, t),
             label: t`Save as PNG`,
           },
           {
-            callback: () => DownloadUtil.downloadEchartsImage(t`Incidence map`, chartRef.current.getEchartsInstance(), 'jpeg', completeCaseType, t),
+            callback: () => CaseDbDownloadUtil.downloadEchartsImage(t`Incidence map`, chartRef.current.getEchartsInstance(), 'jpeg', completeCaseType, t),
             label: t`Save as JPEG`,
           },
         ],

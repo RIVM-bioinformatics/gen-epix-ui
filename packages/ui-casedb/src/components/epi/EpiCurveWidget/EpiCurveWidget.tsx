@@ -61,7 +61,7 @@ import { EpiWidget } from '../EpiWidget';
 import { EpiWidgetUnavailable } from '../EpiWidgetUnavailable';
 import { DATE_FORMAT } from '../../../data/date';
 import { EpiEventBusManager } from '../../../classes/managers/EpiEventBusManager';
-import { DownloadUtil } from '../../../utils/DownloadUtil';
+import { CaseDbDownloadUtil } from '../../../utils/CaseDbDownloadUtil';
 import { EpiLineListUtil } from '../../../utils/EpiLineListUtil';
 
 echarts.use([TooltipComponent, GridComponent, DataZoomComponent, BarChart, CanvasRenderer]);
@@ -453,11 +453,11 @@ export const EpiCurveWidget = () => {
         disabled: !shouldShowEpiCurve,
         items: [
           {
-            callback: () => DownloadUtil.downloadEchartsImage(t`Epi curve`, chartRef.current.getEchartsInstance(), 'png', completeCaseType, t),
+            callback: () => CaseDbDownloadUtil.downloadEchartsImage(t`Epi curve`, chartRef.current.getEchartsInstance(), 'png', completeCaseType, t),
             label: t`Save as PNG`,
           },
           {
-            callback: () => DownloadUtil.downloadEchartsImage(t`Epi curve`, chartRef.current.getEchartsInstance(), 'jpeg', completeCaseType, t),
+            callback: () => CaseDbDownloadUtil.downloadEchartsImage(t`Epi curve`, chartRef.current.getEchartsInstance(), 'jpeg', completeCaseType, t),
             label: t`Save as JPEG`,
           },
         ],

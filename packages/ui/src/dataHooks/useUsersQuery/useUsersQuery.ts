@@ -11,7 +11,7 @@ import { QUERY_KEY } from '../../models/query';
 import { DataHookUtil } from '../../utils/DataHookUtil';
 import { useQueryMemo } from '../../hooks/useQueryMemo';
 import { ConfigManager } from '../../classes/managers/ConfigManager';
-import { DataUtil } from '../../utils/DataUtil';
+import { CommonDataUtil } from '../../utils/CommonDataUtil';
 import { QueryManager } from '../../classes/managers/QueryManager';
 
 export const useUsersQuery = (): UseQueryResult<CommonDbUser[]> => {
@@ -37,6 +37,6 @@ export const useUserOptionsQuery = (): UseOptions<string> => {
   const { t } = useTranslation();
 
   return useMemo(() => {
-    return DataHookUtil.createUseOptionsDataHook<CommonDbUser>(usersQuery, item => item.id, item => DataUtil.getUserDisplayValue(item, t));
+    return DataHookUtil.createUseOptionsDataHook<CommonDbUser>(usersQuery, item => item.id, item => CommonDataUtil.getUserDisplayValue(item, t));
   }, [t, usersQuery]);
 };

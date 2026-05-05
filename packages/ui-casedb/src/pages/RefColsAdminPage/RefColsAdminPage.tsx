@@ -38,7 +38,7 @@ import { TableUtil } from '../../utils/TableUtil';
 import { TestIdUtil } from '../../utils/TestIdUtil';
 import { CrudPage } from '../CrudPage';
 import { useRefColsValidationRulesQuery } from '../../dataHooks/useRefColsValidationRulesQuery';
-import { DataUtil } from '../../utils/DataUtil';
+import { CaseDbDataUtil } from '../../utils/CaseDbDataUtil';
 import type { OmitWithMetaData } from '../../models/data';
 import { SchemaUtil } from '../../utils/SchemaUtil';
 
@@ -133,7 +133,7 @@ export const RefColsAdminPage = () => {
     if (colTypeOptionsByDimIdCacheRef.current.has(id)) {
       return colTypeOptionsByDimIdCacheRef.current.get(id);
     }
-    const options = DataUtil.getColTypeOptionsForRefDimId({
+    const options = CaseDbDataUtil.getColTypeOptionsForRefDimId({
       colsValidationRules: colsValidationRulesQuery.data?.valid_col_types_by_dim_type ?? {},
       colTypeOptions: colTypeOptionsQuery.options,
       refDimId: id,

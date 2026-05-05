@@ -14,7 +14,7 @@ import { useOrganizationMapQuery } from '../useOrganizationsQuery';
 import { useUsersMapQuery } from '../useUsersQuery';
 import { useQueryMemo } from '../../hooks/useQueryMemo';
 import { ConfigManager } from '../../classes/managers/ConfigManager';
-import { DataUtil } from '../../utils/DataUtil';
+import { CommonDataUtil } from '../../utils/CommonDataUtil';
 import { QueryManager } from '../../classes/managers/QueryManager';
 
 export const useOrganizationAdminPoliciesQuery = (): UseQueryResult<CommonDbOrganizationAdminPolicy[]> => {
@@ -44,7 +44,7 @@ export const useOrganizationAdminPolicyNameFactory = (): UseNameFactory<CommonDb
 
   return useMemo(() => {
     const getName = (item: CommonDbOrganizationAdminPolicy) => {
-      return `${organizationMapQuery.map.get(item.organization_id)?.name ?? item.organization_id} → ${DataUtil.getUserDisplayValue(usersMapQuery.map.get(item.user_id), t)}`;
+      return `${organizationMapQuery.map.get(item.organization_id)?.name ?? item.organization_id} → ${CommonDataUtil.getUserDisplayValue(usersMapQuery.map.get(item.user_id), t)}`;
     };
     return DataHookUtil.createUseNameFactoryHook(getName, [organizationMapQuery, usersMapQuery]);
   }, [organizationMapQuery, t, usersMapQuery]);

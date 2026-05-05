@@ -49,7 +49,7 @@ import {
 } from '../../dataHooks/useDimsQuery';
 import { useRefColsValidationRulesQuery } from '../../dataHooks/useRefColsValidationRulesQuery';
 import { useRefDimMapQuery } from '../../dataHooks/useRefDimsQuery';
-import { DataUtil } from '../../utils/DataUtil';
+import { CaseDbDataUtil } from '../../utils/CaseDbDataUtil';
 import type { OmitWithMetaData } from '../../models/data';
 import { SchemaUtil } from '../../utils/SchemaUtil';
 
@@ -117,7 +117,7 @@ export const ColsAdminPage = () => {
     if (dimOptionsByCaseTypeIdCacheRef.current.has(id)) {
       return dimOptionsByCaseTypeIdCacheRef.current.get(id);
     }
-    const options = DataUtil.getDimOptionsForCaseTypeId({
+    const options = CaseDbDataUtil.getDimOptionsForCaseTypeId({
       caseTypeId: id,
       dimMap: dimMapQuery.map,
       dimOptions: dimOptionsQuery.options,
@@ -130,7 +130,7 @@ export const ColsAdminPage = () => {
     if (refColOptionsByDimIdCacheRef.current.has(id)) {
       return refColOptionsByDimIdCacheRef.current.get(id);
     }
-    const options = DataUtil.getRefColOptionsForDimId({
+    const options = CaseDbDataUtil.getRefColOptionsForDimId({
       colsValidationRules: colsValidationRulesQuery.data?.valid_col_types_by_dim_type ?? {},
       dimId: id,
       dimMap: dimMapQuery.map,
@@ -146,7 +146,7 @@ export const ColsAdminPage = () => {
     if (geneticSequenceColOptionsByCaseTypeIdCacheRef.current.has(id)) {
       return geneticSequenceColOptionsByCaseTypeIdCacheRef.current.get(id);
     }
-    const options = DataUtil.getGeneticSequenceColOptionsForCaseTypeId({
+    const options = CaseDbDataUtil.getGeneticSequenceColOptionsForCaseTypeId({
       caseTypeId: id,
       colMap: colMapQuery.map,
       colOptions: colOptionsQuery.options,

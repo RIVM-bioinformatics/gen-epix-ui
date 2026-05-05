@@ -5,7 +5,7 @@ import { CaseDbCaseApi } from '@gen-epix/api-casedb';
 
 import { useCaseTypeMapQuery } from '../useCaseTypesQuery';
 import { useDimMapQuery } from '../useDimsQuery';
-import { DataUtil } from '../../utils/DataUtil';
+import { CaseDbDataUtil } from '../../utils/CaseDbDataUtil';
 import { useQueryMemo, QueryManager, QUERY_KEY, UseMap, DataHookUtil, UseNameFactory, UseOptions } from '@gen-epix/ui';
 
 export const useColsQuery = (): UseQueryResult<CaseDbCol[]> => {
@@ -48,6 +48,6 @@ export const useColOptionsQuery = (): UseOptions<string> => {
   const colNameFactory = useColNameFactory();
 
   return useMemo(() => {
-    return DataHookUtil.createUseOptionsDataHook<CaseDbCol>(response, item => item.id, colNameFactory.getName, [colNameFactory], DataUtil.rankSortComperatorFactory(colNameFactory.getName));
+    return DataHookUtil.createUseOptionsDataHook<CaseDbCol>(response, item => item.id, colNameFactory.getName, [colNameFactory], CaseDbDataUtil.rankSortComperatorFactory(colNameFactory.getName));
   }, [colNameFactory, response]);
 };

@@ -59,7 +59,7 @@ import type {
   UsersEffectiveRightsDetailsDialogRefMethods,
 } from '../../components/ui/UsersEffectiveRightsDetailsDialog';
 import { UsersEffectiveRightsDetailsDialog } from '../../components/ui/UsersEffectiveRightsDetailsDialog';
-import { DataUtil } from '../../utils/DataUtil';
+import { CaseDbDataUtil } from '../../utils/CaseDbDataUtil';
 import { EffectiveRightsUtil } from '../../utils/EffectiveRightsUtil';
 
 export const UserEffectiveRightsAdminPage = () => {
@@ -287,7 +287,7 @@ export const UserEffectiveRightsAdminPage = () => {
         contentActions={(<TableMenu />)}
         contentHeader={(
           <TableCaption
-            caption={user ? t('{{userName}} effective rights', { userName: DataUtil.getUserDisplayValue(user, t) }) : t`⌛ Loading...`}
+            caption={user ? t('{{userName}} effective rights', { userName: CaseDbDataUtil.getUserDisplayValue(user, t) }) : t`⌛ Loading...`}
             component={'h2'}
             variant={'h2'}
           />

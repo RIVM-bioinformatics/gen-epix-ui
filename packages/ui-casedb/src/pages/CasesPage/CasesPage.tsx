@@ -4,7 +4,6 @@ import {
   ListItemIcon,
   ListItemText,
   MenuItem,
-  Table,
   Typography,
   useTheme,
 } from '@mui/material';
@@ -25,11 +24,38 @@ import {
   CaseDbCaseApi,
   CaseDbCaseTypeSetCategoryPurpose,
 } from '@gen-epix/api-casedb';
-import { useQueryMemo, QueryManager, QUERY_KEY, RouterManager, TableRowParams, DownloadUtil, OptionBase, DataUtil, TableColumn, TableUtil, DATE_FORMAT, createTableStore, useInitializeTableStore, TableStoreContextProvider, PageContainer, TableMenu, TableCaption, TestIdUtil, ResponseHandler, TableSidebarMenu, ConfigManager } from '@gen-epix/ui';
-import { EpiCaseTypeInfoDialogWithLoaderRefMethods, EpiCaseTypeInfoDialogWithLoader } from '../../components/epi/EpiCaseTypeInfoDialog';
+import type {
+  OptionBase,
+  TableColumn,
+  TableRowParams,
+} from '@gen-epix/ui';
+import {
+  CommonDataUtil,
+  ConfigManager,
+  createTableStore,
+  DATE_FORMAT,
+  PageContainer,
+  QUERY_KEY,
+  QueryManager,
+  ResponseHandler,
+  RouterManager,
+  Table,
+  TableCaption,
+  TableMenu,
+  TableSidebarMenu,
+  TableStoreContextProvider,
+  TableUtil,
+  TestIdUtil,
+  useInitializeTableStore,
+  useQueryMemo,
+} from '@gen-epix/ui';
+
+import type { EpiCaseTypeInfoDialogWithLoaderRefMethods } from '../../components/epi/EpiCaseTypeInfoDialog';
+import { EpiCaseTypeInfoDialogWithLoader } from '../../components/epi/EpiCaseTypeInfoDialog';
 import { useCaseTypeSetCategoriesQuery } from '../../dataHooks/useCaseTypeSetCategoriesQuery';
 import { useCaseTypeStatsQuery } from '../../dataHooks/useCaseTypeStatsQuery';
 import { CaseTypeUtil } from '../../utils/CaseTypeUtil';
+import { CaseDbDownloadUtil } from '../..';
 
 
 type Row = {
@@ -99,7 +125,7 @@ export const CasesPage = () => {
   }, []);
 
   const onDownloadExcelTemplateButtonClick = useCallback(async (params: TableRowParams<Row>) => {
-    await DownloadUtil.downloadExcelTemplate(params.row.id, t);
+    await CaseDbDownloadUtil.downloadExcelTemplate(params.row.id, t);
   }, [t]);
 
   const onIndexCellClick = useCallback((row: Row) => {
@@ -160,7 +186,7 @@ export const CasesPage = () => {
     const options: { [key: string]: OptionBase<string>[] } = {};
 
     caseTypeSetCategoriesQuery.data?.forEach(category => {
-      options[category.id] = caseTypeSets?.filter(set => set.case_type_set_category_id === category.id).sort(DataUtil.rankSortComperatorFactory('name')).map<OptionBase<string>>(set => ({ label: set.name, value: set.id }));
+      options[category.id] = caseTypeSets?.filter(set => set.case_type_set_category_id === category.id).sort(CommonDataUtil.rankSortComperatorFactory('name')).map<OptionBase<string>>(set => ({ label: set.name, value: set.id }));
     });
     return options;
   }, [caseTypeSetCategoriesQuery, caseTypeSets]);

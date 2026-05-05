@@ -8,11 +8,12 @@ import type {
 } from '@gen-epix/ui';
 import {
   DataHookUtil,
-  DataUtil,
   QUERY_KEY,
   QueryManager,
   useQueryMemo,
 } from '@gen-epix/ui';
+
+import { CaseDbDataUtil } from '../../utils/CaseDbDataUtil';
 
 
 export const useCaseSetsQuery = (): UseQueryResult<CaseDbCaseSet[]> => {
@@ -37,6 +38,6 @@ export const useCaseSetOptionsQuery = (): UseOptions<string> => {
   const response = useCaseSetsQuery();
 
   return useMemo(() => {
-    return DataHookUtil.createUseOptionsDataHook<CaseDbCaseSet>(response, item => item.id, (item: CaseDbCaseSet) => DataUtil.getCaseSetName(item));
+    return DataHookUtil.createUseOptionsDataHook<CaseDbCaseSet>(response, item => item.id, (item: CaseDbCaseSet) => CaseDbDataUtil.getCaseSetName(item));
   }, [response]);
 };

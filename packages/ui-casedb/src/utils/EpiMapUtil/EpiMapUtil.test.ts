@@ -6,9 +6,7 @@ import {
   it,
   vi,
 } from 'vitest';
-
-import { ConfigManager } from '../../../../ui/src/classes/managers/ConfigManager';
-import type { Config } from '../../../../ui/src/models/config';
+import { ConfigManager } from '@gen-epix/ui';
 
 import type { RegionStatistics } from './EpiMapUtil';
 import { EpiMapUtil } from './EpiMapUtil';

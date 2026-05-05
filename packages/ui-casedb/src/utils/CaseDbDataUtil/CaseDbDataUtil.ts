@@ -12,7 +12,7 @@ import { CaseDbColType } from '@gen-epix/api-casedb';
 import type { OptionBase } from '../../../../ui/src/models/form';
 import { DATE_FORMAT } from '../../../../ui/src/data/date';
 
-export class DataUtil {
+export class CaseDbDataUtil {
   public static getCaseSetName(caseSet: CaseDbCaseSet): string {
     return `${caseSet.name} (${format(caseSet.case_set_date, DATE_FORMAT.DATE)})`;
   }
@@ -71,37 +71,5 @@ export class DataUtil {
     });
   }
 
-  public static rankSortComperatorFactory<TSecondarySorKey extends keyof TItem, TItem extends { rank?: number }>(secondarySortKeyOrFn?: ((item: TItem) => string) | TSecondarySorKey) {
-    return (a: TItem, b: TItem): number => {
-      const rankComparison = (a.rank ?? 0) - (b.rank ?? 0);
-      if (rankComparison !== 0 || !secondarySortKeyOrFn) {
-        return rankComparison;
-      }
-      let aSecondary: unknown;
-      let bSecondary: unknown;
-      if (typeof secondarySortKeyOrFn === 'function') {
-        aSecondary = secondarySortKeyOrFn(a);
-        bSecondary = secondarySortKeyOrFn(b);
-      } else {
-        aSecondary = a[secondarySortKeyOrFn];
-        bSecondary = b[secondarySortKeyOrFn];
-      }
-      if (aSecondary === bSecondary) {
-        return 0;
-      }
-      if (aSecondary === undefined || aSecondary === null) {
-        return -1;
-      }
-      if (bSecondary === undefined || bSecondary === null) {
-        return 1;
-      }
-      if (typeof aSecondary === 'string' && typeof bSecondary === 'string') {
-        return aSecondary.localeCompare(bSecondary);
-      }
-      if (typeof aSecondary === 'number' && typeof bSecondary === 'number') {
-        return aSecondary - bSecondary;
-      }
-      return 0;
-    };
-  }
+
 }
