@@ -19,25 +19,27 @@ import {
   CaseDbCaseApi,
   CaseDbColType,
 } from '@gen-epix/api-casedb';
-
-import type {
-  CreateTableStoreInitialStateKwArgs,
-  CreateTableStoreKwArgs,
-  TableStoreActions,
-  TableStoreState,
-} from '../../../../ui/src/stores/tableStore';
 import {
+  AxiosUtil,
+  ConfigManager,
   createTableStoreActions,
   createTableStoreInitialState,
   createTableStorePersistConfiguration,
-} from '../../../../ui/src/stores/tableStore';
-import { FILTER_MODE } from '../../../../ui/src/classes/abstracts/FilterAbstract';
-import { SelectionFilter } from '../../../../ui/src/classes/filters/SelectionFilter';
-import { TreeFilter } from '../../../../ui/src/classes/filters/TreeFilter';
-import { ConfigManager } from '../../../../ui/src/classes/managers/ConfigManager';
-import { EpiHighlightingManager } from '../../classes/managers/EpiHighlightingManager';
-import { NotificationManager } from '../../../../ui/src/classes/managers/NotificationManager';
-import { QueryClientManager } from '../../../../ui/src/classes/managers/QueryClientManager';
+  FILTER_MODE,
+  NotificationManager,
+  ObjectUtil,
+  QUERY_KEY,
+  QueryClientManager,
+  QueryManager,
+} from '@gen-epix/ui';
+import type {
+  CreateTableStoreInitialStateKwArgs,
+  CreateTableStoreKwArgs,
+  FilterValues,
+  TableStoreActions,
+  TableStoreState,
+} from '@gen-epix/ui';
+
 import type {
   CaseTypeRowValue,
   EPI_ZONE,
@@ -50,10 +52,7 @@ import {
   STRATIFICATION_MODE,
   STRATIFICATION_SELECTED,
 } from '../../models/epi';
-import type { FilterValues } from '../../../../ui/src/models/filter';
-import { QUERY_KEY } from '../../../../ui/src/models/query';
-import type { TreeNode } from '../../../../ui/src/models/tree';
-import { AxiosUtil } from '../../../../ui/src/utils/AxiosUtil';
+import type { TreeNode } from '../../models/tree';
 import {
   CaseTypeUtil,
   SELECTION_FILTER_GROUP,
@@ -61,11 +60,13 @@ import {
 } from '../../utils/CaseTypeUtil';
 import { CaseUtil } from '../../utils/CaseUtil';
 import { EpiFilterUtil } from '../../utils/EpiFilterUtil';
-import { NewickUtil } from '../../../../ui/src/utils/NewickUtil';
+import { NewickUtil } from '../../utils/NewickUtil';
 import { EpiTreeUtil } from '../../utils/EpiTreeUtil';
-import { ObjectUtil } from '../../../../ui/src/utils/ObjectUtil';
 import { EpiDataManager } from '../../classes/managers/EpiDataManager';
-import { QueryManager } from '@gen-epix/ui';
+import { SelectionFilter } from '../../../../ui/src/classes/filters/SelectionFilter';
+import { TreeFilter } from '../../../../ui/src/classes/filters/TreeFilter';
+import { EpiHighlightingManager } from '../../classes/managers/EpiHighlightingManager';
+import type { CaseDbConfig } from '../../models/config';
 
 export interface CreateEpiDashboardStoreInitialStateKwArgs extends CreateTableStoreInitialStateKwArgs<CaseDbCase> {
   caseSetId: string;
@@ -211,7 +212,7 @@ const createEpiDashboardStoreInitialState = (kwArgs: CreateEpiDashboardStoreInit
     isMaxResultsExceeded: false,
     isMaxResultsExceededDismissed: false,
     newick: null,
-    numVisibleAttributesInSummary: ConfigManager.getInstance().config.epi.INITIAL_NUM_VISIBLE_ATTRIBUTES_IN_CASE_SUMMARY,
+    numVisibleAttributesInSummary: ConfigManager.getInstance<CaseDbConfig>().config.epi.INITIAL_NUM_VISIBLE_ATTRIBUTES_IN_CASE_SUMMARY,
     stratification: null,
     stratifyableColumns: [],
     tree: null,
@@ -394,7 +395,7 @@ export const createEpiDashboardStore = (kwArgs: CreateEpiDashboardStoreKwArgs) =
             const { filteredData, frontendFilterPriorities } = get();
 
             const data = filteredData[last(frontendFilterPriorities)];
-            const { ALLOWED_COL_TYPES_FOR_STRATIFICATION, STRATIFICATION_COLORS } = ConfigManager.getInstance().config.epi;
+            const { ALLOWED_COL_TYPES_FOR_STRATIFICATION, STRATIFICATION_COLORS } = ConfigManager.getInstance<CaseDbConfig>().config.epi;
 
             const filteredCols = CaseTypeUtil.getCols(completeCaseType).filter(col => {
               const column = completeCaseType.ref_cols[col.ref_col_id];
@@ -547,7 +548,7 @@ export const createEpiDashboardStore = (kwArgs: CreateEpiDashboardStoreKwArgs) =
             const legendaItemsByColor: { [key: string]: StratificationLegendaItem } = {};
             const legendaItemsByValue: { [key: string]: StratificationLegendaItem } = {};
 
-            const { STRATIFICATION_COLOR_ITEM_MISSING, STRATIFICATION_COLORS } = ConfigManager.getInstance().config.epi;
+            const { STRATIFICATION_COLOR_ITEM_MISSING, STRATIFICATION_COLORS } = ConfigManager.getInstance<CaseDbConfig>().config.epi;
 
             if (mode === STRATIFICATION_MODE.FIELD) {
               const column = completeCaseType.ref_cols[col.ref_col_id];

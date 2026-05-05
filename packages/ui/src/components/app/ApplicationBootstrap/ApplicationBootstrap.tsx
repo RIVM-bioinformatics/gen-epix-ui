@@ -20,17 +20,17 @@ import { QUERY_KEY } from '../../../models/query';
 import { outagesStore } from '../../../stores/outagesStore';
 import { OutageUtil } from '../../../utils/OutageUtil';
 import { TestIdUtil } from '../../../utils/TestIdUtil';
-import { OutageList } from '../../ui/OutageList';
-import { PageContainer } from '../../ui/PageContainer';
-import { ResponseHandler } from '../../ui/ResponseHandler';
 import { useArray } from '../../../hooks/useArray';
 import { FeatureFlagsManager } from '../../../classes/managers/FeatureFlagsManager';
 import { I18nManager } from '../../../classes/managers/I18nManager';
-import type { ConfirmationRefMethods } from '../../ui/Confirmation';
-import { Confirmation } from '../../ui/Confirmation';
-import { Spinner } from '../../ui/Spinner';
 import { ConfigManager } from '../../../classes/managers/ConfigManager';
 import { QueryManager } from '../../../classes/managers/QueryManager';
+import type { ConfirmationRefMethods } from '../../ui/Confirmation';
+import { Confirmation } from '../../ui/Confirmation';
+import { OutageList } from '../../ui/OutageList';
+import { PageContainer } from '../../ui/PageContainer';
+import { ResponseHandler } from '../../ui/ResponseHandler';
+import { Spinner } from '../../ui/Spinner';
 
 
 export const ApplicationBootstrap = ({ children }: PropsWithChildren): ReactNode => {

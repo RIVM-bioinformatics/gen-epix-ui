@@ -1,11 +1,11 @@
 import {
+  HmrUtil,
   Subject,
   SubscribableAbstract,
 } from '@gen-epix/ui';
 
-import type { Highlighting } from '../../../../../ui-casedb/src/models/epi';
-import { HmrUtil } from '../../../../../ui/src/utils/HmrUtil';
 import { userProfileStore } from '../../../stores/userProfileStore';
+import type { Highlighting } from '../../../models/epi';
 
 export class EpiHighlightingManager extends SubscribableAbstract<Highlighting> {
   private static __instance: EpiHighlightingManager;

@@ -6,19 +6,21 @@ import round from 'lodash/round';
 import { type Theme } from '@mui/material';
 import type { CaseDbCompleteCaseType } from '@gen-epix/api-casedb';
 import { CaseDbColType } from '@gen-epix/api-casedb';
+import {
+  ConfigManager,
+  NumberUtil,
+} from '@gen-epix/ui';
 
-import { NumberUtil } from '../../../../ui/src/utils/NumberUtil';
-import { ConfigManager } from '../../../../ui/src/classes/managers/ConfigManager';
 import type {
   Stratification,
   TreeConfiguration,
 } from '../../models/epi';
+import { EpiDataManager } from '../../classes/managers/EpiDataManager';
 import type {
   TreeAssembly,
   TreeNode,
   TreePathProperties,
-} from '../../../../ui/src/models/tree';
-import { EpiDataManager } from '../../classes/managers/EpiDataManager';
+} from '../../models/tree';
 
 type NodeAssemblyResult = {
   caseIds: string[];

@@ -14,12 +14,12 @@ import {
   CaseDbOrganizationApi,
 } from '@gen-epix/api-casedb';
 import {
+  HmrUtil,
   QueryClientManager,
   QueryManager,
 } from '@gen-epix/ui';
 
 import type { EpiData } from '../../../../../ui-casedb/src/models/epi';
-import { HmrUtil } from '../../../../../ui/src/utils/HmrUtil';
 import { QUERY_KEY } from '../../../models/query';
 import { CaseTypeUtil } from '../../../utils/CaseTypeUtil';
 

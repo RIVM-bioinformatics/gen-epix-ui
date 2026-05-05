@@ -30,7 +30,7 @@ import type {
   TreeAssembly,
   TreeNode,
   TreePathProperties,
-} from '../../../../../ui/src/models/tree';
+} from '../../../models/tree';
 import { EpiTreeUtil } from '../../../utils/EpiTreeUtil';
 
 // NOTE: this component has the Component suffix in order to prevent a name collision with the PhylogeneticTree model in the api package.

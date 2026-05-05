@@ -1,13 +1,14 @@
 import type { CaseDbCaseSetMember } from '@gen-epix/api-casedb';
 import { CaseDbCaseApi } from '@gen-epix/api-casedb';
 import {
+  HmrUtil,
+  QUERY_KEY,
   QueryClientManager,
   QueryManager,
 } from '@gen-epix/ui';
 
-import { HmrUtil } from '../../../../../ui/src/utils/HmrUtil';
-import type { EpiCaseHasCaseSet } from '../../../../../ui-casedb/src/models/epi';
-import { QUERY_KEY } from '../../../models/query';
+import type { EpiCaseHasCaseSet } from '../../../models/epi';
+
 
 type QueueItem = { caseId: string; isFetching: boolean; promise: Promise<boolean>; reject: () => void; resolve: (result: boolean) => void };
 

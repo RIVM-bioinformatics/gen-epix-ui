@@ -13,23 +13,16 @@ import {
   CaseDbColType,
   CaseDbDimType,
 } from '@gen-epix/api-casedb';
+import {
+  DEFAULT_FILTER_GROUP,
+  FILTER_MODE,
+} from '@gen-epix/ui';
 
 import {
   CaseTypeUtil,
   SELECTION_FILTER_GROUP,
   TREE_FILTER_GROUP,
 } from '../CaseTypeUtil';
-import {
-  DEFAULT_FILTER_GROUP,
-  FILTER_MODE,
-} from '../../../../ui/src/classes/abstracts/FilterAbstract';
-import { DateFilter } from '../../../../ui/src/classes/filters/DateFilter';
-import { GeoFilter } from '../../../../ui/src/classes/filters/GeoFilter';
-import { MultiSelectFilter } from '../../../../ui/src/classes/filters/MultiSelectFilter';
-import { NumberRangeFilter } from '../../../../ui/src/classes/filters/NumberRangeFilter';
-import { SelectionFilter } from '../../../../ui/src/classes/filters/SelectionFilter';
-import { TextFilter } from '../../../../ui/src/classes/filters/TextFilter';
-import { TreeFilter } from '../../../../ui/src/classes/filters/TreeFilter';
 import type {
   FilterDimension,
   Filters,
@@ -37,6 +30,13 @@ import type {
 import type { AutoCompleteOption } from '../../../../ui/src/models/form';
 import { DATE_FORMAT } from '../../../../ui/src/data/date';
 import { EpiDataManager } from '../../classes/managers/EpiDataManager';
+import { DateFilter } from '../../../../ui/src/classes/filters/DateFilter';
+import { GeoFilter } from '../../../../ui/src/classes/filters/GeoFilter';
+import { MultiSelectFilter } from '../../../../ui/src/classes/filters/MultiSelectFilter';
+import { NumberRangeFilter } from '../../../../ui/src/classes/filters/NumberRangeFilter';
+import { SelectionFilter } from '../../../../ui/src/classes/filters/SelectionFilter';
+import { TextFilter } from '../../../../ui/src/classes/filters/TextFilter';
+import { TreeFilter } from '../../../../ui/src/classes/filters/TreeFilter';
 
 export class EpiFilterUtil {
   private static readonly colTypeBlackList = new Set<CaseDbColType>([CaseDbColType.GENETIC_DISTANCE, CaseDbColType.GENETIC_READS, CaseDbColType.GENETIC_SEQUENCE]);

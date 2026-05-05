@@ -7,8 +7,8 @@ import {
 import type { Theme } from '@mui/material/styles';
 import { CaseDbColType } from '@gen-epix/api-casedb';
 import type { CaseDbTreeAlgorithm } from '@gen-epix/api-casedb';
+import { ConfigManager } from '@gen-epix/ui';
 
-import { ConfigManager } from '../../../../ui/src/classes/managers/ConfigManager';
 import { EpiDataManager } from '../../classes/managers/EpiDataManager';
 import type { ArgumentTypes } from '../../../../ui/src/models/generic';
 import type { Config } from '../../../../ui/src/models/config';
@@ -21,7 +21,7 @@ import type {
   TreeAssembly,
   TreeNode,
   TreePathProperties,
-} from '../../../../ui/src/models/tree';
+} from '../../models/tree';
 
 import { EpiTreeUtil } from './EpiTreeUtil';
 

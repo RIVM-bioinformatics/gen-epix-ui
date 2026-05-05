@@ -59,12 +59,12 @@ import { EpiContextMenu } from '../EpiContextMenu';
 import { EpiTreeDescription } from '../EpiTreeDescription';
 import { EpiWidget } from '../EpiWidget';
 import { EpiWidgetUnavailable } from '../EpiWidgetUnavailable';
-import type {
-  PhylogeneticTreeComponentPathClickEvent,
-  PhylogeneticTreeComponentRef,
-  PhylogeneticTreeComponentViewState,
+import {
+  PhylogeneticTreeComponent,
+  type PhylogeneticTreeComponentPathClickEvent,
+  type PhylogeneticTreeComponentRef,
+  type PhylogeneticTreeComponentViewState,
 } from '../../ui/PhylogeneticTreeComponent';
-import { PhylogeneticTreeComponent } from '../../ui/PhylogeneticTreeComponent';
 import { TreeFilter } from '../../../../../ui/src/classes/filters/TreeFilter';
 
 export interface EpiTreeWidgetRef {

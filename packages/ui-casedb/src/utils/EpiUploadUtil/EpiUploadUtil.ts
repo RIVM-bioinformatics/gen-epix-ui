@@ -35,18 +35,22 @@ import {
   CaseDbSeqFileFormat,
   CaseDbUploadAction,
 } from '@gen-epix/api-casedb';
-import { QueryManager } from '@gen-epix/ui';
-
-import { CaseTypeUtil } from '../CaseTypeUtil';
-import { CaseUtil } from '../CaseUtil';
-import { DATE_FORMAT } from '../../../../ui/src/data/date';
-import { QUERY_KEY } from '../../../../ui/src/models/query';
 import type {
   AutoCompleteOption,
   FormFieldDefinition,
   OptionBase,
-} from '../../../../ui/src/models/form';
-import { FORM_FIELD_DEFINITION_TYPE } from '../../../../ui/src/models/form';
+} from '@gen-epix/ui';
+import {
+  DATE_FORMAT,
+  FORM_FIELD_DEFINITION_TYPE,
+  ObjectUtil,
+  QUERY_KEY,
+  QueryManager,
+  ValidationUtil,
+} from '@gen-epix/ui';
+
+import { CaseTypeUtil } from '../CaseTypeUtil';
+import { CaseUtil } from '../CaseUtil';
 import type {
   CaseUploadResultWithGeneratedId,
   EpiUploadCompleteColStats,
@@ -57,8 +61,6 @@ import type {
 } from '../../models/epi';
 import { FileUtil } from '../FileUtil';
 import { UploadError } from '../../classes/errors';
-import { ValidationUtil } from '../../../../ui/src/utils/ValidationUtil';
-import { ObjectUtil } from '../../../../ui/src/utils/ObjectUtil';
 
 export class EpiUploadUtil {
   public static readonly caseDateColumnAliases = ['_case_date', 'case date', 'case_date', 'casedate', 'case.date'];
