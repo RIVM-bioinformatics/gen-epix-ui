@@ -5,9 +5,9 @@ import {
 import { useTranslation } from 'react-i18next';
 import { useMemo } from 'react';
 import {
-  CaseDbCommandName,
-  CaseDbPermissionType,
-} from '@gen-epix/api-casedb';
+  CommonDbCommandName,
+  CommonDbPermissionType,
+} from '@gen-epix/api-commondb';
 
 import { withPermissions } from '../../../hoc/withPermissions';
 import { AuthorizationManager } from '../../../classes/managers/AuthorizationManager';
@@ -49,6 +49,6 @@ export const UserOwnOrganizationMenuItem = withPermissions(() => {
   );
 }, {
   requiredPermissions: [
-    { command_name: CaseDbCommandName.RetrieveOrganizationAdminNameEmailsCommand, permission_type: CaseDbPermissionType.EXECUTE },
+    { command_name: CommonDbCommandName.RetrieveOrganizationAdminNameEmailsCommand, permission_type: CommonDbPermissionType.EXECUTE },
   ],
 });

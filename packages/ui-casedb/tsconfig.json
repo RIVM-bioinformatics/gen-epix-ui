@@ -30,7 +30,6 @@
   },
   "include": [
     "src/**/*",
-    "vite.config.ts",
-    "../ui/src/dataHooks/useOrganizationAdminPoliciesQuery"
+    "vite.config.ts"
   ]
 }

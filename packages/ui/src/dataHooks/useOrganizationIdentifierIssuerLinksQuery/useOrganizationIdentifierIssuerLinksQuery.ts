@@ -4,7 +4,7 @@ import type { CommonDbOrganizationIdentifierIssuerLink } from '@gen-epix/api-com
 import { QUERY_KEY } from '../../models/query';
 import { QueryUtil } from '../../utils/QueryUtil';
 import { useQueryMemo } from '../../hooks/useQueryMemo';
-import { ConfigManager } from '../..';
+import { ConfigManager } from '../../classes/managers/ConfigManager';
 
 
 export const useOrganizationIdentifierIssuerLinksQuery = (): UseQueryResult<CommonDbOrganizationIdentifierIssuerLink[]> => {

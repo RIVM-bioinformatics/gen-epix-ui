@@ -22,37 +22,37 @@ export type CommonDbAuthProtocol = typeof CommonDbAuthProtocol[keyof typeof Comm
 
 
 export const CommonDbCommandName = {
-  RetrieveFeatureFlagsCommand: 'RetrieveFeatureFlagsCommand',
-  UserInvitationCrudCommand: 'UserInvitationCrudCommand',
-  DataCollectionSetMemberCrudCommand: 'DataCollectionSetMemberCrudCommand',
-  IdentifierIssuerCrudCommand: 'IdentifierIssuerCrudCommand',
-  RetrieveOwnPermissionsCommand: 'RetrieveOwnPermissionsCommand',
   SiteCrudCommand: 'SiteCrudCommand',
-  RetrieveOrganizationsUnderAdminCommand: 'RetrieveOrganizationsUnderAdminCommand',
+  DataCollectionSetMemberCrudCommand: 'DataCollectionSetMemberCrudCommand',
   DataCollectionSetCrudCommand: 'DataCollectionSetCrudCommand',
-  RegisterInvitedUserCommand: 'RegisterInvitedUserCommand',
-  UserCrudCommand: 'UserCrudCommand',
-  OutageCrudCommand: 'OutageCrudCommand',
-  DataCollectionCrudCommand: 'DataCollectionCrudCommand',
-  UpdateUserOwnOrganizationCommand: 'UpdateUserOwnOrganizationCommand',
-  RetrieveOutagesCommand: 'RetrieveOutagesCommand',
-  RetrieveOrganizationContactsCommand: 'RetrieveOrganizationContactsCommand',
-  OrganizationSetCrudCommand: 'OrganizationSetCrudCommand',
-  RetrieveOrganizationAdminNameEmailsCommand: 'RetrieveOrganizationAdminNameEmailsCommand',
+  DataCollectionSetDataCollectionUpdateAssociationCommand: 'DataCollectionSetDataCollectionUpdateAssociationCommand',
   GetIdentityProvidersCommand: 'GetIdentityProvidersCommand',
+  RetrieveOutagesCommand: 'RetrieveOutagesCommand',
   OrganizationCrudCommand: 'OrganizationCrudCommand',
-  OrganizationIdentifierIssuerLinkCrudCommand: 'OrganizationIdentifierIssuerLinkCrudCommand',
-  OrganizationSetOrganizationUpdateAssociationCommand: 'OrganizationSetOrganizationUpdateAssociationCommand',
+  ContactCrudCommand: 'ContactCrudCommand',
   OrganizationAdminPolicyCrudCommand: 'OrganizationAdminPolicyCrudCommand',
-  RetrieveInviteUserConstraintsCommand: 'RetrieveInviteUserConstraintsCommand',
+  OrganizationSetCrudCommand: 'OrganizationSetCrudCommand',
+  OutageCrudCommand: 'OutageCrudCommand',
+  RetrieveSubRolesCommand: 'RetrieveSubRolesCommand',
+  OrganizationSetMemberCrudCommand: 'OrganizationSetMemberCrudCommand',
+  OrganizationSetOrganizationUpdateAssociationCommand: 'OrganizationSetOrganizationUpdateAssociationCommand',
+  RetrieveOrganizationContactsCommand: 'RetrieveOrganizationContactsCommand',
+  RetrieveLicensesCommand: 'RetrieveLicensesCommand',
+  UpdateUserOwnOrganizationCommand: 'UpdateUserOwnOrganizationCommand',
+  UserCrudCommand: 'UserCrudCommand',
   UpdateUserCommand: 'UpdateUserCommand',
   InviteUserCommand: 'InviteUserCommand',
+  OrganizationIdentifierIssuerLinkCrudCommand: 'OrganizationIdentifierIssuerLinkCrudCommand',
+  UserInvitationCrudCommand: 'UserInvitationCrudCommand',
+  RetrieveOrganizationsUnderAdminCommand: 'RetrieveOrganizationsUnderAdminCommand',
+  RegisterInvitedUserCommand: 'RegisterInvitedUserCommand',
+  RetrieveFeatureFlagsCommand: 'RetrieveFeatureFlagsCommand',
+  RetrieveInviteUserConstraintsCommand: 'RetrieveInviteUserConstraintsCommand',
+  RetrieveOwnPermissionsCommand: 'RetrieveOwnPermissionsCommand',
+  IdentifierIssuerCrudCommand: 'IdentifierIssuerCrudCommand',
   OrganizationIdentifierIssuerLinkUpdateAssociationCommand: 'OrganizationIdentifierIssuerLinkUpdateAssociationCommand',
-  OrganizationSetMemberCrudCommand: 'OrganizationSetMemberCrudCommand',
-  RetrieveLicensesCommand: 'RetrieveLicensesCommand',
-  ContactCrudCommand: 'ContactCrudCommand',
-  DataCollectionSetDataCollectionUpdateAssociationCommand: 'DataCollectionSetDataCollectionUpdateAssociationCommand',
-  RetrieveSubRolesCommand: 'RetrieveSubRolesCommand',
+  RetrieveOrganizationAdminNameEmailsCommand: 'RetrieveOrganizationAdminNameEmailsCommand',
+  DataCollectionCrudCommand: 'DataCollectionCrudCommand',
 } as const;
 
 export type CommonDbCommandName = typeof CommonDbCommandName[keyof typeof CommonDbCommandName];
@@ -621,6 +621,13 @@ export interface CommonDbUserInvitationRequestBody {
 }
 
 
+export interface CommonDbUserNameEmail {
+  'id'?: string | null;
+  'name'?: string | null;
+  'email': string | null;
+}
+
+
 export interface CommonDbValidationError {
   'msg': string;
   'type': string;
@@ -645,6 +652,7 @@ export interface CommonDbAbacApi {
   organizationAdminPoliciesPostSome(organizationAdminPolicy: Array<CommonDbOrganizationAdminPolicy>, options?: RawAxiosRequestConfig): Promise<AxiosResponse<Array<CommonDbOrganizationAdminPolicy>>>;
   organizationAdminPoliciesPutOne(objectId: string, organizationAdminPolicy: CommonDbOrganizationAdminPolicy, options?: RawAxiosRequestConfig): Promise<AxiosResponse<CommonDbOrganizationAdminPolicy>>;
   organizationAdminPoliciesPutSome(organizationAdminPolicy: Array<CommonDbOrganizationAdminPolicy>, options?: RawAxiosRequestConfig): Promise<AxiosResponse<Array<CommonDbOrganizationAdminPolicy>>>;
+  retrieveOrganizationAdminNameEmails(options?: RawAxiosRequestConfig): Promise<AxiosResponse<Array<CommonDbUserNameEmail>>>;
 }
 
 

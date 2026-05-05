@@ -11,8 +11,8 @@ import { QUERY_KEY } from '../../models/query';
 import { DataHookUtil } from '../../utils/DataHookUtil';
 import { QueryUtil } from '../../utils/QueryUtil';
 import { useQueryMemo } from '../../hooks/useQueryMemo';
-import { DataUtil } from '../../../../ui-casedb/src/utils/DataUtil';
 import { ConfigManager } from '../../classes/managers/ConfigManager';
+import { DataUtil } from '../../utils/DataUtil';
 
 export const useUsersQuery = (): UseQueryResult<CommonDbUser[]> => {
   return useQueryMemo({

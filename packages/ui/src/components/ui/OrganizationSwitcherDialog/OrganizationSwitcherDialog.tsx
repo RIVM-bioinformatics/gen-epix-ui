@@ -21,7 +21,6 @@ import {
   object,
   string,
 } from 'yup';
-import { CaseDbOrganizationApi } from '@gen-epix/api-casedb';
 
 import { ResponseHandler } from '../ResponseHandler';
 import { AuthorizationManager } from '../../../classes/managers/AuthorizationManager';
@@ -36,6 +35,7 @@ import type {
 import { withDialog } from '../../../hoc/withDialog';
 import { TestIdUtil } from '../../../utils/TestIdUtil';
 import { Autocomplete } from '../../form/fields/Autocomplete';
+import { ConfigManager } from '../../../classes/managers/ConfigManager';
 
 export interface OrganizationSwitcherDialogOpenProps {
   //
@@ -96,7 +96,7 @@ export const OrganizationSwitcherDialog = withDialog<OrganizationSwitcherDialogP
       });
       try {
         setIsChanging(true);
-        await CaseDbOrganizationApi.instance.updateUserOwnOrganization({
+        await ConfigManager.getInstance().config.organizationApi.updateUserOwnOrganization({
           organization_id: formValues.organization_id,
         }, {});
         setNewOrganizationId(formValues.organization_id);

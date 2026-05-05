@@ -21,7 +21,7 @@ import {
   type TreeNode,
 } from '@gen-epix/ui';
 
-import { customRender } from '../../../test/lib/render';
+import { customRender } from '../../../../../ui/src/test/lib/render';
 
 const DEFAULT_HEIGHT = 320;
 const DEFAULT_ITEM_HEIGHT = 32;

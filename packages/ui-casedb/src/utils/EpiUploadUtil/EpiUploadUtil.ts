@@ -55,7 +55,7 @@ import type {
   EpiUploadSequenceMapping,
   EpiUploadSequenceMappingForCaseId,
 } from '../../models/epi';
-import { FileUtil } from '../../../../ui/src/utils/FileUtil';
+import { FileUtil } from '../FileUtil';
 import { UploadError } from '../../classes/errors';
 import { ValidationUtil } from '../../../../ui/src/utils/ValidationUtil';
 import { ObjectUtil } from '../../../../ui/src/utils/ObjectUtil';

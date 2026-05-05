@@ -17,8 +17,8 @@ const LicenseInformation = (): ReturnType<Config['LicenseInformation']> => null;
 
 let languageCode: string = 'en';
 
-export class ConfigUtil {
-  public static createDemoConfig(): Config {
+export class DemoConfigUtil {
+  public static createConfig(): Config {
     const setNewLanguageCode = async (_code: string) => {
       languageCode = _code;
       return Promise.resolve();

@@ -10,7 +10,7 @@ import {
   useMemo,
 } from 'react';
 import { format } from 'date-fns';
-import type { CaseDbUserInvitation } from '@gen-epix/api-casedb';
+import type { CommonDbUserInvitation } from '@gen-epix/api-commondb';
 
 import { ConfigManager } from '../../classes/managers/ConfigManager';
 import { WindowManager } from '../../classes/managers/WindowManager';
@@ -24,7 +24,7 @@ import { TestIdUtil } from '../../utils/TestIdUtil';
 import { DATE_FORMAT } from '../../data/date';
 
 export interface UserInvitationShareDialogOpenProps {
-  item: CaseDbUserInvitation;
+  item: CommonDbUserInvitation;
 }
 
 export interface UserInvitationShareDialogProps extends WithDialogRenderProps<UserInvitationShareDialogOpenProps> {

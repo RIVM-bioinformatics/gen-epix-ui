@@ -21,9 +21,9 @@ import { QUERY_KEY } from '../../models/query';
 import type { TableColumn } from '../../models/table';
 import { TableUtil } from '../../utils/TableUtil';
 import { TestIdUtil } from '../../utils/TestIdUtil';
-import { CrudPage } from '../../../../ui-casedb/src/pages/CrudPage';
 import type { OmitWithMetaData } from '../../models/data';
 import { ConfigManager } from '../../classes/managers/ConfigManager';
+import { CrudPage } from '../CrudPage';
 
 type FormFields = OmitWithMetaData<CommonDbOrganizationAdminPolicy, 'organization' | 'user'>;
 

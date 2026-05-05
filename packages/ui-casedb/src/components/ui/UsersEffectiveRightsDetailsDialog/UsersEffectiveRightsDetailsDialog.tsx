@@ -20,20 +20,20 @@ import type { CaseDbUser } from '@gen-epix/api-casedb';
 import type {
   WithDialogRefMethods,
   WithDialogRenderProps,
-} from '../../../hoc/withDialog';
-import { withDialog } from '../../../hoc/withDialog';
-import { TestIdUtil } from '../../../utils/TestIdUtil';
-import type { DialogAction } from '../Dialog';
+} from '../../../../../ui/src/hoc/withDialog';
+import { withDialog } from '../../../../../ui/src/hoc/withDialog';
+import { TestIdUtil } from '../../../../../ui/src/utils/TestIdUtil';
+import type { DialogAction } from '../../../../../ui/src/components/ui/Dialog';
 import type { UserEffectiveRight } from '../../../models/caseAccess';
 import { useCaseTypeMapQuery } from '../../../dataHooks/useCaseTypesQuery';
-import { useArray } from '../../../hooks/useArray';
-import { ResponseHandler } from '../ResponseHandler';
+import { useArray } from '../../../../../ui/src/hooks/useArray';
+import { ResponseHandler } from '../../../../../ui/src/components/ui/ResponseHandler';
 import {
   useCaseTypeSetNameFactory,
   useCaseTypeSetsMapQuery,
 } from '../../../dataHooks/useCaseTypeSetsQuery';
 import { useDataCollectionsMapQuery } from '../../../dataHooks/useDataCollectionsQuery';
-import { DataUtil } from '../../../../../ui-casedb/src/utils/DataUtil';
+import { DataUtil } from '../../../utils/DataUtil';
 import { useColSetMapQuery } from '../../../dataHooks/useColSetsQuery';
 import {
   useColMapQuery,
@@ -42,7 +42,7 @@ import {
 import { useColSetMembersQuery } from '../../../dataHooks/useColSetMembersQuery';
 import { useCaseTypeSetMembersQuery } from '../../../dataHooks/useCaseTypeSetMembersQuery';
 import { EpiCustomTabPanel } from '../../epi/EpiCustomTabPanel';
-import { LoadableUtil } from '../../../utils/LoadableUtil';
+import { LoadableUtil } from '../../../../../ui/src/utils/LoadableUtil';
 
 
 export interface UsersEffectiveRightsDetailsDialogOpenProps {

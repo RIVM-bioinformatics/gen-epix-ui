@@ -14,12 +14,12 @@ import {
   useState,
 } from 'react';
 import type { CaseDbUser } from '@gen-epix/api-casedb';
-
 import type {
   WithDialogRefMethods,
   WithDialogRenderProps,
-} from '../../../hoc/withDialog';
-import { withDialog } from '../../../hoc/withDialog';
+} from '@gen-epix/ui';
+import { withDialog } from '@gen-epix/ui';
+
 import { EpiCustomTabPanel } from '../EpiCustomTabPanel/EpiCustomTabPanel';
 
 import { EpiUserRightsDialogCaseAccessPolicy } from './EpiUserRightsDialogCaseAccessPolicy';

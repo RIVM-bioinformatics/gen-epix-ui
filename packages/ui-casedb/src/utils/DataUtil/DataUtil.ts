@@ -1,4 +1,3 @@
-import type { TFunction } from 'i18next';
 import { format } from 'date-fns';
 import type {
   CaseDbCaseSet,
@@ -7,7 +6,6 @@ import type {
   CaseDbRefCol,
   CaseDbRefColValidationRulesResponseBody,
   CaseDbRefDim,
-  CaseDbUser,
 } from '@gen-epix/api-casedb';
 import { CaseDbColType } from '@gen-epix/api-casedb';
 
@@ -72,14 +70,6 @@ export class DataUtil {
       return kwArgs.colsValidationRules[refDim.dim_type].includes(colType);
     });
   }
-
-  public static getUserDisplayValue(user: CaseDbUser, t: TFunction<'translation', undefined>): string {
-    if (!user) {
-      return t`Unknown user`;
-    }
-    return `${user.name} (${user.key})`;
-  }
-
 
   public static rankSortComperatorFactory<TSecondarySorKey extends keyof TItem, TItem extends { rank?: number }>(secondarySortKeyOrFn?: ((item: TItem) => string) | TSecondarySorKey) {
     return (a: TItem, b: TItem): number => {

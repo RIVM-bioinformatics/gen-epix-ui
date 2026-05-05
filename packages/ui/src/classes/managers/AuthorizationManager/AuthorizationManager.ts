@@ -40,7 +40,7 @@ export class AuthorizationManager {
     //
   }
 
-  public doesUserHavePermission(permissions: CommonDbApiPermission[]): boolean {
+  public doesUserHavePermission<TApiPermission = CommonDbApiPermission>(permissions: NoInfer<TApiPermission>[]): boolean {
     if (!permissions?.length) {
       return true;
     }
@@ -49,7 +49,7 @@ export class AuthorizationManager {
     }
     return permissions.every(permission => {
       return !!(this.apiPermissions).find(({ command_name, permission_type }) => {
-        return command_name === permission.command_name && permission_type === permission.permission_type;
+        return command_name === (permission as CommonDbApiPermission).command_name && permission_type === (permission as CommonDbApiPermission).permission_type;
       });
     });
   }

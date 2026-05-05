@@ -8,12 +8,12 @@ import {
 } from '@mui/material';
 import {
   ConfigManager,
-  ConfigUtil,
+  DemoConfigUtil,
   EmotionCacheManager,
   QueryClientManager,
 } from '@gen-epix/ui';
 
-ConfigManager.getInstance().config = ConfigUtil.createDemoConfig();
+ConfigManager.getInstance().config = DemoConfigUtil.createConfig();
 
 const queryQueryManager = QueryClientManager.instance;
 const emotionCacheManager = EmotionCacheManager.instance;

@@ -14,8 +14,8 @@ import { QueryUtil } from '../../utils/QueryUtil';
 import { useOrganizationMapQuery } from '../useOrganizationsQuery';
 import { useUsersMapQuery } from '../useUsersQuery';
 import { useQueryMemo } from '../../hooks/useQueryMemo';
-import { DataUtil } from '../../../../ui-casedb/src/utils/DataUtil';
 import { ConfigManager } from '../../classes/managers/ConfigManager';
+import { DataUtil } from '../../utils/DataUtil';
 
 export const useOrganizationAdminPoliciesQuery = (): UseQueryResult<CommonDbOrganizationAdminPolicy[]> => {
   return useQueryMemo({

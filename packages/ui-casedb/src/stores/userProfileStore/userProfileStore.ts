@@ -4,8 +4,8 @@ import {
   persist,
 } from 'zustand/middleware';
 
-import type { EpiDashboardLayoutUserConfig } from '../../../../ui-casedb/src/models/epi';
-import { DashboardUtil } from '../../../../ui-casedb/src/utils/DashboardUtil';
+import type { EpiDashboardLayoutUserConfig } from '../../models/epi';
+import { DashboardUtil } from '../../utils/DashboardUtil';
 
 export type EpiDashboardGeneralSettings = {
   isHighlightingEnabled: boolean;

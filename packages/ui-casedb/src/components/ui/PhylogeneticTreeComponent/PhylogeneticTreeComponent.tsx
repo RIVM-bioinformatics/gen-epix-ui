@@ -13,25 +13,25 @@ import {
 } from 'react';
 import { useDebouncedCallback } from 'use-debounce';
 
-import { ConfigManager } from '../../../classes/managers/ConfigManager';
-import { DevicePixelRatioManager } from '../../../classes/managers/DevicePixelRatioManager';
-import { Subject } from '../../../classes/Subject';
-import { useDimensions } from '../../../hooks/useDimensions';
-import { useScrollbarSize } from '../../../hooks/useScrollbarSize';
-import { useSubscribable } from '../../../hooks/useSubscribable';
+import { ConfigManager } from '../../../../../ui/src/classes/managers/ConfigManager';
+import { DevicePixelRatioManager } from '../../../../../ui/src/classes/managers/DevicePixelRatioManager';
+import { Subject } from '../../../../../ui/src/classes/Subject';
+import { useDimensions } from '../../../../../ui/src/hooks/useDimensions';
+import { useScrollbarSize } from '../../../../../ui/src/hooks/useScrollbarSize';
+import { useSubscribable } from '../../../../../ui/src/hooks/useSubscribable';
 import type {
   EpiLineListRangeSubjectValue,
   EpiLinkedScrollSubjectValue,
   Highlighting,
   Stratification,
-} from '../../../../../ui-casedb/src/models/epi';
-import { EPI_ZONE } from '../../../../../ui-casedb/src/models/epi';
+} from '../../../models/epi';
+import { EPI_ZONE } from '../../../models/epi';
 import type {
   TreeAssembly,
   TreeNode,
   TreePathProperties,
-} from '../../../models/tree';
-import { EpiTreeUtil } from '../../../../../ui-casedb/src/utils/EpiTreeUtil';
+} from '../../../../../ui/src/models/tree';
+import { EpiTreeUtil } from '../../../utils/EpiTreeUtil';
 
 // NOTE: this component has the Component suffix in order to prevent a name collision with the PhylogeneticTree model in the api package.
 
