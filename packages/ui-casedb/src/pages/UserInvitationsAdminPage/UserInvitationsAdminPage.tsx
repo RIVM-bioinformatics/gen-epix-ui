@@ -22,7 +22,7 @@ import {
   CaseDbOrganizationApi,
 } from '@gen-epix/api-casedb';
 
-import { useOrganizationAdminPolicyMapQuery } from '../../dataHooks/useOrganizationAdminPoliciesQuery';
+import { useOrganizationAdminPolicyMapQuery } from '../../../../ui/src/dataHooks/useOrganizationAdminPoliciesQuery';
 import { useOrganizationOptionsQuery } from '../../dataHooks/useOrganizationsQuery';
 import { useUserOptionsQuery } from '../../dataHooks/useUsersQuery';
 import { useArray } from '../../hooks/useArray';

@@ -22,37 +22,37 @@ export type CommonDbAuthProtocol = typeof CommonDbAuthProtocol[keyof typeof Comm
 
 
 export const CommonDbCommandName = {
-  ContactCrudCommand: 'ContactCrudCommand',
-  RetrieveLicensesCommand: 'RetrieveLicensesCommand',
-  DataCollectionCrudCommand: 'DataCollectionCrudCommand',
-  DataCollectionSetCrudCommand: 'DataCollectionSetCrudCommand',
-  RetrieveOrganizationContactsCommand: 'RetrieveOrganizationContactsCommand',
-  UpdateUserCommand: 'UpdateUserCommand',
-  RetrieveOwnPermissionsCommand: 'RetrieveOwnPermissionsCommand',
-  UserCrudCommand: 'UserCrudCommand',
   RetrieveFeatureFlagsCommand: 'RetrieveFeatureFlagsCommand',
-  IdentifierIssuerCrudCommand: 'IdentifierIssuerCrudCommand',
-  OrganizationSetMemberCrudCommand: 'OrganizationSetMemberCrudCommand',
-  RegisterInvitedUserCommand: 'RegisterInvitedUserCommand',
-  RetrieveInviteUserConstraintsCommand: 'RetrieveInviteUserConstraintsCommand',
-  RetrieveSubRolesCommand: 'RetrieveSubRolesCommand',
-  OrganizationCrudCommand: 'OrganizationCrudCommand',
-  OrganizationSetCrudCommand: 'OrganizationSetCrudCommand',
-  InviteUserCommand: 'InviteUserCommand',
-  RetrieveOrganizationsUnderAdminCommand: 'RetrieveOrganizationsUnderAdminCommand',
-  OrganizationIdentifierIssuerLinkUpdateAssociationCommand: 'OrganizationIdentifierIssuerLinkUpdateAssociationCommand',
-  SiteCrudCommand: 'SiteCrudCommand',
-  OrganizationSetOrganizationUpdateAssociationCommand: 'OrganizationSetOrganizationUpdateAssociationCommand',
-  RetrieveOutagesCommand: 'RetrieveOutagesCommand',
-  UpdateUserOwnOrganizationCommand: 'UpdateUserOwnOrganizationCommand',
-  OrganizationAdminPolicyCrudCommand: 'OrganizationAdminPolicyCrudCommand',
-  OrganizationIdentifierIssuerLinkCrudCommand: 'OrganizationIdentifierIssuerLinkCrudCommand',
-  DataCollectionSetDataCollectionUpdateAssociationCommand: 'DataCollectionSetDataCollectionUpdateAssociationCommand',
-  RetrieveOrganizationAdminNameEmailsCommand: 'RetrieveOrganizationAdminNameEmailsCommand',
   UserInvitationCrudCommand: 'UserInvitationCrudCommand',
-  OutageCrudCommand: 'OutageCrudCommand',
-  GetIdentityProvidersCommand: 'GetIdentityProvidersCommand',
   DataCollectionSetMemberCrudCommand: 'DataCollectionSetMemberCrudCommand',
+  IdentifierIssuerCrudCommand: 'IdentifierIssuerCrudCommand',
+  RetrieveOwnPermissionsCommand: 'RetrieveOwnPermissionsCommand',
+  SiteCrudCommand: 'SiteCrudCommand',
+  RetrieveOrganizationsUnderAdminCommand: 'RetrieveOrganizationsUnderAdminCommand',
+  DataCollectionSetCrudCommand: 'DataCollectionSetCrudCommand',
+  RegisterInvitedUserCommand: 'RegisterInvitedUserCommand',
+  UserCrudCommand: 'UserCrudCommand',
+  OutageCrudCommand: 'OutageCrudCommand',
+  DataCollectionCrudCommand: 'DataCollectionCrudCommand',
+  UpdateUserOwnOrganizationCommand: 'UpdateUserOwnOrganizationCommand',
+  RetrieveOutagesCommand: 'RetrieveOutagesCommand',
+  RetrieveOrganizationContactsCommand: 'RetrieveOrganizationContactsCommand',
+  OrganizationSetCrudCommand: 'OrganizationSetCrudCommand',
+  RetrieveOrganizationAdminNameEmailsCommand: 'RetrieveOrganizationAdminNameEmailsCommand',
+  GetIdentityProvidersCommand: 'GetIdentityProvidersCommand',
+  OrganizationCrudCommand: 'OrganizationCrudCommand',
+  OrganizationIdentifierIssuerLinkCrudCommand: 'OrganizationIdentifierIssuerLinkCrudCommand',
+  OrganizationSetOrganizationUpdateAssociationCommand: 'OrganizationSetOrganizationUpdateAssociationCommand',
+  OrganizationAdminPolicyCrudCommand: 'OrganizationAdminPolicyCrudCommand',
+  RetrieveInviteUserConstraintsCommand: 'RetrieveInviteUserConstraintsCommand',
+  UpdateUserCommand: 'UpdateUserCommand',
+  InviteUserCommand: 'InviteUserCommand',
+  OrganizationIdentifierIssuerLinkUpdateAssociationCommand: 'OrganizationIdentifierIssuerLinkUpdateAssociationCommand',
+  OrganizationSetMemberCrudCommand: 'OrganizationSetMemberCrudCommand',
+  RetrieveLicensesCommand: 'RetrieveLicensesCommand',
+  ContactCrudCommand: 'ContactCrudCommand',
+  DataCollectionSetDataCollectionUpdateAssociationCommand: 'DataCollectionSetDataCollectionUpdateAssociationCommand',
+  RetrieveSubRolesCommand: 'RetrieveSubRolesCommand',
 } as const;
 
 export type CommonDbCommandName = typeof CommonDbCommandName[keyof typeof CommonDbCommandName];
@@ -132,6 +132,8 @@ export interface CommonDbEtlLogItem {
   'code': string;
   'message': string;
   'severity': CommonDbLogLevel;
+  'source'?: string | null;
+  'target'?: string | null;
 }
 
 
@@ -167,7 +169,7 @@ export interface CommonDbHTTPValidationError {
 }
 
 
-export interface CommonDbHealthReponseBody {
+export interface CommonDbHealthResponseBody {
   'status': CommonDbHealthStatus;
 }
 
@@ -278,6 +280,19 @@ export interface CommonDbOrganization {
   'code': string;
   'name': string;
   'description'?: string | null;
+}
+
+
+export interface CommonDbOrganizationAdminPolicy {
+  'created_at'?: string | null;
+  'modified_at'?: string | null;
+  'modified_by'?: string | null;
+  'id'?: string | null;
+  'organization_id': string;
+  'organization'?: CommonDbOrganization;
+  'user_id': string;
+  'user'?: CommonDbUser;
+  'is_active': boolean;
 }
 
 
@@ -617,6 +632,22 @@ export interface CommonDbValidationError {
 export type CommonDbValue = number | string;
 
 
+export interface CommonDbAbacApi {
+  organizationAdminPoliciesDeleteAll(options?: RawAxiosRequestConfig): Promise<AxiosResponse<any>>;
+  organizationAdminPoliciesDeleteOne(objectId: any, options?: RawAxiosRequestConfig): Promise<AxiosResponse<string>>;
+  organizationAdminPoliciesDeleteSome(ids: string, options?: RawAxiosRequestConfig): Promise<AxiosResponse<Array<string>>>;
+  organizationAdminPoliciesGetAll(options?: RawAxiosRequestConfig): Promise<AxiosResponse<Array<CommonDbOrganizationAdminPolicy>>>;
+  organizationAdminPoliciesGetOne(objectId: string, options?: RawAxiosRequestConfig): Promise<AxiosResponse<CommonDbOrganizationAdminPolicy>>;
+  organizationAdminPoliciesGetSome(ids: string, options?: RawAxiosRequestConfig): Promise<AxiosResponse<Array<CommonDbOrganizationAdminPolicy>>>;
+  organizationAdminPoliciesPostOne(organizationAdminPolicy: CommonDbOrganizationAdminPolicy, options?: RawAxiosRequestConfig): Promise<AxiosResponse<CommonDbOrganizationAdminPolicy>>;
+  organizationAdminPoliciesPostQuery(filter: CommonDbEpiFilter, options?: RawAxiosRequestConfig): Promise<AxiosResponse<Array<CommonDbOrganizationAdminPolicy>>>;
+  organizationAdminPoliciesPostQueryIds(filter: CommonDbEpiFilter, options?: RawAxiosRequestConfig): Promise<AxiosResponse<Array<string>>>;
+  organizationAdminPoliciesPostSome(organizationAdminPolicy: Array<CommonDbOrganizationAdminPolicy>, options?: RawAxiosRequestConfig): Promise<AxiosResponse<Array<CommonDbOrganizationAdminPolicy>>>;
+  organizationAdminPoliciesPutOne(objectId: string, organizationAdminPolicy: CommonDbOrganizationAdminPolicy, options?: RawAxiosRequestConfig): Promise<AxiosResponse<CommonDbOrganizationAdminPolicy>>;
+  organizationAdminPoliciesPutSome(organizationAdminPolicy: Array<CommonDbOrganizationAdminPolicy>, options?: RawAxiosRequestConfig): Promise<AxiosResponse<Array<CommonDbOrganizationAdminPolicy>>>;
+}
+
+
 export interface CommonDbAuthApi {
   identityProvidersGetAll(options?: RawAxiosRequestConfig): Promise<AxiosResponse<Array<CommonDbIdentityProvider>>>;
 }
@@ -787,7 +818,7 @@ export interface CommonDbOrganizationApi {
 
 
 export interface CommonDbSystemApi {
-  health(options?: RawAxiosRequestConfig): Promise<AxiosResponse<CommonDbHealthReponseBody>>;
+  health(options?: RawAxiosRequestConfig): Promise<AxiosResponse<CommonDbHealthResponseBody>>;
   log(logRequestBody: CommonDbLogRequestBody, options?: RawAxiosRequestConfig): Promise<AxiosResponse<any>>;
   outagesDeleteAll(options?: RawAxiosRequestConfig): Promise<AxiosResponse<any>>;
   outagesDeleteOne(objectId: any, options?: RawAxiosRequestConfig): Promise<AxiosResponse<string>>;

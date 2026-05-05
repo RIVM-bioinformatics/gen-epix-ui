@@ -196,79 +196,81 @@ export interface SeqDbCalculateSeqDistancesResult {
 
 
 export const SeqDbCommandName = {
-    RetrieveInviteUserConstraintsCommand: 'RetrieveInviteUserConstraintsCommand',
-    ContactCrudCommand: 'ContactCrudCommand',
-    SampleCrudCommand: 'SampleCrudCommand',
-    ReadSetCrudCommand: 'ReadSetCrudCommand',
-    TaxonCrudCommand: 'TaxonCrudCommand',
+    LocusCodeMapCrudCommand: 'LocusCodeMapCrudCommand',
+    RetrieveFeatureFlagsCommand: 'RetrieveFeatureFlagsCommand',
+    UserInvitationCrudCommand: 'UserInvitationCrudCommand',
+    DataCollectionCrudCommand: 'DataCollectionCrudCommand',
+    OrganizationCrudCommand: 'OrganizationCrudCommand',
+    DataCollectionSetMemberCrudCommand: 'DataCollectionSetMemberCrudCommand',
+    IdentifierIssuerCrudCommand: 'IdentifierIssuerCrudCommand',
+    RetrieveOutagesCommand: 'RetrieveOutagesCommand',
+    UpdateUserOwnOrganizationCommand: 'UpdateUserOwnOrganizationCommand',
+    OrganizationIdentifierIssuerLinkUpdateAssociationCommand: 'OrganizationIdentifierIssuerLinkUpdateAssociationCommand',
+    PcrMeasurementCrudCommand: 'PcrMeasurementCrudCommand',
+    TreeAlgorithmClassCrudCommand: 'TreeAlgorithmClassCrudCommand',
+    RetrieveSamplesByIdCommand: 'RetrieveSamplesByIdCommand',
+    OrganizationSetMemberCrudCommand: 'OrganizationSetMemberCrudCommand',
+    SeqIdentifierCrudCommand: 'SeqIdentifierCrudCommand',
+    SampleIdentifierCrudCommand: 'SampleIdentifierCrudCommand',
+    TaxonSetMemberCrudCommand: 'TaxonSetMemberCrudCommand',
+    TreeAlgorithmCrudCommand: 'TreeAlgorithmCrudCommand',
+    SeqCategorySetCrudCommand: 'SeqCategorySetCrudCommand',
+    RefSeqCrudCommand: 'RefSeqCrudCommand',
+    ProtocolCrudCommand: 'ProtocolCrudCommand',
+    OrganizationIdentifierIssuerLinkCrudCommand: 'OrganizationIdentifierIssuerLinkCrudCommand',
+    RetrieveOwnPermissionsCommand: 'RetrieveOwnPermissionsCommand',
+    CalculatePhylogeneticTreeCommand: 'CalculatePhylogeneticTreeCommand',
     RetrieveLicensesCommand: 'RetrieveLicensesCommand',
+    SeqDistanceCrudCommand: 'SeqDistanceCrudCommand',
+    CalculateSeqDistancesForNewProfilesCommand: 'CalculateSeqDistancesForNewProfilesCommand',
+    ProtocolSetMemberCrudCommand: 'ProtocolSetMemberCrudCommand',
+    ReadSetIdentifierCrudCommand: 'ReadSetIdentifierCrudCommand',
+    SeqProfileCrudCommand: 'SeqProfileCrudCommand',
     OrganizationSetOrganizationUpdateAssociationCommand: 'OrganizationSetOrganizationUpdateAssociationCommand',
-    RetrieveSubRolesCommand: 'RetrieveSubRolesCommand',
-    SeqCrudCommand: 'SeqCrudCommand',
+    AlleleCrudCommand: 'AlleleCrudCommand',
     RetrieveSimilarProfilesCommand: 'RetrieveSimilarProfilesCommand',
     UpdateSeqDistancesCommand: 'UpdateSeqDistancesCommand',
-    DataCollectionCrudCommand: 'DataCollectionCrudCommand',
-    ProtocolSetCrudCommand: 'ProtocolSetCrudCommand',
-    SeqTaxonomyCrudCommand: 'SeqTaxonomyCrudCommand',
-    DataCollectionSetCrudCommand: 'DataCollectionSetCrudCommand',
-    LocusCodeMapCrudCommand: 'LocusCodeMapCrudCommand',
-    RetrieveOutagesCommand: 'RetrieveOutagesCommand',
     RetrieveOrganizationContactsCommand: 'RetrieveOrganizationContactsCommand',
-    SeqProfileIdentifierCrudCommand: 'SeqProfileIdentifierCrudCommand',
-    PcrMeasurementCrudCommand: 'PcrMeasurementCrudCommand',
-    CalculateSeqDistancesForNewProfilesCommand: 'CalculateSeqDistancesForNewProfilesCommand',
+    ContactCrudCommand: 'ContactCrudCommand',
+    CreateFileCommand: 'CreateFileCommand',
+    FileCrudCommand: 'FileCrudCommand',
+    SiteCrudCommand: 'SiteCrudCommand',
+    AstPredictionCrudCommand: 'AstPredictionCrudCommand',
+    RefAlleleCrudCommand: 'RefAlleleCrudCommand',
     UploadSamplesCommand: 'UploadSamplesCommand',
-    UpdateUserCommand: 'UpdateUserCommand',
-    RetrieveOwnPermissionsCommand: 'RetrieveOwnPermissionsCommand',
-    ProtocolSetMemberCrudCommand: 'ProtocolSetMemberCrudCommand',
-    OrganizationCrudCommand: 'OrganizationCrudCommand',
-    UserCrudCommand: 'UserCrudCommand',
-    DataCollectionSetDataCollectionUpdateAssociationCommand: 'DataCollectionSetDataCollectionUpdateAssociationCommand',
-    SampleIdentifierCrudCommand: 'SampleIdentifierCrudCommand',
-    RetrieveOrganizationAdminNameEmailsCommand: 'RetrieveOrganizationAdminNameEmailsCommand',
-    RetrieveSamplesByIdCommand: 'RetrieveSamplesByIdCommand',
-    SeqProfileCrudCommand: 'SeqProfileCrudCommand',
-    RetrieveSeqDistanceLastModifiedCommand: 'RetrieveSeqDistanceLastModifiedCommand',
+    OrganizationAdminPolicyCrudCommand: 'OrganizationAdminPolicyCrudCommand',
+    RetrieveOrganizationsUnderAdminCommand: 'RetrieveOrganizationsUnderAdminCommand',
     RetrieveSamplesByQueryCommand: 'RetrieveSamplesByQueryCommand',
-    ReadSetIdentifierCrudCommand: 'ReadSetIdentifierCrudCommand',
-    AstMeasurementCrudCommand: 'AstMeasurementCrudCommand',
-    RetrieveFeatureFlagsCommand: 'RetrieveFeatureFlagsCommand',
-    RetrieveSeqFastaCommand: 'RetrieveSeqFastaCommand',
     LocusSetCrudCommand: 'LocusSetCrudCommand',
     SeqClassificationCrudCommand: 'SeqClassificationCrudCommand',
-    UserInvitationCrudCommand: 'UserInvitationCrudCommand',
-    UpdateUserOwnOrganizationCommand: 'UpdateUserOwnOrganizationCommand',
-    IdentifierIssuerCrudCommand: 'IdentifierIssuerCrudCommand',
-    OrganizationSetMemberCrudCommand: 'OrganizationSetMemberCrudCommand',
-    RefAlleleCrudCommand: 'RefAlleleCrudCommand',
-    OrganizationAdminPolicyCrudCommand: 'OrganizationAdminPolicyCrudCommand',
-    OrganizationSetCrudCommand: 'OrganizationSetCrudCommand',
-    InviteUserCommand: 'InviteUserCommand',
-    TreeAlgorithmClassCrudCommand: 'TreeAlgorithmClassCrudCommand',
-    RetrieveOrganizationsUnderAdminCommand: 'RetrieveOrganizationsUnderAdminCommand',
-    RegisterInvitedUserCommand: 'RegisterInvitedUserCommand',
-    OrganizationIdentifierIssuerLinkUpdateAssociationCommand: 'OrganizationIdentifierIssuerLinkUpdateAssociationCommand',
-    RefSeqCrudCommand: 'RefSeqCrudCommand',
-    OrganizationIdentifierIssuerLinkCrudCommand: 'OrganizationIdentifierIssuerLinkCrudCommand',
-    SampleDataCollectionLinkCrudCommand: 'SampleDataCollectionLinkCrudCommand',
+    ReadSetCrudCommand: 'ReadSetCrudCommand',
+    SeqCrudCommand: 'SeqCrudCommand',
+    RetrieveInviteUserConstraintsCommand: 'RetrieveInviteUserConstraintsCommand',
     LocusCrudCommand: 'LocusCrudCommand',
-    SiteCrudCommand: 'SiteCrudCommand',
-    OutageCrudCommand: 'OutageCrudCommand',
-    SeqCategorySetCrudCommand: 'SeqCategorySetCrudCommand',
-    GetIdentityProvidersCommand: 'GetIdentityProvidersCommand',
-    DataCollectionSetMemberCrudCommand: 'DataCollectionSetMemberCrudCommand',
-    TaxonSetMemberCrudCommand: 'TaxonSetMemberCrudCommand',
     TaxonSetCrudCommand: 'TaxonSetCrudCommand',
-    TreeAlgorithmCrudCommand: 'TreeAlgorithmCrudCommand',
-    SeqDistanceCrudCommand: 'SeqDistanceCrudCommand',
-    SeqIdentifierCrudCommand: 'SeqIdentifierCrudCommand',
-    FileCrudCommand: 'FileCrudCommand',
-    CreateFileCommand: 'CreateFileCommand',
-    AstPredictionCrudCommand: 'AstPredictionCrudCommand',
-    AlleleCrudCommand: 'AlleleCrudCommand',
+    AstMeasurementCrudCommand: 'AstMeasurementCrudCommand',
+    SampleDataCollectionLinkCrudCommand: 'SampleDataCollectionLinkCrudCommand',
+    DataCollectionSetCrudCommand: 'DataCollectionSetCrudCommand',
+    DataCollectionSetDataCollectionUpdateAssociationCommand: 'DataCollectionSetDataCollectionUpdateAssociationCommand',
+    RegisterInvitedUserCommand: 'RegisterInvitedUserCommand',
+    OrganizationSetCrudCommand: 'OrganizationSetCrudCommand',
+    SeqProfileIdentifierCrudCommand: 'SeqProfileIdentifierCrudCommand',
+    TaxonCrudCommand: 'TaxonCrudCommand',
+    RetrieveOrganizationAdminNameEmailsCommand: 'RetrieveOrganizationAdminNameEmailsCommand',
+    GetIdentityProvidersCommand: 'GetIdentityProvidersCommand',
+    RetrieveSubRolesCommand: 'RetrieveSubRolesCommand',
+    RetrieveSeqDistanceLastModifiedCommand: 'RetrieveSeqDistanceLastModifiedCommand',
+    RetrieveBestSeqProfilePerSampleCommand: 'RetrieveBestSeqProfilePerSampleCommand',
+    RetrieveBestSeqPerSampleCommand: 'RetrieveBestSeqPerSampleCommand',
+    RetrieveSeqFastaCommand: 'RetrieveSeqFastaCommand',
+    UpdateUserCommand: 'UpdateUserCommand',
     SeqCategoryCrudCommand: 'SeqCategoryCrudCommand',
-    ProtocolCrudCommand: 'ProtocolCrudCommand',
-    CalculatePhylogeneticTreeCommand: 'CalculatePhylogeneticTreeCommand',
+    ProtocolSetCrudCommand: 'ProtocolSetCrudCommand',
+    SeqTaxonomyCrudCommand: 'SeqTaxonomyCrudCommand',
+    UserCrudCommand: 'UserCrudCommand',
+    InviteUserCommand: 'InviteUserCommand',
+    OutageCrudCommand: 'OutageCrudCommand',
+    SampleCrudCommand: 'SampleCrudCommand',
 } as const;
 
 export type SeqDbCommandName = typeof SeqDbCommandName[keyof typeof SeqDbCommandName];
@@ -411,6 +413,8 @@ export interface SeqDbEtlLogItem {
      */
     'message': string;
     'severity': SeqDbLogLevel;
+    'source'?: string | null;
+    'target'?: string | null;
 }
 
 
@@ -576,7 +580,7 @@ export interface SeqDbGenEpixSeqdbDomainModelSeqTreeTreeAlgorithm {
 export interface SeqDbHTTPValidationError {
     'detail'?: Array<SeqDbValidationError>;
 }
-export interface SeqDbHealthReponseBody {
+export interface SeqDbHealthResponseBody {
     'status': SeqDbHealthStatus;
 }
 
@@ -833,6 +837,29 @@ export interface SeqDbOrganization {
      */
     'name': string;
     'description'?: string | null;
+}
+/**
+ * Defines whether a user is an admin for an organization. If so, and if the user has the role ORG_ADMIN, they will be able to: 1) Invite new users of this organization. 2) Manage the case and case set access and share rights of these users.  The user will not be able to: 1) Perform the operations above for any other organization for which there    is no corresponding admin policy. 2) Set the case and case set access and share case rights for the    organization itself. This has to be done by a user with role APP_ADMIN.  Users with role APP_ADMIN or above do not require an admin policy to perform these actions. They are de facto organization admin for all organizations.
+ */
+export interface SeqDbOrganizationAdminPolicy {
+    'created_at'?: string | null;
+    'modified_at'?: string | null;
+    'modified_by'?: string | null;
+    'id'?: string | null;
+    /**
+     * The ID of the organization. FOREIGN KEY
+     */
+    'organization_id': string;
+    'organization'?: SeqDbOrganization;
+    /**
+     * The ID of the user. FOREIGN KEY
+     */
+    'user_id': string;
+    'user'?: SeqDbUser;
+    /**
+     * Whether the user is an admin for the organization
+     */
+    'is_active': boolean;
 }
 export interface SeqDbOrganizationContacts {
     'organization': SeqDbOrganization;
@@ -1264,6 +1291,17 @@ export interface SeqDbRefSeq {
 }
 
 
+export interface SeqDbRetrieveBestSeqPerSampleRequestBody {
+    'protocol_ids'?: Array<string> | null;
+    'sample_ids': Array<string> | null;
+}
+export interface SeqDbRetrieveBestSeqProfilePerSampleRequestBody {
+    /**
+     * The IDs of the sequence profile protocols to search among.
+     */
+    'protocol_ids': Array<string>;
+    'sample_ids': Array<string> | null;
+}
 export interface SeqDbRetrieveOrganizationContactsRequestBody {
     /**
      * The ID of the organization to retrieve contacts for.
@@ -2497,6 +2535,743 @@ export interface SeqDbValidationError {
  * The number to match.
  */
 export type SeqDbValue = number | string;
+
+
+/**
+ * AbacApi - axios parameter creator
+ */
+const SeqDbAbacApiAxiosParamCreator = function (configuration?: Configuration) {
+    return {
+        /**
+         * Manage policies that define which organizations an administrator can manage across the platform.
+         * @summary SeqDbOrganization Admin Policies  Delete All
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        organizationAdminPoliciesDeleteAll: async (options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
+            const localVarPath = `/v1/organization_admin_policies`;
+            // use dummy base URL string because the URL constructor only accepts absolute URLs.
+            const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
+            let baseOptions;
+            if (configuration) {
+                baseOptions = configuration.baseOptions;
+            }
+
+            const localVarRequestOptions = { method: 'DELETE', ...baseOptions, ...options};
+            const localVarHeaderParameter = {} as any;
+            const localVarQueryParameter = {} as any;
+
+            localVarHeaderParameter['Accept'] = 'application/json';
+
+            setSearchParams(localVarUrlObj, localVarQueryParameter);
+            let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
+            localVarRequestOptions.headers = {...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers};
+
+            return {
+                url: toPathString(localVarUrlObj),
+                options: localVarRequestOptions,
+            };
+        },
+        /**
+         * Manage policies that define which organizations an administrator can manage across the platform.
+         * @summary SeqDbOrganization Admin Policies  Delete One
+         * @param {any} objectId 
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        organizationAdminPoliciesDeleteOne: async (objectId: any, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
+            // verify required parameter 'objectId' is not null or undefined
+            assertParamExists('organizationAdminPoliciesDeleteOne', 'objectId', objectId)
+            const localVarPath = `/v1/organization_admin_policies/{object_id}`
+                .replace(`{${"object_id"}}`, encodeURIComponent(String(objectId)));
+            // use dummy base URL string because the URL constructor only accepts absolute URLs.
+            const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
+            let baseOptions;
+            if (configuration) {
+                baseOptions = configuration.baseOptions;
+            }
+
+            const localVarRequestOptions = { method: 'DELETE', ...baseOptions, ...options};
+            const localVarHeaderParameter = {} as any;
+            const localVarQueryParameter = {} as any;
+
+            localVarHeaderParameter['Accept'] = 'application/json';
+
+            setSearchParams(localVarUrlObj, localVarQueryParameter);
+            let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
+            localVarRequestOptions.headers = {...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers};
+
+            return {
+                url: toPathString(localVarUrlObj),
+                options: localVarRequestOptions,
+            };
+        },
+        /**
+         * Manage policies that define which organizations an administrator can manage across the platform.
+         * @summary SeqDbOrganization Admin Policies  Delete Some
+         * @param {string} ids 
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        organizationAdminPoliciesDeleteSome: async (ids: string, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
+            // verify required parameter 'ids' is not null or undefined
+            assertParamExists('organizationAdminPoliciesDeleteSome', 'ids', ids)
+            const localVarPath = `/v1/organization_admin_policies/batch`;
+            // use dummy base URL string because the URL constructor only accepts absolute URLs.
+            const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
+            let baseOptions;
+            if (configuration) {
+                baseOptions = configuration.baseOptions;
+            }
+
+            const localVarRequestOptions = { method: 'DELETE', ...baseOptions, ...options};
+            const localVarHeaderParameter = {} as any;
+            const localVarQueryParameter = {} as any;
+
+            if (ids !== undefined) {
+                localVarQueryParameter['ids'] = ids;
+            }
+
+            localVarHeaderParameter['Accept'] = 'application/json';
+
+            setSearchParams(localVarUrlObj, localVarQueryParameter);
+            let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
+            localVarRequestOptions.headers = {...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers};
+
+            return {
+                url: toPathString(localVarUrlObj),
+                options: localVarRequestOptions,
+            };
+        },
+        /**
+         * Manage policies that define which organizations an administrator can manage across the platform.
+         * @summary SeqDbOrganization Admin Policies  Get All
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        organizationAdminPoliciesGetAll: async (options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
+            const localVarPath = `/v1/organization_admin_policies`;
+            // use dummy base URL string because the URL constructor only accepts absolute URLs.
+            const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
+            let baseOptions;
+            if (configuration) {
+                baseOptions = configuration.baseOptions;
+            }
+
+            const localVarRequestOptions = { method: 'GET', ...baseOptions, ...options};
+            const localVarHeaderParameter = {} as any;
+            const localVarQueryParameter = {} as any;
+
+            localVarHeaderParameter['Accept'] = 'application/json';
+
+            setSearchParams(localVarUrlObj, localVarQueryParameter);
+            let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
+            localVarRequestOptions.headers = {...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers};
+
+            return {
+                url: toPathString(localVarUrlObj),
+                options: localVarRequestOptions,
+            };
+        },
+        /**
+         * Manage policies that define which organizations an administrator can manage across the platform.
+         * @summary SeqDbOrganization Admin Policies  Get One
+         * @param {string} objectId 
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        organizationAdminPoliciesGetOne: async (objectId: string, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
+            // verify required parameter 'objectId' is not null or undefined
+            assertParamExists('organizationAdminPoliciesGetOne', 'objectId', objectId)
+            const localVarPath = `/v1/organization_admin_policies/{object_id}`
+                .replace(`{${"object_id"}}`, encodeURIComponent(String(objectId)));
+            // use dummy base URL string because the URL constructor only accepts absolute URLs.
+            const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
+            let baseOptions;
+            if (configuration) {
+                baseOptions = configuration.baseOptions;
+            }
+
+            const localVarRequestOptions = { method: 'GET', ...baseOptions, ...options};
+            const localVarHeaderParameter = {} as any;
+            const localVarQueryParameter = {} as any;
+
+            localVarHeaderParameter['Accept'] = 'application/json';
+
+            setSearchParams(localVarUrlObj, localVarQueryParameter);
+            let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
+            localVarRequestOptions.headers = {...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers};
+
+            return {
+                url: toPathString(localVarUrlObj),
+                options: localVarRequestOptions,
+            };
+        },
+        /**
+         * Manage policies that define which organizations an administrator can manage across the platform.
+         * @summary SeqDbOrganization Admin Policies  Get Some
+         * @param {string} ids 
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        organizationAdminPoliciesGetSome: async (ids: string, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
+            // verify required parameter 'ids' is not null or undefined
+            assertParamExists('organizationAdminPoliciesGetSome', 'ids', ids)
+            const localVarPath = `/v1/organization_admin_policies/batch`;
+            // use dummy base URL string because the URL constructor only accepts absolute URLs.
+            const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
+            let baseOptions;
+            if (configuration) {
+                baseOptions = configuration.baseOptions;
+            }
+
+            const localVarRequestOptions = { method: 'GET', ...baseOptions, ...options};
+            const localVarHeaderParameter = {} as any;
+            const localVarQueryParameter = {} as any;
+
+            if (ids !== undefined) {
+                localVarQueryParameter['ids'] = ids;
+            }
+
+            localVarHeaderParameter['Accept'] = 'application/json';
+
+            setSearchParams(localVarUrlObj, localVarQueryParameter);
+            let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
+            localVarRequestOptions.headers = {...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers};
+
+            return {
+                url: toPathString(localVarUrlObj),
+                options: localVarRequestOptions,
+            };
+        },
+        /**
+         * Manage policies that define which organizations an administrator can manage across the platform.
+         * @summary SeqDbOrganization Admin Policies  Post One
+         * @param {SeqDbOrganizationAdminPolicy} organizationAdminPolicy 
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        organizationAdminPoliciesPostOne: async (organizationAdminPolicy: SeqDbOrganizationAdminPolicy, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
+            // verify required parameter 'organizationAdminPolicy' is not null or undefined
+            assertParamExists('organizationAdminPoliciesPostOne', 'organizationAdminPolicy', organizationAdminPolicy)
+            const localVarPath = `/v1/organization_admin_policies`;
+            // use dummy base URL string because the URL constructor only accepts absolute URLs.
+            const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
+            let baseOptions;
+            if (configuration) {
+                baseOptions = configuration.baseOptions;
+            }
+
+            const localVarRequestOptions = { method: 'POST', ...baseOptions, ...options};
+            const localVarHeaderParameter = {} as any;
+            const localVarQueryParameter = {} as any;
+
+            localVarHeaderParameter['Content-Type'] = 'application/json';
+            localVarHeaderParameter['Accept'] = 'application/json';
+
+            setSearchParams(localVarUrlObj, localVarQueryParameter);
+            let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
+            localVarRequestOptions.headers = {...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers};
+            localVarRequestOptions.data = serializeDataIfNeeded(organizationAdminPolicy, localVarRequestOptions, configuration)
+
+            return {
+                url: toPathString(localVarUrlObj),
+                options: localVarRequestOptions,
+            };
+        },
+        /**
+         * Manage policies that define which organizations an administrator can manage across the platform.
+         * @summary SeqDbOrganization Admin Policies  Post Query
+         * @param {SeqDbEpiFilter} filter 
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        organizationAdminPoliciesPostQuery: async (filter: SeqDbEpiFilter, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
+            // verify required parameter 'filter' is not null or undefined
+            assertParamExists('organizationAdminPoliciesPostQuery', 'filter', filter)
+            const localVarPath = `/v1/organization_admin_policies/query`;
+            // use dummy base URL string because the URL constructor only accepts absolute URLs.
+            const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
+            let baseOptions;
+            if (configuration) {
+                baseOptions = configuration.baseOptions;
+            }
+
+            const localVarRequestOptions = { method: 'POST', ...baseOptions, ...options};
+            const localVarHeaderParameter = {} as any;
+            const localVarQueryParameter = {} as any;
+
+            localVarHeaderParameter['Content-Type'] = 'application/json';
+            localVarHeaderParameter['Accept'] = 'application/json';
+
+            setSearchParams(localVarUrlObj, localVarQueryParameter);
+            let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
+            localVarRequestOptions.headers = {...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers};
+            localVarRequestOptions.data = serializeDataIfNeeded(filter, localVarRequestOptions, configuration)
+
+            return {
+                url: toPathString(localVarUrlObj),
+                options: localVarRequestOptions,
+            };
+        },
+        /**
+         * Manage policies that define which organizations an administrator can manage across the platform.
+         * @summary SeqDbOrganization Admin Policies  Post Query  Ids
+         * @param {SeqDbEpiFilter} filter 
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        organizationAdminPoliciesPostQueryIds: async (filter: SeqDbEpiFilter, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
+            // verify required parameter 'filter' is not null or undefined
+            assertParamExists('organizationAdminPoliciesPostQueryIds', 'filter', filter)
+            const localVarPath = `/v1/organization_admin_policies/query/ids`;
+            // use dummy base URL string because the URL constructor only accepts absolute URLs.
+            const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
+            let baseOptions;
+            if (configuration) {
+                baseOptions = configuration.baseOptions;
+            }
+
+            const localVarRequestOptions = { method: 'POST', ...baseOptions, ...options};
+            const localVarHeaderParameter = {} as any;
+            const localVarQueryParameter = {} as any;
+
+            localVarHeaderParameter['Content-Type'] = 'application/json';
+            localVarHeaderParameter['Accept'] = 'application/json';
+
+            setSearchParams(localVarUrlObj, localVarQueryParameter);
+            let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
+            localVarRequestOptions.headers = {...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers};
+            localVarRequestOptions.data = serializeDataIfNeeded(filter, localVarRequestOptions, configuration)
+
+            return {
+                url: toPathString(localVarUrlObj),
+                options: localVarRequestOptions,
+            };
+        },
+        /**
+         * Manage policies that define which organizations an administrator can manage across the platform.
+         * @summary SeqDbOrganization Admin Policies  Post Some
+         * @param {Array<SeqDbOrganizationAdminPolicy>} organizationAdminPolicy 
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        organizationAdminPoliciesPostSome: async (organizationAdminPolicy: Array<SeqDbOrganizationAdminPolicy>, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
+            // verify required parameter 'organizationAdminPolicy' is not null or undefined
+            assertParamExists('organizationAdminPoliciesPostSome', 'organizationAdminPolicy', organizationAdminPolicy)
+            const localVarPath = `/v1/organization_admin_policies/batch`;
+            // use dummy base URL string because the URL constructor only accepts absolute URLs.
+            const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
+            let baseOptions;
+            if (configuration) {
+                baseOptions = configuration.baseOptions;
+            }
+
+            const localVarRequestOptions = { method: 'POST', ...baseOptions, ...options};
+            const localVarHeaderParameter = {} as any;
+            const localVarQueryParameter = {} as any;
+
+            localVarHeaderParameter['Content-Type'] = 'application/json';
+            localVarHeaderParameter['Accept'] = 'application/json';
+
+            setSearchParams(localVarUrlObj, localVarQueryParameter);
+            let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
+            localVarRequestOptions.headers = {...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers};
+            localVarRequestOptions.data = serializeDataIfNeeded(organizationAdminPolicy, localVarRequestOptions, configuration)
+
+            return {
+                url: toPathString(localVarUrlObj),
+                options: localVarRequestOptions,
+            };
+        },
+        /**
+         * Manage policies that define which organizations an administrator can manage across the platform.
+         * @summary SeqDbOrganization Admin Policies  Put One
+         * @param {string} objectId 
+         * @param {SeqDbOrganizationAdminPolicy} organizationAdminPolicy 
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        organizationAdminPoliciesPutOne: async (objectId: string, organizationAdminPolicy: SeqDbOrganizationAdminPolicy, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
+            // verify required parameter 'objectId' is not null or undefined
+            assertParamExists('organizationAdminPoliciesPutOne', 'objectId', objectId)
+            // verify required parameter 'organizationAdminPolicy' is not null or undefined
+            assertParamExists('organizationAdminPoliciesPutOne', 'organizationAdminPolicy', organizationAdminPolicy)
+            const localVarPath = `/v1/organization_admin_policies/{object_id}`
+                .replace(`{${"object_id"}}`, encodeURIComponent(String(objectId)));
+            // use dummy base URL string because the URL constructor only accepts absolute URLs.
+            const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
+            let baseOptions;
+            if (configuration) {
+                baseOptions = configuration.baseOptions;
+            }
+
+            const localVarRequestOptions = { method: 'PUT', ...baseOptions, ...options};
+            const localVarHeaderParameter = {} as any;
+            const localVarQueryParameter = {} as any;
+
+            localVarHeaderParameter['Content-Type'] = 'application/json';
+            localVarHeaderParameter['Accept'] = 'application/json';
+
+            setSearchParams(localVarUrlObj, localVarQueryParameter);
+            let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
+            localVarRequestOptions.headers = {...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers};
+            localVarRequestOptions.data = serializeDataIfNeeded(organizationAdminPolicy, localVarRequestOptions, configuration)
+
+            return {
+                url: toPathString(localVarUrlObj),
+                options: localVarRequestOptions,
+            };
+        },
+        /**
+         * Manage policies that define which organizations an administrator can manage across the platform.
+         * @summary SeqDbOrganization Admin Policies  Put Some
+         * @param {Array<SeqDbOrganizationAdminPolicy>} organizationAdminPolicy 
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        organizationAdminPoliciesPutSome: async (organizationAdminPolicy: Array<SeqDbOrganizationAdminPolicy>, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
+            // verify required parameter 'organizationAdminPolicy' is not null or undefined
+            assertParamExists('organizationAdminPoliciesPutSome', 'organizationAdminPolicy', organizationAdminPolicy)
+            const localVarPath = `/v1/organization_admin_policies/batch`;
+            // use dummy base URL string because the URL constructor only accepts absolute URLs.
+            const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
+            let baseOptions;
+            if (configuration) {
+                baseOptions = configuration.baseOptions;
+            }
+
+            const localVarRequestOptions = { method: 'PUT', ...baseOptions, ...options};
+            const localVarHeaderParameter = {} as any;
+            const localVarQueryParameter = {} as any;
+
+            localVarHeaderParameter['Content-Type'] = 'application/json';
+            localVarHeaderParameter['Accept'] = 'application/json';
+
+            setSearchParams(localVarUrlObj, localVarQueryParameter);
+            let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
+            localVarRequestOptions.headers = {...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers};
+            localVarRequestOptions.data = serializeDataIfNeeded(organizationAdminPolicy, localVarRequestOptions, configuration)
+
+            return {
+                url: toPathString(localVarUrlObj),
+                options: localVarRequestOptions,
+            };
+        },
+    }
+};
+
+/**
+ * AbacApi - functional programming interface
+ */
+const SeqDbAbacApiFp = function(configuration?: Configuration) {
+    const localVarAxiosParamCreator = SeqDbAbacApiAxiosParamCreator(configuration)
+    return {
+        /**
+         * Manage policies that define which organizations an administrator can manage across the platform.
+         * @summary SeqDbOrganization Admin Policies  Delete All
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        async organizationAdminPoliciesDeleteAll(options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<any>> {
+            const localVarAxiosArgs = await localVarAxiosParamCreator.organizationAdminPoliciesDeleteAll(options);
+            const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
+            const localVarOperationServerBasePath = operationServerMap['AbacApi.organizationAdminPoliciesDeleteAll']?.[localVarOperationServerIndex]?.url;
+            return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
+        },
+        /**
+         * Manage policies that define which organizations an administrator can manage across the platform.
+         * @summary SeqDbOrganization Admin Policies  Delete One
+         * @param {any} objectId 
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        async organizationAdminPoliciesDeleteOne(objectId: any, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<string>> {
+            const localVarAxiosArgs = await localVarAxiosParamCreator.organizationAdminPoliciesDeleteOne(objectId, options);
+            const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
+            const localVarOperationServerBasePath = operationServerMap['AbacApi.organizationAdminPoliciesDeleteOne']?.[localVarOperationServerIndex]?.url;
+            return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
+        },
+        /**
+         * Manage policies that define which organizations an administrator can manage across the platform.
+         * @summary SeqDbOrganization Admin Policies  Delete Some
+         * @param {string} ids 
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        async organizationAdminPoliciesDeleteSome(ids: string, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<Array<string>>> {
+            const localVarAxiosArgs = await localVarAxiosParamCreator.organizationAdminPoliciesDeleteSome(ids, options);
+            const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
+            const localVarOperationServerBasePath = operationServerMap['AbacApi.organizationAdminPoliciesDeleteSome']?.[localVarOperationServerIndex]?.url;
+            return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
+        },
+        /**
+         * Manage policies that define which organizations an administrator can manage across the platform.
+         * @summary SeqDbOrganization Admin Policies  Get All
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        async organizationAdminPoliciesGetAll(options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<Array<SeqDbOrganizationAdminPolicy>>> {
+            const localVarAxiosArgs = await localVarAxiosParamCreator.organizationAdminPoliciesGetAll(options);
+            const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
+            const localVarOperationServerBasePath = operationServerMap['AbacApi.organizationAdminPoliciesGetAll']?.[localVarOperationServerIndex]?.url;
+            return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
+        },
+        /**
+         * Manage policies that define which organizations an administrator can manage across the platform.
+         * @summary SeqDbOrganization Admin Policies  Get One
+         * @param {string} objectId 
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        async organizationAdminPoliciesGetOne(objectId: string, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<SeqDbOrganizationAdminPolicy>> {
+            const localVarAxiosArgs = await localVarAxiosParamCreator.organizationAdminPoliciesGetOne(objectId, options);
+            const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
+            const localVarOperationServerBasePath = operationServerMap['AbacApi.organizationAdminPoliciesGetOne']?.[localVarOperationServerIndex]?.url;
+            return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
+        },
+        /**
+         * Manage policies that define which organizations an administrator can manage across the platform.
+         * @summary SeqDbOrganization Admin Policies  Get Some
+         * @param {string} ids 
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        async organizationAdminPoliciesGetSome(ids: string, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<Array<SeqDbOrganizationAdminPolicy>>> {
+            const localVarAxiosArgs = await localVarAxiosParamCreator.organizationAdminPoliciesGetSome(ids, options);
+            const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
+            const localVarOperationServerBasePath = operationServerMap['AbacApi.organizationAdminPoliciesGetSome']?.[localVarOperationServerIndex]?.url;
+            return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
+        },
+        /**
+         * Manage policies that define which organizations an administrator can manage across the platform.
+         * @summary SeqDbOrganization Admin Policies  Post One
+         * @param {SeqDbOrganizationAdminPolicy} organizationAdminPolicy 
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        async organizationAdminPoliciesPostOne(organizationAdminPolicy: SeqDbOrganizationAdminPolicy, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<SeqDbOrganizationAdminPolicy>> {
+            const localVarAxiosArgs = await localVarAxiosParamCreator.organizationAdminPoliciesPostOne(organizationAdminPolicy, options);
+            const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
+            const localVarOperationServerBasePath = operationServerMap['AbacApi.organizationAdminPoliciesPostOne']?.[localVarOperationServerIndex]?.url;
+            return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
+        },
+        /**
+         * Manage policies that define which organizations an administrator can manage across the platform.
+         * @summary SeqDbOrganization Admin Policies  Post Query
+         * @param {SeqDbEpiFilter} filter 
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        async organizationAdminPoliciesPostQuery(filter: SeqDbEpiFilter, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<Array<SeqDbOrganizationAdminPolicy>>> {
+            const localVarAxiosArgs = await localVarAxiosParamCreator.organizationAdminPoliciesPostQuery(filter, options);
+            const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
+            const localVarOperationServerBasePath = operationServerMap['AbacApi.organizationAdminPoliciesPostQuery']?.[localVarOperationServerIndex]?.url;
+            return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
+        },
+        /**
+         * Manage policies that define which organizations an administrator can manage across the platform.
+         * @summary SeqDbOrganization Admin Policies  Post Query  Ids
+         * @param {SeqDbEpiFilter} filter 
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        async organizationAdminPoliciesPostQueryIds(filter: SeqDbEpiFilter, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<Array<string>>> {
+            const localVarAxiosArgs = await localVarAxiosParamCreator.organizationAdminPoliciesPostQueryIds(filter, options);
+            const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
+            const localVarOperationServerBasePath = operationServerMap['AbacApi.organizationAdminPoliciesPostQueryIds']?.[localVarOperationServerIndex]?.url;
+            return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
+        },
+        /**
+         * Manage policies that define which organizations an administrator can manage across the platform.
+         * @summary SeqDbOrganization Admin Policies  Post Some
+         * @param {Array<SeqDbOrganizationAdminPolicy>} organizationAdminPolicy 
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        async organizationAdminPoliciesPostSome(organizationAdminPolicy: Array<SeqDbOrganizationAdminPolicy>, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<Array<SeqDbOrganizationAdminPolicy>>> {
+            const localVarAxiosArgs = await localVarAxiosParamCreator.organizationAdminPoliciesPostSome(organizationAdminPolicy, options);
+            const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
+            const localVarOperationServerBasePath = operationServerMap['AbacApi.organizationAdminPoliciesPostSome']?.[localVarOperationServerIndex]?.url;
+            return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
+        },
+        /**
+         * Manage policies that define which organizations an administrator can manage across the platform.
+         * @summary SeqDbOrganization Admin Policies  Put One
+         * @param {string} objectId 
+         * @param {SeqDbOrganizationAdminPolicy} organizationAdminPolicy 
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        async organizationAdminPoliciesPutOne(objectId: string, organizationAdminPolicy: SeqDbOrganizationAdminPolicy, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<SeqDbOrganizationAdminPolicy>> {
+            const localVarAxiosArgs = await localVarAxiosParamCreator.organizationAdminPoliciesPutOne(objectId, organizationAdminPolicy, options);
+            const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
+            const localVarOperationServerBasePath = operationServerMap['AbacApi.organizationAdminPoliciesPutOne']?.[localVarOperationServerIndex]?.url;
+            return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
+        },
+        /**
+         * Manage policies that define which organizations an administrator can manage across the platform.
+         * @summary SeqDbOrganization Admin Policies  Put Some
+         * @param {Array<SeqDbOrganizationAdminPolicy>} organizationAdminPolicy 
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        async organizationAdminPoliciesPutSome(organizationAdminPolicy: Array<SeqDbOrganizationAdminPolicy>, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<Array<SeqDbOrganizationAdminPolicy>>> {
+            const localVarAxiosArgs = await localVarAxiosParamCreator.organizationAdminPoliciesPutSome(organizationAdminPolicy, options);
+            const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
+            const localVarOperationServerBasePath = operationServerMap['AbacApi.organizationAdminPoliciesPutSome']?.[localVarOperationServerIndex]?.url;
+            return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
+        },
+    }
+};
+
+/**
+ * AbacApi - factory interface
+ */
+
+/**
+ * SeqDbAbacApi - object-oriented interface
+
+ */
+export class SeqDbAbacApi extends SeqDbBaseAPI {
+  private static __instance: SeqDbAbacApi;
+  public static get instance(): SeqDbAbacApi {
+    SeqDbAbacApi.__instance = SeqDbAbacApi.__instance || new SeqDbAbacApi();
+    return SeqDbAbacApi.__instance;
+  }
+
+    /**
+     * Manage policies that define which organizations an administrator can manage across the platform.
+     * @summary SeqDbOrganization Admin Policies  Delete All
+     * @param {*} [options] Override http request option.
+     * @throws {RequiredError}
+     */
+    public organizationAdminPoliciesDeleteAll(options?: RawAxiosRequestConfig) {
+        return SeqDbAbacApiFp(this.configuration).organizationAdminPoliciesDeleteAll(options).then((request) => request(this.axios, this.configuration.baseUrl));
+    }
+
+    /**
+     * Manage policies that define which organizations an administrator can manage across the platform.
+     * @summary SeqDbOrganization Admin Policies  Delete One
+     * @param {any} objectId 
+     * @param {*} [options] Override http request option.
+     * @throws {RequiredError}
+     */
+    public organizationAdminPoliciesDeleteOne(objectId: any, options?: RawAxiosRequestConfig) {
+        return SeqDbAbacApiFp(this.configuration).organizationAdminPoliciesDeleteOne(objectId, options).then((request) => request(this.axios, this.configuration.baseUrl));
+    }
+
+    /**
+     * Manage policies that define which organizations an administrator can manage across the platform.
+     * @summary SeqDbOrganization Admin Policies  Delete Some
+     * @param {string} ids 
+     * @param {*} [options] Override http request option.
+     * @throws {RequiredError}
+     */
+    public organizationAdminPoliciesDeleteSome(ids: string, options?: RawAxiosRequestConfig) {
+        return SeqDbAbacApiFp(this.configuration).organizationAdminPoliciesDeleteSome(ids, options).then((request) => request(this.axios, this.configuration.baseUrl));
+    }
+
+    /**
+     * Manage policies that define which organizations an administrator can manage across the platform.
+     * @summary SeqDbOrganization Admin Policies  Get All
+     * @param {*} [options] Override http request option.
+     * @throws {RequiredError}
+     */
+    public organizationAdminPoliciesGetAll(options?: RawAxiosRequestConfig) {
+        return SeqDbAbacApiFp(this.configuration).organizationAdminPoliciesGetAll(options).then((request) => request(this.axios, this.configuration.baseUrl));
+    }
+
+    /**
+     * Manage policies that define which organizations an administrator can manage across the platform.
+     * @summary SeqDbOrganization Admin Policies  Get One
+     * @param {string} objectId 
+     * @param {*} [options] Override http request option.
+     * @throws {RequiredError}
+     */
+    public organizationAdminPoliciesGetOne(objectId: string, options?: RawAxiosRequestConfig) {
+        return SeqDbAbacApiFp(this.configuration).organizationAdminPoliciesGetOne(objectId, options).then((request) => request(this.axios, this.configuration.baseUrl));
+    }
+
+    /**
+     * Manage policies that define which organizations an administrator can manage across the platform.
+     * @summary SeqDbOrganization Admin Policies  Get Some
+     * @param {string} ids 
+     * @param {*} [options] Override http request option.
+     * @throws {RequiredError}
+     */
+    public organizationAdminPoliciesGetSome(ids: string, options?: RawAxiosRequestConfig) {
+        return SeqDbAbacApiFp(this.configuration).organizationAdminPoliciesGetSome(ids, options).then((request) => request(this.axios, this.configuration.baseUrl));
+    }
+
+    /**
+     * Manage policies that define which organizations an administrator can manage across the platform.
+     * @summary SeqDbOrganization Admin Policies  Post One
+     * @param {SeqDbOrganizationAdminPolicy} organizationAdminPolicy 
+     * @param {*} [options] Override http request option.
+     * @throws {RequiredError}
+     */
+    public organizationAdminPoliciesPostOne(organizationAdminPolicy: SeqDbOrganizationAdminPolicy, options?: RawAxiosRequestConfig) {
+        return SeqDbAbacApiFp(this.configuration).organizationAdminPoliciesPostOne(organizationAdminPolicy, options).then((request) => request(this.axios, this.configuration.baseUrl));
+    }
+
+    /**
+     * Manage policies that define which organizations an administrator can manage across the platform.
+     * @summary SeqDbOrganization Admin Policies  Post Query
+     * @param {SeqDbEpiFilter} filter 
+     * @param {*} [options] Override http request option.
+     * @throws {RequiredError}
+     */
+    public organizationAdminPoliciesPostQuery(filter: SeqDbEpiFilter, options?: RawAxiosRequestConfig) {
+        return SeqDbAbacApiFp(this.configuration).organizationAdminPoliciesPostQuery(filter, options).then((request) => request(this.axios, this.configuration.baseUrl));
+    }
+
+    /**
+     * Manage policies that define which organizations an administrator can manage across the platform.
+     * @summary SeqDbOrganization Admin Policies  Post Query  Ids
+     * @param {SeqDbEpiFilter} filter 
+     * @param {*} [options] Override http request option.
+     * @throws {RequiredError}
+     */
+    public organizationAdminPoliciesPostQueryIds(filter: SeqDbEpiFilter, options?: RawAxiosRequestConfig) {
+        return SeqDbAbacApiFp(this.configuration).organizationAdminPoliciesPostQueryIds(filter, options).then((request) => request(this.axios, this.configuration.baseUrl));
+    }
+
+    /**
+     * Manage policies that define which organizations an administrator can manage across the platform.
+     * @summary SeqDbOrganization Admin Policies  Post Some
+     * @param {Array<SeqDbOrganizationAdminPolicy>} organizationAdminPolicy 
+     * @param {*} [options] Override http request option.
+     * @throws {RequiredError}
+     */
+    public organizationAdminPoliciesPostSome(organizationAdminPolicy: Array<SeqDbOrganizationAdminPolicy>, options?: RawAxiosRequestConfig) {
+        return SeqDbAbacApiFp(this.configuration).organizationAdminPoliciesPostSome(organizationAdminPolicy, options).then((request) => request(this.axios, this.configuration.baseUrl));
+    }
+
+    /**
+     * Manage policies that define which organizations an administrator can manage across the platform.
+     * @summary SeqDbOrganization Admin Policies  Put One
+     * @param {string} objectId 
+     * @param {SeqDbOrganizationAdminPolicy} organizationAdminPolicy 
+     * @param {*} [options] Override http request option.
+     * @throws {RequiredError}
+     */
+    public organizationAdminPoliciesPutOne(objectId: string, organizationAdminPolicy: SeqDbOrganizationAdminPolicy, options?: RawAxiosRequestConfig) {
+        return SeqDbAbacApiFp(this.configuration).organizationAdminPoliciesPutOne(objectId, organizationAdminPolicy, options).then((request) => request(this.axios, this.configuration.baseUrl));
+    }
+
+    /**
+     * Manage policies that define which organizations an administrator can manage across the platform.
+     * @summary SeqDbOrganization Admin Policies  Put Some
+     * @param {Array<SeqDbOrganizationAdminPolicy>} organizationAdminPolicy 
+     * @param {*} [options] Override http request option.
+     * @throws {RequiredError}
+     */
+    public organizationAdminPoliciesPutSome(organizationAdminPolicy: Array<SeqDbOrganizationAdminPolicy>, options?: RawAxiosRequestConfig) {
+        return SeqDbAbacApiFp(this.configuration).organizationAdminPoliciesPutSome(organizationAdminPolicy, options).then((request) => request(this.axios, this.configuration.baseUrl));
+    }
+}
+
 
 
 /**
@@ -18409,6 +19184,76 @@ const SeqDbSeqApiAxiosParamCreator = function (configuration?: Configuration) {
             };
         },
         /**
+         * Retrieve the best SeqDbSeq ID for each sample among the given sample IDs and protocol IDs, and using a particular ranking strategy. Returns a dict[sample_id, seq_id].
+         * @summary Retrievebestseqpersample
+         * @param {SeqDbRetrieveBestSeqPerSampleRequestBody} retrieveBestSeqPerSampleRequestBody 
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        retrieveBestSeqPerSample: async (retrieveBestSeqPerSampleRequestBody: SeqDbRetrieveBestSeqPerSampleRequestBody, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
+            // verify required parameter 'retrieveBestSeqPerSampleRequestBody' is not null or undefined
+            assertParamExists('retrieveBestSeqPerSample', 'retrieveBestSeqPerSampleRequestBody', retrieveBestSeqPerSampleRequestBody)
+            const localVarPath = `/v1/retrieve/best_seq_per_sample`;
+            // use dummy base URL string because the URL constructor only accepts absolute URLs.
+            const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
+            let baseOptions;
+            if (configuration) {
+                baseOptions = configuration.baseOptions;
+            }
+
+            const localVarRequestOptions = { method: 'POST', ...baseOptions, ...options};
+            const localVarHeaderParameter = {} as any;
+            const localVarQueryParameter = {} as any;
+
+            localVarHeaderParameter['Content-Type'] = 'application/json';
+            localVarHeaderParameter['Accept'] = 'application/json';
+
+            setSearchParams(localVarUrlObj, localVarQueryParameter);
+            let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
+            localVarRequestOptions.headers = {...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers};
+            localVarRequestOptions.data = serializeDataIfNeeded(retrieveBestSeqPerSampleRequestBody, localVarRequestOptions, configuration)
+
+            return {
+                url: toPathString(localVarUrlObj),
+                options: localVarRequestOptions,
+            };
+        },
+        /**
+         * Retrieve the best SeqDbSeqProfile ID for each sample among the given sample IDs and protocol IDs, and using a particular ranking strategy. Returns a dict[sample_id, seq_profile_id].
+         * @summary Retrievebestseqprofilepersample
+         * @param {SeqDbRetrieveBestSeqProfilePerSampleRequestBody} retrieveBestSeqProfilePerSampleRequestBody 
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        retrieveBestSeqProfilePerSample: async (retrieveBestSeqProfilePerSampleRequestBody: SeqDbRetrieveBestSeqProfilePerSampleRequestBody, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
+            // verify required parameter 'retrieveBestSeqProfilePerSampleRequestBody' is not null or undefined
+            assertParamExists('retrieveBestSeqProfilePerSample', 'retrieveBestSeqProfilePerSampleRequestBody', retrieveBestSeqProfilePerSampleRequestBody)
+            const localVarPath = `/v1/retrieve/best_seq_profile_per_sample`;
+            // use dummy base URL string because the URL constructor only accepts absolute URLs.
+            const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
+            let baseOptions;
+            if (configuration) {
+                baseOptions = configuration.baseOptions;
+            }
+
+            const localVarRequestOptions = { method: 'POST', ...baseOptions, ...options};
+            const localVarHeaderParameter = {} as any;
+            const localVarQueryParameter = {} as any;
+
+            localVarHeaderParameter['Content-Type'] = 'application/json';
+            localVarHeaderParameter['Accept'] = 'application/json';
+
+            setSearchParams(localVarUrlObj, localVarQueryParameter);
+            let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
+            localVarRequestOptions.headers = {...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers};
+            localVarRequestOptions.data = serializeDataIfNeeded(retrieveBestSeqProfilePerSampleRequestBody, localVarRequestOptions, configuration)
+
+            return {
+                url: toPathString(localVarUrlObj),
+                options: localVarRequestOptions,
+            };
+        },
+        /**
          * Calculate a phylogenetic tree based on the given protocol, tree algorithm, and query profile IDs. The returned tree is expected to contain the query profiles as well as any additional profiles that are within the maximum distance threshold specified in the protocol for at least one of the query profiles. The leaf names in the tree correspond to the profile IDs, but can optionally be replaced with custom leaf names provided in the command (e.g. for better readability of the tree).
          * @summary Retrievephylogenetictree
          * @param {SeqDbCalculatePhylogeneticTreeRequestBody} calculatePhylogeneticTreeRequestBody 
@@ -27939,6 +28784,32 @@ const SeqDbSeqApiFp = function(configuration?: Configuration) {
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
         /**
+         * Retrieve the best SeqDbSeq ID for each sample among the given sample IDs and protocol IDs, and using a particular ranking strategy. Returns a dict[sample_id, seq_id].
+         * @summary Retrievebestseqpersample
+         * @param {SeqDbRetrieveBestSeqPerSampleRequestBody} retrieveBestSeqPerSampleRequestBody 
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        async retrieveBestSeqPerSample(retrieveBestSeqPerSampleRequestBody: SeqDbRetrieveBestSeqPerSampleRequestBody, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<{ [key: string]: string; }>> {
+            const localVarAxiosArgs = await localVarAxiosParamCreator.retrieveBestSeqPerSample(retrieveBestSeqPerSampleRequestBody, options);
+            const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
+            const localVarOperationServerBasePath = operationServerMap['SeqApi.retrieveBestSeqPerSample']?.[localVarOperationServerIndex]?.url;
+            return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
+        },
+        /**
+         * Retrieve the best SeqDbSeqProfile ID for each sample among the given sample IDs and protocol IDs, and using a particular ranking strategy. Returns a dict[sample_id, seq_profile_id].
+         * @summary Retrievebestseqprofilepersample
+         * @param {SeqDbRetrieveBestSeqProfilePerSampleRequestBody} retrieveBestSeqProfilePerSampleRequestBody 
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        async retrieveBestSeqProfilePerSample(retrieveBestSeqProfilePerSampleRequestBody: SeqDbRetrieveBestSeqProfilePerSampleRequestBody, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<{ [key: string]: string; }>> {
+            const localVarAxiosArgs = await localVarAxiosParamCreator.retrieveBestSeqProfilePerSample(retrieveBestSeqProfilePerSampleRequestBody, options);
+            const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
+            const localVarOperationServerBasePath = operationServerMap['SeqApi.retrieveBestSeqProfilePerSample']?.[localVarOperationServerIndex]?.url;
+            return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
+        },
+        /**
          * Calculate a phylogenetic tree based on the given protocol, tree algorithm, and query profile IDs. The returned tree is expected to contain the query profiles as well as any additional profiles that are within the maximum distance threshold specified in the protocol for at least one of the query profiles. The leaf names in the tree correspond to the profile IDs, but can optionally be replaced with custom leaf names provided in the command (e.g. for better readability of the tree).
          * @summary Retrievephylogenetictree
          * @param {SeqDbCalculatePhylogeneticTreeRequestBody} calculatePhylogeneticTreeRequestBody 
@@ -32530,6 +33401,28 @@ export class SeqDbSeqApi extends SeqDbBaseAPI {
     }
 
     /**
+     * Retrieve the best SeqDbSeq ID for each sample among the given sample IDs and protocol IDs, and using a particular ranking strategy. Returns a dict[sample_id, seq_id].
+     * @summary Retrievebestseqpersample
+     * @param {SeqDbRetrieveBestSeqPerSampleRequestBody} retrieveBestSeqPerSampleRequestBody 
+     * @param {*} [options] Override http request option.
+     * @throws {RequiredError}
+     */
+    public retrieveBestSeqPerSample(retrieveBestSeqPerSampleRequestBody: SeqDbRetrieveBestSeqPerSampleRequestBody, options?: RawAxiosRequestConfig) {
+        return SeqDbSeqApiFp(this.configuration).retrieveBestSeqPerSample(retrieveBestSeqPerSampleRequestBody, options).then((request) => request(this.axios, this.configuration.baseUrl));
+    }
+
+    /**
+     * Retrieve the best SeqDbSeqProfile ID for each sample among the given sample IDs and protocol IDs, and using a particular ranking strategy. Returns a dict[sample_id, seq_profile_id].
+     * @summary Retrievebestseqprofilepersample
+     * @param {SeqDbRetrieveBestSeqProfilePerSampleRequestBody} retrieveBestSeqProfilePerSampleRequestBody 
+     * @param {*} [options] Override http request option.
+     * @throws {RequiredError}
+     */
+    public retrieveBestSeqProfilePerSample(retrieveBestSeqProfilePerSampleRequestBody: SeqDbRetrieveBestSeqProfilePerSampleRequestBody, options?: RawAxiosRequestConfig) {
+        return SeqDbSeqApiFp(this.configuration).retrieveBestSeqProfilePerSample(retrieveBestSeqProfilePerSampleRequestBody, options).then((request) => request(this.axios, this.configuration.baseUrl));
+    }
+
+    /**
      * Calculate a phylogenetic tree based on the given protocol, tree algorithm, and query profile IDs. The returned tree is expected to contain the query profiles as well as any additional profiles that are within the maximum distance threshold specified in the protocol for at least one of the query profiles. The leaf names in the tree correspond to the profile IDs, but can optionally be replaced with custom leaf names provided in the command (e.g. for better readability of the tree).
      * @summary Retrievephylogenetictree
      * @param {SeqDbCalculatePhylogeneticTreeRequestBody} calculatePhylogeneticTreeRequestBody 
@@ -35438,7 +36331,7 @@ const SeqDbSystemApiFp = function(configuration?: Configuration) {
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        async health(options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<SeqDbHealthReponseBody>> {
+        async health(options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<SeqDbHealthResponseBody>> {
             const localVarAxiosArgs = await localVarAxiosParamCreator.health(options);
             const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
             const localVarOperationServerBasePath = operationServerMap['SystemApi.health']?.[localVarOperationServerIndex]?.url;

@@ -5,6 +5,7 @@ import type {
 } from '@mui/material';
 import type { TFunction } from 'i18next';
 import type {
+  CommonDbAbacApi,
   CommonDbAuthApi,
   CommonDbOrganizationApi,
   CommonDbSystemApi,
@@ -23,11 +24,12 @@ export type ApplicationHeaderProps = {
 
 
 export interface ConfigBase {
+  abacApi: CommonDbAbacApi;
   api: Api;
   // eslint-disable-next-line @typescript-eslint/naming-convention
   ApplicationHeader: (props: ApplicationHeaderProps) => ReactElement;
-  applicationName: string;
 
+  applicationName: string;
   authApi: CommonDbAuthApi;
   consentDialog: {
     // eslint-disable-next-line @typescript-eslint/naming-convention

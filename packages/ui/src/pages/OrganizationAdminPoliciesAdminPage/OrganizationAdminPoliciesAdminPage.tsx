@@ -8,11 +8,8 @@ import {
   object,
   string,
 } from 'yup';
-import type { CaseDbOrganizationAdminPolicy } from '@gen-epix/api-casedb';
-import {
-  CaseDbAbacApi,
-  CaseDbCommandName,
-} from '@gen-epix/api-casedb';
+import type { CommonDbOrganizationAdminPolicy } from '@gen-epix/api-commondb';
+import { CommonDbCommandName } from '@gen-epix/api-commondb';
 
 import { useOrganizationAdminPolicyNameFactory } from '../../dataHooks/useOrganizationAdminPoliciesQuery';
 import { useOrganizationOptionsQuery } from '../../dataHooks/useOrganizationsQuery';
@@ -24,10 +21,11 @@ import { QUERY_KEY } from '../../models/query';
 import type { TableColumn } from '../../models/table';
 import { TableUtil } from '../../utils/TableUtil';
 import { TestIdUtil } from '../../utils/TestIdUtil';
-import { CrudPage } from '../CrudPage';
+import { CrudPage } from '../../../../ui-casedb/src/pages/CrudPage';
 import type { OmitWithMetaData } from '../../models/data';
+import { ConfigManager } from '../../classes/managers/ConfigManager';
 
-type FormFields = OmitWithMetaData<CaseDbOrganizationAdminPolicy, 'organization' | 'user'>;
+type FormFields = OmitWithMetaData<CommonDbOrganizationAdminPolicy, 'organization' | 'user'>;
 
 export const OrganizationAdminPoliciesAdminPage = () => {
   const { t } = useTranslation();
@@ -38,22 +36,22 @@ export const OrganizationAdminPoliciesAdminPage = () => {
   const loadables = useArray([organizationOptionsQuery, userOptionsQuery, organizationAdminPolicyNameFactory]);
 
   const fetchAll = useCallback(async (signal: AbortSignal) => {
-    return (await CaseDbAbacApi.instance.organizationAdminPoliciesGetAll({ signal }))?.data;
+    return (await ConfigManager.getInstance().config.abacApi.organizationAdminPoliciesGetAll({ signal }))?.data;
   }, []);
 
-  const deleteOne = useCallback(async (item: CaseDbOrganizationAdminPolicy) => {
-    return await CaseDbAbacApi.instance.organizationAdminPoliciesDeleteOne(item.id);
+  const deleteOne = useCallback(async (item: CommonDbOrganizationAdminPolicy) => {
+    return await ConfigManager.getInstance().config.abacApi.organizationAdminPoliciesDeleteOne(item.id);
   }, []);
 
-  const updateOne = useCallback(async (variables: FormFields, item: CaseDbOrganizationAdminPolicy) => {
-    return (await CaseDbAbacApi.instance.organizationAdminPoliciesPutOne(item.id, { id: item.id, ...variables })).data;
+  const updateOne = useCallback(async (variables: FormFields, item: CommonDbOrganizationAdminPolicy) => {
+    return (await ConfigManager.getInstance().config.abacApi.organizationAdminPoliciesPutOne(item.id, { id: item.id, ...variables })).data;
   }, []);
 
   const createOne = useCallback(async (variables: FormFields) => {
-    return (await CaseDbAbacApi.instance.organizationAdminPoliciesPostOne(variables)).data;
+    return (await ConfigManager.getInstance().config.abacApi.organizationAdminPoliciesPostOne(variables)).data;
   }, []);
 
-  const getName = useCallback((item: CaseDbOrganizationAdminPolicy) => {
+  const getName = useCallback((item: CommonDbOrganizationAdminPolicy) => {
     return organizationAdminPolicyNameFactory.getName(item) ?? item.id;
   }, [organizationAdminPolicyNameFactory]);
 
@@ -89,19 +87,19 @@ export const OrganizationAdminPoliciesAdminPage = () => {
     ] as const;
   }, [organizationOptionsQuery.isLoading, organizationOptionsQuery.options, t, userOptionsQuery.isLoading, userOptionsQuery.options]);
 
-  const tableColumns = useMemo((): TableColumn<CaseDbOrganizationAdminPolicy>[] => {
+  const tableColumns = useMemo((): TableColumn<CommonDbOrganizationAdminPolicy>[] => {
     return [
-      TableUtil.createOptionsColumn<CaseDbOrganizationAdminPolicy>({ id: 'organization_id', name: t`Organization`, options: organizationOptionsQuery.options }),
-      TableUtil.createOptionsColumn<CaseDbOrganizationAdminPolicy>({ id: 'user_id', name: t`User`, options: userOptionsQuery.options }),
-      TableUtil.createBooleanColumn<CaseDbOrganizationAdminPolicy>({ id: 'is_active', name: t`Is active` }),
+      TableUtil.createOptionsColumn<CommonDbOrganizationAdminPolicy>({ id: 'organization_id', name: t`Organization`, options: organizationOptionsQuery.options }),
+      TableUtil.createOptionsColumn<CommonDbOrganizationAdminPolicy>({ id: 'user_id', name: t`User`, options: userOptionsQuery.options }),
+      TableUtil.createBooleanColumn<CommonDbOrganizationAdminPolicy>({ id: 'is_active', name: t`Is active` }),
     ];
   }, [organizationOptionsQuery.options, t, userOptionsQuery.options]);
 
   return (
-    <CrudPage<FormFields, CaseDbOrganizationAdminPolicy>
+    <CrudPage<FormFields, CommonDbOrganizationAdminPolicy>
       createItemDialogTitle={t`Create new organization admin policy`}
       createOne={createOne}
-      crudCommandType={CaseDbCommandName.OrganizationAdminPolicyCrudCommand}
+      crudCommandType={CommonDbCommandName.OrganizationAdminPolicyCrudCommand}
       defaultSortByField={'organization_id'}
       defaultSortDirection={'asc'}
       deleteOne={deleteOne}

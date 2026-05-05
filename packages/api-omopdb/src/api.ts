@@ -146,94 +146,94 @@ export interface OmopDbCohortDefinition {
 }
 
 export const OmopDbCommandName = {
-    ContactCrudCommand: 'ContactCrudCommand',
-    DrugEraCrudCommand: 'DrugEraCrudCommand',
-    RetrieveLicensesCommand: 'RetrieveLicensesCommand',
-    DataCollectionCrudCommand: 'DataCollectionCrudCommand',
-    DoseEraCrudCommand: 'DoseEraCrudCommand',
-    DataCollectionSetCrudCommand: 'DataCollectionSetCrudCommand',
-    RetrieveOrganizationContactsCommand: 'RetrieveOrganizationContactsCommand',
-    UpdateUserCommand: 'UpdateUserCommand',
-    RetrieveOwnPermissionsCommand: 'RetrieveOwnPermissionsCommand',
-    UserCrudCommand: 'UserCrudCommand',
-    SpecimenCrudCommand: 'SpecimenCrudCommand',
-    OmopDbUploadPersonsCommand: 'OmopDbUploadPersonsCommand',
-    PersonCrudCommand: 'PersonCrudCommand',
     RetrieveFeatureFlagsCommand: 'RetrieveFeatureFlagsCommand',
-    ObservationPeriodIdentifierCrudCommand: 'ObservationPeriodIdentifierCrudCommand',
-    IdentifierIssuerCrudCommand: 'IdentifierIssuerCrudCommand',
-    OrganizationSetMemberCrudCommand: 'OrganizationSetMemberCrudCommand',
-    NoteNlpIdentifierCrudCommand: 'NoteNlpIdentifierCrudCommand',
-    RegisterInvitedUserCommand: 'RegisterInvitedUserCommand',
-    VocabularyCrudCommand: 'VocabularyCrudCommand',
-    ConceptSynonymCrudCommand: 'ConceptSynonymCrudCommand',
-    ConditionEraCrudCommand: 'ConditionEraCrudCommand',
-    CostCrudCommand: 'CostCrudCommand',
-    ObservationPeriodCrudCommand: 'ObservationPeriodCrudCommand',
-    VisitDetailCrudCommand: 'VisitDetailCrudCommand',
-    ProcedureOccurrenceIdentifierCrudCommand: 'ProcedureOccurrenceIdentifierCrudCommand',
-    ProcedureOccurrenceCrudCommand: 'ProcedureOccurrenceCrudCommand',
-    RetrieveInviteUserConstraintsCommand: 'RetrieveInviteUserConstraintsCommand',
-    ConceptCrudCommand: 'ConceptCrudCommand',
-    ConditionOccurrenceIdentifierCrudCommand: 'ConditionOccurrenceIdentifierCrudCommand',
-    RetrieveSubRolesCommand: 'RetrieveSubRolesCommand',
-    DeathCrudCommand: 'DeathCrudCommand',
-    FactRelationshipCrudCommand: 'FactRelationshipCrudCommand',
-    ConceptRelationshipCrudCommand: 'ConceptRelationshipCrudCommand',
-    OrganizationCrudCommand: 'OrganizationCrudCommand',
-    MeasurementIdentifierCrudCommand: 'MeasurementIdentifierCrudCommand',
-    OrganizationSetCrudCommand: 'OrganizationSetCrudCommand',
-    InviteUserCommand: 'InviteUserCommand',
-    PayerPlanPeriodCrudCommand: 'PayerPlanPeriodCrudCommand',
-    RetrieveOrganizationsUnderAdminCommand: 'RetrieveOrganizationsUnderAdminCommand',
-    SourceToConceptMapCrudCommand: 'SourceToConceptMapCrudCommand',
-    ObservationCrudCommand: 'ObservationCrudCommand',
-    OrganizationIdentifierIssuerLinkUpdateAssociationCommand: 'OrganizationIdentifierIssuerLinkUpdateAssociationCommand',
-    SiteCrudCommand: 'SiteCrudCommand',
-    OrganizationSetOrganizationUpdateAssociationCommand: 'OrganizationSetOrganizationUpdateAssociationCommand',
-    ConceptAncestorCrudCommand: 'ConceptAncestorCrudCommand',
-    CohortDefinitionCrudCommand: 'CohortDefinitionCrudCommand',
-    NoteNlpCrudCommand: 'NoteNlpCrudCommand',
-    RelationshipCrudCommand: 'RelationshipCrudCommand',
-    MeasurementRelationCrudCommand: 'MeasurementRelationCrudCommand',
-    RetrieveOutagesCommand: 'RetrieveOutagesCommand',
-    DeviceExposureCrudCommand: 'DeviceExposureCrudCommand',
-    SpecimenIdentifierCrudCommand: 'SpecimenIdentifierCrudCommand',
-    MeasurementRelationIdentifierCrudCommand: 'MeasurementRelationIdentifierCrudCommand',
-    RetrievePersonsByIdCommand: 'RetrievePersonsByIdCommand',
-    UpdateUserOwnOrganizationCommand: 'UpdateUserOwnOrganizationCommand',
-    OrganizationAdminPolicyCrudCommand: 'OrganizationAdminPolicyCrudCommand',
-    DeathIdentifierCrudCommand: 'DeathIdentifierCrudCommand',
-    ConceptClassCrudCommand: 'ConceptClassCrudCommand',
-    MetadataCrudCommand: 'MetadataCrudCommand',
-    OrganizationIdentifierIssuerLinkCrudCommand: 'OrganizationIdentifierIssuerLinkCrudCommand',
-    VisitOccurrenceCrudCommand: 'VisitOccurrenceCrudCommand',
-    DrugStrengthCrudCommand: 'DrugStrengthCrudCommand',
-    PersonIdentifierCrudCommand: 'PersonIdentifierCrudCommand',
-    DeviceExposureIdentifierCrudCommand: 'DeviceExposureIdentifierCrudCommand',
-    LocationCrudCommand: 'LocationCrudCommand',
-    VisitOccurrenceIdentifierCrudCommand: 'VisitOccurrenceIdentifierCrudCommand',
-    MeasurementCrudCommand: 'MeasurementCrudCommand',
-    CohortCrudCommand: 'CohortCrudCommand',
-    VisitDetailIdentifierCrudCommand: 'VisitDetailIdentifierCrudCommand',
-    ProviderCrudCommand: 'ProviderCrudCommand',
-    ConditionOccurrenceCrudCommand: 'ConditionOccurrenceCrudCommand',
-    DrugExposureCrudCommand: 'DrugExposureCrudCommand',
-    CareSiteCrudCommand: 'CareSiteCrudCommand',
-    DataCollectionSetDataCollectionUpdateAssociationCommand: 'DataCollectionSetDataCollectionUpdateAssociationCommand',
-    RetrieveOrganizationAdminNameEmailsCommand: 'RetrieveOrganizationAdminNameEmailsCommand',
-    DrugExposureIdentifierCrudCommand: 'DrugExposureIdentifierCrudCommand',
-    NoteCrudCommand: 'NoteCrudCommand',
-    ObservationIdentifierCrudCommand: 'ObservationIdentifierCrudCommand',
     UserInvitationCrudCommand: 'UserInvitationCrudCommand',
-    EpisodeEventCrudCommand: 'EpisodeEventCrudCommand',
-    OutageCrudCommand: 'OutageCrudCommand',
-    GetIdentityProvidersCommand: 'GetIdentityProvidersCommand',
+    VisitDetailIdentifierCrudCommand: 'VisitDetailIdentifierCrudCommand',
     DataCollectionSetMemberCrudCommand: 'DataCollectionSetMemberCrudCommand',
-    CdmSourceCrudCommand: 'CdmSourceCrudCommand',
+    IdentifierIssuerCrudCommand: 'IdentifierIssuerCrudCommand',
+    OmopDbUploadPersonsCommand: 'OmopDbUploadPersonsCommand',
+    ConceptAncestorCrudCommand: 'ConceptAncestorCrudCommand',
+    DrugExposureCrudCommand: 'DrugExposureCrudCommand',
+    VisitOccurrenceIdentifierCrudCommand: 'VisitOccurrenceIdentifierCrudCommand',
     EpisodeCrudCommand: 'EpisodeCrudCommand',
-    NoteIdentifierCrudCommand: 'NoteIdentifierCrudCommand',
+    RetrieveOwnPermissionsCommand: 'RetrieveOwnPermissionsCommand',
+    PersonIdentifierCrudCommand: 'PersonIdentifierCrudCommand',
+    MeasurementRelationIdentifierCrudCommand: 'MeasurementRelationIdentifierCrudCommand',
+    SiteCrudCommand: 'SiteCrudCommand',
+    VisitDetailCrudCommand: 'VisitDetailCrudCommand',
+    ConceptClassCrudCommand: 'ConceptClassCrudCommand',
+    RetrieveOrganizationsUnderAdminCommand: 'RetrieveOrganizationsUnderAdminCommand',
+    MetadataCrudCommand: 'MetadataCrudCommand',
+    DataCollectionSetCrudCommand: 'DataCollectionSetCrudCommand',
+    RegisterInvitedUserCommand: 'RegisterInvitedUserCommand',
+    ObservationCrudCommand: 'ObservationCrudCommand',
+    LocationCrudCommand: 'LocationCrudCommand',
+    UserCrudCommand: 'UserCrudCommand',
+    ConditionOccurrenceCrudCommand: 'ConditionOccurrenceCrudCommand',
     DomainCrudCommand: 'DomainCrudCommand',
+    OutageCrudCommand: 'OutageCrudCommand',
+    DeviceExposureCrudCommand: 'DeviceExposureCrudCommand',
+    DrugStrengthCrudCommand: 'DrugStrengthCrudCommand',
+    DataCollectionCrudCommand: 'DataCollectionCrudCommand',
+    UpdateUserOwnOrganizationCommand: 'UpdateUserOwnOrganizationCommand',
+    SpecimenIdentifierCrudCommand: 'SpecimenIdentifierCrudCommand',
+    RetrieveOutagesCommand: 'RetrieveOutagesCommand',
+    VisitOccurrenceCrudCommand: 'VisitOccurrenceCrudCommand',
+    CostCrudCommand: 'CostCrudCommand',
+    CohortDefinitionCrudCommand: 'CohortDefinitionCrudCommand',
+    SourceToConceptMapCrudCommand: 'SourceToConceptMapCrudCommand',
+    RetrieveOrganizationContactsCommand: 'RetrieveOrganizationContactsCommand',
+    NoteNlpCrudCommand: 'NoteNlpCrudCommand',
+    CohortCrudCommand: 'CohortCrudCommand',
+    MeasurementIdentifierCrudCommand: 'MeasurementIdentifierCrudCommand',
+    DrugEraCrudCommand: 'DrugEraCrudCommand',
+    DoseEraCrudCommand: 'DoseEraCrudCommand',
+    OrganizationSetCrudCommand: 'OrganizationSetCrudCommand',
+    ConceptCrudCommand: 'ConceptCrudCommand',
+    ObservationIdentifierCrudCommand: 'ObservationIdentifierCrudCommand',
+    RetrieveOrganizationAdminNameEmailsCommand: 'RetrieveOrganizationAdminNameEmailsCommand',
+    GetIdentityProvidersCommand: 'GetIdentityProvidersCommand',
+    PayerPlanPeriodCrudCommand: 'PayerPlanPeriodCrudCommand',
+    DeathCrudCommand: 'DeathCrudCommand',
+    VocabularyCrudCommand: 'VocabularyCrudCommand',
+    OrganizationCrudCommand: 'OrganizationCrudCommand',
+    OrganizationIdentifierIssuerLinkCrudCommand: 'OrganizationIdentifierIssuerLinkCrudCommand',
+    OrganizationSetOrganizationUpdateAssociationCommand: 'OrganizationSetOrganizationUpdateAssociationCommand',
+    ObservationPeriodCrudCommand: 'ObservationPeriodCrudCommand',
+    PersonCrudCommand: 'PersonCrudCommand',
+    RelationshipCrudCommand: 'RelationshipCrudCommand',
+    DeviceExposureIdentifierCrudCommand: 'DeviceExposureIdentifierCrudCommand',
+    RetrievePersonsByIdCommand: 'RetrievePersonsByIdCommand',
+    OrganizationAdminPolicyCrudCommand: 'OrganizationAdminPolicyCrudCommand',
+    RetrieveInviteUserConstraintsCommand: 'RetrieveInviteUserConstraintsCommand',
+    CareSiteCrudCommand: 'CareSiteCrudCommand',
+    ConceptSynonymCrudCommand: 'ConceptSynonymCrudCommand',
+    MeasurementRelationCrudCommand: 'MeasurementRelationCrudCommand',
+    ProcedureOccurrenceIdentifierCrudCommand: 'ProcedureOccurrenceIdentifierCrudCommand',
+    NoteNlpIdentifierCrudCommand: 'NoteNlpIdentifierCrudCommand',
+    UpdateUserCommand: 'UpdateUserCommand',
+    ProcedureOccurrenceCrudCommand: 'ProcedureOccurrenceCrudCommand',
+    InviteUserCommand: 'InviteUserCommand',
+    SpecimenCrudCommand: 'SpecimenCrudCommand',
+    OrganizationIdentifierIssuerLinkUpdateAssociationCommand: 'OrganizationIdentifierIssuerLinkUpdateAssociationCommand',
+    MeasurementCrudCommand: 'MeasurementCrudCommand',
+    OrganizationSetMemberCrudCommand: 'OrganizationSetMemberCrudCommand',
+    ProviderCrudCommand: 'ProviderCrudCommand',
+    DeathIdentifierCrudCommand: 'DeathIdentifierCrudCommand',
+    FactRelationshipCrudCommand: 'FactRelationshipCrudCommand',
+    RetrieveLicensesCommand: 'RetrieveLicensesCommand',
+    ConditionEraCrudCommand: 'ConditionEraCrudCommand',
+    NoteIdentifierCrudCommand: 'NoteIdentifierCrudCommand',
+    EpisodeEventCrudCommand: 'EpisodeEventCrudCommand',
+    CdmSourceCrudCommand: 'CdmSourceCrudCommand',
+    NoteCrudCommand: 'NoteCrudCommand',
+    ContactCrudCommand: 'ContactCrudCommand',
+    ConditionOccurrenceIdentifierCrudCommand: 'ConditionOccurrenceIdentifierCrudCommand',
+    DataCollectionSetDataCollectionUpdateAssociationCommand: 'DataCollectionSetDataCollectionUpdateAssociationCommand',
+    DrugExposureIdentifierCrudCommand: 'DrugExposureIdentifierCrudCommand',
+    RetrieveSubRolesCommand: 'RetrieveSubRolesCommand',
+    ObservationPeriodIdentifierCrudCommand: 'ObservationPeriodIdentifierCrudCommand',
+    ConceptRelationshipCrudCommand: 'ConceptRelationshipCrudCommand',
 } as const;
 
 export type OmopDbCommandName = typeof OmopDbCommandName[keyof typeof OmopDbCommandName];
@@ -984,6 +984,8 @@ export interface OmopDbEtlLogItem {
      */
     'message': string;
     'severity': OmopDbLogLevel;
+    'source'?: string | null;
+    'target'?: string | null;
 }
 
 
@@ -1167,7 +1169,7 @@ export interface OmopDbFullPerson {
 export interface OmopDbHTTPValidationError {
     'detail'?: Array<OmopDbValidationError>;
 }
-export interface OmopDbHealthReponseBody {
+export interface OmopDbHealthResponseBody {
     'status': OmopDbHealthStatus;
 }
 
@@ -1858,6 +1860,29 @@ export interface OmopDbOrganization {
      */
     'name': string;
     'description'?: string | null;
+}
+/**
+ * Defines whether a user is an admin for an organization. If so, and if the user has the role ORG_ADMIN, they will be able to: 1) Invite new users of this organization. 2) Manage the case and case set access and share rights of these users.  The user will not be able to: 1) Perform the operations above for any other organization for which there    is no corresponding admin policy. 2) Set the case and case set access and share case rights for the    organization itself. This has to be done by a user with role APP_ADMIN.  Users with role APP_ADMIN or above do not require an admin policy to perform these actions. They are de facto organization admin for all organizations.
+ */
+export interface OmopDbOrganizationAdminPolicy {
+    'created_at'?: string | null;
+    'modified_at'?: string | null;
+    'modified_by'?: string | null;
+    'id'?: string | null;
+    /**
+     * The ID of the organization. FOREIGN KEY
+     */
+    'organization_id': string;
+    'organization'?: OmopDbOrganization;
+    /**
+     * The ID of the user. FOREIGN KEY
+     */
+    'user_id': string;
+    'user'?: OmopDbUser;
+    /**
+     * Whether the user is an admin for the organization
+     */
+    'is_active': boolean;
 }
 export interface OmopDbOrganizationContacts {
     'organization': OmopDbOrganization;
@@ -3047,6 +3072,743 @@ export interface OmopDbVocabulary {
      */
     'vocabulary_concept_id': string;
 }
+
+/**
+ * AbacApi - axios parameter creator
+ */
+const OmopDbAbacApiAxiosParamCreator = function (configuration?: Configuration) {
+    return {
+        /**
+         * Manage policies that define which organizations an administrator can manage across the platform.
+         * @summary OmopDbOrganization Admin Policies  Delete All
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        organizationAdminPoliciesDeleteAll: async (options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
+            const localVarPath = `/v1/organization_admin_policies`;
+            // use dummy base URL string because the URL constructor only accepts absolute URLs.
+            const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
+            let baseOptions;
+            if (configuration) {
+                baseOptions = configuration.baseOptions;
+            }
+
+            const localVarRequestOptions = { method: 'DELETE', ...baseOptions, ...options};
+            const localVarHeaderParameter = {} as any;
+            const localVarQueryParameter = {} as any;
+
+            localVarHeaderParameter['Accept'] = 'application/json';
+
+            setSearchParams(localVarUrlObj, localVarQueryParameter);
+            let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
+            localVarRequestOptions.headers = {...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers};
+
+            return {
+                url: toPathString(localVarUrlObj),
+                options: localVarRequestOptions,
+            };
+        },
+        /**
+         * Manage policies that define which organizations an administrator can manage across the platform.
+         * @summary OmopDbOrganization Admin Policies  Delete One
+         * @param {any} objectId 
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        organizationAdminPoliciesDeleteOne: async (objectId: any, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
+            // verify required parameter 'objectId' is not null or undefined
+            assertParamExists('organizationAdminPoliciesDeleteOne', 'objectId', objectId)
+            const localVarPath = `/v1/organization_admin_policies/{object_id}`
+                .replace(`{${"object_id"}}`, encodeURIComponent(String(objectId)));
+            // use dummy base URL string because the URL constructor only accepts absolute URLs.
+            const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
+            let baseOptions;
+            if (configuration) {
+                baseOptions = configuration.baseOptions;
+            }
+
+            const localVarRequestOptions = { method: 'DELETE', ...baseOptions, ...options};
+            const localVarHeaderParameter = {} as any;
+            const localVarQueryParameter = {} as any;
+
+            localVarHeaderParameter['Accept'] = 'application/json';
+
+            setSearchParams(localVarUrlObj, localVarQueryParameter);
+            let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
+            localVarRequestOptions.headers = {...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers};
+
+            return {
+                url: toPathString(localVarUrlObj),
+                options: localVarRequestOptions,
+            };
+        },
+        /**
+         * Manage policies that define which organizations an administrator can manage across the platform.
+         * @summary OmopDbOrganization Admin Policies  Delete Some
+         * @param {string} ids 
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        organizationAdminPoliciesDeleteSome: async (ids: string, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
+            // verify required parameter 'ids' is not null or undefined
+            assertParamExists('organizationAdminPoliciesDeleteSome', 'ids', ids)
+            const localVarPath = `/v1/organization_admin_policies/batch`;
+            // use dummy base URL string because the URL constructor only accepts absolute URLs.
+            const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
+            let baseOptions;
+            if (configuration) {
+                baseOptions = configuration.baseOptions;
+            }
+
+            const localVarRequestOptions = { method: 'DELETE', ...baseOptions, ...options};
+            const localVarHeaderParameter = {} as any;
+            const localVarQueryParameter = {} as any;
+
+            if (ids !== undefined) {
+                localVarQueryParameter['ids'] = ids;
+            }
+
+            localVarHeaderParameter['Accept'] = 'application/json';
+
+            setSearchParams(localVarUrlObj, localVarQueryParameter);
+            let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
+            localVarRequestOptions.headers = {...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers};
+
+            return {
+                url: toPathString(localVarUrlObj),
+                options: localVarRequestOptions,
+            };
+        },
+        /**
+         * Manage policies that define which organizations an administrator can manage across the platform.
+         * @summary OmopDbOrganization Admin Policies  Get All
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        organizationAdminPoliciesGetAll: async (options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
+            const localVarPath = `/v1/organization_admin_policies`;
+            // use dummy base URL string because the URL constructor only accepts absolute URLs.
+            const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
+            let baseOptions;
+            if (configuration) {
+                baseOptions = configuration.baseOptions;
+            }
+
+            const localVarRequestOptions = { method: 'GET', ...baseOptions, ...options};
+            const localVarHeaderParameter = {} as any;
+            const localVarQueryParameter = {} as any;
+
+            localVarHeaderParameter['Accept'] = 'application/json';
+
+            setSearchParams(localVarUrlObj, localVarQueryParameter);
+            let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
+            localVarRequestOptions.headers = {...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers};
+
+            return {
+                url: toPathString(localVarUrlObj),
+                options: localVarRequestOptions,
+            };
+        },
+        /**
+         * Manage policies that define which organizations an administrator can manage across the platform.
+         * @summary OmopDbOrganization Admin Policies  Get One
+         * @param {string} objectId 
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        organizationAdminPoliciesGetOne: async (objectId: string, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
+            // verify required parameter 'objectId' is not null or undefined
+            assertParamExists('organizationAdminPoliciesGetOne', 'objectId', objectId)
+            const localVarPath = `/v1/organization_admin_policies/{object_id}`
+                .replace(`{${"object_id"}}`, encodeURIComponent(String(objectId)));
+            // use dummy base URL string because the URL constructor only accepts absolute URLs.
+            const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
+            let baseOptions;
+            if (configuration) {
+                baseOptions = configuration.baseOptions;
+            }
+
+            const localVarRequestOptions = { method: 'GET', ...baseOptions, ...options};
+            const localVarHeaderParameter = {} as any;
+            const localVarQueryParameter = {} as any;
+
+            localVarHeaderParameter['Accept'] = 'application/json';
+
+            setSearchParams(localVarUrlObj, localVarQueryParameter);
+            let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
+            localVarRequestOptions.headers = {...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers};
+
+            return {
+                url: toPathString(localVarUrlObj),
+                options: localVarRequestOptions,
+            };
+        },
+        /**
+         * Manage policies that define which organizations an administrator can manage across the platform.
+         * @summary OmopDbOrganization Admin Policies  Get Some
+         * @param {string} ids 
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        organizationAdminPoliciesGetSome: async (ids: string, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
+            // verify required parameter 'ids' is not null or undefined
+            assertParamExists('organizationAdminPoliciesGetSome', 'ids', ids)
+            const localVarPath = `/v1/organization_admin_policies/batch`;
+            // use dummy base URL string because the URL constructor only accepts absolute URLs.
+            const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
+            let baseOptions;
+            if (configuration) {
+                baseOptions = configuration.baseOptions;
+            }
+
+            const localVarRequestOptions = { method: 'GET', ...baseOptions, ...options};
+            const localVarHeaderParameter = {} as any;
+            const localVarQueryParameter = {} as any;
+
+            if (ids !== undefined) {
+                localVarQueryParameter['ids'] = ids;
+            }
+
+            localVarHeaderParameter['Accept'] = 'application/json';
+
+            setSearchParams(localVarUrlObj, localVarQueryParameter);
+            let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
+            localVarRequestOptions.headers = {...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers};
+
+            return {
+                url: toPathString(localVarUrlObj),
+                options: localVarRequestOptions,
+            };
+        },
+        /**
+         * Manage policies that define which organizations an administrator can manage across the platform.
+         * @summary OmopDbOrganization Admin Policies  Post One
+         * @param {OmopDbOrganizationAdminPolicy} organizationAdminPolicy 
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        organizationAdminPoliciesPostOne: async (organizationAdminPolicy: OmopDbOrganizationAdminPolicy, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
+            // verify required parameter 'organizationAdminPolicy' is not null or undefined
+            assertParamExists('organizationAdminPoliciesPostOne', 'organizationAdminPolicy', organizationAdminPolicy)
+            const localVarPath = `/v1/organization_admin_policies`;
+            // use dummy base URL string because the URL constructor only accepts absolute URLs.
+            const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
+            let baseOptions;
+            if (configuration) {
+                baseOptions = configuration.baseOptions;
+            }
+
+            const localVarRequestOptions = { method: 'POST', ...baseOptions, ...options};
+            const localVarHeaderParameter = {} as any;
+            const localVarQueryParameter = {} as any;
+
+            localVarHeaderParameter['Content-Type'] = 'application/json';
+            localVarHeaderParameter['Accept'] = 'application/json';
+
+            setSearchParams(localVarUrlObj, localVarQueryParameter);
+            let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
+            localVarRequestOptions.headers = {...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers};
+            localVarRequestOptions.data = serializeDataIfNeeded(organizationAdminPolicy, localVarRequestOptions, configuration)
+
+            return {
+                url: toPathString(localVarUrlObj),
+                options: localVarRequestOptions,
+            };
+        },
+        /**
+         * Manage policies that define which organizations an administrator can manage across the platform.
+         * @summary OmopDbOrganization Admin Policies  Post Query
+         * @param {OmopDbEpiFilter} filter 
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        organizationAdminPoliciesPostQuery: async (filter: OmopDbEpiFilter, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
+            // verify required parameter 'filter' is not null or undefined
+            assertParamExists('organizationAdminPoliciesPostQuery', 'filter', filter)
+            const localVarPath = `/v1/organization_admin_policies/query`;
+            // use dummy base URL string because the URL constructor only accepts absolute URLs.
+            const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
+            let baseOptions;
+            if (configuration) {
+                baseOptions = configuration.baseOptions;
+            }
+
+            const localVarRequestOptions = { method: 'POST', ...baseOptions, ...options};
+            const localVarHeaderParameter = {} as any;
+            const localVarQueryParameter = {} as any;
+
+            localVarHeaderParameter['Content-Type'] = 'application/json';
+            localVarHeaderParameter['Accept'] = 'application/json';
+
+            setSearchParams(localVarUrlObj, localVarQueryParameter);
+            let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
+            localVarRequestOptions.headers = {...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers};
+            localVarRequestOptions.data = serializeDataIfNeeded(filter, localVarRequestOptions, configuration)
+
+            return {
+                url: toPathString(localVarUrlObj),
+                options: localVarRequestOptions,
+            };
+        },
+        /**
+         * Manage policies that define which organizations an administrator can manage across the platform.
+         * @summary OmopDbOrganization Admin Policies  Post Query  Ids
+         * @param {OmopDbEpiFilter} filter 
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        organizationAdminPoliciesPostQueryIds: async (filter: OmopDbEpiFilter, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
+            // verify required parameter 'filter' is not null or undefined
+            assertParamExists('organizationAdminPoliciesPostQueryIds', 'filter', filter)
+            const localVarPath = `/v1/organization_admin_policies/query/ids`;
+            // use dummy base URL string because the URL constructor only accepts absolute URLs.
+            const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
+            let baseOptions;
+            if (configuration) {
+                baseOptions = configuration.baseOptions;
+            }
+
+            const localVarRequestOptions = { method: 'POST', ...baseOptions, ...options};
+            const localVarHeaderParameter = {} as any;
+            const localVarQueryParameter = {} as any;
+
+            localVarHeaderParameter['Content-Type'] = 'application/json';
+            localVarHeaderParameter['Accept'] = 'application/json';
+
+            setSearchParams(localVarUrlObj, localVarQueryParameter);
+            let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
+            localVarRequestOptions.headers = {...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers};
+            localVarRequestOptions.data = serializeDataIfNeeded(filter, localVarRequestOptions, configuration)
+
+            return {
+                url: toPathString(localVarUrlObj),
+                options: localVarRequestOptions,
+            };
+        },
+        /**
+         * Manage policies that define which organizations an administrator can manage across the platform.
+         * @summary OmopDbOrganization Admin Policies  Post Some
+         * @param {Array<OmopDbOrganizationAdminPolicy>} organizationAdminPolicy 
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        organizationAdminPoliciesPostSome: async (organizationAdminPolicy: Array<OmopDbOrganizationAdminPolicy>, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
+            // verify required parameter 'organizationAdminPolicy' is not null or undefined
+            assertParamExists('organizationAdminPoliciesPostSome', 'organizationAdminPolicy', organizationAdminPolicy)
+            const localVarPath = `/v1/organization_admin_policies/batch`;
+            // use dummy base URL string because the URL constructor only accepts absolute URLs.
+            const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
+            let baseOptions;
+            if (configuration) {
+                baseOptions = configuration.baseOptions;
+            }
+
+            const localVarRequestOptions = { method: 'POST', ...baseOptions, ...options};
+            const localVarHeaderParameter = {} as any;
+            const localVarQueryParameter = {} as any;
+
+            localVarHeaderParameter['Content-Type'] = 'application/json';
+            localVarHeaderParameter['Accept'] = 'application/json';
+
+            setSearchParams(localVarUrlObj, localVarQueryParameter);
+            let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
+            localVarRequestOptions.headers = {...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers};
+            localVarRequestOptions.data = serializeDataIfNeeded(organizationAdminPolicy, localVarRequestOptions, configuration)
+
+            return {
+                url: toPathString(localVarUrlObj),
+                options: localVarRequestOptions,
+            };
+        },
+        /**
+         * Manage policies that define which organizations an administrator can manage across the platform.
+         * @summary OmopDbOrganization Admin Policies  Put One
+         * @param {string} objectId 
+         * @param {OmopDbOrganizationAdminPolicy} organizationAdminPolicy 
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        organizationAdminPoliciesPutOne: async (objectId: string, organizationAdminPolicy: OmopDbOrganizationAdminPolicy, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
+            // verify required parameter 'objectId' is not null or undefined
+            assertParamExists('organizationAdminPoliciesPutOne', 'objectId', objectId)
+            // verify required parameter 'organizationAdminPolicy' is not null or undefined
+            assertParamExists('organizationAdminPoliciesPutOne', 'organizationAdminPolicy', organizationAdminPolicy)
+            const localVarPath = `/v1/organization_admin_policies/{object_id}`
+                .replace(`{${"object_id"}}`, encodeURIComponent(String(objectId)));
+            // use dummy base URL string because the URL constructor only accepts absolute URLs.
+            const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
+            let baseOptions;
+            if (configuration) {
+                baseOptions = configuration.baseOptions;
+            }
+
+            const localVarRequestOptions = { method: 'PUT', ...baseOptions, ...options};
+            const localVarHeaderParameter = {} as any;
+            const localVarQueryParameter = {} as any;
+
+            localVarHeaderParameter['Content-Type'] = 'application/json';
+            localVarHeaderParameter['Accept'] = 'application/json';
+
+            setSearchParams(localVarUrlObj, localVarQueryParameter);
+            let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
+            localVarRequestOptions.headers = {...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers};
+            localVarRequestOptions.data = serializeDataIfNeeded(organizationAdminPolicy, localVarRequestOptions, configuration)
+
+            return {
+                url: toPathString(localVarUrlObj),
+                options: localVarRequestOptions,
+            };
+        },
+        /**
+         * Manage policies that define which organizations an administrator can manage across the platform.
+         * @summary OmopDbOrganization Admin Policies  Put Some
+         * @param {Array<OmopDbOrganizationAdminPolicy>} organizationAdminPolicy 
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        organizationAdminPoliciesPutSome: async (organizationAdminPolicy: Array<OmopDbOrganizationAdminPolicy>, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
+            // verify required parameter 'organizationAdminPolicy' is not null or undefined
+            assertParamExists('organizationAdminPoliciesPutSome', 'organizationAdminPolicy', organizationAdminPolicy)
+            const localVarPath = `/v1/organization_admin_policies/batch`;
+            // use dummy base URL string because the URL constructor only accepts absolute URLs.
+            const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
+            let baseOptions;
+            if (configuration) {
+                baseOptions = configuration.baseOptions;
+            }
+
+            const localVarRequestOptions = { method: 'PUT', ...baseOptions, ...options};
+            const localVarHeaderParameter = {} as any;
+            const localVarQueryParameter = {} as any;
+
+            localVarHeaderParameter['Content-Type'] = 'application/json';
+            localVarHeaderParameter['Accept'] = 'application/json';
+
+            setSearchParams(localVarUrlObj, localVarQueryParameter);
+            let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
+            localVarRequestOptions.headers = {...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers};
+            localVarRequestOptions.data = serializeDataIfNeeded(organizationAdminPolicy, localVarRequestOptions, configuration)
+
+            return {
+                url: toPathString(localVarUrlObj),
+                options: localVarRequestOptions,
+            };
+        },
+    }
+};
+
+/**
+ * AbacApi - functional programming interface
+ */
+const OmopDbAbacApiFp = function(configuration?: Configuration) {
+    const localVarAxiosParamCreator = OmopDbAbacApiAxiosParamCreator(configuration)
+    return {
+        /**
+         * Manage policies that define which organizations an administrator can manage across the platform.
+         * @summary OmopDbOrganization Admin Policies  Delete All
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        async organizationAdminPoliciesDeleteAll(options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<any>> {
+            const localVarAxiosArgs = await localVarAxiosParamCreator.organizationAdminPoliciesDeleteAll(options);
+            const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
+            const localVarOperationServerBasePath = operationServerMap['AbacApi.organizationAdminPoliciesDeleteAll']?.[localVarOperationServerIndex]?.url;
+            return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
+        },
+        /**
+         * Manage policies that define which organizations an administrator can manage across the platform.
+         * @summary OmopDbOrganization Admin Policies  Delete One
+         * @param {any} objectId 
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        async organizationAdminPoliciesDeleteOne(objectId: any, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<string>> {
+            const localVarAxiosArgs = await localVarAxiosParamCreator.organizationAdminPoliciesDeleteOne(objectId, options);
+            const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
+            const localVarOperationServerBasePath = operationServerMap['AbacApi.organizationAdminPoliciesDeleteOne']?.[localVarOperationServerIndex]?.url;
+            return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
+        },
+        /**
+         * Manage policies that define which organizations an administrator can manage across the platform.
+         * @summary OmopDbOrganization Admin Policies  Delete Some
+         * @param {string} ids 
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        async organizationAdminPoliciesDeleteSome(ids: string, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<Array<string>>> {
+            const localVarAxiosArgs = await localVarAxiosParamCreator.organizationAdminPoliciesDeleteSome(ids, options);
+            const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
+            const localVarOperationServerBasePath = operationServerMap['AbacApi.organizationAdminPoliciesDeleteSome']?.[localVarOperationServerIndex]?.url;
+            return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
+        },
+        /**
+         * Manage policies that define which organizations an administrator can manage across the platform.
+         * @summary OmopDbOrganization Admin Policies  Get All
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        async organizationAdminPoliciesGetAll(options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<Array<OmopDbOrganizationAdminPolicy>>> {
+            const localVarAxiosArgs = await localVarAxiosParamCreator.organizationAdminPoliciesGetAll(options);
+            const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
+            const localVarOperationServerBasePath = operationServerMap['AbacApi.organizationAdminPoliciesGetAll']?.[localVarOperationServerIndex]?.url;
+            return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
+        },
+        /**
+         * Manage policies that define which organizations an administrator can manage across the platform.
+         * @summary OmopDbOrganization Admin Policies  Get One
+         * @param {string} objectId 
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        async organizationAdminPoliciesGetOne(objectId: string, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<OmopDbOrganizationAdminPolicy>> {
+            const localVarAxiosArgs = await localVarAxiosParamCreator.organizationAdminPoliciesGetOne(objectId, options);
+            const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
+            const localVarOperationServerBasePath = operationServerMap['AbacApi.organizationAdminPoliciesGetOne']?.[localVarOperationServerIndex]?.url;
+            return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
+        },
+        /**
+         * Manage policies that define which organizations an administrator can manage across the platform.
+         * @summary OmopDbOrganization Admin Policies  Get Some
+         * @param {string} ids 
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        async organizationAdminPoliciesGetSome(ids: string, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<Array<OmopDbOrganizationAdminPolicy>>> {
+            const localVarAxiosArgs = await localVarAxiosParamCreator.organizationAdminPoliciesGetSome(ids, options);
+            const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
+            const localVarOperationServerBasePath = operationServerMap['AbacApi.organizationAdminPoliciesGetSome']?.[localVarOperationServerIndex]?.url;
+            return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
+        },
+        /**
+         * Manage policies that define which organizations an administrator can manage across the platform.
+         * @summary OmopDbOrganization Admin Policies  Post One
+         * @param {OmopDbOrganizationAdminPolicy} organizationAdminPolicy 
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        async organizationAdminPoliciesPostOne(organizationAdminPolicy: OmopDbOrganizationAdminPolicy, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<OmopDbOrganizationAdminPolicy>> {
+            const localVarAxiosArgs = await localVarAxiosParamCreator.organizationAdminPoliciesPostOne(organizationAdminPolicy, options);
+            const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
+            const localVarOperationServerBasePath = operationServerMap['AbacApi.organizationAdminPoliciesPostOne']?.[localVarOperationServerIndex]?.url;
+            return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
+        },
+        /**
+         * Manage policies that define which organizations an administrator can manage across the platform.
+         * @summary OmopDbOrganization Admin Policies  Post Query
+         * @param {OmopDbEpiFilter} filter 
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        async organizationAdminPoliciesPostQuery(filter: OmopDbEpiFilter, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<Array<OmopDbOrganizationAdminPolicy>>> {
+            const localVarAxiosArgs = await localVarAxiosParamCreator.organizationAdminPoliciesPostQuery(filter, options);
+            const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
+            const localVarOperationServerBasePath = operationServerMap['AbacApi.organizationAdminPoliciesPostQuery']?.[localVarOperationServerIndex]?.url;
+            return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
+        },
+        /**
+         * Manage policies that define which organizations an administrator can manage across the platform.
+         * @summary OmopDbOrganization Admin Policies  Post Query  Ids
+         * @param {OmopDbEpiFilter} filter 
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        async organizationAdminPoliciesPostQueryIds(filter: OmopDbEpiFilter, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<Array<string>>> {
+            const localVarAxiosArgs = await localVarAxiosParamCreator.organizationAdminPoliciesPostQueryIds(filter, options);
+            const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
+            const localVarOperationServerBasePath = operationServerMap['AbacApi.organizationAdminPoliciesPostQueryIds']?.[localVarOperationServerIndex]?.url;
+            return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
+        },
+        /**
+         * Manage policies that define which organizations an administrator can manage across the platform.
+         * @summary OmopDbOrganization Admin Policies  Post Some
+         * @param {Array<OmopDbOrganizationAdminPolicy>} organizationAdminPolicy 
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        async organizationAdminPoliciesPostSome(organizationAdminPolicy: Array<OmopDbOrganizationAdminPolicy>, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<Array<OmopDbOrganizationAdminPolicy>>> {
+            const localVarAxiosArgs = await localVarAxiosParamCreator.organizationAdminPoliciesPostSome(organizationAdminPolicy, options);
+            const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
+            const localVarOperationServerBasePath = operationServerMap['AbacApi.organizationAdminPoliciesPostSome']?.[localVarOperationServerIndex]?.url;
+            return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
+        },
+        /**
+         * Manage policies that define which organizations an administrator can manage across the platform.
+         * @summary OmopDbOrganization Admin Policies  Put One
+         * @param {string} objectId 
+         * @param {OmopDbOrganizationAdminPolicy} organizationAdminPolicy 
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        async organizationAdminPoliciesPutOne(objectId: string, organizationAdminPolicy: OmopDbOrganizationAdminPolicy, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<OmopDbOrganizationAdminPolicy>> {
+            const localVarAxiosArgs = await localVarAxiosParamCreator.organizationAdminPoliciesPutOne(objectId, organizationAdminPolicy, options);
+            const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
+            const localVarOperationServerBasePath = operationServerMap['AbacApi.organizationAdminPoliciesPutOne']?.[localVarOperationServerIndex]?.url;
+            return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
+        },
+        /**
+         * Manage policies that define which organizations an administrator can manage across the platform.
+         * @summary OmopDbOrganization Admin Policies  Put Some
+         * @param {Array<OmopDbOrganizationAdminPolicy>} organizationAdminPolicy 
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        async organizationAdminPoliciesPutSome(organizationAdminPolicy: Array<OmopDbOrganizationAdminPolicy>, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<Array<OmopDbOrganizationAdminPolicy>>> {
+            const localVarAxiosArgs = await localVarAxiosParamCreator.organizationAdminPoliciesPutSome(organizationAdminPolicy, options);
+            const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
+            const localVarOperationServerBasePath = operationServerMap['AbacApi.organizationAdminPoliciesPutSome']?.[localVarOperationServerIndex]?.url;
+            return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
+        },
+    }
+};
+
+/**
+ * AbacApi - factory interface
+ */
+
+/**
+ * OmopDbAbacApi - object-oriented interface
+
+ */
+export class OmopDbAbacApi extends OmopDbBaseAPI {
+  private static __instance: OmopDbAbacApi;
+  public static get instance(): OmopDbAbacApi {
+    OmopDbAbacApi.__instance = OmopDbAbacApi.__instance || new OmopDbAbacApi();
+    return OmopDbAbacApi.__instance;
+  }
+
+    /**
+     * Manage policies that define which organizations an administrator can manage across the platform.
+     * @summary OmopDbOrganization Admin Policies  Delete All
+     * @param {*} [options] Override http request option.
+     * @throws {RequiredError}
+     */
+    public organizationAdminPoliciesDeleteAll(options?: RawAxiosRequestConfig) {
+        return OmopDbAbacApiFp(this.configuration).organizationAdminPoliciesDeleteAll(options).then((request) => request(this.axios, this.configuration.baseUrl));
+    }
+
+    /**
+     * Manage policies that define which organizations an administrator can manage across the platform.
+     * @summary OmopDbOrganization Admin Policies  Delete One
+     * @param {any} objectId 
+     * @param {*} [options] Override http request option.
+     * @throws {RequiredError}
+     */
+    public organizationAdminPoliciesDeleteOne(objectId: any, options?: RawAxiosRequestConfig) {
+        return OmopDbAbacApiFp(this.configuration).organizationAdminPoliciesDeleteOne(objectId, options).then((request) => request(this.axios, this.configuration.baseUrl));
+    }
+
+    /**
+     * Manage policies that define which organizations an administrator can manage across the platform.
+     * @summary OmopDbOrganization Admin Policies  Delete Some
+     * @param {string} ids 
+     * @param {*} [options] Override http request option.
+     * @throws {RequiredError}
+     */
+    public organizationAdminPoliciesDeleteSome(ids: string, options?: RawAxiosRequestConfig) {
+        return OmopDbAbacApiFp(this.configuration).organizationAdminPoliciesDeleteSome(ids, options).then((request) => request(this.axios, this.configuration.baseUrl));
+    }
+
+    /**
+     * Manage policies that define which organizations an administrator can manage across the platform.
+     * @summary OmopDbOrganization Admin Policies  Get All
+     * @param {*} [options] Override http request option.
+     * @throws {RequiredError}
+     */
+    public organizationAdminPoliciesGetAll(options?: RawAxiosRequestConfig) {
+        return OmopDbAbacApiFp(this.configuration).organizationAdminPoliciesGetAll(options).then((request) => request(this.axios, this.configuration.baseUrl));
+    }
+
+    /**
+     * Manage policies that define which organizations an administrator can manage across the platform.
+     * @summary OmopDbOrganization Admin Policies  Get One
+     * @param {string} objectId 
+     * @param {*} [options] Override http request option.
+     * @throws {RequiredError}
+     */
+    public organizationAdminPoliciesGetOne(objectId: string, options?: RawAxiosRequestConfig) {
+        return OmopDbAbacApiFp(this.configuration).organizationAdminPoliciesGetOne(objectId, options).then((request) => request(this.axios, this.configuration.baseUrl));
+    }
+
+    /**
+     * Manage policies that define which organizations an administrator can manage across the platform.
+     * @summary OmopDbOrganization Admin Policies  Get Some
+     * @param {string} ids 
+     * @param {*} [options] Override http request option.
+     * @throws {RequiredError}
+     */
+    public organizationAdminPoliciesGetSome(ids: string, options?: RawAxiosRequestConfig) {
+        return OmopDbAbacApiFp(this.configuration).organizationAdminPoliciesGetSome(ids, options).then((request) => request(this.axios, this.configuration.baseUrl));
+    }
+
+    /**
+     * Manage policies that define which organizations an administrator can manage across the platform.
+     * @summary OmopDbOrganization Admin Policies  Post One
+     * @param {OmopDbOrganizationAdminPolicy} organizationAdminPolicy 
+     * @param {*} [options] Override http request option.
+     * @throws {RequiredError}
+     */
+    public organizationAdminPoliciesPostOne(organizationAdminPolicy: OmopDbOrganizationAdminPolicy, options?: RawAxiosRequestConfig) {
+        return OmopDbAbacApiFp(this.configuration).organizationAdminPoliciesPostOne(organizationAdminPolicy, options).then((request) => request(this.axios, this.configuration.baseUrl));
+    }
+
+    /**
+     * Manage policies that define which organizations an administrator can manage across the platform.
+     * @summary OmopDbOrganization Admin Policies  Post Query
+     * @param {OmopDbEpiFilter} filter 
+     * @param {*} [options] Override http request option.
+     * @throws {RequiredError}
+     */
+    public organizationAdminPoliciesPostQuery(filter: OmopDbEpiFilter, options?: RawAxiosRequestConfig) {
+        return OmopDbAbacApiFp(this.configuration).organizationAdminPoliciesPostQuery(filter, options).then((request) => request(this.axios, this.configuration.baseUrl));
+    }
+
+    /**
+     * Manage policies that define which organizations an administrator can manage across the platform.
+     * @summary OmopDbOrganization Admin Policies  Post Query  Ids
+     * @param {OmopDbEpiFilter} filter 
+     * @param {*} [options] Override http request option.
+     * @throws {RequiredError}
+     */
+    public organizationAdminPoliciesPostQueryIds(filter: OmopDbEpiFilter, options?: RawAxiosRequestConfig) {
+        return OmopDbAbacApiFp(this.configuration).organizationAdminPoliciesPostQueryIds(filter, options).then((request) => request(this.axios, this.configuration.baseUrl));
+    }
+
+    /**
+     * Manage policies that define which organizations an administrator can manage across the platform.
+     * @summary OmopDbOrganization Admin Policies  Post Some
+     * @param {Array<OmopDbOrganizationAdminPolicy>} organizationAdminPolicy 
+     * @param {*} [options] Override http request option.
+     * @throws {RequiredError}
+     */
+    public organizationAdminPoliciesPostSome(organizationAdminPolicy: Array<OmopDbOrganizationAdminPolicy>, options?: RawAxiosRequestConfig) {
+        return OmopDbAbacApiFp(this.configuration).organizationAdminPoliciesPostSome(organizationAdminPolicy, options).then((request) => request(this.axios, this.configuration.baseUrl));
+    }
+
+    /**
+     * Manage policies that define which organizations an administrator can manage across the platform.
+     * @summary OmopDbOrganization Admin Policies  Put One
+     * @param {string} objectId 
+     * @param {OmopDbOrganizationAdminPolicy} organizationAdminPolicy 
+     * @param {*} [options] Override http request option.
+     * @throws {RequiredError}
+     */
+    public organizationAdminPoliciesPutOne(objectId: string, organizationAdminPolicy: OmopDbOrganizationAdminPolicy, options?: RawAxiosRequestConfig) {
+        return OmopDbAbacApiFp(this.configuration).organizationAdminPoliciesPutOne(objectId, organizationAdminPolicy, options).then((request) => request(this.axios, this.configuration.baseUrl));
+    }
+
+    /**
+     * Manage policies that define which organizations an administrator can manage across the platform.
+     * @summary OmopDbOrganization Admin Policies  Put Some
+     * @param {Array<OmopDbOrganizationAdminPolicy>} organizationAdminPolicy 
+     * @param {*} [options] Override http request option.
+     * @throws {RequiredError}
+     */
+    public organizationAdminPoliciesPutSome(organizationAdminPolicy: Array<OmopDbOrganizationAdminPolicy>, options?: RawAxiosRequestConfig) {
+        return OmopDbAbacApiFp(this.configuration).organizationAdminPoliciesPutSome(organizationAdminPolicy, options).then((request) => request(this.axios, this.configuration.baseUrl));
+    }
+}
+
+
 
 /**
  * AuthApi - axios parameter creator
@@ -51745,7 +52507,7 @@ const OmopDbSystemApiFp = function(configuration?: Configuration) {
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        async health(options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<OmopDbHealthReponseBody>> {
+        async health(options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<OmopDbHealthResponseBody>> {
             const localVarAxiosArgs = await localVarAxiosParamCreator.health(options);
             const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
             const localVarOperationServerBasePath = operationServerMap['SystemApi.health']?.[localVarOperationServerIndex]?.url;
