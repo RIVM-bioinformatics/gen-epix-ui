@@ -24,8 +24,8 @@ import type {
   EpiLinkedScrollSubjectValue,
   Highlighting,
   Stratification,
-} from '../../../models/epi';
-import { EPI_ZONE } from '../../../models/epi';
+} from '../../../../../ui-casedb/src/models/epi';
+import { EPI_ZONE } from '../../../../../ui-casedb/src/models/epi';
 import type {
   TreeAssembly,
   TreeNode,
@@ -110,11 +110,11 @@ export const PhylogeneticTreeComponent = ({
   }), [initialViewState?.horizontalScrollPosition, initialViewState?.verticalScrollPosition]);
   const effectiveHighlightingSubject = highlightingSubject ?? fallbackHighlightingSubject;
 
-  const headerHeight = ConfigManager.instance.config.epiTree.HEADER_HEIGHT;
+  const headerHeight = ConfigManager.getInstance().config.epiTree.HEADER_HEIGHT;
   const treeCanvasWidth = width;
   const treeCanvasHeight = Math.max(0, height - headerHeight);
   const combinedCanvasHeight = Math.max(0, height);
-  const treeWidthMinusPadding = treeCanvasWidth - (2 * ConfigManager.instance.config.epiTree.TREE_PADDING);
+  const treeWidthMinusPadding = treeCanvasWidth - (2 * ConfigManager.getInstance().config.epiTree.TREE_PADDING);
   const pixelToGeneticDistanceRatio = tree?.maxBranchLength ? treeWidthMinusPadding / tree.maxBranchLength.toNumber() : null;
   const treeHeight = tree?.size ? (tree.size * itemHeight) + scrollbarSize : itemHeight;
 
@@ -220,7 +220,7 @@ export const PhylogeneticTreeComponent = ({
       origin: scrollContainerRef.current,
       position: position / devicePixelRatio,
     });
-  }, ConfigManager.instance.config.epiTree.LINKED_SCROLL_DEBOUNCE_DELAY_MS, { leading: true, trailing: true });
+  }, ConfigManager.getInstance().config.epiTree.LINKED_SCROLL_DEBOUNCE_DELAY_MS, { leading: true, trailing: true });
 
   const updateScrollPosition = useCallback((params: { internalZoomLevel: number; positionX: number; positionY: number }) => {
     const { internalZoomLevel, positionX, positionY } = params;
@@ -544,7 +544,7 @@ export const PhylogeneticTreeComponent = ({
         const scrollPositionY = pos.currentY - deltaY;
 
         let sanitizedScrollPositionX = scrollPositionX;
-        if (zoomLevel === 1 && Math.abs(deltaX) < ConfigManager.instance.config.epiTree.PANNING_THRESHOLD && pos.currentX === 0) {
+        if (zoomLevel === 1 && Math.abs(deltaX) < ConfigManager.getInstance().config.epiTree.PANNING_THRESHOLD && pos.currentX === 0) {
           sanitizedScrollPositionX = 0;
         }
         updateScrollPosition({ internalZoomLevel: zoomLevel, positionX: sanitizedScrollPositionX, positionY: scrollPositionY });
@@ -596,7 +596,7 @@ export const PhylogeneticTreeComponent = ({
         return;
       }
 
-      const { MAX_ZOOM_LEVEL, MAX_ZOOM_SPEED, MIN_ZOOM_LEVEL, MIN_ZOOM_SPEED } = ConfigManager.instance.config.epiTree;
+      const { MAX_ZOOM_LEVEL, MAX_ZOOM_SPEED, MIN_ZOOM_LEVEL, MIN_ZOOM_SPEED } = ConfigManager.getInstance().config.epiTree;
 
       const zoomSpeed = Math.min(MAX_ZOOM_SPEED, Math.max(MIN_ZOOM_SPEED, treeHeight / treeCanvasHeight * 0.2));
       const newZoomLevel = Math.min(MAX_ZOOM_LEVEL, Math.max(MIN_ZOOM_LEVEL, zoomLevel + (event.deltaY > 0 ? zoomSpeed : -zoomSpeed)));

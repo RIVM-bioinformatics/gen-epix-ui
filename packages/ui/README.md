@@ -26,7 +26,7 @@ import {
   setup,
 } from '@gen-epix/ui';
 
-ConfigManager.instance.config = {
+ConfigManager.getInstance().config = {
   // add your config
 }
 

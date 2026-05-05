@@ -19,8 +19,8 @@ import type {
   CaseUploadResultWithGeneratedId,
   EpiUploadMappedColumn,
   EpiUploadSequenceMapping,
-} from '../../models/epi';
-import { EPI_UPLOAD_STEP } from '../../models/epi';
+} from '../../../../ui-casedb/src/models/epi';
+import { EPI_UPLOAD_STEP } from '../../../../ui-casedb/src/models/epi';
 
 export const STEP_ORDER = [
   EPI_UPLOAD_STEP.SELECT_FILE,

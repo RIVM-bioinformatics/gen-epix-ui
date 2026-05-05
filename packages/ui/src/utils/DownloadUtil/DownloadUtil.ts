@@ -179,7 +179,7 @@ export class DownloadUtil {
 
   public static getExportFileName(baseName: string, completeCaseType: CaseDbCompleteCaseType, t: TFunction<'translation', undefined>): string {
     return t('{{date}}--{{applicationName}}--{{caseTypeName}}--{{baseName}}', {
-      applicationName: StringUtil.createSlug(ConfigManager.instance.config.applicationName),
+      applicationName: StringUtil.createSlug(ConfigManager.getInstance().config.applicationName),
       baseName: StringUtil.createSlug(baseName),
       caseTypeName: StringUtil.createSlug(completeCaseType.name),
       date: format(new Date(), DATE_FORMAT.DATE),
@@ -187,7 +187,7 @@ export class DownloadUtil {
   }
 
   public static getTemplateFileName(completeCaseType: CaseDbCompleteCaseType): string {
-    return `${StringUtil.createSlug(ConfigManager.instance.config.applicationName)}--${StringUtil.createSlug(completeCaseType.name)}--template`;
+    return `${StringUtil.createSlug(ConfigManager.getInstance().config.applicationName)}--${StringUtil.createSlug(completeCaseType.name)}--template`;
   }
 
   private static arrayBufferToBase64(buffer: ArrayBuffer) {

@@ -24,7 +24,7 @@ export const HomePageIntroduction = () => {
         }}
       >
         <Typography variant={'h1'}>
-          {t('Welcome to {{applicationName}}', { applicationName: ConfigManager.instance.config.applicationName })}
+          {t('Welcome to {{applicationName}}', { applicationName: ConfigManager.getInstance().config.applicationName })}
         </Typography>
       </Box>
       <Box

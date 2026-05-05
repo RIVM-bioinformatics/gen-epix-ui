@@ -17,10 +17,7 @@ import {
   Typography,
 } from '@mui/material';
 import { t } from 'i18next';
-import {
-  CaseDbAuthApi,
-  CaseDbLogLevel,
-} from '@gen-epix/api-casedb';
+import { CommonDbLogLevel } from '@gen-epix/api-commondb';
 
 import { AuthenticationManager } from '../../../classes/managers/AuthenticationManager';
 import { LogManager } from '../../../classes/managers/LogManager';
@@ -52,7 +49,7 @@ export const RouterRoot = () => {
   const { data: identityProvidersWithAvailability, error: identityProvidersError, isLoading: isIdentityProvidersLoading } = useQueryMemo<IdentityProviderWithAvailability[], Error, IdentityProviderWithAvailability[]>({
     gcTime: Infinity,
     queryFn: async ({ signal }) => {
-      const providers = (await CaseDbAuthApi.instance.identityProvidersGetAll({ signal })).data;
+      const providers = (await ConfigManager.getInstance().config.authApi.identityProvidersGetAll({ signal })).data;
       if (!Array.isArray(providers)) {
         throw new Error('Invalid response for identity providers. Backend is most likely misconfigured.');
       }
@@ -95,7 +92,7 @@ export const RouterRoot = () => {
       detail: {
         pathname: location.pathname,
       },
-      level: CaseDbLogLevel.INFO,
+      level: CommonDbLogLevel.INFO,
       topic: 'USER_NAVIGATION',
     }]);
   }, [location.pathname]);
@@ -123,7 +120,7 @@ export const RouterRoot = () => {
 
   const onSignin = useCallback(() => {
     LogManager.instance.log([{
-      level: CaseDbLogLevel.INFO,
+      level: CommonDbLogLevel.INFO,
       topic: 'USER_LOGIN',
     }]);
   }, []);
@@ -150,7 +147,7 @@ export const RouterRoot = () => {
           }}
         >
           <Typography>
-            {t('{{applicationName}} is currently unavailable. Please try again later.', { applicationName: ConfigManager.instance.config.applicationName })}
+            {t('{{applicationName}} is currently unavailable. Please try again later.', { applicationName: ConfigManager.getInstance().config.applicationName })}
           </Typography>
           <Box sx={{ marginTop: 2 }}>
             <Button

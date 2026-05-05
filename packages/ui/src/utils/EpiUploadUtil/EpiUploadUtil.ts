@@ -54,7 +54,7 @@ import type {
   EpiUploadMappedColumnsFormFields,
   EpiUploadSequenceMapping,
   EpiUploadSequenceMappingForCaseId,
-} from '../../models/epi';
+} from '../../../../ui-casedb/src/models/epi';
 import { FileUtil } from '../FileUtil';
 import { UploadError } from '../../classes/errors';
 import { ValidationUtil } from '../ValidationUtil';

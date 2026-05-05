@@ -3,14 +3,14 @@ import {
   Typography,
 } from '@mui/material';
 import { useTranslation } from 'react-i18next';
-import type { CaseDbOutage } from '@gen-epix/api-casedb';
+import type { CommonDbOutage } from '@gen-epix/api-commondb';
 
 import { OutageSection } from './OutageSection';
 
 export type OutageListProps = {
-  readonly activeOutages: CaseDbOutage[];
-  readonly soonActiveOutages: CaseDbOutage[];
-  readonly visibleOutages: CaseDbOutage[];
+  readonly activeOutages: CommonDbOutage[];
+  readonly soonActiveOutages: CommonDbOutage[];
+  readonly visibleOutages: CommonDbOutage[];
 };
 export const OutageList = ({ activeOutages, soonActiveOutages, visibleOutages }: OutageListProps) => {
   const { t } = useTranslation();

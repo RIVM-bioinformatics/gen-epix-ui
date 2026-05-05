@@ -58,7 +58,7 @@ export class OutageUtil {
       }
       if (outage.active_from || outage.active_to) {
         const now = new Date();
-        const soon = addHours(now, ConfigManager.instance.config.outages.NUM_HOURS_TO_SHOW_SOON_ACTIVE_OUTAGES);
+        const soon = addHours(now, ConfigManager.getInstance().config.outages.NUM_HOURS_TO_SHOW_SOON_ACTIVE_OUTAGES);
         if (outage.active_from && outage.active_to) {
           return soon >= new Date(outage.active_from) && now < new Date(outage.active_to);
         }

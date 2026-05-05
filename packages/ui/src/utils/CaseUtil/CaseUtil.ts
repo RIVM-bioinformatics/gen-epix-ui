@@ -26,7 +26,7 @@ import { AbacUtil } from '../AbacUtil';
 import { QueryUtil } from '../QueryUtil';
 import { ConfigManager } from '../../classes/managers/ConfigManager';
 import { NotificationManager } from '../../classes/managers/NotificationManager';
-import type { CaseTypeRowValue } from '../../models/epi';
+import type { CaseTypeRowValue } from '../../../../ui-casedb/src/models/epi';
 import type { FormFieldDefinition } from '../../models/form';
 import { FORM_FIELD_DEFINITION_TYPE } from '../../models/form';
 import { QUERY_KEY } from '../../models/query';
@@ -324,7 +324,7 @@ export class CaseUtil {
   }
 
   public static getMissingRowValue(raw: string, machineReadable = true): CaseTypeRowValue {
-    const { DATA_MISSING_CHARACTER } = ConfigManager.instance.config.epi;
+    const { DATA_MISSING_CHARACTER } = ConfigManager.getInstance().config.epi;
     const dataMissingCharacter = machineReadable ? '' : DATA_MISSING_CHARACTER;
 
     return {
@@ -343,7 +343,7 @@ export class CaseUtil {
       return CaseUtil.getMappedValue(content[col.id], col, completeCaseType, machineReadable);
     }
 
-    const { DATA_MISSING_CHARACTER } = ConfigManager.instance.config.epi;
+    const { DATA_MISSING_CHARACTER } = ConfigManager.getInstance().config.epi;
     const dataMissingCharacter = machineReadable ? '' : DATA_MISSING_CHARACTER;
 
     const rowValue: CaseTypeRowValue = {

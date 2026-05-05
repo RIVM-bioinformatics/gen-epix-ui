@@ -1,7 +1,7 @@
-import type { CaseDbOutage } from '@gen-epix/api-casedb';
+import type { CommonDbOutage } from '@gen-epix/api-commondb';
 
 export type CategorizedOutages = {
-  activeOutages: CaseDbOutage[];
-  soonActiveOutages: CaseDbOutage[];
-  visibleOutages: CaseDbOutage[];
+  activeOutages: CommonDbOutage[];
+  soonActiveOutages: CommonDbOutage[];
+  visibleOutages: CommonDbOutage[];
 };

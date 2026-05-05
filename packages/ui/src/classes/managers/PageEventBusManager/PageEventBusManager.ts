@@ -1,4 +1,4 @@
-import type { CaseDbUser } from '@gen-epix/api-casedb';
+import type { CommonDbUser } from '@gen-epix/api-commondb';
 
 import { WindowManager } from '../WindowManager';
 import { ConfigManager } from '../ConfigManager';
@@ -6,7 +6,7 @@ import { EventBusAbstract } from '../../abstracts/EventBusAbstract';
 
 type EpiEvent = {
   changePage: Page;
-  changeUser: CaseDbUser;
+  changeUser: CommonDbUser;
   click: {
     context?: string;
     label: string;
@@ -60,7 +60,7 @@ export class PageEventBusManager extends EventBusAbstract<EpiEvent> {
   }
 
   private setupClickEventListener(): void {
-    if (!ConfigManager.instance.config.enablePageEvents) {
+    if (!ConfigManager.getInstance().config.enablePageEvents) {
       return;
     }
     WindowManager.instance.window.addEventListener('click', (event: Event): void => {

@@ -57,7 +57,7 @@ describe('EpiMapUtil', () => {
 
   describe('getPieChartRadius', () => {
     beforeAll(() => {
-      vi.spyOn(ConfigManager.instance, 'config', 'get').mockReturnValue({
+      vi.spyOn(ConfigManager.getInstance, 'config', 'get').mockReturnValue({
         epiMap: {
           MIN_PIE_CHART_RADIUS: 4,
         },
@@ -80,7 +80,7 @@ describe('EpiMapUtil', () => {
         // test where minNumCases === maxNumCases (result should be maxArea)
         [[1, 1487, { ...statisticsBase, maxNumCases: 1, minNumCases: 1 }], 21.76],
         // test where numCases === minNumCases (result should be minArea)
-        [[1, 1487, { ...statisticsBase, maxNumCases: 9, minNumCases: 1 }], ConfigManager.instance.config.epiMap.MIN_PIE_CHART_RADIUS],
+        [[1, 1487, { ...statisticsBase, maxNumCases: 9, minNumCases: 1 }], ConfigManager.getInstance().config.epiMap.MIN_PIE_CHART_RADIUS],
         // test where numCases === maxNumCases (result should be maxArea
         [[9, 1487, { ...statisticsBase, maxNumCases: 9, minNumCases: 1 }], 21.76],
         // test where numCases is some where in between minNumCases and maxNumCases (area should be proportional)

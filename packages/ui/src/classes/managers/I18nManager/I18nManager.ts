@@ -35,8 +35,8 @@ export class I18nManager extends EventBusAbstract<I18nEvent> {
       console.warn('I18nManager is already initialized');
       return;
     }
-    const currentLanguageCode = await ConfigManager.instance.config.i18n.getCurrentLanguageCode();
-    const defaultLanguageConfig = ConfigManager.instance.config.i18n.languages.find(x => x.code === currentLanguageCode);
+    const currentLanguageCode = await ConfigManager.getInstance().config.i18n.getCurrentLanguageCode();
+    const defaultLanguageConfig = ConfigManager.getInstance().config.i18n.languages.find(x => x.code === currentLanguageCode);
 
     // eslint-disable-next-line @eslint-react/rules-of-hooks
     await use(initReactI18next)
@@ -67,7 +67,7 @@ export class I18nManager extends EventBusAbstract<I18nEvent> {
   }
 
   public async switchLanguageConfig(code: string): Promise<void> {
-    await ConfigManager.instance.config.i18n.setNewLanguageCode(code);
+    await ConfigManager.getInstance().config.i18n.setNewLanguageCode(code);
     this.updateLangAttribute(code);
   }
 
@@ -75,7 +75,7 @@ export class I18nManager extends EventBusAbstract<I18nEvent> {
     if (this.languageLoaded[code]) {
       return;
     }
-    const config = ConfigManager.instance.config.i18n.languages.find(x => x.code === code);
+    const config = ConfigManager.getInstance().config.i18n.languages.find(x => x.code === code);
     if (!config) {
       throw new Error(`No i18n config found for code: ${code}`);
     }

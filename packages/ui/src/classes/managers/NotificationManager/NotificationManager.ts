@@ -73,7 +73,7 @@ export class NotificationManager extends SubscribableAbstract<Notification[]> {
 
   public showNotification(notification: Omit<Notification, 'key' | 'timestamp' | 'visible'>): string {
     const key = StringUtil.createUuid();
-    const autoHideAfterMs = notification.autoHideAfterMs ?? ConfigManager.instance.config.notifications.autoHideAfterMs;
+    const autoHideAfterMs = notification.autoHideAfterMs ?? ConfigManager.getInstance().config.notifications.autoHideAfterMs;
 
     this.subject.next([
       {

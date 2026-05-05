@@ -11,7 +11,7 @@ import {
 } from 'react';
 import { isRouteErrorResponse } from 'react-router-dom';
 import { isAxiosError } from 'axios';
-import { CaseDbLogLevel } from '@gen-epix/api-casedb';
+import { CommonDbLogLevel } from '@gen-epix/api-commondb';
 
 import { AxiosUtil } from '../../../utils/AxiosUtil';
 import { AuthenticationManager } from '../../../classes/managers/AuthenticationManager';
@@ -38,11 +38,11 @@ export const GenericErrorMessage = ({ error, shouldHideActionButtons }: GenericE
         error,
         stack: (error as Error)?.stack,
       },
-      level: isAxiosError(error) ? CaseDbLogLevel.DEBUG : CaseDbLogLevel.ERROR,
+      level: isAxiosError(error) ? CommonDbLogLevel.DEBUG : CommonDbLogLevel.ERROR,
       topic: (error as Error)?.message ? `Error: ${(error as Error)?.message}` : 'Error',
     }]);
     LogManager.instance.flushLog();
-    if (error instanceof Error && ConfigManager.instance.config.enablePageEvents) {
+    if (error instanceof Error && ConfigManager.getInstance().config.enablePageEvents) {
       PageEventBusManager.instance.emit('error', error);
     }
   }, [error]);

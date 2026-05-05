@@ -12,11 +12,11 @@ import { ConfigManager } from '../../classes/managers/ConfigManager';
 import { EpiDataManager } from '../../classes/managers/EpiDataManager';
 import type { ArgumentTypes } from '../../models/generic';
 import type { Config } from '../../models/config';
-import { STRATIFICATION_MODE } from '../../models/epi';
+import { STRATIFICATION_MODE } from '../../../../ui-casedb/src/models/epi';
 import type {
   Stratification,
   TreeConfiguration,
-} from '../../models/epi';
+} from '../../../../ui-casedb/src/models/epi';
 import type {
   TreeAssembly,
   TreeNode,
@@ -161,7 +161,7 @@ describe('EpiTreeUtil', () => {
 
   describe('getTickMarkScale', () => {
     beforeAll(() => {
-      vi.spyOn(ConfigManager.instance, 'config', 'get').mockReturnValue({
+      vi.spyOn(ConfigManager.getInstance, 'config', 'get').mockReturnValue({
         epiTree: {
           MAX_SCALE_WIDTH_PX: 144,
           MIN_SCALE_WIDTH_PX: 48,
@@ -728,7 +728,7 @@ describe('EpiTreeUtil', () => {
     const treeCanvasWidth = 800;
 
     beforeAll(() => {
-      vi.spyOn(ConfigManager.instance, 'config', 'get').mockReturnValue({
+      vi.spyOn(ConfigManager.getInstance, 'config', 'get').mockReturnValue({
         epiTree: {
           ANCESTOR_DOT_RADIUS,
           LEAF_DOT_RADIUS,
@@ -1077,7 +1077,7 @@ describe('EpiTreeUtil', () => {
     const HEADER_HEIGHT = 40;
 
     beforeAll(() => {
-      vi.spyOn(ConfigManager.instance, 'config', 'get').mockReturnValue({
+      vi.spyOn(ConfigManager.getInstance, 'config', 'get').mockReturnValue({
         epiTree: {
           HEADER_HEIGHT,
           TREE_PADDING,
@@ -1281,7 +1281,7 @@ describe('EpiTreeUtil', () => {
     const REGULAR_FILL_COLOR = '#dddddd';
 
     beforeAll(() => {
-      vi.spyOn(ConfigManager.instance, 'config', 'get').mockReturnValue({
+      vi.spyOn(ConfigManager.getInstance, 'config', 'get').mockReturnValue({
         epiTree: {
           REGULAR_FILL_COLOR_SUPPORT_LINE: REGULAR_FILL_COLOR,
           TREE_PADDING: TREE_PADDING_GUIDES,
@@ -1406,7 +1406,7 @@ describe('EpiTreeUtil', () => {
     const HEADER_HEIGHT_SCALE = 40;
 
     beforeAll(() => {
-      vi.spyOn(ConfigManager.instance, 'config', 'get').mockReturnValue({
+      vi.spyOn(ConfigManager.getInstance, 'config', 'get').mockReturnValue({
         epiTree: {
           HEADER_HEIGHT: HEADER_HEIGHT_SCALE,
           TREE_PADDING: TREE_PADDING_SCALE,
@@ -1512,7 +1512,7 @@ describe('EpiTreeUtil', () => {
     const REGULAR_FILL_CANVAS = '#eeeeee';
 
     beforeAll(() => {
-      vi.spyOn(ConfigManager.instance, 'config', 'get').mockReturnValue({
+      vi.spyOn(ConfigManager.getInstance, 'config', 'get').mockReturnValue({
         epiLineList: {
           TABLE_ROW_HEIGHT: 30,
         },

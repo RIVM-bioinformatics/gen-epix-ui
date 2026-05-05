@@ -51,7 +51,7 @@ export class EpiMapUtil {
 
   public static getPieChartRadius(numCases: number, maxPieChartArea: number, statistics: RegionStatistics) {
     const { maxNumCases, minNumCases } = statistics;
-    const { MIN_PIE_CHART_RADIUS } = ConfigManager.instance.config.epiMap;
+    const { MIN_PIE_CHART_RADIUS } = ConfigManager.getInstance().config.epiMap;
     const MIN_PIE_CHART_AREA = MIN_PIE_CHART_RADIUS ** 2 * Math.PI;
 
     let area: number;

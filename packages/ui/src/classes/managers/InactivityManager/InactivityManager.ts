@@ -1,5 +1,5 @@
 import throttle from 'lodash/throttle';
-import { CaseDbLogLevel } from '@gen-epix/api-casedb';
+import { CommonDbLogLevel } from '@gen-epix/api-commondb';
 
 import { SubscribableAbstract } from '../../abstracts/SubscribableAbstract';
 import { Subject } from '../../Subject';
@@ -41,8 +41,8 @@ export class InactivityManager extends SubscribableAbstract<InactivityState> {
       readableNotificationDiff: '',
     }));
 
-    const ALLOWED_IDLE_TIME_MS = ConfigManager.instance.config.userInactivityConfirmation.ALLOWED_IDLE_TIME_MS;
-    const NOTIFICATION_TIME_MS = ConfigManager.instance.config.userInactivityConfirmation.NOTIFICATION_TIME_MS;
+    const ALLOWED_IDLE_TIME_MS = ConfigManager.getInstance().config.userInactivityConfirmation.ALLOWED_IDLE_TIME_MS;
+    const NOTIFICATION_TIME_MS = ConfigManager.getInstance().config.userInactivityConfirmation.NOTIFICATION_TIME_MS;
 
     this.onActivityDebounced = throttle(this.onActivity.bind(this), 1000, {
       leading: true,
@@ -73,7 +73,7 @@ export class InactivityManager extends SubscribableAbstract<InactivityState> {
   public logout(): void {
     LogManager.instance.log([{
       detail: AuthenticationManager.instance.authContextProps.user,
-      level: CaseDbLogLevel.TRACE,
+      level: CommonDbLogLevel.TRACE,
       topic: 'USER_LOGOUT_BY_INACTIVITY',
     }]);
     LogManager.instance.flushLog();

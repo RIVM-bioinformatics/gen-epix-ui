@@ -3,17 +3,17 @@ import {
   createJSONStorage,
   persist,
 } from 'zustand/middleware';
-import type { CaseDbIdentityProvider } from '@gen-epix/api-casedb';
+import type { CommonDbIdentityProvider } from '@gen-epix/api-commondb';
 
 
 export type OidcStore = OidcStoreActions & OidcStoreState;
 
 export interface OidcStoreActions {
-  setConfiguration: (configuration: CaseDbIdentityProvider) => void;
+  setConfiguration: (configuration: CommonDbIdentityProvider) => void;
 }
 
 export interface OidcStoreState {
-  configuration: CaseDbIdentityProvider;
+  configuration: CommonDbIdentityProvider;
 }
 
 export const createOidcStoreInitialState: () => OidcStoreState = () => ({
@@ -25,7 +25,7 @@ export const oidcStore = createStore<OidcStore>()(
     (set) => {
       return {
         ...createOidcStoreInitialState(),
-        setConfiguration: (configuration: CaseDbIdentityProvider) => {
+        setConfiguration: (configuration: CommonDbIdentityProvider) => {
           set({ configuration });
         },
       };

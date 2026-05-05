@@ -26,9 +26,9 @@ import { customRender } from '../../../test/lib/render';
 const DEFAULT_HEIGHT = 320;
 const DEFAULT_ITEM_HEIGHT = 32;
 const DEFAULT_WIDTH = 640;
-const HEADER_HEIGHT = ConfigManager.instance.config.epiTree.HEADER_HEIGHT;
+const HEADER_HEIGHT = ConfigManager.getInstance().config.epiTree.HEADER_HEIGHT;
 const LARGE_TREE_NEWICK = '(A:1,B:1,C:1,D:1,E:1,F:1,G:1,H:1,I:1,J:1);';
-const TREE_PADDING = ConfigManager.instance.config.epiTree.TREE_PADDING;
+const TREE_PADDING = ConfigManager.getInstance().config.epiTree.TREE_PADDING;
 
 let ariaLabelCounter = 0;
 

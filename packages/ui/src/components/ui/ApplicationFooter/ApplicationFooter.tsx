@@ -48,7 +48,7 @@ export const ApplicationFooter = ({ fullWidth }: ApplicationFooterProps) => {
     setIsMenuOpen(x => !x);
   }, []);
 
-  const footer = useMemo(() => ConfigManager.instance.config.createFooter(t), [t]);
+  const footer = useMemo(() => ConfigManager.getInstance().config.createFooter(t), [t]);
 
   return (
     <Box

@@ -57,14 +57,14 @@ export const HomePageTrends = withPermissions(() => {
 
   const dateTimeRangeFilter = useMemo<CaseDbTypedDatetimeRangeFilter>(() => ({
     type: 'DATETIME_RANGE',
-    upper_bound: ConfigManager.instance.config.trends.homePage.getSinceDate(),
+    upper_bound: ConfigManager.getInstance().config.trends.homePage.getSinceDate(),
     upper_bound_censor: '<=',
   } satisfies CaseDbTypedDatetimeRangeFilter), []);
 
   const caseSetQueryFilter = useMemo<CaseDbEpiFilter>(() => ({
     key: 'case_set_date',
     type: 'DATETIME_RANGE',
-    upper_bound: ConfigManager.instance.config.trends.homePage.getSinceDate(),
+    upper_bound: ConfigManager.getInstance().config.trends.homePage.getSinceDate(),
     upper_bound_censor: '<=',
   } satisfies CaseDbEpiFilter), []);
 
@@ -304,7 +304,7 @@ export const HomePageTrends = withPermissions(() => {
                 diffPercentage={statistic.diffPercentage}
                 header={statistic.header}
                 key={statistic.header}
-                sinceLabel={ConfigManager.instance.config.trends.homePage.getSinceLabel(t)}
+                sinceLabel={ConfigManager.getInstance().config.trends.homePage.getSinceLabel(t)}
                 value={statistic.value}
               />
             ))}

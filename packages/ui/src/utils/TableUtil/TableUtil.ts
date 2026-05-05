@@ -21,7 +21,7 @@ import { DateFilter } from '../../classes/filters/DateFilter';
 import { MultiSelectFilter } from '../../classes/filters/MultiSelectFilter';
 import { NumberRangeFilter } from '../../classes/filters/NumberRangeFilter';
 import { TextFilter } from '../../classes/filters/TextFilter';
-import type { CaseTypeRowValue } from '../../models/epi';
+import type { CaseTypeRowValue } from '../../../../ui-casedb/src/models/epi';
 import type { Filters } from '../../models/filter';
 import type { OptionBase } from '../../models/form';
 import type {

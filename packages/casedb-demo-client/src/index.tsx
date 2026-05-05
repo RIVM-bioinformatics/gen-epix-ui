@@ -8,7 +8,7 @@ import {
 
 import { ConfigUtil } from './utils/ConfigUtil';
 
-ConfigManager.instance.config = ConfigUtil.createConfig();
+ConfigManager.getInstance().config = ConfigUtil.createConfig();
 I18nManager.instance.init()
   .then(() => {
     setup();

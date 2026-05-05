@@ -13,7 +13,6 @@ import {
   Box,
   Button,
 } from '@mui/material';
-import { CaseDbSystemApi } from '@gen-epix/api-casedb';
 
 import { WindowManager } from '../../../classes/managers/WindowManager';
 import { useQueryMemo } from '../../../hooks/useQueryMemo';
@@ -31,6 +30,7 @@ import { I18nManager } from '../../../classes/managers/I18nManager';
 import type { ConfirmationRefMethods } from '../../ui/Confirmation';
 import { Confirmation } from '../../ui/Confirmation';
 import { Spinner } from '../../ui/Spinner';
+import { ConfigManager } from '../../../classes/managers/ConfigManager';
 
 
 export const ApplicationBootstrap = ({ children }: PropsWithChildren): ReactNode => {
@@ -56,7 +56,7 @@ export const ApplicationBootstrap = ({ children }: PropsWithChildren): ReactNode
 
   const outagesQuery = useQueryMemo({
     gcTime: Infinity,
-    queryFn: async ({ signal }) => (await CaseDbSystemApi.instance.retrieveOutages({ signal })).data,
+    queryFn: async ({ signal }) => (await ConfigManager.getInstance().config.systemApi.retrieveOutages({ signal })).data,
     queryKey: QueryUtil.getGenericKey(QUERY_KEY.OUTAGES),
     refetchInterval: 5 * 60 * 1000,
     staleTime: Infinity,
@@ -104,7 +104,7 @@ export const ApplicationBootstrap = ({ children }: PropsWithChildren): ReactNode
   const featureFlagsQuery = useQueryMemo({
     enabled: shouldShowChildren,
     gcTime: Infinity,
-    queryFn: async ({ signal }) => (await CaseDbSystemApi.instance.retrieveFeatureFlags({ signal })).data,
+    queryFn: async ({ signal }) => (await ConfigManager.getInstance().config.systemApi.retrieveFeatureFlags({ signal })).data,
     queryKey: QueryUtil.getGenericKey(QUERY_KEY.FEATURE_FLAGS),
     staleTime: Infinity,
   });

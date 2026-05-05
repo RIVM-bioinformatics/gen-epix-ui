@@ -13,7 +13,7 @@ import {
   QueryClientManager,
 } from '@gen-epix/ui';
 
-ConfigManager.instance.config = ConfigUtil.createDemoConfig();
+ConfigManager.getInstance().config = ConfigUtil.createDemoConfig();
 
 const queryQueryManager = QueryClientManager.instance;
 const emotionCacheManager = EmotionCacheManager.instance;
@@ -23,7 +23,7 @@ const AllTheProviders = ({ children }: PropsWithChildren<unknown>) => {
   return (
     <QueryClientProvider client={queryQueryManager.queryClient}>
       <CacheProvider value={emotionCacheManager.emotionCache}>
-        <ThemeProvider theme={ConfigManager.instance.config.theme}>
+        <ThemeProvider theme={ConfigManager.getInstance().config.theme}>
           <CssBaseline />
           { children }
         </ThemeProvider>

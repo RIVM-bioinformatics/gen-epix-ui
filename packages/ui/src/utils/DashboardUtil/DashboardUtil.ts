@@ -5,8 +5,8 @@ import type {
   EpiDashboardLayout,
   EpiDashboardLayoutConfig,
   EpiDashboardLayoutUserConfig,
-} from '../../models/epi';
-import { EPI_ZONE } from '../../models/epi';
+} from '../../../../ui-casedb/src/models/epi';
+import { EPI_ZONE } from '../../../../ui-casedb/src/models/epi';
 
 
 export class DashboardUtil {
@@ -32,7 +32,7 @@ export class DashboardUtil {
 
   public static getDashboardLayoutConfig(userConfig: EpiDashboardLayoutUserConfig): EpiDashboardLayoutConfig {
     const enabledZones = DashboardUtil.getEnabledZones(userConfig);
-    return ConfigManager.instance.config.epiDashboard.LAYOUTS.find(epiDashboardLayout => epiDashboardLayout.zones.length === enabledZones.length && intersection(enabledZones, epiDashboardLayout.zones).length === enabledZones.length);
+    return ConfigManager.getInstance().config.epiDashboard.LAYOUTS.find(epiDashboardLayout => epiDashboardLayout.zones.length === enabledZones.length && intersection(enabledZones, epiDashboardLayout.zones).length === enabledZones.length);
   }
 
   public static getEnabledZones(userConfig: EpiDashboardLayoutUserConfig): EPI_ZONE[] {

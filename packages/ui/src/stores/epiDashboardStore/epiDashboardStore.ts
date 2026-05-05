@@ -45,11 +45,11 @@ import type {
   Stratification,
   StratificationLegendaItem,
   TreeConfiguration,
-} from '../../models/epi';
+} from '../../../../ui-casedb/src/models/epi';
 import {
   STRATIFICATION_MODE,
   STRATIFICATION_SELECTED,
-} from '../../models/epi';
+} from '../../../../ui-casedb/src/models/epi';
 import type { FilterValues } from '../../models/filter';
 import { QUERY_KEY } from '../../models/query';
 import type { TreeNode } from '../../models/tree';
@@ -211,7 +211,7 @@ const createEpiDashboardStoreInitialState = (kwArgs: CreateEpiDashboardStoreInit
     isMaxResultsExceeded: false,
     isMaxResultsExceededDismissed: false,
     newick: null,
-    numVisibleAttributesInSummary: ConfigManager.instance.config.epi.INITIAL_NUM_VISIBLE_ATTRIBUTES_IN_CASE_SUMMARY,
+    numVisibleAttributesInSummary: ConfigManager.getInstance().config.epi.INITIAL_NUM_VISIBLE_ATTRIBUTES_IN_CASE_SUMMARY,
     stratification: null,
     stratifyableColumns: [],
     tree: null,
@@ -394,7 +394,7 @@ export const createEpiDashboardStore = (kwArgs: CreateEpiDashboardStoreKwArgs) =
             const { filteredData, frontendFilterPriorities } = get();
 
             const data = filteredData[last(frontendFilterPriorities)];
-            const { ALLOWED_COL_TYPES_FOR_STRATIFICATION, STRATIFICATION_COLORS } = ConfigManager.instance.config.epi;
+            const { ALLOWED_COL_TYPES_FOR_STRATIFICATION, STRATIFICATION_COLORS } = ConfigManager.getInstance().config.epi;
 
             const filteredCols = CaseTypeUtil.getCols(completeCaseType).filter(col => {
               const column = completeCaseType.ref_cols[col.ref_col_id];
@@ -547,7 +547,7 @@ export const createEpiDashboardStore = (kwArgs: CreateEpiDashboardStoreKwArgs) =
             const legendaItemsByColor: { [key: string]: StratificationLegendaItem } = {};
             const legendaItemsByValue: { [key: string]: StratificationLegendaItem } = {};
 
-            const { STRATIFICATION_COLOR_ITEM_MISSING, STRATIFICATION_COLORS } = ConfigManager.instance.config.epi;
+            const { STRATIFICATION_COLOR_ITEM_MISSING, STRATIFICATION_COLORS } = ConfigManager.getInstance().config.epi;
 
             if (mode === STRATIFICATION_MODE.FIELD) {
               const column = completeCaseType.ref_cols[col.ref_col_id];

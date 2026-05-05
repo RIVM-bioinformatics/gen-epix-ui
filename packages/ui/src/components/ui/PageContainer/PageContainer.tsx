@@ -50,7 +50,7 @@ export const PageContainer = ({
 
   const hasContentHeaderArea = contentHeader || contentActions;
   const hasFooterArea = !fullHeight && !singleAction;
-  const { ApplicationHeader } = ConfigManager.instance.config;
+  const { ApplicationHeader } = ConfigManager.getInstance().config;
 
   useEffect(() => {
     const pageName = testIdAttributes['data-testid'];
@@ -58,7 +58,7 @@ export const PageContainer = ({
       return;
     }
 
-    if (ConfigManager.instance.config.enablePageEvents) {
+    if (ConfigManager.getInstance().config.enablePageEvents) {
       PageEventBusManager.instance.emit('changePage', {
         location: WindowManager.instance.window.location,
         pageName: testIdAttributes['data-testid'],
@@ -119,7 +119,7 @@ export const PageContainer = ({
           singleAction={singleAction}
         />
         <Box
-          id={ConfigManager.instance.config.layout.MAIN_CONTENT_ID}
+          id={ConfigManager.getInstance().config.layout.MAIN_CONTENT_ID}
           sx={{
             display: 'grid',
             gridTemplateRows: `${showBreadcrumbs ? 'max-content' : ''} auto`,

@@ -29,7 +29,7 @@ export type ApplicationBarActionsProps = {
 export const ApplicationBarActions = ({ fullWidth }: ApplicationBarActionsProps) => {
   const theme = useTheme();
   const { t } = useTranslation();
-  const environmentMessage = ConfigManager.instance.config.getEnvironmentMessage(t);
+  const environmentMessage = ConfigManager.getInstance().config.getEnvironmentMessage(t);
   const navId = useId();
 
   const [isMenuOpen, setIsMenuOpen] = useState(false);

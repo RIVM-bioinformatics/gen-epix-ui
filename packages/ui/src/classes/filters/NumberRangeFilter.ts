@@ -1,6 +1,6 @@
 import isFinite from 'lodash/isFinite';
-import type { CaseDbTypedNumberRangeFilter } from '@gen-epix/api-casedb';
-import { CaseDbComparisonOperator } from '@gen-epix/api-casedb';
+import type { CommonDbTypedNumberRangeFilter } from '@gen-epix/api-commondb';
+import { CommonDbComparisonOperator } from '@gen-epix/api-commondb';
 
 import type { Filter } from '../../models/filter';
 import type { FilterAbstractKwArgs } from '../abstracts/FilterAbstract';
@@ -59,21 +59,21 @@ export class NumberRangeFilter extends FilterAbstract<[number, number]> implemen
     return true;
   }
 
-  public toBackendFilter(): CaseDbTypedNumberRangeFilter {
+  public toBackendFilter(): CommonDbTypedNumberRangeFilter {
     if (this.isInitialFilterValue()) {
       return;
     }
-    let upper_bound_censor: CaseDbComparisonOperator;
+    let upper_bound_censor: CommonDbComparisonOperator;
     if (this.filterValue[0] === this.filterValue[1]) {
-      upper_bound_censor = CaseDbComparisonOperator.Less_Than_Or_Equal_To;
+      upper_bound_censor = CommonDbComparisonOperator.Less_Than_Or_Equal_To;
     } else if (isFinite(this.filterValue[1])) {
-      upper_bound_censor = CaseDbComparisonOperator.Less_Than;
+      upper_bound_censor = CommonDbComparisonOperator.Less_Than;
     }
 
     return {
       key: this.id,
       lower_bound: this.filterValue[0] ?? undefined,
-      lower_bound_censor: isFinite(this.filterValue[0]) ? CaseDbComparisonOperator.Greater_Than_Or_Equal_To : undefined,
+      lower_bound_censor: isFinite(this.filterValue[0]) ? CommonDbComparisonOperator.Greater_Than_Or_Equal_To : undefined,
       type: 'NUMBER_RANGE',
       upper_bound: this.filterValue[1] ?? undefined,
       upper_bound_censor,

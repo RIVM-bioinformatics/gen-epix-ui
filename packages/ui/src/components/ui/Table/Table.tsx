@@ -128,7 +128,7 @@ export const Table = <TRowData,>({
   const { t } = useTranslation();
   const tableStore = useTableStoreContext<TRowData>();
 
-  const { DEFAULT_OVERSCAN_MAIN, DEFAULT_OVERSCAN_REVERSE } = ConfigManager.instance.config.table;
+  const { DEFAULT_OVERSCAN_MAIN, DEFAULT_OVERSCAN_REVERSE } = ConfigManager.getInstance().config.table;
 
   // make sure the table re-renders when the visible columns change
   useStore(tableStore, useShallow((state) => state.columnSettings.filter(c => c.isVisible).map(c => c.id)));
@@ -167,7 +167,7 @@ export const Table = <TRowData,>({
       if (!getRowName) {
         throw new Error('getRowName is required when onRowClick is provided');
       }
-      if (ConfigManager.instance.config.enablePageEvents) {
+      if (ConfigManager.getInstance().config.enablePageEvents) {
         PageEventBusManager.instance.emit('click', {
           label: getRowName(row.row),
           type: 'table-row',

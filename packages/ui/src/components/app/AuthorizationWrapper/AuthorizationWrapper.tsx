@@ -9,7 +9,6 @@ import {
 } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
 import last from 'lodash/last';
-import { CaseDbOrganizationApi } from '@gen-epix/api-casedb';
 
 import { AuthorizationManager } from '../../../classes/managers/AuthorizationManager';
 import { QUERY_KEY } from '../../../models/query';
@@ -21,6 +20,7 @@ import { useQueryMemo } from '../../../hooks/useQueryMemo';
 import { LoadableUtil } from '../../../utils/LoadableUtil';
 import { PageContainer } from '../../ui/PageContainer';
 import { ResponseHandler } from '../../ui/ResponseHandler';
+import { ConfigManager } from '../../../classes/managers/ConfigManager';
 
 export const AuthorizationWrapper = ({ children }: PropsWithChildren): ReactNode => {
   const { t } = useTranslation();
@@ -31,14 +31,14 @@ export const AuthorizationWrapper = ({ children }: PropsWithChildren): ReactNode
   const userQuery = useQueryMemo({
     enabled: requiresUserProfile,
     gcTime: Infinity,
-    queryFn: async ({ signal }) => (await CaseDbOrganizationApi.instance.userMeGetOne({ signal })).data,
+    queryFn: async ({ signal }) => (await ConfigManager.getInstance().config.organizationApi.userMeGetOne({ signal })).data,
     queryKey: QueryUtil.getGenericKey(QUERY_KEY.USER_ME),
     staleTime: Infinity,
   });
   const userPermissionsQuery = useQueryMemo({
     enabled: requiresUserProfile,
     gcTime: Infinity,
-    queryFn: async ({ signal }) => (await CaseDbOrganizationApi.instance.userMeRetrievePermissions({ signal })).data,
+    queryFn: async ({ signal }) => (await ConfigManager.getInstance().config.organizationApi.userMeRetrievePermissions({ signal })).data,
     queryKey: QueryUtil.getGenericKey(QUERY_KEY.USER_PERMISSIONS),
     staleTime: Infinity,
   });

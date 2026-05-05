@@ -11,7 +11,6 @@ import {
   useEffect,
   useMemo,
 } from 'react';
-import { CaseDbOrganizationApi } from '@gen-epix/api-casedb';
 
 import type {
   WithDialogRefMethods,
@@ -21,6 +20,8 @@ import { withDialog } from '../../../hoc/withDialog';
 import { useQueryMemo } from '../../../hooks/useQueryMemo';
 import { ResponseHandler } from '../../ui/ResponseHandler';
 import { useArray } from '../../../hooks/useArray';
+import { ConfigManager } from '../../../classes/managers/ConfigManager';
+import type { ConfigBase } from '../../../models/config';
 
 export interface EpiContactDetailsDialogOpenProps {
   organizationId: string;
@@ -47,7 +48,8 @@ export const EpiContactDetailsDialog = withDialog<EpiContactDetailsDialogProps, 
 
   const organizationContactsQuery = useQueryMemo({
     queryFn: async ({ signal }) => {
-      const response = await CaseDbOrganizationApi.instance.retrieveOrganizationContacts({
+      const organizationApi = ConfigManager.getInstance<ConfigBase>().config.organizationApi;
+      const response = await organizationApi.retrieveOrganizationContacts({
         organization_id: openProps.organizationId,
       }, { signal });
       return response.data;

@@ -1,5 +1,5 @@
 import { t } from 'i18next';
-import type { CaseDbFiltersInner } from '@gen-epix/api-casedb';
+import type { CommonDbFiltersInner } from '@gen-epix/api-commondb';
 
 import type { Filter } from '../../models/filter';
 import { FilterAbstract } from '../abstracts/FilterAbstract';
@@ -16,7 +16,7 @@ export class TreeFilter extends FilterAbstract<string> implements Filter<string,
     return true;
   }
 
-  public toBackendFilter(): CaseDbFiltersInner {
+  public toBackendFilter(): CommonDbFiltersInner {
     return undefined;
   }
 }

@@ -4,7 +4,7 @@ import {
   persist,
 } from 'zustand/middleware';
 
-import type { EpiDashboardLayoutUserConfig } from '../../models/epi';
+import type { EpiDashboardLayoutUserConfig } from '../../../../ui-casedb/src/models/epi';
 import { DashboardUtil } from '../../utils/DashboardUtil';
 
 export type EpiDashboardGeneralSettings = {

@@ -3,14 +3,14 @@ import type {
   IndexRouteObject,
   NonIndexRouteObject,
 } from 'react-router';
-import type { CaseDbApiPermission } from '@gen-epix/api-casedb';
+import type { CommonDbApiPermission } from '@gen-epix/api-commondb';
 
 export type MyHandle = {
   category?: string;
   disabled?: boolean;
   hidden?: boolean;
   icon?: ReactElement;
-  requiredPermissions: CaseDbApiPermission[];
+  requiredPermissions: CommonDbApiPermission[];
   requirePermissionForChildRoute?: boolean;
   requiresUserProfile: boolean;
   root?: boolean;

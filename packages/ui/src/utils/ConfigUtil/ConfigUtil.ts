@@ -5,8 +5,8 @@ import {
 import { CaseDbColType } from '@gen-epix/api-casedb';
 
 import type { Config } from '../../models/config';
-import type { EpiDashboardLayoutConfig } from '../../models/epi';
-import { EPI_ZONE } from '../../models/epi';
+import type { EpiDashboardLayoutConfig } from '../../../../ui-casedb/src/models/epi';
+import { EPI_ZONE } from '../../../../ui-casedb/src/models/epi';
 import { AxiosUtil } from '../AxiosUtil';
 import { createDemoTheme } from '../../theme/demoTheme';
 

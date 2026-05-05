@@ -26,8 +26,8 @@ export class QueryClientManager {
       defaultOptions: {
         queries: {
           gcTime: Infinity,
-          retry: ConfigManager.instance.config.queryClient.retry,
-          retryDelay: ConfigManager.instance.config.queryClient.retryDelay,
+          retry: ConfigManager.getInstance().config.queryClient.retry,
+          retryDelay: ConfigManager.getInstance().config.queryClient.retryDelay,
           staleTime: Infinity,
         },
       },

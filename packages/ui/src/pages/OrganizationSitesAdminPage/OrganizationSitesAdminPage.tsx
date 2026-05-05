@@ -5,12 +5,11 @@ import {
 import { useTranslation } from 'react-i18next';
 import { object } from 'yup';
 import { useParams } from 'react-router-dom';
-import type { CaseDbSite } from '@gen-epix/api-casedb';
+import type { CommonDbSite } from '@gen-epix/api-commondb';
 import {
-  CaseDbCommandName,
-  CaseDbOrganizationApi,
-  CaseDbPermissionType,
-} from '@gen-epix/api-casedb';
+  CommonDbCommandName,
+  CommonDbPermissionType,
+} from '@gen-epix/api-commondb';
 
 import type { FormFieldDefinition } from '../../models/form';
 import { FORM_FIELD_DEFINITION_TYPE } from '../../models/form';
@@ -23,23 +22,24 @@ import { CrudPage } from '../CrudPage';
 import { AuthorizationManager } from '../../classes/managers/AuthorizationManager';
 import type { OmitWithMetaData } from '../../models/data';
 import { SchemaUtil } from '../../utils/SchemaUtil';
+import { ConfigManager } from '../../classes/managers/ConfigManager';
 
-type FormFields = OmitWithMetaData<CaseDbSite, 'organization_id' | 'organization'>;
+type FormFields = OmitWithMetaData<CommonDbSite, 'organization_id' | 'organization'>;
 
 export const OrganizationSitesAdminPage = () => {
   const { organizationId } = useParams();
   const { t } = useTranslation();
 
   const fetchAll = useCallback(async (signal: AbortSignal) => {
-    return (await CaseDbOrganizationApi.instance.sitesGetAll({ signal })).data;
+    return (await ConfigManager.getInstance().config.organizationApi.sitesGetAll({ signal })).data;
   }, []);
 
-  const fetchAllSelect = useCallback((sites: CaseDbSite[]) => {
+  const fetchAllSelect = useCallback((sites: CommonDbSite[]) => {
     return sites.filter((site) => site.organization_id === organizationId);
   }, [organizationId]);
 
-  const updateOne = useCallback(async (variables: FormFields, item: CaseDbSite) => {
-    return (await CaseDbOrganizationApi.instance.sitesPutOne(item.id, {
+  const updateOne = useCallback(async (variables: FormFields, item: CommonDbSite) => {
+    return (await ConfigManager.getInstance().config.organizationApi.sitesPutOne(item.id, {
       id: item.id,
       name: variables.name,
       organization_id: organizationId,
@@ -47,14 +47,14 @@ export const OrganizationSitesAdminPage = () => {
   }, [organizationId]);
 
   const createOne = useCallback(async (variables: FormFields) => {
-    return (await CaseDbOrganizationApi.instance.sitesPostOne({
+    return (await ConfigManager.getInstance().config.organizationApi.sitesPostOne({
       name: variables.name,
       organization_id: organizationId,
     })).data;
   }, [organizationId]);
 
-  const deleteOne = useCallback(async (item: CaseDbSite) => {
-    return await CaseDbOrganizationApi.instance.sitesDeleteOne(item.id);
+  const deleteOne = useCallback(async (item: CommonDbSite) => {
+    return await ConfigManager.getInstance().config.organizationApi.sitesDeleteOne(item.id);
   }, []);
 
   const getName = useCallback((item: FormFields) => {
@@ -77,13 +77,13 @@ export const OrganizationSitesAdminPage = () => {
     ] as const;
   }, [t]);
 
-  const tableColumns = useMemo((): TableColumn<CaseDbSite>[] => {
+  const tableColumns = useMemo((): TableColumn<CommonDbSite>[] => {
     return [
-      TableUtil.createTextColumn<CaseDbSite>({ advancedSort: true, id: 'name', name: t`Name` }),
+      TableUtil.createTextColumn<CommonDbSite>({ advancedSort: true, id: 'name', name: t`Name` }),
     ];
   }, [t]);
 
-  const getOptimisticUpdateIntermediateItem = useCallback((variables: FormFields, previousItem: CaseDbSite): CaseDbSite => {
+  const getOptimisticUpdateIntermediateItem = useCallback((variables: FormFields, previousItem: CommonDbSite): CommonDbSite => {
     return {
       id: previousItem.id,
       organization_id: previousItem.organization_id,
@@ -91,26 +91,26 @@ export const OrganizationSitesAdminPage = () => {
     };
   }, []);
 
-  const subPages = useMemo<CrudPageSubPage<CaseDbSite>[]>(() => {
+  const subPages = useMemo<CrudPageSubPage<CommonDbSite>[]>(() => {
     if (!AuthorizationManager.instance.doesUserHavePermission([
-      { command_name: CaseDbCommandName.ContactCrudCommand, permission_type: CaseDbPermissionType.READ },
+      { command_name: CommonDbCommandName.ContactCrudCommand, permission_type: CommonDbPermissionType.READ },
     ])) {
       return [];
     }
 
     return [
       {
-        getPathName: (item: CaseDbSite) => `/management/organizations/${item.organization_id}/sites/${item.id}/contacts`,
+        getPathName: (item: CommonDbSite) => `/management/organizations/${item.organization_id}/sites/${item.id}/contacts`,
         label: t`Manage contacts`,
-      } satisfies CrudPageSubPage<CaseDbSite>,
+      } satisfies CrudPageSubPage<CommonDbSite>,
     ];
   }, [t]);
 
   return (
-    <CrudPage<FormFields, CaseDbSite>
+    <CrudPage<FormFields, CommonDbSite>
       createItemDialogTitle={t`Create new site`}
       createOne={createOne}
-      crudCommandType={CaseDbCommandName.SiteCrudCommand}
+      crudCommandType={CommonDbCommandName.SiteCrudCommand}
       defaultSortByField={'name'}
       defaultSortDirection={'asc'}
       deleteOne={deleteOne}

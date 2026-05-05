@@ -31,7 +31,7 @@ export const ApplicationBarActionsFeedbackItem = () => {
     if (!UserSettingsManager.instance.showShowUserFeedbackTooltip) {
       return;
     }
-    const timeoutMs = Math.max(0, ConfigManager.instance.config.userFeedback.SHOW_USER_FEEDBACK_TOOLTIP_AFTER_MS - (new Date().getTime() - NOW));
+    const timeoutMs = Math.max(0, ConfigManager.getInstance().config.userFeedback.SHOW_USER_FEEDBACK_TOOLTIP_AFTER_MS - (new Date().getTime() - NOW));
     const handle = setTimeout(() => {
       setIsFeedbackTooltipOpen(true);
     }, timeoutMs);

@@ -1,7 +1,7 @@
 import type {
-  CaseDbApiPermission,
-  CaseDbUser,
-} from '@gen-epix/api-casedb';
+  CommonDbApiPermission,
+  CommonDbUser,
+} from '@gen-epix/api-commondb';
 
 import type { MyNonIndexRouteObject } from '../../../models/reactRouter';
 import { PageEventBusManager } from '../PageEventBusManager';
@@ -14,33 +14,33 @@ export class AuthorizationManager {
     WindowManager.instance.window.managers.authorization = WindowManager.instance.window.managers.authorization || new AuthorizationManager();
     return WindowManager.instance.window.managers.authorization;
   }
-  public set apiPermissions(permissions: CaseDbApiPermission[]) {
+  public set apiPermissions(permissions: CommonDbApiPermission[]) {
     this.__apiPermissions = permissions;
   }
 
-  public get apiPermissions(): CaseDbApiPermission[] {
+  public get apiPermissions(): CommonDbApiPermission[] {
     return this.__apiPermissions;
   }
 
-  public set user(user: CaseDbUser) {
+  public set user(user: CommonDbUser) {
     PageEventBusManager.instance.emit('changeUser', user);
     this.__user = user;
   }
 
-  public get user(): CaseDbUser {
+  public get user(): CommonDbUser {
     return this.__user;
   }
 
-  private __apiPermissions: CaseDbApiPermission[] = [];
+  private __apiPermissions: CommonDbApiPermission[] = [];
 
-  private __user: CaseDbUser;
+  private __user: CommonDbUser;
 
 
   private constructor() {
     //
   }
 
-  public doesUserHavePermission(permissions: CaseDbApiPermission[]): boolean {
+  public doesUserHavePermission(permissions: CommonDbApiPermission[]): boolean {
     if (!permissions?.length) {
       return true;
     }

@@ -11,7 +11,7 @@ import type {
 
 import type { DATE_FORMAT } from '../data/date';
 
-import type { CaseTypeRowValue } from './epi';
+import type { CaseTypeRowValue } from '../../../ui-casedb/src/models/epi';
 import type { OptionBase } from './form';
 
 export enum FIXED_COLUMN_ID {

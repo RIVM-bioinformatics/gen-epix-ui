@@ -12,7 +12,7 @@ import { ConfigManager } from '../../classes/managers/ConfigManager';
 import type {
   Stratification,
   TreeConfiguration,
-} from '../../models/epi';
+} from '../../../../ui-casedb/src/models/epi';
 import type {
   TreeAssembly,
   TreeNode,
@@ -175,7 +175,7 @@ export class EpiTreeUtil {
     const canvasHeight = canvas.clientHeight || canvas.height / devicePixelRatio;
 
     EpiTreeUtil.draw(canvas, devicePixelRatio, (ctx) => {
-      ctx.strokeStyle = ConfigManager.instance.config.epiTree.REGULAR_FILL_COLOR_SUPPORT_LINE;
+      ctx.strokeStyle = ConfigManager.getInstance().config.epiTree.REGULAR_FILL_COLOR_SUPPORT_LINE;
       ctx.setLineDash([3, 1]);
       EpiTreeUtil.forEachScaleLine({
         callback: (x) => {
@@ -222,7 +222,7 @@ export class EpiTreeUtil {
           ctx.textAlign = 'center';
           ctx.font = `bold 11px ${theme.typography.fontFamily}`;
           const label = new Decimal(tickerMarkScale[1]).times((numberOfLines - 1) - i).toNumber();
-          ctx.fillText(NumberUtil.toStringWithPrecision(label, tickerMarkScale[2]), x, ConfigManager.instance.config.epiTree.HEADER_HEIGHT * 0.61);
+          ctx.fillText(NumberUtil.toStringWithPrecision(label, tickerMarkScale[2]), x, ConfigManager.getInstance().config.epiTree.HEADER_HEIGHT * 0.61);
           ctx.closePath();
         },
         devicePixelRatio,
@@ -641,7 +641,7 @@ export class EpiTreeUtil {
     let positionYMax: number;
     let positionYMin: number;
 
-    const relativeTreePadding = ((ConfigManager.instance.config.epiTree.TREE_PADDING) * devicePixelRatio);
+    const relativeTreePadding = ((ConfigManager.getInstance().config.epiTree.TREE_PADDING) * devicePixelRatio);
 
     if (isLinked && internalZoomLevel === 1) {
       if (treeHeight < treeCanvasHeight) {
@@ -668,8 +668,8 @@ export class EpiTreeUtil {
         positionYMax = (treeHeight * devicePixelRatio) - ((treeCanvasHeight) * devicePixelRatio) - divePixelRatioOffset;
       }
     } else {
-      positionYMin = (-treeCanvasHeight * devicePixelRatio) + relativeTreePadding + (ConfigManager.instance.config.epiTree.HEADER_HEIGHT * devicePixelRatio);
-      positionYMax = ((treeHeight / internalZoomLevel) * devicePixelRatio) - relativeTreePadding - (ConfigManager.instance.config.epiTree.HEADER_HEIGHT * devicePixelRatio);
+      positionYMin = (-treeCanvasHeight * devicePixelRatio) + relativeTreePadding + (ConfigManager.getInstance().config.epiTree.HEADER_HEIGHT * devicePixelRatio);
+      positionYMax = ((treeHeight / internalZoomLevel) * devicePixelRatio) - relativeTreePadding - (ConfigManager.getInstance().config.epiTree.HEADER_HEIGHT * devicePixelRatio);
     }
     const newPositionY = Math.max(Math.min(positionYMax, positionY), positionYMin);
 
@@ -743,8 +743,8 @@ export class EpiTreeUtil {
     }
     const width = treeWidthMinusPadding / zoomLevel;
 
-    let minNumLines = Math.floor(width / ConfigManager.instance.config.epiTree.MAX_SCALE_WIDTH_PX) + 1;
-    let maxNumLines = Math.ceil(width / ConfigManager.instance.config.epiTree.MIN_SCALE_WIDTH_PX) + 1;
+    let minNumLines = Math.floor(width / ConfigManager.getInstance().config.epiTree.MAX_SCALE_WIDTH_PX) + 1;
+    let maxNumLines = Math.ceil(width / ConfigManager.getInstance().config.epiTree.MIN_SCALE_WIDTH_PX) + 1;
 
     if (geneticTreeWidth.div(minGeneticScaleUnit).add(1).lessThan(maxNumLines)) {
       maxNumLines = Math.max(geneticTreeWidth.div(minGeneticScaleUnit).ceil().toNumber(), 2);
@@ -758,7 +758,7 @@ export class EpiTreeUtil {
 
     const geneticTreeWidthDecimal = new Decimal(geneticTreeWidth);
     const multiplier = new Decimal(10).pow(geneticTreeWidthDecimal.log(10).floor().minus(1));
-    const multipliedIncrements = ConfigManager.instance.config.epiTree.SCALE_INCREMENTS.map(i => new Decimal(i).times(multiplier));
+    const multipliedIncrements = ConfigManager.getInstance().config.epiTree.SCALE_INCREMENTS.map(i => new Decimal(i).times(multiplier));
 
     let bestCombination: [Decimal, Decimal, Decimal] = [new Decimal(0), new Decimal(0), new Decimal(Infinity)];
 
@@ -945,7 +945,7 @@ export class EpiTreeUtil {
     if (node.children.every(child => (child.branchLength?.toNumber() ?? 0) > 0)) {
       // add circle at beginning of the line representing the node itself
       const circlePath = new Path2D();
-      circlePath.arc(ancestorXPxEnd, ancestorYPx, ConfigManager.instance.config.epiTree.ANCESTOR_DOT_RADIUS, 0, 2 * Math.PI, false);
+      circlePath.arc(ancestorXPxEnd, ancestorYPx, ConfigManager.getInstance().config.epiTree.ANCESTOR_DOT_RADIUS, 0, 2 * Math.PI, false);
       treeAssemblyContext.treeAssembly.ancestorNodes.push({ nodeNames: [node.name, ...caseIds], shape: circlePath });
       treeAssemblyContext.treeAssembly.nodePathPropertiesMap.set(circlePath, {
         subTreeLeaveNames: node.subTreeLeaveNames,
@@ -976,7 +976,7 @@ export class EpiTreeUtil {
    */
   private static assembleLeafNode(treeAssemblyContext: TreeAssemblyContext, node: TreeNode, distance = 0, leafIndex = 0, externalSortingIndex = 0): NodeAssemblyResult {
     const leafX = distance + (node.branchLength?.toNumber() ?? 0);
-    const leafXPxEnd = leafX * treeAssemblyContext.pixelToGeneticDistanceRatio + ConfigManager.instance.config.epiTree.TREE_PADDING;
+    const leafXPxEnd = leafX * treeAssemblyContext.pixelToGeneticDistanceRatio + ConfigManager.getInstance().config.epiTree.TREE_PADDING;
     const leafYPx = ((leafIndex) * treeAssemblyContext.itemHeight) + (treeAssemblyContext.itemHeight / 2);
     const leafXPxDistance = (node.branchLength?.toNumber() ?? 0) * treeAssemblyContext.pixelToGeneticDistanceRatio;
     const leafXPxStart = leafXPxEnd - leafXPxDistance;
@@ -1002,7 +1002,7 @@ export class EpiTreeUtil {
 
     // add a dot to represent the node
     const circlePath = new Path2D();
-    circlePath.arc(leafXPxEnd, leafYPx, ConfigManager.instance.config.epiTree.LEAF_DOT_RADIUS, 0, 2 * Math.PI, false);
+    circlePath.arc(leafXPxEnd, leafYPx, ConfigManager.getInstance().config.epiTree.LEAF_DOT_RADIUS, 0, 2 * Math.PI, false);
     circlePath.closePath();
 
     treeAssemblyContext.treeAssembly.nodePathPropertiesMap.set(circlePath, {
@@ -1079,7 +1079,7 @@ export class EpiTreeUtil {
     const offset = totalTickerWidth.minus(geneticTreeWidthPx);
 
     for (let i = 0; i < numberOfLines; i++) {
-      const x = new Decimal(i).times(tickerWidth).plus(new Decimal(ConfigManager.instance.config.epiTree.TREE_PADDING).div(zoomLevel)).minus(offset).minus(new Decimal(horizontalScrollPosition).div(devicePixelRatio)).toNumber();
+      const x = new Decimal(i).times(tickerWidth).plus(new Decimal(ConfigManager.getInstance().config.epiTree.TREE_PADDING).div(zoomLevel)).minus(offset).minus(new Decimal(horizontalScrollPosition).div(devicePixelRatio)).toNumber();
       callback(x, i, numberOfLines);
     }
   }
@@ -1106,7 +1106,7 @@ export class EpiTreeUtil {
     if (!treeAssemblyContext.rootNode.maxBranchLength || treeAssemblyContext.rootNode.maxBranchLength.toNumber() === 0 || !branchLength || branchLength.toNumber() === 0) {
       return null;
     }
-    if (branchLength.div(treeAssemblyContext.rootNode.maxBranchLength).mul(100).lessThan(ConfigManager.instance.config.epiTree.MINIMUM_DISTANCE_PERCENTAGE_TO_SHOW_LABEL)) {
+    if (branchLength.div(treeAssemblyContext.rootNode.maxBranchLength).mul(100).lessThan(ConfigManager.getInstance().config.epiTree.MINIMUM_DISTANCE_PERCENTAGE_TO_SHOW_LABEL)) {
       return null;
     }
     return String(round(branchLength.toNumber(), labelPrecision));

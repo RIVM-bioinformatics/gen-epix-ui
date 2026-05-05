@@ -1,4 +1,4 @@
-import type { CaseDbFeatureFlagsResponseBody } from '@gen-epix/api-casedb';
+import type { CommonDbFeatureFlagsResponseBody } from '@gen-epix/api-commondb';
 
 import { WindowManager } from '../WindowManager';
 
@@ -11,7 +11,7 @@ export class FeatureFlagsManager {
   }
 
 
-  public get featureFlags(): CaseDbFeatureFlagsResponseBody['feature_flags'] {
+  public get featureFlags(): CommonDbFeatureFlagsResponseBody['feature_flags'] {
     if (this.__featureFlags === null) {
       throw new Error('Feature flags have not been loaded yet');
     }
@@ -19,11 +19,11 @@ export class FeatureFlagsManager {
   }
 
 
-  public set featureFlags(featureFlags: CaseDbFeatureFlagsResponseBody['feature_flags']) {
+  public set featureFlags(featureFlags: CommonDbFeatureFlagsResponseBody['feature_flags']) {
     this.__featureFlags = featureFlags;
   }
 
-  private __featureFlags: CaseDbFeatureFlagsResponseBody['feature_flags'] = null;
+  private __featureFlags: CommonDbFeatureFlagsResponseBody['feature_flags'] = null;
 
   private constructor() {
     //

@@ -4,10 +4,9 @@ import {
   isAxiosError,
 } from 'axios';
 import {
-  type CaseDbLogItem,
-  CaseDbLogLevel,
-} from '@gen-epix/api-casedb';
-import { CaseDbSystemApi } from '@gen-epix/api-casedb';
+  type CommonDbLogItem,
+  CommonDbLogLevel,
+} from '@gen-epix/api-commondb';
 
 import { AuthenticationManager } from '../AuthenticationManager';
 import { ConfigManager } from '../ConfigManager';
@@ -18,7 +17,7 @@ import { AxiosUtil } from '../../../utils/AxiosUtil';
 type LogManagerItem = {
   detail?: unknown;
   duration?: number;
-  level: CaseDbLogLevel;
+  level: CommonDbLogLevel;
   topic: string;
 };
 
@@ -31,13 +30,13 @@ export class LogManager {
   }
   protected readonly requestMap: Map<string, number>;
 
-  private logItems: CaseDbLogItem[] = [];
+  private logItems: CommonDbLogItem[] = [];
 
   private constructor() {
     this.requestMap = new Map<string, number>();
     setInterval(() => {
       this.sendLog();
-    }, ConfigManager.instance.config.log.LOG_INTERVAL_MS);
+    }, ConfigManager.getInstance().config.log.LOG_INTERVAL_MS);
   }
 
   public flushLog(): void {
@@ -46,8 +45,8 @@ export class LogManager {
 
   public log(items: LogManagerItem[]): void {
     const timestamp = new Date().toISOString();
-    const software_version = ConfigManager.instance.config.getSoftwareVersion();
-    this.logItems.push(...items.map<CaseDbLogItem>(item => {
+    const software_version = ConfigManager.getInstance().config.getSoftwareVersion();
+    this.logItems.push(...items.map<CommonDbLogItem>(item => {
       return {
         command_id: StringUtil.createUuid(),
         detail: item.detail ? JSON.stringify(item.detail) : null,
@@ -74,7 +73,7 @@ export class LogManager {
         requestParams: request.params as unknown,
         url: request.url,
       },
-      level: CaseDbLogLevel.TRACE,
+      level: CommonDbLogLevel.TRACE,
       topic: 'REQUEST',
     }]);
 
@@ -96,7 +95,7 @@ export class LogManager {
         url: response.config.url,
       },
       duration,
-      level: response.status >= 200 && response.status < 300 ? CaseDbLogLevel.TRACE : CaseDbLogLevel.ERROR,
+      level: response.status >= 200 && response.status < 300 ? CommonDbLogLevel.TRACE : CommonDbLogLevel.ERROR,
       topic: 'RESPONSE',
     }]);
 
@@ -118,7 +117,7 @@ export class LogManager {
           url: error.config.url,
         },
         duration,
-        level: CaseDbLogLevel.ERROR,
+        level: CommonDbLogLevel.ERROR,
         topic: 'RESPONSE_ERROR',
       }]);
     } else {
@@ -126,7 +125,7 @@ export class LogManager {
         detail: {
           error,
         },
-        level: CaseDbLogLevel.ERROR,
+        level: CommonDbLogLevel.ERROR,
         topic: 'RESPONSE_ERROR',
       }]);
     }
@@ -139,7 +138,7 @@ export class LogManager {
     if (document.location.href.includes('accept-invitation')) {
       return;
     }
-    CaseDbSystemApi.instance.log({
+    ConfigManager.getInstance().config.systemApi.log({
       log_items: this.logItems,
     }, {
       headers: {

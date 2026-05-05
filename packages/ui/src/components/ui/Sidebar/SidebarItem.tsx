@@ -34,7 +34,7 @@ export const SidebarItem = ({ children, closeIcon, closeIconTooltipText, onClose
   const [mainContentDOMRect, setMainContentDOMRect] = useState<DOMRect>(null);
 
   useEffect(() => {
-    const mainContentElement = document.getElementById(ConfigManager.instance.config.layout.MAIN_CONTENT_ID);
+    const mainContentElement = document.getElementById(ConfigManager.getInstance().config.layout.MAIN_CONTENT_ID);
 
     setMainContentDOMRect(mainContentElement.getBoundingClientRect());
 

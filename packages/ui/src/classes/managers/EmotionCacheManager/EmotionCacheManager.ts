@@ -19,8 +19,8 @@ export class EmotionCacheManager {
     this.emotionCache = createCache({
       container: window.document.head,
       key: 'genepix',
-      nonce: ConfigManager.instance.config.nonce,
-      prepend: !!ConfigManager.instance.config.nonce,
+      nonce: ConfigManager.getInstance().config.nonce,
+      prepend: !!ConfigManager.getInstance().config.nonce,
       stylisPlugins: [],
     });
   }

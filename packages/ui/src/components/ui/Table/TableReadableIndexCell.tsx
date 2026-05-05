@@ -29,7 +29,7 @@ export const TableReadableIndexCell = <TRowData, >({
       if (!getRowName) {
         throw new Error('getRowName is required when onReadableIndexClick is provided');
       }
-      if (ConfigManager.instance.config.enablePageEvents) {
+      if (ConfigManager.getInstance().config.enablePageEvents) {
         PageEventBusManager.instance.emit('click', {
           label: getRowName(cell.row),
           type: 'table-row-index',

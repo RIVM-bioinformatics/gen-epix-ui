@@ -16,7 +16,7 @@ import { QueryUtil } from './QueryUtil';
 
 describe('QueryUtil', () => {
   beforeAll(() => {
-    vi.spyOn(ConfigManager.instance, 'config', 'get').mockReturnValue({
+    vi.spyOn(ConfigManager.getInstance, 'config', 'get').mockReturnValue({
       queryClient: {
         retry: () => false,
         retryDelay: () => 0,

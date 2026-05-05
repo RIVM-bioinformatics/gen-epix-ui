@@ -25,10 +25,7 @@ import {
 import FolderIcon from '@mui/icons-material/Folder';
 import OpenInNewIcon from '@mui/icons-material/OpenInNew';
 import axios from 'axios';
-import {
-  type CaseDbPackageMetadata,
-  CaseDbSystemApi,
-} from '@gen-epix/api-casedb';
+import { type CommonDbPackageMetadata } from '@gen-epix/api-commondb';
 
 import { ConfigManager } from '../../../classes/managers/ConfigManager';
 import { WindowManager } from '../../../classes/managers/WindowManager';
@@ -64,22 +61,22 @@ export const LicensesDialog = withDialog<LicensesDialogProps, LicensesDialogOpen
   }: LicensesDialogProps,
 ): ReactElement => {
   const { t } = useTranslation();
-  const [item, setItem] = useState<CaseDbPackageMetadata>(null);
+  const [item, setItem] = useState<CommonDbPackageMetadata>(null);
 
-  const { LicenseInformation } = ConfigManager.instance.config;
+  const { LicenseInformation } = ConfigManager.getInstance().config;
 
   const { data: frontendLicenses, error: frontendLicensesError, isLoading: isFrontendLicensesLoading } = useQueryMemo({
     queryFn: async ({ signal }) => {
       return (await axios.get('/licenses.json', {
         signal,
-      })).data as CaseDbPackageMetadata[];
+      })).data as CommonDbPackageMetadata[];
     },
     queryKey: ['LICENSES.JSON'],
   });
 
   const { data: backendLicenses, error: backendLicensesError, isLoading: isBackendLicensesLoading } = useQueryMemo({
     queryFn: async ({ signal }) => {
-      const response = await CaseDbSystemApi.instance.retrieveLicenses({ signal });
+      const response = await ConfigManager.getInstance().config.systemApi.retrieveLicenses({ signal });
       return response.data;
     },
     queryKey: QueryUtil.getGenericKey(QUERY_KEY.LICENSES),
@@ -127,7 +124,7 @@ export const LicensesDialog = withDialog<LicensesDialogProps, LicensesDialogOpen
     WindowManager.instance.window.open(url, '_blank');
   }, []);
 
-  const onItemLicenseClick = useCallback((entry: CaseDbPackageMetadata) => {
+  const onItemLicenseClick = useCallback((entry: CommonDbPackageMetadata) => {
     dialogContentRef?.current?.scrollTo(0, 0);
     setItem(entry);
   }, [dialogContentRef]);

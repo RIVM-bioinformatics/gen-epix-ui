@@ -61,7 +61,7 @@ export const ApplicationBar = ({
                 }}
                 variant={'body2'}
               >
-                {ConfigManager.instance.config.applicationName}
+                {ConfigManager.getInstance().config.applicationName}
               </Typography>
             </Box>
           )}

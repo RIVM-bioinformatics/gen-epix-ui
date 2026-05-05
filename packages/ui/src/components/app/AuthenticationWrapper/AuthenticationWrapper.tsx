@@ -13,7 +13,7 @@ import {
 } from 'react';
 import { useTranslation } from 'react-i18next';
 import { useAuth } from 'react-oidc-context';
-import { CaseDbLogLevel } from '@gen-epix/api-casedb';
+import { CommonDbLogLevel } from '@gen-epix/api-commondb';
 
 import { AuthenticationManager } from '../../../classes/managers/AuthenticationManager';
 import { ConfigManager } from '../../../classes/managers/ConfigManager';
@@ -32,12 +32,12 @@ export const AuthenticationWrapper = ({ children }: PropsWithChildren) => {
   const auth = useAuth();
   const consentDialogRef = useRef<ConsentDialogRefMethods>(null);
   const [hasGivenConsent, setHasGivenConsent] = useState<boolean>(
-    !ConfigManager.instance.config.consentDialog.getShouldShow(),
+    !ConfigManager.getInstance().config.consentDialog.getShouldShow(),
   );
 
   const oidcConfiguration = useSubscribable(AuthenticationManager.instance);
   const AfterLoginElement =
-    ConfigManager.instance.config.login?.AfterLoginElement;
+    ConfigManager.getInstance().config.login?.AfterLoginElement;
 
   useEffect(() => {
     AuthenticationManager.instance.authContextProps = auth;
@@ -52,7 +52,7 @@ export const AuthenticationWrapper = ({ children }: PropsWithChildren) => {
   const onConsentDialogConsent = useCallback(() => {
     LogManager.instance.log([
       {
-        level: CaseDbLogLevel.INFO,
+        level: CommonDbLogLevel.INFO,
         topic: 'CONSENT',
       },
     ]);
@@ -147,7 +147,7 @@ export const AuthenticationWrapper = ({ children }: PropsWithChildren) => {
         detail: {
           error: auth.error,
         },
-        level: CaseDbLogLevel.ERROR,
+        level: CommonDbLogLevel.ERROR,
         topic: 'Authentication Error',
       },
     ]);
@@ -205,7 +205,7 @@ export const AuthenticationWrapper = ({ children }: PropsWithChildren) => {
   return (
     <>
       {children}
-      {ConfigManager.instance.config.consentDialog.getShouldShow() && (
+      {ConfigManager.getInstance().config.consentDialog.getShouldShow() && (
         <ConsentDialog
           onConsent={onConsentDialogConsent}
           ref={consentDialogRef}
