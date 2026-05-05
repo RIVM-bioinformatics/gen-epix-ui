@@ -29,19 +29,19 @@ export const EtiologicalAgentsAdminPage = () => {
   const { t } = useTranslation();
 
   const fetchAll = useCallback(async (signal: AbortSignal) => {
-    return (await CaseDbOntologyApi.instance.etiologicalAgentsGetAll({ signal }))?.data;
+    return (await CaseDbOntologyApi.getInstance().etiologicalAgentsGetAll({ signal }))?.data;
   }, []);
 
   const deleteOne = useCallback(async (item: CaseDbEtiologicalAgent) => {
-    return await CaseDbOntologyApi.instance.etiologicalAgentsDeleteOne(item.id);
+    return await CaseDbOntologyApi.getInstance().etiologicalAgentsDeleteOne(item.id);
   }, []);
 
   const updateOne = useCallback(async (variables: FormFields, item: CaseDbEtiologicalAgent) => {
-    return (await CaseDbOntologyApi.instance.etiologicalAgentsPutOne(item.id, { id: item.id, ...variables })).data;
+    return (await CaseDbOntologyApi.getInstance().etiologicalAgentsPutOne(item.id, { id: item.id, ...variables })).data;
   }, []);
 
   const createOne = useCallback(async (variables: FormFields) => {
-    return (await CaseDbOntologyApi.instance.etiologicalAgentsPostOne(variables)).data;
+    return (await CaseDbOntologyApi.getInstance().etiologicalAgentsPostOne(variables)).data;
   }, []);
 
   const getName = useCallback((variables: CaseDbEtiologicalAgent) => {

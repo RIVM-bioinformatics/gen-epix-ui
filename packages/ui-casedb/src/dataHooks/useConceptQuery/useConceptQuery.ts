@@ -2,26 +2,28 @@ import type { UseQueryResult } from '@tanstack/react-query';
 import { useMemo } from 'react';
 import type { CaseDbConcept } from '@gen-epix/api-casedb';
 import { CaseDbOntologyApi } from '@gen-epix/api-casedb';
-
 import type {
   UseMap,
   UseNameFactory,
   UseOptions,
-} from '../../models/dataHooks';
-import { QUERY_KEY } from '../../models/query';
-import { DataHookUtil } from '../../utils/DataHookUtil';
-import { QueryUtil } from '../../utils/QueryUtil';
-import { useQueryMemo } from '../../hooks/useQueryMemo';
+} from '@gen-epix/ui';
+import {
+  DataHookUtil,
+  QUERY_KEY,
+  QueryManager,
+  useQueryMemo,
+} from '@gen-epix/ui';
+
 import { useConceptSetMapQuery } from '../useConceptSetsQuery';
 import { DataUtil } from '../../utils/DataUtil';
 
 export const useConceptQuery = (): UseQueryResult<CaseDbConcept[]> => {
   return useQueryMemo({
     queryFn: async ({ signal }) => {
-      const response = await CaseDbOntologyApi.instance.conceptsGetAll({ signal });
+      const response = await CaseDbOntologyApi.getInstance().conceptsGetAll({ signal });
       return response.data;
     },
-    queryKey: QueryUtil.getGenericKey(QUERY_KEY.CONCEPTS),
+    queryKey: QueryManager.getInstance().getGenericKey(QUERY_KEY.CONCEPTS),
   });
 };
 

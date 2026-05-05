@@ -32,7 +32,7 @@ export const OrganizationContactsAdminPage = () => {
   const { t } = useTranslation();
 
   const fetchAll = useCallback(async (signal: AbortSignal) => {
-    return (await CaseDbOrganizationApi.instance.contactsGetAll({ signal })).data;
+    return (await CaseDbOrganizationApi.getInstance().contactsGetAll({ signal })).data;
   }, []);
 
   const fetchAllSelect = useCallback((contacts: CaseDbContact[]) => {
@@ -40,7 +40,7 @@ export const OrganizationContactsAdminPage = () => {
   }, [siteId]);
 
   const updateOne = useCallback(async (variables: FormFields, item: CaseDbContact) => {
-    return (await CaseDbOrganizationApi.instance.contactsPutOne(item.id, {
+    return (await CaseDbOrganizationApi.getInstance().contactsPutOne(item.id, {
       id: item.id,
       site_id: siteId,
       ...variables,
@@ -48,14 +48,14 @@ export const OrganizationContactsAdminPage = () => {
   }, [siteId]);
 
   const createOne = useCallback(async (variables: FormFields) => {
-    return (await CaseDbOrganizationApi.instance.contactsPostOne({
+    return (await CaseDbOrganizationApi.getInstance().contactsPostOne({
       site_id: siteId,
       ...variables,
     })).data;
   }, [siteId]);
 
   const deleteOne = useCallback(async (item: CaseDbContact) => {
-    return await CaseDbOrganizationApi.instance.contactsDeleteOne(item.id);
+    return await CaseDbOrganizationApi.getInstance().contactsDeleteOne(item.id);
   }, []);
 
   const getName = useCallback((item: FormFields) => {

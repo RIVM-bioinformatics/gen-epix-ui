@@ -13,7 +13,7 @@ import {
 export const HomePageIntroduction = () => {
   const [t] = useTranslation();
   const onExploreCasesButtonClick = useCallback(async () => {
-    await RouterManager.instance.router.navigate('/cases');
+    await RouterManager.getInstance().router.navigate('/cases');
   }, []);
 
   return (

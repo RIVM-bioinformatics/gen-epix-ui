@@ -35,12 +35,12 @@ export const AuthenticationWrapper = ({ children }: PropsWithChildren) => {
     !ConfigManager.getInstance().config.consentDialog.getShouldShow(),
   );
 
-  const oidcConfiguration = useSubscribable(AuthenticationManager.instance);
+  const oidcConfiguration = useSubscribable(AuthenticationManager.getInstance());
   const AfterLoginElement =
     ConfigManager.getInstance().config.login?.AfterLoginElement;
 
   useEffect(() => {
-    AuthenticationManager.instance.authContextProps = auth;
+    AuthenticationManager.getInstance().authContextProps = auth;
   }, [auth]);
 
   useEffect(() => {
@@ -50,7 +50,7 @@ export const AuthenticationWrapper = ({ children }: PropsWithChildren) => {
   }, [auth.isAuthenticated, hasGivenConsent]);
 
   const onConsentDialogConsent = useCallback(() => {
-    LogManager.instance.log([
+    LogManager.getInstance().log([
       {
         level: CommonDbLogLevel.INFO,
         topic: 'CONSENT',
@@ -62,7 +62,7 @@ export const AuthenticationWrapper = ({ children }: PropsWithChildren) => {
 
   const login = useCallback(() => {
     const perform = async () => {
-      const { hash, pathname, search } = WindowManager.instance.window.location;
+      const { hash, pathname, search } = WindowManager.getInstance().window.location;
 
       const state: AuthState = {
         preLoginLocation: {
@@ -85,7 +85,7 @@ export const AuthenticationWrapper = ({ children }: PropsWithChildren) => {
 
   const onChangeLoginProviderButtonClick = useCallback(() => {
     AuthenticationManager.clearStaleState();
-    AuthenticationManager.instance.next(undefined);
+    AuthenticationManager.getInstance().next(undefined);
   }, []);
 
   const now = useMemo(() => new Date().getTime(), []);
@@ -142,7 +142,7 @@ export const AuthenticationWrapper = ({ children }: PropsWithChildren) => {
 
   if (auth.error) {
     AuthenticationManager.clearStaleState();
-    LogManager.instance.log([
+    LogManager.getInstance().log([
       {
         detail: {
           error: auth.error,
@@ -173,9 +173,9 @@ export const AuthenticationWrapper = ({ children }: PropsWithChildren) => {
 
   if (!auth.isAuthenticated) {
     if (
-      AuthenticationManager.instance.getUserManagerSettingsCreatedAt() &&
+      AuthenticationManager.getInstance().getUserManagerSettingsCreatedAt() &&
       now -
-        AuthenticationManager.instance.getUserManagerSettingsCreatedAt() <
+        AuthenticationManager.getInstance().getUserManagerSettingsCreatedAt() <
         AuthenticationManager.autoLoginSkew
     ) {
       login();

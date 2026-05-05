@@ -3,26 +3,18 @@ import { useMemo } from 'react';
 import type { CaseDbCol } from '@gen-epix/api-casedb';
 import { CaseDbCaseApi } from '@gen-epix/api-casedb';
 
-import type {
-  UseMap,
-  UseNameFactory,
-  UseOptions,
-} from '../../models/dataHooks';
-import { QUERY_KEY } from '../../models/query';
-import { DataHookUtil } from '../../utils/DataHookUtil';
-import { QueryUtil } from '../../utils/QueryUtil';
 import { useCaseTypeMapQuery } from '../useCaseTypesQuery';
-import { useQueryMemo } from '../../hooks/useQueryMemo';
 import { useDimMapQuery } from '../useDimsQuery';
 import { DataUtil } from '../../utils/DataUtil';
+import { useQueryMemo, QueryManager, QUERY_KEY, UseMap, DataHookUtil, UseNameFactory, UseOptions } from '@gen-epix/ui';
 
 export const useColsQuery = (): UseQueryResult<CaseDbCol[]> => {
   return useQueryMemo({
     queryFn: async ({ signal }) => {
-      const response = await CaseDbCaseApi.instance.colsGetAll({ signal });
+      const response = await CaseDbCaseApi.getInstance().colsGetAll({ signal });
       return response.data;
     },
-    queryKey: QueryUtil.getGenericKey(QUERY_KEY.COLS),
+    queryKey: QueryManager.getInstance().getGenericKey(QUERY_KEY.COLS),
   });
 };
 

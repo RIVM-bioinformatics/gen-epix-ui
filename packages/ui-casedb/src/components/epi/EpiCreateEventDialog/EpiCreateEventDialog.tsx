@@ -30,36 +30,16 @@ import type {
 } from '@gen-epix/api-casedb';
 import { CaseDbCaseApi } from '@gen-epix/api-casedb';
 
+
+import { EpiCreateEventDialogSuccessNotificationMessage } from './EpiCreateEventDialogSuccessNotificationMessage';
+import { WithDialogRenderProps, WithDialogRefMethods, withDialog, SchemaUtil, useItemQuery, QUERY_KEY, AutoCompleteOption, FormFieldDefinition, FORM_FIELD_DEFINITION_TYPE, useArray, LoadableUtil, useCreateMutation, QueryManager, DialogAction, TestIdUtil, ResponseHandler, GenericForm } from '@gen-epix/ui';
 import { EpiEventBusManager } from '../../../classes/managers/EpiEventBusManager';
 import { useCaseSetCategoryOptionsQuery } from '../../../dataHooks/useCaseSetCategoriesQuery';
 import { useCaseSetStatusOptionsQuery } from '../../../dataHooks/useCaseSetStatusesQuery';
 import { useCaseTypeOptionsQuery } from '../../../dataHooks/useCaseTypesQuery';
 import { useDataCollectionOptionsQuery } from '../../../dataHooks/useDataCollectionsQuery';
-import type {
-  WithDialogRefMethods,
-  WithDialogRenderProps,
-} from '../../../hoc/withDialog';
-import { withDialog } from '../../../hoc/withDialog';
-import { useCreateMutation } from '../../../hooks/useCreateMutation';
-import { useItemQuery } from '../../../hooks/useItemQuery';
-import type {
-  AutoCompleteOption,
-  FormFieldDefinition,
-} from '../../../models/form';
-import { FORM_FIELD_DEFINITION_TYPE } from '../../../models/form';
-import { QUERY_KEY } from '../../../models/query';
 import { CaseUtil } from '../../../utils/CaseUtil';
-import { QueryUtil } from '../../../utils/QueryUtil';
-import { TestIdUtil } from '../../../utils/TestIdUtil';
-import { GenericForm } from '../../form/helpers/GenericForm';
-import type { DialogAction } from '../../ui/Dialog';
-import { ResponseHandler } from '../../ui/ResponseHandler';
 import { EpiCasesAlreadyInCaseSetWarning } from '../EpiCasesAlreadyInCaseSetWarning';
-import { useArray } from '../../../hooks/useArray';
-import { LoadableUtil } from '../../../utils/LoadableUtil';
-import { SchemaUtil } from '../../../utils/SchemaUtil';
-
-import { EpiCreateEventDialogSuccessNotificationMessage } from './EpiCreateEventDialogSuccessNotificationMessage';
 
 export interface EpiCreateEventDialogOpenProps {
   readonly completeCaseType?: CaseDbCompleteCaseType;
@@ -136,7 +116,7 @@ export const EpiCreateEventDialog = withDialog<EpiCreateEventDialogProps, EpiCre
     useQueryOptions: {
       enabled: !openProps.completeCaseType && !!sanitizedCompleteCaseTypeId,
       queryFn: async ({ signal }) => {
-        return (await CaseDbCaseApi.instance.completeCaseTypesGetOne(sanitizedCompleteCaseTypeId, { signal })).data;
+        return (await CaseDbCaseApi.getInstance().completeCaseTypesGetOne(sanitizedCompleteCaseTypeId, { signal })).data;
       },
     },
   });
@@ -273,20 +253,20 @@ export const EpiCreateEventDialog = withDialog<EpiCreateEventDialogProps, EpiCre
         caseTypeId: completeCaseType.id,
       });
     }
-    EpiEventBusManager.instance.emit('onEventCreated');
+    EpiEventBusManager.getInstance().emit('onEventCreated');
     onClose();
   }, [completeCaseType?.id, onClose, openProps.rows]);
 
   const onError = useCallback(() => {
-    EpiEventBusManager.instance.emit('onEventCreated');
+    EpiEventBusManager.getInstance().emit('onEventCreated');
     onClose();
   }, [onClose]);
 
   const { isMutating: isCreating, mutate: mutateCreate } = useCreateMutation<CaseDbCaseSet, FormFields>({
     associationQueryKeys: [
-      ...QueryUtil.getQueryKeyDependencies([QUERY_KEY.CASE_SETS]),
-      ...QueryUtil.getQueryKeyDependencies([QUERY_KEY.CASE_SET_MEMBERS], true),
-      ...QueryUtil.getQueryKeyDependencies([QUERY_KEY.DATA_COLLECTION_SET_MEMBERS], true),
+      ...QueryManager.getInstance().getQueryKeyDependencies([QUERY_KEY.CASE_SETS]),
+      ...QueryManager.getInstance().getQueryKeyDependencies([QUERY_KEY.CASE_SET_MEMBERS], true),
+      ...QueryManager.getInstance().getQueryKeyDependencies([QUERY_KEY.DATA_COLLECTION_SET_MEMBERS], true),
     ],
     getErrorNotificationMessage: (item, _error) => t('Failed to create event: {{name}}', { name: item.name }),
     getProgressNotificationMessage: (variables) => t('Creating event: {{name}}...', { name: variables.name }),
@@ -299,7 +279,7 @@ export const EpiCreateEventDialog = withDialog<EpiCreateEventDialogProps, EpiCre
     onError,
     onSuccess,
     queryFn: async (formData: FormFields): Promise<CaseDbCaseSet> => {
-      const caseSetResult = (await CaseDbCaseApi.instance.createCaseSet({
+      const caseSetResult = (await CaseDbCaseApi.getInstance().createCaseSet({
         case_ids: openProps.rows?.map(row => row.id) ?? [],
         case_set: {
           case_set_category_id: formData.case_set_category_id,
@@ -315,7 +295,7 @@ export const EpiCreateEventDialog = withDialog<EpiCreateEventDialogProps, EpiCre
 
       return caseSetResult;
     },
-    resourceQueryKey: QueryUtil.getGenericKey(QUERY_KEY.CASE_SETS),
+    resourceQueryKey: QueryManager.getInstance().getGenericKey(QUERY_KEY.CASE_SETS),
   });
 
   const isFormDisabled = useMemo(() => {

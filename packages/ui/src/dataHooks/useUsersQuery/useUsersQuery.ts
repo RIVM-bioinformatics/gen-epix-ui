@@ -9,10 +9,10 @@ import type {
 } from '../../models/dataHooks';
 import { QUERY_KEY } from '../../models/query';
 import { DataHookUtil } from '../../utils/DataHookUtil';
-import { QueryUtil } from '../../utils/QueryUtil';
 import { useQueryMemo } from '../../hooks/useQueryMemo';
 import { ConfigManager } from '../../classes/managers/ConfigManager';
 import { DataUtil } from '../../utils/DataUtil';
+import { QueryManager } from '../../classes/managers/QueryManager';
 
 export const useUsersQuery = (): UseQueryResult<CommonDbUser[]> => {
   return useQueryMemo({
@@ -20,7 +20,7 @@ export const useUsersQuery = (): UseQueryResult<CommonDbUser[]> => {
       const response = await ConfigManager.getInstance().config.organizationApi.usersGetAll({ signal });
       return response.data;
     },
-    queryKey: QueryUtil.getGenericKey(QUERY_KEY.USERS),
+    queryKey: QueryManager.getInstance().getGenericKey(QUERY_KEY.USERS),
   });
 };
 

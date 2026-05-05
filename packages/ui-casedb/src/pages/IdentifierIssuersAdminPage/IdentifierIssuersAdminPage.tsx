@@ -27,19 +27,19 @@ export const IdentifierIssuersAdminPage = () => {
 
 
   const fetchAll = useCallback(async (signal: AbortSignal) => {
-    return (await CaseDbOrganizationApi.instance.identifierIssuersGetAll({ signal }))?.data;
+    return (await CaseDbOrganizationApi.getInstance().identifierIssuersGetAll({ signal }))?.data;
   }, []);
 
   const deleteOne = useCallback(async (item: CaseDbIdentifierIssuer) => {
-    return await CaseDbOrganizationApi.instance.identifierIssuersDeleteOne(item.id);
+    return await CaseDbOrganizationApi.getInstance().identifierIssuersDeleteOne(item.id);
   }, []);
 
   const updateOne = useCallback(async (variables: FormFields, item: CaseDbIdentifierIssuer) => {
-    return (await CaseDbOrganizationApi.instance.identifierIssuersPutOne(item.id, { id: item.id, ...variables })).data;
+    return (await CaseDbOrganizationApi.getInstance().identifierIssuersPutOne(item.id, { id: item.id, ...variables })).data;
   }, []);
 
   const createOne = useCallback(async (variables: FormFields) => {
-    return (await CaseDbOrganizationApi.instance.identifierIssuersPostOne(variables)).data;
+    return (await CaseDbOrganizationApi.getInstance().identifierIssuersPostOne(variables)).data;
   }, []);
 
   const getName = useCallback((item: CaseDbIdentifierIssuer) => {

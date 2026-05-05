@@ -43,19 +43,19 @@ export const OrganizationShareCasePoliciesAdminPage = () => {
   const loadables = useArray([nameFactory, organizationOptionsQuery, dataCollectionOptionsQuery, colSetOptionsQuery, caseTypeSetOptions]);
 
   const fetchAll = useCallback(async (signal: AbortSignal) => {
-    return (await CaseDbAbacApi.instance.organizationShareCasePoliciesGetAll({ signal }))?.data;
+    return (await CaseDbAbacApi.getInstance().organizationShareCasePoliciesGetAll({ signal }))?.data;
   }, []);
 
   const deleteOne = useCallback(async (item: CaseDbOrganizationShareCasePolicy) => {
-    return await CaseDbAbacApi.instance.organizationShareCasePoliciesDeleteOne(item.id);
+    return await CaseDbAbacApi.getInstance().organizationShareCasePoliciesDeleteOne(item.id);
   }, []);
 
   const updateOne = useCallback(async (variables: FormFields, item: CaseDbOrganizationShareCasePolicy) => {
-    return (await CaseDbAbacApi.instance.organizationShareCasePoliciesPutOne(item.id, { id: item.id, ...variables })).data;
+    return (await CaseDbAbacApi.getInstance().organizationShareCasePoliciesPutOne(item.id, { id: item.id, ...variables })).data;
   }, []);
 
   const createOne = useCallback(async (variables: FormFields) => {
-    return (await CaseDbAbacApi.instance.organizationShareCasePoliciesPostOne(variables)).data;
+    return (await CaseDbAbacApi.getInstance().organizationShareCasePoliciesPostOne(variables)).data;
   }, []);
 
   const getName = useCallback((item: CaseDbOrganizationShareCasePolicy) => {

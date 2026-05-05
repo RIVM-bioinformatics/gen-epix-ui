@@ -16,11 +16,6 @@ export const createdAtMetaDataKey = Symbol('createdAt');
 
 export class AuthenticationManager extends SubscribableAbstract<CommonDbIdentityProvider> {
   public static autoLoginSkew = 500;
-  public static get instance(): AuthenticationManager {
-    AuthenticationManager.__instance = HmrUtil.getHmrSingleton('authenticationManager', AuthenticationManager.__instance, () => new AuthenticationManager());
-    return AuthenticationManager.__instance;
-  }
-
   private static __instance: AuthenticationManager;
 
   public authContextProps: AuthContextProps;
@@ -37,6 +32,11 @@ export class AuthenticationManager extends SubscribableAbstract<CommonDbIdentity
         sessionStorage.removeItem(key);
       }
     });
+  }
+
+  public static getInstance(): AuthenticationManager {
+    AuthenticationManager.__instance = HmrUtil.getHmrSingleton('authenticationManager', AuthenticationManager.__instance, () => new AuthenticationManager());
+    return AuthenticationManager.__instance;
   }
 
   public getUserManagerSettingsCreatedAt(): number {
@@ -67,7 +67,7 @@ export class AuthenticationManager extends SubscribableAbstract<CommonDbIdentity
 
       // If the user is not logged in, or the user is already redirected, throw the error
 
-      if (redirectCounter > 0 || !AuthorizationManager.instance.user) {
+      if (redirectCounter > 0 || !AuthorizationManager.getInstance().user) {
         throw error;
       }
 
@@ -81,9 +81,9 @@ export class AuthenticationManager extends SubscribableAbstract<CommonDbIdentity
         await this.authContextProps.signinRedirect({
           state: {
             preLoginLocation: {
-              hash: WindowManager.instance.window.location.hash,
-              pathname: WindowManager.instance.window.location.pathname,
-              search: WindowManager.instance.window.location.search,
+              hash: WindowManager.getInstance().window.location.hash,
+              pathname: WindowManager.getInstance().window.location.pathname,
+              search: WindowManager.getInstance().window.location.search,
             },
             redirectCounter: redirectCounter + 1,
           },

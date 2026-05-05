@@ -18,17 +18,10 @@ import type { BoxProps } from '@mui/material';
 import { Box } from '@mui/material';
 import type { CaseDbCaseSet } from '@gen-epix/api-casedb';
 import { CaseDbCaseApi } from '@gen-epix/api-casedb';
-
-import { NotificationManager } from '../../../classes/managers/NotificationManager';
+import { QueryManager, QUERY_KEY, NotificationManager, FormFieldDefinition, FORM_FIELD_DEFINITION_TYPE, FormUtil, Spinner, GenericForm } from '@gen-epix/ui';
 import { useCaseAbacContext } from '../../../context/caseAbac';
-import type { FormFieldDefinition } from '../../../models/form';
-import { FORM_FIELD_DEFINITION_TYPE } from '../../../models/form';
-import { QUERY_KEY } from '../../../models/query';
 import { CaseUtil } from '../../../utils/CaseUtil';
-import { FormUtil } from '../../../utils/FormUtil';
-import { QueryUtil } from '../../../utils/QueryUtil';
-import { GenericForm } from '../../form/helpers/GenericForm';
-import { Spinner } from '../../ui/Spinner';
+
 
 export type EpiCaseSetSharingFormProps = {
   readonly caseSet: CaseDbCaseSet;
@@ -58,32 +51,32 @@ export const EpiCaseSetSharingForm = ({ caseSet, caseTypeId, formId, onFinish, o
     const perform = async () => {
       setIsSaving(true);
       onIsSavingChange(true);
-      const queryKeys = QueryUtil.getQueryKeyDependencies([QUERY_KEY.CASE_SET_DATA_COLLECTION_LINKS], true);
-      const notificationKey = NotificationManager.instance.showNotification({
+      const queryKeys = QueryManager.getInstance().getQueryKeyDependencies([QUERY_KEY.CASE_SET_DATA_COLLECTION_LINKS], true);
+      const notificationKey = NotificationManager.getInstance().showNotification({
         isLoading: true,
         message: t('Saving case set data collections'),
         severity: 'info',
       });
       try {
-        await QueryUtil.cancelQueries(queryKeys);
+        await QueryManager.getInstance().cancelQueries(queryKeys);
         const rights = caseAbacContext?.rights?.[0];
         const dataCollectionIdsToAdd = difference(dataCollectionIds, rights.shared_in_data_collection_ids);
         const dataCollectionIdsToRemove = difference(rights.shared_in_data_collection_ids, dataCollectionIds);
 
         if (dataCollectionIdsToAdd.length > 0) {
-          await CaseDbCaseApi.instance.caseSetDataCollectionLinksPostSome(dataCollectionIdsToAdd.map(data_collection_id => ({
+          await CaseDbCaseApi.getInstance().caseSetDataCollectionLinksPostSome(dataCollectionIdsToAdd.map(data_collection_id => ({
             case_set_id: caseSet.id,
             data_collection_id,
           })));
         }
         if (dataCollectionIdsToRemove.length > 0) {
-          await CaseDbCaseApi.instance.caseSetDataCollectionLinksDeleteSome(caseAbacContext.itemDataCollectionLinks[0]?.filter(x => dataCollectionIdsToRemove.includes(x.data_collection_id)).map(x => x.id).join(','));
+          await CaseDbCaseApi.getInstance().caseSetDataCollectionLinksDeleteSome(caseAbacContext.itemDataCollectionLinks[0]?.filter(x => dataCollectionIdsToRemove.includes(x.data_collection_id)).map(x => x.id).join(','));
         }
-        NotificationManager.instance.fulfillNotification(notificationKey, t('Successfully saved case set data collections.'), 'success');
+        NotificationManager.getInstance().fulfillNotification(notificationKey, t('Successfully saved case set data collections.'), 'success');
       } catch (_error) {
-        NotificationManager.instance.fulfillNotification(notificationKey, t('Could not save case set data collections.'), 'error');
+        NotificationManager.getInstance().fulfillNotification(notificationKey, t('Could not save case set data collections.'), 'error');
       } finally {
-        await QueryUtil.invalidateQueryKeys(queryKeys);
+        await QueryManager.getInstance().invalidateQueryKeys(queryKeys);
         if (shouldApplySharingToCases) {
           await CaseUtil.applyDataCollectionLinks({
             caseSetDataCollectionIds: dataCollectionIds,

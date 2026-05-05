@@ -31,7 +31,7 @@ ConfigManager.getInstance().config = {
 }
 
 // initialize the I18nManager
-I18nManager.instance.init()
+I18nManager.getInstance().init()
   .then(() => {
     // call setup
     setup();

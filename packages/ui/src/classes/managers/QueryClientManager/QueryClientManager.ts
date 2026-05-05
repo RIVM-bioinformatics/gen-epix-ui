@@ -8,16 +8,11 @@ import { ConfigManager } from '../ConfigManager';
 import { HmrUtil } from '../../../utils/HmrUtil';
 
 export class QueryClientManager {
-  public static get instance(): QueryClientManager {
-    QueryClientManager.__instance = HmrUtil.getHmrSingleton('queryClientManager', QueryClientManager.__instance, () => new QueryClientManager());
-    return QueryClientManager.__instance;
-  }
-
   private static __instance: QueryClientManager;
 
   public readonly mutationCache: MutationCache;
-  public readonly queryCache: QueryCache;
 
+  public readonly queryCache: QueryCache;
   public readonly queryClient: QueryClient;
 
   private constructor() {
@@ -39,5 +34,10 @@ export class QueryClientManager {
     this.queryCache = queryCache;
     this.mutationCache = mutationCache;
     this.queryClient = queryClient;
+  }
+
+  public static getInstance(): QueryClientManager {
+    QueryClientManager.__instance = HmrUtil.getHmrSingleton('queryClientManager', QueryClientManager.__instance, () => new QueryClientManager());
+    return QueryClientManager.__instance;
   }
 }

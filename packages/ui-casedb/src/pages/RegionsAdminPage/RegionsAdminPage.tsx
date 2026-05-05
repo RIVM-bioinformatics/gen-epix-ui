@@ -29,7 +29,7 @@ export const RegionsAdminPage = () => {
   const { t } = useTranslation();
 
   const fetchAll = useCallback(async (signal: AbortSignal) => {
-    return (await CaseDbGeoApi.instance.regionsGetAll({ signal }))?.data;
+    return (await CaseDbGeoApi.getInstance().regionsGetAll({ signal }))?.data;
   }, []);
 
   const fetchAllSelect = useCallback((regions: CaseDbRegion[]) => {
@@ -37,11 +37,11 @@ export const RegionsAdminPage = () => {
   }, [regionSetId]);
 
   const deleteOne = useCallback(async (item: CaseDbRegion) => {
-    return await CaseDbGeoApi.instance.regionsDeleteOne(item.id);
+    return await CaseDbGeoApi.getInstance().regionsDeleteOne(item.id);
   }, []);
 
   const updateOne = useCallback(async (variables: FormFields, item: CaseDbRegion) => {
-    return (await CaseDbGeoApi.instance.regionsPutOne(item.id, {
+    return (await CaseDbGeoApi.getInstance().regionsPutOne(item.id, {
       ...variables,
       id: item.id,
       region_set_id: regionSetId,
@@ -49,7 +49,7 @@ export const RegionsAdminPage = () => {
   }, [regionSetId]);
 
   const createOne = useCallback(async (variables: FormFields) => {
-    return (await CaseDbGeoApi.instance.regionsPostOne({
+    return (await CaseDbGeoApi.getInstance().regionsPostOne({
       ...variables,
       region_set_id: regionSetId,
     })).data;

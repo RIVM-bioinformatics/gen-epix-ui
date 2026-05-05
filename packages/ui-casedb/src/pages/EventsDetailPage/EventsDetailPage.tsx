@@ -27,7 +27,7 @@ export const EventsDetailPage = () => {
     baseQueryKey: QUERY_KEY.CASE_SETS,
     itemId: caseSetId,
     useQueryOptions: {
-      queryFn: async ({ signal }) => (await CaseDbCaseApi.instance.caseSetsGetOne(caseSetId, { signal })).data,
+      queryFn: async ({ signal }) => (await CaseDbCaseApi.getInstance().caseSetsGetOne(caseSetId, { signal })).data,
     },
   });
 

@@ -57,19 +57,19 @@ export const CaseTypesAdminPage = () => {
   }, []);
 
   const fetchAll = useCallback(async (signal: AbortSignal) => {
-    return (await CaseDbCaseApi.instance.caseTypesGetAll({ signal }))?.data;
+    return (await CaseDbCaseApi.getInstance().caseTypesGetAll({ signal }))?.data;
   }, []);
 
   const deleteOne = useCallback(async (item: CaseDbCaseType) => {
-    return await CaseDbCaseApi.instance.caseTypesDeleteOne(item.id);
+    return await CaseDbCaseApi.getInstance().caseTypesDeleteOne(item.id);
   }, []);
 
   const updateOne = useCallback(async (variables: FormFields, item: CaseDbCaseType) => {
-    return (await CaseDbCaseApi.instance.caseTypesPutOne(item.id, getCaseTypeFromVariables(variables, item.id))).data;
+    return (await CaseDbCaseApi.getInstance().caseTypesPutOne(item.id, getCaseTypeFromVariables(variables, item.id))).data;
   }, [getCaseTypeFromVariables]);
 
   const createOne = useCallback(async (variables: FormFields) => {
-    return (await CaseDbCaseApi.instance.caseTypesPostOne(getCaseTypeFromVariables(variables))).data;
+    return (await CaseDbCaseApi.getInstance().caseTypesPostOne(getCaseTypeFromVariables(variables))).data;
   }, [getCaseTypeFromVariables]);
 
   const getName = useCallback((item: CaseDbCaseType) => {
@@ -226,7 +226,7 @@ export const CaseTypesAdminPage = () => {
   }, [etiologicalAgentOptionsQuery.options, diseaseOptionsQuery.options, t]);
 
   const subPages = useMemo<CrudPageSubPage<CaseDbCaseType>[]>(() => {
-    if (!AuthorizationManager.instance.doesUserHavePermission([
+    if (!AuthorizationManager.getInstance().doesUserHavePermission([
       { command_name: CaseDbCommandName.DimCrudCommand, permission_type: CaseDbPermissionType.READ },
     ])) {
       return [];

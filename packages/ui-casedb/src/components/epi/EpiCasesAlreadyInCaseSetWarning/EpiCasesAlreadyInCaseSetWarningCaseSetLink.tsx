@@ -30,7 +30,7 @@ export const EpiCasesAlreadyInCaseSetWarningCaseSetLink = ({ caseSet }: EpiCases
   }, []);
 
   const onConfirm = useCallback(async () => {
-    await RouterManager.instance.router.navigate(CaseSetUtil.createCaseSetLink(caseSet));
+    await RouterManager.getInstance().router.navigate(CaseSetUtil.createCaseSetLink(caseSet));
   }, [caseSet]);
 
 

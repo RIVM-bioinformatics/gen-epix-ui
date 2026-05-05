@@ -36,11 +36,11 @@ export type ApplicationBarNavigationMenuProps = {
 export const ApplicationBarNavigationMenu = ({ fullWidth }: ApplicationBarNavigationMenuProps) => {
   const { t } = useTranslation();
   const theme = useTheme();
-  const authorizationManager = useMemo(() => AuthorizationManager.instance, []);
+  const authorizationManager = useMemo(() => AuthorizationManager.getInstance(), []);
   const navId = useId();
 
   const menuItems = useMemo(() => {
-    const rootItem = RouterManager.instance.routes.find(r => r.handle.root);
+    const rootItem = RouterManager.getInstance().routes.find(r => r.handle.root);
     return [rootItem, ...rootItem.children.filter(r => !r.handle.hidden)] as MyNonIndexRouteObject[];
   }, []);
 

@@ -18,7 +18,7 @@ type Result = {
 };
 
 export const useDimensions = (ref: RefObject<HTMLElement>, onResizeCallback?: () => void) => {
-  const timeoutHandleRef = useRef<ReturnType<typeof WindowManager.instance.window.setTimeout>>(null);
+  const timeoutHandleRef = useRef<ReturnType<typeof window.setTimeout>>(null);
   const [isResizing, setIsResizing] = useState(false);
   const dimensionsRef = useRef<Dimensions>(null);
 
@@ -47,7 +47,7 @@ export const useDimensions = (ref: RefObject<HTMLElement>, onResizeCallback?: ()
       if (timeoutHandleRef.current) {
         clearTimeout(timeoutHandleRef.current);
       }
-      timeoutHandleRef.current = WindowManager.instance.window.setTimeout(() => {
+      timeoutHandleRef.current = WindowManager.getInstance().window.setTimeout(() => {
         setIsResizing(false);
         if (onResizeCallback) {
           onResizeCallback();

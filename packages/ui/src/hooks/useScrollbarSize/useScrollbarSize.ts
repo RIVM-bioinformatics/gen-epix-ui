@@ -5,7 +5,7 @@ import { WindowManager } from '../../classes/managers/WindowManager';
 
 export const useScrollbarSize = () => {
   const scrollbarSize = useMemo(() => {
-    const win = WindowManager.instance.window;
+    const win = WindowManager.getInstance().window;
     const div1 = win.document.createElement('div');
     const div2 = win.document.createElement('div');
     div1.style.width = '100px';

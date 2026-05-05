@@ -61,7 +61,7 @@ export const RefColsAdminPage = () => {
   const loadables = useArray([refDimMapQuery, refDimOptionsQuery, colTypeOptionsQuery, conceptSetOptionsQuery, regionSetOptionsQuery, geneticDistanceProtocolOptionsQuery, colsValidationRulesQuery]);
 
   const fetchAll = useCallback(async (signal: AbortSignal) => {
-    return (await CaseDbCaseApi.instance.refColsGetAll({ signal }))?.data;
+    return (await CaseDbCaseApi.getInstance().refColsGetAll({ signal }))?.data;
   }, []);
 
   const fetchAllSelect = useCallback((refCols: CaseDbRefCol[]) => {
@@ -72,15 +72,15 @@ export const RefColsAdminPage = () => {
   }, [refDimId]);
 
   const deleteOne = useCallback(async (item: CaseDbRefCol) => {
-    return await CaseDbCaseApi.instance.refColsDeleteOne(item.id);
+    return await CaseDbCaseApi.getInstance().refColsDeleteOne(item.id);
   }, []);
 
   const updateOne = useCallback(async (variables: FormFields, item: CaseDbRefCol) => {
-    return (await CaseDbCaseApi.instance.refColsPutOne(item.id, { id: item.id, ...variables })).data;
+    return (await CaseDbCaseApi.getInstance().refColsPutOne(item.id, { id: item.id, ...variables })).data;
   }, []);
 
   const createOne = useCallback(async (variables: FormFields) => {
-    return (await CaseDbCaseApi.instance.refColsPostOne(variables)).data;
+    return (await CaseDbCaseApi.getInstance().refColsPostOne(variables)).data;
   }, []);
 
   const getName = useCallback((item: CaseDbRefCol) => {

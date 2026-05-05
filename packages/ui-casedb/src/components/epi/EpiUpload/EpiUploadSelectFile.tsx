@@ -117,7 +117,7 @@ const EpiUploadSelectFile = () => {
     useQueryOptions: {
       enabled: !!caseTypeId,
       queryFn: async ({ signal }) => {
-        return (await CaseDbCaseApi.instance.completeCaseTypesGetOne(caseTypeId, { signal })).data;
+        return (await CaseDbCaseApi.getInstance().completeCaseTypesGetOne(caseTypeId, { signal })).data;
       },
     },
   });

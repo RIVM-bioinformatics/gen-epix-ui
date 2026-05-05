@@ -14,11 +14,11 @@ import { InactivityManager } from '../../../classes/managers/InactivityManager';
 export const UserInactivityConfirmation = () => {
   const { t } = useTranslation();
   const confirmationRef = useRef<ConfirmationRefMethods>(null);
-  const [idleState, setIdleState] = useState<InactivityState>(InactivityManager.instance.data);
+  const [idleState, setIdleState] = useState<InactivityState>(InactivityManager.getInstance().data);
 
 
   useEffect(() => {
-    const unsubscribe = InactivityManager.instance.subscribe((data) => {
+    const unsubscribe = InactivityManager.getInstance().subscribe((data) => {
       if (data.isIdle) {
         setIdleState(data);
         confirmationRef.current?.open();
@@ -32,11 +32,11 @@ export const UserInactivityConfirmation = () => {
   }, []);
 
   const onCancel = useCallback(() => {
-    InactivityManager.instance.logout();
+    InactivityManager.getInstance().logout();
   }, []);
 
   const onClose = useCallback(() => {
-    InactivityManager.instance.reset();
+    InactivityManager.getInstance().reset();
   }, []);
 
 

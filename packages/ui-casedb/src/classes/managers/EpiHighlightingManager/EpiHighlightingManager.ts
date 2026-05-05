@@ -5,11 +5,6 @@ import { SubscribableAbstract } from '../../abstracts/SubscribableAbstract';
 import { Subject } from '../../Subject';
 
 export class EpiHighlightingManager extends SubscribableAbstract<Highlighting> {
-  public static get instance(): EpiHighlightingManager {
-    EpiHighlightingManager.__instance = HmrUtil.getHmrSingleton('epiHighlightingManager', EpiHighlightingManager.__instance, () => new EpiHighlightingManager());
-    return EpiHighlightingManager.__instance;
-  }
-
   private static __instance: EpiHighlightingManager;
 
   protected constructor() {
@@ -17,6 +12,11 @@ export class EpiHighlightingManager extends SubscribableAbstract<Highlighting> {
       caseIds: [],
       origin: null,
     }));
+  }
+
+  public static getInstance(): EpiHighlightingManager {
+    EpiHighlightingManager.__instance = HmrUtil.getHmrSingleton('epiHighlightingManager', EpiHighlightingManager.__instance, () => new EpiHighlightingManager());
+    return EpiHighlightingManager.__instance;
   }
 
   public highlight(highlighting: Highlighting): void {

@@ -45,7 +45,7 @@ export const AdminPage = ({ routes }: AdminPageProps) => {
     const items = routes
       .map(r => r.children?.length ? r.children.find(child => child.index) as MyNonIndexRouteObject : r)
       .filter(r => {
-        const hasPermission = AuthorizationManager.instance.doesUserHavePermission(r.handle.requiredPermissions);
+        const hasPermission = AuthorizationManager.getInstance().doesUserHavePermission(r.handle.requiredPermissions);
         return !r.handle?.hidden && hasPermission;
       });
     return items;
@@ -79,7 +79,7 @@ export const AdminPage = ({ routes }: AdminPageProps) => {
   }, [categoryToLabelMap, menuItems]);
 
   const onCardClick = useCallback(async (path: string) => {
-    await RouterManager.instance.router.navigate(path);
+    await RouterManager.getInstance().router.navigate(path);
   }, []);
 
   if (location?.pathname !== '/management') {

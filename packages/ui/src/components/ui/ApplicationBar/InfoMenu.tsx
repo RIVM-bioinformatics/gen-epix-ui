@@ -80,7 +80,7 @@ export const InfoMenu = ({ anchorElement, onClose }: InfoMenuProps): ReactElemen
         >
           <ListItemText
             primary={t('Backend version')}
-            secondary={BackendVersionManager.instance.version}
+            secondary={BackendVersionManager.getInstance().version}
             slotProps={{
               primary: {
                 sx: {

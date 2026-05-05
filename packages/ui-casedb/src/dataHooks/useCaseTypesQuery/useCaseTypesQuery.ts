@@ -9,13 +9,13 @@ import type {
 import {
   DataHookUtil,
   QUERY_KEY,
-  QueryUtil,
+  QueryManager,
   useQueryMemo,
 } from '@gen-epix/ui';
 
 
 export const caseTypesQueryFn = async ({ signal }: { signal: AbortSignal }): Promise<CaseDbCaseType[]> => {
-  const response = await CaseDbCaseApi.instance.caseTypesGetAll({ signal });
+  const response = await CaseDbCaseApi.getInstance().caseTypesGetAll({ signal });
   const items = response.data;
   items.sort((a, b) => a.name.localeCompare(b.name));
   return items;
@@ -24,7 +24,7 @@ export const caseTypesQueryFn = async ({ signal }: { signal: AbortSignal }): Pro
 export const useCaseTypesQuery = (): UseQueryResult<CaseDbCaseType[]> => {
   return useQueryMemo({
     queryFn: caseTypesQueryFn,
-    queryKey: QueryUtil.getGenericKey(QUERY_KEY.CASE_TYPES),
+    queryKey: QueryManager.getInstance().getGenericKey(QUERY_KEY.CASE_TYPES),
   });
 };
 

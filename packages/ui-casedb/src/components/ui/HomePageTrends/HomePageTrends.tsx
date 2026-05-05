@@ -28,7 +28,7 @@ import {
   ConfigManager,
   LoadableUtil,
   QUERY_KEY,
-  QueryUtil,
+  QueryManager,
   ResponseHandler,
   RouterManager,
   useArray,
@@ -74,10 +74,10 @@ export const HomePageTrends = withPermissions<CaseDbApiPermission>(() => {
 
   const caseTypeStatsQueryNow = useQueryMemo({
     queryFn: async ({ signal }) => {
-      const response = await CaseDbCaseApi.instance.retrieveCaseTypeStats({}, { signal });
+      const response = await CaseDbCaseApi.getInstance().retrieveCaseTypeStats({}, { signal });
       return response.data;
     },
-    queryKey: QueryUtil.getGenericKey(QUERY_KEY.CASE_TYPE_STATS),
+    queryKey: QueryManager.getInstance().getGenericKey(QUERY_KEY.CASE_TYPE_STATS),
   });
 
   const retrieveTypeCaseStatsRequestBody = useMemo<CaseDbRetrieveCaseTypeStatsRequestBody>(() => {
@@ -93,20 +93,20 @@ export const HomePageTrends = withPermissions<CaseDbApiPermission>(() => {
   const caseTypeStatsQueryPast = useQueryMemo({
     enabled: !!retrieveTypeCaseStatsRequestBody,
     queryFn: async ({ signal }) => {
-      const response = await CaseDbCaseApi.instance.retrieveCaseTypeStats(retrieveTypeCaseStatsRequestBody ?? {}, { signal });
+      const response = await CaseDbCaseApi.getInstance().retrieveCaseTypeStats(retrieveTypeCaseStatsRequestBody ?? {}, { signal });
       return response.data;
     },
-    queryKey: QueryUtil.getGenericKey(QUERY_KEY.CASE_TYPE_STATS, retrieveTypeCaseStatsRequestBody ?? {}),
+    queryKey: QueryManager.getInstance().getGenericKey(QUERY_KEY.CASE_TYPE_STATS, retrieveTypeCaseStatsRequestBody ?? {}),
   });
   const caseSetsNowQuery = useCaseSetsQuery();
   const caseTypeMapQuery = useCaseTypeMapQuery();
 
   const { data: caseSetsThenData, ...caseSetsThenQuery } = useQueryMemo({
     queryFn: async ({ signal }) => {
-      const response = await CaseDbCaseApi.instance.caseSetsPostQuery(caseSetQueryFilter, { signal });
+      const response = await CaseDbCaseApi.getInstance().caseSetsPostQuery(caseSetQueryFilter, { signal });
       return response.data;
     },
-    queryKey: QueryUtil.getGenericKey(QUERY_KEY.CASE_SETS, caseSetQueryFilter),
+    queryKey: QueryManager.getInstance().getGenericKey(QUERY_KEY.CASE_SETS, caseSetQueryFilter),
   });
 
   const loadables = useArray([
@@ -130,7 +130,7 @@ export const HomePageTrends = withPermissions<CaseDbApiPermission>(() => {
     s.push(
       {
         callback: async () => {
-          await RouterManager.instance.router.navigate('/cases');
+          await RouterManager.getInstance().router.navigate('/cases');
         },
         callbackLabel: t`View all cases`,
         diffPercentage: round((nowTotalCases - thenTotalCases) / (thenTotalCases || 1) * 100, 2),
@@ -144,7 +144,7 @@ export const HomePageTrends = withPermissions<CaseDbApiPermission>(() => {
     s.push(
       {
         callback: async () => {
-          await RouterManager.instance.router.navigate('/events');
+          await RouterManager.getInstance().router.navigate('/events');
         },
         callbackLabel: t`View all events`,
         diffPercentage: round((numberOfCaseSetsNow - numberOfCaseSetsThen) / (numberOfCaseSetsThen || 1) * 100, 2),
@@ -178,7 +178,7 @@ export const HomePageTrends = withPermissions<CaseDbApiPermission>(() => {
           s.push(
             {
               callback: async () => {
-                await RouterManager.instance.router.navigate(CaseTypeUtil.createCaseTypeLink(caseType));
+                await RouterManager.getInstance().router.navigate(CaseTypeUtil.createCaseTypeLink(caseType));
               },
               callbackLabel: t`View cases`,
               diffPercentage: sortedStats[i].diffPercentage,
@@ -194,7 +194,7 @@ export const HomePageTrends = withPermissions<CaseDbApiPermission>(() => {
   }, [caseSetsNowQuery.data?.length, caseSetsThenData?.length, caseTypeMapQuery.map, caseTypeStatsQueryNow.data, caseTypeStatsQueryPast.data, loadables, t]);
 
   const onViewMoreTrendsButtonClick = useCallback(async () => {
-    await RouterManager.instance.router.navigate('/trends');
+    await RouterManager.getInstance().router.navigate('/trends');
   }, []);
 
   if (AxiosUtil.isAxiosForbiddenError(LoadableUtil.findFirstError(loadables))) {

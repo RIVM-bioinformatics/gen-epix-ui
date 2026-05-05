@@ -19,21 +19,23 @@ import {
   CaseDbOrganizationApi,
   type CaseDbUserInvitation,
 } from '@gen-epix/api-casedb';
-
 import type {
+  FormFieldDefinition,
   WithDialogRefMethods,
   WithDialogRenderProps,
-} from '../../hoc/withDialog';
-import { withDialog } from '../../hoc/withDialog';
-import { TestIdUtil } from '../../utils/TestIdUtil';
-import type { FormFieldDefinition } from '../../models/form';
-import { FORM_FIELD_DEFINITION_TYPE } from '../../models/form';
-import { GenericForm } from '../../components/form/helpers/GenericForm';
-import { AuthenticationManager } from '../../classes/managers/AuthenticationManager';
-import { ResponseHandler } from '../../components/ui/ResponseHandler';
-import { QueryUtil } from '../../utils/QueryUtil';
-import { QUERY_KEY } from '../../models/query';
-import { NotificationManager } from '../../classes/managers/NotificationManager';
+} from '@gen-epix/ui';
+import {
+  AuthenticationManager,
+  FORM_FIELD_DEFINITION_TYPE,
+  GenericForm,
+  NotificationManager,
+  QUERY_KEY,
+  QueryManager,
+  ResponseHandler,
+  TestIdUtil,
+  withDialog,
+} from '@gen-epix/ui';
+
 
 export interface UserInvitationConsumeDialogOpenProps {
   item: CaseDbUserInvitation;
@@ -84,9 +86,9 @@ export const UserInvitationConsumeDialog = withDialog<UserInvitationConsumeDialo
 
   const onFormSubmit = useCallback(async (data: FormFields) => {
     try {
-      AuthenticationManager.instance.temporaryToken = data.bearerToken;
-      await CaseDbOrganizationApi.instance.userRegistrationsPostOne(openProps.item.token);
-      NotificationManager.instance.showNotification({
+      AuthenticationManager.getInstance().temporaryToken = data.bearerToken;
+      await CaseDbOrganizationApi.getInstance().userRegistrationsPostOne(openProps.item.token);
+      NotificationManager.getInstance().showNotification({
         message: t`Invitation has been consumed by bearer token`,
         severity: 'success',
       });
@@ -94,9 +96,9 @@ export const UserInvitationConsumeDialog = withDialog<UserInvitationConsumeDialo
     } catch (responseError) {
       setError(responseError);
     } finally {
-      delete AuthenticationManager.instance.temporaryToken;
-      const queryKeys = QueryUtil.getQueryKeyDependencies([QUERY_KEY.USER_INVITATIONS], true);
-      await QueryUtil.invalidateQueryKeys(queryKeys);
+      delete AuthenticationManager.getInstance().temporaryToken;
+      const queryKeys = QueryManager.getInstance().getQueryKeyDependencies([QUERY_KEY.USER_INVITATIONS], true);
+      await QueryManager.getInstance().invalidateQueryKeys(queryKeys);
     }
   }, [onClose, openProps.item.token, t]);
 

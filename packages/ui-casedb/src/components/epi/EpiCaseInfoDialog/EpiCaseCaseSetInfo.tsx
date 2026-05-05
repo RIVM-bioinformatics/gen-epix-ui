@@ -14,16 +14,18 @@ import type {
   CaseDbTypedUuidSetFilter,
 } from '@gen-epix/api-casedb';
 import { CaseDbCaseApi } from '@gen-epix/api-casedb';
+import {
+  QUERY_KEY,
+  QueryManager,
+  ResponseHandler,
+  useArray,
+  useQueryMemo,
+} from '@gen-epix/ui';
+import { NavLink } from 'react-router';
 
 import { useCaseSetCategoryMapQuery } from '../../../dataHooks/useCaseSetCategoriesQuery';
 import { useCaseSetStatusMapQuery } from '../../../dataHooks/useCaseSetStatusesQuery';
-import { QUERY_KEY } from '../../../models/query';
 import { CaseSetUtil } from '../../../utils/CaseSetUtil';
-import { QueryUtil } from '../../../utils/QueryUtil';
-import { NavLink } from '../../ui/NavLink';
-import { ResponseHandler } from '../../ui/ResponseHandler';
-import { useArray } from '../../../hooks/useArray';
-import { useQueryMemo } from '../../../hooks/useQueryMemo';
 
 export type EpiCaseCaseSetInfoProps = {
   readonly epiCase: CaseDbCase;
@@ -42,10 +44,10 @@ export const EpiCaseCaseSetInfo = ({ epiCase, ...boxProps }: EpiCaseCaseSetInfoP
   };
   const { data: caseSetMembers, error: caseSetMembersError, isLoading: isCaseSetMembersLoading } = useQueryMemo({
     queryFn: async ({ signal }) => {
-      const response = await CaseDbCaseApi.instance.caseSetMembersPostQuery(caseSetMembersFilter, { signal });
+      const response = await CaseDbCaseApi.getInstance().caseSetMembersPostQuery(caseSetMembersFilter, { signal });
       return response.data;
     },
-    queryKey: QueryUtil.getGenericKey(QUERY_KEY.CASE_SET_MEMBERS, caseSetMembersFilter),
+    queryKey: QueryManager.getInstance().getGenericKey(QUERY_KEY.CASE_SET_MEMBERS, caseSetMembersFilter),
   });
 
   const caseSetsFilter: CaseDbTypedUuidSetFilter = {
@@ -57,10 +59,10 @@ export const EpiCaseCaseSetInfo = ({ epiCase, ...boxProps }: EpiCaseCaseSetInfoP
   const { data: caseSets, error: caseSetsError, isLoading: isCaseSetsLoading } = useQueryMemo({
     enabled: caseSetsFilter.members.length > 0,
     queryFn: async ({ signal }) => {
-      const response = await CaseDbCaseApi.instance.caseSetsPostQuery(caseSetsFilter, { signal });
+      const response = await CaseDbCaseApi.getInstance().caseSetsPostQuery(caseSetsFilter, { signal });
       return response.data;
     },
-    queryKey: QueryUtil.getGenericKey(QUERY_KEY.CASE_SETS, caseSetsFilter),
+    queryKey: QueryManager.getInstance().getGenericKey(QUERY_KEY.CASE_SETS, caseSetsFilter),
   });
 
   const loadables = useArray([caseSetCategoryMapQuery, caseSetStatusMapQuery]);

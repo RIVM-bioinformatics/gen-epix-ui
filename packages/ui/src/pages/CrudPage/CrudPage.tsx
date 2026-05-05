@@ -60,12 +60,12 @@ import {
   createTableStore,
   TableStoreContextProvider,
 } from '../../stores/tableStore';
-import { QueryUtil } from '../../utils/QueryUtil';
 import { TableUtil } from '../../utils/TableUtil';
 import type { DialogAction } from '../../components/ui/Dialog';
 import type { FormFieldDefinition } from '../../models/form';
 import { useQueryMemo } from '../../hooks/useQueryMemo';
 import { LoadableUtil } from '../../utils/LoadableUtil';
+import { QueryManager } from '../../classes/managers/QueryManager';
 
 import type { CrudPageEditDialogRefMethods } from './CrudPageEditDialog';
 import { CrudPageEditDialog } from './CrudPageEditDialog';
@@ -186,13 +186,13 @@ export const CrudPage = <
   const theme = useTheme();
   const deleteConfirmationRef = useRef<CrudPageDeleteDialogRefMethods<TData>>(null);
   const editDialogRef = useRef<CrudPageEditDialogRefMethods<TData, TFormFields>>(null);
-  const authorizationManager = useMemo(() => AuthorizationManager.instance, []);
+  const authorizationManager = useMemo(() => AuthorizationManager.getInstance(), []);
   const resourceQueryKey = useMemo(() => [resourceQueryKeyBase], [resourceQueryKeyBase]);
   const tableStore = useMemo(() => createTableStore<TTableData>({
     defaultSortByField: defaultSortByField as string,
     defaultSortDirection,
     idSelectorCallback: (item) => item.id,
-    navigatorFunction: RouterManager.instance.router.navigate,
+    navigatorFunction: RouterManager.getInstance().router.navigate,
     storageNamePostFix: tableStoreStorageNamePostFix ? `CRUDPage-${resourceQueryKeyBase}-${tableStoreStorageNamePostFix}` : `CRUDPage-${resourceQueryKeyBase}`,
     storageVersion: tableStoreStorageVersion ?? 1,
   }), [defaultSortByField, defaultSortDirection, resourceQueryKeyBase, tableStoreStorageNamePostFix, tableStoreStorageVersion]);
@@ -280,7 +280,7 @@ export const CrudPage = <
       actions.push({
         color: 'primary',
         label: subPage.label,
-        onClick: async () => await RouterManager.instance.router.navigate({
+        onClick: async () => await RouterManager.getInstance().router.navigate({
           pathname: subPage.getPathName(item),
         }),
         variant: 'outlined',
@@ -356,7 +356,7 @@ export const CrudPage = <
   const calculatedAssociationQueryKeys = useMemo<string[][]>(() => {
     const keys = associationQueryKeys ?? [];
 
-    QueryUtil.getQueryKeyDependencies([resourceQueryKeyBase]).forEach(key => {
+    QueryManager.getInstance().getQueryKeyDependencies([resourceQueryKeyBase]).forEach(key => {
       keys.push(key);
     });
     return keys;
@@ -435,7 +435,7 @@ export const CrudPage = <
         <MenuItem
           key={subPage.label}
           // eslint-disable-next-line @eslint-react/kit/jsx-no-bind
-          onClick={async () => await RouterManager.instance.router.navigate({
+          onClick={async () => await RouterManager.getInstance().router.navigate({
             pathname: subPage.getPathName(params.row),
           })}
         >

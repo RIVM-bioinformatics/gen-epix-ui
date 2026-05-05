@@ -80,9 +80,9 @@ export const EpiLineListWidgetPrimaryMenu = ({
   }, [sortedData, selectedIds]);
 
   const menu = useMemo<MenuItemData[]>(() => {
-    const shouldShowCreateEventMenuItem = AuthorizationManager.instance.doesUserHavePermission([{ command_name: CaseDbCommandName.CreateCaseSetCommand, permission_type: CaseDbPermissionType.EXECUTE }]);
-    const shouldShowAddToEventMenuItem = AuthorizationManager.instance.doesUserHavePermission([{ command_name: CaseDbCommandName.CaseSetMemberCrudCommand, permission_type: CaseDbPermissionType.CREATE }]);
-    const shouldShowRemoveFromEventMenuItem = !!caseSet && AuthorizationManager.instance.doesUserHavePermission([{ command_name: CaseDbCommandName.CaseSetMemberCrudCommand, permission_type: CaseDbPermissionType.DELETE }]);
+    const shouldShowCreateEventMenuItem = AuthorizationManager.getInstance().doesUserHavePermission([{ command_name: CaseDbCommandName.CreateCaseSetCommand, permission_type: CaseDbPermissionType.EXECUTE }]);
+    const shouldShowAddToEventMenuItem = AuthorizationManager.getInstance().doesUserHavePermission([{ command_name: CaseDbCommandName.CaseSetMemberCrudCommand, permission_type: CaseDbPermissionType.CREATE }]);
+    const shouldShowRemoveFromEventMenuItem = !!caseSet && AuthorizationManager.getInstance().doesUserHavePermission([{ command_name: CaseDbCommandName.CaseSetMemberCrudCommand, permission_type: CaseDbPermissionType.DELETE }]);
     // !TODO
     // const shouldShowBulkEditCaseMenuItem = true;
 
@@ -95,7 +95,7 @@ export const EpiLineListWidgetPrimaryMenu = ({
           label: t`Create filter from selected cases`,
         },
         {
-          callback: () => EpiEventBusManager.instance.emit('openFindSimilarCasesDialog', {
+          callback: () => EpiEventBusManager.getInstance().emit('openFindSimilarCasesDialog', {
             allRows: sortedData,
             completeCaseType,
             selectedRows: sortedData,
@@ -104,7 +104,7 @@ export const EpiLineListWidgetPrimaryMenu = ({
           label: t`Find similar cases`,
         },
         {
-          callback: () => EpiEventBusManager.instance.emit('openFindSimilarCasesDialog', {
+          callback: () => EpiEventBusManager.getInstance().emit('openFindSimilarCasesDialog', {
             allRows: sortedData,
             completeCaseType,
             selectedRows,
@@ -113,7 +113,7 @@ export const EpiLineListWidgetPrimaryMenu = ({
           label: t`Find similar cases (based on selected cases)`,
         },
         {
-          callback: () => EpiEventBusManager.instance.emit('openRemoveFindSimilarCasesResultDialog', {
+          callback: () => EpiEventBusManager.getInstance().emit('openRemoveFindSimilarCasesResultDialog', {
             completeCaseType,
           }),
           disabled: !findSimilarCasesResults?.length,
@@ -126,7 +126,7 @@ export const EpiLineListWidgetPrimaryMenu = ({
     if (shouldShowCreateEventMenuItem) {
       actionsColumnMenuItem.items.push(
         {
-          callback: () => EpiEventBusManager.instance.emit('openCreateEventDialog', {
+          callback: () => EpiEventBusManager.getInstance().emit('openCreateEventDialog', {
             completeCaseType,
             rows: selectedRows,
           }),
@@ -139,7 +139,7 @@ export const EpiLineListWidgetPrimaryMenu = ({
     if (shouldShowAddToEventMenuItem) {
       actionsColumnMenuItem.items.push(
         {
-          callback: () => EpiEventBusManager.instance.emit('openAddCasesToEventDialog', {
+          callback: () => EpiEventBusManager.getInstance().emit('openAddCasesToEventDialog', {
             currentCaseSet: caseSet,
             rows: selectedRows,
           }),
@@ -152,7 +152,7 @@ export const EpiLineListWidgetPrimaryMenu = ({
     if (shouldShowRemoveFromEventMenuItem) {
       actionsColumnMenuItem.items.push(
         {
-          callback: () => EpiEventBusManager.instance.emit('openRemoveCasesFromEventDialog', {
+          callback: () => EpiEventBusManager.getInstance().emit('openRemoveCasesFromEventDialog', {
             caseSet,
             rows: selectedRowsWithoutSimilarCases,
           }),
@@ -171,7 +171,7 @@ export const EpiLineListWidgetPrimaryMenu = ({
     //     {
     //       disabled: !selectedRowCaseIds?.length,
     //       label: t`Bulk edit selected cases`,
-    //       callback: () => EpiEventBusManager.instance.emit('openBulkEditCaseDialog', { rows: selectedRows }),
+    //       callback: () => EpiEventBusManager.getInstance().emit('openBulkEditCaseDialog', { rows: selectedRows }),
     //     },
     //   );
     // }

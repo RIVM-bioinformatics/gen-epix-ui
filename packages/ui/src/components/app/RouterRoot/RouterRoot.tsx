@@ -26,7 +26,6 @@ import { useSubscribable } from '../../../hooks/useSubscribable';
 import { QUERY_KEY } from '../../../models/query';
 import { ChooseIdentityProviderPage } from '../../../pages/ChooseIdentityProviderPage';
 import { HomePage } from '../../../pages/HomePage';
-import { QueryUtil } from '../../../utils/QueryUtil';
 import { UserManagerUtil } from '../../../utils/UserManagerUtil';
 import { NotificationsStack } from '../../ui/Notifications';
 import { Spinner } from '../../ui/Spinner';
@@ -39,12 +38,13 @@ import { useQueryMemo } from '../../../hooks/useQueryMemo';
 import { ApplicationBootstrap } from '../ApplicationBootstrap';
 import { AuthenticationWrapper } from '../AuthenticationWrapper';
 import { AuthorizationWrapper } from '../AuthorizationWrapper';
+import { QueryManager } from '../../../classes/managers/QueryManager';
 
 
 export const RouterRoot = () => {
   const location = useLocation();
 
-  const oidcConfiguration = useSubscribable(AuthenticationManager.instance);
+  const oidcConfiguration = useSubscribable(AuthenticationManager.getInstance());
 
   const { data: identityProvidersWithAvailability, error: identityProvidersError, isLoading: isIdentityProvidersLoading } = useQueryMemo<IdentityProviderWithAvailability[], Error, IdentityProviderWithAvailability[]>({
     gcTime: Infinity,
@@ -68,7 +68,7 @@ export const RouterRoot = () => {
         } catch (error: unknown) {
           console.log(`Identity provider ${provider.name} is not available`, error);
           if (oidcConfiguration?.name === provider.name) {
-            AuthenticationManager.instance.next(undefined);
+            AuthenticationManager.getInstance().next(undefined);
           }
           providersWithAvailability.push({
             isAvailable: false,
@@ -78,7 +78,7 @@ export const RouterRoot = () => {
       }
       return providersWithAvailability;
     },
-    queryKey: QueryUtil.getGenericKey(QUERY_KEY.IDENTITY_PROVIDERS),
+    queryKey: QueryManager.getInstance().getGenericKey(QUERY_KEY.IDENTITY_PROVIDERS),
     staleTime: Infinity,
   });
 
@@ -87,8 +87,8 @@ export const RouterRoot = () => {
   }, [identityProvidersWithAvailability]);
 
   useEffect(() => {
-    NavigationHistoryManager.instance.navigationHistory.push(location.pathname);
-    LogManager.instance.log([{
+    NavigationHistoryManager.getInstance().navigationHistory.push(location.pathname);
+    LogManager.getInstance().log([{
       detail: {
         pathname: location.pathname,
       },
@@ -99,7 +99,7 @@ export const RouterRoot = () => {
 
   useEffect(() => {
     if (identityProvidersWithAvailability?.length === 1 && availableIdentityProviders.length === 1) {
-      AuthenticationManager.instance.next(identityProvidersWithAvailability[0].provider);
+      AuthenticationManager.getInstance().next(identityProvidersWithAvailability[0].provider);
     }
   }, [availableIdentityProviders.length, identityProvidersWithAvailability]);
 
@@ -111,7 +111,7 @@ export const RouterRoot = () => {
     // Validate the storage
     const identityProvider = identityProvidersWithAvailability.find(x => x.provider.name === oidcConfiguration.name)?.provider;
     if (!identityProvider || JSON.stringify(oidcConfiguration) !== JSON.stringify(identityProvider)) {
-      AuthenticationManager.instance.next(undefined);
+      AuthenticationManager.getInstance().next(undefined);
       return null;
     }
     window.userManager = new UserManager(UserManagerUtil.getSettings(oidcConfiguration));
@@ -119,7 +119,7 @@ export const RouterRoot = () => {
   }, [availableIdentityProviders?.length, identityProvidersWithAvailability, oidcConfiguration]);
 
   const onSignin = useCallback(() => {
-    LogManager.instance.log([{
+    LogManager.getInstance().log([{
       level: CommonDbLogLevel.INFO,
       topic: 'USER_LOGIN',
     }]);

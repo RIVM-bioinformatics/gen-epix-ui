@@ -43,19 +43,19 @@ export const RegionRelationsAdminPage = () => {
   const loadables = useArray([regionOptionsQuery, regionMapQuery, regionRelationTypeOptionsQuery]);
 
   const fetchAll = useCallback(async (signal: AbortSignal) => {
-    return (await CaseDbGeoApi.instance.regionRelationsGetAll({ signal }))?.data;
+    return (await CaseDbGeoApi.getInstance().regionRelationsGetAll({ signal }))?.data;
   }, []);
 
   const deleteOne = useCallback(async (item: CaseDbRegionRelation) => {
-    return await CaseDbGeoApi.instance.regionRelationsDeleteOne(item.id);
+    return await CaseDbGeoApi.getInstance().regionRelationsDeleteOne(item.id);
   }, []);
 
   const updateOne = useCallback(async (variables: FormFields, item: CaseDbRegionRelation) => {
-    return (await CaseDbGeoApi.instance.regionRelationsPutOne(item.id, { id: item.id, ...variables })).data;
+    return (await CaseDbGeoApi.getInstance().regionRelationsPutOne(item.id, { id: item.id, ...variables })).data;
   }, []);
 
   const createOne = useCallback(async (variables: FormFields) => {
-    return (await CaseDbGeoApi.instance.regionRelationsPostOne(variables)).data;
+    return (await CaseDbGeoApi.getInstance().regionRelationsPostOne(variables)).data;
   }, []);
 
   const getName = useCallback((item: CaseDbRegionRelation) => {

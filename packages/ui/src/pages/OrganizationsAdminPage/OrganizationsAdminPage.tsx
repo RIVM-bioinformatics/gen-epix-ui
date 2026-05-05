@@ -134,7 +134,7 @@ export const OrganizationsAdminPage = () => {
   }, [identifierIssuerOptionsQuery.options.length, t]);
 
   const subPages = useMemo<CrudPageSubPage<CommonDbOrganization>[]>(() => {
-    if (!AuthorizationManager.instance.doesUserHavePermission([
+    if (!AuthorizationManager.getInstance().doesUserHavePermission([
       { command_name: CommonDbCommandName.SiteCrudCommand, permission_type: CommonDbPermissionType.READ },
     ])) {
       return [];

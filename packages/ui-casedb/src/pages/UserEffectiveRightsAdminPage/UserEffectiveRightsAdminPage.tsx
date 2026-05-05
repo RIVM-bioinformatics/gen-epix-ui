@@ -74,7 +74,7 @@ export const UserEffectiveRightsAdminPage = () => {
     itemId: userId,
     useQueryOptions: {
       queryFn: async ({ signal }) => {
-        const response = await CaseDbOrganizationApi.instance.usersGetOne(userId, { signal });
+        const response = await CaseDbOrganizationApi.getInstance().usersGetOne(userId, { signal });
         return response.data;
       },
     },
@@ -110,7 +110,7 @@ export const UserEffectiveRightsAdminPage = () => {
     defaultSortByField: 'data_collection_id',
     defaultSortDirection: 'asc',
     idSelectorCallback: (entry) => entry.data_collection_id,
-    navigatorFunction: RouterManager.instance.router.navigate,
+    navigatorFunction: RouterManager.getInstance().router.navigate,
     storageNamePostFix: 'UsersEffectiveRightsAdminPage-Table',
     storageVersion: 1,
   }), []);

@@ -21,42 +21,15 @@ import type {
 import { CaseDbCaseApi } from '@gen-epix/api-casedb';
 
 import CollectionIcon from '../../assets/icons/CollectionIcon.svg?react';
-import { ConfigManager } from '../../classes/managers/ConfigManager';
-import { RouterManager } from '../../classes/managers/RouterManager';
-import type { EpiCaseSetInfoDialogRefMethods } from '../../components/epi/EpiCaseSetInfoDialog';
-import { EpiCaseSetInfoDialog } from '../../components/epi/EpiCaseSetInfoDialog';
-import type { EpiCreateEventDialogRefMethods } from '../../components/epi/EpiCreateEventDialog';
-import { EpiCreateEventDialog } from '../../components/epi/EpiCreateEventDialog';
-import { PageContainer } from '../../components/ui/PageContainer';
-import { ResponseHandler } from '../../components/ui/ResponseHandler';
-import {
-  Table,
-  TableCaption,
-  TableMenu,
-  TableSidebarMenu,
-} from '../../components/ui/Table';
+import { useQueryMemo, QueryManager, QUERY_KEY, useArray, RouterManager, Table, TableRowParams, TableColumn, TableUtil, DATE_FORMAT, createTableStore, useInitializeTableStore, LoadableUtil, TableMenu, TableStoreContextProvider, PageContainer, TableCaption, TestIdUtil, ResponseHandler, ConfigManager, TableSidebarMenu } from '@gen-epix/ui';
+import { EpiCaseSetInfoDialogRefMethods, EpiCaseSetInfoDialog } from '../../components/epi/EpiCaseSetInfoDialog';
+import { EpiCreateEventDialogRefMethods, EpiCreateEventDialog } from '../../components/epi/EpiCreateEventDialog';
 import { useCaseSetCategoryOptionsQuery } from '../../dataHooks/useCaseSetCategoriesQuery';
 import { useCaseSetStatsMapQuery } from '../../dataHooks/useCaseSetStatsQuery';
 import { useCaseSetStatusOptionsQuery } from '../../dataHooks/useCaseSetStatusesQuery';
 import { useCaseTypeOptionsQuery } from '../../dataHooks/useCaseTypesQuery';
-import { useInitializeTableStore } from '../../hooks/useInitializeTableStore';
-import { useArray } from '../../hooks/useArray';
-import { QUERY_KEY } from '../../models/query';
-import type {
-  TableColumn,
-  TableRowParams,
-} from '../../models/table';
-import {
-  createTableStore,
-  TableStoreContextProvider,
-} from '../../stores/tableStore';
 import { CaseSetUtil } from '../../utils/CaseSetUtil';
-import { QueryUtil } from '../../utils/QueryUtil';
-import { TableUtil } from '../../utils/TableUtil';
-import { TestIdUtil } from '../../utils/TestIdUtil';
-import { DATE_FORMAT } from '../../data/date';
-import { useQueryMemo } from '../../hooks/useQueryMemo';
-import { LoadableUtil } from '../../utils/LoadableUtil';
+
 
 type Row = CaseDbCaseSet & CaseDbCaseStats;
 
@@ -71,16 +44,16 @@ export const EventsPage = () => {
 
   const { data: caseSets, error: caseSetsError, isLoading: isCaseSetsLoading } = useQueryMemo({
     queryFn: async ({ signal }) => {
-      const response = await CaseDbCaseApi.instance.caseSetsGetAll({ signal });
+      const response = await CaseDbCaseApi.getInstance().caseSetsGetAll({ signal });
       return response.data;
     },
-    queryKey: QueryUtil.getGenericKey(QUERY_KEY.CASE_SETS),
+    queryKey: QueryManager.getInstance().getGenericKey(QUERY_KEY.CASE_SETS),
   });
   const caseSetStatsMapQuery = useCaseSetStatsMapQuery(caseSets ? caseSets.map(cs => cs.id) : null);
   const loadables = useArray([caseTypeOptionsQuery, caseSetCategoryOptionsQuery, caseSetStatusOptionsQuery, caseSetStatsMapQuery]);
 
   const navigateToEvent = useCallback(async (row: CaseDbCaseSet) => {
-    await RouterManager.instance.router.navigate(CaseSetUtil.createCaseSetLink(row));
+    await RouterManager.getInstance().router.navigate(CaseSetUtil.createCaseSetLink(row));
   }, []);
 
   const showEventInformation = useCallback((row: CaseDbCaseSet) => {
@@ -170,7 +143,7 @@ export const EventsPage = () => {
     defaultSortByField: 'case_set_date',
     defaultSortDirection: 'desc',
     idSelectorCallback: (row) => row.id,
-    navigatorFunction: RouterManager.instance.router.navigate,
+    navigatorFunction: RouterManager.getInstance().router.navigate,
     storageNamePostFix: 'caseSets',
     storageVersion: 3,
   }), []);

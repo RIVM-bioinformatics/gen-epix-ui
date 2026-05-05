@@ -22,7 +22,7 @@ export class CaseTypeUtil {
   public static createCaseTypeLink(caseType: CaseDbCaseType | CaseDbCompleteCaseType, full?: boolean): string {
     const path = `/cases/${StringUtil.createSlug(caseType.name)}/${caseType.id}`;
     if (full) {
-      return `${WindowManager.instance.window.location.origin}${path}`;
+      return `${WindowManager.getInstance().window.location.origin}${path}`;
     }
     return path;
   }

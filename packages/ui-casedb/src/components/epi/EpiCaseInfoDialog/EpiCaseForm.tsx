@@ -17,17 +17,9 @@ import {
 } from '@mui/material';
 import type { CaseDbCase } from '@gen-epix/api-casedb';
 import { CaseDbCaseApi } from '@gen-epix/api-casedb';
-
-import { NotificationManager } from '../../../classes/managers/NotificationManager';
-import { useOrganizationsQuery } from '../../../dataHooks/useOrganizationsQuery';
-import { QUERY_KEY } from '../../../models/query';
+import { useOrganizationsQuery, QueryManager, QUERY_KEY, NotificationManager, ObjectUtil, FormUtil, Spinner, GenericForm } from '@gen-epix/ui';
 import { EpiDashboardStoreContext } from '../../../stores/epiDashboardStore';
 import { CaseUtil } from '../../../utils/CaseUtil';
-import { FormUtil } from '../../../utils/FormUtil';
-import { ObjectUtil } from '../../../utils/ObjectUtil';
-import { QueryUtil } from '../../../utils/QueryUtil';
-import { GenericForm } from '../../form/helpers/GenericForm';
-import { Spinner } from '../../ui/Spinner';
 
 export type EpiCaseFormProps = {
   readonly epiCase: CaseDbCase;
@@ -49,25 +41,25 @@ export const EpiCaseForm = ({ epiCase, formId, onFinish, onIsSavingChange, ...bo
     setIsSaving(true);
     onIsSavingChange(true);
     const perform = async () => {
-      const queryKeys = QueryUtil.getQueryKeyDependencies([QUERY_KEY.CASES], true);
-      const notificationKey = NotificationManager.instance.showNotification({
+      const queryKeys = QueryManager.getInstance().getQueryKeyDependencies([QUERY_KEY.CASES], true);
+      const notificationKey = NotificationManager.getInstance().showNotification({
         isLoading: true,
         message: t('Saving case data'),
         severity: 'info',
       });
       try {
-        await QueryUtil.cancelQueries(queryKeys);
+        await QueryManager.getInstance().cancelQueries(queryKeys);
         const item = {
           ...epiCase,
           content: ObjectUtil.mergeWithUndefined(epiCase.content, content),
         };
-        await CaseDbCaseApi.instance.casesPutOne(item.id, item);
+        await CaseDbCaseApi.getInstance().casesPutOne(item.id, item);
         mutateCachedCase(item.id, item);
-        NotificationManager.instance.fulfillNotification(notificationKey, t('Successfully saved case data.'), 'success');
+        NotificationManager.getInstance().fulfillNotification(notificationKey, t('Successfully saved case data.'), 'success');
       } catch (_error) {
-        NotificationManager.instance.fulfillNotification(notificationKey, t('Could not save case data.'), 'error');
+        NotificationManager.getInstance().fulfillNotification(notificationKey, t('Could not save case data.'), 'error');
       } finally {
-        await QueryUtil.invalidateQueryKeys(queryKeys);
+        await QueryManager.getInstance().invalidateQueryKeys(queryKeys);
         setIsSaving(false);
         onIsSavingChange(false);
         onFinish();

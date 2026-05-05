@@ -16,7 +16,7 @@ describe('UserManagerUtil', () => {
       const mockWindow = {
         location: { href: 'https://example.com/somepath?someQuery=123' },
       } as unknown as Window;
-      vi.spyOn(WindowManager.instance, 'window', 'get').mockReturnValue(mockWindow as unknown as typeof globalThis & Window);
+      vi.spyOn(WindowManager.getInstance(), 'window', 'get').mockReturnValue(mockWindow as unknown as typeof globalThis & Window);
 
       const oidcConfiguration: Partial<CommonDbIdentityProvider> = {
         client_id: 'client-id-123',

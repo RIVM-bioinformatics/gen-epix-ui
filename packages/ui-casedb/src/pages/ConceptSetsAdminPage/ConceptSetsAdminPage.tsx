@@ -36,19 +36,19 @@ export const ConceptSetsAdminPage = () => {
   const { t } = useTranslation();
 
   const fetchAll = useCallback(async (signal: AbortSignal) => {
-    return (await CaseDbOntologyApi.instance.conceptSetsGetAll({ signal }))?.data;
+    return (await CaseDbOntologyApi.getInstance().conceptSetsGetAll({ signal }))?.data;
   }, []);
 
   const deleteOne = useCallback(async (item: CaseDbConceptSet) => {
-    return await CaseDbOntologyApi.instance.conceptSetsDeleteOne(item.id);
+    return await CaseDbOntologyApi.getInstance().conceptSetsDeleteOne(item.id);
   }, []);
 
   const updateOne = useCallback(async (variables: FormFields, item: CaseDbConceptSet) => {
-    return (await CaseDbOntologyApi.instance.conceptSetsPutOne(item.id, { id: item.id, ...variables })).data;
+    return (await CaseDbOntologyApi.getInstance().conceptSetsPutOne(item.id, { id: item.id, ...variables })).data;
   }, []);
 
   const createOne = useCallback(async (variables: FormFields) => {
-    return (await CaseDbOntologyApi.instance.conceptSetsPostOne(variables)).data;
+    return (await CaseDbOntologyApi.getInstance().conceptSetsPostOne(variables)).data;
   }, []);
 
   const getName = useCallback((item: CaseDbConceptSet) => {
@@ -99,7 +99,7 @@ export const ConceptSetsAdminPage = () => {
   }, [conceptSetTypeOptionsQuery.options, t]);
 
   const subPages = useMemo<CrudPageSubPage<CaseDbConceptSet>[]>(() => {
-    if (!AuthorizationManager.instance.doesUserHavePermission([
+    if (!AuthorizationManager.getInstance().doesUserHavePermission([
       { command_name: CaseDbCommandName.ConceptCrudCommand, permission_type: CaseDbPermissionType.READ },
     ])) {
       return [];

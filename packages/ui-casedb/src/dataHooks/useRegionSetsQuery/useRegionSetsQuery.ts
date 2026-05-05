@@ -2,23 +2,24 @@ import type { UseQueryResult } from '@tanstack/react-query';
 import { useMemo } from 'react';
 import type { CaseDbRegionSet } from '@gen-epix/api-casedb';
 import { CaseDbGeoApi } from '@gen-epix/api-casedb';
-
 import type {
   UseMap,
   UseOptions,
-} from '../../models/dataHooks';
-import { QUERY_KEY } from '../../models/query';
-import { DataHookUtil } from '../../utils/DataHookUtil';
-import { QueryUtil } from '../../utils/QueryUtil';
-import { useQueryMemo } from '../../hooks/useQueryMemo';
+} from '@gen-epix/ui';
+import {
+  DataHookUtil,
+  QUERY_KEY,
+  QueryManager,
+  useQueryMemo,
+} from '@gen-epix/ui';
 
 export const useRegionSetsQuery = (): UseQueryResult<CaseDbRegionSet[]> => {
   return useQueryMemo({
     queryFn: async ({ signal }) => {
-      const response = await CaseDbGeoApi.instance.regionSetsGetAll({ signal });
+      const response = await CaseDbGeoApi.getInstance().regionSetsGetAll({ signal });
       return response.data;
     },
-    queryKey: QueryUtil.getGenericKey(QUERY_KEY.REGION_SETS),
+    queryKey: QueryManager.getInstance().getGenericKey(QUERY_KEY.REGION_SETS),
   });
 };
 

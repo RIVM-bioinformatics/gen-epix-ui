@@ -43,26 +43,26 @@ export const DataCollectionSetsAdminPage = () => {
   const loadables = useArray([dataCollectionSetMembersQuery, dataCollectionOptionsQuery]);
 
   const fetchAll = useCallback(async (signal: AbortSignal) => {
-    return (await CaseDbOrganizationApi.instance.dataCollectionSetsGetAll({ signal }))?.data;
+    return (await CaseDbOrganizationApi.getInstance().dataCollectionSetsGetAll({ signal }))?.data;
   }, []);
 
   const deleteOne = useCallback(async (item: CaseDbDataCollectionSet) => {
-    return await CaseDbOrganizationApi.instance.dataCollectionSetsDeleteOne(item.id);
+    return await CaseDbOrganizationApi.getInstance().dataCollectionSetsDeleteOne(item.id);
   }, []);
 
   const updateOne = useCallback(async (variables: FormFields, item: CaseDbDataCollectionSet) => {
-    await CaseDbOrganizationApi.instance.dataCollectionSetsPutDataCollections(item.id, {
+    await CaseDbOrganizationApi.getInstance().dataCollectionSetsPutDataCollections(item.id, {
       data_collection_set_members: variables.dataCollectionIds.map<CaseDbDataCollectionSetMember>(data_collection_id => ({
         data_collection_id,
         data_collection_set_id: item.id,
       })),
     });
-    return (await CaseDbOrganizationApi.instance.dataCollectionSetsPutOne(item.id, { id: item.id, ...variables })).data;
+    return (await CaseDbOrganizationApi.getInstance().dataCollectionSetsPutOne(item.id, { id: item.id, ...variables })).data;
   }, []);
 
   const createOne = useCallback(async (variables: FormFields) => {
-    const resultItem = (await CaseDbOrganizationApi.instance.dataCollectionSetsPostOne(variables)).data;
-    await CaseDbOrganizationApi.instance.dataCollectionSetsPutDataCollections(resultItem.id, {
+    const resultItem = (await CaseDbOrganizationApi.getInstance().dataCollectionSetsPostOne(variables)).data;
+    await CaseDbOrganizationApi.getInstance().dataCollectionSetsPutDataCollections(resultItem.id, {
       data_collection_set_members: variables.dataCollectionIds.map<CaseDbDataCollectionSetMember>(data_collection_id => ({
         data_collection_id,
         data_collection_set_id: resultItem.id,

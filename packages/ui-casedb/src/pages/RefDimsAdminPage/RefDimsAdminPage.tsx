@@ -36,19 +36,19 @@ export const RefDimsAdminPage = () => {
   const dimTypeOptionsQuery = useDimTypeOptionsQuery();
 
   const fetchAll = useCallback(async (signal: AbortSignal) => {
-    return (await CaseDbCaseApi.instance.refDimsGetAll({ signal }))?.data;
+    return (await CaseDbCaseApi.getInstance().refDimsGetAll({ signal }))?.data;
   }, []);
 
   const deleteOne = useCallback(async (item: CaseDbRefDim) => {
-    return await CaseDbCaseApi.instance.refDimsDeleteOne(item.id);
+    return await CaseDbCaseApi.getInstance().refDimsDeleteOne(item.id);
   }, []);
 
   const updateOne = useCallback(async (variables: FormFields, item: CaseDbRefDim) => {
-    return (await CaseDbCaseApi.instance.refDimsPutOne(item.id, { id: item.id, ...variables })).data;
+    return (await CaseDbCaseApi.getInstance().refDimsPutOne(item.id, { id: item.id, ...variables })).data;
   }, []);
 
   const createOne = useCallback(async (variables: FormFields) => {
-    return (await CaseDbCaseApi.instance.refDimsPostOne(variables)).data;
+    return (await CaseDbCaseApi.getInstance().refDimsPostOne(variables)).data;
   }, []);
 
   const getName = useCallback((item: CaseDbRefDim) => {
@@ -116,7 +116,7 @@ export const RefDimsAdminPage = () => {
   }, [dimTypeOptionsQuery.options, t]);
 
   const subPages = useMemo<CrudPageSubPage<CaseDbRefDim>[]>(() => {
-    if (!AuthorizationManager.instance.doesUserHavePermission([
+    if (!AuthorizationManager.getInstance().doesUserHavePermission([
       { command_name: CaseDbCommandName.RefColCrudCommand, permission_type: CaseDbPermissionType.READ },
     ])) {
       return [];

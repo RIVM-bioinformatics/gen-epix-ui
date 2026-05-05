@@ -14,7 +14,7 @@ export const withPermissions = <TApiPermission = CommonDbApiPermission, TProps e
   options: WithPermissionsOptions<TApiPermission>,
 ) => {
   const WrappedComponent = (props: TProps) => {
-    const authorizationManager = useMemo(() => AuthorizationManager.instance, []);
+    const authorizationManager = useMemo(() => AuthorizationManager.getInstance(), []);
 
     if (!authorizationManager.doesUserHavePermission(options.requiredPermissions as CommonDbApiPermission[])) {
       if (options.fallback) {

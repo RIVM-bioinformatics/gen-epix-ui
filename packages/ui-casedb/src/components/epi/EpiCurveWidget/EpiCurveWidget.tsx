@@ -77,7 +77,7 @@ export const EpiCurveWidget = () => {
   const { t } = useTranslation();
   const [epiContextMenuConfig, setEpiContextMenuConfig] = useState<EpiContextMenuConfigWithPosition | null>(null);
   const [hasRenderedOnce, setHasRenderedOnce] = useState(false);
-  const highlightingManager = useMemo(() => EpiHighlightingManager.instance, []);
+  const highlightingManager = useMemo(() => EpiHighlightingManager.getInstance(), []);
   const chartRef = useRef<EChartsReact>(null);
 
   const epiDashboardStore = use(EpiDashboardStoreContext);
@@ -449,7 +449,7 @@ export const EpiCurveWidget = () => {
 
   useEffect(() => {
     const emitDownloadOptions = () => {
-      EpiEventBusManager.instance.emit('onDownloadOptionsChanged', {
+      EpiEventBusManager.getInstance().emit('onDownloadOptionsChanged', {
         disabled: !shouldShowEpiCurve,
         items: [
           {
@@ -466,14 +466,14 @@ export const EpiCurveWidget = () => {
       });
     };
     emitDownloadOptions();
-    EpiEventBusManager.instance.addEventListener('onDownloadOptionsRequested', emitDownloadOptions);
+    EpiEventBusManager.getInstance().addEventListener('onDownloadOptionsRequested', emitDownloadOptions);
     return () => {
-      EpiEventBusManager.instance.emit('onDownloadOptionsChanged', {
+      EpiEventBusManager.getInstance().emit('onDownloadOptionsChanged', {
         items: null,
         zone: EPI_ZONE.EPI_CURVE,
         zoneLabel: t`Epi curve`,
       });
-      EpiEventBusManager.instance.removeEventListener('onDownloadOptionsRequested', emitDownloadOptions);
+      EpiEventBusManager.getInstance().removeEventListener('onDownloadOptionsRequested', emitDownloadOptions);
     };
   }, [completeCaseType, shouldShowEpiCurve, t]);
 

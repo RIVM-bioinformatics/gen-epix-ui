@@ -9,15 +9,15 @@ import { HmrUtil } from '../../../utils/HmrUtil';
 type SubjectData = Record<string, string>;
 
 export class BreadcrumbManager extends SubscribableAbstract<SubjectData> {
-  public static get instance(): BreadcrumbManager {
-    BreadcrumbManager.__instance = HmrUtil.getHmrSingleton('breadcrumbManager', BreadcrumbManager.__instance, () => new BreadcrumbManager());
-    return BreadcrumbManager.__instance;
-  }
-
   private static __instance: BreadcrumbManager;
 
   private constructor() {
     super(new Subject<SubjectData>({}));
+  }
+
+  public static getInstance(): BreadcrumbManager {
+    BreadcrumbManager.__instance = HmrUtil.getHmrSingleton('breadcrumbManager', BreadcrumbManager.__instance, () => new BreadcrumbManager());
+    return BreadcrumbManager.__instance;
   }
 
   public remove(position: string): void {

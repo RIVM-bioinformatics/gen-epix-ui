@@ -2,23 +2,25 @@ import type { UseQueryResult } from '@tanstack/react-query';
 import { useMemo } from 'react';
 import type { CaseDbColSet } from '@gen-epix/api-casedb';
 import { CaseDbCaseApi } from '@gen-epix/api-casedb';
-
 import type {
   UseMap,
   UseOptions,
-} from '../../models/dataHooks';
-import { QUERY_KEY } from '../../models/query';
-import { DataHookUtil } from '../../utils/DataHookUtil';
-import { QueryUtil } from '../../utils/QueryUtil';
-import { useQueryMemo } from '../../hooks/useQueryMemo';
+} from '@gen-epix/ui';
+import {
+  DataHookUtil,
+  QUERY_KEY,
+  QueryManager,
+  useQueryMemo,
+} from '@gen-epix/ui';
+
 
 export const useColSetsQuery = (): UseQueryResult<CaseDbColSet[]> => {
   return useQueryMemo({
     queryFn: async ({ signal }) => {
-      const response = await CaseDbCaseApi.instance.colSetsGetAll({ signal });
+      const response = await CaseDbCaseApi.getInstance().colSetsGetAll({ signal });
       return response.data;
     },
-    queryKey: QueryUtil.getGenericKey(QUERY_KEY.COL_SETS),
+    queryKey: QueryManager.getInstance().getGenericKey(QUERY_KEY.COL_SETS),
   });
 };
 

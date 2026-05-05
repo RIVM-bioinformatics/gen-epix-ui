@@ -115,7 +115,7 @@ export class TableUtil {
       }
 
       if (refCol.col_type === CaseDbColType.ORDINAL) {
-        const conceptSetConceptIds = EpiDataManager.instance.data.conceptsIdsBySetId[refCol.concept_set_id];
+        const conceptSetConceptIds = EpiDataManager.getInstance().data.conceptsIdsBySetId[refCol.concept_set_id];
         return (conceptSetConceptIds.indexOf(aValue.raw) - conceptSetConceptIds.indexOf(bValue.raw)) * directionMultiplier;
       }
 

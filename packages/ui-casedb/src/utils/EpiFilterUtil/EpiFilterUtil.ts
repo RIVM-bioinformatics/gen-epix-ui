@@ -43,8 +43,8 @@ export class EpiFilterUtil {
 
   public static createCategoricalFilter(col: CaseDbCol, dimId: string, completeCaseType: CaseDbCompleteCaseType): MultiSelectFilter | TextFilter {
     const refCol = completeCaseType.ref_cols[col.ref_col_id];
-    if ((refCol.col_type === CaseDbColType.NOMINAL || refCol.col_type === CaseDbColType.ORDINAL || refCol.col_type === CaseDbColType.INTERVAL) && EpiDataManager.instance.data.conceptsBySetId[refCol.concept_set_id]) {
-      const options = EpiDataManager.instance.data.conceptsBySetId[refCol.concept_set_id].map<AutoCompleteOption>(concept => ({
+    if ((refCol.col_type === CaseDbColType.NOMINAL || refCol.col_type === CaseDbColType.ORDINAL || refCol.col_type === CaseDbColType.INTERVAL) && EpiDataManager.getInstance().data.conceptsBySetId[refCol.concept_set_id]) {
+      const options = EpiDataManager.getInstance().data.conceptsBySetId[refCol.concept_set_id].map<AutoCompleteOption>(concept => ({
         label: `${concept.code} (${concept.name})`,
         value: concept.id,
       }));
@@ -162,8 +162,8 @@ export class EpiFilterUtil {
             }),
           );
         } else if (refDim.dim_type === CaseDbDimType.GEO) {
-          const regionSet = EpiDataManager.instance.data.regionSets[refCol.region_set_id];
-          const options = (EpiDataManager.instance.data.regionsByRegionSetId[refCol.region_set_id]?.map<AutoCompleteOption>(region => {
+          const regionSet = EpiDataManager.getInstance().data.regionSets[refCol.region_set_id];
+          const options = (EpiDataManager.getInstance().data.regionsByRegionSetId[refCol.region_set_id]?.map<AutoCompleteOption>(region => {
             return {
               label: regionSet.region_code_as_label ? region.code : region.name,
               value: region.id,
@@ -195,7 +195,7 @@ export class EpiFilterUtil {
           }
         } else if (refDim.dim_type === CaseDbDimType.ORGANIZATION) {
           // organizations are already sorted
-          const options = EpiDataManager.instance.data.organizations.map<AutoCompleteOption>(organization => {
+          const options = EpiDataManager.getInstance().data.organizations.map<AutoCompleteOption>(organization => {
             return {
               label: organization.name,
               value: organization.id,

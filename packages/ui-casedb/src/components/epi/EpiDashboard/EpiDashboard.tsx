@@ -148,7 +148,7 @@ export const EpiDashboard = withEpiDashboardStore(({ caseSet }: EpiDashboardProp
   }, [epiDashboardStore]);
 
   useEffect(() => {
-    const eventBus = EpiEventBusManager.instance;
+    const eventBus = EpiEventBusManager.getInstance();
     const removers = [
       // eslint-disable-next-line @eslint-react/web-api-no-leaked-event-listener
       eventBus.addEventListener('onEventCreated', () => {
@@ -183,13 +183,13 @@ export const EpiDashboard = withEpiDashboardStore(({ caseSet }: EpiDashboardProp
 
   useEffect(() => {
     const removers = [
-      KeyboardShortcutManager.instance.registerShortcut({ callback: () => {
+      KeyboardShortcutManager.getInstance().registerShortcut({ callback: () => {
         setIsFilterSidebarOpen(x => !x);
       }, key: 'f', modifier: null }),
-      KeyboardShortcutManager.instance.registerShortcut({ callback: () => {
+      KeyboardShortcutManager.getInstance().registerShortcut({ callback: () => {
         setIsSettingsSidebarOpen(x => !x);
       }, key: 's', modifier: null }),
-      KeyboardShortcutManager.instance.registerShortcut({ callback: () => {
+      KeyboardShortcutManager.getInstance().registerShortcut({ callback: () => {
         epiCaseTypeInfoDialogRef.current.open();
       }, key: 'i', modifier: null }),
     ];

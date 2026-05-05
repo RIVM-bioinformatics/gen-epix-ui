@@ -18,7 +18,7 @@ import {
   NotificationManager,
   QUERY_KEY,
   QueryClientManager,
-  QueryUtil,
+  QueryManager,
   StringUtil,
 } from '@gen-epix/ui';
 
@@ -85,13 +85,13 @@ export class DownloadUtil {
   }
 
   public static async downloadExcelTemplate(caseTypeId: string, t: TFunction<'translation', undefined>): Promise<void> {
-    const queryClient = QueryClientManager.instance.queryClient;
+    const queryClient = QueryClientManager.getInstance().queryClient;
     try {
       const completeCaseType = await queryClient.fetchQuery({
         queryFn: async ({ signal }) => {
-          return (await CaseDbCaseApi.instance.completeCaseTypesGetOne(caseTypeId, { signal })).data;
+          return (await CaseDbCaseApi.getInstance().completeCaseTypesGetOne(caseTypeId, { signal })).data;
         },
-        queryKey: QueryUtil.getGenericKey(QUERY_KEY.COMPLETE_CASE_TYPES, caseTypeId),
+        queryKey: QueryManager.getInstance().getGenericKey(QUERY_KEY.COMPLETE_CASE_TYPES, caseTypeId),
       });
 
       const headers = DownloadUtil.getColumnHeadersForImport(
@@ -116,7 +116,7 @@ export class DownloadUtil {
       const base64 = CommonDownloadUtil.arrayBufferToBase64(arrayBuffer);
       CommonDownloadUtil.createDownloadUrl(`data:application/vnd.openxmlformats-officedocument.spreadsheetml.sheet;base64,${base64}`, fileName);
     } catch (error) {
-      LogManager.instance.log([{
+      LogManager.getInstance().log([{
         detail: {
           error,
           stack: (error as Error)?.stack,
@@ -124,7 +124,7 @@ export class DownloadUtil {
         level: CaseDbLogLevel.ERROR,
         topic: (error as Error)?.message ? `Error: ${(error as Error)?.message}` : 'Error',
       }]);
-      NotificationManager.instance.showNotification({
+      NotificationManager.getInstance().showNotification({
         message: t('Excel template could not be created'),
         severity: 'error',
       });

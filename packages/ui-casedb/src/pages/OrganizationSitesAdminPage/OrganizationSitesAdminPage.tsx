@@ -31,7 +31,7 @@ export const OrganizationSitesAdminPage = () => {
   const { t } = useTranslation();
 
   const fetchAll = useCallback(async (signal: AbortSignal) => {
-    return (await CaseDbOrganizationApi.instance.sitesGetAll({ signal })).data;
+    return (await CaseDbOrganizationApi.getInstance().sitesGetAll({ signal })).data;
   }, []);
 
   const fetchAllSelect = useCallback((sites: CaseDbSite[]) => {
@@ -39,7 +39,7 @@ export const OrganizationSitesAdminPage = () => {
   }, [organizationId]);
 
   const updateOne = useCallback(async (variables: FormFields, item: CaseDbSite) => {
-    return (await CaseDbOrganizationApi.instance.sitesPutOne(item.id, {
+    return (await CaseDbOrganizationApi.getInstance().sitesPutOne(item.id, {
       id: item.id,
       name: variables.name,
       organization_id: organizationId,
@@ -47,14 +47,14 @@ export const OrganizationSitesAdminPage = () => {
   }, [organizationId]);
 
   const createOne = useCallback(async (variables: FormFields) => {
-    return (await CaseDbOrganizationApi.instance.sitesPostOne({
+    return (await CaseDbOrganizationApi.getInstance().sitesPostOne({
       name: variables.name,
       organization_id: organizationId,
     })).data;
   }, [organizationId]);
 
   const deleteOne = useCallback(async (item: CaseDbSite) => {
-    return await CaseDbOrganizationApi.instance.sitesDeleteOne(item.id);
+    return await CaseDbOrganizationApi.getInstance().sitesDeleteOne(item.id);
   }, []);
 
   const getName = useCallback((item: FormFields) => {
@@ -92,7 +92,7 @@ export const OrganizationSitesAdminPage = () => {
   }, []);
 
   const subPages = useMemo<CrudPageSubPage<CaseDbSite>[]>(() => {
-    if (!AuthorizationManager.instance.doesUserHavePermission([
+    if (!AuthorizationManager.getInstance().doesUserHavePermission([
       { command_name: CaseDbCommandName.ContactCrudCommand, permission_type: CaseDbPermissionType.READ },
     ])) {
       return [];

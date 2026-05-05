@@ -10,10 +10,10 @@ import {
 } from '@gen-epix/api-commondb';
 
 import { QUERY_KEY } from '../../../models/query';
-import { QueryUtil } from '../../../utils/QueryUtil';
 import { withPermissions } from '../../../hoc/withPermissions';
 import { useQueryMemo } from '../../../hooks/useQueryMemo';
 import { ConfigManager } from '../../../classes/managers/ConfigManager';
+import { QueryManager } from '../../../classes/managers/QueryManager';
 
 export const UserOrganizationAdminMenuItem = withPermissions(() => {
   const { t } = useTranslation();
@@ -21,7 +21,7 @@ export const UserOrganizationAdminMenuItem = withPermissions(() => {
   const { data: organizationAdminNameEmails, error: organizationAdminNameEmailsError, isLoading: isOrganizationAdminNameEmailsLoading } = useQueryMemo({
     gcTime: 0,
     queryFn: async ({ signal }) => (await ConfigManager.getInstance().config.abacApi.retrieveOrganizationAdminNameEmails({ signal })).data,
-    queryKey: QueryUtil.getGenericKey(QUERY_KEY.ORGANIZATION_ADMIN_NAME_EMAILS),
+    queryKey: QueryManager.getInstance().getGenericKey(QUERY_KEY.ORGANIZATION_ADMIN_NAME_EMAILS),
     staleTime: 0,
   });
 

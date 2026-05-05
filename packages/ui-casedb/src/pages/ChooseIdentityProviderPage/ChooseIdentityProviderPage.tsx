@@ -37,7 +37,7 @@ export const ChooseIdentityProviderPage = ({
         'data-name',
       );
 
-      AuthenticationManager.instance.next(
+      AuthenticationManager.getInstance().next(
         identityProvidersWithAvailability.find(
           (identityProviderWithAvailability) =>
             identityProviderWithAvailability.provider.name === name,

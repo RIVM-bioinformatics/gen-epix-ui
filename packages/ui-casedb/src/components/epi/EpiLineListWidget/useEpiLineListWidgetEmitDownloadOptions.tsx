@@ -25,7 +25,7 @@ export const useEpiLineListWidgetEmitDownloadOptions = () => {
 
   useEffect(() => {
     const emitDownloadOptions = (selectedIds: string[]) => {
-      EpiEventBusManager.instance.emit('onDownloadOptionsChanged', {
+      EpiEventBusManager.getInstance().emit('onDownloadOptionsChanged', {
         items: [
           {
             disabled: !sortedData?.length,
@@ -39,7 +39,7 @@ export const useEpiLineListWidgetEmitDownloadOptions = () => {
                 label: t`Download as CSV`,
               },
               {
-                callback: () => EpiEventBusManager.instance.emit('openSequenceDownloadDialog', { cases: sortedData }),
+                callback: () => EpiEventBusManager.getInstance().emit('openSequenceDownloadDialog', { cases: sortedData }),
                 label: t`Download sequences`,
               },
               {
@@ -62,7 +62,7 @@ export const useEpiLineListWidgetEmitDownloadOptions = () => {
                 label: t`Download as CSV`,
               },
               {
-                callback: () => EpiEventBusManager.instance.emit('openSequenceDownloadDialog', { cases: sortedData.filter(c => selectedIds.includes(c.id)) }),
+                callback: () => EpiEventBusManager.getInstance().emit('openSequenceDownloadDialog', { cases: sortedData.filter(c => selectedIds.includes(c.id)) }),
                 label: t`Download sequences`,
               },
               {
@@ -88,14 +88,14 @@ export const useEpiLineListWidgetEmitDownloadOptions = () => {
     const onDownloadOptionsRequested = () => {
       emitDownloadOptions(epiDashboardStore.getState().selectedIds);
     };
-    EpiEventBusManager.instance.addEventListener('onDownloadOptionsRequested', onDownloadOptionsRequested);
+    EpiEventBusManager.getInstance().addEventListener('onDownloadOptionsRequested', onDownloadOptionsRequested);
     return () => {
-      EpiEventBusManager.instance.emit('onDownloadOptionsChanged', {
+      EpiEventBusManager.getInstance().emit('onDownloadOptionsChanged', {
         items: null,
         zone: EPI_ZONE.LINE_LIST,
         zoneLabel: t`Line list`,
       });
-      EpiEventBusManager.instance.removeEventListener('onDownloadOptionsRequested', onDownloadOptionsRequested);
+      EpiEventBusManager.getInstance().removeEventListener('onDownloadOptionsRequested', onDownloadOptionsRequested);
       unsubscribe();
     };
   }, [completeCaseType, epiDashboardStore, getVisibleColumnIds, sortedData, t]);

@@ -59,8 +59,8 @@ export const PageContainer = ({
     }
 
     if (ConfigManager.getInstance().config.enablePageEvents) {
-      PageEventBusManager.instance.emit('changePage', {
-        location: WindowManager.instance.window.location,
+      PageEventBusManager.getInstance().emit('changePage', {
+        location: WindowManager.getInstance().window.location,
         pageName: testIdAttributes['data-testid'],
       });
     }

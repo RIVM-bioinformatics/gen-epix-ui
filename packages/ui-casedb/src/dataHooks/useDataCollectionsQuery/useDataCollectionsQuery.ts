@@ -2,23 +2,24 @@ import type { UseQueryResult } from '@tanstack/react-query';
 import { useMemo } from 'react';
 import type { CaseDbDataCollection } from '@gen-epix/api-casedb';
 import { CaseDbOrganizationApi } from '@gen-epix/api-casedb';
-
 import type {
   UseMap,
   UseOptions,
-} from '../../models/dataHooks';
-import { QUERY_KEY } from '../../models/query';
-import { DataHookUtil } from '../../utils/DataHookUtil';
-import { QueryUtil } from '../../utils/QueryUtil';
-import { useQueryMemo } from '../../hooks/useQueryMemo';
+} from '@gen-epix/ui';
+import {
+  DataHookUtil,
+  QUERY_KEY,
+  QueryManager,
+  useQueryMemo,
+} from '@gen-epix/ui';
 
 export const useDataCollectionsQuery = (dataCollectionIds?: string[]): UseQueryResult<CaseDbDataCollection[]> => {
   return useQueryMemo({
     queryFn: async ({ signal }) => {
-      const response = await CaseDbOrganizationApi.instance.dataCollectionsGetAll({ signal });
+      const response = await CaseDbOrganizationApi.getInstance().dataCollectionsGetAll({ signal });
       return response.data;
     },
-    queryKey: QueryUtil.getGenericKey(QUERY_KEY.DATA_COLLECTIONS),
+    queryKey: QueryManager.getInstance().getGenericKey(QUERY_KEY.DATA_COLLECTIONS),
     select: (items) => {
       if (dataCollectionIds) {
         return items.filter(item => dataCollectionIds.includes(item.id));

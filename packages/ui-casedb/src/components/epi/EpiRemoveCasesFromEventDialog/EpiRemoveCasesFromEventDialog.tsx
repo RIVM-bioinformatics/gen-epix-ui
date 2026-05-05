@@ -16,21 +16,8 @@ import type {
   CaseDbTypedCompositeFilter,
 } from '@gen-epix/api-casedb';
 import { CaseDbCaseApi } from '@gen-epix/api-casedb';
-
-import type {
-  WithDialogRefMethods,
-  WithDialogRenderProps,
-} from '../../../hoc/withDialog';
-import { withDialog } from '../../../hoc/withDialog';
-import { useDeleteMutation } from '../../../hooks/useDeleteMutation';
-import { QUERY_KEY } from '../../../models/query';
+import { WithDialogRenderProps, WithDialogRefMethods, withDialog, useQueryMemo, QueryManager, QUERY_KEY, useDeleteMutation, DialogAction, TestIdUtil, Spinner, ResponseHandler } from '@gen-epix/ui';
 import { EpiDashboardStoreContext } from '../../../stores/epiDashboardStore';
-import { QueryUtil } from '../../../utils/QueryUtil';
-import { TestIdUtil } from '../../../utils/TestIdUtil';
-import type { DialogAction } from '../../ui/Dialog';
-import { ResponseHandler } from '../../ui/ResponseHandler';
-import { Spinner } from '../../ui/Spinner';
-import { useQueryMemo } from '../../../hooks/useQueryMemo';
 
 export interface EpiRemoveCasesFromEventDialogOpenProps {
   caseSet: CaseDbCaseSet;
@@ -81,10 +68,10 @@ export const EpiRemoveCasesFromEventDialog = withDialog<EpiRemoveCasesFromEventD
 
   const { data: caseSetMembers, error: caseSetMembersError, isLoading: isCaseSetMembersLoading } = useQueryMemo({
     queryFn: async ({ signal }) => {
-      const response = await CaseDbCaseApi.instance.caseSetMembersPostQuery(caseSetMembersFilter, { signal });
+      const response = await CaseDbCaseApi.getInstance().caseSetMembersPostQuery(caseSetMembersFilter, { signal });
       return response.data;
     },
-    queryKey: QueryUtil.getGenericKey(QUERY_KEY.CASE_SET_MEMBERS, caseSetMembersFilter),
+    queryKey: QueryManager.getInstance().getGenericKey(QUERY_KEY.CASE_SET_MEMBERS, caseSetMembersFilter),
   });
 
   const onSuccess = useCallback(async () => {
@@ -99,14 +86,14 @@ export const EpiRemoveCasesFromEventDialog = withDialog<EpiRemoveCasesFromEventD
   }, [fetchData, onClose]);
 
   const { isMutating, mutate } = useDeleteMutation<CaseDbCaseSetMember[]>({
-    associationQueryKeys: QueryUtil.getQueryKeyDependencies([QUERY_KEY.CASE_SET_MEMBERS], true),
+    associationQueryKeys: QueryManager.getInstance().getQueryKeyDependencies([QUERY_KEY.CASE_SET_MEMBERS], true),
     getErrorNotificationMessage: () => t('Could not remove all cases from {{eventName}}.', { eventName: openProps.caseSet.name }),
     getProgressNotificationMessage: (items) => t('Removing {{numCases}} case(s) from {{eventName}}...', { eventName: openProps.caseSet.name, numCases: items.length }),
     getSuccessNotificationMessage: (items) => t('Successfully removed {{numCases}} case(s) from {{eventName}}.', { eventName: openProps.caseSet.name, numCases: items.length }),
     onError,
     onSuccess,
     queryFn: async (items: CaseDbCaseSetMember[]) => {
-      await CaseDbCaseApi.instance.caseSetMembersDeleteSome(items.map(item => item.id).join(','));
+      await CaseDbCaseApi.getInstance().caseSetMembersDeleteSome(items.map(item => item.id).join(','));
     },
   });
 

@@ -34,19 +34,19 @@ export const OutagesAdminPage = () => {
   const { t } = useTranslation();
 
   const fetchAll = useCallback(async (signal: AbortSignal) => {
-    return (await CaseDbSystemApi.instance.outagesGetAll({ signal }))?.data;
+    return (await CaseDbSystemApi.getInstance().outagesGetAll({ signal }))?.data;
   }, []);
 
   const deleteOne = useCallback(async (item: CaseDbOutage) => {
-    return await CaseDbSystemApi.instance.outagesDeleteOne(item.id);
+    return await CaseDbSystemApi.getInstance().outagesDeleteOne(item.id);
   }, []);
 
   const updateOne = useCallback(async (variables: FormFields, item: CaseDbOutage) => {
-    return (await CaseDbSystemApi.instance.outagesPutOne(item.id, { id: item.id, ...variables })).data;
+    return (await CaseDbSystemApi.getInstance().outagesPutOne(item.id, { id: item.id, ...variables })).data;
   }, []);
 
   const createOne = useCallback(async (variables: FormFields) => {
-    return (await CaseDbSystemApi.instance.outagesPostOne(variables)).data;
+    return (await CaseDbSystemApi.getInstance().outagesPostOne(variables)).data;
   }, []);
 
   const getName = useCallback((item: CaseDbOutage) => {

@@ -13,7 +13,6 @@ import last from 'lodash/last';
 import { AuthorizationManager } from '../../../classes/managers/AuthorizationManager';
 import { QUERY_KEY } from '../../../models/query';
 import type { MyNonIndexRouteObject } from '../../../models/reactRouter';
-import { QueryUtil } from '../../../utils/QueryUtil';
 import { TestIdUtil } from '../../../utils/TestIdUtil';
 import { useArray } from '../../../hooks/useArray';
 import { useQueryMemo } from '../../../hooks/useQueryMemo';
@@ -21,6 +20,7 @@ import { LoadableUtil } from '../../../utils/LoadableUtil';
 import { PageContainer } from '../../ui/PageContainer';
 import { ResponseHandler } from '../../ui/ResponseHandler';
 import { ConfigManager } from '../../../classes/managers/ConfigManager';
+import { QueryManager } from '../../../classes/managers/QueryManager';
 
 export const AuthorizationWrapper = ({ children }: PropsWithChildren): ReactNode => {
   const { t } = useTranslation();
@@ -32,14 +32,14 @@ export const AuthorizationWrapper = ({ children }: PropsWithChildren): ReactNode
     enabled: requiresUserProfile,
     gcTime: Infinity,
     queryFn: async ({ signal }) => (await ConfigManager.getInstance().config.organizationApi.userMeGetOne({ signal })).data,
-    queryKey: QueryUtil.getGenericKey(QUERY_KEY.USER_ME),
+    queryKey: QueryManager.getInstance().getGenericKey(QUERY_KEY.USER_ME),
     staleTime: Infinity,
   });
   const userPermissionsQuery = useQueryMemo({
     enabled: requiresUserProfile,
     gcTime: Infinity,
     queryFn: async ({ signal }) => (await ConfigManager.getInstance().config.organizationApi.userMeRetrievePermissions({ signal })).data,
-    queryKey: QueryUtil.getGenericKey(QUERY_KEY.USER_PERMISSIONS),
+    queryKey: QueryManager.getInstance().getGenericKey(QUERY_KEY.USER_PERMISSIONS),
     staleTime: Infinity,
   });
 
@@ -50,10 +50,10 @@ export const AuthorizationWrapper = ({ children }: PropsWithChildren): ReactNode
 
 
   if (userQuery.data) {
-    AuthorizationManager.instance.user = userQuery.data;
+    AuthorizationManager.getInstance().user = userQuery.data;
   }
   if (userPermissionsQuery.data) {
-    AuthorizationManager.instance.apiPermissions = userPermissionsQuery.data;
+    AuthorizationManager.getInstance().apiPermissions = userPermissionsQuery.data;
   }
 
   if (requiresUserProfile && (LoadableUtil.isSomeLoading(loadables) || LoadableUtil.hasSomeError(loadables))) {

@@ -22,32 +22,6 @@ import type {
 } from '@gen-epix/api-casedb';
 import { CaseDbCaseApi } from '@gen-epix/api-casedb';
 
-import {
-  withDialog,
-  type WithDialogRefMethods,
-  type WithDialogRenderProps,
-} from '../../../hoc/withDialog';
-import type { CaseAbacContext } from '../../../context/caseAbac/CaseAbacContext';
-import { CaseAbacContextProvider } from '../../../context/caseAbac';
-import { useCaseRightsQuery } from '../../../dataHooks/useCaseRightsQuery';
-import {
-  useDataCollectionOptionsQuery,
-  useDataCollectionsMapQuery,
-  useDataCollectionsQuery,
-} from '../../../dataHooks/useDataCollectionsQuery';
-import { useDeleteMutation } from '../../../hooks/useDeleteMutation';
-import { useItemQuery } from '../../../hooks/useItemQuery';
-import { QUERY_KEY } from '../../../models/query';
-import { EpiDashboardStoreContext } from '../../../stores/epiDashboardStore';
-import { QueryUtil } from '../../../utils/QueryUtil';
-import { TestIdUtil } from '../../../utils/TestIdUtil';
-import type { ConfirmationRefMethods } from '../../ui/Confirmation';
-import { Confirmation } from '../../ui/Confirmation';
-import type { DialogAction } from '../../ui/Dialog';
-import { ResponseHandler } from '../../ui/ResponseHandler';
-import { Spinner } from '../../ui/Spinner';
-import { useArray } from '../../../hooks/useArray';
-import { useQueryMemo } from '../../../hooks/useQueryMemo';
 
 import { EpiCaseCaseSetInfo } from './EpiCaseCaseSetInfo';
 import { EpiCaseForm } from './EpiCaseForm';
@@ -55,6 +29,11 @@ import { EpiReadOnlyCaseContent } from './EpiReadOnlyCaseContent';
 import { EpiCaseContent } from './EpiCaseContent';
 import { EpiCaseSharingInfo } from './EpiCaseSharingInfo';
 import { EpiCaseSharingForm } from './EpiCaseSharingForm';
+import { WithDialogRenderProps, WithDialogRefMethods, withDialog, ConfirmationRefMethods, useArray, useDeleteMutation, QueryManager, QUERY_KEY, useItemQuery, useQueryMemo, DialogAction, TestIdUtil, Spinner, ResponseHandler, Confirmation } from '@gen-epix/ui';
+import { CaseAbacContext, CaseAbacContextProvider } from '../../../context/caseAbac';
+import { useCaseRightsQuery } from '../../../dataHooks/useCaseRightsQuery';
+import { useDataCollectionsQuery, useDataCollectionsMapQuery, useDataCollectionOptionsQuery } from '../../../dataHooks/useDataCollectionsQuery';
+import { EpiDashboardStoreContext } from '../../../stores/epiDashboardStore';
 
 
 export interface EpiCaseInfoDialogOpenProps {
@@ -104,16 +83,16 @@ export const EpiCaseInfoDialog = withDialog<EpiCaseInfoDialogProps, EpiCaseInfoD
   }, [onClose]);
 
   const { isMutating: isDeleteMutating, mutate: deleteMutate } = useDeleteMutation<CaseDbCase>({
-    associationQueryKeys: QueryUtil.getQueryKeyDependencies([QUERY_KEY.CASES], true),
+    associationQueryKeys: QueryManager.getInstance().getQueryKeyDependencies([QUERY_KEY.CASES], true),
     getErrorNotificationMessage: (data) => t('Unable to remove case: {{id}}.', { name: data.id }),
     getProgressNotificationMessage: (data) => t('Deleting case: {{id}}...', { name: data.id }),
     getSuccessNotificationMessage: (data) => t('Case: {{id}}, has been removed.', { name: data.id }),
     onError: onDeleteError,
     onSuccess: onDeleteSuccess,
     queryFn: async (item: CaseDbCase) => {
-      return await CaseDbCaseApi.instance.casesDeleteOne(item.id);
+      return await CaseDbCaseApi.getInstance().casesDeleteOne(item.id);
     },
-    resourceQueryKey: QueryUtil.getGenericKey(QUERY_KEY.CASES),
+    resourceQueryKey: QueryManager.getInstance().getGenericKey(QUERY_KEY.CASES),
   });
 
   const { data: epiCase, error: epiCaseError, isLoading: epiCaseIsLoading } = useItemQuery<CaseDbCase>({
@@ -122,7 +101,7 @@ export const EpiCaseInfoDialog = withDialog<EpiCaseInfoDialogProps, EpiCaseInfoD
     useQueryOptions: {
       enabled: !isDeleteMutating,
       queryFn: async ({ signal }) => {
-        const response = await CaseDbCaseApi.instance.casesGetOne(openProps.caseId, { signal });
+        const response = await CaseDbCaseApi.getInstance().casesGetOne(openProps.caseId, { signal });
         return response.data;
       },
     },
@@ -137,10 +116,10 @@ export const EpiCaseInfoDialog = withDialog<EpiCaseInfoDialogProps, EpiCaseInfoD
   const { data: caseDataCollectionLinks, error: caseDataCollectionLinksError, isLoading: isCaseDataCollectionLinksLoading } = useQueryMemo({
     enabled: !!epiCase,
     queryFn: async ({ signal }) => {
-      const response = await CaseDbCaseApi.instance.caseDataCollectionLinksPostQuery(caseDataCollectionLinksFilter, { signal });
+      const response = await CaseDbCaseApi.getInstance().caseDataCollectionLinksPostQuery(caseDataCollectionLinksFilter, { signal });
       return response.data;
     },
-    queryKey: QueryUtil.getGenericKey(QUERY_KEY.CASE_DATA_COLLECTION_LINKS, caseDataCollectionLinksFilter),
+    queryKey: QueryManager.getInstance().getGenericKey(QUERY_KEY.CASE_DATA_COLLECTION_LINKS, caseDataCollectionLinksFilter),
   });
 
 

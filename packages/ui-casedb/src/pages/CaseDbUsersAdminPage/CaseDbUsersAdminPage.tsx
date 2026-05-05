@@ -27,7 +27,7 @@ export const CaseDbUsersAdminPage = () => {
   const epiUserRightsDialogRef = useRef<EpiUserRightsDialogRefMethods>(null);
 
   const subPages = useMemo<CrudPageSubPage<CaseDbUser>[]>(() => {
-    const doesUserHavePermissionToViewEffectiveRights = AuthorizationManager.instance.doesUserHavePermission<CaseDbApiPermission>([
+    const doesUserHavePermissionToViewEffectiveRights = AuthorizationManager.getInstance().doesUserHavePermission<CaseDbApiPermission>([
       { command_name: CaseDbCommandName.ColSetMemberCrudCommand, permission_type: CaseDbPermissionType.READ },
       { command_name: CaseDbCommandName.CaseTypeSetCrudCommand, permission_type: CaseDbPermissionType.READ },
       { command_name: CaseDbCommandName.ColSetCrudCommand, permission_type: CaseDbPermissionType.READ },

@@ -11,7 +11,7 @@ export class UserManagerUtil {
   public static readonly userManager: UserManager;
 
   public static getSettings(oidcConfiguration: CommonDbIdentityProvider): UserManagerSettings {
-    const url = new URL(WindowManager.instance.window.location.href);
+    const url = new URL(WindowManager.getInstance().window.location.href);
     url.search = '';
     url.pathname = '/post-login';
     const redirect_uri = url.toString();

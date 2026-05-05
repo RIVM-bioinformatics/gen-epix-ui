@@ -25,7 +25,7 @@ export const UserOwnOrganizationMenuItem = withPermissions(() => {
     if (organizationMapQuery.error) {
       return t`Error`;
     }
-    return organizationMapQuery.map.get(AuthorizationManager.instance.user?.organization_id ?? '')?.name ?? t`Unknown`;
+    return organizationMapQuery.map.get(AuthorizationManager.getInstance().user?.organization_id ?? '')?.name ?? t`Unknown`;
   }, [organizationMapQuery, t]);
 
   return (

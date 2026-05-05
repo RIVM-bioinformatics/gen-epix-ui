@@ -22,17 +22,17 @@ type KeyboardShortcutConfig = {
 };
 
 export class KeyboardShortcutManager {
-  public static get instance(): KeyboardShortcutManager {
-    KeyboardShortcutManager.__instance = HmrUtil.getHmrSingleton('keyboardShortcutManager', KeyboardShortcutManager.__instance, () => new KeyboardShortcutManager());
-    return KeyboardShortcutManager.__instance;
-  }
-
   private static __instance: KeyboardShortcutManager;
 
   private readonly configs: KeyboardShortcutConfig[] = [];
 
   private constructor() {
     window.addEventListener('keydown', this.handleKeyDown.bind(this));
+  }
+
+  public static getInstance(): KeyboardShortcutManager {
+    KeyboardShortcutManager.__instance = HmrUtil.getHmrSingleton('keyboardShortcutManager', KeyboardShortcutManager.__instance, () => new KeyboardShortcutManager());
+    return KeyboardShortcutManager.__instance;
   }
 
   private static shouldIgnoreShortcut(): boolean {

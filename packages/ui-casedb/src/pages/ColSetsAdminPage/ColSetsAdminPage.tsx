@@ -46,27 +46,27 @@ export const ColSetsAdminPage = () => {
   const loadables = useArray([colOptionsQuery, colSetMembersQuery]);
 
   const fetchAll = useCallback(async (signal: AbortSignal) => {
-    return (await CaseDbCaseApi.instance.colSetsGetAll({ signal }))?.data;
+    return (await CaseDbCaseApi.getInstance().colSetsGetAll({ signal }))?.data;
   }, []);
 
   const deleteOne = useCallback(async (item: CaseDbColSet) => {
-    return await CaseDbCaseApi.instance.colSetsDeleteOne(item.id);
+    return await CaseDbCaseApi.getInstance().colSetsDeleteOne(item.id);
   }, []);
 
   const updateOne = useCallback(async (variables: FormFields, item: CaseDbColSet) => {
-    await CaseDbCaseApi.instance.colSetsPutCols(item.id, {
+    await CaseDbCaseApi.getInstance().colSetsPutCols(item.id, {
       col_set_members: variables.colIds.map<CaseDbColSetMember>(col_id => ({
         col_id,
         col_set_id: item.id,
       })),
     });
 
-    return (await CaseDbCaseApi.instance.colSetsPutOne(item.id, omit({ id: item.id, ...variables }, ['colIds']))).data;
+    return (await CaseDbCaseApi.getInstance().colSetsPutOne(item.id, omit({ id: item.id, ...variables }, ['colIds']))).data;
   }, []);
 
   const createOne = useCallback(async (variables: FormFields) => {
-    const resultItem = (await CaseDbCaseApi.instance.colSetsPostOne(omit(variables, ['colIds']))).data;
-    await CaseDbCaseApi.instance.colSetsPutCols(resultItem.id, {
+    const resultItem = (await CaseDbCaseApi.getInstance().colSetsPostOne(omit(variables, ['colIds']))).data;
+    await CaseDbCaseApi.getInstance().colSetsPutCols(resultItem.id, {
       col_set_members: variables.colIds.map<CaseDbColSetMember>(col_id => ({
         col_id,
         col_set_id: resultItem.id,

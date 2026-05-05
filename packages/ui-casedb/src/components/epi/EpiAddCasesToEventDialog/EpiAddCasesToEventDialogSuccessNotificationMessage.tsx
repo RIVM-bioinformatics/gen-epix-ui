@@ -17,7 +17,7 @@ export type EpiAddCasesToEventDialogSuccessNotificationMessageProps = {
 export const EpiAddCasesToEventDialogSuccessNotificationMessage = ({ caseSet, numAddedCases }: EpiAddCasesToEventDialogSuccessNotificationMessageProps) => {
 
   const onLinkClick = useCallback(async () => {
-    await RouterManager.instance.router.navigate({ pathname: CaseSetUtil.createCaseSetLink(caseSet) });
+    await RouterManager.getInstance().router.navigate({ pathname: CaseSetUtil.createCaseSetLink(caseSet) });
   }, [caseSet]);
 
   return (

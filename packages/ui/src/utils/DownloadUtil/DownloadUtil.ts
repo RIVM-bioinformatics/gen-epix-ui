@@ -46,7 +46,7 @@ export class DownloadUtil {
     const input = document.createElement('input');
     input.name = 'token';
     // ! FIXME: add access token to arguments instead of accessing it directly here
-    input.value = AuthenticationManager.instance.authContextProps?.user?.access_token ?? '';
+    input.value = AuthenticationManager.getInstance().authContextProps?.user?.access_token ?? '';
     formElement.appendChild(input);
 
     document.body.appendChild(formElement);

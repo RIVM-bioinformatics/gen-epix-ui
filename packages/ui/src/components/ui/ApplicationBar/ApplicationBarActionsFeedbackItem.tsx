@@ -28,7 +28,7 @@ export const ApplicationBarActionsFeedbackItem = () => {
   const userFeedbackDialogRef = useRef<UserFeedbackDialogRefMethods>(null);
   const [isFeedbackTooltipOpen, setIsFeedbackTooltipOpen] = useState(false);
   useEffect(() => {
-    if (!UserSettingsManager.instance.showShowUserFeedbackTooltip) {
+    if (!UserSettingsManager.getInstance().showShowUserFeedbackTooltip) {
       return;
     }
     const timeoutMs = Math.max(0, ConfigManager.getInstance().config.userFeedback.SHOW_USER_FEEDBACK_TOOLTIP_AFTER_MS - (new Date().getTime() - NOW));
@@ -46,7 +46,7 @@ export const ApplicationBarActionsFeedbackItem = () => {
 
   const onTooltipMouseEnter = useCallback(() => {
     setIsFeedbackTooltipOpen(false);
-    UserSettingsManager.instance.showShowUserFeedbackTooltip = false;
+    UserSettingsManager.getInstance().showShowUserFeedbackTooltip = false;
   }, []);
 
   return (

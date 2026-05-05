@@ -73,7 +73,7 @@ export const EpiLineListWidget = ({ caseSet, lineListRangeSubject, linkedScrollS
   const containerRef = useRef<HTMLDivElement>(null);
   const { t } = useTranslation();
   const theme = useTheme();
-  const highlightingManager = useMemo(() => EpiHighlightingManager.instance, []);
+  const highlightingManager = useMemo(() => EpiHighlightingManager.getInstance(), []);
   const rowHighlightingSubject = useMemo(() => new Subject<string[]>([]), []);
   const tableRef = useRef<TableRef>(null);
 
@@ -93,7 +93,7 @@ export const EpiLineListWidget = ({ caseSet, lineListRangeSubject, linkedScrollS
   }, [lineListRangeSubject]);
 
   const onIndexCellClick = useCallback((row: CaseDbCase) => {
-    EpiEventBusManager.instance.emit('openCaseInfoDialog', {
+    EpiEventBusManager.getInstance().emit('openCaseInfoDialog', {
       caseId: row.id,
       caseTypeId: completeCaseType.id,
     });
@@ -118,7 +118,7 @@ export const EpiLineListWidget = ({ caseSet, lineListRangeSubject, linkedScrollS
   }, [completeCaseType, sortedData, stratification?.col?.id, theme]);
 
   const onOrganizationCellClick = useCallback((organizationId: string, organizationName: string) => {
-    EpiEventBusManager.instance.emit('openContactDetailsDialog', {
+    EpiEventBusManager.getInstance().emit('openContactDetailsDialog', {
       organizationId,
       organizationName,
     });
@@ -158,7 +158,7 @@ export const EpiLineListWidget = ({ caseSet, lineListRangeSubject, linkedScrollS
   }, [completeCaseType, onOrganizationCellClick, stratification?.caseIdColors, stratification?.col?.id]);
 
   const onGeneticSequenceCellClick = useCallback((id: string, row: CaseDbCase) => {
-    EpiEventBusManager.instance.emit('openSequenceDownloadDialog', {
+    EpiEventBusManager.getInstance().emit('openSequenceDownloadDialog', {
       cases: [row],
       geneticSequenceColId: id,
     });
@@ -207,7 +207,7 @@ export const EpiLineListWidget = ({ caseSet, lineListRangeSubject, linkedScrollS
     let queryResult;
     const rowId = `row_${row.id}`;
 
-    EpiLineListCaseSetMembersManager.instance.query(row.id).then(result => {
+    EpiLineListCaseSetMembersManager.getInstance().query(row.id).then(result => {
       queryResult = result;
       const element = document.getElementById(rowId);
       if (element) {
@@ -427,7 +427,7 @@ export const EpiLineListWidget = ({ caseSet, lineListRangeSubject, linkedScrollS
   }, [updateVisibleIndexDebounced]);
 
   const onRangeChangedDebounced = useDebouncedCallback(async (range: ListRange) => {
-    await EpiLineListCaseSetMembersManager.instance.loadRange(sortedData.slice(range.startIndex, Math.min(range.endIndex + 1, sortedData.length)).map(row => row.id));
+    await EpiLineListCaseSetMembersManager.getInstance().loadRange(sortedData.slice(range.startIndex, Math.min(range.endIndex + 1, sortedData.length)).map(row => row.id));
   }, ConfigManager.getInstance().config.epiLineList.CASE_SET_MEMBERS_FETCH_DEBOUNCE_DELAY_MS, {
     leading: false,
     trailing: true,
@@ -440,7 +440,7 @@ export const EpiLineListWidget = ({ caseSet, lineListRangeSubject, linkedScrollS
 
   useEffect(() => {
     return () => {
-      EpiLineListCaseSetMembersManager.instance.cleanStaleQueue();
+      EpiLineListCaseSetMembersManager.getInstance().cleanStaleQueue();
     };
   }, []);
 

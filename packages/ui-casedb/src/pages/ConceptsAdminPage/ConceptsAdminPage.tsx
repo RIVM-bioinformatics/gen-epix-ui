@@ -28,7 +28,7 @@ export const ConceptsAdminPage = () => {
   const { t } = useTranslation();
 
   const fetchAll = useCallback(async (signal: AbortSignal) => {
-    return (await CaseDbOntologyApi.instance.conceptsGetAll({ signal }))?.data;
+    return (await CaseDbOntologyApi.getInstance().conceptsGetAll({ signal }))?.data;
   }, []);
 
   const fetchAllSelect = useCallback((concepts: CaseDbConcept[]) => {
@@ -36,11 +36,11 @@ export const ConceptsAdminPage = () => {
   }, [conceptSetId]);
 
   const deleteOne = useCallback(async (item: CaseDbConcept) => {
-    return await CaseDbOntologyApi.instance.conceptsDeleteOne(item.id);
+    return await CaseDbOntologyApi.getInstance().conceptsDeleteOne(item.id);
   }, []);
 
   const updateOne = useCallback(async (variables: FormFields, item: CaseDbConcept) => {
-    const updatedItem = (await CaseDbOntologyApi.instance.conceptsPutOne(item.id, {
+    const updatedItem = (await CaseDbOntologyApi.getInstance().conceptsPutOne(item.id, {
       ...variables,
       concept_set_id: conceptSetId,
       id: item.id,
@@ -49,7 +49,7 @@ export const ConceptsAdminPage = () => {
   }, [conceptSetId]);
 
   const createOne = useCallback(async (variables: FormFields) => {
-    return (await CaseDbOntologyApi.instance.conceptsPostOne({
+    return (await CaseDbOntologyApi.getInstance().conceptsPostOne({
       ...variables,
       concept_set_id: conceptSetId,
     })).data;

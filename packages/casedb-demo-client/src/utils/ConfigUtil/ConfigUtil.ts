@@ -27,19 +27,19 @@ const LOCAL_STORAGE_KEY_PREFERRED_LANGUAGE = 'GenEpix-preferred-language';
 export class ConfigUtil {
   public static createConfig(): Config {
     const onEnglishClick = () => {
-      I18nManager.instance.emit('onUserLanguageChange', 'en');
+      I18nManager.getInstance().emit('onUserLanguageChange', 'en');
     };
 
     const onDutchClick = () => {
-      I18nManager.instance.emit('onUserLanguageChange', 'nl');
+      I18nManager.getInstance().emit('onUserLanguageChange', 'nl');
     };
 
     const setNewLanguageCode = async (code: string) => {
-      return Promise.resolve(WindowManager.instance.window.localStorage.setItem(LOCAL_STORAGE_KEY_PREFERRED_LANGUAGE, code));
+      return Promise.resolve(WindowManager.getInstance().window.localStorage.setItem(LOCAL_STORAGE_KEY_PREFERRED_LANGUAGE, code));
     };
 
     const getCurrentLanguageCode = async () => {
-      return Promise.resolve(WindowManager.instance.window.localStorage.getItem(LOCAL_STORAGE_KEY_PREFERRED_LANGUAGE) ?? window.navigator.language.split('-')[0] ?? 'en');
+      return Promise.resolve(WindowManager.getInstance().window.localStorage.getItem(LOCAL_STORAGE_KEY_PREFERRED_LANGUAGE) ?? window.navigator.language.split('-')[0] ?? 'en');
     };
 
 
@@ -364,7 +364,7 @@ export class ConfigUtil {
         TREE_PADDING: 20,
       },
       getAPIBaseUrl: (app: APP) => {
-        const { location: { href } } = WindowManager.instance.window.document;
+        const { location: { href } } = WindowManager.getInstance().window.document;
         const { hostname } = new URL(href);
         switch (hostname) {
           case '127.0.0.1':
@@ -376,7 +376,7 @@ export class ConfigUtil {
         }
       },
       getEnvironmentMessage: (_t) => {
-        const { location: { href } } = WindowManager.instance.window.document;
+        const { location: { href } } = WindowManager.getInstance().window.document;
         const { hostname } = new URL(href);
         let environment: string;
         switch (hostname) {

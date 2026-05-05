@@ -69,7 +69,7 @@ export const UsersAdminPage = () => {
     }));
     setTableRoleOptions(_tableRoleOptions);
     let _formRoleOptions: OptionBase<string>[];
-    if (AuthorizationManager.instance.doesUserHavePermission([
+    if (AuthorizationManager.getInstance().doesUserHavePermission([
       { command_name: CaseDbCommandName.RetrieveInviteUserConstraintsCommand, permission_type: CaseDbPermissionType.EXECUTE },
     ])) {
       _formRoleOptions = inviteUserConstraintsQuery?.data ? inviteUserConstraintsQuery.data.roles.map(role => ({
@@ -81,7 +81,7 @@ export const UsersAdminPage = () => {
     }
     // The users own roles may not be included in the options from the invite user constraints endpoint (if they don't have permission to view that endpoint),
     // so we need to add those to the options as well, but disable them since the user doesn't have permission to assign those roles to other users.
-    const extraRolesFromUser = AuthorizationManager.instance.user.roles.filter(role => !_formRoleOptions.some(option => option.value === role));
+    const extraRolesFromUser = AuthorizationManager.getInstance().user.roles.filter(role => !_formRoleOptions.some(option => option.value === role));
     _formRoleOptions.push(...extraRolesFromUser.map(role => ({
       disabled: true,
       label: role,
@@ -91,13 +91,13 @@ export const UsersAdminPage = () => {
   }, [inviteUserConstraintsQuery.data]);
 
   const fetchAll = useCallback(async (signal: AbortSignal) => {
-    const users = (await CaseDbOrganizationApi.instance.usersGetAll({ signal }))?.data;
+    const users = (await CaseDbOrganizationApi.getInstance().usersGetAll({ signal }))?.data;
 
     return users;
   }, []);
 
   const updateOne = useCallback(async (variables: FormFields, item: CaseDbUser) => {
-    return (await CaseDbOrganizationApi.instance.updateUser(item.id, {
+    return (await CaseDbOrganizationApi.getInstance().updateUser(item.id, {
       is_active: variables.is_active,
       organization_id: item.organization_id,
       roles: variables.roles,
@@ -105,7 +105,7 @@ export const UsersAdminPage = () => {
   }, []);
 
   const deleteOne = useCallback(async (item: CaseDbUser) => {
-    return await CaseDbOrganizationApi.instance.usersDeleteOne(item.id);
+    return await CaseDbOrganizationApi.getInstance().usersDeleteOne(item.id);
   }, []);
 
   const getName = useCallback((item: FormFields) => {
@@ -113,7 +113,7 @@ export const UsersAdminPage = () => {
   }, []);
 
   const canEditItem = useCallback((item: CaseDbUser) => {
-    return AuthorizationManager.instance.user.email !== item.email;
+    return AuthorizationManager.getInstance().user.email !== item.email;
   }, []);
 
   const schema = useMemo(() => {
@@ -191,7 +191,7 @@ export const UsersAdminPage = () => {
   }, []);
 
   const subPages = useMemo<CrudPageSubPage<CaseDbUser>[]>(() => {
-    const doesUserHavePermissionToViewEffectiveRights = AuthorizationManager.instance.doesUserHavePermission([
+    const doesUserHavePermissionToViewEffectiveRights = AuthorizationManager.getInstance().doesUserHavePermission([
       { command_name: CaseDbCommandName.ColSetMemberCrudCommand, permission_type: CaseDbPermissionType.READ },
       { command_name: CaseDbCommandName.CaseTypeSetCrudCommand, permission_type: CaseDbPermissionType.READ },
       { command_name: CaseDbCommandName.ColSetCrudCommand, permission_type: CaseDbPermissionType.READ },

@@ -4,17 +4,19 @@ import type {
   CaseDbRetrieveCaseTypeStatsRequestBody,
 } from '@gen-epix/api-casedb';
 import { CaseDbCaseApi } from '@gen-epix/api-casedb';
+import {
+  QUERY_KEY,
+  QueryManager,
+  useQueryMemo,
+} from '@gen-epix/ui';
 
-import { QUERY_KEY } from '../../models/query';
-import { QueryUtil } from '../../utils/QueryUtil';
-import { useQueryMemo } from '../../hooks/useQueryMemo';
 
 export const useCaseTypeStatsQuery = (options?: CaseDbRetrieveCaseTypeStatsRequestBody): UseQueryResult<CaseDbCaseStats[]> => {
   return useQueryMemo({
     queryFn: async ({ signal }) => {
-      const response = await CaseDbCaseApi.instance.retrieveCaseTypeStats(options ?? {}, { signal });
+      const response = await CaseDbCaseApi.getInstance().retrieveCaseTypeStats(options ?? {}, { signal });
       return response.data;
     },
-    queryKey: QueryUtil.getGenericKey(QUERY_KEY.CASE_TYPE_STATS, options ?? {}),
+    queryKey: QueryManager.getInstance().getGenericKey(QUERY_KEY.CASE_TYPE_STATS, options ?? {}),
   });
 };

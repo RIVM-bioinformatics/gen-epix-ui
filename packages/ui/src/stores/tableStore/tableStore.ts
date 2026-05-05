@@ -371,7 +371,7 @@ export const createTableStoreActions = <TData>(kwArgs: {
         frontendFilters: Object.fromEntries(frontendFilterPriorities.map(filterPriority => [filterPriority, filters.filter(filter => filter.filterPriority === filterPriority)])),
       });
       if (navigateFunction) {
-        const searchParams = new URLSearchParams(WindowManager.instance.window.document.location.search);
+        const searchParams = new URLSearchParams(WindowManager.getInstance().window.document.location.search);
         filters.forEach(filter => {
           const searchParamStringValue = searchParams.get(filter.id);
           if (!searchParamStringValue) {

@@ -46,22 +46,22 @@ export const OrganizationsAdminPage = () => {
   const loadables = useArray([identifierIssuerOptionsQuery, organizationIdentifierIssuerLinksQuery]);
 
   const fetchAll = useCallback(async (signal: AbortSignal) => {
-    return (await CaseDbOrganizationApi.instance.organizationsGetAll({ signal }))?.data;
+    return (await CaseDbOrganizationApi.getInstance().organizationsGetAll({ signal }))?.data;
   }, []);
 
   const updateOne = useCallback(async (variables: FormFields, item: CaseDbOrganization) => {
-    await CaseDbOrganizationApi.instance.organizationsPutIdentifierIssuers(item.id, {
+    await CaseDbOrganizationApi.getInstance().organizationsPutIdentifierIssuers(item.id, {
       organization_identifier_issuer_links: variables.identifierIssuerIds.map(identifier_issuer_id => ({
         identifier_issuer_id,
         organization_id: item.id,
       })),
     });
-    return (await CaseDbOrganizationApi.instance.organizationsPutOne(item.id, { id: item.id, ...variables })).data;
+    return (await CaseDbOrganizationApi.getInstance().organizationsPutOne(item.id, { id: item.id, ...variables })).data;
   }, []);
 
   const createOne = useCallback(async (variables: FormFields) => {
-    const resultItem = (await CaseDbOrganizationApi.instance.organizationsPostOne(omit(variables, ['identifierIssuerIds']))).data;
-    await CaseDbOrganizationApi.instance.organizationsPutIdentifierIssuers(resultItem.id, {
+    const resultItem = (await CaseDbOrganizationApi.getInstance().organizationsPostOne(omit(variables, ['identifierIssuerIds']))).data;
+    await CaseDbOrganizationApi.getInstance().organizationsPutIdentifierIssuers(resultItem.id, {
       organization_identifier_issuer_links: variables.identifierIssuerIds.map(identifier_issuer_id => ({
         identifier_issuer_id,
         organization_id: resultItem.id,
@@ -71,7 +71,7 @@ export const OrganizationsAdminPage = () => {
   }, []);
 
   const deleteOne = useCallback(async (item: CaseDbOrganization) => {
-    return await CaseDbOrganizationApi.instance.organizationsDeleteOne(item.id);
+    return await CaseDbOrganizationApi.getInstance().organizationsDeleteOne(item.id);
   }, []);
 
   const getName = useCallback((item: CaseDbOrganization) => {
@@ -134,7 +134,7 @@ export const OrganizationsAdminPage = () => {
   }, [identifierIssuerOptionsQuery.options.length, t]);
 
   const subPages = useMemo<CrudPageSubPage<CaseDbOrganization>[]>(() => {
-    if (!AuthorizationManager.instance.doesUserHavePermission([
+    if (!AuthorizationManager.getInstance().doesUserHavePermission([
       { command_name: CaseDbCommandName.SiteCrudCommand, permission_type: CaseDbPermissionType.READ },
     ])) {
       return [];

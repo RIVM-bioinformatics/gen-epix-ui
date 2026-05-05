@@ -71,7 +71,7 @@ export const UsersAdminPage = ({
     }));
     setTableRoleOptions(_tableRoleOptions);
     let _formRoleOptions: OptionBase<string>[];
-    if (AuthorizationManager.instance.doesUserHavePermission([
+    if (AuthorizationManager.getInstance().doesUserHavePermission([
       { command_name: CommonDbCommandName.RetrieveInviteUserConstraintsCommand, permission_type: CommonDbPermissionType.EXECUTE },
     ])) {
       _formRoleOptions = inviteUserConstraintsQuery?.data ? inviteUserConstraintsQuery.data.roles.map(role => ({
@@ -83,7 +83,7 @@ export const UsersAdminPage = ({
     }
     // The users own roles may not be included in the options from the invite user constraints endpoint (if they don't have permission to view that endpoint),
     // so we need to add those to the options as well, but disable them since the user doesn't have permission to assign those roles to other users.
-    const extraRolesFromUser = AuthorizationManager.instance.user.roles.filter(role => !_formRoleOptions.some(option => option.value === role));
+    const extraRolesFromUser = AuthorizationManager.getInstance().user.roles.filter(role => !_formRoleOptions.some(option => option.value === role));
     _formRoleOptions.push(...extraRolesFromUser.map(role => ({
       disabled: true,
       label: role,
@@ -115,7 +115,7 @@ export const UsersAdminPage = ({
   }, []);
 
   const canEditItem = useCallback((item: CommonDbUser) => {
-    return AuthorizationManager.instance.user.email !== item.email;
+    return AuthorizationManager.getInstance().user.email !== item.email;
   }, []);
 
   const schema = useMemo(() => {

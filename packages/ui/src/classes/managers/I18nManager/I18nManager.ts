@@ -18,18 +18,18 @@ type I18nEvent = {
 };
 
 export class I18nManager extends EventBusAbstract<I18nEvent> {
-  public static get instance(): I18nManager {
-    I18nManager.__instance = HmrUtil.getHmrSingleton('i18nManager', I18nManager.__instance, () => new I18nManager());
-    return I18nManager.__instance;
-  }
-
   private static __instance: I18nManager;
 
   private isInitialized = false;
-  private languageLoaded: Record<string, boolean> = {};
 
+  private languageLoaded: Record<string, boolean> = {};
   private constructor() {
     super();
+  }
+
+  public static getInstance(): I18nManager {
+    I18nManager.__instance = HmrUtil.getHmrSingleton('i18nManager', I18nManager.__instance, () => new I18nManager());
+    return I18nManager.__instance;
   }
 
   public async init(): Promise<void> {
@@ -99,7 +99,7 @@ export class I18nManager extends EventBusAbstract<I18nEvent> {
   }
 
   private updateLangAttribute(code: string): void {
-    const doc = WindowManager.instance.document;
+    const doc = WindowManager.getInstance().document;
     if (!doc) {
       console.warn('Document is not available, cannot set lang attribute');
       return;

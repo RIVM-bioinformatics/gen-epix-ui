@@ -7,11 +7,6 @@ import type { MyNonIndexRouteObject } from '../../../models/reactRouter';
 
 
 export class RouterManager {
-  public static get instance(): RouterManager {
-    RouterManager.__instance = HmrUtil.getHmrSingleton('routerManager', RouterManager.__instance, () => new RouterManager());
-    return RouterManager.__instance;
-  }
-
   private static __instance: RouterManager;
 
   public readonly router: ReturnType<typeof createBrowserRouter>;
@@ -21,6 +16,11 @@ export class RouterManager {
   private constructor() {
     this.routes = createRoutes(t);
     this.router = createBrowserRouter(this.routes);
+  }
+
+  public static getInstance(): RouterManager {
+    RouterManager.__instance = HmrUtil.getHmrSingleton('routerManager', RouterManager.__instance, () => new RouterManager());
+    return RouterManager.__instance;
   }
 
 }

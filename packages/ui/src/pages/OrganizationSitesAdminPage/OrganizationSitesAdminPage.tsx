@@ -92,7 +92,7 @@ export const OrganizationSitesAdminPage = () => {
   }, []);
 
   const subPages = useMemo<CrudPageSubPage<CommonDbSite>[]>(() => {
-    if (!AuthorizationManager.instance.doesUserHavePermission([
+    if (!AuthorizationManager.getInstance().doesUserHavePermission([
       { command_name: CommonDbCommandName.ContactCrudCommand, permission_type: CommonDbPermissionType.READ },
     ])) {
       return [];

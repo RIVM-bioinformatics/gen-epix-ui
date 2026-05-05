@@ -1,26 +1,28 @@
 import type { CaseDbCaseSetMember } from '@gen-epix/api-casedb';
 import { CaseDbCaseApi } from '@gen-epix/api-casedb';
+import {
+  QueryClientManager,
+  QueryManager,
+} from '@gen-epix/ui';
 
 import { HmrUtil } from '../../../../../ui/src/utils/HmrUtil';
-import { QueryClientManager } from '../QueryClientManager';
 import type { EpiCaseHasCaseSet } from '../../../../../ui-casedb/src/models/epi';
 import { QUERY_KEY } from '../../../models/query';
-import { QueryUtil } from '../../../utils/QueryUtil';
 
 type QueueItem = { caseId: string; isFetching: boolean; promise: Promise<boolean>; reject: () => void; resolve: (result: boolean) => void };
 
 export class EpiLineListCaseSetMembersManager {
-  public static get instance(): EpiLineListCaseSetMembersManager {
-    EpiLineListCaseSetMembersManager.__instance = HmrUtil.getHmrSingleton('epiLineListCaseSetMembersManager', EpiLineListCaseSetMembersManager.__instance, () => new EpiLineListCaseSetMembersManager());
-    return EpiLineListCaseSetMembersManager.__instance;
-  }
-
   private static __instance: EpiLineListCaseSetMembersManager;
 
   private readonly queuedCases: { [caseId: string]: QueueItem } = {};
 
   private constructor() {
     //
+  }
+
+  public static getInstance(): EpiLineListCaseSetMembersManager {
+    EpiLineListCaseSetMembersManager.__instance = HmrUtil.getHmrSingleton('epiLineListCaseSetMembersManager', EpiLineListCaseSetMembersManager.__instance, () => new EpiLineListCaseSetMembersManager());
+    return EpiLineListCaseSetMembersManager.__instance;
   }
 
   public cleanStaleQueue(): void {
@@ -33,7 +35,7 @@ export class EpiLineListCaseSetMembersManager {
   }
 
   public async loadRange(caseIds: string[]): Promise<void> {
-    const cache = QueryUtil.getValidQueryData<EpiCaseHasCaseSet>([QUERY_KEY.XXX_CASE_ID_HAS_CASE_SET]) ?? {};
+    const cache = QueryManager.getInstance().getValidQueryData<EpiCaseHasCaseSet>([QUERY_KEY.XXX_CASE_ID_HAS_CASE_SET]) ?? {};
     const caseIdsToFetch: string[] = [];
     caseIds.forEach((caseId) => {
       if (caseIdsToFetch.includes(caseId)) {
@@ -55,9 +57,9 @@ export class EpiLineListCaseSetMembersManager {
     }
 
     try {
-      const queryClient = QueryClientManager.instance.queryClient;
+      const queryClient = QueryClientManager.getInstance().queryClient;
       const newCache = { ...cache };
-      const caseSetMembersResult = (await CaseDbCaseApi.instance.caseSetMembersPostQuery({
+      const caseSetMembersResult = (await CaseDbCaseApi.getInstance().caseSetMembersPostQuery({
         invert: false,
         key: 'case_id',
         members: caseIdsToFetch,
@@ -74,7 +76,7 @@ export class EpiLineListCaseSetMembersManager {
         this.queuedCases[caseId].resolve(newCache[caseId]);
         delete this.queuedCases[caseId];
       });
-      queryClient.setQueryData<EpiCaseHasCaseSet>(QueryUtil.getGenericKey(QUERY_KEY.XXX_CASE_ID_HAS_CASE_SET), {
+      queryClient.setQueryData<EpiCaseHasCaseSet>(QueryManager.getInstance().getGenericKey(QUERY_KEY.XXX_CASE_ID_HAS_CASE_SET), {
         ...newCache,
       });
     } catch (_error: unknown) {
@@ -114,6 +116,6 @@ export class EpiLineListCaseSetMembersManager {
   }
 
   private getItemFromCache(caseId: string): boolean {
-    return QueryUtil.getValidQueryData<EpiCaseHasCaseSet>([QUERY_KEY.XXX_CASE_ID_HAS_CASE_SET])?.[caseId];
+    return QueryManager.getInstance().getValidQueryData<EpiCaseHasCaseSet>([QUERY_KEY.XXX_CASE_ID_HAS_CASE_SET])?.[caseId];
   }
 }

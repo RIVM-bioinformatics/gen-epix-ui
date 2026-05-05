@@ -43,19 +43,19 @@ export const UserShareCasePoliciesAdminPage = () => {
   const loadables = useArray([userOptionsQuery, dataCollectionOptionsQuery, colSetOptionsQuery, caseTypeSetOptionsQuery]);
 
   const fetchAll = useCallback(async (signal: AbortSignal) => {
-    return (await CaseDbAbacApi.instance.userShareCasePoliciesGetAll({ signal }))?.data;
+    return (await CaseDbAbacApi.getInstance().userShareCasePoliciesGetAll({ signal }))?.data;
   }, []);
 
   const deleteOne = useCallback(async (item: CaseDbUserShareCasePolicy) => {
-    return await CaseDbAbacApi.instance.userShareCasePoliciesDeleteOne(item.id);
+    return await CaseDbAbacApi.getInstance().userShareCasePoliciesDeleteOne(item.id);
   }, []);
 
   const updateOne = useCallback(async (variables: FormFields, item: CaseDbUserShareCasePolicy) => {
-    return (await CaseDbAbacApi.instance.userShareCasePoliciesPutOne(item.id, { id: item.id, ...variables })).data;
+    return (await CaseDbAbacApi.getInstance().userShareCasePoliciesPutOne(item.id, { id: item.id, ...variables })).data;
   }, []);
 
   const createOne = useCallback(async (variables: FormFields) => {
-    return (await CaseDbAbacApi.instance.userShareCasePoliciesPostOne(variables)).data;
+    return (await CaseDbAbacApi.getInstance().userShareCasePoliciesPostOne(variables)).data;
   }, []);
 
   const getName = useCallback((item: CaseDbUserShareCasePolicy) => {

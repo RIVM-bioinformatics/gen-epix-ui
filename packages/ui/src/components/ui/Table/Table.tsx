@@ -168,7 +168,7 @@ export const Table = <TRowData,>({
         throw new Error('getRowName is required when onRowClick is provided');
       }
       if (ConfigManager.getInstance().config.enablePageEvents) {
-        PageEventBusManager.instance.emit('click', {
+        PageEventBusManager.getInstance().emit('click', {
           label: getRowName(row.row),
           type: 'table-row',
         });
@@ -361,9 +361,9 @@ export const Table = <TRowData,>({
       updateColumnSizes();
       updateColumnOrderInDOM();
     };
-    WindowManager.instance.window.addEventListener('resize', onWindowResize);
+    WindowManager.getInstance().window.addEventListener('resize', onWindowResize);
     return () => {
-      WindowManager.instance.window.removeEventListener('resize', onWindowResize);
+      WindowManager.getInstance().window.removeEventListener('resize', onWindowResize);
     };
   }, [updateColumnOrderInDOM, updateColumnSizes]);
 
@@ -402,7 +402,7 @@ export const Table = <TRowData,>({
 
     if (event.type === 'start') {
       // Prevent a horizontal scroll on the entire page when dragging the column
-      WindowManager.instance.body.style.setProperty('overflow', 'hidden');
+      WindowManager.getInstance().body.style.setProperty('overflow', 'hidden');
 
       // Prevent text selection while dragging
       container?.style.setProperty('--selection-background', 'none');
@@ -426,13 +426,13 @@ export const Table = <TRowData,>({
         filter: blur(0.5px);
         box-shadow: 1px 2px 3px 0px rgba(0,0,0,0.5);
       `;
-      WindowManager.instance.body.appendChild(dragConfigRef.current.clonedElement);
+      WindowManager.getInstance().body.appendChild(dragConfigRef.current.clonedElement);
     }
     if (event.type === 'end') {
       // Restore the original behaviors and styles
-      WindowManager.instance.body.style.removeProperty('overflow');
+      WindowManager.getInstance().body.style.removeProperty('overflow');
       container?.style.setProperty('--selection-background', 'highlight');
-      WindowManager.instance.document.getSelection().empty();
+      WindowManager.getInstance().document.getSelection().empty();
       dragConfigRef.current.clonedElement.remove();
       event.target.style.setProperty('opacity', '1');
     }

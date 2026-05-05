@@ -10,12 +10,12 @@ import type {
 } from '../../models/dataHooks';
 import { QUERY_KEY } from '../../models/query';
 import { DataHookUtil } from '../../utils/DataHookUtil';
-import { QueryUtil } from '../../utils/QueryUtil';
 import { useOrganizationMapQuery } from '../useOrganizationsQuery';
 import { useUsersMapQuery } from '../useUsersQuery';
 import { useQueryMemo } from '../../hooks/useQueryMemo';
 import { ConfigManager } from '../../classes/managers/ConfigManager';
 import { DataUtil } from '../../utils/DataUtil';
+import { QueryManager } from '../../classes/managers/QueryManager';
 
 export const useOrganizationAdminPoliciesQuery = (): UseQueryResult<CommonDbOrganizationAdminPolicy[]> => {
   return useQueryMemo({
@@ -23,7 +23,7 @@ export const useOrganizationAdminPoliciesQuery = (): UseQueryResult<CommonDbOrga
       const response = await ConfigManager.getInstance().config.abacApi.organizationAdminPoliciesGetAll({ signal });
       return response.data;
     },
-    queryKey: QueryUtil.getGenericKey(QUERY_KEY.ORGANIZATION_ADMIN_POLICIES),
+    queryKey: QueryManager.getInstance().getGenericKey(QUERY_KEY.ORGANIZATION_ADMIN_POLICIES),
   });
 };
 

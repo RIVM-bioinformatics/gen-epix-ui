@@ -5,10 +5,10 @@ import { useMemo } from 'react';
 import { NotificationManager } from '../../classes/managers/NotificationManager';
 import { QueryClientManager } from '../../classes/managers/QueryClientManager';
 import type { GenericData } from '../../models/data';
-import { QueryUtil } from '../../utils/QueryUtil';
 import { StringUtil } from '../../utils/StringUtil';
 import { NotificationUtil } from '../../utils/NotificationUtil';
 import { ObjectUtil } from '../../utils/ObjectUtil';
+import { QueryManager } from '../../classes/managers/QueryManager';
 
 
 export type MutationContextCreate<TData> = { notificationKey?: string; previousData?: TData[]; temporaryId?: string };
@@ -34,7 +34,7 @@ export const useCreateMutation = <TData extends GenericData | GenericData[], TVa
   queryFn,
   resourceQueryKey,
 }: UseCreateMutationProps<TData, TVariables>) => {
-  const queryClient = QueryClientManager.instance.queryClient;
+  const queryClient = QueryClientManager.getInstance().queryClient;
 
   const createMutation = useMutation<TData, Error, TVariables, MutationContextCreate<TData>>({
     mutationFn: async (item) => {
@@ -49,14 +49,14 @@ export const useCreateMutation = <TData extends GenericData | GenericData[], TVa
           return [...oldItems.filter(item => (item as GenericData)?.id !== context.temporaryId)];
         });
       }
-      await QueryUtil.invalidateQueryKeys(associationQueryKeys);
+      await QueryManager.getInstance().invalidateQueryKeys(associationQueryKeys);
       if (onError) {
         await onError(error, variables, context);
       }
-      NotificationManager.instance.fulfillNotification(context.notificationKey, NotificationUtil.wrapErrorNotificationMessage(getErrorNotificationMessage(variables, error), error), 'error');
+      NotificationManager.getInstance().fulfillNotification(context.notificationKey, NotificationUtil.wrapErrorNotificationMessage(getErrorNotificationMessage(variables, error), error), 'error');
     },
     onMutate: async (variables) => {
-      const notificationKey = NotificationManager.instance.showNotification({
+      const notificationKey = NotificationManager.getInstance().showNotification({
         isLoading: true,
         message: getProgressNotificationMessage(variables),
         severity: 'info',
@@ -89,11 +89,11 @@ export const useCreateMutation = <TData extends GenericData | GenericData[], TVa
           ];
         });
       }
-      await QueryUtil.invalidateQueryKeys(associationQueryKeys);
+      await QueryManager.getInstance().invalidateQueryKeys(associationQueryKeys);
       if (onSuccess) {
         await onSuccess(item, variables, context);
       }
-      NotificationManager.instance.fulfillNotification(context.notificationKey, getSuccessNotificationMessage(item, context), 'success');
+      NotificationManager.getInstance().fulfillNotification(context.notificationKey, getSuccessNotificationMessage(item, context), 'success');
     },
   });
 

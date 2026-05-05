@@ -96,7 +96,7 @@ export const PhylogeneticTreeComponent = ({
   const { dimensions: { height, width } } = useDimensions(containerRef);
   const [treeCanvas, setTreeCanvas] = useState<HTMLCanvasElement>();
   const [treeAssembly, setTreeAssembly] = useState<TreeAssembly>(null);
-  const [devicePixelRatio, setDevicePixelRatio] = useState<number>(DevicePixelRatioManager.instance.data);
+  const [devicePixelRatio, setDevicePixelRatio] = useState<number>(DevicePixelRatioManager.getInstance().data);
   const [isLinked, setIsLinked] = useState(true);
   const canvasScrollSubject = useMemo(() => new Subject<{ x: number; y: number }>({ x: 0, y: 0 }), []);
   const fallbackHighlightingSubject = useMemo(() => new Subject<Highlighting>({
@@ -307,7 +307,7 @@ export const PhylogeneticTreeComponent = ({
     setDevicePixelRatio(newDevicePixelRatio);
   }, [canvasScrollSubject]);
 
-  useSubscribable(DevicePixelRatioManager.instance, {
+  useSubscribable(DevicePixelRatioManager.getInstance(), {
     callback: devicePixelRatioManagerCallback,
   });
 

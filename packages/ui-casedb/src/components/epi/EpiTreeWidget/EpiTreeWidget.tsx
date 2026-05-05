@@ -31,12 +31,17 @@ import { useStore } from 'zustand';
 import { useDebouncedCallback } from 'use-debounce';
 import type { CaseDbRetrievePhylogeneticTreeRequestBody } from '@gen-epix/api-casedb';
 import { CaseDbCaseApi } from '@gen-epix/api-casedb';
+import type { MenuItemData } from '@gen-epix/ui';
+import {
+  ConfigManager,
+  QUERY_KEY,
+  Spinner,
+  Subject,
+  useQueryMemo,
+} from '@gen-epix/ui';
 
-import { TreeFilter } from '../../../classes/filters/TreeFilter';
-import { ConfigManager } from '../../../classes/managers/ConfigManager';
 import { EpiEventBusManager } from '../../../classes/managers/EpiEventBusManager';
 import { EpiHighlightingManager } from '../../../classes/managers/EpiHighlightingManager';
-import { Subject } from '../../../classes/Subject';
 import type {
   EpiLineListRangeSubjectValue,
   EpiLinkedScrollSubjectValue,
@@ -44,15 +49,11 @@ import type {
   TreeConfiguration,
 } from '../../../../../ui-casedb/src/models/epi';
 import { EPI_ZONE } from '../../../../../ui-casedb/src/models/epi';
-import type { MenuItemData } from '../../../models/nestedMenu';
-import { useQueryMemo } from '../../../hooks/useQueryMemo';
 import { EpiDashboardStoreContext } from '../../../stores/epiDashboardStore';
 import { userProfileStore } from '../../../stores/userProfileStore';
 import { SELECTION_FILTER_GROUP } from '../../../utils/CaseTypeUtil';
 import { DownloadUtil } from '../../../utils/DownloadUtil';
 import { EpiTreeUtil } from '../../../utils/EpiTreeUtil';
-import { QueryUtil } from '../../../utils/QueryUtil';
-import { Spinner } from '../../ui/Spinner';
 import type { EpiContextMenuConfigWithPosition } from '../EpiContextMenu';
 import { EpiContextMenu } from '../EpiContextMenu';
 import { EpiTreeDescription } from '../EpiTreeDescription';
@@ -64,6 +65,7 @@ import type {
   PhylogeneticTreeComponentViewState,
 } from '../../ui/PhylogeneticTreeComponent';
 import { PhylogeneticTreeComponent } from '../../ui/PhylogeneticTreeComponent';
+import { TreeFilter } from '../../../../../ui/src/classes/filters/TreeFilter';
 
 export interface EpiTreeWidgetRef {
   link: () => void;
@@ -87,7 +89,7 @@ export const EpiTreeWidget = ({ itemHeight, lineListRangeSubject, linkedScrollSu
   const [treeCanvas, setTreeCanvas] = useState<HTMLCanvasElement>();
   const [isTreeLinked, setIsTreeLinked] = useState(true);
   const treeRef = useRef<PhylogeneticTreeComponentRef>(null);
-  const highlightingManager = useMemo(() => EpiHighlightingManager.instance, []);
+  const highlightingManager = useMemo(() => EpiHighlightingManager.getInstance(), []);
   const epiDashboardStore = use(EpiDashboardStoreContext);
   const setPhylogeneticTreeResponse = useStore(epiDashboardStore, (state) => state.setPhylogeneticTreeResponse);
   const baseData = useStore(epiDashboardStore, (state) => state.baseData);
@@ -183,10 +185,10 @@ export const EpiTreeWidget = ({ itemHeight, lineListRangeSubject, linkedScrollSu
   const { data: treeData, error: treeError, isLoading: isTreeLoading } = useQueryMemo({
     enabled: hasEnoughSequencesToShowTree && !!treeConfiguration && !hasToManyResultsToShowTree,
     queryFn: async ({ signal }) => {
-      const response = await CaseDbCaseApi.instance.retrievePhylogeneticTree(retrievePhylogeneticTreeRequestBody, { signal });
+      const response = await CaseDbCaseApi.getInstance().retrievePhylogeneticTree(retrievePhylogeneticTreeRequestBody, { signal });
       return response.data;
     },
-    queryKey: QueryUtil.getRetrievePhylogeneticTreeKey(retrievePhylogeneticTreeRequestBody),
+    queryKey: [QUERY_KEY.PHYLOGENETIC_TREE, JSON.stringify(retrievePhylogeneticTreeRequestBody)],
     retry: false,
     staleTime: Infinity,
   });
@@ -265,7 +267,7 @@ export const EpiTreeWidget = ({ itemHeight, lineListRangeSubject, linkedScrollSu
   }, [linkLineListToTree]);
 
   const onOpenFiltersButtonClick = useCallback(() => {
-    EpiEventBusManager.instance.emit('openFiltersMenu');
+    EpiEventBusManager.getInstance().emit('openFiltersMenu');
   }, []);
 
   const resetZoomLevelAndScrollPosition = useCallback(() => {
@@ -327,7 +329,7 @@ export const EpiTreeWidget = ({ itemHeight, lineListRangeSubject, linkedScrollSu
   }, []);
 
   const onShowDetailsSelectionMenuItemClick = useCallback((onMenuClose: () => void) => {
-    EpiEventBusManager.instance.emit('openCaseInfoDialog', {
+    EpiEventBusManager.getInstance().emit('openCaseInfoDialog', {
       caseId: baseData.find(c => c.id === extraLeafInfoId).id,
       caseTypeId: completeCaseType.id,
     });
@@ -445,7 +447,7 @@ export const EpiTreeWidget = ({ itemHeight, lineListRangeSubject, linkedScrollSu
           treeAlgorithm: treeConfiguration?.treeAlgorithm.name ?? '',
         });
 
-      EpiEventBusManager.instance.emit('onDownloadOptionsChanged', {
+      EpiEventBusManager.getInstance().emit('onDownloadOptionsChanged', {
         disabled: isTreeUnavailable,
         items: [
           {
@@ -468,15 +470,15 @@ export const EpiTreeWidget = ({ itemHeight, lineListRangeSubject, linkedScrollSu
 
 
     emitDownloadOptions();
-    EpiEventBusManager.instance.addEventListener('onDownloadOptionsRequested', emitDownloadOptions);
+    EpiEventBusManager.getInstance().addEventListener('onDownloadOptionsRequested', emitDownloadOptions);
 
     return () => {
-      EpiEventBusManager.instance.emit('onDownloadOptionsChanged', {
+      EpiEventBusManager.getInstance().emit('onDownloadOptionsChanged', {
         items: null,
         zone: EPI_ZONE.TREE,
         zoneLabel: t`Tree`,
       });
-      EpiEventBusManager.instance.removeEventListener('onDownloadOptionsRequested', emitDownloadOptions);
+      EpiEventBusManager.getInstance().removeEventListener('onDownloadOptionsRequested', emitDownloadOptions);
     };
   }, [completeCaseType, isTreeLinked, isTreeUnavailable, newick, t, treeCanvas, treeConfiguration?.geneticDistanceProtocol.name, treeConfiguration?.treeAlgorithm.name]);
 

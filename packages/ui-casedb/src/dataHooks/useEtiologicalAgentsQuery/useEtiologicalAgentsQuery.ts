@@ -2,23 +2,24 @@ import { type UseQueryResult } from '@tanstack/react-query';
 import { useMemo } from 'react';
 import type { CaseDbEtiologicalAgent } from '@gen-epix/api-casedb';
 import { CaseDbOntologyApi } from '@gen-epix/api-casedb';
-
 import type {
   UseMap,
   UseOptions,
-} from '../../models/dataHooks';
-import { QUERY_KEY } from '../../models/query';
-import { DataHookUtil } from '../../utils/DataHookUtil';
-import { QueryUtil } from '../../utils/QueryUtil';
-import { useQueryMemo } from '../../hooks/useQueryMemo';
+} from '@gen-epix/ui';
+import {
+  DataHookUtil,
+  QUERY_KEY,
+  QueryManager,
+  useQueryMemo,
+} from '@gen-epix/ui';
 
 export const useEtiologicalAgentsQuery = (): UseQueryResult<CaseDbEtiologicalAgent[]> => {
   return useQueryMemo({
     queryFn: async ({ signal }) => {
-      const response = await CaseDbOntologyApi.instance.etiologicalAgentsGetAll({ signal });
+      const response = await CaseDbOntologyApi.getInstance().etiologicalAgentsGetAll({ signal });
       return response.data;
     },
-    queryKey: QueryUtil.getGenericKey(QUERY_KEY.ETIOLOGICAL_AGENTS),
+    queryKey: QueryManager.getInstance().getGenericKey(QUERY_KEY.ETIOLOGICAL_AGENTS),
   });
 };
 

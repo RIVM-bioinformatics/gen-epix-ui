@@ -14,9 +14,9 @@ import { ConfigManager } from '../../classes/managers/ConfigManager';
 import { WindowManager } from '../../classes/managers/WindowManager';
 import { PageContainer } from '../../components/ui/PageContainer';
 import { ResponseHandler } from '../../components/ui/ResponseHandler';
-import { QueryUtil } from '../../utils/QueryUtil';
 import { TestIdUtil } from '../../utils/TestIdUtil';
 import { useQueryMemo } from '../../hooks/useQueryMemo';
+import { QueryManager } from '../../classes/managers/QueryManager';
 
 export const AcceptInvitationPage = () => {
   const { token } = useParams();
@@ -29,14 +29,14 @@ export const AcceptInvitationPage = () => {
       const response = await ConfigManager.getInstance().config.organizationApi.userRegistrationsPostOne(token, { signal });
       return response.data;
     },
-    queryKey: QueryUtil.getUserRegistrationsKey(token),
+    queryKey: QueryManager.getInstance().getUserRegistrationsKey(token),
     staleTime: 0,
   });
 
   const { t } = useTranslation();
 
   const onGoToHomePageButtonClick = useCallback(() => {
-    WindowManager.instance.window.location.href = '/';
+    WindowManager.getInstance().window.location.href = '/';
   }, []);
 
   const onCompleteRegistrationButtonClick = useCallback(() => {

@@ -28,10 +28,10 @@ import { FORM_FIELD_DEFINITION_TYPE } from '../../models/form';
 import { GenericForm } from '../../components/form/helpers/GenericForm';
 import { AuthenticationManager } from '../../classes/managers/AuthenticationManager';
 import { ResponseHandler } from '../../components/ui/ResponseHandler';
-import { QueryUtil } from '../../utils/QueryUtil';
 import { QUERY_KEY } from '../../models/query';
 import { NotificationManager } from '../../classes/managers/NotificationManager';
 import { ConfigManager } from '../../classes/managers/ConfigManager';
+import { QueryManager } from '../../classes/managers/QueryManager';
 
 export interface UserInvitationConsumeDialogOpenProps {
   item: CommonDbUserInvitation;
@@ -82,9 +82,9 @@ export const UserInvitationConsumeDialog = withDialog<UserInvitationConsumeDialo
 
   const onFormSubmit = useCallback(async (data: FormFields) => {
     try {
-      AuthenticationManager.instance.temporaryToken = data.bearerToken;
+      AuthenticationManager.getInstance().temporaryToken = data.bearerToken;
       await ConfigManager.getInstance().config.organizationApi.userRegistrationsPostOne(openProps.item.token);
-      NotificationManager.instance.showNotification({
+      NotificationManager.getInstance().showNotification({
         message: t`Invitation has been consumed by bearer token`,
         severity: 'success',
       });
@@ -92,9 +92,9 @@ export const UserInvitationConsumeDialog = withDialog<UserInvitationConsumeDialo
     } catch (responseError) {
       setError(responseError);
     } finally {
-      delete AuthenticationManager.instance.temporaryToken;
-      const queryKeys = QueryUtil.getQueryKeyDependencies([QUERY_KEY.USER_INVITATIONS], true);
-      await QueryUtil.invalidateQueryKeys(queryKeys);
+      delete AuthenticationManager.getInstance().temporaryToken;
+      const queryKeys = QueryManager.getInstance().getQueryKeyDependencies([QUERY_KEY.USER_INVITATIONS], true);
+      await QueryManager.getInstance().invalidateQueryKeys(queryKeys);
     }
   }, [onClose, openProps.item.token, t]);
 

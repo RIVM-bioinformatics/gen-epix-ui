@@ -1,7 +1,9 @@
 import {
   Alert,
   AlertTitle,
+  Autocomplete,
   Box,
+  Select,
 } from '@mui/material';
 import {
   type ReactElement,
@@ -27,33 +29,13 @@ import type {
 } from '@gen-epix/api-casedb';
 import { CaseDbCaseApi } from '@gen-epix/api-casedb';
 
-import {
-  withDialog,
-  type WithDialogRefMethods,
-  type WithDialogRenderProps,
-} from '../../../hoc/withDialog';
-import { EpiCasesAlreadyInCaseSetWarning } from '../EpiCasesAlreadyInCaseSetWarning';
+import { EpiAddCasesToEventDialogSuccessNotificationMessage } from './EpiAddCasesToEventDialogSuccessNotificationMessage';
+import { WithDialogRenderProps, WithDialogRefMethods, withDialog, useQueryMemo, QueryManager, QUERY_KEY, useEditMutation, DataUtil, DialogAction, TestIdUtil, useArray, FormUtil, ResponseHandler } from '@gen-epix/ui';
+import { useCaseSetOptionsQuery, useCaseSetsMapQuery } from '../../../dataHooks/useCaseSetsQuery';
 import { useDataCollectionsMapQuery } from '../../../dataHooks/useDataCollectionsQuery';
-import { useEditMutation } from '../../../hooks/useEditMutation';
-import { QUERY_KEY } from '../../../models/query';
 import { EpiDashboardStoreContext } from '../../../stores/epiDashboardStore';
 import { CaseUtil } from '../../../utils/CaseUtil';
-import { FormUtil } from '../../../utils/FormUtil';
-import { QueryUtil } from '../../../utils/QueryUtil';
-import { TestIdUtil } from '../../../utils/TestIdUtil';
-import { ResponseHandler } from '../../ui/ResponseHandler';
-import {
-  useCaseSetOptionsQuery,
-  useCaseSetsMapQuery,
-} from '../../../dataHooks/useCaseSetsQuery';
-import type { DialogAction } from '../../ui/Dialog';
-import { Autocomplete } from '../../form/fields/Autocomplete';
-import { Select } from '../../form/fields/Select';
-import { useArray } from '../../../hooks/useArray';
-import { useQueryMemo } from '../../../hooks/useQueryMemo';
-import { DataUtil } from '../../../utils/DataUtil';
-
-import { EpiAddCasesToEventDialogSuccessNotificationMessage } from './EpiAddCasesToEventDialogSuccessNotificationMessage';
+import { EpiCasesAlreadyInCaseSetWarning } from '../EpiCasesAlreadyInCaseSetWarning';
 
 
 export interface EpiAddCasesToEventDialogOpenProps {
@@ -142,10 +124,10 @@ export const EpiAddCasesToEventDialog = withDialog<EpiAddCasesToEventDialogProps
   const { data: caseSetMembers, error: caseSetMembersError, isLoading: isCaseSetMembersLoading } = useQueryMemo({
     enabled: !!caseSetId,
     queryFn: async ({ signal }) => {
-      const response = await CaseDbCaseApi.instance.caseSetMembersPostQuery(caseSetMembersFilter, { signal });
+      const response = await CaseDbCaseApi.getInstance().caseSetMembersPostQuery(caseSetMembersFilter, { signal });
       return response.data;
     },
-    queryKey: QueryUtil.getGenericKey(QUERY_KEY.CASE_SET_MEMBERS, caseSetMembersFilter),
+    queryKey: QueryManager.getInstance().getGenericKey(QUERY_KEY.CASE_SET_MEMBERS, caseSetMembersFilter),
   });
 
   const caseSetDataCollectionLinksFilter = useMemo<CaseDbTypedUuidSetFilter>(() => ({
@@ -157,10 +139,10 @@ export const EpiAddCasesToEventDialog = withDialog<EpiAddCasesToEventDialogProps
   const { data: caseSetDataCollectionLinks, error: caseSetDataCollectionLinksError, isLoading: isCaseSetDataCollectionLinksLoading } = useQueryMemo({
     enabled: !!caseSetId,
     queryFn: async ({ signal }) => {
-      const response = await CaseDbCaseApi.instance.caseSetDataCollectionLinksPostQuery(caseSetDataCollectionLinksFilter, { signal });
+      const response = await CaseDbCaseApi.getInstance().caseSetDataCollectionLinksPostQuery(caseSetDataCollectionLinksFilter, { signal });
       return response.data;
     },
-    queryKey: QueryUtil.getGenericKey(QUERY_KEY.CASE_SET_DATA_COLLECTION_LINKS, caseSetDataCollectionLinksFilter),
+    queryKey: QueryManager.getInstance().getGenericKey(QUERY_KEY.CASE_SET_DATA_COLLECTION_LINKS, caseSetDataCollectionLinksFilter),
   });
 
   const caseSetDataCollections = useMemo(() => {
@@ -190,7 +172,7 @@ export const EpiAddCasesToEventDialog = withDialog<EpiAddCasesToEventDialogProps
   }, [fetchData, onClose]);
 
   const { isMutating: isMutatingItems, mutate: mutateItems } = useEditMutation<CaseDbCaseSetMember[]>({
-    associationQueryKeys: QueryUtil.getQueryKeyDependencies([QUERY_KEY.CASE_SET_MEMBERS], true),
+    associationQueryKeys: QueryManager.getInstance().getQueryKeyDependencies([QUERY_KEY.CASE_SET_MEMBERS], true),
     getErrorNotificationMessage: () => t('Failed add case(s) to {{caseSetName}}', { caseSetName: caseSetsMapQuery.map.get(caseSetId).name }),
     getProgressNotificationMessage: () => t('Adding case(s) to {{caseSetName}}', { caseSetName: caseSetsMapQuery.map.get(caseSetId).name }),
     getSuccessNotificationMessage: () => (
@@ -202,7 +184,7 @@ export const EpiAddCasesToEventDialog = withDialog<EpiAddCasesToEventDialogProps
     onError,
     onSuccess,
     queryFn: async (items: CaseDbCaseSetMember[]) => {
-      await CaseDbCaseApi.instance.caseSetMembersPostSome(items);
+      await CaseDbCaseApi.getInstance().caseSetMembersPostSome(items);
       return items;
     },
   });

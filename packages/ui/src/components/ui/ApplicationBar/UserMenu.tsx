@@ -57,22 +57,22 @@ export const UserMenu = ({ anchorElement, onClose }: UserMenuProps): ReactElemen
   }, []);
 
   const onLogoutConfirmationConfirm = useCallback(() => {
-    LogManager.instance.log([{
+    LogManager.getInstance().log([{
       detail: auth.user,
       level: CommonDbLogLevel.TRACE,
       topic: 'USER_LOGOUT',
     }]);
-    LogManager.instance.flushLog();
+    LogManager.getInstance().flushLog();
     // eslint-disable-next-line @typescript-eslint/no-floating-promises
     auth.signoutRedirect();
   }, [auth]);
 
   const userName = useMemo(() => {
-    return DataUtil.getUserDisplayValue(AuthorizationManager.instance.user, t);
+    return DataUtil.getUserDisplayValue(AuthorizationManager.getInstance().user, t);
   }, [t]);
 
   const userRoles = useMemo(() => {
-    return AuthorizationManager.instance.user?.roles;
+    return AuthorizationManager.getInstance().user?.roles;
   }, []);
 
   return (

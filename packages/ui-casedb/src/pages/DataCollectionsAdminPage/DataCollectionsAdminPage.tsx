@@ -26,19 +26,19 @@ export const DataCollectionsAdminPage = () => {
   const { t } = useTranslation();
 
   const fetchAll = useCallback(async (signal: AbortSignal) => {
-    return (await CaseDbOrganizationApi.instance.dataCollectionsGetAll({ signal }))?.data;
+    return (await CaseDbOrganizationApi.getInstance().dataCollectionsGetAll({ signal }))?.data;
   }, []);
 
   const deleteOne = useCallback(async (item: CaseDbDataCollection) => {
-    return await CaseDbOrganizationApi.instance.dataCollectionsDeleteOne(item.id);
+    return await CaseDbOrganizationApi.getInstance().dataCollectionsDeleteOne(item.id);
   }, []);
 
   const updateOne = useCallback(async (variables: FormFields, item: CaseDbDataCollection) => {
-    return (await CaseDbOrganizationApi.instance.dataCollectionsPutOne(item.id, { id: item.id, ...variables })).data;
+    return (await CaseDbOrganizationApi.getInstance().dataCollectionsPutOne(item.id, { id: item.id, ...variables })).data;
   }, []);
 
   const createOne = useCallback(async (variables: FormFields) => {
-    return (await CaseDbOrganizationApi.instance.dataCollectionsPostOne(variables)).data;
+    return (await CaseDbOrganizationApi.getInstance().dataCollectionsPostOne(variables)).data;
   }, []);
 
   const getName = useCallback((item: FormFields) => {

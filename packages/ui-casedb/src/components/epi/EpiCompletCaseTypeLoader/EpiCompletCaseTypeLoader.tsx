@@ -30,7 +30,7 @@ export const EpiCompletCaseTypeLoader = ({ caseTypeId, children, onCompleteCaseT
     itemId: caseTypeId,
     useQueryOptions: {
       queryFn: async ({ signal }) => {
-        return (await CaseDbCaseApi.instance.completeCaseTypesGetOne(caseTypeId, { signal })).data;
+        return (await CaseDbCaseApi.getInstance().completeCaseTypesGetOne(caseTypeId, { signal })).data;
       },
     },
   });
@@ -47,10 +47,10 @@ export const EpiCompletCaseTypeLoader = ({ caseTypeId, children, onCompleteCaseT
       const perform = async () => {
         try {
           await Promise.all([
-            EpiDataManager.instance.loadConcepts(abortController.signal),
-            EpiDataManager.instance.loadMissingRegions(completeCaseType, abortController.signal),
-            EpiDataManager.instance.loadTreeAlgorithms(completeCaseType, abortController.signal),
-            EpiDataManager.instance.loadOrganizations(abortController.signal),
+            EpiDataManager.getInstance().loadConcepts(abortController.signal),
+            EpiDataManager.getInstance().loadMissingRegions(completeCaseType, abortController.signal),
+            EpiDataManager.getInstance().loadTreeAlgorithms(completeCaseType, abortController.signal),
+            EpiDataManager.getInstance().loadOrganizations(abortController.signal),
           ]);
           setIsSideEffectLoading(false);
         } catch (error) {

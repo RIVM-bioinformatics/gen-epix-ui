@@ -20,17 +20,19 @@ import {
   CaseDbCaseApi,
   CaseDbColType,
 } from '@gen-epix/api-casedb';
+import type { FormFieldDefinition } from '@gen-epix/ui';
+import {
+  ConfigManager,
+  FORM_FIELD_DEFINITION_TYPE,
+  NotificationManager,
+  QUERY_KEY,
+  QueryManager,
+} from '@gen-epix/ui';
 
 import { CaseTypeUtil } from '../CaseTypeUtil';
 import { AbacUtil } from '../AbacUtil';
-import { QueryUtil } from '../../../../ui/src/utils/QueryUtil';
-import { ConfigManager } from '../../../../ui/src/classes/managers/ConfigManager';
-import { NotificationManager } from '../../../../ui/src/classes/managers/NotificationManager';
-import type { CaseTypeRowValue } from '../../models/epi';
-import type { FormFieldDefinition } from '../../../../ui/src/models/form';
-import { FORM_FIELD_DEFINITION_TYPE } from '../../../../ui/src/models/form';
-import { QUERY_KEY } from '../../../../ui/src/models/query';
 import { EpiDataManager } from '../../classes/managers/EpiDataManager';
+import type { CaseTypeRowValue } from '../../models/epi';
 
 export class CaseUtil {
   public static async applyDataCollectionLinks(kwArgs: { caseIds?: string[]; caseSetDataCollectionIds: string[]; caseSetId?: string; caseTypeId: string }): Promise<void> {
@@ -40,7 +42,7 @@ export class CaseUtil {
       throw new Error('Either caseSetId or caseIds must be provided');
     }
 
-    const notificationKey = NotificationManager.instance.showNotification({
+    const notificationKey = NotificationManager.getInstance().showNotification({
       isLoading: true,
       message: t('Applying sharing to the cases'),
       severity: 'info',
@@ -48,14 +50,14 @@ export class CaseUtil {
 
     try {
       if (!caseSetDataCollectionIds.length) {
-        NotificationManager.instance.fulfillNotification(notificationKey, t('Sharing has not been applied to the cases because the event is not shared.'), 'info');
+        NotificationManager.getInstance().fulfillNotification(notificationKey, t('Sharing has not been applied to the cases because the event is not shared.'), 'info');
       }
 
       let normalizedCaseIds: string[] = [];
       if (caseIds) {
         normalizedCaseIds = caseIds;
       } else {
-        normalizedCaseIds = (await CaseDbCaseApi.instance.caseSetMembersPostQuery({
+        normalizedCaseIds = (await CaseDbCaseApi.getInstance().caseSetMembersPostQuery({
           invert: false,
           key: 'case_set_id',
           members: [caseSetId],
@@ -64,11 +66,11 @@ export class CaseUtil {
       }
 
       if (!normalizedCaseIds.length) {
-        NotificationManager.instance.fulfillNotification(notificationKey, t('Sharing has not been applied to the cases because there are no cases in the event.'), 'info');
+        NotificationManager.getInstance().fulfillNotification(notificationKey, t('Sharing has not been applied to the cases because there are no cases in the event.'), 'info');
       }
 
       const dataLinksToAdd: CaseDbCaseDataCollectionLink[] = [];
-      const caseRights = (await CaseDbCaseApi.instance.retrieveCaseRights({
+      const caseRights = (await CaseDbCaseApi.getInstance().retrieveCaseRights({
         case_ids: normalizedCaseIds,
         case_type_id: caseTypeId,
       })).data;
@@ -90,17 +92,17 @@ export class CaseUtil {
       });
 
       if (!dataLinksToAdd.length) {
-        NotificationManager.instance.fulfillNotification(notificationKey, t('Sharing has not been applied to the cases because sharing has already been applied.'), 'info');
+        NotificationManager.getInstance().fulfillNotification(notificationKey, t('Sharing has not been applied to the cases because sharing has already been applied.'), 'info');
         return;
       }
 
       // Batch add the data collection links
-      await CaseDbCaseApi.instance.caseDataCollectionLinksPostSome(dataLinksToAdd);
-      await QueryUtil.invalidateQueryKeys(QueryUtil.getQueryKeyDependencies([QUERY_KEY.CASE_DATA_COLLECTION_LINKS], true));
-      NotificationManager.instance.fulfillNotification(notificationKey, t('Sharing has been applied to the cases'), 'success');
+      await CaseDbCaseApi.getInstance().caseDataCollectionLinksPostSome(dataLinksToAdd);
+      await QueryManager.getInstance().invalidateQueryKeys(QueryManager.getInstance().getQueryKeyDependencies([QUERY_KEY.CASE_DATA_COLLECTION_LINKS], true));
+      NotificationManager.getInstance().fulfillNotification(notificationKey, t('Sharing has been applied to the cases'), 'success');
 
     } catch (_error) {
-      NotificationManager.instance.fulfillNotification(notificationKey, t('Sharing could not be applied to selected cases due to an error.'), 'error');
+      NotificationManager.getInstance().fulfillNotification(notificationKey, t('Sharing could not be applied to selected cases due to an error.'), 'error');
     }
   }
 
@@ -139,13 +141,13 @@ export class CaseUtil {
           } as const satisfies FormFieldDefinition<CaseDbCase['content']>);
           break;
         case CaseDbColType.GEO_REGION:
-          if (EpiDataManager.instance.data.regionsByRegionSetId[refCol.region_set_id]) {
+          if (EpiDataManager.getInstance().data.regionsByRegionSetId[refCol.region_set_id]) {
             acc.push({
               definition: FORM_FIELD_DEFINITION_TYPE.AUTOCOMPLETE,
               label: col.label,
               name: col.id,
-              options: EpiDataManager.instance.data.regionsByRegionSetId[refCol.region_set_id].map(region => ({
-                label: EpiDataManager.instance.data.regionSets[refCol.region_set_id].region_code_as_label ? region.code : region.name,
+              options: EpiDataManager.getInstance().data.regionsByRegionSetId[refCol.region_set_id].map(region => ({
+                label: EpiDataManager.getInstance().data.regionSets[refCol.region_set_id].region_code_as_label ? region.code : region.name,
                 value: region.id,
               })),
             } as const satisfies FormFieldDefinition<CaseDbCase['content']>);
@@ -154,12 +156,12 @@ export class CaseUtil {
         case CaseDbColType.INTERVAL:
         case CaseDbColType.NOMINAL:
         case CaseDbColType.ORDINAL:
-          if (EpiDataManager.instance.data.conceptsBySetId[refCol.concept_set_id]) {
+          if (EpiDataManager.getInstance().data.conceptsBySetId[refCol.concept_set_id]) {
             acc.push({
               definition: FORM_FIELD_DEFINITION_TYPE.AUTOCOMPLETE,
               label: col.label,
               name: col.id,
-              options: EpiDataManager.instance.data.conceptsBySetId[refCol.concept_set_id].map(concept => ({
+              options: EpiDataManager.getInstance().data.conceptsBySetId[refCol.concept_set_id].map(concept => ({
                 label: concept.name,
                 value: concept.id,
               })),
@@ -357,7 +359,7 @@ export class CaseUtil {
   }
 
   private static getConceptMappedValue(raw: string): CaseTypeRowValue {
-    const concept = EpiDataManager.instance.data.conceptsById?.[raw];
+    const concept = EpiDataManager.getInstance().data.conceptsById?.[raw];
     if (!concept) {
       return CaseUtil.getMissingRowValue(raw);
     }
@@ -371,7 +373,7 @@ export class CaseUtil {
   }
 
   private static getOrganizationMappedValue(raw: string): CaseTypeRowValue {
-    const organization = EpiDataManager.instance.data?.organizationsById?.[raw];
+    const organization = EpiDataManager.getInstance().data?.organizationsById?.[raw];
     if (!organization) {
       return CaseUtil.getMissingRowValue(raw);
     }
@@ -385,8 +387,8 @@ export class CaseUtil {
   }
 
   private static getRegionMappedValue(refCol: CaseDbRefCol, raw: string): CaseTypeRowValue {
-    const regionSet = EpiDataManager.instance.data.regionSets[refCol.region_set_id];
-    const region = EpiDataManager.instance.data.regionsById?.[raw];
+    const regionSet = EpiDataManager.getInstance().data.regionSets[refCol.region_set_id];
+    const region = EpiDataManager.getInstance().data.regionsById?.[raw];
     if (!region) {
       return CaseUtil.getMissingRowValue(raw);
     }

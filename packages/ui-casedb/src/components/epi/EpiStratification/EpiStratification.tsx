@@ -39,7 +39,7 @@ import { NestedDropdown } from '../../ui/NestedMenu';
 export const EpiStratification = () => {
   const { t } = useTranslation();
   const epiDashboardStore = use(EpiDashboardStoreContext);
-  const highlightingManager = useMemo(() => EpiHighlightingManager.instance, []);
+  const highlightingManager = useMemo(() => EpiHighlightingManager.getInstance(), []);
 
   const stratification = useStore(epiDashboardStore, (state) => state.stratification);
   const stratify = useStore(epiDashboardStore, (state) => state.stratify);

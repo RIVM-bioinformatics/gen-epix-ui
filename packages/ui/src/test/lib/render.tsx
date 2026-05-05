@@ -15,8 +15,8 @@ import {
 
 ConfigManager.getInstance().config = DemoConfigUtil.createConfig();
 
-const queryQueryManager = QueryClientManager.instance;
-const emotionCacheManager = EmotionCacheManager.instance;
+const queryQueryManager = QueryClientManager.getInstance();
+const emotionCacheManager = EmotionCacheManager.getInstance();
 
 // eslint-disable-next-line react-refresh/only-export-components
 const AllTheProviders = ({ children }: PropsWithChildren<unknown>) => {

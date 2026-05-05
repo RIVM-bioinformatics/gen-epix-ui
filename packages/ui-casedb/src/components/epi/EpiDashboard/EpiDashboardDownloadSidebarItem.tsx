@@ -50,11 +50,11 @@ const EpiDashboardDownloadSidebarItemContent = () => {
         });
       });
     };
-    EpiEventBusManager.instance.addEventListener('onDownloadOptionsChanged', onDownloadOptionsChanged);
-    EpiEventBusManager.instance.emit('onDownloadOptionsRequested');
+    EpiEventBusManager.getInstance().addEventListener('onDownloadOptionsChanged', onDownloadOptionsChanged);
+    EpiEventBusManager.getInstance().emit('onDownloadOptionsRequested');
 
     return () => {
-      EpiEventBusManager.instance.removeEventListener('onDownloadOptionsChanged', onDownloadOptionsChanged);
+      EpiEventBusManager.getInstance().removeEventListener('onDownloadOptionsChanged', onDownloadOptionsChanged);
     };
   }, []);
 

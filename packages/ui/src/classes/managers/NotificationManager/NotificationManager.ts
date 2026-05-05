@@ -6,11 +6,6 @@ import { ConfigManager } from '../ConfigManager';
 import type { Notification } from '../../../models/notification';
 
 export class NotificationManager extends SubscribableAbstract<Notification[]> {
-  public static get instance(): NotificationManager {
-    NotificationManager.__instance = HmrUtil.getHmrSingleton('notificationManager', NotificationManager.__instance, () => new NotificationManager());
-    return NotificationManager.__instance;
-  }
-
   private static __instance: NotificationManager;
 
   private readonly notificationTimeouts: Record<string, ReturnType<typeof setTimeout>>;
@@ -18,6 +13,11 @@ export class NotificationManager extends SubscribableAbstract<Notification[]> {
   private constructor() {
     super(new Subject<Notification[]>([]));
     this.notificationTimeouts = {};
+  }
+
+  public static getInstance(): NotificationManager {
+    NotificationManager.__instance = HmrUtil.getHmrSingleton('notificationManager', NotificationManager.__instance, () => new NotificationManager());
+    return NotificationManager.__instance;
   }
 
   public clearNotification(key: string): void {

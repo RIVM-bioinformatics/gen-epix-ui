@@ -26,19 +26,19 @@ export const CaseSetCategoryAdminPage = () => {
   const { t } = useTranslation();
 
   const fetchAll = useCallback(async (signal: AbortSignal) => {
-    return (await CaseDbCaseApi.instance.caseSetStatusesGetAll({ signal }))?.data;
+    return (await CaseDbCaseApi.getInstance().caseSetStatusesGetAll({ signal }))?.data;
   }, []);
 
   const deleteOne = useCallback(async (item: CaseDbCaseSetCategory) => {
-    return await CaseDbCaseApi.instance.caseSetStatusesDeleteOne(item.id);
+    return await CaseDbCaseApi.getInstance().caseSetStatusesDeleteOne(item.id);
   }, []);
 
   const updateOne = useCallback(async (variables: FormFields, item: CaseDbCaseSetCategory) => {
-    return (await CaseDbCaseApi.instance.caseSetStatusesPutOne(item.id, { id: item.id, ...variables })).data;
+    return (await CaseDbCaseApi.getInstance().caseSetStatusesPutOne(item.id, { id: item.id, ...variables })).data;
   }, []);
 
   const createOne = useCallback(async (variables: FormFields) => {
-    return (await CaseDbCaseApi.instance.caseSetStatusesPostOne(variables)).data;
+    return (await CaseDbCaseApi.getInstance().caseSetStatusesPostOne(variables)).data;
   }, []);
 
   const getName = useCallback((item: FormFields) => {

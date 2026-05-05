@@ -22,11 +22,6 @@ type LogManagerItem = {
 };
 
 export class LogManager {
-  public static get instance(): LogManager {
-    LogManager.__instance = HmrUtil.getHmrSingleton('logManager', LogManager.__instance, () => new LogManager());
-    return LogManager.__instance;
-  }
-
   private static __instance: LogManager;
 
   protected readonly requestMap: Map<string, number>;
@@ -38,6 +33,11 @@ export class LogManager {
     setInterval(() => {
       this.sendLog();
     }, ConfigManager.getInstance().config.log.LOG_INTERVAL_MS);
+  }
+
+  public static getInstance(): LogManager {
+    LogManager.__instance = HmrUtil.getHmrSingleton('logManager', LogManager.__instance, () => new LogManager());
+    return LogManager.__instance;
   }
 
   public flushLog(): void {
@@ -133,7 +133,7 @@ export class LogManager {
   }
 
   private sendLog(): void {
-    if (!this.logItems.length || !AuthenticationManager.instance?.authContextProps?.isAuthenticated) {
+    if (!this.logItems.length || !AuthenticationManager.getInstance()?.authContextProps?.isAuthenticated) {
       return;
     }
     if (document.location.href.includes('accept-invitation')) {

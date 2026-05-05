@@ -60,7 +60,7 @@ export const OrganizationSwitcherDialog = withDialog<OrganizationSwitcherDialogP
 ): ReactElement => {
   const { t } = useTranslation();
   const organizationOptionsQuery = useOrganizationOptionsQuery();
-  const user = AuthorizationManager.instance.user;
+  const user = AuthorizationManager.getInstance().user;
   const [isChanging, setIsChanging] = useState(false);
   const [newOrganizationId, setNewOrganizationId] = useState<string>(null);
 
@@ -81,7 +81,7 @@ export const OrganizationSwitcherDialog = withDialog<OrganizationSwitcherDialogP
   const { handleSubmit } = formMethods;
 
   const onRefreshPageClick = useCallback(() => {
-    WindowManager.instance.window.location.reload();
+    WindowManager.getInstance().window.location.reload();
   }, []);
 
   const onFormSubmit = useCallback((formValues: FormFields): void => {
@@ -89,7 +89,7 @@ export const OrganizationSwitcherDialog = withDialog<OrganizationSwitcherDialogP
       onClose();
     }
     const perform = async () => {
-      const notificationKey = NotificationManager.instance.showNotification({
+      const notificationKey = NotificationManager.getInstance().showNotification({
         isLoading: true,
         message: t`Changing organization...`,
         severity: 'info',
@@ -101,9 +101,9 @@ export const OrganizationSwitcherDialog = withDialog<OrganizationSwitcherDialogP
         }, {});
         setNewOrganizationId(formValues.organization_id);
         setIsChanging(false);
-        NotificationManager.instance.fulfillNotification(notificationKey, t`Successfully changed organization.`, 'success');
+        NotificationManager.getInstance().fulfillNotification(notificationKey, t`Successfully changed organization.`, 'success');
       } catch (_error: unknown) {
-        NotificationManager.instance.fulfillNotification(notificationKey, t`Could not change organization.`, 'error');
+        NotificationManager.getInstance().fulfillNotification(notificationKey, t`Could not change organization.`, 'error');
         onClose();
       }
     };

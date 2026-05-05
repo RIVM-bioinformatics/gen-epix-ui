@@ -23,7 +23,7 @@ type BreadcrumbProps = {
 };
 
 export const Breadcrumb = ({ isLast, item }: BreadcrumbProps): ReactElement => {
-  const breadcrumbsTitles = useSubscribable(BreadcrumbManager.instance);
+  const breadcrumbsTitles = useSubscribable(BreadcrumbManager.getInstance());
 
   const title = useMemo(() => {
     if (breadcrumbsTitles[item.handle.title]) {
@@ -34,7 +34,7 @@ export const Breadcrumb = ({ isLast, item }: BreadcrumbProps): ReactElement => {
 
   const onLinkClick = useCallback(async (event: ReactMouseEvent<HTMLAnchorElement>) => {
     event.preventDefault();
-    await RouterManager.instance.router.navigate(item.pathname);
+    await RouterManager.getInstance().router.navigate(item.pathname);
   }, [item.pathname]);
 
   if (!isLast) {

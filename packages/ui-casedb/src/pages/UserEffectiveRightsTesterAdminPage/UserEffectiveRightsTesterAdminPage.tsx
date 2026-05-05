@@ -73,7 +73,7 @@ export const UserEffectiveRightsTesterAdminPage = () => {
     itemId: userId,
     useQueryOptions: {
       queryFn: async ({ signal }) => {
-        const response = await CaseDbOrganizationApi.instance.usersGetOne(userId, { signal });
+        const response = await CaseDbOrganizationApi.getInstance().usersGetOne(userId, { signal });
         return response.data;
       },
     },

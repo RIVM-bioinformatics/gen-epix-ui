@@ -12,12 +12,12 @@ import { TestIdUtil } from '../../../utils/TestIdUtil';
 import { NotificationItem } from './NotificationItem';
 
 export const NotificationsStack = (): ReactElement => {
-  const visibleNotifications = useSubscribable(NotificationManager.instance, {
+  const visibleNotifications = useSubscribable(NotificationManager.getInstance(), {
     select: (notifications) => notifications.filter(notification => notification.visible),
   });
 
   const onNotificationItemClose = useCallback((key: string) => {
-    NotificationManager.instance.hideNotification(key);
+    NotificationManager.getInstance().hideNotification(key);
   }, []);
 
   return (

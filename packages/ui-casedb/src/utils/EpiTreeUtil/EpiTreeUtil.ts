@@ -819,7 +819,7 @@ export class EpiTreeUtil {
       return refCol.col_type === CaseDbColType.GENETIC_DISTANCE;
     });
 
-    const sortedTreeAlgorithmCodes = EpiDataManager.instance.data.treeAlgorithms.map(x => x.code);
+    const sortedTreeAlgorithmCodes = EpiDataManager.getInstance().data.treeAlgorithms.map(x => x.code);
 
     geneticDistanceCols.forEach(col => {
       const refCol = completeCaseType.ref_cols[col.ref_col_id];

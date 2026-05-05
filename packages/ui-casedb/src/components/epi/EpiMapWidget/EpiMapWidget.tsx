@@ -42,27 +42,19 @@ import {
   CaseDbDimType,
   CaseDbGeoApi,
 } from '@gen-epix/api-casedb';
-
-import { EpiWidget } from '../EpiWidget';
-import type { EpiContextMenuConfigWithPosition } from '../EpiContextMenu';
-import { EpiContextMenu } from '../EpiContextMenu';
-import { EpiWidgetUnavailable } from '../EpiWidgetUnavailable';
-import { ConfigManager } from '../../../classes/managers/ConfigManager';
+import { UnwrapArray, useDimensions, useQueryMemo, QueryManager, QUERY_KEY, ConfigManager, MenuItemData, DownloadUtil } from '@gen-epix/ui';
+import { EpiDataManager } from '../../../classes/managers/EpiDataManager';
+import { EpiEventBusManager } from '../../../classes/managers/EpiEventBusManager';
 import { EpiHighlightingManager } from '../../../classes/managers/EpiHighlightingManager';
-import { useDimensions } from '../../../hooks/useDimensions';
-import { EPI_ZONE } from '../../../../../ui-casedb/src/models/epi';
-import type { UnwrapArray } from '../../../models/generic';
-import type { MenuItemData } from '../../../models/nestedMenu';
-import { QUERY_KEY } from '../../../models/query';
+import { EPI_ZONE } from '../../../models/epi';
 import { EpiDashboardStoreContext } from '../../../stores/epiDashboardStore';
 import { CaseTypeUtil } from '../../../utils/CaseTypeUtil';
 import { EpiLineListUtil } from '../../../utils/EpiLineListUtil';
 import { EpiMapUtil } from '../../../utils/EpiMapUtil';
-import { QueryUtil } from '../../../utils/QueryUtil';
-import { EpiEventBusManager } from '../../../classes/managers/EpiEventBusManager';
-import { DownloadUtil } from '../../../utils/DownloadUtil';
-import { useQueryMemo } from '../../../hooks/useQueryMemo';
-import { EpiDataManager } from '../../../classes/managers/EpiDataManager';
+import { EpiContextMenuConfigWithPosition, EpiContextMenu } from '../EpiContextMenu';
+import { EpiWidget } from '../EpiWidget';
+import { EpiWidgetUnavailable } from '../EpiWidgetUnavailable';
+
 
 echarts.use([GeoComponent, TooltipComponent, LegendComponent, CanvasRenderer, PieChart]);
 
@@ -90,7 +82,7 @@ export const EpiMapWidget = () => {
   const containerRef = useRef<HTMLDivElement>(null);
   const chartRef = useRef<EChartsReact>(null);
   const { dimensions: { height, width } } = useDimensions(containerRef);
-  const highlightingManager = useMemo(() => EpiHighlightingManager.instance, []);
+  const highlightingManager = useMemo(() => EpiHighlightingManager.getInstance(), []);
 
   const epiDashboardStore = use(EpiDashboardStoreContext);
   const stratification = useStore(epiDashboardStore, (state) => state.stratification);
@@ -107,16 +99,16 @@ export const EpiMapWidget = () => {
     return {
       invert: false,
       key: 'region_set_id',
-      members: EpiDataManager.instance.getRegionSetIds(completeCaseType),
+      members: EpiDataManager.getInstance().getRegionSetIds(completeCaseType),
       type: 'UUID_SET',
     };
   }, [completeCaseType]);
 
   const { data: regionSetShapes, error: regionSetShapesError, isLoading: isRegionSetShapesLoading } = useQueryMemo({
     queryFn: async ({ signal }) => {
-      return (await CaseDbGeoApi.instance.regionSetShapesPostQuery(regionSetShapesFilter, { signal })).data;
+      return (await CaseDbGeoApi.getInstance().regionSetShapesPostQuery(regionSetShapesFilter, { signal })).data;
     },
-    queryKey: QueryUtil.getGenericKey(QUERY_KEY.REGION_SET_SHAPES, regionSetShapesFilter),
+    queryKey: QueryManager.getInstance().getGenericKey(QUERY_KEY.REGION_SET_SHAPES, regionSetShapesFilter),
     retry: false,
     select: (shapes) => Object.fromEntries(shapes.map(regionSetShape => [regionSetShape.region_set_id, regionSetShape])),
   });
@@ -142,7 +134,7 @@ export const EpiMapWidget = () => {
       return [];
     }
     const regionSetId = completeCaseType.ref_cols[col.ref_col_id].region_set_id;
-    return EpiDataManager.instance.data.regionsByRegionSetId[regionSetId];
+    return EpiDataManager.getInstance().data.regionsByRegionSetId[regionSetId];
   }, [col, completeCaseType.ref_cols]);
 
   const lineListCaseCount = useMemo(() => {
@@ -469,7 +461,7 @@ export const EpiMapWidget = () => {
 
   useEffect(() => {
     const emitDownloadOptions = () => {
-      EpiEventBusManager.instance.emit('onDownloadOptionsChanged', {
+      EpiEventBusManager.getInstance().emit('onDownloadOptionsChanged', {
         disabled: !shouldShowMap,
         items: [
           {
@@ -488,14 +480,14 @@ export const EpiMapWidget = () => {
 
 
     emitDownloadOptions();
-    EpiEventBusManager.instance.addEventListener('onDownloadOptionsRequested', emitDownloadOptions);
+    EpiEventBusManager.getInstance().addEventListener('onDownloadOptionsRequested', emitDownloadOptions);
     return () => {
-      EpiEventBusManager.instance.emit('onDownloadOptionsChanged', {
+      EpiEventBusManager.getInstance().emit('onDownloadOptionsChanged', {
         items: null,
         zone: EPI_ZONE.MAP,
         zoneLabel: t`Map`,
       });
-      EpiEventBusManager.instance.removeEventListener('onDownloadOptionsRequested', emitDownloadOptions);
+      EpiEventBusManager.getInstance().removeEventListener('onDownloadOptionsRequested', emitDownloadOptions);
     };
   }, [completeCaseType, shouldShowMap, t]);
 

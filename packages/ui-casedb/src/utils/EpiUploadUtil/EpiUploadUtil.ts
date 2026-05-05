@@ -35,11 +35,11 @@ import {
   CaseDbSeqFileFormat,
   CaseDbUploadAction,
 } from '@gen-epix/api-casedb';
+import { QueryManager } from '@gen-epix/ui';
 
 import { CaseTypeUtil } from '../CaseTypeUtil';
 import { CaseUtil } from '../CaseUtil';
 import { DATE_FORMAT } from '../../../../ui/src/data/date';
-import { QueryUtil } from '../../../../ui/src/utils/QueryUtil';
 import { QUERY_KEY } from '../../../../ui/src/models/query';
 import type {
   AutoCompleteOption,
@@ -106,7 +106,7 @@ export class EpiUploadUtil {
     } = kwArgs;
     const { col: mappedSampleIdCol, sampleIdentifierIssuerId } = mappedColumns.find(mc => mc.col.id === sampleIdColId);
 
-    return (await CaseDbCaseApi.instance.uploadCases({
+    return (await CaseDbCaseApi.getInstance().uploadCases({
       case_batch: {
         cases: validatedCasesWithGeneratedId.map((vc, index) => {
           const caseId = validatedCases[index].id ?? undefined;
@@ -203,7 +203,7 @@ export class EpiUploadUtil {
       await EpiUploadUtil.uploadFilesForCases({ ...kwArgs, caseBatchUploadResult, endPercentage: 99, startPercentage: 1 });
       onProgress(100, t('Upload complete.'));
 
-      await QueryUtil.invalidateQueryKeys(QueryUtil.getQueryKeyDependencies([QUERY_KEY.CASES], true));
+      await QueryManager.getInstance().invalidateQueryKeys(QueryManager.getInstance().getQueryKeyDependencies([QUERY_KEY.CASES], true));
       onComplete();
     } catch (error) {
       onError(error instanceof Error ? error : new Error('Unknown error occurred during upload'));
@@ -809,7 +809,7 @@ export class EpiUploadUtil {
         if (file) {
           const fileSize = file.size;
           const base64Data = await EpiUploadUtil.readFileAsBase64(file);
-          await CaseDbCaseApi.instance.createFileForSeq(caseSeqToBeUploaded.caseId, caseSeqToBeUploaded.colId, {
+          await CaseDbCaseApi.getInstance().createFileForSeq(caseSeqToBeUploaded.caseId, caseSeqToBeUploaded.colId, {
             file_compression: FileUtil.getFileCompressionFromFileName(caseSeqToBeUploaded.fileName),
             file_content: base64Data,
             file_format: CaseDbSeqFileFormat.FASTA,
@@ -831,7 +831,7 @@ export class EpiUploadUtil {
         if (file) {
           const fileSize = file.size;
           const base64Data = await EpiUploadUtil.readFileAsBase64(file);
-          await CaseDbCaseApi.instance.createFileForReadSet(caseReadSetToBeUploaded.caseId, caseReadSetToBeUploaded.colId, {
+          await CaseDbCaseApi.getInstance().createFileForReadSet(caseReadSetToBeUploaded.caseId, caseReadSetToBeUploaded.colId, {
             file_compression: FileUtil.getFileCompressionFromFileName(caseReadSetToBeUploaded.fileName),
             file_content: base64Data,
             file_format: CaseDbReadsFileFormat.FASTQ,

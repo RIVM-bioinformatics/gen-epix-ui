@@ -83,15 +83,15 @@ export const UserInvitationsAdminPage = () => {
   const userInvitationConsumeDialogRef = useRef<UserInvitationConsumeDialogRefMethods>(null);
 
   const fetchAll = useCallback(async (signal: AbortSignal) => {
-    return (await CaseDbOrganizationApi.instance.userInvitationsGetAll({ signal }))?.data;
+    return (await CaseDbOrganizationApi.getInstance().userInvitationsGetAll({ signal }))?.data;
   }, []);
 
   const deleteOne = useCallback(async (item: CaseDbUserInvitation) => {
-    return await CaseDbOrganizationApi.instance.userInvitationsDeleteOne(item.id);
+    return await CaseDbOrganizationApi.getInstance().userInvitationsDeleteOne(item.id);
   }, []);
 
   const createOne = useCallback(async (variables: FormFields) => {
-    return (await CaseDbOrganizationApi.instance.inviteUser({
+    return (await CaseDbOrganizationApi.getInstance().inviteUser({
       ...variables,
     })).data;
   }, []);

@@ -37,7 +37,7 @@ export const RegionSetShapesAdminPage = () => {
   const loadables = useArray([regionSetsMapQuery]);
 
   const fetchAll = useCallback(async (signal: AbortSignal) => {
-    return (await CaseDbGeoApi.instance.regionSetShapesGetAll({ signal }))?.data;
+    return (await CaseDbGeoApi.getInstance().regionSetShapesGetAll({ signal }))?.data;
   }, []);
 
   const fetchAllSelect = useCallback((regionSetShapes: CaseDbRegionSetShape[]) => {
@@ -45,11 +45,11 @@ export const RegionSetShapesAdminPage = () => {
   }, [regionSetId]);
 
   const deleteOne = useCallback(async (item: CaseDbRegionSetShape) => {
-    return await CaseDbGeoApi.instance.regionSetShapesDeleteOne(item.id);
+    return await CaseDbGeoApi.getInstance().regionSetShapesDeleteOne(item.id);
   }, []);
 
   const updateOne = useCallback(async (variables: FormFields, item: CaseDbRegionSetShape) => {
-    return (await CaseDbGeoApi.instance.regionSetShapesPutOne(item.id, {
+    return (await CaseDbGeoApi.getInstance().regionSetShapesPutOne(item.id, {
       ...variables,
       id: item.id,
       region_set_id: regionSetId,
@@ -57,7 +57,7 @@ export const RegionSetShapesAdminPage = () => {
   }, [regionSetId]);
 
   const createOne = useCallback(async (variables: FormFields) => {
-    return (await CaseDbGeoApi.instance.regionSetShapesPostOne({
+    return (await CaseDbGeoApi.getInstance().regionSetShapesPostOne({
       ...variables,
       region_set_id: regionSetId,
     })).data;

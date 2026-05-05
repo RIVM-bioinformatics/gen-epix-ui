@@ -87,7 +87,7 @@ export const ColsAdminPage = () => {
   }, [dimId, dimMapQuery.map, caseTypeId]);
 
   const fetchAll = useCallback(async (signal: AbortSignal) => {
-    return (await CaseDbCaseApi.instance.colsGetAll({ signal }))?.data;
+    return (await CaseDbCaseApi.getInstance().colsGetAll({ signal }))?.data;
   }, []);
 
   const fetchAllSelect = useCallback((cols: CaseDbCol[]) => {
@@ -98,15 +98,15 @@ export const ColsAdminPage = () => {
   }, [dimId]);
 
   const deleteOne = useCallback(async (item: CaseDbCol) => {
-    return await CaseDbCaseApi.instance.colsDeleteOne(item.id);
+    return await CaseDbCaseApi.getInstance().colsDeleteOne(item.id);
   }, []);
 
   const updateOne = useCallback(async (variables: FormFields, item: CaseDbCol) => {
-    return (await CaseDbCaseApi.instance.colsPutOne(item.id, { id: item.id, ...variables })).data;
+    return (await CaseDbCaseApi.getInstance().colsPutOne(item.id, { id: item.id, ...variables })).data;
   }, []);
 
   const createOne = useCallback(async (variables: FormFields) => {
-    return (await CaseDbCaseApi.instance.colsPostOne(variables)).data;
+    return (await CaseDbCaseApi.getInstance().colsPostOne(variables)).data;
   }, []);
 
   const getName = useCallback((item: CaseDbCol) => {

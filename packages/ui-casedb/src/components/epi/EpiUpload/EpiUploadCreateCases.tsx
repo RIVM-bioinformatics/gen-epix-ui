@@ -57,13 +57,13 @@ export const EpiUploadCreateCases = () => {
 
     const abort = () => {
       abortController.abort();
-      InactivityManager.instance.resume();
+      InactivityManager.getInstance().resume();
     };
 
     if (!isUploadStarted) {
       return abort;
     }
-    InactivityManager.instance.pause();
+    InactivityManager.getInstance().pause();
 
     EpiUploadUtil.createCasesAndUploadFiles({
       assemblyProtocolId: store.getState().assemblyProtocolId,
@@ -112,7 +112,7 @@ export const EpiUploadCreateCases = () => {
 
   const onGotoCasesButtonClick = useCallback(async () => {
     const link = CaseTypeUtil.createCaseTypeLink(completeCaseType);
-    await RouterManager.instance.router.navigate(link);
+    await RouterManager.getInstance().router.navigate(link);
   }, [completeCaseType]);
 
   let content: ReactNode;

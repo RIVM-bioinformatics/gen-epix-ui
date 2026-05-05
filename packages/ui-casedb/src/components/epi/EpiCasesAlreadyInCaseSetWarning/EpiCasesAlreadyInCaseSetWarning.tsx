@@ -22,13 +22,9 @@ import {
 } from '@gen-epix/api-casedb';
 
 import { EpiCaseSummary } from '../EpiCaseSummary';
-import { LogManager } from '../../../classes/managers/LogManager';
-import { QUERY_KEY } from '../../../models/query';
-import { QueryUtil } from '../../../utils/QueryUtil';
-import { ResponseHandler } from '../../ui/ResponseHandler';
-import { useQueryMemo } from '../../../hooks/useQueryMemo';
 
 import { EpiCasesAlreadyInCaseSetWarningCaseSetLink } from './EpiCasesAlreadyInCaseSetWarningCaseSetLink';
+import { useQueryMemo, QueryManager, QUERY_KEY, LogManager, ResponseHandler } from '@gen-epix/ui';
 
 export type EpiCasesAlreadyInCaseSetWarningProps = {
   readonly cases: CaseDbCase[];
@@ -49,10 +45,10 @@ export const EpiCasesAlreadyInCaseSetWarning = ({ cases }: EpiCasesAlreadyInCase
   }, [cases]);
   const { data: caseSetMembers, error: caseSetMembersError, isLoading: isCaseSetMembersLoading } = useQueryMemo({
     queryFn: async ({ signal }) => {
-      const response = await CaseDbCaseApi.instance.caseSetMembersPostQuery(caseSetMembersFilter, { signal });
+      const response = await CaseDbCaseApi.getInstance().caseSetMembersPostQuery(caseSetMembersFilter, { signal });
       return response.data;
     },
-    queryKey: QueryUtil.getGenericKey(QUERY_KEY.CASE_SET_MEMBERS, caseSetMembersFilter),
+    queryKey: QueryManager.getInstance().getGenericKey(QUERY_KEY.CASE_SET_MEMBERS, caseSetMembersFilter),
   });
 
   // Load all case sets for the given case set members
@@ -67,10 +63,10 @@ export const EpiCasesAlreadyInCaseSetWarning = ({ cases }: EpiCasesAlreadyInCase
   const { data: caseSets, error: caseSetsError, isLoading: isCaseSetsLoading } = useQueryMemo({
     enabled: existingCaseSetsFilter.members.length > 0,
     queryFn: async ({ signal }) => {
-      const response = await CaseDbCaseApi.instance.caseSetsPostQuery(existingCaseSetsFilter, { signal });
+      const response = await CaseDbCaseApi.getInstance().caseSetsPostQuery(existingCaseSetsFilter, { signal });
       return response.data;
     },
-    queryKey: QueryUtil.getGenericKey(QUERY_KEY.CASE_SETS, existingCaseSetsFilter),
+    queryKey: QueryManager.getInstance().getGenericKey(QUERY_KEY.CASE_SETS, existingCaseSetsFilter),
   });
 
   const caseSetsByCase = useMemo(() => {
@@ -83,7 +79,7 @@ export const EpiCasesAlreadyInCaseSetWarning = ({ cases }: EpiCasesAlreadyInCase
       const caseItem = cases.find(x => x.id === member.case_id);
       const caseSetItem = caseSets.find(x => x.id === member.case_set_id);
       if (!caseItem || !caseSetItem) {
-        LogManager.instance.log([
+        LogManager.getInstance().log([
           {
             detail: member,
             level: CaseDbLogLevel.DEBUG,

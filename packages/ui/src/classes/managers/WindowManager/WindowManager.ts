@@ -1,11 +1,6 @@
 import { HmrUtil } from '../../../utils/HmrUtil';
 
 export class WindowManager {
-  public static get instance(): WindowManager {
-    WindowManager.__instance = HmrUtil.getHmrSingleton('windowManager', WindowManager.__instance, () => new WindowManager());
-    return WindowManager.__instance;
-  }
-
   private static __instance: WindowManager;
 
   public get body(): HTMLBodyElement {
@@ -22,5 +17,10 @@ export class WindowManager {
 
   private constructor() {
     //
+  }
+
+  public static getInstance(): WindowManager {
+    WindowManager.__instance = HmrUtil.getHmrSingleton('windowManager', WindowManager.__instance, () => new WindowManager());
+    return WindowManager.__instance;
   }
 }

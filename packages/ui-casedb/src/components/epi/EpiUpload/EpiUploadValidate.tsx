@@ -65,7 +65,7 @@ export const EpiUploadValidateInner = () => {
     enabled: mappedColumns.length > 0 && casesForVerification.length > 0,
     gcTime: Infinity,
     queryFn: async ({ signal }) => {
-      const response = await CaseDbCaseApi.instance.uploadCases({
+      const response = await CaseDbCaseApi.getInstance().uploadCases({
         case_batch: {
           cases: casesForVerification,
         },

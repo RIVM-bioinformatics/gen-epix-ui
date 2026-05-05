@@ -43,19 +43,19 @@ export const OrganizationAccessCasePoliciesAdminPage = () => {
   const loadables = useArray([nameFactory, organizationOptionsQuery, dataCollectionOptionsQuery, colSetOptionsQuery, caseTypeSetOptionsQuery]);
 
   const fetchAll = useCallback(async (signal: AbortSignal) => {
-    return (await CaseDbAbacApi.instance.organizationAccessCasePoliciesGetAll({ signal }))?.data;
+    return (await CaseDbAbacApi.getInstance().organizationAccessCasePoliciesGetAll({ signal }))?.data;
   }, []);
 
   const deleteOne = useCallback(async (item: CaseDbOrganizationAccessCasePolicy) => {
-    return await CaseDbAbacApi.instance.organizationAccessCasePoliciesDeleteOne(item.id);
+    return await CaseDbAbacApi.getInstance().organizationAccessCasePoliciesDeleteOne(item.id);
   }, []);
 
   const updateOne = useCallback(async (variables: FormFields, item: CaseDbOrganizationAccessCasePolicy) => {
-    return (await CaseDbAbacApi.instance.organizationAccessCasePoliciesPutOne(item.id, { id: item.id, ...variables })).data;
+    return (await CaseDbAbacApi.getInstance().organizationAccessCasePoliciesPutOne(item.id, { id: item.id, ...variables })).data;
   }, []);
 
   const createOne = useCallback(async (variables: FormFields) => {
-    return (await CaseDbAbacApi.instance.organizationAccessCasePoliciesPostOne(variables)).data;
+    return (await CaseDbAbacApi.getInstance().organizationAccessCasePoliciesPostOne(variables)).data;
   }, []);
 
   const getName = useCallback((item: CaseDbOrganizationAccessCasePolicy) => {

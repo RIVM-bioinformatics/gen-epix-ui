@@ -8,11 +8,6 @@ import { HmrUtil } from '../../../utils/HmrUtil';
 import { PageEventBusManager } from '../PageEventBusManager';
 
 export class AuthorizationManager {
-  public static get instance(): AuthorizationManager {
-    AuthorizationManager.__instance = HmrUtil.getHmrSingleton('authorizationManager', AuthorizationManager.__instance, () => new AuthorizationManager());
-    return AuthorizationManager.__instance;
-  }
-
   private static __instance: AuthorizationManager;
 
   public set apiPermissions(permissions: CommonDbApiPermission[]) {
@@ -24,7 +19,7 @@ export class AuthorizationManager {
   }
 
   public set user(user: CommonDbUser) {
-    PageEventBusManager.instance.emit('changeUser', user);
+    PageEventBusManager.getInstance().emit('changeUser', user);
     this.__user = user;
   }
 
@@ -36,9 +31,14 @@ export class AuthorizationManager {
 
   private __user: CommonDbUser;
 
-
   private constructor() {
     //
+  }
+
+
+  public static getInstance(): AuthorizationManager {
+    AuthorizationManager.__instance = HmrUtil.getHmrSingleton('authorizationManager', AuthorizationManager.__instance, () => new AuthorizationManager());
+    return AuthorizationManager.__instance;
   }
 
   public doesUserHavePermission<TApiPermission = CommonDbApiPermission>(permissions: NoInfer<TApiPermission>[]): boolean {

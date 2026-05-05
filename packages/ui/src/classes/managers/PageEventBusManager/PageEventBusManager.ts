@@ -23,11 +23,6 @@ type Page = {
 };
 
 export class PageEventBusManager extends EventBusAbstract<EpiEvent> {
-  public static get instance(): PageEventBusManager {
-    PageEventBusManager.__instance = HmrUtil.getHmrSingleton('pageEventBusManager', PageEventBusManager.__instance, () => new PageEventBusManager());
-    return PageEventBusManager.__instance;
-  }
-
   private static __instance: PageEventBusManager;
 
   private lastPageEventPayload: string = null;
@@ -35,6 +30,11 @@ export class PageEventBusManager extends EventBusAbstract<EpiEvent> {
   private constructor() {
     super();
     this.setupClickEventListener();
+  }
+
+  public static getInstance(): PageEventBusManager {
+    PageEventBusManager.__instance = HmrUtil.getHmrSingleton('pageEventBusManager', PageEventBusManager.__instance, () => new PageEventBusManager());
+    return PageEventBusManager.__instance;
   }
 
   public emit<TEventName extends keyof EpiEvent>(eventName: TEventName, payload?: EpiEvent[TEventName]): void {
@@ -55,7 +55,7 @@ export class PageEventBusManager extends EventBusAbstract<EpiEvent> {
 
   public getPage(): Page {
     return {
-      location: WindowManager.instance.window.location,
+      location: WindowManager.getInstance().window.location,
       pageName: document.querySelector('[data-page-container]')?.getAttribute('data-testid'),
     };
   }
@@ -64,7 +64,7 @@ export class PageEventBusManager extends EventBusAbstract<EpiEvent> {
     if (!ConfigManager.getInstance().config.enablePageEvents) {
       return;
     }
-    WindowManager.instance.window.addEventListener('click', (event: Event): void => {
+    WindowManager.getInstance().window.addEventListener('click', (event: Event): void => {
 
       const closestButton = (event.target as HTMLElement).closest('button');
       const closestLink = (event.target as HTMLElement).closest('a');

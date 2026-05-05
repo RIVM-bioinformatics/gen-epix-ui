@@ -20,16 +20,18 @@ import {
 } from '@mui/material';
 import type { CaseDbCase } from '@gen-epix/api-casedb';
 import { CaseDbCaseApi } from '@gen-epix/api-casedb';
+import type { FormFieldDefinition } from '@gen-epix/ui';
+import {
+  FORM_FIELD_DEFINITION_TYPE,
+  FormUtil,
+  GenericForm,
+  NotificationManager,
+  QUERY_KEY,
+  QueryManager,
+  Spinner,
+} from '@gen-epix/ui';
 
 import { useCaseAbacContext } from '../../../context/caseAbac';
-import { NotificationManager } from '../../../classes/managers/NotificationManager';
-import type { FormFieldDefinition } from '../../../models/form';
-import { FORM_FIELD_DEFINITION_TYPE } from '../../../models/form';
-import { QUERY_KEY } from '../../../models/query';
-import { FormUtil } from '../../../utils/FormUtil';
-import { QueryUtil } from '../../../utils/QueryUtil';
-import { GenericForm } from '../../form/helpers/GenericForm';
-import { Spinner } from '../../ui/Spinner';
 
 export type EpiCaseSharingFormProps = {
   readonly epiCase: CaseDbCase;
@@ -79,32 +81,32 @@ export const EpiCaseSharingForm = ({ epiCase, formId, onFinish, onIsSavingChange
     const perform = async () => {
       setIsSaving(true);
       onIsSavingChange(true);
-      const queryKeys = QueryUtil.getQueryKeyDependencies([QUERY_KEY.CASE_DATA_COLLECTION_LINKS], true);
-      const notificationKey = NotificationManager.instance.showNotification({
+      const queryKeys = QueryManager.getInstance().getQueryKeyDependencies([QUERY_KEY.CASE_DATA_COLLECTION_LINKS], true);
+      const notificationKey = NotificationManager.getInstance().showNotification({
         isLoading: true,
         message: t('Saving case data collections'),
         severity: 'info',
       });
       try {
-        await QueryUtil.cancelQueries(queryKeys);
+        await QueryManager.getInstance().cancelQueries(queryKeys);
         const rights = caseAbacContext?.rights?.[0];
         const dataCollectionIdsToAdd = difference(dataCollectionIds, rights.shared_in_data_collection_ids);
         const dataCollectionIdsToRemove = difference(rights.shared_in_data_collection_ids, dataCollectionIds);
 
         if (dataCollectionIdsToAdd.length > 0) {
-          await CaseDbCaseApi.instance.caseDataCollectionLinksPostSome(dataCollectionIdsToAdd.map(data_collection_id => ({
+          await CaseDbCaseApi.getInstance().caseDataCollectionLinksPostSome(dataCollectionIdsToAdd.map(data_collection_id => ({
             case_id: epiCase.id,
             data_collection_id,
           })));
         }
         if (dataCollectionIdsToRemove.length > 0) {
-          await CaseDbCaseApi.instance.caseDataCollectionLinksDeleteSome(caseAbacContext.itemDataCollectionLinks[0]?.filter(x => dataCollectionIdsToRemove.includes(x.data_collection_id)).map(x => x.id).join(','));
+          await CaseDbCaseApi.getInstance().caseDataCollectionLinksDeleteSome(caseAbacContext.itemDataCollectionLinks[0]?.filter(x => dataCollectionIdsToRemove.includes(x.data_collection_id)).map(x => x.id).join(','));
         }
-        NotificationManager.instance.fulfillNotification(notificationKey, t('Successfully saved case data collections.'), 'success');
+        NotificationManager.getInstance().fulfillNotification(notificationKey, t('Successfully saved case data collections.'), 'success');
       } catch (_error) {
-        NotificationManager.instance.fulfillNotification(notificationKey, t('Could not save case data collections.'), 'error');
+        NotificationManager.getInstance().fulfillNotification(notificationKey, t('Could not save case data collections.'), 'error');
       } finally {
-        await QueryUtil.invalidateQueryKeys(queryKeys);
+        await QueryManager.getInstance().invalidateQueryKeys(queryKeys);
         setIsSaving(false);
         onIsSavingChange(false);
         onFinish();

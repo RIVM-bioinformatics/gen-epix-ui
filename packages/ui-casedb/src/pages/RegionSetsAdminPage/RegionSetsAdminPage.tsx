@@ -32,19 +32,19 @@ export const RegionSetsAdminPage = () => {
   const { t } = useTranslation();
 
   const fetchAll = useCallback(async (signal: AbortSignal) => {
-    return (await CaseDbGeoApi.instance.regionSetsGetAll({ signal }))?.data;
+    return (await CaseDbGeoApi.getInstance().regionSetsGetAll({ signal }))?.data;
   }, []);
 
   const deleteOne = useCallback(async (item: CaseDbRegionSet) => {
-    return await CaseDbGeoApi.instance.regionSetsDeleteOne(item.id);
+    return await CaseDbGeoApi.getInstance().regionSetsDeleteOne(item.id);
   }, []);
 
   const updateOne = useCallback(async (variables: FormFields, item: CaseDbRegionSet) => {
-    return (await CaseDbGeoApi.instance.regionSetsPutOne(item.id, { id: item.id, ...variables })).data;
+    return (await CaseDbGeoApi.getInstance().regionSetsPutOne(item.id, { id: item.id, ...variables })).data;
   }, []);
 
   const createOne = useCallback(async (variables: FormFields) => {
-    return (await CaseDbGeoApi.instance.regionSetsPostOne(variables)).data;
+    return (await CaseDbGeoApi.getInstance().regionSetsPostOne(variables)).data;
   }, []);
 
   const getName = useCallback((item: CaseDbRegionSet) => {
@@ -99,7 +99,7 @@ export const RegionSetsAdminPage = () => {
   const subPages = useMemo<CrudPageSubPage<CaseDbRegionSet>[]>(() => {
     const pages: CrudPageSubPage<CaseDbRegionSet>[] = [];
 
-    if (AuthorizationManager.instance.doesUserHavePermission([
+    if (AuthorizationManager.getInstance().doesUserHavePermission([
       { command_name: CaseDbCommandName.RegionCrudCommand, permission_type: CaseDbPermissionType.READ },
     ])) {
       pages.push(
@@ -110,7 +110,7 @@ export const RegionSetsAdminPage = () => {
       );
     }
 
-    if (AuthorizationManager.instance.doesUserHavePermission([
+    if (AuthorizationManager.getInstance().doesUserHavePermission([
       { command_name: CaseDbCommandName.RegionSetShapeCrudCommand, permission_type: CaseDbPermissionType.READ },
     ])) {
       pages.push(

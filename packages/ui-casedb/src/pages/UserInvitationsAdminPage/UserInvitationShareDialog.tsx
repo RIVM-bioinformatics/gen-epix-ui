@@ -50,7 +50,7 @@ export const UserInvitationShareDialog = withDialog<UserInvitationShareDialogPro
   }, [openProps.item.expires_at]);
 
   const invitationLink = useMemo(() => {
-    const url = new URL(WindowManager.instance.window.location.href);
+    const url = new URL(WindowManager.getInstance().window.location.href);
     url.search = '';
     url.hash = '';
     url.pathname = `/accept-invitation/${openProps.item.token}`;

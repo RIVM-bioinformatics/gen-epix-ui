@@ -6,11 +6,6 @@ import { HmrUtil } from '../../../utils/HmrUtil';
 
 
 export class EmotionCacheManager {
-  public static get instance(): EmotionCacheManager {
-    EmotionCacheManager.__instance = HmrUtil.getHmrSingleton('emotionCacheManager', EmotionCacheManager.__instance, () => new EmotionCacheManager());
-    return EmotionCacheManager.__instance;
-  }
-
   private static __instance: EmotionCacheManager;
 
   public emotionCache: EmotionCache;
@@ -23,5 +18,10 @@ export class EmotionCacheManager {
       prepend: !!ConfigManager.getInstance().config.nonce,
       stylisPlugins: [],
     });
+  }
+
+  public static getInstance(): EmotionCacheManager {
+    EmotionCacheManager.__instance = HmrUtil.getHmrSingleton('emotionCacheManager', EmotionCacheManager.__instance, () => new EmotionCacheManager());
+    return EmotionCacheManager.__instance;
   }
 }

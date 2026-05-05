@@ -6,21 +6,14 @@ import type {
   CaseDbCompleteCaseType,
 } from '@gen-epix/api-casedb';
 
-import { QueryUtil } from '../../../../ui/src/utils/QueryUtil';
-import { StringUtil } from '../../../../ui/src/utils/StringUtil';
-import { EpiUploadUtil } from '../../utils/EpiUploadUtil';
-import { QUERY_KEY } from '../../../../ui/src/models/query';
-import type {
-  AutoCompleteOption,
-  OptionBase,
-} from '../../../../ui/src/models/form';
-import { NotificationManager } from '../../../../ui/src/classes/managers/NotificationManager';
 import type {
   CaseUploadResultWithGeneratedId,
   EpiUploadMappedColumn,
   EpiUploadSequenceMapping,
 } from '../../models/epi';
 import { EPI_UPLOAD_STEP } from '../../models/epi';
+import { AutoCompleteOption, NotificationManager, OptionBase, QUERY_KEY, QueryManager, StringUtil } from '@gen-epix/ui';
+import { EpiUploadUtil } from '../../utils/EpiUploadUtil';
 
 export const STEP_ORDER = [
   EPI_UPLOAD_STEP.SELECT_FILE,
@@ -111,7 +104,7 @@ const createEpiUploadStoreDefaultState: () => EpiUploadStoreState = () => ({
   sheetOptions: [],
   shouldResetColumnMapping: false,
   shouldResetSequenceMapping: false,
-  validateCasesQueryKey: QueryUtil.getGenericKey(QUERY_KEY.VALIDATE_CASES, StringUtil.createUuid()),
+  validateCasesQueryKey: QueryManager.getInstance().getGenericKey(QUERY_KEY.VALIDATE_CASES, StringUtil.createUuid()),
   validatedCases: [],
   validatedCasesWithGeneratedId: [],
 });
@@ -148,7 +141,7 @@ export const createEpiUploadStore = () => {
 
         if (nextStep === EPI_UPLOAD_STEP.MAP_COLUMNS) {
           if (shouldResetColumnMapping && mappedColumns) {
-            NotificationManager.instance.showNotification({
+            NotificationManager.getInstance().showNotification({
               isLoading: false,
               message: t`Column mappings have been reset due to changes in the selected case type or file.`,
               severity: 'info',
@@ -161,7 +154,7 @@ export const createEpiUploadStore = () => {
 
         if (nextStep === EPI_UPLOAD_STEP.MAP_SEQUENCES) {
           if (shouldResetSequenceMapping && sequenceMapping) {
-            NotificationManager.instance.showNotification({
+            NotificationManager.getInstance().showNotification({
               isLoading: false,
               message: t`Sequence mappings have been reset due to changes in the selected uploaded files.`,
               severity: 'info',
@@ -195,8 +188,8 @@ export const createEpiUploadStore = () => {
       invalidateCaseValidationQuery: async () => {
         const { validateCasesQueryKey } = get();
 
-        await QueryUtil.invalidateQueryKeys([validateCasesQueryKey]);
-        QueryUtil.removeQueries([validateCasesQueryKey]);
+        await QueryManager.getInstance().invalidateQueryKeys([validateCasesQueryKey]);
+        QueryManager.getInstance().removeQueries([validateCasesQueryKey]);
       },
 
       reset: async () => {

@@ -8,10 +8,10 @@ import type {
 } from '../../models/dataHooks';
 import { QUERY_KEY } from '../../models/query';
 import { DataHookUtil } from '../../utils/DataHookUtil';
-import { QueryUtil } from '../../utils/QueryUtil';
 import { StringUtil } from '../../utils/StringUtil';
 import { useQueryMemo } from '../../hooks/useQueryMemo';
 import { ConfigManager } from '../../classes/managers/ConfigManager';
+import { QueryManager } from '../../classes/managers/QueryManager';
 
 export const useOrganizationsQuery = (): UseQueryResult<CommonDbOrganization[]> => {
   return useQueryMemo({
@@ -19,7 +19,7 @@ export const useOrganizationsQuery = (): UseQueryResult<CommonDbOrganization[]> 
       const response = await ConfigManager.getInstance().config.organizationApi.organizationsGetAll({ signal });
       return response.data;
     },
-    queryKey: QueryUtil.getGenericKey(QUERY_KEY.ORGANIZATIONS),
+    queryKey: QueryManager.getInstance().getGenericKey(QUERY_KEY.ORGANIZATIONS),
   });
 };
 

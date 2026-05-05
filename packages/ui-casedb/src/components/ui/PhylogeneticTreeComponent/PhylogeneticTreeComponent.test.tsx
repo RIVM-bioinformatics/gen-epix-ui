@@ -880,7 +880,7 @@ describe('PhylogeneticTreeComponent', () => {
   });
 
   test('redraws the canvas when the device pixel ratio changes', async () => {
-    const originalDevicePixelRatio = DevicePixelRatioManager.instance.data;
+    const originalDevicePixelRatio = DevicePixelRatioManager.getInstance().data;
     const ref = createComponentRef();
     const viewStates: PhylogeneticTreeComponentViewState[] = [];
     const tree = parseTree(LARGE_TREE_NEWICK);
@@ -929,7 +929,7 @@ describe('PhylogeneticTreeComponent', () => {
       });
     });
 
-    DevicePixelRatioManager.instance.next(originalDevicePixelRatio * 2);
+    DevicePixelRatioManager.getInstance().next(originalDevicePixelRatio * 2);
 
     await waitForAssertion(() => {
       expect(getLast(viewStates)).toMatchObject({
@@ -940,7 +940,7 @@ describe('PhylogeneticTreeComponent', () => {
       expect(canvas.width).toBe(canvas.clientWidth * (originalDevicePixelRatio * 2));
     });
 
-    DevicePixelRatioManager.instance.next(originalDevicePixelRatio);
+    DevicePixelRatioManager.getInstance().next(originalDevicePixelRatio);
 
     await renderResult.unmount();
   });

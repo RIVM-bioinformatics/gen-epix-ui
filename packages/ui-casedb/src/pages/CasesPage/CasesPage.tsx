@@ -4,6 +4,7 @@ import {
   ListItemIcon,
   ListItemText,
   MenuItem,
+  Table,
   Typography,
   useTheme,
 } from '@mui/material';
@@ -24,40 +25,12 @@ import {
   CaseDbCaseApi,
   CaseDbCaseTypeSetCategoryPurpose,
 } from '@gen-epix/api-casedb';
-
-import { ConfigManager } from '../../classes/managers/ConfigManager';
-import { RouterManager } from '../../classes/managers/RouterManager';
-import type { EpiCaseTypeInfoDialogWithLoaderRefMethods } from '../../components/epi/EpiCaseTypeInfoDialog';
-import { EpiCaseTypeInfoDialogWithLoader } from '../../components/epi/EpiCaseTypeInfoDialog';
-import { PageContainer } from '../../components/ui/PageContainer';
-import { ResponseHandler } from '../../components/ui/ResponseHandler';
-import {
-  Table,
-  TableCaption,
-  TableMenu,
-  TableSidebarMenu,
-} from '../../components/ui/Table';
+import { useQueryMemo, QueryManager, QUERY_KEY, RouterManager, TableRowParams, DownloadUtil, OptionBase, DataUtil, TableColumn, TableUtil, DATE_FORMAT, createTableStore, useInitializeTableStore, TableStoreContextProvider, PageContainer, TableMenu, TableCaption, TestIdUtil, ResponseHandler, TableSidebarMenu, ConfigManager } from '@gen-epix/ui';
+import { EpiCaseTypeInfoDialogWithLoaderRefMethods, EpiCaseTypeInfoDialogWithLoader } from '../../components/epi/EpiCaseTypeInfoDialog';
 import { useCaseTypeSetCategoriesQuery } from '../../dataHooks/useCaseTypeSetCategoriesQuery';
 import { useCaseTypeStatsQuery } from '../../dataHooks/useCaseTypeStatsQuery';
-import { useInitializeTableStore } from '../../hooks/useInitializeTableStore';
-import type { OptionBase } from '../../models/form';
-import { QUERY_KEY } from '../../models/query';
-import type {
-  TableColumn,
-  TableRowParams,
-} from '../../models/table';
-import {
-  createTableStore,
-  TableStoreContextProvider,
-} from '../../stores/tableStore';
-import { QueryUtil } from '../../utils/QueryUtil';
-import { TableUtil } from '../../utils/TableUtil';
-import { TestIdUtil } from '../../utils/TestIdUtil';
-import { DATE_FORMAT } from '../../data/date';
 import { CaseTypeUtil } from '../../utils/CaseTypeUtil';
-import { DownloadUtil } from '../../utils/DownloadUtil';
-import { useQueryMemo } from '../../hooks/useQueryMemo';
-import { DataUtil } from '../../utils/DataUtil';
+
 
 type Row = {
   [key: string]: boolean | number | string | string[];
@@ -77,10 +50,10 @@ export const CasesPage = () => {
 
   const { data: caseTypes, error: caseTypesError, isLoading: isCaseTypesLoading } = useQueryMemo({
     queryFn: async ({ signal }) => {
-      const response = await CaseDbCaseApi.instance.caseTypesGetAll({ signal });
+      const response = await CaseDbCaseApi.getInstance().caseTypesGetAll({ signal });
       return response.data;
     },
-    queryKey: QueryUtil.getGenericKey(QUERY_KEY.CASE_TYPES),
+    queryKey: QueryManager.getInstance().getGenericKey(QUERY_KEY.CASE_TYPES),
   });
 
   const caseTypeStatsMap = useMemo(() => {
@@ -90,25 +63,25 @@ export const CasesPage = () => {
 
   const { data: caseTypeSets, error: caseTypeSetsError, isLoading: isCaseTypeSetsLoading } = useQueryMemo({
     queryFn: async ({ signal }) => {
-      const response = await CaseDbCaseApi.instance.caseTypeSetsGetAll({ signal });
+      const response = await CaseDbCaseApi.getInstance().caseTypeSetsGetAll({ signal });
       return response.data;
     },
-    queryKey: QueryUtil.getGenericKey(QUERY_KEY.CASE_TYPE_SETS),
+    queryKey: QueryManager.getInstance().getGenericKey(QUERY_KEY.CASE_TYPE_SETS),
   });
 
   const { data: caseTypeSetMembers, error: caseTypeSetMembersError, isLoading: isCaseTypeSetMembersLoading } = useQueryMemo({
     queryFn: async ({ signal }) => {
-      const response = await CaseDbCaseApi.instance.caseTypeSetMembersGetAll({ signal });
+      const response = await CaseDbCaseApi.getInstance().caseTypeSetMembersGetAll({ signal });
       return response.data;
     },
-    queryKey: QueryUtil.getGenericKey(QUERY_KEY.CASE_TYPE_SET_MEMBERS),
+    queryKey: QueryManager.getInstance().getGenericKey(QUERY_KEY.CASE_TYPE_SET_MEMBERS),
   });
 
   const isLoading = isCaseTypesLoading || isCaseTypeSetsLoading || isCaseTypeSetMembersLoading || caseTypeSetCategoriesQuery.isLoading || caseTypeStatsQuery.isLoading;
   const error = caseTypesError || caseTypeSetsError || caseTypeSetMembersError || caseTypeSetCategoriesQuery.error || caseTypeStatsQuery.error;
 
   const handleCellNavigation = useCallback(async (caseType: Row) => {
-    await RouterManager.instance.router.navigate(CaseTypeUtil.createCaseTypeLink(caseType));
+    await RouterManager.getInstance().router.navigate(CaseTypeUtil.createCaseTypeLink(caseType));
   }, []);
 
   const onRowClick = useCallback(async (params: TableRowParams<Row>) => {
@@ -280,7 +253,7 @@ export const CasesPage = () => {
     defaultSortDirection: 'asc',
     idSelectorCallback: (row) => row.id,
     isRowEnabledCallback: (row) => row.n_cases > 0,
-    navigatorFunction: RouterManager.instance.router.navigate,
+    navigatorFunction: RouterManager.getInstance().router.navigate,
     storageNamePostFix: 'cases',
     storageVersion: 1,
   }), []);

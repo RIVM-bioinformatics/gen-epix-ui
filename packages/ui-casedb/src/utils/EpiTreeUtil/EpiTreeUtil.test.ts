@@ -1987,12 +1987,12 @@ describe('EpiTreeUtil', () => {
     };
 
     beforeAll(() => {
-      savedTreeAlgorithms = EpiDataManager.instance.data.treeAlgorithms;
-      EpiDataManager.instance.data.treeAlgorithms = [mockAlgo1, mockAlgo2];
+      savedTreeAlgorithms = EpiDataManager.getInstance().data.treeAlgorithms;
+      EpiDataManager.getInstance().data.treeAlgorithms = [mockAlgo1, mockAlgo2];
     });
 
     afterAll(() => {
-      EpiDataManager.instance.data.treeAlgorithms = savedTreeAlgorithms;
+      EpiDataManager.getInstance().data.treeAlgorithms = savedTreeAlgorithms;
     });
 
     it('returns empty array when no GENETIC_DISTANCE cols exist', () => {
@@ -2052,7 +2052,7 @@ describe('EpiTreeUtil', () => {
       expect(result[0].computedId).toBe('col1_rc1_gdp1_algo-nj');
     });
 
-    it('sorts algorithms according to EpiDataManager.instance.data.treeAlgorithms order', () => {
+    it('sorts algorithms according to EpiDataManager.getInstance().data.treeAlgorithms order', () => {
       // EpiDataManager order: [mockAlgo1(NJ), mockAlgo2(UPGMA)]
       // col specifies UPGMA first, then NJ → result should be sorted to NJ then UPGMA
       const completeCaseType = {

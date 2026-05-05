@@ -21,13 +21,13 @@ import { useSubscribable } from '../../../hooks/useSubscribable';
 export const ApplicationBarActionsNotificationsItem = () => {
   const { t } = useTranslation();
   const theme = useTheme();
-  const notifications = useSubscribable(NotificationManager.instance);
+  const notifications = useSubscribable(NotificationManager.getInstance());
   const isLoading = useMemo(() => notifications.some(x => x.isLoading), [notifications]);
   const [open, setOpen] = useState(false);
 
 
   const onMenuIconClick = useCallback(() => {
-    NotificationManager.instance.hideAllNotifications();
+    NotificationManager.getInstance().hideAllNotifications();
     setOpen(true);
   }, []);
 

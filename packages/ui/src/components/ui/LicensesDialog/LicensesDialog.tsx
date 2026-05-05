@@ -37,8 +37,8 @@ import { withDialog } from '../../../hoc/withDialog';
 import { TestIdUtil } from '../../../utils/TestIdUtil';
 import { ResponseHandler } from '../ResponseHandler';
 import { QUERY_KEY } from '../../../models/query';
-import { QueryUtil } from '../../../utils/QueryUtil';
 import { useQueryMemo } from '../../../hooks/useQueryMemo';
+import { QueryManager } from '../../../classes/managers/QueryManager';
 
 
 export interface LicensesDialogOpenProps {
@@ -79,7 +79,7 @@ export const LicensesDialog = withDialog<LicensesDialogProps, LicensesDialogOpen
       const response = await ConfigManager.getInstance().config.systemApi.retrieveLicenses({ signal });
       return response.data;
     },
-    queryKey: QueryUtil.getGenericKey(QUERY_KEY.LICENSES),
+    queryKey: QueryManager.getInstance().getGenericKey(QUERY_KEY.LICENSES),
   });
 
   const isLoading = isFrontendLicensesLoading || isBackendLicensesLoading;
@@ -121,7 +121,7 @@ export const LicensesDialog = withDialog<LicensesDialogProps, LicensesDialogOpen
   }, [item, onActionsChange, onClose, t]);
 
   const onItemURLClick = useCallback((url: string) => {
-    WindowManager.instance.window.open(url, '_blank');
+    WindowManager.getInstance().window.open(url, '_blank');
   }, []);
 
   const onItemLicenseClick = useCallback((entry: CommonDbPackageMetadata) => {

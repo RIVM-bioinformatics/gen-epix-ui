@@ -32,28 +32,10 @@ import type {
   CaseDbCompleteCaseType,
 } from '@gen-epix/api-casedb';
 import { CaseDbCaseApi } from '@gen-epix/api-casedb';
-
-import {
-  withDialog,
-  type WithDialogRefMethods,
-  type WithDialogRenderProps,
-} from '../../../hoc/withDialog';
-import { TestIdUtil } from '../../../utils/TestIdUtil';
-import type { DialogAction } from '../../ui/Dialog';
-import { EpiTreeUtil } from '../../../utils/EpiTreeUtil';
+import { WithDialogRenderProps, WithDialogRefMethods, withDialog, SchemaUtil, ConfigManager, AutoCompleteOption, FORM_FIELD_DEFINITION_TYPE, FormFieldDefinition, useQueryMemo, QueryManager, QUERY_KEY, DialogAction, TestIdUtil, GenericForm, ResponseHandler } from '@gen-epix/ui';
 import { EpiDashboardStoreContext } from '../../../stores/epiDashboardStore';
-import { useQueryMemo } from '../../../hooks/useQueryMemo';
-import { QUERY_KEY } from '../../../models/query';
-import { QueryUtil } from '../../../utils/QueryUtil';
-import type {
-  AutoCompleteOption,
-  FormFieldDefinition,
-} from '../../../models/form';
-import { FORM_FIELD_DEFINITION_TYPE } from '../../../models/form';
-import { GenericForm } from '../../form/helpers/GenericForm';
-import { ResponseHandler } from '../../ui/ResponseHandler';
-import { ConfigManager } from '../../../classes/managers/ConfigManager';
-import { SchemaUtil } from '../../../utils/SchemaUtil';
+import { EpiTreeUtil } from '../../../utils/EpiTreeUtil';
+
 
 export interface EpiFindSimilarCasesDialogOpenProps {
   allRows: CaseDbCase[];
@@ -168,7 +150,7 @@ export const EpiFindSimilarCasesDialog = withDialog<EpiFindSimilarCasesDialogPro
   const query = useQueryMemo({
     enabled: !!formData,
     queryFn: async ({ signal }) => {
-      const response = await CaseDbCaseApi.instance.retrieveSimilarCases({
+      const response = await CaseDbCaseApi.getInstance().retrieveSimilarCases({
         case_ids: openProps.selectedRows.map(x => x.id),
         case_type_id: openProps.completeCaseType.id,
         genetic_distance_col_id: formData?.treeColId,
@@ -176,7 +158,7 @@ export const EpiFindSimilarCasesDialog = withDialog<EpiFindSimilarCasesDialogPro
       }, { signal });
       return response.data;
     },
-    queryKey: [QueryUtil.getGenericKey(QUERY_KEY.SIMILAR_CASES), JSON.stringify({ formData, rowIds: openProps.selectedRows.map(row => row.id) })],
+    queryKey: [QueryManager.getInstance().getGenericKey(QUERY_KEY.SIMILAR_CASES), JSON.stringify({ formData, rowIds: openProps.selectedRows.map(row => row.id) })],
   });
 
   const similarCaseIdsNotInView = useMemo(() => {

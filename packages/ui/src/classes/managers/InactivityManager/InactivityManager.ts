@@ -18,19 +18,14 @@ export type InactivityState = {
 };
 
 export class InactivityManager extends SubscribableAbstract<InactivityState> {
-  public static get instance(): InactivityManager {
-    InactivityManager.__instance = HmrUtil.getHmrSingleton('inactivityManager', InactivityManager.__instance, () => new InactivityManager());
-    return InactivityManager.__instance;
-  }
-
   private static __instance: InactivityManager;
 
   private idleDiff: number = 0;
+
   private idleSince: number = Date.now();
   private isIdle: boolean = false;
   private isPaused: boolean = false;
   private notificationDiff: number = 0;
-
   private readonly onActivityDebounced: () => void;
 
   private constructor() {
@@ -71,15 +66,20 @@ export class InactivityManager extends SubscribableAbstract<InactivityState> {
     }, 500);
   }
 
+  public static getInstance(): InactivityManager {
+    InactivityManager.__instance = HmrUtil.getHmrSingleton('inactivityManager', InactivityManager.__instance, () => new InactivityManager());
+    return InactivityManager.__instance;
+  }
+
   public logout(): void {
-    LogManager.instance.log([{
-      detail: AuthenticationManager.instance.authContextProps.user,
+    LogManager.getInstance().log([{
+      detail: AuthenticationManager.getInstance().authContextProps.user,
       level: CommonDbLogLevel.TRACE,
       topic: 'USER_LOGOUT_BY_INACTIVITY',
     }]);
-    LogManager.instance.flushLog();
+    LogManager.getInstance().flushLog();
     // eslint-disable-next-line @typescript-eslint/no-floating-promises
-    AuthenticationManager.instance.authContextProps.signoutRedirect();
+    AuthenticationManager.getInstance().authContextProps.signoutRedirect();
   }
 
   public pause(): void {

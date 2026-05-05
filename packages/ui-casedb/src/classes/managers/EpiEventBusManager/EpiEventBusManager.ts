@@ -49,15 +49,15 @@ type EpiEvent = {
 };
 
 export class EpiEventBusManager extends EventBusAbstract<EpiEvent> {
-  public static get instance(): EpiEventBusManager {
-    EpiEventBusManager.__instance = HmrUtil.getHmrSingleton('epiEventBusManager', EpiEventBusManager.__instance, () => new EpiEventBusManager());
-    return EpiEventBusManager.__instance;
-  }
-
   private static __instance: EpiEventBusManager;
 
   private constructor() {
     super();
+  }
+
+  public static getInstance(): EpiEventBusManager {
+    EpiEventBusManager.__instance = HmrUtil.getHmrSingleton('epiEventBusManager', EpiEventBusManager.__instance, () => new EpiEventBusManager());
+    return EpiEventBusManager.__instance;
   }
 
 }

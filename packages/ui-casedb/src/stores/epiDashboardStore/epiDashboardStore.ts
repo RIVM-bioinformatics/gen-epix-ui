@@ -64,8 +64,8 @@ import { EpiFilterUtil } from '../../utils/EpiFilterUtil';
 import { NewickUtil } from '../../../../ui/src/utils/NewickUtil';
 import { EpiTreeUtil } from '../../utils/EpiTreeUtil';
 import { ObjectUtil } from '../../../../ui/src/utils/ObjectUtil';
-import { QueryUtil } from '../../../../ui/src/utils/QueryUtil';
 import { EpiDataManager } from '../../classes/managers/EpiDataManager';
+import { QueryManager } from '@gen-epix/ui';
 
 export interface CreateEpiDashboardStoreInitialStateKwArgs extends CreateTableStoreInitialStateKwArgs<CaseDbCase> {
   caseSetId: string;
@@ -246,7 +246,7 @@ export const createEpiDashboardStore = (kwArgs: CreateEpiDashboardStoreKwArgs) =
             await setFilterValue(treeFilter.id, nodeId);
           },
           destroy: () => {
-            EpiHighlightingManager.instance.reset();
+            EpiHighlightingManager.getInstance().reset();
             tableStoreActions.destroy();
           },
           expandZone: (expandedZone: EPI_ZONE) => {
@@ -255,7 +255,7 @@ export const createEpiDashboardStore = (kwArgs: CreateEpiDashboardStoreKwArgs) =
           fetchData: async () => {
             set({ dataError: null, isMaxResultsExceeded: false, isMaxResultsExceededDismissed: false });
             const { fetchAbortController: previousFetchAbortController, findSimilarCasesResults, globalAbortSignal } = get();
-            const queryClient = QueryClientManager.instance.queryClient;
+            const queryClient = QueryClientManager.getInstance().queryClient;
 
             const similarCaseIds = findSimilarCasesResults?.flatMap((result) => result.similarCaseIds) || [];
 
@@ -289,12 +289,12 @@ export const createEpiDashboardStore = (kwArgs: CreateEpiDashboardStoreKwArgs) =
               case_type_id: completeCaseType.id,
               filter: compositeFilter,
             };
-            const retrieveCaseIdsByQueryQueryKey = QueryUtil.getRetrieveCaseIdsByQueryKey(completeCaseType.id, caseQuery);
+            const retrieveCaseIdsByQueryQueryKey = [QUERY_KEY.CASE_IDS_BY_QUERY, completeCaseType.id, JSON.stringify(caseQuery)];
 
             try {
-              let currentCaseIdsByQueryResponse = QueryUtil.getValidQueryData<CaseDbCaseQueryResult>(retrieveCaseIdsByQueryQueryKey);
+              let currentCaseIdsByQueryResponse = QueryManager.getInstance().getValidQueryData<CaseDbCaseQueryResult>(retrieveCaseIdsByQueryQueryKey);
               if (!currentCaseIdsByQueryResponse) {
-                const retrieveCaseIdsByQueryResponse = (await CaseDbCaseApi.instance.retrieveCaseIdsByQuery(caseQuery, { signal: fetchAbortController.signal })).data;
+                const retrieveCaseIdsByQueryResponse = (await CaseDbCaseApi.getInstance().retrieveCaseIdsByQuery(caseQuery, { signal: fetchAbortController.signal })).data;
                 currentCaseIdsByQueryResponse = retrieveCaseIdsByQueryResponse;
                 queryClient.setQueryData(retrieveCaseIdsByQueryQueryKey, currentCaseIdsByQueryResponse);
               }
@@ -303,20 +303,20 @@ export const createEpiDashboardStore = (kwArgs: CreateEpiDashboardStoreKwArgs) =
               //        It's possible the user added similar cases to the current case_set after. Then the case will be included in the query AND the similar case result. So we need to make sure to only include unique case ids.
               const caseIds = uniq([...currentCaseIdsByQueryResponse.case_ids, ...similarCaseIds]);
 
-              const currentCases = QueryUtil.getValidQueryData<CaseDbCase[]>(QueryUtil.getGenericKey(QUERY_KEY.CASES_LAZY));
+              const currentCases = QueryManager.getInstance().getValidQueryData<CaseDbCase[]>(QueryManager.getInstance().getGenericKey(QUERY_KEY.CASES_LAZY));
               const currentCaseIds = (currentCases ?? []).map(x => x.id);
               const missingCaseIds = difference(caseIds, currentCaseIds);
               if (missingCaseIds.length) {
-                const missingCasesResult = (await CaseDbCaseApi.instance.retrieveCasesByIds({
+                const missingCasesResult = (await CaseDbCaseApi.getInstance().retrieveCasesByIds({
                   case_ids: missingCaseIds,
                   case_type_id: completeCaseType.id,
                 }, { signal: fetchAbortController.signal })).data;
-                queryClient.setQueryData(QueryUtil.getGenericKey(QUERY_KEY.CASES_LAZY), [...currentCases ?? [], ...missingCasesResult]);
+                queryClient.setQueryData(QueryManager.getInstance().getGenericKey(QUERY_KEY.CASES_LAZY), [...currentCases ?? [], ...missingCasesResult]);
               }
 
-              const casesMap = new Map((QueryUtil.getValidQueryData<CaseDbCase[]>(QueryUtil.getGenericKey(QUERY_KEY.CASES_LAZY)) ?? []).map(x => [x.id, x]));
+              const casesMap = new Map((QueryManager.getInstance().getValidQueryData<CaseDbCase[]>(QueryManager.getInstance().getGenericKey(QUERY_KEY.CASES_LAZY)) ?? []).map(x => [x.id, x]));
               casesMap.forEach((item) => {
-                queryClient.setQueryData(QueryUtil.getGenericKey(QUERY_KEY.CASES_LAZY, item.id), item);
+                queryClient.setQueryData(QueryManager.getInstance().getGenericKey(QUERY_KEY.CASES_LAZY, item.id), item);
               });
               const cases = caseIds.map(id => casesMap.get(id));
 
@@ -331,9 +331,9 @@ export const createEpiDashboardStore = (kwArgs: CreateEpiDashboardStoreKwArgs) =
             }
           },
           mutateCachedCase: (caseId: string, item: CaseDbCase) => {
-            const queryClient = QueryClientManager.instance.queryClient;
-            const currentCases = QueryUtil.getValidQueryData<CaseDbCase[]>(QueryUtil.getGenericKey(QUERY_KEY.CASES_LAZY));
-            queryClient.setQueryData(QueryUtil.getGenericKey(QUERY_KEY.CASES_LAZY), currentCases.map(c => c.id === caseId ? item : c));
+            const queryClient = QueryClientManager.getInstance().queryClient;
+            const currentCases = QueryManager.getInstance().getValidQueryData<CaseDbCase[]>(QueryManager.getInstance().getGenericKey(QUERY_KEY.CASES_LAZY));
+            queryClient.setQueryData(QueryManager.getInstance().getGenericKey(QUERY_KEY.CASES_LAZY), currentCases.map(c => c.id === caseId ? item : c));
           },
           reloadFilterData: () => {
             const { reloadStratification, reloadStratifyableColumns } = get();
@@ -376,7 +376,7 @@ export const createEpiDashboardStore = (kwArgs: CreateEpiDashboardStoreKwArgs) =
               const activeStratifyableColumn = stratifyableColumns.find(c => c.col.ref_col_id === stratification.col.ref_col_id);
               if (!activeStratifyableColumn?.enabled) {
                 // column no longer stratifiable
-                NotificationManager.instance.showNotification({
+                NotificationManager.getInstance().showNotification({
                   message: t`The grouping column is no longer available. Grouping has been removed.`,
                   severity: 'info',
                 });
@@ -455,7 +455,7 @@ export const createEpiDashboardStore = (kwArgs: CreateEpiDashboardStoreKwArgs) =
             const treeFilter = prevFilters.find(filter => filter instanceof TreeFilter);
             const hadTreeFilter = !treeFilter.isInitialFilterValue(previousFilterValues[treeFilter.id]);
             if (hadTreeFilter && !filterValuesDiff.includes(treeFilter.id)) {
-              NotificationManager.instance.showNotification({
+              NotificationManager.getInstance().showNotification({
                 message: t`The tree filter has automatically been removed, because it's incompatible with the results of the other filters.`,
                 severity: 'info',
               });
@@ -476,7 +476,7 @@ export const createEpiDashboardStore = (kwArgs: CreateEpiDashboardStoreKwArgs) =
             const treeFilter = filters.find(filter => filter instanceof TreeFilter);
             const hasTreeFilter = !treeFilter.isInitialFilterValue(filterValues[treeFilter.id]);
             if (hasTreeFilter) {
-              NotificationManager.instance.showNotification({
+              NotificationManager.getInstance().showNotification({
                 message: t`The tree filter has automatically been removed, because it's incompatible with the results of "Find Similar Cases".`,
                 severity: 'info',
               });
@@ -551,10 +551,10 @@ export const createEpiDashboardStore = (kwArgs: CreateEpiDashboardStoreKwArgs) =
 
             if (mode === STRATIFICATION_MODE.FIELD) {
               const column = completeCaseType.ref_cols[col.ref_col_id];
-              const conceptSetConceptIds = EpiDataManager.instance.data.conceptsIdsBySetId[column.concept_set_id];
+              const conceptSetConceptIds = EpiDataManager.getInstance().data.conceptsIdsBySetId[column.concept_set_id];
               if (conceptSetConceptIds) {
                 if (conceptSetConceptIds.length <= STRATIFICATION_COLORS.length) {
-                  conceptSetConceptIds.map(conceptId => EpiDataManager.instance.data.conceptsById[conceptId]).sort((a, b) => {
+                  conceptSetConceptIds.map(conceptId => EpiDataManager.getInstance().data.conceptsById[conceptId]).sort((a, b) => {
                     if (([
                       CaseDbColType.ORDINAL,
                       CaseDbColType.INTERVAL,

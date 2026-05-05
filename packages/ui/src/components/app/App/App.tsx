@@ -20,8 +20,8 @@ import { LogManager } from '../../../classes/managers/LogManager';
 export const App = () => {
   const { config } = ConfigManager.getInstance();
   const { api, routerManager } = config;
-  const authenticationManager = AuthenticationManager.instance;
-  const logManager = LogManager.instance;
+  const authenticationManager = AuthenticationManager.getInstance();
+  const logManager = LogManager.getInstance();
 
   const touchIconUrl = config.getTouchIconUrl();
   if (touchIconUrl) {
@@ -37,15 +37,15 @@ export const App = () => {
   ];
   api.onResponseFulfilled = [
     logManager.onResponseFulfilled.bind(logManager),
-    BackendVersionManager.instance.onResponseFulfilled.bind(BackendVersionManager.instance),
+    BackendVersionManager.getInstance().onResponseFulfilled.bind(BackendVersionManager.getInstance()),
   ];
   api.onResponseRejected = [
     logManager.onResponseRejected.bind(logManager),
     authenticationManager.onResponseRejected.bind(authenticationManager),
   ];
 
-  const queryQueryManager = QueryClientManager.instance;
-  const emotionCacheManager = EmotionCacheManager.instance;
+  const queryQueryManager = QueryClientManager.getInstance();
+  const emotionCacheManager = EmotionCacheManager.getInstance();
 
   return (
     <QueryClientProvider client={queryQueryManager.queryClient}>
