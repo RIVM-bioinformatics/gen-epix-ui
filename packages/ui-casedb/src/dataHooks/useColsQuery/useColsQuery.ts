@@ -8,7 +8,7 @@ import type {
   UseOptions,
 } from '@gen-epix/ui';
 import {
-  CommonDataUtil,
+  DataUtil,
   DataHookUtil,
   QueryClientManager,
   useQueryMemo,
@@ -58,6 +58,6 @@ export const useColOptionsQuery = (): UseOptions<string> => {
   const colNameFactory = useColNameFactory();
 
   return useMemo(() => {
-    return DataHookUtil.createUseOptionsDataHook<CaseDbCol>(response, item => item.id, colNameFactory.getName, [colNameFactory], CommonDataUtil.rankSortComperatorFactory(colNameFactory.getName));
+    return DataHookUtil.createUseOptionsDataHook<CaseDbCol>(response, item => item.id, colNameFactory.getName, [colNameFactory], DataUtil.rankSortComperatorFactory(colNameFactory.getName));
   }, [colNameFactory, response]);
 };

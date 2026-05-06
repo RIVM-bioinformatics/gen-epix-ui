@@ -7,7 +7,7 @@ import type {
   UseOptions,
 } from '@gen-epix/ui';
 import {
-  CommonDataUtil,
+  DataUtil,
   DataHookUtil,
   QueryClientManager,
   useQueryMemo,
@@ -38,6 +38,6 @@ export const useCaseTypeSetCategoryOptionsQuery = (): UseOptions<string> => {
   const response = useCaseTypeSetCategoriesQuery();
 
   return useMemo(() => {
-    return DataHookUtil.createUseOptionsDataHook<CaseDbCaseTypeSetCategory>(response, item => item.id, item => item.name, [], CommonDataUtil.rankSortComperatorFactory('name'));
+    return DataHookUtil.createUseOptionsDataHook<CaseDbCaseTypeSetCategory>(response, item => item.id, item => item.name, [], DataUtil.rankSortComperatorFactory('name'));
   }, [response]);
 };

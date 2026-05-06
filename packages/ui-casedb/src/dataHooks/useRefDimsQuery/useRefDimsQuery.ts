@@ -7,7 +7,7 @@ import type {
   UseOptions,
 } from '@gen-epix/ui';
 import {
-  CommonDataUtil,
+  DataUtil,
   DataHookUtil,
   QueryClientManager,
   useQueryMemo,
@@ -37,6 +37,6 @@ export const useRefDimOptionsQuery = (): UseOptions<string> => {
   const dimsQuery = useRefDimsQuery();
 
   return useMemo(() => {
-    return DataHookUtil.createUseOptionsDataHook<CaseDbRefDim>(dimsQuery, item => item.id, item => item.label, [], CommonDataUtil.rankSortComperatorFactory('label'));
+    return DataHookUtil.createUseOptionsDataHook<CaseDbRefDim>(dimsQuery, item => item.id, item => item.label, [], DataUtil.rankSortComperatorFactory('label'));
   }, [dimsQuery]);
 };

@@ -19,7 +19,7 @@ import type {
 } from '@gen-epix/ui';
 import {
   COMMON_QUERY_KEY,
-  CommonDataUtil,
+  DataUtil,
   ConfigManager,
   createTableStore,
   PageContainer,
@@ -286,7 +286,7 @@ export const UserEffectiveRightsAdminPage = () => {
         contentActions={(<TableMenu />)}
         contentHeader={(
           <TableCaption
-            caption={user ? t('{{userName}} effective rights', { userName: CommonDataUtil.getUserDisplayValue(user, t) }) : t`⌛ Loading...`}
+            caption={user ? t('{{userName}} effective rights', { userName: DataUtil.getUserDisplayValue(user, t) }) : t`⌛ Loading...`}
             component={'h2'}
             variant={'h2'}
           />

@@ -29,7 +29,7 @@ import { StringUtil } from '../../../utils/StringUtil';
 import { TestIdUtil } from '../../../utils/TestIdUtil';
 import type { MyPermissionsDialogRefMethods } from '../MyPermissionsDialog';
 import { MyPermissionsDialog } from '../MyPermissionsDialog';
-import { CommonDataUtil } from '../../../utils/CommonDataUtil';
+import { DataUtil } from '../../../utils/DataUtil';
 
 import { UserOrganizationAdminMenuItem } from './UserOrganizationAdminMenuItem';
 import { UserOwnOrganizationMenuItem } from './UserOwnOrganizationMenuItem';
@@ -68,7 +68,7 @@ export const UserMenu = ({ anchorElement, onClose }: UserMenuProps): ReactElemen
   }, [auth]);
 
   const userName = useMemo(() => {
-    return CommonDataUtil.getUserDisplayValue(AuthorizationManager.getInstance().user, t);
+    return DataUtil.getUserDisplayValue(AuthorizationManager.getInstance().user, t);
   }, [t]);
 
   const userRoles = useMemo(() => {

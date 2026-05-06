@@ -30,7 +30,7 @@ import type {
   TableRowParams,
 } from '@gen-epix/ui';
 import {
-  CommonDataUtil,
+  DataUtil,
   ConfigManager,
   createTableStore,
   DATE_FORMAT,
@@ -186,7 +186,7 @@ export const CasesPage = () => {
     const options: { [key: string]: OptionBase<string>[] } = {};
 
     caseTypeSetCategoriesQuery.data?.forEach(category => {
-      options[category.id] = caseTypeSets?.filter(set => set.case_type_set_category_id === category.id).sort(CommonDataUtil.rankSortComperatorFactory('name')).map<OptionBase<string>>(set => ({ label: set.name, value: set.id }));
+      options[category.id] = caseTypeSets?.filter(set => set.case_type_set_category_id === category.id).sort(DataUtil.rankSortComperatorFactory('name')).map<OptionBase<string>>(set => ({ label: set.name, value: set.id }));
     });
     return options;
   }, [caseTypeSetCategoriesQuery, caseTypeSets]);

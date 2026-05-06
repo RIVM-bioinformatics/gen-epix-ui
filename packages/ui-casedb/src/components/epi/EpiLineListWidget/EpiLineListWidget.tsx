@@ -24,15 +24,27 @@ import type {
   CaseDbCol,
 } from '@gen-epix/api-casedb';
 import { CaseDbColType } from '@gen-epix/api-casedb';
+import type {
+  GetTableCellRowComparatorProps,
+  TableColumn,
+  TableColumnCaseType,
+  TableRef,
+  TableRowParams,
+} from '@gen-epix/ui';
+import {
+  ConfigManager,
+  StringUtil,
+  Subject,
+  Table,
+  TableUtil,
+} from '@gen-epix/ui';
 
 import CollectionIcon from '../../../assets/icons/CollectionIcon.svg?react';
 import { EpiWidget } from '../EpiWidget';
 import { EpiLegendaItem } from '../EpiLegendaItem';
-import { ConfigManager } from '../../../classes/managers/ConfigManager';
 import { EpiEventBusManager } from '../../../classes/managers/EpiEventBusManager';
 import { EpiLineListCaseSetMembersManager } from '../../../classes/managers/EpiLineListCaseSetMembersManager';
 import { EpiHighlightingManager } from '../../../classes/managers/EpiHighlightingManager';
-import { Subject } from '../../../classes/Subject';
 import type {
   EpiLineListRangeSubjectValue,
   EpiLinkedScrollSubjectValue,
@@ -41,21 +53,10 @@ import {
   EPI_ZONE,
   STRATIFICATION_MODE,
 } from '../../../../../ui-casedb/src/models/epi';
-import type {
-  GetTableCellRowComparatorProps,
-  TableColumn,
-  TableColumnCaseType,
-  TableRowParams,
-} from '../../../models/table';
 import { EpiDashboardStoreContext } from '../../../stores/epiDashboardStore';
 import { CaseTypeUtil } from '../../../utils/CaseTypeUtil';
 import { CaseUtil } from '../../../utils/CaseUtil';
-import { StringUtil } from '../../../utils/StringUtil';
-import { TableUtil } from '../../../utils/TableUtil';
-import {
-  Table,
-  type TableRef,
-} from '../../ui/Table';
+import type { CaseDbConfig } from '../../../models/config';
 
 import { EpiLineListWidgetTitle } from './EpiLineListWidgetTitle';
 import { EpiLineListWidgetPrimaryMenu } from './EpiLineListWidgetPrimaryMenu';
@@ -113,7 +114,7 @@ export const EpiLineListWidget = ({ caseSet, lineListRangeSubject, linkedScrollS
       maxWidth = maxWidth + +theme.spacing(3).replace('px', '');
     }
 
-    const { MAX_COLUMN_WIDTH, REQUIRED_EXTRA_CELL_PADDING_TO_FIT_CONTENT } = ConfigManager.getInstance().config.epiLineList;
+    const { MAX_COLUMN_WIDTH, REQUIRED_EXTRA_CELL_PADDING_TO_FIT_CONTENT } = ConfigManager.getInstance<CaseDbConfig>().config.epiLineList;
     return Math.min(MAX_COLUMN_WIDTH, maxWidth) + REQUIRED_EXTRA_CELL_PADDING_TO_FIT_CONTENT;
   }, [completeCaseType, sortedData, stratification?.col?.id, theme]);
 
@@ -319,7 +320,7 @@ export const EpiLineListWidget = ({ caseSet, lineListRangeSubject, linkedScrollS
   }, [renderEventsCell, renderSimilarCell, renderEventsHeader, renderSimilarHeader, t]);
 
   const tableColumns = useMemo<TableColumn<CaseDbCase>[]>(() => {
-    const { DATA_MISSING_CHARACTER } = ConfigManager.getInstance().config.epi;
+    const { DATA_MISSING_CHARACTER } = ConfigManager.getInstance<CaseDbConfig>().config.epi;
 
     const initialVisibleColumnIds = CaseTypeUtil.getInitialVisibleColIds(completeCaseType);
     const caseTypeTableColumns: TableColumn<CaseDbCase>[] = [];
@@ -428,7 +429,7 @@ export const EpiLineListWidget = ({ caseSet, lineListRangeSubject, linkedScrollS
 
   const onRangeChangedDebounced = useDebouncedCallback(async (range: ListRange) => {
     await EpiLineListCaseSetMembersManager.getInstance().loadRange(sortedData.slice(range.startIndex, Math.min(range.endIndex + 1, sortedData.length)).map(row => row.id));
-  }, ConfigManager.getInstance().config.epiLineList.CASE_SET_MEMBERS_FETCH_DEBOUNCE_DELAY_MS, {
+  }, ConfigManager.getInstance<CaseDbConfig>().config.epiLineList.CASE_SET_MEMBERS_FETCH_DEBOUNCE_DELAY_MS, {
     leading: false,
     trailing: true,
   });

@@ -11,7 +11,7 @@ import {
   CaseDbLogLevel,
 } from '@gen-epix/api-casedb';
 import {
-  CommonDownloadUtil,
+  DownloadUtil,
   ConfigManager,
   DATE_FORMAT,
   LogManager,
@@ -34,7 +34,7 @@ export class CaseDbDownloadUtil {
       defaultEncoding: 'utf-8',
     });
     const fileName = `${CaseDbDownloadUtil.getExportFileName(t`Line list`, completeCaseType, t)}.csv`;
-    CommonDownloadUtil.createDownloadUrl(`data:text/csv;base64,${btoa(csv)}`, fileName);
+    DownloadUtil.createDownloadUrl(`data:text/csv;base64,${btoa(csv)}`, fileName);
   }
 
   public static async downloadAsExcel(cases: CaseDbCase[], colIds: string[], completeCaseType: CaseDbCompleteCaseType, t: TFunction<'translation', undefined>): Promise<void> {
@@ -63,14 +63,14 @@ export class CaseDbDownloadUtil {
 
     // Convert blob to base64 and download
     const arrayBuffer = await blob.arrayBuffer();
-    const base64 = CommonDownloadUtil.arrayBufferToBase64(arrayBuffer);
-    CommonDownloadUtil.createDownloadUrl(`data:application/vnd.openxmlformats-officedocument.spreadsheetml.sheet;base64,${base64}`, fileName);
+    const base64 = DownloadUtil.arrayBufferToBase64(arrayBuffer);
+    DownloadUtil.createDownloadUrl(`data:application/vnd.openxmlformats-officedocument.spreadsheetml.sheet;base64,${base64}`, fileName);
   }
 
   public static downloadCanvasImage(baseName: string, canvas: HTMLCanvasElement, type: 'jpeg' | 'png', completeCaseType: CaseDbCompleteCaseType, t: TFunction<'translation', undefined>): void {
     const dataUrl = canvas.toDataURL(type === 'jpeg' ? 'image/jpeg' : 'image/png');
     const fileName = `${CaseDbDownloadUtil.getExportFileName(baseName, completeCaseType, t)}.${type}`;
-    CommonDownloadUtil.createDownloadUrl(dataUrl, fileName);
+    DownloadUtil.createDownloadUrl(dataUrl, fileName);
   }
 
   public static downloadEchartsImage(baseName: string, instance: ECharts, type: 'jpeg' | 'png', completeCaseType: CaseDbCompleteCaseType, t: TFunction<'translation', undefined>): void {
@@ -80,7 +80,7 @@ export class CaseDbDownloadUtil {
       type,
     });
     const fileName = `${CaseDbDownloadUtil.getExportFileName(baseName, completeCaseType, t)}.${type.toLowerCase()}`;
-    CommonDownloadUtil.createDownloadUrl(url, fileName);
+    DownloadUtil.createDownloadUrl(url, fileName);
   }
 
   public static async downloadExcelTemplate(caseTypeId: string, t: TFunction<'translation', undefined>): Promise<void> {
@@ -112,8 +112,8 @@ export class CaseDbDownloadUtil {
 
       // Convert blob to base64 and download
       const arrayBuffer = await blob.arrayBuffer();
-      const base64 = CommonDownloadUtil.arrayBufferToBase64(arrayBuffer);
-      CommonDownloadUtil.createDownloadUrl(`data:application/vnd.openxmlformats-officedocument.spreadsheetml.sheet;base64,${base64}`, fileName);
+      const base64 = DownloadUtil.arrayBufferToBase64(arrayBuffer);
+      DownloadUtil.createDownloadUrl(`data:application/vnd.openxmlformats-officedocument.spreadsheetml.sheet;base64,${base64}`, fileName);
     } catch (error) {
       LogManager.getInstance().log([{
         detail: {
@@ -132,7 +132,7 @@ export class CaseDbDownloadUtil {
 
   public static downloadNewick(baseName: string, newick: string, completeCaseType: CaseDbCompleteCaseType, t: TFunction<'translation', undefined>): void {
     const fileName = `${CaseDbDownloadUtil.getExportFileName(baseName, completeCaseType, t)}.txt`;
-    CommonDownloadUtil.createDownloadUrl(`data:text/x-nh;base64,${btoa(newick)}`, fileName);
+    DownloadUtil.createDownloadUrl(`data:text/x-nh;base64,${btoa(newick)}`, fileName);
   }
 
   public static getExportFileName(baseName: string, completeCaseType: CaseDbCompleteCaseType, t: TFunction<'translation', undefined>): string {
