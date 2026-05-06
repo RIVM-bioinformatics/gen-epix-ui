@@ -2,8 +2,19 @@ import type { UseQueryResult } from '@tanstack/react-query';
 import { useMemo } from 'react';
 import type { CaseDbCaseTypeSet } from '@gen-epix/api-casedb';
 import { CaseDbCaseApi } from '@gen-epix/api-casedb';
-import { useQueryMemo, QueryKeyManager, CASEDB_QUERY_KEY, UseMap, DataHookUtil, UseNameFactory, UseOptions } from '@gen-epix/ui';
+import type {
+  UseMap,
+  UseNameFactory,
+  UseOptions,
+} from '@gen-epix/ui';
+import {
+  DataHookUtil,
+  QueryKeyManager,
+  useQueryMemo,
+} from '@gen-epix/ui';
+
 import { useCaseTypeSetCategoryMapQuery } from '../useCaseTypeSetCategoriesQuery';
+import { CASEDB_QUERY_KEY } from '../../data/query';
 
 export const useCaseTypeSetsQuery = (): UseQueryResult<CaseDbCaseTypeSet[]> => {
   return useQueryMemo({

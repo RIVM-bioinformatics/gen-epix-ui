@@ -8,7 +8,6 @@ import {
 
 import { CASEDB_QUERY_KEY } from '../../data/query';
 
-
 export const useRefColsValidationRulesQuery = (): UseQueryResult<CaseDbRefColValidationRulesResponseBody> => {
   return useQueryMemo({
     queryFn: async ({ signal }) => {

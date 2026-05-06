@@ -52,7 +52,8 @@ import { useDataCollectionsMapQuery } from '../../../dataHooks/useDataCollection
 import { EpiDashboardStoreContext } from '../../../stores/epiDashboardStore';
 import { CaseUtil } from '../../../utils/CaseUtil';
 import { EpiCasesAlreadyInCaseSetWarning } from '../EpiCasesAlreadyInCaseSetWarning';
-import { CASEDB_QUERY_KEY, CaseDbDataUtil } from '../../..';
+import { CASEDB_QUERY_KEY } from '../../../data/query';
+import { CaseDbDataUtil } from '../../../utils/CaseDbDataUtil';
 
 import { EpiAddCasesToEventDialogSuccessNotificationMessage } from './EpiAddCasesToEventDialogSuccessNotificationMessage';
 
