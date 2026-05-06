@@ -146,12 +146,18 @@ export class QueryClientManager<TQueryKey extends string = string> {
     }
   }
 
+  private getDirectQueryKeyDependents(key: TQueryKey): TQueryKey[] {
+    return Object.entries<TQueryKey[]>(this.queryKeyDependencies)
+      .filter(([, dependencyKeys]) => dependencyKeys.includes(key))
+      .map(([dependentKey]) => dependentKey as TQueryKey);
+  }
+
   private getQueryKeyDependenciesInternal(key: TQueryKey, currentKeys: TQueryKey[] = [], originalKey?: TQueryKey): TQueryKey[] {
     const keys: TQueryKey[] = [...currentKeys];
-    this.__queryKeyDependencies[key].forEach(subKey => {
-      if (!keys.includes(subKey)) {
-        keys.push(subKey);
-        keys.push(...this.getQueryKeyDependenciesInternal(subKey, [...keys], originalKey ?? key));
+    this.getDirectQueryKeyDependents(key).forEach(dependentKey => {
+      if (!keys.includes(dependentKey)) {
+        keys.push(dependentKey);
+        keys.push(...this.getQueryKeyDependenciesInternal(dependentKey, [...keys], originalKey ?? key));
       }
     });
     return remove(uniq(keys), x => x !== originalKey);

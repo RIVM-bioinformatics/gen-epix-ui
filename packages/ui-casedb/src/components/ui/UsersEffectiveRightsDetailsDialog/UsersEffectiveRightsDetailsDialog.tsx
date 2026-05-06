@@ -16,33 +16,35 @@ import {
   useState,
 } from 'react';
 import type { CaseDbUser } from '@gen-epix/api-casedb';
-
 import type {
+  DialogAction,
   WithDialogRefMethods,
   WithDialogRenderProps,
-} from '../../../../../ui/src/hoc/withDialog';
-import { withDialog } from '../../../../../ui/src/hoc/withDialog';
-import { TestIdUtil } from '../../../../../ui/src/utils/TestIdUtil';
-import type { DialogAction } from '../../../../../ui/src/components/ui/Dialog';
-import type { UserEffectiveRight } from '../../../models/caseAccess';
-import { useCaseTypeMapQuery } from '../../../dataHooks/useCaseTypesQuery';
-import { useArray } from '../../../../../ui/src/hooks/useArray';
-import { ResponseHandler } from '../../../../../ui/src/components/ui/ResponseHandler';
+} from '@gen-epix/ui';
+import {
+  CommonDataUtil,
+  LoadableUtil,
+  ResponseHandler,
+  TestIdUtil,
+  useArray,
+  withDialog,
+} from '@gen-epix/ui';
+
+import { useCaseTypeSetMembersQuery } from '../../../dataHooks/useCaseTypeSetMembersQuery';
 import {
   useCaseTypeSetNameFactory,
   useCaseTypeSetsMapQuery,
 } from '../../../dataHooks/useCaseTypeSetsQuery';
-import { useDataCollectionsMapQuery } from '../../../dataHooks/useDataCollectionsQuery';
-import { CaseDbDataUtil } from '../../../utils/CaseDbDataUtil';
+import { useCaseTypeMapQuery } from '../../../dataHooks/useCaseTypesQuery';
+import { useColSetMembersQuery } from '../../../dataHooks/useColSetMembersQuery';
 import { useColSetMapQuery } from '../../../dataHooks/useColSetsQuery';
 import {
   useColMapQuery,
   useColNameFactory,
 } from '../../../dataHooks/useColsQuery';
-import { useColSetMembersQuery } from '../../../dataHooks/useColSetMembersQuery';
-import { useCaseTypeSetMembersQuery } from '../../../dataHooks/useCaseTypeSetMembersQuery';
+import { useDataCollectionsMapQuery } from '../../../dataHooks/useDataCollectionsQuery';
+import type { UserEffectiveRight } from '../../../models/caseAccess';
 import { EpiCustomTabPanel } from '../../epi/EpiCustomTabPanel';
-import { LoadableUtil } from '../../../../../ui/src/utils/LoadableUtil';
 
 
 export interface UsersEffectiveRightsDetailsDialogOpenProps {
@@ -117,7 +119,7 @@ export const UsersEffectiveRightsDetailsDialog = withDialog<UsersEffectiveRights
   }, []);
 
   useEffect(() => {
-    onTitleChange(t('{{userName}} effective rights details for {{dataCollectionName}}', { dataCollectionName: dataCollectionsMapQuery.map.get(userEffectiveRight.data_collection_id)?.name ?? userEffectiveRight.data_collection_id, userName: CaseDbDataUtil.getUserDisplayValue(user, t) }));
+    onTitleChange(t('{{userName}} effective rights details for {{dataCollectionName}}', { dataCollectionName: dataCollectionsMapQuery.map.get(userEffectiveRight.data_collection_id)?.name ?? userEffectiveRight.data_collection_id, userName: CommonDataUtil.getUserDisplayValue(user, t) }));
   }, [dataCollectionsMapQuery.map, onTitleChange, t, user, userEffectiveRight.data_collection_id]);
 
   useEffect(() => {

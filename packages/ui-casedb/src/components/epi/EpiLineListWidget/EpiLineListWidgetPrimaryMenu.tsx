@@ -24,11 +24,11 @@ import {
   UseColumnsMenu,
 } from '@gen-epix/ui';
 
-import { SelectionFilter } from '../../../../../ui/src/classes/filters/SelectionFilter';
 import { EpiEventBusManager } from '../../../classes/managers/EpiEventBusManager';
 import { EpiDashboardStoreContext } from '../../../stores/epiDashboardStore';
 import { CaseUtil } from '../../../utils/CaseUtil';
 import { EpiWidgetMenu } from '../EpiWidgetMenu';
+import { SelectionFilter } from '../../../../../ui/src/classes/filters/SelectionFilter';
 
 
 export type EpiLineListWidgetPrimaryMenuProps = {

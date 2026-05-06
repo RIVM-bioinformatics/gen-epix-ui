@@ -11,9 +11,10 @@ import {
   CaseDbColType,
   CaseDbDimType,
 } from '@gen-epix/api-casedb';
-
-import { StringUtil } from '../../../../ui/src/utils/StringUtil';
-import { WindowManager } from '../../../../ui/src/classes/managers/WindowManager';
+import {
+  StringUtil,
+  WindowManager,
+} from '@gen-epix/ui';
 
 export const SELECTION_FILTER_GROUP = 'selection';
 export const TREE_FILTER_GROUP = 'tree';

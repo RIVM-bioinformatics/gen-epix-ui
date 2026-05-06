@@ -7,11 +7,10 @@ import {
 import type { Theme } from '@mui/material/styles';
 import { CaseDbColType } from '@gen-epix/api-casedb';
 import type { CaseDbTreeAlgorithm } from '@gen-epix/api-casedb';
+import type { ArgumentTypes } from '@gen-epix/ui';
 import { ConfigManager } from '@gen-epix/ui';
 
 import { EpiDataManager } from '../../classes/managers/EpiDataManager';
-import type { ArgumentTypes } from '../../../../ui/src/models/generic';
-import type { Config } from '../../../../ui/src/models/config';
 import { STRATIFICATION_MODE } from '../../models/epi';
 import type {
   Stratification,

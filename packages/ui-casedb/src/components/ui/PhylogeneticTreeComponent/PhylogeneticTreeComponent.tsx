@@ -12,13 +12,15 @@ import {
   useState,
 } from 'react';
 import { useDebouncedCallback } from 'use-debounce';
+import {
+  ConfigManager,
+  DevicePixelRatioManager,
+  Subject,
+  useDimensions,
+  useScrollbarSize,
+  useSubscribable,
+} from '@gen-epix/ui';
 
-import { ConfigManager } from '../../../../../ui/src/classes/managers/ConfigManager';
-import { DevicePixelRatioManager } from '../../../../../ui/src/classes/managers/DevicePixelRatioManager';
-import { Subject } from '../../../../../ui/src/classes/Subject';
-import { useDimensions } from '../../../../../ui/src/hooks/useDimensions';
-import { useScrollbarSize } from '../../../../../ui/src/hooks/useScrollbarSize';
-import { useSubscribable } from '../../../../../ui/src/hooks/useSubscribable';
 import type {
   EpiLineListRangeSubjectValue,
   EpiLinkedScrollSubjectValue,
@@ -32,6 +34,7 @@ import type {
   TreePathProperties,
 } from '../../../models/tree';
 import { EpiTreeUtil } from '../../../utils/EpiTreeUtil';
+import type { CaseDbConfig } from '../../../models/config';
 
 // NOTE: this component has the Component suffix in order to prevent a name collision with the PhylogeneticTree model in the api package.
 
@@ -110,11 +113,11 @@ export const PhylogeneticTreeComponent = ({
   }), [initialViewState?.horizontalScrollPosition, initialViewState?.verticalScrollPosition]);
   const effectiveHighlightingSubject = highlightingSubject ?? fallbackHighlightingSubject;
 
-  const headerHeight = ConfigManager.getInstance().config.epiTree.HEADER_HEIGHT;
+  const headerHeight = ConfigManager.getInstance<CaseDbConfig>().config.epiTree.HEADER_HEIGHT;
   const treeCanvasWidth = width;
   const treeCanvasHeight = Math.max(0, height - headerHeight);
   const combinedCanvasHeight = Math.max(0, height);
-  const treeWidthMinusPadding = treeCanvasWidth - (2 * ConfigManager.getInstance().config.epiTree.TREE_PADDING);
+  const treeWidthMinusPadding = treeCanvasWidth - (2 * ConfigManager.getInstance<CaseDbConfig>().config.epiTree.TREE_PADDING);
   const pixelToGeneticDistanceRatio = tree?.maxBranchLength ? treeWidthMinusPadding / tree.maxBranchLength.toNumber() : null;
   const treeHeight = tree?.size ? (tree.size * itemHeight) + scrollbarSize : itemHeight;
 
@@ -220,7 +223,7 @@ export const PhylogeneticTreeComponent = ({
       origin: scrollContainerRef.current,
       position: position / devicePixelRatio,
     });
-  }, ConfigManager.getInstance().config.epiTree.LINKED_SCROLL_DEBOUNCE_DELAY_MS, { leading: true, trailing: true });
+  }, ConfigManager.getInstance<CaseDbConfig>().config.epiTree.LINKED_SCROLL_DEBOUNCE_DELAY_MS, { leading: true, trailing: true });
 
   const updateScrollPosition = useCallback((params: { internalZoomLevel: number; positionX: number; positionY: number }) => {
     const { internalZoomLevel, positionX, positionY } = params;
@@ -544,7 +547,7 @@ export const PhylogeneticTreeComponent = ({
         const scrollPositionY = pos.currentY - deltaY;
 
         let sanitizedScrollPositionX = scrollPositionX;
-        if (zoomLevel === 1 && Math.abs(deltaX) < ConfigManager.getInstance().config.epiTree.PANNING_THRESHOLD && pos.currentX === 0) {
+        if (zoomLevel === 1 && Math.abs(deltaX) < ConfigManager.getInstance<CaseDbConfig>().config.epiTree.PANNING_THRESHOLD && pos.currentX === 0) {
           sanitizedScrollPositionX = 0;
         }
         updateScrollPosition({ internalZoomLevel: zoomLevel, positionX: sanitizedScrollPositionX, positionY: scrollPositionY });
@@ -596,7 +599,7 @@ export const PhylogeneticTreeComponent = ({
         return;
       }
 
-      const { MAX_ZOOM_LEVEL, MAX_ZOOM_SPEED, MIN_ZOOM_LEVEL, MIN_ZOOM_SPEED } = ConfigManager.getInstance().config.epiTree;
+      const { MAX_ZOOM_LEVEL, MAX_ZOOM_SPEED, MIN_ZOOM_LEVEL, MIN_ZOOM_SPEED } = ConfigManager.getInstance<CaseDbConfig>().config.epiTree;
 
       const zoomSpeed = Math.min(MAX_ZOOM_SPEED, Math.max(MIN_ZOOM_SPEED, treeHeight / treeCanvasHeight * 0.2));
       const newZoomLevel = Math.min(MAX_ZOOM_LEVEL, Math.max(MIN_ZOOM_LEVEL, zoomLevel + (event.deltaY > 0 ? zoomSpeed : -zoomSpeed)));

@@ -13,7 +13,13 @@ import {
   CaseDbColType,
   CaseDbDimType,
 } from '@gen-epix/api-casedb';
+import type {
+  AutoCompleteOption,
+  FilterDimension,
+  Filters,
+} from '@gen-epix/ui';
 import {
+  DATE_FORMAT,
   DEFAULT_FILTER_GROUP,
   FILTER_MODE,
 } from '@gen-epix/ui';
@@ -23,13 +29,6 @@ import {
   SELECTION_FILTER_GROUP,
   TREE_FILTER_GROUP,
 } from '../CaseTypeUtil';
-import type {
-  FilterDimension,
-  Filters,
-} from '../../../../ui/src/models/filter';
-import type { AutoCompleteOption } from '../../../../ui/src/models/form';
-import { DATE_FORMAT } from '../../../../ui/src/data/date';
-import { EpiDataManager } from '../../classes/managers/EpiDataManager';
 import { DateFilter } from '../../../../ui/src/classes/filters/DateFilter';
 import { GeoFilter } from '../../../../ui/src/classes/filters/GeoFilter';
 import { MultiSelectFilter } from '../../../../ui/src/classes/filters/MultiSelectFilter';
@@ -37,6 +36,7 @@ import { NumberRangeFilter } from '../../../../ui/src/classes/filters/NumberRang
 import { SelectionFilter } from '../../../../ui/src/classes/filters/SelectionFilter';
 import { TextFilter } from '../../../../ui/src/classes/filters/TextFilter';
 import { TreeFilter } from '../../../../ui/src/classes/filters/TreeFilter';
+import { EpiDataManager } from '../../classes/managers/EpiDataManager';
 
 export class EpiFilterUtil {
   private static readonly colTypeBlackList = new Set<CaseDbColType>([CaseDbColType.GENETIC_DISTANCE, CaseDbColType.GENETIC_READS, CaseDbColType.GENETIC_SEQUENCE]);

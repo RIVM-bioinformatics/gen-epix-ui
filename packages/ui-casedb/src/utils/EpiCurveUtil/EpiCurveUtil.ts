@@ -18,10 +18,10 @@ import type {
   CaseDbCompleteCaseType,
 } from '@gen-epix/api-casedb';
 import { CaseDbColType } from '@gen-epix/api-casedb';
+import { DATE_FORMAT } from '@gen-epix/ui';
 
 import { CaseTypeUtil } from '../CaseTypeUtil';
 import { EpiFilterUtil } from '../EpiFilterUtil';
-import { DATE_FORMAT } from '../../../../ui/src/data/date';
 
 interface Item {
   date: Date;
