@@ -27,7 +27,7 @@ import type {
   TableColumn,
   TableRowParams,
 } from '../../../models/table';
-import { TableUtil } from '../../../utils/TableUtil';
+import { TableUtil } from '../../../utils/CaseDbTableUtil';
 import { EpiUploadUtil } from '../../../utils/EpiUploadUtil';
 import { Table } from '../../ui/Table';
 import { CaseUtil } from '../../../utils/CaseUtil';

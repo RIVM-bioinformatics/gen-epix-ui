@@ -29,7 +29,7 @@ import type {
 } from '../../../models/table';
 import type { TableStore } from '../../../stores/tableStore';
 import { CaseUtil } from '../../../utils/CaseUtil';
-import { TableUtil } from '../../../utils/TableUtil';
+import { TableUtil } from '../../../utils/CaseDbTableUtil';
 import {
   Table,
   TableMenu,

@@ -8,10 +8,7 @@ import type { ReactElement } from 'react';
 import type { TFunction } from 'i18next';
 import difference from 'lodash/difference';
 import sumBy from 'lodash/sumBy';
-import type { CaseDbCase } from '@gen-epix/api-casedb';
-import { CaseDbColType } from '@gen-epix/api-casedb';
 
-import { CaseUtil } from '../../../../ui-casedb/src/utils/CaseUtil';
 import {
   DEFAULT_FILTER_GROUP,
   FILTER_MODE,
@@ -21,7 +18,6 @@ import { DateFilter } from '../../classes/filters/DateFilter';
 import { MultiSelectFilter } from '../../classes/filters/MultiSelectFilter';
 import { NumberRangeFilter } from '../../classes/filters/NumberRangeFilter';
 import { TextFilter } from '../../classes/filters/TextFilter';
-import type { CaseTypeRowValue } from '../../../../ui-casedb/src/models/epi';
 import type { Filters } from '../../models/filter';
 import type { OptionBase } from '../../models/form';
 import type {
@@ -31,7 +27,6 @@ import type {
   TableColumn,
   TableColumnActions,
   TableColumnBoolean,
-  TableColumnCaseType,
   TableColumnDate,
   TableColumnDimension,
   TableColumnNumber,
@@ -45,7 +40,6 @@ import type {
 import { FIXED_COLUMN_ID } from '../../models/table';
 import { DATE_FORMAT } from '../../data/date';
 import { StringUtil } from '../StringUtil';
-import { EpiDataManager } from '../../classes/managers/EpiDataManager';
 
 export class TableUtil {
   public static areColumnSettingsValid<TData>(tableColumns: TableColumn<TData>[], columnSettings: TableColumnSettings[]): boolean {
@@ -93,37 +87,6 @@ export class TableUtil {
       isInitiallyVisible: true,
       type: 'boolean',
       widthFlex: kwArgs.flex ?? 0.25,
-    };
-  }
-
-  public static createCaseTypeCellRowComperator<TRowData>({ column, direction }: GetTableCellRowComparatorProps<TableColumnCaseType<TRowData>>): (a: TRowData, b: TRowData) => number {
-    return (a: TRowData, b: TRowData) => {
-      const aValue = TableUtil.getTableCaseTypeCellValue({ column, row: a, rowIndex: 0 });
-      const bValue = TableUtil.getTableCaseTypeCellValue({ column, row: b, rowIndex: 0 });
-      const refCol = column.completeCaseType.ref_cols[column.col.ref_col_id];
-
-      const directionMultiplier = direction === 'asc' ? 1 : -1;
-
-      if (aValue.raw === bValue.raw) {
-        return 0;
-      }
-      if (aValue.isMissing) {
-        return 1;
-      }
-      if (bValue.isMissing) {
-        return -1;
-      }
-
-      if (refCol.col_type === CaseDbColType.ORDINAL) {
-        const conceptSetConceptIds = EpiDataManager.getInstance().data.conceptsIdsBySetId[refCol.concept_set_id];
-        return (conceptSetConceptIds.indexOf(aValue.raw) - conceptSetConceptIds.indexOf(bValue.raw)) * directionMultiplier;
-      }
-
-      if (([CaseDbColType.DECIMAL_0, CaseDbColType.DECIMAL_1, CaseDbColType.DECIMAL_2, CaseDbColType.DECIMAL_3, CaseDbColType.DECIMAL_4, CaseDbColType.DECIMAL_4, CaseDbColType.DECIMAL_5, CaseDbColType.DECIMAL_6] as CaseDbColType[]).includes(refCol.col_type)) {
-        return (+aValue.raw - +bValue.raw) * directionMultiplier;
-      }
-
-      return aValue.short.localeCompare(bValue.short) * directionMultiplier;
     };
   }
 
@@ -410,18 +373,6 @@ export class TableUtil {
       return column.valueGetter({ id: column.id, row, rowIndex });
     }
     return (row[column.id as keyof TRowData] as boolean);
-  }
-
-  public static getTableCaseTypeCellDisplayValue<TRowData>({ column, row, rowIndex }: GetTableCellValueProps<TRowData, TableColumnCaseType<TRowData>>): string {
-    const value = TableUtil.getTableCaseTypeCellValue({ column, row, rowIndex });
-    return value.short;
-  }
-
-  public static getTableCaseTypeCellValue<TRowData>({ column, row, rowIndex }: GetTableCellValueProps<TRowData, TableColumnCaseType<TRowData>>): CaseTypeRowValue {
-    if (column.valueGetter) {
-      return column.valueGetter({ id: column.id, row, rowIndex });
-    }
-    return CaseUtil.getRowValue((row as CaseDbCase).content, column.col, column.completeCaseType);
   }
 
   public static getTableDateCellValue<TRowData>({ column, row, rowIndex }: GetTableCellValueProps<TRowData, TableColumnDate<TRowData>>): string {

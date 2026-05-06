@@ -29,7 +29,7 @@ import {
 } from '../../../stores/tableStore';
 import { useInitializeTableStore } from '../../../hooks/useInitializeTableStore';
 import type { TableColumn } from '../../../models/table';
-import { TableUtil } from '../../../utils/TableUtil';
+import { TableUtil } from '../../../utils/CaseDbTableUtil';
 import {
   Table,
   TableHeader,
