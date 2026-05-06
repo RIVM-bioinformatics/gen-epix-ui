@@ -361,9 +361,10 @@ export const Table = <TRowData,>({
       updateColumnSizes();
       updateColumnOrderInDOM();
     };
-    WindowManager.getInstance().window.addEventListener('resize', onWindowResize);
+    const windowManager = WindowManager.getInstance();
+    windowManager.window.addEventListener('resize', onWindowResize);
     return () => {
-      WindowManager.getInstance().window.removeEventListener('resize', onWindowResize);
+      windowManager.window.removeEventListener('resize', onWindowResize);
     };
   }, [updateColumnOrderInDOM, updateColumnSizes]);
 

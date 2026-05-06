@@ -8,10 +8,11 @@ import {
 } from '@mui/material';
 import {
   ConfigManager,
-  DemoConfigUtil,
   EmotionCacheManager,
   QueryClientManager,
 } from '@gen-epix/ui';
+
+import { DemoConfigUtil } from './DemoConfigUtil';
 
 ConfigManager.getInstance().config = DemoConfigUtil.createConfig();
 
