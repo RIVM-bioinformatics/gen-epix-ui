@@ -20,8 +20,15 @@ import type {
 } from '@gen-epix/ui';
 import {
   DATE_FORMAT,
+  DateFilter,
   DEFAULT_FILTER_GROUP,
   FILTER_MODE,
+  GeoFilter,
+  MultiSelectFilter,
+  NumberRangeFilter,
+  SelectionFilter,
+  TextFilter,
+  TreeFilter,
 } from '@gen-epix/ui';
 
 import {
@@ -29,13 +36,6 @@ import {
   SELECTION_FILTER_GROUP,
   TREE_FILTER_GROUP,
 } from '../CaseTypeUtil';
-import { DateFilter } from '../../../../ui/src/classes/filters/DateFilter';
-import { GeoFilter } from '../../../../ui/src/classes/filters/GeoFilter';
-import { MultiSelectFilter } from '../../../../ui/src/classes/filters/MultiSelectFilter';
-import { NumberRangeFilter } from '../../../../ui/src/classes/filters/NumberRangeFilter';
-import { SelectionFilter } from '../../../../ui/src/classes/filters/SelectionFilter';
-import { TextFilter } from '../../../../ui/src/classes/filters/TextFilter';
-import { TreeFilter } from '../../../../ui/src/classes/filters/TreeFilter';
 import { EpiDataManager } from '../../classes/managers/EpiDataManager';
 
 export class EpiFilterUtil {

@@ -17,12 +17,11 @@ import {
   COMMON_QUERY_KEY,
   HmrUtil,
   QueryClientManager,
-  QueryClientManager,
 } from '@gen-epix/ui';
 
-import type { EpiData } from '../../../../../ui-casedb/src/models/epi';
 import { CaseTypeUtil } from '../../../utils/CaseTypeUtil';
 import { CASEDB_QUERY_KEY } from '../../../data/query';
+import type { EpiData } from '../../../models/epi';
 
 export class EpiDataManager {
   private static __instance: EpiDataManager;

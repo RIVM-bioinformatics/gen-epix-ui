@@ -3,7 +3,6 @@ import type { ReactElement } from 'react';
 import { useMemo } from 'react';
 
 import { NotificationManager } from '../../classes/managers/NotificationManager';
-import { QueryClientManager } from '../../classes/managers/QueryClientManager';
 import type { GenericData } from '../../models/data';
 import { NotificationUtil } from '../../utils/NotificationUtil';
 import { QueryClientManager } from '../../classes/managers/QueryClientManager';

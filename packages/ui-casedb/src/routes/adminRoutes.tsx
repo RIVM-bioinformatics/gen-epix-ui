@@ -4,19 +4,12 @@ import {
   CaseDbCommandName,
   CaseDbPermissionType,
 } from '@gen-epix/api-casedb';
-import type { MyNonIndexRouteObject } from '@gen-epix/ui';
 import {
   ADMIN_PAGE_CATEGORY,
-  IdentifierIssuersAdminPage,
-  OrganizationAdminPoliciesAdminPage,
-  OrganizationContactsAdminPage,
-  OrganizationsAdminPage,
-  OrganizationSitesAdminPage,
-  OutagesAdminPage,
+  createAdminRoutes as createCommonAdminRoutes,
   RouterErrorPage,
-  UserInvitationsAdminPage,
-  UsersAdminPage,
 } from '@gen-epix/ui';
+import type { MyNonIndexRouteObject } from '@gen-epix/ui';
 import { t } from 'i18next';
 import type { CommonDbApiPermission } from '@gen-epix/api-commondb';
 
@@ -51,190 +44,57 @@ import { UserEffectiveRightsTesterAdminPage } from '../pages/UserEffectiveRights
 import { UserShareCasePoliciesAdminPage } from '../pages/UserShareCasePoliciesAdminPage';
 
 
-export const createAdminRoutes = (): MyNonIndexRouteObject<CaseDbApiPermission | CommonDbApiPermission>[] => [
-  // USERS_AND_ORGANIZATIONS
+type RoutePermission = CaseDbApiPermission | CommonDbApiPermission;
 
+const createUserEffectiveRightsRoutes = (): MyNonIndexRouteObject<RoutePermission>[] => [
   {
-    children: [
-      {
-        Component: OrganizationsAdminPage,
-        errorElement: <RouterErrorPage />,
-        handle: {
-          category: ADMIN_PAGE_CATEGORY.USERS_AND_ORGANIZATIONS,
-          requiredPermissions: [
-            { command_name: CaseDbCommandName.OrganizationCrudCommand, permission_type: CaseDbPermissionType.READ },
-          ],
-          requiresUserProfile: true,
-          subTitle: t`Manage your organizations`,
-          title: t`Organizations`,
-        },
-        index: true,
-        path: '/management/organizations',
-      },
-      {
-        children: [
-          {
-            Component: OrganizationSitesAdminPage,
-            errorElement: <RouterErrorPage />,
-            handle: {
-              requiredPermissions: [
-                { command_name: CaseDbCommandName.SiteCrudCommand, permission_type: CaseDbPermissionType.READ },
-              ],
-              requiresUserProfile: true,
-              title: t`Organization sites`,
-            },
-            index: true,
-            path: '/management/organizations/:organizationId/sites',
-          },
-          {
-            Component: OrganizationContactsAdminPage,
-            errorElement: <RouterErrorPage />,
-            handle: {
-              requiredPermissions: [
-                { command_name: CaseDbCommandName.SiteCrudCommand, permission_type: CaseDbPermissionType.READ },
-              ],
-              requiresUserProfile: true,
-              title: t`Site contacts`,
-            },
-            path: '/management/organizations/:organizationId/sites/:siteId/contacts',
-          },
-        ],
-        errorElement: <RouterErrorPage />,
-        handle: {
-          requiredPermissions: [],
-          requirePermissionForChildRoute: true,
-          requiresUserProfile: true,
-          title: t`Organization sites`,
-        },
-        path: '/management/organizations/:organizationId/sites',
-      },
-    ],
+    Component: UserEffectiveRightsAdminPage,
     errorElement: <RouterErrorPage />,
     handle: {
-      requiredPermissions: [],
-      requirePermissionForChildRoute: true,
-      requiresUserProfile: true,
-      title: t`Organizations`,
-    },
-    path: '/management/organizations',
-  },
-  {
-    children: [
-      {
-        Component: UsersAdminPage,
-        errorElement: <RouterErrorPage />,
-        handle: {
-          category: ADMIN_PAGE_CATEGORY.USERS_AND_ORGANIZATIONS,
-          requiredPermissions: [
-            { command_name: CaseDbCommandName.UserCrudCommand, permission_type: CaseDbPermissionType.READ },
-            { command_name: CaseDbCommandName.OrganizationCrudCommand, permission_type: CaseDbPermissionType.READ },
-          ],
-          requiresUserProfile: true,
-          subTitle: t`Manage users`,
-          title: t`Users`,
-        },
-        index: true,
-        path: '/management/users',
-      },
-      {
-        Component: UserEffectiveRightsAdminPage,
-        errorElement: <RouterErrorPage />,
-        handle: {
-          requiredPermissions: [
-            { command_name: CaseDbCommandName.ColSetMemberCrudCommand, permission_type: CaseDbPermissionType.READ },
-            { command_name: CaseDbCommandName.CaseTypeSetCrudCommand, permission_type: CaseDbPermissionType.READ },
-            { command_name: CaseDbCommandName.ColSetCrudCommand, permission_type: CaseDbPermissionType.READ },
-            { command_name: CaseDbCommandName.CaseTypeSetMemberCrudCommand, permission_type: CaseDbPermissionType.READ },
-            { command_name: CaseDbCommandName.CaseTypeSetCategoryCrudCommand, permission_type: CaseDbPermissionType.READ },
-            { command_name: CaseDbCommandName.DataCollectionCrudCommand, permission_type: CaseDbPermissionType.READ },
-            { command_name: CaseDbCommandName.OrganizationAccessCasePolicyCrudCommand, permission_type: CaseDbPermissionType.READ },
-            { command_name: CaseDbCommandName.OrganizationShareCasePolicyCrudCommand, permission_type: CaseDbPermissionType.READ },
-            { command_name: CaseDbCommandName.UserAccessCasePolicyCrudCommand, permission_type: CaseDbPermissionType.READ },
-            { command_name: CaseDbCommandName.UserShareCasePolicyCrudCommand, permission_type: CaseDbPermissionType.READ },
-            { command_name: CaseDbCommandName.ColCrudCommand, permission_type: CaseDbPermissionType.READ },
-          ],
-          requiresUserProfile: true,
-          title: t`Effective rights`,
-        },
-        path: '/management/users/:userId/effective-rights',
-      },
-      {
-        Component: UserEffectiveRightsTesterAdminPage,
-        errorElement: <RouterErrorPage />,
-        handle: {
-          requiredPermissions: [
-            { command_name: CaseDbCommandName.ColSetMemberCrudCommand, permission_type: CaseDbPermissionType.READ },
-            { command_name: CaseDbCommandName.CaseTypeSetCrudCommand, permission_type: CaseDbPermissionType.READ },
-            { command_name: CaseDbCommandName.ColSetCrudCommand, permission_type: CaseDbPermissionType.READ },
-            { command_name: CaseDbCommandName.CaseTypeSetMemberCrudCommand, permission_type: CaseDbPermissionType.READ },
-            { command_name: CaseDbCommandName.CaseTypeSetCategoryCrudCommand, permission_type: CaseDbPermissionType.READ },
-            { command_name: CaseDbCommandName.DataCollectionCrudCommand, permission_type: CaseDbPermissionType.READ },
-            { command_name: CaseDbCommandName.OrganizationAccessCasePolicyCrudCommand, permission_type: CaseDbPermissionType.READ },
-            { command_name: CaseDbCommandName.OrganizationShareCasePolicyCrudCommand, permission_type: CaseDbPermissionType.READ },
-            { command_name: CaseDbCommandName.UserAccessCasePolicyCrudCommand, permission_type: CaseDbPermissionType.READ },
-            { command_name: CaseDbCommandName.UserShareCasePolicyCrudCommand, permission_type: CaseDbPermissionType.READ },
-            { command_name: CaseDbCommandName.ColCrudCommand, permission_type: CaseDbPermissionType.READ },
-          ],
-          requiresUserProfile: true,
-          title: t`Effective rights test`,
-        },
-        path: '/management/users/:userId/effective-rights-tester',
-      },
-    ],
-    errorElement: <RouterErrorPage />,
-    handle: {
-      requiredPermissions: [],
-      requirePermissionForChildRoute: true,
-      requiresUserProfile: true,
-      title: t`Users`,
-    },
-    path: '/management/users',
-  },
-  {
-    Component: UserInvitationsAdminPage,
-    errorElement: <RouterErrorPage />,
-    handle: {
-      category: ADMIN_PAGE_CATEGORY.USERS_AND_ORGANIZATIONS,
       requiredPermissions: [
-        { command_name: CaseDbCommandName.UserInvitationCrudCommand, permission_type: CaseDbPermissionType.READ },
-        { command_name: CaseDbCommandName.OrganizationCrudCommand, permission_type: CaseDbPermissionType.READ },
+        { command_name: CaseDbCommandName.ColSetMemberCrudCommand, permission_type: CaseDbPermissionType.READ },
+        { command_name: CaseDbCommandName.CaseTypeSetCrudCommand, permission_type: CaseDbPermissionType.READ },
+        { command_name: CaseDbCommandName.ColSetCrudCommand, permission_type: CaseDbPermissionType.READ },
+        { command_name: CaseDbCommandName.CaseTypeSetMemberCrudCommand, permission_type: CaseDbPermissionType.READ },
+        { command_name: CaseDbCommandName.CaseTypeSetCategoryCrudCommand, permission_type: CaseDbPermissionType.READ },
+        { command_name: CaseDbCommandName.DataCollectionCrudCommand, permission_type: CaseDbPermissionType.READ },
+        { command_name: CaseDbCommandName.OrganizationAccessCasePolicyCrudCommand, permission_type: CaseDbPermissionType.READ },
+        { command_name: CaseDbCommandName.OrganizationShareCasePolicyCrudCommand, permission_type: CaseDbPermissionType.READ },
+        { command_name: CaseDbCommandName.UserAccessCasePolicyCrudCommand, permission_type: CaseDbPermissionType.READ },
+        { command_name: CaseDbCommandName.UserShareCasePolicyCrudCommand, permission_type: CaseDbPermissionType.READ },
+        { command_name: CaseDbCommandName.ColCrudCommand, permission_type: CaseDbPermissionType.READ },
       ],
       requiresUserProfile: true,
-      subTitle: t`Invite users to your organization`,
-      title: t`User invitations`,
+      title: t`Effective rights`,
     },
-    path: '/management/user-invitations',
+    path: '/management/users/:userId/effective-rights',
   },
   {
-    Component: OrganizationAdminPoliciesAdminPage,
+    Component: UserEffectiveRightsTesterAdminPage,
     errorElement: <RouterErrorPage />,
     handle: {
-      category: ADMIN_PAGE_CATEGORY.USERS_AND_ORGANIZATIONS,
       requiredPermissions: [
-        { command_name: CaseDbCommandName.OrganizationAdminPolicyCrudCommand, permission_type: CaseDbPermissionType.READ },
-        { command_name: CaseDbCommandName.UserCrudCommand, permission_type: CaseDbPermissionType.READ },
-        { command_name: CaseDbCommandName.OrganizationCrudCommand, permission_type: CaseDbPermissionType.READ },
+        { command_name: CaseDbCommandName.ColSetMemberCrudCommand, permission_type: CaseDbPermissionType.READ },
+        { command_name: CaseDbCommandName.CaseTypeSetCrudCommand, permission_type: CaseDbPermissionType.READ },
+        { command_name: CaseDbCommandName.ColSetCrudCommand, permission_type: CaseDbPermissionType.READ },
+        { command_name: CaseDbCommandName.CaseTypeSetMemberCrudCommand, permission_type: CaseDbPermissionType.READ },
+        { command_name: CaseDbCommandName.CaseTypeSetCategoryCrudCommand, permission_type: CaseDbPermissionType.READ },
+        { command_name: CaseDbCommandName.DataCollectionCrudCommand, permission_type: CaseDbPermissionType.READ },
+        { command_name: CaseDbCommandName.OrganizationAccessCasePolicyCrudCommand, permission_type: CaseDbPermissionType.READ },
+        { command_name: CaseDbCommandName.OrganizationShareCasePolicyCrudCommand, permission_type: CaseDbPermissionType.READ },
+        { command_name: CaseDbCommandName.UserAccessCasePolicyCrudCommand, permission_type: CaseDbPermissionType.READ },
+        { command_name: CaseDbCommandName.UserShareCasePolicyCrudCommand, permission_type: CaseDbPermissionType.READ },
+        { command_name: CaseDbCommandName.ColCrudCommand, permission_type: CaseDbPermissionType.READ },
       ],
       requiresUserProfile: true,
-      subTitle: t`Manage organization admin policies`,
-      title: t`Organization admin policies`,
+      title: t`Effective rights test`,
     },
-    path: '/management/organization-admin-policies',
+    path: '/management/users/:userId/effective-rights-tester',
   },
-  {
-    Component: IdentifierIssuersAdminPage,
-    errorElement: <RouterErrorPage />,
-    handle: {
-      category: ADMIN_PAGE_CATEGORY.USERS_AND_ORGANIZATIONS,
-      requiredPermissions: [
-        { command_name: CaseDbCommandName.IdentifierIssuerCrudCommand, permission_type: CaseDbPermissionType.READ },
-      ],
-      requiresUserProfile: true,
-      subTitle: t`Manage identifier issuers`,
-      title: t`Identifier issuers`,
-    },
-    path: '/management/identifier-issuers',
-  },
+];
+
+export const createAdminRoutes = (): MyNonIndexRouteObject<RoutePermission>[] => [
+  ...createCommonAdminRoutes<CaseDbApiPermission>({ usersRouteChildren: createUserEffectiveRightsRoutes() }),
 
   // ACCESS_RIGHTS
 
@@ -707,20 +567,6 @@ export const createAdminRoutes = (): MyNonIndexRouteObject<CaseDbApiPermission |
       title: t`Region Relations`,
     },
     path: '/management/region-relations',
-  },
-
-  // SYSTEM
-  {
-    Component: OutagesAdminPage,
-    errorElement: <RouterErrorPage />,
-    handle: {
-      category: ADMIN_PAGE_CATEGORY.SYSTEM,
-      requiredPermissions: [],
-      requiresUserProfile: true,
-      subTitle: t`Manage outages`,
-      title: t`Outages`,
-    },
-    path: '/management/outages',
   },
 
   // HELPERS

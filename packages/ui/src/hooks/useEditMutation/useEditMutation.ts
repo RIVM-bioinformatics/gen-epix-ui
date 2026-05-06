@@ -11,7 +11,6 @@ import { QueryClientManager } from '../../classes/managers/QueryClientManager';
 import type { GenericData } from '../../models/data';
 import { NotificationUtil } from '../../utils/NotificationUtil';
 import { ObjectUtil } from '../../utils/ObjectUtil';
-import { QueryClientManager } from '../../classes/managers/QueryClientManager';
 
 export type MutationContextEdit<TData> = { item?: TData; notificationKey?: string; previousData?: TData[] };
 

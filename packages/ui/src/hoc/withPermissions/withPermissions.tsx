@@ -9,7 +9,7 @@ export interface WithPermissionsOptions<TApiPermission = CommonDbApiPermission> 
   readonly requiredPermissions: TApiPermission[];
 }
 
-export const withPermissions = <TApiPermission = CommonDbApiPermission, TProps extends object = null>(
+export const withPermissions = <TApiPermission = CommonDbApiPermission, TProps extends object = Record<string, never>>(
   Component: ComponentType<TProps>,
   options: WithPermissionsOptions<TApiPermission>,
 ) => {
