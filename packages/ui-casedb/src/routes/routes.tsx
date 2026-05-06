@@ -1,28 +1,32 @@
 /* eslint-disable @typescript-eslint/naming-convention */
 import HomeIcon from '@mui/icons-material/Home';
+import type { CaseDbApiPermission } from '@gen-epix/api-casedb';
 import {
   CaseDbCommandName,
   CaseDbPermissionType,
 } from '@gen-epix/api-casedb';
 import { t } from 'i18next';
+import type { MyNonIndexRouteObject } from '@gen-epix/ui';
+import {
+  AcceptInvitationPage,
+  AdminPage,
+  PostLoginPage,
+  PostLogoutPage,
+  RouterErrorPage,
+  RouterRoot,
+} from '@gen-epix/ui';
+import type { CommonDbApiPermission } from '@gen-epix/api-commondb';
 
-import type { MyNonIndexRouteObject } from '../models/reactRouter';
-import { AcceptInvitationPage } from '../pages/AcceptInvitationPage';
-import { AdminPage } from '../pages/AdminPage';
 import { CasesDetailPage } from '../pages/CasesDetailPage';
 import { CasesPage } from '../pages/CasesPage';
 import { EventsDetailPage } from '../pages/EventsDetailPage';
 import { EventsPage } from '../pages/EventsPage';
-import { PostLoginPage } from '../pages/PostLoginPage';
-import { PostLogoutPage } from '../pages/PostLogoutPage';
-import { RouterErrorPage } from '../pages/RouterErrorPage';
 import { TrendsPage } from '../pages/TrendsPage';
 import { UploadPage } from '../pages/UploadPage';
-import { RouterRoot } from '../components/app/RouterRoot';
 
 import { createAdminRoutes } from './adminRoutes';
 
-export const createRoutes = (): MyNonIndexRouteObject[] => {
+export const createRoutes = (): MyNonIndexRouteObject<CaseDbApiPermission | CommonDbApiPermission>[] => {
   const adminRoutes = createAdminRoutes();
 
   return [
@@ -195,7 +199,7 @@ export const createRoutes = (): MyNonIndexRouteObject[] => {
           children: [
             {
               // eslint-disable-next-line @eslint-react/component-hook-factories
-              Component: () => <AdminPage routes={adminRoutes} />,
+              Component: () => <AdminPage />,
               errorElement: <RouterErrorPage />,
               handle: {
                 disabled: false,

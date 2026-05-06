@@ -5,12 +5,12 @@ import type {
 } from 'react-router';
 import type { CommonDbApiPermission } from '@gen-epix/api-commondb';
 
-export type MyHandle = {
+export type MyHandle<TApiPermission = CommonDbApiPermission> = {
   category?: string;
   disabled?: boolean;
   hidden?: boolean;
   icon?: ReactElement;
-  requiredPermissions: CommonDbApiPermission[];
+  requiredPermissions: TApiPermission[];
   requirePermissionForChildRoute?: boolean;
   requiresUserProfile: boolean;
   root?: boolean;
@@ -18,13 +18,13 @@ export type MyHandle = {
   title: string;
 };
 
-export type MyIndexRouteObject = {
-  handle?: MyHandle;
+export type MyIndexRouteObject<TApiPermission = CommonDbApiPermission> = {
+  handle?: MyHandle<TApiPermission>;
 } & Omit<IndexRouteObject, 'handle'>;
 
-export type MyNonIndexRouteObject = {
-  children?: Array<MyIndexRouteObject | MyNonIndexRouteObject>;
-  handle?: MyHandle;
+export type MyNonIndexRouteObject<TApiPermission = CommonDbApiPermission> = {
+  children?: Array<MyIndexRouteObject<TApiPermission> | MyNonIndexRouteObject<TApiPermission>>;
+  handle?: MyHandle<TApiPermission>;
 } & Omit<
   NonIndexRouteObject,
   'children' | 'handle'

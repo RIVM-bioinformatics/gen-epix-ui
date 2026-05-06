@@ -1,52 +1,57 @@
 /* eslint-disable @typescript-eslint/naming-convention */
-import { t, type TFunction } from 'i18next';
+import type { CaseDbApiPermission } from '@gen-epix/api-casedb';
 import {
   CaseDbCommandName,
   CaseDbPermissionType,
 } from '@gen-epix/api-casedb';
+import type { MyNonIndexRouteObject } from '@gen-epix/ui';
+import {
+  ADMIN_PAGE_CATEGORY,
+  IdentifierIssuersAdminPage,
+  OrganizationAdminPoliciesAdminPage,
+  OrganizationContactsAdminPage,
+  OrganizationsAdminPage,
+  OrganizationSitesAdminPage,
+  OutagesAdminPage,
+  RouterErrorPage,
+  UserInvitationsAdminPage,
+  UsersAdminPage,
+} from '@gen-epix/ui';
+import { t } from 'i18next';
+import type { CommonDbApiPermission } from '@gen-epix/api-commondb';
 
-import { ADMIN_PAGE_CATEGORY } from '../models/admin';
-import type { MyNonIndexRouteObject } from '../models/reactRouter';
+import { CaseSetCategoryAdminPage } from '../pages/CaseSetCategoryAdminPage';
 import { CaseSetStatusAdminPage } from '../pages/CaseSetStatusAdminPage';
-import { ColsAdminPage } from '../pages/ColsAdminPage';
-import { ColSetsAdminPage } from '../pages/ColSetsAdminPage';
-import { DimsAdminPage } from '../pages/DimsAdminPage';
 import { CaseTypesAdminPage } from '../pages/CaseTypesAdminPage';
 import { CaseTypeSetCategoriesAdminPage } from '../pages/CaseTypeSetCategoriesAdminPage';
 import { CaseTypeSetsAdminPage } from '../pages/CaseTypeSetsAdminPage';
-import { RefColsAdminPage } from '../pages/RefColsAdminPage';
+import { ColsAdminPage } from '../pages/ColsAdminPage';
+import { ColSetsAdminPage } from '../pages/ColSetsAdminPage';
 import { ConceptRelationsAdminPage } from '../pages/ConceptRelationsAdminPage';
 import { ConceptsAdminPage } from '../pages/ConceptsAdminPage';
 import { ConceptSetsAdminPage } from '../pages/ConceptSetsAdminPage';
 import { DataCollectionsAdminPage } from '../pages/DataCollectionsAdminPage';
 import { DataCollectionSetsAdminPage } from '../pages/DataCollectionSetsAdminPage';
-import { RefDimsAdminPage } from '../pages/RefDimsAdminPage';
+import { DataCollectionVisualizationPage } from '../pages/DataCollectionVisualizationPage';
+import { DimsAdminPage } from '../pages/DimsAdminPage';
 import { DiseasesAdminPage } from '../pages/DiseasesAdminPage';
 import { EtiologicalAgentsAdminPage } from '../pages/EtiologicalAgentsAdminPage';
 import { EtiologiesAdminPage } from '../pages/EtiologiesAdminPage';
-import { IdentifierIssuersAdminPage } from '../pages/IdentifierIssuersAdminPage';
 import { OrganizationAccessCasePoliciesAdminPage } from '../pages/OrganizationAccessCasePoliciesAdminPage';
-import { OrganizationAdminPoliciesAdminPage } from '../pages/OrganizationAdminPoliciesAdminPage';
-import { OrganizationContactsAdminPage } from '../pages/OrganizationContactsAdminPage';
-import { OrganizationsAdminPage } from '../pages/OrganizationsAdminPage';
 import { OrganizationShareCasePoliciesAdminPage } from '../pages/OrganizationShareCasePoliciesAdminPage';
-import { OrganizationSitesAdminPage } from '../pages/OrganizationSitesAdminPage';
-import { OutagesAdminPage } from '../pages/OutagesAdminPage';
+import { RefColsAdminPage } from '../pages/RefColsAdminPage';
+import { RefDimsAdminPage } from '../pages/RefDimsAdminPage';
 import { RegionRelationsAdminPage } from '../pages/RegionRelationsAdminPage';
 import { RegionsAdminPage } from '../pages/RegionsAdminPage';
 import { RegionSetsAdminPage } from '../pages/RegionSetsAdminPage';
 import { RegionSetShapesAdminPage } from '../pages/RegionSetShapesAdminPage';
-import { RouterErrorPage } from '../pages/RouterErrorPage';
 import { UserAccessCasePoliciesAdminPage } from '../pages/UserAccessCasePoliciesAdminPage';
-import { UserInvitationsAdminPage } from '../pages/UserInvitationsAdminPage';
-import { UsersAdminPage } from '../pages/UsersAdminPage';
 import { UserEffectiveRightsAdminPage } from '../pages/UserEffectiveRightsAdminPage';
 import { UserEffectiveRightsTesterAdminPage } from '../pages/UserEffectiveRightsTesterAdminPage';
 import { UserShareCasePoliciesAdminPage } from '../pages/UserShareCasePoliciesAdminPage';
-import { CaseSetCategoryAdminPage } from '../pages/CaseSetCategoryAdminPage';
-import { DataCollectionVisualizationPage } from '../pages/DataCollectionVisualizationPage';
 
-export const createAdminRoutes = (): MyNonIndexRouteObject[] => [
+
+export const createAdminRoutes = (): MyNonIndexRouteObject<CaseDbApiPermission | CommonDbApiPermission>[] => [
   // USERS_AND_ORGANIZATIONS
 
   {
@@ -800,8 +805,6 @@ export const createAdminRoutes = (): MyNonIndexRouteObject[] => [
     },
     path: '/management/columns',
   },
-
-
   {
     Component: DataCollectionVisualizationPage,
     errorElement: <RouterErrorPage />,

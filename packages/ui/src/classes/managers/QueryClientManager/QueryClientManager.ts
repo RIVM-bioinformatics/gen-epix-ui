@@ -15,43 +15,14 @@ import type { GenericData } from '../../../models/data';
 
 export class QueryClientManager<TQueryKey extends string = string> {
   private static __instance: QueryClientManager;
-  public readonly mutationCache: MutationCache;
+  public mutationCache: MutationCache;
+  public queryCache: QueryCache;
+  public queryClient: QueryClient;
 
-  public readonly queryCache: QueryCache;
-
-  public readonly queryClient: QueryClient;
-
-  public set queryKeyDependencies(queryKeyDependencies: Array<Record<TQueryKey, TQueryKey[]>>) {
-    this.__queryKeyDependencies = QueryClientManager.mergeQueryKeyDependencies(queryKeyDependencies);
-  }
-
-  public get queryKeyDependencies(): Record<TQueryKey, TQueryKey[]> {
-    if (!this.__queryKeyDependencies) {
-      throw new Error('QueryKeyDependencies not set');
-    }
-    return this.__queryKeyDependencies;
-  }
-  private __queryKeyDependencies: Record<TQueryKey, TQueryKey[]>;
+  public queryKeyDependencies: Record<TQueryKey, TQueryKey[]>;
 
   private constructor() {
-    const queryCache = new QueryCache({});
-    const mutationCache = new MutationCache({});
-    const queryClient = new QueryClient({
-      defaultOptions: {
-        queries: {
-          gcTime: Infinity,
-          retry: ConfigManager.getInstance().config.queryClient.retry,
-          retryDelay: ConfigManager.getInstance().config.queryClient.retryDelay,
-          staleTime: Infinity,
-        },
-      },
-      mutationCache,
-      queryCache,
-    });
 
-    this.queryCache = queryCache;
-    this.mutationCache = mutationCache;
-    this.queryClient = queryClient;
   }
 
   public static getInstance<TQueryKey extends string>(): QueryClientManager<TQueryKey> {
@@ -129,6 +100,31 @@ export class QueryClientManager<TQueryKey extends string = string> {
       return undefined;
     }
     return queryClient.getQueryData<T>(queryKey);
+  }
+
+  public initialize(kwArgs: { queryKeyDependencies: Array<Record<TQueryKey, TQueryKey[]>> }) {
+    if (this.queryKeyDependencies) {
+      throw new Error('QueryClientManager already initialized');
+    }
+    this.queryKeyDependencies = QueryClientManager.mergeQueryKeyDependencies<TQueryKey>(kwArgs.queryKeyDependencies);
+    const queryCache = new QueryCache({});
+    const mutationCache = new MutationCache({});
+    const queryClient = new QueryClient({
+      defaultOptions: {
+        queries: {
+          gcTime: Infinity,
+          retry: ConfigManager.getInstance().config.queryClient.retry,
+          retryDelay: ConfigManager.getInstance().config.queryClient.retryDelay,
+          staleTime: Infinity,
+        },
+      },
+      mutationCache,
+      queryCache,
+    });
+
+    this.queryCache = queryCache;
+    this.mutationCache = mutationCache;
+    this.queryClient = queryClient;
   }
 
   public async invalidateQueryKeys(queryKeys: string[][]) {

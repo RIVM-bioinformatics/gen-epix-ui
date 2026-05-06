@@ -25,6 +25,7 @@ export * from './stores/userProfileStore';
 export * from './stores/epiUploadStore';
 export * from './stores/epiDashboardStore';
 export * from './setup';
+export * from './routes';
 export * from './pages/UserShareCasePoliciesAdminPage';
 export * from './pages/UserEffectiveRightsTesterAdminPage';
 export * from './pages/UserEffectiveRightsAdminPage';

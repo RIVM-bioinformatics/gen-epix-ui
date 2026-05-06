@@ -623,6 +623,9 @@ importers:
       '@gen-epix/api-casedb':
         specifier: workspace:*
         version: link:../api-casedb
+      '@gen-epix/api-commondb':
+        specifier: workspace:*
+        version: link:../api-commondb
       '@gen-epix/ui':
         specifier: workspace:*
         version: link:../ui

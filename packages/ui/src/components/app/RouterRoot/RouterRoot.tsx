@@ -16,15 +16,14 @@ import {
   Button,
   Typography,
 } from '@mui/material';
-import { t } from 'i18next';
 import { CommonDbLogLevel } from '@gen-epix/api-commondb';
+import { useTranslation } from 'react-i18next';
 
 import { AuthenticationManager } from '../../../classes/managers/AuthenticationManager';
 import { LogManager } from '../../../classes/managers/LogManager';
 import { NavigationHistoryManager } from '../../../classes/managers/NavigationHistoryManager';
 import { useSubscribable } from '../../../hooks/useSubscribable';
 import { ChooseIdentityProviderPage } from '../../../pages/ChooseIdentityProviderPage';
-import { HomePage } from '../../../pages/HomePage';
 import { UserManagerUtil } from '../../../utils/UserManagerUtil';
 import { NotificationsStack } from '../../ui/Notifications';
 import { Spinner } from '../../ui/Spinner';
@@ -39,9 +38,11 @@ import { AuthenticationWrapper } from '../AuthenticationWrapper';
 import { AuthorizationWrapper } from '../AuthorizationWrapper';
 import { QueryClientManager } from '../../../classes/managers/QueryClientManager';
 import { COMMON_QUERY_KEY } from '../../../data/query';
+import { RouterManager } from '../../../classes/managers/RouterManager';
 
 
 export const RouterRoot = () => {
+  const { t } = useTranslation();
   const location = useLocation();
 
   const oidcConfiguration = useSubscribable(AuthenticationManager.getInstance());
@@ -138,7 +139,7 @@ export const RouterRoot = () => {
       <PageContainer
         singleAction
         testIdAttributes={TestIdUtil.createAttributes('ErrorPage')}
-        title={'Error'}
+        title={t('Error')}
       >
         <Box
           sx={{
@@ -167,6 +168,8 @@ export const RouterRoot = () => {
       <ChooseIdentityProviderPage identityProvidersWithAvailability={identityProvidersWithAvailability} />
     );
   }
+
+  const HomePage = RouterManager.getInstance().homePageComponent;
 
   return (
     <AuthProvider

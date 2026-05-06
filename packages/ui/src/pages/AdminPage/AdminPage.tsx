@@ -26,30 +26,26 @@ import type { MyNonIndexRouteObject } from '../../models/reactRouter';
 import { TestIdUtil } from '../../utils/TestIdUtil';
 
 
-export type AdminPageProps = {
-  readonly routes: MyNonIndexRouteObject[];
-};
-
 type Category = {
   items: MyNonIndexRouteObject[];
   label: string;
   name: string;
 };
 
-export const AdminPage = ({ routes }: AdminPageProps) => {
+export const AdminPage = () => {
   const { t } = useTranslation();
   const location = useLocation();
   const theme = useTheme();
 
   const menuItems = useMemo(() => {
-    const items = routes
+    const items = RouterManager.getInstance().adminRoutes
       .map(r => r.children?.length ? r.children.find(child => child.index) as MyNonIndexRouteObject : r)
       .filter(r => {
         const hasPermission = AuthorizationManager.getInstance().doesUserHavePermission(r.handle.requiredPermissions);
         return !r.handle?.hidden && hasPermission;
       });
     return items;
-  }, [routes]);
+  }, []);
 
   const categoryToLabelMap = useMemo<Record<ADMIN_PAGE_CATEGORY, string>>(() => {
     return {
