@@ -23,10 +23,7 @@ import type {
   FieldValues,
   UseFormReturn,
 } from 'react-hook-form';
-import type {
-  CommonDbApiPermission,
-  CommonDbCommandName,
-} from '@gen-epix/api-commondb';
+import type { CommonDbApiPermission } from '@gen-epix/api-commondb';
 import { CommonDbPermissionType } from '@gen-epix/api-commondb';
 
 import { AuthorizationManager } from '../../classes/managers/AuthorizationManager';
@@ -75,7 +72,13 @@ import { CrudPageDeleteDialog } from './CrudPageDeleteDialog';
 export type CrudPageProps<
   TFormFields extends FieldValues,
   TData extends GenericData,
-  TTableData extends TData = TData
+  TTableData extends TData = TData,
+  TQueryKey extends string = COMMON_QUERY_KEY,
+  TApiPermission extends {
+    command_name: string;
+    permission_type: string;
+  } = CommonDbApiPermission,
+  TCommandName extends TApiPermission['command_name'] = TApiPermission['command_name'],
 > = PropsWithTestIdAttributes<{
   readonly associationQueryKeys?: string[][];
   readonly canEditItem?: (item: TData) => boolean;
@@ -85,7 +88,7 @@ export type CrudPageProps<
   readonly createItemButtonText?: string;
   readonly createItemDialogTitle?: string;
   readonly createOne?: (item: TFormFields) => Promise<TData>;
-  readonly crudCommandType?: CommonDbCommandName;
+  readonly crudCommandType?: TCommandName;
   readonly customOnRowClick?: (params: TableRowParams<TData>) => void;
   readonly defaultNewItem?: Partial<TFormFields>;
   readonly defaultSortByField: keyof TTableData;
@@ -93,9 +96,9 @@ export type CrudPageProps<
   readonly deleteOne?: (item: TData) => Promise<unknown>;
   readonly editDialogExtraActionsFactory?: (item: TData) => DialogAction[];
   readonly extraActionsFactory?: (params: TableRowParams<TData>) => ReactElement[];
-  readonly extraCreateOnePermissions?: CommonDbApiPermission[];
-  readonly extraDeleteOnePermissions?: CommonDbApiPermission[];
-  readonly extraUpdateOnePermissions?: CommonDbApiPermission[];
+  readonly extraCreateOnePermissions?: TApiPermission[];
+  readonly extraDeleteOnePermissions?: TApiPermission[];
+  readonly extraUpdateOnePermissions?: TApiPermission[];
   readonly fetchAll: (signal: AbortSignal) => Promise<TData[]>;
   readonly fetchAllSelect?: (data: TData[]) => TData[];
   readonly formFieldDefinitions: ((values: TFormFields, item: TData) => FormFieldDefinition<TFormFields>[]) | FormFieldDefinition<TFormFields>[];
@@ -113,7 +116,7 @@ export type CrudPageProps<
   readonly onRowsChange?: (items: TData[]) => void;
   readonly onShowItem?: (params: TableRowParams<TTableData>) => void;
   readonly readOnly?: boolean;
-  readonly resourceQueryKeyBase: COMMON_QUERY_KEY;
+  readonly resourceQueryKeyBase: TQueryKey;
   readonly schema?: ObjectSchema<TFormFields, TFormFields>;
   readonly showBreadcrumbs?: boolean;
   readonly showIdColumn?: boolean;
@@ -134,7 +137,13 @@ export type CrudPageSubPage<TData extends GenericData> = {
 export const CrudPage = <
   TFormFields extends FieldValues,
   TData extends GenericData,
-  TTableData extends TData = TData
+  TTableData extends TData = TData,
+  TQueryKey extends string = COMMON_QUERY_KEY,
+  TApiPermission extends {
+    command_name: string;
+    permission_type: string;
+  } = CommonDbApiPermission,
+  TCommandName extends TApiPermission['command_name'] = TApiPermission['command_name'],
 >({
   associationQueryKeys,
   canEditItem,
@@ -181,7 +190,9 @@ export const CrudPage = <
   testIdAttributes,
   title,
   updateOne,
-}: CrudPageProps<TFormFields, TData, TTableData>) => {
+}: CrudPageProps<TFormFields, TData, TTableData, TQueryKey, TApiPermission, TCommandName>) => {
+  type CrudPermission = Pick<TApiPermission, 'command_name' | 'permission_type'>;
+
   const { t } = useTranslation();
   const theme = useTheme();
   const deleteConfirmationRef = useRef<CrudPageDeleteDialogRefMethods<TData>>(null);
@@ -234,41 +245,48 @@ export const CrudPage = <
     return null;
   }, [rowsError, loadables]);
 
+  const createPermission = useCallback((permissionType: CrudPermission['permission_type']): CrudPermission => {
+    return {
+      command_name: crudCommandType,
+      permission_type: permissionType,
+    };
+  }, [crudCommandType]);
+
   const userCanEdit = useMemo(() => {
     if (!updateOne) {
       return false;
     }
-    return authorizationManager.doesUserHavePermission(
+    return authorizationManager.doesUserHavePermission<CrudPermission>(
       [
-        ...(crudCommandType ? [{ command_name: crudCommandType, permission_type: CommonDbPermissionType.UPDATE }] : []),
+        ...(crudCommandType ? [createPermission(CommonDbPermissionType.UPDATE as CrudPermission['permission_type'])] : []),
         ...(extraUpdateOnePermissions ?? []),
       ],
     );
-  }, [crudCommandType, extraUpdateOnePermissions, updateOne, authorizationManager]);
+  }, [authorizationManager, createPermission, crudCommandType, extraUpdateOnePermissions, updateOne]);
 
   const userCanDelete = useMemo(() => {
     if (!deleteOne) {
       return false;
     }
-    return authorizationManager.doesUserHavePermission(
+    return authorizationManager.doesUserHavePermission<CrudPermission>(
       [
-        ...(crudCommandType ? [{ command_name: crudCommandType, permission_type: CommonDbPermissionType.DELETE }] : []),
+        ...(crudCommandType ? [createPermission(CommonDbPermissionType.DELETE as CrudPermission['permission_type'])] : []),
         ...(extraDeleteOnePermissions ?? []),
       ],
     );
-  }, [crudCommandType, deleteOne, extraDeleteOnePermissions, authorizationManager]);
+  }, [authorizationManager, createPermission, crudCommandType, deleteOne, extraDeleteOnePermissions]);
 
   const userCanCreate = useMemo(() => {
     if (!createOne || error) {
       return false;
     }
-    return authorizationManager.doesUserHavePermission(
+    return authorizationManager.doesUserHavePermission<CrudPermission>(
       [
-        ...(crudCommandType ? [{ command_name: crudCommandType, permission_type: CommonDbPermissionType.CREATE }] : []),
+        ...(crudCommandType ? [createPermission(CommonDbPermissionType.CREATE as CrudPermission['permission_type'])] : []),
         ...(extraCreateOnePermissions ?? []),
       ],
     );
-  }, [createOne, error, authorizationManager, crudCommandType, extraCreateOnePermissions]);
+  }, [authorizationManager, createOne, createPermission, crudCommandType, error, extraCreateOnePermissions]);
 
   const normalizedEditDialogExtraActionsFactory = useCallback((item: TData) => {
     const actions: DialogAction[] = [];

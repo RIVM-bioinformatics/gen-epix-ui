@@ -5,7 +5,7 @@ import {
 import { useTranslation } from 'react-i18next';
 import { object } from 'yup';
 import { useParams } from 'react-router-dom';
-import type { CaseDbRegion } from '@gen-epix/api-casedb';
+import type { CaseDbApiPermission, CaseDbRegion } from '@gen-epix/api-casedb';
 import {
   CaseDbCommandName,
   CaseDbGeoApi,
@@ -131,7 +131,7 @@ export const RegionsAdminPage = () => {
   }, []);
 
   return (
-    <CrudPage<FormFields, CaseDbRegion>
+    <CrudPage<FormFields, CaseDbRegion, CaseDbRegion, CASEDB_QUERY_KEY, CaseDbApiPermission>
       createItemDialogTitle={t`Create new region`}
       createOne={createOne}
       crudCommandType={CaseDbCommandName.RegionCrudCommand}

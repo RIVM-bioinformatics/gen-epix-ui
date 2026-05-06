@@ -135,7 +135,7 @@ export const RefDimsAdminPage = () => {
   }, [t]);
 
   return (
-    <CrudPage<FormFields, CaseDbRefDim>
+    <CrudPage<FormFields, CaseDbRefDim, CaseDbRefDim, CASEDB_QUERY_KEY, CaseDbApiPermission>
       createItemDialogTitle={t`Create new reference dimension`}
       createOne={createOne}
       crudCommandType={CaseDbCommandName.RefDimCrudCommand}

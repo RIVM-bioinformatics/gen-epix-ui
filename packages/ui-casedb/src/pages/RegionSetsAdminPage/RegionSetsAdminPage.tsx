@@ -133,7 +133,7 @@ export const RegionSetsAdminPage = () => {
 
 
   return (
-    <CrudPage<FormFields, CaseDbRegionSet>
+    <CrudPage<FormFields, CaseDbRegionSet, CaseDbRegionSet, CASEDB_QUERY_KEY, CaseDbApiPermission>
       createItemDialogTitle={t`Create new region set`}
       createOne={createOne}
       crudCommandType={CaseDbCommandName.RegionSetCrudCommand}

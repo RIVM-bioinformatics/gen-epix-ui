@@ -7,7 +7,7 @@ import {
   object,
   string,
 } from 'yup';
-import type { CaseDbEtiology } from '@gen-epix/api-casedb';
+import type { CaseDbApiPermission, CaseDbEtiology } from '@gen-epix/api-casedb';
 import {
   CaseDbCommandName,
   CaseDbOntologyApi,
@@ -93,7 +93,7 @@ export const EtiologiesAdminPage = () => {
   }, [etiologicalAgentOptionsQuery.options, diseaseOptionsQuery.options, t]);
 
   return (
-    <CrudPage<FormFields, CaseDbEtiology>
+    <CrudPage<FormFields, CaseDbEtiology, CaseDbEtiology, CASEDB_QUERY_KEY, CaseDbApiPermission>
       createItemDialogTitle={t`Create new etiology`}
       createOne={createOne}
       crudCommandType={CaseDbCommandName.EtiologyCrudCommand}

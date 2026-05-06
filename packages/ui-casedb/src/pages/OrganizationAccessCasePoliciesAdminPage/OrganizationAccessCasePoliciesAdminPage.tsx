@@ -8,7 +8,7 @@ import {
   object,
   string,
 } from 'yup';
-import type { CaseDbOrganizationAccessCasePolicy } from '@gen-epix/api-casedb';
+import type { CaseDbApiPermission, CaseDbOrganizationAccessCasePolicy } from '@gen-epix/api-casedb';
 import {
   CaseDbAbacApi,
   CaseDbCommandName,
@@ -185,7 +185,7 @@ export const OrganizationAccessCasePoliciesAdminPage = () => {
   }, [colSetOptionsQuery.options, caseTypeSetOptionsQuery.options, dataCollectionOptionsQuery.options, organizationOptionsQuery.options, t]);
 
   return (
-    <CrudPage<FormFields, CaseDbOrganizationAccessCasePolicy>
+    <CrudPage<FormFields, CaseDbOrganizationAccessCasePolicy, CaseDbOrganizationAccessCasePolicy, CASEDB_QUERY_KEY, CaseDbApiPermission>
       createItemDialogTitle={t`Create new organization access case policy`}
       createOne={createOne}
       crudCommandType={CaseDbCommandName.OrganizationAccessCasePolicyCrudCommand}

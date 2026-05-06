@@ -8,7 +8,7 @@ import {
   object,
   string,
 } from 'yup';
-import type { CaseDbOrganizationShareCasePolicy } from '@gen-epix/api-casedb';
+import type { CaseDbApiPermission, CaseDbOrganizationShareCasePolicy } from '@gen-epix/api-casedb';
 import {
   CaseDbAbacApi,
   CaseDbCommandName,
@@ -155,7 +155,7 @@ export const OrganizationShareCasePoliciesAdminPage = () => {
   }, [caseTypeSetOptions.options, dataCollectionOptionsQuery.options, organizationOptionsQuery.options, t]);
 
   return (
-    <CrudPage<FormFields, CaseDbOrganizationShareCasePolicy>
+    <CrudPage<FormFields, CaseDbOrganizationShareCasePolicy, CaseDbOrganizationShareCasePolicy, CASEDB_QUERY_KEY, CaseDbApiPermission>
       createItemDialogTitle={t`Create new organization share case policy`}
       createOne={createOne}
       crudCommandType={CaseDbCommandName.OrganizationShareCasePolicyCrudCommand}

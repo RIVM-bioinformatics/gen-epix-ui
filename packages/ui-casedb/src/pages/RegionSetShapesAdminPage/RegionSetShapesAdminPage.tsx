@@ -9,7 +9,7 @@ import {
   string,
 } from 'yup';
 import { useParams } from 'react-router-dom';
-import type { CaseDbRegionSetShape } from '@gen-epix/api-casedb';
+import type { CaseDbApiPermission, CaseDbRegionSetShape } from '@gen-epix/api-casedb';
 import {
   CaseDbCommandName,
   CaseDbGeoApi,
@@ -113,7 +113,7 @@ export const RegionSetShapesAdminPage = () => {
   }, []);
 
   return (
-    <CrudPage<FormFields, CaseDbRegionSetShape>
+    <CrudPage<FormFields, CaseDbRegionSetShape, CaseDbRegionSetShape, CASEDB_QUERY_KEY, CaseDbApiPermission>
       createItemDialogTitle={t`Create new region set shape`}
       createOne={createOne}
       crudCommandType={CaseDbCommandName.RegionSetShapeCrudCommand}

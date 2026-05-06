@@ -5,7 +5,7 @@ import {
 import { useTranslation } from 'react-i18next';
 import { object } from 'yup';
 import { useParams } from 'react-router-dom';
-import type { CaseDbConcept } from '@gen-epix/api-casedb';
+import type { CaseDbApiPermission, CaseDbConcept } from '@gen-epix/api-casedb';
 import {
   CaseDbCommandName,
   CaseDbOntologyApi,
@@ -118,7 +118,7 @@ export const ConceptsAdminPage = () => {
   }, []);
 
   return (
-    <CrudPage<FormFields, CaseDbConcept>
+    <CrudPage<FormFields, CaseDbConcept, CaseDbConcept, CASEDB_QUERY_KEY, CaseDbApiPermission>
       createItemDialogTitle={t`Create new concept`}
       createOne={createOne}
       crudCommandType={CaseDbCommandName.ConceptCrudCommand}

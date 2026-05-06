@@ -4,7 +4,7 @@ import {
 } from 'react';
 import { useTranslation } from 'react-i18next';
 import { object } from 'yup';
-import type { CaseDbDataCollection } from '@gen-epix/api-casedb';
+import type { CaseDbApiPermission, CaseDbDataCollection } from '@gen-epix/api-casedb';
 import {
   CaseDbCommandName,
   CaseDbOrganizationApi,
@@ -79,7 +79,7 @@ export const DataCollectionsAdminPage = () => {
   }, [t]);
 
   return (
-    <CrudPage<FormFields, CaseDbDataCollection>
+    <CrudPage<FormFields, CaseDbDataCollection, CaseDbDataCollection, CASEDB_QUERY_KEY, CaseDbApiPermission>
       createItemDialogTitle={t`Create new data collection`}
       createOne={createOne}
       crudCommandType={CaseDbCommandName.DataCollectionCrudCommand}

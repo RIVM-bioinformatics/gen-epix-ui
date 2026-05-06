@@ -121,7 +121,7 @@ export const ConceptSetsAdminPage = () => {
   }, [t]);
 
   return (
-    <CrudPage<FormFields, CaseDbConceptSet>
+    <CrudPage<FormFields, CaseDbConceptSet, CaseDbConceptSet, CASEDB_QUERY_KEY, CaseDbApiPermission>
       createItemDialogTitle={t`Create new concept set`}
       createOne={createOne}
       crudCommandType={CaseDbCommandName.ConceptSetCrudCommand}

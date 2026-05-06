@@ -8,7 +8,7 @@ import {
   object,
   string,
 } from 'yup';
-import type { CaseDbConceptRelation } from '@gen-epix/api-casedb';
+import type { CaseDbApiPermission, CaseDbConceptRelation } from '@gen-epix/api-casedb';
 import {
   CaseDbCommandName,
   CaseDbConceptRelationType,
@@ -117,7 +117,7 @@ export const ConceptRelationsAdminPage = () => {
 
 
   return (
-    <CrudPage<FormFields, CaseDbConceptRelation>
+    <CrudPage<FormFields, CaseDbConceptRelation, CaseDbConceptRelation, CASEDB_QUERY_KEY, CaseDbApiPermission>
       createItemDialogTitle={t`Create new concept relation`}
       createOne={createOne}
       crudCommandType={CaseDbCommandName.ConceptRelationCrudCommand}

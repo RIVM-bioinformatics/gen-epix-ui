@@ -190,7 +190,7 @@ export const DimsAdminPage = () => {
   }, [caseTypeId, caseTypeMapQuery.map, t]);
 
   return (
-    <CrudPage<FormFields, CaseDbDim>
+    <CrudPage<FormFields, CaseDbDim, CaseDbDim, CASEDB_QUERY_KEY, CaseDbApiPermission>
       createItemDialogTitle={t`Create new dimensions`}
       createOne={createOne}
       crudCommandType={CaseDbCommandName.DimCrudCommand}

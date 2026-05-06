@@ -8,7 +8,7 @@ import {
   object,
   string,
 } from 'yup';
-import type { CaseDbRegionRelation } from '@gen-epix/api-casedb';
+import type { CaseDbApiPermission, CaseDbRegionRelation } from '@gen-epix/api-casedb';
 import {
   CaseDbCommandName,
   CaseDbGeoApi,
@@ -115,7 +115,7 @@ export const RegionRelationsAdminPage = () => {
 
 
   return (
-    <CrudPage<FormFields, CaseDbRegionRelation>
+    <CrudPage<FormFields, CaseDbRegionRelation, CaseDbRegionRelation, CASEDB_QUERY_KEY, CaseDbApiPermission>
       createItemDialogTitle={t`Create new region relation`}
       createOne={createOne}
       crudCommandType={CaseDbCommandName.RegionRelationCrudCommand}

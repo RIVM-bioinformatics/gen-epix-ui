@@ -4,7 +4,10 @@ import {
 } from 'react';
 import { useTranslation } from 'react-i18next';
 import { object } from 'yup';
-import type { CaseDbCaseSetCategory } from '@gen-epix/api-casedb';
+import type {
+  CaseDbApiPermission,
+  CaseDbCaseSetCategory,
+} from '@gen-epix/api-casedb';
 import {
   CaseDbCaseApi,
   CaseDbCommandName,
@@ -89,7 +92,7 @@ export const CaseSetCategoryAdminPage = () => {
   }, [t]);
 
   return (
-    <CrudPage<FormFields, CaseDbCaseSetCategory>
+    <CrudPage<FormFields, CaseDbCaseSetCategory, CaseDbCaseSetCategory, CASEDB_QUERY_KEY, CaseDbApiPermission>
       createItemDialogTitle={t`Create new case set category`}
       createOne={createOne}
       crudCommandType={CaseDbCommandName.CaseSetCategoryCrudCommand}

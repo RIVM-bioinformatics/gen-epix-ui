@@ -4,7 +4,7 @@ import {
 } from 'react';
 import { useTranslation } from 'react-i18next';
 import { object } from 'yup';
-import type { CaseDbCaseSetStatus } from '@gen-epix/api-casedb';
+import type { CaseDbApiPermission, CaseDbCaseSetStatus } from '@gen-epix/api-casedb';
 import {
   CaseDbCaseApi,
   CaseDbCommandName,
@@ -89,7 +89,7 @@ export const CaseSetStatusAdminPage = () => {
   }, [t]);
 
   return (
-    <CrudPage<FormFields, CaseDbCaseSetStatus>
+    <CrudPage<FormFields, CaseDbCaseSetStatus, CaseDbCaseSetStatus, CASEDB_QUERY_KEY, CaseDbApiPermission>
       createItemDialogTitle={t`Create new case set status`}
       createOne={createOne}
       crudCommandType={CaseDbCommandName.CaseSetStatusCrudCommand}

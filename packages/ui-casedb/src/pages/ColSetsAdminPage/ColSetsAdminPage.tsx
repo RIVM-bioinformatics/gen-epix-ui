@@ -154,7 +154,7 @@ export const ColSetsAdminPage = () => {
   ], []);
 
   return (
-    <CrudPage<FormFields, CaseDbColSet, TableData>
+    <CrudPage<FormFields, CaseDbColSet, TableData, CASEDB_QUERY_KEY, CaseDbApiPermission>
       associationQueryKeys={associationQueryKeys}
       convertToTableData={convertToTableData}
       createItemDialogTitle={t`Create new column set`}

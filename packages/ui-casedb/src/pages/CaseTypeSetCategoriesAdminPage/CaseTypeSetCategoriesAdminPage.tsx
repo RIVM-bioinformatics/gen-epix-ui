@@ -7,7 +7,7 @@ import {
   mixed,
   object,
 } from 'yup';
-import type { CaseDbCaseTypeSetCategory } from '@gen-epix/api-casedb';
+import type { CaseDbApiPermission, CaseDbCaseTypeSetCategory } from '@gen-epix/api-casedb';
 import {
   CaseDbCaseApi,
   CaseDbCaseTypeSetCategoryPurpose,
@@ -109,7 +109,7 @@ export const CaseTypeSetCategoriesAdminPage = () => {
   }, [caseTypeSetCategoryPurposeOptionsQuery.options, t]);
 
   return (
-    <CrudPage<FormFields, CaseDbCaseTypeSetCategory>
+    <CrudPage<FormFields, CaseDbCaseTypeSetCategory, CaseDbCaseTypeSetCategory, CASEDB_QUERY_KEY, CaseDbApiPermission>
       createItemDialogTitle={t`Create new case type set category`}
       createOne={createOne}
       crudCommandType={CaseDbCommandName.CaseTypeSetCategoryCrudCommand}

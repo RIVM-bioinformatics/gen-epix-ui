@@ -9,6 +9,7 @@ import {
   string,
 } from 'yup';
 import type {
+  CaseDbApiPermission,
   CaseDbDataCollectionSet,
   CaseDbDataCollectionSetMember,
 } from '@gen-epix/api-casedb';
@@ -140,7 +141,7 @@ export const DataCollectionSetsAdminPage = () => {
   }, [dataCollectionSetMembersQuery.data]);
 
   return (
-    <CrudPage<FormFields, CaseDbDataCollectionSet, TableData>
+    <CrudPage<FormFields, CaseDbDataCollectionSet, TableData, CASEDB_QUERY_KEY, CaseDbApiPermission>
       convertToTableData={convertToTableData}
       createItemDialogTitle={t`Create new data collection set`}
       createOne={createOne}

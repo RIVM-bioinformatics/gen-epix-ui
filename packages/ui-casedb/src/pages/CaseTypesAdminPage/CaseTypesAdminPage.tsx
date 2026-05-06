@@ -280,7 +280,7 @@ export const CaseTypesAdminPage = () => {
   }, []);
 
   return (
-    <CrudPage<FormFields, CaseDbCaseType>
+    <CrudPage<FormFields, CaseDbCaseType, CaseDbCaseType, CASEDB_QUERY_KEY, CaseDbApiPermission>
       createItemDialogTitle={t`Create new case type`}
       createOne={createOne}
       crudCommandType={CaseDbCommandName.CaseTypeCrudCommand}

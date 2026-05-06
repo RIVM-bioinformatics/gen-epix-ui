@@ -11,7 +11,10 @@ import {
 } from 'yup';
 import { useParams } from 'react-router-dom';
 import type { UseFormReturn } from 'react-hook-form';
-import type { CaseDbCol } from '@gen-epix/api-casedb';
+import type {
+  CaseDbApiPermission,
+  CaseDbCol,
+} from '@gen-epix/api-casedb';
 import {
   CaseDbCaseApi,
   CaseDbColType,
@@ -385,7 +388,7 @@ export const ColsAdminPage = () => {
   }, [dimId, caseTypeId]);
 
   return (
-    <CrudPage<FormFields, CaseDbCol>
+    <CrudPage<FormFields, CaseDbCol, CaseDbCol, CASEDB_QUERY_KEY, CaseDbApiPermission>
       createItemDialogTitle={t`Create new column`}
       createOne={createOne}
       crudCommandType={CaseDbCommandName.ColCrudCommand}

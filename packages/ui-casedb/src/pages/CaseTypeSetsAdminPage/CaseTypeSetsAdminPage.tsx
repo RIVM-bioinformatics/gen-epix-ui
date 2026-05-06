@@ -178,7 +178,7 @@ export const CaseTypeSetsAdminPage = () => {
   ], []);
 
   return (
-    <CrudPage<FormFields, CaseDbCaseTypeSet, TableData>
+    <CrudPage<FormFields, CaseDbCaseTypeSet, TableData, CASEDB_QUERY_KEY, CaseDbApiPermission>
       associationQueryKeys={associationQueryKeys}
       convertToTableData={convertToTableData}
       createItemDialogTitle={t`Create new case type set`}
