@@ -159,6 +159,7 @@ export * from './classes/managers/BreadcrumbManager';
 export * from './classes/managers/BackendVersionManager';
 export * from './classes/managers/AuthorizationManager';
 export * from './classes/managers/AuthenticationManager';
+export * from './classes/filters';
 export * from './classes/abstracts/SubscribableAbstract';
 export * from './classes/abstracts/FilterAbstract';
 export * from './classes/abstracts/EventBusAbstract';

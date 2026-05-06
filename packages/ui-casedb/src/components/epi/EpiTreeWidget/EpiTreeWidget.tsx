@@ -36,6 +36,7 @@ import {
   ConfigManager,
   Spinner,
   Subject,
+  TreeFilter,
   useQueryMemo,
 } from '@gen-epix/ui';
 
@@ -64,9 +65,8 @@ import {
   type PhylogeneticTreeComponentRef,
   type PhylogeneticTreeComponentViewState,
 } from '../../ui/PhylogeneticTreeComponent';
-import { TreeFilter } from '../../../../../ui/src/classes/filters/TreeFilter';
 import { CASEDB_QUERY_KEY } from '../../../data/query';
-import { CaseDbConfig } from '../../../models/config';
+import type { CaseDbConfig } from '../../../models/config';
 
 export interface EpiTreeWidgetRef {
   link: () => void;
@@ -471,15 +471,16 @@ export const EpiTreeWidget = ({ itemHeight, lineListRangeSubject, linkedScrollSu
 
 
     emitDownloadOptions();
-    EpiEventBusManager.getInstance().addEventListener('onDownloadOptionsRequested', emitDownloadOptions);
+    const epiEventBusManager = EpiEventBusManager.getInstance();
+    epiEventBusManager.addEventListener('onDownloadOptionsRequested', emitDownloadOptions);
 
     return () => {
-      EpiEventBusManager.getInstance().emit('onDownloadOptionsChanged', {
+      epiEventBusManager.emit('onDownloadOptionsChanged', {
         items: null,
         zone: EPI_ZONE.TREE,
         zoneLabel: t`Tree`,
       });
-      EpiEventBusManager.getInstance().removeEventListener('onDownloadOptionsRequested', emitDownloadOptions);
+      epiEventBusManager.removeEventListener('onDownloadOptionsRequested', emitDownloadOptions);
     };
   }, [completeCaseType, isTreeLinked, isTreeUnavailable, newick, t, treeCanvas, treeConfiguration?.geneticDistanceProtocol.name, treeConfiguration?.treeAlgorithm.name]);
 
