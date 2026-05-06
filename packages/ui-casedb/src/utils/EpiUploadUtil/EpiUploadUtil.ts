@@ -44,7 +44,7 @@ import {
   DATE_FORMAT,
   FORM_FIELD_DEFINITION_TYPE,
   ObjectUtil,
-  QueryKeyManager,
+  QueryClientManager,
   ValidationUtil,
 } from '@gen-epix/ui';
 
@@ -205,7 +205,7 @@ export class EpiUploadUtil {
       await EpiUploadUtil.uploadFilesForCases({ ...kwArgs, caseBatchUploadResult, endPercentage: 99, startPercentage: 1 });
       onProgress(100, t('Upload complete.'));
 
-      await QueryKeyManager.getInstance().invalidateQueryKeys(QueryKeyManager.getInstance().getQueryKeyDependencies([CASEDB_QUERY_KEY.CASES], true));
+      await QueryClientManager.getInstance().invalidateQueryKeys(QueryClientManager.getInstance().getQueryKeyDependencies([CASEDB_QUERY_KEY.CASES], true));
       onComplete();
     } catch (error) {
       onError(error instanceof Error ? error : new Error('Unknown error occurred during upload'));

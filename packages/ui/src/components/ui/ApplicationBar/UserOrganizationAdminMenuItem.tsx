@@ -12,7 +12,7 @@ import {
 import { withPermissions } from '../../../hoc/withPermissions';
 import { useQueryMemo } from '../../../hooks/useQueryMemo';
 import { ConfigManager } from '../../../classes/managers/ConfigManager';
-import { QueryKeyManager } from '../../../classes/managers/QueryKeyManager';
+import { QueryClientManager } from '../../../classes/managers/QueryClientManager';
 import { COMMON_QUERY_KEY } from '../../../data/query';
 
 export const UserOrganizationAdminMenuItem = withPermissions(() => {
@@ -21,7 +21,7 @@ export const UserOrganizationAdminMenuItem = withPermissions(() => {
   const { data: organizationAdminNameEmails, error: organizationAdminNameEmailsError, isLoading: isOrganizationAdminNameEmailsLoading } = useQueryMemo({
     gcTime: 0,
     queryFn: async ({ signal }) => (await ConfigManager.getInstance().config.abacApi.retrieveOrganizationAdminNameEmails({ signal })).data,
-    queryKey: QueryKeyManager.getInstance().getGenericKey(COMMON_QUERY_KEY.ORGANIZATION_ADMIN_NAME_EMAILS),
+    queryKey: QueryClientManager.getInstance().getGenericKey(COMMON_QUERY_KEY.ORGANIZATION_ADMIN_NAME_EMAILS),
     staleTime: 0,
   });
 

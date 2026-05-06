@@ -19,7 +19,7 @@ import { LoadableUtil } from '../../../utils/LoadableUtil';
 import { PageContainer } from '../../ui/PageContainer';
 import { ResponseHandler } from '../../ui/ResponseHandler';
 import { ConfigManager } from '../../../classes/managers/ConfigManager';
-import { QueryKeyManager } from '../../../classes/managers/QueryKeyManager';
+import { QueryClientManager } from '../../../classes/managers/QueryClientManager';
 import { COMMON_QUERY_KEY } from '../../../data/query';
 
 export const AuthorizationWrapper = ({ children }: PropsWithChildren): ReactNode => {
@@ -32,14 +32,14 @@ export const AuthorizationWrapper = ({ children }: PropsWithChildren): ReactNode
     enabled: requiresUserProfile,
     gcTime: Infinity,
     queryFn: async ({ signal }) => (await ConfigManager.getInstance().config.organizationApi.userMeGetOne({ signal })).data,
-    queryKey: QueryKeyManager.getInstance().getGenericKey(COMMON_QUERY_KEY.USER_ME),
+    queryKey: QueryClientManager.getInstance().getGenericKey(COMMON_QUERY_KEY.USER_ME),
     staleTime: Infinity,
   });
   const userPermissionsQuery = useQueryMemo({
     enabled: requiresUserProfile,
     gcTime: Infinity,
     queryFn: async ({ signal }) => (await ConfigManager.getInstance().config.organizationApi.userMeRetrievePermissions({ signal })).data,
-    queryKey: QueryKeyManager.getInstance().getGenericKey(COMMON_QUERY_KEY.USER_PERMISSIONS),
+    queryKey: QueryClientManager.getInstance().getGenericKey(COMMON_QUERY_KEY.USER_PERMISSIONS),
     staleTime: Infinity,
   });
 

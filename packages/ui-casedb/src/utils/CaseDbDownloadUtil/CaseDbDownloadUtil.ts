@@ -17,7 +17,6 @@ import {
   LogManager,
   NotificationManager,
   QueryClientManager,
-  QueryKeyManager,
   StringUtil,
 } from '@gen-epix/ui';
 
@@ -91,7 +90,7 @@ export class CaseDbDownloadUtil {
         queryFn: async ({ signal }) => {
           return (await CaseDbCaseApi.getInstance().completeCaseTypesGetOne(caseTypeId, { signal })).data;
         },
-        queryKey: QueryKeyManager.getInstance().getGenericKey(CASEDB_QUERY_KEY.COMPLETE_CASE_TYPES, caseTypeId),
+        queryKey: QueryClientManager.getInstance().getGenericKey(CASEDB_QUERY_KEY.COMPLETE_CASE_TYPES, caseTypeId),
       });
 
       const headers = CaseDbDownloadUtil.getColumnHeadersForImport(

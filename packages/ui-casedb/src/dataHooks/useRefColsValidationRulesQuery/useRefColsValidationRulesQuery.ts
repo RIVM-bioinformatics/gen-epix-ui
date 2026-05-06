@@ -2,7 +2,7 @@ import type { UseQueryResult } from '@tanstack/react-query';
 import type { CaseDbRefColValidationRulesResponseBody } from '@gen-epix/api-casedb';
 import { CaseDbCaseApi } from '@gen-epix/api-casedb';
 import {
-  QueryKeyManager,
+  QueryClientManager,
   useQueryMemo,
 } from '@gen-epix/ui';
 
@@ -14,6 +14,6 @@ export const useRefColsValidationRulesQuery = (): UseQueryResult<CaseDbRefColVal
       const response = await CaseDbCaseApi.getInstance().refColsValidationRules({ signal });
       return response.data;
     },
-    queryKey: QueryKeyManager.getInstance().getGenericKey(CASEDB_QUERY_KEY.REF_COLS_VALIDATION_RULES),
+    queryKey: QueryClientManager.getInstance().getGenericKey(CASEDB_QUERY_KEY.REF_COLS_VALIDATION_RULES),
   });
 };

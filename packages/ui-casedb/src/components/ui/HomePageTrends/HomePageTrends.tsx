@@ -27,7 +27,7 @@ import {
   AxiosUtil,
   ConfigManager,
   LoadableUtil,
-  QueryKeyManager,
+  QueryClientManager,
   ResponseHandler,
   RouterManager,
   useArray,
@@ -77,7 +77,7 @@ export const HomePageTrends = withPermissions<CaseDbApiPermission>(() => {
       const response = await CaseDbCaseApi.getInstance().retrieveCaseTypeStats({}, { signal });
       return response.data;
     },
-    queryKey: QueryKeyManager.getInstance().getGenericKey(CASEDB_QUERY_KEY.CASE_TYPE_STATS),
+    queryKey: QueryClientManager.getInstance().getGenericKey(CASEDB_QUERY_KEY.CASE_TYPE_STATS),
   });
 
   const retrieveTypeCaseStatsRequestBody = useMemo<CaseDbRetrieveCaseTypeStatsRequestBody>(() => {
@@ -96,7 +96,7 @@ export const HomePageTrends = withPermissions<CaseDbApiPermission>(() => {
       const response = await CaseDbCaseApi.getInstance().retrieveCaseTypeStats(retrieveTypeCaseStatsRequestBody ?? {}, { signal });
       return response.data;
     },
-    queryKey: QueryKeyManager.getInstance().getGenericKey(CASEDB_QUERY_KEY.CASE_TYPE_STATS, retrieveTypeCaseStatsRequestBody ?? {}),
+    queryKey: QueryClientManager.getInstance().getGenericKey(CASEDB_QUERY_KEY.CASE_TYPE_STATS, retrieveTypeCaseStatsRequestBody ?? {}),
   });
   const caseSetsNowQuery = useCaseSetsQuery();
   const caseTypeMapQuery = useCaseTypeMapQuery();
@@ -106,7 +106,7 @@ export const HomePageTrends = withPermissions<CaseDbApiPermission>(() => {
       const response = await CaseDbCaseApi.getInstance().caseSetsPostQuery(caseSetQueryFilter, { signal });
       return response.data;
     },
-    queryKey: QueryKeyManager.getInstance().getGenericKey(CASEDB_QUERY_KEY.CASE_SETS, caseSetQueryFilter),
+    queryKey: QueryClientManager.getInstance().getGenericKey(CASEDB_QUERY_KEY.CASE_SETS, caseSetQueryFilter),
   });
 
   const loadables = useArray([

@@ -11,7 +11,7 @@ import type {
 } from '@gen-epix/ui';
 import {
   NotificationManager,
-  QueryKeyManager,
+  QueryClientManager,
   StringUtil,
 } from '@gen-epix/ui';
 
@@ -113,7 +113,7 @@ const createEpiUploadStoreDefaultState: () => EpiUploadStoreState = () => ({
   sheetOptions: [],
   shouldResetColumnMapping: false,
   shouldResetSequenceMapping: false,
-  validateCasesQueryKey: QueryKeyManager.getInstance().getGenericKey(CASEDB_QUERY_KEY.VALIDATE_CASES, StringUtil.createUuid()),
+  validateCasesQueryKey: QueryClientManager.getInstance().getGenericKey(CASEDB_QUERY_KEY.VALIDATE_CASES, StringUtil.createUuid()),
   validatedCases: [],
   validatedCasesWithGeneratedId: [],
 });
@@ -197,8 +197,8 @@ export const createEpiUploadStore = () => {
       invalidateCaseValidationQuery: async () => {
         const { validateCasesQueryKey } = get();
 
-        await QueryKeyManager.getInstance().invalidateQueryKeys([validateCasesQueryKey]);
-        QueryKeyManager.getInstance().removeQueries([validateCasesQueryKey]);
+        await QueryClientManager.getInstance().invalidateQueryKeys([validateCasesQueryKey]);
+        QueryClientManager.getInstance().removeQueries([validateCasesQueryKey]);
       },
 
       reset: async () => {

@@ -8,7 +8,7 @@ import type { GenericData } from '../../models/data';
 import { StringUtil } from '../../utils/StringUtil';
 import { NotificationUtil } from '../../utils/NotificationUtil';
 import { ObjectUtil } from '../../utils/ObjectUtil';
-import { QueryKeyManager } from '../../classes/managers/QueryKeyManager';
+import { QueryClientManager } from '../../classes/managers/QueryClientManager';
 
 
 export type MutationContextCreate<TData> = { notificationKey?: string; previousData?: TData[]; temporaryId?: string };
@@ -49,7 +49,7 @@ export const useCreateMutation = <TData extends GenericData | GenericData[], TVa
           return [...oldItems.filter(item => (item as GenericData)?.id !== context.temporaryId)];
         });
       }
-      await QueryKeyManager.getInstance().invalidateQueryKeys(associationQueryKeys);
+      await QueryClientManager.getInstance().invalidateQueryKeys(associationQueryKeys);
       if (onError) {
         await onError(error, variables, context);
       }
@@ -89,7 +89,7 @@ export const useCreateMutation = <TData extends GenericData | GenericData[], TVa
           ];
         });
       }
-      await QueryKeyManager.getInstance().invalidateQueryKeys(associationQueryKeys);
+      await QueryClientManager.getInstance().invalidateQueryKeys(associationQueryKeys);
       if (onSuccess) {
         await onSuccess(item, variables, context);
       }

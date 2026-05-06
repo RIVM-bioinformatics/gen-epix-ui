@@ -17,7 +17,7 @@ import {
 } from '@mui/material';
 import type { CaseDbCase } from '@gen-epix/api-casedb';
 import { CaseDbCaseApi } from '@gen-epix/api-casedb';
-import { useOrganizationsQuery, QueryKeyManager, NotificationManager, ObjectUtil, FormUtil, Spinner, GenericForm } from '@gen-epix/ui';
+import { useOrganizationsQuery, QueryClientManager, NotificationManager, ObjectUtil, FormUtil, Spinner, GenericForm } from '@gen-epix/ui';
 import { EpiDashboardStoreContext } from '../../../stores/epiDashboardStore';
 import { CaseUtil } from '../../../utils/CaseUtil';
 import { CASEDB_QUERY_KEY } from '../../../data/query';
@@ -42,14 +42,14 @@ export const EpiCaseForm = ({ epiCase, formId, onFinish, onIsSavingChange, ...bo
     setIsSaving(true);
     onIsSavingChange(true);
     const perform = async () => {
-      const queryKeys = QueryKeyManager.getInstance().getQueryKeyDependencies([CASEDB_QUERY_KEY.CASES], true);
+      const queryKeys = QueryClientManager.getInstance().getQueryKeyDependencies([CASEDB_QUERY_KEY.CASES], true);
       const notificationKey = NotificationManager.getInstance().showNotification({
         isLoading: true,
         message: t('Saving case data'),
         severity: 'info',
       });
       try {
-        await QueryKeyManager.getInstance().cancelQueries(queryKeys);
+        await QueryClientManager.getInstance().cancelQueries(queryKeys);
         const item = {
           ...epiCase,
           content: ObjectUtil.mergeWithUndefined(epiCase.content, content),
@@ -60,7 +60,7 @@ export const EpiCaseForm = ({ epiCase, formId, onFinish, onIsSavingChange, ...bo
       } catch (_error) {
         NotificationManager.getInstance().fulfillNotification(notificationKey, t('Could not save case data.'), 'error');
       } finally {
-        await QueryKeyManager.getInstance().invalidateQueryKeys(queryKeys);
+        await QueryClientManager.getInstance().invalidateQueryKeys(queryKeys);
         setIsSaving(false);
         onIsSavingChange(false);
         onFinish();

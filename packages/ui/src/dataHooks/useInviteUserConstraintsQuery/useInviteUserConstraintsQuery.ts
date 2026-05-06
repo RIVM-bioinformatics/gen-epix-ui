@@ -8,7 +8,7 @@ import {
 import { useQueryMemo } from '../../hooks/useQueryMemo';
 import { AuthorizationManager } from '../../classes/managers/AuthorizationManager';
 import { ConfigManager } from '../../classes/managers/ConfigManager';
-import { QueryKeyManager } from '../../classes/managers/QueryKeyManager';
+import { QueryClientManager } from '../../classes/managers/QueryClientManager';
 import { COMMON_QUERY_KEY } from '../../data/query';
 
 
@@ -27,6 +27,6 @@ export const useInviteUserConstraintsQuery = (): UseQueryResult<CommonDbUserInvi
       const response = await ConfigManager.getInstance().config.organizationApi.inviteUserConstraints({ signal });
       return response.data;
     },
-    queryKey: QueryKeyManager.getInstance().getGenericKey(COMMON_QUERY_KEY.INVITE_USER_CONSTRAINTS),
+    queryKey: QueryClientManager.getInstance().getGenericKey(COMMON_QUERY_KEY.INVITE_USER_CONSTRAINTS),
   });
 };

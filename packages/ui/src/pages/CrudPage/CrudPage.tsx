@@ -64,7 +64,7 @@ import type { DialogAction } from '../../components/ui/Dialog';
 import type { FormFieldDefinition } from '../../models/form';
 import { useQueryMemo } from '../../hooks/useQueryMemo';
 import { LoadableUtil } from '../../utils/LoadableUtil';
-import { QueryKeyManager } from '../../classes/managers/QueryKeyManager';
+import { QueryClientManager } from '../../classes/managers/QueryClientManager';
 import type { COMMON_QUERY_KEY } from '../../data/query';
 
 import type { CrudPageEditDialogRefMethods } from './CrudPageEditDialog';
@@ -356,7 +356,7 @@ export const CrudPage = <
   const calculatedAssociationQueryKeys = useMemo<string[][]>(() => {
     const keys = associationQueryKeys ?? [];
 
-    QueryKeyManager.getInstance().getQueryKeyDependencies([resourceQueryKeyBase]).forEach(key => {
+    QueryClientManager.getInstance().getQueryKeyDependencies([resourceQueryKeyBase]).forEach(key => {
       keys.push(key);
     });
     return keys;

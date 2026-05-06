@@ -2,7 +2,7 @@ import type { UseQueryResult } from '@tanstack/react-query';
 import type { CaseDbUserShareCasePolicy } from '@gen-epix/api-casedb';
 import { CaseDbAbacApi } from '@gen-epix/api-casedb';
 import {
-  QueryKeyManager,
+  QueryClientManager,
   useQueryMemo,
 } from '@gen-epix/ui';
 
@@ -15,7 +15,7 @@ export const useUserShareCasePoliciesQuery = (select?: (data: CaseDbUserShareCas
       const response = await CaseDbAbacApi.getInstance().userShareCasePoliciesGetAll({ signal });
       return response.data;
     },
-    queryKey: QueryKeyManager.getInstance().getGenericKey(CASEDB_QUERY_KEY.USER_SHARE_CASE_POLICIES),
+    queryKey: QueryClientManager.getInstance().getGenericKey(CASEDB_QUERY_KEY.USER_SHARE_CASE_POLICIES),
     select: select ? (data) => select(data) : undefined,
   });
 };

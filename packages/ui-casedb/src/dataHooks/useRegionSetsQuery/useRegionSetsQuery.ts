@@ -8,7 +8,7 @@ import type {
 } from '@gen-epix/ui';
 import {
   DataHookUtil,
-  QueryKeyManager,
+  QueryClientManager,
   useQueryMemo,
 } from '@gen-epix/ui';
 
@@ -20,7 +20,7 @@ export const useRegionSetsQuery = (): UseQueryResult<CaseDbRegionSet[]> => {
       const response = await CaseDbGeoApi.getInstance().regionSetsGetAll({ signal });
       return response.data;
     },
-    queryKey: QueryKeyManager.getInstance().getGenericKey(CASEDB_QUERY_KEY.REGION_SETS),
+    queryKey: QueryClientManager.getInstance().getGenericKey(CASEDB_QUERY_KEY.REGION_SETS),
   });
 };
 

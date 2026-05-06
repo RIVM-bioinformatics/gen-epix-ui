@@ -29,7 +29,7 @@ import {
   DATE_FORMAT,
   LoadableUtil,
   PageContainer,
-  QueryKeyManager,
+  QueryClientManager,
   ResponseHandler,
   RouterManager,
   Table,
@@ -73,7 +73,7 @@ export const EventsPage = () => {
       const response = await CaseDbCaseApi.getInstance().caseSetsGetAll({ signal });
       return response.data;
     },
-    queryKey: QueryKeyManager.getInstance().getGenericKey(CASEDB_QUERY_KEY.CASE_SETS),
+    queryKey: QueryClientManager.getInstance().getGenericKey(CASEDB_QUERY_KEY.CASE_SETS),
   });
   const caseSetStatsMapQuery = useCaseSetStatsMapQuery(caseSets ? caseSets.map(cs => cs.id) : null);
   const loadables = useArray([caseTypeOptionsQuery, caseSetCategoryOptionsQuery, caseSetStatusOptionsQuery, caseSetStatsMapQuery]);

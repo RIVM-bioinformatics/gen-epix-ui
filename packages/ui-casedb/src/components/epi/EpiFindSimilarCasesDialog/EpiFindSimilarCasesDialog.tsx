@@ -32,7 +32,7 @@ import type {
   CaseDbCompleteCaseType,
 } from '@gen-epix/api-casedb';
 import { CaseDbCaseApi } from '@gen-epix/api-casedb';
-import { WithDialogRenderProps, WithDialogRefMethods, withDialog, SchemaUtil, ConfigManager, AutoCompleteOption, FORM_FIELD_DEFINITION_TYPE, FormFieldDefinition, useQueryMemo, QueryKeyManager, DialogAction, TestIdUtil, GenericForm, ResponseHandler } from '@gen-epix/ui';
+import { WithDialogRenderProps, WithDialogRefMethods, withDialog, SchemaUtil, ConfigManager, AutoCompleteOption, FORM_FIELD_DEFINITION_TYPE, FormFieldDefinition, useQueryMemo, QueryClientManager, DialogAction, TestIdUtil, GenericForm, ResponseHandler } from '@gen-epix/ui';
 import { EpiDashboardStoreContext } from '../../../stores/epiDashboardStore';
 import { EpiTreeUtil } from '../../../utils/EpiTreeUtil';
 import { CASEDB_QUERY_KEY } from '../../../data/query';
@@ -160,7 +160,7 @@ export const EpiFindSimilarCasesDialog = withDialog<EpiFindSimilarCasesDialogPro
       }, { signal });
       return response.data;
     },
-    queryKey: [QueryKeyManager.getInstance().getGenericKey(CASEDB_QUERY_KEY.SIMILAR_CASES), JSON.stringify({ formData, rowIds: openProps.selectedRows.map(row => row.id) })],
+    queryKey: [QueryClientManager.getInstance().getGenericKey(CASEDB_QUERY_KEY.SIMILAR_CASES), JSON.stringify({ formData, rowIds: openProps.selectedRows.map(row => row.id) })],
   });
 
   const similarCaseIdsNotInView = useMemo(() => {

@@ -25,7 +25,7 @@ import {
   ConfigManager,
   FORM_FIELD_DEFINITION_TYPE,
   NotificationManager,
-  QueryKeyManager,
+  QueryClientManager,
 } from '@gen-epix/ui';
 
 import { CaseTypeUtil } from '../CaseTypeUtil';
@@ -99,7 +99,7 @@ export class CaseUtil {
 
       // Batch add the data collection links
       await CaseDbCaseApi.getInstance().caseDataCollectionLinksPostSome(dataLinksToAdd);
-      await QueryKeyManager.getInstance().invalidateQueryKeys(QueryKeyManager.getInstance().getQueryKeyDependencies([CASEDB_QUERY_KEY.CASE_DATA_COLLECTION_LINKS], true));
+      await QueryClientManager.getInstance().invalidateQueryKeys(QueryClientManager.getInstance().getQueryKeyDependencies([CASEDB_QUERY_KEY.CASE_DATA_COLLECTION_LINKS], true));
       NotificationManager.getInstance().fulfillNotification(notificationKey, t('Sharing has been applied to the cases'), 'success');
 
     } catch (_error) {

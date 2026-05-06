@@ -37,7 +37,7 @@ import { useQueryMemo } from '../../../hooks/useQueryMemo';
 import { ApplicationBootstrap } from '../ApplicationBootstrap';
 import { AuthenticationWrapper } from '../AuthenticationWrapper';
 import { AuthorizationWrapper } from '../AuthorizationWrapper';
-import { QueryKeyManager } from '../../../classes/managers/QueryKeyManager';
+import { QueryClientManager } from '../../../classes/managers/QueryClientManager';
 import { COMMON_QUERY_KEY } from '../../../data/query';
 
 
@@ -78,7 +78,7 @@ export const RouterRoot = () => {
       }
       return providersWithAvailability;
     },
-    queryKey: QueryKeyManager.getInstance().getGenericKey(COMMON_QUERY_KEY.IDENTITY_PROVIDERS),
+    queryKey: QueryClientManager.getInstance().getGenericKey(COMMON_QUERY_KEY.IDENTITY_PROVIDERS),
     staleTime: Infinity,
   });
 

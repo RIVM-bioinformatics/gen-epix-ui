@@ -11,7 +11,7 @@ import { DataHookUtil } from '../../utils/DataHookUtil';
 import { useQueryMemo } from '../../hooks/useQueryMemo';
 import { ConfigManager } from '../../classes/managers/ConfigManager';
 import { CommonDataUtil } from '../../utils/CommonDataUtil';
-import { QueryKeyManager } from '../../classes/managers/QueryKeyManager';
+import { QueryClientManager } from '../../classes/managers/QueryClientManager';
 import { COMMON_QUERY_KEY } from '../../data/query';
 
 export const useUsersQuery = (): UseQueryResult<CommonDbUser[]> => {
@@ -20,7 +20,7 @@ export const useUsersQuery = (): UseQueryResult<CommonDbUser[]> => {
       const response = await ConfigManager.getInstance().config.organizationApi.usersGetAll({ signal });
       return response.data;
     },
-    queryKey: QueryKeyManager.getInstance().getGenericKey(COMMON_QUERY_KEY.USERS),
+    queryKey: QueryClientManager.getInstance().getGenericKey(COMMON_QUERY_KEY.USERS),
   });
 };
 

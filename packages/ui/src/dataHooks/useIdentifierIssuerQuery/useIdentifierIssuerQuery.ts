@@ -9,7 +9,7 @@ import type {
 import { DataHookUtil } from '../../utils/DataHookUtil';
 import { useQueryMemo } from '../../hooks/useQueryMemo';
 import { ConfigManager } from '../../classes/managers/ConfigManager';
-import { QueryKeyManager } from '../../classes/managers/QueryKeyManager';
+import { QueryClientManager } from '../../classes/managers/QueryClientManager';
 import { COMMON_QUERY_KEY } from '../../data/query';
 
 type Select = (data: CommonDbIdentifierIssuer[]) => CommonDbIdentifierIssuer[];
@@ -20,7 +20,7 @@ export const useIdentifierIssuersQuery = (select?: Select): UseQueryResult<Commo
       const response = await ConfigManager.getInstance().config.organizationApi.identifierIssuersGetAll({ signal });
       return response.data;
     },
-    queryKey: QueryKeyManager.getInstance().getGenericKey(COMMON_QUERY_KEY.IDENTIFIER_ISSUERS),
+    queryKey: QueryClientManager.getInstance().getGenericKey(COMMON_QUERY_KEY.IDENTIFIER_ISSUERS),
     select: select ? (data) => select(data) : undefined,
   });
 };

@@ -8,10 +8,9 @@ import type {
   UseQueryOptions,
 } from '@tanstack/react-query';
 
-import { QueryClientManager } from '../../classes/managers/QueryClientManager';
 import type { GenericData } from '../../models/data';
 import { useQueryMemo } from '../useQueryMemo';
-import { QueryKeyManager } from '../../classes/managers/QueryKeyManager';
+import { QueryClientManager } from '../../classes/managers/QueryClientManager';
 
 export type UseItemQueryProps<T extends GenericData, TQueryKey extends string = string> = {
   readonly baseQueryKey: TQueryKey;
@@ -27,12 +26,12 @@ export const useItemQuery = <T extends GenericData>({
   useQueryOptions,
 }: UseItemQueryProps<T>) => {
   const { queryCache } = QueryClientManager.getInstance();
-  const [itemFromCache, setItemFromCache] = useState<T>(QueryKeyManager.getInstance().getItemFromCache<T>(baseQueryKey, itemId));
+  const [itemFromCache, setItemFromCache] = useState<T>(QueryClientManager.getInstance().getItemFromCache<T>(baseQueryKey, itemId));
 
   const useQueryResult = useQueryMemo({
     ...useQueryOptions,
     enabled: !itemFromCache && useQueryOptions.enabled,
-    queryKey: QueryKeyManager.getInstance().getGenericKey(baseQueryKey, itemId),
+    queryKey: QueryClientManager.getInstance().getGenericKey(baseQueryKey, itemId),
   });
 
   useEffect(() => {

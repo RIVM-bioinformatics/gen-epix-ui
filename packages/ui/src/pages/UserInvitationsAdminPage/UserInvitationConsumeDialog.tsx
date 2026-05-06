@@ -30,7 +30,7 @@ import { AuthenticationManager } from '../../classes/managers/AuthenticationMana
 import { ResponseHandler } from '../../components/ui/ResponseHandler';
 import { NotificationManager } from '../../classes/managers/NotificationManager';
 import { ConfigManager } from '../../classes/managers/ConfigManager';
-import { QueryKeyManager } from '../../classes/managers/QueryKeyManager';
+import { QueryClientManager } from '../../classes/managers/QueryClientManager';
 import { COMMON_QUERY_KEY } from '../../data/query';
 
 export interface UserInvitationConsumeDialogOpenProps {
@@ -93,8 +93,8 @@ export const UserInvitationConsumeDialog = withDialog<UserInvitationConsumeDialo
       setError(responseError);
     } finally {
       delete AuthenticationManager.getInstance().temporaryToken;
-      const queryKeys = QueryKeyManager.getInstance().getQueryKeyDependencies([COMMON_QUERY_KEY.USER_INVITATIONS], true);
-      await QueryKeyManager.getInstance().invalidateQueryKeys(queryKeys);
+      const queryKeys = QueryClientManager.getInstance().getQueryKeyDependencies([COMMON_QUERY_KEY.USER_INVITATIONS], true);
+      await QueryClientManager.getInstance().invalidateQueryKeys(queryKeys);
     }
   }, [onClose, openProps.item.token, t]);
 

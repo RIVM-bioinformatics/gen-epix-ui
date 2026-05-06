@@ -2,7 +2,7 @@ import { type UseQueryResult } from '@tanstack/react-query';
 import type { CaseDbCaseSetRights } from '@gen-epix/api-casedb';
 import { CaseDbCaseApi } from '@gen-epix/api-casedb';
 import {
-  QueryKeyManager,
+  QueryClientManager,
   useQueryMemo,
 } from '@gen-epix/ui';
 
@@ -14,6 +14,6 @@ export const useCaseSetRightsQuery = (caseSetIds: string[]): UseQueryResult<Case
       const response = await CaseDbCaseApi.getInstance().retrieveCaseSetRights(caseSetIds, { signal });
       return response.data;
     },
-    queryKey: QueryKeyManager.getInstance().getGenericKey(CASEDB_QUERY_KEY.CASE_SET_RIGHTS, caseSetIds),
+    queryKey: QueryClientManager.getInstance().getGenericKey(CASEDB_QUERY_KEY.CASE_SET_RIGHTS, caseSetIds),
   });
 };

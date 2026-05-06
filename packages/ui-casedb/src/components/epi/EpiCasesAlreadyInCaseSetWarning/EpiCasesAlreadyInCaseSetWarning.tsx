@@ -24,7 +24,7 @@ import {
 import { EpiCaseSummary } from '../EpiCaseSummary';
 
 import { EpiCasesAlreadyInCaseSetWarningCaseSetLink } from './EpiCasesAlreadyInCaseSetWarningCaseSetLink';
-import { useQueryMemo, QueryKeyManager, LogManager, ResponseHandler } from '@gen-epix/ui';
+import { useQueryMemo, QueryClientManager, LogManager, ResponseHandler } from '@gen-epix/ui';
 import { CASEDB_QUERY_KEY } from '../../../data/query';
 
 export type EpiCasesAlreadyInCaseSetWarningProps = {
@@ -49,7 +49,7 @@ export const EpiCasesAlreadyInCaseSetWarning = ({ cases }: EpiCasesAlreadyInCase
       const response = await CaseDbCaseApi.getInstance().caseSetMembersPostQuery(caseSetMembersFilter, { signal });
       return response.data;
     },
-    queryKey: QueryKeyManager.getInstance().getGenericKey(CASEDB_QUERY_KEY.CASE_SET_MEMBERS, caseSetMembersFilter),
+    queryKey: QueryClientManager.getInstance().getGenericKey(CASEDB_QUERY_KEY.CASE_SET_MEMBERS, caseSetMembersFilter),
   });
 
   // Load all case sets for the given case set members
@@ -67,7 +67,7 @@ export const EpiCasesAlreadyInCaseSetWarning = ({ cases }: EpiCasesAlreadyInCase
       const response = await CaseDbCaseApi.getInstance().caseSetsPostQuery(existingCaseSetsFilter, { signal });
       return response.data;
     },
-    queryKey: QueryKeyManager.getInstance().getGenericKey(CASEDB_QUERY_KEY.CASE_SETS, existingCaseSetsFilter),
+    queryKey: QueryClientManager.getInstance().getGenericKey(CASEDB_QUERY_KEY.CASE_SETS, existingCaseSetsFilter),
   });
 
   const caseSetsByCase = useMemo(() => {

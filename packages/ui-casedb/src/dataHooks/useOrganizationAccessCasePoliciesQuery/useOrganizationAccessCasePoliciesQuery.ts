@@ -4,7 +4,7 @@ import {
   type CaseDbOrganizationAccessCasePolicy,
 } from '@gen-epix/api-casedb';
 import {
-  QueryKeyManager,
+  QueryClientManager,
   useQueryMemo,
 } from '@gen-epix/ui';
 
@@ -16,7 +16,7 @@ export const useOrganizationAccessCasePoliciesQuery = (select?: (data: CaseDbOrg
       const response = await CaseDbAbacApi.getInstance().organizationAccessCasePoliciesGetAll({ signal });
       return response.data;
     },
-    queryKey: QueryKeyManager.getInstance().getGenericKey(CASEDB_QUERY_KEY.ORGANIZATION_ACCESS_CASE_POLICIES),
+    queryKey: QueryClientManager.getInstance().getGenericKey(CASEDB_QUERY_KEY.ORGANIZATION_ACCESS_CASE_POLICIES),
     select: select ? (data) => select(data) : undefined,
   });
 };

@@ -48,7 +48,7 @@ import type {
 } from '@gen-epix/ui';
 import {
   ConfigManager,
-  QueryKeyManager,
+  QueryClientManager,
   useDimensions,
   useQueryMemo,
 } from '@gen-epix/ui';
@@ -122,7 +122,7 @@ export const EpiMapWidget = () => {
     queryFn: async ({ signal }) => {
       return (await CaseDbGeoApi.getInstance().regionSetShapesPostQuery(regionSetShapesFilter, { signal })).data;
     },
-    queryKey: QueryKeyManager.getInstance().getGenericKey(CASEDB_QUERY_KEY.REGION_SET_SHAPES, regionSetShapesFilter),
+    queryKey: QueryClientManager.getInstance().getGenericKey(CASEDB_QUERY_KEY.REGION_SET_SHAPES, regionSetShapesFilter),
     retry: false,
     select: (shapes) => Object.fromEntries(shapes.map(regionSetShape => [regionSetShape.region_set_id, regionSetShape])),
   });
@@ -494,14 +494,15 @@ export const EpiMapWidget = () => {
 
 
     emitDownloadOptions();
-    EpiEventBusManager.getInstance().addEventListener('onDownloadOptionsRequested', emitDownloadOptions);
+    const epiEventBusManager = EpiEventBusManager.getInstance();
+    epiEventBusManager.addEventListener('onDownloadOptionsRequested', emitDownloadOptions);
     return () => {
       EpiEventBusManager.getInstance().emit('onDownloadOptionsChanged', {
         items: null,
         zone: EPI_ZONE.MAP,
         zoneLabel: t`Map`,
       });
-      EpiEventBusManager.getInstance().removeEventListener('onDownloadOptionsRequested', emitDownloadOptions);
+      epiEventBusManager.removeEventListener('onDownloadOptionsRequested', emitDownloadOptions);
     };
   }, [completeCaseType, shouldShowMap, t]);
 

@@ -143,7 +143,6 @@ export * from './components/app/App';
 export * from './classes/managers/WindowManager';
 export * from './classes/managers/UserSettingsManager';
 export * from './classes/managers/RouterManager';
-export * from './classes/managers/QueryKeyManager';
 export * from './classes/managers/QueryClientManager';
 export * from './classes/managers/PageEventBusManager';
 export * from './classes/managers/NotificationManager';

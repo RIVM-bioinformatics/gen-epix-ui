@@ -35,7 +35,7 @@ import {
   createTableStore,
   DATE_FORMAT,
   PageContainer,
-  QueryKeyManager,
+  QueryClientManager,
   ResponseHandler,
   RouterManager,
   Table,
@@ -79,7 +79,7 @@ export const CasesPage = () => {
       const response = await CaseDbCaseApi.getInstance().caseTypesGetAll({ signal });
       return response.data;
     },
-    queryKey: QueryKeyManager.getInstance().getGenericKey(CASEDB_QUERY_KEY.CASE_TYPES),
+    queryKey: QueryClientManager.getInstance().getGenericKey(CASEDB_QUERY_KEY.CASE_TYPES),
   });
 
   const caseTypeStatsMap = useMemo(() => {
@@ -92,7 +92,7 @@ export const CasesPage = () => {
       const response = await CaseDbCaseApi.getInstance().caseTypeSetsGetAll({ signal });
       return response.data;
     },
-    queryKey: QueryKeyManager.getInstance().getGenericKey(CASEDB_QUERY_KEY.CASE_TYPE_SETS),
+    queryKey: QueryClientManager.getInstance().getGenericKey(CASEDB_QUERY_KEY.CASE_TYPE_SETS),
   });
 
   const { data: caseTypeSetMembers, error: caseTypeSetMembersError, isLoading: isCaseTypeSetMembersLoading } = useQueryMemo({
@@ -100,7 +100,7 @@ export const CasesPage = () => {
       const response = await CaseDbCaseApi.getInstance().caseTypeSetMembersGetAll({ signal });
       return response.data;
     },
-    queryKey: QueryKeyManager.getInstance().getGenericKey(CASEDB_QUERY_KEY.CASE_TYPE_SET_MEMBERS),
+    queryKey: QueryClientManager.getInstance().getGenericKey(CASEDB_QUERY_KEY.CASE_TYPE_SET_MEMBERS),
   });
 
   const isLoading = isCaseTypesLoading || isCaseTypeSetsLoading || isCaseTypeSetMembersLoading || caseTypeSetCategoriesQuery.isLoading || caseTypeStatsQuery.isLoading;

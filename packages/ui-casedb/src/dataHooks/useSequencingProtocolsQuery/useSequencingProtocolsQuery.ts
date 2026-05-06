@@ -8,7 +8,7 @@ import type {
 } from '@gen-epix/ui';
 import {
   DataHookUtil,
-  QueryKeyManager,
+  QueryClientManager,
   useQueryMemo,
 } from '@gen-epix/ui';
 
@@ -20,7 +20,7 @@ export const useSequencingProtocolsQuery = (): UseQueryResult<CaseDbProtocol[]> 
       const response = await CaseDbCaseApi.getInstance().retrieveSequencingProtocols({ signal });
       return response.data;
     },
-    queryKey: QueryKeyManager.getInstance().getGenericKey(CASEDB_QUERY_KEY.SEQUENCING_PROTOCOLS),
+    queryKey: QueryClientManager.getInstance().getGenericKey(CASEDB_QUERY_KEY.SEQUENCING_PROTOCOLS),
   });
 };
 
