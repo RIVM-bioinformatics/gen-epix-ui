@@ -35,8 +35,7 @@ import {
   createTableStore,
   DATE_FORMAT,
   PageContainer,
-  QUERY_KEY,
-  QueryManager,
+  QueryKeyManager,
   ResponseHandler,
   RouterManager,
   Table,
@@ -55,7 +54,8 @@ import { EpiCaseTypeInfoDialogWithLoader } from '../../components/epi/EpiCaseTyp
 import { useCaseTypeSetCategoriesQuery } from '../../dataHooks/useCaseTypeSetCategoriesQuery';
 import { useCaseTypeStatsQuery } from '../../dataHooks/useCaseTypeStatsQuery';
 import { CaseTypeUtil } from '../../utils/CaseTypeUtil';
-import { CaseDbDownloadUtil } from '../..';
+import { CASEDB_QUERY_KEY } from '../../data/query';
+import { CaseDbDownloadUtil } from '../../utils/CaseDbDownloadUtil';
 
 
 type Row = {
@@ -79,7 +79,7 @@ export const CasesPage = () => {
       const response = await CaseDbCaseApi.getInstance().caseTypesGetAll({ signal });
       return response.data;
     },
-    queryKey: QueryManager.getInstance().getGenericKey(QUERY_KEY.CASE_TYPES),
+    queryKey: QueryKeyManager.getInstance().getGenericKey(CASEDB_QUERY_KEY.CASE_TYPES),
   });
 
   const caseTypeStatsMap = useMemo(() => {
@@ -92,7 +92,7 @@ export const CasesPage = () => {
       const response = await CaseDbCaseApi.getInstance().caseTypeSetsGetAll({ signal });
       return response.data;
     },
-    queryKey: QueryManager.getInstance().getGenericKey(QUERY_KEY.CASE_TYPE_SETS),
+    queryKey: QueryKeyManager.getInstance().getGenericKey(CASEDB_QUERY_KEY.CASE_TYPE_SETS),
   });
 
   const { data: caseTypeSetMembers, error: caseTypeSetMembersError, isLoading: isCaseTypeSetMembersLoading } = useQueryMemo({
@@ -100,7 +100,7 @@ export const CasesPage = () => {
       const response = await CaseDbCaseApi.getInstance().caseTypeSetMembersGetAll({ signal });
       return response.data;
     },
-    queryKey: QueryManager.getInstance().getGenericKey(QUERY_KEY.CASE_TYPE_SET_MEMBERS),
+    queryKey: QueryKeyManager.getInstance().getGenericKey(CASEDB_QUERY_KEY.CASE_TYPE_SET_MEMBERS),
   });
 
   const isLoading = isCaseTypesLoading || isCaseTypeSetsLoading || isCaseTypeSetMembersLoading || caseTypeSetCategoriesQuery.isLoading || caseTypeStatsQuery.isLoading;

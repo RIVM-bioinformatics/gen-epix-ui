@@ -28,10 +28,10 @@ import { FORM_FIELD_DEFINITION_TYPE } from '../../models/form';
 import { GenericForm } from '../../components/form/helpers/GenericForm';
 import { AuthenticationManager } from '../../classes/managers/AuthenticationManager';
 import { ResponseHandler } from '../../components/ui/ResponseHandler';
-import { QUERY_KEY } from '../../models/query';
 import { NotificationManager } from '../../classes/managers/NotificationManager';
 import { ConfigManager } from '../../classes/managers/ConfigManager';
-import { QueryManager } from '../../classes/managers/QueryManager';
+import { QueryKeyManager } from '../../classes/managers/QueryKeyManager';
+import { COMMON_QUERY_KEY } from '../../data/query';
 
 export interface UserInvitationConsumeDialogOpenProps {
   item: CommonDbUserInvitation;
@@ -93,8 +93,8 @@ export const UserInvitationConsumeDialog = withDialog<UserInvitationConsumeDialo
       setError(responseError);
     } finally {
       delete AuthenticationManager.getInstance().temporaryToken;
-      const queryKeys = QueryManager.getInstance().getQueryKeyDependencies([QUERY_KEY.USER_INVITATIONS], true);
-      await QueryManager.getInstance().invalidateQueryKeys(queryKeys);
+      const queryKeys = QueryKeyManager.getInstance().getQueryKeyDependencies([COMMON_QUERY_KEY.USER_INVITATIONS], true);
+      await QueryKeyManager.getInstance().invalidateQueryKeys(queryKeys);
     }
   }, [onClose, openProps.item.token, t]);
 

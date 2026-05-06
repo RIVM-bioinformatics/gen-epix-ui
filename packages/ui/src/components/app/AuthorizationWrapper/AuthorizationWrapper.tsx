@@ -11,7 +11,6 @@ import { useTranslation } from 'react-i18next';
 import last from 'lodash/last';
 
 import { AuthorizationManager } from '../../../classes/managers/AuthorizationManager';
-import { QUERY_KEY } from '../../../models/query';
 import type { MyNonIndexRouteObject } from '../../../models/reactRouter';
 import { TestIdUtil } from '../../../utils/TestIdUtil';
 import { useArray } from '../../../hooks/useArray';
@@ -20,7 +19,8 @@ import { LoadableUtil } from '../../../utils/LoadableUtil';
 import { PageContainer } from '../../ui/PageContainer';
 import { ResponseHandler } from '../../ui/ResponseHandler';
 import { ConfigManager } from '../../../classes/managers/ConfigManager';
-import { QueryManager } from '../../../classes/managers/QueryManager';
+import { QueryKeyManager } from '../../../classes/managers/QueryKeyManager';
+import { COMMON_QUERY_KEY } from '../../../data/query';
 
 export const AuthorizationWrapper = ({ children }: PropsWithChildren): ReactNode => {
   const { t } = useTranslation();
@@ -32,14 +32,14 @@ export const AuthorizationWrapper = ({ children }: PropsWithChildren): ReactNode
     enabled: requiresUserProfile,
     gcTime: Infinity,
     queryFn: async ({ signal }) => (await ConfigManager.getInstance().config.organizationApi.userMeGetOne({ signal })).data,
-    queryKey: QueryManager.getInstance().getGenericKey(QUERY_KEY.USER_ME),
+    queryKey: QueryKeyManager.getInstance().getGenericKey(COMMON_QUERY_KEY.USER_ME),
     staleTime: Infinity,
   });
   const userPermissionsQuery = useQueryMemo({
     enabled: requiresUserProfile,
     gcTime: Infinity,
     queryFn: async ({ signal }) => (await ConfigManager.getInstance().config.organizationApi.userMeRetrievePermissions({ signal })).data,
-    queryKey: QueryManager.getInstance().getGenericKey(QUERY_KEY.USER_PERMISSIONS),
+    queryKey: QueryKeyManager.getInstance().getGenericKey(COMMON_QUERY_KEY.USER_PERMISSIONS),
     staleTime: Infinity,
   });
 

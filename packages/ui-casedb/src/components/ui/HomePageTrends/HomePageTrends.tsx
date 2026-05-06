@@ -27,8 +27,7 @@ import {
   AxiosUtil,
   ConfigManager,
   LoadableUtil,
-  QUERY_KEY,
-  QueryManager,
+  QueryKeyManager,
   ResponseHandler,
   RouterManager,
   useArray,
@@ -40,6 +39,7 @@ import { useCaseSetsQuery } from '../../../dataHooks/useCaseSetsQuery';
 import { useCaseTypeMapQuery } from '../../../dataHooks/useCaseTypesQuery';
 import { CaseTypeUtil } from '../../../utils/CaseTypeUtil';
 import type { CaseDbConfig } from '../../../models/config';
+import { CASEDB_QUERY_KEY } from '../../../data/query';
 
 import { HomePageTrendCard } from './HomePageTrendCard';
 
@@ -77,7 +77,7 @@ export const HomePageTrends = withPermissions<CaseDbApiPermission>(() => {
       const response = await CaseDbCaseApi.getInstance().retrieveCaseTypeStats({}, { signal });
       return response.data;
     },
-    queryKey: QueryManager.getInstance().getGenericKey(QUERY_KEY.CASE_TYPE_STATS),
+    queryKey: QueryKeyManager.getInstance().getGenericKey(CASEDB_QUERY_KEY.CASE_TYPE_STATS),
   });
 
   const retrieveTypeCaseStatsRequestBody = useMemo<CaseDbRetrieveCaseTypeStatsRequestBody>(() => {
@@ -96,7 +96,7 @@ export const HomePageTrends = withPermissions<CaseDbApiPermission>(() => {
       const response = await CaseDbCaseApi.getInstance().retrieveCaseTypeStats(retrieveTypeCaseStatsRequestBody ?? {}, { signal });
       return response.data;
     },
-    queryKey: QueryManager.getInstance().getGenericKey(QUERY_KEY.CASE_TYPE_STATS, retrieveTypeCaseStatsRequestBody ?? {}),
+    queryKey: QueryKeyManager.getInstance().getGenericKey(CASEDB_QUERY_KEY.CASE_TYPE_STATS, retrieveTypeCaseStatsRequestBody ?? {}),
   });
   const caseSetsNowQuery = useCaseSetsQuery();
   const caseTypeMapQuery = useCaseTypeMapQuery();
@@ -106,7 +106,7 @@ export const HomePageTrends = withPermissions<CaseDbApiPermission>(() => {
       const response = await CaseDbCaseApi.getInstance().caseSetsPostQuery(caseSetQueryFilter, { signal });
       return response.data;
     },
-    queryKey: QueryManager.getInstance().getGenericKey(QUERY_KEY.CASE_SETS, caseSetQueryFilter),
+    queryKey: QueryKeyManager.getInstance().getGenericKey(CASEDB_QUERY_KEY.CASE_SETS, caseSetQueryFilter),
   });
 
   const loadables = useArray([

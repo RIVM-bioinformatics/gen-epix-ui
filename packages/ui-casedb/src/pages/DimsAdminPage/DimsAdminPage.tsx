@@ -9,30 +9,37 @@ import {
   string,
 } from 'yup';
 import { useParams } from 'react-router-dom';
-import type { CaseDbDim } from '@gen-epix/api-casedb';
+import type {
+  CaseDbApiPermission,
+  CaseDbDim,
+} from '@gen-epix/api-casedb';
 import {
   CaseDbCaseApi,
   CaseDbCommandName,
   CaseDbPermissionType,
 } from '@gen-epix/api-casedb';
+import type {
+  CrudPageSubPage,
+  FormFieldDefinition,
+  OmitWithMetaData,
+  TableColumn,
+} from '@gen-epix/ui';
+import {
+  AuthorizationManager,
+  CrudPage,
+  FORM_FIELD_DEFINITION_TYPE,
+  SchemaUtil,
+  TableUtil,
+  TestIdUtil,
+  useArray,
+} from '@gen-epix/ui';
 
 import {
   useCaseTypeMapQuery,
   useCaseTypeOptionsQuery,
 } from '../../dataHooks/useCaseTypesQuery';
-import { useArray } from '../../hooks/useArray';
-import type { FormFieldDefinition } from '../../models/form';
-import { FORM_FIELD_DEFINITION_TYPE } from '../../models/form';
-import { QUERY_KEY } from '../../models/query';
-import type { TableColumn } from '../../models/table';
-import { TableUtil } from '../../utils/TableUtil';
-import { TestIdUtil } from '../../utils/TestIdUtil';
-import type { CrudPageSubPage } from '../CrudPage';
-import { CrudPage } from '../CrudPage';
+import { CASEDB_QUERY_KEY } from '../../data/query';
 import { useRefDimOptionsQuery } from '../../dataHooks/useRefDimsQuery';
-import { AuthorizationManager } from '../../classes/managers/AuthorizationManager';
-import type { OmitWithMetaData } from '../../models/data';
-import { SchemaUtil } from '../../utils/SchemaUtil';
 
 type FormFields = OmitWithMetaData<CaseDbDim, 'case_type' | 'ref_dim'>;
 
@@ -157,7 +164,7 @@ export const DimsAdminPage = () => {
   }, [caseTypeId]);
 
   const subPages = useMemo<CrudPageSubPage<CaseDbDim>[]>(() => {
-    if (!AuthorizationManager.getInstance().doesUserHavePermission([
+    if (!AuthorizationManager.getInstance().doesUserHavePermission<CaseDbApiPermission>([
       { command_name: CaseDbCommandName.RefColCrudCommand, permission_type: CaseDbPermissionType.READ },
     ])) {
       return [];
@@ -196,7 +203,7 @@ export const DimsAdminPage = () => {
       formFieldDefinitions={formFieldDefinitions}
       getName={getName}
       loadables={loadables}
-      resourceQueryKeyBase={QUERY_KEY.DIMS}
+      resourceQueryKeyBase={CASEDB_QUERY_KEY.DIMS}
       schema={schema}
       subPages={subPages}
       tableColumns={tableColumns}

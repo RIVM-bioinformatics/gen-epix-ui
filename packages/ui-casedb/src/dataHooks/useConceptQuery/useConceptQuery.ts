@@ -8,14 +8,14 @@ import type {
   UseOptions,
 } from '@gen-epix/ui';
 import {
+  CommonDataUtil,
   DataHookUtil,
-  QUERY_KEY,
-  QueryManager,
+  QueryKeyManager,
   useQueryMemo,
 } from '@gen-epix/ui';
 
 import { useConceptSetMapQuery } from '../useConceptSetsQuery';
-import { CaseDbDataUtil } from '../../utils/CaseDbDataUtil';
+import { CASEDB_QUERY_KEY } from '../../data/query';
 
 export const useConceptQuery = (): UseQueryResult<CaseDbConcept[]> => {
   return useQueryMemo({
@@ -23,7 +23,7 @@ export const useConceptQuery = (): UseQueryResult<CaseDbConcept[]> => {
       const response = await CaseDbOntologyApi.getInstance().conceptsGetAll({ signal });
       return response.data;
     },
-    queryKey: QueryManager.getInstance().getGenericKey(QUERY_KEY.CONCEPTS),
+    queryKey: QueryKeyManager.getInstance().getGenericKey(CASEDB_QUERY_KEY.CONCEPTS),
   });
 };
 
@@ -50,6 +50,6 @@ export const useConceptOptionsQuery = (): UseOptions<string> => {
   const conceptNameFactory = useConceptNameFactory();
 
   return useMemo(() => {
-    return DataHookUtil.createUseOptionsDataHook<CaseDbConcept>(conceptQuery, item => item.id, conceptNameFactory.getName, [conceptNameFactory], CaseDbDataUtil.rankSortComperatorFactory(conceptNameFactory.getName));
+    return DataHookUtil.createUseOptionsDataHook<CaseDbConcept>(conceptQuery, item => item.id, conceptNameFactory.getName, [conceptNameFactory], CommonDataUtil.rankSortComperatorFactory(conceptNameFactory.getName));
   }, [conceptNameFactory, conceptQuery]);
 };

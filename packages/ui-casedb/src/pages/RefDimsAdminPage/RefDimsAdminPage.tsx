@@ -8,26 +8,30 @@ import {
   object,
   string,
 } from 'yup';
-import type { CaseDbRefDim } from '@gen-epix/api-casedb';
+import type { CaseDbApiPermission, CaseDbRefDim } from '@gen-epix/api-casedb';
 import {
   CaseDbCaseApi,
   CaseDbCommandName,
   CaseDbDimType,
   CaseDbPermissionType,
 } from '@gen-epix/api-casedb';
+import type {
+  CrudPageSubPage,
+  FormFieldDefinition,
+  OmitWithMetaData,
+  TableColumn,
+} from '@gen-epix/ui';
+import {
+  AuthorizationManager,
+  CrudPage,
+  FORM_FIELD_DEFINITION_TYPE,
+  SchemaUtil,
+  TableUtil,
+  TestIdUtil,
+} from '@gen-epix/ui';
 
 import { useDimTypeOptionsQuery } from '../../dataHooks/useDimTypesQuery';
-import type { FormFieldDefinition } from '../../models/form';
-import { FORM_FIELD_DEFINITION_TYPE } from '../../models/form';
-import { QUERY_KEY } from '../../models/query';
-import type { TableColumn } from '../../models/table';
-import { TableUtil } from '../../utils/TableUtil';
-import { TestIdUtil } from '../../utils/TestIdUtil';
-import type { CrudPageSubPage } from '../CrudPage';
-import { CrudPage } from '../CrudPage';
-import { AuthorizationManager } from '../../classes/managers/AuthorizationManager';
-import type { OmitWithMetaData } from '../../models/data';
-import { SchemaUtil } from '../../utils/SchemaUtil';
+import { CASEDB_QUERY_KEY } from '../../data/query';
 
 type FormFields = OmitWithMetaData<CaseDbRefDim, 'props'>;
 
@@ -116,7 +120,7 @@ export const RefDimsAdminPage = () => {
   }, [dimTypeOptionsQuery.options, t]);
 
   const subPages = useMemo<CrudPageSubPage<CaseDbRefDim>[]>(() => {
-    if (!AuthorizationManager.getInstance().doesUserHavePermission([
+    if (!AuthorizationManager.getInstance().doesUserHavePermission<CaseDbApiPermission>([
       { command_name: CaseDbCommandName.RefColCrudCommand, permission_type: CaseDbPermissionType.READ },
     ])) {
       return [];
@@ -141,7 +145,7 @@ export const RefDimsAdminPage = () => {
       fetchAll={fetchAll}
       formFieldDefinitions={formFieldDefinitions}
       getName={getName}
-      resourceQueryKeyBase={QUERY_KEY.REF_DIMS}
+      resourceQueryKeyBase={CASEDB_QUERY_KEY.REF_DIMS}
       schema={schema}
       subPages={subPages}
       tableColumns={tableColumns}

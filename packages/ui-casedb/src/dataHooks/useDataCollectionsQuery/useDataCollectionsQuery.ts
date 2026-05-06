@@ -8,10 +8,11 @@ import type {
 } from '@gen-epix/ui';
 import {
   DataHookUtil,
-  QUERY_KEY,
-  QueryManager,
+  QueryKeyManager,
   useQueryMemo,
 } from '@gen-epix/ui';
+
+import { CASEDB_QUERY_KEY } from '../../data/query';
 
 export const useDataCollectionsQuery = (dataCollectionIds?: string[]): UseQueryResult<CaseDbDataCollection[]> => {
   return useQueryMemo({
@@ -19,7 +20,7 @@ export const useDataCollectionsQuery = (dataCollectionIds?: string[]): UseQueryR
       const response = await CaseDbOrganizationApi.getInstance().dataCollectionsGetAll({ signal });
       return response.data;
     },
-    queryKey: QueryManager.getInstance().getGenericKey(QUERY_KEY.DATA_COLLECTIONS),
+    queryKey: QueryKeyManager.getInstance().getGenericKey(CASEDB_QUERY_KEY.DATA_COLLECTIONS),
     select: (items) => {
       if (dataCollectionIds) {
         return items.filter(item => dataCollectionIds.includes(item.id));

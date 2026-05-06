@@ -4,23 +4,55 @@ import {
   uniqBy,
 } from 'lodash';
 
-import { QUERY_DEPENDENCIES } from '../../../data/queryDependencies';
 import type { GenericData } from '../../../models/data';
-import { QUERY_KEY } from '../../../models/query';
 import { HmrUtil } from '../../../utils/HmrUtil';
 import { QueryClientManager } from '../QueryClientManager';
 
-export class QueryManager {
-  private static __instance: QueryManager;
+export class QueryKeyManager<TQueryKey extends string = string> {
+  private static __instance: unknown;
+  public set queryKeyDependencies(queryKeyDependencies: Array<Record<TQueryKey, TQueryKey[]>>) {
+    this.__queryKeyDependencies = QueryKeyManager.mergeQueryKeyDependencies(queryKeyDependencies);
+  }
+
+  public get queryKeyDependencies(): Record<TQueryKey, TQueryKey[]> {
+    if (!this.__queryKeyDependencies) {
+      throw new Error('QueryKeyDependencies not set');
+    }
+    return this.__queryKeyDependencies;
+  }
+
+  private __queryKeyDependencies: Record<TQueryKey, TQueryKey[]>;
 
 
   private constructor() {
     //
   }
 
-  public static getInstance(): QueryManager {
-    QueryManager.__instance = HmrUtil.getHmrSingleton('queryManager', QueryManager.__instance, () => new QueryManager());
-    return QueryManager.__instance;
+
+  public static getInstance<TQueryKey extends string>(): QueryKeyManager<TQueryKey> {
+    const instance = HmrUtil.getHmrSingleton<QueryKeyManager<TQueryKey>>(
+      'queryManager',
+      QueryKeyManager.__instance as QueryKeyManager<TQueryKey> | undefined,
+      () => new QueryKeyManager<TQueryKey>(),
+    );
+    QueryKeyManager.__instance = instance;
+    return instance;
+  }
+
+  private static mergeQueryKeyDependencies<TQueryKey extends string>(dependencies: Array<Record<TQueryKey, TQueryKey[]>>): Record<TQueryKey, TQueryKey[]> {
+    const merged: Record<TQueryKey, TQueryKey[]> = {} as Record<TQueryKey, TQueryKey[]>;
+    dependencies.forEach(dependency => {
+      Object.entries<TQueryKey[]>(dependency).forEach(([key, value]) => {
+        if (!merged[key as TQueryKey]) {
+          merged[key as TQueryKey] = [];
+        }
+        merged[key as TQueryKey].push(...value);
+      });
+    });
+    Object.keys(merged).forEach(key => {
+      merged[key as TQueryKey] = uniq(merged[key as TQueryKey]);
+    });
+    return merged;
   }
 
   public async cancelQueries(queryKeys: string[][]) {
@@ -30,7 +62,7 @@ export class QueryManager {
     }
   }
 
-  public getGenericKey(key: QUERY_KEY, arg?: unknown) {
+  public getGenericKey(key: TQueryKey, arg?: unknown) {
     const keyArray: string[] = [key];
     if (arg) {
       if (typeof arg === 'string') {
@@ -42,13 +74,13 @@ export class QueryManager {
     return keyArray;
   }
 
-  public getItemFromCache<T extends GenericData>(queryKey: QUERY_KEY, itemId: string): T {
+  public getItemFromCache<T extends GenericData>(queryKey: TQueryKey, itemId: string): T {
     const items = this.getValidQueryData<T[]>([queryKey]);
     return items?.find(item => item.id === itemId);
   }
 
-  public getQueryKeyDependencies(queryKeys: QUERY_KEY[], includeSelf = false): string[][] {
-    const keys: QUERY_KEY[][] = [];
+  public getQueryKeyDependencies(queryKeys: TQueryKey[], includeSelf = false): string[][] {
+    const keys: TQueryKey[][] = [];
 
     queryKeys.forEach(key => {
       keys.push(...this.getQueryKeyDependenciesInternal(key).map(k => [k]));
@@ -61,10 +93,6 @@ export class QueryManager {
 
   public getUniqueQueryKeys<T>(queryKeys: T[][]): T[][] {
     return uniqBy(queryKeys, x => x.join('-'));
-  }
-
-  public getUserRegistrationsKey(token: string) {
-    return this.getGenericKey(QUERY_KEY.USER_INVITATIONS, token);
   }
 
   public getValidQueryData<T>(queryKey: string[]): T {
@@ -93,9 +121,9 @@ export class QueryManager {
     }
   }
 
-  private getQueryKeyDependenciesInternal(key: QUERY_KEY, currentKeys: QUERY_KEY[] = [], originalKey?: QUERY_KEY): QUERY_KEY[] {
-    const keys: QUERY_KEY[] = [...currentKeys];
-    QUERY_DEPENDENCIES[key].forEach(subKey => {
+  private getQueryKeyDependenciesInternal(key: TQueryKey, currentKeys: TQueryKey[] = [], originalKey?: TQueryKey): TQueryKey[] {
+    const keys: TQueryKey[] = [...currentKeys];
+    this.__queryKeyDependencies[key].forEach(subKey => {
       if (!keys.includes(subKey)) {
         keys.push(subKey);
         keys.push(...this.getQueryKeyDependenciesInternal(subKey, [...keys], originalKey ?? key));

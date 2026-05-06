@@ -17,6 +17,20 @@ import {
   CaseDbColType,
   CaseDbCommandName,
 } from '@gen-epix/api-casedb';
+import type {
+  FormFieldDefinition,
+  OmitWithMetaData,
+  OptionBase,
+  TableColumn,
+} from '@gen-epix/ui';
+import {
+  CrudPage,
+  FORM_FIELD_DEFINITION_TYPE,
+  SchemaUtil,
+  TableUtil,
+  TestIdUtil,
+  useArray,
+} from '@gen-epix/ui';
 
 import { useColTypeOptionsQuery } from '../../dataHooks/useColTypesQuery';
 import { useConceptSetOptionsQuery } from '../../dataHooks/useConceptSetsQuery';
@@ -26,21 +40,9 @@ import {
 } from '../../dataHooks/useRefDimsQuery';
 import { useGeneticDistanceProtocolOptionsQuery } from '../../dataHooks/useGeneticDistanceProtocolsQuery';
 import { useRegionSetOptionsQuery } from '../../dataHooks/useRegionSetsQuery';
-import { useArray } from '../../hooks/useArray';
-import type {
-  FormFieldDefinition,
-  OptionBase,
-} from '../../models/form';
-import { FORM_FIELD_DEFINITION_TYPE } from '../../models/form';
-import { QUERY_KEY } from '../../models/query';
-import type { TableColumn } from '../../models/table';
-import { TableUtil } from '../../utils/TableUtil';
-import { TestIdUtil } from '../../utils/TestIdUtil';
-import { CrudPage } from '../CrudPage';
+import { CASEDB_QUERY_KEY } from '../../data/query';
 import { useRefColsValidationRulesQuery } from '../../dataHooks/useRefColsValidationRulesQuery';
 import { CaseDbDataUtil } from '../../utils/CaseDbDataUtil';
-import type { OmitWithMetaData } from '../../models/data';
-import { SchemaUtil } from '../../utils/SchemaUtil';
 
 type FormFields = OmitWithMetaData<CaseDbRefCol, 'concept_set' | 'genetic_distance_protocol' | 'props' | 'ref_dim' | 'region_set'>;
 
@@ -307,7 +309,7 @@ export const RefColsAdminPage = () => {
       getOptimisticUpdateIntermediateItem={getOptimisticUpdateIntermediateItem}
       loadables={loadables}
       onFormChange={onFormChange}
-      resourceQueryKeyBase={QUERY_KEY.REF_COLS}
+      resourceQueryKeyBase={CASEDB_QUERY_KEY.REF_COLS}
       schema={schema}
       tableColumns={tableColumns}
       tableStoreStorageNamePostFix={refDimId ? 'RefDim' : undefined}

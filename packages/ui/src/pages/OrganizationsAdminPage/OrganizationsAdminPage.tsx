@@ -20,7 +20,6 @@ import {
 
 import type { FormFieldDefinition } from '../../models/form';
 import { FORM_FIELD_DEFINITION_TYPE } from '../../models/form';
-import { QUERY_KEY } from '../../models/query';
 import type { TableColumn } from '../../models/table';
 import { TableUtil } from '../../utils/TableUtil';
 import { TestIdUtil } from '../../utils/TestIdUtil';
@@ -33,6 +32,7 @@ import { useOrganizationIdentifierIssuerLinksQuery } from '../../dataHooks/useOr
 import type { OmitWithMetaData } from '../../models/data';
 import { SchemaUtil } from '../../utils/SchemaUtil';
 import { ConfigManager } from '../../classes/managers/ConfigManager';
+import { COMMON_QUERY_KEY } from '../../data/query';
 
 type FormFields = OmitWithMetaData<TableData>;
 
@@ -162,7 +162,7 @@ export const OrganizationsAdminPage = () => {
   }, [organizationIdentifierIssuerLinksQuery.data]);
 
   const associationQueryKeys = useMemo(() => [
-    [QUERY_KEY.IDENTIFIER_ISSUER_LINKS],
+    [COMMON_QUERY_KEY.IDENTIFIER_ISSUER_LINKS],
   ], []);
 
   const extraPermissions = useMemo<CommonDbApiPermission[]>(() => [
@@ -186,7 +186,7 @@ export const OrganizationsAdminPage = () => {
       formFieldDefinitions={formFieldDefinitions}
       getName={getName}
       loadables={loadables}
-      resourceQueryKeyBase={QUERY_KEY.ORGANIZATIONS}
+      resourceQueryKeyBase={COMMON_QUERY_KEY.ORGANIZATIONS}
       schema={schema}
       subPages={subPages}
       tableColumns={tableColumns}

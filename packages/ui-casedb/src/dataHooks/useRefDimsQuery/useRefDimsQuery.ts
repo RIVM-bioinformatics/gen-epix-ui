@@ -7,12 +7,13 @@ import type {
   UseOptions,
 } from '@gen-epix/ui';
 import {
-  DataHookUtil,
   CommonDataUtil,
-  QUERY_KEY,
-  QueryManager,
+  DataHookUtil,
+  QueryKeyManager,
   useQueryMemo,
 } from '@gen-epix/ui';
+
+import { CASEDB_QUERY_KEY } from '../../data/query';
 
 export const useRefDimsQuery = (): UseQueryResult<CaseDbRefDim[]> => {
   return useQueryMemo({
@@ -20,7 +21,7 @@ export const useRefDimsQuery = (): UseQueryResult<CaseDbRefDim[]> => {
       const response = await CaseDbCaseApi.getInstance().refDimsGetAll({ signal });
       return response.data;
     },
-    queryKey: QueryManager.getInstance().getGenericKey(QUERY_KEY.REF_DIMS),
+    queryKey: QueryKeyManager.getInstance().getGenericKey(CASEDB_QUERY_KEY.REF_DIMS),
   });
 };
 

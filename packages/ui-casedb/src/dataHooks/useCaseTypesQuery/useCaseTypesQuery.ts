@@ -8,10 +8,11 @@ import type {
 } from '@gen-epix/ui';
 import {
   DataHookUtil,
-  QUERY_KEY,
-  QueryManager,
+  QueryKeyManager,
   useQueryMemo,
 } from '@gen-epix/ui';
+
+import { CASEDB_QUERY_KEY } from '../../data/query';
 
 
 export const caseTypesQueryFn = async ({ signal }: { signal: AbortSignal }): Promise<CaseDbCaseType[]> => {
@@ -24,7 +25,7 @@ export const caseTypesQueryFn = async ({ signal }: { signal: AbortSignal }): Pro
 export const useCaseTypesQuery = (): UseQueryResult<CaseDbCaseType[]> => {
   return useQueryMemo({
     queryFn: caseTypesQueryFn,
-    queryKey: QueryManager.getInstance().getGenericKey(QUERY_KEY.CASE_TYPES),
+    queryKey: QueryKeyManager.getInstance().getGenericKey(CASEDB_QUERY_KEY.CASE_TYPES),
   });
 };
 

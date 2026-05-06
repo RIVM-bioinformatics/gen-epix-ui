@@ -13,18 +13,42 @@ import {
 import { useParams } from 'react-router-dom';
 import type { CaseDbUser } from '@gen-epix/api-casedb';
 import { CaseDbOrganizationApi } from '@gen-epix/api-casedb';
-
-import { TestIdUtil } from '../../utils/TestIdUtil';
-import { PageContainer } from '../../components/ui/PageContainer';
-import { ResponseHandler } from '../../components/ui/ResponseHandler';
+import type {
+  TableColumn,
+  TableRowParams,
+} from '@gen-epix/ui';
 import {
+  COMMON_QUERY_KEY,
+  CommonDataUtil,
+  ConfigManager,
+  createTableStore,
+  PageContainer,
+  ResponseHandler,
+  RouterManager,
   Table,
   TableCaption,
   TableMenu,
   TableSidebarMenu,
-} from '../../components/ui/Table';
-import { useColSetMembersQuery } from '../../dataHooks/useColSetMembersQuery';
+  TableStoreContextProvider,
+  TableUtil,
+  TestIdUtil,
+  useArray,
+  useInitializeTableStore,
+  useItemQuery,
+} from '@gen-epix/ui';
+
+import type {
+  UsersEffectiveRightsDetailsDialogOpenProps,
+  UsersEffectiveRightsDetailsDialogRefMethods,
+} from '../../components/ui/UsersEffectiveRightsDetailsDialog';
+import { UsersEffectiveRightsDetailsDialog } from '../../components/ui/UsersEffectiveRightsDetailsDialog';
 import { useCaseTypeSetMembersQuery } from '../../dataHooks/useCaseTypeSetMembersQuery';
+import {
+  useCaseTypeSetNameFactory,
+  useCaseTypeSetsMapQuery,
+} from '../../dataHooks/useCaseTypeSetsQuery';
+import { useColSetMembersQuery } from '../../dataHooks/useColSetMembersQuery';
+import { useColSetMapQuery } from '../../dataHooks/useColSetsQuery';
 import {
   useDataCollectionOptionsQuery,
   useDataCollectionsMapQuery,
@@ -33,34 +57,9 @@ import { useOrganizationAccessCasePoliciesQuery } from '../../dataHooks/useOrgan
 import { useOrganizationShareCasePoliciesQuery } from '../../dataHooks/useOrganizationShareCasePoliciesQuery';
 import { useUserAccessCasePoliciesQuery } from '../../dataHooks/useUserAccessCasePoliciesQuery';
 import { useUserShareCasePoliciesQuery } from '../../dataHooks/useUserShareCasePoliciesQuery';
-import { useArray } from '../../hooks/useArray';
-import { useInitializeTableStore } from '../../hooks/useInitializeTableStore';
-import type {
-  TableColumn,
-  TableRowParams,
-} from '../../models/table';
-import {
-  createTableStore,
-  TableStoreContextProvider,
-} from '../../stores/tableStore';
-import { TableUtil } from '../../utils/TableUtil';
-import { useItemQuery } from '../../hooks/useItemQuery';
-import { QUERY_KEY } from '../../models/query';
-import {
-  useCaseTypeSetNameFactory,
-  useCaseTypeSetsMapQuery,
-} from '../../dataHooks/useCaseTypeSetsQuery';
-import { useColSetMapQuery } from '../../dataHooks/useColSetsQuery';
-import { ConfigManager } from '../../classes/managers/ConfigManager';
-import { RouterManager } from '../../classes/managers/RouterManager';
 import type { UserEffectiveRight } from '../../models/caseAccess';
-import type {
-  UsersEffectiveRightsDetailsDialogOpenProps,
-  UsersEffectiveRightsDetailsDialogRefMethods,
-} from '../../components/ui/UsersEffectiveRightsDetailsDialog';
-import { UsersEffectiveRightsDetailsDialog } from '../../components/ui/UsersEffectiveRightsDetailsDialog';
-import { CaseDbDataUtil } from '../../utils/CaseDbDataUtil';
 import { EffectiveRightsUtil } from '../../utils/EffectiveRightsUtil';
+
 
 export const UserEffectiveRightsAdminPage = () => {
   const { t } = useTranslation();
@@ -70,7 +69,7 @@ export const UserEffectiveRightsAdminPage = () => {
   const { userId } = useParams();
 
   const { data: user, error: userError, isLoading: isUserLoading } = useItemQuery<CaseDbUser>({
-    baseQueryKey: QUERY_KEY.USERS,
+    baseQueryKey: COMMON_QUERY_KEY.USERS,
     itemId: userId,
     useQueryOptions: {
       queryFn: async ({ signal }) => {
@@ -287,7 +286,7 @@ export const UserEffectiveRightsAdminPage = () => {
         contentActions={(<TableMenu />)}
         contentHeader={(
           <TableCaption
-            caption={user ? t('{{userName}} effective rights', { userName: CaseDbDataUtil.getUserDisplayValue(user, t) }) : t`⌛ Loading...`}
+            caption={user ? t('{{userName}} effective rights', { userName: CommonDataUtil.getUserDisplayValue(user, t) }) : t`⌛ Loading...`}
             component={'h2'}
             variant={'h2'}
           />

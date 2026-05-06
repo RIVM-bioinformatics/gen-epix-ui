@@ -3,12 +3,12 @@ import { type UseQueryResult } from '@tanstack/react-query';
 import type { CommonDbIdentifierIssuer } from '@gen-epix/api-commondb';
 
 import type { UseOptions } from '../../models/dataHooks';
-import { QUERY_KEY } from '../../models/query';
 import { DataHookUtil } from '../../utils/DataHookUtil';
 import { useQueryMemo } from '../../hooks/useQueryMemo';
 import { AuthorizationManager } from '../../classes/managers/AuthorizationManager';
 import { ConfigManager } from '../../classes/managers/ConfigManager';
-import { QueryManager } from '../../classes/managers/QueryManager';
+import { QueryKeyManager } from '../../classes/managers/QueryKeyManager';
+import { COMMON_QUERY_KEY } from '../../data/query';
 
 export const useIdentifierIssuerOwnOrganizationQuery = (): UseQueryResult<CommonDbIdentifierIssuer[]> => {
   return useQueryMemo({
@@ -21,7 +21,7 @@ export const useIdentifierIssuerOwnOrganizationQuery = (): UseQueryResult<Common
       const response = await ConfigManager.getInstance().config.organizationApi.identifierIssuersGetSome(links.map(x => x.identifier_issuer_id).join(','), { signal });
       return response.data;
     },
-    queryKey: QueryManager.getInstance().getGenericKey(QUERY_KEY.IDENTIFIER_ISSUERS_OWN_ORGANIZATION),
+    queryKey: QueryKeyManager.getInstance().getGenericKey(COMMON_QUERY_KEY.IDENTIFIER_ISSUERS_OWN_ORGANIZATION),
   });
 };
 

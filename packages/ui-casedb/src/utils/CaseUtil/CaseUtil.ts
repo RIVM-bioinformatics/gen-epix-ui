@@ -25,14 +25,15 @@ import {
   ConfigManager,
   FORM_FIELD_DEFINITION_TYPE,
   NotificationManager,
-  QUERY_KEY,
-  QueryManager,
+  QueryKeyManager,
 } from '@gen-epix/ui';
 
 import { CaseTypeUtil } from '../CaseTypeUtil';
 import { AbacUtil } from '../AbacUtil';
 import { EpiDataManager } from '../../classes/managers/EpiDataManager';
 import type { CaseTypeRowValue } from '../../models/epi';
+import { CASEDB_QUERY_KEY } from '../../data/query';
+import type { CaseDbConfig } from '../../models/config';
 
 export class CaseUtil {
   public static async applyDataCollectionLinks(kwArgs: { caseIds?: string[]; caseSetDataCollectionIds: string[]; caseSetId?: string; caseTypeId: string }): Promise<void> {
@@ -98,7 +99,7 @@ export class CaseUtil {
 
       // Batch add the data collection links
       await CaseDbCaseApi.getInstance().caseDataCollectionLinksPostSome(dataLinksToAdd);
-      await QueryManager.getInstance().invalidateQueryKeys(QueryManager.getInstance().getQueryKeyDependencies([QUERY_KEY.CASE_DATA_COLLECTION_LINKS], true));
+      await QueryKeyManager.getInstance().invalidateQueryKeys(QueryKeyManager.getInstance().getQueryKeyDependencies([CASEDB_QUERY_KEY.CASE_DATA_COLLECTION_LINKS], true));
       NotificationManager.getInstance().fulfillNotification(notificationKey, t('Sharing has been applied to the cases'), 'success');
 
     } catch (_error) {
@@ -326,7 +327,7 @@ export class CaseUtil {
   }
 
   public static getMissingRowValue(raw: string, machineReadable = true): CaseTypeRowValue {
-    const { DATA_MISSING_CHARACTER } = ConfigManager.getInstance().config.epi;
+    const { DATA_MISSING_CHARACTER } = ConfigManager.getInstance<CaseDbConfig>().config.epi;
     const dataMissingCharacter = machineReadable ? '' : DATA_MISSING_CHARACTER;
 
     return {
@@ -345,7 +346,7 @@ export class CaseUtil {
       return CaseUtil.getMappedValue(content[col.id], col, completeCaseType, machineReadable);
     }
 
-    const { DATA_MISSING_CHARACTER } = ConfigManager.getInstance().config.epi;
+    const { DATA_MISSING_CHARACTER } = ConfigManager.getInstance<CaseDbConfig>().config.epi;
     const dataMissingCharacter = machineReadable ? '' : DATA_MISSING_CHARACTER;
 
     const rowValue: CaseTypeRowValue = {

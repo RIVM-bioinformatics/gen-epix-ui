@@ -18,7 +18,8 @@ import { EpiCreateEventDialogSuccessNotificationMessage } from '../EpiCreateEven
 import { useCaseSetCategoryOptionsQuery } from '../../../dataHooks/useCaseSetCategoriesQuery';
 import { useCaseSetStatusOptionsQuery } from '../../../dataHooks/useCaseSetStatusesQuery';
 import { useCaseTypeOptionsQuery } from '../../../dataHooks/useCaseTypesQuery';
-import { OmitWithMetaData, SchemaUtil, FormFieldDefinition, FORM_FIELD_DEFINITION_TYPE, useEditMutation, QueryManager, QUERY_KEY, FormUtil, Spinner, GenericForm } from '@gen-epix/ui';
+import { OmitWithMetaData, SchemaUtil, FormFieldDefinition, FORM_FIELD_DEFINITION_TYPE, useEditMutation, QueryKeyManager, FormUtil, Spinner, GenericForm } from '@gen-epix/ui';
+import { CASEDB_QUERY_KEY } from '../../../data/query';
 
 export type EpiCaseSetFormProps = {
   readonly caseSet: CaseDbCaseSet;
@@ -105,7 +106,7 @@ export const EpiCaseSetForm = ({ caseSet, formId, onFinish, onIsSavingChange }: 
       const result = await CaseDbCaseApi.getInstance().caseSetsPutOne(item.id, { ...item, ...formData });
       return result.data;
     },
-    resourceQueryKey: QueryManager.getInstance().getGenericKey(QUERY_KEY.CASE_SETS),
+    resourceQueryKey: QueryKeyManager.getInstance().getGenericKey(CASEDB_QUERY_KEY.CASE_SETS),
   });
 
   useEffect(() => {

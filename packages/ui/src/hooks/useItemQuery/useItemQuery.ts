@@ -10,12 +10,11 @@ import type {
 
 import { QueryClientManager } from '../../classes/managers/QueryClientManager';
 import type { GenericData } from '../../models/data';
-import type { QUERY_KEY } from '../../models/query';
 import { useQueryMemo } from '../useQueryMemo';
-import { QueryManager } from '../../classes/managers/QueryManager';
+import { QueryKeyManager } from '../../classes/managers/QueryKeyManager';
 
-export type UseItemQueryProps<T extends GenericData> = {
-  readonly baseQueryKey: QUERY_KEY;
+export type UseItemQueryProps<T extends GenericData, TQueryKey extends string = string> = {
+  readonly baseQueryKey: TQueryKey;
   readonly itemId: string;
   readonly useQueryOptions: Omit<UseQueryOptions<T>, 'queryKey'>;
 };
@@ -28,12 +27,12 @@ export const useItemQuery = <T extends GenericData>({
   useQueryOptions,
 }: UseItemQueryProps<T>) => {
   const { queryCache } = QueryClientManager.getInstance();
-  const [itemFromCache, setItemFromCache] = useState<T>(QueryManager.getInstance().getItemFromCache<T>(baseQueryKey, itemId));
+  const [itemFromCache, setItemFromCache] = useState<T>(QueryKeyManager.getInstance().getItemFromCache<T>(baseQueryKey, itemId));
 
   const useQueryResult = useQueryMemo({
     ...useQueryOptions,
     enabled: !itemFromCache && useQueryOptions.enabled,
-    queryKey: QueryManager.getInstance().getGenericKey(baseQueryKey, itemId),
+    queryKey: QueryKeyManager.getInstance().getGenericKey(baseQueryKey, itemId),
   });
 
   useEffect(() => {

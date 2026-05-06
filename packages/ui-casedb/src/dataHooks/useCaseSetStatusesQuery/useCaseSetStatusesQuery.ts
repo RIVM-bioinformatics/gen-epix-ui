@@ -9,10 +9,10 @@ import type {
 import {
   CommonDataUtil,
   DataHookUtil,
-  QUERY_KEY,
-  QueryManager,
+  QueryKeyManager,
   useQueryMemo,
 } from '@gen-epix/ui';
+import { CASEDB_QUERY_KEY } from '../../data/query';
 
 
 export const useCaseSetStatusesQuery = (): UseQueryResult<CaseDbCaseSetStatus[]> => {
@@ -21,7 +21,7 @@ export const useCaseSetStatusesQuery = (): UseQueryResult<CaseDbCaseSetStatus[]>
       const response = await CaseDbCaseApi.getInstance().caseSetStatusesGetAll({ signal });
       return response.data;
     },
-    queryKey: QueryManager.getInstance().getGenericKey(QUERY_KEY.CASE_SET_STATUSES),
+    queryKey: QueryKeyManager.getInstance().getGenericKey(CASEDB_QUERY_KEY.CASE_SET_STATUSES),
   });
 };
 

@@ -23,7 +23,6 @@ import { AuthenticationManager } from '../../../classes/managers/AuthenticationM
 import { LogManager } from '../../../classes/managers/LogManager';
 import { NavigationHistoryManager } from '../../../classes/managers/NavigationHistoryManager';
 import { useSubscribable } from '../../../hooks/useSubscribable';
-import { QUERY_KEY } from '../../../models/query';
 import { ChooseIdentityProviderPage } from '../../../pages/ChooseIdentityProviderPage';
 import { HomePage } from '../../../pages/HomePage';
 import { UserManagerUtil } from '../../../utils/UserManagerUtil';
@@ -38,7 +37,8 @@ import { useQueryMemo } from '../../../hooks/useQueryMemo';
 import { ApplicationBootstrap } from '../ApplicationBootstrap';
 import { AuthenticationWrapper } from '../AuthenticationWrapper';
 import { AuthorizationWrapper } from '../AuthorizationWrapper';
-import { QueryManager } from '../../../classes/managers/QueryManager';
+import { QueryKeyManager } from '../../../classes/managers/QueryKeyManager';
+import { COMMON_QUERY_KEY } from '../../../data/query';
 
 
 export const RouterRoot = () => {
@@ -78,7 +78,7 @@ export const RouterRoot = () => {
       }
       return providersWithAvailability;
     },
-    queryKey: QueryManager.getInstance().getGenericKey(QUERY_KEY.IDENTITY_PROVIDERS),
+    queryKey: QueryKeyManager.getInstance().getGenericKey(COMMON_QUERY_KEY.IDENTITY_PROVIDERS),
     staleTime: Infinity,
   });
 

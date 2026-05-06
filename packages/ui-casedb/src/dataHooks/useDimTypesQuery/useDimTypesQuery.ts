@@ -1,8 +1,10 @@
 import { useMemo } from 'react';
 import { CaseDbDimType } from '@gen-epix/api-casedb';
+import type {
+  OptionBase,
+  UseOptions,
+} from '@gen-epix/ui';
 
-import type { UseOptions } from '../../models/dataHooks';
-import type { OptionBase } from '../../models/form';
 
 export const dimTypePresentationValues: Record<CaseDbDimType, string> = {
   [CaseDbDimType.GEO]: 'GEO',

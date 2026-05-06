@@ -13,18 +13,23 @@ import {
   CaseDbCaseTypeSetCategoryPurpose,
   CaseDbCommandName,
 } from '@gen-epix/api-casedb';
+import type {
+  FormFieldDefinition,
+  OmitWithMetaData,
+  TableColumn,
+} from '@gen-epix/ui';
+import {
+  CrudPage,
+  FORM_FIELD_DEFINITION_TYPE,
+  SchemaUtil,
+  TableUtil,
+  TestIdUtil,
+  useArray,
+} from '@gen-epix/ui';
 
-import type { FormFieldDefinition } from '../../models/form';
-import { FORM_FIELD_DEFINITION_TYPE } from '../../models/form';
-import { QUERY_KEY } from '../../models/query';
-import type { TableColumn } from '../../models/table';
-import { TableUtil } from '../../utils/TableUtil';
-import { TestIdUtil } from '../../utils/TestIdUtil';
-import { CrudPage } from '../CrudPage';
+import { CASEDB_QUERY_KEY } from '../../data/query';
 import { useCaseTypeSetCategoryPurposeOptionsQuery } from '../../dataHooks/useCaseTypeSetCategoryPurposeQuery';
-import { useArray } from '../../hooks/useArray';
-import type { OmitWithMetaData } from '../../models/data';
-import { SchemaUtil } from '../../utils/SchemaUtil';
+
 
 type FormFields = OmitWithMetaData<CaseDbCaseTypeSetCategory>;
 
@@ -115,7 +120,7 @@ export const CaseTypeSetCategoriesAdminPage = () => {
       formFieldDefinitions={formFieldDefinitions}
       getName={getName}
       loadables={loadables}
-      resourceQueryKeyBase={QUERY_KEY.CASE_TYPE_SET_CATEGORIES}
+      resourceQueryKeyBase={CASEDB_QUERY_KEY.CASE_TYPE_SET_CATEGORIES}
       schema={schema}
       tableColumns={tableColumns}
       testIdAttributes={TestIdUtil.createAttributes('CaseTypeSetCategoriesAdminPage')}

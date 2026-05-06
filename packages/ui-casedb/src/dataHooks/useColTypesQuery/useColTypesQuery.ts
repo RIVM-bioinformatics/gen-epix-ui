@@ -1,8 +1,10 @@
 import { useMemo } from 'react';
 import { CaseDbColType } from '@gen-epix/api-casedb';
+import type {
+  OptionBase,
+  UseOptions,
+} from '@gen-epix/ui';
 
-import type { UseOptions } from '../../models/dataHooks';
-import type { OptionBase } from '../../models/form';
 
 export const colTypePresentationValues: Record<CaseDbColType, string> = {
   [CaseDbColType.CONTEXT_FREE_GRAMMAR_JSON]: 'CONTEXT_FREE_GRAMMAR_JSON',

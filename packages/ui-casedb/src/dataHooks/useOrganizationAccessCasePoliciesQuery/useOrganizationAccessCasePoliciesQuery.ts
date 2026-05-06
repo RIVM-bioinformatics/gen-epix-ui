@@ -4,10 +4,11 @@ import {
   type CaseDbOrganizationAccessCasePolicy,
 } from '@gen-epix/api-casedb';
 import {
-  QUERY_KEY,
-  QueryManager,
+  QueryKeyManager,
   useQueryMemo,
 } from '@gen-epix/ui';
+
+import { CASEDB_QUERY_KEY } from '../../data/query';
 
 export const useOrganizationAccessCasePoliciesQuery = (select?: (data: CaseDbOrganizationAccessCasePolicy[]) => CaseDbOrganizationAccessCasePolicy[]): UseQueryResult<CaseDbOrganizationAccessCasePolicy[]> => {
   return useQueryMemo({
@@ -15,7 +16,7 @@ export const useOrganizationAccessCasePoliciesQuery = (select?: (data: CaseDbOrg
       const response = await CaseDbAbacApi.getInstance().organizationAccessCasePoliciesGetAll({ signal });
       return response.data;
     },
-    queryKey: QueryManager.getInstance().getGenericKey(QUERY_KEY.ORGANIZATION_ACCESS_CASE_POLICIES),
+    queryKey: QueryKeyManager.getInstance().getGenericKey(CASEDB_QUERY_KEY.ORGANIZATION_ACCESS_CASE_POLICIES),
     select: select ? (data) => select(data) : undefined,
   });
 };

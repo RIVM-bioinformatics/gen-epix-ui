@@ -9,10 +9,10 @@ import type {
 import {
   DataHookUtil,
   CommonDataUtil,
-  QUERY_KEY,
-  QueryManager,
+  QueryKeyManager,
   useQueryMemo,
 } from '@gen-epix/ui';
+import { CASEDB_QUERY_KEY } from '../../data/query';
 
 export const useRefColsQuery = (): UseQueryResult<CaseDbRefCol[]> => {
   return useQueryMemo({
@@ -20,7 +20,7 @@ export const useRefColsQuery = (): UseQueryResult<CaseDbRefCol[]> => {
       const response = await CaseDbCaseApi.getInstance().refColsGetAll({ signal });
       return response.data;
     },
-    queryKey: QueryManager.getInstance().getGenericKey(QUERY_KEY.REF_COLS),
+    queryKey: QueryKeyManager.getInstance().getGenericKey(CASEDB_QUERY_KEY.REF_COLS),
   });
 };
 

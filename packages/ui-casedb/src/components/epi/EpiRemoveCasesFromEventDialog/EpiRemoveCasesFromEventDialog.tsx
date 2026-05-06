@@ -16,8 +16,23 @@ import type {
   CaseDbTypedCompositeFilter,
 } from '@gen-epix/api-casedb';
 import { CaseDbCaseApi } from '@gen-epix/api-casedb';
-import { WithDialogRenderProps, WithDialogRefMethods, withDialog, useQueryMemo, QueryManager, QUERY_KEY, useDeleteMutation, DialogAction, TestIdUtil, Spinner, ResponseHandler } from '@gen-epix/ui';
+import type {
+  DialogAction,
+  WithDialogRefMethods,
+  WithDialogRenderProps,
+} from '@gen-epix/ui';
+import {
+  QueryKeyManager,
+  ResponseHandler,
+  Spinner,
+  TestIdUtil,
+  useDeleteMutation,
+  useQueryMemo,
+  withDialog,
+} from '@gen-epix/ui';
+
 import { EpiDashboardStoreContext } from '../../../stores/epiDashboardStore';
+import { CASEDB_QUERY_KEY } from '../../../data/query';
 
 export interface EpiRemoveCasesFromEventDialogOpenProps {
   caseSet: CaseDbCaseSet;
@@ -71,7 +86,7 @@ export const EpiRemoveCasesFromEventDialog = withDialog<EpiRemoveCasesFromEventD
       const response = await CaseDbCaseApi.getInstance().caseSetMembersPostQuery(caseSetMembersFilter, { signal });
       return response.data;
     },
-    queryKey: QueryManager.getInstance().getGenericKey(QUERY_KEY.CASE_SET_MEMBERS, caseSetMembersFilter),
+    queryKey: QueryKeyManager.getInstance().getGenericKey(CASEDB_QUERY_KEY.CASE_SET_MEMBERS, caseSetMembersFilter),
   });
 
   const onSuccess = useCallback(async () => {
@@ -86,7 +101,7 @@ export const EpiRemoveCasesFromEventDialog = withDialog<EpiRemoveCasesFromEventD
   }, [fetchData, onClose]);
 
   const { isMutating, mutate } = useDeleteMutation<CaseDbCaseSetMember[]>({
-    associationQueryKeys: QueryManager.getInstance().getQueryKeyDependencies([QUERY_KEY.CASE_SET_MEMBERS], true),
+    associationQueryKeys: QueryKeyManager.getInstance().getQueryKeyDependencies([CASEDB_QUERY_KEY.CASE_SET_MEMBERS], true),
     getErrorNotificationMessage: () => t('Could not remove all cases from {{eventName}}.', { eventName: openProps.caseSet.name }),
     getProgressNotificationMessage: (items) => t('Removing {{numCases}} case(s) from {{eventName}}...', { eventName: openProps.caseSet.name, numCases: items.length }),
     getSuccessNotificationMessage: (items) => t('Successfully removed {{numCases}} case(s) from {{eventName}}.', { eventName: openProps.caseSet.name, numCases: items.length }),

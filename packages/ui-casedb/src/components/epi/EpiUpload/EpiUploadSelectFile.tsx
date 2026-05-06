@@ -22,22 +22,24 @@ import {
 } from '@mui/material';
 import { useStore } from 'zustand';
 import { CaseDbCaseApi } from '@gen-epix/api-casedb';
+import type { FormFieldDefinition } from '@gen-epix/ui';
+import {
+  FORM_FIELD_DEFINITION_TYPE,
+  GenericForm,
+  ResponseHandler,
+  useArray,
+  useItemQuery,
+} from '@gen-epix/ui';
 
 import {
   useCaseTypeOptionsQuery,
   useCaseTypesQuery,
 } from '../../../dataHooks/useCaseTypesQuery';
-import { useItemQuery } from '../../../hooks/useItemQuery';
-import type { FormFieldDefinition } from '../../../models/form';
-import { FORM_FIELD_DEFINITION_TYPE } from '../../../models/form';
-import { QUERY_KEY } from '../../../models/query';
-import { useArray } from '../../../hooks/useArray';
-import { GenericForm } from '../../form/helpers/GenericForm';
-import { ResponseHandler } from '../../ui/ResponseHandler';
 import { useDataCollectionOptionsQuery } from '../../../dataHooks/useDataCollectionsQuery';
 import { useColsQuery } from '../../../dataHooks/useColsQuery';
 import { EpiUploadUtil } from '../../../utils/EpiUploadUtil';
 import { EpiUploadStoreContext } from '../../../stores/epiUploadStore';
+import { CASEDB_QUERY_KEY } from '../../../data/query';
 
 import { EpiUploadNavigation } from './EpiUploadNavigation';
 
@@ -112,7 +114,7 @@ const EpiUploadSelectFile = () => {
   }, [dataCollectionOptionsQuery?.options, setDataCollectionOptions]);
 
   const { data: completeCaseType, error: completeCaseTypeError, isLoading: isCompleteCaseTypeLoading } = useItemQuery({
-    baseQueryKey: QUERY_KEY.COMPLETE_CASE_TYPES,
+    baseQueryKey: CASEDB_QUERY_KEY.COMPLETE_CASE_TYPES,
     itemId: caseTypeId,
     useQueryOptions: {
       enabled: !!caseTypeId,

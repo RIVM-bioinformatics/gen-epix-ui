@@ -11,11 +11,15 @@ import type {
   CaseDbUserShareCasePolicy,
 } from '@gen-epix/api-casedb';
 import { CaseDbOrganizationApi } from '@gen-epix/api-casedb';
+import type { UseMap } from '@gen-epix/ui';
+import {
+  COMMON_QUERY_KEY,
+  LoadableUtil,
+  useArray,
+  useItemQuery,
+} from '@gen-epix/ui';
 
-import { useArray } from '../../hooks/useArray';
-import { useItemQuery } from '../../hooks/useItemQuery';
 import type { UserEffectiveRight } from '../../models/caseAccess';
-import { QUERY_KEY } from '../../models/query';
 import { EffectiveRightsUtil } from '../../utils/EffectiveRightsUtil';
 import { useColSetMembersQuery } from '../useColSetMembersQuery';
 import { useColSetMapQuery } from '../useColSetsQuery';
@@ -32,8 +36,6 @@ import { useOrganizationAccessCasePoliciesQuery } from '../useOrganizationAccess
 import { useOrganizationShareCasePoliciesQuery } from '../useOrganizationShareCasePoliciesQuery';
 import { useUserAccessCasePoliciesQuery } from '../useUserAccessCasePoliciesQuery';
 import { useUserShareCasePoliciesQuery } from '../useUserShareCasePoliciesQuery';
-import type { UseMap } from '../../models/dataHooks';
-import { LoadableUtil } from '../../utils/LoadableUtil';
 
 export type UserEffectiveRightsQueryResult = {
   caseTypeSetMembers: CaseDbCaseTypeSetMember[];
@@ -50,7 +52,7 @@ export type UserEffectiveRightsQueryResult = {
 
 export const useUserEffectiveRightsQuery = (userId: string): Partial<UseQueryResult<UserEffectiveRightsQueryResult>> => {
   const userQuery = useItemQuery<CaseDbUser>({
-    baseQueryKey: QUERY_KEY.USERS,
+    baseQueryKey: COMMON_QUERY_KEY.USERS,
     itemId: userId,
     useQueryOptions: {
       queryFn: async ({ signal }) => {

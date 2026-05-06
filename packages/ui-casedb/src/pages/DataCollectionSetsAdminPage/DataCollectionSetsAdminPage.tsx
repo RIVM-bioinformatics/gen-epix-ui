@@ -16,19 +16,24 @@ import {
   CaseDbCommandName,
   CaseDbOrganizationApi,
 } from '@gen-epix/api-casedb';
+import type {
+  FormFieldDefinition,
+  OmitWithMetaData,
+  TableColumn,
+} from '@gen-epix/ui';
+import {
+  CrudPage,
+  FORM_FIELD_DEFINITION_TYPE,
+  SchemaUtil,
+  TableUtil,
+  TestIdUtil,
+  useArray,
+} from '@gen-epix/ui';
 
-import { CrudPage } from '../CrudPage';
-import { useDataCollectionOptionsQuery } from '../../dataHooks/useDataCollectionsQuery';
+import { CASEDB_QUERY_KEY } from '../../data/query';
 import { useDataCollectionSetMembersQuery } from '../../dataHooks/useDataCollectionSetMembersQuery';
-import { useArray } from '../../hooks/useArray';
-import type { FormFieldDefinition } from '../../models/form';
-import { FORM_FIELD_DEFINITION_TYPE } from '../../models/form';
-import { QUERY_KEY } from '../../models/query';
-import type { TableColumn } from '../../models/table';
-import { TableUtil } from '../../utils/TableUtil';
-import { TestIdUtil } from '../../utils/TestIdUtil';
-import type { OmitWithMetaData } from '../../models/data';
-import { SchemaUtil } from '../../utils/SchemaUtil';
+import { useDataCollectionOptionsQuery } from '../../dataHooks/useDataCollectionsQuery';
+
 
 type FormFields = OmitWithMetaData<TableData>;
 
@@ -147,7 +152,7 @@ export const DataCollectionSetsAdminPage = () => {
       formFieldDefinitions={formFieldDefinitions}
       getName={getName}
       loadables={loadables}
-      resourceQueryKeyBase={QUERY_KEY.DATA_COLLECTION_SETS}
+      resourceQueryKeyBase={CASEDB_QUERY_KEY.DATA_COLLECTION_SETS}
       schema={schema}
       tableColumns={tableColumns}
       testIdAttributes={TestIdUtil.createAttributes('DataCollectionSetsAdminPage')}

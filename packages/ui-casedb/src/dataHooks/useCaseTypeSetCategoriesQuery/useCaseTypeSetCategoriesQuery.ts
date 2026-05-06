@@ -7,12 +7,13 @@ import type {
   UseOptions,
 } from '@gen-epix/ui';
 import {
-  DataHookUtil,
   CommonDataUtil,
-  QUERY_KEY,
-  QueryManager,
+  DataHookUtil,
+  QueryKeyManager,
   useQueryMemo,
 } from '@gen-epix/ui';
+
+import { CASEDB_QUERY_KEY } from '../../data/query';
 
 
 export const useCaseTypeSetCategoriesQuery = (): UseQueryResult<CaseDbCaseTypeSetCategory[]> => {
@@ -21,7 +22,7 @@ export const useCaseTypeSetCategoriesQuery = (): UseQueryResult<CaseDbCaseTypeSe
       const response = await CaseDbCaseApi.getInstance().caseTypeSetCategoriesGetAll({ signal });
       return response.data;
     },
-    queryKey: QueryManager.getInstance().getGenericKey(QUERY_KEY.CASE_TYPE_SET_CATEGORIES),
+    queryKey: QueryKeyManager.getInstance().getGenericKey(CASEDB_QUERY_KEY.CASE_TYPE_SET_CATEGORIES),
   });
 };
 

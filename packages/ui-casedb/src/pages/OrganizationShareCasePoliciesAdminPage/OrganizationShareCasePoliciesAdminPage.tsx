@@ -13,21 +13,25 @@ import {
   CaseDbAbacApi,
   CaseDbCommandName,
 } from '@gen-epix/api-casedb';
+import type {
+  FormFieldDefinition,
+  OmitWithMetaData,
+  TableColumn,
+} from '@gen-epix/ui';
+import {
+  CrudPage,
+  FORM_FIELD_DEFINITION_TYPE,
+  TableUtil,
+  TestIdUtil,
+  useArray,
+  useOrganizationOptionsQuery,
+} from '@gen-epix/ui';
 
 import { useColSetOptionsQuery } from '../../dataHooks/useColSetsQuery';
 import { useCaseTypeSetOptionsQuery } from '../../dataHooks/useCaseTypeSetsQuery';
 import { useDataCollectionOptionsQuery } from '../../dataHooks/useDataCollectionsQuery';
-import { useOrganizationOptionsQuery } from '../../dataHooks/useOrganizationsQuery';
+import { CASEDB_QUERY_KEY } from '../../data/query';
 import { useOrganizationCasePolicyNameFactory } from '../../hooks/useOrganizationCasePolicyNameFactory';
-import { useArray } from '../../hooks/useArray';
-import type { FormFieldDefinition } from '../../models/form';
-import { FORM_FIELD_DEFINITION_TYPE } from '../../models/form';
-import { QUERY_KEY } from '../../models/query';
-import type { TableColumn } from '../../models/table';
-import { TableUtil } from '../../utils/TableUtil';
-import { TestIdUtil } from '../../utils/TestIdUtil';
-import { CrudPage } from '../CrudPage';
-import type { OmitWithMetaData } from '../../models/data';
 
 type FormFields = OmitWithMetaData<CaseDbOrganizationShareCasePolicy, 'case_type_set' | 'data_collection' | 'from_data_collection' | 'organization'>;
 
@@ -162,7 +166,7 @@ export const OrganizationShareCasePoliciesAdminPage = () => {
       formFieldDefinitions={formFieldDefinitions}
       getName={getName}
       loadables={loadables}
-      resourceQueryKeyBase={QUERY_KEY.ORGANIZATION_SHARE_CASE_POLICIES}
+      resourceQueryKeyBase={CASEDB_QUERY_KEY.ORGANIZATION_SHARE_CASE_POLICIES}
       schema={schema}
       tableColumns={tableColumns}
       testIdAttributes={TestIdUtil.createAttributes('OrganizationShareCasePoliciesAdminPage')}

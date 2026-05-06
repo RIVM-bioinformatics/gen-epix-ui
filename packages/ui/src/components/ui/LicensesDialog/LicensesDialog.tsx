@@ -36,9 +36,9 @@ import type {
 import { withDialog } from '../../../hoc/withDialog';
 import { TestIdUtil } from '../../../utils/TestIdUtil';
 import { ResponseHandler } from '../ResponseHandler';
-import { QUERY_KEY } from '../../../models/query';
 import { useQueryMemo } from '../../../hooks/useQueryMemo';
-import { QueryManager } from '../../../classes/managers/QueryManager';
+import { QueryKeyManager } from '../../../classes/managers/QueryKeyManager';
+import { COMMON_QUERY_KEY } from '../../../data/query';
 
 
 export interface LicensesDialogOpenProps {
@@ -79,7 +79,7 @@ export const LicensesDialog = withDialog<LicensesDialogProps, LicensesDialogOpen
       const response = await ConfigManager.getInstance().config.systemApi.retrieveLicenses({ signal });
       return response.data;
     },
-    queryKey: QueryManager.getInstance().getGenericKey(QUERY_KEY.LICENSES),
+    queryKey: QueryKeyManager.getInstance().getGenericKey(COMMON_QUERY_KEY.LICENSES),
   });
 
   const isLoading = isFrontendLicensesLoading || isBackendLicensesLoading;

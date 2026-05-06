@@ -2,11 +2,21 @@ import type { UseQueryResult } from '@tanstack/react-query';
 import { useMemo } from 'react';
 import type { CaseDbCol } from '@gen-epix/api-casedb';
 import { CaseDbCaseApi } from '@gen-epix/api-casedb';
+import type {
+  UseMap,
+  UseNameFactory,
+  UseOptions,
+} from '@gen-epix/ui';
+import {
+  CommonDataUtil,
+  DataHookUtil,
+  QueryKeyManager,
+  useQueryMemo,
+} from '@gen-epix/ui';
 
 import { useCaseTypeMapQuery } from '../useCaseTypesQuery';
 import { useDimMapQuery } from '../useDimsQuery';
-import { CaseDbDataUtil } from '../../utils/CaseDbDataUtil';
-import { useQueryMemo, QueryManager, QUERY_KEY, UseMap, DataHookUtil, UseNameFactory, UseOptions } from '@gen-epix/ui';
+import { CASEDB_QUERY_KEY } from '../../data/query';
 
 export const useColsQuery = (): UseQueryResult<CaseDbCol[]> => {
   return useQueryMemo({
@@ -14,7 +24,7 @@ export const useColsQuery = (): UseQueryResult<CaseDbCol[]> => {
       const response = await CaseDbCaseApi.getInstance().colsGetAll({ signal });
       return response.data;
     },
-    queryKey: QueryManager.getInstance().getGenericKey(QUERY_KEY.COLS),
+    queryKey: QueryKeyManager.getInstance().getGenericKey(CASEDB_QUERY_KEY.COLS),
   });
 };
 
@@ -48,6 +58,6 @@ export const useColOptionsQuery = (): UseOptions<string> => {
   const colNameFactory = useColNameFactory();
 
   return useMemo(() => {
-    return DataHookUtil.createUseOptionsDataHook<CaseDbCol>(response, item => item.id, colNameFactory.getName, [colNameFactory], CaseDbDataUtil.rankSortComperatorFactory(colNameFactory.getName));
+    return DataHookUtil.createUseOptionsDataHook<CaseDbCol>(response, item => item.id, colNameFactory.getName, [colNameFactory], CommonDataUtil.rankSortComperatorFactory(colNameFactory.getName));
   }, [colNameFactory, response]);
 };

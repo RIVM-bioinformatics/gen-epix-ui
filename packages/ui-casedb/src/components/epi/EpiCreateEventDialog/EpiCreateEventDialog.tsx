@@ -29,10 +29,27 @@ import type {
   CaseDbCompleteCaseType,
 } from '@gen-epix/api-casedb';
 import { CaseDbCaseApi } from '@gen-epix/api-casedb';
+import type {
+  AutoCompleteOption,
+  DialogAction,
+  FormFieldDefinition,
+  WithDialogRefMethods,
+  WithDialogRenderProps,
+} from '@gen-epix/ui';
+import {
+  FORM_FIELD_DEFINITION_TYPE,
+  GenericForm,
+  LoadableUtil,
+  QueryKeyManager,
+  ResponseHandler,
+  SchemaUtil,
+  TestIdUtil,
+  useArray,
+  useCreateMutation,
+  useItemQuery,
+  withDialog,
+} from '@gen-epix/ui';
 
-
-import { EpiCreateEventDialogSuccessNotificationMessage } from './EpiCreateEventDialogSuccessNotificationMessage';
-import { WithDialogRenderProps, WithDialogRefMethods, withDialog, SchemaUtil, useItemQuery, QUERY_KEY, AutoCompleteOption, FormFieldDefinition, FORM_FIELD_DEFINITION_TYPE, useArray, LoadableUtil, useCreateMutation, QueryManager, DialogAction, TestIdUtil, ResponseHandler, GenericForm } from '@gen-epix/ui';
 import { EpiEventBusManager } from '../../../classes/managers/EpiEventBusManager';
 import { useCaseSetCategoryOptionsQuery } from '../../../dataHooks/useCaseSetCategoriesQuery';
 import { useCaseSetStatusOptionsQuery } from '../../../dataHooks/useCaseSetStatusesQuery';
@@ -40,6 +57,9 @@ import { useCaseTypeOptionsQuery } from '../../../dataHooks/useCaseTypesQuery';
 import { useDataCollectionOptionsQuery } from '../../../dataHooks/useDataCollectionsQuery';
 import { CaseUtil } from '../../../utils/CaseUtil';
 import { EpiCasesAlreadyInCaseSetWarning } from '../EpiCasesAlreadyInCaseSetWarning';
+import { CASEDB_QUERY_KEY } from '../../../data/query';
+
+import { EpiCreateEventDialogSuccessNotificationMessage } from './EpiCreateEventDialogSuccessNotificationMessage';
 
 export interface EpiCreateEventDialogOpenProps {
   readonly completeCaseType?: CaseDbCompleteCaseType;
@@ -111,7 +131,7 @@ export const EpiCreateEventDialog = withDialog<EpiCreateEventDialogProps, EpiCre
   const sanitizedCompleteCaseTypeId = openProps.completeCaseType?.id ?? userSelectedCaseTypeId;
 
   const { data: loadedCompleteCaseType, error: completeCaseTypeError, isLoading: isCompleteCaseTypeLoading } = useItemQuery({
-    baseQueryKey: QUERY_KEY.COMPLETE_CASE_TYPES,
+    baseQueryKey: CASEDB_QUERY_KEY.COMPLETE_CASE_TYPES,
     itemId: sanitizedCompleteCaseTypeId,
     useQueryOptions: {
       enabled: !openProps.completeCaseType && !!sanitizedCompleteCaseTypeId,
@@ -264,9 +284,9 @@ export const EpiCreateEventDialog = withDialog<EpiCreateEventDialogProps, EpiCre
 
   const { isMutating: isCreating, mutate: mutateCreate } = useCreateMutation<CaseDbCaseSet, FormFields>({
     associationQueryKeys: [
-      ...QueryManager.getInstance().getQueryKeyDependencies([QUERY_KEY.CASE_SETS]),
-      ...QueryManager.getInstance().getQueryKeyDependencies([QUERY_KEY.CASE_SET_MEMBERS], true),
-      ...QueryManager.getInstance().getQueryKeyDependencies([QUERY_KEY.DATA_COLLECTION_SET_MEMBERS], true),
+      ...QueryKeyManager.getInstance().getQueryKeyDependencies([CASEDB_QUERY_KEY.CASE_SETS]),
+      ...QueryKeyManager.getInstance().getQueryKeyDependencies([CASEDB_QUERY_KEY.CASE_SET_MEMBERS], true),
+      ...QueryKeyManager.getInstance().getQueryKeyDependencies([CASEDB_QUERY_KEY.DATA_COLLECTION_SET_MEMBERS], true),
     ],
     getErrorNotificationMessage: (item, _error) => t('Failed to create event: {{name}}', { name: item.name }),
     getProgressNotificationMessage: (variables) => t('Creating event: {{name}}...', { name: variables.name }),
@@ -295,7 +315,7 @@ export const EpiCreateEventDialog = withDialog<EpiCreateEventDialogProps, EpiCre
 
       return caseSetResult;
     },
-    resourceQueryKey: QueryManager.getInstance().getGenericKey(QUERY_KEY.CASE_SETS),
+    resourceQueryKey: QueryKeyManager.getInstance().getGenericKey(CASEDB_QUERY_KEY.CASE_SETS),
   });
 
   const isFormDisabled = useMemo(() => {

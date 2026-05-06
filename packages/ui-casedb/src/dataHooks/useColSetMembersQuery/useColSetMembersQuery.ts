@@ -2,10 +2,10 @@ import type { UseQueryResult } from '@tanstack/react-query';
 import type { CaseDbColSetMember } from '@gen-epix/api-casedb';
 import { CaseDbCaseApi } from '@gen-epix/api-casedb';
 import {
-  QUERY_KEY,
-  QueryManager,
+  QueryKeyManager,
   useQueryMemo,
 } from '@gen-epix/ui';
+import { CASEDB_QUERY_KEY } from '../../data/query';
 
 
 export const useColSetMembersQuery = (): UseQueryResult<CaseDbColSetMember[]> => {
@@ -14,6 +14,6 @@ export const useColSetMembersQuery = (): UseQueryResult<CaseDbColSetMember[]> =>
       const response = await CaseDbCaseApi.getInstance().colSetMembersGetAll({ signal });
       return response.data;
     },
-    queryKey: QueryManager.getInstance().getGenericKey(QUERY_KEY.COL_SET_MEMBERS),
+    queryKey: QueryKeyManager.getInstance().getGenericKey(CASEDB_QUERY_KEY.COL_SET_MEMBERS),
   });
 };

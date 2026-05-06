@@ -9,7 +9,6 @@ import { CommonDbCommandName } from '@gen-epix/api-commondb';
 
 import type { FormFieldDefinition } from '../../models/form';
 import { FORM_FIELD_DEFINITION_TYPE } from '../../models/form';
-import { QUERY_KEY } from '../../models/query';
 import type { TableColumn } from '../../models/table';
 import { TableUtil } from '../../utils/TableUtil';
 import { TestIdUtil } from '../../utils/TestIdUtil';
@@ -17,6 +16,7 @@ import { CrudPage } from '../CrudPage';
 import type { OmitWithMetaData } from '../../models/data';
 import { SchemaUtil } from '../../utils/SchemaUtil';
 import { ConfigManager } from '../../classes/managers/ConfigManager';
+import { COMMON_QUERY_KEY } from '../../data/query';
 
 type FormFields = OmitWithMetaData<CommonDbIdentifierIssuer>;
 
@@ -92,7 +92,7 @@ export const IdentifierIssuersAdminPage = () => {
       fetchAll={fetchAll}
       formFieldDefinitions={formFieldDefinitions}
       getName={getName}
-      resourceQueryKeyBase={QUERY_KEY.IDENTIFIER_ISSUERS}
+      resourceQueryKeyBase={COMMON_QUERY_KEY.IDENTIFIER_ISSUERS}
       schema={schema}
       tableColumns={tableColumns}
       testIdAttributes={TestIdUtil.createAttributes('IdentifierIssuersAdminPage')}

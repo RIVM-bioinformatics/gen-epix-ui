@@ -7,6 +7,7 @@ import { useTranslation } from 'react-i18next';
 import { useStore } from 'zustand';
 import { useShallow } from 'zustand/shallow';
 import type {
+  CaseDbApiPermission,
   CaseDbCase,
   CaseDbCaseSet,
 } from '@gen-epix/api-casedb';
@@ -14,16 +15,21 @@ import {
   CaseDbCommandName,
   CaseDbPermissionType,
 } from '@gen-epix/api-casedb';
+import type {
+  MenuItemData,
+  TableColumn,
+} from '@gen-epix/ui';
+import {
+  AuthorizationManager,
+  UseColumnsMenu,
+} from '@gen-epix/ui';
 
-import { AuthorizationManager } from '../../../classes/managers/AuthorizationManager';
+import { SelectionFilter } from '../../../../../ui/src/classes/filters/SelectionFilter';
 import { EpiEventBusManager } from '../../../classes/managers/EpiEventBusManager';
-import type { MenuItemData } from '../../../models/nestedMenu';
 import { EpiDashboardStoreContext } from '../../../stores/epiDashboardStore';
-import { UseColumnsMenu } from '../../../hooks/useColumnsMenu';
-import type { TableColumn } from '../../../models/table';
 import { CaseUtil } from '../../../utils/CaseUtil';
 import { EpiWidgetMenu } from '../EpiWidgetMenu';
-import { SelectionFilter } from '../../../classes/filters/SelectionFilter';
+
 
 export type EpiLineListWidgetPrimaryMenuProps = {
   readonly caseSet?: CaseDbCaseSet;
@@ -80,9 +86,9 @@ export const EpiLineListWidgetPrimaryMenu = ({
   }, [sortedData, selectedIds]);
 
   const menu = useMemo<MenuItemData[]>(() => {
-    const shouldShowCreateEventMenuItem = AuthorizationManager.getInstance().doesUserHavePermission([{ command_name: CaseDbCommandName.CreateCaseSetCommand, permission_type: CaseDbPermissionType.EXECUTE }]);
-    const shouldShowAddToEventMenuItem = AuthorizationManager.getInstance().doesUserHavePermission([{ command_name: CaseDbCommandName.CaseSetMemberCrudCommand, permission_type: CaseDbPermissionType.CREATE }]);
-    const shouldShowRemoveFromEventMenuItem = !!caseSet && AuthorizationManager.getInstance().doesUserHavePermission([{ command_name: CaseDbCommandName.CaseSetMemberCrudCommand, permission_type: CaseDbPermissionType.DELETE }]);
+    const shouldShowCreateEventMenuItem = AuthorizationManager.getInstance().doesUserHavePermission<CaseDbApiPermission>([{ command_name: CaseDbCommandName.CreateCaseSetCommand, permission_type: CaseDbPermissionType.EXECUTE }]);
+    const shouldShowAddToEventMenuItem = AuthorizationManager.getInstance().doesUserHavePermission<CaseDbApiPermission>([{ command_name: CaseDbCommandName.CaseSetMemberCrudCommand, permission_type: CaseDbPermissionType.CREATE }]);
+    const shouldShowRemoveFromEventMenuItem = !!caseSet && AuthorizationManager.getInstance().doesUserHavePermission<CaseDbApiPermission>([{ command_name: CaseDbCommandName.CaseSetMemberCrudCommand, permission_type: CaseDbPermissionType.DELETE }]);
     // !TODO
     // const shouldShowBulkEditCaseMenuItem = true;
 

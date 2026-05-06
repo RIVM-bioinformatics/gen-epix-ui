@@ -5,11 +5,11 @@ import {
   CommonDbPermissionType,
 } from '@gen-epix/api-commondb';
 
-import { QUERY_KEY } from '../../models/query';
 import { useQueryMemo } from '../../hooks/useQueryMemo';
 import { AuthorizationManager } from '../../classes/managers/AuthorizationManager';
 import { ConfigManager } from '../../classes/managers/ConfigManager';
-import { QueryManager } from '../../classes/managers/QueryManager';
+import { QueryKeyManager } from '../../classes/managers/QueryKeyManager';
+import { COMMON_QUERY_KEY } from '../../data/query';
 
 
 export const useInviteUserConstraintsQuery = (): UseQueryResult<CommonDbUserInvitationConstraints> => {
@@ -27,6 +27,6 @@ export const useInviteUserConstraintsQuery = (): UseQueryResult<CommonDbUserInvi
       const response = await ConfigManager.getInstance().config.organizationApi.inviteUserConstraints({ signal });
       return response.data;
     },
-    queryKey: QueryManager.getInstance().getGenericKey(QUERY_KEY.INVITE_USER_CONSTRAINTS),
+    queryKey: QueryKeyManager.getInstance().getGenericKey(COMMON_QUERY_KEY.INVITE_USER_CONSTRAINTS),
   });
 };

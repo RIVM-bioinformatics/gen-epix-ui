@@ -8,10 +8,11 @@ import type {
 } from '@gen-epix/ui';
 import {
   DataHookUtil,
-  QUERY_KEY,
-  QueryManager,
+  QueryKeyManager,
   useQueryMemo,
 } from '@gen-epix/ui';
+
+import { CASEDB_QUERY_KEY } from '../../data/query';
 
 
 export const useAssemblyProtocolsQuery = (): UseQueryResult<CaseDbProtocol[]> => {
@@ -20,7 +21,7 @@ export const useAssemblyProtocolsQuery = (): UseQueryResult<CaseDbProtocol[]> =>
       const response = await CaseDbCaseApi.getInstance().retrieveAssemblyProtocols({ signal });
       return response.data;
     },
-    queryKey: QueryManager.getInstance().getGenericKey(QUERY_KEY.ASSEMBLY_PROTOCOLS),
+    queryKey: QueryKeyManager.getInstance().getGenericKey(CASEDB_QUERY_KEY.ASSEMBLY_PROTOCOLS),
   });
 };
 

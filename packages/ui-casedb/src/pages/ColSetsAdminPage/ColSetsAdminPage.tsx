@@ -19,19 +19,23 @@ import {
   CaseDbCommandName,
   CaseDbPermissionType,
 } from '@gen-epix/api-casedb';
+import type {
+  FormFieldDefinition,
+  OmitWithMetaData,
+  TableColumn,
+} from '@gen-epix/ui';
+import {
+  CrudPage,
+  FORM_FIELD_DEFINITION_TYPE,
+  SchemaUtil,
+  TableUtil,
+  TestIdUtil,
+  useArray,
+} from '@gen-epix/ui';
 
 import { useColOptionsQuery } from '../../dataHooks/useColsQuery';
 import { useColSetMembersQuery } from '../../dataHooks/useColSetMembersQuery';
-import { useArray } from '../../hooks/useArray';
-import type { FormFieldDefinition } from '../../models/form';
-import { FORM_FIELD_DEFINITION_TYPE } from '../../models/form';
-import { QUERY_KEY } from '../../models/query';
-import type { TableColumn } from '../../models/table';
-import { TableUtil } from '../../utils/TableUtil';
-import { TestIdUtil } from '../../utils/TestIdUtil';
-import { CrudPage } from '../CrudPage';
-import type { OmitWithMetaData } from '../../models/data';
-import { SchemaUtil } from '../../utils/SchemaUtil';
+import { CASEDB_QUERY_KEY } from '../../data/query';
 
 type FormFields = OmitWithMetaData<TableData>;
 
@@ -146,7 +150,7 @@ export const ColSetsAdminPage = () => {
   }, [colSetMembersQuery.data]);
 
   const associationQueryKeys = useMemo(() => [
-    [QUERY_KEY.COL_SET_MEMBERS],
+    [CASEDB_QUERY_KEY.COL_SET_MEMBERS],
   ], []);
 
   return (
@@ -166,7 +170,7 @@ export const ColSetsAdminPage = () => {
       formFieldDefinitions={formFieldDefinitions}
       getName={getName}
       loadables={loadables}
-      resourceQueryKeyBase={QUERY_KEY.COL_SETS}
+      resourceQueryKeyBase={CASEDB_QUERY_KEY.COL_SETS}
       schema={schema}
       tableColumns={tableColumns}
       testIdAttributes={TestIdUtil.createAttributes('ColSetsAdminPage')}

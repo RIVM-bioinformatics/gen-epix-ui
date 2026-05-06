@@ -48,8 +48,7 @@ import type {
 } from '@gen-epix/ui';
 import {
   ConfigManager,
-  QUERY_KEY,
-  QueryManager,
+  QueryKeyManager,
   useDimensions,
   useQueryMemo,
 } from '@gen-epix/ui';
@@ -68,6 +67,7 @@ import { EpiWidget } from '../EpiWidget';
 import { EpiWidgetUnavailable } from '../EpiWidgetUnavailable';
 import { CaseDbDownloadUtil } from '../../../utils/CaseDbDownloadUtil';
 import type { CaseDbConfig } from '../../../models/config';
+import { CASEDB_QUERY_KEY } from '../../../data/query';
 
 
 echarts.use([GeoComponent, TooltipComponent, LegendComponent, CanvasRenderer, PieChart]);
@@ -122,7 +122,7 @@ export const EpiMapWidget = () => {
     queryFn: async ({ signal }) => {
       return (await CaseDbGeoApi.getInstance().regionSetShapesPostQuery(regionSetShapesFilter, { signal })).data;
     },
-    queryKey: QueryManager.getInstance().getGenericKey(QUERY_KEY.REGION_SET_SHAPES, regionSetShapesFilter),
+    queryKey: QueryKeyManager.getInstance().getGenericKey(CASEDB_QUERY_KEY.REGION_SET_SHAPES, regionSetShapesFilter),
     retry: false,
     select: (shapes) => Object.fromEntries(shapes.map(regionSetShape => [regionSetShape.region_set_id, regionSetShape])),
   });

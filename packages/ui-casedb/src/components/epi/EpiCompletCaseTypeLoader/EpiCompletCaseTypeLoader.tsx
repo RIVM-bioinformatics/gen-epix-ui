@@ -8,11 +8,9 @@ import { useTranslation } from 'react-i18next';
 import type { CaseDbCompleteCaseType } from '@gen-epix/api-casedb';
 import { CaseDbCaseApi } from '@gen-epix/api-casedb';
 
-import { useItemQuery } from '../../../hooks/useItemQuery';
-import { QUERY_KEY } from '../../../models/query';
-import { AxiosUtil } from '../../../utils/AxiosUtil';
-import { ResponseHandler } from '../../ui/ResponseHandler';
 import { EpiDataManager } from '../../../classes/managers/EpiDataManager';
+import { useItemQuery, AxiosUtil, ResponseHandler } from '@gen-epix/ui';
+import { CASEDB_QUERY_KEY } from '../../../data/query';
 
 
 export type EpiCompletCaseTypeLoaderProps = PropsWithChildren<{
@@ -26,7 +24,7 @@ export const EpiCompletCaseTypeLoader = ({ caseTypeId, children, onCompleteCaseT
   const [sideEffectError, setSideEffectError] = useState<Error>();
 
   const { data: completeCaseType, error: completeCaseTypeError, isLoading: isCompleteCaseTypeLoading } = useItemQuery({
-    baseQueryKey: QUERY_KEY.COMPLETE_CASE_TYPES,
+    baseQueryKey: CASEDB_QUERY_KEY.COMPLETE_CASE_TYPES,
     itemId: caseTypeId,
     useQueryOptions: {
       queryFn: async ({ signal }) => {

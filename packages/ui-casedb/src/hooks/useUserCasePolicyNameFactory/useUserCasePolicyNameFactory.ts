@@ -4,13 +4,15 @@ import type {
   CaseDbUserAccessCasePolicy,
   CaseDbUserShareCasePolicy,
 } from '@gen-epix/api-casedb';
+import type { UseNameFactory } from '@gen-epix/ui';
+import {
+  CommonDataUtil,
+  DataHookUtil,
+  useUsersMapQuery,
+} from '@gen-epix/ui';
 
 import { useCaseTypeSetsMapQuery } from '../../dataHooks/useCaseTypeSetsQuery';
 import { useDataCollectionsMapQuery } from '../../dataHooks/useDataCollectionsQuery';
-import { useUsersMapQuery } from '../../dataHooks/useUsersQuery';
-import type { UseNameFactory } from '../../models/dataHooks';
-import { DataHookUtil } from '../../utils/DataHookUtil';
-import { CaseDbDataUtil } from '../../utils/CaseDbDataUtil';
 
 export const useUserCasePolicyNameFactory = (): UseNameFactory<CaseDbUserAccessCasePolicy | CaseDbUserShareCasePolicy> => {
   const { t } = useTranslation();
@@ -26,7 +28,7 @@ export const useUserCasePolicyNameFactory = (): UseNameFactory<CaseDbUserAccessC
       const dataCollection = dataCollectionsMapQuery.map.get(item.data_collection_id)?.name ?? item.data_collection_id;
       const caseTypeSet = caseTypeSetsMapQuery.map.get(item.case_type_set_id)?.name ?? item.case_type_set_id;
 
-      const userName = CaseDbDataUtil.getUserDisplayValue(user, t);
+      const userName = CommonDataUtil.getUserDisplayValue(user, t);
 
       return `${userName} → ${dataCollection} → ${caseTypeSet}`;
     };

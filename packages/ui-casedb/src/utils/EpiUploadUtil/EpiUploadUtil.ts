@@ -44,8 +44,7 @@ import {
   DATE_FORMAT,
   FORM_FIELD_DEFINITION_TYPE,
   ObjectUtil,
-  QUERY_KEY,
-  QueryManager,
+  QueryKeyManager,
   ValidationUtil,
 } from '@gen-epix/ui';
 
@@ -61,6 +60,7 @@ import type {
 } from '../../models/epi';
 import { FileUtil } from '../FileUtil';
 import { UploadError } from '../../classes/errors';
+import { CASEDB_QUERY_KEY } from '../../data/query';
 
 export class EpiUploadUtil {
   public static readonly caseDateColumnAliases = ['_case_date', 'case date', 'case_date', 'casedate', 'case.date'];
@@ -205,7 +205,7 @@ export class EpiUploadUtil {
       await EpiUploadUtil.uploadFilesForCases({ ...kwArgs, caseBatchUploadResult, endPercentage: 99, startPercentage: 1 });
       onProgress(100, t('Upload complete.'));
 
-      await QueryManager.getInstance().invalidateQueryKeys(QueryManager.getInstance().getQueryKeyDependencies([QUERY_KEY.CASES], true));
+      await QueryKeyManager.getInstance().invalidateQueryKeys(QueryKeyManager.getInstance().getQueryKeyDependencies([CASEDB_QUERY_KEY.CASES], true));
       onComplete();
     } catch (error) {
       onError(error instanceof Error ? error : new Error('Unknown error occurred during upload'));

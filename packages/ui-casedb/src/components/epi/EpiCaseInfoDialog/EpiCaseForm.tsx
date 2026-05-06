@@ -17,9 +17,10 @@ import {
 } from '@mui/material';
 import type { CaseDbCase } from '@gen-epix/api-casedb';
 import { CaseDbCaseApi } from '@gen-epix/api-casedb';
-import { useOrganizationsQuery, QueryManager, QUERY_KEY, NotificationManager, ObjectUtil, FormUtil, Spinner, GenericForm } from '@gen-epix/ui';
+import { useOrganizationsQuery, QueryKeyManager, NotificationManager, ObjectUtil, FormUtil, Spinner, GenericForm } from '@gen-epix/ui';
 import { EpiDashboardStoreContext } from '../../../stores/epiDashboardStore';
 import { CaseUtil } from '../../../utils/CaseUtil';
+import { CASEDB_QUERY_KEY } from '../../../data/query';
 
 export type EpiCaseFormProps = {
   readonly epiCase: CaseDbCase;
@@ -41,14 +42,14 @@ export const EpiCaseForm = ({ epiCase, formId, onFinish, onIsSavingChange, ...bo
     setIsSaving(true);
     onIsSavingChange(true);
     const perform = async () => {
-      const queryKeys = QueryManager.getInstance().getQueryKeyDependencies([QUERY_KEY.CASES], true);
+      const queryKeys = QueryKeyManager.getInstance().getQueryKeyDependencies([CASEDB_QUERY_KEY.CASES], true);
       const notificationKey = NotificationManager.getInstance().showNotification({
         isLoading: true,
         message: t('Saving case data'),
         severity: 'info',
       });
       try {
-        await QueryManager.getInstance().cancelQueries(queryKeys);
+        await QueryKeyManager.getInstance().cancelQueries(queryKeys);
         const item = {
           ...epiCase,
           content: ObjectUtil.mergeWithUndefined(epiCase.content, content),
@@ -59,7 +60,7 @@ export const EpiCaseForm = ({ epiCase, formId, onFinish, onIsSavingChange, ...bo
       } catch (_error) {
         NotificationManager.getInstance().fulfillNotification(notificationKey, t('Could not save case data.'), 'error');
       } finally {
-        await QueryManager.getInstance().invalidateQueryKeys(queryKeys);
+        await QueryKeyManager.getInstance().invalidateQueryKeys(queryKeys);
         setIsSaving(false);
         onIsSavingChange(false);
         onFinish();

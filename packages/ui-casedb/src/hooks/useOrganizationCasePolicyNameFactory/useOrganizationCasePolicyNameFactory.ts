@@ -3,12 +3,14 @@ import type {
   CaseDbOrganizationAccessCasePolicy,
   CaseDbOrganizationShareCasePolicy,
 } from '@gen-epix/api-casedb';
+import type { UseNameFactory } from '@gen-epix/ui';
+import {
+  DataHookUtil,
+  useOrganizationMapQuery,
+} from '@gen-epix/ui';
 
 import { useCaseTypeSetsMapQuery } from '../../dataHooks/useCaseTypeSetsQuery';
 import { useDataCollectionsMapQuery } from '../../dataHooks/useDataCollectionsQuery';
-import { useOrganizationMapQuery } from '../../dataHooks/useOrganizationsQuery';
-import type { UseNameFactory } from '../../models/dataHooks';
-import { DataHookUtil } from '../../utils/DataHookUtil';
 
 export const useOrganizationCasePolicyNameFactory = (): UseNameFactory<CaseDbOrganizationAccessCasePolicy | CaseDbOrganizationShareCasePolicy> => {
   const organizationMapQuery = useOrganizationMapQuery();

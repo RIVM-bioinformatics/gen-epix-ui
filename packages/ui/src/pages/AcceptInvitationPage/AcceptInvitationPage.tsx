@@ -16,7 +16,8 @@ import { PageContainer } from '../../components/ui/PageContainer';
 import { ResponseHandler } from '../../components/ui/ResponseHandler';
 import { TestIdUtil } from '../../utils/TestIdUtil';
 import { useQueryMemo } from '../../hooks/useQueryMemo';
-import { QueryManager } from '../../classes/managers/QueryManager';
+import { QueryKeyManager } from '../../classes/managers/QueryKeyManager';
+import { COMMON_QUERY_KEY } from '../../data/query';
 
 export const AcceptInvitationPage = () => {
   const { token } = useParams();
@@ -29,7 +30,7 @@ export const AcceptInvitationPage = () => {
       const response = await ConfigManager.getInstance().config.organizationApi.userRegistrationsPostOne(token, { signal });
       return response.data;
     },
-    queryKey: QueryManager.getInstance().getUserRegistrationsKey(token),
+    queryKey: QueryKeyManager.getInstance().getGenericKey(COMMON_QUERY_KEY.USER_INVITATIONS, token),
     staleTime: 0,
   });
 

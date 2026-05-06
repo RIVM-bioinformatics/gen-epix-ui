@@ -19,16 +19,42 @@ import type {
   CaseDbCaseStats,
 } from '@gen-epix/api-casedb';
 import { CaseDbCaseApi } from '@gen-epix/api-casedb';
+import type {
+  TableColumn,
+  TableRowParams,
+} from '@gen-epix/ui';
+import {
+  ConfigManager,
+  createTableStore,
+  DATE_FORMAT,
+  LoadableUtil,
+  PageContainer,
+  QueryKeyManager,
+  ResponseHandler,
+  RouterManager,
+  Table,
+  TableCaption,
+  TableMenu,
+  TableSidebarMenu,
+  TableStoreContextProvider,
+  TableUtil,
+  TestIdUtil,
+  useArray,
+  useInitializeTableStore,
+  useQueryMemo,
+} from '@gen-epix/ui';
 
 import CollectionIcon from '../../assets/icons/CollectionIcon.svg?react';
-import { useQueryMemo, QueryManager, QUERY_KEY, useArray, RouterManager, Table, TableRowParams, TableColumn, TableUtil, DATE_FORMAT, createTableStore, useInitializeTableStore, LoadableUtil, TableMenu, TableStoreContextProvider, PageContainer, TableCaption, TestIdUtil, ResponseHandler, ConfigManager, TableSidebarMenu } from '@gen-epix/ui';
-import { EpiCaseSetInfoDialogRefMethods, EpiCaseSetInfoDialog } from '../../components/epi/EpiCaseSetInfoDialog';
-import { EpiCreateEventDialogRefMethods, EpiCreateEventDialog } from '../../components/epi/EpiCreateEventDialog';
+import type { EpiCaseSetInfoDialogRefMethods } from '../../components/epi/EpiCaseSetInfoDialog';
+import { EpiCaseSetInfoDialog } from '../../components/epi/EpiCaseSetInfoDialog';
+import type { EpiCreateEventDialogRefMethods } from '../../components/epi/EpiCreateEventDialog';
+import { EpiCreateEventDialog } from '../../components/epi/EpiCreateEventDialog';
 import { useCaseSetCategoryOptionsQuery } from '../../dataHooks/useCaseSetCategoriesQuery';
 import { useCaseSetStatsMapQuery } from '../../dataHooks/useCaseSetStatsQuery';
 import { useCaseSetStatusOptionsQuery } from '../../dataHooks/useCaseSetStatusesQuery';
 import { useCaseTypeOptionsQuery } from '../../dataHooks/useCaseTypesQuery';
 import { CaseSetUtil } from '../../utils/CaseSetUtil';
+import { CASEDB_QUERY_KEY } from '../../data/query';
 
 
 type Row = CaseDbCaseSet & CaseDbCaseStats;
@@ -47,7 +73,7 @@ export const EventsPage = () => {
       const response = await CaseDbCaseApi.getInstance().caseSetsGetAll({ signal });
       return response.data;
     },
-    queryKey: QueryManager.getInstance().getGenericKey(QUERY_KEY.CASE_SETS),
+    queryKey: QueryKeyManager.getInstance().getGenericKey(CASEDB_QUERY_KEY.CASE_SETS),
   });
   const caseSetStatsMapQuery = useCaseSetStatsMapQuery(caseSets ? caseSets.map(cs => cs.id) : null);
   const loadables = useArray([caseTypeOptionsQuery, caseSetCategoryOptionsQuery, caseSetStatusOptionsQuery, caseSetStatsMapQuery]);

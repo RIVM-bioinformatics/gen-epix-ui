@@ -7,12 +7,12 @@ import type {
   UseMap,
   UseOptions,
 } from '../../models/dataHooks';
-import { QUERY_KEY } from '../../models/query';
 import { DataHookUtil } from '../../utils/DataHookUtil';
 import { useQueryMemo } from '../../hooks/useQueryMemo';
 import { ConfigManager } from '../../classes/managers/ConfigManager';
 import { CommonDataUtil } from '../../utils/CommonDataUtil';
-import { QueryManager } from '../../classes/managers/QueryManager';
+import { QueryKeyManager } from '../../classes/managers/QueryKeyManager';
+import { COMMON_QUERY_KEY } from '../../data/query';
 
 export const useUsersQuery = (): UseQueryResult<CommonDbUser[]> => {
   return useQueryMemo({
@@ -20,7 +20,7 @@ export const useUsersQuery = (): UseQueryResult<CommonDbUser[]> => {
       const response = await ConfigManager.getInstance().config.organizationApi.usersGetAll({ signal });
       return response.data;
     },
-    queryKey: QueryManager.getInstance().getGenericKey(QUERY_KEY.USERS),
+    queryKey: QueryKeyManager.getInstance().getGenericKey(COMMON_QUERY_KEY.USERS),
   });
 };
 

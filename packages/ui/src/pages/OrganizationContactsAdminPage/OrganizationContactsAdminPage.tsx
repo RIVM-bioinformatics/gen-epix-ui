@@ -13,7 +13,6 @@ import { CommonDbCommandName } from '@gen-epix/api-commondb';
 
 import type { FormFieldDefinition } from '../../models/form';
 import { FORM_FIELD_DEFINITION_TYPE } from '../../models/form';
-import { QUERY_KEY } from '../../models/query';
 import type { TableColumn } from '../../models/table';
 import { TableUtil } from '../../utils/TableUtil';
 import { TestIdUtil } from '../../utils/TestIdUtil';
@@ -21,6 +20,7 @@ import { CrudPage } from '../CrudPage';
 import type { OmitWithMetaData } from '../../models/data';
 import { SchemaUtil } from '../../utils/SchemaUtil';
 import { ConfigManager } from '../../classes/managers/ConfigManager';
+import { COMMON_QUERY_KEY } from '../../data/query';
 
 // Note: site_id is given in the route params
 type FormFields = OmitWithMetaData<CommonDbContact, 'site_id' | 'site'>;
@@ -117,7 +117,7 @@ export const OrganizationContactsAdminPage = () => {
       formFieldDefinitions={formFieldDefinitions}
       getName={getName}
       getOptimisticUpdateIntermediateItem={getOptimisticUpdateIntermediateItem}
-      resourceQueryKeyBase={QUERY_KEY.CONTACTS}
+      resourceQueryKeyBase={COMMON_QUERY_KEY.CONTACTS}
       schema={schema}
       tableColumns={tableColumns}
       testIdAttributes={TestIdUtil.createAttributes('OrganizationContactsAdminPage')}

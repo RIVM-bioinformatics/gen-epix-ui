@@ -5,16 +5,18 @@ import {
   useMemo,
 } from 'react';
 import { CaseDbCaseApi } from '@gen-epix/api-casedb';
+import {
+  PageContainer,
+  ResponseHandler,
+  TestIdUtil,
+  useArray,
+  useItemQuery,
+  useUpdateBreadcrumb,
+} from '@gen-epix/ui';
 
 import { EpiDashboard } from '../../components/epi/EpiDashboard';
-import { PageContainer } from '../../components/ui/PageContainer';
-import { ResponseHandler } from '../../components/ui/ResponseHandler';
+import { CASEDB_QUERY_KEY } from '../../data/query';
 import { useCaseTypeMapQuery } from '../../dataHooks/useCaseTypesQuery';
-import { useArray } from '../../hooks/useArray';
-import { useItemQuery } from '../../hooks/useItemQuery';
-import { useUpdateBreadcrumb } from '../../hooks/useUpdateBreadcrumb';
-import { QUERY_KEY } from '../../models/query';
-import { TestIdUtil } from '../../utils/TestIdUtil';
 
 export const EventsDetailPage = () => {
   const { t } = useTranslation();
@@ -24,7 +26,7 @@ export const EventsDetailPage = () => {
   const updateBreadcrumb = useUpdateBreadcrumb('Event');
 
   const caseSetQuery = useItemQuery({
-    baseQueryKey: QUERY_KEY.CASE_SETS,
+    baseQueryKey: CASEDB_QUERY_KEY.CASE_SETS,
     itemId: caseSetId,
     useQueryOptions: {
       queryFn: async ({ signal }) => (await CaseDbCaseApi.getInstance().caseSetsGetOne(caseSetId, { signal })).data,

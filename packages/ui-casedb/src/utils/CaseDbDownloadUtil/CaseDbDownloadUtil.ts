@@ -16,14 +16,14 @@ import {
   DATE_FORMAT,
   LogManager,
   NotificationManager,
-  QUERY_KEY,
   QueryClientManager,
-  QueryManager,
+  QueryKeyManager,
   StringUtil,
 } from '@gen-epix/ui';
 
 import { CaseTypeUtil } from '../CaseTypeUtil';
 import { CaseUtil } from '../CaseUtil';
+import { CASEDB_QUERY_KEY } from '../../data/query';
 
 export class CaseDbDownloadUtil {
   public static downloadAsCsv(cases: CaseDbCase[], colIds: string[], completeCaseType: CaseDbCompleteCaseType, t: TFunction<'translation', undefined>): void {
@@ -91,7 +91,7 @@ export class CaseDbDownloadUtil {
         queryFn: async ({ signal }) => {
           return (await CaseDbCaseApi.getInstance().completeCaseTypesGetOne(caseTypeId, { signal })).data;
         },
-        queryKey: QueryManager.getInstance().getGenericKey(QUERY_KEY.COMPLETE_CASE_TYPES, caseTypeId),
+        queryKey: QueryKeyManager.getInstance().getGenericKey(CASEDB_QUERY_KEY.COMPLETE_CASE_TYPES, caseTypeId),
       });
 
       const headers = CaseDbDownloadUtil.getColumnHeadersForImport(

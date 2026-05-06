@@ -14,21 +14,25 @@ import {
   CaseDbGeoApi,
   CaseDbRegionRelationType,
 } from '@gen-epix/api-casedb';
+import type {
+  FormFieldDefinition,
+  OmitWithMetaData,
+  TableColumn,
+} from '@gen-epix/ui';
+import {
+  CrudPage,
+  FORM_FIELD_DEFINITION_TYPE,
+  TableUtil,
+  TestIdUtil,
+  useArray,
+} from '@gen-epix/ui';
 
-import type { FormFieldDefinition } from '../../models/form';
-import { FORM_FIELD_DEFINITION_TYPE } from '../../models/form';
-import { QUERY_KEY } from '../../models/query';
-import type { TableColumn } from '../../models/table';
-import { TableUtil } from '../../utils/TableUtil';
-import { TestIdUtil } from '../../utils/TestIdUtil';
-import { CrudPage } from '../CrudPage';
-import { useArray } from '../../hooks/useArray';
+import { CASEDB_QUERY_KEY } from '../../data/query';
 import {
   useRegionMapQuery,
   useRegionOptionsQuery,
 } from '../../dataHooks/useRegionQuery';
 import { useRegionRelationTypeOptionsQuery } from '../../dataHooks/useRegionRelationTypeQuery';
-import type { OmitWithMetaData } from '../../models/data';
 
 
 type FormFields = OmitWithMetaData<CaseDbRegionRelation, 'from_region' | 'to_region'>;
@@ -122,7 +126,7 @@ export const RegionRelationsAdminPage = () => {
       formFieldDefinitions={formFieldDefinitions}
       getName={getName}
       loadables={loadables}
-      resourceQueryKeyBase={QUERY_KEY.REGION_RELATIONS}
+      resourceQueryKeyBase={CASEDB_QUERY_KEY.REGION_RELATIONS}
       schema={schema}
       tableColumns={tableColumns}
       testIdAttributes={TestIdUtil.createAttributes('RegionRelationsAdminPage')}

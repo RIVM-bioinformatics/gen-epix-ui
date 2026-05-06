@@ -34,7 +34,6 @@ import { CaseDbCaseApi } from '@gen-epix/api-casedb';
 import type { MenuItemData } from '@gen-epix/ui';
 import {
   ConfigManager,
-  QUERY_KEY,
   Spinner,
   Subject,
   useQueryMemo,
@@ -66,6 +65,8 @@ import {
   type PhylogeneticTreeComponentViewState,
 } from '../../ui/PhylogeneticTreeComponent';
 import { TreeFilter } from '../../../../../ui/src/classes/filters/TreeFilter';
+import { CASEDB_QUERY_KEY } from '../../../data/query';
+import { CaseDbConfig } from '../../../models/config';
 
 export interface EpiTreeWidgetRef {
   link: () => void;
@@ -188,7 +189,7 @@ export const EpiTreeWidget = ({ itemHeight, lineListRangeSubject, linkedScrollSu
       const response = await CaseDbCaseApi.getInstance().retrievePhylogeneticTree(retrievePhylogeneticTreeRequestBody, { signal });
       return response.data;
     },
-    queryKey: [QUERY_KEY.PHYLOGENETIC_TREE, JSON.stringify(retrievePhylogeneticTreeRequestBody)],
+    queryKey: [CASEDB_QUERY_KEY.PHYLOGENETIC_TREE, JSON.stringify(retrievePhylogeneticTreeRequestBody)],
     retry: false,
     staleTime: Infinity,
   });
@@ -224,7 +225,7 @@ export const EpiTreeWidget = ({ itemHeight, lineListRangeSubject, linkedScrollSu
       treeRef.current?.unlink({
         positionX: 0,
         positionY: 0,
-        zoomLevel: ConfigManager.getInstance().config.epiTree.INITIAL_UNLINKED_ZOOM_LEVEL,
+        zoomLevel: ConfigManager.getInstance<CaseDbConfig>().config.epiTree.INITIAL_UNLINKED_ZOOM_LEVEL,
       });
     }
   }, [isTreeLinked, shouldShowTree, sortByField]);
@@ -556,7 +557,7 @@ export const EpiTreeWidget = ({ itemHeight, lineListRangeSubject, linkedScrollSu
         {(isLoading && !isTreeUnavailable) && (
           <Spinner
             label={t`Loading`}
-            takingLongerTimeoutMs={ConfigManager.getInstance().config.epiTree.TAKING_LONGER_TIMEOUT_MS}
+            takingLongerTimeoutMs={ConfigManager.getInstance<CaseDbConfig>().config.epiTree.TAKING_LONGER_TIMEOUT_MS}
           />
         )}
         {!isTreeUnavailable && shouldShowTree && (

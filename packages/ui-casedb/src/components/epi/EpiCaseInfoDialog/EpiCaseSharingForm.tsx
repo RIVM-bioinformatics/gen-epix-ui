@@ -26,12 +26,12 @@ import {
   FormUtil,
   GenericForm,
   NotificationManager,
-  QUERY_KEY,
-  QueryManager,
+  QueryKeyManager,
   Spinner,
 } from '@gen-epix/ui';
 
 import { useCaseAbacContext } from '../../../context/caseAbac';
+import { CASEDB_QUERY_KEY } from '../../../data/query';
 
 export type EpiCaseSharingFormProps = {
   readonly epiCase: CaseDbCase;
@@ -81,14 +81,14 @@ export const EpiCaseSharingForm = ({ epiCase, formId, onFinish, onIsSavingChange
     const perform = async () => {
       setIsSaving(true);
       onIsSavingChange(true);
-      const queryKeys = QueryManager.getInstance().getQueryKeyDependencies([QUERY_KEY.CASE_DATA_COLLECTION_LINKS], true);
+      const queryKeys = QueryKeyManager.getInstance().getQueryKeyDependencies([CASEDB_QUERY_KEY.CASE_DATA_COLLECTION_LINKS], true);
       const notificationKey = NotificationManager.getInstance().showNotification({
         isLoading: true,
         message: t('Saving case data collections'),
         severity: 'info',
       });
       try {
-        await QueryManager.getInstance().cancelQueries(queryKeys);
+        await QueryKeyManager.getInstance().cancelQueries(queryKeys);
         const rights = caseAbacContext?.rights?.[0];
         const dataCollectionIdsToAdd = difference(dataCollectionIds, rights.shared_in_data_collection_ids);
         const dataCollectionIdsToRemove = difference(rights.shared_in_data_collection_ids, dataCollectionIds);
@@ -106,7 +106,7 @@ export const EpiCaseSharingForm = ({ epiCase, formId, onFinish, onIsSavingChange
       } catch (_error) {
         NotificationManager.getInstance().fulfillNotification(notificationKey, t('Could not save case data collections.'), 'error');
       } finally {
-        await QueryManager.getInstance().invalidateQueryKeys(queryKeys);
+        await QueryKeyManager.getInstance().invalidateQueryKeys(queryKeys);
         setIsSaving(false);
         onIsSavingChange(false);
         onFinish();

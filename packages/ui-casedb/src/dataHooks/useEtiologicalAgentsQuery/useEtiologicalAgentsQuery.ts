@@ -8,10 +8,11 @@ import type {
 } from '@gen-epix/ui';
 import {
   DataHookUtil,
-  QUERY_KEY,
-  QueryManager,
+  QueryKeyManager,
   useQueryMemo,
 } from '@gen-epix/ui';
+
+import { CASEDB_QUERY_KEY } from '../../data/query';
 
 export const useEtiologicalAgentsQuery = (): UseQueryResult<CaseDbEtiologicalAgent[]> => {
   return useQueryMemo({
@@ -19,7 +20,7 @@ export const useEtiologicalAgentsQuery = (): UseQueryResult<CaseDbEtiologicalAge
       const response = await CaseDbOntologyApi.getInstance().etiologicalAgentsGetAll({ signal });
       return response.data;
     },
-    queryKey: QueryManager.getInstance().getGenericKey(QUERY_KEY.ETIOLOGICAL_AGENTS),
+    queryKey: QueryKeyManager.getInstance().getGenericKey(CASEDB_QUERY_KEY.ETIOLOGICAL_AGENTS),
   });
 };
 

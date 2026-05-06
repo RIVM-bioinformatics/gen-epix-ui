@@ -13,7 +13,6 @@ import {
 
 import type { FormFieldDefinition } from '../../models/form';
 import { FORM_FIELD_DEFINITION_TYPE } from '../../models/form';
-import { QUERY_KEY } from '../../models/query';
 import type { TableColumn } from '../../models/table';
 import { TableUtil } from '../../utils/TableUtil';
 import { TestIdUtil } from '../../utils/TestIdUtil';
@@ -23,6 +22,7 @@ import { AuthorizationManager } from '../../classes/managers/AuthorizationManage
 import type { OmitWithMetaData } from '../../models/data';
 import { SchemaUtil } from '../../utils/SchemaUtil';
 import { ConfigManager } from '../../classes/managers/ConfigManager';
+import { COMMON_QUERY_KEY } from '../../data/query';
 
 type FormFields = OmitWithMetaData<CommonDbSite, 'organization_id' | 'organization'>;
 
@@ -119,7 +119,7 @@ export const OrganizationSitesAdminPage = () => {
       formFieldDefinitions={formFieldDefinitions}
       getName={getName}
       getOptimisticUpdateIntermediateItem={getOptimisticUpdateIntermediateItem}
-      resourceQueryKeyBase={QUERY_KEY.SITES}
+      resourceQueryKeyBase={COMMON_QUERY_KEY.SITES}
       schema={schema}
       subPages={subPages}
       tableColumns={tableColumns}

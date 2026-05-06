@@ -8,10 +8,10 @@ import type {
 } from '@gen-epix/ui';
 import {
   DataHookUtil,
-  QUERY_KEY,
-  QueryManager,
+  QueryKeyManager,
   useQueryMemo,
 } from '@gen-epix/ui';
+import { CASEDB_QUERY_KEY } from '../../data/query';
 
 
 export const useColSetsQuery = (): UseQueryResult<CaseDbColSet[]> => {
@@ -20,7 +20,7 @@ export const useColSetsQuery = (): UseQueryResult<CaseDbColSet[]> => {
       const response = await CaseDbCaseApi.getInstance().colSetsGetAll({ signal });
       return response.data;
     },
-    queryKey: QueryManager.getInstance().getGenericKey(QUERY_KEY.COL_SETS),
+    queryKey: QueryKeyManager.getInstance().getGenericKey(CASEDB_QUERY_KEY.COL_SETS),
   });
 };
 

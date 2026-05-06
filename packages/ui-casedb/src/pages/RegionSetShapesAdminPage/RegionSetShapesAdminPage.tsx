@@ -14,17 +14,21 @@ import {
   CaseDbCommandName,
   CaseDbGeoApi,
 } from '@gen-epix/api-casedb';
+import type {
+  FormFieldDefinition,
+  OmitWithMetaData,
+  TableColumn,
+} from '@gen-epix/ui';
+import {
+  CrudPage,
+  FORM_FIELD_DEFINITION_TYPE,
+  TableUtil,
+  TestIdUtil,
+  useArray,
+} from '@gen-epix/ui';
 
 import { useRegionSetsMapQuery } from '../../dataHooks/useRegionSetsQuery';
-import { useArray } from '../../hooks/useArray';
-import type { FormFieldDefinition } from '../../models/form';
-import { FORM_FIELD_DEFINITION_TYPE } from '../../models/form';
-import { QUERY_KEY } from '../../models/query';
-import type { TableColumn } from '../../models/table';
-import { TableUtil } from '../../utils/TableUtil';
-import { TestIdUtil } from '../../utils/TestIdUtil';
-import { CrudPage } from '../CrudPage';
-import type { OmitWithMetaData } from '../../models/data';
+import { CASEDB_QUERY_KEY } from '../../data/query';
 
 // Note: region_set_id is given in the route params
 type FormFields = OmitWithMetaData<CaseDbRegionSetShape, 'region_set_id' | 'region_set'>;
@@ -122,7 +126,7 @@ export const RegionSetShapesAdminPage = () => {
       getName={getName}
       getOptimisticUpdateIntermediateItem={getOptimisticUpdateIntermediateItem}
       loadables={loadables}
-      resourceQueryKeyBase={QUERY_KEY.REGION_SET_SHAPES}
+      resourceQueryKeyBase={CASEDB_QUERY_KEY.REGION_SET_SHAPES}
       schema={schema}
       tableColumns={tableColumns}
       testIdAttributes={TestIdUtil.createAttributes('RegionSetShapesAdminPage')}

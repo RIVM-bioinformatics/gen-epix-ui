@@ -16,7 +16,6 @@ import {
 
 import { WindowManager } from '../../../classes/managers/WindowManager';
 import { useQueryMemo } from '../../../hooks/useQueryMemo';
-import { QUERY_KEY } from '../../../models/query';
 import { outagesStore } from '../../../stores/outagesStore';
 import { OutageUtil } from '../../../utils/OutageUtil';
 import { TestIdUtil } from '../../../utils/TestIdUtil';
@@ -24,13 +23,14 @@ import { useArray } from '../../../hooks/useArray';
 import { FeatureFlagsManager } from '../../../classes/managers/FeatureFlagsManager';
 import { I18nManager } from '../../../classes/managers/I18nManager';
 import { ConfigManager } from '../../../classes/managers/ConfigManager';
-import { QueryManager } from '../../../classes/managers/QueryManager';
+import { QueryKeyManager } from '../../../classes/managers/QueryKeyManager';
 import type { ConfirmationRefMethods } from '../../ui/Confirmation';
 import { Confirmation } from '../../ui/Confirmation';
 import { OutageList } from '../../ui/OutageList';
 import { PageContainer } from '../../ui/PageContainer';
 import { ResponseHandler } from '../../ui/ResponseHandler';
 import { Spinner } from '../../ui/Spinner';
+import { COMMON_QUERY_KEY } from '../../../data/query';
 
 
 export const ApplicationBootstrap = ({ children }: PropsWithChildren): ReactNode => {
@@ -57,7 +57,7 @@ export const ApplicationBootstrap = ({ children }: PropsWithChildren): ReactNode
   const outagesQuery = useQueryMemo({
     gcTime: Infinity,
     queryFn: async ({ signal }) => (await ConfigManager.getInstance().config.systemApi.retrieveOutages({ signal })).data,
-    queryKey: QueryManager.getInstance().getGenericKey(QUERY_KEY.OUTAGES),
+    queryKey: QueryKeyManager.getInstance().getGenericKey(COMMON_QUERY_KEY.OUTAGES),
     refetchInterval: 5 * 60 * 1000,
     staleTime: Infinity,
   });
@@ -105,7 +105,7 @@ export const ApplicationBootstrap = ({ children }: PropsWithChildren): ReactNode
     enabled: shouldShowChildren,
     gcTime: Infinity,
     queryFn: async ({ signal }) => (await ConfigManager.getInstance().config.systemApi.retrieveFeatureFlags({ signal })).data,
-    queryKey: QueryManager.getInstance().getGenericKey(QUERY_KEY.FEATURE_FLAGS),
+    queryKey: QueryKeyManager.getInstance().getGenericKey(COMMON_QUERY_KEY.FEATURE_FLAGS),
     staleTime: Infinity,
   });
 

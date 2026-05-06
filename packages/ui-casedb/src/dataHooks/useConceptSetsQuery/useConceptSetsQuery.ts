@@ -8,10 +8,11 @@ import type {
 } from '@gen-epix/ui';
 import {
   DataHookUtil,
-  QUERY_KEY,
-  QueryManager,
+  QueryKeyManager,
   useQueryMemo,
 } from '@gen-epix/ui';
+
+import { CASEDB_QUERY_KEY } from '../../data/query';
 
 
 export const useConceptSetsQuery = (): UseQueryResult<CaseDbConceptSet[]> => {
@@ -20,7 +21,7 @@ export const useConceptSetsQuery = (): UseQueryResult<CaseDbConceptSet[]> => {
       const response = await CaseDbOntologyApi.getInstance().conceptSetsGetAll({ signal });
       return response.data;
     },
-    queryKey: QueryManager.getInstance().getGenericKey(QUERY_KEY.CONCEPT_SETS),
+    queryKey: QueryKeyManager.getInstance().getGenericKey(CASEDB_QUERY_KEY.CONCEPT_SETS),
   });
 };
 

@@ -32,9 +32,11 @@ import type {
   CaseDbCompleteCaseType,
 } from '@gen-epix/api-casedb';
 import { CaseDbCaseApi } from '@gen-epix/api-casedb';
-import { WithDialogRenderProps, WithDialogRefMethods, withDialog, SchemaUtil, ConfigManager, AutoCompleteOption, FORM_FIELD_DEFINITION_TYPE, FormFieldDefinition, useQueryMemo, QueryManager, QUERY_KEY, DialogAction, TestIdUtil, GenericForm, ResponseHandler } from '@gen-epix/ui';
+import { WithDialogRenderProps, WithDialogRefMethods, withDialog, SchemaUtil, ConfigManager, AutoCompleteOption, FORM_FIELD_DEFINITION_TYPE, FormFieldDefinition, useQueryMemo, QueryKeyManager, DialogAction, TestIdUtil, GenericForm, ResponseHandler } from '@gen-epix/ui';
 import { EpiDashboardStoreContext } from '../../../stores/epiDashboardStore';
 import { EpiTreeUtil } from '../../../utils/EpiTreeUtil';
+import { CASEDB_QUERY_KEY } from '../../../data/query';
+import { CaseDbConfig } from '../../../models/config';
 
 
 export interface EpiFindSimilarCasesDialogOpenProps {
@@ -79,7 +81,7 @@ export const EpiFindSimilarCasesDialog = withDialog<EpiFindSimilarCasesDialogPro
         return s;
       }
       const sWithIntegerCheck = s.integer(t`Max distance must be an integer`);
-      return sWithIntegerCheck.max(currentTreeConfiguration.geneticDistanceProtocol.seqdb_max_stored_distance || ConfigManager.getInstance().config.epi.SEQDB_MAX_STORED_DISTANCE_FALLBACK);
+      return sWithIntegerCheck.max(currentTreeConfiguration.geneticDistanceProtocol.seqdb_max_stored_distance || ConfigManager.getInstance<CaseDbConfig>().config.epi.SEQDB_MAX_STORED_DISTANCE_FALLBACK);
     }),
     treeColId: string().required(),
   }), [t, treeConfigurations]);
@@ -122,7 +124,7 @@ export const EpiFindSimilarCasesDialog = withDialog<EpiFindSimilarCasesDialogPro
       {
         definition: FORM_FIELD_DEFINITION_TYPE.NUMBER,
         label: t`Max distance`,
-        max: currentTreeConfiguration?.geneticDistanceProtocol?.seqdb_max_stored_distance || ConfigManager.getInstance().config.epi.SEQDB_MAX_STORED_DISTANCE_FALLBACK,
+        max: currentTreeConfiguration?.geneticDistanceProtocol?.seqdb_max_stored_distance || ConfigManager.getInstance<CaseDbConfig>().config.epi.SEQDB_MAX_STORED_DISTANCE_FALLBACK,
         min: 0,
         name: 'maxDistance',
         showSlider: true,
@@ -158,7 +160,7 @@ export const EpiFindSimilarCasesDialog = withDialog<EpiFindSimilarCasesDialogPro
       }, { signal });
       return response.data;
     },
-    queryKey: [QueryManager.getInstance().getGenericKey(QUERY_KEY.SIMILAR_CASES), JSON.stringify({ formData, rowIds: openProps.selectedRows.map(row => row.id) })],
+    queryKey: [QueryKeyManager.getInstance().getGenericKey(CASEDB_QUERY_KEY.SIMILAR_CASES), JSON.stringify({ formData, rowIds: openProps.selectedRows.map(row => row.id) })],
   });
 
   const similarCaseIdsNotInView = useMemo(() => {

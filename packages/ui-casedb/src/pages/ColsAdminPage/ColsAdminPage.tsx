@@ -17,6 +17,21 @@ import {
   CaseDbColType,
   CaseDbCommandName,
 } from '@gen-epix/api-casedb';
+import type {
+  FormFieldDefinition,
+  OmitWithMetaData,
+  OptionBase,
+  TableColumn,
+} from '@gen-epix/ui';
+import {
+  CrudPage,
+  DATE_FORMAT,
+  FORM_FIELD_DEFINITION_TYPE,
+  SchemaUtil,
+  TableUtil,
+  TestIdUtil,
+  useArray,
+} from '@gen-epix/ui';
 
 import {
   useColMapQuery,
@@ -31,18 +46,6 @@ import {
   useRefColOptionsQuery,
 } from '../../dataHooks/useRefColsQuery';
 import { useTreeAlgorithmCodeOptionsQuery } from '../../dataHooks/useTreeAlgorithmCodesQuery';
-import { useArray } from '../../hooks/useArray';
-import type {
-  FormFieldDefinition,
-  OptionBase,
-} from '../../models/form';
-import { FORM_FIELD_DEFINITION_TYPE } from '../../models/form';
-import { QUERY_KEY } from '../../models/query';
-import type { TableColumn } from '../../models/table';
-import { TableUtil } from '../../utils/TableUtil';
-import { TestIdUtil } from '../../utils/TestIdUtil';
-import { CrudPage } from '../CrudPage';
-import { DATE_FORMAT } from '../../data/date';
 import {
   useDimMapQuery,
   useDimOptionsQuery,
@@ -50,8 +53,7 @@ import {
 import { useRefColsValidationRulesQuery } from '../../dataHooks/useRefColsValidationRulesQuery';
 import { useRefDimMapQuery } from '../../dataHooks/useRefDimsQuery';
 import { CaseDbDataUtil } from '../../utils/CaseDbDataUtil';
-import type { OmitWithMetaData } from '../../models/data';
-import { SchemaUtil } from '../../utils/SchemaUtil';
+import { CASEDB_QUERY_KEY } from '../../data/query';
 
 type FormFields = OmitWithMetaData<CaseDbCol, 'case_type' | 'dim' | 'props' | 'ref_col'>;
 
@@ -398,7 +400,7 @@ export const ColsAdminPage = () => {
       getOptimisticUpdateIntermediateItem={getOptimisticUpdateIntermediateItem}
       loadables={loadables}
       onFormChange={onFormChange}
-      resourceQueryKeyBase={QUERY_KEY.COLS}
+      resourceQueryKeyBase={CASEDB_QUERY_KEY.COLS}
       schema={schema}
       tableColumns={tableColumns}
       tableStoreStorageNamePostFix={tableStoreStorageNamePostFix}

@@ -1,10 +1,10 @@
 import { type UseQueryResult } from '@tanstack/react-query';
 import type { CommonDbOrganizationIdentifierIssuerLink } from '@gen-epix/api-commondb';
 
-import { QUERY_KEY } from '../../models/query';
 import { useQueryMemo } from '../../hooks/useQueryMemo';
 import { ConfigManager } from '../../classes/managers/ConfigManager';
-import { QueryManager } from '../../classes/managers/QueryManager';
+import { QueryKeyManager } from '../../classes/managers/QueryKeyManager';
+import { COMMON_QUERY_KEY } from '../../data/query';
 
 
 export const useOrganizationIdentifierIssuerLinksQuery = (): UseQueryResult<CommonDbOrganizationIdentifierIssuerLink[]> => {
@@ -13,6 +13,6 @@ export const useOrganizationIdentifierIssuerLinksQuery = (): UseQueryResult<Comm
       const response = await ConfigManager.getInstance().config.organizationApi.organizationIdentifierIssuerLinksGetAll({ signal });
       return response.data;
     },
-    queryKey: QueryManager.getInstance().getGenericKey(QUERY_KEY.IDENTIFIER_ISSUER_LINKS),
+    queryKey: QueryKeyManager.getInstance().getGenericKey(COMMON_QUERY_KEY.IDENTIFIER_ISSUER_LINKS),
   });
 };

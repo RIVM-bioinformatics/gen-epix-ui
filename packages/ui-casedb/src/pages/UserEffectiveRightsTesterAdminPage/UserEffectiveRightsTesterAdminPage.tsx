@@ -22,10 +22,19 @@ import {
 import noop from 'lodash/noop';
 import type { CaseDbUser } from '@gen-epix/api-casedb';
 import { CaseDbOrganizationApi } from '@gen-epix/api-casedb';
+import type { FormFieldDefinition } from '@gen-epix/ui';
+import {
+  COMMON_QUERY_KEY,
+  FORM_FIELD_DEFINITION_TYPE,
+  GenericForm,
+  PageContainer,
+  ResponseHandler,
+  TestIdUtil,
+  useArray,
+  useItemQuery,
+  useOrganizationMapQuery,
+} from '@gen-epix/ui';
 
-import { TestIdUtil } from '../../utils/TestIdUtil';
-import { PageContainer } from '../../components/ui/PageContainer';
-import { ResponseHandler } from '../../components/ui/ResponseHandler';
 import { useColSetMembersQuery } from '../../dataHooks/useColSetMembersQuery';
 import { useCaseTypeSetMembersQuery } from '../../dataHooks/useCaseTypeSetMembersQuery';
 import { useDataCollectionOptionsQuery } from '../../dataHooks/useDataCollectionsQuery';
@@ -33,16 +42,10 @@ import { useOrganizationAccessCasePoliciesQuery } from '../../dataHooks/useOrgan
 import { useOrganizationShareCasePoliciesQuery } from '../../dataHooks/useOrganizationShareCasePoliciesQuery';
 import { useUserAccessCasePoliciesQuery } from '../../dataHooks/useUserAccessCasePoliciesQuery';
 import { useUserShareCasePoliciesQuery } from '../../dataHooks/useUserShareCasePoliciesQuery';
-import { useArray } from '../../hooks/useArray';
-import { useItemQuery } from '../../hooks/useItemQuery';
-import { QUERY_KEY } from '../../models/query';
+import { useCaseTypeOptionsQuery } from '../../dataHooks/useCaseTypesQuery';
 import type { UserEffectiveRight } from '../../models/caseAccess';
 import { EffectiveRightsUtil } from '../../utils/EffectiveRightsUtil';
-import { useCaseTypeOptionsQuery } from '../../dataHooks/useCaseTypesQuery';
-import type { FormFieldDefinition } from '../../models/form';
-import { FORM_FIELD_DEFINITION_TYPE } from '../../models/form';
-import { GenericForm } from '../../components/form/helpers/GenericForm';
-import { useOrganizationMapQuery } from '../../dataHooks/useOrganizationsQuery';
+
 
 type FormFields = {
   caseTypeId: string;
@@ -69,7 +72,7 @@ export const UserEffectiveRightsTesterAdminPage = () => {
   const { userId } = useParams();
 
   const userQuery = useItemQuery<CaseDbUser>({
-    baseQueryKey: QUERY_KEY.USERS,
+    baseQueryKey: COMMON_QUERY_KEY.USERS,
     itemId: userId,
     useQueryOptions: {
       queryFn: async ({ signal }) => {

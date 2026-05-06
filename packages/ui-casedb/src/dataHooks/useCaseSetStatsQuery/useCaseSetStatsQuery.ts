@@ -5,10 +5,11 @@ import { CaseDbCaseApi } from '@gen-epix/api-casedb';
 import type { UseMap } from '@gen-epix/ui';
 import {
   DataHookUtil,
-  QUERY_KEY,
-  QueryManager,
+  QueryKeyManager,
   useQueryMemo,
 } from '@gen-epix/ui';
+
+import { CASEDB_QUERY_KEY } from '../../data/query';
 
 
 export const useCaseSetStatsQuery = (caseSetIds: string[]): UseQueryResult<CaseDbCaseStats[]> => {
@@ -20,7 +21,7 @@ export const useCaseSetStatsQuery = (caseSetIds: string[]): UseQueryResult<CaseD
       }, { signal });
       return response.data;
     },
-    queryKey: QueryManager.getInstance().getGenericKey(QUERY_KEY.CASE_SET_STATS, caseSetIds),
+    queryKey: QueryKeyManager.getInstance().getGenericKey(CASEDB_QUERY_KEY.CASE_SET_STATS, caseSetIds),
   });
 };
 

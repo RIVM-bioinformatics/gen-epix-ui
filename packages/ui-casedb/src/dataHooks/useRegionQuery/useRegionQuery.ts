@@ -9,12 +9,12 @@ import type {
 } from '@gen-epix/ui';
 import {
   DataHookUtil,
-  QUERY_KEY,
-  QueryManager,
+  QueryKeyManager,
   useQueryMemo,
 } from '@gen-epix/ui';
 
 import { useRegionSetsMapQuery } from '../useRegionSetsQuery';
+import { CASEDB_QUERY_KEY } from '../../data/query';
 
 
 export const useRegionQuery = (): UseQueryResult<CaseDbRegion[]> => {
@@ -23,7 +23,7 @@ export const useRegionQuery = (): UseQueryResult<CaseDbRegion[]> => {
       const response = await CaseDbGeoApi.getInstance().regionsGetAll({ signal });
       return response.data;
     },
-    queryKey: QueryManager.getInstance().getGenericKey(QUERY_KEY.REGIONS),
+    queryKey: QueryKeyManager.getInstance().getGenericKey(CASEDB_QUERY_KEY.REGIONS),
   });
 };
 

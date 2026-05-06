@@ -49,7 +49,6 @@ import { useEditMutation } from '../../hooks/useEditMutation';
 import { useInitializeTableStore } from '../../hooks/useInitializeTableStore';
 import type { GenericData } from '../../models/data';
 import type { Loadable } from '../../models/dataHooks';
-import type { QUERY_KEY } from '../../models/query';
 import type {
   TableColumn,
   TableRowParams,
@@ -65,7 +64,8 @@ import type { DialogAction } from '../../components/ui/Dialog';
 import type { FormFieldDefinition } from '../../models/form';
 import { useQueryMemo } from '../../hooks/useQueryMemo';
 import { LoadableUtil } from '../../utils/LoadableUtil';
-import { QueryManager } from '../../classes/managers/QueryManager';
+import { QueryKeyManager } from '../../classes/managers/QueryKeyManager';
+import type { COMMON_QUERY_KEY } from '../../data/query';
 
 import type { CrudPageEditDialogRefMethods } from './CrudPageEditDialog';
 import { CrudPageEditDialog } from './CrudPageEditDialog';
@@ -113,7 +113,7 @@ export type CrudPageProps<
   readonly onRowsChange?: (items: TData[]) => void;
   readonly onShowItem?: (params: TableRowParams<TTableData>) => void;
   readonly readOnly?: boolean;
-  readonly resourceQueryKeyBase: QUERY_KEY;
+  readonly resourceQueryKeyBase: COMMON_QUERY_KEY;
   readonly schema?: ObjectSchema<TFormFields, TFormFields>;
   readonly showBreadcrumbs?: boolean;
   readonly showIdColumn?: boolean;
@@ -356,7 +356,7 @@ export const CrudPage = <
   const calculatedAssociationQueryKeys = useMemo<string[][]>(() => {
     const keys = associationQueryKeys ?? [];
 
-    QueryManager.getInstance().getQueryKeyDependencies([resourceQueryKeyBase]).forEach(key => {
+    QueryKeyManager.getInstance().getQueryKeyDependencies([resourceQueryKeyBase]).forEach(key => {
       keys.push(key);
     });
     return keys;

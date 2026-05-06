@@ -18,7 +18,6 @@ import {
 
 import type { FormFieldDefinition } from '../../models/form';
 import { FORM_FIELD_DEFINITION_TYPE } from '../../models/form';
-import { QUERY_KEY } from '../../models/query';
 import type { TableColumn } from '../../models/table';
 import { TableUtil } from '../../utils/TableUtil';
 import { TestIdUtil } from '../../utils/TestIdUtil';
@@ -27,6 +26,7 @@ import { DATE_FORMAT } from '../../data/date';
 import type { OmitWithMetaData } from '../../models/data';
 import { SchemaUtil } from '../../utils/SchemaUtil';
 import { ConfigManager } from '../../classes/managers/ConfigManager';
+import { COMMON_QUERY_KEY } from '../../data/query';
 
 type FormFields = OmitWithMetaData<CommonDbOutage>;
 
@@ -147,7 +147,7 @@ export const OutagesAdminPage = () => {
       fetchAll={fetchAll}
       formFieldDefinitions={formFieldDefinitions}
       getName={getName}
-      resourceQueryKeyBase={QUERY_KEY.OUTAGES}
+      resourceQueryKeyBase={COMMON_QUERY_KEY.OUTAGES}
       schema={schema}
       tableColumns={tableColumns}
       testIdAttributes={TestIdUtil.createAttributes('OutagesAdminPage')}

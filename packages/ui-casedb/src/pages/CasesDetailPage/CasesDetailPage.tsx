@@ -5,14 +5,17 @@ import {
   useMemo,
 } from 'react';
 import { CaseDbCaseApi } from '@gen-epix/api-casedb';
+import {
+  PageContainer,
+  ResponseHandler,
+  TestIdUtil,
+  useItemQuery,
+  useUpdateBreadcrumb,
+} from '@gen-epix/ui';
 
 import { EpiDashboard } from '../../components/epi/EpiDashboard';
-import { PageContainer } from '../../components/ui/PageContainer';
-import { ResponseHandler } from '../../components/ui/ResponseHandler';
-import { useItemQuery } from '../../hooks/useItemQuery';
-import { useUpdateBreadcrumb } from '../../hooks/useUpdateBreadcrumb';
-import { QUERY_KEY } from '../../models/query';
-import { TestIdUtil } from '../../utils/TestIdUtil';
+import { CASEDB_QUERY_KEY } from '../../data/query';
+
 
 export const CasesDetailPage = () => {
   const { t } = useTranslation();
@@ -21,7 +24,7 @@ export const CasesDetailPage = () => {
   const updateBreadcrumb = useUpdateBreadcrumb('Case type');
 
   const { data: caseType, error, isLoading } = useItemQuery({
-    baseQueryKey: QUERY_KEY.CASE_TYPES,
+    baseQueryKey: CASEDB_QUERY_KEY.CASE_TYPES,
     itemId: caseTypeId,
     useQueryOptions: {
       queryFn: async ({ signal }) => (await CaseDbCaseApi.getInstance().caseTypesGetOne(caseTypeId, { signal })).data,

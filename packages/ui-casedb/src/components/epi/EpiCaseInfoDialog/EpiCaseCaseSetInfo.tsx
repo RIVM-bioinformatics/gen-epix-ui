@@ -15,17 +15,17 @@ import type {
 } from '@gen-epix/api-casedb';
 import { CaseDbCaseApi } from '@gen-epix/api-casedb';
 import {
-  QUERY_KEY,
-  QueryManager,
+  NavLink,
+  QueryKeyManager,
   ResponseHandler,
   useArray,
   useQueryMemo,
 } from '@gen-epix/ui';
-import { NavLink } from 'react-router';
 
 import { useCaseSetCategoryMapQuery } from '../../../dataHooks/useCaseSetCategoriesQuery';
 import { useCaseSetStatusMapQuery } from '../../../dataHooks/useCaseSetStatusesQuery';
 import { CaseSetUtil } from '../../../utils/CaseSetUtil';
+import { CASEDB_QUERY_KEY } from '../../../data/query';
 
 export type EpiCaseCaseSetInfoProps = {
   readonly epiCase: CaseDbCase;
@@ -47,7 +47,7 @@ export const EpiCaseCaseSetInfo = ({ epiCase, ...boxProps }: EpiCaseCaseSetInfoP
       const response = await CaseDbCaseApi.getInstance().caseSetMembersPostQuery(caseSetMembersFilter, { signal });
       return response.data;
     },
-    queryKey: QueryManager.getInstance().getGenericKey(QUERY_KEY.CASE_SET_MEMBERS, caseSetMembersFilter),
+    queryKey: QueryKeyManager.getInstance().getGenericKey(CASEDB_QUERY_KEY.CASE_SET_MEMBERS, caseSetMembersFilter),
   });
 
   const caseSetsFilter: CaseDbTypedUuidSetFilter = {
@@ -62,7 +62,7 @@ export const EpiCaseCaseSetInfo = ({ epiCase, ...boxProps }: EpiCaseCaseSetInfoP
       const response = await CaseDbCaseApi.getInstance().caseSetsPostQuery(caseSetsFilter, { signal });
       return response.data;
     },
-    queryKey: QueryManager.getInstance().getGenericKey(QUERY_KEY.CASE_SETS, caseSetsFilter),
+    queryKey: QueryKeyManager.getInstance().getGenericKey(CASEDB_QUERY_KEY.CASE_SETS, caseSetsFilter),
   });
 
   const loadables = useArray([caseSetCategoryMapQuery, caseSetStatusMapQuery]);

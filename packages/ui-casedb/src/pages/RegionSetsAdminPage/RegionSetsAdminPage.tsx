@@ -7,24 +7,32 @@ import {
   boolean,
   object,
 } from 'yup';
-import type { CaseDbRegionSet } from '@gen-epix/api-casedb';
+import type {
+  CaseDbApiPermission,
+  CaseDbRegionSet,
+} from '@gen-epix/api-casedb';
 import {
   CaseDbCommandName,
   CaseDbGeoApi,
   CaseDbPermissionType,
 } from '@gen-epix/api-casedb';
+import type {
+  CrudPageSubPage,
+  FormFieldDefinition,
+  OmitWithMetaData,
+  TableColumn,
+} from '@gen-epix/ui';
+import {
+  AuthorizationManager,
+  CrudPage,
+  FORM_FIELD_DEFINITION_TYPE,
+  SchemaUtil,
+  TableUtil,
+  TestIdUtil,
+} from '@gen-epix/ui';
 
-import type { FormFieldDefinition } from '../../models/form';
-import { FORM_FIELD_DEFINITION_TYPE } from '../../models/form';
-import { QUERY_KEY } from '../../models/query';
-import type { TableColumn } from '../../models/table';
-import { TableUtil } from '../../utils/TableUtil';
-import { TestIdUtil } from '../../utils/TestIdUtil';
-import type { CrudPageSubPage } from '../CrudPage';
-import { CrudPage } from '../CrudPage';
-import { AuthorizationManager } from '../../classes/managers/AuthorizationManager';
-import type { OmitWithMetaData } from '../../models/data';
-import { SchemaUtil } from '../../utils/SchemaUtil';
+import { CASEDB_QUERY_KEY } from '../../data/query';
+
 
 type FormFields = OmitWithMetaData<CaseDbRegionSet>;
 
@@ -99,7 +107,7 @@ export const RegionSetsAdminPage = () => {
   const subPages = useMemo<CrudPageSubPage<CaseDbRegionSet>[]>(() => {
     const pages: CrudPageSubPage<CaseDbRegionSet>[] = [];
 
-    if (AuthorizationManager.getInstance().doesUserHavePermission([
+    if (AuthorizationManager.getInstance().doesUserHavePermission<CaseDbApiPermission>([
       { command_name: CaseDbCommandName.RegionCrudCommand, permission_type: CaseDbPermissionType.READ },
     ])) {
       pages.push(
@@ -110,7 +118,7 @@ export const RegionSetsAdminPage = () => {
       );
     }
 
-    if (AuthorizationManager.getInstance().doesUserHavePermission([
+    if (AuthorizationManager.getInstance().doesUserHavePermission<CaseDbApiPermission>([
       { command_name: CaseDbCommandName.RegionSetShapeCrudCommand, permission_type: CaseDbPermissionType.READ },
     ])) {
       pages.push(
@@ -135,7 +143,7 @@ export const RegionSetsAdminPage = () => {
       fetchAll={fetchAll}
       formFieldDefinitions={formFieldDefinitions}
       getName={getName}
-      resourceQueryKeyBase={QUERY_KEY.REGION_SETS}
+      resourceQueryKeyBase={CASEDB_QUERY_KEY.REGION_SETS}
       schema={schema}
       subPages={subPages}
       tableColumns={tableColumns}

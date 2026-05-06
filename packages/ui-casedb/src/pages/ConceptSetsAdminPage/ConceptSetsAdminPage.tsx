@@ -7,26 +7,33 @@ import {
   mixed,
   object,
 } from 'yup';
-import type { CaseDbConceptSet } from '@gen-epix/api-casedb';
+import type {
+  CaseDbApiPermission,
+  CaseDbConceptSet,
+} from '@gen-epix/api-casedb';
 import {
   CaseDbCommandName,
   CaseDbConceptSetType,
   CaseDbOntologyApi,
   CaseDbPermissionType,
 } from '@gen-epix/api-casedb';
+import type {
+  CrudPageSubPage,
+  FormFieldDefinition,
+  OmitWithMetaData,
+  TableColumn,
+} from '@gen-epix/ui';
+import {
+  AuthorizationManager,
+  CrudPage,
+  FORM_FIELD_DEFINITION_TYPE,
+  SchemaUtil,
+  TableUtil,
+  TestIdUtil,
+} from '@gen-epix/ui';
 
-import type { FormFieldDefinition } from '../../models/form';
-import { FORM_FIELD_DEFINITION_TYPE } from '../../models/form';
-import { QUERY_KEY } from '../../models/query';
-import type { TableColumn } from '../../models/table';
-import { TableUtil } from '../../utils/TableUtil';
-import { TestIdUtil } from '../../utils/TestIdUtil';
-import type { CrudPageSubPage } from '../CrudPage';
-import { CrudPage } from '../CrudPage';
+import { CASEDB_QUERY_KEY } from '../../data/query';
 import { useConceptSetTypeOptionsQuery } from '../../dataHooks/useConceptSetTypeQuery';
-import { AuthorizationManager } from '../../classes/managers/AuthorizationManager';
-import type { OmitWithMetaData } from '../../models/data';
-import { SchemaUtil } from '../../utils/SchemaUtil';
 
 
 type FormFields = OmitWithMetaData<CaseDbConceptSet>;
@@ -99,7 +106,7 @@ export const ConceptSetsAdminPage = () => {
   }, [conceptSetTypeOptionsQuery.options, t]);
 
   const subPages = useMemo<CrudPageSubPage<CaseDbConceptSet>[]>(() => {
-    if (!AuthorizationManager.getInstance().doesUserHavePermission([
+    if (!AuthorizationManager.getInstance().doesUserHavePermission<CaseDbApiPermission>([
       { command_name: CaseDbCommandName.ConceptCrudCommand, permission_type: CaseDbPermissionType.READ },
     ])) {
       return [];
@@ -124,7 +131,7 @@ export const ConceptSetsAdminPage = () => {
       fetchAll={fetchAll}
       formFieldDefinitions={formFieldDefinitions}
       getName={getName}
-      resourceQueryKeyBase={QUERY_KEY.CONCEPT_SETS}
+      resourceQueryKeyBase={CASEDB_QUERY_KEY.CONCEPT_SETS}
       schema={schema}
       subPages={subPages}
       tableColumns={tableColumns}

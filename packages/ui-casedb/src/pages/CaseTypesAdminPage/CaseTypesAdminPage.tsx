@@ -10,6 +10,7 @@ import {
 import omit from 'lodash/omit';
 import pick from 'lodash/pick';
 import type {
+  CaseDbApiPermission,
   CaseDbCaseType,
   CaseDbCaseTypeProps,
 } from '@gen-epix/api-casedb';
@@ -18,21 +19,25 @@ import {
   CaseDbCommandName,
   CaseDbPermissionType,
 } from '@gen-epix/api-casedb';
+import type {
+  CrudPageSubPage,
+  FormFieldDefinition,
+  OmitWithMetaData,
+  TableColumn,
+} from '@gen-epix/ui';
+import {
+  AuthorizationManager,
+  CrudPage,
+  FORM_FIELD_DEFINITION_TYPE,
+  SchemaUtil,
+  TableUtil,
+  TestIdUtil,
+  useArray,
+} from '@gen-epix/ui';
 
 import { useDiseaseOptionsQuery } from '../../dataHooks/useDiseasesQuery';
 import { useEtiologicalAgentOptionsQuery } from '../../dataHooks/useEtiologicalAgentsQuery';
-import { useArray } from '../../hooks/useArray';
-import type { FormFieldDefinition } from '../../models/form';
-import { FORM_FIELD_DEFINITION_TYPE } from '../../models/form';
-import { QUERY_KEY } from '../../models/query';
-import type { TableColumn } from '../../models/table';
-import { TableUtil } from '../../utils/TableUtil';
-import { TestIdUtil } from '../../utils/TestIdUtil';
-import type { CrudPageSubPage } from '../CrudPage';
-import { CrudPage } from '../CrudPage';
-import { AuthorizationManager } from '../../classes/managers/AuthorizationManager';
-import type { OmitWithMetaData } from '../../models/data';
-import { SchemaUtil } from '../../utils/SchemaUtil';
+import { CASEDB_QUERY_KEY } from '../../data/query';
 
 type FormFields = CaseDbCaseTypeProps & OmitWithMetaData<CaseDbCaseType, 'disease' | 'etiological_agent' | 'props'>;
 
@@ -226,7 +231,7 @@ export const CaseTypesAdminPage = () => {
   }, [etiologicalAgentOptionsQuery.options, diseaseOptionsQuery.options, t]);
 
   const subPages = useMemo<CrudPageSubPage<CaseDbCaseType>[]>(() => {
-    if (!AuthorizationManager.getInstance().doesUserHavePermission([
+    if (!AuthorizationManager.getInstance().doesUserHavePermission<CaseDbApiPermission>([
       { command_name: CaseDbCommandName.DimCrudCommand, permission_type: CaseDbPermissionType.READ },
     ])) {
       return [];
@@ -288,7 +293,7 @@ export const CaseTypesAdminPage = () => {
       getName={getName}
       getOptimisticUpdateIntermediateItem={getIntermediateItem}
       loadables={loadables}
-      resourceQueryKeyBase={QUERY_KEY.CASE_TYPES}
+      resourceQueryKeyBase={CASEDB_QUERY_KEY.CASE_TYPES}
       schema={schema}
       subPages={subPages}
       tableColumns={tableColumns}

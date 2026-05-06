@@ -1,8 +1,10 @@
 import { useMemo } from 'react';
 import { CaseDbTreeAlgorithmType } from '@gen-epix/api-casedb';
+import type {
+  OptionBase,
+  UseOptions,
+} from '@gen-epix/ui';
 
-import type { UseOptions } from '../../models/dataHooks';
-import type { OptionBase } from '../../models/form';
 
 export const treeAlgorithmCodeValues: Record<CaseDbTreeAlgorithmType, string> = {
   [CaseDbTreeAlgorithmType.BAYESIAN_INFERENCE]: 'BAYESIAN_INFERENCE',

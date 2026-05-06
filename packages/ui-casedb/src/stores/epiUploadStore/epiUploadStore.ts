@@ -5,6 +5,15 @@ import type {
   CaseDbCol,
   CaseDbCompleteCaseType,
 } from '@gen-epix/api-casedb';
+import type {
+  AutoCompleteOption,
+  OptionBase,
+} from '@gen-epix/ui';
+import {
+  NotificationManager,
+  QueryKeyManager,
+  StringUtil,
+} from '@gen-epix/ui';
 
 import type {
   CaseUploadResultWithGeneratedId,
@@ -12,8 +21,8 @@ import type {
   EpiUploadSequenceMapping,
 } from '../../models/epi';
 import { EPI_UPLOAD_STEP } from '../../models/epi';
-import { AutoCompleteOption, NotificationManager, OptionBase, QUERY_KEY, QueryManager, StringUtil } from '@gen-epix/ui';
 import { EpiUploadUtil } from '../../utils/EpiUploadUtil';
+import { CASEDB_QUERY_KEY } from '../../data/query';
 
 export const STEP_ORDER = [
   EPI_UPLOAD_STEP.SELECT_FILE,
@@ -104,7 +113,7 @@ const createEpiUploadStoreDefaultState: () => EpiUploadStoreState = () => ({
   sheetOptions: [],
   shouldResetColumnMapping: false,
   shouldResetSequenceMapping: false,
-  validateCasesQueryKey: QueryManager.getInstance().getGenericKey(QUERY_KEY.VALIDATE_CASES, StringUtil.createUuid()),
+  validateCasesQueryKey: QueryKeyManager.getInstance().getGenericKey(CASEDB_QUERY_KEY.VALIDATE_CASES, StringUtil.createUuid()),
   validatedCases: [],
   validatedCasesWithGeneratedId: [],
 });
@@ -188,8 +197,8 @@ export const createEpiUploadStore = () => {
       invalidateCaseValidationQuery: async () => {
         const { validateCasesQueryKey } = get();
 
-        await QueryManager.getInstance().invalidateQueryKeys([validateCasesQueryKey]);
-        QueryManager.getInstance().removeQueries([validateCasesQueryKey]);
+        await QueryKeyManager.getInstance().invalidateQueryKeys([validateCasesQueryKey]);
+        QueryKeyManager.getInstance().removeQueries([validateCasesQueryKey]);
       },
 
       reset: async () => {

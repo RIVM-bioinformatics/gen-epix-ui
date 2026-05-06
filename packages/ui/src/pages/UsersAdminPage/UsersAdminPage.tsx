@@ -25,7 +25,6 @@ import type {
   OptionBase,
 } from '../../models/form';
 import { FORM_FIELD_DEFINITION_TYPE } from '../../models/form';
-import { QUERY_KEY } from '../../models/query';
 import type { TableColumn } from '../../models/table';
 import { TableUtil } from '../../utils/TableUtil';
 import { TestIdUtil } from '../../utils/TestIdUtil';
@@ -37,6 +36,7 @@ import { useInviteUserConstraintsQuery } from '../../dataHooks/useInviteUserCons
 import type { OmitWithMetaData } from '../../models/data';
 import { SchemaUtil } from '../../utils/SchemaUtil';
 import { ConfigManager } from '../../classes/managers/ConfigManager';
+import { COMMON_QUERY_KEY } from '../../data/query';
 
 export type UsersAdminPageProps = {
   subPages?: CrudPageProps<FormFields, CommonDbUser>['subPages'];
@@ -215,7 +215,7 @@ export const UsersAdminPage = ({
         getOptimisticUpdateIntermediateItem={getOptimisticUpdateIntermediateItem}
         loadables={loadables}
         onRowsChange={onRowsChange}
-        resourceQueryKeyBase={QUERY_KEY.USERS}
+        resourceQueryKeyBase={COMMON_QUERY_KEY.USERS}
         schema={schema}
         subPages={subPages}
         tableColumns={tableColumns}

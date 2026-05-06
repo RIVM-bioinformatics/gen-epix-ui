@@ -18,9 +18,19 @@ import type { BoxProps } from '@mui/material';
 import { Box } from '@mui/material';
 import type { CaseDbCaseSet } from '@gen-epix/api-casedb';
 import { CaseDbCaseApi } from '@gen-epix/api-casedb';
-import { QueryManager, QUERY_KEY, NotificationManager, FormFieldDefinition, FORM_FIELD_DEFINITION_TYPE, FormUtil, Spinner, GenericForm } from '@gen-epix/ui';
+import type { FormFieldDefinition } from '@gen-epix/ui';
+import {
+  FORM_FIELD_DEFINITION_TYPE,
+  FormUtil,
+  GenericForm,
+  NotificationManager,
+  QueryKeyManager,
+  Spinner,
+} from '@gen-epix/ui';
+
 import { useCaseAbacContext } from '../../../context/caseAbac';
 import { CaseUtil } from '../../../utils/CaseUtil';
+import { CASEDB_QUERY_KEY } from '../../../data/query';
 
 
 export type EpiCaseSetSharingFormProps = {
@@ -51,14 +61,14 @@ export const EpiCaseSetSharingForm = ({ caseSet, caseTypeId, formId, onFinish, o
     const perform = async () => {
       setIsSaving(true);
       onIsSavingChange(true);
-      const queryKeys = QueryManager.getInstance().getQueryKeyDependencies([QUERY_KEY.CASE_SET_DATA_COLLECTION_LINKS], true);
+      const queryKeys = QueryKeyManager.getInstance().getQueryKeyDependencies([CASEDB_QUERY_KEY.CASE_SET_DATA_COLLECTION_LINKS], true);
       const notificationKey = NotificationManager.getInstance().showNotification({
         isLoading: true,
         message: t('Saving case set data collections'),
         severity: 'info',
       });
       try {
-        await QueryManager.getInstance().cancelQueries(queryKeys);
+        await QueryKeyManager.getInstance().cancelQueries(queryKeys);
         const rights = caseAbacContext?.rights?.[0];
         const dataCollectionIdsToAdd = difference(dataCollectionIds, rights.shared_in_data_collection_ids);
         const dataCollectionIdsToRemove = difference(rights.shared_in_data_collection_ids, dataCollectionIds);
@@ -76,7 +86,7 @@ export const EpiCaseSetSharingForm = ({ caseSet, caseTypeId, formId, onFinish, o
       } catch (_error) {
         NotificationManager.getInstance().fulfillNotification(notificationKey, t('Could not save case set data collections.'), 'error');
       } finally {
-        await QueryManager.getInstance().invalidateQueryKeys(queryKeys);
+        await QueryKeyManager.getInstance().invalidateQueryKeys(queryKeys);
         if (shouldApplySharingToCases) {
           await CaseUtil.applyDataCollectionLinks({
             caseSetDataCollectionIds: dataCollectionIds,

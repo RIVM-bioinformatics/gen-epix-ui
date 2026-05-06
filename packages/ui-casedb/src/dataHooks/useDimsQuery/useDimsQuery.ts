@@ -2,8 +2,20 @@ import type { UseQueryResult } from '@tanstack/react-query';
 import { useMemo } from 'react';
 import type { CaseDbDim } from '@gen-epix/api-casedb';
 import { CaseDbCaseApi } from '@gen-epix/api-casedb';
-import { useQueryMemo, QueryManager, QUERY_KEY, UseMap, DataHookUtil, UseNameFactory, UseOptions, CommonDataUtil } from '@gen-epix/ui';
+import type {
+  UseMap,
+  UseNameFactory,
+  UseOptions,
+} from '@gen-epix/ui';
+import {
+  CommonDataUtil,
+  DataHookUtil,
+  QueryKeyManager,
+  useQueryMemo,
+} from '@gen-epix/ui';
+
 import { useCaseTypeMapQuery } from '../useCaseTypesQuery';
+import { CASEDB_QUERY_KEY } from '../../data/query';
 
 
 export const useDimsQuery = (): UseQueryResult<CaseDbDim[]> => {
@@ -12,7 +24,7 @@ export const useDimsQuery = (): UseQueryResult<CaseDbDim[]> => {
       const response = await CaseDbCaseApi.getInstance().dimsGetAll({ signal });
       return response.data;
     },
-    queryKey: QueryManager.getInstance().getGenericKey(QUERY_KEY.DIMS),
+    queryKey: QueryKeyManager.getInstance().getGenericKey(CASEDB_QUERY_KEY.DIMS),
   });
 };
 

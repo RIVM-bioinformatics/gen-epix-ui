@@ -11,7 +11,7 @@ import { QueryClientManager } from '../../classes/managers/QueryClientManager';
 import type { GenericData } from '../../models/data';
 import { NotificationUtil } from '../../utils/NotificationUtil';
 import { ObjectUtil } from '../../utils/ObjectUtil';
-import { QueryManager } from '../../classes/managers/QueryManager';
+import { QueryKeyManager } from '../../classes/managers/QueryKeyManager';
 
 export type MutationContextEdit<TData> = { item?: TData; notificationKey?: string; previousData?: TData[] };
 
@@ -65,7 +65,7 @@ export const useEditMutation = <TData extends GenericData | GenericData[], TVari
           return [...oldItems.filter(x => (x as GenericData).id !== (context.item as GenericData).id), context.item];
         });
       }
-      await QueryManager.getInstance().invalidateQueryKeys(associationQueryKeys);
+      await QueryKeyManager.getInstance().invalidateQueryKeys(associationQueryKeys);
       if (onError) {
         await onError(error, variables, context);
       }
@@ -98,7 +98,7 @@ export const useEditMutation = <TData extends GenericData | GenericData[], TVari
     },
     onSuccess: async (item, variables, context) => {
       previousItemRef.current = undefined;
-      await QueryManager.getInstance().invalidateQueryKeys(associationQueryKeys);
+      await QueryKeyManager.getInstance().invalidateQueryKeys(associationQueryKeys);
       if (onSuccess) {
         await onSuccess(item, variables, context);
       }

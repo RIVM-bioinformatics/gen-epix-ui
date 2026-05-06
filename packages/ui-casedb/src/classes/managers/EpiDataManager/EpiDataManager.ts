@@ -14,14 +14,15 @@ import {
   CaseDbOrganizationApi,
 } from '@gen-epix/api-casedb';
 import {
+  COMMON_QUERY_KEY,
   HmrUtil,
   QueryClientManager,
-  QueryManager,
+  QueryKeyManager,
 } from '@gen-epix/ui';
 
 import type { EpiData } from '../../../../../ui-casedb/src/models/epi';
-import { QUERY_KEY } from '../../../models/query';
 import { CaseTypeUtil } from '../../../utils/CaseTypeUtil';
+import { CASEDB_QUERY_KEY } from '../../../data/query';
 
 export class EpiDataManager {
   private static __instance: EpiDataManager;
@@ -65,8 +66,8 @@ export class EpiDataManager {
   public async loadConcepts(signal: AbortSignal): Promise<void> {
     const queryClient = QueryClientManager.getInstance().queryClient;
 
-    let conceptSets = QueryManager.getInstance().getValidQueryData<CaseDbConceptSet[]>(QueryManager.getInstance().getGenericKey(QUERY_KEY.CONCEPT_SETS)) ?? null;
-    let concepts = QueryManager.getInstance().getValidQueryData<CaseDbConcept[]>(QueryManager.getInstance().getGenericKey(QUERY_KEY.CONCEPTS)) ?? null;
+    let conceptSets = QueryKeyManager.getInstance().getValidQueryData<CaseDbConceptSet[]>(QueryKeyManager.getInstance().getGenericKey(CASEDB_QUERY_KEY.CONCEPT_SETS)) ?? null;
+    let concepts = QueryKeyManager.getInstance().getValidQueryData<CaseDbConcept[]>(QueryKeyManager.getInstance().getGenericKey(CASEDB_QUERY_KEY.CONCEPTS)) ?? null;
 
     if (conceptSets !== null && concepts !== null) {
       return;
@@ -74,12 +75,12 @@ export class EpiDataManager {
 
     if (conceptSets === null) {
       conceptSets = (await CaseDbOntologyApi.getInstance().conceptSetsGetAll({ signal })).data;
-      queryClient.setQueryData(QueryManager.getInstance().getGenericKey(QUERY_KEY.CONCEPT_SETS), conceptSets);
+      queryClient.setQueryData(QueryKeyManager.getInstance().getGenericKey(CASEDB_QUERY_KEY.CONCEPT_SETS), conceptSets);
     }
 
     if (concepts === null) {
       concepts = (await CaseDbOntologyApi.getInstance().conceptsGetAll({ signal })).data;
-      queryClient.setQueryData(QueryManager.getInstance().getGenericKey(QUERY_KEY.CONCEPTS), concepts);
+      queryClient.setQueryData(QueryKeyManager.getInstance().getGenericKey(CASEDB_QUERY_KEY.CONCEPTS), concepts);
     }
 
     // Rebuild the cache
@@ -111,8 +112,8 @@ export class EpiDataManager {
       return;
     }
 
-    const currentRegionSets = QueryManager.getInstance().getValidQueryData<CaseDbRegionSet[]>(QueryManager.getInstance().getGenericKey(QUERY_KEY.REGION_SETS_LAZY)) ?? [];
-    const currentRegions = QueryManager.getInstance().getValidQueryData<CaseDbRegion[]>(QueryManager.getInstance().getGenericKey(QUERY_KEY.REGIONS_LAZY)) ?? [];
+    const currentRegionSets = QueryKeyManager.getInstance().getValidQueryData<CaseDbRegionSet[]>(QueryKeyManager.getInstance().getGenericKey(CASEDB_QUERY_KEY.REGION_SETS_LAZY)) ?? [];
+    const currentRegions = QueryKeyManager.getInstance().getValidQueryData<CaseDbRegion[]>(QueryKeyManager.getInstance().getGenericKey(CASEDB_QUERY_KEY.REGIONS_LAZY)) ?? [];
 
     const regionSetsResult = (await CaseDbGeoApi.getInstance().regionSetsPostQuery({
       invert: false,
@@ -121,7 +122,7 @@ export class EpiDataManager {
       type: 'UUID_SET',
     }, { signal })).data;
     const regionSets = [...regionSetsResult, ...currentRegionSets];
-    queryClient.setQueryData(QueryManager.getInstance().getGenericKey(QUERY_KEY.REGION_SETS_LAZY), regionSets);
+    queryClient.setQueryData(QueryKeyManager.getInstance().getGenericKey(CASEDB_QUERY_KEY.REGION_SETS_LAZY), regionSets);
 
     const regionsResult = (await CaseDbGeoApi.getInstance().regionsPostQuery({
       invert: false,
@@ -130,7 +131,7 @@ export class EpiDataManager {
       type: 'UUID_SET',
     }, { signal })).data;
     const regions = [...regionsResult, ...currentRegions];
-    queryClient.setQueryData(QueryManager.getInstance().getGenericKey(QUERY_KEY.REGIONS_LAZY), regions);
+    queryClient.setQueryData(QueryKeyManager.getInstance().getGenericKey(CASEDB_QUERY_KEY.REGIONS_LAZY), regions);
 
     // Rebuild the cache
     this.data.regionSets = {};
@@ -153,13 +154,13 @@ export class EpiDataManager {
   public async loadOrganizations(signal: AbortSignal): Promise<void> {
     const queryClient = QueryClientManager.getInstance().queryClient;
 
-    let organizations = QueryManager.getInstance().getValidQueryData<CaseDbOrganization[]>(QueryManager.getInstance().getGenericKey(QUERY_KEY.ORGANIZATIONS)) ?? null;
+    let organizations = QueryKeyManager.getInstance().getValidQueryData<CaseDbOrganization[]>(QueryKeyManager.getInstance().getGenericKey(COMMON_QUERY_KEY.ORGANIZATIONS)) ?? null;
 
     if (organizations !== null) {
       return;
     }
     organizations = (await CaseDbOrganizationApi.getInstance().organizationsGetAll({ signal })).data;
-    queryClient.setQueryData(QueryManager.getInstance().getGenericKey(QUERY_KEY.ORGANIZATIONS), organizations);
+    queryClient.setQueryData(QueryKeyManager.getInstance().getGenericKey(COMMON_QUERY_KEY.ORGANIZATIONS), organizations);
 
     // Rebuild the cache
     this.data.organizationsById = {};
@@ -174,9 +175,9 @@ export class EpiDataManager {
       return;
     }
     const { queryClient } = QueryClientManager.getInstance();
-    const queryKey = QueryManager.getInstance().getGenericKey(QUERY_KEY.TREE_ALGORITHMS);
+    const queryKey = QueryKeyManager.getInstance().getGenericKey(CASEDB_QUERY_KEY.TREE_ALGORITHMS);
 
-    const currentTreeAlgorithms = QueryManager.getInstance().getValidQueryData<CaseDbTreeAlgorithm[]>(queryKey);
+    const currentTreeAlgorithms = QueryKeyManager.getInstance().getValidQueryData<CaseDbTreeAlgorithm[]>(queryKey);
     if (currentTreeAlgorithms) {
       return;
     }
@@ -192,7 +193,7 @@ export class EpiDataManager {
 
   private getMissingRegionSetIds(completeCaseType: CaseDbCompleteCaseType): string[] {
     const regionSetIds = this.getRegionSetIds(completeCaseType);
-    const currentRegionSetsIds = (QueryManager.getInstance().getValidQueryData<CaseDbRegionSet[]>(QueryManager.getInstance().getGenericKey(QUERY_KEY.REGION_SETS_LAZY)) ?? []).map(x => x.id);
+    const currentRegionSetsIds = (QueryKeyManager.getInstance().getValidQueryData<CaseDbRegionSet[]>(QueryKeyManager.getInstance().getGenericKey(CASEDB_QUERY_KEY.REGION_SETS_LAZY)) ?? []).map(x => x.id);
     return regionSetIds.filter(regionSetId => !currentRegionSetsIds.includes(regionSetId));
   }
 

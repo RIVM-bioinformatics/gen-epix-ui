@@ -28,7 +28,6 @@ import type {
   OptionBase,
 } from '../../models/form';
 import { FORM_FIELD_DEFINITION_TYPE } from '../../models/form';
-import { QUERY_KEY } from '../../models/query';
 import type {
   TableColumn,
   TableRowParams,
@@ -40,6 +39,7 @@ import { useInviteUserConstraintsQuery } from '../../dataHooks/useInviteUserCons
 import type { OmitWithMetaData } from '../../models/data';
 import { SchemaUtil } from '../../utils/SchemaUtil';
 import { ConfigManager } from '../../classes/managers/ConfigManager';
+import { COMMON_QUERY_KEY } from '../../data/query';
 
 import { UserInvitationShareDialog } from './UserInvitationShareDialog';
 import type { UserInvitationShareDialogRefMethods } from './UserInvitationShareDialog';
@@ -211,7 +211,7 @@ export const UserInvitationsAdminPage = () => {
         getName={getName}
         loadables={loadables}
         onCreateSuccess={onCreateSuccess}
-        resourceQueryKeyBase={QUERY_KEY.USER_INVITATIONS}
+        resourceQueryKeyBase={COMMON_QUERY_KEY.USER_INVITATIONS}
         schema={schema}
         tableColumns={tableColumns}
         testIdAttributes={TestIdUtil.createAttributes('UserInvitationsAdminPage')}

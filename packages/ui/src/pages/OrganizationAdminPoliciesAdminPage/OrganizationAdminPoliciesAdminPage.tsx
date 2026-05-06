@@ -17,13 +17,13 @@ import { useUserOptionsQuery } from '../../dataHooks/useUsersQuery';
 import { useArray } from '../../hooks/useArray';
 import type { FormFieldDefinition } from '../../models/form';
 import { FORM_FIELD_DEFINITION_TYPE } from '../../models/form';
-import { QUERY_KEY } from '../../models/query';
 import type { TableColumn } from '../../models/table';
 import { TableUtil } from '../../utils/TableUtil';
 import { TestIdUtil } from '../../utils/TestIdUtil';
 import type { OmitWithMetaData } from '../../models/data';
 import { ConfigManager } from '../../classes/managers/ConfigManager';
 import { CrudPage } from '../CrudPage';
+import { COMMON_QUERY_KEY } from '../../data/query';
 
 type FormFields = OmitWithMetaData<CommonDbOrganizationAdminPolicy, 'organization' | 'user'>;
 
@@ -107,7 +107,7 @@ export const OrganizationAdminPoliciesAdminPage = () => {
       formFieldDefinitions={formFieldDefinitions}
       getName={getName}
       loadables={loadables}
-      resourceQueryKeyBase={QUERY_KEY.ORGANIZATION_ADMIN_POLICIES}
+      resourceQueryKeyBase={COMMON_QUERY_KEY.ORGANIZATION_ADMIN_POLICIES}
       schema={schema}
       tableColumns={tableColumns}
       testIdAttributes={TestIdUtil.createAttributes('OrganizationAdminPoliciesAdminPage')}
