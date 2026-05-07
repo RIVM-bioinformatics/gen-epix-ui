@@ -13,7 +13,7 @@ export const TableStoreContextProvider = <TData,>(
 ) => {
   const { children, store } = props;
   return (
-    <TableStoreContext value={store as StoreApi<TableStore<unknown>>}>
+    <TableStoreContext value={store}>
       {children}
     </TableStoreContext>
   );

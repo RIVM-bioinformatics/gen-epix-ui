@@ -68,10 +68,10 @@ export class TableUtil {
     };
   }
 
-  public static createBooleanCellRowComperator<TRowData, TContext>({ column, direction }: GetTableCellRowComparatorProps<TableColumnBoolean<TRowData, TContext>>): (a: TRowData, b: TRowData) => number {
+  public static createBooleanCellRowComperator<TRowData, TContext>({ column, context, direction }: GetTableCellRowComparatorProps<TableColumnBoolean<TRowData, TContext>, TContext>): (a: TRowData, b: TRowData) => number {
     return (a: TRowData, b: TRowData) => {
-      const aValue = TableUtil.getTableBooleanCellValue({ column, row: a, rowIndex: 0 }) ? 1 : 0;
-      const bValue = TableUtil.getTableBooleanCellValue({ column, row: b, rowIndex: 0 }) ? 1 : 0;
+      const aValue = TableUtil.getTableBooleanCellValue({ column, context, row: a, rowIndex: 0 }) ? 1 : 0;
+      const bValue = TableUtil.getTableBooleanCellValue({ column, context, row: b, rowIndex: 0 }) ? 1 : 0;
 
 
       return direction === 'asc' ? aValue - bValue : bValue - aValue;
@@ -90,7 +90,7 @@ export class TableUtil {
     };
   }
 
-  public static createDateCellRowComperator<TRowData, TContext>({ column, direction }: GetTableCellRowComparatorProps<TableColumnDate<TRowData, TContext>>): (a: TRowData, b: TRowData) => number {
+  public static createDateCellRowComperator<TRowData, TContext>({ column, direction }: GetTableCellRowComparatorProps<TableColumnDate<TRowData, TContext>, TContext>): (a: TRowData, b: TRowData) => number {
     return (a: TRowData, b: TRowData) => {
       const aValue = a[column.id as keyof TRowData] as string;
       const bValue = b[column.id as keyof TRowData] as string;
@@ -124,7 +124,7 @@ export class TableUtil {
     };
   }
 
-  public static createFiltersFromColumns<TData, TContext>(columns: TableColumn<TData, TContext>[], baseRows: TData[]): Filters {
+  public static createFiltersFromColumns<TData, TContext>(columns: TableColumn<TData, TContext>[], baseRows: TData[], context: TContext): Filters {
     if (!columns?.length || !baseRows?.length) {
       return [];
     }
@@ -163,7 +163,7 @@ export class TableUtil {
 
         if (column.shouldFilterOptions) {
           const possibleOptions = baseRows.map((row, index) => {
-            const rowValue = column.valueGetter ? column.valueGetter({ id: column.id, row, rowIndex: index }) : row[column.id as keyof TData];
+            const rowValue = column.valueGetter ? column.valueGetter({ context, id: column.id, row, rowIndex: index }) : row[column.id as keyof TData];
             if (!Array.isArray(rowValue)) {
               return [rowValue] as string[];
             }
@@ -222,10 +222,10 @@ export class TableUtil {
     }));
   }
 
-  public static createNumberCellRowComperator<TRowData, TContext>({ column, direction }: GetTableCellRowComparatorProps<TableColumnNumber<TRowData, TContext>>): (a: TRowData, b: TRowData) => number {
+  public static createNumberCellRowComperator<TRowData, TContext>({ column, context, direction }: GetTableCellRowComparatorProps<TableColumnNumber<TRowData, TContext>, TContext>): (a: TRowData, b: TRowData) => number {
     return (a: TRowData, b: TRowData) => {
-      const aValue = TableUtil.getTableNumberCellValue({ column, row: a, rowIndex: 0 });
-      const bValue = TableUtil.getTableNumberCellValue({ column, row: b, rowIndex: 0 });
+      const aValue = TableUtil.getTableNumberCellValue({ column, context, row: a, rowIndex: 0 });
+      const bValue = TableUtil.getTableNumberCellValue({ column, context, row: b, rowIndex: 0 });
       return direction === 'asc' ? aValue - bValue : bValue - aValue;
     };
   }
@@ -243,10 +243,10 @@ export class TableUtil {
     };
   }
 
-  public static createOptionsCellRowComperator<TRowData, TContext>({ column, direction }: GetTableCellRowComparatorProps<TableColumnOptions<TRowData, TContext>>): (a: TRowData, b: TRowData) => number {
+  public static createOptionsCellRowComperator<TRowData, TContext>({ column, context, direction }: GetTableCellRowComparatorProps<TableColumnOptions<TRowData, TContext>, TContext>): (a: TRowData, b: TRowData) => number {
     return (a: TRowData, b: TRowData) => {
-      const aValue = TableUtil.getTableOptionsCellValue({ column, row: a, rowIndex: 0 });
-      const bValue = TableUtil.getTableOptionsCellValue({ column, row: b, rowIndex: 0 });
+      const aValue = TableUtil.getTableOptionsCellValue({ column, context, row: a, rowIndex: 0 });
+      const bValue = TableUtil.getTableOptionsCellValue({ column, context, row: b, rowIndex: 0 });
 
       const stringifiedAValue = (Array.isArray(aValue) ? aValue.join(', ') : aValue) ?? '';
       const stringifiedBValue = (Array.isArray(bValue) ? bValue.join(', ') : bValue) ?? '';
@@ -300,20 +300,20 @@ export class TableUtil {
     };
   }
 
-  public static createTextCellRowAdvancedComperator<TRowData, TContext>({ column, direction }: GetTableCellRowComparatorProps<TableColumnText<TRowData, TContext>>): (a: TRowData, b: TRowData) => number {
+  public static createTextCellRowAdvancedComperator<TRowData, TContext>({ column, context, direction }: GetTableCellRowComparatorProps<TableColumnText<TRowData, TContext>, TContext>): (a: TRowData, b: TRowData) => number {
     return (a: TRowData, b: TRowData) => {
-      const aValue = TableUtil.getTableTextCellValue({ column, row: a, rowIndex: 0 });
-      const bValue = TableUtil.getTableTextCellValue({ column, row: b, rowIndex: 0 });
+      const aValue = TableUtil.getTableTextCellValue({ column, context, row: a, rowIndex: 0 });
+      const bValue = TableUtil.getTableTextCellValue({ column, context, row: b, rowIndex: 0 });
       const result = StringUtil.advancedSortComperator(aValue ?? '', bValue ?? '');
       return direction === 'asc' ? result : -result;
     };
   }
 
   // Cell row comparators
-  public static createTextCellRowComperator<TRowData, TContext>({ column, direction }: GetTableCellRowComparatorProps<TableColumnText<TRowData, TContext>>): (a: TRowData, b: TRowData) => number {
+  public static createTextCellRowComperator<TRowData, TContext>({ column, context, direction }: GetTableCellRowComparatorProps<TableColumnText<TRowData, TContext>, TContext>): (a: TRowData, b: TRowData) => number {
     return (a: TRowData, b: TRowData) => {
-      const aValue = TableUtil.getTableTextCellValue({ column, row: a, rowIndex: 0 });
-      const bValue = TableUtil.getTableTextCellValue({ column, row: b, rowIndex: 0 });
+      const aValue = TableUtil.getTableTextCellValue({ column, context, row: a, rowIndex: 0 });
+      const bValue = TableUtil.getTableTextCellValue({ column, context, row: b, rowIndex: 0 });
       const result = (aValue ?? '').localeCompare(bValue ?? '');
       return direction === 'asc' ? result : -result;
     };
@@ -332,8 +332,8 @@ export class TableUtil {
     };
   }
 
-  public static getColumnIdsWithData<TRowData, TContext>(params: { hasCellData: HasCellDataFn<TRowData, TContext>; sortedData: TRowData[]; tableColumns: TableColumn<TRowData, TContext>[]; visibleColumnIds: string[] }): string[] {
-    const { hasCellData, sortedData, tableColumns, visibleColumnIds } = params;
+  public static getColumnIdsWithData<TRowData, TContext>(params: { context: TContext; hasCellData: HasCellDataFn<TRowData, TContext>; sortedData: TRowData[]; tableColumns: TableColumn<TRowData, TContext>[]; visibleColumnIds: string[] }): string[] {
+    const { context, hasCellData, sortedData, tableColumns, visibleColumnIds } = params;
     const columns = visibleColumnIds.map(id => tableColumns.find(c => c.id === id));
     let newVisibleColumnIds: string[];
     if (hasCellData) {
@@ -351,6 +351,7 @@ export class TableUtil {
         return sortedData.some((row, rowIndex) => {
           if (column.valueGetter) {
             return column.valueGetter({
+              context,
               id: column.id,
               row,
               rowIndex,
@@ -363,21 +364,21 @@ export class TableUtil {
     return newVisibleColumnIds;
   }
 
-  public static getTableBooleanCellDisplayValue<TRowData, TContext>({ column, row, rowIndex, t }: GetTableCellValueProps<TRowData, TableColumnBoolean<TRowData, TContext>>): string {
-    const value = TableUtil.getTableBooleanCellValue({ column, row, rowIndex });
+  public static getTableBooleanCellDisplayValue<TRowData, TContext>({ column, context, row, rowIndex, t }: GetTableCellValueProps<TRowData, TableColumnBoolean<TRowData, TContext>, TContext>): string {
+    const value = TableUtil.getTableBooleanCellValue({ column, context, row, rowIndex });
     return value ? t('Yes') : t('No');
   }
 
-  public static getTableBooleanCellValue<TRowData, TContext>({ column, row, rowIndex }: GetTableCellValueProps<TRowData, TableColumnBoolean<TRowData, TContext>>): boolean {
+  public static getTableBooleanCellValue<TRowData, TContext>({ column, context, row, rowIndex }: GetTableCellValueProps<TRowData, TableColumnBoolean<TRowData, TContext>, TContext>): boolean {
     if (column.valueGetter) {
-      return column.valueGetter({ id: column.id, row, rowIndex });
+      return column.valueGetter({ context, id: column.id, row, rowIndex });
     }
     return (row[column.id as keyof TRowData] as boolean);
   }
 
-  public static getTableDateCellValue<TRowData, TContext>({ column, row, rowIndex }: GetTableCellValueProps<TRowData, TableColumnDate<TRowData, TContext>>): string {
+  public static getTableDateCellValue<TRowData, TContext>({ column, context, row, rowIndex }: GetTableCellValueProps<TRowData, TableColumnDate<TRowData, TContext>, TContext>): string {
     if (column.valueGetter) {
-      return column.valueGetter({ id: column.id, row, rowIndex });
+      return column.valueGetter({ context, id: column.id, row, rowIndex });
     }
     const value = row[column.id as keyof TRowData] as string;
     if (!value) {
@@ -386,21 +387,21 @@ export class TableUtil {
     return dateFnsFormat(value, column.dateFormat);
   }
 
-  public static getTableNumberCellValue<TRowData, TContext>({ column, row, rowIndex }: GetTableCellValueProps<TRowData, TableColumnNumber<TRowData, TContext>>): number {
+  public static getTableNumberCellValue<TRowData, TContext>({ column, context, row, rowIndex }: GetTableCellValueProps<TRowData, TableColumnNumber<TRowData, TContext>, TContext>): number {
     if (column.valueGetter) {
-      return column.valueGetter({ id: column.id, row, rowIndex });
+      return column.valueGetter({ context, id: column.id, row, rowIndex });
     }
     return row[column.id as keyof TRowData] as number;
   }
 
-  public static getTableOptionsCellDisplayValue<TRowData, TContext>({ column, row, rowIndex }: GetTableCellValueProps<TRowData, TableColumnOptions<TRowData, TContext>>): string {
-    const value = TableUtil.getTableOptionsCellValue({ column, row, rowIndex });
+  public static getTableOptionsCellDisplayValue<TRowData, TContext>({ column, context, row, rowIndex }: GetTableCellValueProps<TRowData, TableColumnOptions<TRowData, TContext>, TContext>): string {
+    const value = TableUtil.getTableOptionsCellValue({ column, context, row, rowIndex });
     return Array.isArray(value) ? value.join(', ') : value;
   }
 
-  public static getTableOptionsCellValue<TRowData, TContext>({ column, row, rowIndex }: GetTableCellValueProps<TRowData, TableColumnOptions<TRowData, TContext>>): string | string[] {
+  public static getTableOptionsCellValue<TRowData, TContext>({ column, context, row, rowIndex }: GetTableCellValueProps<TRowData, TableColumnOptions<TRowData, TContext>, TContext>): string | string[] {
     if (column.valueGetter) {
-      return column.valueGetter({ id: column.id, row, rowIndex });
+      return column.valueGetter({ context, id: column.id, row, rowIndex });
     }
     const values = row[column.id as keyof TRowData] as string | string[];
     if (Array.isArray(values)) {
@@ -459,9 +460,9 @@ export class TableUtil {
     return new Map(tableColumnVisualSettings.map(c => [c.id, c]));
   }
 
-  public static getTableTextCellValue<TRowData, TContext>({ column, row, rowIndex }: GetTableCellValueProps<TRowData, TableColumnText<TRowData, TContext>>): string {
+  public static getTableTextCellValue<TRowData, TContext>({ column, context, row, rowIndex }: GetTableCellValueProps<TRowData, TableColumnText<TRowData, TContext>, TContext>): string {
     if (column.valueGetter) {
-      return column.valueGetter({ id: column.id, row, rowIndex });
+      return column.valueGetter({ context, id: column.id, row, rowIndex });
     }
     return row[column.id as keyof TRowData] as string;
   }

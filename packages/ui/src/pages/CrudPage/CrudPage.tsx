@@ -89,13 +89,13 @@ export type CrudPageProps<
   readonly createItemDialogTitle?: string;
   readonly createOne?: (item: TFormFields) => Promise<TData>;
   readonly crudCommandType?: TCommandName;
-  readonly customOnRowClick?: (params: TableRowParams<TData>) => void;
+  readonly customOnRowClick?: (params: TableRowParams<TData, null>) => void;
   readonly defaultNewItem?: Partial<TFormFields>;
   readonly defaultSortByField: keyof TTableData;
   readonly defaultSortDirection: TableSortDirection;
   readonly deleteOne?: (item: TData) => Promise<unknown>;
   readonly editDialogExtraActionsFactory?: (item: TData) => DialogAction[];
-  readonly extraActionsFactory?: (params: TableRowParams<TData>) => ReactElement[];
+  readonly extraActionsFactory?: (params: TableRowParams<TData, null>) => ReactElement[];
   readonly extraCreateOnePermissions?: TApiPermission[];
   readonly extraDeleteOnePermissions?: TApiPermission[];
   readonly extraUpdateOnePermissions?: TApiPermission[];
@@ -114,14 +114,14 @@ export type CrudPageProps<
   readonly onEditSuccess?: (item: TData, variables: TFormFields, context: MutationContextEdit<TData>) => Promise<void> | void;
   readonly onFormChange?: (item: TData, formValues: TFormFields, formMethods: UseFormReturn<TFormFields>) => void;
   readonly onRowsChange?: (items: TData[]) => void;
-  readonly onShowItem?: (params: TableRowParams<TTableData>) => void;
+  readonly onShowItem?: (params: TableRowParams<TTableData, null>) => void;
   readonly readOnly?: boolean;
   readonly resourceQueryKeyBase: TQueryKey;
   readonly schema?: ObjectSchema<TFormFields, TFormFields>;
   readonly showBreadcrumbs?: boolean;
   readonly showIdColumn?: boolean;
   readonly subPages?: CrudPageSubPage<TData>[];
-  readonly tableColumns: TableColumn<TTableData>[];
+  readonly tableColumns: TableColumn<TTableData, null>[];
   readonly tableStoreStorageNamePostFix?: string;
   readonly tableStoreStorageVersion?: number;
   readonly title: string | string[];
@@ -199,7 +199,7 @@ export const CrudPage = <
   const editDialogRef = useRef<CrudPageEditDialogRefMethods<TData, TFormFields>>(null);
   const authorizationManager = useMemo(() => AuthorizationManager.getInstance(), []);
   const resourceQueryKey = useMemo(() => [resourceQueryKeyBase], [resourceQueryKeyBase]);
-  const tableStore = useMemo(() => createTableStore<TTableData>({
+  const tableStore = useMemo(() => createTableStore<TTableData, null>({
     defaultSortByField: defaultSortByField as string,
     defaultSortDirection,
     idSelectorCallback: (item) => item.id,
@@ -423,11 +423,11 @@ export const CrudPage = <
     }
   }, [mutateCreate, mutateEdit, mutateEditSetPreviousItem]);
 
-  const onEditIconClick = useCallback((params: TableRowParams<TTableData>) => {
+  const onEditIconClick = useCallback((params: TableRowParams<TTableData, null>) => {
     editItem(params.row);
   }, [editItem]);
 
-  const onRowClick = useCallback((params: TableRowParams<TTableData>) => {
+  const onRowClick = useCallback((params: TableRowParams<TTableData, null>) => {
     if (customOnRowClick) {
       customOnRowClick(params);
     } else if (onShowItem) {
@@ -441,7 +441,7 @@ export const CrudPage = <
     mutateDelete(item);
   }, [mutateDelete]);
 
-  const normalizedExtraActions = useCallback((params: TableRowParams<TTableData>) => {
+  const normalizedExtraActions = useCallback((params: TableRowParams<TTableData, null>) => {
     const actions: ReactElement[] = [];
 
     const extraActions = extraActionsFactory ? extraActionsFactory(params) : [];
@@ -470,8 +470,8 @@ export const CrudPage = <
     return actions;
   }, [extraActionsFactory, subPages]);
 
-  const columns = useMemo<TableColumn<TTableData>[]>(() => {
-    const internalColumns: TableColumn<TTableData>[] = [
+  const columns = useMemo<TableColumn<TTableData, null>[]>(() => {
+    const internalColumns: TableColumn<TTableData, null>[] = [
       TableUtil.createReadableIndexColumn(),
     ];
 
@@ -557,7 +557,7 @@ export const CrudPage = <
     return convertToTableData(rows);
   }, [convertToTableData, rows]);
 
-  useInitializeTableStore<TTableData>({ columns, createFiltersFromColumns: true, rows: tableRows, store: tableStore });
+  useInitializeTableStore<TTableData, null>({ columns, context: null, createFiltersFromColumns: true, rows: tableRows, store: tableStore });
 
   const onCreateItemButtonClick = useCallback(() => {
     editDialogRef.current.open({

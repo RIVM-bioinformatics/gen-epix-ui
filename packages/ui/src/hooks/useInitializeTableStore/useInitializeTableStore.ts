@@ -9,14 +9,16 @@ import type { TableColumn } from '../../models/table';
 import type { TableStore } from '../../stores/tableStore';
 import { TableUtil } from '../../utils/TableUtil';
 
-export type UseInitializeTableStoreKWArgs<TData> = {
-  readonly columns: TableColumn<TData>[];
+export type UseInitializeTableStoreKWArgs<TData, TContext> = {
+  readonly columns: TableColumn<TData, TContext>[];
+  readonly context: TContext;
   readonly createFiltersFromColumns?: boolean;
   readonly rows: TData[];
-  readonly store: StoreApi<TableStore<TData>>;
+  readonly store: StoreApi<TableStore<TData, TContext>>;
 };
 
-export const useInitializeTableStore = <TData>({ columns, createFiltersFromColumns, rows, store }: UseInitializeTableStoreKWArgs<TData>) => {
+
+export const useInitializeTableStore = <TData, TContext>({ columns, context, createFiltersFromColumns, rows, store }: UseInitializeTableStoreKWArgs<TData, TContext>) => {
   const setColumns = useStore(store, (state) => state.setColumns);
   const setBaseData = useStore(store, (state) => state.setBaseData);
   const setFilters = useStore(store, (state) => state.setFilters);
@@ -30,12 +32,12 @@ export const useInitializeTableStore = <TData>({ columns, createFiltersFromColum
     setColumns(columns);
     setBaseData(rows);
     if (createFiltersFromColumns) {
-      setFilters(TableUtil.createFiltersFromColumns(columns, rows), [], [DEFAULT_FILTER_GROUP]);
+      setFilters(TableUtil.createFiltersFromColumns(columns, rows, context), [], [DEFAULT_FILTER_GROUP]);
     }
-    // eslint-disable-next-line @typescript-eslint/no-floating-promises
-    initialize(abortController.signal);
+
+    void initialize(abortController.signal);
     return () => {
       abortController.abort();
     };
-  }, [columns, initialize, setColumns, setFilters, setBaseData, createFiltersFromColumns, rows]);
+  }, [columns, initialize, setColumns, setFilters, setBaseData, createFiltersFromColumns, rows, context]);
 };

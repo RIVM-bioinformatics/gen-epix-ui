@@ -34,17 +34,17 @@ import { ObjectUtil } from '../../utils/ObjectUtil';
 import { TableUtil } from '../../utils/TableUtil';
 
 
-export interface CreateTableStoreInitialStateKwArgs<TData> {
+export interface CreateTableStoreInitialStateKwArgs<TData, TContext> {
   defaultSortByField?: string;
   defaultSortDirection?: TableSortDirection;
   idSelectorCallback: (row: TData) => string;
-  isRowEnabledCallback?: (row: TData) => boolean;
+  isRowEnabledCallback?: (row: TData, context: TContext) => boolean;
   navigatorFunction?: NavigateFunction;
 }
-export type CreateTableStoreKwArgs<TData> = {
+export type CreateTableStoreKwArgs<TData, TContext> = {
   storageNamePostFix?: string;
   storageVersion?: number;
-} & CreateTableStoreInitialStateKwArgs<TData>;
+} & CreateTableStoreInitialStateKwArgs<TData, TContext>;
 
 export type TableStore<TData, TContext> = TableStoreActions<TData, TContext> & TableStoreState<TData, TContext>;
 
@@ -90,6 +90,7 @@ export interface TableStoreState<TData, TContext = unknown> {
   columnDimensions: TableColumnDimension[];
   columns: TableColumn<TData, TContext>[];
   columnVisualSettings: TableColumnVisualSettings[];
+  context: TContext;
   dataError: Error;
   defaultSortByField: string;
   defaultSortDirection: TableSortDirection;
@@ -105,7 +106,7 @@ export interface TableStoreState<TData, TContext = unknown> {
   idSelectorCallback: (row: TData) => string;
   isDataLoading: boolean;
   isInitialized: boolean;
-  isRowEnabledCallback: (row: TData) => boolean;
+  isRowEnabledCallback: (row: TData, context: TContext) => boolean;
   navigateFunction: NavigateFunction;
   selectedIds: string[];
   sortByField: string;
@@ -119,7 +120,7 @@ type Get<TData, TContext> = () => TableStore<TData, TContext>;
 
 type Set<TData, TContext> = (partial: ((state: TableStore<TData, TContext>) => Partial<TableStore<TData, TContext>> | TableStore<TData, TContext>) | Partial<TableStore<TData, TContext>> | TableStore<TData, TContext>, replace?: false) => void;
 
-export const createTableStoreInitialState = <TData, TContext>(kwArgs: CreateTableStoreInitialStateKwArgs<TData>): TableStoreState<TData, TContext> => {
+export const createTableStoreInitialState = <TData, TContext>(kwArgs: CreateTableStoreInitialStateKwArgs<TData, TContext>): TableStoreState<TData, TContext> => {
   const { defaultSortByField, defaultSortDirection, idSelectorCallback, isRowEnabledCallback, navigatorFunction } = kwArgs;
   const url = new URL(document.location.href);
   const searchParams = url.searchParams;
@@ -142,6 +143,7 @@ export const createTableStoreInitialState = <TData, TContext>(kwArgs: CreateTabl
     columnDimensions: null,
     columns: [],
     columnVisualSettings: [],
+    context: null,
     dataError: null,
     defaultSortByField,
     defaultSortDirection,
@@ -258,7 +260,7 @@ export const createTableStoreActions = <TData, TContext>(kwArgs: {
       reloadSortedData();
     },
     reloadFilterPriorityData: (filterPriority: string, data: TData[]): TData[] => {
-      const { columns, frontendFilters } = get();
+      const { columns, context, frontendFilters } = get();
       const filters = frontendFilters[filterPriority];
 
       const columnMap = keyBy(columns, 'id');
@@ -269,7 +271,7 @@ export const createTableStoreActions = <TData, TContext>(kwArgs: {
           }
 
           const column = columnMap[filter.id];
-          const value = column.valueGetter ? column.valueGetter({ id: column.id, row, rowIndex }) : row[column.id as keyof TData];
+          const value = column.valueGetter ? column.valueGetter({ context, id: column.id, row, rowIndex }) : row[column.id as keyof TData];
           return (filter.matchRowValue as (value: unknown) => boolean)(value);
         });
       });
@@ -281,7 +283,7 @@ export const createTableStoreActions = <TData, TContext>(kwArgs: {
       setSelectedIds(intersection(selectedIds, sortedData.map(item => idSelectorCallback(item))));
     },
     reloadSortedData: () => {
-      const { columns, defaultSortByField, defaultSortDirection, filteredData, frontendFilterPriorities, idSelectorCallback, sortByField, sortDirection, sortedIds } = get();
+      const { columns, context, defaultSortByField, defaultSortDirection, filteredData, frontendFilterPriorities, idSelectorCallback, sortByField, sortDirection, sortedIds } = get();
 
       const preSortedData: TData[] = filteredData[last(frontendFilterPriorities)];
       let sanitizedSortByField = sortByField;
@@ -311,7 +313,7 @@ export const createTableStoreActions = <TData, TContext>(kwArgs: {
         }
 
         // Note: as never because the type of column can be of different types
-        const comparator = column.comparatorFactory?.({ column: column as never, direction: sanitizedSortDirection });
+        const comparator = column.comparatorFactory?.({ column: column as never, context, direction: sanitizedSortDirection });
         const sortedData = preSortedData.toSorted((a, b) => {
           if (column.comparatorFactory) {
             return comparator(a, b);
@@ -517,7 +519,7 @@ export const createTableStoreActions = <TData, TContext>(kwArgs: {
   };
 };
 
-export const createTableStore = <TData, TContext>(kwArgs: CreateTableStoreKwArgs<TData>) => {
+export const createTableStore = <TData, TContext>(kwArgs: CreateTableStoreKwArgs<TData, TContext>) => {
   const { storageNamePostFix, storageVersion, ...initialStateParams } = kwArgs;
   const initialState = createTableStoreInitialState<TData, TContext>(initialStateParams);
 

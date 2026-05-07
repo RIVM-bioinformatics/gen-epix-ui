@@ -15,13 +15,15 @@ export enum FIXED_COLUMN_ID {
   ROW_SELECT = 'ROW_SELECT',
 }
 
-export interface GetTableCellRowComparatorProps<TColumn> {
+export interface GetTableCellRowComparatorProps<TColumn, TContext> {
   readonly column: TColumn;
+  readonly context: TContext;
   readonly direction: TableSortDirection;
 }
 
-export interface GetTableCellValueProps<TRowData, TColumn> {
+export interface GetTableCellValueProps<TRowData, TColumn, TContext> {
   readonly column: TColumn;
+  readonly context: TContext;
   readonly row: TRowData;
   readonly rowIndex: number;
   readonly t?: TFunction<'translation', undefined>;
@@ -45,8 +47,7 @@ export type TableColumn<TRowData, TContext> =
   TableColumnText<TRowData, TContext>;
 
 export interface TableColumnActions<TRowData, TContext> extends TableColumnBase<TRowData, string, TContext> {
-  comparatorFactory?: (params: GetTableCellRowComparatorProps<TableColumnActions<TRowData, TContext>>) => (a: TRowData, b: TRowData) => number;
-  context?: TContext;
+  comparatorFactory?: (params: GetTableCellRowComparatorProps<TableColumnActions<TRowData, TContext>, TContext>) => (a: TRowData, b: TRowData) => number;
   getActions: (params: TableRowParams<TRowData, TContext>) => ReactElement[];
   id: FIXED_COLUMN_ID.ACTIONS;
   isInitiallyVisible: true;
@@ -56,14 +57,12 @@ export interface TableColumnActions<TRowData, TContext> extends TableColumnBase<
 }
 
 export interface TableColumnBoolean<TRowData, TContext> extends TableColumnBase<TRowData, boolean, TContext> {
-  comparatorFactory?: (params: GetTableCellRowComparatorProps<TableColumnBoolean<TRowData, TContext>>) => (a: TRowData, b: TRowData) => number;
-  context?: TContext;
+  comparatorFactory?: (params: GetTableCellRowComparatorProps<TableColumnBoolean<TRowData, TContext>, TContext>) => (a: TRowData, b: TRowData) => number;
   type: 'boolean';
 }
 
 export interface TableColumnDate<TRowData, TContext> extends TableColumnBase<TRowData, string, TContext> {
-  comparatorFactory?: (params: GetTableCellRowComparatorProps<TableColumnDate<TRowData, TContext>>) => (a: TRowData, b: TRowData) => number;
-  context?: TContext;
+  comparatorFactory?: (params: GetTableCellRowComparatorProps<TableColumnDate<TRowData, TContext>, TContext>) => (a: TRowData, b: TRowData) => number;
   dateFormat: typeof DATE_FORMAT[keyof typeof DATE_FORMAT];
   type: 'date';
 }
@@ -75,14 +74,12 @@ export type TableColumnDimension = {
 };
 
 export interface TableColumnNumber<TRowData, TContext> extends TableColumnBase<TRowData, number, TContext> {
-  comparatorFactory?: (params: GetTableCellRowComparatorProps<TableColumnNumber<TRowData, TContext>>) => (a: TRowData, b: TRowData) => number;
-  context?: TContext;
+  comparatorFactory?: (params: GetTableCellRowComparatorProps<TableColumnNumber<TRowData, TContext>, TContext>) => (a: TRowData, b: TRowData) => number;
   type: 'number';
 }
 
 export interface TableColumnOptions<TRowData, TContext> extends TableColumnBase<TRowData, string | string[], TContext> {
-  comparatorFactory?: (params: GetTableCellRowComparatorProps<TableColumnOptions<TRowData, TContext>>) => (a: TRowData, b: TRowData) => number;
-  context?: TContext;
+  comparatorFactory?: (params: GetTableCellRowComparatorProps<TableColumnOptions<TRowData, TContext>, TContext>) => (a: TRowData, b: TRowData) => number;
   maxNumOptionsExpanded?: number;
   options: OptionBase<string>[];
   shouldFilterOptions?: boolean;
@@ -92,12 +89,11 @@ export interface TableColumnOptions<TRowData, TContext> extends TableColumnBase<
 export interface TableColumnParams<TRowData, TContext> {
   column: TableColumn<TRowData, TContext>;
   columnIndex: number;
-  context?: TContext;
+  context: TContext;
 }
 
 export interface TableColumnReadableIndex<TRowData, TContext> extends TableColumnBase<TRowData, never, TContext> {
   comparatorFactory?: never;
-  context?: TContext;
   disableEllipsis: true;
   frozen: true;
   getAriaLabel: (params: TableRowParams<TRowData, TContext>) => string;
@@ -109,7 +105,6 @@ export interface TableColumnReadableIndex<TRowData, TContext> extends TableColum
 
 export interface TableColumnSelectable<TRowData, TContext> extends TableColumnBase<TRowData, never, TContext> {
   comparatorFactory?: never;
-  context?: TContext;
   disableEllipsis: true;
   frozen: true;
   id: FIXED_COLUMN_ID.ROW_SELECT;
@@ -120,8 +115,7 @@ export interface TableColumnSelectable<TRowData, TContext> extends TableColumnBa
 }
 
 export interface TableColumnText<TRowData, TContext> extends TableColumnBase<TRowData, string, TContext> {
-  comparatorFactory?: (params: GetTableCellRowComparatorProps<TableColumnText<TRowData, TContext>>) => (a: TRowData, b: TRowData) => number;
-  context?: TContext;
+  comparatorFactory?: (params: GetTableCellRowComparatorProps<TableColumnText<TRowData, TContext>, TContext>) => (a: TRowData, b: TRowData) => number;
   type: 'text';
 }
 
@@ -150,7 +144,7 @@ export type TableDragEvent = {
 export type TableRowAndColumnParams<TRowData, TContext> = TableColumnParams<TRowData, TContext> & TableRowParams<TRowData, TContext>;
 
 export interface TableRowParams<TRowData, TContext> {
-  context?: TContext;
+  context: TContext;
   id: string;
   row: TRowData;
   rowIndex: number;
@@ -160,7 +154,6 @@ export type TableSortDirection = 'asc' | 'desc';
 
 interface TableColumnBase<TRowData, TValue, TContext> {
   cellTitleGetter?: (params: TableRowParams<TRowData, TContext>) => string;
-  context?: TContext;
   disableEllipsis?: boolean;
   displayValueGetter?: (params: TableRowParams<TRowData, TContext>) => string;
   filterLabel?: string;

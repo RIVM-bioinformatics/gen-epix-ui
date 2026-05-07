@@ -18,6 +18,7 @@ import type {
   KeyboardEvent as ReactKeyboardEvent,
   MouseEvent as ReactMouseEvent,
   Ref,
+  RefObject,
 } from 'react';
 import {
   forwardRef,
@@ -107,7 +108,6 @@ export interface TableRef {
 }
 
 export const Table = <TRowData, TContext,>({
-  context,
   font,
   forceHorizontalOverflow,
   getRowName,
@@ -143,6 +143,7 @@ export const Table = <TRowData, TContext,>({
   const isStoreInitialized = useStore(tableStore, useShallow((state) => state.isInitialized));
   const isRowEnabledCallback = useStore(tableStore, useShallow((state) => state.isRowEnabledCallback));
   const addTableEventListener = useStore(tableStore, useShallow((state) => state.addEventListener));
+  const context = useStore(tableStore, useShallow((state) => state.context));
   const columnDimensions = useStore(tableStore, useShallow((state) => state.columnDimensions));
   const tableColumnVisualSettingsRef = useRef<TableColumnVisualSettings[]>(null);
   const eventListenersCleanerRef = useRef<() => void>(noop);
@@ -215,7 +216,7 @@ export const Table = <TRowData, TContext,>({
     );
   }, [getRowName, onReadableIndexClick]);
 
-  const renderCheckboxHeaderContent = useCallback((tableColumnParams: TableColumnParams<TRowData, TContext>) => {
+  const renderSelectableHeaderContent = useCallback((tableColumnParams: TableColumnParams<TRowData, TContext>) => {
     return (
       <TableCheckboxHeader
         tableColumnParams={tableColumnParams}
@@ -223,7 +224,7 @@ export const Table = <TRowData, TContext,>({
     );
   }, []);
 
-  const renderCheckboxCell = useCallback((tableColumn: TableColumnSelectable<TRowData, TContext>, cell: TableRowParams<TRowData, TContext>) => {
+  const renderSelectableCell = useCallback((tableColumn: TableColumnSelectable<TRowData, TContext>, cell: TableRowParams<TRowData, TContext>) => {
     const id = idSelectorCallback(cell.row);
 
     return (
@@ -480,7 +481,7 @@ export const Table = <TRowData, TContext,>({
           }
           return (
             <TableHeaderCell<TRowData, TContext>
-              column={tableColumn.type === 'selectable' ? { ...tableColumn, renderHeaderContent: renderCheckboxHeaderContent } : tableColumn}
+              column={tableColumn.type === 'selectable' ? { ...tableColumn, renderHeaderContent: renderSelectableHeaderContent } : tableColumn}
               columnIndex={tableSettingsColumnIndex}
               dividerColor={headerBorderColor}
               height={theme.spacing(headerHeight)}
@@ -497,7 +498,7 @@ export const Table = <TRowData, TContext,>({
         })}
       </Box>
     );
-  }, [theme, headerHeight, headerBorderColor, getVisibleTableSettingsColumns, tableColumns, renderCheckboxHeaderContent, onColumnDividerMouseDown, onColumnDividerKeyDown, onTableHeaderCellDrag]);
+  }, [theme, headerHeight, headerBorderColor, getVisibleTableSettingsColumns, tableColumns, renderSelectableHeaderContent, onColumnDividerMouseDown, onColumnDividerKeyDown, onTableHeaderCellDrag]);
 
   const renderItemContent = useCallback((index: number, row: TRowData) => {
     return (
@@ -507,26 +508,27 @@ export const Table = <TRowData, TContext,>({
           let title: string;
           if (tableColumn.cellTitleGetter) {
             title = tableColumn.cellTitleGetter({
+              context,
               id: column.id,
               row,
               rowIndex: index,
             });
           } else if (tableColumn.type === 'text') {
-            title = TableUtil.getTableTextCellValue({ column: tableColumn, row, rowIndex: index });
+            title = TableUtil.getTableTextCellValue({ column: tableColumn, context, row, rowIndex: index });
           } else if (tableColumn.type === 'boolean') {
-            title = TableUtil.getTableBooleanCellDisplayValue({ column: tableColumn, row, rowIndex: index, t });
+            title = TableUtil.getTableBooleanCellDisplayValue({ column: tableColumn, context, row, rowIndex: index, t });
           } else if (tableColumn.type === 'number') {
-            const numericValue = TableUtil.getTableNumberCellValue({ column: tableColumn, row, rowIndex: index });
+            const numericValue = TableUtil.getTableNumberCellValue({ column: tableColumn, context, row, rowIndex: index });
             title = isNumber(numericValue) ? numericValue.toString() : '';
           } else if (tableColumn.type === 'date') {
-            title = TableUtil.getTableDateCellValue({ column: tableColumn, row, rowIndex: index });
+            title = TableUtil.getTableDateCellValue({ column: tableColumn, context, row, rowIndex: index });
           } else if (tableColumn.type === 'options') {
-            title = TableUtil.getTableOptionsCellDisplayValue({ column: tableColumn, row, rowIndex: index });
+            title = TableUtil.getTableOptionsCellDisplayValue({ column: tableColumn, context, row, rowIndex: index });
           }
 
           const baseProps: Partial<TableCellProps<TRowData, TContext>> = {
             columnIndex,
-            enabled: isRowEnabledCallback ? isRowEnabledCallback(row) : true,
+            enabled: isRowEnabledCallback ? isRowEnabledCallback(row, context) : true,
             height: theme.spacing(rowHeight),
             onClick: onTableRowClick,
             order: tableColumnVisualSettingsRef.current.findIndex(c => c.id === column.id),
@@ -556,27 +558,27 @@ export const Table = <TRowData, TContext,>({
             >
               {!!tableColumn.renderCell && (
                 <Fragment key={tableColumn.id}>
-                  {tableColumn.renderCell({ column: tableColumn, columnIndex, id: column.id, row, rowIndex: index })}
+                  {tableColumn.renderCell({ column: tableColumn, columnIndex, context, id: column.id, row, rowIndex: index })}
                 </Fragment>
               )}
               {!tableColumn.renderCell && !!tableColumn.displayValueGetter && (
                 <Fragment key={tableColumn.id}>
-                  <TableCellAsyncContent content={tableColumn.displayValueGetter({ id: column.id, row, rowIndex: index })} />
+                  <TableCellAsyncContent content={tableColumn.displayValueGetter({ context, id: column.id, row, rowIndex: index })} />
                 </Fragment>
               )}
-              {!tableColumn.displayValueGetter && !tableColumn.renderCell && tableColumn.type === 'text' && TableUtil.getTableTextCellValue({ column: tableColumn, row, rowIndex: index })}
-              {!tableColumn.displayValueGetter && !tableColumn.renderCell && tableColumn.type === 'boolean' && TableUtil.getTableBooleanCellDisplayValue({ column: tableColumn, row, rowIndex: index, t })}
-              {!tableColumn.displayValueGetter && !tableColumn.renderCell && tableColumn.type === 'number' && TableUtil.getTableNumberCellValue({ column: tableColumn, row, rowIndex: index })}
-              {!tableColumn.displayValueGetter && !tableColumn.renderCell && tableColumn.type === 'date' && TableUtil.getTableDateCellValue({ column: tableColumn, row, rowIndex: index })}
-              {!tableColumn.displayValueGetter && !tableColumn.renderCell && tableColumn.type === 'options' && TableUtil.getTableOptionsCellDisplayValue({ column: tableColumn, row, rowIndex: index })}
-              {!tableColumn.displayValueGetter && !tableColumn.renderCell && tableColumn.type === 'readableIndex' && renderReadableIndexCell(tableColumn, { id: column.id, row, rowIndex: index })}
-              {!tableColumn.displayValueGetter && !tableColumn.renderCell && tableColumn.type === 'selectable' && renderCheckboxCell(tableColumn, { id: column.id, row, rowIndex: index })}
+              {!tableColumn.displayValueGetter && !tableColumn.renderCell && tableColumn.type === 'text' && TableUtil.getTableTextCellValue({ column: tableColumn, context, row, rowIndex: index })}
+              {!tableColumn.displayValueGetter && !tableColumn.renderCell && tableColumn.type === 'boolean' && TableUtil.getTableBooleanCellDisplayValue({ column: tableColumn, context, row, rowIndex: index, t })}
+              {!tableColumn.displayValueGetter && !tableColumn.renderCell && tableColumn.type === 'number' && TableUtil.getTableNumberCellValue({ column: tableColumn, context, row, rowIndex: index })}
+              {!tableColumn.displayValueGetter && !tableColumn.renderCell && tableColumn.type === 'date' && TableUtil.getTableDateCellValue({ column: tableColumn, context, row, rowIndex: index })}
+              {!tableColumn.displayValueGetter && !tableColumn.renderCell && tableColumn.type === 'options' && TableUtil.getTableOptionsCellDisplayValue({ column: tableColumn, context, row, rowIndex: index })}
+              {!tableColumn.displayValueGetter && !tableColumn.renderCell && tableColumn.type === 'readableIndex' && renderReadableIndexCell(tableColumn, { context, id: column.id, row, rowIndex: index })}
+              {!tableColumn.displayValueGetter && !tableColumn.renderCell && tableColumn.type === 'selectable' && renderSelectableCell(tableColumn, { context, id: column.id, row, rowIndex: index })}
             </TableCell>
           );
         })}
       </>
     );
-  }, [getVisibleTableSettingsColumns, isRowEnabledCallback, onTableRowClick, renderCheckboxCell, renderReadableIndexCell, rowHeight, t, tableColumns, theme]);
+  }, [getVisibleTableSettingsColumns, isRowEnabledCallback, onTableRowClick, renderSelectableCell, renderReadableIndexCell, rowHeight, t, tableColumns, theme, context]);
 
   const onRowMouseEnterCallback = useCallback((row: TRowData) => {
     onRowMouseEnter(row);
@@ -758,7 +760,7 @@ export const Table = <TRowData, TContext,>({
             )),
             // eslint-disable-next-line @eslint-react/no-forward-ref, @typescript-eslint/naming-convention, @eslint-react/kit/no-multi-comp
             TableRow: forwardRef((props: ItemProps<TRowData>, tableRowRef) => {
-              const isRowEnabled = isRowEnabledCallback ? isRowEnabledCallback(props.item) : true;
+              const isRowEnabled = isRowEnabledCallback ? isRowEnabledCallback(props.item, context) : true;
               return (
                 <Box
                   data-id={idSelectorCallback(props.item)}
@@ -806,8 +808,8 @@ export const Table = <TRowData, TContext,>({
           totalCount={sortedData.length}
         />
       )}
-      <TableColumnsEditorDialog<TRowData, TContext>
-        ref={tableColumnsEditorDialogRef}
+      <TableColumnsEditorDialog
+        ref={tableColumnsEditorDialogRef as RefObject<TableColumnsEditorDialogRefMethods<unknown, unknown>>}
       />
     </Box>
   );
