@@ -39,6 +39,7 @@ import { ResponseHandler } from '../ResponseHandler';
 import { useQueryMemo } from '../../../hooks/useQueryMemo';
 import { QueryClientManager } from '../../../classes/managers/QueryClientManager';
 import { COMMON_QUERY_KEY } from '../../../data/query';
+import { ApiManager } from '../../../classes/managers/ApiManager';
 
 
 export interface LicensesDialogOpenProps {
@@ -76,7 +77,7 @@ export const LicensesDialog = withDialog<LicensesDialogProps, LicensesDialogOpen
 
   const { data: backendLicenses, error: backendLicensesError, isLoading: isBackendLicensesLoading } = useQueryMemo({
     queryFn: async ({ signal }) => {
-      const response = await ConfigManager.getInstance().config.systemApi.retrieveLicenses({ signal });
+      const response = await ApiManager.getInstance().systemApi.retrieveLicenses({ signal });
       return response.data;
     },
     queryKey: QueryClientManager.getInstance().getGenericKey(COMMON_QUERY_KEY.LICENSES),

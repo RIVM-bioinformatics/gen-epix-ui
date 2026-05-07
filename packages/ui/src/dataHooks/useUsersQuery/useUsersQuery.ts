@@ -9,15 +9,15 @@ import type {
 } from '../../models/dataHooks';
 import { DataHookUtil } from '../../utils/DataHookUtil';
 import { useQueryMemo } from '../../hooks/useQueryMemo';
-import { ConfigManager } from '../../classes/managers/ConfigManager';
 import { DataUtil } from '../../utils/DataUtil';
 import { QueryClientManager } from '../../classes/managers/QueryClientManager';
 import { COMMON_QUERY_KEY } from '../../data/query';
+import { ApiManager } from '../../classes/managers/ApiManager';
 
 export const useUsersQuery = (): UseQueryResult<CommonDbUser[]> => {
   return useQueryMemo({
     queryFn: async ({ signal }) => {
-      const response = await ConfigManager.getInstance().config.organizationApi.usersGetAll({ signal });
+      const response = await ApiManager.getInstance().organizationApi.usersGetAll({ signal });
       return response.data;
     },
     queryKey: QueryClientManager.getInstance().getGenericKey(COMMON_QUERY_KEY.USERS),

@@ -21,8 +21,8 @@ import { CrudPage } from '../CrudPage';
 import { AuthorizationManager } from '../../classes/managers/AuthorizationManager';
 import type { OmitWithMetaData } from '../../models/data';
 import { SchemaUtil } from '../../utils/SchemaUtil';
-import { ConfigManager } from '../../classes/managers/ConfigManager';
 import { COMMON_QUERY_KEY } from '../../data/query';
+import { ApiManager } from '../../classes/managers/ApiManager';
 
 type FormFields = OmitWithMetaData<CommonDbSite, 'organization_id' | 'organization'>;
 
@@ -31,7 +31,7 @@ export const OrganizationSitesAdminPage = () => {
   const { t } = useTranslation();
 
   const fetchAll = useCallback(async (signal: AbortSignal) => {
-    return (await ConfigManager.getInstance().config.organizationApi.sitesGetAll({ signal })).data;
+    return (await ApiManager.getInstance().organizationApi.sitesGetAll({ signal })).data;
   }, []);
 
   const fetchAllSelect = useCallback((sites: CommonDbSite[]) => {
@@ -39,7 +39,7 @@ export const OrganizationSitesAdminPage = () => {
   }, [organizationId]);
 
   const updateOne = useCallback(async (variables: FormFields, item: CommonDbSite) => {
-    return (await ConfigManager.getInstance().config.organizationApi.sitesPutOne(item.id, {
+    return (await ApiManager.getInstance().organizationApi.sitesPutOne(item.id, {
       id: item.id,
       name: variables.name,
       organization_id: organizationId,
@@ -47,14 +47,14 @@ export const OrganizationSitesAdminPage = () => {
   }, [organizationId]);
 
   const createOne = useCallback(async (variables: FormFields) => {
-    return (await ConfigManager.getInstance().config.organizationApi.sitesPostOne({
+    return (await ApiManager.getInstance().organizationApi.sitesPostOne({
       name: variables.name,
       organization_id: organizationId,
     })).data;
   }, [organizationId]);
 
   const deleteOne = useCallback(async (item: CommonDbSite) => {
-    return await ConfigManager.getInstance().config.organizationApi.sitesDeleteOne(item.id);
+    return await ApiManager.getInstance().organizationApi.sitesDeleteOne(item.id);
   }, []);
 
   const getName = useCallback((item: FormFields) => {

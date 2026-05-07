@@ -18,6 +18,7 @@ import { TestIdUtil } from '../../utils/TestIdUtil';
 import { useQueryMemo } from '../../hooks/useQueryMemo';
 import { QueryClientManager } from '../../classes/managers/QueryClientManager';
 import { COMMON_QUERY_KEY } from '../../data/query';
+import { ApiManager } from '../../classes/managers/ApiManager';
 
 export const AcceptInvitationPage = () => {
   const { token } = useParams();
@@ -27,7 +28,7 @@ export const AcceptInvitationPage = () => {
     enabled: shouldRegister,
     gcTime: 0,
     queryFn: async ({ signal }) => {
-      const response = await ConfigManager.getInstance().config.organizationApi.userRegistrationsPostOne(token, { signal });
+      const response = await ApiManager.getInstance().organizationApi.userRegistrationsPostOne(token, { signal });
       return response.data;
     },
     queryKey: QueryClientManager.getInstance().getGenericKey(COMMON_QUERY_KEY.USER_INVITATIONS, token),

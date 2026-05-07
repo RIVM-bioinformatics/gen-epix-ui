@@ -35,8 +35,8 @@ import { useArray } from '../../hooks/useArray';
 import { useInviteUserConstraintsQuery } from '../../dataHooks/useInviteUserConstraintsQuery';
 import type { OmitWithMetaData } from '../../models/data';
 import { SchemaUtil } from '../../utils/SchemaUtil';
-import { ConfigManager } from '../../classes/managers/ConfigManager';
 import { COMMON_QUERY_KEY } from '../../data/query';
+import { ApiManager } from '../../classes/managers/ApiManager';
 
 export type UsersAdminPageProps = {
   subPages?: CrudPageProps<FormFields, CommonDbUser>['subPages'];
@@ -93,13 +93,13 @@ export const UsersAdminPage = ({
   }, [inviteUserConstraintsQuery.data]);
 
   const fetchAll = useCallback(async (signal: AbortSignal) => {
-    const users = (await ConfigManager.getInstance().config.organizationApi.usersGetAll({ signal }))?.data;
+    const users = (await ApiManager.getInstance().organizationApi.usersGetAll({ signal }))?.data;
 
     return users;
   }, []);
 
   const updateOne = useCallback(async (variables: FormFields, item: CommonDbUser) => {
-    return (await ConfigManager.getInstance().config.organizationApi.updateUser(item.id, {
+    return (await ApiManager.getInstance().organizationApi.updateUser(item.id, {
       is_active: variables.is_active,
       organization_id: item.organization_id,
       roles: variables.roles,
@@ -107,7 +107,7 @@ export const UsersAdminPage = ({
   }, []);
 
   const deleteOne = useCallback(async (item: CommonDbUser) => {
-    return await ConfigManager.getInstance().config.organizationApi.usersDeleteOne(item.id);
+    return await ApiManager.getInstance().organizationApi.usersDeleteOne(item.id);
   }, []);
 
   const getName = useCallback((item: FormFields) => {

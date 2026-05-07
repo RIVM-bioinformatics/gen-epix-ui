@@ -19,8 +19,8 @@ import { TestIdUtil } from '../../utils/TestIdUtil';
 import { CrudPage } from '../CrudPage';
 import type { OmitWithMetaData } from '../../models/data';
 import { SchemaUtil } from '../../utils/SchemaUtil';
-import { ConfigManager } from '../../classes/managers/ConfigManager';
 import { COMMON_QUERY_KEY } from '../../data/query';
+import { ApiManager } from '../../classes/managers/ApiManager';
 
 // Note: site_id is given in the route params
 type FormFields = OmitWithMetaData<CommonDbContact, 'site_id' | 'site'>;
@@ -30,7 +30,7 @@ export const OrganizationContactsAdminPage = () => {
   const { t } = useTranslation();
 
   const fetchAll = useCallback(async (signal: AbortSignal) => {
-    return (await ConfigManager.getInstance().config.organizationApi.contactsGetAll({ signal })).data;
+    return (await ApiManager.getInstance().organizationApi.contactsGetAll({ signal })).data;
   }, []);
 
   const fetchAllSelect = useCallback((contacts: CommonDbContact[]) => {
@@ -38,7 +38,7 @@ export const OrganizationContactsAdminPage = () => {
   }, [siteId]);
 
   const updateOne = useCallback(async (variables: FormFields, item: CommonDbContact) => {
-    return (await ConfigManager.getInstance().config.organizationApi.contactsPutOne(item.id, {
+    return (await ApiManager.getInstance().organizationApi.contactsPutOne(item.id, {
       id: item.id,
       site_id: siteId,
       ...variables,
@@ -46,14 +46,14 @@ export const OrganizationContactsAdminPage = () => {
   }, [siteId]);
 
   const createOne = useCallback(async (variables: FormFields) => {
-    return (await ConfigManager.getInstance().config.organizationApi.contactsPostOne({
+    return (await ApiManager.getInstance().organizationApi.contactsPostOne({
       site_id: siteId,
       ...variables,
     })).data;
   }, [siteId]);
 
   const deleteOne = useCallback(async (item: CommonDbContact) => {
-    return await ConfigManager.getInstance().config.organizationApi.contactsDeleteOne(item.id);
+    return await ApiManager.getInstance().organizationApi.contactsDeleteOne(item.id);
   }, []);
 
   const getName = useCallback((item: FormFields) => {

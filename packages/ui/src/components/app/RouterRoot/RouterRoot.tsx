@@ -39,6 +39,7 @@ import { AuthorizationWrapper } from '../AuthorizationWrapper';
 import { QueryClientManager } from '../../../classes/managers/QueryClientManager';
 import { COMMON_QUERY_KEY } from '../../../data/query';
 import { RouterManager } from '../../../classes/managers/RouterManager';
+import { ApiManager } from '../../../classes/managers/ApiManager';
 
 
 export const RouterRoot = () => {
@@ -50,7 +51,7 @@ export const RouterRoot = () => {
   const { data: identityProvidersWithAvailability, error: identityProvidersError, isLoading: isIdentityProvidersLoading } = useQueryMemo<IdentityProviderWithAvailability[], Error, IdentityProviderWithAvailability[]>({
     gcTime: Infinity,
     queryFn: async ({ signal }) => {
-      const providers = (await ConfigManager.getInstance().config.authApi.identityProvidersGetAll({ signal })).data;
+      const providers = (await ApiManager.getInstance().authApi.identityProvidersGetAll({ signal })).data;
       if (!Array.isArray(providers)) {
         throw new Error('Invalid response for identity providers. Backend is most likely misconfigured.');
       }

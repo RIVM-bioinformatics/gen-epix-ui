@@ -21,9 +21,9 @@ import type { TableColumn } from '../../models/table';
 import { TableUtil } from '../../utils/TableUtil';
 import { TestIdUtil } from '../../utils/TestIdUtil';
 import type { OmitWithMetaData } from '../../models/data';
-import { ConfigManager } from '../../classes/managers/ConfigManager';
 import { CrudPage } from '../CrudPage';
 import { COMMON_QUERY_KEY } from '../../data/query';
+import { ApiManager } from '../../classes/managers/ApiManager';
 
 type FormFields = OmitWithMetaData<CommonDbOrganizationAdminPolicy, 'organization' | 'user'>;
 
@@ -36,19 +36,19 @@ export const OrganizationAdminPoliciesAdminPage = () => {
   const loadables = useArray([organizationOptionsQuery, userOptionsQuery, organizationAdminPolicyNameFactory]);
 
   const fetchAll = useCallback(async (signal: AbortSignal) => {
-    return (await ConfigManager.getInstance().config.abacApi.organizationAdminPoliciesGetAll({ signal }))?.data;
+    return (await ApiManager.getInstance().abacApi.organizationAdminPoliciesGetAll({ signal }))?.data;
   }, []);
 
   const deleteOne = useCallback(async (item: CommonDbOrganizationAdminPolicy) => {
-    return await ConfigManager.getInstance().config.abacApi.organizationAdminPoliciesDeleteOne(item.id);
+    return await ApiManager.getInstance().abacApi.organizationAdminPoliciesDeleteOne(item.id);
   }, []);
 
   const updateOne = useCallback(async (variables: FormFields, item: CommonDbOrganizationAdminPolicy) => {
-    return (await ConfigManager.getInstance().config.abacApi.organizationAdminPoliciesPutOne(item.id, { id: item.id, ...variables })).data;
+    return (await ApiManager.getInstance().abacApi.organizationAdminPoliciesPutOne(item.id, { id: item.id, ...variables })).data;
   }, []);
 
   const createOne = useCallback(async (variables: FormFields) => {
-    return (await ConfigManager.getInstance().config.abacApi.organizationAdminPoliciesPostOne(variables)).data;
+    return (await ApiManager.getInstance().abacApi.organizationAdminPoliciesPostOne(variables)).data;
   }, []);
 
   const getName = useCallback((item: CommonDbOrganizationAdminPolicy) => {

@@ -18,9 +18,9 @@ import { useQueryMemo } from '../../../hooks/useQueryMemo';
 import { LoadableUtil } from '../../../utils/LoadableUtil';
 import { PageContainer } from '../../ui/PageContainer';
 import { ResponseHandler } from '../../ui/ResponseHandler';
-import { ConfigManager } from '../../../classes/managers/ConfigManager';
 import { QueryClientManager } from '../../../classes/managers/QueryClientManager';
 import { COMMON_QUERY_KEY } from '../../../data/query';
+import { ApiManager } from '../../../classes/managers/ApiManager';
 
 export const AuthorizationWrapper = ({ children }: PropsWithChildren): ReactNode => {
   const { t } = useTranslation();
@@ -31,14 +31,14 @@ export const AuthorizationWrapper = ({ children }: PropsWithChildren): ReactNode
   const userQuery = useQueryMemo({
     enabled: requiresUserProfile,
     gcTime: Infinity,
-    queryFn: async ({ signal }) => (await ConfigManager.getInstance().config.organizationApi.userMeGetOne({ signal })).data,
+    queryFn: async ({ signal }) => (await ApiManager.getInstance().organizationApi.userMeGetOne({ signal })).data,
     queryKey: QueryClientManager.getInstance().getGenericKey(COMMON_QUERY_KEY.USER_ME),
     staleTime: Infinity,
   });
   const userPermissionsQuery = useQueryMemo({
     enabled: requiresUserProfile,
     gcTime: Infinity,
-    queryFn: async ({ signal }) => (await ConfigManager.getInstance().config.organizationApi.userMeRetrievePermissions({ signal })).data,
+    queryFn: async ({ signal }) => (await ApiManager.getInstance().organizationApi.userMeRetrievePermissions({ signal })).data,
     queryKey: QueryClientManager.getInstance().getGenericKey(COMMON_QUERY_KEY.USER_PERMISSIONS),
     staleTime: Infinity,
   });

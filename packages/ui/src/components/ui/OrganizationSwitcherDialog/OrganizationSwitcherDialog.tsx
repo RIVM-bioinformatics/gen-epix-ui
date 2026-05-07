@@ -35,7 +35,7 @@ import type {
 import { withDialog } from '../../../hoc/withDialog';
 import { TestIdUtil } from '../../../utils/TestIdUtil';
 import { Autocomplete } from '../../form/fields/Autocomplete';
-import { ConfigManager } from '../../../classes/managers/ConfigManager';
+import { ApiManager } from '../../../classes/managers/ApiManager';
 
 export interface OrganizationSwitcherDialogOpenProps {
   //
@@ -96,7 +96,7 @@ export const OrganizationSwitcherDialog = withDialog<OrganizationSwitcherDialogP
       });
       try {
         setIsChanging(true);
-        await ConfigManager.getInstance().config.organizationApi.updateUserOwnOrganization({
+        await ApiManager.getInstance().organizationApi.updateUserOwnOrganization({
           organization_id: formValues.organization_id,
         }, {});
         setNewOrganizationId(formValues.organization_id);

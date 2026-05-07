@@ -22,7 +22,6 @@ import { TestIdUtil } from '../../../utils/TestIdUtil';
 import { useArray } from '../../../hooks/useArray';
 import { FeatureFlagsManager } from '../../../classes/managers/FeatureFlagsManager';
 import { I18nManager } from '../../../classes/managers/I18nManager';
-import { ConfigManager } from '../../../classes/managers/ConfigManager';
 import { QueryClientManager } from '../../../classes/managers/QueryClientManager';
 import type { ConfirmationRefMethods } from '../../ui/Confirmation';
 import { Confirmation } from '../../ui/Confirmation';
@@ -31,6 +30,7 @@ import { PageContainer } from '../../ui/PageContainer';
 import { ResponseHandler } from '../../ui/ResponseHandler';
 import { Spinner } from '../../ui/Spinner';
 import { COMMON_QUERY_KEY } from '../../../data/query';
+import { ApiManager } from '../../../classes/managers/ApiManager';
 
 
 export const ApplicationBootstrap = ({ children }: PropsWithChildren): ReactNode => {
@@ -57,7 +57,7 @@ export const ApplicationBootstrap = ({ children }: PropsWithChildren): ReactNode
 
   const outagesQuery = useQueryMemo({
     gcTime: Infinity,
-    queryFn: async ({ signal }) => (await ConfigManager.getInstance().config.systemApi.retrieveOutages({ signal })).data,
+    queryFn: async ({ signal }) => (await ApiManager.getInstance().systemApi.retrieveOutages({ signal })).data,
     queryKey: QueryClientManager.getInstance().getGenericKey(COMMON_QUERY_KEY.OUTAGES),
     refetchInterval: 5 * 60 * 1000,
     staleTime: Infinity,
@@ -105,7 +105,7 @@ export const ApplicationBootstrap = ({ children }: PropsWithChildren): ReactNode
   const featureFlagsQuery = useQueryMemo({
     enabled: shouldShowChildren,
     gcTime: Infinity,
-    queryFn: async ({ signal }) => (await ConfigManager.getInstance().config.systemApi.retrieveFeatureFlags({ signal })).data,
+    queryFn: async ({ signal }) => (await ApiManager.getInstance().systemApi.retrieveFeatureFlags({ signal })).data,
     queryKey: QueryClientManager.getInstance().getGenericKey(COMMON_QUERY_KEY.FEATURE_FLAGS),
     staleTime: Infinity,
   });

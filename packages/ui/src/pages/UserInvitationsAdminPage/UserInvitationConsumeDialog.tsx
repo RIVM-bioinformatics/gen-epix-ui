@@ -29,9 +29,9 @@ import { GenericForm } from '../../components/form/helpers/GenericForm';
 import { AuthenticationManager } from '../../classes/managers/AuthenticationManager';
 import { ResponseHandler } from '../../components/ui/ResponseHandler';
 import { NotificationManager } from '../../classes/managers/NotificationManager';
-import { ConfigManager } from '../../classes/managers/ConfigManager';
 import { QueryClientManager } from '../../classes/managers/QueryClientManager';
 import { COMMON_QUERY_KEY } from '../../data/query';
+import { ApiManager } from '../../classes/managers/ApiManager';
 
 export interface UserInvitationConsumeDialogOpenProps {
   item: CommonDbUserInvitation;
@@ -83,7 +83,7 @@ export const UserInvitationConsumeDialog = withDialog<UserInvitationConsumeDialo
   const onFormSubmit = useCallback(async (data: FormFields) => {
     try {
       AuthenticationManager.getInstance().temporaryToken = data.bearerToken;
-      await ConfigManager.getInstance().config.organizationApi.userRegistrationsPostOne(openProps.item.token);
+      await ApiManager.getInstance().organizationApi.userRegistrationsPostOne(openProps.item.token);
       NotificationManager.getInstance().showNotification({
         message: t`Invitation has been consumed by bearer token`,
         severity: 'success',

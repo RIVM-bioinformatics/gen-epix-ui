@@ -13,6 +13,7 @@ import { AuthenticationManager } from '../AuthenticationManager';
 import { ConfigManager } from '../ConfigManager';
 import { StringUtil } from '../../../utils/StringUtil';
 import { AxiosUtil } from '../../../utils/AxiosUtil';
+import { ApiManager } from '../ApiManager';
 
 type LogManagerItem = {
   detail?: unknown;
@@ -139,7 +140,7 @@ export class LogManager {
     if (document.location.href.includes('accept-invitation')) {
       return;
     }
-    ConfigManager.getInstance().config.systemApi.log({
+    ApiManager.getInstance().systemApi.log({
       log_items: this.logItems,
     }, {
       headers: {
