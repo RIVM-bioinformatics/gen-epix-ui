@@ -20,6 +20,6 @@ I18nManager.getInstance().init()
       <App />,
     );
   })
-  .catch(() => {
-    alert('Failed to initialize the application');
+  .catch((error) => {
+    console.error('Failed to initialize the application', error);
   });

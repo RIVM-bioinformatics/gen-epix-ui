@@ -9,10 +9,10 @@ type HomePage = () => ReactElement;
 export class RouterManager {
   private static __instance: RouterManager;
 
-  public adminRoutes: MyNonIndexRouteObject[];
+  public adminRoutes: MyNonIndexRouteObject[] = [];
   public homePageComponent: HomePage;
   public router: ReturnType<typeof createBrowserRouter>;
-  public routes: MyNonIndexRouteObject[];
+  public routes: MyNonIndexRouteObject[] = [];
 
   private constructor() {
   }
