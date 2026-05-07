@@ -20,6 +20,7 @@
     "@emotion/styled": "11.14.1",
     "@gen-epix/api-casedb": "workspace:*",
     "@gen-epix/ui": "workspace:*",
+    "@gen-epix/ui-casedb": "workspace:*",
     "@mui/icons-material": "9.0.0",
     "@mui/material": "9.0.0",
     "@mui/styled-engine": "9.0.0",

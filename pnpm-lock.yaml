@@ -168,6 +168,9 @@ importers:
       '@gen-epix/ui':
         specifier: workspace:*
         version: link:../ui
+      '@gen-epix/ui-casedb':
+        specifier: workspace:*
+        version: link:../ui-casedb
       '@mui/icons-material':
         specifier: 9.0.0
         version: 9.0.0(@mui/material@9.0.0(@emotion/react@11.14.0(@types/react@19.2.14)(react@19.2.5))(@emotion/styled@11.14.1(@emotion/react@11.14.0(@types/react@19.2.14)(react@19.2.5))(@types/react@19.2.14)(react@19.2.5))(@types/react@19.2.14)(react-dom@19.2.5(react@19.2.5))(react@19.2.5))(@types/react@19.2.14)(react@19.2.5)

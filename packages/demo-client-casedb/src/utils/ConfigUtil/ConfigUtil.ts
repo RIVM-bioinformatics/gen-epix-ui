@@ -2,19 +2,19 @@ import {
   format,
   subDays,
 } from 'date-fns';
+import { CaseDbColType } from '@gen-epix/api-casedb';
+import type { APP } from '@gen-epix/ui';
 import {
   AxiosUtil,
   createDemoTheme,
-  EPI_ZONE,
   I18nManager,
   WindowManager,
 } from '@gen-epix/ui';
 import type {
-  APP,
-  Config,
+  CaseDbConfig,
   EpiDashboardLayoutConfig,
-} from '@gen-epix/ui';
-import { CaseDbColType } from '@gen-epix/api-casedb';
+} from '@gen-epix/ui-casedb';
+import { EPI_ZONE } from '@gen-epix/ui-casedb';
 
 import { ApplicationHeader } from '../../components/ApplicationHeader';
 import { ConsentDialogContent } from '../../components/ConsentDialogContent';
@@ -25,7 +25,7 @@ import { LicenseInformation } from '../../components/LicenseInformation';
 const LOCAL_STORAGE_KEY_PREFERRED_LANGUAGE = 'GenEpix-preferred-language';
 
 export class ConfigUtil {
-  public static createConfig(): Config {
+  public static createConfig(): CaseDbConfig {
     const onEnglishClick = () => {
       I18nManager.getInstance().emit('onUserLanguageChange', 'en');
     };
@@ -44,7 +44,7 @@ export class ConfigUtil {
 
 
     const PANEL_ZONES = [EPI_ZONE.EPI_CURVE, EPI_ZONE.LINE_LIST, EPI_ZONE.MAP, EPI_ZONE.TREE];
-    const config: Config = {
+    const config: CaseDbConfig = {
       // eslint-disable-next-line @typescript-eslint/naming-convention
       ApplicationHeader,
       applicationName: 'Gen-EpiX',

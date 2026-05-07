@@ -5,10 +5,11 @@ import {
   I18nManager,
   setup,
 } from '@gen-epix/ui';
+import type { CaseDbConfig } from '@gen-epix/ui-casedb';
 
 import { ConfigUtil } from './utils/ConfigUtil';
 
-ConfigManager.getInstance().config = ConfigUtil.createConfig();
+ConfigManager.getInstance<CaseDbConfig>().config = ConfigUtil.createConfig();
 I18nManager.getInstance().init()
   .then(() => {
     setup();
