@@ -5,8 +5,8 @@ import {
 } from '@mui/material';
 import { useCallback } from 'react';
 import type { CaseDbCaseSet } from '@gen-epix/api-casedb';
+import { RouterManager } from '@gen-epix/ui';
 
-import { RouterManager } from '../../../classes/managers/RouterManager';
 import { CaseSetUtil } from '../../../utils/CaseSetUtil';
 
 export type EpiAddCasesToEventDialogSuccessNotificationMessageProps = {

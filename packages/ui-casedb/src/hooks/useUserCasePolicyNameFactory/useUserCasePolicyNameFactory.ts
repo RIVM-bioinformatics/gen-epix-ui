@@ -6,8 +6,8 @@ import type {
 } from '@gen-epix/api-casedb';
 import type { UseNameFactory } from '@gen-epix/ui';
 import {
-  DataUtil,
   DataHookUtil,
+  DataUtil,
   useUsersMapQuery,
 } from '@gen-epix/ui';
 

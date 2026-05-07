@@ -4,14 +4,16 @@ import {
 } from 'react';
 import { useTranslation } from 'react-i18next';
 import type { CaseDbCase } from '@gen-epix/api-casedb';
-
+import type {
+  DialogAction,
+  WithDialogRefMethods,
+  WithDialogRenderProps,
+} from '@gen-epix/ui';
 import {
+  TestIdUtil,
   withDialog,
-  type WithDialogRefMethods,
-  type WithDialogRenderProps,
-} from '../../../hoc/withDialog';
-import { TestIdUtil } from '../../../utils/TestIdUtil';
-import type { DialogAction } from '../../ui/Dialog';
+} from '@gen-epix/ui';
+
 
 export interface EpiBulkEditCaseDialogOpenProps {
   rows: CaseDbCase[];

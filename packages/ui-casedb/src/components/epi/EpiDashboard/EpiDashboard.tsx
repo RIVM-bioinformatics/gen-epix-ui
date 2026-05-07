@@ -18,6 +18,18 @@ import { useStore } from 'zustand';
 import { useShallow } from 'zustand/shallow';
 import InfoIcon from '@mui/icons-material/Info';
 import type { CaseDbCaseSet } from '@gen-epix/api-casedb';
+import type { EpiContactDetailsDialogRefMethods } from '@gen-epix/ui';
+import {
+  ConfigManager,
+  EpiContactDetailsDialog,
+  KeyboardShortcutManager,
+  ResponseHandler,
+  SidebarMenu,
+  SidebarMenuItem,
+  Subject,
+  TableFiltersSidebarItem,
+  TableFiltersSidebarItemIcon,
+} from '@gen-epix/ui';
 
 import CollectionIcon from '../../../assets/icons/CollectionIcon.svg?react';
 import type { EpiCaseSetInfoDialogRefMethods } from '../EpiCaseSetInfoDialog';
@@ -38,10 +50,6 @@ import {
   type EpiCaseInfoDialogRefMethods,
 } from '../EpiCaseInfoDialog';
 import {
-  EpiContactDetailsDialog,
-  type EpiContactDetailsDialogRefMethods,
-} from '../EpiContactDetailsDialog';
-import {
   EpiCreateEventDialog,
   type EpiCreateEventDialogRefMethods,
 } from '../EpiCreateEventDialog';
@@ -53,10 +61,6 @@ import {
   EpiSequenceDownloadDialog,
   type EpiSequenceDownloadDialogRefMethods,
 } from '../EpiSequenceDownloadDialog';
-import { ConfigManager } from '../../../classes/managers/ConfigManager';
-import { EpiEventBusManager } from '../../../classes/managers/EpiEventBusManager';
-import { KeyboardShortcutManager } from '../../../classes/managers/KeyboardShortcutManager';
-import { Subject } from '../../../classes/Subject';
 import type {
   EpiLineListRangeSubjectValue,
   EpiLinkedScrollSubjectValue,
@@ -65,15 +69,6 @@ import { EPI_ZONE } from '../../../../../ui-casedb/src/models/epi';
 import { EpiDashboardStoreContext } from '../../../stores/epiDashboardStore';
 import { userProfileStore } from '../../../stores/userProfileStore';
 import { DashboardUtil } from '../../../utils/DashboardUtil';
-import { ResponseHandler } from '../../ui/ResponseHandler';
-import {
-  SidebarMenu,
-  SidebarMenuItem,
-} from '../../ui/Sidebar';
-import {
-  TableFiltersSidebarItem,
-  TableFiltersSidebarItemIcon,
-} from '../../ui/Table';
 import { EpiCurveWidget } from '../EpiCurveWidget';
 import { EpiLineListWidget } from '../EpiLineListWidget';
 import { EpiMapWidget } from '../EpiMapWidget';
@@ -89,6 +84,8 @@ import {
   EpiRemoveFindSimilarCasesResultDialog,
   type EpiRemoveFindSimilarCasesResultDialogRefMethods,
 } from '../EpiRemoveFindSimilarCasesResultDialog/EpiRemoveFindSimilarCasesResultDialog';
+import { EpiEventBusManager } from '../../../classes/managers/EpiEventBusManager';
+import type { CaseDbConfig } from '../../../models/config';
 
 import {
   EpiDashboardSettingsSidebarItem,
@@ -384,7 +381,7 @@ export const EpiDashboard = withEpiDashboardStore(({ caseSet }: EpiDashboardProp
               )}
               phylogeneticTreeWidget={(
                 <EpiTreeWidget
-                  itemHeight={ConfigManager.getInstance().config.epiLineList.TABLE_ROW_HEIGHT}
+                  itemHeight={ConfigManager.getInstance<CaseDbConfig>().config.epiLineList.TABLE_ROW_HEIGHT}
                   lineListRangeSubject={lineListRangeSubject}
                   linkedScrollSubject={linkedScrollSubject}
                   ref={epiTreeRef}

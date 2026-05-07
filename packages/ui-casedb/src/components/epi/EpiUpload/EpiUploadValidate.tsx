@@ -21,18 +21,18 @@ import {
   CaseDbDataIssueType,
   CaseDbUploadAction,
 } from '@gen-epix/api-casedb';
+import {
+  createTableStore,
+  ResponseHandler,
+  TableStoreContextProvider,
+  useArray,
+  useQueryMemo,
+} from '@gen-epix/ui';
 
 import { EpiUploadStoreContext } from '../../../stores/epiUploadStore';
 import { EpiCompletCaseTypeLoader } from '../EpiCompletCaseTypeLoader';
-import { useArray } from '../../../hooks/useArray';
-import { useQueryMemo } from '../../../hooks/useQueryMemo';
-import type { CaseUploadResultWithGeneratedId } from '../../../../../ui-casedb/src/models/epi';
-import {
-  createTableStore,
-  TableStoreContextProvider,
-} from '../../../stores/tableStore';
-import { ResponseHandler } from '../../ui/ResponseHandler';
 import { EpiUploadUtil } from '../../../utils/EpiUploadUtil';
+import type { CaseUploadResultWithGeneratedId } from '../../../models/epi';
 
 import { EpiUploadCaseResultTable } from './EpiUploadCaseResultTable';
 import { EpiUploadValidateNavigation } from './EpiUploadValidateNavigation';

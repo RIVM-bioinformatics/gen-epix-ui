@@ -5,15 +5,18 @@ import {
 } from 'react';
 import { t } from 'i18next';
 import type { CaseDbCaseSet } from '@gen-epix/api-casedb';
+import type { ConfirmationRefMethods } from '@gen-epix/ui';
+import {
+  Confirmation,
+  ResponseHandler,
+  RouterManager,
+  useArray,
+} from '@gen-epix/ui';
 
-import { RouterManager } from '../../../classes/managers/RouterManager';
 import { useCaseSetCategoryMapQuery } from '../../../dataHooks/useCaseSetCategoriesQuery';
 import { useCaseSetStatusMapQuery } from '../../../dataHooks/useCaseSetStatusesQuery';
 import { CaseSetUtil } from '../../../utils/CaseSetUtil';
-import type { ConfirmationRefMethods } from '../../ui/Confirmation';
-import { Confirmation } from '../../ui/Confirmation';
-import { ResponseHandler } from '../../ui/ResponseHandler';
-import { useArray } from '../../../hooks/useArray';
+
 
 export type EpiCasesAlreadyInCaseSetWarningCaseSetLinkProps = {
   readonly caseSet: CaseDbCaseSet;

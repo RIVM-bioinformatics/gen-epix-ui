@@ -16,10 +16,10 @@ import {
 } from 'react';
 import { useStore } from 'zustand';
 import { useShallow } from 'zustand/shallow';
+import { Switch } from '@gen-epix/ui';
 
 import type { EpiDashboardTreeSettings } from '../../../stores/userProfileStore';
 import { userProfileStore } from '../../../stores/userProfileStore';
-import { Switch } from '../../form/fields/Switch';
 
 export type EpiDashboardTreeSettingsFormProps = {
   readonly onReset: () => void;

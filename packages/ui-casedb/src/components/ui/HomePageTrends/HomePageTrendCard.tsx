@@ -1,3 +1,4 @@
+import { TestIdUtil } from '@gen-epix/ui';
 import {
   Box,
   Button,
@@ -11,7 +12,6 @@ import {
 import { t } from 'i18next';
 import { useCallback } from 'react';
 
-import { TestIdUtil } from '../../../utils/TestIdUtil';
 
 export type HomagePageTrendCardProps = {
   readonly callback?: () => void;

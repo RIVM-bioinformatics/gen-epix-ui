@@ -3,7 +3,6 @@ import { CaseDbCaseApi } from '@gen-epix/api-casedb';
 import {
   HmrUtil,
   QueryClientManager,
-  QueryClientManager,
 } from '@gen-epix/ui';
 
 import type { EpiCaseHasCaseSet } from '../../../models/epi';

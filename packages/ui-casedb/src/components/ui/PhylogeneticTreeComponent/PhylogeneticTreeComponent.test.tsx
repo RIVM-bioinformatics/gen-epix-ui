@@ -130,7 +130,7 @@ const hasPixelAround = (
     return false;
   }
 
-  const context = canvas.geTDataContext('2d');
+  const context = canvas.getContext('2d');
 
   if (!context) {
     throw new Error('Expected the tree canvas to expose a 2D rendering context.');

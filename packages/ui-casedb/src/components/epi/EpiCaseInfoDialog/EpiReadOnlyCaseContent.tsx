@@ -11,12 +11,14 @@ import {
 import { useTranslation } from 'react-i18next';
 import { format } from 'date-fns';
 import type { CaseDbCase } from '@gen-epix/api-casedb';
+import {
+  DATE_FORMAT,
+  GenericErrorMessage,
+  ResponseHandler,
+  useArray,
+} from '@gen-epix/ui';
 
 import { useDataCollectionsMapQuery } from '../../../dataHooks/useDataCollectionsQuery';
-import { GenericErrorMessage } from '../../ui/GenericErrorMessage';
-import { ResponseHandler } from '../../ui/ResponseHandler';
-import { DATE_FORMAT } from '../../../data/date';
-import { useArray } from '../../../hooks/useArray';
 
 export type EpiReadOnlyCaseContentProps = {
   readonly epiCase: CaseDbCase;

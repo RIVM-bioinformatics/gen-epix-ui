@@ -36,15 +36,15 @@ export type TableCellRowComparatorArgument<TRowData> = {
   rowIndex: number;
 };
 
-export type TableColumn<TRowData, TDataContext = null> =
-  TableColumnActions<TRowData, TDataContext> |
-  TableColumnBoolean<TRowData, TDataContext> |
-  TableColumnDate<TRowData, TDataContext> |
-  TableColumnNumber<TRowData, TDataContext> |
-  TableColumnOptions<TRowData, TDataContext> |
-  TableColumnReadableIndex<TRowData, TDataContext> |
-  TableColumnSelectable<TRowData, TDataContext> |
-  TableColumnText<TRowData, TDataContext>;
+export type TableColumn<TRowData, TDataContext = null, TColumnContext = null> =
+  TableColumnActions<TRowData, TDataContext, TColumnContext> |
+  TableColumnBoolean<TRowData, TDataContext, TColumnContext> |
+  TableColumnDate<TRowData, TDataContext, TColumnContext> |
+  TableColumnNumber<TRowData, TDataContext, TColumnContext> |
+  TableColumnOptions<TRowData, TDataContext, TColumnContext> |
+  TableColumnReadableIndex<TRowData, TDataContext, TColumnContext> |
+  TableColumnSelectable<TRowData, TDataContext, TColumnContext> |
+  TableColumnText<TRowData, TDataContext, TColumnContext>;
 
 export interface TableColumnActions<TRowData, TDataContext = null, TColumnContext = null> extends TableColumnBase<TRowData, string, TDataContext, TColumnContext> {
   comparatorFactory?: (params: GetTableCellRowComparatorProps<TableColumnActions<TRowData, TDataContext, TColumnContext>, TDataContext>) => (a: TRowData, b: TRowData) => number;
@@ -154,7 +154,7 @@ export type TableSortDirection = 'asc' | 'desc';
 
 interface TableColumnBase<TRowData, TValue, TDataContext = null, TColumnContext = null> {
   cellTitleGetter?: (params: TableRowParams<TRowData, TDataContext>) => string;
-  columnContext: TColumnContext;
+  columnContext?: TColumnContext;
   disableEllipsis?: boolean;
   displayValueGetter?: (params: TableRowParams<TRowData, TDataContext>) => string;
   filterLabel?: string;

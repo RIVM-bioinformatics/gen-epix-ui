@@ -7,7 +7,10 @@ import {
   mixed,
   object,
 } from 'yup';
-import type { CaseDbApiPermission, CaseDbCaseTypeSetCategory } from '@gen-epix/api-casedb';
+import type {
+  CaseDbApiPermission,
+  CaseDbCaseTypeSetCategory,
+} from '@gen-epix/api-casedb';
 import {
   CaseDbCaseApi,
   CaseDbCaseTypeSetCategoryPurpose,

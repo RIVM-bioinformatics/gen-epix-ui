@@ -11,7 +11,10 @@ import {
 } from 'yup';
 import { useParams } from 'react-router-dom';
 import type { UseFormReturn } from 'react-hook-form';
-import type { CaseDbApiPermission, CaseDbRefCol } from '@gen-epix/api-casedb';
+import type {
+  CaseDbApiPermission,
+  CaseDbRefCol,
+} from '@gen-epix/api-casedb';
 import {
   CaseDbCaseApi,
   CaseDbColType,

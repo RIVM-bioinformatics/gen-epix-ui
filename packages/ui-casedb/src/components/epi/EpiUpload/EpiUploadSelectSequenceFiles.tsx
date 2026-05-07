@@ -22,19 +22,21 @@ import {
 import { yupResolver } from '@hookform/resolvers/yup';
 import type { Resolver } from 'react-hook-form';
 import { useForm } from 'react-hook-form';
+import type {
+  FormFieldDefinition,
+  SelectOption,
+} from '@gen-epix/ui';
+import {
+  FORM_FIELD_DEFINITION_TYPE,
+  GenericForm,
+  ResponseHandler,
+  useArray,
+} from '@gen-epix/ui';
 
 import { FileSelector } from '../../ui/FileSelector';
 import { EpiUploadUtil } from '../../../utils/EpiUploadUtil';
 import { EpiUploadStoreContext } from '../../../stores/epiUploadStore';
 import { useSequencingProtocolOptionsQuery } from '../../../dataHooks/useSequencingProtocolsQuery';
-import { useArray } from '../../../hooks/useArray';
-import { ResponseHandler } from '../../ui/ResponseHandler';
-import type {
-  FormFieldDefinition,
-  SelectOption,
-} from '../../../models/form';
-import { FORM_FIELD_DEFINITION_TYPE } from '../../../models/form';
-import { GenericForm } from '../../form/helpers/GenericForm';
 import { useAssemblyProtocolOptionsQuery } from '../../../dataHooks/useAssemblyProtocolsQuery';
 
 import { EpiUploadNavigation } from './EpiUploadNavigation';

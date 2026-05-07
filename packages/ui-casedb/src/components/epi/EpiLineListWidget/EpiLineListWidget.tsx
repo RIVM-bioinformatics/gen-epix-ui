@@ -58,7 +58,7 @@ import { EpiDashboardStoreContext } from '../../../stores/epiDashboardStore';
 import { CaseTypeUtil } from '../../../utils/CaseTypeUtil';
 import { CaseUtil } from '../../../utils/CaseUtil';
 import type { CaseDbConfig } from '../../../models/config';
-import { CaseDbTableUtil } from '../../..';
+import { CaseDbTableUtil } from '../../../utils/CaseDbTableUtil';
 
 import { EpiLineListWidgetTitle } from './EpiLineListWidgetTitle';
 import { EpiLineListWidgetPrimaryMenu } from './EpiLineListWidgetPrimaryMenu';
@@ -322,7 +322,8 @@ export const EpiLineListWidget = ({ caseSet, lineListRangeSubject, linkedScrollS
   }, [renderEventsCell, renderSimilarCell, renderEventsHeader, renderSimilarHeader, t]);
 
   const tableColumns = useMemo<TableColumn<CaseDbCase, CaseDbCompleteCaseType>[]>(() => {
-    const { DATA_MISSING_CHARACTER } = ConfigManager.getInstance<CaseDbConfig>().config.epi;
+    // !FIXME
+    // const { DATA_MISSING_CHARACTER } = ConfigManager.getInstance<CaseDbConfig>().config.epi;
 
     const initialVisibleColumnIds = CaseTypeUtil.getInitialVisibleColIds(completeCaseType);
     const caseTypeTableColumns: TableColumn<CaseDbCase, CaseDbCompleteCaseType>[] = [];
@@ -331,7 +332,8 @@ export const EpiLineListWidget = ({ caseSet, lineListRangeSubject, linkedScrollS
     completeCaseType.ordered_dim_ids.map(x => completeCaseType.dims[x]).forEach((dim) => {
       completeCaseType.ordered_col_ids_by_dim[dim.id].map(id => completeCaseType.cols[id]).forEach(col => {
         const refCol = completeCaseType.ref_cols[col.ref_col_id];
-        const baseCaseTypeTableColumn: Partial<TableColumn<CaseDbCase, CaseDbCompleteCaseType>> = {
+        const baseCaseTypeTableColumn: Partial<TableColumn<CaseDbCase, CaseDbCompleteCaseType, CaseDbCol>> = {
+          columnContext: col,
           headerName: col.label,
           headerTooltipContent: refCol.description,
           id: col.id,
@@ -346,14 +348,16 @@ export const EpiLineListWidget = ({ caseSet, lineListRangeSubject, linkedScrollS
             },
             type: 'text',
             valueGetter: (params) => {
+              // !FIXME
               const value = treeAddresses[col.id]?.addresses[params.row.id] ? `${treeAddresses[col.id].algorithmCode} ${treeAddresses[col.id].addresses[params.row.id]}` : undefined;
-              return {
-                full: value ?? DATA_MISSING_CHARACTER,
-                isMissing: !value,
-                long: value ?? DATA_MISSING_CHARACTER,
-                raw: value,
-                short: value ?? DATA_MISSING_CHARACTER,
-              };
+              return value;
+              // return {
+              //   full: value ?? DATA_MISSING_CHARACTER,
+              //   isMissing: !value,
+              //   long: value ?? DATA_MISSING_CHARACTER,
+              //   raw: value,
+              //   short: value ?? DATA_MISSING_CHARACTER,
+              // };
             },
             widthPx: 200,
           } as TableColumn<CaseDbCase, CaseDbCompleteCaseType>);

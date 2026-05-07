@@ -1,9 +1,11 @@
 import type { ReactNode } from 'react';
 import { isValidElement } from 'react';
+import type { MenuItemData } from '@gen-epix/ui';
+import {
+  MenuDataUtil,
+  NestedDropdown,
+} from '@gen-epix/ui';
 
-import type { MenuItemData } from '../../../models/nestedMenu';
-import { NestedDropdown } from '../../ui/NestedMenu';
-import { MenuDataUtil } from '../../../utils/MenuDataUtil';
 import { WidgetHeaderIconButton } from '../EpiWidgetHeaderIconButton';
 
 export type EpiWidgetMenuProps = {

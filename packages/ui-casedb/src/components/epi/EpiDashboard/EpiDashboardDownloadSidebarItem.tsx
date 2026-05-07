@@ -12,16 +12,19 @@ import {
   useEffect,
   useState,
 } from 'react';
+import type { SidebarItemSharedProps } from '@gen-epix/ui';
+import {
+  ConfigManager,
+  SidebarItem,
+} from '@gen-epix/ui';
 
-import type { SidebarItemSharedProps } from '../../ui/Sidebar';
-import { SidebarItem } from '../../ui/Sidebar';
 import type {
   DownloadConfig,
   DownloadConfigItem,
   DownloadConfigSection,
 } from '../../../classes/managers/EpiEventBusManager';
 import { EpiEventBusManager } from '../../../classes/managers/EpiEventBusManager';
-import { ConfigManager } from '../../../classes/managers/ConfigManager';
+import type { CaseDbConfig } from '../../../models/config';
 
 
 export type EpiDashboardDownloadSidebarItemProps = SidebarItemSharedProps;
@@ -46,15 +49,16 @@ const EpiDashboardDownloadSidebarItemContent = () => {
           ...prevDownloadOptions.filter(item => item.zone !== payload.zone),
           payload,
         ].sort((a, b) => {
-          return ConfigManager.getInstance().config.epi.DOWNLOAD_SECTION_ORDER.indexOf(a.zone) - ConfigManager.getInstance().config.epi.DOWNLOAD_SECTION_ORDER.indexOf(b.zone);
+          return ConfigManager.getInstance<CaseDbConfig>().config.epi.DOWNLOAD_SECTION_ORDER.indexOf(a.zone) - ConfigManager.getInstance<CaseDbConfig>().config.epi.DOWNLOAD_SECTION_ORDER.indexOf(b.zone);
         });
       });
     };
-    EpiEventBusManager.getInstance().addEventListener('onDownloadOptionsChanged', onDownloadOptionsChanged);
-    EpiEventBusManager.getInstance().emit('onDownloadOptionsRequested');
+    const epiEventBusManager = EpiEventBusManager.getInstance();
+    epiEventBusManager.addEventListener('onDownloadOptionsChanged', onDownloadOptionsChanged);
+    epiEventBusManager.emit('onDownloadOptionsRequested');
 
     return () => {
-      EpiEventBusManager.getInstance().removeEventListener('onDownloadOptionsChanged', onDownloadOptionsChanged);
+      epiEventBusManager.removeEventListener('onDownloadOptionsChanged', onDownloadOptionsChanged);
     };
   }, []);
 

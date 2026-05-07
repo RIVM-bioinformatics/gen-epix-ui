@@ -7,7 +7,10 @@ import {
   object,
   string,
 } from 'yup';
-import type { CaseDbApiPermission, CaseDbDisease } from '@gen-epix/api-casedb';
+import type {
+  CaseDbApiPermission,
+  CaseDbDisease,
+} from '@gen-epix/api-casedb';
 import {
   CaseDbCommandName,
   CaseDbOntologyApi,

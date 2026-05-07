@@ -1,10 +1,10 @@
 import { useTranslation } from 'react-i18next';
 import { useStore } from 'zustand';
 import { use } from 'react';
+import { useTableStoreContext } from '@gen-epix/ui';
 
-import type { CaseUploadResultWithGeneratedId } from '../../../../../ui-casedb/src/models/epi';
-import { useTableStoreContext } from '../../../stores/tableStore';
 import { EpiUploadStoreContext } from '../../../stores/epiUploadStore';
+import type { CaseUploadResultWithGeneratedId } from '../../../models/epi';
 
 import { EpiUploadNavigation } from './EpiUploadNavigation';
 

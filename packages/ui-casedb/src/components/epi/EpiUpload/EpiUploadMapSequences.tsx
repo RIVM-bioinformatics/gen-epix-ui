@@ -17,22 +17,22 @@ import {
 import { useTranslation } from 'react-i18next';
 import { useStore } from 'zustand';
 import { type CaseDbCol } from '@gen-epix/api-casedb';
-
-import {
-  createTableStore,
-  TableStoreContextProvider,
-} from '../../../stores/tableStore';
-import { useInitializeTableStore } from '../../../hooks/useInitializeTableStore';
 import type {
   TableColumn,
   TableRowParams,
-} from '../../../models/table';
-import { TableUtil } from '../../../utils/CaseDbTableUtil';
-import { EpiUploadUtil } from '../../../utils/EpiUploadUtil';
-import { Table } from '../../ui/Table';
+} from '@gen-epix/ui';
+import {
+  createTableStore,
+  Table,
+  TableStoreContextProvider,
+  TableUtil,
+  useInitializeTableStore,
+} from '@gen-epix/ui';
+
 import { CaseUtil } from '../../../utils/CaseUtil';
 import { EpiUploadStoreContext } from '../../../stores/epiUploadStore';
 import type { CaseUploadResultWithGeneratedId } from '../../../../../ui-casedb/src/models/epi';
+import { EpiUploadUtil } from '../../../utils/EpiUploadUtil';
 
 import { EpiUploadNavigation } from './EpiUploadNavigation';
 

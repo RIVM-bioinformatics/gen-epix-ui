@@ -22,18 +22,19 @@ import {
   Box,
 } from '@mui/material';
 import { useTranslation } from 'react-i18next';
+import {
+  ConfigManager,
+  PanelSeparatorHorizontal,
+  PanelSeparatorVertical,
+  StringUtil,
+} from '@gen-epix/ui';
 
-import { ConfigManager } from '../../../classes/managers/ConfigManager';
 import type { EpiDashboardLayoutPanelOrientation } from '../../../../../ui-casedb/src/models/epi';
 import { EPI_ZONE } from '../../../../../ui-casedb/src/models/epi';
 import { EpiDashboardStoreContext } from '../../../stores/epiDashboardStore';
 import { userProfileStore } from '../../../stores/userProfileStore';
 import { DashboardUtil } from '../../../utils/DashboardUtil';
-import { StringUtil } from '../../../utils/StringUtil';
-import {
-  PanelSeparatorHorizontal,
-  PanelSeparatorVertical,
-} from '../../ui/PanelSeparator';
+import type { CaseDbConfig } from '../../../models/config';
 
 export type EpiDashboardLayoutRendererProps = {
   readonly disabled?: boolean;
@@ -116,7 +117,7 @@ export const EpiDashboardLayoutRenderer = ({
   const groupRefInner0 = useGroupRef();
   const groupRefInner1 = useGroupRef();
 
-  const { MIN_PANEL_HEIGHT, MIN_PANEL_WIDTH } = ConfigManager.getInstance().config.epiDashboard;
+  const { MIN_PANEL_HEIGHT, MIN_PANEL_WIDTH } = ConfigManager.getInstance<CaseDbConfig>().config.epiDashboard;
 
   useImperativeHandle(ref, () => ({
     reset: () => {

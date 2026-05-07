@@ -9,14 +9,16 @@ import {
   useTheme,
 } from '@mui/material';
 import { useStore } from 'zustand';
+import {
+  type Step,
+  Stepper,
+} from '@gen-epix/ui';
 
 import {
   EpiUploadStoreContext,
   STEP_ORDER,
 } from '../../../stores/epiUploadStore';
 import { EPI_UPLOAD_STEP } from '../../../../../ui-casedb/src/models/epi';
-import type { Step } from '../../ui/Stepper';
-import { Stepper } from '../../ui/Stepper';
 
 import EpiUploadSelectFile from './EpiUploadSelectFile';
 import { EpiUploadMapColumns } from './EpiUploadMapColumns';

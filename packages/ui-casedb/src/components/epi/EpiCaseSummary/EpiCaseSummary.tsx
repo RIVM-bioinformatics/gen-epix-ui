@@ -15,7 +15,7 @@ import AddIcon from '@mui/icons-material/Add';
 import RemoveIcon from '@mui/icons-material/Remove';
 import { useTranslation } from 'react-i18next';
 import type { CaseDbCase } from '@gen-epix/api-casedb';
-import type { TableColumnCaseType } from '@gen-epix/ui';
+import type { TableColumnText } from '@gen-epix/ui';
 import { useTableStoreContext } from '@gen-epix/ui';
 
 import { EpiDashboardStoreContext } from '../../../stores/epiDashboardStore';
@@ -36,7 +36,7 @@ export const EpiCaseSummary = ({ epiCase }: EpiCaseSummaryProps) => {
   const columnVisualSettings = useStore(tableStore, useShallow((state) => state.columnVisualSettings));
   const columnVisualSettingsVisibleColumnIds = useStore(tableStore, useShallow((state) => state.columnVisualSettings.filter(c => c.isVisible).map(c => c.id)));
 
-  const visibleCaseTypeTableColumns = useMemo(() => columnVisualSettings.map(x => tableColumns.find(c => c.id === x.id)).filter(c => c.type === 'caseType' && columnVisualSettingsVisibleColumnIds.includes(c.id)) as TableColumnCaseType<CaseDbCase>[], [columnVisualSettings, tableColumns, columnVisualSettingsVisibleColumnIds]);
+  const visibleCaseTypeTableColumns = useMemo(() => columnVisualSettings.map(x => tableColumns.find(c => c.id === x.id)).filter(c => c.columnContext && columnVisualSettingsVisibleColumnIds.includes(c.id)) as TableColumnText<CaseDbCase>[], [columnVisualSettings, tableColumns, columnVisualSettingsVisibleColumnIds]);
 
   const visibleAttributes = useMemo(() => {
     return visibleCaseTypeTableColumns.slice(0, numVisibleAttributesInSummary);
@@ -85,7 +85,7 @@ export const EpiCaseSummary = ({ epiCase }: EpiCaseSummaryProps) => {
       >
         {visibleAttributes.map(tableColumn => {
           try {
-            const value = CaseUtil.getRowValue(epiCase.content, tableColumn.col, completeCaseType);
+            const value = CaseUtil.getRowValue(epiCase.content, tableColumn.columnContext, completeCaseType);
             return (
               <Fragment key={tableColumn.id}>
                 <dt>

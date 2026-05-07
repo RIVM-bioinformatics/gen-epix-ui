@@ -4,7 +4,10 @@ import {
 } from 'react';
 import { useTranslation } from 'react-i18next';
 import { object } from 'yup';
-import type { CaseDbApiPermission, CaseDbDataCollection } from '@gen-epix/api-casedb';
+import type {
+  CaseDbApiPermission,
+  CaseDbDataCollection,
+} from '@gen-epix/api-casedb';
 import {
   CaseDbCommandName,
   CaseDbOrganizationApi,

@@ -1,10 +1,9 @@
 import type { ReactElement } from 'react';
-
 import type {
   WithDialogRefMethods,
   WithDialogRenderProps,
-} from '../../../hoc/withDialog';
-import { withDialog } from '../../../hoc/withDialog';
+} from '@gen-epix/ui';
+import { withDialog } from '@gen-epix/ui';
 
 import { EpiCaseTypeInfoDialogContent } from './EpiCaseTypeInfoDialogContent';
 

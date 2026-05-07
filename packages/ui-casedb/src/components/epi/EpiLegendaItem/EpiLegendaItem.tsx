@@ -12,9 +12,10 @@ import {
   useCallback,
   useMemo,
 } from 'react';
+import { ConfigManager } from '@gen-epix/ui';
 
 import type { CaseTypeRowValue } from '../../../../../ui-casedb/src/models/epi';
-import { ConfigManager } from '../../../classes/managers/ConfigManager';
+import type { CaseDbConfig } from '../../../models/config';
 
 export type EpiLegendaItemProps = {
   readonly children?: ReactNode;
@@ -51,7 +52,7 @@ export const EpiLegendaItem = ({ children, color, disabled, onItemClick, onMouse
   const canClick = onClick && !disabled;
 
   const innerContent = useMemo(() => {
-    const value = rowValue.isMissing ? ConfigManager.getInstance().config.epi.DATA_MISSING_CHARACTER : rowValue.short;
+    const value = rowValue.isMissing ? ConfigManager.getInstance<CaseDbConfig>().config.epi.DATA_MISSING_CHARACTER : rowValue.short;
     return (
       <Box
         sx={{

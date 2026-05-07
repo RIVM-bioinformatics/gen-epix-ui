@@ -6,7 +6,8 @@ import type {
   CaseDbRegion,
 } from '@gen-epix/api-casedb';
 import { ConfigManager } from '@gen-epix/ui';
-import { CaseDbConfig } from '../../models/config';
+
+import type { CaseDbConfig } from '../../models/config';
 
 
 export type RegionStatistics = {

@@ -55,7 +55,7 @@ export class TableUtil {
 
   // Cell value getters
 
-  public static createActionsColumn<TData, TDataContext = null, TColumnContext = null>(kwArgs: { columnContext: TColumnContext; getActions: (params: TableRowParams<TData, TDataContext>) => ReactElement[]; t: TFunction<'translation', undefined> }): TableColumnActions<TData, TDataContext, TColumnContext> {
+  public static createActionsColumn<TData, TDataContext = null, TColumnContext = null>(kwArgs: { columnContext?: TColumnContext; getActions: (params: TableRowParams<TData, TDataContext>) => ReactElement[]; t: TFunction<'translation', undefined> }): TableColumnActions<TData, TDataContext, TColumnContext> {
     return {
       columnContext: kwArgs.columnContext,
       getActions: kwArgs.getActions,
@@ -233,7 +233,7 @@ export class TableUtil {
     };
   }
 
-  public static createNumberColumn<TData, TDataContext = null, TColumnContext = null>(kwArgs: { columnContext: TColumnContext; filterLabel?: string; flex?: number; id?: keyof TData; name: string }): TableColumnNumber<TData, TDataContext, TColumnContext> {
+  public static createNumberColumn<TData, TDataContext = null, TColumnContext = null>(kwArgs: { columnContext?: TColumnContext; filterLabel?: string; flex?: number; id?: keyof TData; name: string }): TableColumnNumber<TData, TDataContext, TColumnContext> {
     return {
       columnContext: kwArgs.columnContext,
       comparatorFactory: TableUtil.createNumberCellRowComperator,
@@ -259,7 +259,7 @@ export class TableUtil {
     };
   }
 
-  public static createOptionsColumn<TData, TDataContext = null, TColumnContext = null>(kwArgs: { columnContext: TColumnContext; filterLabel?: string; flex?: number; id?: keyof TData; maxNumOptionsExpanded?: number; name: string; options: OptionBase<string>[]; shouldFilterOptions?: boolean }): TableColumnOptions<TData, TDataContext, TColumnContext> {
+  public static createOptionsColumn<TData, TDataContext = null, TColumnContext = null>(kwArgs: { columnContext?: TColumnContext; filterLabel?: string; flex?: number; id?: keyof TData; maxNumOptionsExpanded?: number; name: string; options: OptionBase<string>[]; shouldFilterOptions?: boolean }): TableColumnOptions<TData, TDataContext, TColumnContext> {
     return {
       columnContext: kwArgs.columnContext,
       comparatorFactory: TableUtil.createOptionsCellRowComperator,
@@ -327,7 +327,7 @@ export class TableUtil {
   }
 
   // Column creation helpers
-  public static createTextColumn<TData, TDataContext = null, TColumnContext = null>(kwArgs: { advancedSort?: boolean; columnContext: TColumnContext; filterLabel?: string; flex?: number; id?: keyof TData; name: string }): TableColumnText<TData, TDataContext, TColumnContext> {
+  public static createTextColumn<TData, TDataContext = null, TColumnContext = null>(kwArgs: { advancedSort?: boolean; columnContext?: TColumnContext; filterLabel?: string; flex?: number; id?: keyof TData; name: string }): TableColumnText<TData, TDataContext, TColumnContext> {
     return {
       columnContext: kwArgs.columnContext,
       comparatorFactory: kwArgs.advancedSort ? TableUtil.createTextCellRowAdvancedComperator : TableUtil.createTextCellRowComperator,

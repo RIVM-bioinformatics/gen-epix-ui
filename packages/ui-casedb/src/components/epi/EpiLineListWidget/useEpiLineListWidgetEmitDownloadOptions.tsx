@@ -88,14 +88,15 @@ export const useEpiLineListWidgetEmitDownloadOptions = () => {
     const onDownloadOptionsRequested = () => {
       emitDownloadOptions(epiDashboardStore.getState().selectedIds);
     };
-    EpiEventBusManager.getInstance().addEventListener('onDownloadOptionsRequested', onDownloadOptionsRequested);
+    const epiEventBusManager = EpiEventBusManager.getInstance();
+    epiEventBusManager.addEventListener('onDownloadOptionsRequested', onDownloadOptionsRequested);
     return () => {
-      EpiEventBusManager.getInstance().emit('onDownloadOptionsChanged', {
+      epiEventBusManager.emit('onDownloadOptionsChanged', {
         items: null,
         zone: EPI_ZONE.LINE_LIST,
         zoneLabel: t`Line list`,
       });
-      EpiEventBusManager.getInstance().removeEventListener('onDownloadOptionsRequested', onDownloadOptionsRequested);
+      epiEventBusManager.removeEventListener('onDownloadOptionsRequested', onDownloadOptionsRequested);
       unsubscribe();
     };
   }, [completeCaseType, epiDashboardStore, getVisibleColumnIds, sortedData, t]);

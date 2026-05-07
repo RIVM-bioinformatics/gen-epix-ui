@@ -47,11 +47,14 @@ import {
 } from 'date-fns';
 import type { CaseDbCol } from '@gen-epix/api-casedb';
 import { CaseDbDimType } from '@gen-epix/api-casedb';
+import type { MenuItemData } from '@gen-epix/ui';
+import {
+  ConfigManager,
+  DATE_FORMAT,
+} from '@gen-epix/ui';
 
-import { ConfigManager } from '../../../classes/managers/ConfigManager';
 import { EpiHighlightingManager } from '../../../classes/managers/EpiHighlightingManager';
 import { EPI_ZONE } from '../../../../../ui-casedb/src/models/epi';
-import type { MenuItemData } from '../../../models/nestedMenu';
 import { EpiDashboardStoreContext } from '../../../stores/epiDashboardStore';
 import { CaseTypeUtil } from '../../../utils/CaseTypeUtil';
 import { EpiCurveUtil } from '../../../utils/EpiCurveUtil';
@@ -59,10 +62,10 @@ import type { EpiContextMenuConfigWithPosition } from '../EpiContextMenu';
 import { EpiContextMenu } from '../EpiContextMenu';
 import { EpiWidget } from '../EpiWidget';
 import { EpiWidgetUnavailable } from '../EpiWidgetUnavailable';
-import { DATE_FORMAT } from '../../../data/date';
 import { EpiEventBusManager } from '../../../classes/managers/EpiEventBusManager';
 import { CaseDbDownloadUtil } from '../../../utils/CaseDbDownloadUtil';
 import { EpiLineListUtil } from '../../../utils/EpiLineListUtil';
+import type { CaseDbConfig } from '../../../models/config';
 
 echarts.use([TooltipComponent, GridComponent, DataZoomComponent, BarChart, CanvasRenderer]);
 
@@ -206,7 +209,7 @@ export const EpiCurveWidget = () => {
     if (!stratification) {
       barSeries.push({
         ...barSerieOptionsBase,
-        color: ConfigManager.getInstance().config.epi.STRATIFICATION_COLORS[0],
+        color: ConfigManager.getInstance<CaseDbConfig>().config.epi.STRATIFICATION_COLORS[0],
         data: [],
         name: '',
       });
@@ -333,7 +336,7 @@ export const EpiCurveWidget = () => {
 
   const getOptions = useCallback(() => {
     return {
-      color: ConfigManager.getInstance().config.epi.STRATIFICATION_COLORS,
+      color: ConfigManager.getInstance<CaseDbConfig>().config.epi.STRATIFICATION_COLORS,
       grid: {
         bottom: 64,
         left: 48,
@@ -466,14 +469,15 @@ export const EpiCurveWidget = () => {
       });
     };
     emitDownloadOptions();
-    EpiEventBusManager.getInstance().addEventListener('onDownloadOptionsRequested', emitDownloadOptions);
+    const eventBusManager = EpiEventBusManager.getInstance();
+    eventBusManager.addEventListener('onDownloadOptionsRequested', emitDownloadOptions);
     return () => {
-      EpiEventBusManager.getInstance().emit('onDownloadOptionsChanged', {
+      eventBusManager.emit('onDownloadOptionsChanged', {
         items: null,
         zone: EPI_ZONE.EPI_CURVE,
         zoneLabel: t`Epi curve`,
       });
-      EpiEventBusManager.getInstance().removeEventListener('onDownloadOptionsRequested', emitDownloadOptions);
+      eventBusManager.removeEventListener('onDownloadOptionsRequested', emitDownloadOptions);
     };
   }, [completeCaseType, shouldShowEpiCurve, t]);
 

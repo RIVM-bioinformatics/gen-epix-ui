@@ -20,19 +20,21 @@ import {
   useCallback,
   useMemo,
 } from 'react';
+import type { MenuItemData } from '@gen-epix/ui';
+import {
+  MenuDataUtil,
+  NestedDropdown,
+  Spinner,
+  TestIdUtil,
+} from '@gen-epix/ui';
 
 import type { EPI_ZONE } from '../../../../../ui-casedb/src/models/epi';
-import type { MenuItemData } from '../../../models/nestedMenu';
+import { EpiWidgetMenu } from '../EpiWidgetMenu';
+import { WidgetHeaderIconButton } from '../EpiWidgetHeaderIconButton';
 import { EpiDashboardStoreContext } from '../../../stores/epiDashboardStore';
 import { userProfileStore } from '../../../stores/userProfileStore';
 import { DashboardUtil } from '../../../utils/DashboardUtil';
-import { TestIdUtil } from '../../../utils/TestIdUtil';
-import { NestedDropdown } from '../../ui/NestedMenu';
-import { Spinner } from '../../ui/Spinner';
 import { EpiWarning } from '../EpiWarning';
-import { MenuDataUtil } from '../../../utils/MenuDataUtil';
-import { EpiWidgetMenu } from '../EpiWidgetMenu';
-import { WidgetHeaderIconButton } from '../EpiWidgetHeaderIconButton';
 
 
 export type WidgetProps = PropsWithChildren<{

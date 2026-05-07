@@ -32,11 +32,29 @@ import type {
   CaseDbCompleteCaseType,
 } from '@gen-epix/api-casedb';
 import { CaseDbCaseApi } from '@gen-epix/api-casedb';
-import { WithDialogRenderProps, WithDialogRefMethods, withDialog, SchemaUtil, ConfigManager, AutoCompleteOption, FORM_FIELD_DEFINITION_TYPE, FormFieldDefinition, useQueryMemo, QueryClientManager, DialogAction, TestIdUtil, GenericForm, ResponseHandler } from '@gen-epix/ui';
+import type {
+  AutoCompleteOption,
+  DialogAction,
+  FormFieldDefinition,
+  WithDialogRefMethods,
+  WithDialogRenderProps,
+} from '@gen-epix/ui';
+import {
+  ConfigManager,
+  FORM_FIELD_DEFINITION_TYPE,
+  GenericForm,
+  QueryClientManager,
+  ResponseHandler,
+  SchemaUtil,
+  TestIdUtil,
+  useQueryMemo,
+  withDialog,
+} from '@gen-epix/ui';
+
+import { CASEDB_QUERY_KEY } from '../../../data/query';
+import type { CaseDbConfig } from '../../../models/config';
 import { EpiDashboardStoreContext } from '../../../stores/epiDashboardStore';
 import { EpiTreeUtil } from '../../../utils/EpiTreeUtil';
-import { CASEDB_QUERY_KEY } from '../../../data/query';
-import { CaseDbConfig } from '../../../models/config';
 
 
 export interface EpiFindSimilarCasesDialogOpenProps {

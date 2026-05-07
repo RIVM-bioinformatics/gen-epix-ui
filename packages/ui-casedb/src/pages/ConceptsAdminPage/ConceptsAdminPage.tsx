@@ -5,7 +5,10 @@ import {
 import { useTranslation } from 'react-i18next';
 import { object } from 'yup';
 import { useParams } from 'react-router-dom';
-import type { CaseDbApiPermission, CaseDbConcept } from '@gen-epix/api-casedb';
+import type {
+  CaseDbApiPermission,
+  CaseDbConcept,
+} from '@gen-epix/api-casedb';
 import {
   CaseDbCommandName,
   CaseDbOntologyApi,

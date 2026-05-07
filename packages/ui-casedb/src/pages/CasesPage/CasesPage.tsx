@@ -30,9 +30,9 @@ import type {
   TableRowParams,
 } from '@gen-epix/ui';
 import {
-  DataUtil,
   ConfigManager,
   createTableStore,
+  DataUtil,
   DATE_FORMAT,
   PageContainer,
   QueryClientManager,

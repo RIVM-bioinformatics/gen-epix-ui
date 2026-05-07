@@ -26,18 +26,20 @@ import type {
 } from 'echarts';
 import type { AutocompleteRenderInputParams } from '@mui/material/Autocomplete';
 import type { CaseDbOrganizationAccessCasePolicy } from '@gen-epix/api-casedb';
+import {
+  LoadableUtil,
+  PageContainer,
+  ResponseHandler,
+  StringUtil,
+  TestIdUtil,
+  useArray,
+  useOrganizationMapQuery,
+} from '@gen-epix/ui';
 
-import { PageContainer } from '../../components/ui/PageContainer';
-import { ResponseHandler } from '../../components/ui/ResponseHandler';
 import { useDataCollectionsMapQuery } from '../../dataHooks/useDataCollectionsQuery';
 import { useOrganizationAccessCasePoliciesQuery } from '../../dataHooks/useOrganizationAccessCasePoliciesQuery';
 import { useOrganizationShareCasePoliciesQuery } from '../../dataHooks/useOrganizationShareCasePoliciesQuery';
-import { useOrganizationMapQuery } from '../../dataHooks/useOrganizationsQuery';
-import { useArray } from '../../hooks/useArray';
 import { EffectiveRightsUtil } from '../../utils/EffectiveRightsUtil';
-import { LoadableUtil } from '../../utils/LoadableUtil';
-import { StringUtil } from '../../utils/StringUtil';
-import { TestIdUtil } from '../../utils/TestIdUtil';
 
 echarts.use([TooltipComponent, CanvasRenderer, GraphChart]);
 

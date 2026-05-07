@@ -15,15 +15,17 @@ import {
   Container,
 } from '@mui/material';
 import { useStore } from 'zustand';
+import {
+  GenericErrorMessage,
+  InactivityManager,
+  LinearProgressWithLabel,
+  RouterManager,
+} from '@gen-epix/ui';
 
 import { CaseTypeUtil } from '../../../utils/CaseTypeUtil';
-import { RouterManager } from '../../../classes/managers/RouterManager';
-import { EpiUploadStoreContext } from '../../../stores/epiUploadStore';
-import { GenericErrorMessage } from '../../ui/GenericErrorMessage';
-import { LinearProgressWithLabel } from '../../ui/LinearProgressWithLabel';
-import { EpiUploadUtil } from '../../../utils/EpiUploadUtil';
-import { InactivityManager } from '../../../classes/managers/InactivityManager';
 import { UploadError } from '../../../classes/errors';
+import { EpiUploadStoreContext } from '../../../stores/epiUploadStore';
+import { EpiUploadUtil } from '../../../utils/EpiUploadUtil';
 
 import { EpiUploadNavigation } from './EpiUploadNavigation';
 

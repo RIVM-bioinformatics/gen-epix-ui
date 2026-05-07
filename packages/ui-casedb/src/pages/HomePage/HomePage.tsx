@@ -1,9 +1,11 @@
 import { useTranslation } from 'react-i18next';
 import { Box } from '@mui/material';
+import {
+  ConfigManager,
+  PageContainer,
+  TestIdUtil,
+} from '@gen-epix/ui';
 
-import { ConfigManager } from '../../classes/managers/ConfigManager';
-import { PageContainer } from '../../components/ui/PageContainer';
-import { TestIdUtil } from '../../utils/TestIdUtil';
 import { HomePageTrends } from '../../components/ui/HomePageTrends';
 
 

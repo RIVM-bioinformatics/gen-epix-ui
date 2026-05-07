@@ -18,17 +18,19 @@ import {
 } from 'react';
 import { useStore } from 'zustand';
 import { useShallow } from 'zustand/shallow';
+import type { ToggleButtonOption } from '@gen-epix/ui';
+import {
+  Switch,
+  ToggleButtonGroup,
+} from '@gen-epix/ui';
 
 import type {
   EpiDashboardLayoutConfig,
   EpiDashboardLayoutUserConfig,
 } from '../../../../../ui-casedb/src/models/epi';
 import { EPI_ZONE } from '../../../../../ui-casedb/src/models/epi';
-import type { ToggleButtonOption } from '../../../models/form';
 import { userProfileStore } from '../../../stores/userProfileStore';
 import { DashboardUtil } from '../../../utils/DashboardUtil';
-import { Switch } from '../../form/fields/Switch';
-import { ToggleButtonGroup } from '../../form/fields/ToggleButtonGroup';
 
 export type EpiDashboardLayoutSettingsFormProps = {
   readonly onReset: () => void;

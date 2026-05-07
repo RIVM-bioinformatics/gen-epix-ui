@@ -7,9 +7,8 @@ import {
 import { useTranslation } from 'react-i18next';
 import SettingsIcon from '@mui/icons-material/Settings';
 import { useMemo } from 'react';
-
-import type { SidebarItemSharedProps } from '../../ui/Sidebar';
-import { SidebarItem } from '../../ui/Sidebar';
+import type { SidebarItemSharedProps } from '@gen-epix/ui';
+import { SidebarItem } from '@gen-epix/ui';
 
 import { EpiDashboardGeneralSettingsForm } from './EpiDashboardGeneralSettingsForm';
 import { EpiDashboardLayoutSettingsForm } from './EpiDashboardLayoutSettingsForm';

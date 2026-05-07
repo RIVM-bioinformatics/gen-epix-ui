@@ -52,11 +52,12 @@ export const EpiLineListWidgetPrimaryMenu = ({
 
   const hasCellData = useCallback((row: CaseDbCase, tableColumn: TableColumn<CaseDbCase, CaseDbCompleteCaseType>, rowIndex: number) => {
     if (tableColumn.valueGetter) {
-      return !tableColumn.valueGetter({
+      return !!tableColumn.valueGetter({
+        dataContext: completeCaseType,
         id: tableColumn.id,
         row,
         rowIndex,
-      }).isMissing;
+      });
     }
     return !CaseUtil.getRowValue(row.content, completeCaseType.cols[tableColumn.id], completeCaseType).isMissing;
   }, [completeCaseType]);

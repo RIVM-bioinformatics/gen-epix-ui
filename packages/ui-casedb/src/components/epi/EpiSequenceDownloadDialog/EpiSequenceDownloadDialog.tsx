@@ -20,19 +20,22 @@ import {
 } from 'react-hook-form';
 import type { CaseDbCase } from '@gen-epix/api-casedb';
 import { CaseDbColType } from '@gen-epix/api-casedb';
-
 import type {
+  AutoCompleteOption,
   WithDialogRefMethods,
   WithDialogRenderProps,
-} from '../../../hoc/withDialog';
-import { withDialog } from '../../../hoc/withDialog';
-import type { AutoCompleteOption } from '../../../models/form';
+} from '@gen-epix/ui';
+import {
+  APP,
+  Autocomplete,
+  ConfigManager,
+  DownloadUtil,
+  StringUtil,
+  withDialog,
+} from '@gen-epix/ui';
+
 import { EpiDashboardStoreContext } from '../../../stores/epiDashboardStore';
-import { CaseDbDownloadUtil } from '../../../utils/CaseDbDownloadUtil';
-import { Autocomplete } from '../../form/fields/Autocomplete';
-import { StringUtil } from '../../../utils/StringUtil';
-import { ConfigManager } from '../../../classes/managers/ConfigManager';
-import { APP } from '../../../models/app';
+
 
 export interface EpiSequenceDownloadDialogOpenProps {
   cases: CaseDbCase[];
@@ -90,7 +93,7 @@ export const EpiSequenceDownloadDialog = withDialog<EpiSequenceDownloadDialogPro
   }, []);
 
   const onDownloadFastaButtonClick = useCallback(() => {
-    CaseDbDownloadUtil.downloadAsMultiPartForm({
+    DownloadUtil.downloadAsMultiPartForm({
       action: `${ConfigManager.getInstance().config.getAPIBaseUrl(APP.CASEDB)}/v1/retrieve/genetic_sequence/fasta`,
       data: {
         case_ids: openProps.cases.map(c => c.id),

@@ -10,11 +10,20 @@ import type {
   CaseDbUser,
   CaseDbUserAccessCasePolicy,
 } from '@gen-epix/api-casedb';
+import type { TableColumn } from '@gen-epix/ui';
+import {
+  createTableStore,
+  ResponseHandler,
+  Table,
+  TableHeader,
+  TableStoreContextProvider,
+  TableUtil,
+  useArray,
+  useInitializeTableStore,
+} from '@gen-epix/ui';
 
-import { ResponseHandler } from '../../ui/ResponseHandler';
 import { useOrganizationAccessCasePoliciesQuery } from '../../../dataHooks/useOrganizationAccessCasePoliciesQuery';
 import { useUserAccessCasePoliciesQuery } from '../../../dataHooks/useUserAccessCasePoliciesQuery';
-import { useArray } from '../../../hooks/useArray';
 import { useCaseTypeSetMembersQuery } from '../../../dataHooks/useCaseTypeSetMembersQuery';
 import { useCaseTypeMapQuery } from '../../../dataHooks/useCaseTypesQuery';
 import { useColMapQuery } from '../../../dataHooks/useColsQuery';
@@ -23,17 +32,6 @@ import {
   useDataCollectionOptionsQuery,
   useDataCollectionsMapQuery,
 } from '../../../dataHooks/useDataCollectionsQuery';
-import {
-  createTableStore,
-  TableStoreContextProvider,
-} from '../../../stores/tableStore';
-import { useInitializeTableStore } from '../../../hooks/useInitializeTableStore';
-import type { TableColumn } from '../../../models/table';
-import { TableUtil } from '../../../utils/CaseDbTableUtil';
-import {
-  Table,
-  TableHeader,
-} from '../../ui/Table';
 
 export type EpiUserRightsDialogCaseAccessPolicyProps = {
   readonly user: CaseDbUser;

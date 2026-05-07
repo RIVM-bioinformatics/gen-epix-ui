@@ -27,18 +27,20 @@ import { useTranslation } from 'react-i18next';
 import uniq from 'lodash/uniq';
 import { useStore } from 'zustand';
 import difference from 'lodash/difference';
+import type { FormFieldDefinition } from '@gen-epix/ui';
+import {
+  ConfigManager,
+  GenericForm,
+  ResponseHandler,
+  Select,
+  useArray,
+  useIdentifierIssuerOwnOrganizationOptionsQuery,
+} from '@gen-epix/ui';
 
-import { type FormFieldDefinition } from '../../../models/form';
-import { GenericForm } from '../../form/helpers/GenericForm';
 import { useColMapQuery } from '../../../dataHooks/useColsQuery';
-import { useArray } from '../../../hooks/useArray';
-import { ResponseHandler } from '../../ui/ResponseHandler';
-import { EpiUploadUtil } from '../../../utils/EpiUploadUtil';
-import { ConfigManager } from '../../../classes/managers/ConfigManager';
+import type { EpiUploadMappedColumnsFormFields } from '../../../models/epi';
 import { EpiUploadStoreContext } from '../../../stores/epiUploadStore';
-import { Select } from '../../form/fields/Select';
-import { useIdentifierIssuerOwnOrganizationOptionsQuery } from '../../../dataHooks/useIdentifierIssuerOwnOrganizationQuery';
-import type { EpiUploadMappedColumnsFormFields } from '../../../../../ui-casedb/src/models/epi';
+import { EpiUploadUtil } from '../../../utils/EpiUploadUtil';
 
 import { EpiUploadNavigation } from './EpiUploadNavigation';
 

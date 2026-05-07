@@ -9,7 +9,10 @@ import {
   string,
 } from 'yup';
 import { useParams } from 'react-router-dom';
-import type { CaseDbApiPermission, CaseDbRegionSetShape } from '@gen-epix/api-casedb';
+import type {
+  CaseDbApiPermission,
+  CaseDbRegionSetShape,
+} from '@gen-epix/api-casedb';
 import {
   CaseDbCommandName,
   CaseDbGeoApi,

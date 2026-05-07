@@ -1,9 +1,9 @@
 import { t } from 'i18next';
 import { Box } from '@mui/material';
 import type { CaseDbCaseSet } from '@gen-epix/api-casedb';
+import { NavLink } from '@gen-epix/ui';
 
 import { CaseSetUtil } from '../../../utils/CaseSetUtil';
-import { NavLink } from '../../ui/NavLink';
 
 export type EpiCreateEventDialogSuccessNotificationMessageProps = {
   readonly caseSet: CaseDbCaseSet;

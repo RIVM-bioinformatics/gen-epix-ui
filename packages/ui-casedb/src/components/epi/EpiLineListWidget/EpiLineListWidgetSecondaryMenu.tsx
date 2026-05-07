@@ -8,8 +8,8 @@ import LinkIcon from '@mui/icons-material/Link';
 import { useStore } from 'zustand';
 import { useShallow } from 'zustand/shallow';
 import { useTheme } from '@mui/material';
+import type { MenuItemData } from '@gen-epix/ui';
 
-import type { MenuItemData } from '../../../models/nestedMenu';
 import { EpiDashboardStoreContext } from '../../../stores/epiDashboardStore';
 import { EpiWidgetMenu } from '../EpiWidgetMenu';
 

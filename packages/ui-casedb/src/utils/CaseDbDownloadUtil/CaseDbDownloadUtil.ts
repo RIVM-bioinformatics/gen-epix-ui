@@ -11,9 +11,9 @@ import {
   CaseDbLogLevel,
 } from '@gen-epix/api-casedb';
 import {
-  DownloadUtil,
   ConfigManager,
   DATE_FORMAT,
+  DownloadUtil,
   LogManager,
   NotificationManager,
   QueryClientManager,

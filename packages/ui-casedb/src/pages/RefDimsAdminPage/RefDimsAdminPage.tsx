@@ -8,7 +8,10 @@ import {
   object,
   string,
 } from 'yup';
-import type { CaseDbApiPermission, CaseDbRefDim } from '@gen-epix/api-casedb';
+import type {
+  CaseDbApiPermission,
+  CaseDbRefDim,
+} from '@gen-epix/api-casedb';
 import {
   CaseDbCaseApi,
   CaseDbCommandName,

@@ -9,14 +9,16 @@ import type {
   CaseDbCaseSet,
   CaseDbCompleteCaseType,
 } from '@gen-epix/api-casedb';
+import type { TableColumnDimension } from '@gen-epix/ui';
+import {
+  StringUtil,
+  TableStoreContextProvider,
+} from '@gen-epix/ui';
 
-import type { TableColumnDimension } from '../../../models/table';
 import {
   createEpiDashboardStore,
   EpiDashboardStoreContext,
 } from '../../../stores/epiDashboardStore';
-import { TableStoreContextProvider } from '../../../stores/tableStore';
-import { StringUtil } from '../../../utils/StringUtil';
 import { CaseTypeUtil } from '../../../utils/CaseTypeUtil';
 
 type EpiDashboardStoreLoaderContentProps = PropsWithChildren<{

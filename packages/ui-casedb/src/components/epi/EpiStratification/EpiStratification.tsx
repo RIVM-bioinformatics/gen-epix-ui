@@ -21,20 +21,23 @@ import { produce } from 'immer';
 import FilterAltIcon from '@mui/icons-material/FilterAlt';
 import { useStoreWithEqualityFn } from 'zustand/traditional';
 import type { CaseDbCol } from '@gen-epix/api-casedb';
+import type { MenuItemData } from '@gen-epix/ui';
+import {
+  ConfigManager,
+  NestedDropdown,
+} from '@gen-epix/ui';
 
 import type { EpiContextMenuConfigWithAnchor } from '../EpiContextMenu';
 import { EpiContextMenu } from '../EpiContextMenu';
 import { EpiLegendaItem } from '../EpiLegendaItem';
-import { ConfigManager } from '../../../classes/managers/ConfigManager';
 import { EpiHighlightingManager } from '../../../classes/managers/EpiHighlightingManager';
-import type { StratificationLegendaItem } from '../../../../../ui-casedb/src/models/epi';
+import { EpiDashboardStoreContext } from '../../../stores/epiDashboardStore';
+import type { StratificationLegendaItem } from '../../../models/epi';
 import {
   EPI_ZONE,
   STRATIFICATION_MODE,
-} from '../../../../../ui-casedb/src/models/epi';
-import type { MenuItemData } from '../../../models/nestedMenu';
-import { EpiDashboardStoreContext } from '../../../stores/epiDashboardStore';
-import { NestedDropdown } from '../../ui/NestedMenu';
+} from '../../../models/epi';
+import type { CaseDbConfig } from '../../../models/config';
 
 export const EpiStratification = () => {
   const { t } = useTranslation();
@@ -86,7 +89,7 @@ export const EpiStratification = () => {
         label: 'Selected rows',
       }],
       label,
-      tooltip: t('Grouping allows you to group cases by a selected field. Grouping will be disabled when the maximum unique values of the selected field exceeds {{max_stratification_unique_values}}.', { max_stratification_unique_values: ConfigManager.getInstance().config.epi.STRATIFICATION_COLORS.length }),
+      tooltip: t('Grouping allows you to group cases by a selected field. Grouping will be disabled when the maximum unique values of the selected field exceeds {{max_stratification_unique_values}}.', { max_stratification_unique_values: ConfigManager.getInstance<CaseDbConfig>().config.epi.STRATIFICATION_COLORS.length }),
     }, draft => {
       stratifyableColumns
         .forEach(stratifyableCol => {

@@ -11,6 +11,12 @@ import {
 } from 'react';
 import { useTranslation } from 'react-i18next';
 import { useStore } from 'zustand';
+import type { WithDialogRenderProps } from '@gen-epix/ui';
+import {
+  ResponseHandler,
+  RichTextEditorContent,
+  useArray,
+} from '@gen-epix/ui';
 
 import type { CaseTypeAbacContext } from '../../../context/caseTypeAbac';
 import { CaseTypeAbacContextProvider } from '../../../context/caseTypeAbac';
@@ -21,11 +27,7 @@ import {
 import { useDiseasesMapQuery } from '../../../dataHooks/useDiseasesQuery';
 import { useEtiologicalAgentsMapQuery } from '../../../dataHooks/useEtiologicalAgentsQuery';
 import { EpiDashboardStoreContext } from '../../../stores/epiDashboardStore';
-import { ResponseHandler } from '../../ui/ResponseHandler';
-import { useArray } from '../../../hooks/useArray';
-import type { WithDialogRenderProps } from '../../../hoc/withDialog';
 import { CaseTypeUtil } from '../../../utils/CaseTypeUtil';
-import { RichTextEditorContent } from '../../form/fields/RichTextEditor';
 
 import { EpiCaseTypeInfoValues } from './EpiCaseTypeInfoValues';
 import { EpiCaseTypeInfoTrees } from './EpiCaseTypeInfoTrees';

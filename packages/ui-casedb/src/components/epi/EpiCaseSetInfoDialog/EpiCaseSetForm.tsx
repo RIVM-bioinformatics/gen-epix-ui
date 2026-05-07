@@ -13,12 +13,24 @@ import {
 } from 'yup';
 import type { CaseDbCaseSet } from '@gen-epix/api-casedb';
 import { CaseDbCaseApi } from '@gen-epix/api-casedb';
+import type {
+  FormFieldDefinition,
+  OmitWithMetaData,
+} from '@gen-epix/ui';
+import {
+  FORM_FIELD_DEFINITION_TYPE,
+  FormUtil,
+  GenericForm,
+  QueryClientManager,
+  SchemaUtil,
+  Spinner,
+  useEditMutation,
+} from '@gen-epix/ui';
 
 import { EpiCreateEventDialogSuccessNotificationMessage } from '../EpiCreateEventDialog/EpiCreateEventDialogSuccessNotificationMessage';
 import { useCaseSetCategoryOptionsQuery } from '../../../dataHooks/useCaseSetCategoriesQuery';
 import { useCaseSetStatusOptionsQuery } from '../../../dataHooks/useCaseSetStatusesQuery';
 import { useCaseTypeOptionsQuery } from '../../../dataHooks/useCaseTypesQuery';
-import { OmitWithMetaData, SchemaUtil, FormFieldDefinition, FORM_FIELD_DEFINITION_TYPE, useEditMutation, QueryClientManager, FormUtil, Spinner, GenericForm } from '@gen-epix/ui';
 import { CASEDB_QUERY_KEY } from '../../../data/query';
 
 export type EpiCaseSetFormProps = {

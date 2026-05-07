@@ -16,21 +16,22 @@ import {
 import { useStore } from 'zustand';
 import { produce } from 'immer';
 import type { CaseDbCompleteCaseType } from '@gen-epix/api-casedb';
-
-import {
-  withDialog,
-  type WithDialogRefMethods,
-  type WithDialogRenderProps,
-} from '../../../hoc/withDialog';
-import { TestIdUtil } from '../../../utils/TestIdUtil';
-import type { DialogAction } from '../../ui/Dialog';
-import { EpiTreeUtil } from '../../../utils/EpiTreeUtil';
-import { EpiDashboardStoreContext } from '../../../stores/epiDashboardStore';
-import type { Step } from '../../ui/Stepper';
+import type {
+  DialogAction,
+  Step,
+  WithDialogRefMethods,
+  WithDialogRenderProps,
+} from '@gen-epix/ui';
 import {
   Stepper,
   STEPPER_DIRECTION,
-} from '../../ui/Stepper';
+  TestIdUtil,
+  withDialog,
+} from '@gen-epix/ui';
+
+import { EpiDashboardStoreContext } from '../../../stores/epiDashboardStore';
+import { EpiTreeUtil } from '../../../utils/EpiTreeUtil';
+
 
 export interface EpiRemoveFindSimilarCasesResultDialogOpenProps {
   completeCaseType: CaseDbCompleteCaseType;

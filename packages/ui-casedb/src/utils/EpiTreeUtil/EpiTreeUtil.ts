@@ -281,7 +281,7 @@ export class EpiTreeUtil {
     zoomLevel: number;
   }): void {
     const { canvas, devicePixelRatio, externalRange, externalScrollPosition = 0, headerHeight = 0, highlightedNodeNames = [], horizontalScrollPosition, isLinked, itemHeight, shouldShowDistances, shouldShowSupportLinesWhenUnlinked, stratification, theme, treeAssembly, verticalScrollPosition, zoomLevel } = params;
-    const ctx = canvas.geTDataContext('2d');
+    const ctx = EpiTreeUtil.getCanvasContext(canvas);
     const bodyStartY = headerHeight * devicePixelRatio;
     const setRegularTransform = () => {
       ctx.setTransform(
@@ -452,7 +452,7 @@ export class EpiTreeUtil {
     zoomLevel: number;
   }): void {
     const { canvas, devicePixelRatio, externalRange, externalScrollPosition = 0, geneticTreeWidth, headerHeight = 0, highlightedNodeNames, horizontalScrollPosition, isLinked, itemHeight, pixelToGeneticDistanceRatio, shouldShowDistances, shouldShowSupportLinesWhenUnlinked, stratification, theme, tickerMarkScale, treeAssembly, treeCanvasHeight, treeCanvasWidth, verticalScrollPosition, zoomLevel } = params;
-    const ctx = canvas.geTDataContext('2d');
+    const ctx = EpiTreeUtil.getCanvasContext(canvas);
     ctx.reset();
     canvas.width = canvas.clientWidth * devicePixelRatio;
     canvas.height = canvas.clientHeight * devicePixelRatio;
@@ -577,7 +577,7 @@ export class EpiTreeUtil {
   public static getPathPropertiesFromCanvas(params: { canvas: HTMLCanvasElement; devicePixelRatio: number; event: MouseEvent; treeAssembly: TreeAssembly }): TreePathProperties {
     const { canvas, devicePixelRatio, event, treeAssembly } = params;
 
-    const ctx = canvas.geTDataContext('2d');
+    const ctx = EpiTreeUtil.getCanvasContext(canvas);
     const rect = (event.target as HTMLCanvasElement).getBoundingClientRect();
     const canvasX = (event.clientX - rect.left) * devicePixelRatio;
     const canvasY = (event.clientY - rect.top) * devicePixelRatio;
@@ -1030,7 +1030,7 @@ export class EpiTreeUtil {
    * @param callback - Drawing operations to perform inside the transform.
    */
   private static draw(canvas: HTMLCanvasElement, devicePixelRatio: number, callback: (ctx: CanvasRenderingContext2D) => void): void {
-    const ctx = canvas.geTDataContext('2d');
+    const ctx = EpiTreeUtil.getCanvasContext(canvas);
     ctx.scale(devicePixelRatio, devicePixelRatio);
     ctx.translate(0.5, 0.5);
     callback(ctx);
@@ -1085,6 +1085,14 @@ export class EpiTreeUtil {
       const x = new Decimal(i).times(tickerWidth).plus(new Decimal(ConfigManager.getInstance<CaseDbConfig>().config.epiTree.TREE_PADDING).div(zoomLevel)).minus(offset).minus(new Decimal(horizontalScrollPosition).div(devicePixelRatio)).toNumber();
       callback(x, i, numberOfLines);
     }
+  }
+
+  private static getCanvasContext(canvas: HTMLCanvasElement): CanvasRenderingContext2D {
+    const ctx = canvas.getContext('2d');
+    if (!ctx) {
+      throw new Error('Failed to acquire 2D canvas context.');
+    }
+    return ctx;
   }
 
   /**

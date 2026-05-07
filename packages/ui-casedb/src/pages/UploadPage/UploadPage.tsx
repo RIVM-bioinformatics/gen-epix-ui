@@ -4,9 +4,11 @@ import {
   useMemo,
 } from 'react';
 import noop from 'lodash/noop';
+import {
+  PageContainer,
+  TestIdUtil,
+} from '@gen-epix/ui';
 
-import { PageContainer } from '../../components/ui/PageContainer';
-import { TestIdUtil } from '../../utils/TestIdUtil';
 import { EpiUpload } from '../../components/epi/EpiUpload';
 import {
   createEpiUploadStore,

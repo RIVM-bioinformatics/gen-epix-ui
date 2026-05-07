@@ -19,13 +19,16 @@ import { useTranslation } from 'react-i18next';
 import { useStore } from 'zustand';
 import type { CaseDbCase } from '@gen-epix/api-casedb';
 import { CaseDbColType } from '@gen-epix/api-casedb';
+import type { EpiContactDetailsDialogRefMethods } from '@gen-epix/ui';
+import {
+  EpiContactDetailsDialog,
+  GenericErrorMessage,
+} from '@gen-epix/ui';
 
-import type { EpiContactDetailsDialogRefMethods } from '../EpiContactDetailsDialog';
-import { EpiContactDetailsDialog } from '../EpiContactDetailsDialog';
 import { EpiDashboardStoreContext } from '../../../stores/epiDashboardStore';
 import { CaseTypeUtil } from '../../../utils/CaseTypeUtil';
 import { CaseUtil } from '../../../utils/CaseUtil';
-import { GenericErrorMessage } from '../../ui/GenericErrorMessage';
+
 
 export type EpiCaseContentProps = {
   readonly epiCase: CaseDbCase;

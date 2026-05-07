@@ -11,13 +11,15 @@ import {
 import { useTranslation } from 'react-i18next';
 import { format } from 'date-fns';
 import type { CaseDbCaseSet } from '@gen-epix/api-casedb';
+import {
+  DATE_FORMAT,
+  ResponseHandler,
+  useArray,
+} from '@gen-epix/ui';
 
 import { useCaseSetCategoryMapQuery } from '../../../dataHooks/useCaseSetCategoriesQuery';
 import { useCaseSetStatusMapQuery } from '../../../dataHooks/useCaseSetStatusesQuery';
 import { useCaseTypeMapQuery } from '../../../dataHooks/useCaseTypesQuery';
-import { ResponseHandler } from '../../ui/ResponseHandler';
-import { DATE_FORMAT } from '../../../data/date';
-import { useArray } from '../../../hooks/useArray';
 
 export type EpiCaseSetContentProps = {
   readonly caseSet: CaseDbCaseSet;

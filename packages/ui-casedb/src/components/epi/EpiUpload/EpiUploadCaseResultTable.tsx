@@ -17,23 +17,23 @@ import type {
   CaseDbCompleteCaseType,
 } from '@gen-epix/api-casedb';
 import { CaseDbDataIssueType } from '@gen-epix/api-casedb';
-
-import { useInitializeTableStore } from '../../../hooks/useInitializeTableStore';
-import type {
-  CaseUploadResultWithGeneratedId,
-  EpiUploadMappedColumn,
-} from '../../../../../ui-casedb/src/models/epi';
 import type {
   TableColumn,
   TableRowParams,
-} from '../../../models/table';
-import type { TableStore } from '../../../stores/tableStore';
-import { CaseUtil } from '../../../utils/CaseUtil';
-import { TableUtil } from '../../../utils/CaseDbTableUtil';
+  TableStore,
+} from '@gen-epix/ui';
 import {
   Table,
   TableMenu,
-} from '../../ui/Table';
+  TableUtil,
+  useInitializeTableStore,
+} from '@gen-epix/ui';
+
+import type {
+  CaseUploadResultWithGeneratedId,
+  EpiUploadMappedColumn,
+} from '../../../models/epi';
+import { CaseUtil } from '../../../utils/CaseUtil';
 
 
 export type EpiUploadCaseResultTableProps = {

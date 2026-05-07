@@ -11,7 +11,7 @@ import { TableUtil } from '../../utils/TableUtil';
 
 export type UseInitializeTableStoreKWArgs<TData, TDataContext = null> = {
   readonly columns: TableColumn<TData, TDataContext>[];
-  readonly context: TDataContext;
+  readonly context?: TDataContext;
   readonly createFiltersFromColumns?: boolean;
   readonly rows: TData[];
   readonly store: StoreApi<TableStore<TData, TDataContext>>;
