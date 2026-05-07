@@ -402,14 +402,16 @@ export class ConfigUtil {
           {
             bundles: [
               '/locale/en.json',
-              '/locale/gen-epix-ui/en.json',
+              '/locale/ui/en.json',
+              '/locale/ui-casedb/en.json',
             ],
             code: 'en',
           },
           {
             bundles: [
               '/locale/nl.json',
-              '/locale/gen-epix-ui/nl.json',
+              '/locale/ui/nl.json',
+              '/locale/ui-casedb/nl.json',
             ],
             code: 'nl',
           },

@@ -109,10 +109,17 @@ export default defineConfig({
           ],
         },
         {
-          dest: './locale/gen-epix-ui',
+          dest: './locale/ui',
           rename: (fileName, fileExtension) => `../../../${fileName}.${fileExtension}`,
           src: [
             normalizePath(resolve(gitRootPath, 'packages', 'ui', 'src', 'locale', '*.json')),
+          ],
+        },
+        {
+          dest: './locale/ui-casedb',
+          rename: (fileName, fileExtension) => `../../../${fileName}.${fileExtension}`,
+          src: [
+            normalizePath(resolve(gitRootPath, 'packages', 'ui-casedb', 'src', 'locale', '*.json')),
           ],
         },
       ],
