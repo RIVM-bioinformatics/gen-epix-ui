@@ -27,7 +27,7 @@ import type { UnwrapArray } from '../../models/generic';
 import type {
   TableColumn,
   TableColumnDimension,
-  TableColumnSettings,
+  TableColumnVisualSettings,
   TableSortDirection,
 } from '../../models/table';
 import { ObjectUtil } from '../../utils/ObjectUtil';
@@ -66,7 +66,7 @@ export interface TableStoreActions<TData> {
 
   setColumnDimensions: (columnDimensions: TableColumnDimension[]) => void;
   setColumns: (columns: TableColumn<TData>[]) => void;
-  setColumnSettings: (columnSettings: TableColumnSettings[]) => void;
+  setColumnVisualSettings: (columnVisualSettings: TableColumnVisualSettings[]) => void;
 
   setFilters: (filters: Filters, filterDimensions: FilterDimension[], frontendFilterPriorities: string[]) => void;
   setFilterValue: (id: string, value: unknown) => Promise<void>;
@@ -89,7 +89,7 @@ export interface TableStoreState<TData> {
   baseData: TData[];
   columnDimensions: TableColumnDimension[];
   columns: TableColumn<TData>[];
-  columnSettings: TableColumnSettings[];
+  columnVisualSettings: TableColumnVisualSettings[];
   dataError: Error;
   defaultSortByField: string;
   defaultSortDirection: TableSortDirection;
@@ -141,7 +141,7 @@ export const createTableStoreInitialState = <TData>(kwArgs: CreateTableStoreInit
     baseData: [],
     columnDimensions: null,
     columns: [],
-    columnSettings: [],
+    columnVisualSettings: [],
     dataError: null,
     defaultSortByField,
     defaultSortDirection,
@@ -184,7 +184,7 @@ export const createTableStorePersistConfiguration = <TData, TStore extends Table
   return {
     name: `GENEPIX-TableStore-${storageNamePostFix}`,
     partialize: (state) => ({
-      columnSettings: state.columnSettings,
+      columnVisualSettings: state.columnVisualSettings,
       sortByField: state.sortByField,
       sortDirection: state.sortDirection,
       ...partialize?.(state),
@@ -219,10 +219,10 @@ export const createTableStoreActions = <TData>(kwArgs: {
       if (globalAbortSignal) {
         set({ globalAbortSignal });
       }
-      const { columns, columnSettings, destroy, fetchData, setColumnSettings, sortByField, sortDirection, updateUrl } = get();
+      const { columns, columnVisualSettings, destroy, fetchData, setColumnVisualSettings, sortByField, sortDirection, updateUrl } = get();
 
-      if (!TableUtil.areColumnSettingsValid(columns, columnSettings)) {
-        setColumnSettings(TableUtil.createInitialColumnSettings(columns));
+      if (!TableUtil.areColumnVisualSettingsValid(columns, columnVisualSettings)) {
+        setColumnVisualSettings(TableUtil.createInitialVisualColumnSettings(columns));
       }
 
       const globalAbortSignalListener = () => {
@@ -360,8 +360,8 @@ export const createTableStoreActions = <TData>(kwArgs: {
     setColumns: (columns: TableColumn<TData>[]) => {
       set({ columns });
     },
-    setColumnSettings: (columnSettings: TableColumnSettings[]) => {
-      set({ columnSettings });
+    setColumnVisualSettings: (columnVisualSettings: TableColumnVisualSettings[]) => {
+      set({ columnVisualSettings });
     },
     setFilters: (filters: Filters, filterDimensions: FilterDimension[], frontendFilterPriorities: string[]) => {
       const { navigateFunction } = get();

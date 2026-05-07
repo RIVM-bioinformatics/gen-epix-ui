@@ -25,7 +25,7 @@ export const UseColumnsMenu = <TRowData,>({ hasCellData }: UseColumnsMenuProps<T
   const tableStore = useTableStoreContext<TRowData>();
   const emitTableEvent = useStore(tableStore, useShallow((state) => state.emitEvent));
   const tableColumns = useStore(tableStore, useShallow((state) => state.columns));
-  const visibleColumnIds = useStore(tableStore, useShallow((state) => state.columnSettings.filter(c => c.isVisible).map(c => c.id)));
+  const visibleColumnIds = useStore(tableStore, useShallow((state) => state.columnVisualSettings.filter(c => c.isVisible).map(c => c.id)));
   const columnDimensions = useStore(tableStore, useShallow((state) => state.columnDimensions));
   const sortedData = useStore(tableStore, useShallow((state) => state.sortedData));
   const { t } = useTranslation();

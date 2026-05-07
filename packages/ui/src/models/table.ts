@@ -124,7 +124,12 @@ export interface TableColumnSelectable<TRowData> extends TableColumnBase<TRowDat
   type: 'selectable';
 }
 
-export type TableColumnSettings = {
+export interface TableColumnText<TRowData> extends TableColumnBase<TRowData, string> {
+  comparatorFactory?: (params: GetTableCellRowComparatorProps<TableColumnText<TRowData>>) => (a: TRowData, b: TRowData) => number;
+  type: 'text';
+}
+
+export type TableColumnVisualSettings = {
   calculatedWidth?: number;
   hasResized?: boolean;
   id: string;
@@ -133,11 +138,6 @@ export type TableColumnSettings = {
   widthFlex: number;
   widthPx: number;
 };
-
-export interface TableColumnText<TRowData> extends TableColumnBase<TRowData, string> {
-  comparatorFactory?: (params: GetTableCellRowComparatorProps<TableColumnText<TRowData>>) => (a: TRowData, b: TRowData) => number;
-  type: 'text';
-}
 
 export type TableDragEvent = {
   clientX: number;
@@ -161,7 +161,7 @@ export interface TableRowParams<TRowData> {
 
 export type TableSettings = {
   availableColumnIds: string[];
-  columns: TableColumnSettings[];
+  columns: TableColumnVisualSettings[];
 };
 
 export type TableSortDirection = 'asc' | 'desc';

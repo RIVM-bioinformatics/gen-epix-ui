@@ -53,7 +53,7 @@ import type {
   TableColumnParams,
   TableColumnReadableIndex,
   TableColumnSelectable,
-  TableColumnSettings,
+  TableColumnVisualSettings,
   TableDragEvent,
   TableRowParams,
 } from '../../../models/table';
@@ -131,9 +131,9 @@ export const Table = <TRowData,>({
   const { DEFAULT_OVERSCAN_MAIN, DEFAULT_OVERSCAN_REVERSE } = ConfigManager.getInstance().config.table;
 
   // make sure the table re-renders when the visible columns change
-  useStore(tableStore, useShallow((state) => state.columnSettings.filter(c => c.isVisible).map(c => c.id)));
+  useStore(tableStore, useShallow((state) => state.columnVisualSettings.filter(c => c.isVisible).map(c => c.id)));
 
-  const setColumnSettingsInStore = useStore(tableStore, useShallow((state) => state.setColumnSettings));
+  const setColumnVisualSettingsInStore = useStore(tableStore, useShallow((state) => state.setColumnVisualSettings));
   const sortedData = useStore(tableStore, useShallow((state) => state.sortedData));
   const idSelectorCallback = useStore(tableStore, useShallow((state) => state.idSelectorCallback));
   const tableColumns = useStore(tableStore, useShallow((state) => state.columns));
@@ -141,7 +141,7 @@ export const Table = <TRowData,>({
   const isRowEnabledCallback = useStore(tableStore, useShallow((state) => state.isRowEnabledCallback));
   const addTableEventListener = useStore(tableStore, useShallow((state) => state.addEventListener));
   const columnDimensions = useStore(tableStore, useShallow((state) => state.columnDimensions));
-  const tableColumnSettingsRef = useRef<TableColumnSettings[]>(null);
+  const tableColumnVisualSettingsRef = useRef<TableColumnVisualSettings[]>(null);
   const eventListenersCleanerRef = useRef<() => void>(noop);
   const [isInitialized, setIsInitialized] = useState(false);
   const borderColor = useMemo(() => lighten(alpha(theme.palette.divider, 1), 0.1), [theme.palette.divider]);
@@ -180,11 +180,11 @@ export const Table = <TRowData,>({
   }, [getRowName, onRowClick]);
 
   const getVisibleTableSettingsColumns = useCallback(() => {
-    return tableColumnSettingsRef?.current?.filter(c => c.isVisible);
+    return tableColumnVisualSettingsRef?.current?.filter(c => c.isVisible);
   }, []);
 
   const updateTableWidth = useCallback(() => {
-    if (!tableColumnSettingsRef?.current?.length || !container) {
+    if (!tableColumnVisualSettingsRef?.current?.length || !container) {
       return;
     }
     const tableWidth = sumBy(getVisibleTableSettingsColumns(), tableSettingsColumn => tableSettingsColumn.calculatedWidth);
@@ -220,7 +220,7 @@ export const Table = <TRowData,>({
     );
   }, []);
 
-  const renderCheckboxCell = useCallback((cell: TableRowParams<TRowData>, tableColumn: TableColumnSelectable<TRowData>) => {
+  const renderCheckboxCell = useCallback((tableColumn: TableColumnSelectable<TRowData>, cell: TableRowParams<TRowData>) => {
     const id = idSelectorCallback(cell.row);
 
     return (
@@ -242,7 +242,7 @@ export const Table = <TRowData,>({
       scrollbarSize,
       sortedData,
       tableColumns,
-      tableColumnSettingsRef.current,
+      tableColumnVisualSettingsRef.current,
       getVisibleTableSettingsColumns(),
     );
 
@@ -262,7 +262,7 @@ export const Table = <TRowData,>({
       return;
     }
 
-    tableColumnSettingsRef.current = tableStore.getState().columnSettings;
+    tableColumnVisualSettingsRef.current = tableStore.getState().columnVisualSettings;
     updateColumnSizes();
     updateTableWidth();
     setIsInitialized(true);
@@ -270,21 +270,21 @@ export const Table = <TRowData,>({
 
   const getScrollerElement = useCallback(() => container?.querySelector('[data-virtuoso-scroller=true]'), [container]);
 
-  const saveColumnSettingsToStore = useCallback(() => {
-    setColumnSettingsInStore(tableColumnSettingsRef.current);
-  }, [setColumnSettingsInStore]);
+  const saveColumnVisualSettingsToStore = useCallback(() => {
+    setColumnVisualSettingsInStore(tableColumnVisualSettingsRef.current);
+  }, [setColumnVisualSettingsInStore]);
 
-  const saveColumnSettingsToStoreDebounced = useDebouncedCallback(() => {
-    saveColumnSettingsToStore();
+  const saveColumnVisualSettingsToStoreDebounced = useDebouncedCallback(() => {
+    saveColumnVisualSettingsToStore();
   }, 500, { trailing: true });
 
-  const updateColumnSize = useCallback((columnSettings: TableColumnSettings, newWidth: number) => {
-    columnSettings.calculatedWidth = newWidth;
-    columnSettings.widthPx = newWidth;
-    columnSettings.hasResized = true;
+  const updateColumnSize = useCallback((columnVisualSettings: TableColumnVisualSettings, newWidth: number) => {
+    columnVisualSettings.calculatedWidth = newWidth;
+    columnVisualSettings.widthPx = newWidth;
+    columnVisualSettings.hasResized = true;
     updateColumnSizes();
-    saveColumnSettingsToStoreDebounced();
-  }, [updateColumnSizes, saveColumnSettingsToStoreDebounced]);
+    saveColumnVisualSettingsToStoreDebounced();
+  }, [updateColumnSizes, saveColumnVisualSettingsToStoreDebounced]);
 
   const onColumnDividerKeyDown = useCallback((event: ReactKeyboardEvent<HTMLDivElement>, tableColumn: TableColumn<TRowData>) => {
     if (event.key !== 'ArrowLeft' && event.key !== 'ArrowRight') {
@@ -292,19 +292,19 @@ export const Table = <TRowData,>({
     }
     event.preventDefault();
 
-    const columnSettings = tableColumnSettingsRef.current.find(c => c.id === tableColumn.id);
-    const currentWidth = columnSettings.calculatedWidth;
+    const columnVisualSettings = tableColumnVisualSettingsRef.current.find(c => c.id === tableColumn.id);
+    const currentWidth = columnVisualSettings.calculatedWidth;
     const newWidth = event.key === 'ArrowLeft' ? Math.max(50, currentWidth - 10) : currentWidth + 10;
-    updateColumnSize(columnSettings, newWidth);
+    updateColumnSize(columnVisualSettings, newWidth);
   }, [updateColumnSize]);
 
   const onColumnDividerMouseDown = useCallback((event: ReactMouseEvent<HTMLDivElement>, tableColumn: TableColumn<TRowData>) => {
     event.preventDefault();
 
-    const columnSettings = tableColumnSettingsRef.current.find(c => c.id === tableColumn.id);
+    const columnVisualSettings = tableColumnVisualSettingsRef.current.find(c => c.id === tableColumn.id);
 
     const staringX = event.clientX;
-    const startingCellWidth = columnSettings?.calculatedWidth;
+    const startingCellWidth = columnVisualSettings?.calculatedWidth;
 
     const mouseMoveListener = (moveEvent: MouseEvent) => {
       const currentX = moveEvent.clientX;
@@ -317,7 +317,7 @@ export const Table = <TRowData,>({
       if (startingCellWidth === newWidth) {
         return;
       }
-      updateColumnSize(columnSettings, newWidth);
+      updateColumnSize(columnVisualSettings, newWidth);
     };
     const mouseUpListener = (_mouseUpEvent: MouseEvent) => {
       eventListenersCleanerRef.current();
@@ -342,7 +342,7 @@ export const Table = <TRowData,>({
   const moveColumn = useCallback((elementTableColumn: TableColumn<TRowData>, direction: -1 | 1): boolean => {
     return TableUtil.handleMoveColumn(
       columnDimensions,
-      tableColumnSettingsRef.current,
+      tableColumnVisualSettingsRef.current,
       tableColumns,
       elementTableColumn,
       direction,
@@ -352,7 +352,7 @@ export const Table = <TRowData,>({
   const updateColumnOrderInDOM = useCallback(() => {
     container.querySelectorAll('[data-column-index]').forEach(cell => {
       const id = cell.getAttribute('data-id');
-      (cell as HTMLDivElement).style.order = tableColumnSettingsRef.current.findIndex(c => c.id === id).toString();
+      (cell as HTMLDivElement).style.order = tableColumnVisualSettingsRef.current.findIndex(c => c.id === id).toString();
     });
   }, [container]);
 
@@ -485,7 +485,7 @@ export const Table = <TRowData,>({
               onColumnDividerKeyDown={onColumnDividerKeyDown}
               onColumnDividerMouseDown={onColumnDividerMouseDown}
               onCustomDrag={onTableHeaderCellDrag}
-              order={tableColumnSettingsRef.current.findIndex(c => c.id === tableSettingsColumn.id)}
+              order={tableColumnVisualSettingsRef.current.findIndex(c => c.id === tableSettingsColumn.id)}
               role={'columnheader'}
               width={tableSettingsColumn.calculatedWidth}
               xOffset={tableSettingsColumn.offsetX}
@@ -528,13 +528,13 @@ export const Table = <TRowData,>({
             enabled: isRowEnabledCallback ? isRowEnabledCallback(row) : true,
             height: theme.spacing(rowHeight),
             onClick: onTableRowClick,
-            order: tableColumnSettingsRef.current.findIndex(c => c.id === column.id),
+            order: tableColumnVisualSettingsRef.current.findIndex(c => c.id === column.id),
             row,
             rowIndex: index,
             sx: tableColumn.sx,
             title,
-            width: tableColumnSettingsRef.current.find(c => c.id === column.id).calculatedWidth,
-            xOffset: tableColumnSettingsRef.current.find(c => c.id === column.id).offsetX,
+            width: tableColumnVisualSettingsRef.current.find(c => c.id === column.id).calculatedWidth,
+            xOffset: tableColumnVisualSettingsRef.current.find(c => c.id === column.id).offsetX,
           };
 
           if (tableColumn.type === 'actions') {
@@ -554,13 +554,11 @@ export const Table = <TRowData,>({
               column={tableColumn}
             >
               {!!tableColumn.renderCell && (
-                // React is losing it's mind here, so we need to wrap the renderCell in a Fragment to prevent complaints about keys
                 <Fragment key={tableColumn.id}>
                   {tableColumn.renderCell({ column: tableColumn, columnIndex, id: column.id, row, rowIndex: index })}
                 </Fragment>
               )}
               {!tableColumn.renderCell && !!tableColumn.displayValueGetter && (
-                // React is losing it's mind here, so we need to wrap the renderCell in a Fragment to prevent complaints about keys
                 <Fragment key={tableColumn.id}>
                   <TableCellAsyncContent content={tableColumn.displayValueGetter({ id: column.id, row, rowIndex: index })} />
                 </Fragment>
@@ -572,7 +570,7 @@ export const Table = <TRowData,>({
               {!tableColumn.displayValueGetter && !tableColumn.renderCell && tableColumn.type === 'options' && TableUtil.getTableOptionsCellDisplayValue({ column: tableColumn, row, rowIndex: index })}
               {!tableColumn.displayValueGetter && !tableColumn.renderCell && tableColumn.type === 'caseType' && TableUtil.getTableCaseTypeCellDisplayValue({ column: tableColumn, row, rowIndex: index })}
               {!tableColumn.displayValueGetter && !tableColumn.renderCell && tableColumn.type === 'readableIndex' && renderReadableIndexCell(tableColumn, { id: column.id, row, rowIndex: index })}
-              {!tableColumn.displayValueGetter && !tableColumn.renderCell && tableColumn.type === 'selectable' && renderCheckboxCell({ id: column.id, row, rowIndex: index }, tableColumn)}
+              {!tableColumn.displayValueGetter && !tableColumn.renderCell && tableColumn.type === 'selectable' && renderCheckboxCell(tableColumn, { id: column.id, row, rowIndex: index })}
             </TableCell>
           );
         })}
@@ -619,22 +617,22 @@ export const Table = <TRowData,>({
       updateColumnSizes();
       updateColumnOrderInDOM();
       updateTableWidth();
-      saveColumnSettingsToStore();
+      saveColumnVisualSettingsToStore();
     };
 
     const listeners = [
       addTableEventListener('reset', () => {
-        tableColumnSettingsRef.current = TableUtil.createInitialColumnSettings(tableColumns);
+        tableColumnVisualSettingsRef.current = TableUtil.createInitialVisualColumnSettings(tableColumns);
         updateTable();
       }),
       addTableEventListener('columnVisibilityChange', (columnIds: string[]) => {
-        tableColumnSettingsRef.current.forEach(column => {
+        tableColumnVisualSettingsRef.current.forEach(column => {
           column.isVisible = columnIds.includes(column.id);
         });
         updateTable();
       }),
       addTableEventListener('columnOrderChange', (columnIds: string[]) => {
-        tableColumnSettingsRef.current.sort((a, b) => {
+        tableColumnVisualSettingsRef.current.sort((a, b) => {
           return columnIds.indexOf(a.id) - columnIds.indexOf(b.id);
         });
         updateTable();
@@ -650,7 +648,7 @@ export const Table = <TRowData,>({
       listeners.forEach(cb => cb());
     };
 
-  }, [addTableEventListener, saveColumnSettingsToStore, tableColumns, updateColumnOrderInDOM, updateColumnSizes, updateTableWidth]);
+  }, [addTableEventListener, saveColumnVisualSettingsToStore, tableColumns, updateColumnOrderInDOM, updateColumnSizes, updateTableWidth]);
 
   const onTableScroll = useCallback(() => {
     const scrollerElement = getScrollerElement();

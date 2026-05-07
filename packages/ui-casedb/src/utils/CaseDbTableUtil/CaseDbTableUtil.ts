@@ -5,7 +5,6 @@ import type {
   GetTableCellValueProps,
   TableColumnCaseType,
 } from '@gen-epix/ui';
-import { TableUtil } from '@gen-epix/ui';
 
 import { EpiDataManager } from '../../classes/managers/EpiDataManager';
 import type { CaseTypeRowValue } from '../../models/epi';
@@ -15,8 +14,8 @@ export class CaseDbTableUtil {
   // Cell value getters
   public static createCaseTypeCellRowComperator<TRowData>({ column, direction }: GetTableCellRowComparatorProps<TableColumnCaseType<TRowData>>): (a: TRowData, b: TRowData) => number {
     return (a: TRowData, b: TRowData) => {
-      const aValue = TableUtil.getTableCaseTypeCellValue({ column, row: a, rowIndex: 0 });
-      const bValue = TableUtil.getTableCaseTypeCellValue({ column, row: b, rowIndex: 0 });
+      const aValue = CaseDbTableUtil.getTableCaseTypeCellValue({ column, row: a, rowIndex: 0 });
+      const bValue = CaseDbTableUtil.getTableCaseTypeCellValue({ column, row: b, rowIndex: 0 });
       const refCol = column.completeCaseType.ref_cols[column.col.ref_col_id];
 
       const directionMultiplier = direction === 'asc' ? 1 : -1;
@@ -45,7 +44,7 @@ export class CaseDbTableUtil {
   }
 
   public static getTableCaseTypeCellDisplayValue<TRowData>({ column, row, rowIndex }: GetTableCellValueProps<TRowData, TableColumnCaseType<TRowData>>): string {
-    const value = TableUtil.getTableCaseTypeCellValue({ column, row, rowIndex });
+    const value = CaseDbTableUtil.getTableCaseTypeCellValue({ column, row, rowIndex });
     return value.short;
   }
 

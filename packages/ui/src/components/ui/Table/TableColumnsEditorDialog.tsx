@@ -20,7 +20,7 @@ import type {
 import type {
   HasCellDataFn,
   TableColumn,
-  TableColumnSettings,
+  TableColumnVisualSettings,
 } from '../../../models/table';
 import { SortableList } from '../SortableList/SortableList';
 import { useTableStoreContext } from '../../../stores/tableStore';
@@ -57,7 +57,7 @@ export const TableColumnsEditorDialog = withDialog<TableColumnsEditorDialogProps
 
   const tableStore = useTableStoreContext<unknown>();
   const emitTableEvent = useStore(tableStore, useShallow((state) => state.emitEvent));
-  const tableColumnSettings = useStore(tableStore, useShallow((state) => state.columnSettings));
+  const tableColumnVisualSettings = useStore(tableStore, useShallow((state) => state.columnVisualSettings));
   const tableColumns = useStore(tableStore, useShallow((state) => state.columns));
   const sortedData = useStore(tableStore, useShallow((state) => state.sortedData));
 
@@ -69,9 +69,9 @@ export const TableColumnsEditorDialog = withDialog<TableColumnsEditorDialogProps
     return map;
   }, [tableColumns]);
 
-  const updateItems = useCallback((columnSettings: TableColumnSettings[]) => {
+  const updateItems = useCallback((columnVisualSettings: TableColumnVisualSettings[]) => {
     const newItems: Item[] = [];
-    columnSettings.forEach(columnSetting => {
+    columnVisualSettings.forEach(columnSetting => {
       const column = columnsMap.get(columnSetting.id);
       if (column && !column.isStatic && !column.frozen) {
         newItems.push({
@@ -85,11 +85,11 @@ export const TableColumnsEditorDialog = withDialog<TableColumnsEditorDialogProps
   }, [columnsMap]);
 
   useEffect(() => {
-    updateItems(tableColumnSettings);
-  }, [tableColumnSettings, updateItems]);
+    updateItems(tableColumnVisualSettings);
+  }, [tableColumnVisualSettings, updateItems]);
 
   const onResetButtonClick = useCallback(() => {
-    updateItems(TableUtil.createInitialColumnSettings(tableColumns));
+    updateItems(TableUtil.createInitialVisualColumnSettings(tableColumns));
   }, [tableColumns, updateItems]);
 
 

@@ -33,8 +33,8 @@ import type {
   TableColumnOptions,
   TableColumnReadableIndex,
   TableColumnSelectable,
-  TableColumnSettings,
   TableColumnText,
+  TableColumnVisualSettings,
   TableRowParams,
 } from '../../models/table';
 import { FIXED_COLUMN_ID } from '../../models/table';
@@ -42,15 +42,15 @@ import { DATE_FORMAT } from '../../data/date';
 import { StringUtil } from '../StringUtil';
 
 export class TableUtil {
-  public static areColumnSettingsValid<TData>(tableColumns: TableColumn<TData>[], columnSettings: TableColumnSettings[]): boolean {
-    if (!columnSettings?.length) {
+  public static areColumnVisualSettingsValid<TData>(tableColumns: TableColumn<TData>[], columnVisualSettings: TableColumnVisualSettings[]): boolean {
+    if (!columnVisualSettings?.length) {
       return false;
     }
 
     const tableColumnsIds = tableColumns?.map(c => c.id);
-    const columnSettingsIds = columnSettings?.map(c => c.id);
+    const columnVisualSettingsIds = columnVisualSettings?.map(c => c.id);
 
-    return tableColumnsIds.length === columnSettingsIds.length && difference(tableColumnsIds, columnSettingsIds).length === 0;
+    return tableColumnsIds.length === columnVisualSettingsIds.length && difference(tableColumnsIds, columnVisualSettingsIds).length === 0;
   }
 
   // Cell value getters
@@ -211,8 +211,8 @@ export class TableUtil {
     return filters;
   }
 
-  public static createInitialColumnSettings<TData>(tableColumns: TableColumn<TData>[]): TableColumnSettings[] {
-    return tableColumns.map<TableColumnSettings>(column => ({
+  public static createInitialVisualColumnSettings<TData>(tableColumns: TableColumn<TData>[]): TableColumnVisualSettings[] {
+    return tableColumns.map<TableColumnVisualSettings>(column => ({
       id: column.id,
       isVisible: column.isInitiallyVisible,
       label: column.headerName,
@@ -414,16 +414,16 @@ export class TableUtil {
     scrollbarSize: number,
     sortedData: TRowData[],
     tableColumns: TableColumn<TRowData>[],
-    tableColumnSettings: TableColumnSettings[],
-    visibleTableSettingsColumns: TableColumnSettings[],
-  ): Map<string, TableColumnSettings> {
+    tableColumnVisualSettings: TableColumnVisualSettings[],
+    visibleTableSettingsColumns: TableColumnVisualSettings[],
+  ): Map<string, TableColumnVisualSettings> {
     const tableColumnMap = new Map(tableColumns.map(c => [c.id, c]));
 
     // As soon as the user resizes a column width widthFlex, we need to convert all columns to widthPx
     const hasResizedColumn = visibleTableSettingsColumns.some(column => column.hasResized);
     const hasFlexColumn = visibleTableSettingsColumns.some(column => column.widthFlex);
     if (hasResizedColumn && hasFlexColumn) {
-      tableColumnSettings.forEach(column => {
+      tableColumnVisualSettings.forEach(column => {
         if (!column.widthPx && column.calculatedWidth) {
           column.widthPx = column.calculatedWidth;
           column.widthFlex = undefined;
@@ -439,7 +439,7 @@ export class TableUtil {
     const flexRatio = totalFlexWidth > 0 ? availableFlexWidth / totalFlexWidth : 1;
 
     let totalOffset = 0;
-    tableColumnSettings.forEach(column => {
+    tableColumnVisualSettings.forEach(column => {
       const tableColumn = tableColumns.find(c => c.id === column.id);
       let width: number;
       if (column.hasResized) {
@@ -456,7 +456,7 @@ export class TableUtil {
       totalOffset += width;
     });
 
-    return new Map(tableColumnSettings.map(c => [c.id, c]));
+    return new Map(tableColumnVisualSettings.map(c => [c.id, c]));
   }
 
   public static getTableTextCellValue<TRowData>({ column, row, rowIndex }: GetTableCellValueProps<TRowData, TableColumnText<TRowData>>): string {
@@ -468,7 +468,7 @@ export class TableUtil {
 
   public static handleMoveColumn<TRowData>(
     columnDimensions: TableColumnDimension[],
-    tableColumnSettings: TableColumnSettings[], // Will be mutated
+    tableColumnVisualSettings: TableColumnVisualSettings[], // Will be mutated
     tableColumns: TableColumn<TRowData>[],
     elementTableColumn: TableColumn<TRowData>,
     direction: -1 | 1,
@@ -477,8 +477,8 @@ export class TableUtil {
       return false;
     }
 
-    const elementIndex = tableColumnSettings.findIndex(c => c.id === elementTableColumn.id);
-    const elementSettingsColumn = tableColumnSettings[elementIndex];
+    const elementIndex = tableColumnVisualSettings.findIndex(c => c.id === elementTableColumn.id);
+    const elementSettingsColumn = tableColumnVisualSettings[elementIndex];
     if (!elementSettingsColumn) {
       return false;
     }
@@ -486,13 +486,13 @@ export class TableUtil {
     // find next/previous visible column
     let swappingElementIndex: number;
     let swappingElementTableColumn: TableColumn<TRowData>;
-    let swappingElementSettingsColumn: TableColumnSettings;
-    for (let i = elementIndex + direction; i >= 0 && i < tableColumnSettings.length; i += direction) {
-      swappingElementSettingsColumn = tableColumnSettings[i];
+    let swappingElementSettingsColumn: TableColumnVisualSettings;
+    for (let i = elementIndex + direction; i >= 0 && i < tableColumnVisualSettings.length; i += direction) {
+      swappingElementSettingsColumn = tableColumnVisualSettings[i];
       if (!swappingElementSettingsColumn?.isVisible) {
         continue;
       }
-      swappingElementTableColumn = tableColumns.find(c => c.id === tableColumnSettings[i].id);
+      swappingElementTableColumn = tableColumns.find(c => c.id === tableColumnVisualSettings[i].id);
       if (swappingElementTableColumn && !swappingElementTableColumn.frozen && !swappingElementTableColumn.isStatic) {
         swappingElementIndex = i;
         break;
@@ -505,13 +505,13 @@ export class TableUtil {
 
     // Simple swap if there are no dimensions
     if (!columnDimensions?.length) {
-      TableUtil.swapTwoTableColumns(tableColumnSettings, elementIndex, swappingElementIndex);
+      TableUtil.swapTwoTableColumns(tableColumnVisualSettings, elementIndex, swappingElementIndex);
       return true;
     }
 
     return TableUtil.handleMoveColumnAcrossDimensions(
       columnDimensions,
-      tableColumnSettings,
+      tableColumnVisualSettings,
       elementSettingsColumn,
       swappingElementSettingsColumn,
       elementIndex,
@@ -522,9 +522,9 @@ export class TableUtil {
 
   private static handleMoveColumnAcrossDimensions(
     columnDimensions: TableColumnDimension[],
-    tableColumnSettings: TableColumnSettings[], // Will be mutated
-    elementSettingsColumn: TableColumnSettings,
-    swappingElementSettingsColumn: TableColumnSettings,
+    tableColumnVisualSettings: TableColumnVisualSettings[], // Will be mutated
+    elementSettingsColumn: TableColumnVisualSettings,
+    swappingElementSettingsColumn: TableColumnVisualSettings,
     elementIndex: number,
     swappingElementIndex: number,
     direction: -1 | 1,
@@ -539,50 +539,50 @@ export class TableUtil {
 
     if (elementDimension.id === swappingElementDimension.id) {
       // if the columns are in the same dimension
-      TableUtil.swapTwoTableColumns(tableColumnSettings, elementIndex, swappingElementIndex);
+      TableUtil.swapTwoTableColumns(tableColumnVisualSettings, elementIndex, swappingElementIndex);
       return true;
     }
 
-    const elementDimensionVisibleColumnCount = elementDimension.columnIds.filter(id => tableColumnSettings.find(c => c.id === id)?.isVisible).length;
-    const swappingElementDimensionVisibleColumnCount = swappingElementDimension.columnIds.filter(id => tableColumnSettings.find(c => c.id === id)?.isVisible).length;
+    const elementDimensionVisibleColumnCount = elementDimension.columnIds.filter(id => tableColumnVisualSettings.find(c => c.id === id)?.isVisible).length;
+    const swappingElementDimensionVisibleColumnCount = swappingElementDimension.columnIds.filter(id => tableColumnVisualSettings.find(c => c.id === id)?.isVisible).length;
 
     if (elementDimensionVisibleColumnCount > 1 || swappingElementDimensionVisibleColumnCount > 1) {
       // if there is more than one visible column in the dimension
-      TableUtil.swapTwoTableColumns(tableColumnSettings, elementIndex, swappingElementIndex);
+      TableUtil.swapTwoTableColumns(tableColumnVisualSettings, elementIndex, swappingElementIndex);
       return true;
     }
 
     const elementDimensionColumnsCount = elementDimension.columnIds.length;
-    const elementDimensionIndices = elementDimension.columnIds.map(id => tableColumnSettings.findIndex(c => c.id === id));
+    const elementDimensionIndices = elementDimension.columnIds.map(id => tableColumnVisualSettings.findIndex(c => c.id === id));
     const elementDimensionMinIndex = Math.min(...elementDimensionIndices);
     const elementDimensionMaxIndex = Math.max(...elementDimensionIndices);
     if (elementDimensionMaxIndex - elementDimensionMinIndex !== elementDimensionColumnsCount - 1) {
       // if the columns are NOT next to each other in the dimension
-      TableUtil.swapTwoTableColumns(tableColumnSettings, elementIndex, swappingElementIndex);
+      TableUtil.swapTwoTableColumns(tableColumnVisualSettings, elementIndex, swappingElementIndex);
       return true;
     }
 
-    const swappingElementDimensionIndices = swappingElementDimension.columnIds.map(id => tableColumnSettings.findIndex(c => c.id === id));
+    const swappingElementDimensionIndices = swappingElementDimension.columnIds.map(id => tableColumnVisualSettings.findIndex(c => c.id === id));
     const swappingElementDimensionMinIndex = Math.min(...swappingElementDimensionIndices);
     const swappingElementDimensionMaxIndex = Math.max(...swappingElementDimensionIndices);
 
-    const elementDimensionSettingColumns = elementDimension.columnIds.map(id => tableColumnSettings.find(c => c.id === id));
-    const swappingElementSettingsColumns = swappingElementDimension.columnIds.map(id => tableColumnSettings.find(c => c.id === id));
+    const elementDimensionSettingColumns = elementDimension.columnIds.map(id => tableColumnVisualSettings.find(c => c.id === id));
+    const swappingElementSettingsColumns = swappingElementDimension.columnIds.map(id => tableColumnVisualSettings.find(c => c.id === id));
     const swappingElementSettingsColumnsCount = swappingElementSettingsColumns.length;
 
     if (swappingElementDimensionMaxIndex - swappingElementDimensionMinIndex === swappingElementDimension.columnIds.length - 1) {
       // The swapping element columns are next to each other in the dimension
 
       // Swap all columns within the element dimension with the all the columns in the swapping element dimension
-      tableColumnSettings.splice(elementDimensionMinIndex, elementDimensionColumnsCount, ...swappingElementSettingsColumns);
+      tableColumnVisualSettings.splice(elementDimensionMinIndex, elementDimensionColumnsCount, ...swappingElementSettingsColumns);
       if (direction === 1) {
-        tableColumnSettings.splice(
+        tableColumnVisualSettings.splice(
           (swappingElementDimensionMinIndex - elementDimensionColumnsCount) + swappingElementSettingsColumnsCount,
           swappingElementSettingsColumnsCount,
           ...elementDimensionSettingColumns,
         );
       } else {
-        tableColumnSettings.splice(
+        tableColumnVisualSettings.splice(
           swappingElementDimensionMinIndex,
           swappingElementSettingsColumnsCount,
           ...elementDimensionSettingColumns,
@@ -592,15 +592,15 @@ export class TableUtil {
       // The swapping element columns are NOT next to each other in the dimension
 
       // Swap all columns within the element dimension with the swapping element
-      tableColumnSettings.splice(elementDimensionMinIndex, elementDimensionColumnsCount, swappingElementSettingsColumn);
+      tableColumnVisualSettings.splice(elementDimensionMinIndex, elementDimensionColumnsCount, swappingElementSettingsColumn);
       if (direction === 1) {
-        tableColumnSettings.splice(
+        tableColumnVisualSettings.splice(
           swappingElementDimensionMinIndex - (elementDimensionColumnsCount - 1),
           1,
           ...elementDimensionSettingColumns,
         );
       } else {
-        tableColumnSettings.splice(
+        tableColumnVisualSettings.splice(
           swappingElementDimensionMinIndex,
           1,
           ...elementDimensionSettingColumns,
@@ -610,7 +610,7 @@ export class TableUtil {
     return true;
   }
 
-  private static swapTwoTableColumns(tableColumnSettings: TableColumnSettings[], elementIndex: number, swappingElementIndex: number): void {
-    tableColumnSettings[elementIndex] = tableColumnSettings.splice(swappingElementIndex, 1, tableColumnSettings[elementIndex])[0];
+  private static swapTwoTableColumns(tableColumnVisualSettings: TableColumnVisualSettings[], elementIndex: number, swappingElementIndex: number): void {
+    tableColumnVisualSettings[elementIndex] = tableColumnVisualSettings.splice(swappingElementIndex, 1, tableColumnVisualSettings[elementIndex])[0];
   }
 }

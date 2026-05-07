@@ -15,10 +15,10 @@ import AddIcon from '@mui/icons-material/Add';
 import RemoveIcon from '@mui/icons-material/Remove';
 import { useTranslation } from 'react-i18next';
 import type { CaseDbCase } from '@gen-epix/api-casedb';
+import type { TableColumnCaseType } from '@gen-epix/ui';
+import { useTableStoreContext } from '@gen-epix/ui';
 
-import type { TableColumnCaseType } from '../../../models/table';
 import { EpiDashboardStoreContext } from '../../../stores/epiDashboardStore';
-import { useTableStoreContext } from '../../../stores/tableStore';
 import { CaseUtil } from '../../../utils/CaseUtil';
 
 export type EpiCaseSummaryProps = {
@@ -33,10 +33,10 @@ export const EpiCaseSummary = ({ epiCase }: EpiCaseSummaryProps) => {
   const numVisibleAttributesInSummary = useStore(epiDashboardStore, (state) => state.numVisibleAttributesInSummary);
   const setNumVisibleAttributesInSummary = useStore(epiDashboardStore, (state) => state.setNumVisibleAttributesInSummary);
   const tableColumns = useStore(tableStore, useShallow((state) => state.columns));
-  const columnSettings = useStore(tableStore, useShallow((state) => state.columnSettings));
-  const visibleColumnIds = useStore(tableStore, useShallow((state) => state.columnSettings.filter(c => c.isVisible).map(c => c.id)));
+  const columnVisualSettings = useStore(tableStore, useShallow((state) => state.columnVisualSettings));
+  const columnVisualSettingsVisibleColumnIds = useStore(tableStore, useShallow((state) => state.columnVisualSettings.filter(c => c.isVisible).map(c => c.id)));
 
-  const visibleCaseTypeTableColumns = useMemo(() => columnSettings.map(x => tableColumns.find(c => c.id === x.id)).filter(c => c.type === 'caseType' && visibleColumnIds.includes(c.id)) as TableColumnCaseType<CaseDbCase>[], [columnSettings, tableColumns, visibleColumnIds]);
+  const visibleCaseTypeTableColumns = useMemo(() => columnVisualSettings.map(x => tableColumns.find(c => c.id === x.id)).filter(c => c.type === 'caseType' && columnVisualSettingsVisibleColumnIds.includes(c.id)) as TableColumnCaseType<CaseDbCase>[], [columnVisualSettings, tableColumns, columnVisualSettingsVisibleColumnIds]);
 
   const visibleAttributes = useMemo(() => {
     return visibleCaseTypeTableColumns.slice(0, numVisibleAttributesInSummary);

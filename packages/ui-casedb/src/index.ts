@@ -17,6 +17,7 @@ export * from './utils/CaseUtil';
 export * from './utils/CaseTypeUtil';
 export * from './utils/CaseSetUtil';
 export * from './utils/CaseSelectionUtil';
+export * from './utils/CaseDbTableUtil';
 export * from './utils/CaseDbDownloadUtil';
 export * from './utils/CaseDbDataUtil';
 export * from './utils/AbacUtil';
