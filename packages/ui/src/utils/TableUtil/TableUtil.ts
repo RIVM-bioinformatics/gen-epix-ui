@@ -341,7 +341,7 @@ export class TableUtil {
         if (column.isStatic) {
           return true;
         }
-        return sortedData.some((row, rowIndex) => hasCellData(row, column, rowIndex));
+        return sortedData.some((row, rowIndex) => hasCellData(row, column, rowIndex, context));
       }).map(c => c.id);
     } else {
       newVisibleColumnIds = columns.filter(column => {

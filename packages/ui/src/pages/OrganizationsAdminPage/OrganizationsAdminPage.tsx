@@ -116,10 +116,10 @@ export const OrganizationsAdminPage = () => {
     ] as const;
   }, [identifierIssuerOptionsQuery.isLoading, identifierIssuerOptionsQuery.options, t]);
 
-  const tableColumns = useMemo((): TableColumn<TableData, null>[] => {
+  const tableColumns = useMemo((): TableColumn<TableData>[] => {
     return [
-      TableUtil.createTextColumn<TableData, null>({ advancedSort: true, id: 'name', name: t`Name` }),
-      TableUtil.createTextColumn<TableData, null>({ id: 'code', name: t`Code` }),
+      TableUtil.createTextColumn<TableData>({ advancedSort: true, id: 'name', name: t`Name` }),
+      TableUtil.createTextColumn<TableData>({ id: 'code', name: t`Code` }),
       {
         displayValueGetter: (item) => `${item.row.identifierIssuerIds.length} / ${identifierIssuerOptionsQuery.options.length}`,
         headerName: t`Identifier issuer count`,

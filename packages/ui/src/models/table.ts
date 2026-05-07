@@ -29,7 +29,7 @@ export interface GetTableCellValueProps<TRowData, TColumn, TContext = null> {
   readonly t?: TFunction<'translation', undefined>;
 }
 
-export type HasCellDataFn<TRowData, TContext = null> = (row: TRowData, column: TableColumn<TRowData, TContext>, rowIndex: number) => boolean;
+export type HasCellDataFn<TRowData, TContext = null> = (row: TRowData, column: TableColumn<TRowData, TContext>, rowIndex: number, context: TContext) => boolean;
 
 export type TableCellRowComparatorArgument<TRowData> = {
   row: TRowData;

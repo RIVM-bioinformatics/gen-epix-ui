@@ -49,9 +49,9 @@ export type CreateTableStoreKwArgs<TData, TContext = null> = {
 export type TableStore<TData, TContext = null> = TableStoreActions<TData, TContext> & TableStoreState<TData, TContext>;
 
 export interface TableStoreActions<TData, TContext = null> {
-  addEventListener: <TEventName extends keyof TableEvent>(eventName: TEventName, callback: (payload: TableEvent[TEventName]) => void) => () => void;
+  addEventListener: <TEventName extends keyof TableEvent<TData, TContext>>(eventName: TEventName, callback: (payload: TableEvent<TData, TContext>[TEventName]) => void) => () => void;
   destroy: () => void;
-  emitEvent: <TEventName extends keyof TableEvent>(eventName: TEventName, payload?: TableEvent[TEventName]) => void;
+  emitEvent: <TEventName extends keyof TableEvent<TData, TContext>>(eventName: TEventName, payload?: TableEvent<TData, TContext>[TEventName]) => void;
   fetchData: () => Promise<void> | void;
 
   initialize: (globalAbortSignal: AbortSignal) => Promise<void>;
@@ -94,7 +94,7 @@ export interface TableStoreState<TData, TContext = null> {
   dataError: Error;
   defaultSortByField: string;
   defaultSortDirection: TableSortDirection;
-  eventBus: TableEventBus;
+  eventBus: TableEventBus<TData, TContext>;
   fetchAbortController: AbortController;
   filterDimensions: FilterDimension[];
   filteredData: { [key: string]: TData[] };
@@ -147,7 +147,7 @@ export const createTableStoreInitialState = <TData, TContext = null>(kwArgs: Cre
     dataError: null,
     defaultSortByField,
     defaultSortDirection,
-    eventBus: new TableEventBus(),
+    eventBus: new TableEventBus<TData, TContext>(),
     fetchAbortController: null,
     filterDimensions: [],
     filteredData: { [DEFAULT_FILTER_GROUP]: [] },

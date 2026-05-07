@@ -57,6 +57,7 @@ export const TableColumnsEditorDialog = withDialog<TableColumnsEditorDialogProps
 
   const tableStore = useTableStoreContext<unknown, unknown>();
   const emitTableEvent = useStore(tableStore, useShallow((state) => state.emitEvent));
+  const context = useStore(tableStore, useShallow((state) => state.context));
   const tableColumnVisualSettings = useStore(tableStore, useShallow((state) => state.columnVisualSettings));
   const tableColumns = useStore(tableStore, useShallow((state) => state.columns));
   const sortedData = useStore(tableStore, useShallow((state) => state.sortedData));
@@ -110,6 +111,7 @@ export const TableColumnsEditorDialog = withDialog<TableColumnsEditorDialogProps
 
   const filterColumnsWithPredicate = useCallback((predicate: (item: Item) => boolean) => {
     const newVisibleColumnIds = TableUtil.getColumnIdsWithData({
+      context,
       hasCellData,
       sortedData,
       tableColumns,
@@ -121,7 +123,7 @@ export const TableColumnsEditorDialog = withDialog<TableColumnsEditorDialogProps
         isSelected: newVisibleColumnIds.includes(item.id.toString()),
       }));
     });
-  }, [hasCellData, items, sortedData, tableColumns]);
+  }, [context, hasCellData, items, sortedData, tableColumns]);
 
 
   const onEnableOnlyColumnsWithDataClick = useCallback(() => {

@@ -183,14 +183,14 @@ export const UserInvitationsAdminPage = () => {
     ];
   }, [t]);
 
-  const tableColumns = useMemo((): TableColumn<CommonDbUserInvitation, null>[] => {
+  const tableColumns = useMemo((): TableColumn<CommonDbUserInvitation>[] => {
     return [
-      TableUtil.createTextColumn<CommonDbUserInvitation, null>({ id: 'key', name: t`Key` }),
-      TableUtil.createOptionsColumn<CommonDbUserInvitation, null>({ id: 'organization_id', name: t`Organization`, options: organizationOptions }),
-      TableUtil.createOptionsColumn<CommonDbUserInvitation, null>({ id: 'invited_by_user_id', name: t`Invited by user`, options: userOptionsQuery.options }),
-      TableUtil.createOptionsColumn<CommonDbUserInvitation, null>({ id: 'roles', name: t`Roles`, options: roleOptions }),
-      TableUtil.createTextColumn<CommonDbUserInvitation, null>({ id: 'description', name: t`Description` }),
-      TableUtil.createDateColumn<CommonDbUserInvitation, null>({ id: 'expires_at', name: t`Expires` }),
+      TableUtil.createTextColumn<CommonDbUserInvitation>({ id: 'key', name: t`Key` }),
+      TableUtil.createOptionsColumn<CommonDbUserInvitation>({ id: 'organization_id', name: t`Organization`, options: organizationOptions }),
+      TableUtil.createOptionsColumn<CommonDbUserInvitation>({ id: 'invited_by_user_id', name: t`Invited by user`, options: userOptionsQuery.options }),
+      TableUtil.createOptionsColumn<CommonDbUserInvitation>({ id: 'roles', name: t`Roles`, options: roleOptions }),
+      TableUtil.createTextColumn<CommonDbUserInvitation>({ id: 'description', name: t`Description` }),
+      TableUtil.createDateColumn<CommonDbUserInvitation>({ id: 'expires_at', name: t`Expires` }),
     ];
   }, [t, organizationOptions, userOptionsQuery.options, roleOptions]);
 
