@@ -15,12 +15,12 @@ import type {
 } from '../../../models/table';
 
 
-export type TableCheckboxCellProps<TRowData, TContext> = {
+export type TableCheckboxCellProps<TRowData, TContext = null> = {
   readonly cell: TableRowParams<TRowData, TContext>;
   readonly tableColumn: TableColumnSelectable<TRowData, TContext>;
 };
 
-export const TableCheckboxCell = <TRowData, TContext>({
+export const TableCheckboxCell = <TRowData, TContext = null>({
   cell,
   tableColumn,
 }: TableCheckboxCellProps<TRowData, TContext>) => {

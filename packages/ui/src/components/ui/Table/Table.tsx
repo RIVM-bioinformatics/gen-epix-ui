@@ -81,8 +81,7 @@ import { TableReadableIndexCell } from './TableReadableIndexCell';
 import { tableHeaderCellClassNames } from './classNames';
 
 
-export type TableProps<TRowData, TContext> = {
-  readonly context?: TContext;
+export type TableProps<TRowData, TContext = null> = {
   readonly font?: string;
   readonly forceHorizontalOverflow?: boolean;
   readonly getRowName?: (row: TRowData) => string;
@@ -107,7 +106,7 @@ export interface TableRef {
   setVerticalScrollPosition: (position: number) => void;
 }
 
-export const Table = <TRowData, TContext,>({
+export const Table = <TRowData, TContext = null>({
   font,
   forceHorizontalOverflow,
   getRowName,

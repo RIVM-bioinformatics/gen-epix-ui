@@ -10,19 +10,25 @@ import {
   useState,
 } from 'react';
 import { useTranslation } from 'react-i18next';
+import { useStore } from 'zustand';
+import { useShallow } from 'zustand/shallow';
 
 import type { TableColumnActions } from '../../../models/table';
+import { useTableStoreContext } from '../../../stores/tableStore';
 
 import {
   TableCell,
   type TableCellProps,
 } from './TableCell';
 
-export interface TableActionsCellProps<TRowData, TContext> extends TableCellProps<TRowData, TContext> {
+export interface TableActionsCellProps<TRowData, TContext = null> extends TableCellProps<TRowData, TContext> {
   readonly column: TableColumnActions<TRowData, TContext>;
 }
 
-export const TableActionsCell = <TRowData, TContext>(props: TableActionsCellProps<TRowData, TContext>) => {
+export const TableActionsCell = <TRowData, TContext = null>(props: TableActionsCellProps<TRowData, TContext>) => {
+  const tableStore = useTableStoreContext<TRowData, TContext>();
+  const context = useStore(tableStore, useShallow((state) => state.context));
+
   const [anchorElement, setAnchorElement] = useState<HTMLButtonElement>(null);
   const { t } = useTranslation();
   const open = !!anchorElement;
@@ -36,8 +42,8 @@ export const TableActionsCell = <TRowData, TContext>(props: TableActionsCellProp
   }, []);
 
   const actions = useMemo(() => {
-    return props.column.getActions({ id: props.column.id, row: props.row, rowIndex: props.rowIndex });
-  }, [props.column, props.row, props.rowIndex]);
+    return props.column.getActions({ context, id: props.column.id, row: props.row, rowIndex: props.rowIndex });
+  }, [context, props.column, props.row, props.rowIndex]);
 
   const onTableCellClick = useCallback(() => {
     // Prevent the TableCell's onClick from being triggered when clicking the action button

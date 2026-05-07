@@ -40,7 +40,7 @@ import type {
 import { TableCell } from './TableCell';
 import { tableHeaderCellClassNames } from './classNames';
 
-export interface TableHeaderCellProps<TRowData, TContext> extends TableCellProps<TRowData, TContext> {
+export interface TableHeaderCellProps<TRowData, TContext = null> extends TableCellProps<TRowData, TContext> {
   readonly dividerColor: string;
   readonly onColumnDividerKeyDown: (event: ReactKeyboardEvent<HTMLDivElement>, column: TableColumn<TRowData, TContext>) => void;
   readonly onColumnDividerMouseDown: (event: ReactMouseEvent<HTMLDivElement>, column: TableColumn<TRowData, TContext>) => void;
@@ -101,11 +101,12 @@ const TableFilterLabelIconButton = styled(IconButton, {
   };
 });
 
-export const TableHeaderCell = <TRowData, TContext>(props: TableHeaderCellProps<TRowData, TContext>) => {
+export const TableHeaderCell = <TRowData, TContext = null>(props: TableHeaderCellProps<TRowData, TContext>) => {
   const { t } = useTranslation();
   const theme = useTheme();
   const tableStore = useTableStoreContext<TRowData, TContext>();
   const sortByField = useStore(tableStore, (state) => state.sortByField);
+  const context = useStore(tableStore, (state) => state.context);
   const sortDirection = useStore(tableStore, (state) => state.sortDirection);
   const setSorting = useStore(tableStore, (state) => state.setSorting);
   const filters = useStore(tableStore, (state) => state.filters);
@@ -311,6 +312,7 @@ export const TableHeaderCell = <TRowData, TContext>(props: TableHeaderCellProps<
               {column.renderHeader({
                 column,
                 columnIndex,
+                context,
               })}
             </>
           ) : (
@@ -337,6 +339,7 @@ export const TableHeaderCell = <TRowData, TContext>(props: TableHeaderCellProps<
                   ? column.renderHeaderContent({
                     column,
                     columnIndex,
+                    context,
                   })
                   : column.headerName ?? ''}
               </Box>

@@ -9,7 +9,7 @@ import type { TableColumn } from '../../models/table';
 import type { TableStore } from '../../stores/tableStore';
 import { TableUtil } from '../../utils/TableUtil';
 
-export type UseInitializeTableStoreKWArgs<TData, TContext> = {
+export type UseInitializeTableStoreKWArgs<TData, TContext = null> = {
   readonly columns: TableColumn<TData, TContext>[];
   readonly context: TContext;
   readonly createFiltersFromColumns?: boolean;
@@ -18,7 +18,7 @@ export type UseInitializeTableStoreKWArgs<TData, TContext> = {
 };
 
 
-export const useInitializeTableStore = <TData, TContext>({ columns, context, createFiltersFromColumns, rows, store }: UseInitializeTableStoreKWArgs<TData, TContext>) => {
+export const useInitializeTableStore = <TData, TContext = null>({ columns, context, createFiltersFromColumns, rows, store }: UseInitializeTableStoreKWArgs<TData, TContext>) => {
   const setColumns = useStore(store, (state) => state.setColumns);
   const setBaseData = useStore(store, (state) => state.setBaseData);
   const setFilters = useStore(store, (state) => state.setFilters);

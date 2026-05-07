@@ -16,14 +16,17 @@ import type {
   SxProps,
   Theme,
 } from '@mui/material';
+import { useStore } from 'zustand';
+import { useShallow } from 'zustand/shallow';
 
 import type {
   TableColumn,
   TableDragEvent,
   TableRowParams,
 } from '../../../models/table';
+import { useTableStoreContext } from '../../../stores/tableStore';
 
-export type TableCellProps<TRowData, TContext> = PropsWithChildren<{
+export type TableCellProps<TRowData, TContext = null> = PropsWithChildren<{
   readonly ariaSort?: 'ascending' | 'descending' | 'other';
   readonly canDrag?: (event: ReactMouseEvent<HTMLDivElement>) => boolean;
   readonly className?: string;
@@ -47,7 +50,7 @@ export type TableCellProps<TRowData, TContext> = PropsWithChildren<{
 
 export type TableCellRef = HTMLDivElement;
 
-export const TableCell = <TRowData, TContext>({
+export const TableCell = <TRowData, TContext = null>({
   ariaSort,
   canDrag,
   children,
@@ -70,9 +73,12 @@ export const TableCell = <TRowData, TContext>({
   xOffset,
 }: TableCellProps<TRowData, TContext>) => {
   const theme = useTheme();
+  const tableStore = useTableStoreContext<TRowData, TContext>();
+  const context = useStore(tableStore, useShallow((state) => state.context));
+
   const onTableCellClick = useCallback((event: ReactMouseEvent) => {
-    onClick({ id: column.id, row, rowIndex }, event.nativeEvent);
-  }, [column.id, onClick, row, rowIndex]);
+    onClick({ context, id: column.id, row, rowIndex }, event.nativeEvent);
+  }, [column.id, context, onClick, row, rowIndex]);
   const dragPositionRef = useRef<{ target: HTMLDivElement; x: number; y: number } | null>(null);
 
   const onMouseDown = useCallback((mouseDownEvent: ReactMouseEvent<HTMLDivElement>) => {

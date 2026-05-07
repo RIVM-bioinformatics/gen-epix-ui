@@ -16,12 +16,12 @@ import { useTableStoreContext } from '../../stores/tableStore';
 import { TableUtil } from '../../utils/TableUtil';
 
 
-export type UseColumnsMenuProps<TRowData, TContext> = {
+export type UseColumnsMenuProps<TRowData, TContext = null> = {
   readonly hasCellData?: HasCellDataFn<TRowData, TContext>;
 };
 
 //Note: must be CamelCase because of HMR
-export const UseColumnsMenu = <TRowData, TContext>({ hasCellData }: UseColumnsMenuProps<TRowData, TContext>): MenuItemData => {
+export const UseColumnsMenu = <TRowData, TContext = null>({ hasCellData }: UseColumnsMenuProps<TRowData, TContext>): MenuItemData => {
   const tableStore = useTableStoreContext<TRowData, TContext>();
   const emitTableEvent = useStore(tableStore, useShallow((state) => state.emitEvent));
   const tableColumns = useStore(tableStore, useShallow((state) => state.columns));

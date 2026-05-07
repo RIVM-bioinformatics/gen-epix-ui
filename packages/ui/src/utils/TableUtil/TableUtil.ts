@@ -42,7 +42,7 @@ import { DATE_FORMAT } from '../../data/date';
 import { StringUtil } from '../StringUtil';
 
 export class TableUtil {
-  public static areColumnVisualSettingsValid<TData, TContext>(tableColumns: TableColumn<TData, TContext>[], columnVisualSettings: TableColumnVisualSettings[]): boolean {
+  public static areColumnVisualSettingsValid<TData, TContext = null>(tableColumns: TableColumn<TData, TContext>[], columnVisualSettings: TableColumnVisualSettings[]): boolean {
     if (!columnVisualSettings?.length) {
       return false;
     }
@@ -55,7 +55,7 @@ export class TableUtil {
 
   // Cell value getters
 
-  public static createActionsColumn<TData, TContext>(kwArgs: { getActions: (params: TableRowParams<TData, TContext>) => ReactElement[]; t: TFunction<'translation', undefined> }): TableColumnActions<TData, TContext> {
+  public static createActionsColumn<TData, TContext = null>(kwArgs: { getActions: (params: TableRowParams<TData, TContext>) => ReactElement[]; t: TFunction<'translation', undefined> }): TableColumnActions<TData, TContext> {
     return {
       getActions: kwArgs.getActions,
       headerName: kwArgs.t`Actions`,
@@ -68,7 +68,7 @@ export class TableUtil {
     };
   }
 
-  public static createBooleanCellRowComperator<TRowData, TContext>({ column, context, direction }: GetTableCellRowComparatorProps<TableColumnBoolean<TRowData, TContext>, TContext>): (a: TRowData, b: TRowData) => number {
+  public static createBooleanCellRowComperator<TRowData, TContext = null>({ column, context, direction }: GetTableCellRowComparatorProps<TableColumnBoolean<TRowData, TContext>, TContext>): (a: TRowData, b: TRowData) => number {
     return (a: TRowData, b: TRowData) => {
       const aValue = TableUtil.getTableBooleanCellValue({ column, context, row: a, rowIndex: 0 }) ? 1 : 0;
       const bValue = TableUtil.getTableBooleanCellValue({ column, context, row: b, rowIndex: 0 }) ? 1 : 0;
@@ -78,7 +78,7 @@ export class TableUtil {
     };
   }
 
-  public static createBooleanColumn<TData, TContext>(kwArgs: { filterLabel?: string; flex?: number; id?: keyof TData; name: string }): TableColumnBoolean<TData, TContext> {
+  public static createBooleanColumn<TData, TContext = null>(kwArgs: { filterLabel?: string; flex?: number; id?: keyof TData; name: string }): TableColumnBoolean<TData, TContext> {
     return {
       comparatorFactory: TableUtil.createBooleanCellRowComperator,
       filterLabel: kwArgs.filterLabel,
@@ -90,7 +90,7 @@ export class TableUtil {
     };
   }
 
-  public static createDateCellRowComperator<TRowData, TContext>({ column, direction }: GetTableCellRowComparatorProps<TableColumnDate<TRowData, TContext>, TContext>): (a: TRowData, b: TRowData) => number {
+  public static createDateCellRowComperator<TRowData, TContext = null>({ column, direction }: GetTableCellRowComparatorProps<TableColumnDate<TRowData, TContext>, TContext>): (a: TRowData, b: TRowData) => number {
     return (a: TRowData, b: TRowData) => {
       const aValue = a[column.id as keyof TRowData] as string;
       const bValue = b[column.id as keyof TRowData] as string;
@@ -111,7 +111,7 @@ export class TableUtil {
     };
   }
 
-  public static createDateColumn<TData, TContext>(kwArgs: { dateFormat?: typeof DATE_FORMAT[keyof typeof DATE_FORMAT]; filterLabel?: string; flex?: number; id?: keyof TData; name: string }): TableColumnDate<TData, TContext> {
+  public static createDateColumn<TData, TContext = null>(kwArgs: { dateFormat?: typeof DATE_FORMAT[keyof typeof DATE_FORMAT]; filterLabel?: string; flex?: number; id?: keyof TData; name: string }): TableColumnDate<TData, TContext> {
     return {
       comparatorFactory: TableUtil.createDateCellRowComperator,
       dateFormat: kwArgs.dateFormat ?? DATE_FORMAT.DATE,
@@ -124,7 +124,7 @@ export class TableUtil {
     };
   }
 
-  public static createFiltersFromColumns<TData, TContext>(columns: TableColumn<TData, TContext>[], baseRows: TData[], context: TContext): Filters {
+  public static createFiltersFromColumns<TData, TContext = null>(columns: TableColumn<TData, TContext>[], baseRows: TData[], context: TContext): Filters {
     if (!columns?.length || !baseRows?.length) {
       return [];
     }
@@ -211,7 +211,7 @@ export class TableUtil {
     return filters;
   }
 
-  public static createInitialVisualColumnSettings<TData, TContext>(tableColumns: TableColumn<TData, TContext>[]): TableColumnVisualSettings[] {
+  public static createInitialVisualColumnSettings<TData, TContext = null>(tableColumns: TableColumn<TData, TContext>[]): TableColumnVisualSettings[] {
     return tableColumns.map<TableColumnVisualSettings>(column => ({
       id: column.id,
       isVisible: column.isInitiallyVisible,
@@ -222,7 +222,7 @@ export class TableUtil {
     }));
   }
 
-  public static createNumberCellRowComperator<TRowData, TContext>({ column, context, direction }: GetTableCellRowComparatorProps<TableColumnNumber<TRowData, TContext>, TContext>): (a: TRowData, b: TRowData) => number {
+  public static createNumberCellRowComperator<TRowData, TContext = null>({ column, context, direction }: GetTableCellRowComparatorProps<TableColumnNumber<TRowData, TContext>, TContext>): (a: TRowData, b: TRowData) => number {
     return (a: TRowData, b: TRowData) => {
       const aValue = TableUtil.getTableNumberCellValue({ column, context, row: a, rowIndex: 0 });
       const bValue = TableUtil.getTableNumberCellValue({ column, context, row: b, rowIndex: 0 });
@@ -230,7 +230,7 @@ export class TableUtil {
     };
   }
 
-  public static createNumberColumn<TData, TContext>(kwArgs: { filterLabel?: string; flex?: number; id?: keyof TData; name: string }): TableColumnNumber<TData, TContext> {
+  public static createNumberColumn<TData, TContext = null>(kwArgs: { filterLabel?: string; flex?: number; id?: keyof TData; name: string }): TableColumnNumber<TData, TContext> {
     return {
       comparatorFactory: TableUtil.createNumberCellRowComperator,
       filterLabel: kwArgs.filterLabel,
@@ -243,7 +243,7 @@ export class TableUtil {
     };
   }
 
-  public static createOptionsCellRowComperator<TRowData, TContext>({ column, context, direction }: GetTableCellRowComparatorProps<TableColumnOptions<TRowData, TContext>, TContext>): (a: TRowData, b: TRowData) => number {
+  public static createOptionsCellRowComperator<TRowData, TContext = null>({ column, context, direction }: GetTableCellRowComparatorProps<TableColumnOptions<TRowData, TContext>, TContext>): (a: TRowData, b: TRowData) => number {
     return (a: TRowData, b: TRowData) => {
       const aValue = TableUtil.getTableOptionsCellValue({ column, context, row: a, rowIndex: 0 });
       const bValue = TableUtil.getTableOptionsCellValue({ column, context, row: b, rowIndex: 0 });
@@ -255,7 +255,7 @@ export class TableUtil {
     };
   }
 
-  public static createOptionsColumn<TData, TContext>(kwArgs: { filterLabel?: string; flex?: number; id?: keyof TData; maxNumOptionsExpanded?: number; name: string; options: OptionBase<string>[]; shouldFilterOptions?: boolean }): TableColumnOptions<TData, TContext> {
+  public static createOptionsColumn<TData, TContext = null>(kwArgs: { filterLabel?: string; flex?: number; id?: keyof TData; maxNumOptionsExpanded?: number; name: string; options: OptionBase<string>[]; shouldFilterOptions?: boolean }): TableColumnOptions<TData, TContext> {
     return {
       comparatorFactory: TableUtil.createOptionsCellRowComperator,
       filterLabel: kwArgs.filterLabel,
@@ -270,7 +270,7 @@ export class TableUtil {
     };
   }
 
-  public static createReadableIndexColumn<TData, TContext>(kwArgs: { getAriaLabel?: (params: TableRowParams<TData, TContext>) => string } = {}): TableColumnReadableIndex<TData, TContext> {
+  public static createReadableIndexColumn<TData, TContext = null>(kwArgs: { getAriaLabel?: (params: TableRowParams<TData, TContext>) => string } = {}): TableColumnReadableIndex<TData, TContext> {
     return {
       disableEllipsis: true,
       frozen: true,
@@ -286,7 +286,7 @@ export class TableUtil {
     };
   }
 
-  public static createSelectableColumn<TData, TContext>(kwArgs: { isDisabled?: (params: TableRowParams<TData, TContext>) => boolean } = {}): TableColumnSelectable<TData, TContext> {
+  public static createSelectableColumn<TData, TContext = null>(kwArgs: { isDisabled?: (params: TableRowParams<TData, TContext>) => boolean } = {}): TableColumnSelectable<TData, TContext> {
     return {
       disableEllipsis: true,
       frozen: true,
@@ -300,7 +300,7 @@ export class TableUtil {
     };
   }
 
-  public static createTextCellRowAdvancedComperator<TRowData, TContext>({ column, context, direction }: GetTableCellRowComparatorProps<TableColumnText<TRowData, TContext>, TContext>): (a: TRowData, b: TRowData) => number {
+  public static createTextCellRowAdvancedComperator<TRowData, TContext = null>({ column, context, direction }: GetTableCellRowComparatorProps<TableColumnText<TRowData, TContext>, TContext>): (a: TRowData, b: TRowData) => number {
     return (a: TRowData, b: TRowData) => {
       const aValue = TableUtil.getTableTextCellValue({ column, context, row: a, rowIndex: 0 });
       const bValue = TableUtil.getTableTextCellValue({ column, context, row: b, rowIndex: 0 });
@@ -310,7 +310,7 @@ export class TableUtil {
   }
 
   // Cell row comparators
-  public static createTextCellRowComperator<TRowData, TContext>({ column, context, direction }: GetTableCellRowComparatorProps<TableColumnText<TRowData, TContext>, TContext>): (a: TRowData, b: TRowData) => number {
+  public static createTextCellRowComperator<TRowData, TContext = null>({ column, context, direction }: GetTableCellRowComparatorProps<TableColumnText<TRowData, TContext>, TContext>): (a: TRowData, b: TRowData) => number {
     return (a: TRowData, b: TRowData) => {
       const aValue = TableUtil.getTableTextCellValue({ column, context, row: a, rowIndex: 0 });
       const bValue = TableUtil.getTableTextCellValue({ column, context, row: b, rowIndex: 0 });
@@ -320,7 +320,7 @@ export class TableUtil {
   }
 
   // Column creation helpers
-  public static createTextColumn<TData, TContext>(kwArgs: { advancedSort?: boolean; filterLabel?: string; flex?: number; id?: keyof TData; name: string }): TableColumnText<TData, TContext> {
+  public static createTextColumn<TData, TContext = null>(kwArgs: { advancedSort?: boolean; filterLabel?: string; flex?: number; id?: keyof TData; name: string }): TableColumnText<TData, TContext> {
     return {
       comparatorFactory: kwArgs.advancedSort ? TableUtil.createTextCellRowAdvancedComperator : TableUtil.createTextCellRowComperator,
       filterLabel: kwArgs.filterLabel,
@@ -332,7 +332,7 @@ export class TableUtil {
     };
   }
 
-  public static getColumnIdsWithData<TRowData, TContext>(params: { context: TContext; hasCellData: HasCellDataFn<TRowData, TContext>; sortedData: TRowData[]; tableColumns: TableColumn<TRowData, TContext>[]; visibleColumnIds: string[] }): string[] {
+  public static getColumnIdsWithData<TRowData, TContext = null>(params: { context: TContext; hasCellData: HasCellDataFn<TRowData, TContext>; sortedData: TRowData[]; tableColumns: TableColumn<TRowData, TContext>[]; visibleColumnIds: string[] }): string[] {
     const { context, hasCellData, sortedData, tableColumns, visibleColumnIds } = params;
     const columns = visibleColumnIds.map(id => tableColumns.find(c => c.id === id));
     let newVisibleColumnIds: string[];
@@ -364,19 +364,19 @@ export class TableUtil {
     return newVisibleColumnIds;
   }
 
-  public static getTableBooleanCellDisplayValue<TRowData, TContext>({ column, context, row, rowIndex, t }: GetTableCellValueProps<TRowData, TableColumnBoolean<TRowData, TContext>, TContext>): string {
+  public static getTableBooleanCellDisplayValue<TRowData, TContext = null>({ column, context, row, rowIndex, t }: GetTableCellValueProps<TRowData, TableColumnBoolean<TRowData, TContext>, TContext>): string {
     const value = TableUtil.getTableBooleanCellValue({ column, context, row, rowIndex });
     return value ? t('Yes') : t('No');
   }
 
-  public static getTableBooleanCellValue<TRowData, TContext>({ column, context, row, rowIndex }: GetTableCellValueProps<TRowData, TableColumnBoolean<TRowData, TContext>, TContext>): boolean {
+  public static getTableBooleanCellValue<TRowData, TContext = null>({ column, context, row, rowIndex }: GetTableCellValueProps<TRowData, TableColumnBoolean<TRowData, TContext>, TContext>): boolean {
     if (column.valueGetter) {
       return column.valueGetter({ context, id: column.id, row, rowIndex });
     }
     return (row[column.id as keyof TRowData] as boolean);
   }
 
-  public static getTableDateCellValue<TRowData, TContext>({ column, context, row, rowIndex }: GetTableCellValueProps<TRowData, TableColumnDate<TRowData, TContext>, TContext>): string {
+  public static getTableDateCellValue<TRowData, TContext = null>({ column, context, row, rowIndex }: GetTableCellValueProps<TRowData, TableColumnDate<TRowData, TContext>, TContext>): string {
     if (column.valueGetter) {
       return column.valueGetter({ context, id: column.id, row, rowIndex });
     }
@@ -387,19 +387,19 @@ export class TableUtil {
     return dateFnsFormat(value, column.dateFormat);
   }
 
-  public static getTableNumberCellValue<TRowData, TContext>({ column, context, row, rowIndex }: GetTableCellValueProps<TRowData, TableColumnNumber<TRowData, TContext>, TContext>): number {
+  public static getTableNumberCellValue<TRowData, TContext = null>({ column, context, row, rowIndex }: GetTableCellValueProps<TRowData, TableColumnNumber<TRowData, TContext>, TContext>): number {
     if (column.valueGetter) {
       return column.valueGetter({ context, id: column.id, row, rowIndex });
     }
     return row[column.id as keyof TRowData] as number;
   }
 
-  public static getTableOptionsCellDisplayValue<TRowData, TContext>({ column, context, row, rowIndex }: GetTableCellValueProps<TRowData, TableColumnOptions<TRowData, TContext>, TContext>): string {
+  public static getTableOptionsCellDisplayValue<TRowData, TContext = null>({ column, context, row, rowIndex }: GetTableCellValueProps<TRowData, TableColumnOptions<TRowData, TContext>, TContext>): string {
     const value = TableUtil.getTableOptionsCellValue({ column, context, row, rowIndex });
     return Array.isArray(value) ? value.join(', ') : value;
   }
 
-  public static getTableOptionsCellValue<TRowData, TContext>({ column, context, row, rowIndex }: GetTableCellValueProps<TRowData, TableColumnOptions<TRowData, TContext>, TContext>): string | string[] {
+  public static getTableOptionsCellValue<TRowData, TContext = null>({ column, context, row, rowIndex }: GetTableCellValueProps<TRowData, TableColumnOptions<TRowData, TContext>, TContext>): string | string[] {
     if (column.valueGetter) {
       return column.valueGetter({ context, id: column.id, row, rowIndex });
     }
@@ -410,7 +410,7 @@ export class TableUtil {
     return column.options.find(o => o.value === values)?.label ?? '';
   }
 
-  public static getTableSettingsMap<TRowData, TContext>(
+  public static getTableSettingsMap<TRowData, TContext = null>(
     container: HTMLDivElement,
     scrollbarSize: number,
     sortedData: TRowData[],
@@ -460,14 +460,14 @@ export class TableUtil {
     return new Map(tableColumnVisualSettings.map(c => [c.id, c]));
   }
 
-  public static getTableTextCellValue<TRowData, TContext>({ column, context, row, rowIndex }: GetTableCellValueProps<TRowData, TableColumnText<TRowData, TContext>, TContext>): string {
+  public static getTableTextCellValue<TRowData, TContext = null>({ column, context, row, rowIndex }: GetTableCellValueProps<TRowData, TableColumnText<TRowData, TContext>, TContext>): string {
     if (column.valueGetter) {
       return column.valueGetter({ context, id: column.id, row, rowIndex });
     }
     return row[column.id as keyof TRowData] as string;
   }
 
-  public static handleMoveColumn<TRowData, TContext>(
+  public static handleMoveColumn<TRowData, TContext = null>(
     columnDimensions: TableColumnDimension[],
     tableColumnVisualSettings: TableColumnVisualSettings[], // Will be mutated
     tableColumns: TableColumn<TRowData, TContext>[],

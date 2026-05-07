@@ -34,21 +34,21 @@ import { ObjectUtil } from '../../utils/ObjectUtil';
 import { TableUtil } from '../../utils/TableUtil';
 
 
-export interface CreateTableStoreInitialStateKwArgs<TData, TContext> {
+export interface CreateTableStoreInitialStateKwArgs<TData, TContext = null> {
   defaultSortByField?: string;
   defaultSortDirection?: TableSortDirection;
   idSelectorCallback: (row: TData) => string;
   isRowEnabledCallback?: (row: TData, context: TContext) => boolean;
   navigatorFunction?: NavigateFunction;
 }
-export type CreateTableStoreKwArgs<TData, TContext> = {
+export type CreateTableStoreKwArgs<TData, TContext = null> = {
   storageNamePostFix?: string;
   storageVersion?: number;
 } & CreateTableStoreInitialStateKwArgs<TData, TContext>;
 
-export type TableStore<TData, TContext> = TableStoreActions<TData, TContext> & TableStoreState<TData, TContext>;
+export type TableStore<TData, TContext = null> = TableStoreActions<TData, TContext> & TableStoreState<TData, TContext>;
 
-export interface TableStoreActions<TData, TContext> {
+export interface TableStoreActions<TData, TContext = null> {
   addEventListener: <TEventName extends keyof TableEvent>(eventName: TEventName, callback: (payload: TableEvent[TEventName]) => void) => () => void;
   destroy: () => void;
   emitEvent: <TEventName extends keyof TableEvent>(eventName: TEventName, payload?: TableEvent[TEventName]) => void;
@@ -84,7 +84,7 @@ export interface TableStoreActions<TData, TContext> {
   updateUrl: (searchParams: URLSearchParams) => Promise<void>;
 }
 
-export interface TableStoreState<TData, TContext = unknown> {
+export interface TableStoreState<TData, TContext = null> {
   backendFilters: Filters;
   baseData: TData[];
   columnDimensions: TableColumnDimension[];
@@ -116,11 +116,11 @@ export interface TableStoreState<TData, TContext = unknown> {
   visibleFilterWithinDimensions: { [key: string]: string };
 }
 
-type Get<TData, TContext> = () => TableStore<TData, TContext>;
+type Get<TData, TContext = null> = () => TableStore<TData, TContext>;
 
-type Set<TData, TContext> = (partial: ((state: TableStore<TData, TContext>) => Partial<TableStore<TData, TContext>> | TableStore<TData, TContext>) | Partial<TableStore<TData, TContext>> | TableStore<TData, TContext>, replace?: false) => void;
+type Set<TData, TContext = null> = (partial: ((state: TableStore<TData, TContext>) => Partial<TableStore<TData, TContext>> | TableStore<TData, TContext>) | Partial<TableStore<TData, TContext>> | TableStore<TData, TContext>, replace?: false) => void;
 
-export const createTableStoreInitialState = <TData, TContext>(kwArgs: CreateTableStoreInitialStateKwArgs<TData, TContext>): TableStoreState<TData, TContext> => {
+export const createTableStoreInitialState = <TData, TContext = null>(kwArgs: CreateTableStoreInitialStateKwArgs<TData, TContext>): TableStoreState<TData, TContext> => {
   const { defaultSortByField, defaultSortDirection, idSelectorCallback, isRowEnabledCallback, navigatorFunction } = kwArgs;
   const url = new URL(document.location.href);
   const searchParams = url.searchParams;
@@ -196,7 +196,7 @@ export const createTableStorePersistConfiguration = <TData, TContext, TStore ext
   } satisfies PersistOptions<TStore>;
 };
 
-export const createTableStoreActions = <TData, TContext>(kwArgs: {
+export const createTableStoreActions = <TData, TContext = null>(kwArgs: {
   get: Get<TData, TContext>;
   set: Set<TData, TContext>;
 }): TableStoreActions<TData, TContext> => {
@@ -519,7 +519,7 @@ export const createTableStoreActions = <TData, TContext>(kwArgs: {
   };
 };
 
-export const createTableStore = <TData, TContext>(kwArgs: CreateTableStoreKwArgs<TData, TContext>) => {
+export const createTableStore = <TData, TContext = null>(kwArgs: CreateTableStoreKwArgs<TData, TContext>) => {
   const { storageNamePostFix, storageVersion, ...initialStateParams } = kwArgs;
   const initialState = createTableStoreInitialState<TData, TContext>(initialStateParams);
 

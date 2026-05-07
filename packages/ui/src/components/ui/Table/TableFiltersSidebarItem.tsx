@@ -54,7 +54,7 @@ type TableFiltersSidebarItemContentFilterDimensionProps = {
   readonly visibleFilterWithinDimension: string;
 };
 
-const TableFiltersSidebarItemContentFilterDimension = <TRowData, TContext>({ filterDimension, onFilterVisibilityChange, visibleFilterWithinDimension }: TableFiltersSidebarItemContentFilterDimensionProps) => {
+const TableFiltersSidebarItemContentFilterDimension = <TRowData, TContext = null>({ filterDimension, onFilterVisibilityChange, visibleFilterWithinDimension }: TableFiltersSidebarItemContentFilterDimensionProps) => {
   const tableStore = useTableStoreContext<TRowData, TContext>();
   const filters = useStoreWithEqualityFn(tableStore, (state) => state.filters, (a, b) => JSON.stringify(a.map(filter => filter.filterValue)) === JSON.stringify(b.map(filter => filter.filterValue)));
   const dimensionFilters = filterDimension.filterIds.map(filterId => filters.find(filter => filter.id === filterId));
@@ -173,7 +173,7 @@ const TableFiltersSidebarItemContentFilterDimension = <TRowData, TContext>({ fil
   );
 };
 
-export const TableFiltersSidebarItemContent = <TRowData, TContext>({ onClose }: TableFiltersSidebarItemContentProps) => {
+export const TableFiltersSidebarItemContent = <TRowData, TContext = null>({ onClose }: TableFiltersSidebarItemContentProps) => {
   const { t } = useTranslation();
 
   const tableStore = useTableStoreContext<TRowData, TContext>();

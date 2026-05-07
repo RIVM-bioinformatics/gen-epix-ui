@@ -21,7 +21,7 @@ export type TableSidebarMenuProps = {
   readonly extraSidebarMenuItems?: ReactNode;
 };
 
-export const TableSidebarMenu = <TRowData, TContext>({ extraSidebarMenuItems }: TableSidebarMenuProps) => {
+export const TableSidebarMenu = <TRowData, TContext = null>({ extraSidebarMenuItems }: TableSidebarMenuProps) => {
   const tableStore = useTableStoreContext<TRowData, TContext>();
 
   const activeFiltersCount = useStore(tableStore, (state) => state.filters.filter(f => !f.isInitialFilterValue()).length);
