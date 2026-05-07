@@ -67,7 +67,7 @@ import { EpiHighlightingManager } from '../../classes/managers/EpiHighlightingMa
 import type { CaseDbConfig } from '../../models/config';
 import { CASEDB_QUERY_KEY } from '../../data/query';
 
-export interface CreateEpiDashboardStoreInitialStateKwArgs extends CreateTableStoreInitialStateKwArgs<CaseDbCase> {
+export interface CreateEpiDashboardStoreInitialStateKwArgs extends CreateTableStoreInitialStateKwArgs<CaseDbCase, CaseDbCompleteCaseType> {
   caseSetId: string;
   completeCaseType: CaseDbCompleteCaseType;
 }
@@ -75,14 +75,14 @@ export interface CreateEpiDashboardStoreInitialStateKwArgs extends CreateTableSt
 export type CreateEpiDashboardStoreKwArgs = {
   caseSetId: string;
   completeCaseType: CaseDbCompleteCaseType;
-} & CreateTableStoreKwArgs<CaseDbCase>;
+} & CreateTableStoreKwArgs<CaseDbCase, CaseDbCompleteCaseType>;
 
 export type EpiDashboardStore = EpiDashboardStoreActions & EpiDashboardStoreState;
 interface EpiCurveWidgetData extends WidgetData {
   columnId: string;
   dimensionId: string;
 }
-interface EpiDashboardStoreActions extends TableStoreActions<CaseDbCase> {
+interface EpiDashboardStoreActions extends TableStoreActions<CaseDbCase, CaseDbCompleteCaseType> {
   addTreeFilter: (nodeId: string) => Promise<void>;
   destroy: () => void;
   expandZone: (zone: EPI_ZONE) => void;
@@ -104,7 +104,7 @@ interface EpiDashboardStoreActions extends TableStoreActions<CaseDbCase> {
   updateEpiMapWidgetData: (data: Partial<EpiMapWidgetData>) => void;
   updateEpiTreeWidgetData: (data: Partial<EpiTreeWidgetData>) => void;
 }
-interface EpiDashboardStoreState extends TableStoreState<CaseDbCase> {
+interface EpiDashboardStoreState extends TableStoreState<CaseDbCase, CaseDbCompleteCaseType> {
   caseSetId: string;
   completeCaseType: CaseDbCompleteCaseType;
   epiCurveWidgetData: EpiCurveWidgetData;
@@ -183,9 +183,10 @@ const createEpiDashboardStoreInitialState = (kwArgs: CreateEpiDashboardStoreInit
   const { caseSetId, completeCaseType, ...createTableStoreInitialStateKwArgs } = kwArgs;
 
   return {
-    ...createTableStoreInitialState<CaseDbCase>(createTableStoreInitialStateKwArgs),
+    ...createTableStoreInitialState<CaseDbCase, CaseDbCompleteCaseType>(createTableStoreInitialStateKwArgs),
     caseSetId,
     completeCaseType,
+    context: completeCaseType,
     epiCurveWidgetData: {
       ...createWidgetDataInitialState(),
       columnId: null,
@@ -231,7 +232,7 @@ export const createEpiDashboardStore = (kwArgs: CreateEpiDashboardStoreKwArgs) =
           completeCaseType,
           ...createTableStoreKwArgs,
         });
-        const tableStoreActions = createTableStoreActions<CaseDbCase>({
+        const tableStoreActions = createTableStoreActions<CaseDbCase, CaseDbCompleteCaseType>({
           get,
           set,
         });
@@ -239,7 +240,7 @@ export const createEpiDashboardStore = (kwArgs: CreateEpiDashboardStoreKwArgs) =
         return {
           ...initialState,
           ...tableStoreActions,
-          addTreeFilter: async (nodeId) => {
+          addTreeFilter: async (nodeId: string) => {
             const { filters, resetTreeAddresses, setFilterValue } = get();
             resetTreeAddresses();
             const treeFilter = filters.find(filter => filter instanceof TreeFilter);
@@ -492,7 +493,7 @@ export const createEpiDashboardStore = (kwArgs: CreateEpiDashboardStoreKwArgs) =
             set({ numVisibleAttributesInSummary });
           },
 
-          setPhylogeneticTreeResponse: (phylogeneticTree) => {
+          setPhylogeneticTreeResponse: (phylogeneticTree: CaseDbPhylogeneticTree) => {
             const { newick, reloadSelectedIds, reloadSortedData, reloadTree } = get();
 
             if (newick === phylogeneticTree.newick_repr) {
@@ -539,7 +540,7 @@ export const createEpiDashboardStore = (kwArgs: CreateEpiDashboardStoreKwArgs) =
             }
           },
 
-          stratify: (mode, col) => {
+          stratify: (mode: STRATIFICATION_MODE, col?: CaseDbCol) => {
             const { selectedIds, sortedData } = get();
             const caseIdColors: { [key: string]: string } = {};
 
@@ -734,7 +735,7 @@ export const createEpiDashboardStore = (kwArgs: CreateEpiDashboardStoreKwArgs) =
           },
         };
       },
-      createTableStorePersistConfiguration<CaseDbCase, EpiDashboardStore>(kwArgs.storageNamePostFix, kwArgs.storageVersion, (state) => {
+      createTableStorePersistConfiguration<CaseDbCase, CaseDbCompleteCaseType, EpiDashboardStore>(kwArgs.storageNamePostFix, kwArgs.storageVersion, (state) => {
         return {
           epiTreeWidgetData: {
             ...createEpiTreeWidgetDataInitialState(),
