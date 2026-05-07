@@ -15,11 +15,13 @@ import { EmotionCacheManager } from '../../../classes/managers/EmotionCacheManag
 import { APP } from '../../../models/app';
 import { AuthenticationManager } from '../../../classes/managers/AuthenticationManager';
 import { LogManager } from '../../../classes/managers/LogManager';
+import { ApiManager } from '../../../classes/managers/ApiManager';
+import { RouterManager } from '../../../classes/managers/RouterManager';
 
 
 export const App = () => {
   const { config } = ConfigManager.getInstance();
-  const { api, routerManager } = config;
+
   const authenticationManager = AuthenticationManager.getInstance();
   const logManager = LogManager.getInstance();
 
@@ -28,18 +30,19 @@ export const App = () => {
     // eslint-disable-next-line @eslint-react/purity
     document.querySelector('link[rel="icon"]')?.setAttribute('href', touchIconUrl);
   }
-
-  api.baseUrl = config.getAPIBaseUrl(APP.CASEDB);
-  api.defaultRequestTimeout = config.defaultRequestTimeout;
-  api.onRequest = [
+  const apiManager = ApiManager.getInstance();
+  const routerManager = RouterManager.getInstance();
+  apiManager.api.baseUrl = config.getAPIBaseUrl(APP.CASEDB);
+  apiManager.api.defaultRequestTimeout = config.defaultRequestTimeout;
+  apiManager.api.onRequest = [
     authenticationManager.onRequest.bind(authenticationManager),
     logManager.onRequest.bind(logManager),
   ];
-  api.onResponseFulfilled = [
+  apiManager.api.onResponseFulfilled = [
     logManager.onResponseFulfilled.bind(logManager),
     BackendVersionManager.getInstance().onResponseFulfilled.bind(BackendVersionManager.getInstance()),
   ];
-  api.onResponseRejected = [
+  apiManager.api.onResponseRejected = [
     logManager.onResponseRejected.bind(logManager),
     authenticationManager.onResponseRejected.bind(authenticationManager),
   ];

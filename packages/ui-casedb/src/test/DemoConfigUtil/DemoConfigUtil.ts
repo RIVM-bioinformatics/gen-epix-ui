@@ -33,12 +33,9 @@ export class DemoConfigUtil {
 
     const PANEL_ZONES = [EPI_ZONE.EPI_CURVE, EPI_ZONE.LINE_LIST, EPI_ZONE.MAP, EPI_ZONE.TREE];
     const config: CaseDbConfig = {
-      abacApi: {} as CaseDbConfig['abacApi'],
-      api: {} as CaseDbConfig['api'],
       // eslint-disable-next-line @typescript-eslint/naming-convention
       ApplicationHeader,
       applicationName: 'Gen-EpiX',
-      authApi: {} as CaseDbConfig['authApi'],
       consentDialog: {
         // eslint-disable-next-line @typescript-eslint/naming-convention
         Content: ConsentDialogContent,
@@ -388,7 +385,6 @@ export class DemoConfigUtil {
       notifications: {
         autoHideAfterMs: 5000,
       },
-      organizationApi: {} as CaseDbConfig['organizationApi'],
       outages: {
         NUM_HOURS_TO_SHOW_SOON_ACTIVE_OUTAGES: 8,
       },
@@ -403,12 +399,10 @@ export class DemoConfigUtil {
           },
         retryDelay: attempt => Math.min(attempt > 1 ? 2 ** attempt * 3000 : 3000, 30 * 1000),
       },
-      routerManager: null as unknown as CaseDbConfig['routerManager'],
       spinner: {
         DEFAULT_CIRCULAR_PROGRESS_SIZE: 40,
         DEFAULT_TAKING_LONGER_TIMEOUT_MS: 8000,
       },
-      systemApi: {} as CaseDbConfig['systemApi'],
       table: {
         DEFAULT_OVERSCAN_MAIN: 10,
         DEFAULT_OVERSCAN_REVERSE: 10,

@@ -3,7 +3,7 @@ import type {
   InternalAxiosRequestConfig,
 } from 'axios';
 
-export interface Api {
+export interface BaseApi {
   accessToken: string;
   baseUrl: string;
   defaultRequestTimeout: number;

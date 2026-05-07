@@ -5,7 +5,7 @@
   "private": true,
   "packageManager": "pnpm@10.33.3",
   "scripts": {
-    "start": "concurrently \"pnpm --filter @gen-epix/demo-client run oidc-server\" \"pnpm --filter @gen-epix/demo-client run start\"",
+    "start": "concurrently \"pnpm --filter @gen-epix/demo-client-casedb run oidc-server\" \"pnpm --filter @gen-epix/demo-client-casedb run start\"",
     "clean": "lerna clean && rm -fr node_modules",
     "generate-api": "lerna run generate-api",
     "validate": "lerna run validate",

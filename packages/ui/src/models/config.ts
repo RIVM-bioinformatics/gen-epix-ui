@@ -4,17 +4,8 @@ import type {
   Theme,
 } from '@mui/material';
 import type { TFunction } from 'i18next';
-import type {
-  CommonDbAbacApi,
-  CommonDbAuthApi,
-  CommonDbOrganizationApi,
-  CommonDbSystemApi,
-} from '@gen-epix/api-commondb';
-
-import type { RouterManager } from '../classes/managers/RouterManager';
 
 import type { APP } from './app';
-import type { Api } from './api';
 
 export type ApplicationHeaderProps = {
   readonly fullHeight?: boolean;
@@ -24,13 +15,10 @@ export type ApplicationHeaderProps = {
 
 
 export interface ConfigBase {
-  abacApi: CommonDbAbacApi;
-  api: Api;
   // eslint-disable-next-line @typescript-eslint/naming-convention
   ApplicationHeader: (props: ApplicationHeaderProps) => ReactElement;
 
   applicationName: string;
-  authApi: CommonDbAuthApi;
   consentDialog: {
     // eslint-disable-next-line @typescript-eslint/naming-convention
     Content: () => ReactElement;
@@ -71,7 +59,6 @@ export interface ConfigBase {
   notifications: {
     autoHideAfterMs: number;
   };
-  organizationApi: CommonDbOrganizationApi;
   outages: {
     NUM_HOURS_TO_SHOW_SOON_ACTIVE_OUTAGES: number;
   };
@@ -79,12 +66,10 @@ export interface ConfigBase {
     retry: (failureCount: number, error: unknown) => boolean;
     retryDelay: (attempt: number) => number;
   };
-  routerManager: RouterManager;
   spinner: {
     DEFAULT_CIRCULAR_PROGRESS_SIZE: CircularProgressProps['size'];
     DEFAULT_TAKING_LONGER_TIMEOUT_MS: number;
   };
-  systemApi: CommonDbSystemApi;
   table: {
     DEFAULT_OVERSCAN_MAIN: number;
     DEFAULT_OVERSCAN_REVERSE: number;

@@ -3,16 +3,18 @@ import {
   App,
   ConfigManager,
   I18nManager,
-  setup,
 } from '@gen-epix/ui';
-import type { CaseDbConfig } from '@gen-epix/ui-casedb';
+import {
+  type CaseDbConfig,
+  setupCaseDb,
+} from '@gen-epix/ui-casedb';
 
 import { ConfigUtil } from './utils/ConfigUtil';
 
 ConfigManager.getInstance<CaseDbConfig>().config = ConfigUtil.createConfig();
 I18nManager.getInstance().init()
   .then(() => {
-    setup();
+    setupCaseDb();
 
     createRoot(document.getElementById('root')).render(
       <App />,
