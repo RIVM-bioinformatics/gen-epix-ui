@@ -15,10 +15,10 @@ import { CaseUtil } from '../CaseUtil';
 
 export class CaseDbTableUtil {
   // Cell value getters
-  public static createCaseTypeCellRowComperator<TRowData>({ column, dataContext, direction }: GetTableCellRowComparatorProps<TableColumnText<TRowData, CaseDbCompleteCaseType, CaseDbCol>, CaseDbCompleteCaseType>): (a: TRowData, b: TRowData) => number {
-    return (a: TRowData, b: TRowData) => {
-      const aValue = CaseUtil.getRowValue(a as { [key: string]: string }, column.columnContext, dataContext);
-      const bValue = CaseUtil.getRowValue(b as { [key: string]: string }, column.columnContext, dataContext);
+  public static createCaseTypeCellRowComperator({ column, dataContext, direction }: GetTableCellRowComparatorProps<TableColumnText<CaseDbCase, CaseDbCompleteCaseType, CaseDbCol>, CaseDbCompleteCaseType>): (a: CaseDbCase, b: CaseDbCase) => number {
+    return (a: CaseDbCase, b: CaseDbCase) => {
+      const aValue = CaseUtil.getRowValue(a.content, column.columnContext, dataContext);
+      const bValue = CaseUtil.getRowValue(b.content, column.columnContext, dataContext);
       const col = column.columnContext;
       const refCol = dataContext.ref_cols[col.ref_col_id];
 
