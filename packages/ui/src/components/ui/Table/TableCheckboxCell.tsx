@@ -15,17 +15,17 @@ import type {
 } from '../../../models/table';
 
 
-export type TableCheckboxCellProps<TRowData> = {
-  readonly cell: TableRowParams<TRowData>;
-  readonly tableColumn: TableColumnSelectable<TRowData>;
+export type TableCheckboxCellProps<TRowData, TContext> = {
+  readonly cell: TableRowParams<TRowData, TContext>;
+  readonly tableColumn: TableColumnSelectable<TRowData, TContext>;
 };
 
-export const TableCheckboxCell = <TRowData, >({
+export const TableCheckboxCell = <TRowData, TContext>({
   cell,
   tableColumn,
-}: TableCheckboxCellProps<TRowData>) => {
+}: TableCheckboxCellProps<TRowData, TContext>) => {
   const { t } = useTranslation();
-  const tableStore = useTableStoreContext<TRowData>();
+  const tableStore = useTableStoreContext<TRowData, TContext>();
   const idSelectorCallback = useStore(tableStore, useShallow((state) => state.idSelectorCallback));
   const selectedIds = useStore(tableStore, useShallow((state) => state.selectedIds));
   const setSelectedIds = useStore(tableStore, useShallow((state) => state.setSelectedIds));

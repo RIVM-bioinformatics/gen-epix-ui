@@ -27,15 +27,15 @@ import { useTableStoreContext } from '../../../stores/tableStore';
 import { TableUtil } from '../../../utils/TableUtil';
 
 
-export interface TableColumnsEditorDialogOpenProps {
-  readonly hasCellData: HasCellDataFn<unknown>;
+export interface TableColumnsEditorDialogOpenProps<TRowData, TContext> {
+  readonly hasCellData: HasCellDataFn<TRowData, TContext>;
 }
 
-export interface TableColumnsEditorDialogProps extends WithDialogRenderProps<TableColumnsEditorDialogOpenProps> {
+export interface TableColumnsEditorDialogProps<TRowData, TContext> extends WithDialogRenderProps<TableColumnsEditorDialogOpenProps<TRowData, TContext>> {
   //
 }
 
-export type TableColumnsEditorDialogRefMethods = WithDialogRefMethods<TableColumnsEditorDialogProps, TableColumnsEditorDialogOpenProps>;
+export type TableColumnsEditorDialogRefMethods<TRowData, TContext> = WithDialogRefMethods<TableColumnsEditorDialogProps<TRowData, TContext>, TableColumnsEditorDialogOpenProps<TRowData, TContext>>;
 
 
 type Item = {
@@ -44,25 +44,25 @@ type Item = {
   label: string;
 };
 
-export const TableColumnsEditorDialog = withDialog<TableColumnsEditorDialogProps, TableColumnsEditorDialogOpenProps>((
+export const TableColumnsEditorDialog = withDialog<TableColumnsEditorDialogProps<unknown, unknown>, TableColumnsEditorDialogOpenProps<unknown, unknown>>((
   {
     onActionsChange,
     onClose,
     onTitleChange,
     openProps: { hasCellData },
-  }: TableColumnsEditorDialogProps,
+  }: TableColumnsEditorDialogProps<unknown, unknown>,
 ): ReactElement => {
   const { t } = useTranslation();
   const [items, setItems] = useState<Item[]>([]);
 
-  const tableStore = useTableStoreContext<unknown>();
+  const tableStore = useTableStoreContext<unknown, unknown>();
   const emitTableEvent = useStore(tableStore, useShallow((state) => state.emitEvent));
   const tableColumnVisualSettings = useStore(tableStore, useShallow((state) => state.columnVisualSettings));
   const tableColumns = useStore(tableStore, useShallow((state) => state.columns));
   const sortedData = useStore(tableStore, useShallow((state) => state.sortedData));
 
   const columnsMap = useMemo(() => {
-    const map = new Map<string, TableColumn<unknown>>();
+    const map = new Map<string, TableColumn<unknown, unknown>>();
     tableColumns.forEach((column) => {
       map.set(column.id, column);
     });

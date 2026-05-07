@@ -12,9 +12,9 @@ export type TableCaptionProps = {
   readonly variant: TypographyProps['variant'];
 };
 
-export const TableCaption = <TRowData,>({ caption, component = 'h2', variant = 'h2' }: TableCaptionProps) => {
+export const TableCaption = <TRowData, TContext>({ caption, component = 'h2', variant = 'h2' }: TableCaptionProps) => {
   const { t } = useTranslation();
-  const tableStore = useTableStoreContext<TRowData>();
+  const tableStore = useTableStoreContext<TRowData, TContext>();
   const baseDataLength = useStore(tableStore, (state) => state.baseData.length);
   const sortedDataLength = useStore(tableStore, useShallow((state) => state.sortedData.length));
 

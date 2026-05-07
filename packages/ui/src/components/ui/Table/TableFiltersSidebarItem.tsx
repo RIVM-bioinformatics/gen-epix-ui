@@ -54,8 +54,8 @@ type TableFiltersSidebarItemContentFilterDimensionProps = {
   readonly visibleFilterWithinDimension: string;
 };
 
-const TableFiltersSidebarItemContentFilterDimension = <TRowData,>({ filterDimension, onFilterVisibilityChange, visibleFilterWithinDimension }: TableFiltersSidebarItemContentFilterDimensionProps) => {
-  const tableStore = useTableStoreContext<TRowData>();
+const TableFiltersSidebarItemContentFilterDimension = <TRowData, TContext>({ filterDimension, onFilterVisibilityChange, visibleFilterWithinDimension }: TableFiltersSidebarItemContentFilterDimensionProps) => {
+  const tableStore = useTableStoreContext<TRowData, TContext>();
   const filters = useStoreWithEqualityFn(tableStore, (state) => state.filters, (a, b) => JSON.stringify(a.map(filter => filter.filterValue)) === JSON.stringify(b.map(filter => filter.filterValue)));
   const dimensionFilters = filterDimension.filterIds.map(filterId => filters.find(filter => filter.id === filterId));
 
@@ -173,10 +173,10 @@ const TableFiltersSidebarItemContentFilterDimension = <TRowData,>({ filterDimens
   );
 };
 
-export const TableFiltersSidebarItemContent = <TRowData,>({ onClose }: TableFiltersSidebarItemContentProps) => {
+export const TableFiltersSidebarItemContent = <TRowData, TContext>({ onClose }: TableFiltersSidebarItemContentProps) => {
   const { t } = useTranslation();
 
-  const tableStore = useTableStoreContext<TRowData>();
+  const tableStore = useTableStoreContext<TRowData, TContext>();
   const setFilterValues = useStore(tableStore, (state) => state.setFilterValues);
   const filterDimensions = useStore(tableStore, (state) => state.filterDimensions);
   const filters = useStoreWithEqualityFn(tableStore, (state) => state.filters, (a, b) => JSON.stringify(a.map(filter => filter.filterValue)) === JSON.stringify(b.map(filter => filter.filterValue)));

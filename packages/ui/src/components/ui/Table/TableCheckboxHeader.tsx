@@ -16,16 +16,16 @@ import type {
 import { useTableStoreContext } from '../../../stores/tableStore';
 
 
-export type TableCheckboxHeaderProps<TRowData> = {
-  readonly tableColumnParams: TableColumnParams<TRowData>;
+export type TableCheckboxHeaderProps<TRowData, TContext> = {
+  readonly tableColumnParams: TableColumnParams<TRowData, TContext>;
 };
 
-export const TableCheckboxHeader = <TRowData, >({ tableColumnParams }: TableCheckboxHeaderProps<TRowData>) => {
+export const TableCheckboxHeader = <TRowData, TContext>({ tableColumnParams }: TableCheckboxHeaderProps<TRowData, TContext>) => {
   const { t } = useTranslation();
 
-  const column = tableColumnParams.column as TableColumnSelectable<TRowData>;
+  const column = tableColumnParams.column as TableColumnSelectable<TRowData, TContext>;
 
-  const tableStore = useTableStoreContext<TRowData>();
+  const tableStore = useTableStoreContext<TRowData, TContext>();
   const idSelectorCallback = useStore(tableStore, useShallow((state) => state.idSelectorCallback));
   const selectedIds = useStore(tableStore, useShallow((state) => state.selectedIds));
   const sortedData = useStore(tableStore, useShallow((state) => state.sortedData));

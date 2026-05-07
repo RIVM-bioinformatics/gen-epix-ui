@@ -23,16 +23,16 @@ import type {
   TableRowParams,
 } from '../../../models/table';
 
-export type TableCellProps<TRowData> = PropsWithChildren<{
+export type TableCellProps<TRowData, TContext> = PropsWithChildren<{
   readonly ariaSort?: 'ascending' | 'descending' | 'other';
   readonly canDrag?: (event: ReactMouseEvent<HTMLDivElement>) => boolean;
   readonly className?: string;
-  readonly column: TableColumn<TRowData>;
+  readonly column: TableColumn<TRowData, TContext>;
   readonly columnIndex: number;
   readonly enabled?: boolean;
   readonly height: string;
-  readonly onClick?: (row: TableRowParams<TRowData>, event?: MouseEvent) => void;
-  readonly onCustomDrag?: (event: TableDragEvent, column: TableColumn<TRowData>) => void;
+  readonly onClick?: (row: TableRowParams<TRowData, TContext>, event?: MouseEvent) => void;
+  readonly onCustomDrag?: (event: TableDragEvent, column: TableColumn<TRowData, TContext>) => void;
   readonly order: number;
   readonly ref?: ForwardedRef<TableCellRef>;
   readonly role?: AriaRole;
@@ -47,7 +47,7 @@ export type TableCellProps<TRowData> = PropsWithChildren<{
 
 export type TableCellRef = HTMLDivElement;
 
-export const TableCell = <TRowData, >({
+export const TableCell = <TRowData, TContext>({
   ariaSort,
   canDrag,
   children,
@@ -68,7 +68,7 @@ export const TableCell = <TRowData, >({
   title,
   width,
   xOffset,
-}: TableCellProps<TRowData>) => {
+}: TableCellProps<TRowData, TContext>) => {
   const theme = useTheme();
   const onTableCellClick = useCallback((event: ReactMouseEvent) => {
     onClick({ id: column.id, row, rowIndex }, event.nativeEvent);

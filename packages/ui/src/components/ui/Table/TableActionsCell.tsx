@@ -18,11 +18,11 @@ import {
   type TableCellProps,
 } from './TableCell';
 
-export interface TableActionsCellProps<TRowData> extends TableCellProps<TRowData> {
-  readonly column: TableColumnActions<TRowData>;
+export interface TableActionsCellProps<TRowData, TContext> extends TableCellProps<TRowData, TContext> {
+  readonly column: TableColumnActions<TRowData, TContext>;
 }
 
-export const TableActionsCell = <TRowData,>(props: TableActionsCellProps<TRowData>) => {
+export const TableActionsCell = <TRowData, TContext>(props: TableActionsCellProps<TRowData, TContext>) => {
   const [anchorElement, setAnchorElement] = useState<HTMLButtonElement>(null);
   const { t } = useTranslation();
   const open = !!anchorElement;

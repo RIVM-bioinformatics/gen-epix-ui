@@ -11,19 +11,19 @@ import type {
 import { ConfigManager } from '../../../classes/managers/ConfigManager';
 import { PageEventBusManager } from '../../../classes/managers/PageEventBusManager';
 
-export type TableReadableIndexCellProps<TRowData> = {
-  readonly cell: TableRowParams<TRowData>;
+export type TableReadableIndexCellProps<TRowData, TContext> = {
+  readonly cell: TableRowParams<TRowData, TContext>;
   readonly getRowName?: (row: TRowData) => string;
   readonly onReadableIndexClick: (row: TRowData) => void;
-  readonly tableColumn: TableColumnReadableIndex<TRowData>;
+  readonly tableColumn: TableColumnReadableIndex<TRowData, TContext>;
 };
 
-export const TableReadableIndexCell = <TRowData, >({
+export const TableReadableIndexCell = <TRowData, TContext>({
   cell,
   getRowName,
   onReadableIndexClick,
   tableColumn,
-}: TableReadableIndexCellProps<TRowData>) => {
+}: TableReadableIndexCellProps<TRowData, TContext>) => {
   const onClick = useCallback((event: ReactMouseEvent) => {
     if (onReadableIndexClick) {
       if (!getRowName) {

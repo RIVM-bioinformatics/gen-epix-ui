@@ -45,7 +45,7 @@ export type GenericFormProps<TFormFields extends FieldValues> = {
   readonly wrapForm?: (children: ReactElement) => ReactElement;
 };
 
-export const GenericForm = <TFormFields extends FieldValues,>({
+export const GenericForm = <TFormFields extends FieldValues>({
   disableAll,
   formFieldDefinitions,
   formId,
