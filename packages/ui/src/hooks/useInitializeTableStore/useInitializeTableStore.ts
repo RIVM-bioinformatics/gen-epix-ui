@@ -9,16 +9,16 @@ import type { TableColumn } from '../../models/table';
 import type { TableStore } from '../../stores/tableStore';
 import { TableUtil } from '../../utils/TableUtil';
 
-export type UseInitializeTableStoreKWArgs<TData, TContext = null> = {
-  readonly columns: TableColumn<TData, TContext>[];
-  readonly context: TContext;
+export type UseInitializeTableStoreKWArgs<TData, TDataContext = null> = {
+  readonly columns: TableColumn<TData, TDataContext>[];
+  readonly context: TDataContext;
   readonly createFiltersFromColumns?: boolean;
   readonly rows: TData[];
-  readonly store: StoreApi<TableStore<TData, TContext>>;
+  readonly store: StoreApi<TableStore<TData, TDataContext>>;
 };
 
 
-export const useInitializeTableStore = <TData, TContext = null>({ columns, context, createFiltersFromColumns, rows, store }: UseInitializeTableStoreKWArgs<TData, TContext>) => {
+export const useInitializeTableStore = <TData, TDataContext = null>({ columns, context, createFiltersFromColumns, rows, store }: UseInitializeTableStoreKWArgs<TData, TDataContext>) => {
   const setColumns = useStore(store, (state) => state.setColumns);
   const setBaseData = useStore(store, (state) => state.setBaseData);
   const setFilters = useStore(store, (state) => state.setFilters);

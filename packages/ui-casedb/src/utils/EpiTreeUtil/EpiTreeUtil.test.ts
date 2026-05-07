@@ -1248,7 +1248,7 @@ describe('EpiTreeUtil', () => {
     it('draws a horizontal line at the specified y position', () => {
       const ctx = makeCtx();
       const canvas = {
-        getContext: vi.fn().mockReturnValue(ctx),
+        geTDataContext: vi.fn().mockReturnValue(ctx),
         height: 400,
         width: 600,
       } as unknown as HTMLCanvasElement;
@@ -1263,7 +1263,7 @@ describe('EpiTreeUtil', () => {
     it('calls stroke with lineWidth 1', () => {
       const ctx = makeCtx();
       const canvas = {
-        getContext: vi.fn().mockReturnValue(ctx),
+        geTDataContext: vi.fn().mockReturnValue(ctx),
         height: 400,
         width: 600,
       } as unknown as HTMLCanvasElement;
@@ -1307,7 +1307,7 @@ describe('EpiTreeUtil', () => {
     it('calls setLineDash([3,1]) before drawing and resets to [0,0] after', () => {
       const ctx = makeGuidesCtx();
       const canvas = {
-        getContext: vi.fn().mockReturnValue(ctx),
+        geTDataContext: vi.fn().mockReturnValue(ctx),
         height: 300,
         width: 800,
       } as unknown as HTMLCanvasElement;
@@ -1329,7 +1329,7 @@ describe('EpiTreeUtil', () => {
     it('strokes one vertical line per tick mark', () => {
       const ctx = makeGuidesCtx();
       const canvas = {
-        getContext: vi.fn().mockReturnValue(ctx),
+        geTDataContext: vi.fn().mockReturnValue(ctx),
         height: 300,
         width: 800,
       } as unknown as HTMLCanvasElement;
@@ -1353,7 +1353,7 @@ describe('EpiTreeUtil', () => {
     it('positions the first guide line at TREE_PADDING pixels from the left', () => {
       const ctx = makeGuidesCtx();
       const canvas = {
-        getContext: vi.fn().mockReturnValue(ctx),
+        geTDataContext: vi.fn().mockReturnValue(ctx),
         height: 300,
         width: 800,
       } as unknown as HTMLCanvasElement;
@@ -1378,7 +1378,7 @@ describe('EpiTreeUtil', () => {
     it('uses explicit startY and endY boundaries when provided', () => {
       const ctx = makeGuidesCtx();
       const canvas = {
-        getContext: vi.fn().mockReturnValue(ctx),
+        geTDataContext: vi.fn().mockReturnValue(ctx),
         height: 300,
         width: 800,
       } as unknown as HTMLCanvasElement;
@@ -1436,7 +1436,7 @@ describe('EpiTreeUtil', () => {
     it('calls fillText once per tick mark', () => {
       const ctx = makeScaleCtx();
       const canvas = {
-        getContext: vi.fn().mockReturnValue(ctx),
+        geTDataContext: vi.fn().mockReturnValue(ctx),
         height: 60,
         width: 800,
       } as unknown as HTMLCanvasElement;
@@ -1459,7 +1459,7 @@ describe('EpiTreeUtil', () => {
     it('renders labels in descending order (largest distance at leftmost tick)', () => {
       const ctx = makeScaleCtx();
       const canvas = {
-        getContext: vi.fn().mockReturnValue(ctx),
+        geTDataContext: vi.fn().mockReturnValue(ctx),
         height: 60,
         width: 800,
       } as unknown as HTMLCanvasElement;
@@ -1486,7 +1486,7 @@ describe('EpiTreeUtil', () => {
     it('sets an explicit text fill color before drawing scale labels', () => {
       const ctx = makeScaleCtx();
       const canvas = {
-        getContext: vi.fn().mockReturnValue(ctx),
+        geTDataContext: vi.fn().mockReturnValue(ctx),
         height: 60,
         width: 800,
       } as unknown as HTMLCanvasElement;
@@ -1582,7 +1582,7 @@ describe('EpiTreeUtil', () => {
       const canvas = {
         clientHeight: 100,
         clientWidth: 200,
-        getContext: vi.fn().mockReturnValue(ctx),
+        geTDataContext: vi.fn().mockReturnValue(ctx),
         height: 0,
         width: 0,
       } as unknown as HTMLCanvasElement;
@@ -1617,7 +1617,7 @@ describe('EpiTreeUtil', () => {
       const canvas = {
         clientHeight: 100,
         clientWidth: 200,
-        getContext: vi.fn().mockReturnValue(ctx),
+        geTDataContext: vi.fn().mockReturnValue(ctx),
         height: 0,
         width: 0,
       } as unknown as HTMLCanvasElement;
@@ -1653,7 +1653,7 @@ describe('EpiTreeUtil', () => {
       const canvas = {
         clientHeight: 100,
         clientWidth: 200,
-        getContext: vi.fn().mockReturnValue(ctx),
+        geTDataContext: vi.fn().mockReturnValue(ctx),
         height: 0,
         width: 0,
       } as unknown as HTMLCanvasElement;
@@ -1688,7 +1688,7 @@ describe('EpiTreeUtil', () => {
       const canvas = {
         clientHeight: 100,
         clientWidth: 200,
-        getContext: vi.fn().mockReturnValue(ctx),
+        geTDataContext: vi.fn().mockReturnValue(ctx),
         height: 0,
         width: 0,
       } as unknown as HTMLCanvasElement;
@@ -1756,7 +1756,7 @@ describe('EpiTreeUtil', () => {
       };
       const ctx = makeHitTestCtx(nodeShape, null, null);
       const canvas = {
-        getContext: vi.fn().mockReturnValue(ctx),
+        geTDataContext: vi.fn().mockReturnValue(ctx),
       } as unknown as HTMLCanvasElement;
 
       const result = EpiTreeUtil.getPathPropertiesFromCanvas({
@@ -1786,7 +1786,7 @@ describe('EpiTreeUtil', () => {
       };
       const ctx = makeHitTestCtx(null, hShape, null);
       const canvas = {
-        getContext: vi.fn().mockReturnValue(ctx),
+        geTDataContext: vi.fn().mockReturnValue(ctx),
       } as unknown as HTMLCanvasElement;
 
       const result = EpiTreeUtil.getPathPropertiesFromCanvas({
@@ -1817,7 +1817,7 @@ describe('EpiTreeUtil', () => {
       // isPointInStroke returns true only for vShape
       const ctx = makeHitTestCtx(null, null, vShape);
       const canvas = {
-        getContext: vi.fn().mockReturnValue(ctx),
+        geTDataContext: vi.fn().mockReturnValue(ctx),
       } as unknown as HTMLCanvasElement;
 
       const result = EpiTreeUtil.getPathPropertiesFromCanvas({
@@ -1845,7 +1845,7 @@ describe('EpiTreeUtil', () => {
       };
       const ctx = makeHitTestCtx(null, null, null);
       const canvas = {
-        getContext: vi.fn().mockReturnValue(ctx),
+        geTDataContext: vi.fn().mockReturnValue(ctx),
       } as unknown as HTMLCanvasElement;
 
       const result = EpiTreeUtil.getPathPropertiesFromCanvas({
@@ -1874,7 +1874,7 @@ describe('EpiTreeUtil', () => {
       };
       const ctx = makeHitTestCtx(null, null, null);
       const canvas = {
-        getContext: vi.fn().mockReturnValue(ctx),
+        geTDataContext: vi.fn().mockReturnValue(ctx),
       } as unknown as HTMLCanvasElement;
 
       const result = EpiTreeUtil.getPathPropertiesFromCanvas({
@@ -1904,7 +1904,7 @@ describe('EpiTreeUtil', () => {
       // none of the shapes match → isPointInStroke always returns false
       const ctx = makeHitTestCtx(null, null, null);
       const canvas = {
-        getContext: vi.fn().mockReturnValue(ctx),
+        geTDataContext: vi.fn().mockReturnValue(ctx),
       } as unknown as HTMLCanvasElement;
 
       const result = EpiTreeUtil.getPathPropertiesFromCanvas({
@@ -2144,7 +2144,7 @@ describe('EpiTreeUtil', () => {
     } as unknown as Theme);
 
     const makeCanvas = (ctx: ReturnType<typeof makeTrackedCtx>['ctx']): HTMLCanvasElement =>
-      ({ getContext: vi.fn().mockReturnValue(ctx), height: 300, width: 400 } as unknown as HTMLCanvasElement);
+      ({ geTDataContext: vi.fn().mockReturnValue(ctx), height: 300, width: 400 } as unknown as HTMLCanvasElement);
 
     const makeAssembly = (): TreeAssembly => ({
       ancestorNodes: [],
@@ -2208,7 +2208,7 @@ describe('EpiTreeUtil', () => {
     it('clips tree drawing below the header when headerHeight is provided', () => {
       const { ctx } = makeTrackedCtx();
       const canvas = {
-        getContext: vi.fn().mockReturnValue(ctx),
+        geTDataContext: vi.fn().mockReturnValue(ctx),
         height: 300,
         width: 400,
       } as unknown as HTMLCanvasElement;

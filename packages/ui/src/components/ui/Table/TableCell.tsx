@@ -26,16 +26,16 @@ import type {
 } from '../../../models/table';
 import { useTableStoreContext } from '../../../stores/tableStore';
 
-export type TableCellProps<TRowData, TContext = null> = PropsWithChildren<{
+export type TableCellProps<TRowData, TDataContext = null> = PropsWithChildren<{
   readonly ariaSort?: 'ascending' | 'descending' | 'other';
   readonly canDrag?: (event: ReactMouseEvent<HTMLDivElement>) => boolean;
   readonly className?: string;
-  readonly column: TableColumn<TRowData, TContext>;
+  readonly column: TableColumn<TRowData, TDataContext>;
   readonly columnIndex: number;
   readonly enabled?: boolean;
   readonly height: string;
-  readonly onClick?: (row: TableRowParams<TRowData, TContext>, event?: MouseEvent) => void;
-  readonly onCustomDrag?: (event: TableDragEvent, column: TableColumn<TRowData, TContext>) => void;
+  readonly onClick?: (row: TableRowParams<TRowData, TDataContext>, event?: MouseEvent) => void;
+  readonly onCustomDrag?: (event: TableDragEvent, column: TableColumn<TRowData, TDataContext>) => void;
   readonly order: number;
   readonly ref?: ForwardedRef<TableCellRef>;
   readonly role?: AriaRole;
@@ -50,7 +50,7 @@ export type TableCellProps<TRowData, TContext = null> = PropsWithChildren<{
 
 export type TableCellRef = HTMLDivElement;
 
-export const TableCell = <TRowData, TContext = null>({
+export const TableCell = <TRowData, TDataContext = null>({
   ariaSort,
   canDrag,
   children,
@@ -71,14 +71,14 @@ export const TableCell = <TRowData, TContext = null>({
   title,
   width,
   xOffset,
-}: TableCellProps<TRowData, TContext>) => {
+}: TableCellProps<TRowData, TDataContext>) => {
   const theme = useTheme();
-  const tableStore = useTableStoreContext<TRowData, TContext>();
-  const context = useStore(tableStore, useShallow((state) => state.context));
+  const tableStore = useTableStoreContext<TRowData, TDataContext>();
+  const dataContext = useStore(tableStore, useShallow((state) => state.dataContext));
 
   const onTableCellClick = useCallback((event: ReactMouseEvent) => {
-    onClick({ context, id: column.id, row, rowIndex }, event.nativeEvent);
-  }, [column.id, context, onClick, row, rowIndex]);
+    onClick({ dataContext, id: column.id, row, rowIndex }, event.nativeEvent);
+  }, [column.id, dataContext, onClick, row, rowIndex]);
   const dragPositionRef = useRef<{ target: HTMLDivElement; x: number; y: number } | null>(null);
 
   const onMouseDown = useCallback((mouseDownEvent: ReactMouseEvent<HTMLDivElement>) => {

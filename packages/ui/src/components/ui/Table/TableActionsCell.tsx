@@ -21,13 +21,13 @@ import {
   type TableCellProps,
 } from './TableCell';
 
-export interface TableActionsCellProps<TRowData, TContext = null> extends TableCellProps<TRowData, TContext> {
-  readonly column: TableColumnActions<TRowData, TContext>;
+export interface TableActionsCellProps<TRowData, TDataContext = null> extends TableCellProps<TRowData, TDataContext> {
+  readonly column: TableColumnActions<TRowData, TDataContext>;
 }
 
-export const TableActionsCell = <TRowData, TContext = null>(props: TableActionsCellProps<TRowData, TContext>) => {
-  const tableStore = useTableStoreContext<TRowData, TContext>();
-  const context = useStore(tableStore, useShallow((state) => state.context));
+export const TableActionsCell = <TRowData, TDataContext = null>(props: TableActionsCellProps<TRowData, TDataContext>) => {
+  const tableStore = useTableStoreContext<TRowData, TDataContext>();
+  const dataContext = useStore(tableStore, useShallow((state) => state.dataContext));
 
   const [anchorElement, setAnchorElement] = useState<HTMLButtonElement>(null);
   const { t } = useTranslation();
@@ -42,8 +42,8 @@ export const TableActionsCell = <TRowData, TContext = null>(props: TableActionsC
   }, []);
 
   const actions = useMemo(() => {
-    return props.column.getActions({ context, id: props.column.id, row: props.row, rowIndex: props.rowIndex });
-  }, [context, props.column, props.row, props.rowIndex]);
+    return props.column.getActions({ dataContext, id: props.column.id, row: props.row, rowIndex: props.rowIndex });
+  }, [dataContext, props.column, props.row, props.rowIndex]);
 
   const onTableCellClick = useCallback(() => {
     // Prevent the TableCell's onClick from being triggered when clicking the action button

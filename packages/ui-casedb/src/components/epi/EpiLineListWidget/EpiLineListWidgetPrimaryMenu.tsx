@@ -10,6 +10,7 @@ import type {
   CaseDbApiPermission,
   CaseDbCase,
   CaseDbCaseSet,
+  CaseDbCompleteCaseType,
 } from '@gen-epix/api-casedb';
 import {
   CaseDbCommandName,
@@ -49,8 +50,8 @@ export const EpiLineListWidgetPrimaryMenu = ({
   const setSelectedIds = useStore(epiDashboardStore, useShallow((state) => state.setSelectedIds));
   const findSimilarCasesResults = useStore(epiDashboardStore, useShallow((state) => state.findSimilarCasesResults));
 
-  const hasCellData = useCallback((row: CaseDbCase, tableColumn: TableColumn<CaseDbCase>, rowIndex: number) => {
-    if (tableColumn.type === 'caseType' && tableColumn.valueGetter) {
+  const hasCellData = useCallback((row: CaseDbCase, tableColumn: TableColumn<CaseDbCase, CaseDbCompleteCaseType>, rowIndex: number) => {
+    if (tableColumn.valueGetter) {
       return !tableColumn.valueGetter({
         id: tableColumn.id,
         row,

@@ -16,17 +16,17 @@ import type {
 import { useTableStoreContext } from '../../../stores/tableStore';
 
 
-export type TableCheckboxHeaderProps<TRowData, TContext = null> = {
-  readonly tableColumnParams: TableColumnParams<TRowData, TContext>;
+export type TableCheckboxHeaderProps<TRowData, TDataContext = null> = {
+  readonly tableColumnParams: TableColumnParams<TRowData, TDataContext>;
 };
 
-export const TableCheckboxHeader = <TRowData, TContext = null>({ tableColumnParams }: TableCheckboxHeaderProps<TRowData, TContext>) => {
+export const TableCheckboxHeader = <TRowData, TDataContext = null>({ tableColumnParams }: TableCheckboxHeaderProps<TRowData, TDataContext>) => {
   const { t } = useTranslation();
 
-  const column = tableColumnParams.column as TableColumnSelectable<TRowData, TContext>;
+  const column = tableColumnParams.column as TableColumnSelectable<TRowData, TDataContext>;
 
-  const tableStore = useTableStoreContext<TRowData, TContext>();
-  const context = useStore(tableStore, useShallow((state) => state.context));
+  const tableStore = useTableStoreContext<TRowData, TDataContext>();
+  const dataContext = useStore(tableStore, useShallow((state) => state.dataContext));
   const idSelectorCallback = useStore(tableStore, useShallow((state) => state.idSelectorCallback));
   const selectedIds = useStore(tableStore, useShallow((state) => state.selectedIds));
   const sortedData = useStore(tableStore, useShallow((state) => state.sortedData));
@@ -34,7 +34,7 @@ export const TableCheckboxHeader = <TRowData, TContext = null>({ tableColumnPara
 
 
   const enabledRows = column.isDisabled ? sortedData.filter(row => column.isDisabled({
-    context,
+    dataContext,
     id: idSelectorCallback(row),
     row,
     rowIndex: sortedData.indexOf(row),

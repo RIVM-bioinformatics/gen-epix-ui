@@ -16,16 +16,16 @@ import { useTableStoreContext } from '../../stores/tableStore';
 import { TableUtil } from '../../utils/TableUtil';
 
 
-export type UseColumnsMenuProps<TRowData, TContext = null> = {
-  readonly hasCellData?: HasCellDataFn<TRowData, TContext>;
+export type UseColumnsMenuProps<TRowData, TDataContext = null> = {
+  readonly hasCellData?: HasCellDataFn<TRowData, TDataContext>;
 };
 
 //Note: must be CamelCase because of HMR
-export const UseColumnsMenu = <TRowData, TContext = null>({ hasCellData }: UseColumnsMenuProps<TRowData, TContext>): MenuItemData => {
-  const tableStore = useTableStoreContext<TRowData, TContext>();
+export const UseColumnsMenu = <TRowData, TDataContext = null>({ hasCellData }: UseColumnsMenuProps<TRowData, TDataContext>): MenuItemData => {
+  const tableStore = useTableStoreContext<TRowData, TDataContext>();
   const emitTableEvent = useStore(tableStore, useShallow((state) => state.emitEvent));
   const tableColumns = useStore(tableStore, useShallow((state) => state.columns));
-  const context = useStore(tableStore, useShallow((state) => state.context));
+  const dataContext = useStore(tableStore, useShallow((state) => state.dataContext));
   const visibleColumnIds = useStore(tableStore, useShallow((state) => state.columnVisualSettings.filter(c => c.isVisible).map(c => c.id)));
   const columnDimensions = useStore(tableStore, useShallow((state) => state.columnDimensions));
   const sortedData = useStore(tableStore, useShallow((state) => state.sortedData));
@@ -63,15 +63,15 @@ export const UseColumnsMenu = <TRowData, TContext = null>({ hasCellData }: UseCo
   }, [emitTableEvent, visibleColumnIds]);
 
   const onHideColumnsWithoutDataClick = useCallback(() => {
-    emitTableEvent('columnVisibilityChange', TableUtil.getColumnIdsWithData<TRowData, TContext>({
-      context,
+    emitTableEvent('columnVisibilityChange', TableUtil.getColumnIdsWithData<TRowData, TDataContext>({
+      dataContext,
       hasCellData,
       sortedData,
       tableColumns,
       visibleColumnIds,
     }));
 
-  }, [emitTableEvent, hasCellData, sortedData, tableColumns, visibleColumnIds, context]);
+  }, [emitTableEvent, hasCellData, sortedData, tableColumns, visibleColumnIds, dataContext]);
 
   const menuItemData: MenuItemData = useMemo(() => {
     const items: MenuItemData[] = [

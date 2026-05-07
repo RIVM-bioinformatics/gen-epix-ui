@@ -4,12 +4,12 @@ import type { PropsWithChildren } from 'react';
 import type { TableStore } from './tableStore';
 import { TableStoreContext } from './TableStoreContext';
 
-export type TableStoreContextProviderProps<TData, TContext = null> = PropsWithChildren<{
-  readonly store: StoreApi<TableStore<TData, TContext>>;
+export type TableStoreContextProviderProps<TData, TDataContext = null> = PropsWithChildren<{
+  readonly store: StoreApi<TableStore<TData, TDataContext>>;
 }>;
 
-export const TableStoreContextProvider = <TData, TContext = null>(
-  props: TableStoreContextProviderProps<TData, TContext>,
+export const TableStoreContextProvider = <TData, TDataContext = null>(
+  props: TableStoreContextProviderProps<TData, TDataContext>,
 ) => {
   const { children, store } = props;
   return (

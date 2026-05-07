@@ -186,7 +186,7 @@ const createEpiDashboardStoreInitialState = (kwArgs: CreateEpiDashboardStoreInit
     ...createTableStoreInitialState<CaseDbCase, CaseDbCompleteCaseType>(createTableStoreInitialStateKwArgs),
     caseSetId,
     completeCaseType,
-    context: completeCaseType,
+    dataContext: completeCaseType,
     epiCurveWidgetData: {
       ...createWidgetDataInitialState(),
       columnId: null,

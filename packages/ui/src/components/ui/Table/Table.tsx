@@ -81,7 +81,7 @@ import { TableReadableIndexCell } from './TableReadableIndexCell';
 import { tableHeaderCellClassNames } from './classNames';
 
 
-export type TableProps<TRowData, TContext = null> = {
+export type TableProps<TRowData, TDataContext = null> = {
   readonly font?: string;
   readonly forceHorizontalOverflow?: boolean;
   readonly getRowName?: (row: TRowData) => string;
@@ -89,7 +89,7 @@ export type TableProps<TRowData, TContext = null> = {
   readonly initialVisibleItemIndex?: number;
   readonly onRangeChanged?: (range: ListRange) => void;
   readonly onReadableIndexClick?: (row: TRowData) => void;
-  readonly onRowClick?: (row: TableRowParams<TRowData, TContext>) => void;
+  readonly onRowClick?: (row: TableRowParams<TRowData, TDataContext>) => void;
   readonly onRowMouseEnter?: (row?: TRowData) => void;
   readonly onRowMouseLeave?: (row?: TRowData) => void;
   readonly onVerticalScrollPositionChange?: (position: number) => void;
@@ -106,7 +106,7 @@ export interface TableRef {
   setVerticalScrollPosition: (position: number) => void;
 }
 
-export const Table = <TRowData, TContext = null>({
+export const Table = <TRowData, TDataContext = null>({
   font,
   forceHorizontalOverflow,
   getRowName,
@@ -125,10 +125,10 @@ export const Table = <TRowData, TContext = null>({
   rowHeight = 4,
   rowHighlightingSubject,
   sx,
-}: TableProps<TRowData, TContext>) => {
+}: TableProps<TRowData, TDataContext>) => {
   const theme = useTheme();
   const { t } = useTranslation();
-  const tableStore = useTableStoreContext<TRowData, TContext>();
+  const tableStore = useTableStoreContext<TRowData, TDataContext>();
 
   const { DEFAULT_OVERSCAN_MAIN, DEFAULT_OVERSCAN_REVERSE } = ConfigManager.getInstance().config.table;
 
@@ -142,7 +142,7 @@ export const Table = <TRowData, TContext = null>({
   const isStoreInitialized = useStore(tableStore, useShallow((state) => state.isInitialized));
   const isRowEnabledCallback = useStore(tableStore, useShallow((state) => state.isRowEnabledCallback));
   const addTableEventListener = useStore(tableStore, useShallow((state) => state.addEventListener));
-  const context = useStore(tableStore, useShallow((state) => state.context));
+  const dataContext = useStore(tableStore, useShallow((state) => state.dataContext));
   const columnDimensions = useStore(tableStore, useShallow((state) => state.columnDimensions));
   const tableColumnVisualSettingsRef = useRef<TableColumnVisualSettings[]>(null);
   const eventListenersCleanerRef = useRef<() => void>(noop);
@@ -154,7 +154,7 @@ export const Table = <TRowData, TContext = null>({
   const tableWidthRef = useRef<number>(0);
   const tableRangeRef = useRef<ListRange>(null);
   const [container, setContainer] = useState<HTMLDivElement>();
-  const tableColumnsEditorDialogRef = useRef<TableColumnsEditorDialogRefMethods<TRowData, TContext>>(null);
+  const tableColumnsEditorDialogRef = useRef<TableColumnsEditorDialogRefMethods<TRowData, TDataContext>>(null);
 
   const dragConfigRef = useRef<{ clonedElement: HTMLDivElement; elementOffsetX: number; scrollPosition: number }>(null);
 
@@ -165,7 +165,7 @@ export const Table = <TRowData, TContext = null>({
   useStore(tableStore, useShallow((state) => state.sortByField));
   useStore(tableStore, useShallow((state) => state.sortDirection));
 
-  const onTableRowClick = useCallback((row: TableRowParams<TRowData, TContext>, event: MouseEvent) => {
+  const onTableRowClick = useCallback((row: TableRowParams<TRowData, TDataContext>, event: MouseEvent) => {
     if (onRowClick) {
       if (!getRowName) {
         throw new Error('getRowName is required when onRowClick is provided');
@@ -203,7 +203,7 @@ export const Table = <TRowData, TContext = null>({
     updateTableWidth();
   }, [updateTableWidth]);
 
-  const renderReadableIndexCell = useCallback((tableColumn: TableColumnReadableIndex<TRowData, TContext>, cell: TableRowParams<TRowData, TContext>) => {
+  const renderReadableIndexCell = useCallback((tableColumn: TableColumnReadableIndex<TRowData, TDataContext>, cell: TableRowParams<TRowData, TDataContext>) => {
     return (
       <TableReadableIndexCell
         cell={cell}
@@ -215,7 +215,7 @@ export const Table = <TRowData, TContext = null>({
     );
   }, [getRowName, onReadableIndexClick]);
 
-  const renderSelectableHeaderContent = useCallback((tableColumnParams: TableColumnParams<TRowData, TContext>) => {
+  const renderSelectableHeaderContent = useCallback((tableColumnParams: TableColumnParams<TRowData, TDataContext>) => {
     return (
       <TableCheckboxHeader
         tableColumnParams={tableColumnParams}
@@ -223,7 +223,7 @@ export const Table = <TRowData, TContext = null>({
     );
   }, []);
 
-  const renderSelectableCell = useCallback((tableColumn: TableColumnSelectable<TRowData, TContext>, cell: TableRowParams<TRowData, TContext>) => {
+  const renderSelectableCell = useCallback((tableColumn: TableColumnSelectable<TRowData, TDataContext>, cell: TableRowParams<TRowData, TDataContext>) => {
     const id = idSelectorCallback(cell.row);
 
     return (
@@ -289,7 +289,7 @@ export const Table = <TRowData, TContext = null>({
     saveColumnVisualSettingsToStoreDebounced();
   }, [updateColumnSizes, saveColumnVisualSettingsToStoreDebounced]);
 
-  const onColumnDividerKeyDown = useCallback((event: ReactKeyboardEvent<HTMLDivElement>, tableColumn: TableColumn<TRowData, TContext>) => {
+  const onColumnDividerKeyDown = useCallback((event: ReactKeyboardEvent<HTMLDivElement>, tableColumn: TableColumn<TRowData, TDataContext>) => {
     if (event.key !== 'ArrowLeft' && event.key !== 'ArrowRight') {
       return;
     }
@@ -301,7 +301,7 @@ export const Table = <TRowData, TContext = null>({
     updateColumnSize(columnVisualSettings, newWidth);
   }, [updateColumnSize]);
 
-  const onColumnDividerMouseDown = useCallback((event: ReactMouseEvent<HTMLDivElement>, tableColumn: TableColumn<TRowData, TContext>) => {
+  const onColumnDividerMouseDown = useCallback((event: ReactMouseEvent<HTMLDivElement>, tableColumn: TableColumn<TRowData, TDataContext>) => {
     event.preventDefault();
 
     const columnVisualSettings = tableColumnVisualSettingsRef.current.find(c => c.id === tableColumn.id);
@@ -342,7 +342,7 @@ export const Table = <TRowData, TContext = null>({
     };
   }, []);
 
-  const moveColumn = useCallback((elementTableColumn: TableColumn<TRowData, TContext>, direction: -1 | 1): boolean => {
+  const moveColumn = useCallback((elementTableColumn: TableColumn<TRowData, TDataContext>, direction: -1 | 1): boolean => {
     return TableUtil.handleMoveColumn(
       columnDimensions,
       tableColumnVisualSettingsRef.current,
@@ -371,7 +371,7 @@ export const Table = <TRowData, TContext = null>({
     };
   }, [updateColumnOrderInDOM, updateColumnSizes]);
 
-  const calculateColumnBoundaries = useCallback((tableColumn: TableColumn<TRowData, TContext>) => {
+  const calculateColumnBoundaries = useCallback((tableColumn: TableColumn<TRowData, TDataContext>) => {
     const visibleTableSettingsColumns = getVisibleTableSettingsColumns();
 
     // Find the index of the column being dragged
@@ -401,7 +401,7 @@ export const Table = <TRowData, TContext = null>({
    * @param event - The drag event containing details about the drag action.
    * @param tableColumn - The column being dragged.
    */
-  const onTableHeaderCellDrag = useCallback((event: TableDragEvent, tableColumn: TableColumn<TRowData, TContext>) => {
+  const onTableHeaderCellDrag = useCallback((event: TableDragEvent, tableColumn: TableColumn<TRowData, TDataContext>) => {
     const columnBoundaries = calculateColumnBoundaries(tableColumn);
 
     if (event.type === 'start') {
@@ -479,7 +479,7 @@ export const Table = <TRowData, TContext = null>({
             return null;
           }
           return (
-            <TableHeaderCell<TRowData, TContext>
+            <TableHeaderCell<TRowData, TDataContext>
               column={tableColumn.type === 'selectable' ? { ...tableColumn, renderHeaderContent: renderSelectableHeaderContent } : tableColumn}
               columnIndex={tableSettingsColumnIndex}
               dividerColor={headerBorderColor}
@@ -507,27 +507,27 @@ export const Table = <TRowData, TContext = null>({
           let title: string;
           if (tableColumn.cellTitleGetter) {
             title = tableColumn.cellTitleGetter({
-              context,
+              dataContext,
               id: column.id,
               row,
               rowIndex: index,
             });
           } else if (tableColumn.type === 'text') {
-            title = TableUtil.getTableTextCellValue({ column: tableColumn, context, row, rowIndex: index });
+            title = TableUtil.getTableTextCellValue({ column: tableColumn, dataContext, row, rowIndex: index });
           } else if (tableColumn.type === 'boolean') {
-            title = TableUtil.getTableBooleanCellDisplayValue({ column: tableColumn, context, row, rowIndex: index, t });
+            title = TableUtil.getTableBooleanCellDisplayValue({ column: tableColumn, dataContext, row, rowIndex: index, t });
           } else if (tableColumn.type === 'number') {
-            const numericValue = TableUtil.getTableNumberCellValue({ column: tableColumn, context, row, rowIndex: index });
+            const numericValue = TableUtil.getTableNumberCellValue({ column: tableColumn, dataContext, row, rowIndex: index });
             title = isNumber(numericValue) ? numericValue.toString() : '';
           } else if (tableColumn.type === 'date') {
-            title = TableUtil.getTableDateCellValue({ column: tableColumn, context, row, rowIndex: index });
+            title = TableUtil.getTableDateCellValue({ column: tableColumn, dataContext, row, rowIndex: index });
           } else if (tableColumn.type === 'options') {
-            title = TableUtil.getTableOptionsCellDisplayValue({ column: tableColumn, context, row, rowIndex: index });
+            title = TableUtil.getTableOptionsCellDisplayValue({ column: tableColumn, dataContext, row, rowIndex: index });
           }
 
-          const baseProps: Partial<TableCellProps<TRowData, TContext>> = {
+          const baseProps: Partial<TableCellProps<TRowData, TDataContext>> = {
             columnIndex,
-            enabled: isRowEnabledCallback ? isRowEnabledCallback(row, context) : true,
+            enabled: isRowEnabledCallback ? isRowEnabledCallback(row, dataContext) : true,
             height: theme.spacing(rowHeight),
             onClick: onTableRowClick,
             order: tableColumnVisualSettingsRef.current.findIndex(c => c.id === column.id),
@@ -541,9 +541,9 @@ export const Table = <TRowData, TContext = null>({
 
           if (tableColumn.type === 'actions') {
             return (
-              <TableActionsCell<TRowData, TContext>
+              <TableActionsCell<TRowData, TDataContext>
                 key={column.id}
-                {...baseProps as TableCellProps<TRowData, TContext>}
+                {...baseProps as TableCellProps<TRowData, TDataContext>}
                 column={tableColumn}
               />
             );
@@ -552,32 +552,32 @@ export const Table = <TRowData, TContext = null>({
           return (
             <TableCell
               key={column.id}
-              {...baseProps as TableCellProps<TRowData, TContext>}
+              {...baseProps as TableCellProps<TRowData, TDataContext>}
               column={tableColumn}
             >
               {!!tableColumn.renderCell && (
                 <Fragment key={tableColumn.id}>
-                  {tableColumn.renderCell({ column: tableColumn, columnIndex, context, id: column.id, row, rowIndex: index })}
+                  {tableColumn.renderCell({ column: tableColumn, columnIndex, dataContext, id: column.id, row, rowIndex: index })}
                 </Fragment>
               )}
               {!tableColumn.renderCell && !!tableColumn.displayValueGetter && (
                 <Fragment key={tableColumn.id}>
-                  <TableCellAsyncContent content={tableColumn.displayValueGetter({ context, id: column.id, row, rowIndex: index })} />
+                  <TableCellAsyncContent content={tableColumn.displayValueGetter({ dataContext, id: column.id, row, rowIndex: index })} />
                 </Fragment>
               )}
-              {!tableColumn.displayValueGetter && !tableColumn.renderCell && tableColumn.type === 'text' && TableUtil.getTableTextCellValue({ column: tableColumn, context, row, rowIndex: index })}
-              {!tableColumn.displayValueGetter && !tableColumn.renderCell && tableColumn.type === 'boolean' && TableUtil.getTableBooleanCellDisplayValue({ column: tableColumn, context, row, rowIndex: index, t })}
-              {!tableColumn.displayValueGetter && !tableColumn.renderCell && tableColumn.type === 'number' && TableUtil.getTableNumberCellValue({ column: tableColumn, context, row, rowIndex: index })}
-              {!tableColumn.displayValueGetter && !tableColumn.renderCell && tableColumn.type === 'date' && TableUtil.getTableDateCellValue({ column: tableColumn, context, row, rowIndex: index })}
-              {!tableColumn.displayValueGetter && !tableColumn.renderCell && tableColumn.type === 'options' && TableUtil.getTableOptionsCellDisplayValue({ column: tableColumn, context, row, rowIndex: index })}
-              {!tableColumn.displayValueGetter && !tableColumn.renderCell && tableColumn.type === 'readableIndex' && renderReadableIndexCell(tableColumn, { context, id: column.id, row, rowIndex: index })}
-              {!tableColumn.displayValueGetter && !tableColumn.renderCell && tableColumn.type === 'selectable' && renderSelectableCell(tableColumn, { context, id: column.id, row, rowIndex: index })}
+              {!tableColumn.displayValueGetter && !tableColumn.renderCell && tableColumn.type === 'text' && TableUtil.getTableTextCellValue({ column: tableColumn, dataContext, row, rowIndex: index })}
+              {!tableColumn.displayValueGetter && !tableColumn.renderCell && tableColumn.type === 'boolean' && TableUtil.getTableBooleanCellDisplayValue({ column: tableColumn, dataContext, row, rowIndex: index, t })}
+              {!tableColumn.displayValueGetter && !tableColumn.renderCell && tableColumn.type === 'number' && TableUtil.getTableNumberCellValue({ column: tableColumn, dataContext, row, rowIndex: index })}
+              {!tableColumn.displayValueGetter && !tableColumn.renderCell && tableColumn.type === 'date' && TableUtil.getTableDateCellValue({ column: tableColumn, dataContext, row, rowIndex: index })}
+              {!tableColumn.displayValueGetter && !tableColumn.renderCell && tableColumn.type === 'options' && TableUtil.getTableOptionsCellDisplayValue({ column: tableColumn, dataContext, row, rowIndex: index })}
+              {!tableColumn.displayValueGetter && !tableColumn.renderCell && tableColumn.type === 'readableIndex' && renderReadableIndexCell(tableColumn, { dataContext, id: column.id, row, rowIndex: index })}
+              {!tableColumn.displayValueGetter && !tableColumn.renderCell && tableColumn.type === 'selectable' && renderSelectableCell(tableColumn, { dataContext, id: column.id, row, rowIndex: index })}
             </TableCell>
           );
         })}
       </>
     );
-  }, [getVisibleTableSettingsColumns, isRowEnabledCallback, onTableRowClick, renderSelectableCell, renderReadableIndexCell, rowHeight, t, tableColumns, theme, context]);
+  }, [getVisibleTableSettingsColumns, isRowEnabledCallback, onTableRowClick, renderSelectableCell, renderReadableIndexCell, rowHeight, t, tableColumns, theme, dataContext]);
 
   const onRowMouseEnterCallback = useCallback((row: TRowData) => {
     onRowMouseEnter(row);
@@ -638,7 +638,7 @@ export const Table = <TRowData, TContext = null>({
         });
         updateTable();
       }),
-      addTableEventListener('openColumnsEditorDialog', (hasCellData: HasCellDataFn<TRowData, TContext>) => {
+      addTableEventListener('openColumnsEditorDialog', (hasCellData: HasCellDataFn<TRowData, TDataContext>) => {
         tableColumnsEditorDialogRef.current.open({
           hasCellData,
         });
@@ -751,7 +751,7 @@ export const Table = <TRowData, TContext = null>({
               />
             )),
             // eslint-disable-next-line @eslint-react/no-forward-ref, @typescript-eslint/naming-convention, @eslint-react/kit/no-multi-comp
-            TableHead: forwardRef((props: { readonly context?: unknown }, tableHeadRef) => (
+            TableHead: forwardRef((props: { readonly dataContext?: unknown }, tableHeadRef) => (
               <Box
                 {...props}
                 ref={tableHeadRef}
@@ -759,7 +759,7 @@ export const Table = <TRowData, TContext = null>({
             )),
             // eslint-disable-next-line @eslint-react/no-forward-ref, @typescript-eslint/naming-convention, @eslint-react/kit/no-multi-comp
             TableRow: forwardRef((props: ItemProps<TRowData>, tableRowRef) => {
-              const isRowEnabled = isRowEnabledCallback ? isRowEnabledCallback(props.item, context) : true;
+              const isRowEnabled = isRowEnabledCallback ? isRowEnabledCallback(props.item, dataContext) : true;
               return (
                 <Box
                   data-id={idSelectorCallback(props.item)}

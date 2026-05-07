@@ -1,9 +1,12 @@
-import type { CaseDbCase } from '@gen-epix/api-casedb';
+import type {
+  CaseDbCase,
+  CaseDbCompleteCaseType,
+} from '@gen-epix/api-casedb';
 import { CaseDbColType } from '@gen-epix/api-casedb';
 import type {
   GetTableCellRowComparatorProps,
   GetTableCellValueProps,
-  TableColumnCaseType,
+  TableColumnText,
 } from '@gen-epix/ui';
 
 import { EpiDataManager } from '../../classes/managers/EpiDataManager';
@@ -12,10 +15,10 @@ import { CaseUtil } from '../CaseUtil';
 
 export class CaseDbTableUtil {
   // Cell value getters
-  public static createCaseTypeCellRowComperator<TRowData>({ column, direction }: GetTableCellRowComparatorProps<TableColumnCaseType<TRowData>>): (a: TRowData, b: TRowData) => number {
+  public static createCaseTypeCellRowComperator<TRowData>({ column, dataContext, direction }: GetTableCellRowComparatorProps<TableColumnText<TRowData, CaseDbCompleteCaseType>, CaseDbCompleteCaseType>): (a: TRowData, b: TRowData) => number {
     return (a: TRowData, b: TRowData) => {
-      const aValue = CaseDbTableUtil.getTableCaseTypeCellValue({ column, row: a, rowIndex: 0 });
-      const bValue = CaseDbTableUtil.getTableCaseTypeCellValue({ column, row: b, rowIndex: 0 });
+      const aValue = CaseDbTableUtil.getTableCaseTypeCellValue({ column, dataContext, row: a, rowIndex: 0 });
+      const bValue = CaseDbTableUtil.getTableCaseTypeCellValue({ column, dataContext, row: b, rowIndex: 0 });
       const refCol = column.completeCaseType.ref_cols[column.col.ref_col_id];
 
       const directionMultiplier = direction === 'asc' ? 1 : -1;
@@ -43,14 +46,14 @@ export class CaseDbTableUtil {
     };
   }
 
-  public static getTableCaseTypeCellDisplayValue<TRowData>({ column, row, rowIndex }: GetTableCellValueProps<TRowData, TableColumnCaseType<TRowData>>): string {
-    const value = CaseDbTableUtil.getTableCaseTypeCellValue({ column, row, rowIndex });
+  public static getTableCaseTypeCellDisplayValue<TRowData>({ column, dataContext, row, rowIndex }: GetTableCellValueProps<TRowData, TableColumnText<TRowData, CaseDbCompleteCaseType>, CaseDbCompleteCaseType>): string {
+    const value = CaseDbTableUtil.getTableCaseTypeCellValue({ column, dataContext, row, rowIndex });
     return value.short;
   }
 
-  public static getTableCaseTypeCellValue<TRowData>({ column, row, rowIndex }: GetTableCellValueProps<TRowData, TableColumnCaseType<TRowData>>): CaseTypeRowValue {
+  public static getTableCaseTypeCellValue<TRowData>({ column, dataContext, row, rowIndex }: GetTableCellValueProps<TRowData, TableColumnText<TRowData, CaseDbCompleteCaseType>, CaseDbCompleteCaseType>): CaseTypeRowValue {
     if (column.valueGetter) {
-      return column.valueGetter({ id: column.id, row, rowIndex });
+      return column.valueGetter({ dataContext, id: column.id, row, rowIndex });
     }
     return CaseUtil.getRowValue((row as CaseDbCase).content, column.col, column.completeCaseType);
   }

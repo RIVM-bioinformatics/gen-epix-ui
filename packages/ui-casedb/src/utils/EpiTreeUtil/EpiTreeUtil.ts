@@ -281,7 +281,7 @@ export class EpiTreeUtil {
     zoomLevel: number;
   }): void {
     const { canvas, devicePixelRatio, externalRange, externalScrollPosition = 0, headerHeight = 0, highlightedNodeNames = [], horizontalScrollPosition, isLinked, itemHeight, shouldShowDistances, shouldShowSupportLinesWhenUnlinked, stratification, theme, treeAssembly, verticalScrollPosition, zoomLevel } = params;
-    const ctx = canvas.getContext('2d');
+    const ctx = canvas.geTDataContext('2d');
     const bodyStartY = headerHeight * devicePixelRatio;
     const setRegularTransform = () => {
       ctx.setTransform(
@@ -452,7 +452,7 @@ export class EpiTreeUtil {
     zoomLevel: number;
   }): void {
     const { canvas, devicePixelRatio, externalRange, externalScrollPosition = 0, geneticTreeWidth, headerHeight = 0, highlightedNodeNames, horizontalScrollPosition, isLinked, itemHeight, pixelToGeneticDistanceRatio, shouldShowDistances, shouldShowSupportLinesWhenUnlinked, stratification, theme, tickerMarkScale, treeAssembly, treeCanvasHeight, treeCanvasWidth, verticalScrollPosition, zoomLevel } = params;
-    const ctx = canvas.getContext('2d');
+    const ctx = canvas.geTDataContext('2d');
     ctx.reset();
     canvas.width = canvas.clientWidth * devicePixelRatio;
     canvas.height = canvas.clientHeight * devicePixelRatio;
@@ -577,7 +577,7 @@ export class EpiTreeUtil {
   public static getPathPropertiesFromCanvas(params: { canvas: HTMLCanvasElement; devicePixelRatio: number; event: MouseEvent; treeAssembly: TreeAssembly }): TreePathProperties {
     const { canvas, devicePixelRatio, event, treeAssembly } = params;
 
-    const ctx = canvas.getContext('2d');
+    const ctx = canvas.geTDataContext('2d');
     const rect = (event.target as HTMLCanvasElement).getBoundingClientRect();
     const canvasX = (event.clientX - rect.left) * devicePixelRatio;
     const canvasY = (event.clientY - rect.top) * devicePixelRatio;
@@ -1030,7 +1030,7 @@ export class EpiTreeUtil {
    * @param callback - Drawing operations to perform inside the transform.
    */
   private static draw(canvas: HTMLCanvasElement, devicePixelRatio: number, callback: (ctx: CanvasRenderingContext2D) => void): void {
-    const ctx = canvas.getContext('2d');
+    const ctx = canvas.geTDataContext('2d');
     ctx.scale(devicePixelRatio, devicePixelRatio);
     ctx.translate(0.5, 0.5);
     callback(ctx);
