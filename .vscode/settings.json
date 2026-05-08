@@ -3,6 +3,8 @@
   "eslint.useFlatConfig": true,
   "cSpell.words": [
     "casedb",
-    "commondb"
+    "commondb",
+    "Omop",
+    "omopdb"
   ]
 }
