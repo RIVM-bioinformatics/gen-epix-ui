@@ -36,7 +36,6 @@ import {
   ConfigManager,
   Spinner,
   Subject,
-  TreeFilter,
   useQueryMemo,
 } from '@gen-epix/ui';
 
@@ -67,6 +66,7 @@ import {
 } from '../../ui/PhylogeneticTreeComponent';
 import { CASEDB_QUERY_KEY } from '../../../data/query';
 import type { CaseDbConfig } from '../../../models/config';
+import { TreeFilter } from '../../../classes/filters/TreeFilter';
 
 export interface EpiTreeWidgetRef {
   link: () => void;

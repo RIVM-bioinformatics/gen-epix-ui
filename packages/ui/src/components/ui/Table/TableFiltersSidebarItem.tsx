@@ -30,8 +30,6 @@ import { useStoreWithEqualityFn } from 'zustand/traditional';
 import { SidebarItem } from '../Sidebar';
 import type { SidebarItemSharedProps } from '../Sidebar';
 import { NestedDropdown } from '../NestedMenu';
-import { SelectionFilter } from '../../../classes/filters/SelectionFilter';
-import { TreeFilter } from '../../../classes/filters/TreeFilter';
 import type {
   FilterDimension,
   Filters,
@@ -237,7 +235,7 @@ export const TableFiltersSidebarItemContent = <TRowData, TDataContext = null>({ 
     });
   }, [filters, setValue]);
 
-  const filteredFilters = useMemo(() => filters.filter(filter => !(filter instanceof TreeFilter) && !(filter instanceof SelectionFilter)), [filters]);
+  const filteredFilters = useMemo(() => filters.filter(filter => filter.showInSidebar), [filters]);
 
   return (
     <>

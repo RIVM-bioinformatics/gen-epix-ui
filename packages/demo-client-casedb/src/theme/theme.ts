@@ -410,14 +410,11 @@ export const createTheme = (paletteMode: PaletteMode): Theme => {
         },
       },
     },
-    'gen-epix': {
+    'gen-epix-ui': {
       footer: {
         background: '#154273',
         color: '#fff',
         sectionBorderColor: '#fff',
-      },
-      lineList: {
-        font: '0.8rem "Noto Sans Mono"',
       },
       navbar: {
         activeBackground: '#fff',
@@ -426,6 +423,11 @@ export const createTheme = (paletteMode: PaletteMode): Theme => {
         environmentMessageColor: '#ffea00',
         primaryColor: '#fff',
         secondaryColor: '#ddeff8',
+      },
+    },
+    'gen-epix-ui-casedb': {
+      lineList: {
+        font: '0.8rem "Noto Sans Mono"',
       },
       tree: {
         color: '#000',

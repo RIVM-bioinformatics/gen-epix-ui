@@ -29,8 +29,6 @@ import {
   NotificationManager,
   ObjectUtil,
   QueryClientManager,
-  SelectionFilter,
-  TreeFilter,
 } from '@gen-epix/ui';
 import type {
   CreateTableStoreInitialStateKwArgs,
@@ -66,6 +64,8 @@ import { EpiDataManager } from '../../classes/managers/EpiDataManager';
 import { EpiHighlightingManager } from '../../classes/managers/EpiHighlightingManager';
 import type { CaseDbConfig } from '../../models/config';
 import { CASEDB_QUERY_KEY } from '../../data/query';
+import { SelectionFilter } from '../../classes/filters/SelectionFilter';
+import { TreeFilter } from '../../classes/filters/TreeFilter';
 
 export interface CreateEpiDashboardStoreInitialStateKwArgs extends CreateTableStoreInitialStateKwArgs<CaseDbCase, CaseDbCompleteCaseType> {
   caseSetId: string;

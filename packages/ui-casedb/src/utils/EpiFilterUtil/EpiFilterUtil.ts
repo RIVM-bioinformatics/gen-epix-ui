@@ -26,9 +26,7 @@ import {
   GeoFilter,
   MultiSelectFilter,
   NumberRangeFilter,
-  SelectionFilter,
   TextFilter,
-  TreeFilter,
 } from '@gen-epix/ui';
 
 import {
@@ -37,6 +35,8 @@ import {
   TREE_FILTER_GROUP,
 } from '../CaseTypeUtil';
 import { EpiDataManager } from '../../classes/managers/EpiDataManager';
+import { SelectionFilter } from '../../classes/filters/SelectionFilter';
+import { TreeFilter } from '../../classes/filters/TreeFilter';
 
 export class EpiFilterUtil {
   private static readonly colTypeBlackList = new Set<CaseDbColType>([CaseDbColType.GENETIC_DISTANCE, CaseDbColType.GENETIC_READS, CaseDbColType.GENETIC_SEQUENCE]);
@@ -121,7 +121,7 @@ export class EpiFilterUtil {
   }
 
   public static createFilters(completeCaseType: CaseDbCompleteCaseType): Filters {
-    const filters: Filters = [];
+    const filters: Filters<SelectionFilter | TreeFilter> = [];
     filters.push(new SelectionFilter({
       filterMode: FILTER_MODE.FRONTEND,
       filterPriority: SELECTION_FILTER_GROUP,
