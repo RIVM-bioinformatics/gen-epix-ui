@@ -54,7 +54,7 @@ export const ApplicationFooter = ({ fullWidth }: ApplicationFooterProps) => {
     <Box
       component={'footer'}
       sx={{
-        background: theme['gen-epix'].footer.background,
+        background: theme['gen-epix-ui'].footer.background,
         position: 'relative',
         [theme.breakpoints.up('md')]: {
           paddingBottom: theme.spacing(1),
@@ -82,7 +82,7 @@ export const ApplicationFooter = ({ fullWidth }: ApplicationFooterProps) => {
           paddingLeft: '0 !important',
           paddingRight: '0 !important',
           [theme.breakpoints.down('md')]: {
-            background: theme['gen-epix'].footer.background,
+            background: theme['gen-epix-ui'].footer.background,
             bottom: theme.spacing(5),
             display: isMenuOpen ? 'block' : 'none',
             left: 0,

@@ -494,7 +494,7 @@ export const EpiLineListWidget = ({ caseSet, lineListRangeSubject, linkedScrollS
         }}
       >
         <Table
-          font={theme['gen-epix'].lineList.font}
+          font={theme['gen-epix-ui-casedb'].lineList.font}
           forceHorizontalOverflow
           getRowName={getRowName}
           initialVisibleItemIndex={epiDashboardStore.getState().epiListWidgetData.visibleItemItemIndex}

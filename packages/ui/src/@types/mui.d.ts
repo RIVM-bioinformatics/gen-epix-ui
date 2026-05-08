@@ -1,37 +1,10 @@
 import '@mui/material';
 
-interface GenEpixTheme {
-  'gen-epix': {
-    footer: {
-      background: string;
-      color: string;
-      sectionBorderColor: string;
-    };
-    lineList: {
-      font: string;
-      fontVariationSettings?: string;
-    };
-    navbar: {
-      activeBackground: string;
-      activeColor: string;
-      background: string;
-      environmentMessageColor: string;
-      primaryColor: string;
-      secondaryColor: string;
-    };
-    tree: {
-      color: string;
-      dimFn: (color: string) => string;
-      font: string;
-      fontVariationSettings?: string;
-      supportLineColorLinked: string;
-      supportLineColorUnlinked: string;
-    };
-  };
-}
+import type { GenEpixUiTheme } from '../models/theme';
+
 
 declare module '@mui/material/styles' {
-  interface Theme extends GenEpixTheme { }
+  interface Theme extends GenEpixUiTheme { }
   // allow configuration using `createTheme()`
-  interface ThemeOptions extends GenEpixTheme { }
+  interface ThemeOptions extends GenEpixUiTheme { }
 }

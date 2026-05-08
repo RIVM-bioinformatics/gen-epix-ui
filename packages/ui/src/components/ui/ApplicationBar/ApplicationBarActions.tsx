@@ -66,7 +66,7 @@ export const ApplicationBarActions = ({ fullWidth }: ApplicationBarActionsProps)
         aria-label={t`Toggle menu`}
         onClick={onMenuButtonClick}
         sx={{
-          color: theme['gen-epix'].navbar.primaryColor,
+          color: theme['gen-epix-ui'].navbar.primaryColor,
           [theme.breakpoints.up('md')]: {
             display: 'none',
           },
@@ -80,7 +80,7 @@ export const ApplicationBarActions = ({ fullWidth }: ApplicationBarActionsProps)
           display: 'flex',
           [theme.breakpoints.down('md')]: {
             alignItems: 'start',
-            background: theme['gen-epix'].navbar.background,
+            background: theme['gen-epix-ui'].navbar.background,
             display: isMenuOpen ? 'flex' : 'none',
             flexDirection: 'column',
             left: 0,
@@ -103,7 +103,7 @@ export const ApplicationBarActions = ({ fullWidth }: ApplicationBarActionsProps)
             aria-hidden={'true'}
             sx={{
               alignItems: 'center',
-              color: theme['gen-epix'].navbar.environmentMessageColor,
+              color: theme['gen-epix-ui'].navbar.environmentMessageColor,
               display: 'flex',
               fontWeight: 700,
               marginRight: fullWidth ? 0 : 1,

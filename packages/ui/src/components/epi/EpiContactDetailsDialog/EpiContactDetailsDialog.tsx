@@ -20,8 +20,7 @@ import { withDialog } from '../../../hoc/withDialog';
 import { useQueryMemo } from '../../../hooks/useQueryMemo';
 import { ResponseHandler } from '../../ui/ResponseHandler';
 import { useArray } from '../../../hooks/useArray';
-import { ConfigManager } from '../../../classes/managers/ConfigManager';
-import type { ConfigBase } from '../../../models/config';
+import { ApiManager } from '../../../classes/managers/ApiManager';
 
 export interface EpiContactDetailsDialogOpenProps {
   organizationId: string;
@@ -48,7 +47,7 @@ export const EpiContactDetailsDialog = withDialog<EpiContactDetailsDialogProps, 
 
   const organizationContactsQuery = useQueryMemo({
     queryFn: async ({ signal }) => {
-      const organizationApi = ConfigManager.getInstance<ConfigBase>().config.organizationApi;
+      const organizationApi = ApiManager.getInstance().organizationApi;
       const response = await organizationApi.retrieveOrganizationContacts({
         organization_id: openProps.organizationId,
       }, { signal });

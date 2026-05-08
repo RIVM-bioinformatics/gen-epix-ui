@@ -376,7 +376,7 @@ export const EpiUploadCaseResultTable = ({ completeCaseType, mappedColumns, rawD
         />
       </Box>
       <Table
-        font={theme['gen-epix'].lineList.font}
+        font={theme['gen-epix-ui-casedb'].lineList.font}
       />
     </>
   );

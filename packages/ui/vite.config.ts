@@ -32,6 +32,7 @@ export const createIndex = () => {
   writeFileSync(indexFilePath, indexContent, 'utf8');
   return './src/index.ts';
 };
+createIndex();
 
 // https://vitejs.dev/config/
 export default defineConfig({

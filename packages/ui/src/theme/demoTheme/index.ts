@@ -4,10 +4,7 @@ import type {
   Theme,
   ThemeOptions,
 } from '@mui/material';
-import {
-  lighten,
-  createTheme as muiCreateTheme,
-} from '@mui/material';
+import { createTheme as muiCreateTheme } from '@mui/material';
 
 import robotoFlexWoff2 from './fonts/RobotoFlex.woff2';
 import notoSansMonoWoff2 from './fonts/NotoSansMono.woff2';
@@ -409,14 +406,11 @@ export const createDemoTheme = (paletteMode: PaletteMode): Theme => {
         },
       },
     },
-    'gen-epix': {
+    'gen-epix-ui': {
       footer: {
         background: '#154273',
         color: '#fff',
         sectionBorderColor: '#fff',
-      },
-      lineList: {
-        font: '0.8rem "Noto Sans Mono"',
       },
       navbar: {
         activeBackground: '#fff',
@@ -425,13 +419,6 @@ export const createDemoTheme = (paletteMode: PaletteMode): Theme => {
         environmentMessageColor: '#ffea00',
         primaryColor: '#fff',
         secondaryColor: '#ddeff8',
-      },
-      tree: {
-        color: '#000',
-        dimFn: (color: string) => lighten(color, 0.8),
-        font: 'bold 0.7rem "Noto Sans Mono"',
-        supportLineColorLinked: '#000',
-        supportLineColorUnlinked: lighten('#000', 0.75),
       },
     },
     palette: {

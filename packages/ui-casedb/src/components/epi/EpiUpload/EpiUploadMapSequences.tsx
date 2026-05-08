@@ -323,7 +323,7 @@ export const EpiUploadMapSequences = () => {
       </Box>
       <TableStoreContextProvider store={tableStore}>
         <Table
-          font={theme['gen-epix'].lineList.font}
+          font={theme['gen-epix-ui-casedb'].lineList.font}
           rowHeight={7}
         />
         <EpiUploadNavigation

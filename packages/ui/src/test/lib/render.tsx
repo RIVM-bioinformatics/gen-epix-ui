@@ -6,15 +6,10 @@ import {
   CssBaseline,
   ThemeProvider,
 } from '@mui/material';
-import {
-  ConfigManager,
-  EmotionCacheManager,
-  QueryClientManager,
-} from '@gen-epix/ui';
 
-import { DemoConfigUtil } from './DemoConfigUtil';
-
-ConfigManager.getInstance().config = DemoConfigUtil.createConfig();
+import { ConfigManager } from '../../classes/managers/ConfigManager';
+import { EmotionCacheManager } from '../../classes/managers/EmotionCacheManager';
+import { QueryClientManager } from '../../classes/managers/QueryClientManager';
 
 const queryQueryManager = QueryClientManager.getInstance();
 const emotionCacheManager = EmotionCacheManager.getInstance();

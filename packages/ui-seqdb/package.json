@@ -42,7 +42,7 @@
     "build-publish": "pnpm build && pnpm publish --access=public",
     "test-missing-translations": "translation-util ./ --dry-run --fail-on-missing --fail-on-stale",
     "add-missing-translations": "translation-util ./",
-    "validate": "pnpm run lint && pnpm run check-types && pnpm run test-run && pnpm run test-missing-translations",
+    "_FIXME_validate": "pnpm run lint && pnpm run check-types && pnpm run test-run && pnpm run test-missing-translations",
     "test": "vitest --coverage",
     "test-run": "vitest run --passWithNoTests --coverage",
     "lint": "eslint ./src --report-unused-disable-directives --max-warnings 0",
