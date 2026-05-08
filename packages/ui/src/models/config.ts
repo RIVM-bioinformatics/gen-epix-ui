@@ -5,8 +5,6 @@ import type {
 } from '@mui/material';
 import type { TFunction } from 'i18next';
 
-import type { APP } from './app';
-
 export type ApplicationHeaderProps = {
   readonly fullHeight?: boolean;
   readonly fullWidth?: boolean;
@@ -29,7 +27,7 @@ export interface ConfigBase {
   createFooter: (t: TFunction<'translation', undefined>) => FooterConfig;
   defaultRequestTimeout: number;
   enablePageEvents: boolean;
-  getAPIBaseUrl: (app: APP) => string;
+  getAPIBaseUrl: () => string;
   getEnvironmentMessage: (t: TFunction<'translation', undefined>) => string;
   getSoftwareVersion: () => string;
   getTouchIconUrl: () => string;

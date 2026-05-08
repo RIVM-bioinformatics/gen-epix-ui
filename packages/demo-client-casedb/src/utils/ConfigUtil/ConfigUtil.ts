@@ -3,7 +3,6 @@ import {
   subDays,
 } from 'date-fns';
 import { CaseDbColType } from '@gen-epix/api-casedb';
-import type { APP } from '@gen-epix/ui';
 import {
   AxiosUtil,
   I18nManager,
@@ -365,14 +364,14 @@ export class ConfigUtil {
         TAKING_LONGER_TIMEOUT_MS: 10000,
         TREE_PADDING: 20,
       },
-      getAPIBaseUrl: (app: APP) => {
+      getAPIBaseUrl: () => {
         const { location: { href } } = WindowManager.getInstance().window.document;
         const { hostname } = new URL(href);
         switch (hostname) {
           case '127.0.0.1':
-            return `https://127.0.0.1:5010/proxy/${app}`;
+            return `https://127.0.0.1:5010/proxy/CASEDB`;
           case 'localhost':
-            return `https://localhost:5010/proxy/${app}`;
+            return `https://localhost:5010/proxy/CASEDB`;
           default:
             return '';
         }

@@ -46,7 +46,6 @@ export * from './pages/AdminPage';
 export * from './pages/AcceptInvitationPage';
 export * from './models/admin.ts';
 export * from './models/api.ts';
-export * from './models/app.ts';
 export * from './models/auth.ts';
 export * from './models/config.ts';
 export * from './models/data.ts';

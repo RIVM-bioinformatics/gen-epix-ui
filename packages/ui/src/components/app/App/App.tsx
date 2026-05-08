@@ -12,7 +12,6 @@ import { ConfigManager } from '../../../classes/managers/ConfigManager';
 import { QueryClientManager } from '../../../classes/managers/QueryClientManager';
 import { ErrorPage } from '../../../pages/ErrorPage';
 import { EmotionCacheManager } from '../../../classes/managers/EmotionCacheManager';
-import { APP } from '../../../models/app';
 import { AuthenticationManager } from '../../../classes/managers/AuthenticationManager';
 import { LogManager } from '../../../classes/managers/LogManager';
 import { ApiManager } from '../../../classes/managers/ApiManager';
@@ -32,7 +31,7 @@ export const App = () => {
   }
   const apiManager = ApiManager.getInstance();
   const routerManager = RouterManager.getInstance();
-  apiManager.api.baseUrl = config.getAPIBaseUrl(APP.CASEDB);
+  apiManager.api.baseUrl = config.getAPIBaseUrl();
   apiManager.api.defaultRequestTimeout = config.defaultRequestTimeout;
   apiManager.api.onRequest = [
     authenticationManager.onRequest.bind(authenticationManager),
