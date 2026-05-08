@@ -6,7 +6,6 @@ import { CaseDbColType } from '@gen-epix/api-casedb';
 import type { APP } from '@gen-epix/ui';
 import {
   AxiosUtil,
-  createDemoTheme,
   I18nManager,
   WindowManager,
 } from '@gen-epix/ui';
@@ -14,7 +13,10 @@ import type {
   CaseDbConfig,
   EpiDashboardLayoutConfig,
 } from '@gen-epix/ui-casedb';
-import { EPI_ZONE } from '@gen-epix/ui-casedb';
+import {
+  createCaseDbDemoTheme,
+  EPI_ZONE,
+} from '@gen-epix/ui-casedb';
 
 import { ApplicationHeader } from '../../components/ApplicationHeader';
 import { ConsentDialogContent } from '../../components/ConsentDialogContent';
@@ -452,7 +454,7 @@ export class ConfigUtil {
         DEFAULT_OVERSCAN_MAIN: 10,
         DEFAULT_OVERSCAN_REVERSE: 10,
       },
-      theme: createDemoTheme('light'),
+      theme: createCaseDbDemoTheme('light'),
       trends: {
         homePage: {
           getSinceDate: () => format(subDays(new Date().toISOString(), 365), 'yyyy-MM-dd'),
