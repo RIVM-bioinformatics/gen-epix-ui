@@ -24,7 +24,7 @@
         "import": "./dist/index.js"
       },
       "./client": {
-        "types": "./dist/ui.d.ts"
+        "types": "./dist/ui-casedb.d.ts"
       }
     }
   },
@@ -34,7 +34,7 @@
       "import": "./src/index.ts"
     },
     "./client": {
-      "types": "./src/@types/ui.d.ts"
+      "types": "./src/@types/ui-casedb.d.ts"
     }
   },
   "scripts": {
