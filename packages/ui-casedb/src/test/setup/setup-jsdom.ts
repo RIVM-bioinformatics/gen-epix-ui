@@ -8,10 +8,20 @@ global.TextEncoder = TextEncoder;
 global.TextDecoder = TextDecoder;
 
 export const setupTestEnvironment = () => {
-  ConfigManager.getInstance().config = CaseDbDemoConfigUtil.createConfig();
+  const configManager = ConfigManager.getInstance();
+
+  try {
+    configManager.config;
+  }
+  catch {
+    configManager.config = CaseDbDemoConfigUtil.createConfig();
+  }
+
   setupCaseDb();
 
   vi.setConfig({
     testTimeout: 10000,
   });
 };
+
+setupTestEnvironment();

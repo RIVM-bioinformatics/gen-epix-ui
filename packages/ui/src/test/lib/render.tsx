@@ -11,11 +11,11 @@ import { ConfigManager } from '../../classes/managers/ConfigManager';
 import { EmotionCacheManager } from '../../classes/managers/EmotionCacheManager';
 import { QueryClientManager } from '../../classes/managers/QueryClientManager';
 
-const queryQueryManager = QueryClientManager.getInstance();
-const emotionCacheManager = EmotionCacheManager.getInstance();
-
 // eslint-disable-next-line react-refresh/only-export-components
 const AllTheProviders = ({ children }: PropsWithChildren<unknown>) => {
+  const queryQueryManager = QueryClientManager.getInstance();
+  const emotionCacheManager = EmotionCacheManager.getInstance();
+
   return (
     <QueryClientProvider client={queryQueryManager.queryClient}>
       <CacheProvider value={emotionCacheManager.emotionCache}>

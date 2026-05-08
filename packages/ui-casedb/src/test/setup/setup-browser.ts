@@ -4,6 +4,16 @@ import { setupCaseDb } from '../../setup';
 import { CaseDbDemoConfigUtil } from '../lib';
 
 export const setupTestEnvironment = () => {
-  ConfigManager.getInstance().config = CaseDbDemoConfigUtil.createConfig();
+  const configManager = ConfigManager.getInstance();
+
+  try {
+    configManager.config;
+  }
+  catch {
+    configManager.config = CaseDbDemoConfigUtil.createConfig();
+  }
+
   setupCaseDb();
 };
+
+setupTestEnvironment();

@@ -1554,11 +1554,13 @@ describe('EpiTreeUtil', () => {
     });
 
     const makeTreeCanvasTheme = () => ({
-      'gen-epix': {
+      'gen-epix-ui-casedb': {
         tree: {
           color: '#000000',
           dimFn: vi.fn((_c: string) => '#aaaaaa'),
           font: '12px mono',
+          supportLineColorLinked: '#000000',
+          supportLineColorUnlinked: '#bbbbbb',
         },
       },
       palette: { background: { paper: '#ffffff' } },
@@ -2135,11 +2137,13 @@ describe('EpiTreeUtil', () => {
     const makeDimFn = () => vi.fn((_c: string) => DIM_COLOR);
 
     const makeTheme = (dimFn: (c: string) => string) => ({
-      'gen-epix': {
+      'gen-epix-ui-casedb': {
         tree: {
           color: TREE_COLOR,
           dimFn,
           font: '12px monospace',
+          supportLineColorLinked: TREE_COLOR,
+          supportLineColorUnlinked: DIM_COLOR,
         },
       },
     } as unknown as Theme);
