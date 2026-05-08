@@ -42,6 +42,7 @@ import { UserAccessCasePoliciesAdminPage } from '../pages/UserAccessCasePolicies
 import { UserEffectiveRightsAdminPage } from '../pages/UserEffectiveRightsAdminPage';
 import { UserEffectiveRightsTesterAdminPage } from '../pages/UserEffectiveRightsTesterAdminPage';
 import { UserShareCasePoliciesAdminPage } from '../pages/UserShareCasePoliciesAdminPage';
+import { CaseDbUsersAdminPage } from '../pages/CaseDbUsersAdminPage';
 
 
 type RoutePermission = CaseDbApiPermission | CommonDbApiPermission;
@@ -94,7 +95,10 @@ const createUserEffectiveRightsRoutes = (): MyNonIndexRouteObject<RoutePermissio
 ];
 
 export const createAdminRoutes = (): MyNonIndexRouteObject<RoutePermission>[] => [
-  ...createCommonAdminRoutes<CaseDbApiPermission>({ usersRouteChildren: createUserEffectiveRightsRoutes() }),
+  ...createCommonAdminRoutes<CaseDbApiPermission>({
+    usersComponent: CaseDbUsersAdminPage,
+    usersRouteChildren: createUserEffectiveRightsRoutes(),
+  }),
 
   // ACCESS_RIGHTS
 

@@ -5,6 +5,7 @@ import {
   CommonDbPermissionType,
 } from '@gen-epix/api-commondb';
 import { t } from 'i18next';
+import type { ComponentType } from 'react';
 
 import { ADMIN_PAGE_CATEGORY } from '../models/admin';
 import type { MyNonIndexRouteObject } from '../models/reactRouter';
@@ -19,6 +20,7 @@ import { UserInvitationsAdminPage } from '../pages/UserInvitationsAdminPage';
 import { UsersAdminPage } from '../pages/UsersAdminPage';
 
 type CreateAdminRoutesOptions<TExtraPermission = never> = {
+  usersComponent?: ComponentType;
   usersRouteChildren?: MyNonIndexRouteObject<CommonDbApiPermission | TExtraPermission>[];
 };
 
@@ -92,7 +94,7 @@ export const createAdminRoutes = <TExtraPermission = never>(
   {
     children: [
       {
-        Component: UsersAdminPage,
+        Component: options.usersComponent ?? UsersAdminPage,
         errorElement: <RouterErrorPage />,
         handle: {
           category: ADMIN_PAGE_CATEGORY.USERS_AND_ORGANIZATIONS,
