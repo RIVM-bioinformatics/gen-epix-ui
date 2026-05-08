@@ -262,9 +262,6 @@ importers:
 
   packages/ui:
     dependencies:
-      '@date-io/date-fns':
-        specifier: 3.2.1
-        version: 3.2.1(date-fns@4.1.0)
       '@dnd-kit/core':
         specifier: 6.3.1
         version: 6.3.1(react-dom@19.2.5(react@19.2.5))(react@19.2.5)
@@ -319,15 +316,9 @@ importers:
       '@tiptap/extension-bold':
         specifier: 3.22.3
         version: 3.22.3(@tiptap/core@3.22.3(@tiptap/pm@3.22.3))
-      '@tiptap/extension-bubble-menu':
-        specifier: 3.22.3
-        version: 3.22.3(@tiptap/core@3.22.3(@tiptap/pm@3.22.3))(@tiptap/pm@3.22.3)
       '@tiptap/extension-bullet-list':
         specifier: 3.22.3
         version: 3.22.3(@tiptap/extension-list@3.22.5(@tiptap/core@3.22.3(@tiptap/pm@3.22.3))(@tiptap/pm@3.22.3))
-      '@tiptap/extension-code':
-        specifier: 3.22.3
-        version: 3.22.3(@tiptap/core@3.22.3(@tiptap/pm@3.22.3))
       '@tiptap/extension-code-block':
         specifier: 3.22.3
         version: 3.22.3(@tiptap/core@3.22.3(@tiptap/pm@3.22.3))(@tiptap/pm@3.22.3)
@@ -340,9 +331,6 @@ importers:
       '@tiptap/extension-dropcursor':
         specifier: 3.22.3
         version: 3.22.3(@tiptap/extensions@3.22.5(@tiptap/core@3.22.3(@tiptap/pm@3.22.3))(@tiptap/pm@3.22.3))
-      '@tiptap/extension-floating-menu':
-        specifier: 3.22.3
-        version: 3.22.3(@floating-ui/dom@1.7.6)(@tiptap/core@3.22.3(@tiptap/pm@3.22.3))(@tiptap/pm@3.22.3)
       '@tiptap/extension-font-family':
         specifier: 3.22.3
         version: 3.22.3(@tiptap/extension-text-style@3.22.3(@tiptap/core@3.22.3(@tiptap/pm@3.22.3)))
@@ -350,9 +338,6 @@ importers:
         specifier: 3.22.3
         version: 3.22.3(@tiptap/extensions@3.22.5(@tiptap/core@3.22.3(@tiptap/pm@3.22.3))(@tiptap/pm@3.22.3))
       '@tiptap/extension-hard-break':
-        specifier: 3.22.3
-        version: 3.22.3(@tiptap/core@3.22.3(@tiptap/pm@3.22.3))
-      '@tiptap/extension-heading':
         specifier: 3.22.3
         version: 3.22.3(@tiptap/core@3.22.3(@tiptap/pm@3.22.3))
       '@tiptap/extension-highlight':
@@ -364,9 +349,6 @@ importers:
       '@tiptap/extension-horizontal-rule':
         specifier: 3.22.3
         version: 3.22.3(@tiptap/core@3.22.3(@tiptap/pm@3.22.3))(@tiptap/pm@3.22.3)
-      '@tiptap/extension-image':
-        specifier: 3.22.3
-        version: 3.22.3(@tiptap/core@3.22.3(@tiptap/pm@3.22.3))
       '@tiptap/extension-italic':
         specifier: 3.22.3
         version: 3.22.3(@tiptap/core@3.22.3(@tiptap/pm@3.22.3))
@@ -376,9 +358,6 @@ importers:
       '@tiptap/extension-list-item':
         specifier: 3.22.3
         version: 3.22.3(@tiptap/extension-list@3.22.5(@tiptap/core@3.22.3(@tiptap/pm@3.22.3))(@tiptap/pm@3.22.3))
-      '@tiptap/extension-mention':
-        specifier: 3.22.3
-        version: 3.22.3(@tiptap/core@3.22.3(@tiptap/pm@3.22.3))(@tiptap/pm@3.22.3)(@tiptap/suggestion@3.22.3(@tiptap/core@3.22.3(@tiptap/pm@3.22.3))(@tiptap/pm@3.22.3))
       '@tiptap/extension-ordered-list':
         specifier: 3.22.3
         version: 3.22.3(@tiptap/extension-list@3.22.5(@tiptap/core@3.22.3(@tiptap/pm@3.22.3))(@tiptap/pm@3.22.3))
@@ -427,18 +406,6 @@ importers:
       '@tiptap/extension-underline':
         specifier: 3.22.3
         version: 3.22.3(@tiptap/core@3.22.3(@tiptap/pm@3.22.3))
-      '@tiptap/pm':
-        specifier: 3.22.3
-        version: 3.22.3
-      '@tiptap/react':
-        specifier: 3.22.3
-        version: 3.22.3(@floating-ui/dom@1.7.6)(@tiptap/core@3.22.3(@tiptap/pm@3.22.3))(@tiptap/pm@3.22.3)(@types/react-dom@19.2.3(@types/react@19.2.14))(@types/react@19.2.14)(react-dom@19.2.5(react@19.2.5))(react@19.2.5)
-      '@tiptap/starter-kit':
-        specifier: 3.22.3
-        version: 3.22.3
-      '@tiptap/suggestion':
-        specifier: 3.22.3
-        version: 3.22.3(@tiptap/core@3.22.3(@tiptap/pm@3.22.3))(@tiptap/pm@3.22.3)
       axios:
         specifier: 1.15.0
         version: 1.15.0
@@ -448,21 +415,9 @@ importers:
       clsx:
         specifier: 2.1.1
         version: 2.1.1
-      csv:
-        specifier: 6.5.1
-        version: 6.5.1
       date-fns:
         specifier: 4.1.0
         version: 4.1.0
-      decimal.js:
-        specifier: 10.6.0
-        version: 10.6.0
-      echarts:
-        specifier: 6.0.0
-        version: 6.0.0
-      echarts-for-react:
-        specifier: 3.0.6
-        version: 3.0.6(echarts@6.0.0)(react@19.2.5)
       i18next:
         specifier: 26.0.5
         version: 26.0.5(typescript@6.0.2)
@@ -508,30 +463,18 @@ importers:
       react-virtuoso:
         specifier: 4.18.5
         version: 4.18.5(react-dom@19.2.5(react@19.2.5))(react@19.2.5)
-      read-excel-file:
-        specifier: 8.0.3
-        version: 8.0.3
       reflect-metadata:
         specifier: 0.2.2
         version: 0.2.2
-      rehype-sanitize:
-        specifier: 6.0.0
-        version: 6.0.0
       use-cleanup-callback:
         specifier: 1.3.0
         version: 1.3.0(react@19.2.5)
       use-debounce:
         specifier: 10.1.1
         version: 10.1.1(react@19.2.5)
-      use-sync-external-store:
-        specifier: 1.6.0
-        version: 1.6.0(react@19.2.5)
       uuid:
         specifier: 13.0.0
         version: 13.0.0
-      write-excel-file:
-        specifier: 3.0.8
-        version: 3.0.8
       yup:
         specifier: 1.7.1
         version: 1.7.1
@@ -554,9 +497,6 @@ importers:
       '@types/react':
         specifier: 19.2.14
         version: 19.2.14
-      '@types/react-dom':
-        specifier: 19.2.3
-        version: 19.2.3(@types/react@19.2.14)
       '@vitejs/plugin-react':
         specifier: 6.0.1
         version: 6.0.1(vite@8.0.8(@types/node@25.6.0)(yaml@2.8.0))
@@ -602,18 +542,6 @@ importers:
 
   packages/ui-casedb:
     dependencies:
-      '@date-io/date-fns':
-        specifier: 3.2.1
-        version: 3.2.1(date-fns@4.1.0)
-      '@dnd-kit/core':
-        specifier: 6.3.1
-        version: 6.3.1(react-dom@19.2.5(react@19.2.5))(react@19.2.5)
-      '@dnd-kit/sortable':
-        specifier: 10.0.0
-        version: 10.0.0(@dnd-kit/core@6.3.1(react-dom@19.2.5(react@19.2.5))(react@19.2.5))(react@19.2.5)
-      '@dnd-kit/utilities':
-        specifier: 3.2.2
-        version: 3.2.2(react@19.2.5)
       '@emotion/cache':
         specifier: 11.14.0
         version: 11.14.0
@@ -656,144 +584,6 @@ importers:
       '@tanstack/react-query':
         specifier: 5.99.0
         version: 5.99.0(react@19.2.5)
-      '@tiptap/core':
-        specifier: 3.22.3
-        version: 3.22.3(@tiptap/pm@3.22.3)
-      '@tiptap/extension-blockquote':
-        specifier: 3.22.3
-        version: 3.22.3(@tiptap/core@3.22.3(@tiptap/pm@3.22.3))
-      '@tiptap/extension-bold':
-        specifier: 3.22.3
-        version: 3.22.3(@tiptap/core@3.22.3(@tiptap/pm@3.22.3))
-      '@tiptap/extension-bubble-menu':
-        specifier: 3.22.3
-        version: 3.22.3(@tiptap/core@3.22.3(@tiptap/pm@3.22.3))(@tiptap/pm@3.22.3)
-      '@tiptap/extension-bullet-list':
-        specifier: 3.22.3
-        version: 3.22.3(@tiptap/extension-list@3.22.5(@tiptap/core@3.22.3(@tiptap/pm@3.22.3))(@tiptap/pm@3.22.3))
-      '@tiptap/extension-code':
-        specifier: 3.22.3
-        version: 3.22.3(@tiptap/core@3.22.3(@tiptap/pm@3.22.3))
-      '@tiptap/extension-code-block':
-        specifier: 3.22.3
-        version: 3.22.3(@tiptap/core@3.22.3(@tiptap/pm@3.22.3))(@tiptap/pm@3.22.3)
-      '@tiptap/extension-color':
-        specifier: 3.22.3
-        version: 3.22.3(@tiptap/extension-text-style@3.22.3(@tiptap/core@3.22.3(@tiptap/pm@3.22.3)))
-      '@tiptap/extension-document':
-        specifier: 3.22.3
-        version: 3.22.3(@tiptap/core@3.22.3(@tiptap/pm@3.22.3))
-      '@tiptap/extension-dropcursor':
-        specifier: 3.22.3
-        version: 3.22.3(@tiptap/extensions@3.22.5(@tiptap/core@3.22.3(@tiptap/pm@3.22.3))(@tiptap/pm@3.22.3))
-      '@tiptap/extension-floating-menu':
-        specifier: 3.22.3
-        version: 3.22.3(@floating-ui/dom@1.7.6)(@tiptap/core@3.22.3(@tiptap/pm@3.22.3))(@tiptap/pm@3.22.3)
-      '@tiptap/extension-font-family':
-        specifier: 3.22.3
-        version: 3.22.3(@tiptap/extension-text-style@3.22.3(@tiptap/core@3.22.3(@tiptap/pm@3.22.3)))
-      '@tiptap/extension-gapcursor':
-        specifier: 3.22.3
-        version: 3.22.3(@tiptap/extensions@3.22.5(@tiptap/core@3.22.3(@tiptap/pm@3.22.3))(@tiptap/pm@3.22.3))
-      '@tiptap/extension-hard-break':
-        specifier: 3.22.3
-        version: 3.22.3(@tiptap/core@3.22.3(@tiptap/pm@3.22.3))
-      '@tiptap/extension-heading':
-        specifier: 3.22.3
-        version: 3.22.3(@tiptap/core@3.22.3(@tiptap/pm@3.22.3))
-      '@tiptap/extension-highlight':
-        specifier: 3.22.3
-        version: 3.22.3(@tiptap/core@3.22.3(@tiptap/pm@3.22.3))
-      '@tiptap/extension-history':
-        specifier: 3.22.3
-        version: 3.22.3(@tiptap/extensions@3.22.5(@tiptap/core@3.22.3(@tiptap/pm@3.22.3))(@tiptap/pm@3.22.3))
-      '@tiptap/extension-horizontal-rule':
-        specifier: 3.22.3
-        version: 3.22.3(@tiptap/core@3.22.3(@tiptap/pm@3.22.3))(@tiptap/pm@3.22.3)
-      '@tiptap/extension-image':
-        specifier: 3.22.3
-        version: 3.22.3(@tiptap/core@3.22.3(@tiptap/pm@3.22.3))
-      '@tiptap/extension-italic':
-        specifier: 3.22.3
-        version: 3.22.3(@tiptap/core@3.22.3(@tiptap/pm@3.22.3))
-      '@tiptap/extension-link':
-        specifier: 3.22.3
-        version: 3.22.3(@tiptap/core@3.22.3(@tiptap/pm@3.22.3))(@tiptap/pm@3.22.3)
-      '@tiptap/extension-list-item':
-        specifier: 3.22.3
-        version: 3.22.3(@tiptap/extension-list@3.22.5(@tiptap/core@3.22.3(@tiptap/pm@3.22.3))(@tiptap/pm@3.22.3))
-      '@tiptap/extension-mention':
-        specifier: 3.22.3
-        version: 3.22.3(@tiptap/core@3.22.3(@tiptap/pm@3.22.3))(@tiptap/pm@3.22.3)(@tiptap/suggestion@3.22.3(@tiptap/core@3.22.3(@tiptap/pm@3.22.3))(@tiptap/pm@3.22.3))
-      '@tiptap/extension-ordered-list':
-        specifier: 3.22.3
-        version: 3.22.3(@tiptap/extension-list@3.22.5(@tiptap/core@3.22.3(@tiptap/pm@3.22.3))(@tiptap/pm@3.22.3))
-      '@tiptap/extension-paragraph':
-        specifier: 3.22.3
-        version: 3.22.3(@tiptap/core@3.22.3(@tiptap/pm@3.22.3))
-      '@tiptap/extension-placeholder':
-        specifier: 3.22.3
-        version: 3.22.3(@tiptap/extensions@3.22.5(@tiptap/core@3.22.3(@tiptap/pm@3.22.3))(@tiptap/pm@3.22.3))
-      '@tiptap/extension-strike':
-        specifier: 3.22.3
-        version: 3.22.3(@tiptap/core@3.22.3(@tiptap/pm@3.22.3))
-      '@tiptap/extension-subscript':
-        specifier: 3.22.3
-        version: 3.22.3(@tiptap/core@3.22.3(@tiptap/pm@3.22.3))(@tiptap/pm@3.22.3)
-      '@tiptap/extension-superscript':
-        specifier: 3.22.3
-        version: 3.22.3(@tiptap/core@3.22.3(@tiptap/pm@3.22.3))(@tiptap/pm@3.22.3)
-      '@tiptap/extension-table':
-        specifier: 3.22.3
-        version: 3.22.3(@tiptap/core@3.22.3(@tiptap/pm@3.22.3))(@tiptap/pm@3.22.3)
-      '@tiptap/extension-table-cell':
-        specifier: 3.22.3
-        version: 3.22.3(@tiptap/extension-table@3.22.3(@tiptap/core@3.22.3(@tiptap/pm@3.22.3))(@tiptap/pm@3.22.3))
-      '@tiptap/extension-table-header':
-        specifier: 3.22.3
-        version: 3.22.3(@tiptap/extension-table@3.22.3(@tiptap/core@3.22.3(@tiptap/pm@3.22.3))(@tiptap/pm@3.22.3))
-      '@tiptap/extension-table-row':
-        specifier: 3.22.3
-        version: 3.22.3(@tiptap/extension-table@3.22.3(@tiptap/core@3.22.3(@tiptap/pm@3.22.3))(@tiptap/pm@3.22.3))
-      '@tiptap/extension-task-item':
-        specifier: 3.22.3
-        version: 3.22.3(@tiptap/extension-list@3.22.5(@tiptap/core@3.22.3(@tiptap/pm@3.22.3))(@tiptap/pm@3.22.3))
-      '@tiptap/extension-task-list':
-        specifier: 3.22.3
-        version: 3.22.3(@tiptap/extension-list@3.22.5(@tiptap/core@3.22.3(@tiptap/pm@3.22.3))(@tiptap/pm@3.22.3))
-      '@tiptap/extension-text':
-        specifier: 3.22.3
-        version: 3.22.3(@tiptap/core@3.22.3(@tiptap/pm@3.22.3))
-      '@tiptap/extension-text-align':
-        specifier: 3.22.3
-        version: 3.22.3(@tiptap/core@3.22.3(@tiptap/pm@3.22.3))
-      '@tiptap/extension-text-style':
-        specifier: 3.22.3
-        version: 3.22.3(@tiptap/core@3.22.3(@tiptap/pm@3.22.3))
-      '@tiptap/extension-underline':
-        specifier: 3.22.3
-        version: 3.22.3(@tiptap/core@3.22.3(@tiptap/pm@3.22.3))
-      '@tiptap/pm':
-        specifier: 3.22.3
-        version: 3.22.3
-      '@tiptap/react':
-        specifier: 3.22.3
-        version: 3.22.3(@floating-ui/dom@1.7.6)(@tiptap/core@3.22.3(@tiptap/pm@3.22.3))(@tiptap/pm@3.22.3)(@types/react-dom@19.2.3(@types/react@19.2.14))(@types/react@19.2.14)(react-dom@19.2.5(react@19.2.5))(react@19.2.5)
-      '@tiptap/starter-kit':
-        specifier: 3.22.3
-        version: 3.22.3
-      '@tiptap/suggestion':
-        specifier: 3.22.3
-        version: 3.22.3(@tiptap/core@3.22.3(@tiptap/pm@3.22.3))(@tiptap/pm@3.22.3)
-      axios:
-        specifier: 1.15.0
-        version: 1.15.0
-      classnames:
-        specifier: 2.5.1
-        version: 2.5.1
-      clsx:
-        specifier: 2.1.1
-        version: 2.1.1
       csv:
         specifier: 6.5.1
         version: 6.5.1
@@ -818,12 +608,6 @@ importers:
       lodash:
         specifier: 4.18.1
         version: 4.18.1
-      mui-tiptap:
-        specifier: 1.30.0
-        version: 1.30.0(cb51f1f3e3b81b22425bc4ee81ad3a34)
-      oidc-client-ts:
-        specifier: 3.5.0
-        version: 3.5.0
       react:
         specifier: 19.2.5
         version: 19.2.5
@@ -839,9 +623,6 @@ importers:
       react-i18next:
         specifier: 17.0.3
         version: 17.0.3(i18next@26.0.5(typescript@6.0.2))(react-dom@19.2.5(react@19.2.5))(react@19.2.5)(typescript@6.0.2)
-      react-oidc-context:
-        specifier: 3.3.1
-        version: 3.3.1(oidc-client-ts@3.5.0)(react@19.2.5)
       react-resizable-panels:
         specifier: 4.10.0
         version: 4.10.0(react-dom@19.2.5(react@19.2.5))(react@19.2.5)
@@ -857,21 +638,9 @@ importers:
       read-excel-file:
         specifier: 8.0.3
         version: 8.0.3
-      reflect-metadata:
-        specifier: 0.2.2
-        version: 0.2.2
-      rehype-sanitize:
-        specifier: 6.0.0
-        version: 6.0.0
-      use-cleanup-callback:
-        specifier: 1.3.0
-        version: 1.3.0(react@19.2.5)
       use-debounce:
         specifier: 10.1.1
         version: 10.1.1(react@19.2.5)
-      use-sync-external-store:
-        specifier: 1.6.0
-        version: 1.6.0(react@19.2.5)
       uuid:
         specifier: 13.0.0
         version: 13.0.0
@@ -900,9 +669,6 @@ importers:
       '@types/react':
         specifier: 19.2.14
         version: 19.2.14
-      '@types/react-dom':
-        specifier: 19.2.3
-        version: 19.2.3(@types/react@19.2.14)
       '@vitejs/plugin-react':
         specifier: 6.0.1
         version: 6.0.1(vite@8.0.8(@types/node@25.6.0)(yaml@2.8.0))
@@ -942,291 +708,57 @@ importers:
       vitest:
         specifier: 4.1.4
         version: 4.1.4(@types/node@25.6.0)(@vitest/browser-playwright@4.1.4)(@vitest/coverage-v8@4.1.4)(jsdom@29.0.2)(vite@8.0.8(@types/node@25.6.0)(yaml@2.8.0))
-      vitest-browser-react:
-        specifier: 2.2.0
-        version: 2.2.0(@types/react-dom@19.2.3(@types/react@19.2.14))(@types/react@19.2.14)(react-dom@19.2.5(react@19.2.5))(react@19.2.5)(vitest@4.1.4)
 
   packages/ui-omopdb:
     dependencies:
-      '@date-io/date-fns':
-        specifier: 3.2.1
-        version: 3.2.1(date-fns@4.1.0)
-      '@dnd-kit/core':
-        specifier: 6.3.1
-        version: 6.3.1(react-dom@19.2.5(react@19.2.5))(react@19.2.5)
-      '@dnd-kit/sortable':
-        specifier: 10.0.0
-        version: 10.0.0(@dnd-kit/core@6.3.1(react-dom@19.2.5(react@19.2.5))(react@19.2.5))(react@19.2.5)
-      '@dnd-kit/utilities':
-        specifier: 3.2.2
-        version: 3.2.2(react@19.2.5)
       '@emotion/cache':
-        specifier: 11.14.0
+        specifier: ^11.14.0
         version: 11.14.0
       '@emotion/react':
-        specifier: 11.14.0
+        specifier: ^11.14.0
         version: 11.14.0(@types/react@19.2.14)(react@19.2.5)
       '@emotion/styled':
-        specifier: 11.14.1
+        specifier: ^11.14.1
         version: 11.14.1(@emotion/react@11.14.0(@types/react@19.2.14)(react@19.2.5))(@types/react@19.2.14)(react@19.2.5)
       '@gen-epix/api-casedb':
         specifier: workspace:*
         version: link:../api-casedb
+      '@gen-epix/api-commondb':
+        specifier: workspace:*
+        version: link:../api-commondb
       '@gen-epix/ui':
         specifier: workspace:*
         version: link:../ui
-      '@hookform/resolvers':
-        specifier: 5.2.2
-        version: 5.2.2(react-hook-form@7.72.1(react@19.2.5))
       '@mui/icons-material':
-        specifier: 9.0.0
+        specifier: ^9.0.0
         version: 9.0.0(@mui/material@9.0.0(@emotion/react@11.14.0(@types/react@19.2.14)(react@19.2.5))(@emotion/styled@11.14.1(@emotion/react@11.14.0(@types/react@19.2.14)(react@19.2.5))(@types/react@19.2.14)(react@19.2.5))(@types/react@19.2.14)(react-dom@19.2.5(react@19.2.5))(react@19.2.5))(@types/react@19.2.14)(react@19.2.5)
       '@mui/material':
-        specifier: 9.0.0
+        specifier: ^9.0.0
         version: 9.0.0(@emotion/react@11.14.0(@types/react@19.2.14)(react@19.2.5))(@emotion/styled@11.14.1(@emotion/react@11.14.0(@types/react@19.2.14)(react@19.2.5))(@types/react@19.2.14)(react@19.2.5))(@types/react@19.2.14)(react-dom@19.2.5(react@19.2.5))(react@19.2.5)
       '@mui/styled-engine':
-        specifier: 9.0.0
+        specifier: ^9.0.0
         version: 9.0.0(@emotion/react@11.14.0(@types/react@19.2.14)(react@19.2.5))(@emotion/styled@11.14.1(@emotion/react@11.14.0(@types/react@19.2.14)(react@19.2.5))(@types/react@19.2.14)(react@19.2.5))(react@19.2.5)
       '@mui/system':
-        specifier: 9.0.0
+        specifier: ^9.0.0
         version: 9.0.0(@emotion/react@11.14.0(@types/react@19.2.14)(react@19.2.5))(@emotion/styled@11.14.1(@emotion/react@11.14.0(@types/react@19.2.14)(react@19.2.5))(@types/react@19.2.14)(react@19.2.5))(@types/react@19.2.14)(react@19.2.5)
       '@mui/utils':
-        specifier: 9.0.0
+        specifier: ^9.0.0
         version: 9.0.0(@types/react@19.2.14)(react@19.2.5)
       '@mui/x-date-pickers':
-        specifier: 9.0.2
+        specifier: ^9.0.2
         version: 9.0.2(@emotion/react@11.14.0(@types/react@19.2.14)(react@19.2.5))(@emotion/styled@11.14.1(@emotion/react@11.14.0(@types/react@19.2.14)(react@19.2.5))(@types/react@19.2.14)(react@19.2.5))(@mui/material@9.0.0(@emotion/react@11.14.0(@types/react@19.2.14)(react@19.2.5))(@emotion/styled@11.14.1(@emotion/react@11.14.0(@types/react@19.2.14)(react@19.2.5))(@types/react@19.2.14)(react@19.2.5))(@types/react@19.2.14)(react-dom@19.2.5(react@19.2.5))(react@19.2.5))(@mui/system@9.0.0(@emotion/react@11.14.0(@types/react@19.2.14)(react@19.2.5))(@emotion/styled@11.14.1(@emotion/react@11.14.0(@types/react@19.2.14)(react@19.2.5))(@types/react@19.2.14)(react@19.2.5))(@types/react@19.2.14)(react@19.2.5))(@types/react@19.2.14)(date-fns@4.1.0)(react-dom@19.2.5(react@19.2.5))(react@19.2.5)
-      '@tanstack/react-query':
-        specifier: 5.99.0
-        version: 5.99.0(react@19.2.5)
-      '@tiptap/core':
-        specifier: 3.22.3
-        version: 3.22.3(@tiptap/pm@3.22.3)
-      '@tiptap/extension-blockquote':
-        specifier: 3.22.3
-        version: 3.22.3(@tiptap/core@3.22.3(@tiptap/pm@3.22.3))
-      '@tiptap/extension-bold':
-        specifier: 3.22.3
-        version: 3.22.3(@tiptap/core@3.22.3(@tiptap/pm@3.22.3))
-      '@tiptap/extension-bubble-menu':
-        specifier: 3.22.3
-        version: 3.22.3(@tiptap/core@3.22.3(@tiptap/pm@3.22.3))(@tiptap/pm@3.22.3)
-      '@tiptap/extension-bullet-list':
-        specifier: 3.22.3
-        version: 3.22.3(@tiptap/extension-list@3.22.5(@tiptap/core@3.22.3(@tiptap/pm@3.22.3))(@tiptap/pm@3.22.3))
-      '@tiptap/extension-code':
-        specifier: 3.22.3
-        version: 3.22.3(@tiptap/core@3.22.3(@tiptap/pm@3.22.3))
-      '@tiptap/extension-code-block':
-        specifier: 3.22.3
-        version: 3.22.3(@tiptap/core@3.22.3(@tiptap/pm@3.22.3))(@tiptap/pm@3.22.3)
-      '@tiptap/extension-color':
-        specifier: 3.22.3
-        version: 3.22.3(@tiptap/extension-text-style@3.22.3(@tiptap/core@3.22.3(@tiptap/pm@3.22.3)))
-      '@tiptap/extension-document':
-        specifier: 3.22.3
-        version: 3.22.3(@tiptap/core@3.22.3(@tiptap/pm@3.22.3))
-      '@tiptap/extension-dropcursor':
-        specifier: 3.22.3
-        version: 3.22.3(@tiptap/extensions@3.22.5(@tiptap/core@3.22.3(@tiptap/pm@3.22.3))(@tiptap/pm@3.22.3))
-      '@tiptap/extension-floating-menu':
-        specifier: 3.22.3
-        version: 3.22.3(@floating-ui/dom@1.7.6)(@tiptap/core@3.22.3(@tiptap/pm@3.22.3))(@tiptap/pm@3.22.3)
-      '@tiptap/extension-font-family':
-        specifier: 3.22.3
-        version: 3.22.3(@tiptap/extension-text-style@3.22.3(@tiptap/core@3.22.3(@tiptap/pm@3.22.3)))
-      '@tiptap/extension-gapcursor':
-        specifier: 3.22.3
-        version: 3.22.3(@tiptap/extensions@3.22.5(@tiptap/core@3.22.3(@tiptap/pm@3.22.3))(@tiptap/pm@3.22.3))
-      '@tiptap/extension-hard-break':
-        specifier: 3.22.3
-        version: 3.22.3(@tiptap/core@3.22.3(@tiptap/pm@3.22.3))
-      '@tiptap/extension-heading':
-        specifier: 3.22.3
-        version: 3.22.3(@tiptap/core@3.22.3(@tiptap/pm@3.22.3))
-      '@tiptap/extension-highlight':
-        specifier: 3.22.3
-        version: 3.22.3(@tiptap/core@3.22.3(@tiptap/pm@3.22.3))
-      '@tiptap/extension-history':
-        specifier: 3.22.3
-        version: 3.22.3(@tiptap/extensions@3.22.5(@tiptap/core@3.22.3(@tiptap/pm@3.22.3))(@tiptap/pm@3.22.3))
-      '@tiptap/extension-horizontal-rule':
-        specifier: 3.22.3
-        version: 3.22.3(@tiptap/core@3.22.3(@tiptap/pm@3.22.3))(@tiptap/pm@3.22.3)
-      '@tiptap/extension-image':
-        specifier: 3.22.3
-        version: 3.22.3(@tiptap/core@3.22.3(@tiptap/pm@3.22.3))
-      '@tiptap/extension-italic':
-        specifier: 3.22.3
-        version: 3.22.3(@tiptap/core@3.22.3(@tiptap/pm@3.22.3))
-      '@tiptap/extension-link':
-        specifier: 3.22.3
-        version: 3.22.3(@tiptap/core@3.22.3(@tiptap/pm@3.22.3))(@tiptap/pm@3.22.3)
-      '@tiptap/extension-list-item':
-        specifier: 3.22.3
-        version: 3.22.3(@tiptap/extension-list@3.22.5(@tiptap/core@3.22.3(@tiptap/pm@3.22.3))(@tiptap/pm@3.22.3))
-      '@tiptap/extension-mention':
-        specifier: 3.22.3
-        version: 3.22.3(@tiptap/core@3.22.3(@tiptap/pm@3.22.3))(@tiptap/pm@3.22.3)(@tiptap/suggestion@3.22.3(@tiptap/core@3.22.3(@tiptap/pm@3.22.3))(@tiptap/pm@3.22.3))
-      '@tiptap/extension-ordered-list':
-        specifier: 3.22.3
-        version: 3.22.3(@tiptap/extension-list@3.22.5(@tiptap/core@3.22.3(@tiptap/pm@3.22.3))(@tiptap/pm@3.22.3))
-      '@tiptap/extension-paragraph':
-        specifier: 3.22.3
-        version: 3.22.3(@tiptap/core@3.22.3(@tiptap/pm@3.22.3))
-      '@tiptap/extension-placeholder':
-        specifier: 3.22.3
-        version: 3.22.3(@tiptap/extensions@3.22.5(@tiptap/core@3.22.3(@tiptap/pm@3.22.3))(@tiptap/pm@3.22.3))
-      '@tiptap/extension-strike':
-        specifier: 3.22.3
-        version: 3.22.3(@tiptap/core@3.22.3(@tiptap/pm@3.22.3))
-      '@tiptap/extension-subscript':
-        specifier: 3.22.3
-        version: 3.22.3(@tiptap/core@3.22.3(@tiptap/pm@3.22.3))(@tiptap/pm@3.22.3)
-      '@tiptap/extension-superscript':
-        specifier: 3.22.3
-        version: 3.22.3(@tiptap/core@3.22.3(@tiptap/pm@3.22.3))(@tiptap/pm@3.22.3)
-      '@tiptap/extension-table':
-        specifier: 3.22.3
-        version: 3.22.3(@tiptap/core@3.22.3(@tiptap/pm@3.22.3))(@tiptap/pm@3.22.3)
-      '@tiptap/extension-table-cell':
-        specifier: 3.22.3
-        version: 3.22.3(@tiptap/extension-table@3.22.3(@tiptap/core@3.22.3(@tiptap/pm@3.22.3))(@tiptap/pm@3.22.3))
-      '@tiptap/extension-table-header':
-        specifier: 3.22.3
-        version: 3.22.3(@tiptap/extension-table@3.22.3(@tiptap/core@3.22.3(@tiptap/pm@3.22.3))(@tiptap/pm@3.22.3))
-      '@tiptap/extension-table-row':
-        specifier: 3.22.3
-        version: 3.22.3(@tiptap/extension-table@3.22.3(@tiptap/core@3.22.3(@tiptap/pm@3.22.3))(@tiptap/pm@3.22.3))
-      '@tiptap/extension-task-item':
-        specifier: 3.22.3
-        version: 3.22.3(@tiptap/extension-list@3.22.5(@tiptap/core@3.22.3(@tiptap/pm@3.22.3))(@tiptap/pm@3.22.3))
-      '@tiptap/extension-task-list':
-        specifier: 3.22.3
-        version: 3.22.3(@tiptap/extension-list@3.22.5(@tiptap/core@3.22.3(@tiptap/pm@3.22.3))(@tiptap/pm@3.22.3))
-      '@tiptap/extension-text':
-        specifier: 3.22.3
-        version: 3.22.3(@tiptap/core@3.22.3(@tiptap/pm@3.22.3))
-      '@tiptap/extension-text-align':
-        specifier: 3.22.3
-        version: 3.22.3(@tiptap/core@3.22.3(@tiptap/pm@3.22.3))
-      '@tiptap/extension-text-style':
-        specifier: 3.22.3
-        version: 3.22.3(@tiptap/core@3.22.3(@tiptap/pm@3.22.3))
-      '@tiptap/extension-underline':
-        specifier: 3.22.3
-        version: 3.22.3(@tiptap/core@3.22.3(@tiptap/pm@3.22.3))
-      '@tiptap/pm':
-        specifier: 3.22.3
-        version: 3.22.3
-      '@tiptap/react':
-        specifier: 3.22.3
-        version: 3.22.3(@floating-ui/dom@1.7.6)(@tiptap/core@3.22.3(@tiptap/pm@3.22.3))(@tiptap/pm@3.22.3)(@types/react-dom@19.2.3(@types/react@19.2.14))(@types/react@19.2.14)(react-dom@19.2.5(react@19.2.5))(react@19.2.5)
-      '@tiptap/starter-kit':
-        specifier: 3.22.3
-        version: 3.22.3
-      '@tiptap/suggestion':
-        specifier: 3.22.3
-        version: 3.22.3(@tiptap/core@3.22.3(@tiptap/pm@3.22.3))(@tiptap/pm@3.22.3)
-      axios:
-        specifier: 1.15.0
-        version: 1.15.0
-      classnames:
-        specifier: 2.5.1
-        version: 2.5.1
-      clsx:
-        specifier: 2.1.1
-        version: 2.1.1
-      csv:
-        specifier: 6.5.1
-        version: 6.5.1
-      date-fns:
-        specifier: 4.1.0
-        version: 4.1.0
-      decimal.js:
-        specifier: 10.6.0
-        version: 10.6.0
-      echarts:
-        specifier: 6.0.0
-        version: 6.0.0
-      echarts-for-react:
-        specifier: 3.0.6
-        version: 3.0.6(echarts@6.0.0)(react@19.2.5)
       i18next:
-        specifier: 26.0.5
+        specifier: ^26.0.5
         version: 26.0.5(typescript@6.0.2)
-      immer:
-        specifier: 11.1.4
-        version: 11.1.4
-      lodash:
-        specifier: 4.18.1
-        version: 4.18.1
-      mui-tiptap:
-        specifier: 1.30.0
-        version: 1.30.0(cb51f1f3e3b81b22425bc4ee81ad3a34)
-      oidc-client-ts:
-        specifier: 3.5.0
-        version: 3.5.0
       react:
-        specifier: 19.2.5
+        specifier: ^19.2.5
         version: 19.2.5
       react-dom:
-        specifier: 19.2.5
+        specifier: ^19.2.5
         version: 19.2.5(react@19.2.5)
-      react-error-boundary:
-        specifier: 6.1.1
-        version: 6.1.1(react@19.2.5)
-      react-hook-form:
-        specifier: 7.72.1
-        version: 7.72.1(react@19.2.5)
       react-i18next:
-        specifier: 17.0.3
+        specifier: ^17.0.3
         version: 17.0.3(i18next@26.0.5(typescript@6.0.2))(react-dom@19.2.5(react@19.2.5))(react@19.2.5)(typescript@6.0.2)
-      react-oidc-context:
-        specifier: 3.3.1
-        version: 3.3.1(oidc-client-ts@3.5.0)(react@19.2.5)
-      react-resizable-panels:
-        specifier: 4.10.0
-        version: 4.10.0(react-dom@19.2.5(react@19.2.5))(react@19.2.5)
-      react-router:
-        specifier: 7.14.1
-        version: 7.14.1(react-dom@19.2.5(react@19.2.5))(react@19.2.5)
-      react-router-dom:
-        specifier: 7.14.1
-        version: 7.14.1(react-dom@19.2.5(react@19.2.5))(react@19.2.5)
-      react-virtuoso:
-        specifier: 4.18.5
-        version: 4.18.5(react-dom@19.2.5(react@19.2.5))(react@19.2.5)
-      read-excel-file:
-        specifier: 8.0.3
-        version: 8.0.3
-      reflect-metadata:
-        specifier: 0.2.2
-        version: 0.2.2
-      rehype-sanitize:
-        specifier: 6.0.0
-        version: 6.0.0
-      use-cleanup-callback:
-        specifier: 1.3.0
-        version: 1.3.0(react@19.2.5)
-      use-debounce:
-        specifier: 10.1.1
-        version: 10.1.1(react@19.2.5)
-      use-sync-external-store:
-        specifier: 1.6.0
-        version: 1.6.0(react@19.2.5)
-      uuid:
-        specifier: 13.0.0
-        version: 13.0.0
-      write-excel-file:
-        specifier: 3.0.8
-        version: 3.0.8
-      yup:
-        specifier: 1.7.1
-        version: 1.7.1
-      zustand:
-        specifier: 5.0.12
-        version: 5.0.12(@types/react@19.2.14)(immer@11.1.4)(react@19.2.5)(use-sync-external-store@1.6.0(react@19.2.5))
     devDependencies:
       '@gen-epix/eslint-config':
         specifier: 0.2.3
@@ -1234,18 +766,12 @@ importers:
       '@gen-epix/translation-util':
         specifier: 0.1.1
         version: 0.1.1
-      '@types/lodash':
-        specifier: 4.17.24
-        version: 4.17.24
       '@types/node':
         specifier: 25.6.0
         version: 25.6.0
       '@types/react':
         specifier: 19.2.14
         version: 19.2.14
-      '@types/react-dom':
-        specifier: 19.2.3
-        version: 19.2.3(@types/react@19.2.14)
       '@vitejs/plugin-react':
         specifier: 6.0.1
         version: 6.0.1(vite@8.0.8(@types/node@25.6.0)(yaml@2.8.0))
@@ -1285,291 +811,57 @@ importers:
       vitest:
         specifier: 4.1.4
         version: 4.1.4(@types/node@25.6.0)(@vitest/browser-playwright@4.1.4)(@vitest/coverage-v8@4.1.4)(jsdom@29.0.2)(vite@8.0.8(@types/node@25.6.0)(yaml@2.8.0))
-      vitest-browser-react:
-        specifier: 2.2.0
-        version: 2.2.0(@types/react-dom@19.2.3(@types/react@19.2.14))(@types/react@19.2.14)(react-dom@19.2.5(react@19.2.5))(react@19.2.5)(vitest@4.1.4)
 
   packages/ui-seqdb:
     dependencies:
-      '@date-io/date-fns':
-        specifier: 3.2.1
-        version: 3.2.1(date-fns@4.1.0)
-      '@dnd-kit/core':
-        specifier: 6.3.1
-        version: 6.3.1(react-dom@19.2.5(react@19.2.5))(react@19.2.5)
-      '@dnd-kit/sortable':
-        specifier: 10.0.0
-        version: 10.0.0(@dnd-kit/core@6.3.1(react-dom@19.2.5(react@19.2.5))(react@19.2.5))(react@19.2.5)
-      '@dnd-kit/utilities':
-        specifier: 3.2.2
-        version: 3.2.2(react@19.2.5)
       '@emotion/cache':
-        specifier: 11.14.0
+        specifier: ^11.14.0
         version: 11.14.0
       '@emotion/react':
-        specifier: 11.14.0
+        specifier: ^11.14.0
         version: 11.14.0(@types/react@19.2.14)(react@19.2.5)
       '@emotion/styled':
-        specifier: 11.14.1
+        specifier: ^11.14.1
         version: 11.14.1(@emotion/react@11.14.0(@types/react@19.2.14)(react@19.2.5))(@types/react@19.2.14)(react@19.2.5)
       '@gen-epix/api-casedb':
         specifier: workspace:*
         version: link:../api-casedb
+      '@gen-epix/api-commondb':
+        specifier: workspace:*
+        version: link:../api-commondb
       '@gen-epix/ui':
         specifier: workspace:*
         version: link:../ui
-      '@hookform/resolvers':
-        specifier: 5.2.2
-        version: 5.2.2(react-hook-form@7.72.1(react@19.2.5))
       '@mui/icons-material':
-        specifier: 9.0.0
+        specifier: ^9.0.0
         version: 9.0.0(@mui/material@9.0.0(@emotion/react@11.14.0(@types/react@19.2.14)(react@19.2.5))(@emotion/styled@11.14.1(@emotion/react@11.14.0(@types/react@19.2.14)(react@19.2.5))(@types/react@19.2.14)(react@19.2.5))(@types/react@19.2.14)(react-dom@19.2.5(react@19.2.5))(react@19.2.5))(@types/react@19.2.14)(react@19.2.5)
       '@mui/material':
-        specifier: 9.0.0
+        specifier: ^9.0.0
         version: 9.0.0(@emotion/react@11.14.0(@types/react@19.2.14)(react@19.2.5))(@emotion/styled@11.14.1(@emotion/react@11.14.0(@types/react@19.2.14)(react@19.2.5))(@types/react@19.2.14)(react@19.2.5))(@types/react@19.2.14)(react-dom@19.2.5(react@19.2.5))(react@19.2.5)
       '@mui/styled-engine':
-        specifier: 9.0.0
+        specifier: ^9.0.0
         version: 9.0.0(@emotion/react@11.14.0(@types/react@19.2.14)(react@19.2.5))(@emotion/styled@11.14.1(@emotion/react@11.14.0(@types/react@19.2.14)(react@19.2.5))(@types/react@19.2.14)(react@19.2.5))(react@19.2.5)
       '@mui/system':
-        specifier: 9.0.0
+        specifier: ^9.0.0
         version: 9.0.0(@emotion/react@11.14.0(@types/react@19.2.14)(react@19.2.5))(@emotion/styled@11.14.1(@emotion/react@11.14.0(@types/react@19.2.14)(react@19.2.5))(@types/react@19.2.14)(react@19.2.5))(@types/react@19.2.14)(react@19.2.5)
       '@mui/utils':
-        specifier: 9.0.0
+        specifier: ^9.0.0
         version: 9.0.0(@types/react@19.2.14)(react@19.2.5)
       '@mui/x-date-pickers':
-        specifier: 9.0.2
+        specifier: ^9.0.2
         version: 9.0.2(@emotion/react@11.14.0(@types/react@19.2.14)(react@19.2.5))(@emotion/styled@11.14.1(@emotion/react@11.14.0(@types/react@19.2.14)(react@19.2.5))(@types/react@19.2.14)(react@19.2.5))(@mui/material@9.0.0(@emotion/react@11.14.0(@types/react@19.2.14)(react@19.2.5))(@emotion/styled@11.14.1(@emotion/react@11.14.0(@types/react@19.2.14)(react@19.2.5))(@types/react@19.2.14)(react@19.2.5))(@types/react@19.2.14)(react-dom@19.2.5(react@19.2.5))(react@19.2.5))(@mui/system@9.0.0(@emotion/react@11.14.0(@types/react@19.2.14)(react@19.2.5))(@emotion/styled@11.14.1(@emotion/react@11.14.0(@types/react@19.2.14)(react@19.2.5))(@types/react@19.2.14)(react@19.2.5))(@types/react@19.2.14)(react@19.2.5))(@types/react@19.2.14)(date-fns@4.1.0)(react-dom@19.2.5(react@19.2.5))(react@19.2.5)
-      '@tanstack/react-query':
-        specifier: 5.99.0
-        version: 5.99.0(react@19.2.5)
-      '@tiptap/core':
-        specifier: 3.22.3
-        version: 3.22.3(@tiptap/pm@3.22.3)
-      '@tiptap/extension-blockquote':
-        specifier: 3.22.3
-        version: 3.22.3(@tiptap/core@3.22.3(@tiptap/pm@3.22.3))
-      '@tiptap/extension-bold':
-        specifier: 3.22.3
-        version: 3.22.3(@tiptap/core@3.22.3(@tiptap/pm@3.22.3))
-      '@tiptap/extension-bubble-menu':
-        specifier: 3.22.3
-        version: 3.22.3(@tiptap/core@3.22.3(@tiptap/pm@3.22.3))(@tiptap/pm@3.22.3)
-      '@tiptap/extension-bullet-list':
-        specifier: 3.22.3
-        version: 3.22.3(@tiptap/extension-list@3.22.5(@tiptap/core@3.22.3(@tiptap/pm@3.22.3))(@tiptap/pm@3.22.3))
-      '@tiptap/extension-code':
-        specifier: 3.22.3
-        version: 3.22.3(@tiptap/core@3.22.3(@tiptap/pm@3.22.3))
-      '@tiptap/extension-code-block':
-        specifier: 3.22.3
-        version: 3.22.3(@tiptap/core@3.22.3(@tiptap/pm@3.22.3))(@tiptap/pm@3.22.3)
-      '@tiptap/extension-color':
-        specifier: 3.22.3
-        version: 3.22.3(@tiptap/extension-text-style@3.22.3(@tiptap/core@3.22.3(@tiptap/pm@3.22.3)))
-      '@tiptap/extension-document':
-        specifier: 3.22.3
-        version: 3.22.3(@tiptap/core@3.22.3(@tiptap/pm@3.22.3))
-      '@tiptap/extension-dropcursor':
-        specifier: 3.22.3
-        version: 3.22.3(@tiptap/extensions@3.22.5(@tiptap/core@3.22.3(@tiptap/pm@3.22.3))(@tiptap/pm@3.22.3))
-      '@tiptap/extension-floating-menu':
-        specifier: 3.22.3
-        version: 3.22.3(@floating-ui/dom@1.7.6)(@tiptap/core@3.22.3(@tiptap/pm@3.22.3))(@tiptap/pm@3.22.3)
-      '@tiptap/extension-font-family':
-        specifier: 3.22.3
-        version: 3.22.3(@tiptap/extension-text-style@3.22.3(@tiptap/core@3.22.3(@tiptap/pm@3.22.3)))
-      '@tiptap/extension-gapcursor':
-        specifier: 3.22.3
-        version: 3.22.3(@tiptap/extensions@3.22.5(@tiptap/core@3.22.3(@tiptap/pm@3.22.3))(@tiptap/pm@3.22.3))
-      '@tiptap/extension-hard-break':
-        specifier: 3.22.3
-        version: 3.22.3(@tiptap/core@3.22.3(@tiptap/pm@3.22.3))
-      '@tiptap/extension-heading':
-        specifier: 3.22.3
-        version: 3.22.3(@tiptap/core@3.22.3(@tiptap/pm@3.22.3))
-      '@tiptap/extension-highlight':
-        specifier: 3.22.3
-        version: 3.22.3(@tiptap/core@3.22.3(@tiptap/pm@3.22.3))
-      '@tiptap/extension-history':
-        specifier: 3.22.3
-        version: 3.22.3(@tiptap/extensions@3.22.5(@tiptap/core@3.22.3(@tiptap/pm@3.22.3))(@tiptap/pm@3.22.3))
-      '@tiptap/extension-horizontal-rule':
-        specifier: 3.22.3
-        version: 3.22.3(@tiptap/core@3.22.3(@tiptap/pm@3.22.3))(@tiptap/pm@3.22.3)
-      '@tiptap/extension-image':
-        specifier: 3.22.3
-        version: 3.22.3(@tiptap/core@3.22.3(@tiptap/pm@3.22.3))
-      '@tiptap/extension-italic':
-        specifier: 3.22.3
-        version: 3.22.3(@tiptap/core@3.22.3(@tiptap/pm@3.22.3))
-      '@tiptap/extension-link':
-        specifier: 3.22.3
-        version: 3.22.3(@tiptap/core@3.22.3(@tiptap/pm@3.22.3))(@tiptap/pm@3.22.3)
-      '@tiptap/extension-list-item':
-        specifier: 3.22.3
-        version: 3.22.3(@tiptap/extension-list@3.22.5(@tiptap/core@3.22.3(@tiptap/pm@3.22.3))(@tiptap/pm@3.22.3))
-      '@tiptap/extension-mention':
-        specifier: 3.22.3
-        version: 3.22.3(@tiptap/core@3.22.3(@tiptap/pm@3.22.3))(@tiptap/pm@3.22.3)(@tiptap/suggestion@3.22.3(@tiptap/core@3.22.3(@tiptap/pm@3.22.3))(@tiptap/pm@3.22.3))
-      '@tiptap/extension-ordered-list':
-        specifier: 3.22.3
-        version: 3.22.3(@tiptap/extension-list@3.22.5(@tiptap/core@3.22.3(@tiptap/pm@3.22.3))(@tiptap/pm@3.22.3))
-      '@tiptap/extension-paragraph':
-        specifier: 3.22.3
-        version: 3.22.3(@tiptap/core@3.22.3(@tiptap/pm@3.22.3))
-      '@tiptap/extension-placeholder':
-        specifier: 3.22.3
-        version: 3.22.3(@tiptap/extensions@3.22.5(@tiptap/core@3.22.3(@tiptap/pm@3.22.3))(@tiptap/pm@3.22.3))
-      '@tiptap/extension-strike':
-        specifier: 3.22.3
-        version: 3.22.3(@tiptap/core@3.22.3(@tiptap/pm@3.22.3))
-      '@tiptap/extension-subscript':
-        specifier: 3.22.3
-        version: 3.22.3(@tiptap/core@3.22.3(@tiptap/pm@3.22.3))(@tiptap/pm@3.22.3)
-      '@tiptap/extension-superscript':
-        specifier: 3.22.3
-        version: 3.22.3(@tiptap/core@3.22.3(@tiptap/pm@3.22.3))(@tiptap/pm@3.22.3)
-      '@tiptap/extension-table':
-        specifier: 3.22.3
-        version: 3.22.3(@tiptap/core@3.22.3(@tiptap/pm@3.22.3))(@tiptap/pm@3.22.3)
-      '@tiptap/extension-table-cell':
-        specifier: 3.22.3
-        version: 3.22.3(@tiptap/extension-table@3.22.3(@tiptap/core@3.22.3(@tiptap/pm@3.22.3))(@tiptap/pm@3.22.3))
-      '@tiptap/extension-table-header':
-        specifier: 3.22.3
-        version: 3.22.3(@tiptap/extension-table@3.22.3(@tiptap/core@3.22.3(@tiptap/pm@3.22.3))(@tiptap/pm@3.22.3))
-      '@tiptap/extension-table-row':
-        specifier: 3.22.3
-        version: 3.22.3(@tiptap/extension-table@3.22.3(@tiptap/core@3.22.3(@tiptap/pm@3.22.3))(@tiptap/pm@3.22.3))
-      '@tiptap/extension-task-item':
-        specifier: 3.22.3
-        version: 3.22.3(@tiptap/extension-list@3.22.5(@tiptap/core@3.22.3(@tiptap/pm@3.22.3))(@tiptap/pm@3.22.3))
-      '@tiptap/extension-task-list':
-        specifier: 3.22.3
-        version: 3.22.3(@tiptap/extension-list@3.22.5(@tiptap/core@3.22.3(@tiptap/pm@3.22.3))(@tiptap/pm@3.22.3))
-      '@tiptap/extension-text':
-        specifier: 3.22.3
-        version: 3.22.3(@tiptap/core@3.22.3(@tiptap/pm@3.22.3))
-      '@tiptap/extension-text-align':
-        specifier: 3.22.3
-        version: 3.22.3(@tiptap/core@3.22.3(@tiptap/pm@3.22.3))
-      '@tiptap/extension-text-style':
-        specifier: 3.22.3
-        version: 3.22.3(@tiptap/core@3.22.3(@tiptap/pm@3.22.3))
-      '@tiptap/extension-underline':
-        specifier: 3.22.3
-        version: 3.22.3(@tiptap/core@3.22.3(@tiptap/pm@3.22.3))
-      '@tiptap/pm':
-        specifier: 3.22.3
-        version: 3.22.3
-      '@tiptap/react':
-        specifier: 3.22.3
-        version: 3.22.3(@floating-ui/dom@1.7.6)(@tiptap/core@3.22.3(@tiptap/pm@3.22.3))(@tiptap/pm@3.22.3)(@types/react-dom@19.2.3(@types/react@19.2.14))(@types/react@19.2.14)(react-dom@19.2.5(react@19.2.5))(react@19.2.5)
-      '@tiptap/starter-kit':
-        specifier: 3.22.3
-        version: 3.22.3
-      '@tiptap/suggestion':
-        specifier: 3.22.3
-        version: 3.22.3(@tiptap/core@3.22.3(@tiptap/pm@3.22.3))(@tiptap/pm@3.22.3)
-      axios:
-        specifier: 1.15.0
-        version: 1.15.0
-      classnames:
-        specifier: 2.5.1
-        version: 2.5.1
-      clsx:
-        specifier: 2.1.1
-        version: 2.1.1
-      csv:
-        specifier: 6.5.1
-        version: 6.5.1
-      date-fns:
-        specifier: 4.1.0
-        version: 4.1.0
-      decimal.js:
-        specifier: 10.6.0
-        version: 10.6.0
-      echarts:
-        specifier: 6.0.0
-        version: 6.0.0
-      echarts-for-react:
-        specifier: 3.0.6
-        version: 3.0.6(echarts@6.0.0)(react@19.2.5)
       i18next:
-        specifier: 26.0.5
+        specifier: ^26.0.5
         version: 26.0.5(typescript@6.0.2)
-      immer:
-        specifier: 11.1.4
-        version: 11.1.4
-      lodash:
-        specifier: 4.18.1
-        version: 4.18.1
-      mui-tiptap:
-        specifier: 1.30.0
-        version: 1.30.0(cb51f1f3e3b81b22425bc4ee81ad3a34)
-      oidc-client-ts:
-        specifier: 3.5.0
-        version: 3.5.0
       react:
-        specifier: 19.2.5
+        specifier: ^19.2.5
         version: 19.2.5
       react-dom:
-        specifier: 19.2.5
+        specifier: ^19.2.5
         version: 19.2.5(react@19.2.5)
-      react-error-boundary:
-        specifier: 6.1.1
-        version: 6.1.1(react@19.2.5)
-      react-hook-form:
-        specifier: 7.72.1
-        version: 7.72.1(react@19.2.5)
       react-i18next:
-        specifier: 17.0.3
+        specifier: ^17.0.3
         version: 17.0.3(i18next@26.0.5(typescript@6.0.2))(react-dom@19.2.5(react@19.2.5))(react@19.2.5)(typescript@6.0.2)
-      react-oidc-context:
-        specifier: 3.3.1
-        version: 3.3.1(oidc-client-ts@3.5.0)(react@19.2.5)
-      react-resizable-panels:
-        specifier: 4.10.0
-        version: 4.10.0(react-dom@19.2.5(react@19.2.5))(react@19.2.5)
-      react-router:
-        specifier: 7.14.1
-        version: 7.14.1(react-dom@19.2.5(react@19.2.5))(react@19.2.5)
-      react-router-dom:
-        specifier: 7.14.1
-        version: 7.14.1(react-dom@19.2.5(react@19.2.5))(react@19.2.5)
-      react-virtuoso:
-        specifier: 4.18.5
-        version: 4.18.5(react-dom@19.2.5(react@19.2.5))(react@19.2.5)
-      read-excel-file:
-        specifier: 8.0.3
-        version: 8.0.3
-      reflect-metadata:
-        specifier: 0.2.2
-        version: 0.2.2
-      rehype-sanitize:
-        specifier: 6.0.0
-        version: 6.0.0
-      use-cleanup-callback:
-        specifier: 1.3.0
-        version: 1.3.0(react@19.2.5)
-      use-debounce:
-        specifier: 10.1.1
-        version: 10.1.1(react@19.2.5)
-      use-sync-external-store:
-        specifier: 1.6.0
-        version: 1.6.0(react@19.2.5)
-      uuid:
-        specifier: 13.0.0
-        version: 13.0.0
-      write-excel-file:
-        specifier: 3.0.8
-        version: 3.0.8
-      yup:
-        specifier: 1.7.1
-        version: 1.7.1
-      zustand:
-        specifier: 5.0.12
-        version: 5.0.12(@types/react@19.2.14)(immer@11.1.4)(react@19.2.5)(use-sync-external-store@1.6.0(react@19.2.5))
     devDependencies:
       '@gen-epix/eslint-config':
         specifier: 0.2.3
@@ -1577,18 +869,12 @@ importers:
       '@gen-epix/translation-util':
         specifier: 0.1.1
         version: 0.1.1
-      '@types/lodash':
-        specifier: 4.17.24
-        version: 4.17.24
       '@types/node':
         specifier: 25.6.0
         version: 25.6.0
       '@types/react':
         specifier: 19.2.14
         version: 19.2.14
-      '@types/react-dom':
-        specifier: 19.2.3
-        version: 19.2.3(@types/react@19.2.14)
       '@vitejs/plugin-react':
         specifier: 6.0.1
         version: 6.0.1(vite@8.0.8(@types/node@25.6.0)(yaml@2.8.0))
@@ -1628,9 +914,6 @@ importers:
       vitest:
         specifier: 4.1.4
         version: 4.1.4(@types/node@25.6.0)(@vitest/browser-playwright@4.1.4)(@vitest/coverage-v8@4.1.4)(jsdom@29.0.2)(vite@8.0.8(@types/node@25.6.0)(yaml@2.8.0))
-      vitest-browser-react:
-        specifier: 2.2.0
-        version: 2.2.0(@types/react-dom@19.2.3(@types/react@19.2.14))(@types/react@19.2.14)(react-dom@19.2.5(react@19.2.5))(react@19.2.5)(vitest@4.1.4)
 
 packages:
 
@@ -1831,17 +1114,6 @@ packages:
   '@csstools/css-tokenizer@4.0.0':
     resolution: {integrity: sha512-QxULHAm7cNu72w97JUNCBFODFaXpbDg+dP8b/oWFAZ2MTRppA3U00Y2L1HqaS4J6yBqxwa/Y3nMBaxVKbB/NsA==}
     engines: {node: '>=20.19.0'}
-
-  '@date-io/core@3.2.0':
-    resolution: {integrity: sha512-hqwXvY8/YBsT9RwQITG868ZNb1MVFFkF7W1Ecv4P472j/ZWa7EFcgSmxy8PUElNVZfvhdvfv+a8j6NWJqOX5mA==}
-
-  '@date-io/date-fns@3.2.1':
-    resolution: {integrity: sha512-CtXgTOAamkImI+CmbWRNdBi4ljj9xm/tdoPa+eeeiygduzubJTsXp18vYz+Vs/9yLho1zUOXlxpsfsF7PsXSWQ==}
-    peerDependencies:
-      date-fns: ^3.2.0 || ^4.1.0
-    peerDependenciesMeta:
-      date-fns:
-        optional: true
 
   '@dnd-kit/accessibility@3.1.1':
     resolution: {integrity: sha512-2P+YgaXF+gRsIihwwY1gCsQSYnu9Zyj2py8kY5fFvUM1qm2WA2u639R6YNVfU4GWr+ZM5mqEsfHZZLoRONbemw==}
@@ -3021,11 +2293,6 @@ packages:
       '@tiptap/core': ^3.22.3
       '@tiptap/pm': ^3.22.3
 
-  '@tiptap/extension-code@3.22.3':
-    resolution: {integrity: sha512-wafWTDQOuMKtXpZEuk1PFQmzopabBciNLryL90MB9S03MNLaQQZYLnmYkDBlzAaLAbgF5QiC+2XZQEBQuTVjFQ==}
-    peerDependencies:
-      '@tiptap/core': ^3.22.3
-
   '@tiptap/extension-color@3.22.3':
     resolution: {integrity: sha512-eZtOc4Zp5jnlZh4+gvr3JmOa3kPlIU8IbTByDMgXEMdVGZ5cOk+H4TMIlhU0j7j1TMWm8+r1WYtrU9E9ooz9hQ==}
     peerDependencies:
@@ -3105,23 +2372,11 @@ packages:
     peerDependencies:
       '@tiptap/extension-list': ^3.22.3
 
-  '@tiptap/extension-list-keymap@3.22.5':
-    resolution: {integrity: sha512-cGUnxJ0y515e1bVHNjUmbx7oWHoEon59w6BA5N2KwV9iW2mZZchlTX4yxJSOX+ixeVRChsa7YwC3Z1jUZ6AMEg==}
-    peerDependencies:
-      '@tiptap/extension-list': 3.22.5
-
   '@tiptap/extension-list@3.22.5':
     resolution: {integrity: sha512-cVO3ZHCgxAWZ4zrFSs81FO2nyCk1wb2EHkpLpW98FzbJLkN9rDkazhW99P3HRWy/CvUldOT+8ecI1YrQtBojMg==}
     peerDependencies:
       '@tiptap/core': 3.22.5
       '@tiptap/pm': 3.22.5
-
-  '@tiptap/extension-mention@3.22.3':
-    resolution: {integrity: sha512-wJmpjU6WqZgbMJUwGQKhwnzCdN/DtsFGRsExCvncuQxFKgsMzhW+NWwmzgrGJDyS8BMKzqwyKlSc1dcMOYzgJQ==}
-    peerDependencies:
-      '@tiptap/core': ^3.22.3
-      '@tiptap/pm': ^3.22.3
-      '@tiptap/suggestion': ^3.22.3
 
   '@tiptap/extension-ordered-list@3.22.3':
     resolution: {integrity: sha512-orAghtmd+K4Euu4BgI1hG+iZDXBYOyl5YTwiLBc2mQn+pqtZ9LqaH2us4ETwEwNP3/IWXGSAimUZ19nuL+eM2w==}
@@ -3225,15 +2480,6 @@ packages:
       react: ^17.0.0 || ^18.0.0 || ^19.0.0
       react-dom: ^17.0.0 || ^18.0.0 || ^19.0.0
 
-  '@tiptap/starter-kit@3.22.3':
-    resolution: {integrity: sha512-vdW/Oo1fdwTL1VOQ5YYbTov00ANeHLquBVEZyL/EkV7Xv5io9rXQsCysJfTSHhiQlyr2MtWFB4+CPGuwXjQWOQ==}
-
-  '@tiptap/suggestion@3.22.3':
-    resolution: {integrity: sha512-m2c+5gDj2vW7UI1J4JHCKehQUVE12qBhgF+DC+WEWUU8ZrFNf5OEYWQHDNsopa5RRpilfKfhPNbMtXgvGOsk6g==}
-    peerDependencies:
-      '@tiptap/core': ^3.22.3
-      '@tiptap/pm': ^3.22.3
-
   '@tokenizer/inflate@0.4.1':
     resolution: {integrity: sha512-2mAv+8pkG6GIZiF1kNg1jAjh27IDxEPKwdGul3snfztFerfPGI1LjDezZp3i7BElXompqEtPmoPx6c2wgtWsOA==}
     engines: {node: '>=18'}
@@ -3272,9 +2518,6 @@ packages:
 
   '@types/estree@1.0.8':
     resolution: {integrity: sha512-dWHzHa2WqEXI/O1E9OjrocMTKJl2mSrEolh1Iomrv6U+JuNwaHXsXx9bLu5gG7BUWFIN0skIQJQ/L1rIex4X6w==}
-
-  '@types/hast@3.0.4':
-    resolution: {integrity: sha512-WPs+bbQw5aCj+x6laNGWLH3wviHtoCv/P3+otBhbOhJgG8qtpdAMlTCxLtsTWA7LH1Oh/bFCHsBn0TPS5m30EQ==}
 
   '@types/json-schema@7.0.15':
     resolution: {integrity: sha512-5+fP8P8MFNC+AyZCDxrB2pkZFPGzqQWUzpSeuuVLvm8VMcorNYavBqoFcxK8bQz4Qsbn4oUEEem4wDLfcysGHA==}
@@ -3327,9 +2570,6 @@ packages:
 
   '@types/react@19.2.14':
     resolution: {integrity: sha512-ilcTH/UniCkMdtexkoCN0bI7pMcJDvmQFPvuPvmEaYA/NSfFTAgdUSLAoVjaRJm7+6PvcM+q1zYOwS4wTYMF9w==}
-
-  '@types/unist@3.0.3':
-    resolution: {integrity: sha512-ko/gIFJRv177XgZsZcBwnqJN5x/Gien8qNOn0D5bQU/zAzVf9Zt3BlcUiLqhV9y4ARk0GbT3tnUiPNgnTXzc/Q==}
 
   '@types/use-sync-external-store@0.0.6':
     resolution: {integrity: sha512-zFDAD+tlpf2r4asuHEj0XH6pY6i0g5NeAHPn+15wk3BV6JA69eERFXC1gyGThDkVa1zCyKr5jox1+2LbV/AMLg==}
@@ -3439,9 +2679,6 @@ packages:
   '@typescript-eslint/visitor-keys@8.59.1':
     resolution: {integrity: sha512-LdDNl6C5iJExcM0Yh0PwAIBb9PrSiCsWamF/JyEZawm3kFDnRoaq3LGE4bpyRao/fWeGKKyw7icx0YxrLFC5Cg==}
     engines: {node: ^18.18.0 || ^20.9.0 || >=21.1.0}
-
-  '@ungap/structured-clone@1.3.0':
-    resolution: {integrity: sha512-WmoN8qaIAo7WTYWbAZuG8PYEhn5fkz7dZrqTBZ7dtt//lL2Gwms1IcnQ5yHqjDfX8Ft5j4YzDM23f87zBfDe9g==}
 
   '@unrs/resolver-binding-android-arm-eabi@1.11.1':
     resolution: {integrity: sha512-ppLRUgHVaGRWUx0R0Ut06Mjo9gBaBkg3v/8AxusGLhsIotbBLuRk51rAzqLC8gq6NyyAojEXglNjzf6R948DNw==}
@@ -5164,9 +4401,6 @@ packages:
     resolution: {integrity: sha512-ej4AhfhfL2Q2zpMmLo7U1Uv9+PyhIZpgQLGT1F9miIGmiCJIoCgSmczFdrc97mWT4kVY72KA+WnnhJ5pghSvSg==}
     engines: {node: '>= 0.4'}
 
-  hast-util-sanitize@5.0.2:
-    resolution: {integrity: sha512-3yTWghByc50aGS7JlGhk61SPenfE/p1oaFeNwkOOyrscaOkMGrcW9+Cy/QAIOBpZxP1yqDIzFMR0+Np0i0+usg==}
-
   he@1.2.0:
     resolution: {integrity: sha512-F/1DnUGPopORZi0ni+CvrCgHQ5FyEAHRLSApuYWMmrbSwoN2Mn/7k+Gl38gJnR7yyDZk6WLXwiGod1JOWNDKGw==}
     hasBin: true
@@ -6765,9 +5999,6 @@ packages:
     resolution: {integrity: sha512-dYqgNSZbDwkaJ2ceRd9ojCGjBq+mOm9LmtXnAnEGyHhN/5R7iDW2TRw3h+o/jCFxus3P2LfWIIiwowAjANm7IA==}
     engines: {node: '>= 0.4'}
 
-  rehype-sanitize@6.0.0:
-    resolution: {integrity: sha512-CsnhKNsyI8Tub6L4sm5ZFsme4puGfc6pYylvXo1AeqaGbjOYyzNv3qZPwvs0oMJ39eryyeOdmxwUIo94IpEhqg==}
-
   require-directory@2.1.1:
     resolution: {integrity: sha512-fGxEI7+wsG9xrvdjsrlmL22OMTTiHRwAMroiEeMgq8gzoLC/PQr7RsRDSTLUg/bZAZtF+TVIkHc6/4RIKrui+Q==}
     engines: {node: '>=0.10.0'}
@@ -7380,9 +6611,6 @@ packages:
     resolution: {integrity: sha512-xXnp4kTyor2Zq+J1FfPI6Eq3ew5h6Vl0F/8d9XU5zZQf1tX9s2Su1/3PiMmUANFULpmksxkClamIZcaUqryHsQ==}
     engines: {node: '>=20.18.1'}
 
-  unist-util-position@5.0.0:
-    resolution: {integrity: sha512-fucsC7HjXvkB5R3kTCO7kUjRdrS0BJt3M/FPxmHMBOm8JQi2BsHAHFsy27E0EolP8rp0NzXsJ+jNPyDWvOJZPA==}
-
   universal-user-agent@6.0.1:
     resolution: {integrity: sha512-yCzhz6FN2wU1NiiQRogkTQszlQSlpWaw8SvVegAc+bDxbzHgh1vX8uIe8OYyMH6DwH+sdTJsgMl36+mSMdRJIQ==}
 
@@ -7984,14 +7212,6 @@ snapshots:
 
   '@csstools/css-tokenizer@4.0.0': {}
 
-  '@date-io/core@3.2.0': {}
-
-  '@date-io/date-fns@3.2.1(date-fns@4.1.0)':
-    dependencies:
-      '@date-io/core': 3.2.0
-    optionalDependencies:
-      date-fns: 4.1.0
-
   '@dnd-kit/accessibility@3.1.1(react@19.2.5)':
     dependencies:
       react: 19.2.5
@@ -8272,13 +7492,16 @@ snapshots:
   '@floating-ui/core@1.7.5':
     dependencies:
       '@floating-ui/utils': 0.2.11
+    optional: true
 
   '@floating-ui/dom@1.7.6':
     dependencies:
       '@floating-ui/core': 1.7.5
       '@floating-ui/utils': 0.2.11
+    optional: true
 
-  '@floating-ui/utils@0.2.11': {}
+  '@floating-ui/utils@0.2.11':
+    optional: true
 
   '@gar/promise-retry@1.0.3': {}
 
@@ -9310,6 +8533,7 @@ snapshots:
       '@floating-ui/dom': 1.7.6
       '@tiptap/core': 3.22.3(@tiptap/pm@3.22.3)
       '@tiptap/pm': 3.22.3
+    optional: true
 
   '@tiptap/extension-bullet-list@3.22.3(@tiptap/extension-list@3.22.5(@tiptap/core@3.22.3(@tiptap/pm@3.22.3))(@tiptap/pm@3.22.3))':
     dependencies:
@@ -9319,10 +8543,6 @@ snapshots:
     dependencies:
       '@tiptap/core': 3.22.3(@tiptap/pm@3.22.3)
       '@tiptap/pm': 3.22.3
-
-  '@tiptap/extension-code@3.22.3(@tiptap/core@3.22.3(@tiptap/pm@3.22.3))':
-    dependencies:
-      '@tiptap/core': 3.22.3(@tiptap/pm@3.22.3)
 
   '@tiptap/extension-color@3.22.3(@tiptap/extension-text-style@3.22.3(@tiptap/core@3.22.3(@tiptap/pm@3.22.3)))':
     dependencies:
@@ -9341,6 +8561,7 @@ snapshots:
       '@floating-ui/dom': 1.7.6
       '@tiptap/core': 3.22.3(@tiptap/pm@3.22.3)
       '@tiptap/pm': 3.22.3
+    optional: true
 
   '@tiptap/extension-font-family@3.22.3(@tiptap/extension-text-style@3.22.3(@tiptap/core@3.22.3(@tiptap/pm@3.22.3)))':
     dependencies:
@@ -9389,20 +8610,10 @@ snapshots:
     dependencies:
       '@tiptap/extension-list': 3.22.5(@tiptap/core@3.22.3(@tiptap/pm@3.22.3))(@tiptap/pm@3.22.3)
 
-  '@tiptap/extension-list-keymap@3.22.5(@tiptap/extension-list@3.22.5(@tiptap/core@3.22.3(@tiptap/pm@3.22.3))(@tiptap/pm@3.22.3))':
-    dependencies:
-      '@tiptap/extension-list': 3.22.5(@tiptap/core@3.22.3(@tiptap/pm@3.22.3))(@tiptap/pm@3.22.3)
-
   '@tiptap/extension-list@3.22.5(@tiptap/core@3.22.3(@tiptap/pm@3.22.3))(@tiptap/pm@3.22.3)':
     dependencies:
       '@tiptap/core': 3.22.3(@tiptap/pm@3.22.3)
       '@tiptap/pm': 3.22.3
-
-  '@tiptap/extension-mention@3.22.3(@tiptap/core@3.22.3(@tiptap/pm@3.22.3))(@tiptap/pm@3.22.3)(@tiptap/suggestion@3.22.3(@tiptap/core@3.22.3(@tiptap/pm@3.22.3))(@tiptap/pm@3.22.3))':
-    dependencies:
-      '@tiptap/core': 3.22.3(@tiptap/pm@3.22.3)
-      '@tiptap/pm': 3.22.3
-      '@tiptap/suggestion': 3.22.3(@tiptap/core@3.22.3(@tiptap/pm@3.22.3))(@tiptap/pm@3.22.3)
 
   '@tiptap/extension-ordered-list@3.22.3(@tiptap/extension-list@3.22.5(@tiptap/core@3.22.3(@tiptap/pm@3.22.3))(@tiptap/pm@3.22.3))':
     dependencies:
@@ -9514,38 +8725,6 @@ snapshots:
     transitivePeerDependencies:
       - '@floating-ui/dom'
 
-  '@tiptap/starter-kit@3.22.3':
-    dependencies:
-      '@tiptap/core': 3.22.3(@tiptap/pm@3.22.3)
-      '@tiptap/extension-blockquote': 3.22.3(@tiptap/core@3.22.3(@tiptap/pm@3.22.3))
-      '@tiptap/extension-bold': 3.22.3(@tiptap/core@3.22.3(@tiptap/pm@3.22.3))
-      '@tiptap/extension-bullet-list': 3.22.3(@tiptap/extension-list@3.22.5(@tiptap/core@3.22.3(@tiptap/pm@3.22.3))(@tiptap/pm@3.22.3))
-      '@tiptap/extension-code': 3.22.3(@tiptap/core@3.22.3(@tiptap/pm@3.22.3))
-      '@tiptap/extension-code-block': 3.22.3(@tiptap/core@3.22.3(@tiptap/pm@3.22.3))(@tiptap/pm@3.22.3)
-      '@tiptap/extension-document': 3.22.3(@tiptap/core@3.22.3(@tiptap/pm@3.22.3))
-      '@tiptap/extension-dropcursor': 3.22.3(@tiptap/extensions@3.22.5(@tiptap/core@3.22.3(@tiptap/pm@3.22.3))(@tiptap/pm@3.22.3))
-      '@tiptap/extension-gapcursor': 3.22.3(@tiptap/extensions@3.22.5(@tiptap/core@3.22.3(@tiptap/pm@3.22.3))(@tiptap/pm@3.22.3))
-      '@tiptap/extension-hard-break': 3.22.3(@tiptap/core@3.22.3(@tiptap/pm@3.22.3))
-      '@tiptap/extension-heading': 3.22.3(@tiptap/core@3.22.3(@tiptap/pm@3.22.3))
-      '@tiptap/extension-horizontal-rule': 3.22.3(@tiptap/core@3.22.3(@tiptap/pm@3.22.3))(@tiptap/pm@3.22.3)
-      '@tiptap/extension-italic': 3.22.3(@tiptap/core@3.22.3(@tiptap/pm@3.22.3))
-      '@tiptap/extension-link': 3.22.3(@tiptap/core@3.22.3(@tiptap/pm@3.22.3))(@tiptap/pm@3.22.3)
-      '@tiptap/extension-list': 3.22.5(@tiptap/core@3.22.3(@tiptap/pm@3.22.3))(@tiptap/pm@3.22.3)
-      '@tiptap/extension-list-item': 3.22.3(@tiptap/extension-list@3.22.5(@tiptap/core@3.22.3(@tiptap/pm@3.22.3))(@tiptap/pm@3.22.3))
-      '@tiptap/extension-list-keymap': 3.22.5(@tiptap/extension-list@3.22.5(@tiptap/core@3.22.3(@tiptap/pm@3.22.3))(@tiptap/pm@3.22.3))
-      '@tiptap/extension-ordered-list': 3.22.3(@tiptap/extension-list@3.22.5(@tiptap/core@3.22.3(@tiptap/pm@3.22.3))(@tiptap/pm@3.22.3))
-      '@tiptap/extension-paragraph': 3.22.3(@tiptap/core@3.22.3(@tiptap/pm@3.22.3))
-      '@tiptap/extension-strike': 3.22.3(@tiptap/core@3.22.3(@tiptap/pm@3.22.3))
-      '@tiptap/extension-text': 3.22.3(@tiptap/core@3.22.3(@tiptap/pm@3.22.3))
-      '@tiptap/extension-underline': 3.22.3(@tiptap/core@3.22.3(@tiptap/pm@3.22.3))
-      '@tiptap/extensions': 3.22.5(@tiptap/core@3.22.3(@tiptap/pm@3.22.3))(@tiptap/pm@3.22.3)
-      '@tiptap/pm': 3.22.3
-
-  '@tiptap/suggestion@3.22.3(@tiptap/core@3.22.3(@tiptap/pm@3.22.3))(@tiptap/pm@3.22.3)':
-    dependencies:
-      '@tiptap/core': 3.22.3(@tiptap/pm@3.22.3)
-      '@tiptap/pm': 3.22.3
-
   '@tokenizer/inflate@0.4.1':
     dependencies:
       debug: 4.4.3(supports-color@5.5.0)
@@ -9585,10 +8764,6 @@ snapshots:
   '@types/esrecurse@4.3.1': {}
 
   '@types/estree@1.0.8': {}
-
-  '@types/hast@3.0.4':
-    dependencies:
-      '@types/unist': 3.0.3
 
   '@types/json-schema@7.0.15': {}
 
@@ -9636,8 +8811,6 @@ snapshots:
   '@types/react@19.2.14':
     dependencies:
       csstype: 3.2.3
-
-  '@types/unist@3.0.3': {}
 
   '@types/use-sync-external-store@0.0.6': {}
 
@@ -9796,8 +8969,6 @@ snapshots:
     dependencies:
       '@typescript-eslint/types': 8.59.1
       eslint-visitor-keys: 5.0.1
-
-  '@ungap/structured-clone@1.3.0': {}
 
   '@unrs/resolver-binding-android-arm-eabi@1.11.1':
     optional: true
@@ -11687,12 +10858,6 @@ snapshots:
     dependencies:
       function-bind: 1.1.2
 
-  hast-util-sanitize@5.0.2:
-    dependencies:
-      '@types/hast': 3.0.4
-      '@ungap/structured-clone': 1.3.0
-      unist-util-position: 5.0.0
-
   he@1.2.0: {}
 
   hoist-non-react-statics@3.3.2:
@@ -13575,11 +12740,6 @@ snapshots:
       gopd: 1.2.0
       set-function-name: 2.0.2
 
-  rehype-sanitize@6.0.0:
-    dependencies:
-      '@types/hast': 3.0.4
-      hast-util-sanitize: 5.0.2
-
   require-directory@2.1.1: {}
 
   require-from-string@2.0.2: {}
@@ -14230,10 +13390,6 @@ snapshots:
   undici@6.25.0: {}
 
   undici@7.25.0: {}
-
-  unist-util-position@5.0.0:
-    dependencies:
-      '@types/unist': 3.0.3
 
   universal-user-agent@6.0.1: {}
 

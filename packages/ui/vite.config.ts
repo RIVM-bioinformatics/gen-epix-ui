@@ -49,6 +49,7 @@ export default defineConfig({
       plugins: [
         esmExternalRequirePlugin({
           external: [
+            /^@gen-epix\/api-commondb(\/.+)?$/,
             /^@emotion\/cache(\/.+)?$/,
             /^@emotion\/react(\/.+)?$/,
             /^@emotion\/styled(\/.+)?$/,
@@ -84,7 +85,7 @@ export default defineConfig({
           src: [
             './src/@types/**/*.d.ts',
           ],
-          transform: (content) => content.replace(/from '\.\.\/classes\/[^']+'/g, "from './index'"),
+          // transform: (content) => content.replace(/from '\.\.\/classes\/[^']+'/g, "from './index'"),
         },
         {
           dest: './locale',

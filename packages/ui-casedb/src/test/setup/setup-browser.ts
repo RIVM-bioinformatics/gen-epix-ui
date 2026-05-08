@@ -4,15 +4,7 @@ import { setupCaseDb } from '../../setup';
 import { CaseDbDemoConfigUtil } from '../lib';
 
 export const setupTestEnvironment = () => {
-  const configManager = ConfigManager.getInstance();
-
-  try {
-    // eslint-disable-next-line @typescript-eslint/no-unused-expressions
-    configManager.config;
-  } catch (_error) {
-    configManager.config = CaseDbDemoConfigUtil.createConfig();
-  }
-
+  ConfigManager.getInstance().config = CaseDbDemoConfigUtil.createConfig();
   setupCaseDb();
 };
 

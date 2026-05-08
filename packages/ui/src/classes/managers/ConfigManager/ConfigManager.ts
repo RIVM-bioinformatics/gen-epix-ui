@@ -5,9 +5,6 @@ export class ConfigManager<TConfig extends ConfigBase = ConfigBase> {
   private static __instance: ConfigManager;
 
   public set config(config: TConfig) {
-    if (this.__config) {
-      throw new Error('Config already set');
-    }
     this.__config = config;
   }
 

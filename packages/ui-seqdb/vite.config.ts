@@ -33,6 +33,29 @@ export const createIndex = () => {
   return './src/index.ts';
 };
 
+const staticCopyTargets: Parameters<typeof viteStaticCopy>[0]['targets'] = [];
+
+if (globSync(join(__dirname, 'src', '@types', '**/*.d.ts')).length > 0) {
+  staticCopyTargets.push({
+    dest: './',
+    rename: { stripBase: true as const },
+    src: [
+      './src/@types/**/*.d.ts',
+    ],
+    transform: (content: string) => content.replace(/from '\.\.\/classes\/[^']+'/g, "from './index'"),
+  });
+}
+
+if (globSync(join(__dirname, 'src', 'locale', '**/*')).length > 0) {
+  staticCopyTargets.push({
+    dest: './locale',
+    rename: { stripBase: true as const },
+    src: [
+      './src/locale',
+    ],
+  });
+}
+
 // https://vitejs.dev/config/
 export default defineConfig({
   build: {
@@ -75,25 +98,11 @@ export default defineConfig({
       rollupTypes: true,
       tsconfigPath: './tsconfig.json',
     }),
-    viteStaticCopy({
-      targets: [
-        {
-          dest: './',
-          rename: { stripBase: true },
-          src: [
-            './src/@types/**/*.d.ts',
-          ],
-          transform: (content) => content.replace(/from '\.\.\/classes\/[^']+'/g, "from './index'"),
-        },
-        {
-          dest: './locale',
-          rename: { stripBase: true },
-          src: [
-            './src/locale',
-          ],
-        },
-      ],
-    }),
+    ...(staticCopyTargets.length > 0
+      ? [viteStaticCopy({
+        targets: staticCopyTargets,
+      })]
+      : []),
   ],
   test: {
     coverage: {
