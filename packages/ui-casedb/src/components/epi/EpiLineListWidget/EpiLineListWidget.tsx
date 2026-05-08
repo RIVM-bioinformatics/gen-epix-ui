@@ -49,6 +49,7 @@ import { EpiHighlightingManager } from '../../../classes/managers/EpiHighlightin
 import type {
   EpiLineListRangeSubjectValue,
   EpiLinkedScrollSubjectValue,
+  StratificationLegendaItem,
 } from '../../../../../ui-casedb/src/models/epi';
 import {
   EPI_ZONE,
@@ -132,6 +133,13 @@ export const EpiLineListWidget = ({ caseSet, lineListRangeSubject, linkedScrollS
     if (rowValue.isMissing) {
       return rowValue.short;
     }
+    const legendaItem: StratificationLegendaItem = {
+      caseIds: [row.id],
+      color: stratification?.caseIdColors[row.id],
+      columnType: completeCaseType.ref_cols[completeCaseType.cols[id].ref_col_id].col_type,
+      rowValue,
+    };
+
     const link = (
       <Link
         color={'primary'}
@@ -150,8 +158,7 @@ export const EpiLineListWidget = ({ caseSet, lineListRangeSubject, linkedScrollS
     if (id === stratification?.col?.id) {
       return (
         <EpiLegendaItem
-          color={stratification?.caseIdColors[row.id]}
-          rowValue={rowValue}
+          item={legendaItem}
         >
           {link}
         </EpiLegendaItem>
@@ -272,12 +279,16 @@ export const EpiLineListWidget = ({ caseSet, lineListRangeSubject, linkedScrollS
 
   const renderCell = useCallback(({ id, row }: TableRowParams<CaseDbCase, CaseDbCompleteCaseType>) => {
     const rowValue = CaseUtil.getRowValue(row.content, completeCaseType.cols[id], completeCaseType);
-
+    const legendaItem: StratificationLegendaItem = {
+      caseIds: [row.id],
+      color: stratification?.caseIdColors[row.id],
+      columnType: completeCaseType.ref_cols[completeCaseType.cols[id].ref_col_id].col_type,
+      rowValue,
+    };
     if (id === stratification?.col?.id) {
       return (
         <EpiLegendaItem
-          color={stratification?.caseIdColors[row.id]}
-          rowValue={rowValue}
+          item={legendaItem}
         />
       );
     }
@@ -322,8 +333,7 @@ export const EpiLineListWidget = ({ caseSet, lineListRangeSubject, linkedScrollS
   }, [renderEventsCell, renderSimilarCell, renderEventsHeader, renderSimilarHeader, t]);
 
   const tableColumns = useMemo<TableColumn<CaseDbCase, CaseDbCompleteCaseType>[]>(() => {
-    // !FIXME
-    // const { DATA_MISSING_CHARACTER } = ConfigManager.getInstance<CaseDbConfig>().config.epi;
+    const { DATA_MISSING_CHARACTER } = ConfigManager.getInstance<CaseDbConfig>().config.epi;
 
     const initialVisibleColumnIds = CaseTypeUtil.getInitialVisibleColIds(completeCaseType);
     const caseTypeTableColumns: TableColumn<CaseDbCase, CaseDbCompleteCaseType>[] = [];
@@ -348,16 +358,8 @@ export const EpiLineListWidget = ({ caseSet, lineListRangeSubject, linkedScrollS
             },
             type: 'text',
             valueGetter: (params) => {
-              // !FIXME
               const value = treeAddresses[col.id]?.addresses[params.row.id] ? `${treeAddresses[col.id].algorithmCode} ${treeAddresses[col.id].addresses[params.row.id]}` : undefined;
-              return value;
-              // return {
-              //   full: value ?? DATA_MISSING_CHARACTER,
-              //   isMissing: !value,
-              //   long: value ?? DATA_MISSING_CHARACTER,
-              //   raw: value,
-              //   short: value ?? DATA_MISSING_CHARACTER,
-              // };
+              return value ?? DATA_MISSING_CHARACTER;
             },
             widthPx: 200,
           } as TableColumn<CaseDbCase, CaseDbCompleteCaseType>);
