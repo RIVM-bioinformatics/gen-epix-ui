@@ -9,7 +9,7 @@ export default defineConfig({
   build: {
     copyPublicDir: false,
     lib: {
-      entry: './src/index.ts',
+      entry: './src/api.ts',
       fileName: () => {
         return 'index.js';
       },

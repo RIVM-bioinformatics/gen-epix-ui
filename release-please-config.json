@@ -25,6 +25,10 @@
       "package-name": "@gen-epix/api-casedb",
       "component": "api-casedb"
     },
+    "packages/api-commondb": {
+      "package-name": "@gen-epix/api-commondb",
+      "component": "api-commondb"
+    },
     "packages/api-seqdb": {
       "package-name": "@gen-epix/api-seqdb",
       "component": "api-seqdb"
