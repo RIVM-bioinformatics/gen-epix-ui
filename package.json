@@ -11,7 +11,8 @@
     "clean": "lerna clean && rm -fr node_modules",
     "generate-api": "lerna run generate-api",
     "validate": "lerna run validate",
-    "lint-fix": "lerna run lint-fix"
+    "lint-fix": "lerna run lint-fix",
+    "check-types": "lerna run check-types"
   },
   "devDependencies": {
     "concurrently": "9.2.1",
