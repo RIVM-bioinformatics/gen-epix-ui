@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.26.1](https://github.com/RIVM-bioinformatics/gen-epix-ui/compare/ui-v1.26.0...ui-v1.26.1) (2026-05-11)
+
+
+### Bug Fixes
+
+* fix build ([eda2af3](https://github.com/RIVM-bioinformatics/gen-epix-ui/commit/eda2af31ef2c3bf0fb5857113f2fa6923db8a758))
+
 ## [1.26.0](https://github.com/RIVM-bioinformatics/gen-epix-ui/compare/ui-v1.25.0...ui-v1.26.0) (2026-05-11)
 
 
