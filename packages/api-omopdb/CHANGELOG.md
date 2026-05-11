@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.1.0](https://github.com/RIVM-bioinformatics/gen-epix-ui/compare/api-omopdb-v1.0.4...api-omopdb-v1.1.0) (2026-05-11)
+
+
+### Features
+
+* split and add frontends ([#120](https://github.com/RIVM-bioinformatics/gen-epix-ui/issues/120)) ([ca14f73](https://github.com/RIVM-bioinformatics/gen-epix-ui/commit/ca14f735841f5e738d5310bc2a7def3945460b28))
+
 ## [1.0.4](https://github.com/RIVM-bioinformatics/gen-epix-ui/compare/api-omopdb-v1.1.0...api-omopdb-v1.0.4) (2026-04-16)
 
 

@@ -1,18 +1,11 @@
 # Changelog
 
-## [1.1.0](https://github.com/RIVM-bioinformatics/gen-epix-ui/compare/api-seqdb-v1.0.4...api-seqdb-v1.1.0) (2026-05-11)
+## [1.0.4](https://github.com/RIVM-bioinformatics/gen-epix-ui/compare/ui-seqdb-v1.25.0...ui-seqdb-v1.0.4) (2026-05-11)
 
 
 ### Features
 
 * split and add frontends ([#120](https://github.com/RIVM-bioinformatics/gen-epix-ui/issues/120)) ([ca14f73](https://github.com/RIVM-bioinformatics/gen-epix-ui/commit/ca14f735841f5e738d5310bc2a7def3945460b28))
-
-## [1.0.4](https://github.com/RIVM-bioinformatics/gen-epix-ui/compare/api-seqdb-v1.1.0...api-seqdb-v1.0.4) (2026-04-16)
-
-
-### Features
-
-* add multi backend support ([#117](https://github.com/RIVM-bioinformatics/gen-epix-ui/issues/117)) ([56736ca](https://github.com/RIVM-bioinformatics/gen-epix-ui/commit/56736ca6431c8d0cd60947a786de5c576517e34a))
 
 
 ### Bug Fixes
