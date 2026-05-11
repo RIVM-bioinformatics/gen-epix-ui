@@ -1,5 +1,12 @@
 # Changelog
 
+## [2.0.1](https://github.com/RIVM-bioinformatics/gen-epix-ui/compare/api-seqdb-v2.0.0...api-seqdb-v2.0.1) (2026-05-11)
+
+
+### Bug Fixes
+
+* fix typing exports ([e90d3e6](https://github.com/RIVM-bioinformatics/gen-epix-ui/commit/e90d3e69de59bb8db44dc80d9f2352c0a1881d85))
+
 ## [2.0.0](https://github.com/RIVM-bioinformatics/gen-epix-ui/compare/api-seqdb-v1.1.0...api-seqdb-v2.0.0) (2026-05-11)
 
 
