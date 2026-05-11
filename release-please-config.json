@@ -1,6 +1,7 @@
 {
   "$schema": "https://raw.githubusercontent.com/googleapis/release-please/main/schemas/config.json",
   "release-type": "node",
+  "release-as": "2.0.0",
   "pull-request-title-pattern": "build${scope}: release ${component} ${version}",
   "bootstrap-sha": "35a7e75",
   "include-component-in-tag": true,
@@ -36,6 +37,18 @@
     "packages/api-omopdb": {
       "package-name": "@gen-epix/api-omopdb",
       "component": "api-omopdb"
+    },
+    "packages/demo-client-casedb": {
+      "package-name": "@gen-epix/demo-client-casedb",
+      "component": "demo-client-casedb"
+    },
+    "packages/demo-client-omopdb": {
+      "package-name": "@gen-epix/demo-client-omopdb",
+      "component": "demo-client-omopdb"
+    },
+    "packages/demo-client-seqdb": {
+      "package-name": "@gen-epix/demo-client-seqdb",
+      "component": "demo-client-seqdb"
     }
   }
 }
