@@ -1,5 +1,6 @@
 import { vi } from 'vitest';
 import { ConfigManager } from '@gen-epix/ui';
+
 import { setupSeqDb } from '../../setup';
 import { SeqDbDemoConfigUtil } from '../lib';
 

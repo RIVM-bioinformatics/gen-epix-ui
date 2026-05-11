@@ -96,9 +96,9 @@ export class ConfigUtil {
         const { hostname } = new URL(href);
         switch (hostname) {
           case '127.0.0.1':
-            return `https://127.0.0.1:5010/proxy/SEQDB`;
+            return `https://127.0.0.1:5010`;
           case 'localhost':
-            return `https://localhost:5010/proxy/SEQDB`;
+            return `https://localhost:5010`;
           default:
             return '';
         }

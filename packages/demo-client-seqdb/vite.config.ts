@@ -3,10 +3,6 @@
 import * as child from 'child_process';
 import { resolve } from 'path';
 import { readFileSync } from 'fs';
-import type {
-  IncomingMessage,
-  ServerResponse,
-} from 'http';
 
 import react from '@vitejs/plugin-react';
 import { viteStaticCopy } from 'vite-plugin-static-copy';
@@ -33,10 +29,6 @@ const proxyThrottleConfig: { [key: string]: number } = {
 
 const gitRootPath = findGitRootPath();
 
-const getProxiedApiPath = (path: string | undefined): string => {
-  return path?.replace(/^\/proxy\/[^/]+/, '') ?? '';
-};
-
 
 const proxyResponseCodeConfig: {
   [key: string]: {
@@ -48,29 +40,6 @@ const proxyResponseCodeConfig: {
   //   code: 500,
   //   method: 'DELETE',
   // },
-};
-
-const createAppProxyConfig = (target: string) => {
-  return {
-    bypass: async (req: IncomingMessage, res: ServerResponse) => {
-      const proxiedApiPath = getProxiedApiPath(req.url);
-      const throttle = proxyThrottleConfig[proxiedApiPath];
-      const responseConfig = proxyResponseCodeConfig[proxiedApiPath];
-
-      if (throttle) {
-        await new Promise((r) => setTimeout(r, throttle));
-      }
-      if (responseConfig?.method === req.method) {
-        res.statusCode = responseConfig.code;
-        res.end();
-        return false;
-      }
-    },
-    changeOrigin: true,
-    rewrite: (path: string) => getProxiedApiPath(path),
-    secure: false,
-    target,
-  };
 };
 
 // https://vitejs.dev/config/
@@ -146,16 +115,31 @@ export default defineConfig({
     ],
   },
   server: {
-    https: {
+    https: process.env.NODE_ENV === 'development' && {
       cert: readFileSync(resolve(gitRootPath, 'cert', 'cert.pem')),
       key: readFileSync(resolve(gitRootPath, 'cert', 'key.pem')),
     },
     open: true,
     port: 5010,
     proxy: {
-      '^\\/proxy\\/(?:SEQDB|seqdb)\\/v[\\d\\.]+\\/.*': createAppProxyConfig('https://0.0.0.0:8000'),
-      '^\\/proxy\\/(?:SEQDB|seqdb)\\/v[\\d\\.]+\\/.*': createAppProxyConfig('https://0.0.0.0:8001'),
-      '^\\/proxy\\/(?:SEQDB|seqdb)\\/v[\\d\\.]+\\/.*': createAppProxyConfig('https://0.0.0.0:8002'),
+      '^\\/v[\\d\\.]+\\/.*': {
+        bypass: async (req, res) => {
+          const throttle = proxyThrottleConfig[req.url];
+          const responseConfig = proxyResponseCodeConfig[req.url];
+
+          if (throttle) {
+            await new Promise((r) => setTimeout(r, throttle));
+          }
+          if (responseConfig?.method === req.method) {
+            res.statusCode = responseConfig.code;
+            res.end();
+            return false;
+          }
+        },
+        changeOrigin: true,
+        secure: false,
+        target: 'https://0.0.0.0:8000',
+      },
     },
   },
   test: {

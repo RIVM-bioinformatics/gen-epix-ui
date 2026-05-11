@@ -74,6 +74,7 @@ export default defineConfig({
             /^@emotion\/cache(\/.+)?$/,
             /^@emotion\/react(\/.+)?$/,
             /^@emotion\/styled(\/.+)?$/,
+            /^@gen-epix\/ui(\/.+)?$/,
             /^@mui\/icons-material(\/.+)?$/,
             /^@mui\/material(\/.+)?$/,
             /^@mui\/styled-engine(\/.+)?$/,

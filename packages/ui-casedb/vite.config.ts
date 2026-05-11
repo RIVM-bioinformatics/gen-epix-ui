@@ -51,6 +51,7 @@ export default defineConfig({
             /^@gen-epix\/ui(\/.+)?$/,
             /^@gen-epix\/api-commondb(\/.+)?$/,
             /^@gen-epix\/api-casedb(\/.+)?$/,
+            /^@gen-epix\/ui(\/.+)?$/,
             /^@emotion\/cache(\/.+)?$/,
             /^@emotion\/react(\/.+)?$/,
             /^@emotion\/styled(\/.+)?$/,

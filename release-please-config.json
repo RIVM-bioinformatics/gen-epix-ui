@@ -9,6 +9,18 @@
       "package-name": "@gen-epix/ui",
       "component": "ui"
     },
+    "packages/ui-casedb": {
+      "package-name": "@gen-epix/ui-casedb",
+      "component": "ui-casedb"
+    },
+    "packages/ui-omopdb": {
+      "package-name": "@gen-epix/ui-omopdb",
+      "component": "ui-omopdb"
+    },
+    "packages/ui-seqdb": {
+      "package-name": "@gen-epix/ui-seqdb",
+      "component": "ui-seqdb"
+    },
     "packages/api-casedb": {
       "package-name": "@gen-epix/api-casedb",
       "component": "api-casedb"
