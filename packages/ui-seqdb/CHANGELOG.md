@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.0.5](https://github.com/RIVM-bioinformatics/gen-epix-ui/compare/ui-seqdb-v1.0.4...ui-seqdb-v1.0.5) (2026-05-11)
+
+
+### Bug Fixes
+
+* fix build ([eda2af3](https://github.com/RIVM-bioinformatics/gen-epix-ui/commit/eda2af31ef2c3bf0fb5857113f2fa6923db8a758))
+
 ## [1.0.4](https://github.com/RIVM-bioinformatics/gen-epix-ui/compare/ui-seqdb-v1.25.0...ui-seqdb-v1.0.4) (2026-05-11)
 
 
