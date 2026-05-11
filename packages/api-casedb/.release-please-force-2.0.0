@@ -1,0 +1,2 @@
+This marker exists so the one-time Release-As 2.0.0 commit is scoped to packages/api-casedb.
+It can be removed after the 2.0.0 release has been cut.
